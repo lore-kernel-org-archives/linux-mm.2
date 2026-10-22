@@ -1,99 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110C3606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 14:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E392606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 14:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AmZMQS6I
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=lzMdWQRj
 Received: by kanga.kvack.org (Postfix)
-	id E8A876B094A; Thu, 22 Oct 2026 10:02:43 -0400 (EDT)
+	id 881056B02DD; Thu, 22 Oct 2026 10:11:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E62766B094B; Thu, 22 Oct 2026 10:02:43 -0400 (EDT)
+	id 831DE6B02DF; Thu, 22 Oct 2026 10:11:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9F5F6B094C; Thu, 22 Oct 2026 10:02:43 -0400 (EDT)
+	id 721A06B02E1; Thu, 22 Oct 2026 10:11:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF97B6B094A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:02:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23354A37CD
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:02:43 +0000 (UTC)
-X-FDA: 85350427806.04.E29E621
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 32E83C0016
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:02:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AmZMQS6I;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792677761;
-	b=P6CDoYABzGTMHqjjmowpELmOLccVuaPpyZLGUXy4WRPyVTvBKlO6bKHxduJ7wxIQcUsgmr
-	nL79vF0ienFdpB81dyn/Xe4Lmhm9qCQux/BGTiSNeqm0El+FSEKMcVxK9O9ojB9Y9Pwzqa
-	O3pQIcw/+io8GvVUA/0enVM41EKitLg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AmZMQS6I;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C4856B02DD
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:11:55 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D53F1C0B5A
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:11:54 +0000 (UTC)
+X-FDA: 85350450948.13.C273776
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A78664000A
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 14:11:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=lzMdWQRj;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792677761;
+	s=arc-20220608; t=1792678312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sbNemcwZ2jC1Uc7605k/VmRdjgt1QXoYjX9veU4w4sg=;
-	b=KNckhg2pnyI4zxY4nvpmefRVyDGS+XSh6gY/ZOUX5r5ENzEm6Os5knvPK80Qyfk/bqCtK1
-	KMvHCrSlw41HtciNgbTAbzG2RnKJa0SZYjaBpmR4jztRr61c9IYP23m0Ujyx94qI/A6FqO
-	MqTbwXk7MWB16Z40fgzIlhhXPpxmhRo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EABBE60A89;
-	Thu, 22 Oct 2026 14:02:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EB21F000C1;
-	Thu, 22 Oct 2026 14:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792677759;
-	bh=sbNemcwZ2jC1Uc7605k/VmRdjgt1QXoYjX9veU4w4sg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AmZMQS6IkrbnfBT7rmh94KaapbRI+T4bPXW5CLrWD95W9hDFLpbSOXSkpw3xXQo/Q
-	 JYxbCN3+IRkhfvwGbKgCVvGpsM9JFe3wWNJGlkRGMQA8ANaf9+k/k8xlBIbAcWnzPp
-	 Gu/m6krdg/kpRdIkq5YulAXt+UH8IoI0/ZzjF63qWP73OIbZYob0g17timLVgd5BY9
-	 qL1SDa2n9NHAzqyNmZU3icOaKvdcHz1y30fvMGOMzo/Hy1SlheQVwh6rxzfGOQ5vtU
-	 IaQ5DJGIKcl9/aAKwhsqjbLGlEgU37FyaIqXZWnYggqAyaYAm21ybJnZiBUcAHUWfa
-	 UUVl8+gih695A==
-From: SJ Park <sj@kernel.org>
-To: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Fernand Sieber <sieberf@amazon.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sjpark@amazon.de>,
-	Leonard Foerster <foersleo@amazon.de>,
-	Shubhang Kaushik <shubhang@os.amperecomputing.com>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon: align MMU notifier range when clearing PTE young bit
-Date: Thu, 22 Oct 2026 07:02:31 -0700
-Message-ID: <20261022140232.93962-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261021-damon-align-pte-young-notifier-v1-1-d0365ac45b66@gentwo.org>
-References: 
+	bh=J0ObRZqURp05kcBQ0Zv+pu1j99ivc4QOppayGe5sXtU=;
+	b=ULJrdtjet6y1OLLtIDvLUV+/QQU9KA/Jd7BPm06Nkyn96S4sEq0heT2Ve4NMyG/BcR1uv/
+	btKLrOYoQaOhhfgHpzBkMdovuy6MSeRSQh/myvJuBHQ/3bLc+/veSwQfXGNwt/10Cc0+Wb
+	ilndRtzvmRWIbOiFoAtdUSisX3jQWiY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=lzMdWQRj;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792678312;
+	b=UxfhbK01mWcASwypattkJrgkVUhiYj4Sx6Qwt1N6KEj0iLRzz6c+BmxJwKGvdVqdk3mb6J
+	I4wGutgcsZSDgfdhTqBzeDyRrFPRxyrG/b0NZNaKEVMDq/LiM47u0vL3YckFTomHb3yEK2
+	vlSIuTxhjxJ2vZ5RXL8rJpvMA4M6ZCU=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-91c2fc03880so3422486d6.1
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:11:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792678312; x=1793283112; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=J0ObRZqURp05kcBQ0Zv+pu1j99ivc4QOppayGe5sXtU=;
+        b=lzMdWQRjdJKrTFyiAr6d344LGeDeOnJk1fud84Dpd25vf5WRDJwEHrpbadywSgSq01
+         rwIamfCzqulnvl1jC5jtDQpeWHW8f8Vjym117kgHJbVZay9Hy0Edo9P5aOyhPusyciCC
+         oYWNuqhv2mDJoRB0TmVa8ZDusiXfijQiaEzd1YpgofBuv2tYVEjvemTA0PH/OIHGkcxh
+         BeijjJtWa1QH5q4Qq4LPxlDzekAEYra22RRrS2aJHim7L+tD6L4V6Tdg2OMagTEvURIs
+         +T5WbGgLpgp9WgLqCVwjkonPxgDh28J2HSVcNik7BQPpbIsmlkREypEcVJ75gf6n9shN
+         5utA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792678312; x=1793283112;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J0ObRZqURp05kcBQ0Zv+pu1j99ivc4QOppayGe5sXtU=;
+        b=XITNXcl/BCHLyW2cMcGZ2T2HSXh+sqS86jIcmPCgYA9VVAhOwbG1TqMZE8rspTVAut
+         fbhi9iG1NAlUxCUTp+l5PobWrv+DMwheJ4oy8F64gRWDMKC/2V6ofQ6KuAcXXjVzlHsz
+         dIEY0xsIgfW1U3RwpeqXe2BGUm1YnjPM+dimtnJXst1t9jsLVfKMkBO3/cN1OyuzpIP9
+         fcUVDjJhxZDEUU0QMrrU/neFQYRrqgIGsPkxQqbBQHUmhy3HAAmrTOZqCiUijrLeG2JJ
+         FGdb9U0dVh8lMpsnxzH9/m5vQT8l4MTddLM38eIE0Q0OUZZi3MUUty+6ifUSoi7csv70
+         h0yg==
+X-Forwarded-Encrypted: i=1; AKwUvBwf2V8AqCgYWrsCMBAQ4/N6YwDZKVhLyQ2l1QmcDXDINbI/MrgQIBVwWZgjrPvOHsiBGWBuwKWfnw==@kvack.org
+X-Gm-Message-State: AFq9FYIsbKiE/x6QINlX9yQ9hvXp1hTfMvh5q1QbXqMsxxUxAYh5qDa3
+	PvLpPVBbm+9RgB0JeevH3Dl1iGfllntTz+io5mRfz9S9PtIv+ROSp0q4iJvX5R9NEJ8=
+X-Gm-Gg: AYBFou1DkaY6AGBvKjkPpvY5D8+YKbm3ov5XDIHc1H9eZCYm01qbtQlZtlFoUHquJic
+	/bEtmNUqcZkdb/xWySsNq4rAWW4YWbEaf02YUNVyGqJtTtvHKYDAjjsxR8fwU/X7djT22EYrpkt
+	MJBQ/uXvkG8XKk1xKzt6i8aHPiJOgGFq2qIZ9o0W8a9eazlClxFeEqrkk3FqHP6PLCFo/w05RJa
+	z+b/98BXtLZTKspj9wCZqaVLCNqfXWhm0MuUGoRJn69QSHNnlh+WjTKTZ1XFVvgs+UqcmDNuiiA
+	QQo/njTom6YRj34bjriwgjnylid+/cQ7CRVfkhVA7BCfMnHX9EDfgaV/IR9UD63vYIlJtYE5Z1b
+	y4SzE3NOuWg29TjmI4fG7I1Kz2oCfwe8sk512P5vLsvjQTpKFAobEsg8KthBZQp/zByEm+amv6l
+	9uXxuq7lqVDfiAzWs16znddJy4XkzXoA8JgnsMwWkXS3sX0CZgLcQfDsoDe7l5sGtiJ1SN4g+Yi
+	xV7zbQPA3KIpmGRrp6vaw/1l9JN9guxPS6QDKnSmcoVYR3cgodRU/Jp3QQj2is1pJqXUBO2GbW+
+	3yG0UuIKay33HWXH2b144+OwSKfdpuRwudyyOg==
+X-Received: by 2002:a05:6214:29ed:b0:919:57a8:7537 with SMTP id 6a1803df08f44-91c232e5013mr44009236d6.18.1792678311640;
+        Thu, 22 Oct 2026 07:11:51 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c10c0bd4csm51371086d6.30.2026.10.22.07.11.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 07:11:51 -0700 (PDT)
+Date: Thu, 22 Oct 2026 10:11:49 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com, ljs@kernel.org, mhocko@suse.com,
+	muchun.song@linux.dev, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, weixugc@google.com, cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC 0/2] mm: add source selectors to memory.reclaim
+Message-ID: <atoZpXaCRc7etPW8@gourry-fedora-PF4VCD3F>
+References: <20261019141401.11927-1-lizhe.67@bytedance.com>
+ <atY-LD2AzCYATRii@gourry-fedora-PF4VCD3F>
+ <30457046-a662-4ff7-a6a8-100398d7a806@bytedance.com>
+ <179264138036.2549665.17429111144570830454.b4-reply@b4>
+ <9b715272-3ed9-42da-a6ae-467e8ae00c0b@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9b715272-3ed9-42da-a6ae-467e8ae00c0b@bytedance.com>
+X-Rspamd-Queue-Id: A78664000A
+X-Stat-Signature: jgd5xc9o66kztjd3atusgdo7ttxxhbio
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 32E83C0016
-X-Stat-Signature: n9gqg9h7by8zt8up76jq5f3wfck3s18m
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792677761-100109
-X-HE-Meta: U2FsdGVkX18Htcly+1HLZqbO1Jfsz86ztOzht2rNgnMVQ5MP2jr6mqQRnrceMRdQevAfmrJO+xB6gl5MQuerSfnCjBHlz5Q0FAXVu716ztccamoPETjLCJmDhN2asihH7eSdEncGqEJRSVK3OxENq833r/rL1gNOym8ZJSsDqWI/1mObTsHx4XjUS664X6M6AXEOFrLzoTKaHLNWYPQjPqLDk6HHvYgIWslrQwI+9dh74cR6cNKtVWvAnL2XIWzTN8xZG1Jfa+CZcmwYpaCWhkJsY4az9px+CRyXiagPZNzKzWPYbKQdRRZ9HkpESWHf9IFu3L3Gu3ClQgYhECgDgOsBONZqZ6LPboioyJ6xRJxttTcTtCbk1HwRKM8jBC6alnlZrq9jf8pdrTwK7oD7HYRZAA1lE9i/HOGh7WJ4bcp/QuQfFch4b3CuNq1sA52Inxa0bDtFb3BXxUFYhbBeX+lwfZrAJrdkxAWiLZ6W2hZ5FIJZNoihDntF6NNLIM9803vkhB6AilMrBY/WrUeAtdXiObHTu2gKqUR3CkgTHifS3F/zp6+fXZaxsJQNox0XwaLENIsD80Ygzn9EXKlNj6FGN9dnQ5EQt0XKWANTDWEtfaV/nLndeWNG/lPLLQsUrFmN7Tp7aByCOry7AEMxrH+z25oqxVaibkRBsaTT3imGoTmgADWmNU+uBSV7bbb6lY4ynWj7OtcJmVafmmDnj68sQTy02DPscFauXnc17UDzWEF/d+QM36wVe/8wUdkKbTLHYYJoPfPWVrhMJd4O6T3APO6S0sb7CfQvzBPuH/s5+yiTUhiULto2Tu7/O8TRJDFS6s3OyC/imE9oGLiyZ06tRzU16ZJwAKRvA+L3WWarPesdNCdc78fnbmht+/i56vW9iD+Kery2YyupYBAY8Q27tWfZlXMH+DkD4htl3+R/Jr9e/E3jPfS8aXyNi2HPBikOzF7lS4Nm7KmJyFv
- C45qNExx
- bEuN7cnUSVRuPgoeCMOfWntc4ApieIvt2CucIz6EyXlOL31Pdz6aq3ZFVHVuAtpMZnO6c6Psme95MI/RORdxL0daHDRkRgIk+myH7GZNdSb2KN8Io3ScE1Kk3IGszrbEdS3aXsD5HRRAHy5WUlt65XfYp2ptcr/QHLJBe2Qauk0flwsjAaumOKSV/08ya2LOStfi/5AF6qeevvqJZXt6i4pHP5dFy0v48TlBkhz52TTwyirbmGAIyZY5Cm/B9L2QH3Zqnq0+R60bv4oYnzy5n0xpQvd+Wxq7pj8XHG8Xi7FaSRHQxG56kaSXB9JKfVT/3Zi3a
+X-HE-Tag: 1792678312-800017
+X-HE-Meta: U2FsdGVkX18pWxqPijQSVEt53xOVSkQFFGJLRFzdafgstQKcU7vn2RixbrhLFFzySLrQ2uBD4GT76K8clge3xL0Yg8SW7/rwCFh0rP0cpSplJu/OC8Dqel9v5NPHeh6dmQ5WGPy3FgtA1t2LL+0ukn43RmV/2lL7/V7EPLEKFduBovNcRqHrgPsXSXJttDCiZuOn5OI/pjL6ewzYXRT7KlAjS8XrFZP3mVgAv8E/YEZQnxd5PP5L5jN1W1JVNyD9sdVju/n19gvzvInPIOnY09f83W7A8O9cL5zt6XOt01vWE8TFZHSBmIvaVqjBjhs1l2lpz2ITFWviLPN/mrFJFcWdGVyAkS3TSu7ToLkCNYafX1cBHbaqoQGNKmh80eW+lJ2GSUT6LSEoorptHQui3NAV1DAs9A76CjHAUyKmkC1uo5fKgxOaXbnMv9jcNNgIp04AmodkTly0pYuOcvAF4LvHGt77H6gj+dftDrUXo9hk4ZIRDLkW/6PPHqAbmchnvCIq6phwp9gpMeuTebdMeXY5ESdV/Uu019qTCYKDncbBvyLbtOTYLFqMB1qjq1F/WKtMxqCrI43hV4B1oTJGjSZOMLe2GQHFWhq9fg1sODoYqY+nxLSVJ4tYgHEBl4Mg5NmNscrRrogExaDiaFMSqC9VuPxJRz8ywt9jhLkQQV0nlsFujq7Lp2qXwQ0qlIT6kHBfOqsNp9ZFWN60NxNyEHly4/ULWNWyAkHPEw5juokRTsLTf7yZpxJFjKURpC0xS44px9LcstJKTutPCI9OaEm4JIBcW0L3nGgCDTY7Y0v5wECGMUKVQdEVZH74oq8yvz+Kq7geU1uxc0MFx5j1AXL5bcTv5fsxUVUbAhcE6pOU4r8ePB0MCnUCT1+0uTwwXf7UqVX2bZ3WsX4PuFquXyGxETwbpz+iDNHtqDYSl8xeJrxqCr2NluiyMs34yZv0Kq7VZZptRdz6nScwR18
+ HcXMEdzw
+ D8DUnhTxdDo4HIKx2Xzdj9s82YWiskZF6uKqT3GN2qeT13NU54f3hcTmIi73I9AwJYM9r+mUwkS+KaFIr8hd/8aIvApK5J60ucwTnJxM/dz7RwbwBn6uyxQmxJfzbv0uFNwbArMboWXklnDal4QkqgINqy+KYXaX0lICkwYUqSXm+3uiLQgU5yNw0ghDXNCXeYMuRNMOdkCS85tFqqvgHxUCWBuHkJ9CGXnhHAcFCFnfh38vxCeBUQrjm+srRCb8W0Z5J5DzxUHeM+0WQhAeYnrOXYwFkKTAZvgHOqX7UefbjOfj7P/IoQdRjzaB3Lg4Y33HwkFoc9/Rz3YkY0wnR/pbB3QVYRT9MOKBw+UDywz2gKdB2kh2Bo79BRFEJ5EefboJctCFFC19gRNAzbnN+tPxLVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,47 +132,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello Shubhang,
-
-On Wed, 21 Oct 2026 23:36:19 -0700 "Shubhang Kaushik (Ampere)" <sh@gentwo.org> wrote:
-
-> DAMON selects a byte-granular sampling address.  damon_ptep_mkold()
-> clears the young bit of the PTE covering that address, but passes the
-> unaligned range [addr, addr + PAGE_SIZE) to MMU notifiers.
+On Thu, Oct 22, 2026 at 05:43:49PM +0800, Li Zhe wrote:
+> On 10/22/26 11:56 AM, Gregory Price (Meta) wrote:
 > 
-> For an unaligned address, that range extends into the following page.
-> KVM ages every guest page intersecting the notifier range, so it can age
-> a secondary mapping for the following page although DAMON cleared only
-> the sampled page's primary PTE.
+> So userspace cannot rely on one write to memory.reclaim to produce a
+> final per-node distribution. The intended usage is a feedback loop: the
+> controller observes the memcg's resident distribution, chooses the source
+> nodes it wants to relieve, applies source-scoped reclaim pressure,
+> observes the new distribution, and iterates.
+>
+
+I think the critical question is what CAN userspace rely on?
+
+We can make a bunch of feedback loop interfaces, but there's no
+guarantee they'll actually be useful.
+
+> >
+> > At the very least i think you need to add details in your cover that
+> > demonstrates the process of doing something like per-node resident
+> > ratios, and show that it works as you intend.
+>
+> Agreed. I will update the cover letter to make this model clearer. I
+> will also make clear that source=nodes is not a final net per-node
+> footprint guarantee and does not change memory.reclaim completion
+> accounting.
 > 
-> Align the address before both the primary PTE operation and the
-> MMU notifier call so that they cover the same page.
 
-Thank you for finding and fixing this!
+To be clear, I think not just making it clearer, but if you can show
+some tests that demonstrate the reliable behavior of the interface
+extension under different scenarios - that would be compelling.
 
-> 
-> Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-
-I once thought if we need to Cc: stable@.  Because this is only for monitoring
-accruacy improvement and DAMON is only beest-effort, I think we don't need to.
-
-> Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-I applied  this patch to damon/next [1] tree.  We are now in the middle of the
-merge window.  It may better to focus on making mm.git changes pulled into the
-mainline, rather than adding more changes that are not really urgent.  I
-understand this series is not really urgent.  Hence, Andrew might not add this
-patch until next -rc1 release.  In the case, I will request adding this to
-mm.git after next -rc1 release.  So, no action from your side is needed for
-now.  Let me know if you think this is really urgent.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+~Gregory
 
