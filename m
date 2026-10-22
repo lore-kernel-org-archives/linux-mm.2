@@ -1,109 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9ED606A32F
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 09:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31E260A261B
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 09:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PwIAuW2x
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mcnFsnNb
 Received: by kanga.kvack.org (Postfix)
-	id 9726E6B0287; Thu, 22 Oct 2026 05:18:43 -0400 (EDT)
+	id 0E4A56B02C1; Thu, 22 Oct 2026 05:39:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 942616B02C5; Thu, 22 Oct 2026 05:18:43 -0400 (EDT)
+	id 08E5B6B08E9; Thu, 22 Oct 2026 05:39:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87EE06B02C6; Thu, 22 Oct 2026 05:18:43 -0400 (EDT)
+	id EE5E36B08EA; Thu, 22 Oct 2026 05:39:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E2716B0287
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:18:43 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 37147407C7
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:18:42 +0000 (UTC)
-X-FDA: 85349712084.09.F9CBA40
-Received: from mta0.migadu.com (out-11.mta0.migadu.com [91.218.175.11])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CE158C0004
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:18:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PwIAuW2x;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.11 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CBCBB6B02C1
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 05:39:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 704221C3DF0
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:39:08 +0000 (UTC)
+X-FDA: 85349763576.20.1DBA773
+Received: from mta0.migadu.com (out-191.mta0.migadu.com [91.218.175.191])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C1B7118000C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:39:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mcnFsnNb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.191 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792660720;
+	s=arc-20220608; t=1792661946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PIP2wew2boNsbO2jCY9QS6pi4IH2031MB32CXAZbJYY=;
-	b=ugNX/rvYy9tkGS5//h2sQWY5jqWNzlWceCqTW//mBpauDUiwsmwouFcvSyNIt4AOZiGVNs
-	pg83pchSaMeai//K7iVZnW2gKsgUC9Z19foGg9rkV754zzcdeF9Si+zT5wonCrAEDdafGN
-	kNrhiOJB2+x7+jis9fWBrFPFmGeySAw=
+	bh=0GmCpy+eJfLwayZinpylaJMbGEt0lWCkqtD1BhfUORw=;
+	b=gG1DWtgQWtn94CeQShTZvVI9Fn0mi2VXQmqJ/idfhtQiLH7m7q3Pxg9WzSwPgFze+xOhzM
+	6WfrAWK3H8Dsz7vQzPfKnxyy7zXp8R2qE+wvAemIBBmz8L8yMilO/QRDy+8hAP5vwwxoX1
+	vNVOCuIwqTT6umRcsaRgwubsjnJNAvY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PwIAuW2x;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.11 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mcnFsnNb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.191 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792660720;
-	b=3NOHhEPSzVDKP2NFpPYrprVUQqKEvqSaMpE5f3PgoeYHPIaLK2xqcYZwbk3tv/5frnh2t4
-	F2k0dNXHs1mii+zEpbhkbk8lVEaQP8BhfZzl+sHQUnZNhWLuS2kricRF8JHoVlvoXD7s3F
-	NiQLSu9JnO6XdnpsmPSCr3IrVpr5I2g=
+	t=1792661946;
+	b=FnUFUnlhntLR6zfheSItgLzYh3gOJYddFUmYnZRp7wm/OJaLzSr+KOQ/Qfrx7cT7Sujf6w
+	MWuF/sMgluDOvkxyKCr60Z54JvPYOiY6uGHxbsoGjUVd3wANHmwuezK2iQAWuBms+chWEO
+	5g2OXUYiJasw5mrLy3JWEnwTt8rHpCU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=PIP2wew2boNsbO2jCY9QS6pi4IH2031MB32CXAZbJYY=;
+DKIM-Signature: a=rsa-sha256; bh=1lWGkdTuq/siu1UcRxH5A8Ju9QQIXhG5ZWtb704zGCo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792660717; v=1; x=1793265517;
- b=PwIAuW2xhT18typ6yIM2xFYWQglrpK0p4byP0s6wMqy348GHuH0JbMddiYT7vUFqlBO8fl0/
- Tu61RLV0d9rSQf3MBJT6j+9trRlxHdpa+gnL6+mhkWJHqMUaJNZU9xOOm+MXDSVp7T0bMSot3k7
- xLd9Ty8MtW1EEAoJI7nIT0H0=
+ t=1792661943; v=1; x=1793266743;
+ b=mcnFsnNb7uPMMD0lO5jNilDyFka04DB29P67/eX1grXXQa2SSeRKxQfguX1aZAL0wPR1z3hQ
+ fXGsZWNyJ/Wc3jDeDRVaXndGFiYx6NXaZbw9kjocXYDW7YU+BiD3Lu9Sa2DHhOM2vJN63uC77v8
+ t/nuTHXzHdLZS3EKbubQWr3U=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 59d4a31ee7773685;
-	Thu, 22 Oct 2026 09:18:37 +0000
-X-Mizu-Trace-ID: 59d4a31ee7773685
+Received: by smtp.migadu.com with ESMTPS id ec019d45daa1a9be;
+	Thu, 22 Oct 2026 09:39:03 +0000
+X-Mizu-Trace-ID: ec019d45daa1a9be
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
+Message-ID: <cd1cfdff-5e57-4eca-b190-5b17f53e4c30@linux.dev>
+Date: Thu, 22 Oct 2026 17:38:50 +0800
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH v2 03/20] hugetlb_vmemmap: Always flush TLB if needed upon
- PTE remapping
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <CADrL8HUOJwEgjUzefxSUa=AZHj4JO7koonj2_-WYhcL8QcXPZA@mail.gmail.com>
-Date: Thu, 22 Oct 2026 17:18:15 +0800
-Cc: Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <440A9FCF-2B5D-43A9-9B02-C32F5955AC82@linux.dev>
-References: <20261003002123.505555-1-jthoughton@google.com>
- <20261003002123.505555-4-jthoughton@google.com>
- <B8A44041-1516-4405-976D-534AA2412A49@linux.dev>
- <CADrL8HUOJwEgjUzefxSUa=AZHj4JO7koonj2_-WYhcL8QcXPZA@mail.gmail.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CE158C0004
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/5] mm: hugetlb: enable CMA allocation for PMD-sized
+ pages
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, muchun.song@linux.dev,
+ david@kernel.org, osalvador@suse.de, akpm@linux-foundation.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, lance.yang@linux.dev
+References: <cover.1792651104.git.zhengqi.arch@bytedance.com>
+ <5edd1dc82bd3b0b09005c0b36cafa2f7baea6d3d.1792651104.git.zhengqi.arch@bytedance.com>
+ <f5db959b-3744-4f7d-9837-e8a4aed70ab9@gmail.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <f5db959b-3744-4f7d-9837-e8a4aed70ab9@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C1B7118000C
+X-Stat-Signature: a87h6ha7n38gwehm91ga9znycw3wbge6
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: axq3zjqape1wpmgihobjmpzmc16tkidy
-X-HE-Tag: 1792660719-388646
-X-HE-Meta: U2FsdGVkX18gbRZnCyV56OIC3tnWHqbRGiN6/G8ISfmKlxDKbWn2ZFmvsRHmSDKLMOPBDlZY/vVOzuVvAYgFJznMpVjrobWODPw+WSOO0TS+vi3DH+pFaUK9Jt341iMhs0wyeaJxnZwiocAB1x6tmAoTKKkRQD8A0+G6my5J/bMdUxJ/qegbi6+1elPq1m1mLtVf9hA/Iu+qjqkVVFa6Nm0b3cVAjRupEJmg2ik2RLCA7E5E7sHKyfS9pAxRaMMtH7ojgWmnCP3tIZp3lrWoyovpg0LC5QSsz22WUUl5N0LDhoaC40lxuKY1crjmonL6GLB3x6ukewhNgMPHnZM1HMuftG8juH3BsLoJLLlA38iiFTp7JUkleGYw2pOmY4MxD/MfEeemb2PJ2NO/9Q8MkIpXgzWAYJIdSx9YopVQ3X76Y69FOQZRdk/sjJ4MFOg4lkagCHhl5mWJ6WjU7sZB4BMaBxGshySw0ZUuMj0AAJDIOzkN7j4RgR/sY+swR1ShN+B/7+BAcejAQQDFL+MbBd2ItJMZ+/dOtmvWleB9v4jAmw8a8T71cv3iAXeJl03mettf6LbbxA2P8HDqZzTzybszfG5cEG2a38hRGi/dVpXyvhaQjjBxzCGVD7uaiHHpc4EXPFSp8R4YbEb5SsqyMplQasKA/nOZu5FdNgJc5sNoAFQASmVM36HhvBHOIS5aEP0rtyZ6npBynBCGjLi+fLJ41RDLpdIeBpSCBbAkqb5aUw/gjtWopSEUGt79/0PbYg219k2NwKd87KE43lD4yIQM56KApRfHxB0KvM+yDPz44DSSQtlt9Z4ul/X6pWfDGzmzwqkD2IaLDBOBwfuzf2FFvNN+EGrLAW4hwJPGEpMP3MT6mUdQbzA4LiaiEIyibc0QQrSo4d3NsybnxzoZzGPovQjicsGmuMFaSsYTgRpFa+cT6bV+MenJLPlSBSAiOqvr7Tui5ZASbDnIfft
- YRuHv+2h
- FbDS28qbuhS4CKPL8mGLAs9/PdXrbYEfZXr17qcjTZXR2s9YetFu0LI95wPc+gYL1KY9KanBuxOhPyy2nAWygxb9BAtAz3DGcp8vxJlDNzN3x3DbTTEaga2s4PuXyXTMgfxUSOztmerW7+qC4TDVW5SgZdEFZO9wQUSq99fF7ES434MPkQAm1p6eqpnnaF8SOSk4h4dAatZgcfwtFKrp91eMSJQUqiZoz+rvB3IsismPJawLL6J5fXUuIOrNKrh6ohHRvbRNY0ANtLajQLbxQMQb8X0zK1LL0vM5rsxwpLspAv8q9lQEPbG1hv5bk+E9aMJpMTrrpF5+cQUopWf2lVObyRWBgkFfniCTKb/xUTTyApMNPX5cMQZ6QTLeGXLSUhPQZorEOcuqig3nsr7D6Qc6Ew+IC74tomrrU
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792661944-94697
+X-HE-Meta: U2FsdGVkX19vTp2gCEWxkICU00SyL3Jq3SamE/7zPJD1Yy0Fqugs3xrow91w5FiLOv+fGlyKscYC4fjGQFrgsgdzUTSUw25pvpaOQsxRRFfHh2tLxgoyctDmtVl7wDk2jxprK2BJoOH6mSWg2l7XdwoibIQOEbMAqJuZzvN0pgnEgPkewrfm3Q0rd+QOoXGR+vNMQ1Y8ezx/kq+AfyqNo8cZpLzr95HHRLqVUjzMcf2dZgtkpXJW/5cdL4O27BslYJ1Dddytbrc2gV7NmH0gtp4xo1osX+ToF1U4o2lnRZbeNTquKVLZXTVafW5m726SUKuwwLQulle0Ew0esC6MUjf8wSLnR8uQ0A9pTzCWyJeBNrDpmuKYWzHgVbokTXiLJcxhvhbRHqhKTADZXYkRlmKaf1UasWH0Hd3Hg6OAcUnsYm4+Dr6c3EyzrGChHTFnCxVMTyJ14wUyEKXPVKfEJ+0i+qNWvWggBQCgM7HB0XB2uRkTOJUNsncFuvMRqOqxzlcc5RQJ5uKKC7QTWYHQmGg/WVhAK4QV+71hKf9khsQZi+gIQjepWvHiaQKzlkL38GyxI0P62TwVfmv0kPM8xwP1EntvHqWQOz/ZtTIGzncgXinL95dXrxDfD8Zu9+vKCM3Tnd1pw/UgseMtXX2zmaMtQJlh2PemOVgVGyoO4QKvGNUwkIyfhTG/SKuBJcdN77pe1N0ByQPZy79dFn+r+W5IFlEa9dUZAccibQSzHv2GsZ1wi3Uu+yNNUfrZe7B8DmBPZOvDeoJdRDp6sNDkWZSUrIuMNWMaIizaVrZce5of0QvOVMil9lVYf2FKTyvgAxAaIB5sBMv6E/W06+q6ZkafN9bXYAf6TY4I1HRvRasv/O7ofWOmqKNGTgdR1YwhS6kXvISxDDtaYtcEB1mxjbjMQwZ4f1fnoBn00gECKYNa385dZ9AeRLJD0h/BEl+/VNZi/WXqftevR2+q8j7
+ 19heN3pE
+ xjxZvs4aKyz5LEhrpWcaW2Gfyin8QNdk+/hn1vnHl0M4w8YC6djL9Wly23koYRzfuwQwwi7egg3Ucxe0wUMdBiUbhKsr4w+BSNIzBd38T8z8Z/JlmWKPP/TPw9FQscOmd+LbvzEezmM/C/WpYh7s1iQWPvXFH2SH7p0npR7Oqd8ZJ3sgQSznWVO7jOgGzRw53cLG2ejQMtaGFOLx9boAsGBkIVmcDx1ueuixYlu99ixpvrvP2Qoi/wt65eN+5jkvtbr6OUod3AryuuDR6yQMtPc+jZfuVDFq3Us0xhycqojbbYt9VPxM5kvU7nWLunIyEaLH9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,101 +99,45 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Oct 22, 2026, at 05:59, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> On Wed, Oct 21, 2026 at 2:54=E2=80=AFAM Muchun Song =
-<muchun.song@linux.dev> wrote:
->>=20
->> Hi James,
->>=20
->>> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> =
-wrote:
->>>=20
->>> vmemmap_remap_range() can potentially leave the vmemmap in a =
-partially
->>> optimized state. In this case, a TLB flush should be done if the =
-walk
->>> caller asked for it, even if the optimization was not fully applied.
->>>=20
->>> A follow-up patch will more completely deal with partially-optimized
->>> folios.
->>=20
->> Why are we dealing with partial optimization cases right from
->> the start?
->>=20
->> I know that in patch 12, you try cmpxchg 16 times, and if it
->> fails, it leads to the partial optimization state. What I want
->> to ask is, why do we limit the maximum number of attempts? Is
->> it because during testing you found that this kind of failure
->> is very common? If we did not limit the number of attempts,
->> was it because during testing you found that the scheduling
->> latency caused here is very large? Or is this just defensive
->> programming? In my view, scenarios with such intense
->> concurrent access to these struct page structures should be
->> very rare.
->=20
-> This was done defensively, yes. With 16 retries, I never hit this
-> without fault injection. (Perhaps I should try with no retries...)
->=20
->> If your testing did not find any problems, my suggestion is
->> not to set an upper limit on the number of cmpxchg attempts.
->> This should be able to simplify the design of the initial
->> version of the code to a certain extent. If we want to
->> determine whether an upper limit should be added in the
->> future, I think we can add timing monitoring in the arm64
->> try_update_vmemmap_pte function and trigger a warning when
->> the measured time exceeds a certain threshold. If someone
->> reports this kind of warning to the community in the future,
->> then I think we can improve it at that time.
->>=20
->> What do you think?
->=20
-> =46rom userspace, you could use kpageflags or page_idle to =
-continuously
-> access a single struct page over and over again. I think that's a
+On 10/22/26 5:05 PM, Jose A. Perez de Azpillaga wrote:
+> On 10/22/26 9:31 AM, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> Allow hugetlb_cma=<capacity>@<page-size> to select the architecture's PMD
+>> size in addition to its existing CMA size. PMD pages are 2M on x86-64 and
+>> 2M, 32M or 512M on arm64 with 4K, 16K or 64K base pages.
+>>
+>> Give PMD pages their own pool while preserving the existing sharing among
+>> gigantic sizes. Unsuffixed arguments and an explicit default size continue
+>> to configure the default pool. Gigantic PMD sizes retain access to that
+>> pool when no PMD pool is reserved. Apply this mapping consistently to
+>> allocation, CMA-only policy and boot-time accounting.
+>>
+>> Try buddy allocation first for non-gigantic PMD pages, with CMA as a
+>> fallback, to reduce CMA migration and leave CMA capacity for later
+>> allocations. Preserve CMA-only policy and CMA-first allocation for
+>> gigantic pages.
+> 
+> on v1 you told Lance [1]:
+> 
+>> The same missing PF_MEMALLOC_PIN check also affects 1 GiB CMA
+>> allocations, so I had planned to fix it separately.
+> 
+> why did v2 go out before the fix then? 1G CMA pins fail with -ENOMEM
+> today, so it's this patch that makes it hang.
 
-page_idle does not support HugeTLB pages, right? We should only consider
-/proc/kpageflags; reading this file requires privilege =E2=80=94 unless =
-a privileged
-user intentionally creates malicious software.
+This is a pre-existing issue, so I didn't intend for this patchset to
+depend on that fix.
 
-> pretty good reason to have a bound. Also, the AF can be set even
-> without an architectural memory access (so a mispredicted branch can
-> still set AF, for example); that also makes me want to have a bound.
-
-However, I don't think this scenario would cause a significant amount of
-concurrent reads.
-
->=20
-> Catalin also said wanted a bound here. See the bottom of this reply at =
-[1].
-
-I see, but I'd still like to explain my reasoning and see what everyone
-thinks.
-
->=20
-> So I think we should leave it in. The extra complexity is pretty much
-> entirely in patch #4[2], and I don't think it's too large of a change.
-> I hope you agree. :)
-
-Because I personally feel that having only part of the vmemmap optimized
-is a somewhat awkward intermediate state =E2=80=94 the all-or-nothing =
-semantics
-seems more natural to me. At least until a clear problem actually =
-arises,
-I'd prefer not to consider it. At the same time, we can also keep the =
-design
-simple.
+However, with PMD size enabled, the problem could indeed become more
+severe. I'll send out a fix patch as soon as possible.
 
 Thanks,
-Muchun
+Qi
 
->=20
-> [1] https://lore.kernel.org/linux-mm/aoRn3Fn1dhTdsk6d@arm.com/
-> [2] =
-https://lore.kernel.org/linux-mm/20261003002123.505555-5-jthoughton@google=
-.com/
-
+> 
+> [1]
+> https://lore.kernel.org/all/04c89538-28c8-4d03-92c1-08d854a46ac4@linux.dev/
+> 
 
 
