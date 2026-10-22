@@ -1,86 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5E5606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 08:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E4C606A31B
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 08:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=itx.no header.i=@itx.no header.a=rsa-sha256 header.s=mx.itx.no header.b=hgC3wTTV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HHd5gRUn
 Received: by kanga.kvack.org (Postfix)
-	id 901196B08D1; Thu, 22 Oct 2026 04:20:43 -0400 (EDT)
+	id 4F89F6B08D3; Thu, 22 Oct 2026 04:33:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B18B6B08D2; Thu, 22 Oct 2026 04:20:43 -0400 (EDT)
+	id 4A9A86B08D4; Thu, 22 Oct 2026 04:33:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C6FC6B08D3; Thu, 22 Oct 2026 04:20:43 -0400 (EDT)
+	id 3BFDE6B08D5; Thu, 22 Oct 2026 04:33:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D4666B08D1
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:20:43 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BF1D61A0759
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:20:42 +0000 (UTC)
-X-FDA: 85349565924.12.AFBFA4F
-Received: from mx.itxnorge.no (itx-kvm-14.itxnorge.no [91.189.121.228])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 18ED640005
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:20:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=hgC3wTTV;
-	spf=pass (imf01.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
-	dmarc=pass (policy=reject) header.from=itx.no
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 13E926B08D3
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 04:33:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77AA5C07AE
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:33:12 +0000 (UTC)
+X-FDA: 85349597424.14.F361773
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C60AF1A000A
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 08:33:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHd5gRUn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792657241;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1792657990;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2otPSQyOzqjKfgmJ37i5ezI5QcKI3c1tok4QLLHQ5dU=;
-	b=0hZJs3+BVX+57UZqW9QJFbOsZgKkxxq7N0yOvU8LpZpN3uXMfuJaMkw4AzV80A0DsfTEmz
-	m5oAqoljjbXZzY3hkoTGOi4Ho4+juK2wUZzbXMdqFta2KxSnBP+hhdJbbdC3l9oaQGVarY
-	16qNQu6FcM34AOthXk2CTGiBkjEbxgo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792657241;
-	b=nuLPtDiqCGN1Yo6zmTKvki+9gzCz/9X3nLb/DRYgka+8hAwsDVZXtYKrYtvLGf2jnCOLaD
-	rqCdDXfiTSVnCxxOocFL4iK+ekJo7qhUcnd8XsDJGdnLTMRLB1/ms3yaRHYFTGGoEeXBla
-	FYZ1rWoSAMXYwA1ZHwzIwQpqK4xz19I=
+	bh=I7P4Z0m4H0zqdvZ0EHWJXAmTbybltS5XLjPO30+Sp4U=;
+	b=WqU5b6lk/Vjjid9n1cW2XmiFlaHqxsRxIIYr7TGcfn0p+lpw60QA/c0ZvYWizvn4wG/zRI
+	mHlp/+pAbsxKSliFUMFmKrD/QCQxlNxhpOhTP0U2C4P5xej6pfPf6S3yGXwq95KYp93on4
+	seBuJCrmEz/nglq38Oz2YTYR9oOsE3g=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=itx.no header.s=mx.itx.no header.b=hgC3wTTV;
-	spf=pass (imf01.hostedemail.com: domain of stian@itx.no designates 91.189.121.228 as permitted sender) smtp.mailfrom=stian@itx.no;
-	dmarc=pass (policy=reject) header.from=itx.no
-Message-ID: <bfad4b87359161304015b04cc88f15cf07a055e5.camel@itx.no>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itx.no; s=mx.itx.no;
-	t=1792657238;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2otPSQyOzqjKfgmJ37i5ezI5QcKI3c1tok4QLLHQ5dU=;
-	b=hgC3wTTVZl6b2UOCDz/hk0hOx81kefMFmcpfutss1tbAMk0W/Rze7xH3pX6mY2N7uRk4Rx
-	GGMzUfyEm7FBn+ccwvijPYUvCWry+ypljW/yfDLcnuM1X7abswRJNX9Je1sNr5t3nIIDby
-	VShSW3p7I1lVg7UZqPaf+fmtxTiHB9Y=
-Subject: Re: [PATCH v3 0/4] sparc64: D-cache alias flushing fixes
-From: Stian Halseth <stian@itx.no>
-To: Imre Kaloz <kaloz@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Date: Thu, 22 Oct 2026 10:20:37 +0200
-In-Reply-To: <cover.1792609488.git.kaloz@kernel.org>
-References: <cover.1792609488.git.kaloz@kernel.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-QxkUFBLgW99UfyzqZm2/"
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 18ED640005
-X-Stat-Signature: zszo5iaw8dpz174ako8bi9r35jaugs1m
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHd5gRUn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792657990;
+	b=f+yU9aVCrLf9jTmvAyuSACkb3C+oftKvyjhVEPNwgziTfsumhzNhZo4NG1SeBcEPW8zZ4w
+	EwfYAFMJKAN2R6JGqMFZETfQcFJBrjdvJqPlyTnIrXkGEA/2M04urs2Z+WVusPCCrJssYG
+	zbQQdNlTRhLXmYMWacWbyW51US7wYmY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 10D9343583;
+	Thu, 22 Oct 2026 08:33:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3205D1F000C4;
+	Thu, 22 Oct 2026 08:33:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792657989;
+	bh=I7P4Z0m4H0zqdvZ0EHWJXAmTbybltS5XLjPO30+Sp4U=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HHd5gRUnE0JYDC3bp5XYFM4M/eFH8QH8Dc9624RyNopi6jrA63TrpPxiyLDK/Hxjp
+	 dw5vmKunP6b5VJRmYtyolQYedMj8zpkxe4kTSvv6Yx5TLKjoz7LVRCaaJRZ4SmqgXS
+	 RM6TsMCxzxI4Qw+eWb4axqtD9EgAr/ui5D8M22eqSDsnysEV9vlhxtFEAf7EDzaMV3
+	 LVkNFsb2Og6luB4nAm1yyk8i2bQVKZXnn3Wz1vbnU+J8D78hHl/zN+anlyf9In7npl
+	 qFa9L+D6YdrtMpgoGXVDuikaojWF4qso2fNrL2X5Luk7ZwdIzcdEo79jL6ezwFUHb2
+	 byjglWZorCaRg==
+Message-ID: <sashiko-outbox-181179@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 3/8] crash_core: serialize crash header preparation
+ against hotplug
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Wandun Chen" <chenwandun1@gmail.com>, robh@kernel.org, baoquan.he@linux.dev, rppt@kernel.org, m.szyprowski@samsung.com
+Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, chenhuacai@kernel.org, kernel@xen0n.name, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, saravanak@kernel.org, akpm@linux-foundation.org, pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev, robin.murphy@arm.com, devicetree@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, conor+dt@kernel.org
+In-Reply-To: <20261021083011.2170525-4-chenwandun1@gmail.com>
+References: <20261021083011.2170525-1-chenwandun1@gmail.com>
+ <20261021083011.2170525-4-chenwandun1@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 08:33:07 +0000
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C60AF1A000A
+X-Stat-Signature: epuidfu78to4tcg768unq9rdnef4r6s8
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792657240-533782
-X-HE-Meta: U2FsdGVkX1+j+9Pg8IGHiiMCX4K7Dm3pJMzkq5up5NvYvM43rigvWrAs8Qu/6B6BflfePhQ/q2bqj7cf0CFhRt/JNq9R1sYEEWlpVT1peXAfYNDxo8PKvyntUSgM3Li2xQt3+RSxruoZIFXsOYHZzbLW4yGYfzjgXniU5UHz/B+qSlDdcSi5ws2TU1jdAeFmOgW80HG64yks4AApQWHuoAm843BU4YR0yc2847ABDGnZjfMH77TRJGgP3dM+ik5pd9aJcP2AwhKHiL6UmJwLVAWVrTV6/AeTsp7bjCUiamM6YMlAZubl4B9OgzacMLB31RfDkc4glGF7Qs1IQqMbQ85Kqb8Xr3rZRjhqfKWsrT0jyPiGuWJNYnrnkMk7OTh5F0+mqPzwos+RWj+WtfFi0z+UFXNQWdiF4RobFt5ajaArQGi0zfheR5MVLdd/72NDHeVrePb6GItgmyWv9RPOzYdP0DmApgyyotnQMUOAFVhKPGGDUlEPKE7UY65dg9VD1TQDVoTXuXlxDBhyIRExmqyMshJdPt2lWZDWbK4xLxcawUOvwFrnhe3S4m1/vhrD2S3keLGJUVTF6Pp7PPSFAvMRrOeDks4Ex5DyhBEA25Enb9gyJelBCDd21gDamWPLtSf4UtaqaqpCX334LoGxNctT7Pi6hrN17cCgVmALpF1rDNJfuFCR5J9DGE8w3E+E2nq1q79HBFR8f3HlozyZY9c35p+DxOhmV5A9jlERwfmzuMVKMn+z/tYQ2ycSvR+hV/IK5VXXDOjSsBOMplAMYB8qcsOBsx0io3tHrzOIqms6C1PPL41R5z4Q6zs3UXiPSqS81V7HydLJ5nv1FGKozrETEgqoaTNvc4E8JhQDbmo0Y4qZLhB7fU4qhTmJJFAAjlHc1K+/YiPyghrX3WyvOUe8TO1NFa8c9B9sycZnhsUXOqdVaivz4MIOBvIb3OlfPOUKUOaFeEGyh+UWHf+
- Mccq46s0
- m1bkN9/PUDtQhHXSNwzBnoUi8j/YmYunp+GE/zXk1QArEH7kpE6ckVnDaS4fJYEFnM9hxyozVktrPhafsesMwBIRpc0LLaEpb0p6qyD0fW7dPehCl7ozZVN9Ky0anW59iNxOwHeSq8yDlLfwvWM0ZFNzz4aSV6ikZPx0tmjBF2PgQVR2lQ3T8b6xP1mZpgRAYmeY2grwShFVe44+498qPFoFiME4ndTNPGJfKG4+Lgruv/yWcNuL7EJlN+Q==
+X-HE-Tag: 1792657990-834931
+X-HE-Meta: U2FsdGVkX1+iD775b34KPrcJs3HINdXGsek5R9ro/EgU5TAn5lYmN8iSCl1OP+HEJa1Wk4XrvkotpbUwZD10kp31f+qgXD3SNZ1dPvyTFOpjKOVUCp/WqQ57LtCYYNDXMIOwX2sbTl0uW1ww3ShraDvD2zsP7wjGDZpkQUj+jfNunm90kokIHEUv3AGD8u9Uk3GDMOa+0vrzLk4C6daJrStz0C6nEwkDa4qrUdSlt3b9P0TYBLXSrLT+MKYhpwPrKXIVyeD/FL8C2Bktr8LQ+QUXr4pH6ca9kCTE4WbU/6BSL4Wmto5GM9TpAWFQXpNahHYsikpLD8KjUZ75NfkdDs3Gzp6u4kNTeiFBH+2HZMXG1/Gje/Yh6fUaRzzfL5LWncgGkw/DeAorplmOoM11+XfOLlcLlQecRLaaWY99yoy+DqhyoWLLKm3A1XitWBVTH25eAH1uZvD6Dt0rw1TubNh62UvHnWRmTlfsxQIxNeeMtZJILweNU4tOoH1GX1YwrdoICmmP6mgaQCUnP9ddtIyYY32mmtermI8dHibz1XE6+c4e+t2DxiLXBoLm/rRoYR58yoD1/9TiDupfObm95aSvRJz7t02zyhnJJE7p8V2H9gtg4Tg2TrwkLhmnDRDYm6wpf3E9kgw6rAOCkT60qyBzJaVg+fcwH5Wy+Z9QLHowSiUcx4RY0xOKsjgYHcdaNbfLf94Vt4s9gFvtjLRN1PVaEImLWzpTmcxQIE8RyszGyCLlnha/v5FzvV0NpiYxbj/4yXX3x+Ndh1eP3Wul3MyKXPJ5Wp2jMFuIWP/HMyNzeUu9XvY2+rn/xumKA5mMFOrpYbKR2MM/y4BlDWn6KMTWxvx/1YBGH6FXEz3xg/PVEmC8uZXXuBereXejVKGbNplNEZOaLtim+kBXbveDiiRTVRryPI/65Pd/4+Yd9EDtaVEudIF5YoB80iFRP7c6CRHpHSUoj0ALBqjL9Mi
+ OKlZaPLw
+ ELI/oAoNZyjfj+QTFkJj7t0ZjQ/9eeZCi9fpscNACedJ66svt2bUmQ9BSLvyreijdqzQi3V4nZA+CKnwntTXbIhetK19kHCpOLT//pSXQc4TvHFnimHrgNH66SSDYdoCq5Q5OLZtKwn6oqVaXjaC8m1dFK3Wf3QtM5cpfepJuSy31mKi8UwdiVYL6QBp61Y2s6mgMXoJVWvOV8sT2NpRWjfAnT9Sl4dBgnafOMlqxU9mZn+sRZ3iwGIlsyudqPO6QbwdzRHA9jBxc8SfB2GR4xkVzgdnE2wmReOjtN6XPXJY1YCPa4wxijodQ15NG62cgNDY+3P7rIPGu2GiEJ5gZRdUkKlEAdEByZ5FbjU2+sGVUcU8XfiCJI2v0fKaptquK645ND6JFSbLFx6BEF8r3/xmPAuCQEJ+7VRvoMbk0u4e8mgWTBsyvwMLMdiavanfhNOdcq1ZaDNqoE9Bymcen8BicMNjR9D8osAt654xREvXQun8biTsha7cOenM3r1Gksbn45xJy12F/M1B18hfPuNCQvN60nPR/VPRiXTyeLSbGjWMgQDOOojBTIIq+VqpWB3Q0ohkL10QS8Hd7uMHUkFUvN7j0YSdlu7XsS+smPfdX9M720ehavGCSGTT/vBcwFu82DzRUZw3DVdLjJEcSOmFW1l1lHLv8y1Ic34QxYizMA6FSEN5nSARrA8LvnsBJvqLtw25a6o9AJ5yT/yGzWimBzeqlWsGAU4pGC5sNkYYYN2w1ljCSQxzsRS7OsaPds8Pw9aGhhpUgxWDEpc9gSz1hob9+K7zID1KfitjC7YnEan9ZxsbSce7+kbgtIdQ6fn5e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,48 +92,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] crash_core: cmem->ranges overflow via unlocked iomem_resource ho=
+tplug
+--
 
---=-QxkUFBLgW99UfyzqZm2/
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+commit 24cd8bf08b74ae3e07f992972d3cd97b77d9fcf6
+Author: Wandun Chen <chenwandun@lixiang.com>
 
-Hi Imre,
+crash_core: serialize crash header preparation against hotplug
 
-On Thu, 2026-10-22 at 01:33 +0200, Imre Kaloz wrote:
-> These fix D-cache alias flushing on sparc64 CPUs with a virtually
-> indexed L1 D-cache (Spitfire and Cheetah).
->=20
+This commit serializes crash_prepare_headers() with device_hotplug_lock
+to prevent concurrent memory hotplug from changing the number of memory
+ranges between counting and populating cmem->ranges. It also introduces
+__crash_prepare_headers() for hotplug paths that already hold the lock.
 
-Tested on top of Andreas' for-next on my V240 (sun4u, 2xUltraSPARC
-IIIi), against the same for-next without the series, both with THP
-enabled. The stale reads through a reused vmalloc address are gone, and
-moving an 8 MB THP to the other colour now takes milliseconds instead
-of seven seconds.
+Link: https://sashiko.dev/#/message/20260806101002.1F84E1F000E9@smtp.kernel=
+.org
 
-I also checked 1/4 on its own by booting with the vmemmap check in 3/4
-disabled. The four cross calls from sparse_init() still reach
-xcall_deliver(), but physical address 0 is now left untouched.
+> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+> index faa0f22dbb41d..8a861a946e261 100644
+> --- a/kernel/crash_core.c
+> +++ b/kernel/crash_core.c
+[ ... ]
+> @@ -344,8 +345,8 @@ int crash_exclude_core_ranges(struct crash_mem **cmem)
+>  	return 0;
+>  }
+> =20
+> -int crash_prepare_headers(int need_kernel_map, void **addr, unsigned lon=
+g *sz,
+> -			  unsigned long *nr_mem_ranges)
+> +int __crash_prepare_headers(int need_kernel_map, void **addr, unsigned l=
+ong *sz,
+> +			    unsigned long *nr_mem_ranges)
+>  {
+>  	unsigned int max_nr_ranges;
+>  	struct crash_mem *cmem;
+> @@ -382,6 +383,18 @@ int crash_prepare_headers(int need_kernel_map, void =
+**addr, unsigned long *sz,
+>  	return ret;
+>  }
+> =20
+> +int crash_prepare_headers(int need_kernel_map, void **addr, unsigned lon=
+g *sz,
+> +			  unsigned long *nr_mem_ranges)
+> +{
+> +	int ret;
+> +
+> +	lock_device_hotplug();
+> +	ret =3D __crash_prepare_headers(need_kernel_map, addr, sz, nr_mem_range=
+s);
+> +	unlock_device_hotplug();
+> +
+> +	return ret;
+> +}
 
-4/4 can't really be tested on sparc64, since move_ptes() never
-batches, but it builds and nothing changes. Each patch builds
-cleanly for SMP and UP.
+[Severity: Medium]
+Can cmem->ranges[] still overflow during __crash_prepare_headers() even when
+device_hotplug_lock is held?
 
-Tested-by: Stian Halseth <stian@itx.no> # Sun Fire V240
+In __crash_prepare_headers(), arch_get_system_nr_ranges() counts the current
+system ram ranges (plus a fixed number of split slots for exclusions),
+allocates cmem via alloc_cmem(max_nr_ranges), and then populates
+cmem->ranges[] in arch_crash_populate_cmem().
 
-/Stian
+Neither the x86 callback in arch/x86/kernel/crash.c:
 
---=-QxkUFBLgW99UfyzqZm2/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+static int prepare_elf64_ram_headers_callback(struct resource *res, void *a=
+rg)
+{
+	struct crash_mem *cmem =3D arg;
 
------BEGIN PGP SIGNATURE-----
+	cmem->ranges[cmem->nr_ranges].start =3D res->start;
+	cmem->ranges[cmem->nr_ranges].end =3D res->end;
+	cmem->nr_ranges++;
 
-iHUEABYKAB0WIQTK1ph9OaYoND1R57zoeAEuJe36VgUCatnHVQAKCRDoeAEuJe36
-VnVCAQD276eDVP9yACZ0pHZnP6jdzf1PGdWYtFTac8LQemBX7AD/Qz1ugQwMouHM
-/gljtdjKe4FbEKl+8N+lDB+fTRVFSww=
-=yzu4
------END PGP SIGNATURE-----
+	return 0;
+}
 
---=-QxkUFBLgW99UfyzqZm2/--
+nor the weak implementation in kernel/crash_core.c:
+
+int __weak arch_crash_populate_cmem(struct crash_mem *cmem)
+{
+	phys_addr_t start, end;
+	u64 i;
+
+	for_each_mem_range(i, &start, &end) {
+		cmem->ranges[cmem->nr_ranges].start =3D start;
+		cmem->ranges[cmem->nr_ranges].end =3D end - 1;
+		cmem->nr_ranges++;
+	}
+	return 0;
+}
+
+checks whether cmem->nr_ranges has reached cmem->max_nr_ranges before writi=
+ng
+to cmem->ranges[cmem->nr_ranges++].
+
+However, Xen balloon memory hotplug inserts new system ram resources into
+iomem_resource before acquiring device_hotplug_lock via the call chain:
+
+balloon_thread() / xen_alloc_ballooned_pages()
+  -> add_ballooned_pages()
+    -> reserve_additional_memory()
+      -> additional_memory_resource()
+
+Specifically, in drivers/xen/balloon.c:
+
+static struct resource *additional_memory_resource(phys_addr_t size)
+{
+	...
+	res->name =3D "System RAM";
+	res->flags =3D IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
+
+	ret =3D allocate_resource(&iomem_resource, res,
+				size, 0, -1,
+				PAGES_PER_SECTION * PAGE_SIZE, NULL, NULL);
+	...
+}
+
+static enum bp_state reserve_additional_memory(void)
+{
+	...
+	resource =3D additional_memory_resource(balloon_hotplug * PAGE_SIZE);
+	if (!resource)
+		goto err;
+	...
+	mutex_unlock(&balloon_mutex);
+	/* add_memory_resource() requires the device_hotplug lock */
+	lock_device_hotplug();
+	rc =3D add_memory_resource(nid, resource, MHP_MERGE_RESOURCE);
+	unlock_device_hotplug();
+	mutex_lock(&balloon_mutex);
+	...
+	balloon_stats.total_pages +=3D balloon_hotplug;
+	...
+}
+
+Because reserve_additional_memory() inserts the resource into iomem_resource
+and drops balloon_mutex before waiting on lock_device_hotplug(), and only
+updates balloon_stats.total_pages after add_memory_resource() completes,
+concurrent callers (such as balloon_thread() and xen_alloc_ballooned_pages(=
+))
+can insert new system ram entries into iomem_resource while
+crash_prepare_headers() or arch_crash_handle_hotplug_event() holds
+device_hotplug_lock.
+
+If those entries are inserted between arch_get_system_nr_ranges() and
+arch_crash_populate_cmem(), wouldn't the extra ranges consume the reserved
+split slots (causing crash_exclude_mem_range() to fail) or overflow
+cmem->ranges[]? Should arch_crash_populate_cmem() and
+prepare_elf64_ram_headers_callback() also bounds-check cmem->nr_ranges
+against cmem->max_nr_ranges?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021083011.2170=
+525-1-chenwandun1@gmail.com?part=3D3
 
