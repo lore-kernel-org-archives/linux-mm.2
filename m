@@ -1,117 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388C7606A31B
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4933606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DpnLxfxC
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=aSP8IXuQ
 Received: by kanga.kvack.org (Postfix)
-	id 56BD46B09F1; Thu, 22 Oct 2026 18:03:29 -0400 (EDT)
+	id A03006B09F2; Thu, 22 Oct 2026 18:05:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 544A96B09F2; Thu, 22 Oct 2026 18:03:29 -0400 (EDT)
+	id 9DAE56B09F4; Thu, 22 Oct 2026 18:05:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E5626B09F3; Thu, 22 Oct 2026 18:03:29 -0400 (EDT)
+	id 918916B09F5; Thu, 22 Oct 2026 18:05:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 17C256B09F1
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:03:29 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 991E01A0256
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:03:28 +0000 (UTC)
-X-FDA: 85351639296.18.96BB465
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F3EE3A000D
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:03:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DpnLxfxC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5A6876B09F2
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:05:26 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D95AE1A030E
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:05:25 +0000 (UTC)
+X-FDA: 85351644210.14.91C9120
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 19FE32000B
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:05:23 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=aSP8IXuQ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of 3oojaagsKCHsrtrddmcqZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--suseendranb.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3oojaagsKCHsrtrddmcqZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--suseendranb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792706607;
+	s=arc-20220608; t=1792706724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x5g4D3hEwc7GK+nQos56fFKgAhNh3H0jKC5fCgXobkg=;
-	b=aC5FAbBu/6sO0Na2zVsSzRo+LZb4E7iRJAuyc0HF5OKelP2JL4vn3DcSQb8Gfi/xWVXota
-	BiJBDHAlfGFYY555Z/HsEGLHl8Tc4s6iYc6jj8yVuvt4i8hyaL+pPMMmFkLSij0eBH5O9x
-	w3N6rSnJrSMBsyDHtQGjMSExzCeUi6Q=
+	bh=1/BUQdhYtXycx0vnNfE9NP3iNYT1zXH+kKAKzMrdrV0=;
+	b=jGUgwu3IA7NlWcMrXHTQSv6ioEVSaIkEBrkFGdqdAjQK2Kq2X0CekhXoX0IOPxt3YjcUsk
+	Tf46dM8yBGCX9peMbwbYWPFC45XSyCcPK0xJshuCw9rPcSoW8Dlmgsy4EZnsOKh2KleDnB
+	92ABVpNuXHA5j7fjMUgZasHd/0l5KAM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DpnLxfxC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=aSP8IXuQ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of 3oojaagsKCHsrtrddmcqZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--suseendranb.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3oojaagsKCHsrtrddmcqZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--suseendranb.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792706607;
-	b=u/8lxqSm8S12DVZIP9AcPH94FhtVw36tPDDNBwUM2mdg7Aj1pQs0wwb6Wj1m8DZNs46vbd
-	1/PlZVqwa+DeLSG/7VTXfNzOKyFJuKelkEEhQhv6VeE5zdggyVYvIACmN5o/gE+/R8rjPY
-	vRJM1Zd/NJ0LKqDSKUQfVB7VGbcTySg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9240960A8E;
-	Thu, 22 Oct 2026 22:03:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C181F01829;
-	Thu, 22 Oct 2026 22:03:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792706606;
-	bh=x5g4D3hEwc7GK+nQos56fFKgAhNh3H0jKC5fCgXobkg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DpnLxfxCgxMDb32Z2c8mEShELG4hi0o4Yo00Cxrxh1xB7RIknx6C7gC8fgtZGN6HI
-	 KMkbyw2c9MEhy/qdoVTDrc9QY9hsMNeKvCT/iGbL0YvyZzVX/rPdb1ClNy614kxCFL
-	 TDvTU0rnJk+8yotIbkKZH8kawmZT+PNUwzWU7rGfng7QGLnJYxGlx4XKA0CHT99bGm
-	 uhPDuyT6deMTTrsAlAyyLkcqY4xZmd555jRLS9FxPQL3DXl4662uIkLTkOoomN5/rQ
-	 Wo8wxH3JYEHotpZXhLcFx28w7f8IHGOE0pWalAmLDJSeeZK4sOx6U1hVjs3IPTh0ps
-	 dUe00IyGnD+aA==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: hui.zhu@linux.dev,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org,
-	ljs@kernel.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	ryncsn@gmail.com,
-	shakeel.butt@linux.dev,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhuhui@kylinos.cn,
-	baoquan.he@linux.dev,
-	liuxiang.277@bytedance.com,
-	wangzicheng@honor.com,
-	lianux.mm@gmail.com,
-	kasong@tencent.com,
-	liam@infradead.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	zhangbo56@xiaomi.com,
-	lyugaofei@xiaomi.com,
-	ridong.chen@linux.dev,
-	kunwu.chan@gmail.com
-Subject: [RFC PATCH v5 14/14] mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO allocation
-Date: Fri, 23 Oct 2026 06:02:03 +0800
-Message-Id: <20261022220203.91911-15-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20261022220203.91911-1-baohua@kernel.org>
-References: <20261022220203.91911-1-baohua@kernel.org>
+	t=1792706724;
+	b=FdA/gJE5teCtFWXHzPpQsSo3vSCKtDcYTUo9GGY1stAT3OTcKfMo7nY8u7/DFx5BWPv5kv
+	wwnlq0bgfUsklQQpEgLZIZzBhf0kuRl0UFW+WOHw2MOFVLFntUd2inM8pbYdO+Cie0tzh5
+	NhO7/IJ5Im9RI9mEFLLBEgtLerWx5lo=
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cd6969473a4so152636a12.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:05:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792706723; x=1793311523; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1/BUQdhYtXycx0vnNfE9NP3iNYT1zXH+kKAKzMrdrV0=;
+        b=aSP8IXuQ4KqfIwJFlK0qGSZ3U4yoy1p+dT1hPw9nZYqiitYDr8Rx2Q4A1U3saS2typ
+         DEW76qcWVCvSj8OswHOFuVj+KRcck0xPJAxDNeOtlcN8CTA7RJ8L2zAVAkcTtbr1YGKZ
+         HCsKVMd4L46KNIPr8vW024fvuqVMv3piwbl4Df0h/O1wejm1FK6kaoaBDeAOUPC7/0PW
+         0j/TD0AHKNYtn85Jn7xX1JYiu12R6ODDvFioNauTv/JTmAgJzMjntD93h5AxiAuVicpI
+         yIlWQSqqGEAXYkqKH1KnIe7ChfPSw7c2HaavhgY8LUC2v2QfniEW0/zSkwJuBoJC9Ueo
+         iEHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792706723; x=1793311523;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1/BUQdhYtXycx0vnNfE9NP3iNYT1zXH+kKAKzMrdrV0=;
+        b=Es0Q71aA3Cf889vC+o+FKV2OGKsitWEClFz8wJdl8Pzgv6/PGVfDsHTRpXFMNvC/x9
+         UQbEUJN7w6xLxNp9iPXmDo0PxccPemOgaNsnljKyPklBv6vdyIhvERTPqR/drhZyArs4
+         9gEcBeWsQ1t4sLseK/Nbq1p6uIawV21VVI/qf79DowixqY6kKGCaL96zfD8EaQDDyPuz
+         bWFpQjX/kT/wZtuWEYA9QmOZyT6or4V9AXM/5/kodG93iuP3dO2a4cPCrssjf74r7MPY
+         K0noH1BRkvc6n8DJLFmcTgrmalLOFZ9brDa6ICasHTAT/JYGL+n48F0fPSqg6HvH9feK
+         H7lA==
+X-Forwarded-Encrypted: i=1; AKwUvBxyX1BcsvoU8RxZNsLoFjoN6nQ0d1R0NorEqR24ydkR/VuZCsR0gIzBQRPByToXdK8MsKTBKO9YPg==@kvack.org
+X-Gm-Message-State: AFq9FYLpHEbtKG+CWron0bmPV5Klji6SMOc9SwowNO3/GR2TeSBEQVpB
+	XWMLw7WvDQCTNKfK5afyUeG3uJkWSyHfmVnAQu4BGMm2mXwlNR1jsDJ0Vv+RHuB09SuJKktdlSs
+	YCZfji938S1YjP2MvXE9v1HEc1Q==
+X-Received: from pfblr27.prod.google.com ([2002:a05:6a00:739b:b0:88d:74fb:fa56])
+ (user=suseendranb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:748b:b0:3e2:7030:9080 with SMTP id adf61e73a8af0-3e36945eec6mr190250637.47.1792706722405;
+ Thu, 22 Oct 2026 15:05:22 -0700 (PDT)
+Date: Thu, 22 Oct 2026 22:05:16 +0000
+In-Reply-To: <CAO9r8zN6hN4h5m9pg4xQpirJj3o2nhGx5dxAuSddZ8+UenYnMg@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F3EE3A000D
-X-Stat-Signature: j65gw8b9fugbjup6rz7m3jd69d8ok7tt
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Mime-Version: 1.0
+References: <20261021205626.3286270-1-suseendranb@google.com>
+ <20261021205626.3286270-3-suseendranb@google.com> <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
+ <20261022155144.4177200-1-suseendranb@google.com> <CAO9r8zP+GUE-hcGWSGzhLNLcchFoZ38EMVCAtX5yZ78tZ0bbgA@mail.gmail.com>
+ <20261022183319.163484-1-suseendranb@google.com> <CAO9r8zN6hN4h5m9pg4xQpirJj3o2nhGx5dxAuSddZ8+UenYnMg@mail.gmail.com>
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261022220516.383697-1-suseendranb@google.com>
+Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor compression
+From: Suseendran Bhaskaran <suseendranb@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Suseendran Bhaskaran <suseendranb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
+	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 19FE32000B
+X-Stat-Signature: 9txq4txd97xfqfiwskedasjxnt1eqdnn
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792706606-211473
-X-HE-Meta: U2FsdGVkX1/j8pXaG95SvUw8irRtBMbswxXGGhFX3L4axTMlb5bfohFJge/87FmYXdZQfLhyB4ApDAIVpJzc3ct0V1Ait/FuEAgDgE1fPPuJZCZBxYbL+sUAgXGmDsCFVcH0BIykDls+68Chkz/ytroJFEkj0wsNYqe3PZXP0RggB/ojL5dWzv+21kKgV9QNMWngSN8HKz0ll00qU9N1yqxJx9wYpU7dH2LWvgKFUislSvbRkNSv3fG5Hp7wtX7gEXSsd02Boks1WtbjDkj7yIv4t2tmNBfD4zmUvb1zH2hldEYi58PDqbB7zjKKAEzDYRVtx4/szrr2cQzSndZsdGkdnn4fDadXePbIXBHVBcTlzVZEV6Yx0Go3WfUr0zuzQQQV1NY012yfF4n7McVvQETKgD+cmH6RacQw6bTIJKahb9l0pei87dhMI0QwPmjR4QpWb38TWiMKRi559lju5RPNc5jFiXARvm9Zv4/TplODtEQvWMdCom0CWFzxNmcHFH1UD0mGIsDb+VO/hwRdx5qbHqeQDD/OJ1jXSC3qIx1CXAPe0/dbGJpGkafkoL1kC1rZwCZFrbFBeJsCHecfxOzIiWR2Kh3m/tZirnYMbhi8Ddif0/pMKF4bLlGl59EBR8JgayEsXEmFsVMGN60Cth+ThCA+RA+hXGAZkXYqVXKmfrP2jz/KpCEtoLwEZoYb7IKnvsveyTyXggb/h3l7r7eAfLIzHNreJ7Z+dPotvWBFNHTuzsHYYlZUQnZ41n0pzyQZIy7va/90/OfRTfQFLZTqt3nenOIyK8di1nS/cmmpadMUhy5kSfWLrKODqlPouzy8XQWbA246O32tJEPHcDTKqHCYAPwzIZ9VOGpxLWMaY/DBRZ0HDDKCbSUA6yVilYJUCgiNCYO3siPzB/FYLD20Lxh/x2qG5yu/wt72LVDw71b/9cYcjyljjH099zHuiXnPuaSCWRbr8a8/sNJ
- IcW42MYG
- QfjcSuq7U2U9IOeMaq5vBTNv3K008xL+w0QspeIdbDT2S94Pf0q0pWAEdZhYq5vDt1tNntOcM69SKVG5iRnSjHNNKiW4hfMDZU47+2pD/db6NQrVV1O95ZnYJ/xJj/IhJ5RxnTcqPVCHRObRpUG7KTpANHf40C6HXNi+lB220I+P4j6feHl+2ECdxlO+SioDmz5pyI+Oq+KlRr1+p9v3+TmDUvaRA1BVVItOaOG+/aoFoAtd6/dSXhhRdQJbE+kZmR7u0cR6iSQbDgYTV/2O3lyFU4vErNzG1aYvaty/hQf+xu5YAqfk/oVh24pEHApUi5096bdKflQB5PZfHMYiuh5JCYCiLmnKP9DU7PPyBRvLZvqMjgOZzg+LJCY/0aTcLlLKHZ5V/LMQ+YigF595nEKQm5A==
+X-HE-Tag: 1792706723-188950
+X-HE-Meta: U2FsdGVkX1/OI/nvmhocK7f/v4kBmnHgj/KA4BxZ2yQzwGM8kZqAShSIAgJD/3UrtACHZZ98BmN+oQ+QNJcF9dDe/cmpF4TJ6pouOmoB9GNyns9VUXiekgbSN6l5cwp+bQeFj9gAsTzzv0WljmlO6ONbgbWTpL6XWQDNZjPYhoqZrXKI9eZoiqw8b54suI0imctT2lW99GhNlFvvgc2y+XdvcwA3dnhosP9e0uI8LWKLVK74Nh+aRhQiuwhLRi5Aezms0xC5agbLjVJLUzCeu4Esp28uUFMxW3Oqad0ka3mXOL8VI7CLM1jWO3kNUMRDIKpZMdKnFZvF2vqERLjAXDLjUimkzx1aEhqM0VBKXESGOFEk9ZA966niBaTSVsZYp1BPWWlKUMa5bZEU9RPhqSUSkohJ+uErZ0MbDeOhaBcVJO5uu/IOgEAK8j01TBx/XTjv9kl/9ZyuFG2A/E/OoxsrGbi4TbC58D0RwR3gkYEz2RvjX9wST6sPY0gUs6lMun1cJnOZD+h2TGGwmMu+SFe3KHc1xlGK15Sy5W3gzUBN5zbObm1k+fAuHnGzQwiWbwIvJ9TX5BW+RruGHIhnx1Myv1iOT29DfYQIY2FXpfmt8gWRzjndsxk83vw6CpPMQFYWPdplYIBMV1oDKQaPvcnuXazdNexT1azHFZxndHjmWTAjzaJIR9JI5Qhsp/7/mOuhr6kUohlifagE4Azi6IWjcM9Yntyh4SGZr48H5uKWj6bv89Ga3cfvU2/jSJhtHPjqvlJ7ms8cd7a3Rmmy/KrqXAlCtWb8uYWVJsFZyE9mgiFarG08dx0F2mJk2q1qZbdfT14Vs5OyAez6iYsPB/QNQf4wvGN6fwx65RmJOKz5aFV2niqP1Z0xATWk4YP3inSWeEHePQTk2Cnik9bAn/xWMOt6Gtf/gUIUYxR7fXv08iR/r5fpMRsoplWFiQGn4Epv/FBudYs2RCxQtnz
+ xEmMc5Th
+ UXZaV3ZfmGX+rY1k1ImeSOEBf0MduproKj/pitWurHYQdDihQNgiMqAPyiy7Me0d9uOBv0aP8AC0qia6u7zvpKVzB0xXBEhk0uO6YjJxoNVGQv0xG78QrIUtBYbuyM0CtXxz2hT26MzrJjQkR47Uimy++qxR1/vI+kUO2AAigESrx8BEeslpTGlqHkrMkRiI2+ts51SPzXBJT7xJ4+j2+zokfiR7FW8EylLGcYjeZ975g0CAI9meVUMl3v6sodkLTe6WIBByCxKaG4uuDxqSrsp9NngXBXqQQNd+Pde82satU/6P2TpWTvhaqYR8jadSdBBaPNuBlZ8Us+PnznZfzGMviQ/mrW4hKIUPx5grn1NA54V4iaPNIgyX35iEtTgkmoMJWHZVfZTfhrVhO1raf6NUtoXiYFpnHx7BaThQjgL4mWyyXpezhSiuUbPa+X2kizwMQwt98+sjs5IWnpAh3rgD4kf2X3iszOTHwGBOsb1t8I0kD46BLzFXXZyzdeblQg2JNxx6FWFIGH3G/zfYdwNxqMKillfQEZ2ijY1HPNZ+JrVFoQai103kUTmsUNpcoXiW/6MQZTGR/x4lULePrYZhdZW1Qzdt+ZCULPj87KCVKwWvXnPtGQ+q/CA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,85 +122,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Bo Zhang <zhangbo56@xiaomi.com>
+On Thu, Oct 22, 2026 at 12:15:51PM -0700, Yosry Ahmed wrote:
+> On Thu, Oct 22, 2026 at 11:33 AM Suseendran Bhaskaran
+> <suseendranb@google.com> wrote:
+[...]
+> > Since dlen is only valid when !comp_ret, we could normalize comp_ret
+> > first when !comp_ret and then just check 'if (comp_ret)':
+> >
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -874,19 +874,24 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+> >          */
+> >         comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->req), &acomp_ctx->wait);
+> >         dlen = acomp_ctx->req->dlen;
+> > +       if (!comp_ret) {
+> > +               if (dlen == PAGE_SIZE)
+> > +                       comp_ret = -ENOSPC;
+> > +               else if (WARN_ON_ONCE(!dlen || dlen > PAGE_SIZE))
+> > +                       comp_ret = -EINVAL;
+> > +       }
+> >
+> >         /*
+> >          * If a page cannot be compressed into a size smaller than PAGE_SIZE,
+> >          * save the content as is without a compression, to keep the LRU order
+> >          * of writebacks.  If writeback is disabled, reject the page since it
+> >          * only adds metadata overhead.  swap_writeout() will put the page back
+> >          * to the active LRU list in the case.
+> >          */
+> > -       if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
+> > +       if (comp_ret) {
+> >                 rcu_read_lock();
+> >                 if (!mem_cgroup_zswap_writeback_enabled(
+> >                                         folio_memcg(page_folio(page)))) {
+> >                         rcu_read_unlock();
+> > -                       comp_ret = comp_ret ? comp_ret : -EINVAL;
+> >                         goto unlock;
+> >                 }
+> >
+> > Does this look good to you?
+>
+> Yes. I assume this is completely independent from patch 1, so we can
+> tell Herbert to pick up patch 1 and send this separately?
 
-With GFP_NOIO, we cannot reclaim anon folios unless they are in
-the swap cache. CLRU skips anon reclaim when the swap cache is
-very low by commit 74d9aa0d8e98 ("mm: vmscan: avoid anon scanning
-for GFP_NOIO with low swapcache"). Apply the same logic to MGLRU.
-
-The new scan-budget-based mechanism makes this straightforward to
-implement. Thanks also to Xiang Liu, who previously attempted to fix
-this before we had the scan-budget-based model [1].
-
-[1] https://lore.kernel.org/linux-mm/179248830836.1744016.8424217811286616919.noio-mglru-rfc-v2@bytedance.com/
-Cc: Xiang Liu <liuxiang.277@bytedance.com>
-Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
-Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- mm/vmscan.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6d5a823667e0..d72a5aef3a0f 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -379,13 +379,6 @@ static inline bool reclaimable_anon_is_low(struct mem_cgroup *memcg,
- 	if (!sc || (sc->gfp_mask & __GFP_IO))
- 		return false;
- 
--	/*
--	 * FIXME: MGLRU doesn't fully respect can_reclaim_anon_pages() for the
--	 * scanning type, so only apply this to the traditional LRU for now.
--	 */
--	if (lru_gen_enabled())
--		return false;
--
- 	if (memcg) {
- 		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
- 
-@@ -5061,26 +5054,23 @@ static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_control *sc,
- {
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
--	u64 anon_scan, file_scan, total;
-+	u64 anon_scan, file_scan;
- 	u64 anon_weight, file_weight;
- 	int size_bias;
- 
--	total = nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE];
--	if (!total)
--		return;
--
- 	if (swappiness <= MIN_SWAPPINESS) {
- 		nr[LRU_GEN_ANON] = 0;
- 		nr[LRU_GEN_FILE] = min_t(u64, total_scan, nr[LRU_GEN_FILE]);
--		return;
- 	}
- 
- 	if (swappiness == SWAPPINESS_ANON_ONLY) {
- 		nr[LRU_GEN_FILE] = 0;
- 		nr[LRU_GEN_ANON] = min_t(u64, total_scan, nr[LRU_GEN_ANON]);
--		return;
- 	}
- 
-+	if (!nr[LRU_GEN_ANON] || !nr[LRU_GEN_FILE])
-+		return;
-+
- 	for (int type = LRU_GEN_ANON; type <= LRU_GEN_FILE; type++) {
- 		int hist = lru_hist_from_seq(READ_ONCE(lrugen->min_seq[type]));
- 		/* start at MIN_LRU_BATCH to smooth the rate on gen start */
-@@ -5306,6 +5296,8 @@ static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_control *sc,
- 	unsigned long total;
- 
- 	lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
-+	if (!can_reclaim_anon_pages(memcg, lruvec_pgdat(lruvec)->node_id, sc))
-+		nr_to_scan[LRU_GEN_ANON] = 0;
- 	total = nr_to_scan[LRU_GEN_ANON] + nr_to_scan[LRU_GEN_FILE];
- 
- 	/* Just scrape all pages calculated above if this memcg was deleted */
--- 
-2.34.1
-
+Yes, this change is completely independent from patch 1. Herbert can
+pick up patch 1 as-is.
+I will address the latest Sashiko finding on patch 2 and send the updated
+patch as a standalone change separately.
 
