@@ -1,118 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AB7606A31B
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 16:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2422F606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 16:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mGfY8uhP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L/fKrm27
 Received: by kanga.kvack.org (Postfix)
-	id 9940E6B0993; Thu, 22 Oct 2026 12:33:49 -0400 (EDT)
+	id 3C3A46B02E4; Thu, 22 Oct 2026 12:36:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93D836B0994; Thu, 22 Oct 2026 12:33:49 -0400 (EDT)
+	id 39C4B6B0994; Thu, 22 Oct 2026 12:36:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82C386B0995; Thu, 22 Oct 2026 12:33:49 -0400 (EDT)
+	id 2D8606B0996; Thu, 22 Oct 2026 12:36:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D7256B0993
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:33:49 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B26BC1C0457
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:33:48 +0000 (UTC)
-X-FDA: 85350808536.20.F7BF4DB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 04B6D6B02E4
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:36:34 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8415CA680B
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:36:34 +0000 (UTC)
+X-FDA: 85350815508.27.1BE2747
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 21681120008
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:33:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mGfY8uhP;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792686827;
-	b=xlzkEUFZ6EeDprY/qtfNwPVJJu6aXbMzmX8YDVByMTVruMXB5i+namrad5GA/xADVtXos4
-	6ZJokPVONmB3QQ13t63Bx95V2/YtMxWqwd5QhlaAJFRDnBy72m9uqRO2RQM+Rh7ea3Xwcs
-	GCfGkOXrvE9v1swfVCgZsCBNrxuh7JI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mGfY8uhP;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id EAD13C0004
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:36:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L/fKrm27";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792686827;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1792686992;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LpR8WjbHXVeMxwxDz6y1I6beOL7GiQQlFjax9WUKfwY=;
-	b=bQZ4tYVcud9H5NVdupsnNZUVT8JnV7xL+W/hpcOsdBX4tmEOxojd1SoGOfgqRH8wTVylbD
-	Cc7/CBOeWIpCdyRL+8A9C87elCmpqVjkpj5WFOJV7jWUL9+c0SWOjYIecBpjSR+lnRU3S9
-	MaH+l1aTW/QoRoc2QE/NIj9N+P1EY3k=
+	bh=RO+eVQEMGCXGTb+gs3/7azRquJi55iZv5+oAKWw8EME=;
+	b=fGKvHpblJQwJw8W+n9f09TnhFvEMIUNzGzFuYYs24DnF+qIZKX+MuTD/BTQDLOmiIOhHSW
+	DxmWDLJJ2emQg0kMkdUfxisBWeWKBfnz9J5gYx81ihMI1/8sPne4eokxNlfXuMsCStuEoB
+	1EdcZ/Wj3KcQYPrIvgd/w/5ak/259fU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L/fKrm27";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792686992;
+	b=O5mPVPXiSpYN5ipn7Kl04KMvSW5WZEgs0My73Uik3VOaMhvtTJtxN5XFa+njd9M78+RZZG
+	EvyDxuBKd2SmgWeSVbT0FlZIwfTc7t3opLu/gqMGiuRdVEAHvwunV02IhUOdc/J955Xttv
+	yeM6NskTysOkC0Jg179dfVXv4lQF9mA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8DC5F60A8A;
-	Thu, 22 Oct 2026 16:33:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B02A1F01829;
-	Thu, 22 Oct 2026 16:33:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6EE6A6024D;
+	Thu, 22 Oct 2026 16:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925B21F01825;
+	Thu, 22 Oct 2026 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792686826;
-	bh=LpR8WjbHXVeMxwxDz6y1I6beOL7GiQQlFjax9WUKfwY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mGfY8uhP+J1OJ9zOd5vQO36o8Wtj2BKL2APMuWGIC1cKOoGyd3aiCDYeTt4Gsq3tC
-	 9wXhZz0su8A5X+82eVyls0J/MGt75DSJppM7sPC+XEv2TLKOuaTikGmV7QgdraLnGZ
-	 vkAy2Fmk4wbXqQXys4jSqCBoGBqDYPRFLG0ZepiY3Lnu19OpQu08AT4M3IuLe27XCR
-	 BbEDwunBo5rtR/xnN9r7vgcCmuo5sQWEOm/p6+ZoGp4jxVpmkpZVCI25CS++SfNELW
-	 VKhWfwvhgrVX+NzJMZN0QCs+G3NKs39w3UCmsAOcZRC5iJrmYi621k35bc8gy9X9Qz
-	 IeqViBIxxtuzA==
-Date: Thu, 22 Oct 2026 19:33:30 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	kas@kernel.org, kexec@lists.infradead.org,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, rmikey@meta.com,
-	riel@surriel.com, harry@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v6 4/7] mm/memblock: add a reserved-region flag for
- poisoned frames
-Message-ID: <ato62palTbNjLwN7@kernel.org>
-References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
- <20261016-hwpoison-kho-v6-4-f304255147da@debian.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261016-hwpoison-kho-v6-4-f304255147da@debian.org>
-X-Stat-Signature: js5ekz3uqhwy4up783xhwhw3no3noibh
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1792686992;
+	bh=RO+eVQEMGCXGTb+gs3/7azRquJi55iZv5+oAKWw8EME=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=L/fKrm27DKFGNBuYEi8ggi66Ycno6gUwj4dlF/blXgu1lnEAIIXmsvkTikJYQORi0
+	 osBrnd9R2R9oG+nEpz41W2uXf+54GlFSK16QrWeRHTIIhu1cQsGTW+9vY/ZPZ6XMia
+	 HTMGUgMFDCGqiSY5agmZQp/9w3Co/2L9neguyMQpKrQHHIjaVE09N4WJu+6QHtYI+G
+	 fTKviX2MyjON6umwOb04Mx/148u9Z7/oSc8bohy5A5uyHn/TvIFA7CxCGxftwbfVHY
+	 bA5mIcnagnE+OOVa9UgE+gUb5IBF5+0zpSPmmQ4xjO/L9d8rjidN631B8XCuS06Stb
+	 rK7VrdVEzfpeg==
+Message-ID: <sashiko-outbox-181816@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/3] mm/hugetlb: disable PMD sharing for UFFD missing
+ mode
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Li Zhe" <lizhe.67@bytedance.com>, akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev, osalvador@suse.de, peterx@redhat.com, rppt@kernel.org, azpijr@gmail.com
+Cc: linux-mm@kvack.org
+In-Reply-To: <20261022034543.51226-3-lizhe.67@bytedance.com>
+References: <20261022034543.51226-1-lizhe.67@bytedance.com>
+ <20261022034543.51226-3-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 16:36:31 +0000
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EAD13C0004
+X-Stat-Signature: 1ayibgyoihqtzbdudhpibw4zddjz57zt
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 21681120008
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792686826-198779
-X-HE-Meta: U2FsdGVkX1/7c0XEdP38We60NLGdDpsaanQ728CIBDBbbPGdGwkG3Et9sjGuPLT+SkrNulwVyc4kLrEwcNpvUTF3zQtA7IodJqIjyzmJgSiPcv1a+SvLjgGQpAcr7qGeALBJOLjgvzXOiHFVV1ZChqjjVHIglbLPIqeqJPyMBUVhknW2NTr6C4Ayy1oJQN9kJLLgkc8SXD3dZacldvKxYYorj8rh7QqXzDE3WFOp8JasM79C3o1prWGJNblpAA1XULLOHbyVfpBuB+Cl9YsN+cfrn5wGYIPye82HYCAqN2Fcqp//w/S9xrafMfrSDKY9IxuLpStZcYio94NWl8X+zijsUMGNhvCsR8tmJ2m+tpSANWsLAQBbtyLfIguBvFMKYV2mnEBoNZ9Vx6YIOriTG7tnPfLi5MNLf8wfjAK3CvJSUSpiTtMF1TPt0qgUd7UsQQj8UiDO7TPul/PhyKLnkDhvoNwr7woYAXCEd5VlOcQV8CGUitgK0j9oMX0rvhMnzs1F1Qe1DncVakO74hCRZO9YsOzt2d6OkZQv3oJAGB5DgZYMxlIJKNiR+6v2BNcX2iN5iy/VIGcgZbIqknrgrGTeZcR+0660wuvmfJkW2/w1euiIkqU7k8Gsp6sPfuI40XrRfsF26g9OeiEjjO6i5gb5vkCSBXtBthghb6sGmuRKEO6stmd1Wbyo0aiNRYKZgExqoXNz7ebtZI/JKkS2WCW9EzIOr8WTzEu+zq2iuTxTrp0FI5IH/Lt+6fpNgfEDexP4cXarwpCOV+IijG82R5Znvm1oi2lfdwiecRA0y1gd2CNFVTzLtTSGxg4P+3dq2iy7pUapCRjLtSiKLwWzIvymL3lu1crUX7gidySUmGh1npD1jOZjwxsGsLS6Is/+LLcTn9/6RUdfKTwStGjNQS+aoL0mMAzbp8wuyc3syxXDscwft3uD0k060q8oSMPCMxqjh+JtLWT7ofFAHHz
- lCRvIygR
- PjkoBWmjvht7iRUC6VsJ261QJGUs6bxRSALdTqIN84DZBFjJFZ5UxN3x4lkKUpqHgSPysRAhxJSCRGNthNKoUhNXmT5hc4xkCdS3bf9vSAQsWeMrhYZToC0v8j7pCrXV+AuosoLm0ISZRWL5CX/NrCWtxNN3lEyPuqK++7ZMJ2A09epCxsHMs+Rot6k/2FXtwlStIl+GBVvKWMXFxBHEA5pjDBdWaECUHMNEeWgXI2PhDU9JawrkJr7x+jZllqS6U5c62UmYNrAr14obiRTSzB9XCXiXenZiuZsMJdgKdNut9E4flv82MIoDLfuSMT2HdV0xg+u8D6aT4M0euRTjfOc6Vr12avAt+OkjB
+X-HE-Tag: 1792686992-252306
+X-HE-Meta: U2FsdGVkX1/Ni6fcjy/JIU0eqnS77DVahBQcNo6YJdUnjqfgzR3TTm3xfFyPz2d+/QqN55hDODAzGBqRzRkpeRRouVqzxvLHI2AHZBhcxlJ6Y7ouZhvzL8tOemR6sZphZH4hGeSIYAJvo8fSAV0jP9zC1CVjcdFxd+r3bCoewGM96/8OOQevSXL8q6sZsLet4/ptTbvvqaWa8M7AV+g7lfepJCn7WDg3BQuG9BdlV45zdVGN0h0FY5raa2N5p58pGpdaHCx4NQyg0xYaxf3wKDcAdxJ2pPOMP2I6ld4I2S3adOfh+oqkULdoBWw2jy73ZyudQMFD/ZPq2eeRPByTEHrWcmKi4nHSgRJwkmYUk8Hr65zo1nTPFDwAOq1IEMPpg2bbjgB+i11+4DuJjU5e799mnSme+rXRblPRU2tGMqyljx1YaQYwA99DxGJhD9uAtmd/beeZJTlXV/lwdvKQSzpB59oQ8CeFwzCUN4Pu1JRx5Uj+yDcYVn63XI8P/36+mU3WJyeLMLdmWieYUX3Wmh2Um/TWBgIWRj4KPIwo7j/VUI9EMrJrg3EEtJIGeGna/x0//yItn9hm1F+03iL3fo6oMQ2lPihmkVwrsN5lenyIbWCFoE9Rtto50mDS/PLYx2eb8Bdl/mLm7MxifVY4fllfMuRc96C4vHrh38fFdSVYxZh0B6h+Hdekw0XKYyVZJwYTTQLl4SeSTlJ34L6m2DIqCF5Z+ROAfuA5SAIMrrG7hattaXADxp+TMFg1UI0yBmdrUYAwyG82KWFi3lrBmi5Ry1mbpShin6G4uiG6ZyVhvIh+6TYwlYJBuiN6pq9zE3Alfa4PS+82vmnAl3ViqORAoQAnuSd0D/At1SvuvVU9JopaD3uLpnLnl2uB/F8VHmgBKM0HoGrdtTPzrgTPYwQ+jttHRnzpZ/DZRsCr/0grDd6zZRn5eVFT2vW5KfVmCnOW+NXQwNaRU8H2kG2
+ fpBqKuF9
+ LIKOuo+fQMtrxOHxWBhnu5an8MZJ0JGsluYiDl8bCn9ELnJaxT3Tl8EMXKeLFF89AbViDPnOrcH+if2wgU5u7U2PV+W89HN0B1l3v3Z93F7lwk9N4HiuK/14GNk/Jn5pJVh0GmGkf+XLnZvDyjqJ1B3NevQxOXQqlT/BI5t4TmHBTFd5h6E2C9Kpbw2lkEQUG4Gtv2kvDbvLjBliGB5WytGb6s/6wCkyDYY1qBwNcO+utqr1Ez2t2o8uYvYcQq7poTuZ3JhA2VyenbEWZ3jtpa6O0Ffe72BTc2wY7sxRqymCQYQe+4xjc/ijI3U39xbh0kt8ytegn3fsiw0aZFqp0mzvor1PbVJyj/LI7TxCY/UG6hXupp69KqMhlCWKClsBwXJlluouO4X2BgMPgHn72DypTttVRMKgVBthjwsf/+g2NiQwjE6SA+Nz3Wl5CNbAvFYt3vHzHwAJ8BF+LLkOy3+ePErOUIRa8HgGXAt2VNz6oxNmbjxBvkyGukJ80R52Q2aOGXcV5L6KaI51kjRnnF1Ys447w8/oy1BiacvzncXM+VZn0rRwtWbw0U3WAAUbXx56e91i5WLzcityd/TAkulTvTjd2ZJz80VZCX7EVAXK1BxQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,224 +92,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Hi Breno,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm/hugetlb: uffd_disable_huge_pmd_share() leaks poison markers on =
+unregister
+--
 
-On Fri, Oct 16, 2026 at 05:15:44AM -0700, Breno Leitao wrote:
-> memblock allocates from and frees to buddy whatever is not reserved, and
-> knows nothing about frames an earlier kernel found hardware-poisoned.
-> Such a frame can back the memmap, a page table or a percpu area before
-> any hwpoison code runs, and otherwise reaches the buddy allocator like
-> any other free frame.
-> 
-> Add MEMBLOCK_RSRV_HWPOISON for a reserved range holding those frames.
+commit 5da87cbb6b8f2271fb75acc59e14e2d5860cb54c
+Author: David Hildenbrand (Arm) <david@kernel.org>
 
-How much this would fragment memblock.reserved?
+mm/hugetlb: disable PMD sharing for UFFD missing mode
 
-memblock is not very scalable, to say the least, and each new flag
-increases the size of memblock arrays which obviously hurts performance.
+This commit disables hugetlb pmd page table sharing for all userfaultfd
+registered vmas by checking vma->vm_userfaultfd_ctx.ctx in
+uffd_disable_huge_pmd_share(), preventing poison markers installed under
+missing mode from affecting shared pmd tables. It also adds a debug check
+in hugetlb_mfill_atomic_pte() when installing a poison marker.
 
-Do you have some statistics how many regions would be created for the
-poisoned ranges?
-
-> memblock neither allocates from a flagged range nor frees it to buddy.
-> memmap_init_reserved_pages() initializes its struct pages like any other
-> reserved range, including above first_deferred_pfn, but flags the RAM
-> frames PG_hwpoison instead of PG_reserved. That is the state of a frame
-> poisoned by this kernel. Holes in the range stay reserved.
-> 
-> PG_reserved is left clear on purpose. page_is_unmovable() treats a
-> reserved page as unmovable but skips a counted PG_hwpoison one, so a
-> memory block holding an inherited frame can still be offlined.
-> 
-> memblock_reserve_hwpoison() is the entry point. It is best effort. Until
-> the reserved array can be resized it keeps spare slots for the
-> reservations that must not fail. It flags only what no earlier
-> reservation covers, a kexec segment for one: that was placed around the
-> bad frames, and memblock_add_range() would warn about the overlap. A page
-> shared with such a reservation stays with it, so no page is flagged
-> twice.
-> 
-> It returns 0 only when every free part of the range is reserved. If any
-> part cannot be reserved it returns an error, even when another part was.
-> 
-> Name the flag in the debugfs flag table. MEMBLOCK_RSRV_HUGETLB gets a
-> name too: it has none, and would be left as a NULL slot below the new
-> flag, which memblock_debug_show() passes on to seq_puts().
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  include/linux/memblock.h | 10 ++++++
->  mm/memblock.c            | 80 +++++++++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 89 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index aa845f488327f2..86755be249666d 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -52,6 +52,8 @@ extern unsigned long long max_possible_pfn;
->   * kernel that we know is good to use. It is the only memory that
->   * allocations may happen from in this phase.
->   * @MEMBLOCK_RSRV_HUGETLB: memory is reserved for hugetlb pages
-> + * @MEMBLOCK_RSRV_HWPOISON: reserved memory region holding frames an earlier
-> + * kernel found to be hardware-poisoned.
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index a14b8a9ffb7b1..ebd86677b052d 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -168,22 +168,12 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(=
+struct vm_area_struct *vma,
+>  }
+> =20
+>  /*
+> - * Never enable huge pmd sharing on some uffd registered vmas:
+> - *
+> - * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
+> - *   tracking information is per pgtable entry.
+> - *
+> - * - VM_UFFD_MINOR VMAs, because otherwise we would never get minor faul=
+ts for
+> - *   VMAs which share huge pmds. (If you have two mappings to the same
+> - *   underlying pages, and fault in the non-UFFD-registered one with a w=
+rite,
+> - *   with huge pmd sharing this would *also* setup the second UFFD-regis=
+tered
+> - *   mapping, and we'd not get minor faults.)
+> + * Never enable huge pmd sharing on userfaultfd registered VMAs, because
+> + * userfaultfd state can be tracked per VMA or per page table entry.
 >   */
->  enum memblock_flags {
->  	MEMBLOCK_NONE		= 0x0,	/* No special request */
-> @@ -63,6 +65,7 @@ enum memblock_flags {
->  	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
->  	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
->  	MEMBLOCK_RSRV_HUGETLB	= 0x80, /* memory reserved for hugetlb pages */
-> +	MEMBLOCK_RSRV_HWPOISON	= 0x100, /* poisoned by an earlier kernel */
->  };
->  
->  /**
-> @@ -142,6 +145,8 @@ static __always_inline int memblock_reserve_kern(phys_addr_t base, phys_addr_t s
->  	return __memblock_reserve(base, size, NUMA_NO_NODE, MEMBLOCK_RSRV_KERN);
->  }
->  
-> +int memblock_reserve_hwpoison(phys_addr_t base, phys_addr_t size);
-> +
->  #ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP
->  int memblock_physmem_add(phys_addr_t base, phys_addr_t size);
->  #endif
-> @@ -295,6 +300,11 @@ static inline bool memblock_is_reserved_noinit(struct memblock_region *m)
->  	return m->flags & MEMBLOCK_RSRV_NOINIT;
->  }
->  
-> +static inline bool memblock_is_reserved_hwpoison(struct memblock_region *m)
-> +{
-> +	return m->flags & MEMBLOCK_RSRV_HWPOISON;
-> +}
-> +
->  static inline bool memblock_is_driver_managed(struct memblock_region *m)
+>  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vm=
+a)
 >  {
->  	return m->flags & MEMBLOCK_DRIVER_MANAGED;
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 31961ed628b0ad..d20d99972a4db0 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -36,6 +36,9 @@
->  # define INIT_MEMBLOCK_RESERVED_REGIONS		INIT_MEMBLOCK_REGIONS
->  #endif
->  
-> +/* Reserved slots memblock_reserve_hwpoison() leaves free until a resize. */
-> +#define MEMBLOCK_HWPOISON_SPARE			32
-> +
->  #ifndef INIT_MEMBLOCK_MEMORY_REGIONS
->  #define INIT_MEMBLOCK_MEMORY_REGIONS		INIT_MEMBLOCK_REGIONS
->  #endif
-> @@ -1015,6 +1018,55 @@ int __init_memblock __memblock_reserve(phys_addr_t base, phys_addr_t size,
->  	return memblock_add_range(&memblock.reserved, base, size, nid, flags);
+> -	return vma_test_any_mask(vma,
+> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
+> -					VMA_UFFD_MINOR));
+> +	return vma->vm_userfaultfd_ctx.ctx;
 >  }
->  
-> +int __init memblock_reserve_hwpoison(phys_addr_t base, phys_addr_t size)
-> +{
-> +	phys_addr_t end = base + size;
-> +	bool reserved = false;
-> +	int err = 0;
-> +
-> +	while (base < end) {
-> +		phys_addr_t next = end;
-> +		struct memblock_region *r;
-> +		bool covered = false;
-> +
-> +		for_each_reserved_mem_region(r) {
-> +			if (r->base + r->size <= base)
-> +				continue;
-> +			if (r->base >= end)
-> +				break;
-> +			if (PAGE_ALIGN_DOWN(r->base) <= base) {
-> +				base = min(end, PAGE_ALIGN(r->base + r->size));
-> +				covered = true;
-> +			} else {
-> +				next = PAGE_ALIGN_DOWN(r->base);
-> +			}
-> +			break;
-> +		}
-> +		if (covered)
-> +			continue;
-> +
-> +		if (!memblock_can_resize &&
-> +		    memblock.reserved.cnt + MEMBLOCK_HWPOISON_SPARE >=
-> +		    memblock.reserved.max) {
-> +			err = -ENOSPC;
-> +			break;
-> +		}
-> +
-> +		err = __memblock_reserve(base, next - base, NUMA_NO_NODE,
-> +					 MEMBLOCK_RSRV_HWPOISON);
-> +		if (err)
-> +			break;
-> +
-> +		reserved = true;
-> +		base = next;
-> +	}
-> +
-> +	if (err)
-> +		return err;
-> +
-> +	return reserved ? 0 : -EBUSY;
-> +}
-> +
->  #ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP
->  int __init_memblock memblock_physmem_add(phys_addr_t base, phys_addr_t size)
->  {
-> @@ -2394,6 +2446,27 @@ static void __init memmap_init_reserved_range(phys_addr_t start,
->  	}
->  }
->  
-> +/*
-> + * Frames an earlier kernel found poisoned end up as a frame poisoned by this
-> + * kernel would: PG_hwpoison, not PG_reserved. Holes in the range stay reserved.
-> + */
-> +static void __init memmap_init_hwpoison_range(phys_addr_t start,
-> +					      phys_addr_t end, int nid)
-> +{
-> +	unsigned long pfn;
-> +
-> +	for_each_valid_pfn(pfn, PFN_DOWN(start), PFN_UP(end)) {
-> +		struct page *page = pfn_to_page(pfn);
-> +
-> +		init_deferred_page(pfn, nid);
-> +
-> +		if (memblock_is_map_memory(PFN_PHYS(pfn)))
-> +			hwpoison_boot_page(page);
-> +		else
-> +			__SetPageReserved(page);
-> +	}
-> +}
-> +
->  static void __init memmap_init_reserved_pages(void)
->  {
->  	struct memblock_region *region;
-> @@ -2438,7 +2511,10 @@ static void __init memmap_init_reserved_pages(void)
->  			if (!numa_valid_node(nid))
->  				nid = early_pfn_to_nid(PFN_DOWN(start));
->  
-> -			memmap_init_reserved_range(start, end, nid);
-> +			if (memblock_is_reserved_hwpoison(region))
-> +				memmap_init_hwpoison_range(start, end, nid);
-> +			else
-> +				memmap_init_reserved_range(start, end, nid);
+> =20
+>  /*
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 966d249469454..7566f2eed50b0 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6399,6 +6399,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+>  			return -EEXIST;
 >  		}
->  	}
->  }
-> @@ -2874,6 +2950,8 @@ static const char * const flagname[] = {
->  	[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
->  	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
->  	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
-> +	[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
-> +	[ilog2(MEMBLOCK_RSRV_HWPOISON)] = "RSV_HWPOISON",
->  };
->  
->  static int memblock_debug_show(struct seq_file *m, void *private)
-> 
-> -- 
-> 2.53.0-Meta
-> 
+> =20
+> +		VM_WARN_ON_ONCE(size =3D=3D PMD_SIZE && hugetlb_pmd_shared(dst_pte));
+>  		_dst_pte =3D make_pte_marker(PTE_MARKER_POISONED);
+>  		set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte, size);
+> =20
 
--- 
-Sincerely yours,
-Mike.
+[Severity: High]
+Can a pmd table containing a poison marker still become shared across
+processes after the vma is unregistered from userfaultfd?
+
+When a process registers a shared hugetlbfs vma in missing mode and installs
+a poison marker via hugetlb_mfill_atomic_pte(), the marker is written into =
+the
+process's private pmd table.
+
+If the process later unregisters the vma or closes the userfaultfd descript=
+or
+(via userfaultfd_unregister() -> userfaultfd_clear_vma() or
+userfaultfd_release_all() -> userfaultfd_clear_vma(), or remaps via
+mremap_userfaultfd_prep()), the userfaultfd flags and context are cleared
+while the poison marker remains in the page table:
+
+mm/userfaultfd.c:userfaultfd_clear_vma() {
+	...
+	ret =3D vma_modify_flags_uffd(vmi, prev, vma, start, end,
+				    &new_vma_flags, NULL_VM_UFFD_CTX,
+				    give_up_on_oom);
+
+	if (!IS_ERR(ret))
+		userfaultfd_reset_ctx(ret);
+	...
+}
+
+Unlike write-protect markers, which are resolved by change_protection() on
+unregistration, poison markers intentionally persist after the userfaultfd
+context is reset.
+
+Once vma->vm_userfaultfd_ctx.ctx is cleared and the userfaultfd flags are
+removed from vma->vm_flags, uffd_disable_huge_pmd_share() returns false and
+page_table_shareable() in mm/hugetlb.c considers the vma eligible for shari=
+ng
+again:
+
+mm/hugetlb.c:huge_pmd_share() {
+	...
+	mapping_rmap_tree_foreach(svma, mapping, idx, idx) {
+		if (svma =3D=3D vma)
+			continue;
+
+		saddr =3D page_table_shareable(svma, vma, addr, idx);
+		if (saddr) {
+			spte =3D hugetlb_walk(svma, saddr,
+					    vma_mmu_pagesize(svma));
+			if (spte) {
+				ptdesc_pmd_pts_inc(virt_to_ptdesc(spte));
+				break;
+			}
+		}
+	}
+	...
+}
+
+When another process mapping the same shared hugetlbfs file faults in that
+range (hugetlb_fault() -> huge_pte_alloc() -> want_pmd_share() ->
+huge_pmd_share()), huge_pmd_share() walks the first process's vma, finds its
+populated pmd table containing the poison marker, and shares it into the
+second process.
+
+That exposes the second process to the first process's poison marker. In
+addition, if the first process subsequently unshares the pmd table (for
+example via mprotect(), hugetlb_split(), or re-registering userfaultfd),
+__huge_pmd_unshare() clears the pud entry in the first process, causing the
+originating process to lose its own poison marker while leaving it installed
+in the second process.
+
+Should the vma or ptdesc record that a poison marker was installed so pmd
+sharing remains disabled for it even after userfaultfd unregistration?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022034543.5122=
+6-1-lizhe.67@bytedance.com?part=3D2
 
