@@ -1,135 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB0A606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 06:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018BC606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 06:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=FDw003lB
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=H6LhaWim
 Received: by kanga.kvack.org (Postfix)
-	id 89CDD6B08A9; Thu, 22 Oct 2026 02:25:45 -0400 (EDT)
+	id C49836B08AA; Thu, 22 Oct 2026 02:27:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 874EA6B08AA; Thu, 22 Oct 2026 02:25:45 -0400 (EDT)
+	id BFAAF6B08AC; Thu, 22 Oct 2026 02:27:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78AF46B08AB; Thu, 22 Oct 2026 02:25:45 -0400 (EDT)
+	id AE9036B08AD; Thu, 22 Oct 2026 02:27:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A6516B08A9
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:25:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D92BCC0763
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:25:42 +0000 (UTC)
-X-FDA: 85349276124.26.89B129F
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 286A540003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:25:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FDw003lB;
-	spf=pass (imf12.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 88ED16B08AA
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:27:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A80A1406B9
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:27:57 +0000 (UTC)
+X-FDA: 85349281794.19.D2E9BB2
+Received: from mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4C50920005
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:27:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H6LhaWim;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792650341;
-	b=kXINMjG4Y6TVVyHvEDRUzYXkbcrzfB1R9R8vigKtD1NJ2qElesyMeqhPCyIVmZpqgSnQrw
-	nkL6mKXYB0p+ohyx/K8oqNbxm5PIKnk7shznwEixnDR2DUUBg/8latsrbXQlNmQQbm1OXx
-	QtwV4G3gz1CB3DOYeDm0wEpLPxWYSIU=
+	t=1792650475;
+	b=pQ1dSfZaRfE2pzRwsUleXpZT2km807xaigvnq4Twn0uk0vJlEHlZDY+GLs1+yOaSbMHyE8
+	l80fkRR0QejzKsoTl3Czedz621aj/g0HRt0eOP5+29JkEWDOFKd3o39x/jV2Qg7V+W8KX3
+	vg+754kE/4X9bcE4CyUsrYz1/61YwBc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FDw003lB;
-	spf=pass (imf12.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H6LhaWim;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792650341;
+	s=arc-20220608; t=1792650475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=sR/bd0HSOYC2pLXMNReGoBvqOpk6rZoUDvcX0fCnmN0=;
-	b=8agZPqL/M0ebX/iJjoIvGfGn75otS2a/HZY3ZmTlHvL9n220kzFGOLhE35vAhj4iq3/gD5
-	CXCXg9y+uDTXKtcDRiyAg+kLv00Pr1WMkXFchhnCQVKjnf0z81Oug6BOdenzdy0bgoY6Ku
-	r3Xf0vCrUN9P4NzsJEFEgLN351TLo5E=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a2074a66beso2027025e9.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:25:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792650339; x=1793255139; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sR/bd0HSOYC2pLXMNReGoBvqOpk6rZoUDvcX0fCnmN0=;
-        b=FDw003lBvWLbcyfOeeKVH19JL/UqY0bJYkHA/cWbSson0FZDWnhEbLB7ZbHIlp61Eb
-         UXJsBdNslD4Bvjz5otsFb/j9+DNb4EIXpIi3Pqnd2SMzNWf4jM9Ng4OOYs94755aLbvL
-         RIE1I62Tjzzdv469EzQxBEpqdHEKRCB+C1qtfnJ0h5R7cDyRabOICLK3bTbfgziYLQX+
-         1gIdr0qfIzXq1fmcUoc0o8DYtWLoo3SJX4IsUQWLcsJprbjfuQzkg5mmPpmTKZRqpXxp
-         bSmMA2N2K0k9sgGA0WCED8uMC5Lk/5LCcXjqJlDBEaduu2j1X4sswkj9mrzUVkY6PhMM
-         547A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792650339; x=1793255139;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sR/bd0HSOYC2pLXMNReGoBvqOpk6rZoUDvcX0fCnmN0=;
-        b=bN4oJUrbkObhIgs2+busLR7lPhlsIap+ZZxpNv83xE7injFMvFB8pfn4YyvktJdMUk
-         pFlGEE3plv/bz2BG9FnDUxtnR/XEF8oMKbPL69cZ6nRFi7w2XcP3QM//UnmL6AEVIc1H
-         K/Xlpp04sZ9xtjWbq1jLEmzgLLZx16D+6wCu3j850VZlUKXasTFCgqtqydh04grYPF/A
-         qGDccpwmRXZ2Pa2pSlymrb+P91eM3m2ZGuUc/GccJrVVKvAJ0dySDkdLQON7rj3Y/S+8
-         3/jT4EGNZeUWxf+pUZZTP7DefvSNoWekWJCGZQz+lAO5q6JddmPsOgzz4ZwhScadUm4z
-         6nMA==
-X-Forwarded-Encrypted: i=1; AKwUvBxdd3pcQ/GKJh853jRegaICxUJUcCg/cJaATPMDm+fq4/zz9Ih8xJjOn3psHTKhqoMnks+qrUE12g==@kvack.org
-X-Gm-Message-State: AFq9FYLlEMzhThQTpe8Y1ptMAq5FCiMyaSBfF6asahm5WAl4ssXX+eE+
-	vkHfhdy/8+KMLKbad9jteZZilxKSljRE+klHaR4YkWd7KNayLlz5P3mp
-X-Gm-Gg: AYBFou0H6eLxRCjIhF2eEXaW6iDNsLRf5hSoSn3jU+CQuRZk1XN1XzpG9H5VNMVpJq8
-	bVmtp9X/vj1bNs3ICsMQ6HQLAIU4DSolT9+JYXIQ4EDY+Cx2xPRsLRcoBfdwjkWGeho0JOEJajw
-	kjlkW/HVUxTebnzUhyLaD2HgbBRx8BDyLQpYF8fhApwJIs3hJvJ3PMcDSoBp8zZ+v/Mj4hpc5ca
-	jQFvwLbRmbOQGeMv1oosDQMDloP+63Bqw16GnBLImGLd9GvFZkwRnAlkhtEDVl0FY7eHs71/VSP
-	tXQRqX4RlYiEB92IeCTx37ADYAh2G0U4KB8brBBhmBW7iItet6rVcdrnJTFb/sETf09cJdasw0r
-	irTcXkPn63RWEZTx5G7sGTW4Dw0yiXCSO957EkrYTl+wy+Aobn+AVd+YZcMd8gwXOdLDvVa5Y6U
-	ciWC1iEip+Vk6IWpLEujOmxasKF3OD3sbNncrXwSYOf74d6Qr8jgraC6Oi74TDC33tq40U1ey+Y
-	yWKR0rw/eEs6mRLPe6L9OBe0ABQM+IHEYaNZlsp51HY0PCoIglyUJdrUPIoN6yeM/uO0K4SXGz3
-	4EZJspZdMyxPWv6EN65IWfl6mL9xtDKtAil3ZIBlyeckC4Wsj20GZh+UkplyNhiZu2blxCUf7CU
-	J2KVGKv4lpC0MEaNZ8pNg0x1kPxDgBA72zHg/rM+vVJmXk64qYyXMEwFheu1f7G+7
-X-Received: by 2002:a05:600c:4685:b0:4a2:a1b:dc6f with SMTP id 5b1f17b1804b1-4a20a1bdcc7mr6610985e9.4.1792650339278;
-        Wed, 21 Oct 2026 23:25:39 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-ad43-d501-2c28-bb72-120d-420e.310.pool.telefonica.de. [2a02:3100:ad43:d501:2c28:bb72:120d:420e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203a447c8sm45301155e9.12.2026.10.21.23.25.36
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 23:25:37 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-mm@kvack.org,
-	linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/page_alloc: fix shuffling and reporting for no-lock frees
-Date: Thu, 22 Oct 2026 08:25:23 +0200
-Message-Id: <20261022062523.97082-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4H4b+3/76q62u3qzX7qZgWwUH08AcwDy4+VDBczMcl0=;
+	b=HFsnecwioEQviQ2QoGbaZ6Y0SO6xKOCZkK69/1Iz5ZjjdaOYn4efM/xaKRFLQUEyQLB9JV
+	SzReDwRbfIVA+ccxIi2bkDn4L1Z3ycOmKYDtqYZVBxRuwtvYsnviJKD5OpSV4vDjjVLKQY
+	v2maRnLpkTKAtHJLvU972ICXZHfX59Q=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=A7Wi4XPUPqxfH/qhOds5gcalhu0uwexg0PkzlXKTB94=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792650474; v=1; x=1793255274;
+ b=H6LhaWimV3OoG5UBVym689zsfrNgvksU0eqnLktIyyaEtoC2SplrzEkWnQGTfLATLCXMGkoi
+ GAkca39oo3sMvoC2fJ71KfAURoQrdC+lsxi2XqKmgl9BXw8ZIf6WJZcMNsUd3/unY5vkK1TMpAk
+ IPomPdmz7ECzNtOAKIwx46M8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id ab1c5c7b2a738680;
+	Thu, 22 Oct 2026 06:27:53 +0000
+X-Mizu-Trace-ID: ab1c5c7b2a738680
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 37tsxwqyeeywx789cgufbchg6n946quk
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 286A540003
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 03/12] mm: hugetlb_vmemmap: simplify vmemmap head page
+ handling
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261022062401.62096-1-lance.yang@linux.dev>
+Date: Thu, 22 Oct 2026 14:27:39 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ osalvador@suse.de,
+ akpm@linux-foundation.org,
+ rppt@kernel.org,
+ qi.zheng@linux.dev,
+ jthoughton@google.com,
+ david@kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <79779E11-03B9-41D1-A112-52B7375E10A0@linux.dev>
+References: <20261020115824.823278-2-songmuchun@bytedance.com>
+ <20261022062401.62096-1-lance.yang@linux.dev>
+To: Lance Yang <lance.yang@linux.dev>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
 X-Rspam-User: 
-X-HE-Tag: 1792650340-817366
-X-HE-Meta: U2FsdGVkX19j8qxZ+YbwK7E9H97X7FOD+rTmTmdSPY6dleAhR4ek1nlEPSfJvvkf4jtMOUXlDEnGO4HBeyyC5upcUoEKRI6j8d6RfBWU73lJHt18WetATted6th1OdBNgNRxylNgbtm0x9Gxx6yYYN0pRhIptSY9X1rWQKNz+wbQhmCtHAsF5AdIEtD9jpl2W7U4uU+cJ9CkBg8SKXTWgPH2hXAB4M3l6LbSC5Lps8UWOqUdQuVzqkidKF0PdqgQNIpDWZitiTSCL3r2X8Wo8uPfVYt9DuhGt61lg5QrYH9j8VkH7D6Vv0GVqQfYNXTM3MCJSnueLrx2biHVcd/yUq6o8xjPNiOo6bsy8uXjzyIGa2i8WvcvIlumK1Om4aU2qehQhltBgcF1fF2H1ah/1u4ZljGRcBBt2bU/yo0DHjZKi3LXSyPT4+ySgtKCMcCkIf1YvDmczNcvwv3FBPscsiDvoJ7t46ic6f66h+mstIAtbmEk4UXCXggSZHUZ1hX4V+PDMamHG+eCOIlCaRbw7DHJNoBqpx3g8Hc/IzFM5uvEVRlJk4+CLLayzUOXMYpQBfsHX+/D1XkxgoAPbJGdlvoHCgk3cSxJE6dhw4eOtK75QLoIezxSpBeYCJzbrePhmTPY4diUSPxsUMtHaBRfhQspPjGD9306zuIE5FjC1IXCkgfAhgdZNcKsdyMz2wpMns9nMtA+EC7KZvYx84u2I0ToU9Xdv9ix6t+BhYC5qBs9k+sxKwLL6V0xuQ/yxiyd39AJb5Mp/R9MUi+ZavNOvfmEuupsVwDch0TRj+HARYUMvkk/kRS8N5Q1E2QXmySQq4YDHo5iBLU2YATnV7kEI8L8xB3hLlEy4foZ4rtiXn52HVK0s1H41TF235eRnbTiLta2EqP49NKh0LI3RQjqOhT8lMm0A6ZekYUwmyIl5gh4yIRdaTqgLkpEWmwa2Mc/ErtvyNKsBxF0OKPnARM
- OaIQuzXw
- wQQ2FBIl3anzKYlYpUEgGlsXEwEW6uFrqzrRGKMFqoyVqDCUXxe4NtnwlX8G/NkiifyxfvgL/bg55hil7O0G4yIYI7KYJYIOUxIz1A70Wn8BHw24kpsp1K3N86+FivfRYIk8ePzsBUdqy6Z309DkHonkrgEtBo8pQj6JSvCcQ+6bSIavGsU95J0tIBIl6cWEtkEsP5mXhaHDSlf08hdR+xLTuoJGlSTVXPrmvVGFrv+mKMS+L3rB/V/rE1TtVYI72RAw9yB8JE/4dEdPyxyVn/pAT6Mnst6j+PvZbPuw16SrL3LNtfZvckd7qUZ5mdSi1O+HNoEZy4r6nePp236RF6BscJzXeOi64DdOLdrR5n+PeEAMljW+umXtoXUzf6T1gGbGYB/J064EBV+NJFKXDAqJnL53M9M+UrD4RkZ9Pv7vn7Rv1Cp5ro7ik+5msivjGwdThZPAKR8dgsWHbThH1l0YW1DBYqALMhy15IZiK2NivZJA609fxvhDsnw==
+X-Rspamd-Queue-Id: 4C50920005
+X-Stat-Signature: y1wq5fwgrfyhj4djeik5u9emrwrfksoj
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792650475-921909
+X-HE-Meta: U2FsdGVkX19ePhZSEXTpaz0WeXNunpdS0iax/r4cymZArtL7NIA9sI1ioL2zsff1NvahqpUJAvRRQCK0vU1n7aLGshaxQkA8J7+kOkMROzYQM1QN+sJ7bxQai5lPtp/6vFCi3ub8UO9y8h2D7L4xIcY8aLJlDKGZ5HeORILdjqp7CJnEfnsHPnQk+R8/5/hkWQOMgMLvVIEIYOXo8NlRvc3vrsYtXEjHnqR71Eta5kBFc6wGdgwgj97SMNBFml5NvG6Js1y4FkvDGaOe2JEXBEkuBkPXICTeAjgtYztRGIDlS4kwxCTyaqmwEQyA2mjkgZDUQC54kgt3Z8r7QknYSbnu4iRPQr68HgTsrYPpoUzoD1NRV2cyxK1KezG9dT1BLRwnYQ5oZfKJx510NVSDrlUIkKF56/aqCgqod8yJRH29Wco99+Xm4HyBa4ig04rWR/iVGcXlWchunFEvZgXxt61ePbU1OQ2EbJpCmPu7ep5vhyWzL2SGS7ef5pHL0all/hYpilljD/6If14ndvhCtxOT7oFwFz9W7zIG6cZb4q4mtmVNb1DtiznGEa1BztLe6wpod1Xux4avY7LRqop1tw7HhYHIruifse1ul4zCCbtuwiXeSqOy7vmS2mIuYDNARshPhYNCvIFIcWneaafiEPPYNa5eZ4qnzickWIhKgKRuA2KPvS8jxv4iANatSordNUaSFp0kI1pJgJYS3arcVv6JoCUCxgXG0bi3ZfnC2qsUPA0P6rxZFL8e/VpFXPsucfAeBhXXRqTkVL6/jQRo+YXBNwH5S9XSArVmpRLGCfVK4Uq0jFLfEI8/HMqmhCKI/N2BHbj44lYDhkKsCoI1h6PzO1gX/I/TW8q3D4NQe7Sh/fmkSIgvzDW6nLCmGf63qCVdQVHcRgiCMN8QVXSAH49uvM21WxKwz9Y6g4eadPUuIbe+FCyKisM+qua2cWpfppZuJVaznnXbu02dVtj
+ 2TkCENYs
+ ixhcYpZ8iMXFaz6fwcp30ze4OgnfyztLoi/NfiImNqMTgk/U04/jdM6hU03zRfXQxMRp0tG+0f3lcUxfP96AkiuIKxtNDaLjXO3gbKsZyASginnPqRXUaHN7OkMEQdoOfECuzyGtHl64vHG2WUPqR27Ht04rCXflCfyMSmPK2SXcq0mEwy1+Tb/6lr2n4Mf1HkjvPPrNRahXa3mKLHjO/jXSRzGHSwGRWnI+a9s2G/Ct/u6rID4/op0RNn8k7i32xcwErWtPqVT9NW+wnpcGiX9ijo7cMVJODrUE7H4O4JAAM8DMrQ4t3jVVcLAVw/InbnQgaImGdLciKOAo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,197 +103,114 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-free_pages_nolock() may run from NMI context. The BPF arena also calls
-it while holding arena->spinlock through raw_res_spin_lock_irqsave().
-When the zone trylock succeeds, __free_one_page() still reaches page
-shuffling and page reporting.
-
-When shuffle_pick_tail() exhausts its random-bit cache, it calls
-get_random_u64(). Once the CRNG is ready, this takes an rtmutex-backed
-local lock on PREEMPT_RT, which cannot be acquired while a raw spinlock
-is held. A test-only forced refill under a raw spinlock reported an
-invalid wait context at batched_entropy_u64.lock.
-
-page_reporting_notify_free() may call queue_delayed_work(), which is not
-NMI-safe.
-
-Pass the no-lock constraint to shuffle_pick_tail(). For no-lock frees,
-use a pre-seeded per-CPU prandom state, following the slab allocator.
-Keep the cached get_random_u64() path for ordinary frees. Seed all
-possible CPUs before memblock memory is released to the buddy allocator.
-
-Skip page reporting for no-lock frees. The page remains on the buddy
-list for a later reporting pass.
-
-For stable backports, FPI_NOLOCK was named FPI_TRYLOCK through v7.2.
-
-Fixes: 8c57b687e833 ("mm, bpf: Introduce free_pages_nolock()")
-Cc: stable@vger.kernel.org # needs FPI_TRYLOCK through v7.2
-Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
-Changes in v2:
-- Preserve shuffling for no-lock frees with a pre-seeded per-CPU prandom
-  state, following the slab allocator.
-- Keep the cached get_random_u64() path for ordinary frees.
-- Keep the page-reporting guard and explain its NMI constraint.
-- Check is_shuffle_order() before the no-lock flag.
-
-v1: https://lore.kernel.org/r/20261005063515.6312-1-kmehltretter@gmail.com/
-
-Testing:
-
-A temporary caller freed 65 maximum-order pages under a raw spinlock,
-then repeated the workload through __free_pages(). SMP=1 and SMP=4 QEMU
-TCG guests produced the same path counts:
-
-                                  no-lock  ordinary
-  shuffle decisions                    65        65
-  prandom_u32_state() decisions        65         0
-  cached random-bit decisions           0        65
-  get_random_u64() calls                0         2
-  reporting notifications               0        65
-
-Both guests ran PREEMPT_RT with lockdep, raw-lock nesting checks, page
-reporting, and page shuffling enabled. Both lanes selected the list head
-and tail. Neither guest reported an invalid wait context, lockdep splat,
-atomic-sleep warning, BUG, oops, or panic.
-
-The test does not inject an NMI. The in-tree BPF arena caller establishes
-the raw-lock path, while the forced refill checks the previously failing
-transition.
 
 
- mm/mm_init.c    |  1 +
- mm/page_alloc.c |  6 +++---
- mm/shuffle.c    | 24 +++++++++++++++++++++++-
- mm/shuffle.h    |  9 +++++++--
- 4 files changed, 34 insertions(+), 6 deletions(-)
+> On Oct 22, 2026, at 14:24, Lance Yang <lance.yang@linux.dev> wrote:
+>=20
+>=20
+> On Tue, Oct 20, 2026 at 07:58:15PM +0800, Muchun Song wrote:
+>> The new head page is already tracked on the vmemmap page list before
+>> remapping starts.  Passing it separately gives the remap walker two
+>> ways to refer to the same page and unnecessarily complicates its
+>> interface.
+>>=20
+>> Use the page list as the single handoff mechanism for the head page,
+>> removing the redundant state from the walker.
+>>=20
+>> No functional change intended.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> mm/hugetlb_vmemmap.c | 17 +++++++----------
+>> 1 file changed, 7 insertions(+), 10 deletions(-)
+>>=20
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index 8b3abb562599..164e93e980bf 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+>> @@ -25,7 +25,6 @@
+>> *
+>> * @remap_pte: called for each lowest-level entry (PTE).
+>> * @nr_walked: the number of walked pte.
+>> - * @vmemmap_head: the page to be installed as first in the vmemmap =
+range
+>> * @vmemmap_tail: the page to be installed as non-first in the vmemmap =
+range
+>> * @vmemmap_pages: the list head of the vmemmap pages that can be =
+freed
+>> * or is mapped from.
+>> @@ -37,7 +36,6 @@ struct vmemmap_remap_walk {
+>>     struct vmemmap_remap_walk *walk);
+>>=20
+>> unsigned long nr_walked;
+>> - struct page *vmemmap_head;
+>> struct page *vmemmap_tail;
+>> struct list_head *vmemmap_pages;
+>>=20
+>> @@ -208,10 +206,13 @@ static void vmemmap_remap_pte(pte_t *pte, =
+unsigned long addr,
+>> pte_t entry;
+>>=20
+>> /* Remapping the head page requires r/w */
+>> - if (unlikely(walk->nr_walked =3D=3D 0 && walk->vmemmap_head)) {
+>> + if (unlikely(walk->nr_walked =3D=3D 0)) {
+>> + struct page *head;
+>> +
+>> VM_WARN_ON_ONCE(!PageHead((const struct page *)addr));
+>>=20
+>> - list_del(&walk->vmemmap_head->lru);
+>> + head =3D list_first_entry(walk->vmemmap_pages, struct page, lru);
+>> + list_del(&head->lru);
+>>=20
+>> /*
+>> * Makes sure that preceding stores to the page contents from
+>> @@ -220,7 +221,7 @@ static void vmemmap_remap_pte(pte_t *pte, =
+unsigned long addr,
+>> */
+>> smp_wmb();
+>>=20
+>> - entry =3D mk_pte(walk->vmemmap_head, PAGE_KERNEL);
+>> + entry =3D mk_pte(head, PAGE_KERNEL);
+>> } else {
+>> VM_WARN_ON_ONCE(!PageTail((const struct page *)addr));
+>>=20
+>> @@ -289,7 +290,6 @@ static int vmemmap_remap_split(unsigned long =
+start, unsigned long end)
+>> * to remap.
+>> * @end: end address of the vmemmap virtual address range that we want =
+to
+>> * remap.
+>> - * @vmemmap_head: the page to be installed as first in the vmemmap =
+range
+>> * @vmemmap_tail: the page to be installed as non-first in the vmemmap =
+range
+>> * @vmemmap_pages: list to deposit vmemmap pages to be freed.  It is =
+callers
+>> * responsibility to free pages.
+>> @@ -298,7 +298,6 @@ static int vmemmap_remap_split(unsigned long =
+start, unsigned long end)
+>> * Return: %0 on success, negative error code otherwise.
+>> */
+>=20
+>=20
+> /**
+>  * vmemmap_remap_free - remap the vmemmap virtual address range =
+[@start, @end)
+>  * to use @vmemmap_head/tail, then free vmemmap which
+>  * the range are mapped to.
+>=20
+> Nit: could you update the @vmemmap_head/tail comment too, now that the
+> head argument is gone?
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 1533aebafb688..01bccb23a89c2 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2643,6 +2643,7 @@ void __init mm_core_init_early(void)
- void __init mm_core_init(void)
- {
- 	arch_mm_preinit();
-+	shuffle_init();
- 	init_zero_page_pfn();
- 
- 	/* Initializations relying on SMP setup */
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c483..f13993bda67e1 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1014,14 +1014,14 @@ static inline void __free_one_page(struct page *page,
- 	if (fpi_flags & FPI_TO_TAIL)
- 		to_tail = true;
- 	else if (is_shuffle_order(order))
--		to_tail = shuffle_pick_tail();
-+		to_tail = shuffle_pick_tail(!(fpi_flags & FPI_NOLOCK));
- 	else
- 		to_tail = buddy_merge_likely(pfn, buddy_pfn, page, order);
- 
- 	__add_to_free_list(page, zone, order, migratetype, to_tail);
- 
--	/* Notify page reporting subsystem of freed page */
--	if (!(fpi_flags & FPI_SKIP_REPORT_NOTIFY))
-+	/* No-lock frees may run from NMI, where delayed work cannot be queued. */
-+	if (!(fpi_flags & (FPI_SKIP_REPORT_NOTIFY | FPI_NOLOCK)))
- 		page_reporting_notify_free(order);
- }
- 
-diff --git a/mm/shuffle.c b/mm/shuffle.c
-index 82a2c7725a08a..2e1f76d6bf92b 100644
---- a/mm/shuffle.c
-+++ b/mm/shuffle.c
-@@ -5,6 +5,7 @@
- #include <linux/init.h>
- #include <linux/mmzone.h>
- #include <linux/random.h>
-+#include <linux/prandom.h>
- #include <linux/moduleparam.h>
- #include "internal.h"
- #include "page_alloc.h"
-@@ -13,6 +14,7 @@
- DEFINE_STATIC_KEY_FALSE(page_alloc_shuffle_key);
- 
- static bool shuffle_param;
-+static DEFINE_PER_CPU(struct rnd_state, shuffle_rnd_state);
- 
- static __meminit int shuffle_param_set(const char *val,
- 		const struct kernel_param *kp)
-@@ -30,6 +32,12 @@ static const struct kernel_param_ops shuffle_param_ops = {
- };
- module_param_cb(shuffle, &shuffle_param_ops, &shuffle_param, 0400);
- 
-+void __init shuffle_init(void)
-+{
-+	if (static_branch_unlikely(&page_alloc_shuffle_key))
-+		prandom_seed_full_state(&shuffle_rnd_state);
-+}
-+
- /*
-  * For two pages to be swapped in the shuffle, they must be free (on a
-  * 'free_area' lru), have the same order, and have the same migratetype.
-@@ -159,12 +167,26 @@ void __meminit __shuffle_free_memory(pg_data_t *pgdat)
- 		shuffle_zone(z);
- }
- 
--bool shuffle_pick_tail(void)
-+bool shuffle_pick_tail(bool allow_spin)
- {
- 	static u64 rand;
- 	static u8 rand_bits;
- 	bool ret;
- 
-+	if (!allow_spin) {
-+		struct rnd_state *state;
-+
-+		/*
-+		 * An interrupt or NMI handler might interrupt and change
-+		 * the state in the middle, but that's safe.
-+		 */
-+		state = &get_cpu_var(shuffle_rnd_state);
-+		ret = prandom_u32_state(state) & 1;
-+		put_cpu_var(shuffle_rnd_state);
-+
-+		return ret;
-+	}
-+
- 	/*
- 	 * The lack of locking is deliberate. If 2 threads race to
- 	 * update the rand state it just adds to the entropy.
-diff --git a/mm/shuffle.h b/mm/shuffle.h
-index 11bec7521ab89..92f5e758388d9 100644
---- a/mm/shuffle.h
-+++ b/mm/shuffle.h
-@@ -11,7 +11,8 @@
- #ifdef CONFIG_SHUFFLE_PAGE_ALLOCATOR
- DECLARE_STATIC_KEY_FALSE(page_alloc_shuffle_key);
- extern void __shuffle_free_memory(pg_data_t *pgdat);
--extern bool shuffle_pick_tail(void);
-+void __init shuffle_init(void);
-+bool shuffle_pick_tail(bool allow_spin);
- static inline void __meminit shuffle_free_memory(pg_data_t *pgdat)
- {
- 	if (!static_branch_unlikely(&page_alloc_shuffle_key))
-@@ -34,7 +35,11 @@ static inline bool is_shuffle_order(int order)
- 	return order >= SHUFFLE_ORDER;
- }
- #else
--static inline bool shuffle_pick_tail(void)
-+static inline void __init shuffle_init(void)
-+{
-+}
-+
-+static inline bool shuffle_pick_tail(bool allow_spin)
- {
- 	return false;
- }
--- 
-2.39.5 (Apple Git-154)
+Good catch! It should be fixed in the next version.
+
+>=20
+> Nothing jumped out at me, so
+>=20
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+
+Thank you, Lance.
+
+Muchun
 
 
