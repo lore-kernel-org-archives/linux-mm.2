@@ -1,94 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECE5606A31D
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Oct 2026 23:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2C9606A337
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 00:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=0xYKEwSB
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=WE/YKkUi
 Received: by kanga.kvack.org (Postfix)
-	id CA7EB6B0276; Wed, 21 Oct 2026 19:59:23 -0400 (EDT)
+	id 3DA426B07FF; Wed, 21 Oct 2026 20:04:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C80136B07FC; Wed, 21 Oct 2026 19:59:23 -0400 (EDT)
+	id 38B0B6B0800; Wed, 21 Oct 2026 20:04:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBC846B07FE; Wed, 21 Oct 2026 19:59:23 -0400 (EDT)
+	id 254856B0801; Wed, 21 Oct 2026 20:04:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9665D6B0276
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:59:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 918898049A
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:59:21 +0000 (UTC)
-X-FDA: 85348302522.02.0A94376
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C7257C0005
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 23:59:19 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0xYKEwSB;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792627159;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E1C626B07FF
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 20:04:54 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62A56A070A
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:04:54 +0000 (UTC)
+X-FDA: 85348316508.21.66FCF6A
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7473C1C0009
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:04:52 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="WE/YKkUi";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of dmatlack@google.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792627492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ksEI+I5nWbgBGU6Al2imyLpHdZLmo2q8PfxF1UceYPU=;
-	b=BZbLMAIG4Hv27zQQAXvjG7WXhbShdO76SlJFftxKV6u8h+fGSjASdVji+t705vrMEZEE0C
-	1Cqe0ECQsQm5s8yKnexIAM2doRXGcJWCxNXgjioebg0MUPrihzb3Uayuj3KP+Z7XeoNb2H
-	f93mQNqciiNfx41wS54zmRXgamR8LXk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0xYKEwSB;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792627159;
-	b=8mTRjwHdOErTA7KXlkOLBdV2xBkcYCGvhEIfXfg9dLVCjboRU4tWRX4lSZN4lSbVsSVjF9
-	nWNalUBILzxgGfyraI3JfLcHMsLXE4MNewHol45aGE05Qzx9onaksPv1fgPvkZYM/lMppY
-	4L7vcVahzfRkg7QIMinW56eoMbFmON8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D4FB601DE;
-	Wed, 21 Oct 2026 23:59:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0F11F000C1;
-	Wed, 21 Oct 2026 23:59:18 +0000 (UTC)
+	bh=voL3QXhcF0nQ+Bl+k+0kNlvS+kVkqIaUYWi4xHN4x/I=;
+	b=4WOcRyQFE0su95zGFDzAl53fUzkiWhvTV001EfAK+cO4C41cihv7EmHDyH7RGDcElk6LNX
+	rbaqYcg93+UpnBK1Fi4fiZyjNWHmJnBKJ0zEebqon72kPL8Mm/pJS1k1FbEIZcBjGJdr1Y
+	GTAa2SEYy9x3+iQJNPDijizP2ErQqOU=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="WE/YKkUi";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of dmatlack@google.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792627492;
+	b=n9n9v6PVvbmgww6Uvbmg86oUfIps+5IyteLxl1FNfSWUk8wxrweM3vML/CNvMlT0vl+YAx
+	Agx3ALUMdk5hW03150rqWaPBbIJ7N/BhHNAdib4bylSXSb1a9eCTsi9MfKyBxQqpPd6/Nd
+	e5GybrNb1vkTLE/LodSCoyXVYmWnqn4=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso168529066b.2
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 17:04:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792627491; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ssdTYD8ydFOBqr3Hg5V8OY1xQeWABiKcb0AVc//LjqCjeQyhOS6Cccf5/zj8NtQu/k
+         ROctoth20EgFdg2TkhY25HZALYvXm56k3457q43eAQNxWMvexYUJ2O+D5s9bT3Mndzh3
+         Nl/yNA+0hWMl8hHYAAcpi0lnu+mPmc39Wy8tozAlM7NVA4nE/jUoeYnQATIH69WNrQIB
+         jGM9NYA6osiqctCkvjKZRfqXfoGikfceiLyxW2bV78qM6HZBzGceKYAJQo1bBIYhoEL9
+         e59Yamca6H0MWEuU35b4xe61Ya0hfDeEq8pLox7qKkPtNNmdlTqr7G6fOWIIU3zafP4l
+         Zl8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=voL3QXhcF0nQ+Bl+k+0kNlvS+kVkqIaUYWi4xHN4x/I=;
+        fh=xUzut6NOxuVlDojVAFSHOnKuyujgyU6qjZmhTPeFzgo=;
+        b=ob/2XaSlCjdl4WBP2Ucfxivx9UOmxNaZmBSku1Z/qcON7efYigiL0egZ7hwmU4/1WJ
+         zpa0rNdq53QsHGPNxj1JgQHTdXnsM3ik9nAQ9PBY0FB9dJZdpWr5Y/qIBEaQENhzBiDh
+         v/v5i5tgBlwJSaCb2EmUl9l7wYMPdbFzFFvmdstCZ7I2jxZcanC7Fy6ZzSZweCi+CGat
+         qskXz4BaGJCtwin7XeDF9UxsGN+0B0TmT99EYeQZaYNBxK4bannuFBxOwy1/WyrjrSWn
+         oNsYRR4vk2NCKBp+fq3wYPp/RkJPtQNidigUcyzkPGCQKq5KdBbutocKwehoMiuVY0og
+         9EAw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792627158;
-	bh=ksEI+I5nWbgBGU6Al2imyLpHdZLmo2q8PfxF1UceYPU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=0xYKEwSBu66dnnJ9HcvJasewpGZc84uS97nT6nqlUpEiIGU4UO4F9Yx5Lpy95VaXw
-	 bT5j8IbaUvNr7+0bTwVoQv+E0xBT/Uccgz3hCrqURvefxtS8IxXKoE4D/qvgV3JtrJ
-	 xXtcvhf2Cvz4ppddQdBQ+/CgxdCgSlx+zS5UQNKw=
-Date: Wed, 21 Oct 2026 16:59:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Vivek Kasireddy
- <vivek.kasireddy@intel.com>, Steve Sistare <steven.sistare@oracle.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hongfu Li
- <lihongfu@kylinos.cn>, stable@vger.kernel.org, Daehyeon Ko
- <4ncienth@gmail.com>
-Subject: Re: [PATCH] mm/hugetlb: charge hugetlb cgroup and memcg in
- alloc_hugetlb_folio_reserve()
-Message-Id: <20261021165918.da553bb0879c110847c232f5@linux-foundation.org>
-In-Reply-To: <20261020-for-alloc_hugetlb-1020-v1-1-e6eac82dd754@kylinos.cn>
-References: <20261020-for-alloc_hugetlb-1020-v1-1-e6eac82dd754@kylinos.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20251104; t=1792627491; x=1793232291; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=voL3QXhcF0nQ+Bl+k+0kNlvS+kVkqIaUYWi4xHN4x/I=;
+        b=WE/YKkUiX61c5S/PAvbeSz0MaLyLPqpr/UOyovaWGRABX0FAhnHmHWIoSTCgSd6Y42
+         ubhklP93B6PM4F/Jr8bWXVJFGQxRX38BOakIG68JCOsMFHeVz8Qgo/47in7AUn1rsj9v
+         Lu7hD1BFyyIBRAuZrAI+5Fh4DDGKXvZucUj06x0JCgAvyqQPCBU6Pc2C4QsCqUfjzDQP
+         yHc0AftuqgPA5veVrEbQR7V3dz3REZXmIBolmJfsGAQd6gQ5e1jJFDIITmvA6GrtYKDT
+         m2OelqzaCFWpPHlccNFTMOR3ovaNjlGqncFVx3FLOXI1Qyw2bF9kbMHeMbM4w7afSGrs
+         gyBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792627491; x=1793232291;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=voL3QXhcF0nQ+Bl+k+0kNlvS+kVkqIaUYWi4xHN4x/I=;
+        b=yrkpYTFEmoolv5aLRY4qEQysY+VF+1DF3OLsll6zJS7I8ciDIGU3fSL3o4v0k873gC
+         zNu62iHDV0cfdVDzwjysez92ORZuJ1pJb9LSIEONi/37otnGcwjVGHh1FEl28u6Knulx
+         jU2ObQlaVA6P/hvJZinzC6UASF54fj+hKx87Ljdw6D0zk815AWJl5oLsDcF6EUn4XCAa
+         sAecClhdqNS8XXKzmZZvkXe52Sy4kVVFPgrEDnwr+t34TqECGUTmABcERnbewVoFrdQm
+         Hm5f1bl2K6EDB+oThNWV6QaZ8BD/OmRVHKlE3ROYB/E/MErzWusFKr6k6R3IXZ5TimDO
+         +Vcg==
+X-Forwarded-Encrypted: i=1; AKwUvByQLlD/b6a+Y6gnhaYhff6GJS4qi52Bk139AQm1Rmx5qqB4DD6DjKDR8cFtunhG0FMEtx8tB9aI2w==@kvack.org
+X-Gm-Message-State: AFq9FYKc8W7mLxawSQ5AenLK8Lujpipk7VbsHqXsui9uQzRZoSGSj/oP
+	yTaanvk6wNiJq9WVlRaNkgHuKqSwuefNFv7Rr783SVCd+8+IvShtlVz5JjMOgdTSeDYsgX7JFWV
+	jDmQzqH0pLynt3sh+8+fnt1cg9ZDC0qRVdzFwOyvE
+X-Gm-Gg: AYBFou0/qybpXpCBX+0vCAatUUyqGixnLUBPwhvB9gtYT/DhZrAkOAUqODtnsqmGX/q
+	ff/FQ7FR7CnE7XSbkeJg7DL8yYg8190Rt928GkxJSryKLUxpGW5lBKAlEnjpI6xhN94tScfLj78
+	/Z4ueuhHbaTen+LzYcjlghMuTDGIvVHKCLqRwqQOnCuovPcQN8iCSplmlU7w42K0r8l5Mxl2U4q
+	KxW1XJHCzYRuTy9Nx+OwFu8/oy6J8rMrnpkXv9z+c4JTzJzTuS11gxtLxNstlVFR/NJpuLwOswL
+	xeib/0Y4UElelym+rKvXMLUwf0uGZV/IMrM0PSn8bW6KtXzS8+JYoNUEsaPoau/l0IWc6rwhYs3
+	BMCcjuQT41NzIbkPwOGOfA4NwMjnbM0v+xsy3WQ==
+X-Received: by 2002:a17:907:86a7:b0:c34:cf13:a930 with SMTP id
+ a640c23a62f3a-c4679689896mr324348966b.34.1792627490183; Wed, 21 Oct 2026
+ 17:04:50 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C7257C0005
-X-Stat-Signature: 8t7uqpku85aqwc4ysqscky1roxqd818o
+MIME-Version: 1.0
+References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
+ <atlQ_Er0Ig7CCSxv@google.com>
+In-Reply-To: <atlQ_Er0Ig7CCSxv@google.com>
+From: David Matlack <dmatlack@google.com>
+Date: Wed, 21 Oct 2026 17:04:22 -0700
+X-Gm-Features: AclHuK9LuxkFhyY58-PllQ_xn35qEFAv5-F2hDjCZHaof6GARbd972qVOi8lSVA
+Message-ID: <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
+	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7473C1C0009
+X-Stat-Signature: gks96jj14dybwyi56jmuo543p7x7o8xf
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792627159-871599
-X-HE-Meta: U2FsdGVkX1/5eQhb0yIHLfRsFzEWdIlOI6pa84/i7ki1SIDg4FiBNyy2WKbXXDmASYn3fzwroXIbB87avJL8LO5VQ30lwxifqBlnfSyAhn/qmHmkW+cj2PVIwk/kY8I4kDWhiE0Usfcre2Z6OUWQxTTI8I0A0sxMdJQegKTJ9f3g3hbbw207tRjci/CDN/w080i2nnrn7ENl4mJXjN0EBC9YbNcCtO/LN3ycFAi0dyoCriFYsQOaQx053XtkStz4VtlxrMVJ+pzpdLZaPPHKt885JVBJUOFmBLU7yy82y2KBAX2X/V++N2HS6a7qs0reo8UIEFsP0aqdOISMHCER0bEZwYVkF04D6tq+wtJ7K7yeOPWa27I6w1dfZFRmua/Fm658Uyf2aduP4S4a7A74/McuNe8mwoUfmKZw6R6dpfvRSeOtgs7LOafEPW4/hCh2LxTd421fkAw6zvQTGWo2fmBJxK5BltDyJ75nzRfrExzuC4Jbl8J8BQTBeJPY5Z7Gk1B7uIknma8GKLdouXD5aFDgQ+mMkeenoBhLT8bMA3I3pDBqFtk9h7hD6SEzONLpqYEHJEAV8+4WrYp3vzTNwYTz6pUGGC3cDb3Gfw7U3ZQxw4NSZyNpV+9lRidNze/U6BcyW15eYF044Gpbh5rgVlVSn7+Ucv8K5QCRYlqL4DNLnIkFTphm56cAPEBXeX6bi+dbkheBM++DD/kEFcy9xHk9P+FO3OKJ5X3lbFFTTyjODEk6XhzdQBNCjISprdjBzKZUV//1nGYoWzJptYtMYn473t1R9LJLIRmV1eHidHEQoZre3LPPLCqgfmN+uDczSyzrw6w54bXE2mMFaEzg9FgcW90+nXO5XuIhdjeuVTS3flp65tVNl5As3/vJ/3DQesW3P/m+KOXbOzKh1U6nFidrtfYXVbdghhFI7uFtKFaXMVUu+pv/+mFh3n+d9M/3KWB8QQ2TLo9+UMfUSjk
- qhHz1Tid
- 2aC8OznhtkgZt9RXNYZaag3nNSOd/hrK9YwqwYBT50juVDwEXYMplKDy/EJYuZ27wLHM2yX6Za7nfHt+Sqe+fRq0iyh9vdN8MSg846YMDQx6mLCy3euoac/P6c/ExvXusFymSmbs3MIC0AS+HWFmdA3rhO7QKSvHVxL4j9WOpNwZzquaqNjb3h3NHjuVzMh5o6htInu7I0KHYP2bBfDF2LaDPIOT4sDVvzPuSm0hZTrhZrecQLsuVSVwPAPO7csJ13CZrmkpQ+fOua1Xj1K5xz/d2X/idTkNZNC6zIGVN/fVGioacmO5QDzBR0pO670Yw+29BoVVApcJQP9YzD1+Fiq2jYw==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792627492-167796
+X-HE-Meta: U2FsdGVkX19R+HdyhCw7CzewPr0YBABjH6peQwcf0kL87Z/mcMKCIGdO6F7fjYRhC3D9aJgz8qFbTW6mXezVDLfndvpVHGm8+MOJjPly1Zwi3r/ZBsF0SrvPdznaTq5eBw10xQLQjL0Fc32k1SsCUB9JYt7+7DUYhMJmtHRBAZ+6ATo0NuGFJOU+Y4aR3ZrfPkDHaq3G0hWfPM1phhVSRyQuHmIKzfXk8fzDG//ZlzdBTXcagFXSO4Ay7QQtYzId7Tv7XwksBXln3DU5CB8VOAevzsbSLgxnafAdRB709d1My+q/vJytPwGf0ibv28peGzvcLAvRx+MseVcEkQktxemqCWau4T/wi3DhDbXQAqXkzfjMAkKZFq4xs+s6apnmUfuLvNK6+YMjsdimZemM0y6tff240iB898KVGNJbtKtQKA5BjxRoyEUPmqV+QQbcfVs6AWaPPJSh+5HIGtDLBz9Cq49/qjR294TUTW04LCUWdn8y65KugV6G52s7yLbsaQK1S2rnlDhnOQJxxm/h6PxJYTWOtCVAqjP4rMZjjFnZx0KcnZqyIguvK4QQ4Ug417higVMdvk9UhNW+v44fR99wSWPhgItFwpAv+J+64U3JKxvM47VTyURqiWXylHyEk14Zyd37TjnZJD3hihkzkEyvHd2oys+9UQpzQ2UY68oGyY3SzPBBBGorInIKJsk87egv3L27W3HoGzotzeKaTLwUHqiz4H4jFey1VQzbELsxq7J8rYFuDfoZocuaWAPiCKzCzwXpdgKCOOl6sItLlqLJQBQejrgvVQECSqwqTnwpQ6769Rdz/Bu6DbaTdo5Y4mmmvp7fvnYIsVigqqM9B7CvGtsUB+09cUNGestUb/QzHkbLycfgls6znFEZLx/K2FrhfCK+MfSsq+gwJpCBogGmj4zy6V+Lha3xAtlpyIB1rk8aOnSdgiLwneOsdBoGqfbqfQybuF/cJ9l1PEV
+ Y7H3lXIW
+ HUvOOAUsD1XQQv2UnJqtU7gY/bkfKT27enPWLvY6LC2zrldz7Dh6cM9EYA70652i5xD7FEkBS+bC1yiORus3LEIzmfSuyGYSOKp8mxu1bChmpbIuwW2zKPTsBN05xGzvzzXuGvP3my3CdXRf91Ft7Wdz796z8fZYbyVNQ6YGiUeOB/UyGQwahUpe4E7zu267XA5FaxpFeTQeWC/8ivx61SLc7+PmD4PbMxlJKQ3Ret/Y/mmnuKlK6eWGM4JtHUZgwEKr3yyBcR7SoI/Jben3txKAZMja/B7qHppYS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,67 +154,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 20 Oct 2026 16:46:30 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
+On Wed, Oct 21, 2026 at 4:55=E2=80=AFPM David Matlack <dmatlack@google.com>=
+ wrote:
+>
+> On 2026-10-21 03:25 PM, Tarun Sahu wrote:
+> > LUO and its file handlers validate handed-over state with monolithic
+> > compatibility strings ("luo-v5", "memfd-v2"). Any change to a serialize=
+d
+> > structure, even an optional additive one, must bump the string, which
+> > breaks live update between adjacent kernels. Replace the string in
+> > struct luo_ser with a feature header, so that the target kernel can
+> > accept or reject the source kernel state per feature.
+> >
+> > struct luo_feature_hdr is a fixed 128-byte header: the serialized
+> > structure size from the source kernel followed by 15 chained u64 featur=
+e
+> > flags entries. The fixed size keeps payload field offsets identical in
+> > every kernel, regardless of how many flags entries a source kernel uses=
+.
+> >
+> > Each feature has a 2-bit pair (req, active) state (enum luo_feat_state:
+> > LUO_FEAT_DISABLED, LUO_FEAT_OPTIONAL, LUO_FEAT_REQUIRED). A flags entry
+> > holds 31 features, and bits [63:62] =3D 0b11 chain to the next entry (4=
+65
+> > features in total). Each subsystem defines its feature states as a
+> > static const u8 array indexed by its feature enum, which
+> > luo_feature_hdr_init() packs into 64-bit flags entries with
+> > LUO_FEAT_EXT_MASK chain bits. The target kernel validates the header fr=
+om
+> > the source kernel against its own feature array via
+> > luo_feature_hdr_validate() according to the per-feature (req, active)
+> > truth table:
+> >
+> >   Source Target Action
+> >   (1,0)  (x,x)  Reject -EINVAL: invalid source kernel (req without acti=
+ve)
+> >   (x,x)  (1,0)  Reject -EINVAL + WARN_ON_ONCE: invalid target kernel
+> >   (0,0)  (0,0)  Accept: feature absent
+> >   (0,0)  (0,1)  Accept: feature absent
+> >   (0,0)  (1,1)  Reject -EOPNOTSUPP: target kernel requires the feature
+> >   (0,1)  (0,0)  Accept: ignore payload data
+> >   (1,1)  (0,0)  Reject -EOPNOTSUPP: source kernel requires the feature
+> >   (x,1)  (x,1)  Accept: use payload data
+>
+> I think we have different definitions of "required".
+>
+> In the PCI series [1], required and optional flags describe the _data_
+> the previous kernel handed over, not the kernel itself. A required bit
+> means "this preserved state depends on feature X; a kernel that does
+> not understand X must not take it over". An optional bit means "the
+> data for X is here, but you can safely ignore it". The source kernel
+> only sets a bit when the preserved state actually uses the feature.
+>
+> It's up to the FLB/FH retrieve how to handle the scenario where a
+> required bit is set that the target kernel does not understand. For the
+> PCI FLB we panic since failing to adopt the PCI state could lead to
+> memory corruption as preserved devices can be doing DMA.
+>
+> The target kernel never requires anything from the source. If a
+> feature is absent, the target kernel must handle that, e.g. by
+> falling back to default behavior. If it can't, that is a compatibility
+> break and should be handled by the compatible string.
+>
+> In this patch each kernel has a single static feature array that is used
+> both to generate the header and to validate the incoming header.  So if
+> kernel N marks a new feature X as required (so that older kernels reject
+> data they cannot understand), then kernel N will also reject every
+> kernel that does not have X, because of the (0,0) -> (1,1) row in the
+> truth table. That breaks forward updates from N-1 to N, and rollbacks
+> from N to N-1 even when **nothing being preserved uses X**. Therefore,
+> every new required feature becomes a compatible string bump.
+>
+> I would drop the target-side required state entirely and let the source
+> kernel decide which flags to set for each Live Update based on what is
+> _actually_ preserved. Accessing a field added after the original struct
+> then always requires checking its flag.
+>
+> At the end of the day it is up to userspace to never start using a
+> required feature while they can still rollback to a kernel that does not
+> support it. Cloud Providers know how to do this since Live Migration has
+> the same problem. This also means we must be very careful when adding
+> new required features, as they need some way for userspace to explicitly
+> opt-into them. I do _not_ think we should try to have some generic LUO
+> opt-in for required features. That is up to the File Handlers and FLBs,
+> as they have their own uAPI.
+>
+> [1] https://lore.kernel.org/linux-pci/20261013162529.1928093-1-dmatlack@g=
+oogle.com/
 
-> From: Hongfu Li <lihongfu@kylinos.cn>
-> 
-> alloc_hugetlb_folio_reserve() hands out a folio from the hugetlb pool and
-> consumes a global reservation, but unlike the fault path it never charged
-> the folio to the hugetlb cgroup or to the memcg.  Folios allocated for
-> memfd_pin_folios() through memfd_alloc_folio() were therefore silently
-> bypassing the accounting: they are never charged to the hugetlb cgroup
-> usage counter (hugetlb.<size>.current) nor to the memcg (memory.current),
-> so both limits (hugetlb.<size>.max, memory.max) are bypassed.
-> 
-> Charge the folios to both the hugetlb cgroup and the memcg, just like
-> hugetlb_alloc_folio() does.
-> 
-> Test with a process that creates a hugetlb memfd and pins pages through
-> UDMABUF_CREATE. The counters were read while the folio was still pinned:
-> 
-> Before this patch:
-> $ echo $$ > /sys/fs/cgroup/test/cgroup.procs
-> $ ./memfd-alloc-folio 1 &
-> $ cat /sys/fs/cgroup/test/hugetlb.2MB.current
-> 0
-> $ cat /sys/fs/cgroup/test/memory.current
-> 1351680
-> $
-> 
-> After this patch:
-> $ echo $$ > /sys/fs/cgroup/test/cgroup.procs
-> $ ./memfd-alloc-folio 1 &
-> $ cat /sys/fs/cgroup/test/hugetlb.2MB.current
-> 2097152
-> $ cat /sys/fs/cgroup/test/memory.current
-> 3313664
-> $
+Oh and please see the follow-up PCI series to preserve BARs and bridge
+windows for some examples of using optional_flags to extend struct
+pci_ser with additional data without breaking backwards compatibility.
+e.g. https://lore.kernel.org/linux-pci/20261019213054.3157159-5-dmatlack@go=
+ogle.com/
 
-Thanks.  The before-and-after output is useful.
-
-However there are potential interactions with Daehyeon Ko's
-"mm/hugetlb_cgroup: prevent use-after-free during cgroup offlining". 
-https://lore.kernel.org/20261020100345.1677643-1-4ncienth@gmail.com
-
-Your patch adds another caller of hugetlb_cgroup_charge_cgroup(), which
-has the cgroup-offlining CSS lifetime race addressed by Daehyeon Ko's
-fix.
-
-An existing memfd reservation can belong to cgroup A while the task
-pinning the folio belongs to cgroup B. A's reservation CSS reference
-does not protect B's usage CSS across charge and commit.
-
-Also, the accounting bypass predates 26a8ea80929c.  The original
-memfd_pin_folios() implementation already used an uncharged allocator,
-so the Fixes tag should reference 89c1905d9c14 instead.
-
-The memory.max claim should be qualified: HugeTLB accounting in memcg
-is conditional on the cgroup v2 hierarchy's accounting configuration.
-
-Daehyeon's fix is in the pipeline at present, awaiting a minor fixup
-and maintainer review.  Everything is rather swamped at present.
-
-So please assume that Daehyeon's fix is present and rethink your fix on
-top of that?
-
+I don't yet have a use-case for a required_flag.
 
