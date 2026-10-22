@@ -1,93 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3A6606A322
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 10:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96FD606A31B
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 10:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PZtLEb6n
 Received: by kanga.kvack.org (Postfix)
-	id B8C6F6B02C6; Thu, 22 Oct 2026 06:01:26 -0400 (EDT)
+	id F0FEA6B02CB; Thu, 22 Oct 2026 06:01:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3D886B02CB; Thu, 22 Oct 2026 06:01:26 -0400 (EDT)
+	id EE7336B08FC; Thu, 22 Oct 2026 06:01:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A54AC6B02CD; Thu, 22 Oct 2026 06:01:26 -0400 (EDT)
+	id 8CC836B02CF; Thu, 22 Oct 2026 06:01:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 853436B02C6
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:01:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 651E06B02CB
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:01:45 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1588BA83B2
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:01:26 +0000 (UTC)
-X-FDA: 85349819772.27.523E2A0
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 53888A0012
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:01:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of 3897ZagkbAHYmsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3897ZagkbAHYmsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0E2012080A
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:01:44 +0000 (UTC)
+X-FDA: 85349820528.27.E0CE89C
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 244991A0006
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:01:42 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PZtLEb6n;
+	spf=pass (imf19.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792663284;
-	b=6/gaXueJvPyrCtX9pTr22gmNkv+qRrI6DExTzIMDBLmw7YeVAySMTR9OKwugSeSu0Hfkni
-	53zUtrqGfy5UvFG6JsitNV87Xq8S94dV6NJcHycwWLQnAZrf9SAednpSBuh8v7xxuQScTj
-	yAHPRTWZxVwjMPPduyZQhc0V50zoFek=
+	t=1792663303;
+	b=19Vg/RBnSLZWqL8KsjMBa+MVn+ln2vgDYVzX/3wXaPO3oNfRqbbkqJWmQLmThTQtq0sxPb
+	6MrqLG5iAIiElfGtd8gfjIcld+xcIAEVbBFn/64P+s4GtJLHPHBjk5OrFQf3/sWPxIMT7K
+	IX0RkOnwNRsB/nYZ3rdNqBCKB+Z9pJ0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of 3897ZagkbAHYmsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3897ZagkbAHYmsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PZtLEb6n;
+	spf=pass (imf19.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792663284;
+	s=arc-20220608; t=1792663303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=BWI3Lrcifhq07nHl0S5uej8tCbV/Fgv3NaO9h++jNTo=;
-	b=7CPESNvl/PikuTzxjyju14qGH6Bn/K/OPHrWYm3yccS9dWSMuLbA03SFaH6MSMj5/PAaBN
-	m6zq296cbxw+zK/phg3QBatw7+CwCB15wWD8N5Sa0GQmMcbhxgWl6Yd8QuIV/8EHhG75ce
-	oCwLsKNQbZztIs0IUItx1dLq0YawpV8=
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4ab4f652f9bso1236609b6e.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 03:01:24 -0700 (PDT)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AdFl+c9HTfOJHnKVulHF/KABJga7rr2KkdaAezk90/U=;
+	b=IJ6Mo7DKy7D4PlctEvZR93kQPxpUG+pALU8LKAjxz3508kWTZXokBNJ0QDrsDHnZPKnvE+
+	I3KsDjo6cvyqNHDyDKhMYecjbVuKAIikzyiMFLWcJBzNh0ihNuimnlPOX/5D1kZwcaPaEE
+	NPe8+ET8jgTkCTi/5Vjy09wpSRYk+dw=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c3fd91337baso237681666b.3
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 03:01:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792663301; x=1793268101; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AdFl+c9HTfOJHnKVulHF/KABJga7rr2KkdaAezk90/U=;
+        b=PZtLEb6n9L/Hdv/WeK3cHQ6aK+YpfvWQxOfzjo+YqQvItrFXkSNLlAcEEXQw7yq5NQ
+         lyedydJFrJOJFF3Ty7Fg1KSplmAZ+7AZghhFRi9wETKKFZHIDHOVx9Ugbfd9bMOe9nui
+         TNgt+g21rnTkLWW8jOmnv6JPl4z/5TdgtnYrP/sVR1vgtjmMnVZYvBNjp2KKN7MSXqIT
+         fwGrEqi65bFyiDmuq5963SzqhwMgMVe8i1/18YE7drXfVkaAtEdMbHYsfHFh95JzelrC
+         sgNTNbl4XH+q4s15T/75nmyvS0ab8mkFkcLCRVEPTMBDdJjaVVQKupq6BlDw8mNbaOIe
+         XSvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792663283; x=1793268083;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20260707; t=1792663301; x=1793268101;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BWI3Lrcifhq07nHl0S5uej8tCbV/Fgv3NaO9h++jNTo=;
-        b=duN+Ijsmq2RPrAmM9+w1xfR9b23wTesjPSQ4r4ASVJ9BxG04IVS9zzofGErqBwQd7m
-         BIvc9NwzQl2z36IoTFm0fGwT9AhvdMJJE2uW/RiyhovBlxcT+R5xBIbn/dp9h7ALU/3k
-         bxFq/q8dFytBLNg8smEgsDyD2ORKJrhlvcxsx8ZsJAhrRre/zcfnC8BafDaWVsKytuNa
-         Khvp03acyMPvNf7U8OWD6fJ/4UNa4Q3newh3xJZHEwQsWUVvDy7e2xUk4d+IWUWhGMY8
-         o1UfQfPTPxduEra/KZa36re3sDoMpjb6x5G/qnOEyXXWLqPYeA09/CcDF2KVYCrjohKa
-         p8uA==
-X-Forwarded-Encrypted: i=1; AKwUvBz573x4q/hlOeMZjjp/qdt5EaVL9oj2pcqM7DddxbEGJTLgHyMP28pSs8nSs7soUHSaAUfiZPECQw==@kvack.org
-X-Gm-Message-State: AFq9FYLkrv5SipFGzYbh2uJvw8m0ri0JNM7S4++eVf0woIDMMIAzyukX
-	ponUnJSotVpIXfVAfoDsO0II8aSojUUf0IuYpvT/ppLmk/mZz7c/U6FG5wnQvvHNKLjo7ovw0sU
-	mu1MgiywfXJSiLw85nL1EooiuKTdI9t9RtcsKl8xAU/sm4U6E0H9t2amZAZE=
+        bh=AdFl+c9HTfOJHnKVulHF/KABJga7rr2KkdaAezk90/U=;
+        b=evyOYk8QiAgrHCo+vVCh3YtcmI+HOkWmiFw4gxtY0yhzJ6ivpXsh4x0YfiIHJ/Hxrm
+         /YpZYroJZ6+qtnY4LU9QkMHTT96hs4DV6d2olMpO34pPI14fu5Uh1tHRxiFz87D3ZHkK
+         NXih/bAls5RME6pLdBtztRHJznfqFCdNwbnV2INUnqkts3A27ui4IQxtTP7G9hx5F2xK
+         XvqI88SadVlWkC8Vwu1E+T5vKsGdGpnmvrirYO/JXcJ9w2+xZhhVhC/WlUMfx5kk+sog
+         y1rrhMPALW+CUY4lqOIcP/cJQ25tEJq43Xm7hMHGis8NPoMTO8k/PUNoTe7vRAGOlpKk
+         9Ajw==
+X-Forwarded-Encrypted: i=1; AKwUvByMDAsR8JtDtBVcDTROobBUY8hze/J2/5r3+A2gNRNBxtuQSD9xwVM8i6lkyfQwtJgY0ZqYhoAGbQ==@kvack.org
+X-Gm-Message-State: AFq9FYK3x4v//61HaYQj659m2KGPpdB2PFnt0Sf3F52XNL6ypeO3ttfj
+	IURYgyb8xQ4RRrN9wZ8bZ0plcU0B+FRGOfNXF+52mnI/TU/XZr3DLyu6
+X-Gm-Gg: AYBFou2Cz5m6A3J7o2pn1Ck6E3ohXZPzEar725OvMrz6S5WjApJ2ZteOWo2kO3leNiR
+	WNLhAzl4qA7wuj5pZA1N4RdpvqLlfBJodGcSB/XNAoiCL9EQjYA4z1sfh4nIdYI1IwT0WS4tlTb
+	9ekJ5vgB9E3/8wIRdA/CqyfehRhV2THE7Yv5s0L2bp/mpMXBG/gY1PVVsPjS3iqA0z1pAqMzNV7
+	dY88JmCaw/rjVwL3E6/0kWkBK32Ym1UKGautdt1o0IAAhG/B1UZUY0MKL2dXVGzpHD4GQuoXfOr
+	/MQdj1x9Sn46QNmE49K7CQDsoAs7RjWEz67KhfZgj/M6pRHLkqM37Vud9dLxdBaulyz5RWplI9Y
+	cOo1xKO7/748zBH1sR4e6gSqtzl5T7uyRn/IsYLNRdaPaRb7PYC1fI6Sy1TjZja2zeemcXwJJK2
+	OccIT1Vme1T92bPQHhaVUn/TsVKyIQnRr0Q/cxMJJo/1MIuq3C9pmH0LoVHsVT4BuUIr8iqlHjs
+	bLzKeuoUj8aEXtdFvwUgDXmVtdvHJfRzIWDnkh52qQ=
+X-Received: by 2002:a17:906:dc89:b0:c40:f9ea:7387 with SMTP id a640c23a62f3a-c46791a979emr451363266b.6.1792663301007;
+        Thu, 22 Oct 2026 03:01:41 -0700 (PDT)
+Received: from krava ([176.74.159.170])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2a034fc2sm7287470f8f.5.2026.10.22.03.01.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 03:01:40 -0700 (PDT)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Thu, 22 Oct 2026 12:01:37 +0200
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, linux-kselftest@vger.kernel.org,
+	Shuah Khan <shuah@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: Re: [RFC bpf-next 0/9] bpf: Add support to allocate user page
+Message-ID: <atnfAUWzdsoWQKe8@krava>
+References: <20261021195759.119421-1-jolsa@kernel.org>
+ <DMAUMG9WL4X6.12UEJJMJSW54Z@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:152a:b0:4a4:744:a4ff with SMTP id
- 5614622812f47-5534f045a74mr2683712b6e.4.1792663283371; Thu, 22 Oct 2026
- 03:01:23 -0700 (PDT)
-Date: Thu, 22 Oct 2026 03:01:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ad9def3.3ebfcf67.79b0c.0095.GAE@google.com>
-Subject: [syzbot] [fs?] [mm?] KCSAN: data-race in xas_create / xas_find (10)
-From: syzbot <syzbot+73641b60a3bc11dfca8c@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 1wrzxj4hf63dymrn6zdsfkahajyrwr1p
-X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 53888A0012
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DMAUMG9WL4X6.12UEJJMJSW54Z@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1792663284-924731
-X-HE-Meta: U2FsdGVkX1/+gfT2aJ27K2Y+cGTXt9Er1ZL6oh9l+X6H4uNPTFzOxIja/iVkroo1ymBPu3yyZuctFEhYGR0FnohvGbWEb638rri0rk+Eyq1X5DAbSQPWhExGat9I33YIpYAsUXwueEvzBiABdzNhM5IOcOQ6T/+tG/B3rsheY7KecuUMQlfgaSPtvsFBmoKtOH3sLNNz7rY6mlKo7kvvoLWKtatyVoqiW9uImbTxF9rtWIG0JqfIk2YqFggA10eN6ouyfUH9zQ1pB0Mj0Am/EsLqc8ks83D6as2dQ6G67gytpjadyr78alqMlzoTevZqNwS7h7QM4WnnY91DQGyCcdie24zNZRII0FFKtGNoaGvis8dlWIjSSlDXv8sInybnRRW+1Ean7AmAj39K5w28yixk7YNeXm0uBhqLEfD69RKqMkn6R5neeLcb+6pGlLUsDyxLYusCyM3EFt5BL6YqSJC7xJyZrvEuZJKNDnz8Bla3Kpwk0NRaFc+8FUsWcEfv6B531CozqfVsmGGLTzrQaGzXVYUq6yg5rvvKvEUh/Ojpvv6n3A7H0xB/b3torSbWQqx8XvUV3vdYNuWKdI7G2EbCgv+7DovyMN17KFeslhetif51dmsFUGaL4De2bUrlsyog4caQtkB5ofdqWmoTlCzL4cX2KMjmPSiYReccA2xpOKBfi1Du+5rxUF/cMmTG5uuK02eEy4t9K4eJJ7MpR3jOQSWxwV04RZsbPOfXc64pmf59mkfpqmJYTPL4c6UJlOoMvhZy3n2+qRoW5A2erI4pCRlPPdDIKElpNaQwr5VguzKwqTQhiH6Zo2jma4I11AbqRTLqXphLU80hAMCTuKMoJz7kmaR2pNiUg1+G5tj+5G/CHgF3sFkfEdkkHIrxY+8l1AjmCt92iUgu6Un/scY6jTmUedJBT4JHi6HriwrndI/CYgry8UPMwraD37efKYXYyqL07jB5qbePQyn
- FiTCiOO3
- Sp94Wrw8WbfzmD72t0Rh89jY+C0wDMB+v1Cx/v8RaI60eSckHzLr1hqbv1mQYxFsjvFBY5mDcR7OaC3aMqh8/c/RRdH+MANfkj04vZVdDSlnPdDm2wDT9SqMDNr3v5mFjZGLdNIjCYY5ecXfvl6MJL/P76oK6a64AD8VWyRvGv2NCpCZNRUpmgmajoQSPQSj7gyTCAiyjLWQTDyyRRsCC/hrPE8SzJ4ziIUp7oUOaya1igb9yVtT8Fo2njwtwworjdwhh2rmaZB82dekih0PnTt4ozl/CXwHMmbScUKPfLT0o0ZEMZ5HQXTbXp1l+1vuNwxlWly70KwWK7ivDhv8mwI1plnOtoazD5O7+bz00ll7nzE870pfEWCaHicZNOQgMAq3Y5BrK77ftrrRQqgHO7xblMw3+jlDVNNfD1DpEmuvkRq92NeyNQmcEjk0u5s7jgg3QKNxoIREGQQQ8PDot7/LpIdil9EIkNPIZTU0DB4qRdLYer5M1g07ZCoFTQhi2fsF8jqoOP9J9uw252Vie7p92SCUDAWrHOI6LFHrXma0aQ3sVdwNM7raPOtJXxTSgPV/j/EwxzfiIXRqDvXI0iXl1q+GLeZMIT1N/FvEMmVHsgVxSCQLM/GP5eu517OrQPJW5BOIaIZsrhjpydeDcXQChtllobkNiRUQKkY384DYW5kaQJjLMpg1uuY0Hyq0V3dQ2I+uRlF8xFGDLNRmyH0UDfVyQGYZv1ZCOVJg1sUgDzByba0qQnyhujQat+y3dtdGAac7GxozzYo1lPCWGf+veBSelOBSnqm1mZ1bgTfhZnbQk4mq4gW3QQ1S17Il5yrW0ULOeHTP8q+Ey1awLIuLuWh5yFwxaU/xZ00XawJ4CqrqR9/fa6ivX3MIZz/SgzE6mz85LZ4o+IuoeHcdeEDhJqCI3sxhFiWCLi+aDtUhfKDkNwUMIZp4N9f7aYAyzottg4uYyomUwFM4iEIrLnhDuoj6S
- PPogu6rI
- 8yqB1tBXhp9MDx6kdSZNpN0YGudt2mfUmjuWLD5nJ3imL0OOPez3n5JEm5d6mmmZc5qin3cHW75s455rK56V4t4DsmfsmkYX2gtTXjdER8alGnDsPD7gRY2pRjGokUOjQErYgGHy9zaaxYFTbnLRJH1r4OMUqgx+6X5/SDp7RZqoTKI0g1ioJkH2SQkySLF3UVtgmHtDo/8uv7TBb4Jkuk7uCkaPst/R5yDVLlEULNsNvrFAooUXWTHR3+PpHpXXzrsC2sgPmdnHGilP4TJEF7x5LLNjGAfMK8OLlXAEgca2DiTsIbOYh9US68rSnlpBFx8u50qzprJM+VN69Trb5PfUPX6SLjeMkqAYCUHnQWi9CokqeZUtltz2zk4gC4h2JnIf2CIfs/dmj2wtZ5vzSnlNFV/s7OObBpFQ2WdFGi5aW0hoHahSvcAHy0SJBuwwLBwabo0Pz8o=
+X-Rspamd-Queue-Id: 244991A0006
+X-Stat-Signature: d65s35nmsm51wzcdqpwyxymbqb3h9hdt
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792663302-293951
+X-HE-Meta: U2FsdGVkX1/FTMfplQJeqLuT2hsszeN1CfiUDOMWlz2XSmkNJh1sWVlNyOVTe/0dJltLOolt4Sd5cYdinKFq8cifD5zyj1MSOkWSfpulWWERm0TRIXdcRdNmrDfkzcsabZH+8KjNnq7fENDCCf/NBYbBPeQ2FIxdZu+MsAjiEHCw3VLu9HQOdQcEUm6TS9dG0ygaRybRndRgpxqUFvComxj1RVe+Z8ykjjA1idlCdmbhwTFxRxWfKqdpFj5IAFkWq6+1G28oUpLbf23mQwtMoosi7vblWyJsVpwWDpRd6Hxtvop3pMjPgKCwbXH6vAgYEzIRnQgpNEltj+plF5+FoYpfCJHdPeYaQwP5i87Y8tkc31ubVCytTGdyptzTbsv86C2n5Ks8Mna0pq7xWvLas/5PAIDNAJrr0DfN8oLvtqunxjtnsbid04Nz+nfz6BYZoJ7YSVlLstiq7Tac00LvpUaCniK4ylcljbPnKJvAjMkYZy0OxLrobtudq53QXkIgAA25Gu18MvptDDQAV9DAxHH8iKeYAvIlRD/NT64ukgPqyZXjuYJ/HOTzaO0LV3VRIV/9U8xsjTxt13sDyyh66nGCbQZrjaKvUF5Jdufuhx8Chxs/2mHhh4ttkbnXKBLO65fO9TREYVe0XVzUTJWwzdQrbI/mAjNjOEDpn5IckORoGJSdpiPI58kJemj3oSLU6vDViwxmQU6OsTHJWA0bde+68sA9qAA4R7lJmIjdvawosEAKWNmbGxRz94qfXoj/EOmvjgfp6d/LNXNcr00r1/TCvQ0mS7ZbazuXSplkXEAHLjjPTE5CO3jZWYWDZYWH2aYP1k8sFp80fjhluKzqYjCSoLBaNDxRL+j3soYysy0BCwO45UxNrkkrUyotMYL8LqIFLOZuPLRJBNyKSTJ7k2cbmbYKbQSqtOzgoBXNeCkH/Cqj78FMMK3RWELdsu9n/zl/EmaWP2odbxuv+mZ
+ s9JNy7bk
+ tOJwKKDXOK4bjDmZDA2VB5WPJVB5JDlB7K3eBtGBka6bFpY+ZYn0NDY+4ZXjAgK6y1dYgPZcLmnGlWvoYy4ctZ1msguLoG50USV5Y8zTYoEiYyI2otx8MDvqkzNSxNOYAYOstiriF73WisiJOkXEzq/yQmdIyiCEzog779EfZu+pqccmp6xa0yw2mEp+RGT6qQ+bnadpBsL/2w+YORMCqG4X3za6m9GsjarELO7vmpAtsWblmlrQhcfVmmV0jVl5hA0yCoEafyCK6YaHdOozaEmWjb1YS8i0d4QpnEi2xW4frFomcvw8TqJ/X/QnUM4Pfi05Hp/l+TLZJ6sAnpnD13bxaERi1kr3Px7ncHHETj2/r4jsDsxlql4ZkXMcXGd9kmyj5Pjfbian0U/190FyxYTIB9dwCPAQt2aZQzB77u7tOWKe9frtHna3tyex12/XTWTKO8RH89swS2PwWqxgL3Bg+cdlaPw09KQG3rI3GEt+v5/me2/u1Wo6zl7FR1Q9fhd3gU3nMS57k1U3F/omhJpMq9QbEGHZg2Tug7gsn8wPBFQL3o6rrIx9AVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,109 +131,148 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello,
+On Wed, Oct 21, 2026 at 09:53:47PM +0000, Alexei Starovoitov wrote:
+> On Wed, Oct 21, 2026 at 12:57 PM Jiri Olsa <jolsa@kernel.org> wrote:
+> > hi,
+> > we have few use cases where having the ability to allocate normal
+> > or executable user space memory would help (like to replace function
+> > in live process or change environment variables)
+> 
+> I think it's better to do what debuggers do:
+> vm_mmap() with the final prot and
+> access_process_vm(FOLL_FORCE | FOLL_WRITE), like PTRACE_POKETEXT,
+> to fill it. It faults the pages in, writes into r-x private mapping
+> and copy_to_user_page() takes care of icache.
+> Then no need for bpf_user_page_exec(), do_mprotect_pkey_locked(),
+> the marker, READ_IMPLIES_EXEC special case, get_user_pages(), etc.
+> No mm changes.
 
-syzbot found the following issue on:
+great, much better, will use it in next version, thanks
 
-HEAD commit:    a804c5742bff Merge tag 'lsm-pr-20261016' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10762231580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e0a09745349d136e
-dashboard link: https://syzkaller.appspot.com/bug?extid=73641b60a3bc11dfca8c
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+> 
+> Like:
+> 
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index 648abe1..ca1d88d 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
+> @@ -29,6 +29,7 @@
+>  #include <linux/task_work.h>
+>  #include <linux/irq_work.h>
+>  #include <linux/buildid.h>
+> +#include <linux/mman.h>
+> 
+>  #include "../../lib/kstrtox.h"
+> 
+> @@ -3834,6 +3835,60 @@ __bpf_kfunc int bpf_copy_from_user_task_str(void *dst, u32 dst__sz,
+>  	return ret;
+>  }
+> 
+> +/**
+> + * bpf_copy_to_user_task() - Copy data to a task's address space
+> + * @unsafe_ptr__ign: Destination address in the task's address space
+> + * @src:             Source address, in kernel space
+> + * @src__sz:         Number of bytes to copy
+> + * @tsk:             The task whose address space will be used
+> + * @flags:           Reserved for future use; must be zero
+> + *
+> + * Faults in the destination and writes the way ptrace(PTRACE_POKETEXT) does:
+> + * a private mapping doesn't have to be writable.
+> + *
+> + * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if the copy
+> + * fails or is partial.
+> + */
+> +__bpf_kfunc int bpf_copy_to_user_task(void __user *unsafe_ptr__ign, const void *src,
+> +				      u32 src__sz, struct task_struct *tsk, u64 flags)
+> +{
+> +	int ret;
+> +
+> +	if (unlikely(flags))
+> +		return -EINVAL;
+> +
+> +	if (unlikely(!src__sz))
+> +		return 0;
+> +
+> +	ret = access_process_vm(tsk, (unsigned long)unsafe_ptr__ign, (void *)src,
+> +				src__sz, FOLL_FORCE | FOLL_WRITE);
+> +	return ret == src__sz ? 0 : -EFAULT;
+> +}
+> +
+> +/**
+> + * bpf_user_mmap() - Map private anonymous memory into the current process
+> + * @len:  Length of the mapping
+> + * @prot: PROT_* flags of mmap(2)
+> + *
+> + * Return: The address of the mapping on success, or a negative error code.
+> + */
+> +__bpf_kfunc long bpf_user_mmap(unsigned long len, unsigned long prot)
+> +{
+> +	return vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
+> +}
+> +
+> +/**
+> + * bpf_user_munmap() - Unmap a range of addresses of the current process
+> + * @addr: Start of the range
+> + * @len:  Length of the range
+> + *
+> + * Return: 0 on success, or a negative error code.
+> + */
+> +__bpf_kfunc int bpf_user_munmap(unsigned long addr, unsigned long len)
+> +{
+> +	return vm_munmap(addr, len);
+> +}
+> +
+>  /* Keep unsigned long in prototype so that kfunc is usable when emitted to
+>   * vmlinux.h in BPF programs directly, but note that while in BPF prog, the
+>   * unsigned long always points to 8-byte region on stack, the kernel may only
+> @@ -5139,6 +5194,25 @@ static const struct btf_kfunc_id_set generic_kfunc_set = {
+>  	.set   = &generic_btf_ids,
+>  };
+> 
+> +BTF_KFUNCS_START(user_mem_btf_ids)
+> +BTF_ID_FLAGS(func, bpf_copy_to_user_task, KF_SLEEPABLE | KF_PERFMON)
+> +BTF_ID_FLAGS(func, bpf_user_mmap, KF_SLEEPABLE | KF_PERFMON)
+> +BTF_ID_FLAGS(func, bpf_user_munmap, KF_SLEEPABLE | KF_PERFMON)
+> +BTF_KFUNCS_END(user_mem_btf_ids)
+> +
+> +static int user_mem_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
+> +{
+> +	if (!btf_id_set8_contains(&user_mem_btf_ids, kfunc_id))
+> +		return 0;
+> +	return security_locked_down(LOCKDOWN_BPF_WRITE_USER);
 
-Unfortunately, I don't have any reproducer for this issue yet.
+ah right.. all of those kfuncs should be behing write_user lockdown
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/171f09113e28/disk-a804c574.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/0f8812b149fb/vmlinux-a804c574.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6349a85938ab/bzImage-a804c574.xz
+> +}
+> +
+> +static const struct btf_kfunc_id_set user_mem_kfunc_set = {
+> +	.owner  = THIS_MODULE,
+> +	.set    = &user_mem_btf_ids,
+> +	.filter = user_mem_kfunc_filter,
+> +};
+> +
+>  BTF_ID_LIST(generic_dtor_ids)
+>  BTF_ID(struct, task_struct)
+>  BTF_ID(func, bpf_task_release_dtor)
+> @@ -5266,6 +5340,8 @@ static int __init kfunc_init(void)
+>  	};
+> 
+>  	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &generic_kfunc_set);
+> +	/* Sleepable kprobe prog can only be attached to uprobe */
+> +	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_KPROBE, &user_mem_kfunc_set);
+>  	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &generic_kfunc_set);
+>  	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &generic_kfunc_set);
+>  	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &generic_kfunc_set);
+> 
+> But I'm not at all sure that it's a good idea
+> to inject code into a process.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+73641b60a3bc11dfca8c@syzkaller.appspotmail.com
+well FWIW it's still guarded with the LOCKDOWN_BPF_WRITE_USER same as
+bpf_probe_write_user helper
 
-loop6: detected capacity change from 0 to 1024
-EXT4-fs: Ignoring removed i_version option
-EXT4-fs (loop6): Unsupported encryption level 6
-==================================================================
-BUG: KCSAN: data-race in xas_create / xas_find
+at the moment we have fragile way of live patching a userspace process,
+this would give us a more direct and reliable way for that
 
-write to 0xffff88811a8efda9 of 1 bytes by task 6715 on cpu 1:
- xas_expand lib/xarray.c:620 [inline]
- xas_create+0x685/0xbf0 lib/xarray.c:661
- xas_store+0x6f/0xce0 lib/xarray.c:795
- __filemap_add_folio+0x647/0x910 mm/filemap.c:915
- filemap_add_folio+0x1cd/0x380 mm/filemap.c:972
- page_cache_ra_unbounded+0x1a4/0x3a0 mm/readahead.c:293
- do_page_cache_ra mm/readahead.c:348 [inline]
- force_page_cache_ra+0x190/0x1d0 mm/readahead.c:378
- page_cache_sync_ra+0x11d/0x560 mm/readahead.c:602
- filemap_get_pages+0x2f2/0x1360 mm/filemap.c:2714
- filemap_read+0x21c/0xad0 mm/filemap.c:2824
- blkdev_read_iter+0x21e/0x2d0 block/fops.c:838
- new_sync_read fs/read_write.c:493 [inline]
- vfs_read+0x699/0x7c0 fs/read_write.c:574
- ksys_read+0xdc/0x1a0 fs/read_write.c:716
- __do_sys_read fs/read_write.c:725 [inline]
- __se_sys_read fs/read_write.c:723 [inline]
- __x64_sys_read+0x40/0x50 fs/read_write.c:723
- x64_sys_call+0x2135/0x2550 arch/x86/include/generated/asm/syscalls_64.h:1
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff88811a8efda9 of 1 bytes by task 6813 on cpu 0:
- xas_find+0x360/0x3e0 lib/xarray.c:1421
- find_get_entry mm/filemap.c:2085 [inline]
- find_lock_entries+0xd4/0x6b0 mm/filemap.c:2189
- mapping_try_invalidate+0xc7/0x430 mm/truncate.c:545
- invalidate_mapping_pages+0x27/0x40 mm/truncate.c:602
- invalidate_bdev+0x58/0x70 block/bdev.c:101
- __ext4_fill_super fs/ext4/super.c:5840 [inline]
- ext4_fill_super+0x2cd3/0x37c0 fs/ext4/super.c:5865
- get_tree_bdev_flags+0x291/0x300 fs/super.c:1883
- get_tree_bdev+0x1f/0x30 fs/super.c:1906
- ext4_get_tree+0x1c/0x30 fs/ext4/super.c:5897
- vfs_get_tree+0x57/0x1d0 fs/super.c:1943
- fc_mount fs/namespace.c:1282 [inline]
- do_new_mount_fc fs/namespace.c:3910 [inline]
- do_new_mount+0x288/0x730 fs/namespace.c:3986
- path_mount+0x4ad/0xb90 fs/namespace.c:4337
- do_mount fs/namespace.c:4350 [inline]
- __do_sys_mount fs/namespace.c:4565 [inline]
- __se_sys_mount+0x28c/0x2e0 fs/namespace.c:4542
- __x64_sys_mount+0x67/0x80 fs/namespace.c:4542
- x64_sys_call+0xc3b/0x2550 arch/x86/include/generated/asm/syscalls_64.h:166
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-value changed: 0x03 -> 0x00
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 6813 Comm: syz.6.569 Not tainted syzkaller #0 PREEMPT(lazy) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+thanks,
+jirka
 
