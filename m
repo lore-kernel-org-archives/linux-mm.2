@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A29606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 11:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73638606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 11:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eXNl9UgX
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=brf0jNaF
 Received: by kanga.kvack.org (Postfix)
-	id BC21F6B0919; Thu, 22 Oct 2026 07:48:39 -0400 (EDT)
+	id EA3466B091C; Thu, 22 Oct 2026 07:48:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6C4E6B091C; Thu, 22 Oct 2026 07:48:39 -0400 (EDT)
+	id E2C176B091E; Thu, 22 Oct 2026 07:48:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA8716B091D; Thu, 22 Oct 2026 07:48:39 -0400 (EDT)
+	id D6A506B091F; Thu, 22 Oct 2026 07:48:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 82ADC6B0919
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:48:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FAD114077C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B096D6B091C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:48:41 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A115C07EE
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:48:41 +0000 (UTC)
+X-FDA: 85350090042.20.2B2F038
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id F1E712000D
 	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:48:39 +0000 (UTC)
-X-FDA: 85350089958.07.977A137
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 650F920006
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:48:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eXNl9UgX;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=brf0jNaF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792669717;
+	s=arc-20220608; t=1792669719;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fYtWczY6+nefmccGK2Ww6cM9jNHPdU6a3MtaqH2s/tk=;
-	b=SWBxCbnSBCVA/h4ZPhAnO7KXJ1G5ZqGELkcgQgAiy1kJnky/yP/YrK6jrBPjzxtpy1Nhmj
-	+dvwd6TWpUOMqV1tdmELSmLXdVDPaE3NWM1l5t1DGUBhluAy+srcEHD0WY8Z5V+BhXUuQa
-	xA4nDeVoMeO/cq0akFq/BcBquLIKb+c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792669717;
-	b=mI8jbN8WLoIDJzF5Ror14jlThbjNMLPwCGUN0rxiN5RZJ5+5ImkHyNW4O31fNZcOTfgmld
-	5+ozPzIjaSODNqdx/nKK/geCURDBXLEDUom9TgudgOdG3aMdFGhQKy41aQj8BT2xMRQ14Q
-	XvyTlL4ELKenCs5zG6AoA/ahaFdpSkw=
+	bh=6ESmd90fx1D0rpbzG2EpAYl8sOSqIWpsFVg+5k4FcAI=;
+	b=KllEWcvInAwZWqPRf3K2AFBHyAoCB08bZ/3LfkfZ2bG+WJkR6So2AdS4MhD1nVfajgxo02
+	VhRDw8decuNql52zcVfpWsjQwycK6EObASIaaLG5JxAICvlr2tzTc7Fnjs3V4TJHWBmWRb
+	dRbyVR6+rsafUP3tx6uduPO+KawnpG4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eXNl9UgX;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=brf0jNaF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792669719;
+	b=yLuTNu7oswRJsw+AUFLbwZ1DnaMDKD1mTEyAWiGo6fYJkDk7ZHjnz8XUNkdm51FqrUymHP
+	d6ipt4NdtgJj9JHqAxVPRaT8AG/4m34E/mCKQE1fB4IM1fkiT5u0Q+YBemrd6tIbDIF5Hp
+	m2pa3RUDfC8XdfGx6IiRKO+uBsxOPGU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A80554148D;
-	Thu, 22 Oct 2026 11:48:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95D61F000C4;
-	Thu, 22 Oct 2026 11:48:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6BD07601FD;
+	Thu, 22 Oct 2026 11:48:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BAF1F000C4;
+	Thu, 22 Oct 2026 11:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792669716;
-	bh=fYtWczY6+nefmccGK2Ww6cM9jNHPdU6a3MtaqH2s/tk=;
+	s=k20260515; t=1792669718;
+	bh=6ESmd90fx1D0rpbzG2EpAYl8sOSqIWpsFVg+5k4FcAI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eXNl9UgXjh70gOzaICYY8hQyQPuLH7lJbja/7BOdT2zAL+7swuShx9zFitNnWC6Wl
-	 vbGM4P8AyMy7U3KmZs/aBITrAQXotVSHWJYv7NHQUDRUN4cOazXZKKFfm73JmPnZAS
-	 Hzgksh3w6N/PBFB4A5JrtdlWz6QVfho101ktnac+bnYfvRVIuPYFTB7hmOPFiriPM8
-	 hf49u8b0J2+0kaUBFt7W7XMHU7XaZVS0mOLU76AMkG9q4NO9zBMj89lh4ETaXPCiQy
-	 QJElu4cKjtJ2aTlJESbkT/S6Bbf+tmeQiQgz8BjlhYoUfG8fOXsjjogDnsPWp2JBMj
-	 eGyN4Ir+wG0TQ==
-Message-ID: <sashiko-outbox-181383@kernel.org>
+	b=brf0jNaFv71W67YPpeIOIVSkHUAVVVJMSL3F38FPVdC2DnDLYr6sWatAhZby3KN+P
+	 sbKMWlM578+MylqG32w6FY5bOjDcX64RMUPwqHEeX9Lfn/pXgjMbX5LM5riQuEFv0D
+	 f3+ckQ/Ijnhn4uqu2Fw0/2kneeNRyHOave9N8wy+oq1sxXPrc9PxJcgP7qsNQ+7DRO
+	 cuRZSj51F1cevrdxDoYkFltMAJ7/h6woy4aN9sp2+lLpQqnojzZfIPchLQMLEHlIxf
+	 H99rTCkphHrclMJNltD/rW0RtLbHMN4wlZQ1TTFtSXMAeF2JWEaJ0EH92UReBU9Wy6
+	 05/YZM96G7eEA==
+Message-ID: <sashiko-outbox-181384@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH slab/for-next 02/14] lib/maple_tree: specify
- SLAB_MAY_ACCOUNT for maple_node cache
+Subject: Re: [PATCH slab/for-next 03/14] lib/xarray: specify
+ SLAB_MAY_ACCOUNT for radix_tree_node cache
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?SGFycnkgWW9vIChNZXRhKQ==?= <harry@kernel.org>, "Vlastimil
  Babka" <vbabka@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Suren
@@ -72,27 +72,26 @@ To: =?utf-8?b?SGFycnkgWW9vIChNZXRhKQ==?= <harry@kernel.org>, "Vlastimil
  Gushchin" <roman.gushchin@linux.dev>
 Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
  Rientjes" <rientjes@google.com>, "Muchun Song" <muchun.song@linux.dev>, "Hao
- Ge" <hao.ge@linux.dev>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org, kernel-team@meta.com, "Liam
- R. Howlett" <liam@infradead.org>, "Alice Ryhl" <aliceryhl@google.com>, "Andrew
- Ballance" <andrewjballance@gmail.com>
-In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-2-096800aa3330@kernel.org>
+ Ge" <hao.ge@linux.dev>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org, kernel-team@meta.com, "Matthew
+ Wilcox" <willy@infradead.org>
+In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-3-096800aa3330@kernel.org>
 References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
- <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-2-096800aa3330@kernel.org>
+ <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-3-096800aa3330@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 11:48:35 +0000
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 650F920006
-X-Stat-Signature: adxsddn3c5r4779i5jbmose75j36zj14
-X-Rspam-User: 
+Date: Thu, 22 Oct 2026 11:48:36 +0000
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F1E712000D
+X-Stat-Signature: cqjobdx6fjpfsrae34a3j4duzkzuwkk8
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792669717-595082
-X-HE-Meta: U2FsdGVkX1+CABmYpGw0sgEUFFh/+9rASc59R8TS6XVGLMByzF/AGNG64NN0FpqjDeOeYQA+9qwyGhztibyP5MmIRRRcYsoSguFpWsteVYagTFG5y49IjpmHFXzyJUQDIJH5EPFa7WUz6N5ifUHengZQ4//Qc1fG7YxmRMEvSnOgcTEvXUdEZIXa51E+Lr0sEmxUdi8mYCeKM8GMWJShJ0TZthQpzmgQKhP+S5iK8i5/qtDegbGkekGfsHn3rpWIKGA50oqKK3UJW9h97Vas2q3P/0uTJSWH4xomXyq0nZbbE6ghzdpW4CSp7cn6LOa9kK8Dm4SEBa+8+oJKtt3DmiqOotMdL4D3U2Jmlvt6VdwojvFt5nq7crHie4PNQ/CProojccayr68sPxN8KcTG1oDAVgo6+t8coexKl84VQcvK0F+B1qUt4vkfPfr6Ur3PvN0OAFxRmQSik8fMmMnWpIChT2EHEMnAiggb/Surd1NA+CnADvKaDUQu7nKEAFR+sAGj3rx7stDrSk4MV7poBCz09RMFKZW8yykNheuJ9/DNmrc8QwwjWTcrKiB7LGT+TFykwyGWHmrhjN+w6JlP4sknShuLAapieFEjO9exDfAw6j63M4QszE+811JEneuL6tK6+YeTs9xf+TUqRvHTEUYgB6jJMVOx7gLIfmE8BnlTuaCH2n20i7y5vWkSz6UfkBImqikX4oANNsWHUKQPOO/DBRpzLQS8m9UL2lyscpOBROM7ZxxNVseCcNyOocPsokRwcAu2e/SFFrT0qdvZcYFhVIV7Xdv5fLqnfA79RfXLHMZl6OWprazzIVxBUZ19nQMXusAHEiSS2BfZZWAA7hBOEcVb4F2hE5bNqNH9+O1NfFSpC25QVQd3pYTSouysBxhrkOj8sz+zQxa2jSh1SflUnyYbTuhSjZ7rSDmLVEUQdGDGpFLjKREhx9KB+oNf6bzKtnmSaTSD9DcW3Kl
- jB2BCi2O
- G0rVaeJmYvK8VONFJuQFY/vBLgWpimMiAC31E7LFxT7GF1j5ENALMu6rpbNnuOr6lMLFHEH+5FdeEkGknLrRYyWqD+J8T1N2d4im0G+gswJYN5p2r/eHCQpxGK8DaGjel4z6kfmeI8qVpjzGlXJLVSadWBeUe/gKGVMsMW1oSEbmm7rnLWO/LoOI/bBriWYJI+XDn5SGqM6I7fzvrpFOoUPAW0XZBdT4FoUU2pEwjWtizx3xeVGInSbT9UxKvwXUXJIoc4oBUaOCFwwHWAtPskztwVP/jrGKhfOmM8WBwhsPMCkwwb08iUV7K/LATYVb2pF8NyQesF4yWzz0TWKEIWTVhnLLt5rRUzL5nEYxPLbeATFgnV6pt/34xxBIPyR3r8fF9xPPyK2OoMvJnuyd0+/Z3vGayQHCcT0iJVhd7GYRZ+SqzMna8EX9BbUy4UW53MuJwnEaSQ+El3DVzyarpXM4eC6JPWX/La0A3+OCCG7cuUn75zyLxboSOvkBURw/k8NU5tr45P1vI0O9o14EDNL7RLsiqGlC3tZ1GjOwwkh8lc+UqJeh9vlBbPf5DIRTiHwaNwlfr7PPBj6M/sQuXjmv/W5UXV4zSuNcxjvmpMWeXOL8u82gtTIQqW/ILvDX2dpeJVjnLE7yOhlDV+FkDhj2xuw/wkQj/NxORJyrpbVbn1OQ=
+X-Rspam-User: 
+X-HE-Tag: 1792669719-113935
+X-HE-Meta: U2FsdGVkX1+XVzj4vHzo2QAVUQ6Jaz3W3JXzusOs+WyjVtGmFTQV8aD9xjoRD1kdsijA+ycGnboh4fpNuwEzwBw14eVGCuUtLA/dPl4yKKvGMCV/6lUVuDu91T5u2Qxl9F9z+IC0fxGkDpt/bzP2RGuug18KpIHq1r4B1PeW0RwVz9fZ9B+ijLzw7PhoyI95MMfq5ST6/RBHVjjzKiRbgYR++2umbAH8vAkjT4zF+zuuWiVkcp9i+iu0pv0nlGiKxX9IBY7yr45mMzC2ifbixoY/I63MUGrEKSgUcBsi0Rmg8OhuCG6BcDPiE6RcQGhBx4WJSVn2n/8I5MK3Iy6aS7PORt/YnCUStj7TPMRvwjCMvI85iM41eSeWFhPCQRonmNFeL+bt4TsR7tl4A9XMoNFGAs7Gg7cwSeWAGT9uYWS1uo2NUe6P8fnBSHf+SZvaO8HR3N/ROGysuvR7eBqNhau3WijVSmhx/Kz3uBrhOmXumaUyw+ikXcZI+hF+TnRMBkzI5lksKAmmnJwSs8+TqY80tnirIwTKunWmrhNB+8WBIiWuGLq0HCLVDAqA4NLbB3OwdUrzk2Opw/znV//zqC2icdlbomEw3A5JdQFMRmqJr4PQvMkL8ZJjy00SickCRmnwOYOl0wVgd6ukBWGnUEL+bpf+pshOpSsL3Zho1naYKCqCia7fx8km0fXelJU6MKqqRNGEfxHAlaFSEFlOW4gHVDpt5fJXPbobHguf2kH3bSHi9tPL0gfq8YsXOg/bnimPMtKiqTPjtPexCehPQDkiGu1I2PWoKlZKYbLkkDFSI7J61YTd2ViF0LRKHHGN6pHJx740/j44SRw5JQl8/Sat/+2AStV+zbsayAFRZWuIjw8FisKyrlh1m4CnMimLXf8DG3vKTzWQdRGaKqCltgKQwokou9/e5DgYZvh6vFqx2A+DPfKZr4YD6dX/4mRo9mlhz3yvla7Z5Jb1E29
+ 2QIXm6Nx
+ kTL7+kB8EIXAvkfpsVW+ARG9t7RHK6giuh8fOz3f81TYANrZmp1x4Q4kn9BXR15qI4/QVd0vVrplElzCwG2hP6wIM8SF7r2os0mQKNeHlj7ws26UBgpFW4Tli2w0OTyy/LfAEF3BOoTQQT1c8qo5XKm/RK1V35qSs+LYi6LId+zgII9MkqgG8hCjfSUPQWM4iEN1VGsIPvvdrTcuv5RawbPwH1HYvqQ7JU0LwommswSEuD+BDfLrgB7+NpdMwwBMBdJGQiJT4jfCJPNMlWZKySZFz5187vuzsFagNF5XbueaIH2u+j7dVp+CBDY1LjVtOLQ06uW2v5RiNyhheVeSzNjkcgaE/z6Mu9X9JFhRak91QNuuICLDY4loxcSWr3thJm3qq2CSbtSjOZQ+nfxKUvJ9lnISfnwB7eE6t0g6AwKM1k6nfpwvM8z+zaamfpXlx6IvwTzN0s+Bba33TBwq1yjMv+COALwywLCEZMkVqamGJwN7+St4Z2jUdWjFaFFIv/Ye4cast89Jd9kEbgxg1ag7mm9dKNlGaxEz6rNdiQkQiTnarcLratKm7MGYkB9UghEeQMYLbQCSRtYCCf/xoJQ0etdI+rJ8yeXSjCrn+8U4Z9A9EGYJaqSvl0eLngy8qFRd+PqXzf7+nLBvMzXQ8ap9sgadsrGDYqwsmW29ETqUIVYg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,66 +103,65 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] lib/maple_tree: missing SLAB_MAY_ACCOUNT in tools/include/linux/=
-slab.h
+- [Medium] lib/xarray: undeclared SLAB_MAY_ACCOUNT in tools/include/linux/s=
+lab.h
 --
 
-commit d151188bc6327587207caf458d171cfa4b32a0d5
+commit 93954c4312f84244c94152321c79f4a0b093067d
 Author: Harry Yoo (Meta) <harry@kernel.org>
 
-lib/maple_tree: specify SLAB_MAY_ACCOUNT for maple_node cache
+lib/xarray: specify SLAB_MAY_ACCOUNT for radix_tree_node cache
 
-This commit adds SLAB_MAY_ACCOUNT to the maple_node kmem_cache creation in
-maple_tree_init() so that maple tree node allocations using __GFP_ACCOUNT
-can be charged to a memcg.
+This commit adds SLAB_MAY_ACCOUNT when creating the radix_tree_node slab
+cache in radix_tree_init() so that nodes allocated with __GFP_ACCOUNT can be
+charged to a memcg.
 
-> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> index 1aba6cced7130..e4794b31e5bfc 100644
-> --- a/lib/maple_tree.c
-> +++ b/lib/maple_tree.c
-> @@ -5790,7 +5790,7 @@ void __init maple_tree_init(void)
-> =20
->  	maple_node_cache =3D kmem_cache_create("maple_node",
->  			sizeof(struct maple_node), &args,
-> -			SLAB_PANIC);
-> +			SLAB_PANIC | SLAB_MAY_ACCOUNT);
->  }
+> diff --git a/lib/radix-tree.c b/lib/radix-tree.c
+> index 976b9bd02a1b5..2c7531deb0df7 100644
+> --- a/lib/radix-tree.c
+> +++ b/lib/radix-tree.c
+> @@ -1600,7 +1600,7 @@ void __init radix_tree_init(void)
+>  	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
+>  	radix_tree_node_cachep =3D kmem_cache_create("radix_tree_node",
+>  			sizeof(struct radix_tree_node), 0,
+> -			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
+> +			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT | SLAB_MAY_ACCOUNT,
 
 [Severity: Medium]
-Does this break the build for the userspace test suites in
-tools/testing/radix-tree/, tools/testing/vma/, and tools/testing/rbtree/?
+Does adding SLAB_MAY_ACCOUNT to radix_tree_init() in lib/radix-tree.c break
+the userspace test suite builds under tools/testing/ (such as radix-tree,
+rbtree, and vma)?
 
-Those suites compile tools/testing/shared/maple-shim.c, which includes
-tools/include/linux/slab.h and directly includes lib/maple_tree.c:
+When building those test suites, tools/testing/shared/shared.mk generates
+radix-tree.c from lib/radix-tree.c:
 
-tools/testing/shared/maple-shim.c:
-    #include "maple-shared.h"
-    #include <linux/slab.h>
+tools/testing/shared/shared.mk:
+radix-tree.c: ../../../lib/radix-tree.c
+	sed -e 's/^static //' -e 's/__always_inline //' -e 's/inline //' < $< > $@
 
-    #include "../../../lib/maple_tree.c"
+and compiles radix-tree.o against tools/include/linux/slab.h rather than the
+kernel's include/linux/slab.h.
 
-However, tools/include/linux/slab.h does not define SLAB_MAY_ACCOUNT in
-enum _slab_flag_bits or its SLAB_* macros:
+However, tools/include/linux/slab.h does not define SLAB_MAY_ACCOUNT:
 
 tools/include/linux/slab.h:
-    enum _slab_flag_bits {
-        _SLAB_KMALLOC,
-        _SLAB_HWCACHE_ALIGN,
-        _SLAB_PANIC,
-        _SLAB_TYPESAFE_BY_RCU,
-        _SLAB_ACCOUNT,
-        _SLAB_FLAGS_LAST_BIT
-    };
+enum _slab_flag_bits {
+	_SLAB_KMALLOC,
+	_SLAB_HWCACHE_ALIGN,
+	_SLAB_PANIC,
+	_SLAB_TYPESAFE_BY_RCU,
+	_SLAB_ACCOUNT,
+	_SLAB_FLAGS_LAST_BIT
+};
 
 Should SLAB_MAY_ACCOUNT also be defined in tools/include/linux/slab.h so
-that maple_tree_init() continues to compile in userspace tests?
+that compiling radix-tree.o in the userspace test harness succeeds?
 
-> =20
->  /**
-
-iala
+>  			radix_tree_node_ctor);
+>  	ret =3D cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, "lib/radix:dead",
+>  					NULL, radix_tree_cpu_dead);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-memalloc-p=
-rof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org?part=3D2
+rof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org?part=3D3
 
