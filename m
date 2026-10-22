@@ -1,150 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8BF606A334
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 17:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDCD60A2602
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 17:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mqeR3tq8
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=a0WUo4hq
 Received: by kanga.kvack.org (Postfix)
-	id D6FDA6B0284; Thu, 22 Oct 2026 13:45:30 -0400 (EDT)
+	id E8D036B09A9; Thu, 22 Oct 2026 13:51:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D20B86B0296; Thu, 22 Oct 2026 13:45:30 -0400 (EDT)
+	id E55DE6B09AA; Thu, 22 Oct 2026 13:51:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0FDE6B02A5; Thu, 22 Oct 2026 13:45:30 -0400 (EDT)
+	id D08126B09AB; Thu, 22 Oct 2026 13:51:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9515A6B0284
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 13:45:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D3081C27B2
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:45:30 +0000 (UTC)
-X-FDA: 85350989220.07.259A778
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 38271180002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:45:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mqeR3tq8;
-	spf=pass (imf16.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792691128;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A07F56B09A9
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 13:51:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 37019A7471
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:51:24 +0000 (UTC)
+X-FDA: 85351004088.27.45647E9
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 520E7180005
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 17:51:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a0WUo4hq;
+	spf=pass (imf06.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792691482;
+	b=pvNyTKVs2SC7lbKhBtuvLMTRlflzb4jV0+BIoK5UhPp9V9mrdtvMFm6Vzdtg+wDFQGLKZG
+	Fa1jyEoUghxlo/uZagZYRYAA7wwiBy3ZjP/FnBwrimtSKJRj2S33SizR5DklGVLA+U4m+D
+	GKYp/DbB638maTWGK8fy3+DYDkjnc0I=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a0WUo4hq;
+	spf=pass (imf06.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792691482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q/kJZkRDh+A2dbcPNuvHi4UCiR28b887/rQN2752RCM=;
-	b=gmqeQiBVSnLIFTuFW45r6E624lF9zNbi5q8HZknNTpjy9gj74kdt7SsPLVtYhtKQPrPKxj
-	9IZem9lKlGtn7rigrgEoSKi6OTFo2q7wsXBG8Hbjb2caCGcdkajnWzymHC4dyWNkd+5JGz
-	ePvgYam9iH4Zw43370jOsAHTpOzKEiQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792691128;
-	b=B80f4qlCaHHtBIFmRZqCgHyaBNVLTVJYmOgc8kT4PzUyQIRXNiN8J/C2CgxZiN0EDJDxJo
-	EH/OKzTBca0MYsrgeBIDQLo9O2HBDBrkF9Z7IKRMv3ZAESw/qbGqg5Tnm6eHSE+RDx7YH6
-	SB2fRvwk7rxMT9oezuB8/Sq6BknCsjQ=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mqeR3tq8;
-	spf=pass (imf16.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c468bd799ecso10008666b.1
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:45:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792691127; cv=none;
-        d=google.com; s=arc-20260327;
-        b=K2nkSZyNeig1o4+5iDz8shT8gDxLxqejUKfS2sWguW0+pMlN79o4hUv0kPobsIUgGi
-         DA7Pf6F7go7T55/tDCy0b2HUtbdAT+VmAWLRFBLL0I1QnGr1lq7E0z0KiEeRpvp8PwEz
-         xOkeuOuczxtYoNeprGoRALHCE+JoIQ3wD06mN8180dfQeMaRXiZiiG6tIplrIR3blDrx
-         rcdYZaEQQnH+bl/MKfJ2P7S/NeaTa2sbRywIR58NF9zcTA2ywz0jBZrDuN+LFNZ5e8p3
-         kIFeibKAJH8+axXlBaMfHEZZSf1u8uBaJqFBhxXw7S3pteAMqooUju0HReBidcddUTTC
-         R6yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q/kJZkRDh+A2dbcPNuvHi4UCiR28b887/rQN2752RCM=;
-        fh=1ko4W8RwZw4bk8Xy8u0THVJ1fv84s8ZANy+k1gwD1yI=;
-        b=hn80aoXW2xrO74F/bpmY7oJLDy8BVqqtR2jnNfXHjWU/GqgO+YYMRA/CdZVPIv/r0x
-         zOsfVjPvNpOKMAwdXizs6j+qlDyYcoEVyS7lpoAhM2m1mw3wrRQChlv2f3xwVTs4FanK
-         XGcmR1Vhti2GejDl/2jkQhwB+JkykmglaOPkM1RiZQllBuJOKaWJKFp6aZjQqd0r9tkA
-         xJd/f2JxRMQ+k1IBeej0vNDevuMspisq69oN8Zs7Kshy0mvelfoT1GjaxaX1YIZrUtOT
-         XCTS+fqf0ULX8mNgj2mxfO0+F82OQ7lQXEMdVe+g9/38PbAQnjKYCQ8fzXTDOKZVsGIT
-         5A7A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=VXuE27163XQs95Y17MHXQoRtZevE9c0I3KUjJaU7M5M=;
+	b=Q6Zhs9R94y7gh6CyWzUahSWsNi63XedGCveIR6iPE4RS+BEzFZyTZvq9e812fHRte7KCIL
+	c1wDaPHfoI2M/bS53Z+vBh842CX6X7Z8HRTvl49JDezHgLK2C88ltPkHMjrZQmA9jujUgp
+	ACUTbU/SEfHAQtHUbCzg8V9xYS1nkUc=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e60f9af6e6so4965ad.3
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 10:51:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792691127; x=1793295927; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Q/kJZkRDh+A2dbcPNuvHi4UCiR28b887/rQN2752RCM=;
-        b=mqeR3tq8tOWwLNtjiTWBgwf70hQBZvOEUt/8Vpe6ljKE7n3CRZDfWHGCMZ/APfNg5l
-         /zSlEw0zIgJFLah58mjIAOa5cxE3bDU9qSsoDP4TA2+5Vr6s9oJnPeEm29w50kgRpSe1
-         Yop/kh9xZQehVkP50TLZuF720TFrsw7LNTYP3X74Q28SGK3y8LPjVuw4/Kht5SceaiAd
-         IB1RSISlNbRO+ANRZS+NCoTdHAQ3mxYHa7oDg6yG1SK6BKb3rL0GFIBBL8vWilsFhGA7
-         0sI/DMG5cRZPmNeZ1fnv+SWTYozAcDsjHZRcjvDU8DTTnmLim6obV6ruJ/HZr/Asv25s
-         YHbg==
+        d=google.com; s=20251104; t=1792691481; x=1793296281; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VXuE27163XQs95Y17MHXQoRtZevE9c0I3KUjJaU7M5M=;
+        b=a0WUo4hqOe53LMxMesYZyccNYWYtpc8wVB4VmnAQMaaKHQMTGCrNfOHPsiS3ufqlxe
+         UwzohawtpMg42X4R8ekXk8Fv/vsZymEW0peg7TfHOHd/68cRmqee4RsMvxBhHJQ+scYw
+         ADUA8sLuEMNkeOdCG9P3co3+aWTQMxUMjoEnsKYk/xByuzlrMLoZZCBQ+U9GHIwTLT03
+         +Vm9dyuk24SL8CDubYHXxXOw87aVG8iHi+uyApjXnpxwMijep7Th2ec4o516MBrEwpFf
+         AXf7xRZJe5GSIcSka3i1/MFZCGmrqEjcwnr3BPg2k3RsmWMdx2qOfJTq20orT9OgZ+wu
+         s3qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792691127; x=1793295927;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q/kJZkRDh+A2dbcPNuvHi4UCiR28b887/rQN2752RCM=;
-        b=JVyXhxajY2mKm2tK4GALzmZDSdfXb+aCcpNCjNoJxFWsua4B9DG3GVbfg+OJM0vxv1
-         sMJcqiuccaoJTEyjYvbwI4G0qvcssMFJUpRSofGfZs2QToLT+ikBDIJg+WXfpqJT/eVO
-         cRk/RaGRvdHoeETYE3Iz2wE4KuZs4eJSIVo60LLlQ6fMkSIgyzuGUpClPWB9PmGwve1B
-         Q+FL3SeydlPkWiegcdtyHuihdhWUJkn8N3gr5bLlIWw6HqKuHvqt0DIKzYtxq914IkV3
-         2fnYCQWmJWsRBCb6fSmShgdvEXBylW+zRVKbO7pNlj9V54TuEeDWnfSXlhAjllaJ2ikt
-         RFmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz//W9sOepCx9MUS3F0uK7Vm6SvNAkOxxs+69Xfzj0A1v4RKAgzbBeQIF5m0iGF66oTEIyC1p6aSQ==@kvack.org
-X-Gm-Message-State: AFq9FYKnuBvJdPQ7FReCzDfAveJVIPqJM0V4+CuCdJ3pkH1Vx1fMeFR/
-	fmNhPaP75h94e6i1+8pyF5Sge6Y42Ukv0gEuRV5iN1/fq9WJSm3pM8jXOgwY+XkuyDw2DhKODqI
-	8k5HNg6TX3YEygG1EwlVFLxvVpQgtg5eABV4t6Q/F
-X-Gm-Gg: AYBFou3NvysEjkbYJD5UXWfuWTjdydj1m32laFnH8/GfBcm8yJhrqZn4QJ6cPerfsbS
-	/BEwdmFcBK0NA53ZxIWyvI55UmVGtTlKI7Eq/9hFhJQYAevOhXXPw1sW7IMC65loIQKoLAUWCbT
-	X3zi9kPfE7Qxr5bxRVw0aMjwfxObeEb4CfEGUBReKtUSfOApdcKhxrkm0tOyz8fh0D4Hquk8wDB
-	HEp1RVO61LhSLHTRT9eSuhvdgkSci/6tuHvctHV8BD856j7uQoFhI4gApjAanS2MOiVYAYCwD1N
-	CAXGljZEUSukh3S1ndSE3hiG8gtOIGBBOUhzfyUoSWBolHSj9u2BdDqYN5gi6u0+aOhudB1HfXQ
-	WDfwVLA3Ruhj5t4iRUvoFIBqX9J0YrCKGFg9qxKalyPKyq/9ZCxA6FCST4jyFSh7zQsPLDwVnFr
-	sbmWMTqjXidnz/qixjpE8F4YbAjkSJ+LBKSwPFyVMh/jLrVI2OkbeOkGeG4301V8U4fpck1FIiW
-	UQcIDcN
-X-Received: by 2002:a17:906:d553:b0:c26:1649:47ad with SMTP id
- a640c23a62f3a-c467976e841mr649670766b.35.1792691126016; Thu, 22 Oct 2026
- 10:45:26 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792691481; x=1793296281;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=VXuE27163XQs95Y17MHXQoRtZevE9c0I3KUjJaU7M5M=;
+        b=IpyIn27+MsECOKocxtZ39+ZJ7+Y9zU1UXzfVcIo5BNwwBTeK2aJNXEvTZC9EroSF8a
+         dyOlIz6YKFAoeeXUUsqeW90SF6qKqTklildcTofeNCADZ+oWBp859OAM9CCJ2bVwJ4gu
+         WDCVrJTdJBH7ER/v6OCWIcRe6Z9i64mBjFzTqe+H89qhAQdxf1Io+nOARFgIYkPEOHW/
+         gLbeg8grPLARUJJP3UDUPbRzPhZ8jC3JxyKFRmdbs6NBYCiRaW0ZVzfxr+OhcUiFI/En
+         jcUs1O4DoQSp9qKKJSrfxkIFhYyyDgjevIJQc40CeB4m2SWN3VXd19HTner4buGaGB2a
+         QPNg==
+X-Forwarded-Encrypted: i=1; AKwUvBy5jkeWRBgTqYT/wL/812TqnUOErrSRfGQI8yjd78uO5yspXmsee+kDbgK55pHESCDWK/svBLI0pw==@kvack.org
+X-Gm-Message-State: AFq9FYJ4XpKPVdP0S4s1jK74HiKPks0ndY6n6bzU+opWsOVBQ+lLE0In
+	nDH3Ok7C2zD+YKbNILxfTgtURm7TXYJOCk5p4NCXA5sr5Av3CwSZXLsHI7izQFVh5A==
+X-Gm-Gg: AYBFou2QQ/FKhtH2Fq+dvO9/I2mUG3Px/onCZ0mWfj2W35eCaJ+P7QO/DXn5zWhCcBO
+	M28LWMzUCmm6WAgcujq/QaOkeqgQrATDTOq8pYVOnIC57Y6EPNKqK+St8L7mR7V12XZpgKpdlHi
+	AEYwPEVi94GkabYt559qlEKvtgkROpWFuwIZqQy4CRpZDLKO1TMu8fnyTb1Afm97WOBNbbBHaCh
+	rEbpNmTPeGsph3vOS/tVtMWXuX1C20/LIbjQBAs+5akqeiIDbKJv/YoQ1vqhMklFEYxKUdI6hAU
+	lasELWZVh8ILovGyaX7ZLh6tRhCImEfb21dtr1T331uCBVAFw/ABxITrN3Rd5O793j46sCoGjYm
+	XNZOXNoQEK7chWc6YAFl1MaQyPCBRFoFYNW0Nc6IBoeSSVXH9mh4oGoO1ND835iyDKfiOvA8CWW
+	iMDYokNqTg4oXZcpQFwWkxPC6R1YEryWsH7KeAA5kFuHCJ1Aw4JV3tqRy9ryl7qrtvA2F2WHEGa
+	+CDMlu3as8fRXDgy4diXefsqDgfvwu2wVt5XiqIXKlC9Sd/9q6Gr+W09D9IoZxzNHkMiq2NmVeJ
+	9KF+575UoRK+aOmm
+X-Received: by 2002:a17:902:e547:b0:2e9:502a:ddbb with SMTP id d9443c01a7336-2ea43c9f6bcmr53298445ad.45.1792691480085;
+        Thu, 22 Oct 2026 10:51:20 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea7b346c43sm1644745ad.13.2026.10.22.10.51.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 10:51:19 -0700 (PDT)
+Date: Thu, 22 Oct 2026 17:51:16 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
+	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <atpNFEFIlqAoYIwH@google.com>
+References: <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
+ <9huzecdi6go0.fsf@tarunix.c.googlers.com>
+ <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
+ <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
+ <atlKsD-aJB3mJr2j@google.com>
+ <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
+ <atl7peoVHdP5hz7z@google.com>
+ <CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
+ <CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
+ <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261003002123.505555-1-jthoughton@google.com>
- <20261003002123.505555-4-jthoughton@google.com> <B8A44041-1516-4405-976D-534AA2412A49@linux.dev>
- <CADrL8HUOJwEgjUzefxSUa=AZHj4JO7koonj2_-WYhcL8QcXPZA@mail.gmail.com> <440A9FCF-2B5D-43A9-9B02-C32F5955AC82@linux.dev>
-In-Reply-To: <440A9FCF-2B5D-43A9-9B02-C32F5955AC82@linux.dev>
-From: James Houghton <jthoughton@google.com>
-Date: Thu, 22 Oct 2026 10:44:49 -0700
-X-Gm-Features: AclHuK8OCQjsmkJ8ztkh2B9wQVyT8iKcOFLwut_LnlB7__hy8ym6E5QTYBptOqc
-Message-ID: <CADrL8HWNaurYHGnpvC9qwr6bVU74YhhucCuhoVYcvqmSX+R6+Q@mail.gmail.com>
-Subject: Re: [PATCH v2 03/20] hugetlb_vmemmap: Always flush TLB if needed upon
- PTE remapping
-To: Muchun Song <muchun.song@linux.dev>, Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
-	Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	David Hildenbrand <david@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Nanyong Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>, 
-	Frank van der Linden <fvdl@google.com>, David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 38271180002
-X-Stat-Signature: 1izpz1ue6fnw9tgjogxzdgyrapmaai4a
-X-Rspam-User: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
+X-Stat-Signature: hpdx6eh6qncii193ppby67pap93xe5im
 X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792691128-36832
-X-HE-Meta: U2FsdGVkX19XTmia5bo0yAOcEg7/s20VzyjV4KTpI/tUstzdJXd0SOlBuy2Y28B0h/aQVXIMqWRDhKqwXPAHWgv/WTx2afCm3kO3T1rbviDL+r2Pzh+gS3BUuoC4alWwulcoIYNJYJGaSk38NMT4xJNkABiO6XG832lhrtn3u0SLoWscwhxwKyB8QW+GVafHrLdfR8Ti5oM0Ne/RWcBI5VXiOxDwLhQcZLRF5/0fojKoLVrqKCr7aKUBqqgVgjIBM9hej3Q9uZ73gE5BjUUxnNQcp8453xX+YHCRz3HFUGnaOGktuKTQH42iKMQTsR+1vNJoRZD39OvnMDB1ArjwqXvoXfyYLTOmHCcKK8bpyXJdFym7BRxsnQhkfceksciTEiX+vZyzu7mOS9Ml3SaEr4Syfb5kHRTNurJq/YG2OMFQW9s4RgRQI1XXgMZUshq5m9DihnapnVC2V3U/P9VdjAohRIwsJ3LVCa8Tuo5qInYW9bwP3v+fH4nmegwRwSOVtXWOEAE4upHHTALQKIzQ0BE9pv46pBFEx4od7sR104EcdB24GeelwkyNbCHz5SAwgo0wZnQPPF5Qbhy9vgC3nFlKlF9jiyJE/GdEXWbAJ+EJcTihoCRjydlT+qM+60colrDDZocofLKZEGfWvUQgRTnJc3pBbSW2sXdqSe92BtmDO4fPfHejdGH6LaL2YVmOcFa2cFfSvAEc+UT31Thh0L+n5gljVtiKEOZDVhwzGIbA6PT+QpYwH8IJwN+4ev4t9pHDyalHwxb91jav5/xTThHF+xl2/LrPXWNrCyg1qtlFhZvP0ylFn7V16JPKmVXECXTC2Kez4K8qXqBxgF9AREqF1QXssueA6+HS0iAloLEkBLCVMSf79UiMhSchNjmdOGYWdXHOI9f48O22em4odYRAGS/4/uHbTRVAla6SfAQWb82Ma3q/PznRFYzKTw0oXuHudJHLa0c1X7/1j8K
- AqWYm+CI
- GhkeMP9wlpW4cb+veiKFvqMdQT7SZw6FCJE1gCrUSuxZgp8uGOnuYMDMDPnskZlzzAZaqznolp8SGhD2vOlTPCG8qOJii3sJnwPnNExuSH/hEE4nR88LZop0Z9L2ePYMkigFiAaXr4G5XxknjvnjpSulUTgz/o4ZBq7HER6iJwwpuJy1Use7Wj86ebp2GFYG1MHn0lKzrdlUALSm5kKyezRuns8ZF2/LKX1Cq23W1kMGSARs1NmJgaSYNsdTN+N88WET+2wTv1f2uex4/WIBOV+85H8gWWX9JWrDq2Hh4REV/ifyqqoZrfU9YNQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 520E7180005
+X-Rspam-User: 
+X-HE-Tag: 1792691482-798382
+X-HE-Meta: U2FsdGVkX18NLXybmgibO5I+9QmJgEf1VUc9HS6HpWiH+kLMxWXhvZgSUD6wHTmjanRw4EQKzwSLool8n5j06qyDzn1aS7xrP4D5BfdU8vhgfsfLCLR/nlPF0VsK0tH5pEJJplC8jZGmRRQ8z+/o90tJLHyvn1a7CyaBa6wGa9LmwLHOEC90HGoyXij1SeOBbqz6jx7a02qy1k9MYIls/MaN4BRCM9sr3lGVoYVAGY3cTYehH1zVr1Cz9VJ04XnFte/obEN6a1YeHEinoUTMATXxMVBFdKTQCIetgMp8nz/u103pxZe2ZVPbJno05V+jU4sWhU6/X9tC3e53bqEma2h7TFnbTKub/A+QPhG5qKrO32bBFsi/bda4qOoQg0emMmQBEXYhSLdrjC8WOGCkJIOJSvMtl7WqE93mdsKwfEDIZgsab/CKbHDKtVuoyxjGMn854DaLfGJ4UMGQNz0F/Raj+KAECbMm4uKOEr5xg0tBJpD4shLbSMCvxgLSbJF0UQQ6wPCDEyiMXQrOtqAhU/h7o9I9xiPiPN4pmYl4Nevz0sAngzi+a7Obi9KnUv+toZC+X0fmiEcON6B+FCakXt/Zsp7fEH23xlD+3TD4AnbHGW4QQWdzQzMtWiQnsRjPSINm90HfzoC6vAppYPJpkWQH0LTVaFgrTqHNaLPUMN6HKZ0QwfajKvqABEH2onhAVq2o3a+jJG8uqOSfQNveLkVInsKx+zIwANOmtRRMhmNn0w76+sYWRGy/Bmkolrk442sukYw1KGPe+MwMAuIpuurAaGCd3lde5ny81dLjglNDzzaB1ejTXQpupmEyEKIIqFUEIdAaNWrwEAa/K0O3AGM9dsSeSqQCFOpfeKJFkbiy3u3EhMmf44ZmHz20CleBdTmDEUcgBmv1STQFxh1rLCHxdW7PGFgKidp/uJELh5KdHAy5oBqM6JXhQS5lRswvhig+T70yJsdSy10fvpI
+ hn4u9fbX
+ oJYZuECd22zIcd6359PovhYgLE/VY4nDfBonH8P5F8tB2dtizgv0KqL7qiJM/OLmdvf87i3Ni0a04yNfzZqJksrE0JA5HIMlDSgGmcVNesanZTQ/9tOeYoohM7U49xb1qPHFgSSZNyilI9YG67thmwG26CPxw0xEOmGbU67O11bSMpKh8ylJGdkNNLQpgmAIpu7PueWsPXvjwnQsX7iDtB9UTMM6ae5WlYtV+DmczQ0b01UG6tdkv2PoswtvV3yZ8EBld8Ia7UVBEVSnI9KGyFAuNUGbdX9bqtxsyr1Ss6hl1/xzeyYkE56B5/0BSzGUf3y883CewSIYRzRpvVAa2jdgW1pYCtX0uejtvag6k6/z2Oz62AqJpkGWiVn0poQ/xVmMR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,110 +146,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 2:18=E2=80=AFAM Muchun Song <muchun.song@linux.dev>=
- wrote:
->
-> > On Oct 22, 2026, at 05:59, James Houghton <jthoughton@google.com> wrote=
-:
+On 2026-10-22 12:11 AM, Pasha Tatashin wrote:
+> On Wed, Oct 21, 2026 at 11:53 PM David Matlack <dmatlack@google.com> wrote:
+
+> > > #define DECLARE_LUO_SER(name, expected_size, ext_flags_count, payload_type) \
+> > >     struct name {                                                           \
+> > >         __u32 size;                                                         \
+> > >         __u32 flags;                                                        \
+> > >         __u64 ext_flags[ext_flags_count];                                   \
+> > >         payload_type payload;                                               \
+> > >     };                                                                      \
+> > >     static_assert(sizeof(struct name) == (expected_size),                   \
+> > >                   "LUO struct " #name " size mismatch!")
+> > >
+> > > For example:
+> > >
+> > > struct luo_memfd_payload {
+> > >     __u64 pos;
+> > >     __u64 size;
+> > > };
+> > >
+> > > DECLARE_LUO_SER(luo_memfd_ser, 24, 0, struct luo_memfd_payload);
 > >
-> > On Wed, Oct 21, 2026 at 2:54=E2=80=AFAM Muchun Song <muchun.song@linux.=
-dev> wrote:
-> >>
-> >> Hi James,
-> >>
-> >>> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> wrot=
-e:
-> >>>
-> >>> vmemmap_remap_range() can potentially leave the vmemmap in a partiall=
-y
-> >>> optimized state. In this case, a TLB flush should be done if the walk
-> >>> caller asked for it, even if the optimization was not fully applied.
-> >>>
-> >>> A follow-up patch will more completely deal with partially-optimized
-> >>> folios.
-> >>
-> >> Why are we dealing with partial optimization cases right from
-> >> the start?
-> >>
-> >> I know that in patch 12, you try cmpxchg 16 times, and if it
-> >> fails, it leads to the partial optimization state. What I want
-> >> to ask is, why do we limit the maximum number of attempts? Is
-> >> it because during testing you found that this kind of failure
-> >> is very common? If we did not limit the number of attempts,
-> >> was it because during testing you found that the scheduling
-> >> latency caused here is very large? Or is this just defensive
-> >> programming? In my view, scenarios with such intense
-> >> concurrent access to these struct page structures should be
-> >> very rare.
-> >
-> > This was done defensively, yes. With 16 retries, I never hit this
-> > without fault injection. (Perhaps I should try with no retries...)
-> >
-> >> If your testing did not find any problems, my suggestion is
-> >> not to set an upper limit on the number of cmpxchg attempts.
-> >> This should be able to simplify the design of the initial
-> >> version of the code to a certain extent. If we want to
-> >> determine whether an upper limit should be added in the
-> >> future, I think we can add timing monitoring in the arm64
-> >> try_update_vmemmap_pte function and trigger a warning when
-> >> the measured time exceeds a certain threshold. If someone
-> >> reports this kind of warning to the community in the future,
-> >> then I think we can improve it at that time.
-> >>
-> >> What do you think?
-> >
-> > From userspace, you could use kpageflags or page_idle to continuously
-> > access a single struct page over and over again. I think that's a
->
-> page_idle does not support HugeTLB pages, right? We should only consider
-> /proc/kpageflags; reading this file requires privilege =E2=80=94 unless a=
- privileged
-> user intentionally creates malicious software.
+> > This looks pretty reasonable but I would name the payload
+> > luo_memfd_ser. The combined struct that DECLARE_LUO_SER() creates
+> > should never be used directly since the offset of the payload in that
+> > struct is only valid in the current kernel. So I would give that
+> > struct a special name that makes it obvious you shouldn't be using it.
+> 
+> Lets drop the fourth macro argument and generate the combined struct name:
+> 
+> #define DECLARE_LUO_SER(name, expected_size, ext_flags_count)              \
+>     struct name##_hdr {                                                    \
+>         __u32 size;                                                        \
+>         __u32 flags;                                                       \
+>         __u64 ext_flags[ext_flags_count];                                  \
+>         struct name payload;                                               \
+>     };                                                                     \
+>     static_assert(sizeof(struct name##_hdr) == (expected_size),            \
+>                   "LUO struct " #name " size mismatch!")
+> 
+> For example:
+> 
+> struct luo_memfd_ser {
+>     __u64 pos;
+>     __u64 size;
+> };
+> 
+> DECLARE_LUO_SER_HDR(luo_memfd_ser, 24, 0);
 
-Oh yeah, page_idle only uses LRU pages (which HugeTLB pages are not),
-that's right.
+I think we are getting close, bu I have two remaining concerns:
 
-For kpageflags (and kpagecount and kpagecgroup), I still think it is
-"bad" to provide a mechanism that allows userspace, even privileged
-userspace, to permanently freeze a CPU. Fuzzers could find it, for
-example.
+ * Reserving bits in each flags word for continuation leaves gaps
+   in the flag space that users have to know to skip.
 
-I wonder what Catalin thinks about my reasoning. :)
+ * struct name##_hdr only matches structs written by the current kernel
+   (in terms of length of array and offset of payload).
 
-> > pretty good reason to have a bound. Also, the AF can be set even
-> > without an architectural memory access (so a mispredicted branch can
-> > still set AF, for example); that also makes me want to have a bound.
->
-> However, I don't think this scenario would cause a significant amount of
-> concurrent reads.
+How about this instead:
 
-The fact that AF can be set without an architectural access means we
-can't really reason about what may or may not set the AF. It
-definitely seems implausible for the microarchitecture to continuously
-attempt to set the AF for a generally-unused but valid PTE many times
-in a row, but it isn't forbidden (as far as I can tell).
+struct luo_ser_hdr {
+    __u32 size;        /* Size of header + payload in bytes */
+    __u32 nr_flags;    /* Number of features encoded in flags[] */
+    __u64 flags[];
+};
 
-> >
-> > Catalin also said wanted a bound here. See the bottom of this reply at =
-[1].
->
-> I see, but I'd still like to explain my reasoning and see what everyone
-> thinks.
+Each feature occupies 2 bits of flags[], so feature N is always bits
+[2N+1:2N] of flags[N / 32], with no gaps:
 
-Thanks, yeah I'm curious what others think too. I can go either way really.
+  00: Feature not present
+  01: Feature present, safe to ignore if not supported
+  11: Feature present, must be supported by the next kernel
+  10: Invalid
 
-> >
-> > So I think we should leave it in. The extra complexity is pretty much
-> > entirely in patch #4[2], and I don't think it's too large of a change.
-> > I hope you agree. :)
->
-> Because I personally feel that having only part of the vmemmap optimized
-> is a somewhat awkward intermediate state =E2=80=94 the all-or-nothing sem=
-antics
-> seems more natural to me. At least until a clear problem actually arises,
-> I'd prefer not to consider it. At the same time, we can also keep the des=
-ign
-> simple.
+The length of flags[] and the header size are computed directly rather
+than by walking continuation bits:
 
-Yeah that's fair. Thanks for your feedback, Muchun.
+static inline u32 luo_ser_nr_flag_words(const struct luo_ser_hdr *hdr)
+{
+    return DIV_ROUND_UP(hdr->nr_flags, 32);
+}
+
+static inline size_t luo_ser_hdr_size(const struct luo_ser_hdr *hdr)
+{
+    return struct_size(hdr, flags, luo_ser_nr_flag_words(hdr));
+}
+
+static inline void *luo_ser_payload(const struct luo_ser_hdr *hdr)
+{
+    return (void *)hdr + luo_ser_hdr_size(hdr);
+}
+
+and bounds checking is just luo_ser_hdr_size(hdr) <= hdr->size. The
+payload is always 8-byte aligned.
+
+Payload structs are then declared on their own, with no header:
+
+struct luo_memfd_ser {
+    __u64 pos;
+    __u64 size;
+};
+LUO_SER_ASSERT_SIZE(luo_memfd_ser, 16);
+
+The static_assert covers the payload to catch embedded structs changing
+size.  Asserting the header doesn't add anything since its size varies
+by kernel. And because flags[] is a flexible array, the header can't be
+embedded in front of a payload in a combined struct; it can only be
+reached through luo_ser_payload().
+
+I think the only downside is that the header increases to 16-bytes when
+there is at least 1 flag. But I don't think we need to be so concerned
+about an 8 byte difference...
 
