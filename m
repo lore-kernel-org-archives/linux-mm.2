@@ -1,156 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310C3606A31B
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 20:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6FD60A3834
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 20:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=GKW2N2iY
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tHMVweDH
 Received: by kanga.kvack.org (Postfix)
-	id 24F286B09C0; Thu, 22 Oct 2026 16:12:34 -0400 (EDT)
+	id 5D8C06B0281; Thu, 22 Oct 2026 16:15:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 200466B09C2; Thu, 22 Oct 2026 16:12:34 -0400 (EDT)
+	id 589676B0296; Thu, 22 Oct 2026 16:15:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EEE76B09C3; Thu, 22 Oct 2026 16:12:34 -0400 (EDT)
+	id 477D56B02A5; Thu, 22 Oct 2026 16:15:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D6EFF6B09C0
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:12:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C9CC801FD
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:12:33 +0000 (UTC)
-X-FDA: 85351359786.06.D46FA26
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5A14518000D
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:12:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=GKW2N2iY;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.169 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	by kanga.kvack.org (Postfix) with ESMTP id 1ECF86B0281
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:15:47 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9FF85A6638
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:15:46 +0000 (UTC)
+X-FDA: 85351367892.07.B913964
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DE2654000C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:15:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=tHMVweDH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792699951;
+	s=arc-20220608; t=1792700144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I8JrjL/Toni0rgHeKLxMi210agLPfR373jhOEmm9NDM=;
-	b=mYKy27hcm11GrWKIP9pv8YCT1HJiveu2Lc6XThaIcKt02dnTnj3YlqbZY2NT/SkYAB9apj
-	8+/L/gBo0qow5UH0FhOncrr8ULrtD+RtjoIURlCldJ9/nOaKwwd0vi2MY3PaevyEKhZpUi
-	R9PJds51ElNTn70b29L9Lb8461J6mCQ=
+	bh=C21jdElIWwsssKLBUPwYkC+7CgwOgr8UZ/ugVKG2QZM=;
+	b=dRrrBBp/iFkT2Tb2Va1IkK6sguXYjSpGZPZWDa55/OmZzl0h46vJISwzETIhKms55GITI+
+	mk21l0n3Js116d4H5Dk6auubhiRD6M+DYd3zIgCKsMmZrnyuUFjMymcXHw4onDCnerWF7p
+	GOmCu9JnITvPGeSrDNP6i3Q3at7J6o4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=GKW2N2iY;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.169 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=tHMVweDH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792699951;
-	b=Ku8Nx00pCteReijhUQgA4/p8LswJHKXKuQOvBn9NgRMPwGKOXgkJSM4bO1Z2GAqv+xe2Bl
-	d13dmCTC4XNgUIYM5KETJNeB87dcaKXc9zyIIpLvlBQA89LZptEFQbvPWBPl2CaAB1B/9n
-	+cWl6EQoXKqRO9xy9Kw9yjAdkVVNerM=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5361e313e63so1136061cf.3
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 13:12:31 -0700 (PDT)
+	t=1792700144;
+	b=eJ0HQbrcS2/nF212/TNF30Xb1eh2LJKU7mqgYfDn9VQOfXkmVu+x18FGPkB4B1M0nEQxqM
+	xAgRNAz41Nzm44Zg0AsUfNx4wODO3LhhZRxtsJK2J0ewwZvAiw+i0dJYaXh3Wf0OpZOCjI
+	q07ZSgM/3ax6V2rAVfKHYXtZtqPBCYA=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5366ae57896so1125161cf.3
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 13:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792699950; x=1793304750; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792700144; x=1793304944; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=I8JrjL/Toni0rgHeKLxMi210agLPfR373jhOEmm9NDM=;
-        b=GKW2N2iYQJGeGMoCYl8mbuvw5qL4NWP73jwO5FZ7hoRpclGT79lA3CkbP1PRO5HNL5
-         k+B42pIpJE70DgUWpqFzdKOkqYyapg8OMzpU/Hk5iU68sc6B9yekCtCBAPF6FwjesfNK
-         IYiqUopn5DR8OECqMp3bCY0HuDbOs+cOI9td+bd2I5VG5tUTOP8u6+fV6zN+ZvVmTHc4
-         aZB0zk/b9nMLLdfL4/C9hTfYfcPYeIcg2tq4wptdu5m82GcHHOigTTLEzJfGt7+MDK+m
-         N7LVRrdR0VDFPTlmyIFcMS/cW+mTUkbSehEspqkJJU9ATUExRYPNLw/P6xl484w4K7V1
-         LAsA==
+        bh=C21jdElIWwsssKLBUPwYkC+7CgwOgr8UZ/ugVKG2QZM=;
+        b=tHMVweDHvPKtb6y+Lfo/gSF4EeFBIe9183EjeRvHqG0exDgozZDFG5/8OqAJ1XwNEU
+         2+a9jvTrvqfKEyc1isWvGbU+WH3Udg9qXUGzlQHhK6JdkiSXP6FKdmlfFMYlwlnzuCtM
+         MTYDxjEdTFhdzK88izxpJm1C1sg8dH+3tQOuzcDOtCss/7RuGO4Jx+tuqKrSjZk/qvuA
+         Er6oNIgVHoN3wYmLq4AcZUs8f8ak6nkoLQcR1gii28FnBdKWOk5j5slaAwWwvqe7RksX
+         /yprOJo9HkSgaHjeelCi9pwk0YtJogFnffEYlduAmQrN8s0eYOg3NFOkyGYCkN8vq3vr
+         7akw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792699950; x=1793304750;
+        d=1e100.net; s=20260707; t=1792700144; x=1793304944;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=I8JrjL/Toni0rgHeKLxMi210agLPfR373jhOEmm9NDM=;
-        b=X2TioI5Qr7VfCp0IltJ49ovYaj12PHHivsgJaVimBb1EjycDwXNNX3rPmaQau8JSCF
-         4x7+W5+smYS8LW5PXjL2S+UT+/MhxWk0Nkl6bx8jd4GsTsVvqOPZ7Ygr/spVTK0Y9xXn
-         C2gY6z5JKdXPxSbSXZtSCPgGdiE6poXMa0noE1Emd3FMbWSbN/o/mAC5WHUs8fXpWC9n
-         DvbHhZz/ogXydE3Q5V9OY7y+as+gGkEXbCmMboeKBjFYpdJKYxs+c0ix5woyIwt99CMY
-         1MbiwUmVT29bfk9h/KmzgozgDzkJBY6I763B+xOVPkau9CEhi1Mfc1eACBr9po1AeM9J
-         aDvQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJs2PsKZ93BiiaVZvPA3dBu1zDaEUrxBZ9GkH51QcvHrxB+XsT9AG9Cbo9BdH3wVUMH2OIhQtIaA==@kvack.org
-X-Gm-Message-State: AFq9FYJv9MhLdzG7JxYC8G1WpYrxwEkSroW+zBzfumVJ/Z5cP0g/k5js
-	1U97Lhi69/BmOA5TjRLfFr0Ih9ZGoEouIp3rzCgpp5Xp7rvn8v39ofQjA7p/hYexHLY=
-X-Gm-Gg: AYBFou0J7gCWwbKM6qm2019VAl/e2Dg3eLP85oXyYL5tVwUbDvxPILLoA6ruc9tSbny
-	rRtjswezfirBbSyAXazcp8r1h57NsuAqq3DfFx8k/fTRtrZvoO1URMqagG/ORllc0+W8Yql7B90
-	uQFmlk+IS69X1ERK2b4gTNB0Cddgt1WU7aISQOZ0bSvqmWPhQKFrYZuklvaoDlA9nsekHgqtED9
-	MbNGfr3kycaRWlXCxu3dZ6DVgixvLMOKS8tEsV4BPuEdkHUCoFeYlC4rq0saT2F8QxVAdMJjiDF
-	3/VY8dkKjSjRhlkNI0wUXZXGef9fdF/b30O/fqLmdMGNeDajThfSCVJnBbeF4Uc7oUcZqId/uTT
-	OnCJKEZXo7tA7XEEQrBgq90YhMRWqI/4ulL54zpFoNM4Tugskm+/lPWnC7vgTq0KMqDxLSiNeyx
-	Lhah4oF6eXpVhBoFfaVfDY+8uPwco74hoxjcoaiyq3nBVq3lz4QC+fd2s8h8+UHh4so/M5Mb3D3
-	7XY3VRrRldOJAJ0UCb3yDFYFj6tAe9/8Yax1w3XdhSJPvs8eUt2YLzc/1K2ANU09TbUlDBbjvaL
-	3kqv3gJ/399GuCMEsbHsIim7fQ51YOLiSXwltQ==
-X-Received: by 2002:ac8:5a85:0:b0:536:6378:c7fe with SMTP id d75a77b69052e-5369b8204d9mr99553871cf.47.1792699950468;
-        Thu, 22 Oct 2026 13:12:30 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536c14da10csm1768631cf.0.2026.10.22.13.12.29
+        bh=C21jdElIWwsssKLBUPwYkC+7CgwOgr8UZ/ugVKG2QZM=;
+        b=0d6aAeDmBDXZeVwrytHD9i0aJcXuEqw3dEd4EFCEDMDOPsJhzHJPfbw8Se4okmLjDM
+         5EyuCZbLH7FRP8x6Xc6Mk22KqSqAFN584240GAGjTGmW+ftB+ZbIwFhg5Wp8IGuSEFsH
+         RmKXUCxTLVRvEJbHwUG5iYsmiQO8YXZGcOt9qKJCnOnBGtXGHLvfT1OhkEzwkmXKyYAi
+         nv67gRJy7TC+AvCZHbVkvGc7eF+QG9vr8zFIobMt311CDag2OpDxp+Fc2eNsyAPCDTcD
+         aNZwb0kmwS4nRsH70+VNlZRGIOBo8HOEWZ+yT56A0b9tBK77l6Kng2317mn+qbmUnA1I
+         TX/g==
+X-Forwarded-Encrypted: i=1; AKwUvByONQz3tlaMnL3Cioo+4DlvTkRZ1HMH0lbEwe0CcfVHFaPvdLPlbbIgQvaQsUnb1awYSu7Ph3hvDQ==@kvack.org
+X-Gm-Message-State: AFq9FYLtl0bGvDyA7eCp84vs26cy8aX4Lf2bqb4GFPg22RnAg7BbwdhS
+	CzoBnyJi/tbfRSW1zrCr+iL6jUuQECHI9i6mOiyIDRpJ9wITatQXJANetOZtX6+eHhwoZQ==
+X-Gm-Gg: AYBFou2RylD5MaErMqfAlgIRnNVg/K5i/sOYGY5di+EnsZrpA5Dnr6JvdkK06XtB/1o
+	3ot29j1huwQQ9mE3aDQk6luMQNxNjYF0ffn6LOc9Vg8uJGK32121B0ffZ4Sqsuajmf55/ZMn42v
+	iitcpVg73+awXASZPICdio2ILyp8Nbb1eJi+Iztx/j3bAviAe/pjNWEsnbjvPjxAmC0yt8mruDI
+	7HErD/LzA53wrhnSTHlC6fq7SIx0vVazogtgT7XrR+0lhPJMs3Au66m/oHjVH8hFmzqLie0NqYo
+	JB4O7bGcAQx7PmdK4C6gKwCpq+GTOBhqXn7enh5MVNhA5Sw1NDzIygUJZVwC1UMj9OC34oZhOaJ
+	6bIwjQuBZgk7WS1o4OSRMPdcpAZfFoAcPVtxT3U7Uf6oix9MzQqsXvL0jDqkDsto+YSbxxhzfoq
+	vjY3o+qlkEHFC4kUo1BmtJQEwzZ0EaqgxQxEfWFBJFA+F9BDk/+Q4mLRTJy9WWpBQ63K3gD/H57
+	yXkIwWL5LoWhA5w4O+/mdenhikmC/+vLThigmgC/F5b0tkNxRI85IYVsEUQxcYk
+X-Received: by 2002:a05:7301:650b:b0:360:c266:cdd8 with SMTP id 5a478bee46e88-369d982e719mr358462eec.24.1792699801138;
+        Thu, 22 Oct 2026 13:10:01 -0700 (PDT)
+Received: from localhost ([2409:4062:2d82:947a:d2bd:526:9310:d9af])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369d9e180f6sm160737eec.28.2026.10.22.13.09.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 13:12:29 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xJz9J-0000000FoSN-1XEC;
-	Thu, 22 Oct 2026 17:12:29 -0300
-Date: Thu, 22 Oct 2026 17:12:29 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+        Thu, 22 Oct 2026 13:10:00 -0700 (PDT)
+Date: Fri, 23 Oct 2026 01:39:56 +0530
+From: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+To: Richard Cheng <icheng@nvidia.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dan Williams <djbw@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-Message-ID: <20261022201229.GH3381610@ziepe.ca>
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
- <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+	Breno Leitao <leitao@debian.org>, Ira Weiny <iweiny@kernel.org>,
+	Li Ming <ming.li@zohomail.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Kiryl Shutsemau <kas@kernel.org>, Harry Yoo <harry@kernel.org>
+Subject: Re: [RFC PATCH 4/5] mm/page_alloc: Keep pre-online poison out of the
+ buddy allocator
+Message-ID: <atptlI4Pstd70N9u@acer-nitro-anv15-41>
+References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+ <20261010162017.62506-5-shaikhkamal2012@gmail.com>
+ <atB-cL8x5CSMOHEP@MWDK4CY14F>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5A14518000D
-X-Stat-Signature: cqc7gii9ywfnnqkb6px737it581kaxqb
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+In-Reply-To: <atB-cL8x5CSMOHEP@MWDK4CY14F>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DE2654000C
+X-Stat-Signature: bzk3tx1m7omnh33aoscxgx5amuihfi1j
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792699951-709943
-X-HE-Meta: U2FsdGVkX18PljUn11aOQObD7WUiDT2Z9e9qk2HS0mXKroXGpesionVPSgtomHGvd6bOD8rayxOlvCSmD4VquAHf7vtVHMgngB6W8ltQ24dTvehGuJS62AbBqFUxTdNROhViF+rVQ1TbaDFpBNBwe0lon/gzGmklICq6z9hC9+Et0J5LXH4QIQf2kZWXPS7SqOfE/59ix5xfhb9u3nKmT1CSH/IjFH9T76hWOG4TI639oeZUvCwRqs1GUZ3dbPvRpDu4j3m6b63g7FgdVVLvG6itnNeE/cnNtAh+d6BLVxiAeqv567CJrDqHCyzsjGe+02RgoDhGiaVG4lz91/3rBUD+hVYa4QEDE8mpk0uaE9exJJAA7u2i0HyMWeVKvs2nMqsyn0XhUSc3I3ErsSRgGJG0MfUst+qszdNY5hKYaPLuzMXINeCC3WfPeieVIj2IocqRfrF/Pmhg4hveVpxUP4PESynkGH6t01NClIGVpicMF0I1TnungRJKMwjq/PepbwnMaeVcSKV9wKaa30VCImfElgCjAmkbZA8D+TseadFWKhKvfPT1sUr8WyUk5O9IZT1Z72gPWU+5jBEweHbQbBNVCgEUIaBbcN4gx2I2x+2IL3j/i0LSHqsnc+9eyv3aE9XrjUzlR1GUsSEGOKgUQihP1OQbE2LRywyuLAJDeF9wc7mgjkwxkFV2NUyU+l4DNPVamvoCExnA41EfB7RqookUGz9PkwHuA5PfRHQ5XW+f6xRzdS6HBJpaiDyPZm0JHSXcFbv/6esy8OtmyinH0qi08o1ItUhXDXKXyc3uadccH6AV3YKzgiljfR504qwjp96FV/faMo7SHsLsjSaFt8HQgFNcFusQ/rIuJqYFqmac2CbVfqX5gYM0c+oufRwLTubb4pBxg8hI+kUqGJjMVMquscwMEEYgqJFRK5dxH69/E50bYfQvT0gC/H3xWtnL/v0mvUxJ9uY45VyaPqz
- djCKj9NY
- atx81auQwBnlQeZlGEq9ES3T/Jj4ctRM4IL3b6od1XPT4wnOTOa//mM4udUQQ+HVRYOISJjz8DcZCxnYYxsPXz0khIwPjiq6J4STy1f9bAgl0BGL3wATORHlNoiNyaOQkXwMsi25hVUkxtkUI1UAsHDI7vXXuJjLWDCOeig6t5mq2ywjsOymrIElxKjPpICA95sA+ZLgqC9yhRpieFL4jtz0pZ5Qna4vZ+PW37OeYg5ZnYR0Z2KW1vEpp40B7TqxpYczt9JGRhECWjH1o0GV7miHkoIABKsYpvHgyn4YMXU3kIJsT2csAZrsZWpXyU/pdJI7Jz+d1XOmDUkabG1rBRzUf4aXe2xbcfLY4myJuEdGsQgPRsP50Ioc29ehGmY+SSpuoLPdi5YseVcghRsVfiMBB2NOe4j8AMZvu
+X-HE-Tag: 1792700144-31044
+X-HE-Meta: U2FsdGVkX1/oc1aQNrO2syx6VXCyMVcDAhvAyB5648D2Sa8Y4l1ZqMEegZKS5F96N28v5ZBjOE4CPvb6aT65H7wPX0VLCg2v+doGdY7vE34NXvO+tj0W03hBatozbLwFa2lh+RNQdcGt6CG3OT9ucKEBbdYswldYNQkA7JdsEDXHzAbqLiI00rH2AwT3afcWB3x+Dhbz9YupVdYdOmTTm2WRIAkmiwncYs/PoZ9N8SxESznQ5CAauUiB2Plf2v3MRYkbhQ8TWTgKzg3A1R8UVNJK3FEFac0XWcJLJof1Eow4mHWLW69oPqv6EM82HuPElM9cKYav5hpDJnziPixRx1wuCeYnR2jYUUoQuMti1Ghncv0uvnjyz68Q9IiO7RZ8Oztc/xgPC8KFuXzXkyJTVD9gGnhme0OKUjuGf7o7vV6GZWkhh/N/aAaIElbemRa/ue2vExrqTzaqMaHGBchay08tZER8qadOSMoOYun+It/1CULapVO1TG6zhXN+s6pEu7OcLux8Ub5/yDyOFYkqNdp7q3VcPWFNfWxD7WoS81XgwxP0QzILXTRyHIIzO5Llu9IU7nwXb1H0V0mfo4U9hxAKZBRh31CX4M7v/JPIEDY1soBkwhIusAMGTD9a9n06Efgj0fXJIeQsvH1QeCsvju3PujfRuJzbs2mLCVsUxDv4T1+hw0drzwcG85DqGK5gHII6WdpK5cZ2ZFmgGPI4y6WYzYxieR4EFSiFfo57jyDJsc7PoSGP0kSGAHJx6H6kM3w3KbeYysTH4zqBeGdBmV3t9ratp1+Vi9r+X0gdrzLkRN8yN9lJOAZ92Ef63hvfCVCjgIDM4nmOjORIdekAep2ocyfxMr/c5zWEwbGl0VA67Y7ibeQueDobORP+EvbCQtWGFRghyl5Js4dXrKwnoYSLHUGUh1hHr1hcQ1PuYdMAa/cLd0K1MOtg6O5EcGvvolIvox+uHBk58+FIB6K
+ 9DrVmCAq
+ ElcUnzoXZpGiFnqRZVTyS6292b73tu59x8NBIapnae3gTx8qos2dRO7YImX4/sh79R90WZC/SsltwiCR+IJCH3rl5tbNOaM2IlcfUHE93KOY7T0TZPPVrvuFd6qYD744DcnpFFvniSJWVP6ig66mA24OLZ4hm/Y+e9XOj7VOebUqEsdSGkLyq89bb2ddLDawJAkk1KFMWWRrKVbnSPeth5rym+VBB9b8DuCmGnjJX/igALl3ZxNkt7wtdeVZiqGCRzX40iC/g3MdK36LprKROiYC13eixKgWzN/y8HyQu26LZFnPajsASjDCU4iGibIVcJ0wduObsmfHx2KVJPU7Gejb7QmjIeOT5EMhxWfChbfZLYBScy0c71DIHKV/A32CtIe6CxzxKegtpHFiAEYbmnpSjpJuyNFj34gVa+5y+8/LVYcMXIU8qamyPGjirpDyyVf6BSAQDh81Dxc88nageSy/6Za8fbdpiv2Tce1nfB2/1pqiUB6lYWL9uJqV9rwqwSeor1Xx0SKt0RwQwwZIU03Jr62k2eDT+odPLYVVfdRkSUEAKaxTpB3AisynTJeHTqHyFMy7Cnlzm0guCYbmE4RgnuDUrUk+b25TUgqUoiUkQ3kA1w1cyDrWiv65dXPSeBLud
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,28 +143,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Oct 17, 2026 at 07:11:28PM +0200, Luigi Rizzo wrote:
-> > We should probably just find a way to describe that this is a POOL that focuses
-> > on physical contiguity in some configured granularity.
+On Thu, Oct 15, 2026 at 03:27:54PM +0800, Richard Cheng wrote:
+> On Sat, Oct 10, 2026 at 09:50:12PM +0800, Shaikh Kamaluddin wrote:
+> > The inherited-poison path checks initialized blocks before releasing
+> > them to the buddy allocator. CXL device poison discovered before
+> > hot-added memory is onlined is recorded separately in the pre-online
+> > poison registry.
+> > 
+> > Extend __free_pages_core() to send a block to free_poisoned_block() when
+> > it intersects either poison source. In free_poisoned_block(), withhold a
+> > page when its PFN is registered as pre-online poison or its physical
+> > address is present in the inherited-poison table.
+> > 
+> > Pages identified by either source continue through
+> > hwpoison_boot_page(), while clean pages are released through
+> > accept_and_free_block().
+> > 
+> > Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+> > ---
+> >  mm/page_alloc.c | 8 ++++++--
+> >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index cca67a2702a4..57843df01b2a 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -33,6 +33,7 @@
+> >  #include <linux/cpuset.h>
+> >  #include <linux/folio_batch.h>
+> >  #include <linux/memory_hotplug.h>
+> > +#include <linux/memory-failure.h>
+> >  #include <linux/nodemask.h>
+> >  #include <linux/vmstat.h>
+> >  #include <linux/fault-inject.h>
+> > @@ -1601,12 +1602,14 @@ static void __meminit free_poisoned_block(struct page *page, unsigned int order,
+> >  					  enum meminit_context context)
+> >  {
+> >  	unsigned long i, nr_pages = 1UL << order;
+> > +	unsigned long pfn = page_to_pfn(page);
+> >  
+> >  	for (i = 0; i < nr_pages; i++) {
+> >  		struct page *p = page + i;
+> >  		phys_addr_t phys = page_to_phys(p);
+> >  
+> > -		if (range_contains_poisoned_memory(phys, PAGE_SIZE)) {
+> > +		if (range_contains_poisoned_memory(phys, PAGE_SIZE) ||
+> > +		    preonline_hwpoison_contains(pfn + i)) {
+> >  			hwpoison_boot_page(p, context);
+> >  			continue;
+> >  		}
+> > @@ -1652,7 +1655,8 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
+> >  
+> >  	/* First: a block parked by __free_unaccepted() never returns here. */
+> >  	if (range_contains_poisoned_memory(page_to_phys(page),
+> > -					   PAGE_SIZE << order)) {
+> > +					   PAGE_SIZE << order) ||
+> > +	    preonline_hwpoison_intersects(page_to_pfn(page), nr_pages)) {
+> >  		free_poisoned_block(page, order, context);
+> >  		return;
+> >  	}
+> > -- 
+> > 2.43.0
+> >
 > 
-> Before embarking in a global renaming, I would like to get opinions on
-> acceptable alternative names (possibly with a short prefix usable for
-> identifiers in the code). I could think of the following
+> Hi Shaikh,
 > 
-> DMA_PMAP (for PreMapped or Persistent Mapped)
-> or, ahemm...
-> DMA_PISA (Pooled IOMMU Superpage Allocator)
-> both using dmap_ for internal name prefixes
+> I think the idea of discovering device poison first is good, but the boundary
+> should be more strictly designed.
+>
 
-Can someone explain what outside netdev would use this? And why you
-couldn't do this in the netdev page pool?
+Thanks for the review, Richard.
 
-It is not a common workload to have the DMA allocator be the one that
-allocates the memory. Usually we are DMA'ing from memory that was
-allocated someplace else.
+> Now if I don't get it wrong, if we turn on memory_hotplug.memmap_on_memory,
+> we can have part of CXL memory to do the bookkeeping for itself, without
+> using the existing RAM.
+> 
+> What if that bookkeeping part is poisoned ? the check ignores this situation
+> right ?
 
-I think Robin is right, this is just a special case of the dma pool,
-and it certainly shouldn't be something as grandiose as a subsystem..
+Yes, you are right. With memmap_on_memory, each 128 MiB block's struct
+pages are placed in its first 2 MiB (0x200 pages) by vmemmap_populate()
+when the memory is added, and memory_block_online() then onlines only
+start_pfn + 0x200 onwards. Those vmemmap pages never reach
+__free_pages_core(), so the registry is never consulted for them.
 
-Jason
+I reproduced it in QEMU 9.1 (TCG) on next-20260908 + [1] v5 + this RFC,
+with two Internal poison records in the first block: DPA 0x100000
+(PFN 0x190100, inside the vmemmap area 0x190000-0x1901ff) and DPA
+0x400000 (PFN 0x190400, outside it). Both are registered, but only
+0x190400 is withheld.
+
+Steps:
+
+1. Config: CONFIG_SPARSEMEM_VMEMMAP=y, CONFIG_MHP_MEMMAP_ON_MEMORY=y.
+
+2. Boot with memmap_on_memory, without auto-online:
+
+   vng --disable-kvm --run ./arch/x86/boot/bzImage \
+     --disable-microvm --memory 4G --cpus 4 \
+     --append "memory_hotplug.memmap_on_memory=1" \
+     --qemu-opts="-machine q35,cxl=on \
+       -object memory-backend-ram,id=vmem0,share=on,size=512M \
+       -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
+       -device cxl-rp,port=0,bus=cxl.1,id=rp0,chassis=0,slot=2 \
+       -device cxl-type3,bus=rp0,volatile-memdev=vmem0,id=cxl-vmem0 \
+       -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G \
+       -qmp unix:/tmp/qmp.sock,server=on,wait=off"
+
+   # cat /sys/module/memory_hotplug/parameters/memmap_on_memory
+   Y
+
+3. Inject Internal poison over QMP (host):
+
+   { "execute": "cxl-inject-poison",
+     "arguments": { "path": "/machine/peripheral/cxl-vmem0",
+                    "start": 1048576, "length": 64 } }
+   { "execute": "cxl-inject-poison",
+     "arguments": { "path": "/machine/peripheral/cxl-vmem0",
+                    "start": 4194304, "length": 64 } }
+
+4. Create the region with kmem not yet bound, then enable
+   memmap_on_memory on the dax device:
+
+   # grep MemTotal /proc/meminfo
+   MemTotal:        3999996 kB
+   # echo 0 > /sys/bus/dax/drivers_autoprobe
+   # cxl create-region -m -t ram -d decoder0.0 -w 1 mem0
+   cxl_region region0: withholding 2 frame(s) reported poisoned by the device
+   # echo 1 > /sys/bus/dax/devices/dax0.0/memmap_on_memory
+
+5. Add and online the memory:
+
+   # daxctl reconfigure-device --mode=system-ram dax0.0
+   # lsmem
+   0x0000000190000000-0x00000001afffffff  512M online  yes 50-53
+
+6. Result:
+
+   # grep -E 'MemTotal|HardwareCorrupted' /proc/meminfo
+   MemTotal:        4516092 kB
+   HardwareCorrupted:     4 kB
+   # tools/mm/page-types -a 0x190000+0x20000 -b hwpoison -l
+   offset  len  flags
+   190400  1    ___________________X_______________________
+
+MemTotal grows by 504 MiB rather than 512 MiB (4 blocks x 2 MiB of
+memmap), so memmap_on_memory was in effect. Only 0x190400 is
+hwpoisoned; 0x190100 holds struct pages.
+
+> 
+> What about draw a clear line between normal RAM and hot-add CXL memory, have
+> the latter gone through the thorough check and do the rest you want ?
+> 
+> Best regards,
+> Richard Cheng.
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+>  
 
