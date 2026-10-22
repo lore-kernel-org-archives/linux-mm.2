@@ -1,101 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD003606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 11:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704B2606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 11:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dtlYIa9D
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q5Pk8ONW
 Received: by kanga.kvack.org (Postfix)
-	id E4E956B0916; Thu, 22 Oct 2026 07:46:05 -0400 (EDT)
+	id 8AE7F6B091A; Thu, 22 Oct 2026 07:48:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFF996B0918; Thu, 22 Oct 2026 07:46:05 -0400 (EDT)
+	id 88DB16B091C; Thu, 22 Oct 2026 07:48:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3C0F6B0919; Thu, 22 Oct 2026 07:46:05 -0400 (EDT)
+	id 79C7E6B091B; Thu, 22 Oct 2026 07:48:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AA7CE6B0916
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:46:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A40E6C07D0
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:46:04 +0000 (UTC)
-X-FDA: 85350083448.23.E7C583C
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf31.hostedemail.com (Postfix) with ESMTP id C4AF320006
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:46:01 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dtlYIa9D;
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792669562;
-	b=sl9bq4xZWpdrUJb0ghNM6D2Mk//48D1DxlZHi+PSLO4FF7KfYunOoWz0xH8ddDbmABUfLc
-	fLjCYUf7485HtOABxLugKbugP6QYnBpMZc0iVRQ0+I4dmC2pNOEdqhyruWPqN1X8ZX3kYx
-	0/yNEX3FRsRoyES4va5xDuGJi8WBCcs=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dtlYIa9D;
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5532E6B0919
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:48:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4C2BA84A9
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:48:38 +0000 (UTC)
+X-FDA: 85350089916.30.928CD72
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4682E20005
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 11:48:37 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q5Pk8ONW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792669562;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=USbtgh62wFC1WQ6cU2P1Xc6e6Ra4Ga/3qKN+14Dq2pQ=;
-	b=F5RqT/SZbDiqnGhMdqvR+Z9BoDNyV/kuAVy4ggin0AE7t9f6ABLv+cCnrMq3FG4qU2jUn2
-	/YwFFVjndIAt+rBmw7dFac3bi8ft42UoELYeGvP0hXTSmq2H1yxGk6WShgGQ6LjABeIBsv
-	vJSsFf8xnnHCxRWnqtctwAf7wk46fz8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792669562; x=1824205562;
-  h=date:from:to:cc:subject:message-id;
-  bh=HKxHSVHqAYPZmYpFDbYDrsW4NXQmpQX1pMNdm1jLBBo=;
-  b=dtlYIa9D2SAuTRkGfMA7lwbWV6ghr89lOxntc9lnK/l7fxOEjIYD66er
-   5PLr9iLpgWKUHAYhltp8iq8DIpLbKXRGGsOcocZLIHDnL5xtRaJbbaFf6
-   i7pEps0oJo9Vhwa3Ot8pxnIiuQqRlqQUm6ParjcqANuOCwmDxZErJayt5
-   QaNdAIDY/WQ7+MJHc093Dgy7TqZKYPLhmnX4cWzUels+MtX1zk2g9dmrz
-   Ig/G3TjPbrXuuGYRkIt6NV22llCK8+zAvntm9nEid1Vm7wq2hD4hLKqVS
-   Kn3zCUhdVpGla+lXEZL/x0PfAACVRYx1wvLl8nfHHKFjA4yuBn3oIl6zi
-   g==;
-X-CSE-ConnectionGUID: cdp9kLndTx6aSHzEVckMWA==
-X-CSE-MsgGUID: WVr4aE1kTFCNE9nt8KfeWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1424312"
-X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="1424312"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 04:46:00 -0700
-X-CSE-ConnectionGUID: fc1UzM6aQ0u7TltgRva7Nw==
-X-CSE-MsgGUID: k0aPXvojR7Gbvol0ptSk8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="3733808"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 22 Oct 2026 04:45:58 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xJrF5-00000000QzS-3xIi;
-	Thu, 22 Oct 2026 11:45:55 +0000
-Date: Thu, 22 Oct 2026 19:45:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6
-Message-ID: <202610221944.PBO9ny7O-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: nbx5w6sucakonty9jowsef4inmj7nzzb
+	s=arc-20220608; t=1792669717;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fq4LdQ5nq8LydP2J0wH/opLoXwfhZZtfnxkhi3Y1vtI=;
+	b=w5QiK3f8gHTxL979VRv1cpN6McSImz/QyLmdCLgK+xEn8rH7Rx+iVd7wjBEDZ1Puy855Hf
+	wuhQIkIFT/c8YMBDSSXDXH66uGxSVYaExeqOZmKiCKpNNd9BLXFsF5ake6x00DN0xT7+Bu
+	vL78Yug+fCuZYI4yt7Q9BMLj18YAuSs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q5Pk8ONW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792669717;
+	b=lRvtZSxB/v66T/kzxGewMje46r5AYZomgsWS/9n66MjuPZ+eTDPqzZSjsEuZ4W482YdUe0
+	jGjj5dhOgcxoU5t5hqPo0XqZh+8PTKnbMwToMJQ8srnxPaR7UdLvdcxrUwGIlC7O4s2c8i
+	ATmf5DVQ3EOZjXimxZIxlMB0IDaawyw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F93D4011F;
+	Thu, 22 Oct 2026 11:48:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39E61F000C4;
+	Thu, 22 Oct 2026 11:48:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792669715;
+	bh=fq4LdQ5nq8LydP2J0wH/opLoXwfhZZtfnxkhi3Y1vtI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Q5Pk8ONWQCLExHTrAMPUlE5iPKfgBcsv5DgVcvDni0LSA4FViAgPGb8CrcKquGt61
+	 lIIx05J9N1YAtwSCxgxucsgTnk8I/BXsMxetswd1aKcc0e2JeScLFKuJdMer210DzG
+	 W/4OZEbn7miy9Qk36pZ1SVb1h1QDDYxCOCe2pCZLpPb+H0JIN657/ndh1xbAj+49rS
+	 o1YRAp66TmCt8oLPM83/ShSMuqvCuzNO5s4sk+OYp7VMzpRRS9XK20v/U4W1GSC6Zv
+	 2HPo5XaH9+7/caAGII0SOOleJqAoscZmY5wA1faaP4HRRP+lVT7QpEBFA9Fcie3Qhh
+	 qGLkOj0IER5Ig==
+Message-ID: <sashiko-outbox-181382@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH slab/for-next 01/14] mm/slab: allow passing
+ SLAB_MAY_ACCOUNT to kmem_cache_create()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SGFycnkgWW9vIChNZXRhKQ==?= <harry@kernel.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Michal
+ Hocko" <mhocko@kernel.org>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>
+Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
+ Rientjes" <rientjes@google.com>, "Muchun Song" <muchun.song@linux.dev>, "Hao
+ Ge" <hao.ge@linux.dev>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org, kernel-team@meta.com
+In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-1-096800aa3330@kernel.org>
+References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
+ <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-1-096800aa3330@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 11:48:34 +0000
+X-Rspamd-Queue-Id: 4682E20005
+X-Stat-Signature: ji68wmyn8cwoqmgny4kj6znpzi7x414e
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C4AF320006
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792669561-456951
-X-HE-Meta: U2FsdGVkX1/DiehsD/6XijKpKJoMZuYeOc893dpOk3qGzI9gt/Lf8Do36AcPi79Bo0XMhwfb8e+SbRV8G5xx182G2oBC7AKEzEjHkxzqGi3kCdtQv/my1edzEY1RfwPlx8lfALKLZw+HBI1tBjn4ZQqcYmAD712S7DYl/1m1Tj7o4PwmvLTsYnA9sd+GVpoLu4Ta5ECf+jaZ/mayuPmK5zE2YNlkI+nOIbnKAxBqBG5+YS5tAfuhJwFEuOTdArXdBtLu/pD6yP5Kl6RyzeHoVSCC8/KA7RSaW7SFD3JwUkLOMuKv641szaHbiSNVX+10AcviuGruzQqyhszK4j6U5YH+NSe3q+wKMWHiIOkXTfXbw7hoyf9fF7Xaknlw/5VUiYStrvQvB+snN1LdOdU7VIjSRcISMsS3amXo/GT5Zv5e338umso1D91ZY4851JuLyJT2E64Yo1iEr62nVYF9MxhZV6s6doDtZrFxLb8YHyzK9chvVNUGvXWC5onN1VfE+PLDxV5vko+AU2JZPXrfR83eauYn1tTItWXkOBlT6CcyoOklNQxa/ofuAVuPwjWrRYUXbYvasoLk2u9mxBN2lKWYackjmubD/riEjMyZKxXrIRPZ6kKopdQzE2cFtRxzVx3uge0JWkeKz+6dHvgOKbFEMFDqxAKerrCyQJMTzhdyicogbTgmhQmivwLodoVprXvQkFTf0EquTH6L3JSfdXg4ines2qpWfPRgkAxdgPW8r2xE3tm2BfEq0jcIk0B5HcqfO/T1OiIU8y2WfILh5sICnwTOgTQTrtFguWdmwgC9WbUi48jLZNCbiurxttbDxYFdLWjBRN1bHtXCeYuPmXX2yowKkzHVLrJNRx+jhZYrlOM4VdJwSMPhoEIGlaLNb6blcUI4ehReA+sIIitw6LGxjDNX7+MUv3vKIH+Hii7SNynDt4u53zJgYhB3A+qyUftIa+tG9XpAQbjPebb
- poaU26sc
- zPIe3+A7vhemekjA75clHJR+u0EU4i6e6AJxvCCMyMTQ3GUFlPgZ5do1/vV2bE6IjrOpHmS/H0WsUzpmqy6YnpJmqbD5+b+0QOskON0fKckaDXAljXOldDiiSUovBLCNs0zvKj/N18ttIGCZICe/7h6MMYlitK6LHQXtGV0BgmJT6/a+Zfyr1xmG9bmlPgQZLaU0/YYNrnc5Jn1Y=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792669717-198594
+X-HE-Meta: U2FsdGVkX1/yaZDw9ZpXPzqhgjSC2zIppQezJ7TmQ/mDPcykEz/8ytyfmmSQLkmhFs+MB12F44Xt/m4COgPETDl8j/r7+qWD+1c2zP8VdjATJvTk5A5dyiGGjtk5mSherQxGc7IZlTjGvvxFP6CmHOUjKYxaM3xrfzC3SxRxybLqF8rAQYOqkfm1CIzih8bv3ILL858ySs1fzioGLRb+nQ/HGaainisY4CbYL2RMHzHDQQyfEnJqMpQcGbUfh0NclA55aqc9bjy2Qb3ECrmvbFZKeiOVvl/YGL8K44G3TKb6bCOF85zvR/dVSzyMa+XL52OSLG4UNFu6zyKk6r8fWoyATsFd0RRdj+jnJJGkhaIi5xZkfpSKUms5Guevmo8aTA8l/neKdSAbOl+dwyOnex1NRskBPJ4aij+zJuBv9FJtqeF59X8oOIig7I8mq3PY8qHydriuFw9we8ZLZweKOf3VjZ3h8M9H6dC11ymlZCxROlb4JrIhVA5WdT2EBmBaoYXCiS26T8Z9ZzEQfE99ELuD1Zj99OOFND10T7ts5yjStulgqBW8MNpiftWbNvcLNulv1p5qZ/QhziiEELr8GPnZJdBVAmQfipYv7boUMUu+dopOxcrPk7UFf970YoCLF5t/qQKReXOOtqhXJXUFuKEQyXjFl38z/dDml5qtMHrhqREp67zkws4spftgsxcVmKMj94EIzwN4TP9Bj3SPllf+xaAMnP1HmoHqKKAGfVCsWA/pxEyWlkibmj5JNGW6oRS27e3TFNK+rh7ENsnhSiMetKPdlfiyPWhJQ+JHL9LyH4QNfyYh0EF9XNZrzr1DQwvM9XoXHnDdNPqQtmkJAd0H6WV+Ttskqp3qbTns9koUE8Z83ncUywj1v2R6lt5ideZow8K3nNtHfjn7FLh+wFVuaXDho4z+nPjnUjF8Uiskogvr38LOoIqUEyWkeAL2UXahWpAuZSoM1nVBzIy
+ j/WlRRhI
+ 5uvdnkQ77EacXoidFlLbJza7ry46InbHnHjmGiBmwJ10R2sVohwoCTpMLF7dHGqGhlhM/VFcZI9Yt+xJ4R6euw90AOYBrvjsDGBmzc0ENx94GOzkHWOgusEJnWljnl7YHxT4gdssyRMYfsjJ2quasY+Q/mwtJaLnz2UvRmpRm7WpYQmP08u+xtx3N5yk1OQc56oVFdwe3xazvBwKiV+E5qtU76cNuDIo8UQkhuLg5+USv1mx+/VdX03pUzIepiRT435epKBYaeCpb9rubjjbWiQPixp7pMhkAJynN/AP1roB8FxceT1ZZA/LzFmzXpAdy7YyCpW4SX0L3ymN3zNZuZ+xdfTh/qYGSS58Xsyskis1A+wD2i20htZVJoBm8UKB1dP/sDBnf7c7MFq09caMihEzF0KuEpP6BWiiZ4Gt5yAQ/j+kThljeRvdpaI7dW7SQ/M45r16dtiUIZk1WmHeakwoDbg3alt6Nu0ZHcJPiMoMIgXuMj5qYgbKYXjD2y/kqnyVto/6gYQ8tk9W9xkFAUe9XjWCEMs90NRk1P7zQwbl/uUxXXBxBfB7eIP17QyWZPPVgPK6PbcAvM/wi8t7RJBv8Wjko0v3nuxozUGHt+B/Nir09gcGBrbdhR8qK1UykEAI6OLrj0sG5WsHWZ6fCah8CnlnbotokiOqjZohsnf8/TVQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,182 +100,111 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6  riscv: mm: fix concurrency in mark_new_valid_map()
-
-elapsed time: 1542m
-
-configs tested: 162
-configs skipped: 8
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                              allnoconfig    gcc-16.2.0
-alpha                             allyesconfig    gcc-16.2.0
-alpha                                defconfig    gcc-16.2.0
-arc                               allmodconfig    gcc-16.2.0
-arc                                allnoconfig    gcc-16.2.0
-arc                               allyesconfig    gcc-16.2.0
-arc                                  defconfig    gcc-16.2.0
-arc                   randconfig-1000-20261022    gcc-11.5.0
-arc                   randconfig-1001-20261022    gcc-8.5.0
-arm                                allnoconfig    clang-17
-arm                               allyesconfig    gcc-16.2.0
-arm                           collie_defconfig    gcc-16.2.0
-arm                                  defconfig    clang-24
-arm                       integrator_defconfig    clang-24
-arm                   randconfig-1000-20261022    gcc-10.5.0
-arm                   randconfig-1001-20261022    clang-21
-arm                   randconfig-1002-20261022    clang-17
-arm                   randconfig-1003-20261022    clang-19
-arm                         vexpress_defconfig    gcc-16.2.0
-arm64                             allmodconfig    clang-24
-arm64                              allnoconfig    gcc-16.2.0
-arm64                                defconfig    gcc-16.2.0
-arm64                 randconfig-1000-20261021    clang-21
-arm64                 randconfig-1001-20261021    gcc-13.5.0
-arm64                 randconfig-1002-20261021    clang-24
-arm64                 randconfig-1003-20261021    gcc-8.5.0
-csky                              allmodconfig    gcc-16.2.0
-csky                               allnoconfig    gcc-16.2.0
-csky                                 defconfig    gcc-16.2.0
-csky                  randconfig-1000-20261021    gcc-16.2.0
-csky                  randconfig-1001-20261021    gcc-10.5.0
-hexagon                           allmodconfig    clang-24
-hexagon                            allnoconfig    clang-24
-hexagon                              defconfig    clang-24
-hexagon               randconfig-1000-20261021    clang-24
-hexagon               randconfig-1001-20261021    clang-24
-i386                              allmodconfig    gcc-14
-i386                               allnoconfig    gcc-14
-i386        buildonly-randconfig-1000-20261021    gcc-14
-i386        buildonly-randconfig-1001-20261021    gcc-14
-i386        buildonly-randconfig-1002-20261021    gcc-14
-i386        buildonly-randconfig-1003-20261021    clang-22
-i386        buildonly-randconfig-1004-20261021    clang-22
-i386        buildonly-randconfig-1005-20261021    gcc-14
-i386                                 defconfig    clang-22
-i386                  randconfig-1000-20261021    clang-22
-i386                  randconfig-1001-20261021    gcc-14
-i386                  randconfig-1002-20261021    clang-22
-i386                  randconfig-1003-20261021    gcc-14
-i386                  randconfig-1004-20261021    gcc-14
-i386                  randconfig-1005-20261021    clang-22
-i386                  randconfig-1006-20261021    gcc-14
-i386                  randconfig-1007-20261021    clang-22
-i386                  randconfig-1008-20261021    gcc-12
-i386                  randconfig-1009-20261021    gcc-14
-i386                  randconfig-1010-20261021    clang-22
-i386                  randconfig-1011-20261021    clang-22
-i386                  randconfig-1012-20261021    clang-22
-i386                  randconfig-1013-20261021    clang-22
-loongarch                         allmodconfig    clang-19
-loongarch                          allnoconfig    clang-20
-loongarch                            defconfig    clang-24
-loongarch             randconfig-1000-20261021    gcc-15.3.0
-loongarch             randconfig-1001-20261021    clang-21
-m68k                              allmodconfig    gcc-16.2.0
-m68k                               allnoconfig    gcc-16.2.0
-m68k                              allyesconfig    gcc-16.2.0
-m68k                                 defconfig    gcc-16.2.0
-m68k                           multi_defconfig    gcc-16.2.0
-m68k                          nettel_defconfig    gcc-16.2.0
-m68k                           sun3x_defconfig    gcc-16.2.0
-microblaze                         allnoconfig    gcc-16.2.0
-microblaze                        allyesconfig    gcc-16.2.0
-microblaze                           defconfig    gcc-16.2.0
-mips                               allnoconfig    gcc-16.2.0
-mips                              allyesconfig    gcc-16.2.0
-nios2                             allmodconfig    gcc-11.5.0
-nios2                              allnoconfig    gcc-11.5.0
-nios2                                defconfig    gcc-11.5.0
-nios2                 randconfig-1000-20261021    gcc-11.5.0
-nios2                 randconfig-1001-20261021    gcc-11.5.0
-openrisc                          allmodconfig    gcc-16.2.0
-openrisc                           allnoconfig    gcc-16.2.0
-openrisc                             defconfig    gcc-16.2.0
-parisc                            allmodconfig    gcc-16.2.0
-parisc                             allnoconfig    gcc-16.2.0
-parisc                            allyesconfig    gcc-16.2.0
-parisc                               defconfig    gcc-16.2.0
-parisc                randconfig-1000-20261022    gcc-8.5.0
-parisc                randconfig-1001-20261022    gcc-15.3.0
-parisc64                             defconfig    gcc-16.2.0
-powerpc                            allnoconfig    gcc-16.2.0
-powerpc                       chrp32_defconfig    clang-24
-powerpc               randconfig-1000-20261022    gcc-14.4.0
-powerpc               randconfig-1001-20261022    clang-24
-powerpc64             randconfig-1000-20261022    gcc-12.5.0
-powerpc64             randconfig-1001-20261022    clang-24
-riscv                             allmodconfig    clang-24
-riscv                              allnoconfig    gcc-16.2.0
-riscv                             allyesconfig    clang-24
-riscv                                defconfig    clang-24
-riscv                 randconfig-1000-20261021    gcc-13.5.0
-riscv                 randconfig-1001-20261021    gcc-15.3.0
-s390                              allmodconfig    clang-24
-s390                               allnoconfig    clang-24
-s390                                 defconfig    clang-18
-s390                  randconfig-1000-20261021    clang-24
-s390                  randconfig-1001-20261021    gcc-8.5.0
-sh                                allmodconfig    gcc-16.2.0
-sh                                 allnoconfig    gcc-16.2.0
-sh                                allyesconfig    gcc-16.2.0
-sh                                   defconfig    gcc-16.2.0
-sh                    randconfig-1000-20261021    gcc-16.2.0
-sh                    randconfig-1001-20261021    gcc-10.5.0
-sh                           rsk7203_defconfig    gcc-16.2.0
-sparc                              allnoconfig    gcc-16.2.0
-sparc                                defconfig    gcc-16.2.0
-sparc                 randconfig-1000-20261021    gcc-16.2.0
-sparc                 randconfig-1001-20261021    gcc-16.2.0
-sparc64                           allmodconfig    clang-20
-sparc64                              defconfig    clang-24
-sparc64               randconfig-1000-20261021    gcc-8.5.0
-sparc64               randconfig-1001-20261021    gcc-11.5.0
-um                                allmodconfig    clang-17
-um                                 allnoconfig    clang-17
-um                                allyesconfig    gcc-14
-um                                   defconfig    clang-24
-um                              i386_defconfig    gcc-14
-um                    randconfig-1000-20261021    clang-24
-um                    randconfig-1001-20261021    clang-24
-um                            x86_64_defconfig    clang-24
-x86_64                             allnoconfig    clang-22
-x86_64      buildonly-randconfig-1000-20261021    gcc-14
-x86_64      buildonly-randconfig-1001-20261021    gcc-12
-x86_64      buildonly-randconfig-1002-20261021    gcc-14
-x86_64      buildonly-randconfig-1003-20261021    gcc-14
-x86_64      buildonly-randconfig-1004-20261021    clang-22
-x86_64      buildonly-randconfig-1005-20261021    clang-22
-x86_64                               defconfig    gcc-14
-x86_64                randconfig-1000-20261021    clang-22
-x86_64                randconfig-1001-20261021    clang-22
-x86_64                randconfig-1002-20261021    gcc-14
-x86_64                randconfig-1003-20261021    gcc-14
-x86_64                randconfig-1004-20261021    gcc-14
-x86_64                randconfig-1005-20261021    clang-22
-x86_64                randconfig-1006-20261021    gcc-14
-x86_64                randconfig-1007-20261021    clang-22
-x86_64                randconfig-1008-20261021    gcc-14
-x86_64                randconfig-1009-20261021    gcc-14
-x86_64                randconfig-1010-20261021    gcc-13
-x86_64                randconfig-1011-20261021    clang-22
-x86_64                randconfig-1012-20261021    gcc-14
-x86_64                randconfig-1013-20261021    gcc-13
-x86_64                randconfig-1014-20261021    clang-22
-x86_64                randconfig-1015-20261021    gcc-14
-x86_64                randconfig-1016-20261021    clang-22
-x86_64                randconfig-1017-20261021    clang-22
-x86_64                           rhel-9.4-rust    clang-22
-xtensa                             allnoconfig    gcc-16.2.0
-xtensa                            allyesconfig    gcc-16.2.0
-xtensa                randconfig-1000-20261021    gcc-14.4.0
-xtensa                randconfig-1001-20261021    gcc-8.5.0
-
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/slab: unhandled SLAB_MAY_ACCOUNT in create_unique_id() and no=
+kmem path
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+commit 6d48a33523fd53d7ecd1bf1fa6ab70ec7126128f
+Author: Harry Yoo (Meta) <harry@kernel.org>
+
+mm/slab: allow passing SLAB_MAY_ACCOUNT to kmem_cache_create()
+
+This commit adds SLAB_MAY_ACCOUNT to SLAB_CORE_FLAGS so callers of
+kmem_cache_create() can explicitly specify SLAB_MAY_ACCOUNT for caches whose
+objects may be allocated with __GFP_ACCOUNT.
+
+> diff --git a/mm/slab.h b/mm/slab.h
+> index e94ac63d10dc0..31783311e23ea 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -472,7 +472,7 @@ void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
+>  			 SLAB_CACHE_DMA32 | SLAB_PANIC | \
+>  			 SLAB_TYPESAFE_BY_RCU | SLAB_DEBUG_OBJECTS | \
+>  			 SLAB_NOLEAKTRACE | SLAB_RECLAIM_ACCOUNT | \
+> -			 SLAB_TEMPORARY | SLAB_ACCOUNT | \
+> +			 SLAB_TEMPORARY | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT | \
+>  			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE)
+> =20
+>  #define SLAB_DEBUG_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER =
+| \
+
+[Severity: Medium]
+When callers pass SLAB_MAY_ACCOUNT to kmem_cache_create(), could this cause=
+ a
+sysfs kobject naming collision in create_unique_id() as well as unhandled
+SLAB_MAY_ACCOUNT state when mem_cgroup_kmem_disabled() is true?
+
+In mm/slab_common.c, SLAB_MAY_ACCOUNT is included in SLAB_MERGE_SAME:
+
+#define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
+			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
+
+so find_mergeable() will not merge two aliasable caches of the same size if
+only one of them has SLAB_MAY_ACCOUNT set.
+
+However, in mm/slub.c, when do_kmem_cache_create() -> sysfs_slab_add() ->
+create_unique_id() generates the sysfs identifier for an aliasable cache,
+SLAB_MAY_ACCOUNT is not encoded into the name:
+
+static char *create_unique_id(struct kmem_cache *s)
+{
+	...
+	if (s->flags & SLAB_CACHE_DMA)
+		*p++ =3D 'd';
+	if (s->flags & SLAB_CACHE_DMA32)
+		*p++ =3D 'D';
+	if (s->flags & SLAB_RECLAIM_ACCOUNT)
+		*p++ =3D 'a';
+	if (s->flags & SLAB_CONSISTENCY_CHECKS)
+		*p++ =3D 'F';
+	if (s->flags & SLAB_ACCOUNT)
+		*p++ =3D 'A';
+	if (p !=3D name + 1)
+		*p++ =3D '-';
+	p +=3D snprintf(p, ID_STR_LENGTH - (p - name), "%07u", s->size);
+
+Because create_unique_id() omits SLAB_MAY_ACCOUNT, two unmerged aliasable
+caches of the same size that differ only in SLAB_MAY_ACCOUNT will produce t=
+he
+same sysfs ID string, causing kobject_init_and_add() in sysfs_slab_add() to
+fail with -EEXIST and trigger a sysfs_warn_dup() warning.
+
+In addition, in mm/slab_common.c, __kmem_cache_create_args() currently does:
+
+	if (!mem_cgroup_kmem_disabled())
+		flags |=3D SLAB_MAY_ACCOUNT;
+
+If mem_cgroup_kmem_disabled() is true (for example, with
+cgroup.memory=3Dnokmem) and a caller passes SLAB_MAY_ACCOUNT, the flag is n=
+ot
+cleared. That prevents find_mergeable() from merging the cache with caches
+that lack SLAB_MAY_ACCOUNT (triggering the create_unique_id() collision
+above), and causes cache_needs_objcg() in mm/slab.h:
+
+static inline bool cache_needs_objcg(struct kmem_cache *cache)
+{
+	return (cache->flags & SLAB_MAY_ACCOUNT);
+}
+
+to return true, reserving unused _objcg metadata space via
+cache_obj_ext_size() and slab_obj_ext_size() when slab object extensions are
+allocated.
+
+Note that a later change in the series, commit 51cadd40978b ("mm/slab: do n=
+ot
+set SLAB_MAY_ACCOUNT for all caches"), clears SLAB_MAY_ACCOUNT in
+__kmem_cache_create_args() when mem_cgroup_kmem_disabled() is true, but it
+does not update create_unique_id(), where the sysfs ID collision will then
+also occur on default boots once SLAB_MAY_ACCOUNT is no longer set on all
+caches.
+
+Should create_unique_id() encode SLAB_MAY_ACCOUNT, and should
+__kmem_cache_create_args() strip SLAB_MAY_ACCOUNT when
+mem_cgroup_kmem_disabled() is true here as well?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021-memalloc-p=
+rof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org?part=3D1
 
