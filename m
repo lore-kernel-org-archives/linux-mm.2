@@ -1,127 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43097606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B46606A322
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=E1PXjego
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=sshaKQJu
 Received: by kanga.kvack.org (Postfix)
-	id 36A5E6B084F; Wed, 21 Oct 2026 22:55:48 -0400 (EDT)
+	id E1D046B085B; Wed, 21 Oct 2026 22:57:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31B0C6B0859; Wed, 21 Oct 2026 22:55:48 -0400 (EDT)
+	id DF3E36B085C; Wed, 21 Oct 2026 22:57:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230FA6B085A; Wed, 21 Oct 2026 22:55:48 -0400 (EDT)
+	id D0C9A6B085D; Wed, 21 Oct 2026 22:57:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E3C526B084F
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:55:47 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 673501A070C
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:55:47 +0000 (UTC)
-X-FDA: 85348747134.06.ACE4AC8
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8BDD8C0002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:55:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=E1PXjego;
-	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792637745;
-	b=LhDMbC2osvGVrjaKmi/F6a4PBWP898IOt1phKeGikCXOPapfzNng14f1FITj/Wcs5CsIOO
-	j25n+qSxjXOliDFgJeav1jCUBN2J+h8kzVGyaLy9iM4UFk4ZeNHEqMGBX2rBYPRK4L1l25
-	vaNX57y9zHVwQxI4BC97cZ91b43Ae3o=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=E1PXjego;
-	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A6A3A6B085B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:57:33 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B75F1406B1
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:57:33 +0000 (UTC)
+X-FDA: 85348751586.14.68216B2
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 400051C0003
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:57:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=sshaKQJu;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792637745;
+	s=arc-20220608; t=1792637851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cr4fF23yKRo0SqQXK8klVw/Syk8sr6hkGOQHdTp+MUU=;
-	b=CfAKxUpJoWsr77pA1e9pmCuwqqBgwJMe0JAMduFdCWibINLraeSJnmTQMnB1vkgHvMoiV6
-	tXW78IXAsxCuToLxO5PW2ePmuq196y3+zajdgSTDhjdOWuB70+yd6H6UoRCKLONB6CE+FX
-	YxzoO0V2KpoqUYj/0NR0odhRukDThVU=
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso2403705eec.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:55:45 -0700 (PDT)
+	bh=jbCDllRU5wYbKPFOhnGrl1xB/avA24qTnso9VdtaQCs=;
+	b=12EqtoM2iyHsBktRcJvsoudPPtVIjlDrZkctCB4ZU/MiK3NcDcdAzIg83RbWP4BnVkTBvC
+	W9Er+JTMDYLY6KJfPVgN4Ct3Xor4tbdExEx/vYBluj0FgsQfpN1L9Ttwlnfu42UxKtXBlR
+	Zq7BzrKMKIBSSeVnZ+Ces8ktqftRjMI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=sshaKQJu;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792637851;
+	b=kyFWWIJ+Xrxnfi5WiNrqbi4hZtpW3mr8+b+aZKNyThCxjgWQULUa4eBFPIzVCgdMUzz06g
+	5zMLwaRz6M2J+URAjiHQm2BdKEarngv3D1w9v0hp9c3nPIfpEG7Ut6hdCT7Uz8WbeSAvld
+	DW0KinFjygGk2TyyB9iVoD8YZZMkLpQ=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93f1cf92c9eso140981085a.0
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:57:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792637744; x=1793242544; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Cr4fF23yKRo0SqQXK8klVw/Syk8sr6hkGOQHdTp+MUU=;
-        b=E1PXjegoLVmhmQ/YgCwNW6EFWx87RdosqehV1QHTJ/yHabTdoNNPt/taVvn08U/blK
-         SnDDbaBbVNHUsfsGIbzTJozGUSUTVrISBfrlT0UIk02xnR29U7vDNFdexJBMFo5cu3x3
-         tFSg/cObSRRMiL9oIBDTy5JBlk6+zLd3SEQhw=
+        d=gourry.net; s=google; t=1792637850; x=1793242650; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jbCDllRU5wYbKPFOhnGrl1xB/avA24qTnso9VdtaQCs=;
+        b=sshaKQJumPFSaXbMXhetmuU6KIhKEOV2zMmOdRW4NVRjA5YJ7Y8rwbLoKYJkUaNQYO
+         2yXDJ7x+6bPxEaURbAdPON0INy9/S+jqC3DMi2nHsNLbyr/IWpHSgaanarQZYKEboWxn
+         Efj3RjAf+XECpdSqgeDSOpGmGKYv1rwBcGK5npDsyGlKbqV8CxWHIBR892xnZwjR4v7B
+         1LlorXT9Li3D11OgawFkfFnJIZz0dvIX36Vsxw7AVoN3kP3ZIcuql3fwNhW1CY5iBw90
+         8fjVZf4Hpgi5+I2g4b+qQX8zbjEo1Kx7a+Xuh8CjTUQj8inWKbkFQE50eH+JRxSCCqA1
+         hihw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792637744; x=1793242544;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Cr4fF23yKRo0SqQXK8klVw/Syk8sr6hkGOQHdTp+MUU=;
-        b=GjYni9ZIxO89ggFufg9BhT7+95RBKXZzMqwbJzKSmqtYuHDRyWarhU7qb+h2nOVjaL
-         rypc7oKmni+pAcc5hDURzW6QRg/TiRyd8dz52Z7sf2R+L5h888eDu3HdTV8uGzdn2GC6
-         5CHvQxLtUocT1e6c9mUX+9oyvGyIM8NGCW2994FP9spY0UV8028EZpVnwujfZdxXeFhc
-         BJ4B1V4oJ/7tzGkN3PO6DFw9+bNFOj8ZFvE8SbOON+CWeUg+xBXMjZpg4CKaF32hczcf
-         60gKrL1dmDaTrVkhN4SDuCUu/1AqTx+H0q1YsSF9ukYCr9H7vOR2op9X2MPIzBKfaZFM
-         CKbQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzVL2PkSXVq6myKovo2nG/EKDOAkr0R5lnCe6ZyVegjRqi3YHggYuY7IbZi4KGgAx4Zt24dVCkjoA==@kvack.org
-X-Gm-Message-State: AFq9FYL4MeISZOo68RSuFjq0am9ozF2OdrR3WfVq8Pb1sWCKy6EB9Tfa
-	rV+J1Z2H6tyJTx/VYu3z4kB2gllXUXwfvSCqoWCdJfLbxEhFuEgLs1AV5l+NY7SFTg==
-X-Gm-Gg: AYBFou2y6f1kUM5Tuecatd9K/HlV1JSZlAeGdu6TEHp8do/x8PGAYAr/5ztJ0Xw9b04
-	8iBmRpQHkD+KE5WOK6WuA+6n2v8/KZK72kmXLtDfH7llOjZgj0tlRRpaLCLDsI3Erw91X0/puyj
-	TSxJF94vcXdJQS5/Yqy2x9/B2vucEcaBHypCZj7eRur2F/yrmVa1vD4rTg5SdSqIcUEUqSgs24P
-	QY6xVtw/ik4eYkVThETL/tvJYnenQKIECfoIKy6WQYf+1RDOKN84Q3liwZvGEJeI8/z1lKwSf1Y
-	tHDU0VnEzLK6pbdFWZmn4Pw2eYwxjPkOZ2aQoTEMHBRsucDHeXQY+vwaX0erl0poxgPBWZFtg6G
-	d7i68RQgJB0RhVXQn4mi6wq+4liA69fJJP7+RqlH5Vw3ZXrXBQpYsAj9LfZCwQCd2GGVRHV48Xm
-	LjJJ1Fm6ZNdntUEGNacjwmpB9+9t/Otheiar29w+4XhMkzjbi8fxW82kBP+2AOuVr939yR0erYW
-	G+zN0JAqB4Vf/Wei6OVhpPH8IGQq85lWdOvnna/6g5NaDPtr64eAdVo/v/4wBa0hWoowhh4xVbL
-	Hwrl08+uUKwXqSzjppLnKqh/HzjBGoHPM/njLDsiEg==
-X-Received: by 2002:a05:7301:f89:b0:35c:85fa:5a61 with SMTP id 5a478bee46e88-3674f1186b6mr4958712eec.38.1792637744268;
-        Wed, 21 Oct 2026 19:55:44 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:5145:5add:2df6:4671])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-367405ee5e3sm11457355eec.4.2026.10.21.19.55.40
+        d=1e100.net; s=20260707; t=1792637850; x=1793242650;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jbCDllRU5wYbKPFOhnGrl1xB/avA24qTnso9VdtaQCs=;
+        b=0JGR/+bEM4m/qbp0BHrgzqPbftA2nhE5VoeIaHKu9x3p78z/9LUJEz9FTfP/CaTqNQ
+         zsERNUKuzPUQnThlBPiBKsLUylLKQWVsfT2PRm59BV7O8V8deE/On58Zpu4k2Z0s8Uwr
+         tQoHnBEPaRCsYIc43kAa371VyQafGq81IqoCnifkW4P0IN71oiRxpW1OB+Xdra8bq/a8
+         PjNgEU7381TZiYAKxe++cvmeRa7Rgzyke0GDZvgjDnNzmq4iedtPLkYgJ/btG4dpwFps
+         /1LOVz2H9TtOzbLMMxUH7+W4IH04dQAmPr3QBfvKI0tUN+n2WtBw0634lpxEYWIhnPRR
+         FMDA==
+X-Forwarded-Encrypted: i=1; AKwUvBxgg2yCV8sFQsIrhX8f8Mk+FpFi52fxLOHxxk5FNG3veGWJ+X3z7uBKfCkgsMIXRtXhY92bbJOHCw==@kvack.org
+X-Gm-Message-State: AFq9FYKwMZ87na9649XXWhNKhmyq9M0u7OiEG72RUcX5Y6YHHvxwENzt
+	Kdic9OOME1iI7U4kFW5bm91+1S7brGrtChBm43GnCfeIGfjbWMcc9QIbnWDKRifZco0=
+X-Gm-Gg: AYBFou3jXsoxJIwvnoz/z8LX5A38sSVifDFUt2CbTbj8bZjnfOBAbWLytxbxp09jBsg
+	wyTEe2f9ENjOFDXxn0BEnLQzZBg/PlOcgFVZAAi8taDZPYvnwxlFGQ7n1uOfnC6kR42UNqOiRPw
+	gr1jt3wDiFcDTr5aYHGwWqJs+lQCKJw3cpsvFurNNS9L8LwN1lAF4R5jqaJLcB410QKqlNmfYon
+	f9hf8QE8HQtJLD5mSsIKb0ny6GghHy02X1mmvR874mviDNrQMO2eMeoZqKmtuqhm6vtpOEgDpPX
+	2ltnYQkuku32w7KtUIaKwClkWR5WQwujrlTcvPXUbeQEaISCCbBk59HLMFRPdyS9Ww3ekKh5HF1
+	f/OLHKsMfFm+QCNsBzj8MkaZSqy9JUtY/V1d+dr/EE1wGMwj9z09uOAVmK1uagbHgDdiQ7RCTXk
+	cnHHYI3a3JB+XJsiFg78CcB07hMaa5i5BUFLnk8OXyu6nDdkpM5bbobCdRY4UerXOvZPzeMU3vq
+	sSUewbly4ds8iet+natx+EjbLWolosDJruM7t7NqBiqr0vJ6cUAabk4IcGV8klhRuabW5BwJtxF
+	jSbBUXvybF6ZAg8NmTrQbyjunc8=
+X-Received: by 2002:a05:620a:2415:10b0:93f:5cc0:5978 with SMTP id af79cd13be357-93f5cc05b2cmr353949485a.37.1792637850409;
+        Wed, 21 Oct 2026 19:57:30 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56e30610sm406637385a.43.2026.10.21.19.57.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 19:55:43 -0700 (PDT)
-Date: Thu, 22 Oct 2026 11:55:38 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Hongfeng Chen <chenhongfeng0212@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Barry Song <baohua@kernel.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jens Axboe <axboe@kernel.dk>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Wenchao Hao <haowenchao@xiaomi.com>, Wenchao Hao <haowenchao22@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	Hongfeng Chen <hongfengchen@xiaomi.com>
-Subject: Re: [RFC PATCH v4 0/2] mm/zsmalloc: defer object free to per-cpu
- batches
-Message-ID: <atl6mcXcDt9NZoW8@google.com>
-References: <20261016120927.3191690-1-hongfengchen@xiaomi.com>
- <CAKEwX=ONniSwdiZAe_8NT5XwVj=Mmc-WJs_rWE4Y5snjFg2=Eg@mail.gmail.com>
+        Wed, 21 Oct 2026 19:57:28 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=ONniSwdiZAe_8NT5XwVj=Mmc-WJs_rWE4Y5snjFg2=Eg@mail.gmail.com>
-X-Stat-Signature: zc6fhi3esucc3dbweme8xiegdjtayw85
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8BDD8C0002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH bpf-next 3/9] uprobes/x86: Finish an unoptimization
+ which failed half-way
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+ eddyz87@gmail.com, memxor@gmail.com, oleg@redhat.com, peterz@infradead.org, 
+ mhiramat@kernel.org, jolsa@kernel.org, akpm@linux-foundation.org, 
+ liam@infradead.org, ljs@kernel.org, surenb@google.com, david@kernel.org, 
+ vbabka@kernel.org, jannh@google.com, hughd@google.com, kees@kernel.org, 
+ mingo@redhat.com, tglx@kernel.org, x86@kernel.org, 
+ linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261022015712.1297331-4-alexei.starovoitov@gmail.com>
+References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
+ <20261022015712.1297331-4-alexei.starovoitov@gmail.com>
+Date: Wed, 21 Oct 2026 22:57:26 -0400
+Message-Id: <179263784614.2549665.557126403507804820.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 400051C0003
+X-Stat-Signature: 5zdshfppdjzy8mxj63bj1bkktw8ffifk
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792637745-581165
-X-HE-Meta: U2FsdGVkX19wHFqu7AzmrrO/V+3gsFHMxv7Lji32+B2zJMJjskrCD4KsqMmBDHYYsJyX9YNZTDz68qZoe0OmmwVNFBP8lXL2b8Yy/ajSd/3xR2wDWpyKRGgxD3WwrnfGBQWiRw1dc5w680+jucRX3U+gfbjeglDpK7eaJv8d5rbzDU5l+glfZbuxWpGO/ua7WzHTgA/VvXnHzzyYw1eKzE+9DsLtN+AZI+MvzV1aJyUYEc+ZSoeHZtGCYUP8/TdwrWt/QdSlXypT5hTpvW+Sx9IGLl0nmyzYYnO7A+eXzfB9w8NMQkrOvwZ1EEkSsrtAISxPbI+SGwR2QVYclzQx1yZquj1oItD2pn3yu1WnoXdmiPebYH6gQqZOFPjHfg1VJOvTq7LjNlvxaegWGeOeNTG6V5o0PQGY0Vh4pHm8FpCEEsVHjRlW1n9vpF+w+TalT9oXZDv3V5USG59A/Zk1IIAiMGagHqm/Yf0LV9hMtGQ35kRrTzeFDrkCPGV3Y0pIOIKowzIkV+u1aHcwHTr7pE8jDtJY58TbgLHHOxdSMUPz2O0TqchRKD3CMTzRI+xyCBbrI5dcmbPGRp+Y/yPhaueAfRzZqf1uOZ9rIwtKavyt/njwI/ZBHCpbURC2R5w9BNft5pUceittvc7FBR+jlJLy0vjGukxBHLR1PV+ybR+PsGHd1Fjmdft2BRqSdXgk+P28i4rdZymB/PaI9BLGP2zAUrfpxwL9GbdTNPpzQqI0dCY6KrxcIuipzcenJMQRpsfyPBCcFV/Fr0aKmShYGM03Zol/fJI9D8WxNrGXF0munLkq6ivLf0+r157CMcZXxaMeuRikDHOqfH+DSgnILlVXNzg7iX8v4c3tkVaH2j9ZBdTPI74ii+Yi6wWEKjel9G3R7hDboL1zXLsp+R804NFj8roH6Lsf8lYcD3/hWiwZYhM894p/e2ARlC2MlH0akcsgI9g/PkZ16LVZueL
- yEaHrMgK
- PQlWUHzIPHD7SQefH1EivA4deCxfegEcdOz7LUAsrZolcbZuLSfK3wY8jopTNexNaXYaNQ+5hhZvhMKy2ZsQW9LXzLPqBMqqdWOEg80Akpjfw9SDp6DQzpZHuxR5s7/CjLplEMKWvL4wLKoffpqgVlL8wMqIi0Re75gXJ7e7c9nEM9HalKHTmnhNPZsLC0G9OMjuw7hjoHvh0TJGLNri5WLi8+8qXDqJ7M0FEUkL3FPNS/zsRHAmXKMHNkTf02Cki6vzM/6gNbqV2qoTxRps81B8dDKayqDXud6R3m4drIjE19fA27jah0mIr8j+TG0k13XIjqn4g5wl05FpY9laK3FFp32IGa6cZBKb8WwBZdklNL4zIpMMA+7a51jEy9vdA0OSykjJ3CNdQdkV5KIp43hkqTg==
+X-HE-Tag: 1792637851-697938
+X-HE-Meta: U2FsdGVkX18J7GmeC2YM5mtiBu/RlZch+6i30aUhFw1AN/7elrr3nfUFacy7AQ/kiA9/BluV5ZdSKgO2OoGMdpvQEuI8Sgvzt83/RZVCeJFYO5FSc8FlddiouaO2YYkMMH21zw49XjTeV13AyGKwjxMj145HBf1NVheFzboAnZ5EoiWKoyeBdRXmZXyQVyvOIBFs5g/ws0Se/hSZETKTqmbMxqM25wOBFhrroV2FoA2o1GcUnK45BnAL8q2CeCCdgkQNtSbCEA84XgP2MZVYt7qD201WriwOtvyYn8CbfVSiChu54NvtAVYC0q5yEzx0i26NcC4xppMAIO4fy9hcIvef7VC3eZ78oWMZy++4oTDlmmE1yaM3QV42zxbHP+3lldIjT1VGm0W8qCfWSjNyMGR3GxXB9vmjefIUhkO9Ya535v4A2IO7sPAPLRbIJwgGQSBqcVePTdJlhTkgcmH3i4uhyxouyGPZrp+W8aA7UL/PFDl2FJuXNSAEKN/nBQ3Sso2OlABDmB0+7xvAjJK7yaF8ioPKJIEZTEkgBjsOmVngYbYfp9vTz0kR3cwmHPv3pwwzgCe9T6m6BH+eyD9cmz0a/wenv5BS+8Vtn+8mNItFASRZITCLs4MvMSE31TmqY2cEIlys0QxYLwuU6Zduda4Om3OLc/mlN1m1ltfRvAfxd/tBn5jpz+NQXVFySyYO4xuC/uQUAilT9YLTOld0P9Vb95v3zuyI8wuWmYJRrS8bax3zmT8R33YpHXfAaj6aGi3IB4EYH03vSlE4C9YZMxtIxhsa0WVBqM3QJ0ZRvJaBSOFiGSmylfmVMt8V0/+KwsaZdS9BhW/NZrKWu+KU2L7fIHN16pEfLK5B2nHE1CB0GIfQtXn7tIhpphNQ3oTaFAbTgWf/Sz8mP+9ixDycr+zU35/+yCZp2zYb4xwvd1725bjdFMmhXS3miBROnVk1ZzgVGjyk+WPswkwecNI
+ 2847jRMw
+ GpklHYht1w1A5fS+dIK5nHB7gwMysYmtWhe1gyybJhLNXQ0tTB6/J7WQlAOTnf/RYr25s4OKLweZi49NlEv+4QWgmi7eyWDA6nssfbeYkMM/yAa6JDvFGxl/wUyM6AcyqX5aLz99Tq1OUkwpX8Fw5OBqtyp+W1tlhE7n6u6C8UHt14+34uljpKc9N7/87z0NVZdIK/qyC1GasGRCHpQA3mBOshJnl0vWUQYMIt1Xoc2+a/H54G+0jSqbgb5OjQRxXnNUTHyC+4ESRABqwWF6qd2/kZCcxWzYKVb3d1nCVP0eWpD0FC5uL2Ao12dr9rIdKg0c7dVLAW3v7g27VA83LjytbRU7zEcW+hJWEMcYZL8Da/3uVMOdx6HOO0T1z09lfCeh7v4uKfOokQO7m48uOWOwakyyeGVOUWxur
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,77 +133,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/10/16 09:09), Nhat Pham wrote:
-> On Fri, Oct 16, 2026 at 5:10 AM Hongfeng Chen
-> <chenhongfeng0212@gmail.com> wrote:
-> >
-> > Performance results:
-> >
-> > ROCK 5B+ (RK3588: 4x Cortex-A55 at 1.8GHz, 4x Cortex-A76 at 2.4GHz,
-> > performance governor), single process munmap on A55:
-> >
-> >   times in ms, speedups over base
-> >               Base       Patch1       Patch1+2
-> >   size        time    time speedup   time speedup
-> >   64MB       13.81    3.62   3.81x   3.28   4.21x
-> >   128MB      28.50    7.18   3.97x   6.49   4.39x
-> >   192MB      42.19   10.71   3.94x   9.69   4.36x
-> >   256MB      56.06   14.26   3.93x   12.89  4.35x
-> >   512MB     109.50   28.43   3.85x   25.66  4.27x
-> >   1024MB    217.10   56.70   3.83x   51.15  4.24x
-> >
-> > Same machine, single process munmap on A76:
-> >
-> >   times in ms, speedups over base
-> >               Base       Patch1        Patch1+2
-> >   size        time    time speedup    time speedup
-> >   64MB        5.59    1.58   3.54x    1.49   3.76x
-> >   128MB      11.86    3.16   3.75x    2.95   4.02x
-> >   192MB      17.18    4.72   3.64x    4.45   3.86x
-> >   256MB      22.89    6.29   3.64x    5.87   3.90x
-> >   512MB      45.15   12.52   3.61x   11.64   3.88x
-> >   1024MB     89.16   24.75   3.60x   23.12   3.86x
-> >
-> > x86 (Intel Core i7-14700HX, P-cores locked at 2.1GHz with turbo off),
-> > single process munmap:
-> >
-> >   times in ms, speedups over base
-> >               Base       Patch1         Patch1+2
-> >   size        time    time speedup    time speedup
-> >   64MB        2.87    1.50   1.92x    1.14   2.53x
-> >   128MB       6.00    2.93   2.05x    2.21   2.71x
-> >   192MB       9.33    4.35   2.15x    3.33   2.80x
-> >   256MB      12.51    5.78   2.17x    4.38   2.85x
-> >   512MB      24.96   11.39   2.19x    8.62   2.90x
-> >   1024MB     50.19   22.78   2.20x   17.05   2.94x
-> >
-> > 1-4 process munmap of 256MB each:
-> >
-> >   times in ms, speedups over base
-> >               Base       Patch1        Patch1+2
-> >   mode        time    time speedup   time speedup
-> >   1p         13.18    5.78   2.28x   4.35   3.03x
-> >   2p         25.83   14.41   1.79x   4.57   5.65x
-> >   3p         35.70   22.14   1.61x   4.68   7.63x
-> >   4p         44.25   28.71   1.54x   4.75   9.31x
+On 2026-10-22 01:57 +0000, Alexei Starovoitov wrote:
+> From: Alexei Starovoitov <ast@kernel.org>
 > 
-> The numbers look nice, but I think it's a given that if we measure the
-> process whose work is offloaded, we'll see a speedup.
+> int3_update_unoptimize() restores optimized nop10 in three writes:
 > 
-> But would this come at a cost?
+>   48 8d 64 24 80 e8 d0 d1 d2 d3    lea -0x80(%rsp),%rsp; call tramp
+>   cc 8d 64 24 80 e8 d0 d1 d2 d3    1. trap new entries
+>   cc 2e 0f 1f 84 e8 d0 d1 d2 d3    2. restore bytes 1..4
+>   66 2e 0f 1f 84 e8 d0 d1 d2 d3    3. restore byte 0
 > 
-> 1. Would memory freeing be slowed down? Could you compare the host
-> memory usage over this period of time etc.? Hopefully the parallelism
-> would cancel out the extra overhead of setting up the work offloading.
+> uprobe_write() can fail with -ENOMEM, or with -EINTR when the task is being
+> killed. When the 2nd write fails the result of the 1st one stays. Byte 0 is
+> a breakpoint and it works. But the next set_orig_insn() doesn't find lea in
+> byte 0, takes it for a plain breakpoint and restores one byte:
+> 
+>   66 8d 64 24 80 e8 d0 d1 d2 d3    lea -0x80(%rsp),%sp; call tramp
+> 
+> Nothing recognizes these bytes anymore. The process keeps the call into
+> uprobe trampoline, which can be unmapped already.
+> 
+> Teach is_optimized() to recognize the half-way state, and let the 1st write
+> of int3_update_unoptimize() skip what is already done.
+> 
+> The failure wasn't reproduced, but the state can be made by hand. Attach to
+> nop10, call it to get it optimized, write 0xcc over byte 0, detach.
+> 
+> "uprobes: Don't sleep on mmap_lock under dup_mmap_sem" needs this. There
+> fork() removes the breakpoint from its mm. When fork() is killed in
+> the middle register_for_each_vma() removes it for the second time.
+> 
+> Fixes: 554ba38456da ("uprobes/x86: Move optimized uprobe from nop5 to nop10")
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-Right, especially interesting what happens if OOM-kill of an app with
-a considerable amount of data stored in zsmalloc pool, is not immediately
-easing the memory pressure.
+This was a nice read.
 
-[..]
-> If it's the former, we should dedicate more time
-					^^^^
-					and tokens ;)
-> towards improving zsmalloc.
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
+-- 
+Gregory Price (Meta) <gourry@gourry.net>
 
