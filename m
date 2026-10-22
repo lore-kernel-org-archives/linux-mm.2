@@ -1,119 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89991606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74290606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BY3azg0C
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oh+yOnxJ
 Received: by kanga.kvack.org (Postfix)
-	id 707AC6B0836; Wed, 21 Oct 2026 22:07:02 -0400 (EDT)
+	id 477106B0291; Wed, 21 Oct 2026 22:10:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 696506B0838; Wed, 21 Oct 2026 22:07:02 -0400 (EDT)
+	id 427386B0292; Wed, 21 Oct 2026 22:10:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57EB46B0839; Wed, 21 Oct 2026 22:07:02 -0400 (EDT)
+	id 33D9C6B0295; Wed, 21 Oct 2026 22:10:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ECC26B0836
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:07:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A7CFE12070E
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:07:01 +0000 (UTC)
-X-FDA: 85348624242.10.D8C89D6
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BC529140002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:06:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=BY3azg0C;
-	spf=pass (imf23.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F1EA46B0291
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:10:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 82AE3806F7
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:10:57 +0000 (UTC)
+X-FDA: 85348634154.19.BBA8C37
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E58B3180003
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:10:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oh+yOnxJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792634819;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1792635055;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eQ915uMcXwm+HIjz60hdmKSaQ15t6ZjQjfLrkfmZVJQ=;
-	b=xelf/onXOJuDimJcx/yQg1wtotmjmyHRSWmgQSeQLaZz8IStGLSMCGJpV/YUmPyiHhzqek
-	uuc8UXuqOYmxrhoe7CLLhfKiuuzh/kVoTwab+LSDHMbgCtkwezPKK9Sxdgy/X5eheqEs2Y
-	93hm9yiubKkFzVIXXs9wsxVnQqFU6N0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792634819;
-	b=zJsW0M40dOpCNrEgbSmEVcb4MsHmikNmQ6X5vBRrtH2DsNmgmQ2AemMgdp1/DsG1+sLF03
-	gVeRNcLUdO7i5Il9mmig2cPvPfioV8Jij/M5Md3TWXTThJyMLwvxBzzKTtcvZ8o4rThV03
-	Q04s82v8JdauHVJALPQyvKGKM1m1JMc=
+	bh=W6BWfsJKKbZc4AgOHX3577EDrG/C46AQp9NylRfvsXE=;
+	b=NqOhlMvdqST8S+1doXAsyT3lYmPq717stBI5nWf3ADvLtkflmVJVyAmb/UnNvyza8jYghS
+	Pbael7ZW+PbuKffnZTueK2d4NYF+kKQkDqPyI7y119Q717fBh2USA0eQliRiXswGcXH1zS
+	dOpnKC1zHk6rF9ErvcXp/zDAj/1s5rI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=BY3azg0C;
-	spf=pass (imf23.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.171 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3514b90bb89so3715714eec.1
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:06:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792634818; x=1793239618; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eQ915uMcXwm+HIjz60hdmKSaQ15t6ZjQjfLrkfmZVJQ=;
-        b=BY3azg0C6ytJOitzbvSu3hPkNvKgW/Cz2L3U2Y8uV6q5tyO8L8IqjBX3tzP14nnm+Q
-         oXV3WwQ5aRarq0m1yi8RwvppSN2QXOo7FdOC/mSLnLCUTYPxbLP2LIyAxXPpv8UkF0uw
-         0RzBBjlY9O0ew8705aF/irnNXKiGNoY8vMWOQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792634818; x=1793239618;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eQ915uMcXwm+HIjz60hdmKSaQ15t6ZjQjfLrkfmZVJQ=;
-        b=gvRQfhU59A7DMDjUKAwah75R1qI+f/C7hbOw/37UHvOvBKQpy/1Se+wsP1wJUbMJxt
-         6gYP6uWYxxwz1axRQd+Tt8Uf1robPVsHGhP0CTJ0Xt42ylJIne0epZoXA144o9LluURt
-         9HytpDJLkeD7Xb4KMTqMCkO64hq6k057dftjOosbMXQk+gsQBWO9T5gzhRH57XJluUd0
-         20rhtdUSykXnhB1+Fm/HW2TJaI0ofBsKWETwWw/ERNkARkLr/SNUuTXZcw0TcBDSTgcx
-         dzYd58NF9LdevKbab+TH+DQT1h3YkvFiH/tREEfwI8jqjg04UF81F3pqzDjkIv/S9je4
-         09EA==
-X-Forwarded-Encrypted: i=1; AKwUvBwCshA1P5vdktFZDzS/D7SnIzLqgvKOsehFW/AzjyZRrBtVm3y1DQ5J6G5maO6kznSTQkOf2mk+eQ==@kvack.org
-X-Gm-Message-State: AFq9FYKbwYtvkEFgX2k9xGkY0VcJADjRzuiw7sIth+dDsg0nb7j4CbC8
-	1indmhHP+t+kzl6rkCDMjKylOjE4htA/M5QbAAZj43dAgWxpvobxe26jstWIIfSyYQ==
-X-Gm-Gg: AYBFou0F8l6rnmdEGImSYn1Dva9uefQU2hqMVIbbzm7XOOtzwaSavoyxbopPPLil1Vf
-	LcgGXScBiHn6cmU9ITfwBEVXXA0VauVQIdnBnJ231UxumZKqe0hpIsUW4AIGwB2ynS1YQnBH08m
-	NlCfZ9jQhPMHqVj4gVP28zB5u5TcYIs9a2v4VFoiiTd34gXe5XtXRFO8yOuVlRYclDrAJXJ4/yF
-	JbVEnQ3/pjxCAU0Q9/7thMur99nHcxwUeXIHMYky5ROSqKls4g7yXSicPkDVKsjyOJbHtgwdt+p
-	s9lPnY7XwFapTJQ1a0yaIo+q7v1VIpV5U1ltbl2OV4gzGt3ow2Qq3Je0G46h0Ss9bCmmuJVuywr
-	MIaA5V1ISQhBqa7wmL0haSKaFv2HLZdYYWT4mOfJ3rfBTjB0O/dpMd/V9xTzaIIe5B0IrpY4tVh
-	GDnVxqFShk9+43pePS34Ql9BSrPdYf3p/w9puSiMznNhbOQ+9ETgYb7HYRiqN6yrX3h8ZTVDNKw
-	GlSjANY25tWP1s5vGUc4TDSDjaPHNLQ0bnDzg++6lZRgrP1XED2/0cUJnaJDsLDwaPdr28ubQak
-	0LdJsi+g0qBHfAU8tLlb
-X-Received: by 2002:a05:701b:4308:b0:14f:fb87:cf62 with SMTP id a92af1059eb24-190a5d6f6famr4655442c88.27.1792634818203;
-        Wed, 21 Oct 2026 19:06:58 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:5145:5add:2df6:4671])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903d3ae06fsm10318111c88.19.2026.10.21.19.06.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 19:06:57 -0700 (PDT)
-Date: Thu, 22 Oct 2026 11:06:53 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Hillf Danton <hdanton@sina.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
-Message-ID: <atlt8YGuSxgRb5uE@google.com>
-References: <20261021075322.923-1-hdanton@sina.com>
- <20261022000822.938-1-hdanton@sina.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022000822.938-1-hdanton@sina.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BC529140002
-X-Stat-Signature: 5rddxsszcmh6ges957bbj4my6d5mqwnb
-X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oh+yOnxJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792635055;
+	b=8Fdi7JzOQGJLGl7iL9HoWPHwIDzM8QYZyquC6j7DkzUk+MLt8V1q474T9cBbXgbB/xywYT
+	2iNwFMc90fDcw912SL6wBFBjLwN28qn5BmZ4YHV+80kZTudxKhYg4wA00U1vVU234z+lX8
+	8wUyFkXny3N8xE+Ir3RQSOn5eCvzQ+k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 95CA260213;
+	Thu, 22 Oct 2026 02:10:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC291F000C1;
+	Thu, 22 Oct 2026 02:10:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792635054;
+	bh=W6BWfsJKKbZc4AgOHX3577EDrG/C46AQp9NylRfvsXE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oh+yOnxJpqvgV/lk5Tacr1zrgvaauG5fP+KLuSvGtGQ14XSqCsTK9Rd4laENNjuJk
+	 nGpGDIA1DwI0ALQcP0OXMhiPk3iSNFc08IGNUO/XgonthO9UwRohX27uC2/YPZrfM9
+	 DZjMPlPmyj7+zt/d56wg4KaOU5WYeM4bEZ41jzcp+T0Wa/aEnttp4uWwNOQwPZZHOJ
+	 GS+VyoffycoEu1NwRb1SXYS9xK2x21111VL+H6l4+t1Zpu5tWc3DEBer6lliG+Gns4
+	 3mDUEUsLIm9m/aZ4QZOvkVQLnVtDOenQSh2ZZWlLUxPP7pnfO/I0kThRZ8nrqjvdcv
+	 t871p40SLvAyQ==
+Message-ID: <sashiko-outbox-180860@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH bpf-next 9/9] selftests/bpf: Test uprobes and fork()
+ with busy mmap_lock
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, oleg@redhat.com, peterz@infradead.org, mhiramat@kernel.org, jolsa@kernel.org, akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, surenb@google.com, david@kernel.org, vbabka@kernel.org, jannh@google.com, hughd@google.com, kees@kernel.org, mingo@redhat.com, tglx@kernel.org, x86@kernel.org, linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, linux-perf-users@vger.kernel.org
+In-Reply-To: <20261022015712.1297331-10-alexei.starovoitov@gmail.com>
+References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
+ <20261022015712.1297331-10-alexei.starovoitov@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Oct 2026 02:10:52 +0000
+X-Rspamd-Queue-Id: E58B3180003
+X-Stat-Signature: 7sjqesdezzbjnr1b71nbeda7isbnsuyo
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792634819-230015
-X-HE-Meta: U2FsdGVkX1/wWr0OVLvYBTvcLARP/dVMTyNWhMjezOqLlTMJgBHKduYuI24tgRVLvTaQd/YYp45ZnlI4htack5CrQjJ3x7zoHIFbF7oQ9mtLbuHTNwuxqkeE3NuSEnMkoP74/gMBAuntUZJ5ZqLfDa32XDVvHlnubVNBJYVYROeOPJfu40rYj7Q3x51Hl2y7q78/x2xFNx0mlDyteNjksWQD74ibHHLKFbux4M2OMr525V4J9VToqXXBgbLJZj7+oJJiYmXPoSD6dT/75rZs+OvdgrDAC8dthfw7F+NFPINApwVWBtBvDZSWHkmObuMOqXOKYLoHUDALM9hkqqdVlo9JH7umIQV+aT4BaEu0n2hheHFwlzxB5xDl9WRVwv9Dy/oqFhz9Sf7UdIfFZ69lNqpGWOqrL2Zmj6ZQV66bnJ2k888BXjnYbzQ+0fjejt6M7mUj/pDC+4aroHhRNunozodHqMrriOrf8Dlha6Xizn16srSlW6WTTa+OGcYZxMo/Zz8UyX4XggqblklM80ZDDR4b8GDBSO4iNLnll/UXxB48Lg0aE+h7ekH9N/3fZ3VFr8w9eW9kqAX1TvIiBALip80GIEnD9TjI07NMptV6xeKsokr51Qw/A5bTuxjrfwgrZl1w/g/iJa45ofszopf/lW4fvqb8ZiycOVRdYClKcpqqPCFtoUlG+xIjxs03qqzHSYJxv2MFB1zgAcFmYLopva7cMq8WgjLGbJSv6ahC0q1/F02nKFFAjk02sWXd23sPkK7c7CAF4zqoJUCnlPiPzmSAVOeFp+TkkRmEMKnK6PWj6dr84SP0/ddy6B3jh0rJe0mEF2Ho2yhOhfI6G4TSxD7Qd+VCrInwgw4ejZ+xvVTcbMMrZtiVz6BA1RE0yav32vJVj3KJ5DOKPKLDLOk1x2afPQogOHSHfb4IGILqxUItW8C3IISFT+qZRDCgTHV6UxosaXYPs1dHIzcCBon
- NNGjCgPA
- KOXmc+l7kEzSdv4cA7AUrJ5uqgJGtKGneKpvw9Qe9sg+eZo66Mn+UnHYfLrtyguF5pYJjJRNbn3ixswPrQNmoX7j0uuCeZazYf61y6XRCmGHcSc+ZmVVHTiYUYT4AR/h7EayGdd8+4M9ZPYjF0EMqoYm29eUj6OmBhFoLfalMC+nzh4T5RfVKQINJ0dT01vjtrBLx9bZaGqdHXKVEM+hg3Id6ulNKh5jf++VPy3fI5fnLmK8vIYqE6t3PZg+ChjSZGHvjOnun416e+C5jy07V4WbszDk72tEclJ07QZM7OnYFrqJdz3ueFhoELW8rILF3hIuqedppVATzOrEcAhdb/yq6LrDxJLrg7cjC
+X-Rspam-User: 
+X-HE-Tag: 1792635055-917788
+X-HE-Meta: U2FsdGVkX1+OwfyichDzxaZBJ2Ogq5UWzQy5dogSUGC3OKRSLzTG8r4oKr68Uv82ClXLa2JfUVETKznFkMISyoncbTjtpgtKb4R1IcuwRc9CFyWqXSxETeRt/KUj8W0cc5Wmiuovk5xpb9pi0d0J3xqkcQblQWGyvcekqK/ueHxts5sEGWzAB03VsOwX6Rb8RgEylMtBfBLdpBYVsLbs/e5elZCuQ+0PR93FbkuUIggSBY5PUYhHQXaMSHlHuXcLV5YMpj0t+B8lQ1VNHtODC3mvPhJbrb3dk8cgpqPCwrUKl4KYseiLsAGQ/JGAFkbofnzfXwBb/1H+tOMztLPUD6LjppbI/mY/EgJCN3jmwiLsAnPNx91qccbrlAETvE/edx7rDI8j5Jy1DgJEyLaSwN80bi7IeWU+WB3hjhPvjsYRkIjfSz2wsyUFCZqx0pQiCS4TV6IBK588VrSEWckTOdUJDOGfYkyxcZO8FLqc7cvONon0E7VanF5i6GUV10NsQT3YMb6LU25r0nUqOoFbm4DyUUuoGAvUwqy8/t9jPjo9WPAW3crlG7uosAJ6kxZ8q8QeKb66vG8ycyZEi0DNzG5ujRychfAyAf0nsuKktxLAMC/KINZ2pczruLol6V9lqV5iQvYApeaSH2uUcWutIkt8MVZTYafEFpTy0Phjfxtlg5GfPyR8HdRH0/ggPf6TgA3JXyRKCvyGDQuui2XDGS0xK51qsm8zxrfML/Nk9XxyvA6ncAMKvb8AueBadrzchadL86MpSOdfvIXCbyNw8gM70Vefwq/XpyjpUhUzf0QY53Aj0mMo0QLmSSb0TqLQBn5OYbscIk7c13UOKGEc8a0F6Y/xH8/ZzTK8wjc5oyiQnUf9ZMIhWB7W6CLwPhVWMozG7C8pZyqvIl30QzAOy6LfqfIkHTjfHN3iPyZV/u+lhqOLW37xavN9GDK8u5cdKXTXLV0PbSqjGMFBMqN
+ Xj/ik7ye
+ A6m7Q1BDBbqTug/bIhtK3fxBqNI5pfWUQMxorck0MIejcDZvNV5Ls78Vs8uMdMLH6IhgNueTXN1QLrhSM8lum5wEZWARHEzy8BsSy8ZDb65A6URzRpR0zmskKIVUKNDxuSu0d4/X3Bl6PmSuV1Q+3ma71P5GcwNT8XSUisQLY5LkQT55vXRALruXJu723WVaTi4CDmLuAliaMxY6SyKNus1t+6p+Z0o4w/kObxe+I4jsxolF54HZ1CQ2UsyT7z+I3DRAmKd16rqGj/LJGLeABCd3ksxF4Ye8swNnuh9fATF5FkxyOPuxcTcqIpznDW9CKbBrxaPjEzGYSmrmnpiJfcCN3FrSweyhRSw+5BadVCOD3iJRnSQZcjZKcy/euDCxxMBzxKUvcAOfaf3Aw/+XByrarT98oxAPp7Zy2Xx7GvbFEPeGpM5wSfaTP3Io4HYP2zWo8m2r7w2C3CTNAqqWa7vGc2xLtgddyxVc6Lfq2yHFyxej6CqJ0SM2uw+zBBXhn6UZaeYItiQSiquc0KJfE4AdUmA5/6/pAsUXo761vBcDlLqt/QONJm3WVblSRB9Ex2dS9wi2w7rcO8/ak1DgVa9eFokLnzwnz5DREbjBrqqpH6WITpA96Xqb2JoufSsebKfO2TDa+B5Gu3T9IDndRC5dRdSzQHpaVEqz1uXl+2lZBmK2xSZ7VLvsRCqTpz8AOZHIwFyZJx9dyY5SUzsCQMGA1STIc7nwOAgBxyyfgqatf6i0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,36 +92,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On (26/10/22 08:08), Hillf Danton wrote:
-[..]
-> >>> Given lock like mutex, priority inversion happens from Monday to Friday,
-> >>> but I wonder if you are inventing some wheels in 2026 if proxy excution
-> >>> works for you.
-> >>
-> >> Reader-Writer split is a foundation for further improvements (like
-> >> singleton recompression stream and so on).
-> >>
-> > But that split is not needed at all if PE works, yes?
-> >
-> 
-> When the number of locks and tasks grows, I have increasing difficulty even
-> describing the lock chain that you in combination with Brian are unable to
-> handle. That is why in general PE is prefered over whatever wheels you can create.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] selftests/bpf: integer overflow of AREA_MAX on 32-bit in hold_mm=
+ap_lock()
+--
 
-Hillf, if we reinvent the wheel then I'm very happy with this reinvention.
-But we don't.
+commit 27a041a03328fba58bd21d5e62e3d149445f0523
+Author: Alexei Starovoitov <ast@kernel.org>
 
-There is not a single reason for compression and decompression to be in
-the same context - they don't share a single byte.  And there is no
-reason whatsoever to serialize them against each other.  Compression and
-decompression should have been separate contexts from the beginning.
-While serializing decompression with a PE/PI-enabled mutex is cool, not
-having decompression serialization at all is way cooler.  In addition,
-decoupling compression and decompression leads to a much saner recompression
-stream design, which saves considerable amount of per-CPU memory.
-That's what this patch does for us.
+selftests/bpf: Test uprobes and fork() with busy mmap_lock
 
-The commit message probably can be better, but other than that I'm
-happy with this series.
+This commit adds a BPF selftest that exercises uprobe attach and detach
+concurrently with fork() while a process holds its mmap_lock via
+MADV_POPULATE_READ.
+
+> diff --git a/tools/testing/selftests/bpf/prog_tests/uprobe_busy_mm.c b/to=
+ols/testing/selftests/bpf/prog_tests/uprobe_busy_mm.c
+> new file mode 100644
+> index 0000000000000..30614e8b92cd5
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/prog_tests/uprobe_busy_mm.c
+> @@ -0,0 +1,447 @@
+
+[ ... ]
+
+> +#define AREA_MAX	(64UL << 30)
+> +#define AREA_MIN	(64UL << 20)
+
+[ ... ]
+
+> +/*
+> + * MADV_POPULATE_READ holds mmap_lock for reading while it maps zero page
+> + * all over the area. It costs page tables only.
+> + */
+> +static void *hold_mmap_lock(void *arg)
+> +{
+> +	size_t size =3D AREA_MIN;
+> +	void *area;
+> +	__u64 t;
+> +
+> +	area =3D mmap(NULL, AREA_MAX, PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS | =
+MAP_NORESERVE, -1, 0);
+> +	if (area =3D=3D MAP_FAILED)
+> +		goto err;
+
+[Severity: Medium]
+In tools/testing/selftests/bpf/prog_tests/uprobe_busy_mm.c, does AREA_MAX
+overflow on 32-bit architectures when passed to mmap() in hold_mmap_lock()?
+
+When serial_test_uprobe_busy_mm() runs on a 32-bit system via:
+
+  serial_test_uprobe_busy_mm()
+    -> start_busy_process()
+      -> busy_process()
+        -> hold_mmap_lock()
+
+unsigned long and size_t are 32 bits wide, so (64UL << 30) overflows to 0
+(and a 64 GiB area exceeds the 32-bit virtual address space). Passing 0 as
+the length to mmap() causes it to return MAP_FAILED with EINVAL, jumping to
+err and failing the test.
+
+Should AREA_MAX be sized appropriately for 32-bit architectures as well?
+
+> +	/* EINVAL without CONFIG_TRANSPARENT_HUGEPAGE */
+> +	madvise(area, AREA_MAX, MADV_NOHUGEPAGE);
+> +
+> +	t =3D now_ns();
+> +	if (madvise(area, size, MADV_POPULATE_READ))
+> +		goto err;
+> +	t =3D now_ns() - t;
+> +	size *=3D sh->hold_ms * 1000000ULL / t + 1;
+> +	if (size > AREA_MAX)
+> +		size =3D AREA_MAX;
+> +
+> +	while (!LOAD(sh->stop)) {
+> +		STORE(sh->in_hold, 1);
+> +		t =3D now_ns();
+> +		madvise(area, size, MADV_POPULATE_READ);
+> +		/* before anything that can fault and wait for fork() */
+> +		INC(sh->hold_seq);
+> +		STORE(sh->hold_ns, now_ns() - t);
+> +		STORE(sh->in_hold, 0);
+> +		madvise(area, size, MADV_DONTNEED);
+> +		STORE(sh->ready, 1);
+> +	}
+> +	return NULL;
+> +err:
+> +	INC(sh->errors);
+> +	STORE(sh->ready, 1);
+> +	return NULL;
+> +}
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022015712.1297=
+331-1-alexei.starovoitov@gmail.com?part=3D9
 
