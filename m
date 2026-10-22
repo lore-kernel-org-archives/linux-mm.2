@@ -1,90 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D253606A322
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 06:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CCC606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 06:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aED+FBQ8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jrap7F9O
 Received: by kanga.kvack.org (Postfix)
-	id 9A3746B08A2; Thu, 22 Oct 2026 02:19:36 -0400 (EDT)
+	id DC7C66B08A4; Thu, 22 Oct 2026 02:22:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95A1E6B08A4; Thu, 22 Oct 2026 02:19:36 -0400 (EDT)
+	id D78476B08A6; Thu, 22 Oct 2026 02:22:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A6EE6B08A5; Thu, 22 Oct 2026 02:19:36 -0400 (EDT)
+	id C41E76B08A7; Thu, 22 Oct 2026 02:22:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4890D6B08A2
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:19:36 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC7341C40AC
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:35 +0000 (UTC)
-X-FDA: 85349260710.04.4163378
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 25B1FC0002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:19:33 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aED+FBQ8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9528B6B08A4
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:22:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E036160746
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:22:53 +0000 (UTC)
+X-FDA: 85349269026.05.BE9E8BF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 80859140009
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 06:22:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jrap7F9O;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792649974;
+	s=arc-20220608; t=1792650171;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LRrusuJCUTaVG07etMCTRqEkRDpGcV5Aqfdtz67ggDk=;
-	b=YS+ICxajmvFcAPJdiI7X+D/R9dgIYJKoQVTvsbBPTVtA1gz4L+UEYcGfNRDHBJQLSPc5A9
-	3R0ZxYVyYybznnJB81KQFOvhXUwNhwPD27U/kOfCmvdrkLZ++u02ezGa/9Knht/+vC4sO1
-	3PP05YdaYcRgW2WVXABxbB6qFakeK5w=
+	bh=w/yfjiqIdvan+tzw/4666AzrT45OIjcjfTPwTJTEOYw=;
+	b=3aq8tk1f3S1Kk4hkDIyHuwMRDCUrR795wog1LmcUnYRYw7OFDN2j5CszTva+j7eDRzysqK
+	0im0sUwVVeFi0f9uNsKW3bE7fEyqHBCeS7vW+lsKTp49BxEOauPLIEXsF7AMxLFZ02/x2F
+	LF3bsLJZetY25TtAYCcv7jVOuXFUkc4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aED+FBQ8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jrap7F9O;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792649974;
-	b=t2xgwkHtnkG1ZdcH+Q0P2MnDEyP0fwHfYnI4SyzIoSo2FXQ+JPDKwqkFsrpJ0fTjEex0un
-	bnfdGIoyOk5SnMT3NRBSCUCKGvFrbL7vKKwnbGFHdo0Asqpz+wTGvMm66+j+czwv9IFoz8
-	/1gyjOUywX4sGpRR3KrrPFg9wPDFdIE=
+	t=1792650171;
+	b=fJSR5M3PzEtkaxhfNvMGytpt09ptXSUc12gowd6wItA/Q6NmCA1vrbaMl9zRbf62fWhohp
+	eqncWq0tJevWNePhu5QJZlAUJk/d+8wrDR4IT4JHhiIg94vWC4pzFLYWwZ7FHt4ns6QmfG
+	iXm4fIaHEC0Pj3TbV6F2wAlSYF/XsDc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 718B942DB4;
-	Thu, 22 Oct 2026 06:19:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499DB1F000C3;
-	Thu, 22 Oct 2026 06:19:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2438460211;
+	Thu, 22 Oct 2026 06:22:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559FF1F000C1;
+	Thu, 22 Oct 2026 06:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792649973;
-	bh=LRrusuJCUTaVG07etMCTRqEkRDpGcV5Aqfdtz67ggDk=;
+	s=k20260515; t=1792650170;
+	bh=w/yfjiqIdvan+tzw/4666AzrT45OIjcjfTPwTJTEOYw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aED+FBQ8T9UE7Xf9W8+Qq+E71Mr/ZZSPRqiV+E5/S7HluA/1y2fcN7j3FzaNETr82
-	 tm9aIi1HfSRiC0mhUtjjuQhkWD7Hwzu7/TccHKNurL0zB6FsQoj8xexAl8ttDEuVWC
-	 c5/6G7UXZlo9j1U+baVAkILmeAgsk8xzxF2jkNlip7ky2uwixRWYYUcrga+JdZs/O6
-	 ePKkUHrELW0xeOBzYl8+3IfcpzfpELLZuB/vz8FYJ08U3txS238kZPzZ5QH+CnRy1j
-	 WvDGLi8MjH41oQY7UYV5i88Kxe80yxcKlB6Ck45jXI9EZjkXzEOfvWJfHruijpSLTP
-	 60zmkOuRVDVew==
-Message-ID: <sashiko-outbox-181086@kernel.org>
+	b=Jrap7F9OxJ01g8nuVBWwIiZv55ktyzaGuk8slKZbOwP/c5zyJdhOXzCInEbwGV3Z0
+	 iszXQiopKursZh+dIcDq51UpZuHSyG4hOruvBlEeYbhUgfbixk26sZ25n/k7LTzFjy
+	 vsYAAkXebB97ZoIkTWLegUZuH790Ih/eP9EI0jftUqcwk7m3xFfNOB3vwbVu4UcnTO
+	 W6G1UkmX64yyxANrhy/rWHvXuk4fT2+syiXuhFg651WynN0HiFV2MLvPAd/yulAmOY
+	 uRMxyMkpL9YR1PyOgHtopHl50YlFqlXhdldpUA1U8lsPf9n5r43QqN9l6JoewlEhwF
+	 7U+bHaai4//ZQ==
+Message-ID: <sashiko-outbox-181090@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v6 12/12] mm, swap: back vswap clusters with a
- VM_SPARSE array
+Subject: Re: [RFC PATCH] LoongArch: mm: avoid backing vmemmap beyond max_pfn
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Nhat Pham" <nphamcs@gmail.com>, akpm@linux-foundation.org
-Cc: chrisl@kernel.org, kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, riel@surriel.com, gourry@gourry.net, haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, skhan@linuxfoundation.org, rdunlap@infradead.org, kunwu.chan@linux.dev, kernel-team@meta.com, linux-mm@kvack.org
-In-Reply-To: <20261021061837.1569125-3-nphamcs@gmail.com>
-References: <20261021060323.553433-1-nphamcs@gmail.com>
- <20261021061837.1569125-3-nphamcs@gmail.com>
+To: "Wentao Guan" <guanwentao@uniontech.com>, chenhuacai@kernel.org
+Cc: kernel@xen0n.name, linux-mm@kvack.org, akpm@linux-foundation.org, rppt@kernel.org, david@kernel.org, muchun.song@linux.dev
+In-Reply-To: <20261021062115.116922-1-guanwentao@uniontech.com>
+References: <20261021062115.116922-1-guanwentao@uniontech.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 06:19:27 +0000
-X-Rspamd-Queue-Id: 25B1FC0002
-X-Stat-Signature: pg9w3cyc3qx7kouohs1deugud3yaddz9
+Date: Thu, 22 Oct 2026 06:22:49 +0000
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 80859140009
+X-Stat-Signature: jdexcgqi4tj1z3x1cgyscpioapntfbe1
+X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792649973-926763
-X-HE-Meta: U2FsdGVkX19lux2yd6qRwbTC8GvG7CN51evwPvT/noew1vkr7qGLHuedfQjOZ2JtR8ION0CcceC0c1jNGcuaG2z1JNrtFAXmpRuzoHiE15H6WrewxqeSXyUQaSF+lSL7VspKHdmWhZacKRspfua0sSB0BRWa7Ozmi+igum3sk1ESJYVdpoQ65Vg95sn6jsljne3hiH8Z4cYU5COWLuRjS6OLz8/+H377F61LFbdwrrv8lsIy2ozf8bZQqwWQOzISWWzT+gcl1EKWbx+uCSOpVf3ImToHtNreDm1DNgoOUexJBgUQ61JhVC3HQWh4hWevMq1wXUBYYbegQpSig6OAqgDLKXDMoFRzV7ndjutVBk0Gxc9oglbRTiM4pr3qWn9tXwGjcnOXL6r6izlzjGOGWFkQNobc1mIcgkyBUbSN2wM0onTpZyriutGMZy5rVC8fV0MMiybIKkKxU4Yl85Qk/kk6MLK1z4FnGlriyZXelOo1wu0Vsc5v5QQh5TjLJ86REvkbrGnEA5cwaa9HRyut643fwbj4mzMOTZkK71RxAmm5aWnJIVnzy1tgy4StSaxzQOoM1yIfL8Qz0CDQ/2hIqXWDNYcItCATtgJFVsRlgpWjLoUJRO5Tlu7rj0sl0Hk0TYFobgOwfSvqcJS7w+YfCa8fbIr13A2tuGG+wsjEontkKBvs+r+WIMmqrnOLHmBCzIk2SdvmX6yJaYAi2+uzrK/vm47sv9MCN6MXw/Mn++PaAWtgfFS3fqHrUE0yAi6g4E72nTA0a1okXmPAEN6TvALtqmeT8e+JHtv/V8m75Z+ROrJfX/wc0rg+w8UmZch15GtNk9+QHG55N3G1kxDXBizIv6k9lRXYrUEtGOm18OsGER9bGRF+TxHXBxTdcY05SzqPV2r6lh2Kc5iZaHzayYpsG5Ew/aMbM/A+1MDG0V3loIxx5Vs+g/KfRrsNBL0BiaHaHL9NdI0KU619/Hy
- fA4UM24R
- uEv+rPRreGY5LwRPH3W9qtqZw/j1m8DTawQuJhZbvT8mxq9xw85EOwG3vyfv8EMaeVcgO1O3MlzDXZfAbfDadgXXz4hTAOtw1CdOqnk05xt2oAOZjK489qUAii1mQEl2l5SKqcNX30pUcugkpOKey3axlUaxkrwXGvotUXuStVMOTFXzwUjhVtFQ49aANr8MnVM2e1R2PKg+fDD4GmhKKelcJRMd9gs/Sdr1wW/xjbji1kJc1LFxlhz+rMDjrqOOXGZg+ufaDiQyMG9linE37g0dc2k7ks8BF2UbthgfHeeZ4mqmZH59T+0QLi91M0iFbPvskrFRJP7uAi6GR7Q585UrsXFwFz7qq+2rGz7/CSKbHiZwOEtwuWAHzRcIC0eBEBfEZ23FC8mK9/g9bwKxn06o2PW0yTIWtFo6RpHEJoxm9CDOj2l8HcW5hql+brFrAf6gfDXx2vMdivlz0RBBIok4d+DGrlVbRt824dSYGzbPB4LpRmOGObYOE6Hsblc+UBAw5bhncf5jy15GQopft67I04KkGaOrwyGakVYaToHQ4+3GHD3rMwRlzGSTKH7YADhJYv7UolKaf+y+6a+avbk87o1KgAdnvwK38rp2oJGLr9ynDjhv42vtCThQyqRIAMwD8elc9jvRX6adtHJj6M5a6Casl/XHYTdz6
+X-HE-Tag: 1792650171-566438
+X-HE-Meta: U2FsdGVkX18GAK7nhn8+4UdZPvM0ukWDpi3NeqJ0f4qNWHaJPNizhHYUNLNbpJGgkJ/uHtNSBsrbphQAUkqnYBYfn9ePmx/hQnaS5RqtJZ4s5kXpm697/89Ew9Pbp9EF1b/fX4qK4ZdnC8jbIBa4CQmgvx7UUi+G/PqoGRGTDShvaCjl9W9EhFLg1tx5yLLXaxQtWRsAfdoqExZaKmMLk3mpNPn0NZLD7s5iUOup/vm/RFL9aMP40sxLC9zlFiqV+A00XY6eq7yV0GMRlgGqFTsL3wOzGzURhvBgilUSEMgC1pUgNXJG/k1GM05UP3ldBrGg4aYam1qtR21aEvOWRCXc8iVxnmTZ+30eE8cBENVRpqsBIEbAswDrmJ2xMFhz2Rg8XKnymUQed8i0K62MfIw3en43kCYaHjhB/p2U1rMCi+dtLdRlCg5ubDnzYYkG/9Dim3JPlHk2c1Vd++0OmLIibaIkR95RmxRc+pdyCcvr9SOFLW7qi2vDtKwAnhz0DOJDiod8Ywnug2eFq5DdWBYVxk5RWWt5O8+Nz2B1tW5ODvwIkEsqYXPWXA0nJkpew8rWbvXQ5Obd/1P6oHta5PFH0sGIHG39A5d/JFB6rxoG3UNX+YW+gwHPor1aK7hfQf5FfyeM2ZzhO4IgqOLQF8PFcF0J46j75OViOMFWASCjfH8l087Y8z36fRmQdA8LuW7vD/1JT2riFsVYj2GPbs0FuJT0SxcMcR4PURZIBUt4WXQ1cdSRQLQOKvbXKyed46sGeD+HeyCc4+DzUj8lxjcAHuzHMOqDSC865UPCj2XPCFHIRQ2EPAwJJ8hdNnhnPaL2LFJ4IzNaR8DFKiriZwYsdsWGldvYCvYL0vEGAVnVNxY+eOSBA7ry4fNrYRsReRGBuiOj6Wi+8JthW5aXYeD0acqQcrn8K5YegwacdOa9VeT+eBnHw3i8Qcg4vpDcHEXeAosBIXxqWggHG1D
+ 9UPr/An4
+ HSgyplBNopGsLUsgLgHcy05lEPzuQNUKauDCXWd0Di/rCCfRjwh7lAywm/wDTfnmqDq3U4OHdMflh8LUU8ERYFQE7b+vW6seTYevqolaUobArUI8FbHVsRxWqESFrNVIFYdYXSqi6uHj284xXvkBzUJEomkvL7Yek0g3ESD4SDHpEsksAMSY3EMfc7TmmpmYFySrFmgzbKcIYbkitACHBO8lBgr6jSc5f0F0kxaezxdLgzgfrVOpgNH60cAZ96LmyKAzvBn2zX5iZyn3faOCIQiP2t2CUDYEkZGRHt93KRF75NcFo7UXu6MvJLtAl7VklnCCeqMjOFgNeA0abc9zpNIdZCaniRZIg+Lkwiq5QUcaW6AVPjTRg8k0cFFPsM0uxp/z7rsnv4nNa3YpACIdS+psG/XC0Q+BbucwW63ispwevHzhoZNjiT2FqO0TIGkhdPzo98om3yaQ0Gs0cm7As0wsFqwwzMZHk3nLdASpGVRtM256SnKFgEtXGEDnX9zbHcjJPrcpzO99BPN/zZXPuDU64M3GKkhilSdYbFdYxZv0qyPtEsFbVRToQU3SUat6bVfyG1a2SlsGPNoD9BwjZlJG5g9lG570XHP1Ie/KOH82A3h9ibcGUz3h2O7bTredoDkldZi8YE+57PITWxUXkPRtPSh8/DFutkPVQo47SYOCcelc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,213 +92,213 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] mm: vswap_grow_clusters() publishes nr_mapped_clusters before spin=
-_lock_init()
-- [High] mm, swap: race on unlocked table publish in swap_cluster_populate()
+- [High] loongarch/mm: leaf PMD dereferenced as PTE table in vmemmap_popula=
+te()
+- [Medium] LoongArch: mm: vmemmap_populate() forces basepages for hotplugge=
+d memory above boot max_pfn
+- [Medium] LoongArch: mm: unnecessary basepage vmemmap fallback in vmemmap_=
+populate()
 --
 
-commit f6800a3010801f9cd20edba92bfbe97989790bd2
-Author: Nhat Pham <nphamcs@gmail.com>
+commit 6672ecaf8ad946ad85463c3a10b46da193101efe
+Author: Wentao Guan <guanwentao@uniontech.com>
 
-mm, swap: back vswap clusters with a VM_SPARSE array
+LoongArch: mm: avoid backing vmemmap beyond max_pfn
 
-This commit replaces the xarray of dynamically allocated vswap cluster
-structures with a VM_SPARSE vmalloc array that grows on demand a page at a
-time. Emptied vswap clusters now free their tables and return to
-si->free_clusters for reuse rather than being freed via RCU.
+This commit changes vmemmap_populate() on LoongArch to fall back to
+vmemmap_populate_basepages() when !altmap and the PMD covering start
+extends beyond pfn_to_page(max_pfn), avoiding PMD hugepage mappings that
+extend past max_pfn.
 
-Link: https://lore.kernel.org/all/20260916101929.149106-1-hebaoquan@kylinos=
-.cn/
+> diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
+> index f801f7097f037..8c33744b93fae 100644
+> --- a/arch/loongarch/mm/init.c
+> +++ b/arch/loongarch/mm/init.c
+> @@ -146,6 +146,11 @@ int __meminit vmemmap_populate(unsigned long start, =
+unsigned long end,
+>  #if CONFIG_PGTABLE_LEVELS =3D=3D 2
+>  	return vmemmap_populate_basepages(start, end, node, NULL);
+>  #else
+> +	unsigned long vmemmap_end =3D (unsigned long)pfn_to_page(max_pfn);
 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index fe5460d15f555..4cb6586327c45 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
+[Severity: Medium]
+How does this check behave when memory is hot-added above initial boot DRAM?
 
-[ ... ]
+On LoongArch, max_pfn is only initialized during early boot from
+PFN_DOWN(memblock_end_of_DRAM()) in arch/loongarch/kernel/mem.c:
 
-> @@ -519,12 +550,19 @@ static int swap_cluster_alloc_table(struct swap_inf=
-o_struct *si,
->  	VM_WARN_ON_ONCE(ci->zero_bitmap);
->  	ci->zero_bitmap =3D bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
->  	if (!ci->zero_bitmap) {
-> -		swap_cluster_free_table(ci);
-> +		swap_cluster_free_table(si, ci);
->  		swap_cluster_free_count_table(table);
->  		return -ENOMEM;
->  	}
->  #endif
-> =20
-> +	/* The virtual table shares the swap table's lifetime. */
-> +	if (swap_is_vswap(si) && vswap_cluster_alloc_vtable(ci, gfp)) {
-> +		swap_cluster_free_table(si, ci);
-> +		swap_cluster_free_count_table(table);
-> +		return -ENOMEM;
-> +	}
+void __init memblock_init(void)
+{
+	...
+	max_pfn =3D PFN_DOWN(memblock_end_of_DRAM());
+
+and in arch/loongarch/kernel/setup.c:
+
+static void __init arch_mem_init(char **cmdline_p)
+{
+	/* Recalculate max_low_pfn for "mem=3Dxxx" */
+	max_pfn =3D PFN_DOWN(memblock_end_of_DRAM());
+
+When memory is hot-added at runtime via:
+
+  arch_add_memory()
+    __add_pages()
+      sparse_add_section()
+        section_activate()
+          populate_section_memmap()
+            __populate_section_memmap()
+              vmemmap_populate()
+
+or via memremap_pages() without an altmap at physical addresses above boot
+DRAM (pfn >=3D max_pfn), max_pfn is never updated, so start >=3D vmemmap_en=
+d and
+(!altmap && (start & PMD_MASK) + PMD_SIZE > vmemmap_end) is unconditionally
+true.
+
+Since get_order(PMD_SIZE) <=3D MAX_PAGE_ORDER on 64-bit LoongArch across 4K=
+iB,
+16KiB, and 64KiB page sizes, vmemmap_populate_hugepages() can allocate
+PMD_SIZE blocks at runtime. Won't comparing against max_pfn unintentionally
+force all non-altmap hotplugged memory above boot DRAM to fall back to
+vmemmap_populate_basepages()?
+
+[Severity: Medium]
+Should vmemmap_end be aligned up to PAGES_PER_SECTION and gated on PMD_SIZE
+exceeding the section vmemmap size?
+
+During early boot, sparse_metadata_init_nid() in mm/sparse.c always populat=
+es
+a full PAGES_PER_SECTION range for every present section:
+
+	for_each_early_section_nr(start_section_nr, section_nr) {
+		...
+		mem_map =3D __populate_section_memmap(pfn, PAGES_PER_SECTION, nid,
+						    NULL, NULL);
+
+So falling back to vmemmap_populate_basepages(start, end, node, NULL) still
+populates the entire section up to SECTION_ALIGN_UP(max_pfn). However, in
+memblock_init() in arch/loongarch/kernel/mem.c, EFI_RESERVED_TYPE and
+EFI_RUNTIME_SERVICES_* regions at the top of DRAM are only passed to
+memblock_reserve() (not memblock_add()), or DRAM may be capped with mem=3D,
+leaving max_pfn unaligned inside the final section of a PMD. If all 16
+sections of a 32MiB PMD on a 16KiB page kernel are present, but max_pfn is
+unaligned within the 16th section, (start & PMD_MASK) + PMD_SIZE > vmemmap_=
+end
+is true for all 16 sections even though the entire 32MiB PMD is populated,
+allocating an extra PTE page table page and losing the PMD mapping while
+saving zero vmemmap pages.
+
+Additionally, on 4KiB page kernels (CONFIG_4KB_3LEVEL and CONFIG_4KB_4LEVEL=
+),
+SECTION_SIZE_BITS in arch/loongarch/include/asm/sparsemem.h is 29 (512MiB, =
+or
+131072 pages), so one section's vmemmap is 8MiB, spanning four 2MiB PMDs.
+vmemmap_populate_hugepages() never maps past the section end on 4KiB page
+kernels, yet if max_pfn falls within the first 2MiB PMD of the last section,
+(start & PMD_MASK) + PMD_SIZE > vmemmap_end forces the entire 8MiB section =
+to
+use 4KiB base pages instead of four 2MiB PMDs.
+
 > +
->  	/*
->  	 * Make tables visible to cluster_is_usable() after everything is
->  	 * ready.
-> @@ -575,10 +613,8 @@ swap_cluster_populate(struct swap_info_struct *si,
->  	/*
->  	 * Only cluster isolation from the allocator does table allocation.
->  	 * Swap allocator uses percpu clusters and holds the local lock.
-> -	 * vswap clusters are destroyed rather than freed to si->free_clusters.
->  	 */
-> -	VM_WARN_ON_ONCE(swap_is_vswap(si));
-> -	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
-> +	swap_percpu_cluster_assert_held(si);
->  	if (!(si->flags & SWP_SOLIDSTATE))
->  		lockdep_assert_held(&si->global_cluster_lock);
->  	lockdep_assert_held(&ci->lock);
-> @@ -595,7 +631,7 @@ swap_cluster_populate(struct swap_info_struct *si,
->  	spin_unlock(&ci->lock);
->  	if (!(si->flags & SWP_SOLIDSTATE))
->  		spin_unlock(&si->global_cluster_lock);
-> -	local_unlock(&percpu_swap_cluster.lock);
-> +	swap_percpu_cluster_unlock(si);
-> =20
->  	ret =3D swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
->  					       GFP_KERNEL);
-> @@ -608,7 +644,7 @@ swap_cluster_populate(struct swap_info_struct *si,
->  	 * could happen with ignoring the percpu cluster is fragmentation,
->  	 * which is acceptable since this fallback and race is rare.
->  	 */
-> -	local_lock(&percpu_swap_cluster.lock);
-> +	swap_percpu_cluster_lock(si);
->  	if (!(si->flags & SWP_SOLIDSTATE))
->  		spin_lock(&si->global_cluster_lock);
->  	spin_lock(&ci->lock);
+> +	if (!altmap && (start & PMD_MASK) + PMD_SIZE > vmemmap_end)
+> +		return vmemmap_populate_basepages(start, end, node, NULL);
+> +
+>  	return vmemmap_populate_hugepages(start, end, node, NULL);
 
 [Severity: High]
-Can a concurrent fast-path allocator race with the unlocked
-swap_cluster_alloc_table() call in swap_cluster_populate()?
+Can calling vmemmap_populate_basepages() here dereference a leaf huge PMD a=
+s a
+PTE page table pointer and crash the kernel?
 
-With vswap clusters now returning to si->free_clusters in __free_cluster()
-instead of being destroyed with CLUSTER_FLAG_DEAD, other CPUs (or other
-orders on the same CPU) can still hold an offset into a freed cluster in
-percpu_vswap_cluster.offset[order].
+In arch/loongarch/mm/init.c, vmemmap_set_pmd() installs a leaf huge PMD
+containing a shifted physical PFN and hardware page flags:
 
-When cluster_alloc_swap_entry() -> alloc_swap_scan_list() ->
-isolate_lock_cluster() isolates ci from si->free_clusters, it sets
-ci->flags =3D CLUSTER_FLAG_NONE and calls swap_cluster_populate(). If the
-initial atomic allocation fails, swap_cluster_populate() drops ci->lock and
-calls swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
-GFP_KERNEL), which publishes ci->virtual_table and ci->table before ci->lock
-is re-acquired:
+void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+			       unsigned long addr, unsigned long next)
+{
+	pmd_t entry;
 
-mm/swapfile.c:swap_cluster_alloc_table() {
-	...
-	rcu_assign_pointer(ci->table, table);
-	return 0;
+	entry =3D pfn_pmd(virt_to_pfn(p), PAGE_KERNEL);
+	pmd_val(entry) |=3D _PAGE_HUGE | _PAGE_HGLOBAL;
+	set_pmd_at(&init_mm, addr, pmd, entry);
 }
 
-Because CLUSTER_FLAG_NONE is <=3D CLUSTER_FLAG_USABLE, an isolated cluster =
-is
-only prevented from passing cluster_is_usable(ci, order) by ci->table being
-NULL. Once rcu_assign_pointer(ci->table, table) executes while ci->lock is
-dropped, a concurrent vswap_alloc() (or swap_alloc_fast()) with a cached
-offset into ci can lock ci->lock, see cluster_is_usable(ci, order) return
-true, and allocate entries via alloc_swap_scan_cluster():
+whereas a non-leaf PMD on LoongArch stores the kernel virtual address of the
+PTE table (arch/loongarch/include/asm/pgtable.h):
 
-mm/swapfile.c:vswap_alloc() {
-	if (offset !=3D SWAP_ENTRY_INVALID) {
-		ci =3D swap_cluster_lock(vswap_si, offset);
-		if (cluster_is_usable(ci, order)) {
-			if (cluster_is_empty(ci))
-				offset =3D cluster_offset(vswap_si, ci);
-			alloc_swap_scan_cluster(vswap_si, ci, folio, offset,
-						NULL);
-		} ...
+static inline int pmd_none(pmd_t pmd)
+{
+	return pmd_val(pmd) =3D=3D (unsigned long)invalid_pte_table;
+}
+...
+#define pmd_page_vaddr(pmd)	pmd_val(pmd)
+
+While vmemmap_populate_hugepages() checks vmemmap_check_pmd() before reusing
+an existing PMD, vmemmap_populate_basepages() in mm/sparse-vmemmap.c calls
+vmemmap_pmd_populate() and then vmemmap_pte_populate():
+
+static pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long add=
+r, int node)
+{
+	pmd_t *pmd =3D pmd_offset(pud, addr);
+	if (pmd_none(*pmd)) {
+		...
 	}
+	return pmd;
 }
 
-If that fast-path allocation claims ci for a different order and relocates =
-it
-onto another cluster list, or if those entries are then freed so
-__free_cluster() frees ci->table and ci->virtual_table back to NULL before
-swap_cluster_populate() re-acquires spin_lock(&ci->lock),
-swap_cluster_populate() will still see ret =3D=3D 0 and return ci to
-alloc_swap_scan_list() -> alloc_swap_scan_cluster().
+static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long add=
+r, int node,
+		struct vmem_altmap *altmap)
+{
+	pte_t *pte =3D pte_offset_kernel(pmd, addr);
+	unsigned long pfn =3D page_to_pfn((struct page *)addr);
 
-Could this trigger VM_WARN_ON(!cluster_is_usable(ci, order)) in
-alloc_swap_scan_cluster(), corrupt cluster list and order state, or
-dereference a NULL ci->table in cluster_scan_range() -> __swap_table_get()?
+	if (pte_none(ptep_get(pte))) {
 
-[ ... ]
+If *pmd is already a leaf huge PMD, pmd_none(*pmd) is false, so
+vmemmap_pmd_populate() returns the leaf PMD unchanged and
+vmemmap_pte_populate() treats pmd_val(*pmd) as a kernel virtual address in
+pte_offset_kernel() and dereferences it in ptep_get(pte).
 
-> @@ -1206,50 +1229,146 @@ static unsigned int alloc_swap_scan_list(struct =
-swap_info_struct *si,
+Because vmemmap_populate() passes NULL for altmap to both helpers and
+vmemmap_free() in arch/loongarch/mm/init.c is a no-op, a leaf huge PMD can
+already be present when vmemmap_populate_basepages() runs in two ways:
 
-[ ... ]
+1. In a PMD straddling or above max_pfn, populating a range with
+   altmap !=3D NULL (for example via memremap_pages() -> arch_add_memory() =
+->
+   __add_pages() -> sparse_add_section()) skips the !altmap branch and calls
+   vmemmap_populate_hugepages(start, end, node, NULL), which installs a leaf
+   huge PMD covering the entire PMD (up to 16 sections on 16KiB pages). A
+   subsequent population in the same PMD with altmap =3D=3D NULL (via add_m=
+emory()
+   or memremap_pages() without altmap, or after memunmap_pages() since
+   vmemmap_free() is a no-op) then takes the vmemmap_populate_basepages() p=
+ath
+   on that existing leaf huge PMD.
 
-> +static int vswap_grow_clusters(struct swap_info_struct *si)
->  {
+2. On 4KiB page kernels, a 512MiB section's vmemmap is 8MiB (four 2MiB PMDs=
+).
+   When max_pfn falls in the 2nd, 3rd, or 4th PMD of the last section,
+   (start & PMD_MASK) + PMD_SIZE > vmemmap_end only tests the first 2MiB PMD
+   (which is <=3D vmemmap_end), so vmemmap_populate_hugepages() installs le=
+af
+   huge PMDs for all four PMDs (also still mapping vmemmap beyond max_pfn in
+   the trailing PMDs). If that section is later hot-removed (leaving the fo=
+ur
+   leaf huge PMDs in place because vmemmap_free() is empty) and a range
+   starting in one of the trailing PMDs above vmemmap_end is populated with
+   altmap =3D=3D NULL, (start & PMD_MASK) + PMD_SIZE > vmemmap_end is true =
+and
+   vmemmap_populate_basepages() runs against the existing leaf huge PMD.
 
-[ ... ]
-
-> +	/*
-> +	 * Publish the new clusters before they become reachable by offset.
-> +	 * A zeroed page leaves them off-list with CLUSTER_FLAG_NONE, which
-> +	 * is what move_cluster() expects.
-> +	 */
-> +	WRITE_ONCE(si->nr_mapped_clusters, first + nr);
-> +	for (i =3D first; i < first + nr; i++) {
-> +		ci =3D &si->cluster_info[i];
-> +		spin_lock_init(&ci->lock);
-> +		INIT_LIST_HEAD(&ci->list);
-> +		spin_lock(&ci->lock);
-> +		move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
-> +		spin_unlock(&ci->lock);
->  	}
-
-[Severity: High]
-What happens if swap_cluster_readahead() observes the updated
-si->nr_mapped_clusters in vswap_grow_clusters() before the loop finishes
-running spin_lock_init(&ci->lock) on each new cluster?
-
-In mm/swap_state.c, swap_cluster_readahead() bounds end_offset using
-READ_ONCE(si->nr_mapped_clusters) and then locks each cluster in the range
-via swap_cache_read_folio() -> __swap_cache_alloc_folio() ->
-__swap_cache_alloc() -> swap_cluster_lock():
-
-mm/swap_state.c:swap_cluster_readahead() {
-	...
-	max =3D si->max;
-	if (swap_is_vswap(si))
-		max =3D min(max, READ_ONCE(si->nr_mapped_clusters) *
-			       SWAPFILE_CLUSTER);
-	if (end_offset >=3D max)
-		end_offset =3D max - 1;
-
-	blk_start_plug(&plug);
-	for (offset =3D start_offset; offset <=3D end_offset ; offset++) {
-		/* Ok, do the async read-ahead now */
-		ra_entry =3D swp_entry(swp_type(entry), offset);
-		folio =3D swap_cache_read_folio(&ctx, ra_entry, gfp_mask, mpol,
-				ilx, offset !=3D entry_offset);
-	...
-}
-
-When a readahead window spans across a cluster boundary into the newly grown
-range [first, first + nr) (or after cluster first is added to
-si->free_clusters while clusters first + 1 .. first + nr - 1 are still being
-initialized), swap_cluster_readahead() can call spin_lock(&ci->lock) on
-si->cluster_info[i] before spin_lock_init(&ci->lock) has executed, or while
-spin_lock_init(&ci->lock) is concurrently resetting the lock.
-
-Should vswap_grow_clusters() initialize the new clusters before publishing
-si->nr_mapped_clusters with smp_store_release() (paired with
-smp_load_acquire() in readers), or initialize spin_lock_init(&ci->lock) and
-INIT_LIST_HEAD(&ci->list) for the entire batch before making the new cluste=
-rs
-visible?
-
-[ ... ]
+>  #endif
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021060323.5534=
-33-1-nphamcs@gmail.com?part=3D12
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261021062115.1169=
+22-1-guanwentao@uniontech.com?part=3D1
 
