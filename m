@@ -1,127 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBA4606A31B
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 01:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=BG8PB+uy
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408E2606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 01:49:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1392A6B0815; Wed, 21 Oct 2026 21:45:01 -0400 (EDT)
+	id 2EFF26B0280; Wed, 21 Oct 2026 21:49:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EA736B0816; Wed, 21 Oct 2026 21:45:01 -0400 (EDT)
+	id 2A07A6B0281; Wed, 21 Oct 2026 21:49:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F42246B0817; Wed, 21 Oct 2026 21:45:00 -0400 (EDT)
+	id 16B996B0282; Wed, 21 Oct 2026 21:49:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C6A646B0815
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:45:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31BCFC0653
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:45:00 +0000 (UTC)
-X-FDA: 85348568760.06.BEAD117
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	by imf31.hostedemail.com (Postfix) with ESMTP id C38C420002
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:44:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BG8PB+uy;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D30836B0280
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 21:49:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57AA31406A2
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:49:46 +0000 (UTC)
+X-FDA: 85348580772.18.40C542B
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A48EFA0003
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 01:49:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf25.hostedemail.com: domain of 3t2vZagkbAFICIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3t2vZagkbAFICIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792633498;
+	s=arc-20220608; t=1792633784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LS+EicQQq2YSXAcv/CHPjd9x8RnM4wjQksgtpzHAKuY=;
-	b=r9l2vw2Y848LtCIahIHdTcAeyUiemJ3ookCiL3BawFZUcdv3vY007N5IGUosHA+eqpXws6
-	BKpUwvMS4DgDfiie4C9Lz3DR9y4snystwbzJOhNah3FRml8tgn29j7GOzayClmAT//whap
-	YQUfiDRzmckE9NHSvbD+eWqSghEGcuM=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=JssOmerse6tIPNiF9hOfYFsHOXG2slRdb88lB5aCnO4=;
+	b=A+WTvfp7Wjsdhm7bvKjJu8zY4SU6UscBnqbMcdublLlQU2tGPQTI9aUtScVE8bNWTlbh81
+	lqn+EolRSrehcwtt42G+BuQBTxtHqZbz23q3PQQkSz74BpKcojNvcPMMsmBurBpjjDn++C
+	cKxcnAUmeqVGqrpiR10p3GYOKt5XuN4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BG8PB+uy;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf25.hostedemail.com: domain of 3t2vZagkbAFICIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3t2vZagkbAFICIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792633498;
-	b=eRAq8maeLT7n55PUhb/vji3FTcjIV4e1l31EZ9dx656PtbQgjyKYknvfYZGZNeDZIB4rh9
-	vr9BiLWN0XBHME5VV4qdD2U0lOt58pIviLBLx3120KAWGZBHNVA16/TOxZp2hMl4adCLTy
-	51YY3eQnO2dE6YmCeLadku3m/rC/2DY=
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5eaeb7fdda2so1177038e0c.3
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792633497; x=1793238297; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LS+EicQQq2YSXAcv/CHPjd9x8RnM4wjQksgtpzHAKuY=;
-        b=BG8PB+uy/ff16mT6cmKpeZk9rphOXS8+JZgXGWrBNKA28dJnTos/TSsFN9/WWMN/0i
-         bJBC9P3DGK2K5QEj1rJWQmAcpoG9UIz8rqvKEoGCYVCypXQdDPx2vqC6mPIPk3/vzhsL
-         lVxqjDOXWSEtvaVUNr5U3qVMTeboq3rzTiL/vJvtwEYoWpinLIQA89dxin3I49TR3Uvq
-         VAqjOUFM4qgHXsDO+WPAF0K3qBUX6WZL5CLbF0wF/oF+N/Pdmt7s/EM2sGG+UtFxM7gw
-         0R+u1c4M1ej3DRLLHjLt/k7FXcFmaZnLUdx8b8SmUu2rMz8j7fD5mRrhLyrH41QpBiHQ
-         IKxw==
+	t=1792633784;
+	b=WKKtlvMJm5Ed6yNCBWdXS2d1F30X2O/k28SX0qrNVwl37PTsQhatFAtCt37kpjHOEU7zjI
+	9XZIrQK+diAlGF0t/Y+UMBEdGi30DrSXJZu2Y2oBGmYSQ7I+QnRT8u1Y/ORfnLrNKhM8LT
+	pmUrDxuv5JlZtRzo/NPsQZuRNLMfx58=
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4a45b3f0bdfso1866497b6e.1
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 18:49:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792633497; x=1793238297;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792633784; x=1793238584;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LS+EicQQq2YSXAcv/CHPjd9x8RnM4wjQksgtpzHAKuY=;
-        b=PTx4JYRga+h87LxMcOhh8XDtdogn42k3fUUD1QbhPQ7mHAtSrSEdtsaiQS41QSlVo7
-         cs+sQ1SJpjK5bTP/CG7qPSkRKwyc70K+uyEaik3bqzRbi9En5nfNa8YzvV6nGWCUlhp9
-         VgDc94sa+Rry9IKKctZDUHrbkIwBIoPBiTKMUBLTN93wQWsohaAB17g1AGJS3GW+eRcg
-         DVDqpTp336/ezo4nU3/jwVCN5HpxVHpzneyffdHA0i6UoaKh5skUqmH6+uaH1SmUS1ru
-         ukaofa8UX8PXO3gfxPi+DppnUo1ft9zu9EXS6ztN/rm5THDkjNgni0WR1+W/Iu0PvSpL
-         XTag==
-X-Forwarded-Encrypted: i=1; AKwUvByZqRNQrsEmbSH00yNrxBVccf21/96OmztUb6RHetIJB0prpgVqK1yILeTT/kn685OdsIo1dXsfOA==@kvack.org
-X-Gm-Message-State: AFq9FYIA9A0jjsW9EcwgjpJIkXsb2G8uSQztJ/5xGp023BsHwL9XTziw
-	NJxAno3JvLXB6mE5VBeERZwjR7WHhw8c+q4ZYuvyRYLlDPEK8cEDVCsODte39A7H9e0=
-X-Gm-Gg: AYBFou1oM6RBxONHQUEO0+yYuKr1SyqIuC8Dpgnxuue0jFPNOn5OpxkV6nwZK2ZGP9E
-	qGKRySLzBQWFtZFtfgZazuvKn7uah3T85ln7quhqVzvLifYQxQX4RpsU4JucLkkiyik02UeWSnx
-	x6JOkqoU2tSaPA75UzjJ3GfrumWLmkz2V5VB/Zl/VROhsZPHE2/3XANX2vzjv9ym4wI1tbYHxfJ
-	mD2NyhfG4lvF4504IDnPEcsd1bOpG4+Pr0iWfaeHmDQgkaJw9T142VF+OA2Y3VAJUAuOpSsLkjm
-	bLn+oAaeWHogEpZrPaomu6jfpn/6As3eMc8rOMOIZHxFFntiGEnTnOJmGPr1mwYB5t42LaNVAeY
-	VaYY60Dq/PTFPbHjRh99EsAPrueIO94iVavDLk8cWLTKoVn9LAKXRL7OAm8w1SqC6iPpj0DV4rZ
-	L9iWP6b7Qdb226s5yEVmGM4tVehyQlW8I6UPspkoC0f34CculZnxsowfgNFflIxTcCIrkJgjIMy
-	Cgqse7K3/8jJPlTvRgAJ+dEm3Hk1pRyGdQMqXS+M0sONK0+M8ik6q2UAVOnSmgjlsMSdK2IaJjz
-	VrCLiVF8u63w9+YiTrubM9/IhpLTWEHecCZSv05Ydsb8ENdX2KdwxfylyelObBj6+wTEkCVELrb
-	fXg==
-X-Received: by 2002:a05:6102:418a:b0:7be:25d4:7ff0 with SMTP id ada2fe7eead31-7cc92469ecdmr1660230137.4.1792633497085;
-        Wed, 21 Oct 2026 18:44:57 -0700 (PDT)
-Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-990d104017bsm4933026241.4.2026.10.21.18.44.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 18:44:55 -0700 (PDT)
-Date: Wed, 21 Oct 2026 21:44:55 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org, vipinsh@google.com,
-	linux-kernel@vger.kernel.org, dmatlack@google.com,
-	kexec@lists.infradead.org, graf@amazon.com
-Subject: Re: [PATCH v2 1/2] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
- to freeze sessions early
-Message-ID: <atlql8V0YcXGRxS3@google.com>
-References: <20261020144710.4154339-1-pasha.tatashin@soleen.com>
- <20261020144710.4154339-2-pasha.tatashin@soleen.com>
- <2vxz4iefgy36.fsf@kernel.org>
+        bh=JssOmerse6tIPNiF9hOfYFsHOXG2slRdb88lB5aCnO4=;
+        b=ybcBssnm0570rwYriGTcj0mfHi0NG4xuzoT2/zH7BLq6mMHlW7A8f3tmdW3qJglVVW
+         NMTkrKedSFtX6TBmNkIOMbEUGC5Q5sSs6p98APWzCuYivEnysNNQomNwRxbTeUcL+A9o
+         /ePP99x/Cv1XNIHbaMxhFlxONe18Muf/P8g+Gr/M9FwMOS2QZaIUlzdAW+srRA0i5oYV
+         ExHLtw5vRbgDgDDSO7k8PSlpfKtMXo9lv+xdHnoYPDgUY9ygzLcWXxz0yvpEnUvoqx+J
+         PPjto5cJyZsO7+xsf8xdnUO+hx+xHNr7AfrDfcB+Tg0cuJBCaLF2beZ6X2jn+2ioVZNv
+         UD8A==
+X-Forwarded-Encrypted: i=1; AKwUvBzyXEkmeB0AfwGM0+K12PD9oOp6q5Id3kE6nv9t3QHeqepnXSYbzkII2d9B2YsQJZnyMXpJx6e6pA==@kvack.org
+X-Gm-Message-State: AFq9FYJ+7elKflhSsZbm/ccVB9fLo/79a3rCX2HedaknPVQG9uTFVE0z
+	LqqxHiKOhYF+rKRl5MvbVq4EnesZQmL578YdQPM5TREu+OGeb0jNWClLr+VFaBIZcrQ655a+APx
+	5begjUq7RDZxqgfpJil6rhl0NNQRSo/l2XvDIAa+9mHF39VPKVtCcI5M2HT8=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxz4iefgy36.fsf@kernel.org>
+X-Received: by 2002:a05:6808:1687:b0:4eb:b0b9:2dbe with SMTP id
+ 5614622812f47-5535700ff21mr2591872b6e.27.1792633783759; Wed, 21 Oct 2026
+ 18:49:43 -0700 (PDT)
+Date: Wed, 21 Oct 2026 18:49:43 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ad96bb7.d1c214cc.659fa.0082.GAE@google.com>
+Subject: [syzbot] [mm?] KCSAN: data-race in _copy_to_iter / _copy_to_iter (3)
+From: syzbot <syzbot+68c0534b26fbda7ed84f@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, hughd@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: A48EFA0003
+X-Stat-Signature: 1frf37hzq81ym6bad8hbasqn1sp4arix
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C38C420002
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: xdw8mcwcm88wcs58y5zjezz3j7joy8js
-X-HE-Tag: 1792633498-136491
-X-HE-Meta: U2FsdGVkX186Q3JxlYR6X4xUQFfeg8CP50yQmX3WZpFisMzuBTt6aBv2a/8XAhls90g0f4OI2yg0637GIgJ69KTQTXfpO1XX2+E36IDQa/5wddyFDhiPI4tpqOLAdQ589nI7FaPmVZWEFqZMFqxb1w0F0q6uzv2vCz3aiuSp4ymJCAuB1tLjgWHfjoHHDpxMDE9rTEm23tV3a4TJa2nN/+E06CbHaFIgj411TH1tFKDuwhPW0+1AtQzS9xvwzhJnyNOlOh9br/JyhUCcG+hQFARff73wYsuo41VLxmKu7xzsphWY6WvpfwgovDnoVVRn47zdMudgg5AAVjQbDqPRPNsZimrfjaQeq1P8ip7kVNZGP8ZLeaFy6Lrabw2fqVycFH9cqbQj6DikY4ryKd5YfyGWHM7H5Duveml+j7b1HIkBnqR0o0bmLY/pPqva5hrXmmQdyUSoEnQ6J3hgyPNQdqvPfe+Q1NvPktMRsypM8wQYLNNgfASjv+HQVvdLfiGKWbr/4UPLs2AORFeoYOtSha4TVF0plsRmGH2F9CtaMM9K6oIkEMrFCYei1lZtKIcw8vn6X+sCr2pPxwGNa7zMpF6AntebpvxT2KjDcjV3JqjLXwfsUhaLMcVV+o0cDbmy+HhhLNFRvGjRH5PRNrnkM9nT3yVnAYEcQb2Ryhjgos3wewytO2y8qNnh0RsTdBsxfJmnhL8RSUA53/Oilw1yQyUqeRKFatJLYaV2uodglAC0PozSsiLo1jjFZolyx/nyjK7ZuwIgLxsNFoFVxEJPzV+BqhC0gYRuakePnTKxSYTKkdHYn4wJJ244n1BxHDuf1+lG1+E1GnCtYpasAdTlkz2igkPBuAGCx6p4GztUxJE85kv7+FR6yJO14PSZCrXltIsuBRD0H3/yZ43wm8iGVKQrvCN1VJYgNiCANVzCQGydK0FRlwoOz065qo3fLKl2Iby2j00krLq2+2fORO5
- XN3yJ/ZK
- WiJJup9FehboZFMBMnSRdhL9QBfzXY/qzof89aq1GF1qYn635jq4HnDwNWExWc8YctnSrt1Av9vXh1EjOMZaIUqyHx0ZMBaIIOYGh9oEC+dBkmb2Ui6IZaw5mx54BaRvo7mUT7JE7poJrb7AAWkBDn2NgkUrrC6qVmrESuviLhHXplZHgd3nYEqDSKzY24ac0JNsX58ZwsHlop9Yhwj+akjTHguLvm28mbk2SVn10kXtLbqFDOVuipKi8HEu7Yb+pBCz75WQ0F2r5qzLECWtL42Co0UOj9kKDm3zMQxHZDYC6dC5U9lP6HUmEG33se4OoKvzT3tk5maFMjgAP1ez9vO4gaPNs8LtJjiSZ4u1R3ByZnW8py3BY7ezXqmaguiFxRzT99tQ4WNJJ5nHnzSrOFvr8vhygAkmqLhFLLBz+Ds4AlDRAEPJUZLjm6Q==
+X-HE-Tag: 1792633784-573199
+X-HE-Meta: U2FsdGVkX18AnY/Ay7FQyIzZt+KJWIPr3JUUclQrIQuHXSUW04ZXiEdMCnFkitjulvShRUbYNMG30+PtM1Ez7Gtyq2vyxsizMspOWgnhjoBzckhC4FhC0b9cYXtkX6m5aSGyNUSApTXxBLOTuuGwnHVYwk44jjySag5nYeaZaDhVqSoPRH/AEMcfVc6XMbSDIXzN9IFGo2oRzMFXVEtIktl0k3n3wEcM0I1TslrysEzhTVfexSxFAon+BDySrtTy0oxcdjt3Hv/XL9sXsLpAKgelOL+gafJ5AjyR4uLhBLzs6QA6PBqm6o7Kl0zuWJk78aPQgpyf025QnCOCXYRzNNNmAvBrCX/bqWJZKBhO7eXHlGllcOaIngpX+T0HmidwqcuZPmN2VK2KRcOA8LsCL0+AFLjzXglym1wHOal8T7lVeAPp5tgxiIS+XLs8rnUXIixcmr11i5fLXZagWGv41x0NqEFKA0WtoWs/egGJaH5IzOWKDpzCO2P1szwmp02j41i+RlxczwGL76sDXBJ9LB6YcJClsvKmUAWgHVFx/ALNg+I1HsZhQDfMdKM+0mMwxb4q9fbJ8Ms55B6uGxgxr4jraZjvdo38Qw06e0TU+p1AWUopOy7nxD7nZsZLU5eEcVLYFP4GEi1A/KBpEmP9km273xuJvSL9Wb/3Hs7wczCbbgRj6NNPYviqPAetZSJ0uIwzdyDQTq1ATvXM9f0K8fZxmDM/EF6RhCVQL5oYEtWFCPFUY6/aWmD7zxq8JxokxuT6tsaYuC0FQ3of7PGnMVkoGzYoc2T7DOPEp8dZnwTG4gtkPeMnjklAnWzdliAYaUDjr0r5PrDkmh48hylE+IsS77mGdasAtZBYCx3c3tW94JFiKIPPaI+Er+oeZt3aMlaC8yCKSVliFzrFT8Po9G+Kq8GvhlfiNK5BTKYhi13OvPmq5lPPToPZBvZPJqhWh0RJTNbPTRRTCurGQZY
+ nbknNZbR
+ +OQzJgcjbcdSog+wxu4G6aopapvo/MBu2NTzCK+GKjWrnl7m0nEQ/gnvzZoyz+Vw5iuJDkkjQEUkYleweTLk4rQRSEvVNVW38zxtkPxDbpMqf4nMV+Pq+Zch/Pbf/1sDNjY9OxwmXCghx5r0xCKcvITrSTJCQKpCXNZDmgBrGixKSRhhn633uMGwVwK9GEgl1bb6qIYdyDIItNNF96xNqJut7HkPB3gIzP9++iwKUj4A3/OUA1E31KwrTOBNKtFXggraGFiiFztIfp/dT9ZvkqzKgCs0O0eyeQuM6lYtSnI5I93MVDyrO+S6jQk0nYa0TCEGAIOzj3vTbgM/EYF/CBQ6ut3DnfT8dAfFPN8JsDcqMqyr0y2TNP10iw2qgQ9GJuu3285FkBLkKsab+jeeTsgwXsqb71hzBOa6kTyc061Nn+mZ6s9M9HlCwXwXZoZIygbc67qjhR8qIlvH8W5rmb+YZIamjNosSrAjbDdoVsI1bZB2GvduVh2N+8SatFVkw1bJUqNy0vLtQsm/uZMleMhV8e/UvIVG9Ji68vhG0zljRXnZ7mgwcNwKv5KtgIBotQGVvFfGmjR5GFROoVLVj2nnaGn+2lxC2ElMDJd3zDp8Gc3BeOMY3/y3nQRsL0ku9XLU1mp4bc7XoIHL5jCSE86NaasfHXIDEpkUd/CX0VVihHfrx6pbwD4H6mnnCU+Ef6rWz6svtcwUOTa2hEfM6PM4GIUt4puJg77viC2V4BbUH6ZF0HQzoWUmiqEcD63M4P2lCHvO88z/df8IMx9zdT0Nd/SYotMSPSuLnjFOBxYgenedclBw1hnEuuCfCtLkVgly0wvxiL2DcWOLQoQo8L5RbvwyAqqPRxe1sbz9u6T4p/Owkm0cVm4oNApuMnybctJSC91FVm4x+pzO4C42ka6Mx5qWduy3eNXyaBtKx0ItM1WJPjXG9ww7EaYh0g6LtzGsnRwL9J7VJG9WumQYBmDCTYNDF
+ r7Aiw5eM
+ D8geluzzigDalvDP3HW2KS0znJSXVJz9R8NuPL6rYVF9JqcypjJ+a1Oyad8sF8GhWCcDWUVjwKzThslVELFkiN5wy7bEVj/U7/8l0iXrtZJGubAIijsK1qKHD8cU8v2hJ73yaY3zXBxlFS4+b+EQXEfu9CPftvyVvuG4fooA+6iZza6FxM/H7abo78//5WFgHebTKsV7DNpD+LVZ3Aco2Kg+WEj7CEY13xznOXRCnYnECJwsHrM74W9Sl9RiHZRnauh/VflT3Z2Mm5uFfCvY0kY3XebhLWFO9LiGmLYgxprfjg+H0mqvJFqomQfhrmox9CsjJ8uaz6vn0KlNf3VIsvJ/q2q00ii6gGXzr3uZ8D/FKl6/WWhW2s3R0DqcZTgyUH1Wj3ibjzrS0QHq7SCG7FnRO7PE8zAmlvMSpiQsIB8yqoAGKeyqRnfaDC1KjMqtKHJcckN4csw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,145 +96,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10-21 12:14, Pratyush Yadav wrote:
-> On Tue, Oct 20 2026, Pasha Tatashin wrote:
-> 
-> > Currently, LUO sessions are frozen automatically only inside the
-> > reboot(LINUX_REBOOT_CMD_KEXEC) pathway, where luo_session_serialize()
-> > iterates through all outgoing sessions under global write locks and
-> > freezes them serially during shutdown. Allowing userspace to decide when
-> > to freeze a session once it is done with it (and to freeze multiple
-> > sessions in parallel, since luo_session_freeze() only acquires the
-> > per-session mutex) avoids postponing this work to kexec shutdown and
-> > reduces blackout time.
-> >
-> > Introduce LIVEUPDATE_SESSION_FREEZE on session file descriptors to freeze
-> > a session early. The ioctl runs .freeze() across all preserved files in the
-> > session and serializes their metadata. Once frozen, no additional files can
-> > be added to the session, and subsequent freeze calls return -EBUSY. Freeze
-> > is only valid on outgoing sessions and returns -EINVAL on incoming ones.
-> >
-> > During kexec, sessions that were already frozen early are skipped, while
-> > sessions that did not invoke this ioctl auto-freeze as before. If an
-> > early-frozen session is released before kexec, its files are rolled back
-> > via .unfreeze() before being unpreserved.
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> [...]
-> > @@ -218,18 +219,33 @@ static int luo_session_finish_one(struct luo_session *session)
-> >  	return luo_file_finish(&session->file_set);
-> >  }
-> >  
-> > -static void luo_session_unfreeze_one(struct luo_session *session,
-> > -				     struct luo_session_ser *ser)
-> > +static void luo_session_unserialize_one(struct luo_session *session,
-> > +					struct luo_session_ser *ser)
-> >  {
-> >  	guard(mutex)(&session->mutex);
-> > -	luo_file_unfreeze(&session->file_set, &ser->file_set_ser);
-> > +	if (!session->frozen)
-> > +		luo_file_unfreeze(&session->file_set);
-> 
-> "Wait, this looks wrong. If session is not frozen then unfreeze it?
-> Should be the other way round, right?"
-> 
-> This was my first reaction until I realized that you only unfreeze
-> _automatically_ frozen sessions. User-frozen sessions stay frozen. Which
-> makes sense, but is not obvious at all.
-> 
-> Perhaps rename this to session->user_frozen and add a comment here?
-> 
-> With that fixed, feel free to add
-> 
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Hello,
 
-Thank you, I am going to send out a new version soon.
+syzbot found the following issue on:
 
-Pasha
+HEAD commit:    a804c5742bff Merge tag 'lsm-pr-20261016' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=170e93cd580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e0a09745349d136e
+dashboard link: https://syzkaller.appspot.com/bug?extid=68c0534b26fbda7ed84f
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
 
-> 
-> > +	memset(ser, 0, sizeof(*ser));
-> >  }
-> >  
-> > -static int luo_session_freeze_one(struct luo_session *session,
-> > -				  struct luo_session_ser *ser)
-> > +static int luo_session_serialize_one(struct luo_session *session,
-> > +				     struct luo_session_ser *ser)
-> >  {
-> > +	int err;
-> > +
-> >  	guard(mutex)(&session->mutex);
-> > -	return luo_file_freeze(&session->file_set, &ser->file_set_ser);
-> > +	if (!session->frozen) {
-> > +		err = luo_file_freeze(&session->file_set);
-> > +		if (err)
-> > +			return err;
-> > +	}
-> > +
-> > +	strscpy(ser->name, session->name, sizeof(ser->name));
-> > +	ser->file_set_ser.count = session->file_set.count;
-> > +	ser->file_set_ser.files =
-> > +		kho_block_set_head_pa(&session->file_set.block_set);
-> > +
-> > +	return 0;
-> >  }
-> >  
-> >  static int luo_session_release(struct inode *inodep, struct file *filep)
-> [...]
-> > @@ -267,6 +286,9 @@ static int luo_session_preserve_fd(struct luo_session *session,
-> >  	int err;
-> >  
-> >  	guard(mutex)(&session->mutex);
-> > +	if (session->frozen)
-> > +		return -EBUSY;
-> > +
-> >  	err = luo_preserve_file(&session->file_set, argp->token, argp->fd);
-> >  	if (err)
-> >  		return err;
-> > @@ -340,11 +362,40 @@ static int luo_session_get_name(struct luo_session *session,
-> >  	return luo_ucmd_respond(ucmd, sizeof(*argp));
-> >  }
-> >  
-> > +static int luo_session_freeze(struct luo_session *session,
-> > +			      struct luo_ucmd *ucmd)
-> > +{
-> > +	struct liveupdate_session_freeze *argp = ucmd->cmd;
-> > +	int err;
-> > +
-> > +	if (argp->reserved)
-> > +		return -EINVAL;
-> > +
-> > +	guard(mutex)(&session->mutex);
-> > +	if (session->frozen)
-> > +		return -EBUSY;
-> > +
-> > +	err = luo_file_freeze(&session->file_set);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = luo_ucmd_respond(ucmd, sizeof(*argp));
-> > +	if (err) {
-> > +		luo_file_unfreeze(&session->file_set);
-> > +		return err;
-> > +	}
-> > +
-> > +	session->frozen = true;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  union ucmd_buffer {
-> >  	struct liveupdate_session_finish finish;
-> >  	struct liveupdate_session_preserve_fd preserve;
-> >  	struct liveupdate_session_retrieve_fd retrieve;
-> >  	struct liveupdate_session_get_name get_name;
-> > +	struct liveupdate_session_freeze freeze;
-> >  };
-> >  
-> >  /* Type of sessions the ioctl applies to. */
-> [...]
-> 
-> -- 
-> Regards,
-> Pratyush Yadav
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/171f09113e28/disk-a804c574.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/0f8812b149fb/vmlinux-a804c574.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6349a85938ab/bzImage-a804c574.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+68c0534b26fbda7ed84f@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in _copy_to_iter / _copy_to_iter
+
+write to 0xffff88810d40b000 of 1024 bytes by task 12 on cpu 1:
+ memcpy_to_iter lib/iov_iter.c:77 [inline]
+ iterate_bvec include/linux/iov_iter.h:123 [inline]
+ iterate_and_advance2 include/linux/iov_iter.h:306 [inline]
+ iterate_and_advance include/linux/iov_iter.h:330 [inline]
+ _copy_to_iter+0x605/0xea0 lib/iov_iter.c:197
+ copy_page_to_iter+0x174/0x210 lib/iov_iter.c:374
+ copy_folio_to_iter include/linux/uio.h:204 [inline]
+ shmem_file_read_iter+0x29c/0x4a0 mm/shmem.c:3391
+ lo_rw_aio+0x6a6/0x760 drivers/block/loop.c:-1
+ do_req_filebacked drivers/block/loop.c:-1 [inline]
+ loop_handle_cmd drivers/block/loop.c:1949 [inline]
+ loop_process_work+0x569/0xac0 drivers/block/loop.c:1984
+ loop_workfn+0x31/0x40 drivers/block/loop.c:2008
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0x53f/0xa10 kernel/workqueue.c:3479
+ worker_thread+0x569/0x750 kernel/workqueue.c:3560
+ kthread+0x223/0x270 kernel/kthread.c:436
+ ret_from_fork+0x146/0x330 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+read to 0xffff88810d40b000 of 512 bytes by task 13858 on cpu 0:
+ instrument_copy_to_user include/linux/instrumented.h:130 [inline]
+ copy_to_user_iter lib/iov_iter.c:24 [inline]
+ iterate_ubuf include/linux/iov_iter.h:30 [inline]
+ iterate_and_advance2 include/linux/iov_iter.h:302 [inline]
+ iterate_and_advance include/linux/iov_iter.h:330 [inline]
+ _copy_to_iter+0x130/0xea0 lib/iov_iter.c:197
+ copy_page_to_iter+0x174/0x210 lib/iov_iter.c:374
+ copy_folio_to_iter include/linux/uio.h:204 [inline]
+ filemap_read+0x3f8/0xad0 mm/filemap.c:2875
+ blkdev_read_iter+0x21e/0x2d0 block/fops.c:838
+ new_sync_read fs/read_write.c:493 [inline]
+ vfs_read+0x699/0x7c0 fs/read_write.c:574
+ ksys_read+0xdc/0x1a0 fs/read_write.c:716
+ __do_sys_read fs/read_write.c:725 [inline]
+ __se_sys_read fs/read_write.c:723 [inline]
+ __x64_sys_read+0x40/0x50 fs/read_write.c:723
+ x64_sys_call+0x2135/0x2550 arch/x86/include/generated/asm/syscalls_64.h:1
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 UID: 0 PID: 13858 Comm: udevd Not tainted syzkaller #0 PREEMPT(lazy) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
