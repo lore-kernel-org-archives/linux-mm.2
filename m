@@ -1,178 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72979606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F139606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 16:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=Y6dNdwcl
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CFqeP8ej
 Received: by kanga.kvack.org (Postfix)
-	id 8F6486B098C; Thu, 22 Oct 2026 12:17:32 -0400 (EDT)
+	id B162C6B02E3; Thu, 22 Oct 2026 12:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CDD16B098E; Thu, 22 Oct 2026 12:17:32 -0400 (EDT)
+	id ABEE76B02E4; Thu, 22 Oct 2026 12:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 796146B098F; Thu, 22 Oct 2026 12:17:32 -0400 (EDT)
+	id 9AE0C6B02E5; Thu, 22 Oct 2026 12:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 538666B098C
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:17:32 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2EF4160197
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:17:31 +0000 (UTC)
-X-FDA: 85350767502.17.51181D6
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 603BF1C000C
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:17:29 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=Y6dNdwcl;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf21.hostedemail.com: domain of "prvs=87550bb734=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=87550bb734=alexghiti@meta.com"
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792685849;
+	by kanga.kvack.org (Postfix) with ESMTP id 779EF6B02E3
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:32:36 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EF9FC160197
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:32:35 +0000 (UTC)
+X-FDA: 85350805470.03.950F38C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1A75C180003
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:32:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CFqeP8ej;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf24.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792686754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IyQXzg39zcGXVA48J3R7gRO6wWY/tJYex92UT40JM0E=;
-	b=wMhgilKIWixp1Mq3Ck3ZaKG+Id+Fk9B2wtoyCLo8Hc7Em4KJ1SsaFVK37P3oXkZ+eEGrWX
-	vxyE9lqdvyoXjZcugJqodXZrqo/CXyt04LJ4TzNsmHKD9r4q/n3iz6PSwnT+yz2olo1MT1
-	5gbcAHsSDFHZfIUtsfc9F0StJ25WHTU=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=Y6dNdwcl;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf21.hostedemail.com: domain of "prvs=87550bb734=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=87550bb734=alexghiti@meta.com"
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1792685849;
-	b=Rm+GeXzIg9/k7z0bljD3Q1S0G5nJN1NODlT89F5oxRfIR4OSafi1Iy9XZ9PlcO71IPpeAT
-	tj9OW59KMeUdpuiCBYnEbQ5+oc8wnqFtFMPvTIV9MtCLkhv6cnKWwu/+9ctajD+mz2IsHV
-	JfNSZlF77PkQT02UodrKOp6FJKfJQok=
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69MEEBOK653129
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:17:28 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=IyQXzg39zcGXVA48J3R7gRO6wWY/tJYex92UT
-	40JM0E=; b=Y6dNdwclyk0/i6LRnL1e+MW2cAlqUM2jSFU0ZaoR8zK1gTZopY1H9
-	cpvA2PyeXNqMF9HZZEl9UXagnMwVCF4wFlhCfVUs2ex90MWoCFEDRlGcrWRVTDSG
-	7OOkWVY2C16cGqsyCepZdHcx19AqpmFApUeLOlXb2gZdbSDgF947juJPbUK7V4C9
-	MjjMkPhrXTUUZAQzKnNecwDvXXnhV/4Ep+alwhAtboi2uOXvkQJUyIwLDeEPyhlG
-	dStF645OnxisrGfh2wRNwFZLGvw3xfXoI4vd5yi8fO8EuU4Jj/I+as9ZC8oSoBGs
-	6zTNWAo3ACC2ppuNs9lY7nl+mEUTaNtFw==
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hfjf6hhqn-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:17:28 -0700 (PDT)
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c40bbd26f74so181388566b.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:17:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792685846; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WqiHMshiJY+DLMIRtRQyeRhtH+EB5uY4EOpYqcfJFsGEMHir2jYjGHpV6+l2GbmAYn
-         +Wdv+Zwoi6Fxe0DTr/2KVAxjdbuIVd8TqhsSmsliYOCjfahYoIMTwIMqCHdRG6UxLyCX
-         xzNZhdphnxmGQ3py5ZmbL4tmBkvVMWB1HllaJG7VY/+pdHwM9FLpG17xgXlZB6fobOte
-         HFJSKI5po4/3R3/ZcjZvhAFyTznvckITlE2q7nBTbSeGQDGSl0rkfMoKThzyt6Io1R23
-         /0ZRtoZfNu35bOe50YwfrNtfHuPocBEdnD66Kec+7oAPiQ/V+CjPC2Gxk/AapWbBiT51
-         bujQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=Cpb/0IA0On2NJNCBdcYW0RNbxOlGLfZgdxVpyVTyu0g=;
-        fh=9fRTpSdgRe8aKfpmk9IWfmNeBdTtN9+jYGBfoHI113Q=;
-        b=OngQ0aBMaOWvjS39oWMQVEC3CW0vYG/qJsT9vwIIN8WRH0JKSKhMj9+FreUmTvcwsQ
-         1LVQFe846ujL1IOhUfcAgumY0O2Ik1a3/CplIAkVl3bj41C60VWCU7bYIJL1qheUvwik
-         ZaVAoKrO5aaYoSurBCquu9RMcMe1OlT+9u/czFImUZcjVmG92QzvsLrsZ9E8Pjk4kU2X
-         T/yc6EdpnybR/Gi0+xw8VQ84I/itBOqv/Kuk1uEayBkPcd8QCkBTA1BAbKQI4lu2OM2c
-         sLZ7z+SSnyOswyN3DCpK9l7vii+Dks1GYMQMi5u6fqiE1pCWupeixym0cpwaQ1ZZX6Nz
-         9lGA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792685846; x=1793290646;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Cpb/0IA0On2NJNCBdcYW0RNbxOlGLfZgdxVpyVTyu0g=;
-        b=xNBhsuOQolLpMD6I0OrpK+QR2kjus3699Xo0hyr9lZP03q9Dn7AdBsw6P4v19cejMj
-         Msty7lz4nqowhJ5ufVUivWg9AP2PYrlq7j+rvhWqidmnrC9Ux0IOLMzelU1xt26otTt4
-         4jWp8jqqKLhbYdcIAZQGA0i44inOJK6vPk6ESk+7UXJjeaqGC3/egEt7SCmVNp0L3NXc
-         IYA/bGYVPSK96BojgC8KQU/eLeFUyGI6Kn55VXBDjV9fAcIXfJxy9xlhwuBPTdxN66KS
-         H68J7xdd0ESIhgoahLJ2t4L1bXJssAI+BJCWBbJaI6MtB62824KvqKWcqnpgVB3NAVl1
-         6uWA==
-X-Forwarded-Encrypted: i=1; AKwUvBxwIT3Grw3V4OX7hpdpBGkOjD5Wm3r3hiqN2jZpRuCQK3NvjHVNs51h0o5tOhgO3aMqEcjYBHXsaA==@kvack.org
-X-Gm-Message-State: AFq9FYIK55Z4VoV4EIVtztdSckHCXfRfE2eANl0UhI5TQYceevpVuFP0
-	VggSjA4vcAw3MhOQ8NzAfQ5heQJcg/jOq/FnqcWmzO14QreLuPuPtZekYrqa21raAejSVfz7n3g
-	025svQmy6qFPBIIxvvkKrnWA4FLlUNLdfcGXq/fGYSbyCt7wSfDoEez64F/u6lCZmnNSFaoa7vF
-	m+rLM5H9eJumf1R5VpYUOqwsZxjQ==
-X-Gm-Gg: AYBFou1KBCiOVHft8gUH0/agBLCGHPb1ZCRWgfqUdaccScFKEXLiBoI9hBwsyJtYXcE
-	3R2XF73pF+zWhy2Fsi6oseLfx9A1SUSqK9IWOQjDm8gP8BjWX9RzzRbNAjWX8dAh7un/iGaQ0bl
-	bGSAlOW5ez37QG1MEuC545Y0926QEY6rKrwbBt29TUjFJc+tDZTYdsPnh0TADhnqb8TLGbGTXtz
-	uHGD5vyRPHSeTiiEA==
-X-Received: by 2002:a05:6402:1f82:b0:6b2:e2:d965 with SMTP id 4fb4d7f45d1cf-6b408edb704mr5472628a12.32.1792685844936;
-        Thu, 22 Oct 2026 09:17:24 -0700 (PDT)
-X-Received: by 2002:a05:6402:1f82:b0:6b2:e2:d965 with SMTP id
- 4fb4d7f45d1cf-6b408edb704mr5472605a12.32.1792685844476; Thu, 22 Oct 2026
- 09:17:24 -0700 (PDT)
+	bh=O+E03NrkWyAgYx/OnIv1Bo6JdTIFdK42G1CbBxjO+jc=;
+	b=NArIT0B8/qOY8ky92B38gKfkS09UXo3V0RtuV2apc22bCUw463NOJEsqJOcs1KrCj/t5Vf
+	usfJojM/ljYH4d89O8E+4fl8FGtfU7tjVFij1CIOiE95K3YRIfHRpENbUqH3yVUineVkWx
+	fhjuPMi14HcElj2Hs8z1EMdboGh5JiA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CFqeP8ej;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf24.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792686754;
+	b=y201Q6CY1t21BEFmPWPLGmD+i2Jfm3ScTMBE8k4JScobi3ebMp8EEXn3EVW/AlyuW2m+4Y
+	vVFvoV7waGiSS/K1RbqVDkbk/ugW8jbJBk+/aYxt+K3A6qABstT8ulF+1Jow62SagHKp48
+	OekYhM5pumMIXuyqkh3X8zsXKoUKoek=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=O+E03NrkWyAgYx/OnIv1Bo6JdTIFdK42G1CbBxjO+jc=; b=CFqeP8ejq/ch5RAZMGMFhf2vvi
+	j7JcjPQ10biIlynhtR6++MCr0kLdhl4bT5RLJV1dUPOu7vH3V3K2aCCk/9R7R8zqDeksgzvYqcGdy
+	ljPNXS3YpBmx+hbojquHp6eAsQBFOFfLxUodOB3XC2VIlFEUcO3blNZXkPsyqlsBTgbU24+U4XZgn
+	v3IK6jIyKgcNfuHSGFk67VkdYLXOmeV/JP4Yj2jPKaO3XVPCFGTLItKW8QEbsM0UEleARiiHpby+g
+	Svxfmf7+Ny8VR1E1N3L+wLMKhaiILB9kmCnCYCPMZDk0PgqD0KyK/Z278FxBankkujXc0hXyKeGvS
+	PRKROQow==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xJviO-0000000EUsO-3sxh;
+	Thu, 22 Oct 2026 16:32:29 +0000
+Date: Thu, 22 Oct 2026 12:32:27 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Florian Schmaus <florian.schmaus@codasip.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Suren Baghdasaryan <surenb@google.com>, 
+	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/3] maple_tree: fix two bugs when freeing RCU-mode trees
+Message-ID: <dtet2zelrbzt36i3jbwgsi5iv3nnwtlhtnhbgdvj3m3kzewcvs@vdgjqdivisf7>
+References: <20261015-maple-tree-fix-slab-corruption-v1-0-160d97f7304c@codasip.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261022145615.2184343-1-alex@ghiti.fr> <CAMgjq7AB4wUzmugV3n4mhWcYqMKmhoZJCDV2uUagFjZXjUUi3A@mail.gmail.com>
-In-Reply-To: <CAMgjq7AB4wUzmugV3n4mhWcYqMKmhoZJCDV2uUagFjZXjUUi3A@mail.gmail.com>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Thu, 22 Oct 2026 18:17:12 +0200
-X-Gm-Features: AclHuK9GI5erCWePRdYkEH9p2977EyYs_eI8jHBxOgH2AAL38mp76QLee7bxFts
-Message-ID: <CAEmasaXz2GGoy4dyhbo9Em95Cnz6QL3u2fcnAa2=8pJOOJyH8g@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/1] mm/swap: keep reclaim batches contiguous on swap
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>,
-        Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <baoquan.he@linux.dev>,
-        Youngjun Park <youngjun.park@lge.com>,
-        Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
-        Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
-        Lorenzo Stoakes <ljs@kernel.org>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: 8t76Zcr59ajkB8wHTB5yIkEwqsT3hQcq
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDA2NCBTYWx0ZWRfX4MJz3aARB6bI
- F51NROvpw8WOj+55w62nPXDse26PG8tnIj66mxrazDhkAFDFunnA0MrAGMBoYhAGMpc7hdX56G9
- VKvq0T5XROXzxaQU0D9PIpwegPalT60=
-X-Proofpoint-ORIG-GUID: 8t76Zcr59ajkB8wHTB5yIkEwqsT3hQcq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDA2NCBTYWx0ZWRfX4aIk8knDUm0w
- gCNeicBQkYsR/Cw3wguliXngm8lvUkrdvv3s0jRvmCS8kuJz+/cjUcCS8Y0VinHLUu3x0Cmve3v
- IhhTDMIz12crJclHOpRPVu7gwUWOrBH7yOMP1SAg/hKiTpGKzNEuk3tzyCLbdMeSk+ReeUVY84f
- tPHhFV17nXWI34y1/DruPoPCeihMSmQpb3KpTYWmdQ1bl7212WG+b1D0zzxBVwmQ+lXxJ9hl/HH
- 0MLg/SzPbQf7rC8jVDaSXanIT1Ac7e7ORvq0QIVxQ/LCTgCBNUN/NV2gzRWaN9OnIyDlJbS8sYY
- 3j3OBFX3Aljb2pDSKbJHLnbM6REEdFghrj7p05GbATBDABBEV7ybQRLrAQs3uRi149k1pRbSR+b
- RYGevSquR8BLsOTO8QCXwEWu/hu89T3YJNnzrHBZXvWRxBHxrejVmChdWoXk0QZ7QqVmJKOiPil
- xA6lVJfO9u3r4RBAoUA==
-X-Authority-Analysis: v=2.4 cv=HOVWhYtv c=1 sm=1 tr=0 ts=6ada3718 cx=c_pps
- a=edIAN7ErZTGbxav20d8A7Q==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
- a=pGLkceISAAAA:8 a=AosG1spRg9nRUDFPKwwA:9 a=QEXdDO2ut3YA:10
- a=nIuFr-8touD1a-RngYHT:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-22_05,2026-10-21_02,2025-10-01_01
-X-Rspamd-Queue-Id: 603BF1C000C
-X-Rspam-User: 
-X-Stat-Signature: ajs1u8bj5cu3cd6z95kfqtnxfbpnem1f
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015-maple-tree-fix-slab-corruption-v1-0-160d97f7304c@codasip.com>
+X-Rspamd-Queue-Id: 1A75C180003
+X-Stat-Signature: u11pbqy65sfs1iexzki11sg7kwfx1kqh
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792685849-259566
-X-HE-Meta: U2FsdGVkX18LtZyKUjWeyzVhBNt+HFgLm1sFUwj03H8ixHOHDR8W8WcS0vkBJPdCf8yqMU4wsrr1vDbPpOIf9lEU4vboyhPkP4nXkzafhHGNlCczURDaWuw18qeboDktVbg409pyFumOzmQCWLwHpwXoyKTB2A+E78ptP4cyAJljN2x0G9EXokDNZgorW91EFhNYLpPslcGxV7jsK7n5f17vaR2WbDDUlVLxeUZ7bJT8Fl4FKjQf0mrfcF7+tRxypRnmHiZnANGAR0itel/OSBxPRdQ5WowdkV7R/8vYH45Tt9RBDav/Vx072s4dSmxp/1TFcRppLP69vmrb9lgWsyAFVzjLB4Q1IARGPa3WTGXs9gOX05xN1t9W06dpoTQvrDK6Lv8wHw44KX/6YFS2kUOew+zuN73BQdj9nqZt9oH/Vx8HLuTgYYFrSEC6mVG5B9wom7aZBcCR2vvJAJO6Fat+uuWjQDgdZWIU3AKar1Yx8Y39Y9oQ8gI4fSv+gJKQOsnBjcdPOArDwmyxrl5tWtLz4Mbnfyc5ebxlBcOWY7ApnwBmdnJN+Ftl3sfEN7F4bKCq1pmp8kP3BWmtmHLSGLfIdIPvaeTJXZcfqd44VihaJsQrJ3vflB9Rx06josfFUpuF064/qikYGP2ScVIH8rb4r/0pNKQq/CRV+QsqngrrW3o1XWQbX8RuwgW9/OHL0vaBa0bd87cHT+Q4cJF8D7axx2tWAP2rSMA+p8RscaT/5Q6jaKccjdhFsBE0NUPaVbjXk48pIG06U8EAJI/yXP5KTcL1iC2U2aPgvv/UwsNlF9ZpxLSl/jvtZjvj8Dm/ZifMLY9pIHUUqwf8UHP8zFl/hOBwHlIMcU6oUwtqbnbRFNhLQSpaKEhLUxlODRU3P/ElM1X9B95sRwbigpVwhWh5i5i1xTl7mHlD5pW+xT+I8CWE99iPZ3GRMEu5G70gbFy4UbKl9N0GTHVkFef
- TVDwenc5
- R6V83qvswf0PhzRpcxvMlaqWIw/A/UsI2qFOFfRudpXetQu/r32khBvYFUMRrPSOlriPnS6ZWBVwEX4G6z2PBSLKF9E+6JaaMlTOvXBr5TFDWU7KNJgQiInxgjLDTcVlpniXzErYZVyWvggC7YrC96zVOTfiSsM9bxtOcuzCcMboNhAHCDg/tN4e0/EhlxmMVvSefrRjQm9G64iMZGbwYjquOjA26FY9eKH7lf+qTwyKjE03YAlPV0tks+NoaULH3O7vt1u8ZtDsOJynYFH9okJDW4pRz+BF6lzRugTrr86cdwt8YN6Rjex2xFDy9ypvVYwpFI6V3S9DnphfURMk/keFf4d6qur+V3J8uhjZFIAiqCt6boFbuOCt0KgUFpoT8P/+J3JRcr2OAtOPY3O3zGtBSR1RNc/d3/9jtbeiZIco2cdsVaAS03jeABpcVaof171Rqup8b8/zvPRbYX1SjNGGEj1K3+EFACatakKntMUHHH/aFDlSvzyJMJBm8N2feDdD+e5IYzjUItHNSfkFD2LjElK88O+WpURD3
+X-Rspam-User: 
+X-HE-Tag: 1792686752-927745
+X-HE-Meta: U2FsdGVkX1+MxqZ1xyp+Uc2XR9CDDpVKtrK6QMu2T/3WcEMTqEhmyDFYbZtkAjzhWUz4X0pPuxvML19gyAAEfD9mLTNoeC1we9FTgI0hP86YVpDpzV1V6uuLxX+RirRq7vU+5zL9WXjsrrQUlGpG6arUkBrKVUY9+GUDPeo7BaXz4iHV4OGLkdaxJwZqhblB0YWhLVY4wOyxfxc7/gUXek59ZDeNVLM6RU5L5YDrjZ1nNHcoUTjQls7KEB6inuhhg4a9DnoaLya9hqj3wgD5i8kzOEAlejloI4DeVuJIg1PTRKft0yEsVrbmeTIVxL9bMcWbMSah0srcB8bFpaIo9Py3UMyD8/blEm3eprGkCyRGC7nAu6Q6DjJ1TBQ7UoPhH6vIPHgS2MiDlpbfko2CN84ZxZtCIVIMl6doXLynsdCzfJYvNmav32/FVYkEJgI5WNDar37tuNPr362fgYcVgO/PQDP8FPSeXfTcenLjHosUzpvIoBH9CalUqhp1/cMgwbGYx8Muxjb8eA7ELrCVaYeyFk4ivatIw0h3l4SVXW28CkYa72k0C7poAm2oQUUppX+NrcBnpUNBUsgv4K0vAWG/hDoeSt5gj8gNXagFzlMtMIY359Oe2TK6DZ5eJJJzVaYBb3e8jh3oQTjNbraEk+9t3we86rPltejxvF5muOV0oolAxP4nsOUGJnkxDWvZCYRtYv7R58C5eUxPk1iVhipZ7it8XBszoIsII77Hn9YxLx/4aNeNrqvmpu+Kt0kd7La6UUhQBNNKo/pTnvwoHqxgf6G5EW19EuyBpTC019H84S+urKeiYW0H0QB1f3zG0foNH8TlV8j36hfiJDlAUoUHiQX9JvnETnf1Vo+JLPqhvLGKyJhK9uMijcjInsPT/PfaCO8V2G+Xzrvf+URbG18uT/rUv2KFMNFNqBqkfC45jK7qKsUNQL1AA9yA3VKYYXd08Phsz+MnJ854Xi7
+ PF7hhEfy
+ t7dPJ5OulXVVJjDUIf4I+2Bg382dN36cqDs19jFegPCUgEV1Y/8kOL54WUatLFR29htMvsJX5BP6Fpn8qlpAL/w3ijev71dlR5R1fg4ms91FZ+TGZzVFqxyHrlkHEM9hpuZQPJdLEQT7Me/wukyzlPOVMwL7UYI0vy8wAazfmrMffslEIjND6Oj1i2yOGTXqHBP/0qzZ438ne/B58zRctzSYS1Z7ggYm1xrEXF2x/SikdFGkoeH8t+VgvbK1UKyuS1mHclxVEHK56HrL1zE927DijLwdVnhDHNxhMW5YOJOnDA1y45an2iJf7bIpAPA8vMNvX0Q3aB+yM5HkD79lB7RvUjmscDkm07LVEjtD0KFw1gb4+TjKeuMZVYEm3Ow3389WtSuSsZauYrjJHQ51ZLLuQKd01GBLwgQxIs4lHJnu1kB8tNkBoIyhgGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,79 +94,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Kairui,
+On 26/10/15 05:11PM, Florian Schmaus wrote:
+> Destroying a non-allocation maple tree with MT_FLAGS_USE_RCU defers freeing
+> its nodes to mt_free_walk(). There are two independent bugs on that path,
+> both caused by the metadata that a maple_range_64 node may keep in its last
+> slot:
+> 
+>  1. mt_free_walk() takes the metadata of a node with 15 children for a
+>     child node and dereferences it.
+>     Reproduced with: 2768 ranges / height 4
+> 
+>  2. mt_destroy_walk() takes the last child of a full node for metadata
+>     and corrupts its pointer, so mt_free_walk() frees a bogus address.
+>     Reproduced with: 120 ranges / a full root
+> 
+> Patch 3 adds a regression test for both cases to lib/test_maple_tree.c.
+> 
+> Testing: on x86_64, in the userspace test harness
+> (tools/testing/radix-tree) built with ASan and UBSan, the new test fails at
+> 120 ranges without patch 2 and at 2768 ranges without patch 1. With the
+> whole series, all maple tree tests pass. The full suite also passes on
+> s390x (big-endian) under qemu-user.
 
-On Thu, Oct 22, 2026 at 5:27=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> >
-> On Thu, Oct 22, 2026 at 11:00=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> =
-wrote:
-> >
-> > 7.3 regressed swap I/O: for the same swap volume, a workload that
-> > rewrites swapped out memory sends many more requests to the device.
-> > mysql/sysbench in a 256M memcg swapping to an NVMe partition, 7.3
-> > compared to the previous version:
-> >
-> >   device read requests per transaction        +59%
-> >   device write requests per transaction       +27%
-> >   throughput, iocost off                      no change
-> >   throughput, iocost on                       -19%
-> >
-> > Two commits interact:
-> >
-> > - Commit 9a42aed48421 ("mm, swap: prefer nonfull over free clusters"),
-> >   in 6.18, makes order-0 allocations fill nonfull clusters before
-> >   taking a free one.
-> >
-> > - Commit 3cedb745d354 ("mm: clarify the folio_free_swap() for
-> >   do_swap_page()"), in 7.3, frees the swap slot on an exclusive write
-> >   fault. 7.0 to 7.2 kept the slot, but only as a side effect of commit
-> >   4b34f1d82c65 ("mm, swap: free the swap cache after folio is
-> >   mapped").
-> >
-> > The freed slots leave holes in full clusters, which then go back on
-> > the nonfull list. Reclaim allocates slots one folio at a time and
-> > merges the writes afterwards, so a batch of LRU-adjacent folios gets
-> > scattered over those holes and is written with many small requests.
-> > Readahead later finds those pages scattered as well, and needs more
-> > read requests to bring them back.
-> >
-> > I tried three fixes, which perform similarly:
-> >
-> > A. Revert 3cedb745d354. This keeps the slot on write fault, but undoes
-> >    the intent of that commit and keeps swap space pinned under dirty
-> >    pages.
-> >
-> > B. Below 50% swap usage, make order-0 allocations take a free cluster
-> >    before a nonfull one. This is what the allocator already does, at
-> >    any usage, on swap devices with discard enabled (swapon
-> >    --discard=3Dpages). It is about five lines, but the threshold is
-> >    arbitrary, it stops working as swap fills up, and it applies to
-> >    every order-0 allocation, using up the free clusters that
-> >    nonfull-first keeps for mTHP.
->
-> Hi Alexandre,
->
-> That's a interesting problem. I think the real problem is with commit
-> 9a42aed48421 ("mm, swap: prefer nonfull over free clusters"), right?
->
-> It's more like a balance between fragmentation and contiguity of small
-> order allocation issue.
->
-> Perhaps we should instead always scan the full clusters and revert
-> that one commit? That commit was only following the idea of keeping
-> the allocation more compacted for that series, it looked good at that
-> time. Since fragmentation issues can be solved in other ways,
-> contiguity seems to matter more for large physical swap devices.
->
+Thanks, but did you see Dimitris' patch on the 5th for this [1]?
 
-Oh, okay. I thought reverting it wasn't an option given the good
-numbers the patch provides.
+I believe this should also resolve your issue.
 
-What are the other fragmentation solutions you are referring to?
+[1]. https://lore.kernel.org/all/20261005-fix-maple-tree-range64-rcu-v3-0-ebe7fb278e20@cslab.ece.ntua.gr/
 
 Thanks,
+Liam
 
-Alex
+
+> 
+> No in-tree user is known to hit either bug, because all in-tree RCU-mode
+> trees (mm_mt, sparse_irqs) are allocation trees, whose nodes keep the
+> metadata in a separate field.
+> 
+> We identified these issues on a CHERI [1, 2] system, which provides
+> fine-grained memory protection through architectural capabilities. Our
+> CHERI Linux port uses plain RCU-mode maple trees for CHERI-based temporal
+> safety via revocation and destroys them after every revocation sweep, which
+> exercises a path that in-tree users do not reach. Unlike traditional
+> MMU-based protection, under which zeroing the low bytes of a node pointer
+> silently yields another "valid" address, CHERI invalidated the damaged
+> pointer: the partial write cleared its capability tag. Consequently, the
+> kernel trapped at the next use of that pointer, and the bounds of the
+> faulting capability, exactly one maple node, pointed to a corrupted maple
+> node pointer. We then reproduced both bugs without CHERI on x86 with the
+> userspace test harness under ASan.
+> 
+> 1: https://www.cl.cam.ac.uk/research/security/ctsrd/cheri/
+> 2: https://codasip.com/solutions/riscv-processor-safety-security/cheri/
+> 
+> Signed-off-by: Florian Schmaus <florian.schmaus@codasip.com>
+> ---
+> Florian Schmaus (3):
+>       maple_tree: do not descend into metadata in mt_free_walk()
+>       maple_tree: do not clear the metadata of a full dead node
+>       maple_tree: add a test for destroying RCU-mode trees
+> 
+>  lib/maple_tree.c      | 19 +++++++++++++++----
+>  lib/test_maple_tree.c | 32 ++++++++++++++++++++++++++++++++
+>  2 files changed, 47 insertions(+), 4 deletions(-)
+> ---
+> base-commit: 4056b3c9d3c92ea45955641dbafeb9b960e146ef
+> change-id: 20261015-maple-tree-fix-slab-corruption-d1f098521d15
+> 
+> Best regards,
+> --  
+> Florian Schmaus <florian.schmaus@codasip.com>
+> 
 
