@@ -1,109 +1,178 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970E8606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 16:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72979606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 16:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LUKMDLgm
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=Y6dNdwcl
 Received: by kanga.kvack.org (Postfix)
-	id 9EB276B098B; Thu, 22 Oct 2026 12:01:22 -0400 (EDT)
+	id 8F6486B098C; Thu, 22 Oct 2026 12:17:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1376B098C; Thu, 22 Oct 2026 12:01:22 -0400 (EDT)
+	id 8CDD16B098E; Thu, 22 Oct 2026 12:17:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D65A6B098D; Thu, 22 Oct 2026 12:01:22 -0400 (EDT)
+	id 796146B098F; Thu, 22 Oct 2026 12:17:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C95A6B098B
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:01:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40D541201D2
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:01:21 +0000 (UTC)
-X-FDA: 85350726762.16.A69D7D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7EB1D20003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:01:19 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LUKMDLgm;
-	spf=pass (imf31.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792684879;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 538666B098C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:17:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2EF4160197
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:17:31 +0000 (UTC)
+X-FDA: 85350767502.17.51181D6
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 603BF1C000C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:17:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=Y6dNdwcl;
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
+	spf=pass (imf21.hostedemail.com: domain of "prvs=87550bb734=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=87550bb734=alexghiti@meta.com"
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792685849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZnQH4k66o1mIDEsmzGgsw5IwNIOyXJTZDCq9e7F1pw=;
-	b=bdsK/Srg+/noA2pYxShowmEy/yKW+eGmWTJP7jHqWTu6STyWYT49ZTQavM72aAOg4XLIY4
-	TKKFXIaIPgro8MOHQQp9yxcCSo74r6q4l9NacKcc07N/w5ZjY5S+uPgI1+CgXiHYadioow
-	WqYufbYwh8HW/JPuAm4hxtD1ozPWWq0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792684879;
-	b=eGRkJfWUv/MTEG6jb12Z/YqVV/BpaIi/YwKkymlTlJdOEtHRGiaMojYVmTCwzr3Tgxy5D0
-	65+58EM8SdGM1zKFuC3UwQXd4xHhRT/f9/T9t5qCR+gLFaHiqNRyDjnUj4ZjZjTXPzr6SC
-	6XWlm2vBxb9FISUt1XzXqq20akz4BJM=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LUKMDLgm;
-	spf=pass (imf31.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3B6EC43E34
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:01:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1FF1F031E6
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 16:01:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792684878;
-	bh=mZnQH4k66o1mIDEsmzGgsw5IwNIOyXJTZDCq9e7F1pw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LUKMDLgmYCelRKZK3jvmKxwZJ7UrPFrxBmub5jJzBKHKMKc9Z71KOTzZ/U8sLqWbK
-	 GJmt6NKptSpfEOoQwXPij8KghJWk5NJL4tv9qLsOxm237m9aNMzvIIonAN+/PtyQi1
-	 4TwwtY0rsqa4jjU9/UMFlSck7yWRvLUAWADohSj0rmzKEFNE9deUxG6G+z5yWMZJnR
-	 yeJ4UJ0kpZ4BywGO0f9ltMctlmyK0lhz9oW/oT/yjh8bmLtNsQeDk2HC3NWPEHnzRQ
-	 eAS+ol+jMyd58RSBrjXXgCtg1e6uJYbRhFwgJaE1WuFkROnx2ElpqAdkCnQmdEtHgw
-	 Zj7udkyyZe1cg==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93e6eb77f0bso173553185a.3
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:01:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxRwCbnjc2JKZ7NxE2o7glKs5sZm4H6twbIuYEZE4MY8URObYkd6mk+EnDReVkenVkBLpOJRfKvMQ==@kvack.org
-X-Gm-Message-State: AFq9FYLpxkGo0v9vRgXTkx40vUhyvIgTG4jjsBcK2R1+Z0yXM/GVL+1K
-	jgXrClJixl0Zb/3JbvAR84LtCCySu6g8PWhydeuVF1NJDO3JYqRZj5X7W16iC+IsoFQpz0jR7kS
-	HD/03/SCUKpkQeGEOGVj2xAo3kUeON0M=
-X-Received: by 2002:a05:620a:4015:b0:93f:3646:7a53 with SMTP id
- af79cd13be357-93f57f985e5mr1089190485a.83.1792684877406; Thu, 22 Oct 2026
- 09:01:17 -0700 (PDT)
+	bh=IyQXzg39zcGXVA48J3R7gRO6wWY/tJYex92UT40JM0E=;
+	b=wMhgilKIWixp1Mq3Ck3ZaKG+Id+Fk9B2wtoyCLo8Hc7Em4KJ1SsaFVK37P3oXkZ+eEGrWX
+	vxyE9lqdvyoXjZcugJqodXZrqo/CXyt04LJ4TzNsmHKD9r4q/n3iz6PSwnT+yz2olo1MT1
+	5gbcAHsSDFHZfIUtsfc9F0StJ25WHTU=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=Y6dNdwcl;
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
+	spf=pass (imf21.hostedemail.com: domain of "prvs=87550bb734=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=87550bb734=alexghiti@meta.com"
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1792685849;
+	b=Rm+GeXzIg9/k7z0bljD3Q1S0G5nJN1NODlT89F5oxRfIR4OSafi1Iy9XZ9PlcO71IPpeAT
+	tj9OW59KMeUdpuiCBYnEbQ5+oc8wnqFtFMPvTIV9MtCLkhv6cnKWwu/+9ctajD+mz2IsHV
+	JfNSZlF77PkQT02UodrKOp6FJKfJQok=
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69MEEBOK653129
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:17:28 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=IyQXzg39zcGXVA48J3R7gRO6wWY/tJYex92UT
+	40JM0E=; b=Y6dNdwclyk0/i6LRnL1e+MW2cAlqUM2jSFU0ZaoR8zK1gTZopY1H9
+	cpvA2PyeXNqMF9HZZEl9UXagnMwVCF4wFlhCfVUs2ex90MWoCFEDRlGcrWRVTDSG
+	7OOkWVY2C16cGqsyCepZdHcx19AqpmFApUeLOlXb2gZdbSDgF947juJPbUK7V4C9
+	MjjMkPhrXTUUZAQzKnNecwDvXXnhV/4Ep+alwhAtboi2uOXvkQJUyIwLDeEPyhlG
+	dStF645OnxisrGfh2wRNwFZLGvw3xfXoI4vd5yi8fO8EuU4Jj/I+as9ZC8oSoBGs
+	6zTNWAo3ACC2ppuNs9lY7nl+mEUTaNtFw==
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hfjf6hhqn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:17:28 -0700 (PDT)
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c40bbd26f74so181388566b.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 09:17:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792685846; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WqiHMshiJY+DLMIRtRQyeRhtH+EB5uY4EOpYqcfJFsGEMHir2jYjGHpV6+l2GbmAYn
+         +Wdv+Zwoi6Fxe0DTr/2KVAxjdbuIVd8TqhsSmsliYOCjfahYoIMTwIMqCHdRG6UxLyCX
+         xzNZhdphnxmGQ3py5ZmbL4tmBkvVMWB1HllaJG7VY/+pdHwM9FLpG17xgXlZB6fobOte
+         HFJSKI5po4/3R3/ZcjZvhAFyTznvckITlE2q7nBTbSeGQDGSl0rkfMoKThzyt6Io1R23
+         /0ZRtoZfNu35bOe50YwfrNtfHuPocBEdnD66Kec+7oAPiQ/V+CjPC2Gxk/AapWbBiT51
+         bujQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=Cpb/0IA0On2NJNCBdcYW0RNbxOlGLfZgdxVpyVTyu0g=;
+        fh=9fRTpSdgRe8aKfpmk9IWfmNeBdTtN9+jYGBfoHI113Q=;
+        b=OngQ0aBMaOWvjS39oWMQVEC3CW0vYG/qJsT9vwIIN8WRH0JKSKhMj9+FreUmTvcwsQ
+         1LVQFe846ujL1IOhUfcAgumY0O2Ik1a3/CplIAkVl3bj41C60VWCU7bYIJL1qheUvwik
+         ZaVAoKrO5aaYoSurBCquu9RMcMe1OlT+9u/czFImUZcjVmG92QzvsLrsZ9E8Pjk4kU2X
+         T/yc6EdpnybR/Gi0+xw8VQ84I/itBOqv/Kuk1uEayBkPcd8QCkBTA1BAbKQI4lu2OM2c
+         sLZ7z+SSnyOswyN3DCpK9l7vii+Dks1GYMQMi5u6fqiE1pCWupeixym0cpwaQ1ZZX6Nz
+         9lGA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792685846; x=1793290646;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Cpb/0IA0On2NJNCBdcYW0RNbxOlGLfZgdxVpyVTyu0g=;
+        b=xNBhsuOQolLpMD6I0OrpK+QR2kjus3699Xo0hyr9lZP03q9Dn7AdBsw6P4v19cejMj
+         Msty7lz4nqowhJ5ufVUivWg9AP2PYrlq7j+rvhWqidmnrC9Ux0IOLMzelU1xt26otTt4
+         4jWp8jqqKLhbYdcIAZQGA0i44inOJK6vPk6ESk+7UXJjeaqGC3/egEt7SCmVNp0L3NXc
+         IYA/bGYVPSK96BojgC8KQU/eLeFUyGI6Kn55VXBDjV9fAcIXfJxy9xlhwuBPTdxN66KS
+         H68J7xdd0ESIhgoahLJ2t4L1bXJssAI+BJCWBbJaI6MtB62824KvqKWcqnpgVB3NAVl1
+         6uWA==
+X-Forwarded-Encrypted: i=1; AKwUvBxwIT3Grw3V4OX7hpdpBGkOjD5Wm3r3hiqN2jZpRuCQK3NvjHVNs51h0o5tOhgO3aMqEcjYBHXsaA==@kvack.org
+X-Gm-Message-State: AFq9FYIK55Z4VoV4EIVtztdSckHCXfRfE2eANl0UhI5TQYceevpVuFP0
+	VggSjA4vcAw3MhOQ8NzAfQ5heQJcg/jOq/FnqcWmzO14QreLuPuPtZekYrqa21raAejSVfz7n3g
+	025svQmy6qFPBIIxvvkKrnWA4FLlUNLdfcGXq/fGYSbyCt7wSfDoEez64F/u6lCZmnNSFaoa7vF
+	m+rLM5H9eJumf1R5VpYUOqwsZxjQ==
+X-Gm-Gg: AYBFou1KBCiOVHft8gUH0/agBLCGHPb1ZCRWgfqUdaccScFKEXLiBoI9hBwsyJtYXcE
+	3R2XF73pF+zWhy2Fsi6oseLfx9A1SUSqK9IWOQjDm8gP8BjWX9RzzRbNAjWX8dAh7un/iGaQ0bl
+	bGSAlOW5ez37QG1MEuC545Y0926QEY6rKrwbBt29TUjFJc+tDZTYdsPnh0TADhnqb8TLGbGTXtz
+	uHGD5vyRPHSeTiiEA==
+X-Received: by 2002:a05:6402:1f82:b0:6b2:e2:d965 with SMTP id 4fb4d7f45d1cf-6b408edb704mr5472628a12.32.1792685844936;
+        Thu, 22 Oct 2026 09:17:24 -0700 (PDT)
+X-Received: by 2002:a05:6402:1f82:b0:6b2:e2:d965 with SMTP id
+ 4fb4d7f45d1cf-6b408edb704mr5472605a12.32.1792685844476; Thu, 22 Oct 2026
+ 09:17:24 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261021205626.3286270-1-suseendranb@google.com>
- <20261021205626.3286270-3-suseendranb@google.com> <CAO9r8zNtuN=_BTV53oHqaTqE0Bo2qiDSrgTBzEZo5oyOnWyeYA@mail.gmail.com>
- <20261022155144.4177200-1-suseendranb@google.com>
-In-Reply-To: <20261022155144.4177200-1-suseendranb@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 22 Oct 2026 09:01:02 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zP+GUE-hcGWSGzhLNLcchFoZ38EMVCAtX5yZ78tZ0bbgA@mail.gmail.com>
-X-Gm-Features: AclHuK8UBgpUaMkUIVDLgCYUdPlk7TRDmPVZZOzzavqgJCzERTrB32bGsXXzVQk
-Message-ID: <CAO9r8zP+GUE-hcGWSGzhLNLcchFoZ38EMVCAtX5yZ78tZ0bbgA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/zswap: classify compression dst overflow as poor compression
-To: Suseendran Bhaskaran <suseendranb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S . Miller" <davem@davemloft.net>, Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Nick Terrell <terrelln@fb.com>, 
-	David Sterba <dsterba@suse.com>, SJ Park <sj@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>, linux-crypto@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261022145615.2184343-1-alex@ghiti.fr> <CAMgjq7AB4wUzmugV3n4mhWcYqMKmhoZJCDV2uUagFjZXjUUi3A@mail.gmail.com>
+In-Reply-To: <CAMgjq7AB4wUzmugV3n4mhWcYqMKmhoZJCDV2uUagFjZXjUUi3A@mail.gmail.com>
+From: Alexandre Ghiti <alexghiti@meta.com>
+Date: Thu, 22 Oct 2026 18:17:12 +0200
+X-Gm-Features: AclHuK9GI5erCWePRdYkEH9p2977EyYs_eI8jHBxOgH2AAL38mp76QLee7bxFts
+Message-ID: <CAEmasaXz2GGoy4dyhbo9Em95Cnz6QL3u2fcnAa2=8pJOOJyH8g@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] mm/swap: keep reclaim batches contiguous on swap
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>,
+        Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <baoquan.he@linux.dev>,
+        Youngjun Park <youngjun.park@lge.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+        Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+        Lorenzo Stoakes <ljs@kernel.org>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7EB1D20003
-X-Stat-Signature: jbe9pskjgwfriwj7bqw4naxfjhok9n5q
+X-Proofpoint-GUID: 8t76Zcr59ajkB8wHTB5yIkEwqsT3hQcq
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDA2NCBTYWx0ZWRfX4MJz3aARB6bI
+ F51NROvpw8WOj+55w62nPXDse26PG8tnIj66mxrazDhkAFDFunnA0MrAGMBoYhAGMpc7hdX56G9
+ VKvq0T5XROXzxaQU0D9PIpwegPalT60=
+X-Proofpoint-ORIG-GUID: 8t76Zcr59ajkB8wHTB5yIkEwqsT3hQcq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDA2NCBTYWx0ZWRfX4aIk8knDUm0w
+ gCNeicBQkYsR/Cw3wguliXngm8lvUkrdvv3s0jRvmCS8kuJz+/cjUcCS8Y0VinHLUu3x0Cmve3v
+ IhhTDMIz12crJclHOpRPVu7gwUWOrBH7yOMP1SAg/hKiTpGKzNEuk3tzyCLbdMeSk+ReeUVY84f
+ tPHhFV17nXWI34y1/DruPoPCeihMSmQpb3KpTYWmdQ1bl7212WG+b1D0zzxBVwmQ+lXxJ9hl/HH
+ 0MLg/SzPbQf7rC8jVDaSXanIT1Ac7e7ORvq0QIVxQ/LCTgCBNUN/NV2gzRWaN9OnIyDlJbS8sYY
+ 3j3OBFX3Aljb2pDSKbJHLnbM6REEdFghrj7p05GbATBDABBEV7ybQRLrAQs3uRi149k1pRbSR+b
+ RYGevSquR8BLsOTO8QCXwEWu/hu89T3YJNnzrHBZXvWRxBHxrejVmChdWoXk0QZ7QqVmJKOiPil
+ xA6lVJfO9u3r4RBAoUA==
+X-Authority-Analysis: v=2.4 cv=HOVWhYtv c=1 sm=1 tr=0 ts=6ada3718 cx=c_pps
+ a=edIAN7ErZTGbxav20d8A7Q==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
+ a=pGLkceISAAAA:8 a=AosG1spRg9nRUDFPKwwA:9 a=QEXdDO2ut3YA:10
+ a=nIuFr-8touD1a-RngYHT:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-22_05,2026-10-21_02,2025-10-01_01
+X-Rspamd-Queue-Id: 603BF1C000C
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Stat-Signature: ajs1u8bj5cu3cd6z95kfqtnxfbpnem1f
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792684879-664280
-X-HE-Meta: U2FsdGVkX1+zooAf+0cSqg+5vc3sDO+XYLubuKC8TVKbd0PAUIXi96BgObLzs5900to8ItJut2xWXH3uSo2cj1ngm9Qxq/z1Q9fzK9QPZWEA0OUPwobqoKfWG1ujrOapNtCOAZ4QTefjEhP4J989ETltpfcY4XGxxiobQeOQOv2VkBX1Dcl9NkVNiIFFp4+EEXU77yN9nP2Ks0sJy674SBW6ThlZCuTr8Uksi9y8vf/FTvaXmaI5yn7UyG7t+oovY3odP0NmthKJqPkBd3R6io9SYgiNo3WGA3W87Er9VVV6EwQukd2YxFwYMdE7CoBx3huH7ir8INADv38+hCjm6ac9+LGR9FaaC2EInpGh1gfqruZu/7auRovljhzFtz0N5uUL2QhVTVZiFeryAWUk5/R6IRBEonOPHx5u91sNIlUTTJTvmActzSkhBjfHO5Ve02y2+gnZ8FkP+fpmMWKizdSGjuL/YlwoKWE5UCTiSBEuzG/SvQC2jsALoI3CW6tjRxyZeJpYxeQYNC5G29sLpNBqeHPbMd0AGysHQOp4zn83n1cdTXR/rjQVIRcWNL0Oc5uKmrZZo0zunL6aPgRAd2kmzroVmRXmXQkCukXTcfzgBggdUPnpoDdawiN78//2och+nRp2BNizwMTjZN9JwUIEheqjONtcFKKR+mWyKuCL/+wxqeGXZEaWA+GZpqu14FufWRKXfIje/e4z4kxw7ptfJep3uYFt5AHG4KHbZiqUAzbpa+i0qDYvDEAYpS1HXBvft/zNHPe9tbwdUDf8SOGJNe+CfQklSUA8lD4bYylEV/Kl91B4D2PwUkRx3D67NdGJUaQOKnK+qhFhu7HtNIqz8U2/EaxVrGseBWsgtxngiigMKgIXxjvDTO9Y7+96qRygqCA6ih4rA0XHHYGJRtaJYqzhx1wXx64kilLYp1aBTvqIai3H/It9StZ2PYsGyr4C6kg2ooVZ62XPVbR
- tIIi8sSB
- CIep2aUfMoYil1e7AJ3Hby0tD0mF9/tRs9zlEuUUn1gdg+ekTnrW2iP0ZQv3i8ctRez6qsvTvJcCJqAeCXZ0b6+fKAfXD+5h0VwMgsvCKEOqk+0KfLbWweUrQirX5gxI0FNt4qjVkG9TWABEYITEpR6JadFU21YnNW9fNcglvt+uBXwUuv8z5q37zeMIdo2vYfFwZthjAp3/KQ8RneXjYi0sgMJldKkw/6K1TGvySmMdMHPYbCX+URCtt1fz5FO7VEfkla073+diq/1DRr/38hnBfRZ1LVAWW9udJNibBMVcLK6OLOU//dBxK9bvCbpVoYmNy4JCuoaZTH0hGcVKys6ftag==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792685849-259566
+X-HE-Meta: U2FsdGVkX18LtZyKUjWeyzVhBNt+HFgLm1sFUwj03H8ixHOHDR8W8WcS0vkBJPdCf8yqMU4wsrr1vDbPpOIf9lEU4vboyhPkP4nXkzafhHGNlCczURDaWuw18qeboDktVbg409pyFumOzmQCWLwHpwXoyKTB2A+E78ptP4cyAJljN2x0G9EXokDNZgorW91EFhNYLpPslcGxV7jsK7n5f17vaR2WbDDUlVLxeUZ7bJT8Fl4FKjQf0mrfcF7+tRxypRnmHiZnANGAR0itel/OSBxPRdQ5WowdkV7R/8vYH45Tt9RBDav/Vx072s4dSmxp/1TFcRppLP69vmrb9lgWsyAFVzjLB4Q1IARGPa3WTGXs9gOX05xN1t9W06dpoTQvrDK6Lv8wHw44KX/6YFS2kUOew+zuN73BQdj9nqZt9oH/Vx8HLuTgYYFrSEC6mVG5B9wom7aZBcCR2vvJAJO6Fat+uuWjQDgdZWIU3AKar1Yx8Y39Y9oQ8gI4fSv+gJKQOsnBjcdPOArDwmyxrl5tWtLz4Mbnfyc5ebxlBcOWY7ApnwBmdnJN+Ftl3sfEN7F4bKCq1pmp8kP3BWmtmHLSGLfIdIPvaeTJXZcfqd44VihaJsQrJ3vflB9Rx06josfFUpuF064/qikYGP2ScVIH8rb4r/0pNKQq/CRV+QsqngrrW3o1XWQbX8RuwgW9/OHL0vaBa0bd87cHT+Q4cJF8D7axx2tWAP2rSMA+p8RscaT/5Q6jaKccjdhFsBE0NUPaVbjXk48pIG06U8EAJI/yXP5KTcL1iC2U2aPgvv/UwsNlF9ZpxLSl/jvtZjvj8Dm/ZifMLY9pIHUUqwf8UHP8zFl/hOBwHlIMcU6oUwtqbnbRFNhLQSpaKEhLUxlODRU3P/ElM1X9B95sRwbigpVwhWh5i5i1xTl7mHlD5pW+xT+I8CWE99iPZ3GRMEu5G70gbFy4UbKl9N0GTHVkFef
+ TVDwenc5
+ R6V83qvswf0PhzRpcxvMlaqWIw/A/UsI2qFOFfRudpXetQu/r32khBvYFUMRrPSOlriPnS6ZWBVwEX4G6z2PBSLKF9E+6JaaMlTOvXBr5TFDWU7KNJgQiInxgjLDTcVlpniXzErYZVyWvggC7YrC96zVOTfiSsM9bxtOcuzCcMboNhAHCDg/tN4e0/EhlxmMVvSefrRjQm9G64iMZGbwYjquOjA26FY9eKH7lf+qTwyKjE03YAlPV0tks+NoaULH3O7vt1u8ZtDsOJynYFH9okJDW4pRz+BF6lzRugTrr86cdwt8YN6Rjex2xFDy9ypvVYwpFI6V3S9DnphfURMk/keFf4d6qur+V3J8uhjZFIAiqCt6boFbuOCt0KgUFpoT8P/+J3JRcr2OAtOPY3O3zGtBSR1RNc/d3/9jtbeiZIco2cdsVaAS03jeABpcVaof171Rqup8b8/zvPRbYX1SjNGGEj1K3+EFACatakKntMUHHH/aFDlSvzyJMJBm8N2feDdD+e5IYzjUItHNSfkFD2LjElK88O+WpURD3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,86 +181,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 8:51=E2=80=AFAM Suseendran Bhaskaran
-<suseendranb@google.com> wrote:
->
-> On Wed, Oct 21, 2026 at 02:47:46PM -0700, Yosry Ahmed wrote:
-> > On Wed, Oct 21, 2026 at 1:57 PM Suseendran Bhaskaran
-> > <suseendranb@google.com> wrote:
-> > >
-> > > 1. When zswap writeback is disabled (e.g. memory.zswap.writeback =3D =
-0),
-> > >    zswap_compress() sets 'comp_ret =3D comp_ret ? comp_ret : -EINVAL'=
- and
-> > >    jumps to unlock. Whether the compressor fails on destination overf=
-low
-> > >    with -EINVAL or succeeds with dlen =3D=3D PAGE_SIZE, comp_ret beco=
-mes
-> > >    -EINVAL. Consequently, incompressible pages are misaccounted in
-> > >    debugfs under reject_compress_fail instead of reject_compress_poor
-> > >    (leaving reject_compress_poor stuck at 0 and triggering false
-> > >    compressor failure alerts on normal incompressible workloads).
-> >
-> > Hmm IIUC this is completely fixed by patch 1, so it doesn't belong here=
-, right?
->
-> You are right, thank you for pointing this out. For the destination
-> buffer overflow case, Patch 1 alone fixes it since comp_ret is already
-> -ENOSPC and 'comp_ret ? comp_ret : -EINVAL' preserves it. The only case
-> not covered by Patch 1 when writeback is disabled is when compression
-> succeeds (!comp_ret) with dlen >=3D PAGE_SIZE, where 'comp_ret ? comp_ret=
- :
-> -EINVAL' sets comp_ret to -EINVAL instead of -ENOSPC.
->
-> > > 2. When zswap writeback is enabled, any non-zero comp_ret (such as
-> > >    -EINVAL from an invalid compressor context, -ENOMEM, or a hardware
-> > >    accelerator error) is treated identically to an incompressible pag=
+Hi Kairui,
+
+On Thu, Oct 22, 2026 at 5:27=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
 e:
-> > >    comp_ret is cleared to 0 and the raw page is stored uncompressed i=
-n
-> > >    zsmalloc. This silently masks genuine compressor failures
-> > >    (reject_compress_fail is never incremented) and miscounts pages th=
-at
-> > >    encountered a compressor error under stored_incompressible_pages.
+>
 > >
-> > Storing pages in zswap when compression fails to avoid LRU inversion
-> > was intentional in commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE
-> > compression failed page as-is"). Unless we think this needs to be
-> > changed, I think all we really need to do is make sure we account
-> > debugfs correctly for -ENOSPC vs other error codes? Or am I missing
-> > something?
+> On Thu, Oct 22, 2026 at 11:00=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> =
+wrote:
+> >
+> > 7.3 regressed swap I/O: for the same swap volume, a workload that
+> > rewrites swapped out memory sends many more requests to the device.
+> > mysql/sysbench in a 256M memcg swapping to an NVMe partition, 7.3
+> > compared to the previous version:
+> >
+> >   device read requests per transaction        +59%
+> >   device write requests per transaction       +27%
+> >   throughput, iocost off                      no change
+> >   throughput, iocost on                       -19%
+> >
+> > Two commits interact:
+> >
+> > - Commit 9a42aed48421 ("mm, swap: prefer nonfull over free clusters"),
+> >   in 6.18, makes order-0 allocations fill nonfull clusters before
+> >   taking a free one.
+> >
+> > - Commit 3cedb745d354 ("mm: clarify the folio_free_swap() for
+> >   do_swap_page()"), in 7.3, frees the swap slot on an exclusive write
+> >   fault. 7.0 to 7.2 kept the slot, but only as a side effect of commit
+> >   4b34f1d82c65 ("mm, swap: free the swap cache after folio is
+> >   mapped").
+> >
+> > The freed slots leave holes in full clusters, which then go back on
+> > the nonfull list. Reclaim allocates slots one folio at a time and
+> > merges the writes afterwards, so a batch of LRU-adjacent folios gets
+> > scattered over those holes and is written with many small requests.
+> > Readahead later finds those pages scattered as well, and needs more
+> > read requests to bring them back.
+> >
+> > I tried three fixes, which perform similarly:
+> >
+> > A. Revert 3cedb745d354. This keeps the slot on write fault, but undoes
+> >    the intent of that commit and keeps swap space pinned under dirty
+> >    pages.
+> >
+> > B. Below 50% swap usage, make order-0 allocations take a free cluster
+> >    before a nonfull one. This is what the allocator already does, at
+> >    any usage, on swap devices with discard enabled (swapon
+> >    --discard=3Dpages). It is about five lines, but the threshold is
+> >    arbitrary, it stops working as swap fills up, and it applies to
+> >    every order-0 allocation, using up the free clusters that
+> >    nonfull-first keeps for mTHP.
 >
-> Thank you for the context. Keeping the writeback-enabled behavior from
-> commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
-> as-is") as-is makes sense.
+> Hi Alexandre,
 >
-> With that unchanged, existing zswap_compress() already accounts -ENOSPC
-> vs other error codes when writeback is disabled, except for the
-> !comp_ret && dlen >=3D PAGE_SIZE case mentioned above:
-
-Is this actually possible? When we changed the buffer size to
-PAGE_SIZE, I thought we made sure all compressors wouldn't write
-beyond the buffer size. dlen > PAGE_SIZE means buffer overflow, which
-is a bigger problem than debugfs stats. Or maybe compressors can set
-dlen > PAGE_SIZE but won't actually write to the buffer? I didn't
-check.
-
-As for the (!comp_ret && dlen =3D=3D PAGE_SIZE) case specifically, yeah we
-should probably use -ENOSPC to count it as poor compression.
-
-The compt_ret and dlen checks are not super intuitive tbh, I wonder
-how they should relate. What is the expected value of dlen if comp_ret
-is an error? Is it always 0, or can the compressor set it as a
-non-zero value if compression fails?
-
+> That's a interesting problem. I think the real problem is with commit
+> 9a42aed48421 ("mm, swap: prefer nonfull over free clusters"), right?
 >
-> -                       comp_ret =3D comp_ret ? comp_ret : -EINVAL;
-> +                       comp_ret =3D comp_ret ? comp_ret :
-> +                                  (dlen >=3D PAGE_SIZE ? -ENOSPC : -EINV=
-AL);
+> It's more like a balance between fragmentation and contiguity of small
+> order allocation issue.
 >
-> Would you prefer that I narrow Patch 2 to just that change in v2, or drop
-> Patch 2 and only send Patch 1?
+> Perhaps we should instead always scan the full clusters and revert
+> that one commit? That commit was only following the idea of keeping
+> the allocation more compacted for that series, it looked good at that
+> time. Since fragmentation issues can be solved in other ways,
+> contiguity seems to matter more for large physical swap devices.
+>
 
-Let's figure out what needs to be done for patch 2 first, if anything.
+Oh, okay. I thought reverting it wasn't an option given the good
+numbers the patch provides.
+
+What are the other fragmentation solutions you are referring to?
+
+Thanks,
+
+Alex
 
