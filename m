@@ -1,130 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405C9606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 19:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E52606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 19:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kGaVyFZt
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rA5M1AgM
 Received: by kanga.kvack.org (Postfix)
-	id 3E4BC6B09BA; Thu, 22 Oct 2026 15:39:25 -0400 (EDT)
+	id C6CA66B09BD; Thu, 22 Oct 2026 15:58:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 395E16B09BC; Thu, 22 Oct 2026 15:39:25 -0400 (EDT)
+	id C1D516B09BE; Thu, 22 Oct 2026 15:58:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 285F16B09BD; Thu, 22 Oct 2026 15:39:25 -0400 (EDT)
+	id B0C836B09BF; Thu, 22 Oct 2026 15:58:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F42046B09BA
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:39:24 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E86A8C027B
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:39:23 +0000 (UTC)
-X-FDA: 85351276206.22.23B3840
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 14DF010000E
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:39:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kGaVyFZt;
-	spf=pass (imf14.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792697962;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 76B286B09BD
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 15:58:02 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E679C801D2
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:58:01 +0000 (UTC)
+X-FDA: 85351323162.28.20957EC
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0261140005
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:57:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rA5M1AgM;
+	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792699080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CXFOQ58yRb7ArLvRTOCPZICunogkgYzN7mdYgP5TB4k=;
-	b=6jxlw+ofkLAYO3D2iCPLOpI6bggJF+S+qWFVD/Hs/I2OwRmTY0hzZTIdWuPywCsM7koQK4
-	Fia1wHag/pxsk7muvZouOBNfb6tQUI1dqHbNe+u2bHbwkHVvCx6dtSQ8gn6httKQQgP9nN
-	aG+ox7RsIrMYrD4QV/tWvEgIxtuy2cM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kGaVyFZt;
-	spf=pass (imf14.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792697962;
-	b=AM7XEc2ALTfDoULEPMv5UUChUJ9nRwRPMe2uS4CKcekQacgSwl4FiQZnR6KpcRsxq16U9V
-	51Cocpuk9uY+5JsR+Fe9wcdR81y7kkNLBdsLw9+ioPiLvcScBehiT+6KBawYmoBGuIwk5E
-	4OUJpscjjARp4HUcSqiHj/hAr5DOFG8=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a1ec92f655so1125025e9.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:39:21 -0700 (PDT)
+	bh=7hscKTf4XlzodRG94Ygsf46yIAyJRuA/Yo9qi+4i8HA=;
+	b=EctCrwwhe1aQLwLdlni9BJu9fbuFdYJjxiNPQHeJzZrgD7phRgYTUrmf2XnpFYHeCa4zH8
+	LPZ+CNEDrLK5thakmWPgp9mFPi+gN8zY/wdHeGEzKGw1kXJhxoZ74dlmNBR/wFOwORAL1i
+	h5sOnvIQ7auAQ/bLaPD7rNDRU65Rlb4=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792699080;
+	b=NhTtMBNiRevTCZtluPH5fcfC6K8Cf2AvmECYbuJLOoW+igBRntyU+aTcCeIUpR02iiMVc7
+	iF3ENcqU1ayecFlb8hZ08sRtLD2LEqygdSYOvO0y3goPa2xvWXAEbXOPKd5esrK8WDu0dD
+	4IWIK7wHCf/90VKZThE8hSzJDZuJvM8=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rA5M1AgM;
+	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48c4649b35bso157692f8f.3
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 12:57:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792699078; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qOIxFGr/qViS4EryUFK4cARrGd81jlj5zqdssOq/t69FkLSxPLhBJ8aBB9AiBjyIqC
+         6RBRnh/QHSeoTR+lAREOotoarZX/P2lW6NcT7FT7+6docFrzyFMrMxSvplVXYdSKdjtQ
+         Uj+v1R2zJXei8HHs3SAE6tXK94t+5D0+R54091fAAUej8ei6NF3VxO/ZZosyB+nCiumf
+         iikjUhs1fCMqP7dZ12pMHqQDtpi04TMO2UQjwJqrjIQA4C0DA4M1IPzveHiepXvJrE/o
+         nz6nvieijB0tnPoEJgri+CNauqSKsuIJ2bpjpKgSZcOZVOTEMp9ASeED8N9Fji7hOl56
+         d6oQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7hscKTf4XlzodRG94Ygsf46yIAyJRuA/Yo9qi+4i8HA=;
+        fh=avMBEAQ97IBdaO/Io/SV1zdYYQ63+yuJLnvAeOoQYhs=;
+        b=PZ35V8SpqPhRGHZcVLStnHV5Zf1VICWLnnCAUwG+eKfko+/fj2y2QRqB4L/0Yr8ugF
+         qG0/EDBKWkTrSJVk7tc0ulY5j6I5Awbsf4UWJcqIoaES7VLhJqf0uIrYiXfLo8eM5ARc
+         DH2bUWmguTveHd3IK1divIns+Utd5JxN9QtZv+V3oKCoGo0yGcBWD4S0id5rCw55P43Y
+         5dtOvz21NFU1m8WkKLqIDSzhVq2g6fw5hRv06zDD31KmdGQiCjkQCRmVN33I2ZHMBG5O
+         MuASRAfexAsQq+NVyNGDK2EI3KOfUI3wKAXzUPhstfhqyE1Lyq1fcCYf60e4udLmscpW
+         XDVQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792697960; x=1793302760; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1792699078; x=1793303878; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=CXFOQ58yRb7ArLvRTOCPZICunogkgYzN7mdYgP5TB4k=;
-        b=kGaVyFZtfjw6hwN8o4koom6fSoyvgUmqUhPaSQN7OzZBeHLZMFV8qriDmZqQrqS5yn
-         4p4vUZ0K1+l8rECJpe6pv6jVNHYfS/n9dSfrD4A6kKQrZrMgzUCJJ5U7D/3fx7C330Rm
-         5JOWTNxenadwbWhfMY/PmEKPgeaRmNH3wu3nai5ib3VQ11ZRMdvA8YmNnSxC7fD+YGNk
-         4kSwpBqLteanrglXbSYT2jzfw8MbbQx0+5My4vqg/9mU1x4UpB2FaqI7MTqIlElrr4yf
-         Tw0pMV9ggkPQiHXmtTfG/+rG/Wt3X2hf5GCXDERuDVqVYF4dTFY4bFQCPZCMyGNNk0Zf
-         +NRA==
+        bh=7hscKTf4XlzodRG94Ygsf46yIAyJRuA/Yo9qi+4i8HA=;
+        b=rA5M1AgMRQAQUX1vYQGKpLutjRVPpXfeKH/6xm7UF15mU3Bvh3Rzesj+3xVSdO7yqW
+         hO3eErExDVOXVm7aRCgcmnrhlN1WQcesAvFJFI/kvM3OPqAY5at2mhC4muTJOKxZoL+X
+         Qi+rHwFDXeceLS2pArDtWpQM5QH/ZCf9tnGsROPDgHKNjbpNTgj9sxNjruDKj97MD4br
+         rz3GOarRxvrTr+K+4MShR7DCS3DwzLNU7E5/mlvoTR6EUrhACfm5qD5jq9mnZdg8vzoW
+         WWd5oJMGNW+zTzm8A2znV08pH9x0h5X8RshDMQYCTms7mSsOOwWDOrQr5x8sOgsQcniW
+         16hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792697960; x=1793302760;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1792699078; x=1793303878;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CXFOQ58yRb7ArLvRTOCPZICunogkgYzN7mdYgP5TB4k=;
-        b=fADqzr5G+lX2conR6VSoB/T43QpRNZcGsmYGdri4gSaKVEWqmRG8A968T7b/s1csxk
-         GsT2f4pTIIGKbFm6bbgHBcNbCd0KLKg5M+K2bu4YT17Ngi4cz/0nkYta3kLQbJCMkq5B
-         JCMSDKC1q7lFEEbGm6ahw30dcmWIbdY0dEfWyTEtHuRqmCXyjJwkmtplvpd1MIT0Y98C
-         wMXm0OwGjiwetOX6GO8DRdfKY1qpPmXFgemYpT4pmTlu2v4IiGKNDhHYqSwHW8RwWWLv
-         o37OXEM7o0Fggadhy0bmFEYngwkwlJwgnvlw09zpMxKhn6Nq+lvWBhQBwIbE3I5ImmpT
-         S5Bw==
-X-Forwarded-Encrypted: i=1; AKwUvByy+jj/JuidPkTJYyawNARzGbqiywyMZIi6uAAK0xOYIAMY4NhY1aTUN6vSDxy+b7Eqlu1kDUltww==@kvack.org
-X-Gm-Message-State: AFq9FYK6MQlcw+1Yx6Url2w5+51uBFi3W9ZRMs6W+Fp+gLOgOuVE0Ae8
-	KTgLtXTadqg0XkWMoHLrtuw9T7LobxaNX5Nx1T6jLtK9oCPjIio9bbtB
-X-Gm-Gg: AYBFou1NT+xUGTFWGCcBdnIPdkcFFGvtMRj5U1exh4FlyQBZaQd2BiMaHyiz4yeF3iZ
-	IxYqlNaGkh36l1s6PEz+L4/U6t5h7cT+hDSfluXsOgpnBpiXUHtgw053k/rLIwJkAtArgmgdAlA
-	DoGjYP0Rbf1z7HlSApbaEyV+EV9yAVU0pHiP7rTQQNJq4rvy/536u+MZJAQa0O21Nm0IaydaWuX
-	bTQ/n2Pr8e8Z39hKiXxYMm14xTYY2zxVYY1QH5hLzZk5D2c/7Xt3VY9TEP2Gol73fiXMWwx3uLl
-	xbMGPC6d2AF4eFvt/MWdWQDXFxsfGmxk1WbYwJZZ5ch4YAvfwnex1wGDMWL5WLPefV1Uh8XRc3V
-	fGxZr5zqD4P4lwlI042qWUoFcIFwbFo6vxQ1fmrnOgFqK/rsl9yYpfXVsoE/91v8J7TQFicc7dt
-	E2TK9qA20vrqTatzv5f4pMoZBXS+OplMz/kTt1/eazCUMTKI0ALVJYTMtz9o2kUtUL4Q3ojiHjH
-	q4m9GH+h+tk6lP0h0xtHB17HmkEBGB2yTv2ovRKRGM=
-X-Received: by 2002:a05:600c:1d1e:b0:4a0:34a:588c with SMTP id 5b1f17b1804b1-4a211c859dbmr1721105e9.14.1792697960247;
-        Thu, 22 Oct 2026 12:39:20 -0700 (PDT)
-Received: from krava ([176.74.159.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a2101cedcesm20827015e9.0.2026.10.22.12.39.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 12:39:19 -0700 (PDT)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Thu, 22 Oct 2026 21:39:18 +0200
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: Re: [RFC bpf-next 3/9] mm: Expose locked mprotect operation
-Message-ID: <atpmZt_Je09hdlja@krava>
-References: <20261021195759.119421-1-jolsa@kernel.org>
- <20261021195759.119421-4-jolsa@kernel.org>
- <atnjEc2-6CuKjFzH@gremlin>
+        bh=7hscKTf4XlzodRG94Ygsf46yIAyJRuA/Yo9qi+4i8HA=;
+        b=OHhSUHxuI5zOOoT/yj8amM1Ws4vDNm8zP+hsGEGSBhmeUCx1uQD3iaDA4Yns3OYrKw
+         QdZ3mNmIPEEMC/zWm80jzcHL6vYg4XyZaUlEWIurgMpMODxfK4a9bWCMH4+ihhGsO5Uk
+         XHHZxOYYvPAcO8bUyu+E+X/Wlsvq5VrSvtLZf+BsTiql6/uN/0fVMkPjjW9JKrtVZvtE
+         eSw9sby5hhixorEknkONbrinuuGYGN3FD6DCojS7Q+3XOMivA0QPyZP8yhdYnUT6r7dX
+         Uh6i+yeii5PcS36KnA75yf7YL5bEbIA9WDP/aTbyToHMBe4tnyFtYFNGBeWdUmhP4LIv
+         OnyQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz6HOZUTvJwON87TTWYUJGs4nYHZFOe8CK4/9CH4LrvCbkOwFlS/eXN7W0FYgatOaeyMH+Wn+fz1A==@kvack.org
+X-Gm-Message-State: AFq9FYJ5hyFOC9z2io4KxOACWylsL1XttOBGX/NqzCWacCIWIgZDFc6A
+	qIMHCzlX0DXyncTnIC3Vp5culxAkrGbsDZZwGbGEt9KCyRUareJqHJDOb8rUMyX5+Ww/1ZqELvr
+	DaPGcc0oNw2q66AAJJ7RJTFUDhDzk+C4=
+X-Gm-Gg: AYBFou0PCZAuiLFgB/pDl8sAz8kBoDmBjeL4yqtT+knfkYniZxB1fNXsHBf1Jp+gUji
+	yoCymxHOOZIv/Dh6XAesECr3B7ZoppeNdjq3Iram856xlb5LotAH8kXLoGx7fj8/a0RYGNHAWjL
+	AjTm73mBct3JZIxF0qFrbkCdEUJT6ZvjtuucUNdJVjaGQsco7JiI83CnsR7EmcleUARJ63icsSs
+	yfXjMpt+0cAxWUKfRYVWT8pPv9ZZ/AJ6VNRvJ52LVpzrISvA3tuScAh0icfsIqk7OgUriyTz3Lw
+	VyqG9D7YjjmJPLP+g9jjFc79m2W83FR5CrZ3/D6LzexnF1zRblnQ2rCa85L4RK8zt3PEk+FgRjE
+	ja3+1DtIr5Zsck7nPUf+FXweg3Lgm1n5HTwyDF9YFOuNAhml2poraDlL7r11FgBcCZ2vm4o+ntN
+	hqBgJSaLSgsCrSIFzCGaKlGuWFefg5GGp1Z/3f9VPvXkMyzf5utd2D
+X-Received: by 2002:a05:6000:22c4:b0:48e:3697:708d with SMTP id
+ ffacd0b85a97d-48e369770e0mr1492084f8f.12.1792699078144; Thu, 22 Oct 2026
+ 12:57:58 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atnjEc2-6CuKjFzH@gremlin>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 14DF010000E
-X-Stat-Signature: jnc9adxdfena9jtpyn4mh44y3uxmfq7e
+References: <20261022145615.2184343-1-alex@ghiti.fr> <CAMgjq7AB4wUzmugV3n4mhWcYqMKmhoZJCDV2uUagFjZXjUUi3A@mail.gmail.com>
+In-Reply-To: <CAMgjq7AB4wUzmugV3n4mhWcYqMKmhoZJCDV2uUagFjZXjUUi3A@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 22 Oct 2026 12:57:46 -0700
+X-Gm-Features: AclHuK_UzTcMr7msR_WYzh_P63N6RSYUJfSh6wr5YsFhVd3E4AmVHYZmGVyiC2g
+Message-ID: <CAKEwX=OgEhyVHdGaRbVADGS2E74nFdpZeT9CLup7kZ2JG-QJtA@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] mm/swap: keep reclaim batches contiguous on swap
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>, 
+	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0261140005
+X-Stat-Signature: bgecia1r5kbahe5bhdy5s8nrs84bgntu
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792697961-886388
-X-HE-Meta: U2FsdGVkX188W/lyOfQhNQNl28+foxFQeS7Vuc1/FJPpmze9y8npTFeUVMahitsTgxnUNKS+RpxVLwZk/n1inD/Ozz9hfV5HMvP8eUr3t0o25FDQoV/0nViHVpgykuyJ/oBbWe4cjcIO1VFrcSZTRp332n3EJ4E9qvOm8PDRi74gWnPt+DX46v+CATwMk505zmKrYO2U4NtnDGTt1pwHGtbD1zozekSlrqnO2hBZcGVeC9tqHsL5vTzo7q64TpeTaX+6JNER5doKPX1nH7LvF019Tklgn9ieADtcaZyhkLIqJ+v3nBb19Xo9ojFZgQMckK/fQ7duy/Zp6VhpLLbzXmYRRgvzDsAG7rYuMOGQKzCoZEO8HANJhncmsx9E/CFoezfUCVofaGgAjNtftP6Fl15U9C8y42A3db2ag+OqaVEzY+oyVa8I0RiWVvib9kfNMA8QshdwK8fGBuN38PIXNz/lFItqyqSHt+wmaHz/K3vXFg/44EafRJfBsxrOKHHe15gzThTYLfoIcJQBOEHzDA8K+fhDP1Ll7odk1eGZ8OVayqX2k6Cp973E0ED13eheE1VcS9j52D0dNlGpmTN06WQ60gWSPhsNJjxFyo2bgDCMTJXS1lvwKMWFKd5aiYZWf9yBCkyoHcNBhPFMez54C3WLri7tKV2SnuXYicZCgfP+iEaqe9a5+argrcaN5yF3UwFsSYfXt+FMJl/sppwF241yHCrZK/VwBvnSmFRzCwMnypT8rakOlQWgekhn8a/ffIRVpDurFt/M1r75MlnU1zTeR8hlubqwgsniEdSApPpvaN1O9PIYP+Vqg+HwP3wQEw2LiNYxwZSNhk780xvv11sdBHToeuy5zEy24TluPDicgzt8oYH/n3sy5I70BRzrrKZgGQpzh5e3deBLPs2ZbVcdIi4iyMidOzQvccerlr33cFDpelgxEEw28GqtvkmTM1csN7acXq+NAlirv0t
- 6wlqPWhZ
- Qs1ce4TvVPYlSTXl0L14LjB0ZQgikOQBDe+n0onQvXnXJwDCM49ufOPYdQd7lLIVlkVCh6wpxtXAYy51euHcp2OuPBD4N9ZMcoXdP1+n9zidIXGXV89NQJDvj1HaxZo6ppHGnH8jZfh4FJw+eeknATTUTOAG9njLNgxyp+Je6JTSuaI1PtmKN9YPksfVCCbq8pKZLbjbERuAtroR2gtKJ1kwn7OsySbI1U9xK5DhRHeBwPoHl4LAslyvnp95xHP3ZZ6urUwjr6rzQYiCdbiwGLmvMdKUf5VmrMWDQuwbxY83kcrSz8p+O/XFBOTaudz3xwAce4w4Zf8sV6N6mDSPd5YjC3SyDmbFQWuNcrfWMTMNoabXh++wI0Y5rFOHlW0baPNxnzvVpGUbRCGk6aVoCtOyWyEp8K+6P/GXm82U/d6HVz8cvt9jLNQnBghBe6dd3oZjsyDTBhtDKKDpnw2fUd4gE/v8M82wRTYd2GZ0O2qB1XdyBCegYLucMfuJ/bw7/cdwfMMLDTlqtrnF2ufz4XR546nStzBJyW1tQ0nAYqjnFzNJvCdKByvwZFw==
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792699079-678874
+X-HE-Meta: U2FsdGVkX1+o1B3L/Ev+pI82TWIPQEeTjniEnJz0M6gFuAsIOLjnea273dbt2MOQX3CDKP6Q78kvKDMQuV3+Y9vqllyVO7HE4hD85CNS9J8i1fJVGut3g+U8PvDDE4s4hjXBurYdG17ZwI9bs5fXpZ3xXzT8ig3OeqyOhh7Cu9G8ky49mrJx1tM0r1Qu1EixOrFt+XhjgWq+VrW+z3ujqRFbWPS1GDEbgMTiP9lsTZjlMED53MCK5BJLjjalBc/HB5aL9z5lMR5C2z36aGZTDIy2yz7DhpXM+NZ+m9/kqAZxMfQNm0lsx3+OWhRa1tagUDnJawmeJEH5dw6unGcoTmuwrfEq9dTE7f/eLj0lkmrpHG/6aXrU4/9Pr576hXb7sCk8Pda8+1QNHmXQGsOBrf9LiNJp5FFv0whzqD8kOXfJlhCHD4erf24XAvPqwPyXT/DyYcNgDzGUG06jCT82PGCF02HlwG27+IKJPeyG9HJPn7mNH6PYYUD/AwHtpyU/z2d3/d1791CgQSNTTsP811d1eV4opKhgsQrtI6eiumRvaHf2En0wFPop7wtwPtkwhOQFl6KDrpHmTebX7gLlTkwVO8Povr/SUnWkzWLEkaBRgInX2OiPdNOJ2azfxF3CiqHZdCc2pQLFiIem6LcvzV5im3Rliwq0u4hUrG4fr0OgATinVH9oYZmufuXAckCSWM7Ic/dAQml9Ae/dP1fO69TdbcgCvvEdMjXuFmhjxL730u2cdJrSZ/1BsYn1xVCDse4GtzqWR1duHz2F+01E4F3eMnpN/JGasf8QmS9F5kfm536sCewzrCkP5GIWGqv/Rl+2wAn7WZVHtg7KQQuBzq0u5Rydh4pSo0oFYbFvMuqZ05t34pNQRuMPK+0J2ztoKw1bGrapHgtLtqIZk+KXgg2Tj/75C4/PgkbjPYEYIg4zNdrGfR2e5KxwoYLImPqKGVH64mOlGQcBCzIaFAk
+ 7AJyTXTI
+ 7sp0N2/8Dhu5rNzk6T2U/fF66U8NPi0LnqsaA0yRz8qcAKX3lujUsAA4FJEucj2znLmGIhEn1FyFEOviY6P7WuKnPCv2krixA2h8DNyLF4v45pWcBjhjhFmKGzFPSezKKMYIugrFCBnWetx708FrG4A7kafLquaxM6JIceAdLP/dXxHcOBMHF2kZNgd4YC+6yH/NuXx1sgVkg8UIolEEW3Ry0G7GSFry4m1cnEJGTzGFfcw6Q1LE1tv4u6llAXecptggXQR+J9xzHnbsZMdg0Pcr6q/eW9O0xzpUaXOsBb5doHUllhkH4dM1ykRCz/z4ms0JHK2lQst0KnC2BQhYZeZIJ0e0yxkCXbJzQr1poCfbEcTKWzcvN7JrCYqWCvAxILv0CRf9Br7rHMU8D2BKnCERkdL0g12t7Uk3Yys/vaQQUtwM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,103 +151,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 11:25:31AM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Oct 21, 2026 at 09:57:52PM +0200, Jiri Olsa wrote:
-> > The bpf_user_page_exec() in following patch needs to change page
-> > protections while holding current->mm's mmap write lock.
+On Thu, Oct 22, 2026 at 8:27=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Thu, Oct 22, 2026 at 11:00=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> =
+wrote:
 > >
-> > Exposing the do_mprotect_pkey_locked helper for that.
-> 
-> Err, we'll need some more justification than this for exposing internal mm
-> logic to the rest of the kernel please.
-> 
-> Note that you're already allowing any caller to bypass
-> CONFIG_ARCH_HAS_PKEYS here which is immediately a broken thing.
-> 
+> > 7.3 regressed swap I/O: for the same swap volume, a workload that
+> > rewrites swapped out memory sends many more requests to the device.
+> > mysql/sysbench in a 256M memcg swapping to an NVMe partition, 7.3
+> > compared to the previous version:
 > >
-> > Assisted-by: Codex:GPT-6
-> > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> 
-> It's a no to this in its current form.
+> >   device read requests per transaction        +59%
+> >   device write requests per transaction       +27%
+> >   throughput, iocost off                      no change
+> >   throughput, iocost on                       -19%
+> >
+> > Two commits interact:
+> >
+> > - Commit 9a42aed48421 ("mm, swap: prefer nonfull over free clusters"),
+> >   in 6.18, makes order-0 allocations fill nonfull clusters before
+> >   taking a free one.
+> >
+> > - Commit 3cedb745d354 ("mm: clarify the folio_free_swap() for
+> >   do_swap_page()"), in 7.3, frees the swap slot on an exclusive write
+> >   fault. 7.0 to 7.2 kept the slot, but only as a side effect of commit
+> >   4b34f1d82c65 ("mm, swap: free the swap cache after folio is
+> >   mapped").
+> >
+> > The freed slots leave holes in full clusters, which then go back on
+> > the nonfull list. Reclaim allocates slots one folio at a time and
+> > merges the writes afterwards, so a batch of LRU-adjacent folios gets
+> > scattered over those holes and is written with many small requests.
+> > Readahead later finds those pages scattered as well, and needs more
+> > read requests to bring them back.
+> >
+> > I tried three fixes, which perform similarly:
+> >
+> > A. Revert 3cedb745d354. This keeps the slot on write fault, but undoes
+> >    the intent of that commit and keeps swap space pinned under dirty
+> >    pages.
+> >
+> > B. Below 50% swap usage, make order-0 allocations take a free cluster
+> >    before a nonfull one. This is what the allocator already does, at
+> >    any usage, on swap devices with discard enabled (swapon
+> >    --discard=3Dpages). It is about five lines, but the threshold is
+> >    arbitrary, it stops working as swap fills up, and it applies to
+> >    every order-0 allocation, using up the free clusters that
+> >    nonfull-first keeps for mTHP.
+>
+> Hi Alexandre,
+>
+> That's a interesting problem. I think the real problem is with commit
+> 9a42aed48421 ("mm, swap: prefer nonfull over free clusters"), right?
+>
+> It's more like a balance between fragmentation and contiguity of small
+> order allocation issue.
+>
+> Perhaps we should instead always scan the full clusters and revert
 
-yes I suspected it'd be a problem, but as you mentioned
-in the other reply, Alexei's proposal takes care of that
+You mean scanning the free clusters?
 
-thanks,
-jirka
+> that one commit? That commit was only following the idea of keeping
+> the allocation more compacted for that series, it looked good at that
+> time. Since fragmentation issues can be solved in other ways,
+> contiguity seems to matter more for large physical swap devices.
 
-> 
-> > ---
-> >  include/linux/mm.h |  3 +++
-> >  mm/mprotect.c      | 20 +++++++++++++++-----
-> >  2 files changed, 18 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 63f40e615754..47e853093601 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -3435,6 +3435,9 @@ extern long change_protection(struct mmu_gather *tlb,
-> >  extern int mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
-> >  	  struct vm_area_struct *vma, struct vm_area_struct **pprev,
-> >  	  unsigned long start, unsigned long end, vm_flags_t newflags);
-> > +/* Caller must hold current->mm's mmap write lock. */
-> > +int do_mprotect_pkey_locked(unsigned long start, size_t len,
-> > +			    unsigned long prot, int pkey);
-> >
-> >  /*
-> >   * doesn't attempt to fault and will return short.
-> > diff --git a/mm/mprotect.c b/mm/mprotect.c
-> > index 2888ee638d87..8d800830d3e1 100644
-> > --- a/mm/mprotect.c
-> > +++ b/mm/mprotect.c
-> > @@ -868,8 +868,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
-> >  /*
-> >   * pkey==-1 when doing a legacy mprotect()
-> >   */
-> > -static int do_mprotect_pkey(unsigned long start, size_t len,
-> > -		unsigned long prot, int pkey)
-> > +int do_mprotect_pkey_locked(unsigned long start, size_t len,
-> > +			    unsigned long prot, int pkey)
-> >  {
-> >  	unsigned long nstart, end, tmp, reqprot;
-> >  	struct vm_area_struct *vma, *prev;
-> > @@ -899,8 +899,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
-> >
-> >  	reqprot = prot;
-> >
-> > -	if (mmap_write_lock_killable(current->mm))
-> > -		return -EINTR;
-> > +	mmap_assert_write_locked(current->mm);
-> >
-> >  	/*
-> >  	 * If userspace did not allocate the pkey, do not let
-> > @@ -1013,10 +1012,21 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
-> >  		error = -ENOMEM;
-> >
-> >  out:
-> > -	mmap_write_unlock(current->mm);
-> >  	return error;
-> >  }
-> >
-> > +static int do_mprotect_pkey(unsigned long start, size_t len,
-> > +			    unsigned long prot, int pkey)
-> > +{
-> > +	int ret;
-> > +
-> > +	if (mmap_write_lock_killable(current->mm))
-> > +		return -EINTR;
-> > +	ret = do_mprotect_pkey_locked(start, len, prot, pkey);
-> > +	mmap_write_unlock(current->mm);
-> > +	return ret;
-> > +}
-> > +
-> >  SYSCALL_DEFINE3(mprotect, unsigned long, start, size_t, len,
-> >  		unsigned long, prot)
-> >  {
-> > --
-> > 2.54.0
-> >
-> 
-> --
-> Cheers, Lorenzo
+Hmm what other way are you thinking of? Physical swap space compaction
+requires vswap, which has not landed. And we'd just be kicking the
+problem to virtual swap space. Sure, we won't be failing allocation,
+but that would still increase the memory overhead, scanning overhead,
+etc.
+
+I encountered this myself. Remember when I wrote my own swap allocator
+for vswap? In one of the version, I went for free clusters first
+instead of partial clusters. It fragmented the swap space, so I had to
+copy your homework and went for partially used clusters first...
+
+Anyway, maybe I'm wrong - some numbers would be nice here.
 
