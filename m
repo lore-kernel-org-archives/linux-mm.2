@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD11606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DE8606A319
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 22:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AZU/Dwpe
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j2p2p/pm
 Received: by kanga.kvack.org (Postfix)
-	id 658566B09E4; Thu, 22 Oct 2026 18:03:08 -0400 (EDT)
+	id 805496B09E6; Thu, 22 Oct 2026 18:03:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62D146B09E6; Thu, 22 Oct 2026 18:03:08 -0400 (EDT)
+	id 7DB7F6B09E7; Thu, 22 Oct 2026 18:03:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 549546B09E4; Thu, 22 Oct 2026 18:03:08 -0400 (EDT)
+	id 6A2A86B09E8; Thu, 22 Oct 2026 18:03:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 29EE26B09E4
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:03:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F5E51A02F7
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:03:07 +0000 (UTC)
-X-FDA: 85351638414.27.E099334
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E86B6B09E6
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:03:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD3181602E4
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:03:12 +0000 (UTC)
+X-FDA: 85351638624.22.C523912
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 050C94000C
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:03:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AZU/Dwpe";
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3E89B1C000C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:03:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j2p2p/pm";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792706586;
+	s=arc-20220608; t=1792706591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gLvjEAADfv0lMkt/oWv0SBDRFtk+jw8902krm/ExS1g=;
-	b=Mo/I7Tnlho8jNvX0eISjn3JJoVkGlWm/P24z0soBhxqyUIPGS3sBZJhNhIBAuCn4o1+SuK
-	VntFoct17bUwxWf+WisnfoyGnANf75uVdRdVw8t1BJZG9ip0h75egOrYtJOnrepETomtm7
-	C7f5SxRc/7ABZSOGK1olKm/3scPalTA=
+	bh=6rnjSAKXETk7IX9Iz0xmxItZgkiiI1JWLFVu97pY++w=;
+	b=R9HSVJuqqOB6y3xcewLLrNnwcmC0mb/D0spdoB1dx5dRMpXZbaoFgcuectUk3dvyNSgGE7
+	OLUxSUNJczhV5+T0+Z0tqXbA87heR1Pc4EnzXbTkOA77B2rHDy7IM8OG+zQ3vESe9va4GJ
+	6yr1p4X+kCL9XgBQl0Et/bc3ejaWhI0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AZU/Dwpe";
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j2p2p/pm";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792706586;
-	b=yu6aBqpQfIn/sTST880lCj7MC9verkHxsMk8VxIFXlYhf+pm8jYE8DQP+UnJb7ZPyMRKlp
-	Cd3zeEfKh0a7Z6wG//L8TkBw0D78hdAh4XvxpZbyR/WensjLtKazgKD5ERfWT97azh5FPc
-	uGWpSM1ezHQ2/ygRMWSyYCxeKpKzr3E=
+	t=1792706591;
+	b=64U6vMuF+xvqyy67GNYnzTRCutwSMTk5kerbvOx2aFkdpm7MX33mBfaundPO/iI3cMb+CZ
+	/JT26HWcOAkIOeNYED23be7NXq1fN2ExwilLsHNNm3mys97dSSjsvd0fg+5/6TRo3vL5YZ
+	YLUCFVAGmWn1PnVhfmmtdLW4LxMDIwg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 908D060233;
+	by tor.source.kernel.org (Postfix) with ESMTP id D182E6022E;
+	Thu, 22 Oct 2026 22:03:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC181F01829;
 	Thu, 22 Oct 2026 22:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628851F031E0;
-	Thu, 22 Oct 2026 22:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792706585;
-	bh=gLvjEAADfv0lMkt/oWv0SBDRFtk+jw8902krm/ExS1g=;
+	s=k20260515; t=1792706590;
+	bh=6rnjSAKXETk7IX9Iz0xmxItZgkiiI1JWLFVu97pY++w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AZU/Dwpep72q0zWTolU+Us8yktbHXnNC/l4mmgiJHwyOoJs02uHtVBOQiL5SDMcco
-	 S2BL1DNNRaDtpBxvuORjS+WaSfv1DKqsF7RsMPwawI1g5h0ZPdDrC0KJit1TeuAcuY
-	 f+uhjAXuyZIm8faeD2aokYfcQiyZ99N8CiPnaSWUjvf6PRltdksb6fzhe1+88/ohwp
-	 b5OEiJdZ9whgLcMGQmGPy658mxqN872PAEjNy+FC5JR9tXykoFzf0KM/Khehs/SMYV
-	 x/uey5AGMxt/5RVdVoYgxuTkRc83R20bNqZdFIoXP53GTHk/KhRs1JtY6YHVHVJPX9
-	 H7abMqQD3IAeQ==
+	b=j2p2p/pmAqoVZ9r4zJMNX8O3DdOIzV9h7PhopbCDJwq1qoaD4iCS+CfXSKD3vtVTj
+	 JceEjLIXTrqQwfGz7D6OV2HQLza5sBt/admhX8WvGgvwRKU5sfwq0TXG/vAr/IDt4W
+	 WOwwwb6vKeOL2lM3wnKJOsJg3NKKVA9a8g1n1nhlrcufg/HWcggaQYwJBbVOPimOXT
+	 YmwqVVcfqhYAYqFEFRHuQboNPPy+//tTTii//TlKPYnsD6aUlQ6wRqF0b/CmIa2Xc/
+	 NlyVIsNLZK/5GrFzcaKzJpGLhPnd88AjqbVdrW81DqoaV+NlP9juzpINfC0V2z2U/Z
+	 c7y/W0QErFFQA==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -91,27 +91,27 @@ Cc: hui.zhu@linux.dev,
 	lyugaofei@xiaomi.com,
 	ridong.chen@linux.dev,
 	kunwu.chan@gmail.com
-Subject: [RFC PATCH v5 10/14] mm/mglru: Run aging when pages are rare outside the youngest gen
-Date: Fri, 23 Oct 2026 06:01:59 +0800
-Message-Id: <20261022220203.91911-11-baohua@kernel.org>
+Subject: [RFC PATCH v5 11/14] mm/mglru: Reduce LRU lock contention by shrinking folio batches in inc_min_seq
+Date: Fri, 23 Oct 2026 06:02:00 +0800
+Message-Id: <20261022220203.91911-12-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20261022220203.91911-1-baohua@kernel.org>
 References: <20261022220203.91911-1-baohua@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 050C94000C
-X-Rspam-User: 
-X-Stat-Signature: st9yc89is7k1b3s6iaemjb4eri56uijm
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3E89B1C000C
+X-Stat-Signature: ha7n87o7dwdn8u3tcq9f8cdopw4j8e35
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792706585-656126
-X-HE-Meta: U2FsdGVkX1/lAjc999NskQYEl3tEA5yxsfH/H3izK+ZjoGDpR6kIW6KGs67GCA+tjAMvBUmv3/VKs9sY5zQKkgRhtWtQ6P6L08KuUmFyixsLYC5lk++sIsrFT/jKSZJH8unr7QDjhvw6Yc+CAHp3bMjfknNE+XxXOKIUjSodTvoaNEIolzvSMOqBwxhzxhLX2Wl/nw3yFHVYE/h8kyZyegV0WymxvsJ/IBfNhqgRgyl75nE6bd+yP4ILKSDTuW7imICYpcEgpkVgumm9Zdyo8NTJSxpxnpateuaAYChLT1QuM2GYmmnZ859adSgKM8Gh5iFNtjsrZUnD72TMjSk9ZkDzy0Y2wDlFM7SHyHrmslgiwSQtQMiNeEfirq+B8zcnxRoVLVh8Y4+7n3e1BZDwehZUtLKyF3RAYmU7NZMOGCWk6Cfeas/PhTxRSd/CcpTkhO13N7D2/0svZZFK/Cuj/M+1sQAF8zrJiM+McJk1NlTSUhMkfXP2ls/abIqUw6gE1yrSg13+5c4NYcBGWoMdgB3X+V5rawfO125tkFYqaf/V+SicXyso2iKwqqeiRnB1KmQsf4GVgh55/hKCqOO1477pXFOZlMaMtOCPzQ3+ZRQMxxoeo+FMuwnVWEoMcB3ENuIkgGx7BFe/rvhd3jkMnI8uCgBenEDhSEt/oqB190ttRX+YOKosLidlZl1X65Z3sBSDaqPJ3vwWZXM42FgKgPisXG5uY6lKN7hgK2LA6DqWGD//9Heut+X76GagHuusYyqqj/nCPjssRYvbCELg8B/r5S045ZLdZ14/c3y8VzBhvVXSRj4a9SfLoF/GK1hNcYAUfatuDOTuYA3X21uDw0Do9Y7YghHMHhNry2ZIsNoC09BgLrCBf9/roVBtRT4ABPOlXQ+Hru2Wr3Qd7S25WVYI/nbXaftd5C0Kw7MoHj0xHpLAuaVT3pIkqx2RPbG91lzQ7C1sfFxaxiMAMZV
- j25+yM7v
- XuL6AiK/lLIrMBTcMUfc5sTCZg4IN495fHqitIfRjPwzfgkuBADgTPkgpDtOl7PTuxC7ma4K9VaxxIsFXGdwpG9UMeNII43vSgEmJoynvk/Z+6kxoGSbul2+cH4fnGuxtmF/lHCDIhkX2+DSzUPARE0Fsay2FmAbB8nmde9uLWxRRXaQnOlCbM+sp6c1xTLOWubbqlQwp6Z8o6c+NoxrY074zngb3I0zINa/eu//XEcMsBizA6loHcjNCOCyjcJdKhA2hvxIMDqhDME/OkwScPWTQjFHjA6sTj9s7sy5pcxzNf1uKJjJ3nffeWQhg9XDwrbd/owNCrcqY1dO5HPY72wznhQ==
+X-Rspam-User: 
+X-HE-Tag: 1792706591-392308
+X-HE-Meta: U2FsdGVkX1/cZa6k/xR8E87Ez+DPzIuV0sdxm2dKzG4ngNu14qsfYhFk3hxnpgRNbp2a+p26/IpapKkQOIo/R20Ba0ENrwIRbggyAmF0fClJETn1rkgmYfc2Z5oVaCHpMI3dqrs82YdhaYSO0ArVlpquzzKqyg8YS3tqjmh5yib5lJeqvapTqvj+Idj8OvfrhnfGtR+fD+ij1XXlJ+98JQZ5mUkRu9qSJj3UYYiA9lVbPPgqP0JUajhsjOEwKxhgAlqpfmTiilpcsF9oKoaJaau8hZb7+BVkVdvU7hIySeU9U5dB2f2osm3DHFC4ImBS2FuIakeaiipFDVnVnxZ7MkN915J7jKkm9LeS3Qe/jLBXJw5Hv5PkR71aOXzrj46jjNKm/ETEsMty+WPXurFKwJQwEvMwT4ZNdbEX5QnQCxFIC16XAXZ1VrUYKf9Ifh1M7guOycjofd76IjnXVJbndjzKsVWtLmnh9E74lHqjL51e9m+9FmTf3J9Jilzs4WQWmyA0xxWQA0CAhOt2v02O0xhkrjSzYmxmB/4DEzF/V2tfKchnxXonwIjervR7O5MljUHO6yInkxlkodAfJ1EoM2KB8tFfMctZ8RzMsuKZ5QVMx/4odZxuIi8bgzPZ65l9Fu1QUJAhDygbxp3wjzntZaCC+zRXEAzddrWfuCxKw4XigdkwFcfZJNcudZkk7NhqQ2E7W6dK+A0WGAvtYV1zSp05KNzOV7jr/48jFH2AUX0kkM0hW/yZbtZge4GQPPoHwM1pinCPoWOhYjn2u4dhlKRqjdb75rIguR9lFHjbcePHDsjD+QZWmCba+dcCJjt3MdT0e+CnPRKmMRhdTp8BsY7zRACIjyh2WPgrQhQ/vmX7xCGBeNDQTKLX8RraRvXvIeU37N5hAOkHfVzDhTbPQ/mDQa4rtzoOosEjv/E8grXTeViXorDAfJzN2UhKDa4YCEY/3R8BlsxxlrEpO3V
+ JvtVOcMp
+ Wk01RxsGK0awpfujpXWiG3L4NN8aMB5xWsWvJeZoEHfRKQivm6uht/XKF6EyFelI22WE4ULF84EO7yEtAS2A/pOFs45AckNVMbYHiXKGG9bK64NWZ4Nv8P36ybaZd/pZidr2IhOfLWluh8gpCNq4qNrBH9dhJC6eFmx4OfGkYCKe2yKp5/Nz8TilZW3h8gXi1dU7Xhiwu1G1LFPGM3kc1tIswiB7cMIvQKFJPZgLuUiyHKBgbWanRs1lumsE1cjf8mNo5AVpkUi9JiMqHEzVtUaD3aEYy4AABCaERGxQMSBlrdvhf011keKsnk/grJfuAXkXH2d23TGHxyv9BScoU1xyVzhDKDNzOJHN+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,147 +120,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: lyugaofei <lyugaofei@xiaomi.com>
+Reduce the number of folios moved from the oldest generation to the
+second-oldest generation in each batch. This shortens the time the
+lruvec lock is held, allowing concurrent LRU operations to make
+progress and significantly reducing LRU lock contention.
 
-Run aging when the total number of pages outside the youngest
-generation across both types falls below 1/MAX_NR_GENS of the number
-of pages in the youngest generation. For extreme swappiness values
-such as 1 and 200, also consider the balance of the corresponding
-type.
-
-This improves reclaim efficiency, especially at extreme swappiness
-values, while reducing system time.
-
-To avoid the overhead of aging, we only allow imbalance-based aging
-when the reclaim priority is low enough that we might reclaim the
-youngest generation. We also limit it to once per priority.
-
-Signed-off-by: lyugaofei <lyugaofei@xiaomi.com>
-Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 ---
- mm/vmscan.c | 65 +++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 56 insertions(+), 9 deletions(-)
+ mm/vmscan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 39f77a68be37..e8eeeeb76282 100644
+index e8eeeeb76282..555359cc0368 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4346,10 +4346,21 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
- 	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
- }
- 
-+static inline unsigned long lruvec_gen_size(struct lru_gen_folio *lrugen,
-+		int type, unsigned long seq)
-+{
-+	int gen = lru_gen_from_seq(seq);
-+	unsigned long size = 0;
-+
-+	for (int zone = 0; zone < MAX_NR_ZONES; zone++)
-+		size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-+	return size;
-+}
-+
- static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
- 				  unsigned long nr[])
+@@ -4051,7 +4051,7 @@ static inline void flush_lru_batch(struct list_head *head, struct list_head **ba
+ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
  {
--	int gen, type, zone;
-+	int type;
- 	unsigned long seq;
+ 	int zone;
+-	int remaining = MAX_LRU_BATCH;
++	int remaining = MIN_LRU_BATCH;
  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	DEFINE_MAX_SEQ(lruvec);
-@@ -4359,11 +4370,8 @@ static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
- 	nr[LRU_GEN_FILE] = 0;
- 
- 	for_each_evictable_type(type, swappiness) {
--		for (seq = min_seq[type]; seq <= max_seq; seq++) {
--			gen = lru_gen_from_seq(seq);
--			for (zone = 0; zone < MAX_NR_ZONES; zone++)
--				nr[type] += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
--		}
-+		for (seq = min_seq[type]; seq <= max_seq; seq++)
-+			nr[type] += lruvec_gen_size(lrugen, type, seq);
- 	}
- }
- 
-@@ -5228,8 +5236,41 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	return scanned;
- }
- 
-+static bool lru_gen_imbalanced(struct lruvec *lruvec, struct scan_control *sc,
-+		int swappiness)
-+{
-+	unsigned long youngest[ANON_AND_FILE] = {0}, old[ANON_AND_FILE] = {0};
-+	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+	DEFINE_MAX_SEQ(lruvec);
-+	DEFINE_MIN_SEQ(lruvec);
-+	int type;
-+
-+	for_each_evictable_type(type, swappiness) {
-+		unsigned long seq;
-+
-+		youngest[type] = lruvec_gen_size(lrugen, type, max_seq);
-+		for (seq = min_seq[type]; seq < max_seq; seq++)
-+			old[type] += lruvec_gen_size(lrugen, type, seq);
-+	}
-+
-+	/* the vast majority of pages sit in the youngest gen */
-+	if (youngest[LRU_GEN_ANON] + youngest[LRU_GEN_FILE] >
-+	    (old[LRU_GEN_ANON] + old[LRU_GEN_FILE]) * MAX_NR_GENS)
-+		return true;
-+
-+	/* Swappiness extremes: the corresponding type matters */
-+	if (swappiness == MIN_SWAPPINESS + 1)
-+		return youngest[LRU_GEN_FILE] > old[LRU_GEN_FILE] * MAX_NR_GENS;
-+
-+	if (swappiness == MAX_SWAPPINESS)
-+		return youngest[LRU_GEN_ANON] > old[LRU_GEN_ANON] * MAX_NR_GENS;
-+
-+	return false;
-+}
-+
- static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
--			     struct scan_control *sc, int swappiness)
-+			     struct scan_control *sc, int swappiness,
-+			     bool do_balance)
- {
- 	DEFINE_MIN_SEQ(lruvec);
- 
-@@ -5242,7 +5283,11 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
- 		return false;
- 
- 	/* better to run aging even though eviction is still possible */
--	return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS == max_seq;
-+	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS == max_seq)
-+		return true;
-+
-+	/* run aging when folios outside the youngest gen are rare */
-+	return do_balance && lru_gen_imbalanced(lruvec, sc, swappiness);
- }
- 
- static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_control *sc,
-@@ -5328,6 +5373,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 	bool need_rotate = false, should_age = false;
- 	int swappiness = get_swappiness(lruvec, sc);
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-+	bool do_balance = (sc->priority <= DEF_PRIORITY / 2);
- 
- 	/*
- 	 * Proactive reclaim initiated by userspace for anonymous memory only.
-@@ -5352,11 +5398,12 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 			break;
- 		}
- 
--		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
-+		if (should_run_aging(lruvec, max_seq, sc, swappiness, do_balance)) {
- 			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
- 				need_rotate = true;
- 			should_age = true;
- 		}
-+		do_balance = false;
- 
- 		if (!evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATCH))
- 			break;
+ 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
+ 	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
 -- 
 2.34.1
 
