@@ -1,99 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE8C606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 23:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1DC606A31B
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 23:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gVhlZskd
+	dkim=pass (1024-bit key, unprotected) header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b=m1IwdgDI
 Received: by kanga.kvack.org (Postfix)
-	id 4BA3B6B02EA; Thu, 22 Oct 2026 19:16:04 -0400 (EDT)
+	id 9619A6B0A23; Thu, 22 Oct 2026 19:25:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46B8B6B02ED; Thu, 22 Oct 2026 19:16:04 -0400 (EDT)
+	id 912C26B0A24; Thu, 22 Oct 2026 19:25:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 381B06B02EF; Thu, 22 Oct 2026 19:16:04 -0400 (EDT)
+	id 828166B0A25; Thu, 22 Oct 2026 19:25:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93B3B6B02EA
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:16:03 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97DFAA7BAB
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:16:02 +0000 (UTC)
-X-FDA: 85351822164.20.C2A7671
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F3F7E2000B
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:16:00 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gVhlZskd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D39F6B0A23
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:25:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DBB0A160355
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:25:55 +0000 (UTC)
+X-FDA: 85351847070.21.0D86C5D
+Received: from mail3-166.sinamail.sina.com.cn (mail3-166.sinamail.sina.com.cn [202.108.3.166])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7C5A540002
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:25:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=m1IwdgDI;
+	spf=pass (imf17.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.166 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792711554;
+	b=d6zsf8o9AZALnQsNJI6uWNtAQLX/n7y9WFSCLnzgE1F9Hi1IYDIfQu4clTXIiJHFkbYYMC
+	zhwoh20mA/Ig1rs3v077fCPLf8q0MkPe6STgyyHnauUARwW2ab6erHVwSCuth57bG7nhj8
+	tbNoJ7yAQzNDNCe5b2YGH//QUelhgiE=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=m1IwdgDI;
+	spf=pass (imf17.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.166 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792710961;
+	s=arc-20220608; t=1792711554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EBg17K/M2nYjg0CJ2VB8RcMiLnQd34uRF9TAFezMHP8=;
-	b=iHi7P0QrCTol5k1Hw5lQudgBakrZi5PhAxb8erxEHuaSledTQ9y6y37W5AEKT0iLTZ/5S5
-	O4FKhJsqwv+4UtmKSDq3dEtMebrF8GLNhG1FhAaubQiE1hFcoTqvfDvUNvQpfw/cwsjF2j
-	2zHL3X1gPhYnzTDwKEq7qZEbOnk5hoY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gVhlZskd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792710961;
-	b=aSvWB8DtKZdCHB7l7u/vWJLEWfrcD3HgJns4Zr7l+zx/FkDhW0n3jxRINxGYLSG3BK3F0/
-	+DMkUNGdkvKwCRt1n+Ad6fU6NE7FKqTBJr0V9gPOMAmM+JO2EW88y+dNQo9iFIsqo5z75t
-	i5hTHmBT1cZ0Ae6HyCKZ2VcsS46FYaA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2DA156022E;
-	Thu, 22 Oct 2026 23:16:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBB81F01825;
-	Thu, 22 Oct 2026 23:15:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792710959;
-	bh=EBg17K/M2nYjg0CJ2VB8RcMiLnQd34uRF9TAFezMHP8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gVhlZskdTjjRGcb1sPLj5Vhn+WjGwji3C+5JBi46aBSw++60J4o+IrdTWTd/k0crC
-	 1GCz+CzKZGtls6nwJ9Q0xU3uiOWZpJx8nfJjKY81yvnzDXsRUFbEdo4kaG7XziAG1A
-	 M/0x6gHH63L9JaLKj8X643ZcDLNaHJjmqDApvDrgI5RC+xDowbhcmlcBe7DoJj1xLB
-	 wj43MwjCYJNt+jOiqPjWBlVzEfQIWKbmhEMCJxrSbqUINUi+PXYC3SYCRIpPkYc3HR
-	 b7LIMG0vBU6zF6jhCEWOmiYv4dMx5winYRDr7X/ZMUW4p21zDlNCkBJM06h6GBd9dD
-	 W6YIoYbC9Gheg==
-Date: Thu, 22 Oct 2026 19:15:58 -0400
-From: Mike Snitzer <snitzer@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Mike Snitzer <snitzer@hammerspace.com>, Chuck Lever <cel@kernel.org>,
-	linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v7 2/5] mm: add folio_mark_dropbehind() to mark a folio
- dropbehind and account it
-Message-ID: <atqZLryFXwjiUboe@kernel.org>
-References: <20261020220346.28020-1-snitzer@kernel.org>
- <20261020220346.28020-3-snitzer@kernel.org>
- <8b666ab283f58e5913b3e4c33c52742a1153e9bd.camel@kernel.org>
+	bh=couYRd8E8JXWZWDdDnGH4eKgPjAkCu1Qn2pLPm6IYGQ=;
+	b=FFwSO8xbeAR/kBYUEFzPMBE9tWWPxfe3SY70q5l5Z3voIDleIAoB+6PnEmQQj4vI5bbmvA
+	TDNwFZxIBqWs9SniM50SbmTNkXnnxiZgKuV3Kqc9Ox74gykYeoyMRQNsr9cw4L7NWERzqp
+	yK6/eQSVXvWANNbX13pRME0/2mS+2xc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1792711552;
+	bh=couYRd8E8JXWZWDdDnGH4eKgPjAkCu1Qn2pLPm6IYGQ=;
+	h=From:Subject:Date:Message-ID;
+	b=m1IwdgDIVCPdVFpml9XFB0GLY5ZRAZlbdybnycppHsS05ratj+f9F1M4fJi+0fAos
+	 eWWuI7RUxsR4mCzdHSjRNzHgGJMEZ8YG9bdrnbT9jurquqGT3FI3OAb8IGqgcqPaHI
+	 CfWYsdSRUVHbFZJbPaeMYy+2Rg1ChVEspcm3oUww=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.244.129.212])
+	by sina.com (10.54.253.31) with ESMTP
+	id 6ADA9B79000039F9; Thu, 23 Oct 2026 07:25:48 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 2334166815986
+X-SMAIL-UIID: F945EA0D6C1C4AE692DD24BD6881420C-20261023-072548-1
+From: Hillf Danton <hdanton@sina.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Barry Song <21cnbao@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Date: Fri, 23 Oct 2026 07:25:37 +0800
+Message-ID: <20261022232538.978-1-hdanton@sina.com>
+In-Reply-To: <atlt8YGuSxgRb5uE@google.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8b666ab283f58e5913b3e4c33c52742a1153e9bd.camel@kernel.org>
-X-Rspamd-Queue-Id: F3F7E2000B
-X-Stat-Signature: 7nhsuxprpk5teg66yo3n5w88xiqate9h
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1792710960-369601
-X-HE-Meta: U2FsdGVkX19F/WAN8vQqPN5IVZ5Hmz5foeMi6p3mbD4Gc70DBhajUpl3moFfMbBn+cljjUCTXHVM7aBdv6NAv31Spet7HFLrbgvTn6ZFEuN2u3IeRtuuTc3oCG524pkm5u+MEX/31xLQcRCIRDbB5QvA86+b93N/Przvbn0lzPyKmMyokiurlyqwaZANP1nb+W98aPtPtPYU2TkOCV+zCyLllopGSJ7qrZz2q3r5r1zHUwTbuiFdLhsJnp6tHcnBaPgIT61TlHGyKXn6P+g/5qWCFYkBrKhJN5tzBu8LV/4OcG6GP/JjmZZzfp3TMAwmxrmLHp2mgNRcvh3m7lBU3aIkM3PQYQu8EDk+zQu+f7HWdvcC6yLQJ9garrTVHHoEQPhxHAjP9iN1u5YIKmczRRUIPvzhPZDyspAuO/EJp0b39t+hqNZUt5Y1OqlgcX+9b8FKHyBHoilqc57yPXJz5UB8l9h8mZIF4CDL8sKeJlzaTS5+w/EF+QVvcX8dqvX1wDx1pz2CBmy3j+aCracSFIgnuvE7fSGZx6uJmAYRNfkSbZ/w2g8F5CmCJnyhlGrQui1SngEhfoIQADwHJ3yixXx8de390uuhaMcYprR3ZlqIdbotBqJCC62EgYLUHu1RxswcpAp7jOlk5mbxv3Xh0zLT27U1Yhesgf2TXoDFqvvkm+0OoXUBS5yVmzUsKPBUtHyHtgUurORzqPwW9Vxgars+dhURld+3CxbiwidmqstnXQ5q1jnVZbimt5rIa9wHrXFI8kGuCeA+Ds/ae4QLUzosx+zpV4VAPpa3T3igpwO0zP9hcIsSawImWbwuDgoUCjf9RN8+6YkFYlp1dqvKMQnYtVVk1X03AHuyvRx8DyBN/Zv1jXB4DiXoK1CAOG02r7Tf6tLafVbq9yYlls0kNatjMBsZmT0syn3x5+E2ImL/dmTVRUYwJO8P3txYtnK5h2KvkkXx2fDcex1E9X9
- n2R0uSR0
- jYZnR2tRpkR7+IQCxKK5Lsfjr4j7ZuUaxijqFgF1OvPNzto+kMsOqs+yk9wUJdx2sL7Y9zI7uwAvhsW77Ta1XG8KlcTdLVXI+xgzj/MHVU4upXVLjT+XG1HKrR8BzdSRaRNyLClrvrkv524B5oai4esdmFF5+RllwSDbQoJqecAzCh17vHND1kpFG5dMC+F8JDPtMgdpGBygPWCEeSekvC7ZKwFyYXpQU5CpwkihrQf+YAnBGukitrJ8ARE1+I4Eh8M92IYrulm1mU8yKYejhLneSFaEzkYNGwybt14wKH1j04UctVUR8sM5khs0r5eq+QjuQ7Mynu5U0euMlktAFkKiAxxdN7phzeD8l/mgkrDvJLgHTN7ecx1iBFFfSoBWAspKc
+X-Rspamd-Queue-Id: 7C5A540002
+X-Stat-Signature: h59fk1xhte7w1okso1cmumwp9wxwuya4
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792711552-496461
+X-HE-Meta: U2FsdGVkX18+iG0czNxgvme07gzBxLMu/wbZsDMPUfIoYsa9tnJLSRw3/5Ho6Lem4ucOmwK7Jj6RzJihcT18oW6QoCp7r1G3A18MPfhMqOMlEpRQkZTF664THF78fMS/fibpbcbhJCe3Z2aJLBXyw3kMQq3J7juBVGGzExb/XrKSNXa3Mv9lDxao59WhMVXnRfehDhUbacb9/HEC0BVpnfDq3vNNLT9ayhrYevkK36PtZEUBql2PYxsjgwjyfu+taXSivPfBjeRGtld7oURMMF/998SHC0qB3JH5xZEQLns61r5hgdPxrZrnbcr6f32ox5H2UqDg681FPNUg2P/vH2m359lidoCnw0DmyPIo2Ubb/Y2VvYdrjLIU4DK4Nbo8EXkKig0+RaaWj3M9H6GOAaJxIsppeZZAE4lM8r5piqvcEe5wRhsqChLXz/55r5WAtXhYAVTpEPPWDaDQa/Qr8edR1v2jJd+1FZxAdy7FytEnZyFE5y6iwRyxzRpGtFYye3nT98ggHAy9gJGU9a3S2P5uhvQCRpOrBRkBMx+cwuxRuxadWItwt+YYnTPPwlYTx61sRyzhSYpn84ttGafluzp82csrSwh16BLAOaDd0WuRSRuSNAR5BmAOY8Ph3q9Eawl4ZKhlQzV7W6ty1hDqhz/gw+q0vTBntsUvqDj6lTd//q5/BwFtwDH6G1XGwWcKsPRDSk0STYt+ScEeetQWagGBHwOZTuHXQC12WyjwOjFpiyRa5m2a/sH4RFfWBEW+5ClMWRmwvOaKL1gmBiE77MR35DjpGls97ODMSzof2dFz5UGMUtkJdFtj0xZBM+hZN5g58T8TqxfOt8t/CsKaUH8QsynH+hhBfpphbHG/MXoOd84jYeVfW/DWTJxrxWxfioBqUnNbE7jKLiFsAcZYIxnhv2/dekBDd55uiEYpE+gNZIWc3oXD2rCJXvko3bam3qMs+WB8Pzfn9Dveltw
+ JnzcA8Jc
+ gw5PNutdb8fExDKUOxCxXCOqR2M4gsUgSF31lI9eUS//mKXHSau09o6IPljplfuZ+TC2DKtL1uKDL7wL+Y+7azOx8R2HGYR20DM2TWWzxWhmAt5F+3/dVBHFwpdZilus6/f4QrWjHSgFXiBfv7ZS2/L6LFsIZRG2AJHqF2EeuWZ99x6nZVRgVXusZuO5hf5NmObygbzCVSYdb30AGN5nhuWwxzBstYdgZ75BdhB1XiLojjGMP1JTo0kA+xAr+0LAuiqKHYZp8kKKG7u1LAeGmmYNWCuPCqAhRY+XIvtIkfUm67mAJZHv64pGrNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,55 +95,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 06:52:59AM -0400, Jeff Layton wrote:
+On Thu, 22 Oct 2026 11:06:53 +0900 Sergey Senozhatsky wrote:
+> On (26/10/22 08:08), Hillf Danton wrote:
+> [..]
+> > >>> Given lock like mutex, priority inversion happens from Monday to Friday,
+> > >>> but I wonder if you are inventing some wheels in 2026 if proxy excution
+> > >>> works for you.
+> > >>
+> > >> Reader-Writer split is a foundation for further improvements (like
+> > >> singleton recompression stream and so on).
+> > >>
+> > > But that split is not needed at all if PE works, yes?
+> > >
+> > 
+> > When the number of locks and tasks grows, I have increasing difficulty even
+> > describing the lock chain that you in combination with Brian are unable to
+> > handle. That is why in general PE is prefered over whatever wheels you can create.
 > 
-> Chuck's sashiko had a comment on this one:
+> Hillf, if we reinvent the wheel then I'm very happy with this reinvention.
+> But we don't.
 > 
-> [Severity: Medium]
-> Could this overcount WB_DONTCACHE_DIRTY if folio_mark_dropbehind() races with
-> filemap_dirty_folio() in mm/page-writeback.c? The dirtying path can set
-> PG_dirty before folio_account_dirtied() checks PG_dropbehind, and it need not
-> hold the folio lock. If folio_mark_dropbehind() sets PG_dropbehind after that
-> dirty transition but before the accounting check, both paths increment the
-> counter, while folio_account_cleaned() subtracts it only once. The later NFSD
-> use of this helper retains the same interleaving. Could the flag update and
-> dirty accounting be serialized so the counter is incremented only once?
+> There is not a single reason for compression and decompression to be in
+> the same context - they don't share a single byte.  And there is no
+> reason whatsoever to serialize them against each other.  Compression and
+> decompression should have been separate contexts from the beginning.
+> While serializing decompression with a PE/PI-enabled mutex is cool, not
+> having decompression serialization at all is way cooler.  In addition,
 
-Yes, it can double count.  Every path that takes a folio off
-WB_DONTCACHE_DIRTY holds the folio lock, as folio_mark_dropbehind()'s
-callers do, but folio_account_dirtied() adds under the i_pages lock
-after filemap_dirty_folio() has set PG_dirty without it.  So
-PG_dirty is the wrong test: it is set before the folio is counted.
-Reaching it needs a dirtier that doesn't hold the folio lock, such as a
-zap of a dirty pte in a shared file mapping or bio_set_pages_dirty()
-after a direct read into one; the cost is a counter the DONTCACHE kick
-reads too high, not data.
-
-v8 will test what folio_account_dirtied() leaves behind instead: the
-dirty tag, which __folio_mark_dirty() sets in the same i_pages section
-that counts the folio.  With the folio locked nothing can clean it, so
-the tag is set exactly when the folio has been counted, and taking the
-i_pages lock around setting the flag and testing the tag orders it
-against that section:
-
-        xa_lock_irqsave(&mapping->i_pages, flags);
-        folio_set_dropbehind(folio);
-        if (xa_get_mark(&mapping->i_pages, folio->index, PAGECACHE_TAG_DIRTY))
-                wb_stat_mod(inode_to_wb(mapping->host), WB_DONTCACHE_DIRTY,
-                            folio_nr_pages(folio));
-        xa_unlock_irqrestore(&mapping->i_pages, flags);
-
-A dirtier past folio_test_set_dirty() but not yet in that section finds
-the flag set and counts the folio itself.
-
-The same interleaving undercounts in the clear path that 88d6f128d06d
-("mm: track DONTCACHE dirty pages per bdi_writeback") added to
-__filemap_get_folio_mpol(): it clears the flag and subtracts if
-PG_dirty is set, which a dirtier that has set PG_dirty but not yet
-counted the folio makes it do for a folio that was never added.  The
-same change, clearing instead of setting, fixes that; I will send it
-as its own fix for 88d6f128d06d, at the start of this series for v8.
-
-Thanks,
-Mike
+I see compression and decompression are decoupled at the mutex level, but given
+the "same CPU" in your log message, nothing changes at the CPU level, reguarding
+the micro seconds to complete the two critical sections. So the decouple sounds
+like the half baked croissant, HBC, the Eric Dumazet dude sometimes is happy
+to deliver to lore.
 
