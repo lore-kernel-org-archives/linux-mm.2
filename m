@@ -1,130 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B46606A322
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A93606A322
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=sshaKQJu
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Hc+QXGOW
 Received: by kanga.kvack.org (Postfix)
-	id E1D046B085B; Wed, 21 Oct 2026 22:57:33 -0400 (EDT)
+	id 67C646B085C; Wed, 21 Oct 2026 22:57:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF3E36B085C; Wed, 21 Oct 2026 22:57:33 -0400 (EDT)
+	id 6540C6B085E; Wed, 21 Oct 2026 22:57:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0C9A6B085D; Wed, 21 Oct 2026 22:57:33 -0400 (EDT)
+	id 569B46B085F; Wed, 21 Oct 2026 22:57:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A6A3A6B085B
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:57:33 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B75F1406B1
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:57:33 +0000 (UTC)
-X-FDA: 85348751586.14.68216B2
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 400051C0003
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:57:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=sshaKQJu;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 255B06B085C
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:57:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A3C771C405C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:57:49 +0000 (UTC)
+X-FDA: 85348752258.29.188BCB1
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CD96B40002
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:57:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Hc+QXGOW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792637851;
+	s=arc-20220608; t=1792637867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jbCDllRU5wYbKPFOhnGrl1xB/avA24qTnso9VdtaQCs=;
-	b=12EqtoM2iyHsBktRcJvsoudPPtVIjlDrZkctCB4ZU/MiK3NcDcdAzIg83RbWP4BnVkTBvC
-	W9Er+JTMDYLY6KJfPVgN4Ct3Xor4tbdExEx/vYBluj0FgsQfpN1L9Ttwlnfu42UxKtXBlR
-	Zq7BzrKMKIBSSeVnZ+Ces8ktqftRjMI=
+	bh=9EhJunI31x30V5twb29p5JvXR/ZnOh8avGc16eTeBG0=;
+	b=2eisHo6TJzei9AUAUHut5O8h0XSMM42UAVd5yRVkVeQKEeEhUrJm624ffBk18VrFiNiOyB
+	8IFDhTdhJB7L37XmRDtlRczGtVWqe5hnjnXfzJemVf7M3UZ9WCcKel2+kyBY6VFDMtY5sX
+	maUh47AnfbsOPvc3jY3PDLvpykJdeJc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=sshaKQJu;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Hc+QXGOW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792637851;
-	b=kyFWWIJ+Xrxnfi5WiNrqbi4hZtpW3mr8+b+aZKNyThCxjgWQULUa4eBFPIzVCgdMUzz06g
-	5zMLwaRz6M2J+URAjiHQm2BdKEarngv3D1w9v0hp9c3nPIfpEG7Ut6hdCT7Uz8WbeSAvld
-	DW0KinFjygGk2TyyB9iVoD8YZZMkLpQ=
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93f1cf92c9eso140981085a.0
-        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:57:31 -0700 (PDT)
+	t=1792637867;
+	b=O+bzBW6X+6X+9xwEnCl/ux71WxD2ErrmshROFdKHY8qXrHy7f8IABU8MAUVXCzXnkA66EO
+	nNrpXU5SwGPaMuorORc84QgwYLRmUg39cNl8GaCZfKKeTS7PHyy4b7vKWMNIJbNq6/g9Ak
+	wEN+M0ozijtac7WgcY9pwwwt4zzRmOY=
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc4aa0246b7so531479a12.3
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:57:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792637850; x=1793242650; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=jbCDllRU5wYbKPFOhnGrl1xB/avA24qTnso9VdtaQCs=;
-        b=sshaKQJumPFSaXbMXhetmuU6KIhKEOV2zMmOdRW4NVRjA5YJ7Y8rwbLoKYJkUaNQYO
-         2yXDJ7x+6bPxEaURbAdPON0INy9/S+jqC3DMi2nHsNLbyr/IWpHSgaanarQZYKEboWxn
-         Efj3RjAf+XECpdSqgeDSOpGmGKYv1rwBcGK5npDsyGlKbqV8CxWHIBR892xnZwjR4v7B
-         1LlorXT9Li3D11OgawFkfFnJIZz0dvIX36Vsxw7AVoN3kP3ZIcuql3fwNhW1CY5iBw90
-         8fjVZf4Hpgi5+I2g4b+qQX8zbjEo1Kx7a+Xuh8CjTUQj8inWKbkFQE50eH+JRxSCCqA1
-         hihw==
+        d=google.com; s=20251104; t=1792637866; x=1793242666; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9EhJunI31x30V5twb29p5JvXR/ZnOh8avGc16eTeBG0=;
+        b=Hc+QXGOWFXhqSUBiMks6D/JSfOGmzZU83x7h6i9WsZywxo7vuUY31tJNM4FKWVhfLn
+         1loYDSyacq6hxQ0aY2HRr5YHCyiLi9NkTyLGdpIP9yBBGT/wcZj5ltz2BR8OaBkdZHEi
+         RdKiFM+uxvNY2Ll62mis4NrnGSqTv3PSghyEYkjbDt7K+7roImNXr+hG2ZT9ymz+AF06
+         +ggw8lkT4z91cSYGSXva0Ow0lo3YDVFOBpfJLJ9iA5ggyFR9ZTROws/u8pKui26YjHhG
+         04NuyjTTvd9zDDamXlpvJRnj+NcSPzqU0K8xCeKm0+kydzM+R+tG8gUCEDhf2qnHNAVG
+         bo1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792637850; x=1793242650;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jbCDllRU5wYbKPFOhnGrl1xB/avA24qTnso9VdtaQCs=;
-        b=0JGR/+bEM4m/qbp0BHrgzqPbftA2nhE5VoeIaHKu9x3p78z/9LUJEz9FTfP/CaTqNQ
-         zsERNUKuzPUQnThlBPiBKsLUylLKQWVsfT2PRm59BV7O8V8deE/On58Zpu4k2Z0s8Uwr
-         tQoHnBEPaRCsYIc43kAa371VyQafGq81IqoCnifkW4P0IN71oiRxpW1OB+Xdra8bq/a8
-         PjNgEU7381TZiYAKxe++cvmeRa7Rgzyke0GDZvgjDnNzmq4iedtPLkYgJ/btG4dpwFps
-         /1LOVz2H9TtOzbLMMxUH7+W4IH04dQAmPr3QBfvKI0tUN+n2WtBw0634lpxEYWIhnPRR
-         FMDA==
-X-Forwarded-Encrypted: i=1; AKwUvBxgg2yCV8sFQsIrhX8f8Mk+FpFi52fxLOHxxk5FNG3veGWJ+X3z7uBKfCkgsMIXRtXhY92bbJOHCw==@kvack.org
-X-Gm-Message-State: AFq9FYKwMZ87na9649XXWhNKhmyq9M0u7OiEG72RUcX5Y6YHHvxwENzt
-	Kdic9OOME1iI7U4kFW5bm91+1S7brGrtChBm43GnCfeIGfjbWMcc9QIbnWDKRifZco0=
-X-Gm-Gg: AYBFou3jXsoxJIwvnoz/z8LX5A38sSVifDFUt2CbTbj8bZjnfOBAbWLytxbxp09jBsg
-	wyTEe2f9ENjOFDXxn0BEnLQzZBg/PlOcgFVZAAi8taDZPYvnwxlFGQ7n1uOfnC6kR42UNqOiRPw
-	gr1jt3wDiFcDTr5aYHGwWqJs+lQCKJw3cpsvFurNNS9L8LwN1lAF4R5jqaJLcB410QKqlNmfYon
-	f9hf8QE8HQtJLD5mSsIKb0ny6GghHy02X1mmvR874mviDNrQMO2eMeoZqKmtuqhm6vtpOEgDpPX
-	2ltnYQkuku32w7KtUIaKwClkWR5WQwujrlTcvPXUbeQEaISCCbBk59HLMFRPdyS9Ww3ekKh5HF1
-	f/OLHKsMfFm+QCNsBzj8MkaZSqy9JUtY/V1d+dr/EE1wGMwj9z09uOAVmK1uagbHgDdiQ7RCTXk
-	cnHHYI3a3JB+XJsiFg78CcB07hMaa5i5BUFLnk8OXyu6nDdkpM5bbobCdRY4UerXOvZPzeMU3vq
-	sSUewbly4ds8iet+natx+EjbLWolosDJruM7t7NqBiqr0vJ6cUAabk4IcGV8klhRuabW5BwJtxF
-	jSbBUXvybF6ZAg8NmTrQbyjunc8=
-X-Received: by 2002:a05:620a:2415:10b0:93f:5cc0:5978 with SMTP id af79cd13be357-93f5cc05b2cmr353949485a.37.1792637850409;
-        Wed, 21 Oct 2026 19:57:30 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56e30610sm406637385a.43.2026.10.21.19.57.27
+        d=1e100.net; s=20260707; t=1792637866; x=1793242666;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=9EhJunI31x30V5twb29p5JvXR/ZnOh8avGc16eTeBG0=;
+        b=LsJS2iGGI3IaKzBPp4MSmarnAq+M7/Dqn/6AG7C3iLCuObDJO+vO/c0N/9ZHaoxZmp
+         Su9E60g+kEXPXAw7K5ywWWkL3VuPDVukwTHOaQbCSkjHWS1cF49HQx6ksih8z26dzbf3
+         lytW3Aq0o84bGMvJMlV7W+8S/mRtH1VwXC/wlimPaFnRuJlLyYraN780gckUIPZeOuCR
+         Q+t3sperbPMHspv7sHURAyGRU/QeTzYFPtWL31Dbv9aEgsUkXoJqTdF5A9Uu4dY2DitZ
+         QlU3ENGTRFKsu/P1/6CJeQyapI09iVWQuqUPXiU3C57MtBZs6JrwFFzfOa12AsV5d8TU
+         uXtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx1LDPdUVg6rByU3LeSSnH1O+xzRxaMOoPcE2Ev8wF+BFutsxG9NhtEdI2dz6WxKzPsFp5YaeFMoQ==@kvack.org
+X-Gm-Message-State: AFq9FYI7GKKfXhx6BB4R3HiwjmKd0QxBgo4l85bNi0QoLiOBjutRp+Dt
+	H6jkCgWYge2CKSxOvwpyYsTi7kcfDDBgtGKlnMTGHo/U+k9dxnVBGJ/dYQtlq1nTMg==
+X-Gm-Gg: AYBFou0z+wHzV/g0eTp+jGwN7Ft+2I9iDvrr6j0VAwcyX1X84JtXXntJKbfWWhleaaE
+	catzJLYNrvar9s3B0qJM2WMyllsrBw62otIXc7e763G8NygcGZ8TOIHmpmnC/qgg4az16JafLLZ
+	pMq4Z/OAYjukrA2BbBQ8tuDHoqBqwriv+FbtULS+HPffaMPhqzGJg9lm8SKnw+XMIByMHlKgLeM
+	YeF22Oi/ZMwGPZYrBAeW5ys/J6mJs8JtAZY7/mn0EuVK8gjV0M9bdOq0sAls8gncC3OjcJNv0bf
+	7cafaOAdXkW5RLl0fBPWnXLiwVNTOo8SQNrO0k9aSZiC0PhFnx5zfGPgRNGQiQOzD32UsKeg88X
+	aPZHtZS5xO9lGqQxQDZ1gjveVEYG4jvRJOXsLXeEd3jHw7OMgcOCKK377+s89pR8u79hRFgM1DP
+	cZpGgGlSFJbQnGn2jXfQkIIt8BW74DPELAOCoBr9ld0zgMgAvG5nAZ8R3wRaxVnUBAqLHxkzJkE
+	aW6JzqKo61S3EYS84dmIaBQOh2D9wcIPWy/4EM4iyUHKyXsemmKEVwnelzNYM+UZ2f8ToY5rPd5
+	MpmvywVVI3Dqbu48
+X-Received: by 2002:a17:90b:3ec8:b0:3ac:adce:60ad with SMTP id 98e67ed59e1d1-3ad86e96c9emr2886416a91.22.1792637865925;
+        Wed, 21 Oct 2026 19:57:45 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada495315dsm2092370a91.15.2026.10.21.19.57.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 19:57:28 -0700 (PDT)
+        Wed, 21 Oct 2026 19:57:45 -0700 (PDT)
+Date: Thu, 22 Oct 2026 02:57:41 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
+	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <atl7peoVHdP5hz7z@google.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-4-tarunsahu@google.com>
+ <CA+CK2bAQbmq3ArP3XMErF_8RC2CUwvgpLY0H83D0nCJTaVKYyA@mail.gmail.com>
+ <9huzecdi6go0.fsf@tarunix.c.googlers.com>
+ <CALzav=dLdJoVy=B1pv0FAurD9OhAzLSTjJNbtjTdJRmSqaB0yw@mail.gmail.com>
+ <CA+CK2bAQRMAEXZyHTEuUN0_Fo59Sn0hBmYbme_J9ewjx6gPyJQ@mail.gmail.com>
+ <atlKsD-aJB3mJr2j@google.com>
+ <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH bpf-next 3/9] uprobes/x86: Finish an unoptimization
- which failed half-way
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
- eddyz87@gmail.com, memxor@gmail.com, oleg@redhat.com, peterz@infradead.org, 
- mhiramat@kernel.org, jolsa@kernel.org, akpm@linux-foundation.org, 
- liam@infradead.org, ljs@kernel.org, surenb@google.com, david@kernel.org, 
- vbabka@kernel.org, jannh@google.com, hughd@google.com, kees@kernel.org, 
- mingo@redhat.com, tglx@kernel.org, x86@kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261022015712.1297331-4-alexei.starovoitov@gmail.com>
-References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
- <20261022015712.1297331-4-alexei.starovoitov@gmail.com>
-Date: Wed, 21 Oct 2026 22:57:26 -0400
-Message-Id: <179263784614.2549665.557126403507804820.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 400051C0003
-X-Stat-Signature: 5zdshfppdjzy8mxj63bj1bkktw8ffifk
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
+X-Rspamd-Queue-Id: CD96B40002
+X-Stat-Signature: u65zro3oghxhkh7fia614qsa4e89zegc
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792637851-697938
-X-HE-Meta: U2FsdGVkX18J7GmeC2YM5mtiBu/RlZch+6i30aUhFw1AN/7elrr3nfUFacy7AQ/kiA9/BluV5ZdSKgO2OoGMdpvQEuI8Sgvzt83/RZVCeJFYO5FSc8FlddiouaO2YYkMMH21zw49XjTeV13AyGKwjxMj145HBf1NVheFzboAnZ5EoiWKoyeBdRXmZXyQVyvOIBFs5g/ws0Se/hSZETKTqmbMxqM25wOBFhrroV2FoA2o1GcUnK45BnAL8q2CeCCdgkQNtSbCEA84XgP2MZVYt7qD201WriwOtvyYn8CbfVSiChu54NvtAVYC0q5yEzx0i26NcC4xppMAIO4fy9hcIvef7VC3eZ78oWMZy++4oTDlmmE1yaM3QV42zxbHP+3lldIjT1VGm0W8qCfWSjNyMGR3GxXB9vmjefIUhkO9Ya535v4A2IO7sPAPLRbIJwgGQSBqcVePTdJlhTkgcmH3i4uhyxouyGPZrp+W8aA7UL/PFDl2FJuXNSAEKN/nBQ3Sso2OlABDmB0+7xvAjJK7yaF8ioPKJIEZTEkgBjsOmVngYbYfp9vTz0kR3cwmHPv3pwwzgCe9T6m6BH+eyD9cmz0a/wenv5BS+8Vtn+8mNItFASRZITCLs4MvMSE31TmqY2cEIlys0QxYLwuU6Zduda4Om3OLc/mlN1m1ltfRvAfxd/tBn5jpz+NQXVFySyYO4xuC/uQUAilT9YLTOld0P9Vb95v3zuyI8wuWmYJRrS8bax3zmT8R33YpHXfAaj6aGi3IB4EYH03vSlE4C9YZMxtIxhsa0WVBqM3QJ0ZRvJaBSOFiGSmylfmVMt8V0/+KwsaZdS9BhW/NZrKWu+KU2L7fIHN16pEfLK5B2nHE1CB0GIfQtXn7tIhpphNQ3oTaFAbTgWf/Sz8mP+9ixDycr+zU35/+yCZp2zYb4xwvd1725bjdFMmhXS3miBROnVk1ZzgVGjyk+WPswkwecNI
- 2847jRMw
- GpklHYht1w1A5fS+dIK5nHB7gwMysYmtWhe1gyybJhLNXQ0tTB6/J7WQlAOTnf/RYr25s4OKLweZi49NlEv+4QWgmi7eyWDA6nssfbeYkMM/yAa6JDvFGxl/wUyM6AcyqX5aLz99Tq1OUkwpX8Fw5OBqtyp+W1tlhE7n6u6C8UHt14+34uljpKc9N7/87z0NVZdIK/qyC1GasGRCHpQA3mBOshJnl0vWUQYMIt1Xoc2+a/H54G+0jSqbgb5OjQRxXnNUTHyC+4ESRABqwWF6qd2/kZCcxWzYKVb3d1nCVP0eWpD0FC5uL2Ao12dr9rIdKg0c7dVLAW3v7g27VA83LjytbRU7zEcW+hJWEMcYZL8Da/3uVMOdx6HOO0T1z09lfCeh7v4uKfOokQO7m48uOWOwakyyeGVOUWxur
+X-HE-Tag: 1792637867-802376
+X-HE-Meta: U2FsdGVkX1/4IrrpDcCzKHzOJMlELMJqb1ywx3fZ+CxPPKs0lvojCHvyRXeipcLBBmGMYhelnD58fpLZK43cnBr1898GaKmL/VatuXqCAqF9JQLPFSfP+TCkv6fV2I79ZXsBy0PcdGBLw3jKQbZ01K+Y8VWSWvWiHY7uoTUKW9hSwTO6ixkFfWCyRt5ivjhEPOM6UcLjHZH6Ce4LutH9/RFbfoodPM8qgZuIZtVhiHndKIxj6OJKjCbPKALTV3UjgCRtqdYfhAhp+O+H0e4c2NgC86KEplPoxV/ccmHwmphlA1zoyvMFNyh0e92AkbZMcPn+k5LYH0U+tptOJxrjXPqh2abF+mGwRNhlCqmSvEgx9KzsRVgOoWXv+jlpU0c35yDi/B6StmDQH8WWN4Ngv3ZQ02Ys1rP/ZVXNKBnaH3/+/L0uNGjj6ctUrwUCFIUZ0TQr5FH8mvuEaBtMZ+x/2c+Di3f87z1bbwIYGjhtOw70vMrB5cDWqzt0gBHusKnc8/XeefSlsAQBSzo7o2GAflg5o74MPrLa+nwRqaKUyZTbt9eYNViRYQ1SE8Fa7+RuXKSD1Wfav1VoWbjplni1Y7wCnenlbqsZ9EO5azeUluL/qSfftM+aJ335cMnExWF4pmoLllrkC8WQlbEBIRoMVVFdegjVseAUbZGtnyBaN51l+8fhUzhGwlLAHfwf9H8a3TItH8FPiG4vaTJhlY0ktvEO1kCLHpP99kC/DurJDE8xfPx0hh/Xotsfg1F2hzKdteoLUsL8YZ5d0dpwoLHoaP0sBW0Ttw7f4T2G4O5dvVeWPRCknNyEAL/sJolqfF8HVZhEi1DLA1EZ4fUfiLSFS+HfODUATowp36CdKbHEKY7ISe5XanAvYnMLkeWPF7jKyZ4QWdflT3HyMDCk/YSBt+fQ3PzD3w7Plb7z0FcB1WvZR305tHW8noLWzY4GkLETgp2wtin7I0e5wfeNq0I
+ JG89oGPn
+ 2pHWqchUsOnaNVrEP+GQT77wllU6j/XBdpJptgLVU/hdlWVZPLG6OTbpCE5OXl5k6pM880AaYliTBLpKM1/1DqvU7AbvDA2lm6Q1Vr3AjnYCI22HCyBbHATNrG6Fr2L8wxYalJcdd7LxWaWKGkXb7Aw8zQDMJdCD0wT/xtPT0/1emgeTuCQN5co9FHDW9hR5ZSFs8q7jMtSD0GbwOoCUqYa8LqVq/WonWkm9RFBTP4yo3F8Q01cLXKbPAlUUruU+IfD1rQggkaVUi07JAnVtRn7hbFyH2nr9ONRN1SGZAX1fWu40vrdm5Yez1o+9shOC0KGIR0QuGh74SeLUkMFcFGKywLxMs3I7kUTDeNPbpBRy+mA3RanSCYJkZXdO8vHm78X7lWrJuENU6GG6enf+kJQNucKtOPzYiNuPis1xxQxcdwRQA9jl/0PWMYw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,43 +144,121 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-22 01:57 +0000, Alexei Starovoitov wrote:
-> From: Alexei Starovoitov <ast@kernel.org>
+On 2026-10-21 09:26 PM, Pasha Tatashin wrote:
+> On Wed, Oct 21, 2026 at 7:28 PM David Matlack <dmatlack@google.com> wrote:
+> >
+> > On 2026-10-21 02:50 PM, Pasha Tatashin wrote:
+> > > On Wed, Oct 21, 2026 at 2:47 PM David Matlack <dmatlack@google.com> wrote:
+> > > >
+> > > > On Wed, Oct 21, 2026 at 11:40 AM <tarunsahu@google.com> wrote:
+> > > > >
+> > > > > Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+> > > > >
+> > > > > > On Wed, Oct 21, 2026 at 11:25 AM Tarun Sahu <tarunsahu@google.com> wrote:
+> > > > > >>
+> > > > > >> LUO and its file handlers validate handed-over state with monolithic
+> > > > > >> compatibility strings ("luo-v5", "memfd-v2"). Any change to a serialized
+> > > > > >> structure, even an optional additive one, must bump the string, which
+> > > > > >> breaks live update between adjacent kernels. Replace the string in
+> > > > > >> struct luo_ser with a feature header, so that the target kernel can
+> > > > > >> accept or reject the source kernel state per feature.
+> > > > > >>
+> > > > > >> struct luo_feature_hdr is a fixed 128-byte header: the serialized
+> > > > > >
+> > > > > > This patch is all wrong; 128 bytes is far too large. For every _ser
+> > > > > > struct, we only need 8 bytes instead.
+> > > > >
+> > > > > NOO, It is not. It is intended to avoid complex mess with unnecessary
+> > > > > over-engineering.
+> > >
+> > > 128-byte per serialized struct is not starter.
+> > >
+> > > > >
+> > > > > >
+> > > > > > The first 4 bytes are the size, and the next 4 bytes are flags (i.e.,
+> > > > > > 30 feature flags + 2 reserved bits for flags extension). The last two
+> > > > > > bits of the flags indicate whether an extended flags field is present.
+> > > > > > Each extended flags field is 8 bytes, and its last two bits indicate
+> > > > > > that yet another extended flags field follows.
+> > > > >
+> > > > > If we will have dynamic extension of flags, Think about this.
+> > > >
+> > > > To support dynamic extensions in a backward compatible way you want
+> > > > something like this:
+> > > >
+> > > > struct luo_feature_hdr {
+> > > >    size
+> > > >    flags
+> > >
+> > > __u32 size
+> > > __u32 flags
+> > >
+> > > >    extensions  // offset of first luo_feature_extensions (or 0)
+> > >
+> > > __u64 extensions[0]  --> but the size should be specificed in
+> > > declaration macro that I showed in the next patch.
+> >
+> > I think you may have misunderstood what I meant. In my proposal,
+> > extensions is an offset to the first extension, not an array of
+> > extensions that immediately follow the header.
+> >
+> > If the extensions immediately follow the header, then the number of
+> > extensions is baked into the struct layout. Every field after them sits
+> > at an offset that depends on how many extensions there are. If we ever
+> > need one more extension, all the fields shift and old and new kernels
+> > can no longer read each other's struct. That is the problem Tarun
 > 
-> int3_update_unoptimize() restores optimized nop10 in three writes:
+> We can structure it cleanly by nesting the payload: something like
+> struct { struct header {...}h; struct serialize_data { ... }p; };
+> That way, the header can expand dynamically at the front, while all
+> fields inside `serialize_data` stay at fixed offsets relative to the
+> start
+> of the payload.
 > 
->   48 8d 64 24 80 e8 d0 d1 d2 d3    lea -0x80(%rsp),%rsp; call tramp
->   cc 8d 64 24 80 e8 d0 d1 d2 d3    1. trap new entries
->   cc 2e 0f 1f 84 e8 d0 d1 d2 d3    2. restore bytes 1..4
->   66 2e 0f 1f 84 e8 d0 d1 d2 d3    3. restore byte 0
-> 
-> uprobe_write() can fail with -ENOMEM, or with -EINTR when the task is being
-> killed. When the 2nd write fails the result of the 1st one stays. Byte 0 is
-> a breakpoint and it works. But the next set_orig_insn() doesn't find lea in
-> byte 0, takes it for a plain breakpoint and restores one byte:
-> 
->   66 8d 64 24 80 e8 d0 d1 d2 d3    lea -0x80(%rsp),%sp; call tramp
-> 
-> Nothing recognizes these bytes anymore. The process keeps the call into
-> uprobe trampoline, which can be unmapped already.
-> 
-> Teach is_optimized() to recognize the half-way state, and let the 1st write
-> of int3_update_unoptimize() skip what is already done.
-> 
-> The failure wasn't reproduced, but the state can be made by hand. Attach to
-> nop10, call it to get it optimized, write 0xcc over byte 0, detach.
-> 
-> "uprobes: Don't sleep on mmap_lock under dup_mmap_sem" needs this. There
-> fork() removes the breakpoint from its mm. When fork() is killed in
-> the middle register_for_each_vma() removes it for the second time.
-> 
-> Fixes: 554ba38456da ("uprobes/x86: Move optimized uprobe from nop5 to nop10")
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> Since the header size is self-describing via continuation bits (e.g.,
+> the last two bits indicating whether another flag word follows), LUO
+> can
+> easily compute where the payload begins in the incoming blob. This
+> keeps the implementation simple, avoids linked lists of offsets.
 
-This was a nice read.
+Oh interesting. I agree a dynamically sized header at the front can work
+and is simpler than a linked list.
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+So the header and the payload need to be separate, and the payload is
+located with pointer arithmetic on the header. For example:
 
--- 
-Gregory Price (Meta) <gourry@gourry.net>
+struct luo_ser_hdr {
+    u32 size;    /* Size of the payload in bytes */
+    u32 flags;    /* Bits [31:30] indicate an extension word follows */
+    /* u64 extension words follow while the continuation bits are set */
+};
+
+/* Size of the header, including any extension words. */
+size_t luo_ser_hdr_size(const struct luo_ser_hdr *hdr);
+
+static inline void *luo_ser_payload(const struct luo_ser_hdr *hdr)
+{
+    return (void *)hdr + luo_ser_hdr_size(hdr);
+}
+
+On preserve:
+
+    hdr = kho_alloc_preserve(luo_ser_hdr_size_for(nr_ext) + sizeof(*ser));
+    luo_ser_hdr_init(hdr, sizeof(*ser), ...);
+    ser = luo_ser_payload(hdr);
+    ...
+    args->serialized_data = virt_to_phys(hdr);
+
+On retrieve:
+
+    hdr = phys_to_virt(args->serialized_data);
+    err = luo_ser_hdr_validate(hdr, ...);
+    if (err)
+        return err;
+
+    ser = luo_ser_payload(hdr);
+
+What would size mean in luo_ser_hdr? The size of the payload or the size
+of the combined luo_ser_hdr + payload. luo_ser_hdr is self describing so
+maybe it's just the size of the payload?
 
