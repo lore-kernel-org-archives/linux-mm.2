@@ -1,98 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E835606A32E
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 07:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30190606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 07:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=T/lTafwa
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZevAmix7
 Received: by kanga.kvack.org (Postfix)
-	id 1B61B6B02A9; Thu, 22 Oct 2026 03:23:45 -0400 (EDT)
+	id 325386B02AA; Thu, 22 Oct 2026 03:32:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1418A6B08BB; Thu, 22 Oct 2026 03:23:45 -0400 (EDT)
+	id 2D6EB6B08BD; Thu, 22 Oct 2026 03:32:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F24036B08BC; Thu, 22 Oct 2026 03:23:44 -0400 (EDT)
+	id 1ECA16B08BE; Thu, 22 Oct 2026 03:32:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D16546B02A9
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 03:23:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 65D1580741
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:23:44 +0000 (UTC)
-X-FDA: 85349422368.24.E7E5802
-Received: from mta1.migadu.com (out-14.mta1.migadu.com [95.215.58.14])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5C2FB40004
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:23:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="T/lTafwa";
+	by kanga.kvack.org (Postfix) with ESMTP id F2D0B6B02AA
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 03:32:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 02D7A8072F
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:32:08 +0000 (UTC)
+X-FDA: 85349443578.01.660DFAA
+Received: from mta1.migadu.com (out-152.mta1.migadu.com [95.215.58.152])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D19202000E
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:32:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZevAmix7;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792653822;
+	s=arc-20220608; t=1792654327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nxhw37Ts8JjVkeWnUUXvGcPNaHqWJWHYSG2L4Bkd61Q=;
-	b=b1qvqQX28wzr3C1iBL5FNwY+CBqyqvwiBMqOBZ+MFZokVWFPzmn3ZNArNRa1a84LEfVwC5
-	jzhQ6YxDkOf2XDiAK7kHkGhIFXgbxtzAav+/FUXYZkI8XhZ4nTqenIMxYmfbr7/RMCv1gM
-	JngwNJGP5ibDOaHsuXeu58x4bzT8SCc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sZMaNUkUgOAGCf7vIUHWRsuT7fViPMeanwtTwml4kjU=;
+	b=jb3HR8R1VZZu/K38WuVFzjmasEycRTVtYra0P+R4NUj7mEWIgHH6g5DcYx86mTuqFZXVqd
+	N8GcjxZ/J7BKVbDa//yHeS3RpOEqciu8E7JzslJDL1q4ebZ6JMAtcOqZF8GuPBYELRJZcs
+	uqYD3WMJJVlm7pzaBh5y9PFGmUxYz1g=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="T/lTafwa";
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZevAmix7;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792653822;
-	b=zkf03qu5SwLM4CaYEfmNWbNc4olR52p5ZwmReIEOP2QQybTzGBOsLZGQv9UinD07F1Dgw8
-	Dmv8XxVvf7Pg533IPjgg0Zkn8ixPSWwkqQMHPnCPCRtkl+rgGnKmZXq/cw34z1SnAQfQ44
-	vorkcUveCVcUjT3dF1ZOA8BgZNRdKbQ=
+	t=1792654327;
+	b=idoA9jQlbuQeoRli8HWsVN45zErfhAy1Vs5+/R7vNQvOxJ9tGa15Xz1J5spVUeU1e4uD6f
+	W/cbLxnc6mzjYCYh7enBCQlaowBMJ/r1u0SAWVroiBeMUBh4dSkK8fLfrjT6pDnuWOm5qQ
+	HqgCZyDbOCswN419wMUleMhzoPq8Yzw=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=iMb60vufG01+4AZR+z8pGmBhQmm04VfW1fUB7oSscv8=;
+DKIM-Signature: a=rsa-sha256; bh=pydGOxS/qlsFc5FYzisLlwLazgT7vx7cmXT+dA4dW9s=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792653820; v=1; x=1793258620;
- b=T/lTafwa65EQjI/GtYIBCe7AQBRuvqgyRLahgfzDvuKGIaOaB3DFUhz5dSLW7IXuO2QqUQ8j
- S/qh/jKzHOmbM0GHuIwfOhGFPo0hb2NzRYMvUEADqKdMrWktbH0gGgxy5rTpe/8EnGUFfgxFFTq
- +kwRSZLqQpq/Fpxk37KiTDtE=
+ t=1792654322; v=1; x=1793259122;
+ b=ZevAmix70kRA6dGAO0+YnwcPa2Kdnji5mfDSGP8MXGTeCoko2+iFgNkSiwaDkeFNNjxYyOx9
+ i0Ts51ebWQrhtaX26/5cFin9Uq3/qJpCdTsaX9/Vf/djQmmv7olhEtMgUJgIUAdLzgV1VfMXYkP
+ 4f80aT323M0F1lYa/dlRPSFE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ab87abfd04d8baec;
-	Thu, 22 Oct 2026 07:23:40 +0000
-X-Mizu-Trace-ID: ab87abfd04d8baec
+Received: by smtp.migadu.com with ESMTPS id cf7a53a0e25b2323;
+	Thu, 22 Oct 2026 07:32:02 +0000
+X-Mizu-Trace-ID: cf7a53a0e25b2323
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: songmuchun@bytedance.com
-Cc: osalvador@suse.de,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	qi.zheng@linux.dev,
-	lance.yang@linux.dev,
-	jthoughton@google.com,
+From: Qi Zheng <qi.zheng@linux.dev>
+To: muchun.song@linux.dev,
 	david@kernel.org,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/12] mm: hugetlb_vmemmap: simplify vmemmap head page handling
-Date: Thu, 22 Oct 2026 15:23:29 +0800
-Message-ID: <20261022072329.67561-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261020115824.823278-2-songmuchun@bytedance.com>
-References: <20261020115824.823278-2-songmuchun@bytedance.com>
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	azpijr@gmail.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 0/5] mm: hugetlb: add CMA support for PMD-sized pages
+Date: Thu, 22 Oct 2026 15:31:44 +0800
+Message-ID: <cover.1792651104.git.zhengqi.arch@bytedance.com>
+X-Mailer: git-send-email 2.48.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5C2FB40004
-X-Stat-Signature: mpp8fd6bgwjzsuyizwums6yd7tepfj9x
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D19202000E
+X-Stat-Signature: to9p1cjkc8nebio1c79yuaw11ss4sa8k
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792653822-369680
-X-HE-Meta: U2FsdGVkX19xrcKkZfvN1lb1P8p9aAlM457qP73GKNdDwceba3PRtUhLjjXx58Wec3nZuDYaelfs1AZ95IctmDMTxEnZL3TKNYAAoGygFQn5+RCj2rNDsXDtU+QSGHp8MqmMWqjMF7bzvQ5aQXOzRSfhqBvdYHQbKpIIf5eeyY/uRAftCeM8eh7Azu2qh0yrkC0ySm8H38m2N1m+p4h5E5AjPwNXFA7IZUtxh4yb6540KTCzNfpugGOoTB/2wf/iDzn1vCrDgTp4aaaoYxdNIW/5g3XYY7ALEIjvriMu3NqAs+Hv6PZRyd5dRnQ040v7vbtKZ6SEkwBn5jpdwnLjMK7jkappl15IHJr4gznquuuZ40IQkuU0rRWQm4wM+Y5XjLYoeAO+4GgSQpL/AQxBtWenKJ/eUKiihbdPIu+oITPFlBDri7ch7Xqym0rX6e/M7Jt1QfkUxwxRCpG+4PZhZMaxMdpaY71Hor7+pPgld736IuhY7aaLJjM4Gr1cqZhDErgwmeZkRUelxH27sG6glcoy6BvJpCYmhVal9JD5/X1spDYLRCOY2v6A2PU0i9+0UGKc6irwummPLFbc+YrXQJndiNSLKQ9ywaEgYfIc7GgmBZty4KnKZPjo/4NzMbtZ4HVCnL7UujE2pTmOtoQ1o5ndSBou3ajHX/9TomjsSOucyVcs/B91Wk2m+Ypde8rcj72wbdV8I3SCfFcoVDOqrNd4kvX2AHTCCbA4faHXa7OxP7LLDIHGp2H2B6b1B00WI/O7Ev52p1d/qLZkr3MEBm9KRpsgPmadKFfawwRnV+6RpjU79VLzXh7SE9qrBScPdrFbTMPM4WDrdR0oATdYqrBqkdMMZjUJlfKsXoo7GKNYqUV5ozqJMlQn4eAYlgqp3LdelH5bapdOyzRJAUklxHqQg0H7fYaQt/edy1DUaZhfnuYJTCRjcoVmWSNGVSA/+8KUCnj9Qea7S8nnSFj
- xotiULZQ
- 1E0yB4gU4IGfywfIeb54CoWjcxJh+RnMyjQCEDG9Y9SJKenWltXnGgUMjvf2qUAJK/hvaxdjpOatTQ7NuEGesjj8qIHwZqfwbB2xaq3CRcJMRfjK9+ATxLdSqiFHL4Kvz9/8E9cjSNhTCfByldw7G7XScI4zxiVmrLoHdVIKhwCqEpT3XTVMI0iy/kEFn+op84AulhCK/ARWBKeHTcsnonSw5NiYu2mHivo+p9pvefmlNxgcz+P+la/1b9pKTyREkZ+EtElor5jPR0k9vIHvV3vWLVQ==
+X-HE-Tag: 1792654326-885992
+X-HE-Meta: U2FsdGVkX1+VU28v5pyHy0Hzdp3crX2hWQJPSzh+3hwCJQvvQP95vOneyBg93BUT87a3qYeBwdzL7yC/yWhpVBIBVUreoDrN8keQOQcHUyz/Gn0rw4h0AXDhIpg9AMT6YyMtBng34iEKRTaZbbo7YpUK4ukODgMX7fqYl4w5TsuVlzQF5YXgQyiX/bXpTIcr6w+yvuYgUsV7mDc8aLRdTT/gV7lyZ4nGkFBAkvmKuXAm05KZ2GNvZjZHCPWcCzZur9wi11pJFoTl7RhKWegd5DBkXfWscHxBCF6DmqHmb8/rx3LP3e6ui0eiRQYj/XVlhQX0fmT1UGjAPqYFHsGbKEsiureiKT6N/xO9GJLc2SmiWSQmq+/G8slFRSngeXH4ZI0qqEgtzhJL8JWF/82gluan4Vw0e4HLfQcSqhKNb+Jd1/ZqR4tRLaEG8i4zLIz9B3gNCmTnQWKDZPBUq38dJ10uGnSgBZD4BkMXcd3zxAXwd6HMb2cPPlsc28ww8y2FQQqdHGpTCjZV+zEcn8n2v0TERT97VgvBhe0pP+K80Pya6mqS+NGuf0WMdTVMb6y9vW0y6O/hnipWEmsAoxqjgS0ue9g1ZB9+MnBesx6DvMyajlsFnuFNQr6m4MLmg/W5Dx/XQ7KbZ/oa7cOcY0+j1OC9u0dVAVhjXuHuN5dGS2FJfnAh4x98lXUmlOlr4889LmejbE9JUlFj+8tD/yozkRLUY1yOUwGMPFwRZXhYY1WbyN5VgjSF0/KHlEM0irXLfn0suUvsg0yFjBEstm+sr8IXyY5ZjjZxyr5ULmASaPt39rTEu3/bLSvarLZvEhM56rl9OivAw9F4TTujQ9okfdczKToBURq3lV4ZsuKlVVhkDV+5ttlO/vfLPeeC4n7t+wc9pz7uMwANS72N0MkjxB4Cf9XKWUAcBTzvsdrcB33l7ohSDIK1gbBgbm/w7Rx2QI/vu4Ht6IbH5r6Pxyn
+ cfXjXoWD
+ PghSFS+96tg/EhWYzC4cZf/rb1n7+VkhBio0Q1ghioVExjP2xWB2DduZFrSjhf+5Q5DT0SPu6Q38juwvEru+r7fpvlij90XVSTvW/AZ/B6gdDOuAeb42/VXINhnfrSCvOt3QF2PEWdGKuPVYCzqrV51rd6eVzvfvt2hpJSundCrgJW5Z+ubDHG7diqTHtovpGwcISr7v+b22BvAwMidG3rcU0euY8Hmvo8wFcffD5djkE0+M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,31 +94,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-On Tue, Oct 20, 2026 at 07:58:15PM +0800, Muchun Song wrote:
-[...]
->@@ -289,7 +290,6 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end)
->  *		to remap.
->  * @end:	end address of the vmemmap virtual address range that we want to
->  *		remap.
->- * @vmemmap_head: the page to be installed as first in the vmemmap range
->  * @vmemmap_tail: the page to be installed as non-first in the vmemmap range
->  * @vmemmap_pages: list to deposit vmemmap pages to be freed.  It is callers
->  *		responsibility to free pages.
->@@ -298,7 +298,6 @@ static int vmemmap_remap_split(unsigned long start, unsigned long end)
->  * Return: %0 on success, negative error code otherwise.
->  */
+Hi all,
+
+Allocating PMD-sized HugeTLB pages at runtime can become slow or fail
+as physical memory becomes fragmented. Reserving HugeTLB pages at boot
+avoids this problem, but keeps unused pages unavailable to ordinary
+allocations.
+
+Live upgrades are one example: they need additional HugeTLB pages only
+during the upgrade. HugeTLB already supports CMA for gigantic pages,
+but allocating a 1 GiB page from CMA may require migrating movable pages
+out of a large contiguous range. Pages that cannot be migrated can prevent
+the allocation from succeeding.
+
+Extend CMA support to PMD-sized pages so their backing memory can be
+reserved at boot while remaining usable for movable allocations until
+needed. This relaxes the reservation alignment requirement and reduces
+the contiguous range required per allocation.
+
+The series adds an optional @<page-size> suffix to hugetlb_cma and a
+separate PMD-sized pool. For example, on x86-64:
+
+        hugetlb_cma=4G hugetlb_cma=1G@2M
+
+This reserves 4G for the default pool and 1G for the PMD-sized pool.
+Unsuffixed parameters continue to configure the default pool. Other
+gigantic sizes still share that pool, as do gigantic PMD sizes when
+no separate PMD pool is reserved. The new size follows the architecture's
+PMD size rather than being fixed at 2M.
+
+Non-gigantic PMD allocations try buddy first and fall back to CMA.
+Gigantic allocations retain CMA-first behavior at runtime. With
+hugetlb_cma_only=1, sizes with a reserved CMA pool remain restricted to CMA.
+
+The preparatory patches introduce two fixed pool slots and pass an
+allow_cma flag through the common allocation helpers to prevent recursive
+CMA allocation during migration and free HugeTLB folio replacement.
+
+Changes in v2:
+ - Replace the order-keyed CMA pool array with two fixed pools for the
+   default and PMD sizes. (suggested by Jose A. Perez de Azpillaga)
+ - Pass allow_cma through the common fresh HugeTLB allocation helpers,
+   removing the separate helper that bypassed CMA.
+   (suggested by Jose A. Perez de Azpillaga)
+ - Try buddy allocation before CMA for non-gigantic PMD pages, while
+   preserving CMA-only policy and CMA-first allocation for gigantic pages.
+   (suggested by Jose A. Perez de Azpillaga)
+ - Preserve default-pool access for gigantic PMD sizes when no separate
+   PMD pool is reserved.
+ - Collect Reviewed-by tags
+ - Rebase onto next-20261020
+
+v1: https://lore.kernel.org/all/cover.1792136742.git.zhengqi.arch@bytedance.com/
+
+Thanks,
+Qi
+
+Qi Zheng (5):
+  mm: hugetlb: add explicit page size to hugetlb_cma
+  mm: hugetlb: group CMA pool and reservation state
+  mm: hugetlb: track CMA reservations by pool
+  mm: hugetlb: avoid recursive CMA allocation during migration
+  mm: hugetlb: enable CMA allocation for PMD-sized pages
+
+ .../admin-guide/kernel-parameters.txt         |  40 ++-
+ include/linux/hugetlb.h                       |   4 +-
+ mm/hugetlb.c                                  |  67 ++--
+ mm/hugetlb_cma.c                              | 328 ++++++++++++------
+ mm/hugetlb_cma.h                              |  11 +-
+ mm/mempolicy.c                                |   2 +-
+ mm/migrate.c                                  |   3 +-
+ 7 files changed, 288 insertions(+), 167 deletions(-)
 
 
-/**
- * vmemmap_remap_free - remap the vmemmap virtual address range [@start, @end)
- *			to use @vmemmap_head/tail, then free vmemmap which
- *			the range are mapped to.
+base-commit: 8f7df005a7564bd7ffa75da9c3085d5b996f1e16
+-- 
+2.54.0
 
-Nit: could you update the @vmemmap_head/tail comment too, now that the
-head argument is gone?
-
-Nothing jumped out at me, so
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
