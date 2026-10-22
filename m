@@ -1,90 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF98A606A319
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D258F606A31F
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 02:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q15zNXKK
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=BcWhzLNN
 Received: by kanga.kvack.org (Postfix)
-	id 06E966B0847; Wed, 21 Oct 2026 22:23:51 -0400 (EDT)
+	id DF5276B028B; Wed, 21 Oct 2026 22:36:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 046F36B0848; Wed, 21 Oct 2026 22:23:50 -0400 (EDT)
+	id DCD3C6B028C; Wed, 21 Oct 2026 22:36:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9F6A6B0849; Wed, 21 Oct 2026 22:23:50 -0400 (EDT)
+	id CE32D6B028F; Wed, 21 Oct 2026 22:36:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D0BAF6B0847
-	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:23:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F473A829B
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:23:50 +0000 (UTC)
-X-FDA: 85348666620.30.3D3120A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B781E20005
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:23:48 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q15zNXKK;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A24C76B028B
+	for <linux-mm@kvack.org>; Wed, 21 Oct 2026 22:36:23 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0CA871C404F
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:36:23 +0000 (UTC)
+X-FDA: 85348698246.03.C7ECD4C
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3858880005
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 02:36:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=BcWhzLNN;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792635828;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1792636581;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mBLFTHurzlOVyM6uH/HHo/O74KxQ81dFv20NSPnPgsE=;
-	b=N/YUyzsSzxzV0wXeRvANz3n7Lz0yL7nxuWzicZ4hsIHRSv/3Caw56wVqWptZDQWZqYOBDc
-	oMH0UsL7QF+I8xfu5tE48DBexDVgdY49vdachMzmy+lDSP1HPc5TC7A1t+2zMhxEMZzWyB
-	9kiTFjgj+rEEXHsDc5OkOFsEYqwAxbQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792635828;
-	b=LPGZGuMGodwUZDGm/stvj969b01nVhCq5V95E49KecchCgoFy3oYlRgcuYk8UpWnszRjww
-	utUmE1MfEKfYFrRJfIigGaqgmSUdyf85cb6/3z0qQxr5vDwVAjwhMLYF4aGCEYtesyR5M7
-	kd84kEXtJfibg9Tl9p4AA129m6feTqs=
+	bh=OnfyzMLO0P5DWvV355CXnkmHdcF8VekAj3yYMzW5EvM=;
+	b=GPdpmekg1W1cBnm3SbhDHKDFzqnfSYjcWfBfwRhbnwDw/JG2o8kPSTCUuzt6SYvrRtaBqS
+	U0td4kKhsy/WgYEpD5xDZhMp7MZzlVGc0VcWG/2BDOHWmSIu0sTktMf8DhDVjy6NfeoCiD
+	CRC1A/L/zILXhdSQaXIGn/mncPXwZd8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q15zNXKK;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6A8B43ECC;
-	Thu, 22 Oct 2026 02:23:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D9D1F000C1;
-	Thu, 22 Oct 2026 02:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792635827;
-	bh=mBLFTHurzlOVyM6uH/HHo/O74KxQ81dFv20NSPnPgsE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Q15zNXKKzoqGf8aAZ5Pu3S3PrJGW0I6NP4zEdzaVJ3YREoUIdN7leXcVKZ9DnnQfH
-	 eRk8fLDOhhNB/3DyUYR2cfpwOF0o7BKb/Z59liUY/1fdQQRa+4ptJJr5g+5J39TlI5
-	 i7tKgkQcwBwdK9fike9k6Qp59yQ5qWcTVRGpLSPW0x2kdVyxkSvZl1CmvRMSiYTTmj
-	 d/EDpLB3WMoJHOvJDw/UiSROEimsHsNOc+8tjCEU5UN5Z1WgtUcceEyN3xPMzoH1dU
-	 q1suCFGadz+fcFEtwQYF2ZjRFYk8i1XTuZdB9E+PuKqUwgR3yI1tb8DNlPrUr1/sd0
-	 6OTs6rHF7br2g==
-Message-ID: <sashiko-outbox-180866@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH bpf-next 7/9] fork: Let the new task point to its mm
- before uprobes can find it
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, oleg@redhat.com, peterz@infradead.org, mhiramat@kernel.org, jolsa@kernel.org, akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, surenb@google.com, david@kernel.org, vbabka@kernel.org, jannh@google.com, hughd@google.com, kees@kernel.org, mingo@redhat.com, tglx@kernel.org, x86@kernel.org, linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, linux-perf-users@vger.kernel.org
-In-Reply-To: <20261022015712.1297331-8-alexei.starovoitov@gmail.com>
-References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
- <20261022015712.1297331-8-alexei.starovoitov@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 22 Oct 2026 02:23:45 +0000
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B781E20005
-X-Stat-Signature: xs1hiud8g6wu6b1sd3ywsa1ptpbgs7hr
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=BcWhzLNN;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792636581;
+	b=GwR3zja6uJwjAQNhqzqh1C2kYvDUEC+uUXpFZd8zsA9dBt8GokrRQlWn6J7+39VH8XZkqf
+	K8+wYOPsq4i5lqzBtydXAqFq9Or/H4GSWQn1l7ol+0z7D7XUwR3EOH7dQKdWMATrFNsr8C
+	DkKmHj0revKTivm9tIyxKOYBszoM/CE=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-534e6545939so10597281cf.3
+        for <linux-mm@kvack.org>; Wed, 21 Oct 2026 19:36:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792636580; x=1793241380; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=OnfyzMLO0P5DWvV355CXnkmHdcF8VekAj3yYMzW5EvM=;
+        b=BcWhzLNNR5z84gdLU6IFnN/TvzLVnTicJn81h6t737NsZRtNj/0TvkwrBsfDuPC7Bf
+         W4Hn8EePLAR+BgyI8qSUOzFh+olx1y1PWHS8ucHR3ah1MDTXuH4+WG3WuJXtOS32Akso
+         LSK1lZ+E69gNVVwYM7Vs6EDRZVM7SIMPZEjEHdNaSazKunOHh4dEPBsA1ErX08sj005b
+         0AGCUAW90TXv3qJYYTCur4xsMj3OQmfi+PDtdxpC9CLwMK8LxcAWj39WddB21SiinFec
+         g9OzKGD6iPm+MFMjNB9Spi0E2bAbpSTsih+8n7Mi/JLgFqJP10OTMsUvNbLJPeHt/9es
+         Yegg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792636580; x=1793241380;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OnfyzMLO0P5DWvV355CXnkmHdcF8VekAj3yYMzW5EvM=;
+        b=MJ/amZif1F58CRFisFkniraUfAFNWbMfhd3c1y5PW6Ld201ebBwMpU6w3RHMMshdrp
+         bDxuRtrmEP7ErMuf5kL9iGeBb1JbNLwGa2aSBIKkpwcBCozlfsirjeEQpQqV3nXMYjY0
+         J5M9QBhO89ullbaWdHuKCk4kN5d4jG4UnnTXryXkhy3ceXjVOgQlLsT8TjHRBFlFBNWj
+         pa2sG9D8p/32+ooSC5OSEiyYUsDUTYHHSgVXJoUGd0oOvazTeUjhkivuN+WDgHsTX0bb
+         ndxwCxSQVoL+G6kgWIEib2cXjS03BKjkXbQyow3SuyUz4m31aoElY5j+s+9qqrlfIDMv
+         WYcA==
+X-Forwarded-Encrypted: i=1; AKwUvBxYIsxalYrJtRR1B7rWjSaiXoNFZK5FwIkX32FvmNqXVApHWiKvOtRYWGz8SIA0P9u3/1USDZtfBw==@kvack.org
+X-Gm-Message-State: AFq9FYJPnAmJxVAg3aYTDMYQ1VeSzAOafHUwnApEs0KgwfptJDeYotP5
+	NePPc4X5UGzoHPbE9yHI29xg/7xm2rq842QWbbcsPJlUHIk+zLpaA7k/SmwBLABlaF4=
+X-Gm-Gg: AYBFou3OClu/oat0rEuf4r0KUoRskI7czE2I64ULb8RMKpG43OCpdmxH9QYXTHyMSmt
+	+5zpewK9Jk7wB4uJvdMgWv22OJhlb9DimfbxflFgolfzqdm3kHRGpP2S0VzkhKYVe7c96FwrrCl
+	EZWC6JkldpQZHp3R5Okl9EKQU+hUqlkZEPBCY4SFfxNGTR2H/5ImXL8HVbk2eZ8WrEdZpaKaOtJ
+	Y7T+j5BWJV4elgC+evx6fj6ClbMAyI8UAa6GgK4b1WQ8X9WvNQxag4WYq9+zELRSmNHvI56FU+4
+	SyH+/jFScYXBTEpOibOXcxjubUeTddJl+mfDTd2ysbqmAntzzL2Ccs8Iw876jrSbBJ8KKCZhO0H
+	DHhecCIxNOLyLRgLO73XoULCANwWXw1Zvk4LdBkpQTlWPHUdNq9P0ezhVVkont+Lp+ky6FN9ZIJ
+	QVl8bMID1f4ebm1V6vthWYzSTtiUFeFE0+RojG5RAwZMCX50Tj7yDKCRWdkYpg4KqoY3UEMpFSZ
+	TasbmBqd3ZBnsL0U3CNkZQrtNF8GOrwAebSbh1OOvPaB8T20WbvHvjzyrwm9Mz9Wq5K4bP/vTVI
+	aDFXzZvBIyCzp1dzk10L2OI7FVw=
+X-Received: by 2002:a05:622a:4cd:b0:533:2bf3:3301 with SMTP id d75a77b69052e-5369b86ae59mr66504611cf.36.1792636580301;
+        Wed, 21 Oct 2026 19:36:20 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536ab73b09dsm16032801cf.17.2026.10.21.19.36.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 19:36:19 -0700 (PDT)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 00/12] Virtual Swap Space (Swap Table Edition)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+ hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+ shakeel.butt@linux.dev, yosry@kernel.org, david@kernel.org, 
+ muchun.song@linux.dev, shikemeng@huaweicloud.com, baoquan.he@linux.dev, 
+ baohua@kernel.org, youngjun.park@lge.com, chengming.zhou@linux.dev, 
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+ surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, 
+ yuanchu@google.com, weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
+ haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, 
+ baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, 
+ skhan@linuxfoundation.org, rdunlap@infradead.org, kunwu.chan@linux.dev, 
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, cgroups@vger.kernel.org
+In-Reply-To: <20261021060323.553433-1-nphamcs@gmail.com>
+References: <20261021060323.553433-1-nphamcs@gmail.com>
+Date: Wed, 21 Oct 2026 22:36:17 -0400
+Message-Id: <179263657717.2549665.11401372071846447074.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 3858880005
+X-Stat-Signature: mwf9gtsayzdmyys8uj37xmz14xago9rj
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792635828-105662
-X-HE-Meta: U2FsdGVkX1/0qdGfLCTYEbq1zojFQIl9uI/jx71+fYQVD5L81CU7h5cxCIU0bW24y6zkHlEgK25nWysqrZG1hTf9Rh36v3T65Hd7RG1bbzFRCpVpUmGZyPp5NfZEp6eqg4Fj6azjwFnM4Pjw/SequGfbjPwpMXcy+3p5pfLQz/6IQ0x70x/RIQUA9kTraDGt62Zm5da4ae8xpl3MskATIvoF2SM+nYAM9O/byTkvOxvehb1vd0vfHF+8vS8ttom9sbwhttXy+nLyMujWWWt9eJo5fm/C716AlYWsDTUiZbFSQwd4j0z2i6TO+XWawijGqf4KpkK7IBGiAXbiGBUfz30+wbr0OwSF1oPHYYTEUB4MP73M2cnv2GabFmObmNy26ozrCU49OqnCjFgFWEEVQMn13G6mi2iYIDSJvkvRFp1qPKa2DIuue7zs1GF7Wwwlcpp6e/+8rMDxRbQkF+FJSIb7cvEJg99QqRSaZ3jNgFxU9VyZhNuqVtfEDrwCa6AhWGe2wMaED89F8R0XfF1jyAwWHX7D9KgYwHai3OFEyw/qa7jqURziLkLyds0b41s6NF//HkmDDZs0FDgIU61qlvf2Rp369WmD2XtLmKM4gsc97cZFQoNimzaWOa5qkn19QxfTH+AfOGm8NhDVdju3OpoBBgmmQePFYJLoqrEc8SNp8VoFPg3XlnfHC4My/XRFS8s9XJd/CqJk0cxRkHWq7NXjdVY+dKylN+Upk912VXuYmQ5I+oXaRGuixfCwC3jPEXkj/td0r1DDRN6oA+qF/OOObc1MBcZ/Fp6VX/lVM6K9wwCjLLsckkSxO1RJQ0UmzFPFFWA3eP+1GNY3iIsPm7BP1cGa3dXoJT1qTbcsDmB1AWf+pVsjpxFcBEnIwF4UQcTLfU+cZWoMwzX8q5Cu0Y70H+qE6AReN4iKzdWGlDu4YYRMiqlsF4osgAJx56B13gy8YK4P4iKhMJwdqch
- /WHl62HZ
- hk9csOR42CLzi5tYjm88Oe/AO3KWnkvgFrc0Iz6UCf386YmbGQwxJRBRh9UlM6OopN1U2hWDXYBw98AJOZNcu528iUWNIZHVfFkUEkY7S4ZguRT3rHK7NaCSGH2peWKiNXlXMIF3cyGvAFjslAE3CSqsW78hR5msghsOuLwgbHidden7NhtBw2w6jB8HA67T5vco/yPMkzWtHeQLOwgFe/yuDd719uXjWb2fWAlA3izk8u+hGPJJOg6VmQmlFbbNvuL+BuSKl7gmYViAleskB7ffj3kjsQnp6AwL5JQSuKKsYhNXuLDDWwaTGav9+qzEBAzVvC2p32+NgWW/6zzI+Pf81kXofNvFKnVbmoyvV0w+vbFEcat6MoKvoDNtRBR0JLdRdQajgtkUOPpngaxoPWGMGTDWJWpRMfwsaKC8hLX9JSdTK47Ivmn+WJgU+CgqQow5gNSeTQsILDtR3jBRBYCWsQo3vLzTU+ORFHQyObtZ/yrPhpo8HHyEYaiyH3beSMEFRqekoTWGP7dib8FeBIyL5vIiylQvtZcyAiTLb4ZTHu5X8WcOVfM2LnM7iZTvHIxiduzU1ErwBYgtpxGAX6LiXjzu6xDw0bc7/K/shRV/pJu/2W//Xn4MNi1vtgItToT9qNjsv9rXYJJWxTRzJRu149p5dKiyWjWDoCC0jX04wIUgCL5WVDl18P555HKDP5RU6qoqBijvtvbyIqopr+NwHiw==
+X-Rspam-User: 
+X-HE-Tag: 1792636581-187397
+X-HE-Meta: U2FsdGVkX1/3eSgV+at0Q+QPb+dDWlCWGld3kwMjx07E92YDevgjAM153r1FCDsPYJXmVStbo4E3e4BJkFngzdz08o2fzYo1dUfusUlzozkDliafLgvbRa/5C5vgkMA57sElXsMtYncndskzk5EFJNKMnMafGyrIvEDP5dZci/Ou772/aaIgdKjVINcHLlh8lW09oivjduX8vWjM+uuD84UtxLz9Vx9YCUVogFiS1Qa9MUayqV7w56t/IWivuZoq2hqIiGRLElM16m5uR92S383N2oxeooT7/wDRqTxae6ppVgT8Y/RN9VFTFyzdAgtZFoF2gs86ZS8CZhmr7+QVNqFCzyRc1LofgVxblVlxhZws4GYSP7VzQodEsoVxKK2BTH4kaPD/nj5s9FvhqRrQ+nT+NSpWWBiGHAAKiiBSVa4Z6c4I0R5jZJPbb4q6DXuUYnI1Tfg56ZT69TIMwM0TjOXQP3NvR/HM/aejrAH0FgHnyhfIUOhFuVLvz8EoqPdOAKDScD6CyUg5ZPsa3k8Hx3A/uX3VqQW5HnD6AdxEDzRnZIYK9pDyWX96v/hjySS/+m1lj1Qyi11UvSk0uONZRIz5nPwmOfJa8isKqdtf6Q0lirMPi1ni4tpKI7rVBD1fN3Hmw9KuO6ZneAi3emFB670COCFKO2t7X303mJg4mtC6cV6SrHUTirXKkfIW1eSifRH77zZBGBT0sjTNaIl2PzCGNGletJnpI5DIw480sT2o1Fa5dSgG166yLjN/fyKcwrsLI9mywXSgYNH3SM7LOzd/90z8yw7VumP69jUqQiXFBSPCnqadYNfXe6TnPA575PaPpEeZmq072eWaZCilHl+bUVVreXyMsbhd5R9wsjdAHpcSnLetZWxX4gh8bKHaThz87BvZwsvr/idMmWSsuQ8YaY1+MNY08aExuWW+ilJDcSFv+Lhk2Q/uCmEjebDbwm9xq1LrFk3ozwLs6dg
+ xLPdhmRI
+ yGtzKKdTsqdY0Sg31kZXFb1erhUtGAKK4WIl+Z3l5I6fLdou6ILFUunlPSLdEUqZ3ug7MWEm/PAKV1JTig6W4IirTYHlszFRXhz/GXOTedlqtuvFYvxEo8xdm2smrOePS4nJl1ts7P24L6cAtw828AIqHPjuWl0ftmHiAKkn2D7cexxKYDMp3wqMM6kI80PVzBWdoByjZ9x5qsdrdV4+Y2vn7cfFMpwdbwijn49BGgTgG8XcMAsizm2rYXR9AepQL5g1RRodvHWzbXHn8n42wXQR/HI1JB2fkDqrFR7OvrE3yq49C3+9u6p3fLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,114 +135,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] fork: clear p->mm under task_lock() before mmput() in bad_fork_cle=
-anup_mm
---
+On 2026-10-20 23:03 -0700, Nhat Pham wrote:
+> B. Semi-synthetic Workloads (memhog, usemem, kernel build)
+> ==========================================================
+> 
+> All values are mean +/- standard deviation across rounds.
+> 
+> Test system: x86_64, 52 cores, 64 GB swapfile for all 3 benchmarks.
+> Swap backend: zswap (zstd) with the traditional active/inactive LRU. We
+> focus on zswap here because it is the motivating use case for vswap.
+>
 
-commit ec1e952207350f8b07e6038358df3fabd0496801
-Author: Alexei Starovoitov <ast@kernel.org>
+I get that the motivation is zswap, but it would be nice to have
+disk-swap performance numbers here as well right in the cover.
 
-fork: Let the new task point to its mm before uprobes can find it
+If only because...
 
-This commit sets tsk->mm under task_lock() at the end of dup_mmap() before
-uprobe_end_dup_mmap() releases dup_mmap_sem, so that uprobe filters on
-inherited perf events can match the child's mm. It also clears tsk->mm under
-task_lock() if dup_mm() fails after dup_mmap() succeeds.
+> For each benchmark, we test 3 kernels:
+> * Baseline: mm-unstable, no vswap patches.
+> * VSS off: vswap series applied, vswap=off, to verify that there is no
+>   regression to existing swap paths when we disable vswap.
+> * VSS on: vswap series applied, vswap=on.
+> 
 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 2e125623cdbc3..a1042e370bdb8 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1537,7 +1537,7 @@ static struct mm_struct *dup_mm(struct task_struct =
-*tsk,
->  	if (!mm_init(mm, tsk))
->  		goto fail_nomem;
-> =20
-> -	err =3D dup_mmap(mm, oldmm);
-> +	err =3D dup_mmap(tsk, mm, oldmm);
->  	if (err)
->  		goto free_pt;
-> =20
-> @@ -1550,6 +1550,13 @@ static struct mm_struct *dup_mm(struct task_struct=
- *tsk,
->  	return mm;
-> =20
->  free_pt:
-> +	/*
-> +	 * dup_mmap() has set it if it succeeded. get_task_mm() must not find
-> +	 * it after the mmput() below.
-> +	 */
-> +	task_lock(tsk);
-> +	tsk->mm =3D NULL;
-> +	task_unlock(tsk);
->  	/* don't put binfmt in mmput, we haven't got module yet */
->  	mm->binfmt =3D NULL;
->  	mm_init_owner(mm, NULL);
+If the numbers you presented carry through, I'm left wondering why this
+is a boot option and not a build option.  I rather dislike the boot
+option compromise in general - but other reasoning aside, if there's no
+performance impact, then I don't see why it shouldn't be the default.
 
-[Severity: High]
-dup_mm() clears tsk->mm under task_lock(tsk) before calling mmput(mm) so
-that get_task_mm() cannot find a freed mm when dup_mm() fails. However,
-what happens if copy_process() fails after copy_mm() has already succeeded?
+~Gregory
 
-In kernel/fork.c:copy_process(), perf_event_init_task() runs before
-copy_mm() and links inherited perf events (with event->hw.target =3D p) onto
-parent_event->child_list and uprobe filter->perf_events:
-
-kernel/fork.c:copy_process() {
-	...
-	retval =3D perf_event_init_task(p, clone_flags);
-	if (retval)
-		goto bad_fork_sched_cancel_fork;
-	...
-	retval =3D copy_mm(clone_flags, p);
-	if (retval)
-		goto bad_fork_cleanup_signal;
-
-If a later step in copy_process() fails (for example, copy_namespaces(),
-copy_io(), copy_thread(), alloc_pid(), cgroup_can_fork(), or
-fatal_signal_pending(current) after waiting in dup_userfaultfd_complete()),
-execution jumps to bad_fork_cleanup_mm:
-
-bad_fork_cleanup_mm:
-	sched_cache_fork_cleanup(p);
-	if (p->mm) {
-		mm_clear_owner(p->mm, p);
-		mmput(p->mm);
-	}
-	...
-bad_fork_cleanup_security:
-	security_task_free(p);
-bad_fork_cleanup_audit:
-	audit_free(p);
-bad_fork_cleanup_perf:
-	perf_event_free_task(p);
-
-Here mmput(p->mm) drops the reference and frees the mm, but p->mm is left
-non-null while teardown continues through exit_fs(p), exit_files(p), and
-security_task_free(p) before perf_event_free_task(p) detaches the inherited
-events.
-
-During this window, can a concurrent caller of get_task_mm(p) (such as
-perf_event_set_addr_filter() -> perf_event_for_each_child() ->
-perf_event_addr_filters_apply() in kernel/events/core.c) or bpf helpers like
-bpf_find_vma() and bpf_iter_task_vma_new() in kernel/bpf/task_iter.c (for
-instance from security_task_free(p)) observe the non-null p->mm under
-task_lock(p) and call mmget() on the already-freed mm_struct?
-
-Similarly, when perf_event_free_task(p) -> uprobe_perf_close() runs (or a
-concurrent uprobe_perf_filter() runs), trace_uprobe_filter_remove() and
-__uprobe_perf_filter() in kernel/trace/trace_uprobe.c read
-event->hw.target->mm and compare that dangling pointer against active
-mm_structs.
-
-Should bad_fork_cleanup_mm in copy_process() also clear p->mm under
-task_lock(p) before calling mmput()?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022015712.1297=
-331-1-alexei.starovoitov@gmail.com?part=3D7
+-- 
+Gregory Price (Meta) <gourry@gourry.net>
 
