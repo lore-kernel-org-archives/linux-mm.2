@@ -1,93 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3303B606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 07:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0AC606A337
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Oct 2026 07:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Dprvjl+K
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PIlxxGHv
 Received: by kanga.kvack.org (Postfix)
-	id C76456B02B3; Thu, 22 Oct 2026 03:32:39 -0400 (EDT)
+	id 0F3E26B02AF; Thu, 22 Oct 2026 03:45:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4DEE6B02B4; Thu, 22 Oct 2026 03:32:39 -0400 (EDT)
+	id 07DAC6B02B4; Thu, 22 Oct 2026 03:45:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B15A36B02B7; Thu, 22 Oct 2026 03:32:39 -0400 (EDT)
+	id E67226B02B7; Thu, 22 Oct 2026 03:45:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 82BFF6B02B3
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 03:32:39 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6A3B120793
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:32:38 +0000 (UTC)
-X-FDA: 85349444796.29.673CE60
-Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E2D81A0007
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:32:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dprvjl+K;
-	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B65FB6B02AF
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 03:45:11 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 311611C3B54
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:45:11 +0000 (UTC)
+X-FDA: 85349476422.11.B56DB39
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 40BDC14000C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 07:45:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PIlxxGHv;
+	spf=pass (imf09.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792654357;
-	b=UWJTSr1lJHoMcZNWyZ3KG3PEmRPT0uUiJwHP3xE1kQGlD7zigvTrStuZa9fbxXRzX00m1D
-	TZuP+DurFV/b/vZ13bFQGHRLpWinvNINYkOsCdP9j6Cl4fLlnw9O067rI+lqFGYYpOORfc
-	POSoJYSeOOQlnQoZipSC0kEP0KQnke8=
+	t=1792655109;
+	b=4uA2y/tSrCGkQmMH04g3oaZkIS8mlnHQVHEosZS/aVZIrta2qzuvmqAaTIYn2jfHFwFbho
+	m19c+Q/LocJOkSlWh8mJBAbNYySrwS6DP2ncIDIhobnsSp1KdhlEIyjI7QdIpqftXP2IyP
+	/cPYXwAXy0jYKA/bp3Djt519J8e3d+w=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dprvjl+K;
-	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PIlxxGHv;
+	spf=pass (imf09.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792654357;
+	s=arc-20220608; t=1792655109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t96VkQI1QtBR4oHBW18DVNKMMxlz6mxmTHkgR+EXUQA=;
-	b=nnrKP1w+v8ffZS/Hukwx+MQiydteG40BjmQgp9Jr6T+Coh5ytUqPLRk7zRPDgXL2erOJdZ
-	fC3dJiEUSk48+cGig1iHBbM3q+Ja0WSiMytDdtZ9tppgJpnmYxJHc6UQA3e2V6ZdpkTYMR
-	JabW/Rmb3GVA6dVsScJVhQInBd1+gJc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IX4lDX3UPiFBBi3OMqFi2xks6o7jTO1Q2KveUJZdLoE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792654355; v=1; x=1793259155;
- b=Dprvjl+K7btLYtHWi7GpHLwvqywaLkMghRAhwwilncey2TifpQswpbEfX1sdQ78QgoK2LnAA
- QEYJw4kM8YPBUICq/eEM6TgQjrI+NDoBqqv+LJokonH/rjpufA6xnU3wOk7qtWlXvOdJxjcHmBv
- g9anrEhaUnQ7X0uqYN24Mrc0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7539dc5461ec0d7f;
-	Thu, 22 Oct 2026 07:32:35 +0000
-X-Mizu-Trace-ID: 7539dc5461ec0d7f
-X-Migadu-Flow: FLOW_OUT
-From: Qi Zheng <qi.zheng@linux.dev>
-To: muchun.song@linux.dev,
-	david@kernel.org,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	azpijr@gmail.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v2 5/5] mm: hugetlb: enable CMA allocation for PMD-sized pages
-Date: Thu, 22 Oct 2026 15:31:49 +0800
-Message-ID: <5edd1dc82bd3b0b09005c0b36cafa2f7baea6d3d.1792651104.git.zhengqi.arch@bytedance.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1792651104.git.zhengqi.arch@bytedance.com>
-References: <cover.1792651104.git.zhengqi.arch@bytedance.com>
+	bh=HDXHwat4zLpbZennBEg7uZauJYVMECCPqpPno/TLnRE=;
+	b=TfosYm8toYybVzgcskiW7eoof/flyT/4cj6XDnO1RwiDQe2LBT5aFGmvziHUtvuFFp3tVq
+	fK3+DjIA6s+qaZcMy6WeRhwCECEkODZr6im0q1dWCztVSTETjPLVh4iP0CYabqB6v8Ri8G
+	oSR3ISbsoE0PTI0zYUyDRYpiPbHYY5U=
+Received: by mail-pj2-f10.google.com with SMTP id 98e67ed59e1d1-3ac144119e4so751860a91.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 00:45:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792655108; x=1793259908; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HDXHwat4zLpbZennBEg7uZauJYVMECCPqpPno/TLnRE=;
+        b=PIlxxGHvSV2xdr9pCTz6s6fcLgAC1p1GMjur2TLN3gW7KfbFvG8qD3r1OPid7oS0sa
+         B3jYqPWqylkns7oe9uPbUe4FvfbANZBjs2/Qf4UzrhKrrYph54RXNbGEGOEx3b9P1ds7
+         2wPheZFZJYJMBerlSoHJ557iNvmqr0i18HmHR+rjYAwPndxvhie3Rnj9ouXUO+U/+rke
+         uzAFRiqdYLg0uuiG3R1G4GiRFRLqZS7DDg8D4pZOdnitxYne3hmwQ69z3udwewxHLGQ5
+         v4BG5mK5gUDhWi8li6bYtVbU6kb+XJ8CbaNmzKcbhN3Bmcjiipw7awJF28QmmL3f+WSe
+         tIfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792655108; x=1793259908;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HDXHwat4zLpbZennBEg7uZauJYVMECCPqpPno/TLnRE=;
+        b=ziiQvrrQcXttWQv7oRrNlr7eo/kUlV88lDdOs9PEArdYpNowEV6E/KSnJznIKUuzNB
+         LxddRiB9dDuPb3SYYVR7kmMCy5Bw2XO1aSGYs8PpNQZ0g+y1pHLQbae+bVdgPOTwDfL1
+         KrY4hp5mB0XabptA9+0c8/7lc5iIVVROoY5herxchhVeITL5/eZ+Bhh/4mP/AfrW2EVy
+         kjREc2TvuAujTFPcTK7tIPlDIbaoaqm5gYPiFkZBSDp56XQkrcde3ol8KhBd1OCiQMOF
+         WdwCK+2AAQHNdklw9crQS9cBgAxjGkl/rvogCr/+5awqq2UW1ZvrG3IXAMYhE8L4sSY+
+         oq/w==
+X-Forwarded-Encrypted: i=1; AKwUvBzJz1+ioxwZWkz1Qa2H2DzeYvTyvnDRkNtZJt4UnQuaToDJteivQDxw/nXpoQ2/LUV8qlOe1JgQFA==@kvack.org
+X-Gm-Message-State: AFq9FYIJd0yXLRwMO5GBQ9FetyKb+PnRJtlXPA4NwDPYrLidVbyDw241
+	GapU+D4ZpHfldC1KwSpC5X04nrIQyc1Nd71lqo0EhJZgX8dkQQU7254C
+X-Gm-Gg: AYBFou1ILJH4zhm40QFIw9pfl8NZqzLfVTwE9KaSEYvn2IrKM9Jzg0DNZH3ZM2xmjea
+	4klXtCl3S6h1tpxd8e78O+/UKi4OVhokAHI8/tPvSlJJ5t9uOvh8wwafiD2at28yWMU4tA/89dy
+	Ceime8q4eka5Ulq2NQWXQ2lqfvqBKjt1uUu3qIlgQmwEzqNwjOfxpPXv2vywtjVRIcfqejCOnu5
+	9Yep7nDMXagoovJR6xqkNjvxhaxP5/tMq8DIOTjac52a7PMFtz3Gam1mB3tdqvSbbpnIpbfkcre
+	aAo99wjAX/YUBrlG8sOmrl9VZWdb6v2jlM96N+NWXTPKtLZcDHbngim3ZYXY9xull+lZOweslCr
+	LoCaaoOCKgi1jJ8Ow3WJHEKfvnOiBVmiM9T3CJp4tAuuFY/ej8pB8dn1Njsz+If5N2rDRW387l0
+	hVB/ZZuMHJmW9NNnJuYzXki4SX8VWzgXVuvqERm9RJF/aieTUwmRHYKX16iPJSikdIFqCMmOclX
+	Jw1ep07I84Dg9dDwS4aIxUQw2BuXYPaABTRLI3eeSStgbdiNN1r7Axtnr+67f4=
+X-Received: by 2002:a17:90b:5870:b0:3ab:5758:3766 with SMTP id 98e67ed59e1d1-3ad8707700dmr3724932a91.51.1792655107849;
+        Thu, 22 Oct 2026 00:45:07 -0700 (PDT)
+Received: from [10.125.112.22] ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada49366fdsm2945920a91.14.2026.10.22.00.44.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Oct 2026 00:45:06 -0700 (PDT)
+Message-ID: <098ff899-81b9-4ccc-a143-1e324446258f@gmail.com>
+Date: Thu, 22 Oct 2026 15:44:48 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/8] crash_core: serialize crash header preparation
+ against hotplug
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
+ chenhuacai@kernel.org, kernel@xen0n.name, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ hpa@zytor.com, saravanak@kernel.org, akpm@linux-foundation.org,
+ pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev,
+ robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+ kexec@lists.infradead.org, linux-mm@kvack.org, iommu@lists.linux.dev,
+ robh@kernel.org, baoquan.he@linux.dev, rppt@kernel.org,
+ m.szyprowski@samsung.com
+References: <20261021083011.2170525-1-chenwandun1@gmail.com>
+ <20261021083011.2170525-4-chenwandun1@gmail.com>
+ <12e4e687-1ff0-41b2-bdf8-7f48b29e1f2f@huawei.com>
+ <a1665f9e-3116-47bc-974e-98dce408fa37@gmail.com>
+ <31d63208-3ef2-420f-a0c2-d9d6d49c5e21@huawei.com>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <31d63208-3ef2-420f-a0c2-d9d6d49c5e21@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ygkw3jeru83gqju5wizh7pn3zhpqmuk7
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 40BDC14000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E2D81A0007
-X-Stat-Signature: quhicquk5js46cgbbrwzhbfxj1h77y8x
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792654356-186801
-X-HE-Meta: U2FsdGVkX1+D9HJy0hJPDIofoeARhGvQHmOUvwxVIzdHNNFWWntqt9YMgyvr87uczEUusD2ftO2ItFWnxQgz0hjSqWcnVltGws+4Bna5DBsdQIxrABxTbZLEM4TQ9s+MQbyuhqRgVLV/wlx+5JnKl3x+EEMmS/1tvfi1QvmWx04P+XD96IrGfdl4xiTEZwEUee5sl0ZXyYoMPTnieD8ZbfcFyNEnoJJSfchOdVW6D4XU6sQ16OXmLuJYGMxdtDeOZl8p4tntoHxKVYXGBRPnhD2Ft7mPwNByLUbWSo2hVM5HhMjoW7siqCSDSKDKSepQVO4Obktw4Clm0xe1/+YRD+dHv+gpuVSE8gqI0JBhOzrIk3Rxuzmjz5SLQJNpbAtenqwnsuDNyfSpQthUOZhvNyHNZeJuq1snFlKXc2JGS6Fo98U21zAvdTKqASUag8aL4BTqbsuNmNTTi4acnL855z7vrGzvG8iPLIpANulhGS464cVuMDhuA4r5TONShh3Bl39qBe/Oshx5cQBqpDThokz5qUgsmt337Z2vSa5pPev+sP9z6ilt7gMD5/FH3qaPkwbdW66R9dhyvaeZOPEjdDYwamjgx/jLDMoSnxV1SvgyTlToaN57s+CiB9EqKQtKOzDAmWvRd9Q55xeQ96HbhV6w2jo6mvcXF7T3Rs1G5e0n6xN1stUES+b1OgabQ6Sk18E7x8bUu41kDhI2tIy/RuXNf7OfSADHImZKAPTlVIQynHaa8fy1a023Vi1qg5cXv1r5wW9dS9GA4qigvk0rVSvI+JcNGCAe6On8FfXTjw93RhzC3pHSzMdAOqVmEvCB+vPOoWw5aDJinr6WJj2SJDhn6TGsWLqeyklKfuHioj1hyuExOUMXMq3Q+Ko+uZPTM0/hl3TeFIeVY8GsWHK0ZMhwbNGDEBPXwnWurrTuky3cB5bn48VNU0uoE6i4iy9NgZIFKWQReJHCeWE34hk
- cUKFv7yO
- G0INCzv5m586+tuLjKPV1nG+mpPkP6Jamo4VBiqeYtETsfSwF1Z4Ou/A5lD1IpsgnymrNJLPgRIf7bXllMSmtOvrgM1b5pkiryP/teq6Kn8LH4MO1yZ6wwmNf0oUF4L+jzs14GyV4YeVpSc5SXHw1vMVUmGO6XeMqXUsoYRywfO++4428DEHIs9h6nFx4nRoqc0PMQZo2RR445UZNn1NP38nUlw==
+X-HE-Tag: 1792655109-327400
+X-HE-Meta: U2FsdGVkX1/T9I7FQz6f2s293KLqksF3trwd1ZKeN0pbAnH9dxRpmz50WMmaY696XZZ2DsEWyYCgWC7njuEDzWOGOJHbfeg8MdttjV3G6PXEqwlFXOwONb+4YdUAoFwmiIFCMtjhdAeyPRUsN/sMcNaC/5QJDYMTIk3uP3BRSw19QuuYff4I2HA/YdN8d2H6oqtEgZaRpa6dnGv3Z8SEZ/T8BhqqcCSnWfWLjGL03hBfYZPhP8WDYI+tij1Qy1AJqLCtGpoAwZvBI6dGY1WQF0nGYOeG6c6rk6vhWE5hjpS7N+wgZtwfsj7KBViGiycm7kgppZNm4aIdiJpr82WGx4L5djlDB4PBsu88QuxTJ2azFCybS5tXW7y44V6MB2lGFHRxbY9fYzlOIfEhpc2r1PosA+HcnmZzcfl4tuT/bPqFObvFqugmJlP+gwnXxAqm5/Fqg408+82QIsc9hfmLaldulG2TrjmMnueNrZpuaLchgLkMk6sXvsiIDUoztzukNKyFt7UPxeOykfUQK6EIOxtWkLj0BIbbePIONrmzMVg/dzm/uP1XxhTOU2O9eiaXIrM8EhI/GcIOjG27CS2xxasrbyDEfueC7YtrncrupcT9/hpf9u6pGwlvMAtYVOAohVEWjOe+T9DdAtK8ZqDfPznSo73lB4yNXf75/2YiNSto60PGUYl5VX0xmBU816paOCD+tDEVGhbq9eUEAJ7s74TGfZihKml3qq+cIaOuwNCHNMFu3ozMZxXCrhVE3B89PeQezcmMd2IGJCq1Qd0IxicjDKO8AGWUbU8jeSB8TJOTylO/HIwk+saOp5XeaOWNPZrc2BR+v56Yd4ApTaIGDRfDRu5VjPT/l9vlsU6pVsRnRqdoSrHNl+KFJOYGDeHJDUGk/rrE+K6AMgIhg4If86dKPwYgyBcXbFHHHG67fM4Mw2T/2CeQ/RagXjCRaqrpssMNQkG477yAN0M/GWd
+ ND83C6oG
+ YZUSZvcsTx6S7TWU8jFortceDVRAe2jNbPto621EyCEAhsxACqUKMghQdM5RI87IRexmKAen0pwGMd8CiEGzNW5A8ySoqI2yf3QGfm8UUG6CUJnUgGiPWVvsdX9L61KDtVE1CEifRKVaFUXHtufsJjk15FTHZbQisVcuZeeGzeiSkHEqNNVmiqeipIwCyyqU+0ekJHlnRiziRF1p9QOrvmgxbzBxfHfP64ZERogfpvMVXSLyKr/S3grD7hMuDGJ3O5tAtXeOljeq9pxbejEvNHmxozehbhGzqhmIr3NR9wImH1tjObBcraU+hlEAqFc6WbU1m/yDz8sx2zGpZWEK4HAMeyQiDvVETquQpWh+S8XkmrHeuuE/GBqX3XuzxoF/gLc0HAu1e6uP17LVEKpYbKLuv/iFmIsLYKBdpm0oZ63z0s6Hgd2WQwjcELfGLbZ9V4rQM7UebsQemhH5y5QE6IruccDs5WGw+q/DuCfKooG1LltS3Og48uWL9M2mWCYLqae6jSKXNR/ecM6MfIdzzUKjbER7PKUmpZFR++Kcl3fT2BJ1UyPH3jWCHO38eDcVzGd5n+q6tmVAWFk+QzVrOOBnaiDYN3YsV+QJSoqjIAVXlW2YOyjU4WjwiHv3ZJmUD1V8H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,191 +142,182 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Allow hugetlb_cma=<capacity>@<page-size> to select the architecture's PMD
-size in addition to its existing CMA size. PMD pages are 2M on x86-64 and
-2M, 32M or 512M on arm64 with 4K, 16K or 64K base pages.
 
-Give PMD pages their own pool while preserving the existing sharing among
-gigantic sizes. Unsuffixed arguments and an explicit default size continue
-to configure the default pool. Gigantic PMD sizes retain access to that
-pool when no PMD pool is reserved. Apply this mapping consistently to
-allocation, CMA-only policy and boot-time accounting.
+On 10/22/26 10:00, Jinjie Ruan wrote:
+> 
+> 
+> 在 2026/10/21 17:48, Wandun 写道:
+>>
+>>
+>> On 10/21/26 17:13, Jinjie Ruan wrote:
+>>>
+>>>
+>>> 在 2026/10/21 16:30, Wandun Chen 写道:
+>>>> From: Wandun Chen <chenwandun@lixiang.com>
+>>>>
+>>>> crash_prepare_headers() counts memory ranges before populating the
+>>>> allocated crash_mem array. The weak implementation used by ARM64,
+>>>> RISC-V and LoongArch walks memblock.memory, while x86 performs the same
+>>>> two-pass operation over system RAM resources. Concurrent memory hotplug
+>>>> can change range source between the two walks and make the populate
+>>>> pass overflow cmem->ranges.
+>>>>
+>>>> Take device_hotplug_lock when preparing crash headers during
+>>>> kexec_file_load(). The x86/riscv memory hotplug path already takes
+>>>> device_hotplug_lock, so call __crash_prepare_headers() directly
+>>>> to avoid recursive locking.
+>>>>
+>>>> Sashiko reported this issue in [1].
+>>>>
+>>>> Fixes: 3751e728cef2 ("arm64: kexec_file: add crash dump support")
+>>>> Fixes: 1bcca8620a91 ("LoongArch: Add crash dump support for kexec_file")
+>>>> Fixes: 8acea455fafa ("RISC-V: Support for kexec_file on panic")
+>>>> Fixes: dd5f726076cc ("kexec: support for kexec on panic using new system call")
+>>>> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+>>>> Link: https://sashiko.dev/#/message/20260806101002.1F84E1F000E9@smtp.kernel.org [1]
+>>>> Acked-by: Baoquan He <baoquan.he@linux.dev>
+>>>> ---
+>>>>  arch/riscv/kernel/crash.c  |  2 +-
+>>>>  arch/x86/kernel/crash.c    |  2 +-
+>>>>  include/linux/crash_core.h |  2 ++
+>>>>  kernel/crash_core.c        | 17 +++++++++++++++--
+>>>>  4 files changed, 19 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/arch/riscv/kernel/crash.c b/arch/riscv/kernel/crash.c
+>>>> index fe5a4b306aae..ac8df2edf2a7 100644
+>>>> --- a/arch/riscv/kernel/crash.c
+>>>> +++ b/arch/riscv/kernel/crash.c
+>>>> @@ -70,7 +70,7 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
+>>>>  	 * Create the new elfcorehdr reflecting the changes to CPU and/or
+>>>>  	 * memory resources.
+>>>>  	 */
+>>>> -	if (crash_prepare_headers(true, &elfbuf, &elfsz, NULL)) {
+>>>> +	if (__crash_prepare_headers(true, &elfbuf, &elfsz, NULL)) {
+>>>>  		pr_err("unable to create new elfcorehdr");
+>>>>  		goto out;
+>>>>  	}
+>>>> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+>>>> index e6f23933a6df..bef008a0cb22 100644
+>>>> --- a/arch/x86/kernel/crash.c
+>>>> +++ b/arch/x86/kernel/crash.c
+>>>> @@ -465,7 +465,7 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
+>>>>  	 * Create the new elfcorehdr reflecting the changes to CPU and/or
+>>>>  	 * memory resources.
+>>>>  	 */
+>>>> -	if (crash_prepare_headers(IS_ENABLED(CONFIG_X86_64), &elfbuf, &elfsz, NULL)) {
+>>>> +	if (__crash_prepare_headers(IS_ENABLED(CONFIG_X86_64), &elfbuf, &elfsz, NULL)) {
+>>>>  		pr_err("unable to create new elfcorehdr");
+>>>>  		goto out;
+>>>>  	}
+>>>> diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
+>>>> index bc087124cd78..28e7a81cf263 100644
+>>>> --- a/include/linux/crash_core.h
+>>>> +++ b/include/linux/crash_core.h
+>>>> @@ -61,6 +61,8 @@ extern int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_ma
+>>>>  				       void **addr, unsigned long *sz);
+>>>>  extern int crash_prepare_headers(int need_kernel_map, void **addr,
+>>>>  				 unsigned long *sz, unsigned long *nr_mem_ranges);
+>>>> +int __crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
+>>>> +			    unsigned long *nr_mem_ranges);
+>>>>  extern int crash_exclude_core_ranges(struct crash_mem **cmem);
+>>>>  
+>>>>  struct kimage;
+>>>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+>>>> index faa0f22dbb41..8a861a946e26 100644
+>>>> --- a/kernel/crash_core.c
+>>>> +++ b/kernel/crash_core.c
+>>>> @@ -16,6 +16,7 @@
+>>>>  #include <linux/mm.h>
+>>>>  #include <linux/cpuhotplug.h>
+>>>>  #include <linux/memblock.h>
+>>>> +#include <linux/device.h>
+>>>>  #include <linux/kmemleak.h>
+>>>>  #include <linux/crash_core.h>
+>>>>  #include <linux/reboot.h>
+>>>> @@ -344,8 +345,8 @@ int crash_exclude_core_ranges(struct crash_mem **cmem)
+>>>>  	return 0;
+>>>>  }
+>>>>  
+>>>> -int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
+>>>> -			  unsigned long *nr_mem_ranges)
+>>>> +int __crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
+>>>> +			    unsigned long *nr_mem_ranges)
+>>>>  {
+>>>>  	unsigned int max_nr_ranges;
+>>>>  	struct crash_mem *cmem;
+>>>> @@ -382,6 +383,18 @@ int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
+>>>>  	return ret;
+>>>>  }
+>>>>  
+>>>> +int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
+>>>> +			  unsigned long *nr_mem_ranges)
+>>>> +{
+>>>> +	int ret;
+>>>> +
+>>>> +	lock_device_hotplug();
+>>>> +	ret = __crash_prepare_headers(need_kernel_map, addr, sz, nr_mem_ranges);
+>>>> +	unlock_device_hotplug();
+>>>
+>>> I think this patch conflicts with my changes and would also conflict
+>>> with the implementation of arm64 crash hotplug.
+>>>
+>>> https://lore.kernel.org/all/20260921090450.807575-15-ruanjinjie@huawei.com/
+>>>
+>> Have these patches already been merged? My current work is based on the latest
+>> linux-next. If they have already been merged into the maintainer's branch,
+>> please let me know, I will update my tree and rebase/re-adapt my changes accordingly.
+>>
+>>
+>> Also, regarding the changes in kernel/crash_core.c: it looks like we modified
+>> the same spot, the change is not wrong, is that right?
+> 
+> Hi Wandun,
+> 
+> However, I think someone should have informed me in advance; otherwise,
+> doing duplicate fix work is pointless.
+> 
+> I see that part of your patch series modifies code I previously changed,
+> but I was not CC'd.
 
-Try buddy allocation first for non-gigantic PMD pages, with CMA as a
-fallback, to reduce CMA migration and leave CMA capacity for later
-allocations. Preserve CMA-only policy and CMA-first allocation for
-gigantic pages.
+Hi Jinjie,
 
-Align reservations to both the selected page size and CMA's minimum
-alignment, and use a bitmap granularity no larger than the selected order.
-Keep the original CMA area names and give PMD areas distinct names.
-Document the syntax and pool selection.
+Sorry for not CC'ing you. I keep the per-patch Cc lists short because
+large recipient sets have caused my sends to be cut off midway before,
+(I'm still trying to track down exactly where the problem is) you should
+have been on the list that's my miss. You'll be on the Cc of every future
+version.
+> 
+>>
+>>> arm64 crash hotplug:
+>>> https://lore.kernel.org/all/20260918100442.3841135-18-ruanjinjie@huawei.com/
+>>
+>> In addition, if arm64 gains crash hotplug support, the code there would indeed
+>> need to be modified (to avoid a deadlock). As of now, arm64 crash hotplug
+>> support has not been merged yet either, has it? I just want to make sure I
+>> haven't missed anything.
+> 
+> Yes, you are right. If your patch series will be merged soon, I will
+> develop based on it.
 
-Assisted-by: LLM
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
----
- .../admin-guide/kernel-parameters.txt         | 40 ++++++++++++-------
- mm/hugetlb.c                                  | 18 ++++-----
- mm/hugetlb_cma.c                              | 22 +++++-----
- 3 files changed, 45 insertions(+), 35 deletions(-)
+Also thanks for your reminder, otherwise I might later overlook the case
+where arm64 has already gained crash hotplug support, and introduce bugs
+as a result.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index c06cb660a3ce4..0cc77e648f396 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2065,31 +2065,43 @@ Kernel parameters
- 			Note that this parameter only applies to non-gigantic huge pages.
- 
- 	hugetlb_cma=	[HW,CMA,EARLY] The size of a CMA area used for allocation
--			of gigantic hugepages. Or using node format, the size
--			of a CMA area per node can be specified.
-+			of hugepages. Or using node format, the size of a CMA area
-+			per node can be specified.
- 			The size can be an absolute value (e.g., 2G) or a
- 			percentage of the total memory or node memory (e.g., 20%).
- 			Percentage-derived sizes are rounded down to a multiple of
--			the architecture's gigantic hugepage size and may become
--			zero.
--			Format: nn[KMGTPE] or nn% or (node format)
--				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]] or
--				<node>:nn%[,<node>:nn%]
--
--			The size must be a multiple of the gigantic page size.
-+			the larger of the selected hugepage size and CMA's minimum
-+			alignment, and may become zero.
-+			Format: nn[KMGTPE][@<page-size>] or nn%[@<page-size>]
-+				or (node format)
-+				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]][@<page-size>] or
-+				<node>:nn%[,<node>:nn%][@<page-size>]
-+
-+			An optional @<page-size> suffix selects the architecture's
-+			default CMA hugepage size or a supported PMD size. If
-+			omitted, the default is used. For node format, append
-+			the suffix after the entire node list. Repeat the
-+			parameter to configure the two pools independently.
-+
-+			For CMA allocation, PMD pages use the PMD pool if reserved.
-+			Otherwise, gigantic PMD pages use the default pool. Other
-+			gigantic page sizes always share the default pool.
-+
-+			The size must be aligned to both the selected hugepage
-+			size and CMA's minimum alignment.
- 			When using node format, this applies to each per-node size.
- 			Missaligned values are dropped with a warning.
- 
--			Reserve a CMA area of given size and allocate gigantic
--			hugepages using the CMA allocator. If enabled, the
--			boot-time allocation of gigantic hugepages is skipped.
-+			For gigantic page sizes with a reserved CMA pool, normal
-+			boot-time allocation is skipped. With hugetlb_cma_only=1,
-+			early CMA allocation is used where supported.
- 
- 	hugetlb_cma_only=
- 			[HW,CMA,EARLY] When allocating new HugeTLB pages, only
- 			try to allocate from the CMA areas.
- 
--			This option does nothing if hugetlb_cma= is not also
--			specified.
-+			This option only affects page sizes with a CMA pool
-+			successfully reserved by hugetlb_cma=.
- 
- 	hugetlb_free_vmemmap=
- 			[KNL] Requires CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c1a8d00be11ac..bad5cd4978c5e 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1835,22 +1835,20 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
- {
- 	struct folio *folio = NULL;
- 	int order = huge_page_order(h);
-+	bool cma_only = hugetlb_cma_exclusive_alloc(order);
- 
- 	if (nid == NUMA_NO_NODE)
- 		nid = numa_mem_id();
- 
--	if (allow_cma && order_is_gigantic(order))
-+	if (!order_is_gigantic(order) && !cma_only)
-+		folio = alloc_buddy_frozen_folio(order, gfp_mask, nid, nmask,
-+						 node_alloc_noretry);
-+
-+	if (!folio && allow_cma)
- 		folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nmask);
--	if (!folio) {
--		if (hugetlb_cma_exclusive_alloc(order))
--			return NULL;
- 
--		if (order_is_gigantic(order))
--			folio = alloc_gigantic_frozen_folio(order, gfp_mask, nid, nmask);
--		else
--			folio = alloc_buddy_frozen_folio(order, gfp_mask, nid, nmask,
--							 node_alloc_noretry);
--	}
-+	if (!folio && order_is_gigantic(order) && !cma_only)
-+		folio = alloc_gigantic_frozen_folio(order, gfp_mask, nid, nmask);
- 
- 	if (folio)
- 		init_new_hugetlb_folio(folio);
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index c279c3f548705..5071f0ae012bd 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -180,11 +180,13 @@ static int __init hugetlb_cma_parse(char *p)
- 			pr_warn("hugetlb_cma: invalid parameter %s\n", p);
- 			return -EINVAL;
- 		}
--		if (!order || page_size != (PAGE_SIZE << order) ||
-+		if ((page_size != PMD_SIZE &&
-+		     page_size != (PAGE_SIZE << order)) ||
- 		    !arch_hugetlb_valid_size(page_size)) {
- 			pr_warn("hugetlb_cma: unsupported page size in %s\n", p);
- 			return -EINVAL;
- 		}
-+		order = ilog2(page_size) - PAGE_SHIFT;
- 	}
- 
- 	if (!order) {
-@@ -339,14 +341,7 @@ static void __init hugetlb_cma_reserve_pool(struct hugetlb_cma_pool *pool,
- 	if (!pool->size)
- 		return;
- 
--	/*
--	 * HugeTLB CMA reservation is required for gigantic
--	 * huge pages which could not be allocated via the
--	 * page allocator. Just warn if there is any change
--	 * breaking this assumption.
--	 */
--	VM_WARN_ON(order <= MAX_PAGE_ORDER);
--	hugepage_size = PAGE_SIZE << order;
-+	hugepage_size = max(PAGE_SIZE << order, CMA_MIN_ALIGNMENT_BYTES);
- 
- 	if (config->percent) {
- 		unsigned long orig_size = pool->size;
-@@ -437,14 +432,19 @@ static void __init hugetlb_cma_reserve_pool(struct hugetlb_cma_pool *pool,
- 			size = min(per_node, pool->size - reserved);
- 		}
- 
--		snprintf(name, sizeof(name), "hugetlb%d", nid);
-+		if (pool == &hugetlb_cma[HUGETLB_CMA_DEFAULT])
-+			snprintf(name, sizeof(name), "hugetlb%d", nid);
-+		else
-+			snprintf(name, sizeof(name), "hugetlb-%lukB-%d",
-+				 (PAGE_SIZE << order) / SZ_1K, nid);
-+
- 		/*
- 		 * Note that 'order per bit' is based on smallest size that
- 		 * may be returned to CMA allocator in the case of
- 		 * huge page demotion.
- 		 */
- 		res = cma_declare_contiguous_multi(size, hugepage_size,
--					HUGETLB_PAGE_ORDER, name,
-+					min_t(unsigned int, order, HUGETLB_PAGE_ORDER), name,
- 					&pool->cma[nid], nid);
- 		if (res || !cma_validate_zones(pool->cma[nid])) {
- 			pr_warn("hugetlb_cma: %s: err %d, node %d\n",
--- 
-2.54.0
+
+Best regards,
+Wandun>
+>>
+>>>
+>>>> +
+>>>> +	return ret;
+>>>> +}
+>>>> +
+>>>>  /**
+>>>>   * crash_exclude_mem_range - exclude a mem range for existing ranges
+>>>>   * @mem: mem->range contains an array of ranges sorted in ascending order
+>>>
+>>
+> 
 
 
