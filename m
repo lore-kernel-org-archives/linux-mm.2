@@ -1,170 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E35606A325
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 10:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7358B606A32E
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 10:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=clD++HFp
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CxMEOkn2
 Received: by kanga.kvack.org (Postfix)
-	id 324596B0344; Fri, 23 Oct 2026 06:57:18 -0400 (EDT)
+	id 794686B0B37; Fri, 23 Oct 2026 06:59:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D55C6B0345; Fri, 23 Oct 2026 06:57:18 -0400 (EDT)
+	id 7457C6B0B38; Fri, 23 Oct 2026 06:59:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19CD16B0346; Fri, 23 Oct 2026 06:57:18 -0400 (EDT)
+	id 6344B6B0B39; Fri, 23 Oct 2026 06:59:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E5EB66B0344
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:57:17 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1409F80381
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:57:17 +0000 (UTC)
-X-FDA: 85353589314.14.3D6FB6A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 36F38A0007
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:57:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=clD++HFp;
-	spf=pass (imf25.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792753035;
-	b=si/UMsVmGyFwHTpfhapDpJUlqBn/X0RL/A/uJRvvBmeTGLJA8c9eiUFXIWhvMRKJYxkGWs
-	bweii/mFgdWRr8B95cC9I7hislccLa4G/DJpCRT9mxIlyk/u1KRjv3v2HZpGqZZx2EsMH1
-	fLw6NEPovng4lriWSggTBOoTm9u6TxM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=clD++HFp;
-	spf=pass (imf25.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 291E76B0B37
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:59:12 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B15612038A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:59:11 +0000 (UTC)
+X-FDA: 85353594102.27.02AAC44
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A304D14000B
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:59:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CxMEOkn2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792753035;
+	s=arc-20220608; t=1792753149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZy3vSXQuFsVXgDu4mp0Kw/AOG663vFWNbTt1QMJvQo=;
-	b=lCZ6rI1hHg8UpLETMC6JYDMKt6CJ46e/TTn1V0c6gfLS5DOS8ViTv1dMkDUQ8isIqS+8mM
-	Z+YRCSwvnGUGITJNinMZbxMVkf3ZhX4cfeFnDP7JipG6InsyIcZ7a5FESsp3CFymNDvmmx
-	05EfH4qFWSB+mC9ollbkOyjraW8+dOY=
+	bh=D2r4ZfyHCaD9dgkcWlKEJHPq9+nOT0JroYVFAyy9ixA=;
+	b=lOHvGNxYmm2y9LuAJxbUKd0mqCSR76z5PWxIsR35uUwE1C+1vLNSYAmQIkFMmGQuXMGCYP
+	qW+7/88H/QYgKLCxO3SnGg3OMvdsxat+ztpcjIKq6XRQxUNGkM+Qz2WEwKrU8VyGHmMKCa
+	n4pYo5tBwbMFFUxVNKXwMqZ7NzWX6fw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CxMEOkn2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792753149;
+	b=I2kXi38LfzerYyQEy9pecG7YahQap0Yhgt9gwop/1Tx4VhlKZtPMwKINWPUiT2wFjb7rf5
+	o8dZjBFOhHJAdC7fhjPa53ZHRjQy988Q8biXXzu6GR3RF7m6AWjj7/qRB9iGcFMJYmIgAc
+	pt+kruAZWvJc8XmgUjIlbCHLTwW6cgU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1182440864;
-	Fri, 23 Oct 2026 10:57:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E649F1F01825;
-	Fri, 23 Oct 2026 10:57:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DC7EC60234;
+	Fri, 23 Oct 2026 10:59:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925F91F01825;
+	Fri, 23 Oct 2026 10:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792753033;
-	bh=AZy3vSXQuFsVXgDu4mp0Kw/AOG663vFWNbTt1QMJvQo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=clD++HFpIMJt5lFVSwNArhp2/vBs1rRNdXKpSeyrbn2PGQCodef/gW7FnXsNXcipR
-	 sb8xMFQ1PSwA2V6OuRZbg2rlDpqj1a06L8n/etzVQWUngdD7VCS5F8g1MS2Pj6hTQs
-	 tn2bhz0DUoNpVyqGdWjwujA1C8N09H4spcItVHRK/cJFm7W9VxW5q2GxFOXq1w2+JQ
-	 ZXEcs64hmuB5/TYhO7UyshFWiObRjNqgYngEFrlzV4jf5QxmapQ5zhzCv7+w1oaAki
-	 L6ks2VOWkTti73T9soedlZHX3Rxe9VNqT7oS4r6AVsy0XsdKTxc+YTzGnhmbYJMVN1
-	 E3eqpeHwVW81w==
-Message-ID: <9b43a1aec170ee810ef5fd2a2ab1288bad6508fd.camel@kernel.org>
-Subject: Re: [PATCH v8 0/7] mm, iomap, NFSD: stop uncached writes reading
- back shared pages
-From: Jeff Layton <jlayton@kernel.org>
-To: Mike Snitzer <snitzer@kernel.org>, Chuck Lever <cel@kernel.org>
-Cc: linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>, Olga
- Kornievskaia	 <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom
- Talpey <tom@talpey.com>,  Christoph Hellwig	 <hch@lst.de>, Jens Axboe
- <axboe@kernel.dk>, Matthew Wilcox <willy@infradead.org>,  Jonathan Corbet	
- <corbet@lwn.net>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Date: Fri, 23 Oct 2026 06:57:09 -0400
-In-Reply-To: <20261023024548.71123-1-snitzer@kernel.org>
-References: <20261023024548.71123-1-snitzer@kernel.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
- n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
- egyjnSsFt7EGoDjdKqr1TS9syJYFjagYtvWk/UfHlW09X+jOh4vYtfX7iYSx/NfqV3W1D7EDi0PqV
- T2h6v8i8YqsATFPwO4nuiTmL6I40ZofxVd+9wdRI4Db8yUNA4ZSP2nqLcLtFjClYRBoJvRWvsv4lm
- 0OX6MYPtv76hka8lW4mnRmZqqx3UtfHX/hF/zH24Gj7A6sYKYLCU3YrI2Ogiu7/ksKcl7goQjpvtV
- YrOOI5VGLHge0awt7bhMCTM9KAfPc+xL/ZxAMVWd3NCk5SamL2cE99UWgtvNOIYU8m6EjTLhsj8sn
- VluJH0/RcxEeFbnSaswVChNSGa7mXJrTR22lRL6ZPjdMgS2Km90haWPRc8Wolcz07Y2se0xpGVLEQ
- cDEsvv5IMmeMe1/qLZ6NaVkNuL3WOXvxaVT9USW1+/SGipO2IpKJjeDZfehlB/kpfF24+RrK+seQf
- CBYyUE8QJpvTZyfUHNYldXlrjO6n5MdOempLqWpfOmcGkwnyNRBR46g/jf8KnPRwXs509yAqDB6sE
- LZH+yWr9LQZEwARAQABtCVKZWZmIExheXRvbiA8amxheXRvbkBwb29jaGllcmVkcy5uZXQ+iQI7BB
- MBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCTpXWPAIZAQAKCRAADmhBGVaCFc65D/4
- gBLNMHopQYgG/9RIM3kgFCCQV0pLv0hcg1cjr+bPI5f1PzJoOVi9s0wBDHwp8+vtHgYhM54yt43uI
- 7Htij0RHFL5eFqoVT4TSfAg2qlvNemJEOY0e4daljjmZM7UtmpGs9NN0r9r50W82eb5Kw5bc/r0km
- R/arUS2st+ecRsCnwAOj6HiURwIgfDMHGPtSkoPpu3DDp/cjcYUg3HaOJuTjtGHFH963B+f+hyQ2B
- rQZBBE76ErgTDJ2Db9Ey0kw7VEZ4I2nnVUY9B5dE2pJFVO5HJBMp30fUGKvwaKqYCU2iAKxdmJXRI
- ONb7dSde8LqZahuunPDMZyMA5+mkQl7kpIpR6kVDIiqmxzRuPeiMP7O2FCUlS2DnJnRVrHmCljLkZ
- Wf7ZUA22wJpepBligemtSRSbqCyZ3B48zJ8g5B8xLEntPo/NknSJaYRvfEQqGxgk5kkNWMIMDkfQO
- lDSXZvoxqU9wFH/9jTv1/6p8dHeGM0BsbBLMqQaqnWiVt5mG92E1zkOW69LnoozE6Le+12DsNW7Rj
- iR5K+27MObjXEYIW7FIvNN/TQ6U1EOsdxwB8o//Yfc3p2QqPr5uS93SDDan5ehH59BnHpguTc27Xi
- QQZ9EGiieCUx6Zh2ze3X2UW9YNzE15uKwkkuEIj60NvQRmEDfweYfOfPVOueC+iFifbQgSmVmZiBM
- YXl0b24gPGpsYXl0b25AcmVkaGF0LmNvbT6JAjgEEwECACIFAk6V0q0CGwMGCwkIBwMCBhUIAgkKC
- wQWAgMBAh4BAheAAAoJEAAOaEEZVoIViKUQALpvsacTMWWOd7SlPFzIYy2/fjvKlfB/Xs4YdNcf9q
- LqF+lk2RBUHdR/dGwZpvw/OLmnZ8TryDo2zXVJNWEEUFNc7wQpl3i78r6UU/GUY/RQmOgPhs3epQC
- 3PMJj4xFx+VuVcf/MXgDDdBUHaCTT793hyBeDbQuciARDJAW24Q1RCmjcwWIV/pgrlFa4lAXsmhoa
- c8UPc82Ijrs6ivlTweFf16VBc4nSLX5FB3ls7S5noRhm5/Zsd4PGPgIHgCZcPgkAnU1S/A/rSqf3F
- LpU+CbVBDvlVAnOq9gfNF+QiTlOHdZVIe4gEYAU3CUjbleywQqV02BKxPVM0C5/oVjMVx3bri75n1
- TkBYGmqAXy9usCkHIsG5CBHmphv9MHmqMZQVsxvCzfnI5IO1+7MoloeeW/lxuyd0pU88dZsV/riHw
- 87i2GJUJtVlMl5IGBNFpqoNUoqmvRfEMeXhy/kUX4Xc03I1coZIgmwLmCSXwx9MaCPFzV/dOOrju2
- xjO+2sYyB5BNtxRqUEyXglpujFZqJxxau7E0eXoYgoY9gtFGsspzFkVNntamVXEWVVgzJJr/EWW0y
- +jNd54MfPRqH+eCGuqlnNLktSAVz1MvVRY1dxUltSlDZT7P2bUoMorIPu8p7ZCg9dyX1+9T6Muc5d
- Hxf/BBP/ir+3e8JTFQBFOiLNdFtB9KZWZmIExheXRvbiA8amxheXRvbkBzYW1iYS5vcmc+iQI4BBM
- BAgAiBQJOldK9AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRAADmhBGVaCFWgWD/0ZRi4h
- N9FK2BdQs9RwNnFZUr7JidAWfCrs37XrA/56olQl3ojn0fQtrP4DbTmCuh0SfMijB24psy1GnkPep
- naQ6VRf7Dxg/Y8muZELSOtsv2CKt3/02J1BBitrkkqmHyni5fLLYYg6fub0T/8Kwo1qGPdu1hx2BQ
- RERYtQ/S5d/T0cACdlzi6w8rs5f09hU9Tu4qV1JLKmBTgUWKN969HPRkxiojLQziHVyM/weR5Reu6
- FZVNuVBGqBD+sfk/c98VJHjsQhYJijcsmgMb1NohAzwrBKcSGKOWJToGEO/1RkIN8tqGnYNp2G+aR
- 685D0chgTl1WzPRM6mFG1+n2b2RR95DxumKVpwBwdLPoCkI24JkeDJ7lXSe3uFWISstFGt0HL8Eew
- P8RuGC8s5h7Ct91HMNQTbjgA+Vi1foWUVXpEintAKgoywaIDlJfTZIl6Ew8ETN/7DLy8bXYgq0Xzh
- aKg3CnOUuGQV5/nl4OAX/3jocT5Cz/OtAiNYj5mLPeL5z2ZszjoCAH6caqsF2oLyAnLqRgDgR+wTQ
- T6gMhr2IRsl+cp8gPHBwQ4uZMb+X00c/Amm9VfviT+BI7B66cnC7Zv6Gvmtu2rEjWDGWPqUgccB7h
- dMKnKDthkA227/82tYoFiFMb/NwtgGrn5n2vwJyKN6SEoygGrNt0SI84y6hEVbQlSmVmZiBMYXl0b
- 24gPGpsYXl0b25AcHJpbWFyeWRhdGEuY29tPokCOQQTAQIAIwUCU4xmKQIbAwcLCQgHAwIBBhUIAg
- kKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIV1H0P/j4OUTwFd7BBbpoSp695qb6HqCzWMuExsp8nZjr
- uymMaeZbGr3OWMNEXRI1FWNHMtcMHWLP/RaDqCJil28proO+PQ/yPhsr2QqJcW4nr91tBrv/MqItu
- AXLYlsgXqp4BxLP67bzRJ1Bd2x0bWXurpEXY//VBOLnODqThGEcL7jouwjmnRh9FTKZfBDpFRaEfD
- FOXIfAkMKBa/c9TQwRpx2DPsl3eFWVCNuNGKeGsirLqCxUg5kWTxEorROppz9oU4HPicL6rRH22Ce
- 6nOAON2vHvhkUuO3GbffhrcsPD4DaYup4ic+DxWm+DaSSRJ+e1yJvwi6NmQ9P9UAuLG93S2MdNNbo
- sZ9P8k2mTOVKMc+GooI9Ve/vH8unwitwo7ORMVXhJeU6Q0X7zf3SjwDq2lBhn1DSuTsn2DbsNTiDv
- qrAaCvbsTsw+SZRwF85eG67eAwouYk+dnKmp1q57LDKMyzysij2oDKbcBlwB/TeX16p8+LxECv51a
- sjS9TInnipssssUDrHIvoTTXWcz7Y5wIngxDFwT8rPY3EggzLGfK5Zx2Q5S/N0FfmADmKknG/D8qG
- IcJE574D956tiUDKN4I+/g125ORR1v7bP+OIaayAvq17RP+qcAqkxc0x8iCYVCYDouDyNvWPGRhbL
- UO7mlBpjW9jK9e2fvZY9iw3QzIPGKtClKZWZmIExheXRvbiA8amVmZi5sYXl0b25AcHJpbWFyeWRh
- dGEuY29tPokCOQQTAQIAIwUCU4xmUAIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOa
- EEZVoIVzJoQALFCS6n/FHQS+hIzHIb56JbokhK0AFqoLVzLKzrnaeXhE5isWcVg0eoV2oTScIwUSU
- apy94if69tnUo4Q7YNt8/6yFM6hwZAxFjOXR0ciGE3Q+Z1zi49Ox51yjGMQGxlakV9ep4sV/d5a50
- M+LFTmYSAFp6HY23JN9PkjVJC4PUv5DYRbOZ6Y1+TfXKBAewMVqtwT1Y+LPlfmI8dbbbuUX/kKZ5d
- dhV2736fgyfpslvJKYl0YifUOVy4D1G/oSycyHkJG78OvX4JKcf2kKzVvg7/Rnv+AueCfFQ6nGwPn
- 0P91I7TEOC4XfZ6a1K3uTp4fPPs1Wn75X7K8lzJP/p8lme40uqwAyBjk+IA5VGd+CVRiyJTpGZwA0
- jwSYLyXboX+Dqm9pSYzmC9+/AE7lIgpWj+3iNisp1SWtHc4pdtQ5EU2SEz8yKvDbD0lNDbv4ljI7e
- flPsvN6vOrxz24mCliEco5DwhpaaSnzWnbAPXhQDWb/lUgs/JNk8dtwmvWnqCwRqElMLVisAbJmC0
- BhZ/Ab4sph3EaiZfdXKhiQqSGdK4La3OTJOJYZphPdGgnkvDV9Pl1QZ0ijXQrVIy3zd6VCNaKYq7B
- AKidn5g/2Q8oio9Tf4XfdZ9dtwcB+bwDJFgvvDYaZ5bI3ln4V3EyW5i2NfXazz/GA/I/ZtbsigCFc
- 8ftCBKZWZmIExheXRvbiA8amxheXRvbkBrZXJuZWwub3JnPokCOAQTAQIAIgUCWe8u6AIbAwYLCQg
- HAwIGFQgCCQoLBBYCAwECHgECF4AACgkQAA5oQRlWghUuCg/+Lb/xGxZD2Q1oJVAE37uW308UpVSD
- 2tAMJUvFTdDbfe3zKlPDTuVsyNsALBGclPLagJ5ZTP+Vp2irAN9uwBuacBOTtmOdz4ZN2tdvNgozz
- uxp4CHBDVzAslUi2idy+xpsp47DWPxYFIRP3M8QG/aNW052LaPc0cedYxp8+9eiVUNpxF4SiU4i9J
- DfX/sn9XcfoVZIxMpCRE750zvJvcCUz9HojsrMQ1NFc7MFT1z3MOW2/RlzPcog7xvR5ENPH19ojRD
- CHqumUHRry+RF0lH00clzX/W8OrQJZtoBPXv9ahka/Vp7kEulcBJr1cH5Wz/WprhsIM7U9pse1f1g
- Yy9YbXtWctUz8uvDR7shsQxAhX3qO7DilMtuGo1v97I/Kx4gXQ52syh/w6EBny71CZrOgD6kJwPVV
- AaM1LRC28muq91WCFhs/nzHozpbzcheyGtMUI2Ao4K6mnY+3zIuXPygZMFr9KXE6fF7HzKxKuZMJO
- aEZCiDOq0anx6FmOzs5E6Jqdpo/mtI8beK+BE7Va6ni7YrQlnT0i3vaTVMTiCThbqsB20VrbMjlhp
- f8lfK1XVNbRq/R7GZ9zHESlsa35ha60yd/j3pu5hT2xyy8krV8vGhHvnJ1XRMJBAB/UYb6FyC7S+m
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	s=k20260515; t=1792753148;
+	bh=D2r4ZfyHCaD9dgkcWlKEJHPq9+nOT0JroYVFAyy9ixA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CxMEOkn2QmftN9/St9toBqP7XAtNuAbWcLCpgTK+PMt3x0BqCwxN28K8Ayx+vzucV
+	 Pwan8wjYEC1jXvfZaCoyfaUNvZ+4cJ8bs5DxafA/pXyEq3rg+DCqvQ1MriZHOOutgG
+	 9Kf1QHxbDA9Vvvp8qws2SOS+HENoV/V9SUeJA0lZforHoi2AMCHlcBl6Cq0Vn1Z7Qd
+	 hNyL8NHI5RTaKrNpuZ/l/d7eBVknhC6JTl6AdHiUmLITB5r5AiesR1CMGgz1mhlSG6
+	 Y+qdFdhFEBvjnbA2qGZswHYO1vsy/5JJaWJ6YqZWHwHnwcqiwsMxQM/vKlkoyyJ7WH
+	 zfZZkDQZ2eFCw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 9328A198003A;
+	Fri, 23 Oct 2026 06:59:03 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 23 Oct 2026 06:59:06 -0400
+X-ME-Sender: <xms:9z3bakz8Narhsm6NIlOE1eLTc3lHS6fMAu1_6AZRtewOW_nKdFh43w>
+    <xme:9z3bah-XRVU1xBrR7GzQVzp7UFXPEudLVV90gLKTM0sWhlTQStgm9w7E_70p161xM
+    MJsXroMWl4MrFrPat4Mqtl-0yjEldh-HbHsFhV8QJe0KCBEQVzLmQ>
+X-ME-Received: <xmr:9z3balpzXAa4oyEb17mjDnb5bKZ7jvZrGDcxBLCOH7A5QyIVCug8pwpuqWI>
+X-ME-Proxy-Cause: dmFkZTFLMZyDGD5DpP6lSiL2dELHyUp4N06Rl6Lue143rkn3tUALUBKEbbJY+IvL1iRWKq
+    Z4dgEQq0FUdnRtmFyFv4zy4Gipk1NXKUpdUDUE0u6EF3hakrjkxN38+WVeBhS2nVL2lHZb
+    75VM0Av6Bd/1PNVIfgaHNaJ03W0Ny7LmLqoUTHhwQErKe7pJCcHo+AEzr3Wsj9B8lzTHMo
+    H8KiLgkrfoOLC114GyzOjleNKw8JHQsy/mpTRdhcs1uIYE5N5X3CZKwWn/vDlTEIiWXXM4
+    nbNBQlvaL2nm5ycmEWThCY8DfEVm79j+zbIADZBneeVvw+SuWQvYX9sb9LGTljPv6Q4nIx
+    OAN5J4EUxiZttFLQoN4ReJusDmlByS3MUkJ+GoqXrb6BYlbLQkAYgctOiP+WudqZKi2kzs
+    Eo4cD3MQGEE/Z50zZRKMwL7XxWcv9VxDfQFeiuUNirwidXVEnXBLbZ7yVX3zHcXStdVIZM
+    r1FUVwpVrYI33gyqqoUg4x4z8kpo2k5VaHGS61SrSB6iGQlWd/Y91Jf8HHNken5LZIRP3w
+    6xpHLEmTPGugU0ByEbVDg8ZcFjySOg1HetrgTM3cvT2FlXuirxYtC3QDsxVZjMbT/IfO2a
+    KgfQ7u0Cc+SWIBp1jfS+7nLgADrnnEwsFg+B5Fmf7CcbKpIDbVoFX17sbdlg
+X-ME-Proxy: <xmx:9z3baqkX-TfdGYOgfoTmSRdNqnO2J_kmsxDMDdF9VU4Tm7zxj4qFmw>
+    <xmx:9z3baqY95VpbZt8w-QSYTPgo3eFDr7etRJs1xLepJxbuRSjxahw6Aw>
+    <xmx:9z3bavsHAA-TFsQz13dPgtWTDmrCGc3FoJ5NHTb5RX8Sm9X002CyOA>
+    <xmx:9z3bajpFZoxPX6SsvI8uBTyjgv8nBtH-4xkm58Ok9I6KYHWnCZDgnQ>
+    <xmx:9z3bapmrYkD4lXGoqMsluOX2WMGITXGxk5jDLk_w9sg3xDmZVxEybPgG>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 23 Oct 2026 06:59:02 -0400 (EDT)
+Date: Fri, 23 Oct 2026 11:59:01 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-ID: <ats7oFM-fsYdUS8y@thinkstation>
+References: <20261009125503.126202-1-kas@kernel.org>
+ <15a9e03e-c748-4e51-b8cc-583a3610c897@kernel.org>
+ <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
+ <as5q14OsbK2CmOrh@thinkstation>
+ <20261014202936.GC371161@cmpxchg.org>
+ <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
+ <atDMN5MoGrwJNpAj@thinkstation>
+ <4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com>
+ <atiCG2iPrHwDznSZ@thinkstation>
+ <d2b8edf0-39ab-4a44-bd0d-58230dee2fad@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Stat-Signature: z4zbgrtktimf4n39hx976wcduk3117tn
-X-Spam-Status: No, score=-16.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d2b8edf0-39ab-4a44-bd0d-58230dee2fad@arm.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A304D14000B
+X-Stat-Signature: sjdmafd3oz8xquxwxy7amigwat6se4f4
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS,TRACKER_ID autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 36F38A0007
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792753035-550828
-X-HE-Meta: U2FsdGVkX1/VT6HL6rYsO6LLYQcVrCjbEwRUN6NqLEJXSn2WQ+ZSBNw8wc1S+DxG3/jb7G09xuJI7iDACaiWd9/4McGQzW3CdRZUTPRaSuBB8gTbqDPIotFoZz2oHk6MaVa/PT2NQvvl9FVib1GhWpn+iSQ+GTmP20kTPxrbtAO5cTOJf+9mE1zvtFQwv5zaJAh8/lKdWRe4p8avI2RAJqDTy4i6ssgWY5VhP/Iem16dM9O4ZuWu2Omvil24IrGlnxk0lUR6BKssEbcQsfQfoqFNw1KowqyvcSXhPIvUK5Qvl+Pbs2tNZKlCmaPOxjuvgDd7luELAlG1hM2meut8dyNHemg6swZiaXZ9x5k7WmNVIAd5G11VuW6W9VAsRRV1hJOi9owOtlYa/EHoE5XJbTGX2Yd9YA8pbMecSgL/1cptBXoUOsJZX1qI8e8+HqHYmHRWkqXaf8akZY7Ebi/LEnIgkESzR+XTVJQyn8ZCxR7h8ZmHnqogOHltmUjaiN9rBm0Z+8Cvx0acqv2DE9UU+DnpupUU7toIRjoxmvTWap2lmw9Mj/QPaxSx1PP3B86IC3ENGcnzPiExOr+j07PAbdy5ESkPPwcgRplPZ5J5xu8TYZsAIJSNA2yv8T95nZprYx4pKJxUabXyBH7+xtvaxYi8SyLo0eWDWwqZAFYP19KOz8J37Ho/I+MFzPE/akRMaIRHITzT7UN5zsMfhOW5+fTuRTidmYjXFHalMj67We6PXNckUyC+lCNkdkMtYPu/59JCNCdDjMIWpUg8QCvMH8dHEBDSM51+1xE6uFu/bzEXsJaBLVA5u7cb4/Zoq39ns9fnQX6wV4eKrxPBs733987/WK4M6oydN1G2K0juic+2jDVQGXksTcYuWYww4+L4hJHmEuHeKRetP+9yEYhdp44k0wecG+fhcqWd9BSsfaVCkmMfIEDA/0ZYvJxUnR1FYO70OyV7ak6r4M2O4Gb
- Ni9nZStu
- U8kw6jPD+PGhRi4BLB39F/odH0kVHvdffl5cXNiyhUb0AibQEqBLWLn4n5lEaX2wELX1M/aFrRuWR2YyGktMUGZ+bJ6i7OZljY+e2XNdqlq/CpuRRkdIfRbD8qzS5u39KhRefPzp2MQqba0JRX72lfXcKEethzH8CggwtwSVzyz/aLzDaDZSElpfKqaEFxySU0hw3EEdb1RDmJY+hW5/9jZDacYk+njDZakWrWslJe6jjjCDOYwiT1Zx8Dtb9LVPA+o1oB7t663tLf6uG2O1t+GL/BKMk+4z0b0++SY0hIj7pBw2FdQ0p3FDd93o9VjZllQu8D5YQf3GQl9OHs5Es1gz0/w==
+X-HE-Tag: 1792753149-431381
+X-HE-Meta: U2FsdGVkX19TvsZkR3g3nEA41P/f3IJNmwXJS5/hBXjh2y72lJPSgcgeKRvKlrQuOnA7LJ8vzxorRbaYV0+QSWQ2y34B1ZJnWF383Ai/O36inbMsYUSMNA0lllNa4FEqfXaIEoDYu+IW43upf40tUNHzoQIXRixNpUVnXrLXEDPkERSufHuxXpiUN4fhzCl0NNjEn+knweOuecpzwngBtVF71DKJS8yce7l0Xjvf+vxz6tJ640TRt+u3nScdJQYXWSRRYt+6vo9mSJnbM/YpFCIWxBl/sIroLLSAaatPI/FvteyNanC+t21Bl4hQHA1noiOWSOJIW1ThvikOhrqE7w9i+RYwUG6FGzgKrfag+GHlc/ce+C7PSZVsH9t+Ma9pNHyFOk5UFa6yE8hQnSA2me4o2eSxwjt3Rb+Xo0+LaAtc8fDLgX0SiEzP+iIIeM0CM2lr551w1cRx0m+5zE/Qf1zSy5ZYHnL5kL/GfAfBQFJCAMNjXWiIN0S00WaleohBJHy1BmRxAI3zdmlwVh1hgc0Lje4NXVtz/Mp5yFZ379L+y4S85l5/xw26EWBNFB60MBhETVnExu5tiFE8QV5jiwMKvH1qHbWUaIba1np6PWgydhceTp8rbLv7M1jx8X2anN8aT6fArJpCdoVC5gumliQwGMRpkXj3B5F3qZNrU4njRBO3ZCNGQYW77IShG8aTKMKTt5cIsll4+60mnh1XVKCW0o3ZR6+GNQtnrtq7tiu5mdaq4LvU8sf7aSM1sANq6E3pUxs9MR3UGjP17mfJh5yL0QZOftthW+jp3WoWlhL0dunScbuGsrGNUU5upgRt0hLQ4Qd0e7P5EfjOviZKUMW3tiE6v3cVjTGjEFBs+XTX6dj+8nFSnFNHooNmqMaaBjbh4Oyp4xqmSdm1xuUW6tOWE8wR7wLE/vg4NhgGFBllunHmJGlduasiaAJaw2kAu8X2q+DSDg3bvP7/z6+
+ Pa+Ukst1
+ dbCddemianIDGub4BIZb4ZfrR0GbYAVITQ1oallwLnocDOJ+46ngIMsU/azt9zSYezfmmRSjg4VDcNyRlgNfJbOx66v6+j6a/jUYzoHW9SZ1XQozP4SoHPfQVp9ogYQZ68rT5xTVfDRW/NM7dvi52ONiqnd+oZ/GKdwlg86lqHR3VibjinIrVQUb+MdKnCooCzLyqinw4bWyzjeoREa+aYrhpW2Qvv7BQAD7IfZdl9yH/yAUGL9+feNfDW85icAMRCMlBuy97a77lb6xM11/7CV2VNBgUzEZD4iNys/bv3m1BVB3VzkSoQ9Csj62izjAiX/OlBszU35GHG68=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,150 +135,142 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 2026-10-22 at 22:45 -0400, Mike Snitzer wrote:
-> Hi,
->=20
-> Please consider this v8 for the v7.5 development cycle, so that it can
-> go upstream in the v7.5 merge window.
->=20
-> An uncached (RWF_DONTCACHE) buffered write drops each page it writes
-> once that page is written back.  A page the write covers only partly is
-> shared with the neighbouring write, and once the first of the two has
-> been written back the second has to read it back from disk before it
-> can write its part.  32 threads writing interleaved records to one file
-> on XFS (emulated 4Kn NVMe, 4 KiB pages), before and after 5/7:
->=20
->   record  pwritev2() flags          4 KiB device       MiB/s
->   bytes                             reads per write
->                                     before   after     before  after
->   47008   RWF_DONTCACHE             0.97     0.0005    831     2281
->   47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.0005    601     1227
->   6000    RWF_DONTCACHE             0.97     0.0001    121      488
->   6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.0002     90      206
->=20
-> What is left after is metadata: 49152-byte records, which cover only
-> whole pages, read 0.0005 per write either way.  The test program and
-> script that produced this table, and how to run them, are in:
-> https://lore.kernel.org/linux-nfs/atqJBS8MlYfeUU-t@kernel.org/
->=20
-> 5/7 has the page cache keep such a page for the write that completes
-> it.  6/7 lets a writer that syncs its own write, as NFSD does for a
-> stable WRITE, complete those pages itself once the sync is done.  7/7
-> is the NFSD change that uses it.  3/7 reports the DONTCACHE dirty count
-> in the bdi debugfs stats, and 4/7 adds folio_mark_dropbehind(), which
-> 5/7 and 6/7 use.
->=20
-> 1/7 and 2/7 are fixes the review of v7 turned up in code that is
-> already queued or upstream, and each stands on its own:
->=20
-> - 1/7 fixes 80728157d1bd ("NFSD: cut a misaligned direct-mode WRITE at
->   page boundaries") in cel/nfsd-testing: where the mapping's smallest
->   folio is a block larger than a page, NFSD cut a WRITE's misaligned
->   ends inside a block, so the direct middle and a buffered end shared
->   it.  Chuck, maybe best to fold into 80728157d1bd ?
-> - 2/7 fixes 88d6f128d06d ("mm: track DONTCACHE dirty pages per
->   bdi_writeback"), in v7.3: a cached lookup that clears the dropbehind
->   flag could take a folio off WB_DONTCACHE_DIRTY that was never counted
->   there, or leave one counted with nothing to uncount it.  It applies
->   to v7.3 as it is, if the mm side would rather take it alone.
->=20
-> The prerequisite NFSD changes are staged in cel/nfsd-testing; this
-> series applies on top of it at 6d13b7f74eec ("NFSD: Map every NFS_ACLv2
-> reply status into aclstat2"), and each patch builds with W=3D1 with no
-> warnings.
->=20
-> 2/7 to 6/7 are mm, with small iomap changes in 5/7 and 6/7, and are
-> Cc'd to linux-mm and linux-fsdevel.  If the mm and iomap maintainers
-> are agreeable, their acks would let Chuck take the series through the
-> nfsd tree.  But whatever approach the maintainers prefer for this kind
-> of cross-subsystem merge is obviously fine.
->=20
-> Changes since v7, from Jeff's review and the sashiko findings he
-> relayed:
-> - 1/7 and 2/7 are new (above).
-> - 3/7 (v7 1/5): a comment dropped; Jeff's Reviewed-by.
-> - 4/7 (v7 2/5): folio_mark_dropbehind() counted a folio as DONTCACHE
->   dirty when it found PG_dirty set, but PG_dirty is set before
->   folio_account_dirtied() counts the folio, without the folio lock, so
->   a folio marked in between was counted twice.  It now sets the flag
->   and tests the dirty tag, which is set in the same i_pages section that
->   counts the folio, under the i_pages lock.
-> - 5/7 (v7 3/5): the edge is the smallest folio the mapping allows, a
->   page or a block where blocks are larger, both in iomap's test and in
->   what is marked: a larger folio found there, left by readahead or
->   another buffered write, is no longer marked whole.
-> - 6/7 (v7 4/5): an edge already clean is dropped before the folio lock
->   is released, not after with a trylock that could miss it; and only
->   an edge-sized folio, as in 5/7.
-> - 7/7 (v7 5/5): unchanged.
->=20
-> Tested on XFS on an emulated 4Kn NVMe, 4 KiB pages, 32 threads of
-> interleaved 47008-byte records (12288 bytes where noted), 4 KiB device
-> reads per write, v7 against v8:
->=20
->                                              v7        v8
->   RWF_DONTCACHE over large folios
->     readahead left                          0.94      0.0026
->   RWF_DONTCACHE, 16 KiB blocks              1.62      0.0014
->     12288-byte records                      2.89      0.0004
->   NFS WRITEs through NFSD DIRECT,
->     16 KiB blocks                           3.46      0.0016
->=20
-> (v7 in 128 MiB runs, v8 in 1 GiB runs; on 16 KiB blocks one block read
-> back per write is 4.0 here.)  In every run of v8, BdiDontcacheDirty
-> (3/7) was back at 0 after the final sync, including runs mixing
-> uncached writes, cached writes and mmap stores on one file, and every
-> record verified.
->=20
-> v7: https://lore.kernel.org/linux-nfs/20261020220346.28020-1-snitzer@kern=
-el.org/
-> v6: https://lore.kernel.org/linux-nfs/atbfEbgMU6UGkn2X@kernel.org/
-> v5: https://lore.kernel.org/linux-nfs/20261019150725.1507-1-snitzer@kerne=
-l.org/
-> v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kern=
-el.org/
-> v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kern=
-el.org/
-> v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kern=
-el.org/
-> v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kern=
-el.org/
->=20
-> Thanks,
-> Mike
->=20
-> Mike Snitzer (7):
->   NFSD: cut a misaligned direct-mode WRITE at the mapping's smallest foli=
-o
->   mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
->   mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
->   mm: add folio_mark_dropbehind() to mark a folio dropbehind and account =
-it
->   mm, iomap: keep a partly covered page until an uncached write completes=
- it
->   mm, iomap: let an uncached writer complete its shared pages itself
->   NFSD: drop a shared boundary page only once both WRITEs have written it
->=20
->  .../filesystems/nfs/nfsd-io-modes.rst         |  17 ++
->  fs/iomap/buffered-io.c                        |  20 +-
->  fs/iomap/trace.h                              |   3 +-
->  fs/nfsd/vfs.c                                 | 113 ++++++++--
->  include/linux/fs.h                            |   8 +-
->  include/linux/iomap.h                         |   1 +
->  include/linux/pagemap.h                       |  12 ++
->  mm/backing-dev.c                              |   6 +
->  mm/filemap.c                                  | 193 ++++++++++++++++--
->  9 files changed, 338 insertions(+), 35 deletions(-)
->=20
->=20
-> base-commit: 6d13b7f74eec16e08d5e7f772ee119432a14ef2c
+On Fri, Oct 23, 2026 at 12:09:07PM +0530, Dev Jain wrote:
+> >> I ran a synthetic benchmark faulting in lots of 64k mTHP with swap enabled,
+> >> defrag mode caused me to enter a warn_alloc (and 8 times more compact_stalls),
+> >> which didn't happen without defrag.
 
-It might not hurt to have your LLM simplify the patch descriptions
-here. I find that my appetite for reading claude-ish walls of text has
-waned in recent weeks. This skill helps a lot:
+Thanks for the benchmark. It reproduces on x86 in the same shape.
 
-    https://github.com/danyuchn/asd-ste100-skill
+I think I found the problem.
 
---=20
-Jeff Layton <jlayton@kernel.org>
+Under pressure, the free order-4+ pages left are mostly in partly used
+unmovable and reclaimable pageblocks. A movable request with
+ALLOC_NOFRAGMENT cannot take them. But compaction_suit_allocation_order()
+asks __zone_watermark_ok(), which counts free pages of every
+migratetype, and returns COMPACT_SUCCESS without compacting anything.
+The allocation then fails, and since compaction "succeeded", it is never
+deferred.
+
+With the diff below, compaction behaves the same with and without
+defrag_mode. Medians of 15 runs of "compact-bench 99 64 16 20 0":
+
+                             defrag_mode=0  defrag_mode=1  defrag_mode=1
+                                                           + diff
+    compact_stall                    2135          32476          2290
+    compact_fail                      668          32330           606
+    64K anon_fault_alloc            20689           6780         11804
+    64K anon_fault_fallback           776          14502          9687
+
+64K allocation is still lower with defrag_mode. I will look into this
+further.
+
+Could you try the diff on your setup?
+
+diff --git a/mm/compaction.c b/mm/compaction.c
+index a049415512c6..09be677fff36 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -2365,6 +2365,10 @@ static enum compact_result __compact_finished(struct compact_control *cc)
+ 			!free_area_empty(area, MIGRATE_CMA))
+ 			return COMPACT_SUCCESS;
+ #endif
++		/* Under ALLOC_NOFRAGMENT it may only claim a whole block */
++		if ((cc->alloc_flags & ALLOC_NOFRAGMENT) && order < pageblock_order)
++			continue;
++
+ 		/*
+ 		 * Job done if allocation would steal freepages from
+ 		 * other migratetype buddy lists.
+@@ -2510,6 +2514,43 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+ 	return false;
+ }
+ 
++/*
++ * The watermark check counts free pages of every migratetype.  Under
++ * ALLOC_NOFRAGMENT, a request below pageblock_order cannot take a page from a
++ * block of another migratetype unless it claims the whole block, so look for
++ * a free page the request can actually use.
++ */
++static bool compaction_free_page_usable(struct zone *zone, unsigned int order,
++					int migratetype, unsigned int alloc_flags)
++{
++	unsigned int o;
++	int mt;
++
++	if (!(alloc_flags & ALLOC_NOFRAGMENT) || order >= pageblock_order)
++		return true;
++
++	for (o = order; o < NR_PAGE_ORDERS; o++) {
++		struct free_area *area = &zone->free_area[o];
++
++		if (!free_area_empty(area, migratetype))
++			return true;
++#ifdef CONFIG_CMA
++		if ((alloc_flags & ALLOC_CMA) &&
++		    !free_area_empty(area, MIGRATE_CMA))
++			return true;
++#endif
++		/* From pageblock_order up, a free block can be claimed */
++		if (o < pageblock_order)
++			continue;
++		for (mt = 0; mt < MIGRATE_PCPTYPES; mt++) {
++			if (!free_area_empty(area, mt))
++				return true;
++		}
++	}
++
++	return false;
++}
++
+ /*
+  * Should we do compaction for target allocation order.
+  * Return COMPACT_SUCCESS if allocation for target order can be already
+@@ -2520,7 +2561,7 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+ static enum compact_result
+ compaction_suit_allocation_order(struct zone *zone, unsigned int order,
+ 				 int highest_zoneidx, unsigned int alloc_flags,
+-				 bool async, bool kcompactd)
++				 int migratetype, bool async, bool kcompactd)
+ {
+ 	unsigned long free_pages;
+ 	unsigned long watermark;
+@@ -2532,7 +2573,8 @@ compaction_suit_allocation_order(struct zone *zone, unsigned int order,
+ 
+ 	watermark = wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK);
+ 	if (__zone_watermark_ok(zone, order, watermark, highest_zoneidx,
+-				alloc_flags, free_pages))
++				alloc_flags, free_pages) &&
++	    compaction_free_page_usable(zone, order, migratetype, alloc_flags))
+ 		return COMPACT_SUCCESS;
+ 
+ 	/*
+@@ -2588,6 +2630,7 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+ 		ret = compaction_suit_allocation_order(cc->zone, cc->order,
+ 						       cc->highest_zoneidx,
+ 						       cc->alloc_flags,
++						       cc->migratetype,
+ 						       cc->mode == MIGRATE_ASYNC,
+ 						       !cc->direct_compaction);
+ 		if (ret != COMPACT_CONTINUE)
+@@ -3073,7 +3116,7 @@ static bool kcompactd_node_suitable(pg_data_t *pgdat)
+ 		ret = compaction_suit_allocation_order(zone,
+ 				pgdat->kcompactd_max_order,
+ 				highest_zoneidx, alloc_flags,
+-				false, true);
++				MIGRATE_MOVABLE, false, true);
+ 		if (ret == COMPACT_CONTINUE)
+ 			return true;
+ 	}
+@@ -3116,7 +3159,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
+ 
+ 		ret = compaction_suit_allocation_order(zone,
+ 				cc.order, zoneid, cc.alloc_flags,
+-				false, true);
++				MIGRATE_MOVABLE, false, true);
+ 		if (ret != COMPACT_CONTINUE)
+ 			continue;
+ 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
