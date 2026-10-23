@@ -1,84 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17AE606A324
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB657606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DUU81bAs
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NKktgR4r
 Received: by kanga.kvack.org (Postfix)
-	id CD77E6B0BF7; Fri, 23 Oct 2026 16:53:21 -0400 (EDT)
+	id F28AD6B03FC; Fri, 23 Oct 2026 16:56:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C889E6B0BF8; Fri, 23 Oct 2026 16:53:21 -0400 (EDT)
+	id ED8D86B03FD; Fri, 23 Oct 2026 16:56:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B77F76B0BF9; Fri, 23 Oct 2026 16:53:21 -0400 (EDT)
+	id DC7806B03FE; Fri, 23 Oct 2026 16:56:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C6786B0BF7
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:53:21 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 962211A022F
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:53:19 +0000 (UTC)
-X-FDA: 85355091318.24.4BF5622
+	by kanga.kvack.org (Postfix) with ESMTP id A26566B03FC
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:56:05 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E3B54014F
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:56:05 +0000 (UTC)
+X-FDA: 85355098290.17.BB22392
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D8903180002
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:53:17 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DUU81bAs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4C4F91C0006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:56:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NKktgR4r;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792788963;
+	b=Yjg91l81UtvR0mNb0Da3nOXL3uUtbPtiz20LTaalwpg2hx6b985uUDqDsDCcw79KXyLNk0
+	2SpXpz/2Gu3BxGQuF6habb5bZWGSD8joV7EmAJN2pjtkv2xZkp5G3Txs34kB0W/gqvKOeG
+	zBzz8XC218/zDubpL7asWurd86HGus8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NKktgR4r;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792788797;
+	s=arc-20220608; t=1792788963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0buMQQINV0ZMT10UHG2uFH0Ptzl8aD3BfO7547k5kqY=;
-	b=zaATL5Zy2qfdmg10na66OxMm+qPAfsGKmYOBFMy7TZ9wNDkVfyKe2UdJaHmflit0gndprF
-	FdfmKrgCWkjEr+WuqXcUFoq6LnBiMeHeoJcN3G95nwwQCIFpiAZ5s1ZgieQVvX385NXGK5
-	6hIre5ha6XTc57KX+OuA/wk+3+hBg2U=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DUU81bAs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792788797;
-	b=RZBvS+gM9hE1OtfqDDpQTaDqsYU8WOykadgf8CZY2m9in1vGgE6+mvg8td7YTrsWE9AZcN
-	XpmNlLmSu7pITYulUcCirtinKC4EwenlPQfZSEoaF0lJxBMPkk1ayczMoGT2ADgQ0DEmo3
-	RJ6HJZfX5y6VsglxO1E5EkNVtRSWscY=
+	bh=a31hdiyyDF8ZUUv40jZBEIwm/U5+mj/EC+c4Mf/cga0=;
+	b=gvRmNHggYuOBJbhQ2f/WZgIFkvRQMh8QZ1Qo/bGWN0jiP9ofUPlc3jU7r/iHkLX6ovwfjy
+	OHFAJE0AwBgO8JIB+w8sd+zc1UwP5yJiCRjAB8uaGkakVd57cgYIf/Z5BhqeEtYGhVwFLI
+	3V9WLsMqv8/9TLGxwGVESAiSfvoHYwg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C02460142;
-	Fri, 23 Oct 2026 20:53:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DEB1F01825;
-	Fri, 23 Oct 2026 20:53:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C828860142;
+	Fri, 23 Oct 2026 20:56:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4021F01825;
+	Fri, 23 Oct 2026 20:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792788797;
-	bh=0buMQQINV0ZMT10UHG2uFH0Ptzl8aD3BfO7547k5kqY=;
+	s=k20260515; t=1792788962;
+	bh=a31hdiyyDF8ZUUv40jZBEIwm/U5+mj/EC+c4Mf/cga0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DUU81bAsRlByMerKC6j8ENrXC1/LZaH6l/iyH813lPlUNnkhTUzRJZ7FS62aiyRtg
-	 nk18HnfoiLhgD/7nubtqFeBFg8UJPicbpbNVP1OiMueX/sFnkIptckyLCdt3yShdok
-	 fOmBsw0eNvATOPhavkFKgnshJ/cF4t2QGt4/goRkbHFXKSC+j6Sz1i4YTDQJs9StRI
-	 1k3eNBpmp7vjOP9O8hXMfiWhngOVx6UgHOW2RsbPmrG4kzH/Q6tDPkOrw8CuZMcYSY
-	 99iKODVHyysJalk31n5BoLCcDBQ+AfAMuQGn2jzvcF1E+IB7wVuvrRF9fA4u8i4QYX
-	 WRBqUM0rLtOlw==
-Message-ID: <409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org>
-Date: Fri, 23 Oct 2026 22:53:09 +0200
+	b=NKktgR4rcKUdiO2NkGJRqzAQyHyNqk4IJRrBJu5OAedX8PNttS1iKxSWrk4vI+QCk
+	 YNzgXsxxdNLNEM0LOhDMdTdWBRlT/hiT8BXaWGx9CzvO241Sp7xjXaQQMlT+li1Vmk
+	 xEV8BbhLNv3aETBLsnUYUea273eBkAXi2UlnleTBUcRzusje/zDVOTo7VpvS4HCzqP
+	 XZZoc2CkOJIPULxNsLE8pm7OWICD3bKx8L75lOJptyqzWNQxaZmKTKNYlZZ0t9JZgf
+	 /4WlgKEJZLnCIM0Tuna+bCKkOB1ER1mWz32qJhFlXkmDKNt4I8eWKojYMQm8qkFp7o
+	 rB+6gAabFfuTQ==
+Message-ID: <cc2e3af6-bb56-41b1-9cde-151797c3068d@kernel.org>
+Date: Fri, 23 Oct 2026 22:55:54 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
-To: Imre Kaloz <kaloz@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1792609488.git.kaloz@kernel.org>
- <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
+Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
+ PTEs
+To: Zhao Gongyi <zhaogongyi@bytedance.com>, catalin.marinas@arm.com,
+ will@kernel.org, Ryan Roberts <Ryan.Roberts@arm.com>
+Cc: dev.jain@arm.com, baolin.wang@linux.alibaba.com, lance.yang@linux.dev,
+ mark.rutland@arm.com, akpm@linux-foundation.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+ <daab2f45-56c2-48ad-a24f-aa4f889e4da2@kernel.org>
+ <e0f60526-bb95-4d39-9a7a-72cdf32ca5b6@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,22 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
+In-Reply-To: <e0f60526-bb95-4d39-9a7a-72cdf32ca5b6@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D8903180002
-X-Stat-Signature: mgtq4yb7st89rgm6dztcnyfkorpndgrn
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: otb8j1wx1szrzykgxykmwoszxfit7395
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4C4F91C0006
 X-Rspam-User: 
-X-HE-Tag: 1792788797-990980
-X-HE-Meta: U2FsdGVkX19MCjcv5Z7FEccOCUyqfh93yzSxGHO9bSajtQ7bLPlLZCyTyjmsGkLYtEM3ljfcZzRJPDC2o7TLUe4jYFMIA7o04dSVjbRHGR4L96alXDCxVp07lOMloqsunmIdCHkpmaaAVdOXyf2BdG8c9EXOrYger3fuRIHwNqo+FVsm21iUF6oDvCkJdGLNPvHCRUAWH5BWgNnLKpaaBjuuj6L60rttHRwRCNFnLXYyrJ36eSyG3NBKi+SEkuXNgnVqa9FpNfZ7edHJRKoP5Fn9ocjSezNTup7Aelk6g3MUZOo6PCvXz14nVrW/remVKWHxa4YMkKH6/LFdwV/HUxgTjSox44U5PQrla+QibOQgy3DUzKfgaL12NfEaCeBudS6AJnVWlAJBl28p8limqCmyAyIhEHH8RuFaKsZvhpa5JYCRFy+N+Dz2WO1VaRmr2LhRCiQfWIRbtpH5uqBz0ZOJyy/1LyOoXEnhHzwdVjQcfdJNPSBxuXGanp6TLMpoRF7Oze5p5XVH4VZBZPkmsBkZPDSeIxjBJEnEaPxMpYWRJ3UvtJaPRmYEjROp9SLeXVDekaHgruy3YZq+7ihUcd4RaeccC80dlmXNly8LsKXE+ZLqGJwgLJ6muI2y8S/wCgxj/pKGYXECl+GAmynH7g6/GlZJXCskJseMMCYM8wYtz/psQ3NerKIpp0My/NNSHdEctf61YEEB0YkG5y/3DtglB9lc5tYSfnC9IcXWKN7hW6z5hujyaG07QH/nNJQOfV56EPZZZi0KR0vOdKVD4PbI9JqpDAuSMhRSG5TSamBxpWUhmCWnXmbTxoIEBH/7+ieSdsKJoAyWuJFFuFISRo2y7zFLIxZyzQX2hOPRv060KUllNO9tg6LpexwwKFy9Qf1H9x7SdaP+xqReUxCUqFKqciDEnDhNgbT2+DqH6e3xoItE3TewTKQ6xQ58IE4/biYCIH8a/la3QUdo4mf
- DElCNRyd
- +YR54YiEB8lasktX3eLGegCseRHcV+UweaCPd/yj9WE67BRR2TMBrBvIOBIIQQkNrqZhpqY5CCZGtA/T+QOB1lBlqtz/matYBsy9NXZicx2aTDjUWfV0W/gtgJlrS/+y9/D3Omk/sIF73sbo18Nb89d3jJ67099SjpmgVBk/uHtsry3bfGSlMOK+JiDsjSpzpmC1JdhtrEVK5jkGofeQEsJIZY0ByAY4y8guvC+KovcIlcLG4Fo6Gfn5vL4nDabzb6QDLwXolE3A0VIMX7Tkm5SRyhJgXDvv452nPHXE604OIOmOyl0yWpJ3E2m6VZY9EnCSPQI3FJ8bxt30=
+X-HE-Tag: 1792788963-939521
+X-HE-Meta: U2FsdGVkX1+5asekYRm3g9KXDlOEiAo+V8RgdW13yySj7BedNb1DqHqcAiobIYyTbZwubk4glXWvK25Bv4l3Z3NH6GV7VmaK6tKEJclzNHaWm0zqNJe3hNsCUTpoyHVuUNSaRzCLDRgk3SGDUnAGBT/+8HNzVlq5snV92AUVtRzQk4bjAiFcd+wWdmy18mM5Bc/m6er6HQ7FDB08rF2EY1YvFnT6edCbVLrq6UZ0gVfucOYacJJH+ILmqC2GI/sc7DvC6d7m0QCo6XmvDcr65XrtBbu93Eup01pwDhvQ8SIIEg2pO8kdonZ2sLVdvjAE3F+6rfs4+Zsnf+01ZWQ42azPQO06/6BnhQVAUYzPqz5vj9CFhtEMomLuUtL4dacWN4+LchGlSRN5Sr7XXv7UFLGClYbuh9Z94WiLFeM7xX0nkKSDXW7Fct6t5U6MyV5kSHGz/9hPG+Pb+vQRqAoJxbWcVj/k/4SBHQUjvamA9brkJkzO5q0d9IvCxjK5nwLnwvAQkj5T00p88E4buHwciIiupNOuCs/Rlsw418uwxpwtt5IoWikR1+yljOYsJfWOCaVEtaYPpiFqjUxa92wmXzm9+CbTlha28g1RFz9Qq/oSjQPAi/CFhhlviQFrVpQj8voRcbJ6qFm1Gqw0zNuwV7SU+pMNSHa5t2ZaNgT3SI0yqoB/PGhp3u18/SYa5HlhXocueAZQTaTthKw0xh9XfaJmRPtvl8J4sHTntyT8X8edNgpggobRqF7lEOIWR2JKA8bgqzBELBML6fWpCaGXDUFFSFuLQW2pCd52JRdJFQ/pVH4mE+jIITyTFAG7Tg0DXsp0/RK+jI3q5k4SdsTfvfYJtC3lIYFvmyXa3l3U/0QGFlmAROjTtdmJy31raiqfcqtxMYFOkB8pFebY3YQtj/r4fIH5Eu4Jyl7csUCxjVImXER4IYTqAgl6JiB2JcMHJjLgk35aYgz1b2k3jSg
+ 8EbLAoCo
+ csTGcGkzWBmA9McXnqD4O03j4TrzOQph28iZhuNX89tvFCRyAsdcPlHEX2Wk+JtcoT8DtAgxO76hK5gq/+x/ySjGDA3WuEg5ZkGgNmFhLQSoIbOTTibO9JBj+DjTB/rH+XmW7IXwr3hxBZlhesGB4b2/uvt1EQZsLOd2sSTBSAv7kN9T2G85+p0M2tvmr04dpB54Mk7crsBnjKG6KkDIfaBQgrsvM619NzPnEQVHo0r4qD1yU0zCkVD9FOdk5HW6OtolH3JX/hkZoloVBMKgFhR62FYmu3/m/mMgo+EVY5M8qrSAm9M77BzPZIX2OwOk37uW2elACaiJFkhxuhTC2qIniKX1SZIAlBNv/vL7nPePhIN/azTZ/2jjYve7pF3VGAKHt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,96 +147,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/22/26 01:33, Imre Kaloz wrote:
-> Since commit f822a9a81a31 ("mm: optimize mremap() by PTE batching"),
-> move_ptes() moves a batch of PTEs mapping consecutive pages of a folio
-> at a time, but calls move_pte() once per batch with the first PTE
-> only. sparc64, the only architecture that overrides move_pte(), flushes
-> from the D-cache the page that PTE maps when the move changes its
-> colour, so the other pages of a batch would keep lines of the old
-> colour. This cannot happen today only because sparc64 has no
-> pte_batch_hint(), and mremap_folio_pte_batch() then never batches.
+On 10/19/26 09:06, Zhao Gongyi wrote:
+> On 10/14/26 5:41 PM, David Hildenbrand (Arm) wrote:
+>> CCing Ryan:
+>>
+>> https://lore.kernel.org/r/20261013093600.54995-1-zhaogongyi@bytedance.com
+>>
+>> On 10/13/26 11:36, Zhao Gongyi wrote:
+>>> The transparent contpte layer treats PTE_CONT as software state: when a
+>>> PTE has PTE_CONT set, the contpte helpers may align the operation to a
+>>> CONT_PTE_SIZE block and operate on the whole block. That invariant only
+>>> makes sense for valid mappings. Explicit users such as hugetlb manage
+>>> their contiguous encodings separately.
+>>>
+>>> contpte_set_ptes() currently sets PTE_CONT from alignment alone. Batched
+>>> set_ptes() users can therefore install present-invalid PTEs with
+>>> PTE_CONT set, for example mprotect(PROT_NONE), NUMA hinting through
+>>> modify_prot_commit_ptes(), fork() copying a PROT_NONE large folio, or a
+>>> PMD split installing PAGE_NONE PTEs.
+>>>
+>>> This is not a hardware programming problem: invalid descriptors are not
+>>> translated, so the hardware ignores descriptor bits such as PTE_CONT. It
+>>> is a software-state problem. Some arm64 fast paths intentionally test
+>>> pte_cont() directly instead of pte_valid_cont(), for example commit
+>>> 9970a9a27ffc ("arm64: mm: implement the architecture-specific
+>>> test_and_clear_young_ptes()"). Fixing the producer side preserves these
+>>> fast paths and covers all consumers.
+>>>
+>>> In the observed failure, mprotect(PROT_NONE) installed a full
+>>> CONT_PTE_SIZE range of present-invalid PTEs with PTE_CONT set.
+>>> MADV_GUARD_INSTALL then zapped one PTE. The nr == 1 clear_full_ptes()
+>>> path only unfolds pte_valid_cont() entries, so the neighbouring
+>>> present-invalid entries kept PTE_CONT while the target entry became a
+>>> guard marker.
+>>
+>> Hm, is there a good reason why we cannot just use the cont-pte bit for all
+>> *present* PTEs, even if HW would not be prepared to benefit (!pte_valid())?
+>>
+>> I guess we really only have to make sure to shatter properly, right?
+>>
 > 
-> Pass nr_ptes to move_pte(), as get_and_clear_ptes() takes it. The
-> generic version ignores it, and sparc64 flushes every page of the
-> batch.
 > 
-> Signed-off-by: Imre Kaloz <kaloz@kernel.org>
-> ---
->  arch/sparc/include/asm/pgtable_64.h | 16 +++++++++-------
->  include/linux/pgtable.h             |  2 +-
->  mm/mremap.c                         |  2 +-
->  3 files changed, 11 insertions(+), 9 deletions(-)
+> Hi David,
 > 
-> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-> index 1430489b9ac5..9ca787b3cbfe 100644
-> --- a/arch/sparc/include/asm/pgtable_64.h
-> +++ b/arch/sparc/include/asm/pgtable_64.h
-> @@ -946,21 +946,23 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
->  	set_pte_at((mm), (addr), (ptep), __pte(0UL))
->  
->  #ifdef DCACHE_ALIASING_POSSIBLE
-> -/* This flushes only the page the PTE maps, so it relies on move_ptes()
-> - * calling it for one PTE at a time, which the default pte_batch_hint()
-> - * guarantees.
-> +/* The nr PTEs map consecutive pages of one folio and all move by the
-> + * same offset, so either every page of the batch aliases or none does.
->   */
->  #define __HAVE_ARCH_MOVE_PTE
-> -#define move_pte(pte, old_addr, new_addr)				\
-> +#define move_pte(pte, old_addr, new_addr, nr)				\
->  ({									\
->  	pte_t newpte = (pte);						\
->  	if (tlb_type != hypervisor && pte_present(pte)) {		\
->  		unsigned long this_pfn = pte_pfn(pte);			\
-> +		unsigned int i;						\
->  									\
->  		if (pfn_valid(this_pfn) &&				\
-> -		    (((old_addr) ^ (new_addr)) & (1 << 13)))		\
-> -			flush_dcache_page_all(current->mm,		\
-> -					      pfn_to_page(this_pfn));	\
-> +		    (((old_addr) ^ (new_addr)) & (1 << 13))) {		\
-> +			for (i = 0; i < (nr); i++)			\
-> +				flush_dcache_page_all(current->mm,	\
-> +					pfn_to_page(this_pfn + i));	\
-> +		}							\
->  	}								\
->  	newpte;								\
->  })
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 8c093c119e5a..b58c0e98994e 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1471,7 +1471,7 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
->  #endif
->  
->  #ifndef __HAVE_ARCH_MOVE_PTE
-> -#define move_pte(pte, old_addr, new_addr)	(pte)
-> +#define move_pte(pte, old_addr, new_addr, nr)	(pte)
->  #endif
->  
->  #ifndef pte_accessible
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index e8df5cdb0ac9..7fcae7f0082d 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -289,7 +289,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
->  			force_flush = true;
->  		}
->  		pte = get_and_clear_ptes(mm, old_addr, old_ptep, nr_ptes);
-> -		pte = move_pte(pte, old_addr, new_addr);
-> +		pte = move_pte(pte, old_addr, new_addr, nr_ptes);
->  		pte = move_soft_dirty_pte(pte);
->  
->  		if (need_clear_uffd_wp && pte_is_uffd_wp_marker(pte))
+> Right, there is no architectural restriction preventing PTE_CONT from
+> being used as software grouping state for present-invalid PTEs. For this
+> particular failure, making contpte_try_unfold() recognize something like
+> 
+>          pte_present(pte) && pte_cont(pte)
+> 
+> would make clear_full_ptes(nr == 1) unfold the block before replacing one
+> entry with the guard marker.
+> 
+> My reason for preferring the producer-side fix is that the existing
+> transparent contpte helpers mostly use pte_valid_cont() as the membership
+> test, including contpte_try_unfold(), ptep_get[_lockless](),
+> pte_batch_hint() and contpte_is_consistent(), while some range fast paths
+> test pte_cont() directly.
+> 
+> If present-invalid PTEs are also considered members of a transparent
+> contpte block, I think we should audit the single-PTE modification paths,
+> rather than changing only this clear path. We would likely also need a
+> pte_present_cont() helper: the pte_present() guard matters because the
+> PTE_CONT bit position is part of the swap offset for non-present entries.
+> 
+> There is no hardware benefit while the descriptors are invalid, and
+> set_ptes() can recreate the contiguous encoding when an eligible range is
+> made valid again. For a stable fix, I therefore preferred to stop
+> contpte_set_ptes() from creating present-invalid transparent contpte
+> mappings, which also matches the pte_valid_cont() contract used by most
+> of the existing helpers.
+> 
+> I agree that saying this invariant "only makes sense" for valid mappings
+> is too strong. I will reword that to describe the current helper
+> contract instead.
+> 
+> If preserving the software grouping across PROT_NONE is the intended
+> semantics, I can rework this as a broader unfold-path audit instead.
 
+Hi,
 
-I hate move_pte() so much. And I hate sparc64 for requiring it. ;)
+sorry for the late reply.
 
-Is there some way we can avoid this
-helper-that-shouldn't-exist-but-someone-hacked-it-in entirely?
+If we have the spare PTE bit, why shouldn't we just use it?
 
-If it makes sparc64 slightly slower #dontcare.
+It will make batching over PTEs faster. And we care about that for present PTEs.
+
+So I don't quite see why the stable fix couldn't just do it right away? Do you
+have a prototype that shows that it would require significant code changes?
 
 -- 
 Cheers,
