@@ -1,193 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C502606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807AB606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VE5P8aSC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MKrt8z95
 Received: by kanga.kvack.org (Postfix)
-	id 3813D6B0BB9; Fri, 23 Oct 2026 13:42:25 -0400 (EDT)
+	id A3DD86B0BBB; Fri, 23 Oct 2026 13:45:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 358C36B0BBA; Fri, 23 Oct 2026 13:42:25 -0400 (EDT)
+	id 9EF116B0BBC; Fri, 23 Oct 2026 13:45:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 223EB6B0BBB; Fri, 23 Oct 2026 13:42:25 -0400 (EDT)
+	id 92B6B6B0BBD; Fri, 23 Oct 2026 13:45:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E00F66B0BB9
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:42:24 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6411DA680B
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:42:24 +0000 (UTC)
-X-FDA: 85354610208.07.A7E2FEC
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 87B84C0003
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:42:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VE5P8aSC;
-	spf=pass (imf10.hostedemail.com: domain of griffoul@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C08A6B0BBB
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:45:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC2D91C2217
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:45:45 +0000 (UTC)
+X-FDA: 85354618650.04.540D946
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C7D96160007
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:45:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MKrt8z95;
+	spf=pass (imf08.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792777543;
+	b=GUdNb96fCoAfFMwKKZw51K1pz+7jgMunXMRIx+qAPbyGNHwiwLDFmr9kAT12k7WOvj0PAX
+	G1c2/ki0rMavH31qfhkZaeSzo67h+PSsuhRhfeRDHvYPDF5b1VEFHKcQupsSo6aHWTReSd
+	Ws0v43AboLGZW7IbGHO7P7+IRuP2utA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MKrt8z95;
+	spf=pass (imf08.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792777342;
+	s=arc-20220608; t=1792777543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IArJW2D7DC4NrWDvM238weKBxrWboHP+GmGljUSheNA=;
-	b=Ba5ZY6+vPoKi7me6sxxpoU7AJwZwCdPXkDV38OJPOXu96datXxV1tQdPA/OTHuG7gpXZPK
-	J0pxk/LDT79045vMgs/ijBCRbpDAySAX9p9qbXp0IKagMsrz7cQ3Lmf7bAxwSF2xqDRevs
-	h0WTWc91O5APIo1Klz5anSlyz0mbGrA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792777342;
-	b=QyeKZWdfbHeOlWVPdk9EkoJsTKO/FWgGqxZ2jE4rtI/rAjLHLNsTT4gG6Px/z0BFyvT88B
-	1yIU6q20PBYs2nkwrci7uFRosxB+bN9dYwN4bZO/+cHMNEsspsI9A8drmSwXnR1H33mvUL
-	0F4GFQdVXaxm7q+Pt+Kl8bjfWXiJNv0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VE5P8aSC;
-	spf=pass (imf10.hostedemail.com: domain of griffoul@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48e0d1c095dso809134f8f.1
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:42:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792777341; x=1793382141; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IArJW2D7DC4NrWDvM238weKBxrWboHP+GmGljUSheNA=;
-        b=VE5P8aSCk4fm+OCEdjSAvVzIlJgHGZSyKojCwwp8x7E1vvcelQ/SWaZx5r0s108gh6
-         ENOj7i17JrhMvAf0D0DkqGqVdQ4NXqJ906OURMcOgpJM7gV2s4VKwZ/GhfMU5MeoEl0Q
-         ZGNNr+hMOcKfOYU0Rs5ZXFCweLQ7O6cKxrmAQMu64CPs+nFfI2WQMTb5JwD3SyU6GPyz
-         9PWZW9dDtP9t/PcjgurwhFcCQ556tV4bqSRRshICIx67NAjWiNoZA3JqJ24bWGUXpiKl
-         pPD4qZuD5YZ7Ij7fpeoam2M7vLr1RFya7FzxjKKrHqVJIy4OzI+oNGpx9DsLa0O/sjj5
-         Su5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792777341; x=1793382141;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IArJW2D7DC4NrWDvM238weKBxrWboHP+GmGljUSheNA=;
-        b=HCv/SPsFLPzA5XtFu/nizxCWl72ndLxo4PsLuy0pJJXqCtGbnNKfT2w5/CQHXBUujJ
-         d3i/ALpIi9a8CdaxYj9NK70w0xlWXu+YEg105UkBXKg9PNAaMyQsi+V7QhNzAGQskK/C
-         kEa/k7zVTYAH8F2wU1h+YKs+28ZjejDh0HWdTwtcKAqWxPdEgras3BoKwrtg9T/YaFU5
-         52ccBCCf1XFwiudKGKoZ1A7TboSGkjRLelUA9BvMMpxx5i7rUvdHJg32wm8b7S3kltvD
-         +xVcKbffpexAD74M//qFIYJyZ7UzjjhT7DKTorlqDlVJoBnjZoLJwrtGriD1vwsdpXuv
-         tYJw==
-X-Forwarded-Encrypted: i=1; AKwUvBzxpqH/BfPMJVcnthSZOqGSiqephulPBdBXDc/xgSR/ZJHeH4RKqyM2roGx10lBDLmxKnSAfKs1FQ==@kvack.org
-X-Gm-Message-State: AFq9FYJLqxgmIr2XKC+kIWqjRMJJffZHBs+gNmI1f89vGZ12+DVyY/Zs
-	52GvBkAmiSMlXygGJcB3hRjRzJahO9Zj0Fe/wpW84PclNUf/xsv7rEIG
-X-Gm-Gg: AYBFou0xc9k+a2jSAhRY48qRIH+fhYFt6KZllKqneoD/MMoJrbMqyUzkELA55jnJL4A
-	xo1a8foCpbytBnO6ndYsBnGGBO8tiFQSvu2H+mMPCKSbZdaPncdzwF0G8AijZpy4nOE1nNuU2Ql
-	oVRmeV6r8h0Ll+nHXdbTF9CgoScupY2ogg4nLtZPvv6QJv7g1Qr7RiFX7tGcQfrofJUeaanVVNw
-	0JDGonvo8lfYA5CP7n0aMOr9I4PIqMoDqVKk3YdQ7rq0eizjaR2pRtLMm6747Rud43gF0IWxcUE
-	oTmTx/rvm0S17aFTdNPe01tZNGftF1ifEruzRVtN+z7xVfksGgPlieRwnsX+Eql0MUDln+blPXr
-	/OHn9D9EN4FTXm3ZAqdzmIrIrFvTZEiOzRvv4AEoY0X9cbUdQreIdizjX/0ZX8bNaHYx/dh3wWf
-	HqGJQpV9D18B+A4QCf2L2Z0atZ0sjkE5aWEjr4iDuihPkZAO9HdHHYe0LvGdLMfDs65/eH9ihkj
-	5ZZ/8uEW93MQmL/ra7DECIfoMHgfgQAXaT3aQq6AzSoxArAQ0aFU8bXmlBIP2YYE80dDJRRLBhb
-	941dWE1Ch2jphVi9X8Hvj0vcRZiPp+5PoYHGhLrI49G/Tzs2/9WNnXAq+LnLJaozTUQjFIcz+Gf
-	XNk3rDYDmjRVeO2jL
-X-Received: by 2002:a05:6000:98e:b0:48d:ea67:79d4 with SMTP id ffacd0b85a97d-48e385af0d1mr4196895f8f.53.1792777340908;
-        Fri, 23 Oct 2026 10:42:20 -0700 (PDT)
-Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3d40c182sm1118217f8f.34.2026.10.23.10.42.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 23 Oct 2026 10:42:20 -0700 (PDT)
-From: Fred Griffoul <griffoul@gmail.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Alexander Graf <graf@amazon.de>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Baolu Lu <baolu.lu@linux.intel.com>,
-	Bill Wendling <morbo@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	Connor Williamson <connordw@amazon.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Gregory Price <gourry@gourry.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Hugh Dickins <hughd@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	James Houghton <jthoughton@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jianxiong Gao <jxgao@google.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	John Starks <John.Starks@microsoft.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Justin Stitt <justinstitt@google.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Michael Roth <michael.roth@amd.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Tarun Sahu <tarunsahu@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Tycho Andersen <tycho@kernel.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Yan Zhao <yan.y.zhao@intel.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	x86@kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH RFC v2 31/50] KVM: guest_memfd: Support getting PFNs for stage 2 from providers
-Date: Fri, 23 Oct 2026 17:42:18 +0000
-Message-ID: <20261023174218.54790-1-griffoul@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261022-gmem-alternative-providers-v2-31-5dd1dc6c660a@google.com>
-References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com> <20261022-gmem-alternative-providers-v2-31-5dd1dc6c660a@google.com>
+	bh=+K8VmVMqKOof2bN/ApBJbL1jV/83LdW4iTCquE9kKQw=;
+	b=XiaOm96hYLl1jI0ZtsPHbX/GbFnWOLUWfXHj92D1BJquJQ/RH1rLQ3NH1kxrtYLS2PwVDH
+	vF4mFBhSsny47DD2+uNigE6VDO3zfRs+gGykY7kdPzF/gAj+tiN6hbzu9x8HTUhvd3z6d1
+	PGU2QuFZygLNgv9Z1IlriDPZ8B0ciqI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F244A6020F;
+	Fri, 23 Oct 2026 17:45:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F37B1F01828;
+	Fri, 23 Oct 2026 17:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792777542;
+	bh=+K8VmVMqKOof2bN/ApBJbL1jV/83LdW4iTCquE9kKQw=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=MKrt8z95nduJMsZ46pem/LKNckFHs4IOKk0GiFUkc3kcey7f8+E15FB5XwT6Vw94A
+	 ROw7OoY/0zcGxwSht62YfzAZPKY5kg+9qq+99CUpROhWdi68EVj1Oow08v1xWlk60w
+	 rOyCjvc1N9sycWvglR7FXgBk3MQoeHL9wS4ZbjDg8lNW9hQ/E4xfuafur/6cixXsUK
+	 3wk8bvH6TjHQ46YUyxGTiOCspzoTqaDpdqrPlO05KH7WJHHVQa2Gk1xHFiA69+5O1c
+	 GTUI9mbf/OJD05Z4QeGfzXWSugs0/vBBSDlOJSJM8Yck8onToyGp2RC66pUFuzHAH9
+	 rvh1MsNeZ+prw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A82B9F40067;
+	Fri, 23 Oct 2026 13:45:41 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Fri, 23 Oct 2026 13:45:41 -0400
+X-ME-Sender: <xms:RZ3baiRgESbIfk8wp9J4GDntN9ZHLzKsIejKjhDrXylUTqZSc7OtIA>
+    <xme:RZ3baikbhYbg9_KJmjqNbuHwj38uFWUCI2e8xlDBrTc3Im5t3Okte2kkFF2N884-h
+    JmO15WeN1S5CFsTC_hXbiFczUcd5m4vWa_gQlRzGZJpLWX65XNR5yU>
+X-ME-Proxy-Cause: dmFkZTGw9D+wWvKhDs5hJFHaE33hWLdp5MJJPRON22Zj+F2eCnb7T3BTPUqogEpOQrGpoU
+    X53T4/KSX1qcP6T682bAHoWiDbSAvDlKrXjoqUAXHJ+X7DuUjowthh/75oLiGbHVGRrYvy
+    Ovxp/qIK0TBACpUtpr9HPOhI/W2aQ0NGI72CDCLfYSyzrinyf2y5Gqt9WZXJirg/VcS2wT
+    KyOdEZpnkBtl+peUqWtft1knu0XgIWpBIBcqUUnM3VtMFZcAeRnPDS9Gxo76KWvXUoNzCf
+    +dUggxkUwUiEH4RQkmSeyVrhCYKPh8Ucvj6N6zYPK0vcUWmb3W2SiJCxsX5b/HNxc5KZsP
+    9xHa/wLBKF8Pm7Hmru+7M0hW2UddErbUSA563BeoGzDDauHiqI1VMpsakrbLG7zeJKmGhZ
+    59c/kcupFWVb//JPZAPvOQID0NUlNil8cywKpk8d07LqtLq3EvK9a4DVpp2RknuyHnVZk+
+    TSoi+tRv/xUCqRV71Cesv/nC/VV7NoGe8xlYVKq7mbxfT80K4U5WlLP3TVWPr4WCnCwbYC
+    g7V2SxXA4RaWKiweCOGD6TSOVF/MJQ+dqamZc7tLBcz09vNRR7UyYR+xdb7h3O8GmdSNsr
+    BsPc8f3hwH/a5Ln1Hhp1tYUMJKBRmSg2BFXhm+zQj8nQ4ZFlsNITgmC5qhww
+X-ME-Proxy: <xmx:RZ3banEdxmK5GIshwTV18B6HDRUCrQjQGipd6QkFV_2NDPHigXiZlQ>
+    <xmx:RZ3bahBbpDx8lD1TeNgaYKt4j52Xvakw_Dqt3-AyFnLwcJ1aeh2P3Q>
+    <xmx:RZ3batAIeciA0vfdxa-vLOKT4C0Nei_1GaGckaDgGvsrsuGL6l70lg>
+    <xmx:RZ3bavOT-TZZgCJvN4KIld23RQQWCYjYGbtxo7kiHmSm0ousICc6JQ>
+    <xmx:RZ3bahOeq4hd0P8PRPwhP2_dJRcQC3CEJ4Fu4AdiaOIuvO2BJXKZSJrM>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 8303778273B; Fri, 23 Oct 2026 13:45:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 87B84C0003
-X-Stat-Signature: hfmbpphzsr765y4i3wyb5864sy6q587s
+X-ThreadId: AnedLfdbxVbc
+Date: Fri, 23 Oct 2026 13:45:21 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Mike Snitzer" <snitzer@kernel.org>, "Jeff Layton" <jlayton@kernel.org>
+Cc: linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, "Christoph Hellwig" <hch@lst.de>,
+ "Jens Axboe" <axboe@kernel.dk>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ "Jonathan Corbet" <corbet@lwn.net>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org
+Message-Id: <36498551-15ee-4a55-9757-54aa8a07085a@app.fastmail.com>
+In-Reply-To: <20261023024548.71123-2-snitzer@kernel.org>
+References: <20261023024548.71123-1-snitzer@kernel.org>
+ <20261023024548.71123-2-snitzer@kernel.org>
+Subject: Re: [PATCH v8 1/7] NFSD: cut a misaligned direct-mode WRITE at the mapping's
+ smallest folio
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792777342-893919
-X-HE-Meta: U2FsdGVkX1+LJ2WcXed8MudG5njI13eCSi/ZEVbVym36DV/T5o9+Bafbj0q0Lmp0r/svnrBMODqiZNoOj4cPlVH3zFGc1o19M+YintzwtTVUJ5xDDXs1KVPwJeTzOGuvj0uzva6e5AilIAbXMhgrUYn9dcy6+FRA0YwoBIudYxi+/NJrdGaW14m0aVef1W2rTkTTV5l36s9J+bp5ZFXZWQDf2qveBamDjrTqDB1I6gKJ/Equw7vuCVvINVv8apjWk0RlKmnotpXnE3QyxWnND4VUEcBQNLIDng1aWtU8LXjYbtzxMDQEZ3/9218Bdb44a7s9wf4NhhopuIuvUpQ7UGeWFHRdNr1coqbY0k6+MJYUfeHay1UooQ5i81JCNLZNAvqlCfJvOn9TreW4chs2YT0L+FiXi09rGk/optDKwp4IqBFrEc6+wvSx6SWBeQGjobpQ14sM4MH2tUF7BwJV6fJLLu2Fi5o0cEMnVbB4C9Jjk6uV9oO8uwQlse6zsoAZoypmZkh19Q72ZMlh2tlwckoh7aTG/0igWXqg7uY+lUjkE1OmMbCjnZpOBCVM/JAOcaQ70TIQ1ZfOKCZ8rDU/u6H8JPlTQT0PxpXSWJvDs5QZu/iDcQaQxarkNRDGJfAZl3kfOhADmLy72Ub1M4aEd0jEU8Uj9pKNFzDxEwnSnHQsaycQAeSFoyUas/66b+78eEzab6lxOAZ5Hi6asKtn2mE4qhwdDEkqd4n1qZytxQeCdUhvmukGpjM5UA7Ukcuj+CqysiWGvSkKfFxbDdsZytYHoEN9AJhKt7f3rsPdph154VsmiKXstDBimzq+18TouGbYXH+uGOpsbqLl1H5/nlrYxzsc8aNWpUiS7nbRQ+Aiksvkj1rg8vsehydwsrBd73ABZS6QZ7inaV9NKiUxp1BzmpSenk57d8mD1G3W0+HGoXBMzUT0H1tMJ1zGavM78+R3yTzcIWoQ5ZsFaZ5
- WlU7Yf78
- qU1Rz0UNKlI7rPXtz52moVbnxf8D5zR6AyIcSjEN7aL1Ky850XvTO2W5eCMrAT95/Zyv/+O7v/te7extGfyntjGo+o6SBunwcbx+TJyR489hCgTPT959G03W9Kt+AF96CuEuSwNfty02BanidIN23LmuodulaCBKPr6lmffZ0EvpJB+7IqluZ62cSQrwuE9TElwklvF2N9Tb8AaFXX1SmVYNthnlSNoQk9ECxzFtpUaFhwX/p7I3k1GCutig9wIwMEjv318rbfAMOCgoxaPbd450xvbSNDnkY+giXE1m6/0Wz0VQNM33QeifW5CuzrlHeu23CkoHvLByMykJsNpEPNAFW4869QAy6/aiFJUpmUDz7d9VAXbU3gmMfksPrWtfF1pOI8wb+Kabzf2Ms1bWGTkQCiF5fzIiErofSz3ZpAkQc2ZDqiBjdz6ES7TDQMOINmvPvrujvBKyA97hmHLQTO3vTBtnmPLOBM64IXBwNKlg1qtgFR0THvXDHMselH+tAS3oBjesu7HoWoaiznBzC+Dj+S8kZL2y8hepm/emj+vfmKPNnpM6It8izc5fLbSeHC8iSbRrG2YPkD6Taqzmirshc7XT8Aee0o/UQ
+X-Rspamd-Queue-Id: C7D96160007
+X-Stat-Signature: 9h3grrpt6mjshyqas6e5u45d7eircpqh
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792777543-107516
+X-HE-Meta: U2FsdGVkX186xW9f1DzZIdOrKzBoNfLwYqUFIJB0zSZ8RX80hGItW7XzEuE/GjUXJTutFUT3vXAvAQ5vhGtUEjvkYG2ophV3pMp+1QvaABxVlPH4pBkm6aVAkPf5aoZLDSBMV73QqrqkkF03SxbClkVF/1QG+DTq2CZf0V72AZZGc4SfIyFH26rXskq4KUMKYFCKj/ms/Z1xNGyhx4IwUZ5PHjaRnyQayZupXIZQYMMV/N1uSjjK3if4JyibruJXjf6UDADmjtUmag9bnXgDf6qOhlUxvc0Sy2FwzJ8yMaW8Mwj89M/WkLx73AwopLPfGv+wwrI58Y3o+y4Xx/PYQap/sbLTS4M9IZkaZBsnWo4gXLTywRgDj2W6R8C8M83An4plmpUHndAStK0Zf80f0+o3sbSjmwYDyqGc1IQsTzcDMktN2VQ/Zv39+HNdCnWOVomf5Li3J+/uzbfT8RKY3Nz0og6EQqJmTQcUZJDyXEkm8rxkWxtqE7iUhDqV1QH0xa84lktffI6sT9WWnQWpZNnYdcZe0NoqofvUZhuHM8dJyx+zBNxqaDAR1P191sqJ598zPQvj1PcmovlHhaNY98H3ei0fJPqmwsc9iAqkPBJcFFDLa8IyiWMv2Dz7ob7scgtU9lPSGh6L38mZJmWamt5hJxs0lB+u/YZxcYHFYJiHAuY+edIH9wFvPZowMyhcu/7LQ3orgazYl1wcn5ebGYZ6mQJrCcnXv6e1znLaO1Zifx/tUPkk/E5Xa7NNz2y7csNf28EREcxPwJ8XxK5LpG6mw1qGxIzjeOsNdeSeQhDdWUoNquRZngE1iYdHlYXRPig0815pwJeF//XPJ8uJHk8xK5WoqtAzkaflZudThv60K0Q4jzjj6jZSxmZ1fYJMa4iQE2o5DQJRb8WQxGOVfNCXDS6277NQL80Ag3ZnyXsO35X3sRrP7ojHQcFsCOmEsRKfNbIF/2YadGknWRT
+ 8WHIZHeW
+ PvaoB5ECqei8oxENDKHytzSDjfiFapZkQTSh8dm+6CnHNQyUjcDUfouMv94ZFR6Fb37u+yaIx4gxOzsG1dqY0uHIKJMMDs79iUEStZ4LXuVsA2dvW0M5zrbOTQwMHdFvB9Wz6CgqfnwbNlpLAIlyn88UEKX4bnJ5VyNVVzqnLF2x279LOalUbEW70nEn8wWWFsG/lJtbcY2jfRDdc9eXo5gNv1gwYE0Q2oVtNL/Te0K+TnZWS9BJNprDaPpgdWwD/l6vkPeftiRAnJuXFA7ZIfAseIlN5uYXlCGTa6c+tgim+ddtxk9Jjgny7kjmXxK8toGIQchdqNemm5Y6Y/bybbYAA8/jPwrwuNWum
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,23 +129,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> +	if (kvm_gmem_is_pfn_mode(gi)) {
-> +		r = gmem_provider_get_pfn(gi, index, pfn, max_order);
-> +		if (r)
-> +			return ERR_PTR(r);
-> +		return NULL;
-> +	}
 
-The order goes from the provider to the fault handler unchecked. MPS
-reports 0, but a provider with contiguous memory won't, and then a
-fault can map a block that the gfn and pfn aren't aligned to, one that
-mixes shared and private pages, or one that covers a page being revoked
-or converted at the same time: only that page's gfn is marked as being
-invalidated, so the fault doesn't retry.
 
-Clamping the order in kvm_gmem_get_pfn() to an aligned block of uniform
-attributes, and widening invalidations to the surrounding blocks, would
-cover it.
+On Thu, Oct 22, 2026, at 10:45 PM, Mike Snitzer wrote:
+> nfsd_write_dio_iters_init() cuts a misaligned end of a direct-mode
+> WRITE at a multiple of the larger of offset_align and PAGE_SIZE, so
+> that the direct middle, which invalidates the page cache over its
+> range, never shares a page with a buffered end.  But where the
+> mapping's minimum folio order makes the smallest folio a block larger
+> than a page, the page cache holds that block as one folio: an end cut
+> on a page boundary inside a block leaves the middle and the buffered
+> end in the same folio.  The middle's invalidation then drops the folio
+> the end wrote, and whichever of the two neighbouring WRITEs comes second
+> reads the block back.
+>
+> Cut a misaligned end at a multiple of the smallest folio the mapping
+> allows as well.  Where that is a page, nothing changes.
+>
+> Fixes: 80728157d1bd ("NFSD: cut a misaligned direct-mode WRITE at page 
+> boundaries")
+> Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+> ---
+>  fs/nfsd/vfs.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+>
+> diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+> index 9219f8eb386d..ade00dabef18 100644
+> --- a/fs/nfsd/vfs.c
+> +++ b/fs/nfsd/vfs.c
+> @@ -1452,13 +1452,15 @@ nfsd_write_dio_iters_init(struct svc_rqst 
+> *rqstp, struct svc_fh *fhp,
+> 
+>  	/*
+>  	 * The direct middle invalidates the page cache over its range, so it
+> -	 * must not share a page with a buffered end.  An aligned end needs no
+> -	 * buffered segment; a misaligned one is cut on a page boundary even
+> -	 * where the offset alignment is finer than a page.  A WRITE may end
+> -	 * at OFFSET_MAX, so the prefix is sized as a distance rather than
+> -	 * by rounding @offset up, which could wrap.
+> +	 * must not share a folio with a buffered end.  An aligned end needs no
+> +	 * buffered segment; a misaligned one is cut on a boundary of the
+> +	 * smallest folio the mapping allows, a page or, where the block is
+> +	 * larger, a block, even where the offset alignment is finer.  A WRITE
+> +	 * may end at OFFSET_MAX, so the prefix is sized as a distance rather
+> +	 * than by rounding @offset up, which could wrap.
+>  	 */
+> -	cut = max_t(u32, offset_align, PAGE_SIZE);
+> +	cut = max3(offset_align, PAGE_SIZE,
+> +		   mapping_min_folio_nrbytes(nf->nf_file->f_mapping));
+>  	prefix_end = offset;
+>  	if (!IS_ALIGNED(offset, offset_align))
+>  		prefix_end += min_t(loff_t, cut - (offset & (cut - 1)), total);
+> -- 
+> 2.52.0
 
-Fred
+PAGE_SIZE looks dead in the max3(). mapping_min_folio_nrbytes() is always
+at least PAGE_SIZE, so the cut is just max(offset_align, min folio). The
+new commit message and comment both describe three independent bounds, but
+the accurate statement is two: the DIO offset alignment and the mapping's
+smallest folio.
+
+Also I would like to keep the helper's unsigned long type instead of
+narrowing to u32.
+
+Post an updated version of the v7 patch so we can test and review that
+as a single change. This will also archive that revision in the lore
+archive. This will likely result in merge conflicts with subsequent
+patches in the series. If those are just comment conflicts I can fix
+those up when I apply the revised version.
+
+Do not include the new revision of this patch in v9. v9 is now patches
+destined for the MM tree(s) while this patch goes to NFSD.
+
+
+-- 
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
 
