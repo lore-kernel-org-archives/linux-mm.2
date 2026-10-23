@@ -1,97 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B72606A327
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 10:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507CF606A31B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 10:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=H87Iowrz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Try0UpDq
 Received: by kanga.kvack.org (Postfix)
-	id E4E646B0B31; Fri, 23 Oct 2026 06:19:06 -0400 (EDT)
+	id 5A1266B0B32; Fri, 23 Oct 2026 06:21:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFF5D6B0B32; Fri, 23 Oct 2026 06:19:06 -0400 (EDT)
+	id 552946B0B34; Fri, 23 Oct 2026 06:21:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D15676B0B33; Fri, 23 Oct 2026 06:19:06 -0400 (EDT)
+	id 467C66B0B35; Fri, 23 Oct 2026 06:21:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD9E86B0B31
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:19:06 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E4EF8037B
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:19:06 +0000 (UTC)
-X-FDA: 85353493092.23.6F80D99
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7ED10A0002
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:19:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=H87Iowrz;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2300C6B0B32
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:21:48 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A13971603C9
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:21:47 +0000 (UTC)
+X-FDA: 85353499854.22.2DC2E1E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CF8AE160003
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:21:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Try0UpDq;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792750744;
+	s=arc-20220608; t=1792750905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xVoPvZV32EnV3nhq+nvsH8tkgnbU6lXXBkfpvhV3RiQ=;
-	b=0vQIbgnRDEjATVuxoR96s2m3/y3bfzY+yWWLEQJGQI6xYczUjKPhUlTMIVg5+8SsEDuS03
-	TKTPJNifK9MCtBKS1Al0viOLd6dLhl+w+uhu0QamtJHe0nEDDyvs+cPv03zOjLze1+fBBC
-	SOhAkyxSrSipClFgsQ2PG8OG4Q1AJXo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=sYRuHapo9W9wmZIPuuqoJgF5i8UHavCm+9OHunlMqfk=;
+	b=zlRIiZJfDBOtjub9nZpzZuCXqpzSLqt0g3bJCrOy3USjlWu8qW7cJLPTMb6vSwtLiEDwR6
+	o3347dcND7C9oL7sZTgvWdcSGAply5agEVO9jxwQ7I8fOFRnCT3Rq4beDWnua7s+6GVjbN
+	1R5FN9CBR/wrniOfVhzfVHqCFJAReQk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=H87Iowrz;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Try0UpDq;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792750744;
-	b=zNMGULmhcebnqIvyVZhP7QttMMErkO3pqqXTKRb0Ah45nN2zFhoLimr8PfxlfAsNNiFj88
-	vNQ85YQfy2AU7VfsxKbi7jCR272egimnp7ZRp4XhzjsdCUV7FsFCBPPUKHk3cP1Z1MwtaW
-	CZ75iEQytVSz/wjW02d1RzZQ+4k+3GU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3502A1650;
-	Fri, 23 Oct 2026 03:19:00 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6AFBD3F7B4;
-	Fri, 23 Oct 2026 03:19:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792750743; bh=cTejc6vMr58Bc8gk6KW2BncO0y2Cvz1clpAKwoF7/Ic=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H87IowrzP0rj9C3cOW7Vzu9QCUMfiSLZ0/G+PHAGddRwpJrTeToyiptqu8vx7+3pH
-	 w8RG+x0XddtHFphc6crHsU1gk8O6PWmj3qeZaN0M0Ly+45BVp2wb77l+7WxSJLLoTm
-	 DUEPs9U6xhyWQsEoNRpuxhalPnHIewHnLwfzo0Zw=
-Date: Fri, 23 Oct 2026 15:48:59 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Dave Hansen <dave.hansen@intel.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
-Subject: Re: [PATCH v3 4/4] arm64/mm: fix destructor for unconstructed
- hotplug page tables
-Message-ID: <4vrj226au2t5cyjsgqem7bami3tsgn57zcbw6cbedhkutknnh3@p4hngiltvm6j>
-References: <20261023063428.3658761-1-songmuchun@bytedance.com>
- <20261023063428.3658761-5-songmuchun@bytedance.com>
+	t=1792750905;
+	b=N04ydtTKjPZl13IzNl+UOih67Ft0prPH92qttFiY+Cw6NAolPbwyM9Ubt9NM4wX2mhELmy
+	eTUMswl3UzseK8pGpbTJuhBw6c10zFsM+MpuRqtvOX/RY+5BSxMYwEN8RKvL2l98XynSe+
+	aCDGld4VrhB316FF1rqMJAd6tfeTxvQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C8C760232;
+	Fri, 23 Oct 2026 10:21:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EAD1F031E0;
+	Fri, 23 Oct 2026 10:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792750905;
+	bh=sYRuHapo9W9wmZIPuuqoJgF5i8UHavCm+9OHunlMqfk=;
+	h=From:Date:Subject:To:Cc;
+	b=Try0UpDqk13dUQv8kNuuSByobmY1fv+iclYkBIhj56IHmpUTI8tuRlRsH16FD3C4j
+	 zlRVStaEGZsGe4E+yRPuIHMQ4+GCJnlUCLFsvw2nUUP/dVbCKcobPj4Bh1rarhPd1+
+	 WhFNy1vksDUeHtjnnGksLcd+NVnrZvnjxckZ1g+fHk0ZduQ3zzuC5CR3zYoyksbrOe
+	 B21ZbmW2ng6gNc7qt2Pb5ZltyDn4aRsyi0YvfArfp/7Emn9PsJL1L6+2n7IHbnww9V
+	 c+FVcJJVQ+SaumXh3oNCS9OCKVrnEZcM3bIhhtnQ22np4lLR5rnNuTi1xLyLUq8VEE
+	 9BR2NjC9H2n3Q==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Fri, 23 Oct 2026 11:21:31 +0100
+Subject: [PATCH] ALSA: us122l: mark hwdep mappings VM_MIXEDMAP
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023063428.3658761-5-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7ED10A0002
-X-Stat-Signature: f4wp4pscq9qjrj59zgu5dui8a7mramic
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261023-fix-us122l-mixedmap-v1-1-e7bdd053850f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvxJ7bkE369BXooPlVgtlohRC9Pek4
+ 8DMPJA4Cifoqwci35Lk9AV0XcG8Wb8yiisMpKjTihpcJOOVNNGOh2R2hw1IztCiWjsZ0lDKELl
+ o/3UY3/cDviw63GUAAAA=
+X-Change-ID: 20261023-fix-us122l-mixedmap-2d42f05ab421
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Kazuki Hanai <hnkz.64@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+ David Carlier <devnexen@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2436; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=lNhw2btcFfOxweCD1NL36wEg9RyU1oHp6QFW0PYzg9k=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJum5o5/ivQ58jn8zv2RHuxzi4vhWen7D8p6M6etdBfY
+ 5r3okNzO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCR62kM/yM+mvMtYtvx6ciM
+ uftbnaPzCq2FbISl57UbXspvlcp99IuRYVPi7DJ1jvJy103L3t3cOpn5Eh/jpN/FLDZ1Z82T+FP
+ +MQIA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-HE-Tag: 1792750744-926582
-X-HE-Meta: U2FsdGVkX1992N/k2jzty4PQtLpDzr+tbYlEPu7YIQXpdxW6orj/zx13Zvx3Qm8vZL2JJiNMp08BbVMWUeTD2DglJzNDXjBh2OY9tuSaotuqQ8FFUwOuP/6AOjx4F5j58NX8M1gGfkfaUWoAOZ0m0nwLZG/fVMzt+nX0T7Tm3zupjge4NsSNdkvN6LH2Wh9KCMOGfiXo4oODTo+l9EsYCUEuJg4XGJbR432+eeNN0MUuclTzQxI7EVGmP1aVro7K8DzRezB0zObeu3HPqNXNfxsJeaDhGzn+PVCe9HA5q5dcRtL1kUNX20oYGwF+UdgOIKqppjRIIWInReQNsqWksg9pawTx+mac2v2tUPyD6HoI1hUcyAxJAYaxeqiQxbSzCQqFmIHOuVZd0AqkT4UQJcrmUa9fsi7Toodc7qOKLFgsi9bXtinB8tAu7QmmWIWmUE5P+vdrEwi+BD65JYk44heFmp7vUi+2TYgonplNv5KuesSxA/lhdEywJeOo//ozZaoW3FPjzTRrlhnD2cvVF2uDISo6nY9NG+u7mgSEkWpRd5g6FZJshIXDRtMMm9Jbs2eHe0QIRVMQgtwDeSCZTbZ5J5CmR+Kp6105MtmW19HI3JUWjOMnLN755juEbLAfeUJh73KYdIcNY6772HIU/RpgazEJChG3dNVlI/ezo+jHIDutjZaLyiGsQGnaPiYAzscvS0+djCVmH9BY3H3BaptuKTmGfoY50oZQ/Ncjfadt86UUrufP8Zi98pEGWvQIFoWlZ7CwZIj73O6Sm5gYqnGCJJruZAQZDI/C1rUwyzlBclLWqnmLUVFvFDhOLnLMbCqlPf03yG3HZeHiyYhasG6s1AYlfR1I0uyv/JTmm5Oi1JzPC90NA27V1sseRJF2BjkgzspeekLS4NSlsZLqBTpLKDDsmxMDA7P/JQRpBklhwkd6L5WAGjpsEI285QBDfCxYk4LeoTwlTl3Vlxw
- J+PcGSqM
- MTCkyDm/j4Tto7CT2uCfa5/5vdxsLy5XuIIYMbuKUgIQAAdDBROBThPoqnPGLXA/RQh+DVl33s6kKjCIyMy+TDl0VsKyZTltf8wIy7yQTRs5yx7gyJ0Eu3C17J6DDRUrwjg9a6DOZO++iPXdgqNWQDBJC8dEUT4rp8l7++lcj0afUrJyFbVUtiUeaZMFzTakyMgWb9slWpWlDHbz8UHE6MbOK8PcCQYl2ZENZrdf5rkxuyyU8kEVvp1tjnErT+CucGVKRnOIal9LEfVKsbNP5Z1tHai+0vCNbGUELAdP8xak12bfYfW7TxhTErTdJXby5QDJvn11HzasIUkdi17EuCtkA1vDN/q1A631w8e68O0D8syRTvnJG4wMnNBf+E3B6Br9D
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CF8AE160003
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: fihso1gfaxmsjyf9p9be7rjiuaht3r7y
+X-HE-Tag: 1792750905-893829
+X-HE-Meta: U2FsdGVkX19L1fBybMGeBc2l3iABT9YwMPBOyv3Zgy6Hbdv0t/6o6CpVeyQC2GnDQlEgkqZc1iXggoT5Bg8td+ZDvAFAXD2dMaOlEWiEXruhcGVde1+lZwcruCFcr4TA6/JStZV+zT3927EMZsUwFwtf1qY9SaqqI1BPCsW2BQaDUq5WDeAWjamXB4VeHElgp70Seaj6AEEA/NUazfml/7X3qUAZ8/NPrRBkVwG64UBS5IIDnK+KSc0vLZNjruyxttZyGvlC7+M6ab/x2uf9GVY471eEDVd3A4XajigkZjfsjCCtAyv5wb6SXfSli1IGEb70Ob8w5b7cYKQtuoKafRDnrrjtMOi/fRHBpNyxq3ZCr/v5e1VjEKlrWWdmjhX21b+2LcTiMlC5B2zlHjT+W9xxkpmAd/ShK88SeqWGEHYy/yWe39R7T99UnDIEVBUvn7lJr+EFQow9O0S+aPStPcaH7/pM5JlItO5PHKd8TbirRlfl3ToIieUPqhlLsezCCBI6myYkQxLCKGoZ2jAuSP/wOZLO8+qfT+0Xlu2e7k2Y8CQ/i+zUIiLMmxMo2ZV2RqAHlPxsocrTB5shNoMsb8/caeB/ZHDY58uyzAj610UHBkiquPMeD6flp6VlFrBxcstvWcJA8zaF9Z0Y6c/TCtXNPin8HwVEbRYLcNoQIr2r9bGsUzktd2w8F/aOSv2dUyt3wGAfK7+W0YLypDwMklyIQuh5aUdKQkvKaOrPpU21NVU3rYX+O+IdHYOCLxnfDMVATuaklnE7vFffF9JujHq7rKtngGFWbTng+vOQgKt4CHWR9z9iwPcFwnTwypbbn9Qpr7EhGujtxbqQU7Hx1nUK/KTdb9Hk88rnLL2RfWh4x1MUUYX8q+3G77IudwPYW7Pu6G6pPnbz9gsEb6sa8RQEZMzCo6ufKiDTbvxggzOj4w+MSX1RgyoxNv/dxsQIKlY1+LBId5Eq1hj+iha
+ 4tDEacbT
+ 7QUOc8DtDgy/BLWpQHNdMyU6E4vQpXap+Zhv1lRtgF9mKLMihgI/5hgvp/Ahf4wlL1JGLU+hP1QVcllYieOp6HEYkDjpH4YMLf+K3EaoQpbaXv/ZogEkNeyhXo9clZ6/Rq3WaeBChO2wTR8A3wa2U4OiV+AV6mKCb24ZBIXiz6uTFXi9RRghPeCfr1e6W4TdxRBQaBTa32G8S+XqYtmkTpc8THdzC3MwhROgd12qs6MgrsFTqC6EAtB67lMixzuyHAb3NAqBJzhJyBhNZxUFIWAVk7SF8Ubt8g4qYJfolqQjMU7/qtOY0WBtQfdxB4cKMYJvl2g4I5xLVnWI+nhTZNQxQNV7TiYUKJ8KyFUrDAOpIAzTy2lLlEdNTC0dpNIz2iv+meuJloffv1gXnwtdu/EiIMDjLCHu2wBzabFTRo8taSv6ETAIDcnh1PlTiZK1lVxti
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,60 +107,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 02:34:28PM +0800, Muchun Song wrote:
-> Commit c594b83457cc ("arm64: mm: call pagetable dtor when freeing
-> hot-removed page tables") made free_hotplug_pgtable_page()
-> unconditionally run the page-table destructor. This matches page tables
-> allocated by the arm64 mapping code, which runs the corresponding
-> constructors.
-> 
-> However, arm64 also uses the generic sparse-vmemmap population code.
-> Runtime intermediate page tables allocated by that code do not run a
-> page-table constructor. Freeing one during memory hot-remove therefore
-> runs a destructor without a matching constructor and corrupts
-> NR_PAGETABLE accounting.
-> 
-> Free intermediate page-table pages through pagetable_free(). It runs the
-> destructor only for constructor-backed pages and then releases the page
-> through the page-table freeing path.
-> 
-> Fixes: c594b83457cc ("arm64: mm: call pagetable dtor when freeing hot-removed page tables")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+mm has recently moved to a strict model which requires any driver which
+clears VMA_MAYWRITE_BIT to be mapping non-mm-managed memory
+(VMA_PFNMAP_BIT or VMA_MIXEDMAP_BIT), failing any such mmap() with an
+error and a kernel warning - see "mm/vma: only allow mmap to clear
+VMA_MAYWRITE_BIT if not mm-managed".
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+However, simultaneous to this, commit 71c610aeb177 ("ALSA: us122l: Prevent
+write upgrades for read mappings") updated us122l to clear
+VMA_MAYWRITE_BIT without marking the region with either VMA_PFNMAP_BIT or
+VMA_MIXEDMAP_BIT.
 
-> ---
-> v3:
-> - Collect Acked-by from David Hildenbrand
-> - Collect Reviewed-by from Kevin Brodsky
-> 
-> v2:
-> - Free intermediate tables through pagetable_free() (suggested by David
->   Hildenbrand)
-> - Update the commit message for the page-table freeing path
-> ---
->  arch/arm64/mm/mmu.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 79d90226fd5d..4dce8fa227c3 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1495,8 +1495,7 @@ static void free_hotplug_page_range(struct page *page, size_t size,
->  
->  static void free_hotplug_pgtable_page(struct page *page)
->  {
-> -	pagetable_dtor(page_ptdesc(page));
-> -	free_hotplug_page_range(page, PAGE_SIZE, NULL);
-> +	pagetable_free(page_ptdesc(page));
->  }
->  
->  static bool pgtable_range_aligned(unsigned long start, unsigned long end,
-> -- 
-> 2.54.0
-> 
+vm_insert_pages() and friends set this automatically, however this driver
+maps its pre-allocated pages from a fault handler, so never calls these.
+
+Simply set the flag in usb_stream_hwdep_mmap() to resolve the issue. This
+correctly marks the mapping as one whose pages core mm does not manage,
+which has no meaningful impact for this driver beyond preventing the mmap()
+from failing.
+
+Fixes: 71c610aeb177 ("ALSA: us122l: Prevent write upgrades for read mappings")
+Reported-by: David Carlier <devnexen@gmail.com>
+Closes: https://lore.kernel.org/20261018025905.201296-1-devnexen@gmail.com
+Cc: Kazuki Hanai <hnkz.64@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Andrew - I think easiest for you to take this.
+
+It should go in before my series ideally to avoid bisection hazard, I think
+while it's a fix for the driver, that'll be the safest way.
+
+It should be prioritised to be part of the 2nd batch of patches for this merge
+window.
+
+The commit it fixes is cc: stable but this does NOT need to be backported, it's
+for 7.4 only.
+
+Thanks!
+---
+ sound/usb/usx2y/us122l.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
+index a5db0d044ef9..2986a90ea335 100644
+--- a/sound/usb/usx2y/us122l.c
++++ b/sound/usb/usx2y/us122l.c
+@@ -193,7 +193,7 @@ static int usb_stream_hwdep_mmap(struct snd_hwdep *hw,
+ 	}
+ 
+ 	area->vm_ops = &usb_stream_hwdep_vm_ops;
+-	vm_flags_set(area, VM_DONTDUMP);
++	vm_flags_set(area, VM_MIXEDMAP | VM_DONTDUMP);
+ 	if (!read)
+ 		vm_flags_set(area, VM_DONTEXPAND);
+ 	area->vm_private_data = us122l;
+
+---
+base-commit: 2bba28e98578de622ef307d00875aa8f8bca3d10
+change-id: 20261023-fix-us122l-mixedmap-2d42f05ab421
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
