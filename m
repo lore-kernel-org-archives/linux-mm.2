@@ -1,159 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2975606A328
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB75606A31B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Rw0Lw4Md
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=kMkUSEcD
 Received: by kanga.kvack.org (Postfix)
-	id E29BF6B0393; Fri, 23 Oct 2026 10:31:06 -0400 (EDT)
+	id 7DC646B0B81; Fri, 23 Oct 2026 10:46:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E011F6B0395; Fri, 23 Oct 2026 10:31:06 -0400 (EDT)
+	id 78CA96B0B82; Fri, 23 Oct 2026 10:46:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D169C6B0397; Fri, 23 Oct 2026 10:31:06 -0400 (EDT)
+	id 6A1EF6B0B83; Fri, 23 Oct 2026 10:46:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA1986B0393
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:31:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2FA081C006A
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:31:06 +0000 (UTC)
-X-FDA: 85354128132.12.6A02BC2
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3C137140015
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:31:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Rw0Lw4Md;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=lrizzo@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792765864;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 496E26B0B81
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:46:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5BFE140120
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:46:01 +0000 (UTC)
+X-FDA: 85354165722.11.1D8D377
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 31E09100005
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:45:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kMkUSEcD;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792766760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s3FkMl8OhjMqOhi3zpzbiZNiNsx48LLQzOlCjP1CveY=;
-	b=Qyt7tcsKMePcUnxIZw3QXpsKdJt0cQdWNi8oFvYvbX/jeJxsHUTrcLg38l+cFAAObGlJGa
-	oio3uDv3HUHj9U7WyjbSofKxN8KD1l33PE3IegSIRn9kkE6mPmltwT7+BQvkzBnIoB9d8c
-	scqpl/FBGYDkB4oN7NQyepyTlP0qmSA=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Rw0Lw4Md;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=lrizzo@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792765864;
-	b=Te9Ft3jc1c3HsRkespG4HQajkLmWfj7NB6l6XeZstR7C0oOV+jB196pjVujUi2yhosclTB
-	Hx9f1nVxd3cojNmCA22j6FBHwIxr7aKKgE6vD60rW4TLeri4ekfwjtCr3H7wDOkk7f0dsz
-	m9mWz/zAP9pGPjBBke1uFPUeWAyKx2k=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2db33db4de9so70995ad.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:31:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792765863; cv=none;
-        d=google.com; s=arc-20260327;
-        b=diwJCsg7QuUHb81mBltBhky8ndb+z4P1yj67wPQ5pKk0//aMhpyMAuvPst4kNIrpxn
-         1NrOoMxc035XfZFloVNSxEWn4KVRyXIHzrG6zyvtWf26gse9I2Sp4KQZd+2bvZTgzRyZ
-         oRCfRRqG05LvHJZLFQAtnvUfKxjS7aHgiM8fJsa/nwyvZvigZl+J25I8DepPyjzsQjRO
-         gLbdeguycvigPUbqNSvbHFoGWDogXe5CMlgVZGmqI8OvHzVUgBrTS7UAPW9pa3T6Kac/
-         sImpW55lo3JqfVHNgfenF1j9if+UbXFVvBRohvPML4F2hR9gNMaB/jpSbFqJMFr4rZ+x
-         XvZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=s3FkMl8OhjMqOhi3zpzbiZNiNsx48LLQzOlCjP1CveY=;
-        fh=QyilLk2THul8M42iDd8SVvq6PUl83Q3WhRm4r2VPEic=;
-        b=HN2SMPvFzog/ZKA5LxC49nbMMWPV60Ld3YvPXcXdEwaU4xajFuBWFT4ZKsGGu8TZKb
-         jn7SjA6A1j3fezzSprTDZV+6eUjmWk39fkp1HSUQrjDEuCSoDRCo234U1r7urMmFIKWy
-         paUwWK+qdne27xuaxNMd5h7yMkj4KX6kIwUQgGu8k7OYd7PA53mps713FQ0/v612MlKn
-         xbTYt6vIs0Z6+lnSfHYOof/p7NqpmKPH4Xg07A6ZSuJiI0Dc8SkT7U+ijQB8Q4DEql/7
-         XNdHP3QWfoYj/wLvQ8phVJa26HA6V6aF9gzNX0zvx8M6OxIqLny6ChHChPzAZHThpdsl
-         ieuQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792765863; x=1793370663; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=s3FkMl8OhjMqOhi3zpzbiZNiNsx48LLQzOlCjP1CveY=;
-        b=Rw0Lw4MdGiJe2XUb0YG3Il8GX4EVcmi1gP4DsJeP9r3OWmoAv6R0vVSBN9r0soKFqe
-         IYhhPMBbduX7K/66MtnhUv74AFhrltV2G0PIzvlzkehUY7HH7fMGFN+cYsFnOIYYVMlg
-         iY7pT6+eWAkChLg04MsYbuHpZ5WrqAf/xT0xGuWQBl0PokFbEYUy9g5QL6AFme3TxYcy
-         6E3b5jGEN/j7SNUaDVEMogPmcxDuz6MGWSJDE8LS7vMDEmHVttFZs+SPYiBxIXuME+yD
-         N2DIizu2B6vBstrlHaCHPxemzLBCIeZRoWWehXaaVzI16sHGRV5ePfRypu8kKsONydbK
-         sKOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792765863; x=1793370663;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s3FkMl8OhjMqOhi3zpzbiZNiNsx48LLQzOlCjP1CveY=;
-        b=tzogAqrsgn9+8OzeEpqzh2Q5iAYR4Gphln9kg5FnYHynfnC4bE3FdISR9x2N+L5v/b
-         pF1f80ZYfUmR4RMx39djXvdq1fbsO+Iu0sgoqQIcH8IzpBqad3eB0mxK5CksbVcmXXS+
-         YRxEwWKy6AHA+ef3/PsJJc7qUFQIxgY67Uv25W2JLhGVgIjf1kMogtBY6ZqiwBYn2ZCP
-         o7wC31IHKOhd35vm+HEIOm190rNKnzHBv2+H8dfMBRvkU4XciEHrsTVT/fopohlEJ0me
-         J3oKbThOkU6S5hUA37heBKXXFPd4UGjaKVn+Q0gywvFpeGNCuWGDsjh0ekWBCi+R8Kgp
-         2VOg==
-X-Forwarded-Encrypted: i=1; AKwUvBxueccLzfK6gDJ8cETSCBS5GOXFR0tfNZDeORvY3cAX+GJx1DbjbVYkaxvT5Iq/DrSQL4gU9EiflA==@kvack.org
-X-Gm-Message-State: AFq9FYJBeRcm7DzAuPgikR17N1G5hKYUCMOKjFZ7OAM2rftcgFv3I2QO
-	yGyZfmqL3smHmhBLF1Mkbv0mULLzWCCdP2Kkm1nt736f+gUCduLVdCT3JKa7AK1UGsNFE810lNk
-	7qrYkoVCmraoJ0JKpU0TnMXPo2hbyW7ibOEJTzo9a
-X-Gm-Gg: AYBFou1KbV2n+HZgDO8/RtKkcN9dcui9kfN2M2JqsW7CS1RA9L8wCV0NfAKH1QSr6Ez
-	I4ytSFS9kg8NRcOpOmhPJPzJWI24bmjE1kRTXEA6hPrMlcbQtHDwu+uA9y1e3f0zObqA5q9YJvv
-	tLfXVljqvOeCeOV7aBnm8xoeaqB0IbLsvv7anf8oz6caBven++Hh6DAxYaNTY00afHnHPzAygYx
-	IEUYGG/slgH6tQd5ljrMOnp2ZQp/bwciaR+BRCIrIU2rid5u4m2Xtk8k22PF9qvtPsMeWixRsJT
-	DGHVpQV7mOAm0GpCM+AFof8GUY3EZPXqwPlRguYubZbVSD3pftdxcSOYZ19hluk9zDOonJPVqHz
-	1SGUo5qcG+RhDW/3rkVHG9Oh7b1ZydJZ/FmxBEqrJ+7+1XsgH868lWaM6rdY=
-X-Received: by 2002:a17:902:f683:b0:2ea:7180:3abf with SMTP id
- d9443c01a7336-2ea7f512f16mr4025665ad.15.1792765862249; Fri, 23 Oct 2026
- 07:31:02 -0700 (PDT)
+	bh=/fiO3+QdsE/BfanTbW7upLzdgUQUluHoCjZtUMQ3uBk=;
+	b=RWDCJlF/tTppC/TuBGlXYOZBcRsK//ChVvrKKeUY0WTz5VbNj59c0iBr/Gx8AMX2UusxMD
+	S8U27/iw84FkN7evPqb1t5fuXkCBvOXioqsWZ7/T/agmZ+aQ2C2Yz9W5gmgoDEy3TgN+pB
+	15Xsp3ZzxJgG8Dsta7klnekdrseYyRo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kMkUSEcD;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792766760;
+	b=WoaKZJuJQkqzJEyqo+scBrPI+FHUDQaOt5x8AKUkxXA4CuDdcz9CZQPuRIf0pOXFifr3Q3
+	GksvjhdhJNc+4p9pYrEZbY4RPAJwrViIhx2ctTGcZQst86dJP2Turk6inx2GXChcxXS8wN
+	5jFxeLzcXdx7aHCSGwQSzQYrjh8pbag=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/fiO3+QdsE/BfanTbW7upLzdgUQUluHoCjZtUMQ3uBk=; b=kMkUSEcD/LSfqTU7gNyl/t4tZF
+	zdvV22g3LYXk8cowEg4+mfo+xrqqvN48gAscXUOli6NUPVPGIk3knPM8cFUNCVB3ISM9a6F+t5f/k
+	9vKDliaAhsHfqVaJqWcH4TIl25cesWtdJtXyG+3/Rtcug72SVWSsUJKfJuqVP6oS0TquTIkAz+dD5
+	FDQWoMgjvTAxG5ar2cABmn/NW1JprWWG7txkNiQP3pBwABKI8wk4PAbRpa7xi5YCAQjg92aYp22G6
+	9DHf3VZZgnYUxt4hEaDnpqA42SLa4Gk2HH+L5/NKY1RwnwyB+G+I8uWmnJLJRZ3RiYF1aSUi2gCm4
+	KlBsWx1A==;
+Received: from willy by casper.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xKGWq-0000000CF1Z-05ce;
+	Fri, 23 Oct 2026 14:45:56 +0000
+Date: Fri, 23 Oct 2026 15:45:55 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Nickolai Zeldovich <nickolai@csail.mit.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1] xarray: clear the new head's parent before freeing
+ the old head
+Message-ID: <attzI4sj2Pagmvkd@casper.infradead.org>
+References: <20261012202549.772887-1-nickolai@csail.mit.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
- <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
- <20261023140107.GC3977851@ziepe.ca>
-In-Reply-To: <20261023140107.GC3977851@ziepe.ca>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Fri, 23 Oct 2026 16:30:25 +0200
-X-Gm-Features: AclHuK9d7tFq_s1fhJmYPVN1-JncgZCOvwLUHaeunw-YOxbh9iZtFoxmVAkcY88
-Message-ID: <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3C137140015
-X-Stat-Signature: tyeteuhttpy5mw3aoujhgqyryqo7uawu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012202549.772887-1-nickolai@csail.mit.edu>
+X-Rspamd-Queue-Id: 31E09100005
+X-Stat-Signature: r8zii9drg97aiaukcccigzow7iiuxcit
 X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792765864-739358
-X-HE-Meta: U2FsdGVkX1+TCtzEFIrOrDLTH/EZEWX2fAbEhdk9npYb1Io7k1OBluFvyRWMybLdIenM3Ul4QG301vFnX9roz1R82ICmx8sw+0AiEdRsJAGmsX/l8qee/R/tgDapPO938nhfIqVxklhdc/7FC+3jBEC/qTr6hEB8tfSUT7MWsisCZz7O89B1p2Hrx4yaa5FTMqiptzdPZbhAKZoVihziaF8Nv/HsgqzjexcKr2QxFQSn//MBSNLuxoBr6M86krn+K98DFlH8/FBUC9fQAGoX2vULZusrvHXaE1x03JEayTHmd4+KsAAaXaFKnfNIHrghUR5y6H0Tk48tSqa8X8ab3YM88H7XhsSNX9jluujnawkOMsMtgZHn3cfcZnlza3KuXWKEdckJ3MxDfCORimJPqzrsKuV1q+v4W7kiLkCzSNmsb+milRclpzIQkEqfvg6UtM0lTGvoGm7su3wG1ZxNGJYuqu7vZ7boHpUvRBdL77ZDpE2Bni4l2zgt+QdnFS2fizQLvM9WIEAcYAJJmgC5b95Zl13Jxh0gDZ8sfU8+frL3uO1hSiDkCg4tiUi4tOO8fBoSs5lhbNsXUEXY1Nvv0X68AGRpnv1gfgh99aQCID/ptKLLxp99SmiKvsR7//MiBTJMtG4C5jAGPD4lDBvouDLNDpn7zRHsReB8rG6ZSkDTpPQOBAF7S8w45XBFxXiYqxHc6MJKwESqk6qI5BqjQ5Gp+IGGO/B8OTTl9xT5aMsdToAT078OrLpbhA2DG8W2gfqOOHDmqyqozY8FsoVm4yiNylmDIiVDUAXrFo3dlT7PHo2KtNHwb9gBRoulB7P3AhcpZlyIi9MdPhzueECScRNFSD4XR8W3Hb+F6rmbqKZq2DdieLR5Kgd/hyKmtRXrxJfSlnuhqpCd/u0bWJXVUixwAzgEsL/Nn8dYCEFOKzVX4L1fidCbJWZbiewGqzycdiw+0Hym4G5iwDvwnc/
- /PA1aZVt
- xXo4IqzJPdiXOpaRa31tKGmSVbPl1TbPfPp3QncMJK3/UuULy8TFLbrY4i0drqvyUFzhk6S9LlpAcXz2mA55oUIOo1fMKT6aPdYtZoJUWc9DsBPWIKQfpMgJZu92cvGl02CQ2pBxu5p+SQvuFBeqsu3fdazkSJ3DSl6UKcx75/6BoxowlTcfz0Aq6Uku2P0IDIH8ZPMuviqtdWOilK7oWk5LYq4HgSCoYZSL/c+/SmqmiZ2oJfVi0dMgHKk5JzLsKl30f41aPbTZL+vPydCZSi+IEu6qYhO07mTxRwf+p0yqlZorYm6f5CH6RQP/k65WUvzawkCOrGpZ+7/WC87Bvdb4i8SxZeER2yNNtXtU/KSot3QrP4EvtHI7VdCxMBv+BZjuChD+exWq98VbWSObazsPI9nXMbD0tO2vGARRrlBCHaPc=
+X-HE-Tag: 1792766759-107713
+X-HE-Meta: U2FsdGVkX1/EgxoyoQwqMCAz9JSA1jn4e1/BiBk1wLXZaMQOXrF96IfzPGBSDbyc2w4vBDi5kaFvyg0N25ajcljBigqpOOnpcj6OdOpuQMN/wV2waAB5gxYUmloBH9NECOPew2J2Udez9Cu1H/rntkWQ0RLeKBqZPUBoE7qXKn9A9IjYSaqifUxinAYyFW6eVNTKP31+8Uj+lbfYOKcUVhFqEX30192WWZvZ3DDJGXWwqjtu9AtcuVy9W5EZHxaF+m6q1vJ+8K6TQFnqQ2XFK5AINyzbja84RoOD9Kxf5r/sJwWVAUHtjOyOEtQ/HDQlOTdjr8St1KrvvHvZqsJihOtkrKkcvge2vPh+9XlBEy3pGUMLAp1E4C2Q1OXHzq7HIJXTaKhcuKYIOT36giWVrXWvNEnn9g+BGgTwKzoqfxJH7Xjm8klUcW1GcUAttJIugw0yO28U9ZtpAr7HvdEAwfl4u+A77FPepPHkb0BwkSpDJvbRlnWSrtL4RudasiuXvZ8TGR57CRd5u6QWtAfrUZWbszo0wegwDwVn9PrJlZgdMOGOoziEsj9GvaBj0lBylmqEWdvhIFzpZJCF0KnBYVxKQhoqRhq9dKIrbVXxPuGFsoEsuDlkj2QruZGEWeVObiJmZXXWtYU+c8yV579Mdn/B0vCaKSdx65qLuJYIXkrc+DPZCFOfel2y7bQHYRxqXMQTUu1N4HZs/9G/oQFJYzVaX5go7pVyINbF8OLwrj15NhNALWBuu69N6CfnRfermRhrHG6xrZrrlOo4H7soCrxQX7IuzuchUvkWsDzKNNv0nTYVb7XEd2podP+37r0FYbtkBEYSh6Fw6mzlbhB7SaX2QYFNQD/+zwmsn6a8wvqgyDQwHdrt8vBhAJPz6HBKYml26QXK5Z+Qz2CxtyvV8v3L20aNsR8s9WgFgkYsczYrDX4R2kWk0LBXQhSBEE5ujbtRqSN5F0MBHuXX2xB
+ 5xNOX/G0
+ omT//BKzsy5smZ9OwET3eIXLnJOHqw5l7yP0PUm1oz+q0hSi6oJL3bnppSyB9lHLeI7TZyLcpBwUMvVrz6LE4sa6WPLNpvDsBIuH8xFKE4XMSN0x09hgrhapVlu5f7lMfBEIErpOoZEB1yy0Pqdn9j6Zr8x+P/k+7njgKrEjPouVy8eeyRkaEpC7fja9Fx85wrByIfrFdYeevjv4vVhlrmq81dprz7T9coTQnJA8Hnx+R/dDbqx4IWxYuTA0AGfFrJWQEVcERBpNx9RobV2x9CkCGElG4nYQdw+ckUwruH13eshQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,96 +93,148 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 4:01=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
->
-> On Thu, Oct 22, 2026 at 11:51:40PM +0200, Luigi Rizzo wrote:
-> > On Thu, Oct 22, 2026 at 10:12=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca>=
- wrote:
-...
-> > > Can someone explain what outside netdev would use this? And why you
-> > > couldn't do this in the netdev page pool?
-> >
-> > I can try.
-> >
-> > Regarding users, the next target is disks (not included in this series)
->
-> Disks don't use a memory pool, they do IO to folios allocated by the
-> page cache.
 
-I know. As I said I have a separate patch to cover those IO buffers
+If you must have your AI write the commit message, please tell it to
+be less verbose.  I start losing the will to live after about three
+paragraphs of this.
 
- block/bio.c                  |  21 +++++
- block/blk-mq-dma.c           |   4 +-
- drivers/iommu/dma-pmd-node.c |   3 +-
- drivers/iommu/dma-pmd-pool.c |  14 ++-
- drivers/iommu/dma-pmd-priv.h |   7 +-
- drivers/iommu/dma-pmd-user.c | 390
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----=
----
- include/linux/dma-pmd.h      |  53 +++++++++++
- mm/filemap.c                 |  27 +++++-
- mm/page-writeback.c          |  13 +++
- mm/readahead.c               |   9 +-
+On Mon, Oct 12, 2026 at 04:25:49PM -0400, Nickolai Zeldovich wrote:
+> When xas_shrink() replaces the head node of an array with the node in its
+> slot 0, it stores the child in xa_head, passes the old head to
+> xa_node_free(), which queues it with call_rcu(), and only then clears the
+> child's ->parent pointer.  In between, a lockless walker can still reach
+> the old head, not from xa_head but upwards from the new head:
+> xas_find(), xas_find_marked(), xas_next() and xas_prev() climb through
+> xa_parent() when they step past the end of a node.  RCU does not protect
+> a walker that gets there: call_rcu() waits only for the read-side
+> critical sections that were running when the callback's grace period
+> started, and that grace period can start before the parent pointer is
+> cleared.
+> 
+>   CPU 0: xa_erase(), xa_lock held   CPU 1: RCU walker, e.g. xa_find()
+> 
+>   xas_shrink()
+>     xa->xa_head = child
+>     xa_node_free(old head)
+>       call_rcu()
+>                     <grace period starts>
+>                                      passes a quiescent state
+>                                      rcu_read_lock()
+>                                      xas_find(): loads xa_head (child),
+>                                      steps past its last slot,
+>                                      child->parent is still old head
+>     child->parent = NULL
+>   xa_unlock()
+>   quiescent state
+>                     <grace period ends>
+>   radix_tree_node_rcu_free(old head)
+>                                      reads old head's slots[], shift,
+>                                      offset and parent
+> 
+> The grace period does not wait for CPU 1, which reported its quiescent
+> state before its critical section began; holding xa_lock delays the end
+> of the grace period, not its start.  The start can fall inside the
+> window when an interrupt arrives in it (interrupts are enabled under
+> xa_lock(), and RCU core processing may run on interrupt exit), when
+> callbacks are offloaded (rcu_nocbs=) and the rcuog kthread on another CPU
+> handles the callback, when many callbacks are queued, or while the
+> writer is preempted under PREEMPT_RT.  Interrupts, and in a guest a
+> preempted vCPU, also stretch the window.
+> 
+> After the climb, xas_find(), xas_find_marked() and xas_next() resume in
+> the old head at the slot after the child and read its slots[] and shift
+> (xas_find_marked() also its mark bitmaps); xas_prev(), for which the
+> child is the first slot, steps past the old head at once and reads its
+> offset and parent, as the others do when they reach its end.  Nothing in
+> the walk notices that the node is gone.  The climb takes ->parent as it
+> is, no lockless path looks at node->array (XA_RCU_FREE), and
+> xas_shrink() stores XA_RETRY_ENTRY in slot 0 of the old head only when
+> the head shrinks to a single entry, not to a node; the walker does not
+> look at slot 0 anyway.  radix_tree_node_cachep is not
+> SLAB_TYPESAFE_BY_RCU, so the walker reads freed memory.  Once the object
+> is reused for a node of another array, the walker returns that array's
+> entries or descends and climbs into its nodes.
+> 
+> The order dates from the introduction of xas_shrink() in the commit
+> below, which reimplemented radix_tree_shrink().  radix_tree_shrink()
+> clears the child's parent pointer before it replaces the head and frees
+> the old node, and still does in lib/radix-tree.c.  The commit gives no
+> reason for the different order and nothing depends on it: xas_update()
+> and xa_node_free() only touch the old head.
+> 
+> Clear the child's parent pointer before freeing the old head, as
+> radix_tree_shrink() does.  The stores are the same, the tree and the
+> xa_state the caller sees are the same, and a walker that starts after
+> the callback's grace period has begun sees the cleared pointer, like
+> every store before call_rcu(), and ends its walk at the new head, which
+> covers every index that the old head had an entry for.
+> 
+> A check in the radix-tree test harness that no node passed to
+> xa_node_free() is still the parent of a node reachable from xa_head
+> fails in xas_shrink() 4731 times in the XArray tests without this patch
+> and never with it.  No test is added: the race is not deterministic and
+> the check needs a hook on xa_node_free().  A harness race test (readers
+> walking the whole array with the four climbing walkers while a writer
+> stores and erases an entry that adds three levels above the leaf) did
+> not hit the window in 20 runs of 200000 erases; with a 1 ms sleep
+> injected after xa_node_free() in xas_shrink(), every one of 20 runs
+> reported a heap-use-after-free in __xas_next() or __xas_prev() under
+> AddressSanitizer, and none did with this patch and the same sleep.  On a
+> kernel (x86_64 defconfig + KASAN, QEMU), with a 100 ms delay injected at
+> the same place, a walk that starts on another CPU 20 ms into the window
+> climbs to the old head in each of 20 rounds, and KASAN reports a
+> slab-use-after-free of the radix_tree_node freed from rcu_core() when
+> the walk takes its next step; with this patch, the walk ends at the new
+> head.  The XArray and IDA self-tests pass on x86_64 and riscv64.
+> 
+> Found while formally verifying xas_store() against the kernel binary.
+> 
+> Fixes: 58d6ea3085f2 ("xarray: Add XArray unconditional store operations")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
+> ---
+> 
+> Notes:
+>     Reproduction details: the ordering check wraps each xa_node_free(node)
+>     call in a copy of lib/xarray.c with a function that walks the tree from
+>     xa_head and reports the node if it is still reachable or still the
+>     ->parent of a reachable node.  The harness race test links a copy of
+>     lib/xarray.c with a hook right after the xa_node_free() in xas_shrink()
+>     that sleeps 1 ms in the writer; 32 threads, liburcu-registered readers.
+>     Without that sleep, this patch alone still showed a use-after-free in 3
+>     of 20 runs; those come from the xas_delete_node() bug (the race test
+>     also erases nodes), and with both patches 20 of 20 runs were clean.
+>     With only the xas_delete_node() fix, the sleep still gives 20 of 20
+>     failures.  The kernel demonstration is a test build with mdelay(100)
+>     after xa_node_free() in xas_shrink() for one test array, a writer
+>     kthread on CPU 0 doing xa_store()/xa_erase() and a reader kthread on
+>     CPU 1 doing xas_load()/xas_next() under rcu_read_lock().  The window
+>     has not been hit on an unmodified kernel.  I can send any of these if
+>     useful.
+> 
+>  lib/xarray.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/xarray.c b/lib/xarray.c
+> index bfe7bef80f34..ae9d7fc68861 100644
+> --- a/lib/xarray.c
+> +++ b/lib/xarray.c
+> @@ -471,11 +471,12 @@ static void xas_shrink(struct xa_state *xas)
+>  		if (!xa_is_node(entry))
+>  			RCU_INIT_POINTER(node->slots[0], XA_RETRY_ENTRY);
+>  		xas_update(xas, node);
+> +		if (xa_is_node(entry))
+> +			xa_to_node(entry)->parent = NULL;
+>  		xa_node_free(node);
+>  		if (!xa_is_node(entry))
+>  			break;
+>  		node = xa_to_node(entry);
+> -		node->parent = NULL;
+>  	}
+>  }
 
-
-Disk I/O is still potentially affected by the same problems
-(cost if io mapping/unmapping, iotlb thrashing, bounce buffers
-in confidential computing...)
-
->
-> The only other candiates I know of besides page pool would be the
-> existing dma pool users. I don't think they are so performance
-> sensitive as netdev.
->
-> IOW I think this entire series is only useful to netdev.
-
-Well, the series provide mechanisms to address disk I/O as well.
-
-
->
-> > > It is not a common workload to have the DMA allocator be the one that
-> > > allocates the memory. Usually we are DMA'ing from memory that was
-> > > allocated someplace else.
-> >
-> > Aside from the fact that dma_alloc_attr()/dma_alloc_coherent()
-> > does memory allocation + iova allocation/mapping,
-> > this is not what happens here.
-> > Maybe the confusion comes from one function name
-> > (dma_map_alloc_pages()), but it doesn't map any thing.
->
-> > My code (in this version, and more in the upcoming release)
-> > mainly implements a specialized memory allocator with an
-> > API equivalent to alloc_pages() and variants, but ensures that
-> > the order-N blocks come from contiguous 2MB blocks reserved on the fly.
-> >
-> > The physical addresses of these blocks are recognized by the
-> > "dma allocator" (I suppose you meant the entity that allocates the IOVA=
- range)
-> > so that it can apply specialized IOMMU mappings backed by 2MB IOMMU lea=
-ves.
->
-> Why? This seems completely divergent from how anything else works in
-> DMA mapping, and I don't see a reason for it to be anything like
-> this. Other than it makes page pool work a bit easier
->
-> Frankly this looks like you had AI to transpose a bunch netdev page
-> pool into iommu.
-
-(yes, AI assisted, heavily human-guided).
-Frankly, it's very orthogonal to pagepool, given that it uses pagepool
-for what it does well, and it provides functionality that pagepool
-does not have.
-
-Anyways, reading your next comments, are you suggesting that all
-these functionalities should be implemented as pagepool extensions?
-(2MB mappings and iommu backing, proper allocator of fragments out of large=
-r
-pages, device-less pagepools, multi-domain mappings, pagepool
-as memory provider for skb heads, pagepool as memory provider for descripto=
-r
-rings ?)
-
-cheers
-luigi
+I think the patch is fine.  I understand the infeasibility of adding
+a test into the test suite.  I've had a good think about other ways we
+might spot this happening and haven't come up with anything.
 
