@@ -1,93 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491BC606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D694606A338
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FFx+HjPs
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cSS0Ck+N
 Received: by kanga.kvack.org (Postfix)
-	id 658936B03CE; Fri, 23 Oct 2026 13:55:34 -0400 (EDT)
+	id 4D51B6B0BC3; Fri, 23 Oct 2026 13:56:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 630A36B03CF; Fri, 23 Oct 2026 13:55:34 -0400 (EDT)
+	id 4AD526B0BC4; Fri, 23 Oct 2026 13:56:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56DF36B03D0; Fri, 23 Oct 2026 13:55:34 -0400 (EDT)
+	id 39D316B0BC5; Fri, 23 Oct 2026 13:56:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 331FC6B03CE
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:55:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2330C80180
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:55:33 +0000 (UTC)
-X-FDA: 85354643346.18.6A5EE3F
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3F756140006
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:55:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=FFx+HjPs;
-	spf=pass (imf23.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792778131;
-	b=r8IACHifGHrSuaHVvrTAYY8QwUWsUy6rP35TidjQKttkA9l6jl7jzJtgYTsJCSmJbtZ6Su
-	weOffAR4iST8YUhjFwKAlGVgyPIEtih7bs1mhJVTqe2zUUxdaZv3h3EhT2eZ0A/U8y6b9u
-	qSuXJJaz54ss29QeIwUKi1qrAz7+uhs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=FFx+HjPs;
-	spf=pass (imf23.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0E98A6B0BC3
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:56:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8636714018E
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:56:54 +0000 (UTC)
+X-FDA: 85354646748.15.0CEF702
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DC71680002
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:56:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cSS0Ck+N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792778131;
+	s=arc-20220608; t=1792778212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uYTTF5jDNkxMCVJ9mrlfykfmfKah1Cd8hTMk87yFHBg=;
-	b=QjABZhSdPuqcFDIVinhD6Epx0/2kdp8Qa3ZO73jK9jdqTZ0Rd3/4zIwbX6P382/D3a0D+m
-	IltR8NWuDlQH5zp4IN3wqw1aOkNTEE92UHjHJFhYxwD20QZmhBIjdzTmjwqpE0Otl7AmCl
-	58PLYNyeWyQoWvSaWlLFme7U49+M11k=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=uYTTF5jDNkxMCVJ9mrlfykfmfKah1Cd8hTMk87yFHBg=; b=FFx+HjPsKWG+EePtFOBKnIR9Hs
-	GiPfrM6SAXY2vTtQro2pSZDw/MGSKa/4imbtPz8BzVcylikXV2VXIuNwXOoVNMkufpXfFQbD/4Ah3
-	fSKZ0uUV8cUm7TXyZ7RLnpCVkY8tTajyQXzjilHkO4Y0EkuEzhAiaz+11DIDHgPbTuG3/fTtQRJVy
-	s1T02id+dNFvi99iSrYWeRc8QXq+I+yf4Fnffy7Tck+NG1U+X5eq4MT9cyJDUvnkNOaZZy1lbqJTe
-	rBnqniYL30xcHkkDHQElLV8g+PQYcUDj7+YrHkYhlz6nCrB4Kts94DwZ3Q1UdNPoLhS4aLmzYZN5K
-	WmduT+gQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xKJUG-0000000Glen-1HOa;
-	Fri, 23 Oct 2026 17:55:28 +0000
-Message-ID: <26adbb3d-bbd8-442c-aed6-80cf091888b0@infradead.org>
-Date: Fri, 23 Oct 2026 10:55:26 -0700
+	bh=6dF6ilgg1hCkDWkXW/uBaYSBlAJ46T4Q2XsH6HK8HOg=;
+	b=ovoXWu4tLMpcgQeDibM1pW9r5TGeXaeTEsdOjn9wtxnbLiQGt2wqCBFKpM/gpPB+l/R8eb
+	gHdBNl/rcRMMl0MA8fBmrXVlFBV5olLOfsLK5FwiscWIm8D/82SRlnZWxMJvlswX+VJqug
+	xzrgv2e4doPCofmVpUsVPY2ujYd7KGc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cSS0Ck+N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792778212;
+	b=GVIoMN3bAzM3udeVexhzLYnboQN1mocdax92Bwj0fWxPPEYo6bfBUV78OT8ueVKCJnmiwa
+	Yk42eg9YrSUplozIYyimDir/OHGs8EJH8TbaMoomB0YluPsYZwttMU8KmkZjRN+X7JLDUZ
+	fyIKfcvINtnq9gXrqueMak2boAUIjOw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DE34E43829;
+	Fri, 23 Oct 2026 17:56:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC88E1F01825;
+	Fri, 23 Oct 2026 17:56:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792778211;
+	bh=6dF6ilgg1hCkDWkXW/uBaYSBlAJ46T4Q2XsH6HK8HOg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=cSS0Ck+NSrHUjM87ec4oK+tVdxn6iGBvpBVeHnRpI22pz+cl9kv1k0ewBZ6D1dP+H
+	 bVCrhcxC+JX6TIeI103IOMyfzAmdk506bzOeqKt/MOMquKKvT1H3qIU73fAK3GAQD3
+	 UQlqk7gxESl8jGzFOcBtz2W413JkJo6jZRh/xmnMPIYxFkrcqf1glg89nY6LY2l/0X
+	 aJ/9uKUiEryCHOLmtUz1ro8l08+ntqMmWItaBiiLJxqhRJGDs9MBDrmv54p8TOFGhD
+	 QyQb0Jsgts77moGbNmbU+g5dVigMmtm4cqWEQPd5/mN5PVJ1CnseuSeozwbX/TfRV1
+	 lwu628+jAAQiw==
+Date: Fri, 23 Oct 2026 10:56:50 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Harry Yoo <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Muchun Song
+ <muchun.song@linux.dev>, Hao Ge <hao.ge@linux.dev>, Pedro Falcato
+ <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>, Willem de
+ Bruijn <willemb@google.com>, Mina Almasry <almasrymina@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Sebastian Andrzej
+ Siewior <bigeasy@linutronix.de>, Jiayuan Chen <jiayuan.chen@linux.dev>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH slab/for-next 05/14] net: skbuff: specify
+ SLAB_MAY_ACCOUNT for skbuff_head_cache
+Message-ID: <20261023105650.393c8fc8@kernel.org>
+In-Reply-To: <atoHqLrf70QSkn8F@thinkstation>
+References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
+	<20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-5-096800aa3330@kernel.org>
+	<20261021121941.4d8f8edf@kernel.org>
+	<atoHqLrf70QSkn8F@thinkstation>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] binfmt_misc: fix typo in "auxiliary vector"
-To: atanaskunchev@proton.me, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <kees@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261023-binfmt-typo-v1-1-459d4ae4c15f@proton.me>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20261023-binfmt-typo-v1-1-459d4ae4c15f@proton.me>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: DC71680002
+X-Stat-Signature: y7f5c4bz4aiodtmpjkrkbwh61rusjmfx
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3F756140006
-X-Stat-Signature: pcqqcfymxdxnaeq7kxm83x4ndterohz4
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792778130-473730
-X-HE-Meta: U2FsdGVkX1+7JXWbyJKEhOXQylSKVFrd377QGc2y2lXdMoYW3CE1KOeUb3dWAXI+Dc9TfmmZrDcPPZYL6cx36jk/7Ojxhon/91b572TyXKWybLqcNDmnqNtU2yu2ey5GIaDJpGtMK6KHE5WkS92VoT9Er9InO35BqfZfvpY1GlwkZqXuLVNWTYvHk2s093kCLolFl17bRxFgeiL7vut4bAauuX/T6gKAWdfyi4idvEtFtAXAzfnO+smQR5xpN8TIoN/ChChl8AGC5Lz5jgl9JrxY0hBVsTXJ4bdC4TidIqVOsZ7N77DiNW56Xh3Hh4G1Z6Nd8pbm6RqzcLsk6nphbTGs/Kp73vlqlTt0f3KRb+itkF3QMlZx3hNxS9p/0TLTmUbp8F5fXhmfxwnFAqZRgkDi+BIqgkKd9bMssnU9dHC+GKC+E/jTxIDVNfScu14C+Od9BQlVWQnUrO2HqX4aS1VMFi7ixuCw9swQ0HzzpoMKUKeuhmBVh7FvQkCyZA6taaBE68W0L6Pyygu+qP9Q2GXGoqU3bPWzoH1s+5mYGcK0Je3VFhohZ1lsjxxd9LliVPckmISVQy4AExSwmCZqtZP+UffmeD8M3WeT5/p00ln8G9stp1RPMT3pg59LyXlzgSDDtxkqhMJ2UixNECB9VNvn0Tdtjksli/gjkrbwPBYrBSS8tYyFutYYXsxoh2H5RxAWREsuzYog91jvbsHriuORZt+cY8nN7+t0dXG0G2OT+tN0o1xg9MgAIXHfLlSggmbtj6oANpsoC5XsFN+suFL4Nb0VyvTVS8196Q5gklEb5WLGkruPYhbzr+7lc0WamLbQQVJyRLUFV06jUepnSTlEfyz7pz9oFF0yZTFbhnADVAoJayW5Wn4/6fSYUOkVy8XhKbp+l0Hs7AmInekADA6XwGOOKG4bu4S3T7qREHRiHDNvQeoWLCL1Bqn1eYszKl5l/Jke4M1r1EduHFF
- y9M8eVXg
- enOb+uXSkZ8PAqRLdL0EqxSF0AYFRlxUj0zd72PmshSl0iYBkBWpdbt6jNBjJu2+9ZFKpcw8DYotvSjOl8j8E5/7s+STw5iJF57G2ll4unBpGnhLcv9Z6m4kZBGSG4CuTDkt4ymkHhZfitdFR59uAXQ3ab74eVBhXy8L55Py2pf5BeJQmEzKvG4VHCvFetbb/qTacEmvZoKgtHY2lLjhWI616LUzAV6e0ApPTpeyKDOAR7RzBSuAqUSIswacWWO+3N2R/Guke73Mq3pLAlQokxgj4s8v8kQLmfB7T3RI6SVCcGct6qFeIK9CbTaDVEH1G9kGmugmVxASUAsk7OVgJe7xNnGjaOnlw4sqPS7bJfCzRlB6EhazHLvVNABPbo/3jAY4r+zj11Asj5aW4u+j0hy/A+6ZGQdHm4arM1fD6cecWmjo=
+X-HE-Tag: 1792778212-802188
+X-HE-Meta: U2FsdGVkX19OJG0nCveR8veT2mIWWWsHLsyvzSARuPOGp9y5yIulJb3hCZ+6LWgKK3q5xxbkYfVCXZNNmELgfaTCXL6yOA2mJ8pewk1LCpRWJAbdwHTLqD8gY9epPNDX+6nKyQkejBOLWrCamRhq0RBajfCZBkr5sziyz5kNLQHDByHHju7TOhS3dUdUZGEA6TSK231ta4a5+mcRAvxTIhaGB6Z+IG+rwgktWoCy7yEjZ5/bcgUh5X8qDk/7UvKEgi6wrFTjTVR5N/9YY6017knRfT7cAu0Z5EekzCEcFU+EMstHnlGlDbrINjGFMg86rnieNmP62DkfaYuP0l3zTeJbQheeY64cUJNqzvqto3Gue6d0Zr53mXKLk/NaP7uaV/A64pmqKNquCgeRK6N1vQqJPXN5DItyL5UIJpeDXkq5x8FOlr4GCXaQMx5uFKxcfaDiF7ZSz6vpeT9/uxCzngpwJInqYyisfy7LQF7c4EOXHwql+0+5PsrFHnfV24UyhhSQxYmCTLyICAWRv/4bYRl34J5svw2CTzBb/Q9IqrcIHYakTxVFpLHMwB/V0QKlmfYcuDZtrQuo+iMYY77uwQ+NZm3zxXZjYF6IcCgF/eg6lhDii4fCGjcMM27G9L4zseykZu7jNOlEs8v55agREXhMiK0OfCT9HCDpRh4/XRYtGyk7YQddxNCuDQyYwuabyPQLlJf5Kx1GfIpfRupJTEqInCIs/C3lRAdHDuLbLWOhX9lJfmp0IRohw5KG2jTlvmRdJJDiKsqpq0O6wGI7uBGMvOiaHiILLm3Qq6MaUBRq/9N88LOKurK1DVaqdonMng/eJER7Ae0BePO8VgKdw8L0wJS92FmChvF+cR3Sv051qfELhI6aZdVrZHMWYM09kezJjzcJ5DLyKD+vuplBtLR8BFNMfpb/SVAjJOm6qzkvGLcE5weAFwBhp2znp8ii229gM9I79iye5hXO+eH
+ hK/8si+x
+ B2lXHZQpNx+A3dahqSuTDJXkSlJQeGMS/18l3p91oazaMEr3VTenieznlEqkT7sWTldT3xTkbEFxmUTxp3xR6FjaZwGAec1fvyLUGHd6JiyOKn73gKbdCMRrHRbtrsP/uwQQ7OeB5SNmAMmqWAZ4+PTaktd+JLS/9ZiU7pMVTPsl1/fQA/mKDi5rs5qXSCmKaFFJNoNlGfdtd/+kYu89AZ91rVMxb6njdQQBkquDBlEhDpzjl4qf9PiL2AOgKzkpcKRTZrY5V+VqGfj8E0asXJNkl3cq0yk8YY0NM83UzXPsRlFEKXR40i+LhnwwQNG9upw6eR0TKmCQMnJ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,42 +111,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, 22 Oct 2026 14:43:42 +0100 Harry Yoo wrote:
+> On Wed, Oct 21, 2026 at 12:19:41PM -0700, Jakub Kicinski wrote:
+> > On Wed, 21 Oct 2026 12:46:46 +0100 Harry Yoo (Meta) wrote:  
+> > > AF_UNIX sets sk->sk_allocation to GFP_KERNEL_ACCOUNT, so skbs can be
+> > > allocated from skbuff_head_cache with __GFP_ACCOUNT. Specify
+> > > SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
+> > > __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.  
+> > 
+> > Could you please skip this for the first batch and resend
+> > later to net-next?  
+> 
+> Apologies. Wasn't keen to the net-next development process.
+> 
+> I can resubmit later, but hmm, actually, do you mind if we let it go
+> through slab/for-next with Acked-by: from networking folks?
+> 
+> It's only few lines of change and it'll create a lot of dependency for
+> pull requests if each patch goes through each subsystem's tree...
 
-On 10/23/26 10:50 AM, Atanas Kunchev via B4 Relay wrote:
-> From: Atanas Kunchev <atanaskunchev@proton.me>
-> 
-> Fix "auxilary" -> "auxiliary".
-> 
-> Signed-off-by: Atanas Kunchev <atanaskunchev@proton.me>
+Think I misread the cover letter.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-
-> ---
-> Fix a spelling mistake in the binfmt_misc documentation.
-> ---
->  Documentation/admin-guide/binfmt-misc.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-> index 9e84b877d06d..e37668371453 100644
-> --- a/Documentation/admin-guide/binfmt-misc.rst
-> +++ b/Documentation/admin-guide/binfmt-misc.rst
-> @@ -73,7 +73,7 @@ Here is what the fields mean:
->  	    Legacy behavior of binfmt_misc is to pass the full path
->              of the binary to the interpreter as an argument. When this flag is
->              included, binfmt_misc will open the file for reading and pass its
-> -            descriptor into the auxilary vector with the key "AT_EXECFD", thus
-> +            descriptor into the auxiliary vector with the key "AT_EXECFD", thus
->              allowing the interpreter to execute non-readable binaries. This
->              feature should be used with care - the interpreter has to be trusted
->              not to emit the contents of the non-readable binary.
-> 
-> ---
-> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-> change-id: 20261023-binfmt-typo-bf80308e23a0
-> 
-> Best regards,
-
--- 
-~Randy
+Acked-by: Jakub Kicinski <kuba@kernel.org>
 
