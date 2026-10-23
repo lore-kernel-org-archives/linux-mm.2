@@ -1,84 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B5D606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17AE606A324
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N9VRqbQ5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DUU81bAs
 Received: by kanga.kvack.org (Postfix)
-	id D4FC86B0BF5; Fri, 23 Oct 2026 16:51:21 -0400 (EDT)
+	id CD77E6B0BF7; Fri, 23 Oct 2026 16:53:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF9876B0BF6; Fri, 23 Oct 2026 16:51:21 -0400 (EDT)
+	id C889E6B0BF8; Fri, 23 Oct 2026 16:53:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE8E66B0BF7; Fri, 23 Oct 2026 16:51:21 -0400 (EDT)
+	id B77F76B0BF9; Fri, 23 Oct 2026 16:53:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E71C6B0BF5
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:51:21 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75540C0204
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:51:19 +0000 (UTC)
-X-FDA: 85355086278.18.6A2A1E3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C6786B0BF7
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:53:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 962211A022F
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:53:19 +0000 (UTC)
+X-FDA: 85355091318.24.4BF5622
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C0A20140004
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:51:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N9VRqbQ5;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id D8903180002
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:53:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DUU81bAs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792788677;
+	s=arc-20220608; t=1792788797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/OcUX/aLlPX2c4N33EvgPxJCYKMlff+nB//66pDqPWY=;
-	b=NCs9szWU1IGW5ntgveaV6EKhRG6JgoFct8iXP423rJhuRnVHcVmc2ZxXiNuNaiUeB+BIjl
-	BoLlJww5dT74Y8vvzCEmuYsVmB6VpuK0yBIFqHpoc5VsfpnO8vTKipqe2PsoF2JaRfPKj5
-	Peh8CTifPfDBMSUHKzTfbSpHSbI+j4A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792788677;
-	b=lH/dhBXu068tY0gxKZTLqlYlh8BaenfR7QO+VebtkCSpX7KXDXkY073RSus8ZL5yxLTC0o
-	mW2mH7FZY+Dl2dE81HgMa0lXCTK5rZ75hwoYpelGhH3XQH62zRWYELy93AglDjGUo/h5tn
-	YhotifbC8TPn6KXz4okB06zPusA5o48=
+	bh=0buMQQINV0ZMT10UHG2uFH0Ptzl8aD3BfO7547k5kqY=;
+	b=zaATL5Zy2qfdmg10na66OxMm+qPAfsGKmYOBFMy7TZ9wNDkVfyKe2UdJaHmflit0gndprF
+	FdfmKrgCWkjEr+WuqXcUFoq6LnBiMeHeoJcN3G95nwwQCIFpiAZ5s1ZgieQVvX385NXGK5
+	6hIre5ha6XTc57KX+OuA/wk+3+hBg2U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N9VRqbQ5;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DUU81bAs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792788797;
+	b=RZBvS+gM9hE1OtfqDDpQTaDqsYU8WOykadgf8CZY2m9in1vGgE6+mvg8td7YTrsWE9AZcN
+	XpmNlLmSu7pITYulUcCirtinKC4EwenlPQfZSEoaF0lJxBMPkk1ayczMoGT2ADgQ0DEmo3
+	RJ6HJZfX5y6VsglxO1E5EkNVtRSWscY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5164060142;
-	Fri, 23 Oct 2026 20:51:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3FA1F01825;
-	Fri, 23 Oct 2026 20:51:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C02460142;
+	Fri, 23 Oct 2026 20:53:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DEB1F01825;
+	Fri, 23 Oct 2026 20:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792788677;
-	bh=/OcUX/aLlPX2c4N33EvgPxJCYKMlff+nB//66pDqPWY=;
+	s=k20260515; t=1792788797;
+	bh=0buMQQINV0ZMT10UHG2uFH0Ptzl8aD3BfO7547k5kqY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=N9VRqbQ5AeurshupeTXKA3/1KTdV7whk+bpY0Iy3pEyWOK1ty/CMmfo2uV7fE3ScG
-	 cp9sKV9g602uNUtO0K74gWDNg7pDioLgUXkx1n3+2Yk0w3bnQWXMY2syuSAU8jAMiz
-	 fzSsPz/P6NT9F/TC51Pk9KmLrxYYXTOde3KuwPymGNKpCTrbdmEROFCvxbN+vQZV+V
-	 17i29HBRZnqU+9y1fPvomjjLz+nJACiK6VD9SO9aSxYjE7qXdObynBo4UaJTlAmAKw
-	 WGrONQFE5rS3hSZ/9e/hlwLhZtzEpw7yCs6X6iNiCMM+CKFUka3EPWOwje3Cn1u42q
-	 V4Xd3NZPSjMhQ==
-Message-ID: <6f1bd275-6751-4931-b996-b1c8ee6e4629@kernel.org>
-Date: Fri, 23 Oct 2026 22:51:06 +0200
+	b=DUU81bAsRlByMerKC6j8ENrXC1/LZaH6l/iyH813lPlUNnkhTUzRJZ7FS62aiyRtg
+	 nk18HnfoiLhgD/7nubtqFeBFg8UJPicbpbNVP1OiMueX/sFnkIptckyLCdt3yShdok
+	 fOmBsw0eNvATOPhavkFKgnshJ/cF4t2QGt4/goRkbHFXKSC+j6Sz1i4YTDQJs9StRI
+	 1k3eNBpmp7vjOP9O8hXMfiWhngOVx6UgHOW2RsbPmrG4kzH/Q6tDPkOrw8CuZMcYSY
+	 99iKODVHyysJalk31n5BoLCcDBQ+AfAMuQGn2jzvcF1E+IB7wVuvrRF9fA4u8i4QYX
+	 WRBqUM0rLtOlw==
+Message-ID: <409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org>
+Date: Fri, 23 Oct 2026 22:53:09 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next 6/9] uprobes: Don't sleep on mmap_lock with
- dup_mmap_sem held in dup_mmap()
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, oleg@redhat.com, peterz@infradead.org,
- mhiramat@kernel.org, jolsa@kernel.org, akpm@linux-foundation.org,
- liam@infradead.org, ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
- jannh@google.com, hughd@google.com, kees@kernel.org, mingo@redhat.com,
- tglx@kernel.org, x86@kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
- <20261022015712.1297331-7-alexei.starovoitov@gmail.com>
+Subject: Re: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
+To: Imre Kaloz <kaloz@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <cover.1792609488.git.kaloz@kernel.org>
+ <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,22 +125,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261022015712.1297331-7-alexei.starovoitov@gmail.com>
+In-Reply-To: <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C0A20140004
-X-Stat-Signature: hqdawizzw9xpq6rhpdt9uxqsotbxs4sm
-X-Rspam-User: 
+X-Rspamd-Queue-Id: D8903180002
+X-Stat-Signature: mgtq4yb7st89rgm6dztcnyfkorpndgrn
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1792788677-871133
-X-HE-Meta: U2FsdGVkX18ElHLWdQwZeG2pfCZ6K8VDHbUlrYkjvasFI5lvp/GcH0bvjEFnNljf0iT9/cVmcS1pDP1nRI5RCyZza4XBjUaE7O+nHlzFw5SaGvJBWD/0j1tHvws91jTxYyBZb9QET8CK3+R2xmdOznA+d2ANa5vi1r8iRwEaoSW4loAIK1oz7UBWxbcxUrrLtlppddZ5z4UHeZrqd5n7xyiyG/SGpQaNLJBHxozSMAu8IajsZmETM76pElfPvVez7bioFFN8Xfpf8k1wtt7DAso1UxGMZaK2uRNfakyCcj86S+4f0PV2H7a/dpx0U1eVVlLC9VcszOML4hPjOtFjlt2dEyExhzu+Dyh3qjNG6iytWxyeVEmRll262NNZzwpB7+7VGaKk4AxeYiR6PZAwdknqFVDWLqAb5fp7eAtSXAlvY3Lp1i/DAsX6Vz088Qce0zdKLQOI8jA5Dh2MrTGLkj1yjZil2Q+bnNYtFOpWB7qM7NygcCRzmZZVLOp0CCVGMtCmUuJLejt/qw43MMFljbILwsXqOV9DAsCCnCkGhDVzCGUEFYWARhZs+LED3Fz8fupZr7hS9TTYvqqxg34RnYwsJ/4RSGOsIZpo4Cf09MHro+UHrOPWpyXYKJzKiEBpPpZ3KgxV16RFDpxFxvZ7UzSBRAv/ckFVgJud/xL9uBtweSf24mXzQ8J3O6iUz3Y/OpKObvs5C0KcAsa8n5KJKeWh7zCjZgJRgFv3HeixzS3VprNLMdsLysLr2SfjIjByRzQXUGDzjiASJLdpI4OZi2rFuZgOjKYDcK6182rpeAkNF4VLx21WGxkt1Wl8U4Sv95H8ovcxGCTpJhHmGUaSehbWoh3h3n4TiAYIJI9lPENY4z+0stbtVQi4GpfDfcy9z20ZEcVo2eKYpSe6n7QJaxN8cpJcdbHc4eZiHEbdea/b+ipuqB5ffOzd3JArkXT7WzwOdKtXUCd6BtJAxoy
- wfZkJqOx
- gYtOkZrPowlyrN5Y9u8+d2e4niVxhi+2N8SdAwvbl2lBNGkjeW/nWbXKGxdX81vMx5b7VrrVezSwvQ4QhR9u5R+d0Sw7NN3n+1udUxAzUWkSzoP6XSrC5w/uLJsu9soKCqlPyJ7e9OO/hjbE72qMz/VZLsXS2/V0IaaElzERDNxFDjxvmoVmLZVZBhazqGSFuIq7wIXjbXusfTnTPi5471UqLoBWOkNZ11wUxjwD3TO9OUfUuJMV1SgEAmxSoYK12KBf3/7QcdkMDDydlxvpN+AA+Jng5wPObJGkEAccfpMCS+TzOaeJgdlChfbQo4Vcvtlq7EgwpqHdKCvIbiBJ+uom2XnkUMnInSh4PZ9pBoutVvrcUdxM2xmqp4hDgwP6Q/adcweBkqB9N3qfLhjNrLL6KEj85ijbcrWHCeQxbB4OPIe/2xXVshuzqcQ==
+X-Rspam-User: 
+X-HE-Tag: 1792788797-990980
+X-HE-Meta: U2FsdGVkX19MCjcv5Z7FEccOCUyqfh93yzSxGHO9bSajtQ7bLPlLZCyTyjmsGkLYtEM3ljfcZzRJPDC2o7TLUe4jYFMIA7o04dSVjbRHGR4L96alXDCxVp07lOMloqsunmIdCHkpmaaAVdOXyf2BdG8c9EXOrYger3fuRIHwNqo+FVsm21iUF6oDvCkJdGLNPvHCRUAWH5BWgNnLKpaaBjuuj6L60rttHRwRCNFnLXYyrJ36eSyG3NBKi+SEkuXNgnVqa9FpNfZ7edHJRKoP5Fn9ocjSezNTup7Aelk6g3MUZOo6PCvXz14nVrW/remVKWHxa4YMkKH6/LFdwV/HUxgTjSox44U5PQrla+QibOQgy3DUzKfgaL12NfEaCeBudS6AJnVWlAJBl28p8limqCmyAyIhEHH8RuFaKsZvhpa5JYCRFy+N+Dz2WO1VaRmr2LhRCiQfWIRbtpH5uqBz0ZOJyy/1LyOoXEnhHzwdVjQcfdJNPSBxuXGanp6TLMpoRF7Oze5p5XVH4VZBZPkmsBkZPDSeIxjBJEnEaPxMpYWRJ3UvtJaPRmYEjROp9SLeXVDekaHgruy3YZq+7ihUcd4RaeccC80dlmXNly8LsKXE+ZLqGJwgLJ6muI2y8S/wCgxj/pKGYXECl+GAmynH7g6/GlZJXCskJseMMCYM8wYtz/psQ3NerKIpp0My/NNSHdEctf61YEEB0YkG5y/3DtglB9lc5tYSfnC9IcXWKN7hW6z5hujyaG07QH/nNJQOfV56EPZZZi0KR0vOdKVD4PbI9JqpDAuSMhRSG5TSamBxpWUhmCWnXmbTxoIEBH/7+ieSdsKJoAyWuJFFuFISRo2y7zFLIxZyzQX2hOPRv060KUllNO9tg6LpexwwKFy9Qf1H9x7SdaP+xqReUxCUqFKqciDEnDhNgbT2+DqH6e3xoItE3TewTKQ6xQ58IE4/biYCIH8a/la3QUdo4mf
+ DElCNRyd
+ +YR54YiEB8lasktX3eLGegCseRHcV+UweaCPd/yj9WE67BRR2TMBrBvIOBIIQQkNrqZhpqY5CCZGtA/T+QOB1lBlqtz/matYBsy9NXZicx2aTDjUWfV0W/gtgJlrS/+y9/D3Omk/sIF73sbo18Nb89d3jJ67099SjpmgVBk/uHtsry3bfGSlMOK+JiDsjSpzpmC1JdhtrEVK5jkGofeQEsJIZY0ByAY4y8guvC+KovcIlcLG4Fo6Gfn5vL4nDabzb6QDLwXolE3A0VIMX7Tkm5SRyhJgXDvv452nPHXE604OIOmOyl0yWpJ3E2m6VZY9EnCSPQI3FJ8bxt30=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,151 +149,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/22/26 03:57, Alexei Starovoitov wrote:
-> From: Alexei Starovoitov <ast@kernel.org>
+On 10/22/26 01:33, Imre Kaloz wrote:
+> Since commit f822a9a81a31 ("mm: optimize mremap() by PTE batching"),
+> move_ptes() moves a batch of PTEs mapping consecutive pages of a folio
+> at a time, but calls move_pte() once per batch with the first PTE
+> only. sparc64, the only architecture that overrides move_pte(), flushes
+> from the D-cache the page that PTE maps when the move changes its
+> colour, so the other pages of a batch would keep lines of the old
+> colour. This cannot happen today only because sparc64 has no
+> pte_batch_hint(), and mremap_folio_pte_batch() then never batches.
 > 
-> dup_mm() takes dup_mmap_sem for reading and then dup_mmap() sleeps on
-> mmap_lock of the parent. When another thread keeps that mmap_lock busy
-> register_for_each_vma() waits for the reader, and every other fork() in
-> the system waits for the writer. The parent doesn't have to map the file:
+> Pass nr_ptes to move_pte(), as get_and_clear_ptes() takes it. The
+> generic version ignores it, and sparc64 flushes every page of the
+> batch.
 > 
->   A thread 1:  mmap(MAP_POPULATE) -> mmap_read_lock(A)
->   A thread 2:  fork() -> percpu_down_read(&dup_mmap_sem),
->                mmap_write_lock_killable(A) sleeps
->   tracer:      percpu_down_write(&dup_mmap_sem) sleeps
->   others:      fork() -> percpu_down_read(&dup_mmap_sem) sleeps
-> 
-> dup_mmap() needs both locks. Don't sleep on one of them while holding
-> the other. Sleep on mmap_lock and trylock dup_mmap_sem. If that fails sleep
-> on dup_mmap_sem and trylock mmap_lock, and so on. Taking mmap_lock and then
-> sleeping on dup_mmap_sem is simpler, but then all threads of the parent
-> wait for mmap_lock as long as the writer holds dup_mmap_sem.
-> 
-> Both are taken in dup_mmap() now, so release dup_mmap_sem there too.
-> Commit 8ac662f5da19 ("fork: avoid inappropriate uprobe access to invalid
-> mm") moved that to dup_mm() to hide the child from uprobes until mmput()
-> when dup_mmap() fails. Since commit 43873af772f8 ("mm: change dup_mmap()
-> recovery") dup_mmap() removes all vmas of such child before it drops
-> mmap_lock.
-> 
-> dup_mmap_sem is released before dup_userfaultfd_complete(), so the monitor
-> that doesn't read UFFD_EVENT_FORK no longer blocks every fork(). During
-> that wait register_for_each_vma() can find the child, while no task points
-> to its mm. The next patch deals with that.
-> 
-> Thread 1 of process A loops over mmap(4G, MAP_POPULATE) and munmap().
-> Thread 2 calls fork() in a loop. Nobody maps the file. Process B calls
-> fork() in a loop. 32 cpu VM. Median (max) of 15-25 runs, msec:
-> 
->                          the longest fork() in B    attach
->                          before      after          before  after
->  uprobe_multi, 1 uprobe  206 (219)   0.10 (0.30)       220   11.7
->  uprobe_multi, 4 uprobes 208 (428)   0.08 (0.32)       219   13.5
->  perf_event, 4 uprobes   419 (424)   0.10 (0.44)       632   11.4
-> 
-> During detach: 265-293 -> 0.19-0.37.
-> 
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> Signed-off-by: Imre Kaloz <kaloz@kernel.org>
 > ---
->  include/linux/uprobes.h |  5 +++++
->  kernel/events/uprobes.c |  5 +++++
->  kernel/fork.c           |  4 ----
->  mm/mmap.c               | 19 +++++++++++++++++--
->  4 files changed, 27 insertions(+), 6 deletions(-)
+>  arch/sparc/include/asm/pgtable_64.h | 16 +++++++++-------
+>  include/linux/pgtable.h             |  2 +-
+>  mm/mremap.c                         |  2 +-
+>  3 files changed, 11 insertions(+), 9 deletions(-)
 > 
-> diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-> index d34dbc0fbbfe..6d74efa80d04 100644
-> --- a/include/linux/uprobes.h
-> +++ b/include/linux/uprobes.h
-> @@ -211,6 +211,7 @@ extern void uprobe_unregister_sync(void);
->  extern int uprobe_mmap(struct vm_area_struct *vma);
->  extern void uprobe_munmap(struct vm_area_struct *vma, unsigned long start, unsigned long end);
->  extern void uprobe_start_dup_mmap(void);
-> +extern bool uprobe_try_start_dup_mmap(void);
->  extern void uprobe_end_dup_mmap(void);
->  extern void uprobe_dup_mmap(struct mm_struct *oldmm, struct mm_struct *newmm);
->  extern void uprobe_free_utask(struct task_struct *t);
-> @@ -277,6 +278,10 @@ uprobe_munmap(struct vm_area_struct *vma, unsigned long start, unsigned long end
->  static inline void uprobe_start_dup_mmap(void)
->  {
->  }
-> +static inline bool uprobe_try_start_dup_mmap(void)
-> +{
-> +	return true;
-> +}
->  static inline void uprobe_end_dup_mmap(void)
->  {
->  }
-> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-> index a9274016c55d..92ccb730278f 100644
-> --- a/kernel/events/uprobes.c
-> +++ b/kernel/events/uprobes.c
-> @@ -1927,6 +1927,11 @@ void uprobe_start_dup_mmap(void)
->  	percpu_down_read(&dup_mmap_sem);
->  }
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 1430489b9ac5..9ca787b3cbfe 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -946,21 +946,23 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+>  	set_pte_at((mm), (addr), (ptep), __pte(0UL))
 >  
-> +bool uprobe_try_start_dup_mmap(void)
-> +{
-> +	return percpu_down_read_trylock(&dup_mmap_sem);
-> +}
-> +
->  void uprobe_end_dup_mmap(void)
->  {
->  	percpu_up_read(&dup_mmap_sem);
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 10f2d05d816a..8fd6be932afe 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1539,11 +1539,9 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
->  	if (!mm_init(mm, tsk))
->  		goto fail_nomem;
+>  #ifdef DCACHE_ALIASING_POSSIBLE
+> -/* This flushes only the page the PTE maps, so it relies on move_ptes()
+> - * calling it for one PTE at a time, which the default pte_batch_hint()
+> - * guarantees.
+> +/* The nr PTEs map consecutive pages of one folio and all move by the
+> + * same offset, so either every page of the batch aliases or none does.
+>   */
+>  #define __HAVE_ARCH_MOVE_PTE
+> -#define move_pte(pte, old_addr, new_addr)				\
+> +#define move_pte(pte, old_addr, new_addr, nr)				\
+>  ({									\
+>  	pte_t newpte = (pte);						\
+>  	if (tlb_type != hypervisor && pte_present(pte)) {		\
+>  		unsigned long this_pfn = pte_pfn(pte);			\
+> +		unsigned int i;						\
+>  									\
+>  		if (pfn_valid(this_pfn) &&				\
+> -		    (((old_addr) ^ (new_addr)) & (1 << 13)))		\
+> -			flush_dcache_page_all(current->mm,		\
+> -					      pfn_to_page(this_pfn));	\
+> +		    (((old_addr) ^ (new_addr)) & (1 << 13))) {		\
+> +			for (i = 0; i < (nr); i++)			\
+> +				flush_dcache_page_all(current->mm,	\
+> +					pfn_to_page(this_pfn + i));	\
+> +		}							\
+>  	}								\
+>  	newpte;								\
+>  })
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 8c093c119e5a..b58c0e98994e 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1471,7 +1471,7 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
+>  #endif
 >  
-> -	uprobe_start_dup_mmap();
->  	err = dup_mmap(mm, oldmm);
->  	if (err)
->  		goto free_pt;
-> -	uprobe_end_dup_mmap();
+>  #ifndef __HAVE_ARCH_MOVE_PTE
+> -#define move_pte(pte, old_addr, new_addr)	(pte)
+> +#define move_pte(pte, old_addr, new_addr, nr)	(pte)
+>  #endif
 >  
->  	mm->hiwater_rss = get_mm_rss(mm);
->  	mm->hiwater_vm = mm->total_vm;
-> @@ -1558,8 +1556,6 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
->  	mm->binfmt = NULL;
->  	mm_init_owner(mm, NULL);
->  	mmput(mm);
-> -	if (err)
-> -		uprobe_end_dup_mmap();
+>  #ifndef pte_accessible
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index e8df5cdb0ac9..7fcae7f0082d 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -289,7 +289,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+>  			force_flush = true;
+>  		}
+>  		pte = get_and_clear_ptes(mm, old_addr, old_ptep, nr_ptes);
+> -		pte = move_pte(pte, old_addr, new_addr);
+> +		pte = move_pte(pte, old_addr, new_addr, nr_ptes);
+>  		pte = move_soft_dirty_pte(pte);
 >  
->  fail_nomem:
->  	return NULL;
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 4bf26b0f1e6e..6ce654e33e3b 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1713,8 +1713,22 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
->  	LIST_HEAD(uf);
->  	VMA_ITERATOR(vmi, mm, 0);
->  
-> -	if (mmap_write_lock_killable(oldmm))
-> -		return -EINTR;
-> +	/*
-> +	 * Take mmap_lock of oldmm and dup_mmap_sem of uprobes.
-> +	 * Don't sleep on one of them while holding the other.
-> +	 */
-> +	for (;;) {
-> +		if (mmap_write_lock_killable(oldmm))
-> +			return -EINTR;
-> +		if (uprobe_try_start_dup_mmap())
-> +			break;
-> +		mmap_write_unlock(oldmm);
-> +
-> +		uprobe_start_dup_mmap();
-> +		if (mmap_write_trylock(oldmm))
-> +			break;
-> +		uprobe_end_dup_mmap();
-> +	}
-A note that I will have revised fix from Josef conflict with the changes here.
-Nothing that cannot be worked around, but the whole "take writelock in dup_mmap"
-is shaky as it seems.
+>  		if (need_clear_uffd_wp && pte_is_uffd_wp_marker(pte))
+
+
+I hate move_pte() so much. And I hate sparc64 for requiring it. ;)
+
+Is there some way we can avoid this
+helper-that-shouldn't-exist-but-someone-hacked-it-in entirely?
+
+If it makes sparc64 slightly slower #dontcare.
 
 -- 
 Cheers,
