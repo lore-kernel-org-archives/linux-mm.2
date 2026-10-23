@@ -1,89 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF77606A31D
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 11:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE44D606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 11:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ixSxhJ1+
+	dkim=pass (1024-bit key, unprotected) header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b=MsR4MwTB
 Received: by kanga.kvack.org (Postfix)
-	id AA8D86B0346; Fri, 23 Oct 2026 07:22:19 -0400 (EDT)
+	id 045B86B0B47; Fri, 23 Oct 2026 07:41:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A59796B0B44; Fri, 23 Oct 2026 07:22:19 -0400 (EDT)
+	id F39376B0B48; Fri, 23 Oct 2026 07:41:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96F7F6B0B45; Fri, 23 Oct 2026 07:22:19 -0400 (EDT)
+	id E28846B0B49; Fri, 23 Oct 2026 07:41:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 775F76B0346
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:22:19 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB9E812039A
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:22:18 +0000 (UTC)
-X-FDA: 85353652356.25.D871E24
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2B36C140007
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:22:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ixSxhJ1+;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C00C16B0B47
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:41:12 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 488E980388
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:41:12 +0000 (UTC)
+X-FDA: 85353699984.04.A79F34D
+Received: from r3-25.sinamail.sina.com.cn (r3-25.sinamail.sina.com.cn [202.108.3.25])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E2BEB1C000E
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:41:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=MsR4MwTB;
+	spf=pass (imf21.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.25 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792754537;
+	s=arc-20220608; t=1792755670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2JIr32shhDAdFV4wsdsTH1dxV1roHF7U6GHSm//gPNQ=;
-	b=4sZH2G1lMl9OZRiG2PWTfB0FDUjjih9ea8kGcjA+6oxvD6pKRGzVqBRBnAcFX3e4blyl5h
-	b6jvnZ0NVzXPtvud3Ny9TksHNQsHdtyPwzqCtq9IUcgjZYwDCJ1wYAIv9BjqhLDy7nv2KI
-	aaRjjzahuurNg3W6gI7O74AeUBIrmX8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ixSxhJ1+;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	bh=5cygoKyDem6jl3IIN+AbxX+FnzVwflEWGyoiGRY80Yg=;
+	b=ugQ1uKZW4kuEtGnRpWhfGDadAcTqFVQApKszr5K1xZYoYQlBEhvwWfmYSkxWtPab7ewOJ1
+	F3g0q7PdH2nTO+Ntr7waFazlIbClNYqB1Rrok0QKb0sR1JcLf9gDnS1GewaN+kzXDlvCpO
+	SwNyDbb3tCE9RicAUOAnekkygON6MI0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792754537;
-	b=HKeT/izF9s42cPgMR8ZfPfdTHj7pqB4hlTkMKKcIA68B+x9Ib4VpZmjR+iNiFCxOJ2ywhG
-	3VFhiJSlJvtXPAxs24MTH5HYlt468S5pg3OXi7/GOvPW9WTovLuOtO9VgBFgdWkH/Jrtzx
-	iofDBNfkVQ9hRwR8f1CioU+vG6OwSFc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED3F11691;
-	Fri, 23 Oct 2026 04:22:12 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6BE893F7B4;
-	Fri, 23 Oct 2026 04:22:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1792754536; bh=pEs3PZgwiPiqg6sjwJKr14el93Iv6edM6dGsgzxNJl0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ixSxhJ1+Dmcvys/GZodc/+Jt78DSK1F+KDsahqOP1t17iU5/s1dFp6AHOvHfZ0RX8
-	 zUkOa7zeXfylmXrT6WH7q1TN9ptVS9xK92BqBWue/SJ7NrlKTjjUFLhfanIEp3hAJg
-	 F59g27ySewmTyN0ZYl4/69ocRJLGqL+8SEJBX6HY=
-Date: Fri, 23 Oct 2026 16:52:12 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Shubhang Kaushik <shubhang@os.amperecomputing.com>, "Christoph Lameter (Ampere)" <cl@gentwo.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc: reject overflowing vm_map_ram page counts
-Message-ID: <y5yuwnmvq5nouoitqj6lloz6hepha6cf6vmh42rer2zhgv32au@vbvr3ohn24tf>
-References: <20261022-vmalloc-reject-overflow-v1-1-5fde0042ffb9@gentwo.org>
+	t=1792755670;
+	b=Mn5cKAkxq5WTCgO2QMkYI8wjb/zbsoBI9Qgf/G4mPWH0tqgZFSNgluTIXlCjD/rOkuAWLY
+	Y78oz4lIjMRcoj6CG8vzc6yd4ZqF6aYeMM3/maUxKOa/6De94lvf9CWLyrMpoioh1Tg5+n
+	ysjt2OhpnAxzUy0XOCax8qeMUC0LQEE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=MsR4MwTB;
+	spf=pass (imf21.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.25 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1792755669;
+	bh=5cygoKyDem6jl3IIN+AbxX+FnzVwflEWGyoiGRY80Yg=;
+	h=From:Subject:Date:Message-ID;
+	b=MsR4MwTBrxCZL78IJj2RpIckRi97ITmw4YVnmopelvHAB4X7AS8Bnuun6inDVY9jF
+	 Y49T4L0rr3BIrK8cHulXNWOBGLaWUv5ZtKl1yVK57Yberqwj3q6tCfSl5NA1tWadb7
+	 2vpUAudzzbSgWFuvsKWmEYJGm79kmtK7Fp4toiZQ=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([221.216.116.244])
+	by sina.com (10.54.253.31) with ESMTP
+	id 6ADB47CC00006537; Fri, 23 Oct 2026 19:41:04 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 5283336815912
+X-SMAIL-UIID: 834902246C7247D7A48A785F4A216E1C-20261023-194104-1
+From: Hillf Danton <hdanton@sina.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Barry Song <21cnbao@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Date: Fri, 23 Oct 2026 19:40:49 +0800
+Message-ID: <20261023114050.1011-1-hdanton@sina.com>
+In-Reply-To: <atrnvuQkeldgPqH5@google.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022-vmalloc-reject-overflow-v1-1-5fde0042ffb9@gentwo.org>
-X-Rspamd-Queue-Id: 2B36C140007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E2BEB1C000E
+X-Stat-Signature: w96c9qcdkcmmbrx9rb9a9opyu5547m3c
 X-Rspam-User: 
-X-Stat-Signature: o41qy86adtdnocgqr5ry9yg9qbcts9yg
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792754537-891359
-X-HE-Meta: U2FsdGVkX18Ca+8ZwKSk5ohiCW3jcNV54hB6ivBaTbU4R9eyKgd6pfHsg+DcZKWj8BAIQFpPZpoOMuOGvhrpCfI5JdL8WgntdmkLG51RPG8idP5euUQeycWZ6F5LboSscWtlLJ8IZw4b+j65dGcgRh7o6s0SyoRijTPqBJLoNDecCyBkbz3eF6GLUtBHuXg33YyQtEA94HZ7I6EN3W0DXx7qVTka1xB/iiqmVbjpQuaDT2Ga3sVAlCs6LDq48MNUValwwFVt6fSSEgD494YnNqf96qyI5pRMncvp+g9bZuMRJ/c4lD7lx6oUtcvSkJcimjj631fOAfKrj54InRkqUJ8iXmP0ijEHHiknZ55/mj2Oviz/c9eOF6kJIae0Ed4Y4l7cPVn+AU8DQpQruKhSHXYvekQ/TbSt/nPcxgjKK9kpL/p+hi+j8x60hK7e6vgaNnFLQPlneke2AUVj2xDqMf16PNgbRlWIh7/1sSaSTVTWrR8wG52rbYAh9ovvjt7uSuQ26n14QehqsFsa8KB3hBWHtrIrvpGUPyZkiH5OiZlNVffFwHF8vax5i0lknedueaPOfcB8EytBEqHCNcwil1kj5Vlz5p6chC1TjMEgUyecGclnSOI59ZKIXmU3NhbX1+PVEja6UttXBxTem7/QemXx6/GTt7EFzEn8yVJez1HLMhxnug0Ec9Zfk11mohCZZTsX5rZyIlIltX2SdCE/Pm3P/Slc58/2y2bC/1wtxVAcZXCknEfCE42TZG0qk/slVksOa+D0kUPxQ7ienfZa1gcsxV8cXlwF5j7crn8v3+Nklf3+Tpzlc6YGqeL77zljy788f2NRdoxCtaxtc5lmq8NVS8OJ5aN4yKIG9yXD1XUtP3pjvZ8W+1FvJGXBmS9eeMOLeg1kLl3OtAL8um7jvS6TakMiUl8BOqBSlYX3fwfNUf6KLXD7ogJ2g8z4JLNWID6G/ct+/LxxVIooaEw
- XcPF92Uo
- Lh39JI19qXgCqesxWzjV0VHtxmmo3ogTmscGi4+nCnegqdkhe9ss+8Ec06OLG30s3WcNBS6y7rzviu0fzYuAcKWdbcL922EH+WFYxwElyQNXHyXo804WCb9Yn9aivDzctJPpbT2lkpeNOz7bEFXb2itoyzD0ul8QjGKF9W2mJA2O2tUROuCfpRG2elnhBKMtpGjj6VjOzRx3zsVWOC3yYj1okt32VBI6PwOF7FUjvea9M4boBSmv2DdF85SWlbLAsMAM/6aSb3Dk1GTC4g9PzGyS7Ejn26Em3ERUHCfjb/HmZZiKmTvluzScJ77vfcB/rl4Uuaw8CdMxW0KJ806OnXLh4to+FX/eSgAzmp9P0Y4dGizswHDISmJtow+BkN4kyS4Ix
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792755668-826086
+X-HE-Meta: U2FsdGVkX19dczQPAL+Pdxc64aG16pGwoD7tHWFBwNY5GRyxFMY1sdu9M3CugYt1wEzRnCwROUt1pxEdYjIFrtLpfTDPJi5+jKR8/Ay9E0kGuFRkWlbZk/5zkSO7J/SJfzpVhpDKm0MpmeNsTDfQuiW8/wd2cDWk1aG7Uv6T3gg2PqCiv0C4tyb3++1F5/wqyy1WYC3U8MmwgFArh/0K46e6DQYkVV7hnEPgTclL7KWVt4nzqiMM3ml7ZuWcDNc/NECUiNulrBlQlZuYAhOXqRCf+iaBrnDLMfUJIAv63u0W38wmrg6/KP25A7OKeD+Bbuu2fK+Pb2y94rNriUNK70KBLMEBv441WXrRknygKVg5a0iNsndVj3VoEIy6XKDbo9HY8jGOYgtNliRrSpq1GKFdzJtje5rnvdTQHER1G2WnZ4N5EpFkefTQjMstyExihBiMWnSFvjDq4D+wX9FqCQbxknwZAL39hg4+ddYL2H+nSg6lfOn4GLCvhmBTujPF6+rmcChzvlI/ogX/4CmBkmyDKM2Wj7CkypeRzBc2aWlNy2AhHjAITVtIWUy5hIANhisF5azbs9fofC14JaoHhpeJdjM81xgAeBqK+qW7aVf9I991LC1V5xoZdZGA5UvsrxYYeCBgNTrlqPZdjXJIdKApJ+oHRhnf/UIo9OyvD+3K2ffAZb8FTDQ6OBlMkw3aQkcNGvGKITYbdV4lvFbxH0f9SI4xFJp24S/1YyhYQLwKA1tE/CzNLiFXt4n5PGfgSXOxyyTBpu1M0fhEDO+S0LgribeYt/HxbCPuwk1xVAYvGOAX/OnSUHhe4d+68/0+ta8faDEbHWmS6t6LreqqdzM65K3ccwBEZYVqrVGA9yF2KJqPfwW/XC5g4IoQhJAVpPKS06Pto/OM/HI2zxe57mqrpspiVfjp9K8FcAIHzSU3NK/tNcTbY8MsWeZn6F0Z2FrM519+BuE/VVvQqn4
+ TN8QDn+C
+ klM0xqwGNd48cOBTiTfhV50lK25+V5Yq1I8FbXN/IMLUcSygHXv0dcTXNkihyg1+rj18kYTNd+hl3QMnUilkT+6PIalORXmDalyUE0bW1DDmd7yCAyi9kaTrLMbldB4MVu7f9GNbs2T+vxvW1PzJHHqOiovhLH+WU9tB/aTTALNavwzR7fjGhcKhocJ8JIA5dtcLmn47VqPstsYHDNs+rCAagdhecMfoZcHtCMbYMjgcYrt26DOwu2b3yFKLdXmWIEuzCWz6A8QENK9pZK+GE+y3ry+jhawf1cyDZ8yZezyJlrSNnTEyOWQhJZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,57 +95,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 04:35:20PM -0700, Shubhang Kaushik (Ampere) wrote:
-> vm_map_ram() converts its unsigned int page count to an unsigned long
-> byte size without checking for overflow.
+On Fri, 23 Oct 2026 14:01:32 +0900 Sergey Senozhatsky wrote:
+> On (26/10/22 19:11), Hillf Danton wrote:
+> [..]
+> > What I am confused is -- why decompression needs to run faster without boosting
+> > compression up. Where is the compressed material?
 > 
-> On 32-bit kernels, a count greater than ULONG_MAX >> PAGE_SHIFT wraps
-> the byte size.  vm_map_ram() passes that size to both alloc_vmap_area()
-> and vmap_pages_range(), so it can allocate and map only the wrapped
-> number of pages while returning success for the original larger request.
+> In a typical embedded device (e.g. android) zram write is swap-out
+> (direct, indirect kswapd, or backgroud service swapping out idle apps),
+> users don't see those.  zram read, on the contrary, is what users
+> see - because that's swap-in, read bursts when user brings back idle
+> app (camera app, etc.) which needs to get back to foregound quickly.
+> So, the read path is more important.
 > 
-> For example, with 4 KiB pages, a count of 1048577 produces a
-> PAGE_SIZE byte size after wrapping, allowing a one-page mapping.
+> I tested the series against PE.
 > 
-> Reject page counts whose byte size cannot be represented.
-> 
-> Fixes: db64fe02258f ("mm: rewrite vmap layer")
-> Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
-> ---
->  mm/vmalloc.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index bea9f76ed7e74247d4ce919250c2f02dd5c36483..e98d3aa551fe205ebd9826daad9ad6bd578b91ea 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3083,10 +3083,15 @@ EXPORT_SYMBOL(vm_unmap_ram);
->   */
->  void *vm_map_ram(struct page **pages, unsigned int count, int node)
->  {
-> -	unsigned long size = (unsigned long)count << PAGE_SHIFT;
-> +	unsigned long size;
->  	unsigned long addr;
->  	void *mem;
->  
-> +	if (count > ULONG_MAX >> PAGE_SHIFT)
-> +		return NULL;
+Thanks for sharing data.
 
-Could vm_map_ram() ever be called with such a large number as count ?
+> readers vs readers (no writers) 3 runs
+> 
+>     BASE+PE     IOPS 1,449k  avg 3.48us  sd 155.6us  p99.99 26.8us  max 280,820us
+>                 IOPS 1,435k  avg 3.69us  sd 322.9us  p99.99 24.2us  max 540,512us
+>                 IOPS 1,459k  avg 3.46us  sd  92.8us  p99.99 25.5us  max 172,186us
+>     PATCHED+PE  IOPS 1,457k  avg 3.31us  sd  15.9us  p99.99 25.5us  max   7,580us
+>                 IOPS 1,475k  avg 3.28us  sd  14.6us  p99.99 24.5us  max   7,327us
+>                 IOPS 1,463k  avg 3.32us  sd  17.2us  p99.99 28.5us  max   6,816us
+> 
+     BASE+PE     IOPS 1,449k
+                 IOPS 1,435k
+                 IOPS 1,459k
+		+)----------
+		      4,343
+	       /3)----------
+		      1,447
 
-> +
-> +	size = (unsigned long)count << PAGE_SHIFT;
-> +
->  	if (likely(count <= VMAP_MAX_ALLOC)) {
->  		mem = vb_alloc(size, GFP_KERNEL);
->  		if (IS_ERR(mem))
+     PATCHED+PE  IOPS 1,457k
+                 IOPS 1,475k
+                 IOPS 1,463k
+		+)----------
+		      4,395
+	       /3)----------
+		      1,465
+
+		(1,465 - 1,447) / 1,447 = 18 / 1,447 = 1%
+
+
+> R/W stream split makes sense for reasons that we already mentioned.
+> Readers don't need to be blocked on Writers - they don't compete for
+> the same data.  And, moreover, readers don't need to be serialized at
+> all for stateful decompression.
 > 
-> ---
-> base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
-> change-id: 20261022-vmalloc-reject-overflow-e532c556f3fa
+> writers vs readers 3 runs
 > 
-> Best regards,
-> -- 
-> Shubhang Kaushik (Ampere) <sh@gentwo.org>
+>     BASE+PE     IOPS 1,271k  avg 5.57us  sd 1,393us  p99.99 27.5us  max 1,581,800us
+>                 IOPS 1,461k  avg 3.43us  sd    78us  p99.99 23.9us  max   227,015us
+>                 IOPS 1,444k  avg 3.48us  sd   222us  p99.99 23.9us  max   592,628us
+>     PATCHED+PE  IOPS 1,457k  avg 3.32us  sd    18us  p99.99 27.5us  max     5,620us
+>                 IOPS 1,464k  avg 3.31us  sd    17us  p99.99 24.2us  max     5,621us
+>                 IOPS 1,475k  avg 3.29us  sd    16us  p99.99 26.5us  max     5,620us
 > 
+     BASE+PE     IOPS 1,271k
+                 IOPS 1,461k
+                 IOPS 1,444k
+		+)----------
+		      4,176
+	       /3)----------
+		      1,392
+
+     PATCHED+PE  IOPS 1,457k
+                 IOPS 1,464k
+                 IOPS 1,475k
+		+)----------
+		      4,396
+	       /3)----------
+		      1,465
+
+		(1,465 - 1,392) / 1,392 = 73 / 1,392 = 5%
+
+
+	improvment	within 5%	more than 10%	more than 20%
+	(mIngo's) rule	safely ignored	good		standing ovation
+
+More than two miles away from standing ovation.
 
