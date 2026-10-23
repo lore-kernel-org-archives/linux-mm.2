@@ -1,161 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86A2606A32D
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F67C606A31B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Qbu/vPW+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kUOaND7i
 Received: by kanga.kvack.org (Postfix)
-	id E251F6B0BF0; Fri, 23 Oct 2026 16:23:26 -0400 (EDT)
+	id 85C1B6B03F1; Fri, 23 Oct 2026 16:26:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD48F6B0BF2; Fri, 23 Oct 2026 16:23:26 -0400 (EDT)
+	id 8342A6B03F4; Fri, 23 Oct 2026 16:26:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9C956B0BF3; Fri, 23 Oct 2026 16:23:26 -0400 (EDT)
+	id 7224E6B03F7; Fri, 23 Oct 2026 16:26:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FE646B0BF0
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:23:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D61D801AF
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:23:21 +0000 (UTC)
-X-FDA: 85355015802.24.4151BCE
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010011.outbound.protection.outlook.com [52.101.193.11])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2F717C0006
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:23:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Qbu/vPW+";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.11 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792786998;
+	by kanga.kvack.org (Postfix) with ESMTP id 4316A6B03F1
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:26:01 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D69A2A7581
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:26:00 +0000 (UTC)
+X-FDA: 85355022480.22.E144BD6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E793380005
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:25:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kUOaND7i;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792787159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l+XlcwQI34F3dMA2xFT8NS5TelcWVIyw8mEMoNZQjSI=;
-	b=yqdT7JZcSb1UwdssBrqQ9d/9oXDSaWjfjiHY5dPP+x/K9v0Dtq/7rdxbMAuFdknhgtgQ1e
-	qOz99X/xZhFZRp3er+wWKTAkJJtRumgNJeVJpSvi+3sl4hKKuXBs4P8saCNIil9aRsr4oD
-	dY1U1hYoW7oWKk0KMtESrI6o0eZbGn8=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Qbu/vPW+";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.11 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792786998;
-	b=f0ssfXdeOeYN1g/maFQA8/bpftJSZuTxxaBB/KUX5gH9a5sF3uRbEevwJYOTP+2KBvzMbP
-	/UAcEnBEDGI75vpaxAKj2R3diu5+YC2BzVN0C2DY7LRnEl+e9Wu/QsnUSbH3pqY3eqsitU
-	hOmtVu6oqKT7Es2b+c/JE4hB+kSeZy0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uPS+ac07ovRiANrJwk1/OwS6sjvF4QYbBPk6z0MOFFos4hMojeQHIwyNy6XyoVRbE25c6cJdMXzg9XQPTqqhQXag2HasdjvyzgTIT9pca2st63m+kefksVZkBAA+hBkHAhxmNE5PFeaG5OzakqJfpOJiTmFy6PVlGawcdN3qW0kHTbFXhrmbg10zDUjp/kh8+uW460d1s3DgdlcGNUbGU4Jo5Km2QbiREgHgsqdyCDGytEd17IEWzckL5yZSCUjtcutfafvAOHxPwTBqmA6+KzyXOZl/IZ8HVjpp1JHyKEGeSesKngl/J2FEFm3b+gaDfjOeDep013DKNkecrStElA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l+XlcwQI34F3dMA2xFT8NS5TelcWVIyw8mEMoNZQjSI=;
- b=MrEYzeRA8DAJdnMMqkY9OXDFMS6loRu3AMVFRFAoGa93XM2DYQ0iQABXchwOq4Oz9XSFSrz/ffS3lmlrZaJ7UlWNxlJnygVr3a/y+HH0VjPTiiog8KOM4OKoyP1rBnnsUAb45P9h0TDeUkCbDpJWoPy8Dc2Ag47wbz7MQsnYej7GnxBnsC7I9OcjZNySUk54gl0YmsU/PEBzzTLTLw9E8q7d3Ui7cl0kQ1QEhZsROk9E20KN15HWiiierqTccs4ZvXJyxZ5o+OgfwB2NvF1x0ZM+CV4M2mwBMN7cpcrmcC26yIxfebhR6lT+eTrh4jf0WS+NMpq8TloHRfATey8+fQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l+XlcwQI34F3dMA2xFT8NS5TelcWVIyw8mEMoNZQjSI=;
- b=Qbu/vPW+R7oXg6ngO6mS7MS47cCvG+KQxg6LAPYqhqlCoomh3OjjxDbxv71pTCdH/3UoHVYYJb6q5jZjUzL5Qsz0SB89bNUVlBemhCQRTu5RQk606+302tGpNtZcAhzPHD/wM2SSUvw2YjzraFCWQEtlsYRBoUUyvyNrMggGMFKZyxtqpgc2E6G4aLm5y9divWozzXExoruQqlVuOjBYDF/BIqVq7J6ypDTlGk61JiWJAIZ3BrU+3dnSh9QT1YQFtNAzJrlRID9TrALfuYpz4qhzIdbCruKw5SXGLQOsK1SGpYflqNt9Bhin0y3FWxAkqq/EYZ6LeNOZgppNhD4Wag==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by MN0PR12MB5859.namprd12.prod.outlook.com (2603:10b6:208:37a::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.19; Fri, 23 Oct
- 2026 20:23:13 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0522.017; Fri, 23 Oct 2026
- 20:23:12 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>
-Subject: Re: [PATCH] mm/mempolicy: remove unused mpol_is_preferred_many()
-Date: Fri, 23 Oct 2026 16:23:10 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <AF9A10AA-E27E-4677-B14C-7C1B4EF7EB6A@nvidia.com>
-In-Reply-To: <20261023161003.59086-1-ekffu200098@gmail.com>
-References: <20261023161003.59086-1-ekffu200098@gmail.com>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BN0PR03CA0002.namprd03.prod.outlook.com
- (2603:10b6:408:e6::7) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=cBpuKNMULYb65Wu/rSVhgxM/BAFCtGUZFo7lMN0HRYI=;
+	b=zQgpBcGbPnx01SfUIP3UOTEToc2g2dUVzn0r6pbZZt0Xx67MW5mtSt8Mdf0UdlnHZLaERh
+	B02QCJ7SqR0Z+pONBIlNQQzSfzUvv23jlCrN/uCTiPE8cXjZ7XUZdJLZPvCj6Q2iYdGgjZ
+	/MzOsYMOKbs4IlmEjyLCBstay/xjZRE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kUOaND7i;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792787159;
+	b=WLIsyVaqSKyMbjMTq0D6DWlkawA8EyTFX6QJFUnQ2aG5pRqsK/uTiJF6SNHsaSB/SBlmEp
+	Y7TydiZOsuNpdvxdKEwOadZMLPKcq9QXoMtlfJo0P8NW5kccUJ8k26BmfYn2WbgDAywMpj
+	Lh4EjcuJc/hpFyAAZgqXR3Gj9uMnGWA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0650F44011
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:25:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E256B1F031E4
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:25:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792787157;
+	bh=cBpuKNMULYb65Wu/rSVhgxM/BAFCtGUZFo7lMN0HRYI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kUOaND7i9bo+LfQTlYCeMSIMDINnKcKAqzuMs6mTaPqaxiTdUM7Cuhgwkyc4rUV+L
+	 asihWuH/R5+ji5wOTBIsOO3tYn6oPdD3FWHhPFndTOA9kKA6rHw8if0NbUunXJe+0l
+	 m1t7feyGN5GBgprlHNBPEdIE0kO6FexlMjMALpVVyqJGMkl9aS0eniBHZKhisVafG0
+	 K2f11eEFl4rCCpHNij+cIYKY9caWSDaI1dHvhPNnxcgjMTUCnyGP32QIzcHxoFZkWp
+	 11jRgeKbR13eGBAEMoV7uX2iZ/ZwOYW9rYwiivm5PV9BQqJ1Iv0iQQofxpPq9o5BBe
+	 BUNdm1MazjOgA==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso193696266b.2
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:25:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxTHo13Wuzs2C0nn/4bCZ+XZ71bX0xbAoFv3ilyaYGT9o/5no6jDdzY+xTAyW4acMl5ZFg1A5Q3bA==@kvack.org
+X-Gm-Message-State: AFq9FYL9l9TlA+zQels//A7lO/MKn7sZ5DLhHA4Wfyn7ajBNMiyr7cHV
+	X0th5jO7DquxbkcOPqerEfzHlPcZfGQfdbUxsGKHjufJf084h2WeAcraIBM8f26l8wb6JnIqQik
+	/hu6/Vw712DlyWskG0DCN8WfM8mC1DMo=
+X-Received: by 2002:a17:907:b041:10b0:c46:7ec3:fdfd with SMTP id
+ a640c23a62f3a-c46bddb5527mr644266b.14.1792787156537; Fri, 23 Oct 2026
+ 13:25:56 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MN0PR12MB5859:EE_
-X-MS-Office365-Filtering-Correlation-Id: a081c194-db6f-4e71-46e8-08df31437622
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|11063799006|56012099006|18002099003|22082099003|10067099003|261009223027099003|261021123027099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	pIhv9sL75OnysT8PZlHggM1TqcBlGaiQbb2G5obeBENoCGDrWtUSfqhbKTwyuBHf3suOVB0GFkUUVcsDtAl/vWFe1Q4nXtZdY+kCeqvnqeGpy7EYyyAnROpoJnk4cs4z8YMCIJ18rtbqttzLcQ8fO70oCxc3X57Ey19fRahgn0Wy0JeD7GdfBBqIGUYOeQLXlG4Szc2GiABe1fQDlzy96IQyfwwUmm9AFhRNpkfpBZRo2/+NW2s4O3g/KD7FE6NMlTXy2ah1kwbImJfgpKzjGO0ljDHEXgIwjUx4Tbcmg6E7/45XAjl1DhqWzM1oLrv5cbODKFIEs5InaujbAsv61Vg+9h/wE5DGj4d00aMfW0iqLoHsS8W2hEutty3djgANhinD9gML7HKw4I4bTKdy2zO8ATWPfKD6zpPBk54IDe5QfZxn2Yjxz3LHvQ5hNN/EYssfC7/hH6PpLFW8HOyIu0ezg6p8k3f8LOEmX8OIKdOTSZbcvSNi7O6xL2Vksxr3UxZR4X0fSseyWxtAc7zEwFm9np72LAxW7WZ7IYJJHbUkOiiI//gdbE+KU94vv8Oh6Irser4poBttJdxx2PcR4vssVL14sTle5eWhNZZHweFgMKqIUIQBV0Ul9XTLEy97zmzRDpCT/UKRpEQe3KVB1np59ApmdDudVqWXQ83pbU4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(11063799006)(56012099006)(18002099003)(22082099003)(10067099003)(261009223027099003)(261021123027099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KFhIM6BDlNYYvwzgZKB2/LQqFNty5RDkBBagsxt05SwU7CbvgxaX5btQ/1nG?=
- =?us-ascii?Q?HllScMDB/AhB6DRK+LqGpD0ZXs5VXmX5rUFhpu7deut+Ti/uajK4jq/iNHXT?=
- =?us-ascii?Q?6IRh2i+XSjLFlL9pUauWLOtcMPmYK6WUcXFChrMoLe3/S5De+Y7VEorJbsrO?=
- =?us-ascii?Q?v8q3YT/ecBOy1nEPr8AZgQta1EabWizrUQI9HDcVHAXWkmLqL3A0LtabBjWD?=
- =?us-ascii?Q?Gl63Rqdo6uaI/gT6f/eZ+KKeSu3ZokNxEELky6pdpu3j0k89dlqtoH1meTgy?=
- =?us-ascii?Q?2t7iwSU/VK2+islhTU+Oj6unGdZp2J0RLPx+WNRfnqhDktvgRO7CGWggyEGX?=
- =?us-ascii?Q?Yys/lj4VwIgvkwBTlIVjlsxZSEby8s67breD1HuaDKKF37m0vt7nFOCesvU1?=
- =?us-ascii?Q?7aYULNRsrtUqwJvoS5YQT3p6IKk2wc3ZiO2lNPJ8mOQK8pC4qaqcGbf5wPys?=
- =?us-ascii?Q?41ElI2ySFXdcELFrdkZDTv3t4Q3y3cT4s48Y5Ovr/TgREime7ph6PprsTOOm?=
- =?us-ascii?Q?dv3g/5G/sY6mHF0MB9LIu8Aki8ZV+er3nKSij7XXvIWeXRHhYx+cDdNCBkar?=
- =?us-ascii?Q?bDcCJsWcOP6HhucKo7ihlxhYxe337PkuZdjSkGgZV2bq73zayGs/mJGyP/Ry?=
- =?us-ascii?Q?9yg4YNrSHl7JR8rrxzFt4bB6vuZlj+hv3nt8FQjZziXpd+11Uc8HoB/mBjf1?=
- =?us-ascii?Q?Qv67jI28RD3XgUhybXWrJuMZppBDltk/14f+tOYSt1aEpgN8MXtn2gzSTQXd?=
- =?us-ascii?Q?aFKqXDLzekowxK+vn2nsxeWCHnlWy/krWGoSwS+/s/QhSiMp4EeP5CtgkErJ?=
- =?us-ascii?Q?4Mcy7tMNLMGgn3jIuXnVkhSkEMKLJD/GoGaPx+Y1tBFCsnib49K19PDPldKu?=
- =?us-ascii?Q?fgQtOvfcHZ4doZWmARUKx5q/N6Xk7UM35iS3wSwyqpBqzs/wDsJGljks8EUs?=
- =?us-ascii?Q?yWkCiOLgtyvYUVBLgAYiCpE7YlVVU9lFEcfXXKiZwOazzvY/tRcUruclkhph?=
- =?us-ascii?Q?YxlLpy26rkfvyNay+LaKBIWS7uhy7eDa5VadRbGv6TxiPkZdEfWT5DwC+tgh?=
- =?us-ascii?Q?8ppbo3RemJuolHnhrZdOWTFGURuhNFJJmZersszFhNCvheowi4RiglZEBYC9?=
- =?us-ascii?Q?vReezqsOd4XVKLhUDtJZbJ89n0Ph5wCY8cbumjt1LXQgZc8o1ncrYQU4mxSH?=
- =?us-ascii?Q?tK1IVJf+dqT57kzOJuuReNq6z1UYxSfNzLnc5MgHT57BWXvJbTxOoYX0wu+V?=
- =?us-ascii?Q?ZWxORJF8IO0E8HzAkmQ+7SuS3LuVcHOD4dhUzVkccsSrItI0c4tlBQqZRQKy?=
- =?us-ascii?Q?drVOZ5+My8BBkAt9fnY5dbDyLGGrsjX3VyJ/QxxOcSAzQ1HDu6FqK2Uz/v75?=
- =?us-ascii?Q?ns4EAcM9SrvgZB2KjwoRbVCgJj75KqScMvG4CvN7v31jkoJzh366dUb7IvnC?=
- =?us-ascii?Q?cJ6vG30tlCFDu5yKvh0Vn+ssviPaoV9Tk0z+wWN/a4moJKZ2vKFNrQc8pkrI?=
- =?us-ascii?Q?YvjxRXYyBuq4ZAC4I86o/BepL3sK3zH/vKmr8bSReb/QTkzobUNm+hdeJeT1?=
- =?us-ascii?Q?0QHrvFg7IBtiku4Z0vHIKMnQVYqlmg3jtTDjvx10Xo7lriXlcJujAF5Rm0q6?=
- =?us-ascii?Q?Shpk0ZFACJeg8FzxLzCmSohipClCJiWEAlQCfT0ii6gOn7+INn0gl3y/Z13U?=
- =?us-ascii?Q?Z5vGdaAhPg2iy++jvDwnb0+rd9fCYjsonF9AZBiQJva7lJkn?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a081c194-db6f-4e71-46e8-08df31437622
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 20:23:12.6638
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NE4p4Y+TtifH4g7PsOtZ5U5rpu9MT7k7AQX1c1AqwzhLWXMqxfaItlS5tLc/Kdev
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5859
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2F717C0006
-X-Stat-Signature: 8mn4qixcjumkf3hxk91hrdpy4g11kwpi
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+References: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
+ <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
+ <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org> <20261014195354.GA371161@cmpxchg.org>
+ <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
+ <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org> <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
+ <CAKEwX=PCSyCEAqxeOH6CkCMu1eB3xUn3iz5XNuTbpDM3EmWYAg@mail.gmail.com> <c6e62e80befa886fccd36d34a39cf56ea5b9c9c2.camel@surriel.com>
+In-Reply-To: <c6e62e80befa886fccd36d34a39cf56ea5b9c9c2.camel@surriel.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 23 Oct 2026 13:25:44 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOtK7YYdBNS+h5bNW-miKED7p4G0igy=D-=HRnGqA-38A@mail.gmail.com>
+X-Gm-Features: AclHuK_uvs0DAK96R1pRTbfdiLY8KlmEoFiUjwQOc3DD1U1FsjbL17wAqwkQa-c
+Message-ID: <CAO9r8zOtK7YYdBNS+h5bNW-miKED7p4G0igy=D-=HRnGqA-38A@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Rik van Riel <riel@surriel.com>, Wei Xu <weixugc@google.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Gregory Price <gourry@gourry.net>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E793380005
 X-Rspam-User: 
-X-HE-Tag: 1792786998-503705
-X-HE-Meta: U2FsdGVkX1/i+Aeywef9rcmKUYJ/gaeQcCvo75kEkeZ5vXyUc5HuQ728OApAstJnPVLnkqNcH9NRKGNVwDGppP68kP+jBxxuHjuOBEr0goDl6/zABIfEluQnndoKukWjf45EW9A1nMv/4xpyaz0hDt8CjAgi0OQy50u1XiYOiwpCo4M3M+jBHb1SL/6EpoFKSiwNnekiamhDS70ZQRcqO+qVF81EkU8c0MbPiy5yn6JDi1O4CWU8tJsfhqCPMRFjFAL7AbTMY+R+L4AOkCFfxKEdT8fwVVT6Bighss0mCInKiMHJ8hDwAhTqQb3RdI/b2YCv29yeHmujOM9TWpKQQ29ny7alNflOEnlg/C7KokyYkllqhXdZbeR9U2SAve+a+RyR7KQCAVJT51UynJ1aSSh+mDsz1czg3oTWjxPMH1dbYR/TWcTELi+xjNr38xfUe+RL0qFnAwNGp/YrCaiOif1/0O9yM6CknSyu5yJUNpQwHqqB98M7b6LHTr/CYTcutIOe/BDT9Wk65xoxkh6NofvOtcoMhQz+Fr2YtVhpwQQ2/uKZkteYCJ2PSGmmfcgyOR8fvfoIUh3CbJ4jEYGzCLUje6/a2pHnuEuCdof/c6rHipFWkvNjVAFZGC/Zc4cqgM1viTCydkjMgVPEyNK745NYfYJTO6FIBzgfKinHGyPkVIVLro3Em6jsfufUd/Ma9f0Vm+zoetDsrMeHkHMkoW8Yk7+BWxoBK+ESXFgVukLcPGxjnUUvvMZdkwbpKjI85OfeGYRnNzeuDUuJnzB+kfFUjfOrrBfsflN3uwmu9Xd/wzsofnv1PNdJQPoAA/RgFiUpvi6GJNnPkPAPG77X5jvJGFkDlF7M9TluVB9D+gZ1yUx/04487e3duTotTu610eEYyx1XOgFqwGsd+Oqb8OBH3xpziveRGRKamIsZpmpeiBHMfNGLOWiLHlgHqMl4yq+fxig+vsxjTDQa2K7
- sJHXTbrn
- YpLP3rIG8dNYL6J+C0lwJAa5+bVMVSK6gptD8V0G+y83NmWaytVmuWxmuYlVVSdUmerABC7V/zJVv591PAOhcvIM0qIgEA91qUgqWE1kvyPUxmUW/B6e+uHOeNTHfhcV9OWWGN9t1hPrwhNODNuqpWJPaHaS8Htt+0G+99eSDa4Wlgbj3BNfykayVqoi2tjXRPn4951BtZM0DcdYHLJcnRN+dmwTt1t1A5wyrPv0go8nzjd8mzT44Qxr3y9Q31zJ8v8WBTA6JR+9Q5z8g0/7GM7/DVabUT02+ZHcIlLz2kvSSQXhd6Kzd+cJtkZOuXM4TYPkZt7wxvuZ1BL2bVjPAVKMElglUiSMOvGZfIZVIP7/Nq3Eri8x0W94BlosJlWwNznCyAHWs/xiapDAsYglX0ucHLLzHpNIkYySrLJqN+sKy0Etf3TqaBJliQaQzVG+Ma6+uFrAQDi32h4HK5IEbAN4qyAAW2W+74+6QGgzJAY5EbZtNd9C2QeDmnjokJJ5ipmzViaIObhN/BPDk2/zAMv3u+Q==
+X-Stat-Signature: ohibgo4hmju6zyxsftu6b484sykkqp1s
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792787158-990807
+X-HE-Meta: U2FsdGVkX18rIdxUt2cz091mg+sYBxBOrSrrdmJQp6MESoUfWj4TOSVulcOvaZjDc7leOYQ3lTuH0KvsODcX+iS1bVozZajm3yYG9+jbqefAfOBnhAvTEBnemvYuyobbzTmhN3kWiLPRpzJiS5fu6PcQEHxEvblC3bSLGZrlOZkYGCUohXEM2NiAn57s42k8rMvIJr7XN5ZMw84wYi8BbVGVVmCGnOQZGBwPZXJHmyt2tgQTNMqaq2IuiRCDxkli0bbVuPVnOkELqM5tNqQ132tFl9s3QJ1vusmcZqXmy4yTlNL0jZv5jfeY0/LaG3B4uuY3pAkkXBNgoE9eOSTkfkXbjewfCZaROXQqzclGBUKiL21KTEcsa6RzEmRkG6GJR5eFOWSmScXMyaJEdb1yreTtjMEzRbTj5uC8ADdZKlUYDIhdtlan3mn38W7guzFrxU730QzfVAj0s5P+95eJF2k6ix6SZ4kHrAcpYuPtTenudzEWATKHOucX10Oqlf0Qiywt3dhH65NhGgLO/4YsnfL0H6i+j0JikZK+ikOtcya6phWMA36I7Obiauyu/SGHXVeqhYWO9Yj8vK8/l8fk+yUYBnu/s1S0pbPL7HHl5wU/mQSYnHVUOnLVfILkyjjdbs1N/Cad8d9pzTy/lKhcj1e5vFGEiW0enPVH/gC3FjrUL4jBeqPOB6SXaCnN/9doaz+coVN4SmtVa9/+K7y5ShXs2uvMNy8kyz3ztBMjoA8O6Iaz73kOKn2QrDKvavbRrl/nTkx69pc/2zF0tXxRQ21th3CiXUu5oZH/NMwLgcYVY7IqoZj1fbouu8Z6Q134A7GD7NydhqQR+LQq9K52AAHVls+k/nvrFlJqlqtrNFYYTCbgE0N79iztRazg4V2RV6EjBzErIFz2egl8zTHTwYxeF3PfsQbCwxAZqQJZ5i+tkBridBsnIoyqqZJ9WxXo49urW7Y8/U61vCW14MD
+ EUxntOcr
+ 8IRdePTy2bIuE7vMzeEFDDtC4TY+UcXnZe3tpuGL2oo0iuyAwhwfWJYq+8JtXrJNt+rJslZi8gdJiD/2DU3eQ3Sw6gtLRKwGOqfZYIYVKASO3eQR1bGE8ASHoEJcNUndk1qQzmQkQz3ewei/+hMtF50TlSCA78Zk0GfEfTpXTru+hEnImxV74scRHAysMr9bB9Mh865QLwlZ0dRuClXEzoWFtTjPARNWbc9Tw0RMU/Tlr/sx5qWRagoeXlkRWNa4MAzB0ESgwVpVJksmRhMfOXy/FP6prjxsxIt4nvBfrbxxcc+sJzvhSgOcYHezhaOEB7VJpUKgiE/1w4tDxVpgAGWAU1f846M737O32wOFqsedhGB6T1wobu3IluF7OfNdTac/s3FsGGLWgUoTKoCo2bFYV+1KAxYEn8ZEvl31rDi5JAv2KckvHjuhmxgy22kAOLqivGXYswx0JAtIhNFNOZG1VbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,24 +133,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 23 Oct 2026, at 12:10, Sang-Heon Jeon wrote:
+On Fri, Oct 23, 2026 at 1:03=E2=80=AFPM Rik van Riel <riel@surriel.com> wro=
+te:
+>
+> On Fri, 2026-10-23 at 10:24 -0700, Nhat Pham wrote:
+> >
+> > * Swapoff: this was brought up as a request, but we ran out of time
+> > before we could discuss the motivations and use cases behind them.
+> > Folks interested, could you explain as a follow-up?
+>
+> This is one that I really don't understand.
+>
+> In my mind, we have vswap sitting as kind
+> of a swap VFS between the rest of the system
+> and the swap devices:
+>
+> +-------+     +------------+
+> | vswap |-----| swap cache |
+> +---+---+     +------------+
+>     |
+>     +----------+-----------+
+>     |          |           |
+> +---+---+  +---+---+   +---+---+
+> | swap  |  | zswap |   | zram  |
+> | file  |  |       |   |       |
+> +-------+  +-------+   +-------+
+>
+> When a page is unmapped from userspace by the
+> reclaim code, it goes into the swap cache.
+>
+> The vswap layer then decides where to store it
+> at eviction time. This is configurable by userspace.
+>
+> If the zswap pool is shrunk, the vswap layer knows
+> where to put the data next. There is no need to
+> change page table entries to indicate that the
+> data was moved from zswap to a swap file.
+>
+> If we decide to disable one of the backing swap
+> devices, the vswap layer can just move the data
+> into the swap cache, and the page reclaim code
+> can evict it into a different backing store, if
+> needed.
+>
+> Using vswap as a swap VFS would also allow us to
+> get rid of the page table and tmpfs scanning
+> code we have in swapoff today.
+>
+> In that model, I really do not understand what
+> "swapoff vswap" means.
+>
+> We cannot umount the VFS.
+>
+> What exactly do people want to accomplish here?
 
-> Since commit a492abe28bec ("mm: hugetlb: move mpol interpretation out of
-> dequeue_hugetlb_folio_vma()"), mpol_is_preferred_many() has no callers.
->
-> So remove it.
->
-> No functional change.
->
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> ---
->  include/linux/mempolicy.h | 10 ----------
->  1 file changed, 10 deletions(-)
->
-LGTM.
+Today if you swapoff a swapfile, every is swapped in into the
+swapcache, whether it's in zswap or on disk. With vswap, you have no
+way to trigger swapin of compressed memory in zswap.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-
-Best Regards,
-Yan, Zi
+Wei, is this what you had in mind? Can you please share more details
+about the use case?
 
