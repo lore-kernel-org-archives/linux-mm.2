@@ -1,93 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821AB606A327
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF236606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OLMBpdxF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RnZOfomc
 Received: by kanga.kvack.org (Postfix)
-	id 9D4676B03BE; Fri, 23 Oct 2026 13:31:07 -0400 (EDT)
+	id BB79B6B0BB7; Fri, 23 Oct 2026 13:38:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986BE6B03C0; Fri, 23 Oct 2026 13:31:07 -0400 (EDT)
+	id B68C76B0BB8; Fri, 23 Oct 2026 13:38:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89BDC6B03C2; Fri, 23 Oct 2026 13:31:07 -0400 (EDT)
+	id AABE46B0BB9; Fri, 23 Oct 2026 13:38:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 653236B03BE
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:31:07 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D03E51C20B1
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:31:06 +0000 (UTC)
-X-FDA: 85354581732.03.4EDE4AF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1CEBD180004
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:31:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OLMBpdxF;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 7E45B6B0BB7
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:38:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4282160170
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:38:35 +0000 (UTC)
+X-FDA: 85354600590.19.D362355
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5B64B40009
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:38:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RnZOfomc;
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792776665;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1792777114;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vCuyheP3hRwaXPnVY11qKs5HWYXsCMG1K1Wdmf7PfIM=;
-	b=W1+OCdHdONUcArE2eD5NCfGLlE5lVcF8y7Lqxw2FHMZJONR0a2jnL64kuXd1EtncyjTnxT
-	yV/Nro+/r9mUQR/50OC6jJ9nCtBWi3CEkQofOK9skia+jCBppJfI6kP6txWwUBUmnKXDvh
-	RGxGWNsKP/RxjTh4z3/TDs2qai/aVu8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OLMBpdxF;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=xceb5IU8bfgZgDF8uYnzWT+kl4EVCPQJ5Yl/w9i26mQ=;
+	b=jzT0gCLqdSIryf32W5iyEhiOCfnkrtxdK3Bhb0mwoYR6oCajm+Bzixz4jKMRDpCJHEAIaX
+	Xj64kjFUcJv0jcB/mKuZeV3iiH5ibiBhNf1PFpTGtEbg/cnlUZh6x6O7XvxjpksetyRS0T
+	A7KcblnzC4iJsTGM//sIsJvWArUvN8E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792776665;
-	b=dXs7MvqRschjv9roFTSdnJdn4M4Uf8w6AWuPDjDaXtYtJpCDmZ9YpWV5tcATz03eyB9kK6
-	4PlPIrdFhwAJAXbvsqTuIbTj875xm7a7fVJouol02DM3uc2aFowJp0fO1oOqvsbNfg2bt4
-	4PaaH7oBau37afsRfoXZQLf9/MaRcMY=
+	t=1792777114;
+	b=Fvv4VM1tYH+QBoa3qkM6+A+6Fk9nF2RFknpTs9nRfTLnbS6dCNNu+kYF6Az0FWNCjdHKhL
+	kt/rAoEBBzqW+PScaS7vZnNn6t/sI48Cz70xGkxasXY2hpMj62qvFVVKq2QxSlByoYZzTa
+	KIrQfrpdqUzhQKNWFAf1aly85N/6+UQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RnZOfomc;
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 50D14400D1;
-	Fri, 23 Oct 2026 17:31:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A1E1F01825;
-	Fri, 23 Oct 2026 17:31:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DBC79601DE;
+	Fri, 23 Oct 2026 17:38:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421841F01825;
+	Fri, 23 Oct 2026 17:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792776664;
-	bh=vCuyheP3hRwaXPnVY11qKs5HWYXsCMG1K1Wdmf7PfIM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OLMBpdxFOpWykEJlNQFOsL+hIYiRkoWdxHGC6hU3w6aU/G93yMFipAiwJkR2JVW3J
-	 Z9nkLRTa+kgdaHLTGwrK1URPwqMkcBs+6aGag+eRSf7XqsmFtY7kABsazSKHt1Vo3u
-	 B6KrXksB6gg4FJFSfUn81ykSx/YbnJJSmJ1fhCuB9q3Z1BFQEU7T6KPUtvjh0SHi6C
-	 e92vTigW79GPVx5PUlt1bTunKrpmngrvfM8eA7DqEVFgX+bh+F/R0MGCaRoQv/gOJ8
-	 RG3yZvY+EDZNCjh3i71ASo6pFThoSjcWk0n1DRsrmzMxaSu7fCfau9cYLXKJar3QVD
-	 FHG1Nl54mNwUg==
-Date: Fri, 23 Oct 2026 18:30:58 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Jakub =?utf-8?Q?Mat=C4=9Bna?= <matenajakub@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Luiz Capitulino <luizcap@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vma: fix expansion of VMA_MIXEDMAP_BIT VMAs
-Message-ID: <atuY-n02IWHY7SOT@gremlin>
-References: <20261023-vma-expansion-fix-v1-1-6142baf1f46b@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023-vma-expansion-fix-v1-1-6142baf1f46b@kernel.org>
+	s=k20260515; t=1792777113;
+	bh=xceb5IU8bfgZgDF8uYnzWT+kl4EVCPQJ5Yl/w9i26mQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=RnZOfomcQ1bneuisxRQWTV803c0j4Uv0iVf6zwDBE5tJasoFQ0R6o1jPwnuQn81mY
+	 Rv0Rzbdwc2dE2ieqiYpaiIFihU7zohAuYBvvb/ikXxQ0s3V9oHcWFJH/AdsMLYcwqH
+	 CTH1r5ViQ7gxhzJtxUS46FlsaJlbqXtNL4YWLKlcaQG7gZpgEuifJCO0+RqUj3F0ad
+	 QADrP5zSkSaPUuSSzOdYJJLqPWn3SYxgyeCYequKOGTMq309QOwDioASYJrb84sc19
+	 k60oRW7SpEHENdTpNdFrxcE8LuxNc7NWcoHJN37f6zZCcNzrtveLWeR2xc1ONz6dtg
+	 3sYhDLJ3kRf5Q==
+Message-ID: <sashiko-outbox-183008@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 3/4] alloc_tag: Extend allocinfo_filter to support
+ tracing queries
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Abhishek Bapat" <abhishekbapat@google.com>, "Suren Baghdasaryan" <surenb@google.com>, "Hao
+ Ge" <hao.ge@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
+In-Reply-To: <f577c773058265f0eb7fe2c10fb6aa4003445a00.1792690544.git.abhishekbapat@google.com>
+References: <cover.1792690544.git.abhishekbapat@google.com>
+ <f577c773058265f0eb7fe2c10fb6aa4003445a00.1792690544.git.abhishekbapat@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 23 Oct 2026 17:38:32 +0000
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5B64B40009
+X-Stat-Signature: e4jdd1447j7gsgutb3bkgjpz6etx9pfe
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1CEBD180004
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: hc45xzf3mzaxsysfw8a8xhxf3aeu8ysx
-X-HE-Tag: 1792776664-295492
-X-HE-Meta: U2FsdGVkX19NJF29XmFSW4uEP0R5HM2BB6hhfG2STwzZIYxE2O1qOSN//CVqI5KOVwadeTVw7MtcmUk53yE5wQtyoBhuS6GtYxt4nfoGWhDVlJHTPqMEFO6EdLtC9y6zr538AGax4tAttF/dVw8+JV5xqbSRg42ddcQFYsYrgffgCX0mBEZbXS2wrhvqSF4KAgUJSUgY1P5cSg+D6z66iJmPsItmR8xKtE83yBT/gyShMzJby/dsSrj/Vtbz2+E61u1KNTRFTGcL7ABMJVkb9Ydeki6q0REGVKeWgflWKVu26PEe2c1xY3wygyvZuetxNuRpi4TAd3VIGAhn0GqEiDu+32b72w5iJKnyagbMJ1TlGg615V9unisQfN7eaSaucYAA8yF5HXyVAiwSPTe5vOJDp4ai+yZVfikELJkLpcjKDcDjv6UZviqD1+a3eCWXXdDjnKjTohwxb7U6/CYDO5+FVOrOhoBS9fMqnTtedIv8liTvQL7NmujtGdwgHBTCXezKPsgDLXp21E5NfTk8Wh0NNGnll1YnuFpPth3ZViOYjCI5D2jIMqmS+vNqMnOOzNC7qbbNR0k7jsl7iJ+SNnOsqrWE5EMOr+p31/RJj4fuENB4iVXW+kUHBMN4ZetV9aIhJNg/DBTWOjyjiL6TLapQTGOHJWU7IQdt1Z+kPMj3K0DmX18ta5NrxQftLJXf6aWIy/4emiola9YPh3C2+ftazZrjax2i8BjTqbCee4DCLeq/wqrD7h+vB8WT1ClZbxG/fDTM8Akat9hDBOeBjK3kb+4jfBh+GpdMP2sVyTR4SAZ10mZp8jJhxhoIWJ3UO2uQFPmXTVhpm1HW3Gdn35vV7ePMgLEfcPO0k/8Sh/cropbjL3q4LgTGfhAoo5P2VzRvmsJvfW/tD+8XSWMXHgQ4CzqluhB1/ejfu073Iz0SIOa2XnS0wDhz6Zi4y32pn1JnklCja58lENRZ0sq
- dFVtuWdC
- f+RLUJr81/K9bW1i0BYJCCQK9bQW4uK4c2vTaW1lNExM88zeCBMSuZG7xulcypSL68HHEp6dbVR+WeB/3bRsElLxDA4bR1Yc6737jAv+6ZsGQ2+y5w6gRzt7HNlUxCHwtvCELOWdjms/Vi4JiCnigtFdhou0qhQgfA2M3/9VSg+M4YNbFknug50erDTbgAIASngMIFXWItqlyvESepj7xnlC+tiseUXCclrscDyScFqQSOBVV83RXl3wvvtGPgn8QidIlV/AQfcyukaHnIyfZS5jn453EcxuO7V2/UnMJZCCquSkNqxbJHdNt4jYVci6XtTEPsmuv9URCWtmYLok0pYVrzQ==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792777114-259368
+X-HE-Meta: U2FsdGVkX1/gxZ00jkibLZAm+oA89vh6OjtaZofp58grvpbgbcOa8dHViJ9CLrERr1vn/ryv5atU/7sqXBCC/L5BEumFhG/VYsl+UbDmogLwibXonnnG3JhN1eMFabqyk6e56MLjF+9TMh3igXq/3TKK8LvFXDsNTt/We2HFSvRXwYFohJuz+5/ul/LuD9BBvN0Y9nrFMKjbuMzDLMWRafj7pnCrRmWvyeYB8p4wOwWb8NSVREpM6+hKyfGCWV5CpwHLNqQdmM43BEm7puaartYYGjMqZM1R6TA57Fyrdr07vCUPQ/7sp2q+XH8Pb4Thu/62eiUUAW1tYoFUDUA3RowaSjSuPzNMR2e5NRa0HNyRbRlSrhdlZrcVF3Vro6ebd6fStmBehr7HgAd/LsBZgmr362IeX3F3y1HKg0u3SnQUi6ByNEHCTSmi7LZf6yuPENW6l1snSsL9iCLlmwRNS7wHoN9pfQrhoVAtZXf6tXKCpYQaKini5dKfKDJbWnRIAhXoIj/FhfIDNsxR5YfJoE5H/Exm1EGuHRGKa6diP4SQ/ONTapIGlbbE9bqglMl3TIz4do8QNvE87NbI91F5gfwU8c35bvNn7nTbkdjGiBy85ig+eGxBZ2CcL6M6DNCMYr80jVLdmgete6vlAv7YZILS0os4brpkN8eNgUu+OKpil9Rp3JjWHBC6CkGHDWFAwzZV1n0xlfTZkYF2+MopEXqNEj7LqCwOhaa662isYXl0JnxMde1wB3qeTgZjwXmYflPAOLxqM6xGCRdhxQwtERp8Zw1pvS5OYTCTR1M+NPt1ZVE/5fTw3su9UMM28012+BGBCG3f/lRHzKywRw9apMh145AA4Hqy2XyGcH3JihKG7qcRUpiMpZnpZfzzxcy2DHIGX1pc82MsJTp7yayknNbTTyhglOfvNG8k++MUXpWpPZhdfnNOQzX7W44NdFJkED6GsIaBQphZ5VYjTLi
+ URUpkplw
+ cJWmMhZwaWsZI+Kqx5XfMBBs9rJvQLYBO57hBh6/qt+AQxVj8D08ST6lbsMbKKP/xxt5kCfA/DFpkhzl6dvsc84NwoG4CdKgUfTsI024QLFTJ4ZtLQOmoe725B2hWkYB04svU9DVAMucZqd9SHs7Ko4c1L91/qZKH0y87Io0lddCNWWefura50xY/ep2rGdrk94yPUDGdGj+74OAbmtpccoh/fcdBXRXjZ2papF/gd1pHuU0+DqFrFBTaLEAWjKL7rXbES8hCKB9TSNRwnFci3xe0/E5lECkXPCWSq5Ir5O02mi3VDsJl8S6PGp2TBJ3NdE60dfDkAa/TE3XymL4Gc88aMqgSoWONS8eZQtuc24MXQjgeiySYQTXfGcYgXMlYxfvOxBU3HwtyDH7QN7/kY/7RIDrDu7TOJxd+jQPLPgOo1Qj5KkUJIsP+OzrHXxpsmiSB0O08U29gjNjAa8JWTdOiOx+nw4uENVbVvhRJrWOCp+CAkXdFnkcRyhKKO6lBs2RiaHgwJG5c5N/fIzbppiQMHSoUL6FHas58GLojpDHGBwYbo84guq4lhmoyI3NLEjRyIP7sy0K4WT3EPJma6cuCX02V3vHn4TCs/BAMw0oipCtGNyPd+2VAstA1XBQN2ZJ1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,63 +93,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, Oct 23, 2026 at 04:17:31PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Commit ca3d76b0aa80 ("mm: add merging after mremap resize") combined
-> merging with expansion of mremap()'d VMAs, however it also unintentionally
-> disallowed the expansion of unmergeable VMAs.
->
-> Previously it was possible to expand a mixed mapping which mremap() had
-> already ensured was a legal expansion.
->
-> This is clearly seen in the mremap() logic, as it checks
-> vma_is_fixed_mapping() to determine legality of an expansion rather than
-> vma_can_merge().
->
-> Additionally, copy_vma() allows for a failed merge to result in a new VMA
-> being instantiated if MREMAP_MAYMOVE is specified.
->
-> However, this is not attempted, as a failure in vma_merge_extend() is
-> assumed to be an -ENOMEM failure.
-
-Just to note that VMA_MIXEDMAP_BIT VMAs can _currently_ be expanded if not
-attempted to be expanded in-place (e.g. MREMAP_FIXED, or if not enough space to
-expand into).
-
-So this patch doesn't re-add the ability to do that per se, it just fixes one
-specific means of doing what is already a valid operation.
-
-VMA_MIXEDMAP _expanding_ isn't really a problem - if no fault handler is
-installed, faults in the expanded region will SIGBUS, and if one exists it'll be
-invoked correctly.
-
-This doesn't work for VMA_PFNMAP_BIT because the page offset might be co-opted
-for CoW (!) and thus is unreliable.
-
-And it seems some users do, at least in theory, require it, even if they are
-using older kernel revisions :)
-
-> Since vma_merge_extend() is used exclusively by mremap() to perform a merge
-> and/or expansion, resolve the issue by invoking vma_expand() for
-> unmergeable VMAs there.
->
-> Explicitly assert that the VMA is both non-fixed and a mixed mapping.
-> This provides double insurance against broken changes in future.
->
-> Note that khugepaged_enter_vma() (which vma_merge_new_range() runs) is
-> redundant in this case, as a mixed mapping is not subject to khugepaged.
->
-> Also update the VMA userland tests to add a required predicate.
->
-> Reported-by: Luiz Capitulino <luizcap@redhat.com>
-> Closes: https://lore.kernel.org/all/20261023023106.515365-1-luizcap@redhat.com/
-> Fixes: ca3d76b0aa80 ("mm: add merging after mremap resize")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
-> Confirmed that this fixes the repro and passes mm selftests and the VMA
-> userland tests.
-
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] alloc_tag: UAPI breakage in ALLOCINFO_IOC_GET_AT from growing allo=
+cinfo_filter
 --
-Cheers, Lorenzo
+
+commit b1243e6bc8216f5fe9d8786ec8ca3a597c41681f
+Author: Abhishek Bapat <abhishekbapat@google.com>
+
+alloc_tag: Extend allocinfo_filter to support tracing queries
+
+This commit extends struct allocinfo_counter and struct allocinfo_filter in
+the alloc_tag uapi header to report whether tracing is enabled on a tag and
+allow filtering tags by their trace state.
+
+> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_ta=
+g.h
+> index dafcba2f7e2c1..a96054ac22376 100644
+> --- a/include/uapi/linux/alloc_tag.h
+> +++ b/include/uapi/linux/alloc_tag.h
+> @@ -38,7 +38,8 @@ struct allocinfo_counter {
+>  	__u64 bytes;
+>  	__u64 calls;
+>  	__u8 accurate;
+> -	__u8 pad[7];
+> +	__u8 trace_on;
+> +	__u8 pad[6];
+>  } __attribute__((aligned(8)));
+> =20
+>  struct allocinfo_tag_data {
+> @@ -54,7 +55,8 @@ enum {
+>  	ALLOCINFO_FILTER_INACCURATE,
+>  	ALLOCINFO_FILTER_MIN_SIZE,
+>  	ALLOCINFO_FILTER_MAX_SIZE,
+> -	__ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
+> +	ALLOCINFO_FILTER_TRACE_ON,
+> +	__ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_TRACE_ON
+>  };
+> =20
+>  #define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
+> @@ -64,6 +66,7 @@ enum {
+>  #define ALLOCINFO_FILTER_MASK_INACCURATE	(1 << ALLOCINFO_FILTER_INACCURA=
+TE)
+>  #define ALLOCINFO_FILTER_MASK_MIN_SIZE		(1 << ALLOCINFO_FILTER_MIN_SIZE)
+>  #define ALLOCINFO_FILTER_MASK_MAX_SIZE		(1 << ALLOCINFO_FILTER_MAX_SIZE)
+> +#define ALLOCINFO_FILTER_MASK_TRACE_ON		(1 << ALLOCINFO_FILTER_TRACE_ON)
+> =20
+>  #define ALLOCINFO_FILTER_MASKS \
+>  	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> @@ -75,6 +78,7 @@ struct allocinfo_filter {
+>  	__u64 max_size;
+>  	/* filter criteria only; see allocinfo_counter.accurate for actual accu=
+racy */
+>  	__u64 inaccurate;
+> +	__u64 tracing;
+>  };
+
+[Severity: High]
+Does appending the tracing field to struct allocinfo_filter in
+include/uapi/linux/alloc_tag.h break existing userspace binaries calling
+ALLOCINFO_IOC_GET_AT?
+
+While struct allocinfo_counter consumes a byte from pad[] to keep its size
+unchanged, growing struct allocinfo_filter by 8 bytes shifts the data field
+in struct allocinfo_get_at and changes sizeof(struct allocinfo_get_at):
+
+include/uapi/linux/alloc_tag.h:
+struct allocinfo_get_at {
+	/* inputs */
+	__u64 pos;
+	struct allocinfo_filter filter;
+	/* output */
+	struct allocinfo_tag_data data;
+};
+...
+#define ALLOCINFO_IOC_GET_AT		_IOWR(ALLOCINFO_IOC_BASE, _ALLOCINFO_IOC_GET_=
+AT,	\
+					      struct allocinfo_get_at)
+
+Because ALLOCINFO_IOC_GET_AT encodes sizeof(struct allocinfo_get_at) via
+_IOWR(), and allocinfo_ioctl() -> allocinfo_ioctl_get_at() in mm/alloc_tag.c
+matches only the new command value and copies sizeof(struct allocinfo_get_a=
+t),
+won't userspace binaries built against the previous uapi header fail with
+-ENOIOCTLCMD (-ENOTTY) when invoking ioctl(fd, ALLOCINFO_IOC_GET_AT, &param=
+s)?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1792690544.gi=
+t.abhishekbapat@google.com?part=3D3
 
