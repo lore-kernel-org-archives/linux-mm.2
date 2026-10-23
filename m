@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75484606A31D
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 23:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DE8606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 23:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j9V6hJZx
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UKdfT/OZ
 Received: by kanga.kvack.org (Postfix)
-	id 333586B0C05; Fri, 23 Oct 2026 19:32:19 -0400 (EDT)
+	id 110626B0C06; Fri, 23 Oct 2026 19:32:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28E5B6B0C06; Fri, 23 Oct 2026 19:32:19 -0400 (EDT)
+	id 0BA986B0C08; Fri, 23 Oct 2026 19:32:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1306C6B0C07; Fri, 23 Oct 2026 19:32:19 -0400 (EDT)
+	id EC4386B0C06; Fri, 23 Oct 2026 19:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE216B0C05
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:32:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79EBFA025D
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:18 +0000 (UTC)
-X-FDA: 85355491956.05.0436054
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C1CD440003
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9V6hJZx;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BA7FE6B0C06
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:32:22 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A02512026C
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:22 +0000 (UTC)
+X-FDA: 85355492124.25.6893342
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B8FB8140003
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UKdfT/OZ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792798336;
+	s=arc-20220608; t=1792798340;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+uRpCta2+s96dD69f8bWRQjYDk7aUtR7RRhgbFZAQD8=;
-	b=BxTnMSu5Cmcdp1FmMLGJ3vdoGzZEuRkhDxKJtTXO2sOLNqbyKKxNhW3HmPPh94s2L14W0p
-	IxbheP0l6mSJGURHQAYTWpy4CMmOCz7deO9u1/dmkh8WUYxN+y6COZAUJXiJlunG0wBvxr
-	dNZsqrO7kNfHSTklt1RTWon0KoYkHnM=
+	bh=cUpsYXA4p+AgcY2utW3SVs0gcNM9y9RphrhZOvqDytA=;
+	b=aQ2pmQasuhtAD62/so6qzvO6s3WjGTwqmqQ1CfGhDY9AKwBXWyENePc5UiwiwT6sN/j93B
+	2s3h0F7CwNysz1NM0xubHlj1Gk+1/djkzV/YocEfV5QfX+kEtD7FwIB9YicVooTPtZyjRE
+	zSywTHqVZmpbt4QMtwtqEhlHXaQdeIg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9V6hJZx;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UKdfT/OZ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792798336;
-	b=n4/Og+nMDHxrOGbCWR2uZvDS6KQvTWYRJfZikDZ0hvRPMeZtuEiTY1pKdZCsujJ9qCspmV
-	OQJZkFC92ylEDWDwI1Q12iVeV4As4ksAgtvU8DXKe7ft3OTrhrtyIgu6j73G5yD1SEOZad
-	vYLtAUWSPoSIw3CEOZG89rD0ds6ZC8c=
+	t=1792798340;
+	b=qXByYswj255dtAiqHhDenWLa8VLCvJm+aVGsHbefDf3cfzYQODAZOiu2yWba29b2ZoM1et
+	hG+DxOHo3H0yow4shwpbUOX7hNWjdNrnlcG9onIDgpyhCyxeEryzSObWcC/ZGwecJ7JVTi
+	KedbPBFzJjwi7lnpyTLrkaUeHY/MPtk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 03E63437BF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4CB4A60A52;
+	Fri, 23 Oct 2026 23:32:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC0E1F01825;
 	Fri, 23 Oct 2026 23:32:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7027B1F031E0;
-	Fri, 23 Oct 2026 23:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792798335;
-	bh=+uRpCta2+s96dD69f8bWRQjYDk7aUtR7RRhgbFZAQD8=;
+	s=k20260515; t=1792798340;
+	bh=cUpsYXA4p+AgcY2utW3SVs0gcNM9y9RphrhZOvqDytA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j9V6hJZxS239yXCckA/anEyzWHe1D+TUClFYUZ5SRLNgcY0APoWFx0NaVJRifd9m7
-	 HVILKLOc/vtTX3wSiwrebwEbypEAD6D7x029EIJY3Gzl7p0z83ic0uCX3OwOTI+2Un
-	 PdF9NXsU1VSzhLWvhbhpoUxZ2Il/IXtZiiztsm1Oafy0ufO/nUgxD68taCTVMsLiaO
-	 xbWd4Vy9Wy61u5FKoW8QphbbYWIXZpW3BO9RFi/omR5PxPT+/zLS2nzNVsKTHNqqW9
-	 wHcJBpQx+GULCGD3mV2dd3zAZP7mVFvmndKhyiH1HiGHoSUiCHkOUhv62mDJ+vCgMZ
-	 RyeM0UfQNNnxA==
-Message-ID: <sashiko-outbox-183409@kernel.org>
+	b=UKdfT/OZXVsr5JNMxUJ4xUGR5FMzBjw2rLouHhtfv7TsAdWvn4MfBIXPwZiFuJpZm
+	 LlpP3saAINecEFdJUKm1nQnQH/7RBoHPEkAQqUJVuODcZofE467/Uwi5TUgTcKeCUr
+	 +uSzdFDPmmpXGm1K2DPcEcWXE3V6lFeWIJK5QaKXny2yBHmuTCRxqzYF+WaSE55+r2
+	 svOHmVOGFENXAq3upyZATpdYrmNhys5CiEZRsVO4cVvCuvAS3521CF5lP9l2G0+UZ0
+	 tTKj8lVqNE3iW21v3+zFjJQlRreIMS3FfAo4AnSws3PzY83j+8YzQfduZ9mogig340
+	 ING54nvBLYZHQ==
+Message-ID: <sashiko-outbox-183414@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 45/50] samples/kvm: Implement attach and release
- provider ops in sample provider
+Subject: Re: [PATCH RFC v2 50/50] KVM: selftests: Test guest_memfd
+ conversions with sample memory provider backing
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org>, "Alexander
  Graf" <graf@amazon.de>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Alexey
@@ -100,24 +100,24 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261022-gmem-alternative-providers-v2-45-5dd1dc6c660a@google.com>
+In-Reply-To: <20261022-gmem-alternative-providers-v2-50-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261022-gmem-alternative-providers-v2-45-5dd1dc6c660a@google.com>
+ <20261022-gmem-alternative-providers-v2-50-5dd1dc6c660a@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 23:32:12 +0000
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C1CD440003
-X-Stat-Signature: 36h3itdphrtb1rm14t79cerkwhhzhydq
-X-Rspam-User: 
+Date: Fri, 23 Oct 2026 23:32:16 +0000
+X-Rspamd-Queue-Id: B8FB8140003
+X-Stat-Signature: fh7f1d3dcyo7qnr4w9xqbpc984odne53
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792798336-599036
-X-HE-Meta: U2FsdGVkX18/rbQYYn9t76G9dpUFTS/e5vrM1sZ+sXNkn8aNwRNZ8ns/BlTuyF5diKs1ky+0buJmSzkYnm05UNxKBxpjochUhiRrsnIGyVk/2m3W/M2YUMODyfANMihnhB+HGuPp6sRyP0wxylKRtu+/zcpsgbHwLVzGZ0jIpEOwm9YZNJP8PU8xWeeU5+TkhnMO5lqGQCPud4n6mEylcfMABquIcEysPc7ypHSM6Gf3btXp6lD8ygOFzm7oe6zHWd+s2FJDR5q1xVJoCmEFf5/V/MBkeE+cSWtzVzzLJoc41hVRTT3e4IXUlwWTlrk7EPlLr/KNSlJztM9MQWbRqLAdCEuSBT7RJLjQWx0n58E9BVDH/vH6Nd0UF5QdcZmW2fOC5UuZLsmIBRZTE+TiBo0oZYw9UMtpFARDQVAKPbzcH/B9h+fsbuYxzzFmLJ5E+kMq2FYzCwKq1wQGQPwiZnb6CI/cngkGNz/qM+5EXXhmNnHbNZ72G8YA+kv/to/1Un25cguI0VMCD+Jh4LzROM6EVMw2dKXvzNI01a+136rQXvEIfX9na4Y36sinxYxyf3AlemyxyxUchXJzIsbml/PstZtXHC30m7sM+OwhY6XjJlA2sUTJvDXGrJa1dYU7GbJ0ZAHb0yIIrswMKVp1+h+DWBfX3DidkUpGY7pLcpDO/mc1yTLj6QtYQ7WZtOerM15MF0YRHYQunSIMDHNOfnNera/mMbSAUhoyGnuf/Jewh9JsVPPPPD2WPyjDRttC/ZwhqQf14Ds90FmQaTI/sneG64sjmFZT0E8ushS+zAHoN1be4+ogEH7xlhJT+ig8r9sB2vRo4LhN4tLKVDUzPJ4FU72gkPqJ/6U0C87GpCMmCsctkioW7EWuTSsUh9P8EVUc12LZ/GWOhwwDlB378sIzAWBrMWVIMa0PlQa5/07aqUYrMWm1z8LvZSnJkcbXMkBtE6h0SMGdehQDGqG
- KUPYfa5A
- z8sDsxtEq0fIrDsC2CZ9052E1oGgn1TKuR8dodp6sU4wH9pmxPGN/fxyfLDJ9tKeFUwsq3w6+cKwaMpD07VjHWONrU+4aHsdUCMqkamPyH3OHArF5KUHukdI0/6Y1wWI8wo8txFcbLU+t6dgyL7QcvMm1EH60gwpGXgnpgSKblQ0gXyklegn+IJlIHmk7OCLgNCWgdmbG97RKR+j3p4Q36nehBjiYLZPpR4MyK4B3sXL4JrI98z8l0JR7vfnN0hzmRF8av6HQlwBImwsDFTpxThme8+UbVBnXQjgdS/q3PSwFiSFs8cBhB1g8nemLRt1VGBP8zRuUPL19iwIhIVXLRwGtpHIuryfbUyTTT1s0zhi2exL/EPFR2w17Vgk3Y+ykK5jrKub46g5F1hMvzJhwOYxgpDc729NejIb2D/YFOuPPop92Hf/O0Sw9gsvHiMwcO3QapY+ATKPj/cbjvGXqHkWZM7hx6XpW4EYnswOzf/cYvw0i97b0ioRk3JM6ZJg7rRd4Mt/Yv/DLirfAOeaMqADR+QCh9Oo+kquyunZjr1Atpdug0vJDRBOo5EarMoax+M+WxAcNU02ZQYEteGRfPS7Ox32J3ICyQA3Zk2Oi9TaG/T8lYk57KfrhtfH380/6GYJhBJmg+BL/VTtUDK+KBLEBnU2XWxQynL0s
+X-Rspam-User: 
+X-HE-Tag: 1792798340-455733
+X-HE-Meta: U2FsdGVkX19cVBDv53qEgD6yc9kROWKFSr1Oqj/0MkcB7NG86TeambZpJYJhsQmGTcu5jF2XffmNke6HKAuc0oNGydkIJBJXaqP/MNMarKV/FnMzBHqtID+qr8HCMVkfhUMzbP6HtZM1zeuL9YrsmDN79uKcpwp0c9tTg1oW0lU0gQxeGnaWOAmW+1ZA1C41lI4VtySBGVAsH8lQP5+JD3NPqnQDEa9D7NcVPzAwuz65u71BFHn0KqGpQfOc6pjiw66X8g8P7OjvGxItl/VPyWghwpf0a5zIgN87PuRT6L5ZmlqNr2HrG2Qx8EUalIOpR/C33ijnrV5g2tg81ypnw/EMVd7ukfBHuiooTgYWl9mVRAKRXD/w6r/jFyKdbpgTPIEsMAqm43a0cEOUOLcCsq3+BhamKJjT2MnsoJL8wQFb93tNGcbmnL+r6RamCR51giQJCVLr2ZMnajSHELevstRuzPnKbHbAXi706CbKhBUd4lkmnFKLOEW/8eK6Dv3To3bSapv31onbKONZA9x5NSnVasfJ98o8Rq9JcXPnKvPcQSQixE1Emtcda0SUfg4TOGICijUgCgbiI+PGBY65q4km+QFxpAkZZOfLorjW+3AfI/WaPEg647xv2tibfMk5QOgNQeOCiWlT9cKLNyRdViSz1N4fxI5ZFlAlH4jLIq8KVJybZBtYYcxnzfbcrr0vNtg03A9K3OgvZ43ztM7u8eZs12o5YGFhv4SQJ9x+lWaf73LY6+w13oTlF7Ct0Abxa+WdyN942EFxu43ozG0Rn1WOINuUlfWtl50zIqztZXTBdJYcO4/Tc1zj00irwcd5OEBqXfOB0y8GZ8EoPhzsOjPjSzkj2gDNiJ8JeRWGHPQ4nOWawVxr/VwBVJI7h34l1+HXDb/tp0DRTK4C1H4PVM7uQ4Nj2e5d3xf7C2IN1Yp4LseYcqO4Lqc3BIT/zd2a5p+f5Hl54UN+ZRJsDON
+ y6fEHgAV
+ lYd7+byR3Fblcj7224LUMcT0Mk9JqniovsbsRR5hRSlPe6raNLQPwkOu632uiokGR43IrIv5YLyhFdNr3mlCNaAYPFDxIaKP9f+Lm6oevZBYf2nOiOE2Jgk/LdI30o4a9Cl3BmHVjbl387ZIdntrm5MqZ/jveJv75EY4lGyB8UXl43bO5DrvLMXKaEgnY5+hR41vkTqGOSr8WIZzvHU+rvKVr+bFX8DikSbfStODTFJYEAcKjbw33EFReU0CTm2JsorE3EBPocZNs2iZOZY3zFztuTLmOfFqizsxABDDQ8llgbG1BrU6qSTqy90hrJBXtkt3g1pqcpdm91cI2HKnjpZZjS9kDWy9ciC+fNU5wFosrBkJQ/ozzjEUt0b5Xw3UHSVoasQCF3/7I7tVA5daYIv9w4oqWb3zw/d2EtbppSA8qYxU/5I6sVVVfdlTeQHCiWRfluK5r/avkaX4O83Z4vGsTRBD3UlJPrYz0jmaLD5nXnRwRpHftlYVWuUZdSz8LNSrafpJ4d0SJu1uZHJslCLrrTsz+PZwtCk4OpoTA/FIJw/Zcy4sw/KbGEG8nYQyYM6l5TaJ8roDs4sopBVLl6iTjLlcRO0RVKPtDsXSwzoqwwR0Pi/G+dgLUbRQ4R+keVeTsQbEuGMHRpTMmxU4uNYCh3G6mCGYl0Z/0UKhIcSY+0jB0kxISz228AJsv5VYVw6sJgo60GYpS7qY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,91 +129,54 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] samples/kvm: build failure when CONFIG_KVM_GUEST_MEMFD is disabled
+- [Low] KVM: selftests: wrong relative path to mem_provider_sample.h
 --
 
-commit da89517936ff62d4ed67bf323c9cade71c875336
+commit b071597d5a3f5abd9db2726fb150510172e23946
 Author: Ackerley Tng <ackerleytng@google.com>
 
-samples/kvm: Implement attach and release provider ops in sample provider
+KVM: selftests: Test guest_memfd conversions with sample memory provider ba=
+cking
 
-This commit implements the .attach and .release guest_memfd provider
-operations in the sample memory provider module and wires them up to
-mps_file_fops.gmem_provider_ops.
+This patch adds a fixture variant to guest_memfd_conversions_test.c to test
+guest_memfd conversions backed by the sample memory provider module, skippi=
+ng
+the variant if /dev/mem_provider_sample is unavailable and asserting that
+page pinning fails on pfn-backed memory.
 
-> diff --git a/samples/kvm/mem_provider_sample.c b/samples/kvm/mem_provider=
-_sample.c
-> index 397ebb3773f39..d9e57484c3933 100644
-> --- a/samples/kvm/mem_provider_sample.c
-> +++ b/samples/kvm/mem_provider_sample.c
+> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test=
+.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> index 023df9cb9d4a6..b99e4cdbab8e6 100644
+> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> @@ -16,11 +16,13 @@
+>  #include "kselftest_harness.h"
+>  #include "test_util.h"
+>  #include "ucall_common.h"
+> +#include "../../../../samples/kvm/mem_provider_sample.h"
+
+[Severity: Low]
+Since tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c is five
+directory levels below the kernel tree root, four ../ traversals resolve
+relative to the source file as tools/samples/kvm/mem_provider_sample.h, and
+relative to the tools/include search path as two levels above the kernel tr=
+ee
+root, before happening to match via the four-level-deep
+tools/arch/<arch>/include search path.
+
+Should this use five ../ traversals to match other five-level-deep files su=
+ch
+as tools/testing/selftests/kvm/lib/kvm_util.c:
+
+#include "../../../../../samples/kvm/mem_provider_sample.h"
+
+> =20
+>  FIXTURE(gmem_conversions) {
+>  	struct kvm_vcpu *vcpu;
 
 [ ... ]
 
-> @@ -118,11 +119,30 @@ static long mps_file_ioctl(struct file *file, unsig=
-ned int cmd,
->  	}
->  }
-> =20
-> +static void *mps_gmem_attach(struct inode *gmem_inode,
-> +			     struct file *resource_file)
-> +{
-> +	return get_file(resource_file);
-> +}
-> +
-> +static void mps_gmem_release(void *provider)
-> +{
-> +	struct file *resource_file =3D provider;
-> +
-> +	fput(resource_file);
-> +}
-> +
-> +static const struct guest_memfd_provider_operations mps_gmem_provider_op=
-s =3D {
-> +	.attach		=3D mps_gmem_attach,
-> +	.release	=3D mps_gmem_release,
-> +};
-> +
->  static const struct file_operations mps_file_fops =3D {
->  	.owner		=3D THIS_MODULE,
->  	.release	=3D mps_file_release,
->  	.unlocked_ioctl	=3D mps_file_ioctl,
->  	.compat_ioctl	=3D compat_ptr_ioctl,
-> +	.gmem_provider_ops =3D &mps_gmem_provider_ops,
->  };
-
-[Severity: Low]
-Does initializing .gmem_provider_ops in mps_file_fops in
-samples/kvm/mem_provider_sample.c cause a build regression when
-CONFIG_SAMPLE_KVM_MEM_PROVIDER=3Dm is enabled while CONFIG_KVM_GUEST_MEMFD =
-is
-disabled?
-
-In include/linux/fs.h, gmem_provider_ops in struct file_operations is guard=
-ed
-by CONFIG_KVM_GUEST_MEMFD:
-
-    #ifdef CONFIG_KVM_GUEST_MEMFD
-        const struct guest_memfd_provider_operations *gmem_provider_ops;
-    #endif
-
-However, at this point in the series, SAMPLE_KVM_MEM_PROVIDER in
-samples/Kconfig only depends on CONTIG_ALLOC && X86_64 && m:
-
-    config SAMPLE_KVM_MEM_PROVIDER
-        tristate "Build sample memory provider -- loadable module only"
-        depends on CONTIG_ALLOC && X86_64 && m
-
-A later commit in this series, 279ad9d61dfc ("samples/kvm: Support dynamic
-revocation via kvm_gmem_revoke"), adds && KVM_GUEST_MEMFD to
-SAMPLE_KVM_MEM_PROVIDER in samples/Kconfig. Should that Kconfig dependency =
-be
-moved to this commit to avoid breaking bisection when CONFIG_KVM_GUEST_MEMFD
-is not enabled?
-
-> =20
->  static long mps_ctl_new_file(void __user *uarg)
-
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-gmem-alter=
-native-providers-v2-0-5dd1dc6c660a@google.com?part=3D45
+native-providers-v2-0-5dd1dc6c660a@google.com?part=3D50
 
