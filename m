@@ -1,123 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DE8606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 23:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085EA606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 23:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UKdfT/OZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jB0OKTON
 Received: by kanga.kvack.org (Postfix)
-	id 110626B0C06; Fri, 23 Oct 2026 19:32:23 -0400 (EDT)
+	id 2BDB86B0BEE; Fri, 23 Oct 2026 19:36:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BA986B0C08; Fri, 23 Oct 2026 19:32:23 -0400 (EDT)
+	id 26F486B0BF2; Fri, 23 Oct 2026 19:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC4386B0C06; Fri, 23 Oct 2026 19:32:22 -0400 (EDT)
+	id 1859A6B0C07; Fri, 23 Oct 2026 19:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA7FE6B0C06
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:32:22 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A02512026C
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:22 +0000 (UTC)
-X-FDA: 85355492124.25.6893342
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EBF6E6B0BEE
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:36:35 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4FD3BA711F
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:36:35 +0000 (UTC)
+X-FDA: 85355502750.03.0B8C47C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B8FB8140003
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:20 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UKdfT/OZ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6EB1080008
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:36:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jB0OKTON;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792798593;
+	b=Ount2RVGl3aI+My82jZBPK5/AKHI7OPBkRVkUiJ0aeB+bHWuVaj9VpyQVXGX1ag+bxpoj6
+	3qZilqNw6isSzDrFs08SCZrnmSqs8HCXtprKqAOtsq80BM3nlcexi3Q1KgVPbIO3gi4VU7
+	3UtdbWlzBB1GqbFb5QyQ60SF6NFeSYc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jB0OKTON;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792798340;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1792798593;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cUpsYXA4p+AgcY2utW3SVs0gcNM9y9RphrhZOvqDytA=;
-	b=aQ2pmQasuhtAD62/so6qzvO6s3WjGTwqmqQ1CfGhDY9AKwBXWyENePc5UiwiwT6sN/j93B
-	2s3h0F7CwNysz1NM0xubHlj1Gk+1/djkzV/YocEfV5QfX+kEtD7FwIB9YicVooTPtZyjRE
-	zSywTHqVZmpbt4QMtwtqEhlHXaQdeIg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UKdfT/OZ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792798340;
-	b=qXByYswj255dtAiqHhDenWLa8VLCvJm+aVGsHbefDf3cfzYQODAZOiu2yWba29b2ZoM1et
-	hG+DxOHo3H0yow4shwpbUOX7hNWjdNrnlcG9onIDgpyhCyxeEryzSObWcC/ZGwecJ7JVTi
-	KedbPBFzJjwi7lnpyTLrkaUeHY/MPtk=
+	bh=I/Zuzgcss+svgkUIXyl3XnDM+vG1fLBLQV3+87i8Mnc=;
+	b=03cZuAYsisGOr/9It/VumDTjpv8Kr4sVb/cx/G2qFn6n99KX6PxR907SHZpORiL13W50GU
+	QnK1SzmyT0AhiK/1I01kfpV0d1AhdGJ25FQ+r6rYD6eer+orS4Bn5ab4tezSlII4C0ctIw
+	gQttxxpgeABxJOM482rsP2idFiaSmJA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4CB4A60A52;
-	Fri, 23 Oct 2026 23:32:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC0E1F01825;
-	Fri, 23 Oct 2026 23:32:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 076FC6022A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F6A1F01828
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792798340;
-	bh=cUpsYXA4p+AgcY2utW3SVs0gcNM9y9RphrhZOvqDytA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UKdfT/OZXVsr5JNMxUJ4xUGR5FMzBjw2rLouHhtfv7TsAdWvn4MfBIXPwZiFuJpZm
-	 LlpP3saAINecEFdJUKm1nQnQH/7RBoHPEkAQqUJVuODcZofE467/Uwi5TUgTcKeCUr
-	 +uSzdFDPmmpXGm1K2DPcEcWXE3V6lFeWIJK5QaKXny2yBHmuTCRxqzYF+WaSE55+r2
-	 svOHmVOGFENXAq3upyZATpdYrmNhys5CiEZRsVO4cVvCuvAS3521CF5lP9l2G0+UZ0
-	 tTKj8lVqNE3iW21v3+zFjJQlRreIMS3FfAo4AnSws3PzY83j+8YzQfduZ9mogig340
-	 ING54nvBLYZHQ==
-Message-ID: <sashiko-outbox-183414@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 50/50] KVM: selftests: Test guest_memfd
- conversions with sample memory provider backing
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org>, "Alexander
- Graf" <graf@amazon.de>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Alexey
- Kardashevskiy" <aik@amd.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Aneesh
- Kumar K.V" <aneesh.kumar@kernel.org>, "Ashish Kalra" <ashish.kalra@amd.com>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Baolu Lu" <baolu.lu@linux.intel.com>, "Bill
- Wendling" <morbo@google.com>, "Borislav Petkov" <bp@alien8.de>, "Catalin
- Marinas" <catalin.marinas@arm.com>, "Christian Brauner" <brauner@kernel.org>,
- =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Connor
- Williamson" <connordw@amazon.com>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Dave
- Jiang" <dave.jiang@intel.com>, "David Hildenbrand" <david@kernel.org>, "David
- Rientjes" <rientjes@google.com>, "David Woodhouse" <dwmw2@infradead.org>, "Erdem
- Aktas" <erdemaktas@google.com>, "Frank van der Linden" <fvdl@google.com>, "Fred
- Griffoul" <fgriffo@amazon.co.uk>, "Fred Griffoul" <griffoul@gmail.com>, "Gregory
- Price" <gourry@gourry.net>, "H. Peter Anvin" <hpa@zytor.com>, "Hugh Dickins" <hughd@google.com>, "Ingo
- Molnar" <mingo@redhat.com>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, "James
- Houghton" <jthoughton@google.com>, "Jan Kara" <jack@suse.cz>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, "Jianxiong Gao" <jxgao@google.com>, "Joerg
- Roedel" <joro@8bytes.org>, "Joey Gouly" <joey.gouly@arm.com>, "John Starks" <John.Starks@microsoft.com>, "Jonathan
- Corbet" <corbet@lwn.net>, "Justin Stitt" <justinstitt@google.com>, "Kevin
- Tian" <kevin.tian@intel.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "Marc
- Zyngier" <maz@kernel.org>, "Michael Roth" <michael.roth@amd.com>, "Mike
- Rapoport" <rppt@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>, "Nick
- Desaulniers" <ndesaulniers@google.com>, "Nicolin Chen" <nicolinc@nvidia.com>, "Oliver
- Upton" <oupton@kernel.org>, "Paolo Bonzini" <pbonzini@redhat.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Robin
- Murphy" <robin.murphy@arm.com>, "Samiullah Khawaja" <skhawaja@google.com>, "Sean
- Christopherson" <seanjc@google.com>, "Shuah Khan" <shuah@kernel.org>, "Steffen
- Eiden" <seiden@linux.ibm.com>, "Steven Price" <steven.price@arm.com>, "Suzuki
- K Poulose" <suzuki.poulose@arm.com>, "Tarun Sahu" <tarunsahu@google.com>, "Thomas
- Gleixner" <tglx@kernel.org>, "Tom Lendacky" <thomas.lendacky@amd.com>, "Tycho
- Andersen" <tycho@kernel.org>, "Vishal Annapurve" <vannapurve@google.com>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Yan
- Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
- Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261022-gmem-alternative-providers-v2-50-5dd1dc6c660a@google.com>
-References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261022-gmem-alternative-providers-v2-50-5dd1dc6c660a@google.com>
-Content-Type: text/plain; charset=utf-8
+	s=k20260515; t=1792798592;
+	bh=I/Zuzgcss+svgkUIXyl3XnDM+vG1fLBLQV3+87i8Mnc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jB0OKTONgdkG2Ymv8c4ENoQThRe0kQWZFgQIhN34BmS9ejXoT4mjjy1AbVTtkVly2
+	 RjdGXaVmWcoJlICJutOp3Hp6+OdfczGTyqBWcP2BfNHbFMXozfElaH7BVwGnJS7FxA
+	 eligGEYQdmOJ+qGiMktTc2sRA7inLcaj8mrWSxDSn02Q8XdFrjAymF6titCUW53Ugb
+	 68iifeN7Af6Q4D3TmmfHBUlKLbZLldOQve8fvcsBvinxCKjX01sQ0F3GSOsZt1AL6s
+	 llREUtBf+g33TCGr/NEI3V/+RdxbF5AVNqgiLZOOHoJmbUooteJzpqSqoPLYVAdR/G
+	 MJKVmShnQJ+yA==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c40f29667e6so216522366b.0
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:36:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxo+PVFmWQy1bBotsHomFWnhn0LSyS29inv+29vO4oA7Buy1tOp5SZa/u8Ub7eAnnC58N4OeHuB+Q==@kvack.org
+X-Gm-Message-State: AFq9FYKhNnoSLQozkez+PvfqsA7pce5kd9YaYHXESm3I8hDlNWueMcVZ
+	okcvmdO7PpHniskl6sufXRun72fX/6u+P74sHLz56MGS04D0TxOMM7uPKlZEIYyuP84Ryprkf9Z
+	5EwALJKiwkDdm1W1QMQFIEFNoS/yNOec=
+X-Received: by 2002:a17:907:9715:b0:c33:ae8b:817d with SMTP id
+ a640c23a62f3a-c46bde4b904mr47591566b.46.1792798591415; Fri, 23 Oct 2026
+ 16:36:31 -0700 (PDT)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+References: <20261022232734.496064-1-suseendranb@google.com>
+ <20261023102607.7635885be12b0b6e7a5971aa@linux-foundation.org>
+ <20261023200426.3865221-1-suseendranb@google.com> <20261023162100.41145a57fb91ed1073c24c41@linux-foundation.org>
+In-Reply-To: <20261023162100.41145a57fb91ed1073c24c41@linux-foundation.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 23 Oct 2026 16:36:19 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNBX6Oac4nJryEv1U-57JjgzAS+Bbfe=FGV4fH=sZ7PBQ@mail.gmail.com>
+X-Gm-Features: AclHuK_H5zlrHTD2kZ5uuZ3nnaWevuLYmwlKdeVczL5o5zYQlHUT2FAtC6qHqWg
+Message-ID: <CAO9r8zNBX6Oac4nJryEv1U-57JjgzAS+Bbfe=FGV4fH=sZ7PBQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/zswap: validate dlen and normalize comp_ret on
+ compression success
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Suseendran Bhaskaran <suseendranb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 23:32:16 +0000
-X-Rspamd-Queue-Id: B8FB8140003
-X-Stat-Signature: fh7f1d3dcyo7qnr4w9xqbpc984odne53
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: t8nmp3ea1bpmcpxm6hbhtxq98caxnr64
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6EB1080008
 X-Rspam-User: 
-X-HE-Tag: 1792798340-455733
-X-HE-Meta: U2FsdGVkX19cVBDv53qEgD6yc9kROWKFSr1Oqj/0MkcB7NG86TeambZpJYJhsQmGTcu5jF2XffmNke6HKAuc0oNGydkIJBJXaqP/MNMarKV/FnMzBHqtID+qr8HCMVkfhUMzbP6HtZM1zeuL9YrsmDN79uKcpwp0c9tTg1oW0lU0gQxeGnaWOAmW+1ZA1C41lI4VtySBGVAsH8lQP5+JD3NPqnQDEa9D7NcVPzAwuz65u71BFHn0KqGpQfOc6pjiw66X8g8P7OjvGxItl/VPyWghwpf0a5zIgN87PuRT6L5ZmlqNr2HrG2Qx8EUalIOpR/C33ijnrV5g2tg81ypnw/EMVd7ukfBHuiooTgYWl9mVRAKRXD/w6r/jFyKdbpgTPIEsMAqm43a0cEOUOLcCsq3+BhamKJjT2MnsoJL8wQFb93tNGcbmnL+r6RamCR51giQJCVLr2ZMnajSHELevstRuzPnKbHbAXi706CbKhBUd4lkmnFKLOEW/8eK6Dv3To3bSapv31onbKONZA9x5NSnVasfJ98o8Rq9JcXPnKvPcQSQixE1Emtcda0SUfg4TOGICijUgCgbiI+PGBY65q4km+QFxpAkZZOfLorjW+3AfI/WaPEg647xv2tibfMk5QOgNQeOCiWlT9cKLNyRdViSz1N4fxI5ZFlAlH4jLIq8KVJybZBtYYcxnzfbcrr0vNtg03A9K3OgvZ43ztM7u8eZs12o5YGFhv4SQJ9x+lWaf73LY6+w13oTlF7Ct0Abxa+WdyN942EFxu43ozG0Rn1WOINuUlfWtl50zIqztZXTBdJYcO4/Tc1zj00irwcd5OEBqXfOB0y8GZ8EoPhzsOjPjSzkj2gDNiJ8JeRWGHPQ4nOWawVxr/VwBVJI7h34l1+HXDb/tp0DRTK4C1H4PVM7uQ4Nj2e5d3xf7C2IN1Yp4LseYcqO4Lqc3BIT/zd2a5p+f5Hl54UN+ZRJsDON
- y6fEHgAV
- lYd7+byR3Fblcj7224LUMcT0Mk9JqniovsbsRR5hRSlPe6raNLQPwkOu632uiokGR43IrIv5YLyhFdNr3mlCNaAYPFDxIaKP9f+Lm6oevZBYf2nOiOE2Jgk/LdI30o4a9Cl3BmHVjbl387ZIdntrm5MqZ/jveJv75EY4lGyB8UXl43bO5DrvLMXKaEgnY5+hR41vkTqGOSr8WIZzvHU+rvKVr+bFX8DikSbfStODTFJYEAcKjbw33EFReU0CTm2JsorE3EBPocZNs2iZOZY3zFztuTLmOfFqizsxABDDQ8llgbG1BrU6qSTqy90hrJBXtkt3g1pqcpdm91cI2HKnjpZZjS9kDWy9ciC+fNU5wFosrBkJQ/ozzjEUt0b5Xw3UHSVoasQCF3/7I7tVA5daYIv9w4oqWb3zw/d2EtbppSA8qYxU/5I6sVVVfdlTeQHCiWRfluK5r/avkaX4O83Z4vGsTRBD3UlJPrYz0jmaLD5nXnRwRpHftlYVWuUZdSz8LNSrafpJ4d0SJu1uZHJslCLrrTsz+PZwtCk4OpoTA/FIJw/Zcy4sw/KbGEG8nYQyYM6l5TaJ8roDs4sopBVLl6iTjLlcRO0RVKPtDsXSwzoqwwR0Pi/G+dgLUbRQ4R+keVeTsQbEuGMHRpTMmxU4uNYCh3G6mCGYl0Z/0UKhIcSY+0jB0kxISz228AJsv5VYVw6sJgo60GYpS7qY=
+X-HE-Tag: 1792798593-870671
+X-HE-Meta: U2FsdGVkX18grHtTfuD+WBeKeVmgXwg++d6PshllDgzLHRTeGzgDp8oa2DtOTsWwD9xtrSSufJPb8cexBxCd0EEI9oPN645xJGOWikqntC2IELAyW9c57oXkzoruHFNQHWJv1/vav7kv/wouBnNGxb7ePFzYaem6KVnQHLye+/JrIuv3R/yyl102hDm+NpEjHveoOVtOk5Wk+YydwmY7ORBqCstJYsyiRz9nUPWDt5IRocaRt6XfK9lnzR8K6VRMl9AXHHW/K83UZhiZeL1HoQFZ1I1wBdi4p9CAXmHFiO08h04Ebx+I/nSifU5wSrpInJ8vQ5RMxrKsA87k6SmVUOCK8EiG1dX7pMnnyU2ZiCYRNe3P1L3PPe6qAaxnnVqH1pnN+nKsxa4F7L3arQxFcTS02ghlWqYDrqLIL3QtDlIU2wSvdYErvSHBMQuRnDh7W5/7uLsHIwdVUY2vlEqS/HeO4yZuHiUTqTaOMM1HSmJW3RQsTDIcQb+iiARHmHhIJlLtTRNvdZZ7DxFnjmeWiS/1oFGXWezc8K6JBp5m/1lZWLWRQoRGlBvH3/cDZNFr6qkgp/ULUcHXyS5DQrOWy7NYZmHJaaZ6UvKGh4VxBPvNDva1fUB9/TUr3rpLV3k0zBSYDwXdP/k/RLHI3glnPRm/Q1za7Jd2FjRQBubfpkQ2YCL34I1zzODEeA3qJx7hO2dvA3jXb2JMKhUW9udBQtWPrVL4znx211u6uOm3aJ1V+PMec7T+bW0mFybPXlYnwkPsHDcNPxNGg7aW1m36AIsQQ2h05Duy4XWX69F4KAyXWlOkRcVCDhjnHBx6Iz+XCSzRIzA9a+ziuTRnYn+8xkRUYGExrRkHPEBK4v0EURtm76Z8j4MqKxa6drrhb4jx5ft5TfqDe9Hd+JLQmxIoCgvqNHKAB5MZ6d4BL6ZfUk9+3EuRbJQVdklR2roEuh/lPXDbJgWXIFi1ZVRcxuG
+ vAHUvh6e
+ WXatPuMFDDHLmz/NOkdZd0+ew51nFEmfl9YJd75UIhhMc3RBrXnVnNCWXjZTUtmFbIvVSaReeC8GN6e/4F7jqPv11QVVc+lLLLDfndsYW9JDWUQmUyui9HUBFeP3gKgE5VMFbYcwYW21MTUcC0dPCkx5Yqm5JGPgZ1M610cGyXkJgyXuy16MdLWkQJfvhz+6/aUWalX+3A5WDjZp2/TkjlUr2LT3t2xYCnPRXArko/IJtsaIT8YjlnJpRQPCcCdUg0XKJnwDl0pM8cO+eYYtkn8MyKO+0oNuTCnKWf+r3KankvWOzONa04yw0Hb35xaERRn9Qg8Q1OjYegwLXugsRnmCYdYpazmk/DfGRPxLW8D2HzVYZblPLtSbUKVk7Hr1AXlvSL2XtP0e3H2WOOwhsZjx+tDUwBHveW8mc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,58 +108,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] KVM: selftests: wrong relative path to mem_provider_sample.h
---
+On Fri, Oct 23, 2026 at 4:21=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Fri, 23 Oct 2026 20:04:26 +0000 Suseendran Bhaskaran <suseendranb@goog=
+le.com> wrote:
+>
+> > > Wht you forgot to tell us (please never forget this) is the
+> > > userspace-visible runtime effects of the bug.  Autobot says:
+> > >
+> > > : The userspace-visible effects are limited to corrected zswap
+> > > : statistics and a new warning for invalid compressor results.
+> > > :
+> > > : When compression succeeds but produces exactly PAGE_SIZE bytes, and
+> > > : zswap writeback is disabled, the page is rejected as before. Howeve=
+r,
+> > > : reject_compress_poor now increments instead of reject_compress_fail=
+.
+> > > : This makes the debugfs statistics distinguish incompressible pages
+> > > : from actual compressor failures more accurately.
+> > > :
+> > > : A compressor which reports success with a zero or oversized output
+> > > : length will now trigger WARN_ON_ONCE(). Previously, zswap handled
+> > > : these results without a warning. On systems with panic_on_warn
+> > > : enabled, this could cause a kernel panic.
+> > > :
+> > > : There is no intended change to which pages zswap accepts, rejects
+> > > : or stores uncompressed, nor to normal application behavior.
+> > > :
+> > > : I think these runtime effects should be described more prominently
+> > > : in the changelog, particularly the new warning.
+> >
+> > Apologies for missing the userspace-visible runtime impact in the commi=
+t
+> > description. I will make sure to always include this going forward.
+> > Autobot is spot-on here. I would be happy to send a v2 with an updated
+> > commit message that clearly documents these runtime effects and
+> > behavioral changes.
+>
+> I'm mainly interested in answering "should we backport this into
+> -stable kernels?".  A small debugfs accounting error is probably a
+> "no", but a WARN is "yes".  Is that real?  Can current kernels truly
+> emit WARNs due to this issue?
 
-commit b071597d5a3f5abd9db2726fb150510172e23946
-Author: Ackerley Tng <ackerleytng@google.com>
+No need for a stable backport, it's just debugfs accounting, and the
+new WARN is just hardening.
 
-KVM: selftests: Test guest_memfd conversions with sample memory provider ba=
-cking
-
-This patch adds a fixture variant to guest_memfd_conversions_test.c to test
-guest_memfd conversions backed by the sample memory provider module, skippi=
-ng
-the variant if /dev/mem_provider_sample is unavailable and asserting that
-page pinning fails on pfn-backed memory.
-
-> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test=
-.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> index 023df9cb9d4a6..b99e4cdbab8e6 100644
-> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> @@ -16,11 +16,13 @@
->  #include "kselftest_harness.h"
->  #include "test_util.h"
->  #include "ucall_common.h"
-> +#include "../../../../samples/kvm/mem_provider_sample.h"
-
-[Severity: Low]
-Since tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c is five
-directory levels below the kernel tree root, four ../ traversals resolve
-relative to the source file as tools/samples/kvm/mem_provider_sample.h, and
-relative to the tools/include search path as two levels above the kernel tr=
-ee
-root, before happening to match via the four-level-deep
-tools/arch/<arch>/include search path.
-
-Should this use five ../ traversals to match other five-level-deep files su=
-ch
-as tools/testing/selftests/kvm/lib/kvm_util.c:
-
-#include "../../../../../samples/kvm/mem_provider_sample.h"
-
-> =20
->  FIXTURE(gmem_conversions) {
->  	struct kvm_vcpu *vcpu;
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-gmem-alter=
-native-providers-v2-0-5dd1dc6c660a@google.com?part=3D50
+>
+> If so then yup, please send along a new changelog.  Or a v2 with a new
+> changelog.
 
