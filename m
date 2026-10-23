@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CF3606A31B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 06:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498F3606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 06:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=cpys32/L
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=U9NDiSg5
 Received: by kanga.kvack.org (Postfix)
-	id BF5896B0AFF; Fri, 23 Oct 2026 02:44:29 -0400 (EDT)
+	id 59D976B0B01; Fri, 23 Oct 2026 02:54:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCC986B0B00; Fri, 23 Oct 2026 02:44:29 -0400 (EDT)
+	id 5753A6B0B02; Fri, 23 Oct 2026 02:54:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE30D6B0B01; Fri, 23 Oct 2026 02:44:29 -0400 (EDT)
+	id 48C126B0B03; Fri, 23 Oct 2026 02:54:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 89EA56B0AFF
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:44:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 049FB120333
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:44:28 +0000 (UTC)
-X-FDA: 85352952258.10.B8858A7
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 812A340008
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:44:26 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="cpys32/L";
-	spf=pass (imf01.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2634B6B0B01
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:54:22 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A1F43A7BAB
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:54:21 +0000 (UTC)
+X-FDA: 85352977122.27.1A6DDB2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C566B40007
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:54:19 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=U9NDiSg5;
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792737867;
+	s=arc-20220608; t=1792738460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RRG6U99EKeZDnYNuky91yYiF/y3AS7tMgJRzNytuW38=;
-	b=YIMEMl8E2XcNzmxrPQcZzsZPjhOpTvzELHotxZ+dGXqbXf5QC5zCEzRkUbdmRS3KvgxU4o
-	EAVIizWnw+G0rribPTETqBuVP1vDC9SM2g9QihCWJXytyQaZX2giZcrSiaSGZcNiRIK9fh
-	8fdmdNHXOae1k5oK6FuJ3hU6E1DWiYw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792737867;
-	b=vhpRQQqXYWO0R9ZQh6n8wK0Mz4clCLF+9jiAXoMTF5UqMq7wJ8LrHE3n8ZPEPE9jhlHV5p
-	iGSACYIZH3y5cWADVH9Lzu7/4JKksnrN0gDkt+wJFVuLlJ7GB5c2T4sQ2JS2Qg5paGJDif
-	gIld3AwBZhECyxtsDrh9yWljtYMrRxs=
+	bh=vkPUzX7yhv3Hj1YrE4gniaaxsv2duW0NiwdJ652sT1E=;
+	b=xGOnC2xLdwcDJ0hA5G0hIV41EQGWwL2Hg/ShqhUNegH5v4b2QPC3Fui5RU0MEz7XoBlde3
+	6FHhOQtFjMSxIErL6PTZqtClYaFoTDH7ETM/BRi948QO2lwrv1K4BpxhPos8UPf9VvGhQn
+	jfWT4FOGRD3RgiMLPQy9PhHO4lz9vCs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="cpys32/L";
-	spf=pass (imf01.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792737860; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=RRG6U99EKeZDnYNuky91yYiF/y3AS7tMgJRzNytuW38=;
- b=cpys32/LRolwEFjjMEMw/5ElImdKxW3aek0sC7tkC1CNPLkRKMJvICJUrECWh/hB0z30gw
- O2MP7SyffSrZ+log0mKJ8xHHnjE7ajfrF8OUXcg08jUoiNFS+ZBOVIzgir2eZ3QVBuLAwS
- Du83PYH0Bn1iHjxPqYpSOG1+8vnBVJmr08xntzi89e3Vd7dhZxBdkMQI7XwynjBqvxw/41
- 62EhywzBgDtmsC6/YixqjbCOBGfR7DMX3zLMeUXX4V/SL6jFS6iWgT+g/sMtVuHugXjR7V
- 4yLlBgQsZIKhr4Fi+HIGJ4tpRrUFlLtHI8NtZVASvZK4v9caO8Vq75AvaYG4uw==
-Subject: Re: [RFC 0/2] mm: add source selectors to memory.reclaim
-Date: Fri, 23 Oct 2026 14:43:57 +0800
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=U9NDiSg5;
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792738460;
+	b=1I9gw4RaijzsooKTx8QYlpp1sCvABWriw+9cv94deHa/m8zGQtmNOm0ruq8r5pQihSpSFA
+	bpCeDaRWLLUaFNX2IdPERlvsV7hNuD0RL8PbLrdA1iwk4FBmr6Rg78CqO0JN94FrZlP7IA
+	ed4zw2GowETJ+Nlb8jReo/PR3Uog0Tg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC32C1691;
+	Thu, 22 Oct 2026 23:54:15 -0700 (PDT)
+Received: from [10.163.161.88] (unknown [10.163.161.88])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4574F3F7D8;
+	Thu, 22 Oct 2026 23:54:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792738458; bh=n9iGNDoxlwolv/doJTrw9CQIV0VtE1mAf67LSVSFTkQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=U9NDiSg5x3wMh7Dn/T+WLMA7s67zHvMpwLFZue2JOpO+uC+wR7Nb2WZ6SnuFFtNAr
+	 56iU0zsI0Fpwb9hFfmGoi6l6OjLMtft5Pa/UfcrAXXvEhAaC6qcMvQn/4LvPcJfq45
+	 uYukVwJDKDgW3ZzCeNtEXsdyHhtuDIbyu1sbXud0=
+Message-ID: <18c9c7bd-0d89-45dd-8425-64f10e83fbb1@arm.com>
+Date: Fri, 23 Oct 2026 12:24:13 +0530
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261019141401.11927-1-lizhe.67@bytedance.com> <atY-LD2AzCYATRii@gourry-fedora-PF4VCD3F> <30457046-a662-4ff7-a6a8-100398d7a806@bytedance.com> <179264138036.2549665.17429111144570830454.b4-reply@b4> <9b715272-3ed9-42da-a6ae-467e8ae00c0b@bytedance.com> <atoZpXaCRc7etPW8@gourry-fedora-PF4VCD3F>
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ziy@nvidia.com>, 
-	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, 
-	<ying.huang@linux.alibaba.com>, <ljs@kernel.org>, <mhocko@suse.com>, 
-	<muchun.song@linux.dev>, <roman.gushchin@linux.dev>, 
-	<shakeel.butt@linux.dev>, <weixugc@google.com>, 
-	<cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmalloc: reject overflowing vm_map_ram page counts
+To: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Shubhang Kaushik <shubhang@os.amperecomputing.com>,
+ "Christoph Lameter (Ampere)" <cl@gentwo.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261022-vmalloc-reject-overflow-v1-1-5fde0042ffb9@gentwo.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261022-vmalloc-reject-overflow-v1-1-5fde0042ffb9@gentwo.org>
 Content-Type: text/plain; charset=UTF-8
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Message-Id: <ab7aa28c-ccf7-4bad-a871-4b05f7e9bfca@bytedance.com>
-In-Reply-To: <atoZpXaCRc7etPW8@gourry-fedora-PF4VCD3F>
 Content-Transfer-Encoding: 7bit
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26adb0242+c91a74+kvack.org+lizhe.67@bytedance.com>
-To: "Gregory Price" <gourry@gourry.net>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 812A340008
-X-Stat-Signature: 8458fnndgz5hw173jxscbupo6mwjp844
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C566B40007
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792737866-242989
-X-HE-Meta: U2FsdGVkX1/5nQ4lvxACp+mWCgtt8mN+/fC99SZYUlXZQg8ncojuHFeHlUcz28i5Ivf3PMzl5wLZlCqMCLuB8kKigZyCB+igX9Lk1s1+HC74ejcgqbEIPLbXprOx6TXzH76Ae48dkNQbzuidHjgFDSlmgzzI3TjpENcspBiU8JWV4zfBiY+ocQrLM+r2lDgYyOZo8AIN9fJzGUf9y196bN55YvzRwV9mrFcB13Txj0c19lwiMKe/MIZ9nS9UZBNbbojTKljbQjEK6ZusxHU8mQqulUV4/69MsrpPl5aGnmH82UrNNTR4n0Ln0nyUZ7+8pIGUdzY+CmfYdOEhjsFRJ5o/i4KjAP85hgZs2mZS24Zhn0puGHdqay0LlFhLXDFBU9iA57HC+qwMrstcFtQODScRFuuS2muYQ4qQ0WHE6IHVvdTxumvL0Y3PXZdSo1BYMsVh6YfQaUKXalD1wQ/t8vRLmiv7SMpv7pJk8huh10L0W+Wnk83W+Rddig9BuK5oaWczwKXLsfYwCTb5P1XkV7p6EdT2ibzgOgZLp9ce3fzlqk3qiUbyfYpllF6Lans/8/I0Ts5dT5GUvcPTO3KEEE07G4xbdYQoydJ+lMhRUD0gacM0lMjM44OjMM3fH4XIC0FEfVltAHVYwRi8wrJXhqFkK+Qh6epgbjNCzi1hn6m0IRoyga65rO9kKGethh4SL3HIGOl3au2fVA4HhCUGnTWc1YG+I3wUkOhQZ9yHczxEXNzSF/3k56R4eyo4eZ6bFbWSEwLKBWxm++Y4CgXTqq9E5A+4XMvvhaksS79V/nxCBP0Yl/3iwK3kpe3BK78ZL8IAHGCYFKoXizU5we+gYA6MDrBGwr3BjuGsIrazabZHw6F0FAJFAvU7kI40FwiebG8ieixTP8pejt3JAUGc+N1oiJaWC4Et5BGQAaw6w7H8rinuGgyolbvxxTxcVGDyprlqNFR/6Md1Wz2mpm1
- caowY41T
- lvofB+mOHM4nW7TkEbmBsW0K35KMe32IbOrN8joJyFxgPEHFBtfQ7+jTGBcrmxFN6IHuAwvDqHtYSZc3FrIjBTpFzvhja97UQlKr47LAilNiaH3+ICstX6SYtbJYqZxFHoxsEJUW2hOW6nerXVliXVr61Ro7Rx9SpzxxA7/cqa76G8gop1dmRbtNnE0KxoxvYM5t7yOD2FYXXpjFTerfeaaOs1tI4B3SAVym50SBpGHSUXo1fveO57zbelI2yyIecD7nGPuFLlib9CQ8A1rYomT22FUncsBT6goq11a8yeLgwq4eaMlZC+V7qfcH6qbJKdhDz7N9H4WDh31nC3YjUO2zlbTL3oPybE0m8
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: umhqggs6i91zwtc7wmfggxp9x6yuwwk9
+X-HE-Tag: 1792738459-996351
+X-HE-Meta: U2FsdGVkX1/TSpv0SP62kdM6f+d8e3+vJzRDc4LvCXAAIKbqyMQ/OsvmSzUwc7SbwOT21658Bz8QVKkdnJ6/PjO8cM8aJbKeAnFL/IJPqIVpx3dFe4SxZ6iPndluc5JFM0efH7zkklKXItFUwwY6ws+Kn2nzwqMgAS4KMypT17OSTLFGjX63qYMfEeB0CjB0z9j4h6rUfAFr7B/1KJCwzflmOGCqD7LKKGrMBIWB74MT4EmQmP85QtmdY5rODonS2zV3yJkxh7eObMhyqR6Db8oWoSztCxoO+/2xCkz+ABBjbDqi+PQmVrw/nxwPw4wS00FvtRESKdm28lYTImBkqxMZnJKstBOFGejoI/LZYGwPVPvlA+eLp8sDKJPXfJtinm9Sh2+rH1sqHURSnQ2cr+z4f9LR3b4YDE1d7P7NSoba08SwCYsfebPwNvwJc/lsxjSxjU2qQZuOWrbkvD5XwL+KlCjaI2is7/zybBdZJ/VTyMph6bGlDn3sogX7RUHa7e36cY8MPstS5x5Xt+tdLr3OXii+7cjbVWmmS7hFCU1yrghHW4+9UOZYFViu8vBAsAEVFJAl/AqbGGAKyPWBuCObIB1Wzih7+HJwjOAMxVpu1nEqzG3Uofv+9x+p+d3ViY2ecGx+R5QE2VwWzERIGXdpLphzyNAnylVnr69A7zMK/XH8GjdW/kOxyrs6GUElsHaWQk8ghxhKVPN01187awOUfNR9jhPcVK7kOVvs7VXhJxZqStnhK7sWUbC1UUC1t5uOw73UG2w4iqK8ycjNCBxrx1WDgFOUIU0wIy/XCBQDqcvouuitz22N00cNGWMrkC8tBTuwctj2+krszZw/Ta2CBzqxlD6pSBgFWzn52p5mTCDHBCrZgWy+D1toMNOKgtgMu0Fx4tVFGnvtbxb0+lKDrugI0cqzz9f5Tc7aVSo7XgO6gh33tC2DKdN883LjIC6ocJyxWqBl2DhT1VE
+ 3Jhf5orV
+ zkwp5fksg3C2S5O+to5LGGILDmBwmkYrqqwVF7iN5XcSlqnWuQUNBTTUsvU65c+UZAjtQXZ02894G0tY0HQGyX4+lPoSoayzZ/zInfLvjtYqX6I4xnYcwHYB29nOE/zLx5a3cFgYX72u7zjARRnPGfNhd94lQLf96lLH4NeN35QV2xqXi0FDvY7maxDhy707TrBcaZrAOYGCvCs+Ut0iDe+6cXE2pBsbvULipz3qHF7ERFRqEtulCbOtgsCM+hCRNJHdf+ssSq3RTkHASoJAfKAnMP621xfFOXDuoD01J03Axxo8roQxWDxJx0kk1qfLRSR6+AJdQxHVdEpGKnhnjZX7rKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,50 +97,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/22/26 10:11 PM, Gregory Price wrote:
-> On Thu, Oct 22, 2026 at 05:43:49PM +0800, Li Zhe wrote:
->> On 10/22/26 11:56 AM, Gregory Price (Meta) wrote:
->>
->> So userspace cannot rely on one write to memory.reclaim to produce a
->> final per-node distribution. The intended usage is a feedback loop: the
->> controller observes the memcg's resident distribution, chooses the source
->> nodes it wants to relieve, applies source-scoped reclaim pressure,
->> observes the new distribution, and iterates.
->>
-> I think the critical question is what CAN userspace rely on?
->
-> We can make a bunch of feedback loop interfaces, but there's no
-> guarantee they'll actually be useful.
-
-The reliable part I currently want to claim is narrow: userspace can ask
-memory.reclaim to apply reclaim pressure to memcg memory resident on the
-selected source nodes. It should not rely on a single write to produce a
-final net per-node footprint. The existing memory.reclaim interface is
-also a best-effort reclaim request rather than a deterministic placement
-primitive; this patch only adds a way to select where that reclaim
-pressure is applied.
 
 
->
->>> At the very least i think you need to add details in your cover that
->>> demonstrates the process of doing something like per-node resident
->>> ratios, and show that it works as you intend.
->> Agreed. I will update the cover letter to make this model clearer. I
->> will also make clear that source=nodes is not a final net per-node
->> footprint guarantee and does not change memory.reclaim completion
->> accounting.
->>
-> To be clear, I think not just making it clearer, but if you can show
-> some tests that demonstrate the reliable behavior of the interface
-> extension under different scenarios - that would be compelling.
+On 23/10/26 5:05 am, Shubhang Kaushik (Ampere) wrote:
+> vm_map_ram() converts its unsigned int page count to an unsigned long
+> byte size without checking for overflow.
+> 
+> On 32-bit kernels, a count greater than ULONG_MAX >> PAGE_SHIFT wraps
+> the byte size.  vm_map_ram() passes that size to both alloc_vmap_area()
+> and vmap_pages_range(), so it can allocate and map only the wrapped
+> number of pages while returning success for the original larger request.
 
+I would expect the caller to take care of this?
 
-That makes sense. I will run more detailed tests across different
-scenarios and include the results in v2.
+In vmap(), the check is count > totalram_pages(), is this check more
+appropriate to be used in vm_map_ram too?
 
-Thanks,
-Zhe
+> 
+> For example, with 4 KiB pages, a count of 1048577 produces a
+> PAGE_SIZE byte size after wrapping, allowing a one-page mapping.
+> 
+> Reject page counts whose byte size cannot be represented.
+> 
+> Fixes: db64fe02258f ("mm: rewrite vmap layer")
+> Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
+> ---
+>  mm/vmalloc.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index bea9f76ed7e74247d4ce919250c2f02dd5c36483..e98d3aa551fe205ebd9826daad9ad6bd578b91ea 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3083,10 +3083,15 @@ EXPORT_SYMBOL(vm_unmap_ram);
+>   */
+>  void *vm_map_ram(struct page **pages, unsigned int count, int node)
+>  {
+> -	unsigned long size = (unsigned long)count << PAGE_SHIFT;
+> +	unsigned long size;
+>  	unsigned long addr;
+>  	void *mem;
+>  
+> +	if (count > ULONG_MAX >> PAGE_SHIFT)
+> +		return NULL;
+> +
+> +	size = (unsigned long)count << PAGE_SHIFT;
+> +
+>  	if (likely(count <= VMAP_MAX_ALLOC)) {
+>  		mem = vb_alloc(size, GFP_KERNEL);
+>  		if (IS_ERR(mem))
+> 
+> ---
+> base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
+> change-id: 20261022-vmalloc-reject-overflow-e532c556f3fa
+> 
+> Best regards,
 
->
-> ~Gregory
 
