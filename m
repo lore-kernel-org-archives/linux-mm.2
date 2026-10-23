@@ -1,83 +1,78 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB657606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2FC606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NKktgR4r
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HiQGCRhA
 Received: by kanga.kvack.org (Postfix)
-	id F28AD6B03FC; Fri, 23 Oct 2026 16:56:05 -0400 (EDT)
+	id 711F56B03FD; Fri, 23 Oct 2026 16:56:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED8D86B03FD; Fri, 23 Oct 2026 16:56:05 -0400 (EDT)
+	id 6C3196B0400; Fri, 23 Oct 2026 16:56:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC7806B03FE; Fri, 23 Oct 2026 16:56:05 -0400 (EDT)
+	id 5D9636B0402; Fri, 23 Oct 2026 16:56:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A26566B03FC
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:56:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E3B54014F
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:56:05 +0000 (UTC)
-X-FDA: 85355098290.17.BB22392
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FFE96B03FD
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:56:36 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C8EB31C271E
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:56:35 +0000 (UTC)
+X-FDA: 85355099550.28.3EC3DB8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4C4F91C0006
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:56:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NKktgR4r;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792788963;
-	b=Yjg91l81UtvR0mNb0Da3nOXL3uUtbPtiz20LTaalwpg2hx6b985uUDqDsDCcw79KXyLNk0
-	2SpXpz/2Gu3BxGQuF6habb5bZWGSD8joV7EmAJN2pjtkv2xZkp5G3Txs34kB0W/gqvKOeG
-	zBzz8XC218/zDubpL7asWurd86HGus8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NKktgR4r;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1051E140005
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:56:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HiQGCRhA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792788963;
+	s=arc-20220608; t=1792788994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a31hdiyyDF8ZUUv40jZBEIwm/U5+mj/EC+c4Mf/cga0=;
-	b=gvRmNHggYuOBJbhQ2f/WZgIFkvRQMh8QZ1Qo/bGWN0jiP9ofUPlc3jU7r/iHkLX6ovwfjy
-	OHFAJE0AwBgO8JIB+w8sd+zc1UwP5yJiCRjAB8uaGkakVd57cgYIf/Z5BhqeEtYGhVwFLI
-	3V9WLsMqv8/9TLGxwGVESAiSfvoHYwg=
+	bh=Y67gO6PRdAEfndN9srTaRF6Nt3BQB1WNhqjL17tr/jo=;
+	b=a4SIlOur4YdyaZ968lkqicaTK/jVvesDJr+Q6/ap9G/j5ylpUfPj1ycAMPbU0mazsbFjJ7
+	3E+lawsypBJb6HnO8w8VNlwNz4xpREoHlFzbFFXY+ytc/fAjs/0RsyFMSTT8KVLSfwluWA
+	oRSL3nK1ySiqCGjProyOXChlfkZ6NdA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HiQGCRhA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792788994;
+	b=oIOI10MnlyPJ4tFiuvyuh+/TA5PV69Vk69yuW72jc1NUhAlBNHWjecVONMgRGcDwqsLNh9
+	VOS2XM5MpTPp3/illUIZQqN9wdqKWomEhwuEIT3a3z8HtFiGW0YWpL+SPmMrgs6ZVYLaFm
+	Bw76HUUEe5QkUQLwqvnIZ3H5SrZsIM8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C828860142;
-	Fri, 23 Oct 2026 20:56:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4021F01825;
-	Fri, 23 Oct 2026 20:55:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E50660142;
+	Fri, 23 Oct 2026 20:56:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FF41F01825;
+	Fri, 23 Oct 2026 20:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792788962;
-	bh=a31hdiyyDF8ZUUv40jZBEIwm/U5+mj/EC+c4Mf/cga0=;
+	s=k20260515; t=1792788993;
+	bh=Y67gO6PRdAEfndN9srTaRF6Nt3BQB1WNhqjL17tr/jo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NKktgR4rcKUdiO2NkGJRqzAQyHyNqk4IJRrBJu5OAedX8PNttS1iKxSWrk4vI+QCk
-	 YNzgXsxxdNLNEM0LOhDMdTdWBRlT/hiT8BXaWGx9CzvO241Sp7xjXaQQMlT+li1Vmk
-	 xEV8BbhLNv3aETBLsnUYUea273eBkAXi2UlnleTBUcRzusje/zDVOTo7VpvS4HCzqP
-	 XZZoc2CkOJIPULxNsLE8pm7OWICD3bKx8L75lOJptyqzWNQxaZmKTKNYlZZ0t9JZgf
-	 /4WlgKEJZLnCIM0Tuna+bCKkOB1ER1mWz32qJhFlXkmDKNt4I8eWKojYMQm8qkFp7o
-	 rB+6gAabFfuTQ==
-Message-ID: <cc2e3af6-bb56-41b1-9cde-151797c3068d@kernel.org>
-Date: Fri, 23 Oct 2026 22:55:54 +0200
+	b=HiQGCRhAgTDsuuAFI1xdM4pzH4DCnuxc5f2pEQtnPLvtOTL2NyImEBAxxN1HPxJ4g
+	 cCEU2gIHN0w5puIT9XCjQ2GHvqK9IH07eLfzo9k0Dcvgmn+WFkNvYdvPzq9LJz1hfJ
+	 XXjFolbTTG/+5mqJQNX47lyuSV49+lSk7KMT7dwjChB8i9NWsOKUXya9tmtOMi8w23
+	 Ffe5unOXSIG6mPZjg3PieJMFhWWxQAas0zj6H1jGTPMtjySVZJz/a/HidfTOG5Zn35
+	 qRY4GdSRizzv89zSG2piiKDVBwjNZTlXydNiqrTgp4BccXL8+QoDc4H2C1aPFciY6j
+	 6hJH4WW6ZuAzA==
+Message-ID: <f0ad7069-5ff2-49fa-b11e-1ae589836980@kernel.org>
+Date: Fri, 23 Oct 2026 22:56:27 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
- PTEs
-To: Zhao Gongyi <zhaogongyi@bytedance.com>, catalin.marinas@arm.com,
- will@kernel.org, Ryan Roberts <Ryan.Roberts@arm.com>
-Cc: dev.jain@arm.com, baolin.wang@linux.alibaba.com, lance.yang@linux.dev,
- mark.rutland@arm.com, akpm@linux-foundation.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
- <daab2f45-56c2-48ad-a24f-aa4f889e4da2@kernel.org>
- <e0f60526-bb95-4d39-9a7a-72cdf32ca5b6@bytedance.com>
+Subject: Re: [PATCH] mm/mempolicy: remove unused mpol_is_preferred_many()
+To: Sang-Heon Jeon <ekffu200098@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Gregory Price <gourry@gourry.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>
+References: <20261023161003.59086-1-ekffu200098@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +119,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <e0f60526-bb95-4d39-9a7a-72cdf32ca5b6@bytedance.com>
+In-Reply-To: <20261023161003.59086-1-ekffu200098@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: otb8j1wx1szrzykgxykmwoszxfit7395
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 1051E140005
+X-Stat-Signature: 49n9nbubr9pzpzirsj43fjmwaiawmk6t
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4C4F91C0006
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792788963-939521
-X-HE-Meta: U2FsdGVkX1+5asekYRm3g9KXDlOEiAo+V8RgdW13yySj7BedNb1DqHqcAiobIYyTbZwubk4glXWvK25Bv4l3Z3NH6GV7VmaK6tKEJclzNHaWm0zqNJe3hNsCUTpoyHVuUNSaRzCLDRgk3SGDUnAGBT/+8HNzVlq5snV92AUVtRzQk4bjAiFcd+wWdmy18mM5Bc/m6er6HQ7FDB08rF2EY1YvFnT6edCbVLrq6UZ0gVfucOYacJJH+ILmqC2GI/sc7DvC6d7m0QCo6XmvDcr65XrtBbu93Eup01pwDhvQ8SIIEg2pO8kdonZ2sLVdvjAE3F+6rfs4+Zsnf+01ZWQ42azPQO06/6BnhQVAUYzPqz5vj9CFhtEMomLuUtL4dacWN4+LchGlSRN5Sr7XXv7UFLGClYbuh9Z94WiLFeM7xX0nkKSDXW7Fct6t5U6MyV5kSHGz/9hPG+Pb+vQRqAoJxbWcVj/k/4SBHQUjvamA9brkJkzO5q0d9IvCxjK5nwLnwvAQkj5T00p88E4buHwciIiupNOuCs/Rlsw418uwxpwtt5IoWikR1+yljOYsJfWOCaVEtaYPpiFqjUxa92wmXzm9+CbTlha28g1RFz9Qq/oSjQPAi/CFhhlviQFrVpQj8voRcbJ6qFm1Gqw0zNuwV7SU+pMNSHa5t2ZaNgT3SI0yqoB/PGhp3u18/SYa5HlhXocueAZQTaTthKw0xh9XfaJmRPtvl8J4sHTntyT8X8edNgpggobRqF7lEOIWR2JKA8bgqzBELBML6fWpCaGXDUFFSFuLQW2pCd52JRdJFQ/pVH4mE+jIITyTFAG7Tg0DXsp0/RK+jI3q5k4SdsTfvfYJtC3lIYFvmyXa3l3U/0QGFlmAROjTtdmJy31raiqfcqtxMYFOkB8pFebY3YQtj/r4fIH5Eu4Jyl7csUCxjVImXER4IYTqAgl6JiB2JcMHJjLgk35aYgz1b2k3jSg
- 8EbLAoCo
- csTGcGkzWBmA9McXnqD4O03j4TrzOQph28iZhuNX89tvFCRyAsdcPlHEX2Wk+JtcoT8DtAgxO76hK5gq/+x/ySjGDA3WuEg5ZkGgNmFhLQSoIbOTTibO9JBj+DjTB/rH+XmW7IXwr3hxBZlhesGB4b2/uvt1EQZsLOd2sSTBSAv7kN9T2G85+p0M2tvmr04dpB54Mk7crsBnjKG6KkDIfaBQgrsvM619NzPnEQVHo0r4qD1yU0zCkVD9FOdk5HW6OtolH3JX/hkZoloVBMKgFhR62FYmu3/m/mMgo+EVY5M8qrSAm9M77BzPZIX2OwOk37uW2elACaiJFkhxuhTC2qIniKX1SZIAlBNv/vL7nPePhIN/azTZ/2jjYve7pF3VGAKHt
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792788993-37638
+X-HE-Meta: U2FsdGVkX18DHCocuyEqQUlFj7Wu/BlHU54e39SUOfcO2+BL2TxstR0SAkRbFz1Pjx+7pYX9VhkRwMz+Mj/YGu2+eMeUbxrhDR+DLHJJMBQeEksBI0Sl4Ea3Wo9rQQxSw4IG3SPmylPYKKYNIKbqIam8WAcXSHxuLRd/gij7/C4cQq6xY2FE9pwWxHvblV+MocJtvixEZtqAGWo/8c7jIm/qwshNZMFnieDBWtzGkB0fy3uQSiN9vJ0/kaEgMLQxHMN4lDRaRTpzP0Oo5Y0Gin+FUtGit/dCooqlRD62p5X3hlq4d5/wMIw9gl78MSIMmqN4gAYoQcdTY4VdRDcm5ZldCabKqAFMMqcKuSmQw2hkzNqkfTGoflyLtAVkQaIvnja2le8+VUs7jegB6Eann6y0SGP/LrWbAU48AvcHI8cnZY3OwWRUOAikwzNLG1nFCjURel+FwG99oWlv7S/RWATS/sFQJz+GI6LhVeGUpLozvaq7KBrOy3YJuXxyuQ6SdZlDMdmKPeICuaRiFuMrzKuY0IZSuHG2oKtJAd853a30LpOzGWgL4FmlQOmAKp1tgOuaHpdtp5Scd3xN/xRAep+NCnHYwV7rWzm4CnkBS7s0HJJTv+NpYS0U+8+xjh+DapYOUh6DS/j5VKV2meYgGNC5qgcZYVTopwbGnbwcJcobuUZAqSmJp6sPSNU2b49ORamXQFQD0RxPhmE/VeNcCcP3qsws3vk6VGU86bN+PtA7OzgbANtIwONu2rv11w/fbhAQiNB0Lmh+ZXvPeR3qj+s5MIfSS/ydYJ0OBqn2xC3iL64EhH/uF1AuLlBHxZdOT7eO9X05sn95Ynl/IesAjP9PFh1kp7RQ2N2pE598iRvbAt1UGxE5EGr/uzPqfOFY2j8x9Q3HuPKkH3FGFJyfxLwU3i3T2qVPcN8yFmEx8Jq9o4T5W6bCAmOvB6qrXqRDpsIyVqbb0RSJVlihuFe
+ FBgCBW0U
+ mI5GndddvITSD8M8VUSfQSlyCKnO3JXmFCo0hXCl/WFOFXJP3w/jsZAzlS8gPDNENxcpYweTfGkAsfp6MJzQ8FMFZWP+qfPV9Qu2IKTYvOlu9X5DnppkMAud11TPgjtAGBWAXSjHfAapQdsuI3G10Ltq6j3AgC++J6PWLDvG1a1QgeGjjlMyapJnsWOlYV0oo/K39pWZSSNqgzFVcqJTP4ZLTzE/mIWDKdd4tioXyKTbIqd1Xk6t76PudKNobIq1ePlWCRpXqtO8QBuXRwq47StAXmz8NYRT9m5XKeV5Uds+tNNpoJzg1B98P2rxzfMNRHKJBfDasFypgH87cVQnpL1oxmhySpK4ibDuP+6uQEu/Dd70KC/mgm/MQm+62f62svK/eDowtgVfxVXi0SUqdo//7hinPa8ecgthJ0wnjNIJr5Ms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,94 +142,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/19/26 09:06, Zhao Gongyi wrote:
-> On 10/14/26 5:41 PM, David Hildenbrand (Arm) wrote:
->> CCing Ryan:
->>
->> https://lore.kernel.org/r/20261013093600.54995-1-zhaogongyi@bytedance.com
->>
->> On 10/13/26 11:36, Zhao Gongyi wrote:
->>> The transparent contpte layer treats PTE_CONT as software state: when a
->>> PTE has PTE_CONT set, the contpte helpers may align the operation to a
->>> CONT_PTE_SIZE block and operate on the whole block. That invariant only
->>> makes sense for valid mappings. Explicit users such as hugetlb manage
->>> their contiguous encodings separately.
->>>
->>> contpte_set_ptes() currently sets PTE_CONT from alignment alone. Batched
->>> set_ptes() users can therefore install present-invalid PTEs with
->>> PTE_CONT set, for example mprotect(PROT_NONE), NUMA hinting through
->>> modify_prot_commit_ptes(), fork() copying a PROT_NONE large folio, or a
->>> PMD split installing PAGE_NONE PTEs.
->>>
->>> This is not a hardware programming problem: invalid descriptors are not
->>> translated, so the hardware ignores descriptor bits such as PTE_CONT. It
->>> is a software-state problem. Some arm64 fast paths intentionally test
->>> pte_cont() directly instead of pte_valid_cont(), for example commit
->>> 9970a9a27ffc ("arm64: mm: implement the architecture-specific
->>> test_and_clear_young_ptes()"). Fixing the producer side preserves these
->>> fast paths and covers all consumers.
->>>
->>> In the observed failure, mprotect(PROT_NONE) installed a full
->>> CONT_PTE_SIZE range of present-invalid PTEs with PTE_CONT set.
->>> MADV_GUARD_INSTALL then zapped one PTE. The nr == 1 clear_full_ptes()
->>> path only unfolds pte_valid_cont() entries, so the neighbouring
->>> present-invalid entries kept PTE_CONT while the target entry became a
->>> guard marker.
->>
->> Hm, is there a good reason why we cannot just use the cont-pte bit for all
->> *present* PTEs, even if HW would not be prepared to benefit (!pte_valid())?
->>
->> I guess we really only have to make sure to shatter properly, right?
->>
+On 10/23/26 18:10, Sang-Heon Jeon wrote:
+> Since commit a492abe28bec ("mm: hugetlb: move mpol interpretation out of
+> dequeue_hugetlb_folio_vma()"), mpol_is_preferred_many() has no callers.
 > 
+> So remove it.
 > 
-> Hi David,
+> No functional change.
 > 
-> Right, there is no architectural restriction preventing PTE_CONT from
-> being used as software grouping state for present-invalid PTEs. For this
-> particular failure, making contpte_try_unfold() recognize something like
-> 
->          pte_present(pte) && pte_cont(pte)
-> 
-> would make clear_full_ptes(nr == 1) unfold the block before replacing one
-> entry with the guard marker.
-> 
-> My reason for preferring the producer-side fix is that the existing
-> transparent contpte helpers mostly use pte_valid_cont() as the membership
-> test, including contpte_try_unfold(), ptep_get[_lockless](),
-> pte_batch_hint() and contpte_is_consistent(), while some range fast paths
-> test pte_cont() directly.
-> 
-> If present-invalid PTEs are also considered members of a transparent
-> contpte block, I think we should audit the single-PTE modification paths,
-> rather than changing only this clear path. We would likely also need a
-> pte_present_cont() helper: the pte_present() guard matters because the
-> PTE_CONT bit position is part of the swap offset for non-present entries.
-> 
-> There is no hardware benefit while the descriptors are invalid, and
-> set_ptes() can recreate the contiguous encoding when an eligible range is
-> made valid again. For a stable fix, I therefore preferred to stop
-> contpte_set_ptes() from creating present-invalid transparent contpte
-> mappings, which also matches the pte_valid_cont() contract used by most
-> of the existing helpers.
-> 
-> I agree that saying this invariant "only makes sense" for valid mappings
-> is too strong. I will reword that to describe the current helper
-> contract instead.
-> 
-> If preserving the software grouping across PROT_NONE is the intended
-> semantics, I can rework this as a broader unfold-path audit instead.
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
 
-Hi,
+I'll likely pick this up for the next cycle. After the merge window ;)
 
-sorry for the late reply.
-
-If we have the spare PTE bit, why shouldn't we just use it?
-
-It will make batching over PTEs faster. And we care about that for present PTEs.
-
-So I don't quite see why the stable fix couldn't just do it right away? Do you
-have a prototype that shows that it would require significant code changes?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
