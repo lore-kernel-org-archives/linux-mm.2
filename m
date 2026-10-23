@@ -1,160 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A02606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E409606A325
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=HVAg8X48
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cT6hVZUW
 Received: by kanga.kvack.org (Postfix)
-	id 9DA536B037A; Fri, 23 Oct 2026 10:01:12 -0400 (EDT)
+	id 90FAD6B037C; Fri, 23 Oct 2026 10:01:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 984CC6B037C; Fri, 23 Oct 2026 10:01:12 -0400 (EDT)
+	id 8A0706B0381; Fri, 23 Oct 2026 10:01:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84C646B037F; Fri, 23 Oct 2026 10:01:12 -0400 (EDT)
+	id 6ED4E6B0382; Fri, 23 Oct 2026 10:01:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B29D6B037A
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:01:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E3BABA7FB6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F56D6B037C
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:01:14 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D0F2D1A040D
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:01:13 +0000 (UTC)
+X-FDA: 85354052826.27.69ECD8D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 080111A0019
 	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:01:11 +0000 (UTC)
-X-FDA: 85354052742.01.9B2D65C
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B7687A0020
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:01:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=HVAg8X48;
-	spf=pass (imf25.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cT6hVZUW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792764069;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792764072;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EtyMFPm1AoXY1rEO0WfbSM6JxPHkULRdHaFEkgfjDaI=;
-	b=u1fpufgyQLDhSksiZSWcHVp6H+EWfCuKl9cTMXlxhLnh2FyxxMYN1HT2Wtt7kHQIGqPDE9
-	mE7IzCO6FxStUeeNxmbblm5meFttKk+oDAmnMN+TcEt3FpUO2XhWOArsr6a5rXqAIXxGhl
-	jr7DqwbTnHH5RIVIWj7zI+30zw9Dgtg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792764069;
-	b=PhvAyew6p2MGF5nznMPZo8thk2wgwkqhFvo0Ci3LxWAr9u0wAt/ZRHIPih6aSB0621Iuhm
-	3h0vmpUT0DKzJ02pG3a794KwnRCmvqXfeRW0HkdiOGGz/NRNcYAXXxksBSopKO6EQGwzt3
-	+cLI8sxndPvWgZx7O9aGRQ6PuKbfbl4=
+	bh=HP9Ra1b1eXP/Ub6Btog3ZP8dK/E/DDVXsJ9haEXY8dU=;
+	b=r839awj0NX451klnzc70VUUwTak01YKo9GN+2k4X914y0Ts8z1R26vmxvLFJFXMqBrnGdH
+	4tN5eS1M9pjJwXG6abHkO4HN+3Q/jT0bGgrbr87DSOFpSKAPs853P1D1e07wS1SfM0TF5k
+	r1a1vQN5FQnPtktbU8E4BaLQUDwIIHs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=HVAg8X48;
-	spf=pass (imf25.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.171 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-53634b8328eso6043811cf.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:01:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792764069; x=1793368869; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EtyMFPm1AoXY1rEO0WfbSM6JxPHkULRdHaFEkgfjDaI=;
-        b=HVAg8X48hZ8+NgWMgSVqO7f2tpjdVhPuKQd8GWM8xtkRIO5XJI21XRPpOXE0v643XJ
-         xSNQk9rJtiRIKmNyyRFAdrfdJKNGp4UyB8vHzkkSOVsgfNNBm/HeLEgzAShwdlUIVQTe
-         E/t0Tq3v+nLALppDB9hmlA5LlDQP6Pbi1imXMj07z6Avms85Q/2Q7xvS/yYKhsxBHwss
-         vrP9ZiTKUSAawmd1jRaJ0trvbzZVetgacRqK3k+6ccaHqB5V+OQtvtFaTurvz48a/tYc
-         nuC1LQEfuAAxf1jwLJWeqmmEY1sqVhWzaxLC1f1JmGa3b58rcZ+cRAe7sg5HqhJBXyRm
-         GBiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792764069; x=1793368869;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=EtyMFPm1AoXY1rEO0WfbSM6JxPHkULRdHaFEkgfjDaI=;
-        b=fnqBUgVOxTKc5lBkl/aG+Zi6zP8U1BcNF7XJ8i3tnWI4nSPRD2rOIbiO6Fk92csH8v
-         ulrrdbdrXdlYxYmiJz42FXVwKrY74zowJhYS9OSXFTyAHY+ZoIcR1rXcWloNxI0jtu1Z
-         H2Ezb/TjB9zSPX126Cw2HVn3wPdCoXmxahzcJ0aC6/MFUmaEgU4Qs3T5VifKYeINYWRT
-         Tmkfx70vgfUoFrMfLT+HGhfNM/I+ptOoQDi6qAaEFkkht34UEwY3A2aXYSts9UN4owK1
-         q2w8J7MF2rN1VK55rqa6ZbmTOPTUCJyGucFStF7KuF7KztUfVdW9en9Jxc5hMtEeyick
-         gmjA==
-X-Forwarded-Encrypted: i=1; AKwUvBymZrGp6X/mzET1HFSqV7x2HVLM8eBPsGdjZD5Kd5VLK/BgdQngPQHKRsxk4+hV+e5yM6GVRrHefw==@kvack.org
-X-Gm-Message-State: AFq9FYKHJbOg2JEfBCMmujoXm9Zou8XRvIzceGNrXB9G9W8o6bwucauP
-	BZ5p4/IN2rByjqGBMmtnX1dtKjif3SzSpkOMD2T3kr6g7JEV45KlKuyzHl7OjGNFT0Y=
-X-Gm-Gg: AYBFou2bHW78GUBo+bKqzcvJw4r7Rv2dF7t+LFccy31Yf8WXMKunux6P2AlfysmkakL
-	GkI+heR7kRt1oILP6MWE0vog/BZI70R2CdvWMdsQ0k+p1DZc+ab9VO/tAYvjw3i2nTHnB6uDfaf
-	OiScMpo40CF9frWPqpUc6ce6aguonVlGwzIArAyE0ifEdPtkXYkIqDq5ocevLA9pmjKCBI7xHL8
-	yFb+RPWM8+WtsHK7dlIVgvDn3i33n9uQsmfxVwUbIEloSoVIOtn9HdxTBHkbfZaFblwMLcaCrJu
-	DaMWxgDVV6yhIU8Qaie4H4c03BaHbUt2e+mJJDVLGAeAnUK5EwZk7Rm/KLDkuvtiq2vOnMYPdXg
-	ohI+cHN8hm/OM0HEC/brTDqRH6k3mPrHAjZG5AAGS43WeZiEfZbNZHUWHUqXzE0k1P/AhhVRtDT
-	mfPR92kpsGKmRmFOGclv9GjpRJUlt2LjtL2hg3YahWwd7zcKUmLviWwB5S05nRnunZN2HcZxEs9
-	2L5G3RtfaAgmiRzL8Sk9RCGNyP0Wlsi7Ck0UV9TCImakqdtj3ekp32XxjGmAmHZxaWcxG8lWt72
-	KQc1My/rZZma5oKb9fKA1tNHLYkXD5ql17/m1g==
-X-Received: by 2002:a05:622a:4d88:b0:535:92a6:22ec with SMTP id d75a77b69052e-536c263076fmr30716841cf.29.1792764068500;
-        Fri, 23 Oct 2026 07:01:08 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-940479fc830sm24750685a.21.2026.10.23.07.01.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 07:01:07 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xKFpT-0000000Ghww-1SWZ;
-	Fri, 23 Oct 2026 11:01:07 -0300
-Date: Fri, 23 Oct 2026 11:01:07 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-Message-ID: <20261023140107.GC3977851@ziepe.ca>
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
- <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
- <20261022201229.GH3381610@ziepe.ca>
- <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cT6hVZUW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792764072;
+	b=y3wEne2R0IZ/QM2mRRq/Td0bxiguW3YHNS868ZAl5fB1D1QeNcpmQzJZUK4iyqcmLZWPpW
+	32G0TgMgwGU8RzgmF5CRj66kVParFFNx+zRbCpEYct9vht4gkSgnXp1n3zDii44NJ3bGF3
+	p2s5Y3IrG3R0UWfsirXi83gEIWEGBEk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F78C43E8E;
+	Fri, 23 Oct 2026 14:01:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAA31F031E6;
+	Fri, 23 Oct 2026 14:01:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792764071;
+	bh=HP9Ra1b1eXP/Ub6Btog3ZP8dK/E/DDVXsJ9haEXY8dU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cT6hVZUWjoCBzeWOU1kAHJWoD5SSQjiqy8FHTJUNl5JmKFhLTD9sgxtdCCNT0ooVW
+	 DylpKsBnOwKn59nm3Z6HhlSr83zyoYFlAnIiMOkBSJEUtHyQPWV1IoVGoHqOjsMC/W
+	 jz4FPwofk2aVrSPG6EQwE6tHbuh/ecQl+oMXlRKX0fxc2su/khX5IncuuyigKR9rCm
+	 pyR7y7LNNiDb5eRE0up958aHjQ0c5llbqgB1EAglyUaDAecDV7x/Jf0bvrHkuZbtHE
+	 X8+f/qUvexJEMclRxAQcNzlUqTVgxns9JGqAbazvCR7Ak5g8WYxzLC7QyjE2qJwjDr
+	 uxJDtUI8OgTWA==
+Message-ID: <sashiko-outbox-182858@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] mm/filemap: read ahead downwards on descending
+ VM_HUGEPAGE faults
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Qiliang Yuan" <odys.yuan@gmail.com>, =?utf-8?b?TWF0dGhldyBXaWxjb3gg?=
+ =?utf-8?b?KE9yYWNsZSk=?= <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Vishal Moola" <vishal.moola@gmail.com>, fujunjie <fujunjie1@qq.com>
+Cc: "Roman Gushchin" <roman.gushchin@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, linux-mm@kvack.org
+In-Reply-To: <20261022-bug-mm-mmap-readahead-descending-v1-1-6d08b34862f2@gmail.com>
+References: <20261022-bug-mm-mmap-readahead-descending-v1-0-6d08b34862f2@gmail.com>
+ <20261022-bug-mm-mmap-readahead-descending-v1-1-6d08b34862f2@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B7687A0020
-X-Stat-Signature: tiiwo1wfnjxcawtsw3yudyxc8dhezxow
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 23 Oct 2026 14:01:10 +0000
+X-Rspamd-Queue-Id: 080111A0019
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Stat-Signature: twsgd4y4aaf5qosggte8znuart3jjcij
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792764069-348468
-X-HE-Meta: U2FsdGVkX1/nFNDnq//z2Zc82ohG7Bu9vawWy6T3Y1I1aZWZa1CsOYwAVJTgIiOuvIqAoY2ra+Hi9VyMkWCJfR9HswK+hrYo1U5MpYrABTxqvvPa5Acg0k2GWnPD6b2pLHUK5Cr2nXkGTAAtqL6tTO2vCWcg+d38O2pZ/Ujdf5U95CRwHYNCWypxnM2uI8+70gKSf5IflQx9G4xa3sJod56XdsXdfFLs9eV+lhRHudioQI1f2TUzEjyrwLbMkqrEmL0Fmj1reitfHwQnJ2IZChfzU4yeG9rEv14DJgJn/MGkJRimi1HUU4gSOM9g6kveFJ1czzd6YydWyeqL1LyVw1geH88O6Ysh/ckX8ju7fJwhDTDhXhUX6bkWAy3OAily+N8hW9E4CRmuFDMvJzYPRhZhisql+W7CUm0pIRbchUaYZnvvA6/ZN0hkAjnDqzLMfQRQ1V7eWEX/WwQMzKLlHvp9B/dvS909dHlKgHDtdZrVS1TRNnHKRE8ZQq77LQg1QqmSKFgCwNCq6218f3iWxL+AlBYfDvGAqjwbE+A1TynGv7/tiLjSpQQ369c+Tg8G5dRFXktXrmxaYKo2nvHTc1d2q2NztAYQef3KYpkYY7fOkWq983XRNCkLlr9BjcKMVquSFD7mVBgnA5qUz3rF3pabesq+ItknthQzv7qpEl1WFUn4coIPAfayJ9qnO5nLZCQfUHNBXok6vOvOcte3znjrUuf9pXipSIbZNCKc/QxDWMu2fynSl/8f4B0S2yLpptxQ+2IqbbiuxN3XBFKSwxpL7eUjLpt96gtsu9Xi4SPfekfCSJN46T8d0KG9NpBdGAtAv2VvilwblH1M+4rjG8eUlK9nVHJ1ZS/McrsR1kh5hsIJKHJECeoCq6ceLw+tOyx3QFyxlQ78OMVI5aRpX+2dxgb4eQyLGg6VDkg8FOd0TqbUPfz1R2Rmdq52ZVvueBO/BfSDUK4sN/WJvuq
- Xqfnk8s5
- Op2DqdCtUo5jjfumKpWwtuXkg6hxvksQ0rrmjFt1QaJO/9+5TL4KzRLCCc1xHdYPlT5zE+l4HDP4gdWa96MYBvk3nzNFlHViodfjic9A6SJguqdTUs4Yl8cfqm3NXBff4QDxnJtARHzNGsnlPNWoIg17jkEy4WbY/qKUZACNOBil0ZCe+R9BH9hqXrilS42f5KHgbujsde32+pa4rmEernen1Mmn+wyk/EDpmyQOSfQqD1QVYCfPuQrNRMEWH6SWzxu0Dz4cVE3hEnW79KUfwvofRcyTTJrtAinI1UINuUuZOv65AF/qKaySCCfy0+yFD1oQ7sCw7DBHdVshkkk6D63Ib4q8dMmhQeBcv0K8uPAP2HhodfrZadbweQi204FVhf8SG1NRvsVKabU1xwo9g+CdMgw/wk8ICfWU1J29C9J0w6hnCayA2oOVqPVaxaE+S8R4cb4lvpOjzVOoA2GP8c9J91L3wJTGOOCaSIe1gujqbqdg301pKowlhlg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792764071-381619
+X-HE-Meta: U2FsdGVkX1967iWvb9EG4hP9z05qWH+orlr13Mhf9iLCmOfSpCMLRlseRgHQBIo45r4BfJHKTAPvrQu75jiWb0nc+pG8eL6tMF1lftXr+GzWb23h4H9FRAbv2MzQi+G16pI4UTP8Po9JXSG9pf3xcZlOyyxKLwrAknWs/6BTTBe4Ph3HKEG0x5QjkYK/HTHQriaK4ouo5aGEdol8el3b8jOyW/zuU700awxislFEwxA51ZpQUihwDUoAXsQCVq5D03xIr6qIP/qsIaTfRKd2zlJXQQe7uxC7bZ/NoBlDjGj0HXWbK5q2x4lAIHJurBxfbKjR5PeZ+qc6zDjcfp4GaJLak9C7JlLf2E8xcREqLvnNmRsOqxDk5CuKCGuKaWdyyK0EcuLRyTzlAv3ezbhf3H+7ztqZwC8eEGZTiDnRIVCEbHbFrjPS0YcwB4s8TkeZwBu+p75iE7YieAnrg3rJyCBLYcbdPyJZk/FildTJMiC5q501xE/jW0e8Vh/vLD1zHF4NC4wlO+6q43dkwbgO6QQuzukX7LK2yrLlckTV/f2fYF0TzZic5nfdRz8yHtfo7V3B2Qelis9XE7dt/h50PUxO2s9b/mKw01USzV8Lk9aHkB0OARFpn4XvmObK41Zx8V0Dd35vjrbfb2HmnLdtN1jSG0b+MHQ5iAsBHBENQC8137x10NXoOa6hvFcARVQ3QdcpcBLMxO3FXU3WxJpe7KHFlL9Pt6+X8Eo+v33zzr6mKsettm1qoI/ux+82glOAyFyoRMsSrBLpXx4VzqeUQExEYr9uvIfe+zx33DHTrZG5FGINjt2PEaZao4W0ek+/BKJ7QxNOKLt7H5NZIl4f+4ROaYvNmX8ysmn1bku/eck+StCapiiUCg9n5ITQmrLLPTg054uXSVEqcEcec/QMeht1DpJsk87vaPfOnuAsfYg8WdHzS3UU6hJLmKI3x5hk1NX46MnwNaIEstv6iW/
+ 6HP8BOkG
+ 1EktBSp3UHrGa6mn3AY+5FC1q3pP5dEJhC25e6XZfFbJGs5n8Q12IDt+etMLzfh7J68Um+AT+wKl5es4E4ewOU4KbuEYKrlqZS2rvEWb6agoYywS9HtrzjT1s2aqJLr35pd+pzuTs0fJNMSCcUd8sKYMhvXPeyJMNzyT7Lwx/RHR1VC2s2hoIs8CfKWXrKBvWmynxFb5EUH+GrPb+b+5NQ2qs7qkbwlatghdjUi9yTDbZH3g4v0KsVJsT1siXgROMoOYhFFRWwJttzz8/PdTSVgWlj5DR3x+CMDilh6SfOTd0V8RMuWXvyabdWQLciYKl2vIezIXlZtjciuS42ZL0QVnctQFYM9pkS97nwdUSxUc6TJzdQj75NMnVBh1zRJVtDFrXSSErHBrSkkyX/138NZll7vQh0t6pWKrYMQJlj9BNXosJsj7O5IrQzDoYqb2Z1E14qMN79iAKoBrcoCsdoaMnhBV0Vw8nNzH7pnOsqwxZIEo7/VECsSPJL58sxBQ5WGabznjDeIBlowyeVs3o738USkriLMC/sr7Ox20yzUX6jKCLLPc0+NHsRnOo+KwtwqKeSwpAS3yy7TwdRcXIxuuAwFoYBj1YIdFuX84rKeQSd0IYTXSUOJmZoOQcQqDg+vcE4sxpL9ffD90SNciQzFVJRA3BSrBwJHhpHnE0pqftm9lYIU2bCKyyreYc3TxWTHLEUnZ14w0nWVZPDDJt/jtfZh92WtN8Z8TyeDTQflG9MiaraiPPd1oVQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,108 +94,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Thu, Oct 22, 2026 at 11:51:40PM +0200, Luigi Rizzo wrote:
-> On Thu, Oct 22, 2026 at 10:12 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> >
-> > On Sat, Oct 17, 2026 at 07:11:28PM +0200, Luigi Rizzo wrote:
-> > > > We should probably just find a way to describe that this is a POOL that focuses
-> > > > on physical contiguity in some configured granularity.
-> > >
-> > > Before embarking in a global renaming, I would like to get opinions on
-> > > acceptable alternative names (possibly with a short prefix usable for
-> > > identifiers in the code). I could think of the following
-> > >
-> > > DMA_PMAP (for PreMapped or Persistent Mapped)
-> > > or, ahemm...
-> > > DMA_PISA (Pooled IOMMU Superpage Allocator)
-> > > both using dmap_ for internal name prefixes
-> >
-> > Can someone explain what outside netdev would use this? And why you
-> > couldn't do this in the netdev page pool?
-> 
-> I can try.
-> 
-> Regarding users, the next target is disks (not included in this series)
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/filemap: descending VM_HUGEPAGE readahead falls back to order=
+-0 if lower folio cached
+--
 
-Disks don't use a memory pool, they do IO to folios allocated by the
-page cache.
+commit 137f4cfedf4000c009512ee87ca8b229bcf35fa5
+Author: Qiliang Yuan <odys.yuan@gmail.com>
 
-The only other candiates I know of besides page pool would be the
-existing dma pool users. I don't think they are so performance
-sensitive as netdev.
+mm/filemap: read ahead downwards on descending VM_HUGEPAGE faults
 
-IOW I think this entire series is only useful to netdev.
+This commit updates synchronous mmap readahead on VM_HUGEPAGE mappings to
+read the folio below the faulting one when the folio above is already
+cached, and counts PMD mappings of the faulting address as mmap hits.
 
-> > It is not a common workload to have the DMA allocator be the one that
-> > allocates the memory. Usually we are DMA'ing from memory that was
-> > allocated someplace else.
-> 
-> Aside from the fact that dma_alloc_attr()/dma_alloc_coherent()
-> does memory allocation + iova allocation/mapping,
-> this is not what happens here.
-> Maybe the confusion comes from one function name
-> (dma_map_alloc_pages()), but it doesn't map any thing.
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 00fd89cf6f550..8a7d1238ae75d 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3319,6 +3319,23 @@ static int lock_folio_maybe_drop_mmap(struct vm_fa=
+ult *vmf, struct folio *folio,
+>  	return 1;
+>  }
+> =20
+> +/*
+> + * Whether a miss at @index, right below @nr cached pages, comes from a
+> + * stream that runs towards lower offsets.
+> + */
+> +static bool filemap_descending(struct address_space *mapping, pgoff_t in=
+dex,
+> +			       unsigned long nr)
+> +{
+> +	void *entry;
+> +
+> +	if (index < nr)
+> +		return false;
+> +	rcu_read_lock();
+> +	entry =3D xa_load(&mapping->i_pages, index + nr);
+> +	rcu_read_unlock();
+> +	return entry && !xa_is_value(entry);
+> +}
+> +
+>  /*
+>   * Synchronous readahead happens when we don't even find a page in the p=
+age
+>   * cache at all.  We don't want to perform IO under the mmap sem, so if =
+we have
+> @@ -3392,13 +3409,20 @@ static struct file *do_sync_mmap_readahead(struct=
+ vm_fault *vmf)
+>  		fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
+>  		ractl._index &=3D ~(folio_nr_pages - 1);
+>  		ra->size =3D folio_nr_pages;
+> +		ra->async_size =3D folio_nr_pages;
+>  		/*
+>  		 * Fetch two folios so we get the chance to actually
+> -		 * readahead, unless we've been told not to.
+> +		 * readahead, unless we've been told not to. A stream that
+> +		 * runs towards lower offsets gets the folio below.
+>  		 */
+> -		if (!(vm_flags & VM_RAND_READ))
+> +		if (!(vm_flags & VM_RAND_READ)) {
+>  			ra->size *=3D 2;
+> -		ra->async_size =3D folio_nr_pages;
+> +			if (filemap_descending(mapping, ractl._index,
+> +					       folio_nr_pages)) {
+> +				ractl._index -=3D folio_nr_pages;
+> +				ra->async_size =3D 0;
+> +			}
+> +		}
+>  		ra->order =3D thp_order;
+>  		page_cache_ra_order(&ractl, ra);
+>  		return fpin;
 
-> My code (in this version, and more in the upcoming release)
-> mainly implements a specialized memory allocator with an
-> API equivalent to alloc_pages() and variants, but ensures that
-> the order-N blocks come from contiguous 2MB blocks reserved on the fly.
-> 
-> The physical addresses of these blocks are recognized by the
-> "dma allocator" (I suppose you meant the entity that allocates the IOVA range)
-> so that it can apply specialized IOMMU mappings backed by 2MB IOMMU leaves.
+[Severity: Medium]
+What happens in do_sync_mmap_readahead() when a fault occurs on an uncached
+folio_nr_pages range in a VM_HUGEPAGE mapping where both the upper neighbor
+(ractl._index + folio_nr_pages) and the lower neighbor
+[ractl._index - folio_nr_pages, ractl._index) already have cached pages in
+mapping->i_pages (for example, faulting on an uncached hole between two
+cached regions, or a descending scan reaching a cached lower region)?
 
-Why? This seems completely divergent from how anything else works in
-DMA mapping, and I don't see a reason for it to be anything like
-this. Other than it makes page pool work a bit easier
+filemap_descending() in mm/filemap.c only checks xa_load(&mapping->i_pages,
+index + nr) and does not check whether the lower range already contains
+cached entries, so do_sync_mmap_readahead() shifts ractl._index down by
+folio_nr_pages before calling page_cache_ra_order(&ractl, ra).
 
-Frankly this looks like you had AI to transpose a bunch netdev page
-pool into iommu.
+In mm/readahead.c:page_cache_ra_order(), the allocation loop starts at the
+shifted lower index before reaching the faulting range:
 
-> Note that just feeding the pagepool with 2MB pages is not efficient because
-> the fragmentation in pagepool is done with a bump
-> allocator, so recycling blocks from a 2MB page is difficult
-> (it has to wait until all 512 blocks to become idle). My code
-> has a bitmap to track usage, so it naturally recycles at the block level.
+	while (index <=3D limit) {
+		...
+		err =3D ra_alloc_folio(ractl, index, mark, order, gfp);
+		if (err)
+			break;
+		index +=3D 1UL << order;
+	}
+	...
+fallback:
+	if (ra->size > index - start)
+		do_page_cache_ra(ractl, ra->size - (index - start),
+				 ra->async_size);
 
-It doesn't seem like this little issue should motivate all this
- 
-> Then there is the transmit path.
-> 
-> For skb heads, one simple solution is to use tx head bounce buffers
-> some of the patches in the series show that option (the next version
-> implements a proper tx-copybreak).
+When ra_alloc_folio() fails with -EEXIST on the already-cached lower folio
+at start, the loop breaks before reaching the faulting range and falls back
+to do_page_cache_ra() -> page_cache_ra_unbounded():
 
-> Otherwise we need to populate skb heads with pre-mapped
-> memory. In the next version I have a simple modification to
-> the slub code to accept an opt-in alternative to alloc_pages().
-> I considered using the pagepool, but the changes would be
-> similar and the layering seemed really odd, with a cache on top
-> of a cache.
+	folio =3D ractl_alloc_folio(ractl, gfp_mask,
+				mapping_min_folio_order(mapping));
 
-With AI there is no limit to the layering violations one can make :(
+Doesn't this populate the faulting VM_HUGEPAGE range with
+mapping_min_folio_order(mapping) (order-0) folios instead of a thp_order
+folio, preventing PMD mapping of the faulting range?
 
-> For transmit, there is a bit of impedance mismatch as well:
-> skb_page_frag_refill() does not know which device
-> we want to use (in fact, it is a per-task so there may be
-> many netdevs used by a task). We could tweak the pagepool
-> to be device-agnostic, but that would be a bit more
-> intrusive (more architecturally than in terms of code);
-> also we need to make sure dma_map() on those pages does the right thing
-> without trying to map/unmap the individual 4K fragments,
-> and we need to make sure the skb_free() etc does
-> not leak those pages into free_pages().
+[ ... ]
 
-This is all a page pool problem, has nothing to do with iommu or the
-common dma layer.
-
-You can already get optimally mapped 2M IOVA and memory out of the
-APIs we have. I can see no justification for the intrustive mess under
-this beyond it makes netdev page pool easier to hack on top.
-
-Every thing you listed boils down to 'netdev page pool work the way I
-want'
-
-Jason
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-bug-mm-mma=
+p-readahead-descending-v1-0-6d08b34862f2@gmail.com?part=3D1
 
