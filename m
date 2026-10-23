@@ -1,94 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA183606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 06:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE36C606A31B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 06:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=kFpW3UO8
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=RQYtgorD
 Received: by kanga.kvack.org (Postfix)
-	id 94B136B0AEE; Fri, 23 Oct 2026 02:34:49 -0400 (EDT)
+	id CCD176B0AF0; Fri, 23 Oct 2026 02:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9221A6B0AF0; Fri, 23 Oct 2026 02:34:49 -0400 (EDT)
+	id CA50A6B0AF2; Fri, 23 Oct 2026 02:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 838346B0AF1; Fri, 23 Oct 2026 02:34:49 -0400 (EDT)
+	id BBABA6B0AF3; Fri, 23 Oct 2026 02:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 51AEF6B0AEE
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:34:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8504A018E
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:34:48 +0000 (UTC)
-X-FDA: 85352927856.13.9A5E72D
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 768041C0003
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:34:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=kFpW3UO8;
-	spf=pass (imf21.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AB336B0AF0
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:34:53 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE3CCA7B02
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:34:52 +0000 (UTC)
+X-FDA: 85352928024.15.006FBCB
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 024DB40005
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:34:50 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=RQYtgorD;
+	spf=pass (imf17.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792737287;
+	s=arc-20220608; t=1792737291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rturI3iC2rqsVMr8++V5T0eWydBVkbRvFCJtmlAqnJE=;
-	b=JC8frJbO22pIwoaoLKH3ov6j+1BCXVU1wG8r7UYAnV+QEvTkhljz2q0WZvPRk+ytnxkxYY
-	aANE1X8af6AOnoDSoYtVuQqjYjFldPlA5wkwD7GMxVZH3odceJj06ZoVd7k5uDIFyXlQz/
-	+GLkIW6IXVzgLbhn3OAYH3oaqiyJAUY=
+	bh=db1iEGMFzAz69F0Qd2NIWb14nn5dPV9u5Dz96tL5APM=;
+	b=HwPjdlrmvm5vCPYr0arC7Xhmt93hK1ZCY4lfZfa+o2xfxIUplaldYVtDNe5O+8AU8NVlCr
+	BfHeRhAsDGEOD4JFAmq7N5OLDOlu6f8CjUfB22TCMEMNOzYw4LoMUM4Np7aWblwoY7UzYa
+	hshmvIjwHog3mec3VDTEHMbYJa+uQPQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792737287;
-	b=eIQFa6CewHOzweTvVgsX2l+Q2Q40V7cB/nUzDtI1xTOYO4vqUZbJ8WFg4UJdJFrFkyRyP0
-	dGfj6fBasNEP+AIty6GqebfeORu7Jmdq8XHOg5zwuYf3UcW0rbMkjgHfTVkHhKAU5Dvepe
-	ZnpszWwQplz4uwCOY4sbl0b0b9bvJd8=
+	t=1792737291;
+	b=KwuyWGBnxd3iZWGvn3o2S1GGAw3WDrLoT1ynw5yHpHOusYazcKgCx4e7HBwzQNM0zlg+Ti
+	5ec2m7LvzByi5pn7OVPSvwvJ5wMHnUVlNhxFtW81lDlCU654NfvvAYGDfrPi1dK20phVNf
+	C0IxQzp/soRpZFcop6o6MKQLOQlFTBo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=kFpW3UO8;
-	spf=pass (imf21.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=RQYtgorD;
+	spf=pass (imf17.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc7d154ec4fso229510a12.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:34:45 -0700 (PDT)
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so326717a91.2
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1792737284; x=1793342084; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rturI3iC2rqsVMr8++V5T0eWydBVkbRvFCJtmlAqnJE=;
-        b=kFpW3UO8NDYd6F9Lxz/HmPPYbL2dHgdXWxWt5E+GTyPWq/GxT8Ql7/ctWNYzu+TDCj
-         AoHMtaFM7JjcKyysipBgzF315LFBVHup6svkn4CEV2aKqVQ/C0teyTwsXry5a/Vb1vg2
-         9+84JG/rc90/gsv5dRXnInZz51o/O2QN1vDXlYKRDG87GVfLxmI8KlP9JLQGxXI+Iykb
-         cjp5V742+sOEDHcwZv5OrCbMqH+2ee+lbLiITT+XWcqKIGjCCFuDDKw18FymMqdNX/bX
-         mf/mke+jQUC9WgMeX2E3vXx7D/Z2ajKHCF5051fczJw1DdIsOB4KQYdw6whX7gm2k+fe
-         Ewxg==
+        d=bytedance.com; s=google; t=1792737290; x=1793342090; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=db1iEGMFzAz69F0Qd2NIWb14nn5dPV9u5Dz96tL5APM=;
+        b=RQYtgorDqz36UpRe076uV2Qq6bQ8WyHIv4p4en25tiX3u/yZmqBYUYvZNZK3ElLTeJ
+         boyIcvMweu1e1qadUP49CHFh7LBhIOhx6lqEmD/0ttFN2Yp45HTgaq/nKh/L/syyhkBp
+         JuYTfePC64w3Qs3Iiwj34bUyGo11HkFcUZ3Vwcwkd2xIZjENDAl2dojiTE/MmLS0lNSP
+         50yB0Oj3CfQZCTTFuPO7K2UcoIJZ2bSBujjXtQpG6PcFiHNvf3FSoJaO5XffSWEaAYuP
+         fzq8Esumc4MV8r6LLjEwRLHvBv5OIqH3Ezh0m7pcoH2xOyjtcU2rHivHMTTlWkc8zDJH
+         mgKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792737284; x=1793342084;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rturI3iC2rqsVMr8++V5T0eWydBVkbRvFCJtmlAqnJE=;
-        b=1eyvP/6VIWq8dHQm0izovLzuAlgW5CT4o5xiMx0xdRS3jk508Nv3gca2CTGpXtljEl
-         vQfl7z38PX1jOMNBt7W3la8TnelFxJgbYUJUwgfBj+dPspyeVURnFPAvQKBYoP5kHO2u
-         1rEscTpgVD2C45fCVu+Pz/Qow6TygJ/Rtqpr5MU7vAPeD+zrFDdZ78IG5nmSC6/1+IHj
-         eWT2uNuxDi6GTzdv6UVF8l88H7QbIUcQaSuoEp6ykdxyXKEKA8dnxI5tk8exkDlmsD7w
-         oLlXXrzoRUcqFInNzgvs0+dYDgnYyEWNhs25nFQP4QphIm5hna8DunlQYBv9JN1pYLe2
-         u/pg==
-X-Forwarded-Encrypted: i=1; AKwUvBxCKjdoqTnLKguzeRWkNagFocwpon3m0lsxYhOrEzNgAqEQXblg74PXeYoOVgiY68m4COUbxFfnXw==@kvack.org
-X-Gm-Message-State: AFq9FYIxYrJh7zXAcw4KyylLF9tUARpytoRSlOBydV5TzGX9Xro06lRQ
-	jA+bEQrlpQlPaPrZXIMzuF8KDN1o7k370noIkTNJI7v7rImP/SFSt7XQY/1QR/JV0XU=
-X-Gm-Gg: AYBFou1isy3WOZyr3QdKEZGX5ybXD62J8U05IMj2VVwB98SZXJaNGv7pOSJjPbHU7nb
-	fWjMZm4JIJvL9684UrI+xikxdCpPEMyEBLDs8y69WfGxbTDVee0hc45Tjfty86Qrg+bKCH/udv6
-	nl+BDpyl5k35H63Xz+0OAWy4M77PbHxlIZkK4DQ21p5l4eCobQo0K+DXEcv57Kf8wnOdDLG6JeX
-	Jx2aiT2+rqyDjJO6/mwuKkhT0Hu9HBcolPHAdeL9PT1uoubZSkFyWjvTXIdEqwlsJlEsgQk85Hu
-	dpINOcsHiQmIW+us7fNF23u6oc2VXwonZFg85lk4LnZW33U3lp/I4+wGWRZG3BM7Lf8vSbuGDxF
-	I/5pDMc3qFVa7g8oJNHNjpxzg5Zp++NgDR/MMWtRTedHh+Wm7xa1BxIUWxstollZJZPAxPXuSX/
-	kbvZQTQq5t/GUNZdU8YAAVL27L+RP5USnKRZIHpRre9Sncu5GgkJ2KdZwX/Ov0b5CdSHoe1aqWP
-	9AnaHKzwdhy1N/BqmiCHSLX2ijrSMz8VJ0m6RSOQiUUdZp2RJbAH2NbaMlT/sxr9oCean4RcRNT
-	6w==
-X-Received: by 2002:a17:90a:f945:b0:3ab:4f1:4f76 with SMTP id 98e67ed59e1d1-3adce7dd585mr1009938a91.24.1792737283991;
-        Thu, 22 Oct 2026 23:34:43 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792737290; x=1793342090;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=db1iEGMFzAz69F0Qd2NIWb14nn5dPV9u5Dz96tL5APM=;
+        b=oJEjtx+/0mB2coE9DjOuKAXlw4pochOfzIErMlEPBdfs+PGSmjgSLRnbVuZKQdo5KM
+         B4AL7OqGpjPZ0hdYenY86DoCH9pYTKaBLUOyIyYnJCUSaot1oKQKq7zQnyZ4uRRpg0Sv
+         1X3Of50W517u08kxprxA+I0pBbbfWPXwj1/o6tGKvjjXc5wnSxfou3vyOu167QkNdgUX
+         ge+Z3SmHJp71EsrLExqXhWBKs0sNYahsD4K03Mn7XdhWId/5c2z9qJMz54fcxjGUY/yU
+         moScGB60rBwUGItgWNqBPiFvgmh6g2BN3RArnJMBHgTkh6emDX0eIc+3K3iyvfOGAce8
+         Wtlg==
+X-Forwarded-Encrypted: i=1; AKwUvBy36qgyC2dqaGtx06zbgaoue03UgVuZ2JDyQfohcjlncaM0ccZlbhYepg9aoL39E7OC+2nm0/m5TQ==@kvack.org
+X-Gm-Message-State: AFq9FYJ0ygMp53HwBKcs+nDQzBsqQ/Q0MqX9f58pD68vHZdbTRC8lgBM
+	phRt0Zvlk8zZJIpo8RxdDa7XPJlBSBRsosh5mYpLYOLrcyrGCWS2zmhg9Q+UcEFPUGY=
+X-Gm-Gg: AYBFou1F7PPsJg+PpXMaSHWH4TyqxtoBv4BWRQn8FUZKQWeiumBNDQOB/++VyYFKibm
+	g0WAnl6nHRNaTDUaJg0NuMdFTcE18koveBEOHU96k1S+6+ViGpieEprfaGTso3NJaOrcPA9VDCA
+	Ewq+ZhKXkqi3JLNXwNYYZ185PTEACwc2sH57DeMojxtu9SlHO0gWdmTNCpJ9FvOa34K28bSDGj1
+	Mf09R6SCbTtRS9dt8VgXyXXDekeu9ADn2gXkLZXagejXDNvsJ0TCBX4qs4/i+gu+dDVbH6vatwz
+	2L54VWamrD86QHml6mHdktjvQdS9bKwsNY74Fm/GMb5H0WCJT6Gtl7IdFDPFwjDzKW4NM+Pmj/y
+	Bfe/PtmnFPO443mD4JhfK2Dj5s2Nbpx/S06igCW/GkOeccSRn+02FAlKrV9jm1B7Nuuiv0sSQho
+	qkX8fRdXfkVf67OEQf3Q3r6z+CIuMHbKtNZ9gO49c493YHYr9XPrk1MHwHwGybaQXOvDTFRHpX8
+	ZW//pSM5PQoV0GRjVoEenIzg60BmXmWlhal06geN3gX93PwC9VV1Cs67UE96Vr8cTYZhFEutRYi
+	gw==
+X-Received: by 2002:a17:90b:3b44:b0:3ac:c005:cf07 with SMTP id 98e67ed59e1d1-3adce08329dmr1117038a91.42.1792737289490;
+        Thu, 22 Oct 2026 23:34:49 -0700 (PDT)
 Received: from n232-176-004.byted.org ([36.110.163.103])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3add246f308sm575202a91.0.2026.10.22.23.34.38
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3add246f308sm575202a91.0.2026.10.22.23.34.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 23:34:43 -0700 (PDT)
+        Thu, 22 Oct 2026 23:34:48 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -112,27 +114,28 @@ Cc: David Hildenbrand <david@kernel.org>,
 	stable@vger.kernel.org,
 	Muchun Song <muchun.song@linux.dev>,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 1/4] mm: fix missing page-table destructor in pagetable_free()
-Date: Fri, 23 Oct 2026 14:34:25 +0800
-Message-ID: <20261023063428.3658761-2-songmuchun@bytedance.com>
+Subject: [PATCH v3 2/4] riscv/mm: fix hotplug page-table destructor handling
+Date: Fri, 23 Oct 2026 14:34:26 +0800
+Message-ID: <20261023063428.3658761-3-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261023063428.3658761-1-songmuchun@bytedance.com>
 References: <20261023063428.3658761-1-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 768041C0003
-X-Stat-Signature: 6u43nuq5s3utjmhj6d3au7aanfuqtzye
+X-Rspamd-Queue-Id: 024DB40005
+X-Stat-Signature: 4pngyuanwpyrzmzpu9xbmrjoih9fxtns
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792737285-10479
-X-HE-Meta: U2FsdGVkX18zoCe1aj2kDjt5yfw+dsVufyrSB1fru5Bxr9VHOYNSd7gCH61di590CojnP8A0x9d6SJo0SzRINxnAFJPGPYD6UcZzOu55vMFvnK6PSA5jOYQQEoZa56oUDd4qIpXTGeUett9rqsFg8DZ0jwkr+UEFvJVx7wIUZ4A84tC9cojqMwIBGKpwKOTvCLXEWPclLVRQTkF51EnRs21Fc2+TqlzTLKMnndbg0Z2EDRtgs9gWaoa7R06FVsQYvZqKpf29W3V7OSEf3JdNSAoeviyGCTC5gXWXcv9I5MWB6zNhcidqmjjHcYmmdCU2MbvAznZ1pzsxT1o3N6juv2Mrx0s0WoFZN/zVVBVs2pohLUIZk98AH0pjgXUXJmY1Y4sa/XEzwQb+Fo4td/x+Ky+CCKFR2jGSzPM2m4qORl92pvKOg/e0Gip7D5+7YigOl0FDWNTldlz25q0l3eYjjCkIDYeX1sCQ3jIFoIhuIaejyhX4q1MHx/HNXmuWLbi0kMYGD+iDK+T2yChBnxDh5ghn3zDLeYSpiYDCGX5L/+rp0wbDJHlR5tpZ8B5kNLHfFB4pkVxKXmR4r8dYtGdmLR5SaOvycdkHlO6MCd4a4CKjuOUtiTv0hBj+NgL3bCEe5CfoUH3Z7Dg5DaixBfdFGeCXMJWFrvRA6JLltTZIMHhtKlMyQ0+mzbqJqFTR/IPzJiba5Yq5gpIO2eqkvB4mECrNPZXeWuW5n1yDIM28K/kE/1H5KVFWoYt7sG++9E3BiHdt1W29RKfDr+KKDzgS1lStCuwMDt0yMiB0nHJ1ruYj3AX7zQWyIxnyVV9gzsiAjKUJ7Lc8ci6/bB8wWYNx+GzU8gyKRziXFRw2IZ6LfaQva9cK48LalOEOUL1mvh60Fn9sFHIQds/lRe/6oAnb2FtGXG/BRMsN/UBUDR1ItQE+d0XaQXZcWKTN56cQ4Ddz/x8zS2LjYHq3F+WHDd6
- 4i9eeG6n
- OOklZllu5byjkRzb3J9OsA6oatj+0pLQtFk66+p9oGW+zzXOEFMD4ZDpSOFalTsLU66jodbsCTzSObQrycCqFID0TQkR9k9PxBl5IEJX4FCIORGKR2CCp+CXbWRrReqrTY+XX+XYjDIZhen2FBUW6xW3iNBTWb8U4uEmtKfDy7/7Ac82IykOeyswujv/3N2zE+40ZbtxpcOg90CONkPB188LQCbq7sbNd0WJ2BzEY4p0tAL9J0sR4Euv52LWEjsRRGzqGjt5TL+Si0w24zb8CM15JZHksSmYuOoCa+oozWggJjaiHkJ4QLZkwV0ie7aIUfRJWWTC8tn4wZOjtTCIthW1fGhBsQrkJfnb8sgSciLWZ/6bx82/E8b7P+E87sCKIyVmNCWuE2eaIrtJ7SBDQCrV8N4oc0aMelhRpHS7pWwYwYdD3tLPbUHh+/E6nlITV8Nz+JthpZQjpdi4yiR+Z4qiwPOjjj51B3sdE1qyBKtCVv+I=
+X-HE-Tag: 1792737290-552535
+X-HE-Meta: U2FsdGVkX19YNdiQNLQSEZZcBDg/u69EeHXOhMtvh48sZU2LZuQ4DhTlp7e47YDnweSo1ZXLe15yfQMubLYsx4mxY7MkBUKu0IRytYEMSsVuq8KsjYxiOb9sp26pnJNRYrpm6dapR9Q8TJS8iUc1lCBq0ZD6mQokDuqkzJwcbHVRaDFqcxNP2cMB/4e0I9sBrChj4i0jdE7MBSM4LqQKFiwUDkVAHILn72TYuuI4OIkDSHvVcdbx25tgklcIkx3D//C+NbDsFVsbcJkkAwpvsOU6s1Y7LVTQtpzsjIJkh4kbaTx+9N06yAMk4o6DdSeEdLeAJLmwscY98W6Kk5l7yndw1imvJTjlG3OyNevIPXHV6UIjE1Y0YWGH3kou3YPKMSnxkD4OKLvQAgdGL+v1PHu1iwOhL7IIMIhsHIgXWVRfNuTFiaB+hVRvIrQxrutrVK/7c7V50E3k6MRbGpiP8xUg7GeXaSsk5fvfLtOaviMo2z1OgQdhXIWdi878hOtBuB8DF0kCxKZvm2sJwpG/GeNjNTNXFxJczXytkwHuCUjCFEBIZTC6gonMqHFo7XORQPYCv3zbaIW7rBpvsDO3HUyuG7n09aucTgT2ILZhVLQdJv0vrYSxqScqg+yaXGtrc/SE1WfaBNxkcJd6qn+ivmQD5PsEWVjBYbHhzI6LHiZR4KKc0lhege4cA0ojRYjj1pz6CihsoLFuW/KUM0OuU5grY2iNEz8upgOu/WoK8YO0YfFJz9NdOgY2+DCTumfZrNMtL2Goz8hWaeOiqeSDMtyiQ9ZbKM/kXgspPo8JRM8RgCN9G9rZyLJYZB7eXz2NqPEQBBDLuGf9i3rBg0uH6nEy8Gtmigo32lBvHbi4pKawmbU9rEahSg8r8ZRehDeYew4nwU/9mgUt06Rh1EkG/LBkJQy3whDZFOCQ3gjLQbfqaCLMhy2TTZvy8unYCLRR47U5ILXty5RRNYmbQYm
+ RJTIScje
+ hlL1MU1EWWsxS75/ZrTriyE2AcXCpxsumw1JT8qCKeKqf8f9/xQUGqxd6DfWjjZZfER6pDxIxJbA4u/VAfoc9mKTyzInnTmROLYjSzjRTkj1dU+OJWrZaslzhz5tU3secd16ODzIDw3Vwjc2GuRDaQAPJM32H1LDuFk2nU2CSj1OT/XdpdR4Q/iz4PApLNw7+ZufXgFTZX90EuPgRVUx3AfOK2reS8kexd0q21PI+TxvZaMLhB64TaOBf9BS3Aeb3BlYJzOpn5o/ugZqbUKPVdU+Pjf19I99uSF7IuTyZjV8WEWF36pkubP0OinIBzngBuAv6dDS7kn8qbv9wrXD2i4tdetYjioVshsoZB6o2/tsygeaaHLrzmIK4hPH7rpWwMRBn+ijNQOtqYd1RkVUzBnVEy6c72HV+EaE51M8NmJXIldw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,105 +144,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since commit 49f599666420 ("mm: call ctor/dtor for kernel PTEs"),
-pte_alloc_one_kernel() runs the page-table constructor for kernel PTE
-tables.
+RISC-V uses the same memory-hotplug teardown code for linear-map and
+vmemmap page tables. Late linear-map allocations run page-table
+constructors, while vmemmap and early allocations may not.
 
-HVO (HugeTLB Vmemmap Optimization) uses pte_alloc_one_kernel() when
-splitting a PMD. Restoring the vmemmap backing pages does not collapse
-the PTE table, so a later memory hot-remove eventually frees it through
-pagetable_free() on x86-64. That releases the page without running the
-matching destructor and leaves NR_PAGETABLE elevated.
+free_pte_table() unconditionally calls pagetable_dtor(), corrupting
+NR_PAGETABLE accounting for constructor-free tables. free_pmd_table()
+avoids that for vmemmap using is_vmemmap, but mapping type is not a
+reliable proxy for constructor state. In particular, it becomes invalid
+once runtime vmemmap tables use the normal pgalloc helpers.
 
-Make pagetable_free() the common free-side primitive for page-table
-pages. It checks PageTable() and runs the destructor only when the
-constructor state is still present. Callers that explicitly ran
-pagetable_dtor() have already cleared PageTable(), so they are not
-destructed twice; pages that never ran a constructor are freed directly.
+Introduce free_pgtable_page() to select free_reserved_page() for reserved
+pages and pagetable_free() otherwise. The latter runs the destructor only
+when PageTable() is set, handling both constructor-backed and
+constructor-free tables.
 
-Fixes: 49f599666420 ("mm: call ctor/dtor for kernel PTEs")
-Cc: stable@vger.kernel.org # bf9e4e30f353: x86/mm: use pagetable_free()
-Cc: stable@vger.kernel.org # 39406c05f8f1: x86/mm: Fix freeing of PMD-sized vmemmap pages
+Fixes: c75a74f4ba19 ("riscv: mm: Add memory hotplugging support")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
 Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
 v3:
-- Explain why pagetable_free() does not run the destructor twice
-  (requested by Kevin Brodsky)
-- Add x86 stable prerequisites (suggested by
-  Jose A. Perez de Azpillaga)
-- Collect Acked-by from Dave Hansen and David Hildenbrand
-- Collect Reviewed-by from Jose A. Perez de Azpillaga and Kevin
-  Brodsky
+- Collect Acked-by from David Hildenbrand
+- Collect Reviewed-by from Björn Töpel and Kevin Brodsky
 
 v2:
-- Move destructor handling from x86 into pagetable_free() (suggested by
-  David Hildenbrand)
-- Trim and update the commit message (requested by Dave Hansen)
+- Use pagetable_free() for non-reserved tables (suggested by David
+  Hildenbrand)
+- Simplify reserved-page handling
 ---
- include/linux/mm.h | 37 ++++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 17 deletions(-)
+ arch/riscv/mm/init.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index dd09c438fa23..466875c5908b 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3812,23 +3812,6 @@ static inline void pagetable_free_kernel(struct ptdesc *pt)
- 	__pagetable_free(pt);
- }
- #endif
--/**
-- * pagetable_free - Free pagetables
-- * @pt:	The page table descriptor
-- *
-- * pagetable_free frees the memory of all page tables described by a page
-- * table descriptor and the memory for the descriptor itself.
-- */
--static inline void pagetable_free(struct ptdesc *pt)
--{
--	if (ptdesc_test_kernel(pt)) {
--		ptdesc_clear_kernel(pt);
--		pagetable_free_kernel(pt);
--	} else {
--		__pagetable_free(pt);
--	}
--}
--
- #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
- #if ALLOC_SPLIT_PTLOCKS
- void __init ptlock_cache_init(void);
-@@ -3921,6 +3904,26 @@ static inline void pagetable_dtor(struct ptdesc *ptdesc)
- 	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
- }
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index fb37b0b67efe..e111d25e18e1 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -1485,10 +1485,17 @@ struct execmem_info __init *execmem_arch_setup(void)
+ #endif /* CONFIG_EXECMEM */
  
-+/**
-+ * pagetable_free - Free pagetables
-+ * @pt:	The page table descriptor
-+ *
-+ * pagetable_free frees the memory of all page tables described by a page
-+ * table descriptor and the memory for the descriptor itself.
-+ */
-+static inline void pagetable_free(struct ptdesc *pt)
+ #ifdef CONFIG_MEMORY_HOTPLUG
++static void __meminit free_pgtable_page(struct page *page)
 +{
-+	if (PageTable(ptdesc_page(pt)))
-+		pagetable_dtor(pt);
-+
-+	if (ptdesc_test_kernel(pt)) {
-+		ptdesc_clear_kernel(pt);
-+		pagetable_free_kernel(pt);
-+	} else {
-+		__pagetable_free(pt);
-+	}
++	if (PageReserved(page))
++		free_reserved_page(page);
++	else
++		pagetable_free(page_ptdesc(page));
 +}
 +
- static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
+ static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
  {
- 	pagetable_dtor(ptdesc);
+ 	struct page *page = pmd_page(*pmd);
+-	struct ptdesc *ptdesc = page_ptdesc(page);
+ 	pte_t *pte;
+ 	int i;
+ 
+@@ -1498,18 +1505,13 @@ static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
+ 			return;
+ 	}
+ 
+-	pagetable_dtor(ptdesc);
+-	if (PageReserved(page))
+-		free_reserved_page(page);
+-	else
+-		pagetable_free(ptdesc);
++	free_pgtable_page(page);
+ 	pmd_clear(pmd);
+ }
+ 
+-static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud, bool is_vmemmap)
++static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud)
+ {
+ 	struct page *page = pud_page(*pud);
+-	struct ptdesc *ptdesc = page_ptdesc(page);
+ 	pmd_t *pmd;
+ 	int i;
+ 
+@@ -1519,12 +1521,7 @@ static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud, bool is_vmemm
+ 			return;
+ 	}
+ 
+-	if (!is_vmemmap)
+-		pagetable_dtor(ptdesc);
+-	if (PageReserved(page))
+-		free_reserved_page(page);
+-	else
+-		pagetable_free(ptdesc);
++	free_pgtable_page(page);
+ 	pud_clear(pud);
+ }
+ 
+@@ -1644,7 +1641,7 @@ static void __meminit remove_pud_mapping(pud_t *pud_base, unsigned long addr, un
+ 		remove_pmd_mapping(pmd_base, addr, next, is_vmemmap, altmap);
+ 
+ 		if (pgtable_l4_enabled)
+-			free_pmd_table(pmd_base, pudp, is_vmemmap);
++			free_pmd_table(pmd_base, pudp);
+ 	}
+ }
+ 
 -- 
 2.54.0
 
