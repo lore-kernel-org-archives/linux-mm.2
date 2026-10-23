@@ -1,130 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5998E606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 07:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC1D606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 07:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=b0b+bJ6F
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G285uqat
 Received: by kanga.kvack.org (Postfix)
-	id 720A76B0B06; Fri, 23 Oct 2026 03:13:30 -0400 (EDT)
+	id 7C44B6B0B09; Fri, 23 Oct 2026 03:16:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F82E6B0B07; Fri, 23 Oct 2026 03:13:30 -0400 (EDT)
+	id 772EA6B0B0A; Fri, 23 Oct 2026 03:16:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60FE56B0B08; Fri, 23 Oct 2026 03:13:30 -0400 (EDT)
+	id 689116B0B0B; Fri, 23 Oct 2026 03:16:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 389126B0B06
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:13:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D612AA7B2F
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:13:27 +0000 (UTC)
-X-FDA: 85353025254.04.75471B1
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1536D1C0004
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:13:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=b0b+bJ6F;
-	spf=pass (imf20.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 380C76B0B09
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:16:20 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8750DA033C
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:16:19 +0000 (UTC)
+X-FDA: 85353032478.20.2B65658
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C8F891C0006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:16:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G285uqat;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792739606;
+	s=arc-20220608; t=1792739777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wq7uJPFcmgA9r58RX9y8WD41guFgFXDdj9tzjsOmuN4=;
-	b=XwFQIdfNPHYNDVsXeARE4T5n664sweOmhvfoFOW2kepYD7N4OggCDe4I6Why3QdzxF7sbp
-	YMI0HhEmz228n1IqjE4DqXZYpj79Q5PKP/wBfeV67szl9D/iHiptpvCTjD59iP/eCWmB6Y
-	8szxBWQg01aynr/9czovaDAqLn4rWL8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=b0b+bJ6F;
-	spf=pass (imf20.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=pkqrD//fnGQ72hjouszMioilp+NszrPnGIYWVd5G9RA=;
+	b=ab5rNLgTooCChXLJvlPh9AT25NvrxXJsZJd+T+Hmcdjx6AGTyAFOgiQ7oXE142OAV/woGB
+	7iZ/Tw8XLGilmkttMMDstclOy1iMyjmcXozvJDLb4KeL+sEnARXN+DxCIqwSE6V7Use2GN
+	EGWnljRPY5+AtvFgZj9wylLPUn7HOio=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792739606;
-	b=7MOzmbTSnJfDD88ikot9so881c2S3E0WPV2+fCPGrY3aW/JcxWqZgvntYaqiPX8ZMIXY6J
-	hp0LtGoFHT/51WSrNdnIQeW3JnqLr/Em3UTqKCRPvDX0rgEuRdw7F+qZWzAUi7kdWP8LSg
-	itiZsfVhF6kwBBqrOgItTZS8EwCrDJ8=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48e00eee27dso302029f8f.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 00:13:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792739604; x=1793344404; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wq7uJPFcmgA9r58RX9y8WD41guFgFXDdj9tzjsOmuN4=;
-        b=b0b+bJ6FEDxn+6K/AjkE/aSA4bxdFJoWDp6138i+PsCl1Bv8ArLW+/q95uYb9ex5Qi
-         8HFcrQK3aXgT1oJPOPVzjHvQrofOE95UzJr8Mu4wogVXKI2D7psm3F3gUMLp3xTozs3a
-         rQOh9WWJyzjxIz3VRq1bdlW7eKhUSsgDikyluaaHhY2k/bFD1PV7Z5fUKRIh+EIoWIs7
-         pJwWko4iBpPtIk/XW13w944Wc+BGP5p/KxvrI1XxDYW9HnRQKqVpX9Rr6TpqYtztDhmP
-         0rcMNLHboenlLghs6UwGafElYisvLDSr0FVH6VL6MXt/K6nYVe9HQXFfbLPeSS6vgAHU
-         gEcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792739604; x=1793344404;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wq7uJPFcmgA9r58RX9y8WD41guFgFXDdj9tzjsOmuN4=;
-        b=wNUk+DxsyJli3rj9jpzukGkUKwSaV5Un/n6yfCq6v5ORo+SZESqRopRq0yT+fN0P4p
-         7q1GhatoRF3RKOmiZ/L5hh7DWpiAnqbsVysWj2y+m1reu6QeMxG1EWx9jjyNWwltnWxl
-         yh6BIhDNSoJ/gHMUtWMqmATErZSvPorMIn+6ft+Mkg4zgAeSnezNh9WBObX8xMziffFt
-         GUqRlgdWu8FKCjPqnXOG7EwcsDIBMKWb/LD+E4S4QYx2iLcwpdtn9aKi2MwfRVWpcprR
-         31lePTzYjsXPSSxiYm6mNSq+BMNYhkuf9yjT6j0ysuOo0CmMAJCvMIm/23IJnKzH/yoD
-         9oYA==
-X-Forwarded-Encrypted: i=1; AKwUvByTLotKYRhuogpkL77Hy7GbA181EPHLizZ/Bn2R4d4REdS33wukTaGzzLGVM3KwarAzewuRP10OUw==@kvack.org
-X-Gm-Message-State: AFq9FYKvzO9FjEdS+cPcX/QcG7ce3N4kQF9vriexwvPfZK9aTEhlG5yr
-	qW3iFZ7jRevtx0uGjoSgfAWkZDNrIKID/G9IVC8kYS7oF6oQdjAscj1Q
-X-Gm-Gg: AYBFou0AIqxvrtbbMsdHFd6FlCJkCjNqFHkqbJAXp6A2JuCghpkJnVWCYwSv3hc+/XO
-	qP1Ju9J6KYaAQo7Srj8OHFBd7xWpgMTY3bz7Z+Nud49BkYY5qeCbTudMCytsitPa+dmE0u/hZvd
-	1XdUUiw2JRKX8MFU/s1PLkPtjVogM5Zr0NRnZ9upg4gKrVdJINcps5xPXIQ7TxbFXnsB86CTKxM
-	cfKef1YoFF3okXA/U5DpRdx5CxpohRWaFlBUmT6f9IKRYy8uxHtt68xBSKmcitVetunRDm5us0h
-	5LHCIUN3VaLbyoNwYEeD+UvZujdJuqKGTMdi7cTJdnJp3ZHZBg1WEDXocqXtGV9hC7L/QGslwZ7
-	rEA3Ak+8daavBxEpwgNo+RloW0hu7UjZyR8UrBgX2aDs8MjnBa/MZFwl8K0rIAcvJ17UOiDL+xi
-	mHWkN7n+MuA6il1/YNRF6P659/UE7VrygNSdPTT8M9fEO6jBlwwrsZ5W0rtXtdo4ow6hvXqMMXD
-	QbCGSQNlgwm4saNmpu6mg4Ik//L
-X-Received: by 2002:a5d:5d03:0:b0:48e:3b48:6f1 with SMTP id ffacd0b85a97d-48e3b480974mr340715f8f.54.1792739604164;
-        Fri, 23 Oct 2026 00:13:24 -0700 (PDT)
-Received: from krava ([2a02:8308:a00c:e200::25dc])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e38025d76sm3155877f8f.13.2026.10.23.00.13.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 00:13:23 -0700 (PDT)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Fri, 23 Oct 2026 09:13:21 +0200
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-	eddyz87@gmail.com, memxor@gmail.com, oleg@redhat.com,
-	peterz@infradead.org, mhiramat@kernel.org,
-	akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org,
-	surenb@google.com, david@kernel.org, vbabka@kernel.org,
-	jannh@google.com, hughd@google.com, kees@kernel.org,
-	mingo@redhat.com, tglx@kernel.org, x86@kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf-next 4/9] uprobes/x86: Don't WARN if an optimized
- probe can't be written
-Message-ID: <atsJEWXk04C4oz4R@krava>
-References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
- <20261022015712.1297331-5-alexei.starovoitov@gmail.com>
+	t=1792739777;
+	b=6bShJGaHVwcnNluC2vh0OsKUEYOOt9/s7j7EhfnqIgSbPKPPyqVaVAoaBoO90UPxbslVXH
+	M0+sdZ7XfeED4eWqGCNbpslI2M9CAAROpid5bteNI9h5ocwAOl3TDlR8upjIMaH3TV6bTp
+	3ZbUr2GYUoW8lEqjMyvlfPWjuqaFesY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G285uqat;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DE88360210;
+	Fri, 23 Oct 2026 07:16:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F771F01825;
+	Fri, 23 Oct 2026 07:16:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792739776;
+	bh=pkqrD//fnGQ72hjouszMioilp+NszrPnGIYWVd5G9RA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=G285uqatlfpZ6ocauqOB0OLsQ70I1Dgw7gK2NxUGwd/MJRYS7Y6vqNl+H7gQbGOcK
+	 ftTeh0DVX4xAqez6LW/Vht3wP+DRN48+3dv2nf50i8NnbwNXWGOp2NWv7uMAtIwl/B
+	 wn131MQ1wIWH1p4Fxfow5ose0tQU+YmBccoXuePJXI4+LieWBCayhLnw/BIreTaCcf
+	 SGriwCo3bcjVU9kJmUHE7nBCVWx0ouoPkS0fHzvpWNGjMVD5RsT83KGen5F+L1fzOA
+	 Skf1aCe4gwU8hoEyy1eTHSXTX0MTUtX/eDuHaHy8C+I0b8AklN7DahVTc92e5aUbi5
+	 tIKR+bgmltb0w==
+Message-ID: <8c53e58c-f7d2-4e98-8d03-7ff1163c1159@kernel.org>
+Date: Fri, 23 Oct 2026 09:16:12 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022015712.1297331-5-alexei.starovoitov@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] mremap() fails VMA expansion when VM_MIXEDMAP is set
+To: Luiz Capitulino <luizcap@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ David Hildenbrand <david@kernel.org>, Jakub Matena <matenajakub@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261023023106.515365-1-luizcap@redhat.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <20261023023106.515365-1-luizcap@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C8F891C0006
+X-Stat-Signature: 8ddf6y6xm9pzxaomw65e1rtneg8ps841
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1536D1C0004
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 9q915x4bdhsuywgbkhuje9kbuss1gfj4
-X-HE-Tag: 1792739605-922551
-X-HE-Meta: U2FsdGVkX19CpFfJD2yK9EQKIlg0lh5+h8ikho+gtokR2FQYwC34WVNYERozTmMJaoInxPI/MQT8prhS0j3bPUCK7GpYqxcOQW2/tARuUU7SNJEy6tkfsmL+vqRGmHdLvFUqPnzqjk0Ma0zRLlXpvB2qc09wia9rIB81HCcNJrukga6SSBS6SVC6qBZjGNaMWWetNNB4kqS5guM/ZQNE7eZeZH8hjWJlvkHx5mQSh8vcx0ollUautJKxFZfgab5tz/+QEsmeTitL1M5fKoVNB5MxkiAFrMJARvYOKKvt0eX94WvAlTgkLhomNf+mjaryMuLYo6aXQAKJnD9bkTT9vimhTeJj2AhdN4Qh2Jqz8mMQ2RyOzw2S+8TIcUJ2hNry8grown+PbNSF+81rlyRJBUvcXvcPr8A7DSEHw2YogQ9jXrKzkJnl3V7l2Ze5nOvSsM5mEMa5wFk8sNVo7evCT0Y53qTsMbVlGOrnpOw7o+/PivcRF03SU7zxfOBq95CAGG6Slw3eDSMS25ywSBA46HZ6jDZZn/AoYxsxyEpboHLpOaE/hmvCE0ZmCruEEeMGYwa4AERMbATpkSAHvsMBOd3jVYotPcr1yFWNvGxqzFU5G77We+aWnYOpjr60bmxXEETgtV5Gae9Bh8qiekm0mxHCXxC2PfyJQHHvzqqpTXG8YlhM9rzHwP/3WPJ56nLI5UAvpNB1rUALu2AMgVU38oxW/4xcrenU1r45TE53AqpAx5xF3mGPsJRkHz0u9VRQXRfPTh6vBFtxWNCXSM+s1e6AxPfy4EqnUUEVvU7ataimLA0TYfi+ZXL68Rh85gXNftFLAAtvyMgYBYZSs0jqLTsR9A3tT3C0hjoPhh292LA3L9QZO5jRY0zZy8DPIdV6FXCsbx01Slscf29RKNXmb7Vi3IU8Nu93iryGqGdciLnqQqU5l0drCBA7x1OOn/4Qxs4U7beX73lAkjA3B+o
- 5R4lc6dh
- cSu61mv3HJOd8g4x+355kL8/4KKn+4nr7LeSZ77uQMzvxkPcnOHCPpYNQmxf/dk9hP/BXgztBxxR0n7d7sxePpXwyGNOTqv/ZrWeOryPmsQ77WCWJo/yGvRmDaxgJSxpFdVX7eJxSImIIvu8IRtJviHEkVqaVeM5Z+U7D9PtdiLnkTZKA1CAMqpHJbbRVcEt78pu47KfWuFUe//+d+sGslgEsmPDwrP/fzJ23LssUxUDUEUn4eCsHz5RpOSI+l9B7jYH5UbTDnj8n2krMcXYMBnpi/Wy3CX/VSAmGM1C7s1j7KMRbdx5HsYjTSKqhgQ85EVdpwSFerdTszxwq35K+gFyuyKx6XnSQ57tmWJFI9X989WFQuH0nlmQKrRHOq7PfVj7pNZ6nTDOU0xHJrigIGXagvZhP7yCDVqAjLsnxnebUALDAl7ZN/eIRQiBlES/cPHDJjPdM1jr2ezoqQ0EduOnViNdzKNkD/MGB3UVNKAWFUsjy9svg4XuECz2cMHT+vM2EANU0eWae6T1U1DgG/F8DHzEhoHfQ61rHNlPXrXUNpIC5xoNnT4RdJFoAx7/ovhsz
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792739777-343941
+X-HE-Meta: U2FsdGVkX19eqzplBlWnN6khRalK3CVhxGYAof8MvLKZSA4HNYAajBRoGNWuzLMAiRRcvzQR4mlf5ged3T98iOcam6mfknKWb3b8nJsqtmY5l34gh8HQcTJdOvqE5+nHKjeF2yqMmMgcvTK+f65t4y3xjErxuTCzn+5tUZnwOKtai/cv3imPqct2tL1sAZGfYaVChr/vz/igN2HkH6MNy33vjo3wXB7/qXgHPDD/NuQrhtACOdfQV7FXtvE8laytVhC5/4qjQSaUCA/HVrPurumQ/9GSsJY9ymdQl56FFp0kyBKsCoveU154NH5UiuXlAV4C9NMsIIaecGUqkJLADYdvcx79lII8/uWXFUWeBxwlHWFhWSNdcC5PSu1SCgavNih72FOCzQfWfnhy3lhdLPEJbQEkrjYNmI31XmQIN8DvNvC8kEi8BmpkG6Zh6BmtlelrLZYHURk0a0gSOpw/NGPEPSBDW2+csya+LC3GxJqFYuYdezoFnFBlNpykrzb0VooTt8N/vkwIs5x87PFPUsyGUEVozO44uLFy+hPBCagwAbrLE6U5y4vFXONIF5y/6h1NfNA6GY+9/zq5ltUo2JFdgGq8wz/F/kjTiltHUIXgCiksQgtLcm4Oq34DYmb9+t3j4N2kd8wBNsbH9Ge6DVGWGTf65fJTpcj8xBwrgKSwr/IlNeZGnQiFfYl8coyXrBsJB+YbxqsfsUPdBvurK4Hghkeugeei+BFQmhXpPrhqszGaczpPkV59D8udNansFVSEjlA2gukTieoOON85a/YPKoZaJbkpoHaddYIr9NCjK6xMCaNlkB0T15UyRLI6z9XSBPteKAQTPnOedl93VnPfqI9/be/QxAzmk0Ti/FsL9YqCDPvcfFTqJLDV8hMVy5c7PpXSUL0Cz2HURaIH8KduDkvuCgoALKoP+rEaIvZFq/oXSss0KQ7r7Uj7uOqHXg1Hrq8qNy2jIoB3XYI
+ rWtg7vVd
+ wzG0Ix8WIYnlk9nmSCha7o6xJsdFBkr9LZNWN9oEcKGyVlfXZkA0oWQ4gWkjqFeyYh+6Us1bB8nJqPNdoy2IxoZK9LXTKSLD6aDrAA6s0VQjo+pcKJUyeS3dWfmzVQfjQKX7xc75PWQNByqlSO88QGCTBblpZgvaa82UfpLD7hjj0nqcp1s0iDqsv2AZJ0+efu4bCYCP2wJBSSSh8IhOe7AlUJUhgE+i5PHv3+Dq3bNS8gw+Y88LHDgozL79tbJS2r7+zFNqhDRiym/23Ejmxt+ZeLkwq64iQ8+wCuuiGSouvGah21/NqiobcBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,80 +138,163 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 22, 2026 at 01:57:07AM +0000, Alexei Starovoitov wrote:
-> From: Alexei Starovoitov <ast@kernel.org>
+On 10/23/26 04:31, Luiz Capitulino wrote:
+> Growing a VM_MIXEDMAP VMA with mremap(), with or without MREMAP_MAYMOVE, fails
+> with -ENOMEM when the address range after the VMA is free.
 > 
-> __arch_uprobe_optimize() and set_orig_insn() do WARN_ON_ONCE() when
-> uprobe_write() fails, and user space can make it fail:
-> - -EINTR from get_user_pages_remote() when current is being killed.
-> - -ENOMEM when COW can't be broken, since memcg is at its limit.
-> - -EINVAL from __update_ref_ctr() when the process cleared the semaphore
->   of SDT probe.
-> 
-> Kill the processes that call probed nop10. It warns in 8 of 8 runs:
-> 
->   WARNING: arch/x86/kernel/uprobes.c:1186 at arch_uprobe_optimize+0x291/0x3a0
->    uprobe_notify_resume+0x1c3/0x4c0
->    exit_to_user_mode_loop+0x63/0x4e0
->    exc_int3+0x1f3/0x250
-> 
-> The next patch calls set_orig_insn() from fork(). Kill the processes that
-> fork and keep mmap_lock busy, while a trace event on nop10 is enabled and
-> disabled. The kernel with the next two patches and without this one warns
-> in 3 of 3 runs. The whole series in 0 of 3:
-> 
->   WARNING: arch/x86/kernel/uprobes.c:1161 at set_orig_insn+0x161/0x170
->    register_one_mm+0x154/0x180
->    uprobe_dup_mmap+0x61/0xb0
->    dup_mmap+0x149/0x9f0
-> 
-> The callers handle the error. arch_uprobe_optimize() marks uprobe as not
-> optimizable and byte 0 stays a breakpoint. set_orig_insn() returns
-> the error. Drop both WARNs.
-> 
-> This depends on the previous patch. Without it WARN was the only sign of
-> the bytes that set_orig_insn() cannot restore. Hence no Fixes tag.
-> 
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> This regression was introduced in v6.1 by commit ca3d76b0aa80 ("mm: add merging
+> after mremap resize"). This commit changed mremap() to use vma_merge() instead
+> of vma_adjust() for the expansion case. However, vma_merge() returns NULL for
+> a VMA that has any of the VM_SPECIAL flags set.
 
-Acked-by: Jiri Olsa <jolsa@kernel.org>
+Hi,
 
-thanks,
-jirka
+6.1 was a rather long time ago. How was it discovered just now? I.e. what
+use case broke by the change and prompted creating the reproducer?
 
+Thanks,
+Vlastimil
 
-> ---
->  arch/x86/kernel/uprobes.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+> The issue is also present in latest Linus tree, except that the code has been
+> refactored. In the current tree, the path now is expand_vma_in_place() ->
+> vma_merge_extend() -> vma_merge_new_range(), which performs the check:
 > 
-> diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-> index 62bbe41c6466..33c35bf07801 100644
-> --- a/arch/x86/kernel/uprobes.c
-> +++ b/arch/x86/kernel/uprobes.c
-> @@ -1170,11 +1170,8 @@ int set_orig_insn(struct arch_uprobe *auprobe, struct vm_area_struct *vma,
->  		int ret = is_optimized(vma->vm_mm, vaddr);
->  		if (ret < 0)
->  			return ret;
-> -		if (ret) {
-> -			ret = swbp_unoptimize(auprobe, vma, vaddr);
-> -			WARN_ON_ONCE(ret);
-> -			return ret;
-> -		}
-> +		if (ret)
-> +			return swbp_unoptimize(auprobe, vma, vaddr);
->  	}
->  	return uprobe_write_opcode(auprobe, vma, vaddr, *(uprobe_opcode_t *)&auprobe->insn,
->  				   false /* is_register */);
-> @@ -1197,7 +1194,7 @@ static int __arch_uprobe_optimize(struct arch_uprobe *auprobe, struct mm_struct
->  	if (IS_ERR(tramp))
->  		return PTR_ERR(tramp);
->  	ret = swbp_optimize(auprobe, vma, vaddr, tramp->vm_start);
-> -	if (WARN_ON_ONCE(ret) && new_mapping)
-> +	if (ret && new_mapping)
->  		WARN_ON_ONCE(do_munmap(mm, tramp->vm_start, PAGE_SIZE, NULL));
->  	return ret;
+> 	/* Special VMAs are unmergeable, also if no prev/next. */
+> 	if (vma_flags_test_any_mask(&vmg->vma_flags, VMA_SPECIAL_FLAGS) ||
+> 	    (!prev && !next))
+> 		return NULL;
+> 
+> This issue was originally reproduced with an external module that sets
+> VM_MIXEDMAP on a VMA because it wants to insert pages with vm_insert_page().
+> However, there's at least one in-tree reproducer: tcp_mmap().
+> 
+> Note that commit ca3d76b0aa80 introduced other VMA expansion regressions,
+> but they were caught and fixed early:
+> 
+> - 6f12be792fde ("mm, mremap: fix mremap() expanding vma with addr inside vma")
+> - d014cd7c1c35 ("mm, mremap: fix mremap() expanding for vma's with vm_ops->close()")
+> 
+> Below you'll find a reproducer and an attempted fix.
+> 
+> Reproducer
+> ==========
+> 
+> This reproducer was written by an LLM and uses tcp_mmap(). It reproduces
+> against v6.1 and latest Linus tree (2a08195e4db5). The issue is not
+> reproduced on v6.0.
+> 
+> #define _GNU_SOURCE
+> #include <stdio.h>
+> #include <unistd.h>
+> #include <errno.h>
+> #include <sys/mman.h>
+> #include <sys/socket.h>
+> 
+> int main(void)
+> {
+>         int fd, pagesize;
+>         void *p, *ret;
+> 
+>         fd = socket(AF_INET, SOCK_STREAM, 0);
+>         if (fd < 0) {
+>                 perror("socket");
+>                 return 1;
+>         }
+> 
+>         pagesize = getpagesize();
+> 
+>         /* tcp_mmap() sets VM_MIXEDMAP on this vma. */
+>         p = mmap(NULL, 2 * pagesize, PROT_READ, MAP_SHARED, fd, 0);
+>         if (p == MAP_FAILED) {
+>                 perror("mmap");
+>                 return 1;
+>         }
+> 
+>         /* Drop the upper half, so growing back into it can happen in place. */
+>         if (munmap((char *)p + pagesize, pagesize)) {
+>                 perror("munmap");
+>                 return 1;
+>         }
+> 
+>         errno = 0;
+>         ret = mremap(p, pagesize, 2 * pagesize, MREMAP_MAYMOVE);
+>         if (ret == MAP_FAILED) {
+>                 printf("BUG REPRODUCED errno=%d\n", errno);
+>                 return 1;
+>         }
+> 
+>         printf("NOT REPRODUCED\n");
+> 
+>         return 0;
+> }
+> 
+> Sketch fix
+> ==========
+> 
+> In the fix below, I started with the same idea as d014cd7c1c35: on v6.1 I
+> made mremap() expand VM_MIXEDMAP VMAs the same way that commit did for 
+> VMAs with vm_ops->close(). Then I adapted it to the current tree. It fixes
+> the reproducer and I didn't get regressions in MM kselftests nor the
+> tools/testing/vma test.
+> 
+> However, I'm not posting this as a fix because I'm unfamiliar with the VMA
+> code so I'm not confident this is the right approach.
+> 
+> I really don't mind someone more familiar with the code taking this over.
+> 
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 6c35f0d775ab..ac9a0a8a4be9 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -851,9 +851,15 @@ static int commit_merge(struct vma_merge_struct *vmg)
+>  	return 0;
 >  }
-> -- 
-> 2.55.0
+>  
+> -/* We can only remove VMAs when merging if they do not have a close hook. */
+>  static bool can_merge_remove_vma(struct vm_area_struct *vma)
+>  {
+> +	if (vma_flags_test(&vma->flags, VMA_MIXEDMAP_BIT))
+> +		return false;
+> +
+> +	/*
+> +	 * We can only remove VMAs when merging if they do not have a
+> +	 * close hook.
+> +	 */
+>  	return !vma->vm_ops || !vma->vm_ops->close;
+>  }
+>  
+> @@ -1093,6 +1099,20 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+>  	return NULL;
+>  }
+>  
+> +static bool can_merge_vma(const struct vma_merge_struct *vmg)
+> +{
+> +	/* VMAs without prev/next are unmergeable */
+> +	if (!vmg->prev && !vmg->next)
+> +		return false;
+> +
+> +	/* We can't merge VMA_IO, VMA_DONTEXPAND or VMA_PFNMAP */
+> +	if (vma_flags_test_any(&vmg->vma_flags, VMA_IO_BIT, VMA_DONTEXPAND_BIT,
+> +			       VMA_PFNMAP_BIT))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  /*
+>   * vma_merge_new_range - Attempt to merge a new VMA into address space
+>   *
+> @@ -1152,9 +1172,7 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
+>  
+>  	vmg->state = VMA_MERGE_NOMERGE;
+>  
+> -	/* Special VMAs are unmergeable, also if no prev/next. */
+> -	if (vma_flags_test_any_mask(&vmg->vma_flags, VMA_SPECIAL_FLAGS) ||
+> -	    (!prev && !next))
+> +	if (!can_merge_vma(vmg))
+>  		return NULL;
+>  
+>  	can_merge_left = can_vma_merge_left(vmg);
 > 
+
 
