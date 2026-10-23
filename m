@@ -1,90 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA443606A319
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 04:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1833606A31B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 05:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=j6Y+CCDN
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=g1F6U1vk
 Received: by kanga.kvack.org (Postfix)
-	id B20FD6B0331; Fri, 23 Oct 2026 00:09:50 -0400 (EDT)
+	id AE6ED6B0334; Fri, 23 Oct 2026 01:01:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAA926B0334; Fri, 23 Oct 2026 00:09:50 -0400 (EDT)
+	id A97FD6B0337; Fri, 23 Oct 2026 01:01:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99A546B0337; Fri, 23 Oct 2026 00:09:50 -0400 (EDT)
+	id 9AE146B0339; Fri, 23 Oct 2026 01:01:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E7116B0331
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 00:09:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EC97C1601D0
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 04:09:49 +0000 (UTC)
-X-FDA: 85352562498.17.CFA5E91
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0B1D2180007
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 04:09:46 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 633B86B0334
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:01:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C137D1C3409
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 05:01:40 +0000 (UTC)
+X-FDA: 85352693160.21.EA2584A
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E6DF6180009
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 05:01:38 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=j6Y+CCDN;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792728587;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UL1xs+3wBpHHfuSwjpX6YqED9XSfjXDo9wVKeymLCdc=;
-	b=w2xNhchvdRCmVeYEcTAwFPkKVvcBYS43AaR9fs+sEI2VKy8fcC34KNlD16NOieU0Wyv0Nx
-	5knQfRQiWAUZEY+CLQ4r40f9pPjsDgarGuc3e6+v9ZyjEo8RAebhi1x0AFy24WG1sUAM9H
-	lxvx8PyonOECmHtAxjAZBUA6o9dpdXI=
+	dkim=pass header.d=chromium.org header.s=google header.b=g1F6U1vk;
+	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792731699;
+	b=kI7dRZfmCpbYQ7aDjnX729cF5swuvFgLs4zPiMPXe+9en1orF6xMbDbue1ujToLAEelLTT
+	x6qnGrEmEyS13TghHjSvH0YQdsdaHsV2X8sW/uKPbtGmAcvNHrq5VmxNC+jJV+4lx1rmTI
+	AE7tGtQilN7veNfDok2UuPW2B9LpdrE=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=j6Y+CCDN;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792728587;
-	b=xzNPwHau0QbZ7XJohfIOSotqr79uF6O7NoRKK5YIGu4sbBUPLSQuTRfyb86hepiQ0DLa+D
-	qF4NL740LYFpGIeRWqJjBpDmeEvfhOhUH/r2quGKn5BjVDuq+lDk4gsmz4amIuIN0+LGzS
-	lQaptmMzeBlQvzqPzpL+yeM+2YRrq0w=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792728581; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=UL1xs+3wBpHHfuSwjpX6YqED9XSfjXDo9wVKeymLCdc=;
- b=j6Y+CCDNyyR6H+i0gPIsCHJgUwltUiIsHmtRtM6smI0Ax48nLvW6TcmKtlVv8VrzlTruaM
- 3in7r7HisapKhJLh7947sf2mCjlQxsmhjP/EST7EAGjwdqNwxCPtV3zb5kETx2Y3Xb9k5m
- x49qr+w1AWbJYWk+gMeBq84X6z+tzfGfbHzpOzfaXosI7iDx2vhDA4uIVlwqiOrehVkLey
- IRYM+XvY6OiOrTftjPqRDs8YK8dSdfKHYVnzw5B56z0yxXfo2CZxkvHs3oHwQpuZP4DW7N
- sCNXu2ueDjkgEkmFhpSfXOfB3cCVKY4/jc6mF/ToU6HQUC+5oOzeXQEIW7I3yg==
-Message-Id: <7818e0c8-e20b-4dfb-a192-4d0c9fc8209f@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-In-Reply-To: <sashiko-outbox-181816@kernel.org>
-X-Lms-Return-Path: <lba+26adade04+5d1385+kvack.org+lizhe.67@bytedance.com>
-To: <sashiko-reviews@lists.linux.dev>, <akpm@linux-foundation.org>, 
-	<david@kernel.org>, <muchun.song@linux.dev>, <osalvador@suse.de>, 
-	<peterx@redhat.com>, <rppt@kernel.org>, <azpijr@gmail.com>
-Subject: Re: [PATCH v3 2/3] mm/hugetlb: disable PMD sharing for UFFD missing mode
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Date: Fri, 23 Oct 2026 12:09:25 +0800
-User-Agent: Mozilla Thunderbird
-Content-Transfer-Encoding: 7bit
-References: <20261022034543.51226-1-lizhe.67@bytedance.com> <20261022034543.51226-3-lizhe.67@bytedance.com> <sashiko-outbox-181816@kernel.org>
-Cc: <linux-mm@kvack.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
+	dkim=pass header.d=chromium.org header.s=google header.b=g1F6U1vk;
+	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792731699;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vGSWPVRPxP6ajcwPiQ6sdZfL0TLUXIf0aO/2OiD6KVc=;
+	b=SDerzQ42A2uxB4yvGDABaQFiKSshjPTFMCGl2H48VYtNJz2HaWslxJ2wQ7y9uoZSZrvghR
+	RXS0WQUAxRH6Tkemlu0ev0LH6Akd83Z6DD8NJDe8wwbxciW0lVcQSDGcOEOXNZIrTIc4as
+	xLNVrQk3mEnjB4/vvbVo1BZiB+ENRHg=
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-170135e43c7so572261c88.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:01:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1792731697; x=1793336497; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vGSWPVRPxP6ajcwPiQ6sdZfL0TLUXIf0aO/2OiD6KVc=;
+        b=g1F6U1vkvRTLLbMo2HiGxshlg+nFnNXUNzCq4mNrSTDWd17MTMHtFLPCOISUQqLlJ4
+         S12FKZ1qk4R2jHHTl3PMabigzOMdHJII0x83+6/lLXzWh/o/wAdV51QUG0Tg8fz0b5Kx
+         IYeUVMBcaABLh6kTFVOaK9HksIrHN8kur9v9Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792731697; x=1793336497;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vGSWPVRPxP6ajcwPiQ6sdZfL0TLUXIf0aO/2OiD6KVc=;
+        b=iqg4khu4WhV9kjYEujaN3V/GL/WOpddsCsfZIMTYe8XWMulHdkt1iM/wbTVOh7yvwJ
+         3QERymFJo14GUVoLHaf6gEtP8H5wZnVsX4sbIWcqUpolHlol6c3XAhQEk/v0eNO/AtPB
+         5b8l+6QQhsSyMyDvpiZKbZATzs1Fbduo/tFnMwOjvejFE4bhakDnP8IH/YMfH7f74tgb
+         IjWLXyH2gCuaCQcS6raMTrEOoRd0sHJsf92HTAFaAPbfJh5kg3LaYeY4PmAJ9e+MxwyG
+         Nywd4+E7KT6cy5Yyl274o4tKOx3Z4lpA1491eXWT8XpcqV4+WHUXGmJYL0ZuoZV2orUe
+         4beA==
+X-Forwarded-Encrypted: i=1; AKwUvBxcqFBc7i9FyRXd27HRaXXqEk2cApGYQCIqBizcbLJaq2ov3/qyvXYDyCpkO5124BuYBvk0K58tWg==@kvack.org
+X-Gm-Message-State: AFq9FYJxlh1xZ4NGXAMMuY/yCbeXiUpU0MPIOSjNZRKBB6K9aDlXVwTT
+	G2VekboG9amXaF9XAvUmhx2g/1ljwfBtoec7Ix1fAWNKCYP1zCnF4P9GviqoqJAX1A==
+X-Gm-Gg: AYBFou2o342sfKghPW4izUpxTYnZt8pkch4Asf4Ey9HxvLqqiR4R81JDxz80tdIfmdJ
+	yuAjQcs53yq7oEHQh8eTeOM6zFFvnFbMaXWkPALSb3Bcru5psjD2ATiT1POXQX5UAMKwPJt/wCb
+	TA/7waYnDOouUabXKBewKNk+rewBR8CrGv5LqW2XRvLcOSK/CPcF0cQi1FiwP77QMWisbTZtd9H
+	NveY2KU27Ewqlf8B5NfIVwMUX8EItkUYjHAbAa4dk6erzgOxPMUMG6reXcEjZslm3LvVvsjVzv2
+	JtO8nLNzuBrbZM5OhPqaNMudeZ7l47IXEUWddnnSHwgReCk2+23fHuUQYGNgJn2/nWmQC+ELOPc
+	SrAtP0fvOSuM/02CEJvxt/4Hw6u/cMi1SIagRS8+U/iYu3X/wUUC893T/UckSS6fs5JDOmrcN9F
+	EmxyUKClQoSV4lLjuiYhngXIcL8ZBGU5NhlYEqxSohTNZutbsn7hBMnaTWIcmtE+K25gEpqA5Ro
+	sD1vMrsGkw4mJ0k7Y8y82hpKt/dkKz8pc1XUr2cU2gEeKz6fyToByJ7/QIa0suh9QUZKs8tJ6Mg
+	CBvQk967e7uQsRW9tDFA6A==
+X-Received: by 2002:a05:701b:2309:b0:190:b2de:1549 with SMTP id a92af1059eb24-195bfcb294cmr2047930c88.1.1792731697413;
+        Thu, 22 Oct 2026 22:01:37 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:30e6:10e1:f7d3:a06d])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-195ec82eabfsm5512711c88.19.2026.10.22.22.01.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 22:01:36 -0700 (PDT)
+Date: Fri, 23 Oct 2026 14:01:32 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Hillf Danton <hdanton@sina.com>
+Cc: Barry Song <21cnbao@gmail.com>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Message-ID: <atrnvuQkeldgPqH5@google.com>
+References: <CAGsJ_4wMQteCGxQ7wxUKP2g96myo91ipF_zedFVVbxKdDrb=bA@mail.gmail.com>
+ <20261022111151.960-1-hdanton@sina.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Rspamd-Queue-Id: 0B1D2180007
-X-Stat-Signature: kxw3ram4mnkasnf4a7wx1pbttus694z5
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022111151.960-1-hdanton@sina.com>
 X-Rspam-User: 
-X-HE-Tag: 1792728586-929043
-X-HE-Meta: U2FsdGVkX185rkSDX5085NpeW3smEeiSpN7BOGCUNrpSJVRJVhtZ68tnMqqxRD8v9eA/oywTx5jm+ebfJvxqtohphVXnRG+eP05xKH9UWCd5ZgnR6xlXAHC8Cfc3plkpMvlY2vMhoackoEUdg2xrE/iR6NV0o7oDWPwRORZrnJ5idtMWr6HPVYdFxDFEt773KiiKq2R9ljBoAvwt6b0HJHxwefYyakrVcgkylVKvvYJW1A9IYsyvd9UQjsRIkisFaojxA372h3PLKq4f+UE/yqgZlwrjqWKCf5GK0Qdw32sJcTwRUuI418YaQ6kZX310R48aGw9EsrnlUOkcgWFA5xQWTUKu+jK7mZYg2rBdoCu7XG5DHCHP/GPSpZ81JG2M96BSgU5wX6q+sRtz1+gsBvpdBsVsGs7s3I5anIBSF0ZwPQqIUoeFo3TebVyu9dkcBiQOCf1cE2HKJyTt4+07JWzdQg9GtFlwuFbcAq/UEHEeZ/XnB8A/0ZE0wVirUV1cM9mK97BQYvGsIktMWED2xw8qlQDmvfITeMnMScOY5oJHU6a/T43+WgOvkuuETGqvGcIH11taOUtBPQHh6wr/iS/JBPBX+ny36oksp3ZKwf39VOyB0di0XHuQhDSz9FJ1ImqxG7p9E2H7ZF6Dx27oPvXCkC5NQvjxBdAVHHtcwffPkJNxEGAqts7LgCxX3GM5gkRufDL4sGjxkq1kC1S5tA/Rr8XpJ6KMfBWGlefrP0vzJTgxKrZJTgoXmDv3wYw5q+Gy+hw6c38p/IWV4Bc1Zh2SmpVj2Lpd9sBcycH3Td1k3PSu4GC9o9GMCwrdvcCGiQeyVvvgblqT5C4d5vA0OJ7qs+CRhdQqLDPhoc+tji4/SwOCc5cjnvfPqXz9Aq/OT7BXs7M7qlvOX1+SFo9/j+91IVwRBq5GCgrYsznUsUZkCnT4/aAqKhpUE9CDC1vWcnNkasnW71Em5VHCHFK
- DQvDsUK6
- dDFu6Sy1IZEb52DN2dtChrNa+HN0IcIO1F3YlQOg5T5LDuL4N2YJx51HV+WEx6IjLDKuKH5Kve3EV8TgFUMYHgwPX70JZPWGicmP25Rq6/BooQXH8xylsLgCTqeVTQyqmTplVzgm7bvo9zxDEAFD4sTlWaDjo6dQFprniNQumPIGF1k7vrPpKKKYCLSyvHrIbYU8KWZ6bAjEYt/5uiIGwM0LKNRd63mXGBOJVDoTPC/jTpQbr+Q6T1cnVZm8BRfOkiOcAGLvyqDCbe5uVbpoMh8Fys9DOqYU/va+rFgP+VabBWfY=
+X-Rspamd-Queue-Id: E6DF6180009
+X-Stat-Signature: sqsyfi6j7cnbkwnddcs4sstemq93u1ag
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792731698-62521
+X-HE-Meta: U2FsdGVkX18FwlJiumv9M60tD4uNH7aNE+Z8ez6tgBnQy1opSqmxrlCMsFZEdXUiM6jvuPAnwuEoDQ2ETSCjzKUQMREX12qpt42skyXXcysLY9pMQPWaUe7+ranAsQ8eeVUGeSJGnBWbC/08hrEisb5YxSf5JdLlfE0rIFw9zSJkjSbZpO3QxDel5dMvoGOFoI4vp1e37TfQWMv4H83Ao0DgAfq8sJ8soPRJcW8Og7OvsvIVVvrTS0lxLBk4shNIfnE7Cogm+PVakuLY1BBfzWjL7folmvYYdI0R2dfhl08+IhYtRt9E4RHJ7mHUySqgL2eVhTHUYQgH7nP1pf9IV4JKaExYcbhKcWlou68FSix4u+COr0cbkuhejUyo5Po6uRvaLLmKGVrOIHhA4z5+oHZuFGVytgTf37bWsYKE37mp8jKdDr+dc3FAO9Zpqf3FrFktwphnFnTxRrGRdzVG2p2Ug/MhI1LpW6TtygwISOffX3hICTA1m5iJRvcN6MppJtRkpykU+QPbslIjjcVsz6zKFGULmq6jXGgZB5EO2uGut1pdZPWeUdRshX85//15CaurA1xD5VBgCUNsq1NR/Isr6mQVs2KU4sWTQ4dBJViZl/5EbvrsO7gnXp9auQfBPTCxF5UKdLBiWaoQrSVqxmXyVVv3OD+bjd6zc92XJv0phXvm+2tu+9pzjc74TF0oOP1s7BghCNGCzQu0DPeIXi9E9deBNg//MwSVTI5xhUo36VPNB3WrZrGiSxWeieoUZOWMbq6uDdqiu6uL0OywVR78Dp+9wL55Jwho0D68kBJIz3Maj0qDsD1y3IFKi+HTMqggoeDndQyoEzVfYFXY/w5srebFfn/gDOKG0X8T01y5XhstakU1SQAe/GaNKGOt8isxhSnPgvQ1o5HR4WvUP+BXerTVbUaA0QkQkSOGT6RSNbHPWZnYAW9xSfM0uUxSvqhstqzwnKJUJXh0oZa
+ 8JGCQ5OJ
+ ttvr3pDvkT68Y/ILBdNN/pJkpgX5kFi3ynPyeyZ3mGdf5/UltcGa1ur7xMPmnq7lfJMkS3zvBMHASt5BC7e6wwRTwzV0s1S9Sy7GRZ/sOWr3FEVSs4ZCVPUi/w9aK379DLfklHZGxb48D0HXIu8kk0zLlgTdrDR7MbLm20yYu7FNbIS7kWVBJ/HwtYSRBBSztJ9ANtCeO4wK38WwiF/pxUYs/Iph+LiOpo/Yodv8L6f93Z77VNz9P8a+SZaf33Ve/DvTnMPKTYIbAlB7c19cklgJY8gVMCqDHGRnJaN9/391z2l9NsG+WGCVur+fAWD/P0CJsBLayEH2HFmrCDHJ/g+A6dqqedn6Ruo3S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,154 +123,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/23/26 12:36 AM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] mm/hugetlb: uffd_disable_huge_pmd_share() leaks poison markers on unregister
-> --
->
-> commit 5da87cbb6b8f2271fb75acc59e14e2d5860cb54c
-> Author: David Hildenbrand (Arm) <david@kernel.org>
->
-> mm/hugetlb: disable PMD sharing for UFFD missing mode
->
-> This commit disables hugetlb pmd page table sharing for all userfaultfd
-> registered vmas by checking vma->vm_userfaultfd_ctx.ctx in
-> uffd_disable_huge_pmd_share(), preventing poison markers installed under
-> missing mode from affecting shared pmd tables. It also adds a debug check
-> in hugetlb_mfill_atomic_pte() when installing a poison marker.
->
->> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
->> index a14b8a9ffb7b1..ebd86677b052d 100644
->> --- a/include/linux/userfaultfd_k.h
->> +++ b/include/linux/userfaultfd_k.h
->> @@ -168,22 +168,12 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->>   }
->>   
->>   /*
->> - * Never enable huge pmd sharing on some uffd registered vmas:
->> - *
->> - * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
->> - *   tracking information is per pgtable entry.
->> - *
->> - * - VM_UFFD_MINOR VMAs, because otherwise we would never get minor faults for
->> - *   VMAs which share huge pmds. (If you have two mappings to the same
->> - *   underlying pages, and fault in the non-UFFD-registered one with a write,
->> - *   with huge pmd sharing this would *also* setup the second UFFD-registered
->> - *   mapping, and we'd not get minor faults.)
->> + * Never enable huge pmd sharing on userfaultfd registered VMAs, because
->> + * userfaultfd state can be tracked per VMA or per page table entry.
->>    */
->>   static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
->>   {
->> -	return vma_test_any_mask(vma,
->> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
->> -					VMA_UFFD_MINOR));
->> +	return vma->vm_userfaultfd_ctx.ctx;
->>   }
->>   
->>   /*
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 966d249469454..7566f2eed50b0 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -6399,6 +6399,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
->>   			return -EEXIST;
->>   		}
->>   
->> +		VM_WARN_ON_ONCE(size == PMD_SIZE && hugetlb_pmd_shared(dst_pte));
->>   		_dst_pte = make_pte_marker(PTE_MARKER_POISONED);
->>   		set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte, size);
->>   
-> [Severity: High]
-> Can a pmd table containing a poison marker still become shared across
-> processes after the vma is unregistered from userfaultfd?
->
-> When a process registers a shared hugetlbfs vma in missing mode and installs
-> a poison marker via hugetlb_mfill_atomic_pte(), the marker is written into the
-> process's private pmd table.
->
-> If the process later unregisters the vma or closes the userfaultfd descriptor
-> (via userfaultfd_unregister() -> userfaultfd_clear_vma() or
-> userfaultfd_release_all() -> userfaultfd_clear_vma(), or remaps via
-> mremap_userfaultfd_prep()), the userfaultfd flags and context are cleared
-> while the poison marker remains in the page table:
->
-> mm/userfaultfd.c:userfaultfd_clear_vma() {
-> 	...
-> 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
-> 				    &new_vma_flags, NULL_VM_UFFD_CTX,
-> 				    give_up_on_oom);
->
-> 	if (!IS_ERR(ret))
-> 		userfaultfd_reset_ctx(ret);
-> 	...
-> }
->
-> Unlike write-protect markers, which are resolved by change_protection() on
-> unregistration, poison markers intentionally persist after the userfaultfd
-> context is reset.
->
-> Once vma->vm_userfaultfd_ctx.ctx is cleared and the userfaultfd flags are
-> removed from vma->vm_flags, uffd_disable_huge_pmd_share() returns false and
-> page_table_shareable() in mm/hugetlb.c considers the vma eligible for sharing
-> again:
->
-> mm/hugetlb.c:huge_pmd_share() {
-> 	...
-> 	mapping_rmap_tree_foreach(svma, mapping, idx, idx) {
-> 		if (svma == vma)
-> 			continue;
->
-> 		saddr = page_table_shareable(svma, vma, addr, idx);
-> 		if (saddr) {
-> 			spte = hugetlb_walk(svma, saddr,
-> 					    vma_mmu_pagesize(svma));
-> 			if (spte) {
-> 				ptdesc_pmd_pts_inc(virt_to_ptdesc(spte));
-> 				break;
-> 			}
-> 		}
-> 	}
-> 	...
-> }
->
-> When another process mapping the same shared hugetlbfs file faults in that
-> range (hugetlb_fault() -> huge_pte_alloc() -> want_pmd_share() ->
-> huge_pmd_share()), huge_pmd_share() walks the first process's vma, finds its
-> populated pmd table containing the poison marker, and shares it into the
-> second process.
->
-> That exposes the second process to the first process's poison marker. In
-> addition, if the first process subsequently unshares the pmd table (for
-> example via mprotect(), hugetlb_split(), or re-registering userfaultfd),
-> __huge_pmd_unshare() clears the pud entry in the first process, causing the
-> originating process to lose its own poison marker while leaving it installed
-> in the second process.
->
-> Should the vma or ptdesc record that a poison marker was installed so pmd
-> sharing remains disabled for it even after userfaultfd unregistration?
+On (26/10/22 19:11), Hillf Danton wrote:
+[..]
+> What I am confused is -- why decompression needs to run faster without boosting
+> compression up. Where is the compressed material?
 
-Thanks for the report.
+In a typical embedded device (e.g. android) zram write is swap-out
+(direct, indirect kswapd, or backgroud service swapping out idle apps),
+users don't see those.  zram read, on the contrary, is what users
+see - because that's swap-in, read bursts when user brings back idle
+app (camera app, etc.) which needs to get back to foregound quickly.
+So, the read path is more important.
 
-This looks like a valid concern, but I think it is not introduced by
-this patch. Before this patch, VM_UFFD_MISSING did not prevent hugetlb
-PMD sharing, so UFFDIO_POISON could already install poison markers into
-page tables that could later become shared.
+I tested the series against PE.
 
-This patch addresses the registered-VMA side of that problem by making
-hugetlb PMD sharing disabled for userfaultfd-registered VMAs. So new
-poison markers should no longer be installed into shared PMD page tables
-while the VMA is registered.
+readers vs readers (no writers) 3 runs
 
-The unregister case seems to be a remaining pre-existing lifecycle issue
-around PTE_MARKER_POISONED and hugetlb PMD sharing. David previously
-mentioned broader poison-marker issues and prototype fixes here:
+    BASE+PE     IOPS 1,449k  avg 3.48us  sd 155.6us  p99.99 26.8us  max 280,820us
+                IOPS 1,435k  avg 3.69us  sd 322.9us  p99.99 24.2us  max 540,512us
+                IOPS 1,459k  avg 3.46us  sd  92.8us  p99.99 25.5us  max 172,186us
+    PATCHED+PE  IOPS 1,457k  avg 3.31us  sd  15.9us  p99.99 25.5us  max   7,580us
+                IOPS 1,475k  avg 3.28us  sd  14.6us  p99.99 24.5us  max   7,327us
+                IOPS 1,463k  avg 3.32us  sd  17.2us  p99.99 28.5us  max   6,816us
 
-https://lore.kernel.org/all/bb72cc2c-a46a-44f8-99a2-b036abfdbd26@kernel.org/
+R/W stream split makes sense for reasons that we already mentioned.
+Readers don't need to be blocked on Writers - they don't compete for
+the same data.  And, moreover, readers don't need to be serialized at
+all for stateful decompression.
 
-So I think we should wait for David's thoughts on how to handle that
-remaining case.
+writers vs readers 3 runs
 
-Thanks,
-Zhe
+    BASE+PE     IOPS 1,271k  avg 5.57us  sd 1,393us  p99.99 27.5us  max 1,581,800us
+                IOPS 1,461k  avg 3.43us  sd    78us  p99.99 23.9us  max   227,015us
+                IOPS 1,444k  avg 3.48us  sd   222us  p99.99 23.9us  max   592,628us
+    PATCHED+PE  IOPS 1,457k  avg 3.32us  sd    18us  p99.99 27.5us  max     5,620us
+                IOPS 1,464k  avg 3.31us  sd    17us  p99.99 24.2us  max     5,621us
+                IOPS 1,475k  avg 3.29us  sd    16us  p99.99 26.5us  max     5,620us
+
+And, in addition, R/W streams split saves per-CPU memory.
 
