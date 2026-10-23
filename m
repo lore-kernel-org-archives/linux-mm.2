@@ -1,124 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC30606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF83606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=U4jtH3uQ
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XYgL33LJ
 Received: by kanga.kvack.org (Postfix)
-	id 5F5F46B0BD8; Fri, 23 Oct 2026 15:48:54 -0400 (EDT)
+	id CAEC36B0BDB; Fri, 23 Oct 2026 15:51:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CBF56B0BDA; Fri, 23 Oct 2026 15:48:54 -0400 (EDT)
+	id C5FFD6B0BDC; Fri, 23 Oct 2026 15:51:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E1886B0BDB; Fri, 23 Oct 2026 15:48:54 -0400 (EDT)
+	id B4EA16B0BDD; Fri, 23 Oct 2026 15:51:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29D4F6B0BD8
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:48:54 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 95DDC1401FE
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:48:53 +0000 (UTC)
-X-FDA: 85354928946.23.E822BAC
-Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D2D57C0003
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:48:51 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=U4jtH3uQ;
-	spf=pass (imf28.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.5 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9161F6B0BDB
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:51:28 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0DBBA40208
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:51:28 +0000 (UTC)
+X-FDA: 85354935456.17.EE06213
+Received: from mail-dy2-f7.google.com (mail-dy2-f7.google.com [74.125.229.7])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 37A4840009
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:51:26 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XYgL33LJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.7 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792784931;
+	s=arc-20220608; t=1792785086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jcX7+w+8vvOIu+l1j/b12ERTdZM/yIWf3ikT9C1KkwE=;
-	b=6BHc+L+6kfTFZvkJkd3jGAOlV+hYG0ITeBbB9z7RVJFecfs6hvvBL/2yEKP6q1NTVXeoDH
-	z7AvXP8IwvhGn6r6EQk6MiQjBrraw0Vm49C5S/JqpZYveQCF5Ae86PogfPWvgoiyCTXTxQ
-	i1oFPKllZvPXoyTvW0UEJvQAT6otSAw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792784931;
-	b=636csSHmn4rhhVKXR6JIpwK2ZRfesZcg+tArHzHbNAfKNtpfvp/BhUziC/46kfHDVReSfZ
-	N5Gx45nvmnrFT+9qoTguaF3Rrj1FEbFbnxOLgFbifF8Te96XsWm+GVwVaYX8qIC1SM+ojm
-	xZUCHiIituzPa1umT/I8CJMFo+JalJA=
+	bh=ajNcFZ5WussjgJU9fT6tDOCdCs4dRuGUCjNnd7n+pgg=;
+	b=pvQfIgMBxyb0a8ldyZtgiCI0bc+BmVuNmXTxiTrxe+LI8a2z3Tfjr6LAhkesGV5F3AYjAU
+	SXnKAW1uUlpwoar+B3be6cz7h/HKJu2Wt8lj0k1ZtedXojk2OLjiZEqTxtPU8O4bbxzdZU
+	0GAA0DFR0DldJ3giGib43O9Gk/SudmA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=U4jtH3uQ;
-	spf=pass (imf28.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.5 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-3535a54c09bso1210224eec.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:48:51 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XYgL33LJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.7 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792785086;
+	b=ZFzzeaNLvTAS/iZivHkAnUAD42QUaGy+txyuXuUx7TIoOWSZtr75q/VyujWQQUzXiqa7oY
+	4w4iQ5YNhyYNsuoUyDv9Izy0IkczuZqcMdrcbcMOFzrd9x/cCx7EFEPYlsYD/kqB8GvXAv
+	1LRQ54h+gTiucX99TjUkICavEKGN4hE=
+Received: by mail-dy2-f7.google.com with SMTP id 5a478bee46e88-368c26de2e0so357258eec.1
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:51:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792784930; x=1793389730; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792785085; x=1793389885; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jcX7+w+8vvOIu+l1j/b12ERTdZM/yIWf3ikT9C1KkwE=;
-        b=U4jtH3uQG2KHflz/6qjXkJm1ikeRBvTNVYNgdaQ7PlBetKFpQvbH5VF9Yv+oTC65cf
-         XLoJnOexLft++e6R2+ORdVNyQpfRot9TRGIPi8jTLJBaXlexi4mcDtLSJ3DBM9b50MFB
-         I2mSWlw2gi28A8PrnRhKYLcza3C9o/xdoOS0ah/K0JtJxNwPpchI2BQ/c8PTO5zFXHk5
-         H1Z6jRq2ywB49FjUTPH65Cbt6wyBuK5HguWuRgCv+ZfUiXnQgbxWFeEyjycC04bAJsrV
-         WkhJAXC1jmYxnBurV3o/NDRfrmL0wISNsBRDzmZpnLeViVVuZwQwQA+EPKKs9NG6iiU1
-         6cvQ==
+        bh=ajNcFZ5WussjgJU9fT6tDOCdCs4dRuGUCjNnd7n+pgg=;
+        b=XYgL33LJMyiiRBM9FDjhMhJytdxRWV5dVUPZW2C32rM6FhGsddCY4NpLD5XVRx6SxK
+         GcD+fyNIHuKoFhFvwCuTaRI7dw6qP2hM1CEEdy3bXIvKGpRN9kGx1pRm8F+tOT8uD+67
+         jieG4fvFKBhmkPxxJ2v8pOUZ5u1UnDu1LP94ZGiAep3eNJ2w2otk0jM0kuMw2kU8z1Dr
+         6PRc30SuifWGHT/CMaUDGnTzp4MTSTnJNYrswmcF8zSyzJsebcMNTcnPj4F+jozLLlEX
+         sFmJYkoKfl/yZQe3QyFeKd7jVqHPNeMyuO62mQk8aY0TnKsMkVzxwVJ3HlO1BXsfgUE8
+         mKIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792784930; x=1793389730;
+        d=1e100.net; s=20260707; t=1792785085; x=1793389885;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jcX7+w+8vvOIu+l1j/b12ERTdZM/yIWf3ikT9C1KkwE=;
-        b=tEPE34Yi2apXDr2wuo/+EPtR5MjAm6LwFSZg1ji2qBONzkZdVgcQrMoIstD93kLxNd
-         Y6nWFte278OmhUQ+H0f6YG2NklFCAq1Vdcp4hdZfWIRsvcq8RLaENFiOi1Knc3d2fAJM
-         UyVhW80s7DtU9UEX0/HJpnt18ts5AaAMskh4DFiTaiwjk5vWaQIVaiVSknJiyfkX3Cza
-         v7Q63ISfMukwelUP48cDA6jYpHV+N80md//C8MvGirTErpm8VkFoj5WVXqgfEw5NHsLi
-         KlMz04dZsnvBV0XjnLCMVuPjlChhDbIIcz2zcxcxfeeIcz0+D77iki0JQkVr/si2gNvg
-         xjww==
-X-Forwarded-Encrypted: i=1; AKwUvBzk7sgjlZwNZY4UUoS/li1KEf49CV51R+EIbm7836A9pbnW5XPgDnW3tyZt4sCn4bexjRkj2sWLVg==@kvack.org
-X-Gm-Message-State: AFq9FYIO+UvAJPODZ+CpiQmOJXj4QCTJvjJj7+uVrTDy3h0K8yL0ZmS1
-	PnHJq+o8ir+n/r0gABYx+JyE4kmTHPdx8mMmt815sX9t2hgvjOAnifk=
-X-Gm-Gg: AYBFou24FsaKU7KoS69gVQh1d4N40Db9GE5vRNh/+S5QeNYoXfNTe2l6WzLMK1nX95i
-	iHzVbD49FPcRTLyzMEd7o3JNBz7jR9noFlXCEcordfTeGzZfKawl4VTj6+zA3elIAJl1JRblD7u
-	WZZRqhwiiBam2C2rGR0+3M33YMF4KhMPN66k2WMJuYIm1ovmUikHcPyJkDDGMBcjIUJfzNP6Dxt
-	eXW7vGopd+waXSlglOjxNeHFAOBHe8h4EYmGLXoNaCRf2qU8cTjyasrhPCvbcm2hJtMr3TyIQvX
-	PluNFXw0kcJaWX16uv9N3XbVds2fIc+AZLBKYmDHvk9rkZ4hbko2jqUpw15kYAdax5mmipMVlcI
-	FqoPAqQ5EIRxgr8hfmsT4SB9rqACP0uj3dh0hDoajChRGGIE1GTK7Ijy3FooL6+oSC4g9le6T/W
-	dQbUDr63SRVkTll70I7rR5RJmw7YGIsAwBYTM6RfO0k84D2BnXbZn7VlppCWOx1Xze9ppp5zIC5
-	X4iR8SPft0HCyw+qPTj7Al4G6n6z4XXbPCwMgMqpOWILYrXB8wEJBJkP9ZJ18FB7TnrIRQz3gWd
-	5V8IRa5Zuo+e
-X-Received: by 2002:a05:701b:4248:20b0:183:c7c1:879 with SMTP id a92af1059eb24-1992900a091mr110659c88.1.1792784930103;
-        Fri, 23 Oct 2026 12:48:50 -0700 (PDT)
+        bh=ajNcFZ5WussjgJU9fT6tDOCdCs4dRuGUCjNnd7n+pgg=;
+        b=ntx4QAnRaaHCEqFhwDwuZleDKA9gqE7dFsLogVCJyFZf3cfrfBuQQN3NT8r+3YiOGR
+         e7mzxRztaukKOy2A8iib9DEPTJF6plYcpIwmJLTcrqJWjb4bXOKoiJJojGULT7R8xj8N
+         /SgXUh6LxamTgtflTDcxaX1DsE9SJXYtpHSoNNxjl+vnS+VoI1d5JVCSVRoStUqs4lu4
+         EvS7UWOwlTyfs6qA0UGfrRn0z2rn+3BfgqoRLsR5gWZbJl/UBrJWbpNI4W5FcI8D7w1Y
+         pOdo6S0C9SaogWtPZ8SWbu1HeUeiAr8GRc08KT6FyLoc88JGFcNonsIZrM8s2311yO+9
+         WzYQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz4DHIGIfBbsAYK9xrFienrCz/sDn5zg6nXYEb3fJmHJJGWSnH7/2osuQFaBK1znH9Jy+Hnrt+T5g==@kvack.org
+X-Gm-Message-State: AFq9FYJWkw0oZC7Aty2fG6MatEactnUhsstZTOAJftAsgbE2VsIWvvwB
+	bZl5kEuIc2H5W8ckM0vWjM/tSUBFg+2AT4dHQQkDKzOnypgU+i5z0Lc=
+X-Gm-Gg: AYBFou11zyM1LXCc093NEKytEAbJEaymRW+YIjwUKt+RbaRXoz7UhjcIr5K5gA3BF1O
+	1eEqyt8CNgnyXBQrw+Mpoa/6gDcNn42HPKsQbMq/0wRWpYkPqN1PV6253ouTU26LBuo3GAiiItU
+	YaY4DgbaN+TO5/RiUTL63GziCbn5kEYvkV7+j0fs0U9d4vdCVlTLSVMtFTpBHlyadsexUjP2EyI
+	9V6g3NNU8oF4tbj+2nOMdHXweIRUKqBdWIBcjVyxP49kIc2BVQ4ksBaZse/zk/j7O+qBToAJnyD
+	EI134ItguNPYwv840eWTuDNaeKdMT4okhomg0MY2hBEo4YM8II0RPqrxfPFftIgmmO1lYrwzuRz
+	4wWxgJHxpg3nileqpd8N2kcnAbop895UL+pXLErccyB4UjcshUmcoLmyXU+gL823P6zUR+nu5fi
+	CMiLjiZu6plMTq6aMhr0QEbNDP97nqs85mPb0R9vdl+xAc5iIb2FlSdJtouFnq6x7CbosE7iPg1
+	zNcC5TqTolV/LyS8nOURPCc4iByEh37EMswYOd7XZWz0NkCeLBJ7ocjcBtDzc9s3etBJthA/OBk
+	mBldqlMl4YrtNAYBI2+q/LBfJZJ53Nf9Cw==
+X-Received: by 2002:a05:7300:50c5:b0:368:e6b5:35ad with SMTP id 5a478bee46e88-369e84dab92mr442217eec.12.1792785084531;
+        Fri, 23 Oct 2026 12:51:24 -0700 (PDT)
 Received: from localhost.localdomain ([137.201.204.53])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19894d5a10csm657043c88.1.2026.10.23.12.48.48
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8ee72c0sm420489eec.29.2026.10.23.12.51.23
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 23 Oct 2026 12:48:49 -0700 (PDT)
+        Fri, 23 Oct 2026 12:51:23 -0700 (PDT)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: sj@kernel.org
 Cc: corbet@lwn.net,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	rdunlap@infradead.org,
-	sashiko-bot@kernel.org,
 	skhan@linuxfoundation.org,
 	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 Subject: Re: [RFC PATCH v0] Docs/mm/damon/design: document data attributes report infra design (beyond page table accessed-bit milestone 2)
-Date: Fri, 23 Oct 2026 12:48:48 -0700
-Message-ID: <20261023194848.2449-1-ravis.opensrc@gmail.com>
+Date: Fri, 23 Oct 2026 12:51:22 -0700
+Message-ID: <20261023195122.2481-1-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261022053227.90608-1-sj@kernel.org>
-References: <20261017195747.89961-1-sj@kernel.org> <sashiko-outbox-176355@kernel.org> <20261018200808.379209-1-sj@kernel.org> <20261022041708.2690-1-ravis.opensrc@gmail.com> <20261022053227.90608-1-sj@kernel.org>
+In-Reply-To: <20261022052913.90437-1-sj@kernel.org>
+References: <20261017195747.89961-1-sj@kernel.org> <20261022041724.2712-1-ravis.opensrc@gmail.com> <20261022052913.90437-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D2D57C0003
-X-Stat-Signature: k44ccokxjdhyrz3776gcraubff9madad
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 37A4840009
+X-Stat-Signature: n5ufhf5o33f37y9ce76xnsepe3o5n94j
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792784931-249312
-X-HE-Meta: U2FsdGVkX1/FSo18H54E5CguCvR0355Y+o2Wip78vjWayaa5zdBiffKqDr1/WMHj46LRtgsDZu0Ctsc+egR/0SRMmU+IMtI6B3+W8pUXo4Ozj2Ex1agtfS+fjktnlSvPQVa7ahTlbtbWcaw9MFgfGcEvesWjRfJJMouBCLdC5GgOA0nkMhRY9UAiJ9ImhA4lA0v9LplAT0ElC+cbMdFZhkGZkHK4guWX3pvvQ9036b07wTKvBcv3jJoFRSUv9xTlyJ3kphPYRWI6DzN2oJnDMsOVHerFg4ukSYKRzksKasX8/VYoR3MrG30Ytg0Wk7uFG1i1QmFsZXvDBqlsrJbb7Pl3B9ULvgkLcH8DxMBDJdesTpLuCjcu+czjP1OKJ5IcnI+LGDf9OEE3GMsHmMrUYdcFk9Y+bnvD61nAYUVCFXFeMW1AIcrThpXGEvaaq5EZ5OQ9GAG+OZekJsfvbuLU6UXhfFxT1FMD9/VcUOtI+VJmqX7qcLkOP+PWic6pA2hl8BdqgGBduJHQsohDrGlvtAgxF0qpIx61coEFAHGhjx/cWOgrJI5ZFO3Bit8erdLLEH0hf0EKRrsJJXpAxqL9ZTHnY2gqQTHfmnf35Py6z7s0Q6Y8fAohVR+DEWeBP/7YlmuDMGnST/X60rrm8nEdR+k6dvMDwPnO2MMFrRNpF4M0TKJEqQvTnmvsVhFfGKlVGw0FEJsdepxNsNbLt27LkcywaGZU+ljLy8DxmY7W6kjJ3r4VHbmc+iaWvgShlMD/LSc7gYWKOmYxy462ORcW/giV67sJcHYDh7LjFhumgKwIOMlB/jn70aCwk/BwpC9LwvuFEpJVsl9l5DjXp0AA5pnbJLPukZXthhnLITx4j9yZ/jjodhTF3cQOhSTIzlTCmAAeUcFTWgwmOHfzFZQ5DodVEIXOTxibvqHaPfCBGtF1zafxRyZMYIN+PXcC//NIWxZh0L2H50/clEHr+FM
- 0skwO8sf
- 8BuHVzga7mIrWs6zRuadal/i9UXnCXxhBRMWEnDGxKb5eZNis0E6odJXAdjAxZPLwap/6r+HR9cnVLxNbBGRT5rpdDTW14lg/RoK8i/dwV8kLyrrLOBYJ05cR6VkCHz1sWcwFjEPMy/SVfK89OLVKowmFT4nSBOndeO1+vkp9XIGXSCZ0jb1OwXuvtQpZl9KtshcTwzJydDvbWpeqNYxAt/nO2DdgWklGGES9N0uhB9IMDpHiXs4Qzwds+w6oSpT+5KjvbaUPwMKX53nNld8Qg9GoI+/myWaHUABER28MNX87iSoImgwhf7C5v3/kjopSNxPv2kP1NAzzK30/5eH0VbSqTpsO+EXJs06/3EA5AA56fHsphPxfhmbMKL7eePAnatEioL5lPeC5wKOXlBAprIXLQfFWUBm54Mu2kKLBk+EjiXMI2B0zaaZjGwGnx7/EU5FCP6lJY6Y9dKL2/U3gkmON7XAP+sJPYf8KJKzXtYFzyUkPHY4eIZFftpM5XNmDMGaH
+X-Rspam-User: 
+X-HE-Tag: 1792785086-588152
+X-HE-Meta: U2FsdGVkX18rQ8JjeiMBf0iBKhj0u2Ui0/PrZpj2Qu48ePyhT7sryhZpsRmyDtkB7FsBLsWUyXndyC7aPzJVLTAu5FiOYM93y1dS/Z5uOGI4KJxvD0dQPZzEDNkln1KbUWiFSbk+B6HHNWMhSdpUFNrRsEGSOJf7+iiBIhl5WlFrqMi7yYmEMgoZf9LAz1Ys900oShrkFCTQIL6gEnbuDzo8xArYnHXsgaZtIeTLE6TLR1iPfgFCpQsvLW7cW77JZE4IWJrxlUVJqMRNGfhSi5ZUcfrPoq+KJqkHQnlRS0wB6etBDvOHP+7bQG+6UM7CRKMjUsC1sgarIlWifgBwE3Fnnb3lGfvncMiK3UQz4H3dkpWt3yt0t5VhUabjFnQuHib9bZNFPhbVUnDJ+jI+yS7rAilYc2zOFnwMyomQJ6TK2jFaPwCb6PiHNqiRUlKcLClQiwmc7JuTLaJg9MgDPJT9bqJKhO0HZC/rran9FeGPqVCpYC6V14WcKdSelTGU8xpF/TpLOKe3zv0CFFVCe3bHT1FEd0V6917zq9mWvKcC8YEdwBqQA2XTuiOHvWZcNqpM97ztRLDnmg5m1x50sVZkLNCY0lO8HrcZQx9Is4JN9/QYe9OLOW6P/sEavRiZ8H+FaX+ogz2Nb4znIaSuH//iaOQskLnnDalTpjqR8h48HISVf9HxaVhoc6nBQ1f49LgjOHzlTIzNO6Zha8ykFFfpAGQzSITeKbA2IYcGj10amGs5jcRE0nbSuFga5OsLpyxUE1dO/w6+TBORuIsLCspyruPl72d06Lj7SeXJqe/AyHHo2fZqcS4utSRntP/CirVDi3Y26B7HWRAMuxy91cavc1J4SEZEvZSdJsSP8nwPAjFzkUnH9fjpmxxACtYALqvDhndc25uKBqhB5sz06FV7b4+UpF0LbFe7kg2ZJuU+GCdNaDIS/fDUIJOpH3Jwp2svOhAXGKTY3Dlxyg9
+ MUW1JTB8
+ FTF/Vj3q4TrqZkrzhkA5vUvFeFLeTPSUnSPPk7msttmnqhL3gd7X2cZz6++aNvQln16Khb4xrZivdgwWRWcWjluRzwNspiIEMl2/RoxVw7cZT166tjFw/5kW+xeJpt1LnYhkPMkzBFDanoHiemJOuvUbI3dOc6ECMiUwwEp0FyxahXhxgG9qOTCzniWgRM6eoppbyu/hPF/zBalOKHYawJyh2RpsPaLas7cRFvIVsW22IcXmRlDqubTPvQmlKYdf8rJm9lJH54/Ewyh5CJHvnBKSOy9xYX0cBrlfiYZrlOLCmLqwARtUGtgiLJyNPNM0K1mRL+ykNO0nnICBW6fGJuwfFOyrQob4h8MJnwu+WodSbT+Ts/dX/qO1oUCOhCEXuR9o0GQh1aT02/BR6z3eYkz26a7dCSZm0nP0sh9T4ZjrG27T1ON/ErHViSO6lYYfcelWh2Tb4IjNHo9TYQU1GjQHd14wvF8obx+QzkFMCnt/eFnntRZzQc5zdnshdk13VfcWQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,82 +130,101 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hi SJ,
 
-On Wed, 21 Oct 2026 22:32:26 -0700 SJ Park <sj@kernel.org> wrote:
+On Wed, 21 Oct 2026 22:29:12 -0700 SJ Park <sj@kernel.org> wrote:
 
-> On Wed, 21 Oct 2026 21:17:08 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+> Hi Ravi,
+>
+> On Wed, 21 Oct 2026 21:17:24 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 >
 [...]
-> > PEBS saves registers just after the instruction retires, so a load that
-> > overwrites its base register defeats decode.  IBS saves no general
-> > registers (perf reports the registers at the NMI), so decode is not
-> > reliable on AMD.  Decode in kdamond must also survive exec, munmap, exit
-> > and pid reuse.  These are synthetic loops chosen to separate the cases;
-> > how often real code hits the failing case is not measured.
+>
+> Thank you for your detailed review and testing of the first design!  I'd still
+> like to try decoding idea first, mainly for quick prototyping.
+
+Sounds good.  Starting with decode makes sense, especially for VMs
+where hardware address-sampling PMUs are often unavailable; some tips
+for the prototype are in the other reply [1].
+
 [...]
+> > Yes, if the report has an address field with a validity bit and carries
+> > the producing report-type (attr) id.  Then IBS, PEBS, Arm SPE (through
+> > an adapter, since SPE uses the perf AUX buffer) and device-side
+> > monitors all produce the same report, into the same queues and probes.
 >
-> Thank you for these testing, Ravi.  Unfortunately I'm still learning perf event
-> and therefore not yet fully understanding these tests.  I will revisit after
-> gaining more understanding.
+> Thank you for confirming.  And yes, I think we can add more (union) fields to
+> the report structure.
 >
-> > So the suggestion is for the first report type to use the PMU-captured
-> > address and load/store flag (AMD cpu-cycles:p; on Intel, the PEBS
-> > memory events, which moves them into milestone 2).  Your call, of
-> > course.
+> However, could you further clarify what are the validity bit and attr id, and
+> why those are needed?  I'm still newbie to perf event, please bear in mind with
+> me.
+
+Neither is perf-specific:
+
+- Validity bit (or union tag): a way to tell whether a report carries a
+  virtual address, a physical address, or both.  For example, a decoded
+  sample has no physical address if the page is not mapped.  If you use
+  a union with a type field, that already covers it.
+
+- Attr id: an id of the producer (report type) that made the report.  If
+  several producers later feed one queue (e.g. perf sampling and a
+  device-side monitor), a probe can filter on, or weigh, reports by
+  their source.  If each queue only ever has one producer, the queue
+  already identifies it, and the field is not needed.
+
+[...]
+> > 4. Binary search over a sorted region snapshot (your todo in
+> >    kdamond_apply_access_report()) beats a linear walk from about 2
+> >    reports per interval for 1,000 regions (a model, to be measured).
 >
-> Meanwhile, I will start with the current plan (capture register contents in NMI
-> and decode in kdamond) if you don't have strong concern.
+> Yes, this efficient region-report matching would be important.  We could also
+> consider starting with linear walk and later optimize, though.
 
-No strong concern.  Starting with decode makes sense, and VMs are a
-good reason for it: in the KVM setups tried on Intel and AMD hosts, no
-guest got a data address from the PMU, whereas every guest had a
-software CPU clock (PERF_COUNT_SW_CPU_CLOCK) or basic hardware cycle
-counter (PERF_COUNT_HW_CPU_CYCLES).
+Agreed; starting with a linear walk for the prototype is fine, and once
+it is out, happy to measure where binary search starts to matter.
 
-As quick background on why those earlier test tables brought up PEBS
-and IBS: in perf_event, sampling CPU cycles has two modes, selected by
-attr.precise_ip (the :p suffix in perf record):
+[...]
+> > 5. Samplers can stop silently: in a report on the v4 thread [1], IBS
+[...]
+> Unfortunately my understanding of perf event is not yet good enough to
+> understand this in depth.  I will revisit this after starting implementation.
 
-  - Plain cycle or timer sampling (attr.precise_ip = 0, the default):
-    a counter overflows and raises a normal interrupt/NMI.  The
-    hardware does not record a data address; the handler just sees
-    pt_regs where the CPU stopped between instructions.  Even though
-    the interrupt lands a few instructions after the overflow ("skid"),
-    regs->ip is the next instruction about to run and pt_regs holds
-    its untouched input registers -- so decoding regs->ip gives the
-    address it is about to access.
+Sure.  The one part worth keeping in mind from the start: a sampler can
+stop without any error, so a counter of reports received and dropped
+helps tell "no accesses" from "no samples".
 
-  - Hardware "precise" sampling (attr.precise_ip > 0, which routes to
-    Intel PEBS or AMD IBS): the PMU hardware itself snapshots the
-    instruction and, on supported events, the data address it touched.
-    My earlier tables tested this mode.  Because PEBS records registers
-    after the instruction retires (when a load into its own base
-    register has already overwritten it) and IBS does not capture
-    general registers, software decode breaks there -- which is fine,
-    since in that mode you use the hardware-captured address instead
-    (your Milestone 3).
+[...]
+> >   - The queue: the per-CPU seqcount design in note 2 (suggested), or
+> >     ftrace's ring buffer with one iterator per reader.
+>
+> My current plan is to use DAMON's original simple lockless and global queue per
+> report queue.  Let me know if the report queue design is not clearly explaining
+> what it would look like, or there is a clear problem.
 
-So there is no need to revisit those earlier test tables for your
-Milestone 2 prototype.
+A global queue is fine to start with, and the design is clear.  One
+thing to keep in mind: perf writers run in interrupt or NMI context on
+all CPUs at once, and an NMI can arrive in the middle of another write.
+So reserving a slot needs to be lock-free, and a reader should not see
+a half-written report.  If the design already covers that, there is
+nothing to add.
 
-Two small tips for the prototype:
+[...]
+> As soon as this design discussion is completed, I will start prototype
+> implementation and share it as the next RFC version, as soon as possible.  Your
+> review and test of the version will be super helpful.  I may also ask you some
+> questions for perf event and your prototypes.  Thanks in advance for your help.
+>
+> There are competing works, though.  It would take time.  I expect about one
+> month at minimum.  It might take longer; Thanksgiving holidays could be helpful
+> to give me a time to concentrate.  Please bear in mind.  But once the initial
+> prototype is implemented, I believe we could quickly iterate and meet the ETA
+> (LSFMMBPF'27).
 
-  - use PERF_COUNT_HW_CPU_CYCLES (or PERF_COUNT_SW_CPU_CLOCK in VMs
-    without a virtual PMU) with the default attr.precise_ip = 0;
-  - skip, and count, samples whose instruction does not access memory;
-    in typical programs, only ~15-60% of cycle samples land on a load
-    or store.
-
-If you want to inspect what those samples look like from user space on
-a program:
-
-  R=AX,BX,CX,DX,SI,DI,BP,SP,IP,R8,R9,R10,R11,R12,R13,R14,R15
-  perf record -c 2000003 -e cycles:u --intr-regs=$R -- <program>
-  perf script -F ip,iregs,insn
-
-(In a guest without hardware cycle counters, use -e cpu-clock:u
-instead.)  Each sample shows the IP, the registers and the instruction
-bytes to decode.
+No rush on the timeline; that plan sounds good.  Please feel free to
+ask any time, and I will be happy to share the test programs and review
+and test the prototype when it is out.
 
 Thanks,
 Ravi
+
+[1] https://lore.kernel.org/r/20261023194848.2449-1-ravis.opensrc@gmail.com
 
