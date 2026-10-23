@@ -1,111 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4FF606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059A5606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=uuoJVEn/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BGve7nPZ
 Received: by kanga.kvack.org (Postfix)
-	id D8A316B0BEA; Fri, 23 Oct 2026 16:04:36 -0400 (EDT)
+	id 21A726B0BED; Fri, 23 Oct 2026 16:05:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D62526B0BEC; Fri, 23 Oct 2026 16:04:36 -0400 (EDT)
+	id 1F2006B0BEE; Fri, 23 Oct 2026 16:05:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C52926B0BED; Fri, 23 Oct 2026 16:04:36 -0400 (EDT)
+	id 130666B0BEF; Fri, 23 Oct 2026 16:05:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 90CEF6B0BEA
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:04:36 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 239094020B
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:04:36 +0000 (UTC)
-X-FDA: 85354968552.13.BBFF697
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5A25E18000D
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:04:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="uuoJVEn/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 30L3bagsKCBkHJH33C2GzC05DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--suseendranb.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=30L3bagsKCBkHJH33C2GzC05DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--suseendranb.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792785874;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RbUA7/dxhId/TZcdTXpzWvUZm71mXX0zstuxMncKARE=;
-	b=u2dnXOTOZHJEdZg+I+T+nhvHIy6DGza21aqZwUdz+IarU/Sfpd4w/jRlYppM1upLQftAry
-	U3vyXsZT24fByY5655shCgx90vnrOjSyUur8zr0cO/c2QIAuNV9wEakMCPJ0iB9cOpkqCR
-	WGAlhFUoDlgH6kAz/3ujh2lOMjLwg0M=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="uuoJVEn/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 30L3bagsKCBkHJH33C2GzC05DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--suseendranb.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=30L3bagsKCBkHJH33C2GzC05DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--suseendranb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E3BC26B0BED
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:05:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7432214020A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:05:15 +0000 (UTC)
+X-FDA: 85354970190.18.A272BC5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E2072140007
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:05:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BGve7nPZ;
+	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792785874;
-	b=8aw/FUU5j8ff4u4sFjTdKdGONMJUQYQWAT6KSu2TYPjxBibDZHvAUI/305ah59OxB85ekz
-	K54PQGoHO25nChUnJ+xNYjtyaZ4nCIwiwZDklJVnuFqm7ckKMHeDSxuV1fRrZeQ5XI+rH/
-	DWj+TFgw+vUR3RsP7Y3GQqiVnr2Ij0Q=
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a05c820ecbso1797359b3a.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:04:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792785873; x=1793390673; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RbUA7/dxhId/TZcdTXpzWvUZm71mXX0zstuxMncKARE=;
-        b=uuoJVEn/UHXSKskt9cL80uPI/NmJO0Khr3qUNv1YerqeimuBSzA53++sTTR9WRXmQJ
-         wagvGMb354JofhSzx1UAMWgJncdI02+A9DP8DfzkTBVGZu0pdIGcysPNgGdW7Jq/6GwV
-         GDynOVtx5ApwGSyVTld7c3sUuKjTNNXM3DtzqqdckEYTCV4XCAhQUITYqMesqSroPkGb
-         wKLSjsgGlh4ZFZqgIswMG8T1t8cHRg22QOMG7ph3xV6iLbgVtrsnnlJfAYF52Z65jZOx
-         h7XViYhV671W7zpn1SWdS3DEZ9jO/iQig7xwlJEwatxlnHa2lBLdLX5udl/5qcMRLd31
-         tEkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792785873; x=1793390673;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RbUA7/dxhId/TZcdTXpzWvUZm71mXX0zstuxMncKARE=;
-        b=adblwqOhYOi2FaSayuzbXMXOnE3eEp752h1q7xG8ZXVXQM43OKBZB1FgvSHFzf4JdT
-         3IaLNQsOiFJgV6d0npAq2cFlqpT7yAmho925nwtHo8QelCM3YZJHa2XFV5Ki+HZoA3qX
-         Th2cmV3sk07oyMyC0JdUNjLENRUsWxu3WUXBtKTjbyPCgJ2bn36Wao7cydweIOxnVz/4
-         602CX4sPF1QQnjnlK7fh69K6auXfRKdk+z0q98X/4cOcLaD7g9LDtdqMO0/OO3YdI+mG
-         xP/1c7NqFJAOe9TGl0hJf5k2fMySZb5mHevhqt+JerpXpw4wRjv+cVY77pPTtUGbmzNQ
-         8P8A==
-X-Forwarded-Encrypted: i=1; AKwUvBxsgxjrXO7rUY5pwQnc4ofDt8dSepD9+2EU9uI+3YMKtOOLZnGN3q30koJKUbnoOvvcu7SAyEH62g==@kvack.org
-X-Gm-Message-State: AFq9FYJufos57D7KyYctQyYiv4BEbOKqIiP9RK3Tdnz8NxB2uhlVFYs6
-	+cIyG27aDWHlTZpdrFHabru/spLysJec8w5pA6qDoNCIdEfiOII2rP1hUS6N3jeMvZpOg9Fb6AR
-	KXC48Ph0YbQEuJh56NTtV6fjasw==
-X-Received: from pgbm2-n1.prod.google.com ([2002:a05:6a02:6182:10b0:cc7:52da:b682])
- (user=suseendranb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:9d4c:b0:3e2:252c:3738 with SMTP id adf61e73a8af0-3e7bfa44be2mr77837637.16.1792785872956;
- Fri, 23 Oct 2026 13:04:32 -0700 (PDT)
-Date: Fri, 23 Oct 2026 20:04:26 +0000
-In-Reply-To: <20261023102607.7635885be12b0b6e7a5971aa@linux-foundation.org>
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261022232734.496064-1-suseendranb@google.com> <20261023102607.7635885be12b0b6e7a5971aa@linux-foundation.org>
-X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
-Message-ID: <20261023200426.3865221-1-suseendranb@google.com>
-Subject: Re: [PATCH] mm/zswap: validate dlen and normalize comp_ret on
- compression success
-From: Suseendran Bhaskaran <suseendranb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Suseendran Bhaskaran <suseendranb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5A25E18000D
-X-Stat-Signature: 5m9zmdat5bnyzmugd48k3aim9msjnem8
-X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+	t=1792785914;
+	b=Qd19AWNaE1bM9Y9bRlTLKlmZUpoXT373PNNqple8YhW8Aqt1swkFebOaB1+sGqa9E/kGez
+	BIP76P042NN50sneU8lLeAvn4qNpCl4N7VwkHBue2sw/cC6KVIJOwwW4s6neWl4dGze06I
+	EMLweHQCJ2ZgF1srnvLVSxPKEzSK/f8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BGve7nPZ;
+	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792785914;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=NMpzoe28Li6scyvq7gG95vJno5EdAW6a0YsgQjZX2q0=;
+	b=l0q+u6jocUU+epLYOkFvgSLrcNJZMFZ+t4qYv+hP6DI/jefsLDYweXi+r/7yAcfuWRRWqQ
+	vqLZtvWZR3Dg+90JqGHCA9g8xIKseXFO6xbkH8xRGnuiI8KIUJl1WqZChRHAr1iJot4iZS
+	Qto5TFAmk1Q//+DY3/eZI3fs6hJUcSs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C994140179;
+	Fri, 23 Oct 2026 20:05:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813B61F01825;
+	Fri, 23 Oct 2026 20:05:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792785912;
+	bh=NMpzoe28Li6scyvq7gG95vJno5EdAW6a0YsgQjZX2q0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=BGve7nPZbSwa2LqTQNHByaYKCoffL8elEuhk+jlz/gI5i7hV1ZK7iwu/qtmG9KnfW
+	 qDLQ6u36lWhx7UicKyDcMUNChfBFrWn3JenrDFldoBbRTNPnoVuGnXK7yry9/I+UhS
+	 MWE4pDnSM609ghIOhSw3yImpZyKuDOHWSrhjgRD5US80G6Qkq1oMwCM7PasP4Odoa5
+	 eWESoT+iBiqSqRyLeo/eyLiBZIlzhddfENhxpqe5rRVvDNGrCXD9ZfhommNweBCA6Y
+	 MohZtgivmb5EyOPKL9f0ST9iqF4qVtUezx3RIOK809+Ej3U/6BhD3Jc4as7eFyeM2/
+	 DlEx8t9aemyMg==
+Date: Fri, 23 Oct 2026 10:05:11 -1000
+Message-ID: <100602397eadeaae2e3206e1d9aae55e@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Wilson Felipe Pereira <wfelipe@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Shuah Khan <shuah@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/cgroup: convert cg_read_key_*() helpers to s64
+In-Reply-To: <20261022042921.711624-1-wfelipe@google.com>
+References: <20261022042921.711624-1-wfelipe@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1792785874-531810
-X-HE-Meta: U2FsdGVkX18+tfzLkLRvo5+uJJLgwtMIfoqKYPRK2Rf1ii6/DO6Cx+imZUeGoi/ePvycdBgwDFMCBfHEGN22QKk+kBzZ6Kvq7Kxrnt5Hfj5c3gaE9VaiOObWwPfU+OGcRNGhqeNyvGlMTc65bkQeHvz5XE5rCjPjuNL8QzRGu/Uq6hXqEcfY/CP/Eud1HBr2Q4RExIn6YFxAXpb80KShLTpVNkF5BbNE7YQ1qbTYj4g1ylbaAyLTrQZEfP6/ZUbpoyoVXZExkOt+HQD9kupiLa5Fr10giDx8KZPJE25FDVDliG7UIuDdkuu/eXG+mIkQpuziRM6Xx6G4jGFGf/bGC1ucf/MX9cdbB9rEwEK083OmrKzjl+weZ+GPIdUBdyXdr1Ln0jlKC9YwtKlFhjc/PqCVwHquSPP83+kO87RnemDTz9W+Jcf1A021gGuCHtqOioToR0/TqeBsUKXV9HxD1nhgs5NrM+FyW5Eui41vcIRXdCm4b4BM/r0zL43GgytSDtmrnecjJqV9EQQbIfGNfI2XvFqFJbxTbC9HTfqzqFnsGhG+NGZPe2iuJZ4CJ4jxQ6Psl4njt0imax2/beJi3s4aq18q2urlAQJVDYeS6K1di8IPf9yhoJeC2Q8114xIT8jgOHebnKoVJh/hO1DyrEOKa7K/wZa0fPsyK9BFWWJhAD/mrryMpfkrHBgt/nzHsWJiM/0BjLWHXD2WsZyfO37E5ey7u7f44cokFfU5ojjQFE2j4Vux6yFnZz36vTo6SfndJVDuguXtMUPrCM+gVq1UKGrdXK4uAFb27Fx03VSlds9MfDYQsdmz1N0L8LuHIpLhleYhuElMwfkaysUCECEFNelxbc+zAR991xpOqEQNlTPThyfA0oJJ/yKhPFYwBsdtYCuAiT1oaLDnIH3y1aR9EkniP5dnOd1RTyMST4i12BZNcrhmj3QGMCrgo5vF7MfJzj/8SWK6ZQBamQl
- kHEw4+5s
- rAS85V2EXsdStFa7lgjQw0iGo/b/lBVJ4tSnBf2FKGNT5G6YeDMpkF2qC6J8UX4dQSPaCIPAxIh+854Dit9kxH1KhrxN0ZQ+qTgFx+WDkm2zy6R61NEht0wZmZUU6mrhVq/MbZEqA65kAuCgwHD1EDVlTIoU5ri4szJYfBMT0ntWmOGwraMcUeZLVE42cn7s8oc7FTqWNy+gy9EaA8T3PZWyJ97md+X577CcjLSqRKTCkFMdZNuoqNdpmhxkdZILK54DTUtstJZDvi0T2ZdCNaY0wdNDWYQClhDJ23eBO1Tm3gONjT7Q/Je2xyB+fZpSKTEWvfHyOCWKC+9JrMNaOup8PGFYLl2zeDEdhoS+RLQDPDsfGNvuaBycCudwqKjzG/iOmwc7nTKQI2KYGg4mEBhzKSsQkqD2r9I8CNIlZpR1f+UfIAA8rusjWXc/cbgnNdqdQpHum7S9Tk2nbD4f25U0feokc8RpdiJPXz4heuUi9Ll/zePwgspqLS/12jHRreKIgYN7GAhqCzLPzaQ5+glKiA5JYCW1aLsrZfnYf3ryknkcsw+nz1HxJ00zHk0TZ0m1AkBipj4+lVHVw5+cXzEv/bwRSF42HeS7DdrvITzt9ugIbeWWLbASgA61g8T/8gDlHacDIi20Wac6mcWxHprHv3EKOsRoqYfc193CFanppC9NsOqgLSGls+AwmxETvZIR5Ap3nrGRSCemc7bh9UJR0lF//KHQFgJXXDxANK3k98NuKZOYHCPcoEg==
+X-Rspamd-Queue-Id: E2072140007
+X-Stat-Signature: x6keobz5n5j1wtnij3hgnzz1fa5oegr5
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792785913-57143
+X-HE-Meta: U2FsdGVkX18iTkx4kfPveBagyBdAKqtCCiV+N+8cnCgnBj0aMtixEjiYvhhqFwO4qq3HDN8IRb7JVFqGJU5wzu8y3fq3cesa6Q1n6UDKWmyUtNrbRH0D87MZv7ac8dhCO+DRdepIJjh0zn0SEAryyyrkHVM9Y3bZEWVBtf3/zKJXPaHPMs3zqcJnF2DgFUJ9TnSFTRpEiVXloUYg004/7NjVLGcOmg08da4TSQCZAlaNBDqx0OgId7VBMsuK1WItbXqBS9zupgrFCanKnRTh3kV6swBCI+gmp45x8KqBdhrFXwpunns9a7/lXgflqfFkjDdvTqBIC7V9Hx/uavMzryl+LAuJXWASSQiShTE5zgWmAzoYm14PcDTj/yT9DKj6ynFarqh5+jvv7UDR8mtUl+sVCy0ge75EhzgVcS8baxFontAS4Ykrv4k6WynFF+OLbfsIjo/T6Sy4uBxxq0zZcg4SqxGWAFpNWcATdf/b6VJHQ/yRLpQe0bQfhel85SnEyjecjA0B/7ZF2SBlZDmFP81xzGzUA6KWzWsKRXO7Hqv7YLraTPT5kYplO+13mrrTM+JR4WSRNk1LVPCV9p3B6j3BZz9iyDG33LY0S8cNeHNN35gcbgQAO2RLt3SsUFahNh8kN9PAIlTDiIBPznAfoP24oXRfhUENaVKJYdB/b63aqRXAbnhWHatN3375oJy+Pti7rFGsCNvVCb98T5KiVssJxq2r4zSPOgay5ckf0V+nsohRPJnwqUGWyGI4cK0pG2VJP4erS/7mJv5V99yvtat0JAkDYRBHdp1inD9I9k9eJF5NPA8CiSwTshSMphlWIbpNKL7PD8XV2PSfJ84apokSKqRgg3vY+nqSgu9AhXJJXqX+A6QQTbEcSypmdFL+TBoJwGz74WaHr3sISjJoeDUEaGt0XY97MvJFuQyb07dBYiYRLwsMwGuXL37hNFAZYv5FdqtWpWBwA48zHb+
+ FOfXZq5U
+ thIqL5QwxRp4L/U/RDFtJyjrjo3wdwhBTuiqgQppYT6Qgw+0kirUd5KIbNsjlfey9dJHepvgN2TFs0rL9FMU24Al3UTuCWM+95N7eZlbyOecBq2UYVafsVa4cpEOEagNJ+tCIyXlhM9bU2yJn4cd9NjeHv0VGMIUkrFgJjZX/VCr7ef+ltZtcls1AKCtfEqPkT1JC4S6T4PKqoisYm13JdLxQKUrj6xZ0lLGHM/exFsfnLZ/5kx17GiKtX1hH8AoweQIs3F15UF+U/cTKC01QyxpmersjA3DREL8q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,128 +96,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, 23 Oct 2026 10:26:07 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+Hello, Wilson.
 
-> On Thu, 22 Oct 2026 23:27:33 +0000 Suseendran Bhaskaran <suseendranb@google.com> wrote:
->
-> > In zswap_compress(), dlen is only meaningful when compression succeeds
-> > (!comp_ret), as compressors do not consistently set req->dlen on error
-> > (e.g. zstd, 842, and qat set dlen = 0; lz4, lz4hc, lzo, lzo-rle,
-> > deflate, and iaa leave dlen at PAGE_SIZE; hisi_zip sets dlen to the
-> > hardware-reported produced bytes).
-> >
-> > When !comp_ret and dlen == PAGE_SIZE with zswap writeback disabled,
-> > zswap_compress() sets comp_ret to -EINVAL instead of -ENOSPC,
-> > miscounting the page under reject_compress_fail instead of
-> > reject_compress_poor.
-> >
-> > When !comp_ret, set comp_ret = -ENOSPC if dlen == PAGE_SIZE, or
-> > comp_ret = -EINVAL if WARN_ON_ONCE(!dlen || dlen > PAGE_SIZE). This
-> > allows simplifying the failure check to 'if (comp_ret)' and dropping
-> > the ternary assignment in the writeback-disabled path.
->
-> Sounds like we're complexicating core code in order to accommodate
-> inconsistent compressor behavior.  Would it be better to
->
-> a) design the compressor interface(!)
-> b) document it
-> c) ensure that all compressors comply with it?
->
-> Maintainers may choose to go ahead with this as a backportable
-> quickfix, but it all seems to be a bit of a mess in there.
+The following is a Claude-generated review.
 
-Thank you very much for the review and feedback, Andrew.
+On Thu, Oct 22, 2026 at 04:28:57AM +0000, Wilson Felipe Pereira wrote:
+> On 32-bit platforms, cg_read_key_long() relies on atol(), which returns a
+> 32-bit signed long. When values in memory.stat or event counters exceed
+> 2.14GB (such as on 32-bit systems with large memory), the parsed value
+> overflows and wraps into negative numbers, leading to subtle bugs and
+> false test failures.
 
-I completely agree that clearly defining, documenting, and enforcing a
-consistent compressor interface across all implementations is the right
-long-term approach. I sent a separate patch that standardizes return
-codes on destination buffer overflows [1], but having a well-defined
-compressor interface would tighten all gaps.
+On 32-bit, glibc's atol() saturates at LONG_MAX instead of wrapping:
+atol("3000000000") returns 2147483647. Event counters are counts, not
+bytes. No test reads a value near 2^31 from its cgroups, so the false
+failures are hypothetical. Can the description be updated to match?
 
-[1] https://lore.kernel.org/all/20261021205626.3286270-2-suseendranb@google.com/
+cg_read_long() and cg_read_long_fd() still use atol() and return long.
+They read memory.current, memory.peak and the swap counters, which the
+same reasoning covers.
 
-> Wht you forgot to tell us (please never forget this) is the
-> userspace-visible runtime effects of the bug.  Autobot says:
->
-> : The userspace-visible effects are limited to corrected zswap
-> : statistics and a new warning for invalid compressor results.
-> :
-> : When compression succeeds but produces exactly PAGE_SIZE bytes, and
-> : zswap writeback is disabled, the page is rejected as before. However,
-> : reject_compress_poor now increments instead of reject_compress_fail.
-> : This makes the debugfs statistics distinguish incompressible pages
-> : from actual compressor failures more accurately.
-> :
-> : A compressor which reports success with a zero or oversized output
-> : length will now trigger WARN_ON_ONCE(). Previously, zswap handled
-> : these results without a warning. On systems with panic_on_warn
-> : enabled, this could cause a kernel panic.
-> :
-> : There is no intended change to which pages zswap accepts, rejects
-> : or stores uncompressed, nor to normal application behavior.
-> :
-> : I think these runtime effects should be described more prominently
-> : in the changelog, particularly the new warning.
+> - Migrate helper functions (get_cg_wb_count(), get_zswpout(),
+>   get_zswap_incomp(), wait_for_writeback(), and cg_check_freezetime())
+>   and their callers to s64.
 
-Apologies for missing the userspace-visible runtime impact in the commit
-description. I will make sure to always include this going forward.
-Autobot is spot-on here. I would be happy to send a v2 with an updated
-commit message that clearly documents these runtime effects and
-behavioral changes.
+In test_freezer.c, only test_cgfreezer_time_empty() is converted.
+test_cgfreezer_time_simple(), _populate(), _migrate(), _parent(),
+_child() and _nested() still store cg_check_freezetime() results in
+long and print them with %ld. In test_cpu.c, overprovision_validate()
+still computes "long delta" from two s64 usage values. A 32-bit build
+with -Wshorten-64-to-32 flags all of these.
 
-> My autobot is all worried about the HiSilicon ZIP compressor.
->
-> : I think the zswap-side fix is reasonable. On success, dlen should
-> : contain the actual output length, and zswap should validate it. On
-> : failure, dlen isn't necessarily meaningful, so we should rely on the
-> : compressor's error code.
-> :
-> : Separately, I think we should make the compressors consistently return
-> : -ENOSPC when the output buffer is too small. Some currently return
-> : -EINVAL, which means reject_compress_fail versus reject_compress_poor
-> : will remain inaccurate even with this patch.
-> :
-> : A compressor which successfully produces exactly PAGE_SIZE bytes
-> : should still report success. Deciding that the result isn't worth
-> : storing belongs in zswap.
-> :
-> : One thing worth checking is HiSilicon ZIP's negative-compression
-> : status. It is treated as success, with dlen taken from the hardware.
-> : Could that produce zero or more than PAGE_SIZE bytes? If so, the new
-> : WARN_ON_ONCE() might trigger on ordinary incompressible data.
-> :
-> : I'd take this fix independently of the compressor cleanup, assuming
-> : that last case is safe.
+>     rebased on top of mm-stable to complete the s64 conversion across the
+>     cgroup selftests (including updating test_no_kmem_bypass() to s64).
 
-I checked drivers/crypto/hisilicon/zip/zip_crypto.c and the HiSilicon
-ZIP hardware status definitions (in Linaro UADK drv/hisi_comp.c), and
-this case is safe:
+This doesn't apply to mainline. The test_zswap.c hunks depend on the
+test_zswap fixes in mm-stable, which aren't in mainline yet. The
+tcp_client() hunk in test_memcontrol.c conflicts with eb69e955de7b
+("selftests: cgroup: make test_memcg_sock check flushed sock stats"),
+which went in through the cgroup tree for v7.4. Can it be rebased on
+v7.4-rc1 once that's out?
 
-1. In hisi_zip_fill_buf_size(), sqe->input_data_length = a_req->slen and
-   sqe->dest_avail_out = a_req->dlen (both PAGE_SIZE in zswap_compress()).
+> +typedef signed long long s64;
 
-2. When an incompressible page overflows dest_avail_out (PAGE_SIZE), the
-   hardware aborts at dest_avail_out and reports status 0x0e
-   (ERR_DSTLEN_OUT, insufficient dest_avail_out), not 0x0d (HZIP_NC_ERR).
-   In hisi_zip_acomp_cb(), 'status != 0 && status != HZIP_NC_ERR' sets
-   err = -EIO (comp_ret != 0), so the !comp_ret branch is not entered.
+This is the main problem. The KVM selftests build libcgroup too:
+kvm/Makefile.kvm includes ../cgroup/lib/libcgroup.mk and links
+cgroup_util.o into every KVM test, and access_tracking_perf_test.c
+includes cgroup_util.h. That build uses -I tools/include, and
+tools/include/linux/types.h has "typedef int64_t s64;", which is long
+on 64-bit.
 
-3. HZIP_NC_ERR (0x0d, negative compression) only occurs when the output
-   fits within dest_avail_out (0 < sqe->produced <= dest_avail_out) while
-   exceeding input_data_length (i.e. when a caller passes dlen > slen).
-   Even if HZIP_NC_ERR occurred with sqe->produced == PAGE_SIZE,
-   'if (dlen == PAGE_SIZE)' handles it (comp_ret = -ENOSPC) before the
-   'else if (WARN_ON_ONCE(!dlen || dlen > PAGE_SIZE))' check.
+cgroup_util.c then fails with "typedef redefinition with different
+types ('long long' vs 'int64_t' (aka 'long'))", so none of the KVM
+selftests build on 64-bit. Maybe use int64_t with PRId64 from
+<inttypes.h> instead of the local typedef and %lld?
 
-4. When ctx->fallback is enabled (hisi_zip_fallback_do_work()), it
-   delegates to the software deflate/lz4 backend and only updates dlen on
-   ret == 0 (0 < dlen <= PAGE_SIZE).
+> -
+>  	ret = KSFT_PASS;
 
-So hisi_zip will not return !comp_ret with dlen == 0 or dlen > PAGE_SIZE
-on incompressible pages, and WARN_ON_ONCE() will not trigger on normal
-incompressible data.
+The blank line removal is unrelated to the conversion, same for the one
+in test_cpu.c.
 
-Please let me know if you would like me to send a v2 with the updated
-commit message including the userspace-visible runtime impact.
+> +		ksft_print_msg("debug: zswpout=%lld zswapped=%lld zswap_b=%lld\n",
+> +				zswpout, zswapped, zswap_b);
+
+The continuation line was aligned with the opening parenthesis before
+and now isn't.
+
+Thanks.
+
+--
+tejun
 
