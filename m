@@ -1,120 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1833606A31B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 05:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A898606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 05:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=g1F6U1vk
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tQffM7ad
 Received: by kanga.kvack.org (Postfix)
-	id AE6ED6B0334; Fri, 23 Oct 2026 01:01:41 -0400 (EDT)
+	id AA0DB6B0337; Fri, 23 Oct 2026 01:45:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A97FD6B0337; Fri, 23 Oct 2026 01:01:41 -0400 (EDT)
+	id A4AD56B0339; Fri, 23 Oct 2026 01:45:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AE146B0339; Fri, 23 Oct 2026 01:01:41 -0400 (EDT)
+	id 9602B6B033A; Fri, 23 Oct 2026 01:45:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 633B86B0334
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:01:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C137D1C3409
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 05:01:40 +0000 (UTC)
-X-FDA: 85352693160.21.EA2584A
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E6DF6180009
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 05:01:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=g1F6U1vk;
-	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 75BBE6B0337
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:45:24 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E612EC028D
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 05:45:23 +0000 (UTC)
+X-FDA: 85352803326.13.F28C56F
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B20D120009
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 05:45:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tQffM7ad;
+	spf=pass (imf31.hostedemail.com: domain of 3cPTaagcKCCMFSGDKDMFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--gthelen.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=3cPTaagcKCCMFSGDKDMFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--gthelen.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792731699;
-	b=kI7dRZfmCpbYQ7aDjnX729cF5swuvFgLs4zPiMPXe+9en1orF6xMbDbue1ujToLAEelLTT
-	x6qnGrEmEyS13TghHjSvH0YQdsdaHsV2X8sW/uKPbtGmAcvNHrq5VmxNC+jJV+4lx1rmTI
-	AE7tGtQilN7veNfDok2UuPW2B9LpdrE=
+	t=1792734322;
+	b=j1A1lnplc5rcTio28ieVrajQ/jfnigloFTmwpdZGmUrUouAXvEslQHLB9+6GoJFiGdFKdt
+	zXXtrOvBaa7mnhG4hCRKKXBneygj8V7/T8/Wu1ah5a0QxGW/6TP2LViT9gstd1OHXqDys4
+	X4GMW1A+u+UWZHvZ51Kj+MAif/wSrZA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=g1F6U1vk;
-	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tQffM7ad;
+	spf=pass (imf31.hostedemail.com: domain of 3cPTaagcKCCMFSGDKDMFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--gthelen.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=3cPTaagcKCCMFSGDKDMFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--gthelen.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792731699;
+	s=arc-20220608; t=1792734322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vGSWPVRPxP6ajcwPiQ6sdZfL0TLUXIf0aO/2OiD6KVc=;
-	b=SDerzQ42A2uxB4yvGDABaQFiKSshjPTFMCGl2H48VYtNJz2HaWslxJ2wQ7y9uoZSZrvghR
-	RXS0WQUAxRH6Tkemlu0ev0LH6Akd83Z6DD8NJDe8wwbxciW0lVcQSDGcOEOXNZIrTIc4as
-	xLNVrQk3mEnjB4/vvbVo1BZiB+ENRHg=
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-170135e43c7so572261c88.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:01:38 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zx81mJCQGymu1OZlc3jNrPjZqmEatAtALfsBDY/sthM=;
+	b=5FsDO2b/8tJMaKDjU+zZU/EPpKwShQpIPIasaXHHLWNfPuS2vXTWNrGG+hVTo24jYpe0gz
+	XjP7NfjB+43fZd5ndv8EzZwZGTFtuzKL6p4gGLIgo2e0+TVYesVv5gkpL2ycra/+/0zDs+
+	mZZhyIFVYRG9VMmtcZZb6TthuDThtp4=
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso906015eec.1
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:45:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1792731697; x=1793336497; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vGSWPVRPxP6ajcwPiQ6sdZfL0TLUXIf0aO/2OiD6KVc=;
-        b=g1F6U1vkvRTLLbMo2HiGxshlg+nFnNXUNzCq4mNrSTDWd17MTMHtFLPCOISUQqLlJ4
-         S12FKZ1qk4R2jHHTl3PMabigzOMdHJII0x83+6/lLXzWh/o/wAdV51QUG0Tg8fz0b5Kx
-         IYeUVMBcaABLh6kTFVOaK9HksIrHN8kur9v9Y=
+        d=google.com; s=20251104; t=1792734321; x=1793339121; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zx81mJCQGymu1OZlc3jNrPjZqmEatAtALfsBDY/sthM=;
+        b=tQffM7adX3ONgiZ3rsJ1ypS5dC+iae+ZNTWCnilxv+jZ3TfxeNCxEX6mmTyH91emu1
+         Z3Ygv1x81PKlF3KaD1u3KdsU/GCD7Pdp87oyBTVr6yjYsAMTfRYKXBDRbsgt+XPaVYe+
+         DmBvvIKBbMYJb/Kj7ssnICJRNkvibEiAcmXT++HXd212EZ7bvT8cZPRK1b179cSe5G2b
+         xCYMk61mK+Tz2jVQOmIv6+yQ6cdMxb0K98M2RCbladOZ4RU+r3dq84aa3fpC/inGwA9L
+         CjYDSmyqO3ciIkseZVKf6Y969bAsq0ceKF+3UORL/kb0yMueU5TU2rnJNkzxX02aj8XI
+         97bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792731697; x=1793336497;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792734321; x=1793339121;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vGSWPVRPxP6ajcwPiQ6sdZfL0TLUXIf0aO/2OiD6KVc=;
-        b=iqg4khu4WhV9kjYEujaN3V/GL/WOpddsCsfZIMTYe8XWMulHdkt1iM/wbTVOh7yvwJ
-         3QERymFJo14GUVoLHaf6gEtP8H5wZnVsX4sbIWcqUpolHlol6c3XAhQEk/v0eNO/AtPB
-         5b8l+6QQhsSyMyDvpiZKbZATzs1Fbduo/tFnMwOjvejFE4bhakDnP8IH/YMfH7f74tgb
-         IjWLXyH2gCuaCQcS6raMTrEOoRd0sHJsf92HTAFaAPbfJh5kg3LaYeY4PmAJ9e+MxwyG
-         Nywd4+E7KT6cy5Yyl274o4tKOx3Z4lpA1491eXWT8XpcqV4+WHUXGmJYL0ZuoZV2orUe
-         4beA==
-X-Forwarded-Encrypted: i=1; AKwUvBxcqFBc7i9FyRXd27HRaXXqEk2cApGYQCIqBizcbLJaq2ov3/qyvXYDyCpkO5124BuYBvk0K58tWg==@kvack.org
-X-Gm-Message-State: AFq9FYJxlh1xZ4NGXAMMuY/yCbeXiUpU0MPIOSjNZRKBB6K9aDlXVwTT
-	G2VekboG9amXaF9XAvUmhx2g/1ljwfBtoec7Ix1fAWNKCYP1zCnF4P9GviqoqJAX1A==
-X-Gm-Gg: AYBFou2o342sfKghPW4izUpxTYnZt8pkch4Asf4Ey9HxvLqqiR4R81JDxz80tdIfmdJ
-	yuAjQcs53yq7oEHQh8eTeOM6zFFvnFbMaXWkPALSb3Bcru5psjD2ATiT1POXQX5UAMKwPJt/wCb
-	TA/7waYnDOouUabXKBewKNk+rewBR8CrGv5LqW2XRvLcOSK/CPcF0cQi1FiwP77QMWisbTZtd9H
-	NveY2KU27Ewqlf8B5NfIVwMUX8EItkUYjHAbAa4dk6erzgOxPMUMG6reXcEjZslm3LvVvsjVzv2
-	JtO8nLNzuBrbZM5OhPqaNMudeZ7l47IXEUWddnnSHwgReCk2+23fHuUQYGNgJn2/nWmQC+ELOPc
-	SrAtP0fvOSuM/02CEJvxt/4Hw6u/cMi1SIagRS8+U/iYu3X/wUUC893T/UckSS6fs5JDOmrcN9F
-	EmxyUKClQoSV4lLjuiYhngXIcL8ZBGU5NhlYEqxSohTNZutbsn7hBMnaTWIcmtE+K25gEpqA5Ro
-	sD1vMrsGkw4mJ0k7Y8y82hpKt/dkKz8pc1XUr2cU2gEeKz6fyToByJ7/QIa0suh9QUZKs8tJ6Mg
-	CBvQk967e7uQsRW9tDFA6A==
-X-Received: by 2002:a05:701b:2309:b0:190:b2de:1549 with SMTP id a92af1059eb24-195bfcb294cmr2047930c88.1.1792731697413;
-        Thu, 22 Oct 2026 22:01:37 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:30e6:10e1:f7d3:a06d])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-195ec82eabfsm5512711c88.19.2026.10.22.22.01.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 22:01:36 -0700 (PDT)
-Date: Fri, 23 Oct 2026 14:01:32 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Hillf Danton <hdanton@sina.com>
-Cc: Barry Song <21cnbao@gmail.com>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
-Message-ID: <atrnvuQkeldgPqH5@google.com>
-References: <CAGsJ_4wMQteCGxQ7wxUKP2g96myo91ipF_zedFVVbxKdDrb=bA@mail.gmail.com>
- <20261022111151.960-1-hdanton@sina.com>
+        bh=zx81mJCQGymu1OZlc3jNrPjZqmEatAtALfsBDY/sthM=;
+        b=mFgYl0zQoTUfKfO7imK+1e9Ai2emWYYucd39AAC1qnivxg0RylD43Hbo16KjKt5cKb
+         79vDfXGpUVBnLudFFZkrIiWHdeeZgJ2Mr/iEsCrgfL378dBIPrjdyOUKbN76fnqaUSOd
+         BbeSheiugjPRu6AqFK7cPFfo/pnl/loSZda68R/0lyK6aEGgd29VnCMyqZDbvI7zW+mN
+         bzqMw4S3zF3Q+mgtePBTzIdBzetHnx/cDfRPjpkjhNbLqVa8ZV8MuF5LIjET91UBrU15
+         vFsIYkOLn6bTQxvLlMlajm2X/5zjtKK6Ro5EwlD09rVhJahkJhodfUeHdxMLX2UcPfS8
+         biTg==
+X-Forwarded-Encrypted: i=1; AKwUvBxZt3QJBf0WXX307OisN3DBWvqo3qEVAnZDudL7qbejvwVS8MXy/Q1KRqqTKVYK9HOt9wBm6BY3fA==@kvack.org
+X-Gm-Message-State: AFq9FYJ/tQPlvTGyzbFcmeOLem2IMF2P0u+feFOUIBndi4lzuvJ5RqEO
+	1Lh8llLJupJ4ok9NjU1CHP9h0iY4mRJNmGas+7M0yRugWBW8ebRwO+qUgScMLjyibKO+374O53l
+	eOriTYraU+A==
+X-Received: from dly16-n1.prod.google.com ([2002:a05:701b:2050:10b0:14a:84ec:bd53])
+ (user=gthelen job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:28a:b0:18e:355b:f6b3
+ with SMTP id a92af1059eb24-195c6e0b80amr1891111c88.23.1792734320663; Thu, 22
+ Oct 2026 22:45:20 -0700 (PDT)
+Date: Thu, 22 Oct 2026 22:45:18 -0700
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022111151.960-1-hdanton@sina.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261023054518.3258350-1-gthelen@google.com>
+Subject: [PATCH] kho: check fdt_phys in is_kho_boot()
+From: Greg Thelen <gthelen@google.com>
+To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Evangelos Petrongonas <epetron@amazon.de>, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Greg Thelen <gthelen@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E6DF6180009
-X-Stat-Signature: sqsyfi6j7cnbkwnddcs4sstemq93u1ag
+X-Rspamd-Queue-Id: B20D120009
+X-Stat-Signature: qg5skfu3zbw6faksiw1cpc15nxuch7bb
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792731698-62521
-X-HE-Meta: U2FsdGVkX18FwlJiumv9M60tD4uNH7aNE+Z8ez6tgBnQy1opSqmxrlCMsFZEdXUiM6jvuPAnwuEoDQ2ETSCjzKUQMREX12qpt42skyXXcysLY9pMQPWaUe7+ranAsQ8eeVUGeSJGnBWbC/08hrEisb5YxSf5JdLlfE0rIFw9zSJkjSbZpO3QxDel5dMvoGOFoI4vp1e37TfQWMv4H83Ao0DgAfq8sJ8soPRJcW8Og7OvsvIVVvrTS0lxLBk4shNIfnE7Cogm+PVakuLY1BBfzWjL7folmvYYdI0R2dfhl08+IhYtRt9E4RHJ7mHUySqgL2eVhTHUYQgH7nP1pf9IV4JKaExYcbhKcWlou68FSix4u+COr0cbkuhejUyo5Po6uRvaLLmKGVrOIHhA4z5+oHZuFGVytgTf37bWsYKE37mp8jKdDr+dc3FAO9Zpqf3FrFktwphnFnTxRrGRdzVG2p2Ug/MhI1LpW6TtygwISOffX3hICTA1m5iJRvcN6MppJtRkpykU+QPbslIjjcVsz6zKFGULmq6jXGgZB5EO2uGut1pdZPWeUdRshX85//15CaurA1xD5VBgCUNsq1NR/Isr6mQVs2KU4sWTQ4dBJViZl/5EbvrsO7gnXp9auQfBPTCxF5UKdLBiWaoQrSVqxmXyVVv3OD+bjd6zc92XJv0phXvm+2tu+9pzjc74TF0oOP1s7BghCNGCzQu0DPeIXi9E9deBNg//MwSVTI5xhUo36VPNB3WrZrGiSxWeieoUZOWMbq6uDdqiu6uL0OywVR78Dp+9wL55Jwho0D68kBJIz3Maj0qDsD1y3IFKi+HTMqggoeDndQyoEzVfYFXY/w5srebFfn/gDOKG0X8T01y5XhstakU1SQAe/GaNKGOt8isxhSnPgvQ1o5HR4WvUP+BXerTVbUaA0QkQkSOGT6RSNbHPWZnYAW9xSfM0uUxSvqhstqzwnKJUJXh0oZa
- 8JGCQ5OJ
- ttvr3pDvkT68Y/ILBdNN/pJkpgX5kFi3ynPyeyZ3mGdf5/UltcGa1ur7xMPmnq7lfJMkS3zvBMHASt5BC7e6wwRTwzV0s1S9Sy7GRZ/sOWr3FEVSs4ZCVPUi/w9aK379DLfklHZGxb48D0HXIu8kk0zLlgTdrDR7MbLm20yYu7FNbIS7kWVBJ/HwtYSRBBSztJ9ANtCeO4wK38WwiF/pxUYs/Iph+LiOpo/Yodv8L6f93Z77VNz9P8a+SZaf33Ve/DvTnMPKTYIbAlB7c19cklgJY8gVMCqDHGRnJaN9/391z2l9NsG+WGCVur+fAWD/P0CJsBLayEH2HFmrCDHJ/g+A6dqqedn6Ruo3S
+X-HE-Tag: 1792734322-112876
+X-HE-Meta: U2FsdGVkX1+u/eXQvYBFI4SiWmVO1XeicA8+JkEAS+qQUoQ1sDCBV45M4DVjfIqh7c76QoH5CrMknWzRf+uZiZskhE8HlRSlYnpoywtaNPc7JIAg+ULXSy9u8K1pvvPYirEI8hjnvQLqGesKlopkwiBshMukgQphsliWnaBXCVuca/8+ZTcM++aig67QRMwJJE12GVLlN2BpsmIR4CR6mmDeP8tlqe5iS7LeETfMckm29G+7vX3Xd4JXTW/Xs407lhI8tINlfz034fatDH3q4UKuEnmAteUoJvdXVoJu9r/oz9cjnnvtwe17Rpbgr5vR9s6vaBzS54he7Dzrqifwa+Dj81R/8Bq5IPjBgHQSuHEIL86WRITxL5AcJNW6DlYFWGjWeP4f0MPZdW2cs4tHnUeApKWw8AzTfwZ9LJ9GUNR6/AgqRFFZ8eu5luDqh4Nm8PaZrxxnt8Lk/qLx42qT1US1l4MuKbBkqv97oXYY1sx0jy8l8KXDUIpq13IGwrjdxTzxCHhS+oO+EVSmSB/ETYJRS56wGXQNEYdS+/uEp72eRSE5lZdzaJlBl9wsZ2dG7l5/keM5Xq2B5dKNwRP71TDR/xHmtg8YBxSpt30W9MX01R457VIP1iq6GALPH6Mw/Ihe83eUKVD/L4An9Le0FqsQ2uz8xCjOLPdQ2WwmEOJO+Dy8/SmtIXOm7qDPzeuh2Nmls+fK4NI+sGuyEJvS9T5jclwmB7t9T+hiru4cEP7MkyIF4NW9b/8z/NU+Jepxv6q/g8AizclFFvywhNxq2oEohW7Cdmh3a55VS2tBd1sIfmBgvmm4QRmfwgYRymdPrTRzc+vB/fRHEwctY2pTfw6O1lQKIPHUaBraAY+uxTJYYkZukNTyJMuaNmduxMTGKDMt7Vc2muIQlpIdGT4P47R04/gf7Kcd0Rnu/hpgcuThLJ9PvqTpnWHWqJ6TwyummCjc05GU8XqGiQNdYr9
+ LtoYUcR5
+ afG7BJPd4FjNrA2t+3nTuxD+Xpq58FOsmwMHo7VLBMBVdfTGL2mu0hxNmyr2xxsIDEIqvNKLxX8PWrGBRtrQAt6+fnPNExdJMxHIRvPUmO7qmwtdWyjKwIy/zvlSPoU80tZXAND30RFfzodD9tI2sldH+YxELjFEQ86Kd7vWhH6ov4gCkf1Nen5QFlQKFYBNhi8xIlHU74kFND9L9CXGWz/yIFnWmNGI9ilQNdVRHAmRrp6NbMBcG2/+f95VkqX5Sl9y+EY/MrdN5SFZjizbkxaAqMn94wBEdYwyHibPjQWby6+gRhLgZ1sV4ajego4lGiiXoQeKfPaRuCtGgIQiWqaTI0x/9gLrlpownl3Sutvg6EujPT5PpZpwpnFbSzDoZlQfIttjRorz7YytkPBYbeWJ8IaFSgh8guBdQCF6OBH5sNSqxBJPpcEShU7hrUbYON1Q0TQ2RvVI7DTuk1o6b9xz5ynrtpPKPIHSi6eaDLCy0HwF7TMXIcbPRVD7eTVkNfmDpLkDALFDrHjCcKR+3tPjtUaWnyCVygImCIw36QOvR0Jkv8JAqJfrAy7GBtljMg6+EMGo7T7yd1Lhh3O7jez0nnQ09cjUkitkI8j+QTtTT2hKoQf4E4mBm83UMAE1fsTIK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,42 +111,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/10/22 19:11), Hillf Danton wrote:
-[..]
-> What I am confused is -- why decompression needs to run faster without boosting
-> compression up. Where is the compressed material?
+During arm64 setup_arch(), efi_init() -> reserve_regions() calls
+is_kho_boot() before arm64_memblock_init() initializes memstart_addr.
+At this point memstart_addr still holds its initial sentinel value (-1).
 
-In a typical embedded device (e.g. android) zram write is swap-out
-(direct, indirect kswapd, or backgroud service swapping out idle apps),
-users don't see those.  zram read, on the contrary, is what users
-see - because that's swap-in, read bursts when user brings back idle
-app (camera app, etc.) which needs to get back to foregound quickly.
-So, the read path is more important.
+When booting via kexec with KHO enabled, kho_populate() sets
+kho_in.fdt_phys from the /chosen FDT node. Calling is_kho_boot() ->
+kho_get_fdt() invokes phys_to_virt(kho_in.fdt_phys), which evaluates
+PHYS_OFFSET and triggers VM_BUG_ON(memstart_addr & 1) on arm64 kernels
+built with CONFIG_DEBUG_VM=y:
 
-I tested the series against PE.
+  kernel BUG at ./arch/arm64/include/asm/memory.h:377!
+  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+  Call trace:
+   is_kho_boot+0x2c/0x38 (P)
+   efi_init+0x94/0xf8
+   setup_arch+0xf0/0x240
+   start_kernel+0x84/0x490
+   __primary_switched+0x88/0x98
 
-readers vs readers (no writers) 3 runs
+Check kho_in.fdt_phys directly in is_kho_boot() instead of calling
+kho_get_fdt() so that early boot callers do not invoke phys_to_virt()
+before the linear map offset is initialized.
 
-    BASE+PE     IOPS 1,449k  avg 3.48us  sd 155.6us  p99.99 26.8us  max 280,820us
-                IOPS 1,435k  avg 3.69us  sd 322.9us  p99.99 24.2us  max 540,512us
-                IOPS 1,459k  avg 3.46us  sd  92.8us  p99.99 25.5us  max 172,186us
-    PATCHED+PE  IOPS 1,457k  avg 3.31us  sd  15.9us  p99.99 25.5us  max   7,580us
-                IOPS 1,475k  avg 3.28us  sd  14.6us  p99.99 24.5us  max   7,327us
-                IOPS 1,463k  avg 3.32us  sd  17.2us  p99.99 28.5us  max   6,816us
+Fixes: d6d511639185 ("kexec: introduce is_kho_boot()")
+Assisted-by: Gemini:gemini-3.8-flash
+Signed-off-by: Greg Thelen <gthelen@google.com>
+---
+ kernel/liveupdate/kexec_handover.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-R/W stream split makes sense for reasons that we already mentioned.
-Readers don't need to be blocked on Writers - they don't compete for
-the same data.  And, moreover, readers don't need to be serialized at
-all for stateful decompression.
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 7c4d86daf86d..d81baa38497f 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -1630,7 +1630,7 @@ EXPORT_SYMBOL_GPL(kho_restore_free);
+  */
+ bool is_kho_boot(void)
+ {
+-	return !!kho_get_fdt();
++	return !!kho_in.fdt_phys;
+ }
+ EXPORT_SYMBOL_GPL(is_kho_boot);
+ 
+-- 
+2.56.0.257.gf7497c7d27-goog
 
-writers vs readers 3 runs
-
-    BASE+PE     IOPS 1,271k  avg 5.57us  sd 1,393us  p99.99 27.5us  max 1,581,800us
-                IOPS 1,461k  avg 3.43us  sd    78us  p99.99 23.9us  max   227,015us
-                IOPS 1,444k  avg 3.48us  sd   222us  p99.99 23.9us  max   592,628us
-    PATCHED+PE  IOPS 1,457k  avg 3.32us  sd    18us  p99.99 27.5us  max     5,620us
-                IOPS 1,464k  avg 3.31us  sd    17us  p99.99 24.2us  max     5,621us
-                IOPS 1,475k  avg 3.29us  sd    16us  p99.99 26.5us  max     5,620us
-
-And, in addition, R/W streams split saves per-CPU memory.
 
