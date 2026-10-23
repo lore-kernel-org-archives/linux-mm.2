@@ -1,158 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2298606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 21:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4BC606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 21:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=RoCEpjHz
 Received: by kanga.kvack.org (Postfix)
-	id F10126B0BF3; Fri, 23 Oct 2026 17:24:12 -0400 (EDT)
+	id 532246B0088; Fri, 23 Oct 2026 17:51:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9A1A6B0BF4; Fri, 23 Oct 2026 17:24:12 -0400 (EDT)
+	id 4E2856B008C; Fri, 23 Oct 2026 17:51:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D61446B0BF6; Fri, 23 Oct 2026 17:24:12 -0400 (EDT)
+	id 3D1296B0092; Fri, 23 Oct 2026 17:51:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A924F6B0BF3
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:24:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DF529C01D3
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 21:24:11 +0000 (UTC)
-X-FDA: 85355169102.21.9348BEC
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020104.outbound.protection.outlook.com [52.101.196.104])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 34CD61C0009
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 21:24:09 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of atomlin@atomlin.com designates 52.101.196.104 as permitted sender) smtp.mailfrom=atomlin@atomlin.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792790649;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 12CFE6B0088
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:51:57 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 264CEA0273
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 21:51:56 +0000 (UTC)
+X-FDA: 85355239032.24.E544649
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 66DF3140007
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 21:51:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RoCEpjHz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of 3-NbbagkKCHMkRilejRYlXffXcV.TfdcZelo-ddbmRTb.fiX@flex--tarunsahu.bounces.google.com designates 209.85.208.70 as permitted sender) smtp.mailfrom=3-NbbagkKCHMkRilejRYlXffXcV.TfdcZelo-ddbmRTb.fiX@flex--tarunsahu.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792792314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=puw/qPN/2s5qKranZlNIwJ7ickyu90fHGW05cGQJZq0=;
-	b=XlialaSEhS4k7Ii0P6KwfqNYNOCfUyesK1CZebN0B8JJhCqUfvU1GsoZIL1zu0jpbqUeNc
-	pp7MGAO8GJtBwv9yf89PUduvHBv4Jjck4jax50D8gj1uHJzBODiBhg1NVAscwZ78bL1XKc
-	PWtMQ+Otut1bJeALwobqdCcbsH2Hh9E=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of atomlin@atomlin.com designates 52.101.196.104 as permitted sender) smtp.mailfrom=atomlin@atomlin.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1792790649;
-	b=epGf/NHPR9kgDde5TjlWj1/vryMpdcTUoXbOhOHkkl1hbMf7q/fNPhTP1xQ1mA8q6DEPNx
-	lK1Phf9FZ7Y0WHwW9/mE7JBeQhE9A4kwTKIRUuS6f8PcORErKOUD+V5HjIWBVRB/CfUGrQ
-	IImYwdwahhMmoujb3qN0i/fUBhoCQ+I=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LlOITLCPbXKevFVo30XE2rgtnIVaM2HNuvkjTog8XzKC0/JZVmp5zpPHgRDOZRvzZ1VaeAuErXRZsYtZroUJxaiM7znfXD+dYKo062VfhvzRTNpk484s9CQ3ua4F8RABDS9MQEurnNHooHpCsYgf1yK4h7o5KUbXWoRkKnW+4p3ShOdE60WoRNz/hK9KpljZvgMbPhoYBepc4NygkU5Rs7NTEFXilmYrc+7wY/OkKixjqRM0lTOQgZgA4SMJj9N0+z5xC2SUZAwD4k7qcycUzDnVEbQYsFpgC0feVIh8jS5PoUrup58qnEEVn1iaiu8XkHqiiThwDR6zNgt95ZLWaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=puw/qPN/2s5qKranZlNIwJ7ickyu90fHGW05cGQJZq0=;
- b=pixiNQSBHx3Wo7vzmU4BBdc3JJX0VuSkylf9oOfqYH6E/s/q0JxV+yJpMJ2CI8W1Td5R11niPFefnzKtvYk8tRHZjFTeKf8OLDvHgeVH+ChvbFXMpVABVRjNGV7TGxFyn80mgywNI9qhfHAz85nQAxdQbKmMLYPZQusCaCQFHWnWDkp+9SFBqDQPJXjtaKS/AYgu/76Uvr56UqJ3146m4ACipclsNvEvEOZg6t7DG0/AEVWpnL8T0XASi8rxoaV0o+OSHx+/C1LsXCu8M2a12mJsukzid9qTEQU/NB/41K0iIaCUTCpsTIrUM0cx/KJK0Pl9QwSshQwg2bLswFxPtA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
- dkim=pass header.d=atomlin.com; arc=none
-Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:183::5)
- by LO8P123MB7563.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:3aa::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.19; Fri, 23 Oct
- 2026 21:24:01 +0000
-Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- ([fe80::cec4:77ab:262e:d230]) by CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- ([fe80::cec4:77ab:262e:d230%5]) with mapi id 15.21.0546.017; Fri, 23 Oct 2026
- 21:24:01 +0000
-From: Aaron Tomlin <atomlin@atomlin.com>
-To: akpm@linux-foundation.org
-Cc: osandov@osandov.com,
-	sean@ashe.io,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] tools/mm: add script to display /proc/buddyinfo from vmcore
-Date: Fri, 23 Oct 2026 17:23:56 -0400
-Message-ID: <20261023212356.215922-1-atomlin@atomlin.com>
-X-Mailer: git-send-email 2.55.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YQZPR01CA0106.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:83::18) To CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:400:183::5)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=37bgzHVD8y8sAVNI32vtF0/e4Mt+8V5lKNPa4buINEw=;
+	b=CBWV/D6AWGIS6hMer6WmaDxvo+/dX4siCuOa5+ctFKzBUdzby+P2ypkY9OhuMf88WEtCN6
+	fmG5r38zcYIRDAmDGHZO/PpXm4iay454dnd7T5VT4spjlrvaLiGJUa2ys6SgvCHxLsWSHb
+	q334AIoZd6I6/4kOBJ5n7n0L5Nu4Dk4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RoCEpjHz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of 3-NbbagkKCHMkRilejRYlXffXcV.TfdcZelo-ddbmRTb.fiX@flex--tarunsahu.bounces.google.com designates 209.85.208.70 as permitted sender) smtp.mailfrom=3-NbbagkKCHMkRilejRYlXffXcV.TfdcZelo-ddbmRTb.fiX@flex--tarunsahu.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792792314;
+	b=d3zn/VGuJpW6FdBUe04S6r2zdP8zhSZ8kt8X+MquHH/smMOCmWwDC94KOl5AV7Iuqbz4uJ
+	vJepSao/DPF7F6HfEGhEjN/PEpr7xjK9vdo4/kG0sgw4UOiymWyO9DG+N3a1kmU274k0vL
+	DqGbzPStnOBXE5XIJM0VU5ZlddwTNsE=
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6a125f5b317so1429357a12.1
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:51:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792792313; x=1793397113; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=37bgzHVD8y8sAVNI32vtF0/e4Mt+8V5lKNPa4buINEw=;
+        b=RoCEpjHzqGTOpFjT6SNRnunMShzg38dpbNmqz3Atq1NMmjweeHMIXDTG6omanoj128
+         vUJZ5dCqaTo42H5p0XH44gUGrtltga7b/pTsKo0DpcuaK9qEIjYYVd8QogM9AFvVLEbK
+         Cu/MMYP8261Buxs7yQHe9rEuYtiI75Mzpr51KFDFPQsp9JMiVzYm2C+8zz+3Ub4R9AKa
+         cPwsrPv3RKlvqt1tDrXgK/5GqaChMI+FfQicRwURTPVWlYRR933DaBCUog7A2oo+DVV6
+         4AGW3xmbycYU6dq0rq6VRoSVvuUrQ5H9N7Yti8GYtf6nuJ4cA33U+HMoW1soF3+zekcY
+         CxRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792792313; x=1793397113;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=37bgzHVD8y8sAVNI32vtF0/e4Mt+8V5lKNPa4buINEw=;
+        b=qJCKZaAuRy/qBDUkYgoYt5pfUHjQk0HYpAXY6z3U6eQ49pn1cvgMQFvb4ZAW310gfX
+         p2xZ6RVDRjPzKW76n+7VWTY/C7Ha31jj3EiEEOBMpmXSiymaKr0+oZBqQBWPEH4kGiK+
+         jWhfIHxVOTPT1YvVwF5xbMYVaMeei2e5usbir6bRgO5RCwUUbHWToG1QDKJ/Pr8pS9jJ
+         Lqe4CBaZGAC765ivVA1XDLdlCPSezdKZafDzoizhvyPDuyGPBl1pQ0PTnYTR/geDUqZl
+         7rryfc72TVgWK90UqIQ5kczw3Nbl2hlE+L2HnzaNldJsfRe7IzJw9lGiZnRai3hH+GON
+         J8bA==
+X-Forwarded-Encrypted: i=1; AKwUvBxcVrU56BBzxJWtGIOHLruqYZ4Z50hqi2oTqsHHuTplyCFDCac7WedgdmiDLkoOUpg4dPjGfvMtXA==@kvack.org
+X-Gm-Message-State: AFq9FYK57RmB/BgzJnrpfd3ZZi3CliGOmWjYUuwGVGOjT6biEuw4+RXw
+	fUt5VGLSBmElQk2kD6VX2OUH97iNGLj9bW2eVVhxV/sMmx9RImpYSX991pIzuYSeIGH5jlpxUk/
+	MA/0B1Z929s3P+gHdBQ==
+X-Received: from edve18.prod.google.com ([2002:a05:6402:1492:b0:6b3:c422:923c])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:5191:b0:6b1:b97b:744 with SMTP id 4fb4d7f45d1cf-6b442ff3810mr590380a12.32.1792792312470;
+ Fri, 23 Oct 2026 14:51:52 -0700 (PDT)
+Date: Fri, 23 Oct 2026 21:51:51 +0000
+In-Reply-To: <atsQQcUiVhb9KXWZ@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP123MB6607:EE_|LO8P123MB7563:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1c1c94a4-da96-4e87-bcb5-08df314bf4a6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|6133799003|18002099003|3023799007|56012099006|261022105027099003|261022075727099003|261021121427099003|10067099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	YVVpQYTia7VBPZnzaRJ5RjP+VeU0YR3bBxo2u11/EfZVvjUSjiKVX4ePpdEXAzy1qw5aiLaJmdgtkeKfBa3PRhv/sMlI4tXywuHQ0xxufkjOlkHXzs8DxiSDTr8/ns7vJfi0aN9NzoPg1+bkRiCgn4UliyYVI5ZJ4FK4jctIFXEJyAL8iTC3/aFXMYNCvCxLzBCIPPLrLmvYFw3nWCxrGVDz9Xvje2/MvEqaD4Ix8K0gMRVSfDCtZX1X5Y0+zPqFmhOMYtmxl6bRyIDW5WzM9hW3YxkZsN2CZO+IRn9hjadNn6DlOWQekFGvwPnLaBnwCFc/9y9lsl+Xq+1sQ4bcUbi8i1QgAuu8F3sODMFkyH/Rc8G3o8j4JoS+l734ZnQR/+i40IxXoiA2BBy74BO++ftq3wqJK68hMyb/V+jNyIfCXOxkKNjyd4yOlXZtgIphTdzdSmo8TIRzDLpTOQH1DA0+l/pxzX8A8HeS5Ad3IJt/6Y9fv+HccJAkth9aMYSlVTrGz/FG4HatAvVovE57FqKK4fur4YBSNr9mWvNgzmNwXDAse1JmSXdFsfZvchSVG5OEBEXA1raimSx+/GSl+WZ76h6742V4c3M6198nyezTjJjwSYru1diCG8FI9FKlWuH9UzR8k6HoEntnEzN0Wu4RWCX1GeA/a7uoGJR7XX8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(6133799003)(18002099003)(3023799007)(56012099006)(261022105027099003)(261022075727099003)(261021121427099003)(10067099003)(261009223027099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TWQrWFROTHlIVW5NeTlKZkc4T0loNFV0Q01hVXd0TG8vSFBaREtaOFpXT3lv?=
- =?utf-8?B?L0daYm9pSEFBL2p1c0pMcHJPZHdNTTN6OFJVSzRzYU9JejJNbW0zWUUvOW9S?=
- =?utf-8?B?MVBqUE1Kb3d1cWhEM1lvR1cwSDRrUE5aS3J5Rm9sNVc0U01wVnVpQXBTc05h?=
- =?utf-8?B?QjFrVklwZ3lPbFFEQnIvMUJpdDg2bWZoWkI5QzkwczJmWDNVL2FJcWU0R1RD?=
- =?utf-8?B?bzBmNGlvanlyYkRpY05tK0h4bjljOTlXdGU4L1o2Z1ZMaWF3bnVwSjZaNHBO?=
- =?utf-8?B?RkE0cGtoR1k5RlplWHZ4OFlkb0k5OGFlclBYWWpRNE9ZUUZDMCt0TVdDZWhO?=
- =?utf-8?B?RGUvMjdKSXkyWHd0SlBFR3dHdEUraVJDUWMzZmhIMzFUeUI0TW93dDdrbGdK?=
- =?utf-8?B?WXRlc0haVTFJanJ3THMwMnQ0MXhmT1N2OTFwbCtha2hIRzlWWnU2Zm1hOFV1?=
- =?utf-8?B?SUI2aTQyLy9qNm9DUnFneEgwSE9Md0V2dlQrSVFOZHJOY3F5Y1Zud2JxbVY3?=
- =?utf-8?B?cU1tVmxjYnNGejM5TDdIcjFWUHpYd3hEVnhqVFNpVnFxSm5lTnVVN01pVENn?=
- =?utf-8?B?NzhpVVRBMGhkWndFK3lOTlZSNG5aNzlPVDRpeEpOQUl4NzFmSkJsdW5sLzFU?=
- =?utf-8?B?SUFVMzdRN3g3S21ma21JVjJDWmU0aDVGSStFZEY3OHBRT05lenE3eVNmOGYr?=
- =?utf-8?B?VXVMNHZZQ3Jyc29jdCtmTjVsSUpkQ08xOXRTYXUxb0tlMGJ4UWZNUTFrQWJH?=
- =?utf-8?B?c3F5SDc4N1VkZmRwUnZ0WCs5Z0JrK21JcnE2NlZkbFc5RTlIc05LTTdqR2xi?=
- =?utf-8?B?T2dGbkJod2NMVUNzVFhkR3I5d3BxekR0SFZKeFBBb2tINjJReTRybjA5dFo2?=
- =?utf-8?B?VHV1cmMyS2hPS3V4bWxTZkRDRzIzWmJ3SVFGMWk3NmdxcVBVNTc5V25LZktu?=
- =?utf-8?B?R3BBSHJMdG94T2pQSThvMTRkRk05dUM0Q2VjM3NCaGxSZ05tRTNzVHBuL3dX?=
- =?utf-8?B?bEtJU3M1ME16S1ZpaXdNRzFoY2x5Qnp4a3l4UVphVkhrNTRGeVRtcEtVQUt4?=
- =?utf-8?B?K3JNVVNvaGFXNzVBNlYxMis1WWV6Um5qTjlFL2FaVGxMNk1kdGtzb3pqNmVV?=
- =?utf-8?B?TFlxTnU4d2hNSWFqVVQ2OFlOdzhNM2oxbmRPZUtickszSnBvd1pnVUNVSW1L?=
- =?utf-8?B?TmJwdDBpdDI2VGt4VW1ndTZyZk03RVFOYXF6NVZtdFRaenZBbDVNWW9rVHU1?=
- =?utf-8?B?ajhJTlZvcU01clE3TkFiSzMxdWd2TEpsVCthSDloZGZkaldiQ29XTnJVeGRB?=
- =?utf-8?B?cmMvTGthUG5DdzZoYzU3Mzl3TGx2bm4rWi85L1RUOXg5YXFLV01hVFFSZTVr?=
- =?utf-8?B?TlUzQXNveWh6bTg2Y3Zpa2dTTmIvcDRQeWY1RHoxYVJwRDVFbkhVTDdCa2tB?=
- =?utf-8?B?UmpQVnhubFFDZU56U1NaT1FFb3pKZkhxZEExTUdqa0FhOVZHbHlnYUo4Zmx6?=
- =?utf-8?B?YmRTZWR2OG9sMlFRUDRudkFCVlR6cml3ODhST3ByKzFjQnBYQ2RydWVaV2lF?=
- =?utf-8?B?ZkxkYW9ucHJLc0lpZ0gvQVd3RE90UXNxR2NxR0VnM3lOaTRENFFFOVZvZGY5?=
- =?utf-8?B?T3k1cGVFL2oxR2g2WE9KMmZBNWtjMmw1TWhya090ekpneTlNbDJlVWZtWjVQ?=
- =?utf-8?B?ZlNKNVZRRW95c1dJbWc3SlBCdzhTOHk1cExLOVRONDZOckozejVWRWNvdEZS?=
- =?utf-8?B?TWFCc21XbVRHL0ZmQU1aOVpheGtZS0dqRm5jVVN1RUJkT0dYRHlUYlpEVWJL?=
- =?utf-8?B?YXlXZjlpbTVSZ28waW5vRCs1Z0RETTZzNEd2ZFBLTDZlS0FDSHJmWkx4dVRr?=
- =?utf-8?B?KzNrS3V6MS9OelJqQS85SFQ1MDMxTkFPMVgxYi9LUjczWFdOeTc4d2Jxalpv?=
- =?utf-8?B?ZmtCMG1LeFpkNGt5SkxsS0FKVW9hWVRBcFdRTktHeHNRRFo5YXJMSlJYNkZ6?=
- =?utf-8?B?amdCamdPWEUrZUxqWlBteGp0aVlJdHFrZ1dveW91bnRIcDJYT25hTnkrVUdF?=
- =?utf-8?B?L0xvbEE2SjZNYjI1QkFGR0FXUmRXRXA3b3FFQWxKNDhCaDVaVk5POTM3Sm9j?=
- =?utf-8?B?RW15SmpJdkdnZGl0aWZXcm0zWUdSdE9jSnB3amlJZ3Z3VTgwQlJ3Zng2Z3Mw?=
- =?utf-8?B?MzlrTjY1L2ovUEowK2d1TmRwMm1rcUJPNkNpYUtCL1JzbXFhSnU5ekhiUThr?=
- =?utf-8?B?SGY5aG9BcERCVHlETkpaUTdsZkFLS3cwcXh3RGl4V2IwcXhzRS9HdXVEa0Nk?=
- =?utf-8?B?YXVPWjVsWGpzMGtVVVFrT3FlQStsY2V3dkE2Szd2UUlkNCtld0ErQT09?=
-X-OriginatorOrg: atomlin.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c1c94a4-da96-4e87-bcb5-08df314bf4a6
-X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2026 21:24:00.9323
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JTJggsP/zYUWcPMCm+o2gNvpvyINUpJgi1RMVdz4cMy5A6+tTSZmR0lyWgozTQoPzRCnYM0fMlMwNjBsThzepQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P123MB7563
+Mime-Version: 1.0
+References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-2-tarunsahu@google.com>
+ <CA+CK2bC_wc4LxvHe0TREbBP7esYW3pcMNtkGK-kqvf6MyvOh2g@mail.gmail.com>
+ <9huzik2u6hs5.fsf@tarunix.c.googlers.com> <CA+CK2bDyk=F7W3J=q3pKCjsr2wy_PLdgqgu+ywp0F5HL=VoMpA@mail.gmail.com>
+ <9huzld7q4zjz.fsf@tarunix.c.googlers.com> <atsQQcUiVhb9KXWZ@kernel.org>
+Message-ID: <9huz33twf5l4.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH v2 1/4] liveupdate: Rename handler compatible to name
+From: tarunsahu@google.com
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	joro@8bytes.org, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
+	David Matlack <dmatlack@google.com>, jgg@nvidia.com, robin.murphy@arm.com, 
+	loganodell@google.com, oupton@kernel.org, kevin.tian@intel.com, 
+	alex@shazbot.org, dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, 
+	will@kernel.org, Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	baolu.lu@linux.intel.com, linux-arm-kernel@lists.infradead.org, 
+	linux-arch@vger.kernel.org, sagis@google.com, linux-mm@kvack.org, 
+	kvmarm@lists.linux.dev, iommu@lists.linux.dev, linux-pci@vger.kernel.org, 
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 66DF3140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 34CD61C0009
-X-Spam-Status: No, score=-21.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: apecpprdeks9euapghnxqh43g3hiyeya
-X-HE-Tag: 1792790649-733987
-X-HE-Meta: U2FsdGVkX19F+PIpe3yhk3GDB8a+5Esu86gg9lqyaWCD1+iZjafBpOmzjVae72S0vL/Gn1iWmXb/kDKDBBhn2GYVinKKK1K58rTeeahpXvofq8u9LXTnKIxp85TE9uZ568Awu7+GWVeYD4xERVpZCb99q7GC9lzpZTBr8amUAm1yf1GJPgMuEc+5BQRQXBGHY3s61nEdEWkrtyr3wN+uIkCpg+U1lKeEGPi2Jmze7t+fH6/nQiZnqMuGyhFGYgKsrZm+9/aY0Gw0Dfn6G6OWsXOXMLyJ5B4+4NJ+Wc4T9RuCWoEnAxtARzztzKugAgpgQYo7SVtYQNCucjiJ5LNO/WDcC70tNMK+JDYaE8evd7YOtiFohw4lc9E2YL9s2VlsAYUXH/wqHC4+Dr0SVESkB7tJgOSB1K8Bk3aDgIDQ31jhyEVNgevEf8L3XQKn64gSIqH/pfvk5cqQaItW1ALXvZkQGRsDOEpp2x4aZRaBMKaQmOPTAP8gggMpwan5z6s3d3Si5tLbn2HiYL1Etso6nxn6YHJZ4mqGAZ5d2mDOj2u0H846MVNPzNOlTKsmEzchbKLBinS+kkX4Z9h7Rv2E2jnaDsgfSWWrf/SMNXnKatgAzfOyR/2eLjObNhIMg+2dvHuoW/zAPu6E5weu9/kG3lzewI/9+MW8ulwVa75/C5XBs9J5dHkC294S2EcQm2pJp0rmhonNAvhuUacSlzhS40dJsJbeMroMN1Q9XWleqsFpZoXJ7z3yHWIHiCmvuB5+i5bdJL3tXNPVNugo7mGV2kDnMNgJWnRJc8dOAe4YkxjYWlK26MYd8i7I6j51xgFE//k+I0ezlNmXYtrkzaW2PJQqK2ZcCWd48m3rxxX8PYosZaLFeg9E9FtNth8UUf7fkN9UcUnFCccS7V6quPgPxxxUZjD0uFzbfWTb6Rh7vkcp6lKadVuyt4+M9ut3WWSfJmqHDrbh8/97TnqwXxc
- gSSszlOK
- 9vJbu5mRwCatYRyuCWDcCYFcrMPx552a58y4qP1cY2Smy4VDirhBk0ZS5xDMG9K6yWNX7SXxzqwBLSidezw043HAOjGL21pSdabCgmZEeb67W6gPAS3sIDr53v2L6DqS1F33ANw9+N0HexNvtII+QGXq/WyOAH0fKTuyy3S6195yKuHP9Z5KiZ+3g/v6dTt8WIgkQnFpw4TbR1qNsue/IBAJt/VL886RCzL8tc/49G3loW3lm1Ui02kQGtRA0Vb3WexKDuu12qU7VdjgRRJPYPmLtSJJi1UHO0sd0N0zasv3Xxz6ygysHF58+LR9esMXTsPUg
+X-Stat-Signature: jntwbkqpz8guefwjcoi7ttrr5h7npz5p
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792792314-11582
+X-HE-Meta: U2FsdGVkX1/RIUaRALrUwclTCN9cVEvuyFT/Fxt1jD7Dbt59D/g9b+QBxE82JIcZLpx6OV8xkvfkwo+NUauiiR+X2O2F/pYE1K+tfXWZmKDVwTWh7CsYMpoul6EmUSmKyz0IY/NKN55lykwXkiy+ucrr6Um56m0HfDHNA6sPha7NMccIaFwhI7B6witdzcl19inkbWaHgtKnKT/DAI0dxPKExWVdqBSTjfFwWon0bfhmFYO3n3XXOCo5NwCefGRBZbWxXkD0jvKt2iuBTJSjpC4BIfOKHOTJnOFDhU6T7BI8hiNHn47CCCa9sW5YGpTcKzGXqY3faKe1AJ5afow++JIVo6tltXknMGpC+I1X+qH45T5iCj4oqGXooFGfAdJLHgx6BsF2y+lZopD9lOv1a4b3vSpbaIEIR5/5gSZ9J7f+Rt+SrZsiuRnKPLp0XUvvJpPrqkqdvW1bkO0yc7E12jsCCtHqc882M9Fgb6guSCcFG9ba1i0TJhrzvaBMUNRSkY+J2pKvXByJo4hc1C9cUDyhqFLQzP/H8wQHpbSpT5WQi84bnk8yOaOlccSasIZoP+HbYPylhvyqLHBWP1fPviQagvYeVOTUBnC9Ubau4+cLn9dX5u5mK5DtACGVjAzcHKBkhOlNOjVmgSesBKqF96wiLQenKFYYKGE9G/bykboYSAS1FOBGPz8USakRN1LkKGW51DouY8ihwm7/1KWDrOCl4ceQ7rSwVNaVm1l4yRq2cfAWEta9deAdTaA0QrMwoLQ4GKS2jMCnRvwmmrbhRCEueje1HNKzJcGelexB9jc4AbIsRt/FIIfG+vY9LSjm/aNS0ZAG8uC8fXFs6OwEDm4DCNokZLAVazh537lOsr7rbsXFo1fiPrRtSJ596Hycebah2gcRViB1DyVDPBVBnkLyvwVUS1Pz055dxBcceJrrVA88nh9ZxBrSprGG7MBLeCy8sxWK4r0ObDFaoZ7
+ 17DLqMYP
+ QuswPIuIQnfWK3R7eh3zeRFugvxU/bDQyAosbr+IytV3peznm1LVNosLeeKiXEjVZmEzeXeBxyUUufUdCOWT/J8/7ym7ouiZX+JNyPv6Jx15ePmQPeqMhjS5cluQ4jYsI1cq9UQkw6y3PFcMCxxjjyFTxjVaHyQLRy3FmmD+JtGfKWjy5OSzls8+CDOiHggHoC0L9FASgjCPhliInw5TzVJ1MSrfhWEdYnMvurRuMkIz1zkHiO5lF/RKaT3hiVjZnqpKJHjFO1RrCl3E5eI0uZyPdr2DM0vphWKRsPxOjKNc931YbFGEZeDupVJtz2u33khcPwj2IyyoZqaswqj4ijmreaXMdCCdJYdJm71jI+hvh4IzB6LuQMltEHWyyOpzJQDKjvh9MaOKznuLMiZpIKEqbp3OlezFoItgx1J13hG6RepiNZnRn+45yMIzL3E+Yo14ez2BvFiMGfy+3kwe8XJupDD3joFppOWVdlpfMdObgzaaZhmy4lEhUOufaBHtT3bM3RO9JTb6xZR3dJoDZAj6o6Uy7O6eJmWEucGFO02tQxxY7aWeXHTyAJsruWmI3KASPb/HBIaejWvgJSvv5eRBjJq+pKwvDvkoB9SEr31IoEdqC00e8fiUrttPgjWd8MPbatj0Uo0Cj6TnbDD/rvuw1lUtBWY6hbl4O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,81 +126,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When analysing crash dumps (vmcores), inspecting the buddy allocator's free
-page distribution across memory zones can be useful for diagnosing
-allocation failures, fragmentation, and watermark exhaustion.
+Mike Rapoport <rppt@kernel.org> writes:
 
-Introduce tools/mm/show_buddyinfo.py, a drgn-based script that traverses
-online NUMA nodes and populated memory zones to inspect free_area[].nr_free
-and reconstruct the standard /proc/buddyinfo output.
+> On Wed, Oct 21, 2026 at 07:35:28PM +0000, tarunsahu@google.com wrote:
+>> Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+>> > On Wed, Oct 21, 2026 at 2:16=E2=80=AFPM <tarunsahu@google.com> wrote:
+>> >> Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+>> >>
+>> >> > On Wed, Oct 21, 2026 at 11:25=E2=80=AFAM Tarun Sahu <tarunsahu@goog=
+le.com> wrote:
+>> >> >>
+>> >> >> --- a/include/linux/kho/abi/luo.h
+>> >> >> @@ -84,18 +84,16 @@ struct luo_ser {
+>> >> >>         u64 flbs_pa;
+>> >> >>  } __packed;
+>> >> >>
+>> >> >> -#define LIVEUPDATE_HNDL_COMPAT_LENGTH  48
+>> >> >> -
+>> >> >>  /**
+>> >> >>   * struct luo_file_ser - Represents the serialized preserves file=
+s.
+>> >> >> - * @compatible:  File handler compatible string.
+>> >> >> + * @name:        File handler name string.
+>> >> >
+>> >> > We are renaming from cpmaptible to name; I am not sure that is
+>> >> > necessary. We can still use compatible for the same purpose as name=
+.
+>> >> > Unless it really bothers people, but for me 'compatible' works just
+>> >> > the same.
+>> >>
+>> >> Yes it is necessary, For example if we have two handler for a single
+>> >> subsystem. We should refer it by handle this or handler that, not lik=
+e
+>> >> handler with compatible string this and handler with compatible strin=
+g
+>> >> that.
+>> >
+>> > I still feel like compatability makes more sense to me. Take an exampl=
+e:
+>> >
+>> > We have two file handlers for memfd (i.e., FH_OLD and FH_NEW): one has
+>> > compatibility =3D "memfd", and the other has compatibility =3D
+>> > "memfd_next_generation". The user chooses one of them to preserve the
+>> > memfd data, and the compatibility string is saved alongside the FD.
+>> > When the next kernel scans through the registered file handlers, it
+>> > must find exactly one that is compatible with the preserved data.
+>>=20
+>> I will open this for vote.
+>
+> I'd rather won't ;-)
+>
+> "compatible" does not contradict more fine grained bitfields, and still h=
+as meaning.
+> Just like in FDT world from where we inherited it, it means "these ops ar=
+e
+> somewhat compatible with that serialized format, will check the details a=
+nd
+> will know for sure".
+>
+> And IMO we should keep it.
+> =20
+> And please, trim your responses. I had to scroll 463 lines to see there's
+> nothing there.
 
-For example:
-❯ sudo drgn --no-default-symbols -c /proc/kcore -s vmlinux tools/mm/show_buddyinfo.py
-Node 0, zone DMA           0      0      0      0      0      0      0      0      1      2      2
-Node 0, zone DMA32       907    831    581    423    214     85      3      1      2      2      0
-Node 0, zone Normal        1      1    143    731    552    182     32      0      0      0      0
+Okay.
 
-Signed-off-by: Aaron Tomlin <atomlin@atomlin.com>
----
- tools/mm/show_buddyinfo.py | 48 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
- create mode 100755 tools/mm/show_buddyinfo.py
+I will send the v3 soon with feature flags only. Also I will drop this
+and its next patch, as It will be part of other compatiblity series with
+exporting the schema to userspace so that userspace can make better
+decision in selecting the handler (As per the response from the other threa=
+d).
 
-diff --git a/tools/mm/show_buddyinfo.py b/tools/mm/show_buddyinfo.py
-new file mode 100755
-index 000000000000..70372329e7c1
---- /dev/null
-+++ b/tools/mm/show_buddyinfo.py
-@@ -0,0 +1,48 @@
-+#!/usr/bin/env drgn
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Copyright (C) 2026 Aaron Tomlin <atomlin@atomlin.com>
-+
-+from collections.abc import Iterator
-+
-+from drgn import Object, Program, get_default_prog
-+from drgn.helpers.linux.nodemask import for_each_online_node
-+
-+DESC = """
-+This is a drgn-based Python script that displays /proc/buddyinfo from a
-+vmcore. For further information on drgn, please refer to
-+https://github.com/osandov/drgn.
-+"""
-+
-+
-+def buddyinfo():
-+    """Display the buddyinfo."""
-+
-+    def walk_zones_in_node(prog: Program) -> Iterator[tuple[Object, Object]]:
-+        for node_nr in for_each_online_node(prog):
-+            try:
-+                pgdat = prog["node_data"][node_nr]
-+            except (KeyError, Exception):
-+                pgdat = prog["contig_page_data"].address_of_()
-+            for zone in pgdat.node_zones:
-+                yield pgdat, zone
-+
-+    def populated_zone(zone: Object) -> bool:
-+        """Determine if the specified zone is populated."""
-+        return zone.present_pages.value_() > 0
-+
-+    prog = get_default_prog()
-+    for pgdat, zone in walk_zones_in_node(prog):
-+        if populated_zone(zone):
-+            print(
-+                f"Node {pgdat.node_id.value_()}, zone "
-+                f"{zone.name.string_().decode('utf-8'):8s} ",
-+                end="",
-+            )
-+            for order in range(len(zone.free_area)):
-+                print(f"{zone.free_area[order].nr_free.value_():6} ", end="")
-+            print()
-+
-+
-+if __name__ == "__main__":
-+    buddyinfo()
--- 
-2.55.0
+~Tarun
 
+>
+> --=20
+> Sincerely yours,
+> Mike.
 
