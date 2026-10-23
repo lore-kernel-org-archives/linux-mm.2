@@ -1,133 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07FB606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 18:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2387606A31F
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 18:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Em6Da7KA
+	dkim=pass (2048-bit key, unprotected) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=JXFLkRpV
 Received: by kanga.kvack.org (Postfix)
-	id A489A6B0BC5; Fri, 23 Oct 2026 14:11:47 -0400 (EDT)
+	id EB8566B0BC7; Fri, 23 Oct 2026 14:13:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D22E6B0BC6; Fri, 23 Oct 2026 14:11:47 -0400 (EDT)
+	id E41AD6B0BC8; Fri, 23 Oct 2026 14:13:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89A966B0BC7; Fri, 23 Oct 2026 14:11:47 -0400 (EDT)
+	id D0AE56B0BC9; Fri, 23 Oct 2026 14:13:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 574936B0BC5
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:11:47 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BDAA1601AD
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:11:46 +0000 (UTC)
-X-FDA: 85354684212.08.5C74933
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 22D8410000D
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:11:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Em6Da7KA;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 67C576B0BC7
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:13:11 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E8B03160204
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:13:10 +0000 (UTC)
+X-FDA: 85354687740.30.79B5F5A
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 18340160006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:13:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=cs.unc.edu header.s=google header.b=JXFLkRpV;
+	dmarc=pass (policy=quarantine) header.from=cs.unc.edu;
+	spf=pass (imf08.hostedemail.com: domain of hengyul@cs.unc.edu designates 74.125.224.51 as permitted sender) smtp.mailfrom=hengyul@cs.unc.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792779104;
+	s=arc-20220608; t=1792779189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OER7OiM3baakXk7yT31L3dFSCqe76IjxgAS+7zkqevo=;
-	b=J3nhLGmNlHt7M03fkKGy42Laif3Rjn7gpWn6I/TK+hE4XYepCUq2RU8ZHiZDWIh6jzd3Lf
-	Ue8Kf00hPgccumUU3xSv1xC91SCkPH2zwhqIg3hJl1/B7YAANYdbG0HeNR/6wB01CRR+oD
-	bSSx2aoGme0wnxEr0Gb8/ZByf72sGLA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=4FoCKLxbV8UZ17k7ny+PDZ4wC8nV8QJxctUdFkqIFLA=;
+	b=GHhfn2ZQS3Ko6+r+Vf+Flo4CtNhGYH7Q5p0H+iTBsSa70gWEA+66j+NFChQOGP+sZBSY7V
+	o697GB2P0PIjPXW1inaJIP06E+8FNfx44j0+tysz/CWScdI4TtJNlQCAwI8N/pnuflOIUt
+	S2p15jGX/fP5UXiQjwlxOFdJbKAP5c8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Em6Da7KA;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=cs.unc.edu header.s=google header.b=JXFLkRpV;
+	dmarc=pass (policy=quarantine) header.from=cs.unc.edu;
+	spf=pass (imf08.hostedemail.com: domain of hengyul@cs.unc.edu designates 74.125.224.51 as permitted sender) smtp.mailfrom=hengyul@cs.unc.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792779104;
-	b=waY5mzuN3wHXALRaMG3vTt59kbkJw2rjUbhL3ONDnIrR7oQNt+dmjJL6Mw6+zBbzYQop6l
-	GbwjTckunPxnMpmHAutJyM71G6cAERkXKWiq14X7/ZOjJ00hJ5zAz09z7W4VJBBUvanBqJ
-	v7a6j5qAm9rovJsVXtaFRzM7zpixYPg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792779103;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OER7OiM3baakXk7yT31L3dFSCqe76IjxgAS+7zkqevo=;
-	b=Em6Da7KAdkjGvpkiw/HLt72foCTy0Z/L/Xx9V9UN6vqLsti1l/qXcnKgaq5U+g1/nmkQLY
-	Me8rtJ2HYhuebjLfq3XtujU6QSkg0f2w4DdSVPxJyqPWTepqCwN9nNRkCshdKFj4hwI+76
-	LCT0G+rVK9FwtjEhDEMiraOCDLXKw/Q=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-4VaKfwUMP1W0NKXIdDk6yA-1; Fri, 23 Oct 2026 14:11:42 -0400
-X-MC-Unique: 4VaKfwUMP1W0NKXIdDk6yA-1
-X-Mimecast-MFC-AGG-ID: 4VaKfwUMP1W0NKXIdDk6yA_1792779101
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91bc57d4d11so29511996d6.1
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:11:42 -0700 (PDT)
+	t=1792779189;
+	b=rRwdjB1e4J5z3slJvR/dYFdw18z/qIrdwcDl/SYMZyVy4pbzIf36YDQOBfe/tNNgC3Cp6F
+	bomPu1U1p4kew3gzinhOKaYjCTVUl8/HZDFo3SwUXB5v+QG0ZfiDq5vxamLsZAL7tRO0in
+	3mTictExs2485TIV7j43tvD6ZOOBBnE=
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-679965fb848so1224155d50.1
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:13:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cs.unc.edu; s=google; t=1792779188; x=1793383988; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4FoCKLxbV8UZ17k7ny+PDZ4wC8nV8QJxctUdFkqIFLA=;
+        b=JXFLkRpVmTPz+vKySpKeK4nvB69Kzu5aFa+Z2bgvU5m6u/1vmTMWhmU9CMDrTRNuBU
+         4RY2ZhrGFZQPGReNLGHo1wdJs4KvOfr7VJmBe/84DScbuBVzpXxPuVyEsxZBCxd6w4QT
+         fuHSF1Z+GH57iKX5sUzEo7GmoHqt4Ifo5CiNgqDBvjmbPS8kqQ4jN1A2PlqweSQhGurP
+         8tMR17Xrgy33/Na4wgRz2/+S+2PjMUmi9CMNa1WcfPcm8pe6UVvKnkUiedqRlS+kD4t6
+         2M/tfJ1cEperFDeZ/Pf1ilsH1lW3D/lAK83PbLiV6a280DpAIphDsA4d220E5Pozbvxm
+         6hAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792779101; x=1793383901;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1792779188; x=1793383988;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OER7OiM3baakXk7yT31L3dFSCqe76IjxgAS+7zkqevo=;
-        b=jHJdsv/XHdiYK4pNC94jHC3qmWtHNJIoL1EmYizpgRS2pWCOHmF4kgEK2SJ5oXD8Sk
-         KN9bjzSm4vwP/CUNCmdY9UZVgdpYdT6+15D7qP+vVVRDsiMouUFWtgAC8RW+avhMWoEM
-         xRrJ5EffktfGJ7F2BC8LWc+nzUj4QF/nE2Uo/6dXKuZJt3Gny+I/5/zZiM8bO+sLPjtk
-         2+qditWrtxXbfyXkgKfWVzMF9R6nHQD8ZV0LXwL4N0tKZ6Suru2g+gglwc8uF7n4Wn2t
-         7n6ViqzsPPULS+nB2Ti06CwrQF4uLqgsoKls2eMJRaBEarvBUzovaLUX4cMBEUnfWA6Y
-         ROGQ==
-X-Gm-Message-State: AFq9FYJR8M9Kwr1on+mz5HIz29jHFWJtF07n17vpObS4mWUb7cdiEWAu
-	Tich31gjxGzcipRbGVFA8To1ROLDcOyQ2nmyFGpu2rgNhaQY/Val5NnMkTCg886rTutWp/ZOCk5
-	LwzEgoMyR0oCFw/7CKeAhcWPSlwO8VVLKXzIcQ1ai6nZ5D0AkatAP
-X-Gm-Gg: AYBFou2U+jr6TnlVHd3YfuUNWz7bk6zTqB/oORoYPYNxCu8ZIGo1CjDvoJUuS3+hzU+
-	iD+3bGdqHQR7v4+OfbNXpPIbVirqB13FH2UatmDQTH+UpFqwydtKMaUNitW19GlN+8kdhCcBQBW
-	yhydMOdxafPaIzA2SPWSyeHv0nbbjd6J3Hp0sCXxk9K+71PvmcV/rfGdL/vanPv7F2QctKEYCQg
-	TvaZyi1dkUXqayTnETkVBQA1iglowu8pj0bgrt6sCoc5k9qfNAeOxHxIWEtQVo97lJSM3wqgqlS
-	/vF5i6wGatOA6thqvynsLQLP8EGiFydaQyrBlckpYlJnr2yAw4yR9yakbpVx1+Q35Iuas5FyCrT
-	GMFk=
-X-Received: by 2002:a05:622a:1394:b0:536:cda:d3b0 with SMTP id d75a77b69052e-536c2923e1fmr44456851cf.75.1792779101101;
-        Fri, 23 Oct 2026 11:11:41 -0700 (PDT)
-X-Received: by 2002:a05:622a:1394:b0:536:cda:d3b0 with SMTP id d75a77b69052e-536c2923e1fmr44456341cf.75.1792779100422;
-        Fri, 23 Oct 2026 11:11:40 -0700 (PDT)
-Received: from [192.168.2.110] ([142.172.30.162])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-538394c5273sm448581cf.9.2026.10.23.11.11.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Oct 2026 11:11:40 -0700 (PDT)
-Message-ID: <44a9f234-aeed-4986-8660-608b8a23ecdc@redhat.com>
-Date: Fri, 23 Oct 2026 14:11:39 -0400
+        bh=4FoCKLxbV8UZ17k7ny+PDZ4wC8nV8QJxctUdFkqIFLA=;
+        b=r8HPU+t/Fk4011xubfxrGiqUR6NRFrOCQWBULQ0ZWJR+ydHY1vhKxY0z4MBTBV1Vyo
+         XbbNlcPQBpsC/kcyUxVidGCQWL4IyF8cq5bKbUEMtl7IzaoaMdoZAWo8U1WXvQsfwEmx
+         CIWw83H121MpN/JzYxyb1Ms7GN9ZIZrQ6b32KUNF7vBNGlk4H1igSGP3QUTY57DjoqIv
+         wWbxubicz2ip4SroZ3chTT8GLpL/YNnc+KAMq2mF01WCOr6cl6qYYwqu8PdBr9lub3jb
+         k22FdN5sbxSL/vtYanBz9WiubVVBnB0loT8lk9gWTpjqdkzUUB1I4eh/3KpQCgR+pi5B
+         n5lw==
+X-Forwarded-Encrypted: i=1; AKwUvBxfIwXLmzTDJsmjxE0dKSfe0fm7icKd9tfaZE9GHhcWSFbEg5qPpID6pbvrcywzDM2ulhzTYQxlEA==@kvack.org
+X-Gm-Message-State: AFq9FYJbDSfzqp/kCLS97Vs1bey3EwK1bgs1Au1bvwjoYhDqtcCR2TdJ
+	gedpvE8UTOJttdDSY3c0dXb0T5S3oGuWMpbUtvf+QtZL1xbNx6BdlY3jHkB7InU7Eg==
+X-Gm-Gg: AYBFou0nWHGkYsJmY4SSLY1/JTML4WJ/v3AQ/uFf6vlsCxEeLwHVZxXDC5g85L/g5//
+	daDnmPne1gktCiWqVrG0n0P+G0UibEQ0h0WtolYtl0sgkc6LZmtHE4mVQ5iRcPP8XGTN+IV3Nea
+	2ugUL+71qASxpJnyhIf16Q/l4B8BkM2TDcmzu/vj8vKRHkfjLlUBB1V5A7MjPh9lCRLyTdx3cqT
+	SJC3qnQus+Wltdk5e2zdWcZfHWwefMuMCFBPHWAmTMudak20XBYuSn4JLIq39ZltEvpsLY3sIrE
+	mywzaX4XDc4Han3fnU5bKeWeWSc96HAz4xTTAdylnWC7AgqJCKckYjH+O4+ZtdqpNUscN52BozH
+	kbh5kxgIQoX+55IVrE0C16u1PYsPdASxFdaSNH2B6B7BGoCMWb+TnpT4bHtiaOa/oOEVmCiQAXG
+	YnONaAmWKm+MkGOuddg4SzpbUHZtHbRHjPh0Bz3dqixHWXye7mmZAf/ioo4/fDblC1s7RKU4Xfm
+	gA5f00ccL6TAYvWO9BlDLMkcTU34UflXJ14aNbAQm4nMw1jZYhMXueo4otvqQDThHsM/AhoEfxH
+	xx2Xc+B3k9riSuqVV7pkRE4=
+X-Received: by 2002:a05:690e:43c6:b0:676:8cc2:bee5 with SMTP id 956f58d0204a3-67a35c97da1mr1062555d50.85.1792779187892;
+        Fri, 23 Oct 2026 11:13:07 -0700 (PDT)
+Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a4263bed4sm341889d50.0.2026.10.23.11.13.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 11:13:07 -0700 (PDT)
+From: Hengyu Liang <hengyul@cs.unc.edu>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	usama.anjum@arm.com,
+	avagin@gmail.com,
+	mirq-linux@rere.qmqm.pl,
+	arnd@arndb.de,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/proc/task_mmu: return -ENOTTY for unknown pagemap ioctls
+Date: Fri, 23 Oct 2026 14:13:00 -0400
+Message-ID: <20261023181300.3366487-1-hengyul@cs.unc.edu>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vma: fix expansion of VMA_MIXEDMAP_BIT VMAs
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- =?UTF-8?Q?Jakub_Mat=C4=9Bna?= <matenajakub@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261023-vma-expansion-fix-v1-1-6142baf1f46b@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20261023-vma-expansion-fix-v1-1-6142baf1f46b@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 40yZ1laT7vsy_zVWdxkfRDHSHmcYXmXkzSs4miVGiBA_1792779101
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 22D8410000D
-X-Stat-Signature: 7ftpktdbze6976uc6una3cefyh9gqrtj
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Queue-Id: 18340160006
+X-Stat-Signature: 659mf38eyk89n4hxwyc3jur9a97dyfxz
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792779103-888343
-X-HE-Meta: U2FsdGVkX1+oqiM64E2ODz9knhEfxLaqycPBYHdjvPnMYJrHBUqpBZ8+hkrp0wfkN2CXEtOMlDLbsgk1NnJORuDGOaMoHNLo2ugtJLEvbgmOZrc8yUVei9XvQks6HQLcxZlDm1cGfodoD50ZurK7OEbXhsNgfbH5f0QvTulrUdkN9XYc9L06U8JferQ179b3YRGGcgilArpzc27qSaRC0TNcSdMhnAiPG9e4phMkwcxtIB2B1dvXRiAU/8OXVmjI7W6AAIlZTLnFilpiBhrhca0QLfesIaadaxBfJxjK0iBX7nmhwem5FU1C31K08NgGGYwF0w8xfGyMuXhhCC6E9KAJtVRCwwJOTPIOamiiRSPwotuejRopk6ON7ZRXbUgmuNYoXi9K2huQWtNlxb0IoPICT0tSqTjtFdch2Ve8D1o2xUsdeEMYVEA9mR8y6q4vdHAQsmYp2dx/EK/t0Bah02aPVhEtUXVBvF4owwX/JhS3kLhGjy9nIizKQHmgcyyG4FZYTvp/rp+yTFINXpRl3cDeDyF5bkC7MVD/bAN2Xe+8L1cbMA53GscXoFhHgpI/hHPTkvnkI7AK/EbhCLfKh0nwJD6tqht5CQWCkeAnEFJu7EM8/jErK5gLtTd+Tyeyx4LltrOkzbgI70bvK923ccIdLWUgRsTZyaRaVq0BHEb1EaBjMi9o5cAYZcHptY43ZRnqEmpbdXoQLmkgSgtLPTHxiLaH3QphC3vWC4XO7mxWGeIrSE0VypWvwew4EqHX9xFS6Qo3xirYDadh/KWOLtGAZd/Z9c87E02YCQWeIxWxzfwzdX+CSd3UPa7/kClwEm73dtMPTsdRGgELQ+Hwft6P6VQtguV06lUTv2Dyrd3AXRbrQ3nK4bsAzL89D+lfUqEEF634HrJ6HGjVKsIt4N/OxZfN7NR8ZWPdBhOd5uZxzRQZcTQFLTMcjBuOMhXEjhyxjFojYbybLHYKqHu
- RyKAFPgS
- K4lsJPCtiVfQW7DieT86/ZaoUBJ5U1rF4MVj1fwz1XYBR+SAxLQtHhJFumh/avmKmWKwtfmCCYrJ3wtP73LAjVYPP6PYWItbuJL3g12n6zUFwTXP7FN04G76CsaO1mSJH/odlV/5agFH7dTGAW0JEzXaVtEZM4jATBdOr4zS/pPuBCDAVK3qd2IaEW2Ly01HCKSfRMcp+t0u1Sx/hxjnMr+5Nt07x4amQ9Rp7bdcuSevb/xTQGFxXz2ZjUkFJ4FjBH8q/aI5bsxJUa0qwZd+nOA1BYotsOUXDUhc3kOuo+Lmap4BiBtCL6ErskSKJGvSL3xgHJCXhamSEfG11VNLw0CzyA4IzomZ2I9keVWREuWto7eLxUFTEfOjEd3L0eIYK32+1LHfCVHTwqLiXUDQAC+VGz3jh9hUmTWwzVMBZZ/vK9j9S42Z3Itbf+A==
+X-HE-Tag: 1792779188-673596
+X-HE-Meta: U2FsdGVkX194c3mAw5eO4b3wISSHM8AEZTHdAT4GHuY0hzqWaAv9mHBcja8/2+LQcUGHatPTB9yz8HvKELFWKaAd2nTSHrDhSN2Daut3PoVNKtKcPrG/V05Tm1VfPpgiQxP+lXgr1qnISzdDNTLP4/U8bTXqMx25OCjNJnJtHcZGJPQxMRVw43BYJZ7n9T5YEn1eiWhLY0mF9UMuWyuwyxNtpmUWQfvyhCK9TfthFtnzr+s1thIxNyl+dYDQZbtv0jIYJPYHwoX1UDgdcHwfUMqMIJgyijccua/gfEDjYaJ/EqTABy8fih4GyatLvJ2rnWCV5PXeUC3OI7II8fmUyAo+/5UZXgTk5yJ12vYKid4vgx0IqWcLb7F3zrl1IhU0NSUY7Atp18NcfxMqtIAyAEeoF/2SAn8+t6pWuc3aTcn4JHbRWxg4p1aaHTlsHJcT1SNGRQrGP+xMPdvmIL915IYEDOmVBA0EkBSO+d8pWMxo3Q/tEm1X3OYHyNmUh7PUrV9Jl+vkOYIFswlj9btMyGurN62wzlx0qn+kk8daroAbMxkX5PZfdnXafEkoHmlz03Qb7gUpktpgE30xpNxpf1YfWVNYijHoWjYcbwUuDjpwFfziwyUUlQszopz3Yo1rQ2FvhSRbNlnh+dnc3X1sGHNKl5McqTe/PFKdNcphVzB+cCwrdvFezxsryhtO4wXu8reyCqudfYpsXzXigeKUwAmYSh5QhyyuTp3wP2Xw/+lYspHwMEaTti6I7rvBzGim5GaRfXKexXeVDsswjLdruimIPSfDll1A5LMGS4BkgNhPtsGZiDl8a9LdNAqNYWw4UrU7gkCEG1SP4ouwbinYbkuLGZT7qst+McjrvhrFeigOpDvQ+uZVovNgRkEFkrMs3E3cAuexr5SRWnNjJXHO6LNTDaElmHl+5LyBuV8FA2RP3shcwNhqvcqyneEL5PvITyOJrV1BFmDwTbYYiof
+ vfkr20hk
+ XL3ed8nRMeq706r/O/aarI3LaInJzn+5KzdjgiEukF3WKiDz38kzUNQaCZH35tMS9SGVimYSI/g2AUvUt/IGmoaS14o1aiCTeuhe0NXeFD45d3A0u9JZNYvPElJFeANPqKzelgQhtTo4pq1zBso5EizWDjWTbx/dv/T0QO3WpOUbDafMP8xBma36bxKrX8veTMXVuMUEmgjIQ5A78fP5svH4Fdfq2CxasAPIR1OpsD31Slno4N08gR4mwsa8rWQhDuSm8pcwrirX+RI/jfrKsLvN0Fs8OpzkPv2BsxhZPYUSjWKC+Hk9ZMFZ4TGJrOAt59/u3VDf7aj94NKHFe0RdexGxbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,115 +130,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Commit 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and
+optionally clear info about PTEs") made do_pagemap_cmd() the ioctl
+handler of /proc/<pid>/pagemap.
 
+However, do_pagemap_cmd() returns -EINVAL for every command other than
+PAGEMAP_SCAN. Before that commit, pagemap had no ioctl handler, and
+the VFS returned -ENOTTY for these commands. As of now, they fail with
+EINVAL, so tcgetattr() and isatty() on pagemap report EINVAL instead
+of ENOTTY.
 
-On 10/23/26 11:17 AM, Lorenzo Stoakes (ARM) wrote:
-> Commit ca3d76b0aa80 ("mm: add merging after mremap resize") combined
-> merging with expansion of mremap()'d VMAs, however it also unintentionally
-> disallowed the expansion of unmergeable VMAs.
-> 
-> Previously it was possible to expand a mixed mapping which mremap() had
-> already ensured was a legal expansion.
-> 
-> This is clearly seen in the mremap() logic, as it checks
-> vma_is_fixed_mapping() to determine legality of an expansion rather than
-> vma_can_merge().
-> 
-> Additionally, copy_vma() allows for a failed merge to result in a new VMA
-> being instantiated if MREMAP_MAYMOVE is specified.
-> 
-> However, this is not attempted, as a failure in vma_merge_extend() is
-> assumed to be an -ENOMEM failure.
-> 
-> Since vma_merge_extend() is used exclusively by mremap() to perform a merge
-> and/or expansion, resolve the issue by invoking vma_expand() for
-> unmergeable VMAs there.
-> 
-> Explicitly assert that the VMA is both non-fixed and a mixed mapping.
-> This provides double insurance against broken changes in future.
-> 
-> Note that khugepaged_enter_vma() (which vma_merge_new_range() runs) is
-> redundant in this case, as a mixed mapping is not subject to khugepaged.
-> 
-> Also update the VMA userland tests to add a required predicate.
-> 
-> Reported-by: Luiz Capitulino <luizcap@redhat.com>
-> Closes: https://lore.kernel.org/all/20261023023106.515365-1-luizcap@redhat.com/
-> Fixes: ca3d76b0aa80 ("mm: add merging after mremap resize")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
-> Confirmed that this fixes the repro and passes mm selftests and the VMA
-> userland tests.
+The issue can be reproduced with a simple C program:
 
-Thanks a lot for the ultra fast fix and for the attention you gave to
-this issue.
+    #include <fcntl.h>
+    #include <stdio.h>
+    #include <termios.h>
 
-I tested it the same you did and (of course) it worked. I'll work on
-testing it on the environment that reproduced the issue originally, but
-this may take a bit. I'll report back if there's anything unexpected.
+    int main(void)
+    {
+            struct termios t;
+            int fd = open("/proc/self/pagemap", O_RDONLY);
 
-Another detail is that I see that you CC'ed stable (which is of course
-correct, since this reproduces since v6.1) but I guess this fix won't
-apply since the VMA code has been changing a lot.
+            if (tcgetattr(fd, &t) < 0)
+                    perror("tcgetattr");
+            return 0;
+    }
 
+Before that commit, the result is:
 
-> ---
->   mm/vma.c                        | 19 ++++++++++++++++---
->   tools/testing/vma/include/dup.h |  5 +++++
->   2 files changed, 21 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 1be613044b4a..88ef92ab24ec 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -1851,12 +1851,25 @@ struct vm_area_struct *vma_merge_extend(struct vma_iterator *vmi,
->   					struct vm_area_struct *vma,
->   					unsigned long delta)
->   {
-> -	VMG_VMA_STATE(vmg, vmi, vma, vma, vma->vm_end, vma->vm_end + delta);
-> +	const unsigned long start =
-> +		vma_can_merge(vma) ? vma->vm_end : vma->vm_start;
-> +	VMG_VMA_STATE(vmg, vmi, vma, vma, start, vma->vm_end + delta);
->   
-> -	vmg.next = vma_iter_next_rewind(vmi, NULL);
->   	vmg.middle = NULL; /* We use the VMA to populate VMG fields only. */
->   
-> -	return vma_merge_new_range(&vmg);
-> +	if (vma_can_merge(vma)) {
-> +		vmg.next = vma_iter_next_rewind(vmi, NULL);
-> +		return vma_merge_new_range(&vmg);
-> +	}
-> +
-> +	/* Mixed mappings are permitted to be expanded, not merged. */
-> +	VM_WARN_ON_ONCE(vma_is_fixed_mapping(vma));
-> +	VM_WARN_ON_ONCE(!vma_test(vma, VMA_MIXEDMAP_BIT));
-> +	vma_prev(vmi); /* Reposition to start of VMA. */
-> +	vmg.target = vma;
-> +	if (vma_expand(&vmg))
-> +		return NULL;
-> +	return vma;
->   }
->   
->   void unlink_file_vma_batch_init(struct unlink_vma_file_batch *vb)
-> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-> index f449129ea97a..e0eab4eca998 100644
-> --- a/tools/testing/vma/include/dup.h
-> +++ b/tools/testing/vma/include/dup.h
-> @@ -1727,3 +1727,8 @@ static inline bool vma_flags_can_merge(const vma_flags_t *flags)
->   	 */
->   	return !vma_flags_is_hugetlb(flags);
->   }
-> +
-> +static inline bool vma_can_merge(const struct vm_area_struct *vma)
-> +{
-> +	return vma_flags_can_merge(&vma->flags);
-> +}
-> 
-> ---
-> base-commit: 2bba28e98578de622ef307d00875aa8f8bca3d10
-> change-id: 20261023-vma-expansion-fix-6843391177c4
-> 
-> Cheers,
+    tcgetattr: Inappropriate ioctl for device
+
+After that commit, the result is:
+
+    tcgetattr: Invalid argument
+
+This patch will return -ENOIOCTLCMD for unknown commands, as
+procfs_procmap_ioctl() in the same file does, so that the VFS turns it
+into -ENOTTY.
+
+Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
+---
+Unknown commands should fail with ENOTTY: Documentation/driver-api/
+ioctl.rst says so and calls -EINVAL wrong, and POSIX requires
+tcgetattr() to fail with ENOTTY on a file that is not a terminal.
+
+I found no user space that relies on EINVAL here: Wine and the mm and
+kvm selftests only use PAGEMAP_SCAN on pagemap, whose results do not
+change, and CRIU and LTP only read the file.
+
+ fs/proc/task_mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 5c54aebe2118..92b275dc0d59 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -3307,7 +3307,7 @@ static long do_pagemap_cmd(struct file *file, unsigned int cmd,
+ 		return do_pagemap_scan(mm, arg);
+ 
+ 	default:
+-		return -EINVAL;
++		return -ENOIOCTLCMD;
+ 	}
+ }
+ 
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+-- 
+2.53.0
 
 
