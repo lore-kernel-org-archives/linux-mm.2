@@ -1,95 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BD8606A32E
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 03:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA443606A319
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 04:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CQJekbjU
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=j6Y+CCDN
 Received: by kanga.kvack.org (Postfix)
-	id 196546B0AE1; Thu, 22 Oct 2026 23:58:58 -0400 (EDT)
+	id B20FD6B0331; Fri, 23 Oct 2026 00:09:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14E726B0AE2; Thu, 22 Oct 2026 23:58:58 -0400 (EDT)
+	id AAA926B0334; Fri, 23 Oct 2026 00:09:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05D5A6B0AE3; Thu, 22 Oct 2026 23:58:57 -0400 (EDT)
+	id 99A546B0337; Fri, 23 Oct 2026 00:09:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CFE486B0AE1
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:58:57 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5282CC0277
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:58:57 +0000 (UTC)
-X-FDA: 85352535114.20.E489C64
-Received: from mta1.migadu.com (out-40.mta1.migadu.com [95.215.58.40])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0D1A3140005
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:58:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CQJekbjU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.40 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E7116B0331
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 00:09:50 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EC97C1601D0
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 04:09:49 +0000 (UTC)
+X-FDA: 85352562498.17.CFA5E91
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0B1D2180007
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 04:09:46 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=j6Y+CCDN;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792727935;
+	s=arc-20220608; t=1792728587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OSGGcWSknPo+lf5UkWyamUe8j/Nkv4Dn4WtHUpxHvu4=;
-	b=m1fhDmgWMITD3RJIRImb83Cb4wO/Oet+mhQg7RCUkTo79st63O7jB4WsjAIZCql1yIz3+e
-	R7Fkwh0QWPGjrXXmpbPNGJyuQV8Q9qzew8hn/5RrQLzfzD+1PRGvhS4tqvkDnSBM417fB0
-	3JC4EVprwTGfLlHBHi2quXLJXLRtdaU=
+	bh=UL1xs+3wBpHHfuSwjpX6YqED9XSfjXDo9wVKeymLCdc=;
+	b=w2xNhchvdRCmVeYEcTAwFPkKVvcBYS43AaR9fs+sEI2VKy8fcC34KNlD16NOieU0Wyv0Nx
+	5knQfRQiWAUZEY+CLQ4r40f9pPjsDgarGuc3e6+v9ZyjEo8RAebhi1x0AFy24WG1sUAM9H
+	lxvx8PyonOECmHtAxjAZBUA6o9dpdXI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CQJekbjU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.40 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=j6Y+CCDN;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792727935;
-	b=zyiwR33OiGyi2aSDVzYnkaQ1ubqE7H3MtWnSHgeW1a9whUDbAirIN9/4BSatBRGbtwm7aW
-	uJBaBCdnngWheSI/LNEHTe+bYqLfNaWDkkKYapCHb/c9Hm3N2hAyWPuuax8S9YvUhP77Qc
-	AJoR5PVkmFzkFAYEIMvEA4QZnW6Dx+A=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=usMhOa4kJEpoNozXrGaTkLUWHcNqguBASe33U6okgtk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792727933; v=1; x=1793332733;
- b=CQJekbjUBUGvE000P0fCTruIX4FpIQ7hmj1qoJUdRpEH0k/aM0DeCbjhT/2IFLKZHpj3xSKN
- uPkvJzPpTOfbDEwX2DCD2jvyPkKFxh/h/qHYhhFC3KAgWcx0HPE36/gtKlrdQO4trDFe2v/V+ej
- 1QD4CGbpkxe+r1JTwSvj4ApE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ec97eec7ac5e72fb;
-	Fri, 23 Oct 2026 03:58:53 +0000
-X-Mizu-Trace-ID: ec97eec7ac5e72fb
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <8570a18a-2ed3-4b31-98ae-c7f2a46eda44@linux.dev>
-Date: Fri, 23 Oct 2026 11:58:50 +0800
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
+	t=1792728587;
+	b=xzNPwHau0QbZ7XJohfIOSotqr79uF6O7NoRKK5YIGu4sbBUPLSQuTRfyb86hepiQ0DLa+D
+	qF4NL740LYFpGIeRWqJjBpDmeEvfhOhUH/r2quGKn5BjVDuq+lDk4gsmz4amIuIN0+LGzS
+	lQaptmMzeBlQvzqPzpL+yeM+2YRrq0w=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1792728581; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=UL1xs+3wBpHHfuSwjpX6YqED9XSfjXDo9wVKeymLCdc=;
+ b=j6Y+CCDNyyR6H+i0gPIsCHJgUwltUiIsHmtRtM6smI0Ax48nLvW6TcmKtlVv8VrzlTruaM
+ 3in7r7HisapKhJLh7947sf2mCjlQxsmhjP/EST7EAGjwdqNwxCPtV3zb5kETx2Y3Xb9k5m
+ x49qr+w1AWbJYWk+gMeBq84X6z+tzfGfbHzpOzfaXosI7iDx2vhDA4uIVlwqiOrehVkLey
+ IRYM+XvY6OiOrTftjPqRDs8YK8dSdfKHYVnzw5B56z0yxXfo2CZxkvHs3oHwQpuZP4DW7N
+ sCNXu2ueDjkgEkmFhpSfXOfB3cCVKY4/jc6mF/ToU6HQUC+5oOzeXQEIW7I3yg==
+Message-Id: <7818e0c8-e20b-4dfb-a192-4d0c9fc8209f@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <sashiko-outbox-181816@kernel.org>
+X-Lms-Return-Path: <lba+26adade04+5d1385+kvack.org+lizhe.67@bytedance.com>
+To: <sashiko-reviews@lists.linux.dev>, <akpm@linux-foundation.org>, 
+	<david@kernel.org>, <muchun.song@linux.dev>, <osalvador@suse.de>, 
+	<peterx@redhat.com>, <rppt@kernel.org>, <azpijr@gmail.com>
+Subject: Re: [PATCH v3 2/3] mm/hugetlb: disable PMD sharing for UFFD missing mode
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Date: Fri, 23 Oct 2026 12:09:25 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/12] mm: hugetlb_vmemmap: make vmemmap restoration
- folio-oriented
-To: Lance Yang <lance.yang@linux.dev>
-Cc: osalvador@suse.de, akpm@linux-foundation.org, rppt@kernel.org,
- qi.zheng@linux.dev, jthoughton@google.com, david@kernel.org,
- songmuchun@bytedance.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261020115824.823278-9-songmuchun@bytedance.com>
- <20261023034655.37422-1-lance.yang@linux.dev>
-Content-Language: en-US
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261023034655.37422-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0D1A3140005
-X-Stat-Signature: hp7cae18ae1toskudgdpxhycpr8yo56s
+References: <20261022034543.51226-1-lizhe.67@bytedance.com> <20261022034543.51226-3-lizhe.67@bytedance.com> <sashiko-outbox-181816@kernel.org>
+Cc: <linux-mm@kvack.org>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+X-Rspamd-Queue-Id: 0B1D2180007
+X-Stat-Signature: kxw3ram4mnkasnf4a7wx1pbttus694z5
 X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792727934-332284
-X-HE-Meta: U2FsdGVkX1/Z5uYHKTf5soJIqSwM3skeFbZFAVvwKQV53VWEvdNE/vMqwbBnJnKhG0ZVvANtL2SiUBPHj3lM5/fuf9TnTQ4zSZQquZnI5UndjAxpixVMXw4y7L7dGQWqFT6ds4I5+RXn1oh4nlKzDUqt+2nZalpIxdhlG1A8RIL/hiNjutj1cfNqqmUWgWsxqwLFemdlS184zMfhb5WSyIQvIEi6xlHbq+Z5TwjUVqJ+1U0/NBpbGeQJGgHHyCbRy1YJsiBk9X7o7Jk+sReNWorLqzDzoegYiRcWRrjz4HD0M9JWVr1N4/xnU7EZO10rjo0eNXYZH6wDKXM7/FILp1TcTN4m7yXqtRqVkJ1LgP+JR1Esm3fsQ/lFliKOZ161DPzk4rzzHehY9Og94kkc5QkBmocJkwsaXak9BBhw2gAAn5GL8u2mY01GC3VqmSv2yn/0+RHf9L+Bb/Ae76b13tlkYik5K6ZcsWhCfjqdv+o7ooat+qKdWzzye8GYiU0/X5WF3F+YVvhBbs3mkF9B3nHy0Ai5wvhmBEF8tIcGF57o8W2cxwrO02d9OPpxKakIyTQfdptCwS0pWh502J0OcDKSRMIk53uf69DSZfWcJrQZUz02gJ5rUIQN/QTkjsCr1gXZ4Sosl0P+843tIzPGCBR8xEZw/YZoioMStOZZSNWxvduET/JcXJwSQQU6wmsLi79WHzA1eA6v41M6c1CDeSJpfoPhVHaZyyX3X2EPs4Pe8vxpWO/8jJKqm9iYZhU8STm3RznZVSU3fecAws1Y0TjhTGVco9yncTuNoh7uhbEVw63edWVz5W8r4RdXrXK4OgbzTBB1PrWp24yiTdfks8Tux9b3WIzTZzgtUFPA6b7zbAmvDepVolDSYDn/R7B3EY6nq9bcVm0HHRiAOX3lS38iLoAAvmG9TxBgW7XG+ZaxyaavluWMuhyh8OGEjvhtE6u8LOwkfN5Ytw95ACp
- wYbu0L3E
- ZxLMoyUEKGQEmnSKSP9W6tHHXXgDQt+nT1A1tLZRJFgMPUMGSVvL4N+0UBY2FJhrfJevHBLSl2B6f5sGI9HBzTICEAucGZxvYv50M2LEin4XIq0Y6PPEiwAsBo8SPQIi/MpTdqpUmHakkT7yWmlu2uvPufPP6itfkmoW3r2VRM7PJGX5zhL4sMtL3EvuNJdWgEKuOhcZFxR7atCNEJxsBEoX809QHG9IIs7aeTCdJGTV03+yEwHF0MycIDZ/CEONIb7NeOpCljLY3P0/D5TckIjG9yLSRVHplVXEzINEC7zGpic9MvLVT2Rm42crxEowsgoGqrfsk/WqOLdbbp0atfR+xHw==
+X-HE-Tag: 1792728586-929043
+X-HE-Meta: U2FsdGVkX185rkSDX5085NpeW3smEeiSpN7BOGCUNrpSJVRJVhtZ68tnMqqxRD8v9eA/oywTx5jm+ebfJvxqtohphVXnRG+eP05xKH9UWCd5ZgnR6xlXAHC8Cfc3plkpMvlY2vMhoackoEUdg2xrE/iR6NV0o7oDWPwRORZrnJ5idtMWr6HPVYdFxDFEt773KiiKq2R9ljBoAvwt6b0HJHxwefYyakrVcgkylVKvvYJW1A9IYsyvd9UQjsRIkisFaojxA372h3PLKq4f+UE/yqgZlwrjqWKCf5GK0Qdw32sJcTwRUuI418YaQ6kZX310R48aGw9EsrnlUOkcgWFA5xQWTUKu+jK7mZYg2rBdoCu7XG5DHCHP/GPSpZ81JG2M96BSgU5wX6q+sRtz1+gsBvpdBsVsGs7s3I5anIBSF0ZwPQqIUoeFo3TebVyu9dkcBiQOCf1cE2HKJyTt4+07JWzdQg9GtFlwuFbcAq/UEHEeZ/XnB8A/0ZE0wVirUV1cM9mK97BQYvGsIktMWED2xw8qlQDmvfITeMnMScOY5oJHU6a/T43+WgOvkuuETGqvGcIH11taOUtBPQHh6wr/iS/JBPBX+ny36oksp3ZKwf39VOyB0di0XHuQhDSz9FJ1ImqxG7p9E2H7ZF6Dx27oPvXCkC5NQvjxBdAVHHtcwffPkJNxEGAqts7LgCxX3GM5gkRufDL4sGjxkq1kC1S5tA/Rr8XpJ6KMfBWGlefrP0vzJTgxKrZJTgoXmDv3wYw5q+Gy+hw6c38p/IWV4Bc1Zh2SmpVj2Lpd9sBcycH3Td1k3PSu4GC9o9GMCwrdvcCGiQeyVvvgblqT5C4d5vA0OJ7qs+CRhdQqLDPhoc+tji4/SwOCc5cjnvfPqXz9Aq/OT7BXs7M7qlvOX1+SFo9/j+91IVwRBq5GCgrYsznUsUZkCnT4/aAqKhpUE9CDC1vWcnNkasnW71Em5VHCHFK
+ DQvDsUK6
+ dDFu6Sy1IZEb52DN2dtChrNa+HN0IcIO1F3YlQOg5T5LDuL4N2YJx51HV+WEx6IjLDKuKH5Kve3EV8TgFUMYHgwPX70JZPWGicmP25Rq6/BooQXH8xylsLgCTqeVTQyqmTplVzgm7bvo9zxDEAFD4sTlWaDjo6dQFprniNQumPIGF1k7vrPpKKKYCLSyvHrIbYU8KWZ6bAjEYt/5uiIGwM0LKNRd63mXGBOJVDoTPC/jTpQbr+Q6T1cnVZm8BRfOkiOcAGLvyqDCbe5uVbpoMh8Fys9DOqYU/va+rFgP+VabBWfY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,108 +93,154 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 2026/10/23 11:46, Lance Yang wrote:
-> On Tue, Oct 20, 2026 at 07:58:22PM +0800, Muchun Song wrote:
->> Like optimization, vmemmap restoration operates on one folio at a time,
->> but the current interface exposes a raw address range and requires the
->> HugeTLB caller to prepare part of the operation.  This splits the common
->> mechanism across layers and obscures its natural unit of work.
->>
->> Make the folio the unit of vmemmap restoration and move the common
->> mechanics behind a folio-oriented interface.  This keeps HugeTLB-specific
->> eligibility and state in the caller and gives both directions of HVO
->> consistent folio-level interfaces.
->>
->> No functional change intended.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> mm/hugetlb_vmemmap.c | 37 +++++++++++++------------------------
->> 1 file changed, 13 insertions(+), 24 deletions(-)
->>
->> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->> index b76203e34881..97748a9cefe2 100644
->> --- a/mm/hugetlb_vmemmap.c
->> +++ b/mm/hugetlb_vmemmap.c
->> @@ -360,28 +360,29 @@ static int vmemmap_optimize_folio(const struct folio *folio,
->> }
->>
->> /**
->> - * vmemmap_remap_alloc - remap the vmemmap virtual address range [@start, end)
->> - *			 to the page which is from the @vmemmap_pages
->> - *			 respectively.
->> - * @start:	start address of the vmemmap virtual address range that we want
->> - *		to remap.
->> - * @end:	end address of the vmemmap virtual address range that we want to
->> - *		remap.
->> - * @flags:	modifications to vmemmap_remap_walk flags
->> + * vmemmap_restore_folio - restore the vmemmap backing of a folio
->> + * @folio:	folio whose vmemmap pages should be restored.
->> + * @flags:	vmemmap remap control flags passed to vmemmap_remap_walk.
->> + *
->> + * Remap @folio's vmemmap so optimizable entries are restored from the shared
->> + * tail page back to distinct backing pages allocated for @folio, while
->> + * non-optimizable entries remain unchanged.
->>   *
->>   * Return: %0 on success, negative error code otherwise.
->>   */
->> -static int vmemmap_remap_alloc(unsigned long start, unsigned long end,
->> -			       unsigned long flags)
->> +static int vmemmap_restore_folio(const struct folio *folio, unsigned long flags)
->> {
->> 	LIST_HEAD(vmemmap_pages);
->> -	int nid = page_to_nid((struct page *)start);
->> +	int nid = folio_nid(folio);
->> +	unsigned long start = (unsigned long)folio_page(folio, 0);
->> +	unsigned long end = start + folio_vmemmap_size(folio);
->> 	struct vmemmap_remap_walk walk = {
->> 		.remap_pte	= vmemmap_restore_pte,
->> 		.vmemmap_pages	= &vmemmap_pages,
->> 		.flags		= flags,
->> 	};
->>
->> +	start += VMEMMAP_OPTIMIZATION_SIZE;
->> 	if (alloc_vmemmap_page_list(&vmemmap_pages, (end - start) / PAGE_SIZE, nid))
->> 		return -ENOMEM;
->>
->> @@ -399,7 +400,6 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
->> 					   struct folio *folio, unsigned long flags)
->> {
->> 	int ret;
->> -	unsigned long vmemmap_start, vmemmap_end;
->>
->> 	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio), folio);
->> 	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(folio), folio);
->> @@ -407,18 +407,7 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
->> 	if (!folio_test_hugetlb_vmemmap_optimized(folio))
->> 		return 0;
->>
->> -	vmemmap_start	= (unsigned long)&folio->page;
->> -	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
->> -
->> -	vmemmap_start	+= VMEMMAP_OPTIMIZATION_SIZE;
->> -
->> -	/*
->> -	 * The pages which the vmemmap virtual address range [@vmemmap_start,
->> -	 * @vmemmap_end) are mapped to are freed to the buddy allocator.
->> -	 * When a HugeTLB page is freed to the buddy allocator, previously
->> -	 * discarded vmemmap pages must be allocated and remapping.
->> -	 */
->> -	ret = vmemmap_remap_alloc(vmemmap_start, vmemmap_end, flags);
->> +	ret = vmemmap_restore_folio(folio, flags);
-> Nit: we don't use h in __hugetlb_vmemmap_restore_folio() anymore. Could
-> we drop it from that helper while at it?
-
-You're really thorough. That's actually something on my follow-up series,
-so I didn't include it in the current one.
-
+On 10/23/26 12:36 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] mm/hugetlb: uffd_disable_huge_pmd_share() leaks poison markers on unregister
+> --
 >
-> Otherwise, LGTM!
+> commit 5da87cbb6b8f2271fb75acc59e14e2d5860cb54c
+> Author: David Hildenbrand (Arm) <david@kernel.org>
 >
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> mm/hugetlb: disable PMD sharing for UFFD missing mode
+>
+> This commit disables hugetlb pmd page table sharing for all userfaultfd
+> registered vmas by checking vma->vm_userfaultfd_ctx.ctx in
+> uffd_disable_huge_pmd_share(), preventing poison markers installed under
+> missing mode from affecting shared pmd tables. It also adds a debug check
+> in hugetlb_mfill_atomic_pte() when installing a poison marker.
+>
+>> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+>> index a14b8a9ffb7b1..ebd86677b052d 100644
+>> --- a/include/linux/userfaultfd_k.h
+>> +++ b/include/linux/userfaultfd_k.h
+>> @@ -168,22 +168,12 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+>>   }
+>>   
+>>   /*
+>> - * Never enable huge pmd sharing on some uffd registered vmas:
+>> - *
+>> - * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
+>> - *   tracking information is per pgtable entry.
+>> - *
+>> - * - VM_UFFD_MINOR VMAs, because otherwise we would never get minor faults for
+>> - *   VMAs which share huge pmds. (If you have two mappings to the same
+>> - *   underlying pages, and fault in the non-UFFD-registered one with a write,
+>> - *   with huge pmd sharing this would *also* setup the second UFFD-registered
+>> - *   mapping, and we'd not get minor faults.)
+>> + * Never enable huge pmd sharing on userfaultfd registered VMAs, because
+>> + * userfaultfd state can be tracked per VMA or per page table entry.
+>>    */
+>>   static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+>>   {
+>> -	return vma_test_any_mask(vma,
+>> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
+>> -					VMA_UFFD_MINOR));
+>> +	return vma->vm_userfaultfd_ctx.ctx;
+>>   }
+>>   
+>>   /*
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 966d249469454..7566f2eed50b0 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -6399,6 +6399,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+>>   			return -EEXIST;
+>>   		}
+>>   
+>> +		VM_WARN_ON_ONCE(size == PMD_SIZE && hugetlb_pmd_shared(dst_pte));
+>>   		_dst_pte = make_pte_marker(PTE_MARKER_POISONED);
+>>   		set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte, size);
+>>   
+> [Severity: High]
+> Can a pmd table containing a poison marker still become shared across
+> processes after the vma is unregistered from userfaultfd?
+>
+> When a process registers a shared hugetlbfs vma in missing mode and installs
+> a poison marker via hugetlb_mfill_atomic_pte(), the marker is written into the
+> process's private pmd table.
+>
+> If the process later unregisters the vma or closes the userfaultfd descriptor
+> (via userfaultfd_unregister() -> userfaultfd_clear_vma() or
+> userfaultfd_release_all() -> userfaultfd_clear_vma(), or remaps via
+> mremap_userfaultfd_prep()), the userfaultfd flags and context are cleared
+> while the poison marker remains in the page table:
+>
+> mm/userfaultfd.c:userfaultfd_clear_vma() {
+> 	...
+> 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
+> 				    &new_vma_flags, NULL_VM_UFFD_CTX,
+> 				    give_up_on_oom);
+>
+> 	if (!IS_ERR(ret))
+> 		userfaultfd_reset_ctx(ret);
+> 	...
+> }
+>
+> Unlike write-protect markers, which are resolved by change_protection() on
+> unregistration, poison markers intentionally persist after the userfaultfd
+> context is reset.
+>
+> Once vma->vm_userfaultfd_ctx.ctx is cleared and the userfaultfd flags are
+> removed from vma->vm_flags, uffd_disable_huge_pmd_share() returns false and
+> page_table_shareable() in mm/hugetlb.c considers the vma eligible for sharing
+> again:
+>
+> mm/hugetlb.c:huge_pmd_share() {
+> 	...
+> 	mapping_rmap_tree_foreach(svma, mapping, idx, idx) {
+> 		if (svma == vma)
+> 			continue;
+>
+> 		saddr = page_table_shareable(svma, vma, addr, idx);
+> 		if (saddr) {
+> 			spte = hugetlb_walk(svma, saddr,
+> 					    vma_mmu_pagesize(svma));
+> 			if (spte) {
+> 				ptdesc_pmd_pts_inc(virt_to_ptdesc(spte));
+> 				break;
+> 			}
+> 		}
+> 	}
+> 	...
+> }
+>
+> When another process mapping the same shared hugetlbfs file faults in that
+> range (hugetlb_fault() -> huge_pte_alloc() -> want_pmd_share() ->
+> huge_pmd_share()), huge_pmd_share() walks the first process's vma, finds its
+> populated pmd table containing the poison marker, and shares it into the
+> second process.
+>
+> That exposes the second process to the first process's poison marker. In
+> addition, if the first process subsequently unshares the pmd table (for
+> example via mprotect(), hugetlb_split(), or re-registering userfaultfd),
+> __huge_pmd_unshare() clears the pud entry in the first process, causing the
+> originating process to lose its own poison marker while leaving it installed
+> in the second process.
+>
+> Should the vma or ptdesc record that a poison marker was installed so pmd
+> sharing remains disabled for it even after userfaultfd unregistration?
 
-Thanks.
+Thanks for the report.
 
+This looks like a valid concern, but I think it is not introduced by
+this patch. Before this patch, VM_UFFD_MISSING did not prevent hugetlb
+PMD sharing, so UFFDIO_POISON could already install poison markers into
+page tables that could later become shared.
+
+This patch addresses the registered-VMA side of that problem by making
+hugetlb PMD sharing disabled for userfaultfd-registered VMAs. So new
+poison markers should no longer be installed into shared PMD page tables
+while the VMA is registered.
+
+The unregister case seems to be a remaining pre-existing lifecycle issue
+around PTE_MARKER_POISONED and hugetlb PMD sharing. David previously
+mentioned broader poison-marker issues and prototype fixes here:
+
+https://lore.kernel.org/all/bb72cc2c-a46a-44f8-99a2-b036abfdbd26@kernel.org/
+
+So I think we should wait for David's thoughts on how to handle that
+remaining case.
+
+Thanks,
+Zhe
 
