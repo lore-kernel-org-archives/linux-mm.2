@@ -1,162 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04508606A31B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=STLaEfnM
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E165C606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:52:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 072096B0B84; Fri, 23 Oct 2026 10:50:30 -0400 (EDT)
+	id 0BB9E6B0B86; Fri, 23 Oct 2026 10:52:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01BAC6B0B86; Fri, 23 Oct 2026 10:50:29 -0400 (EDT)
+	id 06C866B0B88; Fri, 23 Oct 2026 10:52:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4C786B0B87; Fri, 23 Oct 2026 10:50:29 -0400 (EDT)
+	id EC4516B0B89; Fri, 23 Oct 2026 10:52:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2CA96B0B84
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:50:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE124A5250
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:50:27 +0000 (UTC)
-X-FDA: 85354176894.17.E431CF3
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BC8071C0006
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:50:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=STLaEfnM;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.172 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id CD3426B0B86
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:52:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A68158011B
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:52:11 +0000 (UTC)
+X-FDA: 85354181262.28.2E19FAC
+Received: from mail-m1602365213.xmail.ntesmail.com (mail-m1602365213.xmail.ntesmail.com [160.236.52.13])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8230D1C0006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:52:07 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf18.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.13 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792767025;
+	s=arc-20220608; t=1792767129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sGl5cqr0Sn8jKPodNx0zyYTo2AHNV4DEHX4rmbHeM6s=;
-	b=f1BiBhJnOmj558HU6SYoZRd0Rajn90mSRVaZo+Fg4g9MOdaGjPIxH9MQCd3hO0dV0rfISF
-	awhgFXHRvX7PF3YMvRrnlFXJWRoFMO5lhaENdFzIb6TDzNhnHvA98y1+ewbMFdYdG654DJ
-	e7ctoWb0geS1pUBC3foFsyxSV/qk7GA=
+	 in-reply-to:in-reply-to:references:references;
+	bh=XSYsF9HWbYppz9Cbcbdfh68sAbHvBzwUOKcY1+7QiNw=;
+	b=rs6fLLy+QShiei7uLSR/ya64+KazsUY7F1fINC7QXrhYKXZZIwTRPYEM/xknVVcUpCjiNP
+	5w0iRT71WG1fWFVkpALyYmX7rTtwnwm7PHqOOpES91o1roiQ7O8xDv/RPCzaoGoZ7n2aN2
+	WaHZMAfCWMLs+MK5tk+wh90ZdRwMeFs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=STLaEfnM;
-	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.172 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf18.hostedemail.com: domain of zhen.ni@easystack.cn designates 160.236.52.13 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792767025;
-	b=E9/3zJgJubczaGaTFr3/ZAQcodwCrKqP8s/SHFh/+rbwmKhQxdaDzT9kIM9luwwTt86/fU
-	0Bh7NPCrmMVSB6IwIuNRDfMILRVNDeqsInfATHSeahOQ+aZqj0h8k7eZhpUka8lyLKzDod
-	6F3jLi/H5uWZyAg85VsagMN0+Bix334=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5364c951da4so8428871cf.1
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:50:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792767025; x=1793371825; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sGl5cqr0Sn8jKPodNx0zyYTo2AHNV4DEHX4rmbHeM6s=;
-        b=STLaEfnMPjs0BYGuaHnxfhU43Kw+dcktzLbXkRusSlE8zTcMnFP726OT80bsg53i4V
-         B4hbIPDbcANoNZiqQYyal9SrR96Z0OwZeQTllbYPnT7SFMJCWHkV5qOpveIDwXct7T/n
-         HBDiCOiOcAgNrc1bPAtLB4b8+eo/0Ez689bRqEWlr1hjqdR7wHGh/U0XHR4+KJOpVJ2Z
-         NEEB5AXp1kzKGDGoiuxLUkSkNQ7xOloTNey0Gerh5I6848bOijEqItrIP9Dob0ETyF0g
-         3bQTrr3kMQp8ECTc5Vrle+rWUFo+74+tx5duPlqR+w2wtN66ChbE0Hcq4WEXZkmOV2W6
-         p4UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792767025; x=1793371825;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=sGl5cqr0Sn8jKPodNx0zyYTo2AHNV4DEHX4rmbHeM6s=;
-        b=iYh+dzDfyyYWJzEcQjXBHLq9EaLKOXMhsdTPEXBh08Zv+5dbILacqEzM6A4D3SqLN9
-         z9bH9vQDwiWr9GjdROqYfWxiaAHmq900Gp4Qi63n+rPBT7Qqr3wWPOQhnHdZzLjcHpGy
-         TrKS7BB4/QnwAMvh0t5nepKxSpGG0CKsHIJbpA+zw+PwBmqCEjoBwDnywCoqjRoM9Zeo
-         AutkYA5iVNVJA0JMiN70hCcoEegMh2klIk9TBY+pUokgEHVL/F+pVjOM06QxQpG9JNWp
-         adDuMwmaGJ5K3w3cSulKHWz6hWKyzaFTbM1zNarO8lF5ZE826R4h+VNekNDEUKEE+KJX
-         UIDw==
-X-Forwarded-Encrypted: i=1; AKwUvBxJBBXkRJ4ttiKGXR7zpMsJ4cg9glQ+neU5qRBdbJUxyUXpOC34CWsqFH69DfftAYZqcW+lfdBbng==@kvack.org
-X-Gm-Message-State: AFq9FYJjLq0wWHR2+ebTKZYEaOrZcCaHEu7H3jBZvzoMJCWwgA/TuSwq
-	/wEfPwR3074aTGwYFd9rDD2kiK1L/jbiDdIji4zQwmL6fhJkT9sGPOu+tbNFrRQtKD4=
-X-Gm-Gg: AYBFou3UBNKCYJLvwwAj+e34pqGoRe5aK3px1dWPwIv+TLHfJ3NapVXlsSjRYmUKFVN
-	nTkdHSdrjclSO9zI/1rSY2LdyiRUda/tfrifu61QA1CPRDEcHtR98vR7bJ6xOK7/Q1Cp6bclQ8l
-	iusgZvk+r+K6gei03oMnzQEkbvtpqzH/0TLARxCuzALD7NkWwXCNRIDrFBI5r1hlwPdUiOjbds3
-	40jI/aww7CktUqMdU4VBAUgyBkRNzpt7cvO4bmpWXQVlEi2kVyXwt4LH6fnpUWSOlSkiy9ZGsr9
-	YoC3VzYUPn3vd9qPe13x23xiHC3UXO5GRXyNsszkS6w8+dzx9JrIlYPRjYqg7HkeZqiRhYtJAMA
-	G6hMKhCVG5pfRirXEKE2RbBbl5O2luZcrDZkIrOF6rZ1pcyunV8TUr7hNt4YpACxg/2ZNgPtFiP
-	6UhC50h/iUmgBgQEzVYjKSCJeIa4D2XJAO7ThmVY92NNcTnwiCsIHPPWmHVDG+VUV7tXqL0gTv8
-	YoTyqpIwtCTOgyfGQVxiSstf1ZiwTcgW4gSuUAVGO3dyMwnIHDmE6c2o2XpX1Vw2+cpBTuXXkF5
-	UE8p/y+5zsOOp6VZG+oovsyBsOlyRljch7kW0g==
-X-Received: by 2002:a05:622a:3cc:b0:536:7669:7eed with SMTP id d75a77b69052e-536c2837232mr34025651cf.21.1792767024875;
-        Fri, 23 Oct 2026 07:50:24 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536c1846ff0sm18130901cf.19.2026.10.23.07.50.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 07:50:24 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xKGb9-0000000GkTD-2sYP;
-	Fri, 23 Oct 2026 11:50:23 -0300
-Date: Fri, 23 Oct 2026 11:50:23 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-Message-ID: <20261023145023.GH3977851@ziepe.ca>
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
- <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
- <20261022201229.GH3381610@ziepe.ca>
- <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
- <20261023140107.GC3977851@ziepe.ca>
- <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+	t=1792767129;
+	b=gUcBT20OG7+MCF+zeS6oQQvopL0gYRWCD2z/HoSaFPwal6xL0sdA70tpcuvYXU2OfwA5Hu
+	zOlJuVBsRtsp67flUyOV/0bzBPQ1gUMjvwhy7vFV6uE2j/mjlRUa+dWzWU9K1fykuqYF4j
+	BkgnxAqPUqodzmLyZNyUmphKaRm2byY=
+Received: from [IPV6:2409:8a20:e23:2ae4:8810:8f74:8c26:2] (unknown [IPV6:2409:8a20:e23:2ae4:8810:8f74:8c26:2])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 206722931;
+	Fri, 23 Oct 2026 22:51:56 +0800 (GMT+08:00)
+Message-ID: <d39db4fb-e511-440e-9065-72c34a1a295a@easystack.cn>
+Date: Fri, 23 Oct 2026 22:51:56 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/7] mm/page_owner: add bpf_iter and kfuncs
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, daniel@iogearbox.net,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
+ martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
+ jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
+ akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
+ ziy@nvidia.com, shuah@kernel.org
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261021112437.1799213-1-zhen.ni@easystack.cn>
+ <DMAURQCKK6CG.10CZ7MFXGJO3V@gmail.com>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <DMAURQCKK6CG.10CZ7MFXGJO3V@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BC8071C0006
-X-Stat-Signature: b7rmjwtbh96u3c3zwfzq9akne9jgkw6p
+X-HM-Tid: 0aa1693f463b0229kunmd586c24b3116c6
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCTx8fVh0ZS0gYGB8dSUgeHlYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJT0tCQUMaSUtBHklIQUkaHk9BQ0NKS0FDHUxPQUMYSU
+	1BSVlXWRYaDxIVHRRZQVlPS0hVSktJT09PSFVKS0tVSkJLS1kG
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8230D1C0006
+X-Stat-Signature: 9ewo7weykdtti91yzeuf37hckg731dia
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792767025-250171
-X-HE-Meta: U2FsdGVkX19icL9I5flnDlDvWJL9v0T5/d9RvUOv17XrYFDvVwWQB+QFlEP9mwzSk7QahaBZ859A8QrmjfJcz9f5+O5j2K48cOeDXotSEKBuLSRpZjgbeZ/W456FypymlVme0gjK3dOQpELNl+aiaN7eeEv7knk/iLLB7IrswZ/TRGCP0XBLChpC2v2ZszA2JXlsx14RweJtOPu5OyPAcR7ocnvrk7D5egqbOmVC7+z34S6YGiVWEWTzIx+vXt3zPz4sx/yor2YayO+JSvi9Pz2zSXKkAUdiw0zjEkhv+YezDP6PC7JoHQQgqUwctndRQlN2VH0kBBBSzxGkKtM2tZ8TpRfv4Ja8l3p2n7/UWv4qizHCFoZEoso6BHY3IqlcXL35ZBCEMBDzu7RfAvpeXtucUHCpmEtQVhPmvoOqhlQzLRptNJL8XmHesjNEIMlkahHkaPXYQp2FLx04PKfugbn+bhPy3QYP5NI0eYFERauIZ0v61f7IHlWQsGhj8x7D1khJpf3Cu2rhxaR2HCI9MrQuyzd4lPaCqTW33Y3fmvAxKsKTbW37V7BPsIpKWhwNALa7pmB4S/+4aQafgtCuIjOBXhU5J4ys7EwK/ARH4bdrNR74sflKNy1Pt4RBbhWAlSIOg9DRn2+vWVwS12izwHtI4drfkFEA8JCQdSrDyVM6md+1f5wwUlf1B14JyhkzFZj3s3bHeJ9W6BlHR5YfGWX+curwnbnqs47uUWPjOdSRSsN1yL+HQ1aS6s3+EdWpJeBSnhvMyX9BsgYtq9udoQkIY57rmujMZvhkarVwtKU5lGWdWdHdtCKHVx+UNjU7QVjotjZclf1IopZG82rkhjNrbgIyEVYcBDVP+FTo9k2y+whRe4P1LCfra/mrFSyTs94vl08Z+FN8647ZwydyLcVqNgKD9IbsaghK2MSzmaBDGXCr/twix3L5mwFf6bAsCf7zEhdvTmr9dvtfccz
- y5KQrVow
- 9xA7ncnfL437G1GPb0yDatz4j7opjGGie71EXDxbYbceWWUkKStPi+wvQ6WB2U5UOQDCOkzlAs0zgRn4FU23KMNfWDrsHc0QX/tmQpoyZ7w1j5mogNchWNXTK2x4WwYjK74WhVQlBZMrYZzJFo9AuWTAT9EWaOSoPGQv3BOUUmW8BFZCK10sNhOBaT2kdE/gsrdqvpfhX2rCcyQ/T6+Hwd+NJBYfmIlRUnoWTm+4jf/6y8Vod//s7AaaBga70hpBuZAkS00md2KZJfufyPQJKjDp+lOO+S+f7XEBJmrygyc2OKFiYDt+wlY4ROBBAf3PPR7rnvKXAgbHgGWZA+TTBcwEYIiPbbXrn9XSr4jqgXWNS4WxgOwv1edlTa7oQ4zPIWlbR1B9UfPLL6uwJ2Y2AwbPFRRwfN6eta1axzogP8bZqVyruLLjnZSXfEzxGDz5YSpayjb5RVxmOxEe6ESNZtJCVcgB4h2VmhgS0jf8rcakdn8dxrki1B9r1CQ==
+X-HE-Tag: 1792767127-284555
+X-HE-Meta: U2FsdGVkX1+Pel1ai0RFntsIuumyH3IaIDN/l69paA3L9Upm9Ftsdqm0S+hp+OvoTG75oRxgeBBOEqHeuG2M2QOptHZ+v4NoHBbVSep2we0M5cJ8zk83x9VZFXq491XVk9Wa+q9vS48/Q4oRoMSi7e3Eia34F3GQW7lIjhRb+4zt+q2MKOglvlrXEw0yCidDorPS6yF5/ZIvAVDmpAWo+9EgqKrqLD920VjeoScx7F7EHe3uqFEjWtqI4XHdluGm6g9sXI4tgTg/SQk4lHNadyMZSPEfZ648ttP0/EfNLKjNB/9EopxL3Ms+lCuCwOAU0bhWmEslo5th5kO0zlbBhKWih9Ywe0vGWaW3lQFC6gr0Y78BIviZ3dv6kqk58WWoRZpAU2xmnRZ7sKsNPV964NMMWakFadwbO5NZPKG2TBfabLsVL8D+k26S7m9y3wm4Lk42sYkvXF9GT6BUm/O4WenXOnz+JmzGPHYd5zNYem2qRK5l84bK0k0NWbdBudfUHa7NJ0gOsBW5UX0qcatlTipE4SmCtOkE8k6M/Tcd9XFWTdqaI2Yu90GLrQ0iq9X9qk/J9IU1RhQMaPJVYUXpl2ECRYOCeJ8ua6F6zhfM5G4JxFQoZN9Npv91aFnNcsk3CkjOoEZeVF+b6ZQ4c5RmV62uPDw04ckCuHxOyoR4ZUV4M7yoVz+oe4gIAhjlfM4c/NsXEXn8Mg4IYaYcc+rNSNPh8TaPMTBr/iKk1Ij9ZAOWLsObO7tEZnFNIGOBueME+7M8uru368lMVuxUxmF4VF2N8oUN6UyrgpqeNjSIIqtiku0SlivJL+fa4YAsrvn9gqST3o7YX3A/2cQv+7TlxwdoIR5zFFzvo6xAsMUGKPatUPG46mg2y160uR9P6EhChl2xz+lEc0ZVD6DhA9hQ7VE3M3SPNFE7ePzg1P1HutUnr8nEN6ePQt+lpfB+Kiwe1U7C8wP6CD+LefXOOD1
+ 1Xh8gxAd
+ YVx8wTV8D4cBCalHYoC6+I14YwfaPcBEkGGOvmCZEn9tz64vhdJoG3CIi1H6jpWbKg5ztBHBd/xkj4Lf1tcq9LccYy+AKlu4m19qkukLQ/OqTY0y0QSh/uww5jtJY45olzrd+eH4wtDRv/Zt508TkagbpZVfYdJBFG44sRrcFNLQ4N8o+XnFt8oMF/MazI72RcnUzFeECQkB/NPAqzKe206c+lDE9I4Z0w++/dnFaHrJpdkcldBjh7U6XVRazWJDPDzf92qRFSa8iZSWfU42fdRZXnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,82 +94,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 04:30:25PM +0200, Luigi Rizzo wrote:
-> On Fri, Oct 23, 2026 at 4:01 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> >
-> > On Thu, Oct 22, 2026 at 11:51:40PM +0200, Luigi Rizzo wrote:
-> > > On Thu, Oct 22, 2026 at 10:12 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> ...
-> > > > Can someone explain what outside netdev would use this? And why you
-> > > > couldn't do this in the netdev page pool?
-> > >
-> > > I can try.
-> > >
-> > > Regarding users, the next target is disks (not included in this series)
-> >
-> > Disks don't use a memory pool, they do IO to folios allocated by the
-> > page cache.
+
+在 2026/10/22 06:00, Alexei Starovoitov 写道:
+> On Wed, Oct 21, 2026 at 04:24 AM Zhen Ni <zhen.ni@easystack.cn> wrote:
+>> Exposing the same walk to eBPF lets a program filter and aggregate in
+>> the kernel and surface only the records it cares about. This series
+>> adds that access as a seq_file bpf_iter target and an open-coded
+>> iterator.
 > 
-> I know. As I said I have a separate patch to cover those IO buffers
+> This is overkill. Two iterators, two kfuncs that print strings,
+> a rewrite of read_page_owner(), a new file and a new header.
 > 
->  block/bio.c                  |  21 +++++
->  block/blk-mq-dma.c           |   4 +-
->  drivers/iommu/dma-pmd-node.c |   3 +-
->  drivers/iommu/dma-pmd-pool.c |  14 ++-
->  drivers/iommu/dma-pmd-priv.h |   7 +-
->  drivers/iommu/dma-pmd-user.c | 390
-> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
->  include/linux/dma-pmd.h      |  53 +++++++++++
->  mm/filemap.c                 |  27 +++++-
->  mm/page-writeback.c          |  13 +++
->  mm/readahead.c               |   9 +-
+
+Thanks for the detailed review and the sketch. I agree with the
+principle that a thin data kfunc would be ideal if it were sufficient,
+but I’d like to explain why the current design ended up this way.
+
+On the two iterator surfaces:
+They aren’t duplicate implementations. Both are thin shells over the
+single page_owner_next_eligible() extracted from read_page_owner(), so
+the eligibility rules exist exactly once. There’s no code redundancy;
+the two iters only differ in access patterns while sharing the same
+underlying iteration logic. This shape is also what Documentation/bpf/
+bpf_iterators.rst prescribes:
+
+When adding a new BPF iterator program, it is expected that similar
+functionality will be added as open-coded iterator for maximum
+flexibility.
+It's also expected that iteration logic and code will be maximally 
+shared and reused between two iterator API surfaces.
+
+On the two “print strings” kfuncs:
+These are things a prog genuinely cannot do on its own. The record only
+carries an opaque stack-depot handle, and resolving it is not reachable
+from BPF. Likewise, the cgroup path is built by cgroup_path() walking
+the kernfs parent chain — a prog has no way to format it. Given the 512-
+byte BPF stack limit, the caller-provides-buffer pattern (as in
+bpf_d_path() and bpf_snprintf_btf()) is the standard shape for this kind
+of kfunc. I agree they could have been mentioned earlier rather than
+left to the diff.
+
+On “a rewrite of read_page_owner()”:
+This is really an extraction of common functions, not a rewrite. Aside
+from the fix for mem-hotplug locking (which addresses a pre-existing bug
+in the debugfs interface), there are no substantial logic changes. It’s
+not a large-scale refactoring.
+
+On the new file and header:
+This is for code clarity — to distinguish the traditional interface from
+the BPF interface and make maintenance easier.
+
+> All that the prog needs from the kernel is the page_owner record
+> of a pfn. That's one kfunc. The walk, the eligibility rules and
+> the filters belong in the bpf prog:
 > 
+>    bpf_for(i, 0, ctx->nr) {
+>            pfn = ctx->start + i;
+>            if (bpf_page_owner_read(pfn, &po) ||
+>                pfn & ((1ul << po.order) - 1))
+>                    continue;
+>            if (po.pid != pid || bpf_page_cgroup_ino(pfn) != cgrp)
+>                    continue;
+>            /* add 1 << po.order to a hash map keyed by po.handle */
+>    }
 > 
-> Disk I/O is still potentially affected by the same problems
-> (cost if io mapping/unmapping, iotlb thrashing, bounce buffers
-> in confidential computing...)
 
-The disk folks already have a proposal to address all of this using
-io_uring and preallocated buffers. I really doubt yet another version
-is going to be interesting there.
+On why the prog can't actually execute it:
 
-> Anyways, reading your next comments, are you suggesting that all
-> these functionalities should be implemented as pagepool extensions?
-> (2MB mappings and iommu backing, proper allocator of fragments out of larger
-> pages, device-less pagepools, multi-domain mappings, pagepool
-> as memory provider for skb heads, pagepool as memory provider for descriptor
-> rings ?)
+1. What range to scan. Where do ctx->start and ctx->nr come from? No
+in-tree iterator context provides them, and a prog cannot derive them:
+min_low_pfn..max_pfn, memblock holes, and offline sections are all
+kernel state. The loop bounds alone require either another kfunc or a
+kernel-side walk — which is exactly what the iter target already is.
 
-netdev shouldn't be touching iommu, it can get a 2M page and map it
-using the normal DMA API. AFAIK there is not such a big reason to need
-any of these layering violations. They just make it easier on page
-pool..
+2. What makes a page eligible. The alignment test in the sketch is the
+only part the kernel agrees is expressible in a prog. Everything before
+it reads state a prog doesn’t have a handle to: pfn_valid() over
+MAX_ORDER_NR_PAGES areas, pfn_to_online_page() under get_online_mems(),
+skip_buddy_pages(), the PAGE_EXT_OWNER / PAGE_EXT_OWNER_ALLOCATED flags
+in page_ext, and taking the record snapshot inside the RCU window so the
+checked value and the reported value are the same copy.
 
-"multi-domain mappings" is that just for page pool because it can't
-easially keep track of IOVAs for all the devices mapping the same PMD?
-I admit hacking in a special IOVA range so every netdev has the same
-IOVA is certainly a creative way to ignore all layering and solve
-it. :\
+3. The walk is deliberately lockless, so exposing struct page to the
+prog is not safe. The pfn validity check and the page_ext dereference
+must happen under the same kernel-controlled RCU window. Otherwise the
+prog could observe offlined pages or stale page_ext data, breaking
+consistency between the check and the snapshot. Keeping the walk in the
+kernel guarantees that the page_owner record is read atomically with
+respect to mem-hotplug and RCU protection.
 
-But you could just figure out a way to keep track of the per-device
-per-PMD iova mapping..
+4. One record doesn’t give the prog the useful data. The record holds
+only opaque handle/free_handle tokens; stack-depot resolution exists
+solely in the kernel. The memcg is neither in the record nor trivially
+reachable — the path is built by cgroup_path() walking the kernfs parent
+chain. The NUMA node comes from page_owner_get_nid(), which bypasses
+page_to_nid()’s poison check. And so on.
 
-That said, if you came with some much narrower series to request some
-kind of 'globally shared iova' during dma allocation that might be
-something dma-api folks could agree with.. It seems like the only
-actual DMA API request here anyhow?
 
-That's a bit tricky since it is impossible as a general concept, but
-maybe you can come up with some way to narrow it..
+Thanks again for pushing on this. I’m still concerned that the sketch
+may not be workable in practice, and that it would also lose some useful
+capabilities. I hope the above clarifies the reasoning. Happy to discuss
+further.
 
-I'm still not convinced this is even right for netdev, especially
-compared to what Dragos has been working on. The CC stuff seems
-actively dangerous. Unconditionally always using CC shared memory for
-skbs is completely security wrong. What I have traffic flowing inside
-my VM between containers or something? Does this end up putting those
-skbs in shared memory even if they never hit a physical NIC?  Same
-with a TDISP capable NIC, does this unconditionally degrade its
-security?
 
-Jason
+
+Thanks,
+Zhen
+
 
