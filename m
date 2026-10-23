@@ -1,96 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BAF606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 11:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF77606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 11:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=dEp9P8wt
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ixSxhJ1+
 Received: by kanga.kvack.org (Postfix)
-	id C012A6B0B42; Fri, 23 Oct 2026 07:16:32 -0400 (EDT)
+	id AA8D86B0346; Fri, 23 Oct 2026 07:22:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B86D56B0B45; Fri, 23 Oct 2026 07:16:32 -0400 (EDT)
+	id A59796B0B44; Fri, 23 Oct 2026 07:22:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B1EE6B0B43; Fri, 23 Oct 2026 07:16:32 -0400 (EDT)
+	id 96F7F6B0B45; Fri, 23 Oct 2026 07:22:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6906A6B0B40
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:16:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A43AEC03D1
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:16:31 +0000 (UTC)
-X-FDA: 85353637782.29.5621C6E
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0809840003
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:16:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dEp9P8wt;
-	spf=pass (imf11.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792754190;
-	b=0FTCuXZ0bd1swQyC9YVvDorNu8fa4gxc2o8WjBX4wtVCqLxA7/wR1SuruQj5dP++c5Wp/7
-	kQzNKPn7wPGeUw8H+c5RkhELXxbQhD9Zla13mmMl/e4l5thiLPqQxDdnkO/SuuhAXkjh5D
-	5BohoZR5ydN0OlCzgO1XNsuRRjB2uNs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dEp9P8wt;
-	spf=pass (imf11.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 775F76B0346
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:22:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB9E812039A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:22:18 +0000 (UTC)
+X-FDA: 85353652356.25.D871E24
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2B36C140007
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:22:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ixSxhJ1+;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792754190;
+	s=arc-20220608; t=1792754537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XR763hCbspNzvt9Ja5KlngGTT7u+E0yj2HR4cp4PfjA=;
-	b=OjtqAlk3RlvJbJGQfuHT7DOpm+7QbJbfRTN6n2MTsDd2AMUWEZo/4NMyrP9NnZzIhfq1D6
-	eVtEzwg3CRwGvjdmqj5+3pcDIAtsTssFP/yFJLumOMMQSUpJnGJRXAw2n3kdeL4qMnbO9g
-	DJ/IiaAukva0r6SczKh1KR3fmnLkdBM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1792754183; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=XR763hCbspNzvt9Ja5KlngGTT7u+E0yj2HR4cp4PfjA=;
-	b=dEp9P8wtKFFnU9ygvZhkHsuOeVWzaAuomqIWciSFKZ+L9UE6UfM4JQuBFeedv7e1nkFVu/G9DWjpVO9pG0NcEJKTnwwH/Ok3T4uD7ImX0uhE+QmFFFjyO2eT1qQo9hfITP+QeEXi28Yz//e+8iFUpGCH0XDaw2AC6/kdBK/c2UM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=cp0613@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XDM1n5K_1792754181;
-Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com fp:SMTPD_---0XDM1n5K_1792754181 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 23 Oct 2026 19:16:21 +0800
-From: Chen Pei <cp0613@linux.alibaba.com>
-To: pjw@kernel.org,
-	palmer@dabbelt.com,
-	alex@ghiti.fr,
-	rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	graf@amazon.com,
-	shuah@kernel.org
-Cc: guoren@kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	kexec@lists.infradead.org
-Subject: [PATCH 1/4] riscv: Call early_ioremap_setup() before parsing the DTB
-Date: Fri, 23 Oct 2026 19:16:09 +0800
-Message-ID: <20261023111612.2134-2-cp0613@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261023111612.2134-1-cp0613@linux.alibaba.com>
-References: <20261023111612.2134-1-cp0613@linux.alibaba.com>
+	bh=2JIr32shhDAdFV4wsdsTH1dxV1roHF7U6GHSm//gPNQ=;
+	b=4sZH2G1lMl9OZRiG2PWTfB0FDUjjih9ea8kGcjA+6oxvD6pKRGzVqBRBnAcFX3e4blyl5h
+	b6jvnZ0NVzXPtvud3Ny9TksHNQsHdtyPwzqCtq9IUcgjZYwDCJ1wYAIv9BjqhLDy7nv2KI
+	aaRjjzahuurNg3W6gI7O74AeUBIrmX8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ixSxhJ1+;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792754537;
+	b=HKeT/izF9s42cPgMR8ZfPfdTHj7pqB4hlTkMKKcIA68B+x9Ib4VpZmjR+iNiFCxOJ2ywhG
+	3VFhiJSlJvtXPAxs24MTH5HYlt468S5pg3OXi7/GOvPW9WTovLuOtO9VgBFgdWkH/Jrtzx
+	iofDBNfkVQ9hRwR8f1CioU+vG6OwSFc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED3F11691;
+	Fri, 23 Oct 2026 04:22:12 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6BE893F7B4;
+	Fri, 23 Oct 2026 04:22:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792754536; bh=pEs3PZgwiPiqg6sjwJKr14el93Iv6edM6dGsgzxNJl0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ixSxhJ1+Dmcvys/GZodc/+Jt78DSK1F+KDsahqOP1t17iU5/s1dFp6AHOvHfZ0RX8
+	 zUkOa7zeXfylmXrT6WH7q1TN9ptVS9xK92BqBWue/SJ7NrlKTjjUFLhfanIEp3hAJg
+	 F59g27ySewmTyN0ZYl4/69ocRJLGqL+8SEJBX6HY=
+Date: Fri, 23 Oct 2026 16:52:12 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: "Shubhang Kaushik (Ampere)" <sh@gentwo.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Shubhang Kaushik <shubhang@os.amperecomputing.com>, "Christoph Lameter (Ampere)" <cl@gentwo.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc: reject overflowing vm_map_ram page counts
+Message-ID: <y5yuwnmvq5nouoitqj6lloz6hepha6cf6vmh42rer2zhgv32au@vbvr3ohn24tf>
+References: <20261022-vmalloc-reject-overflow-v1-1-5fde0042ffb9@gentwo.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022-vmalloc-reject-overflow-v1-1-5fde0042ffb9@gentwo.org>
+X-Rspamd-Queue-Id: 2B36C140007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0809840003
-X-Stat-Signature: mq78dqtti4koj5hth9pe1mipz46h84gd
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Stat-Signature: o41qy86adtdnocgqr5ry9yg9qbcts9yg
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1792754188-597455
-X-HE-Meta: U2FsdGVkX1+2Ku03hrdEjs/UKul5cBwqWc4acNkbaQZzkIlezyw2qs5csH0XWpm+qkww0EZJKMGUekE8TH4+GEmfLzt9glcy9UOkZf9oKNW0XVPOZqPsvGiMks616phkuUdDhgrOVw9V4qBMFjLUBXg7kjsUa3MfUfmGki9bjNpamMUOlYWH9XV88KZBFTIk4GIxQARvDVtCi5j9D99OzOmnw8DhCOvIQqHlSYSIW8jYTcgAUNe6HGCXepynjN0o8flNJPozeylZ2s/MCKpAG4BL4gSk2DFmK1htL5dh+HWpGz6X6HUWJISnOnpU4hPkJqTKQ/MFPJJrdTekGstqWcb52g1qXDhLz5k6EbUIcUV+Sps82g/NFOVwEEW8/Jc8oek8oMvlLVcQF5CISF7itWIiofDACo/CX+f96BCKhTFRrGJI3ptd/xqR8L12p9/mrvSsFP7tn3CfM0c8FRbG27d4tfkNSlReSEMuTbLF8Monc0vU63KSyMokL+lW/ctSdOfywSMLaAw0jzJVlLczT3enZLsEA6Dl7ipyPlWykQ4arKN2/Wkk0hM40EVubqCi7TVunLtyQ2TNijZR89+G5DfYcBpm9poVNDy7iMvTvtJjUcMC9E7E6xsPOea3Fh0cLscLWB65NyzQgJq1X2N/vZOBI1TFQb/6ocXrwiptZslUvJBAGrFdG3177cfgmU6Vs/2rKexguSC1RNexGr2cVXKfK0w5RizWeSOYNosOB9478/nqPrs/Y7uFD/ROk+3q3Rpo0nwSAdqNm5P1dvBwYh6U/CUOMH/9cmQurezY3kAnjKFZr+HpN5yGGJagblUBq8Vo2nERG3PjMjabk8d9/7kkSWhbh2VJZwBzeY7f6WGtyF8gZF5ZTzrQQRV0bFjzYnZrJ6jOj/wa2zXW7ca6bgAoGYVdcV41dmQI1R6izJyQH3jEvLlcjY6mOf1eb457ECxiRuiq3vN4mtX6c30
- X+BJ6voS
- klEb5lOOpXcU7vC8qXJkkOW4SQezjwnulAjnPhVRn2l2ygqWTcka6XGVe1UoKV+e1dC+sFyGi2h1MqTAOSZ4RUVMZOZQNHiUqm5yqEvSKFe10/QnuqnLT+qJjkOgVngCrS6/skgQmOpqhS3jLYGHIrTFr4Z2+fAdlo0dNaXnsDbPRcG7q950PEHKlFke7ixDNc0oLViiocAzMlkWzBQNeIwjE25IAwtc3i1LDcsJqs8Ye7XwqBfNz+T0KrCWddFS9tzkH8sJjGd90N1PiKv5VX8VAp6/KdzCaXz6eYNt6umUGrwo=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792754537-891359
+X-HE-Meta: U2FsdGVkX18Ca+8ZwKSk5ohiCW3jcNV54hB6ivBaTbU4R9eyKgd6pfHsg+DcZKWj8BAIQFpPZpoOMuOGvhrpCfI5JdL8WgntdmkLG51RPG8idP5euUQeycWZ6F5LboSscWtlLJ8IZw4b+j65dGcgRh7o6s0SyoRijTPqBJLoNDecCyBkbz3eF6GLUtBHuXg33YyQtEA94HZ7I6EN3W0DXx7qVTka1xB/iiqmVbjpQuaDT2Ga3sVAlCs6LDq48MNUValwwFVt6fSSEgD494YnNqf96qyI5pRMncvp+g9bZuMRJ/c4lD7lx6oUtcvSkJcimjj631fOAfKrj54InRkqUJ8iXmP0ijEHHiknZ55/mj2Oviz/c9eOF6kJIae0Ed4Y4l7cPVn+AU8DQpQruKhSHXYvekQ/TbSt/nPcxgjKK9kpL/p+hi+j8x60hK7e6vgaNnFLQPlneke2AUVj2xDqMf16PNgbRlWIh7/1sSaSTVTWrR8wG52rbYAh9ovvjt7uSuQ26n14QehqsFsa8KB3hBWHtrIrvpGUPyZkiH5OiZlNVffFwHF8vax5i0lknedueaPOfcB8EytBEqHCNcwil1kj5Vlz5p6chC1TjMEgUyecGclnSOI59ZKIXmU3NhbX1+PVEja6UttXBxTem7/QemXx6/GTt7EFzEn8yVJez1HLMhxnug0Ec9Zfk11mohCZZTsX5rZyIlIltX2SdCE/Pm3P/Slc58/2y2bC/1wtxVAcZXCknEfCE42TZG0qk/slVksOa+D0kUPxQ7ienfZa1gcsxV8cXlwF5j7crn8v3+Nklf3+Tpzlc6YGqeL77zljy788f2NRdoxCtaxtc5lmq8NVS8OJ5aN4yKIG9yXD1XUtP3pjvZ8W+1FvJGXBmS9eeMOLeg1kLl3OtAL8um7jvS6TakMiUl8BOqBSlYX3fwfNUf6KLXD7ogJ2g8z4JLNWID6G/ct+/LxxVIooaEw
+ XcPF92Uo
+ Lh39JI19qXgCqesxWzjV0VHtxmmo3ogTmscGi4+nCnegqdkhe9ss+8Ec06OLG30s3WcNBS6y7rzviu0fzYuAcKWdbcL922EH+WFYxwElyQNXHyXo804WCb9Yn9aivDzctJPpbT2lkpeNOz7bEFXb2itoyzD0ul8QjGKF9W2mJA2O2tUROuCfpRG2elnhBKMtpGjj6VjOzRx3zsVWOC3yYj1okt32VBI6PwOF7FUjvea9M4boBSmv2DdF85SWlbLAsMAM/6aSb3Dk1GTC4g9PzGyS7Ejn26Em3ERUHCfjb/HmZZiKmTvluzScJ77vfcB/rl4Uuaw8CdMxW0KJ806OnXLh4to+FX/eSgAzmp9P0Y4dGizswHDISmJtow+BkN4kyS4Ix
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +92,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-early_ioremap_setup() fills in the slot_virt[] array whose entries the
-return value of early_ioremap()/early_memremap() is composed from.  On
-RISC-V it ran after parse_dtb(), so an early_memremap() reached from
-the device tree scan returned "offset + 0" -- NULL for a page aligned
-address -- and the caller could only report a mapping failure.  This
-stayed latent because nothing reached from parse_dtb() asked for an
-early mapping before; the DT based kexec handover parsing is the first
-such caller, as kho_populate() maps the handover FDT and the scratch
-descriptor array with early_memremap().
+On Thu, Oct 22, 2026 at 04:35:20PM -0700, Shubhang Kaushik (Ampere) wrote:
+> vm_map_ram() converts its unsigned int page count to an unsigned long
+> byte size without checking for overflow.
+> 
+> On 32-bit kernels, a count greater than ULONG_MAX >> PAGE_SHIFT wraps
+> the byte size.  vm_map_ram() passes that size to both alloc_vmap_area()
+> and vmap_pages_range(), so it can allocate and map only the wrapped
+> number of pages while returning success for the original larger request.
+> 
+> For example, with 4 KiB pages, a count of 1048577 produces a
+> PAGE_SIZE byte size after wrapping, allowing a one-page mapping.
+> 
+> Reject page counts whose byte size cannot be represented.
+> 
+> Fixes: db64fe02258f ("mm: rewrite vmap layer")
+> Signed-off-by: Shubhang Kaushik (Ampere) <sh@gentwo.org>
+> ---
+>  mm/vmalloc.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index bea9f76ed7e74247d4ce919250c2f02dd5c36483..e98d3aa551fe205ebd9826daad9ad6bd578b91ea 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3083,10 +3083,15 @@ EXPORT_SYMBOL(vm_unmap_ram);
+>   */
+>  void *vm_map_ram(struct page **pages, unsigned int count, int node)
+>  {
+> -	unsigned long size = (unsigned long)count << PAGE_SHIFT;
+> +	unsigned long size;
+>  	unsigned long addr;
+>  	void *mem;
+>  
+> +	if (count > ULONG_MAX >> PAGE_SHIFT)
+> +		return NULL;
 
-Move the call to the top of setup_arch(), which is how arm64 and x86
-already order it (early_fixmap_init()/early_ioremap_init() before
-setup_machine_fdt()/parse_setup_data()).  The BTMAP window is mapped
-into early_pg_dir by setup_vm(), and RISC-V neither calls
-early_ioremap_reset() nor defines __late_set_fixmap(), so the virtual
-addresses stay identical across the switch to the final page tables
-and nothing else in setup_arch() depends on the previous ordering.
+Could vm_map_ram() ever be called with such a large number as count ?
 
-Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
----
- arch/riscv/kernel/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index d79f99b86033..45e2ef9d32fa 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -308,12 +308,12 @@ extern void __init init_rt_signal_env(void);
- 
- void __init setup_arch(char **cmdline_p)
- {
-+	early_ioremap_setup();
- 	parse_dtb();
- 	setup_initial_init_mm(_stext, _etext, _edata, _end);
- 
- 	*cmdline_p = boot_command_line;
- 
--	early_ioremap_setup();
- 	sbi_init();
- 	jump_label_init();
- 	parse_early_param();
--- 
-2.50.1
-
+> +
+> +	size = (unsigned long)count << PAGE_SHIFT;
+> +
+>  	if (likely(count <= VMAP_MAX_ALLOC)) {
+>  		mem = vb_alloc(size, GFP_KERNEL);
+>  		if (IS_ERR(mem))
+> 
+> ---
+> base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
+> change-id: 20261022-vmalloc-reject-overflow-e532c556f3fa
+> 
+> Best regards,
+> -- 
+> Shubhang Kaushik (Ampere) <sh@gentwo.org>
+> 
 
