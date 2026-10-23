@@ -1,137 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DF8606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FB8606A339
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=XosBg3rY
+	dkim=pass (2048-bit key, unprotected) header.d=colorfullife-com.20251104.gappssmtp.com header.i=@colorfullife-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=wGl1C3d6
 Received: by kanga.kvack.org (Postfix)
-	id 778936B0BD5; Fri, 23 Oct 2026 15:26:38 -0400 (EDT)
+	id E39316B03DC; Fri, 23 Oct 2026 15:32:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7561B6B0BD6; Fri, 23 Oct 2026 15:26:38 -0400 (EDT)
+	id DEA546B03DD; Fri, 23 Oct 2026 15:32:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 618896B0BD7; Fri, 23 Oct 2026 15:26:38 -0400 (EDT)
+	id CD84D6B03DE; Fri, 23 Oct 2026 15:32:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 35AAF6B0BD5
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:26:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 928A4120176
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:26:37 +0000 (UTC)
-X-FDA: 85354872834.11.EF12CBB
-Received: from rusty.tulip.relay.mailchannels.net (rusty.tulip.relay.mailchannels.net [23.83.218.252])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 233D2A000B
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:26:34 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=XosBg3rY;
-	spf=softfail (imf15.hostedemail.com: 23.83.218.252 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 971986B03DC
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:32:31 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECC9A401F7
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:32:30 +0000 (UTC)
+X-FDA: 85354887660.26.84AE856
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E8B24180006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:32:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=colorfullife-com.20251104.gappssmtp.com header.s=20251104 header.b=wGl1C3d6;
+	spf=pass (imf16.hostedemail.com: domain of manfred@colorfullife.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=manfred@colorfullife.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792783949;
+	b=KZdp5ZYj3MAFFpd5n01QwO/3U2npawlkaVuLNYng7s/M7culwQFToKO8DKF6VvkqpVYshC
+	ew/00g7R2hbLeaatkvgiYAAbz7UgrjGEr59HxTcGuaOkHOuA8nWkkoHpUZeAEK9GiBg0bj
+	TOYHWM1f6rMuCwjLwD/TOoHhu7iLFko=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=colorfullife-com.20251104.gappssmtp.com header.s=20251104 header.b=wGl1C3d6;
+	spf=pass (imf16.hostedemail.com: domain of manfred@colorfullife.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=manfred@colorfullife.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792783595;
+	s=arc-20220608; t=1792783949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0nfMQHsA9FdKA8Y/f3fNR+GnrM1jMaIDHAb/EY3SqX4=;
-	b=DqGdAQ85awAMRkdaOnpv9Aw1n+Lb5hczYJUq37Nszoy6HOqYLJF4EmnHVfwLXB36Gm81fg
-	mQAyZENB1tXclBRoce0q3mT65EJWk4s+Q0s46v14VKdHNuAM7qVrPF+Pg3qtL9kaGXNiPY
-	N8i9hJr6eRZk5bM7SUHEzXxPQNWDQc8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792783595;
-	b=oO6DDhiGpxS7uC8x+BmT+kVtxfmlv2NkI2YskQJRZJwhTjZNvRTeGNiiKlGh30OLvD+BEr
-	d7w8ikXV4HcyLRLPbEsM07IIRoHBJORGnGNgXkgO7qoj35q+iUprKZzsKCk6A65+amjRQr
-	lPufQv6D1yDnZCOhfVwRGg11DWt2LLk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=XosBg3rY;
-	spf=softfail (imf15.hostedemail.com: 23.83.218.252 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net;
-	dmarc=none
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id AD9773861D5;
-	Fri, 23 Oct 2026 19:26:31 +0000 (UTC)
-Received: from pdx1-sub0-mail-a203.dreamhost.com (100-96-7-166.trex-nlb.outbound.svc.cluster.local [100.96.7.166])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 515F6386065;
-	Fri, 23 Oct 2026 19:26:31 +0000 (UTC)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Print-Harmony: 033eb3f044415263_1792783591484_1067607383
-X-MC-Loop-Signature: 1792783591484:1481457281
-X-MC-Ingress-Time: 1792783591483
-Received: from pdx1-sub0-mail-a203.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.7.166 (trex/8.0.2);
-	Fri, 23 Oct 2026 19:26:31 +0000
-Received: from offworld (unknown [76.167.199.67])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a203.dreamhost.com (Postfix) with ESMTPSA id 4jBCgV2X4ZzVg;
-	Fri, 23 Oct 2026 12:26:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1792783591;
-	bh=0nfMQHsA9FdKA8Y/f3fNR+GnrM1jMaIDHAb/EY3SqX4=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=XosBg3rYGiyqQ56baoxZS6EN9KifLnZHr220PUrYtMgFLUtnJDW73pu8xYnmafcRW
-	 IopT9it/YFmIzLUMeYvFZ2G7U2x7knQ6frnTdtLwiA0VYIu5+jI0HcGlJzbBucs/IK
-	 iJXmJxz4CHL6V0qiG0geb3B20SqP8kfp1KJueur7Wq1TiLnNvN2dFkEgqnPmdhdlxx
-	 /uurKGpvj7OMucvS0aq3hJBM+jc3bjpGYI9ck4VrCnZO8fe1lzQ0gKNbxNVajyCILL
-	 IykWEWmW7pWOB5Hr0ulhjUyyXXXsUVfU2Vt2yqZ5IBELVfJImoyKF3eDBldk5NbunV
-	 OZstxLWLTcn4g==
-Date: Fri, 23 Oct 2026 12:26:27 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, SJ Park <sj@kernel.org>,
-	Kees Cook <kees@kernel.org>, Colin Cross <ccross@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm/vma: write lock source VMA before duplicating it
- in __split_vma()
-Message-ID: <20261023192627.yj5ltdj4fjzydblp@offworld>
-Mail-Followup-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, SJ Park <sj@kernel.org>,
-	Kees Cook <kees@kernel.org>, Colin Cross <ccross@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-References: <20261023-fix-vma-atomic-v1-0-8ff4fae1fc85@kernel.org>
- <20261023-fix-vma-atomic-v1-2-8ff4fae1fc85@kernel.org>
+	bh=xQ0ZY845r5Du+UUOa8gVSKQGxBME1IJCKr0CS/df4CI=;
+	b=mSMM51vZY2QBWmBXYPpA/FCWuO8ZbnClNfolXNoqzncdf/Upng9HpkZF4buWVS7C16Aa/E
+	jzqCxGcEyyBEGCIy117p9l/ksbZnpD44pogCqgD3xlXtm273J06kAUWG68iLFfSLdKmKqx
+	bMcc3jQYbhAv+Rk4A4XxXhtjuDB0Djk=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a3517554f7so2169855e9.2
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:32:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=colorfullife-com.20251104.gappssmtp.com; s=20251104; t=1792783947; x=1793388747; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xQ0ZY845r5Du+UUOa8gVSKQGxBME1IJCKr0CS/df4CI=;
+        b=wGl1C3d6tlO6G4q9BbcNP6z8xhOznzUAF7xPDT6u0VSugnM2Ked4X4zbxCiINeL35P
+         HyN4uI5MIAenzk/2lwHyUewMvYfNi1jKv+ZWizb28vK4muL0Mbw0gmiIDmpMgo32cI/3
+         SGpSRtQncEQ9W1AWTRluX9JTMYzaMJY8MttKLRmqS69wMLf2jIFINAlb9yMLv3GyD+gM
+         vdM7kEB6pJlBAmrK/1gsVOZBMq0kKqqlRLwwmQFLtEzdZjPqjeB764xEGlOrfoTvtCAw
+         yMUmp0Z5LGKT+476Z1PqoUhG6dp9kkOUYJVlDfMB8F4SF2tbhoT2eHAOi/7g+3gDtTbR
+         1k5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792783947; x=1793388747;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xQ0ZY845r5Du+UUOa8gVSKQGxBME1IJCKr0CS/df4CI=;
+        b=Qz6PfTl8D6ycGBNwBVouak+Z+I/d/+GyPheoxCI4UCJ9dE7Qp53uTF4DmyWIkQQPzw
+         TqCpi8sIVhCeg/idRyr4AP9tIVgDbK8X/jl5L+P+f9gUpZNbnuTix2RnkBpuJOnbk5Rh
+         EjYHlqm4EKfxLvZ6UVQPgb8jlOZ+WjtuIhTqg3D/4f/L3qX9fmIDoZmG73pfmlR705f2
+         J+Y1h+rNpak57pvW8S2DWXedrw8yDPNMV4lDcB+CS9dCOTbIpLRgNx1zmsRM3eUkRHtd
+         ne64Mm27a9LfRZoUbXfq2mfDoTZqjl/3k0b40k2cUsqf12yNivwm7AUAFYHCz44qFGyL
+         ifPw==
+X-Forwarded-Encrypted: i=1; AKwUvByktFf2AasnaT+eVO+5PFQaDDKeToEhbvri+nSAHOYo1w6DSbm8wdWHseTRPstVKFnIQdlu+HfBaQ==@kvack.org
+X-Gm-Message-State: AFq9FYIuPc6GJoPiQvfgyrAEB84wtrQnfEiBkqkbr19P3HnAEiJCoMwV
+	mV7E/oGIxi2/Rrr74SFFWVk9WROCgBcBvO1IhC30vWA1OTnS4DWSUuciyRsKpTsEcQ==
+X-Gm-Gg: AYBFou0kNxHEpX9gpMe7MRELH8DdK7erYimdsBe5Ta3Tp2gCA+gCZemZnV+7SoIX8gN
+	NQbqQqiqZC4xM1hgyH7PZS/T432YI0afoHPb3H+NlMhbKOh0JDznvoJOQKTq0mt3aXFzjjxLNYS
+	LMrXGSwO7acMkYLlqF+D6OicB/rw2a7aAwqCuKaA0+lkGXyElZSwvQGw6ioQStgZeqCma1gP6Fs
+	QPXidGBJEGLNWq5AXrPzuWwYBzU400YDLTQQv4q/oXwKEzu3ef8XEGK6zObGpKqA8btsA57wJMp
+	+rnKK+5wWkyJjHlaVIhZ81+u+uv8gb39OOLgwhjFVHgBrHtibBAkb+hQMVsuvOjuYLO+fqMfYya
+	kJiJrz9wP3IlAMYRM5KTuGMz+TjC8cljaDfsG5RoMIEY2Mbipu74cwMrIv00pzBAh0+XWiHgysj
+	m2ea5tEyMZ/bv5xMv/08VL7KzIWU8/UdjfzFRhOjvg4XFW/pBKoVTX1cZ1qiU3lAucMQ2xb9wQ1
+	/4IN5npZSGOTd1O9OmzgCjPwkh8P9NUSI+dR6sXL7qYCh46oxx1JpriqT2+Hd1CAoVbFxbqrWIs
+	2t79Rvu7XsZaF4+8ovRhc2ByqAQmriI3JPJKpjc5FCp2uRn0Vd5H2u+Zr7vAG0Hxk6JOp7umu3A
+	M0MgH6h8GTw01vmk=
+X-Received: by 2002:a05:600c:630c:b0:4a2:5ca:767f with SMTP id 5b1f17b1804b1-4a211c64f9emr57232995e9.4.1792783947346;
+        Fri, 23 Oct 2026 12:32:27 -0700 (PDT)
+Received: from ?IPV6:2003:d9:9707:8b00:3fa:3a3e:198d:ab69? (p200300d997078b0003fa3a3e198dab69.dip0.t-ipconnect.de. [2003:d9:9707:8b00:3fa:3a3e:198d:ab69])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a359fb08d5sm14180055e9.1.2026.10.23.12.32.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Oct 2026 12:32:26 -0700 (PDT)
+Message-ID: <9a3aa73c-7b62-4f1e-983d-cf22d45ad86b@colorfullife.com>
+Date: Fri, 23 Oct 2026 21:32:25 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261023-fix-vma-atomic-v1-2-8ff4fae1fc85@kernel.org>
-User-Agent: NeoMutt/20220429
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 233D2A000B
-X-Stat-Signature: cfo5rdhwdqkrpgr4b9hikqssm1nbkmbd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] ipc/sem: remove obsolete SEMOPM fragmentation
+ warning
+To: Yingjie Wang <x-professor@outlook.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Alexey Gladkov
+ <legion@kernel.org>, "Eric W . Biederman" <ebiederm@xmission.com>
+Cc: Vasily Averin <vasily.averin@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Michal Hocko <mhocko@suse.com>, Alejandro Colomar <alx@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
+ "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+ "linux-man@vger.kernel.org" <linux-man@vger.kernel.org>
+References: <cover.1792724953.git.x-professor@outlook.com>
+ <cbd5dc183943d2177e5564f6e8ec92499836c7e5.1792724953.git.x-professor@outlook.com>
+Content-Language: en-US
+From: Manfred Spraul <manfred@colorfullife.com>
+In-Reply-To: <cbd5dc183943d2177e5564f6e8ec92499836c7e5.1792724953.git.x-professor@outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1792783594-915522
-X-HE-Meta: U2FsdGVkX1+ievOMVsGHMDbr37CJ3BNCiqdaidRZZikJwBATNfJZUQ5FKdeGLBYBLheWiFZfn+TB4S46NGGsge8/a1a7y/MFUkEMRUoJGhOyGOrORk9OYp+3+9G8N5nhb7Xr+zECMgq1WoBNWZfd2tzw5DBTarksoLc6UPMhokVMgPCiwwQ2F/PIBVl+2fG4RoABZ7ZIFAN6T+mkFPrywdCwCeBde1OhycmchMzN5adqdJtsdHWELhmByLbd3XcOUObSDKAhIwuQdQBZjdw1osJ0yAwMvw/btfMWjhSCTjN3A/4xqxnA7g7zyBEjQC94r/+c6R1uX6gEXqbDof3J4IARsb+SKtKYdXg79vzlv4tUJxgAdAFZ3EnbqXfST3MMEdQ5QEYLenainLIycSdOAbaBsnw0gHVoSMgJV9kTUmBzBo/HoTuRLTJXgD4qkv7ERCUHYFhqFuOfYRRfVQABadi5kriFr8fNu0s6hxfAJa2zort0MBwdQbDLh8zMkztwt32U+WcqjDWyVBiPkBBAjmOfHU6npvniq5zINkAi5n2NQtTMVMTdYqnK/bXCnAGeFN8stVHFPznTZ9TkLQBC4EpJC2g2fNfKBMVLhh8ywBdGVRjhb6LN1l+5rqzIKaTcakmpeJzpcAuBANIlRLam8A2i51WJkfD7ZyPYFa6q2Bc2nJGFEOT/U7J62wXHxgY6CrLELXqL8iv+xtWYz22f1grtOGscfFKSqz8qvcFyeTXGInRja5zNHupuhyT5O3r8e/isCulHus5LUH+7gxwGcEBIU2E6GHYNbrycwJmxmV2HRjPx1fvoMvjSbGe+TTLWDZ0NmvlqBYcdfkStjiPBFihhGemTaf9I99TZ3eL6gS2tZc+9JkU8J1xbKaPDu61MNUmW7wJmc5TOo6dyVqRGlBP+xf5MEmgMkkv837VE/r9471anHWKMUJfKoE/iQzQlcfUlqUKeB+DKhGkNKRF
- SJ3j5fL0
- YSXv1IR83NIzlWORKkakPBWMhZXQdeZVp0DsQsN0YU9BSKVlKpXVNGYayBiMHU/NwubWa8Lv84Ugk1CnwVAF147wZi9PMQAoFzA8QhhcrIH3ti2tJGsrmQBxX/sZlYlhtqRoqEPnYOXOzJvARe5zvln63Lp8uOu7OqC13cdZ+KbbFJXIVgfFcwpfy0HRkLt7/VpwwjXEDQ3pSu6J2CnJqYQmAN0kC1an92t+xLMqfk7c80Zf3mNfm/k6mBUxgCDcD9Iqe+BFwehFxMC3ip6FUxGpIAgbuQTQT8RArtkXIg1VeBynqMjLn32Qsek24Ko4a0Y20n1nwQLl0JB50M1GAzla4rjtk1dNhAVxQKThU/Myu4irA8elpzk+DuSFeBRRfbGhyKkbcjBW1sFhw3U3xDhBM3w==
+X-Rspamd-Queue-Id: E8B24180006
+X-Stat-Signature: odqxbcm39xa8m3dmr15h7mute6mdm4yq
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792783948-593046
+X-HE-Meta: U2FsdGVkX1+PbrXFxqUAA+5iM2V5yszTu8GPcnWKz73Jthsnbr5Ai5Pt0FC60X+7WDsi9n9Gvteok2u5YzQB5DdZR9O754Xm/yPrhYUp5quIZQ6PHj4divo+1Pp4q8ubJLJfNiltv1wHSnQXWPHJrxtmeM4URx77r0ZKClptCoJTFWqGCYUyIwBQDvI88iQA1kJh7iF5QV9MQKlprNkeokRHUrS3n3qISQe4+jOEmOEb3BW7ICK2x7PJf1pccH9Ar+F+y3MCJzLo/CG/g7A5qJB91ASWwAU/yQB3Khf1+Nv0PeCJMrLfTs/h2Sl8NDvjIHYGEv4tY8FSlbo7N9J6y4BL9MLMIQp2v2bTOm3oN8X0H/ikOe4YauBtxV1O65eVUHVOyMdw0WKKHwe1A1Jqe7znYl6w+OMe8ZK8ivv8iqtbT6PFhT/OspM4OidwioYmV5APIGgD3SbaSFVJGLa24Xj/VMJakOoEKvTWE7ItPpVgEnPWlFy6AKJnucG9JcVaGDa6jtPwlTzcGTbYIuvIAHDJW1XqBHPKt8XFzTO4O/mL801q8xVEXB5tfTRQ7vTHMjChMtOpPwZQsmKMyKqZSwPVnwPt8ysNHpKsI0MJFZw+VPn7GS2/zoDuAYwJeDjNbSO2V0EG7Fi/NxlWLueLN8RQ0a0bZZgDy78yGShzHu7HVAZkGsX/hPZOMKtOZcFkNITQbDo1WCUgufYq3fhGNb3fvnF5nBmqFrQG8ueY62yYHGQgIdNs8VJcJkLAj7fKAm/K42phD/g+S4UYeSjBsg+6/6UXuCNaEAV9TcNIZfa442k9+klUPJBNjzUQLXEieFW0maUAnVsK1duDsXKSi2qhqgPc2mFkBbTiQrWBfIE0FDcWNFbTT2709bLwB6zPEfKGdf0upF9s4CgFNeLP0H1kPTA/J+ipu921gx4ggOFmsX/frMFSQvwax5D8pSQAz3c/ZDSIlU/bH/zw4MN
+ JnKDF+cc
+ g9P99HASNB7W5Vl0uPtlTRJMyevVfD/2OZM8xW65MmCSdOXrE0T3aG/9Cv4BJfhkPAVjkxP6+RcytPpfyWyXcvgAkKJTis80HLD3/AxZAOm0aIgOK+tcUGzdRy4g22VF1ZNl7eFdEW93d5DoiECQIceEpQ35ZI/xZKQK+Afi5hOjwIzGpeCgkFLR9fGh5qgQnbWzDi6JYdsA9um6kXvF1qnrrLapvuGdLwW6mBtmTcjLTuKDt24aLe66HTAqEw14pENIQCgBCDRKKXL2LVYtqoz0jtOJt7KeWI47xLl7vTluCVDl9C4fB6vt+YLq5x+M/A9iwE0X3+UuKhPJPPuj+7IsjVtu9+wMZF443BlLGsW9cP+V1Dbjextx/XEeaWHvJ2S1yQUEV4p/Dpl0Vzb5xjHmZP2+kGLOUJo2A3NZR5kFKaqRXP/gZ2eAdmxFSvH4998hbEoaHRaa7QQRatc/Gnm18kl4+FfyyFjz3V7NostCIcxdzCms4rv4jp6yw8mMsBQ4V0fm1bq4gAaKdXaLiVyt1YA9d/MIAaxpwtMmRRzpfPJeGUVpRiuLMqg1/Xx8DAbkXn1ujYPsE2kxnMfeVL1zGdYOmQ6fvDTfOz8PFph/9CZo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,76 +139,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 23 Oct 2026, Lorenzo Stoakes (ARM) wrote:
+Hi Yingjie,
 
->From: "David Hildenbrand (Arm)" <david@kernel.org>
+On 10/23/26 5:19 AM, Yingjie Wang wrote:
+> The UAPI comment advises keeping SEMOPM at or below 1000 because a larger
+> operation array may fail due to physical memory fragmentation.
 >
->__split_vma() duplicates the source VMA before taking its VMA write lock,
->and until the VMA is write-locked, a concurrent thread might set
->VMA_MAYBE_GUARD_BIT, resulting in the duplication missing the flag.
+> Commit e4243b8062c1 ("ipc/sem: play nicer with large nsops allocations")
+> changed the operation array to kvmalloc() specifically to support larger
+> configured limits, with vmalloc fallback when a physically contiguous
+> allocation is unavailable.
 >
->If this happens, then fork may fail to duplicate guard markers and, if a
->file-backed mapping, THP collapse may also discard the markers.
+> Replace the obsolete warning with a description of the compiled-in
+> default and the runtime sysctl.
 >
->Resolve this by taking the VMA write lock before vm_area_dup() and, since
->all callers of vm_area_dup() now hold the VMA write lock, assert that this
->is the case there, and add a comment to explain why it's needed.
+> Signed-off-by: Yingjie Wang <x-professor@outlook.com>
+> ---
+>   include/uapi/linux/sem.h | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
 >
->Fixes: 2ab7f1bbafc9 ("mm/madvise: allow guard page install/remove under VMA lock")
->Cc: <stable@vger.kernel.org>
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->[ ljs - add VMA write assert in vm_area_dup(), commit message touchup ]
->Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> diff --git a/include/uapi/linux/sem.h b/include/uapi/linux/sem.h
+> index 75aa3b273cd99..cfd772f4c3396 100644
+> --- a/include/uapi/linux/sem.h
+> +++ b/include/uapi/linux/sem.h
+> @@ -71,16 +71,15 @@ struct  seminfo {
+>    * The values has been chosen to be larger than necessary for any
+>    * known configuration.
+>    *
+> - * SEMOPM should not be increased beyond 1000, otherwise there is the
+> - * risk that semop()/semtimedop() fails due to kernel memory fragmentation when
+> - * allocating the sop array.
+> + * SEMOPM is the default maximum number of operations per semop() call. The
+> + * runtime limit can be changed through /proc/sys/kernel/sem.
+>    */
+>   
+>   
+>   #define SEMMNI  32000           /* <= IPCMNI  max # of semaphore identifiers */
+>   #define SEMMSL  32000           /* <= INT_MAX max num of semaphores per id */
+>   #define SEMMNS  (SEMMNI*SEMMSL) /* <= INT_MAX max # of semaphores in system */
+> -#define SEMOPM  500	        /* <= 1 000 max num of ops per semop call */
+> +#define SEMOPM  500	        /* default max num of ops per semop call */
+>   #define SEMVMX  32767           /* <= 32767 semaphore maximum value */
+>   #define SEMAEM  SEMVMX          /* adjust on exit max value */
+>   
 
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+I think there is a conceptual issue, but perhaps it is today not 
+relevant anymore:
 
-... with one nit below.
+The values in uapi/linux/{sem,shm,msg}.h can be adapted as needed: Just 
+change the values to what you need, compile a new kernel and you have a 
+suitable system, even without sysctl compiled in.
 
->---
-> mm/vma.c      | 2 +-
-> mm/vma_init.c | 3 +++
-> 2 files changed, 4 insertions(+), 1 deletion(-)
->
->diff --git a/mm/vma.c b/mm/vma.c
->index 1be613044b4a..aa59005e2f42 100644
->--- a/mm/vma.c
->+++ b/mm/vma.c
->@@ -538,6 +538,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> 			return err;
-> 	}
->
->+	vma_start_write(vma);
-> 	new = vm_area_dup(vma);
-> 	if (!new)
-> 		return -ENOMEM;
->@@ -568,7 +569,6 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> 	if (new->vm_ops && new->vm_ops->open)
-> 		new->vm_ops->open(new);
->
->-	vma_start_write(vma);
-> 	vma_start_write(new);
->
-> 	init_vma_prep(&vp, vma);
->diff --git a/mm/vma_init.c b/mm/vma_init.c
->index baa7e82f47e3..d661f229a734 100644
->--- a/mm/vma_init.c
->+++ b/mm/vma_init.c
->@@ -127,6 +127,9 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
-> {
-> 	struct vm_area_struct *new = kmem_cache_alloc(vm_area_cachep, GFP_KERNEL);
->
->+	/* Must hold a write lock to stabilise atomic VMA flags. */
+Your change breaks this: SEMOPM is both the compiled in value, and the 
+implied limit when _ACCOUNT is used. If someone increases SEMOPM in the 
+header file - suddenly more unaccounted memory can be allocated.
+Perhaps there should be two defines: SEMOPM and e.g. SEMOPM_NOACCOUNT?
 
-should just say "stabilize atomic VMA flags".
+SEPMOPM_NOACCOUNT defined in ipc/sem.c, perhaps 500 or 1000.
 
->+	vma_assert_write_locked(orig);
->+
-> 	if (!new)
-> 		return NULL;
+And SEMOPM remains in the uapi header file.
+
+Minor point: So far, the format of all limits is identical. Could we 
+keep this?
+
+#define VALUE 1234 /* <= 4321, due to whatever reason */
+
+Perhaps something like:
+
+> -#define SEMOPM  500            /* <= 1 000 max num of ops per semop 
+> call */
+> +#define SEMOPM  500            /* <= INT_MAX max num of ops per semop 
+> call */
 >
->
->-- 
->2.56.0
->
+Reviewed-By: Manfred Spraul <manfred@colorfullife.com>
+--
+
+     Manfred
+
 
