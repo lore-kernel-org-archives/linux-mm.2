@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70964606A333
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC287606A330
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lEppA5lV
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=WnA9bELu
 Received: by kanga.kvack.org (Postfix)
-	id 932966B0BDE; Fri, 23 Oct 2026 15:54:49 -0400 (EDT)
+	id 821936B0BE0; Fri, 23 Oct 2026 15:54:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E2E66B0BE0; Fri, 23 Oct 2026 15:54:49 -0400 (EDT)
+	id 783B26B0BE2; Fri, 23 Oct 2026 15:54:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F8B36B0BE1; Fri, 23 Oct 2026 15:54:49 -0400 (EDT)
+	id 627606B0BE3; Fri, 23 Oct 2026 15:54:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 565456B0BDE
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:54:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA4F1A76CA
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:54:48 +0000 (UTC)
-X-FDA: 85354943856.02.C43189E
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 20EF818000B
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:54:46 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lEppA5lV;
-	spf=pass (imf06.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C92A6B0BE0
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:54:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BCF5540210
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:54:51 +0000 (UTC)
+X-FDA: 85354943982.20.A39DB79
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E9EEB140007
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:54:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WnA9bELu;
+	spf=pass (imf09.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792785289;
+	b=mvDOavciu07XiGr9ProGCITuQw+6lwhkh6OW9rBcPDkihTsIbcfQclhj0VFQZCOIbvU3kL
+	xpqgPqlekBrKXKYx2rNw1BH0yYZeMBtXaCUkgpAVVR1MwbCt9t/MuyGnpVcTB3oHx3kkEW
+	6jz/E8FZZhUtbb6sq+BC4h8Fpc6VBQQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WnA9bELu;
+	spf=pass (imf09.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792785287;
+	s=arc-20220608; t=1792785289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zwi3GYLBUBlxRf6m2NubJmhIzNf7qgE5p10VsGudk4o=;
-	b=XdL5Ty+ZK5Lk7B6Gh2lzhCQUny8g304Vn6iiMB3d3cTQ3hV/ixoXJ+wE7fv7OPcS5apDnH
-	wTY064yDDVjbboi2ruUlVHWCZ2L7HY03uKG/vZmOMYEu1YpxqtueD0qWPoDVtE6QXWPb1T
-	Wss+NqCb35Tyi8sU141lSV7Y+/sVdYA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792785287;
-	b=LwmL5uK6r6Ms2K3wfwsuqyri6CFgCUBE4FiW4F6fJU/pHrbjvvd0Jr1FBKtCq2i+xns+hQ
-	K9v6WrczMtki2HAGs1doP2SJUqoeFXOQNegr/ZyKv3/JXCyD9hGITLg5ujOIIFbbsml0EU
-	/UlyDiIuBhFYBPjRnEhWK46da8roaW8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lEppA5lV;
-	spf=pass (imf06.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-675676afc3cso1528991d50.3
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:54:46 -0700 (PDT)
+	bh=oyKibSqm1+8ho4Nz7jrRZ3yeDtEDcgPdxxTeTW5ThPU=;
+	b=3c2wVnF3k22ZvM8ot7O8Zqmp2VNr4IvqqBLpeGgqVljDF+g/JdUnXsFUUnDHlRO0w4iOs5
+	/Yl9bycioTTYJJq2q/wt9AWlg5QSCxBcLIP2y+QchLayFFBnSmod7Rp03fc6x7Hp2arF7z
+	xv5hmNmhPJPUnaKAFRINs1ILVAG4qsA=
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6798c43a3d6so1009333d50.1
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:54:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792785286; x=1793390086; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1792785289; x=1793390089; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Zwi3GYLBUBlxRf6m2NubJmhIzNf7qgE5p10VsGudk4o=;
-        b=lEppA5lVsH3fH6T1/pvYfPz+l2gXndimr5F38DxcHbASIQRf11Nsx3tROWtZsrbWhR
-         7czXWchUnLXxXHDJT7VpUuNdJVmtDaVBW8S7CYUTpmvWsWC2JCU6GoNLFifr3kezPryu
-         k+N9S3Db67YZmlQfGcFQ0SamBstIrHVWJsdzrY3Uo3cUTMUuuziHMGuOvxR4XiSIF430
-         4iEBBCrw9Yoam50AL9hCnA6r0jfqqS5VVOf1aTzmSqWqOdIomAQXR64Eir///TnBMOH7
-         YxOPFt1FrUONOThiXMkkj1LqOqQ/HH5Tq5m/+H2qk3dSiWVMKVC0IR5kkCd6nW3NjpRe
-         kcYg==
+        bh=oyKibSqm1+8ho4Nz7jrRZ3yeDtEDcgPdxxTeTW5ThPU=;
+        b=WnA9bELuDs5N1jxmMRK7FyaGKwrF9I6QWbBFhIepjh+sftWUKeDg09npXH5c4viefZ
+         yCNRcwnTJQNw7PNxay1pWz2RE3AiBg+pc3A+nJ08qyoNu2eF51+dmKij/BpMivgsNMd6
+         JFJx0iWGSBkB72Bg6oJ3kD5bmw0XXybcq5R71DPZhQahKkZT2XfY4qzZ4zDm93SIgfej
+         YnGI7+PLeE52Ys8irDHsq4o+4RH5xHdDQEG4oizieoGjf1VVdUAmmJmGv1xLgGDmjlrJ
+         00G8WsdviW8oz7xagQgHT5jAZvu6plz4mjxw1kRmSvVrCAcRA1CpvIqjoa6OZwAyOJZp
+         4mKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792785286; x=1793390086;
+        d=1e100.net; s=20260707; t=1792785289; x=1793390089;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Zwi3GYLBUBlxRf6m2NubJmhIzNf7qgE5p10VsGudk4o=;
-        b=BEXmdyONjfqXFZUGtaskOBapys3KqMx7fAszOvOV7n23pNc/8QLkLPBVgqH307ZsOx
-         4dB9AE/Sn5VoDDRR1jMKVvikaE9vD6CQ8zUrMsj2wy/alw06tN4/mAivScI8Acx4HmPQ
-         MkxDTGonr812epsyudUwNs1IN/W+1ZkvNaLk4Epa7mXQxByvAwXxb8fYTUneqw8obJo8
-         jXDHbgSwPnsk017g72dQTSNTXVJ2Vk2XwpGDc9foPxxRNLXnTj19d+R/72CjapMQ8EVQ
-         wr1E1/mEmjScBdU9C6Ddc6HEQOriam68Leg2B7ZVesSuNS0VrTd33fMw28v3WhBz/rfu
-         mcog==
-X-Forwarded-Encrypted: i=1; AKwUvByF5pNRpAti3nOW2RzKM3qPu+JO9N1WIUdscGKkO3EGJdWaZu53583X3AaG0vTwtC1uBWKkYeDxHg==@kvack.org
-X-Gm-Message-State: AFq9FYJSOzpJg9pbTUZFjdhSEbE1M6LI2DQ+ysDU3zem/EP2Bze0sxaP
-	h85w/7Q48pHjGE7AeFyFl5k0o6HyAdJkmEUed0XTwa01UkxPFaTFv3NM
-X-Gm-Gg: AYBFou3jxW1CE+NFmIci53IC7i9DDtv0is/zBCFIfbbtnaLcxyocSGr2R3w0LL6OPXh
-	oO6rnnFfIsKxutcEhvee16HUBkDOt5AUONY2dSFjk3R/87LNlCHKXXXOuYq5DxJd+VAXb6qgAfY
-	acglywysQeV4O97StxVyLHOog+AkmL2tqjv8eXLSkicjf0UtxviKQnK9G7vdeDTkeJuylCKXZ0d
-	fdfl8diQiYmZCmQ4AmJbDaZywmuPawIEI+8bo1BjGGoa2XuutoLIjmVQIFovIlbg43lKMz5n52X
-	/HoXnTjF2eunqx008N/L5Rndh8/eIfiaOBwWomHXUS6p06nw0lEzH1Su7/PDNqk2i+9ilhTwWYF
-	8FcX9ORcsE6Rs9Fjbk7BxZAAlfb451Ftr7bY9SyF1/s0jS6qhCHIge5b4pdvyVd7xpDx3WOirsG
-	cl+ZJJkumOuvM0wZSptcFVwn49gtMedhcVKwmreApRbD9ChdjNbsbnTSEE9XvnSltzZWmqahhjU
-	ill8jALKqPse6g7JLsrxPgrxS/IQpY+hFA+9kWqXy2yDpseVD5AXGf2d1ID/VfjCSzOexNgrWZs
-	3Ut/K2FLux6vRW9TTrbnkoG74kYLwN/r
-X-Received: by 2002:a05:690e:439a:b0:672:a52c:daf3 with SMTP id 956f58d0204a3-67a454d11d4mr119886d50.102.1792785286111;
-        Fri, 23 Oct 2026 12:54:46 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:40::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a4622e78esm11114d50.12.2026.10.23.12.54.45
+        bh=oyKibSqm1+8ho4Nz7jrRZ3yeDtEDcgPdxxTeTW5ThPU=;
+        b=MIPSyQ/0oCj9vz1bUNSGOS3Mzw5qdR2435CCd+YLYQ4uZQpvAxNUEKgeiQB7542lNu
+         1pzZ8775SoNxrPty4cy1Sd/wlIYlxtiWBBbZ5dlgqO1md0qgZpYqfwTe1WIn8nUyJUvk
+         e80EttYThWV7qOF9ONnvu8rPIKloAfxUfGWPSQo+8cfouTdLKFQVZGw6yMvHFYdyY7Dz
+         tdbL9t0rCkWxrFa3EbNyo+yoacp666QMHCh0jBdL7Y0gMtD+Pf9iCyftMpemOi3LOHK0
+         tW3m+qlISfFHpy/+4Nn6oXfbJ5vE9yu7SkcPPELBjQ3hqdDeTgjT9Pt67IIDXai9x07F
+         3PgQ==
+X-Forwarded-Encrypted: i=1; AKwUvByHfCWuzbFRPs4qKkzb6dpdTkx/M3EhN7uIJMf2W5DrAfnKZi7rTZDrEpJnJj7QuVToxVGE7WVlsg==@kvack.org
+X-Gm-Message-State: AFq9FYJzgbmsuqUmHVM3EH/ix0ntKhAVI/Xz++k4s9UJs9UuIO+Rez4G
+	ssulK1EqabY2vY7CIruHsUStD11ftfer+y+cyIf1OAP+IXbxjSbCj6Y9
+X-Gm-Gg: AYBFou26/SZkxRvLNjNI3Pnh/GSNC+kg475ccaTondYVZI7irxs6xEZg8dh2kCqPFNQ
+	M69GVrjNmNQi+E7kY0+Tsx/oyniVicHw0WPlC18aqtRBy/2Cwq9tTjuskD3g6cjwJksph6Xq9bI
+	yNrwA7ZSrgN3j3YgRyUhtxzHlQL/U9Z0mJDeFCuDmbMp3NPozPGGnlyTL0niWCQcWk+ov/5Y5t6
+	r+7/lrBu3+K+96rtx4AShECcXNwWwIrxK1OLVR/92WFbf7Ojey9nHGSfZi4UYvf4kkO2dS9Xsrq
+	2nS1cLj3XqiCYZxv1pixdNS5POXbBGTVIVKBcgRXgZH44UviaJiz2pvksJIwGMDv18fsrNXo89M
+	E3OBn1TOWp+ODo1BokZSeS+RIBtQZXGXw7BTl5muVHW++JcacU7fFLzQNmCNb/9mWmtV5bPjbpC
+	9spGdAAYmJccNwFZMzpP/mt92sLKEdZUNdpyHG3+dv3S9jsxi2pcAh+EpyVjbTxSsajMbZb6S7R
+	hyKBiSMis/tvBUmXsztuNklWsx83h4wT9LCLggTr7WncKCl93cYWEARoMiaF+/Ewyiwh42vthgs
+	ayy2S++QBeUCEJuddvdoNRG23EQvYO6r
+X-Received: by 2002:a05:690e:4553:20b0:677:a7ac:5624 with SMTP id 956f58d0204a3-67a45493fecmr69048d50.44.1792785288872;
+        Fri, 23 Oct 2026 12:54:48 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:47::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a4626fb03sm9649d50.17.2026.10.23.12.54.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 12:54:45 -0700 (PDT)
+        Fri, 23 Oct 2026 12:54:48 -0700 (PDT)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>,
@@ -99,28 +99,28 @@ Cc: Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 1/2] memcg: reduce cacheline contention between lruvec stat updates and LRU lists
-Date: Fri, 23 Oct 2026 12:54:16 -0700
-Message-ID: <20261023195417.1391216-2-joannelkoong@gmail.com>
+Subject: [PATCH v3 2/2] memcg: don't go through the lruvec for folio and kmem lruvec stat updates
+Date: Fri, 23 Oct 2026 12:54:17 -0700
+Message-ID: <20261023195417.1391216-3-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261023195417.1391216-1-joannelkoong@gmail.com>
 References: <20261023195417.1391216-1-joannelkoong@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 20EF818000B
-X-Stat-Signature: iqq9ozsey3t8oei3t5xh5qnyy67g7ymg
 X-Rspam-User: 
+X-Rspamd-Queue-Id: E9EEB140007
+X-Stat-Signature: adbsu4zbiy6hckid34pue1yqmkj5xg34
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792785286-344153
-X-HE-Meta: U2FsdGVkX1+w/sVgokPYxHH7V/aDGsAGXXqY2OmQ4RlCo1/U2E+8CgseL36a0JXEvxbYGri3HCfZG5sfYnvUgUSXG/e1p9quz3kq1zBAd3t5WBEi6mnRvZB3DeTZT9FGSVXH8umpOWjmkdSe/8xOjwzr94XdXKy+GeBXXkYuiJYzF5i4wEZo2uV+CY9nSbFBsFXAvCa9R/9ihRDZFDeffT9OWP9d/k+pMnz/4yr7EUOe1/jcafJHDdDOQMRi+RrYjTav9ySmLuaEod+teradP7RuROIQz3AH4r8VnrLeN4NZwy9yPOlVh4mnCPhYFFB7YOw4oxHnZKh3zGsTJyHtNpBOPPCogwXVta0K5vYKBM1SwMof0MmRB3HvJf7XrsKgpP24Q2/kLzu7qv9ZAoBCS9LGO6xUgpfmAvS2q78eXivXKKDP0bWpVmxXO0h3/NosyFs82RLrrlfzp+Ag4jTn6/aYtaCRll5PYqsO8HBls+jfjee3zhy0L0BcagJUK0b/uEG/MLeY48nNQfaMoB151galEZSlRTq+OLiCDH7Bl5tkoZZnGTI3FDVPTcsOVRB2SFTM97+ZovAGv5Y8mBkn/WF3AlLWcWP5Tt2gDPm99xiJ3BABKScnnLoc8xw8lq/bO5EhGzCI6YZA+XIjmMMAPeBGwE4VxubnoPqFEww6DZJ2y8KPTrqFZE4osmt9ObfdXnhf0od53yZZ5+YdrP3hbMeSpSgc1EvcLMqLqYVC8WvCN0t1BnIMjI/UuSRjwVOtgxhR763/an1i6+y+lx3tQwPqkoGwnNl4sC878DjdWLSlCLjev2LqfalX6JYNWUQ28Ytdi4u5PuXylna43T0MH5sbSYBm6g6qK63SoMu4oXxrCZbPCE/ueK3mMcU4Sub1lx3NN5drrtZrxxwl2e9LeCryXeJ2Xq4p7NpCYYf6j6V6MHWjOLAhuTl50VsmQ47nZsIv0YdK6I+8VGWdbWN
- ZaX9ah5S
- WH5M5utwvMA5uwnx2kgjI7+HTDEvZSFAGRjjlxxAh1NlDcKPLxM2h2KmkXbl97blWQnXbG/uBu3ABpqTcxoYTgFE4ETEACyiV/Tq1Nc/jylpYYbVn/z2cIjcDuBYclM27xSte2R0l5cwhQczRMYmBzsDdFfvRplidBaPTaltaQ24hxS05yDAVRxGO1wJCAY0ZMfsFNo9bRRz7nnH34+HD1LAUFpw/FViJBN6LzokhARrAbO2X9zhVd4AjS1UxFK8FldyWJ4I/mhqHb/r0tb8wGCKKugIf58dc5fhX3/m815Zjp4VgYxhHrYu2NZ/vQTEQCLbRtCIDfxzb6YjsKm+s2MmZ+obyw0dPn6978a/+uRGvW6LAB2JFVEmphHTq9kepuGxuOwQBDKgdp62QzKjGXzGRBgCCOo0HuzWjTnjOsrG6JpoGifUpFbauB8hiYQ91pSAPy+YmDSMkdYojrINlDgo3rDaPe7E+Q1PH
+X-HE-Tag: 1792785289-245733
+X-HE-Meta: U2FsdGVkX19t59LsWamIxnLpTjdbE4XBAkxHGiMGoYhsoltuF2PX9XBwTYN4wp8BMFLEi0AFFnfh1pkSydX9ehjuzLHw35NGY3OUH5caCtji8AFXzy2e50EHY5FfsTXzRmcNaYnF8DqA6I89I0sxZjhSyp92e9VkcbA0E9E/zYKOdnD7GOckDugqsLHM7Ge8O65b99R4pfwCOfyiasY9FYmsLiYPtay3JE8lgKgRUMRlmYQEFDp5HLVn/a/jWqCUJD6IhFpVywkdwikJ1N9vGIP9nlxebwerkeRnAnDi/3LxsjA9NHcbZ9TYchUcdRTxapFRz+Tv/Lu41gLH5AJquFZRuwkxCNlQ/vCkAOLGk4x5KThl2JeEpV50laolaLcGOQiC5dcfff37X0GByB0pshHQKC20vh1JlN7PHc0ANgPEz0ppzG5Ul9mHpJChKIEhjsKzT9f0U8E2+tSm7/w2C6Mz+WNbJky7ssZl44dm31oC93wD7nTOwFSvvb+/ssph+zjKfDH11O2/omvvvTd4V0k8v+iWsDOEY3ISaHUO8EtF8eMACaQy2ePM4w1RkMApZ2wE8cEpMnri9mJblT1XW1HWeKxICoYNM0z39+i5sr0WbgFS4itGuBpF5akvbu/NGF2KD0bCPUEQN/n8Nb266hSU+0O+9e8EB+N+uHkY959JNt8nUdT1vV9AQC9OmiYLmuCLspQZCU0ntEQODs/nfCxloCbjwqdlb/h/7T3Bu9YzuHwR2ejzsEIcIPg7GPw/ztwu2UtBvMNfH/Wb3IIuVEuxxde4+XYpobETzj2KXjeoJgTj1yHB6B7l3SgLH+JYgABh0Cqf2T2kMnh4Hocy3zgrw4o7QbtScw/8p7v+xgaOlVVWN1y0zfDrw2bk6ZbBC2ECHnSoJhBqBwKih9Y52g2NB/chzJJKXsYdRLgWrmkKxrPBXTB4yDjZfRaSNCtRU9ZARsjy8TaLPtHKoHP
+ hryo2e2o
+ TFVdYo2KVSjWEeFWuEuVN9Q3cvIK2Xq00zVSSNxSdPLCN2LanX2eLDKUMnrXRVachkPx91FPK16AH/HZHJWQkqLAoqWzX1Ibq8Y9ezWFuDnbPREiIJgGwAlhbSfWgU1xgUgaMILH41QWwoocCxgxXUki1f6VdzkPFIgeuFCip94n4Eq+hIptkm8gIMmUjgrt69i34ijA/9OLTt8561E+W2pyO60/wqdJq9h/Nxij21FILwuSoBCScUDT+EDmBQECAydxUT8VSXk8sZggTiqATjpGM/R2kkVbrGJVjUZFKLJaknimQKdLv8uRlvb4z4qK5uqsmLHAYLixCye8/vT2C91pqOIctwnzJ0jRVZCal0y1VILEiJaxjxHsHMde7qyN91v5kKWxN5JSllqpRo+c0H7BLYxrcJ7Nojt8bb+gdGltlJokTf/1IrT82nM/PFrwROWM4CIWkR4oU/ok=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,109 +129,164 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Every memcg lruvec (per-node) stat update reads the memcg and
-lruvec_stats_percpu pointers in the first 64 bytes of struct
-mem_cgroup_per_node. These updates are extremely frequent (eg these
-updates happen several times for every page that's faulted in, freed,
-dirtied, or written back).
+lruvec_stat_mod_folio() and mod_lruvec_kmem_state() already know the memcg
+and the node, but look up the lruvec with mem_cgroup_lruvec() and update
+the stats through mod_lruvec_state(), which reads lruvec->pgdat and
+mem_cgroup_per_node->memcg to get them back. lruvec->pgdat shares a
+128-byte cacheline pair with lines that the lru_lock holder writes
+constantly (lru_lock or lru_zone_size[], depending on the alignment of
+struct mem_cgroup_per_node), so on CPUs that do spatial prefetching
+these per-folio stat updates contend with the lru_lock holder.
 
-The memcg_pn_read_mostly cacheline group keeps those read-mostly fields
-on a different cacheline from the lruvec, but Intel CPUs do spatial
-prefetching [1] and fetch cachelines in 128-byte aligned pairs.
-Depending on where struct mem_cgroup_per_node lands in its slab, that
-cacheline can be paired with the cacheline holding the LRU list heads.
+Pass the memcg and node they already know to mod_memcg_node_state()
+instead.
 
-When this happens, every stat update also pulls in a copy of the LRU
-list heads cacheline, which is written to constantly by other CPUs under
-the lru_lock. The stat update has to fetch it from another CPU, which is
-unnecessary overhead since the stat update doesn't use the LRU list
-heads at all. But even worse, the lru_lock holder then has to invalidate
-those copies and wait for the acknowledgements to come back before it
-can do its next write, which makes the lru_lock critical section longer
-for everyone waiting on the lock.
+On top of the mem_cgroup_per_node rearrangement, on a 2-socket Skylake
+(80 CPUs) with threads faulting in and freeing shmem in a single memcg,
+this improves throughput by about 3% at 20 threads (5.59M -> 5.77M
+pages/sec) and 2% at 80 threads (8.66M -> 8.82M).
 
-This was found when analyzing the output of perf c2c for a benchmark
-where many threads fault in pages in one memcg. It showed the first 64
-bytes of mem_cgroup_per_node as the most contended cacheline (over a
-third of all HITMs and 5x more than the lru_lock cacheline) even though
-there are no writes to it. A quick experiment adding extra padding so
-that the cacheline no longer shared a pairing with the LRU list heads
-showed that this removed most of the contention, which confirmed the
-cause.
-
-Fix this by moving the memcg_pn_cold group, which is only touched when
-the memcg is reparented or freed, right after memcg_pn_read_mostly, so
-that the read-mostly cacheline is paired with the cold cacheline
-instead of the LRU list heads.
-
-Results from a multi-threaded fault/free benchmark in a single memcg,
-run on an Intel Skylake machine (80 threads, 2 NUMA nodes) with threads
-pinned to CPUs showed average pages faulted in (and freed) per second
-across all threads, over 7 freshly created memcgs per run:
-
-                     before    after
-  shmem, 20 threads  4.74M     5.59M   (+18%)
-  shmem, 80 threads  7.94M     8.66M   (+9%)
-  anon,  20 threads  3.04M     3.08M   (+1%)
-
-[1] https://www.intel.com/content/dam/doc/manual/64-ia-32-architectures-optimization-manual.pdf
-(bottom of page 62/800)
-
-Link: https://lore.kernel.org/linux-fsdevel/CAJnrk1ZezmmzrYdf8KP6re_a76izMS=qGPeC8ZZXiteHyZZC-Q@mail.gmail.com/
-Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 ---
- include/linux/memcontrol.h | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ mm/memcontrol.c | 71 ++++++++++++++++++++-----------------------------
+ 1 file changed, 29 insertions(+), 42 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 69e1bcc67c58..6139195b7fa4 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -95,6 +95,24 @@ struct mem_cgroup_per_node {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index a05d9a8baa1b..9f33cc5c8293 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -587,7 +587,7 @@ unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+ 	return x;
+ }
  
- 	__cacheline_group_end_aligned(memcg_pn_read_mostly);
+-static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
++static void __mod_memcg_lruvec_state(struct mem_cgroup *memcg, int nid,
+ 				     enum node_stat_item idx, long val);
  
-+	/*
-+	 * Touched only when the memcg is reparented or freed. Placed right
-+	 * after memcg_pn_read_mostly because CPUs with spatial prefetching
-+	 * (eg most Intel CPUs) fetch cachelines in 128-byte aligned pairs.
-+	 * This keeps the read-mostly line, which every lruvec stat update
-+	 * reads, from being paired with the LRU list heads, which are written
-+	 * constantly under lru_lock.
-+	 */
-+	__cacheline_group_begin_aligned(memcg_pn_cold);
-+	/*
-+	 * orig_objcg preserves a pointer (and a reference) to the original
-+	 * objcg until the end of life of memcg.
-+	 */
-+	struct obj_cgroup	*orig_objcg;
-+	/* list of inherited objcgs, protected by objcg_lock */
-+	struct list_head objcg_list;
-+	__cacheline_group_end_aligned(memcg_pn_cold);
-+
- 	/*
- 	 * Keep lruvec on its own lines. Sharing them with lru_zone_size[]
- 	 * regressed, see commit f59adcf59332 ("mm: memcg: add cacheline
-@@ -114,17 +132,6 @@ struct mem_cgroup_per_node {
- 	atomic_t		slab_unreclaimable;
- #endif
- 	__cacheline_group_end_aligned(memcg_pn_write_hot);
+ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+@@ -596,16 +596,11 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+ 	int nid;
+ 
+ 	for_each_node(nid) {
+-		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+-		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
+-		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
+-		struct mem_cgroup_per_node *child_pn, *parent_pn;
++		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
++		unsigned long value = lruvec_page_state_local(lruvec, idx);
+ 
+-		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
+-		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
 -
--	/* Touched only when the memcg is reparented or freed. */
--	__cacheline_group_begin_aligned(memcg_pn_cold);
--	/*
--	 * orig_objcg preserves a pointer (and a reference) to the original
--	 * objcg until the end of life of memcg.
--	 */
--	struct obj_cgroup	*orig_objcg;
--	/* list of inherited objcgs, protected by objcg_lock */
--	struct list_head objcg_list;
--	__cacheline_group_end_aligned(memcg_pn_cold);
- };
+-		__mod_memcg_lruvec_state(child_pn, idx, -value);
+-		__mod_memcg_lruvec_state(parent_pn, idx, value);
++		__mod_memcg_lruvec_state(memcg, nid, idx, -value);
++		__mod_memcg_lruvec_state(parent, nid, idx, value);
+ 	}
+ }
  
- struct mem_cgroup_threshold {
+@@ -990,10 +985,10 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
+ }
+ #endif
+ 
+-static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
++static void __mod_memcg_lruvec_state(struct mem_cgroup *memcg, int nid,
+ 				     enum node_stat_item idx, long val)
+ {
+-	struct mem_cgroup *memcg = pn->memcg;
++	struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+ 	int i = memcg_stats_index(idx);
+ 	int cpu;
+ 
+@@ -1015,21 +1010,23 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+ 	put_cpu();
+ }
+ 
++static void mod_memcg_node_state(struct mem_cgroup *memcg, int nid,
++				 enum node_stat_item idx, int val)
++{
++	bool rcu_locked = false;
++
++	memcg = get_non_dying_memcg_start(memcg, &rcu_locked);
++	__mod_memcg_lruvec_state(memcg, nid, idx, val);
++	get_non_dying_memcg_end(rcu_locked);
++}
++
+ void mod_memcg_lruvec_state(struct lruvec *lruvec,
+ 			    enum node_stat_item idx, int val)
+ {
+-	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 	struct mem_cgroup_per_node *pn;
+-	struct mem_cgroup *memcg;
+-	bool rcu_locked = false;
+ 
+ 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	memcg = get_non_dying_memcg_start(pn->memcg, &rcu_locked);
+-	pn = memcg->nodeinfo[pgdat->node_id];
+-
+-	__mod_memcg_lruvec_state(pn, idx, val);
+-
+-	get_non_dying_memcg_end(rcu_locked);
++	mod_memcg_node_state(pn->memcg, lruvec_pgdat(lruvec)->node_id, idx, val);
+ }
+ 
+ /**
+@@ -1058,19 +1055,13 @@ void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+ {
+ 	struct mem_cgroup *memcg;
+ 	pg_data_t *pgdat = folio_pgdat(folio);
+-	struct lruvec *lruvec;
++
++	mod_node_page_state(pgdat, idx, val);
+ 
+ 	rcu_read_lock();
+ 	memcg = folio_memcg(folio);
+-	/* Untracked pages have no memcg, no lruvec. Update only the node */
+-	if (!memcg) {
+-		rcu_read_unlock();
+-		mod_node_page_state(pgdat, idx, val);
+-		return;
+-	}
+-
+-	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-	mod_lruvec_state(lruvec, idx, val);
++	if (memcg)
++		mod_memcg_node_state(memcg, pgdat->node_id, idx, val);
+ 	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL(lruvec_stat_mod_folio);
+@@ -1079,23 +1070,19 @@ void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
+ {
+ 	pg_data_t *pgdat = page_pgdat(virt_to_page(p));
+ 	struct mem_cgroup *memcg;
+-	struct lruvec *lruvec;
++
++	mod_node_page_state(pgdat, idx, val);
+ 
+ 	rcu_read_lock();
+ 	memcg = mem_cgroup_from_virt(p);
+ 
+ 	/*
+-	 * Untracked pages have no memcg, no lruvec. Update only the
+-	 * node. If we reparent the slab objects to the root memcg,
+-	 * when we free the slab object, we need to update the per-memcg
+-	 * vmstats to keep it correct for the root memcg.
++	 * If we reparent the slab objects to the root memcg, when we free the
++	 * slab object, we need to update the per-memcg vmstats to keep it
++	 * correct for the root memcg.
+ 	 */
+-	if (!memcg) {
+-		mod_node_page_state(pgdat, idx, val);
+-	} else {
+-		lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-		mod_lruvec_state(lruvec, idx, val);
+-	}
++	if (memcg)
++		mod_memcg_node_state(memcg, pgdat->node_id, idx, val);
+ 	rcu_read_unlock();
+ }
+ 
 -- 
 2.52.0
 
