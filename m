@@ -1,91 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B728D606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61FB606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=kZzeyvJo
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VRNOxv+1
 Received: by kanga.kvack.org (Postfix)
-	id BEDAD6B0BAE; Fri, 23 Oct 2026 13:26:11 -0400 (EDT)
+	id D50986B0BB1; Fri, 23 Oct 2026 13:28:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC6946B0BB0; Fri, 23 Oct 2026 13:26:11 -0400 (EDT)
+	id D29E56B0BB2; Fri, 23 Oct 2026 13:28:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B039D6B0BB1; Fri, 23 Oct 2026 13:26:11 -0400 (EDT)
+	id C65A96B0BB3; Fri, 23 Oct 2026 13:28:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EB9C6B0BAE
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:26:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A244A6EF2
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:26:10 +0000 (UTC)
-X-FDA: 85354569342.25.F63318A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A1F7E6B0BB1
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:28:01 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B17EC0197
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:28:01 +0000 (UTC)
+X-FDA: 85354573962.21.973BC85
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EBF821C0007
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:26:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kZzeyvJo;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7234D40005
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:27:59 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VRNOxv+1;
+	spf=pass (imf17.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792776369;
+	s=arc-20220608; t=1792776479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XSow9JMNcB3KaezVYp2YCCd7nh/RjIrlw4N2iZye4G0=;
-	b=pfEaaBj7ZKfaTNVmrVCWVhiACcAI5Qj9hNKiZz9ENOK/F2EvOBpbYW/mW4f4LW9P0d12BY
-	DXeeFrSqtyTjIA66SO+RGuZdvT+aIYYG/raJlehbTo/4mo9q1RnCZ5DYF03eujaHxJ7bc8
-	VSbcmYWDqmr8LE9njhu11FazRClAf2A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792776369;
-	b=BRTvSbUePIfHjMlZwMro5T6at5+3NPkirxxLhSntnU0l8K99JjphTLoxQgYAkbA2MsqIfg
-	4EmGXwprq7URAVPOoGJTVWlgZ7eqBJNFbW7vVXPS2YKVXHMLdSXIcfnRCv/bUPdsn6yV+C
-	JYHqO+/Ftcbjg2YNCIbpfz1aYkuei94=
+	bh=jJXUDdGOUlnprTLNQ3mpD2znb8kn6x0W43UYG81DLJE=;
+	b=2rPU9NroIZfCNQHyDgopszgpaMDKBUJHhJUhkICFpMRiWYiDJN+kxKkn1xgDQUwg/cR7hi
+	fLtUy2kgLE6lpjiwXmU5oGn1O+Mo8FIGn1TuxaH3b8Pdp0SwiU+MSSib65BOTUcQEMzssC
+	Lpigldx1IKFAR2egN1hHjh7vP4KYysE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kZzeyvJo;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VRNOxv+1;
+	spf=pass (imf17.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792776479;
+	b=2ISal26llY7gxi1n/SE5A6/+H7bkTqZTvGIPRfxhJhZUKToR2oLyRBeDI4jB0qz38wJC6/
+	PUy307zur7fIKhUvVIdQqlbzEEiDbSHsiho8HgLBg8J2W2SvmP71ev9V6vlUsXY4fq99Yg
+	GSEwavnFEiV4eDwzO0n8+wCId6BTUBE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C41B443A44;
-	Fri, 23 Oct 2026 17:26:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705031F01825;
-	Fri, 23 Oct 2026 17:26:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792776367;
-	bh=XSow9JMNcB3KaezVYp2YCCd7nh/RjIrlw4N2iZye4G0=;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9BC06429E9;
+	Fri, 23 Oct 2026 17:27:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DAF1F01825;
+	Fri, 23 Oct 2026 17:27:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792776478;
+	bh=jJXUDdGOUlnprTLNQ3mpD2znb8kn6x0W43UYG81DLJE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kZzeyvJoosy+DyY4nymYopIcOBr0VaSKdfDrpMhVmfJGEJ2SbGb/ivCBsMdOgD0c7
-	 XqCaO1wpHXX4Q6ERUFtBIWUUyMgo6P0CKjYYiurs8ynjMTmbq+cLXy1aK3/gQmdfTy
-	 HaZyIDtFwKciOD3g8uKAJusaOOX7DxGyFUBaU77s=
-Date: Fri, 23 Oct 2026 10:26:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Suseendran Bhaskaran <suseendranb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/zswap: validate dlen and normalize comp_ret on
- compression success
-Message-Id: <20261023102607.7635885be12b0b6e7a5971aa@linux-foundation.org>
-In-Reply-To: <20261022232734.496064-1-suseendranb@google.com>
-References: <20261022232734.496064-1-suseendranb@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=VRNOxv+1Pksyrz5HnFhBkcnpuxCnSmnXdeyB52HziAZ0BKiZZtXPxAuj93PuJc5xI
+	 1pTqs+75q+CJrl3PdpXqmb75U0b0ztZJPlKfMeA3oNQiv6FTGN0ztfopW9p+8p+T7P
+	 ui7Qx8f3vVvVIwafvbWaB9RjhsPkzk6toCmg6ljNO/fs5AQqJlScIW/CdQo43D6NRP
+	 tJo7uzYkrsViniHWvZsVkJCO1YIV9hAIclTxvK4nIj4FUgUlALsK4u9HNWRALjqoHb
+	 Ctem5QTw0r4Gw3aGxKfIafMxkmpl9sspL0EJ5FfAFmnB/0QSTga0iibcftCdkkp4By
+	 uoxDdS6wkAlbA==
+Date: Fri, 23 Oct 2026 10:27:56 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Luigi Rizzo <lrizzo@google.com>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel
+ <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy
+ <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Willem
+ de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy
+ <hramamurthy@google.com>, Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan
+ <tariqt@nvidia.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
+ Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
+ <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+Message-ID: <20261023102756.201315d7@kernel.org>
+In-Reply-To: <20261023145023.GH3977851@ziepe.ca>
+References: <20261003212241.3432303-1-lrizzo@google.com>
+	<0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+	<CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+	<b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+	<CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+	<20261022201229.GH3381610@ziepe.ca>
+	<CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
+	<20261023140107.GC3977851@ziepe.ca>
+	<CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+	<20261023145023.GH3977851@ziepe.ca>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EBF821C0007
-X-Stat-Signature: za3c85exabwnw8y9hsapmtemf5h1j5nt
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7234D40005
+X-Stat-Signature: 5s4uhia11tjm6pwzwuug9c787xcwxtef
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792776368-675906
-X-HE-Meta: U2FsdGVkX1+vXcPq38iCfeP0BUysZTQCpAK5Y5hIGa451hZdu6cF2gOY02qGnzlxKPPlTehdY+l8ObaZbUkLArH2oRfB2k1yPNgOi/HV2dSCHKEou6I6OnaPqwCmxPjiaSihGzVizU99BBdC+nDCzhErXTIah3LolvuugvIBQ2QoSJqKCwcnKss9eXShUDH2/JFCPY9xXuEeT0+corYsuihaNYDZMPZCEZ+wiCFCT901UIlb6Xoa5usCH0vAs7DVrDQv20WigPfdlsoOyE5PUjsFJIm5YRYbOCYOirSRynXD4mp52QEG6ZPVlHl5fOZVb1pLG9b9S4+zBHIFf58s/1dGVs8lJRsrUZADdHPMafc74otXoMRJdMyQDnqmeJZ5x/jJDGOeAenAOVNmwjQzzHyhnc2duRbDIJgN4OLq1lsAf8TvRBOUeeiqGgc4VFpJ5yUkT11kJYfSG10qXf30th9jzRaz2iULN3ewvB7FjAG47p/E/NqcX3hC3+rg5TMxFFbi38vA6sGnGKcKCnlcOqR98HZe93wqLsx2If58bVZRZAuzJDRyb7229gVRWZ4K/btkMweYJ8Y8ElLhd8axMvsi2lkthe+y1xZ+7E0U12bnpIgeVI0VCO67cmLR+lqsNAqRDlwLNoRwNJ6SNyLyj5VJAL9TU42v6uP56X62oA7Zmz6sHK9tylGJVDmzCt8EmQenovWdeDlheoVQA48FeRk4rSb9btVYBt9qRBPtQKdeg/iGzhSKDqnht3PO/0jmMSyL7DCc8Xa9ni9XFpwv2Q1qRmeqV2fmOPuJn+3BOmYvhCSupHHLlb0UrM9+yU7RhyeJxmfBjC2jOeS4GXsy1m6xEILHv3mCQwdUqdOEthCVpbJmxYMxfXsdchbm8+cQuvpWk79UoQWA4+TZCiEo4z1IrwKWcpFkgLPCR9qG9NP0ovIvEjG5drxJ0bLrVMHIXvXHaDTKQv/2PLsI1sg
- tm/pu+Pc
- sAmD68NXCc0R5POcIu7zEE9Xnd62GyuKEFY0ODiw4gekp8ND5KEF3/v4xS5F23E06PjamSXPUVbHvNFa+6tDGXV6kAaoNNotYPGZoNBWaxafJEWiw1OR0XEgMNNI9Sxw+36qdLhUkEzbTf067suIyfzUQ8SPueOMBEACL5guX/8HFgHqte6sQBEm2XxYEphFFFiYu3DS+bBlZXLZUHTmcWN9V9qAPrwjmBl5fVNKtGMLeg+J+xmGH4cL/FzcIusS/px8TmwQdI0vwNjnquRver0scl+K29LU52Pmu0yHjIzi/XKc9WsF4Bg0/fj/ZgmKOZMoa
+X-HE-Tag: 1792776479-741929
+X-HE-Meta: U2FsdGVkX1+j/WO0Q9uyfNe3FwzBrhWC0c+WTmOAObko7Ruz2iYLzT6kJv4W0yrvl4nPloG5IiKZ2nFATCFeMkknP4yXXJzM/v9V532xBcgcchx1eLWgkp5h9zu5HqIGWM00lFEhrqVBIumFILS1G9+a5QE/jLdrfjRvpymV/UWwDABZ9sxweXnbCgmROox3P3m4NtlTHf3yTX+Bz2/xMVKsKUpb3c8kYNXF7jGl/b+3Mx7QHoR6kweikLPLAtc/Y4ZzHj/3qFkLZ1nEJ3u3VSuxMt9FVa12p0G3vZPvXEzS7vRTwBFbGSjTdZd4VVqxrCfXBvSUrJYlv4cyq/y0NCnxo51SPz8t7gpmbxruDw34jupv01lkrHEFWybpOFC5Dt+uJ8C5v0D8lIrpJEYcs9clWhAnGd1GMBJjikJKuDx/6K3JFaOTAKYCEH26WJRi9yhmteM8ppfYXMR9ErmnuIxlqxcvZ+PEup8EO2fxuXdp/6JR5aMgJQL3DrUhUR2w4Pnd8JKVBuW8uYaS5g3elVnpCuWoEla5LW1xO33X0cHIVWpgGLBKC2gcLrSyPLUzfw3TB/yb2Fou/oB76JBaLWdZjnvMm4F5waje9Zzbniy4gPDRcGMv6ENz+XfNkJyatmg3yLjB1ERCz/k2F0oMPJY5mkMgUEf/qcs0aHBRbeAz7njxbVf3rRijba9V3TTdfQqsx7wx7wfdcvO82X4drFLosMpqSZgwIUrSwLJfs5Wa2RujRUnWTnA+Kc3SN7ynboOBZTWGTMD0wvQohBZcpiT5Wd8FbJ2dwzUlI4mXAAsZBIzQHZ4F3fj2DcGCg9OCoidVORQ9rmILwrSM+QHzHcfyZqVhqL7IbuazXAh+uCviSGAbjFglniyqzGKANfh5VG0Ix1BOotiPtVwOQHcOSNVAgMn7ETKGVg3hYoQv13+Ct6IFGaslxx3CvN5RMLNJe3jHf7GoryJRH+iXRaU
+ ToEfycVF
+ Uv0BPsC7SVY4/G9NVaXwVJZufHXnWUfLFQfxl9/Buuo99G4EsAk9xwRjuNJ8h+5lglGWp5+EjPwh/TssRM9/6J5S45ncxGwg6kc5C2nFOVzeEe/INcDBszA0McMVxKAEDYwXZ/eg1fsMcVZ4xLS8XDMGwvhKXpi2b0D/BALqrlc/xNly6xrRtKlvBvfgTg/cvWKxUY3qp2CMrRX3NDwv6PzmH/mVf6RycO9I9ErSv6x74wqvbcIUuha6zkTBTm0KIA9rnh8haB4/LotOPF+DhbbuIS7NiLirWohew+8eLctfzLtwSHeaqrlGr5W8bgYhxStJWIWNWc5PyMOEa5wLd7TE6DFoApUGFeNCPL20cU0PfyWNPYmmaOb7EVwb5EeuePcAc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,82 +121,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 22 Oct 2026 23:27:33 +0000 Suseendran Bhaskaran <suseendranb@google.com> wrote:
-
-> In zswap_compress(), dlen is only meaningful when compression succeeds
-> (!comp_ret), as compressors do not consistently set req->dlen on error
-> (e.g. zstd, 842, and qat set dlen = 0; lz4, lz4hc, lzo, lzo-rle,
-> deflate, and iaa leave dlen at PAGE_SIZE; hisi_zip sets dlen to the
-> hardware-reported produced bytes).
+On Fri, 23 Oct 2026 11:50:23 -0300 Jason Gunthorpe wrote:
+> > Anyways, reading your next comments, are you suggesting that all
+> > these functionalities should be implemented as pagepool extensions?
+> > (2MB mappings and iommu backing, proper allocator of fragments out of larger
+> > pages, device-less pagepools, multi-domain mappings, pagepool
+> > as memory provider for skb heads, pagepool as memory provider for descriptor
+> > rings ?)  
 > 
-> When !comp_ret and dlen == PAGE_SIZE with zswap writeback disabled,
-> zswap_compress() sets comp_ret to -EINVAL instead of -ENOSPC,
-> miscounting the page under reject_compress_fail instead of
-> reject_compress_poor.
-> 
-> When !comp_ret, set comp_ret = -ENOSPC if dlen == PAGE_SIZE, or
-> comp_ret = -EINVAL if WARN_ON_ONCE(!dlen || dlen > PAGE_SIZE). This
-> allows simplifying the failure check to 'if (comp_ret)' and dropping
-> the ternary assignment in the writeback-disabled path.
+> netdev shouldn't be touching iommu, it can get a 2M page and map it
+> using the normal DMA API. AFAIK there is not such a big reason to need
+> any of these layering violations. They just make it easier on page
+> pool..
 
-Sounds like we're complexicating core code in order to accommodate
-inconsistent compressor behavior.  Would it be better to
-
-a) design the compressor interface(!)
-b) document it
-c) ensure that all compressors comply with it?
-
-Maintainers may choose to go ahead with this as a backportable
-quickfix, but it all seems to be a bit of a mess in there.
-
-
-Wht you forgot to tell us (please never forget this) is the
-userspace-visible runtime effects of the bug.  Autobot says:
-
-: The userspace-visible effects are limited to corrected zswap
-: statistics and a new warning for invalid compressor results.
-: 
-: When compression succeeds but produces exactly PAGE_SIZE bytes, and
-: zswap writeback is disabled, the page is rejected as before. However,
-: reject_compress_poor now increments instead of reject_compress_fail.
-: This makes the debugfs statistics distinguish incompressible pages
-: from actual compressor failures more accurately.
-: 
-: A compressor which reports success with a zero or oversized output
-: length will now trigger WARN_ON_ONCE(). Previously, zswap handled
-: these results without a warning. On systems with panic_on_warn
-: enabled, this could cause a kernel panic.
-: 
-: There is no intended change to which pages zswap accepts, rejects
-: or stores uncompressed, nor to normal application behavior.
-: 
-: I think these runtime effects should be described more prominently
-: in the changelog, particularly the new warning.
-
-
-
-My autobot is all worried about the HiSilicon ZIP compressor.
-
-: I think the zswap-side fix is reasonable. On success, dlen should
-: contain the actual output length, and zswap should validate it. On
-: failure, dlen isn't necessarily meaningful, so we should rely on the
-: compressor's error code.
-: 
-: Separately, I think we should make the compressors consistently return
-: -ENOSPC when the output buffer is too small. Some currently return
-: -EINVAL, which means reject_compress_fail versus reject_compress_poor
-: will remain inaccurate even with this patch.
-: 
-: A compressor which successfully produces exactly PAGE_SIZE bytes
-: should still report success. Deciding that the result isn't worth
-: storing belongs in zswap.
-: 
-: One thing worth checking is HiSilicon ZIP's negative-compression
-: status. It is treated as success, with dlen taken from the hardware.
-: Could that produce zero or more than PAGE_SIZE bytes? If so, the new
-: WARN_ON_ONCE() might trigger on ordinary incompressible data.
-: 
-: I'd take this fix independently of the compressor cleanup, assuming
-: that last case is safe.
-
+FWIW we're entirely happy on the netdev side to add this to page pool.
+In fact the initial RFC I posted for "page pool memory providers"
+was addressing this exact use case. I didn't push it forward due
+to low time and suspicion that IOMMU folks would prefer a more generic
+solution. Since then memory providers were pushed forward and merged
+for dmabuf, and we have netlink APIs to configure things. So adding
+large mappings should be SMOC.
 
