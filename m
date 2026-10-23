@@ -1,128 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2311606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 15:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A7A606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 16:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VmglFaZb
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=cJ5zMrr5
 Received: by kanga.kvack.org (Postfix)
-	id CF9186B0B97; Fri, 23 Oct 2026 11:58:31 -0400 (EDT)
+	id 2C80B6B0B98; Fri, 23 Oct 2026 12:02:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD0976B0B98; Fri, 23 Oct 2026 11:58:31 -0400 (EDT)
+	id 278D46B0B9A; Fri, 23 Oct 2026 12:02:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE73A6B0B99; Fri, 23 Oct 2026 11:58:31 -0400 (EDT)
+	id 18EE06B0B9B; Fri, 23 Oct 2026 12:02:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 86F5F6B0B97
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:58:31 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0A7D120184
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:58:26 +0000 (UTC)
-X-FDA: 85354348212.07.410525D
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DFF6D40004
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:58:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VmglFaZb;
-	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E0F8A6B0B98
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:02:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60774C015E
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:02:49 +0000 (UTC)
+X-FDA: 85354359258.16.1B3AEC7
+Received: from mail-pz2-f6.google.com (mail-pz2-f6.google.com [74.125.228.6])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8FBB218000B
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:02:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cJ5zMrr5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.228.6 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792771104;
+	s=arc-20220608; t=1792771367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oR8WsW0STYE/yZ/T3jtIUfWqW3IPmySlmYoCN5YBLrk=;
-	b=uKQdA6Eug7I7stjX4DzYglxpISkVwiVyO6Q4dkOZw2nj1v+sEnIKJFowHHOYZ27nHoUrKB
-	Q3ZBbvyYAfbKyhcexVkPAHdmxIVykk0rN+QxiYTd619SsxDXPqVgjMNSQSvV3i/QaxPpMD
-	NSPfqemBOqvjep9BZ48+tbBgGypaXh8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792771104;
-	b=bfDQ9XHz/CmiSQXdZaOdlZUFLR2yLqaQ5v7uONJp6rvxgI6NiR2VwLwNLY0ivsrMB08Dxv
-	OHrlj7vgWBOQLu5nZM2RhpkP+Mvhl7Ls2DTX0J96jbKW2E7JDlfCzgQBRmWy4MzXueV9MF
-	Yq0mZyH34+rKGkRZ7MgFjZtC1mx09Pg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bA0Hsp5XXumXBy4rVBwW8fxcNqmGHi/YDDxKz56CdE0=;
+	b=0G73gxOPtXg0ai6OZRaAztyvvwoDoGZmEeFc/BdqSpKmdXSdutJrPF/+DdYAf1z1o6YJSm
+	vn9u8IgIld3iX82jOjqizg5fsP29VxEWw0rcrUtX6bBMFgJbUFjg17YRzdG26rioob5t8p
+	q6cPJO6xvutX0I3/dTX9+APkALOm4/U=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VmglFaZb;
-	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cd8ca57ef64so65825a12.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 08:58:24 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cJ5zMrr5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.228.6 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792771367;
+	b=JDTmvro64Vd9rJ9lZO5LiblS7oL1VhcNVBY8bKcWwtIEG8XpOfT3AMNve9gc+yP3GyFM4M
+	x6jttUcaBDC1Qhb/Dm5O4s0YURQfagJW4hOmxqyb60gtjzXVRxl2zo7dstZL8RZnk7zoql
+	8eZasopUKzVGxP1KMy2qJ3BOnEEBAuk=
+Received: by mail-pz2-f6.google.com with SMTP id 41be03b00d2f7-cc75f2924abso612608a12.1
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 09:02:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792771104; x=1793375904; darn=kvack.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oR8WsW0STYE/yZ/T3jtIUfWqW3IPmySlmYoCN5YBLrk=;
-        b=VmglFaZbDOsf8V/813HXxCu9g9PN+h5FyK0bB7jMQGd0I/3jbNfNuDM2x/K83KUAtp
-         PwXKSLtqTK1FnqQTTrgW0v6rcy3GAJoSt6Juuvg63gYE9zvJSso8goLWJX8d7Zp6o+uP
-         d0PMQoUpfyZ98bSicqWJu8LBk1d9fY6jBXykMGih+SwwU3xkgmTVzz5/QebqKvFbkNyJ
-         fj9WkYk3/5Kr6cLPt5aXLZQ3atRg0ZLqevmHIN3jD+XPajcba0FtT+PUsCXeNFeXKDuC
-         pSKQvTj+Ke3oavuG1cMJB19ZZZEsUGWHheF6qPspkz9k2mU/fsFZT4OB9Y/7hnUypNpd
-         bipA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792771104; x=1793375904;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1792771366; x=1793376166; darn=kvack.org;
+        h=message-id:date:content-transfer-encoding:content-type:mime-version
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oR8WsW0STYE/yZ/T3jtIUfWqW3IPmySlmYoCN5YBLrk=;
-        b=0XMlCKc5jmAz6UR7YAARYQFaALHjonRaIzbVgKMXiWpHhLxLysgd50r/3grB3xW9yD
-         qlvCq8EqiFfcn7g1xF93vSE+AVcLHH3Kd60TP1JFA1ULEkRtz9vwqcN1qprZE/iZppg2
-         ik57KYOcNxIHrigQ+sN4t/0kbOW/vOIlIKK3INSBXaiy5X3Rp14lwbC+6g7/GNwhkJ5H
-         ATzo75CVKm663YIrF8i+L7CEQ0J68NdRW0ZSO3Ay+4sHuG2JXqmB2vSwUGFHYHi3XZKv
-         vV3cUBq5D3VfWE+cpgvpBvcFedu+FT/yVwN29Dj3comfi0zPZn09i/SZkbPtqt3DmdJS
-         Y97g==
-X-Forwarded-Encrypted: i=1; AKwUvBwqdv6c1FFBV5u2phk7uQYhe9kMvDrXZsavwvG732z7jGA+DaPPR7H5560frfD4nQIaT8uJjXc3JA==@kvack.org
-X-Gm-Message-State: AFq9FYIc1bwMcgHfzHXzRkdG9MA76Q3+1pu1esu2ic/6poS+l8T/uh3q
-	dR4x84BPz/DT8WeU/v/uZtij0yW1zcSITpFVE0y+56y0B2KppGcIIEql
-X-Gm-Gg: AYBFou2cdOg658hNF6Mp7YAhdLxzqWTODUmGABWHC2gabgUgv16ZtcNJpY3zDoabH37
-	1G2Z5SGlsZWZgcMi2zTdDERUvZD4VkcKGJ0wvVe8zWPOT7slDeGwY9Zx5nJzC6nLFY3S0utWCla
-	ctRn/pUp85ovPOTs5OAQqw0XxDmGLnFh2cLzr5rwF6gYYWER5mp6FrBxvq3/wHS3y1MRnaCqV9Z
-	vTLdVr1ujc3gMONwjMhwPBma635/1kyubxwr18p9qdE+iMqukyI/hqTo6WzxrL+n93OC0eRRMAM
-	hz66SU9AFQjVRAfmxkSJ2x7Tguso4yrMsyfbzMDffFzeLsAhHFxb7Cd91RKsX+jc1rgbnv1a4c1
-	QvovO5kZ/cWFMYfyJIvbSbbPdDsJ9Y9HOzIFaHWvul9GdnKQEezIXOw3MnmDeIz56BnVQqmg+ST
-	MNzJQmEbxzVPoznFww2WHoqupuXRNX4XzyoLyNXIBcX4xiNLieAarzbSNuG6sn7JUHurAiXdrOV
-	eahTM13zp5Au66KX23q60295q9/eGlZEKML9G6QvGHp7rGKhW82deBml0YzeX4BQbi5cQ2bbEfu
-	Zx42SDXwL13Z25BunSQ2QbAy08ZuEnbT3uEHsHnhplTGKQNOPphl+R1kyk2b
-X-Received: by 2002:a17:90b:3e48:b0:3ab:8288:b8ce with SMTP id 98e67ed59e1d1-3adce7398c5mr1635912a91.24.1792771103440;
-        Fri, 23 Oct 2026 08:58:23 -0700 (PDT)
-Received: from localhost ([153.61.198.248])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3addd84b1basm707058a91.14.2026.10.23.08.58.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Oct 2026 08:58:23 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 23 Oct 2026 15:58:22 +0000
-Message-Id: <DMCCBEPCIWH0.2JEDKE64WPJRQ@gmail.com>
-Cc: <bpf@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 0/7] mm/page_owner: add bpf_iter and kfuncs
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "zhen.ni" <zhen.ni@easystack.cn>, <daniel@iogearbox.net>,
- <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
- <martin.lau@linux.dev>, <song@kernel.org>, <yonghong.song@linux.dev>,
- <jolsa@kernel.org>, <emil@etsalapatis.com>, <ihor.solodrai@linux.dev>,
- <akpm@linux-foundation.org>, <vbabka@kernel.org>, <surenb@google.com>,
- <mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
- <ziy@nvidia.com>, <shuah@kernel.org>
-In-Reply-To: <d39db4fb-e511-440e-9065-72c34a1a295a@easystack.cn>
-References: <20261021112437.1799213-1-zhen.ni@easystack.cn> <DMAURQCKK6CG.10CZ7MFXGJO3V@gmail.com> <d39db4fb-e511-440e-9065-72c34a1a295a@easystack.cn>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+        bh=bA0Hsp5XXumXBy4rVBwW8fxcNqmGHi/YDDxKz56CdE0=;
+        b=cJ5zMrr5aEnmX1mxYTBb2eu5wTjiqPHLKVVtF/EyGhUtBIUcomUrMj+yfwcvrel4vl
+         BuhJyJRg6zxGM14JnYacGgpKqAM/VHnvoZ77ZirRcMmjGy+ame3oWuZymWMHerA5Jm2L
+         OB3sZw6sEh26IpwHAJ5rXwitRidZkY7aoRBr5adLu3hPsQgJRrxebRrCYABvHVStxb+/
+         xw1r3qRnmWcqGXR9yWUm0rNSPdz6uFbi79+Qs0tXyllD4mimLJzsM0z7YM0mBVsUSJc2
+         HuvyMnmmc2P39g7ZIdSGKf+pSArRBUbsHv+2epww8IKtF7PWSFVkNaNK/1odEN406IJ+
+         Q51A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792771366; x=1793376166;
+        h=message-id:date:content-transfer-encoding:content-type:mime-version
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bA0Hsp5XXumXBy4rVBwW8fxcNqmGHi/YDDxKz56CdE0=;
+        b=o0pvq86jaO/Az7dp+D6+OB0CFO5EYYAKRG2zN+2lw71eCyZaLTmdHDRMya4e4qytoL
+         znUFKYeDod7YFPSQzYexVUspAlwnRmX97RRa6ZpTm/ElulD/47afRu2aSRhsJVS4i8ba
+         cHhwGPYKBR6lQm99LAK9bvKZhEkxvLhkdBH7V7DKWLj+XvHEB087x7j6D1Cu5DrlKxPu
+         RQMtIzWI/CsWm8WT7kmgltDxNJVfrNdLUdlm2RugNvNv7xzvaBn0TCCKe5TvIeMPC/bt
+         QB2aZRtjE09v/eYnuUzIm8Q2rpyGTCCRXC9qhbV2imo+ZuDpACHW1tNpk9a7aMn0I9RL
+         ixvw==
+X-Forwarded-Encrypted: i=1; AKwUvBwM+tmFT4sLWKXgtitRz5faOLOoZRJ+6fe9kf+i2DhK5RSwj80RR8RBRkMtCqViOUY+mJWVJgKVDg==@kvack.org
+X-Gm-Message-State: AFq9FYKHR7BQmH+6sIlfNBg/mWK8kT8EpTSzjSIKmRVFa3RvRHM6QQ5Z
+	jvyZFsJ/hvoH9rq87bKqZhlPlRfcjyjMGTrrqBq/+cd/lGPPe6UhQ/Pq
+X-Gm-Gg: AYBFou2szgutZ1HA0d2xtFkU1aARUgNBa+tFjJ3UnbDZZrx9NwP0nunmaStm6ZcM370
+	qiuHxAi4d3hzfzOCp5bObHnnhkzBnGxuszmtvliw8vYSe4fPX47v+1K01Ishrd/a/pwinKw16lS
+	EStFBzv7W0UEkWJYMA9+V7Q2UyalfaqTmcdPguSRBGYcnKCIwSH0kT/dkoqRNj8aKRGlj8j19+G
+	91PW7nOh61SbjWBgPAjNItWKvQlwVrVQJdGIG9jaCuUiW7PGDu1xqLnlvXHLgvRhwGfwhiYWpuP
+	L+/uRYS0YR6thc9/4nDOoYbAQFLhn0y1tBMPdtF2xH0HFBy6ipjCZYWAFmwwB9XY6upUK18BGr1
+	2KHRS+JGtglpI/fUik259/U82IZcT/SYU6182VmGkBFzd37tQ5IGSrRholAZQv0K7D1U049ktVr
+	cBcOvpH95/nFbVQtWEkVuApOBE2tNX1aJD4DWcOoeQKltLMhmK+dawwUPZIGC+YXyKMtXp4Z0UR
+	xO/S/hNUaXgqblZQBUiTvBUQJSjjMBg6gtj0bgiTj7Nl9q6zS8hbr0u2BY1R47IlTUvRhHbw0mJ
+	pQoTTDSrKAVhBJRoAh8IBWVonGH11UZDd7wbbsy2JEtbutKVenUm/Q==
+X-Received: by 2002:a05:6a00:4c94:b0:89d:faf6:c69d with SMTP id d2e1a72fcca58-8a2c66893d8mr2481398b3a.58.1792771366283;
+        Fri, 23 Oct 2026 09:02:46 -0700 (PDT)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a336e586f0sm165409b3a.7.2026.10.23.09.02.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 09:02:46 -0700 (PDT)
+From: Aveline Noir <jm5905938@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+    damon@lists.linux.dev,
+    linux-mm@kvack.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/damon/core: reset watermark wait state on each iteration
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DFF6D40004
-X-Stat-Signature: 4sk6jagt7ejy6w7fc1nbuios3dbdrw79
-X-Rspam-User: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Date: Sat, 24 Oct 2026 00:01:31 +0800
+Message-ID: <179277129124.2.16132047926074873101.damon-empty-schemes@gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8FBB218000B
+X-Stat-Signature: 99uru8m7u5pctue9dfgzumfe69eus8c8
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1792771104-992717
-X-HE-Meta: U2FsdGVkX1/uz7lSVFJuPfTIzSXibsHd5O9CYNHnL7P9jbvH4+bdpzetGQeoWo9vDhARivGXXAaQWzdSf48yAYtx22oDywRkjM5VSuX7j5La9K0MUZqUEYseDN/BSUw2LQWa7oKJ0Bxy9Gvbz6P5z6qHwuJBGHmY2Cc4QzwfBctyKfii3J75FqM4Od0hzT9gs29wpaairsP4i9k/FlcmxARtb8gbq5C6tqCDrBoqGN+ovAgfgFq3M/kQxfNUjPBxzaQ0xlv5w3rgNoKOmB+tJPcTtSlBwtYYxjVIa8boTKCPz2W3r6GCnO9eSHAOs3wlmuWvrU9MCJVi8G3bk3D5LSoFa88PfbREm9ZYpnDeZOJVo5MrOQ0bP75UbQUHHukDDjMpTM03phyI6Ib0mgxR4zACewAzf07qKIRVTDn/ADr6NcPpw7b4culf2KGTmDDM/ZesFxNpX80lEWXlMSVUvq6GZsr9Kl91HFCoC56+QYFek1GkbGI84cCyezuALSiwShdum+cAZYw+ic+sQCJM193Abyrw43JWlnqpcljlsj4rObxCXCUKW+9MER4Dp1k3OgOGFhT2IhITxEhzam2/DaWxdARbfVRBxfgfwcmCgCr9ro4Hv6ycJbz9z6No29JFbWmpJdXl7kW0VrEE8leMpv4Zo1MY7YhTcT29u62FzSkQVkFJpKrjWPhGgQTD4PT3oXNkp2AZMjHCQskYbt5AtR3Xelc+WNP8UT5C1YZunR3irXDK4+K66uzdJHgNYjhvy4LEDrpnIfLdfBuTKDTjwGcdqxP3R4UtsDumapFzRmuWEzGQE3UMvQum4+PXFwj35cYdRIQQrEzxGF51m+mGTlQeJLHqf3U9ak/h1hpaRvS4NIHsBMrHLkWsHI+XTB0k2FI8aAjEMwnSIlC19xsBq0Ua6/Xuzvgw0pBEuOXrEmwWA3qOuv8rd4+JDkTP0NcequVNUQSd9wm2W5S3CMk
- X8rz6B7T
- ZHg5pYuF0ZziPxTBbomuP3Vscmjm1FrcbaCwB6nteYtRpBtUAXlE4GQoWEzcBmObvOHCMg62Tbs/acNzNv+JkZbFYDAt99p1+K13Ujysy8pQbe3OuxfI+WlcEwpugIv+c2OUsfq1SZLTRhDTVR6OPPbsNwUex9mqT5bQ4trwDzjotLcDwhsl551mwL8B38WUXnweR8x9pqUp1KSiUGjizY4WVT/Ry8MoHLZ3ZnIt+LQfDvWI1eBuRlcyeIAWrb8WCMurK+5uTLkktCgZqxL8l4cNrSD7Xxzbdtm1sLWNcPs/FBv3jI14XSSqaKxiT/Zfl3ULSNfONIx6YD67tesftbGXIknA0FB0YJ43GHJAlNzOfzAu2h5KqluWp4ETEe48cK7RW3rOSaE3vDgj+Rot6DP4b9OvEspyaGZPhm8XO52obXHYNmKe3klNRS6llHXNmNAYQO29cSxy2svsABYx4+Erw2FIJq/6ocbU/+/uTRNfI4zrSj3rl6VYgViTPNgLq1yn04kWG4aDxYfKdy2M2iu+JZh2q0sGyKrP/hijaIBibP6HD6I3DKJYZBM5VkkNmFauDClQn5tVKFtvjjpNTgXh8yA==
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792771367-626114
+X-HE-Meta: U2FsdGVkX19PcZ1AcjuzUJvvwvVeKeq03zCJyM0/UOOKEbI/PAiXHXoyiQK2bwh0VRn8pQ4jHJIvBFdXXIswtA/vkwqUalqNxF1XZ+m4qMc9Qkzd6LwuetoTfxh1IfV8obdbl5RQ8yXZ26aQbFBWzQVUbtGaEtTw5L5c0pw5/LKJux815bz4JabgfX93E7/IktMD7i5rDj2XgEiZnFMwAH9JuHmQHJYz0cuSpB5wMkurbtHQIegFBHWMUvLBskff97cNaTuDBox5sHNBOleskWbF4U4KEt8Oomd128dGZi83vxIeJTuER5n1X0hkqS8E8x08krqmDaaI+/qg0jIoO0GqGGQl+q7uRPKIvpBRBG9oPva31TcZQbXfXkK0uymPbVHvYRkzCTmqEYthYXjtrzGPYIYLvyp5ZhZ0RXvcHgsIMp1g5t3kG70QNjpMC3Pbt0APeMx8RA53CxGDTwa1GY5ryv+tmtYd05Q0qhXQ50LzoiKeH/nwy6I3TSFW6P1dPuxTrqVpfe/eYWyROfDXwVp/u+e5jZgquzj5V50vPHkroMpKdPH/aiLocB8GDrhrtfOPufoNRScGRnUG63TJM5AhZETevsOHpu+topvOX1Sop4D8HDfDoAcQqwBNcPEMLcpk95y09h7tOhQ8skDQpuPR66NWlnRmbOmNWFC1G8rOxlPtegKhbLoEa3OflrD5efTh5FnEZf9uhbsUa3T+3FfaWTpPbcp4lpSVBB6xpfwPoeyuF+qADrItDT7+cbSwfpUKwbSEusZZ5Glu6i0I+PMFdb2kQXPMriuaBO3K8Hlov8gzf1XUogXzOxL0CM+UjTdV7vwouIMSqVzJobrrHcKfNfEsJ//9PTEvAM+7uLRXl1KasnMxo/isfabTc0m73Khy1A0P/OKhBy/ROAvEmaQ9HH6+2ndJ4NvaBPMbmxU4TjZWqZXDIj43wY8TKfkDjSE2/6ge3r5MlSB6UJe
+ GFNAXIC0
+ 1uF+/731n7W91yA1Mpe3HRfjr0doQpwpvqUNtivexZsmgTzNr+ZBy//tk6kGD9YkxT2fmU8xVO0hTyboFPd6kbdN77JKv/Ex9tyJ99YkbfyN/g45Mgo1iQCSkHMKnH2GFtU41w90soVtZn2z254hrBd0i0hWHteqONdWZnrw9Q/8slt2LIgidQuC7EYgQiFSrEzzA56TwidS/mQH8h1Krg2KjLth9gQp+IeOqUsSJbLotGn7FBfFDNUpxd1amqXLbcDc49vVgupZkp2PimUkooOgvWQtN17GPJr8KNp4qcAUntjYXYo2SmWjT2V1e4Tm6IRh9AbnT5JXS0IWyEO5dYrbrVjJ8nOyU393aBhzsZx9idBspb/ziNgOLcCCkItEoUGZYYoEVf8KYxVTufXeS+LTyiEszrKsk6E1GkWmP7XzbV1/RR22ipvkYhv1LlsKPLM7vqI0f+5W6Btg/wW3oow8IQzxkNXu6BbN5XoUNw+h2lJrqypugLWHYNg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,71 +123,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 07:51 AM zhen.ni <zhen.ni@easystack.cn> wrote:
+Found while reviewing the DAMON source code that if an online commit 
+removes all schemes while kdamond is waiting for watermark activation,
+the scheme loop becomes empty but min_wait_time keeps the previous 
+positive value.  kdamond then keeps sleeping instead of resuming 
+monitoring without schemes.
 
-tldr: it's still nack
+Initialize min_wait_time and init_wait_time on each loop iteration so
+the wait is calculated from the current schemes and an empty scheme
+list resumes monitoring.
 
-> underlying iteration logic. This shape is also what Documentation/bpf/
-> bpf_iterators.rst prescribes:
->
-> When adding a new BPF iterator program, it is expected that similar
-> functionality will be added as open-coded iterator for maximum
-> flexibility.
+Fixes: 6e74d2bf5a26 ("mm/damon/core: add a new callback for watermarks checks")
+Assisted-by: LLM
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+---
+An x86-64 KVM test using free-memory watermarks reproduced the stall
+with nr_schemes=0 followed by commit.  The same test resumed monitoring
+with this fix.  DAMON KUnit and selftests all passed.
 
-It says what to do when an iterator is added. It doesn't say that
-one is needed.
-Iterators are for kernel data structures that a prog cannot walk
-on its own: tasks, cgroups, kmem_caches.
-pfn is a number. bpf_for() is the iterator.
+ mm/damon/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-> 1. What range to scan. Where do ctx->start and ctx->nr come from? No
-> in-tree iterator context provides them, and a prog cannot derive them:
-> min_low_pfn..max_pfn, memblock holes, and offline sections are all
-> kernel state. The loop bounds alone require either another kfunc or a
-> kernel-side walk — which is exactly what the iter target already is.
-
-From user space. It's a syscall prog, like scan_open_coded() in your
-patch 7. Its ctx is what user space passes in ctx_in.
-/proc/zoneinfo has start_pfn and spanned for every zone.
-In holes and offline sections pfn_to_online_page() returns NULL
-and bpf_page_owner_read() returns -ENOENT.
-
-> 2. What makes a page eligible. The alignment test in the sketch is the
-> only part the kernel agrees is expressible in a prog. Everything before
-> it reads state a prog doesn’t have a handle to: pfn_valid() over
-> MAX_ORDER_NR_PAGES areas, pfn_to_online_page() under get_online_mems(),
-> skip_buddy_pages(), the PAGE_EXT_OWNER / PAGE_EXT_OWNER_ALLOCATED flags
-> in page_ext, and taking the record snapshot inside the RCU window so the
-> checked value and the reported value are the same copy.
-
-bpf_page_owner_read() in the diff does all of that:
-pfn_to_online_page(), page_ext_get(), PAGE_EXT_OWNER_ALLOCATED check
-and the copy of the record before page_ext_put().
-PAGE_EXT_OWNER is set together with PAGE_EXT_OWNER_ALLOCATED and it's
-never cleared. No need to check both.
-__reset_page_owner() clears PAGE_EXT_OWNER_ALLOCATED, so
-skip_buddy_pages() and MAX_ORDER_NR_PAGES steps only make the walk
-faster. They don't change what is eligible.
-
-> 3. The walk is deliberately lockless, so exposing struct page to the
-> prog is not safe. The pfn validity check and the page_ext dereference
-> must happen under the same kernel-controlled RCU window. Otherwise the
-
-The prog doesn't see struct page or page_ext. It passes a pfn and gets
-a copy of the record. The lookup, the check and the copy are in one RCU
-section inside the kfunc. offline_page_ext() does synchronize_rcu()
-before freeing page_ext.
-page_ext_from_phys() does the same lookup from any context.
-
-> 4. One record doesn’t give the prog the useful data. The record holds
-> only opaque handle/free_handle tokens; stack-depot resolution exists
-> solely in the kernel. The memcg is neither in the record nor trivially
-> reachable — the path is built by cgroup_path() walking the kernfs parent
-> chain. The NUMA node comes from page_owner_get_nid(), which bypasses
-> page_to_nid()’s poison check. And so on.
-
-The handle is the key to filter and aggregate by.
-page_owner_stacks/show_stacks_handles maps handles to stacks.
-Same for memcg. bpf_page_cgroup_ino() in the diff returns the id.
-st_ino of the cgroup directory is that id.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index eb1fcdabc007..f61ff763d4de 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3976,10 +3976,11 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
+ {
+ 	struct damos *s;
+ 	unsigned long wait_time;
+-	unsigned long min_wait_time = 0;
+-	bool init_wait_time = false;
+ 
+ 	while (!kdamond_need_stop(ctx)) {
++		unsigned long min_wait_time = 0;
++		bool init_wait_time = false;
++
+ 		damon_for_each_scheme(s, ctx) {
+ 			wait_time = damos_wmark_wait_us(s);
+ 			if (!init_wait_time || wait_time < min_wait_time) {
 
