@@ -1,98 +1,183 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8709C606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 02:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A420860A2603
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 03:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Z1WvDcxE
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=lolW+Tvs
 Received: by kanga.kvack.org (Postfix)
-	id 6B4D26B0AC1; Thu, 22 Oct 2026 22:48:02 -0400 (EDT)
+	id A24F46B031C; Thu, 22 Oct 2026 23:19:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 665986B0AC4; Thu, 22 Oct 2026 22:48:02 -0400 (EDT)
+	id 9FC566B0327; Thu, 22 Oct 2026 23:19:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57B6B6B0AC5; Thu, 22 Oct 2026 22:48:02 -0400 (EDT)
+	id 8C7576B0328; Thu, 22 Oct 2026 23:19:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EC7B6B0AC1
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:48:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A762B1601A0
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:48:01 +0000 (UTC)
-X-FDA: 85352356362.09.D87742D
-Received: from mta0.migadu.com (out-225.mta0.migadu.com [91.218.175.225])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B79E3C0002
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:47:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z1WvDcxE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.225 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792723679;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 632C46B031C
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:19:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E9C651A0136
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:19:05 +0000 (UTC)
+X-FDA: 85352434650.13.A1904E1
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazolkn19010021.outbound.protection.outlook.com [52.103.20.21])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 49422140004
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:19:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=lolW+Tvs;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	spf=pass (imf26.hostedemail.com: domain of x-professor@outlook.com designates 52.103.20.21 as permitted sender) smtp.mailfrom=x-professor@outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792725543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=waGF8VthxuGr2cf9AIuvHuwULN2Uj1gYJg+7Hv15GnE=;
-	b=JGDUh4BzGz26PSgkLvc59t61E4CkrH4Kh/QTGRbbPZCseAbkH0102/qgprkZVfoBi00MYh
-	blc5JjWAwptiJE7eib3+y0c3lU+8EF4ulmtKy2rRclQBERXEpHCWqqr+stPgDc0N6iAnxm
-	UkADI+6GPHIl8L9CVUvrRt5oX6PfGV8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z1WvDcxE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.225 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792723680;
-	b=C1sa82joib6y/2Y9iA3FowI3O9aaQFMM2ALT7ETSGjTAAL9alYHAOeYUKuEp4Z6RfjVshE
-	PUuvaQIfYCJ//g9pa/GLqTWDVmncM7ODlaIZ4AhGUNWpSP0ZL4IXqb6oby2GmGpW+mXJkB
-	NTpgUGhnyoyAoi0KIMEsI+fN24AX2cs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=waGF8VthxuGr2cf9AIuvHuwULN2Uj1gYJg+7Hv15GnE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792723678; v=1; x=1793328478;
- b=Z1WvDcxEZIoKaKFWzQsDJQ3hNk2osq09+g+LsdI9P67ej0GzjsQw7KKTCvHdiKgKcBFW4tbC
- Wx9/7k3tyx/DC+298g+YxsxhTWw+6BoqdFNTytfmDHY8BXvGX1vVH3NJ0CXCn5INaQ9yfpqc1oe
- CeGeSMubO7h3adC7o5CjwB/8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 2cb42ed3f8acdf14;
-	Fri, 23 Oct 2026 02:47:58 +0000
-X-Mizu-Trace-ID: 2cb42ed3f8acdf14
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: songmuchun@bytedance.com
-Cc: osalvador@suse.de,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	qi.zheng@linux.dev,
-	lance.yang@linux.dev,
-	jthoughton@google.com,
-	david@kernel.org,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/12] mm: hugetlb_vmemmap: move alloc_vmemmap_page_list() next to its free helper
-Date: Fri, 23 Oct 2026 10:47:48 +0800
-Message-ID: <20261023024748.28413-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261020115824.823278-7-songmuchun@bytedance.com>
-References: <20261020115824.823278-7-songmuchun@bytedance.com>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cOUL/bz2ROtsvNDpZQNOQ8+gwr/lWtawvD0vtG7s10U=;
+	b=P2DXFkdaLZk9iMfkCHNTod1HNO/++xe3pa34yA/FxeBs2c/CAmXwEnkuV5mIYlUVh/rgry
+	rcJGeXYjMwVgBUJoCMisa2OJCpdDKrQ2jiW6BWespk4DHbqeHmuRzTPAe0UWZqMLxxivF+
+	uJ9iCa8nYDaR72Z1ItCayqSa8G5gJ3E=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=lolW+Tvs;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	spf=pass (imf26.hostedemail.com: domain of x-professor@outlook.com designates 52.103.20.21 as permitted sender) smtp.mailfrom=x-professor@outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792725543;
+	b=V6BWfQxpznXaAr8rvt3qjSjyqk3UW2XXhkgjZj47srX8SLb3aKdi7nk1e4DEF4Je1Qegwd
+	nl7hQ5yJ25vn4pOzWzxrxB1ERB7xc0NchcHmjwvzLsPhOCr1QRwt9sWKzlxQrbf3Kto3y2
+	guKoAJ9DvfHXtSSYE2I34sAlvclYoh0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KuGmSblIB/DYsKhWb+qmn8q2CJWGd0UihcGWzOr5DCksAv2D66AKO5U0OvrvSUsPxb485w9D91x71auMdvSwHy+wWlgutY1+auE+IEUr6V+jBxuBNXO6mfoxKlcXqNHt/QBgW0qmoHaj1UkPZUG69jZY9U4A9yDoGpS6S4VYMcBcNsG0Wpi5OhTVUh0LuPIUowxbsbhscUNgI4kCNJr1uooDrl2cG8eguaaAbUeKtQZKKGsK7vhUmt0Io9BOjMVQPKOXHS1f6mgIpVynRCwK4TNd9GCVyT/v4tkjvJ1d5v6cEXUznsSELW5UkasH/Gd5waFppKcQJil6dZVwF+x9Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
+ bh=cOUL/bz2ROtsvNDpZQNOQ8+gwr/lWtawvD0vtG7s10U=;
+ b=Yi58CrRX7pUm9cjLc4W5WaPzuGFFDW4JYgnzpA7t4gzqGc9Hoj0WiOO/iJsHiXyvQCK/oX+5bGxO6P++Xnbo0YMcAILstI6PFh+ZWcmuNnOXdA9WDLevzRf4MjTtHL3aCaw73ZaHN9IjBWrhB3RYS5sluDhgAb1OoC5UFsl++7x99fyoldHYvPnJENLicK6Yb0AtY1nM55f61c9kF4K2bMGsh1Wp+PDcI+Q/smxaW570Cdx7jtQ3g9NhtatzyTLOlW989QD97GI/qyyYxLeWuXh8HCNULHc7rp08CiFkyo10UVOj1RipyhiWPtxqHkbLsA3uFDxnvpqJgA4cTXOuPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cOUL/bz2ROtsvNDpZQNOQ8+gwr/lWtawvD0vtG7s10U=;
+ b=lolW+Tvs0F5ldAjqI4b/b7LXlDgdASaKZiOaVMvnO6AjMf13pF9ctxMlCV8ClNqCW4FnXgCX8aVEzJlpzpdtxAmempOEhe8Wy3Vn6Iz7kSgWTbZD3rGwhjBjuq7l0cFi2TlUwy+Uv57P/CegyCUjrcTEJxo4/lYkq/nMC4gqNX63yQaEqTCD3Xg7aFb5TX9vjwHKLma1GV8zIK6TpVnDgb06HM1q1952qLZ0kf43T1uva6D4TsxX2udRaE4laEtUjo5BvI8yJRR/Gb5dibHlwiexOW4L9LgR9ovdVyqUOqVTahGnpIuiKD5gClYB9MTa3oyhn3G5mCW3zXYe7TZD6Q==
+Received: from SA3PR05MB10385.namprd05.prod.outlook.com
+ (2603:10b6:806:39d::17) by DS1PR05MB10613.namprd05.prod.outlook.com
+ (2603:10b6:8:218::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.18; Fri, 23 Oct
+ 2026 03:19:00 +0000
+Received: from SA3PR05MB10385.namprd05.prod.outlook.com
+ ([fe80::e22f:a0f5:fcb0:9b0d]) by SA3PR05MB10385.namprd05.prod.outlook.com
+ ([fe80::e22f:a0f5:fcb0:9b0d%6]) with mapi id 15.21.0546.012; Fri, 23 Oct 2026
+ 03:18:59 +0000
+From: Yingjie Wang <x-professor@outlook.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Manfred Spraul
+	<manfred@colorfullife.com>, Alexey Gladkov <legion@kernel.org>, "Eric W .
+ Biederman" <ebiederm@xmission.com>
+CC: Yingjie Wang <x-professor@outlook.com>, Vasily Averin
+	<vasily.averin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
+	<shakeel.butt@linux.dev>, =?iso-8859-1?Q?Michal_Koutn=FD?=
+	<mkoutny@suse.com>, Michal Hocko <mhocko@suse.com>, Alejandro Colomar
+	<alx@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
+	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+	"linux-man@vger.kernel.org" <linux-man@vger.kernel.org>
+Subject: [PATCH v2 0/3] ipc/sem: account enlarged sops arrays and validate
+ SEMOPM
+Thread-Topic: [PATCH v2 0/3] ipc/sem: account enlarged sops arrays and
+ validate SEMOPM
+Thread-Index: AQHdYp0+T6/nysx9KUKhv/p8p2d/9g==
+Date: Fri, 23 Oct 2026 03:18:58 +0000
+Message-ID: <cover.1792724953.git.x-professor@outlook.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA3PR05MB10385:EE_|DS1PR05MB10613:EE_
+x-ms-office365-filtering-correlation-id: bf77cc52-e8b9-4ad1-522a-08df30b460ef
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|39105399006|22091999003|24121999003|12121999013|15080799012|38102599003|11091999009|31061999003|21061999006|22141099003|24021099003|41001999006|4140399003|5062599005|19110799012|8062599012|8060799015|25010399006|1602099012|10035399007|41105399003|40105399003|26121999007|102099032|440099028|4302099013|3412199025|1710799026;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?AaIuYLbZc4JRzf51W5nca/KhbnmXr8a8Ym8du4UeblvuwKxxQArM6X4DHo?=
+ =?iso-8859-1?Q?Vv398i0CCpyIdlnTLnoslG9O7jMztA5TbFC6qZyGUclaMY0sIVJjE5b0PJ?=
+ =?iso-8859-1?Q?PnCRsqPmdlEn/0DOJlmRSMV2kLhCJUtUtoyVDcIro5ViAqyG9AHMcn00Vf?=
+ =?iso-8859-1?Q?cSk9gA2Ix1hXsMz1cRyPYxX2eiZ8czzMr+jfsvSDY0fKxpDJekg5oGQD+c?=
+ =?iso-8859-1?Q?POoLoFttlcKpDKZWSmvI6dOCofPWtX3fDKylWHAKN8mQak8qhs899a14Dh?=
+ =?iso-8859-1?Q?HpJ+EHcu0aMWR60py5R226oHPvHQDYVAKLe8dz88L1vHxQe/zH53G4wJWZ?=
+ =?iso-8859-1?Q?NtlU6ANJ2z9FIhXl7nlCaeIEjVqLs2L0E6Ha8RvffFX+ElKOOKcjfEUGk+?=
+ =?iso-8859-1?Q?LrIpAVT7nUnTrFceMJvOYUuVb47r3II4Ym7YblB+9s/zjyZYp4NIIjMPQb?=
+ =?iso-8859-1?Q?/9eW6jKXIzeqsnrdirgt4gn+63Oed3fwhV6WN7rpHBiPvaFd1+tNeRS2hq?=
+ =?iso-8859-1?Q?8b+jMyK+cKmCEurZIQZCClJ+Huo4ziMTRBywXh4AzKzyL0AagKABQDmXXR?=
+ =?iso-8859-1?Q?/nhKSKl+PFqrwVRivILFND0aWtIAt/G/+fmiCan/fLogzymUskcbPlFbOq?=
+ =?iso-8859-1?Q?En0qad1x8fKfigpmCtofIAewPQ1kJehMyUzE3rp0ib6q8pGer6J5OprJjS?=
+ =?iso-8859-1?Q?r7O7SeATjbt4nzCjVaFieg6artVzH9xnpSC9zMpl5Zr0YnpYl9E5LHl9wG?=
+ =?iso-8859-1?Q?DHfxxYNk9fMToh9LsCYhJlGTxu8zupvpSPNLUL7QOWZd3dcqXgxGijbMY2?=
+ =?iso-8859-1?Q?Mf9Rbdv113uQNN8PVGX4NP74jZ3yHSlAyyRm4GatDrudm62bnFwxDCnRZY?=
+ =?iso-8859-1?Q?cxi64XmGFr+fpRNMjb24q6mEHpo8AOXldefrpgumwMwExT/4V01Oi/NuOV?=
+ =?iso-8859-1?Q?KnvOkrpz7KiSDf+2Nv5T4bOs8VeIT4sZulwQ8izbC1wgR3q7VqxeaEAUmw?=
+ =?iso-8859-1?Q?PC+MXEMvYW0odZmQIu2YuUzgJqnUqUUvzWRcOhoRrlK9c1dkl1rnajLEVY?=
+ =?iso-8859-1?Q?/nyogL61qCKrTxMrCiZICNSNZU/LtQMFcN1s7PoQADuoNybBdGNgRDaCnP?=
+ =?iso-8859-1?Q?KwT+CHyMRAcdQ9vzGkfC3jQHV3LEhW7nw55dWC1Twt3HKqCc1B41SaZBKS?=
+ =?iso-8859-1?Q?aQwvR0Ja9Cph3wnqSeZr6z5WjqaQW4WzeRa4n9Ay/8T8LEUKw4gwGeYRH0?=
+ =?iso-8859-1?Q?fmXQyOyuDzgwoE2FogI1A1qgAAop7LDKUClNFQI0zhfpJjyTvUhyC7vdVJ?=
+ =?iso-8859-1?Q?18WXnls4h81NBikd6Q3t5Ja/E2mV8g4PehXIM6fhIbHEVP8bGQOGBDap0I?=
+ =?iso-8859-1?Q?Tg9qzxkGfx37HPg0ubvkIc54BVjHsoB/nGzHV611L2PZj8Abf/PYg=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?2mda+YXYUsG08hK0QoO2PDmi/zFy3uNlQIAPJN44T50z6+e263Vx8E7dcB?=
+ =?iso-8859-1?Q?MULMB5MTDJrI7ozGqR/iCEc2Ikgb8bVe3ss2+hcZ8zl3uYu0TrSD0MScRm?=
+ =?iso-8859-1?Q?dShI8VE8VnAPucBfOtiikgQpNiP2t0cOur62glmRzwHRdPUlxe/uN2MI2V?=
+ =?iso-8859-1?Q?97jaHDO12OEL5zcJmMWd45iZ+F8iooJR8QlVk47aPSb5HZN1ETwuK59guy?=
+ =?iso-8859-1?Q?iGnsJYOhOyLuC3gAFIzgD/3iWC1q6ANwXcd3/OPhJ14YGt5LRjEenP6oVk?=
+ =?iso-8859-1?Q?/7jLeXoX65lbU5TRe6IcacgyMnKHuM4b5zowO3o32Hm7KoXSDJNu3qsHDJ?=
+ =?iso-8859-1?Q?N++H+boI/8mq0FRfbppM0V+C1+l4dCeybdBKaAIQXP1WRAM5bcneLQEgZS?=
+ =?iso-8859-1?Q?hoAJMZre8VuKtRTDCQ8R+8wDf+7vPLK3T2TM9J6FMbNH4/UBKA3bk+j/ad?=
+ =?iso-8859-1?Q?cFdZI27TO7XF0WDUAyy/wbY8b2ayQMEd0Wk5p8vJY8R2XkQF2Nh9ye5fpx?=
+ =?iso-8859-1?Q?/kX+wNxbwqYW8M1kh0lMt8L5jlGAC6b6A36oOra4qB9tZFGGUeFnoXf5/+?=
+ =?iso-8859-1?Q?f3O0ZbGONN8NZAtO8iH2h/2ZpegYW2kC21BvWFV7+TKpj+0FWGyV30r7WX?=
+ =?iso-8859-1?Q?Q0JPJpvNjM7RzCfidjPGJFfyFiOrC9gc9Hj6fH513NfQzbmtVRxwuZ7ZhL?=
+ =?iso-8859-1?Q?LkYpyikrDZIxw8C/DtpDqReAZ18MyfjHqc9HfU/W26pecnxlDv2xoPq0Jz?=
+ =?iso-8859-1?Q?4f4sU11veTvqmZ2jXRVXTRv/pWcoOPMwe7Q/hZFvp3ytH9gy3AIQKbKF3E?=
+ =?iso-8859-1?Q?EW/sL4fxMUDxoOLLQw6qQLlqTNEaz4p4heVeypn1RIIAFcOUN03A9w0w5U?=
+ =?iso-8859-1?Q?J7iyfXYH38BPwsrJJLYxR4OtdO5RBaGHfv8iHVztu0nxKCl/iGZChQnq5J?=
+ =?iso-8859-1?Q?70OtZZMnSk5kB7u8islSd31R9kr0K2FA8gbhQfXV4HsGsZzKAtQ+5prAZm?=
+ =?iso-8859-1?Q?jUJvoVff60JR8bzO/7LBcak/orHoX9cUWYKfn1t5DH5sC5amDcQMnTVDuC?=
+ =?iso-8859-1?Q?9N9PGkaRG8HQBWCwQQqkWqKwxaGtYexnNn21pCuLbztGCEaFhfITZzEpkY?=
+ =?iso-8859-1?Q?7N22fMvCm28eeuzKCViuHes5NHOc/qrFzXIW+NYLDjiuTgFjQihYimVn5z?=
+ =?iso-8859-1?Q?QGwovfYu1SfApqPbrTY3B5gdRMZyzDeSh00UmDmftFdqqd6t80IUvFbw5B?=
+ =?iso-8859-1?Q?JfTqGaUguYV+feadteqjJyX9rzbibIjcWB5cR3l+3Y6bbFNNaeiIpXu9As?=
+ =?iso-8859-1?Q?zMrnN437Jcin/qXB245KRtNDu/JhlV5Cu4HOSDT3VabCCHY7EosrGHe0dj?=
+ =?iso-8859-1?Q?RumkAwHmfeYs7yH4OpVVFBiMg/KA5aZj4dPyF0CgLLhfFqLBz3ywqu+Muw?=
+ =?iso-8859-1?Q?FfS3tvyRs8HuVtaa?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B79E3C0002
-X-Stat-Signature: 5wu5j8o56wbrwywqgdpfqb4j1ttr5gmh
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR05MB10385.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf77cc52-e8b9-4ad1-522a-08df30b460ef
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2026 03:18:58.8002
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS1PR05MB10613
+X-Rspamd-Queue-Id: 49422140004
+X-Stat-Signature: ngdhxg8e7otmeghrsh7hhuexdhcfb97k
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792723679-677455
-X-HE-Meta: U2FsdGVkX1+ULbgGfH15W3V8ZXkjCfKimIAiPTHSoLjabd57wC9utZ+H1UTba1YEr8+7MJ9QqDrT3js95jqaOGfgjx9etSaL58mGYWqz9lDo7djB4Dyux2zTROYLxETBEbT1omXjeyZNDS2kczasuXm8Fz34BO7/lR/YgO/zhHG8wYvrj1X+HLIrk6dHR40ZeCu5rRK/IEu2D8bY/xBvk97HaowwsHjoUETnfA8OmYq0PrKKqVmb6Nw3Kq018jrmjuLCG+7rAmfnZsEK6c9F5gE1VLEFjron47W7GMtA5yhYmzOQVQhg7M7XJ6XSPxlsqO76ltZ0XGd+B8oAF3Lt9O6nWbihOhbjH/rJr5iD2TQ9pp/V4KIPGAnLPznl6Ho7jt+vnioSsQ424WcvZT+QUOL9c7gatYm1xC+AoRASbFggZdFDkqRhAFPUT35v8vr9JJYB855HUZNTNHGME2fzIrDr0W3MS4Eh0UOAncRxDvFQk3JWuACGIb7mmeverN4+p57wQt9w6t2zPdf+mTLqnEbDOvOiYlqRUj0qGwO3zJBSeNjNpV7MFAtM2WqXtAuUY/A+LHqR2CsNMGs2K9++JPoODvaHbl/Y5E1nEIARl8cnPyyPJkDyd3FMqSCoJ2hMkEb3+0hfjtMm09T6DSErkzxUNkIbQI9RmZ4OuH3LJgg4xXNb4OAhVYKOtKVYaMnAw8M3Uy63xjvaTiu568T6luXS41J31iA1UxxXKUoyKoTKGLGox01xij729Yurf18ZfGlcvzzThht1a1dZeudx3sTWAsZb+i6ScnCE9m7mlxbmz+0JJWKyJwffHuWt4EcU6vu3ZwDuPik2dWpeixVPQYHoAmqz7vP7QAhRNeD6wqqrwI4Uf6EyTvNTJhl7nCULnFtJIbgGr/cQiPXi8v9zENUmxt5zGokcVEEkl7oEGiiEUYPVeEbQy9ScDiBrpbMYpxjsQDjJXRlSm46pQ7/
- nc5TfTM7
- HPbKRHFf/MT6BxTaDRAYWGIM/7d31iDKol6jTP3CA3am2oisJrlgsFevwTBv34nkAgZni3z16P6r9ueCGWJI8QEICyENQubhNgfBq5DI8T9OrVnkMg6IzK+wti7ukzNpg00UTP8toCm+FyGdkDbkpuO019jXqT9oxrOh8DeoA7mKC/uqYdOK41raHLVdspvLvfWweXVnv7ZTApOwMqI8QRqV6MFKEnE2pC7z3uurWYp+qIbG5QmreLoNs2h6d+E9VEnoxvp7QttRbcLdHi8IXFdyGNi0woiUDeSAWjtq3uwhVyOzmRaC2d8gyng==
+X-HE-Tag: 1792725543-149166
+X-HE-Meta: U2FsdGVkX1+jglsSMoczVM6fPmQdCpS+pLIYQi+Is2KXKjcY6B4S+BxRXLgp5OiKOpiq+HyqgOFLrIp50xvk46gYqoUjKC/Q0fKM/ImB6IlJhxPVKb03X6jiVmZ09QLoTnLoxBF5n8cJA/JwsKOQw10vivPgeQVE9A9uxMAaUhQLS+Y+RKpFfrTAM4YIAt3w7HbzgAytcX1yG2G6Af9WpUS8Z6yriq4iWRmUE94WzwF9CKceFYdwXDoGVWAJLsshGs2dLjpD54OVxGsTvJg8jsLCbiaJnDcbkpUzwE2WfmyEo1+C9GyfsOFzc9HSX66OAno5bbrLDMb9yXXvmR9oW85MFRiI2pbKcAFgpkIsOtjksVDF8LSsj24SjntQLnRLFtXrVxH0LhaJEQH40u6DXXwzNDG0hw8r22GZq/U1LL2PuLcfoKikZi6YfgNzaRFvmR5aVrXn1HBt2+apj3x2kefHs9GsU0Cb91xwveEkR2yDOR/TvQT+B+Ah4b5zq/wpsgEUmmst8EJfRqxxAGXEHyCas5kp99ezS+f0tljZgAlXz6ZOsiRGrmG0BmmL34D+bBNdxso8qyyTeeKUBx9y7r/lsUtSCKv9iqGnKYU3Y1ox467isTAMF2Fuq8qjl9NrF0QmY44qBAYmHIZ8PTC13YIbrsk9J/W/kVW/oLIq0e0RgMnn3/bjMYo94vieDvFyiv0T5QSomY3QkWoYmu+x+kapJu3hpxLanra7esvu2SqIqOHpbG55YofayXn5uf0VmcZZmvUI25IVQXI7QbSX07zyBNQTPcnKtTOH5xKCqiTto8COUohkSsRt1rvijwSVfU/Jj7+mTU/sWIwO2lV/b9GrNQnT+L30fqGwl/QJsY3WsU9X9TWLmxblAjP7A2ROYxnjrxX6NA4cTaHUtkRmSmv97y/sPLgWZPKRrB9tcUysVAHkXOuDUHblpb1ZgMhVbClFxO/1RuvikpaKYuv
+ WA/J3Brr
+ Tt9/x2M2Z4zipmFeegdSYjDl7LQh685wC7DydrEKPFfYn5V9Wu/hSMORb+doo+XCQ46dXYQBlgLLcnteq6JvgtFKVBX4Cz+i2eRqNQPFHVfyX0Z2U22mEGkrrvnuO8D2UfYu3M7sQE+2HKqV6OUwu08QdWXbMqesp7ag3HSIwXVlS31hti4JNDPfb2ZUOWW/A0GtIxkrHu8HceFK8yS/+q+MuPthzc9jqEBVgUNZG91o/PKJ3TO0cK2UTo0zaZWFa81W57fH7/ia3GYCidb8vSd6TX1V9y43VCeW1Sh70RIRn4qG9StKZICgAfaAymIheYT/jq6AC7Vtwt4I/pzdO+qPlTgZ0iBh+avHfLFWFoeQHhNte9F+WSeMx4fZYQ+R5CnnT52ClCMED3n2nzs+nPfbCmAl2CjA/935aIG9qDow+I4u4lfO7lQm26jqrc1vBgQ8Yq7L0t+V6XufyyLEvsgRaJ0471CQDsq2GX4r9HgrCey1s+9Md5twUINm5S7CNnp1TOl+CgyxTEXZA9KQhGZAF+bDffqYfdUn3J45TmhV2F6LuRvxuI396QOvQNQVL3nI+g1nLVGYHiryVdVKSQjXgBGLAbwVK+z+w6nYbmFNyF+Eg2Xuz7RoJeaxrwGoAC1bzpLOcfLa9Fpk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,17 +186,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-On Tue, Oct 20, 2026 at 07:58:20PM +0800, Muchun Song wrote:
->Keep alloc_vmemmap_page_list() together with
->free_vmemmap_page_list(). This also allows the folio-oriented
->optimization helper introduced in a subsequent change to reuse the
->allocator without a forward declaration.
->
->No functional change intended.
->
->Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->---
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Andrew, Manfred, thanks for the review.=0A=
+=0A=
+This revision keeps the memcg accounting fix independently applicable,=0A=
+makes the SEMOPM validation safe under concurrent sysctl writers, and moves=
+=0A=
+the UAPI comment cleanup to a separate follow-up patch.=0A=
+=0A=
+Patch 1 charges operation arrays to the caller's memory cgroup only when=0A=
+the actual nsops exceeds the compiled-in SEMOPM default. Requests within=0A=
+the default limit retain the existing allocation behavior.=0A=
+=0A=
+Patch 2 rejects negative SEMOPM values. Writes are parsed and validated in=
+=0A=
+temporary storage while a per-IPC-namespace mutex serializes writers from=
+=0A=
+the initial snapshot through publication. Shared settings are accessed=0A=
+with READ_ONCE() and WRITE_ONCE(). Failed writes leave the live settings=0A=
+unchanged, and a partial write cannot restore fields from a stale snapshot.=
+=0A=
+Readers retain the existing per-field visibility.=0A=
+=0A=
+Patch 3 removes the obsolete UAPI warning about physical fragmentation for=
+=0A=
+SEMOPM values above 1000. The operation array has used kvmalloc() since=0A=
+commit e4243b8062c1 ("ipc/sem: play nicer with large nsops allocations").=
+=0A=
+=0A=
+The series is based on 7be4bc52fd9e ("Merge tag 'driver-core-7.4-rc1' of=0A=
+git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core").=0A=
+=0A=
+Validation completed:=0A=
+=0A=
+- W=3D1 builds of the changed objects and full x86-64 bzImage builds for=0A=
+  patch 1 alone and the final series;=0A=
+- a W=3D1 i386 build of ipc/sem.o, ipc/ipc_sysctl.o, and ipc/namespace.o;=
+=0A=
+- initial and user-owned non-initial IPC namespaces rejected negative=0A=
+  SEMOPM, invalid SEMMNI, and malformed writes without changing live=0A=
+  settings, accepted zero and positive SEMOPM values, and enforced the=0A=
+  configured operation-count boundary;=0A=
+- both namespaces completed 10,000 rounds of concurrent partial and full=0A=
+  writes and 10,000 rounds of concurrent rejected and successful writes;=0A=
+  the same test reproduced the stale-snapshot overwrite on the superseded=
+=0A=
+  implementation in round 1;=0A=
+- SEMOPM limits of 500 and 501 accepted requests at their exact boundary=0A=
+  and rejected the immediately larger request;=0A=
+- allocation profiling returned to its baseline after successful semop(),=
+=0A=
+  EAGAIN, EFAULT, signal interruption, and IPC_RMID wakeup paths;=0A=
+- with patch 1 alone, a test using sixteen 1,000,000-operation calls in a=
+=0A=
+  32 MiB memory cgroup observed memory.peak reach 33,554,432 bytes, one=0A=
+  memcg OOM kill, and allocation profiling return to its baseline after=0A=
+  the caller exited.=0A=
+=0A=
+Strict checkpatch reported only the CONST_STRUCT warning for the local=0A=
+ctl_table copy in patch 2. That copy must remain writable because its data=
+=0A=
+pointer is redirected to the temporary array.=0A=
+=0A=
+Changes since v1:=0A=
+=0A=
+- account only requests whose actual nsops exceeds the compiled-in SEMOPM=
+=0A=
+  default and place this independently applicable fix first;=0A=
+- reject negative SEMOPM values before changing live settings;=0A=
+- serialize kernel.sem writers across snapshot, parsing, validation, and=0A=
+  publication, while preserving per-field READ_ONCE()/WRITE_ONCE() access;=
+=0A=
+- attribute the long-standing signed/unsigned limit bug to the initial Git=
+=0A=
+  commit and retain commit 50ec499b9a43 as the reachability explanation;=0A=
+- move the UAPI comment cleanup into a separate follow-up patch;=0A=
+- add concurrent-writer, accounting-boundary, cleanup-path, and i386 build=
+=0A=
+  validation.=0A=
+=0A=
+An AI coding assistant assisted with implementation review, commit-message=
+=0A=
+drafting, and test planning.=0A=
+=0A=
+V1:=0A=
+https://lore.kernel.org/r/20261016152609.2528805-1-x-professor@outlook.com=
+=0A=
+=0A=
+Andrew's review:=0A=
+https://lore.kernel.org/r/20261016155905.2a659b7bb7d61f33467a3263@linux-fou=
+ndation.org=0A=
+=0A=
+Manfred's review:=0A=
+https://lore.kernel.org/r/51c93c19-f1dd-455f-8698-6b1ee30eb630@colorfullife=
+.com=0A=
+=0A=
+Yingjie Wang (3):=0A=
+  ipc/sem: account enlarged sops arrays to memcg=0A=
+  ipc/sem: reject negative SEMOPM values=0A=
+  ipc/sem: remove obsolete SEMOPM fragmentation warning=0A=
+=0A=
+ include/linux/ipc_namespace.h |  3 +++=0A=
+ include/uapi/linux/sem.h      |  7 +++----=0A=
+ ipc/ipc_sysctl.c              | 38 ++++++++++++++++++++++++++---------=0A=
+ ipc/sem.c                     |  5 ++++-=0A=
+ ipc/util.h                    |  7 +++----=0A=
+ 5 files changed, 42 insertions(+), 18 deletions(-)=0A=
+=0A=
+=0A=
+base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614=0A=
+-- =0A=
+2.43.0=0A=
+=0A=
 
