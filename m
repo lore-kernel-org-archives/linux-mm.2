@@ -1,123 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBEC606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 16:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012E8606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 16:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VYZAC06w
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fB5S3V/L
 Received: by kanga.kvack.org (Postfix)
-	id E74FB6B03B1; Fri, 23 Oct 2026 12:10:21 -0400 (EDT)
+	id EA6EE6B0B9F; Fri, 23 Oct 2026 12:37:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1FBA6B03B2; Fri, 23 Oct 2026 12:10:21 -0400 (EDT)
+	id E50D86B0BA0; Fri, 23 Oct 2026 12:37:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D34D26B03B3; Fri, 23 Oct 2026 12:10:21 -0400 (EDT)
+	id D400C6B0BA1; Fri, 23 Oct 2026 12:37:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A903C6B03B1
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:10:21 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B50866B0B9F
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:37:40 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 141DC12018E
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:10:21 +0000 (UTC)
-X-FDA: 85354378242.25.11F70D9
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 600BF1C000A
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:10:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VYZAC06w;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13A5CA6FBA
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:37:40 +0000 (UTC)
+X-FDA: 85354447080.25.6A712F1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6577914000A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:37:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fB5S3V/L";
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792773458;
+	b=cKFMIxlMt+OWENyaqZ9foFuzmLCaur7K7biBBmi/w/PO6jUwOu4xue7tgaYWKmaDSxluRd
+	r4OLmflPZcX7RqUjTX7F/45LQMYOxV2rc1CYU2hVNgtFcdz6aPS7kuhu0XSeaXClve8mKq
+	fENpB42zjBUiphwXatYMUCLx2YP6Ies=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fB5S3V/L";
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792771819;
+	s=arc-20220608; t=1792773458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pcQjs8ioOVkLcmotAGouT1i8KfpRT9OJ9Yjm+nNsKg8=;
-	b=f8ZUqpT8Cnm6vDDSiDNCmEUH39UDY1VSms57d/YOhbp1Hx0SI+NfpOun6WFAp93JXowDUv
-	kzSOo8XAX0Zx0f6iaus9wjdXy9mLXD4/hLw0/9t+BVrID8Axiu/V7Um7b7LMme5FcY0Brw
-	YG7SUjzEK+gzvAt2n0g31nf3wHBmbNY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VYZAC06w;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792771819;
-	b=LH6fa1RZAiBn1Fxp8zXFLnyPcoGqJ4S0+WLaQG4j0Xf0+yZHD58cI9FANnWPkCC6uYgAjL
-	jISIpX8ph/kvZr9TTnkqT3g9aKTCczJvGB+rBUjLFj22wibfUbaYnpqpir6eUjcSjxuqKy
-	pJ+xziQMkPGI1RuDO23O2CcyVozeExE=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ac6794fe45so912386a91.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 09:10:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792771818; x=1793376618; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pcQjs8ioOVkLcmotAGouT1i8KfpRT9OJ9Yjm+nNsKg8=;
-        b=VYZAC06wK6rcn9Zi3J64J3c2wG5HkX0KPbch/FhtV8Tzx813PHQOHeqrHa3QRBiGQM
-         462ca78iRdy3WhKQFZrf1K2INzfjCempUwAL/+G+AK8hIDJEtF+Z6QcTnP4q/QPN00Fx
-         9H0VKTTVzgqoFGJ6ZbXVtL1X1EJD7pWMylz5mgIr23dELty6THRiSfx9+JpWAyMf5LWR
-         L3xtYnQTO8trAqMiwwz6x1np/VAHRD8ofkGlBDvFmcTNtZBQsihYkazfJdYvb/Y93nSQ
-         eoIJzgISzMkl7pSeqp43ACG5fZCYHTfHlweoaWTh52TJro/gEkeUGMP3e7vYnGRb5lyi
-         8eqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792771818; x=1793376618;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pcQjs8ioOVkLcmotAGouT1i8KfpRT9OJ9Yjm+nNsKg8=;
-        b=bGwCk2KUdGTFYUVaPFIbNvfk/l3TbSsu1MVVMgis15dm+dgKlugxNri/M+iz5QbbB4
-         0hfwdqh2xU2wjSZ7x1F8LOfV0NkwxK6SRptNFJe1BSVi6dFuE4vgIbZ99RgCOKFHcvKw
-         DJMReEzN/dyTVhAZrwLtUYQ5LCBkTiJhh32Sw6/CZIVPceMo550c0JaodJYq1qwe9ekp
-         srI8fL5KyiQjkc7CmBdtPU+6J4f5Qg9NfmIvUfOWZnqoHsrrJI1TRfA5PBUhz0t7Wx8h
-         ZygyF8s5ITfVz73SX5oaPlhic5rb/R1cYWooc+XZo0taC3ZBaZKnTH0sPxz3ODtxmclb
-         Azdg==
-X-Forwarded-Encrypted: i=1; AKwUvByludxfwOAEN+7ge9PLHCrotph7bNVNchjQTce09TDsv0rO2O/3biycu/MNzI3PrXAXjUnJFRDgcw==@kvack.org
-X-Gm-Message-State: AFq9FYIaZHffPXZMU4890Cb0SoQ2R6D7Of1PBIYNEZiBIpjcHfen7XzS
-	jqRbDilhUnsWPsiIKNavJgFBdcU7mC1NBKub5f6rvdi7GVqSG0j2HEHu
-X-Gm-Gg: AYBFou3ti6RAGH5rFIpk8UB2kq1JYxcVdekCgcR2WhguskiRKXoPaXc+6gWJYw96L6w
-	+DlWHGipe+0b9hukX9EUrnYVYUmkgVOIih3oALynYIt9Q9egY3ijzmjAgwqRggughrwguSwzsux
-	PnwOTXuKeKFqWsbg//7l7+QDU8lkaWAkIlG9u2fvjtmGW3aiQYOyGerFHwhrOizMw1KbcYNjOnn
-	41CtHe/fb8qasehmuoAvEx95U2HcS2VaBt9ycP6k/hKFbU6wnXqx4MLkQpD0qR0sI2dvtwZLvtf
-	W6mjqWoZQ5ipetLnu2uiS0B87gZ3W7OMjdmKMMjt/KcB/SJyGe2IGGo4LsyKmaP7GMS2m3ODnPH
-	E775jyCEcKVf4v1EjUdaXHs+SCSOmyzZFGXaR303usn2uVXMsXZG8Z0b/jY5hpa5uPUWM3cGedp
-	fsAfHGwyVIX0FuSAn8uJ9I39yaXQYsTMq2QIWOz+DNKUuM7DiQtA8LyU+TyBnrdYH5tPH2Uh1n6
-	BADQVNFkpPq4GGxA0otWeaAOOnSeEnsaFQcPUHBPOS5AgRBeXai8UAP//pK9Bi98jbgtK8uGjeS
-	ZuUUVQ==
-X-Received: by 2002:a17:90b:4b84:b0:3ab:884b:65b4 with SMTP id 98e67ed59e1d1-3adce154993mr2197303a91.59.1792771818170;
-        Fri, 23 Oct 2026 09:10:18 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ade31ff0c9sm258584a91.1.2026.10.23.09.10.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 09:10:17 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH] mm/mempolicy: remove unused mpol_is_preferred_many()
-Date: Sat, 24 Oct 2026 01:10:01 +0900
-Message-ID: <20261023161003.59086-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Q6quEbk1wjADIYDnbmI8RxySF7eMLqCwXbNeK/3QTbQ=;
+	b=CGslWojRfdawyF1OqJ6Fg7+psJszf82j0neJeOigxEmToKxM7ldvxmLML02o88tuujskaF
+	RT2g9U9mAL6dHtRLvYXD5HLptOvQuOwgzAM5HsFAA4pWdEMH+yhNA1k0FDvJRmLq+C61oF
+	P3vDjMMBu6jMCqnfyOUi3x5mH5mSCfc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4674940F63;
+	Fri, 23 Oct 2026 16:37:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458281F01825;
+	Fri, 23 Oct 2026 16:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792773457;
+	bh=Q6quEbk1wjADIYDnbmI8RxySF7eMLqCwXbNeK/3QTbQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=fB5S3V/LaS0CaeNTSAaiAwX6QQaGxO+OqMWheFNTKPAvbenke7l17ptFB0A7vQjb2
+	 JHvJGb6q3DIEyS/cw6/UVetwp0iUl8hd5HXKpVWv9ECNJNlcHsBYVnzI6Gd4ZtPYE8
+	 oOlobM1tBmOifszaS3w7PmFzmoUXQeWZBv+GoYyzSU3L9tu8HGfXFF1u4zlQ/X1QFI
+	 /pul3GxhWLCswfRS3qeRhzKZZaau5Vpf6R+DkpWAyaT2Q1yXLZsqVJ16O4jIO33YnM
+	 N4xKOh5r1qKFveuMPJoE7khOS1YZ7HWmA4gBGV344J3/484dRvoqbOlF1M6el/vCzv
+	 Cz6tzE5ePpetw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Greg Thelen <gthelen@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
+  Alexander Graf <graf@amazon.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Evangelos Petrongonas <epetron@amazon.de>,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kho: check fdt_phys in is_kho_boot()
+In-Reply-To: <20261023054518.3258350-1-gthelen@google.com> (Greg Thelen's
+	message of "Thu, 22 Oct 2026 22:45:18 -0700")
+References: <20261023054518.3258350-1-gthelen@google.com>
+Date: Fri, 23 Oct 2026 18:37:33 +0200
+Message-ID: <2vxzmrs4fk4y.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 600BF1C000A
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: j9mpfubayengnksauahoh4g19wkuha51
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792771819-147150
-X-HE-Meta: U2FsdGVkX18p4IKqd6NZmbcbLpzvba/7xPlFsKAvFcRNMP0HjfUKh7yRKxPwfG8OJvPYvlxMDIwstZqzpSe0oxTZHzSqZQQqzv3/MZ8KC2KGo7aqLglwu4pKwJa9AAjhy1tnWy9PaDzjk8vnzFI5jukWML5EFm3OB2gOQ+Hk9gwopBf7wNBVlh+PuCsIZJbGWiXe1HZ3EJHq1KhjQAGNlfNm7e92iyvszZtepqXUMrDZvD/z8NgjtZbtF8hjJXuCrxRg8TFceMiDzd++3vU+VhSoL39noNxCyhFGLGFVYcsy/xl4i6vtAPEuuAMZiBfLfnQXTDg5P4WdFifEc1Td5b/yGn/+hkXKkL1pKyqLRZ9AfD1A/icFMnWS6q7j1HsREhLWYtRPyaiLze/5iyYoOwZRqZ8Rw8zGjkfG2JBxVmrLTPpNHPE8nO+SM5VTaT45Z3PGQr7wi764QCcu+Y4ydabh1r30hwA+ZeFLQoOaP3c7udOXNGWpsfuqu7bBabFNHUU7I8nJwJkG909+8cfpCAcd8Az15vJ4f2PO9vw9XuN7RysSuGK173+mpjAW10HjBehWiJ/qBd6ecmz9rJgchl/qOtt3TiNz/YKio6VarP58EkrPcgtXUIxjDMm5kT/wtMGDVemxLS/j7o8/q1r3osYIuEJb8m8jL956jHJaZfZjX2vtJ+zxvP4yGlxJLYl+Kyz9cCeKuvHrOv8WlqhkY6nOOKDLgb0CzPbzDfb3zTB9k5x/n8PAE800fmlFaM2GMUnzQk5uh15UC0bSRKeDRHTnMeUHcEArg4nAPIYt3MuJ4hdcNzAa7zJrWxotlSKKPiuIvHC+qK0hhD508PVnMl/ZAxPcszqDUYD7boQo4oX3t8/lmqX6UCnxj0MDLSijsi+bOW29VPIXZOwS9G1K21fxsbp9SpbuhcJgKVYU8kw8npVZG5T87lnClY1Z93bMbo4CQ9p20g9tipoJldD
- DlW/6aOl
- cy7eKpLxhbNc2cDahdtwzRpusmbzikHN0uVXqjuavID+b8N7jmF03ecPE/s8ChXKifFMMZDverXpPHSutt74IGiAtJ5R4L+nHv9y+h086x/TdDgSuUkZqXf0MmNunQRHOVpAzwQllm0AHtp/UrqliJGACEEGLpEX875dmQFNi0ywcHcrIwupjKO5QjwhLhVBPJ+5k6T/ayFHBF/ZQUi85e3J3r9CZlK+62Ld2BVutYwZU/qqvGzcl0KSACnFLBdU5cS9NLUl4LSmkHATNELgd35y3Mg8blumnN9xOS6/ephHFJIsPCUtApuMrag3f/qBKG1clc0fOrVdDf5iXEEQPzCnTs5h3OEJojL7ouTpWDWJUydRqTPWgl2PoLRa6VZBlJQJsGC04LipIdzYF/iN1cEpM4Svfm424JDGe+B+8bROztSVK+LQOyCru1N5O1j0GQ1fXNMiEIcIkPQcNi82XkNW+E1+keSPiyMhTTZ2lUx73bnDpxzfBJzQJ/40zw5wz9R/XlFD8koSJFqG0cJm9Mw2b4w==
+X-Rspamd-Queue-Id: 6577914000A
+X-Stat-Signature: roaj9sfreayawqqcxhynrotkzjas5czm
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792773458-747359
+X-HE-Meta: U2FsdGVkX1+XRNPl7rsszUo5khSLd4TbKkLVOd8LVbSahiS6QwpXURbBdQIYylMs1BsGbzGi3qATiLbsIjTEQwU2aFT/wKe/0Q70QM72I1l8x7XADT9SXXRuFeraa4NLhsfyQDRnFBd0dWOKVcqBNwdMTCbboWL+t/+l/lHA/busAnJxCdcAdrYDAKFyMoxBIx+B8Ww8UJCOFVVQIxDKP+f00QS+1ENANXezMmY48QZyv+S/49shr1dg/oM6e1DfKOBlywz/mMU6XnbEEH4WFy2abCfjiWHVWsoOTCrJY774xte4e3YXm4eGOkBaO9D/+vukzH2r6saqFt1V22FcjMxU4Ad4GRgvLp9/LhdpMwHHDsKMGRGxesrkyhdc7bXysMkENzOnabP1PJPEXb+5TnK8TIfw9j/ui5eyr8hZF7QOxEyuL0l6/H52WoqhECB7hwxlyLcoqKE+/Px9IYZWbFaQ2ePneKTUB5YsiGPG6IfBYTneclwA2RQcObVpSGUA/0voQP0RUNCoDKjRHqh7Ce81uUAYuzYx5XJA/xHtr6USLhsdf/nhUCMGKaMrQPeKEZ0RRrcJBYITV2qAWUQ186ceqcAsEu/0Ub4hRzyblmMEI9+xz7OIXyGaLHBfmRZ0KRPLfH+DN1ZTs3y9cBWyqULldjnffP1Mz30LcTYDynEbRicnkT4GgjAUg7zg13Aa37wq4ru/MFTDigNAU44W1w5OdOYnUyQZfrhRu3SNgnRovB3WtZumeZ7BoAmEhDKj6oop3MdhSqMceNHfmZGTJ1uT/mftauFtvo73JMNZqRoIe/5I515RBKTnUvp4vJXTJoTzvNUJWOQnrv3g4pSqt3k1bh323tXLoVoPr9QY/KMEonqiwgokleiv1okuzTlRW08AodN8gZxyZiQ27Exvm0Mn0nhy5uR8/bSEAKE/5Bbc6JQd4YSs+Qmwy5ABy8gSMell9WIHzjImQFGon5w
+ LJ6ypjin
+ K7aMGOIqhOLcXgyblGqGo6e2B12vg5DnGj0iStitK4yc3NvFDe18sytPzySYxsKO3cB/pp1e124fjNRSYQIQZqwQKtCnz0LRDc/2SWcC2OmKSiHWsGXHFNHvs8ZnfH2qHormYSAx3vA+KyRQrvpuO9wnWGDuZmNAFuUNUt7nDvOzr6T0pMVD1tNt8MTHL/osiYxgG/t4BDvYvKDl9iUAnUI1wJP7YwGNLUE668S2zBRhbV+AgUNzcZpdk2fUmEub5etSYNamqnuybpso4ppdjosJfynaWAkfelc5iN1R3t+lrBc6S3Df/2J6vgw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,48 +99,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since commit a492abe28bec ("mm: hugetlb: move mpol interpretation out of
-dequeue_hugetlb_folio_vma()"), mpol_is_preferred_many() has no callers.
+On Thu, Oct 22 2026, Greg Thelen wrote:
 
-So remove it.
+> During arm64 setup_arch(), efi_init() -> reserve_regions() calls
+> is_kho_boot() before arm64_memblock_init() initializes memstart_addr.
+> At this point memstart_addr still holds its initial sentinel value (-1).
+>
+> When booting via kexec with KHO enabled, kho_populate() sets
+> kho_in.fdt_phys from the /chosen FDT node. Calling is_kho_boot() ->
+> kho_get_fdt() invokes phys_to_virt(kho_in.fdt_phys), which evaluates
+> PHYS_OFFSET and triggers VM_BUG_ON(memstart_addr & 1) on arm64 kernels
+> built with CONFIG_DEBUG_VM=y:
+>
+>   kernel BUG at ./arch/arm64/include/asm/memory.h:377!
+>   Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+>   Call trace:
+>    is_kho_boot+0x2c/0x38 (P)
+>    efi_init+0x94/0xf8
+>    setup_arch+0xf0/0x240
+>    start_kernel+0x84/0x490
+>    __primary_switched+0x88/0x98
+>
+> Check kho_in.fdt_phys directly in is_kho_boot() instead of calling
+> kho_get_fdt() so that early boot callers do not invoke phys_to_virt()
+> before the linear map offset is initialized.
+>
+> Fixes: d6d511639185 ("kexec: introduce is_kho_boot()")
+> Assisted-by: Gemini:gemini-3.8-flash
+> Signed-off-by: Greg Thelen <gthelen@google.com>
 
-No functional change.
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
- include/linux/mempolicy.h | 10 ----------
- 1 file changed, 10 deletions(-)
+[...]
 
-diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
-index 65c732d440d2..cd8f944209ca 100644
---- a/include/linux/mempolicy.h
-+++ b/include/linux/mempolicy.h
-@@ -173,11 +173,6 @@ int mpol_misplaced(struct folio *folio, struct vm_fault *vmf,
- 					unsigned long addr);
- extern void mpol_put_task_policy(struct task_struct *);
- 
--static inline bool mpol_is_preferred_many(struct mempolicy *pol)
--{
--	return  (pol->mode == MPOL_PREFERRED_MANY);
--}
--
- extern bool apply_policy_zone(struct mempolicy *policy, enum zone_type zone);
- 
- extern int mempolicy_set_node_perf(unsigned int node,
-@@ -298,10 +293,5 @@ static inline void mpol_put_task_policy(struct task_struct *task)
- {
- }
- 
--static inline bool mpol_is_preferred_many(struct mempolicy *pol)
--{
--	return  false;
--}
--
- #endif /* CONFIG_NUMA */
- #endif
-
-base-commit: fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6
 -- 
-2.43.0
-
+Regards,
+Pratyush Yadav
 
