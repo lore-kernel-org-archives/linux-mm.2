@@ -1,123 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC95606A31B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 09:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC15606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 10:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hNaqP8RF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kXKV10Fy
 Received: by kanga.kvack.org (Postfix)
-	id 867236B033E; Fri, 23 Oct 2026 05:44:42 -0400 (EDT)
+	id ED3B66B0994; Fri, 23 Oct 2026 06:06:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83ED96B0341; Fri, 23 Oct 2026 05:44:42 -0400 (EDT)
+	id E83D16B0B2A; Fri, 23 Oct 2026 06:06:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7562D6B0343; Fri, 23 Oct 2026 05:44:42 -0400 (EDT)
+	id D729A6B0B2B; Fri, 23 Oct 2026 06:06:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4307E6B033E
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 05:44:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E272AA0363
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 09:44:39 +0000 (UTC)
-X-FDA: 85353406278.06.9F41B9D
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 35D2E1C0005
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 09:44:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hNaqP8RF;
-	spf=pass (imf18.hostedemail.com: domain of wangqing7171@gmail.com designates 74.125.227.133 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF1946B0994
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:06:36 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A22958034D
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:06:34 +0000 (UTC)
+X-FDA: 85353461508.23.59CA8BC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C771D1C0003
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:06:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kXKV10Fy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792748678;
+	s=arc-20220608; t=1792749992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6eHpkzruNMWM7nEd9yLSMJY9dIBghjETsUAxANFqYe8=;
-	b=E3YNnmb0LNBKW4sukHAGZOBEL9fu9j01IB9v7DCqUAFcbBX1QHY/oiFMmDZJ2JcjGKiVhk
-	ZqEY0uAqoCe/6O2whNkl3AmvTZEXI+twU8vQfPpdNAF13ieOcd9Aenl0USkLDS2KCexdgb
-	sn0vzl9EBLQdk6GN9PdjY65ugfUfgDg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nTWmeH9i/zciPFKRMIAo/+xF0ZeK70HJ+nGUDNQqdWo=;
+	b=iExR7CyjflE+bG5uRGsfbNHicDx9EmsNrw+vI6QYU13Tv/4G577AEvjELtG4xEggeJy3aC
+	H8+0DXioMMDucFiA6uSnBL8bNMh93DsF4sfQrKCfa6SlDazQTRZKIA0jBkCm9/jcsnEcIk
+	uR+Elt8QnWkraL854DJ7BAd4gvZreXM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hNaqP8RF;
-	spf=pass (imf18.hostedemail.com: domain of wangqing7171@gmail.com designates 74.125.227.133 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kXKV10Fy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792748678;
-	b=V9LEEAucHy4PauM5OKE4Fp7SpdeqmLWMvTtBQsrZt3pPTEbB1EOOci5sgGAh7N9KR+lLxA
-	tx7YD1duiPjFT1Yytrbx18ztDNnPSns3s1m0ZYMvGcnUN6pKPYnZvUrYy7FzWZ/umuNhJY
-	EnSUbKGjM6swm2cNdwGOnFtCINLVAdc=
-Received: by mail-pj2-f5.google.com with SMTP id d9443c01a7336-2e7c8213b09so1371085ad.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:44:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792748677; x=1793353477; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6eHpkzruNMWM7nEd9yLSMJY9dIBghjETsUAxANFqYe8=;
-        b=hNaqP8RFtIQ8p/IgA83WePQJYkMG5+YJwYZzjcZK+8rTC1WXNpLus2yRYJtBBVsMof
-         Ngf6UCbVpeJ0iDg7CeRdyn2mEHlIWc3xVpLAiwDCH6PjDId5340DkGLGsIb95axXNFZg
-         7o4RbVPsJoG32zv8KgBABhDKRyzOhR6y168Bg4gGC8GDPZcsDpvgM4cj921IfZin7lqT
-         KRmc5DrXzjzLZoRT9BcYLDvbokAABqm/7h3BVIPD5tc4v6cQqbAoec1MoGWCvVo35Kb3
-         b7fpgQ/9AOftFuW6ATrNFxWHgZ75oX5I2+4v3PCgU/tyTIvOl00Wl8kJ/WcKaI1UEom6
-         aqHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792748677; x=1793353477;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6eHpkzruNMWM7nEd9yLSMJY9dIBghjETsUAxANFqYe8=;
-        b=wuWMFQVRHMCo4jFQ4pZx3rghv1FCPOWlQbz9kBzgsSt9QF+joWUNmNYq/XZEw8cvIs
-         /KWBu2VXX5W8SMzjq4kH+WfyNHTDeAECEPW2zESN92Mymav2//jtmbPh63EVO9lY/XPK
-         /sI5Dq3aoc3d3h0XgcFp01t39RoP0bWQ3FTzbpqpTDaKjSHz9LHl6PuyK2hhq/n1so9F
-         /tZQnMhUWQ0kX5nZwAxgH2CggY16d9RRawPBeESJscQPFE+uIba8afOFwnxR26e+ilBj
-         QHf9LljTR3ZqK0uywAewaZrk+OqT8KlobQTMCTEgpXY+dd697kiPevZHhPWzEWAM77WD
-         C2rg==
-X-Gm-Message-State: AFq9FYI2dRey22BBfOlMNSenlwiF3haeaLsaEnYHMnULCbAWsL//MLWS
-	8WzZFg2QsCTFLU1CjRjiAYW3Ap9Wb0UFCN6hAbugE+DZrkPgKLLAmsbM
-X-Gm-Gg: AYBFou3dQ3+P9Fs0bkznZyhJoFql14PJ0i17AJFV9drMrraxJK1j1v+LSvke2CSG+CM
-	gcn7WaMITxzH4GhPVdXf5yjMSW+mLUj959bpESglEQowEoaMfq994mywbxGHchLW+sIXsPs/7GY
-	4FFtOArNObhsZnlQMylwmFKnTYwEJvO5ISTFxFQ+zMupK7S2T5JF3cZlLDpvIZJp98uQT53ddwU
-	llEM3oEmJZ8NtyLwn8kksCqc0J0KzuEifj2ElsXTLsp0nJ8AqGUmw7Xs8Xdji0fBsqgC+mWrNUX
-	/keItwbIAteA5ANJldCUDLBImAGkgDUDw67Zbuh/6I5U7A5FccMAN13gsme7TngpvF0LP2UELSf
-	rX3WeFBioemf8LIp+AlkK44Ok/kVM/I3ufW6GbOeZnwGld4LnKy4gvLsVgMYriclP42KtQD8l6p
-	SSGJ0kYV+fuSdlyygqIuHnK3QMvdLdMIY2xqRBLtyMHjs/9hzDo87+Yrl085Td72jj5T6yhsMDE
-	XBjXwDOXGndeb2UfgAvEPme1H9KguNc9g4A6t1R5IR2xzwkZkw/uVOfNR4r2jn8GFkO2t8EKCvt
-	UwtCaPg=
-X-Received: by 2002:a17:902:db02:b0:2d9:464f:d45f with SMTP id d9443c01a7336-2ea7c169dfcmr18345425ad.5.1792748676866;
-        Fri, 23 Oct 2026 02:44:36 -0700 (PDT)
-Received: from lima-ubuntu.hz.ali.com ([47.246.98.209])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea7af680a9sm8381185ad.5.2026.10.23.02.44.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 02:44:35 -0700 (PDT)
-From: Qing Wang <wangqing7171@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qing Wang <wangqing7171@gmail.com>
-Subject: [PATCH] mm/slab: only require the requested size when refilling prefilled sheaves
-Date: Fri, 23 Oct 2026 17:44:01 +0800
-Message-Id: <20261023094401.2042862-1-wangqing7171@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	t=1792749992;
+	b=vFYTqdrPb61H68yP7SkzQ+Cw89FWgVU7yXMJOjsrQqUandbCOt4CVXw9rPt5j4fxbzIFBI
+	Fs900n+bJseUHJDR9yasjY0ta1YR3B4GJcFR+wae3Dq53nec8H/GpIemn5JU/pAtxm35ah
+	/GL5EgYXUx3HlG3vw6Jh3bkACHc8ECs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BC326053A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:06:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81DA1F031E5
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:06:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792749991;
+	bh=nTWmeH9i/zciPFKRMIAo/+xF0ZeK70HJ+nGUDNQqdWo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kXKV10FyDxIC8tBXivP5X7olR25twvFuz3ZrYMs+uyq6s8KX95pkNqWl7A0DDs7kQ
+	 dRMYCnqlED09DR+/ajG/r6r43Rt3PGKo8HgX8i+C4Y6fm4zzy1nLxsQlFSh9ffizTH
+	 Oeza9LBLOJ07JK+Zrw9nIupH6k/RkQIt1cj1/hxdNZK1UHmK+yGFYObEASoFi92Se3
+	 +u7+FmPtUWHfsQMV/r86gZS2CyspoRV8030KUqyn68EumHESpWrg9wZ4Jhb9a/dcH8
+	 pSpfCI5AA2EqUVDOGuZ0a5tStDAZElP5V+5EuGCMzbppnnvFg22KLrxwK4XGW3H3S4
+	 pgCBzpTH07Svw==
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-93f3c895a0eso56004985a.2
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:06:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz1JcKsKRBpWBaX9wDa7KeYpQFtsLMsJqQO64XmSRcS/WgokVhAAJbn44KgsoPtSgYK8ZqBfvU3NQ==@kvack.org
+X-Gm-Message-State: AFq9FYLGg0D0AcUS2zg4YkdhUa2RUNnxqsHh8xFrTlnejOMlTRNg1bc1
+	A1cC26nkqV76vh4WJ/ffVDMe5/EDPayU1EukWLH8v9BI2eFnzGsxWoAoo3xL3eXEFti/3lHivcr
+	UX55qxP6T7CUXv/t5/l3fm+jusyoleQE=
+X-Received: by 2002:a05:620a:1a10:b0:93f:309a:ba5 with SMTP id
+ af79cd13be357-93f6f8151demr326659285a.47.1792749991048; Fri, 23 Oct 2026
+ 03:06:31 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261023080430.465305-1-hui.zhu@linux.dev>
+In-Reply-To: <20261023080430.465305-1-hui.zhu@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 23 Oct 2026 18:06:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wJ7bBNF2DW_c7MboNFEa3GaOs=N_Sd_KkokCGaaCH3=Q@mail.gmail.com>
+X-Gm-Features: AclHuK-Xdt5eGkfevbiMmRq5JHr_XV5TF8iVL1ErkFcg48nEdYLaCtJpU1OZ5wI
+Message-ID: <CAGsJ_4wJ7bBNF2DW_c7MboNFEa3GaOs=N_Sd_KkokCGaaCH3=Q@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree()
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Yu Zhao <yuzhao@google.com>, Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C771D1C0003
+X-Stat-Signature: 8fm3oz9auj583y94egg8xnifxneq6f4q
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 35D2E1C0005
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 4bxtjcufsq3jhs55m75ws1sems4xaib4
-X-HE-Tag: 1792748678-777934
-X-HE-Meta: U2FsdGVkX1/5yJPEzyE6QqlJbPxqPK5KZJwcmhMgKipHbD9prh0eKYcwZ+0aaGHyj8Okn9BVcTXFcF9AkrFd7DyZt5yuAkmvmTYmoXXG2nXbGDGi7yq+u1DpYX3e9LjdyJ0MaBvOj8TxVd+PkBaxU4sdjkQR/Fw1hCq2zs/2H4o9bi01oJfXXtdVScQSEB/Dxl3TZNk2wAXnnV8aiGLt4B2v4xS1Pm21ZhEaIfrC+M7pSp62WinV+Zf3JBC7LovNpUaLdBnVKrc6RMLOv1MXYSJw2s47wC9I0OWPEZI42XISnONwjpxszaLo5n8fFAi8LxatCMNFAz9tCHC2Xfr9knczbK+ssJG74ILNI9qT1je4KZ7exSyulZ1YdPcVyK0mhrDZPHtzGwujxwAQKLh3L7CQuBimlKdC7SkIbBa1QZFu13oEVokgtVFXcA9guU/3Q7UOE3lpM6YewmGL13O9yE+rtSJYBCnphk+n8SuixqhSNPoQGHiUGiwukrq2Mws9KpLi0SWKGOxz7SdyFIfjPN4AsJO622u3xxqGjPFtOgvKjrsW3VAY0uNU7OVsqpdvyq9FlPtCXNQaqNHEGN8pvbkIA/T3Ms/tBkF0C9Q+OyDULkcL4/pboaOC3VWAGB9hITK8Rvq217TkCLI4pJpNoWGdHAsvSkGREVARE/QyUQrnzznRGtInJcgzWoa5V9WhvDpjFzcUV/b9pNvjLjq7gKsPZEtcWe3Jy3rT55k13KdWE3zpZlS19kmur05YCT0kZIKIVZsB+EpTh2aoigYoLVpHzxIPYnx7on1hf96Dc0xI2E3ezluq0QSuD3AhD09jnffjxrsPDpeczOePaGoXTx8bkEjOc9+C3dy+o3MDqkOlEq/O67GPgaA6W6LKBiBq/GBgLYnqlr8YAwcym+7NxduCARzAdmiYRD5pyOD4U3ruWLqeqRqtUCtxsQKDEMQfYkybMlfP74KkCoNnXm4
- 0B3FZ4mn
- 2AqgpbVAPQPHFXf1Anmlq9zvwRk9CPMUCR/Ip/ESR4biECY0ikTI/O9tV9728FBZ8QDn9KCjYPhlXiPKpWd7ASu/5qAwstwrRHOb5BHyq6bykucYWC85aXp4twSMw41KMkRS+wLrc/N6F4/xPgFbp7CJkzxZ7T9bbsWnFwAOX9vJILhehlEuHCoBZ4kuSwQ0bi/4WeNFwnf+2B3EIbXQbr251gcb3ePSQ5tlp4NiHUVYWYS2RjQ5ogiIGBaZYqtE05L32URQKM34hODp+Dv5Ea6dzNL3UMlMkW3FPGKNHA27H0FSOc9O3FoDQB+fiq4hPycANA2JS0LfkP+eaAYKCvTXTy5NpyF7d9SVsG2NQq3dsCkh4UfWmlSR8A9/OWEwv4ZFjJ1/eWBZjxks7EoUpiA6mIxCJ5Tn5zqM6
+X-HE-Tag: 1792749992-814338
+X-HE-Meta: U2FsdGVkX19qAR/4kO0DSrt/Q0IAI3QE/vnduniS1uvgA+j6wzzx2lx3F7HRkaF1cdwbpQSmvMWwU99BXwxjBGBvZK0HgCyIczHFC/WusOCAyiqVHm2bYj8v8z9E/ETbGcfEqWMkvJcLVOsJtghTZmGhwyLB2/nDSrfu+1Dqnrb20cNfE/uN1rm96XJeRjxEo2Kd7p/t7NRPr55qkNLreRVJY1FE1e6iEx3H11bquviow0RCs26JPM46IlpPi3GI3kSPJC1mpn9EdCeZgYweGjibWZ3nrSkZdDpxXIuH7UUg0QSjsOqrAot5UMCxyPxAwtMGQZTn2EO3DDJck4YhWtPn7NL0ip2lUYYPvTi810k33BiQcY6w8spnFBe4P1aF7hHrjIEwfJDkiDuycvnToi2/1s0A5ocQcerviC0lddK2LkVf+9yEaqHnjssM1v55B1hz9n+Ue9YbzcX+RVoZ7/AlU4osRzF/b+Oe+xLcHwS/peL0mBRuNX2aE0lYi2ZQG7qwSoqEgQ4DVnpqg5+SjrfKelYXAB12RgO3C2o7OPxyozvcLxnGVgd9haMyMGqpm95sE6Dk/GHbR++NXzd9yP+m3o47CGM1swrwWpl4SvMIy3fsYW+6cFbu14aoYcVXQr7z91Z3v9WXniaJoj2qrdKjLhNdSkVex7s+F7CwhuBDXRqaoIJReYYkY2E3+mqlDtI91+gtn+9Q+iJCMVUwZyJ2TsPs1jJffjlmOuZO0ALB37Yb0t4yQRdlr9VgACXi9wYIJvpM0UustpbJCMcUUCCHigZz1rMeskEaJPhn+jaKBxwbkErUJIy13TrgGXqXZO8F6CBcNXUq/KrqO4PevBPAuNP84zVFAjzEEAM+vUQpm0rRFk2oKAPS80/5ymlK4bAJjtkOorox7CVsHubocrHVXOGvoZpJbE1yj62qPBdk7ULWgivxdDdAk/XhwCAOQGgcX54fQuTDulzs7Z1
+ 2Tfx9e2L
+ kWDXx4hip3U9zPGJsImEbZGWCiDXD8Y0CO4Gd++MeHywHJoFb2UWcj2cD4gwX5sU4SILR22pjoPNxJqa6YPViJBNVsNC1+IaNMup1cnc1A4obzwembl6qv6hOMcGuQ3NMJMALanrYcAErlpHmToeBv8D4i95DT+lpInB6Sn/e785mh6ff4RaLK7uZTcnuhhCPsV8th56WDlFccDumghT+SWHiiWde6BQjTDgPh7oAQMQ5UX9Qcv/TqUdUuLvde78yDGx5reoPg/kZ9CQZziGK0MTgytQ9ts2fUQaHF4Mx87O7P/dhQh3MoE6w73f1NiDky0ac9f3NQ4uIbqg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,128 +108,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-kmem_cache_prefill_sheaf() and kmem_cache_refill_sheaf() only guarantee
-@size objects, but for standard capacity sheaves
-__prefill_sheaf_pfmemalloc() uses refill_sheaf(), which actually fills
-the sheaf up to s->sheaf_capacity. The call thus fails with -ENOMEM
-whenever the sheaf cannot be filled completely, even when @size objects
-were already obtained. This leads to needless flushing of the partially
-filled sheaf in kmem_cache_prefill_sheaf(), and may use pfmemalloc
-reserves to fill the sheaf beyond what was requested.
+On Fri, Oct 23, 2026 at 4:04=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
+>
+> From: Hui Zhu <zhuhui@kylinos.cn>
+>
+> lru_lazyfree() calls lru_gen_clear_refs() after lruvec_del_folio(), but
+> lru_gen_del_folio() has already cleared LRU_GEN_MASK, so folio_lru_gen()
+> returns -1 and lru_gen_clear_refs() exits at its "gen < 0" check without
+> clearing anything.
+>
+> A MADV_FREE folio therefore keeps the refs and PG_workingset it had
+> before madvise(2).  lru_gen_folio_seq() places it one generation younger,
+> and PG_workingset puts it in the last tier, so sort_folio() promotes and
+> protects it instead of evicting it and charges it to lrugen->protected[],
+> which read_ctrl_pos() uses to balance anon against file reclaim.
+> __folio_inc_gen() clears the refs but not PG_workingset, so this repeats
+> every time the folio reaches the oldest generation.  If the folio is
+> redirtied first, ttu_anon_lazyfree_folio() keeps it and
+> lru_gen_eviction() packs the stale state into the shadow entry, so a
+> later refault is promoted to the youngest generation.
+>
+> Clear both flags here instead.  lru_gen_clear_refs() only reports whether
+> the folio is already in the oldest generation, which lru_lazyfree() does
+> not need, and moving the call up would still miss the folios that are on
+> the classic LRU while lru_gen_enabled() is true.  Use
+> folio_clear_referenced() rather than folio_set_lru_refs(), which is not
+> defined without CONFIG_LRU_GEN; PG_referenced gates LRU_REFS_MASK, so
+> clearing it zeroes the refs count as well.  PG_workingset is cleared only
+> while MGLRU is running, which leaves the classic LRU unchanged.
+>
+> Fixes: cc8ec7be78ff ("mm/mglru: optimize deactivation")
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+>  mm/folio.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/folio.c b/mm/folio.c
+> index 47a437e0f7fd..03be101334eb 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -599,10 +599,16 @@ static void lru_lazyfree(struct lruvec *lruvec, str=
+uct folio *folio)
+>
+>         lruvec_del_folio(lruvec, folio);
+>         folio_clear_active(folio);
+> -       if (lru_gen_enabled())
+> -               lru_gen_clear_refs(folio);
+> -       else
+> -               folio_clear_referenced(folio);
+> +       folio_clear_referenced(folio);
+> +       if (lru_gen_enabled()) {
+> +               /*
+> +                * lru_gen_clear_refs() skips an off-list folio, which
+> +                * lruvec_del_folio() has just made this one.  Left set,
+> +                * PG_workingset keeps it in the last tier that sort_foli=
+o()
+> +                * protects from eviction.
+> +                */
+> +               folio_clear_workingset(folio);
+> +       }
 
-Pass the @size from kmem_cache_prefill_sheaf() and
-kmem_cache_refill_sheaf() down to __prefill_sheaf_pfmemalloc(), and have
-it use the newly added refill_sheaf_min(), which returns success once
-the sheaf holds @min_size objects while still trying to fill it up to
-s->sheaf_capacity.
+So we can't do the below? But why?
 
-refill_sheaf() remains the full-capacity variant for
-__pcs_replace_empty_main() and kmem_cache_return_sheaf(), because sheaves
-on the barn's full list must be full.
+diff --git a/mm/folio.c b/mm/folio.c
+index 45c814f3857b..6b779a1ad2f6 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -611,12 +611,10 @@ static void lru_lazyfree(struct lruvec *lruvec,
+struct folio *folio)
+            folio_test_swapcache(folio) || folio_test_unevictable(folio))
+                return;
 
-Signed-off-by: Qing Wang <wangqing7171@gmail.com>
----
- mm/slub.c | 36 ++++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 12 deletions(-)
++       lru_gen_clear_refs(folio);
+        lruvec_del_folio(lruvec, folio);
+        folio_clear_active(folio);
+-       if (lru_gen_enabled())
+-               lru_gen_clear_refs(folio);
+-       else
+-               folio_clear_referenced(folio);
++       folio_clear_referenced(folio);
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 544cff39762c..4f92b3e30d84 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2873,28 +2873,39 @@ static unsigned int
- refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
- 	       unsigned int max);
- 
--static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
--			 gfp_t gfp)
-+/*
-+ * Refill a sheaf with at least min_size objects, up to the sheaf's capacity.
-+ * Returns 0 on success, -ENOMEM if the sheaf could not be filled to min_size.
-+ */
-+static int refill_sheaf_min(struct kmem_cache *s, struct slab_sheaf *sheaf,
-+			    gfp_t gfp, unsigned int min_size)
- {
--	int to_fill = s->sheaf_capacity - sheaf->size;
-+	int min_fill = min_size - sheaf->size;
-+	int max_fill = s->sheaf_capacity - sheaf->size;
- 	int filled;
- 
--	if (!to_fill)
-+	if (!min_fill)
- 		return 0;
- 
--	filled = refill_objects(s, &sheaf->objects[sheaf->size], gfp, to_fill,
--				to_fill);
-+	filled = refill_objects(s, &sheaf->objects[sheaf->size], gfp, min_fill,
-+				max_fill);
- 
- 	sheaf->size += filled;
- 
- 	stat_add(s, SHEAF_REFILL, filled);
- 
--	if (filled < to_fill)
-+	if (filled < min_fill)
- 		return -ENOMEM;
- 
- 	return 0;
- }
- 
-+static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
-+			 gfp_t gfp)
-+{
-+	return refill_sheaf_min(s, sheaf, gfp, s->sheaf_capacity);
-+}
-+
- /*
-  * Maximum number of objects freed during a single flush of main pcs sheaf.
-  * Translates directly to an on-stack array size.
-@@ -5074,7 +5085,8 @@ void *kmem_cache_alloc_node_noprof(struct kmem_cache *s, gfp_t gfpflags, int nod
- EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
- 
- static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
--				      struct slab_sheaf *sheaf, gfp_t gfp)
-+				      struct slab_sheaf *sheaf, gfp_t gfp,
-+				      unsigned int size)
- {
- 	gfp_t gfp_nomemalloc;
- 	int ret;
-@@ -5083,7 +5095,7 @@ static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
- 	if (gfp_pfmemalloc_allowed(gfp))
- 		gfp_nomemalloc |= __GFP_NOWARN;
- 
--	ret = refill_sheaf(s, sheaf, gfp_nomemalloc);
-+	ret = refill_sheaf_min(s, sheaf, gfp_nomemalloc, size);
- 
- 	if (likely(!ret || !gfp_pfmemalloc_allowed(gfp)))
- 		return ret;
-@@ -5092,7 +5104,7 @@ static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
- 	 * if we are allowed to, refill sheaf with pfmemalloc but then remember
- 	 * it for when it's returned
- 	 */
--	ret = refill_sheaf(s, sheaf, gfp);
-+	ret = refill_sheaf_min(s, sheaf, gfp, size);
- 	sheaf->pfmemalloc = true;
- 
- 	return ret;
-@@ -5171,7 +5183,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
- 		sheaf->pfmemalloc = false;
- 
- 		if (sheaf->size < size &&
--		    __prefill_sheaf_pfmemalloc(s, sheaf, gfp)) {
-+		    __prefill_sheaf_pfmemalloc(s, sheaf, gfp, size)) {
- 			sheaf_flush_unused(s, sheaf);
- 			free_empty_sheaf(s, sheaf);
- 			sheaf = NULL;
-@@ -5267,7 +5279,7 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
- 
- 	if (likely(sheaf->capacity >= size)) {
- 		if (likely(sheaf->capacity == s->sheaf_capacity))
--			return __prefill_sheaf_pfmemalloc(s, sheaf, gfp);
-+			return __prefill_sheaf_pfmemalloc(s, sheaf, gfp, size);
- 
- 		if (!__kmem_cache_alloc_bulk(s, gfp, sheaf->capacity - sheaf->size,
- 					     &sheaf->objects[sheaf->size]))
--- 
-2.34.1
-
+Best Regards
+Barry
 
