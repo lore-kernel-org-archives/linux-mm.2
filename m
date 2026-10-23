@@ -1,147 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1B4606A322
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 01:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PJVpTTl7
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D11C606A31B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 01:54:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 894856B0AA0; Thu, 22 Oct 2026 21:50:22 -0400 (EDT)
+	id 3926B6B0AA2; Thu, 22 Oct 2026 21:54:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86BAD6B0AA2; Thu, 22 Oct 2026 21:50:22 -0400 (EDT)
+	id 36B2A6B0AA4; Thu, 22 Oct 2026 21:54:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75B916B0AA3; Thu, 22 Oct 2026 21:50:22 -0400 (EDT)
+	id 2A6A56B0AA5; Thu, 22 Oct 2026 21:54:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 401B76B0AA0
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:50:22 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F8711202E4
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:50:21 +0000 (UTC)
-X-FDA: 85352211042.30.CF2ACFE
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B8D8340008
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:50:19 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PJVpTTl7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.176 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A8326B0AA2
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:54:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 94F731A0375
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:54:42 +0000 (UTC)
+X-FDA: 85352222004.08.DD574B7
+Received: from mailout-l3b-97.contactoffice.com (mailout-l3b-97.contactoffice.com [212.3.242.97])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BA73840005
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:54:40 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=mailfence.com header.s=20240605-akrp header.b=FubXlR6z;
+	dmarc=pass (policy=reject) header.from=mailfence.com;
+	spf=pass (imf01.hostedemail.com: domain of brianwitte@mailfence.com designates 212.3.242.97 as permitted sender) smtp.mailfrom=brianwitte@mailfence.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792720219;
+	s=arc-20220608; t=1792720481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X468p48PfOB0WmzJ6kNGiEZKtoooeWVaYKhSdbR2LN8=;
-	b=KfYKWBUfAa5Rw9y8y4VQK/Hms54eZe0y4Pbe/k91yZuoktAlguO7L9tIvGclGbsQRqmQLg
-	undRMBe755imojF7EEkfx3PvLIQ2QqP66VB1cL81ywt4oREbaVg0qhlKmZ1rnaMyX9wkY1
-	g3qqfKtSHMkErbzw8DuxG270UkjzOwA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PJkZhkXXrchYq4gsC5K2d7L85eJ1XLiR7+w6n85/cPg=;
+	b=hmLWjdCQWFjeb6/e4RwARJjl47GGoIiUraN6mbriJCNshvsZSaH0io2y0EwYghtcQClomZ
+	sBmv5X/jkvOtbUWvc3T3WHTQ9xXZ6UkvcCY72lOowjw70jpAsQzGp7aSzajizRgf8ap4jX
+	LZH9QmGGMoGI1JwHoYgjRh/uF2TQWIE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PJVpTTl7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.176 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=mailfence.com header.s=20240605-akrp header.b=FubXlR6z;
+	dmarc=pass (policy=reject) header.from=mailfence.com;
+	spf=pass (imf01.hostedemail.com: domain of brianwitte@mailfence.com designates 212.3.242.97 as permitted sender) smtp.mailfrom=brianwitte@mailfence.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792720219;
-	b=uYTWj+ZRYqIAMN3qgvWEV8ImuadKwazxm08+B+BAbdyWS7QifFcqU/pstDx139lFE8z94c
-	DILN8J92Rwzhg7Gmc0UbkWc7MaJsr7kQX8T0L7NRyjiIPHxorn0GT07Aj7IMqHrIAn1QQ9
-	2eSYGzq5eK4JyUbh+1k5zdTwj9SRYho=
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-35943f55c06so452053eec.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:50:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792720218; x=1793325018; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X468p48PfOB0WmzJ6kNGiEZKtoooeWVaYKhSdbR2LN8=;
-        b=PJVpTTl7brz8YlY0qASdHgcI1AZ/FKrsy6+ACTPHBqawYzVlB5pfsfrIa76GVwF/0n
-         0K72k07R3pVCiTAZ6n56rIpwZ4eLNdWKBG2cKeOuWgUQTjnUIxQYxCqlxNZlNDCEFGBA
-         hl1u1GMEyaruH1V9wRX+IKmGok/VbYd8gnCTjAzt9SjJLoCBtPiBFfJ1yh0sDq2virfS
-         uMOcLp+8vS1XJRC5dSStN/RWpnKDP8ekBVrZMPGdg80tAQHvYEoz3xLoP8AWXJhCUX5q
-         IXNjpH4lJyKOD0YZqha9H/2kKFS7LbTeGhmooD457+MJlmOrPASihTu2JzbgZXJnJWw3
-         rrfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792720218; x=1793325018;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X468p48PfOB0WmzJ6kNGiEZKtoooeWVaYKhSdbR2LN8=;
-        b=Isy+7aiDZg40+nTUvMYn0u1C6sTwSBqmYpkbEP4L2WtKXirWfdbF9yoFA+HZNLyKss
-         1SJJu4M83GSvUgfPsZidE62rzRUSx1+qTY/qJycygN6JCawG3ua1pIUNWAv3NSy0E//h
-         nh+RAgeLVOi2tNZ3jPqNZsF4gTj3PIeqEdaA96UoPFGcVoet8TPsTM3nC5ZaVbSKLgcX
-         5ZYlT8jF6DgnTqOKX1DCZKCJpCX2yUlNonaEy2de2R1Ih/o3RxfDOL/o8vWV4/t1pvVK
-         LwOMm9eBaecPgfpmUjTdTC9uJH11ZD/G2EnsM0yMP+0EWBsRU1+RSnpd6191/c6/vXbS
-         5m5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBw+zyOIqo/J499MQ9NqPxsP6QE0NypqYgnZcIg4jyNYf+Xor0H5ZuUgUJf2YrUJRxuk5iHtc7O9Yg==@kvack.org
-X-Gm-Message-State: AFq9FYICUVkkK335SX0UewYOUqZP55hAZmlNylKPhfjcNj49EtXuqPk+
-	DWpegI/zXMmGYloP8wwgZFxRqlA0rEnZSvDf4GAWflhuYJo11YtiK8ar
-X-Gm-Gg: AYBFou3vPqyxgX+d8rVyeRJdwSCV8PgnpPGFb6m3vFcdFK/6hFGpppZ68wUsRR9DXRJ
-	RnPYFzIw3FST+hc/nEj66ekNNSJR/sXuwAqScJ2p01R82qvhP+HOJ+bB5Z9XLLrkSQNi8wgMwHt
-	UEo8mFZZug9Mai25rt3Kj29Bm+xKnoNGKAVUwRWY5n/wybdtmMnZ1Nz3T/vQC9UeEJGrYb4nFy7
-	cd8GjRBhpZyc0QeNnYFTKK0jNzvvF0gPTcj4Vm1gBm5aycRFdhh3NpgDOdw2ypDSdIdfOqhm9A8
-	2gWXrTUK9x3wkiOBGD5et1YqZLSKS8T9t3uXT3SgyphIp05QT5ZN0Q3CpWUQxVQjp++nho2/QbF
-	3oSia/exLbdY8egxxXdeSpaiSoG/btFDIQWny0BpCBbYbDgrChdADpmHB9BF/po48KCMIe6f/3k
-	jQs7qS98FZRGTdW0BK3sImtHVlHSmv9HaG4X5Sw/mwQNO+nzvrW8YV3JCMIJLrnkc18Eqbo1yGq
-	pu1uYzuwu6jEKXCBVv3eN5rVDco7RGr3x7SfHWZWmu4doMHZKA=
-X-Received: by 2002:a05:693c:69c3:b0:368:2c6d:ddfe with SMTP id 5a478bee46e88-368afd86765mr4796119eec.9.1792720218428;
-        Thu, 22 Oct 2026 18:50:18 -0700 (PDT)
-Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369d9c0e60dsm1971091eec.2.2026.10.22.18.50.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 18:50:18 -0700 (PDT)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Fri, 23 Oct 2026 09:49:49 +0800
-Subject: [PATCH v2 2/2] kasan/test: cover load_unaligned_zeropad()
+	t=1792720481;
+	b=VUPWo4K1+AdPiN4G07FTJ10+EBj+cN8zIugUrQkBiurv1yvtfs5RRRuOuJmGksxF7OUPox
+	+5nT8ca56Ian8GHhQN95pnCMhWhMP8joOx9drRz0dDUIJxTCKg1gS5B8FbrQ3ptJ0d5xvA
+	bL07K+/eTe5a/4f7sluMVYXl+MqGBMM=
+Received: from smtpauth1.co-bxl (smtpauth1.co-bxl [10.2.0.15])
+	by mailout-l3b-97.contactoffice.com (Postfix) with ESMTP id 1EB2A60A8;
+	Fri, 23 Oct 2026 03:54:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792720477;
+	s=20240605-akrp; d=mailfence.com; i=brianwitte@mailfence.com;
+	h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From;
+	bh=PJkZhkXXrchYq4gsC5K2d7L85eJ1XLiR7+w6n85/cPg=;
+	b=FubXlR6z1yM5mVmHNiqSXEFKDp30ljJDES3DB5U9Ify16xMUoLFYMQ//XPSHuHNO
+	N/MjJqVhRoCj1/eRDwfWz6ovg1HmcOT7Mn2WrSks/5hhVGzXekxABaPQt1o7N+Y8l/7
+	Tk1CSB1xneHqutOwSrNY3Gk3FQUkzR1TtwNKBErskGd4fr+sviDRirHXtoqGQWWU2QC
+	aWt4P+iWGupxjYi+VKbuBbFZ7e9q2+oLf9ryhkb0q0JHGjPPkAT2LRnb5mfM0SXdjvS
+	K8cWA2xZN/d9Nre63mB/6KyYaj7TAwqDa1XJqn5iHwV9et72wdJulRJci+pjoWUXPEA
+	hGjF9g1UFA==
+Received: by smtp.mailfence.com with ESMTPSA ; Fri, 23 Oct 2026 03:54:36 +0200 (CEST)
+From: Brian Witte <brianwitte@mailfence.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Brian Witte <brianwitte@mailfence.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Helge Deller <deller@gmx.de>,
+	Justin Stitt <justinstitt@google.com>,
+	Daniel Micay <danielmicay@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] exec: randomize the argument block's in-page offset
+Date: Fri, 23 Oct 2026 03:54:37 +0200 (CEST)
+Message-ID: <20261023015345.1594514-1-brianwitte@mailfence.com>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261023-bug-word-at-a-time-zeropad-kasan-v2-2-be0ecfbae847@gmail.com>
-References: <20261023-bug-word-at-a-time-zeropad-kasan-v2-0-be0ecfbae847@gmail.com>
-In-Reply-To: <20261023-bug-word-at-a-time-zeropad-kasan-v2-0-be0ecfbae847@gmail.com>
-To: Russell King <linux@armlinux.org.uk>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Mark Rutland <mark.rutland@arm.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- Shrikanth Hegde <sshegde@linux.ibm.com>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, 
- Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, 
- Marco Elver <elver@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
- Alexander Potapenko <glider@google.com>, 
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org, Kees Cook <kees@kernel.org>, 
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
- linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- kasan-dev@googlegroups.com, linux-mm@kvack.org, 
- Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B8D8340008
-X-Stat-Signature: m713sdee79599s5uct6dh1mdsmbo6ki8
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-CO-INDEX: xeqgj8PHouPosme+woQh6pFtig5yQF5AvYLqRg7GJhc=
+X-Rspamd-Queue-Id: BA73840005
+X-Stat-Signature: o7e4wqdjx3cu4ncs5jir8oborgros5iz
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792720219-774405
-X-HE-Meta: U2FsdGVkX19uAxxH6UeLBJClOCkgs4IxqmkYxsLjM8NG+V9E3WxrMUBeWzx2siTDm936r3cJfNXrCyz3zPq8gujAwe/+hXYHDxePvzGxQN/vkQgsHEkqqjZKVSF6/aN4TxtLv8oyK0dYKwQZFOHvcVH0egAri7tnXU/bSyC5ryDkMhBjIT8hmhbXDPOvyNqRecs/Qwcu5ub+mPDaPsoywJCXrfkJEarhWoVRcrOaErEIV7L9JEWliiJol3lvwy+jEuh8Y/cYfG6xRLnybR6AxpPhGvmol+tarXfL9aCYCFgmola8XyPenVWyPgPqxOGkOyXVRjk0YdJUi4XQVt49BxAnzLyNCMlWiYSfcGXaXmQypS9g7Zr8PoFBa0GIB++EjGkUjxOGdc+jhT6OnL8FXBOt2dH/h46P8QvXK4r8lV0SRdKQBtQcdx+PfhffkoNV3HNMXDQo+FbPg2kVefFF9Tn16bpQGDsTqKZL95C8gpT0lH9pcO4lND5vq3/VQU+9OFpurcXK9RQt0dJGlmGv2jc4xt0dJKKhG+MF1bevCHgg9G7seJ/BoNrOAZFgGMVB2xiJEyj4V6nJ3Bp9md5ho+asV8gx3eJjChsc+NXVLaRyu5v7itMPZYKGJfWlQpNd/hSw2d9NvJKUDYVHQVnG1ky+ACVzYovJGYOKqh6G+JeKDDRIG0czldL/omFMlMcvn3ySuhyfD/5ZPelrkaMrfJO2YXwFYT8yyhYgDVy5oqQ10+rMIrewOziP/D9wDPrVGO1I32qS5xRKDp6MOA2g+m92N/mkWFHGU+HTXO3B1mMB0TMzd6jkM1R5sMh4x3Jm/10h7Upmdi/EwcOWb7pdGVtHo4TPtWBxUUqrU4rDHUq0O3xT9nQKhVRJsqM/yWLCAzMTi+4vvvr7ebTFtGYF/IcBQQn2WQCa3YZRFh/hTS7L73IJRpQ93SJFg+GJpr2xGf+/fyuhM6YordtOqCc
- u18CMYv/
- UhkCZMq5ecMCKO2nLh2mBuXKCPS5EeXwpL3ZqC91HQsFhyF3SpKrin3kKANDgj47yE+GnHJaAAFacXKiNUManXvcHojxB4WXoTyGKIWPOggtJVi6aaUscdLJ8Gzea8JLQPQkj8U938SyCSJxRsjYM/UdYj+rTrQXeAFr264qezehPnuOyPv10kfAJhC2V9TvGPAaqaEG5dLDoVJWvIp07ylaIHTXTg3idYKeyhsOuOHUKpQi6bFrgC1LOYK/+GcvyHmO0JJxUnhCQGGJXg33jxMXzE5I2XVqeqm14hzEOXywS77q9jJD02AyhlwS/HzWBtJz1psJGG4kvyHM0yIum5VISFOgimr6Y2cF76RBcV1Ee4qtepHycKo5goC5Njv+IGlSDOe1YxuIEgyciBkxWL/E4ztInpqANJJorZ37HQmX+X9ZS1cuskWBx7zv/1qNX0VizQ+HvNMF/SFfECOzMWhqoTU/0LqU9GEu20DO8nMQ5zGoTb1feqa7uEGXGyaicGCvYnDZM0SWTwrXTV5/WYV3GsedBXyh1Rg1CGqCU2PNjRhMmpuOW2DFNkoHqSfTL5OkTN8J4Go6Q23c=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792720480-540193
+X-HE-Meta: U2FsdGVkX1/fVFrCWtkywjHL1Cxd7H4T4iZ0itw1qPgMm5Aiw5c3R7Ajz2AmiCOAVJSXJu0cqJs+Vb7KZvMmYHc+rvLpX1u6eK65zT1QBtKqn0SAmmDvy4pEh8o5qCIeuwDy9QN1j5Dz3/NAIlMS4Fri6lW1SqK5lBVngne/YvVFFXA6l2UkmhdV9Xt3hu4YAAAexfucJ6SC5DF6Pl9RU3p8nk1bRAMw8L4XV4VWhUKVMKJUFvOn+x1SbBdFw6Qnm8j4VAdmyl6t27/PQxYehBVR7zjIA+XHg4YXzScUP9rbzvk/916aF0zVdKG8zjSh1Rr9LLZJHz+wtHw9JzXxCgiSqd9P0gxPlZX7uuIj6SWOE1FHCNW3bx6XMuAlL/uj/ASWKeDPFUpS/UWZBvwS+4WtqU5mkYuguSnwHBjjYQcjtrtSanTjOmFuqqUBjmssIHQOX0f0x9mYNWsfOo/xOwuI6zOvz1hHZ+87uA9g2psvvEf6u0AQDu1V5Q3vU2wEghez4uw7Yh5PEJAa6Lxx5X1NRz5o3MrmWD9SjPYk9nQp9D9wQh2wW1vnZsEGu44P344Rx06RymUE3yjBVFz7cNU9VDqr0+pwcgxeJKj7ehwnFBTq1l/qv0scqlZoNyEPz83bnbRaBmBBHYrnuXsKo6Xa1sT1FXm4AhUfU0E8xph9cvhsbiBX7WelFeJC7k88UN3cy1eMWDcDih3oeRJoagw/xXS1Rw12ffzfh/X/oWCqMI/AuFGYRKeQnNA01lweMbDz0X7SOPeYhRTW5G/+/1zXIvF/yUZgMcJdp33OwAld8nB9YsHUPs7xB0bvdzty28cZzhGREswbslDLG3QPOgFNncQHuEK4lzT22ZfCD/DzMDHWymHDaX7ywdy4jWxUeKW6GnU+43ghOmeF5MjT8OyHTTBufxdZWB4ervsuIAU3VSVd4EslU9F7vuo9rRTVxfAp/y5eYJ95P9EsyVe
+ OK25tnge
+ w0dVqCoInf2XDQWSiqz8psZ9OmyZXs6kiwoquMB2an5qKMKeFMaf7vnvF34EM3LLg9KzFxY+eYhLLEio3K0mjeGqOM1aIWV5mWQ+bi8uAleL7llm1DMBBYMK8cYMVHLXpHYPn+Y95tMQs6j0UhcFlLBL0vwlV6GpXakGB/tz4YtksJulJOpGApSdOJsulvHxVhVdamrIhkmmmmGE7gdGNV4rmuQ2hJMw6+SrgbTj+qzB3oWIqUeOhQiqP/6M/AVZWLLNX+eg4oINJrJB/P5QeKgT/DA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,79 +102,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On architectures with CONFIG_DCACHE_WORD_ACCESS, load_unaligned_zeropad()
-does the word loads of the dcache name compare and of path name
-hashing.
+Patch 1 randomizes where the argv, envp and execfn strings sit within
+the first stack page, as KSPP issue 283 asks; today their low address
+bits never change. Patch 2 adds a selftest.
 
-None of the KASAN test cases reads memory through it, so nothing
-noticed that KASAN did not check these loads at all.
+Patch 1 repeats bprm_fill_uid()'s set-id checks; I can send a shared
+helper as a preparatory patch if preferred.
 
-Add a case that reads a freed object through load_unaligned_zeropad()
-and expects a report. Skip it with hardware tag-based KASAN, since
-arm64 turns tag checking off for this load:
+Tested in QEMU, compared with unpatched for-next/execve (b36b990c50b1),
+on x86_64 with ia32, arm64 (4K pages with AArch32, and 64K pages), and
+parisc 32-bit and 64-bit (STACK_GROWSUP):
 
-  kasan_load_unaligned_zeropad, x86_64, generic KASAN
-  without "word-at-a-time: check the first byte in
-  load_unaligned_zeropad()"                                 FAILED
-  with it                                                   PASSED
+ - The selftest passes; unpatched, it fails.
+ - 10000 execs give 3709-3764 distinct offsets with 4K pages and 9259
+   with 64K, as a uniform draw predicts.
+ - Cost: about 0.5 more minor page faults per exec on average, and up
+   to a page of RLIMIT_STACK; exec time is within noise.
+ - No change in LTP execve and execveat, CRIU dump and restore, or
+   programs that rewrite argv[0] (setproctitle(), sshd, postgres), and
+   no KASAN, UBSAN or lockdep reports under exec and chmod races.
 
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
----
- mm/kasan/kasan_test_c.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+The series is based on mainline (864c07de0c7d), which now includes
+for-next/execve and the const mnt_idmap conversion. On that base it adds
+no W=1 warnings with GCC 14 or clang 19 on x86_64 and arm64, and the
+selftest passes on x86_64.
 
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index b9e167ed5be32..c791512f6fc49 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -28,6 +28,9 @@
- #include <trace/events/printk.h>
- 
- #include <asm/page.h>
-+#ifdef CONFIG_DCACHE_WORD_ACCESS
-+#include <asm/word-at-a-time.h>
-+#endif
- 
- #include "kasan.h"
- 
-@@ -1673,6 +1676,26 @@ static void kasan_memcmp(struct kunit *test)
- 	kfree(ptr);
- }
- 
-+static void kasan_load_unaligned_zeropad(struct kunit *test)
-+{
-+#ifdef CONFIG_DCACHE_WORD_ACCESS
-+	char *ptr;
-+
-+	/* The tag check is turned off for this load on arm64 with MTE. */
-+	KASAN_TEST_NEEDS_CONFIG_OFF(test, CONFIG_KASAN_HW_TAGS);
-+
-+	ptr = kmalloc(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
-+	kfree(ptr);
-+
-+	OPTIMIZER_HIDE_VAR(ptr);
-+	KUNIT_EXPECT_KASAN_FAIL_READ(test,
-+		kasan_int_result = load_unaligned_zeropad(ptr));
-+#else
-+	kunit_skip(test, "Test requires CONFIG_DCACHE_WORD_ACCESS=y");
-+#endif
-+}
-+
- static void kasan_strings(struct kunit *test)
- {
- 	char *ptr;
-@@ -2264,6 +2287,7 @@ static struct kunit_case kasan_kunit_test_cases[] = {
- 	KUNIT_CASE(kasan_alloca_oob_right),
- 	KUNIT_CASE(kasan_memchr),
- 	KUNIT_CASE(kasan_memcmp),
-+	KUNIT_CASE(kasan_load_unaligned_zeropad),
- 	KUNIT_CASE(kasan_strings),
- 	KUNIT_CASE(kasan_bitops_generic),
- 	KUNIT_CASE(kasan_bitops_tags),
+Brian Witte (2):
+  exec: randomize the argument block's offset within its page
+  selftests/exec: test the argument block's in-page offset
 
+ fs/exec.c                                     |  32 +++
+ tools/testing/selftests/exec/.gitignore       |   3 +
+ tools/testing/selftests/exec/Makefile         |   5 +
+ .../testing/selftests/exec/argblock-offset.c  | 214 ++++++++++++++++++
+ .../testing/selftests/exec/argblock-report.c  |  24 ++
+ 5 files changed, 278 insertions(+)
+ create mode 100644 tools/testing/selftests/exec/argblock-offset.c
+ create mode 100644 tools/testing/selftests/exec/argblock-report.c
+
+
+base-commit: 864c07de0c7dcbca58b61625dfa2e461ae63b242
 -- 
-2.43.0
+2.47.3
 
 
