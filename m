@@ -1,105 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8C1606A320
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 12:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E823606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 13:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=NwL/idF7
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nbN2jT0b;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmfmHZTn;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nbN2jT0b;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmfmHZTn
 Received: by kanga.kvack.org (Postfix)
-	id D82DA6B0B57; Fri, 23 Oct 2026 08:38:21 -0400 (EDT)
+	id 790426B0363; Fri, 23 Oct 2026 09:00:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5A866B0B58; Fri, 23 Oct 2026 08:38:21 -0400 (EDT)
+	id 741D36B0365; Fri, 23 Oct 2026 09:00:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C701B6B0B59; Fri, 23 Oct 2026 08:38:21 -0400 (EDT)
+	id 62F506B0367; Fri, 23 Oct 2026 09:00:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A16A56B0B57
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 08:38:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 227EFC0408
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:38:21 +0000 (UTC)
-X-FDA: 85353844002.29.D193370
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 07990140004
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:38:16 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="NwL/idF7";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf26.hostedemail.com: domain of chenhongfeng0212@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chenhongfeng0212@163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35A3C6B0363
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 09:00:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF9FDA7F81
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:00:16 +0000 (UTC)
+X-FDA: 85353899232.25.87E8689
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8DDE5180014
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:00:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbN2jT0b;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qmfmHZTn;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbN2jT0b;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qmfmHZTn;
+	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792759099;
+	s=arc-20220608; t=1792760414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cp05jW7hJV+9rE5FQ+Ld7f2LCLjbgtBVL5t7Y46XhuA=;
-	b=rJFFPiq9WeocjB8BjrX8UJv2hU09qiVf1Vncik6lHyGpUBmt2YZiS/xeoylxj9wvva9/Ud
-	E5EczbTwf+KAbAQTf25vxG3YHnE1MWkCV+w7WwCL1urw5PbUFXS60pzjbig4Ju+PR5SecF
-	xodfN5jWX8TbwrgmwKjT7BjLhHB9XeE=
+	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
+	b=5ECpjTTy1e1ww+dltb9SPg30bYB3F2Zj5ITyAca76HRJFhJQKhmrUkzK+YZMUD2gzrTcjc
+	hdh0iV1vDpDUI7AzQeaLv282ysGY8MEzYyZnmDi0XnGiCZuSA0Pf28UfrnPtc+v842xc1K
+	h1BWIBSdssvK1A+yxM74D5bLJ8k/qqQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="NwL/idF7";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf26.hostedemail.com: domain of chenhongfeng0212@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chenhongfeng0212@163.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbN2jT0b;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qmfmHZTn;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbN2jT0b;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qmfmHZTn;
+	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792759099;
-	b=AGigCArJUc3neGiKTs84zfjx4ztebf2OA5PyfMeRJ4sHikV8Wmx89GmSCaKv0xahMrG/Zh
-	5wUMPrkA3jLngfkeqZwA19YkXdD71ksAiRgPHE1OCfBexomdGT/veSleOPhDy9Ap3maRpe
-	LnTIjvs9ZVVhSh+BHStDOVNKICGPPmo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=cp
-	05jW7hJV+9rE5FQ+Ld7f2LCLjbgtBVL5t7Y46XhuA=; b=NwL/idF7yLcNVy1Sqh
-	wCBArmlZDfE3CETd4QWsLQicQ1DnbCevfOyjT9Nf5WHJ4Txi+50Aq408HisBlz5P
-	ukvpaIcil4sCLfPuJ3cgvXk2hEO+rw0CCAVYffw0vh0PIdp9f7+ICJqC9UfRbcWC
-	BsU40s1CE8mXgqDsdc2XwQRus=
-Received: from hongfeng.mioffice.cn (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD31_UTVdtq41kmCA--.56769S2;
-	Fri, 23 Oct 2026 20:37:41 +0800 (CST)
-From: Hongfeng Chen <chenhongfeng0212@163.com>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Hongfeng Chen <chenhongfeng0212@163.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <baohua@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Wenchao Hao <haowenchao@xiaomi.com>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	Hongfeng Chen <hongfengchen@xiaomi.com>,
-	Hongfeng Chen <chenhongfeng0212@gmail.com>
-Subject: Re: [RFC PATCH v4 0/2] mm/zsmalloc: defer object free to per-cpu batches
-Date: Fri, 23 Oct 2026 20:37:36 +0800
-Message-ID: <20261023123736.1542117-1-chenhongfeng0212@163.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <CAKEwX=ONniSwdiZAe_8NT5XwVj=Mmc-WJs_rWE4Y5snjFg2=Eg@mail.gmail.com>
-References: <20261016120927.3191690-1-hongfengchen@xiaomi.com> <CAKEwX=ONniSwdiZAe_8NT5XwVj=Mmc-WJs_rWE4Y5snjFg2=Eg@mail.gmail.com>
+	t=1792760414;
+	b=8NvUzHPHpKHgACtbaIGNojCVgKxxLOlsGGZoF8C2aOoQOvbhcrKrk5ls8oVSbzPPUtMXuK
+	vpoa9sjFPe0LGKhiyR/XnvtzpzkNpSessY+gRjNZT2aggfie1ffAxPzwO+5OOv0BrR+Pf/
+	ZZWZmY4k75SUhrCIN6TDM7mv7XzLDg4=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2A0361F785;
+	Fri, 23 Oct 2026 13:00:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792760413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
+	b=nbN2jT0bJ+1hEWNmQMV68E0bK59uevv3wh0s4HgOA6Z77CrVn7bBKopcNV6FBOhOjBxmAK
+	LSQ6mg5Bx/3cn7tFcuwqP8sn3EesbXT/md+yTtFq8JYXM5NxG6yvZzzpy6t6nNZ6QbT9Lp
+	k5Wu/hMJcRI0+VCPD3cMO2Vj0Jx0rss=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792760413;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
+	b=qmfmHZTnKLgVSgw3CxWFYZZGj6k5bDwHfjuEOGcYuLMqYbdEaU8j9h5cJCy02vJqHx0RVm
+	PU1Kqb1ZznCr4kBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792760413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
+	b=nbN2jT0bJ+1hEWNmQMV68E0bK59uevv3wh0s4HgOA6Z77CrVn7bBKopcNV6FBOhOjBxmAK
+	LSQ6mg5Bx/3cn7tFcuwqP8sn3EesbXT/md+yTtFq8JYXM5NxG6yvZzzpy6t6nNZ6QbT9Lp
+	k5Wu/hMJcRI0+VCPD3cMO2Vj0Jx0rss=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792760413;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
+	b=qmfmHZTnKLgVSgw3CxWFYZZGj6k5bDwHfjuEOGcYuLMqYbdEaU8j9h5cJCy02vJqHx0RVm
+	PU1Kqb1ZznCr4kBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5915B133F3;
+	Fri, 23 Oct 2026 13:00:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GRe3C1xa22oBKwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 23 Oct 2026 13:00:12 +0000
+Date: Fri, 23 Oct 2026 14:00:10 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Luiz Capitulino <luizcap@redhat.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>, 
+	David Hildenbrand <david@kernel.org>, Jakub Matena <matenajakub@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION] mremap() fails VMA expansion when VM_MIXEDMAP is set
+Message-ID: <attZIKD7GfoNeqbg@pedro-suse.tail5790ac.ts.net>
+References: <20261023023106.515365-1-luizcap@redhat.com>
+ <8c53e58c-f7d2-4e98-8d03-7ff1163c1159@kernel.org>
+ <9544f4ce-f5d1-498b-91ed-906b37122e31@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD31_UTVdtq41kmCA--.56769S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WF4UGw15Xw4kAr4kJr4rGrg_yoW8XFyUpF
-	Z3GayxWws5Jr1xKr97Aw48ur18Aw1rGF48JrWSy347ZFn0yFnFkw1kJay8Zw1fAr4Fk3WF
-	yFWktw15trsrZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U2XdbUUUUU=
-X-CM-SenderInfo: hfkh0xxrqjwvtqjqjiqs6rljoofrz/xtbC7hXrBWrbVRW5MAAA3t
-X-Rspamd-Queue-Id: 07990140004
-X-Stat-Signature: puff9pdn6oxzdprcjyumz1houqhos4qd
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9544f4ce-f5d1-498b-91ed-906b37122e31@redhat.com>
+X-Spam-Score: -13.30
+X-Spam-Level: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8DDE5180014
+X-Stat-Signature: 7s9ik9qk9pmcnxwjjcca7g5umnfnheyu
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792759096-494266
-X-HE-Meta: U2FsdGVkX1/hKmq/9oqkU7qfyxNPeI2/cYL6ZYB1+zbm7nowK/kU4Bl2jWtPa9/gHydzg6/jwS5Z+K5I4srSD93dpyLtcCTQ1RrRpmkFHstjYnxODiifx95Pp0WbcbJLj1vVdeqxaKUYd6r52ENmHzL1vfkMZwAG6DtazV3PwDW1Cdv2BsIw2h8y/hQ4gZ4L8b5KlCwQhDl4we4h/hLb63MbqR29jviwmeDkZrDPx0MoEuuY7SOYrWlLwXParE8OSvdBljlu1OZyeBVN7onoAP4D7mdqGeZ7j7H/cBL6QvtlUXTFm7R7A1GQrcGAgJo/uI/EaDwUUdVnkCM25pvScLttmyWazaZeCQOw9tZxjJi0TyQnxwpNATq32bTt5k5ZBh+RR6yP1rYEyiZO3IjzyPHi7MKR7MkLOqcIM41HgIgsSZsC5XE6/CuOY13gKJ+BTGuwQusn2v5x7NKqKRwjdN2WYKwFL1nLWt6FzRov7qF7rl2NC59e9PP1mrUVCjLsOIFh82Ny4xtaJOdl0SXWntXQYWS5866i8pGfkmJFB+xuG+eiszTuhmGLj6CI//F/gCRFMk5C/9cldg1ARxMcoLeKLUa01uTo/2E0dBJfqVxjBn2pgUrgf8gudl+V2jeh1Toic8PrZyLm8AbuElSRviD8kgv2qDHkU+8H7JcpdrejiWfT+yPt5mJ6dvDcOwbI7vkQ9pSx5fOgFmb9yJ+FJPgKMZpbI6dyakOruNV5dGb74MkxPgotjo+nbMg2zfpz9pVX1tGDPpJVi/N75OytdflGXrbe9IkLowwin2at9OOd5XvKePiyrOM7ivnthmGjXpcsEmv4YFGC7VQmPYh4jfsA8WzbPSQUDcwywaQTV/oAa1yZuMdg9932PLLX1+DPODgsC/BySsIWq/qNhYhgFEfMS8BvHxpBxrlE2FYHVB92j6m0ZZB8VsdZwtiWs8GO5RlV8UYsCiwkSqx6y4U
- mdwcL6gP
- 9wZv1DLJ1PxFbULcukmrwEFwYcPogj12xpexqfPSE9gurCv4QOTx9H6o/123AtUKv3lyi6lGAo04bSlGaSWF7HJBRs0jgJXc3H6XB+J9b6/2Y6M4Mae2v5EJ6flDYuqnKtlziL9rxyfrJ2VPTHktA/hWdTK65xcZk+VwccLQy3rY4H9aavHxQ9sjHpFaAdDCvmN5PmHVG12la88Ca/RBbAP2tw9baYX3mINQ8Sl9EHv6rUY3LRaYFQUKAgS14SU8qkjaCrF4Jeh5d8sM=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792760414-220511
+X-HE-Meta: U2FsdGVkX1/a7Mr+CgCG728Bv80KIlDNYuB3Wn/QRBC66e1oNdWhFEynDzhfAlDFFF3ygDb5VlZ8N4CrRckl4HCLtQadMETQJh4gAUaQFFmrWwNABx7L+umfFSV4ekV4526Cl/SS+Fr+NnKNHZHrtJYJ41oxsxtUdOdc0FxmZPxD2Prh/cBNxK+fBvHf0oSEKZsVu2KUQ2+u1K/KRwIlc9/Qlfoi2GqajpUSR2bqKT/KJQ8+fGFCpfq8y+5foQHGfyXAxAZRbbfop/c4MB4yjjGs0bcKN6hNGiCujfajZM9PvNG2yFTc1tbAiM+/fbev7/KUANN69TeSY+AE+hlzPrPxpv9ns8A9pt8o6q0wugM3lrb87EiaW1J5eq32elFe3CKN7zY8zk1VAh1Mbix89/dZDm7CLumrHZU8nZ69JqVm9jW+Q5Ft2ol50WsCBtABXYtlSSYf+LRcVecPpIG6FUODaCHp0Q9/HE4cuZVZauo/JlYE4+XhT0vrwdWsXq7v6U5CBE2mkWDwxGUCNr0IohawF/U4sYTbr4mhtTr5iUPmzgBM9oLIwLT1fV+J2oO1LlkbD8dL/zCM1tXKWY/wUMRb9H1gVe8X80uPYopLrLyfToJCcG5heSeDP3lqUyzsM4iK8BfGnZylZ6Qli9gRXoUrGN9fKNacRlhmOi/lYe3uNkdhK0qq/qNComIuuSfpxzhWuC6yEeAwRDuQgL+a8KsCPT0gxVuJ/vQdu9/8EMYM2gi6pxRQ1Q5RVI33ApK11ID/J/WTikuVxi2uWKvpAvNpx1UEl0099Fcppc16ddIRN1rBJ/CSjog2RPhhADa+9UxpQCR5J3QNStJ/kzH1uwQpRpwI2eJwIE7jFFe6Aca3q/JkjxRe97ShObltcpxvej8A1PUPA7swH/lAO6E9hd51e8m5Eax1kqwiE7+cHSK758RNlnRKyISDUNk5rjYU6SoITW5PeSsyP0JITtF
+ xaURE6Cm
+ KbsJCCFafOqdied+vs76Q7tDK/7Qv9piaNvMeERbvjNkV3JyU/E4UsdxaQWteJCDFs0YisazkBTLifl1TznD4QrJusy4oOD+Eeh8E/BmKzch+XuxkqtBpPFDyySNrBmrpZghM+RHbPrpZPwTrfd1Ktoj72BN9fSoZGZ4y4ohGCjYDQii+1718kp5Ej/2VGIXGr67056q+p4C8L6iCgTMuR2uANUe2zHnbsgvEANFwOCycEC/qclJBrek4SOoyBUpmCd/RhIfiXsxdKNpyRroyAqcWff9wsIIjBN9oo9E6eApLIM6VyZpgpEulRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,56 +142,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Nhat,
+On Fri, Oct 23, 2026 at 08:13:56AM -0400, Luiz Capitulino wrote:
+> 
+> 
+> On 10/23/26 3:16 AM, Vlastimil Babka (SUSE) wrote:
+> > On 10/23/26 04:31, Luiz Capitulino wrote:
+> > > Growing a VM_MIXEDMAP VMA with mremap(), with or without MREMAP_MAYMOVE, fails
+> > > with -ENOMEM when the address range after the VMA is free.
+> > > 
+> > > This regression was introduced in v6.1 by commit ca3d76b0aa80 ("mm: add merging
+> > > after mremap resize"). This commit changed mremap() to use vma_merge() instead
+> > > of vma_adjust() for the expansion case. However, vma_merge() returns NULL for
+> > > a VMA that has any of the VM_SPECIAL flags set.
+> > 
+> > Hi,
+> > 
+> > 6.1 was a rather long time ago. How was it discovered just now? I.e. what
+> > use case broke by the change and prompted creating the reproducer?
+> 
+> The use-case that broke was an application running on an older kernel
+> and accessing a GPFS volume/FS. I was told that GPFS sets VM_MIXEDMAP on
 
-On Fri, Oct 16, 2026 at 9:09 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> 1. Would memory freeing be slowed down?
+So the application is growing a file VMA with mremap?
 
-I sampled pool->pages_allocated every 1 ms, and measured the time from
-the start of munmap() until the zspages are freed. Three cases are
-tested: 1 process x 256MB, 1 process x 1024MB, and 4 processes x
-256MB. The results are as follows:
+> a VMA because it inserts pages in the process address space with
+> vm_insert_page(). I then asked an LLM to check if there was anything in
 
-  workload                  base      with-patch
-  1 process, 256 MB         14 ms     9 ms
-  1 process, 1024 MB        51 ms     31 ms
-  4 processes, 256 MB       45 ms     24 ms
+FWIW this is really odd for a filesystem to do. I see we have two filesystems
+upstream (at least in 7.3) that do this; that is, cramfs and FUSE DAX. This is
+arguably weird and should be fixed. Perhaps the VM side isn't giving
+filesystems the right flag here.
 
-Memory freeing didn't get slower and it actually got faster.
-
-> 2. Would this introduce isolation issues, especially when this work is
-> not properly accounted?
-
-Yes. The drain runs in an unbound kworker in the root cgroup, so its
-cost is not charged to the killed tenant, and it may take CPU time
-from other tenants. I'd appreciate any suggestions on a clean way to
-handle this.
-
-> Another thing I wonder is, how much of this slowed down is because of
-> zsmalloc's own inefficiency, and how much is because we just have a
-> larger logical footprint
-
-Mostly zsmalloc. I kept the footprint the same (1 GB paged out to zram,
-then munmap()) and only made zs_free() do nothing:
-
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1455,6 +1455,8 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
- 	int fullness;
- 	struct zspage *zspage_to_free = NULL;
- 
-+	return;
-+
- 	if (IS_ERR_OR_NULL((void *)handle))
- 		return;
-
-The speedup is as follows:
-
-  machine                   base      with-diff-above   speedup
-  x86, 1024 MB              50.2 ms   20.6 ms           2.44x
-  RK3588 A76, 1024 MB       89.4 ms   23.3 ms           3.84x
-
-Thanks,
-Hongfeng
-
+-- 
+Pedro
 
