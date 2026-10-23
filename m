@@ -1,86 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6184606A31B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7361360A2603
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 20:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=VWy0WdGa
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=CTncYhve
 Received: by kanga.kvack.org (Postfix)
-	id BD5F36B03F0; Fri, 23 Oct 2026 16:21:23 -0400 (EDT)
+	id 8CC8A6B0BEF; Fri, 23 Oct 2026 16:23:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B86AF6B03F1; Fri, 23 Oct 2026 16:21:23 -0400 (EDT)
+	id 87DA36B0BF0; Fri, 23 Oct 2026 16:23:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9C1D6B03F2; Fri, 23 Oct 2026 16:21:23 -0400 (EDT)
+	id 720756B0BF1; Fri, 23 Oct 2026 16:23:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 818BA6B03F0
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:21:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E436A160228
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:21:22 +0000 (UTC)
-X-FDA: 85355010804.28.C679D07
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 51118A0003
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:21:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=VWy0WdGa;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf25.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792786881;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 370776B0BEF
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 16:23:19 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC68DA0242
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:23:18 +0000 (UTC)
+X-FDA: 85355015676.13.725CD58
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 62C2C20005
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:23:17 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CTncYhve;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=lrizzo@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792786996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=KiicLmvcEJTvj4IUoFShe1zCkXcPbAaG1PST3Sy3hOY=;
-	b=SmzyKA7jSkaHIVoCOfbwu1ah0DVhtQbytUCvDnCHIU1Ds2GlrX4EMupz7jB3EtFDSqBiI5
-	/IGGFu0nuUcFPAQf6nLsAymnSczxo6ORivBOCFn1mO+M6N4UMnL9ykeb01Uo2/MkqHAej+
-	g6THchUTL0Rh2sUc0guubLkUzWWpS7E=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=VWy0WdGa;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf25.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792786881;
-	b=VPw498j1VEnNCF7Z71SpMOYDWCLeHaE/EH3072MwWpGvz8dYFadP3DBV9r8AZ4WDSEPjw0
-	T+raR2QSpnL3msLKEKwC1QFuy0+tfxCFRUp2DE7QkJgmeTAIQzIQl/eyXuwWYC1jciMmDt
-	BaJJ33kpLeVj4BSzq0M/7Aed5kKGcGw=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net A6E5F40915
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1792786879; bh=KiicLmvcEJTvj4IUoFShe1zCkXcPbAaG1PST3Sy3hOY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VWy0WdGaMI6K/kRrPLKn78UmBR8zOSjJwB8vv9MWdZGXjlfLNvRlrf7SD7dU7XBLN
-	 RCTWtUjoMokps474J2EvS+ElcKfubghxKiKPjE+hqlUco1ptsyAo4E/9YHa2KTzWNK
-	 DXK/m2NCS3L3BTfhXvJ7orczYvGPiaRua9S22FoNNcfMSfqvPUikx5quvHIxXom9un
-	 52dfk1OJySJyvqUMBb/EZXOD3vYdZCnnSEyFEsetmwKe4i5RnRiIbTO4J51KZ13i87
-	 XC8Unn58azGD2CAmBAoj/nPpgkHeCl4ar4tdv+H7uz2LQCJo3jH9Raeck50/oFAm8P
-	 0wuhMjQG8NigQ==
-Received: from localhost (unknown [IPv6:2601:280:4600:814::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id A6E5F40915;
-	Fri, 23 Oct 2026 20:21:19 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] uaccess: fix some erroneous kerneldoc comments
-Date: Fri, 23 Oct 2026 14:21:18 -0600
-Message-ID: <87se1ww4ld.fsf@trenco.lwn.net>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eVhNp0GGNRD3+5V43/lt1UQnV2SdTxNQyX5GFb3QiFw=;
+	b=KnsPmUMkINycE/qfOTRcvOhIVbe8tGKBQez6X78GZtkW+H9IqWB3sVa4Nwmx2v97x/Stud
+	Uzcuvg7pOgEWJ3cCSaoV0S/GcyuPai9G0LjGHAy0KrmYI/aJst4NVyb8rd/LYg1EZV2WDq
+	8YVhcNLoGIyk/nLasZTKvP4+I5h4prw=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CTncYhve;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=lrizzo@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792786996;
+	b=Co/Lf1QA4V/6bbiwKjKxw4FcBHdwpmObLnO6H9EzA8+Fr//Sq1AWB0z/bEvz2bfbX69gli
+	GTk7K1tc3OgrLo+CJF1QqYo5mOYFb9YEMyUicmfOCNPFoHqlle+nncLEEXFcoqauFNXNPO
+	oebn215VjExHOrw3MbHNYLcWjjKcCiM=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2db33db4de9so14365ad.0
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:23:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792786996; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oDDktDY9Xmw2acahZ95xxLvcr8LrUkcK2gPyRDBNlQUfACoi9invIh5lB6lm18n8hc
+         Hci+rZFv0RKmMwsfG6Sml6IQ+AiILODio30GxpyandSy2tEuB9sHRxdpo+AfWTepAtgU
+         El6yeOkvS69rmST7hxHzn2Z7BEHW2Baqf3iX4nopOGLHguaWA0X8dfSem2f1VWA3eZC7
+         5PNUHhj75PPsoDu87GLHSGTPgHAREAsdwTv2dnHP6BMVt9mocJvsCJJFQg5uODPNCSjB
+         zq8R6tYMzUxld5sQsT4XLSef1ylptIvWLVu4Dw23qdZWz5n+YFnW5GA+PDhJSzRiA5Bb
+         STqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eVhNp0GGNRD3+5V43/lt1UQnV2SdTxNQyX5GFb3QiFw=;
+        fh=YxfOI/qv8nGrKAqxPWe0EqY5IyhSM1c+d2o6eTLy9cY=;
+        b=lzjSuqNtK5c6NKt0pkHVDvuZ/oRK8qhSbyUeD78EhizMzhBcbAf/+rNt3LL11C+SzL
+         F93MB6H69pn/mXp/HxMozT9ztlmUBPNCwy+xdCElxKQ98yNJLE/3tOlmgNDNBNwheg4t
+         PYm5/2YLWSVw9/7AZgpgkOE57/anNwYkriLOZHM6qHPn3NCdfDMu7V/oefjnxjMfe6Pv
+         MdOhzoNfMREf2oTSFYQziJLFbrzUJw2Mud5YAJEukVBpnWsS0Q3fpiZC/8tYv30/Vfhr
+         0cXo1iV/Zwfh8UWTpvGkY6FU3mJONAdAFE04PJTw14ChmAmExACYYQnN1gAnVs1PhVko
+         6AXQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792786996; x=1793391796; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eVhNp0GGNRD3+5V43/lt1UQnV2SdTxNQyX5GFb3QiFw=;
+        b=CTncYhveYgncfe72BuamuW90AHaLUGS4bNBBjJqAGcOKRXSb4XNDFkGDgefE6GWQEH
+         1XpmP2Ia5TtTWz78TFDHzAHmpvsYdcduPmxmE6gGF3fxl5ua3eB7L/ZeTKHPbEBiOo+d
+         HQGJ2UD+Hi5eR8NNvrZSh70yRIGM6pY0/a5hUNOnI0d1Hp0RUk8+3Mf9wEvMgjRViSVD
+         lH00OBdo/INoLerBMKO23Bzz5Pda4oyVAomFGyAAd9mQNmq80S+IET4Dop/LC66kFnE1
+         Nj1hzO/kuQd7lqhvE5Khadz9H7ZD7rAZPt1Gcf/hRmEKyHAhf5qI2y13PdT88itw+S2T
+         rNfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792786996; x=1793391796;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eVhNp0GGNRD3+5V43/lt1UQnV2SdTxNQyX5GFb3QiFw=;
+        b=mU1VHTb6swPnrUOk32/vMDHdGc1pq2byKJT07+ZpQYVC5HozsgjMZfhlAI2b7/3eXT
+         FiR4gCL8+BRV38y2M6bJUoNLylDJWXF/abmoM3harB1WC3Sb8m3oTYyxzR9X4N2ZliRe
+         rqaXfHk9tMoVCT3KFZsQ5I7JW8KW4E1B1sYGBb0PxuogxzSnE3rnu/xBh+svgB5zjX5C
+         2IElLByaOMpDt9zMmhCS9o3OSyblJM+1RUHqfM73ZocRnLIsBQtdd0m00wKAnPs73jKg
+         3x6GP+/aeQsFYeoo9YJv4jXzjLQM8cqfeMChV9PekvHRZYCek0UV5WZ+DBXUOkzyBVYV
+         K3+g==
+X-Forwarded-Encrypted: i=1; AKwUvBxRLpcSK995ukZmH2PZE6omw+/93/A1fCIBUknkCKUgkZF55SLGFrgem5ahKR/OQlzg2ffAIC6jEQ==@kvack.org
+X-Gm-Message-State: AFq9FYJfWE1D8Q2vOFLz8Ir+eYpHLli/IjM1vjj7mjngCVFWgg07R1JI
+	p2HAFgEKKwN8g4r2JF+fAut1ud1RLhwsEMrXo1fNuhO23azBLvW6hoU5tYMp4XKiMjQyH0K65TX
+	ZsxWfloq3nDtsSXF2JGOuXNcjwRQEFiVd+POxgI2a
+X-Gm-Gg: AYBFou1nz75KLVLXHPCoPtgua8J0pYv+r9HvIpdk7pUzZIT9BiyBISglUCkn6NATGuV
+	4Nqq2uvGNRaeah0hWGu1DpWV8k8XS2MayxWjaRR+jwaIT4U08naS0KPFtmsN+EUgDIhH1Bkcb7+
+	mcaMCofUEJtg1SseTJTWeqIWDq2l5pEZIrZFc/nnjxNQ048SSLJ2JfgviULWMp8IjutgBp5Q8Eh
+	HQ509EtLLfMJ3YMZ/nYUKkZOxvx1HRQsaDtefe0fYZQcirhy8uNk9gQalK2ECHP1IOZMtil/5wb
+	W3OJxO10BtZejlB1Sv/E+l6KkKWBaGjCVUC1vYwOP44tvoJ1LCFZFeTr0DM2F6wWul9zd+gfsQG
+	LD25iw4v6Vot1q5aJmEsdF3iix20WBR8hoCKk4A==
+X-Received: by 2002:a17:903:3c6f:b0:2e5:4604:c37a with SMTP id
+ d9443c01a7336-2ea9c34d519mr322665ad.18.1792786995276; Fri, 23 Oct 2026
+ 13:23:15 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 51118A0003
-X-Stat-Signature: 5di4uwr4tc37ukct7s7bemjfyxfirk7q
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+ <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+ <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
+ <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+ <20261023145023.GH3977851@ziepe.ca> <20261023102756.201315d7@kernel.org>
+In-Reply-To: <20261023102756.201315d7@kernel.org>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Fri, 23 Oct 2026 22:22:38 +0200
+X-Gm-Features: AclHuK8d6JZsEGtM0KlZDv9ie7EsPXi4sNCVttMkACFig7Laogxgi1nYEIBjAsw
+Message-ID: <CAMOZA0KZi1EkJaAFKfwOm8jo1ydyGh=W1RE0iMfte-ZQkOx9AA@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, "David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 62C2C20005
+X-Stat-Signature: np8rwng4prhxpwkk7ycp1rnx5nj6ae4h
 X-Rspam-User: 
-X-HE-Tag: 1792786881-86407
-X-HE-Meta: U2FsdGVkX1/5Y6ntQCdpxkgelAneZ+3/aIkQRiERLnPvb/iFjNp1dUheGtw6biHoJ0SRWYCN1gJzxQBd0nqdyWtYUR5QYyidkLxOsvzcu70zowTJcCKBeNs2b14yQ74EFv8Fc+EvUF6u4+sIQndrVLrW/zs7eeNXiQD1LSKXRXG8Sf5DSCmy0wDf4Sk881dtNWC+zUvsOqg6Zh9ScdHYihvW7WbWgcIPqIoRjhu9IP7U4N3agvrrDD1gzGbaEmb1cXuCL5IZ+VRnb8glDmdeRRzm//qJXKlyzmThoFz+Y4FA/l4woocyOW3BEObM9xEtxJP5iNBfW0RI8/oIjD44/74hfgzTCVG/FwEa5tNodRcOsOepvxbdzXXgIxSz5KPvaO5jYdE/FP/7v+PozJFQY2P7i7QslC5KOOnuSO6JR7JhvnUdkfzxcQhIzd3euoAK8ZM7DhsnComONUCc7y04ireh+SknIkhhcGSF8DPJUD4ofOE8XSIowFtOJ9/+6HoA5zzKO28kWKVTvAUCzNOM9Ih5sGca68QvH3LwzMAxi2xZqLiS9kUNzmhxtjkK8inknytQcl7bKt3zT22jnpoVifigxoSukngHuzr3tfsm0mqR+AypmR2zcIhihwmeBFZ9LfoO+GfX5Sgq2FoqrsUmJFZcYevpuIAUStTBgZssgMEVwceagwJF88ds50IuvlG5bHDn+JiQUukr7p4BsYaYoHirP+lM4cSv6pIDnyfIU31gxLtrUeZBIwHwDIMaWqQcByOR4fYjgJ+FDgOawxR/dynhCjXi5Qq1GTO1mJwY1L3lIqmh4u1yd/HfnlQh9/smapoGxdtaHwUT3QypoIJheWhMy+j9y2GyQF3lEFtRGly2QR/mBnCMtzscNoUL2vTVwzb3xHbIPgHE1CfHNvwwTDlhwGU52ilJ8ZyckIKqZi9Xo+MevYp/7D1/FmgiSr45im/pFLopbxYQwLlFGIJ
- J3RicPoO
- 7GECUdNafknj/7O2xwcCJipAIFMGZzkps1SHCJelIQVn/7GUNXszicIDxh6yGi6JlrMaEUVPgkzzENR5xHgf5AglpVAEG29lbgZsp2g5IeyfGKSZdYgUGaD/DWZdd2RCEk5MwtF7EZ77qL073+83xEwHZB3ObQ0rupIiYST1W11sZHNz4dR3uuHvIayh579+8lhv7vw2RW75rlMZJ0X5wH3ax73dNKQkIGqUlrEObhfjpxugvtnyyyaUVhVReNIM5mEPxaRBFmAoQ5jJ78SLmuwJ5zpjVxkWB2o9mIiiJVWwPojXUwBmx3dDrfVZNgQyxW9y5AGbM6cv0aEr+anRO2f4WNjIGfukGMUXnZGUeYFGCXKpH39YfyfJMPwg8UoAW0oz7
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792786997-140579
+X-HE-Meta: U2FsdGVkX18Jra2S4rPQpGfUN964qLuHMk8BEa3/AgHHGvnCp0ijzqQPt/PnVju18Xxe3ULXnbrl9szNW1io/HX68glq1+efUaJDrVaoH3hgx7V7gAwp/dEsN4O5nSgVCp2KcA0WFgMebCqeKy0kx8AlzvIiWBMVgzqaipvoUuY5s0llXc51ntGpTnJts0BdCKryFrmeg1/b1QIvNQQLLtCkQ5GopkQXEAQF6RjAsJc5loPzPlolUJmm+mtaU2wJoUYEtlmgKalmwmHFd0DtuSReZyxytH68u5xRZQ3C3hJg7Dcnt/af2Gl3FjCbqdfE+Jk8CfpJU2gSyldAPQxB3XS5LrIl6IFd021Z3rpS4NrOusKAoJq7P2BJp2QQkmGRVUIxkJH63qALkrGpzg9jbWYvqChW8bKOqJDpGPtjPECcGDiX5KJvDga4H9QwgQtEAYLGVaMV4Krg/Gs5dZPvHWeXHbE81Fjn3QSIrj4JZzY7PzAQbjaYr3r2w67X3pVpcThTb2ujlOl+VPPOE4ENqdSsqMkdjuhb5hGxy9/GvsvBeb2Gykxskb1VnlKbw9VslzkENIBem2Pk0aNp/uKS6nMIxt+rv1bGgBGRmvniYgkbsm6gj7yyTNPLP8+BjMJ2x0ImGpVTa8uEo2jzWFhbJxXwldzL4GUuQ/N3qTf9kTYtqnCsaxZo+Xkk98d1T0Ye9G/u6FzbIoAxSgyVWetvrHPVOEoj4pDMZzG7tv6sKR4Xza6mfPshJA5y5DMDsHgZVm9p8E5tY/2tKXn5+kHqQ7d1QPfWHSmcdFPv5DEueOeGtwXvvJ2qvXmMVivTpuuGd8HZSCZhpWz74/n9d5b1IOPRi8hhAstblSEIzUL0n4R5eqgdseyBmvi4nELH7v/PmmoFNRaq+ji0GUTNVzJyi9esFx7nSvuhAV6OFZBGgh9B6qg9YNMFQZbxu9CllEuhiMvQ2p+1WeIPmt/KQkF
+ KZguEYBp
+ DAykPbNxv/kzW/QGNrRtVagGHeKZwxks5THDHwGpYhkxLec6HoN8yRWShvY7wEN9AxxKe2lrflMoo6J1CoMpa98Yui/Mdh/zySPJT6YJwkQvpuwr56wRZAsaMvbOKn0RaS/tt9zyzszEQ/wptqUXyDfmAm5Lu+Eg15feQOPqMu4zH8SjROUGS0P3iC3tdWespWnqk+rGjfHQh8IMZXOBYSC6kVb5zoAG4sQSIc36P48BR7EwsGcqpZ3ACHq5/BA3y/C0VGp1MYBujFJ8jf6LyX82q9WJVL7hKnaqWxMbVoVtk/RA3JuYHKCHg9ii1TgrbPTbPUnhryKYDNW6mqU0+ChZD4mtxcVtX244BL1aWEhJqr6s/w7ryllDcuvXe8SudVfPI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,71 +162,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Several of the comments in include/linux/uaccess.h generate kerneldoc
-warnings due to the use of "/**" markers on non-kerneldoc comments and
-unmarked literal blocks.  Bring these digressions into form and eliminate a
-number of docs-build warnings.  No changes to code or documentation
-content.
+On Fri, Oct 23, 2026 at 7:27=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Fri, 23 Oct 2026 11:50:23 -0300 Jason Gunthorpe wrote:
+> > > Anyways, reading your next comments, are you suggesting that all
+> > > these functionalities should be implemented as pagepool extensions?
+> > > (2MB mappings and iommu backing, proper allocator of fragments out of=
+ larger
+> > > pages, device-less pagepools, multi-domain mappings, pagepool
+> > > as memory provider for skb heads, pagepool as memory provider for des=
+criptor
+> > > rings ?)
+> >
+> > netdev shouldn't be touching iommu, it can get a 2M page and map it
+> > using the normal DMA API. AFAIK there is not such a big reason to need
+> > any of these layering violations. They just make it easier on page
+> > pool..
+>
+> FWIW we're entirely happy on the netdev side to add this to page pool.
+> In fact the initial RFC I posted for "page pool memory providers"
+> was addressing this exact use case. I didn't push it forward due
+> to low time and suspicion that IOMMU folks would prefer a more generic
+> solution. Since then memory providers were pushed forward and merged
+> for dmabuf, and we have netlink APIs to configure things. So adding
+> large mappings should be SMOC.
 
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
----
-Naturally bringing this file into the docs build turned up some
-warnings; this fixes them.  Happy to ship it with my other patch or let
-it go through -mm, whatever works.
+Maybe technicalities, maybe not...
 
- include/linux/uaccess.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Getting a 2MB contiguous and aligned page is only the first step, and
+the easy one.
 
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index eddbbb65ccc4..67cdb0a4f583 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -357,7 +357,7 @@ extern __must_check int check_zeroed_user(const void __user *from, size_t size);
-  * struct).
-  *
-  * @ksize is just sizeof(*dst), and @usize should've been passed by userspace.
-- * The recommended usage is something like the following:
-+ * The recommended usage is something like the following::
-  *
-  *   SYSCALL_DEFINE2(foobar, const struct foo __user *, uarg, size_t, usize)
-  *   {
-@@ -447,7 +447,7 @@ copy_struct_from_user(void *dst, size_t ksize, const void __user *src,
-  * about data it does not.
-  *
-  * @ksize is just sizeof(*src), and @usize should've been passed by userspace.
-- * The recommended usage is something like the following:
-+ * The recommended usage is something like the following::
-  *
-  *   SYSCALL_DEFINE2(foobar, struct foo __user *, uarg, size_t, usize)
-  *   {
-@@ -529,7 +529,7 @@ __copy_struct_generic_bounce_buffer(void *dst, size_t dstsize,
- 	memcpy(dst, src, size);
- }
- 
--/**
-+/*
-  * This is like copy_struct_from_user(), but the
-  * src buffer was already copied into a kernel
-  * bounce buffer, so it will never return -EFAULT.
-@@ -553,7 +553,7 @@ copy_struct_from_bounce_buffer(void *dst, size_t dstsize,
- 	return 0;
- }
- 
--/**
-+/*
-  * This is like copy_struct_to_user(), but the
-  * dst buffer is a kernel bounce buffer instead
-  * of a direct userspace buffer, so it will never return -EFAULT.
-@@ -770,7 +770,7 @@ static __always_inline void __scoped_user_rw_access_end(const void *p)
-  * If the user access function inside the scope requires a fault label, it
-  * can use @elbl or a different label outside the scope, which requires
-  * that user access which is implemented with ASM GOTO has been properly
-- * wrapped. See unsafe_get_user() for reference.
-+ * wrapped. See unsafe_get_user() for reference::
-  *
-  *	scoped_user_rw_access(ptr, efault) {
-  *		unsafe_get_user(rval, &ptr->rval, efault);
--- 
-2.55.0
+Next we need to split it into 4K fragments that can be recycled
+without waiting for the entire 512 of them to be returned.
+This is not rocket science, but requires much more state
+that what fits in the struct page, so that's another layer that needs
+to be added to quickly access the state from the pfn.
+Essentially my dma_pmd_meta (because I could not/did not want to/ use
+fields in struct page to access ).
+Doing it in pagepool could reuse some fields in
+struct page to point to the metadata and simplify the implementation,
+but maybe leave people unhappy because now something may
+require an extra indirection.
 
+Then there is a question of resource management: when 512 fragments
+come out of a much larger page, deciding which one to recycle matters a lot=
+.
+Without a strategy, there is a significant risk of stranding a
+lot of lightly used 2M pages that cannot be returned because some
+fragments are in use.
+Again no rocket science but that takes some compromises (sorting
+based on usage ? periodically drain old pages ? etc) between
+effectiveness, code complexity and runtime cost.
+
+And then of course adapting to zero or many devices...
+
+cheers
+luigi
 
