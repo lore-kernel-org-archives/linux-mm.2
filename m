@@ -1,138 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DE7606A328
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105B7606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=HWueAitF;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=73hMXDMw;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=crw8ZLd1;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WrNmMXSe
+	dkim=pass (1024-bit key, unprotected) header.d=gentwo.org header.i=@gentwo.org header.a=rsa-sha256 header.s=default header.b=oLAMtts9
 Received: by kanga.kvack.org (Postfix)
-	id 6EDD96B0BA3; Fri, 23 Oct 2026 13:09:32 -0400 (EDT)
+	id 9B0906B0BA5; Fri, 23 Oct 2026 13:11:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69E666B0BA4; Fri, 23 Oct 2026 13:09:32 -0400 (EDT)
+	id 988ED6B0BA6; Fri, 23 Oct 2026 13:11:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 565526B0BA5; Fri, 23 Oct 2026 13:09:32 -0400 (EDT)
+	id 89E496B0BA7; Fri, 23 Oct 2026 13:11:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A6E66B0BA3
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:09:32 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B632A1401DE
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:09:31 +0000 (UTC)
-X-FDA: 85354527342.17.5623B6C
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8A813180006
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:09:29 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HWueAitF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=73hMXDMw;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=crw8ZLd1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WrNmMXSe;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F70A6B0BA5
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:11:59 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E5C361201B2
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:11:58 +0000 (UTC)
+X-FDA: 85354533516.02.F91F59A
+Received: from gentwo.org (gentwo.org [62.72.0.81])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C5E4720002
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:11:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=oLAMtts9;
+	spf=pass (imf31.hostedemail.com: domain of sh@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=sh@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792775369;
+	s=arc-20220608; t=1792775517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=67SB6LSP3YZL4fyvJpHJjL1fYzDhmkmSaoMKutRzZoQ=;
-	b=XVxrTpAK8YFnm9qpoQdDqKCgGJt8xAkJPKiP1OGNA+8P15jboTqDa+aqesY4gUZTak95Jt
-	bYViflb7bE9XoKiZwcg31luKKQ2eygS9RA4coYR9ALE/yPX2KWHmutNW1QtBCmrR6gWVIX
-	GUAOOwRH4zEicXAKG99JGObAOIpvvtQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HWueAitF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=73hMXDMw;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=crw8ZLd1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WrNmMXSe;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	bh=MTTA+YbrbBMm9z50z75gsdicdlYW7qnqLdRemdmWzl4=;
+	b=2NAjmchT6ldpA60+KOLOYv9lKpGYDKCU+nacHDXYFTjZA9NNexnTGDGpXa6rhMR1ItyyMN
+	1hE7MBSE+e5Q0vY166pk3mluxmhdHJPnrqiAj6XzS8DG9Kp3kmKr9dglTnPxw7MSaEkY6z
+	21J41Q7CnfthVgD8wyIarQ0UHlBxcIw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792775369;
-	b=7fcUT6nhHc4u1uCpliUVe5xj1fugiqMOzjhch+C64001Z5/cD8NsYSPQ+utb708H8nBGZl
-	T6t95u6LBvssWzsoEJ9/HFZ2ce7Q0RPfkevjzbSgxVWeY11e2LW3DkulobKuAkjJDzSQRc
-	cSrd8YMB8EQj6D5ynPdnalLvI8a2rIw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E866622166;
-	Fri, 23 Oct 2026 17:09:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792775368; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=67SB6LSP3YZL4fyvJpHJjL1fYzDhmkmSaoMKutRzZoQ=;
-	b=HWueAitFYISYzSNe5YnyHEb+shlX8K0h7k14BJhPzBH/7EB9lkaz+S2WIPLskS6loSJdvG
-	aUR2ufGJE2HCFhRI/neX9GOF9E09SUh5tnsRlHnKP1mp+RBxUigYVFk6x5H30msdd6hprA
-	ONLQlbOaGFyv52ucs7VwuxW57NFz6rk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792775368;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=67SB6LSP3YZL4fyvJpHJjL1fYzDhmkmSaoMKutRzZoQ=;
-	b=73hMXDMwt6yPnVFNBXW0a7ItPpJrVM58oXKVcgDoYb7sxilADmqvuSH+mahIreGVj6Jc9q
-	DZxK56TCIadLHUAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792775367; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=67SB6LSP3YZL4fyvJpHJjL1fYzDhmkmSaoMKutRzZoQ=;
-	b=crw8ZLd1JuBzD5b00IiO2YPRlqnKODD6XVDQYYxA0MbIaeiiuNmVOd33K2W5PuP2/KhWA0
-	gxHjIOwJ8JSjW5xzj2TcHfbTtyMraZ7Zxxnr53lmvy6LxIdq65njQzO/gIPfcdBlyyHJoD
-	o1owhOMYE6Es66BCTMUp+MNFTxzXdHY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792775367;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=67SB6LSP3YZL4fyvJpHJjL1fYzDhmkmSaoMKutRzZoQ=;
-	b=WrNmMXSe/Xxlt29YJzdzeNGaBcxolLMTBpi/xUZp2whYbFL/dMDg3iXMI8VskPLoPLwsIS
-	LBorCiVjxe0EWxCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F175C133F3;
-	Fri, 23 Oct 2026 17:09:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0J9gI8aU22oYMwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 23 Oct 2026 17:09:26 +0000
-Date: Fri, 23 Oct 2026 18:09:16 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: Re: [PATCH] mm/mremap: populate calculated fields in vrm state
- correctly
-Message-ID: <atuUijJitqDu00ZS@pedro-suse.tail5790ac.ts.net>
-References: <20261019-mremap-fix-shrink-charge-v1-1-a3ce209e5360@kernel.org>
+	t=1792775517;
+	b=70DvkrmmOGlQgCzfjIwrIU2Ta34vAKxuzChe5vjo6oPss7u2eoKo4W/uhThk4COS69JLgZ
+	3AN8TPKQmHPUyU/0mRPPOSWOcRIblPPYt+gMho3zVFq1UkxEjubL4PepgiuLCDPSQ+hILd
+	lRhvf/MDfP5uPyr7vqPFCpgaeIgrHxE=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=oLAMtts9;
+	spf=pass (imf31.hostedemail.com: domain of sh@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=sh@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1792774952;
+	bh=j3lnnu+XwJ3IxgiQhhhYJRK4pj38bqA5bxE8+qnusw4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=oLAMtts9sWUtxc9TQq6u5hWDNCmmVutWKxG6+JOk28oNqzJJQu+zjTjPyYIRq2CCx
+	 zmttuwcM4oIMy3Lo1batINoIfXpF8n1NfIBOB/AT9ZbZja46SOPFkkDVcdr6ww9VaG
+	 dUz+80CNt++Md3IzWWxo/7SoIauw8QyW4e3e4M0A=
+Received: by gentwo.org (Postfix, from userid 1007)
+	id 66FE2406D3; Fri, 23 Oct 2026 10:02:32 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id 64795401AE;
+	Fri, 23 Oct 2026 10:02:32 -0700 (PDT)
+Date: Fri, 23 Oct 2026 10:02:32 -0700 (PDT)
+From: Shubhang <sh@gentwo.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Uladzislau Rezki <urezki@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, 
+    Shubhang Kaushik <shubhang@os.amperecomputing.com>, 
+    "Christoph Lameter (Ampere)" <cl@gentwo.org>, linux-mm@kvack.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc: reject overflowing vm_map_ram page counts
+In-Reply-To: <y5yuwnmvq5nouoitqj6lloz6hepha6cf6vmh42rer2zhgv32au@vbvr3ohn24tf>
+Message-ID: <a8931158-460a-9ec0-28d2-44f3a4956153@gentwo.org>
+References: <20261022-vmalloc-reject-overflow-v1-1-5fde0042ffb9@gentwo.org> <y5yuwnmvq5nouoitqj6lloz6hepha6cf6vmh42rer2zhgv32au@vbvr3ohn24tf>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019-mremap-fix-shrink-charge-v1-1-a3ce209e5360@kernel.org>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -13.51
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C5E4720002
+X-Stat-Signature: ebxuxm3izj8ubg54cfqdu4bqyxn18o49
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8A813180006
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: t6umk1bda9exuzmtt56xd5np7juig1my
-X-HE-Tag: 1792775369-524950
-X-HE-Meta: U2FsdGVkX1946hyP2/ik7YN0CBSeoKL2vLbfBfKSIIgR8BCMJljm+Rx23QAeK1IhtQag31Kmc9nOd0gk7ZOtHNIyt7nZCNx+pS9VWYWCmxIPXIoi1Dh9AmI4KV7CyMM0edDBSsdMyoS8uN3obG9xN4aYwQJluWICk0mqECTbaGtdhVVk5eNq+Z6nhSXKthDMT7jAbjjgBE9ggCnc9R5UkHizfG8ul859BSKWyfdlRwMGRYYWqwtyVMxssoCsqSV5ZL+/vIphV8E96hjJvNWrGt4z64jVjvSUVLsQElLLOBJy1yI9fa6cLQAsOhgqbOO/ytCD7V1ilytfozQDnIqyzgtb65TgWI4pBppSenTP+XVGAdlgLI4ieQ5d1jxY22YhO/7XSaNd/fgCb1c09rTUVvNndQXJYrv16ISEegi3TMh+I6a1Vcn2XnMY2bous0qA5QJD/+nb7p/EFpdfoM6hcnvMzrnCoMmPZxqSlZWhvAjxrlCtIJ0KLnv+0YUpfJgz8fiwXbFslHllLshV3ZjuP9XJdVT3JxD+h7bZF8OPV26GGqQzRj5CPF2b1d4/nIux+XuiBMQSjH1dCr3EXpGvRokuUarBmSn/2Q1/qn2/UYIpSgchuMqT0UqfUCNkua7NJpDICpA43fEs1XG7rbtYhPkYl3M7sbzpNsZr1Z6YR/+bTeuBzW2oohP2OqYhov8G1XcwJlC4QYqofbIcB/Yd53tCipcZjLFCzjIiQohUkxGCRwYnd7M8ADBllhbZOlex62Qa3UZqBvPuhWkviTsljVyta6ZxTROqPPVdnPVgzNAKGT8Mjf682tiJ5t+/wy6LN7ZSETfrKP/sFl1GomeTFxGh9wH7rCTWpVFKvbykaABj4q5lbZpy0+LtG0qNIo2hnSX2HSBKZay/D+c23kvBpji/k5d61jnPmPU86f0FdLPbWCsyiA++xEm+bcZGHQhfnR9oFsu0n17uAZ028fL
- QgDGjuvH
- Mt4cf5fea2WX7ucTdku/z+HvrBM3SXw6htPO01m8mktHu6buy61+6e8njgvYQKLUUImNJrLucUX5TNOgjGyoKDuqiLjr6rDBakc/uSVRQ6h4R3o4i/+1WOTtL6lKx1JBKSW0M9B/HCJvN8AteN/sVPKUdYA+ZiohLtfsFbh3S1pWFODe/v5JwGqPqz9TopMeppVxT0a4XR/rX/Sq7DyTlRPRT6iuxP/U1QlCxjrDaw+ugoCb+LkTYCGe6C/S7Txa+PgqyFlXlUW5bBriWr2l/qnpVaJytYVOuLwM/
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792775517-774017
+X-HE-Meta: U2FsdGVkX1+ALun4Kj4JqYJ7fDq5POyd5Ns+nwa1+ZkiT29/mwUFBz+/IxV/IWPGZgDxe6haB1Pi42BLr/379jaCo8tD8OWKyOjn0WzoeFaX6oeFuvMEJHYOI7h2DV+27dG0omEbvvXuewIyzYxTbnKgmH8t6gKDh4b73rK0eM4i/h7QaVn8beDps5hvM3EUT3q2oa9DIaO7VDuzTOQaTgZIvfw88amKK7KOIVcxPTYGPgoBMIkSq4XgcHUcDJ2zwYtIHiWJgo8cQc2EN8j2RRX0f9Ii6V3ikNbp8HROwMJrBhYX8GbFHmc1S5oUMs0YcsoEnLIoecMFUvPFA12tJcI1u2ZK4EuOKVrxjfJqOLNsJWVnVIgh1mAY2LgFyXPTm/5Q6qo25lUBRRkEENkPAuxbRz3L+nRWYYW6GGq3s7pNSMy+4ltO6hHnRpzaIqLvhQCPQ+pfqmhJzATtp1LVA2Hv7Avmxz4tjAnj0Tz18joSwdQsJSy1r6XSECFtIkD4f4Hh4SUmYuzw5jbKhjE7fgaHavv0Qtex+H5++SvCNE4/lQ7IAn1aOBv3yRwiFTsGKH9Y8NptQBVyJ0Rr9+YWvN+J67sYOgVB+Cd4T50vFAFBgvC1BTSIaB9ee0WFtXYQaK8xz61OIhoAHqOMVkhr38VwvLQKc0AZ9jebuuuFcbuDnmKKslz3hNL5GrM+mOPQGrDrFNZ7v7NX2ubo2PBsYLGNAirDR/auCby80WBFTQdZSRR5ctxw11+Vlwo6B0ZAFAjhZGawQgwUwpPGO6IizWQm4LRJYI/aabL/1tKTMPLELnPfo02671ygds9TjdiD1+6KbXgANMAK7KYRlstR4JN9r4afAKOMgQejtRN/EjUK2pd5VNsY+BgArDOMYawamiiihFyb9k8j1gD6nuBC7tmqpI61nG+zOmRt/NXEXvyiVJjifDVxwKHZ3dnm9cWaQb2ZPQEUAe/Xb8FdpqW
+ cilzQumo
+ EbCD6J+GwaC+moRPB9suzZ51qAnBF2MeCli92YufuWtNIFzuleYQn8haIahjNESBTpgMPip0hpmk+f37Lh/zsxKjABF0Rhg21ePA9Ne5o5Y4RzTH5v+NIimipZMFKT/Kof98D3I+PJvhbqH/jXrMcRu5JehOaDzTPlU/PXjY8eBFl+U+rx/UgMD+NxKEYG07An7p5qr1YONgW+HkDi0SE1GSrfjaVqlY101wmH7lvY4dZFVFijNgAI+AhAlQZLvYzxzdONXOgKNMQWVHJ6Ok+PlneEwkRep6T90FsLGabrqGuNXLJ7wpVUKjEa7vUZygk+e98reyZfPV7EHFIN7rWXS2osoE6aNNavciUSWTmVhYBIqKJYHVXmJgDDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,47 +92,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 03:28:27PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Commit d5c8aec0542e ("mm/mremap: initial refactor of move_vma()")
-> introduced the vma_remap_struct helper to pass state sanely through
-> mremap() logic.
-> 
-> Part of this state is vrm->delta - equal to the absolute difference between
-> vrm->old_len and vrm->new_len (the old and new lengths of the VMA,
-> respectively).
-> 
-> This value is used to correctly charge accounted VMAs.
-> 
-> When shrinking a VMA, mremap_to() sets vrm->old_len equal to vrm->new_len
-> having performed the shrink of the VMA first, prior to any potential
-> move (e.g. MREMAP_FIXED | MREMAP_MAYMOVE specified).
-> 
-> However it does not recalculate vrm->delta, which results in incorrectly
-> overcharging the VMA.
-> 
-> The charge leaks to Committed_AS globally, meaning a mischievous user can
-> cause allocations to fail across the system in strict overcommit mode.
-> 
-> Resolve the issue by abstracting the update of vrm->delta to
-> vrm_populate_calculated() and invoking this from mremap_to() when
-> vrm->old_len is changed.
-> 
-> Additionally, update vrm->remap_type whose value depends on
-> vrm->delta. The field is not read again after the shrink, but it is the
-> logically correct thing to do and protects against future changes which
-> break this.
-> 
-> Fixes: d5c8aec0542e ("mm/mremap: initial refactor of move_vma()")
-> Cc: stable@vger.kernel.org
-> Reported-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
-> Closes: https://lore.kernel.org/all/20261017233527.797191-1-nickolai@csail.mit.edu/
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Hi Anshuman,
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+On Fri, 23 Oct 2026, Anshuman Khandual wrote:
 
-As always, thank you for being so responsive in dealing with AI security
-reports :))
+>>
+>> +	if (count > ULONG_MAX >> PAGE_SHIFT)
+>> +		return NULL;
+>
+> Could vm_map_ram() ever be called with such a large number as count ?
+>
 
--- 
-Pedro
+Yes. I checked the direct callers while respinning this.
+
+udmabuf can build such a count from userspace-provided, page-aligned
+ranges. It stores the accumulated count in ubuf->pagecount, and its
+DMA-BUF vmap callback passes that value directly to vm_map_ram():
+
+ 	vaddr = vm_map_ram(ubuf->pages, ubuf->pagecount, -1);
+
+On a 32-bit PAE kernel, the default udmabuf size limit permits a count
+in the overflowing range, subject to sufficient backing memory and
+successful pinning. For example, 1048577 pages with 4 KiB pages is a
+4 GiB + 4 KiB udmabuf request.
+
+There is also an in-tree import route which invokes this callback.
+DRM drivers using DRM_GEM_DMA_DRIVER_OPS_VMAP call dma_buf_vmap() while 
+importing DMA-BUF through PRIME, which reaches udmabuf's vmap operation.
+
+The same overflowing conversion makes udmabuf advertise a one-page DMA-BUF 
+size and build an SG table with a one-page byte length. Therefore, this 
+establishes that vm_map_ram() can receive a userspace-derived overflowing 
+count. However, I have not found a current in-tree importer that then 
+accesses the returned mapping as if it covered all 1048577 pages.
+
+The v2 using check_mul_overflow() is here:
+
+https://lore.kernel.org/lkml/20261022-vmalloc-reject-overflow-v2-1-0db7a20c53f0@gentwo.org/
+
+Regards,
+Shubhang Kaushik
 
