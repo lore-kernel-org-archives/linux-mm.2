@@ -1,97 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1FDC606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 06:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D224606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 06:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=ZunCuudQ
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=aX1xXnjj
 Received: by kanga.kvack.org (Postfix)
-	id BDED86B0339; Fri, 23 Oct 2026 02:32:55 -0400 (EDT)
+	id 15B7F6B0AED; Fri, 23 Oct 2026 02:34:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8FC56B033A; Fri, 23 Oct 2026 02:32:55 -0400 (EDT)
+	id 1328F6B0AEE; Fri, 23 Oct 2026 02:34:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA5596B033B; Fri, 23 Oct 2026 02:32:55 -0400 (EDT)
+	id 06FCB6B0AEF; Fri, 23 Oct 2026 02:34:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 861156B0339
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:32:55 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 03C031A02D9
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:32:54 +0000 (UTC)
-X-FDA: 85352923110.27.5F9F96B
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7C91040004
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:32:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ZunCuudQ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C5D126B0AED
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:34:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D9BAA7D70
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:34:42 +0000 (UTC)
+X-FDA: 85352927604.18.0433693
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C272940006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 06:34:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=aX1xXnjj;
+	spf=pass (imf17.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792737173;
+	s=arc-20220608; t=1792737280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A/KkeSW0iJwwqF3dTal22x/IVE71KQpeS559w4ryEuE=;
-	b=xBZgfHX0vBH9LcrbjEWSdCf3FHaHHWLsGgwFT7wdpzGUQkPm4BiUNjYNHbec//vXGs7cJ4
-	5SLAszQSErOflpzkVblIRshHK+9fRV1lbBR4FrFLPiNnFpG+f6ERt5LprEiConMRw4Qx+K
-	20sr0cpk+sfl4hURy1cqxewy0FjlXuE=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=64tBqhaCstcvhuNkWvz0hImiXE9PsoHY46iN8B5GY0M=;
+	b=V+HFy4IzhkBhDarcMDdYFLa1P41zpEGCq9zlsyLyoVNeRFtPASDcbMRKkL5n3kJ0M1F0aG
+	B6CaF3dNgaO2kLYUYqfrLIgBd4fZiSiWopmwIg932mkyXKIM6XbtuuFHbbC/+GLWIAUIJg
+	fBO60Gcwqf5mYWrfQJblynQALRRTlY8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ZunCuudQ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=aX1xXnjj;
+	spf=pass (imf17.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792737173;
-	b=lRvIoyp54SMcWvRvCq9hAcR9GxxGdmID+cT8a4nquqqzCKI5iEWZifIRy3IySw4IbkZsJc
-	fcb3jV5epN3Q4jbHrntkUt0YnODKz41NVXB9skOOHJ0sETB/7lQRm87rVNQGGq9zT62F1C
-	IYzZx5YLXdqasu8MjJGL3MlUoX2BEto=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1792737158; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=A/KkeSW0iJwwqF3dTal22x/IVE71KQpeS559w4ryEuE=;
- b=ZunCuudQz4sc9UuX1ESe/ATn26vRhp++gXavBXjrKaHnJU56X9Rlw4VohHcBtmWcla3Hln
- 3Y6ph4OaBoN2Kvv19x6ZuQIlcqiA91Ekf5U315QjVc0Jy8TFADK+rx42J4kh2/hE5IQ6hX
- cLQt+QIUK1/x8wfJEpCt7XApTdjGJGjbtnXBMLqs7nfoZ7DyHYpSIetABw2PR3OwO+Hmt3
- RqkGcDfCbcQW+SpelP/ZMADf4Kfh64E6uuJ9rG7nKMuCFTfsMUPJczP/biADXu1nAYpT/J
- Cm7MCVlga+ealsDvcK5JvolBOmGANKCnBoKiyfi3sYoiLs96LdRtVu6L64XaBQ==
-User-Agent: Mozilla Thunderbird
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Cc: <bpf@vger.kernel.org>, <linux-mm@kvack.org>, <cgroups@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v3 bpf-next 0/5] BPF-based per-cgroup NUMA balancing mode selection
-Date: Fri, 23 Oct 2026 14:32:08 +0800
-References: <20261019064157.29885-1-laoar.shao@gmail.com>
-To: "Yafang Shao" <laoar.shao@gmail.com>, <ast@kernel.org>, 
-	<daniel@iogearbox.net>, <andrii@kernel.org>, <eddyz87@gmail.com>, 
-	<memxor@gmail.com>, <mingo@redhat.com>, <peterz@infradead.org>, 
-	<juri.lelli@redhat.com>, <vincent.guittot@linaro.org>, 
-	<akpm@linux-foundation.org>, <david@kernel.org>, <gourry@gourry.net>, 
-	<tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>, 
-	<shakeel.butt@linux.dev>, <roman.gushchin@linux.dev>, 
-	<yu.c.chen@intel.com>, <zhao1.liu@intel.com>, 
-	<tim.c.chen@linux.intel.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Message-Id: <f68e7f9e-6037-4087-b7cd-a17ea4dba279@bytedance.com>
-X-Lms-Return-Path: <lba+26adaff84+f8ede6+kvack.org+lizhe.67@bytedance.com>
-In-Reply-To: <20261019064157.29885-1-laoar.shao@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+	t=1792737280;
+	b=KeN8+xbP1RpqgcTMsuptz50p3v+dYfeEsDQj1rbcj2EQWyBq7AkWqD7y36FKc+Ygl/mqKg
+	6+SE9aNPCdOzPaBNqUOvqr9BRmNQ4eoSrXBXS+5xvk4wpgajM421A01C8go+T9388b0cZu
+	x1UiUbpXe4A55gqCw6K2y5AuJZCBtMM=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3adc4590de4so433324a91.2
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:34:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1792737279; x=1793342079; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=64tBqhaCstcvhuNkWvz0hImiXE9PsoHY46iN8B5GY0M=;
+        b=aX1xXnjjuovbdqqj80M/WVR7c4LnQTH1Lf+NazbB9gEuhGjADCmOiYjq0GVthbkz2z
+         FCEIuh21VDI98eOPhlptEv4i0ok8uPA8bwsyzk2Ho67zL+r4bA2b0RdnMwQXtUl8XWAN
+         qiU3+Ly52xUQpjTOrZJ/K+UfhmDBqAg+XnqYMXpq9fH/n/+8wcKbtklqlzOrJSEoJFFh
+         7KMiJRs+6gxJsIi9QZF2A9Bpi6TsmCEyyct/gbQSMVZ4Z7XJNYPxGUFskzwLqZy87XjV
+         TFzvgKJAvUecwQvQi8V9YorxysifSfv6+oUcVgOE74Fa9ndSaZ7y1r6Rgh7Fgli3KMw5
+         k+xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792737279; x=1793342079;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=64tBqhaCstcvhuNkWvz0hImiXE9PsoHY46iN8B5GY0M=;
+        b=o71tdaIbibS0dNSkzhR6DdKSvi3I3wl7hZp+QDSRYmechnRjWAvJVNAiH48Ip/RQlx
+         cCRYt1D0kub5+uzeiAz4ZzwQifJyQk5OE5DgWYEDHLxWARhv5k7N97WtgCQDVg4McJUS
+         HaCm8JSd/rCtVB7XgPb/GTs5avX3cjDdiRT5o7GSqCjdHXBeLVsTHxwdle3/FAwj12G2
+         B62Z4ieTays83PcUO2th/2vygQOP6gJN0n6AgYCUSY+e021XbYSAzOCEW0Cym1TxhwUy
+         yprWNBJNtA6g85G25TH8Dk1NdfdW2BHNgPsrYFIqWv5pMSj1BilvvNPNhrxbw2Jr36Q6
+         yZaA==
+X-Forwarded-Encrypted: i=1; AKwUvBxc2MOSGvNp9lXUukkiC9oH7urktQyGvkjQuyhtz7nMxR9BRsU3o5fv+Jdx8yBdFxq+4kxwMuGbhw==@kvack.org
+X-Gm-Message-State: AFq9FYKHj/SlOpxTHXS9HdmsGPBOmtS35zc4GD+oaWLLG/XMVzy4uiLO
+	NHebzpbeAN+4Y7WJGwWTyIeIe87rKlvbCxigG15pPi7XmhzXSgt2m/au7k/eeDal4mU=
+X-Gm-Gg: AYBFou2xaRuLSALpPmGGMk7fKJVeGgk+y/I1eAXoJkpTjmrJEWiFtvXPPS+s/zz+ClP
+	ccoTtHa0aB/BdxqjYf/vwwpV8Wv3FmVlDQuURAMKgGu2xGhhcqLyK23vyq1Ltpm3YtR9pSu4uCX
+	mWQCFaANZoD7xCzozcrl38Bzz9c90+71Mhw6Iu8TqkrZjSGGs2gVzsVzc3AeH5HovTFgn81+jke
+	oEU/yX/Pgg1wlXs0qSwzOM9B5EXjalfMmGkTphkw9zIRnSL5mm22t/r49cILiRjEESh1v9LWyQr
+	gqgEDlJYaZRPnpEfIx3LJMRIYmcRQ+EIjjHNeSETFFWGtXB3CrGg/0PQrHX4lAVjZlZhEeMebAW
+	fC5WOnAmoLjKLTlFYrRL2fmKhZBdOD/41nZUUlrGcSBLemJv8T2vdpsC3CCoyJ2m3hjS+pWrXIi
+	LKWaP8nGsilFdGE16xUFik8LxPvbMXycV9118dO9h5t6Nom+O+oVSrcNk9ZW/Lt8zXKlNzl7Jf1
+	BXaiinLnnzyhhjcB/TJzzq5ROLjxWBfIteEpS2cxp4iHb3wCjw68dPQowWvRcCFTahXUqCWGp0v
+	nQ==
+X-Received: by 2002:a17:90b:1c82:b0:3ac:a7ee:6770 with SMTP id 98e67ed59e1d1-3adce0ccd3dmr1138974a91.7.1792737278490;
+        Thu, 22 Oct 2026 23:34:38 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.103])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3add246f308sm575202a91.0.2026.10.22.23.34.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 23:34:37 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v3 0/4] mm: Fix page-table teardown during memory hot-remove
+Date: Fri, 23 Oct 2026 14:34:24 +0800
+Message-ID: <20261023063428.3658761-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7C91040004
-X-Stat-Signature: fupq9rtcmnobc145so938tr8tewrtqa6
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C272940006
+X-Stat-Signature: xf1t7cyn68wu7dbf4ackkuasjneuu45u
 X-Rspam-User: 
-X-HE-Tag: 1792737172-639576
-X-HE-Meta: U2FsdGVkX1/pOruAxlrLOvyfPQYs2qdvxhbZv1GFjc13/90RPUBsCuR8HDZwuCjy7axsn3BU/U7jDTzIFhpTXEJNO1i1oOkCWbuZfw4vokNtzK+Ci65kkbqHyvY1r3QEEa1GcBjpVCF+Tdfcu8f+60hNxDGbHXNErmmm54pp/UOQcRxJCVLCAGPk4DaxuEE6liSptf6yoAdBLKp01ELEivvgD6T7GGYQaRNa51iJ9JOMPUxbcIicy/lpSwphDLRfEYq+GYmeOk60RS6A4uCMPBZEeCueV3bl4zKP0TQeaNbmtokmW1WenrhAfzSAIT74YS8b766HVWz7fIGcn4w9Xk1UuS4YXD6ktdfbjAnjB9rXsEfO9A1ERQXuszBI5gblZ4HswUw0guSJ3noZGFKlylsgNvCnopT09zcORwrlEUvBiM85EJAkIPZGbs/bBjXTSbxR7xzhmpVvyfHKyoB/t/iispCv9VbW1wST4ECz8vAvcKzeIPayK2KX/G+vJnq0vyP9FvIhTyBwfy5yQoNa1Pw7eBdAPHs1jFWs2VFcwZN9dArzOFntUAeiEkgCknsuwjgma+xHx4XxUKLuZPanq2hFXLuy0YS3z7xOAQYDHfQjU69wfgRNaov421bElw6Vc3P4dhnUh/vtarmSfggHye32GlACGuG2iDf6CXEq7vQxaIQnoSv2Ns3B1F+o/6vb2O2c3Dlv/pdM2TjQ7rpR2YCxHkap0frMyJi1DwUZbrR8DgPx0fM9fpY+7weR9mgVCKO/nY7wxk5pRVndG7yWkyDJz6y6AWPyxW35SuFRNm4rfljCZxdUj2kR+QQaLEnav0loEpnqzTY9AmmkxuDqr+CM3GeWViwWbBIiyqNjkdCK/R5FGaBp3nwEf50XuAlOVu8EVBbr9Pq1RgrJ10OLS+IEfFAllGuy9u8/+Wvvccoi4DcyJoAREe2zrSw0CyKJH6RfzDZCViwOexfSHpi
- 6hcLf4rf
- Q6QDldJBvcz/g/hwQqW9Sg83vznreVFfbhUBHOKETozUHXootPDHZlAmLhJY1GZIEAbHx9c1tmdjzewuV6AUSBcvuniLRskkPjBZuv+HeB/hW79rmn/2kfnzv6Fx94+lAbjT6h27aQaKB71cgzRFyqMH+0z/SRseufahUlbLuT5NbDkL10X8g4UHizBXQjzUD+OtCzmxKw4AhlVtyjdwQkoC5vV5El9cJgS8OUEuQNatSl2O024zmYGtWL8yY7QL0KnWj0jDTba4D6wTZaf5O1D0PF05VyrvovxrYtnSnfxvN9uOye5zP44yDpclrSh/jhO/0ytAiBdKnUa2BXc7WA1emwRfaG9GYe911Xh0MtUoFSSb5MPDA7elGuZYAIXwqW8psFqJNOBOFobTH/wc0718mf+GQTXBMIGLM
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792737279-327987
+X-HE-Meta: U2FsdGVkX1+f+RCLr5r8q5R6gZbSrGL3q+j4OHyT5b3w1fjn5wbAPHe8xlIdWCrNoN2x8EZcsopfUIFCjg2UaMGwmmK7RhwEAX5j6QZffGvnltoD6S0/a7fKvMuYlZKd/9VFza4eR/OQyUfzgVejdHLjwBoE2Uq4biGa2oKSIvLPhRHF82peNAJWpT7wCBbY0OhD5MjJ5oxkTtERu/bimcPS3dAsaKtNcCXUGwq76bBURGV4cjBgmg35fO7sEpjhvTXaVrnSJlTKQ+gVmhdHPflzzSb3Ioiag68n6cR3yLTOxumLagNG3c6qREtnN1gMqXPfL5RdhakDfrkucFEokIsB1aaG7TsWJ20xrdFD62R/UJ8OlELr/0iBVdvb4B2mRX5YipEXj/ObY7IW+EhqirPrgH2FErLOZ05Aac+lKs+ELtv5zMOOhWi+fy9xky6+0nAyU9lB0dvIp/1+kMczvLJn9WuEchtsgauxhFd/alMR4NJ9XNblLJoDagwPT6PeFsRHr4whwd/mifncEuCDujNxLdg24vgO6MyKGUgHZugBBgRC6Nb64iHGj5Aqb2zJayrk4F2JPYUNm0rlTge9r5kYpTJX1kYmlxFvE+tkWK0bstK/609MdLxmegK3tz1U82haAbQj/coAWrMXDQ+q/j7vyF5m1w/ClXs9XRHnAwgOXaEWlM1C+LGibhB5tN4Fzqx8YaxcITFeP0RZRKbemxfqI/WxajBkjJI+lCPSwU4sJ+58fkyRirsrSHN7XvxFgnfBMXaDH787TnFPUbfAOrB0QIsSg1WkJXqEH3/QczaY5s1Zz9/yie9H7iBuPGkkBgRwa57Z37keuhgstuhNe0J3YzUb8l0dI/pcpg8c2wvn4kDmA2d+aTHhu3sWSErG+9Dz2n9OgIyue19XJrVdVArIVB0V7puEHVGQKvYjARW1H/ydmoMiIOBlnrt/+3cBV5LKviOmg7me9WamXLn
+ qpCItOrx
+ kZwaRx68vJSGxAgHIHBCbdzydvSq4uuCsVt7ByKtALMbon/blfWp+lkN0qgl1wCbFpF4y2XL/tB9g5xZFA3+nJj1rxn4Rl+DhoIM5TRvgkkJeyUAcfl7uZddfHEQSecAP34xwR0eCdCw4atbGU+Lz0TjJbtoPO6kFIXB3dd7ogcplh7OuJhb4NIHM+QpF4P1ePqNeQC/vq0fp1Dq2/nfsoqU3iQQrxAZfJuacX3kgFEbXl6VmLuvE/cNc7A1l5X43MF5tCq8Nbti59jy0+mrJbO7lW0K36mt3nt8XwTK9ZJj32+jYEH4N0EPzGOEb+90EB6NrfSkBvg3Q3G1QfoX77VVd4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,126 +140,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/19/26 2:41 PM, Yafang Shao wrote:
-> The Problem
-> ===========
->
-> In our large fleet of Kubernetes-managed servers, NUMA balancing has
-> been historically disabled globally on each server. With the increasing
-> deployment of multi-socket AMD EPYC servers, cross-NUMA access has
-> become a critical performance issue, which made us reconsider enabling NUMA
-> balancing to address it.
->
-> Enabling NUMA balancing globally is still not acceptable since it can
-> introduce latency spikes for latency-sensitive workloads. What we need is
-> to choose per workload whether NUMA balancing runs at all, and which mode
-> it runs in. A latency-sensitive service wants NUMA balancing disabled,
-> while a batch service wants its PMEM-resident memory promoted when hot
-> without paying for scheduler-driven migration. No single global setting
-> serves both.
->
-> The Design
-> ==========
->
-> This series introduces the fine-grained per-cgroup NUMA balancing
-> control. It grows out of Tejun's suggestion to store the existing
-> NUMA_BALANCING_* bitmask per cgroup and expose it through BPF kfuncs.
-> cgroup::numab_mode holds the request: NUMAB_FOLLOW_SYSTEM (-1) defers
-> to the global sysctl state, anything else is a bitmask.
-> bpf_numab_set_mode() writes a request, bpf_numab_get_mode() reads the
-> combined request of the cgroup and of every ancestor back. The hot
-> paths walk the same chain at read time behind a static key, so while no
-> cgroup makes a request the overhead is one patched-out branch.
->
-> An opt-out wins and binds the subtree: a DISABLED request anywhere in
-> the chain opts the cgroup's tasks out entirely. Otherwise the requested
-> bits OR together and the kernel reads them independently, the way
-> kernel.numa_balancing reads them, so a combined NORMAL|TIERING engages
-> both modes. A DISABLED request only speaks for the cgroup's tasks,
-> never for its memory, which follows the remaining requests of its
-> ancestors.
->
-> The cost of the additive combination is that an ancestor cannot cap
-> tiering short of a full opt-out: a descendant's TIERING request
-> re-engages promotion for its own memory, and promotion is the mode that
-> consumes the shared fast tier.
+Memory hot-remove can free page-table pages allocated through paths with
+different constructor state. Some paths run the page-table constructor,
+while generic sparse-vmemmap population may not. The x86, RISC-V, and
+arm64 teardown paths did not handle that distinction consistently,
+leaving constructor/destructor accounting unbalanced.
+
+Make pagetable_free() handle any remaining constructor state before
+freeing a page-table page. Callers that already ran pagetable_dtor()
+have cleared that state, so the destructor is not run twice. The RISC-V
+and arm64 fixes then use this common helper for their memory-hot-remove
+paths.
+
+The architecture fixes depend on the common MM change in patch 1, so
+this remains a single series. I expect it to go through the MM tree,
+with review or acks from the relevant architecture maintainers.
+
+v3:
+- Explain why pagetable_free() does not run the destructor twice.
+- Add the x86 stable prerequisites noted by Jose A. Perez de Azpillaga.
+- Collect Acked-by and Reviewed-by tags from reviewers.
+
+v2: https://lore.kernel.org/20261010112457.49485-1-songmuchun@bytedance.com/
+- Move the destructor decision from x86 into pagetable_free(), as
+  suggested by David Hildenbrand.
+- Use pagetable_free() for non-reserved RISC-V page-table pages and
+  simplify reserved-page handling.
+- Collect David Hildenbrand's Acked-by on the RISC-V PUD fix.
+- Use pagetable_free() for arm64 intermediate page-table pages, as
+  suggested by David Hildenbrand.
+- Trim and update the commit messages, as requested by Dave Hansen.
+
+v1: https://lore.kernel.org/20261008073021.2512665-1-songmuchun@bytedance.com/
+
+Muchun Song (4):
+  mm: fix missing page-table destructor in pagetable_free()
+  riscv/mm: fix hotplug page-table destructor handling
+  riscv/mm: fix missing destructor for hotplug PUD tables
+  arm64/mm: fix destructor for unconstructed hotplug page tables
+
+ arch/arm64/mm/mmu.c  |  3 +--
+ arch/riscv/mm/init.c | 32 +++++++++++++-------------------
+ include/linux/mm.h   | 37 ++++++++++++++++++++-----------------
+ 3 files changed, 34 insertions(+), 38 deletions(-)
 
 
-I am not sure that this matches the usual cgroup hierarchy semantics.
-If promotion consumes the shared fast tier, why is a descendant allowed
-to re-enable TIERING when an ancestor cannot cap it short of a full
-opt-out?
+base-commit: 26d7e34b4226709084461a07bf28d9066fa96d8c
+-- 
+2.54.0
 
-Thanks,
-Zhe
-
->
-> The readback contract is worth spelling out: bpf_numab_get_mode()
-> returns the combined request of the cgroup and its ancestors, and the
-> kernel reads it the same way it reads a single request, each bit
-> independently as kernel.numa_balancing does, so a combined
-> NORMAL|TIERING engages both modes. When any cgroup in the chain makes a
-> request, the value read back is the mode in effect for the cgroup's tasks;
-> when none does, the readback is NUMAB_FOLLOW_SYSTEM (-1) and the sysctl
-> decides. The answer speaks for the cgroup's tasks only: its memory follows
-> the remaining requests of its chain when it opts out, and that folio-side
-> view is not exposed by the kfuncs. These are deliberate simplifications;
-> both can be revisited if callers turn out to need them.
->
-> The sysctl's own documentation is untouched; the override is documented
-> where it lives, in the CONFIG_BPF_NUMAB Kconfig help and the kfunc docs.
->
-> The override was measured with schbench, 384 workers, on a two-node
-> 384-core machine. Whatever kernel.numa_balancing is set to, a cgroup
-> request puts the cgroup at the throughput of the equivalent
-> system-wide setting, within a fraction of a percent: the override
-> itself costs nothing measurable, performance follows the effective
-> state alone. The two states themselves differ by less than a percent
-> under this load.
->
-> Changes
-> =======
->
-> RFC v2->RFC v3:
-> - The struct_ops interface is replaced by two kfuncs, following
->    Tejun's suggestion.
-> - Improve on the function naming and simplify the code (David)
->
-> RFC v2: https://lwn.net/Articles/1099962/
->
-> RFC v1->RFC v2:
-> v1 keyed the hook on the memory cgroup and temporarily embedded the cgroup
-> id into the struct-ops value, because the cgroup struct_ops integration was
-> still under development. v2 attaches through the cgroup struct_ops support
-> that has since landed in bpf-next, keys the task surface on the task's
-> cgroup and the memory surface on the folio's memcg, and adds the
-> memory-tiering mode alongside enable and disable.
->
-> RFC v1: https://lwn.net/Articles/1054030/
->
-> Yafang Shao (5):
->    sched: fix stale get_pref_llc() stub for !CONFIG_SCHED_CACHE
->    sched: use static_branch_likely() for the NUMA balancing tick check
->    sched: add helpers for numa balancing
->    sched: add BPF-based per-cgroup NUMA balancing mode selection
->    selftests/bpf: add tests for the numab kfuncs
->
->   include/linux/cgroup-defs.h                   |  10 +
->   include/linux/sched/numa_balancing.h          | 149 ++++++++++++
->   init/Kconfig                                  |  20 ++
->   kernel/cgroup/cgroup.c                        |  14 ++
->   kernel/sched/bpf_numab.c                      | 195 +++++++++++++++
->   kernel/sched/build_policy.c                   |   4 +
->   kernel/sched/fair.c                           |  33 +--
->   kernel/sched/sched.h                          |   1 -
->   mm/memory-tiers.c                             |   9 +-
->   mm/mempolicy.c                                |   3 +-
->   mm/migrate.c                                  |   7 +-
->   mm/vmscan.c                                   |   6 +-
->   .../selftests/bpf/prog_tests/bpf_numab.c      | 227 ++++++++++++++++++
->   tools/testing/selftests/bpf/progs/bpf_numab.c |  32 +++
->   14 files changed, 681 insertions(+), 29 deletions(-)
->   create mode 100644 kernel/sched/bpf_numab.c
->   create mode 100644 tools/testing/selftests/bpf/prog_tests/bpf_numab.c
->   create mode 100644 tools/testing/selftests/bpf/progs/bpf_numab.c
 
