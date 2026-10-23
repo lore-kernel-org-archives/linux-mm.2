@@ -1,90 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D69606A319
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 03:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A68606A31D
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 03:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=JncvfT2o
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=IaF5uL9G
 Received: by kanga.kvack.org (Postfix)
-	id 0E9856B0ACF; Thu, 22 Oct 2026 23:29:07 -0400 (EDT)
+	id 5F3066B0AD0; Thu, 22 Oct 2026 23:29:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09A6F6B0AD0; Thu, 22 Oct 2026 23:29:07 -0400 (EDT)
+	id 5CB116B0AD2; Thu, 22 Oct 2026 23:29:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE6586B0AD1; Thu, 22 Oct 2026 23:29:06 -0400 (EDT)
+	id 4E0876B0AD3; Thu, 22 Oct 2026 23:29:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B59F46B0ACF
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:29:06 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0DD66A7BE1
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:29:06 +0000 (UTC)
-X-FDA: 85352459892.25.676C695
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7E42A8000C
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:29:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JncvfT2o;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 241F26B0AD0
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:29:19 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E402A020A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:29:18 +0000 (UTC)
+X-FDA: 85352460396.30.E6ABFD6
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C2762C0003
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:29:16 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=IaF5uL9G;
+	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792726144;
+	s=arc-20220608; t=1792726156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dY6PNPWYrXJ1vE51SKSZSX2JUaPuTiugkEMcschNNkY=;
-	b=V3YvRJnHvwByT3xclkkPrRZHyPSeAVHUXGNYGMgix8lzPA9Yjl+KpvGMXx9qQM7MgaLucK
-	Kv6vKQ8AgLsuE5CffI1iLSFZqebVoKWMODhZHN+lZ8HGVlO1gxUt5AC6ltb2MIpNfDw+fX
-	yygER9D/A83yI6Par7Msa24rgQybgSQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JncvfT2o;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	bh=9uNfDtdkpMmQSCiyYsn9we+cKJrdTwJ3vYkFgm9/S6E=;
+	b=DdNGMpqU/VBmetO3Tv9ay7ZYFatbKz70AIad1n6scErnJ2GUfKL0OMcVfAzsGwKW6rkT0V
+	4DB1rVnLpQwBGQrmiDrqXhjth9o2lykst+HbpkTF7yDcML7sV4+i+kMRFjCZR3jKZTs++A
+	30ukLnGDTC76QUMd4y3/myUCC9AG56Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792726144;
-	b=maBUPz7Z4TprgNCTQQts/m43dfXLBb35u5DBMfl9fEXbVpGvK7edfFU2HBvbfeRoRFFtKf
-	e84MBg3JRlkR1qTfEKIs2N3aaTlbtgi63y0DvbKrhmqoc70/3S17a32DLUlLCJApkM4den
-	ZJodF9nnuk8c3a+TEoqpDNDdkiW0IUM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=dY6PNPWYrXJ1vE51SKSZSX2JUaPuTiugkEMcschNNkY=; b=JncvfT2oyvrPwwyPJRfav5/H4X
-	5oU0JUu0Z3ErMABOjy0TKMu5/IrMxbIjRNj8foSiz3OuPQC4YzrPglPlPItdlFpPGE7cQ6+OAYimT
-	8RFPHckxVATZH1rUbdsnThxnk5Xi7CurarzSBci7nOx6bMaB2HJ3hxuQ62PW2NattGYyXN/9fd9D/
-	9gXY2gbgy+qQrelC+UaAe10koA0FIJuh6y6BaV/f0gGZCmTbvePYBOw1FNkCRI3qIyqnhK4y2FPnE
-	kr3NXuzPE93VosJkF+AOCZj5S70V9j8yupWfbA9YArBqOBPpPTpb/lDdlUTueRxRGsB1EeS+u8pRy
-	KkrfMjaA==;
-Received: from willy by casper.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xK5xh-00000007f3f-0XlY;
-	Fri, 23 Oct 2026 03:28:57 +0000
-Date: Fri, 23 Oct 2026 04:28:56 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	linux-mm@kvack.org, "Huang, Ying" <ying.huang@intel.com>
-Subject: Re: [PATCH] mm/migrate: snapshot the source nid before the misplaced
- migration
-Message-ID: <atrUeGPZgoSACpOR@casper.infradead.org>
-References: <20261023023226.29783-1-laoar.shao@gmail.com>
+	t=1792726156;
+	b=dNycnXdOs0VpHyaVoVMaDuq3eRGhMyR2d+dnSMKosj5VfB5jxK5enESj0gNAyLdkrFRRpm
+	ADcdp+jcC7J698pD0yUAp9UVfGZE0MIra3+Zprx/Ti4ePkk4C0RVW4K+nQNqcz3fgAhl3K
+	ENaROx57avPizTHE1ovXIVFMdj7aojo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=IaF5uL9G;
+	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-3550c917fd3so726637eec.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:29:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1792726155; x=1793330955; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9uNfDtdkpMmQSCiyYsn9we+cKJrdTwJ3vYkFgm9/S6E=;
+        b=IaF5uL9GL837vhlieZfZhAaTpR9KrDHlcI5exBAnhNOJJH2ipvbbGbw8TbaXbUSOHH
+         bkzz03qUpwd67FZIgb3SnLcP9PsGfB27hVnJtYHYFxW502FjvWduX2seOj/RMZ1Dlr6u
+         SWuVVkEP4pgKX6UVLe44CXon/xlL/8inbYLrE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792726155; x=1793330955;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9uNfDtdkpMmQSCiyYsn9we+cKJrdTwJ3vYkFgm9/S6E=;
+        b=Q86D811+a4pMdy4AbirdQd5lm557N8XFBcrFO66dprV+ySevkaI/wRcnElLHk3vwaU
+         tEtl+5FUFZvXs6GwiECOvUA/2Pjno/E2OoHe2UQuSStlftbDYhS6e5FzG7+CzkijuvmX
+         XFy2vsY7In8F9r9r/3s3Zmasv0A7hT52CsEg1wPf5QfR1LF5HbB1Oni659gkXNiHocR7
+         qux8VzqZdNakRMe7S6wixcrmgRDL/uqcQuIUgnWFFMuAxGGcOZJcO7+dFT5TqDKF3DKE
+         BAzw10ytJUQqzOj25RP2MNCnvRTbLdh6dosqtncUqrhbJBGYKggPQ1TCEcF2zoxmJwMb
+         mcNg==
+X-Forwarded-Encrypted: i=1; AKwUvByrbmjXwB9UsWrl2pYKqtYZ6MRF4CJluIdsNtM4ub+R675FuXd/cLMB6dnIH0lZNWUVVAroYk1A9g==@kvack.org
+X-Gm-Message-State: AFq9FYJs55bTBjo7WtdUBlew6akLo3DSs8RwQyOjimerU9JMUw37WqmP
+	5K2vWMgNfqiV2hIneP2loSJRozF4iu9hywo/Fu6Yw66qrD042cKuWHp3lhuFhqpBOA==
+X-Gm-Gg: AYBFou2jCitqlDOyryOJmHczWgoMakBbE0cEUmEZpHD3NPRrjJ9g0WBpW2DABCRwPoR
+	DF4WJ1FGLh80JXpIeaDUF8Ec6xK35Op1aKQqeem6S+yKrdV/TFEV5Rrf8ypjha9iK5avJy+Tb8T
+	CUkp3JHaBVA2k+wCfe7wPWsQbkinlJDSPGttLCD41arT5CXorx8xUchiVsHJtwXu4ozR/ggXuUJ
+	J54/ccfujumFPmxwidSul2w/K6Obacw57e4GLncurs0CEQh2qaYXCJar/lG1RjbA15t/niyAZ+/
+	G48h5dNvtOnIc236CmdV7ZvYInU9glv2vMGNp8qEA9FPlLWs3R21tyC9ZqX2OEnE2J+i2Q17RaG
+	3PpDx6ljA0Dm9+Y+5T/7PrwS0Np1PUAyrTgsw8D8gBTagmVPx01ZDICYxQhpbNyE2Mtxfd4A9fs
+	fTyDoI7bI3yXJU19XIouOAc11p20yCpM3v09H4fjh6zMB8F2YtGO9x6UrxFZmrAMm03RlYq4asv
+	SXZOxP8P2rBtMD+S2TZjh9soi9HOX2LXhTxkiXCZjpSJ/HV4+zJQyXYvM0xd1l42Dm3W8/yTiAO
+	p2pJMJTIsHe1fzosbSIZ9Q==
+X-Received: by 2002:a05:7022:150d:b0:195:9228:50a0 with SMTP id a92af1059eb24-195c74c48c2mr1343680c88.42.1792726155374;
+        Thu, 22 Oct 2026 20:29:15 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:30e6:10e1:f7d3:a06d])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-195e5163e7dsm2445013c88.2.2026.10.22.20.29.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 20:29:14 -0700 (PDT)
+Date: Fri, 23 Oct 2026 12:29:06 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Hillf Danton <hdanton@sina.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Brian Geffon <bgeffon@google.com>, 
+	Barry Song <21cnbao@gmail.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Message-ID: <atrTd8REbAo-OH5f@google.com>
+References: <atlt8YGuSxgRb5uE@google.com>
+ <20261022232538.978-1-hdanton@sina.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261023023226.29783-1-laoar.shao@gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7E42A8000C
-X-Stat-Signature: d83ionyuhfzk5ibgq5nixbwr7gpfxepk
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+In-Reply-To: <20261022232538.978-1-hdanton@sina.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C2762C0003
+X-Stat-Signature: gkoi9bx54t51ajm5a93cd94de6zbb875
 X-Rspam-User: 
-X-HE-Tag: 1792726143-417041
-X-HE-Meta: U2FsdGVkX18qLx919a+wpZJ5w6ZNZ6JQ0qeqzC7HvqMaEQLWIIf6XFo1pPjrQerEBcHXcjlKZNaKi/rvZiDszDpCDvKz2nxzU3vdDyc2g9rHLxK0/YheykIFDnq9hs1ULF7M5wcATI1CVkNZrOgW5VGiGFqxQxo72RoAxRw6AC0JZD8O/ZnmQrOzYds7me4uUFaQwAXoWGV9y9dhiBDoCGWd0L2lDj7e5UoZkHxo4rEXF1MkiUYNhs7Ljr/K7JSBvY1X3rOD6FS6Z7+8RPSS7gIvZ6mtm/AcOkd/7S2khlVGuvSLG4elisTbTPTxedQvy888lHYQzFdO7i1JBOzUzGGxtKggc7h3Sz3Cfpiu++mv2QWvUqTTCudfmfoTR2Wt4aOJDC4RdQPXr1Kb2Pg6INrboXfBaWxlV3ucq3dUGxExPZ7YflR/1FvUgxjGDlUfzRtvU+0/nMeBT/oyzD0FY2voQlsu252kAa6P6SWK/YhIpEDouYUSwgR5kYrPkley7Hx0xbISsn+7beDuNHyG8T/V8t+DLhv4uzSemyMfEHrXF87FnjTo9vsZoAe6GLUyavevKvFdul0hRj5z3W+XicyUroVPEJ0Hp/jD05SOxG3Lyh5looSCieSqMye2FyHCXdhWLn6ICk/Ar5DVYTvY0fHdWdjySd4N4z97/gWH6St2xNPILHfvCauoXTy+0R1Ll+iOGQLOr2a1xbcOby5lUHehiR1ibN1wmPmn0MosD4cNm2tX5EiFH51dmgJ3QoZN0g+xj+/bdffDA4jpF2Nyq2aU4Pp4fpy9IcuSuAqVf7AfDW/r8AFF+MIIiLQjUgChaMbvalIjJoRqdRYmeOd5FXlGkYn6DMDBJn/vUukVKVSibWWI4dF4EsiNiqtQBROE2Q59i4l/uUamzMNaqKwdhWZV7vMBbjFYJE7OQwPKYnWqbI0v/5DAkJvEvj/4pVoPCZBmuUj6qxPy3lBOOiu
- 4LO/wWOj
- 9tWQUYHb1okVtURiV6/clVJMgy1XPlLK+59OWsYpX5BSNRFwKe5cmDghbSvLr16aRQynGA7b4L4Az4nglK24VsbtHRKW4npU2r5lOqA9HPY8ITcZ29gC4wLc/wojjipucKJOsRZYCXZxLLvbu/9x2N9rlcqNUnXgqmzn2iL9Cffl9wvyczpjZAVChIQfnOnSAmepjbNUCODn+pMNl29iznr+gQECYQm0+bp9gaN+L5nKj8sl1UXKScBrxWMH5xr6rXcUwVabudV9uB6yfsoiXB6q5vIdKNhgYvwnGEYWHIqDPcxG3430C1ewWRiVURnrQasiQOInDg1NOMML8KxSQuZ2vq4BumogwDPRk
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792726156-118461
+X-HE-Meta: U2FsdGVkX1+b1Xu66t2ECc7PLf1MynnwXXQ7IpjOz6PN4FhvChKiYgqO6o+VOvxhatzCt4VA90dGfyTPjAgHooFLOI0tuzwKY2/6PmbYjLL8y/UyOhBnKfXKByXQZxk3kZXI47iJALiC40sbFe/0+TI4ihUcY1up0YJ+NAyp7K3rDmGgIiHcCYIIF7QMnzABiXPMoTn6gYdJBtn6cPN/zmYnzrhiZfEvatdkWtVnDQx1it7Lmh/dUZpUeT4SmKNRwZNKJuUUXpmCXcF0+DzDTTziGtf7gmGmUPBCwCcwe9V8vjo84svf4v5oikmp+HV/4G/gQQwOxLVPgjO6cNd5rCstmwc5u+DdST5gMR8NV/SN9Ub1s4KdNd2kw3Sf+RIcr94ZQ55NSMFiM26XLaEM9Dz9fHfSlL2bXV5cnpgammZDCsMpJg65PuCPsyT/km37Mi7MhCWZ+OuD3BWrudEsi+ZUqhr8fTm0/iWUMtKCOm8LnLGeWcpumFvvG/0PZcSvjx/D2cgyKQm9ROv7T7BMCJ5K+SNA/qfGHCClFkumy9AilzSsSWrhQUVVz4kDtxDpyb8qZhthrUKm5/N6Zqgh3swbRWfMKyl5/EVBCds9dj3Ms5uiSzt6wCEGtYEQvvVK3O/GkARJfdsa/erDX4vIBEmTnNP4WuGSVemxUrooyYGmJydXXYPd+7qXJ+F8ThYd+rScqPiWSvyHmP4RMaejLZxOUPRv3wkMYKyc9NmmfjAAbkutrFjLWcLlN/aVh6QH59AntLpcFe5zFLlhmVekksBNUuNEu52vAmzhSqFKXQYZ6Ij7bnkzyIKr4kclITE5jLyR1bcB0GF0q5solLhavwqze3UqEnb55rJWa53V6w2ZSc18H+jm130teN0o+7WitujWm/p4lPiQCgTRigBquRXuA05W3Cl25jlDCsLN0pztlXMa15arkfKheBMyXhtSc82sP5Ld8J2ShhKRjnj
+ 0yyg3Tu7
+ nrDoAARC7u6dFvDG8aLJAFOrnYy1UMpxnayEE3zJrAguYmKl1sGBnM6R4njxm1EENTePVAWByVNm2hwW84z25b4FL2PtXNL8JfjQLDcHzbeHIMknmZ3CzAJa/JnKjUQcB+TDiRsFb4+SHFAxx6VKPtlbK+TTuf4Ju3kaemzejPaALKy67ljtN4ZwmQeOWRYSezttju2+mUB6HfLYtwOeby7wuGlFrP5Z916p/jPDAIxAOT34ADdVkWw7rRIdOWVSFcfGogvtsVNaOZgU+L/AxtRTiN1l051sEAMtdUFSN94XtgYr4fdr+/8OcRsoaZqvCuY7PUId8dv89t5zFit0hMZAZmlVHECTSsMba
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,13 +123,10 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 10:32:26AM +0800, Yafang Shao wrote:
-> A successful migration frees the source folio, so the folio_nid() read
-> in the promotion counter update can pick up a reallocated page's nid.
-> Snapshot the nid before the migration, next to the memcg snapshot the
-> function already takes.
+On (26/10/23 07:25), Hillf Danton wrote:
+[..]
+> So the decouple sounds like the half baked croissant, HBC, the
+> Eric Dumazet dude sometimes is happy to deliver to lore.
 
-I don't understand how a node ID can change even after the folio has
-been freed.  I don't think this patch is wrong, but I don't think
-there's actually a bug here that's being fixed.
+I take it as a compliment.
 
