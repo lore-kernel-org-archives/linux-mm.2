@@ -1,132 +1,162 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2035B606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04508606A31B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JcErSQ9T
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=STLaEfnM
 Received: by kanga.kvack.org (Postfix)
-	id 3E4CD6B0B82; Fri, 23 Oct 2026 10:46:22 -0400 (EDT)
+	id 072096B0B84; Fri, 23 Oct 2026 10:50:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BDAA6B0B84; Fri, 23 Oct 2026 10:46:22 -0400 (EDT)
+	id 01BAC6B0B86; Fri, 23 Oct 2026 10:50:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AD2A6B0B85; Fri, 23 Oct 2026 10:46:22 -0400 (EDT)
+	id E4C786B0B87; Fri, 23 Oct 2026 10:50:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 060976B0B82
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:46:21 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 955D4A0052
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:46:21 +0000 (UTC)
-X-FDA: 85354166562.28.4E7FA6F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A248E12000A
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:46:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JcErSQ9T;
-	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B2CA96B0B84
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:50:29 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE124A5250
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:50:27 +0000 (UTC)
+X-FDA: 85354176894.17.E431CF3
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id BC8071C0006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:50:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=STLaEfnM;
+	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.172 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792766779;
+	s=arc-20220608; t=1792767025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lqGtpWRMUHozarHKXyqBee5uJfZddr1rf+OxSwhQcQY=;
-	b=LpNNZkRgu8T8jaP47Ccl42vz01ni3oupfehYHLckjmwycvC3MscriY10Un9fq+cGdwXeK+
-	P07SzZytphN0eczHlc7f+U3jgZjbYJwd+wDierIf9N7sEONoGV5VJJrLf/X9ys2jgJ87os
-	D9g/4FhA+nthRbKJYwIClAFMf5Y8QKc=
+	bh=sGl5cqr0Sn8jKPodNx0zyYTo2AHNV4DEHX4rmbHeM6s=;
+	b=f1BiBhJnOmj558HU6SYoZRd0Rajn90mSRVaZo+Fg4g9MOdaGjPIxH9MQCd3hO0dV0rfISF
+	awhgFXHRvX7PF3YMvRrnlFXJWRoFMO5lhaENdFzIb6TDzNhnHvA98y1+ewbMFdYdG654DJ
+	e7ctoWb0geS1pUBC3foFsyxSV/qk7GA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JcErSQ9T;
-	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=STLaEfnM;
+	spf=pass (imf21.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.172 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792766779;
-	b=w6SVv3X8v2U27NZdfyRW3Vy/XcicVC/juiJbe3l/0mSJIVaubfJEZXs1eda/9ogfqVvTrl
-	UbZhh4eeHu2T/g5pbdl/AvnmBk73eHxcFFGlghovIPwPUPxEpzZnHN7B/otB+jOLNzz7Hk
-	A0z5NFIusuH10iMnSx0eyiCrOYEsLYQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4F12D60236;
-	Fri, 23 Oct 2026 14:46:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878171F01828;
-	Fri, 23 Oct 2026 14:46:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792766778;
-	bh=lqGtpWRMUHozarHKXyqBee5uJfZddr1rf+OxSwhQcQY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JcErSQ9TuliGlGZxkzOepRIlxxK5HiIRT8we8KsFU71OvmBN/ibjVFPXcSg/HflJN
-	 kTLNHHCLpjxyXrsbHml7H2KaJL4tc9uTquWA8q8XGUJmxatuYnSEJhLDc2tI1NPqFe
-	 Uu2r0WBMORQ4bbrUKycyppkd6uoCrFRnrSIV1BfN5HlzyEWXlX2+aO/s7Z0k3BhWCY
-	 v8ZbTTiNooLJXOtqe1M+vgZL0nXrcVC2CVNBYI10LGecEAGJtwg+RT8DAVJCuZU6SP
-	 cAPeVty2DeCh+QMQNzN52jFe4gQ5b5hect0Vz8p4V2QgBYXjpighiU4TNq2VBA21TS
-	 py8YucAC1UEYQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id ADC06198004A;
-	Fri, 23 Oct 2026 10:46:12 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 23 Oct 2026 10:46:15 -0400
-X-ME-Sender: <xms:NHPbaodxIwfmERKVMjO3emuC-DmCiY3_wsg_1clj_OjlSJ4QcopNZQ>
-    <xme:NHPbaj6DF3rY_8J2h4I3gpAc7Dgb1qW5r22W6entvNGUtZsQKI-pL8WkYi2aqDWcX
-    kIoIJEtvoTpCP5FLEUh8x0yyqUbWNSzsJ7LpsUZW_Ih_OXfbk9xLWk>
-X-ME-Received: <xmr:NHPbao3WddwwbxsCpGRLyfnGMn-oEOOo-xSQsrvLJUsLOPp5ELRM6ZuXcVU>
-X-ME-Proxy-Cause: dmFkZTGWzcuTEmWQLzfWqLZ4TItB4My1D1r9DQkczQVudo2y/CBinrz6rqIzv2fdTJmQit
-    MWJwEuqXf9cP1nnF52BUgbU7yUcs+aIKR0NY8tHKyUAivJTQMueCYpQn8ziVleohN2asNT
-    tGiSIb/MnF0vPL0n8KcVeHWwb9xD6DTByHfWnkc+E9lBZUsMWiAGWDml2tJ4AoFQ4qmqUq
-    klzQi7HiNDGq/ym69P3GPHlzA0NXkSTJL0DBnmmdXKgajw/9OG+7sspwLXuaVqp9sQ+R2u
-    vUgM0+L9lfRB0WiRaKnp8iETDuUJ7ldQdWNvFo8/07kNi01NTiuWZMMGjzKp3oJnYQ1kMe
-    aZmc1+hS843Xgoa+at+eHcthqrFTNsIASPbVgVkQdLBcwgNLu7f47IV84EwluPtPFk7HHj
-    1+OOrN5ppjcVEBedXqBYX28mBxEESempkNBsvPR/9gv+U656dlQkJ6Hy0PbhEtYHkYfRGn
-    emwXRBdrGi/52+YAD/MDJ1luUrBPlH3HdqF0uC79YL+SljSesdSUh0kBE5jzBGKa18s1fo
-    L2nyo7hZ8GmQH2Sp65qRN0u4GS2G4gUK83dT0rZiG9HsflYpRKpvrHv/ZxkI+8xU2yvc/1
-    2U770t5dX5AZkR/YSRK4lyW4+zSO3qlgebWsbxvTefu8FgM9L8ZrPx3JNQTA
-X-ME-Proxy: <xmx:NHPbamAm7NyUBz06IvsKkX4ExFTeotqYnXDVWnh28bi7qJBm-q1gVg>
-    <xmx:NHPbapHrTjiOSJmluRQ3UdYqxMxueCquFcSMHWzCsOVwKAV3RqU0lQ>
-    <xmx:NHPbago35GXJXdHH4AychpbXg6n8uSJ4cq75y25cdS1rRJCnNPx5Vg>
-    <xmx:NHPbap3IqfFmICatC8MF6w5rAe0H8G1201YtKl2IMScodEvb6MI-sg>
-    <xmx:NHPbasCOcP9XXZMfbA85AOiwEouDFFnDBy3EsIC-u_P8YgKgy91TwKAF>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 23 Oct 2026 10:46:11 -0400 (EDT)
-Date: Fri, 23 Oct 2026 15:46:10 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
-Message-ID: <atty0n4UzTfI46eN@thinkstation>
-References: <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
- <as5q14OsbK2CmOrh@thinkstation>
- <20261014202936.GC371161@cmpxchg.org>
- <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
- <atDMN5MoGrwJNpAj@thinkstation>
- <4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com>
- <atiCG2iPrHwDznSZ@thinkstation>
- <d2b8edf0-39ab-4a44-bd0d-58230dee2fad@arm.com>
- <ats7oFM-fsYdUS8y@thinkstation>
- <attOFXch_TchIfEv@thinkstation>
+	t=1792767025;
+	b=E9/3zJgJubczaGaTFr3/ZAQcodwCrKqP8s/SHFh/+rbwmKhQxdaDzT9kIM9luwwTt86/fU
+	0Bh7NPCrmMVSB6IwIuNRDfMILRVNDeqsInfATHSeahOQ+aZqj0h8k7eZhpUka8lyLKzDod
+	6F3jLi/H5uWZyAg85VsagMN0+Bix334=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5364c951da4so8428871cf.1
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1792767025; x=1793371825; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sGl5cqr0Sn8jKPodNx0zyYTo2AHNV4DEHX4rmbHeM6s=;
+        b=STLaEfnMPjs0BYGuaHnxfhU43Kw+dcktzLbXkRusSlE8zTcMnFP726OT80bsg53i4V
+         B4hbIPDbcANoNZiqQYyal9SrR96Z0OwZeQTllbYPnT7SFMJCWHkV5qOpveIDwXct7T/n
+         HBDiCOiOcAgNrc1bPAtLB4b8+eo/0Ez689bRqEWlr1hjqdR7wHGh/U0XHR4+KJOpVJ2Z
+         NEEB5AXp1kzKGDGoiuxLUkSkNQ7xOloTNey0Gerh5I6848bOijEqItrIP9Dob0ETyF0g
+         3bQTrr3kMQp8ECTc5Vrle+rWUFo+74+tx5duPlqR+w2wtN66ChbE0Hcq4WEXZkmOV2W6
+         p4UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792767025; x=1793371825;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=sGl5cqr0Sn8jKPodNx0zyYTo2AHNV4DEHX4rmbHeM6s=;
+        b=iYh+dzDfyyYWJzEcQjXBHLq9EaLKOXMhsdTPEXBh08Zv+5dbILacqEzM6A4D3SqLN9
+         z9bH9vQDwiWr9GjdROqYfWxiaAHmq900Gp4Qi63n+rPBT7Qqr3wWPOQhnHdZzLjcHpGy
+         TrKS7BB4/QnwAMvh0t5nepKxSpGG0CKsHIJbpA+zw+PwBmqCEjoBwDnywCoqjRoM9Zeo
+         AutkYA5iVNVJA0JMiN70hCcoEegMh2klIk9TBY+pUokgEHVL/F+pVjOM06QxQpG9JNWp
+         adDuMwmaGJ5K3w3cSulKHWz6hWKyzaFTbM1zNarO8lF5ZE826R4h+VNekNDEUKEE+KJX
+         UIDw==
+X-Forwarded-Encrypted: i=1; AKwUvBxJBBXkRJ4ttiKGXR7zpMsJ4cg9glQ+neU5qRBdbJUxyUXpOC34CWsqFH69DfftAYZqcW+lfdBbng==@kvack.org
+X-Gm-Message-State: AFq9FYJjLq0wWHR2+ebTKZYEaOrZcCaHEu7H3jBZvzoMJCWwgA/TuSwq
+	/wEfPwR3074aTGwYFd9rDD2kiK1L/jbiDdIji4zQwmL6fhJkT9sGPOu+tbNFrRQtKD4=
+X-Gm-Gg: AYBFou3UBNKCYJLvwwAj+e34pqGoRe5aK3px1dWPwIv+TLHfJ3NapVXlsSjRYmUKFVN
+	nTkdHSdrjclSO9zI/1rSY2LdyiRUda/tfrifu61QA1CPRDEcHtR98vR7bJ6xOK7/Q1Cp6bclQ8l
+	iusgZvk+r+K6gei03oMnzQEkbvtpqzH/0TLARxCuzALD7NkWwXCNRIDrFBI5r1hlwPdUiOjbds3
+	40jI/aww7CktUqMdU4VBAUgyBkRNzpt7cvO4bmpWXQVlEi2kVyXwt4LH6fnpUWSOlSkiy9ZGsr9
+	YoC3VzYUPn3vd9qPe13x23xiHC3UXO5GRXyNsszkS6w8+dzx9JrIlYPRjYqg7HkeZqiRhYtJAMA
+	G6hMKhCVG5pfRirXEKE2RbBbl5O2luZcrDZkIrOF6rZ1pcyunV8TUr7hNt4YpACxg/2ZNgPtFiP
+	6UhC50h/iUmgBgQEzVYjKSCJeIa4D2XJAO7ThmVY92NNcTnwiCsIHPPWmHVDG+VUV7tXqL0gTv8
+	YoTyqpIwtCTOgyfGQVxiSstf1ZiwTcgW4gSuUAVGO3dyMwnIHDmE6c2o2XpX1Vw2+cpBTuXXkF5
+	UE8p/y+5zsOOp6VZG+oovsyBsOlyRljch7kW0g==
+X-Received: by 2002:a05:622a:3cc:b0:536:7669:7eed with SMTP id d75a77b69052e-536c2837232mr34025651cf.21.1792767024875;
+        Fri, 23 Oct 2026 07:50:24 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536c1846ff0sm18130901cf.19.2026.10.23.07.50.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 07:50:24 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xKGb9-0000000GkTD-2sYP;
+	Fri, 23 Oct 2026 11:50:23 -0300
+Date: Fri, 23 Oct 2026 11:50:23 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Luigi Rizzo <lrizzo@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+	netdev@vger.kernel.org, linux-mm@kvack.org,
+	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+Message-ID: <20261023145023.GH3977851@ziepe.ca>
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+ <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+ <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+ <20261022201229.GH3381610@ziepe.ca>
+ <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
+ <20261023140107.GC3977851@ziepe.ca>
+ <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <attOFXch_TchIfEv@thinkstation>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A248E12000A
-X-Stat-Signature: ip1a1r8meica3wcgncbo7cf9ghm4fer3
+X-Rspamd-Queue-Id: BC8071C0006
+X-Stat-Signature: b7rmjwtbh96u3c3zwfzq9akne9jgkw6p
 X-Rspam-User: 
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792766779-908704
-X-HE-Meta: U2FsdGVkX190Ymk5l7ZD+eFszDD2n7fL+PvnenBdc6UKfqrTdPqxqCv2gpNXd/pbT0WoUewWqiBT30eonJ3z7y3vW1y+GVXRntmQ6p+aWpZeC4hoj5YlY1B67Ye9Fl85uRDP/kUrN/K3wtGAU4r5pHITO0NrlaQbSdwC2sNVO5etV/dP84mW90UnLyZx3Xv4ehurNU3xL+UFLofLvHU1YIRMepJmJZV6xecD0gXy6gVq/bO9Y4uX60oudxWXAaP/mU2TxiJ5iu5F+2Ept2TbGsWSSyNg8rtvc5n0qcMUoL11JOjZPyqnIqMX0GJkCElp6MlCDRmBKS2HtPPleYzhQ7KwKt4IsWtVlUfJeIphpjI7QegrHFFKHRV1YT3NkHS0bxQJE/RCF4Bo7vulOAnZPqWSclh4L2UETCoE18vTyRkD/sxalsnNFF643vyWgKPsvNe02RkNHn5u1MUeREJ2pPCTk4GRoEPfqDOHqxJxQ+v+tSSUTD7djP9wkq0NKrJVFX/GVm1Vi0szHbeoB8a4COpWZaKzCgYmlKRPpRAL6I61749COS992gSA+SRRYhbLAMMloFANzQ2XlLSVb2QCVP66kKEjYHYeGJ/Ar2icPXNpks+ZquhDHizIvsttJMWd8eE5Z+fmf+X4kGxs6ZpYGCEAVJEBzj29bgYINFebQVw+LkvIT7CHmqp7e4VGxjYqrYJD35LO1CajE0zDVcJP7KI1swy9TDzpMcQbUjDeZArW2CdhUF9Zof7s7s2crlho4HO7610DR2n0aLAtNCIlZBNGyUb30s93UFOWjIDKB5MQAEkom3dQPfw6srFnfpg3yDpJkxxjmc5BNWx87boCyFfYsPvAShAAOENEdXiVgWNw6VD/bjFaGx7YyrrnVwz420dHnCQd+NXu63VBGsODPL1Y3efZStUmBS7g/JwTAQFq8eyrjeevfEOpIV/OonJ+VpzzPbuck4Nidz1rMMH
- Y9j68xz1
- nVpKdep0v10CwbSFs6KXvWlhfJM1UsDiG1KmZJRMdLtUCdCE+Jq2EM6YFBAuUopuy6wSNRxUpl/SjLn46tw2OqtJ2G0x//cIg8d9rH8ryTbSC/sHhonVeSBEf90xp/jY016P8YZEqXbilZZQGfXY6/l5vej62lSUktCGdDJ1mKfBFlj3UTGidiZzw9Erwu1d3Sai4gmjIraPml6qpWDdT9vuuqimhTtlWvor2gjNLL/XMTcuFX9xVtM/HR/jrDt5H/y31IKkpBLOGAZzPq0FVRDs6GE4Y161gBTFHc5RxOWMVNhzgNd3UR4+BjfwRpdkbN3pP0TCVQ8Tu0Ubc0kEOmeC9TuutU3iA0rsS
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792767025-250171
+X-HE-Meta: U2FsdGVkX19icL9I5flnDlDvWJL9v0T5/d9RvUOv17XrYFDvVwWQB+QFlEP9mwzSk7QahaBZ859A8QrmjfJcz9f5+O5j2K48cOeDXotSEKBuLSRpZjgbeZ/W456FypymlVme0gjK3dOQpELNl+aiaN7eeEv7knk/iLLB7IrswZ/TRGCP0XBLChpC2v2ZszA2JXlsx14RweJtOPu5OyPAcR7ocnvrk7D5egqbOmVC7+z34S6YGiVWEWTzIx+vXt3zPz4sx/yor2YayO+JSvi9Pz2zSXKkAUdiw0zjEkhv+YezDP6PC7JoHQQgqUwctndRQlN2VH0kBBBSzxGkKtM2tZ8TpRfv4Ja8l3p2n7/UWv4qizHCFoZEoso6BHY3IqlcXL35ZBCEMBDzu7RfAvpeXtucUHCpmEtQVhPmvoOqhlQzLRptNJL8XmHesjNEIMlkahHkaPXYQp2FLx04PKfugbn+bhPy3QYP5NI0eYFERauIZ0v61f7IHlWQsGhj8x7D1khJpf3Cu2rhxaR2HCI9MrQuyzd4lPaCqTW33Y3fmvAxKsKTbW37V7BPsIpKWhwNALa7pmB4S/+4aQafgtCuIjOBXhU5J4ys7EwK/ARH4bdrNR74sflKNy1Pt4RBbhWAlSIOg9DRn2+vWVwS12izwHtI4drfkFEA8JCQdSrDyVM6md+1f5wwUlf1B14JyhkzFZj3s3bHeJ9W6BlHR5YfGWX+curwnbnqs47uUWPjOdSRSsN1yL+HQ1aS6s3+EdWpJeBSnhvMyX9BsgYtq9udoQkIY57rmujMZvhkarVwtKU5lGWdWdHdtCKHVx+UNjU7QVjotjZclf1IopZG82rkhjNrbgIyEVYcBDVP+FTo9k2y+whRe4P1LCfra/mrFSyTs94vl08Z+FN8647ZwydyLcVqNgKD9IbsaghK2MSzmaBDGXCr/twix3L5mwFf6bAsCf7zEhdvTmr9dvtfccz
+ y5KQrVow
+ 9xA7ncnfL437G1GPb0yDatz4j7opjGGie71EXDxbYbceWWUkKStPi+wvQ6WB2U5UOQDCOkzlAs0zgRn4FU23KMNfWDrsHc0QX/tmQpoyZ7w1j5mogNchWNXTK2x4WwYjK74WhVQlBZMrYZzJFo9AuWTAT9EWaOSoPGQv3BOUUmW8BFZCK10sNhOBaT2kdE/gsrdqvpfhX2rCcyQ/T6+Hwd+NJBYfmIlRUnoWTm+4jf/6y8Vod//s7AaaBga70hpBuZAkS00md2KZJfufyPQJKjDp+lOO+S+f7XEBJmrygyc2OKFiYDt+wlY4ROBBAf3PPR7rnvKXAgbHgGWZA+TTBcwEYIiPbbXrn9XSr4jqgXWNS4WxgOwv1edlTa7oQ4zPIWlbR1B9UfPLL6uwJ2Y2AwbPFRRwfN6eta1axzogP8bZqVyruLLjnZSXfEzxGDz5YSpayjb5RVxmOxEe6ESNZtJCVcgB4h2VmhgS0jf8rcakdn8dxrki1B9r1CQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,14 +165,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 01:12:02PM +0100, Kiryl Shutsemau wrote:
-> The diff below replaces the previous one. It needs cleanup and splitting
-> before it goes upstream.
+On Fri, Oct 23, 2026 at 04:30:25PM +0200, Luigi Rizzo wrote:
+> On Fri, Oct 23, 2026 at 4:01 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> >
+> > On Thu, Oct 22, 2026 at 11:51:40PM +0200, Luigi Rizzo wrote:
+> > > On Thu, Oct 22, 2026 at 10:12 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> ...
+> > > > Can someone explain what outside netdev would use this? And why you
+> > > > couldn't do this in the netdev page pool?
+> > >
+> > > I can try.
+> > >
+> > > Regarding users, the next target is disks (not included in this series)
+> >
+> > Disks don't use a memory pool, they do IO to folios allocated by the
+> > page cache.
+> 
+> I know. As I said I have a separate patch to cover those IO buffers
+> 
+>  block/bio.c                  |  21 +++++
+>  block/blk-mq-dma.c           |   4 +-
+>  drivers/iommu/dma-pmd-node.c |   3 +-
+>  drivers/iommu/dma-pmd-pool.c |  14 ++-
+>  drivers/iommu/dma-pmd-priv.h |   7 +-
+>  drivers/iommu/dma-pmd-user.c | 390
+> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
+>  include/linux/dma-pmd.h      |  53 +++++++++++
+>  mm/filemap.c                 |  27 +++++-
+>  mm/page-writeback.c          |  13 +++
+>  mm/readahead.c               |   9 +-
+> 
+> 
+> Disk I/O is still potentially affected by the same problems
+> (cost if io mapping/unmapping, iotlb thrashing, bounce buffers
+> in confidential computing...)
 
-Proper patchset:
+The disk folks already have a proposal to address all of this using
+io_uring and preallocated buffers. I really doubt yet another version
+is going to be interesting there.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git page_alloc/nofrag-watermark-v1
+> Anyways, reading your next comments, are you suggesting that all
+> these functionalities should be implemented as pagepool extensions?
+> (2MB mappings and iommu backing, proper allocator of fragments out of larger
+> pages, device-less pagepools, multi-domain mappings, pagepool
+> as memory provider for skb heads, pagepool as memory provider for descriptor
+> rings ?)
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+netdev shouldn't be touching iommu, it can get a 2M page and map it
+using the normal DMA API. AFAIK there is not such a big reason to need
+any of these layering violations. They just make it easier on page
+pool..
+
+"multi-domain mappings" is that just for page pool because it can't
+easially keep track of IOVAs for all the devices mapping the same PMD?
+I admit hacking in a special IOVA range so every netdev has the same
+IOVA is certainly a creative way to ignore all layering and solve
+it. :\
+
+But you could just figure out a way to keep track of the per-device
+per-PMD iova mapping..
+
+That said, if you came with some much narrower series to request some
+kind of 'globally shared iova' during dma allocation that might be
+something dma-api folks could agree with.. It seems like the only
+actual DMA API request here anyhow?
+
+That's a bit tricky since it is impossible as a general concept, but
+maybe you can come up with some way to narrow it..
+
+I'm still not convinced this is even right for netdev, especially
+compared to what Dragos has been working on. The CC stuff seems
+actively dangerous. Unconditionally always using CC shared memory for
+skbs is completely security wrong. What I have traffic flowing inside
+my VM between containers or something? Does this end up putting those
+skbs in shared memory even if they never hit a physical NIC?  Same
+with a TDISP capable NIC, does this unconditionally degrade its
+security?
+
+Jason
 
