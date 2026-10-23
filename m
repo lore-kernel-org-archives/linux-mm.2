@@ -1,100 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED499606A31B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491BC606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DQENUZTM
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FFx+HjPs
 Received: by kanga.kvack.org (Postfix)
-	id 0FAA96B03CB; Fri, 23 Oct 2026 13:51:31 -0400 (EDT)
+	id 658936B03CE; Fri, 23 Oct 2026 13:55:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ABCC6B03CC; Fri, 23 Oct 2026 13:51:31 -0400 (EDT)
+	id 630A36B03CF; Fri, 23 Oct 2026 13:55:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDC986B03CD; Fri, 23 Oct 2026 13:51:30 -0400 (EDT)
+	id 56DF36B03D0; Fri, 23 Oct 2026 13:55:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5BE96B03CB
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:51:30 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 434CC80199
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:51:30 +0000 (UTC)
-X-FDA: 85354633140.13.CD31210
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3DFD840006
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:51:20 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=temperror ("DNS error when getting key") header.d=intel.com header.s=Intel header.b=DQENUZTM;
-	spf=temperror (imf11.hostedemail.com: error in processing during lookup of lkp@intel.com: DNS error) smtp.mailfrom=lkp@intel.com;
-	dmarc=temperror reason="SPF/DKIM temp error" header.from=intel.com (policy=temperror)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792777885;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=0jWfNLgp/P53a4Igz6agrxEFVXR7AaXBdmL6jWQ5ArY=;
-	b=GZSWW3niD1llnlIEYz5c2IoZxzbkrZTZboUqOuxJ+1hkfs4QczJrV0PVN4YJJKAWfpA5M9
-	rDiV9t/5b81NbFwEGNqWvHFze58Qz7jymmxumkuw/OUZNrzrxC9l5xdB0mIztP9HjxFVJ3
-	B4wUxdOfNxQ5P/rmPXc2I1HQtgNKV00=
+	by kanga.kvack.org (Postfix) with ESMTP id 331FC6B03CE
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:55:34 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2330C80180
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:55:33 +0000 (UTC)
+X-FDA: 85354643346.18.6A5EE3F
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3F756140006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:55:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=FFx+HjPs;
+	spf=pass (imf23.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792777885;
-	b=Po20R4y1ke3WVgk6CMOvpS+Wgpi2490bn8QQua3/ohOkDm7q2sezHKnvnosxIwoisEn0u2
-	m0Vv+3kY0itSMrNsSFqAUEOmgvawYoVqk0A4Y2F+Dj1JTrtuLcOnrV3ALkVVCjPjHp2x+a
-	JLTIw6nMwRTCGU4vdsQ6NFIxGH1khV8=
+	t=1792778131;
+	b=r8IACHifGHrSuaHVvrTAYY8QwUWsUy6rP35TidjQKttkA9l6jl7jzJtgYTsJCSmJbtZ6Su
+	weOffAR4iST8YUhjFwKAlGVgyPIEtih7bs1mhJVTqe2zUUxdaZv3h3EhT2eZ0A/U8y6b9u
+	qSuXJJaz54ss29QeIwUKi1qrAz7+uhs=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=temperror ("DNS error when getting key") header.d=intel.com header.s=Intel header.b=DQENUZTM;
-	spf=temperror (imf11.hostedemail.com: error in processing during lookup of lkp@intel.com: DNS error) smtp.mailfrom=lkp@intel.com;
-	dmarc=temperror reason="SPF/DKIM temp error" header.from=intel.com (policy=temperror)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792777880; x=1824313880;
-  h=date:from:to:cc:subject:message-id;
-  bh=zfi/3pNWgX5nqHQDs7AP0Jh06G+96u3YpSQtQqSKxlI=;
-  b=DQENUZTM/hJ88bk2olgD8v62cYXaMYdfcT4WfVGchFDAycBZde97/mJ9
-   pUrKMP58ds+b4jO36WxjfslfICEfAYXm/3sUFNM20iSK6Zzaktjnyx/OE
-   Ic4YRIFvQxk8lQtO58V5bM57XPhvvUJWfhgFtVOrsBwxD96CVJgHxC5Vp
-   NeaPk0eTM3MtnkiQ2hHXkGM7gZDSc2WuNzQEe2MeZWyDG48Nf9XAsagDW
-   lf6akeX1CBND9vKI3w5G6a63jazs11wwe8/pNhEDqZ4fogVsv/AKCAC5h
-   O49i5Ga058l0fdky+Dn8s8Ot7/BI4qNorZTd9r1OkeQYeM0K/fQygppqO
-   w==;
-X-CSE-ConnectionGUID: IeHSU3+DShuDbmt+sPtSAQ==
-X-CSE-MsgGUID: qKCnAAlyQIubrp3qw12gzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1546139"
-X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
-   d="scan'208";a="1546139"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 10:51:16 -0700
-X-CSE-ConnectionGUID: QHkCnv67TnivzPaejiEV6A==
-X-CSE-MsgGUID: IL3Axxy6SW2ukmzdZNWWbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,174,1787036400"; 
-   d="scan'208";a="3696480"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 23 Oct 2026 10:51:15 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xKJQ8-00000000T5K-3VA1;
-	Fri, 23 Oct 2026 17:51:12 +0000
-Date: Sat, 24 Oct 2026 01:50:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD REGRESSION
- bd1ecbb61afefc6a8b876ccbc31e9228b44e9eab
-Message-ID: <202610240135.uFA85jSq-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3DFD840006
-X-Stat-Signature: oqag84sdqt6nadudf8yitawunse1sebm
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=FFx+HjPs;
+	spf=pass (imf23.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792778131;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uYTTF5jDNkxMCVJ9mrlfykfmfKah1Cd8hTMk87yFHBg=;
+	b=QjABZhSdPuqcFDIVinhD6Epx0/2kdp8Qa3ZO73jK9jdqTZ0Rd3/4zIwbX6P382/D3a0D+m
+	IltR8NWuDlQH5zp4IN3wqw1aOkNTEE92UHjHJFhYxwD20QZmhBIjdzTmjwqpE0Otl7AmCl
+	58PLYNyeWyQoWvSaWlLFme7U49+M11k=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=uYTTF5jDNkxMCVJ9mrlfykfmfKah1Cd8hTMk87yFHBg=; b=FFx+HjPsKWG+EePtFOBKnIR9Hs
+	GiPfrM6SAXY2vTtQro2pSZDw/MGSKa/4imbtPz8BzVcylikXV2VXIuNwXOoVNMkufpXfFQbD/4Ah3
+	fSKZ0uUV8cUm7TXyZ7RLnpCVkY8tTajyQXzjilHkO4Y0EkuEzhAiaz+11DIDHgPbTuG3/fTtQRJVy
+	s1T02id+dNFvi99iSrYWeRc8QXq+I+yf4Fnffy7Tck+NG1U+X5eq4MT9cyJDUvnkNOaZZy1lbqJTe
+	rBnqniYL30xcHkkDHQElLV8g+PQYcUDj7+YrHkYhlz6nCrB4Kts94DwZ3Q1UdNPoLhS4aLmzYZN5K
+	WmduT+gQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xKJUG-0000000Glen-1HOa;
+	Fri, 23 Oct 2026 17:55:28 +0000
+Message-ID: <26adbb3d-bbd8-442c-aed6-80cf091888b0@infradead.org>
+Date: Fri, 23 Oct 2026 10:55:26 -0700
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] binfmt_misc: fix typo in "auxiliary vector"
+To: atanaskunchev@proton.me, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <kees@kernel.org>
+Cc: linux-doc@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261023-binfmt-typo-v1-1-459d4ae4c15f@proton.me>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20261023-binfmt-typo-v1-1-459d4ae4c15f@proton.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792777880-620485
-X-HE-Meta: U2FsdGVkX1/OFPZl5KuwcLEAc1y5h09ee1FsiMbJpyHFz1TRrBBigwZOFsaThtkpt4ffLDfxbvUCdLJWC+x722z97HHWfgeI6hpjysc2fkm54IcPDaxVJPX/Bm0Sh2IDOqHoGq5KOQUrq2z1ImbvAu0WBRiEEvlbiKnLiOKCKWdSqOttRPjf7fF9REhWf/91dUqkvS/ubskL3hveJhmKuWxaCQZmmOixjrjhmEhlytMQv3KhaEFC87M8PS2KGbLGFsMcr4MVYSaZZf9bqCUNXZ59LiBZDP6bF224WwUe+Xwld7udWfVQMCu5dsH7H9L7+0E7b4TIjsOV6IbmK7KyaAw+r099yfWRrb0gEaUOov0/vhXoadOfx3Z9tlpbB4oL73BsLMGEN0SwApVPI2mtEi+bM7CtpRpHzC+MPxOrVCQ9eHPh5D+NCvK2/9V3lfNqPFrjXL6LMdvintHMw2LNnhzuFQlySXUsWW9cFhOxXy7JNweU5JONKXov/gIYApXXm69dyan2AemCxPh0b0JsjMDlrbv576mfoolIEybywEWNiW6kC8Ta9w84b6+7f2mbEkwbg2WYiyhT1LEw/GxBcmQp8USdqZC+RdW7DfgcPWQirx3GTBj1UT1k5Qe1oOufajsziDfb9/dfP12Zod/DMIVHp6EiyCIaCfSqzADsEP4VQz3ngsqpZlPEQIyxK/ZcASkR4FYU6ffRK2qGp584o9vfnadzHVNXXOYcnkgHTmUv/sVdzr+CogrIE2xps+6pefHEW+VgEVGVIa/klo1+I6tjXoV84vwrywqqER+LfWRYbIG+1KnUwkHegWlqbPSJiUhVoX1EkA3vH5ZdjjWXC+RUMF0npaXLjpybIAg+/DmVnC3PXETvVvDp0QK2VDHrp4uiTq/gGKKhYSDnVehqXVW1BV1oy4u7OcnHJERGrFer2Kv42VbKV440gpmDa32r6kKSHlM056Vha6xqfWb
- xoKzsPFa
- HjRWIqn3BgG3iAXgtetArSdrDOxyPNyK7Q4XeJ6eSs1OCvweWPmH6JXMBva/3ayO7ZJ/heai/lj+xWRV9FyYSBGvS676zPcatxpHmH76+YZGWdjw1onb6XTwIWIxNCVj/olo6ObyUdb4tfoU3pteA3cMRDpe7Key9Zi6RIwkygy/G18klBPuIQxMpqgZEChxkSHwNiA9aNwCzoOELrt8IZQZt+WA/41UFC5TtE7gsC3hW6rF8ArX3AieLLqo0FBw6+0YhehbZ56XTyqi595uNSH+uzk29rndPKbt2FPu8Z39keQAv+wa2nWL1zGs7VxT/Jg29rvo0fZ8MlxA=
+X-Rspamd-Queue-Id: 3F756140006
+X-Stat-Signature: pcqqcfymxdxnaeq7kxm83x4ndterohz4
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792778130-473730
+X-HE-Meta: U2FsdGVkX1+7JXWbyJKEhOXQylSKVFrd377QGc2y2lXdMoYW3CE1KOeUb3dWAXI+Dc9TfmmZrDcPPZYL6cx36jk/7Ojxhon/91b572TyXKWybLqcNDmnqNtU2yu2ey5GIaDJpGtMK6KHE5WkS92VoT9Er9InO35BqfZfvpY1GlwkZqXuLVNWTYvHk2s093kCLolFl17bRxFgeiL7vut4bAauuX/T6gKAWdfyi4idvEtFtAXAzfnO+smQR5xpN8TIoN/ChChl8AGC5Lz5jgl9JrxY0hBVsTXJ4bdC4TidIqVOsZ7N77DiNW56Xh3Hh4G1Z6Nd8pbm6RqzcLsk6nphbTGs/Kp73vlqlTt0f3KRb+itkF3QMlZx3hNxS9p/0TLTmUbp8F5fXhmfxwnFAqZRgkDi+BIqgkKd9bMssnU9dHC+GKC+E/jTxIDVNfScu14C+Od9BQlVWQnUrO2HqX4aS1VMFi7ixuCw9swQ0HzzpoMKUKeuhmBVh7FvQkCyZA6taaBE68W0L6Pyygu+qP9Q2GXGoqU3bPWzoH1s+5mYGcK0Je3VFhohZ1lsjxxd9LliVPckmISVQy4AExSwmCZqtZP+UffmeD8M3WeT5/p00ln8G9stp1RPMT3pg59LyXlzgSDDtxkqhMJ2UixNECB9VNvn0Tdtjksli/gjkrbwPBYrBSS8tYyFutYYXsxoh2H5RxAWREsuzYog91jvbsHriuORZt+cY8nN7+t0dXG0G2OT+tN0o1xg9MgAIXHfLlSggmbtj6oANpsoC5XsFN+suFL4Nb0VyvTVS8196Q5gklEb5WLGkruPYhbzr+7lc0WamLbQQVJyRLUFV06jUepnSTlEfyz7pz9oFF0yZTFbhnADVAoJayW5Wn4/6fSYUOkVy8XhKbp+l0Hs7AmInekADA6XwGOOKG4bu4S3T7qREHRiHDNvQeoWLCL1Bqn1eYszKl5l/Jke4M1r1EduHFF
+ y9M8eVXg
+ enOb+uXSkZ8PAqRLdL0EqxSF0AYFRlxUj0zd72PmshSl0iYBkBWpdbt6jNBjJu2+9ZFKpcw8DYotvSjOl8j8E5/7s+STw5iJF57G2ll4unBpGnhLcv9Z6m4kZBGSG4CuTDkt4ymkHhZfitdFR59uAXQ3ab74eVBhXy8L55Py2pf5BeJQmEzKvG4VHCvFetbb/qTacEmvZoKgtHY2lLjhWI616LUzAV6e0ApPTpeyKDOAR7RzBSuAqUSIswacWWO+3N2R/Guke73Mq3pLAlQokxgj4s8v8kQLmfB7T3RI6SVCcGct6qFeIK9CbTaDVEH1G9kGmugmVxASUAsk7OVgJe7xNnGjaOnlw4sqPS7bJfCzRlB6EhazHLvVNABPbo/3jAY4r+zj11Asj5aW4u+j0hy/A+6ZGQdHm4arM1fD6cecWmjo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,129 +95,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: bd1ecbb61afefc6a8b876ccbc31e9228b44e9eab  Add linux-next specific files for 20261022
 
-Error/Warning (recently discovered and may have been fixed):
+On 10/23/26 10:50 AM, Atanas Kunchev via B4 Relay wrote:
+> From: Atanas Kunchev <atanaskunchev@proton.me>
+> 
+> Fix "auxilary" -> "auxiliary".
+> 
+> Signed-off-by: Atanas Kunchev <atanaskunchev@proton.me>
 
-    https://lore.kernel.org/oe-kbuild-all/202610232206.jTTTXj8l-lkp@intel.com
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 
-    Warning: drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c:204 function parameter 'readonly' not described in 'amdgpu_ttm_map_buffer'
-    arch/openrisc/include/asm/page.h:50:29: error: request for member 'pgd' in something not a structure or union
-    arch/openrisc/include/asm/page.h:54:25: error: incompatible types when initializing type 'int' using type 'pgd_t'
-    arch/powerpc/kernel/irq.c:116:(.text+0x22b8): undefined reference to `irq_proc_emit_counts'
-    include/asm-generic/pgtable-nop4d.h:9:18: error: unknown type name 'pgd_t'; did you mean 'pid_t'?
-    include/linux/mm.h:3639:22: error: pointer/integer type mismatch in conditional expression [-Wint-conversion]
-    include/linux/pgtable.h:1544:13: error: implicit declaration of function 'pgd_none'; did you mean 'pud_none'? [-Wimplicit-function-declaration]
-    include/linux/pgtable.h:1546:22: error: implicit declaration of function 'pgd_bad'; did you mean 'pud_bad'? [-Wimplicit-function-declaration]
-    include/linux/pgtable.h:167:38: error: implicit declaration of function 'p4d_offset'; did you mean 'pmd_offset'? [-Wimplicit-function-declaration]
-    include/linux/pgtable.h:167:38: error: passing argument 1 of 'pud_offset' makes pointer from integer without a cast [-Wint-conversion]
-    irq.c:(.text+0x1d08): undefined reference to `irq_proc_emit_counts'
+> ---
+> Fix a spelling mistake in the binfmt_misc documentation.
+> ---
+>  Documentation/admin-guide/binfmt-misc.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
+> index 9e84b877d06d..e37668371453 100644
+> --- a/Documentation/admin-guide/binfmt-misc.rst
+> +++ b/Documentation/admin-guide/binfmt-misc.rst
+> @@ -73,7 +73,7 @@ Here is what the fields mean:
+>  	    Legacy behavior of binfmt_misc is to pass the full path
+>              of the binary to the interpreter as an argument. When this flag is
+>              included, binfmt_misc will open the file for reading and pass its
+> -            descriptor into the auxilary vector with the key "AT_EXECFD", thus
+> +            descriptor into the auxiliary vector with the key "AT_EXECFD", thus
+>              allowing the interpreter to execute non-readable binaries. This
+>              feature should be used with care - the interpreter has to be trusted
+>              not to emit the contents of the non-readable binary.
+> 
+> ---
+> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+> change-id: 20261023-binfmt-typo-bf80308e23a0
+> 
+> Best regards,
 
-Error/Warning ids grouped by kconfigs:
-
-recent_errors
-|-- csky-allmodconfig
-|   |-- drivers-net-wireless-intel-iwlwifi-pcie-tx.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-spi-spi-bcm2835.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   `-- kernel-workqueue.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|-- openrisc-allmodconfig
-|   |-- arch-openrisc-include-asm-page.h:error:incompatible-types-when-initializing-type-int-using-type-pgd_t
-|   |-- arch-openrisc-include-asm-page.h:error:request-for-member-pgd-in-something-not-a-structure-or-union
-|   |-- include-asm-generic-pgtable-nop4d.h:error:unknown-type-name-pgd_t
-|   |-- include-linux-mm.h:error:pointer-integer-type-mismatch-in-conditional-expression
-|   |-- include-linux-pgtable.h:error:implicit-declaration-of-function-p4d_offset
-|   |-- include-linux-pgtable.h:error:implicit-declaration-of-function-pgd_bad
-|   |-- include-linux-pgtable.h:error:implicit-declaration-of-function-pgd_none
-|   |-- include-linux-pgtable.h:error:passing-argument-of-pud_offset-makes-pointer-from-integer-without-a-cast
-|   `-- Warning:drivers-gpu-drm-amd-amdgpu-amdgpu_ttm.c-function-parameter-readonly-not-described-in-amdgpu_ttm_map_buffer
-|-- powerpc64-randconfig-1000-20261021
-|   `-- arch-powerpc-kernel-irq.c:(.text):undefined-reference-to-irq_proc_emit_counts
-`-- powerpc-randconfig-1001-20261023
-    `-- irq.c:(.text):undefined-reference-to-irq_proc_emit_counts
-
-elapsed time: 1722m
-
-configs tested: 72
-configs skipped: 8
-
-tested configs:
-alpha                     allnoconfig    gcc-16.2.0
-alpha                    allyesconfig    gcc-16.2.0
-arc                      allmodconfig    gcc-16.2.0
-arc                       allnoconfig    gcc-16.2.0
-arc                      allyesconfig    gcc-16.2.0
-arc          randconfig-1000-20261023    gcc-8.5.0
-arc          randconfig-1001-20261023    gcc-8.5.0
-arm                       allnoconfig    clang-17
-arm                      allyesconfig    gcc-16.2.0
-arm          randconfig-1000-20261023    clang-24
-arm          randconfig-1001-20261023    gcc-8.5.0
-arm          randconfig-1002-20261023    clang-17
-arm          randconfig-1003-20261023    gcc-14.4.0
-arm64                     allnoconfig    gcc-16.2.0
-csky                     allmodconfig    gcc-16.2.0
-csky                      allnoconfig    gcc-16.2.0
-hexagon                  allmodconfig    clang-24
-hexagon                   allnoconfig    clang-24
-i386                      allnoconfig    gcc-14
-loongarch                 allnoconfig    clang-20
-m68k                     allmodconfig    gcc-16.2.0
-m68k                      allnoconfig    gcc-16.2.0
-m68k                     allyesconfig    gcc-16.2.0
-m68k                  multi_defconfig    gcc-16.2.0
-microblaze                allnoconfig    gcc-16.2.0
-microblaze               allyesconfig    gcc-16.2.0
-mips                      allnoconfig    gcc-16.2.0
-mips                     allyesconfig    gcc-16.2.0
-mips               lemote2f_defconfig    gcc-16.2.0
-mips                omega2p_defconfig    clang-17
-nios2                    allmodconfig    gcc-11.5.0
-nios2                     allnoconfig    gcc-11.5.0
-nios2        randconfig-1000-20261023    gcc-10.5.0
-nios2        randconfig-1001-20261023    gcc-11.5.0
-openrisc                 allmodconfig    gcc-16.2.0
-openrisc                  allnoconfig    gcc-16.2.0
-parisc                    allnoconfig    gcc-16.2.0
-parisc                   allyesconfig    gcc-16.2.0
-powerpc                   allnoconfig    gcc-16.2.0
-powerpc            amigaone_defconfig    gcc-16.2.0
-powerpc                fsp2_defconfig    gcc-16.2.0
-powerpc            ge_imp3a_defconfig    gcc-16.2.0
-powerpc          iss476-smp_defconfig    gcc-16.2.0
-riscv                     allnoconfig    gcc-16.2.0
-riscv        randconfig-1001-20261023    gcc-13.5.0
-s390                     allmodconfig    clang-24
-s390                      allnoconfig    clang-24
-s390         randconfig-1000-20261023    gcc-8.5.0
-s390         randconfig-1001-20261023    gcc-9.5.0
-sh                       allmodconfig    gcc-16.2.0
-sh                        allnoconfig    gcc-16.2.0
-sh                       allyesconfig    gcc-16.2.0
-sh           randconfig-1000-20261023    gcc-10.5.0
-sh           randconfig-1001-20261023    gcc-16.2.0
-sh          sh7785lcr_32bit_defconfig    gcc-16.2.0
-sparc                     allnoconfig    gcc-16.2.0
-sparc64                  allmodconfig    clang-20
-um                       allmodconfig    clang-17
-um                        allnoconfig    clang-17
-um                       allyesconfig    gcc-14
-x86_64                    allnoconfig    clang-22
-x86_64                          kexec    clang-22
-x86_64       randconfig-1001-20261024    gcc-14
-x86_64       randconfig-1002-20261024    gcc-14
-x86_64                       rhel-9.4    gcc-14
-x86_64                   rhel-9.4-bpf    gcc-14
-x86_64                  rhel-9.4-func    gcc-14
-x86_64            rhel-9.4-kselftests    gcc-14
-x86_64                 rhel-9.4-kunit    gcc-14
-x86_64                   rhel-9.4-ltp    gcc-14
-xtensa                    allnoconfig    gcc-16.2.0
-xtensa                   allyesconfig    gcc-16.2.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+~Randy
 
