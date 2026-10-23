@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5167606A31B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 22:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155E8606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 22:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cmdzTSUQ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSG+aRIu
 Received: by kanga.kvack.org (Postfix)
-	id C53A56B0BFC; Fri, 23 Oct 2026 18:03:45 -0400 (EDT)
+	id 21A366B0BFD; Fri, 23 Oct 2026 18:03:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B87996B0BFD; Fri, 23 Oct 2026 18:03:45 -0400 (EDT)
+	id 03D3A6B0BFE; Fri, 23 Oct 2026 18:03:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B3BB6B0BFE; Fri, 23 Oct 2026 18:03:45 -0400 (EDT)
+	id E6D9D6B0BFF; Fri, 23 Oct 2026 18:03:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D7496B0BFC
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:03:45 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 581C7160279
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 22:03:43 +0000 (UTC)
-X-FDA: 85355268726.05.4138F1B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA91D6B0BFD
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:03:47 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E46D1A0283
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 22:03:47 +0000 (UTC)
+X-FDA: 85355268894.04.7022F74
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 97098160010
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 22:03:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cmdzTSUQ;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6FA3F40009
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 22:03:45 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TSG+aRIu;
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792793021;
+	s=arc-20220608; t=1792793025;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6wvAjV3VEH0y9Aouo90x71QioxDU/M+tApVOpGKG9M4=;
-	b=E6I+wT86rEDh+Fo50pV0i40z5n1xz/RU+4qHa9DK4DcovDB4YqMTsDqOXgtMbeECPVLUek
-	797GjvDN58TQA8iYtduVXXZqE7XYMdcbP0aOeXMUl2ghb6F/LKghOsFJd2xC67uRTpZRPK
-	VOdqa+2qkmqbwc7TTR6Nj0zwqNytB+w=
+	bh=G9LNtsxsoCY3Opnhl7Jnadg+6vMuj2DVUVFsrmi6sWg=;
+	b=VGHeXdcgfVxDcMDknv5rwgDXv9ig0j6EVpNN0Fha4fdTH9m9eMrvryhyEfm1bhQxYA8/e+
+	zUzK4E1dow3/H7ZSrKlV6mZryyHFAgHVUypPecxkdSGSsikG3+89bDBfEkkpON5LVNghvw
+	1ftmJh9NnwTGKGjx06R0FxVfH96ptRE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792793021;
-	b=l9RiemA61c62tAbLj3Z0sLRYFa3UN/kDrHfXsAa/qF/6kDdKS2oA8jOfOGjDK5enMWUQ2B
-	z9EV6K1y1K5iufAeA3pWKWIa88arP63QHWF3LDnLFWYujfVbFQrl7Tr2mbjV64BvNXLTLG
-	yQwXQoQQCJGjSRQEQfzY/LmWMZG/6mE=
+	t=1792793025;
+	b=e+IV4WbwJAMIVqUtlQ2ryRuj93HGHspNpLgGFekl3nvhhSiQOdkwD/J6iUipIFffdvxNtK
+	YFSUa/NaJK4XfUf2U119EvpbVWOyyxyF1tjTdGTpcp9VtYYSETuWCZ7ohxfHVB9L3s+q1u
+	e1xN2EHKoGDb5OHXWYL84vYlJwq2ziA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cmdzTSUQ;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TSG+aRIu;
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEBDE43DC7;
-	Fri, 23 Oct 2026 22:03:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6668A1F01825;
-	Fri, 23 Oct 2026 22:03:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BB76F4403F;
+	Fri, 23 Oct 2026 22:03:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7674B1F01825;
+	Fri, 23 Oct 2026 22:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792793020;
-	bh=6wvAjV3VEH0y9Aouo90x71QioxDU/M+tApVOpGKG9M4=;
+	s=k20260515; t=1792793024;
+	bh=G9LNtsxsoCY3Opnhl7Jnadg+6vMuj2DVUVFsrmi6sWg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cmdzTSUQyANuHLNiUCoQ0Q8a09G02viHHSxwqK0oyv0S5vaPVG1wdlGkfIbIDEQ3R
-	 NH8vw0sMD87cDC5p7T7m3Jvhy4nmYk8mecpwsLM9hmSPBGd++j0f1LVUMzDttNLf4R
-	 T1TbteL4RpFxJOflaRUdllhuVa7aIZ5eZ7cK6AvVLoJw/36YdbaROWtfjQE/62UpF8
-	 9lhBF3ke25pBhvPNYwDqsiGhZfplQ9rhMcTuY8/qCiow92DQxTvFl3xLp2B0gZ6e6l
-	 5ZylQSvAFoTJD01b4+DtathdTwjiArPznO7ksJbyrG3lGsbeuIvuTIHlkQVdtx5/DL
-	 Q1ULVMX4lX0ww==
-Message-ID: <sashiko-outbox-183273@kernel.org>
+	b=TSG+aRIuQIZgMhJbEmq6Cwx1BBFurkRApuxdmdKZeE4btj7u0hn6gRXeU1HchCdC6
+	 Vwjx34kBgvTEltK5jwPf25cVXfV/7UwTMrMp7rKwpgbO9rz7tvtri9hHEmhjYYl8rt
+	 cgkBBQTWBtUTKtZ7fu2JSqa0eOWcs3yAOsM/d0BinJ+HMoO+pwF4u3tXODLfdFNBxz
+	 7HMY+8LhDxfiLLurEECrEkNeC/YhrBL6mw5DGmEVwj4KnktfGpSrG5UvTTdlmHKCna
+	 /SCa4UAXOi6nGvWR8Ore6nnCGYda1AKPJYqxcAV4OWSQmBgvd+ufr1jIHE8ppYAG6W
+	 X7Rn4O3X0153Q==
+Message-ID: <sashiko-outbox-183280@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v5 07/14] mm/mglru: balance anon and file scan
- budget by refault rate
+Subject: Re: [RFC PATCH v5 14/14] mm/mglru: Avoid scan anon while swapcache
+ is low for GFP_NOIO allocation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?QmFycnkgU29uZyAoWGlhb21pKQ==?= <baohua@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org
 Cc: hui.zhu@linux.dev, axelrasmussen@google.com, baolin.wang@linux.alibaba.com, david@kernel.org, hannes@cmpxchg.org, ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, ryncsn@gmail.com, shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com, zhuhui@kylinos.cn, baoquan.he@linux.dev, liuxiang.277@bytedance.com, wangzicheng@honor.com, lianux.mm@gmail.com, kasong@tencent.com, liam@infradead.org, surenb@google.com, mhocko@suse.com, rppt@kernel.org, zhangbo56@xiaomi.com, lyugaofei@xiaomi.com, ridong.chen@linux.dev, kunwu.chan@gmail.com
-In-Reply-To: <20261022220203.91911-8-baohua@kernel.org>
+In-Reply-To: <20261022220203.91911-15-baohua@kernel.org>
 References: <20261022220203.91911-1-baohua@kernel.org>
- <20261022220203.91911-8-baohua@kernel.org>
+ <20261022220203.91911-15-baohua@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 22:03:38 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 97098160010
-X-Stat-Signature: r765rz5o4nc743z5haffy6zw336dhxum
+Date: Fri, 23 Oct 2026 22:03:43 +0000
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6FA3F40009
+X-Stat-Signature: s48ddc66sh6q3jxzjwdhp1m1t6z199qr
 X-Rspam-User: 
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792793021-251728
-X-HE-Meta: U2FsdGVkX1/ojjXYYqyoceJwzoPn3t3Wt+hFfqqORxGGTkALkpBodnLsGyb7dluspQC2gO959cxJHYvDZf9h8eNwZNyL79Hhytevb6dLdurbbaJX2XXX0VQI9Whcl0B4QWY39ctGeS9Sm1Mle5MFbQuzpi+bo8pH3IZRqaknRIQmL/PmcMAXGGD3qw03ZvNAJhtDh5KKmeSDwcTiBabHafeIZ9EEhDiSfVqsjdgZUdZQNLIbRQTzGwptbqmVZNTcyZ/wEQCPUTHi/dZLXDx3VnSCHkuBzoCI5Q0bqsAMcOqTSS1tjMxDE2btaLwhfcD5ful0xAF7Ly+5qE+q2o3gT23k/4NFMYca4iQitW5ijXppIx9iEp6TZLkhez7xB7DuwzsnVaxyC2Q+mbU7HfVdchtW0jD8WET+MXOCq475vADZDipHyt5HZGb9ML+c2kZgNNCSTf3+SagWUQeqP6qiXz1qMqtm2sucdJqnWEhHQTNoWjcTWs5DSiV1j5xLeJWxm/FCG6VixI6RPlHYxYyM9+O9P0YeCv9136kPUW09m+70c27yKnTWqNMYAvHCoIVxZFV4BMW/gh/WgMbXUwOjtdXtxtZtzdz2hEmlndOJdFhSrPtV3Yo5JNJ0Bf+fTFM5EWtSbTrW1pIVOyIkgd5+SvSqYW4yOKT1YouaO6f8I6IqgL3lRUiE+e97ik8/APZnm34N6XjhQxxFLlyxU/rmmSkuD1xcrXWOcG1oiU96wmDDsL+r9UKuBYdUnuYr1JgMu/kO7KcY4pS3tWtsdb+DPZ/gVckr58z8AsO1PzMWSubkYeNw8O1MBWuWsbG7svh5KH4Nf0m5spIsQ0d1gHJSpnJ/kV04aLrjJ5opDfXXYO0lLtD7ac4K8BSAqOCtTYyiFqTFYha4qQaQeWrEAlUeqwhIqT7KfcS1pyKiaIPLu069mWF5SZPwwSjwrnAQzQKLd5pkjVbyYK1Hh1p/lnb
- bZwGLiCv
- DFXyHJylIQyzSsrZEW8ZmKyIkdnQ/IQsZFTq+Sg4aO3T7OrGsoYVc3Gp7VorPysAVxT0DOLmPn+XsVWlUrgZWq1O+0THVbVj0Trw5eGv5l6sxkJCnSsy2kPrkdSBZ2t34Wmyt+PrBKLHVlBeYCpKcx7vYd2nszfr1LlPzzwQE75htH/XhDYCimIpo6CLJC3KD1zSsfJ+J0KWWG+CcaYqkMTQsxnHUvlI7j8FV+YQ/rRbE/6dyIXBvaSvcBKT5dCMAqOBZwMeeFPF83vWd2s0Uz0XjmhmcbYjiFLtOfiSJ4jznZEP4InLrq2bqBSOm5LEJEDiAzzbUbbdNlL322cSkCp4QMRRUMLeAy+pdWtS6fw7B0qClguwXeUa83+kxeL6CE0NJOj8ReeHeqaVznH9HXzowpLYQPqB73Gs5Sz1Mlaz11PGjE3R+RSOJRGbNJAfAKNo3dKW8eJcnDaDoFDzTFViYWHX8qdnm6yc16tKaDQKPkECjBd1qKjYwqtMzHMTdjgbJxsPB2BgzZUjjS504Te40eFrybWEg1RMyl5yYbfac2npll+OoB8I3mUpXJXX29N1coaUY5eFPsZ6tlDAFUVFTcCkKOnJlTV3yWLJN5RqRdi7bh5ikm9oRZLeHkXbGyHDXn+8wErJQWb/SnGU6hxpoaxzB4u64u1PsVG4dFGqzaAd6ogb3HIf5frMq7v3Fz3xc0w+g9jAuzOjci79bWpc4T8nsGG7xY9Lx
+X-HE-Tag: 1792793025-16847
+X-HE-Meta: U2FsdGVkX1/tw/pn5LATbgbWpnySub5A3gjnV4v9bSHbJ+pZGS5IWST11YLrNNlAYL9sEqXgnYne6kvUWJ18P/pDT9objysbWq13Y0H+rx8BOyrBrYkq0kn8yzRMpBBTOsBI9MJei79p2kW7VP5UlahUQdbyRkehlOxM2V2sIhNUhbGLKGVBLEePeys3mIxGH52sXKCPyVpo8uplBChs2ECYTFa6MUvH47HX5N57WVYVdTJc5IBrepnia6pUxIQc9cVKUsXmhq2iuaqv7/WoyCG66luqiuh77boJjhyvDzKz3U4BukuoG9rGck471413r8B88fMztz6BZ59lnxFm36v4ZQ99YlvlF1M+BGKW/Cb2+1wuItUwG23wEBENG/1mGs4/BYdpACbNTFKSxcoCG4ddYof3oDrSPb4rjgaD/NbsRrDgyxwKs+pRw/8eUj84QaOzOzZNvAkc27swCYppnTic7JgHTivoS0+l83AqxbreLLkz96ZZ4ZBtr3onZZ+HZpEKp6FJGOTBM/3z6OlAgaGH0QiZtNJTUCeW9rjLo0E1OnLbu9mwChLSDhLt7B4rC8UW0Nwf7BoS3ijUDEQtzzMoSlJ9uRgm6DEyRd164dP0lTOUqa7pcxM3AsCtAzuO5h7q4vx86om/Znll8nbVbYn9ZgRBTUOrkZp+yOWyu9iypSkGjRRZCtk7Bj7/B1BmzJk65LP7p9lbV76dbof19yi+QjMqmRCutW1GR5E1RYXBhLsE5q4ztmqhjhQB9NHKRMgqCgRLLTlLa4LVtTfwta+fZ3xnKQEgMPPjYJVrM3H48dwObxNT3kGYzM/ylhzwtuXVcaf7cH0OfVjxrQjEuNNpZNTnxP3pH2IwxS0gU94rsilSNBrSDSkrhFfdg5P/bJVkgtXg74IbDbVCgaUZ3oSngYmHq6iIpNpSl253lrbiIkpx5IgSOZlK7rXYt8l4jfgCOQigpbon6aQdFpc
+ 1Hqd/9rR
+ gO9FFHDtStBOvt8gF6ixzcu/nMSxI1+L5BnMNjsFSkW6SPpUXJa3atcvtAQFgmw/CG/12HNOUQGPk5bFAfEJUDNocONOMChmeewwn3Khd80CR+IpLITWqBgkvIVEVYHNoTjRSjtzCSdURFgjYv8WgWRIxj1IjRryyi7dGpVFBWTjYfsB9fKy1lNq1uxp4Qt3zY1S0pwGABf5qeZrWVOlYrqMRL/nZCuzGRQnZZ6jwp+R5dCMjsqEPEw2VBk/BKlY/rXn1K0dcx2hWEvIBSlzyBECx/Y1KN61yll1fexx2Z4NbmsGtGGBjgoe9EsZxfOonC2wxpugrq7wBbM7UuDevXAj4w02ncIH7uZZjGbEEWg4z/pTTmWMwZQOmQdtatOSACTWNYmhkOMzdxbvaYkWdrbR5t3hQG7RaasvTuhraGfUx8u6SoL4DzQF61z1mF9Wr0p8btbKtb23UrKxZl15GC87PW67HmK0plSfBQ9mfeQx4D/U2Ge0JmvV4n5BK7s5shOER4vQtNt9KdQz+fG2z4Mry+g0twBn2yRfOHWF8BwEvrbklD3sQGElG2A+gsrl3+TvqUQPMgUM7npArtg4BUE6VzjprsiM4kw1eoNLyZZ7+JrWS/nXk733i8yAZXnjX6jJBy+x9zsvgZWfHRmI4+898H/WwZAkTTgQmuLCoBTFRBDSRMloWouI0QoPWMTmP9ekkAxTEU7t/rrnxPFoYAXkVKRSc6i9Nhe9UZQhntm/SPKCUoHMmpODWZbCTxedweqUx0Z8wItFjN+E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,265 +94,176 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] mm/mglru: lru_gen_balance_scan() budgets un-scannable gens and z=
-ones
+- [High] mm/mglru: unclamped scan budget on early return in lru_gen_balance=
+_scan()
+- [Medium] mm/mglru: inconsistent swappiness state when anon reclaim is ski=
+pped for GFP_NOIO
 --
 
-commit ce196f9c0d172466d44f73b512ed408a9ecb6e36
-Author: Kairui Song <kasong@tencent.com>
+commit 28e2a43107ca8cde0150881a1f428f1c7e18f418
+Author: Bo Zhang <zhangbo56@xiaomi.com>
 
-mm/mglru: balance anon and file scan budget by refault rate
+mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO allocation
 
-This commit replaces get_type_to_scan() and isolate_folios() with
-lru_gen_balance_scan() and evict_folio_lists() to split the scan budget
-proportionally between anon and file LRUs based on per-type refault rates
-and LRU sizes.
+This commit enables the low-swapcache check in reclaimable_anon_is_low() for
+MGLRU under GFP_NOIO and zeroes nr_to_scan[LRU_GEN_ANON] in
+lru_gen_prepare_scan() when can_reclaim_anon_pages() returns false. It also
+updates lru_gen_balance_scan() to return early when either nr[LRU_GEN_ANON]
+or nr[LRU_GEN_FILE] is zero.
 
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index cc20ba8c6cf2c..fed39b0422e01 100644
+> index c47fe07f7290a..71bc7fedf7a9d 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -5019,79 +5019,110 @@ static int get_tier_idx(struct lruvec *lruvec, i=
-nt type)
 
 [ ... ]
 
-> +static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
-> +		unsigned long total_scan, unsigned long nr[])
+> @@ -5062,26 +5055,23 @@ static void lru_gen_balance_scan(struct lruvec *l=
+ruvec, struct scan_control *sc,
 >  {
-
-[ ... ]
-
-> -	/*
-> -	 * We are running out of the current reclaim type. Fall back to
-> -	 * the other type if allowed.
-> +	 * The more extreme the swappiness, the wider the IO cost gap between
-> +	 * anon and file, so the split should follow the IO cost ratio rather
-> +	 * than the sizes. With a mild swappiness, balance the scan by the
-> +	 * actual LRU size more.
->  	 */
-> -	if (!scanned && !tried && type_fallback_allowed) {
-> -		type =3D !type;
-> -		tried =3D true;
-> -		type_fallback_allowed =3D false;
-> -		goto retry;
-> -	}
-> +	size_bias =3D max(1, min(swappiness, MAX_SWAPPINESS - swappiness));
-> +	anon_weight =3D nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE] / size_bias;
-> +	file_weight =3D nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
-> +
-> +	anon_factor =3D (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_wei=
-ght;
-> +	file_factor =3D (u64)(MAX_SWAPPINESS - swappiness) * refault_rate[LRU_G=
-EN_ANON] * file_weight;
-> +
-> +	/* Cross-multiply the ratio above. */
-> +	anon_scan =3D mul_u64_u64_div_u64(total_scan, anon_factor, anon_factor =
-+ file_factor);
-> +	file_scan =3D (u64)total_scan - anon_scan;
-> +
->  	/*
-> -	 * We scanned some folios but failed to isolate any due to promotions,
-> -	 * protections, or races. Retry once to avoid a larger loop.
-> +	 * Bound each type by its evictable size. Hand the exceeding part to
-> +	 * the other type. Any excess left when total_scan exceeds both sizes
-> +	 * is dropped, since it only stresses the scanner with no gain.
->  	 */
-> -	if (scanned && !tried) {
-> -		tried =3D true;
-> -		goto retry;
-> -	}
+>  	struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+>  	u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
+> -	u64 anon_scan, file_scan, total;
+> +	u64 anon_scan, file_scan;
+>  	u64 anon_weight, file_weight;
+>  	int size_bias;
+> =20
+> -	total =3D nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE];
+> -	if (!total)
+> -		return;
 > -
-> -	return total_scanned;
-> +	if (anon_scan > nr[LRU_GEN_ANON])
-> +		file_scan +=3D anon_scan - nr[LRU_GEN_ANON];
-> +	if (file_scan > nr[LRU_GEN_FILE])
-> +		anon_scan +=3D file_scan - nr[LRU_GEN_FILE];
-> +	nr[LRU_GEN_ANON] =3D min_t(u64, anon_scan, nr[LRU_GEN_ANON]);
-> +	nr[LRU_GEN_FILE] =3D min_t(u64, file_scan, nr[LRU_GEN_FILE]);
->  }
-
-[ ... ]
-
-> @@ -5212,22 +5244,22 @@ static bool should_run_aging(struct lruvec *lruve=
-c, unsigned long max_seq,
->  	return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =3D=3D max_=
-seq;
->  }
+>  	if (swappiness <=3D MIN_SWAPPINESS) {
+>  		nr[LRU_GEN_ANON] =3D 0;
+>  		nr[LRU_GEN_FILE] =3D min_t(u64, total_scan, nr[LRU_GEN_FILE]);
+> -		return;
+>  	}
 > =20
-> -static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *s=
-c,
-> -			   struct mem_cgroup *memcg, int swappiness)
-> +static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_cont=
-rol *sc,
-> +				 struct mem_cgroup *memcg, int swappiness,
-> +				 unsigned long nr_to_scan[])
->  {
-> -	unsigned long nr_to_scan, evictable, sizes[ANON_AND_FILE];
-> +	unsigned long total;
+>  	if (swappiness =3D=3D SWAPPINESS_ANON_ONLY) {
+>  		nr[LRU_GEN_FILE] =3D 0;
+>  		nr[LRU_GEN_ANON] =3D min_t(u64, total_scan, nr[LRU_GEN_ANON]);
+> -		return;
+>  	}
 > =20
-> -	lruvec_evictable_size(lruvec, swappiness, sizes);
-> -	evictable =3D sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
-> +	lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
-> +	total =3D nr_to_scan[LRU_GEN_ANON] + nr_to_scan[LRU_GEN_FILE];
-> =20
-> -	/* try to scrape all its memory if this memcg was deleted */
-> +	/* Just scrape all pages calculated above if this memcg was deleted */
->  	if (!mem_cgroup_online(memcg))
-> -		return evictable;
-> -
-> -	nr_to_scan =3D apply_proportional_protection(memcg, sc, evictable);
-> -	nr_to_scan >>=3D sc->priority;
+> +	if (!nr[LRU_GEN_ANON] || !nr[LRU_GEN_FILE])
 > +		return;
-> =20
-> -	return nr_to_scan;
-> +	total =3D apply_proportional_protection(memcg, sc, total);
-> +	total >>=3D sc->priority;
-> +	lru_gen_balance_scan(lruvec, swappiness, total, nr_to_scan);
->  }
-> =20
->  static bool should_abort_scan(struct lruvec *lruvec, struct scan_control=
- *sc)
-> @@ -5260,6 +5292,30 @@ static bool should_abort_scan(struct lruvec *lruve=
-c, struct scan_control *sc)
->  	return true;
->  }
-> =20
-> +static long evict_folio_lists(unsigned long nr_to_scan[], struct lruvec =
-*lruvec,
-> +			     struct scan_control *sc, int swappiness, unsigned long max_batch)
-> +{
-> +	int type;
-> +	unsigned long batch, scanned, total_scanned =3D 0;
-> +
-> +	/*
-> +	 * Scan both types with the given budgets; the caller checks if
-> +	 * reclaim is satisfied after each pass.
-> +	 */
-> +	for (type =3D LRU_GEN_FILE; type >=3D LRU_GEN_ANON; type--) {
-> +		if (!nr_to_scan[type])
-> +			continue;
-> +
-> +		batch =3D min(nr_to_scan[type], max_batch);
-> +		scanned =3D evict_folios(batch, lruvec, sc, type, swappiness);
-> +
-> +		nr_to_scan[type] -=3D min(nr_to_scan[type], scanned);
-> +		total_scanned +=3D scanned;
-> +	}
-> +
-> +	return total_scanned;
-> +}
 
-[ ... ]
+[Severity: High]
+When 1 <=3D swappiness <=3D MAX_SWAPPINESS and either nr[LRU_GEN_ANON] or
+nr[LRU_GEN_FILE] is 0, does this early return leave the remaining non-zero
+nr[] entry unclamped by total_scan?
 
-> @@ -5948,8 +6001,11 @@ static int run_eviction(struct lruvec *lruvec, uns=
-igned long seq, struct scan_co
->  		if (sc->nr_reclaimed >=3D nr_to_reclaim)
->  			return 0;
+Both callers of lru_gen_balance_scan() first populate nr_to_scan[] with the
+full unscaled evictable LRU sizes via lruvec_evictable_size(). In
+lru_gen_prepare_scan():
+
+    lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
+    if (!can_reclaim_anon_pages(memcg, lruvec_pgdat(lruvec)->node_id, sc))
+            nr_to_scan[LRU_GEN_ANON] =3D 0;
+    total =3D nr_to_scan[LRU_GEN_ANON] + nr_to_scan[LRU_GEN_FILE];
+
+    /* Just scrape all pages calculated above if this memcg was deleted */
+    if (!mem_cgroup_online(memcg))
+            return;
+
+    total =3D apply_proportional_protection(memcg, sc, total);
+    total >>=3D sc->priority;
+    lru_gen_balance_scan(lruvec, sc, swappiness, total, nr_to_scan);
+
+And in run_eviction():
+
+    lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
+    lru_gen_balance_scan(lruvec, sc, swappiness,
+                         nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
+
+Previously, when one type was 0 and swappiness was between 1 and
+MAX_SWAPPINESS, execution continued to the end of lru_gen_balance_scan()
+where nr[LRU_GEN_ANON] and nr[LRU_GEN_FILE] were bounded to total_scan.
+
+With this change, nr[] is only clamped to total_scan before the early return
+when swappiness <=3D MIN_SWAPPINESS or swappiness =3D=3D SWAPPINESS_ANON_ON=
+LY. When
+swappiness is in the normal range (for example, the default 60) and one LRU
+type is 0 (either because !can_reclaim_anon_pages() zeroed
+nr_to_scan[LRU_GEN_ANON] under GFP_NOIO, or because an lruvec only has
+evictable pages of one type), lru_gen_balance_scan() returns early with the
+non-zero nr[type] still set to the entire unscaled evictable size of that
+LRU, bypassing sc->priority scaling, memory.low proportional protection in
+apply_proportional_protection(), and the nr_to_reclaim target in
+run_eviction().
+
+>  	for (int type =3D LRU_GEN_ANON; type <=3D LRU_GEN_FILE; type++) {
+>  		int hist =3D lru_hist_from_seq(READ_ONCE(lrugen->min_seq[type]));
+>  		/* start at MIN_LRU_BATCH to smooth the rate on gen start */
+> @@ -5307,6 +5297,8 @@ static void lru_gen_prepare_scan(struct lruvec *lru=
+vec, struct scan_control *sc,
+>  	unsigned long total;
 > =20
-> -		nr_batch =3D min(nr_to_reclaim - sc->nr_reclaimed, MAX_LRU_BATCH);
-> -		if (!evict_folios(nr_batch, lruvec, sc, swappiness))
-> +		lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
-> +		lru_gen_balance_scan(lruvec, swappiness,
-> +				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
-> +
-> +		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BAT=
-CH))
->  			return 0;
+>  	lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
+> +	if (!can_reclaim_anon_pages(memcg, lruvec_pgdat(lruvec)->node_id, sc))
+> +		nr_to_scan[LRU_GEN_ANON] =3D 0;
+>  	total =3D nr_to_scan[LRU_GEN_ANON] + nr_to_scan[LRU_GEN_FILE];
 > =20
->  		cond_resched();
+>  	/* Just scrape all pages calculated above if this memcg was deleted */
 
 [Severity: Medium]
-Can budgeting with lruvec_evictable_size() in lru_gen_balance_scan() cause
-lost scan budget and premature reclaim termination in try_to_shrink_lruvec()
-and run_eviction() when one type has no folios in scannable generations or
-eligible zones?
+Could zeroing nr_to_scan[LRU_GEN_ANON] in lru_gen_prepare_scan() while
+get_swappiness() still returns a non-zero swappiness cause state
+inconsistencies across the rest of the MGLRU reclaim and aging paths under
+GFP_NOIO when reclaimable_anon_is_low() is true?
 
-Previously, isolate_folios() in mm/vmscan.c fell back to scanning !type
-whenever scan_folios() returned scanned =3D=3D 0. With isolate_folios() rem=
-oved,
-lru_gen_prepare_scan() and run_eviction() rely on lruvec_evictable_size()
-and lru_gen_balance_scan() to cap each type's budget by nr[type] and hand
-any excess to the other type.
+In try_to_shrink_lruvec() and shrink_one(), get_swappiness() does not check
+can_reclaim_anon_pages() or reclaimable_anon_is_low():
 
-However, lruvec_evictable_size() sums folios across all generations up to
-max_seq (including the protected youngest generations max_seq - 1 and
-max_seq) and across all zones:
+    static int get_swappiness(struct lruvec *lruvec, struct scan_control *s=
+c)
+    {
+            ...
+            if (!sc->may_swap)
+                    return 0;
 
-mm/vmscan.c:lruvec_evictable_size() {
-	for_each_evictable_type(type, swappiness) {
-		for (seq =3D min_seq[type]; seq <=3D max_seq; seq++) {
-			gen =3D lru_gen_from_seq(seq);
-			for (zone =3D 0; zone < MAX_NR_ZONES; zone++)
-				nr[type] +=3D max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-		}
-	}
-}
+            if (!can_demote(pgdat->node_id, sc, memcg) &&
+                mem_cgroup_get_nr_swap_pages(memcg) < MIN_LRU_BATCH)
+                    return 0;
 
-In contrast, scan_folios() only scans zones 0..sc->reclaim_idx, and at
-sc->priority =3D=3D DEF_PRIORITY (or after the later commit "mm/mglru: lift
-youngest gen protection for higher priority" in this series, which caps
-scanning at max_seq - MIN_NR_GENS) it does not scan the youngest generation=
-s:
+            return swappiness;
+    }
 
-mm/vmscan.c:scan_folios() {
-	if (sc->priority =3D=3D DEF_PRIORITY)
-		seq =3D lrugen->min_seq[type];
-	else
-		seq =3D lrugen->max_seq;
+When swap space is available during GFP_NOIO reclaim with low swapcache,
+swappiness remains non-zero while anon scanning is skipped:
 
-	seq =3D lruvec_populated_min_seq(lruvec, type, sc->reclaim_idx + 1, seq);
-}
+1. In try_to_inc_min_seq() and should_run_aging(), a non-zero swappiness
+   causes MGLRU to treat LRU_GEN_ANON as evictable:
 
-When one type has no scannable folios in eligible generations or zones (for
-example, after its cold generations <=3D max_seq - MIN_NR_GENS are drained =
-or
-when its folios reside in zones > sc->reclaim_idx, such as under GFP_DMA32),
-lruvec_evictable_size() still reports a large non-zero nr[type] from the
-active generations or higher zones. As a result, lru_gen_balance_scan() does
-not cap that type's budget or transfer it to the scannable type.
+       if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
+               return true;
 
-In the proactive reclaim path (lru_gen_seq_write() -> run_cmd() ->
-run_eviction()), sc.priority is fixed at DEF_PRIORITY. Once one type drains
-its cold generations while retaining folios in max_seq - 1 or max_seq, any
-round where the other type's share rounds down to 0 in:
+   Because LRU_GEN_ANON is not scanned, min_seq[LRU_GEN_ANON] does not
+   advance. When min_seq[LRU_GEN_ANON] lags at max_seq - 3,
+   try_to_inc_min_seq() clamps min_seq[LRU_GEN_FILE] to max_seq - MIN_NR_GE=
+NS
+   and evictable_min_seq() stays below max_seq - MIN_NR_GENS, preventing
+   should_run_aging() from aging even after all evictable file generations
+   are exhausted.
 
-	anon_scan =3D mul_u64_u64_div_u64(total_scan, anon_factor, anon_factor + f=
-ile_factor);
-	file_scan =3D (u64)total_scan - anon_scan;
+2. In shrink_one() -> lruvec_is_sizable(), a non-zero swappiness causes
+   lruvec_evictable_size() to count unreclaimable anon pages in total:
 
-(for instance, whenever nr_to_reclaim - sc->nr_reclaimed =3D=3D 1 for swapp=
-iness
-between 1 and 199, or for larger remaining targets when one factor dominate=
-s,
-or at swappiness =3D=3D MAX_SWAPPINESS when anon's cold generations are emp=
-ty)
-assigns the entire remaining budget to the drained type and 0 to the type
-that still has cold folios. evict_folio_lists() then scans 0 from the drain=
-ed
-type, skips the scannable type, and returns 0, causing run_eviction() to
-abort before meeting nr_to_reclaim.
+       lruvec_evictable_size(lruvec, swappiness, sizes);
+       total =3D sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
 
-Similarly, in regular reclaim (try_to_shrink_lruvec() ->
-lru_gen_prepare_scan() -> lru_gen_balance_scan() -> evict_folio_lists()),
-when evict_folios() returns scanned =3D=3D 0 for the un-scannable type:
+   For an anon-heavy memcg with little or no file cache under GFP_NOIO,
+   lruvec_is_sizable() still returns true even though nothing can be scanne=
+d,
+   preventing shrink_one() from rotating the memcg.
 
-	nr_to_scan[type] -=3D min(nr_to_scan[type], scanned);
-
-leaves nr_to_scan[type] unchanged. While the scannable type still has budge=
-t,
-evict_folio_lists() repeatedly calls evict_folios() (acquiring
-lruvec->lru_lock) on the empty type on every MIN_LRU_BATCH iteration, and
-once the scannable type's share is consumed, the empty type's remaining
-budget is lost instead of being transferred to the scannable type.
-
-Should lru_gen_balance_scan() bound each type by the size of its scannable
-generations and eligible zones, or should evict_folio_lists() transfer the
-remaining budget to the other type when evict_folios() returns 0?
+Would checking can_reclaim_anon_pages() in get_swappiness() (returning 0 wh=
+en
+anon pages cannot be reclaimed) avoid both this mismatch and the unclamped
+nr[LRU_GEN_FILE] budget in lru_gen_balance_scan() for this path?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022220203.9191=
-1-1-baohua@kernel.org?part=3D7
+1-1-baohua@kernel.org?part=3D14
 
