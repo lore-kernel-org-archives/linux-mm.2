@@ -1,91 +1,193 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF236606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C502606A31E
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 17:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RnZOfomc
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=VE5P8aSC
 Received: by kanga.kvack.org (Postfix)
-	id BB79B6B0BB7; Fri, 23 Oct 2026 13:38:36 -0400 (EDT)
+	id 3813D6B0BB9; Fri, 23 Oct 2026 13:42:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B68C76B0BB8; Fri, 23 Oct 2026 13:38:36 -0400 (EDT)
+	id 358C36B0BBA; Fri, 23 Oct 2026 13:42:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AABE46B0BB9; Fri, 23 Oct 2026 13:38:36 -0400 (EDT)
+	id 223EB6B0BBB; Fri, 23 Oct 2026 13:42:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E45B6B0BB7
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:38:36 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4282160170
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:38:35 +0000 (UTC)
-X-FDA: 85354600590.19.D362355
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5B64B40009
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:38:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RnZOfomc;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E00F66B0BB9
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:42:24 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6411DA680B
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:42:24 +0000 (UTC)
+X-FDA: 85354610208.07.A7E2FEC
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 87B84C0003
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:42:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VE5P8aSC;
+	spf=pass (imf10.hostedemail.com: domain of griffoul@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792777114;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1792777342;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xceb5IU8bfgZgDF8uYnzWT+kl4EVCPQJ5Yl/w9i26mQ=;
-	b=jzT0gCLqdSIryf32W5iyEhiOCfnkrtxdK3Bhb0mwoYR6oCajm+Bzixz4jKMRDpCJHEAIaX
-	Xj64kjFUcJv0jcB/mKuZeV3iiH5ibiBhNf1PFpTGtEbg/cnlUZh6x6O7XvxjpksetyRS0T
-	A7KcblnzC4iJsTGM//sIsJvWArUvN8E=
+	bh=IArJW2D7DC4NrWDvM238weKBxrWboHP+GmGljUSheNA=;
+	b=Ba5ZY6+vPoKi7me6sxxpoU7AJwZwCdPXkDV38OJPOXu96datXxV1tQdPA/OTHuG7gpXZPK
+	J0pxk/LDT79045vMgs/ijBCRbpDAySAX9p9qbXp0IKagMsrz7cQ3Lmf7bAxwSF2xqDRevs
+	h0WTWc91O5APIo1Klz5anSlyz0mbGrA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792777114;
-	b=Fvv4VM1tYH+QBoa3qkM6+A+6Fk9nF2RFknpTs9nRfTLnbS6dCNNu+kYF6Az0FWNCjdHKhL
-	kt/rAoEBBzqW+PScaS7vZnNn6t/sI48Cz70xGkxasXY2hpMj62qvFVVKq2QxSlByoYZzTa
-	KIrQfrpdqUzhQKNWFAf1aly85N/6+UQ=
+	t=1792777342;
+	b=QyeKZWdfbHeOlWVPdk9EkoJsTKO/FWgGqxZ2jE4rtI/rAjLHLNsTT4gG6Px/z0BFyvT88B
+	1yIU6q20PBYs2nkwrci7uFRosxB+bN9dYwN4bZO/+cHMNEsspsI9A8drmSwXnR1H33mvUL
+	0F4GFQdVXaxm7q+Pt+Kl8bjfWXiJNv0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RnZOfomc;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DBC79601DE;
-	Fri, 23 Oct 2026 17:38:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421841F01825;
-	Fri, 23 Oct 2026 17:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792777113;
-	bh=xceb5IU8bfgZgDF8uYnzWT+kl4EVCPQJ5Yl/w9i26mQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RnZOfomcQ1bneuisxRQWTV803c0j4Uv0iVf6zwDBE5tJasoFQ0R6o1jPwnuQn81mY
-	 Rv0Rzbdwc2dE2ieqiYpaiIFihU7zohAuYBvvb/ikXxQ0s3V9oHcWFJH/AdsMLYcwqH
-	 CTH1r5ViQ7gxhzJtxUS46FlsaJlbqXtNL4YWLKlcaQG7gZpgEuifJCO0+RqUj3F0ad
-	 QADrP5zSkSaPUuSSzOdYJJLqPWn3SYxgyeCYequKOGTMq309QOwDioASYJrb84sc19
-	 k60oRW7SpEHENdTpNdFrxcE8LuxNc7NWcoHJN37f6zZCcNzrtveLWeR2xc1ONz6dtg
-	 3sYhDLJ3kRf5Q==
-Message-ID: <sashiko-outbox-183008@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 3/4] alloc_tag: Extend allocinfo_filter to support
- tracing queries
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Abhishek Bapat" <abhishekbapat@google.com>, "Suren Baghdasaryan" <surenb@google.com>, "Hao
- Ge" <hao.ge@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
-In-Reply-To: <f577c773058265f0eb7fe2c10fb6aa4003445a00.1792690544.git.abhishekbapat@google.com>
-References: <cover.1792690544.git.abhishekbapat@google.com>
- <f577c773058265f0eb7fe2c10fb6aa4003445a00.1792690544.git.abhishekbapat@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 17:38:32 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5B64B40009
-X-Stat-Signature: e4jdd1447j7gsgutb3bkgjpz6etx9pfe
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VE5P8aSC;
+	spf=pass (imf10.hostedemail.com: domain of griffoul@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48e0d1c095dso809134f8f.1
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:42:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792777341; x=1793382141; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IArJW2D7DC4NrWDvM238weKBxrWboHP+GmGljUSheNA=;
+        b=VE5P8aSCk4fm+OCEdjSAvVzIlJgHGZSyKojCwwp8x7E1vvcelQ/SWaZx5r0s108gh6
+         ENOj7i17JrhMvAf0D0DkqGqVdQ4NXqJ906OURMcOgpJM7gV2s4VKwZ/GhfMU5MeoEl0Q
+         ZGNNr+hMOcKfOYU0Rs5ZXFCweLQ7O6cKxrmAQMu64CPs+nFfI2WQMTb5JwD3SyU6GPyz
+         9PWZW9dDtP9t/PcjgurwhFcCQ556tV4bqSRRshICIx67NAjWiNoZA3JqJ24bWGUXpiKl
+         pPD4qZuD5YZ7Ij7fpeoam2M7vLr1RFya7FzxjKKrHqVJIy4OzI+oNGpx9DsLa0O/sjj5
+         Su5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792777341; x=1793382141;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IArJW2D7DC4NrWDvM238weKBxrWboHP+GmGljUSheNA=;
+        b=HCv/SPsFLPzA5XtFu/nizxCWl72ndLxo4PsLuy0pJJXqCtGbnNKfT2w5/CQHXBUujJ
+         d3i/ALpIi9a8CdaxYj9NK70w0xlWXu+YEg105UkBXKg9PNAaMyQsi+V7QhNzAGQskK/C
+         kEa/k7zVTYAH8F2wU1h+YKs+28ZjejDh0HWdTwtcKAqWxPdEgras3BoKwrtg9T/YaFU5
+         52ccBCCf1XFwiudKGKoZ1A7TboSGkjRLelUA9BvMMpxx5i7rUvdHJg32wm8b7S3kltvD
+         +xVcKbffpexAD74M//qFIYJyZ7UzjjhT7DKTorlqDlVJoBnjZoLJwrtGriD1vwsdpXuv
+         tYJw==
+X-Forwarded-Encrypted: i=1; AKwUvBzxpqH/BfPMJVcnthSZOqGSiqephulPBdBXDc/xgSR/ZJHeH4RKqyM2roGx10lBDLmxKnSAfKs1FQ==@kvack.org
+X-Gm-Message-State: AFq9FYJLqxgmIr2XKC+kIWqjRMJJffZHBs+gNmI1f89vGZ12+DVyY/Zs
+	52GvBkAmiSMlXygGJcB3hRjRzJahO9Zj0Fe/wpW84PclNUf/xsv7rEIG
+X-Gm-Gg: AYBFou0xc9k+a2jSAhRY48qRIH+fhYFt6KZllKqneoD/MMoJrbMqyUzkELA55jnJL4A
+	xo1a8foCpbytBnO6ndYsBnGGBO8tiFQSvu2H+mMPCKSbZdaPncdzwF0G8AijZpy4nOE1nNuU2Ql
+	oVRmeV6r8h0Ll+nHXdbTF9CgoScupY2ogg4nLtZPvv6QJv7g1Qr7RiFX7tGcQfrofJUeaanVVNw
+	0JDGonvo8lfYA5CP7n0aMOr9I4PIqMoDqVKk3YdQ7rq0eizjaR2pRtLMm6747Rud43gF0IWxcUE
+	oTmTx/rvm0S17aFTdNPe01tZNGftF1ifEruzRVtN+z7xVfksGgPlieRwnsX+Eql0MUDln+blPXr
+	/OHn9D9EN4FTXm3ZAqdzmIrIrFvTZEiOzRvv4AEoY0X9cbUdQreIdizjX/0ZX8bNaHYx/dh3wWf
+	HqGJQpV9D18B+A4QCf2L2Z0atZ0sjkE5aWEjr4iDuihPkZAO9HdHHYe0LvGdLMfDs65/eH9ihkj
+	5ZZ/8uEW93MQmL/ra7DECIfoMHgfgQAXaT3aQq6AzSoxArAQ0aFU8bXmlBIP2YYE80dDJRRLBhb
+	941dWE1Ch2jphVi9X8Hvj0vcRZiPp+5PoYHGhLrI49G/Tzs2/9WNnXAq+LnLJaozTUQjFIcz+Gf
+	XNk3rDYDmjRVeO2jL
+X-Received: by 2002:a05:6000:98e:b0:48d:ea67:79d4 with SMTP id ffacd0b85a97d-48e385af0d1mr4196895f8f.53.1792777340908;
+        Fri, 23 Oct 2026 10:42:20 -0700 (PDT)
+Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3d40c182sm1118217f8f.34.2026.10.23.10.42.18
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 23 Oct 2026 10:42:20 -0700 (PDT)
+From: Fred Griffoul <griffoul@gmail.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Alexander Graf <graf@amazon.de>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baolu Lu <baolu.lu@linux.intel.com>,
+	Bill Wendling <morbo@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	Connor Williamson <connordw@amazon.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Frank van der Linden <fvdl@google.com>,
+	Gregory Price <gourry@gourry.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Hugh Dickins <hughd@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	James Houghton <jthoughton@google.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jianxiong Gao <jxgao@google.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	John Starks <John.Starks@microsoft.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Justin Stitt <justinstitt@google.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Michael Roth <michael.roth@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tarun Sahu <tarunsahu@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Tycho Andersen <tycho@kernel.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Yan Zhao <yan.y.zhao@intel.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	x86@kernel.org,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH RFC v2 31/50] KVM: guest_memfd: Support getting PFNs for stage 2 from providers
+Date: Fri, 23 Oct 2026 17:42:18 +0000
+Message-ID: <20261023174218.54790-1-griffoul@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261022-gmem-alternative-providers-v2-31-5dd1dc6c660a@google.com>
+References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com> <20261022-gmem-alternative-providers-v2-31-5dd1dc6c660a@google.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 87B84C0003
+X-Stat-Signature: hfmbpphzsr765y4i3wyb5864sy6q587s
 X-Rspam-User: 
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792777114-259368
-X-HE-Meta: U2FsdGVkX1/gxZ00jkibLZAm+oA89vh6OjtaZofp58grvpbgbcOa8dHViJ9CLrERr1vn/ryv5atU/7sqXBCC/L5BEumFhG/VYsl+UbDmogLwibXonnnG3JhN1eMFabqyk6e56MLjF+9TMh3igXq/3TKK8LvFXDsNTt/We2HFSvRXwYFohJuz+5/ul/LuD9BBvN0Y9nrFMKjbuMzDLMWRafj7pnCrRmWvyeYB8p4wOwWb8NSVREpM6+hKyfGCWV5CpwHLNqQdmM43BEm7puaartYYGjMqZM1R6TA57Fyrdr07vCUPQ/7sp2q+XH8Pb4Thu/62eiUUAW1tYoFUDUA3RowaSjSuPzNMR2e5NRa0HNyRbRlSrhdlZrcVF3Vro6ebd6fStmBehr7HgAd/LsBZgmr362IeX3F3y1HKg0u3SnQUi6ByNEHCTSmi7LZf6yuPENW6l1snSsL9iCLlmwRNS7wHoN9pfQrhoVAtZXf6tXKCpYQaKini5dKfKDJbWnRIAhXoIj/FhfIDNsxR5YfJoE5H/Exm1EGuHRGKa6diP4SQ/ONTapIGlbbE9bqglMl3TIz4do8QNvE87NbI91F5gfwU8c35bvNn7nTbkdjGiBy85ig+eGxBZ2CcL6M6DNCMYr80jVLdmgete6vlAv7YZILS0os4brpkN8eNgUu+OKpil9Rp3JjWHBC6CkGHDWFAwzZV1n0xlfTZkYF2+MopEXqNEj7LqCwOhaa662isYXl0JnxMde1wB3qeTgZjwXmYflPAOLxqM6xGCRdhxQwtERp8Zw1pvS5OYTCTR1M+NPt1ZVE/5fTw3su9UMM28012+BGBCG3f/lRHzKywRw9apMh145AA4Hqy2XyGcH3JihKG7qcRUpiMpZnpZfzzxcy2DHIGX1pc82MsJTp7yayknNbTTyhglOfvNG8k++MUXpWpPZhdfnNOQzX7W44NdFJkED6GsIaBQphZ5VYjTLi
- URUpkplw
- cJWmMhZwaWsZI+Kqx5XfMBBs9rJvQLYBO57hBh6/qt+AQxVj8D08ST6lbsMbKKP/xxt5kCfA/DFpkhzl6dvsc84NwoG4CdKgUfTsI024QLFTJ4ZtLQOmoe725B2hWkYB04svU9DVAMucZqd9SHs7Ko4c1L91/qZKH0y87Io0lddCNWWefura50xY/ep2rGdrk94yPUDGdGj+74OAbmtpccoh/fcdBXRXjZ2papF/gd1pHuU0+DqFrFBTaLEAWjKL7rXbES8hCKB9TSNRwnFci3xe0/E5lECkXPCWSq5Ir5O02mi3VDsJl8S6PGp2TBJ3NdE60dfDkAa/TE3XymL4Gc88aMqgSoWONS8eZQtuc24MXQjgeiySYQTXfGcYgXMlYxfvOxBU3HwtyDH7QN7/kY/7RIDrDu7TOJxd+jQPLPgOo1Qj5KkUJIsP+OzrHXxpsmiSB0O08U29gjNjAa8JWTdOiOx+nw4uENVbVvhRJrWOCp+CAkXdFnkcRyhKKO6lBs2RiaHgwJG5c5N/fIzbppiQMHSoUL6FHas58GLojpDHGBwYbo84guq4lhmoyI3NLEjRyIP7sy0K4WT3EPJma6cuCX02V3vHn4TCs/BAMw0oipCtGNyPd+2VAstA1XBQN2ZJ1
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792777342-893919
+X-HE-Meta: U2FsdGVkX1+LJ2WcXed8MudG5njI13eCSi/ZEVbVym36DV/T5o9+Bafbj0q0Lmp0r/svnrBMODqiZNoOj4cPlVH3zFGc1o19M+YintzwtTVUJ5xDDXs1KVPwJeTzOGuvj0uzva6e5AilIAbXMhgrUYn9dcy6+FRA0YwoBIudYxi+/NJrdGaW14m0aVef1W2rTkTTV5l36s9J+bp5ZFXZWQDf2qveBamDjrTqDB1I6gKJ/Equw7vuCVvINVv8apjWk0RlKmnotpXnE3QyxWnND4VUEcBQNLIDng1aWtU8LXjYbtzxMDQEZ3/9218Bdb44a7s9wf4NhhopuIuvUpQ7UGeWFHRdNr1coqbY0k6+MJYUfeHay1UooQ5i81JCNLZNAvqlCfJvOn9TreW4chs2YT0L+FiXi09rGk/optDKwp4IqBFrEc6+wvSx6SWBeQGjobpQ14sM4MH2tUF7BwJV6fJLLu2Fi5o0cEMnVbB4C9Jjk6uV9oO8uwQlse6zsoAZoypmZkh19Q72ZMlh2tlwckoh7aTG/0igWXqg7uY+lUjkE1OmMbCjnZpOBCVM/JAOcaQ70TIQ1ZfOKCZ8rDU/u6H8JPlTQT0PxpXSWJvDs5QZu/iDcQaQxarkNRDGJfAZl3kfOhADmLy72Ub1M4aEd0jEU8Uj9pKNFzDxEwnSnHQsaycQAeSFoyUas/66b+78eEzab6lxOAZ5Hi6asKtn2mE4qhwdDEkqd4n1qZytxQeCdUhvmukGpjM5UA7Ukcuj+CqysiWGvSkKfFxbDdsZytYHoEN9AJhKt7f3rsPdph154VsmiKXstDBimzq+18TouGbYXH+uGOpsbqLl1H5/nlrYxzsc8aNWpUiS7nbRQ+Aiksvkj1rg8vsehydwsrBd73ABZS6QZ7inaV9NKiUxp1BzmpSenk57d8mD1G3W0+HGoXBMzUT0H1tMJ1zGavM78+R3yTzcIWoQ5ZsFaZ5
+ WlU7Yf78
+ qU1Rz0UNKlI7rPXtz52moVbnxf8D5zR6AyIcSjEN7aL1Ky850XvTO2W5eCMrAT95/Zyv/+O7v/te7extGfyntjGo+o6SBunwcbx+TJyR489hCgTPT959G03W9Kt+AF96CuEuSwNfty02BanidIN23LmuodulaCBKPr6lmffZ0EvpJB+7IqluZ62cSQrwuE9TElwklvF2N9Tb8AaFXX1SmVYNthnlSNoQk9ECxzFtpUaFhwX/p7I3k1GCutig9wIwMEjv318rbfAMOCgoxaPbd450xvbSNDnkY+giXE1m6/0Wz0VQNM33QeifW5CuzrlHeu23CkoHvLByMykJsNpEPNAFW4869QAy6/aiFJUpmUDz7d9VAXbU3gmMfksPrWtfF1pOI8wb+Kabzf2Ms1bWGTkQCiF5fzIiErofSz3ZpAkQc2ZDqiBjdz6ES7TDQMOINmvPvrujvBKyA97hmHLQTO3vTBtnmPLOBM64IXBwNKlg1qtgFR0THvXDHMselH+tAS3oBjesu7HoWoaiznBzC+Dj+S8kZL2y8hepm/emj+vfmKPNnpM6It8izc5fLbSeHC8iSbRrG2YPkD6Taqzmirshc7XT8Aee0o/UQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,98 +195,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] alloc_tag: UAPI breakage in ALLOCINFO_IOC_GET_AT from growing allo=
-cinfo_filter
---
+> +	if (kvm_gmem_is_pfn_mode(gi)) {
+> +		r = gmem_provider_get_pfn(gi, index, pfn, max_order);
+> +		if (r)
+> +			return ERR_PTR(r);
+> +		return NULL;
+> +	}
 
-commit b1243e6bc8216f5fe9d8786ec8ca3a597c41681f
-Author: Abhishek Bapat <abhishekbapat@google.com>
+The order goes from the provider to the fault handler unchecked. MPS
+reports 0, but a provider with contiguous memory won't, and then a
+fault can map a block that the gfn and pfn aren't aligned to, one that
+mixes shared and private pages, or one that covers a page being revoked
+or converted at the same time: only that page's gfn is marked as being
+invalidated, so the fault doesn't retry.
 
-alloc_tag: Extend allocinfo_filter to support tracing queries
+Clamping the order in kvm_gmem_get_pfn() to an aligned block of uniform
+attributes, and widening invalidations to the surrounding blocks, would
+cover it.
 
-This commit extends struct allocinfo_counter and struct allocinfo_filter in
-the alloc_tag uapi header to report whether tracing is enabled on a tag and
-allow filtering tags by their trace state.
-
-> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_ta=
-g.h
-> index dafcba2f7e2c1..a96054ac22376 100644
-> --- a/include/uapi/linux/alloc_tag.h
-> +++ b/include/uapi/linux/alloc_tag.h
-> @@ -38,7 +38,8 @@ struct allocinfo_counter {
->  	__u64 bytes;
->  	__u64 calls;
->  	__u8 accurate;
-> -	__u8 pad[7];
-> +	__u8 trace_on;
-> +	__u8 pad[6];
->  } __attribute__((aligned(8)));
-> =20
->  struct allocinfo_tag_data {
-> @@ -54,7 +55,8 @@ enum {
->  	ALLOCINFO_FILTER_INACCURATE,
->  	ALLOCINFO_FILTER_MIN_SIZE,
->  	ALLOCINFO_FILTER_MAX_SIZE,
-> -	__ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
-> +	ALLOCINFO_FILTER_TRACE_ON,
-> +	__ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_TRACE_ON
->  };
-> =20
->  #define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
-> @@ -64,6 +66,7 @@ enum {
->  #define ALLOCINFO_FILTER_MASK_INACCURATE	(1 << ALLOCINFO_FILTER_INACCURA=
-TE)
->  #define ALLOCINFO_FILTER_MASK_MIN_SIZE		(1 << ALLOCINFO_FILTER_MIN_SIZE)
->  #define ALLOCINFO_FILTER_MASK_MAX_SIZE		(1 << ALLOCINFO_FILTER_MAX_SIZE)
-> +#define ALLOCINFO_FILTER_MASK_TRACE_ON		(1 << ALLOCINFO_FILTER_TRACE_ON)
-> =20
->  #define ALLOCINFO_FILTER_MASKS \
->  	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-> @@ -75,6 +78,7 @@ struct allocinfo_filter {
->  	__u64 max_size;
->  	/* filter criteria only; see allocinfo_counter.accurate for actual accu=
-racy */
->  	__u64 inaccurate;
-> +	__u64 tracing;
->  };
-
-[Severity: High]
-Does appending the tracing field to struct allocinfo_filter in
-include/uapi/linux/alloc_tag.h break existing userspace binaries calling
-ALLOCINFO_IOC_GET_AT?
-
-While struct allocinfo_counter consumes a byte from pad[] to keep its size
-unchanged, growing struct allocinfo_filter by 8 bytes shifts the data field
-in struct allocinfo_get_at and changes sizeof(struct allocinfo_get_at):
-
-include/uapi/linux/alloc_tag.h:
-struct allocinfo_get_at {
-	/* inputs */
-	__u64 pos;
-	struct allocinfo_filter filter;
-	/* output */
-	struct allocinfo_tag_data data;
-};
-...
-#define ALLOCINFO_IOC_GET_AT		_IOWR(ALLOCINFO_IOC_BASE, _ALLOCINFO_IOC_GET_=
-AT,	\
-					      struct allocinfo_get_at)
-
-Because ALLOCINFO_IOC_GET_AT encodes sizeof(struct allocinfo_get_at) via
-_IOWR(), and allocinfo_ioctl() -> allocinfo_ioctl_get_at() in mm/alloc_tag.c
-matches only the new command value and copies sizeof(struct allocinfo_get_a=
-t),
-won't userspace binaries built against the previous uapi header fail with
--ENOIOCTLCMD (-ENOTTY) when invoking ioctl(fd, ALLOCINFO_IOC_GET_AT, &param=
-s)?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1792690544.gi=
-t.abhishekbapat@google.com?part=3D3
+Fred
 
