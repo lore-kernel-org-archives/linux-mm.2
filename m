@@ -1,92 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E409606A325
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96C1606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cT6hVZUW
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=j5Mye+ph
 Received: by kanga.kvack.org (Postfix)
-	id 90FAD6B037C; Fri, 23 Oct 2026 10:01:14 -0400 (EDT)
+	id CC2236B0384; Fri, 23 Oct 2026 10:05:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0706B0381; Fri, 23 Oct 2026 10:01:14 -0400 (EDT)
+	id C73C26B0386; Fri, 23 Oct 2026 10:05:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ED4E6B0382; Fri, 23 Oct 2026 10:01:14 -0400 (EDT)
+	id B3A9E6B0389; Fri, 23 Oct 2026 10:05:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F56D6B037C
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:01:14 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D0F2D1A040D
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:01:13 +0000 (UTC)
-X-FDA: 85354052826.27.69ECD8D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 080111A0019
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:01:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cT6hVZUW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 885766B0384
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 10:05:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A7A11A041E
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:05:44 +0000 (UTC)
+X-FDA: 85354064208.13.4EAB939
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 24C5C1C0018
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:05:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j5Mye+ph;
+	spf=pass (imf18.hostedemail.com: domain of krystianmkaniewski@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=krystianmkaniewski@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792764342;
+	b=MOZ7y4AdB2TN9Phmo0aqr1xApeX+csZFxLuSe2qG/7RuUQ+IzcEbed5PbjgGchTxea5v2Q
+	fqu+KU88gen/QXG/hQBjNLAHRIa+MsiqlXW2tLzNV6PBdFHn4GLp7C4y/dn+xnNXRbNZJq
+	xllss4Hy/LuCCJouXpm5iwO0dheTeD0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j5Mye+ph;
+	spf=pass (imf18.hostedemail.com: domain of krystianmkaniewski@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=krystianmkaniewski@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792764072;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1792764342;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HP9Ra1b1eXP/Ub6Btog3ZP8dK/E/DDVXsJ9haEXY8dU=;
-	b=r839awj0NX451klnzc70VUUwTak01YKo9GN+2k4X914y0Ts8z1R26vmxvLFJFXMqBrnGdH
-	4tN5eS1M9pjJwXG6abHkO4HN+3Q/jT0bGgrbr87DSOFpSKAPs853P1D1e07wS1SfM0TF5k
-	r1a1vQN5FQnPtktbU8E4BaLQUDwIIHs=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cT6hVZUW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792764072;
-	b=y3wEne2R0IZ/QM2mRRq/Td0bxiguW3YHNS868ZAl5fB1D1QeNcpmQzJZUK4iyqcmLZWPpW
-	32G0TgMgwGU8RzgmF5CRj66kVParFFNx+zRbCpEYct9vht4gkSgnXp1n3zDii44NJ3bGF3
-	p2s5Y3IrG3R0UWfsirXi83gEIWEGBEk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1F78C43E8E;
-	Fri, 23 Oct 2026 14:01:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAA31F031E6;
-	Fri, 23 Oct 2026 14:01:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792764071;
-	bh=HP9Ra1b1eXP/Ub6Btog3ZP8dK/E/DDVXsJ9haEXY8dU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cT6hVZUWjoCBzeWOU1kAHJWoD5SSQjiqy8FHTJUNl5JmKFhLTD9sgxtdCCNT0ooVW
-	 DylpKsBnOwKn59nm3Z6HhlSr83zyoYFlAnIiMOkBSJEUtHyQPWV1IoVGoHqOjsMC/W
-	 jz4FPwofk2aVrSPG6EQwE6tHbuh/ecQl+oMXlRKX0fxc2su/khX5IncuuyigKR9rCm
-	 pyR7y7LNNiDb5eRE0up958aHjQ0c5llbqgB1EAglyUaDAecDV7x/Jf0bvrHkuZbtHE
-	 X8+f/qUvexJEMclRxAQcNzlUqTVgxns9JGqAbazvCR7Ak5g8WYxzLC7QyjE2qJwjDr
-	 uxJDtUI8OgTWA==
-Message-ID: <sashiko-outbox-182858@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] mm/filemap: read ahead downwards on descending
- VM_HUGEPAGE faults
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Qiliang Yuan" <odys.yuan@gmail.com>, =?utf-8?b?TWF0dGhldyBXaWxjb3gg?=
- =?utf-8?b?KE9yYWNsZSk=?= <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Vishal Moola" <vishal.moola@gmail.com>, fujunjie <fujunjie1@qq.com>
-Cc: "Roman Gushchin" <roman.gushchin@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, linux-mm@kvack.org
-In-Reply-To: <20261022-bug-mm-mmap-readahead-descending-v1-1-6d08b34862f2@gmail.com>
-References: <20261022-bug-mm-mmap-readahead-descending-v1-0-6d08b34862f2@gmail.com>
- <20261022-bug-mm-mmap-readahead-descending-v1-1-6d08b34862f2@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 14:01:10 +0000
-X-Rspamd-Queue-Id: 080111A0019
+	bh=BUJVWluZQW/qDMSCSzMsGJRAgytWrmfDDzAkl2tvmys=;
+	b=SE8F8XFJ9xbcONPm8RdF8NtPNHHbNnFlPz8P9+luGl2OuJzJYgdrov7u0/woNxe3IqBJwa
+	YRIzJhzcCIe1o8ofXsx+SZkEtfadIcmSl1HIJsnVGBlrYjOfXwP07faYRMAqg5d7El5Eg3
+	C3713bE8g7vhiLWN/tMANXjiyDLBlLY=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c43373ae89aso149117866b.3
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:05:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792764340; x=1793369140; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BUJVWluZQW/qDMSCSzMsGJRAgytWrmfDDzAkl2tvmys=;
+        b=j5Mye+phnF8zEmkv7OQi+zlUc7ouLtxbvV9HveZcJl+Bf+dmPWuuQMtz23s5M8prIh
+         7LHbbIpyfWCLjKYhdSF/Wi4XZU7oLp/SI4vyDcci8wL9482NVX6fv7YSscneS3HwuWBP
+         MEs0FMV6PUSCtnalTi/i6NsTAMv5VOlt/TGnYhGVWMf/pCAjfNWLEqnoKLtCkRwxsogd
+         Zvm8W3yYnP8/JJpOwxWBMnftliRTXjrUeTh1YOm+TTMWW1H9PvMI9ntSqaj6fIY3Zo3P
+         mxu3wCTuYDnQVH+aqsL5IYdQkHfE15dlS8CREuLvLsoMZk3IrnrGg5oZ5nECZfMY959V
+         4FZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792764340; x=1793369140;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BUJVWluZQW/qDMSCSzMsGJRAgytWrmfDDzAkl2tvmys=;
+        b=MoX07lCKES8RAaYsVLHs7JvE0qWeRjLaRVV5SxxNwNkAb0pO4Xcj7ehBuJye1clkPx
+         f76IaN+rcyuJNDL6Z0cu7pJjHrA6mC0T+qvXXGc3vAX1MQL/Mb+9m9IPcTHfcAH3pPmW
+         7FRjviS22i9lfJy8RUuvNJGq2kpTAWY6ZRa2b7MJ7IlkrM/2L5/SPyATtJ2fzVCxDdyL
+         pw8u9O7DkqGRsbeLaHaOKOe3OS/zl9ifbOM0soB3pBcvNFbpxvhkKiaa4+6Ejn3mh3ky
+         ILF+i2MQVcuUPfVMiaLaWKTTpmSlWas6q5ri3ZyCH8fkdHDtvn6uVLMbMUed/TsLpcI7
+         6x6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzFyq7eutUtmTIEkcQtuMZthbpNKdRm/9U5xdgct9ncAT8BMd9oA6gz8LzQZYwm756t3FLxzZ4drQ==@kvack.org
+X-Gm-Message-State: AFq9FYIUXz3L2qitbH4rO+y9nqKiZP0Po03IlcEET011VFlx+AjUVICU
+	OlK8ZPy32rGLEh2EJR9uCNffedJfam1A2VtT3tgppcr99AMdKy2oRncZ
+X-Gm-Gg: AYBFou3artH59y/Y8Rf58nOqgnVfvlLA2AITzL7Mu/wNi7p+BPvxeH2GGBrXlNBxZYR
+	OonToPedDSYVYQbbfqOGdhoOGmFWzoJcC+D0qcIgHCF6ee01QSSQcrzSM+NJe2rXG+2eOIteHJN
+	Z696cWBE82mXBK1ibZxgPnWZDioqmEj73rR7ctCh65oOWCHiXkhdxbkPn9k45u29LXwbB1hZlG0
+	qtQVZxEUdDkcSDEUKQ9wAs5kaYfHi5D2/u2UwrT3pVq8XzpUAM2OZOItVOKDmIrVSJKkzEMMjT/
+	OWN3rKKzROu4e/sbW/sI55CV8yOPqiNSir0sEEwTbRNeclDjgDb6pfUEFSfigTj4YeWBrKQ/OoC
+	I0tTIL8IYzY5Um7e7Lj12BrrFdgbOBPH1dNZdoAZw6V3xpKBz/Soi0VIcH6Csu6uLrdsTGnyGmw
+	aQS6b/99B+vj0wzTZeI4VYHDJiXk+WOgwEXKEawU2fyU9s+nndI2bzkfYX+oz1pFW6PtNN5N61W
+	bTY2ftzUY8whNOUPVwAFl3ipUmKBjED2hpg+IqlOHMHVRoWzBciU/olRTBlEJVJjLS52oWfkUhD
+	XcHcz81Kj6RD7xgsHkn3+zycv2Hu7geMhzM6E73yU7+xC3nGCIwFtnRNGeWVOF6VgQTjZdmDMra
+	hdQsfbvfIBl67aPmVSFA/YNaBncv4NmVwIloMb9AR+Y8/p69Zr1BZUZfjhZHvLWsGUHd6GefFqP
+	hNcw2SsImXfDftsAg=
+X-Received: by 2002:a17:907:930a:b0:c41:30be:4f84 with SMTP id a640c23a62f3a-c46a90ae916mr376211766b.9.1792764340190;
+        Fri, 23 Oct 2026 07:05:40 -0700 (PDT)
+Received: from [192.168.100.100] (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46b8ba181esm4707666b.25.2026.10.23.07.05.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Oct 2026 07:05:39 -0700 (PDT)
+Message-ID: <7a212208-74f2-4d79-8ca2-a1502d0e0a1c@gmail.com>
+Date: Fri, 23 Oct 2026 16:05:38 +0200
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] kernfs, autofs: fix pipe lock cycles through sysfs
+ stores
+To: Ian Kent <raven@themaw.net>, Tejun Heo <tj@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>,
+ driver-core@lists.linux.dev, autofs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+002fb7b2d0bc53bf7e75@syzkaller.appspotmail.com
+References: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
+ <cover.1792577179.git.krystianmkaniewski@gmail.com>
+ <649966b83b39fcdd25e892fc3c6732a1@kernel.org>
+ <22d41f2a5546d3bc90a1b3ad24ed3656588a854f.camel@themaw.net>
+Content-Language: en-US
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+In-Reply-To: <22d41f2a5546d3bc90a1b3ad24ed3656588a854f.camel@themaw.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ykecakmuj8tuo6cjbc76aa8rzkajc7kq
+X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 24C5C1C0018
 X-Rspam-User: 
-X-Stat-Signature: twsgd4y4aaf5qosggte8znuart3jjcij
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792764071-381619
-X-HE-Meta: U2FsdGVkX1967iWvb9EG4hP9z05qWH+orlr13Mhf9iLCmOfSpCMLRlseRgHQBIo45r4BfJHKTAPvrQu75jiWb0nc+pG8eL6tMF1lftXr+GzWb23h4H9FRAbv2MzQi+G16pI4UTP8Po9JXSG9pf3xcZlOyyxKLwrAknWs/6BTTBe4Ph3HKEG0x5QjkYK/HTHQriaK4ouo5aGEdol8el3b8jOyW/zuU700awxislFEwxA51ZpQUihwDUoAXsQCVq5D03xIr6qIP/qsIaTfRKd2zlJXQQe7uxC7bZ/NoBlDjGj0HXWbK5q2x4lAIHJurBxfbKjR5PeZ+qc6zDjcfp4GaJLak9C7JlLf2E8xcREqLvnNmRsOqxDk5CuKCGuKaWdyyK0EcuLRyTzlAv3ezbhf3H+7ztqZwC8eEGZTiDnRIVCEbHbFrjPS0YcwB4s8TkeZwBu+p75iE7YieAnrg3rJyCBLYcbdPyJZk/FildTJMiC5q501xE/jW0e8Vh/vLD1zHF4NC4wlO+6q43dkwbgO6QQuzukX7LK2yrLlckTV/f2fYF0TzZic5nfdRz8yHtfo7V3B2Qelis9XE7dt/h50PUxO2s9b/mKw01USzV8Lk9aHkB0OARFpn4XvmObK41Zx8V0Dd35vjrbfb2HmnLdtN1jSG0b+MHQ5iAsBHBENQC8137x10NXoOa6hvFcARVQ3QdcpcBLMxO3FXU3WxJpe7KHFlL9Pt6+X8Eo+v33zzr6mKsettm1qoI/ux+82glOAyFyoRMsSrBLpXx4VzqeUQExEYr9uvIfe+zx33DHTrZG5FGINjt2PEaZao4W0ek+/BKJ7QxNOKLt7H5NZIl4f+4ROaYvNmX8ysmn1bku/eck+StCapiiUCg9n5ITQmrLLPTg054uXSVEqcEcec/QMeht1DpJsk87vaPfOnuAsfYg8WdHzS3UU6hJLmKI3x5hk1NX46MnwNaIEstv6iW/
- 6HP8BOkG
- 1EktBSp3UHrGa6mn3AY+5FC1q3pP5dEJhC25e6XZfFbJGs5n8Q12IDt+etMLzfh7J68Um+AT+wKl5es4E4ewOU4KbuEYKrlqZS2rvEWb6agoYywS9HtrzjT1s2aqJLr35pd+pzuTs0fJNMSCcUd8sKYMhvXPeyJMNzyT7Lwx/RHR1VC2s2hoIs8CfKWXrKBvWmynxFb5EUH+GrPb+b+5NQ2qs7qkbwlatghdjUi9yTDbZH3g4v0KsVJsT1siXgROMoOYhFFRWwJttzz8/PdTSVgWlj5DR3x+CMDilh6SfOTd0V8RMuWXvyabdWQLciYKl2vIezIXlZtjciuS42ZL0QVnctQFYM9pkS97nwdUSxUc6TJzdQj75NMnVBh1zRJVtDFrXSSErHBrSkkyX/138NZll7vQh0t6pWKrYMQJlj9BNXosJsj7O5IrQzDoYqb2Z1E14qMN79iAKoBrcoCsdoaMnhBV0Vw8nNzH7pnOsqwxZIEo7/VECsSPJL58sxBQ5WGabznjDeIBlowyeVs3o738USkriLMC/sr7Ox20yzUX6jKCLLPc0+NHsRnOo+KwtwqKeSwpAS3yy7TwdRcXIxuuAwFoYBj1YIdFuX84rKeQSd0IYTXSUOJmZoOQcQqDg+vcE4sxpL9ffD90SNciQzFVJRA3BSrBwJHhpHnE0pqftm9lYIU2bCKyyreYc3TxWTHLEUnZ14w0nWVZPDDJt/jtfZh92WtN8Z8TyeDTQflG9MiaraiPPd1oVQA==
+X-HE-Tag: 1792764341-241652
+X-HE-Meta: U2FsdGVkX18opggF9HULNUIUUUu9XFbjuI6jrs41Mcfx/4stoDvJhxdsIXpAyDbVublq5NmFI96zS8GlAzzkyIVJ0a+nlaObBUkJOVr+Lo6/EGTtvfLCYFCZ5kcovhqEOlDtU4EJYkOruJ7xNvKcZv9yo52tQiDT4CwtpisGBiT33+KfPbm+DHlJ04ckYqDOGl/ClOYvvEdu0tlrwqTiHmpNXyPcOmq9qARGiz7vzBD0uZDlkZtoFQG4/q1nbN5Cn/8pyn/lCOxjstYQ2Q2PNsMWFtvIxTo3KaEM05UcmX5cFb4+mDcZtPta2lvGQXdfx6TIOjWvlEqysH6TdgxElZg9fZzHbAnHSkF2pS4A8AzheI51UlXB2fnn3DnSnDPQ1eQ6OnfbwIiVUVK49LF+JjvsKakCVvYKtGRCLWffhPHDk6mEf9L7tTxrtMU3xPVzbM7Rb7zkLFnbavJA5Tgr3OwzNK0hBlRPrKKFVL9tnCS2yk2LltlqaSbwrE6V/nPNVa98usYi5qq0sgMj5sRUc0lGt64kR4zMwuWQCgnEUOHkyTifk7jehVKMafGG11/OmsDMa+2z/k5b0DC6msqZa2w9m91I3++uTH9eezIEvaOG41xKKSpk5CM3742UGTOx/RLPEp2eb7ZZXxPKnuhQCinPoBSN1OzIbCEvYO+M8GdyikHpczoF7SxagnsUjvJ07CO4ny9OGnotU3CxjT7cZNoAS7QUspMCTUhBnSUkHX/pmXS8P0LlQtiBuyDujEK+nM1IxzhtitT0TnAVK0mOpfbyeKkwv11JzIe09iHikMPBtYh2/bOXcOAyNo8NCZ2GL/guTb4ZGbh8kjPh6r9KX0NQvGpr2CeZ1Qy8mE69lJCp1DctlN/eab9fhCZ8da7H2seeBfsxvnIWfHImz4zs3D/VvdzLlLdlvkKt4rxdMC24fcKap7XZjdcrbCYypOKD6jUpeskuEUZ9NpI2nNa
+ bYpp6Z9z
+ j2kGWEONUNbiGOu/dbdF+vyk9DVHdCgvlA6LCXAG8n0dKrxAR0v7skTwXag3hcYGvds5SCK/VOFL/OtSZ2EWTCh/496WXg1Jh8Xp8D7ep09kphkWflfyECm6qKNBD1r70ycRz//ceswKt5pOI2KgXx90EVOzUN8rc9GvYjG+Qg0LEfwh9yGcKaXTLBFaBr/Xhijbw3Vz4H1AwP2GdElh3auLTEPZc6CrbMTAhRLXo9lFswOVu+OrJukEAwwRqIggr64ngSmQjH9O3biOE1usQmTh16shgkylQDF9SCVsWY/cnvWtzN1u3EOBDLAQARLFC/zDyy0Glj09eHmMfZCqbLxyjW9c9jCI7DkaTNxys9AwIOwxvWm2O/WJ4IiOX/CtPWCC/h0ovskLZ1Xr5qlECcyO+TsDBcToRhbodK546zvTSdv7gnPTQRrNbXz1xnJljYoRN3DA1fsVJ7EN0WIwWgFT7B73SAvCyh35XI59iGU5Tv+ZoEpGT946kmJ/1Nchq3GvIF1B/mKWUDrWjMRbEJNBtJvPlVhhRYkQ7gUe+BL/Nkmbqk1IaLVwlT8Eh2YYBDw+B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,124 +141,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm/filemap: descending VM_HUGEPAGE readahead falls back to order=
--0 if lower folio cached
---
+Hi Tejun, Ian,
 
-commit 137f4cfedf4000c009512ee87ca8b229bcf35fa5
-Author: Qiliang Yuan <odys.yuan@gmail.com>
+On 10/22/26 04:46, Ian Kent wrote:
+> On Wed, 2026-10-21 at 11:48 -1000, Tejun Heo wrote:
+>> it doesn't make sense to change the locking scheme for it.
+>> Can we just disallow splice on /sys/power/resume instead?
 
-mm/filemap: read ahead downwards on descending VM_HUGEPAGE faults
+That would address the direct case, but it would not make this report
+go away. The lockdep report combines two separate operations.
 
-This commit updates synchronous mmap readahead on VM_HUGEPAGE mappings to
-read the folio below the faulting one when the folio above is already
-cached, and counts PMD mappings of the faulting address as mmap hits.
+First, the reproducer splices a pipe into the cgroup v1 devices.deny
+file. This records:
 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 00fd89cf6f550..8a7d1238ae75d 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3319,6 +3319,23 @@ static int lock_folio_maybe_drop_mmap(struct vm_fa=
-ult *vmf, struct folio *folio,
->  	return 1;
->  }
-> =20
-> +/*
-> + * Whether a miss at @index, right below @nr cached pages, comes from a
-> + * stream that runs towards lower offsets.
-> + */
-> +static bool filemap_descending(struct address_space *mapping, pgoff_t in=
-dex,
-> +			       unsigned long nr)
-> +{
-> +	void *entry;
-> +
-> +	if (index < nr)
-> +		return false;
-> +	rcu_read_lock();
-> +	entry =3D xa_load(&mapping->i_pages, index + nr);
-> +	rcu_read_unlock();
-> +	return entry && !xa_is_value(entry);
-> +}
-> +
->  /*
->   * Synchronous readahead happens when we don't even find a page in the p=
-age
->   * cache at all.  We don't want to perform IO under the mmap sem, so if =
-we have
-> @@ -3392,13 +3409,20 @@ static struct file *do_sync_mmap_readahead(struct=
- vm_fault *vmf)
->  		fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
->  		ractl._index &=3D ~(folio_nr_pages - 1);
->  		ra->size =3D folio_nr_pages;
-> +		ra->async_size =3D folio_nr_pages;
->  		/*
->  		 * Fetch two folios so we get the chance to actually
-> -		 * readahead, unless we've been told not to.
-> +		 * readahead, unless we've been told not to. A stream that
-> +		 * runs towards lower offsets gets the folio below.
->  		 */
-> -		if (!(vm_flags & VM_RAND_READ))
-> +		if (!(vm_flags & VM_RAND_READ)) {
->  			ra->size *=3D 2;
-> -		ra->async_size =3D folio_nr_pages;
-> +			if (filemap_descending(mapping, ractl._index,
-> +					       folio_nr_pages)) {
-> +				ractl._index -=3D folio_nr_pages;
-> +				ra->async_size =3D 0;
-> +			}
-> +		}
->  		ra->order =3D thp_order;
->  		page_cache_ra_order(&ractl, ra);
->  		return fpin;
+        &pipe->mutex -> &of->mutex
 
-[Severity: Medium]
-What happens in do_sync_mmap_readahead() when a fault occurs on an uncached
-folio_nr_pages range in a VM_HUGEPAGE mapping where both the upper neighbor
-(ractl._index + folio_nr_pages) and the lower neighbor
-[ractl._index - folio_nr_pages, ractl._index) already have cached pages in
-mapping->i_pages (for example, faulting on an uncached hole between two
-cached regions, or a descending scan reaching a cached lower region)?
+It later uses a normal write() to /sys/power/resume. That records:
 
-filemap_descending() in mm/filemap.c only checks xa_load(&mapping->i_pages,
-index + nr) and does not check whether the lower range already contains
-cached entries, so do_sync_mmap_readahead() shifts ractl._index down by
-folio_nr_pages before calling page_cache_ra_order(&ractl, ra).
+        &of->mutex -> &sbi->pipe_mutex -> &pipe->mutex
 
-In mm/readahead.c:page_cache_ra_order(), the allocation loop starts at the
-shifted lower index before reaching the faulting range:
+There is no splice into /sys/power/resume in the reported sequence.
+Disabling splice on that file would prevent some direct deadlock
+cases, but the first edge of this report would still come from
+devices.deny.
 
-	while (index <=3D limit) {
-		...
-		err =3D ra_alloc_folio(ractl, index, mark, order, gfp);
-		if (err)
-			break;
-		index +=3D 1UL << order;
-	}
-	...
-fallback:
-	if (ra->size > index - start)
-		do_page_cache_ra(ractl, ra->size - (index - start),
-				 ra->async_size);
+A complete restriction for this attribute would also have to cover
+both splice directions. With an O_RDWR open, a splice read takes the
+output pipe mutex before the same of->mutex. Another thread can write
+through the same open and reach autofs in the opposite order.
 
-When ra_alloc_folio() fails with -EEXIST on the already-cached lower folio
-at start, the loop breaks before reaching the faulting range and falls back
-to do_page_cache_ra() -> page_cache_ra_unbounded():
+Kernfs splice support is established behavior. Commit f2d6c2708bd8
+("kernfs: wire up ->splice_read and ->splice_write") explicitly
+restored it in v5.11 after the VFS stopped providing the implicit
+fallback. The pipe has been locked across ->write_iter() since 2014.
 
-	folio =3D ractl_alloc_folio(ractl, gfp_mask,
-				mapping_min_folio_order(mapping));
+I agree that changing serialization for every regular sysfs store is
+too broad for this case. Before preparing a v2, I would like to
+clarify the intended scope.
 
-Doesn't this populate the faulting VM_HUGEPAGE range with
-mapping_min_folio_order(mapping) (order-0) folios instead of a thp_order
-folio, preventing PMD mapping of the faulting range?
+> Not only is the description hard to follow the example is flawed
 
-[ ... ]
+You are right that the cover letter was hard to follow. I should have
+described the two operations separately. The automount itself uses the
+normal empty directory case.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-bug-mm-mma=
-p-readahead-descending-v1-0-6d08b34862f2@gmail.com?part=3D1
+The reproducer creates a detached indirect autofs mount with its own
+daemon pipe. It changes its current directory to the root of that
+mount and moves out of the daemon process group. It then writes the
+relative name "0x0000000004000921" to /sys/power/resume.
+
+resume_store() calls lookup_bdev() on that string before trying to
+parse it as a device number. The pathname lookup therefore starts in
+the autofs root. The new negative name triggers the normal mount
+request for an empty indirect autofs directory.
+
+The dentry whose ->d_automount callback runs belongs to autofs, not
+to sysfs. There is no autofs mount on top of kernfs in this
+reproducer. Kernfs is involved only because resume_store() starts the
+pathname lookup.
+
+The change which made this path possible is 1e8c813b083c ("PM:
+hibernate: don't use early_lookup_bdev in resume_store"). It replaced
+early_lookup_bdev() with the normal pathname lookup in v6.5. That is
+what made autofs reachable from resume_store().
+
+> The other possibility I was thinking about when I saw that report
+> is to disallow file systems that don't make sense for automount.
+
+I may be misunderstanding this suggestion. In this reproducer, the
+filesystem which owns the automount dentry is autofs. A restriction
+based on the filesystem owning that dentry would therefore see autofs,
+not kernfs.
+
+The lookup from a sysfs store is also not unique to
+/sys/power/resume. For example, with CONFIG_BCACHE=y,
+sys/fs/bcache/register also resolves a user supplied pathname.
+
+The exact reproducer records the lockdep edges with different pipes
+and different open files. It does not deadlock on those mutex
+instances. After sending the request, it waits killably for a daemon
+reply that never arrives. Related setups can deadlock when the daemon
+pipe itself participates in splice or tee.
+
+Given these two separate paths, did you intend to prevent only direct
+splice operations on /sys/power/resume even though the reported class
+cycle would remain, or should a replacement also eliminate the
+lockdep report?
+
+A per-attribute splice restriction alone cannot do both. If this does
+not justify new kernfs infrastructure, I can leave it alone.
+
+Thanks,
+-- 
+Krystian Kaniewski
 
