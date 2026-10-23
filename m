@@ -1,96 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4EF606A32C
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 02:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8284C606A319
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 02:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nzA2GmE4
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oD3TX5d4
 Received: by kanga.kvack.org (Postfix)
-	id 1DD0D6B0AAF; Thu, 22 Oct 2026 22:32:14 -0400 (EDT)
+	id 8947B6B031B; Thu, 22 Oct 2026 22:32:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B4536B0AB0; Thu, 22 Oct 2026 22:32:14 -0400 (EDT)
+	id 86B7A6B031C; Thu, 22 Oct 2026 22:32:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F1436B0AB1; Thu, 22 Oct 2026 22:32:14 -0400 (EDT)
+	id 782566B031D; Thu, 22 Oct 2026 22:32:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E11256B0AAF
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:32:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A6A46160201
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:32:12 +0000 (UTC)
-X-FDA: 85352316504.21.75FED92
-Received: from mta1.migadu.com (out-245.mta1.migadu.com [95.215.58.245])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 650F1A0002
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:32:10 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nzA2GmE4;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.245 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792722730;
-	b=1XhrDKUun1bWUBps+guHxrbIsbk3k2mms6ypqOn47UblbacdJg8yzzktHCVjGAkKG2bC3u
-	kiwnynep8M7Cd8JEtZ20gebuhwr1XG5lrY9SAfItJOtPiBNsJQEhOk3Rr+/C5L4PZM7dst
-	oP7zUWhUr4rTNZLDmX+5zleh+235a3c=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nzA2GmE4;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.245 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D0C06B031B
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 22:32:43 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA5EEA01F6
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:32:42 +0000 (UTC)
+X-FDA: 85352317764.17.53D665A
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9DF5020008
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 02:32:41 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oD3TX5d4;
+	spf=pass (imf31.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792722730;
+	s=arc-20220608; t=1792722761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r7c3swfnj+SAiJYhFBwLA8X/WD+blCLvWAWJF6ltOFs=;
-	b=ZUH4ROWP+wfpPK30KpJ/Ouu0WgW7igJamYIqTervMPCGzaLdj9Xig5HyW29vxY5QvQe8Fk
-	CEW3qiPy0LLGsGegQDstOgjQ66NQoVfYa6Fw5Ec+PKoC3e3Yno9PwcHrpEKg9iT2BtDI5c
-	jxarAUr3pTMSnndxQX6xUrcr5vUFaDQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Kl4/f0wED6XjvWDZ9iOMhZfzmTjfloXcrEiM0IjOl9A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792722728; v=1; x=1793327528;
- b=nzA2GmE4Yh/G+hp15F1INaQ8plk0J9EG26KOPWZNUJzG2EKZfo00IeFbc+OMmoF+Enswn2Kr
- oCsefht8iJ372OlQ3fHcMiY5NtNuYhvhN/3Qw1RylNDFF+JzAQWqH+bhYuMPHwDMckBQRm2dPrX
- E4LJMcZddlMBGt1Wzx4Xi4vQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4ce4a1801382ae1c;
-	Fri, 23 Oct 2026 02:32:08 +0000
-X-Mizu-Trace-ID: 4ce4a1801382ae1c
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <a340ec5a-c50b-4fa3-b325-52dba86f0015@linux.dev>
-Date: Fri, 23 Oct 2026 10:32:05 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OiktTo8xSBry4ZhOvp6SkAXw484O9QanmGqTKsmqRQU=;
+	b=VAWoGf3lZeD4iy7NZBxCrJZ+5pDtCn8mK2hUcqPiHjdy6e59aKnP9noNJoREqE8XeYbYij
+	U2udXNNn3eT/Z/LDwTbv34/xgjcHiPfAWcSAnsDMZScRAB62fKTLzgWAxw5qC4Gs2jYl8g
+	4Wm86HJW2bdMi7QlKou3L+m3nCN6yR0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792722761;
+	b=oPC8mxywIFlLxwgQJYAgIMZb7HKs9ssUOJt29B8W2fCWdjd95H0ds9mIAP/ofGlSkB8kNW
+	Thksis8FyqHaBzrbegjGU9jOPXZhin6gEpNdBHCWZrot9oJV9kLZWA0Jn0WssjzMf2nuT0
+	yBbXSMIkMQ6brF4Fkg3q7ML2NY9aa3Y=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oD3TX5d4;
+	spf=pass (imf31.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a06b27bf9bso257959b3a.2
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 19:32:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792722760; x=1793327560; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OiktTo8xSBry4ZhOvp6SkAXw484O9QanmGqTKsmqRQU=;
+        b=oD3TX5d4Bh/Ck4rouhNOYsGSOga3PaN04L22gk8wbRdnDPoeipa67LYjvsr+wAl0Os
+         LYnHUD8eNjvvI5ZVgdCSupuhR9hGhcrxpOP3FQtdGzWVlhzUqHO4oDL4lOf+xgttAPnu
+         /qVw0P5ttVjjsMj3WkR2njutpR06ViOk56lDgBP6218RCypQ9D6VVrdgWai1AF18ceMB
+         BmfMAmdtzE4FFNshfh+qJt0ev02bgC1NZKTHrcGMkbzKOBJQMsFlqH+lG14HNH2KXzQA
+         GgMez/rXlBCTxr9Cq9QxB17qRxoeXuI4M3zHBU8QgbD7QR6gPILZOrblAOIUojlP8OWZ
+         v5Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792722760; x=1793327560;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OiktTo8xSBry4ZhOvp6SkAXw484O9QanmGqTKsmqRQU=;
+        b=vkSZZIGS08N1TL6fDUu4uuPwKAmB+gVe7eNQgLaPGMzvktYO/wDL0t3uiDYhlqkZKM
+         MKW/UGI0A28Z5BLms4qmnclYR8r9jrk4NVtdHhAU3/ewyicNECKDB2ySqxDw0AqsyTks
+         FVQEzDKyaJsPIOARajY18x4XUHStjdxMPxfdWPOLjSwuBKgSkL9NyQQJkKg0cy2YGMe2
+         oL0ozW6DTYY041fGIABUP+9/JXdMxdC1EIoVF77EibtxthlcY1K2LkqMzqvpIKsll37v
+         KVrKbxXbdduBrHr3/xX61CsBXnms3hKEAPKg2U9lJvE4ANFvyh+vPEbGMl8Qj7GRX8/x
+         8PtQ==
+X-Gm-Message-State: AFq9FYIdKeUv+h07Dzyp8ravm3uX7LEAZjOpbCf2M7aI0lLCOC38LaGZ
+	DOigATAMfbF2MMwDFaWhNavoH6rtVTwZBtcN8WrmDn0qZzkaDL6N2mU4
+X-Gm-Gg: AYBFou1fjCgVrcQyjo9HV+OyxAYkcXcNIaV01bUo0mr+TndOcKilHAzhpPQG9GHeVnU
+	FwtQJYm2v8wXKzGYvP4ohIUjS6KnyqhJypQkYGjvF8OIaViMR8dxtcngDig7+bFeoPwSDtLY8Ck
+	DaUtLdkAEPbigJYm4T7FlyL/BnYnaFdImlu3qGugxCdkFem/DDsRkY40k+jsiFRGLI+PoC4yi93
+	RZ5nI7NgYbPmPX0ztdBmGhkB6UO0v78aaz/ePe71vwQEi8M0a0z4B1C1bXz5Jw5bJBqnjpHUGH8
+	P9sWgWPgR5gmGTNAIzZ9woR3FqzfccKTMkYpNsljZpCkNjgEIg5Bw3h3szybxJDVlReqvJrN/qr
+	+5H7sgy289amXI7evzE4OKWFjDYxYIjATFxoSwXSXz9IShREFZWu0EUzBupTyClMMLtAYGdk08v
+	rEqDIG5MdzgKlT5IE1VqXpwmNW6phI1ETckd7pL0rx0msTfNnjpFXN3qo5o5wx6ZYzmyYP6BlrT
+	/Dmuc/iGwaN5m+hvdyfSX2IrDx36gGiOEmWcLBFif02jyy9C3l8O7MOxqo8xUIwp1baSrA0dbpS
+	5eP7zCWJL5r2vK8YBQasu2QnwKL+SavRcPKy+n2b
+X-Received: by 2002:a05:6a21:4cc1:b0:3e1:558d:e37a with SMTP id adf61e73a8af0-3e369203bdemr680101637.26.1792722760003;
+        Thu, 22 Oct 2026 19:32:40 -0700 (PDT)
+Received: from localhost.localdomain ([101.82.104.98])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd8ba7d5f96sm299609a12.4.2026.10.22.19.32.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 22 Oct 2026 19:32:39 -0700 (PDT)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com
+Cc: linux-mm@kvack.org,
+	Yafang Shao <laoar.shao@gmail.com>,
+	"Huang, Ying" <ying.huang@intel.com>
+Subject: [PATCH] mm/migrate: snapshot the source nid before the misplaced migration
+Date: Fri, 23 Oct 2026 10:32:26 +0800
+Message-ID: <20261023023226.29783-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.50.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/12] mm: hugetlb_vmemmap: simplify shared tail page
- handling
-To: Lance Yang <lance.yang@linux.dev>
-Cc: osalvador@suse.de, akpm@linux-foundation.org, rppt@kernel.org,
- qi.zheng@linux.dev, jthoughton@google.com, david@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Muchun Song <songmuchun@bytedance.com>
-References: <20261020115824.823278-6-songmuchun@bytedance.com>
- <20261023022027.25898-1-lance.yang@linux.dev>
-Content-Language: en-US
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261023022027.25898-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hqxok3p8ehqjb3frd1hip8s5q3c3gnis
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 650F1A0002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9DF5020008
+X-Stat-Signature: pcsf5k4feja51a64r549ih9h9kh36815
 X-Rspam-User: 
-X-HE-Tag: 1792722730-270035
-X-HE-Meta: U2FsdGVkX18J5lc8Ifqf8n2wVp9BNQD9+EHrcZDMCNXA0mSBvqS+dcn4w96OQSdDBe8PI2mKC1jb1HnHXnfK1T2HQjxW1A2QOPzgyMadSrVSkFBbgPdSAnLMnreOsQR+Gj2S4MSQthMTCZjOhEmF91bwPrrjlQBZfe4rdk+NvP7/LWsMpdpZ3yXPz3lLh6w7kskl16u+cfweiZ+xbQl6OQ0P/sRTLL1bN59rHloJIQ6pPlu/qt1QnOFBA0ES3/bakxr+X5vMQI3zlkhqyEqCfmiOis29Z6BC4evjq3H7RSqBRSruNsyauCsmJ031rJyk3sfFAz3pWQWeBTE+ufsOfP95Hdf9bmFq9Suz3P4J2GbJ4fzxnU48zQ2FQji9HdLu+315M+8dXaqfcGBXqbzEkXCVODUKFXPBGyrDoYhVxIP8UwruRthnvOa03L1ye73vOH+7FVzYxfQAB5mGMdYBqHoX1Fn8PV+M+46CgjHRphr4qqK45TblLOAVrmHaXGGBgIm081dBpHtv8oEo3B+53Id8MLyCR3sZ9V42oVwRShncR2EJfEksaTmLXEAYayPYCkN1fWlKi79YgvjPwlQ+/Kb+40K6Zut96RLTPTftoJyW42N2AAYw1gqTJHPBJxskrICVj961zeUFZtE0lFUJWY7oPEvqwQRB3xHNJ7zr2e8SSebx8c3AIXv9gk44Hcv7NB4GPOnRSyLbrx9ogf7+1AUSTvKHxinKhOkhO9DtrpQFKHKsYJafUVhbp5VmBvUSKphkcLLQedIUPu/CQRT6qNRidKzGEW0mvTQLbIxkEU5JV8I0BWK1/TTIzi8PnGYkxWWWtNyIcAnFmmwN6Iqyme2vmyroV1XOna+8J0MyYMVotPAYXB0SlHZ/EvAIOnAemur6zV+U0cUz5Gkth7CmNgpkazPjc6ZzkSyzLkEi2eZzL4EG5uxuY4ojsA44MEJsvtV3pxEwpca0ajQPGHP
- Wx3PsmhM
- cET2hqUYAXigpGIuKE03FQkkJfLhnEyulKxCbHa6P6G2JbiYRz1n0rZWHbtLqXiFyq3g/ePO1BJiCgFWJSt+dNUe2mFTDbnD5CqppVKBB3JDGyo4Hl0uuN5VfLM4N4AEvdS9iQ0hFZuR0k4ei2v+WTu9NTT1xu9LgcTwa6+sMGFPWqaW/VTarTAY218cmjOHxW+tVMs4jO1WwWPD4XWBOo/VGSIXLyxJIK1LlA6mjma4RDq9QMVVDEVxubW/39B4YuiuB498j8CKbIds4JwDWvXr/6Tp/r0cxowObkhVbRKj+r8dyGc4thJpVZv30W+l6IB8AHi+aOSC+2nAHVp7fr5owmQ==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792722761-898561
+X-HE-Meta: U2FsdGVkX181XAhlQwY9QJPV0LtGNz8HDO/O6dHHgVglN3vqiPEXsaxZy2QRTJyV5vNg23Odcs8jQHMN2a+ec7MJVgLV5+VJpZwYvP4ybs9jejSYmfRGcvS+5kvNyEQFndKDxmMy6vaR1MchvENFxaa24JoxgOorjSm5hgdlPgskrtzGiHE2N19+sD5he84C3CXhOe3cR5PHKppOS0kg8EpptMwpyJFY8TZFQ+1e3zYXZgLPsOEfwJZLhyvTqg+NkBhDAKMwGv87tOgNk+QX3jzfYtfhzhZTibKPLONOFaAMMaLD/6RFCCKQTIEu/XazL7fzUbgrE6+qY7jIIJDRgQNskazNVx4Zex0mqryNxQ7rAvDqyBPGsnMG6EbueC3zz6mkmfm7lqKQspOnzUuHc0B376+tVg0q4z2zyd/b3HfnWYt2JbxUMbK2Aeyt74aCd+jQP/w16SMl/Syy5sP8md1RkwbfhXRCRBujzI4/UF9SUL0n3/YxvxCpRqW3oy4R3VwzsYZ9tU8RWsg1OZN0koqdyo5As7MpN9KKPQudwCuepL3+MuBX2/AMOClzjRlbJm0QZhKA20SOh3hy8Ko5KRnX617VCpGTs5WeswJcOzrlFIA72u7GQXlGX7jVkV+LpmmC17s8arlFPRoVOjNSXxw/O1g1866Os/Ct6gPGdo41Blg5bxnarFlcsYsrAwAC2oTW/RjjnsTMOcwREmouH6vXU7ZkC7VNOr2EWd7UBxstXGdfuMXWGoSf5y6U/4QAeffl2VBqHBErEQxxM8wjlt/V8sjkvWIGNe76hXI6bZoeKqF36GgiyNJ6RUYjySXJIckinES8q/IoOn/+Fc7sQyMo0ZTYd77FRg8Lci9FgqHilbKLanMmjzPZlZv6D2Sdz7xQyPdvIPUuj9a5H6gRCOURTi7jHKmu31kQTddfNIP9d+CmePlj2D1TIwDuDlpnAfL6eb01AmMGgjofIT6
+ Jd1lgaYs
+ xI1FApQd3EvghzIcmUrX2DSc1durXqJtxHgd+FSrNHtcy9GcmplJXKAfM6sZzVNvKdmKSeg3wMKW4QbGgwkQUkIHBbZFhFekiOSjptl0m/aNRPHZqw4M0R1kSbLLml4VPrKp5fatbr6b8UpWjVv1SlL6QzkgYJrrQeEYLN6yRyv1CYuJ34pbfh0cElJPuoP0BIVWYGlQDEfL4sXKCPJFGuioGcHVPF3EtqmsMfWgCdXYtLExwoE53gUIAMKTqsdLXuYzURHwlHW1SaJJmp0rlB75A+cKQaiPWhM7zcjzW1a2AXCjt43u4pCuIxbhw2aLDY+di2FC5Nm+jh49sNrMVTdVxklvnkixFvJQcGjECMoxEztjuTsaz3/3fOAzzrn1TYUJrae+AlUKy6x0D6pGThAdN04M2hb4qbo/f3IWw34ExwDTCrF+zhXtLOeHiycG8y5pM968ZqfFUD8ZBL0gU/z6rd/z1D1e/yS6gzOSaj2k+eSDwex5jvVh90ZBXULPyYWBERGRC8dfia1Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,145 +128,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+A successful migration frees the source folio, so the folio_nid() read
+in the promotion counter update can pick up a reallocated page's nid.
+Snapshot the nid before the migration, next to the memcg snapshot the
+function already takes.
 
+Fixes: e39bb6be9f2b ("NUMA Balancing: add page promotion counter")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+---
+ mm/migrate.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On 2026/10/23 10:20, Lance Yang wrote:
-> On Tue, Oct 20, 2026 at 07:58:19PM +0800, Muchun Song wrote:
->> The remap walker currently carries a shared tail page selected by its
->> caller, even though the optimize and restore callbacks can derive the
->> same information from the folio being processed.  This adds redundant
->> state to the walker and couples its interface to caller-side preparation.
->>
->> Derive the shared mapping state in the callbacks instead, keeping the
->> mapping policy with the PTE being processed and simplifying the remap
->> interface.
->>
->> No functional change intended.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> include/linux/vmemmap-optimization.h |  6 +-
->> mm/hugetlb_vmemmap.c                 | 89 ++++++++++++----------------
->> mm/mm_init.c                         |  6 +-
->> mm/sparse-vmemmap.c                  |  5 +-
->> 4 files changed, 49 insertions(+), 57 deletions(-)
->>
->> diff --git a/include/linux/vmemmap-optimization.h b/include/linux/vmemmap-optimization.h
->> index 065840f3c241..858311a71b0c 100644
->> --- a/include/linux/vmemmap-optimization.h
->> +++ b/include/linux/vmemmap-optimization.h
->> @@ -91,11 +91,13 @@ static inline struct page *vmemmap_shared_tail_page(unsigned int order,
->> }
->> #endif /* CONFIG_VMEMMAP_OPTIMIZATION */
->>
->> -static inline bool vmemmap_optimizable_pfn(unsigned long pfn)
->> +static inline bool vmemmap_optimizable_pfn(unsigned long pfn, unsigned int order)
->> {
->> -	const unsigned int order = pfn_to_section_compound_order(pfn);
->> 	const unsigned long nr_pages = 1UL << order;
->>
->> +	if (!IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZATION))
->> +		return false;
->> +
->> 	if (!is_power_of_2(sizeof(struct page)))
->> 		return false;
->>
->> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->> index 18b72d553955..8fac61b7d74a 100644
->> --- a/mm/hugetlb_vmemmap.c
->> +++ b/mm/hugetlb_vmemmap.c
->> @@ -24,22 +24,18 @@
->>   * struct vmemmap_remap_walk - walk vmemmap page table
->>   *
->>   * @remap_pte:		called for each lowest-level entry (PTE).
->> - * @nr_walked:		the number of walked pte.
->> - * @vmemmap_tail:	the page to be installed as non-first in the vmemmap range
->> + * @nr_walked:		the number of PTEs successfully remapped.
->>   * @vmemmap_pages:	the list head of the vmemmap pages that can be freed
->>   *			or is mapped from.
->>   * @flags:		used to modify behavior in vmemmap page table walking
->>   *			operations.
->>   */
->> struct vmemmap_remap_walk {
->> -	void			(*remap_pte)(pte_t *pte, unsigned long addr,
->> +	int			(*remap_pte)(pte_t *pte, unsigned long addr,
->> 					     struct vmemmap_remap_walk *walk);
->> -
->> 	unsigned long		nr_walked;
->> -	struct page		*vmemmap_tail;
->> 	struct list_head	*vmemmap_pages;
->>
->> -
->> /* Skip the TLB flush while updating the vmemmap page tables. */
->> #define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(0)
->> 	unsigned long		flags;
->> @@ -140,12 +136,14 @@ static int vmemmap_pmd_entry(pmd_t *pmd, unsigned long addr,
->> static int vmemmap_pte_entry(pte_t *pte, unsigned long addr,
->> 			     unsigned long next, struct mm_walk *walk)
->> {
->> +	int ret;
->> 	struct vmemmap_remap_walk *vmemmap_walk = walk->private;
->>
->> -	vmemmap_walk->remap_pte(pte, addr, vmemmap_walk);
->> -	vmemmap_walk->nr_walked++;
->> +	ret = vmemmap_walk->remap_pte(pte, addr, vmemmap_walk);
->> +	if (!ret)
->> +		vmemmap_walk->nr_walked++;
->>
->> -	return 0;
->> +	return ret;
->> }
->>
->> static const struct mm_walk_ops vmemmap_remap_ops = {
->> @@ -213,51 +211,51 @@ static struct page *vmemmap_dup_page_from_list(const struct page *src,
->> 	return dst;
->> }
->>
->> -static void vmemmap_optimize_pte(pte_t *pte, unsigned long addr,
->> -				 struct vmemmap_remap_walk *walk)
->> +static inline struct page *folio_vmemmap_shared_tail_page(const struct folio *folio)
->> {
->> -	struct page *page = pte_page(ptep_get(pte));
->> -	pte_t entry;
->> -
->> -	/* Remapping the head page requires r/w */
->> -	if (unlikely(walk->nr_walked == 0)) {
->> -		struct page *head;
->> +	return vmemmap_shared_tail_page(folio_order(folio), folio_zone(folio));
->> +}
->>
->> -		VM_WARN_ON_ONCE(!PageHead((const struct page *)addr));
->> +static int vmemmap_optimize_pte(pte_t *pte, unsigned long addr,
->> +				struct vmemmap_remap_walk *walk)
->> +{
->> +	pte_t entry;
->> +	struct page *src = pte_page(ptep_get(pte)), *dst;
->> +	const struct page *page = (const struct page *)addr;
->> +	const struct folio *folio = page_folio(page);
->>
->> -		head = vmemmap_dup_page_from_list(page, walk->vmemmap_pages);
->> -		entry = mk_pte(head, PAGE_KERNEL);
->> +	if (likely(vmemmap_optimizable_pfn(page_to_pfn(page), folio_order(folio)))) {
->> +		dst = folio_vmemmap_shared_tail_page(folio);
->> +		if (!dst)
->> +			return -ENOMEM;
-> One thing caught my eye here ... shared tail allocation can now fail after
-> we've already remapped the head.
+---
 
-Right. Once the shared page has been allocated successfully, this
-shouldn't be a common case.
+This was found while implementing the BPF-NUMAB series. No real issues occurred.
 
->
-> IIUC, nothing to worry about there, though :) since rollback keeps the
-> new head mapped and flushes before clearing the optimized flag or freeing
-> the old backing page.
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 15b45832bcfa..91ba064e1bf4 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2757,6 +2757,7 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+ 	pg_data_t *pgdat = NODE_DATA(node);
+ 	int nr_remaining;
+ 	unsigned int nr_succeeded;
++	int src_node = folio_nid(folio);
+ 	LIST_HEAD(migratepages);
+ 	struct mem_cgroup *memcg = get_mem_cgroup_from_folio(folio);
+ 	struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+@@ -2771,7 +2772,7 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+ 		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+ 		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
+ 		if ((sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
+-		    && !node_is_toptier(folio_nid(folio))
++		    && !node_is_toptier(src_node)
+ 		    && node_is_toptier(node))
+ 			mod_lruvec_state(lruvec, PGPROMOTE_SUCCESS, nr_succeeded);
+ 	}
+-- 
+2.52.0
 
-Yes.
-
->
-> [...]
->
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
-Thanks.
 
