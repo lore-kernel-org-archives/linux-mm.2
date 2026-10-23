@@ -1,104 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330DC606A335
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 15:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2CE606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 15:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSVb0oU/
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KDG5+upo
 Received: by kanga.kvack.org (Postfix)
-	id 50C806B0B90; Fri, 23 Oct 2026 11:17:44 -0400 (EDT)
+	id F2E7E6B03A5; Fri, 23 Oct 2026 11:22:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E2D16B0B92; Fri, 23 Oct 2026 11:17:44 -0400 (EDT)
+	id ED8B46B03A6; Fri, 23 Oct 2026 11:22:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41F916B0B93; Fri, 23 Oct 2026 11:17:44 -0400 (EDT)
+	id D79986B03A8; Fri, 23 Oct 2026 11:22:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C7176B0B90
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:17:44 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98811A012D
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:17:43 +0000 (UTC)
-X-FDA: 85354245606.13.E4B0A84
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DB916100010
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:17:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TSVb0oU/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A49B46B03A5
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:22:53 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25E9116014E
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:22:53 +0000 (UTC)
+X-FDA: 85354258626.25.0D2202C
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 76B4F180009
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:22:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KDG5+upo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792768661;
+	s=arc-20220608; t=1792768970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=9oPHb6UkUAuCeIoTZhGqRaYjHQ33ICgDmbmBczj7A+U=;
-	b=urJVBom0UpGgA18zz+qEitsRKUCSsCG0gWGADo0FuqQgstRgQhuqHpeD+7fS583osjMPpD
-	5LDKNXx1MYbvKRfeym7rOUazxreqFgZeXKGzAQ8Na3CfgDfAx1Mp+bJl43wbOBn92MH5nJ
-	n5Np9n2IRYrWClNG7+rR5nd+chXe/cY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=v4diYte8A4U+5YdamvmyB/opU496/bYf8sQxy/1ok8Q=;
+	b=jTyYxB9lW9bD6VJia/AkzPVQZ2Wfcyh1wxw+bNAbt5T3s2y/hqudaien/DlxZDO90Y22r4
+	0kEwW4YIEA0rkqgrVG8DcilT4y+Sh14PL9yi/QImSioCLCBM7xlykaQT0CX8gXK97sBw13
+	GyrFLEdFnYWxydvCwFQBy9f3MOnVJRI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TSVb0oU/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KDG5+upo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792768661;
-	b=aRXexKuyUuJJf0z8yDmMoy1yR86AldpPSX5R6x17lmeH96ZxETazoBwBpYhua/9ml3MkbI
-	U1HrPrU3kiiZdF9LvWGbaOiY2+6KSnsQcSZlAbamw8koNoxhBmzaQXW26YOTfnBe0cKMs3
-	zHdxG0OJg4J5Bl2g7mP3YvSAy4eM86w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64AC6601E4;
-	Fri, 23 Oct 2026 15:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21221F01825;
-	Fri, 23 Oct 2026 15:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792768661;
-	bh=9oPHb6UkUAuCeIoTZhGqRaYjHQ33ICgDmbmBczj7A+U=;
-	h=From:Date:Subject:To:Cc;
-	b=TSVb0oU/0DYQRlWKzFZ1+M5bfA2fsQELDWZJ7ouo4RY+HG3qghgtFgLKhqqlv0q+w
-	 jB4rnZVo6YJeBeCxsIDdByS+TqolKBBNMCYKJL+Wg9QpzxNmlkADIdv1OM9cMW1tHj
-	 NEkDqxR6G+9DmGSlP6t3axYabc4WyRwFsDEZXaWFkrzSIKa6lA7iKMGvdEcrki9PUz
-	 udtcCGV5Bh/Nxzv922razMhC95ZeyqgJwYiGq/txLyPgiMRNd5cUcwquHojkdaeNnP
-	 i5CDcxvz+pf1v5NsqSIw++7RgdM3orkRbpc8nrbLZAYqA1uUMQCYkKZe0sp0P26yLa
-	 qdbdTKswvKnFQ==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 23 Oct 2026 16:17:31 +0100
-Subject: [PATCH] mm/vma: fix expansion of VMA_MIXEDMAP_BIT VMAs
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
+	t=1792768970;
+	b=an2PDQwuuflZMpTw+++wO5mmXWETtiMEARIQBoFTbwIi78Y4oYqLEra1t8Sl1NFi3zymL2
+	RMalLvEuYoZG7Pj7SHZgrXrj8pArL2HjUic1eGNG8vm3Z8xFk1uD3lzeFc0KM9/BIEZ5Eq
+	Dry9vs4OVYx5xc2nqJTcCydhnT21EBI=
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2e934c6c20aso6466555ad.0
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 08:22:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792768969; x=1793373769; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=v4diYte8A4U+5YdamvmyB/opU496/bYf8sQxy/1ok8Q=;
+        b=KDG5+upoem2fRf9UsaZAGaW06vFTHQOJ45uQMAd3+JQI2Uj+yXQi5VkIZtPBhNM7y6
+         RY8YzzLoDJfaodAIOjBENpMwOYHiIRSTPcNx+HFCelkxwFWXx+IaFg37D5VwfroBblUA
+         hWYQi2qg1JhQLKHFIrxpF19WAXVzZCxE2ti0DXz8cg6ubtM9JtLzha37O9vqA+W+01pP
+         4GvmK4S1U3sZE2v8sDapsqAMLGb5RBmpxP9aTwj5ro+j96mf+tZbqNjLErhYF4j89abi
+         j9lfJ7uj4dFZoHTjPFWV8BzyBZZ5WTXZHC2LwVXIAk5kLXqXmY9zOgK8Q1ZwFI7yZMOJ
+         ctQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792768969; x=1793373769;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v4diYte8A4U+5YdamvmyB/opU496/bYf8sQxy/1ok8Q=;
+        b=F8xQLPh/QjWlAEY/gRQiZS1Vc+EzGOrGfI7tPr5KSZQ6+UPyuo6gSe0m2OOYKd2kmj
+         /bYUXTFcaIoiJgp9xJRreIi1KhdPW6EgFQvO+0HslmLvGLFk0EV6A6GP+mt8vzNXx8R2
+         PM/BNugAfvTTSCp7Ghsqc+9HmNN4Wi3jisDjGnlX6P0qMr5xwhEQlfBKJ54zW2YHU65/
+         +lToWQ2xfvaN8jryLDvPhZSC/p3/HUzVS6jWlMJW48zGazfzuFWur2/tn8fs3BusudXA
+         2QinwGOSFW7FyFZG00PPtIsQx1PDIDqWhTKpZvUYo4mf6Wp7KuDUTt8yJf843xcxSLLq
+         czXw==
+X-Forwarded-Encrypted: i=1; AKwUvBzyG4WMqbjrJqEOw0V5XcvL1sP1UsExl+GUcg9P1wOc7pVLwlL2xjx0PDfrH5Xy1FuzDAO1w/vFIQ==@kvack.org
+X-Gm-Message-State: AFq9FYJ9docZtGr13iZh5+m8RiEW9pDQ0Ns5Se3zwylOG0bnf3FUw5Yu
+	c5qNk5ymynSRrhNYYfgr09T3x336eeSOrAG8DbFiHfN5FDl5pYBeTAS/
+X-Gm-Gg: AYBFou3bpICYrYZEycC9C0mtk+Qvug5TVD6L/z3kBZNNYnsMQmIksT1MQOh5g7/+aub
+	htHVYZRz/GfJn5SoXDS0AZ8Y/5g/yiKfYxBryyn15sw8m3AjPe650y28ON+o1O0wH3nGIYnLEJQ
+	io9EYDK5JyH0gptOfYvq/2VYEfQhP4t0IpVVy2cH8Sok90Ycs2HM56Mr2vguqJ2kUl5C68jh7TX
+	SQTy55UX+k87xF/5pehKj8L5hhXquTyoPpUu2TGhVjTtBgGvlOuXofAUYNU1oX5mPBkJKCi+zKA
+	yw3mfNRgnkxR9w445uH/KizOcEOpWpOxfiIJZHUsHqcyYjEHOo/YbIhG9cGzsKevl2yIR93e0hD
+	wgoOFA6hgsD39dibCNfJ7ftAL+EdDmhtxJRjYAYq6S0+mXD4yfEiuLvC9F17FKAtMtfwDDeBM8L
+	uP/khspcUKKNMoi2glKOB2y1Vexkk+InMf+QVYHXOIcLEz9VAPnd8RYORZRoLY/5495h93jbDGJ
+	ohBsvuXEktk8Q6BGPLskoDYQqM708klD+2nRfO54jQoa3W8k9ZQwG9sn5vyen+ec1c8NWU2hzcx
+	6wrI3tYeQcwUOAWPJrVAMcab8Dl60Vo99/6F3PvKp6o/Q03nftpM
+X-Received: by 2002:a17:903:1585:b0:2ea:1b9b:b946 with SMTP id d9443c01a7336-2ea7d09d3bdmr25679205ad.14.1792768969109;
+        Fri, 23 Oct 2026 08:22:49 -0700 (PDT)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9476f72csm1528235ad.43.2026.10.23.08.22.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 08:22:48 -0700 (PDT)
+From: Aveline Noir <jm5905938@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Shubhang Kaushik <sh@gentwo.org>, damon@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Fernand Sieber <sieberf@amazon.com>,
+ Leonard Foerster <foersleo@amazon.de>, SeongJae Park <sjpark@amazon.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Shubhang Kaushik <shubhang@os.amperecomputing.com>,
+ Christoph Lameter (Ampere) <cl@gentwo.org>
+Subject:
+ Re: [PATCH] mm/damon: align MMU notifier range when clearing PMD young bit
+Date: Fri, 23 Oct 2026 13:01:31 +0800
+Message-ID:
+ <179273169185.2.1655708299473876346.damon-pmd-kvm-reply-draft@gmail.com>
+In-Reply-To: <20261023002018.102560-1-sj@kernel.org>
+References:
+ <179267916870.2.5637290691657871645.damon-pmd-align-draft@gmail.com>
+ <20261023002018.102560-1-sj@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261023-vma-expansion-fix-v1-1-6142baf1f46b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDAyNj3bLcRN3UioLEPJBK3bTMCl0zCxNjY0tDQ3PzZBMloL6ColSgMNj
- M6NjaWgBsDj5AYwAAAA==
-X-Change-ID: 20261023-vma-expansion-fix-6843391177c4
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- =?utf-8?q?Jakub_Mat=C4=9Bna?= <matenajakub@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
- Luiz Capitulino <luizcap@redhat.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3534; i=ljs@kernel.org;
- h=from:subject:message-id; bh=5ZqmiLxzSYfJofiKd8XjWTm3Ne0Gvwb77tpCkLEm588=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJuV/XP8VY5dce4c5ahhBbniy2r97RPebTxewuXi01+y
- XmBsoZ9HaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiIcxvDP32LqMqwvT8m+k7g
- Dk74+9X2QX6V2JT8hYe0b0Vy87/Tq2H4K+bKsElzzaLlmUa9rDbGspysSwJWbpPzitY1MhWdp1L
- CBAA=
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DB916100010
-X-Stat-Signature: xeni6f5ods6eazs6ob17mdw1gardsibw
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 76B4F180009
+X-Stat-Signature: 5rkpjaqhd8mprskpsykxa75ywc6e546s
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-1.2 required=3.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792768661-825048
-X-HE-Meta: U2FsdGVkX18SrhRSa4Uu5fqelOjKoEcQv2IJreUEpmlhhIaOX60m8GvC3/bYDZNmttg650yp0ymcB1IpSD9bjr7Rk+Ti+UcAPYJ6ijRmQm5/K4JNEOVOWIX3EYN1E4shtA7kny5Kwvf02+y0sMe2ecokYsFFjLL//0QeTi1MjUXQluFaWvOC40hmi2PsXSeKhG9VcMifPMgjP6fihdOTBjbKaa77Dp1oqummJ0t9V+E4Ne6hyzCfciQqzx7WCXC98QT+GcRCR5A1L0FpyghfDyd5BTduQyeXp08Nm43OOPpDQ+J0wwAa53r9TYMDHej09Gu7EXUkH04P6mrQR3qs1Q3cOLkxEehHwCNA1y0/fKWjlM8XdZi/8RjhbsdYj1BjXajK562G9lAJjaC1JopWJPzy0bNt/dvS6cI39cRcvmaQ+aR+NLjKENBL648Oa84iVuPZlH0h2ueelo0VVoEQHY4RzQvYtm+V7OAP/G6p/hBA6pJ2gqo5dZjQluYuMg/ug96ih3Bb96WXpPPaV+Rjp0XeASi9AVOcWid6xlbkespBoH416jX53bEdaTi+P7lME5xPlFgd3w7qJLaKk64LPcHrbJp7E2oeyDka8CqVtI/QncNgQw+7mM2FqlkBeJglH2KSnUtJEa1uFynmvt/nFVn8TuCMGtO3BHPyqRAe1OJv9xY/s3luPzH/mmbZan2Zr8wzUdePiBgjaxxvHyzhqK+MHw4NIP9fOdtsUU7GpPibDuHmUrx/2lGMZFcTUyPlxIK1qkmlByr1C4Veo46VX/QsvjK9aVMT4YSIvV547oklhRruZVoYpbHefEeyXAsgwUXy1rQ1lzDSk3X+3TgkMkPxlN55pDlPzJ7OwcW85Fm5QoQF6jqKm4NfVh56iDlZ1i2MWOohuLIuBuk+oqVm3d29Xf3GeI6P/X9PSk2ZW2iPpM/G/I5kE0kaa/kaReQCcIlHEKZMn2UOO1dTMuN
- TB2yRpEY
- 1WB9tfV5wyQpMgvld37aCUqgwIoprqk7CeWYxTkTEdku0R9WKRKdryl5gUAq2e7MIIJcL1+qYoYrOXXNQPYBWqfJOoyNriS241bj4ndEV5LqiXEzIVQvpiXcyt34c7tPCKVZkpr96DYOa33ubtkeACw5xAOv1qmSSLsuQJdgyKJD+cD5P4xe1jbhKp0/iHXqopPx3Mwk4anI6tHUXztyQctFIlrgbIH0z0h5zmChZkQjikg6YC6hP+556PWg3slvSeOtj2/yjkoT9kBPTRX2Y6YuRMbFqjwRMvAEPiIzCgefsn9vq7T7/EKZIEA==
+X-HE-Tag: 1792768970-275381
+X-HE-Meta: U2FsdGVkX1+sHdozMDAXdUoIxRNe0clz1+egSLNUdNsdqWovwHlmKNEUIBNbnEPwRGLeznYhA+YXKR+iX1BWDcohbwk8yiFSTq7ChaLxvg0F5R0QTFzEUfmR5hCnGo+eTCqaziz0Fu1sPgwM20naDJOVdrw4igMwxrEt4yrQsVdH18m+SwTrn/WqlQB2W9MoLo/2SmOgzuo06ehbW4cbyUtCUlFwnnaXt5TeU31q7mo3vpnsOE9eSN/US6ZVnE4bfsfWsfBNMzgNRAwxxARbVd704t9RqclPd7iP9gHepSpK9lVaE+2cJxydS57QIXLoibyctF+n9Qx89I3VngF0LJN6wmdwf2axY1q/tyWRFPkmuRbYodgII1RPhHDHRqCDNDx8cppXIC4nU/gWYgkIlHO8x8r9ciuV1hwNA0/v9XHuVsm8j+uuLM6obRfTnqL7P5dvxWIRSgrnxS9qFBA8n7/AyhxkyuKHMSIo0IDDVEiRObhqLsPD1W9906Xxbo+LiN7tLjLowmlNfL7By2AHa8PBLwRA3H1HBV5SnAxoXd/6nl/j/bIQYoTkHp0vU8RpOmz0Dajb8KzW0YuD6JraJN5SZ+uCmEOJjqKF7VmQnLSv15AIvJZL0VFtKc1F8fNGuSQxz0adLIC1BdAw7PQSVUXSmIsgKdKavVo767D8MvZ+c8P/Pb7AEt3fH3YR4KENfjYVppwYceV/rHozTWUBtBNxYITbhMYwd5Ma8AmSskpFJu3AvE6++BlJ6AiLCr0c0rTs38Y3GLXx2k+DYnLfyccD29cbJVWuNPmYP9RJusiz5YOQjKX9tHPJdKQnKpxpBDIbgNbGjq3y2m7ewTdXgfgsZ1nQFZxwaQWLoVF39G5cI84XgDwVoaB6Ftg22D8EAOnxLn6Xynsw/GMN6qJZvbxX+PGAItjfn/gz9q0jUFNw3wvku1pb06i6RQLFZL/kox57E5yV0eTde3zBNv5
+ HhAlh46o
+ b1fdY0UCE+YLHCLNGaPydwafrIrPQepb9kKwkj577wslLuhS5gcOxD6oGxSFvfWku6htmwehHUu1CSYqIEGGUJBMD+N2ct0ca5mZ7x+KbTjjdbULTnW5+GoeRgri40nyQnViw7xOqb9RrrIrHXwPSYRCHn0utc5WZdIzTRSYsfcrTs9rk+w+ndBxHfoy/bbCuOGEZ03xm8NsiGxgZh8gJGAWrCrxc9bkDD32iPtf/y0QlUrDRq92SpYy+o7JlRN5Mq1xMGDcnba4CmzYxFBTOxEIwPe80v0xHzcrv3IA1pbmWJEVqmFzYKsLhh+uvV0o9/ba1ffBMw0rmWrC7vSlQdEYalf3DxeLvfxQre9WjMVSzzUAyAh52nW0rmkpqgp0R+XImEoDwdL8Od1dPeWcPkUff43cuTT2UhDrUzUeDBbdClLDOZ82NGy8YxBmHjyGQOCHcIOLOLzrTCutFNwmP+9IfYKBZDZSabiOJi3NOrol/2ELBHJc+Dd5Iy0Ku2N5ywIrGf2G02X/zdpOwUSEBM6SDmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,101 +133,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit ca3d76b0aa80 ("mm: add merging after mremap resize") combined
-merging with expansion of mremap()'d VMAs, however it also unintentionally
-disallowed the expansion of unmergeable VMAs.
+Hi SJ,
 
-Previously it was possible to expand a mixed mapping which mremap() had
-already ensured was a legal expansion.
+On Thu, 22 Oct 2026 17:20:17 -0700 SJ Park <sj@kernel.org> wrote:
+> I Cc-ed them.  Please Cc all
+> recipients who get_maitnainer.pl is recommending, from the next time.
 
-This is clearly seen in the mremap() logic, as it checks
-vma_is_fixed_mapping() to determine legality of an expansion rather than
-vma_can_merge().
+Sorry for that. Maybe I will use b4 next time :)
 
-Additionally, copy_vma() allows for a failed merge to result in a new VMA
-being instantiated if MREMAP_MAYMOVE is specified.
+> However, I think this patch explains its context very well, and therefore
+> this link is not needed.
 
-However, this is not attempted, as a failure in vma_merge_extend() is
-assumed to be an -ENOMEM failure.
+Sure , That make sense.
 
-Since vma_merge_extend() is used exclusively by mremap() to perform a merge
-and/or expansion, resolve the issue by invoking vma_expand() for
-unmergeable VMAs there.
+> Were you also able to confirm the expected wrong behavior (missing part
+> of the sampled huge page and age secondary mapping), too?
 
-Explicitly assert that the VMA is both non-fixed and a mixed mapping.
-This provides double insurance against broken changes in future.
+Yes. A test with nested x86-64 KVM confirmed both effects. With
+4 KiB EPT mappings, a midpoint PMD sample left the first 1 MiB young and
+aged the next THP's first 1 MiB. With 2 MiB EPT mappings, both whole THPs
+were aged. After the fix, only the sampled THP was aged in both cases.
 
-Note that khugepaged_enter_vma() (which vma_merge_new_range() runs) is
-redundant in this case, as a mixed mapping is not subject to khugepaged.
-
-Also update the VMA userland tests to add a required predicate.
-
-Reported-by: Luiz Capitulino <luizcap@redhat.com>
-Closes: https://lore.kernel.org/all/20261023023106.515365-1-luizcap@redhat.com/
-Fixes: ca3d76b0aa80 ("mm: add merging after mremap resize")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
-Confirmed that this fixes the repro and passes mm selftests and the VMA
-userland tests.
----
- mm/vma.c                        | 19 ++++++++++++++++---
- tools/testing/vma/include/dup.h |  5 +++++
- 2 files changed, 21 insertions(+), 3 deletions(-)
-
-diff --git a/mm/vma.c b/mm/vma.c
-index 1be613044b4a..88ef92ab24ec 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -1851,12 +1851,25 @@ struct vm_area_struct *vma_merge_extend(struct vma_iterator *vmi,
- 					struct vm_area_struct *vma,
- 					unsigned long delta)
- {
--	VMG_VMA_STATE(vmg, vmi, vma, vma, vma->vm_end, vma->vm_end + delta);
-+	const unsigned long start =
-+		vma_can_merge(vma) ? vma->vm_end : vma->vm_start;
-+	VMG_VMA_STATE(vmg, vmi, vma, vma, start, vma->vm_end + delta);
- 
--	vmg.next = vma_iter_next_rewind(vmi, NULL);
- 	vmg.middle = NULL; /* We use the VMA to populate VMG fields only. */
- 
--	return vma_merge_new_range(&vmg);
-+	if (vma_can_merge(vma)) {
-+		vmg.next = vma_iter_next_rewind(vmi, NULL);
-+		return vma_merge_new_range(&vmg);
-+	}
-+
-+	/* Mixed mappings are permitted to be expanded, not merged. */
-+	VM_WARN_ON_ONCE(vma_is_fixed_mapping(vma));
-+	VM_WARN_ON_ONCE(!vma_test(vma, VMA_MIXEDMAP_BIT));
-+	vma_prev(vmi); /* Reposition to start of VMA. */
-+	vmg.target = vma;
-+	if (vma_expand(&vmg))
-+		return NULL;
-+	return vma;
- }
- 
- void unlink_file_vma_batch_init(struct unlink_vma_file_batch *vb)
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index f449129ea97a..e0eab4eca998 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -1727,3 +1727,8 @@ static inline bool vma_flags_can_merge(const vma_flags_t *flags)
- 	 */
- 	return !vma_flags_is_hugetlb(flags);
- }
-+
-+static inline bool vma_can_merge(const struct vm_area_struct *vma)
-+{
-+	return vma_flags_can_merge(&vma->flags);
-+}
-
----
-base-commit: 2bba28e98578de622ef307d00875aa8f8bca3d10
-change-id: 20261023-vma-expansion-fix-6843391177c4
-
-Cheers,
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+Thanks,
+Aveline Noir
 
