@@ -1,98 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00E8606A31F
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 03:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7952E606A319
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 03:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=owwUz7Ao
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Sgj7wMmS
 Received: by kanga.kvack.org (Postfix)
-	id BBA436B0ADB; Thu, 22 Oct 2026 23:47:06 -0400 (EDT)
+	id 729FC6B0ADD; Thu, 22 Oct 2026 23:49:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6AA66B0ADC; Thu, 22 Oct 2026 23:47:06 -0400 (EDT)
+	id 6B4306B0ADE; Thu, 22 Oct 2026 23:49:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A59F76B0ADD; Thu, 22 Oct 2026 23:47:06 -0400 (EDT)
+	id 57E826B0ADF; Thu, 22 Oct 2026 23:49:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 779756B0ADB
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:47:06 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1094514022B
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:47:06 +0000 (UTC)
-X-FDA: 85352505252.24.4749FD1
-Received: from mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E0554A0005
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:47:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=owwUz7Ao;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792727224;
+	by kanga.kvack.org (Postfix) with ESMTP id 285DF6B0ADD
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 23:49:30 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD96C8029C
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:49:08 +0000 (UTC)
+X-FDA: 85352510376.16.91554C7
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E2B5C1C0009
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:49:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Sgj7wMmS;
+	spf=pass (imf18.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792727346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3VNVf0/RTjTbRf57wl1w88rYS317KM33ofoAQG+5nfI=;
-	b=0JXXVebqVXy/so4FFgbh88YkwsI+JHKWaMXPPpd35M/0yMa5hPMQUehRvepc2gpK5c3nSR
-	7aILQ+m1MsP6nxf9qM6evwphq0QUjM474NvhANPItKPtUiskb9qvu9FHTCNvbrnp99xzFv
-	w3nxx1KdWiqnA9FN1TNyigR5M96JP5U=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=owwUz7Ao;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792727224;
-	b=NPxHuhQn2FQFYIGjJy0aNiNoB74FKb4yuu346rAwy6u8e3G9iB7u9Td1zt0j9+d3nL1dNy
-	QeiCHwasTDBFi9ZUiiERuLt3AwIHiM5NKyGxbbdHaJoN/2YHdcxvb+zb6zBIEJXdWCgVL6
-	BCz6iriJL0POsyqBV6hCh6WKFbJjnBs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=L+H22LxR/S7kNv+P15UOky1GL22rLifgQhK5zAHtVzg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792727222; v=1; x=1793332022;
- b=owwUz7Aox2bPMrctPPRlHZ2j1tPpyK6dWV4mMLTJepn8eVqJOoQhCTdENneeDNAR+fWlfwlv
- Wx0Zt9Nd6dczEbVXud+rFJhiGtBJ7KtfecojapI8sCCq6KPW0oxUNtdvrj3KaR5dijDVdXaS9Yv
- o736bXbls/Y7XgQt/YEnmbLM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 315b90f35bda0009;
-	Fri, 23 Oct 2026 03:47:01 +0000
-X-Mizu-Trace-ID: 315b90f35bda0009
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: songmuchun@bytedance.com
-Cc: osalvador@suse.de,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	qi.zheng@linux.dev,
-	lance.yang@linux.dev,
-	jthoughton@google.com,
-	david@kernel.org,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/12] mm: hugetlb_vmemmap: make vmemmap restoration folio-oriented
-Date: Fri, 23 Oct 2026 11:46:55 +0800
-Message-ID: <20261023034655.37422-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261020115824.823278-9-songmuchun@bytedance.com>
-References: <20261020115824.823278-9-songmuchun@bytedance.com>
+	bh=/Wwj7dQRGUn6heeFZGN8mfvbPjpdUjCofK9/xXySq9k=;
+	b=gGjEqs8iJtmFu2kzLr+IMSKK5xhSfXs34EtQpkGb0I6+V6lSsHPESb/4XMHkD9ERsxtntS
+	ZUlul08e0n1aEAAxqSzm8efeD1kO0OJAYC9qbtoefeTraBifYYixmuHfINJxjS1jKYqCzB
+	GFGLGVQocbMhwqEbd0OFrLlX+c8f1Fk=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792727346;
+	b=K+5O/EuNtwGuMYlnAtX89xZCKxYqtfcEPbPRwZTkDEm/sBSZMtgNnaGWbIp57GKmTi2xoP
+	2lNAz9pidQpgdwWXZ+gXok8Ps52X57DLvdaPwkby30yKrsV2bbM7Pt+NkyU8rG7C+LNumk
+	8l7m9fnm/tySHvcWX5xj//qpC4eMqNI=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Sgj7wMmS;
+	spf=pass (imf18.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6798af41644so354196d50.2
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:49:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792727346; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e/skvMCxEi+8UwsWl93irr7QhI5yit585gNVWIWKspJelsSQEsdjcHI7jjlKiXDzsP
+         BElIeViVMh7vPbu/Z4xKdtuiGqvskBLLTih/UktHG+1YeZuPW+3nsBxU68sOXIxKntGv
+         S3FHGLlB0TcB+VWVZeHreSMHjM1JHlRt8AKuW9c8DajzK/aqktwuh93WnhzV23NeX4QC
+         FqRldqTd7O98OeZ8D4KQ2TzKCzQLP4ZMEHTyGGkjGrBzHOHTmxH9ojN7ILzPAccSDhRS
+         DG39RbaQzRK4bJIoH5q9eDjgx1sigXP5szB280m8Ezl2X604OsCOXyp3xwvkXRINyixX
+         a5OQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/Wwj7dQRGUn6heeFZGN8mfvbPjpdUjCofK9/xXySq9k=;
+        fh=yfQQtM5LNu0N8GADh5hsMGtHbx5xttmolrRjHZzDIDY=;
+        b=Y+43Tp/9qldQGW21Ivt74AGwbcLHyvMQnvyXcVoM8jFvJnIVbepZPZPYu2Byt/rT0F
+         x8ZUGb4f1J+6vNEWIXwGMcjQeT6J0LUYAHrdERMTyLMeoHwZvGk5+zCo5ne4An1a4Vfs
+         UMtpV4cifQvZfJeQKhhk8Zelo/iENEBfhePxOyfCzhKBtBhXjM4EaDpJ6zZ1YVqud3u2
+         vdXvrh9SQtWwPCsRQFmeRNjvQ0XWVIW+Aa9E6S/n+o80LKpalBt675AmQOF8P5d8GIbT
+         hxbyzeOFn6a/QxYTYTO6LZnfej0kPd9b7LMK6ffrJcwgXfkxo7VKTo8QbJJm8xjS35oP
+         a3oA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792727346; x=1793332146; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/Wwj7dQRGUn6heeFZGN8mfvbPjpdUjCofK9/xXySq9k=;
+        b=Sgj7wMmSVjCgM2c9fzxcgWizLxKLz2r2XuTS13vqox2G/pa0KMFnvY6dHT+6FN4dMm
+         bswQL04UIyahyyESwDeKKcfKpoZweSJ4Wkxvx3pts0968gLL/+1rOf+38dOsFSAieVA4
+         h2uEyGeQ+rR1MbQ/leIacL8YLXzIAepJWki3z2CCKtqcvMGd92/2IebQCBzyLfM9izIJ
+         slZ6KKRnTOrMwPqWx4F3XrTgjMKIlbDBKkcYO0vASb9RjaLAEDGqv4CdB1LZriJqXJNu
+         VJd8mba5ehfbLUQnNP+8q6JzWEQUaqW2QQB2ICHadZzjKyq0U7WG+3PvyNMHorMUUZHa
+         tMQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792727346; x=1793332146;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/Wwj7dQRGUn6heeFZGN8mfvbPjpdUjCofK9/xXySq9k=;
+        b=XjfNq0WVVf224Fx/+o1YJrvD6E2WUKFC2vOcdLT2DNEEOkQ6lcO1eQsayuc2ZSr7zo
+         ugh25/R94UA+bBs0KFlElDWWtQaouDeZ0Rpc25bWtswLGcJqgLDjVXRZtUm+RBfmB6xi
+         kAW9NT3dpiaqaeXnzraKKHW8rnmapUxdLQMLHFh+BPDG5Iq8pAw8ZQmoPrC9DG0NCS23
+         fRb2qwxQom0HepsHh6Vwesof9g0VkUK6O1viokBBfuaAXU0mUyLbM5dV75PzVDsTW2MK
+         7+QIohuZrDh94NyI2E79XgSiPa7RQCW53Tjyum9WADWs0WT5eH1PoOio/mbAAKBvQ4qT
+         wXnA==
+X-Forwarded-Encrypted: i=1; AKwUvBwSrY/6eFA2rk0ZqfR6nSF0ZWQIZeN4ZxuEhPOBGngQVAQ1am8n3VF42JKWBf6Bo07hhbDqfELRmg==@kvack.org
+X-Gm-Message-State: AFq9FYLKvXuFVUAT2/Pu1WUWLOUR1IPgOd+++RmJfi+Ez4C6SFybiKCe
+	HV9gz21qDfpduL69SE+oRCSmOWAIthklZ2roCsoj4NluUt+vI5avf4wPubNhyVxpkKblyVtRPE/
+	4nNIVo4Kge9juxoJhBGcUKTICS43UB04=
+X-Gm-Gg: AYBFou1VvGz42uN0gMR/sUCbk36o7h+7A3FblOTg8rRdWdena/FmQ0xyhZybA1xytcw
+	VRUxkrJcxK6JlArLZdntZZ4cHJt01nnOkWiO1Pu7Sjj0Y1Rq3TyLiBPJrd6mmrmswXTTT2ibnYu
+	x2ovEUINy/5sJnO1FCtjyrN89Eo+OkogyvUa2LDSVVSu0++mue/0BLzK6MQOWwwhMSNptsmdlna
+	dxI6Zn/ltQsKxufxhfyUkqGNmR+viG/qyt7Iul286gD/pgNkje0msW31lQBjKbVuNIk8AUgB4xg
+	WEChPdj7Y4rjXBsu+oZ/BCa1cNffQqF6rQFrmQqPZiyOTu2VjNbqMdc2cGwpT1Aco+W4TW6EjXm
+	9EjTTXcM13dmo81JZ527Uq+ZdOxd0oedBGedlcep7NlD2asKEmKlW2ZgravsCsJ+0W+M=
+X-Received: by 2002:a05:690e:1382:b0:674:a7b:a07e with SMTP id
+ 956f58d0204a3-67a35b3c8demr929504d50.29.1792727345866; Thu, 22 Oct 2026
+ 20:49:05 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E0554A0005
-X-Stat-Signature: qhk7a35pf6xnz66t7h48tpp7auht9556
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+References: <20261023023226.29783-1-laoar.shao@gmail.com> <atrUeGPZgoSACpOR@casper.infradead.org>
+In-Reply-To: <atrUeGPZgoSACpOR@casper.infradead.org>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Fri, 23 Oct 2026 11:48:28 +0800
+X-Gm-Features: AclHuK_M_4eAwVRk8vzgCcHkUZzp0EtL8_NQcauXWIU3U6Rg0QFKDzTk3hGcnwU
+Message-ID: <CALOAHbARy4pSrsDLmTfntdsWONETqPrGJM+g6jM27WWnc-bCAw@mail.gmail.com>
+Subject: Re: [PATCH] mm/migrate: snapshot the source nid before the misplaced migration
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	linux-mm@kvack.org, "Huang, Ying" <ying.huang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E2B5C1C0009
+X-Stat-Signature: xt6cixajcqnpbboar7udnu4kfq4o3jp3
 X-Rspam-User: 
-X-HE-Tag: 1792727223-792024
-X-HE-Meta: U2FsdGVkX1+owRNl8mNPFqGQxZK6gJKAPv5Hb86ybkbpDsbgAtqbk51FZNWtQ9OuRWp/8+s0TVzTWZOKecjI7x1GuKgBnPXJUlKT8XAg3Tol7SNbxJEdzTTHFMBd0GjJhUH/gQkcZvIFlzxrwOudVg2mt0S9qzakVTK4MmvT0j7GPw5JGbx0mj2XyGvwIXPRrwJekOq8ImURlJ8g1Lolwb2YwBliptfOXM4oFPPQvZtF3m3QpB6rwt4ADmIV6/rHuIyclw6HYZit4rJhR/foE4c5cFcJOzBTX1U8X6W4BafcVsUcVPm2B09l9eZW5+MVxRrdO4QBYb3kthQBltQJNTioxZ51tqXkUIKrc/2s+kTNAly6WRWqFXLmh9tdtc/e40RnH0QrO86aphnYbAvYMC3EXNDhQYJcuex2LMbZUpxhl5tcZpJ90x58Oem+k1FxEEMDEeIXBBwHo+Hb1y/dJfD51F38oqarQjlmwgfVBrPpCthHbQ5ElwQpe8Q7hC7+dgKvT+BiFNskqPtuYA1K3KyTwcIJAg+YKRdLF7VSuVHLUbybegIq8Nn2Z4plcVRDzoHh1Esj5yVzwT7Nz2kaEoPDkMaUEdEUS72/8o5gCjp0iOE+HuYflifDkWTzZvWoiotA8eDTBmEHiXYohOmXH9lyAZ2ufjeNvEzSHlEHeuuBrty0oDsj/7qymdHIuyFTHy3xcdezU7rE1xkEIBTCKk7Q5IgJqOw5nKi4EH3eAXUHV95rvJsAQpu/9jk9ogTEehPFN4Ugy1yAY9Bf78sDZIiUK1WmVVSuoOHCLcFy7WjlzK2csRR5scjGlkbFlhrryxN8zdCWePKX3VlgXHU/NhPEJQBdB1s8j3ShENhIWREm0QJGBJ+ueXja9fLwHUNIB9AE92ASz42VaHhFVS+yZfVFH+D0DJuBTeeCyxiFgCwSYq+RC+Qw4tpR348FY4/zVZ3A239O5+1upPsxkLV
- +YsuanMK
- wfTaf/5NUiOT9pAG5FsyTNpKU+10JYZh0JVeSJE7j4+oHINhpFnM9PN1PunvzQpQlA/pVn8Zlv5xdRcxZ7q+NunUjtzlE+jD4oGgkXqJGzHZQbyICqG5JFCQWnSt0I7zH1+3P6jSldbSb5lsn9UjBryTsAN25q0AltqY/nDGvYtC5aHx3TBcokijdFa8rXp2nHy/iSxs/KtbTIXPNtvNouIi2qSIIAFKRCbyfVHG4tP2EYhJqbVTjVat58dLPFKgKyLHU6JwbW2iy7whpCz703DSyvyNnPO6ezj6lQ73+2Y5DOd28gG3ktZ4qw8xeLo+qRVR3x1PM+LB1KlaW1ruzyORoDg==
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792727346-467772
+X-HE-Meta: U2FsdGVkX1/NxpLLGHvzE0xsYOEevTIP8vGGRki63mgGHVVmxi3GBSSm5ziTqX+532MFJgyDVraDWiYrX8kEHDGOxDxz/mmHRrBMe+Fir6zIXS5Ohw1ZAXFNfQSAVgHidMShueJm7XkgOaKrgOOuSzrFfCulHgwY3kFFe48GeEHJpv21SgCY53BCLXEXLSPWWQEUQKltrzsYEPNdpLlppYa5c71weIOzMEs4/NqQWmFODKE55g58+RA7A/i2FcB9Y5YZDb8mDXm1RjWISIdCXmclGIUP5ieyn2VmKzn8CZBqh7yCEjrt1ULsv2CaxPnn8n3VzIBeawMjM4bjlqEXPJ9n/iqnCtf1bd52T8hykK6WpCL4YuGTtQHzAchJR6r8YhIKv+gLZVy4886GnD76lHbNlqzx+Up4j6MdO6KmPb2q0EaQHYMIUjP8hmpffczJCwGfYnVnLlYkdLYIM7jtIcr1yxEEECg0OvW2auHPY7pI+KJ+m34vxfhOrfK4njs7bHNmJzKkswMqV5FTCrUvAWL4j5av/0s0pXxs5IcUd18QZFj3AHj4HrCWbONeP0Wjnq1NZz2fDm8Bx58H9dgGXgSr9qMPFOTcSkrl6IF9qi+dUdJXH/TiyhlFMdHtv/5KofSVyglD4WpjUP+EYJZNAhvheFyTEbHaFOaJ6qUXnIUaXjqWHRWdHHIgMgKSzeTWKwM3SCzZn6K3yc/BM+SPS4mqBnJBovkr93CUc12VfoUgPwb5OI2M6qqfsIiDTAQmoR4HWt68BAh8AqtTvmfNKrGnarDnwefcoYXEfeA6VRMRGAiPKXNDv6OP6cNXfAnpjfmdr/k8g9pMye5gGkg3fPauNG2+kWqz/zCrtxQdCehdAh2M6F9EQe1F+hBPRhgHQqUPZVt/iDk2QsvsWytpv4Dq0k0KicqPOhuypDktOuK+txUz2rA+DRemnsMEJTsKywZfn+PKP4RTSE+BeO1
+ Pc6C96cQ
+ g7/DGr7YSgP3qQ+CjobwnAIucJTGbG4JsT1PCsmgCJuZrnpNBo0Ysx74VyScSEbS55jBFkzbT5fCoRmwb9BHRDW4ME7LAMbnwAXR1hh2I2hIqnTqXcNkFhe/PXKF3xCDLMgl1CCMm3niuc7UIws3fky8VoQ2u46tLGjeZpktbiFE+JutOUxfpWhWanJKjUYnqET/TSPacvbTkq1TCy6oVm1pTVtniRK+k3jqE2yyDbk77OvRllr0ivMgIU7Q2GnK9VCfQD+WvgycSMEmMlHY4iSIGll1m+m1/4q6hwPaOUtoQ0ZSQkwVkZpZ7DBelslc1Pkdp2M2BclSOzxPqKA64m9WmxQ+4L04v6iiIUG93lvnOQ/NXVuaUHbV+0IfuBlKNxJchbOBPsrIUK2/b+X8AQESMgpsS2Y0KVsY7LGvOs+jzUnJlrb0rh/dzpVCzeLbfz7mZoqWpl1hp8ExeWidw6LOE/AiLSaD4tNcdQQ144+5CmHfUexSsGFGDwmjf29afrRmnAFAJjpOXvjfZEvsnKUcfuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,100 +145,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-On Tue, Oct 20, 2026 at 07:58:22PM +0800, Muchun Song wrote:
->Like optimization, vmemmap restoration operates on one folio at a time,
->but the current interface exposes a raw address range and requires the
->HugeTLB caller to prepare part of the operation.  This splits the common
->mechanism across layers and obscures its natural unit of work.
+On Fri, Oct 23, 2026 at 11:29=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
+g> wrote:
 >
->Make the folio the unit of vmemmap restoration and move the common
->mechanics behind a folio-oriented interface.  This keeps HugeTLB-specific
->eligibility and state in the caller and gives both directions of HVO
->consistent folio-level interfaces.
+> On Fri, Oct 23, 2026 at 10:32:26AM +0800, Yafang Shao wrote:
+> > A successful migration frees the source folio, so the folio_nid() read
+> > in the promotion counter update can pick up a reallocated page's nid.
+> > Snapshot the nid before the migration, next to the memcg snapshot the
+> > function already takes.
 >
->No functional change intended.
->
->Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->---
-> mm/hugetlb_vmemmap.c | 37 +++++++++++++------------------------
-> 1 file changed, 13 insertions(+), 24 deletions(-)
->
->diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->index b76203e34881..97748a9cefe2 100644
->--- a/mm/hugetlb_vmemmap.c
->+++ b/mm/hugetlb_vmemmap.c
->@@ -360,28 +360,29 @@ static int vmemmap_optimize_folio(const struct folio *folio,
-> }
-> 
-> /**
->- * vmemmap_remap_alloc - remap the vmemmap virtual address range [@start, end)
->- *			 to the page which is from the @vmemmap_pages
->- *			 respectively.
->- * @start:	start address of the vmemmap virtual address range that we want
->- *		to remap.
->- * @end:	end address of the vmemmap virtual address range that we want to
->- *		remap.
->- * @flags:	modifications to vmemmap_remap_walk flags
->+ * vmemmap_restore_folio - restore the vmemmap backing of a folio
->+ * @folio:	folio whose vmemmap pages should be restored.
->+ * @flags:	vmemmap remap control flags passed to vmemmap_remap_walk.
->+ *
->+ * Remap @folio's vmemmap so optimizable entries are restored from the shared
->+ * tail page back to distinct backing pages allocated for @folio, while
->+ * non-optimizable entries remain unchanged.
->  *
->  * Return: %0 on success, negative error code otherwise.
->  */
->-static int vmemmap_remap_alloc(unsigned long start, unsigned long end,
->-			       unsigned long flags)
->+static int vmemmap_restore_folio(const struct folio *folio, unsigned long flags)
-> {
-> 	LIST_HEAD(vmemmap_pages);
->-	int nid = page_to_nid((struct page *)start);
->+	int nid = folio_nid(folio);
->+	unsigned long start = (unsigned long)folio_page(folio, 0);
->+	unsigned long end = start + folio_vmemmap_size(folio);
-> 	struct vmemmap_remap_walk walk = {
-> 		.remap_pte	= vmemmap_restore_pte,
-> 		.vmemmap_pages	= &vmemmap_pages,
-> 		.flags		= flags,
-> 	};
-> 
->+	start += VMEMMAP_OPTIMIZATION_SIZE;
-> 	if (alloc_vmemmap_page_list(&vmemmap_pages, (end - start) / PAGE_SIZE, nid))
-> 		return -ENOMEM;
-> 
->@@ -399,7 +400,6 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
-> 					   struct folio *folio, unsigned long flags)
-> {
-> 	int ret;
->-	unsigned long vmemmap_start, vmemmap_end;
-> 
-> 	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio), folio);
-> 	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(folio), folio);
->@@ -407,18 +407,7 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
-> 	if (!folio_test_hugetlb_vmemmap_optimized(folio))
-> 		return 0;
-> 
->-	vmemmap_start	= (unsigned long)&folio->page;
->-	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
->-
->-	vmemmap_start	+= VMEMMAP_OPTIMIZATION_SIZE;
->-
->-	/*
->-	 * The pages which the vmemmap virtual address range [@vmemmap_start,
->-	 * @vmemmap_end) are mapped to are freed to the buddy allocator.
->-	 * When a HugeTLB page is freed to the buddy allocator, previously
->-	 * discarded vmemmap pages must be allocated and remapping.
->-	 */
->-	ret = vmemmap_remap_alloc(vmemmap_start, vmemmap_end, flags);
->+	ret = vmemmap_restore_folio(folio, flags);
+> I don't understand how a node ID can change even after the folio has
+> been freed.  I don't think this patch is wrong, but I don't think
+> there's actually a bug here that's being fixed.
 
-Nit: we don't use h in __hugetlb_vmemmap_restore_folio() anymore. Could
-we drop it from that helper while at it?
+You are right.
+The node bits in page->flags encode the physical node and the
+allocator does not touch them. There is no observable bug here.
 
-Otherwise, LGTM!
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+--=20
+Regards
+Yafang
 
