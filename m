@@ -1,127 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2387606A31F
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 18:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D96B606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 18:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=JXFLkRpV
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jIby+CaR
 Received: by kanga.kvack.org (Postfix)
-	id EB8566B0BC7; Fri, 23 Oct 2026 14:13:11 -0400 (EDT)
+	id 1DFEF6B074A; Fri, 23 Oct 2026 14:17:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E41AD6B0BC8; Fri, 23 Oct 2026 14:13:11 -0400 (EDT)
+	id 177B86B0BCA; Fri, 23 Oct 2026 14:17:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0AE56B0BC9; Fri, 23 Oct 2026 14:13:11 -0400 (EDT)
+	id 08DAA6B0BCB; Fri, 23 Oct 2026 14:17:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 67C576B0BC7
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:13:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E8B03160204
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:13:10 +0000 (UTC)
-X-FDA: 85354687740.30.79B5F5A
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 18340160006
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:13:08 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=cs.unc.edu header.s=google header.b=JXFLkRpV;
-	dmarc=pass (policy=quarantine) header.from=cs.unc.edu;
-	spf=pass (imf08.hostedemail.com: domain of hengyul@cs.unc.edu designates 74.125.224.51 as permitted sender) smtp.mailfrom=hengyul@cs.unc.edu
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A6F56B074A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 14:17:09 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 987CA1201A6
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:17:08 +0000 (UTC)
+X-FDA: 85354697736.20.E8CE44A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1C58310000B
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 18:17:05 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jIby+CaR;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792779189;
+	s=arc-20220608; t=1792779426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4FoCKLxbV8UZ17k7ny+PDZ4wC8nV8QJxctUdFkqIFLA=;
-	b=GHhfn2ZQS3Ko6+r+Vf+Flo4CtNhGYH7Q5p0H+iTBsSa70gWEA+66j+NFChQOGP+sZBSY7V
-	o697GB2P0PIjPXW1inaJIP06E+8FNfx44j0+tysz/CWScdI4TtJNlQCAwI8N/pnuflOIUt
-	S2p15jGX/fP5UXiQjwlxOFdJbKAP5c8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1THp/OIN/zpNWmU48vsr3ZYeiyjQo4uPof3S/m8ebdU=;
+	b=RUy8Pc9RJtLiBLIeKO9ELMEheYnrIlOnItIkuwWhrovRavr5RUOWH0KIOmI8lpLbB6T8pn
+	zEjgH1H+m7BVwpmjfNHembKBgXMXBoh7OSoFTe0KlbZZoMmmi7lGjxOzVN/FJaGTOE8AO1
+	W7fV+PmixfNJVrvqBZDsQAc3w8iYYIg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=cs.unc.edu header.s=google header.b=JXFLkRpV;
-	dmarc=pass (policy=quarantine) header.from=cs.unc.edu;
-	spf=pass (imf08.hostedemail.com: domain of hengyul@cs.unc.edu designates 74.125.224.51 as permitted sender) smtp.mailfrom=hengyul@cs.unc.edu
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jIby+CaR;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792779189;
-	b=rRwdjB1e4J5z3slJvR/dYFdw18z/qIrdwcDl/SYMZyVy4pbzIf36YDQOBfe/tNNgC3Cp6F
-	bomPu1U1p4kew3gzinhOKaYjCTVUl8/HZDFo3SwUXB5v+QG0ZfiDq5vxamLsZAL7tRO0in
-	3mTictExs2485TIV7j43tvD6ZOOBBnE=
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-679965fb848so1224155d50.1
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:13:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cs.unc.edu; s=google; t=1792779188; x=1793383988; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4FoCKLxbV8UZ17k7ny+PDZ4wC8nV8QJxctUdFkqIFLA=;
-        b=JXFLkRpVmTPz+vKySpKeK4nvB69Kzu5aFa+Z2bgvU5m6u/1vmTMWhmU9CMDrTRNuBU
-         4RY2ZhrGFZQPGReNLGHo1wdJs4KvOfr7VJmBe/84DScbuBVzpXxPuVyEsxZBCxd6w4QT
-         fuHSF1Z+GH57iKX5sUzEo7GmoHqt4Ifo5CiNgqDBvjmbPS8kqQ4jN1A2PlqweSQhGurP
-         8tMR17Xrgy33/Na4wgRz2/+S+2PjMUmi9CMNa1WcfPcm8pe6UVvKnkUiedqRlS+kD4t6
-         2M/tfJ1cEperFDeZ/Pf1ilsH1lW3D/lAK83PbLiV6a280DpAIphDsA4d220E5Pozbvxm
-         6hAQ==
+	t=1792779426;
+	b=DsD7JMocQ+HPHlVsyIVQlBiV/GOcGnR/7Z9pArSbB+vfiC07jZU/7C2/YUg3Q0o+PLSaJf
+	IBglOnxgTzMQE5AgaSNzdapOel+MXi/gs8xyqfUBtPwIs7btbsEdABCZbra1k3Ofyfe+Xk
+	sKwclDgoTZj4LivLsZgNffugE215jwM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792779425;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1THp/OIN/zpNWmU48vsr3ZYeiyjQo4uPof3S/m8ebdU=;
+	b=jIby+CaR3UMtb/OEnH6jXRLP0aZnNBPbRIRTaHlOfrLsOySy/xOdhBR6n95p1biDSI7ENU
+	d/f8Abiv2CRaf0K19HJop2Me2XyhlTG24L7SS3wAl+vxH/XrtfiYm++UFzhudOBGaNr896
+	x2bE9kSAiBRNhG1BS+AKMNUfrxdcS2U=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-676-fOXc-AB8M_akJjZotZKmeg-1; Fri, 23 Oct 2026 14:16:58 -0400
+X-MC-Unique: fOXc-AB8M_akJjZotZKmeg-1
+X-Mimecast-MFC-AGG-ID: fOXc-AB8M_akJjZotZKmeg_1792779417
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93f32050e72so15075185a.1
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 11:16:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792779188; x=1793383988;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1792779417; x=1793384217;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4FoCKLxbV8UZ17k7ny+PDZ4wC8nV8QJxctUdFkqIFLA=;
-        b=r8HPU+t/Fk4011xubfxrGiqUR6NRFrOCQWBULQ0ZWJR+ydHY1vhKxY0z4MBTBV1Vyo
-         XbbNlcPQBpsC/kcyUxVidGCQWL4IyF8cq5bKbUEMtl7IzaoaMdoZAWo8U1WXvQsfwEmx
-         CIWw83H121MpN/JzYxyb1Ms7GN9ZIZrQ6b32KUNF7vBNGlk4H1igSGP3QUTY57DjoqIv
-         wWbxubicz2ip4SroZ3chTT8GLpL/YNnc+KAMq2mF01WCOr6cl6qYYwqu8PdBr9lub3jb
-         k22FdN5sbxSL/vtYanBz9WiubVVBnB0loT8lk9gWTpjqdkzUUB1I4eh/3KpQCgR+pi5B
-         n5lw==
-X-Forwarded-Encrypted: i=1; AKwUvBxfIwXLmzTDJsmjxE0dKSfe0fm7icKd9tfaZE9GHhcWSFbEg5qPpID6pbvrcywzDM2ulhzTYQxlEA==@kvack.org
-X-Gm-Message-State: AFq9FYJbDSfzqp/kCLS97Vs1bey3EwK1bgs1Au1bvwjoYhDqtcCR2TdJ
-	gedpvE8UTOJttdDSY3c0dXb0T5S3oGuWMpbUtvf+QtZL1xbNx6BdlY3jHkB7InU7Eg==
-X-Gm-Gg: AYBFou0nWHGkYsJmY4SSLY1/JTML4WJ/v3AQ/uFf6vlsCxEeLwHVZxXDC5g85L/g5//
-	daDnmPne1gktCiWqVrG0n0P+G0UibEQ0h0WtolYtl0sgkc6LZmtHE4mVQ5iRcPP8XGTN+IV3Nea
-	2ugUL+71qASxpJnyhIf16Q/l4B8BkM2TDcmzu/vj8vKRHkfjLlUBB1V5A7MjPh9lCRLyTdx3cqT
-	SJC3qnQus+Wltdk5e2zdWcZfHWwefMuMCFBPHWAmTMudak20XBYuSn4JLIq39ZltEvpsLY3sIrE
-	mywzaX4XDc4Han3fnU5bKeWeWSc96HAz4xTTAdylnWC7AgqJCKckYjH+O4+ZtdqpNUscN52BozH
-	kbh5kxgIQoX+55IVrE0C16u1PYsPdASxFdaSNH2B6B7BGoCMWb+TnpT4bHtiaOa/oOEVmCiQAXG
-	YnONaAmWKm+MkGOuddg4SzpbUHZtHbRHjPh0Bz3dqixHWXye7mmZAf/ioo4/fDblC1s7RKU4Xfm
-	gA5f00ccL6TAYvWO9BlDLMkcTU34UflXJ14aNbAQm4nMw1jZYhMXueo4otvqQDThHsM/AhoEfxH
-	xx2Xc+B3k9riSuqVV7pkRE4=
-X-Received: by 2002:a05:690e:43c6:b0:676:8cc2:bee5 with SMTP id 956f58d0204a3-67a35c97da1mr1062555d50.85.1792779187892;
-        Fri, 23 Oct 2026 11:13:07 -0700 (PDT)
-Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a4263bed4sm341889d50.0.2026.10.23.11.13.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 11:13:07 -0700 (PDT)
-From: Hengyu Liang <hengyul@cs.unc.edu>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	usama.anjum@arm.com,
-	avagin@gmail.com,
-	mirq-linux@rere.qmqm.pl,
-	arnd@arndb.de,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] fs/proc/task_mmu: return -ENOTTY for unknown pagemap ioctls
-Date: Fri, 23 Oct 2026 14:13:00 -0400
-Message-ID: <20261023181300.3366487-1-hengyul@cs.unc.edu>
-X-Mailer: git-send-email 2.53.0
+        bh=1THp/OIN/zpNWmU48vsr3ZYeiyjQo4uPof3S/m8ebdU=;
+        b=K2rnyl0Dl5rTwtYUvbhW9K3LnR6avyUL8zFkWc+u6n9CG+2bA76lT9UhNhyrLymAvs
+         TIgxErsI1TXzVUqSci8enZNj9QRyhCDajMN3+JbuSa8EL2Ee61Qqbou15s8Fa+dB7sEY
+         +zXu3TPnoDG9dnWGshv9poDdvQau3S1kF00KC6xYZ0N4xuB3mE5Ds4l0MFkYlv0Kg311
+         VC+vrIolaAAMlATHXofzQMWtHH5onAdgHWFlbM4/cZ7M1YNGpmiekVINTFC0W9muLvbd
+         H0+clrkzi2T1XYvvK6lET0MkWZ5LRW4Wf0Cr1jDi/la9sS4HNQt4aUTJ+BpOsacENgrW
+         UB+g==
+X-Forwarded-Encrypted: i=1; AKwUvBwEMxx2KiZJhPIpwGRDoWYF3Qft7hl5Oh8somyszegU0ccmeVvdeaMQCPYHp5rEEBlHg3nAvYFLtA==@kvack.org
+X-Gm-Message-State: AFq9FYIM2gbTja6pEgaZXy+L8DONsHsy9dlUEDOhXisE+sQ3VisxeDny
+	ji6h6WSC/ATeFue7cGm8ltWZ34qdesOAAalTeFGWQAwicth09acVVMWwd5rGWuDJrkAZkXAmYcG
+	zlttJ431MsQT1T937P20GLZ7BfqKCEZjufM8BUH3cMPAkN+ptzXVBfnzNUVac
+X-Gm-Gg: AYBFou0L9NZEO+9RWlMJQeF7oF/AOl9jIOL0Ejl2cHqCKeYRDed0dK0OB27j2l36XMc
+	5vmjr/ZC7MmlMsTWv9kEMNbNKYih353FkDpjC5C1LKshFRPQuJ+zX6aJjjVBjQriNBhn6ncHJyN
+	YSTwv6+YTS5O3mBFLwYYu+S2tKyIV9opRkqjZr8tvut163hb5tP+DHWFkgbqwhF+xA8E36USy+F
+	7UTiTM+1MIfAfi2Nk9kjAu21R5W1LJ+DhGyO37Z0f0LYW2etXrb1UwJ7Es22khgvXkvQnOqhr8j
+	APt1/0zOSEt6qwNUP285+3OL5ZwBEXTtnyPglLUkuy78p4USe4W1+sW33esju5Pcr3cIhcdCXFl
+	41bs=
+X-Received: by 2002:a05:620a:260d:b0:93f:47fa:b727 with SMTP id af79cd13be357-93f6f91dbe0mr566892985a.28.1792779417389;
+        Fri, 23 Oct 2026 11:16:57 -0700 (PDT)
+X-Received: by 2002:a05:620a:260d:b0:93f:47fa:b727 with SMTP id af79cd13be357-93f6f91dbe0mr566890085a.28.1792779416972;
+        Fri, 23 Oct 2026 11:16:56 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-94047b2ab0asm81343485a.31.2026.10.23.11.16.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Oct 2026 11:16:56 -0700 (PDT)
+Message-ID: <f49c5d8f-b83a-4b1f-ba91-07eabd0ed46e@redhat.com>
+Date: Fri, 23 Oct 2026 14:16:55 -0400
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 18340160006
-X-Stat-Signature: 659mf38eyk89n4hxwyc3jur9a97dyfxz
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] mremap() fails VMA expansion when VM_MIXEDMAP is set
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Jann Horn <jannh@google.com>, David Hildenbrand <david@kernel.org>,
+ Jakub Matena <matenajakub@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261023023106.515365-1-luizcap@redhat.com>
+ <8c53e58c-f7d2-4e98-8d03-7ff1163c1159@kernel.org>
+ <9544f4ce-f5d1-498b-91ed-906b37122e31@redhat.com>
+ <attZIKD7GfoNeqbg@pedro-suse.tail5790ac.ts.net>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <attZIKD7GfoNeqbg@pedro-suse.tail5790ac.ts.net>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: adiV4jmO3M916YicAsHkp_eg6FDChIetThGDK-HPuak_1792779417
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1C58310000B
 X-Rspam-User: 
-X-HE-Tag: 1792779188-673596
-X-HE-Meta: U2FsdGVkX194c3mAw5eO4b3wISSHM8AEZTHdAT4GHuY0hzqWaAv9mHBcja8/2+LQcUGHatPTB9yz8HvKELFWKaAd2nTSHrDhSN2Daut3PoVNKtKcPrG/V05Tm1VfPpgiQxP+lXgr1qnISzdDNTLP4/U8bTXqMx25OCjNJnJtHcZGJPQxMRVw43BYJZ7n9T5YEn1eiWhLY0mF9UMuWyuwyxNtpmUWQfvyhCK9TfthFtnzr+s1thIxNyl+dYDQZbtv0jIYJPYHwoX1UDgdcHwfUMqMIJgyijccua/gfEDjYaJ/EqTABy8fih4GyatLvJ2rnWCV5PXeUC3OI7II8fmUyAo+/5UZXgTk5yJ12vYKid4vgx0IqWcLb7F3zrl1IhU0NSUY7Atp18NcfxMqtIAyAEeoF/2SAn8+t6pWuc3aTcn4JHbRWxg4p1aaHTlsHJcT1SNGRQrGP+xMPdvmIL915IYEDOmVBA0EkBSO+d8pWMxo3Q/tEm1X3OYHyNmUh7PUrV9Jl+vkOYIFswlj9btMyGurN62wzlx0qn+kk8daroAbMxkX5PZfdnXafEkoHmlz03Qb7gUpktpgE30xpNxpf1YfWVNYijHoWjYcbwUuDjpwFfziwyUUlQszopz3Yo1rQ2FvhSRbNlnh+dnc3X1sGHNKl5McqTe/PFKdNcphVzB+cCwrdvFezxsryhtO4wXu8reyCqudfYpsXzXigeKUwAmYSh5QhyyuTp3wP2Xw/+lYspHwMEaTti6I7rvBzGim5GaRfXKexXeVDsswjLdruimIPSfDll1A5LMGS4BkgNhPtsGZiDl8a9LdNAqNYWw4UrU7gkCEG1SP4ouwbinYbkuLGZT7qst+McjrvhrFeigOpDvQ+uZVovNgRkEFkrMs3E3cAuexr5SRWnNjJXHO6LNTDaElmHl+5LyBuV8FA2RP3shcwNhqvcqyneEL5PvITyOJrV1BFmDwTbYYiof
- vfkr20hk
- XL3ed8nRMeq706r/O/aarI3LaInJzn+5KzdjgiEukF3WKiDz38kzUNQaCZH35tMS9SGVimYSI/g2AUvUt/IGmoaS14o1aiCTeuhe0NXeFD45d3A0u9JZNYvPElJFeANPqKzelgQhtTo4pq1zBso5EizWDjWTbx/dv/T0QO3WpOUbDafMP8xBma36bxKrX8veTMXVuMUEmgjIQ5A78fP5svH4Fdfq2CxasAPIR1OpsD31Slno4N08gR4mwsa8rWQhDuSm8pcwrirX+RI/jfrKsLvN0Fs8OpzkPv2BsxhZPYUSjWKC+Hk9ZMFZ4TGJrOAt59/u3VDf7aj94NKHFe0RdexGxbg==
+X-Stat-Signature: w6kinqj1tizcd5zojb7zs948rjsk34et
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792779425-590367
+X-HE-Meta: U2FsdGVkX19FSAzN/6RtZeM1+dti1rtqrBZbks9MDMqpxkXfuSYXAAJzpRJAieMMamORa4k/jj2Kh883+LM6k4caXnk5CH6I6nVc000N+/NlXGbhMx37Ois72XzO2n95FoN+14Sory1WiuMtUmsfRmm3wttrz6vvxrf8atHLOgN6fLMC2tGgL6V+wpSqJLg7MSf0FEPIrfhi05xVQzs86oB2goWZJ1qt4Ikol1NTuGkLf+GLCMXN02KuiVF43t2BD2Eo+OnMR2PYxssIEdTCS0vSSpufblLcAMVuG2lZVQI/rafFyELEqizVAFyCEKoUz9SX89o7GeF8l94RpSBsglQukY5V1wS30NtkB7GrLjFD/b86Cl95E89hpawU0Th4+JIAke1JzObeBqENj0zl0ZfdoYSAVzaLgvU3bP/fHmssltnghKDfWjnexl8MfmyEt7YLfrCRBMpKNqIlqflGwr9K1M0LO5vu8Jyf22JrWqretLLQDqnrmm8NP3ZYCnYSJtark1gjBHvodNJWO3aIpritOauWksE2Oxj03GalSE2QoRBmHM+7Z2dp3B1fXQdtEV9M9zaMOmXe8Qlpzqnnq1p69CCdnhxgM36qdcEjC69VenaBxVT6TPgg+9WlTKzbMH3m4qi0RTMq1JnE+GCeNwasxVcvFK2JHMG+f0hhnRyHkJ55iiURhDfViEhvTpl5M4BiMq+JVFFqRypC66iE0K1u07JFNHoPZt3mYwB41cSX6RTcA6/2llqolAuiBbRxyPTlM1tTmbPMRAWM1jARKEEpNT/KB55ZVXIJnAYReKpxJyS/Y3UdPmwjWn1dpY1VH6Y15TdJ6BheJIs/pibt9lJp7Tk6hhjo0tI3o/8EsQfC/sPT3vjqPTSvzH6CW8IEh/mgj7b29kIjKV1wyP1K7ESfYgIlkERjyS0dm7e2v79U1BvgOjK9gcnWOUe+kdPO2GBlQvzVrQvXMljkpIn
+ WnOJyCw6
+ l59ttTNI4FF1qs1R8YjRSfj1sTOLZ5KfD7FoaJ55eXqv2SpEHmO1df6rrbyDLbtJY5gW45VBpqYWfRJhWkE3q7mYq3uQh1KmdAc4gtev6GclDNlrO/Va8n4lLKzTHE4ZFJInNRcZ6+wuoShful1DEHu+mOy/3Dnlmpd3IA2Oq/oFu+3VA+M84DyBhhtohMDTyuZR9VojjkU9+eQPLadyWCVibJLpPNJF7Vb0ohko3dkUGppawfp2oixpZf5SzgEekJdW9oh1aycqFFj/1bs5mpFxbtWMTUS1y+f71RKdva3M4BuKzPRUoQ7dKRva23n5lsE22W4H0aKFBNS++i/Zaa8J6COu6qgaCEG60GiDuelSFXWobHIwmhte52Iy0bXo3pV6r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,75 +140,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and
-optionally clear info about PTEs") made do_pagemap_cmd() the ioctl
-handler of /proc/<pid>/pagemap.
 
-However, do_pagemap_cmd() returns -EINVAL for every command other than
-PAGEMAP_SCAN. Before that commit, pagemap had no ioctl handler, and
-the VFS returned -ENOTTY for these commands. As of now, they fail with
-EINVAL, so tcgetattr() and isatty() on pagemap report EINVAL instead
-of ENOTTY.
 
-The issue can be reproduced with a simple C program:
+On 10/23/26 9:00 AM, Pedro Falcato wrote:
+> On Fri, Oct 23, 2026 at 08:13:56AM -0400, Luiz Capitulino wrote:
+>>
+>>
+>> On 10/23/26 3:16 AM, Vlastimil Babka (SUSE) wrote:
+>>> On 10/23/26 04:31, Luiz Capitulino wrote:
+>>>> Growing a VM_MIXEDMAP VMA with mremap(), with or without MREMAP_MAYMOVE, fails
+>>>> with -ENOMEM when the address range after the VMA is free.
+>>>>
+>>>> This regression was introduced in v6.1 by commit ca3d76b0aa80 ("mm: add merging
+>>>> after mremap resize"). This commit changed mremap() to use vma_merge() instead
+>>>> of vma_adjust() for the expansion case. However, vma_merge() returns NULL for
+>>>> a VMA that has any of the VM_SPECIAL flags set.
+>>>
+>>> Hi,
+>>>
+>>> 6.1 was a rather long time ago. How was it discovered just now? I.e. what
+>>> use case broke by the change and prompted creating the reproducer?
+>>
+>> The use-case that broke was an application running on an older kernel
+>> and accessing a GPFS volume/FS. I was told that GPFS sets VM_MIXEDMAP on
+> 
+> So the application is growing a file VMA with mremap?
 
-    #include <fcntl.h>
-    #include <stdio.h>
-    #include <termios.h>
+To be honest, I don't know because I don't have access to the
+application/production environment that reproduced this. I got a
+detailed report with debugging information that allowed me to identify
+the regression.
 
-    int main(void)
-    {
-            struct termios t;
-            int fd = open("/proc/self/pagemap", O_RDONLY);
+I can try to get this information if it's important for what you're
+proposing below.
 
-            if (tcgetattr(fd, &t) < 0)
-                    perror("tcgetattr");
-            return 0;
-    }
-
-Before that commit, the result is:
-
-    tcgetattr: Inappropriate ioctl for device
-
-After that commit, the result is:
-
-    tcgetattr: Invalid argument
-
-This patch will return -ENOIOCTLCMD for unknown commands, as
-procfs_procmap_ioctl() in the same file does, so that the VFS turns it
-into -ENOTTY.
-
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
----
-Unknown commands should fail with ENOTTY: Documentation/driver-api/
-ioctl.rst says so and calls -EINVAL wrong, and POSIX requires
-tcgetattr() to fail with ENOTTY on a file that is not a terminal.
-
-I found no user space that relies on EINVAL here: Wine and the mm and
-kvm selftests only use PAGEMAP_SCAN on pagemap, whose results do not
-change, and CRIU and LTP only read the file.
-
- fs/proc/task_mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 5c54aebe2118..92b275dc0d59 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -3307,7 +3307,7 @@ static long do_pagemap_cmd(struct file *file, unsigned int cmd,
- 		return do_pagemap_scan(mm, arg);
- 
- 	default:
--		return -EINVAL;
-+		return -ENOIOCTLCMD;
- 	}
- }
- 
-
-base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
--- 
-2.53.0
+>> a VMA because it inserts pages in the process address space with
+>> vm_insert_page(). I then asked an LLM to check if there was anything in
+> 
+> FWIW this is really odd for a filesystem to do. I see we have two filesystems
+> upstream (at least in 7.3) that do this; that is, cramfs and FUSE DAX. This is
+> arguably weird and should be fixed. Perhaps the VM side isn't giving
+> filesystems the right flag here.
+> 
 
 
