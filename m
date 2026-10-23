@@ -1,125 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DDF606A322
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC30606A31A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=XpAYvsaP
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=U4jtH3uQ
 Received: by kanga.kvack.org (Postfix)
-	id 2A29B6B0BD9; Fri, 23 Oct 2026 15:33:09 -0400 (EDT)
+	id 5F5F46B0BD8; Fri, 23 Oct 2026 15:48:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27A196B0BDA; Fri, 23 Oct 2026 15:33:09 -0400 (EDT)
+	id 5CBF56B0BDA; Fri, 23 Oct 2026 15:48:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18FB86B0BDB; Fri, 23 Oct 2026 15:33:09 -0400 (EDT)
+	id 4E1886B0BDB; Fri, 23 Oct 2026 15:48:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED94F6B0BD9
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:33:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7704A1C25E4
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:33:08 +0000 (UTC)
-X-FDA: 85354889256.27.9E72450
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6C24020002
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:33:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=XpAYvsaP;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792783986;
-	b=Wu23HLbFBN+SrPFjdxVwqzrIC/xQNTNVcJ9xn32YZTEUaSXvR9vo1dsDo2SNcaF8SOyUBi
-	FizCO+ACIXXk2QSwj/mOVt5EVPx2Mf5ifLFN7FTi2+lfHBMImIKh2+IfBV99gcTlx2RvYU
-	qKoDgF5h3t9VxjXEhScotJowejwhNbI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=XpAYvsaP;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 29D4F6B0BD8
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:48:54 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 95DDC1401FE
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:48:53 +0000 (UTC)
+X-FDA: 85354928946.23.E822BAC
+Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D2D57C0003
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:48:51 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=U4jtH3uQ;
+	spf=pass (imf28.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.5 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792783986;
+	s=arc-20220608; t=1792784931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ra4PwUN4j1XDh0rJxY9+VVsmhyDYrSXY972fJf+hOU=;
-	b=LnEl0a/7w2t+gLEvm0okHsSfkbENpy/NTWSMXb6FTgF8ACs5bArYKBKAao4Fb0oshMksrN
-	FizDxobrFq7fTS+BQsNYuKjDHETDMzmy954fa+u924xuZoETdugNsDY5BJJ1aQBKWhzqt3
-	SYtnxMiM+DGb7QCFPYAARvta2oQo3EU=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-533797e72e8so8144281cf.2
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:33:06 -0700 (PDT)
+	bh=jcX7+w+8vvOIu+l1j/b12ERTdZM/yIWf3ikT9C1KkwE=;
+	b=6BHc+L+6kfTFZvkJkd3jGAOlV+hYG0ITeBbB9z7RVJFecfs6hvvBL/2yEKP6q1NTVXeoDH
+	z7AvXP8IwvhGn6r6EQk6MiQjBrraw0Vm49C5S/JqpZYveQCF5Ae86PogfPWvgoiyCTXTxQ
+	i1oFPKllZvPXoyTvW0UEJvQAT6otSAw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792784931;
+	b=636csSHmn4rhhVKXR6JIpwK2ZRfesZcg+tArHzHbNAfKNtpfvp/BhUziC/46kfHDVReSfZ
+	N5Gx45nvmnrFT+9qoTguaF3Rrj1FEbFbnxOLgFbifF8Te96XsWm+GVwVaYX8qIC1SM+ojm
+	xZUCHiIituzPa1umT/I8CJMFo+JalJA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=U4jtH3uQ;
+	spf=pass (imf28.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.5 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-3535a54c09bso1210224eec.0
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:48:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792783985; x=1793388785; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0ra4PwUN4j1XDh0rJxY9+VVsmhyDYrSXY972fJf+hOU=;
-        b=XpAYvsaPhYr1tAlVH7yXx4wWtu6w2wMrr1QO2km1Y+lqgDDQlNEVIp2FwYAXFcRJ/S
-         4enbkR1VCYQjQJbEEpTsdVnrQhKdn1zfgbhttSxDit5BmSNiMk7kneU9MsjM1mRKpNSL
-         LlUP4KMLjZPS7gweTSmd3HUUDcwtYWuyN5pYsx4Ua+G4t2EFe0rpXY9DqRYw90hYdMS4
-         ke53BEQ4B5Mw32VBNHtQC3byI6N0uqJxCLlWlYQp4g78jurtnMREV/wMWTXQveXsGMlL
-         ZuS8OuwjZzxBc7jHPi1hhnoLOdKwVzZLm9NMgcSPYaxHnkskaJlWF2O5pB0lEoSF9Qez
-         orCw==
+        d=gmail.com; s=20251104; t=1792784930; x=1793389730; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jcX7+w+8vvOIu+l1j/b12ERTdZM/yIWf3ikT9C1KkwE=;
+        b=U4jtH3uQG2KHflz/6qjXkJm1ikeRBvTNVYNgdaQ7PlBetKFpQvbH5VF9Yv+oTC65cf
+         XLoJnOexLft++e6R2+ORdVNyQpfRot9TRGIPi8jTLJBaXlexi4mcDtLSJ3DBM9b50MFB
+         I2mSWlw2gi28A8PrnRhKYLcza3C9o/xdoOS0ah/K0JtJxNwPpchI2BQ/c8PTO5zFXHk5
+         H1Z6jRq2ywB49FjUTPH65Cbt6wyBuK5HguWuRgCv+ZfUiXnQgbxWFeEyjycC04bAJsrV
+         WkhJAXC1jmYxnBurV3o/NDRfrmL0wISNsBRDzmZpnLeViVVuZwQwQA+EPKKs9NG6iiU1
+         6cvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792783985; x=1793388785;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0ra4PwUN4j1XDh0rJxY9+VVsmhyDYrSXY972fJf+hOU=;
-        b=tMl98wIzoOzRkxDZyxc8DvujEQrsN6vkM9Q9hl0sdKLsOIevJqNi39UPcuj9/jld3k
-         /a9x+NYpmnpHxuBz1wqh/vOeBBPbiPgMBA4G+Zxv+bQ0spkGyNF4x9GRFldltr8VSwu3
-         ar/Iw+A93KQcQbXoLauYqPyJjYHkhZUpzwzB6xGR9r+q7D0SU65Dv1jxGL35j098JdKf
-         uavkyB7SrPyMa8I5ZCFHHsqBFgZ5N8GQgkuDN9ByIQamqbffDRdpBjcr5sSHiZxSqYVG
-         l2jM7RUYcHcG5bxIYyeH0yUVlpHA2yoLNh/4GstCOL+beEOx82ALkIj2I+BlGTNJJMf7
-         WDTg==
-X-Forwarded-Encrypted: i=1; AKwUvByn2XJja03xDaxGufwSewfQ7T7EUWe/Cr6a6M0/kBy+FyqCAS+vYdECB2nfeipcmA5midIaAqncLg==@kvack.org
-X-Gm-Message-State: AFq9FYIfcbrVO1YwhPVVvK1/EcRwdLhQdG7L2YwGo9cfLYOJB+q5RA95
-	2QRCA8XEPJrnLhkyGyXWGkjsLgcJPvdyJbtRDxCwTN7AiCxBnnPRcphluoIYkxfHCB8=
-X-Gm-Gg: AYBFou0WTybD7MraIUXf/bHOyw+QKOwyHwQf22Y+z163Tyc5Ftzmalk9Zofdtnge7KQ
-	MhSy6+3qzutlFliCtPtI4uMNaHZJS0oalr57l3wXkVjFmdo/EQE+aj1QvGjxGQgPPkgHGy43m8M
-	GmkXnL0HUKxnl2BNhfKM+VbEBqbr0RReEoYqSgSvtlIQMccWaPrI3FOZ2RvfFoH0gNWetNwcxLt
-	9pl5xee9C93NcYwedRmjhGn2LlD3emBgkfhq2gHxXVLm7HzmfJyHqkBeR2P95M2m6Ne1x+uA4iq
-	XXAtDVVbwK/BhvFg8HdRFk1nczz4+g7em+RK8yVxsHv6Z/YDisu76g/AoV2pUGUiedmYuyCIIXP
-	qATw48ew80Xn3jDnledMGPWUry8Au4PfzNFwckQ3shi0WqzytsqGFs5O0sI3ApSwKqdhsybh/Q7
-	gZVa9nOCu39LndRXSZJb2ulKP96nCKod8KKzFoz9+MBzHwtEiUZ86kehwHjERkZbBO2VeHdAoMe
-	pavojwqgIChwQ4U5t9nSQynzaSRtsVh0HuXoQFkwtUbBkPDhHpXrlqNcLokdwSdmph1Y8nnkpb9
-	NSbJny0Mmaae4x4yhuZ1mHhaJP4=
-X-Received: by 2002:a05:622a:5b97:b0:532:f0a2:ef4 with SMTP id d75a77b69052e-536c25f7a86mr44477151cf.26.1792783985368;
-        Fri, 23 Oct 2026 12:33:05 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-538394c38easm1748051cf.7.2026.10.23.12.33.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2026 12:33:04 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792784930; x=1793389730;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jcX7+w+8vvOIu+l1j/b12ERTdZM/yIWf3ikT9C1KkwE=;
+        b=tEPE34Yi2apXDr2wuo/+EPtR5MjAm6LwFSZg1ji2qBONzkZdVgcQrMoIstD93kLxNd
+         Y6nWFte278OmhUQ+H0f6YG2NklFCAq1Vdcp4hdZfWIRsvcq8RLaENFiOi1Knc3d2fAJM
+         UyVhW80s7DtU9UEX0/HJpnt18ts5AaAMskh4DFiTaiwjk5vWaQIVaiVSknJiyfkX3Cza
+         v7Q63ISfMukwelUP48cDA6jYpHV+N80md//C8MvGirTErpm8VkFoj5WVXqgfEw5NHsLi
+         KlMz04dZsnvBV0XjnLCMVuPjlChhDbIIcz2zcxcxfeeIcz0+D77iki0JQkVr/si2gNvg
+         xjww==
+X-Forwarded-Encrypted: i=1; AKwUvBzk7sgjlZwNZY4UUoS/li1KEf49CV51R+EIbm7836A9pbnW5XPgDnW3tyZt4sCn4bexjRkj2sWLVg==@kvack.org
+X-Gm-Message-State: AFq9FYIO+UvAJPODZ+CpiQmOJXj4QCTJvjJj7+uVrTDy3h0K8yL0ZmS1
+	PnHJq+o8ir+n/r0gABYx+JyE4kmTHPdx8mMmt815sX9t2hgvjOAnifk=
+X-Gm-Gg: AYBFou24FsaKU7KoS69gVQh1d4N40Db9GE5vRNh/+S5QeNYoXfNTe2l6WzLMK1nX95i
+	iHzVbD49FPcRTLyzMEd7o3JNBz7jR9noFlXCEcordfTeGzZfKawl4VTj6+zA3elIAJl1JRblD7u
+	WZZRqhwiiBam2C2rGR0+3M33YMF4KhMPN66k2WMJuYIm1ovmUikHcPyJkDDGMBcjIUJfzNP6Dxt
+	eXW7vGopd+waXSlglOjxNeHFAOBHe8h4EYmGLXoNaCRf2qU8cTjyasrhPCvbcm2hJtMr3TyIQvX
+	PluNFXw0kcJaWX16uv9N3XbVds2fIc+AZLBKYmDHvk9rkZ4hbko2jqUpw15kYAdax5mmipMVlcI
+	FqoPAqQ5EIRxgr8hfmsT4SB9rqACP0uj3dh0hDoajChRGGIE1GTK7Ijy3FooL6+oSC4g9le6T/W
+	dQbUDr63SRVkTll70I7rR5RJmw7YGIsAwBYTM6RfO0k84D2BnXbZn7VlppCWOx1Xze9ppp5zIC5
+	X4iR8SPft0HCyw+qPTj7Al4G6n6z4XXbPCwMgMqpOWILYrXB8wEJBJkP9ZJ18FB7TnrIRQz3gWd
+	5V8IRa5Zuo+e
+X-Received: by 2002:a05:701b:4248:20b0:183:c7c1:879 with SMTP id a92af1059eb24-1992900a091mr110659c88.1.1792784930103;
+        Fri, 23 Oct 2026 12:48:50 -0700 (PDT)
+Received: from localhost.localdomain ([137.201.204.53])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19894d5a10csm657043c88.1.2026.10.23.12.48.48
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 23 Oct 2026 12:48:49 -0700 (PDT)
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+To: sj@kernel.org
+Cc: corbet@lwn.net,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	rdunlap@infradead.org,
+	sashiko-bot@kernel.org,
+	skhan@linuxfoundation.org,
+	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Subject: Re: [RFC PATCH v0] Docs/mm/damon/design: document data attributes report infra design (beyond page table accessed-bit milestone 2)
+Date: Fri, 23 Oct 2026 12:48:48 -0700
+Message-ID: <20261023194848.2449-1-ravis.opensrc@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261022053227.90608-1-sj@kernel.org>
+References: <20261017195747.89961-1-sj@kernel.org> <sashiko-outbox-176355@kernel.org> <20261018200808.379209-1-sj@kernel.org> <20261022041708.2690-1-ravis.opensrc@gmail.com> <20261022053227.90608-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm/mempolicy: remove unused mpol_is_preferred_many()
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, Rakie Kim <rakie.kim@sk.com>, 
- Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>
-In-Reply-To: <20261023161003.59086-1-ekffu200098@gmail.com>
-References: <20261023161003.59086-1-ekffu200098@gmail.com>
-Date: Fri, 23 Oct 2026 15:33:03 -0400
-Message-Id: <179278398385.3414657.5670535479884226120.b4-reply@b4>
-X-Mailer: b4 0.17-dev
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D2D57C0003
+X-Stat-Signature: k44ccokxjdhyrz3776gcraubff9madad
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6C24020002
-X-Stat-Signature: wioe8mfyq3wdi7j8jzj9q1ppjf7h6gd8
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792783986-151755
-X-HE-Meta: U2FsdGVkX1/zAACtWP28krPvS49K5YCa6fubn1w5AUh3MO/oHFiR0pS3BCFJtCKFYqyZi3MA3MRekk123M6ZpN9Su7m1dM+xQ9sfyn6I7Yz1E//PPxl/phUw4pvi0Y84emjKOmwvPPaGh1cvAQcKUcKd5pxcYaPdFvkA9cLKMCw0zOM3zIhaUuDSBss6bcvPQTzIZbE7ixKtcIrwAGDiV2jPEwlgkbTZmnNt+RSMT0kZAMAr98hVfLKGgKGG5FQ0zyrzY3drXf927Zcicu9MnWXO+H59BYGqa6SumO4JJAYcLQzOFxmQBfH5K45qJy70bPZvIuACOkBSTaznqMtmCBaAAAP7XzzKpPey9TneT9j0DUwaej6jYmGTSIcF4XBd4o2sVGsoIszRQo6CWDoP2cq3igvEpTHDNEPden875airg+K5012GTOXC3mCwg+8BGpBPU5AxDkFs8yKT4mTrVEVIcDaoAQdo3MT8QcH48NOtfHwA7WnvyyoyHoKORFegQyzh9VoF1s3ANsnT7v1EC2phz7sxkr3n8KQJj56EBnu7D30+4MqHfKaTV7k9kxrW6w6aJdneuFiahT2aO4pif6yoQlFVSCjz5VFxB+Npi9IWa6G4vdLrcERQbQf4cFQjq9EzPQ5irgeNIcKyiwYpIpCkcGxMIrKgaIFp2TMQuigEkDe7vRMooPu7rjq0WCVXXCbssZTgx1kgxvOEU2wxRFZaxirq+SkxUdT+Loks4LUzu+zUJEpe2+4Ihl5jNEToCA/9CBxTzN0A3ghbkJJCMlabD+cP4kyTS+HxegUamgFO2IzDagMnHsvs+wAQaCc3iIwXXw4m896ARBhmdfGssPK1+UoSkDMj8qjGSCRj6a1PdZ07XDYNcAGLrGgabdn9DalxjY12FHHFIlxHtJ5cMGG2Vr8SSy84G2QHPK+oT+8DpBGxPqECfDTJJuxomQP3Dx0V61lpCK6mYcc4s1i
- dWDpl/b2
- mm0Ml0WdSBy1B5chpwCRhwN/j4bpsRZcYTscDAPG7F5w7sIAkPSKpyaTET0s5up6vnv8Qn2UMXcfBGamax88pqVwA4udC5/lk1veLOU2E7gs+r6llaNi6SyUu54rNLJMx8/5pLV+92R/yzFiaCiu2Ht3Lp9eWfnqOuBOgSwI78zNrlDbzyXMX8NRTC/htO2FQ2wRnrCUkPG4uCUqloo2g/Xecrj+x3b8ukcG8mKSjcRuGmFeFMPjCibbg6p7jB//VEdSixYqTkKjwp2rAzd8v0CchUXUl3HwiT3uj551OA/IJQrVyyeE4IQndWbJHEGwktfDQ3S+hVfWQ9XCol+qzl2mDGILucpvOuia76IesrEWLB9p1wq84J/QQsRRQhDvFMJs/41BuMI3rOvJPKYI2y+xGpmda1f0HCMyesH9nTgrX+//a/QI3Z+ESSEGtXPhcE/kCtnFEr2/6jRc=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792784931-249312
+X-HE-Meta: U2FsdGVkX1/FSo18H54E5CguCvR0355Y+o2Wip78vjWayaa5zdBiffKqDr1/WMHj46LRtgsDZu0Ctsc+egR/0SRMmU+IMtI6B3+W8pUXo4Ozj2Ex1agtfS+fjktnlSvPQVa7ahTlbtbWcaw9MFgfGcEvesWjRfJJMouBCLdC5GgOA0nkMhRY9UAiJ9ImhA4lA0v9LplAT0ElC+cbMdFZhkGZkHK4guWX3pvvQ9036b07wTKvBcv3jJoFRSUv9xTlyJ3kphPYRWI6DzN2oJnDMsOVHerFg4ukSYKRzksKasX8/VYoR3MrG30Ytg0Wk7uFG1i1QmFsZXvDBqlsrJbb7Pl3B9ULvgkLcH8DxMBDJdesTpLuCjcu+czjP1OKJ5IcnI+LGDf9OEE3GMsHmMrUYdcFk9Y+bnvD61nAYUVCFXFeMW1AIcrThpXGEvaaq5EZ5OQ9GAG+OZekJsfvbuLU6UXhfFxT1FMD9/VcUOtI+VJmqX7qcLkOP+PWic6pA2hl8BdqgGBduJHQsohDrGlvtAgxF0qpIx61coEFAHGhjx/cWOgrJI5ZFO3Bit8erdLLEH0hf0EKRrsJJXpAxqL9ZTHnY2gqQTHfmnf35Py6z7s0Q6Y8fAohVR+DEWeBP/7YlmuDMGnST/X60rrm8nEdR+k6dvMDwPnO2MMFrRNpF4M0TKJEqQvTnmvsVhFfGKlVGw0FEJsdepxNsNbLt27LkcywaGZU+ljLy8DxmY7W6kjJ3r4VHbmc+iaWvgShlMD/LSc7gYWKOmYxy462ORcW/giV67sJcHYDh7LjFhumgKwIOMlB/jn70aCwk/BwpC9LwvuFEpJVsl9l5DjXp0AA5pnbJLPukZXthhnLITx4j9yZ/jjodhTF3cQOhSTIzlTCmAAeUcFTWgwmOHfzFZQ5DodVEIXOTxibvqHaPfCBGtF1zafxRyZMYIN+PXcC//NIWxZh0L2H50/clEHr+FM
+ 0skwO8sf
+ 8BuHVzga7mIrWs6zRuadal/i9UXnCXxhBRMWEnDGxKb5eZNis0E6odJXAdjAxZPLwap/6r+HR9cnVLxNbBGRT5rpdDTW14lg/RoK8i/dwV8kLyrrLOBYJ05cR6VkCHz1sWcwFjEPMy/SVfK89OLVKowmFT4nSBOndeO1+vkp9XIGXSCZ0jb1OwXuvtQpZl9KtshcTwzJydDvbWpeqNYxAt/nO2DdgWklGGES9N0uhB9IMDpHiXs4Qzwds+w6oSpT+5KjvbaUPwMKX53nNld8Qg9GoI+/myWaHUABER28MNX87iSoImgwhf7C5v3/kjopSNxPv2kP1NAzzK30/5eH0VbSqTpsO+EXJs06/3EA5AA56fHsphPxfhmbMKL7eePAnatEioL5lPeC5wKOXlBAprIXLQfFWUBm54Mu2kKLBk+EjiXMI2B0zaaZjGwGnx7/EU5FCP6lJY6Y9dKL2/U3gkmON7XAP+sJPYf8KJKzXtYFzyUkPHY4eIZFftpM5XNmDMGaH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,21 +127,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-24 01:10 +0900, Sang-Heon Jeon wrote:
-> Since commit a492abe28bec ("mm: hugetlb: move mpol interpretation out of
-> dequeue_hugetlb_folio_vma()"), mpol_is_preferred_many() has no callers.
-> 
-> So remove it.
-> 
-> No functional change.
-> 
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Hi SJ,
 
-looks good to me
+On Wed, 21 Oct 2026 22:32:26 -0700 SJ Park <sj@kernel.org> wrote:
 
-Acked-by: Gregory Price (Meta) <gourry@gourry.net>
+> On Wed, 21 Oct 2026 21:17:08 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+>
+[...]
+> > PEBS saves registers just after the instruction retires, so a load that
+> > overwrites its base register defeats decode.  IBS saves no general
+> > registers (perf reports the registers at the NMI), so decode is not
+> > reliable on AMD.  Decode in kdamond must also survive exec, munmap, exit
+> > and pid reuse.  These are synthetic loops chosen to separate the cases;
+> > how often real code hits the failing case is not measured.
+[...]
+>
+> Thank you for these testing, Ravi.  Unfortunately I'm still learning perf event
+> and therefore not yet fully understanding these tests.  I will revisit after
+> gaining more understanding.
+>
+> > So the suggestion is for the first report type to use the PMU-captured
+> > address and load/store flag (AMD cpu-cycles:p; on Intel, the PEBS
+> > memory events, which moves them into milestone 2).  Your call, of
+> > course.
+>
+> Meanwhile, I will start with the current plan (capture register contents in NMI
+> and decode in kdamond) if you don't have strong concern.
 
--- 
-~Gregory
+No strong concern.  Starting with decode makes sense, and VMs are a
+good reason for it: in the KVM setups tried on Intel and AMD hosts, no
+guest got a data address from the PMU, whereas every guest had a
+software CPU clock (PERF_COUNT_SW_CPU_CLOCK) or basic hardware cycle
+counter (PERF_COUNT_HW_CPU_CYCLES).
 
+As quick background on why those earlier test tables brought up PEBS
+and IBS: in perf_event, sampling CPU cycles has two modes, selected by
+attr.precise_ip (the :p suffix in perf record):
+
+  - Plain cycle or timer sampling (attr.precise_ip = 0, the default):
+    a counter overflows and raises a normal interrupt/NMI.  The
+    hardware does not record a data address; the handler just sees
+    pt_regs where the CPU stopped between instructions.  Even though
+    the interrupt lands a few instructions after the overflow ("skid"),
+    regs->ip is the next instruction about to run and pt_regs holds
+    its untouched input registers -- so decoding regs->ip gives the
+    address it is about to access.
+
+  - Hardware "precise" sampling (attr.precise_ip > 0, which routes to
+    Intel PEBS or AMD IBS): the PMU hardware itself snapshots the
+    instruction and, on supported events, the data address it touched.
+    My earlier tables tested this mode.  Because PEBS records registers
+    after the instruction retires (when a load into its own base
+    register has already overwritten it) and IBS does not capture
+    general registers, software decode breaks there -- which is fine,
+    since in that mode you use the hardware-captured address instead
+    (your Milestone 3).
+
+So there is no need to revisit those earlier test tables for your
+Milestone 2 prototype.
+
+Two small tips for the prototype:
+
+  - use PERF_COUNT_HW_CPU_CYCLES (or PERF_COUNT_SW_CPU_CLOCK in VMs
+    without a virtual PMU) with the default attr.precise_ip = 0;
+  - skip, and count, samples whose instruction does not access memory;
+    in typical programs, only ~15-60% of cycle samples land on a load
+    or store.
+
+If you want to inspect what those samples look like from user space on
+a program:
+
+  R=AX,BX,CX,DX,SI,DI,BP,SP,IP,R8,R9,R10,R11,R12,R13,R14,R15
+  perf record -c 2000003 -e cycles:u --intr-regs=$R -- <program>
+  perf script -F ip,iregs,insn
+
+(In a guest without hardware cycle counters, use -e cpu-clock:u
+instead.)  Each sample shows the IP, the registers and the instruction
+bytes to decode.
+
+Thanks,
+Ravi
 
