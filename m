@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108ED606A322
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 23:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6157606A328
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 23:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFcJmQnD
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fPyqDrZj
 Received: by kanga.kvack.org (Postfix)
-	id CA1A86B0C02; Fri, 23 Oct 2026 19:32:11 -0400 (EDT)
+	id 550546B0C04; Fri, 23 Oct 2026 19:32:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C03AA6B0C03; Fri, 23 Oct 2026 19:32:11 -0400 (EDT)
+	id 4448B6B0C05; Fri, 23 Oct 2026 19:32:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA4DF6B0C04; Fri, 23 Oct 2026 19:32:11 -0400 (EDT)
+	id 303DC6B0C06; Fri, 23 Oct 2026 19:32:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6342E6B0C02
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:32:11 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC46F1601EB
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:10 +0000 (UTC)
-X-FDA: 85355491620.07.077A36E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 37593100005
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CFcJmQnD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EE19C6B0C04
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:32:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 404BAC02B3
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:14 +0000 (UTC)
+X-FDA: 85355491788.26.B654BD9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9BD0CC0005
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:32:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fPyqDrZj;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792798329;
+	s=arc-20220608; t=1792798332;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ruHanbLvoE1VJkWUikficvKLFnq3SIPwAWmLJ71jezY=;
-	b=ZY28/psqABkjDm4u059D3izOXhns4UjGazx3TrTKYxDQdBGT6mc864eJ46F210CTd3UqCr
-	qlNLFZIegnSCNY5aU0Y/l5+CBW4xOJLmYMq8i0R92Ge7pmnj5fr4TxUXcfWDZhJVEb78Pj
-	k9Eunckb/NQ6msvEkwYcQ9Q+va77KW0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CFcJmQnD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=3UZrbC4N8JNfc6PZwSmyhvVctg9xGDP5yMSRIj5yhQw=;
+	b=LBpP6SwuUJFKvqg4f9OfamjtTN1qn3aqNqEbHMsWAAQrZiF8odPO2sZ0GdGe2bNkUTwqmd
+	gjoS9V7ktvcYnuRVO8IyqYDGHui8uJQypoIATLkVdcw//Cz1lYp8ahxPji5zGidGxgkl7Y
+	DuuAJb2Qjo5AXg70UiuuB6G1EcBZ4jA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792798329;
-	b=ovWWJOTdEnaq+X2Uh6LxKvDaMoLpegYFmE2si9biLoPqH2Rrs4qwuTnLXrEuuTL1SKcm+D
-	+MJcq3trbIfxZ5POAb+T999U6y7lBA70GLs3ZsTAPVGLQ5aYhoy83nm4itLASFxImWuF/k
-	mTpHR2aQyqlz3saoQlCkC2l+2uIfIbA=
+	t=1792798332;
+	b=1hH2qrppjnFYg9IcxjTK9Xw7ehnjrm6G2fcPWvCeDqpBFBWOh3beHt5gF7WwqiK9neYiFV
+	fiRfOnn8c5aUv2bO+637O0H5SKtnLB18MbEkOcNB3GVyHK3bOzlVBh9Zl44MsmMegYbDvx
+	BLwvyQmcISCj4AScV3asxJreofcWcdk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fPyqDrZj;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7809E4373D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 40CA56022A;
+	Fri, 23 Oct 2026 23:32:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD2E1F01829;
 	Fri, 23 Oct 2026 23:32:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF7A1F01825;
-	Fri, 23 Oct 2026 23:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792798328;
-	bh=ruHanbLvoE1VJkWUikficvKLFnq3SIPwAWmLJ71jezY=;
+	s=k20260515; t=1792798332;
+	bh=3UZrbC4N8JNfc6PZwSmyhvVctg9xGDP5yMSRIj5yhQw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CFcJmQnDL3astvp/bhPoGy4f9Ecsu73Rkzy5dDEawW6HcUyX5noK0Kyq0OKv0DYno
-	 zFIAHqgogExV+AzopY+PkBwONlYBt7YRWSr6Gg2+cSFFN7oEvhcUGg8GAoL2wgQKu/
-	 IzbGaxqKjqAPzkeoseGw0IvFZvIUI1bqbjt8YWMDwbfm/TyJg3f4jHqyckGvhOLOir
-	 Neu+CGOBFUttA3LzRl3pIJT7plAEj3H/vaEV1zNbFCK+xEWx7IrrHYkJQ1bx1GW6WT
-	 h+EFHWOIprhK28mGZo+lprE0EQzvpcil451fMsluTBeK14uvXwFl5uMjYSocArpLco
-	 fDXolBT2NQLyA==
-Message-ID: <sashiko-outbox-183381@kernel.org>
+	b=fPyqDrZjw5JLD8l37DKGX8bIAPsBQ9025pPwxcHXKxilcY2qc0rlwb+T1uo7AWF6x
+	 n+sM/o3O5fgsuK7PBaVSl2I4QtJz4kTyg/J5Kqcr43GSdmDgPCEvyCjoVombOMveqe
+	 OGFZJexZBH5jswG+0fMPooq+/dfulmNeg9a7psVpF0zezm8fFWuh3JTTNscgOUki4r
+	 Brdfu1rXpDW99cmpH4PnxAPvPE2KglA9pT+eCELv0cl332A/hU8PwLaulhyaV6/MXp
+	 KbSXBULwn/cg9zXqKtMYU2p0GelPZp8ZnJR+C7Ql9eOCuJYZyXt9Tth1hI+0Vvkkz4
+	 bByiUrMyiWMdg==
+Message-ID: <sashiko-outbox-183394@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 17/50] KVM: selftests: Test guest execution with
- tmpfs-backed guest_memfd
+Subject: Re: [PATCH RFC v2 30/50] KVM: selftests: Add basic test for sample
+ memory provider
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org>, "Alexander
  Graf" <graf@amazon.de>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Alexey
@@ -100,24 +100,24 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alex Williamson" <alex@shazbot.org
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261022-gmem-alternative-providers-v2-17-5dd1dc6c660a@google.com>
+In-Reply-To: <20261022-gmem-alternative-providers-v2-30-5dd1dc6c660a@google.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261022-gmem-alternative-providers-v2-17-5dd1dc6c660a@google.com>
+ <20261022-gmem-alternative-providers-v2-30-5dd1dc6c660a@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 23 Oct 2026 23:32:05 +0000
-X-Rspamd-Queue-Id: 37593100005
-X-Stat-Signature: kkn6ym5niysrnqusq1h4fnimgq5mqpnj
-X-Rspamd-Server: rspam04
+Date: Fri, 23 Oct 2026 23:32:08 +0000
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9BD0CC0005
+X-Stat-Signature: be38aaxd381u7rqij9z1c6h9f1mtubgq
+X-Rspam-User: 
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792798329-271584
-X-HE-Meta: U2FsdGVkX18CWrbCDSGV/4SrATrsx3Xi8Cz+setMPduynGXSaMmrN2qSrPGLG5eA8oC1SRPmz+KJBZkaS70x03hf1FNfi/zHePCcxhZOy9g6i2P8PUdR0XvsIUvFGCAwgY/Af0FVADE0oq0oU13aXtNpME1kdl1m44ueZTW2xbw5iAm10kss+PxqemtWk1QjK2Uo4prERLaVcbTu4p7B2vIYdNFvbbGh25dv1MmA4oj7RaHrCeDbN5JprHc3wbUP4V3mDlciWZ1DW1qiII1poIiPjnNJDmWk0ynXEHHQsJIJ7baEBeLYL3/C69tHUD1wS6fuD0FrufPk2QvZPNsi/N8l4XPr9j0Qt+XORD4Rhhwagrl+WETO4TfrxxadRZKOs0HaxKK1bHAiVtuDMmtCe1j+BO3IabQSANvaa+vGdYn/UkSx8Ys1/oxq6DoPbqDpe4Awr5cY75W39Ertl0hQ95+kDgEgfIXzKpse4T3qBJw136QL9ekRbJuohbhbFZL19xUed8kTICJbbCCYaDWM4xCYAv11hG/Hc1E1xfYPQCUilraJf9RmQtzXK/K7g5fnqa5lWcY71Tyfgnr3QhR8BOHnMXV1MppvG+LUAsQW8Gv+rPgE38kDr3mDIn84db8cU28eoKJ/c4X7RL3ePhd7qdPGPaEThm8RHu5TD1/mwqERPb8TlUgOLXNqvJ10F3Qu+yGQt8Pu0uvE2M4eI+c4LW5Cc8HlyVlENpdYpvjMMSMcL7P2aXxiyaf6o6g44XB0tIZZUsAUntA7UMdHvv+umLb9a7PW6/wB8neNSSOFNDLqrXQG5S80gXFX4YXHL+emCWnN29HWZInIoZD2H/rR7ATvD1jmJqmLiHIvF37avj1dpkkzRRuP5jd9J5C/Dov0BESUk29cPHJuTnY7+Qp5pvfmu1nYFQnE61SH6o3axuOyRECMQNvevw789YoMKg6pVWavFK3r6/IlnUtuqYD
- /IRh2tUe
- IgJjeaZmN9OOATQTWX92QRQezGPaq81YokpfDHg0+E81wCc2g0Air0tdemSi35qz5f8GGbzKo8N+ChDCJTqrjD+QNSaWKta7CQ0SuUW/5b/o6z6Rhz3xrnq8NCICJtSsJFCjbDDpCUrNIXcl3y7OrTz4odyMp9zoBmtQ8RIJTGGdpId9VDfkkJBDkqRPxDVC0WgFVhRO+wsEqMj4NWX6AQYQmEr4dQGYn0xs4rWYpKR3dQxQKIv5ukyYcHiy8I7nMNWMZPmLnxi1Xuk0PCxmUNKK/Fr7Ie7riIVsNQTDPyJODMzsIw2nf0nx34kX6uSRQYK63q1fU0YjtQmWyyoPEKkZ2N/LzzmE8ovCARZtNgkk/2smcDeMVxYCdN2HRdaRvAcc2PJyTXkyT0IB6HUCFUJnfgwrSsLoSjKGynNfLT5KPL5aX73eafB7b5I7M51qyrLf4y5+k39XSyBWwkA1OFgD/IJRKO/73thE6x1IcY6Sd0yI+y8g/20zhS+1x01RI9RcWQTltI/l0nlLZJ6B+D4GSepkf57SlXrKdg41PttSD/S75mqW0nSwPlntmH8N7l3u+u/+ro0lZ393jHEGtECIoGox9iX6o+PCUnE/AWopcSmt28re3iJ3B4guAGfuHLyYUKQnBKzdeTjkDdGcUkrAZW92HZR9VQaHKpt6l8OEhYdMUbV/+h20TdGIRy5g+ltUH29s1hIba+5Zb29zpRYpI+Q==
+X-HE-Tag: 1792798332-396103
+X-HE-Meta: U2FsdGVkX19aaiXSTWOr4gdRHb6ngp4YGCBLktiom0yWvshb4NAH6iJ+n9rorg/8bTMC7Z39gVA4ImyDobp04cP6ypPwAYP/HWbtoiD0DDVxTPf4cgHM4USwPpKL82xvMOCrJ87YKTM3MA3BCzEEWln3Mn+9T17katGTmWq8EesajSIuNwoHe4dQka6TJnSYnFlWK3a+s2liiYVT5ypUAZrRCxr2u7QVocZEAva3QRY0jRALxZgsg7qfyoxJO9eTKAOCSqtPZJyiW+kgdiMzzXQ42tSOqMl501qvCncxW0q/ijBW7MCYFgJk8Bgc1nKToXlceCJgi6NtOcCGgiSFZaOSXMy+2b29yYcJJgGOAuDejQpb/bAdAhKcyRTQ8hfIxsTlW+CLTwjrlinQu7Zg2Xx3Ec+50D7jujISFVY5Tgx//riVVwpLLM1VFtA2J5STqivIF4ctr/D13MIH6dkDJeaDASLo70/KWbmMTc3AEx4LYMB7iLgbdANVqRq7618APcMSdaK1yBwgZvk3G5pE1KSCraqbeus8tST5O9OI1rRZtGQQ8uc4+hJnrOAZgt2tWIVwh6w1tnsKyjsSXxTExMshfDjv9k0fcoEB0CgHjj8HfuuavBcq5WUFdPF2k4EoA6lewuxJalWN89ZPIvpMHO74ZWE3XD4q3M0gVrmgayrHfO00k5067uN3UhmPKGOMBslowAGNHlWHikWtWpt1FfMVbNaWqblfLGVz98x+v5hz9/A9pqSi7cyXnXS4iYLsNYNWQv8ChYoSF26PJEy1Tjs7PZVIPbsGyneCn0SXYz4hi70w355F2tNDoUxhLx5tXWzjslJoZfX5RLHWIlKEVMu2PVlShJiN0pTNsj/ZL0U24fcyoCI02Mw7rhTJvft07mJqtBQB5NKjKdTVGFXnc1wWvdF6p256q4M3wG5v4qyXHq2SpB0IlcjEo32NZEG02irjHtslPnZzMQYR+Sc
+ BidJwFzG
+ yW8HhISkFxlN5nWPa/3tSrF1uj+rqKILIaMC/cWOSObKZmiY4Et1F3o7X56fkcnSeTHs4xnw1xM7TINqziTPx/hceABVflmkEcgX9fFHBhgI+bNwn0JPvnPlWgkYuXmloRqWVn+LRtM8EQPcltosMO+sbNdW4bebgkS6jzUpEDmnd2LVC56K3Nmm4m15lHALjzdETIu5xMMBtybf/47wytrFgPcaYPJsoUh4wUUTSY8eU4gzHVlmm7Nhwc7m+OS+XD86FGT/iRnwmDkdptFfNUzx5gER70TVd0PtNYaCqLg+u7My8tMRkSLQlLAgNmCtZ1VYkPaWVkTdgQhdkL2Yv67zCfgCjmcPJgHkVfQeA+ogFcntnRfsIcT3fyt29OJG65BQ015ZgsPlOPTUTpWFJwejznz5L4QOhRDiwm7InI4BvLGAhiy0b188cCiuV7x8MZSB60n2mqz8HWa9V2CmTQuWIUJ8RrkZMAGZAFtJDw1BxUc1nWNmrWsUUs6NYYb6D133YV+Cx6bJ3p9z8xLgi4tf1qE6YJcXdq7Ka9zGHlpr1ij2jMUScsXMHh0ZXlHKK/+v25y3CYf1zEYZwrNjwGFjSTp9bVjWreGL8kORKJJnS+VfrFVq4SWjB3gAt3rC4eZZX5oXoOimojSA9edjHy947VN3P5L4j14Ns
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,118 +127,115 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] KVM: selftests: undersized tmpfs pool in test_guest_memfd_guest_=
-resource()
-- [Low] KVM: selftests: dead pool_fd check and duplication in test_guest_me=
-mfd_guest_resource()
+- [Medium] KVM: selftests: open_provider_dev() reimplements __open_path_or_=
+exit()
 --
 
-commit a03f3023933c2e4a7447fa35e4f2470380c225bd
+commit adc070cca1ed801047bd293a0094a045579d124f
 Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: selftests: Test guest execution with tmpfs-backed guest_memfd
+KVM: selftests: Add basic test for sample memory provider
 
-This patch adds a selftest in guest_memfd_test.c to verify that a guest
-vCPU can execute instructions and read/write memory backed by a
-tmpfs-backed guest_memfd resource pool.
+This commit adds a selftest for /dev/mem_provider_sample to verify basic fi=
+le
+creation across multiple sizes, stats reporting via MPS_GET_STATS, and page
+presence toggling via MPS_SET_PRESENT.
 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testi=
-ng/selftests/kvm/guest_memfd_test.c
-> index 20de24ad535f1..8e9261db23354 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -799,6 +799,61 @@ static void test_guest_memfd_guest(void)
->  	kvm_vm_free(vm);
->  }
-> =20
-> +static void test_guest_memfd_guest_resource(void)
+> diff --git a/tools/testing/selftests/kvm/mem_provider_sample_test.c b/too=
+ls/testing/selftests/kvm/mem_provider_sample_test.c
+> new file mode 100644
+> index 0000000000000..932ea3f30f494
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+> @@ -0,0 +1,147 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Tests for the sample memory provider (/dev/mem_provider_sample).
+> + */
+> +#include <fcntl.h>
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/stat.h>
+> +#include <unistd.h>
+> +
+> +#include "test_util.h"
+> +#include "../../../../samples/kvm/mem_provider_sample.h"
+> +
+> +#define DEV_PATH "/dev/mem_provider_sample"
+> +
+> +static int open_provider_dev(void)
 > +{
-> +	const gpa_t gpa =3D SZ_4G;
-> +	const int slot =3D 1;
-> +	struct kvm_vcpu *vcpu;
-> +	struct kvm_vm *vm;
-> +	int pool_fd, fd, i;
-> +	size_t size;
-> +	u8 *mem;
+> +	int fd =3D open(DEV_PATH, O_RDWR);
 > +
-> +	if (!kvm_check_cap(KVM_CAP_GUEST_MEMFD_FLAGS))
-> +		return;
-> +
-> +	pool_fd =3D create_tmpfs_pool_fd("never", true, page_size);
-> +	if (pool_fd < 0)
-> +		TEST_REQUIRE(false);
-
-[Severity: Low]
-In test_guest_memfd_guest_resource() in
-tools/testing/selftests/kvm/guest_memfd_test.c, can pool_fd < 0 ever be
-true here?
-
-Looking at create_tmpfs_pool_fd(), every failure path already asserts via
-TEST_ASSERT() before returning dir_fd:
-
-	dir_fd =3D open(mount_dir, O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-	TEST_ASSERT(dir_fd >=3D 0, "open tmpfs mount directory failed");
-	...
-	return dir_fd;
-
-Also, since test_guest_memfd_guest_resource() duplicates the VM setup,
-memslot configuration, guest execution, and memory verification of
-test_guest_memfd_guest(), could test_guest_memfd_guest() be parameterized
-(and use vm_create_guest_memfd_resource()) instead of duplicating the test
-function?
-
-> +
-> +	vm =3D __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1, gues=
-t_code);
-> +
-> +	TEST_ASSERT(vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS) & GUEST_MEMFD_F=
-LAG_MMAP,
-> +		    "Default VM type should support MMAP, supported flags =3D 0x%x",
-> +		    vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));
-> +	TEST_ASSERT(vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS) & GUEST_MEMFD_F=
-LAG_INIT_SHARED,
-> +		    "Default VM type should support INIT_SHARED, supported flags =3D 0=
-x%x",
-> +		    vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));
-> +
-> +	size =3D max_t(size_t, vm->page_size, page_size);
-> +	fd =3D __vm_create_guest_memfd_resource(vm, size,
-> +					      GUEST_MEMFD_FLAG_MMAP |
-> +					      GUEST_MEMFD_FLAG_INIT_SHARED |
-> +					      GUEST_MEMFD_FLAG_USE_RESOURCE,
-> +					      pool_fd);
-> +	TEST_ASSERT(fd >=3D 0, "guest_memfd with tmpfs pool should succeed");
-> +
-> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NU=
-LL, fd, 0);
-> +
-> +	mem =3D kvm_mmap(size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
-> +	memset(mem, 0xaa, size);
+> +	if (fd < 0) {
+> +		TEST_REQUIRE(errno !=3D ENOENT && errno !=3D ENODEV);
+> +		TEST_FAIL("Failed to open %s: %d (%s)", DEV_PATH, errno,
+> +			  strerror(errno));
+> +	}
+> +	return fd;
+> +}
 
 [Severity: Medium]
-In test_guest_memfd_guest_resource() in
-tools/testing/selftests/kvm/guest_memfd_test.c, what happens when
-vm->page_size is larger than the host page_size?
+Could open_provider_dev() use __open_path_or_exit() from
+tools/testing/selftests/kvm/lib/kvm_util.c instead of hand-rolling the
+open() error handling?
 
-pool_fd is created earlier via create_tmpfs_pool_fd("never", true,
-page_size), which limits the backing tmpfs mount capacity to a single host
-page. When vm->page_size > page_size, size is computed as
-max_t(size_t, vm->page_size, page_size) and exceeds the pool capacity.
+tools/testing/selftests/kvm/lib/kvm_util.c:__open_path_or_exit() {
+	fd =3D open(path, flags);
+	if (fd < 0)
+		goto error;
 
-When memset(mem, 0xaa, size) faults in pages beyond the first host page,
-shmem_gmem_alloc_folio() will fail with -ENOSPC and
-kvm_gmem_fault_user_mapping() will raise SIGBUS.
+	return fd;
 
-Should pool_fd be created after size is computed, passing size instead of
-page_size to create_tmpfs_pool_fd()?
+error:
+	if (errno =3D=3D EACCES || errno =3D=3D ENOENT)
+		ksft_exit_skip("- Cannot open '%s': %s.  %s\n",
+			       path, strerror(errno),
+			       errno =3D=3D EACCES ? "Root required?" : enoent_help);
+	TEST_FAIL("Failed to open '%s'", path);
+}
+
+Because samples/kvm/mem_provider_sample.c registers /dev/mem_provider_sample
+via misc_register() with default 0600 permissions, running the test as an
+unprivileged user causes open() in main()->open_provider_dev() to fail with
+EACCES. That bypasses TEST_REQUIRE(errno !=3D ENOENT && errno !=3D ENODEV) =
+and
+calls TEST_FAIL() -> test_assert() in
+tools/testing/selftests/kvm/lib/assert.c:
+
+tools/testing/selftests/kvm/lib/assert.c:test_assert() {
+	if (!(exp)) {
+		va_start(ap, fmt);
+
+		fprintf(stderr, "\n=3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D\n"
+			"  %s:%u: %s\n"
+			"  pid=3D%d tid=3D%d errno=3D%d - %s\n",
+			file, line, exp_str, getpid(), kvm_gettid(),
+			errno, strerror(errno));
+		test_dump_stack();
+		...
+		if (errno =3D=3D EACCES) {
+			print_skip("Access denied - Exiting");
+			exit(KSFT_SKIP);
+		}
+		exit(254);
+	}
+}
+
+In test_assert(), fprintf() and test_dump_stack() run before the
+errno =3D=3D EACCES check, printing an assertion failure stack trace and
+clobbering errno so the test exits with 254 instead of skipping cleanly. In
+addition, when the sample module is not loaded,
+TEST_REQUIRE(errno !=3D ENOENT && errno !=3D ENODEV) only prints the raw
+expression without the missing device path or Kconfig hint.
 
 [ ... ]
 
->
-
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261022-gmem-alter=
-native-providers-v2-0-5dd1dc6c660a@google.com?part=3D17
+native-providers-v2-0-5dd1dc6c660a@google.com?part=3D30
 
