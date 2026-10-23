@@ -1,106 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8E0606A31A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 01:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5833606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 01:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ahj0rvYC
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ii+ToBK/
 Received: by kanga.kvack.org (Postfix)
-	id 9A5456B031A; Thu, 22 Oct 2026 21:50:02 -0400 (EDT)
+	id 9A4DD6B0A9F; Thu, 22 Oct 2026 21:50:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97CF46B031B; Thu, 22 Oct 2026 21:50:02 -0400 (EDT)
+	id 97C3D6B0AA0; Thu, 22 Oct 2026 21:50:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 892FE6B031C; Thu, 22 Oct 2026 21:50:02 -0400 (EDT)
+	id 86B146B0AA1; Thu, 22 Oct 2026 21:50:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 560986B031A
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:50:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BE46214033B
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:50:01 +0000 (UTC)
-X-FDA: 85352210202.29.2C563D5
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 486A420008
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:50:00 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ahj0rvYC;
-	spf=pass (imf31.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 575626B0A9F
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:50:13 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C5FD540367
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:50:12 +0000 (UTC)
+X-FDA: 85352210664.28.B7C72BF
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E8D691A0007
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:50:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ii+ToBK/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792720199;
+	s=arc-20220608; t=1792720210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=+p8cIpnt0YjLXT/3n6WuKQxFq68+6JJEn3PVDsIrB3s=;
-	b=TsspJ/bmFevdJBDFZwT+ikIOal74IgblB2kqLgRAUUgg0AmWimFyUpctYeM0OXJGSamSaW
-	dAZ8II6BWcls7auWokY41msFPHYdk/GzrarhgFyRA2TGLOMvDiTlgUOMe6CeLCQMfPcOlI
-	7DCbPpkH6NISuxrd+aVAvOTjnKiB+r0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792720199;
-	b=dQ8W5Oquj5wlZfjz1DLsSgTCtKnOgjKL2wGpHAmu6Uw6aiRKsonOkpgyxxDKrlh9aB+ekm
-	XoyB1a0zx/xSEMZ8BiKCR4WuMU3jh6DZ3X/9I0+/CsWuQbX5Y2ag0LCa2nVdg4y+yBsBjn
-	rEZ5rAJfFwOSIc3AZ1+r8Isgr+ajo9Q=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=a5VOHmm+k0IBj8x+32bgCpnZFpHRZVbIyYT6tTI+jX8=;
+	b=ssEI9BRcH3w4TmjXBuMB9kq/XXp5ZfKncQCHJCuHHpwW1MknIf/9MfJMr2Cb2YFwrT8oeJ
+	tZsL3Xh/5yHBgqW7jxo+8BK75e62zwdf6l8dYnT0DuPRtVjvwvOYGGNPBiGmZ+nMiUk0FB
+	Z2LKDYVzzTjr/vNltZGueHS6IJZ4shU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ahj0rvYC;
-	spf=pass (imf31.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-353804b591eso742857eec.0
-        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:49:59 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ii+ToBK/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792720210;
+	b=UG1JfI2z9wjt13AZaPjT6JZMHiRbLeD1fiu6xpm2AVVg5tv461ddUpy4xvAGJe6qYpzM/K
+	7zXHAggOa83qBWrGf5+oaH7v38AdWy28Q47LtDO/WNvUWMgOhMDX1V9qSG6uwDCUi1J1Fx
+	bqXwX0aVtHC3Zx3Oxm3MHYzpu88Yn30=
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-353804b591eso743095eec.0
+        for <linux-mm@kvack.org>; Thu, 22 Oct 2026 18:50:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792720198; x=1793324998; darn=kvack.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+p8cIpnt0YjLXT/3n6WuKQxFq68+6JJEn3PVDsIrB3s=;
-        b=ahj0rvYCnd7UTb3IE+vkX0xSvToBIf/DEE+aYrcwErSSKP3C/uwRHX7f0YQwi6FSfm
-         O/7t2L6rkNmk35kkszOCt3sWqmnwYdACBnV786T70aSQ1z0/lIPQtewqUfHSEgt0lBJR
-         u53Y4vIojd6s/iKvefh71C69qpXGqAcWprSeYZel5DTscuh5XBUUjrsxHzk6FAg0IXAN
-         OAva6JISqMpBu8K7uQbjwTCdlpMz1FjjHRFTm1HK/+z6uCqJcYAr9CvCICez9WVezM+s
-         yx3xj9xxRPVB0o8hr+PuMCnCwwtiZps1dnKieXRYH8HJ/v7HHyLKOVipnJ7xq1wSvwg3
-         HtKQ==
+        d=gmail.com; s=20251104; t=1792720210; x=1793325010; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=a5VOHmm+k0IBj8x+32bgCpnZFpHRZVbIyYT6tTI+jX8=;
+        b=ii+ToBK/gEBt+wA6qGpIm+N56YqaGFPS9HtSlnxPeTdLK4ZjXOHboAm5teHdpYpzJ3
+         1sIr2dBRVn72aq7YvxUdGex9y+CtxPeWK3y0+bOuXUd7ZIlTX3p/9pFUIEG4ZB327Nd1
+         1ESyKCzHNG2pmTGgAmbWKQetkUWwkRJrApGaFjEuQPETEZp4d7CYAiRjZYm7IvBzvaIo
+         q3Q7AXYFhtXo+XBcToSm+Opj9jBc05ThST9rLSfwjzYV0VP4/sj3aWrvFgoHyHxwnxku
+         lLjoNRc0lXmlv/E49rTha1XkfAqL6qOG8cq4yCgKaiIS/xaW1DOJ+Ai3x1JMjcKC4kCp
+         yymg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792720198; x=1793324998;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=+p8cIpnt0YjLXT/3n6WuKQxFq68+6JJEn3PVDsIrB3s=;
-        b=tSGr4Jhjn/O71voaXwTWWEy1wIo9Qfu//TwHsHstZhsLD6LCExmk45fmcpxsC+XBLW
-         ipnn/95chdyAxYXewhfrXABxDwsEZv6NlzVdsYyVYYtDn1dqfLan10J4+6MwdUlLkKEw
-         npuCR4mjsQPK6A5qprcgVgdobiyUh3kkwsTYBYK12R4FNrY2LlFpCjEjgPQ/3YVwYjS2
-         mzx4aZnVbP+KYuMVJSJg09cEZMx93DTUVFO3cwc9+k5i+hg5akwU4mpmcQ8FmlIxh6QI
-         zljQBVVHOSQYbD2a8L0Pq7dh3/+8GdyrYbKAzUtE+zendGpP2bs6+He/+dLHyh6PAX9h
-         YWiw==
-X-Forwarded-Encrypted: i=1; AKwUvBxJwVFQs3sldf7o1qvo2RyuEFzrH/UPV/Yp3SB0aB2yBRVzSjcumlJ8ayAiGJhISXlsulwE4tYi6g==@kvack.org
-X-Gm-Message-State: AFq9FYIWKdB09jUg6bad9FN+rQNFN50j2agkiyZ8AEgQpxGJ4v1YEZHM
-	4vXqnIscNAc59VQ0NnWK7wmFqMMgly6XvoJud2axsFhGnzioutiekr5h
-X-Gm-Gg: AYBFou0PN0Be20TV0fX+RoART8KlTu4XpCtSV8OwloK+z/8f6zHskQFpBp80+1Z8NlM
-	n8dCwO1H+2Uz1fFFsdmZ6N6H0hSgEiDjrQLLPSsCnYfxO+hV7KbDiUXapJTuhWQFJOH74ENJxHA
-	Pc3ZhKdXZmxrbN1+HriFoRciXlXYzAeOa4eKeo+Rcvc1LwCfcci9jYNem0ir789e5JNW2Nknr5z
-	bMd8JhI3nwgcyb9xLBlj3da0wNX13qEMSikKVZuj4s771qPE1SRS9ImCDRZRPensK7m6FubMrYl
-	P86DbMKI8zv2XYZQnATp850dgZz71qAOEWzjAtEKeIgo1GudTNQ/1tsb8bNZblRE7DgSL7oLqSZ
-	agnGJe4DXgoRsu/k8angCishZeTw5S9aB5eQkRcveEPRX7lBamkB83Mpi5Z1ZrbJWNg96B+Mlgi
-	qJnpcXS4WBQiFDci16k7QzmgNlxy1sb2gXfs+qBKVyE2IKm/3JQQldmA4K+v7CmM3yOtGMPbGSn
-	9LWin+6Bf/Myk5Fz+dqaH+mrzMW53nLFlCm/VDSfnPGuM4FL2k=
-X-Received: by 2002:a05:7300:c00d:10b0:35f:4780:518e with SMTP id 5a478bee46e88-369d97155f0mr1233857eec.16.1792720198309;
-        Thu, 22 Oct 2026 18:49:58 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792720210; x=1793325010;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=a5VOHmm+k0IBj8x+32bgCpnZFpHRZVbIyYT6tTI+jX8=;
+        b=vOn/vbIEU8Lt4B4m1OagvHxPphEcSKtgj4G/V0xAibpSJWlHdigmrYWZ6iZDcG/plA
+         wHAZl7dpRPjXFNg2UyQd+5ykrTQWm1jCVYX+S4medqDplZ0ovXKTCh8LUvTvAFGG/1M6
+         Bgi9HJB1/dJ9QzA76wudVrQlvE8eus7iNqRpmzkcIqvnbuVGxEtk4oTaGqnjwTg9pByU
+         Bvfdu1vHB9hmZzCNFBEk8JkknbOxtQd1oSXywopi7S0m3RkRH90saOOGA9zWDpuqaOjF
+         7fA/wQootaYS/FSgdLMarrCEaLPJs1uLx+zP7r7yGYavepz3BQk77C8ngG9oyNjVioK7
+         LcGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzSNsVJvJ/nhBsQW32qnytgp3pBYDPSog8Y00C2u1rmGS9YuQjjnyXiBOV/LCIX1FXr5HTEBhu03g==@kvack.org
+X-Gm-Message-State: AFq9FYJAthxzlJh6oOgw26IFFX7R8yeD5lyXAXlxw0Vq7wwYpFA1xbaI
+	CmvyzorZ/06ReIFIo42Q047SBg5e50WZ4pol/nLaGspacSSruPGBYCiu
+X-Gm-Gg: AYBFou3hikKzU1mofbOKMvqOwL0O6QiXTJR4Hdx30gnidCP199pRr0bEUGtLL0fNtlo
+	Lzact/XBMD6HMt4/3hfRRvV6Tssbf1/ujFTIPPxNTLzG44+rMHwpl5DDYLusLVcKcYQkkYnrXKi
+	GYxVrH2QsRa/sxhwAJsd1hQ+G2yc3C57alZo5v8ataAAcBcMJZL0FvfX9y79J5L4PqrifL2j6id
+	nzDXFEC+PhvnM+yrkAIbGCyPss8W+FFyzTO0O7E75qgl0tFaTzBcSkoSIVYCm3qSB+cvLHWisq7
+	lBJVuvrRS3FZhb/4AYN7IfZD3Ts0DIVy5oLJcuOp51OLwTBo0cGCZrSsMNzXggZPOJ8QuuJCQWI
+	d5pGfM5rQKZoz2ZMNjZyDphhG3wDBJCYvbhURT8vWbAK9mDq3zSg47mn1Z+/glE3aUmtMuicGya
+	ab3lQd9Vo5hv5wSc8Bq3ZBXHwMROslrUgv9WgslENQKtgLSiPEIqg7Wb8vxL6e629Grx2ySBeyC
+	4DArBXE+zJsJlp4qmy/dzrnn/1CHkAc8ADK+OvUSLfZoftGhonD
+X-Received: by 2002:a05:7300:fe81:b0:33c:e74:4624 with SMTP id 5a478bee46e88-369d977beeamr1247908eec.27.1792720209507;
+        Thu, 22 Oct 2026 18:50:09 -0700 (PDT)
 Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369d9c0e60dsm1971091eec.2.2026.10.22.18.49.49
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369d9c0e60dsm1971091eec.2.2026.10.22.18.49.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 18:49:57 -0700 (PDT)
+        Thu, 22 Oct 2026 18:50:09 -0700 (PDT)
 From: Qiliang Yuan <odys.yuan@gmail.com>
-Subject: [PATCH v2 0/2] word-at-a-time: let KASAN see
+Date: Fri, 23 Oct 2026 09:49:48 +0800
+Subject: [PATCH v2 1/2] word-at-a-time: check the first byte in
  load_unaligned_zeropad()
-Date: Fri, 23 Oct 2026 09:49:47 +0800
-Message-Id: <20261023-bug-word-at-a-time-zeropad-kasan-v2-0-be0ecfbae847@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADu92moC/5WNSw6CMBBAr0Jm7Zi2khJdeQ/DYqQDTBRK2oofw
- t2t3MDle4v3FogchCOcigUCzxLFjxnMroCmp7FjFJcZjDJWK33E66PDpw8OKSFhkoHxw8FP5PB
- GkUak1pRWldYyW8iZKXArr21xqTP3EpMP7+0465/9Iz5rVNgaTQd2lsqqOncDyX3f+AHqdV2/W
- tfq3NAAAAA=
+Message-Id: <20261023-bug-word-at-a-time-zeropad-kasan-v2-1-be0ecfbae847@gmail.com>
+References: <20261023-bug-word-at-a-time-zeropad-kasan-v2-0-be0ecfbae847@gmail.com>
+In-Reply-To: <20261023-bug-word-at-a-time-zeropad-kasan-v2-0-be0ecfbae847@gmail.com>
 To: Russell King <linux@armlinux.org.uk>, 
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
  Mark Rutland <mark.rutland@arm.com>, 
@@ -130,19 +130,19 @@ Cc: linux-arm-kernel@lists.infradead.org, Kees Cook <kees@kernel.org>,
  kasan-dev@googlegroups.com, linux-mm@kvack.org, 
  Qiliang Yuan <odys.yuan@gmail.com>, Peter Collingbourne <peter@pcc.me.uk>
 X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 486A420008
-X-Stat-Signature: tqifod4zap7f4qq7nuhz3r53mkwe8w4f
-X-Rspam-User: 
+X-Rspamd-Queue-Id: E8D691A0007
+X-Stat-Signature: 3epmqdrgparunzburej9icspizogf5so
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792720200-104104
-X-HE-Meta: U2FsdGVkX19zLgjscegbIgVPqgc98r0HgKBIMkiMVPngVql3QEBB1nxqXRUKZHE27V8vjOW886CGxOaH46WaSzA49Ev65P+o91NQt70vFbY3REH3VlT4QceRkQ2YQVx9OOtlNZ9bTum8idBrGpIma09JsFVIxqk+EDegsWu4BkAUcK+O/8fRp1+VhFcUThmXjAGMjPnvj8iBBjaDdkpwLqrjSg3O2y4rVT5F+5R2I1Rigwl7mrlSb5ozR7dzIUEkpXFh6ofzq0YCt89JI948PXiePF1SD1i57uTz0Ggup4BeKv17n5cVXDoNSUXJBhhjNn4dN9t54PPIrQQFhCHGIG7xAmQyEE1tUIxU5cs0EXwTGKZcHxrCi6Ehq5YGMRA0Rw9DOLcJ95xVLyhtFwsZmiRvtDgi7A3Yanjs24QzTOV7LdzR2jvAnUkFPq9kh3G64ZsrxdeW9OKM60FYJv5JBbRIjh4PHOVEEyq65GERdhW89eU6wdFLtLPiaFobfqybxQDicmyCl9qsQCx5S138OmAQeSc9BcBdX6Ap9SVVjNnndne1ac4yBgi2OJFGSfhfBqw3IPpNyIkvoSJoR2XRkXLAaw2bjC+/Bg+NHMsww4o+Wd4uM5lbgAW8Vch8G9F79pvRS04p6yTdzPar8SLyOce8I7NsoDLsYxM1vivc2uraF/tmyI7jd3RCz4FfBRzhGjjO1YEx0LLJPcAIj38UfpBnf2+BLCA+iEmZtlSNPq3GNk1udsFfl0317Vw8p6pfyHPSQEOX8K409ZKTGpHbyYsU/nZTflKUQ0Z3g84nyXBKMiHgY8osVe+dDTpzMaKtvXbeObxuBXufzCNTXkKNpjjJHAArTms7O8Tan2cE+IrpDs0fSYb6CwPMXZv/aTDgQMjqLdgS7T1B1MmV/OD4N/z2RsHvqMB0RcbX3Vfsv2O1D6dUgy8iMBA52x1gKu4bJQD8drDM/LidpAAS77w
- VFfkoUWy
- rwKE4RYMq4Iex9ZYmN6cPyZxnuRc9Yx1OjTt3LTQuON5cyiwp6baJky/9SUO/JkNPH9FMdSP34VtRJPPg8ZuSNpY0g72+ZIVesdQuSeFTOT1e/V1I0bMl/UkPbypVr3IVbJpZLMtxdnaHaP1B3+df/uXAHqhKErVVKpVbnrfznNpZskhyBOQR/Hnh2fSygC8pcBfrIVqHXGGZBYYR24pnp11bjr1bNPQyHDXm0XDpu2eaWBGUUXebnIZj3Y63tQQriSyKuYCeDKStJ8jovcUb2Xup5RokXd2psS2hP+P40kdVmzHU61djClX0VEVFNNogeCxoIhRcNZps7h9fr80+JGVyvsFZS4Fl1x1u1F6q8HvkPhZlr6RLLRevc5nGwZS4maAHThsZwohfCTNhyRYMrHxXLYT3yz8LqSJQp14lJY2boqkJs8bJmB9xA6HHdQgWrWT4gFisN1eICSdyn6+uHVAw8uC9SKaIrxqWf9RqJQ21t/l7nUiI46Z0D1Gtb68VhC2bo3KGKSdr06VpYxm7RpnxRCEHXOZNu/6pegcBQPNulmSsZ0mgOoUKvCenmOkwa3+P
+X-Rspam-User: 
+X-HE-Tag: 1792720210-199979
+X-HE-Meta: U2FsdGVkX19d6rYbKtuBza2tbU+ORn1IoGkj0DD1rnkCi2TL+2jwrEJ7Zk8SzQz3qS+emv6x3VurkywnrzYkyON4wzGwsyY+bH2lpOqE47+dwQmbVdY8d1NQgZYrknTVVJSCx0N79qQglwCh8tzcC11u/zs28A0prozPH1FGlTWgEKIdv3lx1lId3fpYtWW/9Tf2ryu7ke3gldzEqJw0zxA2MU6j1XcOELvv3ZRA2qAw/bW/lR+kE+wiA2ywkgSIuwIzLvY5vn23+4r6T6WMifRRYdUp2I7IK/8kUx65+Q0pnJEfnlkrLEqBBzQ78lsvXhnJReILPaZG0HUvEypcMIH7CcT2uf7d1oq6TwvH7iiQPPbIwmPohpgWEppP9HDcILanlOTWuhYvm7kWUv89e9rolEYqEILm9kJyu97gn3NCTDREqbg92FIg9gSjrPKt/xcDN3A/d2Nyy1zXIt5nTtjj3OANK4qtu6v2TwEOmZpfR8vBvyPg8g3VjOUHN3+GvvNOHg4d/RlSbT7w1CHxAKGPXvQ+eDxQt7IZIg5y3Iua7K9qX0mCk1g7hWDOjyv9aAiqxSoBBvqBOH0AFMpBiGpXauPneLKJgVsOwRCRZF2n8+g4mtiVcvay3ly778PJDakYPr7fEELEVOvGUvkzx4mupOPT9B2wBfKPvhRN3Ei9lghPlJ7zphmtZ6tlS4jkio3M0AnHYmC1k+6zoQ9ZR9Kbp9J2tTfnCW/efVh/ozOIAfilQT+q9zhp34C2t3ZxRgWcHC6AP+XCM/htr8ehADsJZcEiogkCgrquU/deDq0VnLi8VLig68hRfbX4DPS4IEMFVOEiHfODaoYvgWxzJYf0Twx2y0uxqrUfmFAirtmau5bG6T7Ydj6vd1c6WikKPmszJYLYX6YJqKxl6MwOGnKBbC0ldO6yGrEl3kqJQ1zhwaTb80Mqzbir/Y/+SXaFng0iaQ72mCus1LQrvpW
+ oXRcCSwe
+ TnPQMGpm0ZQZDnjww885Pe/cIuv0aVQVfckPbynFqVBhF6Lkqh3GXZMSksACVJbVc+L9IebB7g1QEeFo2z6zhjJmmOKutSBorsgx1jsrSFXpkifsdZVVln6bi9lUbjEJLcXs/s0dy9ZokrbGjwwHNHlhdK0B7ugMTrFtu3gDbn/qeLmaLWMDXsY0/OT1IdpUmrz79cnO/p4FkdxVbRs1GLxUCKlk/4mTjslcuXF3NceYGsHtt8BDiqAVdwyNi/9C7hSF7YogqmL5ltRvnyc6BTYZ4MBTF9tSW+ZBtpDmzxcPNyOGUKOoW6fsUr4UUdY78VC7X8kS2obQaLN349KnCxkCAKPuNmnYtgo2OA5ocbZ1tSYPwvpipcRByrcpA+J5jxiFSGbIV3n9yOvupJ+29vZhPnB667pCKw15w91JaGW1oQDmN8VmaGjQAv127f68+2R0bpv1Nov3EiGThtz8bsDm6J5rVGJ84/o1ok351soDfDX1/dR+GURnvTsB3SX1ELt5f4RQgm+WOkGqDnsddlIv3BZFZflHRbUvG+Q1KjsRnYtyF6gNdcJA9At4Xs8vPAGK8qO5p7mtvqzt4/kvmx4mtz9DpD1jyVSKg63DpPy5aT/+SGC3tTyeF3rGrdPUqo9/+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,48 +151,188 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-load_unaligned_zeropad() is inline assembly, so KASAN and KCSAN never
-see the word loads that sized_strscpy(), the dcache name compare, path
-name hashing and x86 csum_partial() do through it. While reviewing a
-strscpy() KASAN fix, Peter Collingbourne suggested checking the first
-byte inside load_unaligned_zeropad() itself, as read_word_at_a_time()
-does [1].
+load_unaligned_zeropad() reads a word that may run into an unmapped
+page and recovers through an exception fixup. It does the word loads of
+sized_strscpy() and of the name compare in dentry_string_cmp(), path
+components in hash_name() and hashlen_string(), and the trailing bytes
+in x86's csum_partial().
 
-Patch 1 adds that check on the six architectures that implement
-load_unaligned_zeropad(). Patch 2 adds a KASAN KUnit case for it.
+It is inline assembly on every architecture that implements it, so
+KASAN and KCSAN never see these loads, while read_word_at_a_time() at
+least checks the first byte of each word. A use-after-free or
+out-of-bounds read of a name handed to path lookup goes unreported, and
+so does strscpy() reading from a bad source, which the kasan_strings
+KUnit case expects to be reported. On x86_64 with generic KASAN:
 
-[1] https://lore.kernel.org/r/CAPQLkRhXZwozmfhNd_PEx1ihwdH1_5qthP6PANYJ_m-v9vfQTw@mail.gmail.com
+  KASAN and string KUnit suites      failures
+                                  before    after
+  CONFIG_FORTIFY_SOURCE=n              1        0
+  CONFIG_FORTIFY_SOURCE=y              1        0
 
+Check the first byte with instrument_read() at the start of
+load_unaligned_zeropad() on every architecture, as read_word_at_a_time()
+does. All callers only load a word whose first byte belongs to the
+string or buffer they read, so the check does not flag their intended
+reads past the end. Add a no-op instrument_read() for the powerpc
+selftest that builds the header in user space.
+
+Suggested-by: Peter Collingbourne <peter@pcc.me.uk>
 Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+Reviewed-by: Marco Elver <elver@google.com>
 ---
-V1 -> V2:
-- Call instrument_read() instead of open-coding it (Andrey Ryabinin)
-- Keep Marco Elver's Reviewed-by, as the check itself is unchanged
-- Rebase onto 7be4bc52fd9e, which drops the big-endian branch of the
-  arm64 header and rewrites the s390 load_unaligned_zeropad()
+ arch/arm/include/asm/word-at-a-time.h                           | 5 +++++
+ arch/arm64/include/asm/word-at-a-time.h                         | 4 ++++
+ arch/powerpc/include/asm/word-at-a-time.h                       | 4 ++++
+ arch/riscv/include/asm/word-at-a-time.h                         | 4 ++++
+ arch/s390/include/asm/word-at-a-time.h                          | 4 ++++
+ arch/x86/include/asm/word-at-a-time.h                           | 4 ++++
+ tools/testing/selftests/powerpc/primitives/linux/instrumented.h | 3 +++
+ 7 files changed, 28 insertions(+)
 
-v1: https://lore.kernel.org/r/20261019-bug-word-at-a-time-zeropad-kasan-v1-0-f21a3ed6a477@gmail.com
+diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
+index 5023f98d8293d..361771f178699 100644
+--- a/arch/arm/include/asm/word-at-a-time.h
++++ b/arch/arm/include/asm/word-at-a-time.h
+@@ -56,6 +56,8 @@ static inline unsigned long find_zero(unsigned long mask)
+ #include <asm-generic/word-at-a-time.h>
+ #endif
+ 
++#include <linux/instrumented.h>
++
+ #ifdef CONFIG_DCACHE_WORD_ACCESS
+ 
+ /*
+@@ -69,6 +71,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ {
+ 	unsigned long ret, tmp;
+ 
++	/* Check only the first byte, the rest may lie past the object */
++	instrument_read(addr, 1);
++
+ 	/* Load word from unaligned pointer addr */
+ 	asm(
+ 	"1:	ldr	%0, [%2]\n"
+diff --git a/arch/arm64/include/asm/word-at-a-time.h b/arch/arm64/include/asm/word-at-a-time.h
+index d7a3b69dc8c6f..37d45e716c11a 100644
+--- a/arch/arm64/include/asm/word-at-a-time.h
++++ b/arch/arm64/include/asm/word-at-a-time.h
+@@ -8,6 +8,7 @@
+ #include <linux/uaccess.h>
+ 
+ #include <linux/bitops.h>
++#include <linux/instrumented.h>
+ #include <linux/wordpart.h>
+ 
+ struct word_at_a_time {
+@@ -45,6 +46,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ {
+ 	unsigned long ret;
+ 
++	/* Check only the first byte, the rest may lie past the object */
++	instrument_read(addr, 1);
++
+ 	__mte_enable_tco_async();
+ 
+ 	/* Load word from unaligned pointer addr */
+diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
+index 54653a8634149..1660b2e3e3a8f 100644
+--- a/arch/powerpc/include/asm/word-at-a-time.h
++++ b/arch/powerpc/include/asm/word-at-a-time.h
+@@ -5,6 +5,7 @@
+  * Word-at-a-time interfaces for PowerPC.
+  */
+ #include <linux/bitops.h>
++#include <linux/instrumented.h>
+ #include <linux/wordpart.h>
+ #include <asm/asm-compat.h>
+ #include <asm/extable.h>
+@@ -168,6 +169,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ {
+ 	unsigned long ret, offset, tmp;
+ 
++	/* Check only the first byte, the rest may lie past the object */
++	instrument_read(addr, 1);
++
+ 	asm(
+ 	"1:	" PPC_LL "%[ret], 0(%[addr])\n"
+ 	"2:\n"
+diff --git a/arch/riscv/include/asm/word-at-a-time.h b/arch/riscv/include/asm/word-at-a-time.h
+index 3802cda71ab7e..761fa2734b7f5 100644
+--- a/arch/riscv/include/asm/word-at-a-time.h
++++ b/arch/riscv/include/asm/word-at-a-time.h
+@@ -11,6 +11,7 @@
+ 
+ #include <asm/asm-extable.h>
+ #include <linux/bitops.h>
++#include <linux/instrumented.h>
+ #include <linux/wordpart.h>
+ 
+ struct word_at_a_time {
+@@ -60,6 +61,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ {
+ 	unsigned long ret;
+ 
++	/* Check only the first byte, the rest may lie past the object */
++	instrument_read(addr, 1);
++
+ 	/* Load word from unaligned pointer addr */
+ 	asm(
+ 	"1:	" REG_L " %0, %2\n"
+diff --git a/arch/s390/include/asm/word-at-a-time.h b/arch/s390/include/asm/word-at-a-time.h
+index 0b7779c8d5a4e..f3caa4959cc87 100644
+--- a/arch/s390/include/asm/word-at-a-time.h
++++ b/arch/s390/include/asm/word-at-a-time.h
+@@ -3,6 +3,7 @@
+ #define _ASM_WORD_AT_A_TIME_H
+ 
+ #include <linux/bitops.h>
++#include <linux/instrumented.h>
+ #include <linux/wordpart.h>
+ #include <asm/asm-extable.h>
+ #include <asm/bitsperlong.h>
+@@ -52,6 +53,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ {
+ 	unsigned long data;
+ 
++	/* Check only the first byte, the rest may lie past the object */
++	instrument_read(addr, 1);
++
+ 	asm_inline volatile(
+ 		"0:	lg	%[data],0(%[addr])\n"
+ 		"1:\n"
+diff --git a/arch/x86/include/asm/word-at-a-time.h b/arch/x86/include/asm/word-at-a-time.h
+index 422a47746657a..5374e08372253 100644
+--- a/arch/x86/include/asm/word-at-a-time.h
++++ b/arch/x86/include/asm/word-at-a-time.h
+@@ -3,6 +3,7 @@
+ #define _ASM_WORD_AT_A_TIME_H
+ 
+ #include <linux/bitops.h>
++#include <linux/instrumented.h>
+ #include <linux/wordpart.h>
+ 
+ struct word_at_a_time {
+@@ -71,6 +72,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ {
+ 	unsigned long ret;
+ 
++	/* Check only the first byte, the rest may lie past the object */
++	instrument_read(addr, 1);
++
+ 	asm volatile(
+ 		"1:	mov %[mem], %[ret]\n"
+ 		"2:\n"
+diff --git a/tools/testing/selftests/powerpc/primitives/linux/instrumented.h b/tools/testing/selftests/powerpc/primitives/linux/instrumented.h
+new file mode 100644
+index 0000000000000..114ef9284f69b
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/primitives/linux/instrumented.h
+@@ -0,0 +1,3 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* There is nothing for KASAN or KCSAN to check in user space. */
++#define instrument_read(p, size)	((void)(p), (void)(size))
 
----
-Qiliang Yuan (2):
-      word-at-a-time: check the first byte in load_unaligned_zeropad()
-      kasan/test: cover load_unaligned_zeropad()
-
- arch/arm/include/asm/word-at-a-time.h              |  5 +++++
- arch/arm64/include/asm/word-at-a-time.h            |  4 ++++
- arch/powerpc/include/asm/word-at-a-time.h          |  4 ++++
- arch/riscv/include/asm/word-at-a-time.h            |  4 ++++
- arch/s390/include/asm/word-at-a-time.h             |  4 ++++
- arch/x86/include/asm/word-at-a-time.h              |  4 ++++
- mm/kasan/kasan_test_c.c                            | 24 ++++++++++++++++++++++
- .../powerpc/primitives/linux/instrumented.h        |  3 +++
- 8 files changed, 52 insertions(+)
----
-base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
-change-id: 20261019-bug-word-at-a-time-zeropad-kasan-af2460466ee6
-
-Best regards,
 -- 
-Qiliang Yuan <odys.yuan@gmail.com>
+2.43.0
 
 
