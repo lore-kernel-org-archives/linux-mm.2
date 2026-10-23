@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C6B606B2B3
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112F5606A335
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WJ1qq0pg
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mGGGrFYI
 Received: by kanga.kvack.org (Postfix)
-	id 8C4206B0BE7; Fri, 23 Oct 2026 15:58:13 -0400 (EDT)
+	id 345236B0BE8; Fri, 23 Oct 2026 15:58:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 874A36B0BE8; Fri, 23 Oct 2026 15:58:13 -0400 (EDT)
+	id 2F60A6B0BEA; Fri, 23 Oct 2026 15:58:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7638F6B0BE9; Fri, 23 Oct 2026 15:58:13 -0400 (EDT)
+	id 20BDF6B0BEB; Fri, 23 Oct 2026 15:58:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 534FD6B0BE7
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:58:13 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEE02C0201
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:58:11 +0000 (UTC)
-X-FDA: 85354952382.11.F215191
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F07056B0BE8
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:58:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F1A0401DD
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:58:16 +0000 (UTC)
+X-FDA: 85354952592.15.89CCE02
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EFF6C180008
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:58:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WJ1qq0pg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9D77540013
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:58:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mGGGrFYI;
+	spf=pass (imf17.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792785494;
+	b=COTcRVI7dK0QRIxDMSjmio4A5vBzOW6BNWNTf+CgrLgMAGgtSBSBP5jwd4KaRkMTx/zVvC
+	WlS30nyAGydffZsUZ96vTt0oPeWmGKqQmUVILWGzmcslkgDJ3GQ7bY9vB4q76fpUtbYrwu
+	l57XaBkVDU2LyJkU7jthI8tyexqhSIg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mGGGrFYI;
+	spf=pass (imf17.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792785490;
+	s=arc-20220608; t=1792785494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=SoLUd57UpurzCp3TfNrochKgqeTvNyyRQnHVp8etxRw=;
-	b=etYOZblOCUGtp24sMIn1QVXappot8K4lc86n61TQzw7FhgEDLc7I0fuy0EXe8Mus1yBHyj
-	CfpbbgOzB/xqExiF7s2OrhojWlCtN8m510rjg3h/WdN+VQMuDNHSDgxDRy233uHDZuiEni
-	5kwYFliea/K7Z2x7rVmPSC5glDwJtF8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WJ1qq0pg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792785490;
-	b=Dr144HmuPBZ/WavjPc0iw5B3PG6n96lDke0PfXU4MPEXHbtJMt4Aatw11WHBmU5lO1xDbT
-	e8KWh8KVZedrogMtpu+T5cAnRNqpgDP5BJxgXv3xGyAxqknCdh7jb3VIHdHbn67XQ8RajX
-	rJgTPSeC3j/vlgTSyHY/euWb5BEX3kU=
+	bh=0kB1Eu+OBUcet3f1PztzYQFUl2ZFOUmK+s0rCwLUKcw=;
+	b=WS8R4P/nyuClkpkXqCqlepe3JQrqcuym23cm+aKwgoIMZQH4fmXzvuvhLAwkM2+f5bB65v
+	5FjRw4M0ol+jmcW3Cxdo+I1XuQTh2X4IWVrZja/+RTAEWqxDvsTiTkmh5yZkU0JEwuJPx3
+	a1x8nO6UwsV5Q0hqGPBVrSaFT/40Xu8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D42043B19;
-	Fri, 23 Oct 2026 19:58:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4901F01828;
-	Fri, 23 Oct 2026 19:58:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E3DE644491;
+	Fri, 23 Oct 2026 19:58:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68B91F01825;
+	Fri, 23 Oct 2026 19:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792785488;
-	bh=SoLUd57UpurzCp3TfNrochKgqeTvNyyRQnHVp8etxRw=;
+	s=k20260515; t=1792785493;
+	bh=0kB1Eu+OBUcet3f1PztzYQFUl2ZFOUmK+s0rCwLUKcw=;
 	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=WJ1qq0pgTQP6p/PgBL1uXk1Nxpqk5rDGgeTaqGJT7hM4te6Tk+yIw9Cy2EQr2wDBu
-	 PmowCgiyDFyG56bZSg9gABAOKtpVHfzOLiFUBQyfzMI54aw052D/2UDrSqJRbvaSov
-	 sVFvUigNGma3uE0ygFwZnxcfTXl/9qIiTbbU2QA1fQsevaPrD9pa6wzPok2f02f60y
-	 4jgsnnbQsCn7EMFqwOYopURxynkq422HW3stKLoGxgjyGdusNQYAewXbXA0CMVBpJl
-	 r/+c+3imJmoGkV6nLpOEiENr3jEoLsDR0/M+oMbLIR/HlBrr4KUn4e6rssTYYzRU6G
-	 LNPpyPny57TWw==
+	b=mGGGrFYIGMqVKqk7/6VAAHYx6RcjgH0tsQSbHjXyGBheHWn2BofKOgbUZ9DvbZBxA
+	 Ukc0nOvEGqpsrJgNyXl0rDgAZ7GPQR9X1eTLjjXidaTcl+N8W6VnJRz0sPaNJqYXcj
+	 vY2w86uwntIf3muIVDHDMln0pS1FRajIFNLzl3+nISZikeE3uXl3Tb37HltUYHNE0W
+	 JVO8z0t6o7qgbF4U8j0Fqo2E8lEUftHojqZy38t08yKH6vLd4N7/Yf8sn2Dz/AimnC
+	 Ak0XzguCadW+Vci1qLAdzjBRaP/sNBqWe7lu++FqO0ynql2lVDYmwWMAQZeMaUxcD7
+	 RwLiszItRT9bA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 44681391B153;
-	Fri, 23 Oct 2026 19:58:08 +0000 (UTC)
-Subject: Re: [GIT PULL] slab updates for 7.4
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE549391B153;
+	Fri, 23 Oct 2026 19:58:13 +0000 (UTC)
+Subject: Re: [GIT PULL] Core MM updates for 7.4 (new MM tree)
 From: pr-tracker-bot@kernel.org
-In-Reply-To: <atoJsKNb5KiE44jl@thinkstation>
-References: <atoJsKNb5KiE44jl@thinkstation>
+In-Reply-To: <20261023172100.49643-1-david@kernel.org>
+References: <20261023172100.49643-1-david@kernel.org>
 X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <atoJsKNb5KiE44jl@thinkstation>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git tags/slab-for-7.4
-X-PR-Tracked-Commit-Id: d15d7703166daf7bd62c844a3cb1b3a6279adb4c
+X-PR-Tracked-Message-Id: <20261023172100.49643-1-david@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git tags/mm-core-7.4-rc1
+X-PR-Tracked-Commit-Id: 07ae95d933b84db98696f23e24de078b251561ff
 X-PR-Merge-Tree: torvalds/linux.git
 X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 7a78f7ba9f24962c8033e0152bf34a7903ff61ba
-Message-Id: <179278548679.1241373.15147187620040740346.pr-tracker-bot@kernel.org>
-Date: Fri, 23 Oct 2026 19:58:06 +0000
-To: Harry Yoo <harry@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>, Imre Kaloz <kaloz@kernel.org>, Karl Mehltretter <kmehltretter@gmail.com>, Kees Cook <kees@kernel.org>, Longlong Xia <xialonglong@kylinos.cn>, Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>
-X-Rspamd-Queue-Id: EFF6C180008
+X-PR-Merge-Commit-Id: 2ee2475e15b4ff8fda89a9edcb77dfd871de1386
+Message-Id: <179278549235.1241373.11674189443259173093.pr-tracker-bot@kernel.org>
+Date: Fri, 23 Oct 2026 19:58:12 +0000
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: x76o8wpik4w14o6o8tran48a7a1joccf
+X-Rspamd-Queue-Id: 9D77540013
+X-Stat-Signature: huzg51qttzkq5jqdwbnk1kaxxurwdcbs
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792785489-225391
-X-HE-Meta: U2FsdGVkX1+9J77s9eMjUwZxXft9xeU1ee0CDbvcrZe9uRWegqUSb55IIlGgWQU0//upy2VoKFDsstrNBrkuAgRFvZw3D/biUbs3xIR2RhvIsaXwdqlp5cKYfwdamdH+s8teSQuIA1GbF8mYfKu59QKCHkuzPS/hL0SDN1Wyg3IIpGJtb1xqxUPkXvRrB/8tE71NqPoQAH5w97ZfsI5Pqviz4YEuK1grZgVD/6jJuI7iORZ5vjBLYqEvmpw9GC6YqdlbHYutacnEcjVfL9Wgu7Urc+vWjpLluP4WXrj/Io0TgqyS3n3XdHyk3iXPAnHQEUM8330Ni/hQNuZq0lzYxasMYW7P0nz+1u1aO4h3cpaS3MUNKrpaPUarsEc1wQMK5BslCi/og9uTZWy6jDXoynavad7P3iW8Nbbczoa0qAMJdW3MqtiTLczrFUAQrgJmjNS9ax4n2up6oLrjP2KGhMqen9qGDSF1tjXvIhTYzQm5R92OyZ8bSt5Q7Z/Y1ckBSnU9vlhs5dPkKkTgOs8F3R4+mJp990HjeZrCFQVlx97NFFWzPOmhrey/ZmPOPFuyaPQtQqWzFsrc7Zoqb7fVVws1RJkSelvEj3HzmvekNvDWMN+8jtW/kioIIef4yR2GbXjoXzN4a0YFpT8SEgpKpukHH4Nb183anJcqscLqP8R2YJblytu94JNCoXnDafcJMxL/wCNiFDxq12ohqy76AQf0WtYtEo2noFLd4PJs1uxqtKRKSR3X7sUf1PvonyzKCUdmgJm9j+KkkCY4cWWQWvYL1VOhYVBSZqwnUZ3ARwYwUCYBF3V/zCWz2+96PQjYbmfhUPbSgRN3Sa/0KchMI7sXAGP1gnjZ5ED9cEnrUqSMJjZSeRh63QKdqBema3wtinWFT8VJdccXkQh4yttbz4Y7FZKCPaHjVKjLFFNtQ1KrqB/pu0nS9XxABKy/IQZca/CTnRBm/O3Uofsg/CT
- DaFzqkFP
- 59Za8NmhBlM6TS1vXM+5lyAlFa1xWleQR6fc2KiqmDZQQVuLRXHnyv3zB8HC9ViTlue7EkDeXam3z6pWIU/bhATi9eQiSgbQSh88bX6dm2dtWzyfyEX/kra9iw+r5rM7puuqmJC3TtehIYosP+s+ar7g5s6bnjodqyLMqAPlab8oDU3bfukq7kwol5PtO7hZFvxEW+KohYdeWi0//1XYvCkqZTKCvnh/A3P4fM2sg2xi96fi/AC+VfIRTTXsOxJTSVy2GW4DoTpnGD8MTeKxtcMo1vzJiFqDP0PcYoxY0tUVDcBb9MfoQUV0tXA6BF+JFiFTTsr6zymIIQ5QzK+SMwltGp+q4QdzfOMrxD83ONvlQZAunVw2zqwG4oq7oS50gI2SpL46saTb3Bfkng/JqzrRYAOw1YA2Ls6BryFV2m9o6XNVVbzUhuAIU0w==
+X-HE-Tag: 1792785494-342948
+X-HE-Meta: U2FsdGVkX1/xKqOm12mYQUNlYJx9uW4cH2pg6rDBcFVzGHWEXPSYQ9L2lYqbKGRk6bloz5yUZmXw1vyNqGCDz3XJ7R0O4cM7g4fyycaXyCQlUwsXL0YQPBo6270gAxWqY1rEndzozhLPMXg7njvePIITgyUVxEhz+mhYu7UyJ8xRN8ygYooYpS12QR2ZNNJHabdEWW9YLvUCYvphtyGPc5NPjtRYpJg9Rjw1LbyWM5hdebIjd1xicoO6qAowRNKCh+gbqqedWSQ4cEd/vzIsX7jJk2yPuHKZrv2PmwjH/mwkNkMoxxCURvJvxnvtgbZ8StuDY4i1gfx/QKHwEQaGVj3k8edcQ/d6ZNpx+NA/kwSd0GNTdJ909JlHKRbDqC8riIl8G3+sQNxnaM6g4Y4SfxhQAGRZ+ZEz6VOWqgsp/VEZEAg2esIoFOYyjdIuh9MSw+WJ/GPY9Z4ubKxdivlU93wm6+xprAJa/mQ5DHcI4nKBHP9acjwsG2JzTb3N+d6gTERql61SZlRD4pgFAfK8w8G0TQ0k2Q5/NU4lUYmiMLMQ47YnfOEms2yr78TLJFCZKgWvVhhlioXK+pGdG0oum9127rE7Bezd6X3YaHCCKefh8WnjYEsqbIOQxRAwvtdc/+4h7pbHcgN+xQKTC0CIiQjIn8+AFNpVYCSeTgCwEbngVTT4EwLxMrtWBVN0NV8uDVpr39VzhV+hoyb2rsMRjM9xkuiMelmyq5B66lHJFzuLSEAZ7BLhCmk2PCHPv6rAliWSA2IYeG8KeVfYM+FEMdBNfPX8pahIUXwdV5qy+JPVS1bb4H7XIvE1CcO5jbkvRH2BtKv8lLgRPPzGezAdxpn1aSENbQPDTE+1kO4WBWyMdKNN+EzSc7rvgL3dUnPjsxzsl30L9mvpzqvdjaj10MtXdqT8usp2MW9E+dXwRuS7cgWwCzeTzwYLYusEuzY+7v2LY3eIoiQytfZLko6
+ RnmMC/MO
+ jt1ufxpdQLXqNP7Y3mb8GrG0vFLLYYjBEOKhSjsIuULb57iCjFW7cOPe/6hLUrM6lI+Hm+NeTjILvRXKZqnAtYrU5KnLugs4bk5ddAI6X2ZSntV6hJGAhEp8bSd+EdYO/WrjWymfp53ylAr3pKc+YtQ51eGuyVe17HcXoeCrUbIAHB60ADZlon2ort2WRKMf1UCnIYcRhfbgnky1rMBoQDPwXCid1g/zibiK1q843uF4ZZ2+qiOydrSbYfCCRvGurUeNOqykFsrpzQyHNmPXhNIFlk5A33rpHY0hz/LPTWD5nkf8iXS+u0AmGDOW9x1/0tXYNvOUpFGAtlL/pXthOeHjSSLYbQXEPpZ1vzgwyEvYcEOyrGmbsFyNITm53O5k1E+tHh1hhLK+5o1F/opaehsngJAzr2D7LEgp/HKKXR+unFUf+d8S7YgFuLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,12 +99,12 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-The pull request you sent on Thu, 22 Oct 2026 14:10:13 +0100:
+The pull request you sent on Fri, 23 Oct 2026 19:20:58 +0200:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git tags/slab-for-7.4
+> git://git.kernel.org/pub/scm/linux/kernel/git/mm/core.git tags/mm-core-7.4-rc1
 
 has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/7a78f7ba9f24962c8033e0152bf34a7903ff61ba
+https://git.kernel.org/torvalds/c/2ee2475e15b4ff8fda89a9edcb77dfd871de1386
 
 Thank you!
 
