@@ -1,139 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E823606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 13:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1DC606A320
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 13:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nbN2jT0b;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmfmHZTn;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nbN2jT0b;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmfmHZTn
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=DM2fPH07;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=C2qqh51M;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=DM2fPH07;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=C2qqh51M
 Received: by kanga.kvack.org (Postfix)
-	id 790426B0363; Fri, 23 Oct 2026 09:00:17 -0400 (EDT)
+	id B72E86B0367; Fri, 23 Oct 2026 09:30:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741D36B0365; Fri, 23 Oct 2026 09:00:17 -0400 (EDT)
+	id B49FD6B0368; Fri, 23 Oct 2026 09:30:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62F506B0367; Fri, 23 Oct 2026 09:00:17 -0400 (EDT)
+	id A5FB86B036A; Fri, 23 Oct 2026 09:30:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 35A3C6B0363
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 09:00:17 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF9FDA7F81
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:00:16 +0000 (UTC)
-X-FDA: 85353899232.25.87E8689
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8DDE5180014
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:00:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbN2jT0b;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qmfmHZTn;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbN2jT0b;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qmfmHZTn;
-	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8231F6B0367
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 09:30:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F7D21C37AF
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:30:33 +0000 (UTC)
+X-FDA: 85353975546.18.F287E8F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 067CD12000C
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 13:30:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DM2fPH07;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C2qqh51M;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DM2fPH07;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C2qqh51M;
+	spf=pass (imf29.hostedemail.com: domain of tiwai@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tiwai@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792760414;
+	s=arc-20220608; t=1792762231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
-	b=5ECpjTTy1e1ww+dltb9SPg30bYB3F2Zj5ITyAca76HRJFhJQKhmrUkzK+YZMUD2gzrTcjc
-	hdh0iV1vDpDUI7AzQeaLv282ysGY8MEzYyZnmDi0XnGiCZuSA0Pf28UfrnPtc+v842xc1K
-	h1BWIBSdssvK1A+yxM74D5bLJ8k/qqQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbN2jT0b;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qmfmHZTn;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbN2jT0b;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qmfmHZTn;
-	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	bh=H5C2YgX9zoAUN8RdPNBEehJ+u01y85A4y2Tev8DT1hg=;
+	b=O0vPpbr8rOq6V6K+Ux1Plu5FI1zs+i/0YgwdynicIDzhDxtz6TGHrVPZH12rufTp9f8Hzp
+	MaoI7pDA2RghNZmYelHkCtxzqA165hkCKxbdU34RbT6bQWZTr4NwvVT2pY9A/2cMsgNyKu
+	DZXpEwK+xdFTY/zw2kQPB+Jo64I9bCo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792760414;
-	b=8NvUzHPHpKHgACtbaIGNojCVgKxxLOlsGGZoF8C2aOoQOvbhcrKrk5ls8oVSbzPPUtMXuK
-	vpoa9sjFPe0LGKhiyR/XnvtzpzkNpSessY+gRjNZT2aggfie1ffAxPzwO+5OOv0BrR+Pf/
-	ZZWZmY4k75SUhrCIN6TDM7mv7XzLDg4=
+	t=1792762231;
+	b=K5b9xuPLE6q3ougL+VroiKSohBCa9kLknvPpYJt/9u+egNKscU25TUVGferRjESEVazJDz
+	Cr9qA0w5oxl23om8Uz/hmN24iFmIU5XplccWx0Q3Ec9GCZcSDtJ1ePaZ6e5uAsu/5jxD1Q
+	HZnH6VaUSsEcTH+igU3waG4Oz/g3kcA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DM2fPH07;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C2qqh51M;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DM2fPH07;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C2qqh51M;
+	spf=pass (imf29.hostedemail.com: domain of tiwai@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tiwai@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2A0361F785;
-	Fri, 23 Oct 2026 13:00:13 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 706C5220D3;
+	Fri, 23 Oct 2026 13:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792760413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1792762229; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
-	b=nbN2jT0bJ+1hEWNmQMV68E0bK59uevv3wh0s4HgOA6Z77CrVn7bBKopcNV6FBOhOjBxmAK
-	LSQ6mg5Bx/3cn7tFcuwqP8sn3EesbXT/md+yTtFq8JYXM5NxG6yvZzzpy6t6nNZ6QbT9Lp
-	k5Wu/hMJcRI0+VCPD3cMO2Vj0Jx0rss=
+	bh=H5C2YgX9zoAUN8RdPNBEehJ+u01y85A4y2Tev8DT1hg=;
+	b=DM2fPH07E17ZTllrMqBRrD7OXjttjIWUEXjPuHEzvJUpNbQXN5qmQX5BKeCz7uARth7cFG
+	j2H5n9KXSd3FPBvFvWtuOM/bHW/K9BbLIrWGBAEec5ocN9CYFBpX6PD+8s70dyUcWwhRn7
+	gjREfMDayFpjOGuAUiu20/NDOkbWSKI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792760413;
+	s=susede2_ed25519; t=1792762229;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
-	b=qmfmHZTnKLgVSgw3CxWFYZZGj6k5bDwHfjuEOGcYuLMqYbdEaU8j9h5cJCy02vJqHx0RVm
-	PU1Kqb1ZznCr4kBg==
+	bh=H5C2YgX9zoAUN8RdPNBEehJ+u01y85A4y2Tev8DT1hg=;
+	b=C2qqh51MJIORQZbHuWwC4QjEFo8QJkfsrAgse2aSBwc/Y3PojDaCf1KInPaBjuBeY9iV3R
+	CaW8W3f6HwFeUfBg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792760413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1792762229; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
-	b=nbN2jT0bJ+1hEWNmQMV68E0bK59uevv3wh0s4HgOA6Z77CrVn7bBKopcNV6FBOhOjBxmAK
-	LSQ6mg5Bx/3cn7tFcuwqP8sn3EesbXT/md+yTtFq8JYXM5NxG6yvZzzpy6t6nNZ6QbT9Lp
-	k5Wu/hMJcRI0+VCPD3cMO2Vj0Jx0rss=
+	bh=H5C2YgX9zoAUN8RdPNBEehJ+u01y85A4y2Tev8DT1hg=;
+	b=DM2fPH07E17ZTllrMqBRrD7OXjttjIWUEXjPuHEzvJUpNbQXN5qmQX5BKeCz7uARth7cFG
+	j2H5n9KXSd3FPBvFvWtuOM/bHW/K9BbLIrWGBAEec5ocN9CYFBpX6PD+8s70dyUcWwhRn7
+	gjREfMDayFpjOGuAUiu20/NDOkbWSKI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792760413;
+	s=susede2_ed25519; t=1792762229;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CGkjdIfQ2kWLFqSVO3nPKYQIl8t6u+ZHR5jt0u0MANQ=;
-	b=qmfmHZTnKLgVSgw3CxWFYZZGj6k5bDwHfjuEOGcYuLMqYbdEaU8j9h5cJCy02vJqHx0RVm
-	PU1Kqb1ZznCr4kBg==
+	bh=H5C2YgX9zoAUN8RdPNBEehJ+u01y85A4y2Tev8DT1hg=;
+	b=C2qqh51MJIORQZbHuWwC4QjEFo8QJkfsrAgse2aSBwc/Y3PojDaCf1KInPaBjuBeY9iV3R
+	CaW8W3f6HwFeUfBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5915B133F3;
-	Fri, 23 Oct 2026 13:00:12 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 12033133F6;
+	Fri, 23 Oct 2026 13:30:29 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GRe3C1xa22oBKwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 23 Oct 2026 13:00:12 +0000
-Date: Fri, 23 Oct 2026 14:00:10 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Luiz Capitulino <luizcap@redhat.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>, 
-	David Hildenbrand <david@kernel.org>, Jakub Matena <matenajakub@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION] mremap() fails VMA expansion when VM_MIXEDMAP is set
-Message-ID: <attZIKD7GfoNeqbg@pedro-suse.tail5790ac.ts.net>
-References: <20261023023106.515365-1-luizcap@redhat.com>
- <8c53e58c-f7d2-4e98-8d03-7ff1163c1159@kernel.org>
- <9544f4ce-f5d1-498b-91ed-906b37122e31@redhat.com>
+	id 342PNXRh22rrSgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 23 Oct 2026 13:30:29 +0000
+Date: Fri, 23 Oct 2026 15:30:28 +0200
+Message-ID: <87pkx0a6iz.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Kazuki Hanai <hnkz.64@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	David Carlier <devnexen@gmail.com>
+Subject: Re: [PATCH] ALSA: us122l: mark hwdep mappings VM_MIXEDMAP
+In-Reply-To: <20261023-fix-us122l-mixedmap-v1-1-e7bdd053850f@kernel.org>
+References: <20261023-fix-us122l-mixedmap-v1-1-e7bdd053850f@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9544f4ce-f5d1-498b-91ed-906b37122e31@redhat.com>
-X-Spam-Score: -13.30
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-Spam-Level: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8DDE5180014
-X-Stat-Signature: 7s9ik9qk9pmcnxwjjcca7g5umnfnheyu
+X-Spam-Score: -10.80
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 067CD12000C
+X-Stat-Signature: 9xnhhhkkoe13316t8pedothp3bffgrup
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792760414-220511
-X-HE-Meta: U2FsdGVkX1/a7Mr+CgCG728Bv80KIlDNYuB3Wn/QRBC66e1oNdWhFEynDzhfAlDFFF3ygDb5VlZ8N4CrRckl4HCLtQadMETQJh4gAUaQFFmrWwNABx7L+umfFSV4ekV4526Cl/SS+Fr+NnKNHZHrtJYJ41oxsxtUdOdc0FxmZPxD2Prh/cBNxK+fBvHf0oSEKZsVu2KUQ2+u1K/KRwIlc9/Qlfoi2GqajpUSR2bqKT/KJQ8+fGFCpfq8y+5foQHGfyXAxAZRbbfop/c4MB4yjjGs0bcKN6hNGiCujfajZM9PvNG2yFTc1tbAiM+/fbev7/KUANN69TeSY+AE+hlzPrPxpv9ns8A9pt8o6q0wugM3lrb87EiaW1J5eq32elFe3CKN7zY8zk1VAh1Mbix89/dZDm7CLumrHZU8nZ69JqVm9jW+Q5Ft2ol50WsCBtABXYtlSSYf+LRcVecPpIG6FUODaCHp0Q9/HE4cuZVZauo/JlYE4+XhT0vrwdWsXq7v6U5CBE2mkWDwxGUCNr0IohawF/U4sYTbr4mhtTr5iUPmzgBM9oLIwLT1fV+J2oO1LlkbD8dL/zCM1tXKWY/wUMRb9H1gVe8X80uPYopLrLyfToJCcG5heSeDP3lqUyzsM4iK8BfGnZylZ6Qli9gRXoUrGN9fKNacRlhmOi/lYe3uNkdhK0qq/qNComIuuSfpxzhWuC6yEeAwRDuQgL+a8KsCPT0gxVuJ/vQdu9/8EMYM2gi6pxRQ1Q5RVI33ApK11ID/J/WTikuVxi2uWKvpAvNpx1UEl0099Fcppc16ddIRN1rBJ/CSjog2RPhhADa+9UxpQCR5J3QNStJ/kzH1uwQpRpwI2eJwIE7jFFe6Aca3q/JkjxRe97ShObltcpxvej8A1PUPA7swH/lAO6E9hd51e8m5Eax1kqwiE7+cHSK758RNlnRKyISDUNk5rjYU6SoITW5PeSsyP0JITtF
- xaURE6Cm
- KbsJCCFafOqdied+vs76Q7tDK/7Qv9piaNvMeERbvjNkV3JyU/E4UsdxaQWteJCDFs0YisazkBTLifl1TznD4QrJusy4oOD+Eeh8E/BmKzch+XuxkqtBpPFDyySNrBmrpZghM+RHbPrpZPwTrfd1Ktoj72BN9fSoZGZ4y4ohGCjYDQii+1718kp5Ej/2VGIXGr67056q+p4C8L6iCgTMuR2uANUe2zHnbsgvEANFwOCycEC/qclJBrek4SOoyBUpmCd/RhIfiXsxdKNpyRroyAqcWff9wsIIjBN9oo9E6eApLIM6VyZpgpEulRw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792762230-740501
+X-HE-Meta: U2FsdGVkX1/SxfLdiAn/Wu04kcq7qsFOcEcUuoS0GlU7y2fQwDVpDqe6tY+JNhjdGLxTCARbFdhRWrZP1bfg5Rs3/WfyQo+qMBd5T/1p6KX73EnYv9B6lFNBc+aIH4+s7+/hF26tEjc+Bso+VUATnkEEtDeHUEj/o5fivaTJfQTtBkmMiaJkXgxTqK5uDne0Llrp8xcvYImx0xAkFybY7iAWJXs16r+dEwz4jSSMaRJk9hq/vuCHziUKo2wME96qvwQd2uSEO9JYqYNOkhzuLxonIBDH/MyodrEKekvY+mNrbsQz63yxhrxrP63HhGClIJhAKu0v0vf40OVAQ9OYiq7SuerpVTpjHnM1D1tLdf84me9sa6EWaGBcgVLEnO8YjWDnjQS1pmvilPNrs6NJfq4IsRRcMfqOs5D/JPCTPU+d8GL2SoPS+oh0cHFIM015S1JpYVL4ig2ijnFPyCRjvY9syrzf8ZQuvuyuP0o0nkgOPU1TSa0tv5B/+wDr448VsWM8dbHZOs4J6lHLfaQXogiR8+XprQYtGO3uznTo4B7tiis63KWjBzITOnHPBIFOOk4v/7T2iRdfcFHccvXeWjBXn6KR2BFY4QEDtMPoWrPr2segMOU0wodSB1dbzU3WOtFIroY89SMIR+b+7f3FDzlwyrd1u6Yhi7TQZF2nmGybq1ySfdtAFO+PTf2meWxotHh+0TqmRdQ6KOgBvnUEHmuzNLTLarYWijaMg0J6RcZH8kWyIRyaCVJFaBCcagxlf2CtqFblojuj8Z/kile9S2hX8NL5V2R7tGhlP/LEUVBDjeowsFtVPWWYLXsLjaMM8v5iEfhbfxxPxEuyk8YMK/uN5vtED5QlXkyCXhj3yXDX8/gXwr+pigbDucxG7MWr2AOF5uLYkjBGQ2OIA4kS6XDK0qZT/A9EZra4ooxnsLkrCxAy25WktonPGs/Nbs66UCxycEt47EJ/y9ivZb+
+ VagBDnci
+ FVLAvGETCKA9navD733xrz2rI82AlVMLtfnnMzqClU9a7GT6PBhxWaNDfcubf3Xp/vF+y1DSnDONhV74/hO9Sfx7MTIbCWP1zn3okizFBrbnJ4Tds0CnpfGU3LXGL8LgvScZ7J7ZEj9cAuoc1K1hMK+fWHTs0Qu8K4tO9YzNJ+vxGwj6w5kyjkoXklELtav8AnfPcDCJAK0VpDkYNwpX2snFn4OYnlY2vSH5N++/rRCXkBHTsi8Qs+7yhPBe6E8Dn4E/NjlKRfdeo821FGYLpSIm71n5AFRUwfHgidmPEXmxEf+gUitYqKG2jrJ2sauYpr4euVezmrEfulB9vmkAj15wiqL8egNfYTyvatq8bjGmP1Mt8aPnED+B2uSxzxS4bVbFO2LU9gsTvFmWU4Jl1asS25zu40CQ7e0BwLM4py0ftqyX91YLqkrW32NMssfRThgxOlMllJdwY3ETZQaaWkbVEkniOI464M3+uOgf3V3KyflrgbyaInzLhpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,37 +144,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 08:13:56AM -0400, Luiz Capitulino wrote:
+On Fri, 23 Oct 2026 12:21:31 +0200,
+Lorenzo Stoakes (ARM) wrote:
 > 
+> mm has recently moved to a strict model which requires any driver which
+> clears VMA_MAYWRITE_BIT to be mapping non-mm-managed memory
+> (VMA_PFNMAP_BIT or VMA_MIXEDMAP_BIT), failing any such mmap() with an
+> error and a kernel warning - see "mm/vma: only allow mmap to clear
+> VMA_MAYWRITE_BIT if not mm-managed".
 > 
-> On 10/23/26 3:16 AM, Vlastimil Babka (SUSE) wrote:
-> > On 10/23/26 04:31, Luiz Capitulino wrote:
-> > > Growing a VM_MIXEDMAP VMA with mremap(), with or without MREMAP_MAYMOVE, fails
-> > > with -ENOMEM when the address range after the VMA is free.
-> > > 
-> > > This regression was introduced in v6.1 by commit ca3d76b0aa80 ("mm: add merging
-> > > after mremap resize"). This commit changed mremap() to use vma_merge() instead
-> > > of vma_adjust() for the expansion case. However, vma_merge() returns NULL for
-> > > a VMA that has any of the VM_SPECIAL flags set.
-> > 
-> > Hi,
-> > 
-> > 6.1 was a rather long time ago. How was it discovered just now? I.e. what
-> > use case broke by the change and prompted creating the reproducer?
+> However, simultaneous to this, commit 71c610aeb177 ("ALSA: us122l: Prevent
+> write upgrades for read mappings") updated us122l to clear
+> VMA_MAYWRITE_BIT without marking the region with either VMA_PFNMAP_BIT or
+> VMA_MIXEDMAP_BIT.
 > 
-> The use-case that broke was an application running on an older kernel
-> and accessing a GPFS volume/FS. I was told that GPFS sets VM_MIXEDMAP on
+> vm_insert_pages() and friends set this automatically, however this driver
+> maps its pre-allocated pages from a fault handler, so never calls these.
+> 
+> Simply set the flag in usb_stream_hwdep_mmap() to resolve the issue. This
+> correctly marks the mapping as one whose pages core mm does not manage,
+> which has no meaningful impact for this driver beyond preventing the mmap()
+> from failing.
+> 
+> Fixes: 71c610aeb177 ("ALSA: us122l: Prevent write upgrades for read mappings")
+> Reported-by: David Carlier <devnexen@gmail.com>
+> Closes: https://lore.kernel.org/20261018025905.201296-1-devnexen@gmail.com
+> Cc: Kazuki Hanai <hnkz.64@gmail.com>
+> Cc: Takashi Iwai <tiwai@suse.com>
+> Cc: Jaroslav Kysela <perex@perex.cz>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+> Andrew - I think easiest for you to take this.
+> 
+> It should go in before my series ideally to avoid bisection hazard, I think
+> while it's a fix for the driver, that'll be the safest way.
 
-So the application is growing a file VMA with mremap?
+Yes, feel free to take:
 
-> a VMA because it inserts pages in the process address space with
-> vm_insert_page(). I then asked an LLM to check if there was anything in
+Acked-by: Takashi Iwai <tiwai@suse.de>
 
-FWIW this is really odd for a filesystem to do. I see we have two filesystems
-upstream (at least in 7.3) that do this; that is, cramfs and FUSE DAX. This is
-arguably weird and should be fixed. Perhaps the VM side isn't giving
-filesystems the right flag here.
 
--- 
-Pedro
+thanks,
+
+Takashi
 
