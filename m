@@ -1,94 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C0B606A31E
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 07:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD34606A31F
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 07:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qec53LB/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=idgeTM+1
 Received: by kanga.kvack.org (Postfix)
-	id D5CEA6B033A; Fri, 23 Oct 2026 03:30:15 -0400 (EDT)
+	id 54A036B0B11; Fri, 23 Oct 2026 03:33:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D32EA6B0B0E; Fri, 23 Oct 2026 03:30:15 -0400 (EDT)
+	id 4FCA16B0B12; Fri, 23 Oct 2026 03:33:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6F516B0B10; Fri, 23 Oct 2026 03:30:15 -0400 (EDT)
+	id 410A26B0B13; Fri, 23 Oct 2026 03:33:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A67F86B033A
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:30:15 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10BEB40366
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:30:15 +0000 (UTC)
-X-FDA: 85353067590.02.1354E77
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 78C7A120010
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:30:13 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qec53LB/";
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 27D536B0B11
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 03:33:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A4891120198
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:33:14 +0000 (UTC)
+X-FDA: 85353075108.09.78FBBC3
+Received: from mta1.migadu.com (out-152.mta1.migadu.com [95.215.58.152])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A31DF40006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 07:33:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=idgeTM+1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792740613;
+	s=arc-20220608; t=1792740792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r4wmPWcRwAYNvROfFkIzQ3+TvTf3iBKeJ+QLx3ENVDU=;
-	b=iwe6JtKoxTECcx4+WL9FYGTgfwU4LaoECluOF4yY5b1nvU8GOlrioFlD6KH59SxNtOwe+F
-	PkiG7pFZo36I4ekmKL+ID/zPW098gWyIY2fbT3d370cKfMYufG/878PTorCyr8VUQ1ox++
-	yjUG3g6fpeDBlJ5ZdAdqgz5KBpZimo0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792740613;
-	b=a+4nPZyrP4TPdMhTsxFe3K0+/zt8XIekX5kIruHFGR6NoeybC9cCRdt7f76MHBIl6K4KCb
-	AdzWye8LNH30drnagj7bLF/PPYPkEx8wIqTcAp1DaTrLyWybgo7ZTpiHLndhb9FxjQO97E
-	mHjbWxEqLwm8ThO3xqtB0RoknAwFQJc=
+	bh=GCPeXdVtsAIGZmNIgcd/gdVcV03xEPsGBvi1mGdnz00=;
+	b=v0JaL374hJ7LultDUzMLcn788QCjQte6vBmvOKKWfpNbCmDFCqWsltmwlTkXN2w/XEmIVX
+	XsvNw8Uivuvky/mRMfH0WHH62LnIgjAaUhl5IHptiW2k6Kn7xJGRw72jvpqJRCj0VxsREz
+	7wmLklrrQtUEGgp2YmoScE5Y5J5dLUk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qec53LB/";
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 508FA424B6;
-	Fri, 23 Oct 2026 07:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFBD1F01828;
-	Fri, 23 Oct 2026 07:30:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792740612;
-	bh=r4wmPWcRwAYNvROfFkIzQ3+TvTf3iBKeJ+QLx3ENVDU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Qec53LB/A1eayaCEjYLDFL9z+iuJE7bAuXTc06fl/8KJFTDdrImX2I5Dt6mpPtgZi
-	 J4YK9HrpfUneKeQyozUR739UvzP0CwZeRE3vf8si30GCWKbiNowKUqUECkKz/c++GY
-	 VFKz57zcN5q/l0HebM2mGTVbJffz17gB2dS3/A93a45UKO70+FZDsOixTXd6bqqXvy
-	 y3LiPc1ShAWQty+3eIo8ATnpQcJL7zoHv3Om65qullG30F91UT0l+nvNAj35DUdXc8
-	 UrpvYCVdiiZfgsTMn3ipa0c/FgKnYXK7Q8hdXNnA0d5M1FLkfZotYY+NoVjdbNgD5B
-	 sgtH2DdeBTRXw==
-Date: Fri, 23 Oct 2026 10:30:05 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org, vipinsh@google.com,
-	linux-kernel@vger.kernel.org, dmatlack@google.com,
-	kexec@lists.infradead.org, pratyush@kernel.org, graf@amazon.com
-Subject: Re: [PATCH v2 2/2] selftests: liveupdate: Add tests for
- LIVEUPDATE_SESSION_FREEZE
-Message-ID: <atsM_WTjuZNl1EGG@kernel.org>
-References: <20261020144710.4154339-1-pasha.tatashin@soleen.com>
- <20261020144710.4154339-3-pasha.tatashin@soleen.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=idgeTM+1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792740792;
+	b=zSE2FdFDI3xmtrN8Uk0RMOZkvXZTTcB9TmTTXsuT3kK5M5kEVvFeo6utVywm6JbVxaVgU0
+	VxTCVTeSHuCcSMasHo7tewIEKZ8X08s98IimO+0a56Re7peYrDoY++gbRWtv6DhqRG2qel
+	rJtgib98JWqZzgOnZNBS4w/M8cZMv6Y=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=0k5lukGRbTSNqdymG8Q7jy3MBEvP6PLNPDsNCvsgCNU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792740791; v=1; x=1793345591;
+ b=idgeTM+1LCkjAbPmUEPvzrzw/moA6TayFIoBDO7hqGVN2Nhzi0H4kg/JReqrOzFs2OgGrddu
+ 0AZl1bx1HXEL+DsXJFXxEXbjS4EA22cWV7GAkLu49SElOXezmuTcThQB2kcyB92wxeba85DG+fJ
+ yHGYXcILWEdbzuBQeT4UgwOs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0fec9d0276b536b5;
+	Fri, 23 Oct 2026 07:33:10 +0000
+X-Mizu-Trace-ID: 0fec9d0276b536b5
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: songmuchun@bytedance.com
+Cc: osalvador@suse.de,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	qi.zheng@linux.dev,
+	lance.yang@linux.dev,
+	jthoughton@google.com,
+	david@kernel.org,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 12/12] mm: hugetlb_vmemmap: make vmemmap PTE conversion folio-oriented
+Date: Fri, 23 Oct 2026 15:33:03 +0800
+Message-ID: <20261023073303.66682-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261020115824.823278-11-songmuchun@bytedance.com>
+References: <20261020115824.823278-11-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020144710.4154339-3-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 78C7A120010
-X-Stat-Signature: 5pg7q51gi5wyoffw6f1foupbi1hiyse4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A31DF40006
+X-Stat-Signature: rbcoxkci6kn45rn7yfc1iau5ug4gcpkk
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1792740613-281952
-X-HE-Meta: U2FsdGVkX1+mO/NkaBJ9ziQHI5wOERZjjB+W3/aLVAFpz915pxDWajbFyuXvWmPRyafGJjqNXdeQ7ajMGxuRiKVE9t6uwXpPpbRZksO7OvnQVYex+4OWj06jEEXPwkYK995NI97V9WAFAi+w4PU6WRkI091Im3rkAwW3AjOEQNJmv6tgXr4sbleHUTmEhOcwZocJK1p0OZfq02ArPV904flXk4G0/hlFFJmb8778Y7UQ//5Yye0dplNHmXqfDBChsEkf/2J15mnOtSGLEKtWp7UmtaZql9t6cSmLcOjUiSRVEbJBlDA+KvTmxWrCT+BL7uqgAbFSktgEenekU541+dAR7CIJDwd2UBpudMI7WvwQTgfgisfjLWc+qVV9YQoXX6oekfpStSpkwQyW02FI34blN5NUK2ZXGtGaX+Jqev/fsElli8slqLsxfUgBDs8Fr7VXzuE6Udg8yZ5gfh0rU8mY50O5iiUV5j3lev7VFzX3mzsdZMfzlcVyLmvABCGk+Ot0bbx90cJFK1w7olUVrsJFslREbPBbnNyNrrzC5B4I/cSdTadsZWVkt3yF1t6wvwzVa4qsjAZpJg5LHtKb7/dkPhSYRADYkPWicm3ndf5iF9lp0FFyf8LDL0MgiNyxFBg9cuv7beEAqumoacF5m6Oq18VMMnVhs43lYG9gnbjVPHgMoXcejbEfnPditT654HyEtJQHz4N6A1n+A8Qn+quIStW/tPxUoV5q6tCuCUoAHf7k9ka3GtcziOkq8PAQ0cTrxrnRktqNHUHN67wGKYqEX269e2m+Fo3lb+3rrmcSdVGl+GAH+n6PKa7VwEe95tPlCNP4wtDmeK9UJ0zKwn6VP+G0OuUzYbW5fj7x2RXMZsNqcRemAiiQiOalV2zU0kWHRQmcfxyLBKWXW2GmVAHjCj0g/faMeBMwyIP71TxKubBXGamClBeLlE6q2YH0kbIKzdoE76B++sBsFlf
- TyQSrNxn
- Ox5ta8WAQU8IgOH8QjOcn2pWFczqNYIZa2ZHXkQPBRabmXIqvTa+i9uHVL1vMuFldqS1i20JvJ45rH12pvKkFYLz4qNzLnUeeMIt7G0f4WZ3fbhk8d4k652+R+04c7s9WiLAwLwL16Nsad+vH3CSUHiEvn43f1L9MYO52xtvn7c3BaIjYoFufqBFldAYpageuUcL+hwkT4AzVZQKt4Gxffs7yzqH3V3so9DwFf4mMbfAASC7pWiN7QSUYkn8gjAynB6Lm/gqy+BEcjqTbDwvvB1mJQFLKWRb0S4GpsB6igCHrOqkrpGqToe9aQL2WuMAuvK0/fKStevA36kG/NJMy7f4HwjDb3ZkfGupUcFIOAi4wcY0=
+X-HE-Tag: 1792740792-156365
+X-HE-Meta: U2FsdGVkX18CEKV0bMVnboe5qDVm4lqE9B3546dnSL1d2BS+AK8tt6+6Oe7J4HaWt9WpXEaSoUl7u5O+1MQZlOyaDYPrKDIvzU2Kw9vRIEShnAZQ+8elqUJH3ko+FqqyYNVz48z+9HBW59uJigBH+3OdVpAIFRRvaUk5U9VeyKWmYH4H8uXN76n+topM5ckAuJZe/ThgN0JKcoZ1etRJIsAiOnP/r0uTb3P3aACvOV36Bra3O/IbV4cujm6ZZFtzsJneTSg1pKgeYUbHUHv0zUuiC0XbEiPRW5IeUKQTaw4xFs26UDdvy3LEcrt9VIr9962RCklPF8QxGB49pxWwSIsM7QkPB+bhyCF2rexdhSQhKnL4yIiRb96JW44lBMVmBAAqEI9jEk7JyZVq3CYV92pi+PhIdilTfv/6sXHGyGbWloK1n2iCVSMnDZZvHYqUfA4fY4LZzq6YXa6EhrGAlt0D5AmLjq0LjiFIv/RdxNzpjrWjI9Vm9/OlM2bLljRdZnEpV7OUKjHxqkljXPuWCnETq3il3Gx0ITbU9bgbv0UACPngSkG3SujQf6KBdVJjjFQFTC0Pyu1wlQF7gl7jy6VtcZjbJwcoIN8sR+ioCdcanyxjHAD8GBJMkhGF3vMs0iH9H8mTkonBt9wdvM30cpkgah+FQ7Qg6qPIai13ilt/muBPdunPh1Uu6QjK/YSj61FUGigaQbGnKqDk0nmmBCBJAiSAuAKFvFb7hQ7BJx4/QYQeViEzZmc3Ws9p8DsJZI9kTYzH8O5KTLP4ylKOTb29L3rybmQC0rZdxkzKPpu6/5fAMwtiEjRuTlB5pIE9nJ/GqprlC/ZNw5nmtOcK6RjBdwjalgE9HPN27EHeYQhUR4vw7YYtzZeZIcqz/1+EPSCTEbgNkcwEeq8LES2i/XPN4BYJrxkuvNkpk5zIKIgxujc9PEWEhtQ+jwmyjtiBu269osbXadlt2uLZwyH
+ j8Rfo9On
+ S7/dXu19T/UIIRC29X+hCbDiTIN9ggH3BHIZSYOoYfSDBGyxUFJHa10Pvv1heff/vyBwEEPPFWCkFuVCF7kF8xnnfwV2Dc8PFK0I3qgpwFBvj95MuLYjO0ZkImfy5vPEGGrDeY/IlbU1y0/QFC2q+V2vTlUcqoMyYSlVW18k8XpV4kDDlVtwSQS7ZbZbRiTU2SygcrK8M0TQbOL8+Kn+QUyjEYa+3j7XEAyHG4rVL3FL+xo+Q7g5GadGjoHozcY6LxaEEjCBiCSFjlGNHJsZWXdUyiWlI9JngMz0xfcrCVAuV8MUsCpnv2LoQ4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,31 +101,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 10:47:04AM -0400, Pasha Tatashin wrote:
-> Provide luo_session_freeze() in the liveupdate test library and add unit
-> tests in liveupdate.c covering the LIVEUPDATE_SESSION_FREEZE ioctl. The
-> tests verify that non-zero reserved bits are rejected with -EINVAL, an
-> outgoing session with preserved files can be frozen early, freezing an
-> already frozen session returns -EBUSY, and attempting to preserve an
-> additional file descriptor into a frozen session fails with -EBUSY.
 
-Please teach your LLM to use shorter paragraphs :)
+On Tue, Oct 20, 2026 at 07:58:24PM +0800, Muchun Song wrote:
+>Converting a folio's vmemmap mappings from PMDs to PTEs is a per-folio
+>operation, but the current interface exposes a raw address range and
+>hardcodes deferred TLB flushing.  This splits the common mechanism
+>across layers and couples it to the HugeTLB batching policy.
+>
+>Make the folio the unit of PTE conversion and let callers select the TLB
+>flush policy through the folio-oriented interface.  This keeps
+>HugeTLB-specific eligibility and batching outside the common operation.
+>
+>No functional change intended.
+>
+>Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>---
 
-Do we need the entire list of what the test checks in the changelog?
- 
-> Also freeze the test session early in luo_kexec_simple.c to exercise
-> LIVEUPDATE_SESSION_FREEZE across a kexec reboot, and verify that
-> attempting to freeze a retrieved incoming session returns -EINVAL.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  .../liveupdate/lib/include/libliveupdate.h    |  1 +
->  .../selftests/liveupdate/lib/lu_utils.c       | 10 ++++
->  .../testing/selftests/liveupdate/liveupdate.c | 49 +++++++++++++++++++
->  .../selftests/liveupdate/luo_kexec_simple.c   |  8 +++
->  4 files changed, 68 insertions(+)
+Nothing jumped out at me, so:
 
--- 
-Sincerely yours,
-Mike.
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
