@@ -1,98 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE6A606A31B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 00:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD29606A31B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 01:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=a6CBw2n2
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=BiS6WUs6
 Received: by kanga.kvack.org (Postfix)
-	id A7D826B0A95; Thu, 22 Oct 2026 20:55:42 -0400 (EDT)
+	id 8A3296B0A97; Thu, 22 Oct 2026 21:36:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2D386B0A96; Thu, 22 Oct 2026 20:55:42 -0400 (EDT)
+	id 8550F6B0A98; Thu, 22 Oct 2026 21:36:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 943FF6B0A97; Thu, 22 Oct 2026 20:55:42 -0400 (EDT)
+	id 768716B0A99; Thu, 22 Oct 2026 21:36:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B1336B0A95
-	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 20:55:42 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06441A7D0F
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 00:55:42 +0000 (UTC)
-X-FDA: 85352073324.07.0A9B958
-Received: from mta0.migadu.com (out-32.mta0.migadu.com [91.218.175.32])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3BA9B40008
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 00:55:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a6CBw2n2;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.32 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E75B6B0A97
+	for <linux-mm@kvack.org>; Thu, 22 Oct 2026 21:36:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4D59EA030E
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:36:15 +0000 (UTC)
+X-FDA: 85352175510.18.1A9242A
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4BFB8A0006
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 01:36:11 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BiS6WUs6;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792716940;
+	s=arc-20220608; t=1792719373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WQcd0l67AxhO8WSZviozv+Pddw80RChcSdimzj7mciM=;
-	b=AKRwd3BACMNF+okmVXdnicuVMI9fW5E3o4von+m+6BSWcV1zNr1yzAEpaya3Ewhxzc67T9
-	gq/KBtC7TxvL3/PZgaoyM9S0WyVVW6xUfcdsIWK4hoNjjppjRxK/qpeoQefOM9fKDEcYx7
-	7Gq0kG0Y1lmNnAyMILFV0tNwVbVlpGo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792716940;
-	b=TKNEG4VWUlPwgrnshJtw2fwRQ4c5THLHeFckWzWMF9NpU0ktBRS789PGo4yMDHWCyX5C09
-	fu4KJH7g+SZV6alhJ7BYc0XQxqR9kev8fd4MU+4yO12Pb/bTRkQ6o0xCPe0xlOMZ3mdpvQ
-	VsNKEd4uJEAy2V72ZbK9qGFHqOyEClM=
+	bh=PY0NJAPke28sO3SvXiUYBiEZjRXhf6oHVUh0MyPbglg=;
+	b=Y1EV0kDNxDVfm+VN4S6Wy7zedIRnU91m+cHRpzLYeeKvZszCznjTe6qlJBafm10IVBjhya
+	9MJhb98dexkdVsJwD7O/qgQWUCsMCIqsF3DH4DKYKLY4mM4Jxm159/e0bIV6hW4W0YdYIc
+	UtulgCAbWjrFRT0qxXgN+xexyD8/5x4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a6CBw2n2;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.32 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=e2fjOiLeTWrJYYpS60xcbzkTmUkNJmvgx/KCtZ72os0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792716936; v=1; x=1793321736;
- b=a6CBw2n2L5svXcNXVxtRaqzX2z6L+DOaY5/huwtiZ1P1LX3xBGlYYaTE8SZEPvmAkbRfj935
- ON0MXmOZxU0H+FS38Uxionx55+UxyHKmdGZdFJNTaUTLaOBDGvbfxYeyojI3L+H+VS3sD3+rFjk
- dotOc2UpUZhUisAI59UtmG5M=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0f9dfc49a1afc88e;
-	Fri, 23 Oct 2026 00:55:36 +0000
-X-Mizu-Trace-ID: 0f9dfc49a1afc88e
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: songmuchun@bytedance.com
-Cc: osalvador@suse.de,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	qi.zheng@linux.dev,
-	lance.yang@linux.dev,
-	jthoughton@google.com,
-	david@kernel.org,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 06/12] mm: hugetlb_vmemmap: rename vmemmap_remap_pte() to vmemmap_optimize_pte()
-Date: Fri, 23 Oct 2026 08:55:26 +0800
-Message-ID: <20261023005526.20560-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261020115824.823278-5-songmuchun@bytedance.com>
-References: <20261020115824.823278-5-songmuchun@bytedance.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BiS6WUs6;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792719373;
+	b=nGx+Rs0R1yeHHUAlN35+PEXV0AcrNdFVD1CVE3UieasOS238KsmRz9i+f0WJC4ZX3a7Abl
+	CM6h/bLg28SqZHiladUcBu0NbHH/BvPCUyprizh8BaJxS4dh4HrR/H77F7Ce0BYSICi+6l
+	GxhQuHCvSjZq+xssI/5DzchZtMEqLkc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792719369; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=PY0NJAPke28sO3SvXiUYBiEZjRXhf6oHVUh0MyPbglg=;
+	b=BiS6WUs6t4MKba0QHlPys0sPpMxAwV/k+pQ9CgDOoNCZJRBrP+G5d2bJm8vwKzCwrKM/H3B7/lMmN8yeNeMfWgOClTMukDgSbIYy+Sv3QeiXUk1FrUI13QYWs+0m827pvaRvPO6xO9ppobtthheG22j6UfCm1HmqTxoeCLB7MtY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XDKY5aF_1792719366;
+Received: from 30.74.144.154(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDKY5aF_1792719366 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 23 Oct 2026 09:36:06 +0800
+Message-ID: <4e647816-0b8b-4a75-8777-8580a574d752@linux.alibaba.com>
+Date: Fri, 23 Oct 2026 09:36:05 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2] mm: vmscan: avoid anon scanning for GFP_NOIO with
+ low swapcache in MGLRU
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com,
+ baoquan.he@linux.dev, david@kernel.org, hannes@cmpxchg.org,
+ kasong@tencent.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ liuxiang.277@bytedance.com, ljs@kernel.org, mhocko@kernel.org,
+ qi.zheng@linux.dev, shakeel.butt@linux.dev, weixugc@google.com,
+ yuanchu@google.com, zhangbo56@xiaomi.com
+References: <0cbd219d-f69d-4f72-aec5-43e1f2d978de@linux.alibaba.com>
+ <20261022102726.56682-1-baohua@kernel.org>
+ <fc302ca3-6bf6-4bde-b3e8-8d2e93a4e4ac@linux.alibaba.com>
+ <CAGsJ_4z9GZkpV+mpoGogma4oSX4cHy+2UDzyUQSjjOLOfekEPg@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAGsJ_4z9GZkpV+mpoGogma4oSX4cHy+2UDzyUQSjjOLOfekEPg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3BA9B40008
-X-Stat-Signature: b91iatcs35ux3m8hyg15httbox6p1prt
-X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4BFB8A0006
+X-Stat-Signature: odbajbq6ft7rspii1w5arxjwrwrmuj8b
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792716937-972340
-X-HE-Meta: U2FsdGVkX187sISJTZtXCM9DbSFBIfpAeGHAFZ2CH0uv6JPVoLXaWOURhYMHg0kTpLjzWB1JYFwzZAINKmin2yvk+cZT9NlqqozlNpcD1zzlpY7R4K47V3FzM8qiEGGmmF7ICZ0tQmJyQvCpt9RVPnwpKauqKnAICAtIxnoSs2skZFfED1dhejOArml3u6MZEe5K1+aAhJ2in+9OsT/QOmziHsvi1DUshWOpTASAgC5SP8BuqC3azpF4xImEpgcl4uKVdFCLm2+u/CSF4BdsX0DxCygYmBLeRvcET3pX2ThNA1b2tIEivbpU7W3NgtgHSTSbJc2VXb4MmkWnd3Bt87EMAPC35wi2+ARnsKJ5HUmB0WcLwkVd/jTVLABUqyg2wNDqkBL7z+22amBh9EdmfNx8mLy2U/vbbCr1SlzUVoB+fvyKq2J0gdmroMll07E6tiAfxuYY+70feKCRBDm6UsxjD/k6D+zyGwNN5bhRyyaO2UmJ0Gi5LvZEIp6VvQcplcs1un23PhuUflBqU/dLzlGLxMnspdqUJI9nhJ7gCDB8HwTiEDex7QuUqP36jzt4n6Yx7qvh0/XXv4TqNLJBGgecpeZJ5kqrPc71wYHLcBlqAMLfnKPPyDRw1Z+LFTfwYXsca5DwuyPU64FObF0U5TCjkVIoEQIfuK8sWMw57PTc2M1QXmuB2GXbo74ON+4JnltW62V/l1G591AnDHA2t45TubSBsFC3aKByA2dF4U/0VnHZv8E4AyT+EgBmkl/q1U3fhPolxJH7mwmcL5K6NVRLXOuslgRUxR9jMeGbUFaytZnAgPB/VmXQMcA9wc9MAXi0egM1DErlf+pxc6KfxeU2EgPkwCYIsHEzjcwRk0G+Sj6HqD+fTHJnxWKRLfUB+RYGmAyjm+2BytbFLVIId2kxTBmHjdLQFw5Hrt6I6vNXT5T3nCAYUOuGtPfoLKNvYYU/ar3MH2V1lxZyfJi
- +9vtR1dN
- S7jrdF2OtUIyVx1FoZdqknMUMypCBFSQ+/47FB/R90evSGW+4drUVlD/GpdKPG5qIx2Rn7aAcqf0pFhV9SC8F080OD/MtyV9H5pId3pz9Fiqr1hmvOfoYOKn4DUwqPeA8o7MqjNOIumsqrmFREUG/2T9vfUYGuDOT1wmzhx1jHPDTm6eKEfR3WercDkukXDP27TyNUJRqmZ3NBmo7+FTOZtVVGbh355LK8G+A2lE/1DLOjj7lP60OInAntX60KafRVFwjQIyNbad5jKz81i5dfrVjWX+7EFweRhnWWCbOf0Glz/k4CoZLKEmGxA==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1792719371-533889
+X-HE-Meta: U2FsdGVkX1/dB/5ifLN5ZCz/eCxO8R0ZYFy9BH87xJmTZO+FWxO1zwwgSg5vU16goyNzEHEyGzPXVc1jTQd5C8Tn2XuMSm8HBVrjWKcLG8cUJa4fLtXYfwpCBcdoUbXIKFqw/QFEXB/TDxXbpExEN0gC4oe9we1nQnWgIjWpjCCAZpWzHtruPax4zPYZ9IcGEHImFL6uyyxv76y6L2ZyNwuUhse8+OkGvpWO08OEFPEk2P57YYx+UTOVYGcz5svyYy6Z234+gCzwdtrsqIo469u1Qxn0iAG3vzl+64TS24hf3W+DMI35Kt+TWv5ezPnDUrRR2ZVHxH+6NQ9bMkZOXmBapd+B8NVYEnCFafHyRHsL6JCC7N+VZ+g1Sx9KeYuGrSmxVNTAqznz7lmIf1wA1uzjRKf+ZDMIV8TQhIRM6pZFhOR8qE6pHJnO+EAeiTvESRT7eh/K4FlgQPLvQfoU8hu8XBD7DPvnRQjM4jDxTl0nZcVWZj4iev6FRarlRvKnlUKN6bNJvOqPKYY3rAoeL/S1yhCaIkz+6RULVF70NT8LF9BRhUfl7tg/D6dD3OlhObTTyfsAU1VcUYaEff82QwafvSc/3vosr3+xMY9hq1p/iBSjMyW2w+Ua90cW49y6/3RTYL85x7kpoflTgAVQfe9ltQFdRd2gMbYcER/aG9YjoN8wDZul3FSWRvkwUlnhasyQjqiHDB1k2vhgyvb62xtFpJ93qWLi9RNphJajjZkIgMAy74+cA9cVkXOX4dcUvK5yBQuIJGNtsCv5ZwDHYSRJW7lK87kbPunI4oOp03WB71RYnHFB6lqiCrEzgDQ7O7XYUzmOlzWn6SSVFgo/LgnqJeYUkGbBTQmuVn6BpQXNWeoEkb8gs/6aXROgEG6AbnC8VL9RcvKcu26U/RhpNfAgbxxVbGh6Btf8jyY+J8vFPWKYktu7Q9qA+OxfMMe3BwQs0TQbpjn1wMuxHDH
+ j4DThGMo
+ cTsX5Rasad8GccGkxfE5RKyHKQhTzj1hO4fmaxQeYsfgZtY6Qith5dIuVFtABGVwQomQYs5hbp7mgZzq4WTkBjTWjJSGvfqTdxuj+HRi3DuPWVof7c9Y3CaRRYDnkdzB5mP3b4WFRUB5b14z9dq0JMANMVC7mnnTbFJ0Sktxx/KDUGSYbpd9VcPVMyQGHeDsbLBYsvuWtBZEHenBmohudZp8VxarEkNRn0hJmlu7BkTofAW66y50uYzdUFEesUE4e6bXrlwP9qdHFrBzGS6o7Mx8L9Yg4d2OkHi1520g/jL0jjKEMQIakPN1FMMUxbl83FTPaBephGoxzk+4trT+06cE0G+JiRbyhE7hYTBwx8wzq1MPitbwKSTPKGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,16 +99,31 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-On Tue, Oct 20, 2026 at 07:58:18PM +0800, Muchun Song wrote:
->Both optimization and restoration update vmemmap PTEs by remapping them,
->so "remap" does not identify the callback's role.  Use "optimize" for the
->optimization callback to match "restore" and make the two directions
->explicit and consistent.
->
->No functional change intended.
->
->Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->---
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+On 10/23/26 5:19 AM, Barry Song wrote:
+> On Thu, Oct 22, 2026 at 7:26 PM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
+> [...]
+> 
+>>>>                    }
+>>>>
+>>>>                    if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
+>>>> -                       if (try_to_inc_max_seq(lruvec, max_seq,
+>>>> swappiness, false))
+>>>
+>>> This is quite tricky. If we pass swappiness=0, anon aging will be
+>>> skipped. Do we want that for GFP_NOIO cases? I mean, these are not
+>>> real cases where anon aging should be disabled.
+>>
+>> No, we have real use cases where 'vm_swappiness' is set to 0, which
+>> means the workload never reclaims anon folios. So in this case we don't
+>> need to age anon folios.
+> 
+> My concern is that setting swappiness to 0 for GFP_NOIO also skips
+> anon aging, making it behave the same as a real swappiness=0.
+
+It will not. We will force anon aging for GFP_NOIO case.
+
+> However, GFP_NOIO is only a temporary state, and subsequent
+> allocations may not use GFP_NOIO.
 
