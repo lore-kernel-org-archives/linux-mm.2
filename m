@@ -1,125 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF83606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D802C606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Oct 2026 19:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XYgL33LJ
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=snbZh5bE
 Received: by kanga.kvack.org (Postfix)
-	id CAEC36B0BDB; Fri, 23 Oct 2026 15:51:28 -0400 (EDT)
+	id 080E06B0BDC; Fri, 23 Oct 2026 15:54:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5FFD6B0BDC; Fri, 23 Oct 2026 15:51:28 -0400 (EDT)
+	id 030B16B0BDE; Fri, 23 Oct 2026 15:54:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4EA16B0BDD; Fri, 23 Oct 2026 15:51:28 -0400 (EDT)
+	id E88866B0BDF; Fri, 23 Oct 2026 15:54:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9161F6B0BDB
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:51:28 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0DBBA40208
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:51:28 +0000 (UTC)
-X-FDA: 85354935456.17.EE06213
-Received: from mail-dy2-f7.google.com (mail-dy2-f7.google.com [74.125.229.7])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 37A4840009
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:51:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XYgL33LJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.7 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id C46D86B0BDC
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 15:54:45 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E0B41A014D
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:54:45 +0000 (UTC)
+X-FDA: 85354943730.15.A9327F2
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8FB13C000A
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 19:54:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=snbZh5bE;
+	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792785086;
+	s=arc-20220608; t=1792785283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ajNcFZ5WussjgJU9fT6tDOCdCs4dRuGUCjNnd7n+pgg=;
-	b=pvQfIgMBxyb0a8ldyZtgiCI0bc+BmVuNmXTxiTrxe+LI8a2z3Tfjr6LAhkesGV5F3AYjAU
-	SXnKAW1uUlpwoar+B3be6cz7h/HKJu2Wt8lj0k1ZtedXojk2OLjiZEqTxtPU8O4bbxzdZU
-	0GAA0DFR0DldJ3giGib43O9Gk/SudmA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XYgL33LJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.229.7 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+	 in-reply-to:references:dkim-signature;
+	bh=cpi2EB3quHQgRCV81Rzv4dQD8elBWDJHR5WGv5PMzrE=;
+	b=0C8lRX+XyHSIZ21fBuBEzLnbqBmjFm1nLVipOfB8WfUbaUo+qCHyZC0oIRpUDvCTXwVbA1
+	7T3WNZra9OARWqxkU2yz31FnkrDc3YDEE86Wg2m3i0usYNKgK9JqXKnlJW33y4FFn9+FQU
+	+29B1meOWvnvb+VqDgnwxqPDAP3nsfs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792785086;
-	b=ZFzzeaNLvTAS/iZivHkAnUAD42QUaGy+txyuXuUx7TIoOWSZtr75q/VyujWQQUzXiqa7oY
-	4w4iQ5YNhyYNsuoUyDv9Izy0IkczuZqcMdrcbcMOFzrd9x/cCx7EFEPYlsYD/kqB8GvXAv
-	1LRQ54h+gTiucX99TjUkICavEKGN4hE=
-Received: by mail-dy2-f7.google.com with SMTP id 5a478bee46e88-368c26de2e0so357258eec.1
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:51:25 -0700 (PDT)
+	t=1792785283;
+	b=2ufOWlt28blrWv+YiR5IVThhDTcMyfuHj4NLU6BXhcqqHDeU7dlDYnKULidzt3hshnaBlU
+	LcppvrPh1qPucqZql40wWoebzSAqBqDZhsDbGi8AZ9XUnCIOcPlsnab/MxNJQnKebRdGGG
+	ZMqU5+DPtRFwOMwf3Y6xYBcJ6WX2LX8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=snbZh5bE;
+	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8b05bf699easo12867917b3.2
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 12:54:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792785085; x=1793389885; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ajNcFZ5WussjgJU9fT6tDOCdCs4dRuGUCjNnd7n+pgg=;
-        b=XYgL33LJMyiiRBM9FDjhMhJytdxRWV5dVUPZW2C32rM6FhGsddCY4NpLD5XVRx6SxK
-         GcD+fyNIHuKoFhFvwCuTaRI7dw6qP2hM1CEEdy3bXIvKGpRN9kGx1pRm8F+tOT8uD+67
-         jieG4fvFKBhmkPxxJ2v8pOUZ5u1UnDu1LP94ZGiAep3eNJ2w2otk0jM0kuMw2kU8z1Dr
-         6PRc30SuifWGHT/CMaUDGnTzp4MTSTnJNYrswmcF8zSyzJsebcMNTcnPj4F+jozLLlEX
-         sFmJYkoKfl/yZQe3QyFeKd7jVqHPNeMyuO62mQk8aY0TnKsMkVzxwVJ3HlO1BXsfgUE8
-         mKIQ==
+        d=gmail.com; s=20251104; t=1792785282; x=1793390082; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cpi2EB3quHQgRCV81Rzv4dQD8elBWDJHR5WGv5PMzrE=;
+        b=snbZh5bEQ4nknuubC79PtyyATElkIWkXHpDJanJ9YvVgDLzAjllrTqG5BYXC8wAQyp
+         +l6F6tsOMboQCdA6dBGOevUGYq5uDM3AR0a6QeuIL4v+RrkTX9sf5oq9Q01O3EwvlaAh
+         Prs2XMS/3lMV+DIMePDxoDOsVMLEBb9bfGkKzt73BaKAQJrBkzGBG+g0B2Vz+DeoYmLN
+         kZymBRoaGUh/jeNvjuLWsPE9dn2x1i5Nqfhmoeo7VqkuZYX8CYv8ktUapothL10fXBNV
+         x+lob9X+mjPTICNunKZZlExA/yJreXUaR1kkir4jR9ArxL+jEVm5bPwivogi4w8+1oD9
+         s+eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792785085; x=1793389885;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ajNcFZ5WussjgJU9fT6tDOCdCs4dRuGUCjNnd7n+pgg=;
-        b=ntx4QAnRaaHCEqFhwDwuZleDKA9gqE7dFsLogVCJyFZf3cfrfBuQQN3NT8r+3YiOGR
-         e7mzxRztaukKOy2A8iib9DEPTJF6plYcpIwmJLTcrqJWjb4bXOKoiJJojGULT7R8xj8N
-         /SgXUh6LxamTgtflTDcxaX1DsE9SJXYtpHSoNNxjl+vnS+VoI1d5JVCSVRoStUqs4lu4
-         EvS7UWOwlTyfs6qA0UGfrRn0z2rn+3BfgqoRLsR5gWZbJl/UBrJWbpNI4W5FcI8D7w1Y
-         pOdo6S0C9SaogWtPZ8SWbu1HeUeiAr8GRc08KT6FyLoc88JGFcNonsIZrM8s2311yO+9
-         WzYQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz4DHIGIfBbsAYK9xrFienrCz/sDn5zg6nXYEb3fJmHJJGWSnH7/2osuQFaBK1znH9Jy+Hnrt+T5g==@kvack.org
-X-Gm-Message-State: AFq9FYJWkw0oZC7Aty2fG6MatEactnUhsstZTOAJftAsgbE2VsIWvvwB
-	bZl5kEuIc2H5W8ckM0vWjM/tSUBFg+2AT4dHQQkDKzOnypgU+i5z0Lc=
-X-Gm-Gg: AYBFou11zyM1LXCc093NEKytEAbJEaymRW+YIjwUKt+RbaRXoz7UhjcIr5K5gA3BF1O
-	1eEqyt8CNgnyXBQrw+Mpoa/6gDcNn42HPKsQbMq/0wRWpYkPqN1PV6253ouTU26LBuo3GAiiItU
-	YaY4DgbaN+TO5/RiUTL63GziCbn5kEYvkV7+j0fs0U9d4vdCVlTLSVMtFTpBHlyadsexUjP2EyI
-	9V6g3NNU8oF4tbj+2nOMdHXweIRUKqBdWIBcjVyxP49kIc2BVQ4ksBaZse/zk/j7O+qBToAJnyD
-	EI134ItguNPYwv840eWTuDNaeKdMT4okhomg0MY2hBEo4YM8II0RPqrxfPFftIgmmO1lYrwzuRz
-	4wWxgJHxpg3nileqpd8N2kcnAbop895UL+pXLErccyB4UjcshUmcoLmyXU+gL823P6zUR+nu5fi
-	CMiLjiZu6plMTq6aMhr0QEbNDP97nqs85mPb0R9vdl+xAc5iIb2FlSdJtouFnq6x7CbosE7iPg1
-	zNcC5TqTolV/LyS8nOURPCc4iByEh37EMswYOd7XZWz0NkCeLBJ7ocjcBtDzc9s3etBJthA/OBk
-	mBldqlMl4YrtNAYBI2+q/LBfJZJ53Nf9Cw==
-X-Received: by 2002:a05:7300:50c5:b0:368:e6b5:35ad with SMTP id 5a478bee46e88-369e84dab92mr442217eec.12.1792785084531;
-        Fri, 23 Oct 2026 12:51:24 -0700 (PDT)
-Received: from localhost.localdomain ([137.201.204.53])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8ee72c0sm420489eec.29.2026.10.23.12.51.23
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 23 Oct 2026 12:51:23 -0700 (PDT)
-From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-To: sj@kernel.org
-Cc: corbet@lwn.net,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	rdunlap@infradead.org,
-	skhan@linuxfoundation.org,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Subject: Re: [RFC PATCH v0] Docs/mm/damon/design: document data attributes report infra design (beyond page table accessed-bit milestone 2)
-Date: Fri, 23 Oct 2026 12:51:22 -0700
-Message-ID: <20261023195122.2481-1-ravis.opensrc@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261022052913.90437-1-sj@kernel.org>
-References: <20261017195747.89961-1-sj@kernel.org> <20261022041724.2712-1-ravis.opensrc@gmail.com> <20261022052913.90437-1-sj@kernel.org>
+        d=1e100.net; s=20260707; t=1792785282; x=1793390082;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cpi2EB3quHQgRCV81Rzv4dQD8elBWDJHR5WGv5PMzrE=;
+        b=sGDhNqMdYNb526P5oCqzroj5qAWKv3pxWQ+REwM/VSrY+cCRklLS5lgk6otNanRA5k
+         qdAxdNL0cDTUuetcRTMxwfb0FUdSRnO8caib8CkLkYU+nTQ3DY3GkfadFz3yra0tXgmN
+         kXAA8tm644Rbt6nn+F/PK6vAq86x/xrKvnbQ2H52hhzZL/Tay4xGkrY54Omkk3yB3Yph
+         p7/f7pspcfN81yW4GMn7g4NwaXNeyn6gipFka4ICDhEaVh8Hq6UDDbAexp4L88Tn9d4f
+         J9uG7S1in8a/B+AEBJMnLOazdj/pxMWXy1T7G6WlK02MbuYpYevK2cJZ4j8CCTSfkjrV
+         1ywg==
+X-Forwarded-Encrypted: i=1; AKwUvBwyBiYQzgXudHbUJXPi54fJRhVp0/iWLul+/53nYBuNyHK9Ddoxz9KRarrIaa0gaz7yHGLLHB32Bw==@kvack.org
+X-Gm-Message-State: AFq9FYI+iQ+N/nSCWv/TUUZpsfMSQOKqL2O1nRVL7F3CxaP9gqRS37jR
+	5SszcY1UhFewn6AWAPmLnRF5xplCx+Q+Kt9IO127M2tSrkwUBnir681m
+X-Gm-Gg: AYBFou3aIKNSDEQubqB+mVGJ/j5nY/25q+qiFDRe5OTBkCyf+PweuLIz3hyxhlyHzIG
+	BOvQBfmZKWkkszvzfzSTHQgecv6ruNQ0GXWZPvwc5TpQ4nkBQHV+0zY93aqMKoA6YXWnlmDQGzM
+	Ghydvd3AOAp2JC8mzBeQol5R1XwxhwjJx9SFzeoD17bXaXUKCik53b4ZMCurmqZar9Dmy2M9DdI
+	Q5zw+ozuGerXWDcC3yl/FE0acv/gLJ8mZslWsm5wvjG8j1hn6xw+afwpfDno3WOivZ4Jr+0+I4E
+	6W2L+pCzJh5uGr5geBc4Ngh5JcnBCrVDig2ZBKxc26p1Xd6DYhAkJsqpzn0ul8b54Rw28gMi1Gn
+	3/Itt4oWjVUjSBVE1i+yPNn/yJGh5T9Ru335kbJzqQsE9pfNZDjkItErn2pQmxIxsprZUWTqHil
+	orIDGHIFBRCmwM4wNmEKidgKDExBH0z4JglRgzU12AQZwj3QLNC4y2+xhdzccouFTVvaUfT/Hea
+	xYHUD+21DPV2VfLM+SAvobzUEALUHfKBZ3CSD8Lu6q9kh+L/tHmMEUC+vu9SgEez9YaKqQRvujW
+	wtIBaQveIo9kvx8dwvltr5EGkljma+k1
+X-Received: by 2002:a05:690c:c117:b0:8ac:805b:3a7d with SMTP id 00721157ae682-8b166c2de63mr1462627b3.47.1792785282377;
+        Fri, 23 Oct 2026 12:54:42 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:40::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b166dd01c0sm961667b3.7.2026.10.23.12.54.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2026 12:54:41 -0700 (PDT)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/2] memcg: reduce cacheline contention from lruvec stat
+Date: Fri, 23 Oct 2026 12:54:15 -0700
+Message-ID: <20261023195417.1391216-1-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.52.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 37A4840009
-X-Stat-Signature: n5ufhf5o33f37y9ce76xnsepe3o5n94j
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8FB13C000A
+X-Stat-Signature: y8skoirg6a63pha1zw3z35o9frx8bw43
 X-Rspam-User: 
-X-HE-Tag: 1792785086-588152
-X-HE-Meta: U2FsdGVkX18rQ8JjeiMBf0iBKhj0u2Ui0/PrZpj2Qu48ePyhT7sryhZpsRmyDtkB7FsBLsWUyXndyC7aPzJVLTAu5FiOYM93y1dS/Z5uOGI4KJxvD0dQPZzEDNkln1KbUWiFSbk+B6HHNWMhSdpUFNrRsEGSOJf7+iiBIhl5WlFrqMi7yYmEMgoZf9LAz1Ys900oShrkFCTQIL6gEnbuDzo8xArYnHXsgaZtIeTLE6TLR1iPfgFCpQsvLW7cW77JZE4IWJrxlUVJqMRNGfhSi5ZUcfrPoq+KJqkHQnlRS0wB6etBDvOHP+7bQG+6UM7CRKMjUsC1sgarIlWifgBwE3Fnnb3lGfvncMiK3UQz4H3dkpWt3yt0t5VhUabjFnQuHib9bZNFPhbVUnDJ+jI+yS7rAilYc2zOFnwMyomQJ6TK2jFaPwCb6PiHNqiRUlKcLClQiwmc7JuTLaJg9MgDPJT9bqJKhO0HZC/rran9FeGPqVCpYC6V14WcKdSelTGU8xpF/TpLOKe3zv0CFFVCe3bHT1FEd0V6917zq9mWvKcC8YEdwBqQA2XTuiOHvWZcNqpM97ztRLDnmg5m1x50sVZkLNCY0lO8HrcZQx9Is4JN9/QYe9OLOW6P/sEavRiZ8H+FaX+ogz2Nb4znIaSuH//iaOQskLnnDalTpjqR8h48HISVf9HxaVhoc6nBQ1f49LgjOHzlTIzNO6Zha8ykFFfpAGQzSITeKbA2IYcGj10amGs5jcRE0nbSuFga5OsLpyxUE1dO/w6+TBORuIsLCspyruPl72d06Lj7SeXJqe/AyHHo2fZqcS4utSRntP/CirVDi3Y26B7HWRAMuxy91cavc1J4SEZEvZSdJsSP8nwPAjFzkUnH9fjpmxxACtYALqvDhndc25uKBqhB5sz06FV7b4+UpF0LbFe7kg2ZJuU+GCdNaDIS/fDUIJOpH3Jwp2svOhAXGKTY3Dlxyg9
- MUW1JTB8
- FTF/Vj3q4TrqZkrzhkA5vUvFeFLeTPSUnSPPk7msttmnqhL3gd7X2cZz6++aNvQln16Khb4xrZivdgwWRWcWjluRzwNspiIEMl2/RoxVw7cZT166tjFw/5kW+xeJpt1LnYhkPMkzBFDanoHiemJOuvUbI3dOc6ECMiUwwEp0FyxahXhxgG9qOTCzniWgRM6eoppbyu/hPF/zBalOKHYawJyh2RpsPaLas7cRFvIVsW22IcXmRlDqubTPvQmlKYdf8rJm9lJH54/Ewyh5CJHvnBKSOy9xYX0cBrlfiYZrlOLCmLqwARtUGtgiLJyNPNM0K1mRL+ykNO0nnICBW6fGJuwfFOyrQob4h8MJnwu+WodSbT+Ts/dX/qO1oUCOhCEXuR9o0GQh1aT02/BR6z3eYkz26a7dCSZm0nP0sh9T4ZjrG27T1ON/ErHViSO6lYYfcelWh2Tb4IjNHo9TYQU1GjQHd14wvF8obx+QzkFMCnt/eFnntRZzQc5zdnshdk13VfcWQ
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792785283-765844
+X-HE-Meta: U2FsdGVkX1835vkKGXAu4FfBNLiQJq5/9VzxzvhENhW475TdJ368vMz3ZNHFxfVmOcjtcCz85dpYLVOWo9MRBLlxLVmDNXJPN4fLqiEpEQVKosaC1IBUXcKedHZMSJDwUmWje1hF/yr21EONloi95XzKTbac/MPUSAECPwva6d4ql3VfX830qOTmMZs6pRxe3Ni7FT0yw/PsbduluQr40N7NeNB0SGLX8P0v0DXrpKevEVe76V8RnMiGfQ1sMzZ6nANYdSP7sqaoFkTrLOst3nXPGdJsJ+gOKNbAVNJ04mzvv/4N1h0nq5XvPmytNmHnvCRM3Kx6BCc+eLUQ7kFeZgj/FbO80D+sePeBUNJXeNA2mfRFoAGQ7LhS3ABXSudVzGpuJLit3WeBlUlhwkdKPCQsA45pM1iQtq4SlRDKT0OOPlWgC6HlmLL2b7ilje+SXzsKpkh9BFijjwoovWeAFR5VSarGzp6JGu1eB8m0/LgoRra37OECDJIQCQWkiU7UYwNl16XJsGc5LQ2Uxn6Qdj2f3p1DX/4hlQ8pyImqhvnYNg6uufzrTY0w2SxRUL4q+2DLVhUsgj3rZ+FFn1TWgNDRsQ4BsdY4XfQuHytk/SpztAuOMulXYXjnVM0z2daIV2/Df5Ox8YVfkwirGKB0i1UexDql0SlhbJPp4kv69oEA56gFAwT0BLdhH5IjT54VaP+CwP52vXcbHgOvbvqngKkOEXRhO7gGFRZgfQsYfpfJmHzzOYy0czjK8kFo3linKQXdRXEosUuCxwjZtLCDE5wAQZvAE2wDo8C6N/fUE6+KghsvJES70cdgHBRDatsgEzEy59Q3yUelzPnxAJ/QulU0LNDpfN/+FCBo3zv0BIbypXfyvNppCDb+wKJgFzRxxMeDhTwTf06eToHjgO1uXOk4rUq4rT5ivOeJOfVfwVITkwERt3qOZJbXdgWNEa2xkNl4gFWNv5aI0uzNRpH
+ WkjqCYIG
+ mAmrXhFRpm9ZUfJWLIlyRVjrX95BVqHk0ylP9l4h61W7uxTy9ZLJxNDce8hh2n60+pc7YBQgefrgM/J/X+wyS6KCVu+MoCXEleUwWFVTZ/1tPKru6l0r7p5+fq3WdidR20vMBjc4OgKYWqayNYOjuUKJjwXn/KmmFX+nQ6HNiaKf7QgudAsbOE6MNz3wfNKtB0tnbJfcaZqCAR+SaFE+Jik1bfPZaYB98UUKRf9rFOE7mhv+oWBAPcgspkY6daDTsOvoc6asFnyXlbHnltUbX43qE8e9yfRY2RVcmvEkKnmNwf2QCCUdiCGLNGjLGRct0WZbNPcIPxSYUBmyGMJRE/btn93xO19BJD5eXi/tk2D8dUmqJEQVoy/IcfujbB0U3KaIKmVXsDLKlx8M7aEQCmxaJFYdaXNgNc+E9Ax90Qw+JhrJ/mq7hbQMrSrZ9AjguKHGnh0qvP/mDbBw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,103 +126,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+Memcg lruvec stat updates read fields of struct mem_cgroup_per_node and struct
+lruvec that can share a 128-byte cacheline pair with lines the lru_lock holder
+writes constantly (the LRU list heads, lru_lock or lru_zone_size[]), depending
+on where struct mem_cgroup_per_node lands in its slab. On CPUs that do spatial
+prefetching (eg Intel CPUs), this makes the stat updates contend with the
+lru_lock holder.
 
-On Wed, 21 Oct 2026 22:29:12 -0700 SJ Park <sj@kernel.org> wrote:
+Patch 1 rearranges struct mem_cgroup_per_node so that its read-mostly line is
+paired with a cold line, and patch 2 makes the folio and kmem stat updates use
+the memcg and node they already know instead of going through the lruvec,
+whose pgdat field shares a cacheline pair with lru_lock or lru_zone_size[].
 
-> Hi Ravi,
->
-> On Wed, 21 Oct 2026 21:17:24 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
->
-[...]
->
-> Thank you for your detailed review and testing of the first design!  I'd still
-> like to try decoding idea first, mainly for quick prototyping.
+Results on a 2-socket Skylake (80 CPUs), average pages per second for
+threads faulting in and freeing memory in a single memcg:
 
-Sounds good.  Starting with decode makes sense, especially for VMs
-where hardware address-sampling PMUs are often unavailable; some tips
-for the prototype are in the other reply [1].
+	   base     patch 1   patch 1+2 
+shmem, 20 threads  4.74M    5.59M     5.77M
+shmem, 80 threads  7.94M    8.66M     8.82M
+anon,  20 threads  3.04M    3.08M     3.10M
 
-[...]
-> > Yes, if the report has an address field with a validity bit and carries
-> > the producing report-type (attr) id.  Then IBS, PEBS, Arm SPE (through
-> > an adapter, since SPE uses the perf AUX buffer) and device-side
-> > monitors all produce the same report, into the same queues and probes.
->
-> Thank you for confirming.  And yes, I think we can add more (union) fields to
-> the report structure.
->
-> However, could you further clarify what are the validity bit and attr id, and
-> why those are needed?  I'm still newbie to perf event, please bear in mind with
-> me.
+Changelog
+---------
+v2: https://lore.kernel.org/linux-mm/20261022223930.138779-1-joannelkoong@gmail.com/
+Changes from v2 -> v3:
+- Add in a comment about memcg_pn_cold placement after memcg_pn_read_mostly
+  (Shakeel)
+- Add Shakeel's Acked-bys
 
-Neither is perf-specific:
+v1: https://lore.kernel.org/linux-mm/20261020200730.250189-1-joannelkoong@gmail.com/
+Changes from v1 -> v2:
+- Replace the lruvec_stats_percpu pointers in struct mem_cgroup with a
+  rearranged struct mem_cgroup_per_node layout (Shakeel)
+- Move lruvec_stat_mod_folio()/mod_lruvec_kmem_state() change into its own
+  patch (Shakeel)
 
-- Validity bit (or union tag): a way to tell whether a report carries a
-  virtual address, a physical address, or both.  For example, a decoded
-  sample has no physical address if the page is not mapped.  If you use
-  a union with a type field, that already covers it.
+Joanne Koong (2):
+  memcg: reduce cacheline contention between lruvec stat updates and LRU
+    lists
+  memcg: don't go through the lruvec for folio and kmem lruvec stat
+    updates
 
-- Attr id: an id of the producer (report type) that made the report.  If
-  several producers later feed one queue (e.g. perf sampling and a
-  device-side monitor), a probe can filter on, or weigh, reports by
-  their source.  If each queue only ever has one producer, the queue
-  already identifies it, and the field is not needed.
+ include/linux/memcontrol.h | 29 ++++++++++------
+ mm/memcontrol.c            | 71 ++++++++++++++++----------------------
+ 2 files changed, 47 insertions(+), 53 deletions(-)
 
-[...]
-> > 4. Binary search over a sorted region snapshot (your todo in
-> >    kdamond_apply_access_report()) beats a linear walk from about 2
-> >    reports per interval for 1,000 regions (a model, to be measured).
->
-> Yes, this efficient region-report matching would be important.  We could also
-> consider starting with linear walk and later optimize, though.
 
-Agreed; starting with a linear walk for the prototype is fine, and once
-it is out, happy to measure where binary search starts to matter.
+base-commit: fcec4f4bcc1101dbd7e3aff267856b3bbfe128c6
+-- 
+2.52.0
 
-[...]
-> > 5. Samplers can stop silently: in a report on the v4 thread [1], IBS
-[...]
-> Unfortunately my understanding of perf event is not yet good enough to
-> understand this in depth.  I will revisit this after starting implementation.
-
-Sure.  The one part worth keeping in mind from the start: a sampler can
-stop without any error, so a counter of reports received and dropped
-helps tell "no accesses" from "no samples".
-
-[...]
-> >   - The queue: the per-CPU seqcount design in note 2 (suggested), or
-> >     ftrace's ring buffer with one iterator per reader.
->
-> My current plan is to use DAMON's original simple lockless and global queue per
-> report queue.  Let me know if the report queue design is not clearly explaining
-> what it would look like, or there is a clear problem.
-
-A global queue is fine to start with, and the design is clear.  One
-thing to keep in mind: perf writers run in interrupt or NMI context on
-all CPUs at once, and an NMI can arrive in the middle of another write.
-So reserving a slot needs to be lock-free, and a reader should not see
-a half-written report.  If the design already covers that, there is
-nothing to add.
-
-[...]
-> As soon as this design discussion is completed, I will start prototype
-> implementation and share it as the next RFC version, as soon as possible.  Your
-> review and test of the version will be super helpful.  I may also ask you some
-> questions for perf event and your prototypes.  Thanks in advance for your help.
->
-> There are competing works, though.  It would take time.  I expect about one
-> month at minimum.  It might take longer; Thanksgiving holidays could be helpful
-> to give me a time to concentrate.  Please bear in mind.  But once the initial
-> prototype is implemented, I believe we could quickly iterate and meet the ETA
-> (LSFMMBPF'27).
-
-No rush on the timeline; that plan sounds good.  Please feel free to
-ask any time, and I will be happy to share the test programs and review
-and test the prototype when it is out.
-
-Thanks,
-Ravi
-
-[1] https://lore.kernel.org/r/20261023194848.2449-1-ravis.opensrc@gmail.com
 
