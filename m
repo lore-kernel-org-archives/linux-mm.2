@@ -1,78 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1C660A2635
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 00:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6074E606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 01:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=zYICE5Yg
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JB9GbvwY
 Received: by kanga.kvack.org (Postfix)
-	id 38EB06B008C; Fri, 23 Oct 2026 20:52:51 -0400 (EDT)
+	id 842ED6B0BEB; Fri, 23 Oct 2026 21:12:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33FCE6B0092; Fri, 23 Oct 2026 20:52:51 -0400 (EDT)
+	id 7F3E76B0BEC; Fri, 23 Oct 2026 21:12:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 259C16B0095; Fri, 23 Oct 2026 20:52:51 -0400 (EDT)
+	id 6E2CC6B0BEE; Fri, 23 Oct 2026 21:12:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 028516B008C
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:52:50 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C969A0282
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 00:52:50 +0000 (UTC)
-X-FDA: 85355694900.23.076559A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 00A1C180003
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 00:52:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zYICE5Yg;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E58A6B0BEB
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 21:12:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB2BA160208
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 01:12:01 +0000 (UTC)
+X-FDA: 85355743242.25.11DFCA3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4FC1D40004
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 01:12:00 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JB9GbvwY;
+	spf=pass (imf27.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792803169;
+	s=arc-20220608; t=1792804320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=xZtcQ/8DmJXSoJNrGPRWjRKXH7jfwvLZwbB5yzP5F58=;
-	b=qMf6gjaIuDVDukB5ZoaOslR60+1UabTOk3fhwHFmBdPTmIMbO5vn12VeQnMH/fH0UPIveb
-	NtG65qHqreBz36vt8vlpKPtBW2VLlG/mg19GvXO0vZl5H10U2ZdKeJCYMamzLFHgRTxTfL
-	6mOKjMTmgkCYn8tkdi7Z1TEeAaKkaMg=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qqcjA7DNdTq+xZwtRnwCLNkrsUov1CecwEVrKr3pes8=;
+	b=2LOij8xMs+RHTZXyzk3jvLa8npi/6bqbYmORBXubV8sB9KwZZtVtLUcNvmSzNt1O3fUlYt
+	7xZwb+a2mnEjXlFo00SMsk+2V5kjd9j3i1pvO3192EIUz0lp0fKtaEOBvvdE2YdeM6R/QZ
+	00hM98pPsS4ET+KihCqxz2nn7hUMJX4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zYICE5Yg;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JB9GbvwY;
+	spf=pass (imf27.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792803169;
-	b=K7a4P8b+pOQA0hInPREAfKdu561ObZ2RIUD4v8KJR3OVK0vNLVYgvTzIefFeOnEMmWr5S7
-	wu2TO1Rpg3f8RHRTiiURn5A+EmTo9eBBvuvH3N7GJ6XDvK2Lu1X5shnRAHyQCBW92MzhFe
-	uDQh8dxlvaMe5G6OcEOE4NdsucCWEuk=
+	t=1792804320;
+	b=V5dBnsE16Eh4U53BmfBXfAkUqasnxM93my9lTj+kdUhsbtT3Rf7hhdC7BAdCCx9nWrg/YJ
+	C+Oa/bTOK648iCefjb27UHTZuxD3pcGERE9mth5uktWF8h3048CgmXMfDFwP9VhyON/AxV
+	Ku7hM0O6HordG8vAzp/P/1O7yT4CZ3U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4F8CE4243E;
-	Sat, 24 Oct 2026 00:52:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211471F01181;
-	Sat, 24 Oct 2026 00:52:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792803168;
-	bh=xZtcQ/8DmJXSoJNrGPRWjRKXH7jfwvLZwbB5yzP5F58=;
-	h=Date:To:From:Subject;
-	b=zYICE5Yg+IUEBWm8IoUWCSu+vdzhGEJU+n2l1l6GcSNfo6BwWRjlVERupouZO7hWp
-	 Cg8cKu8D7uluICZsAE4gia1U4z/FoCaurBS29DEgv1GGPPT7M1AfAmOSL7/EH3rxDZ
-	 XeCuyss5sqJ1OsAKPsLPy/uaTAjoH4kyT5ktYtgQ=
-Date: Fri, 23 Oct 2026 17:52:47 -0700
-To: stefan.kristiansson@saunalahti.fi,shorne@gmail.com,lkp@intel.com,jonas@southpole.se,broonie@kernel.org,akpm@linux-foundation.org,linux-mm@kvack.org,willy@infradead.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Message-Id: <7e6799e4a26d4c87b28bfe1d0bab7d54.1@linux-foundation.org>
-Subject: [PATCH 1/1] openrisc: include asm/page.h before folded pgtable headers
-X-Rspamd-Queue-Id: 00A1C180003
-X-Stat-Signature: ijnx4g1po19mka1mciuumd56g5ysdtab
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	by tor.source.kernel.org (Postfix) with ESMTP id A92C7601DE;
+	Sat, 24 Oct 2026 01:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6E51F01825;
+	Sat, 24 Oct 2026 01:11:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792804319;
+	bh=qqcjA7DNdTq+xZwtRnwCLNkrsUov1CecwEVrKr3pes8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JB9GbvwYUPYu2AenF8uiR5+l/yJlmYsyVbpE5bjdXpbiNpcMEu4A+zbRAGiFuQrKV
+	 lAH9sjVruL0NoEC4b45IRnzOd+ue2Xg+QmfwVwdYKi57DDN35Nt2+OJZaqWOUknrJF
+	 kpGU8VWhL87l2F0PgDsav9PgAEIQZn7q9mXAxEpuSTyrtl7A73SwzQQ+1RI+37OKXR
+	 b7kBNAdR9lsOR1Mg0J8REHrYPrSUqd5mP8jZxguQa9TGrklVdop/NKfhivSBCynqxm
+	 TAk2zyy5KVGDryqPIFGoyLvQO1kJhmq6BrRtqj1l1+VuBF0yLVT6fpdhHMkTgKa8Kp
+	 mHe3pNskHcJxA==
+Date: Fri, 23 Oct 2026 21:11:58 -0400
+From: Mike Snitzer <snitzer@kernel.org>
+To: Chuck Lever <cel@kernel.org>
+Cc: Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v8 1/7] NFSD: cut a misaligned direct-mode WRITE at the
+ mapping's smallest folio
+Message-ID: <atwF3s3-VtUkooZI@kernel.org>
+References: <20261023024548.71123-1-snitzer@kernel.org>
+ <20261023024548.71123-2-snitzer@kernel.org>
+ <36498551-15ee-4a55-9757-54aa8a07085a@app.fastmail.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <36498551-15ee-4a55-9757-54aa8a07085a@app.fastmail.com>
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4FC1D40004
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792803168-45871
-X-HE-Meta: U2FsdGVkX1+kngh0fVzgoxeZGk/AzCf2sxXzCs0MuT5lMKSDW+JfiBD038BMNOCVuc1Tdl5GuvICUFMa4sL+ZWL8yCW/aVdtQjJGkUFtlvgdXx/o902D2OCDRvkjGLN3BbfrgiVP4JdDOe7nIf044kTxVLToV34Uej4HkvyBiUrRf9DFuiuww5f8dM4gbL7fMnTPir5qr3/y4d1aJqWpFib3WrAn5c+/biyNwMyBH15O6ZnoPyeiKd0sK3JqCerJhUvPnKDiuRsJ59RKy8n2eq4neEcYYeXpgc10RsktGSp+ORCPtde5FEXi9Goa8s/VEBjE93rOI+PfMu7NTUUtgJrklipVb58S1JMUy4WnNKd7nDBsK0eprREPOOo8u5QEGAxgRIcGboM7Mm4joiU1R9SZqvz32MptwcQMrtGwP37Q3TRLHrxxf4b+3rYZ/Mp9Tc74jHF9fbf65dh+TiKtIFUzwYESkkI1AX1nTgrafC0ylYrKtD+PBpSDx49o8pUEjha+r8fq2qBLLtNTAPmZC9z8WLoGqt/za6izSgNGzb6ANJ+JhocPELjahoBcoDqT6my7ejbY+20pzHT/N8cVjnYuL/euMAEa4BXVqjlG6Az4nDGWzQYGvc7jVedpdL1rklZ3rFecBRWStRdMZoBCZgmGaNEzEcgbFZKzb5ygXX2hNjHWjd9pMhNMWplAssZVH8gSJ1YR+GGdXAMo0b0tNRRHci/cDIaUG0i+Tnrid06L8HCMA4TMLmU3nCyrMCRFvQnKCydXzyhYbfzDMiZyCLJk9xEg2MC0N4RjlOghsMocG6PK318x8ErYWqRGKrhVC7qj6P8n67QsG+Qeou8O0o4KOirj3lu2rQPf9yqnoya1SHy5dYlsENB2puCHakR8fOMboQQVPf3r7uSkNhWl8f1SySURaUwTHortLs8J+v2H3bf3QyFpnK01zAYqBLYcf+ZxjswOCHCMX1WMzok
- 5h1JZF1K
- oVXfUtZc2pLsN8vPY4tW/3IQ3QUnSjw1U4FCBb7+RTwGIs9KDhL6K3JZBRlMr1liIj7+vdZ7FlQ8kVycEABpM9cv2OdkZuu/31lNcw0s3DX8HDCQrACrJXOa/qRMj9YwUiUrCxz/ko3KkoFbWrvNyvSt4zCg5Nb76OJHQfKxEGyrsaxiuye8B53EiP6KNEry8XYU08T1Nw7MxnBYPhDiFWjtL/09ZLxKLmxG4LfVSqDHiRedr99kKhRtF9D0Xls3aLnGfmuN5+vqiq4GNDUXhj/2PBoZbcVuS/e9mGdMAszetvNhAkeOSHVaxywawofJl4M10Hk7JS8KD8d1QI1xX19VWE+W1OYfl5ota+gVuz0Ja6OXfbTL/8XqsQF1X6ow4wK7pbfef5AXUmIq1xpEilpJ1Sz7NCGB2xwMI72F+FQkjNNEowG0DrMvmSA==
+X-Stat-Signature: c6dubwzeuoau9ssqzjtzz53995jh1w45
+X-HE-Tag: 1792804320-266968
+X-HE-Meta: U2FsdGVkX1+Kx1kOjNWyv8ER9hMMJZ7zGYfbQAIr1O78T2yeC+gCFmAFof99KfB88RvyQJ0Mzi+2GUj0EzpsngIJGK7NmN2GBIbZxFMhrgN8shYV2a/MteleDBkHc3/Tw78csdfSx8JdNHKMaCUcvcIhxi241C+52HbadM0mhn074mumTLP3T8Leo1a3a1RxYmjXa61OaMPOXnMy3WRswBOBevsbjUmo9ulWXciXg6VJE5ErzKHtJzFtDCLY1FhnIvArs6WBTMY6YXstGUXsm2lmwEjwBVA8EY3vbGhFtMkVI+ExH/jgsT+ZuAXepo/3BL9XQzEbfRCrnk+1R70YyHj7eH9Uuy7jxUjNmB+DNnhQ8++VW2IQlFhY1i50YU0uhWgCIlVqm1kQPKVHP5d/ZeqGnDTYThxfUOnx0OtP76QYCEcydtWiKCTW+Oobw7TD3rw0AVwSA1+TRsUBxjhq4UM/ruPqxAL4akeKlYmgduA24oKFohG/CLknZ4SjODJrn6EtRORlUxGih2OwBu62WKTRMmAg9rSh6WrcORMqwX8fODzKouFSmYuvsR3B8fHRKE7fzQdmr5L4YJcVLF3bZQtO+rSYVcOJm4YvphU+GKq0Idb8wZHXJgzN7U1ytJ9qEYEvt5sOrz7Uc13VxIeClpHYj2OsnLxMv2stMBcO3dTWaixm63ZI516cKgm9kiWjXdC2Tnr5OKDA3T/9QouIvb6mcNbJQLtt1GnuhtxvwM70VSS1Vt+3s4qk76dcw0D4esnzqhcSOzFig99yUTTWMrw2B6NfL2ssZJZQYmO5u7dJuMk7cG1U1SlWochsNtzd/FiU+Mz9cZIiPy9KMxIHlG7n5MSmRop1Ya7FtBye5IcvmzRn+t2ohYHl7dcEcU+eFxDudIVJy3/1Ip+rdCojgkYe0gVxh/y4ZAlVk8C1gotHzYAJdERYH9ErF7EVv7M8xlDYdmypMkcvf8ItvRZ
+ lXvg+YsN
+ b2XtiA0ro8IEwVfo35AeNYrebDGx5/+B7zmuqrHeP+r/zwPIMHHgFsBvbww/uUXiimqyA6bCqbVOeqgyyTT51y3io4kLtxhsrMyIPtugGYA74sZu+bhVO73lDCYl4hVHdMjWE3xDpUdUlaEFCWiPn3gv9yy1Dev8Ewtuh/hkqkubxZoFX2nqWTGg+uum0cBCHzKIP0Kb9J2OrllHwnLBEemr4Prm5/nJZXWDSATEhuuNTL7STnp+BX7vQTQXhQQ1wWu5y70GOcoTLS88CD3vgwTYjJ6sYuSoePo4GWn+kjjWfW6/5gAiot2uRKUWqYgYsWN/7Ktlsgd69xEO00ZUlup/nCUwGZA+IHiwh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -80,50 +101,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: openrisc: include asm/page.h before folded pgtable headers
-Date: Fri, 23 Oct 2026 17:37:53 -0700
+On Fri, Oct 23, 2026 at 01:45:21PM -0400, Chuck Lever wrote:
+> 
+> 
+> On Thu, Oct 22, 2026, at 10:45 PM, Mike Snitzer wrote:
+> > nfsd_write_dio_iters_init() cuts a misaligned end of a direct-mode
+> > WRITE at a multiple of the larger of offset_align and PAGE_SIZE, so
+> > that the direct middle, which invalidates the page cache over its
+> > range, never shares a page with a buffered end.  But where the
+> > mapping's minimum folio order makes the smallest folio a block larger
+> > than a page, the page cache holds that block as one folio: an end cut
+> > on a page boundary inside a block leaves the middle and the buffered
+> > end in the same folio.  The middle's invalidation then drops the folio
+> > the end wrote, and whichever of the two neighbouring WRITEs comes second
+> > reads the block back.
+> >
+> > Cut a misaligned end at a multiple of the smallest folio the mapping
+> > allows as well.  Where that is a page, nothing changes.
+> >
+> > Fixes: 80728157d1bd ("NFSD: cut a misaligned direct-mode WRITE at page 
+> > boundaries")
+> > Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+> > ---
+> >  fs/nfsd/vfs.c | 14 ++++++++------
+> >  1 file changed, 8 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+> > index 9219f8eb386d..ade00dabef18 100644
+> > --- a/fs/nfsd/vfs.c
+> > +++ b/fs/nfsd/vfs.c
+> > @@ -1452,13 +1452,15 @@ nfsd_write_dio_iters_init(struct svc_rqst 
+> > *rqstp, struct svc_fh *fhp,
+> > 
+> >  	/*
+> >  	 * The direct middle invalidates the page cache over its range, so it
+> > -	 * must not share a page with a buffered end.  An aligned end needs no
+> > -	 * buffered segment; a misaligned one is cut on a page boundary even
+> > -	 * where the offset alignment is finer than a page.  A WRITE may end
+> > -	 * at OFFSET_MAX, so the prefix is sized as a distance rather than
+> > -	 * by rounding @offset up, which could wrap.
+> > +	 * must not share a folio with a buffered end.  An aligned end needs no
+> > +	 * buffered segment; a misaligned one is cut on a boundary of the
+> > +	 * smallest folio the mapping allows, a page or, where the block is
+> > +	 * larger, a block, even where the offset alignment is finer.  A WRITE
+> > +	 * may end at OFFSET_MAX, so the prefix is sized as a distance rather
+> > +	 * than by rounding @offset up, which could wrap.
+> >  	 */
+> > -	cut = max_t(u32, offset_align, PAGE_SIZE);
+> > +	cut = max3(offset_align, PAGE_SIZE,
+> > +		   mapping_min_folio_nrbytes(nf->nf_file->f_mapping));
+> >  	prefix_end = offset;
+> >  	if (!IS_ALIGNED(offset, offset_align))
+> >  		prefix_end += min_t(loff_t, cut - (offset & (cut - 1)), total);
+> > -- 
+> > 2.52.0
+> 
+> PAGE_SIZE looks dead in the max3(). mapping_min_folio_nrbytes() is always
+> at least PAGE_SIZE, so the cut is just max(offset_align, min folio). The
+> new commit message and comment both describe three independent bounds, but
+> the accurate statement is two: the DIO offset alignment and the mapping's
+> smallest folio.
+> 
+> Also I would like to keep the helper's unsigned long type instead of
+> narrowing to u32.
+> 
+> Post an updated version of the v7 patch so we can test and review that
+> as a single change. This will also archive that revision in the lore
+> archive. This will likely result in merge conflicts with subsequent
+> patches in the series. If those are just comment conflicts I can fix
+> those up when I apply the revised version.
+> 
+> Do not include the new revision of this patch in v9. v9 is now patches
+> destined for the MM tree(s) while this patch goes to NFSD.
 
-An OpenRISC allmodconfig build fails while compiling the DRM TTM KUnit
-helpers:
+v7 didn't have this 1/7 patch.  But seems you're saying the fix for
+nfsd-testing commit 80728157d1bd (which started as v4 1/10) would be
+to have max_t() use mapping_min_folio_nrbytes(nf->nf_file->f_mapping)
+instead of PAGE_SIZE?
 
-  include/asm-generic/pgtable-nop4d.h:9:18: error:
-  unknown type name 'pgd_t'
+I think you're saying post a revised version of commit 80728157d1bd as
+a standalone NFSD patch?  I can check if it causes the other patches
+you've staged to have conflicts (but like you say, should be simple to
+resolve).
 
-The TTM header cleanup stopped including linux/pagemap.h from ttm_tt.h. 
-The remaining ttm_caching.h include pulls in linux/pgtable.h, which
-reaches OpenRISC's asm/pgtable.h before asm/page.h has supplied the pgd_t
-definition.
-
-Include asm/page.h ahead of the generic folded page-table headers.  This
-restores the missing type definition and allows OpenRISC allmodconfig
-builds to get past this failure.
-
-Fixes: 2854902575ac ("drm: Remove pagemap from ttm_tt.h header")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/202610240135.uFA85jSq-lkp@intel.com
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: Stafford Horne <shorne@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mark Brown <broonie@kernel.org>
----
-
- arch/openrisc/include/asm/pgtable.h |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/arch/openrisc/include/asm/pgtable.h~openrisc-include-asm-page-before-folded-pgtable-headers
-+++ a/arch/openrisc/include/asm/pgtable.h
-@@ -21,6 +21,7 @@
- #ifndef __ASM_OPENRISC_PGTABLE_H
- #define __ASM_OPENRISC_PGTABLE_H
- 
-+#include <asm/page.h>
- #include <asm-generic/pgtable-nopmd.h>
- 
- #ifndef __ASSEMBLER__
-_
+Thanks,
+Mike
 
