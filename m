@@ -1,92 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3A0606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 11:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6168F606A31F
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 11:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BWeHkD3B
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TRNbwXhW
 Received: by kanga.kvack.org (Postfix)
-	id C7E896B0095; Sat, 24 Oct 2026 07:21:48 -0400 (EDT)
+	id 8B0296B0A89; Sat, 24 Oct 2026 07:22:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2F386B0096; Sat, 24 Oct 2026 07:21:48 -0400 (EDT)
+	id 886A56B0A8A; Sat, 24 Oct 2026 07:22:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6E8E6B0098; Sat, 24 Oct 2026 07:21:48 -0400 (EDT)
+	id 79CD26B0A8B; Sat, 24 Oct 2026 07:22:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F1F66B0095
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 07:21:48 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BDFD1C37B4
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 11:21:48 +0000 (UTC)
-X-FDA: 85357279896.09.7D33B22
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 96F8F20003
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 11:21:46 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWeHkD3B;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792840906;
-	b=gNLFlFUBwGWGdfoainU2BCepfMG2mUqRc54ZviWgErWKNhU4OKBNL1yvH/DAvKRLGNIbPs
-	VXQqZzXP9D1BNkSa0lbsw7dI1voPflzQO8S6C7q6B19aoGFi847lTJYgXIYFzDZxIt+iRg
-	V5LOJO6+FE5GzgsqLntV77xTB6N+a8s=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWeHkD3B;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CC476B0A89
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 07:22:07 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB86B120344
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 11:22:06 +0000 (UTC)
+X-FDA: 85357280652.05.58FC094
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 63C65180003
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 11:22:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TRNbwXhW;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792840906;
+	s=arc-20220608; t=1792840925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=iDDeg9qjHmGV6IXYQKG3+nLfuCV82jMJnayxqcQwlbI=;
-	b=nzJxqLlKAIKR9RiaBcXn9hlBoaBlp/yHCqdapGkFurxvmuQhV5y/1kVaK07ehEdRQWLDnz
-	vcBrhv+03bhjqFnSmLcbKVCRzZgawFN+TqJvQX42rngL00LlSgfptmGgdtdv8xZkusZKen
-	k9nt52j84kT07aaKnzXGPjGdqymikfU=
+	bh=cGiQ8OTVAeX0o47MTz+ktInH/fOBwJghtHtytzaWqSA=;
+	b=rfT7jnuuNmFOLFhQiajKe7Gi1AhigiWXE8ty/SzanUtQ4u8t134VouOGUshugVzUCuB+Ar
+	lbk04fZ79WM8k+2xcsLp/vcbVdWKJ27VbGCbNyJNVTRtpoq2tekfbRoXspiDu8vDKA3vm2
+	Q/bzKsfAEKhjqTIDgeKcq68eBRwPmP4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TRNbwXhW;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792840925;
+	b=rvagTWoLQIWMtpgOBft/7nXsWwH/poV22h5mE+xoS4J+ZRjl+0SHmawu6sHspiQudmF0fn
+	4VBrHIYeIO1tAOCXivYymA9UQ7w/5LewPJYMraWET/eb4arJ9oJNW735t7ImdEzj+4TzL+
+	P7Xg1Uc8lC6BwcdDENlosDKU+XiLfoQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09A6D4006B;
-	Sat, 24 Oct 2026 11:21:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500221F01829;
-	Sat, 24 Oct 2026 11:21:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D6D1B60A52;
+	Sat, 24 Oct 2026 11:22:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA88F1F01825;
+	Sat, 24 Oct 2026 11:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792840904;
-	bh=iDDeg9qjHmGV6IXYQKG3+nLfuCV82jMJnayxqcQwlbI=;
+	s=k20260515; t=1792840924;
+	bh=cGiQ8OTVAeX0o47MTz+ktInH/fOBwJghtHtytzaWqSA=;
 	h=From:To:Cc:Subject:Date;
-	b=BWeHkD3BxXtLiI7xqTS7+XkJgaANCXW93y9p4EzdaFJ1wuLgNj5IJLtyL4UukLqee
-	 A1Uk9MK+qPb8qIScenE4BJNTXaFXVx+p8/uRSUPTMTKWFqXGMTzpZIyeb18AFoK61c
-	 UZsTxMqJymOvLFCf1FZrl00MIz0/KjWMbgcISrhTf9+t7DtdvK3M1sGPe5FxnAH108
-	 SDurcjRm3GtrL0dcNTDFWITE3PdxpKQrEMw3ssB2/D9NF44HvPGJtSScv95UdKbl/H
-	 8dkDjQbv6zi4RjdqQ0swEDBJP4TylEJEQI/CQH7LyE8a8lua1amC6mhD+QGIBk9aYF
-	 Ys9yKuxnzjsmA==
+	b=TRNbwXhWlrh6M/1ClNTKGyPNstnCcPOnZb6JJKfrQxHhK7/JK+RatDhSfByg57hNX
+	 6oFHvIvyDJMBVMWPyZS9ugRtKgj4cqHmurv4A3xBJZMVjjPreNyP/DIMecHI4gvKWl
+	 kva6WY1FEjD2e5PiBQCCZ6x77//aFUiU/7AtSgCapiJRh83Xr1Ohl9YqG4B86UjD+x
+	 XpEeuXs799qQOIV+vDIJNnIsTTQdJLWZxjYVKpVRQcHYLPPdJnyH0KEKW68/7J31yu
+	 DJZTU9CGZQRYpK1z5zfgDBumgHjN9fy2xKKHeyALrUhXc6iTrXfkgmtUayzEeqLwkH
+	 NeqgDwLuidrqQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] memblock: updates for 7.4-rc1
-Date: Sat, 24 Oct 2026 14:21:29 +0300
-Message-ID: <20261024112131.3384572-1-rppt@kernel.org>
+Subject: [GIT PULL] kexec: updates for 7.4-rc1
+Date: Sat, 24 Oct 2026 14:21:54 +0300
+Message-ID: <20261024112155.3384616-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 63C65180003
+X-Stat-Signature: zx4wb8o61surw73hwynd8drse16qimmq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96F8F20003
-X-Stat-Signature: gtaejrup8mkmcmb6t1rzb71jxzwyjhjm
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-24.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,
 	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792840906-702913
-X-HE-Meta: U2FsdGVkX1+xVI16Dlw+uVQtljoACcCsYnCgXGXUy9sV77EXDZn9SSox+DcBF15pNAC8AX/Y5FB8gVYPR2CrmRswUgFKEVMt5mo6lrfg+W9Mt1XRfztzyMX2/hNuY5YU5aqTGxq33yGHH1TtuXfDxE/9sBrWusedTufFtTL6fb2tX7DmMzCngxKaQMSMiYXIhCa4u+lkY2tYTWEJpoDttS9SellNHW88zAi7teGXa3RuAoD/3FPLgJoqbLBVk+GnPSrtbS7C6B8yzfXupjqeGPw0Jk5kkDYr2oY9M6KVzxK1g3k46vy6NUugeVlEmpGMYpvWoVnFch/AH23dGVzixBSCQ4rrO5WIpckWKXZ0UdKnkvzDRRE8NYA5yq1KFgnlkDcIenWtKDxNBvoUD57LnVd0dCvSy3Oo4Xx4df8ZYKb0tsWaQCT5+hk45gcbKKyXtR2P4Rsyp3NRbgUAfNDKQ28mBSth6f+O+J2K1J+hpcNvDE8mcftJlOycIwkkIShMZccTCWe24Szp0c4FwPTKRCSs83nfedcu1UCLZgmkSVtPU+C/HEnts59d5FrjnAt3v9AqFrdUgMVhO3N73LkQGm0UdHMeDlebtXOe5b6MsKfsIUQxxUlxh+7FZEPLaCrQtCSeAfcwZ+TZ96lpms2y64/aFqr5pAwcoNygZgBvsAE53jVI1U1YW1flzHRzZ9fgEby8ugvYvZeWdMvl4YiKTgnRnqMrb2tfvfqkJpwtCZKJLVfytwYwDFNq6VZF1FkxvBaCBWe8tJ9zw1vf9oyYuaLhnJD4CV7rhd4TAcKUQhyCFY7P3S5GD5lTr24KB8K34mmm9CZ6NZbCmX/WuX9/dXcg5WBYj+IZrM2nkmJ+Fku4vWG5vzXAAVOO8JLUJ6Jn9ErFhIrpbLnAmPZkjYP+ipTE/gIpZTzTyvIxjCBXLpOZh0yztkhVMpJysrPxDuBuHK2w+otf6z/uh3ragoD
- 2rPO3SZ8
- yqNrikCpkVuJKNajudJq7qIqfigFBIYXHJ59YQqhku9U62X7XE0aZMysoqhHhavORdaFZbw0hY1ViszF5YBhqfhtkAGzPyrw1ZpvQ1Cz5fUvAjj0OZhPkE3Sar0DRpNKj1fqnl6fYwakyBNEH4cKhRPMw1F4DvbgoYJr93z+E7SMx2ojapYHSsy8m8ihdkQTC0XWQcQigVPuW9xaYtwUp5HVqbb4vKQUhUdlmuOpcf/dt22c=
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1792840925-789047
+X-HE-Meta: U2FsdGVkX1+co4SkMDyiGsiEtXlANHO6OKlMDJRsgK9X/TxJkKARTIuEVe9K7AV/1P/SZPK5r/I+5RAfTy1rSbd7bIUzI2u9XLKR4/ZliQUc71kp2eUIQOQEtUr2V6w65JWzA1wFCnbk+F8z/VpnUBIPxRoGCT6cv+sJbxEIaRbfikdUd5ruHN278EL5VIj8QrrAsq307Jnv8t2F0lQ6GBJiVuEyup1dxDw2zGAERcDnRJc3Pe1xdQpI0731tpw/bYzquCdKeJYedadulsZngoW9Tzp5pHuRAllfrIJPd2LEGZ0Zadaou/Ub6l8IL7693uUAFChiO4g77INT9Mc3cWcqvOl1cuLPBw499nIG3HBvc0e2w2U/Qav83QR1WyPU4PsuuVF8LLRCIupeH0bEKq0JKHpVR5seMibRK59KB/kqrNOYxtl8Yll5Khfan6HkTHgyBrzgCHtePON5ZNAEstQQDA8i3hE32FKCXMlIiJGJGqiA0wSCDjejNMwzLePsNd8FGggZGXxyN9zG7zIS3wHaXWYOlIv9I+A6Ojh4svoMDRptBYzOYTzV2CY6TU4+ow6Be9RsoIA/gFNXolbqD6NgUzVRqKWv7sWIf5vZwGI6Mk7PTBVTijp3+Zc1Lvb5NFeJw92sdbAYtL6XWwf2kKYLOVY5mFJuWlFOFilOeyUXyJmVUi1sWiKsZVMcOwS+gI2xbnaoaWug2UkZvfGSkt6HsU23oaSp0zMhfaIaDC68ApCQN/b1HDkTYbq2C6sdgA5yTTbec6hd2UkOhv416jIrQf1iuChemt6mpaEvDCiUTEL6uv3QFfQYYyLpVYDJp5bhdXKoqJYi7yxcQNI+pPkPTpPkGgRQ00ApL34bdN612cTqTCmo1rnowtGRPWhHMWrfoCSCnx5Yu1L2T7MO8/0sPeA0DYAZy/oizQGRWe2EtSSdhx+HO6jhER9TLzrIZPT3/JiUu0JZe0DEFP3
+ 0/6i2pe8
+ J/L/zs9+F2fm0Aujigd8+AnQdBdR6bk/ps8XHWSBbktSM9PprlHq2UjUfNFehzgLc80NvIMI/sIkGreLUG1mc0S53W7sw4rh168NV0NlbNsmyHagLKZ6OH9J7L5f41G83JR4N1OcbhNSaZ1lfZsKRyoNvp3ZqHMVOQZihUgFDy8uB6CmbUrVY3j9plVtIW8V1C+5zJQlVa0dZmQbBOshyhpKsHJzx1jcSfBEpoztBfokob1M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,109 +98,57 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hi Linus,
 
-The following changes since commit 6e33dc90df108c76899dc544a42d17adcba61668:
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
 
-  MAINTAINERS: update memblock tree URLs (2026-09-09 20:28:14 +0300)
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mm/memblock.git tags/memblock-v7.4-rc1
+  https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/kexec-v7.4-rc1
 
-for you to fetch changes up to 7933ad3f669670ca5f5f13de2b5cb0f92b91abf5:
+for you to fetch changes up to 833d2b79ed9520e77c5d83eb11644e5239b2c5bb:
 
-  memblock: use binary search to locate candidate regions (2026-10-15 09:39:37 +0300)
-
-There is a conflict in mm/sparse-vmemmap.c and here is how my resolution shows
-up with git diff --cc 17bb0e2f6c804  -- mm/sparse-vmemmap.c:
-
-diff --cc mm/sparse-vmemmap.c
-index 5a2469fb1838c,23b31bc4bf94a..0000000000000
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@@ -78,8 -62,7 +62,7 @@@ void __ref *vmemmap_alloc_block(unsigne
-  		}
-  		return NULL;
-  	} else
-- 		return __earlyonly_bootmem_alloc(node, size, size,
-- 				__pa(MAX_DMA_ADDRESS));
- -		return memmap_alloc(size, size, __pa(MAX_DMA_ADDRESS), node, false);
-++		return memmap_alloc(size, size, __pa(MAX_DMA_ADDRESS), node);
-  }
-  
-  static void * __meminit altmap_alloc_block_buf(unsigned long size,
+  Merge branch 'kexec-7.4' into kexec-next (2026-10-15 11:38:21 +0300)
 
 ----------------------------------------------------------------
-memblock: updates for 7.4-rc1
+kexec: updates for 7.4-rc1
 
-Performance improvement:
-
-* Use binary search in memblock_add_range() and memblock_isolate_range()
-
-Cleanups:
-
-* Several simplifications in memblock and mm_init that remvove redundand
-  code.
-* After rework of sparsemem buffer preallocation, memmap_alloc() does not
-  require exact_nid parameter. Remove that parameter, drop now unused
-  memblock_alloc_exact_nid_raw() and ajust memblock tests accordingly.
-
-memblock test updates:
-
-* add coverage for lowmem allocations
-* fix 32-bit build warinings
+* Fix probe error codes and error propagation:
+  * make architecture functions that probe loaded image consistenly return
+    -ENOEXEC when they do not recognize the image format
+  * Make kexec_image_probe_default() to distinguish image format mismatches
+    (-ENOEXEC) from real errors (e.g. -ENOMEM), propagating real errors
+    immediately and only continuing to the next loader on -ENOEXEC
+* Make sure the next kernel does not land on hardware-poisoned pages
+* Remove unused arch_kexec_locate_mem_hole hook
 
 ----------------------------------------------------------------
-Kaitao Cheng (3):
-      mm: Remove unused exact_nid parameter from memmap_alloc()
-      memblock tests: Move exact nid tests to memblock_alloc_range_nid()
-      memblock: Remove unused memblock_alloc_exact_nid_raw()
+Breno Leitao (2):
+      kexec_file: stop the top-down search before it underflows
+      kexec: keep the next kernel off hardware-poisoned pages
 
-Mike Rapoport (Microsoft) (3):
-      Merge patch series "memblock tests: cover low-address allocations"
-      Merge patch series "memblock tests: fix BUILD=32 address conversions and warnings"
-      Merge patch series "memblock: Remove unused exact nid allocation API"
+Mike Rapoport (Microsoft) (4):
+      Merge patch series "kexec: keep the next kernel off hardware-poisoned pages"
+      Merge patch series "kexec: fix probe error codes and error propagation"
+      Merge branch 'kexec-fixes' into kexec-next
+      Merge branch 'kexec-7.4' into kexec-next
 
-Sang-Heon Jeon (4):
-      memblock: simplify reset_all_zones_managed_pages()
-      memblock: remove conditional return with no effect
-      mm/mm_init: remove zone_absent_pages_in_node()
-      memblock: reject non-page-aligned reserve_mem regions
+Mukesh Pilaniya (2):
+      kexec: return -ENOEXEC from image probe functions on mismatch
+      kexec: fix error propagation in kexec_image_probe_default()
 
-Tarun Sahu (2):
-      memblock: drop for_each_memblock_type() and open code its users
-      memblock: use binary search to locate candidate regions
+Sourabh Jain (1):
+      kexec_file: remove unused arch_kexec_locate_mem_hole hook
 
-Tianyi Chen (6):
-      memblock tests: model the low allocation limit within dummy memory
-      memblock tests: cover allocations below the low address limit
-      memblock tests: use physical addresses for region removal
-      memblock tests: zero-extend simulated memory addresses
-      tools: use __pa() in virt_to_phys()
-      memblock: initialize the region merge end index
-
- Documentation/admin-guide/kernel-parameters.txt    |   3 +
- include/linux/memblock.h                           |   4 -
- mm/memblock.c                                      | 127 +++---
- mm/mm_init.c                                       |  38 +-
- mm/mm_init.h                                       |   4 +-
- mm/sparse-vmemmap.c                                |  17 +-
- mm/sparse.c                                        |   2 +-
- tools/include/linux/mm.h                           |   2 +-
- tools/testing/memblock/Makefile                    |   3 +-
- tools/testing/memblock/README                      |  12 +-
- tools/testing/memblock/TODO                        |   5 -
- tools/testing/memblock/asm/dma.h                   |   6 +
- tools/testing/memblock/main.c                      |   2 +
- tools/testing/memblock/tests/alloc_exact_nid_api.c | 454 ++-------------------
- tools/testing/memblock/tests/alloc_low_api.c       | 148 +++++++
- tools/testing/memblock/tests/alloc_low_api.h       |   9 +
- tools/testing/memblock/tests/alloc_nid_api.c       |  20 -
- tools/testing/memblock/tests/alloc_nid_api.h       |   1 -
- tools/testing/memblock/tests/basic_api.c           |  20 +-
- tools/testing/memblock/tests/common.c              |  12 +-
- tools/testing/memblock/tests/common.h              |   2 -
- 21 files changed, 294 insertions(+), 597 deletions(-)
- delete mode 100644 tools/testing/memblock/TODO
- create mode 100644 tools/testing/memblock/tests/alloc_low_api.c
- create mode 100644 tools/testing/memblock/tests/alloc_low_api.h
+ arch/arm64/kernel/kexec_image.c   |  4 ++--
+ arch/loongarch/kernel/kexec_efi.c |  4 ++--
+ arch/riscv/kernel/kexec_elf.c     |  2 +-
+ arch/riscv/kernel/kexec_image.c   |  4 ++--
+ include/linux/kexec.h             | 15 ---------------
+ include/linux/mm.h                | 14 ++++++++++++++
+ kernel/kexec_core.c               | 10 ++++++++++
+ kernel/kexec_elf.c                |  4 ++--
+ kernel/kexec_file.c               | 34 ++++++++++++++++++++++++++-------
+ mm/memory-failure.c               | 40 +++++++++++++++++++++++++++++++++++++++
+ 10 files changed, 100 insertions(+), 31 deletions(-)
 
