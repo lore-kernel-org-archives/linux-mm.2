@@ -1,112 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8588B606A32C
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 22:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B862A606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 23:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fSsZEjmF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bL+NkwUn
 Received: by kanga.kvack.org (Postfix)
-	id 9078C6B05B4; Sat, 24 Oct 2026 18:27:51 -0400 (EDT)
+	id D3E076B05B0; Sat, 24 Oct 2026 19:01:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DDE96B05B5; Sat, 24 Oct 2026 18:27:51 -0400 (EDT)
+	id CC9A36B05B1; Sat, 24 Oct 2026 19:01:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81B286B05B6; Sat, 24 Oct 2026 18:27:51 -0400 (EDT)
+	id B8F6E6B05B2; Sat, 24 Oct 2026 19:01:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 588166B05B4
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 18:27:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D6F57A04F6
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 22:27:50 +0000 (UTC)
-X-FDA: 85358958300.17.245AC38
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 092C1180007
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 22:27:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSsZEjmF;
-	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792880869;
-	b=rKar5u5y4TOldzydFjS4UJuUlEcx+Y9WSjlXisEFdnmYFJ1bfeLcs6TWi5gzhE58ucM3Iy
-	U2LfAECX6cNULsIXhNplRryOB6+s889pzCoGTPs+cFxJRXIEj7xdpYpAV2N9GuaoWhS4TB
-	AUbeaa3mwkDKLHPnz6eUklu63pNUz3M=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSsZEjmF;
-	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6950F6B05B0
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:01:56 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A552120584
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 23:01:55 +0000 (UTC)
+X-FDA: 85359044190.07.B2130C4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EA092100006
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 23:01:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bL+NkwUn;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792880869;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792882914;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vZIKDKKS2FdRJ5bhHVdKxJNVCBF7h98gzdI0qBLThok=;
-	b=DDEc1Wv9WR3T8NsraiujwMVSh2+JVHf9CytJyHXP4qjlnRhY5WcP8f0A2g3Ox6sb9ifBGG
-	VFYZHP0pini8JPZuKc3J1Tdqd+6pQ4pYI7b5r5v4TMVV8a1txS4paKFsqrEH0R+WinrOkc
-	8VHFwB+7yUSfPhHEu3VduaA21bO2LjI=
+	bh=Ifik7ywdJzSlBWTh4fZClNn0YBG7LwNrhRPYJqoiXR4=;
+	b=Fgc+g9JEXdS4Vphm14rW62m3VoE5I0eHPtebsaENuXRnW/ZTcuOiorHviy69AMbZVb24xj
+	xp+rpp99HBzkWNVRf58RE5cXkWQftoQ69sM4nu9DRDPU0hB7IupWpIqJcQXWlNm2/jtVUe
+	Ku/nL8eGxryd20SHXF/ZTsAdc0u4RWg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bL+NkwUn;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792882914;
+	b=WCosj8fCbB5OM12Kg2Z07k8BmM56G6Se+vA+a995aUFMl+cCioe83izuq5IkOpwBoZhqPi
+	SLYqTjj4auJzztxhsKkzJXLjLDWYVecKEoQrfEgALwGl1TZ2IgPikooAXY7X28iZPPrNMO
+	BaDVLXqE+vxRdgwslDgVafOLsLOUjEk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B6FC6025F
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 22:27:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACE01F031EE
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 22:27:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6691142E7C;
+	Sat, 24 Oct 2026 23:01:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C5F1F01825;
+	Sat, 24 Oct 2026 23:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792880867;
-	bh=vZIKDKKS2FdRJ5bhHVdKxJNVCBF7h98gzdI0qBLThok=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fSsZEjmFpPx7gWLUDKT75qvXylgPoUNbQkOLf+Oyt8mLrKmFtp/pm60U21UnyGh75
-	 WzjMSWgFxIV+yWtziTLWDffjK7YhV1XUbIFFjO8XC1WL2sPRkwOCFcKSx8XAyHcgga
-	 G3sYpF0HbFKOAHNF3nud48Ggy90jwVzbO7GrmvOrfY437cSqqSuDPith1EwwSbFFKp
-	 oqLpiX1q/nbOBAaLJ8EOFpB8klsCYVZgl9CXGLTV7QKO2QaOHHfMGJk4oWdhz6yeYE
-	 vgRC3E/qPSlyX21qeNFVV4o8z4dPn1EPpzpl5BB4pAjI0zHZbYUBKG5pd0c9l1UYZs
-	 sSx2LzUZO4r9A==
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5365d26ccbdso22242561cf.0
-        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:27:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzKEKO0BwG+1Tq4nLs4Luj3T/yEZhcICoEVOoX/FUFS9wXu9GYBjrJQRzdoUrQrarGUaiVSyaQmZg==@kvack.org
-X-Gm-Message-State: AFq9FYKdftt9XIWZL3SmugiYDFU0AA8NDPNMtuYXlUVHWDEECNv+eGBs
-	MSI97uQOaQVFkw/3yb/uYIoGwRS5pVDAXRKBN/p9K1ON1t6HmipCSXvUNyhqLpHpZgXT+e7n2C1
-	sVDjMLVjldBpP1oXYDuQtHEyxXzenR9o=
-X-Received: by 2002:a05:620a:6ccd:b0:93f:43a4:a47e with SMTP id
- af79cd13be357-940ef8db9ffmr456761185a.43.1792880867226; Sat, 24 Oct 2026
- 15:27:47 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261019034426.2354049-1-ridong.chen@linux.dev> <20261019035252.2357900-3-ridong.chen@linux.dev>
-In-Reply-To: <20261019035252.2357900-3-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Sun, 25 Oct 2026 06:27:36 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zuFsooOk+PEaSxCGJXm__uS0d_sGbGKsniB+vkdMqAGw@mail.gmail.com>
-X-Gm-Features: AclHuK-TQu5lTS1fOR976skmXR1N0B8TphWnkqZazAAO_9122YtVC3DM7Ag6eek
-Message-ID: <CAGsJ_4zuFsooOk+PEaSxCGJXm__uS0d_sGbGKsniB+vkdMqAGw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/9] mm/vmscan: move struct scan_control to a dedicated header
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Dave Chinner <david@fromorbit.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Muchun Song <muchun.song@linux.dev>, 
-	Qi Zheng <qi.zheng@linux.dev>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
+	s=k20260515; t=1792882912;
+	bh=Ifik7ywdJzSlBWTh4fZClNn0YBG7LwNrhRPYJqoiXR4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bL+NkwUnyBtU1LyTojYqwxxZs6kkrlFJStrOSIGKp4LA28Vn4osiprS+xPImlhwEA
+	 mPTozbJNmKPp3TtSfStLQGWNJNqP2BXgFRajT9Uc/WXW249zKrQyT5QXCEuYc+UgMj
+	 7I7IxgYudAlKo9YA9k2ILmFqF2rxidvluMp8JpIgMfnHTorzF2Mel3LHdg+jQWs70U
+	 294FRfAiR5NfoecIB7h96sOl/5Gfvc72g2eXBb6jhfXUvNzDTejC2SLpLPJTvLPLr1
+	 OLZh30srMxJHciWS/EiGpaQq1uMugYxbFBmHV0Zf0YttoVLSGZGgsG7GSpN4PZcRLp
+	 pLBEo/q3IXAOw==
+Message-ID: <sashiko-outbox-183933@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 1/3] mm/huge_memory: scale thp_underused() to the
+ folio size
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Joanne Koong" <joannelkoong@gmail.com>, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org
+Cc: baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, kas@kernel.org, alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
+In-Reply-To: <20261023230006.3759543-2-joannelkoong@gmail.com>
+References: <20261023230006.3759543-1-joannelkoong@gmail.com>
+ <20261023230006.3759543-2-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Date: Sat, 24 Oct 2026 23:01:50 +0000
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 092C1180007
-X-Stat-Signature: 6jef4dcqm5q3fnsy1n8e3tza45fjm7ia
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EA092100006
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792880868-462128
-X-HE-Meta: U2FsdGVkX1+9JzG+5utrlQIsHMvAH5ouU/S690dwiBKYvOTHOF1DNDXVtHEZKVsSWFvSrP4VTQC3xotQHozZqXBfrfqjYEM+2VACZf+Ezd+lAkwuDly28gdp5Y1L5upUkbr4WhgFlY9s53BCo4cl1T3OSBF78qM1NaJPV45GTmg3FpPgyZbqCOG0cpMQxRmSU5DN/4zdm86SrRz4brnOycl4iNpMLWMQ3s+kAEQJFV5RVkJha0zsdlYr6h7dRQxwxl1WFraLekqkCUGi0gJMgydtwoSynmF2kAsPmPMA3rriF1mY1a815b2/CxW+ip5rYw/gfimTHjzQWUqXfgzYZaxH66IwGY/lTnkUCDLhqQwP1NVZeddxmxWI5Mxmi+1jYrf1YujrqCjVmLnn2HIZHVZIPKUUAZKPKn4+etLiykzgoQ/97mTaFPbDdDYLmTKXcDGM34ffO8v5y93MEu1jxiPGA7za0U0lvm+JsE5QEkyXZLV3GOfV/JkcDWLpEnT/TJ7yd+zcnx2J9ZRay15CYeAti6GgOfO3Dr7CI6aJi0b+bf77KIk2jPIz/aLAegjIY9QhkkQnMfgwbzDyuS9k6ds7GumjG9ImxV1Rd9e4WDOrLxMip5EDpnf1npO+gSTAY3DR2fbWY82hc9w24GulyWlqPOtymsBZBZNEfLpRyB8RZpe+1Q0X0XQVwlYOSg9kNHpDDTdphTOoSPo+sTNEImY7lHH61ozpnD3pPaWs8sS0ktXmkKwaYLuYeIHse0WKsVcvdjLJpIPZB1+0NL6JJ/vuSlXK3A47hIEArtdJJqz9MgkHx73pvFFwAJkFiwlunrvoozynyJj2WopExQmXEcOpc97/jhTExERIXJU9IUS6LKH39SiZj2/QYVR8s+a50pTRlajdProP98HTzV6/mCuKWjGjSnq1VkkM26RLdwrFRBqi12eaYtL0XqbIr11cEPNrQY2PSGfeZR5V9Rw
- sozpwBbg
- /xsAGn/G2ee9BM/svkSgeXuTbFusc1DTGsOKar8VdcNMzMf2mxqRB56zZ9+wNnKd+1Gokf3j9nlHod8Y4X8gLLDQR4lYtAK2vwqBpQ0WLABvFnciy6PwuNVAC2U1RNZKHsDjmOPyW2Qtash+ZljRveA2dYtgNRn2VhrpUFBUIiyBBBwAcjTeJ6XJC/ADfjJqNslJfyog+bPkx37bby+3wabC6VJXWTypOo+XIpBOiNF6SxMQOTbDwvTpVkz6BzCaaEOXONFLjsyNRnoHl8+6OSEjw6To6up6C8tZQ5ZtSb/ADqyRxbAiYYStthMKptG/A+txC9fz1btQ3NE9J4lBPzWJ/tieVPhCcwd6J
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: xtm6h1azczjrcd9mhraffosnqaj7meay
+X-HE-Tag: 1792882913-553494
+X-HE-Meta: U2FsdGVkX19gQJwiVdEBMpA+C7u292h3lqz4/bxtgQnumlgYvY57plJrkWagWPSnLsHcyHYoY1PDV3ounmac/oCsK3597u+ObV8ECtMliWW77kIt8xFLFd+IXlfuJ7KpCCcmmnI10JOCYNWH5z52BKpq7JactL+cp2qyGi8VyQQ49yrigEa7bUu8anovD306MjmFzG6it7p0vKugrSLGoWJYVffecuzoESIJtWqUn81ZqSGEeAlK5ckToGchxx4FJ30D1fO4UfiOFDNbZnU0ftnCZkb1t3cILJY0NvinxaWhE7dkJsE+r1ue1LS4r8LFB18AEmzFeDQj+bF/SsDWFPV/V/fD0F1d3IjEnPVW+bKQqr6FeNbkZeZcPHxfQJLL6/x2n1NDOnG4wK69oqkmdq+MW/BSXaL+1Yoss0FHCzyawlSb+xkejw3L0dTybceKz0yVD7+G08wb27xZsKn0R41v5DRYSxlOG89IMAvtBQ0xAjwXQ2ShPv7qh/Vb1rMAAkQjoMMBXr09Y/GUXPSdUCAlGj7vmPJJHMbwYaA+n399mc/hJx3NlAAcBxH6mPyp07ww1L+wk8y6GLT4SLZOwhROsr0A4LoCI/zkV8KQHxV+62UfCeSzhvZdqvL3bOujpcPH60OpRuTUZLmfAG3Y4aG0pNOxIqi9Nxx6pPGl9VehP1rOju+kMG7tOfeHuQTBUbRc4IFTON3n4oi0CAP5Ul7JMfYiLlkmd1suh0vO2emNiL9xzZ3SIH4vjVoJxYO3ntCuEzCpXWcW7lnTDXzN85u3W/TZCFhBALd4lltobW/UTadCysAL36EBUWElM1KY+S4NWWktn9f8qvJ6ACAo+AipXWfN+NdRlPNwPWweQpZ2XdUq3vwxSVm+ifMH58nZ6xfJK7uJftAsqd3YWidNVSjAM6ncQL1yx9Jv7Q95/rW6FNW3cjxSVSisqDkzLHvWsE3OKxXjg1MlVodwIsf
+ dy+s74/F
+ LWnJjTz8RlgPwjfLxjly55/vduc8HxT6vJlptr3Z7aY6J6r0XhpWJKcoZ1C9n7mz0i4vMntR9VcJmZqIu8MnlUGvHSpM/nLAl2w7+VQWrYX7xLhOYtsUGm+1K25kD8etajRCV5DfCvRhex1VNyPydhKxy7l3M4CnBUr981pNO5GVQ2keLkMYMQP6Pw7qtTFT50wpYJfVHfqKn/D4Zy36tJMa+ZPwGGkI3biNWPw2i2Rw5uL/V57Hpbk02bITP/DyGj/Tdvc9goeJnc14mJh7bO2i9a3v+7zauD/Dno0XNiYFAGNxQEJMc7SOOjrO/EkSl3QrzHyI/AhtA5bwlHAlrnoyAcFpWDnUToB8L6mF6lkcNqowQv2/QwnaoT0psUA1RZ/hGv2O22TONCx2baitXDFdCKVJBWHPZo6iI22mdFZB/IAUYIFgziOc5qvlGa8KY1ImmTRmpKPVmI5uDuTzUv3mBApN0uIiRmOzTKHLO3VSXOp13HD3stex2WibZGdFaol8UKQfUwSpvOHoWdHAMBWyqaZPIZyT5q8/rnYnwYOuv/vQaQhSWrZeodPSYomIIbV3S9Fk1ebV/QiblFyIpo1CH1fRZTQslV/aEc+z81NcGvZM4Kd2qa6rYzjeIC/ZUlGyYda+mDlsY9Is=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,36 +92,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Mon, Oct 19, 2026 at 11:53=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev=
-> wrote:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> The definition of struct scan_control has lived inline at the top of
-> mm/vmscan.c. Move it out to a new mm/vmscan.h so the reclaim-internal
-> state can be referenced from other reclaim translation units without
-> duplicating the definition.
->
-> The header uses an ordinary include guard and pulls in only what the
-> struct needs (nodemask_t, gfp_t and struct reclaim_state).
->
-> mm/trace_vmscan.h includes the new header directly so that any
-> translation unit pulling in the trace events (mm/vmscan.c, mm/shrinker.c)
-> sees the full definition of struct scan_control regardless of include
-> order.
->
-> No functional change.
->
-> Assisted-by: LLM
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/huge_memory: wrong rounding in thp_underused() max_ptes_none =
+scaling
+--
 
-Well, vmscan.c is way too long, so moving some common
-code out of it seems like a good idea, beyond just serving
-the needs of tracepoints. We may move more code out of it
-in the future.
+commit 56eb0cfccba9e5e4276f2a8250815399987bc848
+Author: Joanne Koong <joannelkoong@gmail.com>
 
-Best Regards
-Barry
+mm/huge_memory: scale thp_underused() to the folio size
+
+This commit updates thp_underused() to scale khugepaged_max_ptes_none
+proportionally to the number of pages in the folio rather than assuming
+the folio has HPAGE_PMD_NR pages.
+
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index bd44d58e86845..218259940f24d 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4613,25 +4613,35 @@ static unsigned long deferred_split_count(struct =
+shrinker *shrink,
+> =20
+>  static bool thp_underused(struct folio *folio)
+>  {
+> -	int num_zero_pages =3D 0, num_filled_pages =3D 0;
+> -	int i;
+> +	const unsigned long nr_pages =3D folio_nr_pages(folio);
+> +	unsigned long num_zero_pages =3D 0, num_filled_pages =3D 0;
+> +	unsigned long max_ptes_none =3D khugepaged_max_ptes_none;
+> +	unsigned long i;
+> =20
+> -	if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
+> +	if (max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
+>  		return false;
+> =20
+>  	if (folio_contain_hwpoisoned_page(folio))
+>  		return false;
+> =20
+> -	for (i =3D 0; i < folio_nr_pages(folio); i++) {
+> +	/*
+> +	 * khugepaged_max_ptes_none is a number of pages out of HPAGE_PMD_NR.
+> +	 * Scale it to this folio's size (rounding up so that the folio is never
+> +	 * split when fewer than the configured fraction of its pages are
+> +	 * zero-filled).
+> +	 */
+> +	max_ptes_none =3D DIV_ROUND_UP(max_ptes_none * nr_pages, HPAGE_PMD_NR);
+> +
+> +	for (i =3D 0; i < nr_pages; i++) {
+>  		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+> -			if (++num_zero_pages > khugepaged_max_ptes_none)
+> +			if (++num_zero_pages > max_ptes_none)
+>  				return true;
+
+[Severity: Medium]
+Should max_ptes_none in thp_underused() be scaled with truncating integer
+division rather than DIV_ROUND_UP()?
+
+Because the loop checks a strict inequality:
+
+	if (++num_zero_pages > max_ptes_none)
+		return true;
+
+max_ptes_none is the maximum number of zero-filled pages tolerated without
+splitting, not the minimum count that triggers a split. Since num_zero_pages
+is an integer, the condition that the zero-filled fraction exceeds the
+configured PMD fraction (num_zero_pages / nr_pages >
+khugepaged_max_ptes_none / HPAGE_PMD_NR) is equivalent to:
+
+	num_zero_pages > (khugepaged_max_ptes_none * nr_pages) / HPAGE_PMD_NR
+
+using truncating division. With truncating division, any folio with at most
+the configured fraction of zero-filled pages already satisfies
+num_zero_pages <=3D max_ptes_none and is not split.
+
+Rounding max_ptes_none up with DIV_ROUND_UP() alongside the strict > check
+requires floor((khugepaged_max_ptes_none * nr_pages) / HPAGE_PMD_NR) + 2
+zero pages to trigger a split whenever the product is not an exact multiple
+of HPAGE_PMD_NR, allowing sub-PMD folios that exceed the configured zero-pa=
+ge
+fraction to escape splitting in deferred_split_scan() -> thp_underused().
+
+In addition, for any sub-PMD folio (nr_pages < HPAGE_PMD_NR), whenever
+khugepaged_max_ptes_none is in the range
+[HPAGE_PMD_NR - HPAGE_PMD_NR / nr_pages + 1, HPAGE_PMD_NR - 2] (for example,
+481..510 for an order-4 mTHP on 4K base pages where HPAGE_PMD_NR is 512),
+DIV_ROUND_UP(max_ptes_none * nr_pages, HPAGE_PMD_NR) evaluates to nr_pages.
+In that case, ++num_zero_pages > max_ptes_none can never be true during the
+nr_pages iterations, so even a 100% zero-filled folio scans all nr_pages
+subpages with pages_identical() and returns false, dropping the folio from
+deferred_split_lru without splitting.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023230006.3759=
+543-1-joannelkoong@gmail.com?part=3D1
 
