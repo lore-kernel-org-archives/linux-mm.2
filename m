@@ -1,94 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B712606A31B
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3B3606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k4vB6PT7
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eCXMwYc2
 Received: by kanga.kvack.org (Postfix)
-	id E73076B05BF; Sat, 24 Oct 2026 15:12:26 -0400 (EDT)
+	id ADED16B05B0; Sat, 24 Oct 2026 15:22:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E243E6B05C0; Sat, 24 Oct 2026 15:12:26 -0400 (EDT)
+	id AB6A76B05B4; Sat, 24 Oct 2026 15:22:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D12796B05C1; Sat, 24 Oct 2026 15:12:26 -0400 (EDT)
+	id 9CC676B05B8; Sat, 24 Oct 2026 15:22:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F4E86B05BF
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:12:26 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F3191204E8
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:12:26 +0000 (UTC)
-X-FDA: 85358465892.05.E058AEC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7158F140004
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:12:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k4vB6PT7;
-	spf=pass (imf23.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DA976B05B0
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:22:59 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C855BC03EA
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:22:58 +0000 (UTC)
+X-FDA: 85358492436.08.4B6CE2F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3C07980003
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:22:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eCXMwYc2;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792869144;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=tWWiAhD1q3SGqZytIYj8Vfqab8KfOk5ANJFgDlntlxg=;
-	b=3IPhxUcnBLhmI1cb/TPXrRRGxiiGLix/C/cIqnUU9LMIApYtxLJmo2rL1i7wmQk3OlXny/
-	naxqbx17JuC7TCnzqml8yDfkIHM1/T0AtrCqY/EObKGcbaF01brWl6yE2Gf/vh+YTI+Cq5
-	FFFl/FzDA2z+P+3HehmDDMlpYinVEHA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k4vB6PT7;
-	spf=pass (imf23.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	s=arc-20220608; t=1792869777;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=l7LHfOVnwmBcb2C8jtey7mV3GxSr4tp4MJY2sGPpheo=;
+	b=ablAPFnBeFK2V0GjM2yS0DXjT2p1m8hGcEtcXFwfXuB9axv9BfodpNa+MZo0CiylwWl9xz
+	mX0pOSogf3k1kuVM7nVyaGL1V9R4EijhmhkJ7XtUCTnTG+WTHjp/lZ+FJqDR+4vIYLjpjU
+	JE5Eg5o+XeLnLh5J5CdgZvDHuXQvECg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792869144;
-	b=kLlr5eNvhM5AVXaDvlPL3xa7arkwCLrz0QWu4nqR9W2iQ0GV+wocYc/++SbkrPEjM5A4hs
-	hAMz1czngG5eQkn4FTlKnpgOXHXk97NchcE78907L+JmIhw5Hr45Nx8QF/sfP1fC3gHZxr
-	Ikeb+SNyzBfzaZSqeg6zEA8MnXIPkns=
+	t=1792869777;
+	b=1ZrB/yX7FPATx7Ui/+0FtjAtPICLAYk+9r5uz2Zc65Zq7DOU4bWa68FXV+8LJOgNcx58oO
+	FY6k+kNboBPsnjEIYtEiVg+PPeWIeUf0sfY2Ax97fmU/HvzfqESERgz+xKi8xFj2va6kub
+	nC44jVpRnz0KxMEu/y2xrtRELGaYv60=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eCXMwYc2;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D39543937;
-	Sat, 24 Oct 2026 19:12:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5A01F01825;
-	Sat, 24 Oct 2026 19:12:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9EA62601DB;
+	Sat, 24 Oct 2026 19:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4681F01825;
+	Sat, 24 Oct 2026 19:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792869143;
-	bh=tWWiAhD1q3SGqZytIYj8Vfqab8KfOk5ANJFgDlntlxg=;
-	h=Date:From:To:Cc:Subject;
-	b=k4vB6PT74tlNmxhi9L2GOANsPAVqfX1q2JmIvaC2bdL0QQzOXPu91DEM+YEY8YmL7
-	 Ipn+cIXjJJj92UpMbUzvspL0eLaZHA8WyBl9grp+FeepHs0AZnPwVytpeFbtHaP3s7
-	 qcE5YOJW23SbpEB3S75h3GCouQSguWnZgE2FuztQv8N77fweEp9pyqXMEu6/68CCPR
-	 0zEY8OoEA8qIul/i2czY+AkLUo8+RlW77envDwY21N0biXqvJCAFcQeePCioHJjz/1
-	 1Mi4JIs/NL1A7o25TPjX9YiUoWKFry33ar3PRFcxFFXf0UJkCbKBLhBMfxghp/9gl+
-	 jF8UX1y1CZ1Hw==
-Date: Sat, 24 Oct 2026 15:12:22 -0400
-From: Mike Snitzer <snitzer@kernel.org>
-To: Chuck Lever <cel@kernel.org>
-Cc: Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH cel/nfsd-testing replacement] NFSD: cut a misaligned
- direct-mode WRITE at folio boundaries
-Message-ID: <at0DFod8CcUfus2S@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7158F140004
-X-Stat-Signature: w4yotdcxz1fggwm8nzgta8bbs4cwz3cq
+	s=k20260515; t=1792869776;
+	bh=l7LHfOVnwmBcb2C8jtey7mV3GxSr4tp4MJY2sGPpheo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eCXMwYc2z4yu4J+0Jx9PtjUmryGPi66pBWmBwUHGkSsOw9DA77jsZqGsM9dPhAwdg
+	 OhOZSxqmDJpUEFh58rH2Z7UCzGNnGMjcLn981RQoeEbHXf3tnHTpmDH4P3bVEdG0o+
+	 D7/fqFQnu+MOUl89PM5at3bR1MNVSY1xeWa9GPYBRQGE+byY9GVkTgbFrPmBxG+WnJ
+	 6KC/9FF6LS4eREb7x5X9XCVaRRfykuVMtfjSP3Mm5z3u4HRd590jkravzhzC7Uexit
+	 8e1ngQZlW3jPhcle4rC03ov+xA7q64bu/cNyHvNB2Lq7LUYM0VU7nI+/7YCDxA01k1
+	 /JJWsGUx95+0A==
+Message-ID: <sashiko-outbox-183847@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v2 2/8] mm, slab: introduce slab_debug=N
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Vmxhc3RpbWlsIEJhYmthIChTVVNFKQ==?= <vbabka@kernel.org>, "Harry
+ Yoo" <harry@kernel.org>
+Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
+ Rientjes" <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Geert
+ Uytterhoeven" <geert@linux-m68k.org>, "Conor Dooley" <conor@kernel.org>, "Damien
+ Le Moal" <dlemoal@kernel.org>, linux-mm@kvack.org
+In-Reply-To: <20261024-slub_tiny_rework-v2-2-bf1419ab5ffd@kernel.org>
+References: <20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org>
+ <20261024-slub_tiny_rework-v2-2-bf1419ab5ffd@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 24 Oct 2026 19:22:54 +0000
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3C07980003
+X-Stat-Signature: 1iugazw7dm4pekfo8kqs8mq7imne39fh
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792869144-850258
-X-HE-Meta: U2FsdGVkX1/Gk9CBXfSWDM1XFmajgfOGGHpSP7EOLSkAbLX3up8MzYuETUEYJo0p+5MNid/5fkKvqlXqcJqb2iE1b6TDqjjwqaOMP3cApCJ5zV6jvDeDxZCADqWAzgLIjWME8gOUTTK3aR91A/n9c6QWRB9FSNdCwmNKmxfYTz55tTz/kDrupdtARUg4I5XWhww9s68yataSNPGqkdeqvb6OnP2323H/dRcE+YS5IWWD30XEB/TJDt+5lB1mZUjP98/zpwQgN0XpiXOUHMkgO+uxOpjndZU+o4V/46xeblIWZIhRu1QQQmxH7Idk5lthFws6dp63YdD6jYCw22QiM2OL4+TKPfR5uTx/8ou7DcvNfUuoc9KCMnC2++dpjWH7t2lm2R5tUN1gatIEwwNQHeHl3t+TbBpxeoGkuQv/n+scFjExUm/9utJE+P3B1Wk7sG1F1izFT5qJ823p77/lo50vEwVWujDANrXSo3528EHH8tziQpl25xxAFbKP7swIo9XfFTEyK14Bohri+SnBtzDEPcGvDNZ++pxW5fetuzHXcLJptzV1SZ6gy53RGxb2CvaJAqDrKxHl93NCRNATE3xYSnOiTDHOWqyURANtgyxRSmu+988Z8W8VUt+oKUQLOfZ63hFC5AFyLL4KRGAgKnO0pxhlKhklKc90tS330RKh674FQ5YzVYH/fxE3lMWKxh+q/0e0G6+SZV/vUdsLY/dtMykiyxCeSCVKzDwHLQMDS8CfNTIh9oA8UvYS42YXlRoQKrW+/A28CFUPkb/A31iT5ukPcSKvJ4uXECAJh+8TIlCq6AmSyRnb6j448zy9VLKMU/YCrXpWpu7y3fG+XUwxhttSRzUq4FmJFbfAEkby6KFRnANob6J1eUHpUON2RV1QmiQzkQtMZqhDIkfzhCHXUqSnj7v1FnKo81AIn/ubbmJD0Exc70/oJ/HW+tk1pCE6slfxdclKVw6q1W4
- gm8pILmM
- UAuwtO6kx015oNsgu9fduLLn3SC6i8AwNkZhIuugzHVa9rxvjaD76H/wyJ1DAe/TOVI7ArqyxBEUBaR089Fq/4Uc2D19fcmiyDbuf+scgOHm4FsBqrBIxHiUdNbgTVAT0At9LL8W/ASBlkwy47jxpXETSvx/vDkncaqZYgfolTSuoxX8cXufSa6E7Uo2Zg95FrgrMc8Ex+bh2QTlNqQxURUH2DHiYxmIsX+AoU1HDniYjfNRbtjKePSt6mDme4abBP6NYQXFzIYyQKI0xU2SLB32BAizV2ECJ3eDGfkslU/GlVYhDEUjbSoOceiWuvWn8GHwwObtIG9JSc/QzmHenn1PSYZhWL230sDw8fDMPTb/igOg=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1792869777-734852
+X-HE-Meta: U2FsdGVkX1/QKofcAv5jayfVWCkKjs9XDT6M15PdvZcIRtDaCft1owmsqY6L99b3PKwM38zAK+cXLkl+2qd4ECfoIrQ3NnUC7gQP5GtY9zkCdzbJ7E1y3gr+5X4D4c7IcVoobu6wwuEVajpoNMrdyVYquWapVW9xr7K1UHaZ5bNrR/d6WrII+0HpX1S1BmvhMqiVZ3nLoa9oa/d+POz3YjnUCed9XDqyC/0egMK1Xop02iVyKEbMrucnoTqRmvxn84o7DNvk6jBpL5qIW31oo8eKZmkF/NhTaDTOnj0I1Fdg7BAyvTM2QHYYHEZz3hgYkdBC+4JYx8ChEw6zB9JP4YjOOuNLO5jlYo8xrnywdFWcVCt34lgDZVqkJ9EZ4Bt88MyPW/CzYJ+X3uMurtKKm84Uoh2smTA33ByTs2RGPcQFD7aPfT+gZeilDXKvMRkx4SAfsckYvI5D54iJTaiA2fOGRPp4zrVXSW7GJ2j27RV2pLQ34wp+jZfk38iWp8Ri1dS6DEhiRjUlMhkTn5YZvqswQQt25ngGZNSy6AVIjjEGVQPdocxqXXKw9p9H1K7cX3IBo6V+KNrr4N37qg16K28v1g7StNJiTg/arpfVv9gNGwxEfclRFPnLY2xkrR/l6w0lT8XT6m8DJZXhNqzz9Ou7oOL7/xEfkAm9TjAzhMM9W4fKnrxptdnkLkTqHoEKTDYHWpT1nG5D4U02NC06c4Z6aVEBaCzxJ8SN+E3ElbmP5nIGGxqNgwiVBKbQB6LzJAwhjdxHplT8U+mDrA/+PCb9X9hgEBNDTN0sNlcUNiecEaZ/PT+EUX+cdhGoeWHDnsZzRUvq0/F0yNjILDsKTdCXUus6y0rSv5oNaDfQ0orm4h2tAVqDSOMxbbZm4ktbqJHxlsEp3rbwoh6owKqjRp61Cd5m96L7ZWTFnao4eEmD3FDxQ3F9sqi5m1+dOwYX0Te9lrQBTjiWGQmupVl
+ LwXgtQe+
+ mnE11IpaaxzWNJwCjhiK/nsSnJnrAuI60Vad3L8TUCmW5+NyLgPon0bZ5M8VeKjRIHMZ7K7ty2nsvA6VjJGttKoFBKkS9R24r4BcGsCZlzgsl/v9zg1A/2v+7JyqAZ9fESwL+jZtt8xPeg267kf08kAQApKocnKbTEwsYumRENrw5iOCrsXH9FfHOv6aipN23ijMtRSohIQe3TeegY+WNzzz8U9BYj7i6JBTS2/B8YxjCMrukO/2H0djur0SYcGeweEg18pZ5xSP8bDOiJLBp5mGIoKrODsIMh2PE00GZJHr10n/HphO+wSna7RfkMGhPShPMQcKmKR3b4278UNo76mxX8Hm6aQkz5yBq1yZ9KtTtNNakrAitesqXOarPvQ/PlTop6dr+Q9ABs7psv1IraqBP8gzdL9ZaxmBvaZ0hxqwB34ztEvvo/ZlBC70p9zRGgNZz8t3zuOfX+eyFDP4PdohtTRCOAwtO/ZnxAasS4EK6r6BBZecpD2Tm6KVafd+kT84y0ZwD69u1iu+bn86+zWMYt6n/lP4BfawzWgwWeIvp9nfJfovecdYtYtyziaSRTIut/EAG+ff0ixrFOKhEuUyTEvagER1o3DAiZHQvwQjrvXhtzkUCSHGh33e2RA8P1G5z76OGxLWiMIuNUkkdTHYfeR0+I70lN8VU7+RrF+MVrHo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,152 +95,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-nfsd_write_dio_iters_init() splits a misaligned direct-mode WRITE into a
-direct middle and buffered ends.  Then as little of the WRITE as
-possible goes through the page cache.  That works only if direct and
-buffered I/O never meet inside a folio.  The direct middle invalidates
-the page cache over its range.  So a middle that starts or stops inside
-the folio of a buffered end drops that folio.  Then the second of the
-two neighbouring WRITEs reads it back from the device.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm, slab: missing SLAB_DEBUG_NOOP in SLAB_MERGE_SAME merges mism=
+atched caches
+--
 
-The middle was cut at the file system's direct I/O offset alignment:
+commit 2d842bc4bf4f28b2b4c86a9001856691abe3624c
+Author: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-        prefix_end = round_up(offset, offset_align);
-        middle_end = round_down(orig_end, offset_align);
+mm, slab: introduce slab_debug=3DN
 
-Where that alignment is a multiple of the smallest folio the mapping
-allows, the cut is a folio boundary, and the problem cannot occur.  This
-is the case for 4 KiB pages over 4096-byte blocks.  It is broken where
-the smallest folio is larger than the alignment.  Examples are 16 and
-64 KiB pages over 4096-byte blocks, and 4 KiB pages over 512-byte
-blocks.
+This commit introduces the slab_debug=3DN boot option and the corresponding
+SLAB_DEBUG_NOOP slab flag to force slab debugging slowpaths and disable
+percpu sheaf caching without enabling actual debug checks. It also excludes
+SLAB_DEBUG_NOOP from SLAB_NEVER_MERGE and avoids disabling printk pointer
+hashing when only SLAB_DEBUG_NOOP is enabled.
 
-Another is a block larger than the page, which the page cache holds as
-one folio.  There a misaligned WRITE costs a read per shared folio on
-top of its three I/Os.
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 01c64ef661e7f..02dfe4351e8b7 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -47,9 +47,9 @@ struct kmem_cache *kmem_cache;
+>   * Any flag that adds per-object metadata should be included,
+>   * since slab merging can update s->inuse that affects the metadata layo=
+ut.
+>   */
+> -#define SLAB_NEVER_MERGE (SLAB_DEBUG_FLAGS | SLAB_TYPESAFE_BY_RCU | \
+> -		SLAB_NOLEAKTRACE | SLAB_FAILSLAB | SLAB_NO_MERGE | \
+> -		SLAB_OBJ_EXT_IN_OBJ)
+> +#define SLAB_NEVER_MERGE ((SLAB_DEBUG_FLAGS & ~SLAB_DEBUG_NOOP) | \
+> +		SLAB_TYPESAFE_BY_RCU | SLAB_NOLEAKTRACE | SLAB_FAILSLAB | \
+> +		SLAB_NO_MERGE | SLAB_OBJ_EXT_IN_OBJ)
+> =20
+>  #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
+>  			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
 
-Cut each end of a WRITE on its own:
+[Severity: Medium]
+Should SLAB_DEBUG_NOOP also be added to SLAB_MERGE_SAME?
 
-- an end that is already an offset_align multiple needs no buffered
-  segment, and the middle starts or stops there, inside a folio or not.
-  A WRITE aligned to the device stays fully direct at every page size.
-- a misaligned end needs a buffered segment in any case.  That segment
-  now runs to the nearest boundary of the smallest folio inside the
-  WRITE.
+Excluding SLAB_DEBUG_NOOP from SLAB_NEVER_MERGE allows caches with
+SLAB_DEBUG_NOOP to participate in slab merging, which is checked in
+find_mergeable():
 
-That is one rule: a misaligned end is cut at a multiple of the larger of
-offset_align and mapping_min_folio_nrbytes().  Both are powers of two.
+mm/slab_common.c:find_mergeable() {
+	flags =3D kmem_cache_flags(flags, name);
+	if (slab_args_unmergeable(args, flags))
+		return NULL;
+	...
+	list_for_each_entry_reverse(s, &slab_caches, list) {
+		if (slab_unmergeable(s))
+			continue;
 
-The segments still tile exactly the bytes of the WRITE: a buffered end
-grows inward, at the middle's expense, never outward.  A misaligned
-WRITE that holds no whole folio of the smallest size has no middle, and
-is issued as one buffered segment.  Where offset_align is a multiple of
-the smallest folio, nothing changes.
+		if (size > s->size)
+			continue;
 
-A folio larger than the smallest that the mapping allows can still span
-the cut.  Readahead or an earlier buffered write can leave one, and only
-the lookup that finds it learns its size.  The direct middle then
-invalidates it as a whole, and the neighbouring WRITE reads its part
-back once.  Direct I/O always has that read-back for a cached folio, and
-the cut cannot prevent it.
+		if ((flags & SLAB_MERGE_SAME) !=3D (s->flags & SLAB_MERGE_SAME))
+			continue;
+}
 
-nfsd-io-modes.rst said that DONTCACHE is not used for the misaligned
-segments.  The write loop already contradicted that: every segment
-without IOCB_DIRECT gets IOCB_DONTCACHE when the file system supports
-it.  Replace that sentence with one that says so, next to one that
-describes the new cut.
+When SLAB_DEBUG_NOOP is enabled for a subset of caches (for example via
+per-cache boot parameters such as slab_debug=3DN,<cache_name> or
+slab_debug=3DN;-,<cache_name>, or by passing SLAB_DEBUG_NOOP to
+kmem_cache_create()), find_mergeable() does not require both caches to agree
+on SLAB_DEBUG_NOOP.
 
-Fixes: 06c5c97293e3 ("NFSD: Implement NFSD_IO_DIRECT for NFS WRITE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
----
-This replaces 80728157d1bd ("NFSD: cut a misaligned direct-mode WRITE at
-page boundaries") in cel/nfsd-testing.  Changes from that commit:
+As a result, a cache matched by slab_debug=3DN,<cache_name> can merge into =
+an
+existing compatible cache created without SLAB_DEBUG_NOOP (such as a
+kmalloc-* cache), keeping percpu sheaves enabled and silently ignoring the
+requested option. Conversely, if an earlier mergeable cache is created with
+SLAB_DEBUG_NOOP, subsequent compatible caches without SLAB_DEBUG_NOOP will
+merge into it and be forced onto the debug slowpaths with zero sheaf
+capacity.
 
-- the cut is max_t(unsigned long, offset_align,
-  mapping_min_folio_nrbytes(nf->nf_file->f_mapping)).  PAGE_SIZE is
-  gone, and cut keeps the helper's unsigned long type.
-- the subject, the commit message, the comment and nfsd-io-modes.rst
-  name two bounds: the DIO offset alignment and the mapping's smallest
-  folio.
+If SLAB_DEBUG_NOOP is added to SLAB_MERGE_SAME, does create_unique_id() in
+mm/slub.c also need to encode SLAB_DEBUG_NOOP so that aliasable caches
+differing only in SLAB_DEBUG_NOOP do not generate colliding sysfs IDs in
+sysfs_slab_add()?
 
-It also takes the place of v8 1/7, which will not be in v9.
+mm/slub.c:create_unique_id() {
+	/*
+	 * First flags affecting slabcache operations. We will only
+	 * get here for aliasable slabs so we do not need to support
+	 * too many flags. The flags here must cover all flags that
+	 * are matched during merging to guarantee that the id is
+	 * unique.
+	 */
+	if (s->flags & SLAB_CACHE_DMA)
+		*p++ =3D 'd';
+	if (s->flags & SLAB_CACHE_DMA32)
+		*p++ =3D 'D';
+	if (s->flags & SLAB_RECLAIM_ACCOUNT)
+		*p++ =3D 'a';
+	if (s->flags & SLAB_CONSISTENCY_CHECKS)
+		*p++ =3D 'F';
+	if (s->flags & SLAB_ACCOUNT)
+		*p++ =3D 'A';
+}
 
-Heads-up for applying the commits after 80728157d1bd: of the 27 in
-cel/nfsd-testing (6d13b7f74eec), only fcd8823db80e ("NFSD: only split a
-direct-mode WRITE for a worthwhile direct middle") conflicts, in
-nfsd-io-modes.rst.  Take its paragraph with "page" changed to "folio" in
-"nearest page boundary" and "never shares a page".  Nothing conflicts in
-code.  The other 26 apply cleanly, and the result differs from
-cel/nfsd-testing only in this change.
-
- .../filesystems/nfs/nfsd-io-modes.rst         |  9 ++++++---
- fs/nfsd/vfs.c                                 | 20 +++++++++++++++++--
- 2 files changed, 24 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/filesystems/nfs/nfsd-io-modes.rst b/Documentation/filesystems/nfs/nfsd-io-modes.rst
-index 0fd6e82478fe6..8f5e6872f1004 100644
---- a/Documentation/filesystems/nfs/nfsd-io-modes.rst
-+++ b/Documentation/filesystems/nfs/nfsd-io-modes.rst
-@@ -126,9 +126,12 @@ Misaligned WRITE:
-     middle and end as needed. The large middle segment is DIO-aligned
-     and the start and/or end are misaligned. Buffered IO is used for the
-     misaligned segments and O_DIRECT is used for the middle DIO-aligned
--    segment. DONTCACHE buffered IO is _not_ used for the misaligned
--    segments because using normal buffered IO offers significant RMW
--    performance benefit when handling streaming misaligned WRITEs.
-+    segment. A misaligned start or end segment runs to the nearest folio
-+    boundary inside the WRITE, not just to the nearest DIO-aligned
-+    offset, so the O_DIRECT segment never shares a folio with a buffered
-+    one; a start or end that is already DIO-aligned gets no buffered
-+    segment at all. If the filesystem supports FOP_DONTCACHE, the
-+    misaligned segments are marked DONTCACHE.
- 
- Tracing:
-     The nfsd_read_direct trace event shows how NFSD expands any
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index c4b32e41b4c5e..f18309d4609b7 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1396,6 +1396,7 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
- 	size_t prefix, middle, suffix;
- 	loff_t offset = iocb->ki_pos;
- 	unsigned int nsegs = 0;
-+	unsigned long cut;
- 
- 	/*
- 	 * Check if direct I/O is feasible for this write request.
-@@ -1406,9 +1407,24 @@ nfsd_write_dio_iters_init(struct nfsd_file *nf, struct bio_vec *bvec,
- 	    unlikely(total < max(offset_align, mem_align)))
- 		goto no_dio;
- 
--	prefix_end = round_up(offset, offset_align);
- 	orig_end = offset + total;
--	middle_end = round_down(orig_end, offset_align);
-+
-+	/*
-+	 * The direct middle invalidates the page cache over its range, so it
-+	 * must not share a folio with a buffered end.  An aligned end needs no
-+	 * buffered segment.  A misaligned one is cut on a boundary of the
-+	 * smallest folio the mapping allows, even where the offset alignment
-+	 * is finer.  A WRITE may end at OFFSET_MAX, so the prefix is sized as
-+	 * a distance rather than by rounding @offset up, which could wrap.
-+	 */
-+	cut = max_t(unsigned long, offset_align,
-+		    mapping_min_folio_nrbytes(nf->nf_file->f_mapping));
-+	prefix_end = offset;
-+	if (!IS_ALIGNED(offset, offset_align))
-+		prefix_end += min_t(loff_t, cut - (offset & (cut - 1)), total);
-+	middle_end = orig_end;
-+	if (!IS_ALIGNED(orig_end, offset_align))
-+		middle_end = max(round_down(orig_end, cut), prefix_end);
- 
- 	prefix = prefix_end - offset;
- 	middle = middle_end - prefix_end;
-
-base-commit: 4e84914d70a0194e18bba6d814cfe71b340aadc8
--- 
-2.52.0
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261024-slub_tiny_=
+rework-v2-0-bf1419ab5ffd@kernel.org?part=3D2
 
