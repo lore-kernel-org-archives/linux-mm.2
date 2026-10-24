@@ -1,93 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF371606A31D
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 17:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB326606A31D
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 17:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=PiI3/OF9
 Received: by kanga.kvack.org (Postfix)
-	id E3CD36B05B0; Sat, 24 Oct 2026 13:19:58 -0400 (EDT)
+	id E780B6B05B0; Sat, 24 Oct 2026 13:29:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEE1C6B05B1; Sat, 24 Oct 2026 13:19:58 -0400 (EDT)
+	id E2A096B05B1; Sat, 24 Oct 2026 13:29:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D035C6B05B2; Sat, 24 Oct 2026 13:19:58 -0400 (EDT)
+	id D3E776B05B2; Sat, 24 Oct 2026 13:29:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E95E6B05B0
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 13:19:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E280803DC
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 17:19:58 +0000 (UTC)
-X-FDA: 85358182476.29.9A93430
-Received: from mail-m2484.xmail.ntesmail.com (mail-m2484.xmail.ntesmail.com [45.195.24.84])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5CBCD40009
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 17:19:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf04.hostedemail.com: domain of zhen.ni@easystack.cn designates 45.195.24.84 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 98F466B05B0
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 13:29:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C9C3A0453
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 17:29:38 +0000 (UTC)
+X-FDA: 85358206836.30.4F33ADC
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1DDD5C0003
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 17:29:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail2 header.b="PiI3/OF9";
+	spf=pass (imf28.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 185.70.43.19 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
+	dmarc=pass (policy=quarantine) header.from=proton.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792862396;
+	s=arc-20220608; t=1792862976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sd+yctJGX58GYgR2VMHbAaQET091sbKp1a2O1nu6sRY=;
-	b=DJe9saU2tt9Ky1vJsxZR5wheXf3/fcf/s94DMmrwPTXzxIC1Wai4jfrRNnCbLpadjRs3TL
-	ZwfiAbs1no06GIeJ1+Ohq0c2q7iL+epFfIRuYvEl7W3aGfVvmAAMHRx5pjBVF3nTpNFzJO
-	H+KPzASn/To1JH/LrIkIgVcKWqhvRus=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uSwBoXXR0278lCz88tFScOKYUs1WlmzxQUkqwc84UV4=;
+	b=m12UGwIq/9EXHg+ihDWjMpIpxY0zeDJ+6vo7ZVtJD6hMHgWhrYI/xFnPZ6Au1yhj3ez+Yb
+	CM1gRDZO43IrmdETKW9SdwucfbSBBtD2xHb2xmYa/pgQIJnSAkUEb/z5nFeqmtdlXdvfGp
+	G7TvfpBDTknxI0Cd3in0UhI9ExWT1n4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf04.hostedemail.com: domain of zhen.ni@easystack.cn designates 45.195.24.84 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	imf28.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail2 header.b="PiI3/OF9";
+	spf=pass (imf28.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 185.70.43.19 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
+	dmarc=pass (policy=quarantine) header.from=proton.me
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792862396;
-	b=PVDHD+svnz7uWXdB7AD3UboXcrsbviH1ZhOBckdpWpTRu9jbvHX+UbiuFGl4Fp4D1RJLv/
-	xA3rG5Nzzbid7OiE1s6lepNToxVoVNHtVIT8bFGqGQafBjfkG0KWBNfohAjLc4KMPe0NdK
-	HXoM9bx/REjYQ9fbfPgX6LavWyD0j7U=
-Received: from [IPV6:2409:8a20:e23:2ae4:8810:8f74:8c26:2] (unknown [IPV6:2409:8a20:e23:2ae4:8810:8f74:8c26:2])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 206c2f1c2;
-	Sun, 25 Oct 2026 01:19:47 +0800 (GMT+08:00)
-Message-ID: <06925440-8df8-4f2e-aea0-ede1a98435fa@easystack.cn>
-Date: Sun, 25 Oct 2026 01:19:47 +0800
+	t=1792862976;
+	b=57oW9TjjfPXUX+/HzZ3D/H8dQa5CVrYiOIkiXAtzrDVv1nzJQx5da2i+utVpM7uyjCHs1q
+	fjWhC/2wPbh64exIc+vVIxlR271/S1Ln3xSKDpr1P97ow+v0jEWiZKMWvh4AYcaFdR2kgD
+	UygGkyU/QH18gdJcX/iS9DthEiE1WH4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1792862972; x=1793122172;
+	bh=uSwBoXXR0278lCz88tFScOKYUs1WlmzxQUkqwc84UV4=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=PiI3/OF9Ufuyyj3aO8eCO/1tEHvsGaLkYocLXcRHq1ObnRjeSj66aMGBF08+jsIEK
+	 OzQuv4WCtGM00qcXbO2vRBBSlDSE04eGBpXs/fPUfogDdbytC1je+yDuhhFYX3vW+n
+	 LAb8VumFcqPVAMz9X2yDukd373oPdAXblM8ueo9IsTmV1sBqnvdz7G6P5bPp+uxWyf
+	 VDlB08X4w/lMP0+feKvFD2zpXl8YQpkWqx2bppO5tmJKptYZ8WuZC+VVNV79ixDGAO
+	 zO8k1tT97FfTqo1Wub00uGJCTekDeEYTaSrXc9LJFxkJJsuo1v4qnBYGdm56tx+FDE
+	 XwnJyGBdeaswQ==
+Date: Sat, 24 Oct 2026 17:29:26 +0000
+To: "brauner@kernel.org" <brauner@kernel.org>, "kees@kernel.org" <kees@kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>
+From: BoxStrikesTeam <BoxStrikesTeam@proton.me>
+Cc: "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "jack@suse.cz" <jack@suse.cz>, "mhiramat@kernel.org" <mhiramat@kernel.org>, "mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "jkoolstra@xs4all.nl" <jkoolstra@xs4all.nl>, "farid.m.zakaria@gmail.com" <farid.m.zakaria@gmail.com>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+Subject: [RFC] binfmt_misc: add a tracepoint for BPF-selected interpreters
+Message-ID: <21bBRWi4dDGR7l5TdmShL09exFRFwQA8c-1U_QlNoY2L7LGzDCNfypM9VECtuwD7mkrG1Cw8uXSLLdHmXsYsMARBbGn-mIl3Mutmeku-2zg=@proton.me>
+Feedback-ID: 205449183:user:proton
+X-Pm-Message-ID: 9a4226781f6ad8bab2fb7d82922320196d2e2407
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/7] mm/page_owner: add bpf_iter and kfuncs
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
- martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
- jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
- akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
- mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
- ziy@nvidia.com, shuah@kernel.org
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261021112437.1799213-1-zhen.ni@easystack.cn>
- <DMAURQCKK6CG.10CZ7MFXGJO3V@gmail.com>
- <d39db4fb-e511-440e-9065-72c34a1a295a@easystack.cn>
- <DMCCBEPCIWH0.2JEDKE64WPJRQ@gmail.com>
-From: "zhen.ni" <zhen.ni@easystack.cn>
-In-Reply-To: <DMCCBEPCIWH0.2JEDKE64WPJRQ@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa16eecfd8c0229kunm0bf4aa98351e65
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCHUlLVk8fH0IaGkodGEpMHVYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJT0tCQUMaSUtBHklIQUkaHk9BQ0NKS0FDHUxPQUMYSU
-	1BSVlXWRYaDxIVHRRZQVlPS0hVSktJT09PSFVKS0tVSkJLS1kG
+Content-Type: multipart/mixed;
+ boundary="b1=_ypzT8Pl0sSG9XfrFKv1IRmPTSVHPbQ69Wlkmf6LTY"
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5CBCD40009
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 4cp4xtq9a61339prfq3i6bw4nq7s7sjd
-X-HE-Tag: 1792862393-899420
-X-HE-Meta: U2FsdGVkX1+AKU+a1Gct9s7TDC0BNtSAGQ9q07yEq9DRNfSOThiMJKlRYUSEmedyFm8+TH9e1zqk76XI4aOqG8Z5LsrLHs4TvW6qTJx8TPejm5VoJJg1bLNS7cFW4JhJ0196m8v+bqZcc7XAEwL3qXP4+7VIZUkl6JxThKQBwVre2ExBKdzKImzYTBi6ImZ6jg4CwCW3nDlJdt8x6QqsYOdNtm2wNHGhyGwavL8TFgjhGdpnUKT1DG7WmP75buKivI18OBeIvl4C79TLSDtB2qZhHJlGeOM7OcGUdEbE6Q8UIpmDE/7o/hA783HxzbQ5W5vdbVKucYOEd+m+CPpIrdzIg1F2XQ7bG7uDSS/xXMrhBJM48O562G5yscATHoBK8H+3MirkYC+GEcr9rnCvAGBBI2x54zauV1TnoPqXUoe2z1dnX/CjNSiJVO9iGoWgO7K5mX4uxkDomxkYGTsmyBz/vTTwioi3nWzih1btYiz0Q38QPKfMKXJKEUc6YfbeBG16FhfnJ+MOwphUQi3lQv2amVOSXn5Qnhup4Fedz4+zmEdwAloEvjUrDBtSuiY1EF5Ggc0CtfF3WSokMGH6fDHxSuhnbVjFQYxO9ljJNENi157Wp+vGS2fIjVer27hecNw03++V8xHtr5sr38O6K6ihCsROMpE0wH+QBUk+PJi+vIloFqUcMyBjHGNvYe/GV2Kzy9K4lN36fqVOFUWPaT7HQ/KIEuB4AWtI2xRuMebj06N9hifPZV/J+o/i5AZZhobsQB55AsYIW7VOPmo0lyPEPHbjZAovZxMQ2Hq8bwSWLiSYZyu3PKRjoyl2kUcnNZk4oBY8BxazHz2cBR1km4rz8/DWs6ivK7qGntykxZbfi80OYLN4MO1KF5/mJfsvX1vgVtUgLXkWp5fD1nIgF1u2vFGksQlV8+9Etis1FQ3tNm0Ee8vKvjZLL/jrd+gzU1IDIzdS0Wz5eFjxiV7
- 0SBRABkk
- pjJ9DioZvkpH+jYsxbgUjhzA1Abr+Rhqk71hUGPETOJ6UskrXUaNQ2CQC20qCWWbaDAPqhMtuXjUHY1VdDuQAAzp1PdEUf9T0rOVgxHPOA5aRkLrBXYB8BSc2fcOiHl23OF8/aIxBOry/97bC64B2tD4g7z9uTRcH70Z0QgagtDsO8JVGGH3XfdFqItBNlrgj6CZtqdTK2FoLRTzxiLIyHU4mwjA2jpHv/17KDFggz72xmZYkmqpkuLummRdnj0sm0hSrvteTxWD9hGEMQAsJ6GgVfqHjpEnYhCbPj0oPfQTT7w33UKcuBf4S6ACkx6CS0a5EXnjL08REmhA=
+X-Rspamd-Queue-Id: 1DDD5C0003
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: xwh5ruza8mdj8ur8xncb1gw5qj3pdhh1
+X-HE-Tag: 1792862975-623323
+X-HE-Meta: U2FsdGVkX1/dcDNaFGUWZir27F9xYvRVcu2Xk0X/YtHPxNEoadS5oP3GdVuc+R0TX4YEDqtN+9bkRsW8APL30HGVxa/gEKQerc5qJ153NRyjNGTpAvmKfpgsFUc9QbZTm1nBsKCOUMAsOwqUcfiTGxrKSGGjaQ/RLojCBvorVA1qOa+477E0jI0Eukf5QGgT34XshCU5L2ivk8qbEHvAN6lh4xGgbyuMgZhg3UaRhpDYM02MVp3JnMfnYu1zvLaFvIEOS4Moi2/fMMki7uRNGgQUwXVuDGPZqOrcUAYCil3nfyWFrPn1PJ83u9QLpGdzQfsx54FgTbv8EzVAtk0kq+2fn9LMk559+9d+hmcFLKHr9sBHSKvYuoZplyflbRp0Gf0GKTqw2dnVqN//SzKxAusuiRlPx6ki/FVSgvhXweqvOnyYepKU91xQHur/DG8XBq9Y3nfUedpHCPxOo6B7seMzaeDc5el+78bpGYJEkGh+haaQKtBJ1ehGmHB28dizfiMA+Bw+4SpU7PPbgpNQkcmuOrAkzRa0FuoMekZDz3CV+Xcdz2NemVd8LNa15v66rv2KjjqzfmHHhCGbfRmrqIDt/C2doY34rMjxulBxoaEzSL4pWDmzhkEn+sK2Ull0oGlZj1kgys1qmIYbZ1GQwABvrXNuElPQfoF0atwa9jlDLpGz+HWPHaf8l9OW8YgsoO3BmM/koBV+LdDgPru433enbWRmCieyZUA65sZkQH36+yPjQkZDzTwTWKGfLQCelpd63Q1+3yQFzVmfsQuh5jWghO4ZTBGNMdfcQjw8Gj+G104O2VQKualXhuziogHte3/GhT0Fq380udtROm7rPtTSFz4wc9QAbd/TnfafLXU2/0zgNSiWHT/ttfi+GMj7KoC8Cpbpz1aKIi2937xVWd7ZfCYeKq5Qt5OPyBtdqN3ibqHlzXipTTQdjOC8Hy7qA6CJ8P98fSchDE4mEo5
+ osFgk/BU
+ wTlNkLbX1WJc49ojwrZZqdXtTXpFqYfvM9E9HZ0Ohox1J67idn2UF2AJ/9hnL3rs9BuN9JMFEgUrRWtzcyX+beR6qRPe9ITvBbzvF4JAwlNbUx4JltToMkd9D7aXzZfbORMCT1eMniS89JpjFzk/XhlFaqaYm2e3l8B/qzHHj7fyRBDCCAgNU7/Ny6QVRYs5ftwljToEQ4RnTqgxL9ys1Jy50R3BFvlh73XMfY+tjgC7wYOPUKqPPdNvkV5FQIa66bkHmZZRUfbvcoR1ThFL8Sk/wfrjNeH2VkxKW9WO/N1DVLPSuzP8DdNtZ7wgmvscL667VmxCjR44KDmEMOznqfhmTDUBe9w7GzCvtddO7MBpbGMDo3YZI9zdcKt94O8iN8oWClAXxC46GSRPgcpUD7bsdFsYjR/o407Pn+cFmlynDqIYyVIJXhlfy9pxJkmmg9KUiF/goAjrLnUgaaseQRhevSoeAKKQ9ATQRceatmT/I08Nt0TncIQfoTZCk2eLTPrHa+vm4/FfRFmehBgSH8UyVgxuvA21COxK0k1jcdjmzGl7TZQbQ99PZ2l5Nzl8FzfvVj0GxG2AMref0+C/+uKrNI+IqM1NLoRoxgsZ61CtvRROIqwgapcD3WgFg5vetXuocKMToCKgaftfQvIgWy0eAtuHZrYD/nqeu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,150 +87,222 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+--b1=_ypzT8Pl0sSG9XfrFKv1IRmPTSVHPbQ69Wlkmf6LTY
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+Hello,
+The 'B' (BPF struct_ops) binfmt_misc handlers added in v7.3 can
+select an interpreter per exec. =C2=A0In transparent mode the selected
+interpreter is not visible through the usual interfaces:
+/proc/PID/exe, /proc/PID/cmdline and sched_process_exec all describe
+the binary, not the interpreter that actually runs. =C2=A0That is useful
+for concealment, and it also leaves tracing and security monitoring
+blind to the dispatch.
 
-在 2026/10/23 23:58, Alexei Starovoitov 写道:
-> On Fri, Oct 23, 2026 at 07:51 AM zhen.ni <zhen.ni@easystack.cn> wrote:
-> 
-> tldr: it's still nack
-> 
->> underlying iteration logic. This shape is also what Documentation/bpf/
->> bpf_iterators.rst prescribes:
->>
->> When adding a new BPF iterator program, it is expected that similar
->> functionality will be added as open-coded iterator for maximum
->> flexibility.
-> 
-> It says what to do when an iterator is added. It doesn't say that
-> one is needed.
-> Iterators are for kernel data structures that a prog cannot walk
-> on its own: tasks, cgroups, kmem_caches.
-> pfn is a number. bpf_for() is the iterator.
+I built a small PoC to understand the mechanism and measure the gap.
+It registers three struct_ops handlers (classic, transparent, loader)
+and runs each target twice: once without a handler, once with the
+handler and entry active. =C2=A0In the transparent case the process sees
+/tmp/target_trans as its exe and keeps its argv, while the code that
+runs is /tmp/poc_interp, reached through AT_EXECFD. =C2=A0In the loader
+case the binary runs natively and only the PT_INTERP loader changes;
+/proc/self/maps and AT_BASE show the substitution. =C2=A0The match program
+checks the ELF magic and marker bytes in the e_ident padding; it does
+not check the machine type, so the PoC is architecture-independent
+and does not target a specific real binary format.
 
-I agree the doc is prescribing what to do when an iterator is added, not
-that every case must have one. But my point is that having both
-iterators coexist is the convention, not overkill.
+The official binfmt_misc_bpf selftest passes 16/16 on the same
+kernel (v7.3-rc7). =C2=A0The test needed a small arm64 adaptation because
+it assumes an x86_64 host: the foreign-architecture constants and the
+interp_bind match rule were adjusted, while the assertions and
+coverage are unchanged.
 
-Page owner traversal looks like iterating over PFNs, but PFN is just a
-number; what is actually being traversed is page_owner records, buddy
-blocks, online/ offline sections, memblock holes—kernel state that a
-prog cannot see on its own. So it is not a pure numeric-range walk.
+The gap is not a bug in the feature; it is a missing observation
+point. =C2=A0I would like to propose a tracepoint after the entry has
+selected its interpreter and the invocation flags are final:
 
-> 
->> 1. What range to scan. Where do ctx->start and ctx->nr come from? No
->> in-tree iterator context provides them, and a prog cannot derive them:
->> min_low_pfn..max_pfn, memblock holes, and offline sections are all
->> kernel state. The loop bounds alone require either another kfunc or a
->> kernel-side walk — which is exactly what the iter target already is.
-> 
->  From user space. It's a syscall prog, like scan_open_coded() in your
-> patch 7. Its ctx is what user space passes in ctx_in.
-> /proc/zoneinfo has start_pfn and spanned for every zone.
-> In holes and offline sections pfn_to_online_page() returns NULL
-> and bpf_page_owner_read() returns -ENOENT.
-> 
+=C2=A0 binfmt_misc_select(struct linux_binprm *bprm, const char *interp,
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0const char *handler, unsigned long flags)
 
-I agree the range can be obtained. But being able to obtain a range is
-not the same as that range being meaningful to the user. Page owner
-users typically care about a process, a cgroup's leaks, or the global
-distribution; PFN is just a physical address index, and users almost
-never know in advance which zone or which PFN range to scan. Letting the
-prog specify a PFN range raises the bar for writing it while the
-practical use cases remain limited. This is not a feasibility issue—it
-is a question of abstraction level.
+The event would record filename, interp, handler, flags and pid.
+handler is the struct_ops name for a 'B' entry and empty for a static
+entry; flags is masked with MISC_FMT_INVOCATION_FLAGS so only the
+P/C/O/F/T/L bits are reported. =C2=A0The event is disabled by default and
+costs a static key check when off. =C2=A0It does not change dispatch
+behaviour.
 
->> 2. What makes a page eligible. The alignment test in the sketch is the
->> only part the kernel agrees is expressible in a prog. Everything before
->> it reads state a prog doesn’t have a handle to: pfn_valid() over
->> MAX_ORDER_NR_PAGES areas, pfn_to_online_page() under get_online_mems(),
->> skip_buddy_pages(), the PAGE_EXT_OWNER / PAGE_EXT_OWNER_ALLOCATED flags
->> in page_ext, and taking the record snapshot inside the RCU window so the
->> checked value and the reported value are the same copy.
-> 
-> bpf_page_owner_read() in the diff does all of that:
-> pfn_to_online_page(), page_ext_get(), PAGE_EXT_OWNER_ALLOCATED check
-> and the copy of the record before page_ext_put().
-> PAGE_EXT_OWNER is set together with PAGE_EXT_OWNER_ALLOCATED and it's
-> never cleared. No need to check both.
-> __reset_page_owner() clears PAGE_EXT_OWNER_ALLOCATED, so
-> skip_buddy_pages() and MAX_ORDER_NR_PAGES steps only make the walk
-> faster. They don't change what is eligible.
+I tested a patch on v7.3-rc7-32-g0fcb05b72344 (2 files, 60
+insertions). =C2=A0In an A/B run the event does not fire without a
+matching entry; with a classic handler it reports flags=3D0x0, and
+with a transparent handler it reports:
 
-I agree on eligibility. But I'd like to expand on "only faster": what
-those steps change is the scale of the walk, and under SPARSEMEM that
-scale is structural, not a constant factor. On a 256G, 8-NUMA machine I
-have, node0 is:
+=C2=A0 binfmt_misc_select: pid=3D96 filename=3D/tmp/target_trans \
+=C2=A0 =C2=A0 =C2=A0 interp=3D/tmp/poc_interp handler=3Dpoc_transparent fla=
+gs=3D0x48000000
 
-crash> struct pglist_data ffff0106ffffe580 | grep node_spanned_pages
-   node_spanned_pages = 17235968,
-crash> struct pglist_data ffff0106ffffe580 | grep node_present_pages
-   node_present_pages = 523024,
+while the process itself still sees /tmp/target_trans as its exe.
+The selftest stays at 16/16 with the patch applied.
 
-For this one node alone, about 97% of spanned is holes. With
-bpf_for(pfn, start, end) plus a bpf_page_owner_read() per iteration,
-that is at least 16,712,944 kfunc calls, and bpf_for has no scheduling
-point inside, and all of them are wasted work. The gap grows with memory
-size, and I'm concerned "only faster" understates the runtime cost on
-real machines.
+Before sending the patch, I would like to ask:
 
-One more structural issue: bpf_for is capped at BPF_MAX_LOOPS = 8 * 1024
-* 1024, and this is a runtime check—the verifier will not reject it up
-front. The spanned of this node is already 17.23M, so a single bpf_for
-cannot cover it; you have to split it into N chunks and poll, with the
-chunking state kept in a prog map, i.e. a loop nested in a loop.
+- Is a tracepoint the right primitive here, or would you prefer
+=C2=A0 another interface (audit, a /proc file, a BPF iterator)?
+- Is the event name and placement acceptable? =C2=A0I put it in
+=C2=A0 fs/binfmt_misc.c and the header in include/trace/events/.
+- Should this go through the VFS tree or the tracing tree?
+- Is the flags mask the right ABI, or should the event report the raw
+=C2=A0 entry flags and the resolved BPF flags separately?
+- Would you want this at all?
 
-And cur/end are stored as BPF_W (32-bit), while the PFN upper bound
-tracks the physical address width: on x86-64 with 46-bit PA, max_pfn can
-reach 2^34, and 2^40 with LA57; on arm64, 2^36 for 48-bit PA and 2^40
-for 52-bit PA. A 32-bit PFN range will overflow here.
+The tracepoint is observability, not enforcement. =C2=A0tracefs is
+normally root-only, and a root-capable attacker can turn the event
+off; I am not claiming it stops a rootkit. =C2=A0If the approach is
+acceptable, I can send the patch as an RFC PATCH or a formal PATCH,
+rebased on whichever tree you prefer. =C2=A0If not, I would rather hear
+that now than send code that is not wanted.
 
-Solving all of this requires yet another, more complex kfunc—and it
-looks increasingly like bpf iter. So why not just use the iter?
+The PoC is attached as binfmt-poc-upstream.tar.gz (source and logs,
+about 70K). =C2=A0It includes an English README.upstream.md; some of the
+original notes are in Turkish. =C2=A0It needs v7.3+ with
+CONFIG_BINFMT_MISC_BPF=3Dy and root inside the VM. =C2=A0The patch is not
+attached yet; I can send it inline on request. =C2=A0If the list strips the
+PoC attachment, I can send it directly.
 
-> 
->> 3. The walk is deliberately lockless, so exposing struct page to the
->> prog is not safe. The pfn validity check and the page_ext dereference
->> must happen under the same kernel-controlled RCU window. Otherwise the
-> 
-> The prog doesn't see struct page or page_ext. It passes a pfn and gets
-> a copy of the record. The lookup, the check and the copy are in one RCU
-> section inside the kfunc. offline_page_ext() does synchronize_rcu()
-> before freeing page_ext.
-> page_ext_from_phys() does the same lookup from any context.
-
-I have no doubt about feasibility.
-
-> 
->> 4. One record doesn’t give the prog the useful data. The record holds
->> only opaque handle/free_handle tokens; stack-depot resolution exists
->> solely in the kernel. The memcg is neither in the record nor trivially
->> reachable — the path is built by cgroup_path() walking the kernfs parent
->> chain. The NUMA node comes from page_owner_get_nid(), which bypasses
->> page_to_nid()’s poison check. And so on.
-> 
-> The handle is the key to filter and aggregate by.
-> page_owner_stacks/show_stacks_handles maps handles to stacks.
-> Same for memcg. bpf_page_cgroup_ino() in the diff returns the id.
-> st_ino of the cgroup directory is that id.
-> 
-> 
-
-Similarly, I have no doubt about feasibility. I do have some concerns
-about data consistency and performance. It also increases prog
-complexity.
-
-In summary, while I don't dispute the feasibility of the bpf_for +
-bpf_page_owner_read approach and fully agree that kernel-side simplicity
-is paramount, I wonder if we should also weigh the complexity on the
-program side. If using this kfunc imposes a steep learning curve, I'm
-concerned it might limit adoption. If a feature lacks practical utility,
-it becomes difficult to justify the effort.
-
-Thanks for the detailed explanations and for walking me through
-these points.
-
-
+I prepared this email and the PoC with an LLM assistant; I reviewed
+the code and ran the tests above.
 
 Thanks,
-Zhen
+Eneshan Erdo=C4=9Fan Karaca
+--b1=_ypzT8Pl0sSG9XfrFKv1IRmPTSVHPbQ69Wlkmf6LTY
+Content-Type: application/gzip; name="binfmt-poc (1).tar.gz"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="binfmt-poc (1).tar.gz"
+
+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
+geCF8BP2ykhBAKAAAA==
+
+--b1=_ypzT8Pl0sSG9XfrFKv1IRmPTSVHPbQ69Wlkmf6LTY--
+
 
