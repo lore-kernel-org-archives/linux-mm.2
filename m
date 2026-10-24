@@ -1,99 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6074E606A31E
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 01:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E638606A31B
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 01:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JB9GbvwY
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B025dT8I
 Received: by kanga.kvack.org (Postfix)
-	id 842ED6B0BEB; Fri, 23 Oct 2026 21:12:02 -0400 (EDT)
+	id F36886B0099; Fri, 23 Oct 2026 21:22:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F3E76B0BEC; Fri, 23 Oct 2026 21:12:02 -0400 (EDT)
+	id EE5746B06C2; Fri, 23 Oct 2026 21:22:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E2CC6B0BEE; Fri, 23 Oct 2026 21:12:02 -0400 (EDT)
+	id DFB956B0BC2; Fri, 23 Oct 2026 21:22:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E58A6B0BEB
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 21:12:02 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB2BA160208
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 01:12:01 +0000 (UTC)
-X-FDA: 85355743242.25.11DFCA3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4FC1D40004
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 01:12:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JB9GbvwY;
-	spf=pass (imf27.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AF9576B0099
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 21:22:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1679180213
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 01:22:38 +0000 (UTC)
+X-FDA: 85355769996.11.D3D9EE9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 633CE40006
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 01:22:36 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B025dT8I;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792804320;
+	s=arc-20220608; t=1792804956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qqcjA7DNdTq+xZwtRnwCLNkrsUov1CecwEVrKr3pes8=;
-	b=2LOij8xMs+RHTZXyzk3jvLa8npi/6bqbYmORBXubV8sB9KwZZtVtLUcNvmSzNt1O3fUlYt
-	7xZwb+a2mnEjXlFo00SMsk+2V5kjd9j3i1pvO3192EIUz0lp0fKtaEOBvvdE2YdeM6R/QZ
-	00hM98pPsS4ET+KihCqxz2nn7hUMJX4=
+	bh=wYR2M2iVhPBLmlpr1xOyUZypnHKQt/AYQu7IBgbQBZU=;
+	b=qkm0tRU5RAhtgyITBH/gzimjfd118u0N+LH31jR2Dr8FXg3GEP6NUAm0SuoI6uw2j2KaPH
+	7yHBrLNlbiwaREt0XTtCwXraiqwIC3Vm3Elv7X36WsIQU4Ucwf24AntwvJImeOe6vZw8vo
+	BxLjYKPiP+ZnZHcoxnF6h7N7rVFKPek=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JB9GbvwY;
-	spf=pass (imf27.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B025dT8I;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792804320;
-	b=V5dBnsE16Eh4U53BmfBXfAkUqasnxM93my9lTj+kdUhsbtT3Rf7hhdC7BAdCCx9nWrg/YJ
-	C+Oa/bTOK648iCefjb27UHTZuxD3pcGERE9mth5uktWF8h3048CgmXMfDFwP9VhyON/AxV
-	Ku7hM0O6HordG8vAzp/P/1O7yT4CZ3U=
+	t=1792804956;
+	b=vVrWrei6HdIVPicaNmB6OnrGIz/5K7cLZaUgZuJyhlxfzN9PdTExJjbkA7u91ZSNjQ+dQu
+	CpzVdbxYsu4KcRdlhP/D6ZQ3wmQ0yeW2VctV126RfsW+rH+ZWVkJrhCtRYssUjZdjH/FQm
+	NpKUw9ZbR4vR9/hm0US1h/0HhSYsif0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A92C7601DE;
-	Sat, 24 Oct 2026 01:11:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6E51F01825;
-	Sat, 24 Oct 2026 01:11:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9049043C11;
+	Sat, 24 Oct 2026 01:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC7C1F01825;
+	Sat, 24 Oct 2026 01:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792804319;
-	bh=qqcjA7DNdTq+xZwtRnwCLNkrsUov1CecwEVrKr3pes8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JB9GbvwYUPYu2AenF8uiR5+l/yJlmYsyVbpE5bjdXpbiNpcMEu4A+zbRAGiFuQrKV
-	 lAH9sjVruL0NoEC4b45IRnzOd+ue2Xg+QmfwVwdYKi57DDN35Nt2+OJZaqWOUknrJF
-	 kpGU8VWhL87l2F0PgDsav9PgAEIQZn7q9mXAxEpuSTyrtl7A73SwzQQ+1RI+37OKXR
-	 b7kBNAdR9lsOR1Mg0J8REHrYPrSUqd5mP8jZxguQa9TGrklVdop/NKfhivSBCynqxm
-	 TAk2zyy5KVGDryqPIFGoyLvQO1kJhmq6BrRtqj1l1+VuBF0yLVT6fpdhHMkTgKa8Kp
-	 mHe3pNskHcJxA==
-Date: Fri, 23 Oct 2026 21:11:58 -0400
-From: Mike Snitzer <snitzer@kernel.org>
-To: Chuck Lever <cel@kernel.org>
-Cc: Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v8 1/7] NFSD: cut a misaligned direct-mode WRITE at the
- mapping's smallest folio
-Message-ID: <atwF3s3-VtUkooZI@kernel.org>
-References: <20261023024548.71123-1-snitzer@kernel.org>
- <20261023024548.71123-2-snitzer@kernel.org>
- <36498551-15ee-4a55-9757-54aa8a07085a@app.fastmail.com>
+	s=k20260515; t=1792804955;
+	bh=wYR2M2iVhPBLmlpr1xOyUZypnHKQt/AYQu7IBgbQBZU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=B025dT8IqnKo9J9ah00/inNxyi1JmmsDJJJ84SWS51C1yg2CHTP2TJ9S3DJ9/6Vn/
+	 RQmLnqeHRn1yeUpspA5wQAgRVT9y1tNjL1JUW8CuEDzDK/JROD6+0inGu7yUMuiuFg
+	 uk2qy+x7R2Y9P0ug92ptKFpmEd1YiZNGS2cCJ9qpN7oAo4G/+S6opzTkpb6ho7bnpa
+	 A+mwAdsN1WsteR72rOzaIFWayrfMoQntkqSDKZLoQTgRxNAu/b3lAzylySiKi7+bB/
+	 mPRUP/sbknkQuYdtSxDm3xpAyGogKgZ4KZDnZ5aIf39MgYzeOyawsS0CXYX6h2dNOH
+	 A46vVSWT75AXg==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/core: reset watermark wait state on each iteration
+Date: Fri, 23 Oct 2026 18:22:27 -0700
+Message-ID: <20261024012228.88920-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179277129124.2.16132047926074873101.damon-empty-schemes@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <36498551-15ee-4a55-9757-54aa8a07085a@app.fastmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4FC1D40004
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 633CE40006
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: c6dubwzeuoau9ssqzjtzz53995jh1w45
-X-HE-Tag: 1792804320-266968
-X-HE-Meta: U2FsdGVkX1+Kx1kOjNWyv8ER9hMMJZ7zGYfbQAIr1O78T2yeC+gCFmAFof99KfB88RvyQJ0Mzi+2GUj0EzpsngIJGK7NmN2GBIbZxFMhrgN8shYV2a/MteleDBkHc3/Tw78csdfSx8JdNHKMaCUcvcIhxi241C+52HbadM0mhn074mumTLP3T8Leo1a3a1RxYmjXa61OaMPOXnMy3WRswBOBevsbjUmo9ulWXciXg6VJE5ErzKHtJzFtDCLY1FhnIvArs6WBTMY6YXstGUXsm2lmwEjwBVA8EY3vbGhFtMkVI+ExH/jgsT+ZuAXepo/3BL9XQzEbfRCrnk+1R70YyHj7eH9Uuy7jxUjNmB+DNnhQ8++VW2IQlFhY1i50YU0uhWgCIlVqm1kQPKVHP5d/ZeqGnDTYThxfUOnx0OtP76QYCEcydtWiKCTW+Oobw7TD3rw0AVwSA1+TRsUBxjhq4UM/ruPqxAL4akeKlYmgduA24oKFohG/CLknZ4SjODJrn6EtRORlUxGih2OwBu62WKTRMmAg9rSh6WrcORMqwX8fODzKouFSmYuvsR3B8fHRKE7fzQdmr5L4YJcVLF3bZQtO+rSYVcOJm4YvphU+GKq0Idb8wZHXJgzN7U1ytJ9qEYEvt5sOrz7Uc13VxIeClpHYj2OsnLxMv2stMBcO3dTWaixm63ZI516cKgm9kiWjXdC2Tnr5OKDA3T/9QouIvb6mcNbJQLtt1GnuhtxvwM70VSS1Vt+3s4qk76dcw0D4esnzqhcSOzFig99yUTTWMrw2B6NfL2ssZJZQYmO5u7dJuMk7cG1U1SlWochsNtzd/FiU+Mz9cZIiPy9KMxIHlG7n5MSmRop1Ya7FtBye5IcvmzRn+t2ohYHl7dcEcU+eFxDudIVJy3/1Ip+rdCojgkYe0gVxh/y4ZAlVk8C1gotHzYAJdERYH9ErF7EVv7M8xlDYdmypMkcvf8ItvRZ
- lXvg+YsN
- b2XtiA0ro8IEwVfo35AeNYrebDGx5/+B7zmuqrHeP+r/zwPIMHHgFsBvbww/uUXiimqyA6bCqbVOeqgyyTT51y3io4kLtxhsrMyIPtugGYA74sZu+bhVO73lDCYl4hVHdMjWE3xDpUdUlaEFCWiPn3gv9yy1Dev8Ewtuh/hkqkubxZoFX2nqWTGg+uum0cBCHzKIP0Kb9J2OrllHwnLBEemr4Prm5/nJZXWDSATEhuuNTL7STnp+BX7vQTQXhQQ1wWu5y70GOcoTLS88CD3vgwTYjJ6sYuSoePo4GWn+kjjWfW6/5gAiot2uRKUWqYgYsWN/7Ktlsgd69xEO00ZUlup/nCUwGZA+IHiwh
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3c7um7xjb7cekm9km3myfdayxzdz9tsi
+X-HE-Tag: 1792804956-281595
+X-HE-Meta: U2FsdGVkX1/3LxZDHOz1j9W3wvh8A8ukFrEr2v09gJFaFDpKw611IRW8c29/r6LcJmkeOnaUXswb0y0LKVgYTApuPPltyjEjdNJtTkw8+eIP4ib0hcvgoAFEexySo6eIj5fBRQ4M8TbQb3d0iaLxMe0EAYnFU7DWQsL94iErg4IFDlyCZxpxWACW3gBGtgvHsq0UMHGWP95HB2IpI/3NgA2k4RIe+AB6gd38Jw2IleaCYVvuIJAIJ1HEQs9rUsznhN3YWpfKyaLU885mG19VLZGvXLWTtW527a5XC6+OSJsYfMSbKWPpNmtAIdXc4NThviWPXFpivNFhkMDX6E2q0kx+DtfX4WgmpUaqMp/bTnxY+h0qqJOIzWe01e1smTrQ+SYfmu6Ya1Hb4bm3qgRdbmwr9MVyPQHxJCeKLvBZYhv6sxwTCkITjZRoVgiGEi9n9UIz7GNaEXlzJJH2A9BgPzzQc/6hsyGq9Q+Ys9dhXlZrlD660re1+2Gu8sUnQbzNmy/vhp26EonsYKrBYjYnHtnnbL9Y6Nu3CfwrbX38JJaWeIRmTZ26XsqSLrZf9BFS2dN23lOllQTIZoLOtVZU1JR+Rbk0ri/oaOOjRQB0gFgJw4X22ZMv2w8wfFJtBCvZxD3aq5xQ8CcFxsB9bsfMMKRt1kPVYagoKabvUlvi5a/szr5CKfbJXgloAFcPu3XQzzgBlQg3Cs17RxmjNAEeJI07yzWk6yH8HK4oXeIShgwL8NzHBPqvKtpsfbVkfuWR/Xvd38QJdDN2JwT+FIkpkgCwDpGbblDEXA3gjmlQzLXKFRFew0poqkJ1SaYFSf5zqWhfPZsPsQGXdf1QHJNKo5/7x5kbKelGnYBcFye+YVkfkxdLcBXEu4chZpmfIex53PX19VCGOCRexE85qQ0m/T+ZFsrw8ZHiQmE1OygXHRXKFNfrAXBt//Bwh3NTJ228wW0Gq6OgqKy3xBOTWfg
+ RPlk6P7B
+ X2HhtFv4YRMiT3IPf12TggMxXo0uMswrE0stxGCQKIVKWHB5bE/6mAOx7hm09Ew7NGYX55TZLWX0KyKeYNPjoWQfEc7qDqsBeFPkGhlSlbiQisAnBuc0GhbOm1OGAsbrNVdMxbIgEltRQtc4/wMFl1DaZSqo8IiZWMhDTc/VIKOYnLzgGnHh4mj/faBTtreCGDHcgGqV/WOQQ36cNFyzo3UpskwckM9de10yh0yuTiqLAQy+D5ADcFY5y1tEQU1qYRKl1dj6CrOV0dygc34i8oRwzHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,89 +97,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 01:45:21PM -0400, Chuck Lever wrote:
-> 
-> 
-> On Thu, Oct 22, 2026, at 10:45 PM, Mike Snitzer wrote:
-> > nfsd_write_dio_iters_init() cuts a misaligned end of a direct-mode
-> > WRITE at a multiple of the larger of offset_align and PAGE_SIZE, so
-> > that the direct middle, which invalidates the page cache over its
-> > range, never shares a page with a buffered end.  But where the
-> > mapping's minimum folio order makes the smallest folio a block larger
-> > than a page, the page cache holds that block as one folio: an end cut
-> > on a page boundary inside a block leaves the middle and the buffered
-> > end in the same folio.  The middle's invalidation then drops the folio
-> > the end wrote, and whichever of the two neighbouring WRITEs comes second
-> > reads the block back.
-> >
-> > Cut a misaligned end at a multiple of the smallest folio the mapping
-> > allows as well.  Where that is a page, nothing changes.
-> >
-> > Fixes: 80728157d1bd ("NFSD: cut a misaligned direct-mode WRITE at page 
-> > boundaries")
-> > Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-> > ---
-> >  fs/nfsd/vfs.c | 14 ++++++++------
-> >  1 file changed, 8 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-> > index 9219f8eb386d..ade00dabef18 100644
-> > --- a/fs/nfsd/vfs.c
-> > +++ b/fs/nfsd/vfs.c
-> > @@ -1452,13 +1452,15 @@ nfsd_write_dio_iters_init(struct svc_rqst 
-> > *rqstp, struct svc_fh *fhp,
-> > 
-> >  	/*
-> >  	 * The direct middle invalidates the page cache over its range, so it
-> > -	 * must not share a page with a buffered end.  An aligned end needs no
-> > -	 * buffered segment; a misaligned one is cut on a page boundary even
-> > -	 * where the offset alignment is finer than a page.  A WRITE may end
-> > -	 * at OFFSET_MAX, so the prefix is sized as a distance rather than
-> > -	 * by rounding @offset up, which could wrap.
-> > +	 * must not share a folio with a buffered end.  An aligned end needs no
-> > +	 * buffered segment; a misaligned one is cut on a boundary of the
-> > +	 * smallest folio the mapping allows, a page or, where the block is
-> > +	 * larger, a block, even where the offset alignment is finer.  A WRITE
-> > +	 * may end at OFFSET_MAX, so the prefix is sized as a distance rather
-> > +	 * than by rounding @offset up, which could wrap.
-> >  	 */
-> > -	cut = max_t(u32, offset_align, PAGE_SIZE);
-> > +	cut = max3(offset_align, PAGE_SIZE,
-> > +		   mapping_min_folio_nrbytes(nf->nf_file->f_mapping));
-> >  	prefix_end = offset;
-> >  	if (!IS_ALIGNED(offset, offset_align))
-> >  		prefix_end += min_t(loff_t, cut - (offset & (cut - 1)), total);
-> > -- 
-> > 2.52.0
-> 
-> PAGE_SIZE looks dead in the max3(). mapping_min_folio_nrbytes() is always
-> at least PAGE_SIZE, so the cut is just max(offset_align, min folio). The
-> new commit message and comment both describe three independent bounds, but
-> the accurate statement is two: the DIO offset alignment and the mapping's
-> smallest folio.
-> 
-> Also I would like to keep the helper's unsigned long type instead of
-> narrowing to u32.
-> 
-> Post an updated version of the v7 patch so we can test and review that
-> as a single change. This will also archive that revision in the lore
-> archive. This will likely result in merge conflicts with subsequent
-> patches in the series. If those are just comment conflicts I can fix
-> those up when I apply the revised version.
-> 
-> Do not include the new revision of this patch in v9. v9 is now patches
-> destined for the MM tree(s) while this patch goes to NFSD.
+On Sat, 24 Oct 2026 00:01:31 +0800 Aveline Noir <jm5905938@gmail.com> wrote:
 
-v7 didn't have this 1/7 patch.  But seems you're saying the fix for
-nfsd-testing commit 80728157d1bd (which started as v4 1/10) would be
-to have max_t() use mapping_min_folio_nrbytes(nf->nf_file->f_mapping)
-instead of PAGE_SIZE?
+> Found while reviewing the DAMON source code that if an online commit 
+> removes all schemes while kdamond is waiting for watermark activation,
+> the scheme loop becomes empty but min_wait_time keeps the previous 
+> positive value.  kdamond then keeps sleeping instead of resuming 
+> monitoring without schemes.
+> 
+> Initialize min_wait_time and init_wait_time on each loop iteration so
+> the wait is calculated from the current schemes and an empty scheme
+> list resumes monitoring.
 
-I think you're saying post a revised version of commit 80728157d1bd as
-a standalone NFSD patch?  I can check if it causes the other patches
-you've staged to have conflicts (but like you say, should be simple to
-resolve).
+Nice catch and fix, thank you Aveline!
+
+> 
+> Fixes: 6e74d2bf5a26 ("mm/damon/core: add a new callback for watermarks checks")
+
+But, this is a preparational patch for online commit support, right?  Shouldn't
+the Fixes: be the commit that enabled online commit?
+
+Also, this bug seems nasty to me.  Users could work around the issue without
+restarting DAMON only by installing a scheme that has watermarks that activates
+DAMON again, and then removing the scheme again.  I think it deserves to add
+this to commit message and Cc stable@.
+
+Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
+Cc: <stable@vger.kernel.org> # 5.19.x
+
+> Assisted-by: LLM
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+> ---
+> An x86-64 KVM test using free-memory watermarks reproduced the stall
+> with nr_schemes=0 followed by commit.  The same test resumed monitoring
+> with this fix.  DAMON KUnit and selftests all passed.
+
+Thank you for keep adding this useful test results.
+
+Assuming you agree to above suggestions, I applied  this patch to
+damon/next [1] tree after applying my suggestions like below.  We are in the
+middle of the merge window.
+It may better to let mm.git maintainer (Andrew Morton) take time for pull
+request works, rather than adding more changes that are not really urgent.  I
+understand this series is not really urgent.  Hence, Andrew might not add this
+patch until next -rc1 release.  In the case, I will request adding this to
+mm.git after the next -rc1 release.  So, no action from your side is needed for
+now.  Let me know if you find anything I missed, or disagree to the suggestions
+or the urgency judgement.
+
+Changes to the patch file that I made:
+
+'''
+@@ -8,6 +8,10 @@ the scheme loop becomes empty but min_wait_time keeps the previous
+ positive value.  kdamond then keeps sleeping instead of resuming
+ monitoring without schemes.
+
++The way to wake up the kdamond again without DAMON is bit complicated.
++Install a scheme having watermarks that can activate the kdamond again,
++and remove the scheme again.  Doable but cumbersome and complicated.
++
+ Initialize min_wait_time and init_wait_time on each loop iteration so
+ the wait is calculated from the current schemes and an empty scheme
+ list resumes monitoring.
+@@ -15,11 +19,15 @@ list resumes monitoring.
+ /* TODO: move below to commentary */
+ Changes from v1
+ - v1: https://lore.kernel.org/179277129124.2.16132047926074873101.damon-empty-schemes@gmail.com
+-- None.
++- Collect R-b: from SJ.
++- Add how to work around the problem.
++- Update Fixes: and add Cc: stable@.
+
+-Fixes: 6e74d2bf5a26 ("mm/damon/core: add a new callback for watermarks checks")
++Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
++Cc: <stable@vger.kernel.org> # 5.19.x
+ Assisted-by: LLM
+ Signed-off-by: Aveline Noir <jm5905938@gmail.com>
++Reviewed-by: SJ Park <sj@kernel.org>
+ Signed-off-by: SJ Park <sj@kernel.org>
+'''
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
 
 Thanks,
-Mike
+SJ
+
+[...]
 
