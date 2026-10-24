@@ -1,88 +1,165 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274FB606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858BC606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 20:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GOyAIB1r
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=UM/qJJpC
 Received: by kanga.kvack.org (Postfix)
-	id 356A06B05B1; Sat, 24 Oct 2026 15:56:59 -0400 (EDT)
+	id 739166B05B0; Sat, 24 Oct 2026 16:48:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 307F86B05B2; Sat, 24 Oct 2026 15:56:59 -0400 (EDT)
+	id 710676B05B1; Sat, 24 Oct 2026 16:48:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21DA46B05B3; Sat, 24 Oct 2026 15:56:59 -0400 (EDT)
+	id 5FEFD6B05B2; Sat, 24 Oct 2026 16:48:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF57B6B05B1
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:56:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67A6E803E4
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:56:58 +0000 (UTC)
-X-FDA: 85358578116.30.5663EA7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CD2D9180007
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:56:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GOyAIB1r;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2F7426B05B0
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 16:48:28 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A5783803E4
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 20:48:27 +0000 (UTC)
+X-FDA: 85358707854.03.7232ACA
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C231340007
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 20:48:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="UM/qJJpC";
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792871816;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1792874905;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JmMlTKfpNHokvyjnWNUvxbdsY0ytuHDIziS4VZxItYY=;
-	b=n2iV9YXM3LSUnqe/zWiU/evYV1+dfDFjifQ5MWTLzQ+Rhyu8fHVHlX/JXXBniaoeKlH+9Y
-	cTJDFPG1sqwqBXzdvDJBuImK/ooy+gH7p19Deru9RTK9BxmuSXQjbLwpkz2QTamNEh5kuT
-	yqDWOV/+StiKP77HNr6OrCbtg5mkHQk=
+	bh=BuPJgnsG0Ng1Dae+yMYUghn3Dz0uN6VmqtORQTrWN9o=;
+	b=Cpz0pUronNckEWnZYHmwShXOAo8w6T+GQpBx2WkfIg3wi8bLFrWvcUMmemzCWj9Nl1f+Pb
+	JHVqXZ3EBP1XDBRRh8ryN0wthUGSn2OMx7CZnYOgLzGeZCS7+p66Ei46YbmexDRJNk9eVf
+	1SLK48LRRFk+CjFCiSSRUcll9aBdKuc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GOyAIB1r;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="UM/qJJpC";
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792871816;
-	b=xIVYMIiTzfnDDVzRJkgJbt3Uu67qGeSD/vDtvHqF54sScbkYsDDF5YC0N5tEcgCl3591Iq
-	Dcg6MZD61ncY6YGzVT3L19xpksS8wGRHsYtoK7LkAU5w3+1yoe8BlEl6L5voROHgRp3Nmv
-	Onqhi5MoyDPiF9ggGPMgx4p3C+/cRFA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59A1E600D4;
-	Sat, 24 Oct 2026 19:56:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB21F1F01825;
-	Sat, 24 Oct 2026 19:56:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792871816;
-	bh=JmMlTKfpNHokvyjnWNUvxbdsY0ytuHDIziS4VZxItYY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GOyAIB1rjvArSFE7gfIVCzK0ziJWNbf0ckbZya7wm88IJ580Xr7c0UdzNhlTC/tEL
-	 fgJeh3zjG2vArPUvu6tRoP+sGd2dpbtQqaKhSZdsi8EQ+Bl4jYheu3T+thuPB5zy+a
-	 L6gKOO4GwTzgZThgj60zYPTUpgOgknHVDX558oAkeTLRtZ4GmOGUl6g9O6uVNtA4x7
-	 nt2Lf2EiQ2judPSRJtuLWBDPW6cGG9MPutZVrBDQLSdTu0msjUtpfOGteAu8OJqPrx
-	 GV+eyWkVawrQCbyfndU+5kWpOqaVQIlHHNOVa0PChUma3xJjzcgVzn6U/UFiVfCNm+
-	 ZKL2kHdfX/oxQ==
-Message-ID: <sashiko-outbox-183867@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] lib/lz4: backport upstream fast decode loop
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Biplab Raut" <Biplab.Raut@amd.com>, linux-mm@kvack.org
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, hsiangkao@linux.alibaba.com, terrelln@fb.com, yann.collet.73@gmail.com, guoxuenan@huawei.com
-In-Reply-To: <20261023195617.3468543-1-Biplab.Raut@amd.com>
-References: <20261023195617.3468543-1-Biplab.Raut@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 24 Oct 2026 19:56:55 +0000
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CD2D9180007
-X-Stat-Signature: 71ig5u4zhxze5ratqnidq1nex73x716b
+	t=1792874905;
+	b=KblBn+hz8ICQ/8tK/lEPtA6oygPPAZ9q+SBoI3mcAz1g+F4f5D/xOV8jCW2iZMDqvynvJ8
+	EZFmocEvegN/cTe04dZoYhke4WaZHhXyHfQChBNy371SGgTiBcGinlqLTxqUkpOUBFHfhK
+	K7HOFXUQ+vACiwK+ipjPQJLTyPIjrvw=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-917c04630c2so20273266d6.3
+        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 13:48:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1792874905; x=1793479705; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BuPJgnsG0Ng1Dae+yMYUghn3Dz0uN6VmqtORQTrWN9o=;
+        b=UM/qJJpCb8kgGMAm4xjYyOAra8+d5wnhi0ynA6lVYIkp/ucAA59EYlVqnj3m1sLpM5
+         l7ESg3MLsKkecFCt2ds+tBD7U/w0c2IpcU9+hSJRgunfEQgOeJwkAhtcmHSuJkWTnou2
+         HMsX267TAB0B8s+WdnWMFX5VGTIO2Uqa3ht1Pp0PiN1/KilhkwVemdTg9xT1r98GsUNn
+         YBL0GIW6YZw9CDccIMtn8HNBFlp2yNKYAnTdbVA9Y07/1e1Z+Zk4S1Fm8gmAArezP5Ez
+         PXNGkX/ZJduhcdiszDurH/jM5NvTo/qLfouJ7rTys3t7QuBZyVllyWKtf7/xc6QzFwh0
+         KRJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792874905; x=1793479705;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BuPJgnsG0Ng1Dae+yMYUghn3Dz0uN6VmqtORQTrWN9o=;
+        b=zL175G6BxRlWZMuJcgFo1WDAwZDRhWMXtTM1k47YhWOiWV6SDW4h4kw+2z75Wn9lOm
+         71FTaYO/L1kMverc+jqE62pyu5tdPZEyjZ00jQV9AznHcal9T62ILLdMClmCgzut6r8S
+         wuZOsRPHDC7erQ+HDib6X3MT/2FZHUXYrVCHlP9L9qBwZtKIBMF8DpLaeSlNWhX3DPwN
+         hjWOoy3SbU/RhnK1cG8wFE680PQpY82kDFD4fj68f3OBA2WECuj6/IY8j5xs+wlNu9l2
+         VPwZt/9Vm3i0MNxVdSx5iQ56x17VpoAEbd6x69cH8rsWs496BuXf4/t8JqsKf3FK/28t
+         mHlQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwhqnPqYEeRAuDegPYLP3RxARXv4ho0A6eU2REOReY4mbNUtIcBDqO0tvmcCeKGElEIb/QWydB7bQ==@kvack.org
+X-Gm-Message-State: AFq9FYIztLF/krYFA0a+/FkGzGojZQ6lqoT9kYfI8M772ofT3R+50I1t
+	AwUdYHYKLyuo5gl1b/Rfpj9vBLgbj+80yP8Ge5JPGMUJnkv4jZPTC+XEpsRy80mCqUw=
+X-Gm-Gg: AYBFou2I4C3LnvyeQ/mTGG+QewjF5iyBQoCM6PDsbYsBoa0kw6OeIOfUHyHa7Vn/+i/
+	Tu2sEPhOrmmEIqK2HSMg7LJ4cVrEbcyYGpnli1GyRuR1n/unRO9CSxEUGUlypIBt/1c8Em3/fo4
+	aRuoOFv15Nd7m8pdGh6YSW4TLxuNh2NdVjoNFzbyANGU9xM3SqctBvXTr4jz68fbv6FNIFVqqtb
+	Oj6UhqtqahgQU7qQSiqzHIoNC9tKu29sDIqU/O249JwUF12NOKSc66+FFMo/NWlJ2bGVK3O8xqf
+	0Wu3Du4/LMR64eVG2v84Kx4rt2zU30spBuvcEKGGv5YqV9WWNZjFN/5iPIclEKHNT/55UG5zSkT
+	YOAKlBbFIuvqZKerrN8Ef5JMSh5oE/AJsks5ogNafgjTrWAobkel7iI3VUV7s3AiMTnEaoMIaQr
+	5N3o7Ed7mfgY1Xotcc52CcLziZ6XNCS3Kp2Sa6UT4gQBoMtl0RMxoZyF5DdC5PkOE0EGFLvO5I7
+	SS7uJdZWHe4vvjoOZ5upu9XpK5Cf5U8a8DVE5DJ+sd1re5KNwBHcrynTiLC36UMzpUUg7aGtWDA
+	nUdbVTGe5UWj9NaKieusudDxfew=
+X-Received: by 2002:a05:620a:4001:b0:93e:9292:1b9e with SMTP id af79cd13be357-940ef7ad8b6mr372744585a.1.1792874904799;
+        Sat, 24 Oct 2026 13:48:24 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f0a94a5csm258574885a.41.2026.10.24.13.48.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Oct 2026 13:48:24 -0700 (PDT)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: Path forward for Virtualized Swap?
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Rik van Riel <riel@surriel.com>
+Cc: Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
+ Baoquan He <baoquan.he@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+ Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, 
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, 
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, 
+ =?utf-8?q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+ Meta kernel team <kernel-team@meta.com>, 
+ Linux Memory Management List <linux-mm@kvack.org>, 
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+ linux-doc@vger.kernel.org, 
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>
+In-Reply-To: <12081d266e4846f23faacfc65c7be7da4ed013a9.camel@surriel.com>
+References: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
+ <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
+ <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora>
+ <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
+ <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
+ <20261014195354.GA371161@cmpxchg.org>
+ <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
+ <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org>
+ <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
+ <CAKEwX=PCSyCEAqxeOH6CkCMu1eB3xUn3iz5XNuTbpDM3EmWYAg@mail.gmail.com>
+ <c6e62e80befa886fccd36d34a39cf56ea5b9c9c2.camel@surriel.com>
+ <CAMgjq7CN7qTes+OXvCfsgPOnbtyY7YPytTEP3zZJTBxrGZ5JnA@mail.gmail.com>
+ <12081d266e4846f23faacfc65c7be7da4ed013a9.camel@surriel.com>
+Date: Sat, 24 Oct 2026 16:48:22 -0400
+Message-Id: <179287490291.4123581.5790613647977714588.b4-reply@b4>
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792871816-10407
-X-HE-Meta: U2FsdGVkX1/B6HP/wGKZqqA/QVlTX69MPOifUfWu4cAerIyEY9BIvyvP4DzKa90ev9MaY+VgbQOyc4r3EjUNXfU+00NkSYUwFXb7EsVb2aSZMftJM4aa+ahLsTimsKZswEHUrx8Jqhs4BCsAFStWxKo2ds+unmxWEtLEeELPssxN+4hY8v9E5RLxIz+PjlPPqqTTQY+xcHg2QHrhgJnNFbvbqz+j0BOSRWoGeyIIdUTg1Q/ELsXFHz71qA4QDZ8BwE4MWECMG7Ei1bhiJ3X5Ff4H/2SKwDixMhF3nYeBikK/pYqIhUCcc8eRpNwh7RJ5Gu1HDVUB2+92JoslK9YzcYCsCpgrKTJ6DGghrsb1ttFrSJNqJGM4xWnUhQ9hxr4JkazOdldDIl65SC0l2yKmeFkGZxx3U5GOu7yu6dkWyyADD04/HywuByzQ2BFFKoiWHX7kU0r5wjgJcLOeGJKaSYuCobrGH4aWZcyczc8Azm6Yv8Cn666kTXvWSsMSSwA1Vb5Jsi3GJxscgK458OEKHITGrdE7H8fZwGstwd9VXhxbzF1qkCsjiSd800U2T8nDam5A2qjjqqnCRxZJEk3oc9amHohOV4ohilXjUWVN4iIPhOMXM2J5jaJcxIqSpvdlDmpfd1r+UZFQ5Y2yfsLvas+Pf6oYvAlA4Utn2wFVycRWT+YKq23nTwaKBEKRGTecbY2/JlkmiCaBYaX7k1lFr/RYOsohCWJE0ntgiWXpEuJiu7oFVZkvojWW0uCtZOpKqmlU0PkIIIzMS34zNJWFmWNb24uVu5kteV/BiodpynbQud5KKhHdlKC0qpLkltgP+e9xccsv78vraaKvGhNMWsQiA1Vm8NUVh9Qyy72uEjwP2KMWlJEoQZrg2bxelXOxRe1i/uuTWR1orRI8CAbfFf9ttptpfZYYFpP6/l8rawLBjo2PVK//MnD0bUAOVHm13cXBud+c9YW8nW+gHwm
- cgWLLV2y
- Sa3rHAM6YszZutkepeDlT+49N6SlMCULzno8d82/KnhjREYMoF4LyYPzNKn5d6YJVv06sXob/cOk1ttURDgi9A4YW4TsaWIRjmwnTpfnh8gxuBlyxd7//f26/oXyBQYD0yisyv5N8Rorca5Oj+CY9p0p05gGVIX8/EQQcHR5V6fidobGR36OR/HeVKC2gn+aaE4WQaq2gcLgOXIiZXMhRDyMxPmSPEkftcDVaJouTtCkmkoH7scfgI+gxSS+Q9K23bLQx2J/3rW8BeIpqrTVabgMGMfANt0TjcbcenaW6L7unfPM+JvCGDagb3C2bGCpaf+wVgK/gqy/rRFFmqwLP1cWvcF5DwYutOesu8RNuLdJDz1ahZ0BqBKL+C2QjMPdvrGmlt1HjfXlOblBkuKVQuld8wvcfZyC3rKZWKqJCTNN1w+U8J2nEK+wwGqe7GJkFUF8Iyiv6UjXEjv1PtiGt5zbMm1gKMceOw7dgBq39VSsjlePiUNpyFFOL5+MejjHR/scO7O4iDmlP4Vv+PQrHv3fbnmXj0HeYWrzdT+hV3zsptoapj7EIaTvRsHez2Qv/J0VxaP90gER8ogHThMLTxyVUpC96Gm/8w2omTgIQzRo+hd0DqsBDtRCphe14IM08UnkfH+3fgekxEW0SQEY0dIKxcvRw8yuA4+hSrGS2uCPRauL4tcRCM1SviQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C231340007
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 795i8ggzfth6bij8fmrk4hskfhhgka75
+X-HE-Tag: 1792874905-9711
+X-HE-Meta: U2FsdGVkX19cRrwx0RBmasrQmzJbpACAH0XQBMFbVroNW+h75hWkp6j0Zv4ZRfUTUfHjkMmSxLJy0lMgVY1UiFMmwiGQm0uKY4cMrsthpJc3kmTRLFHAL6BqvH+CpA6haeRgGX1bpl53IwoA9siItR6TKs8xnGEY427aKRi8LnWj1EXF9Sk+Gi59ToYT0n9uTkVVQ0lsHWxgcNRw7BjxekBt4GDEFpCs4wOc4c3QJ2A2Y5TuyAs2lpWzciMMRx3s6tAyX8L4rsIq/w2MMC5KzqDgpMUm0T1WrRUF4D4tqn9uh/Xz+vs3dYdkCs1ToUaKfN/imYoD/YEfrCGy9bl37rZX5k7WcjKyKBY7Cba/avf1DP0BndDiGGaX/NF93Vj5IQokK6TcMtGn8WjAjhHWEkdhwIXJhg9nxC6eNmXL5SIuICPRUI9mqBW+4JwjM21vS6C6it8zPn1t42z5uKqvF2YUeyCstvLB4/PTzUY/+TPrFy3b4LsWOgW+12/c5mTNj1od32f9ih2PnQ9Un3o4cdY1EjzMcPWkj594Y20T4SRvMqD+IEHm2otNsxQfFnsEq8s7U8G/nGDa4gqNKdr9CjqDX1ou46WU9TAxtvYmGOtOv0+t1679Sr7nuSRqQEk9bFAPMwrFLcF5+FAIrSu7I4DM2IGLBdp6aIWwc+Oms4dToJxteojkUd4OOxxQXTF8wzsq4SBAx+ohp6vUXvocLeF7Zq0bzzRsEqLkybQRgesFHsbwjSxW0fz0/WOl5qnJ63ScPgcpzh0bTvpZLknbYUURrTt8JEKfgRygUfC98ycREqsEMTPyAJgT9w8mNQ+tcjegHcs4ly5uIK70uey9S/nH2jMTk7mAR1sBCNz78ctIbRvWslqbZTSe7NZMjs7DYJvR9sQefhgpayYLkUKjZff7udgrTu+ekmhnehu77ERsPvqUU1hYj7URY3BCO/STKeO29WrKF/VWAgH5oHo
+ OYJv6Lf4
+ YrnKxSsQmPKuKYcZBoO+PWvbdG2dRmkgTovuoOtlvKXKLWwycc0aLQKkSSzSdXohejAztOmzn+93CzFqvN9BpZT6KCmK0xkmQi2+aZsyZru/bV1ffZq9nyyIdvx9F7VaH3OGTJskTu9YrF+rfR/+f3N7BPLMoM0wxQ/oqhulXFJTkMJz75UeLg/LyctSDwuPItsxI1ZR1ltfNIUAlLEkTn8yvjmIFzIL9aVIsYRKiqrvDfrMhyNikl4JOZpm8lXnevgxmHoH/ZSHw2+2N79Nu9j8uHSXTtUWgnsTx7aXhDEMg+gwXJpcNc9oNwnWgZ881q/HIuUMcDhi68/V7QUmcGgFRciqXFEI0Vo/vHRRKh7S4sPpzqOzgbp55ar0AHXSJfSw2gbpta123bo5kZipGdKB7Mql1GDY+bEo+CwE5lMyp9GDkWnXx0+2HinoTpXzVBkKC61b+8YlxlyQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,132 +167,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] lib/lz4: pointer overflow check before adding MINMATCH in LZ4_de=
-compress_generic()
---
+On 2026-10-24 14:16 -0400, Rik van Riel wrote:
+> On Sat, 2026-10-24 at 23:50 +0800, Kairui Song wrote:
+> > On Sat, Oct 24, 2026 at 4:03 AM Rik van Riel <riel@surriel.com>
+> > I also hope there is a way to release swap metadata completely too.
+> > e.g. for fs, you at least have umount, and can rmmod the fs itself
+> > afterwards. We also have many ways to bypass the page cache. In cases
+> > where a virtual layer is just a burden, we want raw physical swap,
+> > and
+> > the ability to swap off that too.
+> 
+> The VM cannot operate without the swap cache, though.
+> 
+> That is very much built into core parts of the VM.
+> 
+> However, having swapoff remove all data from the swap
+> cache, after mapping the memory back into userspace
+> page tables, seems like it would be fairly easy to do.
+> 
+> Does that meet the needs of your use case?
+> 
 
-commit 470e38e27e55da2aeb57c59ceef99c817952636e
-Author: S. Biplab Raut <Biplab.Raut@amd.com>
+It may be good to talk about this in terms of discrete workflows and
+interfaces, rather than in the abstract.  Just describing effects
+creates a confusing situation without including the cause.
 
-lib/lz4: backport upstream fast decode loop
+Isn't this as simple as having something like:
 
-This commit backports the upstream LZ4 v1.9.2 fast decode loop into
-LZ4_decompress_generic() for x86 and non-clang arm64 targets, along with
-the shared variable-length reader and updated safe-loop control flow.
+echo 1 > /sys/kernel/mm/swap/drop_cache
 
-Link: https://github.com/lz4/lz4/commit/28356e02ad6f6dac529302cedf707712c5b=
-628fe
-Link: https://github.com/lz4/lz4/pull/645
+('simple' is doing a lot of work here)
 
-> diff --git a/lib/lz4/lz4_decompress.c b/lib/lz4/lz4_decompress.c
-> index 3a2cd9acada4a..bb201c9484dda 100644
-> --- a/lib/lz4/lz4_decompress.c
-> +++ b/lib/lz4/lz4_decompress.c
+-- 
+~Gregory
 
-[ ... ]
-
-> @@ -116,15 +273,200 @@ static FORCE_INLINE int LZ4_decompress_generic(
-
-[ ... ]
-
-> +		/* get matchlength */
-> +		length =3D token & ML_MASK;
-> +
-> +		if (length =3D=3D ML_MASK) {
-> +			enum variable_length_error error =3D ok;
-> +
-> +			if ((checkOffset) &&
-> +			    (unlikely(match + dictSize < lowPrefix))) {
-> +				/* Error : offset outside buffers */
-> +				goto _output_error;
-> +			}
-> +			length +=3D read_variable_length(&ip,
-> +					iend - LASTLITERALS + 1,
-> +					(int)endOnInput, 0, &error);
-> +			if (error !=3D ok)
-> +				goto _output_error;
-> +			if ((safeDecode) && unlikely((uptrval)(op) +
-> +						length < (uptrval)op)) {
-> +				/* overflow detection */
-> +				goto _output_error;
-> +			}
-> +			length +=3D MINMATCH;
-> +			if (op + length >=3D oend - FASTLOOP_SAFE_DISTANCE)
-> +				goto safe_match_copy;
-
-[Severity: Medium]
-In LZ4_decompress_generic() in lib/lz4/lz4_decompress.c, can checking for
-(uptrval)(op) + length < (uptrval)op before adding MINMATCH (4) allow
-op + length to wrap around the address space?
-
-When safeDecode is enabled and a match token has length =3D=3D ML_MASK, if a
-crafted input stream supplies enough 0xff extension bytes so that
-(uptrval)op + length lands within 4 bytes of the top of the address space
-prior to length +=3D MINMATCH, the overflow check passes because op <=3D
-oend - FASTLOOP_SAFE_DISTANCE.
-
-Adding MINMATCH then wraps op + length around to 0x0..0x3, which bypasses
-the op + length >=3D oend - FASTLOOP_SAFE_DISTANCE check, sets cpy =3D op +
-length to 0x0..0x3, copies 32 bytes in LZ4_wildCopy32(op, match, cpy)
-before terminating because d < cpy is false, and leaves op pointing to
-0x0..0x3 for the next iteration.
-
-Additionally, read_variable_length() accumulates into an unsigned int
-length, which can wrap modulo 2^32 if srcSize exceeds roughly 16.8 MB of
-0xff bytes.
-
-[ ... ]
-
-> @@ -293,38 +645,16 @@ static FORCE_INLINE int LZ4_decompress_generic(
->  		length =3D token & ML_MASK;
-> =20
->  _copy_match:
-
-[ ... ]
-
->  		if (length =3D=3D ML_MASK) {
-> -			unsigned int s;
-> +			enum variable_length_error error =3D ok;
-> =20
-> -			do {
-> -				s =3D *ip++;
-> -
-> -				if ((endOnInput) && (ip > iend - LASTLITERALS))
-> -					goto _output_error;
-> -
-> -				length +=3D s;
-> -			} while (s =3D=3D 255);
-> -
-> -			if ((safeDecode)
-> -				&& unlikely(
-> -					(uptrval)(op) + length < (uptrval)op)) {
-> +			length +=3D read_variable_length(&ip,
-> +					iend - LASTLITERALS + 1,
-> +					(int)endOnInput, 0, &error);
-> +			if (error !=3D ok)
-> +				goto _output_error;
-> +			if ((safeDecode) && unlikely((uptrval)(op) +
-> +						length < (uptrval)op)) {
->  				/* overflow detection */
->  				goto _output_error;
->  			}
->  		}
-> =20
->  		length +=3D MINMATCH;
-
-[Severity: Medium]
-Similarly in the safe loop of LZ4_decompress_generic() in
-lib/lz4/lz4_decompress.c, should length +=3D MINMATCH happen before checking
-(uptrval)(op) + length < (uptrval)op (or should the check include
-MINMATCH) so that cpy =3D op + length cannot wrap around by up to 4 bytes
-and bypass the subsequent cpy > oend - MATCH_SAFEGUARD_DISTANCE bounds
-check?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023195617.3468=
-543-1-Biplab.Raut@amd.com?part=3D1
 
