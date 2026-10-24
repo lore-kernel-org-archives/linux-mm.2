@@ -1,91 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B15606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 10:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2E8606A31D
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 10:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OOZxQpcM
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=O+biJyg6
 Received: by kanga.kvack.org (Postfix)
-	id 977AC6B0A94; Sat, 24 Oct 2026 06:22:05 -0400 (EDT)
+	id CB2B36B008C; Sat, 24 Oct 2026 06:46:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D9C26B0A96; Sat, 24 Oct 2026 06:22:05 -0400 (EDT)
+	id C3AF86B0A8F; Sat, 24 Oct 2026 06:46:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77AEB6B0A98; Sat, 24 Oct 2026 06:22:05 -0400 (EDT)
+	id B03116B0A90; Sat, 24 Oct 2026 06:46:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F34B6B0A94
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 06:22:05 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49255120347
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 10:22:03 +0000 (UTC)
-X-FDA: 85357129326.18.77E82D9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 94AB3A0006
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 10:22:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OOZxQpcM;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 75A9D6B008C
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 06:46:09 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5B9E21A027F
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 10:46:08 +0000 (UTC)
+X-FDA: 85357190016.01.4DB01B1
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AF87A180002
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 10:46:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=O+biJyg6;
+	spf=pass (imf16.hostedemail.com: domain of joaoanandalima@gmail.com designates 209.85.222.47 as permitted sender) smtp.mailfrom=joaoanandalima@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792837321;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eYXM4y7vVcl00H+9DObDCdderh0QDVdn3eYPAzsxly4=;
-	b=XwgDSL1tR4qGTF18QNQdsE13e3mGknshe1Heop3F/CL5rY82FuT90PqZaFsGL118+Hxsjf
-	UgnTHem5hUH5DJbKctqJJgyNSGYEFHSD6nmfFpIKtXfWunoIL0mZIHCliMk8WhvaRsLeLM
-	POrKqN1wReLIGBsPjEPdjgfhnDd2r7k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792837321;
-	b=KcWtaTE0ClDPsuwHON8mx8ibhUCDmYnvCRR9fivQ1+3IItHN8MsXisz1Ym5ZJMImjFoeX+
-	G3sfMwQKLwqNB8/R1dAbg2xyuaghCZRJSdOowd7bVhBq0sfrYGLXBCzTDxZzcRUAaH0AzM
-	ZJi0HKDXgX+mbzyRxao9RCPIgfSVZzY=
+	s=arc-20220608; t=1792838766;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yI6gnpr3iD8MepU4vdxCrnHeeo0inroAoiiaaC1yzbs=;
+	b=F99c1poUYtdvT1ZdBaVPckokuqjefZ+UZPEtRWPH3Whb7iFvoxu8ysquf6FdGYpgl04rz0
+	ZIDetkJarGIiU+ceA3URsN2m9PjBKNWfBfJsHNl9+kz2liA7K53vsoSvxKc40RXaGOFWp9
+	xB00dOGk30qn2XYCfpMYqTv+eD6+r9E=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OOZxQpcM;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BB6DF43E91;
-	Sat, 24 Oct 2026 10:22:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3982F1F01825;
-	Sat, 24 Oct 2026 10:21:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792837320;
-	bh=eYXM4y7vVcl00H+9DObDCdderh0QDVdn3eYPAzsxly4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OOZxQpcMc8VvkkOt82eS9CKR1G/9ZWClkZJCGAzGW5CmyyFBgN0kuiE+QE8QWRd/G
-	 4VUJHDQuoPtZZIKtZS9Lzxjnsa4uVENe3m/uMUnPnNvZf+o/VeAcsVFcwclYDokfNz
-	 Hjl9Q7OO4/TOdsucXOTtFwrAeC7r+AKsPxKB8aLoUntOzuuXzcdYfJHRhit0mDpHTK
-	 /rtpVCs7+BnzhmSqigkVjElzJuKJmZKnkVpQ9TuLvAB4//+Gwb7Ar+rN/w51v6FiR6
-	 IghfpV6CIfh4opwvPcQ8nDMWmGtS71jfqAwMcullCTaSRjggiZJ4bPAH2fg5h8JEIX
-	 4eVHhNJmE/XDg==
-Message-ID: <sashiko-outbox-183642@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] ALSA: us122l: mark hwdep mappings VM_MIXEDMAP
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Jaroslav Kysela" <perex@perex.cz>, "Takashi
- Iwai" <tiwai@suse.com>, "Kazuki Hanai" <hnkz.64@gmail.com>
-Cc: "Takashi Iwai" <tiwai@suse.de>, linux-sound@vger.kernel.org, linux-mm@kvack.org, "David
- Carlier" <devnexen@gmail.com>
-In-Reply-To: <20261023-fix-us122l-mixedmap-v1-1-e7bdd053850f@kernel.org>
-References: <20261023-fix-us122l-mixedmap-v1-1-e7bdd053850f@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 24 Oct 2026 10:21:59 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 94AB3A0006
-X-Stat-Signature: wey6nxfocfqdax6ycwztbxfkji5yqg86
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=O+biJyg6;
+	spf=pass (imf16.hostedemail.com: domain of joaoanandalima@gmail.com designates 209.85.222.47 as permitted sender) smtp.mailfrom=joaoanandalima@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792838766;
+	b=OM6kn2Tyt7wbV0WQNgfbNfhizpGkypZNR9c6dMa865Juia57NYm/n0LuF3BH4QbZsdHhXW
+	e0rjNKBcOHVur3yZaPxWZFeZIlVjysQTxlYUC0Zla/318wEULih1MVV0qm3Qyagy1Xmbpr
+	abH+L/xQLV1qLI8dMY99SZVsNCcUlKk=
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-988c7371716so646730241.1
+        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 03:46:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792838766; x=1793443566; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yI6gnpr3iD8MepU4vdxCrnHeeo0inroAoiiaaC1yzbs=;
+        b=O+biJyg68nuSIPfSIVuAWh7EcLCJFpyMFkf8WkZSoc1eNU1EqWQmI9LJn0nzieX3hi
+         1cmvB5NzDaH8q3DBWcCjUa1pu9afgZS3WONQ3cbABPag7qMCGnPodktMEVb35JuRtB7x
+         2LNRaV6YIneF83Wkxsr16WTTKsqaStBAxiiLInO2P8KO9SGAJWzKR2xrGdFWXPmGOb/q
+         tNkjNjs3bVeqO5loOXUR91BnIJc429/OBxX1FKNP8M8AoiW2N8pxXp3X8HSqdAqPQ37t
+         3agv/LCbYUPd8UPrVBzsQIuNcQmmvGyGC7Kk/kP80QNNQXtF9IEKN5bEG+V6rkSe0dpC
+         b4hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792838766; x=1793443566;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yI6gnpr3iD8MepU4vdxCrnHeeo0inroAoiiaaC1yzbs=;
+        b=LETqmIBJ5+U3Z5kmduNa8y48+0R9IZcup62ubesXRlDKuhEYNySETtK0CBEHgOFLzq
+         /yr6FGYOfmph5Bk5+zz5jQsHzdTc0NNF2mFLRWhoyr6E2voVGt76qvKW5Ohw0csin+rh
+         AHITZW1V9HfNx3+z2P43ctkIpSbW8E7S0fvtOddr8VSzAuWv3gW7jYUNKB7wZyS03bG9
+         0EdD4rBX7Lx2h+k5O4NynNaV7Ch+uXqIP9UpkeC07O3HJwL591mTcGQM/KLE8xrrWH1I
+         7dPQG7GqFHaJe9NL736vqIgKrtAp3aX4eO+JfI0kQNFeh+iXrcHfP6LdB586Phm1T3/u
+         QHOA==
+X-Gm-Message-State: AFq9FYK4p/sJ0pkzgQtOqcLO7Yj/3qcXc5WZiOVKWMTw6iy2KNB6QPtk
+	WR3Q2aKyONJuNduiGH/jaiwfPYdixukas3qBIQciATMJo5DhXgc/raWKHTOfknC9
+X-Gm-Gg: AYBFou2TgZfJ71L+KeJdjFClIO8/TVe2y5ht8BhBV6GQfDDPe3wi7XjEkgguWda1kOH
+	pCaKJBH4xHCXYrGD/6gvjSH859+QC1UvSjErRCaOoUO1unXUnvyALX3cAsXvkuSBsgxYtrti0Bo
+	+83gN96Xo4aupeu++95m7+4n0r8a6IEgqw5qG1ptxIT3kQdE74yeSRqzEy3i2Kz5eEqCJs0whn8
+	IyEWwRW9w9VS8hiD5qOus+B2HrHarFXmBpgr52WAXxdqiao+5v1KYY8weoDlunOfvO0oY+CHBkc
+	WksskKOWGR9uC7L0HwHdtyTwWBOskuVySEBz6OO7wszCbx6Ta1wc2AhOUIo6nR8TIzS9cCJxt29
+	TiUgr3zWfL7NfTS05hDQlhltxGM7alue6V7SwRV37CcKm/+mNdK+RqqgmOVjwf1wnt+1kVf6tP1
+	VxRqJjy4jpZE4C1dzjX9hJ3nX4OL1b7sbsUScLJ4rhuHTWrOMOr1L8f3Vn81f4Wzbe2ik2zK6XS
+	Da5g3cUW7HyOLYkbu1Gb12DbevYrFIlqiO9R4p/mLXSdZnuC4+9ioksylaYTBupsON9RGoeBHlt
+	pF98
+X-Received: by 2002:a05:6102:1492:b0:7cc:32da:56e with SMTP id ada2fe7eead31-7ce5cd41446mr429300137.19.1792838765631;
+        Sat, 24 Oct 2026 03:46:05 -0700 (PDT)
+Received: from DESKTOP-7QP7L26 ([45.190.211.148])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9910e7b7069sm2191025241.3.2026.10.24.03.46.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Oct 2026 03:46:05 -0700 (PDT)
+From: dev12124 <joaoanandalima@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	ardb@kernel.org,
+	keescook@chromium.org,
+	dev12124 <joaoanandalima@gmail.com>
+Subject: [PATCH] mm: ppm: add PPM (Page-Plugger Under Memory) to Page Fault and Overcommit elimination
+Date: Sat, 24 Oct 2026 07:45:42 -0300
+Message-ID: <20261024104552.394-1-joaoanandalima@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.3
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AF87A180002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792837321-174290
-X-HE-Meta: U2FsdGVkX195Bs+04LNrCr0CKU7LhyzTrL3h//r5emW1QNHRZ/C7ZYECvELYI/6uZthdfDW1DJjpXO7aQkhKGpWskXZPk1j9yTUcoF0BIivMnT4omZ5IYjBXV6bXhTp2HH3u/nDRO0YXstDXjbNYVdFfxsB86AV8JM6ufhFad+ocEvi53SnvoHNEqJDGUBAquDidbPguoX09vST4oQSTy5eBG/jKuz7v0YK0Sq9Kz2u4KsC5ii+Zya38Ekw3Cka4JRmnqn+QAX9RDgFgqwiANnOOKZdwHDLGFX9mXsMMF27AMasNOraFImQciupl+mXvyOkD7huLvqACQInVj2U+Mz2kORHFyW9dkS0xGQij1N5Lhlgo8i5Nnx2hwC0XfeybvwrMRhwstTKpYrz6xdXaFmrPRJYUGHe5ufe7w4y3Y7IIj2K3co3ZS6MisVwfQRBEuaRUq2ufGtSqo4CHcD9h2n+hlbMF2PrnAqTntzSok/tPBgoA6ubNlDtbwoqN1YssfQAeLdsT5lqPNViP8f4buy+zuAR9JmiZFc9KSR7HX7I4yRwQP89PCAsZu87yZrfwRD8GyDpeqgwLbgbGLOCjIm2aWDS+9Y5scWr236lPqedrSXBt4oK2zDDoF34aBCX29/QJcnyngS5n3dFWs/bQ9A39bPxRxq22Z9dnAcyfhz0TIkKmQ5NzuriFHMJAWe0fUBdXoGLMDwVqLd83WZpapcJ7JVWeVgRT+Pyf0OMp3qRjrvv6LZZsjRf7QD842FALOviiimHqosAhLxjJxdeHpMlEHUbGLfE74BkSJjPVEJmFriZv/0+uyLXgahqD1ydRk5MS5NKhrIO3gR9tRsfss6QMPL9ESrn1zoA7tJ+P0YKEtXYYDpxQYB4xSyo4X+AcV6xwW6mNjhdYGmoSGrdTHHUmEPXDx4mdULl0xcDSjby87vE/XDkKYquVjSTMnlLcPJPbVHeqHv7Bm4YJTLK
- QEFaLSar
- gSS+gXVycLAGr34882iGvzhLIcly6n8Vv7k9XTlZC1wJH/tL9tv7HhPjguYsQVLLr38erdv8RGsOXxRZrAUN2VEiy7IM1kLMTPMpx2Pao5lH4Y5B5Am+A815RxCW2YjEKi+2K0spTG6kY6Yi+DrKbiUtPYXuderxPypvY3+pM+tcYZ7tRcEq06t/mk2FiT44uEkzeNlvmhyEFYQeFeKD8d6Fq/EHdzm/43HG6BY1k/rNJ2DwvmzCVK/K9s30uicTG4hQd1yrT9HeJ0VOxYWdS1o9j+zQiMvKJ0oJlaQ9PX4eunaKTA+dIRtuEvq61T8m/MLRV2V/5Bn5CdkTMbFnCHKToubRRTTNCy9CZ+09CAnS6uiSDS/DdZhfe8RXstP1BKQ3lWijpah3uOseKktLsEi2apsaH36riqbIAmrMVbK/RVj/9ucavxuqgA1wa4s917mRG8KMI20/mP3mAcLxyPyR+d4tfu7gGAcZ/6D5+yD/yK7lJkk+F658wJxp/bSH+kK3d+gaCZLXjeLwTqSyae4sbNoAm6Qjc5uHQZSRR08GVR1iesDnSw7nxh13T6Kon4t3GaY3vKPzwg0eIqzr23UGAEJIIhC985TVTuV6+41twbLveLxR1MWhAWdTAto8fiw0hdXbQECeJ4KBraLClnR/I4gIDnE2MMXsqV5AX4228udJ+QKbr+QhRX/Ed96MH7AdyvVfuIuizKeIXXhFQvT9uPzuw7mtzxPjarSmsRuWmFwbXFj76GkFLhg==
+X-Stat-Signature: b88mdaejntp59h8oxk55uwzwz3oiddb9
+X-HE-Tag: 1792838766-120
+X-HE-Meta: U2FsdGVkX192R0NBpcbKg0m7WVQ41/U5ZbUerX0qMTH3gK2RFWQa2VrBMw5zTDk5fPh6ltOQuLpypLifLM44yVoO9O0DvsfezNeLyd9Zt9y78rLuPlTA5MoL2/yyyC0VZZdJ/ulskHhefxoK03qDMInyVuTz0dU6C5eE6mncfphfuAuOG8xDm/GaI4OsQctFZLueIdCzMafz8h3hkYFb5IKgi4xhsc8FGT9xcc3fY3EJt+P8UznsaD1trk7CYvDwCzJgh+lGwGWD8UumFDRber2+eBh6FPtyYctwAD95zrxmKbAwlfYh+S95YnpY5ehWS7ysUk9ObXKd9uqJGc5Jdhw3nRh01IvdfawCcsQ9fZBIeQ/yTqBJKY+G0Xns9i5u/ElC7Sg+AHd5ONXw456zlJWrzDZwqeoQS/UGyeWsihHbtPygitcso72zx0XamXE7qL8J8mu14gmaqZ1RPZiICt6Uy/AUNW9/FoEOElSPlH+hq+opP4pfhBFGnp+vK881afFIPyExjdTZTTh49IkVRfs2WCYDsO08zas8p9fbEQs9D4Hm0gFE/zpIFm+FArNu3mfWFXsg9fq1Tx4vO+xVcEo9DmXNtwUgSJdHOhKV3FrNIXWUSpFfStnnrEmznyfeMe/e64r5nfBAD96Lw70PAMvXTeIN0HBvQWi2rXZ8Vyezid4tJAtB4JuCRRwPr0g9/kErTK8LhWqWU6iQe57t05r1DGGbl+I/QvsV+hyeWNjq9CINGHpXo176IZyBF3r5kQHEefKz8a9Q2CWiZcJ5jweerJ1PkuSucHYQV6BlSPC6ddIh6L2xs5ApqOUChjddaGW3wZ2Z7xBvw3/0v9tTExTg2CeCH+ttQG/r6bBjelfE7CJvsujEaFekASIFVE8zZrc9lS2TrVCWWlq51g16paU95zPd7KlsvYtzyCfhYcXqBYBOXkzg40cWB8C+S20LYVVB2ci0ShCouOcEmH/
+ pAl8zU66
+ CVtTubjzBGg7gg4zTz7urFdIwHKqvocjx1vSWnEEyub4Iv7X2RGkqcGIbm3vVcSF2B+/BHP5IrfgpFUR7kQWByFDlCuNm1AdVUX8Ctk6XppRq3hvqqjAUFXAke6+vtcVU9rG6reRW7Nyl7lx0BN+WmHO8e0PkSbEzv/3eCmNctWQUwCtsV42vL9izJobFZiI22bcIdWkcb/wIrozV7DH+eNfhnEI42qqdU98aEhvSwl1ww/2s8xj8FeakNf0OhKPJdND//YSYPL1LAF9fCQ2fuJo4qzSG7KPYNiCeh3lDcj4AqG6FDEEB+gpZrhvdLvy7rO1VTasSv7ZSVp6rWDUZJEtXK+TfPYJTfViQRxdhAFqWpwP3eV0NuneYDk7dUtuw2PkZobglqvQvHvLpDWCbifsP8KYSafQJZvKJtqUiuLFKmv6BmEpXbbOMIanh3VmWgAHJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,91 +124,338 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] ALSA: us122l: VM_MIXEDMAP in usb_stream_hwdep_mmap() breaks mremap=
-()
+Hi mm subsystem,
+
+This patch implements the Memory Tatic called PPM, Page-Plugger Under Memory.
+The Main Objective is: Page Faults and Overcommit Elimination.
+
+A few points under additionate:
+
+1. Allocation Handshake (ppm_kalloc):
+Using the GFP_PLUG_MEMORY mask, the allocator completely bypasses
+passive overcommit verification. It instantly isolates physical frames
+on the RAM, maps the page table entries síncronamente, and forces the
+Present Bit and Writable Bit to 1 before returning the address block
+register to the CPU.
+
+2. Desallocation Cleanup (ppm_kfree):
+Triggered via the GFP_FREE_T parameter, the release phase executes an
+immediate length truncation to 0. It forces a synchronous TLB
+invalidation (via invlpg execution) and flushes the data out of the L3
+cache lines using clflushopt instructions before moving the hot clean
+pages into a dedicated priority recycling pool.
+
+I additionate a Buffer/Cache with store important objects.
+
+
+
+
+
+
+---
+ include/linux/ppm/gfp_types.h |  74 ++++++++++++++++
+ include/linux/slab.h          |  11 +++
+ mm/memory.c                   | 158 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 243 insertions(+)
+ create mode 100644 include/linux/ppm/gfp_types.h
+
+diff --git a/include/linux/ppm/gfp_types.h b/include/linux/ppm/gfp_types.h
+new file mode 100644
+index 000000000..741122b2d
+--- /dev/null
++++ b/include/linux/ppm/gfp_types.h
+@@ -0,0 +1,74 @@
++/* 
++  Memory Tatic: PPM (Page-Plugger Under Memory).
++  This File is for PPM Flags/Macros/Functions/Types.
++  Engineer (brazilian): João Guilherme da Silva Freitas Lima <joanandalima@gmail.com>
++ */
++
++/* Types Include Guards */
++#ifndef __PPM_TYPES_MEMORY 
++#define __PPM_TYPES_MEMORY 
++
++typedef unsigned char uint8_t;
++typedef unsigned short uint16_t;
++typedef unsigned int uint32_t;
++typedef unsigned long long uint64_t;
++typedef uint64_t gfp_t;
++/* For errors in Allocation */
++#define __PPM_ALLOC_ERROR -102
++/* For errors in Desallocation */
++#define __PPM_FREE_ERROR 0x04 
++/* For success */
++#define __PPM_SUCCESS 0
++#endif
++
++/* Functions Include Guards */
++#ifndef __PPM_FUNCTIONS_MEMORY
++#define __PPM_FUNCTIONS_MEMORY 
++
++/* Initializer */
++void __init_ppm_memory();
++
++/* Allocator Optimized */
++int ppm_kalloc(unsigned long address, uint64_t size, gfp_t flags);
++
++/* Desallocator Optimized */
++int ppm_kfree(uint64_t size);
++
++#endif
++
++/* Flags Include Guards */
++#ifndef __PPM_FLAGS_MEMORY 
++#define __PPM_FLAGS_MEMORY
++
++/* PPM inits/starts in Bit 54 of a 
++   64-bit variable 
++ */
++gfp_t GFP_PLUG_MEMORY = (1ULL << 54); 
++
++/* For free memory, the Bit 55 is 
++   used 
++ */
++gfp_t GFP_FREE_T = (1ULL << 55);
++
++#endif 
++
++/* Macros Include Guards */
++#ifndef __PPM_MACROS_MEMORY
++#define __PPM_MACROS_MEMORY
++
++/* For Kernel Kernel tests 2 Bits (54 and 55) in 
++  1 Clock Cycle (or in small clocks, example: 5 Clocks), 
++  is used a mask using | 
++ */
++gfp_t GFP_MASK = GFP_PLUG_MEMORY | GFP_FREE_T;
++
++#endif
++
++/* 
++  Notes:
++    E-Mail of RFC:
++        [RFC] mm: page-fault: overcommit: PPM (Page-Plugger Under Memory)
++    
++    
++    Assigned-Off-by: João <joanandalima@gmail.com>
++ */
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index cda126def..c76243128 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -22,6 +22,17 @@
+ #include <linux/percpu-refcount.h>
+ #include <linux/cleanup.h>
+ #include <linux/hash.h>
++#include <linux/ppm/gfp_types.h>
++
++/* A Structure enum with objects and codes
++  for PPM Tatic Memory 
++ */
++enum __PPM_OBJ_CDE_BITS {
++	_PPM_OBJECT_CACHE, /* A Simple Cache to store objects */
++	_PPM_OBTAIN_CODE, /* 0x04, -102 or 0 */
++    _PPM_FLAGS__ /* The Special Flags to PPM (Page-Plugger Under Memory) */
++};
++
+ 
+ enum _slab_flag_bits {
+ 	_SLAB_CONSISTENCY_CHECKS,
+diff --git a/mm/memory.c b/mm/memory.c
+index 8b0c2c735..5e1ca12c4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -78,6 +78,8 @@
+ #include <linux/sched/sysctl.h>
+ #include <linux/pgalloc.h>
+ #include <linux/uaccess.h>
++#include <linux/ppm/gfp_types.h>
++#include <linux/slab.h>
+ 
+ #include <trace/events/kmem.h>
+ 
+@@ -94,6 +96,137 @@
+ #warning Unfortunate NUMA and NUMA Balancing config, growing page-frame for last_cpupid.
+ #endif
+ 
++/* Small Variables for 
++  PPM uses 
++ */
++int ppm_free_error;
++int ppm_alloc_error;
++int ppm_success;
++unsigned int order;
++unsigned int nr_pages = 1 << order;
++unsigned int i;
++struct vm_area_struct *vma;
++spinlock_t *ptl;
++
++/* Initializer of PPM */
++void __init_ppm_memory() 
++{
++	
++	/* 1. Define the variables for 
++	 the rest of System uses 
++	 */
++	ppm_free_error = __PPM_FREE_ERROR;
++	ppm_alloc_error = __PPM_ALLOC_ERROR;
++	ppm_success = __PPM_SUCCESS;
++
++	/* 2. Connect __PPM_OBJ_CDE_BITS to 
++	   flags under gfp_types.h 
++	 */
++	__PPM_OBJ_CDE_BITS.__PPM_OBJECT_CACHE = 4 * 1024 * 1024; /* 4MB for alloc, used to store important objects */
++	__PPM_OBJ_CDE_BITS.__PPM_OBTAIN_CODE = 0; /* Is modifyed in ppm_kalloc() and ppm_kfree() */
++	__PPM_OBJ_CDE_BITS.__PPM_FLAGS__ = GFP_MASK; /* The Kernel uses this for test */
++
++	/* 3. Alloc the Cache of Objects */
++	char *ppm_identifier = "PPM Cache";
++	int *result_ptr = kmem_cache_create(ppm_identifier, 
++		8, 
++		_slab_flag_bits._SLAB_HWCACHE_ALIGN,
++		_slab_flag_bits._SLAB_PANIC 
++	); /* Number 8 for a 64-bit Pointer */
++	__PPM_OBJ_CDE_BITS.__PPM_OBJECT_CACHE = result_ptr;
++
++	/* 4. Return success */
++	ppm_success = __PPM_SUCCESS; /* The Kernel Optional-Action is verify if ppm_success is __PPM_SUCCESS */
++}
++
++/* Allocator to PPM */
++int ppm_kalloc(unsigned long address, uint64_t size, gfp_t flags) 
++{
++	if (unlikely(!size)) 
++		return __PPM_ALLOC_ERROR;
++
++	/* 1. Alloc the size */
++	order = get_order(size);
++	struct page *pages_ppm = alloc_pages(
++		flags | GFP_PLUG_MEMORY,
++		order
++	);
++
++	/* 2. Navigation in PTE (Page Table Walk) */
++	/* 2.1. Obtain PGD */
++	pgd_t *pgd = pgd_offset(current->mm, address);
++	/* 2.2. Obtain P4D */
++	p4d_t *p4d = p4d_alloc(current->mm, pgd, address);
++	/* 2.3. Obtain PUD */
++	pud_t *pud = pud_alloc(current->mm, p4d, address);
++	/* 2.4. Obtain PMD */
++	pmd_t *pmd = pmd_alloc(current->mm, pud, address);
++	
++	/* 3. Plugging */
++	/* Entry in PTE */
++	pte_t *pte = pte_offset_map_lock(current->mm, pmd, address, &ptl);
++	for (int i = 0; i < nr_pages; i++)
++	{
++		/* Calcle the memory allocated in 1 step */
++		pte_t entry = pfn_pte(page_to_pfn(pages_ppm) + i, vma->vma_page_prot);
++		entry = pte_mkdirty(entry); /* Active bit dirty */
++		entry = pte_mkyoung(entry); /* Active bit young/present */
++	}
++
++	/* 4. Finalize setting in the RAM the page */
++	pte_t *new_pte;
++	set_pte_at(current->mm, address, pte, new_pte);
++
++	/* 5. Unlock */
++	pte_unmap_unlock(pte, ptl);
++
++	/* 6. Return */
++	ppm_success = __PPM_SUCCESS; /* If value returned == __PPM_SUCCESS? */
++	return ppm_success;
++}
++
++/* Desallocator to PPM */
++int ppm_kfree(uint64_t size) 
++{
++	if (unlikely(!size)) 
++		return __PPM_FREE_ERROR;
++	
++	/* 1. Entry in MMU Directories */
++	pgd_t pgd = pgd_offset(current->mm, address);
++	p4d_t p4d = p4d_alloc(current->mm, pgd, address);
++	pud_t pud = pud_alloc(current->mm, p4d, address);
++	pmd_t pmd = pmd_alloc(current->mm, pud, address);
++
++	/* 2. Entry in PTE */
++	pte_t pte = pte_offset_map_lock(current->mm, pmd, address, &ptl);
++	/* Verify if the PPM plugged the page */
++	pte_t result_for_check = ptep_get(pte);
++	pte_val(result_for_check) & GFP_PLUG_MEMORY;
++	if (result_for_check > 1) 
++	{
++		pte_clear(current->mm, address, pte);
++	} else `{
++		/* No executes/call, is ignored */
++		
++	}
++
++	/* 3. Flush for clear the TLB */
++	flush_tlb_page();
++
++	/* 4. Unlock PTE */
++	pte_unmap_unlock(pte, ptl);
++
++	/* 6. Extract the Pointer to free */
++	int identifier_numeric = pte_pfn(result_for_check);
++	struct page *ptr_result = pfn_to_page(identifier_numeric);
++	free_pages(ptr_result, order);
++
++	/* 7. Return success */
++	ppm_success = __PPM_SUCCESS;
++	return ppm_success;
++}
++
++
+ static vm_fault_t do_fault(struct vm_fault *vmf);
+ static vm_fault_t do_anonymous_page(struct vm_fault *vmf);
+ static bool vmf_pte_changed(struct vm_fault *vmf);
+@@ -6848,6 +6981,31 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
+ 
+ 	__set_current_state(TASK_RUNNING);
+ 
++	/* If PPM returns no is == __PPM_SUCCESS, ignore the PPM Mode and 
++	   sign the default flow 
++	 */
++	int code_error = __init_ppm_memory();
++	if (code_error == 0) 
++	{
++		/* Verify flags */
++		unsigned int ppm_check = flags & GFP_MASK;
++		if (ppm_check == GFP_PLUG_MEMORY)
++		{
++			ppm_kalloc(address, size, flags);
++			return VM_FAULT_NOPAGE;
++		} else if (ppm_check == GFP_FREE_T) {
++			ppm_kfree(size);
++			return VM_FAULT_NOPAGE;
++		} else {
++			/* Executes none */
++		}
++
++	} else {
++		/* Executes none, is jump to the instruction of 
++		   'ret = sanitize_fault_flags(vma, &flags)' and next 
++		 */		
++	}
++
+ 	ret = sanitize_fault_flags(vma, &flags);
+ 	if (ret)
+ 		goto out;
 --
 
-commit c40f3445d293957b8d56aca33b8d5ed4071fcf4b
-Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-ALSA: us122l: mark hwdep mappings VM_MIXEDMAP
+Signed-Off-by: João Guilherme da Silva Freitas Lima <joaoanandalima@gmail.com>
 
-This commit sets VM_MIXEDMAP in usb_stream_hwdep_mmap() so that clearing
-VM_MAYWRITE on read mappings satisfies the core mm requirement that
-mappings clearing VMA_MAYWRITE_BIT must not be mm-managed.
 
-> diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
-> index a5db0d044ef96..2986a90ea3351 100644
-> --- a/sound/usb/usx2y/us122l.c
-> +++ b/sound/usb/usx2y/us122l.c
-> @@ -193,7 +193,7 @@ static int usb_stream_hwdep_mmap(struct snd_hwdep *hw,
->  	}
-> =20
->  	area->vm_ops =3D &usb_stream_hwdep_vm_ops;
-> -	vm_flags_set(area, VM_DONTDUMP);
-> +	vm_flags_set(area, VM_MIXEDMAP | VM_DONTDUMP);
->  	if (!read)
->  		vm_flags_set(area, VM_DONTEXPAND);
 
-[Severity: High]
-Does setting VM_MIXEDMAP here cause a regression when userspace expands
-the read mapping with mremap()?
 
-In sound/usb/usx2y/us122l.c:usb_stream_hwdep_mmap(), VM_DONTEXPAND is
-intentionally omitted when read is true so that userspace (such as the
-alsa-plugins pcm_usb_stream plugin) can initially mmap() the first page to
-read s->read_size and then expand the read VMA to s->read_size via
-mremap().
 
-When userspace calls mremap() to expand this VMA and the virtual address
-range following the VMA is unmapped, do_mremap() -> mremap_at() ->
-expand_vma() takes the in-place expansion path in mm/mremap.c:
 
-mm/mremap.c:expand_vma() {
-	if (vrm_can_expand_in_place(vrm)) {
-		err =3D expand_vma_in_place(vrm);
-		if (err)
-			return err;
 
-		/* OK we're done! */
-		return vrm->addr;
-	}
-}
+2.55.0.windows.3
 
-expand_vma_in_place() then calls vma_merge_extend():
-
-mm/mremap.c:expand_vma_in_place() {
-	vma =3D vma_merge_extend(&vmi, vma, vrm->delta);
-	if (!vma) {
-		vrm_uncharge(vrm);
-		return -ENOMEM;
-	}
-}
-
-However, vma_merge_extend() -> vma_merge_new_range() in mm/vma.c checks
-whether the VMA flags allow merging:
-
-mm/vma.c:vma_merge_new_range() {
-	if (!vma_flags_can_merge(&vmg->vma_flags))
-		return NULL;
-}
-
-And vma_flags_can_merge() -> vma_flags_is_mm_backed() ->
-vma_flags_is_mm_managed() in include/linux/mm.h rejects VMAs with
-VMA_MIXEDMAP_BIT set:
-
-include/linux/mm.h:vma_flags_is_mm_managed() {
-	return !vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
-}
-
-With VM_MIXEDMAP set on the read VMA, won't vma_merge_extend() return NULL
-and cause expand_vma_in_place() to fail the mremap() call with -ENOMEM?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023-fix-us122l=
--mixedmap-v1-1-e7bdd053850f@kernel.org?part=3D1
 
