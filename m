@@ -1,95 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2882606A31F
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274FB606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EfoDNYpT
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GOyAIB1r
 Received: by kanga.kvack.org (Postfix)
-	id 7C0266B05B4; Sat, 24 Oct 2026 15:34:03 -0400 (EDT)
+	id 356A06B05B1; Sat, 24 Oct 2026 15:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74C756B05B8; Sat, 24 Oct 2026 15:34:03 -0400 (EDT)
+	id 307F86B05B2; Sat, 24 Oct 2026 15:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C3166B05B5; Sat, 24 Oct 2026 15:34:03 -0400 (EDT)
+	id 21DA46B05B3; Sat, 24 Oct 2026 15:56:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 146CE6B05B6
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:34:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 871E18044D
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:34:02 +0000 (UTC)
-X-FDA: 85358520324.13.239695C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EF527140002
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:34:00 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EfoDNYpT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DF57B6B05B1
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:56:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67A6E803E4
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:56:58 +0000 (UTC)
+X-FDA: 85358578116.30.5663EA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CD2D9180007
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:56:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GOyAIB1r;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792870441;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1792871816;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HjEsKHyDFKj7HHX5WZLrUS4CLP7wbTWvbErAlhp6Z7k=;
-	b=3abx5fU5VPa9Q3XKTRCKOgCm2HGdTuwi7Gp7KkUv1gS5ZRfUe+aQtWVN9jy1NizA96GKOD
-	+f2KkcV+OeF/59hTjZCuVSXOWQXVEcyH1Yo0ap6u43Om4c4E7yVJVJNVjw+oZP2SgfGfqz
-	l1o3XTptLNoV5ZWFRJUS1rPPJKaxlQ0=
+	bh=JmMlTKfpNHokvyjnWNUvxbdsY0ytuHDIziS4VZxItYY=;
+	b=n2iV9YXM3LSUnqe/zWiU/evYV1+dfDFjifQ5MWTLzQ+Rhyu8fHVHlX/JXXBniaoeKlH+9Y
+	cTJDFPG1sqwqBXzdvDJBuImK/ooy+gH7p19Deru9RTK9BxmuSXQjbLwpkz2QTamNEh5kuT
+	yqDWOV/+StiKP77HNr6OrCbtg5mkHQk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EfoDNYpT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GOyAIB1r;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792870441;
-	b=rCnOCKKJo/5z96aPIpp9SPLhOzV2KNw0BSxEClT4XRDDbyoj6NI5j8/JK3ENtZLDtPrW+B
-	YJXo2NLO1wzWYMuqV7tsxdqVdYq4Wzcn/meMhJVvNeIdTQd5j4Si6J1BcCHwNNpHQAsa10
-	kta3RDSSTLvQrMasGpgJCsJDw2vvsR0=
+	t=1792871816;
+	b=xIVYMIiTzfnDDVzRJkgJbt3Uu67qGeSD/vDtvHqF54sScbkYsDDF5YC0N5tEcgCl3591Iq
+	Dcg6MZD61ncY6YGzVT3L19xpksS8wGRHsYtoK7LkAU5w3+1yoe8BlEl6L5voROHgRp3Nmv
+	Onqhi5MoyDPiF9ggGPMgx4p3C+/cRFA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4E9D74363F;
-	Sat, 24 Oct 2026 19:34:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B951F01825;
-	Sat, 24 Oct 2026 19:33:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 59A1E600D4;
+	Sat, 24 Oct 2026 19:56:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB21F1F01825;
+	Sat, 24 Oct 2026 19:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792870440;
-	bh=HjEsKHyDFKj7HHX5WZLrUS4CLP7wbTWvbErAlhp6Z7k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EfoDNYpTX4r7251gPD043Z1N82zWoBSTl5aNvZtonOA4CjNZ3L1eLdV95xz2RfATx
-	 2faEgGwhj0NbSZZr7VkX0Q8X4/3r4FCxr5Zh6LMv2YSYHUARHCPMkCR59uwDPDlZmc
-	 1jQENf/ehnrpbH94glJSmQAZtY2FGFwBYC7vVXrCMTg6LZaHEMBRQ/7JFdgRTK/68q
-	 U0NH2cctz0L7JkiXtwHihVPr3EyRbK4hBlBdndEytlIS2aY/x+Geg3w1oWM56MTmaD
-	 G3g9mTg+opI83yKo93OuXV0A83hfzIYdrCe0ltAbLOaWcB72/prR4m/cUlsm2mRn+O
-	 saIR+PzEetDKg==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 3/3] mm/damon/core: move static variable rotation to damon_ctx
-Date: Sat, 24 Oct 2026 12:33:49 -0700
-Message-ID: <20261024193351.87130-4-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261024193351.87130-1-sj@kernel.org>
-References: <20261024193351.87130-1-sj@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EF527140002
-X-Stat-Signature: qwmou3czdwbwe8pnrw3ana8a5e5w9ugr
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	s=k20260515; t=1792871816;
+	bh=JmMlTKfpNHokvyjnWNUvxbdsY0ytuHDIziS4VZxItYY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GOyAIB1rjvArSFE7gfIVCzK0ziJWNbf0ckbZya7wm88IJ580Xr7c0UdzNhlTC/tEL
+	 fgJeh3zjG2vArPUvu6tRoP+sGd2dpbtQqaKhSZdsi8EQ+Bl4jYheu3T+thuPB5zy+a
+	 L6gKOO4GwTzgZThgj60zYPTUpgOgknHVDX558oAkeTLRtZ4GmOGUl6g9O6uVNtA4x7
+	 nt2Lf2EiQ2judPSRJtuLWBDPW6cGG9MPutZVrBDQLSdTu0msjUtpfOGteAu8OJqPrx
+	 GV+eyWkVawrQCbyfndU+5kWpOqaVQIlHHNOVa0PChUma3xJjzcgVzn6U/UFiVfCNm+
+	 ZKL2kHdfX/oxQ==
+Message-ID: <sashiko-outbox-183867@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] lib/lz4: backport upstream fast decode loop
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Biplab Raut" <Biplab.Raut@amd.com>, linux-mm@kvack.org
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, hsiangkao@linux.alibaba.com, terrelln@fb.com, yann.collet.73@gmail.com, guoxuenan@huawei.com
+In-Reply-To: <20261023195617.3468543-1-Biplab.Raut@amd.com>
+References: <20261023195617.3468543-1-Biplab.Raut@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 24 Oct 2026 19:56:55 +0000
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CD2D9180007
+X-Stat-Signature: 71ig5u4zhxze5ratqnidq1nex73x716b
 X-Rspam-User: 
-X-HE-Tag: 1792870440-485257
-X-HE-Meta: U2FsdGVkX1/7UE2j55K/0VZBqocNYUmwj7FOgpeeVaR36nOngJ28BA2rEmsPkaBEv6bXQbvQwYlNkyLrlsLs0zPnqvuG31guWob4wMWgrPVKYHDKNHcAsagK9KG300afB96ayx2E+3XDfDjyPcBrMynvozJYLL4Pvn5dZ4fHWjWI+5Uam+cvRZiglZ0fim9uAL8x8dUctNBD2HZlNB6HCN3eDDIDHQANX4Vnq6FgS2FmaxtlUYUA88c5n0U3lliNk6I1CDNrTpx38nVQaIqhWSR+qtpO7m+JAiHIxXFO+tPZUl06GGSIuyK1YuVThCHj/SZtseMfE5HxtqW4DxSHreudzVdgvU+jdtNKyV6zDpiWCKpC+WtKxkDlmv9J3GD7njQRtBa2+cjaW9qhJ28pyTESmI88XwqrIE6HkMPVVvxsEzWs941ki4qn6OEVKwE1z9m3MsJ492fGfM31jlZkpgpSQbtTOJ0Ze8uwh0Gr5tXp0zuIRXNMe7Cbz35Kkg9VpUBm0c8Uip9JPuaDLxRnT6DNz9xFmTtiqC8rGRMaMZTJOZ6qJb7oVu55QAUZCLtDw66fmBMrDaOQZwKq6MWuenUXf7pLjVHsmKPHXbuDxeWCLSoYAHISq9qbnLcMIU5oYGEplCmlJ2mVtIZZQZQqGD88xWxfUcepjCYh90nCVtr7IElJOSs60yghQY0CFIKnpxaY7+eP4VQLFqpjw1bzdxEDiap6d1mTCZQsyg3r8zruBaCuVsbN3btDTN5iRc2M8GuYc6ybbYxCNssA5aXuVwAkzB/ckl0QUD9gpZeLNWAvnafZCEhg5OY4XPKHGLastcKE2jkEQp4FgYKPow8D6m7VDMDsvjdtX04ibTL/Q7n07IAu+c4mhB+JIc/W6IBeH4JmJuyFgKyU21HK3eNx86co7eAYoniuES56iJv3j65D2070xpH8HVzOaxKnzv2w2AMV9vRRfHjwG48t63j
- eRB9u1Fe
- XNtjpUV0j+P6l8OOYVf7Dlo+jgV3AE7c/ACJOXI7SbDAtEfooTKYAOW/ARm2jMNhAeiYCstWh6VH7lw6SmLnBnP+OSdhfxYYmN9/GD2pCFmSKVjg1L+JDx/SBCp9AGnQe3nCiFDBcknuEaqodXOIrl40+m/3llfwLcZwr9ZUEqBNXjs8ZYRe37SmQm+XBR8Xse5N50yLxGiqu32unOt9n2YfjP6gfJdmPQCpCADQmsAsvo5EB1pZuDaWxM/8OJbi2RCJIAs1eKrqIH6vyR0vpRA4pZ/+v6sX3dLyqQq/kFBEcz7lmi1hzWQDXLPoDHHghmKLQ62METd1hJu1RVPQaNcwu1Q==
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792871816-10407
+X-HE-Meta: U2FsdGVkX1/B6HP/wGKZqqA/QVlTX69MPOifUfWu4cAerIyEY9BIvyvP4DzKa90ev9MaY+VgbQOyc4r3EjUNXfU+00NkSYUwFXb7EsVb2aSZMftJM4aa+ahLsTimsKZswEHUrx8Jqhs4BCsAFStWxKo2ds+unmxWEtLEeELPssxN+4hY8v9E5RLxIz+PjlPPqqTTQY+xcHg2QHrhgJnNFbvbqz+j0BOSRWoGeyIIdUTg1Q/ELsXFHz71qA4QDZ8BwE4MWECMG7Ei1bhiJ3X5Ff4H/2SKwDixMhF3nYeBikK/pYqIhUCcc8eRpNwh7RJ5Gu1HDVUB2+92JoslK9YzcYCsCpgrKTJ6DGghrsb1ttFrSJNqJGM4xWnUhQ9hxr4JkazOdldDIl65SC0l2yKmeFkGZxx3U5GOu7yu6dkWyyADD04/HywuByzQ2BFFKoiWHX7kU0r5wjgJcLOeGJKaSYuCobrGH4aWZcyczc8Azm6Yv8Cn666kTXvWSsMSSwA1Vb5Jsi3GJxscgK458OEKHITGrdE7H8fZwGstwd9VXhxbzF1qkCsjiSd800U2T8nDam5A2qjjqqnCRxZJEk3oc9amHohOV4ohilXjUWVN4iIPhOMXM2J5jaJcxIqSpvdlDmpfd1r+UZFQ5Y2yfsLvas+Pf6oYvAlA4Utn2wFVycRWT+YKq23nTwaKBEKRGTecbY2/JlkmiCaBYaX7k1lFr/RYOsohCWJE0ntgiWXpEuJiu7oFVZkvojWW0uCtZOpKqmlU0PkIIIzMS34zNJWFmWNb24uVu5kteV/BiodpynbQud5KKhHdlKC0qpLkltgP+e9xccsv78vraaKvGhNMWsQiA1Vm8NUVh9Qyy72uEjwP2KMWlJEoQZrg2bxelXOxRe1i/uuTWR1orRI8CAbfFf9ttptpfZYYFpP6/l8rawLBjo2PVK//MnD0bUAOVHm13cXBud+c9YW8nW+gHwm
+ cgWLLV2y
+ Sa3rHAM6YszZutkepeDlT+49N6SlMCULzno8d82/KnhjREYMoF4LyYPzNKn5d6YJVv06sXob/cOk1ttURDgi9A4YW4TsaWIRjmwnTpfnh8gxuBlyxd7//f26/oXyBQYD0yisyv5N8Rorca5Oj+CY9p0p05gGVIX8/EQQcHR5V6fidobGR36OR/HeVKC2gn+aaE4WQaq2gcLgOXIiZXMhRDyMxPmSPEkftcDVaJouTtCkmkoH7scfgI+gxSS+Q9K23bLQx2J/3rW8BeIpqrTVabgMGMfANt0TjcbcenaW6L7unfPM+JvCGDagb3C2bGCpaf+wVgK/gqy/rRFFmqwLP1cWvcF5DwYutOesu8RNuLdJDz1ahZ0BqBKL+C2QjMPdvrGmlt1HjfXlOblBkuKVQuld8wvcfZyC3rKZWKqJCTNN1w+U8J2nEK+wwGqe7GJkFUF8Iyiv6UjXEjv1PtiGt5zbMm1gKMceOw7dgBq39VSsjlePiUNpyFFOL5+MejjHR/scO7O4iDmlP4Vv+PQrHv3fbnmXj0HeYWrzdT+hV3zsptoapj7EIaTvRsHez2Qv/J0VxaP90gER8ogHThMLTxyVUpC96Gm/8w2omTgIQzRo+hd0DqsBDtRCphe14IM08UnkfH+3fgekxEW0SQEY0dIKxcvRw8yuA4+hSrGS2uCPRauL4tcRCM1SviQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,63 +90,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-damon_split_some_reigons() uses a static variable, rotation, to remember
-how many times it was called.  It is again used to determine fair
-selection of regions to split.  Since it is a static variable, it can be
-indeterministic and therefore less fair.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] lib/lz4: pointer overflow check before adding MINMATCH in LZ4_de=
+compress_generic()
+--
 
-The user impact is not critical.  No crash, no leak.  DAMON's
-best-effort and indeterministic monitoring accuracy could be slightly
-more indeterministic when multiple kdamonds are used in parallel.
+commit 470e38e27e55da2aeb57c59ceef99c817952636e
+Author: S. Biplab Raut <Biplab.Raut@amd.com>
 
-Fix the problem by moving the static variable into the damon_ctx struct.
+lib/lz4: backport upstream fast decode loop
 
-Fixes: 1a582e6e0174 ("mm/damon/core: split a fraction of regions when nr_regions exceeds max/2")
-Cc: <stable@vger.kernel.org> # 7.3.x
-Closes: https://sashiko.dev/#/bug/linux-eebfcdde-2881-48ef-8df1-e2019d2a47f2
-Signed-off-by: SJ Park <sj@kernel.org>
----
- include/linux/damon.h | 5 +++++
- mm/damon/core.c       | 5 +++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+This commit backports the upstream LZ4 v1.9.2 fast decode loop into
+LZ4_decompress_generic() for x86 and non-clang arm64 targets, along with
+the shared variable-length reader and updated safe-loop control flow.
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index cb6a50032a1eb..380f9cf6ddd82 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -963,6 +963,11 @@ struct damon_ctx {
- 	 * for more details.
- 	 */
- 	unsigned long last_nr_regions;
-+	/*
-+	 * number of damon_split_some_regions() invocations for this context.
-+	 * Read damon_split_some_regions() for more details.
-+	 */
-+	unsigned long region_split_rotation;
- };
- 
- /* Get a random number in [@l, @r) using @ctx's lockless PRNG. */
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 09722257ce736..73b571b429cb3 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3753,12 +3753,13 @@ static void damon_split_regions_of(struct damon_ctx *ctx,
- static void damon_split_some_regions(struct damon_ctx *ctx,
- 				     unsigned long split_step)
- {
--	static unsigned long rotation;
- 	struct damon_target *t;
- 	struct damon_region *r, *next;
--	unsigned long offset = rotation++ % split_step;
-+	unsigned long offset;
- 	unsigned long idx = 0;
- 
-+	offset = ctx->region_split_rotation++ % split_step;
-+
- 	damon_for_each_target(t, ctx) {
- 		damon_for_each_region_safe(r, next, t) {
- 			unsigned long sz_region, sz_sub;
--- 
-2.47.3
+Link: https://github.com/lz4/lz4/commit/28356e02ad6f6dac529302cedf707712c5b=
+628fe
+Link: https://github.com/lz4/lz4/pull/645
+
+> diff --git a/lib/lz4/lz4_decompress.c b/lib/lz4/lz4_decompress.c
+> index 3a2cd9acada4a..bb201c9484dda 100644
+> --- a/lib/lz4/lz4_decompress.c
+> +++ b/lib/lz4/lz4_decompress.c
+
+[ ... ]
+
+> @@ -116,15 +273,200 @@ static FORCE_INLINE int LZ4_decompress_generic(
+
+[ ... ]
+
+> +		/* get matchlength */
+> +		length =3D token & ML_MASK;
+> +
+> +		if (length =3D=3D ML_MASK) {
+> +			enum variable_length_error error =3D ok;
+> +
+> +			if ((checkOffset) &&
+> +			    (unlikely(match + dictSize < lowPrefix))) {
+> +				/* Error : offset outside buffers */
+> +				goto _output_error;
+> +			}
+> +			length +=3D read_variable_length(&ip,
+> +					iend - LASTLITERALS + 1,
+> +					(int)endOnInput, 0, &error);
+> +			if (error !=3D ok)
+> +				goto _output_error;
+> +			if ((safeDecode) && unlikely((uptrval)(op) +
+> +						length < (uptrval)op)) {
+> +				/* overflow detection */
+> +				goto _output_error;
+> +			}
+> +			length +=3D MINMATCH;
+> +			if (op + length >=3D oend - FASTLOOP_SAFE_DISTANCE)
+> +				goto safe_match_copy;
+
+[Severity: Medium]
+In LZ4_decompress_generic() in lib/lz4/lz4_decompress.c, can checking for
+(uptrval)(op) + length < (uptrval)op before adding MINMATCH (4) allow
+op + length to wrap around the address space?
+
+When safeDecode is enabled and a match token has length =3D=3D ML_MASK, if a
+crafted input stream supplies enough 0xff extension bytes so that
+(uptrval)op + length lands within 4 bytes of the top of the address space
+prior to length +=3D MINMATCH, the overflow check passes because op <=3D
+oend - FASTLOOP_SAFE_DISTANCE.
+
+Adding MINMATCH then wraps op + length around to 0x0..0x3, which bypasses
+the op + length >=3D oend - FASTLOOP_SAFE_DISTANCE check, sets cpy =3D op +
+length to 0x0..0x3, copies 32 bytes in LZ4_wildCopy32(op, match, cpy)
+before terminating because d < cpy is false, and leaves op pointing to
+0x0..0x3 for the next iteration.
+
+Additionally, read_variable_length() accumulates into an unsigned int
+length, which can wrap modulo 2^32 if srcSize exceeds roughly 16.8 MB of
+0xff bytes.
+
+[ ... ]
+
+> @@ -293,38 +645,16 @@ static FORCE_INLINE int LZ4_decompress_generic(
+>  		length =3D token & ML_MASK;
+> =20
+>  _copy_match:
+
+[ ... ]
+
+>  		if (length =3D=3D ML_MASK) {
+> -			unsigned int s;
+> +			enum variable_length_error error =3D ok;
+> =20
+> -			do {
+> -				s =3D *ip++;
+> -
+> -				if ((endOnInput) && (ip > iend - LASTLITERALS))
+> -					goto _output_error;
+> -
+> -				length +=3D s;
+> -			} while (s =3D=3D 255);
+> -
+> -			if ((safeDecode)
+> -				&& unlikely(
+> -					(uptrval)(op) + length < (uptrval)op)) {
+> +			length +=3D read_variable_length(&ip,
+> +					iend - LASTLITERALS + 1,
+> +					(int)endOnInput, 0, &error);
+> +			if (error !=3D ok)
+> +				goto _output_error;
+> +			if ((safeDecode) && unlikely((uptrval)(op) +
+> +						length < (uptrval)op)) {
+>  				/* overflow detection */
+>  				goto _output_error;
+>  			}
+>  		}
+> =20
+>  		length +=3D MINMATCH;
+
+[Severity: Medium]
+Similarly in the safe loop of LZ4_decompress_generic() in
+lib/lz4/lz4_decompress.c, should length +=3D MINMATCH happen before checking
+(uptrval)(op) + length < (uptrval)op (or should the check include
+MINMATCH) so that cpy =3D op + length cannot wrap around by up to 4 bytes
+and bypass the subsequent cpy > oend - MATCH_SAFEGUARD_DISTANCE bounds
+check?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023195617.3468=
+543-1-Biplab.Raut@amd.com?part=3D1
 
