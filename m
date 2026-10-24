@@ -1,102 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFF0606A31B
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 17:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D47606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 18:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O/+QLq+u
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=d/nc68lp
 Received: by kanga.kvack.org (Postfix)
-	id D50486B05B0; Sat, 24 Oct 2026 13:59:05 -0400 (EDT)
+	id 43C116B05B2; Sat, 24 Oct 2026 14:09:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D29516B05B1; Sat, 24 Oct 2026 13:59:05 -0400 (EDT)
+	id 3EC106B05B3; Sat, 24 Oct 2026 14:09:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3EE16B05B2; Sat, 24 Oct 2026 13:59:05 -0400 (EDT)
+	id 2B4C86B05B4; Sat, 24 Oct 2026 14:09:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F5936B05B0
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 13:59:05 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3091E8026B
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 17:59:05 +0000 (UTC)
-X-FDA: 85358281050.26.2062ECA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 930428000A
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 17:59:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/+QLq+u";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792864743;
+	by kanga.kvack.org (Postfix) with ESMTP id EFF246B05B2
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 14:09:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 81A158034D
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 18:09:08 +0000 (UTC)
+X-FDA: 85358306376.13.A8B510B
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7A3DC160006
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 18:09:06 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d/nc68lp";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792865346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wn6LUunGIyzmVYEoJnx2e0JItf3hv7Cqz4SK0g8TuiA=;
-	b=6IwK6sTO7bL3IsPdFNTI4sWlFYiKkt/WULQBPKLm5l20/q94rAbXdJ9cZeoAokJzx6GuQN
-	MmjzOjOnrsz7qvXQVoqnMxOfv8Jjz5O56P3qnGqiu58xpL6oCO/3OJZ58BjbcBSd7zr0kO
-	wYhrTMQDsIACC22EWy6K1Mlglgn0FdI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/+QLq+u";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792864743;
-	b=Lu9zKzzgxVs+wzIgJ5fDIvazZYRso/Qynp9Ep5Zw16I3NBmidz9n922GYh/zxjfaeBGBRi
-	/R7wDh29n07S311P+eGmAneBBFFuxEtIC+m/Q/fwdn9HwCwFC4hji4lXYPagOPr3KtpXOq
-	Dj11Gm/t+NOXxmz+KUHHZq2t+lIVdQ4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D091D601DE;
-	Sat, 24 Oct 2026 17:59:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167911F01828;
-	Sat, 24 Oct 2026 17:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792864742;
-	bh=wn6LUunGIyzmVYEoJnx2e0JItf3hv7Cqz4SK0g8TuiA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O/+QLq+uHY9+iyfrZ36J0jyEXPAPsXKqg63TZD5OGSFtSDbB7I2I5QXYJV4tqedn0
-	 bc2iNK+u5q11BDWgIQrWP562ElPINCxorvSR9qLTV/kXnUeeiQk3hnfeOxTL4XbCIF
-	 HcLSPhUm0rBK4jjhrpLtkm6uPd/mDLJzsPqWc4ZbO3XUA9FQqL+TRq5xm49J+Ofage
-	 nCIESaVA/YX4k/oSriQZTEAqjbU+IIcXffb+ahZEABHRwv7ES7a9o+aEsgv3HPxtRt
-	 tXoLEMNttdtlafvsmK2oNtMAImURhmZ9PE3qXLdF9GTnMgq5XiPA7YrOENrvQP107z
-	 n5pEWJ9YINWCw==
-From: SJ Park <sj@kernel.org>
-To: David Rientjes <rientjes@google.com>
-Cc: SJ Park <sj@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Fan Ni <nifan.cxl@gmail.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Raghavendra K T <rkodsara@amd.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	Wei Xu <weixugc@google.com>,
-	Xuezheng Chu <xuezhengchu@huawei.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org
-Subject: Re: [Linux Memory Hotness and Promotion] Notes from October 22, 2026
-Date: Sat, 24 Oct 2026 10:58:54 -0700
-Message-ID: <20261024175855.81607-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <a4676b13-ffca-636f-4590-640a1adbe422@google.com>
-References: 
+	bh=ERdyhAtVPKJZFC9C4hXaHC+3+7Xam6OVWXt0NVslvcg=;
+	b=T6DDAIOELr1nvlhOQ2MiHyQ65iELzeSokT66FC1KDJQxVdcM8tlhZN8FTje0EnJoMgiysg
+	N4VzajMVfJpjT2Vo5Z/wqN32y0XhagePhX3Ji+MLjX9apAZDF2E2z1WDeHKDM6FXqTURZD
+	FEyD5lsAq5G7fXSTw4nmRZtUmgzLf18=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d/nc68lp";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792865346;
+	b=tQvQKut8SRbSD78yjuUBcDvL74aBBTNy0WawxDIemogNfEjr4iQeSnpHq3xNc5G2pVrFd1
+	bFoRxDulfUNWXfDwlT/U+DCAoShg4mQHCt1X7PHftZxgXUFefwRAwvuIGoTJYmN8KUyAjP
+	VAD78KJFcm7JRPtf//1rx6U+YhVMiLo=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c2e8c710847so224202366b.0
+        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 11:09:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792865345; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Zj9p/thMhuZ5YSL7ad4Vit/EWa19GITiwWT7dPsDjgLsHyJY1VnD80qOk17rR5G4Qb
+         bT5F63hxwIIfVs+QzCvdT46glaOhNOnXMdwbPJG32PHQzvBe0Kt9xi7bIV89X5uigLoL
+         HJm7pySqkBl5ujavv2Jdidd9vb1PFOeR/VekjpzK03+2bhlFV9d0bUGa4Qv59yF187jD
+         IQK1oy1FXW85WL8TRF+88V82vwfFrhe4Dt51GtWghEBpWjnzIwTj5NQYpX/q9Nao6D8S
+         P7DhhaAHcWXXG/MJIAtta7Eqa+2dR/KotwUlMN/gnVL5hxapTxhqJJ52jiVbiqtQ+m/q
+         Vo2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ERdyhAtVPKJZFC9C4hXaHC+3+7Xam6OVWXt0NVslvcg=;
+        fh=CECIkOMNCg5qZB4QZsCuHh7VZgffmDf6T81akS+IdVI=;
+        b=OHCEph5+/W7z8ATgYC4u63SBImodzIVhnW9Ft7aTGujBYY6H3npeRIzuDn84u0m16i
+         rH7QpG2yEtRGI9fl+cU930R3EUGDxM+oofl1K9z24Uj7clPd8qiO3vB8l7D6dxr6wUS/
+         GQouOSkGQeoX8GJw0JftTKzMoyIy9aKkcdT/ZC8yEdN13OpAWr2UXv/IEfhhEpcevjlK
+         /+NJx96oCP85i8hNzZWrxBQaIHkYVAN/e0TrwuQlPT5uqRfCJG/ZHAiTQAM2QrLlgnKw
+         XV58BByffAYdPwg6gYfpTy9vrx6i3ZZc+eSvSrS2omJ1R1mjKfaNMoplBBrhQ+ZvChkB
+         qe2A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792865345; x=1793470145; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ERdyhAtVPKJZFC9C4hXaHC+3+7Xam6OVWXt0NVslvcg=;
+        b=d/nc68lpG0jmcr5R/fepe/xpWvYwYB3SoqRZT2pkS/F1WLPeHrt3ufSsoqeg5zD7b4
+         JNuJV4UGa90IJLIWRZGoOYDPCK2ckrOolZn3nDUmtvs8f6DKU7ifgDaZKIM6Um+6w0Ot
+         Ev+gkT1+f2p/bFlR2dgMsQWmrMKabiF01EZ4lMeHvq3HFl9IlD+TUA56EhRUoVIf9Q8V
+         WX/0un2Mblxp17ulaX3eeVa1ucY0oRkgvSH1p14e85XoiscIWdj7LzVFkBq10tbwgAF2
+         6UtYEG6TcK9aEDMSrup3jU0uZCYFmZTUAknY6cGdtpk1c+YvGWvJn2dHrfVin63JfzZZ
+         oLWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792865345; x=1793470145;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ERdyhAtVPKJZFC9C4hXaHC+3+7Xam6OVWXt0NVslvcg=;
+        b=EpCGQAHxcQ2u86xd+5tpBOUR5dU9FT6KHRzrJMeNxNCpxNynUqDSmCNWf0ZISvmxza
+         5sv37ZMmZWz6QNAJHOyTnDcNh24E6JqFWdhpyfrMs5r18Vl7mWiuxulzYdW0AVJEs70V
+         hZhNg02HgMkj0R05RDP9lb5rJHkfELZ26XS60+7FFeKBtdVMBtiUG5Cyx8SUZeCDMstI
+         PnfFaK3lLJEogRWqGbQ25RWQP0EToh1PUOoKsBCOTG7Wc7cqqK78mh0p3GKVEe1F2Px+
+         cXLtzzBLeFHBk57nfFvIjkjCmpL5FVBOUtziHs3T35FT3wjThf1ylLcuOihZPEO1gVSm
+         f3ZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzJcwcRTdtOeFDEUMixkMj97nhrcUjGNKrmNmCxk7w0shlXiPvm8Ar8yMbm7SvdNUDcLBSNZMl6uQ==@kvack.org
+X-Gm-Message-State: AFq9FYIcI/Dwdb8/vtvQYOdk4DRcPXW1XtDOuwJufHfnnrychcs9On0H
+	ArNwavSubQ9yNsPh1zJTwkHQkkBseIpby4u8O8phwCXtS8tqjfCPFgCycjFAdi+qjP5tbdU5ULi
+	S88I3qiYroc9Knj6JfyvHTArB3MZYwMk=
+X-Gm-Gg: AYBFou2jRdQiUvlgMtsBndPHmaLmPp3fBQVwbB9RmNQneNAUGrTUk2gQ/QvOB3ypOd0
+	b+SwBslN7PoF8IgyIBIeVQ16nbnrWOepIUKJXrSkrTr2Cov74Y1q8E3DkMH6xseQOfQUkVKd4mY
+	k0LZE45pxq2MOpf4sS2qvZrGlpyZMV5br2+gyn/sq00AT7Lc39PSzAVroPhY4b55A7gEy/tAhYm
+	8lKhTdglCpXyq6lhIg/iJ6IE63ZPQp+eI7hcRGe+X3MOXoFOpi1FEzaJGRHgcOwYwnK7Xqh2w76
+	08cE65SxEunz6Qm65LmMVJYPPiS1LTeMbfqJg/QSSEQv1OMJU3cVkeok6xMTf3X5p6xOOP3fkzQ
+	Puu8Sk03+/1t+9fSa/E/sPa+iXJw4OVDZhE9P9Sd0OwaEIt1XaWQKh1MwXQPuDrgEehg/yg==
+X-Received: by 2002:a17:907:86a5:b0:c41:6149:cb43 with SMTP id
+ a640c23a62f3a-c46bde099a6mr296933566b.18.1792865344596; Sat, 24 Oct 2026
+ 11:09:04 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 930428000A
-X-Stat-Signature: n4awcgazfn777sxs31j9fnwnmpokxgta
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+References: <20261022220203.91911-1-baohua@kernel.org> <20261022220203.91911-9-baohua@kernel.org>
+ <sashiko-outbox-183274@kernel.org>
+In-Reply-To: <sashiko-outbox-183274@kernel.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 25 Oct 2026 02:08:27 +0800
+X-Gm-Features: AclHuK8eWzuWavI0MQObBpMsb7z-DtSxrWiDtHQlSG46lBLdU3C2a79kHtVHB8c
+Message-ID: <CAMgjq7DjYS01BQAWnr=EdbhM1gbX+K+pXM6z04UEKg_NLU3CNw@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 08/14] mm/mglru: lift youngest gen protection for
+ higher priority
+To: sashiko-reviews@lists.linux.dev
+Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	hui.zhu@linux.dev, axelrasmussen@google.com, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, hannes@cmpxchg.org, ljs@kernel.org, mhocko@kernel.org, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, weixugc@google.com, 
+	yuanchu@google.com, zhuhui@kylinos.cn, baoquan.he@linux.dev, 
+	liuxiang.277@bytedance.com, wangzicheng@honor.com, lianux.mm@gmail.com, 
+	liam@infradead.org, surenb@google.com, mhocko@suse.com, rppt@kernel.org, 
+	zhangbo56@xiaomi.com, lyugaofei@xiaomi.com, ridong.chen@linux.dev, 
+	kunwu.chan@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7A3DC160006
 X-Rspam-User: 
-X-HE-Tag: 1792864743-918570
-X-HE-Meta: U2FsdGVkX1/dIPE326KRue8xcVhFogLuzCK49x5qNtu6qMvisHN+DQzY/0NwytUOxHNPRTd1WY/zMnD+R52G7dS4yPsrYsUp+bfE2cPUkizPIqCjZgrdG5SXHRqCWm916WJX7/akTxBeX5SdN0XgXXHUl5AkP4zwsSQRBUqLvzej0WI8lGZDZXD47gmyn8Bol9o6gtxtrYCh7H8Sr8VsBO6anix++BTgcgWLlWQit9hZRQNoRqdssYubL8sqvKBcUSaJmawRE4VqeqqbiECKa+aGAwwJfBFiD+IcPoQn5A7+C1Lu7NuQttAHoNJZcE+TDO9tfoXsWXKEH+RRhUOV/7MDcsKpNvUV/sM+xdREKOvYBRMzX18DzLWj4f5DXRgLyYNkWNX3O8RgQwEZFqjvYc1k/4f3GikD54oWoMYu4q8PGX8GXNp87XJdEp4qtqleePo+Nd2VA1ZR5dL1175bManQeD7NeoRlQ9rJDSaZ9mxrCI42KLqnKRkzLljVCCxNz7upYvoLyqtuUjBfL1sO7QSPlibmVIoIe78HkJrN7d/W7n4xiyVQPxk3MkEG+eQkkMp7hRU1sMt2MDpVzKxsQgTymOTY0kNs7nzgWTv3FpcVHvT/6GTQeAc18nDXP4+HORD7GbXnLOXK5MSvLNtjgmSo0nUMsOfluKdNwyOI7Y95wYwrqa7uK+FJ0SwueUD1YU+ihtdJ04Jn29VWxyHPLqTCazr0ae6Eld0KrZz0rZ8tq/K9fEm3lXc7x+SNeK96CPn0a6vdsCDqLR479E1wunjWVAeK70RMGKwcVSyqKYZvrjmx/Ud3FX5+w0rakNYYFjyCqj8GkDuSlzK34LHo4rk0RgUAVuOzTaCA+QTtZmKrQGQm+i4qJVnXsyH8XQG29XKnGegPa5RcFEM/BOThH4e1qiqH/mIT7hOuJDJ480kOpP5ipwjyuQZv2L8f7GsPi2ZVqWCsdZbgMHAYuT9
- ikR5KusY
- c4s4/AwprY/F3b46FhY7NOQIv/qbfWB3xGv3AkNAqkDTGgbupUs9yE/1/nWFC8LcuXjuk+dPBrnfi0cV4Vw6U/L93lLfFlTf3SYW56mXvC0HZ0YCSKDxg99svzqoRyVBkVSypzMGgB07guEEAra9zYEnZhQcOErzmF0QScUHRSKaU489xF2+ke/x3vdjCgesZe5hwgqcQiyiHja9lbjNwwjn9JZ0RnVbh19Jg2RqCMdcHDQWT4YkuCnNhxwl9TLZlkS5ml7w9nd88W4RBVE9+aW4oWmHBF5HVxcPc/wukUkbHoDCj3oILPCPMxztyzKfXMN/aH/Wo6izqt9mViKhAr4B6CUvCLckb+SrTXtjzy+OmvzhSV39idIoc4A==
+X-Stat-Signature: pgkf1mh77dr143ux5w9sgrf64ak1pnwc
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792865346-918559
+X-HE-Meta: U2FsdGVkX1/LHjhoNt/HByXVNpfm7ubwRTycgVsd12w+0zNGUfjgIUHgTWJSGqU9MovxLvSso00GdA5NY8Bl3lMqyTJGmmSBbXjk9ZgRfT47PsqayVHcNJGgcYKIS9sDd9mULLYFrimzuFIcHC7jAat54neadaI3BBo4S7O58HKXgt2reYEsqfFNB/ic4nj+d0K3C7PieH1CgndB9ThPt4Bhpmkdhv1WsS5ZB4MA3qtgzSmt+yBIqba8z5L2VgYl0KJiljeYBuDr01+Ak7Pv7TzrHoW+xMLEJDkU3z1yLPF8ess6eVIwbQq6y0QvoGeqaamyHPpzb5IMYeuXojWzPGSqtDLfyVwOKIdLEf5/dkVV1wvfwcaExYUpm2S3rpCNGisDUrB6/wReQs50BueED2xMQjUFxvsXrLnMs2Qd/+D1C4yK+NFgVYznBi6A6odkOdNUmDlvRrQC0KD/grrgRzxymCyVwvVOzqROA+7wgF4xdiigXKe+AmLDh0RP4tyOFCI+Z7La8sODYu8gjQYbAZBcJ67m9Gm/NxUSs0FJLH9OxdhZn9Ge9AR3UZY7VjhD2+YfnT6yG9FtCKCKRj+rIrYsnXwX32wDC+PcrXwivenyqSzSxhkzwQcKQbLOwpWIGHfGuASZuu201mdYkZ+8b4UopuA7yCB/GsvEMB2A/Jzy8RWFBQh/Uk130cppVir6uGY9Ni3MuUGAYZT5as10CRhtr+2OCakK2dHl7giU2lYSo4iQRkzhTPcIBc+mdW7dR5d/hRNzRe8Lek+LxQE1gZbB1A6h/4ouxWZP86HPK5esqD9TeIkJdhsyyPpoivfylePdL6Da4bknMpUcCgKhLUij1iRYP3aqkTJd158VnosQ78eWpsD52XG9M7OE9dCILZfRN5ozqcevzJ1SCCXrJ3BJo3bLYes9rNqDeEBJr/KK1e9XdKth8coYaYwrSKiNm4/2JXlwdFHTKspikf0
+ jd1dYzZy
+ B5cpenBH8yROrCMl7aTnQUdLWPN0RS0vqBWndzAYJm1PNRa59rCzq8CnCDUBjbqUZr+WdPVRrAZnQ8LkTFGE4L8Njp6k+QT1zLC/7rQK1LvV0WFQwITE1nAPBortM0+JZAlTRIM4SIH8qlbdC1IyvwhljPjRxOpWJNwPlLxvtkV/pzF92HWbDmEDV4x2iR3g386BbilZxtaAFMKA6AKLR52tJ3LDS1cPHdjO8Yr42frCbbMCo1XmoxL5OlloGRjMsOF0tZbTMgg0J6VlLyPtegt7WQkyraYy/cwdcpCl0RCxXPhu7Ccu3U/qDCMq1yFdyWbg/9eMZcPjkc3M1PQiH2lTLahNysKafg1qs0Qc9C5Izt824TFX7wB9GOQ/uILHHNqVErQZvvIc4MIvRnuESTsRcsN2a6fDY6f5v1M6SGuAGbnFZddvqiFODz48l3o5bYBRM5rvqtkbDBoRDrljBauskEaljK11bTSz+lL81cHS9DpKcAFTz2U1M5a4Oayl40ZPtJQN76k1iwK+TKIEU1BGjIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,78 +152,143 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi David,
+On Sat, Oct 24, 2026 at 6:03=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Medium] mm/mglru: scan_folios() scans expired gen < min_seq at DEF_PRI=
+ORITY
+> --
+>
+> commit 1329290ce5f86b7de9b77d6b22e4b265f16348ae
+> Author: Kairui Song <kasong@tencent.com>
+>
+> mm/mglru: lift youngest gen protection for higher priority
+>
+> This commit adjusts scan_folios() in mm/vmscan.c to choose the target
+> generation sequence number based on reclaim priority rather than using
+> lrugen->min_seq[type] at default priority. It aims to protect younger
+> generations at default priority while allowing higher-priority reclaim to
+> scan newer generations step by step.
+>
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index fed39b0422e01..d1e14001f9346 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4930,12 +4930,14 @@ static int scan_folios(unsigned long nr_to_scan=
+, struct lruvec *lruvec,
+> >       VM_WARN_ON_ONCE(!list_empty(list));
+> >
+> >       /*
+> > -      * Respect the gen hotness distribution at low priority to avoid
+> > -      * aging and scan cost, but prefer to satisfy the reclaimers requ=
+est
+> > -      * when under pressure to respect swappiness more and reduce IO c=
+ost.
+> > +      * Respect hotness at default priority, and only reach into the
+> > +      * newest generation when under severe pressure, so hot folios ar=
+e
+> > +      * not evicted as soon as priority is raised.
+> >        */
+> >       if (sc->priority =3D=3D DEF_PRIORITY)
+> > -             seq =3D lrugen->min_seq[type];
+> > +             seq =3D lrugen->max_seq - MIN_NR_GENS;
+> > +     else if (sc->priority > DEF_PRIORITY / 2)
+> > +             seq =3D lrugen->max_seq - 1;
+> >       else
+> >               seq =3D lrugen->max_seq;
+> >
+>
+> [Severity: Medium]
+> Can this cause scan_folios() in mm/vmscan.c to scan an already-evicted
+> generation when a type only has the minimum number of generations left?
+>
+> In try_to_shrink_lruvec() -> evict_folio_lists() -> evict_folios() ->
+> scan_folios() at default priority, when get_nr_gens(lruvec, type) is at t=
+he
+> minimum (2 generations), lrugen->min_seq[type] is lrugen->max_seq - 1, wh=
+ile
+> scan_folios() sets seq to lrugen->max_seq - 2 and passes it as max_seq to
+> lruvec_populated_min_seq():
+>
+> mm/vmscan.c:scan_folios() {
+>         if (sc->priority =3D=3D DEF_PRIORITY)
+>                 seq =3D lrugen->max_seq - MIN_NR_GENS;
+>         ...
+>         seq =3D lruvec_populated_min_seq(lruvec, type, sc->reclaim_idx + =
+1, seq);
+>         gen =3D lru_gen_from_seq(seq);
+> }
+>
+> In lruvec_populated_min_seq(), because min_seq (lrugen->max_seq - 1) is
+> greater than max_seq (lrugen->max_seq - 2), the while loop is skipped and
+> max_seq is returned directly:
+>
+> mm/vmscan.c:lruvec_populated_min_seq() {
+>         min_seq =3D READ_ONCE(lrugen->min_seq[type]);
+>         while (min_seq <=3D max_seq) {
+>                 gen =3D lru_gen_from_seq(min_seq);
+>                 for (zone =3D 0; zone < zone_limit; zone++) {
+>                         if (!list_empty(&lrugen->folios[gen][type][zone])=
+)
+>                                 return min_seq;
+>                 }
+>                 min_seq++;
+>         }
+>
+>         return max_seq;
+> }
+>
+> When scan_folios() previously scanned younger generations (lrugen->max_se=
+q - 1
+> or lrugen->max_seq) at elevated priority while get_nr_gens(lruvec, type) =
+had
+> fewer than the maximum number of generations, sort_folio() can move folio=
+s
+> with a stale folio_lru_gen() value (such as after __lru_gen_reparent_memc=
+g()
+> or when inc_min_seq() skipped draining old_gen) into that expired
+> lrugen->folios[gen][type][zone] list:
+>
+> mm/vmscan.c:sort_folio() {
+>         /* promoted, or moved due to reparenting. */
+>         if (gen !=3D min_gen) {
+>                 list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+>                 return true;
+>         }
+> }
+>
+> A subsequent default-priority call to scan_folios() will then visit that
+> expired generation (< lrugen->min_seq[type]) and corrupt active/inactive =
+size
+> accounting.
+>
+> In addition, in lru_gen_seq_write() -> run_cmd() -> run_eviction(), debug=
+fs
+> eviction runs at default priority. If a user requests evicting up to
+> lrugen->max_seq - 3 when four generations exist and one type has already
+> emptied lrugen->max_seq - 3 while the other type still has min_seq at
+> lrugen->max_seq - 3, wouldn't setting seq to lrugen->max_seq - 2 in
+> scan_folios() evict folios from generation lrugen->max_seq - 2, exceeding=
+ the
+> requested seq bound?
+>
 
+Looks a false positive, though it is tricky. A folio on a generation
+list is only ever promoted, and min_seq[type] is advanced only after
+the old generation has been drained by inc_min_seq() or verified empty
+by try_to_inc_min_seq(). So when a type is down to MIN_NR_GENS, the
+max_seq - MIN_NR_GENS target is empty, not a populated expired
+generation. Lazy folio flags and the non evictable skip can create
+temporary skew, and reparenting can look odd across generations, but
+that skew is transient and cannot survive until a DEF_PRIORITY scan
+targets that generation. sort_folio() also refuses to promote from the
+last live generation.
 
-Thank you for sharing these nice notes!  I unforunately keep being unable to
-join the meeting, so these notes are very helpful.
-
-On Fri, 23 Oct 2026 20:14:53 -0700 (PDT) David Rientjes <rientjes@google.com> wrote:
-
-> Hi everybody,
-> 
-> Here are the notes from the last Linux Memory Hotness and Promotion call
-> that happened on Thursday, October 22.  Thanks to everybody who was 
-> involved!
-> 
-> These notes are intended to bring people up to speed who could not attend 
-> the call as well as keep the conversation going in between meetings.
-[...]
-> Davidlohr noted that this matched his expectation and that he is working 
-> on upstreaming the CHMU support as a CXL driver, currently using DAMON as 
-> its backend.  He'll then wait to see the outcome of the other patch series 
-> in parallel.  Jonathan questioned how integration with DAMON would be done 
-> to eventually support the asynchronous promotion stuff.  Davidlohr said 
-> this would be done in the most generic way as possible.  CHMU has a 
-> natural interface with ranges and large continguous chunks of memory that 
-> can be passed to any interface.  If pghot is confined to the NUMA 
-> Balancing aspects, then CHMU wouldn't be integrated with it.  Jonathan 
-> asked if we're really getting large contiguous chunks of memory from the 
-> CHMU and Davidlohr said this is what he is seeing in his evaluation.
-
-Makes sense to me.  If CHMU can find address ranges of hot memory, it could
-directly ask DAMOS to migrate those to a specific node.  DAMOS does not provide
-such interface for now.  We could implement new API like damos_add_folios(),
-which I proposed at LSFMMBPF'25.  For CHMU, I think it could be easier if the
-API receives address ranges instead of folios.
-
-Yet another idea is let users ask DAMON to do everything.  That is, DAMON will
-turn on CHMU, get the hot memory information from it, and do the migration all
-by itself.  DAMON sysfs ABI would need to be extended for CHMU configuration.
-
-Both look doable to me.  Davidlohr may have a much better idea.  In any case, I
-will be happy to help as always.  Please don't hesitate to reach out even if it
-is only for internal prototyping that doesn't pursue upstreaming.
-
-> 
-> Bharata suggested it may be difficult to get the configuration of DAMON 
-> correct, this is a complex undertaking.  If the only way to use CHMU is 
-> through DAMON, this may be challenging.  Davidlohr agreed the 
-> configuration was more complex but if you're going to go out and buy a 
-> CHMU supported device then you can likely configure this correctly.
-
-We (DAMON community) provide and support a auto-tuning based DAMON
-configuration for general memory tiering on 2 nodes setup [1].  The support
-means that if a user tried it and find it doesn't work as expected, they can
-reach out to DAMON community for help.  In the case, we will help investigating
-the issue and provide solutions.  We also merge back the solution to the
-configuration and DAMON itself.
-
-Of course our support is not constrained to only the auto-tuning based
-configuration.  We samely help for any custom configuration usages.
-
-Some people indeed trying the auto-tuning based config and reaching out to us
-in the way.  We are helping them and improve DAMON.  I believe it will be
-similar for CHMU case.
-
-DAMON is an open source project that is actively maintained, supported and open
-to changes.  Please feel free to ask questions and changes.
-
-[1] https://github.com/damonitor/damo/blob/next/scripts/mem_tier.sh
-
-
-Thanks,
-SJ
-
-[...]
+For the debugfs case, lruvec_populated_min_seq() starts from
+min_seq[type], so the type with min_seq =3D=3D max_seq - 3 scans max_seq -
+3 while that generation is populated. The type already at max_seq - 2
+was scanned at max_seq - 2 before this patch too. Not enforcing the
+requested seq per type is a separate pre-existing debugfs issue, not
+caused by this change.
 
