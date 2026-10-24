@@ -1,92 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44942606A31B
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 02:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D10D606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 02:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xp0pwalR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XSSbJoaB
 Received: by kanga.kvack.org (Postfix)
-	id 5A52D6B0B80; Fri, 23 Oct 2026 22:31:38 -0400 (EDT)
+	id A08BF6B0B80; Fri, 23 Oct 2026 22:46:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57F4A6B0B83; Fri, 23 Oct 2026 22:31:38 -0400 (EDT)
+	id 9B99D6B0B83; Fri, 23 Oct 2026 22:46:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BA816B0B85; Fri, 23 Oct 2026 22:31:38 -0400 (EDT)
+	id 8D5F66B0B85; Fri, 23 Oct 2026 22:46:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2123C6B0B80
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 22:31:38 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95780A781D
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 02:31:37 +0000 (UTC)
-X-FDA: 85355943834.14.140B7D5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 64C186B0B80
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 22:46:39 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EC2B1C33A9
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 02:46:38 +0000 (UTC)
+X-FDA: 85355981676.26.C395E02
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E04D7180006
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 02:31:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xp0pwalR;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792809096;
-	b=gfcVr33zdIbkz1MipclLJAjTl918A3oSVxMNOITY2C2XU++YDqaz9wrwGSpcM7wRwi2q2r
-	yH+R/svnRmb2edg2nbrDjqjO4WwDcgedAzGEf9Ea5ZfQ2TsHZYLfMff/X7oa7LkFYLaYWi
-	iOuh4MIIoHILaLvjMDxN9EoinxRRwzg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xp0pwalR;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 011C0A0009
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 02:46:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XSSbJoaB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792809096;
+	s=arc-20220608; t=1792809997;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iYKVkkzsleB4XgO7/jFAc83Gj5L6kG3Yn16ZKmSQ8uQ=;
-	b=gw7Rj4Lmha447NjAdK3QISuYnzy2qA5vcrXqK9k/UCGC2lrnuV+zlU4MDvpI571UikYynP
-	/cKk3py4rapswY4aOveDqbR3qX0VbkC9v/xnwqZN0OMEeKw/pusHwZh8oorUhtjsF12j/v
-	IxwbxP38zqj3zOVvnxTSwX+eqv6D/6M=
+	bh=il4r3ot3r8yPAmWBcdLW7uTmjL1df7/yIKDl8nkIgx8=;
+	b=st5CLBSnDAt0Ub+LoHNM+OULj2CX0lqbPMFHer1oF6BKRL7PLd7tneOkUbjCWQ4pMcV87I
+	OA8xTMZZGabRgxmSSoSeeGBITmu9d/7frsIBKefn3KNFG1ND557HjxPjcGRmFDPSi8RJkH
+	L9zYVu2R3r0sgAQDU5TROvB5wCq1ItU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XSSbJoaB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792809997;
+	b=tzIzEwktUToVfj79AE1+uXJqmiMBKeEIZzoevbG5XNYUG4YY4jVj/namBEUdmc9pK5i+Ff
+	DBGQx8cpfv9jKhAXUVStoFjmZtb5Jl7QFLPsKASH4ZRBor0xJbXvKkU3kMckWfBCqNN/VB
+	F06+m437lEftkTeDNMA+GlQzrpmqF08=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B02E040406;
-	Sat, 24 Oct 2026 02:31:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC301F01825;
-	Sat, 24 Oct 2026 02:31:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E5554393E;
+	Sat, 24 Oct 2026 02:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668D01F01825;
+	Sat, 24 Oct 2026 02:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792809094;
-	bh=iYKVkkzsleB4XgO7/jFAc83Gj5L6kG3Yn16ZKmSQ8uQ=;
+	s=k20260515; t=1792809996;
+	bh=il4r3ot3r8yPAmWBcdLW7uTmjL1df7/yIKDl8nkIgx8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Xp0pwalR7B9s+h5fQMPI7cU4ykxaegPpjG36rWqZYteBeM6i+ElnYVVEgnVRqmFme
-	 SCzCrLS3v+2fK3APshl0qtsxK/N2nhmzCLKNKNiq2Jzq7/Nc3dxAvS5/KCPstJB5Yk
-	 lVWjjijc708zioTNNkF/jCofbFbNEMHYIxU8GTalyPSHKTEdp3aPdTcxygui9agWzb
-	 aq6HDaZr44tc2xwXY+fZaRQGwRc+TbZjtHCnri0VmJAO4Br1T2weHfYY/BrfhUCabR
-	 DMUjRraqjRuMKj/l2v7hbFR4cUzjOJoaSjJQNZnDLokJj5M2E/tETVpDmbbXANf5eK
-	 PX4UbQ+Ly7rxA==
-Message-ID: <sashiko-outbox-183514@kernel.org>
+	b=XSSbJoaB7cYyHF22n4lIRuaboK528R11x+L85VjckYvT9PuLewmGPKRX/DSwF4yqZ
+	 sr/hHlX+wvhUtBSGxaFbrR58jYC32gb08yKQh8QNmVpjf7zmB1dotOqF+MK0hRoEpy
+	 NWZEEpIEC/he56CWWWI7FUMfOX2F1ADbRSyECoHi+B+tMMjps9k3HTT9416aiCifxI
+	 XxVzjJaVMQbywX0EbvYZIEMfFlZlQ/aFC9YGX0aYDxjWbuiI12z7AxVt4ijmy2AGyI
+	 8mA0jyZiQZloTALHZ+3Q/IgJy9lpZ5e3h+9kwm/HyjYJcPZzSfWQFBtfaal+mG4m42
+	 34NQmiDvUB/Pw==
+Message-ID: <sashiko-outbox-183519@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [REGRESSION] mremap() fails VMA expansion when VM_MIXEDMAP is
- set
+Subject: Re: [PATCH v8 2/7] mm: take a folio off WB_DONTCACHE_DIRTY only if
+ it was counted there
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luiz Capitulino" <luizcap@redhat.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>
-Cc: "Vlastimil Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>, "Pedro
- Falcato" <pfalcato@suse.de>, "David Hildenbrand" <david@kernel.org>, "Jakub
- Matena" <matenajakub@gmail.com>, linux-mm@kvack.org
-In-Reply-To: <20261023023106.515365-1-luizcap@redhat.com>
-References: <20261023023106.515365-1-luizcap@redhat.com>
+To: "Mike Snitzer" <snitzer@kernel.org>, "Chuck Lever" <cel@kernel.org>, "Jeff
+ Layton" <jlayton@kernel.org>
+Cc: NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>, "Dai
+ Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>, "Christoph
+ Hellwig" <hch@lst.de>, "Jens Axboe" <axboe@kernel.dk>, "Matthew Wilcox" <willy@infradead.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, linux-mm@kvack.org, "Anna Schumaker" <anna@kernel.org>
+In-Reply-To: <20261023024548.71123-3-snitzer@kernel.org>
+References: <20261023024548.71123-1-snitzer@kernel.org>
+ <20261023024548.71123-3-snitzer@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 24 Oct 2026 02:31:33 +0000
-X-Rspam-User: 
-X-Rspamd-Queue-Id: E04D7180006
-X-Stat-Signature: ejffed86i4wizxmsxsx7jryrc7unuwbq
-X-Rspamd-Server: rspam01
+Date: Sat, 24 Oct 2026 02:46:34 +0000
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 011C0A0009
+X-Stat-Signature: kxxus3mjsigx3ku9qafkpnu5h1ka5rwh
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792809095-969066
-X-HE-Meta: U2FsdGVkX1/BOzZsv7NQF72uxx+E9LzMSWRtCBKkVGIlnN/O1Z4V17A1X23b0wXeBh2o9Okd/8rDpQtdp44Dmyy1w7qVaWe5coD0q03O0IBWpHn9LLsId+TAl0vRUbmmt00Q1ain8F5CxoxVqmSTzhnWyru8Enqid67APf/ChvLU5tp+cJvFWkXVucrHrb5J/KNmoUlCZmRr9zw0m5sdudNxBYH98IRR3zaeTYs/sDCfdv6giqYgmRV6XLm2XRpv/hNBFZszHMwiGPXF2JOi7Oy1NhSNoFE7lAWlc/pyPKcrN/f9W2AlqbvzKBODAC/0NesVb7sWomO/UAGb4XADPC1XYyhH74SK7yRKXvirWNwlb0n1P58u1gt8i552emasQpGUipQaKVatC+oeZJRtE/fI0uzzt+j2wdU9BBYcamiXn+b85s5iTxvMib2U5pknC1JaHvofwvK+U5Wwj2pqLUqXd1G+ocCSwPyldI3d2v5lLD3Hk0XrH3ldkA40IKdRgw/jo1ZLEra6OMTuMjnFovSOZ6XRulCx/W0nT7YBuu0SwlCFBwYPi5SZEBtmNStwfo93AJ9Zwguh6dGlfZps7IPP2DCO4+3TxWGL272ORG/hYcY2erkZSzzHPhxtSyWR/7kj5E47z4Ppa1M8zBo+bcUsHB/olOPb0lzFJIaloPW4oceDqdVv4+2Q0Sm8aQPpqGuEIuXSWBD8W8FCHv9HidrgpJrBypZJttPauz5eNUQ48ee/KcKmty/noRMsYPMtxOhyrFgVFz3KOe3+mxheyds7YGzMNOwbLspse13QGtIO+m67t2H3UzzOZ9pWqJMsfKfaXV/uAuuZjtYBWvXu2uzdJwrnU7HNjyAYwcUssmJ4NXb7FN84pEKa7Kh57qx+TtAh/ZzXuSMGkZ0PJMCyNDRJaTf3KvUo3MxHGubvc5ehNt9LKU8tZ9B/xlO3XuB4sdm/P7E3O7QxQxhqztF
- ed4aHNT7
- AESrJfmvFGg4ZXO5F6nHN9ElImU6UPstWvxDkeQhlN752UsOEzEn/R282QnYCJEWB8oksp/AoN0u5dFxwPLnJ4KxF8HwevukcRrU76TNT6Ug1OQNBjCJyaRmPX+GCV7Y/9wDX15kt5MrKkvLFQdcW6ZKJMAFl93bUigTeCA7Z7cgfrDGw09ryOOV23H+rglrw+53+3Pzcquk7JxIWEfva4KK8qmiJG6xo8AdxBvKNl7vCLy2mGLjxdl2fuXkkSAzqQ9SG24s7M3xHEn/9iTjLq0T0xw5BogValJhEu9518rBnhIBf7NH2rXn1EcE+PQKCyHif3sDY4f2fSYC1IpwV6R3Obz0H6FnelxhhBWnlfgMHlQa0/dJ554BSf/WcFzd0ZGd4by9CT+2LuCkZvCHIvmeqPtF2nBa+TVyKReewk84fQ4WwovkPYOOUkaAy6IEy5H2STCYt35AlhL93OarYkaNrFQWbYSfNf+niVOe/BqVO9TmCJ9/9NCwFBcJsIMADhR7bg4rbJuv0BTx8EL+QDJTbQpxBpVdqIC2FBlcfUq0E0F8GJdUIw6ZJyZm6xs3NKXNHJDPBfH23+AcxTdS4hUc0raq+1m4k27g4gDFr/l32iPx0HYA51zNaTD12aYeildb2
+X-Rspam-User: 
+X-HE-Tag: 1792809996-468480
+X-HE-Meta: U2FsdGVkX19vjdkYfG+Fqogkmu+uzExVcSSBPkyrGNOY1u8HZB1DxhMHaJJT71adj7bWVQKAkUg3E4lAFTR/REd45/JL/Hwv8qCntfnkd5BP2nS5Gsic/a7W9eP+E3rUbY/LkWNqkW7neYPRTde15H4Fqg28Kbq6bVP+VUx5yUhyO2uY7cEpSr2HpCroor4nP6hmR8+xHwYzvp55D6HNCTZOLYTBPmJNp67TPrZd9n8AgAHf6PiKqzkOQAvb0C2lXMO848D/JG2hwU3zGNbmu2WAantfxlk5TKXMtQFl9mqfxoLAzUZNRCWfwqndxq595dl0j0q/NExhs+C6hJwbOOu5WFXA1E1kHzW7PAP/xtQoy63BK4MVBK2N4xOOaJDlGMv3HKdSahkKKkZPsQXJkdNaHdLYWvsMt4YhOkRrCytNT5CVbPgBoiIDH7tMElm7wik+dwDvhyAzPWZODQxsmR5bI/8gH5CbEKhy/g8D3vvfK9ADNr+UfFmU6XQsy77pIyAtKZYb4uPF79Pwqi703QekUN0jPX+j6XleSQRP+1VeMhIEhypx3lz+vE17Eqv+9r3t3CTRXP1qG3fFGTqAXxFNoFDXwdPOMJ2gshYd0LL5zEw6t0sufxvcEmdn4T9NOnTwNXcMiqyEIGU6sEo27V7ra6MzltlHu8bHTKl/mBPx/tK5G/9QNSYtVE2w0OmsYx2dpELYr8iCFxyE8zAo2jpQPAxadFVNkwlzNLyRlvEDtJuLhJMuqQzpGiDPv+OgyyuCV4zw6PrSGeeh73fVu1H28MFZBHrHKVUxDWuXcUh2Hi/4J7R9BNqlO3tqIz2pJ2ykmxBv4TTXFUWKeW7lQ+MLvabOz+Ee6bKgC0drj/IWtdgJgopFmC38szjcZkqBvdzp/8e20rU2fRR7SDVeFBKfhNZOS0gEc73hnh7Ekcn+42SXu+DG6QRWC/sgUZ7gWdSzp9UGb2I1g5pOhLg
+ 1gBEN0ho
+ 4SkSPVByMCgjb+l6sbW5WaAWU3DUVjuOI9mufR02ZjXfyY/8KV2PvL7vFgQjqH26JeBGTZe4xaJfocj4Q4GyXzYbvLppUZYwdpo4eizUbcqYPmAvH/KabiBQObjnJMV0QiIdBK5h+9spOsmZPIJxOgSADlZjsufU2QfcmNMTNY7MRrylJZTCS11SYbg2QczDLe70qSbshE+e96paerP2Iltms8x08teDIyoh0Y1eOKYAUj1vvs4O/hAj6PoCpS0C4lb9SIpHYbcHb/kUfT0VzNWh1Z4J4n7LIiOWhLb2cx7Km7axho7c7NPIH1X3SPXLu9lQmdbTU0z+jcpFFJEwEQqGTMyyqu62g0tfvlCRdnU0AGblLk+S6hEQcGFtBh2vP1MJwrWoIeL10PQuSxPPLyaq1GMfytKu/Jy7aeoZdH75PFm+ajusFnnTEvxdMXclJIVlDXKZpp38SoYVtWggfuX9+FrYvJsXqNObhBaKcOv92xayVHsXCbGjDIh3qhPY8MKWf03Xw/z5ytpYOzGAYYm8LwgBUASLUSEUQgvV0J+nY8fr+AYdQA7cY2RQQaL7DYDHOOP1WBBPevvgPn2z5R3YW9Jw2naGVrs4CAzEio5wafH9x/9SgxzGvipunoWBUZjgnkgSSw0gddfuKaIH1SkgfGaEChfhAywPxx+0kHlipxjDOoycsDzCiT0/I85bF1ZfaXOZUQ75bTBshpm+c912t8PFEsbA6U6LK6jOW6rctICk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,188 +98,149 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] mm: vma_merge_new_range() merges VM_MIXEDMAP VMAs in mmap() and mr=
-emap()
-- [Medium] mm: vma: can_merge_vma() breaks test_vma_merge_special_flags() f=
-or VM_MIXEDMAP
+- [Medium] mm: double-decrement of WB_DONTCACHE_DIRTY in filemap_clear_drop=
+behind()
 --
 
-commit b9b12caabde38874f12fe6aa692b1dcf956d3f4a
-Author: Luiz Capitulino <luizcap@redhat.com>
+commit 4fb0b9f6bc322dc01cdee84f7076d22537c5bd27
+Author: Mike Snitzer <snitzer@kernel.org>
 
-mremap() fails VMA expansion when VM_MIXEDMAP is set
+mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
 
-This patch allows vma_merge_new_range() to merge VM_MIXEDMAP VMAs while
-updating can_merge_remove_vma() to reject removing VM_MIXEDMAP VMAs so
-that in-place VMA expansion during mremap() can succeed.
+This commit introduces filemap_clear_dropbehind() to clear PG_dropbehind
+and decrement WB_DONTCACHE_DIRTY under the folio lock and i_pages lock
+when a cached lookup without FGP_DONTCACHE finds a dropbehind folio.
 
-> diff --git a/mm/vma.c b/mm/vma.c
-> index f56317ee82471..12ba8e247b477 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -851,9 +851,15 @@ static int commit_merge(struct vma_merge_struct *vmg)
->  	return 0;
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 00fd89cf6f550..1cc28224d547a 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1927,6 +1927,45 @@ void *filemap_get_entry(struct address_space *mapp=
+ing, pgoff_t index)
+>  	return folio;
 >  }
 > =20
-> -/* We can only remove VMAs when merging if they do not have a close hook=
-. */
->  static bool can_merge_remove_vma(struct vm_area_struct *vma)
->  {
-> +	if (vma_flags_test(&vma->flags, VMA_MIXEDMAP_BIT))
-> +		return false;
-> +
-> +	/*
-> +	 * We can only remove VMAs when merging if they do not have a
-> +	 * close hook.
-> +	 */
->  	return !vma->vm_ops || !vma->vm_ops->close;
->  }
-> =20
-> @@ -1093,6 +1099,20 @@ static __must_check struct vm_area_struct *vma_mer=
-ge_existing_range(
->  	return NULL;
->  }
-> =20
-> +static bool can_merge_vma(const struct vma_merge_struct *vmg)
+> +/*
+> + * Clear the uncached flag of a folio a cached lookup found, and take the
+> + * folio off WB_DONTCACHE_DIRTY if it is counted there.
+> + *
+> + * folio_account_dirtied() counts a dropbehind folio under the i_pages l=
+ock,
+> + * in the section that sets its dirty tag, after PG_dirty has been set
+> + * without the folio lock, and every path that uncounts a dirty folio ho=
+lds
+> + * the folio lock.  So with the folio locked and the i_pages lock held, =
+the
+> + * dirty tag, not PG_dirty, says whether the folio is counted: a dirtier=
+ past
+> + * folio_test_set_dirty() but not yet counting finds the flag clear and =
+does
+> + * not count it.  A folio another task has locked keeps the flag, as it
+> + * would have had this lookup not run.
+> + */
+> +static void filemap_clear_dropbehind(struct address_space *mapping,
+> +				     struct folio *folio, bool locked)
 > +{
-> +	/* VMAs without prev/next are unmergeable */
-> +	if (!vmg->prev && !vmg->next)
-> +		return false;
+> +	unsigned long flags;
 > +
-> +	/* We can't merge VMA_IO, VMA_DONTEXPAND or VMA_PFNMAP */
-> +	if (vma_flags_test_any(&vmg->vma_flags, VMA_IO_BIT, VMA_DONTEXPAND_BIT,
-> +			       VMA_PFNMAP_BIT))
-> +		return false;
-> +
-> +	return true;
-> +}
-
-[Severity: High]
-Does omitting VMA_MIXEDMAP_BIT from can_merge_vma() cause unintended merges
-of distinct VM_MIXEDMAP VMAs during mmap() and mremap() moves?
-
-In vma_merge_new_range(), can_merge_remove_vma(next) is only checked when
-both can_merge_left and can_merge_right are true, and even then it only
-reduces a 3-way merge to a 2-way merge into prev:
-
-mm/vma.c:vma_merge_new_range() {
-	...
-	if (can_merge_right) {
-		vmg->end =3D next->vm_end;
-		vmg->target =3D next;
-	}
-
-	if (can_merge_left) {
-		vmg->start =3D prev->vm_start;
-		vmg->target =3D prev;
-		...
-		if (can_merge_right && !can_merge_remove_vma(next))
-			vmg->end =3D end;
-	...
-}
-
-Because vma_merge_new_range() is called by __mmap_region() and copy_vma() in
-addition to vma_merge_extend(), allowing VMA_MIXEDMAP_BIT here affects two
-other paths:
-
-1. In __mmap_region(), when a driver's f_op->mmap_prepare callback sets
-VMA_MIXEDMAP_BIT (for example via mmap_action_map_kernel_pages() ->
-call_mmap_prepare() -> mmap_action_prepare() -> map_kernel_pages_prepare())
-adjacent to a compatible existing VMA, vma_merge_new_range() will now expand
-prev or next instead of returning NULL:
-
-mm/vma.c:__mmap_region() {
-	...
-	if (map.prev || map.next) {
-		VMG_MMAP_STATE(vmg, &map, /* vma =3D */ NULL);
-
-		vma =3D vma_merge_new_range(&vmg);
-	}
-
-	if (!vma) {
-		error =3D __mmap_new_vma(&map, &vma, &desc.action);
-		if (error)
-			goto unacct_error;
-		allocated_new =3D true;
-	}
-
-	if (have_mmap_prepare && !map_is_anon(&map) && allocated_new)
-		set_vma_user_defined_fields(vma, &map);
-
-	__mmap_complete(&map, vma);
-
-	if (have_mmap_prepare && allocated_new) {
-		error =3D mmap_action_complete(vma, &desc.action,
-					     /*is_compat=3D*/false);
-	...
-}
-
-When vma_merge_new_range() returns a merged VMA, allocated_new remains
-false, skipping both set_vma_user_defined_fields() and
-mmap_action_complete() (which skips map_kernel_pages_complete() and
-call_vma_mapped()).
-
-2. When moving a VM_MIXEDMAP VMA via mremap() with MREMAP_MAYMOVE or
-MREMAP_FIXED adjacent to another compatible VM_MIXEDMAP VMA, move_vma() ->
-copy_vma_and_data() -> copy_vma() calls vma_merge_copied_range() ->
-vma_merge_new_range(). The moved range is merged into the adjacent VMA
-without checking can_merge_remove_vma(vmg->copied_from) and without calling
-vm_ops->open() in copy_vma(), after which move_vma() calls
-unmap_source_vma() -> do_vmi_munmap() and invokes vm_ops->close() on the
-source VMA.
-
-Also, since vma_merge_existing_range() still rejects all VMA_SPECIAL_FLAGS
-upfront, is the VMA_MIXEDMAP_BIT check in can_merge_remove_vma() ever
-reachable from vma_merge_existing_range()?
-
-> +
->  /*
->   * vma_merge_new_range - Attempt to merge a new VMA into address space
->   *
-> @@ -1152,9 +1172,7 @@ struct vm_area_struct *vma_merge_new_range(struct v=
-ma_merge_struct *vmg)
-> =20
->  	vmg->state =3D VMA_MERGE_NOMERGE;
-> =20
-> -	/* Special VMAs are unmergeable, also if no prev/next. */
-> -	if (vma_flags_test_any_mask(&vmg->vma_flags, VMA_SPECIAL_FLAGS) ||
-> -	    (!prev && !next))
-> +	if (!can_merge_vma(vmg))
->  		return NULL;
+> +	if (!locked) {
+> +		if (!folio_trylock(folio))
+> +			return;
+> +		if (unlikely(folio->mapping !=3D mapping))
+> +			goto out;
+> +	}
+> +	if (!mapping_can_writeback(mapping)) {
+> +		folio_clear_dropbehind(folio);
+> +		goto out;
+> +	}
+> +	xa_lock_irqsave(&mapping->i_pages, flags);
+> +	if (folio_test_clear_dropbehind(folio) &&
+> +	    xa_get_mark(&mapping->i_pages, folio->index, PAGECACHE_TAG_DIRTY))
+> +		wb_stat_mod(inode_to_wb(mapping->host), WB_DONTCACHE_DIRTY,
+> +			    -folio_nr_pages(folio));
+> +	xa_unlock_irqrestore(&mapping->i_pages, flags);
 
 [Severity: Medium]
-Does this change cause test_vma_merge_special_flags() in
-tools/testing/vma/tests/merge.c to fail on the VMA_MIXEDMAP_BIT iteration?
+Can testing only PAGECACHE_TAG_DIRTY without folio_test_dirty(folio) in
+filemap_clear_dropbehind() decrement WB_DONTCACHE_DIRTY a second time for
+a folio that was already uncounted?
 
-In test_vma_merge_special_flags(), the loop tests each flag in
-special_flags[] (including VMA_MIXEDMAP_BIT) against merge_new() ->
-vma_merge_new_range() when adjacent to vma_left:
+In fs/fs-writeback.c:inode_do_switch_wbs(), the PAGECACHE_TAG_DIRTY walk
+checks folio_test_dirty(folio) before moving WB_RECLAIMABLE and
+WB_DONTCACHE_DIRTY because PAGECACHE_TAG_DIRTY remains set in
+mapping->i_pages after several paths clear PG_dirty and uncount the folio:
 
-tools/testing/vma/tests/merge.c:test_vma_merge_special_flags() {
-	...
-	vmg_set_range(&vmg, 0x3000, 0x4000, 3, vma_flags);
-	for (i =3D 0; i < ARRAY_SIZE(special_flags); i++) {
-		vma_flag_t special_flag =3D special_flags[i];
-		vma_flags_t flags =3D vma_flags;
-
-		vma_flags_set(&flags, special_flag);
-		vma_left->flags =3D flags;
-		vmg.vma_flags =3D flags;
-		vma =3D merge_new(&vmg);
-		ASSERT_EQ(vma, NULL);
-		ASSERT_EQ(vmg.state, VMA_MERGE_NOMERGE);
+	xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+		if (folio_test_dirty(folio)) {
+			long nr =3D folio_nr_pages(folio);
+			wb_stat_mod(old_wb, WB_RECLAIMABLE, -nr);
+			wb_stat_mod(new_wb, WB_RECLAIMABLE, nr);
+			if (folio_test_dropbehind(folio)) {
+				wb_stat_mod(old_wb, WB_DONTCACHE_DIRTY, -nr);
+				wb_stat_mod(new_wb, WB_DONTCACHE_DIRTY, nr);
+			}
+		}
 	}
+
+For example, during writeback,
+writeback_iter()->writeback_get_folio()->folio_prepare_writeback() calls
+folio_clear_dirty_for_io(), which clears PG_dirty and subtracts the folio
+from WB_DONTCACHE_DIRTY while leaving PAGECACHE_TAG_DIRTY set in
+mapping->i_pages (normally cleared later by folio_start_writeback()):
+
+mm/page-writeback.c:folio_clear_dirty_for_io() {
+	...
+	if (folio_test_clear_dirty(folio)) {
+		long nr =3D folio_nr_pages(folio);
+		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
+		if (folio_test_dropbehind(folio))
+			wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
 	...
 }
 
-Because can_merge_vma() allows VMA_MIXEDMAP_BIT and vmg.prev is vma_left
-with matching flags and pgoff, can_vma_merge_left() and vma_expand()
-succeed, returning vma_left with VMA_MERGE_SUCCESS and tripping the
-assertions.
+If writeback races with truncate_setsize() lowering i_size, writeback
+handlers such as iomap_writepages()->iomap_writeback_folio() see that the
+folio is at or past i_size via iomap_writeback_handle_eof() and return
+early without calling folio_start_writeback(). The folio is then unlocked
+in mapping->i_pages with PG_dirty clear, PG_dropbehind still set, and
+PAGECACHE_TAG_DIRTY still set. When truncate_inode_pages_range() or
+another non-FGP_DONTCACHE caller subsequently looks up the folio via
+__filemap_get_folio_mpol(), filemap_clear_dropbehind() will see
+PAGECACHE_TAG_DIRTY set and subtract the folio from WB_DONTCACHE_DIRTY a
+second time.
+
+Similarly, mm/page-writeback.c:__folio_cancel_dirty() clears PG_dirty and
+calls folio_account_cleaned(), subtracting WB_DONTCACHE_DIRTY without
+clearing PAGECACHE_TAG_DIRTY or PG_dropbehind:
+
+mm/page-writeback.c:__folio_cancel_dirty() {
+	if (mapping_can_writeback(mapping)) {
+		...
+		if (folio_test_clear_dirty(folio))
+			folio_account_cleaned(folio, wb);
+		...
+	} else {
+		folio_clear_dirty(folio);
+	}
+}
+
+When folio_cancel_dirty() is called on a folio that stays in the page
+cache (for instance via filemap_release_folio()->try_to_free_buffers()
+when reclaim or migration fails to remove the folio, or during partial
+folio invalidation), PAGECACHE_TAG_DIRTY remains set on the clean
+dropbehind folio. Furthermore, if such a folio with a lingering
+PAGECACHE_TAG_DIRTY mark is later dirtied without the folio lock via
+filemap_dirty_folio(), both PG_dirty and PAGECACHE_TAG_DIRTY are set
+before __folio_mark_dirty() takes the i_pages lock to call
+folio_account_dirtied().
+
+Should filemap_clear_dropbehind() also require folio_test_dirty(folio), or
+should paths that clear PG_dirty and uncount WB_DONTCACHE_DIRTY without
+starting writeback also clear PAGECACHE_TAG_DIRTY (or PG_dropbehind)?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023023106.5153=
-65-1-luizcap@redhat.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023024548.7112=
+3-1-snitzer@kernel.org?part=3D2
 
