@@ -1,97 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340FB606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A56606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n+3r7WjY
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=CjP7AiuL
 Received: by kanga.kvack.org (Postfix)
-	id 25CDB6B05BA; Sat, 24 Oct 2026 15:08:00 -0400 (EDT)
+	id 6CB7C6B05BD; Sat, 24 Oct 2026 15:09:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 236096B05BB; Sat, 24 Oct 2026 15:08:00 -0400 (EDT)
+	id 6A4056B05BE; Sat, 24 Oct 2026 15:09:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1727F6B05BC; Sat, 24 Oct 2026 15:08:00 -0400 (EDT)
+	id 5E12F6B05BF; Sat, 24 Oct 2026 15:09:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CF3A56B05BA
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:07:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FAB56B05BD
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:09:04 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 167A81A043F
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:07:59 +0000 (UTC)
-X-FDA: 85358454678.25.CA647C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6F94B40006
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:07:57 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+3r7WjY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6AFA1A7F75
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:09:03 +0000 (UTC)
+X-FDA: 85358457366.25.D8914D6
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9623AC0005
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:09:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CjP7AiuL;
+	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792868877;
+	s=arc-20220608; t=1792868941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BMyYTioU/FrU2fWhiwuWu1FFpNsNlrYz9eN4f3WcI2I=;
-	b=2GclCBrBU6yadhywoc38dSR4ZNRq9r06yYhpO8dTVXi/rY5Y3YBQMiY0iAN5Qz7fgTDbiZ
-	29GsE8WszJQCSKeYys1zWqjzfaq/oL+vSazMCSj773w9XeKcY3U4Vhu/AnzI0b1TcaJwEo
-	F2TbhsFeq6Lntr03P/hjW3gL1AHR324=
+	bh=b1KmGtfkzCXHo4XGQE9aXZCjXYpjChENBSuESrEsEx4=;
+	b=icS17rkDsZdEAhTLXB9mYNHPOFhVmEA6pWOCxUDcSYnqD2dryTL3zIOMwxKxeihORMqQVH
+	JLmeV0CkJrKk2qSS9h3U7d1rjTvi7qVa88YMHoLVmytxw0vLcLe7CTsUWGFOwU9qzDJh7z
+	l509VUa1YRg1ibnARjeo8y04IWaqatM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+3r7WjY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CjP7AiuL;
+	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792868877;
-	b=HnYXMLrER3ygpD9PYBDY2Gpy9J4RTNYvyitqAkzj3kdtXmTIBSYAv0Bf3dm9SK77ckmh3u
-	A7c0xGjp2GUTxgIqtLOOXkcOKdFQ5tnxOFYoqeV22GpeqS3bJRI6C2H70U4SxGmrKeFBfh
-	A1gFxCUyRoJoTyN5jalZ65mMrhDIcko=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BFD0343DB3;
-	Sat, 24 Oct 2026 19:07:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860C61F031E0;
-	Sat, 24 Oct 2026 19:07:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792868876;
-	bh=BMyYTioU/FrU2fWhiwuWu1FFpNsNlrYz9eN4f3WcI2I=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=n+3r7WjY0T01eAUCq/zRS0G+2hGEX5GFurChhcOIYE/HpDty0WA6gmzikNcxTYdH5
-	 LhJWqrngg+qlGLVhYQimSpyue667XC+oTW6/Rxmbi6YLpG2amWpIW+41nxBiKRvPrG
-	 WJSCfxvpry0it2d4f/nZKPV/i9+7MudMWie7qr9DtEmLffMO7uj7+Gy1UolLzetOQ5
-	 yyplSGcW1ofPrAArDLBpw0F9Rx4ZQN8TjkBWRG7FfXY5BZ2iJldfxNENi9M7Gr023V
-	 3N0Fu1cYoper5E9v9Z1XiFPaLA9apxQwEo/s+bz3O9k1ymRsh+WlkQYoR8MNPndQ6/
-	 ZbloiE7IXl+uQ==
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Sat, 24 Oct 2026 21:07:30 +0200
-Subject: [PATCH RFC v2 8/8] mm, slab: deprecate CONFIG_SLUB_TINY and reduce
- its Kconfig effects
+	t=1792868941;
+	b=sONyLLY8XDWCwufpz6nApmEJraCfrVjImw2KkSiOjCMAfemD27IPXV62ASbsvtRI3DoEIE
+	9KuiEbTNGMiaG9EnBV6g80y9QW2BK+wlkKhQ4u/ExpGgMOAra416H0ntHhYvZ3bnF/HVp7
+	JmvMnXhJk0QEY06eYigtri741WV03DQ=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3adac5b29ebso1174239a91.2
+        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 12:09:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792868940; x=1793473740; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:from
+         :subject:cc:to:message-id:date:content-type:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b1KmGtfkzCXHo4XGQE9aXZCjXYpjChENBSuESrEsEx4=;
+        b=CjP7AiuLuQNUWXuJVHGPY5WTXu+sZ4C0vcx2sV8Dxpnx+/Z28sACI4zc1b6xqJOjY2
+         zqpyGpr0CiyCNvLScB70Wp6e3mio3yFy1RdA7+/D+eMhrtcYHkRFj4xECDxoe+95PKOh
+         f2PuL9K5wyqag16JavgR0lcCs2MjsR5feofOsGUmKSolEb854Dt7/v3HSyQG45ivGXo9
+         2Y3Jp0Nz0AmiYmu/I3w7HvU7Ge51jLL5Gr3a/Xg0Gb0i0uZ2yAnuNOno5dByP1uwdEF5
+         uC6eri1swLz8Jj2kWz+1OSClkh1NYkHi915T4cHnXsDXXYtlGkboHw4pnwaNY1p3NB9h
+         hznA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792868940; x=1793473740;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:from
+         :subject:cc:to:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b1KmGtfkzCXHo4XGQE9aXZCjXYpjChENBSuESrEsEx4=;
+        b=NW7ygQwe77zIuX13V9+WHhwHftVCd/RZ/bD0Oq45KjRhjiYLEEGmRZgJODZ00mALNW
+         gi5ROi9BAkYLfhkNdsQ3ZQzJXq9ZEFIsJzGi0sDeZU5RsC3Ii2UobNVR/B2QE+mLshSR
+         +tZq5VDwK6ECBRkFiLvgqpnz26FpYkx2SEZTjVJNMgfQRwxkcctoZ+dM+8DR/2XyJhna
+         DxnpVChZyipFWb0yWQa4h2dDdULzTX2p7PSyOhHvPs7o7m69nzXksIhmqfu9+27Bn1+W
+         dL/PK3GhrmTULlaiCV1A8CHXz8n567mAlFkRJhqhyxib69rvklzE7DdBplb3UPgNOh1f
+         pNsg==
+X-Forwarded-Encrypted: i=1; AKwUvBwT/T88H4QcLFhWW+XBQzWBAPHgg9VzXUKA+Bs9R3DTRzYHc4GpPVOg4wjsCaLL6QcAdAk0zi0Ztg==@kvack.org
+X-Gm-Message-State: AFq9FYKHjYJ8+ETOBSJTPi4h2kk5YrhOAVgvpmHzjYKqrZ8iF5pXSIYD
+	VdIukf0J4wTmHTeeetHVuH+G9lKRFHEGsIBpbIVBzKNERGBrcOlTgMFl
+X-Gm-Gg: AYBFou2yK1yNTCsrdj59S0LOcTZCgFYrZQhdjvHouGqe5hvMpCb0hMT3ABunn8Tbmx+
+	/zACp4/OgdWnAOIz+vot5J1Jb7C9xXE3+25YX6BKB5MptCx8w5YSCqD2EgYlfxI5w8XAUr7HtAr
+	VhtunkSExKjPk09nAKJEOuK3kkEyS7sGSK3WQk1T7soGZpuN9E87JeU4mprG5Fk7fQIK4Edabnm
+	3tWsNr/h42ybGeG9XnOd3iX6FnMnkLOXqJVYGfgMsUUdRi+S51nh7K4SQkRxNCoZ/OZZQ8XKJhB
+	adfR+ZWFvWMgMjvgZ7MtEtShRf9xZh2xlA2QPZpP6Ajw+nb6AjyAK8fH55xG9ynm8RWQKPl26wJ
+	5gaCGqqOVCVegncFl4NaWDiVjIAPscigbLBInAXXeIr9Qb0ImZ9Y41Lh2ghoYQx5tQAdzCwsAol
+	DYQCyz6eJjqILd1GhtfmMgOgOTdSw+EJOYFSaVU9ymVt4hmiAJGEWEty+UY0eyVwWBBCF8qOGqk
+	R41xepJ4d57o3SX2UOzKmgIst0fY/J6v+ONvcp2rLCBxXCLeUgz8TQOm3+JmufjJLH/gRTPgWLc
+	TLc2QlL7PvFyqiLotN9Vw4F2FNPR7GXckRZHlLOqkoxp5khYzqDedx1t8Zv5
+X-Received: by 2002:a17:90b:55cd:b0:3ac:9e76:aa97 with SMTP id 98e67ed59e1d1-3adea1a76b8mr2258311a91.6.1792868940394;
+        Sat, 24 Oct 2026 12:09:00 -0700 (PDT)
+Received: from localhost ([153.61.198.244])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adeba32e38sm3785610a91.2.2026.10.24.12.08.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 24 Oct 2026 12:08:59 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 24 Oct 2026 19:08:59 +0000
+Message-Id: <DMDAZW82I9LT.3FNX2WI80GNE2@gmail.com>
+To: "zhen.ni" <zhen.ni@easystack.cn>, <daniel@iogearbox.net>,
+ <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
+ <martin.lau@linux.dev>, <song@kernel.org>, <yonghong.song@linux.dev>,
+ <jolsa@kernel.org>, <emil@etsalapatis.com>, <ihor.solodrai@linux.dev>,
+ <akpm@linux-foundation.org>, <vbabka@kernel.org>, <surenb@google.com>,
+ <mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
+ <ziy@nvidia.com>, <shuah@kernel.org>
+Cc: <bpf@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 0/7] mm/page_owner: add bpf_iter and kfuncs
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+In-Reply-To: <06925440-8df8-4f2e-aea0-ede1a98435fa@easystack.cn>
+References: <20261021112437.1799213-1-zhen.ni@easystack.cn> <DMAURQCKK6CG.10CZ7MFXGJO3V@gmail.com> <d39db4fb-e511-440e-9065-72c34a1a295a@easystack.cn> <DMCCBEPCIWH0.2JEDKE64WPJRQ@gmail.com> <06925440-8df8-4f2e-aea0-ede1a98435fa@easystack.cn>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261024-slub_tiny_rework-v2-8-bf1419ab5ffd@kernel.org>
-References: <20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org>
-In-Reply-To: <20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
- David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, Conor Dooley <conor@kernel.org>, 
- Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-X-Mailer: b4 0.16.0
-X-Rspamd-Queue-Id: 6F94B40006
-X-Stat-Signature: 4zzfz8ihf48gkgdp3ng69prd981nu5cx
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792868877-427155
-X-HE-Meta: U2FsdGVkX18aPFmzLyL796qXtr8H8h2ib8+NiITr1H2N2M6vz9dP6JD1GYm13VRxBBAHrVn4eg0gNZ3Gdj7/++rPLpli/+kKVX9qE+fPuHAIAA3zSbZnd81AcqAFCARImv+2eEEmRApJm6ZryXsqm88YRLXYKIeOzgOsmshYa7hof3LfE+KCOJpDcHqN4xhw4zOuVoQsppP+Jsp8XnNLQip51aqwsSfcA9we4utKoh64ksLM+VyQ6idsu32DudLo7v+Ji9IBij+OEkrBQA1Bvmj2sQGi4UOOvczhD0Si6JuPi7QUaXsBc+yqbxymJ0ZTzjKcta4Rxz9q6K1dF8shOXTBA30MmpjrOj6W+fv09aSirCMY7XiJZW3TL3v4WYDzCv7QDgA/E6pZmxXBSEArYQCrEsI8pa9lCileJBmd342Jx+Ra6YdLIsIR1grHT7iUGzvRIy6fla///sF8AXqHDfbeQEI+O97fXm+xf1E+jrrMR34YefBaIqqB/a/2bHi3ooNJT56x0dhkM6yVnFuXkoyYCj28S0b4LnGOc2zMyA8KPvKkjSL95XTglQjYD/BqzF3JA6ud8/CS0LtLM+yWJA7D10YvP8t2uu8NFIhQfABJTiqeavpQPCLonr1mJdwbuqXSNN8hEOz5pu59i1wCOZ8Znhz7Xm04w7YzrhJN0TxojbPEs+uZp7huQrEl37vByJKgP2Rt1hradAkOlTY7wIV8EpyLmarLKLEXnwg/Qbj1QsXxWiyDy6oIBw7PbHPxbaeo3KFa49ou+1ENgHVd9wbWR7hNQiT/tmgFDFRy+1ZzxBuy1a0NMDGKSEMs8iNH99VRggTmGfJ9jmcP6r1aOpychm/vcj6KU+QVC7PnpwrZsrvdjPv/hODoEUXGkyTMBPDzdeRr5jLUGree7RxBeGP+xsWUZGDcb1pNen/msi0FLYWmuvagzuPSiiam3FRMQmWqAscxIB7YgTJZVuF
- KGiNHqLv
- gZTstFYRMR24z7Uv22wLReJudPbPLR4HYRqho8m9Izv9+FaFK1jsNdLQLGTHp2+j85m2Ljuu/XPIVuf8RXtVry3YP4a9AC/vjUYbJ4o1hAygI49yiLp8+dQT7MPBlO5x7OsjGGA6n/5r/He6HQk1o3p0Q4sKVwZ3wn86vLNtQfO0757KoRBwRytol8bZgqrD95Dfajhes32+x37WtsMdKAAv28XBLpsHae2NnR12w96NHxxGD6V6b5teO9Fu5XTyNZQFAv2ojq3AVXg1N82swOLuWTsFfFsd2fVV4B9SLFUmMgbE=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9623AC0005
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: s7qtampu5rp1guo177bc5ngfe5jc1u8i
+X-HE-Tag: 1792868941-241604
+X-HE-Meta: U2FsdGVkX19l4LkDdeKothqgEjMQOwB1HNeB+w2QLPpWkwUmJCZmrtJPAmQLN4GODGhKX48VD43Ny1I8Hl+avicrZk60jD4qqXcQNzARMjw4VMEj3zv7e7lg+7QbW+HbcVgvvV0du46G+3T8v2Z1CJ8TaFTCTNnsHcjh9vtwHnVjCpZD6HCcPArnpWHhf0JiY0lkDP7P2L2ZJH4pOfvnNlu1PQjgPtaMkZL/MqDKl2gxFl0sEHj8gVS81av/FBlr0FXXkBqidXb+VAUSS/XkoyKFppazgoHKltJUG/XodTZpgZCdWvuphyMxSJpY9Q6T0T9Rk+449C6SB4zRLkcBVdYwYdzkzPlpH4UEumqbSGF5f0+HqYb2Sd7v6Qs4lncxff/lRESehv7751X7b4/KmAcS/agU/GpAoj6mjGwwuo8wM2rDtDDiJ7bTShijRyUK+uZ/itxaa138Uhf6hEPBnOrZvYnUGgiFUKzH55yoCmRnsPrss9np74jYnbA/lwc3UoX3mzJxCjwZav5QsY3eEFwTTrCDveq6EyqZVLlTnKd2J+2jplXxW/hHHLyltQ9BMTq6C8iCfu3KI+4nGJ7pjkPGp+vuKgT1izJ4srj1UfLIIRDsvjA0yocJrYfPF4eiLVL7/VsT2pc8qKHLUraZUzXbifQCHMi8Y1k7ZQwVcXc05m06Gp3/Y5hymsQl8TuxIbAYMsmGk+vMIatqWX/7DoD9uOp2VMBotM31gTrbJC6eyUGULyq97BaqdsVy2b452c/pOnjFuzoX9bCmi/AjPbo7QKQjfX1h3ybgiS5NVJxYTYeNy51vXHvrr7PF9USzfsia6p0ZULbjdTM8TDHKvrEfmnlA1r4YGSP5fhNKXBuZpd9vzQkKby0HHDVTxY4LyAMlHJT3Oqp/KozyXGh0eNwllw60lKvUx1KvLdrC1stE8iGIjK2AlIfIqgw4RP3o/+kv2G6tnEDSLlMJOH0
+ RLZvY/3v
+ 3CnhzoIyIjIr50VjVdaJWfQ1maKWAOZigLhG92vVh8q7cOGbz182UIE6eI8GLih3PLDRqeBrlN8yVAvOe52h5N6szpsXscndhWlkgHa5Hkd38fX11evkRFLIgTNHf6Pk9teH4t8bx2qRvRE90jzb9cSbl+EU+2+AaKBQgmgHTs3n0C5bT1OHfkO3sqh2yQJOQ1UuPQj6nbcBqbbjOLhA+zBYerveRmo/zRPJoHMM/CZWmm+yhdg/hK99G6XnoZyqI9QkKp7atF18Wk9K0catbrhz2kvvd5w2GXztg280yH19QPt+MdykTHy+AgWKqR7JPQW8mSTCpCTi1HZvzgFwPUq82+Hms4QfMXYGjFgLaBiZ1Bnc4jjy0ma5IRw5uwZgcqfqPOPqNFoF0jYzKoxNVnY9P/pQhz7A55kf2iwJ2fT0gEqRfWY6BrYISxju4rycZza0kY6BhMFUZNrFDoEC3piGxuAjZTsi6AnRflxKQOTsPs6Fda6zqD56dcJUaZccfQfounj8iik3jxJ/FPSbqSJOKTopKo6CCOd6NpJzYlLt3qtQ5SOlhn3RlIbV0PvEZKDnB7hQdhqANLx8i9FqtZs5T4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,130 +131,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-At this point CONFIG_SLUB_TINY only affects the default value of
-slab_tiny_enabled which has a boot-time parameter. Thus deprecate it in
-the Kconfig description.
+On Sat, Oct 24, 2026 at 10:19 AM zhen.ni <zhen.ni@easystack.cn> wrote:
+> For this one node alone, about 97% of spanned is holes. With
+> bpf_for(pfn, start, end) plus a bpf_page_owner_read() per iteration,
+> that is at least 16,712,944 kfunc calls, and bpf_for has no scheduling
+> point inside, and all of them are wasted work. The gap grows with memory
 
-Also remove its interactions with other Kconfig option, as they are not
-necessary:
+Right. spanned includes the holes. So don't pass them.
+/sys/devices/system/memory/ has memoryN only for present blocks.
+/sys/devices/system/node/nodeN/ links to the blocks of that node.
+/proc/iomem has "System RAM" ranges.
+523024 pages in a 32G node looks like 64K pages.
+Then the whole 256G box is 4M pfns.
+When a hole is passed anyway the call ends at !online_section() in
+pfn_to_online_page(). /proc/kpageflags does that plus put_user()
+for every pfn, holes included.
+Syscall progs run under migrate_disable() only.
 
-- KASAN, SLUB_DEBUG or SLUB_STATS support do not need !SLUB_TINY
+> front. The spanned of this node is already 17.23M, so a single bpf_for
+> cannot cover it; you have to split it into N chunks and poll, with the
+> chunking state kept in a prog map, i.e. a loop nested in a loop.
 
-- KVFREE_RCU_BATCHED can simply depend on !TINY_RCU
+The loop over chunks is in user space. One bpf_prog_test_run_opts()
+per range with start and nr in ctx_in. No map, no nested loop.
 
-- various hardening options do not need to be excluded, although it's
-  unlikely that somebody would enable those with extra memory overhead
-  together with slab_tiny
+> for 52-bit PA. A 32-bit PFN range will overflow here.
 
-- SLAB_MERGE_DEFAULT does not need to be selected, although it's likely
-  to be used together
+The snippet was:
+  bpf_for(i, 0, ctx->nr) {
+          pfn = ctx->start + i;
+i is an offset within the chunk. start and pfn are 64-bit.
 
-Keep the "depends on EXPERT && !COMPILE_TEST" as there's no point making
-the deprecated option more visible.
+> Solving all of this requires yet another, more complex kfunc—and it
+> looks increasingly like bpf iter. So why not just use the iter?
 
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
----
- lib/Kconfig.kasan |  2 +-
- mm/Kconfig        | 16 +++++++---------
- mm/Kconfig.debug  |  2 +-
- 3 files changed, 9 insertions(+), 11 deletions(-)
-
-diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
-index a4bb610a7a6f..f20b574f6653 100644
---- a/lib/Kconfig.kasan
-+++ b/lib/Kconfig.kasan
-@@ -49,7 +49,7 @@ menuconfig KASAN
- 		     (HAVE_ARCH_KASAN_SW_TAGS && CC_HAS_KASAN_SW_TAGS)) && \
- 		    CC_HAS_WORKING_NOSANITIZE_ADDRESS) || \
- 		   HAVE_ARCH_KASAN_HW_TAGS
--	depends on SYSFS && !SLUB_TINY
-+	depends on SYSFS
- 	select STACKDEPOT_ALWAYS_INIT
- 	help
- 	  Enables KASAN (Kernel Address Sanitizer) - a dynamic memory safety
-diff --git a/mm/Kconfig b/mm/Kconfig
-index edb4a6c0a870..2286073ea906 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -167,16 +167,18 @@ config SLUB
- 
- config KVFREE_RCU_BATCHED
- 	def_bool y
--	depends on !SLUB_TINY && !TINY_RCU
-+	depends on !TINY_RCU
- 	depends on !RCU_STRICT_GRACE_PERIOD
- 
- config SLUB_TINY
--	bool "Configure for minimal memory footprint"
-+	bool "Enable slab_tiny by default"
- 	depends on EXPERT && !COMPILE_TEST
--	select SLAB_MERGE_DEFAULT
- 	help
-+	   Deprecated option that enables the slab_tiny boot parameter by
-+	   default, and can be overridden by booting with slab_tiny=0.
-+
- 	   Configures the slab allocator in a way to achieve minimal memory
--	   footprint, sacrificing scalability, debugging and other features.
-+	   footprint, sacrificing scalability.
- 	   This is intended only for the smallest system that had used the
- 	   SLOB allocator and is not recommended for systems with more than
- 	   16MB RAM.
-@@ -199,7 +201,6 @@ config SLAB_MERGE_DEFAULT
- 
- config SLAB_FREELIST_RANDOM
- 	bool "Randomize slab freelist"
--	depends on !SLUB_TINY
- 	help
- 	  Randomizes the freelist order used on creating new pages. This
- 	  security feature reduces the predictability of the kernel slab
-@@ -207,7 +208,6 @@ config SLAB_FREELIST_RANDOM
- 
- config SLAB_FREELIST_HARDENED
- 	bool "Harden slab freelist metadata"
--	depends on !SLUB_TINY
- 	help
- 	  Many kernel heap attacks try to target slab cache metadata and
- 	  other infrastructure. This options makes minor performance
-@@ -216,7 +216,6 @@ config SLAB_FREELIST_HARDENED
- 
- config SLAB_BUCKETS
- 	bool "Support allocation from separate kmalloc buckets"
--	depends on !SLUB_TINY
- 	default SLAB_FREELIST_HARDENED
- 	help
- 	  Kernel heap attacks frequently depend on being able to create
-@@ -234,7 +233,7 @@ config SLAB_BUCKETS
- config SLUB_STATS
- 	default n
- 	bool "Enable performance statistics"
--	depends on SYSFS && !SLUB_TINY
-+	depends on SYSFS
- 	help
- 	  The statistics are useful to debug slab allocation behavior in
- 	  order find ways to optimize the allocator. This should never be
-@@ -245,7 +244,6 @@ config SLUB_STATS
- 	  Try running: slabinfo -DA
- 
- config KMALLOC_PARTITION_CACHES
--	depends on !SLUB_TINY
- 	bool "Partitioned slab caches for normal kmalloc"
- 	default RANDOM_KMALLOC_CACHES
- 	help
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index 9eaa25d1cf23..4e36c7c63ef7 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -48,7 +48,7 @@ config DEBUG_PAGEALLOC_ENABLE_DEFAULT
- config SLUB_DEBUG
- 	default y
- 	bool "Enable SLUB debugging support" if EXPERT
--	depends on SYSFS && !SLUB_TINY
-+	depends on SYSFS
- 	select STACKDEPOT if STACKTRACE_SUPPORT
- 	help
- 	  SLUB has extensive debug support features. Disabling these can
-
--- 
-2.56.0
+Nothing of the above needs kernel code.
+v3 is +474 -83 lines on the kernel side. The diff I sent is +55 -1
+and it doesn't touch the debugfs path.
 
 
