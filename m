@@ -1,99 +1,170 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1741F606A326
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47DC606A31D
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 15:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=napl7AQi
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ln5LGl5G
 Received: by kanga.kvack.org (Postfix)
-	id 157C16B0092; Sat, 24 Oct 2026 09:23:35 -0400 (EDT)
+	id CA0596B008C; Sat, 24 Oct 2026 11:50:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 107A86B0095; Sat, 24 Oct 2026 09:23:35 -0400 (EDT)
+	id C50816B0092; Sat, 24 Oct 2026 11:50:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01C9C6B0096; Sat, 24 Oct 2026 09:23:34 -0400 (EDT)
+	id B3F9D6B0095; Sat, 24 Oct 2026 11:50:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CB67A6B0092
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 09:23:34 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDD151A03AC
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 13:23:27 +0000 (UTC)
-X-FDA: 85357586454.12.142C7FA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 62FD010000C
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 13:23:24 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=napl7AQi;
-	spf=pass (imf14.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792848204;
+	by kanga.kvack.org (Postfix) with ESMTP id 895E36B008C
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 11:50:50 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 083DE1A03AD
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:50:50 +0000 (UTC)
+X-FDA: 85357957860.21.DEE4C08
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0872340002
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:50:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ln5LGl5G;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792857048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AenfdRm90WrSjoi864BFabnLzqWgO/qqA3F0PRLFjp0=;
-	b=PFQ1bJxhgYt8cY7RFGt3Q+56RFhqF4v43Q3u3mW/ixopZRft68/zxtvgxzVX2csWxzXqsW
-	3S6tmMk7mHTbg1tUeIRCFSvw90nlysljBw3mZh2WduEBLDWwMD7YbPzuGs+An0gYhZaZsx
-	LZNda83GuliZkDZP/APFNk1OoRdDt0Q=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=napl7AQi;
-	spf=pass (imf14.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792848204;
-	b=JJZ2lWhUnm4twUSU2PLrPZSudLGny5z5bmYj8Wvqi1h52jWN80ka6W2UCTZjwrGRLOYuGy
-	UaANHawTyJOPhCJv4Dm6cs/7GXUfRUulY9+RfKU8t/jdqEVAQh5vWQog6SdTQVJQbK8OSy
-	a8XHgMM5p6Vkh3WMhSo1pbe5WwaD1Tc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 291176022A;
-	Sat, 24 Oct 2026 13:23:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4EB1F01825;
-	Sat, 24 Oct 2026 13:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792848202;
-	bh=AenfdRm90WrSjoi864BFabnLzqWgO/qqA3F0PRLFjp0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=napl7AQi2UiTBpTwoXjQ8MJt+9SLLnPFu7CuUVg7W/aRolDGozszZGUlIaGY+Cq/N
-	 OM471O3WWvM9+LNDFoZVYSx2OjzdA0u+FiDe6SRoEIwe9QgI2HgFtNIw0KfL8rNN1C
-	 32HI0xaj8v6w0CTprcI98iFZnFQKn2n+ja77zSSYDNUIBkUxaAMMZmyL7RNCmzuvYM
-	 xXu8APRXiotFV/J3gUsH3y1ycY8zXwuC6YoPteRB/kTOqpq87i/lshG/WOt9KNJ7l2
-	 2y5CPcgneTBH/sgUMaPQpWYCZHPWj3xP7tQ4BRrLucpNUdwqSrf25DUssebpwne0sm
-	 AqfzKMgSYqN6Q==
-Date: Sat, 24 Oct 2026 15:23:11 +0200
-From: Alejandro Colomar <alx@kernel.org>
-To: Yingjie Wang <x-professor@outlook.com>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	Manfred Spraul <manfred@colorfullife.com>, Alexey Gladkov <legion@kernel.org>, 
-	"Eric W . Biederman" <ebiederm@xmission.com>, Vasily Averin <vasily.averin@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Michal Hocko <mhocko@suse.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>, "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, 
-	"linux-man@vger.kernel.org" <linux-man@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] ipc/sem: reject negative SEMOPM values
-Message-ID: <atyvbQ5xxtxcxBZE@debian>
-References: <cover.1792808260.git.x-professor@outlook.com>
- <c2c9cb6d741fd9290c835679f9c209b147f74f64.1792808260.git.x-professor@outlook.com>
+	bh=oFWGrkgth1iIJh7Anrwf3nuRUssZtgX5R4ZSgIf/0Qw=;
+	b=uFYwEvJzVfq9h1XZnBWhcGf4pAKyZ/PqvzL1biSqO4HhqmoE9u36TeJVeCWM9qyl9FGglT
+	9zXgr/8S0QexbtdgCH93kWqES/U7OFkLcYqeio6Iegb+LTscmjjz502Oe+NlLiEyuC3IsG
+	mkeeFGIBI7X4bIuKtm+ZQbdd6sjPRpQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792857048;
+	b=7tuiWsAQDOuyISYPJo2AeoFnqe0laXCv087p0rv5FQqOkWnlA/7n5DOphLEZeBLHLFlIDz
+	jlmH7e6WFKH3vlQS9zKD7v99dJM+mD8gGQ6WGCBscKE6VglAkahHaD3+lt8SQ9bOmRQXyG
+	0y81WfETSnRn6s/gSbAC3tZbvbqtf98=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ln5LGl5G;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c263415982eso214824166b.0
+        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 08:50:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792857046; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fDi7riIeWyOdF83/g1FURo2h47UuhMlKiEzyX42/GeI2J3ursGjQ/+qJtCe2p+KCMt
+         HwtxD3iPKRnn4lmo4TMLd4d76IGecz4G2oHnDPSX9kEX+UdoVq6xd6z50LjaMQxmCwS0
+         ScPWk6KC7KiY3KaDGG3wFV9If4atxTD4aOiLKZXbsGmirYnAP+KXqP/XlUWz6ltMMyJj
+         hIM0LgQI+Mv/fEgJFqff2p3fv+4rsFad3EkzLdEr7EsRu0oezDAIoT5+y8cOGeDnRADu
+         TYg0XZUZHpvIrY29y2coBThxPdNa5sNIUiwhJD78SghyQZrWJjpFDPaMbm0QgL7abhAU
+         mS6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oFWGrkgth1iIJh7Anrwf3nuRUssZtgX5R4ZSgIf/0Qw=;
+        fh=ca+5BO7XQjgdInL88NOe128nl9vQ8QrZgTvL+o06lUc=;
+        b=GMtokcUBHxdh6syFdCXwHbyF5Iv8QIEsCeb0fIPBAsNmBV0wDO5mOGDZbIGZiAjPXA
+         OArq3NPZIJltPa4m6lNIcVoiQ92zqW9sWuLkbBgYeEL9dU77ztArKEB/xHBvemEh2uJK
+         W2/rr9Fig0cvgsAyy7UXK5TQwGgiyq5UywU25O3S2wfWVgdXyV35SDGB4XZlxMLGeSDO
+         gBGwTH7l/qsxGPezEP8jSPwSP+1ewPAgfowmXQPXP878zrv5dMeujQKkBUavuQzFm8il
+         JclenlLgPIbpl0YbTOO4uVTniXzs+1m8uv0itk5tZX6QJC1of/MMgBwHsqeVh4o/sS0V
+         2HDA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792857046; x=1793461846; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oFWGrkgth1iIJh7Anrwf3nuRUssZtgX5R4ZSgIf/0Qw=;
+        b=ln5LGl5GFRl+ewlMvfJ5MQuOOafg0aCsO7VrIiZWzrgZAbMaBq9jLrfjCAmVoo5tgA
+         5CtgS2F7l2Q2bTUVdIwisEFLKz0qmAuq/3jJDjUapnI3aUYjSjKZgrmwvbIo4RLC7v6E
+         thMSJtDvvf4v/Ko0qZC7ocL7u72xWArVDMGupeh07S/Y7Cr0zARmgsqL+5BZS7qEX9ZC
+         rL932cOQKmxhbbvtHL+fbVrlEfD1W1Bm9N/8c6OFf9oZg8bXzNMe2iDdEMNCj675Jzrh
+         LW+/+DdTEt9tS2UUlVzGVeINQSeR6EG/SLR0VwXj172JU5UodPrHwLsCslq1A8sUpDNE
+         WIJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792857046; x=1793461846;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oFWGrkgth1iIJh7Anrwf3nuRUssZtgX5R4ZSgIf/0Qw=;
+        b=l22NnSyqWE+qDdfoAOa6dgeXTC93gdY1wDRk6WbAn9XNwWhsyspCAZzb2Nqw/z7/uR
+         tppURXrkzE7p39maOrrsOvwfZrpe3fzN2fTbqETmlwebtD4Yyif7cTYt5RMzifOZuCyi
+         KIrqrk3lm8pdBOxRTdgMqWwvPS2SAzbjpYR9Vca2bf0ltSHWY2jsz6g5T9FZm49JSe07
+         TQsNIK2DeuP6v2rnWB709qS82viZV6I/ts5c3U4o7AYEDoNcAYO9O63teFINQ/t0VOG6
+         huuAsoiYn95kCMO+N5WRxyIbAkShrzd8dE+0GyvFGmoSSZlrDDwYDKtRB5k4o3EZFzfs
+         YhDw==
+X-Forwarded-Encrypted: i=1; AKwUvBxj0OTrnzgCpDONP335/p9rpmnVOvaR9umtLhzXZrYROglKY0ZhY++0QVRyLY0pXRNR+Yq5UHMhzg==@kvack.org
+X-Gm-Message-State: AFq9FYIpMK3frYZZNtMzry92A3Ki5hruwFpA9mzb8V3rh39Nw2xZfWyB
+	YqV4b6Men/XE+U8YJH+JcTeNx/TjEn1Vvk5Sm5Njol34KaDsU0nAlr2+flQm2jBAH1ZuyJ50qtb
+	+2L47ladzmOk/EwY1Fw4NJMPnHmIezII=
+X-Gm-Gg: AYBFou2lHQ84/l/wODsn4e/vPIzHPOZiH1wpLKly3Dxef9aTPC8kkU3PowX/72Vyuqi
+	qAdGD7jXSMo1EV7ePqNCVm48S7r2mX0ryxbja55Tb3RgzkK85MeMUFkCi2yC7YZ61g81I8Lz0ss
+	pX1TzlbWWB5hEUvJOqtrNRKVDqcNxk9h8rQFbg6RVpfTsRNJnMV8kxmETBp07nyt+2bVPvdO7Yj
+	VBJRjRLd2y/wtxs7dVayx0cKT8k6xvSYA+oFOnoiwZxwruv2JGHAhOo05NwnkHbSFIegsZSzWKK
+	J/ZawRlOCSTl0ZW991DlI/Fm0+I24s48+qIu0KY8JrzXeLEVdP4QCkY3AZb3sHVOYSo0KzXBD73
+	7aMqrbC52ky6esQ1YxL4BRALKgGaalhz3dik+SoAglRcxMq22GW9FRZAyowMYR4j37DBtlDGV2E
+	SJVUe+E0krxOYxFcU=
+X-Received: by 2002:a17:907:3f1e:b0:c41:26b8:c49c with SMTP id
+ a640c23a62f3a-c46bdd97c19mr234177866b.10.1792857046023; Sat, 24 Oct 2026
+ 08:50:46 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3ypnmqpyuzbufluf"
-Content-Disposition: inline
-In-Reply-To: <c2c9cb6d741fd9290c835679f9c209b147f74f64.1792808260.git.x-professor@outlook.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 62FD010000C
-X-Stat-Signature: 11ddrw6iomwjyrq6drweiwy59hr19mz5
+References: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
+ <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
+ <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org> <20261014195354.GA371161@cmpxchg.org>
+ <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
+ <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org> <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
+ <CAKEwX=PCSyCEAqxeOH6CkCMu1eB3xUn3iz5XNuTbpDM3EmWYAg@mail.gmail.com> <c6e62e80befa886fccd36d34a39cf56ea5b9c9c2.camel@surriel.com>
+In-Reply-To: <c6e62e80befa886fccd36d34a39cf56ea5b9c9c2.camel@surriel.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 24 Oct 2026 23:50:09 +0800
+X-Gm-Features: AclHuK8EdrvPlNQOkv86BcPqxKsSvjXgFWnjUR3jEYoufbz3bHhkuKrZQsexIF0
+Message-ID: <CAMgjq7CN7qTes+OXvCfsgPOnbtyY7YPytTEP3zZJTBxrGZ5JnA@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Rik van Riel <riel@surriel.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0872340002
+X-Stat-Signature: isi751epph889duwho4sgp7ys7k3r7hc
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792848204-568863
-X-HE-Meta: U2FsdGVkX18Sc+TNAdkMkdSiEYwECs6ybE1F4G1UwT25g4HMUhIxpQXxkXhdmO2p0JXFa/jXRnUNKVukCb3FlsB7QUkHBIEBwnodR3ipvXqOF9IrNOsxw4YuDG+5KE6aHwndx+1Z8iFyfkjAi+oH1nce2IZ1fw79GQ6w7QbEqMSAtQLvG+Yf/gkZd4nifhLPdrOP5B4SXicvdOsqfRhdd2L2xPMZ6peVzH1gfmco7NmaZgYmfbU/AovBOJNZNdNClr7x0F3Sx+fpk/iVl/z7zRhem6TgIeqP0zQExN+Urdcfe3MzU8jC4+5UPN/f5Lmni2zIsaofleqINM96WAxFsRURxq8zAaUZOzA7+xqh30XVSy4tXMXxkPAvHbi5tUDYOT5Ukn21T69Q1nv6xcz8dHN/7CrmtCZtPZGFempiPLb5Fk7bk2FmYZnDyVXI5OGUwdB8b4jOD8KAaJBucvXRkDP4Md6zaHgAdlyf1stT1MREDeKKUyG/7sJ9AkaK4FVQfKAEHcMUKOeWokSJpH3pqjnzu876BPawylhza/552UeNp069CJ+a/QiOWSFNl8YahX8kvPhFbxp3sq8ncdq8FgIGp9T8A5dlDjzkrte8JwlH0Xpiu6Xm1I6mhaQ3B+GlZ5PLUxzhxdrlpV8SmRSSPAlDOO9TxCdeGgwF6IBNF94FpVQB3MfPI5Law3T+3IyEROGzZUoin35DEF6lSRUqjH5Si0qtu8hAq+mU/bvOSWN0H2mS8F3XiJusIJouGIbVILzjlZWUrc7esl773sI5kqM3Rc637GVRXByxnD/PNZE0S5p4jQ6YJZDEddsry11aNnJ57aEV5jHPrzTOq6prm0ArYyYp5EKI/qxkoUDilkIfq6uNa6jUN7cwCa7+XdSdq2F9Vw+OO3CplJDcGOVIxE0d94rI56pQi77F3011L9iqM0myTwWUQJboRxm/pWjrLkLdwOvoi/iH+3Lqedf
- YCa0y2CB
- wGTy8vGGqoZ5p5UApzi36yHeTXUQ4dZdOt1eB9qugDAn3DEMCrnb6jKZj+T73BrreE3YkAEEUJjWMI0tuL4WHaDjoNCXNSQTvQ84XQpjOXFZTZVYxmBFH/+x1U8dleJWcfNRcXqivYhxh5rxj50LmpagjAkvdFLqd0fiiJp/O0CXswIogkcuPPvugPdLvHFbAjcGepIARVJ9uAwBz9biuanK4QjAC4s2z+aiOh6mO5bgsOiiC/FG2dLGN8vwX4KXj69zXFO8+8afC/srKncFsa8+sLs4UqRppst2Ft1VzKtHzUIq1MFKhxnn+Jp4ssJINJcwXsERgHVFyocKlEABvdY8nhqTRayKmbE0th1e7jovBRQja38L2UHTNhPCDmFvHabZUrhy13IZ9c4orr2CpfMZgtUQ58AqtFsDNGRYNfEPjWj9ESWHDl2+1ApDorU5CELaT6jxDBXVeOei0N83WxaaNxMJeNg3IsazAdTc2oB7BzrxnyM0RIebRLEozaZvS0au+DzdWfAQ3N2qfNw+ESDm8aCr7XGK+oh5XO7Nv9GKDezgCPE2Qq2+njnoZpXyJaVmUKfqcaRAlGjsf86ZAZii36IXRx7KCiBgFjBpwocLDsMM=
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792857047-555392
+X-HE-Meta: U2FsdGVkX19TsJ1Jo57ox+v8x0nx49I6T+lvb2rnaFYaCv5VBA16CpyvTWoQ0hs/5uPFQJHvsAzDm2N7dswzsKKDVH2xsCWn+1u3ErtC2VzdOopCjAqGqxwKEk2BODK7EmqrcdRkQOwKIfnnxtuzxGjBNWtw+CccEzyHfTbGk/FdYl7bCGdXftlol5BqmDIMMGhLtgLU5vOGJw680femIzttXbDmpi4O+eXOuyAolZGAK7pzcHUusxGxxocgb4aEwsKRKcu6f0tbDQYnF42hECmgt58mbm9Ds3s6v4+dd2q61Rts+dpluduckl7pftd8mpE4QBJ3fAUTLgeGGyIo6S5Ym7wDcTM9Zgk8ufNd/hhTItJfxSLtnnWB2VemS+YzXd0oMnAcxNsd+CNoHxN7yK8qXISDxAlanEbaKEHiwrDAoVFShdaJ88PxKZVFbaxs5isFLBiw5pyS5q17TSZoo3wLKGDYVSgfjtF3noOdPH70KKUMr/F2e+AQa6+Yrpt/HPbwnVxA9e7x1VQCOkizdZiwAHZ0cJmcnD7Dn+Cs+GK4dcFflQ8OEDykXMQIkFK3uWrOkoUnLzQ3dAh6td1OCGWnUQYZTtbFftWQFR8WJPBoali/x7NvVBgGDVPc9EcWwkccrGxziCfgsnaF+mhTnVLt1z2vE2nBguGZdXtNl0JrVOxqhdWiOZep7OmUUjRF4gq0uzkTmojQ5PUrDrfrJuxqKtd3flRihnZgCY4EDoM7SbMY7fvpGRSsIbg8RUrn7n6qxKV6ZgFGHZ+4vV8h/93KLFLYunOf08sC3gnByjL8HyxCVlKxx4/aj+kvKSuth+IKCMw4f4GwbJVBigh44ML1PRZRR6XkVaMJpl+4JICPyDtsNUkvp+gJ7HwLn23FHd13tRx+pvKU3+SKcDX77eUQLfnOHtqy+awjWUTmGO3yhJcaZ6tzDAkDyA+6VLt8adrX6p272P4Sy1ozdIQ
+ ih7H0cH6
+ hHD8CIj1mmNVsfsh3Ae8F4a7oexIl2nJd9cNbUQZWmUGZjVEcvbkB5cG/V/V7caqIgfeQhMPxXC9MFE1kNiGdfQuMMc1AHvNr6hkHlni7wots38GTH3WBgEe1jtdWxRh3ibfxNLu2pXRy1AGhoCsBwNKKG4/qfHcQRdysQc8Gok4ZXUEbHbIUhRGPG/LP2j17N0Bw1S6zYkpE6/Tqp8IfJGxa+W+8R9s2O1/g6UB0poakY8kMy3ZAJePRJlYGEuEodU1rVj7xbkxQh7foPxdOldk/EAZgQmLWgDqO8KJaSuRUGZwY3NlRbfyMLWMyERfmDXU1YwpQgQdIs1uJ0rH7sCNzvgYvIzvebURNsagcSfd3AbcZUpfFQnBy0Q8wTiMl9p4+7mPfROVRAYC2RQSetQWqH+N/IT4FfFmNHWA1OvKmui1HZftBDfKOVcxCodTULvcgilAkZlc1m8CzzRiW4ih872R9alFl8+oDxbVExV4xmDflZYxqsU76Vxr3HZfMlCoZUgfkI9J7OniqmF+ab+hteOzhOyY2SRIv+77bdn91YpZJKmLHvcpaku2vEspn7JpS9vaghU5cFNg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,232 +173,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
---3ypnmqpyuzbufluf
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Yingjie Wang <x-professor@outlook.com>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	Manfred Spraul <manfred@colorfullife.com>, Alexey Gladkov <legion@kernel.org>, 
-	"Eric W . Biederman" <ebiederm@xmission.com>, Vasily Averin <vasily.averin@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Michal Hocko <mhocko@suse.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>, "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, 
-	"linux-man@vger.kernel.org" <linux-man@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] ipc/sem: reject negative SEMOPM values
-Message-ID: <atyvbQ5xxtxcxBZE@debian>
-References: <cover.1792808260.git.x-professor@outlook.com>
- <c2c9cb6d741fd9290c835679f9c209b147f74f64.1792808260.git.x-professor@outlook.com>
-MIME-Version: 1.0
-In-Reply-To: <c2c9cb6d741fd9290c835679f9c209b147f74f64.1792808260.git.x-professor@outlook.com>
-
-Hi Yingjie,
-
-> Date: 2026-10-24 12:21:42+0000
-> From: Yingjie Wang <x-professor@outlook.com>
+On Sat, Oct 24, 2026 at 4:03=E2=80=AFAM Rik van Riel <riel@surriel.com> wro=
+te:
 >
-> The SEMOPM field has been stored as an int while semop() receives an
-> unsigned operation count since the beginning of Git history. A negative
-> SEMOPM accepted by proc_dointvec() is converted to a large unsigned value
-> in the comparison, defeating the intended operation-count limit.
->=20
-> Commit 50ec499b9a43 ("sysctl: allow change system v ipc sysctls inside ipc
-> namespace") made kernel.sem writable by IPC namespace owners without
-> capabilities in the initial user namespace.
->=20
-> Parse writes against a temporary copy and validate SEMOPM and SEMMNI
-> before changing the live settings. Hold a per-namespace mutex from the
-> snapshot through publication so concurrent sysctl writers cannot publish
-> stale values for fields they did not supply. Access the live fields with
-> READ_ONCE() and WRITE_ONCE(), preserving the per-field access semantics of
-> proc_dointvec(). Read requests continue to use proc_dointvec() directly.
->=20
-> Failed writes leave the live settings unchanged. Successful partial writes
-> change only the supplied fields relative to the latest locked snapshot.
-> The writer mutex retains the existing per-field visibility for readers.
->=20
-> Keep zero and positive SEMOPM values valid. Zero continues to reject every
-> non-empty semop() request.
->=20
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Link: https://lore.kernel.org/r/20261016155905.2a659b7bb7d61f33467a3263@l=
-inux-foundation.org
-> Link: https://lore.kernel.org/r/51c93c19-f1dd-455f-8698-6b1ee30eb630@colo=
-rfullife.com
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yingjie Wang <x-professor@outlook.com>
-> Reviewed-by: Manfred Spraul <manfred@colorfullife.com>
-> ---
->  include/linux/ipc_namespace.h |  3 +++
->  ipc/ipc_sysctl.c              | 35 ++++++++++++++++++++++++++---------
->  ipc/sem.c                     |  1 +
->  ipc/util.h                    |  9 ---------
->  4 files changed, 30 insertions(+), 18 deletions(-)
->=20
-> diff --git a/include/linux/ipc_namespace.h b/include/linux/ipc_namespace.h
-> index 12faca29bbb9c..c06568ccfca88 100644
-> --- a/include/linux/ipc_namespace.h
-> +++ b/include/linux/ipc_namespace.h
-> @@ -4,6 +4,7 @@
-> =20
->  #include <linux/err.h>
->  #include <linux/idr.h>
-> +#include <linux/mutex.h>
->  #include <linux/rwsem.h>
->  #include <linux/notifier.h>
->  #include <linux/nsproxy.h>
-> @@ -31,6 +32,8 @@ struct ipc_ids {
->  struct ipc_namespace {
->  	struct ipc_ids	ids[3];
-> =20
-> +	/* Serialize kernel.sem writers. */
-> +	struct mutex	sem_ctls_mutex;
->  	int		sem_ctls[4];
->  	int		used_sems;
-> =20
-> diff --git a/ipc/ipc_sysctl.c b/ipc/ipc_sysctl.c
-> index d038d944257f6..a05e28e67c305 100644
-> --- a/ipc/ipc_sysctl.c
-> +++ b/ipc/ipc_sysctl.c
-> @@ -51,21 +51,38 @@ static int proc_ipc_auto_msgmni(const struct ctl_tabl=
-e *table, int write,
->  static int proc_ipc_sem_dointvec(const struct ctl_table *table, int writ=
-e,
->  	void *buffer, size_t *lenp, loff_t *ppos)
->  {
-> +	struct ctl_table ipc_table;
->  	struct ipc_namespace *ns =3D
->  		container_of(table->data, struct ipc_namespace, sem_ctls);
-> -	int ret, semmni;
-> +	int sem_ctls[ARRAY_SIZE(ns->sem_ctls)];
-> +	size_t i;
-> +	int ret;
-> +
-> +	if (!write)
-> +		return proc_dointvec(table, write, buffer, lenp, ppos);
-> =20
-> -	semmni =3D ns->sem_ctls[3];
-> -	ret =3D proc_dointvec(table, write, buffer, lenp, ppos);
-> +	mutex_lock(&ns->sem_ctls_mutex);
-> +	for (i =3D 0; i < ARRAY_SIZE(sem_ctls); i++)
-> +		sem_ctls[i] =3D READ_ONCE(ns->sem_ctls[i]);
-> =20
-> -	if (!ret)
-> -		ret =3D sem_check_semmni(ns);
-> +	memcpy(&ipc_table, table, sizeof(ipc_table));
+> On Fri, 2026-10-23 at 10:24 -0700, Nhat Pham wrote:
+> >
+> > * Swapoff: this was brought up as a request, but we ran out of time
+> > before we could discuss the motivations and use cases behind them.
+> > Folks interested, could you explain as a follow-up?
+>
+> This is one that I really don't understand.
+>
+> In my mind, we have vswap sitting as kind
+> of a swap VFS between the rest of the system
+> and the swap devices:
+>
+> +-------+     +------------+
+> | vswap |-----| swap cache |
+> +---+---+     +------------+
+>     |
+>     +----------+-----------+
+>     |          |           |
+> +---+---+  +---+---+   +---+---+
+> | swap  |  | zswap |   | zram  |
+> | file  |  |       |   |       |
+> +-------+  +-------+   +-------+
+>
+> When a page is unmapped from userspace by the
+> reclaim code, it goes into the swap cache.
+>
+> The vswap layer then decides where to store it
+> at eviction time. This is configurable by userspace.
+>
+> If the zswap pool is shrunk, the vswap layer knows
+> where to put the data next. There is no need to
+> change page table entries to indicate that the
+> data was moved from zswap to a swap file.
+>
+> If we decide to disable one of the backing swap
+> devices, the vswap layer can just move the data
+> into the swap cache, and the page reclaim code
+> can evict it into a different backing store, if
+> needed.
 
-Why memcpy(3)?  Being a structure, we could use simple assignment, which
-is type safe.
+And in this case we want to disable vswap itself.
 
-	ipc_table =3D *table;
+> Using vswap as a swap VFS would also allow us to
+> get rid of the page table and tmpfs scanning
+> code we have in swapoff today.
+>
+> In that model, I really do not understand what
+> "swapoff vswap" means.
 
-memcpy(3) is way too powerful for this, and that can be dangerous.
-A few ways where it is easy to screw a call to memcpy(3) are:
+...
 
--  Size of destination doesn't match size of input.
--  Size argument doesn't match size of destination.
--  Type of input doesn't match type of destination.
--  You may forget to copy a flexible array member.
+> What exactly do people want to accomplish here?
 
-In some cases, you really want to defeat those, and then memcpy(3) is
-useful (or you're copying an array, and then you have no choice), but if
-not, memccpy(3) is not the best tool.
+One thing is, to prevent page fault (minor), not sure if everyone is
+aware, but a page fault itself is sometimes slower than swap IO /
+compression (especially for compressed swap backend).
 
-[CC +=3D linux-hardening]
+There are suggestions to use MADV from userspace, which is not really
+maintainable when you have thousands of different, opaque and dynamic
+workload, and that is very common for cloud providers.
 
-
-Have a lovely day!
-Alex
-
-> +	ipc_table.data =3D sem_ctls;
-> =20
-> -	/*
-> -	 * Reset the semmni value if an error happens.
-> -	 */
-> +	ret =3D proc_dointvec(&ipc_table, write, buffer, lenp, ppos);
->  	if (ret)
-> -		ns->sem_ctls[3] =3D semmni;
-> +		goto out_unlock;
-> +
-> +	if (sem_ctls[2] < 0 ||
-> +	    sem_ctls[3] < 0 || sem_ctls[3] > ipc_mni) {
-> +		ret =3D -ERANGE;
-> +		goto out_unlock;
-> +	}
-> +
-> +	for (i =3D 0; i < ARRAY_SIZE(sem_ctls); i++)
-> +		WRITE_ONCE(ns->sem_ctls[i], sem_ctls[i]);
-> +
-> +out_unlock:
-> +	mutex_unlock(&ns->sem_ctls_mutex);
->  	return ret;
->  }
-> =20
-> diff --git a/ipc/sem.c b/ipc/sem.c
-> index a8c9807175520..0f7d32c12993f 100644
-> --- a/ipc/sem.c
-> +++ b/ipc/sem.c
-> @@ -249,6 +249,7 @@ static int sysvipc_sem_proc_show(struct seq_file *s, =
-void *it);
-> =20
->  void sem_init_ns(struct ipc_namespace *ns)
->  {
-> +	mutex_init(&ns->sem_ctls_mutex);
->  	ns->sc_semmsl =3D SEMMSL;
->  	ns->sc_semmns =3D SEMMNS;
->  	ns->sc_semopm =3D SEMOPM;
-> diff --git a/ipc/util.h b/ipc/util.h
-> index a55d6cebe6d3b..51b4efa3d6db0 100644
-> --- a/ipc/util.h
-> +++ b/ipc/util.h
-> @@ -245,15 +245,6 @@ int ipcget(struct ipc_namespace *ns, struct ipc_ids =
-*ids,
->  void free_ipcs(struct ipc_namespace *ns, struct ipc_ids *ids,
->  		void (*free)(struct ipc_namespace *, struct kern_ipc_perm *));
-> =20
-> -static inline int sem_check_semmni(struct ipc_namespace *ns) {
-> -	/*
-> -	 * Check semmni range [0, ipc_mni]
-> -	 * semmni is the last element of sem_ctls[4] array
-> -	 */
-> -	return ((ns->sem_ctls[3] < 0) || (ns->sem_ctls[3] > ipc_mni))
-> -		? -ERANGE : 0;
-> -}
-> -
->  #ifdef CONFIG_COMPAT
->  #include <linux/compat.h>
->  struct compat_ipc_perm {
-> --=20
-> 2.43.0
->=20
-
---=20
-<https://www.alejandro-colomar.es>
-
---3ypnmqpyuzbufluf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmrcsTcACgkQ64mZXMKQ
-wqnKRRAAt8enQI5cXjKMqVjXRh1pd0f04+raK2ShM3YQhaynNwX7pqaPuQu7CNYn
-XS4UU//IYiVQhRD+/a6w8QixgPRqvYbpQiVSPaOexM4TmCwbciR/XIs0PBVcyjFI
-5GRV9vJBf0c3U1Lcsc2rLqtQT5X7OWK9nEjwHdrKSbYu1JOynmH43gBP+b4wyLW2
-4Jhurv34jdrxGZ+oBgMBBOmSJcr3C7CIUj7kOgaJO6uA4w7d6KVcuwgHraP25Qat
-+kEhFgs9G7SkzZ8QLOSzUhmY59tkAzuNuqpMRM4LfqOaNNrr8LJKEJLW5/BiZzu6
-DewbIzVND0w+PwohgGESVpj+fbEjO3CMlln6tAtmneIB5rrNa5kcqLUyKdhszDIB
-BeV2nVRI13zzbs7tuPa1V4/YAB53+QH+JkYadnDkwwEcKs3gGw6TA48g4Sr/L0nu
-cBp7f/yslXDqiSxIyUwt1Y2AxUX/5zDzTn4/DqDyxUrWwsc6B07X0IY0rvLDSBWJ
-Q68dB2r9lsFdzqdMpBb06OdBl2D/no3BEu/Xni7ROwc2RwlOK9gUS86ILuvIwpGU
-jtPOTnbk7c3NRO6/xmPMPVCqGrsm5HIJEfkL2x8Gvfzp3+hnIh+37aj6/Gc9lfLn
-qEEiMnILRfHuz52Lk+6KQxg4ZjFU11gtlKYtqoo0H4Gm1yGkTnM=
-=dC3A
------END PGP SIGNATURE-----
-
---3ypnmqpyuzbufluf--
+I also hope there is a way to release swap metadata completely too.
+e.g. for fs, you at least have umount, and can rmmod the fs itself
+afterwards. We also have many ways to bypass the page cache. In cases
+where a virtual layer is just a burden, we want raw physical swap, and
+the ability to swap off that too.
 
