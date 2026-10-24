@@ -1,109 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E660606A321
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 03:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15246606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 03:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.a=rsa-sha256 header.s=test20231205 header.b=XlupHKHL
+	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=Ogacobf/
 Received: by kanga.kvack.org (Postfix)
-	id 5A66C6B0B77; Fri, 23 Oct 2026 23:30:34 -0400 (EDT)
+	id 1493E6B00FF; Fri, 23 Oct 2026 23:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 556C56B0B79; Fri, 23 Oct 2026 23:30:34 -0400 (EDT)
+	id 0FAE36B0100; Fri, 23 Oct 2026 23:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 470586B0B7B; Fri, 23 Oct 2026 23:30:34 -0400 (EDT)
+	id 0125E6B0102; Fri, 23 Oct 2026 23:56:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 22C1B6B0B77
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:30:34 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EA1A1C33B9
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 03:30:33 +0000 (UTC)
-X-FDA: 85356092346.26.1A39CA2
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 861AAC0006
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 03:30:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=XlupHKHL;
-	spf=pass (imf28.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C582D6B00FF
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 23:56:58 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 435AB401F7
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 03:56:55 +0000 (UTC)
+X-FDA: 85356158790.18.30EB3B1
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 99CEE40003
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 03:56:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=openai.com header.s=google header.b="Ogacobf/";
+	dmarc=pass (policy=reject) header.from=openai.com;
+	spf=pass (imf04.hostedemail.com: domain of kylebot@openai.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=kylebot@openai.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792812631;
+	s=arc-20220608; t=1792814213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DxREnxXFL74zEXnlXFVXWPlkVOMBFqhGQRo3iyJ0jLE=;
-	b=DTeK6VAuUMNP0u+s6Hxf+MdqucIMYwASWi9FEd9+ZZDv6osnC0YqtIlYBbAUPfizZ4V5E/
-	oN+6DCCu1lZkI04cD+V9JoWuqslUdE1LbrgvOWrmsY54EBy1zxDTzt5Na0/D4vMWTLY4xY
-	TTyl5q2TxqVJQuf8Do+7VUJi/OGl9s0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792812631;
-	b=P3rT4fOYjR03fAqmWcGNx2Wgodb3PdnhpXCt9wS5HumEFTETKQEAAQZqP3PBzZYMdDNfwl
-	2EZjUCv3OodxW9wmPaLyxVi67yVupN1ua960iQJ0rUun0RswySuW61aZIYmUImpIqeyXfA
-	csf9eg75I81RMPBrS0zBGUXGmITOjWE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QmLSHEUIlzA6b1Z8wErarn2CLIxesBi7GU7DAVJa58Q=;
+	b=qkVcuWoPS42Idw2PNHfqv8PO1Y0hbtd6tP57/FK3F1D1l0FzVh7qvUTUmJz7/CpnBz+DAk
+	03K3UWImlrypI5UmsUSA/Dx0OwC2xS/quKQJdlfkf5FQgd30jLLPRaVlQgVESrE78XO1oU
+	6bRSAirTNdcUaFMZgpmSwVz9BsSv100=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=XlupHKHL;
-	spf=pass (imf28.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=outgoing.csail.mit.edu; s=test20231205; h=Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=DxREnxXFL74zEXnlXFVXWPlkVOMBFqhGQRo3iyJ0jLE=; t=1792812631; x=1793676631; 
-	b=XlupHKHLpRFmdluWHfjziaHaQxpnzyIc15B0KGp+IoxQJED0J9Erd/yDzNGAseaEJ0Wx8wo0OSg
-	aNRoZl8uJx2PbB7LvwxFu/uHmfJWiUqKW1GrJaBcXbc5s9OzwOONJL51e71f75Sgw/gq88eo1qU3k
-	+MiB7VDXOgoA74MXJ0EkGeKZW6amuAR9M2LkN8/QdY2y1XkA1ApHnpYf7PD9KNLjQsvcbQJvPvwCU
-	x5T//BAry6XuMSJtevZaCST60tpwg8Z29ZAdcVj/4Q2NVRiv9gZj1h8nvilpyEuiBm40RPJd1Ej0j
-	+px0EfzXuA4PHi1AVAU/RxYa9zX/0qCUCdug==;
-Received: from mail-dl1-f53.google.com ([74.125.82.53])
-	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xKSSk-00EHeh-IH
-	for linux-mm@kvack.org;
-	Fri, 23 Oct 2026 23:30:30 -0400
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-170135e43c7so1616378c88.0
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:30:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByEECNvoDKfNN0wVBcxsdQtoO+B+0AmFyNlWveADWR/Opc+9tn4UPMOH/P5PJpPl2g09c/Ps1prwA==@kvack.org
-X-Gm-Message-State: AFq9FYI5jq2bGyI6H0X+86Ak+ia6LXZ04St94Q+o6tKro+t3LwH9acTg
-	yqGOF5+1gThLNTkYLW241w5tHLisUKFs+ZRj52oeuEN1Cx9nCvtZdzluCJyZVYyvaS/iBOKxEZx
-	kTxTH9fm3i9elt2IhLjIAdA1wOaxg4uI=
-X-Received: by 2002:a05:701b:2915:b0:196:e254:db24 with SMTP id
- a92af1059eb24-199375eb26amr1030037c88.21.1792812629421; Fri, 23 Oct 2026
- 20:30:29 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=openai.com header.s=google header.b="Ogacobf/";
+	dmarc=pass (policy=reject) header.from=openai.com;
+	spf=pass (imf04.hostedemail.com: domain of kylebot@openai.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=kylebot@openai.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792814213;
+	b=NR5KUmvPcoSSZMNNy5UGVu4L431hKSE5owVgqMLzSlajmufqBvWx3J/oBNUOJEEDnq9fRg
+	AJDW7hKPx9DkUiMUbIcVvoRcyrB79eWO42EAEKMg83fvNgv34d8o8lwhj5NICoX3s8UE9s
+	+Zyrkr9/ofXlg80ZYzEi/s+Nf+RA1SQ=
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6d68de53053so796043eaf.0
+        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:56:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1792814212; x=1793419012; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QmLSHEUIlzA6b1Z8wErarn2CLIxesBi7GU7DAVJa58Q=;
+        b=Ogacobf/rBZz4fJGWHgtSEz/4k9OHMuMcLe/Zj97CDCefy/z01OwcZCpnHXq7N9Omg
+         XJzds5doJh+LJzK6gOcKkQZcd7WkWL9gYc+18IukvA/Kx/MfhmbfrfTgM4BbFOC2KURH
+         98iKWQtz7U7nJlqF9x8LrcY2EZZBeyY5aALYU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792814212; x=1793419012;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QmLSHEUIlzA6b1Z8wErarn2CLIxesBi7GU7DAVJa58Q=;
+        b=eOfXPcaFiv6N1h7FOlV8mhY7pSyikN8YI5vP1z6otuHbhuPhqE4EvKgGIiwedFSU+N
+         s/1QCFAfu2TXWeBIVaDZ/ef5x7U1XUfbvWQrdCsjSlxt/pcNMS5BQs1DzzOcYho7xUoi
+         DLQOzZUCuQ2duEPkYwSzbfqvSyq2P+OZcqHH9E9mFwq1Qrw/nW8czoDX/BiE6zNMrI22
+         PyvQYywA1LcFeOvjQ6vAajmJQfZkfKTMItzdYeWka0ictXvJnQbxMh38TLzhnv+Otqzk
+         AOZh8G5cNvaolD0VmsiB0v/V0FDautNjn7CrTAVwNI0SKYVLtdsFWF1+ojJPHx9kj87i
+         Mhhw==
+X-Gm-Message-State: AFq9FYKDRJYjODZYgU/9kvFAIoGCoaoEl0VLSAGxLOco2YbOPzE1vuuK
+	+rAqOAWokYdILn1itAwqsnNq7oCa5mWIZJ/8539MXzNx6LhGqMqr15fGS36wSEzQiM10eNKcL/K
+	fk6k75Ho=
+X-Gm-Gg: AYBFou3RWy7mpONO2k2Bsvo90ttmaG/TN3TVMp8R8A3sdyDTo8+fy7iy559QiuAR0Lw
+	oONgmYjQFdIt+8CN7Nlkvl8X1sIemvmBtxyi6aZichWb/21fBtIskxqGlffWROC9amuNhltCd5R
+	LaYjXwlT+BO6kLTSVNhhR4hMNgtO4fg9KIVJ1Wr9Bg0koDBc/lrY3kruOEZ9TT6wTDG+5hk6Rlz
+	KvMzXjuN+UADUHiZ68LtfubxexCZ0d9/IqljrA3uikJWNhvNDvxPGBr4zEhvABEBCumwwkv6Ux1
+	KWA+ZPDxILXiTerWyqB90ZJ2iqevT27qD/aXF51cc9zoSxz6VsMwHXemaF0q0UuWV70AGttSddl
+	uac+sKSfGPbV9Ue9rpnsIz7dlSx9JAYhd5TR+9viaJlpg6gzs+ukrPb6Q8o6K7gCnWuWsJAwqAO
+	uIO7cSIOyEmmtXeoj+Nv3HVsoroj96f4blkhThvRa7p9NIs9k2Ig6Dq/sdP+pQdVpleq8FiMs08
+	e8Hr2XttCrqszT9KujQ+DR5H+b7HH5nX/+CKaWtBUtflRQK3RUiZyCeNQmMAAH2EbewCuunZ0Sl
+	cri25gkflPcUFgiQJUWyAYsR+PQ04RVb1hvGrvwdxdyT+4iUPWvQGef9
+X-Received: by 2002:a05:6808:309f:b0:539:dfe8:9960 with SMTP id 5614622812f47-55c00335864mr1018155b6e.56.1792814212486;
+        Fri, 23 Oct 2026 20:56:52 -0700 (PDT)
+Received: from com-75606.corp.openai.org ([199.47.143.5])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-55c0429c56asm649076b6e.9.2026.10.23.20.56.51
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 23 Oct 2026 20:56:52 -0700 (PDT)
+From: Kyle Zeng <kylebot@openai.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kyle Zeng <kylebot@openai.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/proc/task_mmu: pin the mm during PAGEMAP_SCAN
+Date: Fri, 23 Oct 2026 20:56:46 -0700
+Message-ID: <20261024035646.68348-1-kylebot@openai.com>
+X-Mailer: git-send-email 2.55.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261016222721.791785-1-nickolai@csail.mit.edu>
- <atZw_gtMIIKXgc1q@bfoster> <CADGQE7H91ZwPgUzPHoAJmF3WjzRKxeQkQcV8+BLdGn7+kkEduA@mail.gmail.com>
- <atdHhW7JU8j5pozl@bfoster>
-In-Reply-To: <atdHhW7JU8j5pozl@bfoster>
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-Date: Fri, 23 Oct 2026 23:30:17 -0400
-X-Gmail-Original-Message-ID: <CADGQE7Gaw9t14nOr_FYcT4d5y+VEjX+oSgkQoNWiNtomCfkVRQ@mail.gmail.com>
-X-Gm-Features: AclHuK8U-00Ea83CZV1_hG7vFrciQgbpxapAyoOn_d2XFtjDVI9f8nU_G2FcSqA
-Message-ID: <CADGQE7Gaw9t14nOr_FYcT4d5y+VEjX+oSgkQoNWiNtomCfkVRQ@mail.gmail.com>
-Subject: Re: [PATCH v1] mm/truncate: fix the zeroing end of pagecache_isize_extended()
-To: Brian Foster <bfoster@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Theodore Ts'o" <tytso@mit.edu>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 861AAC0006
-X-Stat-Signature: 8hrb4h3nx7gbz1ctpgi9uj554n9fm9o1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 99CEE40003
+X-Stat-Signature: whfjr693c5aejiuuqwom5a4ko4ckzkmo
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792812631-973441
-X-HE-Meta: U2FsdGVkX1/rQzqcMbAX7nkLBqwz6W8MlNaaVlM9yKKeznu4rSuMorgS4TEyKWVs1UZXter1fL4qq0VAf3el45HZOIHQ/efKA1Uwm0ETjUI6B5ktPsVfxWzrS+sI/mDQT3LI5MBOsCHkw5TZ/I6pYijz5ILQUTntnE9FnmbvxHpGlV6hq2HlOSoLxzxFbOcGA2QykRtn8p7LJiIQZjZmTxM4XUyWPjmsXhvs6tGRgkYW5vR4bMcEpqyb2c2onnZ6OTkTjgGZQycXFa3meUnyzNyf8wfP7ueeDQ4oFx67Oc/ejbHXL2XY9WQr0j6coqvRC3MI3W9DfSgD6H9Iv3fq+TAXQAxJ8k/2+bDEmeIP6cEur4Txe4H0X7DS8jPKccdHoXI9if/vKy6Zmb/0buNJtTsfoFuEP04P+RzQ+T+U//5DyUG9J9e8EYj6N3V5LmAAvCTUEzIZwi/2phxccecpoynUKMSbo9qkppGuKkTzql27nT1VlUUdbZC8sbgnGxsx/9/tCfY1ec1AR4/uZI5/dur8fToYCNnyNpAAQlmmoq3E7Lvg7xv/xNNAcbmZyQvU0ixVBJ+C5SuFVzsIjmPPaUxM/qcZEUB4tCAO5XeugXPnVD23LYtR3G+Jkwi11Bc/Arh7V0zYYCgm7giaJTQHPR1TbtszF/TK993J+ewgkDnyalTrdSFvuTPR1bgsgNIkskxaLOWs6TKL13IRBQotOIg0Ovh7M9+L0re0+QtINAfX46CEn/Rtds8uCetMf02KgeNj6Ooa7IkCUe7gFvdzv8BkieLwFYaxk4E727MoAFuHawMFQppTQl8MTr8mEqd2Zx7Q0WpSrh9qPOFnr9HkkpDVhFmtr6NwH/8Gy3Vc+iF3a2LsGSgnfPm8/FU8OeAk5SUE+3aCMSOmVt/3E7t0FmW/pXGBL+lrxsCjP6vs9NWkFEK3j7iG5zlclboROLXSBivcJUQPrIbF8jSd4Rr
- 8JGfvcGj
- acApaBDpfWEGErfAxXZsPjowGpggmgGYCXtqDU16Sy1cyhBvZqq6ACCr7ed6epfI8dmAK1m9PUsqZL6b5f5FKYdk6GXs8IBZiahTTwHusvT1nI3llZty9aP5cweOsmKN1Q48OlOFiFW0LyrzNGBOJpzBrtLPmvj5A9ImHG44wv0aStJUPVLAJqjBhru/0rJFhkW5XqKKrCIpmfKUjBjCL1zATvC5YGtlxLb0j6lGfOiQta1gdipwsuQklF/Azb1Hm+x+NFHQx/vGknb3qNO6gNeV0VhvarWtUi1augLFJz/HMqZBTstKpOFinyiuB0cKbcmtQVuJ/QVlOW0Rq7A5oXHzcPYLifri1j0WX28y6pvIFzJHw9i4SneDxNg==
+X-HE-Tag: 1792814213-982168
+X-HE-Meta: U2FsdGVkX1/u0LUKteWZyhmXDrzhm5c4eWgVE+IzRvOWA+b+xAZYxCA+gGFyorTHuD/+uidOElHLskxi/blWoExSUd1QQQOWGokZaHSp9bGCWTF9uWxJuxTV0sEZH3v+rhS3JOBMybznH0qR+BLQZwW5/DSwllB38ihidLoLFV+WDWg2LoweOkgx3uYZlpJZXOa6pS3caW3/ClJqGoRdAcaIdh8Bcm8NhhCDRW5FSAFyNZyMOTjO8yauft+Mrh/+wB0w9zeLF04TX3DLNT2MKS4ZWQM0daZKelffUhP7WjzlaM6ex2EsBjGJP9KwugoK/RLxMHkGzwaW3Wv9b/v8XyjpMG4QFzGw64CpX1NXM74qEt+OucLAyj3Xh415digV3xKXm+4nebcb28ZowErESRHl9/J+OaoIgASovTl8HZprc5MzUoqSgpQyvm0HnVjM0N9OJTWyUf/iBedpItlNgTPK/pztXnDR4+kYea0fi3ZMWRQVGBwLEE1B+34bCvXsqnc9LWFJ7SUUlz6JPvDeYEvXsnGHrV7NWSADLv/rKMkH7cfcHFtjFQpDW9HN7F7sM9RY/Ah/1h5td23UHLf7R+RkbFnAjzv8dJrKhFHVHuddoNa1UZDlRnmExonClNYQUKLTHOyU6PiKQk82j1YehQCni3zlMSacPkcmYYDgdgzxxEGxaSvWda04rKsx42rFCNZo1knTObrsPmmheoNHgODQCO2E3DkFxoZchB8wjhYk/kv4Z56kAlXYrrdUe0mITFyUX3NtNtM7qDPymYMcG0BjeZK80CKetZORf9DNIRfPcY59ORP1XI7Io3qeBGZR6kDNmXm2EyjXcwDUZ2FWQTL1m1gVSZnVHeaHm/3obAHVpXuwoOBi095EdENrMlPbNHPMFZ+s0ng57rDA6I2hGuDGs9mjwe9uvyEeK5kSQj9zEbxvMds+e6eVB0iE63QydxVshO2u91Dr6GF8DmZ
+ CtLuEo4Y
+ IoeaqGgXplG/KhVSHTM8LVzyPy/usgyrDgA/0NhHfBZ5MZfsM5DbMFgjWYDEGwykPD9AxJxQ6xz4AQtmWvo2LNhgdds3id9UJhU4rKBUJoMx+oa/73z8qPJZ2AsQ20lDOcHwBh259sIgYmZe45s1l+LD2XEqD22G9qC1bM4CnVR0+5cGNXkkKeLeTdaAFmHfctKccded7YMshe7XlgvIoXJwpIqYjjJ2Cze7Kz4GESDMK/+zov65WPyWlJsnlYuXucoPsAd11zC7VVkCfIr0dIBf7E+AAU9z/Xh7zRHAKg3o/Qwy5zgJUDYiNF38hIO6CKNoyoaFM5ZkrO+5Qxr8C5DgrPOMQ0MK75BXWjiCWEem/P5c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,39 +122,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 20, 2026 at 6:51=E2=80=AFAM Brian Foster <bfoster@redhat.com> w=
-rote:
-> On Mon, Oct 19, 2026 at 03:54:14PM -0400, Nickolai Zeldovich wrote:
-> > On Mon, Oct 19, 2026 at 3:35=E2=80=AFPM Brian Foster <bfoster@redhat.co=
-m> wrote:
-> > > > --- a/mm/truncate.c
-> > > > +++ b/mm/truncate.c
-> > > > @@ -878,8 +878,7 @@ void pagecache_isize_extended(struct inode *ino=
-de, loff_t from, loff_t to)
-> > > >               unsigned int offset, end;
-> > > >
-> > > >               offset =3D from - folio_pos(folio);
-> > > > -             end =3D min_t(unsigned int, to - folio_pos(folio),
-> > > > -                         folio_size(folio));
-> > > > +             end =3D min_t(loff_t, to - folio_pos(folio), folio_si=
-ze(folio));
-> > >
-> > > Good catch...
-> > >
-> > > folio_size() returns size_t and folio_zero_segment() expects size_t f=
-or
-> > > the offset params. Perhaps we should that instead of loff_t?
-> >
-> > size_t is (unsigned int) on 32-bit machines, like i386, which has the
-> > same issue (reproducer from the patch).
-> >
->
-> Ah, Ok. So loff_t makes sense for the min_t(). I do still wonder if it
-> makes sense to switch offset and end to size_t while we're here though.
+A pagemap file holds an mm_count reference, not an mm_users reference.
+Unlike pagemap_read(), do_pagemap_scan() does not acquire a live-MM
+reference before walking the page tables. Its mmap read lock does not
+exclude the first phase of exit_mmap(), which also unmaps VMAs under the
+read lock.
 
-I believe they're always pretty small (bounded by folio_size, which is
-bounded by 2^MAX_PAGECACHE_ORDER), so size_t isn't going to make a
-difference here.
+A process retaining a pagemap descriptor can therefore race the final
+mmput() and access resources that have already been released. In
+particular, a concurrent last userfaultfd close can free a context still
+reachable through a dying MM's VMAs, and unmap_vmas() can free a shared
+HugeTLB VMA's lock while the page walker is entering down_read(). KASAN
+reports both a userfaultfd context read-after-free and a HugeTLB rwsem
+write-after-free with unprivileged, read-only PAGEMAP_SCAN requests.
 
-Nickolai.
+Acquire mmget_not_zero() after validating the ioctl arguments and keep
+the reference for the entire scan, including across mmap lock drops and
+MMU-notifier operations. Return -ESRCH if the MM is already dead, as
+PROCMAP_QUERY does. Balance the reference on the bounce-buffer allocation
+failure path and at the common exit. The pagemap file continues to hold
+only its existing mm_count reference between operations.
+
+Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+---
+I have a reproducer for this issue.
+
+ fs/proc/task_mmu.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 5c54aebe2118..d2cee8dcba58 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -3235,11 +3235,14 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+ 	if (ret)
+ 		return ret;
+ 
++	if (!mmget_not_zero(mm))
++		return -ESRCH;
++
+ 	p.masks_of_interest = p.arg.category_mask | p.arg.category_anyof_mask |
+ 			      p.arg.return_mask;
+ 	ret = pagemap_scan_init_bounce_buffer(&p);
+ 	if (ret)
+-		return ret;
++		goto out_mm;
+ 
+ 	for (walk_start = p.arg.start; walk_start < p.arg.end;
+ 			walk_start = p.arg.walk_end) {
+@@ -3294,6 +3297,8 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+ 		ret = -EFAULT;
+ 
+ 	kfree(p.vec_buf);
++out_mm:
++	mmput(mm);
+ 	return ret;
+ }
+ 
 
