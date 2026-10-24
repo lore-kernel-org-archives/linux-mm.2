@@ -1,94 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3F9606A33A
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C4C606A333
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 19:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LACHCK6O
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z3YoQoQ4
 Received: by kanga.kvack.org (Postfix)
-	id 1EF6A6B05B3; Sat, 24 Oct 2026 15:34:03 -0400 (EDT)
+	id 69E776B05B6; Sat, 24 Oct 2026 15:34:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 158356B05B5; Sat, 24 Oct 2026 15:34:02 -0400 (EDT)
+	id 636C26B05B4; Sat, 24 Oct 2026 15:34:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4D8C6B05B5; Sat, 24 Oct 2026 15:34:02 -0400 (EDT)
+	id 4FF1B6B05B7; Sat, 24 Oct 2026 15:34:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B44726B05B3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0728E6B05B4
 	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 15:34:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33C80C041F
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64BC6A04AF
 	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:34:02 +0000 (UTC)
-X-FDA: 85358520324.03.DCA5F7B
+X-FDA: 85358520324.06.52D8D73
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 97108C0003
+	by imf16.hostedemail.com (Postfix) with ESMTP id B4799180004
 	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:34:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LACHCK6O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z3YoQoQ4;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1792870440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aV53s/thMev0qSzH+ayYeyKX09O6kEW4ly1bV0/xJfs=;
-	b=LuoWfy6Xoyze8w75hL3nGLhB39jyVpuJaTd18RuUtOQn7vs5No60ueGK3qko93k74wMUfI
-	Q9Rw/Kyl+93a0C6IBAxsvI7DbbArkNRrEmxcM0XD8rIvZTF6vzgqs5pN/WxhbE30MOgBVH
-	MZ5mLmyqvYeoc7PMncjdj7e/J7mY+pY=
+	bh=nr+YoPGEHm8Q3JHJ6w69GvnBfQfVrjXNL0RTKjfdlF8=;
+	b=pgrzofdZenRf0ONgB/6j7r4YLiBHfJSEdpYqxLtuvEfFRNVwCYQqU8nHYyCMXTfm+vTrTd
+	/cFGAkHeNy5mFdpQONQeelNNok4miAczN/03psfF5HsWpPifkHLoUux97STk/MglfbSci9
+	wJZ0q2+eBemr9SXxeu4b4l7MVZWt2rI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LACHCK6O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z3YoQoQ4;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1792870440;
-	b=jdffCdQbbiB1fcqTeAuLpqnAj6luckayPbqrCD+2quOt47mdlQLMwzN2xv5hPc6tSUTJhK
-	wQgEvF15pQ26b/3zq1pFUMSwcWo9o8XndIOPKa8ZIMbPxDSLM7gD9FsNVbt8ejuIJuUB+v
-	lAclyCza4ndgymxoq/zEkb0daNXt4+s=
+	b=8jEiiSxZTKgdM+FoXi4cqDa9w+u0TAFEcTCN1nvcIyV+mfk5Om2EThZxw/OLHuZk6Y51KO
+	C2C/9BZplsSLxU+zQgkbme/Ke7IoHAHnDeA99h+HEgg7xSr62ojxWzDDC+gsE0SkOTw9pi
+	wDfwBqGH2Qz9jCkGKNvWy3yl1WJqpso=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8633443F12;
+	by sea.source.kernel.org (Postfix) with ESMTP id E7EC740BBA;
 	Sat, 24 Oct 2026 19:33:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A38F1F01829;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FF41F031E0;
 	Sat, 24 Oct 2026 19:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1792870439;
-	bh=aV53s/thMev0qSzH+ayYeyKX09O6kEW4ly1bV0/xJfs=;
+	bh=nr+YoPGEHm8Q3JHJ6w69GvnBfQfVrjXNL0RTKjfdlF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LACHCK6OV3GbL6mZehTtgLpGXlnvq6Vujkxhv60FGXqZ44vgROHr+18efgaVrhvXz
-	 ikQIh9QIdEGsXohV5PxI8O8jBZtfla/Covtfq35X4XIGQh10dsU1F34v02eqQCqTLH
-	 X3xIN+uX5nio0NBrq1B+/ku+3PGU8of3crlz90OuqzPJYkjf90H6bYnAC5ASKWwV6a
-	 kX45GCY+jj5Gy3huVbQRWe1CUxK4Ca/ShnSvPYiqQZp27/5kJkh92IJdPlosM8RSec
-	 R8uz0NwGH+C5AZo0cdk2fkYD9zSdWDCK8X426JiGwUlu2CAUyNfsB5Pv0nLt1ZDGF3
-	 o2yECMtxEYyLQ==
+	b=Z3YoQoQ4gmS+/Aqq6qA74DhONxs0aqE+nSetz3bItoE39Xl1wFZRg+MRMfRW3rpBb
+	 yRt5bxQPXRDXxbcR0zI7yUXJjsloteIoXQ2FNPvzM1pt+RK6RmqW/8VXOHILg2HaIM
+	 syO40anvzZUAdaatr65SVify8Cb5rrzEQTy+LOJS2hXPgbadfM3srNGegGRAg8rErW
+	 wnIYaAIaO9krKJlUwlEzlmIYKjano43sBfeBrVOFakXc9mGahe7TZRrFQc/7OnZY64
+	 LRMyv/TWpmRDN8fsKyhiCaqru1n/OrhQzwOZsHWsIe56Kq78osz9LwLfAAkP3P7Psg
+	 J4sqJ+Ks9ucIg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Fernand Sieber <sieberf@amazon.com>,
+	SeongJae Park <sjpark@amazon.de>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/3] mm/damon/sysfs-schemes: hold damon_sysfs_lock in target_metric_store()
-Date: Sat, 24 Oct 2026 12:33:47 -0700
-Message-ID: <20261024193351.87130-2-sj@kernel.org>
+Subject: [RFC PATCH 2/3] mm/damon/core: move static variable last_nr_regions to damon_ctx
+Date: Sat, 24 Oct 2026 12:33:48 -0700
+Message-ID: <20261024193351.87130-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261024193351.87130-1-sj@kernel.org>
 References: <20261024193351.87130-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97108C0003
-X-Stat-Signature: 36ouwyckuc8yr6yp1icdpeqbe3ano1ja
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B4799180004
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792870440-371698
-X-HE-Meta: U2FsdGVkX1+xXWv/MTJlJumhxd0GSoXaEkhYwIdogxuquqIxKizclXCdpAaa0YzxoWq6+qIP5aPlWTebAyhxT/rcplBM/0OKtehyJfQIa0NJpvGeolJ2rprby9T+/z9i9jiqrOvM6+mTKl7sRgkvzQT5KO0tdlbMS7vuqC/HWxGXDdBAyOEVHdXm1mnfGVqx038ELtLnZ3km0wNJ69YYXJBmP6xqqySzyptWfIDFWFUD9U+eBlHkEAuZRTDWnBULFrOfUhVqx0X2mjnHm0LokwGCM/TLZ6wLflnmBxbp3eWuLK7HWpLk4x+W22MQCgbIMSE0WkOly61rcTJE563JaQEjFEskBUEGlTNMlx7780X8iuWDh4YKqmDPicnsqaJjwZo0ZIaYkJaVmRPOSdApltNCNo+aEWvnLm8+KcTuE0rv4Zro8T78nlaz3XtgMiFttZe8BDpgD38yvEyRw58Eit1pcaHPKmaBZv2O7Td7nlCfzSPMuupnPxVacl5ef/0zK2XqK7i9AH8Mujfrbb6yAnWvdNrCuW0A+LSDxbo3GTXYzPf/RIF1NTeMOfqAavCnhnig/x2vyHIsYxJAC0zxrVlgxMBO/tMblZWOohYG5LYMmynT/8XAcKcLDzkbbsOsTJ+81CD5xCP9bEZNWVXzP4Ev9Ds6gWjJU7pQekFxUmG/2rCbQhduJB0ib1pkwwfFA1Jx9SllGQ29cn3ZmhWt8dT6qVec3K1NQ4Pja2c8n4ci7FLJkVQCS0E4xCxfw95sOb0wJpLmsHnw6IXYajlIop9lYE464VErvOnhfBZ067XROztkD715RbMlXVIUjXQLMXcuqs8ayc7faKH4WrAyOhAWpHuN/wMpGCq0PrygppWDOxQr4T455OOzX+pzLvo6pgZjslCixaA3EOOs36go3j2NLZsBJTmMrkPA3UPA9A29cC3d8jctFVsaRqhcaZY80ldbB+/IrNqMjZGG2co
- H3kTy+V9
- dLJvN+he/Kg/Uo0H52nsm5juYTwM++Sp23OoVAuwcwoeoegHwxQUSYX1vFPti0zaZGa01lmAOFQfVUBryPMM2ONi8gjA7DG05DkofDTQVf+XR17rdgRin3Vuk5OM4/xL6enoRvhDx62dzU+cbHt95rNBZVIZQHz3dmCaPG6fmXCGMIbPaNmPZwmifEmv2uskpPfngwCgIoXexmpkQ+SyqWJMNNgu73k5Orn77wvWqQ0YodtR9kW/OLRvPpRMS/1kQkLs/fymObOszTQWgYAAcLBvXkMdQ4LXCk9U8HeTR5umuZbwOIzTzZghV61dYoncU/Ic9QXd+Pmn9KyiRhYxmDsG3vw==
+X-Stat-Signature: jrdnpidaxq6uyt98c5nnxfk5ei7p696c
+X-HE-Tag: 1792870440-503893
+X-HE-Meta: U2FsdGVkX1/I6ZhYg4Sd4mTctpO+f0QWxjSHHwqGNF7YxLgo4Qfs9ACZ7wRdpjwsgBR55tM/ud4PTEped23iJPJN+q2RUzvL8Xa0FrA9GFibBjUdz104znqFYA10bKhhJbq14+i7irpbZMly556aiZCf6l9x3Yc22XqlFRQLd5G10vxHdiFtpg+fwcFg1LYLUBsMzk1b6Csoi8h0V5IPj4wYvTCmox0xaf7ZEXM9qiEfFmXYiwUrfF//R1GC+wI1ZgbChSu7+lTIrHIA4HAC51Rvv21WiHCsP4SN+RiyDAdXA1TO3srAKgRwjfo1K4phoXKlW0kknW79Q0dFg5dKF1q9nks6KtagWmiSETTOnWHiMTKRa+sYqeYB1eh/S5MMR1OrKIIlFlrZpXfoajSDIJ8n4eOJp9qzKusK5231Z7fTJlkLHf1JYMJ7VtRS7qPijKwENUfeQSL/IKema7aMDj9UthqXJkxDT4POgEXP8VVD/6jTPigJaOWWWxwsTNvuwtpfVljC+LTBeRdY0Lda+p9TmX3d5oC0PKiU19g7fyts2UflaIgz3iW8cgBVc7af2zYFq7n7ge320/AxkBL/7mhYcAUKpQG0yvfx825NwJM1v7JXMsAGYC7BAlYqf8HB8LTX4Pdb+jSkpVFUcch5lBCuBukqshq/F5wGqXkVi/S5EjPGTCxxJx62q9wGu7dstj/hSSEvHI3nnzP7BE2ZCygK6KIttQumiDTGdRtHd4wDIRrHud87yIieCKbvAwDIyWJb3OdkMYbA/o7NvGaWv/tsR7zHcwMQj1NmkqC1FZkz72mfk4yskGaFrRxfCa2Z8vdtmGWL3TR8eYIhix3bU7kXstot3UpszQBEHczcpO8lmoRJ5jhEYg0//7JCmaoJ5hwwKokrGeXLzSLaGAe9Pbxg5Q4RI4ivFgLDpeXykuBRpNwJye5Xa6TCgwdmrcbj4IKneZP5u+UJdiKql0o
+ SpRDRwi1
+ gV+Jl7PfDo9tMHWyjbGse24q6lsMqJWxFfXtfIbAqkFcevBlEN8kgsSD3CB/zjzc6HmcS2Oiryle9LS/VCrWZdt7MTKnbvXTZmwreXpsluwwzJuKlekhUjatFrCYRhPOkdZmzuq/a+YKH25uLCw4vH1BWkq/pX4haUjzcT3WVQ94lhvTQJqvzzoYA0hOgFeiF9JHrBm+85iq5f7EdGafkVQhIiLMJ8mBSh5OoidSnZ0d9twbI7z3JJVxaxRjQD9LSv66165GPK25+yXk7eBF1izCjzdp92FHyXwGq+M/1b/uUYr2ni4XADP/mP5ogHrrrOMTocJZdd0MmFe+XsXimXpAFtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,65 +99,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-damon_sysfs_add_quota_score() reads damos_sysfs_quota_goal->metric
-twice, once to set damos_quota_goal->metric to the value, and once again
-to set the metric-dependent damos_quota_goal unions based on the value.
+kdamond_split_regions() uses a static variable last_nr_regions, to infer
+if the region boundaries are too stable.  If it looks too stable, it
+does a more aggressive region split because it might be a fake stability
+coming from non-aggressive split.  Because the variable is static, the
+inference can be racy and wrong when multiple kdamonds are running in
+parallel.
 
-target_metrics_score() can update damos_sysfs_quota_goal->metric between
-the two reads.  This time-of-check to time-of-use (toctou) race can make
-the union fields incorrectly set.  The incorrect damos_quota_goal will
-be passed to the core layer and make DAMOS incorrectly behave.
+The user impact is not critical.  No crash, no leak.  DAMON's
+best-effort monitoring accuracy can be degraded when multiple kdamonds
+are used in parallel and the workload has certain access patterns. Still
+it is a bug that is better to fix.
 
-Users could reproduce the race by writing a new value to the
-target_metric sysfs file while DAMON is starting, or online parameters
-update is ongoing.  The issue will only rarely happen in the real use
-cases.  It requires sysfs write permission.  The race window is short.
-Sane users wouldn't do such writes while DAMON enablement and/or online
-parameters update is ongoing.
+Move the variable into the damon_ctx struct to fix the problem.
 
-The user impact is not very critical.  The race is not easy to
-unintentionally trigger.  No leak or crash happens.  Nonetheless, DAMOS
-could be unexpectedly more or less aggressive and does not achieve the
-auto-tune goal.  Because of the nature of races, investigating will be
-difficult.  Users can control the impact from unexpected aggressiveness
-using additional quotas and resolve the issue in runtime by
-re-installing the quota goal, though.
-
-Avoid the race by protecting damos_sysfs_quota_goal->metric write in
-target_metric_store() with damon_sysfs_lock.  Because
-damon_sysfs_add_quota_score() is called while holding the same lock, the
-race is removed.
-
-The issue was discovered as a part of a bug report [1] from Sashiko,
-which is partially outdated.  In more detail, the Sashiko report [1] was
-mainly for an outdated bug [2].  But it was also mentioning the issue of
-this patch as a similar class bug.
-
-[1] https://sashiko.dev/#/bug/linux-7f814c9a-986f-4103-a55a-ef9537dcf62b
-[2] https://lore.kernel.org/20261021005234.94107-1-sj@kernel.org
-
-Fixes: 85fcf0ffc460 ("mm/damon/sysfs-schemes: connect damos_quota_goal nid with core layer")
-Cc: <stable@vger.kernel.org> # 6.16.x
+Fixes: 75c1c2b53c78 ("mm/damon/dbgfs: support multiple contexts")
+Cc: <stable@vger.kernel.org> # 5.15.x
+Closes: https://sashiko.dev/#/bug/linux-eebfcdde-2881-48ef-8df1-e2019d2a47f2
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs-schemes.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/damon.h | 5 +++++
+ mm/damon/core.c       | 5 ++---
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 8f083611741fd..637f1bd0c950b 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -1310,7 +1310,10 @@ static ssize_t target_metric_store(struct kobject *kobj,
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 63050eb2206a0..cb6a50032a1eb 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -958,6 +958,11 @@ struct damon_ctx {
  
- 		metric_name = &damos_sysfs_qgoal_metric_names[i];
- 		if (sysfs_streq(buf, metric_name->name)) {
-+			if (!mutex_trylock(&damon_sysfs_lock))
-+				return -EBUSY;
- 			goal->metric = metric_name->metric;
-+			mutex_unlock(&damon_sysfs_lock);
- 			return count;
- 		}
+ 	/* @rnd_state:	Per-ctx PRNG state for damon_rand(). */
+ 	struct rnd_state rnd_state;
++	/*
++	 * number of regions after last merge.  Read kdamond_split_regions()
++	 * for more details.
++	 */
++	unsigned long last_nr_regions;
+ };
+ 
+ /* Get a random number in [@l, @r) using @ctx's lockless PRNG. */
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index eb1fcdabc0075..09722257ce736 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3795,7 +3795,6 @@ static noinline_for_stack void kdamond_split_regions(struct damon_ctx *ctx)
+ 	struct damon_target *t;
+ 	unsigned long nr_regions = 0;
+ 	unsigned long max_nr_regions = ctx->attrs.max_nr_regions;
+-	static unsigned long last_nr_regions;
+ 	int nr_subregions = 2;
+ 
+ 	damon_for_each_target(t, ctx)
+@@ -3811,7 +3810,7 @@ static noinline_for_stack void kdamond_split_regions(struct damon_ctx *ctx)
  	}
+ 
+ 	/* Maybe the middle of the region has different access frequency */
+-	if (last_nr_regions == nr_regions &&
++	if (ctx->last_nr_regions == nr_regions &&
+ 			nr_regions < max_nr_regions / 3)
+ 		nr_subregions = 3;
+ 
+@@ -3820,7 +3819,7 @@ static noinline_for_stack void kdamond_split_regions(struct damon_ctx *ctx)
+ 				       ctx->min_region_sz);
+ 
+ done:
+-	last_nr_regions = nr_regions;
++	ctx->last_nr_regions = nr_regions;
+ }
+ 
+ /*
 -- 
 2.47.3
 
