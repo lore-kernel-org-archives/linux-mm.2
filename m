@@ -1,165 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858BC606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 20:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA59606A31E
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 22:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=UM/qJJpC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CA4N7kYu
 Received: by kanga.kvack.org (Postfix)
-	id 739166B05B0; Sat, 24 Oct 2026 16:48:28 -0400 (EDT)
+	id 713CC6B05B0; Sat, 24 Oct 2026 18:11:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 710676B05B1; Sat, 24 Oct 2026 16:48:28 -0400 (EDT)
+	id 6EB836B05B1; Sat, 24 Oct 2026 18:11:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FEFD6B05B2; Sat, 24 Oct 2026 16:48:28 -0400 (EDT)
+	id 629CE6B05B2; Sat, 24 Oct 2026 18:11:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F7426B05B0
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 16:48:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A5783803E4
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 20:48:27 +0000 (UTC)
-X-FDA: 85358707854.03.7232ACA
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C231340007
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 20:48:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="UM/qJJpC";
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 324D46B05B0
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 18:11:57 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1BB9A04F7
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 22:11:56 +0000 (UTC)
+X-FDA: 85358918232.09.62404C5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 19BCA1C0009
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 22:11:54 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CA4N7kYu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792874905;
+	s=arc-20220608; t=1792879915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BuPJgnsG0Ng1Dae+yMYUghn3Dz0uN6VmqtORQTrWN9o=;
-	b=Cpz0pUronNckEWnZYHmwShXOAo8w6T+GQpBx2WkfIg3wi8bLFrWvcUMmemzCWj9Nl1f+Pb
-	JHVqXZ3EBP1XDBRRh8ryN0wthUGSn2OMx7CZnYOgLzGeZCS7+p66Ei46YbmexDRJNk9eVf
-	1SLK48LRRFk+CjFCiSSRUcll9aBdKuc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Dohn15IUOHXMdV7gT9hK8jFlJPy1ag0iXS7J0b+4Qfk=;
+	b=49cHRROtOmnejBPCeFyWkMgfGBQgpci+lIy9QBGWmgFfwmvfmZmdf9Ipk3oMygHNKNXl2P
+	2YTTuRxsebKncxyTghkV6VTZPcpV8/giVS1VP4oyP/SGcFLd7lyPpUhGrFp04bfgxfS2tj
+	6c6n7QIu2EFaJdqKruTXoVtlaWlK5hY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="UM/qJJpC";
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CA4N7kYu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792874905;
-	b=KblBn+hz8ICQ/8tK/lEPtA6oygPPAZ9q+SBoI3mcAz1g+F4f5D/xOV8jCW2iZMDqvynvJ8
-	EZFmocEvegN/cTe04dZoYhke4WaZHhXyHfQChBNy371SGgTiBcGinlqLTxqUkpOUBFHfhK
-	K7HOFXUQ+vACiwK+ipjPQJLTyPIjrvw=
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-917c04630c2so20273266d6.3
-        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 13:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1792874905; x=1793479705; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=BuPJgnsG0Ng1Dae+yMYUghn3Dz0uN6VmqtORQTrWN9o=;
-        b=UM/qJJpCb8kgGMAm4xjYyOAra8+d5wnhi0ynA6lVYIkp/ucAA59EYlVqnj3m1sLpM5
-         l7ESg3MLsKkecFCt2ds+tBD7U/w0c2IpcU9+hSJRgunfEQgOeJwkAhtcmHSuJkWTnou2
-         HMsX267TAB0B8s+WdnWMFX5VGTIO2Uqa3ht1Pp0PiN1/KilhkwVemdTg9xT1r98GsUNn
-         YBL0GIW6YZw9CDccIMtn8HNBFlp2yNKYAnTdbVA9Y07/1e1Z+Zk4S1Fm8gmAArezP5Ez
-         PXNGkX/ZJduhcdiszDurH/jM5NvTo/qLfouJ7rTys3t7QuBZyVllyWKtf7/xc6QzFwh0
-         KRJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792874905; x=1793479705;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BuPJgnsG0Ng1Dae+yMYUghn3Dz0uN6VmqtORQTrWN9o=;
-        b=zL175G6BxRlWZMuJcgFo1WDAwZDRhWMXtTM1k47YhWOiWV6SDW4h4kw+2z75Wn9lOm
-         71FTaYO/L1kMverc+jqE62pyu5tdPZEyjZ00jQV9AznHcal9T62ILLdMClmCgzut6r8S
-         wuZOsRPHDC7erQ+HDib6X3MT/2FZHUXYrVCHlP9L9qBwZtKIBMF8DpLaeSlNWhX3DPwN
-         hjWOoy3SbU/RhnK1cG8wFE680PQpY82kDFD4fj68f3OBA2WECuj6/IY8j5xs+wlNu9l2
-         VPwZt/9Vm3i0MNxVdSx5iQ56x17VpoAEbd6x69cH8rsWs496BuXf4/t8JqsKf3FK/28t
-         mHlQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwhqnPqYEeRAuDegPYLP3RxARXv4ho0A6eU2REOReY4mbNUtIcBDqO0tvmcCeKGElEIb/QWydB7bQ==@kvack.org
-X-Gm-Message-State: AFq9FYIztLF/krYFA0a+/FkGzGojZQ6lqoT9kYfI8M772ofT3R+50I1t
-	AwUdYHYKLyuo5gl1b/Rfpj9vBLgbj+80yP8Ge5JPGMUJnkv4jZPTC+XEpsRy80mCqUw=
-X-Gm-Gg: AYBFou2I4C3LnvyeQ/mTGG+QewjF5iyBQoCM6PDsbYsBoa0kw6OeIOfUHyHa7Vn/+i/
-	Tu2sEPhOrmmEIqK2HSMg7LJ4cVrEbcyYGpnli1GyRuR1n/unRO9CSxEUGUlypIBt/1c8Em3/fo4
-	aRuoOFv15Nd7m8pdGh6YSW4TLxuNh2NdVjoNFzbyANGU9xM3SqctBvXTr4jz68fbv6FNIFVqqtb
-	Oj6UhqtqahgQU7qQSiqzHIoNC9tKu29sDIqU/O249JwUF12NOKSc66+FFMo/NWlJ2bGVK3O8xqf
-	0Wu3Du4/LMR64eVG2v84Kx4rt2zU30spBuvcEKGGv5YqV9WWNZjFN/5iPIclEKHNT/55UG5zSkT
-	YOAKlBbFIuvqZKerrN8Ef5JMSh5oE/AJsks5ogNafgjTrWAobkel7iI3VUV7s3AiMTnEaoMIaQr
-	5N3o7Ed7mfgY1Xotcc52CcLziZ6XNCS3Kp2Sa6UT4gQBoMtl0RMxoZyF5DdC5PkOE0EGFLvO5I7
-	SS7uJdZWHe4vvjoOZ5upu9XpK5Cf5U8a8DVE5DJ+sd1re5KNwBHcrynTiLC36UMzpUUg7aGtWDA
-	nUdbVTGe5UWj9NaKieusudDxfew=
-X-Received: by 2002:a05:620a:4001:b0:93e:9292:1b9e with SMTP id af79cd13be357-940ef7ad8b6mr372744585a.1.1792874904799;
-        Sat, 24 Oct 2026 13:48:24 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f0a94a5csm258574885a.41.2026.10.24.13.48.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 13:48:24 -0700 (PDT)
+	t=1792879915;
+	b=TtFMfvfi//om00y4wmmFQ7Y3nQxWbyEw0rQkpfEx0Bntnz8ylgCsprC61VQkT9cNUnYWXn
+	KsZv9fRkNnogJD2Z6I46/FPtOc2MYQsFkn+DZU79We9riMFIstul7+4m+ybrfxpNoBCNk8
+	gn8+q7UkdRzHBRXrNdI8YXzxpJSwbjQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 74C4840458;
+	Sat, 24 Oct 2026 22:11:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D0E1F01825;
+	Sat, 24 Oct 2026 22:11:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792879913;
+	bh=Dohn15IUOHXMdV7gT9hK8jFlJPy1ag0iXS7J0b+4Qfk=;
+	h=From:To:Cc:Subject:Date;
+	b=CA4N7kYuDQW8+QTHP01LuTzIubozRkF7GqPn3+GAx/zJ4LasXMBsW1FPR6ImnOkwa
+	 MgssH65VJ9EU6w3JE2Ohzm8lK5OKx1PFgVO14Uvnz/BYv9k2bG/G7E0SFrPp91hSfg
+	 gcZ1xRGOPSUyWUjnDwsuagIAO6H3Apw+O5foawZNbHaJ4vOln5jW/y8arWZ+QR1LaP
+	 3yv9hTzQX02n42/r2GfIOq0GLJ25Gvru/k1F7NyrwxPIvfXSGUdtfa1ctIy3Gorlj/
+	 KH7pIYrpTQ8HPCElKV4Vx6YvX6NygFefItP3e+uEJ+kuLSa9Bd0qoV4R/UvK2bYwwK
+	 osqCZQC1WyBjQ==
+From: Mike Snitzer <snitzer@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Cc: Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH v9 0/6] mm, iomap, NFSD: stop uncached writes reading back shared pages
+Date: Sat, 24 Oct 2026 18:11:46 -0400
+Message-ID: <20261024221152.6965-1-snitzer@kernel.org>
+X-Mailer: git-send-email 2.44.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: Path forward for Virtualized Swap?
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Rik van Riel <riel@surriel.com>
-Cc: Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
- Baoquan He <baoquan.he@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
- Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
- Chengming Zhou <chengming.zhou@linux.dev>, 
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, 
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, 
- =?utf-8?q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
- Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
- Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
- Meta kernel team <kernel-team@meta.com>, 
- Linux Memory Management List <linux-mm@kvack.org>, 
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
- linux-doc@vger.kernel.org, 
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>
-In-Reply-To: <12081d266e4846f23faacfc65c7be7da4ed013a9.camel@surriel.com>
-References: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
- <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
- <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora>
- <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
- <5c8a2b7b-b76d-4bba-92e1-ec3d66794273@kernel.org>
- <20261014195354.GA371161@cmpxchg.org>
- <CAKEwX=Mwc+D+AN-B5T7p=80fqCDijdsiJjd6aN_3YMrEQjyvwQ@mail.gmail.com>
- <a24ca7b8-8b42-43f3-ad72-afe62f97f76c@kernel.org>
- <CAKEwX=OdbOrFbdihntP3rmcWJUyM1UpYa5n+pYjt_feMQwx8yA@mail.gmail.com>
- <CAKEwX=PCSyCEAqxeOH6CkCMu1eB3xUn3iz5XNuTbpDM3EmWYAg@mail.gmail.com>
- <c6e62e80befa886fccd36d34a39cf56ea5b9c9c2.camel@surriel.com>
- <CAMgjq7CN7qTes+OXvCfsgPOnbtyY7YPytTEP3zZJTBxrGZ5JnA@mail.gmail.com>
- <12081d266e4846f23faacfc65c7be7da4ed013a9.camel@surriel.com>
-Date: Sat, 24 Oct 2026 16:48:22 -0400
-Message-Id: <179287490291.4123581.5790613647977714588.b4-reply@b4>
-X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 19BCA1C0009
+X-Stat-Signature: jhtjbgzhwei5k3x1ttjjjbg1kkoskbty
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C231340007
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 795i8ggzfth6bij8fmrk4hskfhhgka75
-X-HE-Tag: 1792874905-9711
-X-HE-Meta: U2FsdGVkX19cRrwx0RBmasrQmzJbpACAH0XQBMFbVroNW+h75hWkp6j0Zv4ZRfUTUfHjkMmSxLJy0lMgVY1UiFMmwiGQm0uKY4cMrsthpJc3kmTRLFHAL6BqvH+CpA6haeRgGX1bpl53IwoA9siItR6TKs8xnGEY427aKRi8LnWj1EXF9Sk+Gi59ToYT0n9uTkVVQ0lsHWxgcNRw7BjxekBt4GDEFpCs4wOc4c3QJ2A2Y5TuyAs2lpWzciMMRx3s6tAyX8L4rsIq/w2MMC5KzqDgpMUm0T1WrRUF4D4tqn9uh/Xz+vs3dYdkCs1ToUaKfN/imYoD/YEfrCGy9bl37rZX5k7WcjKyKBY7Cba/avf1DP0BndDiGGaX/NF93Vj5IQokK6TcMtGn8WjAjhHWEkdhwIXJhg9nxC6eNmXL5SIuICPRUI9mqBW+4JwjM21vS6C6it8zPn1t42z5uKqvF2YUeyCstvLB4/PTzUY/+TPrFy3b4LsWOgW+12/c5mTNj1od32f9ih2PnQ9Un3o4cdY1EjzMcPWkj594Y20T4SRvMqD+IEHm2otNsxQfFnsEq8s7U8G/nGDa4gqNKdr9CjqDX1ou46WU9TAxtvYmGOtOv0+t1679Sr7nuSRqQEk9bFAPMwrFLcF5+FAIrSu7I4DM2IGLBdp6aIWwc+Oms4dToJxteojkUd4OOxxQXTF8wzsq4SBAx+ohp6vUXvocLeF7Zq0bzzRsEqLkybQRgesFHsbwjSxW0fz0/WOl5qnJ63ScPgcpzh0bTvpZLknbYUURrTt8JEKfgRygUfC98ycREqsEMTPyAJgT9w8mNQ+tcjegHcs4ly5uIK70uey9S/nH2jMTk7mAR1sBCNz78ctIbRvWslqbZTSe7NZMjs7DYJvR9sQefhgpayYLkUKjZff7udgrTu+ekmhnehu77ERsPvqUU1hYj7URY3BCO/STKeO29WrKF/VWAgH5oHo
- OYJv6Lf4
- YrnKxSsQmPKuKYcZBoO+PWvbdG2dRmkgTovuoOtlvKXKLWwycc0aLQKkSSzSdXohejAztOmzn+93CzFqvN9BpZT6KCmK0xkmQi2+aZsyZru/bV1ffZq9nyyIdvx9F7VaH3OGTJskTu9YrF+rfR/+f3N7BPLMoM0wxQ/oqhulXFJTkMJz75UeLg/LyctSDwuPItsxI1ZR1ltfNIUAlLEkTn8yvjmIFzIL9aVIsYRKiqrvDfrMhyNikl4JOZpm8lXnevgxmHoH/ZSHw2+2N79Nu9j8uHSXTtUWgnsTx7aXhDEMg+gwXJpcNc9oNwnWgZ881q/HIuUMcDhi68/V7QUmcGgFRciqXFEI0Vo/vHRRKh7S4sPpzqOzgbp55ar0AHXSJfSw2gbpta123bo5kZipGdKB7Mql1GDY+bEo+CwE5lMyp9GDkWnXx0+2HinoTpXzVBkKC61b+8YlxlyQ=
+X-HE-Tag: 1792879914-104730
+X-HE-Meta: U2FsdGVkX18G24+VKSfGM2id2I503qL1yVcsSePJ7L8gj10Ofes/NWZY/dZwyOwn2VU0QZBoRo5aDwYTK2eAFCTFYrdImUfr0mhmpNg/DXCErt4E4oOEp0uQUAa5/IfNR1ld+zy4/tXlITLEGXJFSPGfusb9eeL4WjtUcggm1QO1qNm6qkueDmY1Zdkti7BiO2RPGAQMU1FxzEWDSSnspvBcx0zwg6I2JHG0k7Ow6z6xfa+CdC7osaMa5TwpnOO5Pgzs45+tfek1m51xWCUExGIzGmk7v7KteY+XRi7NamVejmEsq8iTANPVYtYFltPcRwrDUeOUIa1lBZwNlmaXRDbGi8QxAlBkxV82fI6NKNowvp9AFe6KuUASECL2y2CzWe5a5hwA8R/HuR1kdHgdkbKxV5pNCKogddhjs3SiAKJBNOAC9MClojTZuDN9pqEg0wB9aaDzj+CeQNCpe4XEAhRSVgR0601Y4q8TYxC52usrhtw/JDZgPtMUdLkxf/8nHaZvqeBd7HbJONQkCn5Ew9fEq9b/ZJCavovW8caDqI1BcjdWRnq1W8WjHIo3HcS7aD/jO9ObNjZZlnNVdjewfcyALK8cu+BIeODK8tIj2iBaM1BE+IzPlm589MNr0KUwEdEkzw0T3IVITS3ItqRAZ/7L/6wvJX8RbRsv9EyvdWGDismElFNnsQwvKNigYx/qevpiAEIiewmoOWNZIOMEx2duZnLBQmwL/wiqEEqeL1KyhvdMdwwJ13SbVPFfVPQz8eMVAlhI8jWMmfvBIyY8H8h0meRb92oQWmtsRmLqQd21UmJ8UuzUiiSuVjDbTTORGwdWbVghkMYuD1sh2ro3fW2K0kYRRrnkUBKsOVWzNd4zyCbDWPndkhisGbcryCC4cIiA8C+1HSyuKqy/EEWvrnfH/bvCGevFHlOkVQvygommyILZHztpTpQSXAj5Hrauq0hoiiTZdIrLdiJi4V2
+ B0NiVOFV
+ nkJgrQ8j2F9APhEAhz2x2VqJAlq67n+QoYkPHGd3wsdJ9IN+9dMHdZticmqKnjNg6+yoIDd3J8b6fbbYJMwQFfMrjJ9LSgX/HunQDKRPudHp5S2PUYfQfDy9D2UAWYTc/q7C4rw81gM/Nn87ltXh83CJWyC3xbdoOKtAlyelMjF//tfWJjcHtJ0oxC6SjxFVlsQ/agcB9UhvnaJUtd3pG6srqZJItds5uDUWYyzpQnwpZz6RewUwp00Z1YqbHEJBjDsK69GIPL/NIbt+AcX4qWoqevn8R/Nlufh+9Pp5JWNtUMJ10A+BDkjhWMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,38 +101,157 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-24 14:16 -0400, Rik van Riel wrote:
-> On Sat, 2026-10-24 at 23:50 +0800, Kairui Song wrote:
-> > On Sat, Oct 24, 2026 at 4:03 AM Rik van Riel <riel@surriel.com>
-> > I also hope there is a way to release swap metadata completely too.
-> > e.g. for fs, you at least have umount, and can rmmod the fs itself
-> > afterwards. We also have many ways to bypass the page cache. In cases
-> > where a virtual layer is just a burden, we want raw physical swap,
-> > and
-> > the ability to swap off that too.
-> 
-> The VM cannot operate without the swap cache, though.
-> 
-> That is very much built into core parts of the VM.
-> 
-> However, having swapoff remove all data from the swap
-> cache, after mapping the memory back into userspace
-> page tables, seems like it would be fairly easy to do.
-> 
-> Does that meet the needs of your use case?
-> 
+Hi,
 
-It may be good to talk about this in terms of discrete workflows and
-interfaces, rather than in the abstract.  Just describing effects
-creates a confusing situation without including the cause.
+Please consider this v9 for the v7.5 development cycle, so that it can
+go upstream in the v7.5 merge window.
 
-Isn't this as simple as having something like:
+An uncached (RWF_DONTCACHE) buffered write drops each page it writes
+once that page is written back.  A page the write covers only partly is
+shared with the neighbouring write.  Once the first of the two is
+written back, the second reads the page back from disk before it writes
+its part.  32 threads wrote interleaved records to one file on
+XFS (emulated 4Kn NVMe, 4 KiB pages).  Before and after 4/6:
 
-echo 1 > /sys/kernel/mm/swap/drop_cache
+  record  pwritev2() flags          4 KiB device       MiB/s
+  bytes                             reads per write
+                                    before   after     before  after
+  47008   RWF_DONTCACHE             0.97     0.0005    831     2281
+  47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.0005    601     1227
+  6000    RWF_DONTCACHE             0.97     0.0001    121      488
+  6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.0002     90      206
 
-('simple' is doing a lot of work here)
+What is left after is metadata.  49152-byte records cover only whole
+pages, and they read 0.0005 per write either way.  The test program and
+script that produced this table, and how to run them, are in:
+https://lore.kernel.org/linux-nfs/atqJBS8MlYfeUU-t@kernel.org/
 
+4/6 has the page cache keep such a page for the write that completes
+it.  5/6 lets a writer that syncs its own write complete those pages
+itself once the sync is done.  NFSD does that for a stable WRITE.  6/6
+is the NFSD change that uses it.  2/6 reports the DONTCACHE dirty count
+in the bdi debugfs stats.  3/6 adds folio_mark_dropbehind(), which 4/6
+and 5/6 use.
+
+1/6 fixes 88d6f128d06d ("mm: track DONTCACHE dirty pages per
+bdi_writeback"), in v7.3.  A cached lookup that clears the dropbehind
+flag could uncount a folio that was never counted.  It could also leave
+a folio counted with nothing to uncount it.  The patch applies to v7.3
+as it is, if the mm side would rather take it alone.
+
+v8 1/7 is not in this series.  As Chuck asked, I post it on its own.  It
+is a revised version of 80728157d1bd ("NFSD: cut a misaligned
+direct-mode WRITE at page boundaries") in cel/nfsd-testing.  This series
+applies on cel/nfsd-testing at 6d13b7f74eec ("NFSD: Map every
+NFS_ACLv2 reply status into aclstat2"), with or without that revision.
+Each patch builds with W=1 with no warnings.
+
+1/6 to 5/6 are mm, with small iomap changes in 4/6 and 5/6.  They are
+Cc'd to linux-mm and linux-fsdevel.  If the mm and iomap maintainers
+are agreeable, their acks would let Chuck take the series through the
+nfsd tree.  But whatever approach the maintainers prefer for this kind
+of cross-subsystem merge is obviously fine.
+
+Changes since v8, from two independent sashiko reviews of v8: the one
+Jeff Layton relayed, and the one that sashiko-bot posted to linux-mm.
+Some findings were in both.
+- 1/6 and 3/6 (both reviews): a folio is counted in WB_DONTCACHE_DIRTY
+  only when both PG_dirty and its dirty tag are set.  v8 tested the tag
+  alone.  __folio_cancel_dirty() clears PG_dirty but leaves the tag, and
+  so does writeback that stops at EOF after folio_clear_dirty_for_io().
+  A folio that stays cached then keeps a stale tag.  1/6 uncounted such
+  a folio twice, and 3/6 counted it and never uncounted it.
+- 4/6, 5/6 and 6/6 (second review): with blocks smaller than the folio,
+  iomap tracks uptodate per block.  The edge that a write completes is
+  then not uptodate when the write finds it, so it was never marked and
+  stayed cached until reclaim.  This happens with 4 KiB blocks on 16 or
+  64 KiB pages.  The new folio_dontcache_edge_written() also accepts a
+  folio whose blocks outside this write are uptodate.
+  filemap_dontcache_edge_completes() takes the range that the write
+  covers, and 6/6 passes it.
+- 5/6 (second review): filemap_dontcache_edge_complete() now waits for
+  writeback in flight, which could not drop the folio.  It also kicks
+  DONTCACHE writeback when it marks a dirty folio.  The earlier kick
+  came before the mark.  It drops a clean folio that is not mapped
+  without a mark.  A mark that filemap_end_dropbehind() then cleared
+  outside the i_pages lock could leave WB_DONTCACHE_DIRTY counted.
+- 6/6 (both reviews): NFSD finds the edges that a buffered segment
+  shares by the mapping's smallest folio, as iomap does, not by page.
+  On 16 KiB blocks, a WRITE written as one buffered segment can have
+  page-aligned ends inside a block.  Nothing completed those edges.
+  NFSD also completes a segment's first edge only when the write
+  reached the end of the segment's bytes in that unit (first review).
+- 4/6 (first review): a paragraph on a limit.  4/6 marks the folio
+  before iomap validates the iomap.  A stale iomap stopped by a fatal
+  signal then leaves a mark on a folio that this write did not complete.
+  This costs one read-back and no data.
+- 2/6: unchanged.
+
+Patches 1, 3, 4, 5 and 6 carry notes below the --- line.  The notes
+give each question from the v8 reviews, and the code, lock or check
+that answers it.  This includes the limits that the series keeps on
+purpose.
+
+Before posting, I ran a third review of v9 locally, with Sashiko's
+review stages and the review prompts it uses.  It found no new
+problems.
+
+Measured for 6/6 on 16 KiB-block XFS over the loop device.  Its
+dma_alignment is 511, so every TCP payload is memory-misaligned and
+NFSD writes each WRITE as one buffered segment.  32 writers of 12288-byte
+records, 1 GiB: v8 left all 32,736 pages of a 128 MiB file resident.
+v9 leaves 948 of 262,080 pages (0.4%) and reads 0.0003 blocks per
+record.  The v8 results hold.  In every run BdiDontcacheDirty was 0
+after the final sync.  That includes runs that mix uncached writes,
+cached writes and mmap stores on one file.  Every record verified.
+
+I measured all of v9 again on 4 KiB pages, with XFS blocks of 1 KiB
+and 2 KiB over the loop device.  These blocks are smaller than the page.
+32 writers wrote 47008-byte records, 1 GiB.  Uncached application writes
+left 0 of 261,850 pages resident.  NFSD left 497 (1 KiB blocks) and 349
+(2 KiB blocks).  LOCALIO left 854 and 949.  Every path read 0.0001
+blocks per record.  A kernel without these fixes, on a 128 MiB run with
+1 KiB blocks, left about one page for every two records.  Uncached
+writes through NFSD, cached writes and mmap stores ran together on one
+file, with 4 KiB and 1 KiB blocks.  BdiDontcacheDirty was 0 after every
+round, and every record verified.  I did not test kernels with 16 KiB
+or 64 KiB pages.
+
+v8: https://lore.kernel.org/linux-nfs/20261023024548.71123-1-snitzer@kernel.org/
+v7: https://lore.kernel.org/linux-nfs/20261020220346.28020-1-snitzer@kernel.org/
+v6: https://lore.kernel.org/linux-nfs/atbfEbgMU6UGkn2X@kernel.org/
+v5: https://lore.kernel.org/linux-nfs/20261019150725.1507-1-snitzer@kernel.org/
+v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
+v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
+v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
+v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
+
+Thanks,
+Mike
+
+Mike Snitzer (6):
+  mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
+  mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
+  mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
+  mm, iomap: keep a partly covered page until an uncached write completes it
+  mm, iomap: let an uncached writer complete its shared pages itself
+  NFSD: drop a shared boundary page only once both WRITEs have written it
+
+
+ .../filesystems/nfs/nfsd-io-modes.rst         |  17 ++
+ fs/iomap/buffered-io.c                        |  36 ++-
+ fs/iomap/trace.h                              |   3 +-
+ fs/nfsd/vfs.c                                 | 116 +++++++-
+ include/linux/fs.h                            |   8 +-
+ include/linux/iomap.h                         |   1 +
+ include/linux/pagemap.h                       |  14 +
+ mm/backing-dev.c                              |   6 +
+ mm/filemap.c                                  | 265 +++++++++++++++++-
+ 9 files changed, 435 insertions(+), 31 deletions(-)
+
+
+base-commit: 6d13b7f74eec16e08d5e7f772ee119432a14ef2c
 -- 
-~Gregory
+2.52.0
 
 
