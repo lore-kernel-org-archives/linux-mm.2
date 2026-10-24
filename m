@@ -1,115 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A57606A31D
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 00:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDB2606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 00:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=lLSYzBnG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FxGxOuh/
 Received: by kanga.kvack.org (Postfix)
-	id 68B856B008C; Fri, 23 Oct 2026 20:22:17 -0400 (EDT)
+	id 31D2A6B0BF2; Fri, 23 Oct 2026 20:32:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63C996B0092; Fri, 23 Oct 2026 20:22:17 -0400 (EDT)
+	id 2A7426B0BF4; Fri, 23 Oct 2026 20:32:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55C586B0095; Fri, 23 Oct 2026 20:22:17 -0400 (EDT)
+	id 16ECE6B0BF6; Fri, 23 Oct 2026 20:32:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 14C816B008C
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:22:17 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9464412010E
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 00:22:11 +0000 (UTC)
-X-FDA: 85355617662.16.F804383
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D73D740003
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 00:22:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lLSYzBnG;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of 3MPrbagcKCPEpYXebiXZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--wfelipe.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3MPrbagcKCPEpYXebiXZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--wfelipe.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E70BE6B0BF2
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 20:32:45 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E84351A016F
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 00:32:43 +0000 (UTC)
+X-FDA: 85355644206.04.6FD367C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 60A631A0002
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 00:32:42 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FxGxOuh/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792801329;
+	s=arc-20220608; t=1792801962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HxaRVRenX1FR+iZ0AONAeVn2JQUzRoeRNX74fibnxLs=;
-	b=cpbJy18w0vT2fM3gvsC534dlbUso8i0oMUxRYpWSd6BYugYsJO54DsSWOyHu9TvjeJuY4u
-	U0vgfE88M9Sd+IXpY4gZX+cdG5G7NnCSk/UQ3J643etlhWxns6HApo30uuY9ymwZzcm8bp
-	XJuT6S691fzQGXsyk1EdIA6uo3J3ZiM=
+	bh=XyvT2RE/oWa975FzIOJtY2uQYaJ6b76CZmdE3rvCcGg=;
+	b=7/lQXlAhstGB+H73m//nwF8YQEBjvWo9uLceRkUJY1Vw7DYrg/q8ocus1vtSH9fqU5ylPs
+	jxtbdkUqMmJimKADEcU1/NHMg8igAHkKuGZvHg4yAbVw9Rek//0F67ixfz7FjDEcvB4Xqg
+	jti9ptiRt2MkoV7xtUWWMVHTp+NhBKA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lLSYzBnG;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of 3MPrbagcKCPEpYXebiXZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--wfelipe.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3MPrbagcKCPEpYXebiXZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--wfelipe.bounces.google.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FxGxOuh/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792801329;
-	b=dhK2ICSGDIhl28Nk8qNtHPaPFws6AXjCO/nNTIvXpq1L56KJAEB8tMALhe2meCMJgqMO6D
-	1yEZqm6SxvDEW9OC9h4VtCnbwYfacLxBhf9Kem5LncaVgMY6TbRbWl5yAThzeJCcaQi+Zo
-	kVuIjc7OEKz/bKDCj3YnmklvhEz1rbY=
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-6e0063e7a02so1567588eaf.2
-        for <linux-mm@kvack.org>; Fri, 23 Oct 2026 17:22:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792801329; x=1793406129; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:user-agent:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=HxaRVRenX1FR+iZ0AONAeVn2JQUzRoeRNX74fibnxLs=;
-        b=lLSYzBnGSDBsTagVMbBKaehZu2nCy82qImBW/96L+QUBbbrXQCoxlmhVJDlabew5CH
-         FmvDlyqup/W4u5CpPNrVzzLx4hUrGZ6ijhoIbmQ4unEAdD+2xPK1au4A79qs7W+Gkqdz
-         eAYEcVf6T+IvYElSz+3yIa7doIt6ahXTfZQnTDfk59zrj0W0UnoNXuwySR5gFwdJxtV3
-         HD1jIZPdkMIufd4bfOAQ11WlmtcURJxSXbX6BfYmOSoOYGCvxiVoDWBTtkAdMex5wb0T
-         csVDZfTLlA8FO09gp0ZF85iO4IUFxjmmlYhYNnSMctuFLtVWWfM1UP3cS49csftaGBML
-         TxQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792801329; x=1793406129;
-        h=content-type:cc:to:from:subject:message-id:user-agent:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HxaRVRenX1FR+iZ0AONAeVn2JQUzRoeRNX74fibnxLs=;
-        b=bT7BAxde6yZlAykrJdrdb0KsiD2CK3umm5ryx/L0vLLRWnrx4uhVccl35yJfOBKPXo
-         VMuKNFXFa0gPLWtL7/dAdXJxOxBbU0/HKl9Rje8lfVpEXICbkgCu9gwzi33Ymz0/sxkR
-         UD2BYMGX6aOz919OWX4PiGszk9GbVdAJIqPFXcZDtsJqUCqm3d7cI5Rde0QNA5KW6BUy
-         ws6HrDHHcL2MrW5ifHgxwdWZMLfiv/J6p/jTWVoSWGqkRXdvFkDPDw3ONPRz1ZSUC09o
-         KbIs9Bk6HpZ+4jtDPlI12sBweJg4jbQaRO5olR5ABKS9lCGK4e05HDQgpXn+M2ler+4n
-         I5zA==
-X-Forwarded-Encrypted: i=1; AKwUvBy0F1A1voesBmEN5ggivA5/GHiziCUroftrgzkhSR2bOMURZBfcRJC6/g1djGWAMavuxj0KSsUfKg==@kvack.org
-X-Gm-Message-State: AFq9FYJjZz6+YY1YK4hD40cxCJ2ULuzfgpiJgywYaTOJUlf2sp5wt7sR
-	TZrUpS/0Tt3Dyr0CUbnA/7X0BBg2UocHzAJeCdKVStClcJBRkO7O+Hnn70HisA8ZQLqS2wYobZV
-	TdcI5GYuL/g==
-X-Received: from oara11-n2.prod.google.com ([2002:a05:6870:534b:20b0:4a7:c9:bf73])
- (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6820:f027:b0:704:417f:a571
- with SMTP id 006d021491bc7-70ba0b5aa65mr348934eaf.5.1792801328540; Fri, 23
- Oct 2026 17:22:08 -0700 (PDT)
-Date: Sat, 24 Oct 2026 00:22:07 +0000
-In-Reply-To: <100602397eadeaae2e3206e1d9aae55e@kernel.org> (Tejun Heo's
- message of "Fri, 23 Oct 2026 10:05:11 -1000")
+	t=1792801962;
+	b=rQPTRkt5L11Yhou+Zhey91kv8dgwAaFgSjhe4jStP75nicbJu+UjDjZLlW5X+TUyj9n5zP
+	reV8JPRchF/VU+4h/StLMn5sTud+/4jkIdIhy5wlOkH11G+QLmhH5//PN/aavzmFqR2utD
+	ZI1hbU0HbUuEW/36P8ym0KOp3aLQtgI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CE80429E4;
+	Sat, 24 Oct 2026 00:32:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5D71F01825;
+	Sat, 24 Oct 2026 00:32:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792801961;
+	bh=XyvT2RE/oWa975FzIOJtY2uQYaJ6b76CZmdE3rvCcGg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FxGxOuh/qmzaizPy8znUs4Ovs8LBRfCG0WpOIEBXvPML2LdenQK9hFoIwWZ1NSmNt
+	 MuJef1AXNcPkYkL3YYRD7q5xpnIfJhxgmEsrJ9GmGbpP3Z2k/yUbwKsNdf2tjkPohV
+	 b1V/68EyIIlXe80UExpffL2TLPJuVj17/6j5kXRYw6LPyPjEw4ZYJOmlNsys2cfGG1
+	 d6OU06zSF9WH3QUWKdMFkmYwmCtNfOdsoJ5tS+YlMlZyFhwAO3+pJubyBTJqxKRCnC
+	 4QAyZ5L0SjDspHzDsmmFunBu+l/sQTW1Eat9cPBaRwCTeHMPkvZ0SQtxXcF25iQV/c
+	 XS6vIg+7xTBNw==
+From: SJ Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH] mm/mempolicy: remove unused mpol_is_preferred_many()
+Date: Fri, 23 Oct 2026 17:32:33 -0700
+Message-ID: <20261024003234.86981-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261023161003.59086-1-ekffu200098@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261022042921.711624-1-wfelipe@google.com> <100602397eadeaae2e3206e1d9aae55e@kernel.org>
-User-Agent: mu4e 1.12.15; emacs 30.2
-Message-ID: <p973fqxwymkw.fsf@wfelipe-west1.c.googlers.com>
-Subject: Re: [PATCH] selftests/cgroup: convert cg_read_key_*() helpers to s64
-From: Wilson Felipe Pereira <wfelipe@google.com>
-To: Tejun Heo <tj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Michal =?utf-8?Q?Koutn?= =?utf-8?Q?=C3=BD?=" <mkoutny@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Shuah Khan <shuah@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: D73D740003
-X-Stat-Signature: ui1f1gpr75wo5zy7cd6kqg9nunx9j34i
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 60A631A0002
+X-Stat-Signature: 75edyr31i6xrrz8sdzttqu81eqhfmpjf
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792801329-735516
-X-HE-Meta: U2FsdGVkX19QNTOPAnmxbVqV4HeZaOn5DAzoRry/rUVhaBi9abWY/OU12Xig13GJMMK8V9XfnxTKsMTRi04VTksAQTQ0igmX0GuiOgzAc4xlEzM5eP37oYqzTWtYLg9v6W+nfPoQtHeTZNnmS0L5ASHqJFyktoYPMCBGc+yTHM9YkTYH9al4iAzVwkIwamo59rvmYFYutNuiZcTZHNaKxQZdPW7zHf9jzgdQfiKnNIjTa+79vyCqibLMAXiP8z3qkKbmzRgJLYVcl9YU1YPE/cpsCx0sKZ58Qmy8GXGEGmoRcAeCcNiQa6G+DwHmk2c3numnYxWZLfcivUizsSEDlTtjOu4Wm7vR69gLmf1kmkmZPrH1bY6dAeO/pIoIwGzxyM8G2X0J+WxVNydrsZjV4kAFp+HcN05deQ20DLM26GzG7eOK+2RZ7Xu7G6aoAu/G2smGtoh8+BpBm6WwVq9NMxWlQ/CrxcntFXSG923UyfBJTGvNA8Pl9gadMvswUGJF6fSV9NeyB/L0xKBt3TSuSURzpDMnZ5v7RNadwnHhNkzoZ7mifrFUIox+EQXIS+RpWF2nPx2z+cePPOsUlLFL2rAP5i7MxPpaAG76yzWQRhp6ie6VFS7Nojc6sxvI0KqXOVNBzKwCDFUxlHHi9D1/ZAdT+igts/DbwI7cUHMaY0J1yq6GXG34LHKiNqwjEvYbu52RIs4dghxr5pdMRymQeJ2tJd66iRVO7Tsnkj98y+TVtRIn+VIdHOES+QQ/jiRxq63N3tax5FqxOjP30XJAjsPCJeYN/NM8YaVGkw3uEFfiLJ5Ve+9+6TvHei0eZFPj8uzAas9+aX8cpVuPKW+L9BUpFxOFyqPRALxHhO+oqLTg4DHckJfrBqkBX5D3yvWBVVfFCQhZtqeF9X+fJC8y6iXcjJal620q7khAfVEOsxSTnsuiJ15hBexCyh8HhmNagqcFDxKLDltkV6yMouS
- sERd9IGU
- fH+9ocmrN7yMuTKpdCc9ynE+5s+bpR3pPNPcobPnsxVauJqtvD9zeJIwP2ziN4wc201cK1RIfqrfhWjWpc+fzWF7E9V0a1DTlmrKW6LCtxnw1VHq+SboKEYppffJ6au1Xlr33pqePF3t/+7ihQrfnm23U8vwF91zIq0o3Y15Bb8wJbSfDUmgHO37RP14KUkSzjpQjiNycmrPfNOiCQvQUM/vfgbEDklPk+6d/wPj8mUNPDXAwWfDN1EHvzRijFlf7ZXof2MR26Dzea576uLT9eOYf8z3LujGqOKAQSSEPWBucga7qNCcwUhtmychgslXUXKJOohQYVdsBFNSxZ3DHTsohU3q4ddcs5xLAisAMdOtDar4qCswdwwG8QXiMrWwzW5YjazwV2YJ3ct8+/UPtmXoc/3fapl93F3vluWnR09St0FcrLbAwo3YX73EiKEeCHal8kltEK1vI6oSEmedgVNeUa63CQgxUu/SpV2oyCTw6zVt/qqu0Bqg5CGCImlO46sEEOgunRdC518OUfoHPqUle/EKWChcfFa3GURCeJdXQpfBMuzSHfAaZNsvOGOKbGi8SjGxMqCRBXJ9Kj+On0oSvdw==
+X-HE-Tag: 1792801962-601524
+X-HE-Meta: U2FsdGVkX19rq45iJKeWtcP6Z58Bp43OZYEWXBWTOKe+4EVt2281w4jQAG1sfdMlphgZkNxTUOgtfWrgzD2TnkAvUScU95ZCYprQ58zNlaX7PWACTHZKbc15a/GDekfL7DG4eN+FF8rHg4zsWFNaDSAEw9jgNnkAUfk/tvWywR4A4o7CETdY8H73+4e6WnqYcB6YvFtKLUCBZy4mj5oALkOZ4C6pmM4+pWUwRUuhKke+mFVaU3CutOfKeTVkrIjKM4quKuykP9y4k4E1CdALj5OrgSCcXO7nlHwHXJ1KwEWVwG68apKfQJlxfQBHS9EaboAn9ZUv9E4rNNu0xjOl9bQpTrOB9A+qen7w8SHs8ox/w9bLAb4C9X2MzE5YsiwAjA6uWoFEk35Ez+8J6pxvhRe5ufIk/lbOfJTbM+zB2FZF5DCmhSGHPH2Gr+uaXfqEYWjirmxNi2hoPPh+HZqcBxGvqr97+ta/NGBlYXWt7v5yqR+kw+hTk8T3T9WRF3qZ5OBAA2CPqwZL0eAOSslluc0LniwWhpjgaNxJGMJm+g4Q31//dB6+fM1pu8VGqlQ7xaveCONTdlvuxAwo4vxWbGAWwUYXaIDbFzm/onxhW+r3zRx1h7ZFUk5uZ9vTJkdzD3xAiPurlNS5Yirx7bh+tY8p78Z8npE9hY1VTdFs3ufo3QkCUR30UOhtIs9nDrRiwia9o2FiDLJe1/Fw28Uq13gtfq6UEIWHMoqIHDgaB+wxx2MlqgmOZIasAbRpyj6UyA1/z09oIjHCRJ+KhqT/IRqHM5hgJLsuzm+r8JnPh/xaDwbF52mOf4B83Rvd5NbJxIjUfz7xMZ4sheSHwE/TCtt5dwR0mbFBTN/WQLvXX/U2U6LAx2yFc+kCY0QmMLL6g9aWZgy42HKgWzY4y0BM4e4bWMiuTOsRAX/xoMRpDHUZT5ej1Q4eJ4aFzMlbVxjMiPGHjY5EAKQDvsYp5kM
+ 2g3HimbE
+ QYR9aMz8AUYnKVEU62iHeq7jvEkpWrC6EHH7sSwtqhq2BGoHURbmsjQ3iO7TlQ3HnOkD0X5QrFKP6axLeH0ash40vTmaAQONTGQeSz3jhvzdFkjgQ+9bbSqO0Evh0lWHW2YeN7rgDr3LnrQhuKgjtwm/KzRS+Z8L7/6YKJCLEXpN5ZzycirdUUuDQfNd0uzaI5qEooPmGDw4g2aCUchTwHXikw6hfAUxc7Du7qL+IVQTztvGgKgEsAbjJuDVfWgkBrhKiJKHQozVsYxCt2+Et7+MruwZRPYUuCzYPSvWa1HIkXUymY/JmMGobjvhJICCh+/JO2f2Ui+lbe20N7TClvgZlFcg2b0ARohCcDBCHBEAFZE2nmunTJ9yHiazC/oxuti24
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,94 +101,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Tejun Heo <tj@kernel.org> writes:
+On Sat, 24 Oct 2026 01:10:01 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-> Hello, Wilson.
->
-> The following is a Claude-generated review.
->
-> On Thu, Oct 22, 2026 at 04:28:57AM +0000, Wilson Felipe Pereira wrote:
->> On 32-bit platforms, cg_read_key_long() relies on atol(), which returns a
->> 32-bit signed long. When values in memory.stat or event counters exceed
->> 2.14GB (such as on 32-bit systems with large memory), the parsed value
->> overflows and wraps into negative numbers, leading to subtle bugs and
->> false test failures.
->
-> On 32-bit, glibc's atol() saturates at LONG_MAX instead of wrapping:
-> atol("3000000000") returns 2147483647. Event counters are counts, not
-> bytes. No test reads a value near 2^31 from its cgroups, so the false
-> failures are hypothetical. Can the description be updated to match?
->
-> cg_read_long() and cg_read_long_fd() still use atol() and return long.
-> They read memory.current, memory.peak and the swap counters, which the
-> same reasoning covers.
->
->> - Migrate helper functions (get_cg_wb_count(), get_zswpout(),
->>   get_zswap_incomp(), wait_for_writeback(), and cg_check_freezetime())
->>   and their callers to s64.
->
-> In test_freezer.c, only test_cgfreezer_time_empty() is converted.
-> test_cgfreezer_time_simple(), _populate(), _migrate(), _parent(),
-> _child() and _nested() still store cg_check_freezetime() results in
-> long and print them with %ld. In test_cpu.c, overprovision_validate()
-> still computes "long delta" from two s64 usage values. A 32-bit build
-> with -Wshorten-64-to-32 flags all of these.
->
->>     rebased on top of mm-stable to complete the s64 conversion across the
->>     cgroup selftests (including updating test_no_kmem_bypass() to s64).
->
-> This doesn't apply to mainline. The test_zswap.c hunks depend on the
-> test_zswap fixes in mm-stable, which aren't in mainline yet. The
-> tcp_client() hunk in test_memcontrol.c conflicts with eb69e955de7b
-> ("selftests: cgroup: make test_memcg_sock check flushed sock stats"),
-> which went in through the cgroup tree for v7.4. Can it be rebased on
-> v7.4-rc1 once that's out?
->
->> +typedef signed long long s64;
->
-> This is the main problem. The KVM selftests build libcgroup too:
-> kvm/Makefile.kvm includes ../cgroup/lib/libcgroup.mk and links
-> cgroup_util.o into every KVM test, and access_tracking_perf_test.c
-> includes cgroup_util.h. That build uses -I tools/include, and
-> tools/include/linux/types.h has "typedef int64_t s64;", which is long
-> on 64-bit.
->
-> cgroup_util.c then fails with "typedef redefinition with different
-> types ('long long' vs 'int64_t' (aka 'long'))", so none of the KVM
-> selftests build on 64-bit. Maybe use int64_t with PRId64 from
-> <inttypes.h> instead of the local typedef and %lld?
->
->> -
->>  	ret = KSFT_PASS;
->
-> The blank line removal is unrelated to the conversion, same for the one
-> in test_cpu.c.
->
->> +		ksft_print_msg("debug: zswpout=%lld zswapped=%lld zswap_b=%lld\n",
->> +				zswpout, zswapped, zswap_b);
->
-> The continuation line was aligned with the opening parenthesis before
-> and now isn't.
->
-> Thanks.
+> Since commit a492abe28bec ("mm: hugetlb: move mpol interpretation out of
+> dequeue_hugetlb_folio_vma()"), mpol_is_preferred_many() has no callers.
 
-Thanks for the review and I'm sorry for the build failures! I believe I
-messed up with I rebased it on mm-stable and didn't check all places
-that had changed.
+Looks correct to me.
 
-I've updated the patch locally to:
-* Use `typedef int64_t s64` and to use `PRId64` from <inttypes.h>,
-  similar to how KVM selftests are using, while fixing the build
-  failures.
-* Convert cg_read_long(), cg_read_long_fd(), and cg_write_numeric() to
-  s64 along with the remaining callers in test_freezer.c, test_cpu.c,
-  test_hugetlb_memcg.c, test_kmem.c, test_memcontrol.c, and
-  test_zswap.c.
-* Update the commit description to reflect atol() clamping at LONG_MAX
-  and clean up the whitespace changes.
+> 
+> So remove it.
+> 
+> No functional change.
+> 
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-I'll wait until 7.4-rc1 is out and send the v2 that applies cleanly on
-mm-stable and cgroup tree.
+Reviewed-by: SJ Park <sj@kernel.org>
 
-Thanks!
+
+Thanks,
+SJ
+
+[...]
 
