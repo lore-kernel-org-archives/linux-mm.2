@@ -1,82 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BFF606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 01:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BD7606A31A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 02:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IqS9y7P3
 Received: by kanga.kvack.org (Postfix)
-	id D60116B00D4; Fri, 23 Oct 2026 21:43:59 -0400 (EDT)
+	id D98A46B00A4; Fri, 23 Oct 2026 22:14:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D119F6B0848; Fri, 23 Oct 2026 21:43:59 -0400 (EDT)
+	id D49B86B00A6; Fri, 23 Oct 2026 22:14:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2A686B0BBA; Fri, 23 Oct 2026 21:43:59 -0400 (EDT)
+	id C3B836B00AA; Fri, 23 Oct 2026 22:14:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E9B46B00D4
-	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 21:43:59 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C5AEA0261
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 01:43:57 +0000 (UTC)
-X-FDA: 85355823714.23.42B138F
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A3334C0002
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 01:43:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf22.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 978F86B00A4
+	for <linux-mm@kvack.org>; Fri, 23 Oct 2026 22:14:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4F1C140254
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 02:14:51 +0000 (UTC)
+X-FDA: 85355901582.10.8BB092E
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CC8B7C0006
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 02:14:48 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IqS9y7P3;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792806235;
+	s=arc-20220608; t=1792808089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wyVREYXOxjrzUhwVsdrv5z52bG4LokTjT1gazbHkJ+o=;
-	b=aZgM2e1EowpbRHh6TQze49hiL/MjMVKDLYfj0okFLMjBApWj/yEE9+OATc/4YiN1dFoxfN
-	1z+9LHtg1Daky6r+QwZnKRxzteKWUGj9elRjGxGPBtafqYEiBVIgU/6dGWkfeduwWRahcL
-	OFZOWoU45Yf8CqAWPDUTRScwkWd8R+0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf22.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yAuYor1soPIZA7EX+lfFc4BA32TSGeGLXRlLw71DcRo=;
+	b=frwcv5H4M9svwuK82iY85zEyCGlqFAyd4gvhP3LO0OGLBeG73Wlr+L/XFum/iBp4VOA75Y
+	jDrdEjWBPAwTerGolMfowQQxZmTAuYUe8EmIHCIitrisJza4JCxt9ggCLtHLn1zucOE8fO
+	BFgyUHWtqLGOdO4JSSZaAtfkYac6kRQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792806235;
-	b=dJI0gHU9O6GMPU8BK0j2beb+UNy30Ir9Cd+aD4+WtDPXYocjeUoiTKafRav7f/dAZY2nIQ
-	878RjRd5WHmCJRkpJR1FYS/mXZf+NGrWFOnKQ3U36vz8qR81q9FjcCPHeK243Pw/qHOq8R
-	8WMBoEIZ4Pv7tQwLAMeMVA5RYZiAeR0=
-Received: from escalante.csail.mit.edu ([128.52.128.198])
-	by outgoing2021.csail.mit.edu with esmtp (Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xKQnR-00DwZT-3H;
-	Fri, 23 Oct 2026 21:43:45 -0400
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Baoli Zhang <baoli.zhang@intel.com>,
-	Nickolai Zeldovich <nickolai@csail.mit.edu>
-Subject: [PATCH v2] xarray: initialise the offset of a new root node
-Date: Fri, 23 Oct 2026 21:43:44 -0400
-Message-ID: <20261024014344.830116-1-nickolai@csail.mit.edu>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261012181107.772545-1-nickolai@csail.mit.edu>
-References: <20261012181107.772545-1-nickolai@csail.mit.edu>
+	t=1792808089;
+	b=PoPFYlERluhpExEInSDxdlbbiSOg2gbrFpc0w0MTisYRWt9pCLosvn0lFPlpbeBRSt3CID
+	QvND1w7BWsFfFaDhX/sEuEetxEpgLxq3tTooS7bT26FCZ0MipVxT4u/l08e2IVZ2GLKaiU
+	oBm8/tBy82xc1TQWIWA0JZc1g49jel8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IqS9y7P3;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792808088; x=1824344088;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3vGAHWAWj47J1NUauqlbfdNw4l7B+4Puz5dEkbTphJg=;
+  b=IqS9y7P3XVB416zVw/sj+1q3pJRuDIjiOlaUikMd78tD0HTfMv8JTb0x
+   gf+wtKIO6RrvHTtmtjI34Z23pI5NrmCWVjrk6inkaRnao3Rf9m9p67FW+
+   losQE7vr3cMZCWEA12XYFH8iZai8RAPuOntbHDhXLA0Z5OgrLaqWdrAlG
+   FLiaEDPBOwwr+yOqmt//Je+bhNxt0qkfbdonzRh/C33NefFpGP5q+hON7
+   DzZWpcTVY0P8wfKK3f2VtZzcntedJu9X/vOxFdUuc4bnmh0UNQXjTc2rZ
+   tiM8UdYzKq1sVbtnsC/QUV33g6UEfLcrVuQiEO//pgMGKFawOKHT5sgfp
+   A==;
+X-CSE-ConnectionGUID: X2AlgkZ6QLC+zhVZxyeJcg==
+X-CSE-MsgGUID: M2p/AOnlQHm3wCEShWlgJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1587783"
+X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
+   d="scan'208";a="1587783"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2026 19:14:47 -0700
+X-CSE-ConnectionGUID: 8mSKeHZjQkCC22iIBpRuVQ==
+X-CSE-MsgGUID: meTqIDLFRqyS9kxVhu4S9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
+   d="scan'208";a="3710658"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 23 Oct 2026 19:14:44 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xKRHN-00000000TVO-1kwu;
+	Sat, 24 Oct 2026 02:14:41 +0000
+Date: Sat, 24 Oct 2026 10:13:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Kees Cook <kees@kernel.org>, Petr Mladek <pmladek@suse.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tycho Andersen <tycho@tycho.pizza>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: Re: [PATCH v5 2/2] kallsyms: Don't leak pointers for unresolved
+ symbols
+Message-ID: <202610241049.9evBxlP8-lkp@intel.com>
+References: <20261023-vsprintf_kallsym-v5-2-57ff92187c1d@linutronix.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A3334C0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023-vsprintf_kallsym-v5-2-57ff92187c1d@linutronix.de>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CC8B7C0006
+X-Stat-Signature: mmiix9dqqtmyp8xy44x44af1ygq3neo5
 X-Rspam-User: 
-X-Stat-Signature: 1em3y6wp5hchdtfi7rjf41dsogd38h8j
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792806235-138136
-X-HE-Meta: U2FsdGVkX1+O/xp/1euqyXtul7UnlnmDP72wD+riqI6elLBzf2KN9/OSixyvWMjAQEQ5lTscwmw7HY+zz+W/LnHktG/GrHKtUZCN4QEzwGmGe3AyJZubSDG8/ylhw6BFlc3Q/akyD87+UAR1yzsQndPAV/609bor5I06ZJhm7kOlrO9LLN5GnkOXTaZzhRDnAEuS0sWOJFr7lxXzFttDWHVmuDCs/uNJUk1ufHq+ccgk+zlFCFDu5/vaYd1lUkiwe6vEyj3xmLv+WYXIdTuB1Xa+BniYgL7aV6Iak5T8jpPmx1VB6LhECj58TaLitbOyhGtUUlky8WgEGFemyv2tmR977wtloda/fcxY3Om5zW8u8deZcmXhTjAg4G/IgzCESKZBUyY4Wny0ULDmh636hwrnxeHNcec09PWL6BELzVh0gS2EXK84Zg1JgIK/YtAT1fPiyDEwce8uZaumwg5vkzBRz0dYvcC8b/59H/LowsEHfRygPuRxS9/oWrKMq6XCuOvzKTz7M8rMdY5S5EKYGJkvr143ddpfU0h8qreb3Rei8q1dXbe9SOInU/NT5S3aHwidDeaCt6QYj2Qi3qKnI8xFvTulL5Yz4lo98A9qfOPpSzpaj16dR0/m8D+U9AtN0mHdGuork0J0ZGLCiTtWPIdLCE/nJrbo4++eKbO3IR0Rzmap5rSHXxnYHUa+fNbzD/YslbEq+06sgdZs3P/l9rZJdl2ejpBNMNMnS4LbH2Zm+LZUwolkQg/0G0haRl6GH6OXnCh7aCr/Z+o7XCtHzoEyUlHuSCATt8j3hXed5ZBMLaJwAN6WuDqbUhzcQYvTBveYpEQB7kkOAfEVPUNRLFM7RTDN9uNc8V6frfpotudfg/cnmhZYYkCivaWMLArySCKIyDLFRBWbydglrssyO6Idn5PPMqhwjibSW/ZESlqVU/r5iLWpz3+p5lg/xoQ2QfhHtjzJByP7Iy5UQMH
- 4IO7fBpm
- nLC9lwo/Ed4OdDxKg1e7xzQx1fkW+MfUo1jku9RaSp7QrW7HQSLLINTCAtAvV2FpDo4IYxGUiJaNC98PM7uC78BM50Sv3QDst6+YujQLkOp1uCT/rObZRy5nGdaGCrumynXPyCsnPQsI3p6YVHn73DoVpJYIstEOQ41pwoY25nsai0R9eJoY/xNnCJgSZe18hkOlMmLGZVNoo14QBPoRNgg9Ts0PB9xmNvBq4UOs2R1sulukBe/TxdEXWfg==
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792808088-5929
+X-HE-Meta: U2FsdGVkX19BeirAwqgeRKt3PO6MyVCqMQnAggOAd2afRLGbz1Zb9n/bk/RgdUldAWDasVfI/c0SHGiF6zUQOy05+iIiw/NARmxRoGLsFzazObiVaxRVSdEDihSQ06BEGLz6/lCjqDsZDN6AyA/D5k143kwmaKqdxdbAd+R/5Fw7PTqfMx8WJggL1Q6rGHPw2FC9N15+TOBl3I+Gb+O4NgraL2yDz+3E7Z4YmMLOdm2o5uSmxz2VCiIWltToBSg82kuBkqkj/sxFd6q/w5shtXqw8z+xb8tQlLDpVkZDKgndwQOmdus5XnhjFFdY+19GWKYzgg0R4S7I3y1g6ArputltLrjp6aM2xs32ydDmMcm0ag0fFxGKomNshcC8Vk6jo4O1YSVQOQ3DvDaAkBA1YsqpnajqYDk4FWd2KBWxHHaoJs2DLLWiagGTfviffwU2NJg/WZl2Ny+fIo0Fhmx475jOOE5s1Ac2gOEhollX9YxZkoBHX90psvMWWSIAT7Zwy7miMpS1Pvex9riLdQ1+sOeJ6NOYgf2MUH39lS/1IcIApuRU/CDJxizpFt1EfAxY3esrIgESR/8S2xSQ4/jym+45HPVHUKQevjjrAFPwAFHVUaAwU3oJL+PizS8uaswov288WTxNPB/THinNReTOGWGUm+tpfvqbhZvFlcdj6OqmlfA70ghfHpHe+FPznyfFvYoOZzRjiUYFhUUXFLBKx/qrAjbT7srQHFjyWbZWsfxx0FvLusRkSoZGHM1ruaoOGXFJa/3Vw+LEn6uXCFrEnLrqZ3o9DZH9MmXHCD3kwo9+Xq/UBJcTr5TrLwzWAPg5zbFHs3yEUQhF+5aaZE8Fcqw5rFsr2uJJU31fYe4TT7MJ0K458mHhg9t2y/w0GpYcPpj6WEc8tzclPRVc0nmSflWAnmj3RZ/cmyCTOxMRvCibiuXO77m26kkRswS7GBBK5MnXsQa04YR75xGEhIW
+ 2/ZL/xlJ
+ i2p5AZ2aaQuB0JUMDSJ51YVYWRNXyDhASaz/8l2+8hwejb7dfhPGYEbCrvyBHcosyiqHXWv05ugRNkeOmH20ABnKhhX81fzAiZfpLU8XPZUlZVKFNIxxF8Zh2N37CBSCOQzWenNCLmOu4Hl+lnIdbfCQX0rdo7l9AnN/r1iYrMso2iSBlA5oa4JhiJ9kYYznu43T7pSMwsSEZGOmgM1w6um/gkqaVsqahLOcxNoZeqxPzQOmJUBkXt8p/0m3ElfpE+GYz1HVYxY/XOBhJxSdM5SMUPYNgO99voBVOZJJq0jw54SBDSIaZcrzcdH+6CFgVuzy6wMa0ilnedqM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,189 +120,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-An RCU walker such as xas_find() that climbs out of the root while
-xas_expand() adds a level above it can resume in the new root at the
-wrong slot and return an entry with the wrong index.
+Hi Sebastian,
 
-xas_alloc() sets node->offset only for a node with a parent, so a new
-root keeps the offset its slab object had before.  xas_expand() stores
-0 to the old root's offset just before linking it below the new root,
-and a walker can load the stale offset before that store and the new
-parent pointer after it.
+kernel test robot noticed the following build warnings:
 
-Set the offset of a node allocated without a parent to 0.  The store in
-xas_expand() then writes the value the old root already has, so remove
-it.
+[auto build test WARNING on 091b06388b117fefdcb63336ac09956a4914b961]
 
-Fixes: 58d6ea3085f2 ("xarray: Add XArray unconditional store operations")
-Reported-by: syzbot+73641b60a3bc11dfca8c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=73641b60a3bc11dfca8c
-Tested-by: Baoli Zhang <baoli.zhang@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Nickolai Zeldovich <nickolai@csail.mit.edu>
----
+url:    https://github.com/intel-lab-lkp/linux/commits/Sebastian-Andrzej-Siewior/vsprintf-Don-t-leak-pointers-for-ps-without-KALLSYMS-enabled/20261023-184623
+base:   091b06388b117fefdcb63336ac09956a4914b961
+patch link:    https://lore.kernel.org/r/20261023-vsprintf_kallsym-v5-2-57ff92187c1d%40linutronix.de
+patch subject: [PATCH v5 2/2] kallsyms: Don't leak pointers for unresolved symbols
+config: sh-rsk7201_defconfig (https://download.01.org/0day-ci/archive/20261024/202610241049.9evBxlP8-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 16.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261024/202610241049.9evBxlP8-lkp@intel.com/reproduce)
 
-Notes:
-    Changes in v2:
-    - The test uses XA_BUG_ON() instead of a new XA_WARN_ON() (Matthew Wilcox).
-    - Remove the store to the old root's offset in xas_expand(), which now
-      writes the value already there (Baoli Zhang).
-    - The first root in the test now comes from xas_create(); in v1 both
-      came from xas_expand().
-    v1: https://lore.kernel.org/all/20261012181107.772545-1-nickolai@csail.mit.edu/
-    
-    Setting node->offset = xas->xa_offset for a root too does not work:
-    xas_set() keeps xa_offset, so a loop like the one in check_xas_erase()
-    (xas_set(&xas, j); xas_store(&xas, ...)) grows the tree with the offset
-    of the previous index.  In the XArray tests 2929 of 104963 allocations
-    without a parent see a non-zero xa_offset, and with that variant
-    check_xas_erase() fails.
-    
-    The syzbot report is this race seen by KCSAN: xas_expand() changes the
-    old root's offset from 3 to 0 while xas_find() reads it.  After this
-    patch xas_expand() no longer writes it.
-    
-    Reproducer (tools/testing/radix-tree with a hook in xas_find() between
-    "xas->xa_offset = xas->xa_node->offset + 1;" and the xa_parent() load:
-    "if (xa_climb_hook) xa_climb_hook();"; add "rootoff: rootoff.o
-    $(CORE_OFILES)" to the Makefile):
-    
-    #include <stdio.h>
-    #include <linux/xarray.h>
-    #include "test.h"
-    
-    extern void (*xa_climb_hook)(void);
-    static DEFINE_XARRAY(tmp);
-    static DEFINE_XARRAY(xa);
-    
-    static void expand(void)
-    {
-    	xa_climb_hook = NULL;
-    	xa_store(&xa, 6UL << XA_CHUNK_SHIFT, xa_mk_value(48), GFP_KERNEL);
-    }
-    
-    int main(void)
-    {
-    	unsigned long index;
-    	void *entry;
-    
-    	rcu_register_thread();
-    	radix_tree_init();
-    
-    	/* free a leaf that sat in slot 5 of its parent */
-    	xa_store(&tmp, 0, xa_mk_value(0), GFP_KERNEL);
-    	xa_store(&tmp, 5UL << XA_CHUNK_SHIFT, xa_mk_value(0), GFP_KERNEL);
-    	xa_store(&tmp, 7UL << XA_CHUNK_SHIFT, xa_mk_value(0), GFP_KERNEL);
-    	xa_erase(&tmp, 5UL << XA_CHUNK_SHIFT);
-    	rcu_barrier();
-    
-    	/* the new root of xa reuses it */
-    	xa_store(&xa, 1, xa_mk_value(1), GFP_KERNEL);
-    	printf("root offset %u\n", xa_to_node(xa.xa_head)->offset);
-    
-    	xa_climb_hook = expand;
-    	xa_for_each(&xa, index, entry)
-    		printf("index %lu entry %lu\n", index, xa_to_value(entry));
-    	return 0;
-    }
-    
-    $ make rootoff && ./rootoff
-    Without this patch:       With it:
-    root offset 5             root offset 0
-    index 1 entry 1           index 1 entry 1
-    index 8 entry 48          index 48 entry 48
-    index 48 entry 48
-    
-    Tested with tools/testing/radix-tree and with test_xarray built in on
-    x86_64 and riscv64 under QEMU; without the lib/xarray.c change both new
-    checks fail.
-    
-    The analysis, the patch and the tests were done with the help of an AI
-    coding assistant.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610241049.9evBxlP8-lkp@intel.com/
 
- lib/test_xarray.c | 33 +++++++++++++++++++++++++++++++++
- lib/xarray.c      |  6 +++---
- 2 files changed, 36 insertions(+), 3 deletions(-)
+All warnings (new ones prefixed by >>):
 
-diff --git a/lib/test_xarray.c b/lib/test_xarray.c
-index 5ca0aefee9aa5..046abad609648 100644
---- a/lib/test_xarray.c
-+++ b/lib/test_xarray.c
-@@ -370,6 +370,38 @@ static noinline void check_xa_shrink(struct xarray *xa)
- 	}
- }
- 
-+static noinline void check_xa_root_offset(struct xarray *xa)
-+{
-+	DEFINE_XARRAY(tmp);
-+	struct xa_node *node;
-+
-+	/* Free two nodes with non-zero offsets so the slab can reuse them */
-+	xa_store_index(&tmp, 0, GFP_KERNEL);
-+	xa_store_index(&tmp, 5UL << XA_CHUNK_SHIFT, GFP_KERNEL);
-+	xa_store_index(&tmp, 6UL << XA_CHUNK_SHIFT, GFP_KERNEL);
-+	xa_store_index(&tmp, 7UL << XA_CHUNK_SHIFT, GFP_KERNEL);
-+	xa_erase_index(&tmp, 5UL << XA_CHUNK_SHIFT);
-+	xa_erase_index(&tmp, 6UL << XA_CHUNK_SHIFT);
-+	rcu_barrier();
-+
-+	/* A root created by xas_create() must have offset 0 */
-+	XA_BUG_ON(xa, xa_store_index(xa, 1, GFP_KERNEL));
-+	rcu_read_lock();
-+	node = xa_to_node(xa_head(xa));
-+	XA_BUG_ON(xa, node->offset != 0);
-+	rcu_read_unlock();
-+
-+	/* And so must a root created by xas_expand() */
-+	XA_BUG_ON(xa, xa_store_index(xa, XA_CHUNK_SIZE, GFP_KERNEL));
-+	rcu_read_lock();
-+	node = xa_to_node(xa_head(xa));
-+	XA_BUG_ON(xa, node->offset != 0);
-+	rcu_read_unlock();
-+
-+	xa_destroy(xa);
-+	xa_destroy(&tmp);
-+}
-+
- static noinline void check_insert(struct xarray *xa)
- {
- 	unsigned long i;
-@@ -2235,6 +2267,7 @@ static int xarray_checks(void)
- 	check_xa_load(&array);
- 	check_xa_mark(&array);
- 	check_xa_shrink(&array);
-+	check_xa_root_offset(&array);
- 	check_xas_erase(&array);
- 	check_insert(&array);
- 	check_cmpxchg(&array);
-diff --git a/lib/xarray.c b/lib/xarray.c
-index bfe7bef80f34e..1e2380e3194d6 100644
---- a/lib/xarray.c
-+++ b/lib/xarray.c
-@@ -387,6 +387,8 @@ static void *xas_alloc(struct xa_state *xas, unsigned int shift)
- 		parent->count++;
- 		XA_NODE_BUG_ON(node, parent->count > XA_CHUNK_SIZE);
- 		xas_update(xas, parent);
-+	} else {
-+		node->offset = 0;
- 	}
- 	XA_NODE_BUG_ON(node, shift > BITS_PER_LONG);
- 	XA_NODE_BUG_ON(node, !list_empty(&node->private_list));
-@@ -616,10 +618,8 @@ static int xas_expand(struct xa_state *xas, void *head)
- 		 * Now that the new node is fully initialised, we can add
- 		 * it to the tree
- 		 */
--		if (xa_is_node(head)) {
--			xa_to_node(head)->offset = 0;
-+		if (xa_is_node(head))
- 			rcu_assign_pointer(xa_to_node(head)->parent, node);
--		}
- 		head = xa_mk_node(node);
- 		rcu_assign_pointer(xa->xa_head, head);
- 		xas_update(xas, node);
+   kernel/kallsyms.c: In function '__sprint_symbol':
+>> kernel/kallsyms.c:486:44: warning: format '%p' expects argument of type 'void *', but argument 3 has type 'long unsigned int' [-Wformat=]
+     486 |                 return sprintf(buffer, "0x%p", address - symbol_offset);
+         |                                           ~^   ~~~~~~~~~~~~~~~~~~~~~~~
+         |                                            |           |
+         |                                            void *      long unsigned int
+         |                                           %ld
 
-base-commit: 26344c0dd32af8790d8474d233619db825441138
--- 
-2.53.0
 
+vim +486 kernel/kallsyms.c
+
+   469	
+   470	/* Look up a kernel symbol and return it in a text buffer. */
+   471	static int __sprint_symbol(char *buffer, unsigned long address,
+   472				   int symbol_offset, int add_offset, int add_buildid)
+   473	{
+   474		char *modname;
+   475		const unsigned char *buildid;
+   476		unsigned long offset, size;
+   477		int len;
+   478	
+   479		/* Prevent module removal until modname and modbuildid are printed */
+   480		guard(rcu)();
+   481	
+   482		address += symbol_offset;
+   483		len = kallsyms_lookup_buildid(address, &size, &offset, &modname, &buildid,
+   484					       buffer);
+   485		if (!len)
+ > 486			return sprintf(buffer, "0x%p", address - symbol_offset);
+   487	
+   488		offset -= symbol_offset;
+   489	
+   490		if (add_offset)
+   491			len += sprintf(buffer + len, "+%#lx/%#lx", offset, size);
+   492	
+   493		if (modname) {
+   494			len += sprintf(buffer + len, " [%s", modname);
+   495			if (add_buildid)
+   496				len += append_buildid(buffer + len, modname, buildid);
+   497			len += sprintf(buffer + len, "]");
+   498		}
+   499	
+   500		return len;
+   501	}
+   502	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
