@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D0B606A320
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 17:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCFA606A333
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 17:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HRuk66ln
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LKbdKhtl
 Received: by kanga.kvack.org (Postfix)
-	id 5A16B6B05B0; Sun, 25 Oct 2026 13:24:45 -0400 (EDT)
+	id AFE3C6B05B2; Sun, 25 Oct 2026 13:27:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 552CC6B05B1; Sun, 25 Oct 2026 13:24:45 -0400 (EDT)
+	id AAE566B05B3; Sun, 25 Oct 2026 13:27:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 467FF6B05B2; Sun, 25 Oct 2026 13:24:45 -0400 (EDT)
+	id 9C3716B05B4; Sun, 25 Oct 2026 13:27:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 170DF6B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 13:24:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97F7C1C3AC1
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:24:44 +0000 (UTC)
-X-FDA: 85361823288.27.B1E2CB3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id EF36620008
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:24:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HRuk66ln;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 70CE16B05B2
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 13:27:22 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 02E7F805D8
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:27:21 +0000 (UTC)
+X-FDA: 85361829924.11.E40D5C0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8169640004
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:27:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LKbdKhtl;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792949083;
+	s=arc-20220608; t=1792949240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=Nkyq5l5Ghq356yzBoCQoLTfgpUWLS8pHN4Yf4mmGPPY=;
-	b=xYO7721NdOSCHT2iZBnrSs0Sr20zusw/n9WEyQ1QdMPVYeUo9P2DeEuZOKxArZ/r6eeefa
-	MbtOTqMo8mQCDC5stCLOY/G+HbWzKpwGKFefmYWUefQKACzMPadxTD7izREGVa+HHoi09/
-	SEAO8mu+NJuMYmcdcJKXwLjQ7dcZNSg=
+	bh=uOoKQ2PnkH09Vk1jw7K1oh5n4BU041veL5ZwyfeSI9g=;
+	b=XISWs/fA9PwX8bo3GMnbPpK1lNKz/NJ8Vxb4sP7mtWUl2rP1KvvAfI9Rqyho68byBFVNsA
+	0L3idyfbsK/ZwID6l1nzjn8b0eXZUiBmqnayC1CZvNbbfXcpLrjIyltl3z+LAyjzEka1Wv
+	eek8WHdouI/AiM6SXShYptyZBaUYn90=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HRuk66ln;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LKbdKhtl;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792949083;
-	b=f2HUPLGHjf3jLctBnhegYz5oTFLeNZTa7EaGEq9sjb1B4XMIWbh0rLLdrlMNYubZNwdCJj
-	7owFakmXQUn+qse4gPtbZxGO+2nKeS1+gyYqFArdalLWfqj8FFV4GjDiMXS9BcsQWpUAwe
-	/pNApjZK1QB1aF1lG57DsUZlrMO0o+o=
+	t=1792949240;
+	b=It2XJhpgR5eg/1G0WQfw4aN8+oHtO4kOjQgdZS6eah1YVNWVkd1RWoWmrn0FshWFuFFEoG
+	hvvzYwh/98zriM90q5So0bJWnA45d/pOtQtZW6AgCnkP8SV0iT4a9VzNBM2e3LBMeshcbU
+	RIyf9eF4leHAy815hHRxODeeUsCjh8E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2D83543C17;
-	Sun, 25 Oct 2026 17:24:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D951F01825;
-	Sun, 25 Oct 2026 17:24:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 124BC600AA;
+	Sun, 25 Oct 2026 17:27:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC121F01825;
+	Sun, 25 Oct 2026 17:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792949082;
-	bh=Nkyq5l5Ghq356yzBoCQoLTfgpUWLS8pHN4Yf4mmGPPY=;
+	s=k20260515; t=1792949239;
+	bh=uOoKQ2PnkH09Vk1jw7K1oh5n4BU041veL5ZwyfeSI9g=;
 	h=From:To:Cc:Subject:Date;
-	b=HRuk66lnQ323DJ5rahzb6qhwxDGn6mSnG/OoMieII1aNcbThS8GTGdhLTWrMRwnHE
-	 jyNNoBGOE67u6yYAPu6VzYdJLoOlkJG/GkCT21fg0Bt5bV/XcZq8Sx3bhmXa6+oGMD
-	 kDzVMGAhpkkIj9e1nKkws1Lz1Gk+LEz9z0GRDh/lEvNybeG8VQ+r3CbijM0ZhKppYH
-	 P9Cdd0dhVEgRz1hsmzXhwo2kNh8xhyDBcbM+EIZpiYTau95GgtpIjAdqp3Wpb3WC9b
-	 2zAXuHxg80A09TjU+nt/ThqpAZwveIpWQjb/xKZVq5B/U3WnpTz+FVXDUpAr6SS+N8
-	 oitVY8v1hQbSg==
+	b=LKbdKhtlyoXURqlHoGmzBroiGrBMDMwQO1Q9HBle3p+cQ765zXSLB2jNShjsJ5ykb
+	 N10s504jTVCUf4j+0yDuodsW8/2mDeb7BAzowMIQcOo7lCzbVhf5VBSKelePNmpO+p
+	 5Rs16+C1rzGZ50gNvBXCwwHzeZBWKnmYEZctC5hF/0CJUf7lL/e6GBS3no8v5VxUs2
+	 EBC9QhmAPQHktZ/2ASugUX9625olkz8QfRHdWMAFVZFsdSxhXQfNLp3k8iFswsOjSL
+	 HF0oxKb2vyt2QN1VsBNaidu+ax5pfO7ZNVnJh6ha2A47FpgMdRbC8pvOLXBiZgV/CF
+	 kYfb5EgoFAAAQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -68,25 +68,25 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	stable@vger.kernel.org
-Subject: [RFC PATCH 7.2.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
-Date: Sun, 25 Oct 2026 10:24:33 -0700
-Message-ID: <20261025172434.161597-1-sj@kernel.org>
+Subject: [RFC PATCH 6.18.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Sun, 25 Oct 2026 10:27:10 -0700
+Message-ID: <20261025172712.164385-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EF36620008
-X-Stat-Signature: no7u4k8c47dmjyzsjwrdc811mqttnyyo
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8169640004
+X-Stat-Signature: 3dem1ptw56tjhoeyh7zs5hyidc8zqtyo
+X-Rspam-User: 
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1792949082-143160
-X-HE-Meta: U2FsdGVkX1/QCCsCesTNn0ULFUi9/pLzK1wgSYiCIRRE71D4jEuL3HGPTxG+X5lEh9jK/hy1Q+yJrNPlghtazYlrpMKvZ1Z25hiK5TvFCVNcAgtVuqaPyzAHmT4cUI5FRd3G5GrPz2KZpf9ANG1Nd9X6Hp6Rth28ZWxkuezArikZNaVpgUinGTEkG4l6HbjAFKyHqlPD9ZXPsMGeYpkWE1HjuFi7B+NgcfsbEAhdry+Wt7dgRMUQFgTEFP+DbNbdyGTpejWHpn/jAYbMIS5ykwNakf6+hXWRrnTH2klC6gP09mtrkPLDrCRWmWrF98nUGxX+UezMsBQviaGfbpQuM1uxTeJyoOo2CAMYatDQXfcQHsVy+6FceGGbwaB/j4E0zSyom2PIlcKHxVxKCkQy7pEs6/r2wUofNFl5DCmWfmcNbxmUpe0QGRWUzgZotcADh+VQBsyc6ooZnLkDhNQ5rcAqvF/pk923m56MTNJfefMjSfumzKwNWf2Q4RoxsyK2+zRlBnmP1C2R8LA7CPz/myuAxeCjeVOBJVn7mG+JjUhh+0uepV/qr7FGc2sopZc9zgova3Ue5i77hq/RXSrUQDRC3yfoBFZ1WlBynF8bONKRvNJG3ijYncOAwIUdol1bXID7GxSomi3CQ2CjMQqWKvSAhOqt/Ix1/ciZseT6UPfRemhYLb2IgYijNzW8TNJ9TB9LLOkq0ZRQrKJpvucGHKi6uGHr8xPXYBD7wQHCG1OVoaWEdkfSEhtdJXCD/WH2IZfkKD0GhAoaANE0qPm8jMx1KmygdIjm6hqXcFLyHlN65kPkR3vzpfWehtktr3vQS+1X9bnH9ks0ec3h3i6jARINXjvH3s5IZ3QE96jdW1r41c6YmR+BuoRuLMTxA2RocodTVXPnYYV3/ucSO00SZc9QJ/pPx7GxogET2s1p1mRiT0OKcb9htEjIfa41WApuWPAOzVsugCbUxROMKIO
- aWHjdIHb
- Fo2sA5Pb5HriQGZAFlb+lwUMvK9K5Xsep68ZyeGfheoxw4vocwBvhOEJUGJecGiOYWaVJ44HXFfh8u80NDkPSAvd5njGequZgbk3/YTeEjttGk2v4b9ypW2JDcrozNdiXvE9r85eoFsbS/mD2qhf1WC7VS3VizVviRp66PmSd1qnnn7ltTD7wNFghUy7Vm81MTPyUwuOs3ml7WUlPfdhiz8Iub8MXyb5vWzTlI8X9hbg/rNMqI4roKpBFRD2yZ5b18V4JvluhH8HOZfPFHWiy9q+ZpXxKgA5pdzDSzh0qGtY1fnKFinzojDOV7RPrK7qTD8jRz8awSdzkh5IIMqQ+Lzw7FYQOIZrXx8KVhnoN7YuXR5danbjGbULYNNmeIUommc+DsNdHK0xx4JA=
+X-HE-Tag: 1792949240-264693
+X-HE-Meta: U2FsdGVkX18U/RnLzMmgfHaqLAB7kYz3EVBtqVUDuRDOpFGwZyTvLvnt7v/gji/JVIW15AUSLVrVO03LvGQa5Nefiqu78nRgmj3LV1UKKgih5nRFc30msEafm8SUHKat2H8ck0XltCoA78hqoDQOsOOQTPHQQNzmOMnvKlzV5geq3s1jf5vpDgxxn7ZRazhA7OIW2a9/qIlyGbFNBIutgl4NchbnS6RCljTqgQ7TNL+jeNQWERhny7KuRm0PCrC69J0UraRNsFLJay+Rx4i2PbR0kmhZEgbckb8h0ymC8JsVJ2mw1T3q15/banV7DHHG4Gr+c/tqMrTbf7GwvR6bPyTXV8DTF9P0rx6aQD2h2HySQPUgnMMicTDrdLdBvr1OqRAX5Zn2sl0EJ1yotzCw1VGEplO3WWLAjrH67g9+JUc8njczGFJUdxSXrCAZTCdKpVWWUTw5qcyZAkGNxY4ajFF9ZWxtLTa355qoq5ARu1eskT+TLFHrNadHXd1YO/sIKY/QD0zivkWy+tieP2XBzD9miZAPZ45c+uyDuy/fOGgvRiqkl8B7BvgHBg6srAUqiidHNxa7UdjmBcO2hr1FM+NvycnjSLxfAcbXFiyckDcZBTH0rfo4V7kg2tdMdgOXKlxu5VxKUo7Hu4H3dW3uTdDSKAVjJS2irquoSnAyxGa0dUbefZiXdUgEET34P0oWRAo9fziMdfbHJpflSl1UEA57nvq1zFh7Qyca3+WK4CYwcStqFcDr15qlhZkoTkbc/Odf1voc32Dgm8v8pXBMqBHFN9zUQU84te+HZ93UJGMIpCAGP5ZXd1jszZrjBXuXH+UHBkrfk39ETfMFsC3l7zP5TSE4DMql+TmVetUiXUv04Izz+3IWW3yDtyHqSKkVQGiHjXnor4ow5a2TiyTsS/AJcjtBEq6Uy0m6FH87RuPPO18BiA290NfcKIlYJd8cNRKBUD3D0Cjd0FJmg3k
+ mRu7aq2T
+ sPCub2BJHdo39GOXqKOpOwGLXNeChj9WXDdgX4QFYEly9xaXfOkOA0ZJJ/qqhmcAvDZx7v6r88kpus+2BuhXZb5/MEn8fD/HS4Yca6C9gRISwsGK3UhckZc65cLPO/dd84wU1Kzg2OS25aqo0oCVhFRUb9whgbV8xmrzhrV6sBfirU7tUSGUsoikc2+kJFhDpYVrlFpdCTPMRtVIHu/Q7U+isG2Io80MSz7GPPrLDigM9VWEzpm/P+N1uuBSDFs25UncuL2UiX7NR0y8KVwhqNRKBr3QfVhjIR5HVGVJT4Ex/1fBP++SWqLD3UUkSyreFA2CRig5Dk+opbuWogAldIM5hmMTUyEsPr/9GiB97HTo1K39p8//2L2fwKhB4YbGmpiMjmFXD5HHjNxQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,10 +152,10 @@ Signed-off-by: SJ Park <sj@kernel.org>
  1 file changed, 16 insertions(+), 6 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 40714c69d1b18..0aefaef46d655 100644
+index 4e6e3d7d0a5c0..8fa788b0d709c 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -999,15 +999,18 @@ static void damos_commit_quota_goal_union(
+@@ -807,15 +807,18 @@ static void damos_commit_quota_goal_union(
  	}
  }
  
@@ -175,7 +175,7 @@ index 40714c69d1b18..0aefaef46d655 100644
  }
  
  /**
-@@ -1025,14 +1028,17 @@ static void damos_commit_quota_goal(
+@@ -833,14 +836,17 @@ static void damos_commit_quota_goal(
  int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
  {
  	struct damos_quota_goal *dst_goal, *next, *src_goal, *new_goal;
@@ -197,7 +197,7 @@ index 40714c69d1b18..0aefaef46d655 100644
  	}
  	damos_for_each_quota_goal_safe(src_goal, next, src) {
  		if (j++ < i)
-@@ -1041,7 +1047,11 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+@@ -849,7 +855,11 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
  				src_goal->metric, src_goal->target_value);
  		if (!new_goal)
  			return -ENOMEM;
@@ -211,7 +211,7 @@ index 40714c69d1b18..0aefaef46d655 100644
  	}
  	return 0;
 
-base-commit: cc9de5d4b5ab6459f5774946aa3195ad51236fa8
+base-commit: 2926d88bb7fc4608fd942453d929c39e4e5ec006
 -- 
 2.47.3
 
