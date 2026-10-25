@@ -1,104 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF23606A31B
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 20:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02902606A31B
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 21:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cw6wxqO8
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gWkUhUFU
 Received: by kanga.kvack.org (Postfix)
-	id D99736B05B2; Sun, 25 Oct 2026 16:42:36 -0400 (EDT)
+	id 0F8766B05B0; Sun, 25 Oct 2026 17:49:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D49C86B05B3; Sun, 25 Oct 2026 16:42:36 -0400 (EDT)
+	id 0A95B6B05B1; Sun, 25 Oct 2026 17:49:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C603F6B05B4; Sun, 25 Oct 2026 16:42:36 -0400 (EDT)
+	id F057B6B05B2; Sun, 25 Oct 2026 17:49:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9960F6B05B2
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 16:42:36 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F1C0E1605D4
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 20:42:35 +0000 (UTC)
-X-FDA: 85362321870.17.698A244
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1B464140004
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 20:42:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cw6wxqO8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D0A1D6B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:49:10 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A2F41C0F79
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 21:48:52 +0000 (UTC)
+X-FDA: 85362488904.19.E484F6A
+Received: from mta1.migadu.com (out-240.mta1.migadu.com [95.215.58.240])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F3EFF40003
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 21:48:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gWkUhUFU;
+	spf=pass (imf07.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792960954;
+	s=arc-20220608; t=1792964930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ZVwpDuEOvVP+5WMptjvGUaD4UnS5xmh0v3my59uo80=;
-	b=5qBDeTnNI7lF4ZmllSxTtca7Dnti6l0E5Gl780L3zle1WXvcpmcDdWD0WKF3jYZaADGAJ9
-	mumNIrw6MQfKov7K4zdRuWe5Aekas81OpP0WesiM6SchQwOetkENC2KqahCvkX36ovFchY
-	Wzznv6+kPjkHJje+6KCnLk47yJXltdk=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cw6wxqO8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	bh=7wQNgAvrV53M6g73xXbn+Hsa5Wpgb9uHDA2CEi88MY8=;
+	b=yot9ZgM260pw+zW/NKnHn5AAPU9pBn60GSc4UwfeKEIDEypNcvHcij/wuApuvnNyb2O0AO
+	8yom8qqQBM0AvJwiOdYy+WoKPVQqXM0ZBOK1zdfjdS1e+YyUvIS9062kVozQNF5ZNsaZ9Q
+	ldg/nLOnj30RCntAUzTCCXPPqEniUGE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792960954;
-	b=U1JoUKjonYmvD7G0gIYdhCxL2U1iLR8QVzdA7S4zX0z3Mu/N47C842Ly08EaVwUeOF/REE
-	s0i5TNbuYbqoAyOMxYNhdcq9j9ZlkunHrJS9GXLsu4IKK7K+/Og4xYKbCkoKKM4EoiYs4B
-	9yJMeCDYRE2VY3pYG6jO6zS6WpZ4YsY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EF92743A16
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 20:42:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20941F031E4
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 20:42:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792960952;
-	bh=1ZVwpDuEOvVP+5WMptjvGUaD4UnS5xmh0v3my59uo80=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cw6wxqO869ZZJ8vwwoDzLpFL7knGGLPUHbSAAQ1kpxEmlLRSoAcIyI+7nCNkPXtXC
-	 /sQV6Nvfef8NOsj/Vee6+JjdQSwsL8eGsx0BMC/21zb7xTzpc9lozSJ7N6zZWF79VG
-	 mhefi2f4xhIQUZOWJNQJMiZp57XOxhMYe7hXPq/QPwTT/ClZNZV7lCq/+2OFBWsxrw
-	 7Bbsquk/ryxVB+AxDl4L4wPHsfXS7lFVdaIMIGn6/3nH7z15C+TgtIieL9xFC7NZ5v
-	 Nf14VG1zxAGC+aQJ4EokIMh5+0zoWQO5PXt/cCcE/eP1BVl+c1l6nRpKjLzjRsrTav
-	 8ePHU+mvvPfrg==
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93efc0452b5so156499185a.0
-        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 13:42:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx9QvA76YOPOY1ferXltiAvKtot5awe54Yii5eKnfUUKar+AD4+JRHKdU1pDK5KTWUT1tbU48y4cA==@kvack.org
-X-Gm-Message-State: AFq9FYJ9JpjOfZcQyNC+OfHRXCFIiMkKRz+bOtd3du4pLlsvLx7ohIAW
-	BhS5L+wmZmRFUvGz0OngqF8oc459JN7j4o+5tTt83ZPJ24mSFlZ+iC7QoeWby6FlST7OYcHMsBc
-	DzjpWruwd66ACGOVKbbPZZLfJrlDLm+g=
-X-Received: by 2002:a05:620a:400a:b0:93e:48fc:aa88 with SMTP id
- af79cd13be357-940ef95513emr790870385a.44.1792960952180; Sun, 25 Oct 2026
- 13:42:32 -0700 (PDT)
+	t=1792964930;
+	b=zLE+LIbKhWoztDegDJOySOyk4XV3FjihaT7ii54LjPnefjZbWoCJNRjGmfi7GtrXqwScT5
+	d8VRX+/YuM2U31Av4Z8PdGBXg4woUTVQcSSi8yrVm6VfBTxWOvhdpSAjGVKBQS7YOqM23f
+	mOANHaDSZLoD2F+Rpjzhe/YKYGjGZIg=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gWkUhUFU;
+	spf=pass (imf07.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=FW93I9g2tFhlVSvMbZvJhIsiJI9bo4PZOSNREMcmxDA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792964928; v=1; x=1793569728;
+ b=gWkUhUFUyP2n9w1XqfxuzV06+ZqN3YN+wNJCYBrB4HxP5Nwf4YoA/Ifr7LPlYyKV633fnYzN
+ ZQA0k94WlZsm0a64RNpARKHYrHVnMTF+ivYvmRNLgLaeOBang+tBO6hINmNWwGhQVq7MrwtftlD
+ 8ilzZwtbnrH9kXJ2kDI26e2M=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id e5eed0b9c945e22a;
+	Sun, 25 Oct 2026 21:48:48 +0000
+X-Mizu-Trace-ID: e5eed0b9c945e22a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <e865f7f0-087c-4fe5-b729-6e6946cd20f6@linux.dev>
+Date: Sun, 25 Oct 2026 15:48:43 -0600
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261025021839.1542805-1-senozhatsky@chromium.org> <20261025021839.1542805-4-senozhatsky@chromium.org>
-In-Reply-To: <20261025021839.1542805-4-senozhatsky@chromium.org>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 26 Oct 2026 04:42:21 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wF2YfHwyDSt=B_+duiHCXke8JJgqGJcaw31JunUbxxQw@mail.gmail.com>
-X-Gm-Features: AclHuK_u4ku4HYNTJ8RqUHQB0jHfvIpB2fBEVv08j0BZX4fWzV5XB72RUiMN54w
-Message-ID: <CAGsJ_4wF2YfHwyDSt=B_+duiHCXke8JJgqGJcaw31JunUbxxQw@mail.gmail.com>
-Subject: Re: [PATCH v7 03/15] zram: reset writeback state in zram_reset_device()
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Brian Geffon <bgeffon@google.com>, 
-	Bo Zhang <zhangbo0325@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1B464140004
-X-Stat-Signature: 4nspudrhzmn9k7rdro81cb4f3fnk3gsc
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
+ underused THP shrinker is disabled
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Yu Zhao <yuzhao@google.com>, Xu Xin <xu.xin@linux.dev>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
+References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
+ <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
+ <CAGsJ_4zUVpBJazRxc1CzN6u5XvpUaGnaf-_7JMz-rGK_ZTYMtw@mail.gmail.com>
+Content-Language: en-US
+From: Nico Pache <nico.pache@linux.dev>
+In-Reply-To: <CAGsJ_4zUVpBJazRxc1CzN6u5XvpUaGnaf-_7JMz-rGK_ZTYMtw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F3EFF40003
+X-Stat-Signature: wdto4kgutbjirhypghw41sgcnqozbzjd
 X-Rspam-User: 
-X-HE-Tag: 1792960953-285540
-X-HE-Meta: U2FsdGVkX1/9vTuyMKlGpsM1hgUCYy5ugLedj4hd3I53gz6jKpz8IG2Twph5IKhxnGt2WRTRuWKcjbnw01QisMX7vN/fwz1/qQOx6cdZHbBwsB/K/dS0jf8pjFS7XFp+pltEh/hTvdUslaPdYukWKV4m0OChiUtA1467VMSFiJD1KCD7W6t44tk3t06neVgPmZCedWNRfWw7Rjpam3jBlAT9iS7BtH9Onj03WmCbMgIT+DmPmUc1zmAxwBT6j8C74jGlJVnBvOLTB6jv1yuchLspX8D88uPbapl2O1fPTT5DiU7TDbbQaB22yBR+WC6V03WuekosNK6aCTx0IfeCF+pJIaewX+nUio48CBCXgjr/dtHPwReG5/ab/SmqzkRq12rA4/jj8h0E8q3YwwXZ+Qvt+HMlqB8Zh+o1vd1V4BPeiX1hC7AP7EKGtmEM7SbqedZHQJbBQaDf5LGNZmlxjDOwm30aBL0FxMhKv4H9WMFd6Ibdv5SNdgAZezHkD4K7il1K1+mLT5fdw0cux7cfp/X8+8KHEtZ83JSvnSKS3hOi44lCNG6FItG+ouBLHfutwlb0vdGM1VJeo6QiUhLmm5bUgB6ZuM7zTIMsdi38naRsPjCuTZ0KpFSmKa6I+2qohv3YyOCkMR6nOwPWA05rxz7nxpxfx4vqpVtn7MDD52WJhLP115fm9zRf38jcm54+zg+Vq42ELXqSh9ROEF65XvnQX+XWvFqXUU4JqoFYHimFUOilU8G2Y6vPZISL/j1z6TlPjAHzCmRhYoHHfu4CxWaqkBLrE5IDjDiPMWWx+p70YkaH2XDva0QdRHdizbWRmEvATRJ1alOL0aF6khkkvhjCXjxq4wZCLKXPXtb3VmQ1N97aE2rlxXeGqhvbDjpZNoBx2rA5FrRoAzctxzz7vXQ40m4qp1X3PsP5WZFqwJ2Irc68AhD7bnfXQiPXqEK58CyINZqxHDoPd5gVNix
- KDBlkLFH
- ZobFlxPxv2ltqgApdINz81xCFyw8r/MNWAwGmxBWaQTry0Lej0wig4+u216h8w7yq3sjYXAHAc6MIaprlRvBsJoe176AwcwIHcesYFweV+VydR117lxUDjgxq/NJRzIfq85qwSav3871eAntJjvCCl1RcoD9+BYvx38CqtECQS0hOX8CaznRyaw49dfTAqeXUqa4lfj/O5ulFDbjg+CzSuFWUNl2vEn4TwJV64adsGJM5+zkqjS32vkJ6SpG10LALvEfk0XWEjQZVZIv0PbQnOYI7rG3oIcCAVPvDyTWtms31VIljTiURzp8CCEgj5VMnHjmoyvV97sKC3PTDVoR9PMPbYA1mxZP69decQ6WASRvRMYVIeSRsFlMHeTBFKdY1w5FhMjiUvmaXssdMwGi5YKO0gQ==
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1792964929-41254
+X-HE-Meta: U2FsdGVkX184SSY5UklFgdiMVn16WBRF1HN4YOH75VnWQ9Nfl1Eif5UQ10V1JfC0TIp0QdtPI+xQSzOriGlzKzi25RAhCgcGn5jYFvoIY7NunR38qrz3MGSn3MwJHTOLxxu5nG0G/sAaZm0fKig54n9c0QL3iOJSMHfyucjLdb2P4apRZ0fb6WPrsiKUxgOKQ4C+kG0cRUiVAfLaUAnJFEHm9sPp/wkSiZhdMRBYxrn7IFn/VgAOJ6Sr7rpWU0/Jr4odEH844TCiOazoreIvog4mQfhw0m8I2QgR7/5kZUX0EuCbrrz3lSN17P9HqBGkt5bbzqWG8xBMm/vp8kKE+3Edxd9+ZYaS0c7wYrPqKdhtBj3f5cgsKZVGJ3Q34powr6uQbdI5T20VWOnwalVKE2kdd9eAvJzd1X0Fv6oXd6WY2UX2PzrjBc8PxBhiCeaM+530k/AB/a6dTQ1rdaDuXP3zT2trNkq+yZJRIqWBioqtmxlmqN1W38249GAjXJPutK6U5yhRJgMqAm5F6N/58C1uCmZyVIJLqwCWijg2SBzmCb0arjxALxSeiiLYTnGeUefdNp6/PPCS1b7c2aiFgTD1BOPbn8Al6a8uHwDnp3tPBvRL2YzQ0n9vCVFUlfXN37PWFrXQczEOvgdbA/wGkCLRS+yTrU1GC19Pr/8Qugptv1u8vex4QIQrSRDUfvd1ADaNtvohtf3DL6ky3BHNJIyAjyyzMFcOnBkvKDDBWrkH7ayGrEzhCMYCjYHzpxGxKBLs6bKKOPDyVNjEn1Uu5BvEDnHtikOfEtZB+4/7eVuYvacqXjxFlXmInhPg7YdgC2Z/8JeiKfBjh1Xelh5E6KXcq8jkTn7GQ5yeylH1xB+44WdSXM9c/GT5V6+mm3pP+iGNpbThCU0DBvyL14qu1Xn16jboLr+j2BCemhupZf9gD5o1Oa/JDPiQl7mfrV7Ol0uBvHOpu0E4pIxNH2T
+ fOc+xY1A
+ fugF2FSdpn4V/WXxnKS6jRi0SG/y841CjJYwm6Gyu/MCb7rjt8XgueAUlHhB8f/mstm/UCPPpRVy6PuUeV45fS/okGPH8wnKl8N5zFO+s/aAgJPSXVoBSBnrhYNVTBCRvxXtn6I/vsU6Lb0vuBUhR7Q9LczYKv0BAKpKkBVRrPNIkwJ5NMnS1YPaIVPgf/AUw5mjrGgPQudYBAh80vJp6R2vlbJ07PhPifZhN8SkjWcGFBX+rAV44SyUHnmB8UYpGqghmPoZ7zfbL0/jNfcWv+QvhRCwOVvQ5k7iANqzAl52Slk649wQvxqLLj58BKZxqu8nNQSiFdqrNhwFp5794TwohTra8KIroT4e1/C+juC/c+coA2c9gQJBt4xQ/XA3mrIt3XAI00f9RArt4/57ZWBvLRhcCeQFNwz2njVq63flrIykI3T6kFJUgEBm/xTEEwUzp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,22 +109,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Oct 25, 2026 at 10:18=E2=80=AFAM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> Reset all writeback state to its initial defaults on device reset.
-> We used to keep writeback related data in zram->stats, which
-> zram_reset_device() clears, but commit 1d69a3f8ae77 ("zram: idle
-> writeback fixes and cleanup") moved it (along with the newly added
-> wb_limit_enable) to struct zram, after which neither of them was
-> reset anymore.  wb_batch_size and compressed_wb, which were added
-> later, are not reset either.
->
-> The patch is more about just being pedantic.
->
-> Acked-by: Brian Geffon <bgeffon@google.com>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> ---
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+
+On 10/25/26 2:28 PM, Barry Song wrote:
+> On Mon, Oct 26, 2026 at 1:40 AM Nico Pache (Red Hat)
+> <nico.pache@linux.dev> wrote:
+>>
+>> The zero-page remapping in __folio_split() was added to support the
+>> underused THP shrinker. When the shrinker is disabled via
+>> shrink_underused, gate TTU_USE_SHARED_ZEROPAGE on split_underused_thp
+>> to avoid scanning subpages for zero content unnecessarily.
+>>
+>> Suggested-by: David Hildenbrand <david@kernel.org>
+>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+>> Signed-off-by: Nico Pache <nico.pache@linux.dev>
+> 
+> is b1f202060afe a correct fixes tag? as
+> commit b1f202060afe has no even "split_underused_thp" there.
+
+I believe so. IIUC these two series were merged together. While 
+81d3ff3c6f7 introduces the toggle, b1f202060afe is where the behavior 
+started.
+
+I guess you could argue that the Fixes should include both?
+
+Not entirely sure!
+
+-- Nico
+> 
+> it was introduced by 81d3ff3c6f7 ("mm: add sysfs entry to disable
+> splitting underused THPs").
+
 
