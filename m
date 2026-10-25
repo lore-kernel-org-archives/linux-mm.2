@@ -1,89 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A86606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 10:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489C4606A328
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 10:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U13IRDaq
+	dkim=pass (1024-bit key, unprotected) header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b=FRgIUM7R
 Received: by kanga.kvack.org (Postfix)
-	id 53C6D6B05B1; Sun, 25 Oct 2026 06:46:24 -0400 (EDT)
+	id 3ECA86B05B0; Sun, 25 Oct 2026 06:55:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4ED546B05B2; Sun, 25 Oct 2026 06:46:24 -0400 (EDT)
+	id 39DCB6B05B2; Sun, 25 Oct 2026 06:55:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DBC66B05B3; Sun, 25 Oct 2026 06:46:24 -0400 (EDT)
+	id 2B3A06B05B3; Sun, 25 Oct 2026 06:55:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 02A966B05B1
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 06:46:23 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DA4B1205BB
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:46:23 +0000 (UTC)
-X-FDA: 85360819446.03.63D8361
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C4C0340004
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:46:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U13IRDaq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792925181;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E4SZFTTNmF7qBoPXPsj8haA0Ke7UgDMpEIh4UfNrrZs=;
-	b=Q2tU8Jb2w+CigyEPj/a4Ca/T5Qllkol+8lZVHwqyyZRHAS3Gijpwo/2NT8mD4g7DvOK5MG
-	dm8uDZT1wO7hX2v0AAtJIEhIPdrXg7qjJhbt8fepto2+MiaxyaQAatbcClQ6X8kUb3R0GF
-	SoFfKy8SuH76kd/kEAdXeNkwjKfwZFo=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U13IRDaq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 093646B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 06:55:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 786C812027A
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:55:02 +0000 (UTC)
+X-FDA: 85360841244.06.14DA10C
+Received: from smtp153-165.sina.com.cn (smtp153-165.sina.com.cn [61.135.153.165])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D5F21C0003
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:54:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=FRgIUM7R;
+	spf=pass (imf10.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.165 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792925181;
-	b=rrRcfVYwnSPdktlNOLL24MvOUBGMUxdwD98SOfvIc7CbnyCrRodeRCBR2MxrcoYJix4Qur
-	tBuHPl0QAfLhZ2Aw0vsPGvY8frI7iULNIpEwkleGJ7sd6GCETByWwglU3UL9fIQiEng5TN
-	Y6KljE1YG4rId7RItKalKq7c3ok63gw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BBDBC438AA;
-	Sun, 25 Oct 2026 10:46:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58CD11F01825;
-	Sun, 25 Oct 2026 10:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792925180;
-	bh=E4SZFTTNmF7qBoPXPsj8haA0Ke7UgDMpEIh4UfNrrZs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=U13IRDaqfJpW1legBOXZAnni35ufcRObxGxtboN3LvDCsufLjkzbKx6DoKTvFl5pj
-	 1ngwTa1D0eWPJfqZyybHhKa5fFspZlQl/z6EL73zF4OMf1tiGnPRBSTq7bcOBzlzMm
-	 yRk55belLsBkjM8XVXnndZXxvQAf8HJw9i5llR8YvGc44WgwKs7pMzR1Y7KKRmp5yA
-	 MR6PGoaXhTJBJww43jAH/GaZmwyRSbDhzvIdccVj6E423APMNDjHhhKChc6QE7SPVg
-	 W4XP/d1oD4bXHb//7sjiQ5/WykHvyIwhEK9H0ZABGcumLqs+I6Dz2dwpjBBOE1/2Df
-	 g9Bg+AZwpIAzQ==
-Message-ID: <sashiko-outbox-184189@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm: ppm: add PPM (Page-Plugger Under Memory) to Page
- Fault and Overcommit elimination
-Reply-To: sashiko-reviews@lists.linux.dev
-To: dev12124 <joaoanandalima@gmail.com>, linux-mm@kvack.org
-Cc: linux-efi@vger.kernel.org, ardb@kernel.org, keescook@chromium.org
-In-Reply-To: <20261024104552.394-1-joaoanandalima@gmail.com>
-References: <20261024104552.394-1-joaoanandalima@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 25 Oct 2026 10:46:19 +0000
-X-Rspamd-Queue-Id: C4C0340004
+	t=1792925700;
+	b=FiMzbL8npY7QkUOS88izBY6pOfqgk0cA9qPHyZN3ERRxc1cF9d0o+OKl5ySRpUjWBBNXpk
+	G4t6xicy3EdUQsWi8HDQZ7+NCdQNPLrXlmgAb7L/TG7jxO41decEuY2/QRKSkAGM4oFyHl
+	Ng/h45EemCxWt8d/vDc+IVmQ1MSwneU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=FRgIUM7R;
+	spf=pass (imf10.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.165 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792925700;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4ddGAYAtB79F7wRhnGkW+ljKWe8FQH+MNDzT857Yhzs=;
+	b=bhKNZcs/cSNDfIZxVXNV94s/PXHNPP42RQ4YAOW91WMPnjzQIxdmqWqvc6Po5tHXnSMASr
+	s7Uc2C5ZXQOBebONf8mFYB26h8ENuFBFNf075KvVJmkKw4SAg0FDl5SS+PVXYiYqHEJXAV
+	yu2RyuM9vmilEpehqMmPGIilxAIARaM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1792925699;
+	bh=4ddGAYAtB79F7wRhnGkW+ljKWe8FQH+MNDzT857Yhzs=;
+	h=From:Subject:Date:Message-ID;
+	b=FRgIUM7R9HnHCxdjvfk8HtKFJPNpWkLiknMOgKjGXAESGx+h1FqRbfhJmWrQSi4mg
+	 r9b5wBp6jIAFn+TspFjDxcCVjebsVQkpewZv9f1X9x70pgNnk+mMPHCp1BTPfWgAvm
+	 NPZUzHPKLrt/Jtj3fND8iiTZdG6eaFxdmNhWs07E=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.246.238.232])
+	by sina.com (10.54.253.32) with ESMTP
+	id 6ADDDFFB00000221; Sun, 25 Oct 2026 18:54:54 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 6351494456771
+X-SMAIL-UIID: 9557747A4C984AC9AE3E1418D8FD2278-20261025-185454-1
+From: Hillf Danton <hdanton@sina.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Barry Song <21cnbao@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Date: Sun, 25 Oct 2026 18:54:40 +0800
+Message-ID: <20261025105441.1148-1-hdanton@sina.com>
+In-Reply-To: <at1cSbfBXdYIAIyT@google.com>
+References: 
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: xqhbfy3ut8ziybhwicuzmsbphhyd1c8z
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792925181-746488
-X-HE-Meta: U2FsdGVkX1+rtv4i4PwNIse4EVgFAxrL+EPo2Gow/OdMVZ4ZeU3petzvIp7vkbNLXP5gwUao3OHPkaFJcE4a7MEXc/UgTBzP5fM01jzflNxASN1efEp38Du9nEmrruNSCXsiKkV9yZLZug9UsdOKvdzYmDbrVrFd6T7p8ZXAf8+vPLXxPDywJI5KlADI8eEP6l5Dt70u+9bVe3ziqJiex5unvVMbl/3AvIjXMGI0cYXklcXah58XiFK29JNfY19NE1n8aeTvx5RakEkADgfxhO04zueewNv/tDY86eH0pbn0T2LTWMxjxnRrmgYnEaC/W6hIrlpmoKuKakCkuG90TOPdmwRebgGV7PRiYODsPbCJxdZTLQ7ynWNjuTCk0s3e7rEa3DKELh43y8JyL5RCJOufIOngcoIGM+eqPnvtd3vO/UCMImkgEwNNYWIZno/BWyQ0atS88BmPaCd9MVQ41MUXsG8AD4DRhShP7uzcOX138glBTsyKP9IIwbwrWqSR1TknLzkhbq6VJYMxuqg9tVSd75bhyNdS2MAxPuLMNpyKF5jdy6Usm6zB92woqin2Kg8sqhBPcyGyJENZhsxdUVatszqSc/WmKSXJCAKr1ASTVXEw2cWOVqVH9ah6V1hSDA6HFEIyuQ2lElT1QfhTMI5xa1HPTwA5KlLZjJRYAOGx8HsGId9FitzTrDVvqsjjD6L/ApQREdNrVgxryUzRLYA+PivTHksqlTiSAvH5rqL0r6hQeNyb/qbNdy22lk0HeDAFyJw7JFxbJULx0E1SF7E8hB//R4a0ivCNq6rhE6krhbOYgJXsKfoeSLQmvlQGnBZjc29k+p6fRhym+A9vlAfcfLEgZZbSh0n/UKSCvzxwzrmxhTFQZ7jeWxUvJy9sfX7UdGQdn5LJU1t1Hdp1K26/vWlYt5NpNTGb8kORUj+oRHOVx0cVj8zFyfyp4r7sMYuiKrwfBnYKEmr46p9
- 5RDcRD7u
- aQC+NWbV//yPeNlNB3dGNFVL8flK6D/EkmC+gdfH76dpUWdfsNKt+9J8BJLa2bGS8hNqHWB/M5bbj9lZKSmvD5g9x0r6qJOd4RGsvOfXEQyUS1lW0YUX6tZ934Uz7HMaUCSoohLhyH0WPAijSq+aUA9oKVjSp2c1qslcmSaH/8crEVx4+z6DQlcYJekxViJaesh1AG5pWjLUWHqqZ0neWnoFY42o6/zZJSE87UGPwDU3s39Bcu2k/Wh3uO5Kr5Lk2vuFNaKKikQRSBbLz8JwAPZ7lI0XYHJc2DxcW5nq2JQRPDEuyrcOnFpUukfeSNepJxDtH9T+5Qpu9QYTodJK/5MP4fTaPPd55cEbd/MvaXYBtvpxel9tkD1KwrSC7WR/pPmACTDszzBpgrVpNMAJs+D+dQFMZPT3qgi5FzbkadCDS7RGFKXcwYiAHFKVhlcSJ6CRLEKBBN+fPyjmR5qamU8ooSvjL7yElTtm+NtB6kSZIylZmdEB1d4OgPMLYYKKTttxbr40J4oAYW65tG7zCkfIuyvVF3p9i2tKTC8+aCYGB/1hlfzrZ9VJtaz5EuQYtn5N+FHu5VsUJGosBscM21sAnrw==
+X-Rspamd-Queue-Id: D5F21C0003
+X-Stat-Signature: 9rsfkssux6p43naxfzpy75afaqgtezzu
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1792925698-704000
+X-HE-Meta: U2FsdGVkX18Z+1NjuHRl0WWXcpj7d1Rhe3PxEkRAy/OXv9BZdNyEB7jphdLNGqc5IM8J1p2LsPvG4FtXxSar2YVtOS7usllQ5JfQlP3iI44jKFxdXzxpKnMHpENyMk8LM8Kiq0ymEwx3843458snZuJPIg3B6LOXH0XpmYrwwDxdhIIo8/hLh0Dxd9dABIOrchrMhKnbnlT8H3szofM25rRJw1Vc8GYoCmTwtK/qZ3c4GkrpNUd5QrSggOlY4esDCBJXS5fS+6Xz3zlnksX46hfpoOmoc0Bje89voNHVAabvM5pSuvK2nIq58GyzuxICwkb+pHBX7vnn8fiEqNLUizG+FWSFpzb9BtJdGCygB766Y7k8E4GrNVOUNsZwKYNWhyeVh5oO1MpbRx/h9dNtD49QhfWrQpKoajkLQg67ALnMSkfOVkD6lJZpXnSmEJRKQfTQ/ZCl1+39jWgyXJnp+U2vwKXvA37bwR9aoxwCLBvERDD4wA6AnOO7149C398ZOOqlMUw8GqLnC3XI9bPGzzaI8yV6ZQtrGHu1bpkA7pfwVaCtzKCJHiw6pPFFtcEwZ1mJzNRCzS941VwB4YVLlG6YyJcIaRhetuUNDnxYlnHud6fuxC3oK5iHiRT+oLUEiRFs+251ugNiDzbw6006kCRSKU3xj4AzMRjWAFtwPn5jvQ2k0OZ3hQfcQQoTpNse0Hz4PvITmO6fPBnPlA5z8NDCzphc2m2MQFFe/FI6foh8RILUMAGjSn5xD/omKbvPO6Xo8kFwszY+hVHczZkCr81VsRUshHo08jX8HvJ7Hxb1YiuNnNh8shHasXqEcnqpFk4EanLanKTRAgyIMahgGeDDlIWNmOkd8ZCx8fps/oXiGHXwAUVKLKOVkzVMd1fZ1GR9ZVuowvhh0/jTOjGSjfj0L5TFu6q2oV6QC4kMGFv7A1QVeUAvav6ymtJic+D+buD+P36nxdzxuFLzajC
+ 1QRkJXIf
+ QLErVarujXWBdaszTyFTtQpKiwOgrlleHgD7uBxtYQuwl0Tjhsf2gokR4a7f+99PeiFoc43KbwiDEuXYA0YupU13i5vHuyj2/KRnBm3+NCUehEP776r1wjzMvrE2vRRgVBJqp4Fh+wWR+BZO8lPcLua/yZp6h/Q7IvWHJlBmt6RdnyywAn4vp3NuOQ0CWUdUiX5SeGPb+EuHxpgcSGnCEJ/MxCCJPHPcnFdpK0gfvwONjQ7xo/SjqhAeqzPrSkzWCgT2R5umbMf/dj8n1ti9ltYSzDFqbZPMSxoS56+hrDC3rRT66T5ZLmXXlwuraKRT0RSso34snYpPBSJHyXo8dPWr3fi/vKc0qlR2M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,460 +94,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
-s) to consider:
-- [Critical] mm: slab cache leak and lock inversion calling __init_ppm_memo=
-ry() on fault
-- [Critical] mm: non-constant initializer and unsynchronized globals ptl an=
-d order
-- [Critical] mm: NULL vma dereference and uninitialized PTE install in ppm_=
-kalloc()
-- [Critical] mm: compilation errors and invalid free_pages() call in ppm_kf=
-ree()
-- [Critical] mm: undeclared size, fault flag mismatch, and check bypass in =
-handle_mm_fault()
-- [High] mm: conflicting gfp_t typedef and non-const header globals in gfp_=
-types.h
-- [High] mm: invalid enum syntax and kmem_cache_create() call in __init_ppm=
-_memory()
---
+On Sun, 25 Oct 2026 10:38:47 +0900 Sergey Senozhatsky wrote:
+>On (26/10/24 18:14), Hillf Danton wrote:
+>> > (PE enabled for all tests)
+>> > 
+>> > ######## zstd compression level 3 W-vs-R
+>> >     BASE     IOPS 1,154k  avg 7.84us  sd   444us  max   697,634us
+>> >              IOPS 881k  avg 14.16us  sd 2,242us  max 1,387,000us
+>> >              IOPS 704k  avg 20.43us  sd 3,499us  max 2,058,300us
+>> >              IOPS 563k  avg 29.02us  sd 3,910us  max 1,649,800us
+>> >              IOPS 626k  avg 24.79us  sd 4,013us  max 2,085,800us
+>> >              IOPS 976k  avg 11.54us  sd 1,518us  max 1,165,800us
+>> >              IOPS 1,178k  avg 7.44us  sd    22us  max     3,103us
+>> >              IOPS 1,120k  avg 7.39us  sd    21us  max     7,222us
+>> >              IOPS 522k  avg 32.51us  sd 4,311us  max 1,598,300us
+>> >              IOPS 581k  avg 27.54us  sd 3,626us  max 1,448,600us
+>> >              IOPS 1,160k  avg 7.69us  sd   352us  max   702,099us
+>> >              IOPS 1,169k  avg 7.52us  sd   129us  max   281,428us
+>> >              IOPS 954k  avg 12.06us  sd 1,705us  max 1,545,600us
+>> >              IOPS 1,029k  avg 10.24us  sd 1,156us  max   976,065us
+>> >              IOPS 1,169k  avg 7.48us  sd    24us  max     4,305us
+>> >              IOPS 1,177k  avg 7.45us  sd    53us  max   118,777us
+>> >              IOPS 579k  avg 27.43us  sd 3,661us  max 1,615,800us
+>> >              IOPS 1,169k  avg 7.52us  sd   115us  max   228,074us
+>> >              IOPS 1,110k  avg 8.59us  sd   985us  max 1,288,000us
+>> >              IOPS 1,177k  avg 7.45us  sd    29us  max    72,245us
+>> >              IOPS 580k  avg 27.74us  sd 3,755us  max 1,507,000us
+>> >     PATCHED  IOPS 1,179k  avg 7.40us  sd    23us  max     7,404us
+>> >              IOPS 1,179k  avg 7.41us  sd    22us  max     2,857us
+>> >              IOPS 1,176k  avg 7.40us  sd    22us  max     6,615us
+>> >              IOPS 1,175k  avg 7.44us  sd    23us  max     5,623us
+>> >              IOPS 1,176k  avg 7.42us  sd    24us  max     5,625us
+>> >              IOPS 1,173k  avg 7.42us  sd    24us  max     5,632us
+>> >              IOPS 1,172k  avg 7.41us  sd    23us  max     6,223us
+>> >              IOPS 1,173k  avg 7.40us  sd    25us  max     5,848us
+>> >              IOPS 1,173k  avg 7.40us  sd    24us  max     7,563us
+>> >              IOPS 1,172k  avg 7.42us  sd    24us  max     5,625us
+>> >              IOPS 1,175k  avg 7.42us  sd    23us  max     5,626us
+>> >              IOPS 1,177k  avg 7.42us  sd    23us  max     4,243us
+>> >              IOPS 1,170k  avg 7.46us  sd    25us  max     5,622us
+>> >              IOPS 1,178k  avg 7.40us  sd    22us  max     3,213us
+>> >              IOPS 1,167k  avg 7.43us  sd    25us  max     7,593us
+>> >              IOPS 1,174k  avg 7.44us  sd    23us  max     6,971us
+>> >              IOPS 1,179k  avg 7.38us  sd    23us  max     3,477us
+>> >              IOPS 1,180k  avg 7.39us  sd    23us  max     2,894us
+>> >              IOPS 1,145k  avg 7.37us  sd    21us  max     4,048us
+>> >              IOPS 1,177k  avg 7.38us  sd    22us  max     5,620us
+>> >              IOPS 1,177k  avg 7.40us  sd    23us  max     5,623us
+>> > 
+>> >     IOPS: BASE 932k (+-260k), PATCHED 1,174k (+-7k), 21 runs each.
+>> >           significant difference at 95% confidence: PATCHED is 241k (25.9%) higher; 95% CI [+136k, +353k], Welch's t-test p = 0.000
+>> >     max latency: BASE 3.1..2,085.8 ms, PATCHED 2.9..7.6 ms
+>> >           runs with max over 100 ms: BASE 17 of 21, PATCHED 0 of 21; over 1 s: BASE 11 of 21, PATCHED 0 of 21
+>> > 
+>> > ######## zstd compression level 12 W-vs-R
+>> >     BASE     IOPS 690k  avg 21.53us  sd 3,088us  max 1,635,500us
+>> >              IOPS 478k  avg 36.51us  sd 4,385us  max 1,941,300us
+>> >              IOPS 822k  avg 16.13us  sd 2,865us  max 2,263,800us
+>> >              IOPS 1,161k  avg 7.73us  sd   114us  max   190,307us
+>> >              IOPS 780k  avg 17.56us  sd 2,717us  max 1,550,500us
+>> >              IOPS 1,166k  avg 7.66us  sd    40us  max    94,522us
+>> >              IOPS 585k  avg 27.51us  sd 3,847us  max 1,550,600us
+>> >              IOPS 1,147k  avg 7.97us  sd   344us  max   496,483us
+>> >              IOPS 1,166k  avg 7.64us  sd    49us  max   115,243us
+>> >              IOPS 1,163k  avg 7.66us  sd    23us  max     7,006us
+>> >              IOPS 1,071k  avg 9.42us  sd 1,489us  max 1,915,500us
+>> >              IOPS 962k  avg 11.88us  sd 2,168us  max 1,904,500us
+>> >              IOPS 607k  avg 26.05us  sd 3,538us  max 1,591,100us
+>> >              IOPS 1,167k  avg 7.63us  sd    23us  max     2,903us
+>> >              IOPS 1,157k  avg 7.78us  sd   198us  max   418,930us
+>> >              IOPS 1,163k  avg 7.66us  sd    40us  max   100,346us
+>> >              IOPS 1,162k  avg 7.70us  sd    32us  max    82,602us
+>> >              IOPS 488k  avg 35.43us  sd 4,340us  max 1,786,400us
+>> >              IOPS 563k  avg 28.85us  sd 3,989us  max 2,209,500us
+>> >              IOPS 843k  avg 15.43us  sd 2,490us  max 1,572,100us
+>> >              IOPS 604k  avg 26.30us  sd 3,560us  max 1,555,700us
+>> >     PATCHED  IOPS 1,166k  avg 7.60us  sd    23us  max     5,623us
+>> >              IOPS 1,169k  avg 7.58us  sd    23us  max     5,629us
+>> >              IOPS 1,157k  avg 7.67us  sd    27us  max     5,639us
+>> >              IOPS 1,166k  avg 7.61us  sd    24us  max     5,644us
+>> >              IOPS 1,160k  avg 7.64us  sd    26us  max     7,543us
+>> >              IOPS 1,167k  avg 7.60us  sd    24us  max     7,514us
+>> >              IOPS 1,160k  avg 7.61us  sd    25us  max     6,643us
+>> >              IOPS 1,162k  avg 7.65us  sd    25us  max     7,315us
+>> >              IOPS 1,161k  avg 7.66us  sd    24us  max     6,237us
+>> >              IOPS 1,158k  avg 7.62us  sd    27us  max     7,688us
+>> >              IOPS 1,167k  avg 7.58us  sd    24us  max     5,637us
+>> >              IOPS 1,165k  avg 7.59us  sd    24us  max     7,098us
+>> >              IOPS 948k  avg 7.58us  sd    23us  max     7,808us
+>> >              IOPS 1,166k  avg 7.60us  sd    24us  max     5,621us
+>> >              IOPS 1,166k  avg 7.58us  sd    24us  max     5,672us
+>> >              IOPS 1,162k  avg 7.65us  sd    25us  max     6,824us
+>> >              IOPS 1,165k  avg 7.59us  sd    24us  max     7,078us
+>> >              IOPS 1,168k  avg 7.58us  sd    23us  max     6,191us
+>> >              IOPS 1,170k  avg 7.56us  sd    22us  max     2,851us
+>> >              IOPS 1,171k  avg 7.55us  sd    22us  max     2,834us
+>> >              IOPS 1,166k  avg 7.59us  sd    24us  max     5,627us
+>> > 
+>> >     IOPS: BASE 902k (+-269k), PATCHED 1,154k (+-47k), 21 runs each.
+>> >           significant difference at 95% confidence: PATCHED is 252k (27.9%) higher; 95% CI [+142k, +367k], Welch's t-test p = 0.000
+>> >     max latency: BASE 2.9..2,263.8 ms, PATCHED 2.8..7.8 ms
+>> >           runs with max over 100 ms: BASE 17 of 21, PATCHED 0 of 21; over 1 s: BASE 12 of 21, PATCHED 0 of 21
+>> > 
+>> > ######## lz4 W-vs-R
+>> >     BASE     IOPS 1,422k  avg 3.84us  sd   418us  max   619,495us
+>> >              IOPS 1,450k  avg 3.57us  sd   326us  max   609,723us
+>> >              IOPS 1,414k  avg 3.92us  sd   543us  max   879,815us
+>> >              IOPS 1,451k  avg 3.56us  sd   253us  max   503,428us
+>> >              IOPS 1,460k  avg 3.40us  sd    68us  max   135,825us
+>> >              IOPS 1,413k  avg 3.31us  sd    44us  max   188,450us
+>> >              IOPS 1,432k  avg 3.73us  sd   503us  max   844,228us
+>> >              IOPS 1,387k  avg 4.20us  sd   719us  max   961,827us
+>> >              IOPS 1,464k  avg 3.38us  sd    44us  max   133,675us
+>> >              IOPS 1,469k  avg 3.38us  sd    22us  max    65,812us
+>> >              IOPS 1,465k  avg 3.40us  sd    49us  max   111,788us
+>> >              IOPS 1,465k  avg 3.39us  sd    64us  max   174,040us
+>> >              IOPS 1,467k  avg 3.38us  sd    36us  max    97,821us
+>> >              IOPS 1,445k  avg 3.63us  sd   343us  max   671,026us
+>> >              IOPS 1,472k  avg 3.35us  sd    27us  max    86,795us
+>> >              IOPS 1,473k  avg 3.33us  sd    44us  max   138,096us
+>> >              IOPS 1,439k  avg 3.71us  sd   353us  max   619,815us
+>> >              IOPS 1,398k  avg 3.36us  sd    54us  max   206,815us
+>> >              IOPS 1,471k  avg 3.36us  sd    15us  max     2,832us
+>> >              IOPS 1,407k  avg 4.02us  sd   629us  max 1,074,800us
+>> >              IOPS 1,465k  avg 3.40us  sd    63us  max   158,779us
+>> >     PATCHED  IOPS 1,471k  avg 3.30us  sd    15us  max     6,946us
+>> >              IOPS 1,473k  avg 3.29us  sd    16us  max     5,618us
+>> >              IOPS 1,474k  avg 3.29us  sd    15us  max     5,615us
+>> >              IOPS 1,473k  avg 3.29us  sd    15us  max     5,625us
+>> >              IOPS 1,440k  avg 3.26us  sd    13us  max     2,829us
+>> >              IOPS 1,456k  avg 3.30us  sd    15us  max     5,623us
+>> >              IOPS 1,476k  avg 3.29us  sd    15us  max     2,835us
+>> >              IOPS 1,464k  avg 3.28us  sd    16us  max     6,063us
+>> >              IOPS 1,468k  avg 3.32us  sd    19us  max     6,692us
+>> >              IOPS 1,465k  avg 3.30us  sd    17us  max     6,834us
+>> >              IOPS 1,468k  avg 3.28us  sd    16us  max     7,268us
+>> >              IOPS 1,463k  avg 3.31us  sd    17us  max     6,480us
+>> >              IOPS 1,454k  avg 3.33us  sd    20us  max     8,418us
+>> >              IOPS 1,452k  avg 3.32us  sd    19us  max     5,621us
+>> >              IOPS 1,477k  avg 3.27us  sd    14us  max     2,834us
+>> >              IOPS 1,468k  avg 3.30us  sd    16us  max     5,617us
+>> >              IOPS 1,475k  avg 3.30us  sd    16us  max     3,884us
+>> >              IOPS 1,475k  avg 3.30us  sd    16us  max     5,692us
+>> >              IOPS 1,471k  avg 3.30us  sd    15us  max     5,616us
+>> >              IOPS 1,473k  avg 3.28us  sd    16us  max     7,014us
+>> >              IOPS 1,475k  avg 3.28us  sd    15us  max     5,616us
+>> > 
+>> >     IOPS: BASE 1,444k (+-27k), PATCHED 1,467k (+-10k), 21 runs each.
+>> >           significant difference at 95% confidence: PATCHED is 23k (1.6%) higher; 95% CI [+11k, +35k], Welch's t-test p = 0.001
+>> >     max latency: BASE 2.8..1,074.8 ms, PATCHED 2.8..8.4 ms
+>> >           runs with max over 100 ms: BASE 17 of 21, PATCHED 0 of 21; over 1 s: BASE 1 of 21, PATCHED 0 of 21
+>> 
+>> 
+>> Lets see the data from another pov (feel free to disagree) -- in the android
+>> phone/car cockpit environment, the render frequence is required above 60HZ,
+>> IOW a frame rendered within 16ms, so what share of the 16ms does the IOPS
+>> account for after this patchset, for example when an app in background is
+>> brought foreground?
+>
+> A single 500 ms read stall is 30 dropped frames.  Across 126 runs that
+> I ran, base+PE had read stalls over 100 ms in 108 runs and over 1 s in 47.
+> The worst read with the series+PE, in all 126 runs, was 8.4 ms, i.e. within
+> one frame.
+>
+Good work from the 2026 most valuable baker, MVB.
 
-commit 469364dbfcb846300b827ea6edfe96aa5fd8142d
-Author: dev12124 <joaoanandalima@gmail.com>
-
-mm: ppm: add PPM (Page-Plugger Under Memory) to Page Fault and Overcommit e=
-limination
-
-This commit introduces a new Page-Plugger Under Memory (PPM) mechanism with
-include/linux/ppm/gfp_types.h, slab cache initialization, and page allocati=
-on
-and deallocation routines hooked into handle_mm_fault().
-
-> diff --git a/include/linux/ppm/gfp_types.h b/include/linux/ppm/gfp_types.h
-> new file mode 100644
-> index 0000000000000..741122b2dd2a4
-> --- /dev/null
-> +++ b/include/linux/ppm/gfp_types.h
-> @@ -0,0 +1,74 @@
-> +/*=20
-> +  Memory Tatic: PPM (Page-Plugger Under Memory).
-> +  This File is for PPM Flags/Macros/Functions/Types.
-> +  Engineer (brazilian): Jo=C3=A3o Guilherme da Silva Freitas Lima <joana=
-ndalima@gmail.com>
-> + */
-> +
-> +/* Types Include Guards */
-> +#ifndef __PPM_TYPES_MEMORY=20
-> +#define __PPM_TYPES_MEMORY=20
-> +
-> +typedef unsigned char uint8_t;
-> +typedef unsigned short uint16_t;
-> +typedef unsigned int uint32_t;
-> +typedef unsigned long long uint64_t;
-> +typedef uint64_t gfp_t;
-> +/* For errors in Allocation */
-> +#define __PPM_ALLOC_ERROR -102
-> +/* For errors in Desallocation */
-> +#define __PPM_FREE_ERROR 0x04=20
-> +/* For success */
-> +#define __PPM_SUCCESS 0
-> +#endif
-> +
-> +/* Functions Include Guards */
-> +#ifndef __PPM_FUNCTIONS_MEMORY
-> +#define __PPM_FUNCTIONS_MEMORY=20
-> +
-> +/* Initializer */
-> +void __init_ppm_memory();
-> +
-> +/* Allocator Optimized */
-> +int ppm_kalloc(unsigned long address, uint64_t size, gfp_t flags);
-> +
-> +/* Desallocator Optimized */
-> +int ppm_kfree(uint64_t size);
-> +
-> +#endif
-> +
-> +/* Flags Include Guards */
-> +#ifndef __PPM_FLAGS_MEMORY=20
-> +#define __PPM_FLAGS_MEMORY
-> +
-> +/* PPM inits/starts in Bit 54 of a=20
-> +   64-bit variable=20
-> + */
-> +gfp_t GFP_PLUG_MEMORY =3D (1ULL << 54);=20
-> +
-> +/* For free memory, the Bit 55 is=20
-> +   used=20
-> + */
-> +gfp_t GFP_FREE_T =3D (1ULL << 55);
-> +
-> +#endif=20
-> +
-> +/* Macros Include Guards */
-> +#ifndef __PPM_MACROS_MEMORY
-> +#define __PPM_MACROS_MEMORY
-> +
-> +/* For Kernel Kernel tests 2 Bits (54 and 55) in=20
-> +  1 Clock Cycle (or in small clocks, example: 5 Clocks),=20
-> +  is used a mask using |=20
-> + */
-> +gfp_t GFP_MASK =3D GFP_PLUG_MEMORY | GFP_FREE_T;
-> +
-> +#endif
-
-[Severity: High]
-Will including include/linux/ppm/gfp_types.h from include/linux/slab.h break
-the build across every translation unit that includes <linux/slab.h>?
-
-In include/linux/slab.h, <linux/types.h> is already included and defines
-gfp_t as a 32-bit bitwise unsigned int and uint64_t as u64. Redefining
-uint64_t as unsigned long long (which conflicts on 64-bit architectures that
-use unsigned long for u64) and redefining gfp_t as uint64_t causes conflict=
-ing
-type definitions.
-
-In addition, GFP_PLUG_MEMORY, GFP_FREE_T, and GFP_MASK are defined as
-non-static, non-const global variables directly in the header:
-
-  gfp_t GFP_PLUG_MEMORY =3D (1ULL << 54);
-  gfp_t GFP_FREE_T =3D (1ULL << 55);
-  gfp_t GFP_MASK =3D GFP_PLUG_MEMORY | GFP_FREE_T;
-
-Initializing GFP_MASK at file scope with non-constant variables fails C
-compilation, and defining non-static variables in a header produces
-multiple-definition linker errors. Also, declaring void __init_ppm_memory();
-without (void) triggers -Werror=3Dstrict-prototypes.
-
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index cda126def67af..c76243128eb65 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -22,6 +22,17 @@
->  #include <linux/percpu-refcount.h>
->  #include <linux/cleanup.h>
->  #include <linux/hash.h>
-> +#include <linux/ppm/gfp_types.h>
-> +
-> +/* A Structure enum with objects and codes
-> +  for PPM Tatic Memory=20
-> + */
-> +enum __PPM_OBJ_CDE_BITS {
-> +	_PPM_OBJECT_CACHE, /* A Simple Cache to store objects */
-> +	_PPM_OBTAIN_CODE, /* 0x04, -102 or 0 */
-> +    _PPM_FLAGS__ /* The Special Flags to PPM (Page-Plugger Under Memory)=
- */
-> +};
-> +
-> =20
->  enum _slab_flag_bits {
->  	_SLAB_CONSISTENCY_CHECKS,
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 976cd03954e3e..1700dd54a51ba 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-[ ... ]
-> @@ -94,6 +96,137 @@
->  #warning Unfortunate NUMA and NUMA Balancing config, growing page-frame =
-for last_cpupid.
->  #endif
-> =20
-> +/* Small Variables for=20
-> +  PPM uses=20
-> + */
-> +int ppm_free_error;
-> +int ppm_alloc_error;
-> +int ppm_success;
-> +unsigned int order;
-> +unsigned int nr_pages =3D 1 << order;
-> +unsigned int i;
-> +struct vm_area_struct *vma;
-> +spinlock_t *ptl;
-
-[Severity: Critical]
-Does defining nr_pages, order, vma, and ptl as file-scope globals in
-mm/memory.c break compilation and introduce races across concurrent faults?
-
-At file scope, initializing unsigned int nr_pages =3D 1 << order; fails to
-compile because order is not a compile-time constant, and nr_pages is never
-updated after order =3D get_order(size); in ppm_kalloc().
-
-Furthermore, because spinlock_t *ptl and unsigned int order are single
-unsynchronized global variables rather than local stack variables, concurre=
-nt
-calls to ppm_kalloc() or ppm_kfree() overwrite them:
-
-  CPU 0                              CPU 1
-  ppm_kalloc()                       ppm_kalloc()
-    pte_offset_map_lock(..., &ptl)
-    /* ptl points to lock_A */
-                                       pte_offset_map_lock(..., &ptl)
-                                       /* overwrites ptl with lock_B */
-    pte_unmap_unlock(pte, ptl)
-    /* unlocks lock_B instead of lock_A */
-
-Wouldn't this leave lock_A permanently locked while unlocking lock_B early
-(followed by a double-unlock on CPU 1), and similarly corrupt the global
-order passed to free_pages(ptr_result, order) in ppm_kfree()?
-
-> +
-> +/* Initializer of PPM */
-> +void __init_ppm_memory()=20
-> +{
-> +=09
-> +	/* 1. Define the variables for=20
-> +	 the rest of System uses=20
-> +	 */
-> +	ppm_free_error =3D __PPM_FREE_ERROR;
-> +	ppm_alloc_error =3D __PPM_ALLOC_ERROR;
-> +	ppm_success =3D __PPM_SUCCESS;
-> +
-> +	/* 2. Connect __PPM_OBJ_CDE_BITS to=20
-> +	   flags under gfp_types.h=20
-> +	 */
-> +	__PPM_OBJ_CDE_BITS.__PPM_OBJECT_CACHE =3D 4 * 1024 * 1024; /* 4MB for a=
-lloc, used to store important objects */
-> +	__PPM_OBJ_CDE_BITS.__PPM_OBTAIN_CODE =3D 0; /* Is modifyed in ppm_kallo=
-c() and ppm_kfree() */
-> +	__PPM_OBJ_CDE_BITS.__PPM_FLAGS__ =3D GFP_MASK; /* The Kernel uses this =
-for test */
-> +
-> +	/* 3. Alloc the Cache of Objects */
-> +	char *ppm_identifier =3D "PPM Cache";
-> +	int *result_ptr =3D kmem_cache_create(ppm_identifier,=20
-> +		8,=20
-> +		_slab_flag_bits._SLAB_HWCACHE_ALIGN,
-> +		_slab_flag_bits._SLAB_PANIC=20
-> +	); /* Number 8 for a 64-bit Pointer */
-> +	__PPM_OBJ_CDE_BITS.__PPM_OBJECT_CACHE =3D result_ptr;
-> +
-> +	/* 4. Return success */
-> +	ppm_success =3D __PPM_SUCCESS; /* The Kernel Optional-Action is verify =
-if ppm_success is __PPM_SUCCESS */
-> +}
-
-[Severity: High]
-Can __init_ppm_memory() compile as written?
-
-In include/linux/slab.h, enum __PPM_OBJ_CDE_BITS and enum _slab_flag_bits a=
-re
-enumeration type declarations rather than struct instances, so applying the
-member access operator (such as __PPM_OBJ_CDE_BITS.__PPM_OBJECT_CACHE or
-_slab_flag_bits._SLAB_HWCACHE_ALIGN) and assigning values to enumerators is
-not valid C syntax. The double-underscore names (__PPM_OBJECT_CACHE) also do
-not match the single-underscore enumerators (_PPM_OBJECT_CACHE).
-
-In addition, kmem_cache_create() is called with 4 arguments where the third
-argument is an enum constant instead of struct kmem_cache_args * or void *,
-so _Generic dispatches to __kmem_cache_create(), which requires 5 arguments
-(name, size, align, flags, ctor). It also passes raw bit indices instead of
-SLAB_* bitmasks and assigns the returned struct kmem_cache * to int *.
-
-[Severity: Critical]
-Aside from the syntax issues, doesn't calling __init_ppm_memory() from
-handle_mm_fault() leak a kmem_cache and cause lock inversion on every page
-fault?
-
-handle_mm_fault() runs while holding mmap_lock or a per-VMA read lock
-(FAULT_FLAG_VMA_LOCK), and may be called with FAULT_FLAG_RETRY_NOWAIT.
-Calling kmem_cache_create() unconditionally inside handle_mm_fault() acquir=
-es
-cpus_read_lock() and slab_mutex and performs sleeping GFP_KERNEL allocation=
-s,
-inverting the lock hierarchy (where cpus_read_lock() orders outside
-mmap_lock) and leaking a new slab cache on every fault.
-
-> +
-> +/* Allocator to PPM */
-> +int ppm_kalloc(unsigned long address, uint64_t size, gfp_t flags)=20
-> +{
-> +	if (unlikely(!size))=20
-> +		return __PPM_ALLOC_ERROR;
-> +
-> +	/* 1. Alloc the size */
-> +	order =3D get_order(size);
-> +	struct page *pages_ppm =3D alloc_pages(
-> +		flags | GFP_PLUG_MEMORY,
-> +		order
-> +	);
-> +
-> +	/* 2. Navigation in PTE (Page Table Walk) */
-> +	/* 2.1. Obtain PGD */
-> +	pgd_t *pgd =3D pgd_offset(current->mm, address);
-> +	/* 2.2. Obtain P4D */
-> +	p4d_t *p4d =3D p4d_alloc(current->mm, pgd, address);
-> +	/* 2.3. Obtain PUD */
-> +	pud_t *pud =3D pud_alloc(current->mm, p4d, address);
-> +	/* 2.4. Obtain PMD */
-> +	pmd_t *pmd =3D pmd_alloc(current->mm, pud, address);
-> +=09
-> +	/* 3. Plugging */
-> +	/* Entry in PTE */
-> +	pte_t *pte =3D pte_offset_map_lock(current->mm, pmd, address, &ptl);
-> +	for (int i =3D 0; i < nr_pages; i++)
-> +	{
-> +		/* Calcle the memory allocated in 1 step */
-> +		pte_t entry =3D pfn_pte(page_to_pfn(pages_ppm) + i, vma->vma_page_prot=
-);
-> +		entry =3D pte_mkdirty(entry); /* Active bit dirty */
-> +		entry =3D pte_mkyoung(entry); /* Active bit young/present */
-> +	}
-> +
-> +	/* 4. Finalize setting in the RAM the page */
-> +	pte_t *new_pte;
-> +	set_pte_at(current->mm, address, pte, new_pte);
-> +
-> +	/* 5. Unlock */
-> +	pte_unmap_unlock(pte, ptl);
-> +
-> +	/* 6. Return */
-> +	ppm_success =3D __PPM_SUCCESS; /* If value returned =3D=3D __PPM_SUCCES=
-S? */
-> +	return ppm_success;
-> +}
-
-[Severity: Critical]
-What happens in ppm_kalloc() when walking page tables and installing the PT=
-E?
-
-1. alloc_pages(), p4d_alloc(), pud_alloc(), pmd_alloc(), and
-   pte_offset_map_lock() are not checked for NULL. Note that
-   pte_offset_map_lock() does not allocate a missing PTE table (unlike
-   pte_alloc_map_lock()) and returns NULL without acquiring ptl when the PMD
-   is empty, yet ppm_kalloc() proceeds to dereference pte and call
-   pte_unmap_unlock(pte, ptl).
-2. Inside the loop, vma->vma_page_prot dereferences the global variable vma
-   (which is never initialized and is always NULL) and references a
-   non-existent member vma_page_prot instead of vm_page_prot.
-3. The local variable entry computed in the loop (which also never calls
-   pte_mkwrite() despite the commit description) is discarded at the end of
-   each iteration.
-4. pte_t *new_pte; is declared as an uninitialized pointer and passed to
-   set_pte_at(current->mm, address, pte, new_pte), which expects a pte_t
-   value rather than a pte_t * pointer, installing uninitialized stack data
-   into the page table and leaking pages_ppm.
-
-> +
-> +/* Desallocator to PPM */
-> +int ppm_kfree(uint64_t size)=20
-> +{
-> +	if (unlikely(!size))=20
-> +		return __PPM_FREE_ERROR;
-> +=09
-> +	/* 1. Entry in MMU Directories */
-> +	pgd_t pgd =3D pgd_offset(current->mm, address);
-> +	p4d_t p4d =3D p4d_alloc(current->mm, pgd, address);
-> +	pud_t pud =3D pud_alloc(current->mm, p4d, address);
-> +	pmd_t pmd =3D pmd_alloc(current->mm, pud, address);
-> +
-> +	/* 2. Entry in PTE */
-> +	pte_t pte =3D pte_offset_map_lock(current->mm, pmd, address, &ptl);
-> +	/* Verify if the PPM plugged the page */
-> +	pte_t result_for_check =3D ptep_get(pte);
-> +	pte_val(result_for_check) & GFP_PLUG_MEMORY;
-> +	if (result_for_check > 1)=20
-> +	{
-> +		pte_clear(current->mm, address, pte);
-> +	} else `{
-> +		/* No executes/call, is ignored */
-> +	=09
-> +	}
-> +
-> +	/* 3. Flush for clear the TLB */
-> +	flush_tlb_page();
-> +
-> +	/* 4. Unlock PTE */
-> +	pte_unmap_unlock(pte, ptl);
-> +
-> +	/* 6. Extract the Pointer to free */
-> +	int identifier_numeric =3D pte_pfn(result_for_check);
-> +	struct page *ptr_result =3D pfn_to_page(identifier_numeric);
-> +	free_pages(ptr_result, order);
-> +
-> +	/* 7. Return success */
-> +	ppm_success =3D __PPM_SUCCESS;
-> +	return ppm_success;
-> +}
-
-[Severity: Critical]
-Does ppm_kfree() compile or safely free the target pages?
-
-1. address is used throughout ppm_kfree(), but it is neither a parameter nor
-   a declared variable.
-2. pgd_offset(), p4d_alloc(), pud_alloc(), pmd_alloc(), and
-   pte_offset_map_lock() return pointers (pgd_t *, p4d_t *, pud_t *, pmd_t =
-*,
-   pte_t *), but they are assigned to non-pointer value types and passed to
-   ptep_get(), pte_clear(), and pte_unmap_unlock() without NULL checks.
-3. pte_val(result_for_check) & GFP_PLUG_MEMORY; discards its result,
-   if (result_for_check > 1) compares a pte_t struct against an integer,
-   } else `{ has a stray backtick syntax error, and flush_tlb_page() is
-   called with 0 arguments instead of (vma, addr).
-4. After unlocking the PTE, ppm_kfree() unconditionally extracts pte_pfn()
-   into a 32-bit int (even if the PTE was not present or the else branch was
-   taken) and calls free_pages(ptr_result, order). Because free_pages()
-   expects an unsigned long kernel virtual address rather than a
-   struct page * (unlike __free_pages()), won't passing ptr_result trigger
-   VM_BUG_ON(!virt_addr_valid((void *)addr)) or corrupt memory?
-
-[ ... ]
-
-> @@ -6936,6 +7069,31 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *=
-vma, unsigned long address,
-> =20
->  	__set_current_state(TASK_RUNNING);
-> =20
-> +	/* If PPM returns no is =3D=3D __PPM_SUCCESS, ignore the PPM Mode and=20
-> +	   sign the default flow=20
-> +	 */
-> +	int code_error =3D __init_ppm_memory();
-> +	if (code_error =3D=3D 0)=20
-> +	{
-> +		/* Verify flags */
-> +		unsigned int ppm_check =3D flags & GFP_MASK;
-> +		if (ppm_check =3D=3D GFP_PLUG_MEMORY)
-> +		{
-> +			ppm_kalloc(address, size, flags);
-> +			return VM_FAULT_NOPAGE;
-> +		} else if (ppm_check =3D=3D GFP_FREE_T) {
-> +			ppm_kfree(size);
-> +			return VM_FAULT_NOPAGE;
-> +		} else {
-> +			/* Executes none */
-> +		}
-> +
-> +	} else {
-> +		/* Executes none, is jump to the instruction of=20
-> +		   'ret =3D sanitize_fault_flags(vma, &flags)' and next=20
-> +		 */	=09
-> +	}
-> +
->  	ret =3D sanitize_fault_flags(vma, &flags);
->  	if (ret)
->  		goto out;
-
-[Severity: Critical]
-How is this block in handle_mm_fault() intended to work?
-
-1. __init_ppm_memory() has a void return type, so assigning it to
-   int code_error fails compilation.
-2. ppm_kalloc(address, size, flags) and ppm_kfree(size) reference size, whi=
-ch
-   is not declared in handle_mm_fault() or at file scope.
-3. The flags parameter of handle_mm_fault() carries 32-bit FAULT_FLAG_* bit=
-s,
-   not gfp_t flags. Masking unsigned int flags with GFP_MASK truncates
-   GFP_PLUG_MEMORY (1ULL << 54) and GFP_FREE_T (1ULL << 55) to 0, so
-   ppm_check =3D=3D GFP_PLUG_MEMORY and ppm_check =3D=3D GFP_FREE_T can nev=
-er be
-   true.
-4. Returning VM_FAULT_NOPAGE before sanitize_fault_flags() and
-   arch_vma_access_permitted() bypasses VMA access permission checks, memcg
-   fault tracking, and mm_account_fault().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261024104552.394-=
-1-joaoanandalima@gmail.com?part=3D1
+Hillf
 
