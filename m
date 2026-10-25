@@ -1,89 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1456C606A323
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 09:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62791606A31E
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 10:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=UyXE9pHc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g9JNF4nw
 Received: by kanga.kvack.org (Postfix)
-	id 332B46B05B0; Sun, 25 Oct 2026 05:39:32 -0400 (EDT)
+	id 674AC6B05B0; Sun, 25 Oct 2026 06:06:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30A0A6B05B1; Sun, 25 Oct 2026 05:39:32 -0400 (EDT)
+	id 64C8F6B05B1; Sun, 25 Oct 2026 06:06:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 221526B05B2; Sun, 25 Oct 2026 05:39:32 -0400 (EDT)
+	id 589256B05B2; Sun, 25 Oct 2026 06:06:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF37F6B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 05:39:31 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74800A6BD5
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 09:39:31 +0000 (UTC)
-X-FDA: 85360650942.03.C84DD2C
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 168D5140003
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 09:39:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UyXE9pHc;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf23.hostedemail.com: domain of jinyue.li@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=jinyue.li@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 35A4E6B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 06:06:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B50611C3DB1
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:06:00 +0000 (UTC)
+X-FDA: 85360717680.30.93759DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D59E8C0004
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:05:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g9JNF4nw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792921170;
+	s=arc-20220608; t=1792922758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1YX/NGwD+4icII1vdPQ/3V0UVnnxb1F3CZZawSscMPM=;
-	b=istJFx2eo/Qbf31p3ywGJrHXvV84/jyRqrDIIKHFum0ktEr90A0K9o8hmseCRZ+4lYHiQm
-	vR6TqoBhryNZ3vNc9xeFR/ubmESi+wTt3cM/s91lx6ITjmNtH4s2OnEYV1LBcHv4z3MzRz
-	NJjHNYy10E2wnxGC7zWXlHmQeVX5puM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=W7gJTuVi9tDXgHlyaf5e6Te/gAcfSr0TPEgIwLiJCcU=;
+	b=Ap/XZrhOYQwVf6DhyDmmUEZGdDBvbXUzUp6gr+KXLX65CJdgecdOlNmIk1lPYUFQrrdbaC
+	A4A5cqa/QG70LZOqKm7azP25MTf2Fyhc5I+88YLCxB7ygCz5nACVxjbWsbIyU40zRxyWhC
+	luUgYXX0Ska1GgxO2C9aZ/KTQ+pUYw4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UyXE9pHc;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf23.hostedemail.com: domain of jinyue.li@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=jinyue.li@linux.alibaba.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g9JNF4nw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792921170;
-	b=FHdrogWt8Te9eleLR5cUovlZG8vaCR0RFusLhnNDJXz683F1oOeqZkZDk9eDdjlWxM/HuZ
-	VEG60yE6Ev0y0hU6sJc+xCnngJvomBXrIs56Ywd64ni4GWXY3t78zZ7NhLILv2C+MOgp1z
-	FO5nxDTCesJ+1Syy/Muma7U7nag2mzQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1792921164; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=1YX/NGwD+4icII1vdPQ/3V0UVnnxb1F3CZZawSscMPM=;
-	b=UyXE9pHchOL3Tr/sAHRaDnJIvF8kQeiYcWstaQUiwYI4I5zUu+M89drq3T9jRRm6Fb3RxYpk/D+82cYKSZeqAFh2HxC2EAcladXhhvdrga8eamEa7eCNe1T/fpgnRs202c3eJq0L/xAXFpfNzGAMPJpVrhXTLxLwVXc8afcdmCY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=jinyue.li@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XDQ7Uop_1792921161;
-Received: from aa8c952a0f58..(mailfrom:jinyue.li@linux.alibaba.com fp:SMTPD_---0XDQ7Uop_1792921161 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sun, 25 Oct 2026 17:39:22 +0800
-From: Li Jinyue <jinyue.li@linux.alibaba.com>
-To: akpm@linux-foundation.org
-Cc: liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/vma: reset the VMA iterator when merging a new range fails
-Date: Sun, 25 Oct 2026 09:39:21 +0000
-Message-Id: <20261025093921.1011927-1-jinyue.li@linux.alibaba.com>
-X-Mailer: git-send-email 2.25.1
+	t=1792922758;
+	b=OvXx+elD2F7FFvzpOAJ8PRr6YkBYncvfpJe1UcTlD1CfaKdyLdHBwxgfDEMQCw58Ynmgqv
+	Xq5tFxZEXQVU8TgmHccSUJuCVG6hGdckbvltcQWRN6I/md+7tml2Xdmz5RBvSBH0V4Rmvb
+	kgYat96hptMVSvlyQQCccOo1KQAqyQM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BC52C43EFE
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:05:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03CA1F031E1
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792922757;
+	bh=W7gJTuVi9tDXgHlyaf5e6Te/gAcfSr0TPEgIwLiJCcU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=g9JNF4nwhyjZEs/ZmRDaoMhjB0L73RSQupVBm5JRTYeoBrJv0gN7l+AJKK5JzrreO
+	 DFWfEJdJP3h2ysBnfN9qCKn37wITJF0Dt92aWPzo/uug3aUd/nX+jKQ3rVOsmEj1zE
+	 KI6GS3VtLtlnLUkmoNrs22U0WLxUR7YvWdPj6pJdEqsWTHIiE1Rr4Z7BfFaKpCoYoa
+	 UKkqCjf35AUpWlkaseQGXSrENUrbXG+Thu2FLQPVKSKya4Q4UnWP48NWfIElqMOq4e
+	 G1qu0s+OaWBK274L/Ehzd/nwg/WWf36lzoOd5siZVSCEkW1ge6jFYiWZ3X7gmo96iq
+	 3CJdBb3LHHp7Q==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f1ca4132bso185034585a.0
+        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 03:05:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBztw0Iqb1EyX+9orywD8ejuF55aWonGCkVA5L01Jd+yELkl+iE9hAIE6Hth3hV1woo30/vmsZXhPw==@kvack.org
+X-Gm-Message-State: AFq9FYIzrNr+SxtHk0MUGuYMko9wqnr7mHrvjCQlgZjf7ZO5fUBs8irj
+	KeQ0rnLuTWNLg7uSa8s0xh44Fv8nf9wG9JEiNAWBFPasiRvWZd+Tt6NO1WlKMnIi4lA7G1fUI2N
+	G4Goh8cUfKMSpcIw59SYJTgIyiTTPtYc=
+X-Received: by 2002:a05:620a:261e:b0:93f:24e6:403e with SMTP id
+ af79cd13be357-940ef98287dmr493200085a.54.1792922756979; Sun, 25 Oct 2026
+ 03:05:56 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 168D5140003
-X-Stat-Signature: ursn4s8tg8k18boodspbmup7ti1z8qm1
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+References: <20261025021839.1542805-1-senozhatsky@chromium.org> <20261025021839.1542805-2-senozhatsky@chromium.org>
+In-Reply-To: <20261025021839.1542805-2-senozhatsky@chromium.org>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 25 Oct 2026 18:05:46 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wBz8SHAy_nmv8w1UX7yX_yqhp_ShnNNJ+Ek82S3ZvYzw@mail.gmail.com>
+X-Gm-Features: AclHuK9dW6R5A382Z6S5kYHE3k5MMyEbL-uFyfOty30ebho3VuUUWRklFvN0H7Y
+Message-ID: <CAGsJ_4wBz8SHAy_nmv8w1UX7yX_yqhp_ShnNNJ+Ek82S3ZvYzw@mail.gmail.com>
+Subject: Re: [PATCH v7 01/15] zram: prefix backends printk-s
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Brian Geffon <bgeffon@google.com>, 
+	Bo Zhang <zhangbo0325@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D59E8C0004
+X-Stat-Signature: xa539ripj5imt7i5rkjupq9o7j9wwa1w
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1792921167-47929
-X-HE-Meta: U2FsdGVkX19xZt7oeQSRfOpRzkJSdOXIKz/dwpPNeJJsJs64lTj2OzFhThzCcR2p4mjUJcxUdJLSGpyn4p92mRo89zzMm/06BZ/7yCp/xQneVpgjgofYMIsbAallWcDfGblzhv4v0MFkyEtRLRAWvaNhIBCFtrIwHHioMWRLhT4Gb82SuQssZY5ndDnhOM13a5HqET9KJY6/oIqs9bW2zEQap87pQ3kFIoKc9jQO3uM+YDXGaFhJkQ6zCiQwFxdu9HHfCK/g1qbwoaoMNvFa/OQQ9/Bovu9WbfXZet7PyCoz3jA118PGffdec2tdldlgZvAlgPAHB2lJiqCVpMZWYwRfIAFeW/QabijHkG52xZLOQ59/Xnjd/sA6bvJXh/PWmkqBOmLXsMnIqA/3a1XDF6CtyC6R1PRixhnvnapfyv6HDNcQzOgWyALozsAWcbiAwoIxcZAY29ZqHQ+40c/59MO667SM6102IE/OT+DOfQOkKqmcWUpU32uTb6ghulXmM3xN6C4v75U3hvmmOLAyNV2yLI227CAS8UZ+pzsw3GFC+qRj6tq7jl0qAnqFMJQCUlyk4HkxHHhCcmmhIY5n6Rde4XNFDf+p+pxKpc7mLSg145TNhrTUgHxrJV+2ZiXNkqCxPExkb3XbFdwFlX643vQl988M4NOzx2SnaCEkDYw3KONJ6Kg364zo+W9sOOC3hvf/0ROAXdx1EyzQdbWLX4RdPsnqPoWUbdWF8L3WER+e3q3ElPP0hVhas+eRarQ4Jvc0CRdO5u/jMaIOF+9OlUgJYDdF8C6npAXAC0Gm9n2Evo6TkOpnLg0Y/c3ZypcEMn6wgkTZVuitTy69mGG16BeE/ljPSsSZfaj+t2iGMTCyvZA70w99FpyfZqmA6Cuz9+3Xj0+18OXoXqR8/PK/LNNYF2IeOyfpyGRD8nI4LVHh837q5cPk6EKsYxGdXf0fbsjaoeC/u5/3ucX1Qn+
- x6uYHCVo
- D2vowfVT66mle/1szpSHb8WJ9hGyWx8zCJwxbPpdY+8QydfxobaF1nssW9vhhvDfqMGyGwo4CYZfrlZyntI7mRYSts+CmTMeDXlDoSCd7lEXU+UUcN++7iEV91pL4ty/N7Pa/nIRV/XAuzKwPcQ80BjiEegfm9q8e1oQz5VukHQoR6DBqTItTYnms5vFSELY7Fe7t/k3dbU5XSTLhLmDiDIJMeCmGKlUSlPke+rWZiZLrqlSaGJgLtLZJNzF4a0twVkfCLEiTPFj+ubz2LMw5jGHDUOG3OxK38sLZhjBmDIQDOtU=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1792922758-367257
+X-HE-Meta: U2FsdGVkX1832BcQnzRjODMDC3VJgubSJnlO6omV9X11hxDqMii4YBagt2b3IWdI3Mh9v46ELy9wFqygrTguFqeFetwbz9f+RmI5kY7NhhK1dThUC4qOLTmn+68NhCyWWvXSwjhhx1rFutv4OIQo7bo6rdITskKTqGAFaW4crnIKCJHZy1euY7xtI41BVBG49aWh3xDNIF5vGZIYF4JKou+Ya7hlAadatYlUTR6GFcR9BGDoKR+gwrpTjwvNASGzsrSGjP3f7jTJvaOG53H40SP13pVnXaEqAt83+ga3aY2GCwXZeZ75aem3LztCrdgbqIykd84ZQ5IAk8q6d3r4LguTcha5TWwqxcMQWroqnWDQgS1OJFBEHplK8yTH91jATmk/BhWjtai/F3Zxt5XxjeepYsphfZyjrGtwcKPCQpOzj1sOxG7wTKsWFGkKZgNPH54tufK0pqauKM35yuIVJCH+/manDicU2MOkJo+fVm0PCfviUFevHtXvhVpbxITwFt8Jnj/59uAlQt/ad0Hbmn5yy/Q63MIKjvZAfnVs87jsmAEFYE/OoOIIgcsvkJa6vt8k/HbY3vkgop8Xq2PdvDIrRkALOcn1dbgYMii6LrIYLxu66CbvkEr0ET1fnIFEoi6FLBgY+/OPYGJJLJMKlQ+xRyg2Mqreb7n/lqVd9DjDPM9Xu0Rg+0wWNIFIsRi40d4JQ4OPoOnuc5ufjKnRwfuX0tQRAZ49odXTLuJ8oAqTdv/LBZRtw9G54EIHtS+oJkQwP20pn/64jeeS4QnaOmSh55SFGGpfiySBQ42ZMW8Yxwuntgozxx5+dfWbpUn2ENonpb80izXrWO4lF3IknDL0wTfGvSmNM7siRKERBDWstv9tkDvaSjr+GJVdUG9CGJvuaPo2quVqonz3KEFNvulPTWim20BIcyM7JwyPFE4S2hM8LMdGvTkgfp9cuVLZ5Ha/+hHlk6fa7F6psBk
+ IQZZs+++
+ Lz0ZPrW/Udje0o344MnfJKwKFTtpeDChZ2RGwZ7J07WqNHk93qxw0qEV+/5DlrA+D4JXK7OTAvIJIx7Dw9Dwuq2lfELmPtA6c5Wm5tQYwpaHtRtavBhn6cQ2ZzI/a7tGpSYD7vhoJIeDLlcivQmV73Um7qS430bV+CwcTSuCROxr4bJjorSh+VsbZcV2NSeJni4177miNn2UfifXZCrz+n+ktrL3vzG9l0+P12MrRfIZF4t35S9KvzalZMTYMp6vvI5nb3z2yfU/oDvWETxUxZezMZO65k+2e4ho+gxqxHFibMqIPlbokQezKdVPvUuiATZr++ZxGEN84jME=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,66 +107,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When the new range can be merged with prev, vma_merge_new_range() moves
-the VMA iterator back to prev with vma_prev() before calling
-vma_expand(). If vma_expand() then fails, NULL is returned with the
-iterator still covering prev. __mmap_region() falls back to
-__mmap_new_vma(), whose vma_iter_config() requires the iterator to
-already contain the new address and warns:
+On Sun, Oct 25, 2026 at 10:18=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> Currently, zram backends prefix printk-s with their names, which may
+> look a little confusing, e.g. "zstd: alloc size 408128".  Prefix
+> backend names with "zram:" so it's clear that the message is coming
+> from a zram backend.
+>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> ---
 
-  WARNING: ./include/linux/maple_tree.h:796 at __mmap_region+0x1a04/0x2398
-  ...
-   __mmap_region+0x1a04/0x2398
-   mmap_region+0x304/0x466
-   do_mmap+0xe7c/0x162c
-   vm_mmap_pgoff+0x1e8/0x362
-   ksys_mmap_pgoff+0x76/0x402
-
-This is easy to hit with fault injection when the new range sits
-between an unfaulted prev and a faulted next, so that dup_anon_vma()
-has to run and fails on allocation before the iterator is
-reconfigured.
-
-mmap_region() used to reposition the iterator itself in this case, but
-that was lost when it was converted to vma_merge_new_range(). Restore
-it in vma_merge_new_range(), and only when the iterator was moved, so
-that the common no-merge path is unchanged.
-
-Found by syzkaller.
-
-Fixes: cacded5e42b9 ("mm: avoid using vma_merge() for new VMAs")
-Link: https://lore.kernel.org/linux-mm/CAGfhM4AaEygReogOAmkmu5UfRYwoBXAMdLMBi4jbakNONbpsMw@mail.gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Jinyue <jinyue.li@linux.alibaba.com>
----
- mm/vma.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/mm/vma.c b/mm/vma.c
-index 6c35f0d775ab..a801e3d29dbd 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -1141,6 +1141,7 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
- {
- 	struct vm_area_struct *prev = vmg->prev;
- 	struct vm_area_struct *next = vmg->next;
-+	unsigned long start = vmg->start;
- 	unsigned long end = vmg->end;
- 	bool can_merge_left, can_merge_right;
- 
-@@ -1198,6 +1199,10 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
- 		return vmg->target;
- 	}
- 
-+	/* Undo the vma_prev() above so the caller can insert a new VMA. */
-+	if (can_merge_left && !vmg->just_expand)
-+		vma_iter_set(vmg->vmi, start);
-+
- 	return NULL;
- }
- 
-
--- 
-2.25.1
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
