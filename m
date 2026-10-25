@@ -1,81 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3891606A31B
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 10:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8286C606A31D
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 10:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QMXrqqMs
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=blPOGtHH
 Received: by kanga.kvack.org (Postfix)
-	id 12FDB6B05B3; Sun, 25 Oct 2026 06:56:09 -0400 (EDT)
+	id 8AC176B05B4; Sun, 25 Oct 2026 06:57:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1326B05B4; Sun, 25 Oct 2026 06:56:09 -0400 (EDT)
+	id 8839C6B05B5; Sun, 25 Oct 2026 06:57:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F11306B05B5; Sun, 25 Oct 2026 06:56:08 -0400 (EDT)
+	id 772EE6B05B6; Sun, 25 Oct 2026 06:57:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C5DCB6B05B3
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 06:56:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5D37116043C
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:56:08 +0000 (UTC)
-X-FDA: 85360844016.14.3D70AB8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E86E6B05B4
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 06:57:07 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6A0CA80C9
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:57:06 +0000 (UTC)
+X-FDA: 85360846452.07.F5687B4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 84DA91C0006
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:56:06 +0000 (UTC)
+	by imf21.hostedemail.com (Postfix) with ESMTP id 059BD1C0003
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:57:04 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QMXrqqMs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=blPOGtHH;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792925766;
+	s=arc-20220608; t=1792925825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=68QJafW62HgkjotUsbneO0EWoKRkIg6fDkzU/Qf+g1s=;
-	b=cjWQNu738cu+uATH6QpcJrqUa/KL2YmQW59ola3wF2U23wcf6uKBp6+O0gogz9Fy9RA3kF
-	3CsIUCrN/MYXz7HtpIlttZGjqVth0im8SecbrA1KxXWhXNrGx6EQ/WLj0Y9tv+rEls3HKa
-	6xpAAFb0mIbXGPs4Sx7GlPvViQI2tig=
+	bh=WxGHp2cRhL5SwPo0OwBRfhp0Jz+5ULz4/oEe6eLF81A=;
+	b=B4krJ0KiBq4aYiwix0t3ZeZwOOEgIOsl0BEIGuM/701HtIbm2GJQnERRJ1KoZvIhM8pTW+
+	esG6rL52a9tHmc3IqtEGCw8Xob5xmokiH8dm3v4cTmL3IwNWz+kjS1+Pua2MgvVsy4Z9zh
+	rzANIukkHMIkILSzo4Mp3tdRJb5ZR6s=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QMXrqqMs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=blPOGtHH;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792925766;
-	b=0JM+ErFvYdkyXUyGNIzFA5SIgHnocjghVFERNa+e9MIu8HRC2D83scObE91+8sUSgJ/HvX
-	oLryHs758QovwPbk/tW+eSO+16ywnw2J8bBbplTDsdA8HM3nrdT8nmx9Ul3QYG0kv0S8Ap
-	0hqeyzVg56urBXA4+ojlnD/fh9m2kXg=
+	t=1792925825;
+	b=axPKir4V7Y32WSjZCf/AULzWXggtX3wpFJkArlzrUAjLoOaUs9Qm82zdqOncMySRCJqwO3
+	3pZpQhDfDwbi9iuGLiIs3fsTxvxuzrs68UaIKlM4Ps9l2JCkY7yT1CifRAQw8qaQekX5NI
+	9c9YEkXbcCaqMi4Peto6tUEP9f8YZIA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA1C5429E9;
-	Sun, 25 Oct 2026 10:56:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA25A1F01825;
-	Sun, 25 Oct 2026 10:56:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5201541B45;
+	Sun, 25 Oct 2026 10:57:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1336A1F01825;
+	Sun, 25 Oct 2026 10:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792925765;
-	bh=68QJafW62HgkjotUsbneO0EWoKRkIg6fDkzU/Qf+g1s=;
+	s=k20260515; t=1792925824;
+	bh=WxGHp2cRhL5SwPo0OwBRfhp0Jz+5ULz4/oEe6eLF81A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QMXrqqMso456ITXiNZr90kPAO74wrbYx+z54a3x+l9eEMuCfAezKeCbqq2Y+wX32C
-	 0qz/HU8V/DjMllMVNsZ7dxS2kR7tjv05cgXujnvcOFDLsJgM6noFufS+AkA9cfsGBg
-	 0C85Lpvl1/EXlcjibTd/iJTpsmVptJ+cf7juyho5braCwFt0YC5MlKZfE4ASGGgeSx
-	 JjecmP1+6N+QaI9Kppdd/CDp5h3GuqJBbtBE4rrInZxLZpDvcd3p/7+Xcl7UGbkQot
-	 QXQZQwBFz+bxBlFkiGuMQ5BrHn3TDOa7ZpsXKfvZyeHiTnvEKf1Uu/Ty6n4qEBXv+y
-	 8Z1Dbxv9k8c7Q==
-Message-ID: <9aa49812-1132-458e-9bf5-6dba8b476b26@kernel.org>
-Date: Sun, 25 Oct 2026 11:55:59 +0100
+	b=blPOGtHHu1tq3dB00Ujh+vtvVYU+cG9XGGANoibb6V930ieUlGbThJR+UuVR5cEbd
+	 VDxHHioU5Hje8/Bmd1zSATXRtXaqJ9kl4uv8M/A2r1CF7seZT7bVSEoy53/lqc5FJU
+	 hjOb1vaWSnLDDFQP7W6iS9d+m9w9BjQqTReqGEnGK0c++AFP05BLJJZ6qpqfHYt0we
+	 tDS/J1Oom1CD5WxjzTCiI+tVn5uu8mJ6/9kWgudDMDN9VJvTniA8vjcs5F0p2RdjqQ
+	 VnkTzliosOQ4wMTZFG7/8Lwjt8/PHd78lWpeF3K2r+jObJgsTzLeBkEVrVTjApt3vN
+	 QRD3NcP3ba2ZA==
+Message-ID: <d5dc39ba-6af9-484a-9e3d-9c73662c431c@kernel.org>
+Date: Sun, 25 Oct 2026 11:56:16 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] fs/proc/task_mmu: pin mm_users in do_pagemap_scan()
-To: Andrew Morton <akpm@linux-foundation.org>,
- Ngoc Quy <ngocquy0700@gmail.com>
-Cc: liam@infradead.org, ljs@kernel.org, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+To: Ngoc Quy <ngocquy0700@gmail.com>, akpm@linux-foundation.org,
+ liam@infradead.org, ljs@kernel.org
+Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
  Muhammad Usama Anjum <usama.anjum@collabora.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  stable@vger.kernel.org
 References: <20261014095540.3261469-1-ngocquy0700@gmail.com>
- <20261019174659.42c3529d5e35563cc6e5244c@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,21 +121,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261019174659.42c3529d5e35563cc6e5244c@linux-foundation.org>
+In-Reply-To: <20261014095540.3261469-1-ngocquy0700@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 84DA91C0006
 X-Rspam-User: 
-X-Stat-Signature: x35cj71sdmyjgcz955pdu6naq44ygz1e
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 059BD1C0003
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792925766-684227
-X-HE-Meta: U2FsdGVkX1+AiDwifIBIZFBmM93fkGQ8ofSrf9Af3f35J4DKJ8vJWIwqaetSy2wfXj4yIF9/4T8r+1QA32AIJpQF9gTJi/ELoBpDyRE1r/430VJJnI8wThF4hT8uSv7aP0xo/D/hAUfaRYI0k4IeuRdwt6kX7vV4yh7HdgjZgkSdhWTAMmCKwKJfBjmfLpxrFP+/LekX5kASD0kpwUkb6z1zPIg+Q9zgtY6/qCUqj6zulZyA6qYIo6OEahLXYdG7BzdL09XURhB1iFVTgjdsqaWnT/QEZsoApG5LSW4UtGdGXrCb6cU4Xucl4ilOviKRorSu0I5wCBXOEpRPMwI14VyUOdssTzU7p3WR+lhGY1Kp9JMeLgV8pTcNUxc2fXsgbWQjoouz1aQhy3/02et/BOk2r00UFqPPKlDOIaqer0zwYl5YPCqhge+yn1QM+Z0JKHFpW7PoyqngnqZaTK1FkxVtU7ESgH1B/cpNXy2m94eeq0z1EL68xMQAvcHMdh22VuruPblPe+i7U2N2vne6XADnNoou4KdKtjQXBMHlMvAZsztNq30XwaEzHS9/AlnMLu81LbEPkjoa0ms98RBwSMdVlRTbYD59oe2f6VtLSLcL4EgfzBejB6ezFvHtBxfpSVKeMbLFe8Dp1AIvaV5PGRAW1JqB3dMUN4VAn9tNR+2lDAVH0yBmvnuMRHttEImKZsLVuhgI4ACtRg0t9jXce2fwV4QAhvXhhgvIUeZ95vq5JskukxuQ6ds5TbzAwnmF7fcfDIT+3B8gZ2C16JdLDnL4vqu4KrVxZkVqZ8yoCJSa2WP6GR99qyyVnrs7pbzsFl7euoIpqU+5tO4IgHb9csgXOGbfj1ovAEVUOFZ9ZgTJB/u8CgUvCftEj7HF274djIYGuAZ8EwQ81626mqm+tn7b8bYusnQoXxXmyp8Hogw+bZJ6YKQvYfHJUOc+B+2WQ1+G4LoMDnokk1r90Kf
- sfX/kMbE
- g8SadmV86rXngYqMKAv7mePox3cnYA7AcEyPdDvLbZxNjfwUlVwDrA9sD/2uNHZlouiNIW3muJWF3Wor2qAxJJlyWoO8E4sskomjxxmU+LQSkICt80DHCIFuLRUySHRxnHngpoAluNBEil1YO77CX+Rip35XYRVvVY1BpBRUIODnNmcLOrdJImkQmDDJyz3JqYudSSmb5W0i2/B3Vxh01TO/1gEk9MLZtOY7dkCKaEnok/hSpKDzwQ8K160fLi7m1xRX8pVyTRrpOf3XL3qvcLlmUyXrzBHiMa9UDKpZwiQlNGsgkvEzI5yO+YLX2qePvqCPMRRL1nYUAp8M=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: zbjoi56q8dtue4azxk5iep5hq93f3xj5
+X-HE-Tag: 1792925824-709527
+X-HE-Meta: U2FsdGVkX1/A6zIbkdGXHitdBKSKlzNqdpUpmGLvjatieUFZF4DzlbHTu1rp0Z2ntRZ98l97Aq3N/NGCO8WfoBBixcSsB0fKOsZ4SDimQcEy8Pvr4f/tdt4BJI+lbn9vsmKZg6e9yDnbdtl184XGTPIAr0+zTNH+pr01cQxQf/3o4t5p+dLopUkkLURBHeDY3DuJZFz0MvFHXAWL728PzWsQrWO7kTbWSxUqNIyvuLQUFCTvoTnJCRdZJA3Dwdf1OdwyUd+XegqNAbo1U3irHxWsNEa9bBsA+RoTg0tTQDi6SaNUUky7cAazxhLM7fNUi93tSBuSt3A6CyKz7mbeQaOqDRog4WUDMmCvViBrQ5jwAooSmZgXWTuNJ6ZW2xztxk1rETj1QP+8sp8y2IluhFM0Jh+lFJsP/bFg2SHLLuCDpE3ydIAgSkM5BbO3ZYUa4J3nK+UOa5+qkOUqh0W1hkYlh+SvuFlhZ/zBnH6qeUdc01CAtkVpTpp9KtGHXoBTzouaQW3IoktStWV6j1zUZvN4gjc8P2BrFsLLxjgHYX9NODXCUH5Pvm1OtTAPpL+QJ/MZJXHNnS5sJbxYLDMKMFV3GXYmtLtyS4iZXU2HQEuo6JE547WuunIbw+h6b0a5im2cwmbwdFVGmfTf6pl1+8optXt7OPBm4gaue8gFF+wtWU+cZq+mRdv3+PkkDOCxoJ7JlZQqbX5AZNeaXNyhAzZqajGKAPbHQ0ikCxsW1TV16YpBUbgSnUxGlw46S3BeiInUyHcoKEBYZD9ov7sR1Huc0ySk8rtWJDfbqNu83QSV70e+BEQtFw8U7xsLvD6I1l/FMMr/Hs4GMb5ew7J85T5CZRD/A3t6ipm7VIxitgG0JGewkLP5ncdOpEqyEqQxzeHFIQaV+6k8OX/uSGVrBXny2z4e0QXHbV/J8z+Uoc4bQogwVlrDRHBNl1/dr+rawekupga9Ac9g/4qJe8F
+ Yootk7Q9
+ jlI78FaUd5pICFQWCrDjFNDrbI2z0vitQxug5eWlQayD/o7GKhBri60Lnt2cwCLrFtTM2+idPE0Jh39hHO8NLXblkt0Kw7mcLMExfCoBddofgoo+d7vhGgM82wSyWGzbtc00xToY1zaxRh1Xvuv8hQspwLfXgkMJ4HJ5Lg2JChYqrm5++eW5y8FcxZy+kjb5tbvyvoPR6CdeTMx2NTKihMz8RpEmneqwk3q5ug4nmt8YFybnzkkx8RXan4eHpwWWe+TfVH9c8EfdK3a5J6kji+kpKEXTGkYBrRr4SIICtgr9b83bhWzfwy+sQcXd1RHAQPCQZ7+aruwmFpEv3qsslKHvh1iKubPrEHcjm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,54 +145,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/20/26 02:46, Andrew Morton wrote:
-> On Wed, 14 Oct 2026 16:55:40 +0700 Ngoc Quy <ngocquy0700@gmail.com> wrote:
+On 10/14/26 11:55, Ngoc Quy wrote:
+> The PAGEMAP_SCAN ioctl takes mmap_read_lock() on an mm obtained from
+> /proc/<pid>/pagemap without holding a reference to mm_users.
 > 
->> The PAGEMAP_SCAN ioctl takes mmap_read_lock() on an mm obtained from
->> /proc/<pid>/pagemap without holding a reference to mm_users.
->>
->> proc_mem_open() deliberately grabs only mm_count, so a consumer that
->> touches the address space has to call mmget_not_zero() first. Every
->> other consumer in this file does -- m_start(), do_procmap_query(),
->> show_smaps_rollup() and pagemap_read() -- but do_pagemap_scan() does
->> not.
->>
->> Without that reference the target can reach exit_mmap() concurrently,
->> and exit_mmap() calls unmap_vmas() while holding mmap_lock only for
->> reading, which does not exclude the scanner. For ordinary VMAs this is
->> harmless, as free_pgtables() and remove_vma() run afterwards under
->> mmap_write_lock. A shared hugetlb VMA is different: __hugetlb_zap_end()
->> frees the VMA's hugetlb_vma_lock inside the read-locked phase.
->>
->> walk_hugetlb_range() can therefore load vma->vm_private_data, have the
->> lock freed underneath it, and then down_read() a freed rw_semaphore.
->> The load happens before the freeing side clears the pointer, so this is
->> a use-after-free and not a NULL dereference. Any unprivileged user can
->> reach it with no huge pages configured, as hugetlb_reserve_pages()
->> allocates the lock before the VM_NORESERVE early return.
->>
->> Pin mm_users across the scan, the way the other consumers do. mmput()
->> from the exiting task can then no longer reach exit_mmap() while a walk
->> is in progress.
+> proc_mem_open() deliberately grabs only mm_count, so a consumer that
+> touches the address space has to call mmget_not_zero() first. Every
+> other consumer in this file does -- m_start(), do_procmap_query(),
+> show_smaps_rollup() and pagemap_read() -- but do_pagemap_scan() does
+> not.
 > 
-> All looks good and checks out for me, thanks.
+> Without that reference the target can reach exit_mmap() concurrently,
+> and exit_mmap() calls unmap_vmas() while holding mmap_lock only for
+> reading, which does not exclude the scanner. For ordinary VMAs this is
+> harmless, as free_pgtables() and remove_vma() run afterwards under
+> mmap_write_lock. A shared hugetlb VMA is different: __hugetlb_zap_end()
+> frees the VMA's hugetlb_vma_lock inside the read-locked phase.
 > 
-> Except...
+> walk_hugetlb_range() can therefore load vma->vm_private_data, have the
+> lock freed underneath it, and then down_read() a freed rw_semaphore.
+> The load happens before the freeing side clears the pointer, so this is
+> a use-after-free and not a NULL dereference. Any unprivileged user can
+> reach it with no huge pages configured, as hugetlb_reserve_pages()
+> allocates the lock before the VM_NORESERVE early return.
 > 
->> --- a/fs/proc/task_mmu.c
->> +++ b/fs/proc/task_mmu.c
->> @@ -3231,15 +3231,18 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
->>  	size_t n_ranges_out = 0;
->>  	int ret;
->>  
->> +	if (!mm || !mmget_not_zero(mm))
->> +		return -ESRCH;
+> Pin mm_users across the scan, the way the other consumers do. mmput()
+> from the exiting task can then no longer reach exit_mmap() while a walk
+> is in progress.
 > 
-> Why the new test for !mm?  The current call chain guarantees this is a
-> cant-happen and the current do_pagemap_scan will cheerfully oops if
-> mm==NULL.
+> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Ngoc Quy <ngocquy0700@gmail.com>
+> ---
+>  fs/proc/task_mmu.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 5c54aebe2118..8825b01f5e38 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -3231,15 +3231,18 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+>  	size_t n_ranges_out = 0;
+>  	int ret;
+>  
+> +	if (!mm || !mmget_not_zero(mm))
+> +		return -ESRCH;
+> +
+>  	ret = pagemap_scan_get_args(&p.arg, uarg);
+>  	if (ret)
+> -		return ret;
+> +		goto out_mmput;
+>  
+>  	p.masks_of_interest = p.arg.category_mask | p.arg.category_anyof_mask |
+>  			      p.arg.return_mask;
+>  	ret = pagemap_scan_init_bounce_buffer(&p);
+>  	if (ret)
+> -		return ret;
+> +		goto out_mmput;
+>  
+>  	for (walk_start = p.arg.start; walk_start < p.arg.end;
+>  			walk_start = p.arg.walk_end) {
+> @@ -3294,6 +3297,8 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+>  		ret = -EFAULT;
+>  
+>  	kfree(p.vec_buf);
+> +out_mmput:
+> +	mmput(mm);
+>  	return ret;
+>  }
 
-I'd just keep it for consistency with all the other checks in this file?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
