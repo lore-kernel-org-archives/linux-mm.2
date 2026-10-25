@@ -1,142 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A37606A31D
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 14:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0394606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 14:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=HMx4aSqi
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ZUVhuG+W
 Received: by kanga.kvack.org (Postfix)
-	id 370CF6B05B0; Sun, 25 Oct 2026 10:36:08 -0400 (EDT)
+	id EE1FB6B05B0; Sun, 25 Oct 2026 10:56:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 348F66B05B1; Sun, 25 Oct 2026 10:36:08 -0400 (EDT)
+	id E930F6B05B1; Sun, 25 Oct 2026 10:56:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 210A76B05B2; Sun, 25 Oct 2026 10:36:08 -0400 (EDT)
+	id D5A826B05B2; Sun, 25 Oct 2026 10:56:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB7976B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:36:07 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62D5A14056D
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 14:36:07 +0000 (UTC)
-X-FDA: 85361398374.14.B113121
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 98AD180003
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 14:36:05 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HMx4aSqi;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792938965;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A7EF86B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:56:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27648C0555
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 14:56:04 +0000 (UTC)
+X-FDA: 85361448648.04.D888BDD
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3948F40004
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 14:56:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZUVhuG+W;
+	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792940162;
+	b=iPXM7ouZmAZ5i/O9WtBSYlQZP7b8EAymFSzniB8iZdwtdFnGD3udXpKc9WIIxwuPYuU0qF
+	OTg7Sgd/pH8e3EfV1f5qI1S/0v9xxYKvmGdXAw1n3J6gUzY+SW+p2h8nVuuAoIzCkZO1+U
+	C7aKIqCQ/rId+1U2cufhKavVq0w5/E8=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZUVhuG+W;
+	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792940162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=p8TpnlZQqHoJQXNIEVycNifGEfr+D4SXzqPcwNXn9W8=;
-	b=tB3TSnwddDUOOX/czKV1gvLSi3AJYeOJmvN3khILlpuqzFmrZCBPh1+bQ1D5AMg5McCObb
-	ucyi7+7l9mk7jkp5fAqku/pfkd2Pcwb3awvmFnIT6XGeTOLzMIt4DjELmQUwKImdHzeYhp
-	oVTk145f5CDHJkaq8N696hWPr2qeGnw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HMx4aSqi;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792938965;
-	b=PWN2VPWaDU2Mtf6ivIZXl30mUR77a/+30c4Tk1sOxrKGpU2bEx043TocSdArjwMKQqTJ48
-	hm0+wGCsEmDCO+fNz86FNH0k7jkyjoTacCpMSaWFQXl90taLFlRl+xR6D1A55FppkBw8aS
-	vlOjNISFfZj+d/6UsVRnRcwemvwjbxI=
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5eac6c5f927so916226e0c.0
-        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 07:36:05 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=edJydXO8eM7QbcwRvjK6Scc5idFapwpqQSUYWRShZ90=;
+	b=dKRoFL/vefK85djEZ0C6lcA/UoYYV3dCkeiEKLl/pu99wAvZArKj1QNkHaVWg3wJn473an
+	9mYTEVGO/QyxVcbOqTrlu6rpVaJ16IUR9tX3FAyQaeNh0S8vplzVF4/HFtGcPRexsFOZEP
+	Ouii/zsvoUhxiYoXhrsWt/6umPOfXaM=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-535f598d126so184441cf.1
+        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 07:56:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792940161; cv=none;
+        d=google.com; s=arc-20260327;
+        b=F258VLeNO5JDeW6TEjfp+EJra6uqhjEPth4ROKgZC30UEm/QCjerLMlqMekK6H53qu
+         UBGjmF8hCW0EXOGqghSbenBgw2hid6JVEW0V1/f2w8hTm8Z0DwRBEEJ6a5uRj1VCF0yH
+         88ybJfAMC71/PHLmtbY3eM8SsdtQ/R/mEZQJ7K8ccFZwRBmyOq52sAuSeLDZyGX1YWfC
+         MhKlBSosSogfDu5p5w1wm9IozgVeYTY7xXA0VGUGubIY7HERc2BsZ6zT/VkQCVa0nlTx
+         n0rlSAlI8JGLMHQjwyd6CWN0wh1pFhsrPmK0LnkR2HxNv4hP5Hiau7dSKtSof3GaMZMt
+         7+tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=edJydXO8eM7QbcwRvjK6Scc5idFapwpqQSUYWRShZ90=;
+        fh=kpk1IgaPFViz1vZlJfJaZ9y8+N1jyol6FBgzTjRdSl0=;
+        b=P+UzgSOMWpfwJdhgREd8lM1ATFFLcsos7xUTybtzS7HlIQPs9n3qwvNmg5IlrgQSqB
+         BFfYHmKS+2/7kmjsoAuI/milCupwd3EB8kUWrvCnLAN4wBZvBEHymISxMVkzRxMxDLOW
+         EAm3OBSBZDmHNu69OWREA1jVrx7wYFwzAGGpDhWfTsRLtjULtRTtS2dG2kk1Fut+Dkgu
+         Gwupj+HI+edVLzyS8bGmQYvvNGqopGV7ihobYzd45GWOgMXnvkz9w+kXE4NyWeMvXb6n
+         46zdH9dKXvYSmcOI/fz6ShCxZzKDL3G0IPwsO9qIe7dp+kw18A+9ESUKNbcz6tVnBH41
+         OBIg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792938965; x=1793543765; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p8TpnlZQqHoJQXNIEVycNifGEfr+D4SXzqPcwNXn9W8=;
-        b=HMx4aSqiRH7ZXi8PK5gvMMwEJZJ1uV0/C9RNwa62oZAo/w1KzstggQDvBIFZianUs8
-         Q+UnWxwKujmixdBLuuCmLyjet5fb41pFmVCSQ7BXHWntuxQXKy7molBEjftb8b+buekw
-         DGK8Jo6L1HIanTDJK8BDsi523FuUeW0LsuTOWMQdXjASHxoXyhw2sQOEwsw6g4YtxcJ1
-         5iWVeCxeVTbiezheKJLu0EPT5lqZeOa+AuNzfg/MkvfDkO6zGKfnvCVox9el9QbcXRsP
-         LtQ6ChUxh4WLZguhNiB6p3SOO4nlZ15PI9tgZSJjXxd4tvhGzW1fGquFYXEWTDk7Ec/2
-         IdXQ==
+        d=google.com; s=20251104; t=1792940161; x=1793544961; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=edJydXO8eM7QbcwRvjK6Scc5idFapwpqQSUYWRShZ90=;
+        b=ZUVhuG+W4Hy7g+VMn4vFnG9Zgknbvfg2Odvq1PiMy0TsgDyObvMQNzjpfWX5aUHZ2e
+         9PdK2VgmLvdtUDzAZ6URnjXtQw0yHPwiWbym/5yHbB47SS8YYceEsb2xQAcZj4N0SdGp
+         WbHi5t0dsGwSgW3QfLt2wFkhSFTbVYbgRkE0p2I5pk4Bbz7PcP6jU06p9V72hC9p6Pg3
+         lmqEvqm1dBSh8R9/XBV3VcrUKBSFpI+wiCoBQRMICGqo/qZ1cEJWXv1T1XZbJJUIH8Zj
+         tpGKtdI71vLr8swMlQs52Bd6Ztg0WjwKPmWUEuGjWSJZ8VFckpKp7rjK8Cpb9p72HyXe
+         vlfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792938965; x=1793543765;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p8TpnlZQqHoJQXNIEVycNifGEfr+D4SXzqPcwNXn9W8=;
-        b=KjgaTUSdP+eVDSkeK14AmfbWpcuSsbekzUtb+ja0Le+3jW2nrTellVbFEtVDNp5fx4
-         1xMLKMqi8gSGSO3PGPpRHfrY6JCKEukEiGZlCOBKYPExVPPmAJdnnIQ+DlBkH03zLdTB
-         3Gl5odKCNCj8r74ksThNKjpxHCpO7OvRIaHd+X12zXAMLwnroyP60817bkI2Lpcti4OR
-         g+C2xLU1O6q8LiX78ONVpjqMhVaPKv9NQzmZyXh01eEaHSBgy5EVCgm1x5MZgtnIdNkG
-         tKot8AN0BvZvsivZLPpjyBzMYngLaU5KnPfqso+wgCnN4sKjJMZcqXEc6dsaLE+up3zm
-         Pgvg==
-X-Forwarded-Encrypted: i=1; AKwUvBzF9LIyn3tUiLGc1qgyUyRT0rw7PD2g7MBWa0H0HJ+TmMIE/MI5u7P1QdzW7JxcPEi7oDlrCfp6Zw==@kvack.org
-X-Gm-Message-State: AFq9FYL2XzriEJlTOdVI4uKsi2fRmDBkK8onw+ERFCDVt+vyx3BCX/Ef
-	FNG0pmRVvXT/jAkhmEEuI9MrpcwSA81ZeVPVsw62S5L6Eo68u3kfc0kwnIIONWPJ/CA=
-X-Gm-Gg: AYBFou3NvvPd2UxxlaVcIivx8XjT8bblYh73JDPqykpYSRccCFtnzTJL87SH7srRt3L
-	NOFoADgYmAOIupHEu21ddqJwt2oDjKClSNPXIeFgcQriw4GVaVaAvRAJGRdVb/4DIOWVjPeVbR4
-	ptFWGMnw2LyssYnjT+uNqMqozr91nyqQ8pCy7oC9a2N1FuFjNs0TeVvdIKjt0VKUFMFCMRMZbEq
-	EgsD72Ay3M7wUptUZ1kcySRLylbXkhxuYj9PQUCq1uVBId/sTY1OhmoQMsfkbyZ1Z5axkZlfQmR
-	J+Kl68CJeiop0dNZkErefqb8eYegTYx2D+K+/u3d9S2yj/FXGAWsJzzTHhco4huERTiL23B5V8l
-	kIefEFWfbcmhDI00SOmyI2Rpb5NCJbDbI4XbeFJNm95zEhleqpDy1LKhQmhjzBSPQRpw8aqT7uN
-	MInNtL4mE/obgpW5VZgNn7LReG+KnBj/dsQui8MNcKW8/BmAVn3AaFMp2poDnbkxgBRcLX3908m
-	Fj2AMgYQW1GJKcUJ62SDOZEXbH4/BAh3Za/wLdB8ol2ldeGme3uCIhK/H7LbcUUJJA2pHGPIK6+
-	r+eLFdmg7ijl/8J5ULw1OQfY0fVKf+qqy9+okPXryGVvtJmelVsEgnUAUEEB7UBu5b2LppOHWQ4
-	o
-X-Received: by 2002:a05:6122:1b05:b0:5db:4749:1737 with SMTP id 71dfb90a1353d-5ec231f5be2mr1218362e0c.4.1792938964559;
-        Sun, 25 Oct 2026 07:36:04 -0700 (PDT)
-Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec234618c9sm5531291e0c.11.2026.10.25.07.36.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 07:36:04 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	"Andersen, Tycho" <Tycho.Andersen@amd.com>,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	Baolu Lu <baolu.lu@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	"Heyne, Maximillian" <mheyne@amazon.de>,
-	James Gowans <jgowans@amazon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Praveen Kumar <kpraveen.lkml@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	"Woodhouse, David" <dwmw@amazon.co.uk>,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Jork Loeser <jloeser@linux.microsoft.com>,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	linux-mm@kvack.org,
-	kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [Hypervisor Live Update] Notes from October 19, 2026
-Date: Sun, 25 Oct 2026 10:35:33 -0400
-Message-ID: <20261025143601.2564170-1-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+        d=1e100.net; s=20260707; t=1792940161; x=1793544961;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=edJydXO8eM7QbcwRvjK6Scc5idFapwpqQSUYWRShZ90=;
+        b=bZ2yZZ4RtOfc5JVcgARJRNvlNUSjnU5EzNKm9/HU3VHLU2jDHckNG/taQClCG0A7qI
+         er/5QN6LYwbrt5hP9h74p6G7RsEAZ+JCF9PoorjcYIcT6e2VqBOT5gENFr5WMkJWSTk+
+         unetv82p6sXWbbWIst6DQWC33llGNSthaN271J+RKBz7OSmhO8qFdfuhgnh98iHZWC2J
+         0IKNSaEHEs9HYx1EOmG7VjWdZtubnpMhN+JtShHWpYeSOudxIQAV2h6OHWuHU4Z/BEHk
+         27d6WAzjuU/sJ3cM6nGHWyf2vfVX2/tQ5Ik2A7ZH3KyL2zCBczMXvN6SicNtnQtEKI/F
+         +Kzg==
+X-Forwarded-Encrypted: i=1; AKwUvBytQ7EulYoLSzynK3LpeIcpdSF/7ILutN0V+QoAGCgkpdwtUsr2yK/edTHT/nHPuWaf7ELJLzxiwA==@kvack.org
+X-Gm-Message-State: AFq9FYLOTm4FpcoBoxy57Pcy9crO0bmAzXZOxa2Z4mgLD1eZeCNWMPRb
+	F8O/b0mQ1Xk6NqZlgW0iknBLRp9oQnefVG0beXq75S+2AUg800OaIk96fvmlfcbw/6F7wIrWJ9T
+	GeQpI70UJElU4Zf6V594kAD9x4Zx/aaIrB8aM0TSh
+X-Gm-Gg: AYBFou2mbTIAPmIA4VuOUloF5lFlIoopyk4vu2qsKOYq2niSgLZlygrlr8tzuTqgcIJ
+	HQ4AGUgUrsqaBb8BqoMjvCbxfcFpUdn60Bl0Ag7bzYU4cQbCvwdsI0sXGynxsGba6FjDHhRc6as
+	Wm+o6rndz0pkEr5tFtxVqYG2cmnTZZGc08pTmrjci1bVR26b7JsRlFKOuzcaHL5W82JzxaPkZzb
+	+Aq296IsyNtaEwRcOx56kxUvKbrq1Yn1nfRujZrp3lfQiLqIqTexeuiSizwthXT9mlOj8wU4O99
+	twwjGXCLCfIosCh1z20pbob3XfCATfcgMlrM6K3elFqNlFUc2t52rj2ampFRr9blfZaabwqZ8d2
+	cbCnYEQA65wsN0UVp5mnVGfYL71VArPWIHLY=
+X-Received: by 2002:a05:622a:1f12:b0:535:30a:76c7 with SMTP id
+ d75a77b69052e-5383b47236amr21034181cf.3.1792940160515; Sun, 25 Oct 2026
+ 07:56:00 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 98AD180003
-X-Stat-Signature: jra7q6791173xezn3xf6zjke3xmt1wc5
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
+In-Reply-To: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 25 Oct 2026 07:55:48 -0700
+X-Gm-Features: AclHuK8uFqepEAvLNHa3DmgUKJrQNAsjl4cEFXBDYXl8QDdPza9TmJXOwbUbspw
+Message-ID: <CAJuCfpEk6H-wJvNqxSXTwj2NCjEMEzYr6MyHjRNRZjPC2AV2wA@mail.gmail.com>
+Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1792938965-330411
-X-HE-Meta: U2FsdGVkX1+2SILnZjzBH4VDTxbxBB8EKUreAH997wB6iAbLl+4wTCCvth+UeZDrOQfFv+ZU8PdFaldkMWkxBW0AcakXCnhYiPF6c/YmM76vfmB9LUh1YgKgR8XTWXWw6xMBTpjmbKVxyCrdll16/YMw/QSxahSkAvPXpzp7HQf6Su7taeoWu9vdw7Ed6e+ZHzCgwM8Ge7zrOZQ2ve3ppdsEZvDfsHpF9hTM11QJ7aurbM3qgK/mpePCcXkzqc+GkU+ciKkx+dsDQZIkUvsp2W6D/fy411v54dbYpnI7bZmYL4tN73Ju8QzLR8W4fJ9vDaTYR+t/JoALKOoA6ITrzFKrmcm7kALWgkkS9KCJsmWy9GAxPhfAHR//oXvKLbo4qBRPD8Y7gtmUR/PguZ0YHyouMk1mYreClubueROVYI4KbCdE5dnNdjC3HtXVAYgYw7ukEKIOoqYXrj8/9KzebDHOb9s1ewzMd9nStsI/38M9Ukhas9KLaI11JxmJajtlubs2W2TBGl9YlcPJNUwliKAHv5Yh4h4Rgs0DEq4M6Ps3C84vkvr8wdUSFC6xTVgFcWi/mE7C1mey/kG0CUTXSOWaC9Y299TdF7H3irNM9VDii8NwEGicj7k5z85zFJCQuAJkCIZpdLgT0SNn9HCGEouQPehCq3QyA1Lzb009ycYxYH7IDm9j5yRLnBczWiXcKaNK65mYQIula1oEfxfxDSjLz143wOZuadXg2OVLwvqMR2mn/iAnJ5iP/uCaDdEqtP8qxZ5AwGcE8isFflWnajs7tzzbLleLP95Gjf5n2Z9cgkHIzPM39nXNFe1YPoG3CPb8Oz+iru7flke9Oxt1GcsMfQUMUSS63pMjiALoRgkyBLbWj98P85IcK1K92iVhdEO7BpOu6x1QER9PDkIxYVUUClRnbPGXODfv0KhoUtIp9FJbww/uoSYJx5DkexcY3mMvnzjuReL7O7bGLRH
- fDH42bUq
- /ofFn15srDcwGsmo7anmz3tfDd3pYlvnHK5b5fWgVlgblMRJo8kds9UW2ojjAEGpbAfsVIC36d6mUPXKZRiEGsb+k0Ywcii1lyeBGboIakIshWB/NSdg6TwKIO9D4G/34CW7gusS7X8dUSFyDG9qwnY81yZu1CgfjB0ww1SEdwoTOfBoYH1xYH51r6/6gI6LlLlBKopLKRSLcCSPbrS1qnYMae24vKf3ZUjJRJVxDApTNh7ywuqCB+3AMRnUW8lAST4e3q5rLT3TGXJ8mD6V3KIpJ7A+ll8jXCYcVxVoii+nErczZ2iKBoDedmC1d4mQejEVj2PRD6LKyDlGEGKXUq1VfiHuqpiwxq4vQyhvPUPCWpe7U0AXdHog2bBxiAKfVfCYnFp/ZF1xG7bjnHWODjGOLFA==
+X-Rspamd-Queue-Id: 3948F40004
+X-Stat-Signature: 63zmtqgwacqyux6f3nnhhooarx8z1ziz
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1792940162-685249
+X-HE-Meta: U2FsdGVkX1+b4y87eSKOailQfFn3oJQEqotdNzl6c/MNTKEC6n+kKszeFZF6uKHBL1zahPDr3TkC1SvSRS3DhM03V0SIifOly3g3FNBx4MBFeEDCVSFEOMkLbo9ZCJoQWZ5Be1/f+d+NLOd8aZEUikiUoYkvuq8I8OhXzVFG8KHv8XMhKHSOYbaVRE89UvMzAvqmLh6ZElzxJ4POkV994RWwn2RIdlZDgfq7zMlP8VGrzWJ89b6fl547U9uP7AS+/lScHtpHkscrNKcTx8CO7BkQRVII1KfLnA8WfnqTGds9881H1VI17A069kw8/IgnPmEOJCZJWX6qLQhw7xNkNeTxy995r6OhPdy5oTklfQExUMHLfNUgjljfja2FjNROaQjXL/39WDnRHZWXJu3orVj/GAszE7yTAebniwpkA43xGL39xlhOnIte5qbSR2p2OXpTPdmK8WzxVHa9Ru5oxkNOklHC+xd8pg3GyrrrsoFR2ujULF7cdC30PPKF0Ll59i2JBakH4nQeZP0RqfKokIPT4f4/E+EEyRaw3jj+eekZTQCVtbRe5wp1wvLIkafJUJWJniKGFIymx5BW54z6wqzmjD0SgQZg9mrVUIDs6BI3xrwZqk6jGM/SZkGmP6P86T3+ojAXr7VT/wm1lVzTgupwpN4rAd91ewN1qeTxtabDTb+jyYVTkYyDQjHizvO31ZM1ojF9Mu7fkCSFbksxNuarzktOyWnefSWu/arKitATAsqyNZTgM02I/TIl2IIzN/1ANv7L6gD/Iqta/yvKFW8rdn80tExhzWWflubH2DJbnOP1TrGrsWG2Fv9jBwFAXR67kVNTJ+z2qT1Q4WKreEGYuWquPl9G3Wn2k3nm1zlrbnFmSDg1e8RwIw34ycOTlFuTNIs6PczXOa4KEPFGnJ9VCVcukb3QNL7hMqERvx/Nvx3uTJR4GsNNtntMxqmJNTRh5WsennP9nV60K7y
+ H6GN2lJs
+ P/AxXIwODzca19YjYbZhKurmZnLiI8CmgzcoJ1yGR4fA9HBiSo2j8cUjRT66tr1z3bSbeFv6Qlggob5ySi4JX30VVyrut8x/bAG7p8km0qqeLaVxxna27ttzdxlWVlVp6QIiE6aiPp0xSPomrqW4SHpW7te3f8kpt7hkbyGqlRu1oiiJVIKTA3+0aP0Vjfj/yTDs3VC89QYLNyUwjNLauH5h74Iw+r2pn4Yc+O7VBnXgFymR1fhsxF2WHQyneROtIfS6YUuaT6GT8zVEmLXlYNKxdhMj4jrqiAIHApZWuXAt5MpDU48LTnGBzXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,280 +147,302 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi everybody,
+On Sun, Oct 25, 2026 at 3:43=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> Reading /proc/PID/maps under per-VMA locks can skip continuously mapped
+> address ranges during concurrent VMA splits or merges. This violates the
+> guarantee in Documentation/filesystems/proc.rst:
+>
+>   "If there is something at a given vaddr during the entirety of the
+>    life of the smaps/maps walk, there will be some output for it."
+>
+> lock_next_vma() reuses a tree iterator across calls under RCU. The iterat=
+or
+> remembers the range of its last entry. When its node is replaced,
+> mas_next_slot() walks the tree again at the last index of that range, the=
+n
+> advances past the entry containing that index. If VMA boundaries changed,
+> this can skip a range that has not been reported:
+>
+>  - A lookup finds [A, C), then mprotect() splits it into [A, B) and [B, C=
+)
+>    before vma_start_read() locks the first VMA. The reader reports [A, B)=
+,
+>    but the iterator still covers [A, C). The next call starts from B yet
+>    advances past C, omitting [B, C).
+>
+>  - The reader reports [A, B) and unlocks it. A concurrent mprotect() then
+>    merges it with [B, C). On the next call, the iterator resumes at B - 1=
+,
+>    which now belongs to [A, C), and advances past C. Again, [B, C) is los=
+t.
+>
+> Checking the mmap_lock sequence only within the next call misses writers
+> that completed before that call began. Also, a NULL result is currently
+> accepted without validation, so a race can terminate the walk early.
+>
+> Even a fresh lookup can skip a mapping. Suppose it finds a gap before
+> [B, C). A writer inserts an adjacent VMA at the end of that gap, then
+> merges it into [B, C), replacing the node. The lookup resumes at the old
+> gap's last index, now inside the merged VMA, and steps past it. The
+> original [B, C) remains mapped throughout. Repeating the forward lookup
+> is insufficient: another merge can make it skip the same mapping again,
+> returning the same later VMA or NULL.
+>
+> The fresh-lookup race also affects /proc/PID/smaps, numa_maps and
+> smaps_rollup. Resetting the iterator after gathering each VMA's statistic=
+s
+> does not prevent a merge during the next lookup. Fixing lock_next_vma()
+> also prevents omitted entries and incomplete rollup statistics.
+>
+> Keep a saved sequence in the proc maps locking context and validate it
+> before each lookup with mmap_lock_speculate_retry(). If it is even (no
+> pending writer) and still matches, reuse both the iterator and the saved
+> sequence. Otherwise, restart at from_addr and sample the current sequence
+> before looking up the VMA. Only refresh the sample when resetting the
+> iterator, so a writer between validation and the lookup cannot go
+> undetected.
+>
+> The smp_rmb() in mmap_lock_speculate_retry() orders the previous lookup
+> before rereading the sequence. It pairs with smp_wmb() in
+> do_raw_write_seqcount_begin(), which separates the sequence increment in
+> mmap_write_lock() from subsequent tree updates.
+>
+> Validate detected gaps (from_addr < vma->vm_start) and NULL from
+> vma_next() against the sequence. If there were concurrent writes, use
+> mas_walk() to check if the writer could have interfered with the range
+> of interest. If the range is not empty, something interfered concurrently
+> so we retry under mmap_lock. Checking for empty ranges avoids taking the
+> mmap_lock just because an unrelated writer changed the sequence.
+>
+> Original fix generated by an LLM and sent by Josef Bacik in private.
+>
+> Fixes: 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under per-vma =
+lock")
+> Fixes: ea3085dd7a4e ("fs/proc/task_mmu: read proc/pid/{smaps|numa_maps} u=
+nder per-vma lock")
+> Fixes: 0e985559d72a ("proc/task_mmu: read proc/pid/smaps_rollup under per=
+-vma lock")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Here are the notes from our Hypervisor Live Update call held on October 19.
-These notes are intended to bring those who could not attend up to speed
-and to keep the momentum going between meetings.
+Thanks for the report and the fix! Let me take a closer look. I took
+extra care to ensure we do not skip any VMA but maybe I missed
+something here.
 
------>o-----
-LPC 2026 Recap & Takeaways
-
-* Track Placement for Subsystem Topics: Following a successful experiment
-  moving KVM-related live update talks (such as Orphaned VMs) into the KVM
-  Microconference, David Matlack and Pasha agreed that subsystem-specific
-  live update topics (e.g., VFIO, IOMMU, PCI) should target their respective
-  subsystem microconferences next year. Now that core Live Update concepts
-  are established, presenting directly in subsystem tracks ensures the
-  relevant maintainers are in the room while freeing up time in the
-  Live Update Microconference.
-
-* Focused Core Sessions: For future Live Update Microconferences, the group
-  plans to be stricter on topic selection—focusing the track on core,
-  cross-cutting architectural topics (such as versioning and LUO core)—with
-  longer time slots, minimal slides (2–3 slides), and discussion-focused
-  sessions aimed at concrete outcomes.
-
------>o-----
-Cross-Subsystem Versioning & Compatibility Strategy
-
-* Post-LPC Alignment: The Live Update BoF organized by Pratyush Yadav at
-  LPC helped clarify maintainer expectations and establish a path forward
-  with Sean Christopherson and Jason Gunthorpe without blocking ongoing
-  series.
-
-* Minimal Expandable Header First: Rather than trying to lock down a full
-  versioning UAPI upfront—which requires extensive scrutiny given permanent
-  UAPI stability guarantees—the group will start by introducing a minimal,
-  expandable serialization header (with size and feature flags) and updating
-  all existing serialized structures across upstream Linux to use it.
-
-* Next Steps: Tarun Sahu took over sending the initial expandable header
-  patch series from Pratyush, as it directly unblocks the guest_memfd and
-  KVM preservation work.
-
------>o-----
-PCIe Persistence
-
-* PCI v10 & Target Kernel Retargeting: David Matlack posted v10 of the base
-  PCIe Live Update series, adding ACS egress control vector save/restore per
-  Alex Williamson, kernel-doc improvements per Mike Rapoport, and a flags
-  field in the serialized structure (to be replaced by the standard header
-  once available). Because v10 arrived too late for sufficient linux-next
-  soak time ahead of Linux 7.4, Mike Rapoport noted off-list that the series
-  will now target Linux 7.5. Pasha will merge v10 into liveupdate/next
-  immediately after the Linux 7.4 merge window closes.
-
-* PCIe Core Roadmap & Upcoming Series: David published the PCIe core live
-  update roadmap to the mailing list prior to LPC:
-  - PCI Save State Refactor: Posted upstream to restructure PCI save state
-    data structures in preparation for VFIO preservation.
-  - Peer-to-Peer DMA & MMIO Preservation: Ready to post this week. Preserves
-    bridge windows and device BARs and avoids destructive BAR sizing during
-    enumeration so preserved devices (and Orphaned VMs performing MMIO) can
-    continue memory transactions across kexec.
-
-* Testing Strategy: David is currently validating the peer-to-peer DMA
-  series using the VFIO live update kexec selftests under QEMU with PCI
-  config space write tracing to verify that preserved BARs and bridge
-  windows are untouched across reboot. To enable standalone PCI core testing
-  before VFIO support lands, David plans to prototype a selftest kernel
-  module (a minimal no-op PCI driver that binds to a device and preserves
-  it via LUO).
-
------>o-----
-VFIO Persistence
-
-* Full Preservation via no-IOMMU Mode: Vipin Sharma returns from parental
-  leave on October 21. At LPC, the group agreed with Alex Williamson to
-  restructure the next VFIO series so that it lands full VFIO device
-  preservation in a single series using no-IOMMU mode (preserving internal
-  driver state and skipping device reset across kexec), rather than landing
-  a partial series that resets the device.
-
-* IOMMUFD Integration & Ordering: Once the complete no-IOMMU VFIO series is
-  in place, Samiullah Khawaja's IOMMUFD persistence series will hook into it
-  via a single small patch calling IOMMUFD preserve/unpreserve/restore APIs.
-  Samiullah clarified the dependency ordering: userspace preserves IOMMUFD
-  first (preserving core domain state), followed by VFIO. Because an IOMMU
-  domain may have multiple attached devices where only a subset is being
-  preserved, VFIO calls into IOMMUFD during its preservation step to
-  preserve the device-specific IOMMUFD state whose lifecycle it owns.
-
------>o-----
-IOMMU Persistence & LUO Core
-
-* IOMMU v6 & Architecture RFCs: Samiullah received review feedback from
-  Nicolin Chen and Baolu Lu on v5 and is preparing v6, incorporating
-  LPC UAPI and design updates. Additionally, AMD and ARM IOMMU preservation
-  RFC series have now been posted to the mailing list; Samiullah will review
-  both series.
-
-* Dependency Ordering & Early Freeze: Samiullah will defer his LPC proposal
-  for explicit FD dependency tracking and batching in LUO. Following
-  discussions with KVM maintainers on how live migration enforces strict
-  ioctl ordering in userspace, Pasha and Samiullah agreed to enforce
-  dependency ordering on userspace during preservation, while using Pasha's
-  new user-triggerable early freeze patch as the synchronization point to
-  resolve any circular dependencies across file handlers.
-
------>o-----
-tmpfs File Preservation
-
-* Refined Retrieve Design (O_TMPFILE + linkat): Building on the LPC
-  discussion and subsequent mailing list refinement by David Matlack,
-  Pratyush Yadav, and Pasha, LUO will create the restored tmpfs file
-  directly during the retrieve ioctl via generic arguments rather than
-  backfilling a pre-opened userspace FD (avoiding races with concurrent
-  userspace accesses).
-
-* Unlinked File Creation: Modeled after openat(2) with O_TMPFILE, userspace
-  passes a target directory FD and flags to retrieve, and LUO returns an
-  unnamed, unlinked tmpfs file FD on that mount. Userspace can either keep
-  it as an anonymous temp file or link it into the filesystem namespace via
-  linkat(2). This keeps LUO completely agnostic of filenames and variable-
-  length path strings.
-
-* Patch Series Split: David will include Pasha's generic retrieve argument
-  patches in the next revision of the tmpfs series. Pasha's early freeze
-  patches will be split out as a standalone series, with Pratyush reviewing
-  them on v1.
-
------>o-----
-KHO & Scratch Memory
-
-* Scratch-to-Bootmem Rename: Pratyush reported that the patch series
-  renaming KHO "scratch memory" to "boot memory" (bootmem) is queued in
-  liveupdate/next.
-
-* KHO XArray & Sparse memfd Support: Pratyush has implemented the KHO XArray
-  data structure and is integrating it into memfd. Pasha and Pratyush
-  discussed using sparse memfd preservation (large virtual address space
-  with unpopulated holes) as the primary motivating use case and selftest.
-  Supporting sparse memfds without faulting in holes requires updating the
-  pinning path to pin only populated pages and disallow new page faults
-  after preservation; Pratyush will evaluate the fault, migration, and swap
-  path implications.
-
-* CMA Pinning Bottlenecks & Scratch Memory: Pratyush noted an Ubuntu bug
-  report where KHO's pre-reserved CMA regions restrict pinnable memory for
-  GPUs. Tarun has been analyzing CMA allocation behavior: normal movable
-  allocations default to ZONE_NORMAL until it fills up, leaving no room for
-  pinned allocations in ZONE_NORMAL because movable pages are not migrated
-  into CMA (ZONE_MOVABLE). Tarun discussed adding ZONE_NORMAL-to-CMA page
-  migration with David Hildenbrand, who agreed it would be a valuable
-  kernel improvement to alleviate CMA pinning pressure while longer-term
-  alternatives to pre-reserved KHO scratch memory are investigated.
-
------>o-----
-PowerPC & LoongArch KHO Support
-
-* Real-Mode Execution of kho_populate(): Sourabh Jain reported a review finding
-  from Sashiko on the PowerPC KHO series: kho_populate() was being invoked
-  too late during boot, after several early memblock allocations had already
-  taken place and could overwrite preserved memory regions. On PowerPC,
-  running kho_populate() prior to any memblock allocations requires calling
-  it in real mode (before the MMU is enabled in start_kernel). However,
-  generic kho_populate() uses early_memremap(), which returns virtual
-  addresses that cannot be accessed in PowerPC real mode.
-
-* Architecture Mapping Abstraction: Sourabh and Pratyush agreed to add a
-  lightweight architecture abstraction so generic kho_populate() receives a
-  usable pointer—continuing to use early_memremap() on architectures like
-  x86 (where the MMU is active and uncached physical accesses are slow)
-  while allowing PowerPC to pass a direct real-mode physical address.
-  Sourabh plans to post the updated series this week.
-
-* Static memblock Array Limit (128 Regions): Sourabh also checked whether
-  populating KHO regions before dynamic memblock array resizing is enabled
-  could hit the static 128-entry BSS array limit. Pratyush and Pasha confirmed
-  that 128 entries are shared across architectures and sufficient for 2 + N
-  scratch regions (where N is the number of NUMA nodes); if ever needed,
-  dynamic resizing can be enabled as soon as the first scratch region is
-  registered, or the static size can scale with CONFIG_NODES_SHIFT.
-
------>o-----
-Guest Memory (guest_memfd), KVM & Confidential VMs
-
-* KVM & guest_memfd PoC Series: Following LPC discussions, Tarun Sahu is
-  preparing a combined PoC series (VM preservation, vCPU preservation, and
-  guest_memfd preservation) by the end of October to demonstrate the end-to-
-  end ABI for KVM maintainers, after which guest_memfd preservation can
-  proceed standalone. To unblock this, Tarun is also incorporating custom
-  arguments for LUO preserve and retrieve ioctls alongside the expandable
-  serialization header series.
-
-* Confidential VMs (TDX & SEV-SNP) Require In-Kernel Live Update: Pasha,
-  Sagi Shahar, and David Matlack confirmed that confidential VMs (Intel TDX
-  and AMD SEV-SNP) cannot perform host kernel updates via userspace live
-  migration / copy-out flows: guest memory and control structures use
-  physical-address-dependent encryption (pages cannot be relocated in
-  physical memory) and architectural state (TDX SEPT tables and VMCS pages,
-  or SNP RMP/VMSA state) cannot be exported to userspace. Consequently,
-  in-kernel KHO/LUO preservation of guest_memfd, VM FDs, and vCPU FDs is an
-  essential requirement for updating hypervisor kernels running confidential
-  VMs. Sagi noted that Google's internal copyless TDX migration uses this
-  same in-kernel transfer approach.
-
------>o-----
-TDX Module Preservation & Orphaned VMs
-
-* TDX Module Preservation Status: Sagi Shahar reported that TDX module
-  preservation across kexec is working. He is now connecting it to TDX VM
-  preservation, where the main remaining hurdle is traversing and preserving
-  Secure EPT (SEPT) tables across kexec. Pasha pointed Sagi to the EPT
-  traversal and preservation implementation in the Orphaned VMs RFC series.
-
-* Orphaned VMs Supporting Series: Pasha posted two new upstream patch series
-  supporting Orphaned VMs:
-  1. Read-only KHO: Enables the lightweight Linux caretaker to read preserved
-     KHO state without full KHO initialization.
-  2. CPU Hotplug (Online/Offline) Performance Improvements: Standalone
-     series accelerating CPU offlining and onlining, benefiting both general
-     host operations and Orphaned VM physical CPU preservation.
-  Because time ran short, Orphaned VMs will be moved to the first agenda
-  item for our next meeting.
-
------>o-----
-Action Items & Next Steps
-
-Pasha:
-* Merge PCI v10 into liveupdate/next right after the Linux 7.4 merge window.
-* Split early freeze patches into a standalone series (separate from generic
-  retrieve arguments).
-* Move Orphaned VMs to the top of the agenda for the next meeting.
-
-David M:
-* Post the PCIe peer-to-peer DMA / bridge window & BAR preservation series.
-* Prototype a standalone PCI core live update selftest kernel module.
-* Incorporate Pasha's generic retrieve argument patches into the next tmpfs
-  preservation series using the O_TMPFILE + linkat model.
-
-Tarun:
-* Post the minimal expandable serialization header + custom LUO preserve/
-  retrieve argument patch series.
-* Post the combined KVM VM + vCPU + guest_memfd preservation PoC series by
-  the end of October.
-* Continue investigating ZONE_NORMAL-to-CMA page migration for pinnable
-  memory pressure.
-
-Pratyush:
-* Review Pasha's standalone early freeze patches on v1.
-* Evaluate memfd pinning and fault-disabling changes to support sparse
-  memfd preservation with KHO XArray.
-
-Samiullah:
-* Post IOMMU persistence v6 incorporating review feedback and LPC updates.
-* Review the AMD and ARM IOMMU preservation RFC series on the mailing list.
-
-Sourabh:
-* Post the next revision of the PowerPC KHO series with real-mode
-  kho_populate() mapping support.
-
-Sagi:
-* Review the EPT preservation logic in the Orphaned VMs RFC to integrate
-  with TDX SEPT table preservation.
-
------>o-----
-
-Next meeting will be on Monday, November 2 at 8am PST (UTC-8), everybody is
-welcome!
-
-Join Here: https://meet.google.com/rjn-dmzu-hgq
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-Best regards,
-Pasha
+> ---
+> I neither understood nor liked the original LLM generated fix that was
+> provided to me, and I (and codex) think it was incomplete. So I tried to
+> come up with a better fix that avoids additional fallbacks to the mmap_lo=
+ck
+> while trying to keep it simple.
+>
+> I won't claim that I am now an expert on the code, or that this is the
+> most elegant fix. It is quite complicated what we built ... too
+> complicated. So if this goes into the wrong direction I'll be happy
+> if someone else wants to take over ;)
+>
+> I reproduced the races with /proc/PID/maps, and with this patch they are
+> resolved. I did not manage to reproduce the races with the new
+> smaps/smaps_rollup, but the races are slightly different and harder to
+> trigger.
+>
+> There is the issue with seqcount overflows that Lorenzo is tackling. It
+> probably interacts here as well? Likely, but that's an independent issue
+> to resolve.
+> ---
+>  fs/proc/internal.h        |  1 +
+>  fs/proc/task_mmu.c        |  6 +++--
+>  include/linux/mmap_lock.h |  5 ++--
+>  mm/mmap_lock.c            | 58 +++++++++++++++++++++++++++++++++++------=
+------
+>  4 files changed, 51 insertions(+), 19 deletions(-)
+>
+> diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+> index df873df9afc56..f3e846b574d79 100644
+> --- a/fs/proc/internal.h
+> +++ b/fs/proc/internal.h
+> @@ -386,6 +386,7 @@ struct mem_size_stats;
+>  struct proc_maps_locking_ctx {
+>         struct mm_struct *mm;
+>         bool mmap_locked;
+> +       unsigned int mm_wr_seq;
+>         struct vm_area_struct *locked_vma;
+>  };
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index ee9fc2fd2b2fe..dc3adcffb6d9c 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -148,6 +148,7 @@ static void reset_lock_ctx(struct proc_maps_locking_c=
+tx *lock_ctx)
+>  {
+>         lock_ctx->locked_vma =3D NULL;
+>         lock_ctx->mmap_locked =3D false;
+> +       lock_ctx->mm_wr_seq =3D UINT_MAX;
+>  }
+>
+>  static struct vm_area_struct *get_next_vma(struct proc_maps_private *pri=
+v,
+> @@ -160,7 +161,8 @@ static struct vm_area_struct *get_next_vma(struct pro=
+c_maps_private *priv,
+>                 return vma_next(&priv->iter);
+>
+>         unlock_ctx_vma(lock_ctx);
+> -       vma =3D lock_next_vma(lock_ctx->mm, &priv->iter, last_pos);
+> +       vma =3D lock_next_vma(lock_ctx->mm, &priv->iter, last_pos,
+> +                           &lock_ctx->mm_wr_seq);
+>         if (!IS_ERR_OR_NULL(vma))
+>                 lock_ctx->locked_vma =3D vma;
+>
+> @@ -523,7 +525,7 @@ static struct vm_area_struct *query_vma_find_by_addr(=
+struct proc_maps_locking_ct
+>         unlock_ctx_vma(lock_ctx);
+>         rcu_read_lock();
+>         vma_iter_init(&vmi, mm, addr);
+> -       vma =3D lock_next_vma(mm, &vmi, addr);
+> +       vma =3D lock_next_vma(mm, &vmi, addr, &lock_ctx->mm_wr_seq);
+>         rcu_read_unlock();
+>
+>         if (!vma)
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index 28e3696ce9ff3..e33d15ce6a876 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -511,12 +511,13 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm=
+_struct *mm,
+>   * Locks next vma pointed by the iterator. Confirms the locked vma has n=
+ot
+>   * been modified and will retry under mmap_lock protection if modificati=
+on
+>   * was detected. Should be called from read RCU section.
+> + * *last_seq must initially be odd and is kept across calls.
+>   * Returns either a valid locked VMA, NULL if no more VMAs or -EINTR if =
+the
+>   * process was interrupted.
+>   */
+>  struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+> -                                    struct vma_iterator *iter,
+> -                                    unsigned long address);
+> +               struct vma_iterator *vmi, unsigned long from_addr,
+> +               unsigned int *last_seq);
+>
+>  static inline void vma_assert_can_modify(struct vm_area_struct *vma)
+>  {
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index 2f94ee0fdee2a..0f3a4e0c5520d 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -400,21 +400,50 @@ static struct vm_area_struct *lock_next_vma_under_m=
+map_lock(struct mm_struct *mm
+>         return vma;
+>  }
+>
+> +static bool vma_range_is_empty(struct mm_struct *mm, unsigned long start=
+,
+> +               unsigned long last)
+> +{
+> +       MA_STATE(mas, &mm->mm_mt, start, start);
+> +
+> +       return !mas_walk(&mas) && mas.last >=3D last;
+> +}
+> +
+>  struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+> -                                    struct vma_iterator *vmi,
+> -                                    unsigned long from_addr)
+> +               struct vma_iterator *vmi, unsigned long from_addr,
+> +               unsigned int *last_seq)
+>  {
+>         struct vm_area_struct *vma;
+> -       unsigned int mm_wr_seq;
+>         bool mmap_unlocked;
+>
+>         RCU_LOCKDEP_WARN(!rcu_read_lock_held(), "no rcu read lock held");
+>  retry:
+> -       /* Start mmap_lock speculation in case we need to verify the vma =
+later */
+> -       mmap_unlocked =3D mmap_lock_speculate_try_begin(mm, &mm_wr_seq);
+> +       /*
+> +        * Restart by address if a writer could have changed the cached r=
+ange.
+> +        * The retry check's smp_rmb() orders the previous lookup before =
+reading
+> +        * the sequence and pairs with smp_wmb() in do_raw_write_seqcount=
+_begin().
+> +        *
+> +        * The vma_range_is_empty() checks below avoid unnecessary mmap_l=
+ock
+> +        * fallbacks.
+> +        */
+> +       mmap_unlocked =3D !(*last_seq & 1);
+> +       if (!mmap_unlocked || mmap_lock_speculate_retry(mm, *last_seq)) {
+> +               vma_iter_set(vmi, from_addr);
+> +               mmap_unlocked =3D mmap_lock_speculate_try_begin(mm, last_=
+seq);
+> +       }
+> +
+>         vma =3D vma_next(vmi);
+> -       if (!vma)
+> -               return NULL;
+> +       if (!vma) {
+> +               /*
+> +                * There is no reason to fallback if there really isn't a=
+nything
+> +                * in the remaining range.
+> +                */
+> +               if ((mmap_unlocked && !mmap_lock_speculate_retry(mm, *las=
+t_seq)) ||
+> +                   vma_range_is_empty(mm, from_addr, ULONG_MAX))
+> +                       return NULL;
+> +
+> +               rcu_read_unlock();
+> +               goto fallback;
+> +       }
+>
+>         vma =3D vma_start_read(mm, vma);
+>         if (IS_ERR_OR_NULL(vma)) {
+> @@ -442,15 +471,14 @@ struct vm_area_struct *lock_next_vma(struct mm_stru=
+ct *mm,
+>          * it was not shrunk after we found it and another vma has not be=
+en
+>          * installed ahead of it. Otherwise we might observe a gap that s=
+hould
+>          * not be there.
+> +        *
+> +        * If speculation fails, avoid taking the mmap_lock when a direct=
+ lookup
+> +        * confirms that the gap is empty.
+>          */
+> -       if (from_addr < vma->vm_start) {
+> -               /* Verify only if the address space might have changed si=
+nce vma lookup. */
+> -               if (!mmap_unlocked || mmap_lock_speculate_retry(mm, mm_wr=
+_seq)) {
+> -                       vma_iter_set(vmi, from_addr);
+> -                       if (vma !=3D vma_next(vmi))
+> -                               goto fallback_unlock;
+> -               }
+> -       }
+> +       if (from_addr < vma->vm_start &&
+> +           (!mmap_unlocked || mmap_lock_speculate_retry(mm, *last_seq)) =
+&&
+> +           !vma_range_is_empty(mm, from_addr, vma->vm_start - 1))
+> +               goto fallback_unlock;
+>
+>         return vma;
+>
+>
+> ---
+>
+> base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
+>
+> change-id: 20261025-per_vma_maps-ceab0eb860d5
+>
+> --
+>
+> Cheers,
+>
+> David
+>
 
