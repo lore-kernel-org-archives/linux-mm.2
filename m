@@ -1,94 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88A5606A322
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 22:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7049606A31B
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 22:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R5FjYOcv
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PBUro/bR
 Received: by kanga.kvack.org (Postfix)
-	id E42576B05B1; Sun, 25 Oct 2026 18:12:15 -0400 (EDT)
+	id 2D0856B05B0; Sun, 25 Oct 2026 18:33:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCB716B05B2; Sun, 25 Oct 2026 18:12:15 -0400 (EDT)
+	id 2A84E6B05B1; Sun, 25 Oct 2026 18:33:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08626B05B3; Sun, 25 Oct 2026 18:12:15 -0400 (EDT)
+	id 1E4D66B05B2; Sun, 25 Oct 2026 18:33:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 860A96B05B1
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 18:12:15 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D37DA805FA
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:12:14 +0000 (UTC)
-X-FDA: 85362547788.22.8FA0E98
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2191640004
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:12:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R5FjYOcv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 968F16B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 18:32:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6CAA1405D8
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:32:57 +0000 (UTC)
+X-FDA: 85362599994.05.DEE2EF9
+Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 30B5180002
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:32:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="PBUro/bR";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.5 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792966333;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YWbxq42hxi+ZRNzF4dCjYVmcYAoQXgJd485ElFkPZis=;
-	b=4G0BY2M90ACAjDKoGyWvp5YvW3HdyIRpbmwQLbKTNXfj3terMZmSo9gj4Q/ed7HOx7xS7z
-	vydfGHZhQW7a9Q7cHRdurrWVzCdm6uEyFVc6Ju+7saXrIHfIf6tdSWH/D8YJMIZJG6YrNp
-	o1bzMrpj3FR3S2kbVWybx2IfRr73n+g=
+	s=arc-20220608; t=1792967576;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=f0CD2JTVPSKVQ8ahg/uzbIr8a3vhy8fPw66NRM5eXd8=;
+	b=d9qQfQqdvT/6q6httx52g/ziiTkmqFWqRZWVFn1R4TfD89vg62USK6ynEVR5WZQvVd6Lo9
+	dHo6rn9LWyEpNKpWA4C6MpeoVVRB2pbvAUe3I7bFtb/dcHVUD2shOhUjcwdIAbzryaY4CP
+	wd+hRHxZBdRGVgDZVV8S3qoSpX+fAms=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R5FjYOcv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="PBUro/bR";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.5 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792966333;
-	b=ecnjQkGA6CBwvHa7Xe1pGND4SudY2uryzdnLyYpOGJaMsNN3pk2qZfknUdJ+IpNSz+W4od
-	yTlCRjikpsf94VGLvog//dokysv7jnRgHcqE9D0cCgmHhJxnbHQ7Zoj00UkyAgV3Adpmcg
-	niZpGbTJnTtIjoc1yt5x+dhZcSnNg6s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 013E54142D;
-	Sun, 25 Oct 2026 22:12:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEBF1F01825;
-	Sun, 25 Oct 2026 22:12:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792966331;
-	bh=YWbxq42hxi+ZRNzF4dCjYVmcYAoQXgJd485ElFkPZis=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=R5FjYOcvqohSIgPwLI4i+LWeeP5xsuMSFCyDwl4Fs4HT2mExxT/p5ySU+cD/oi6uI
-	 z6/y9ul53m/7zUwQLmOdPsj8Py75WT5nx4OAoxj1sWgJiXGHJYfzh2GW4Rthw1tvC+
-	 mYiOm/5OU3IFty7A8EL+iAtTca2n40vd3dcSEMZxNTMmD9nEFcDfWugEcGqXxgf+f5
-	 G0317IYmzfQA7ElvaoloA0CpbJ8Qo54cOc5iMoQPX5XQPLKgdlhWDeQ2izxqdONNbL
-	 RsE++qcMnUNp2m4RQmNVjPbEacyOPEk+tgGIfXCkcw9ii7LzzP4ve6SrXfHJ34ySCY
-	 TF2RtPXqI9LKg==
-Message-ID: <sashiko-outbox-184467@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 6/6] NFSD: drop a shared boundary page only once both
- WRITEs have written it
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mike Snitzer" <snitzer@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, linux-mm@kvack.org
-Cc: "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Olga
- Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom
- Talpey" <tom@talpey.com>, "Christoph Hellwig" <hch@lst.de>, "Jens Axboe" <axboe@kernel.dk>, "Jonathan
- Corbet" <corbet@lwn.net>, "Jonathan Flynn" <jonathan.flynn@hammerspace.com>, "Anna
- Schumaker" <anna@kernel.org>
-In-Reply-To: <20261024221152.6965-7-snitzer@kernel.org>
-References: <20261024221152.6965-1-snitzer@kernel.org>
- <20261024221152.6965-7-snitzer@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 25 Oct 2026 22:12:10 +0000
-X-Rspamd-Queue-Id: 2191640004
-X-Rspam-User: 
-X-Stat-Signature: 1sonnx4karaaxbhrj691yfob7meetaey
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	t=1792967576;
+	b=NXlLkUZkr3aMveSrQhlgprALgVWcDtZQoKlyyysJbsfw337Shn+p/nmZhk1PL3y4suYgio
+	TSYOVW/WVkckmNKvQcGKG5QA1BXwZNdY8ELvx0pprs4UycY1t+M7EyX52xSoRFfg5+g02x
+	CiKbLQC1ejp54qZXlkbzXOB2goyAdIM=
+Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-35cd538de29so1251673eec.1
+        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 15:32:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792967575; x=1793572375; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f0CD2JTVPSKVQ8ahg/uzbIr8a3vhy8fPw66NRM5eXd8=;
+        b=PBUro/bRHTLzDDFlNid7MeijK8iruz8bQS55JyqSMgNCl1C8LHQMGDtWREwd4XVTPm
+         u+GTURE767j7asvc0B/nB+3DYPjDAOxRcarDWVHwH602Ja1eSvMTS4bZRVwB5mhIgsw+
+         idSpcZ8L5qxC3PgO6/7OfdxByc/Y/QNpjETd8xMOKKzG5XFHkeSfvCXjqqfMLqEz29Bc
+         EHKS1p0r2cDxNH7TCgdOa5nA8Abn8UvoiLY6rM4wEraIwX40nCp8zdxs47W8gwvvkMny
+         VoWE2okS2PaZYSaPRnARLPGVpKgaUGUos8E9+qPsJjCk/xSoekBuHNz8VH622y6YY9Oz
+         u/+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792967575; x=1793572375;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f0CD2JTVPSKVQ8ahg/uzbIr8a3vhy8fPw66NRM5eXd8=;
+        b=z3SrWB01Moli77xtf9evYjGJVLTX4m/v68d/POzbYKDK8UNgJIymplKqj4VEp9bUPk
+         Q5FlTDoRoj3OfKrxpMGe2OkTzJZNf3b4mw4C80NfLpXV6Gwm4Zf5QhI9JZ15SoA+C/Wu
+         BcRc7h4A3qnpb2TQvWF22ucVBuBiyAc6alhIX5ArP+VhhFl4DlwueVCqTvA5p1VEzBvy
+         qZNzRfy7H+NXPe+yvubrvJiw+oWvBcZshzn80TfbY/q575rKlvgr0pAebpgKBv0gLwMS
+         REUaKfygdPdefv5FBKIfZoVoDtP/noDvATwb0+fgVYquV0GVqm+KymHjQbjKE5DQa2Ra
+         dj9g==
+X-Forwarded-Encrypted: i=1; AKwUvBzdIxJ6KmksFMmobE0AtsV7thDlOv4LIPuwuQSXi6hllEPkG4xM3Iy8P0izXReU1nmly2YHrYW1TQ==@kvack.org
+X-Gm-Message-State: AFq9FYK11vrKhpURyJ0Lg2KOgBNaapNEf0YmAtNaK02i24BuK2TiukFC
+	yOVm4hxAJtn5tntNifYIInvEXx3mtcAuK6h7AdymnC6XVf8U9CigkPOV
+X-Gm-Gg: AYBFou3ueg+aS8+6+c6/Rm3vFog6oqtfcp/1v19xsqmxBACU/ICVrZ1oU/0mdu+18C9
+	TO8qnCBUQnFmJ/NwN7z/GEdGQXKW8sx4rt3dOdRSPAOjKlMi8wsVFqHqojlT70jQ3cYkF2lqE8Q
+	WU3VQWKJtRQMMFYBovM9wOpJhZ1MSyhmM3gOX+rYAejE2UAj8ruIIdpPbEA7dKeDDRfy7+JzNaV
+	d98KOD3Wm6aOwLiOUxpCrdhTd8JcQ54d2oovqLcarymjMPlPG8eY61rGsxnivioY8gpXxS1VrUA
+	ps48e2qa15TFoTvRTJCrQ2zC6Pk9XgAIpJSi9dMHuvKm47Tn0AXpkDr06mb9t3FA4llz/THDd20
+	1tiWLYH5oVVC6ZaFnZsRMKuVCb410hsf58r3pDBYdYSpReQbHD83OVlEOtzTmVver1eLFEh324p
+	TocgF2NHp6xGLiTyrL7qrF56EIv9r29MmM/eFh1So63ayypQqh9r5a/n/sK62As4p3kUOGob+Ro
+	CODl3CG4t4tLYAPAs5bhUliF7rM+b9RXvHtdgiM2jeEPdxh3wtzry/rnYrMRH+s9aWP4oLobQ0z
+	yD/3x1U=
+X-Received: by 2002:a05:7300:fb01:b0:351:4a80:d94c with SMTP id 5a478bee46e88-369e862a0d5mr7633319eec.21.1792967574632;
+        Sun, 25 Oct 2026 15:32:54 -0700 (PDT)
+Received: from localhost.localdomain ([98.148.34.5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a026e04a0sm1943471eec.1.2026.10.25.15.32.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 15:32:54 -0700 (PDT)
+From: Hungyu Lin <dennylin0707@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	andreyknvl@gmail.com,
+	catalin.marinas@arm.com,
+	vincenzo.frascino@arm.com,
+	khalid.aziz@oracle.com,
+	odys.yuan@gmail.com,
+	sashiko-bot@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Hungyu Lin <dennylin0707@gmail.com>
+Subject: [PATCH] mm/migrate: untag addresses when querying page nodes
+Date: Sun, 25 Oct 2026 22:32:26 +0000
+Message-ID: <20261025223226.33740-1-dennylin0707@gmail.com>
+X-Mailer: git-send-email 2.43.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 30B5180002
+X-Stat-Signature: ti8x8w14zpxzjrzy6qemrndz635jzqen
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792966332-629830
-X-HE-Meta: U2FsdGVkX1/CnSeX5rhbOpEb90oJomDrqOF7NOfl4GbdixqSZamP6U1Doe+rx/vaacbj3rH8PBRY5RL5vfqATwkJKaxeeffZFvKYnMoa9KfrXZG4aQURwLxD9Wv1CW4reuf74iomParC3vEWDRms2a+b3kdps/l+DM6vUxBohO3d/UhzF5zo9NYopk1JnQ2lSLwgrXHNokbhFti12sorxw693kiKnWVy6JQDeuFgC5Pvso6+2G3jjRGEKvz/c0G28nMJhoWB5mp8Dw7IvTGGar+pDge+LwXryGYe9qqU1CSuXELRCLfnUFSoGOU0m3h0Mh3h4nMsm3q8/xGoaURFAYSwf8Mk1fBPbYq8ve9/sZO+YF34dFYRTt89ZrvLHELOz536LuruyNFydQ4vEwBkHTpWIxVxHDqvz8KHPXDv9gHf05zGYOe1rUnIKS3Dxky/DygDfGuYENAHWeRz2XxbRL1wgMA7Yzn/swBABa+47lY4olTCFyoKRDa82y2USbFnhbIol5khJ4xn8bIrCFQp/iJR0CyC9xJSJhnXPV1Lex/ly9sQ9RprwZIB4U5NJucRTzQhDEe6ncijzATGJ+7KqgDuhUTYx7wOKyjJBJ1bsLjz1kwFqQcaXi8/YRgETTZiJBTgDcSPhx1kwJvdoAm/lbfm532cR+8X9FaKewqR9wJ3C6TK/XqInChteXksQYQQ3mJ07rIo74B69DzpuuhosMAdRIMgw7ep3bR2xnSfjgOxyb1NNl3I7DOBSprF3aO6JfPHsHheyms/oL3o7wuYv10++54URu/TTiUFrHvxqYOy89/egDGt7G7QDQIqKG2sgNEAzz220FjxKStoq4tp+bRo1iwOtx3QJ9gf2X6uWo1U+o2iLnDC0xtFiILoo68V5MMd09v7gVa8JrHHZ7Uk7FO+ZVRge0Caq6P8Z6T+ldrqkhq8+0qyPftUJv7QrODg4d6Xx3c73TT64+SkVfF
- cJZfaS5C
- ZRcGDtQUgsCCnc7Gmveausys6gHbKF1G2P5USouAy6Y+O6yAXQ3okskl0iddWXAK6z9hq8K6/dWupY2ZZUmN2DLOtTemn/klkeItpVCS8MVmCSr18a243snMvYIbdQzHz7u2xaPMqk/quEQSYJNFQS5uT7hbkWsXQbdm8fj6yHUYTLn1Hw0dRVnFIrLdnHUvoRv36GDFabmhy7xr2M1XkFd69f4bNtFDgq+4+I352WAfcJCNoRLEoDRt29Ay8kPfiwmNGP3hao7C3chUbs3PiSUYU5+/9ecX1V/8zvgCg4bi8AHoCzWeB4coKPnAiXQMkyrCogIDrjnx+khyQa64E7AI4YKCu8DcNrvKy87f4as4SMtIAt7sUhJJq7Y2lbSdoNXxWEixoxczdqhw52jctuvi4HGZ3CVeEINS6dLuCVjIVMG7aS1W0o/Idvht1/9PMk6BlWiaOqFEyTt26hQ7L5yUemEvT5YmeaYhE2U7JlVMMixOxkW++ocUPqRucIUHW5HwXQx7N1+IFyMRbfGiA52FWlo43MN1ZDxxU8l6Wj31XZUcreZ+Pj3kFM4E5lqEslAjhnSv0Lva5N9kEHDXXtqHfN6dbivt8pGHiTNG/gac5rBp0Qu3a+rZhFMHGXg54//YEIPYrZIqPlvlgIfgDH+vXiZMZxgfHpeeP
+X-Rspam-User: 
+X-HE-Tag: 1792967576-366855
+X-HE-Meta: U2FsdGVkX1/2mw2I4wvq0/QBDYzoMmO3RW3ddKttooA479iVXSDHhu35ubzMJAORPR055rg0Nh595rqLjXXxf9ylDNQsIU3sh3ZZWY0IElsOcN5m/pCxkL2OBN/MICRHjw9UZcBgSVvnRlGV6b96UrZBNWrn34rppPNXz/N224Ni/LdNxQCgvmCRAU84gJVRTj32jiraCkvyLfrBqXz5X2viQ1VI7VKz0qfjlOnjowDklLJ/9aib2vb6GMv+aXDZCzrtihsmfvKmDyL9J+kRiKtC0W6PhYs0Vt8wz3cBvFSFS2L0wyWDSPVhivEojV4S98Q0gRT5s/B7AWpIZri3L/9n4r69eY4MvNBF6Jd+/KM1uRPW0OuhzxWw91+uW5vOIYqrrcYc/tspvr/+JXZPKL7IHtzaN6BXugbbL8bcrEMGyUDU6Z9SXmZK4XTKFbkZ+e/SEiHj+gAP+1RkrfSPlcIKBwPSodEWpqkPInUdHHupOtu3QW6C3A+WQF98ebsAY1cdwifTUmLflHA8pJ8hIiWAApRczWOIpbvSM4to0Hrc50S+RpZtqkySqEsu07Fl+E/JgiyMtTfKaaKI2D3/3e2Ro5si+DOLdxniA6AMnQCtOPcBjKoCoQy6bg6xXiuGT06Elhq57xcaLoBGrI6kl5Bcf7UyyQck4C+JCCEkqDIPP+/2WwzHY9bcIDdGwX9NPvnrVfDhEvmY1e77afmuR9B7bkMKRUc4Mr3CUYmWC+2ijb792AVn3uNM/m+GxuyNmh/0eAETrHnXqGf10z2QyNLxfQWPx1wHojUw9GYtyarcmxg/nVpfzku/rzfUI3HLRp/q0WRgf9zims7WBHlpyysg4o+r67plz+SWNL6lzYQtYi6ceQr3wciXIcu75VhPcdTDFRME3FUoIMa7S9RIgr1fINNSfY81hkTZhyJG2weDjC0qTwPLpL4tcs4uPPs8P6foLmSUX8bGMd6GhZD
+ KWNJYFr7
+ cf+MRfUHWPAs3fmVbTq/A23bcZ4ruX7RBAITF1ooMjDa7x2cySrjJEIffyFIbKpn3N9pEaVMdxNv3UOKUHAVWd/3QlEOIvZ5lVA0BgG6UbuGhX1QMxERTqk3bc7IH0CPBDymjiif5zzeteu6sSS72SAN9QYnf7nguTYL77U5YTPmQ5ZqEPsySfo/dcymDvHNIsFfO4bhpniwBMkxL7WpTDwdwUk6qtqJN62sCXqqxWIf5ovIFYsHyr2fsqeMacYMvUSBCCWEfk5bg/uMLPtcEWRA3pKjiGoAyiTO8+qfj5/lrGx+PxuJpWfSaP73BXdOBQk38VEk8nT9e6TugGO2FXLVkIyfHgj/eHfyB+igA28w0zIKSYWd8KMy9gkG/AfnnjCWRUJCJqYxPP4INr9M7IDG8TcEh12ucBDrROyrQCRv4PzKoceBKdYlNKuovudk3c4vMhs43dCoFKM459ISIBamT/hxlO1rmf807dIdoG8AZ/D/Yytuvia/etadHH6TT/DvG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,157 +135,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] nfsd: cut misaligned segments at min folio size in nfsd_write_di=
-o_iters_init()
---
+When move_pages() is used with nodes == NULL, do_pages_stat_array()
+passes each page address directly to vma_lookup(). A valid tagged address
+therefore fails the VMA lookup and gets -EFAULT in its status entry,
+instead of the node reported for the corresponding untagged address.
 
-commit 539f478b663513be1ed1736c065becca6e5a5016
-Author: Mike Snitzer <snitzer@kernel.org>
+The tagged address ABI permits these pointers, and the migration path
+already removes their tags. Apply the target mm's untagging rules to
+the query path as well, while holding its mmap read lock.
 
-NFSD: drop a shared boundary page only once both WRITEs have written it
+Fixes: 057d3389108e ("mm: untag user pointers passed to memory syscalls")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/r/20260721183257.706661F000E9@smtp.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+---
+ mm/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This commit defers dropping shared boundary units during buffered
-segments of direct-mode writes by passing IOCB_DONTCACHE_DEFER and
-calling filemap_dontcache_edge_completes() and
-filemap_dontcache_edge_complete() around the write and fsync.
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 7e3a81f06974..994c78782a54 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2461,7 +2461,7 @@ static void do_pages_stat_array(struct mm_struct *mm, unsigned long nr_pages,
+ 	mmap_read_lock(mm);
+ 
+ 	for (i = 0; i < nr_pages; i++) {
+-		unsigned long addr = (unsigned long)(*pages);
++		unsigned long addr = (unsigned long)untagged_addr_remote(mm, *pages);
+ 		struct vm_area_struct *vma;
+ 		struct folio_walk fw;
+ 		struct folio *folio;
+-- 
+2.43.0
 
-> diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-> index 9219f8eb386d0..0b62c4659e547 100644
-> --- a/fs/nfsd/vfs.c
-> +++ b/fs/nfsd/vfs.c
-[ ... ]
-> @@ -1406,6 +1407,82 @@ nfsd_write_dio_seg_init(struct nfsd_write_dio_seg =
-*segment,
->  		iov_iter_advance(&segment->iter, start);
->  	iov_iter_truncate(&segment->iter, len);
->  	segment->flags =3D iocb->ki_flags;
-> +	segment->claim =3D false;
-> +}
-> +
-> +/* The shared pages a segment completes, and how much of it was written.=
- */
-> +struct nfsd_write_dio_hold {
-> +	loff_t	first, last;
-> +	size_t	first_len;	/* the segment's bytes in its first unit */
-> +	bool	complete_first, complete_last;
-> +	size_t	written;
-> +};
-> +
-> +/*
-> + * A page that a buffered DONTCACHE segment covers only partly is shared=
- with
-> + * the neighbouring WRITE.  The page cache keeps it, unmarked, for the w=
-rite
-> + * that completes it; the segment is issued IOCB_DONTCACHE_DEFER so that=
- this
-> + * WRITE, not the page cache, marks it, once the whole WRITE, its fsync
-> + * included, is complete.  Ask whether the neighbour has already written=
- its
-> + * part immediately before writing @seg: asking earlier gives the neighb=
-our
-> + * time to write its part and find this WRITE's part missing.
-> + */
-> +static void
-> +nfsd_write_dio_seg_hold(struct file *file, const struct nfsd_write_dio_s=
-eg *seg,
-> +			loff_t pos, size_t len, struct nfsd_write_dio_hold *hold)
-> +{
-> +	struct address_space *mapping =3D file->f_mapping;
-> +	size_t unit, last_len;
-> +	loff_t mask, last_unit;
-> +	bool one_unit, head, tail;
-> +
-> +	hold->first =3D pos;
-> +	hold->last =3D pos + len - 1;
-> +	hold->complete_first =3D false;
-> +	hold->complete_last =3D false;
-> +	hold->written =3D 0;
-> +	if (!seg->claim || !len)
-> +		return;
-> +
-> +	/*
-> +	 * The unit two writes share is the smallest folio the mapping allows:
-> +	 * a page, or a block where the block is larger.  Only a unit the
-> +	 * segment covers partly is shared.
-> +	 */
-> +	unit =3D mapping_min_folio_nrbytes(mapping);
-> +	mask =3D ~(loff_t)(unit - 1);
-> +	one_unit =3D (hold->first & mask) =3D=3D (hold->last & mask);
-> +	head =3D hold->first & (unit - 1);
-> +	tail =3D (hold->last + 1) & (unit - 1);
-> +	last_unit =3D hold->last & mask;
-> +	last_len =3D (hold->last & (unit - 1)) + 1;
-> +
-> +	hold->first_len =3D min_t(size_t, len,
-> +				unit - (hold->first & (unit - 1)));
-> +	if (head || (one_unit && tail))
-> +		hold->complete_first =3D
-> +			filemap_dontcache_edge_completes(mapping, hold->first,
-> +							 hold->first_len);
-> +	if (!one_unit && tail)
-> +		hold->complete_last =3D
-> +			filemap_dontcache_edge_completes(mapping, last_unit,
-> +							 last_len);
-> +}
-
-[Severity: Medium]
-Here in nfsd_write_dio_seg_hold(), the shared page-cache unit size is
-computed via mapping_min_folio_nrbytes(mapping) to account for large
-block size filesystems where the block size exceeds the base page size.
-
-However, in fs/nfsd/vfs.c:nfsd_write_dio_iters_init(), the boundary
-between the buffered prefix or suffix and the direct middle segment is
-still cut at max_t(u32, offset_align, PAGE_SIZE):
-
-	cut =3D max_t(u32, offset_align, PAGE_SIZE);
-	prefix_end =3D offset;
-	if (!IS_ALIGNED(offset, offset_align))
-		prefix_end +=3D min_t(loff_t, cut - (offset & (cut - 1)), total);
-	middle_end =3D orig_end;
-	if (!IS_ALIGNED(orig_end, offset_align))
-		middle_end =3D max(round_down(orig_end, cut), prefix_end);
-
-On filesystems with a block size larger than the base page size,
-nf->nf_dio_offset_align can still be the underlying block device logical
-sector size (for example, 512 or 4096 bytes), such as for non-cow XFS
-inodes in fs/xfs/xfs_iops.c:xfs_report_dioalign():
-
-	stat->dio_read_offset_align =3D bdev_logical_block_size(bdev);
-	if (xfs_is_cow_inode(ip))
-		stat->dio_offset_align =3D xfs_inode_alloc_unitsize(ip);
-	else
-		stat->dio_offset_align =3D stat->dio_read_offset_align;
-
-When offset_align is smaller than mapping_min_folio_nrbytes(mapping),
-nfsd_write_dio_iters_init() cuts prefix_end and middle_end on a base page
-boundary inside the minimum-size folio rather than on a unit boundary:
-
-1. The direct middle segment shares the minimum folio with the buffered
-   prefix or suffix, so kiocb_invalidate_pages() synchronously writes back
-   and evicts the entire minimum folio just written by the prefix (or left
-   cached by a neighbouring write for the suffix), and the buffered suffix
-   starts at an interior page offset within the unit, forcing iomap to
-   read back from disk the bytes just written by the middle segment.
-
-2. If both the buffered prefix and suffix fall within the same minimum
-   folio (for example, on a 64 KiB block size filesystem with 4 KiB pages)
-   and an earlier write already wrote the leading bytes before the prefix,
-   nfsd_write_dio_seg_hold() sets holds[0].complete_first =3D true for the
-   prefix. After the middle segment evicts the folio and the suffix
-   re-populates only the prefix-through-suffix range for the next
-   neighbour, nfsd_write_dio_seg_release() for holds[0] calls
-   filemap_dontcache_edge_complete() on that same unit and drops the
-   incomplete folio before the following write arrives.
-
-Should cut in nfsd_write_dio_iters_init() also take
-mapping_min_folio_nrbytes(nf->nf_file->f_mapping) into account so that
-buffered prefix and suffix segments are cut on unit boundaries?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261024221152.6965=
--1-snitzer@kernel.org?part=3D6
 
