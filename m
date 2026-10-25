@@ -1,94 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77097606A322
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 16:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B28606A31E
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 17:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iD8B2bWH
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Om0gVv64
 Received: by kanga.kvack.org (Postfix)
-	id 644E86B05B7; Sun, 25 Oct 2026 12:48:32 -0400 (EDT)
+	id 6F0316B05B0; Sun, 25 Oct 2026 13:15:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F6426B05B8; Sun, 25 Oct 2026 12:48:32 -0400 (EDT)
+	id 6A0B36B05B1; Sun, 25 Oct 2026 13:15:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 509A66B05B9; Sun, 25 Oct 2026 12:48:32 -0400 (EDT)
+	id 5B6306B05B2; Sun, 25 Oct 2026 13:15:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E8C16B05B7
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 12:48:32 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF682140569
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 16:48:24 +0000 (UTC)
-X-FDA: 85361731728.20.CCA57B4
+	by kanga.kvack.org (Postfix) with ESMTP id 341546B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 13:15:37 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8970A80573
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:15:36 +0000 (UTC)
+X-FDA: 85361800272.13.DDAA217
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 39A6080004
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 16:48:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iD8B2bWH;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id DAA46A000C
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:15:34 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Om0gVv64;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792946903;
+	s=arc-20220608; t=1792948535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HjEsKHyDFKj7HHX5WZLrUS4CLP7wbTWvbErAlhp6Z7k=;
-	b=DTtwwkeRzflo5UdAxGZ+/DuCv5uTbc0KdgYeQla3Y8KKpLfQA6iExsEyXnLITqoRoTo/8B
-	fA+YGR+xCuRpi5aBLg8VU+8VunKHEr8hpK88HByVWs4pwLkU32xWn0P9XgWGtDtJhsy/7/
-	5cmeKmYjHLmAI3w3t8tAJIpQraOUZao=
+	 in-reply-to:references:dkim-signature;
+	bh=DAENk+cctPe93c75V7p9sIsmyuSg6UDiR9dUUMQ5Phs=;
+	b=xErclclHLCL45QUNGNgM2pqNN+6O/dawrhMuuPYmT3/4XzbWuH8JbIYgWIlPPbhPpn2TJw
+	4J/5i60xR4K00JS8dLn9BaMPEPe3WLlyhWlA37+wZ5fUc2XoUv9Kc/85PjpQWChM2YsngO
+	ijcB7p5NpVnAZZJf0xqW76Z/iOrUOWs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iD8B2bWH;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Om0gVv64;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792946903;
-	b=nsCDtu2/qKM+Isb3ejICiWYaLc/KccoBXUiNkC82M+hew1SHrGDM38MZlf6/gM4gNNzXay
-	cb/tZUXCw2D+ZajmpUQJwwfyu+KrNOAG4a6TZ75Rwlgun1pkyQfaXom3rdw+odpB7wPXr1
-	+beVRS4oa+9pT0kScOeY3z53Fg5VDGU=
+	t=1792948535;
+	b=WLwTx/vmrtLWsXA6EMcLeeaWxeXSn8W2MLRcEfmsvxDzPRqS2HgduPB4QdxUkgMbIt/pC0
+	tpnrO9c7kVY9btkZRdJq8cctYwmSoj+87x/KGZVBRt35a5XLCCn+MiDj+dAZjTWayDFlud
+	f3FVD1WNvHS/uqLE8Mswbeug+X4YTD8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 93C1443E8A;
-	Sun, 25 Oct 2026 16:48:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14711F01829;
-	Sun, 25 Oct 2026 16:48:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 054EA41232;
+	Sun, 25 Oct 2026 17:15:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD02B1F01825;
+	Sun, 25 Oct 2026 17:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792946902;
-	bh=HjEsKHyDFKj7HHX5WZLrUS4CLP7wbTWvbErAlhp6Z7k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iD8B2bWHqgzjI/FQKlqUb/8hW2GaTV5hN/GUwnLZ3KLp1erPD0njJHPkCkyN297ny
-	 zW2XJC+SMYZO2ojUSZ6bCd1dToZAJ0EpeuAECGZVh5jgaAt/XkfseZtVkpZ/w7hdPc
-	 PCJWnva3sBiqz2Unh2MVFhliRQ8r+T/14pScXimM7+yq7L1gYHuAhknT07LrmUl5pe
-	 0LSfP98oYntPL0DoZM5Vy0jZALZGdjOphx51lhSGHMoq3dGQH7nFmfdO9nGGmDmaFa
-	 jyc14QAtpnPF24hh2R8nbM2kFxdMxE/DyIH5x8Jcv9m1ucgXN/IeCLec4M/FevsF1b
-	 vuA7SPvhkOgrw==
+	s=k20260515; t=1792948533;
+	bh=DAENk+cctPe93c75V7p9sIsmyuSg6UDiR9dUUMQ5Phs=;
+	h=From:To:Cc:Subject:Date;
+	b=Om0gVv64HOumU1N1ER+f2HJvdZV0lCn0JRKPEOIP+1IQOo0UeiQmqUD8Mjl2pRelz
+	 CkrGFIoXOIZdKKV/88tLEji6ZFWSDyBiF2id7AyEqg/WEVkj1lOmILnz0fOApi6y+e
+	 lNS/QcDesWoWg5w+877A4O88K9Trtpw86nXHEf0LigmOlwF526qOlrnTLtjIvv2fJf
+	 82OV9+gBwT5sqGGV0EKg7AHX4ANPfAB3JjmtLFPAf4fTA/u051P/V2B1fIwooRAvzp
+	 svI/j+pYPYQ0MRIrMR0qM4KT285f6VeYXemULvHZH416QcwjTKCBtQBQjBejRzpiX6
+	 tVOpdA5qld8Bg==
 From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: 
 Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 3/3] mm/damon/core: move static variable rotation to damon_ctx
-Date: Sun, 25 Oct 2026 09:48:06 -0700
-Message-ID: <20261025164808.152048-4-sj@kernel.org>
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: [RFC PATCH 7.3.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Sun, 25 Oct 2026 10:15:25 -0700
+Message-ID: <20261025171526.157414-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261025164808.152048-1-sj@kernel.org>
-References: <20261025164808.152048-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 39A6080004
-X-Stat-Signature: 3isttseecyt3hko8zm9r1e1yjcbyy6ay
+X-Rspamd-Queue-Id: DAA46A000C
 X-Rspam-User: 
+X-Stat-Signature: j4d5nrxy7d6sx1tgmqg6uai6qhszy9qo
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792946903-115256
-X-HE-Meta: U2FsdGVkX18HIbSRA0bx5w4M3uSSThdoshFxNNNeCG5/orQJEFfiPjjEr+UrxjSVkjGHCljX4vVxrpqlTOM+UP+e3gASybWii7soubHK6oEbKZhXK4HPqxHpKa9apIhYB2N9NoN6oQffSsqj9uZK8yjOB4aYul66xSpFoZpjYqfTq/LI056CmvuCmY+D0JM7kDwfkv8ipK6kp47hg3jABvNqYfRaqqaI8p+DC85fP0Ji/LLfcSUxYesG+k5YtGMAdU2pXVMtXUg1JjkwGJTT7Q/8I14jB16YIKcfp1h3Knw2vxbZ2lBpBSOE9DewGjbQ1oIjqU6o5KrJni+JH7xS3f/nm2bGxWQ1r5vF6wE5msyIg2wW4/XAMWAyzMm4a7SSL42r43Kbe0jjFo/ymUOroR46sSTZ5Wn7w6Fps3oIVSxUoOKfF4RHTaTgFFBd1We/+Tx8hhvrQd3vIT5Oc/RW5GfL+WXMh8g5/9+uzExCgsYOpxrHWVthRBY/PT7ULi75BD2HBstEgxp63r+kU8ico5ZUFJyHDrALjTuKIG4ppOB+8Y7UlSETUY8/L+OwH6+v2XioUNwRlAd1hfVy/T4eRaYzKCW8cWAM1H9zBxiSiVV6ZeonX/g2oUV0NxOqMjgiUWemfl/1YrGaFOSTVOsZpMHQqpSuMEsZQr9lq4YcvisIJIQ64y0HRxiZeLghnAEf39AlBJj8/KPTvPZGah5e9MpbM43XwTaxAyuX162aKgr6wl1y2XtxKyt+/y6gcc7vwZVCpn8xYlZh0R7NcsRVJa7uBD6gR53Y9EE8gk+PadpBM35WFKQ7P0uc+l2jSqrXUNNhOK6O+mG3hCyChWfcsLrJAGtK/gQ3uUKZNuQ8Wns0R9MvFDKphuAeYa/3fooeztam+YI89gKe1rAhAdx06t9c/cii+GSOF+mH+bDhkOBSsLBDVGQquvtOj1DJ9u0HGjvYmtO4P8v0h5VCExr
- ICsqF6R5
- sYB5qYmzF33xYMcg1lWTyHBO7B9cl+uH6OgwadiKNSIbkvBPjxN4ajgbsXwk3m1Wu7N2cJ1rJLmnVhWjDaXcazeUrpfpkw+ClWo8Tkkyv9a2GRi147LymmkGQsgi0gawcPmAEM7o1lFBAmDSaETlx5FeeSHOSwKAEVpQ1yzPoSZW4qnzzji0zDhX1ZyHmepSqReEpy1lx1iSjF4/E2rfyeu7Chii5nqYb25u+2HdnczAWbvNmwe1YSUmqK4EqCn3oJPKxzobTYPtjp1Pw7WRlP3bakekWLHbItTa5qZZsNTelczJImyaPDD/clEDro82BRrNuwYjG5bhFOp6JGxJHBt3AKQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792948534-78399
+X-HE-Meta: U2FsdGVkX18v/uWmldIrje5+5A06o0WpV3bwHEMhnvuJUcq2PVi66gwcLqwQrne5ol6M6oBjy2dVbGqeykSTncm1e0wm0OKxdXHsPvg5X1aCF44HbQUVcJpIcQZfilx11OpAJsqJy55opB9eJZ/VbMb1W+GrDcJKXNz/Y7FV5LS22xxRz7cp5DIy+UllAFgyurEAEkdVlJHkXPyLUqNqD9CHYHqdQLjLSdML3ivE4jqabDIXZw4smuvO8FcIMGy00eSdqrx31uoOn7MimHLwxD/bOppLy0dL5VnJcW0ab0xG3RI7JvAoV1diL0RKuyW+CdMZ4eADJWqU35dhzMa59kaB7LnZ2EGtXiOh6nA/y8itSCqnZ/XO49FHVaN7w/JeKvsO5mofIw9cGmsqqGKEgfcj/8WkI0nLdu+5XivqUBtjEyaLsYiGiER1paGHG0LzAr6AnsHTvH6aO5bz9NSMKDSJ9iQPBWjiBBxyRGY48y69UmjDPMoUzvIN2KMGGpv0JN8NS+UCDSGQsgwMHUulbJ9s3YNJwZ3hxpeCBBRszWBSACeUSgHRxQguZpULntQ7xn97SeOPIluKW/R71XKC22i7fJyWu5d7H/XwJ8JHi9wt3w1nlowbos8ODzbsF54QpeopkZNhxnQvl+ZpnZWljXMQxR6ePrIXcV/PJFC4FzSrxn/bgYGRxrqfue1LEL/Z936ARvWlHDe8m+ZJ28e7pex72vuE9bW82DgehfSI1NBK4nIUuRlJ/MaXIbR5bfBTckyvpC5VOs4N1W0G/926eLghKd9Gb6ns5x8wVZwT8N2jZTudgG2yaewFIyqhbhTauQPnoq+tcNQIl9MY8pWMN65zzBMXOq663P/ZsJPCrVIy3onUf75tRkWv3ooSqP06uyjLZWHh724kRamGizQmMiZ5NO1gVlmf6pz2yQsAQPyuNtOf3nVV1ohFYCdcDsjVQt6k9DCkZ1QqXHW+Dch
+ /SUNW3JS
+ ULTRPCmyFZq2Wa4ZUr0J5bFuHetMu/ymu7BBiC1ggtjANPHGl9VjlQsmmqRbyDT72cubWvt/PyJCygS63bvxR8u/Wwct42jMzdGw81jklYCj1LOZNt5cIPFWYmMmUujRn82+6VvZ25jtj17sT531tDy0G56YEiMWLVNmMiZqBxGgTmtSIdUBaqHNYqH7tgmTOupAfGm0UxLXY0g1mFhvzg7bJOqwc/XZW9kZ25dFCRkrFDJA0G8AiFiRP3TBU9A1w25FGnF3NEvIIdLLB9Xex8/G2fyZo8lRt+XGyKgXfSZmj8q1OeusBev0fUFl0Eb0vmooXAgdA+RKaD61+B71jUEC9X6ZsIa/RQoU/KybGMKrWd8gvg4xkz1MZ6G7tNz3f0B61bM7Om8AulH8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,62 +95,123 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-damon_split_some_reigons() uses a static variable, rotation, to remember
-how many times it was called.  It is again used to determine fair
-selection of regions to split.  Since it is a static variable, it can be
-indeterministic and therefore less fair.
+Patch series "mm/damon: move zero damos quota target_value handling to the
+core layer".
 
-The user impact is not critical.  No crash, no leak.  DAMON's
-best-effort and indeterministic monitoring accuracy could be slightly
-more indeterministic when multiple kdamonds are used in parallel.
+Having zero DAMOS quota target value can cause division by zero.  DAMON
+API callers are checking the target value parameters to avoid that.  It is
+easy to make mistakes in some of the multiple API callers.  Move that to
+the core layer.
 
-Fix the problem by moving the static variable into the damon_ctx struct.
+Patch 1 adds the corner case handling into the core layer DAMON parameters
+validation logic.  Patches 2 and 3 remove no more needed DAMON API callers
+side handling of the corner case in DAMON_LRU_SORT and DMON_SAMPLIE_MTIER,
+respectively.
 
-Fixes: 1a582e6e0174 ("mm/damon/core: split a fraction of regions when nr_regions exceeds max/2")
-Cc: <stable@vger.kernel.org> # 7.3.x
-Closes: https://sashiko.dev/#/bug/linux-eebfcdde-2881-48ef-8df1-e2019d2a47f2
+This patch (of 3):
+
+If a DAMOS scheme has a damos_quota_goal of zero target_value,
+damos_quota_goal() could trigger division-by-zero error.  Hence each DAMON
+API callers should do the zero target_value validation.  It is easy to
+make mistakes.  Actually such bugs in DAMON_LRU_SORT and
+DAMON_SAMPLE_MTIER were found and fixed [1].
+
+It is better to handle the corner case only once in the core layer,
+instead of multiple places in all DAMON API callers.  One straightforward
+option is using an alternative denominator for the corner case in the
+damos_quota_goal().  However, the zero target_value is meaningless.  In
+this case, the quota goal is always evaluated as achieved or
+over-achieved.  The quota will only keep being reduced.
+
+Simply avoid using zero target_value by adding a check in the core layer
+DAMOS quota goal parameters validation/commit path,
+damos_commit_quota_goal().  Update it to return an error in the case.
+Also update its caller to propagate the error.
+
+Notes for stable kernel porting.  The upstream commit doesn't have
+Fixes: and therefore not ported to stable kernels.  It turned out it
+fixes commit 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota
+goals user input to DAMOS") which was merged into v6.8.  The user impact
+is a race condition that can result in divide-by-zero.  Hence backport.
+Reproducing the issue requires sysfs write permission, certain DAMON ABI
+usages that are supposed to be uncommon, and a rare race timing, though.
+The issue was discovered [2] by Sashiko as a part [3] of its bug report.
+
+[2] https://sashiko.dev/#/bug/linux-7f814c9a-986f-4103-a55a-ef9537dcf62b
+[3] https://lore.kernel.org/20261021005234.94107-1-sj@kernel.org
+
+Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
+Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
+Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
+Signed-off-by: SJ Park <sj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 610c4438fb66e06d9e693c0ad3b2c1be54c0d61f)
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 5 +++++
- mm/damon/core.c       | 5 +++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ mm/damon/core.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index cb6a50032a1eb..380f9cf6ddd82 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -963,6 +963,11 @@ struct damon_ctx {
- 	 * for more details.
- 	 */
- 	unsigned long last_nr_regions;
-+	/*
-+	 * number of damon_split_some_regions() invocations for this context.
-+	 * Read damon_split_some_regions() for more details.
-+	 */
-+	unsigned long region_split_rotation;
- };
- 
- /* Get a random number in [@l, @r) using @ctx's lockless PRNG. */
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 09722257ce736..73b571b429cb3 100644
+index ab3c4d7549644..74d22a596fc13 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -3753,12 +3753,13 @@ static void damon_split_regions_of(struct damon_ctx *ctx,
- static void damon_split_some_regions(struct damon_ctx *ctx,
- 				     unsigned long split_step)
- {
--	static unsigned long rotation;
- 	struct damon_target *t;
- 	struct damon_region *r, *next;
--	unsigned long offset = rotation++ % split_step;
-+	unsigned long offset;
- 	unsigned long idx = 0;
+@@ -1136,15 +1136,18 @@ static void damos_commit_quota_goal_union(
+ 	}
+ }
  
-+	offset = ctx->region_split_rotation++ % split_step;
-+
- 	damon_for_each_target(t, ctx) {
- 		damon_for_each_region_safe(r, next, t) {
- 			unsigned long sz_region, sz_sub;
+-static void damos_commit_quota_goal(
++static int damos_commit_quota_goal(
+ 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
+ {
++	if (!src->target_value)
++		return  -EINVAL;
+ 	dst->metric = src->metric;
+ 	dst->target_value = src->target_value;
+ 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
+ 		dst->current_value = src->current_value;
+ 	/* keep last_psi_total as is, since it will be updated in next cycle */
+ 	damos_commit_quota_goal_union(dst, src);
++	return 0;
+ }
+ 
+ /**
+@@ -1162,14 +1165,17 @@ static void damos_commit_quota_goal(
+ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ {
+ 	struct damos_quota_goal *dst_goal, *next, *src_goal, *new_goal;
+-	int i = 0, j = 0;
++	int i = 0, j = 0, err;
+ 
+ 	damos_for_each_quota_goal_safe(dst_goal, next, dst) {
+ 		src_goal = damos_nth_quota_goal(i++, src);
+-		if (src_goal)
+-			damos_commit_quota_goal(dst_goal, src_goal);
+-		else
++		if (src_goal) {
++			err = damos_commit_quota_goal(dst_goal, src_goal);
++			if (err)
++				return err;
++		} else {
+ 			damos_destroy_quota_goal(dst_goal);
++		}
+ 	}
+ 	damos_for_each_quota_goal_safe(src_goal, next, src) {
+ 		if (j++ < i)
+@@ -1178,7 +1184,11 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ 				src_goal->metric, src_goal->target_value);
+ 		if (!new_goal)
+ 			return -ENOMEM;
+-		damos_commit_quota_goal(new_goal, src_goal);
++		err = damos_commit_quota_goal(new_goal, src_goal);
++		if (err) {
++			damos_free_quota_goal(new_goal);
++			return err;
++		}
+ 		damos_add_quota_goal(dst, new_goal);
+ 	}
+ 	return 0;
+
+base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
 -- 
 2.47.3
 
