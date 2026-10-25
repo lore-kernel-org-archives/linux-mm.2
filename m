@@ -1,103 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5622F606A31D
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 17:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094C7606A31D
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 17:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ts1cgX5X
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gtTWEkq6
 Received: by kanga.kvack.org (Postfix)
-	id F34EF6B05C0; Sun, 25 Oct 2026 13:40:54 -0400 (EDT)
+	id 23EBE6B05C5; Sun, 25 Oct 2026 13:41:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE6726B05C1; Sun, 25 Oct 2026 13:40:54 -0400 (EDT)
+	id 1EEFB6B05C6; Sun, 25 Oct 2026 13:41:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD48B6B05C2; Sun, 25 Oct 2026 13:40:54 -0400 (EDT)
+	id 0B70C6B05C7; Sun, 25 Oct 2026 13:41:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CE206B05C0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 13:40:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 148DE12064C
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:40:54 +0000 (UTC)
-X-FDA: 85361864028.04.54C235B
-Received: from mta0.migadu.com (out-210.mta0.migadu.com [91.218.175.210])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0C7E31C0005
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:40:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ts1cgX5X;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.210 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D92326B05C5
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 13:41:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72401160602
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:41:48 +0000 (UTC)
+X-FDA: 85361866296.07.96BB1FF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C02BA80006
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:41:46 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtTWEkq6;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792950052;
+	s=arc-20220608; t=1792950106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EFcn0IkG5YBPfWOvPb8EahamKp0w+ts2teBO5+lqi6Y=;
-	b=3gJ5/+9/nXWfQfRpQkef0JoRIzfqUf/CLL7q5QxRC919n4gCMDzrgzAQxk94v7b9Cb4Y6Y
-	t2mtz5+RzS9BhSfhpAnH2LpbfqJIaXB53uvk4r9s6nQ3TnVLpq78RYpKOgsHqup4mulhMx
-	ezjbcVCQqRuzch09YnzxkGAwe+TKBiA=
+	bh=I2WtUHFl6q3jEaDUWNmi7N1mxbLsBs8YwHkyGeQMjiE=;
+	b=eDUE6YBuuYnhBSKW91kDUOBP2jYcuby4z5PIrHCFTkcHQULZZS7wCJRijKONX6+Y+amRJP
+	iE3GA4KCTu+1FhRwNYbCygkHfZ9fEL2e+WJurp7Db963Ik7nfwIJMfJk5haVyupVjSKX6b
+	iiVaZfj9ruEPrs2VLF9wz6gdMfWVUPI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ts1cgX5X;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of nico.pache@linux.dev designates 91.218.175.210 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtTWEkq6;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792950052;
-	b=Qn/FRfT84hLOqB6vksdVHweesDzF8LHDQz9PO8g2Yxt7CcG2gC1c/F87Huv2IUPR4dj1Gf
-	4o3K4BBx4gsjLHlMo1I7LLIBT17sS9PV75u/Xx249ePenoHIa/WEkVV9XD5Lj6Q6kSNzxQ
-	zl9YukExEP3NnabzO8bFjrsrsFlzbG0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kRLF/HRsqERTBPSJ8Ot+uxyMxQc9Tghc4vnCRz+O19U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792950050; v=1; x=1793554850;
- b=Ts1cgX5X6ddWyNQriS86kNTRUCXh0OBNgQ3Ua0wxRXcUNcLWbb3fhAYJbvWBj3p7KsMH8XQ7
- NjSYuF8xHriVZ0CmhfvCilmB1a9ABLX1hR9GxwPeOZFFlBs1TKTPXAGG9M/h2gDQXCZMuiHlRxn
- niSEJhPBgqmqbPSwUUwGQcRc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 8008230ebac73f13;
-	Sun, 25 Oct 2026 17:40:50 +0000
-X-Mizu-Trace-ID: 8008230ebac73f13
-X-Migadu-Flow: FLOW_OUT
-From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-Date: Sun, 25 Oct 2026 11:39:47 -0600
-Subject: [PATCH v2 2/2] mm/ksm: prevent zero-page remapping during
- ksmd-triggered THP splits
+	t=1792950106;
+	b=caOmYq27n+SuyjRQkQlXx2wn4Hhk2zLcSiwp+NL0hxwZwnnA85Q9uXs2F1yZ+JDEI6X5GF
+	6IKvnSedxFLtxkynUtCI1SZM43IipUIIhyqVitoIpOeghDU7wSpINTeOnGzaUG+ZCDUcYz
+	p7njgP9Euf2Hxn1SzFPDRj5Tqt6ySZs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F2A4D4061E;
+	Sun, 25 Oct 2026 17:41:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CE81F01825;
+	Sun, 25 Oct 2026 17:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792950105;
+	bh=I2WtUHFl6q3jEaDUWNmi7N1mxbLsBs8YwHkyGeQMjiE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gtTWEkq68BRCPoTIMh/xO2jcf7f4SPpTFGWwXwq3E+wsK122kGaF8zXok9jR/4ZwW
+	 8jXUegn9aA4my0YZKQ+VoLwvuP1ySGFzRlsL8J/ySPK+lzgeHn7mgyVbnJDY/uq3vh
+	 ALqs+4RkE0tlxu4sirGRTyN324EqcvRY3rZoGoZGFSAzSBqX2wi0/64q50XKiX1azK
+	 Z3Y26TYLpi60/C9QUi2isC42QrXulVGNLUtcuMbSvW3A3zJqGEkNZOCDSNDdN53i63
+	 1L2CLZBqaO4H9ECs5Gyh+6rBXisrCM69tNZyEIBz6Jk2RLN4FfyP9xgrx5prhIcnEz
+	 uazf+MjPeZO9Q==
+From: SJ Park <sj@kernel.org>
+To: sashiko-bot@kernel.org
+Cc: SJ Park <sj@kernel.org>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 6.18.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Sun, 25 Oct 2026 10:41:37 -0700
+Message-ID: <20261025174138.165096-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <sashiko-outbox-184295@kernel.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261025-b4-ksm_fixv2-v2-2-8b61ad0491f1@linux.dev>
-References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
-In-Reply-To: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
-To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Yu Zhao <yuzhao@google.com>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Usama Arif <usamaarif642@gmail.com>, 
- aarcange@redhat.com, "Nico Pache (Red Hat)" <nico.pache@linux.dev>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 0C7E31C0005
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: teezgyrm7ata7os7irsrircbya6d1gfh
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792950051-458134
-X-HE-Meta: U2FsdGVkX1+YZOQi+aTXLjD3LtZsKtPg7bX+d1RRUNOMKfYsCMGkTHEvHDBbPXJcgFtpQrj6QBNz97KWTuBWsZHAB9TpTmlgrdeK7b7HBnNURDJ7S8fvB363Gs7ryX8CfOMtA37cw1o/F2wdtDltcaVpxFMuIgCUppY2xsqLVgleXza1GpA5JSE4bK5bC4zaoCk1FzB/sR5fKP8kLbKTgtvyz2DLkGS62TkP/9WfrC2KG6oqy0C54C56aqrjdt6Kyea/PYCvSapKVejrSa8iFSfDc3MrKcsuKDiYWFmbynh3j9PgBW1jBEPGnad0gI0cNqFgLBXvlf3nQeI0nNkl+PbI7SWEDkfN3vXmaQjFGnq9X27gTmaCScRq03WKgXFOAQh92ZLc2auYgyUs0nMTtJi6ObtIPB6D4cIgkR5pFqfQh40lv4xl2vjqTDfRmocaGr4uYdm7gXOPtJL9RYg9pt8Fjf0O+QHDoOlKK4X9/7pbkNCHwHQnFOmF7SGXuaGiTIm7Tuxut4wY9C+RQeTQOjWoXXvMY4/FZX6L0rkS6kZcjIuyVBR2W2X7caFviAq9MDwlwxXrz/8HHTljOqLR0H9deH0bGnNJIKoOE51FnEc1C9W0Fmjz/1aQXAaWgC7I/tvaW4Ezsg0416+Nmg7numZLuLc9W3Cgm3h93EiVISX3oAsAGgKOWkyX1/OdRjWlyzpozLSr3wVCbHDuHBsqr1icQPx+QC1VI1aP9EmEhfRTGC7vafcoMN6bEcnEulfaF4UOXG3xMBclZM/l0cpNA9ga4bTjzMKJXBoM+M46mPoViUB6M/qM41kPD+3bkHJZhZcAJ/W00+n+6CrGshVk9pC6CSN1S5W06sUE3ldL6RxYoIIn+FecWaunJuqMzFsFyLDDyz8ykH6MaysYwedL2ArSUO6WDFHwr9G3ZZOr7VFXQbp5dKtOVz1Bw7BVzEI2u6CjLO6jexY1FZSyFoy
- vs3CObDo
- DyjXEUVYzaS+ayf8ZUJQLTWlo5gKu3gTfLKVpzt82xvzfNw4x42xRIY8fWOd8UOzdeNEl/kCDJOuy+8ww+TCe0bMIhZOzFUlEqaXP3TJVQWxa15Cq0BVMrEcDDtN6CyanklKlnJPyzd0LaOwu3ioWbbbMurJ4dWlTjMlqLBZvvb91CybzcbUmc6QT7u94fn1tq6vErdN5JFex0J8ySw23W8Ibe5+elm4XAKKSvZiCRB9HOz7NEUUQ6bQkuXyXhzRmoE39J+rmFYp2Y00xyf0aNPZJvOS7A9VGLS2A9uxEBKZ3uZ1PO+d4C4ZZvQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C02BA80006
+X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: t81pehjfjnc14ww18yjg8ppy89xc5idm
+X-HE-Tag: 1792950106-489287
+X-HE-Meta: U2FsdGVkX1+2W4OwlxYeZrW2L9jqKIAtukWPZdiblZHJyhPsTxfQGu8bDQxyPQwzHZ83uvUFPp4i9233xj8cT9A/I2qWMCUcreIPGuTfga4B5qFjeVWRoobGExPFnXDENA4oKn5P90sDL9r77/B7zjwpaK34ch0xC7S1h30qGNnaFkAYr6mj4g/qbH2WnBEPaRCsoSb1VsU4cqEPsAsRVZPPsTlzE5N0WNhbHaVx5o1gZ9US5MrABrYAC9ygWqOwkDCKcblQrTYI2spvZAx5nl2diy08nC8EL6RgfQTOB1vp2HpY9+ljiOe4P9dhEJoXHctuS1H8KgyHOd7vWOBNOQNcrdrb5MbpBp7qCdfgwFaP2RIpConCiiOevgw3UGkq8378l6SD/dtzStqdBxE3Nm/8lql9J/pcdk3uyiy77qQ+kd627eLQRiM9+ifDSsqUqt3Rzvo/Ag4tCE0JelYhDZDUHcG2/YEULifHqPUmAEZNBb/DEmqBFgaFeEXpmB4NKffV5X9+dqFc8d581l9dyin4EKs0G4gQnsQdYJeViMZBlvq+7i0PyHluTQ+3lmP+s4ooeIpt/U9KtzTTFoxbOiTfttMWWCkUNUCiEkJl58Jipe+Ngzd5B3BpiMnKEs3YwErIIE6C5i1CI8u7mDaLO7tnAilARZZ+RFvfRCqrCTWtIQKbtlgeVSczQI02YfiyWRYPTH6MX1ztyGp7vwnKXHyygQY3wqH0rlC9psOzu+k/AJyj6FTe06yLu7iFt91MDs8Pvj3BtHT3dFSNWr/ALzVcNAowZru+3nHphdtfPh9WCq/RhP6b7QfKTQe0TtjoATDjvEa8Qd/haN5k/5X4lYU03j3nFLpRi6J0YCjp18+NWv+I+wuswyKU2Ds4WgHY9w12DJM5lDwcY5AUzVFz741EMBju49d106ZlIrIwlgdmVWBhq5COos9zVEz8MWvHkckf9fBAuqgPUVwJZYO
+ IrHoWf5I
+ Y64vn2P7aLjMoJyNepxO7GBoj3HuDe4yb1A3Imh2YY0gl1eMFFacV6tCPNaLZ9pPfl6G2rkqptbBflUEFxAGCUqTFHEINOeUNTsJkQQ45OCMDUcMMKQ4OxyytdtzWJKhFEo3jEUdqiOO53ZhVtOPZao9kxGLe7JrVD3vLfTtG1Aokf4sC7Fb2LGBVyJKK9Ulqz+KpB/OIiXBamjIQRRUIe/8+LwmGp+KZzUdKzYa6VLHH+Zqp58RADyLdSVdP8zz4Tny4JIxKP/+EPBGc3kg8X3iKL9DtSzcysT/Y3BEyKBEm7Dl/UGdO0yOCZXVrAELozNbHzFwQuK85G2eM/nn3F2JpyS/HLCRtD7ViEIrHEStaj9yq5Am5GbUgMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,96 +97,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-when splitting isolated thp"), splitting an anonymous THP remaps all
-zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
-This flag is set unconditionally for every anonymous folio split,
-including splits triggered by KSM.
+On Sun, 25 Oct 2026 17:37:55 +0000 sashiko-bot@kernel.org wrote:
 
-When KSM is enabled with THP=always, this causes two regressions:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] mm/damon: incomplete zero target_value check in damos_commit_quota_goal()
+> --
+> 
+> commit ea716ea29282ef733822096401c5c8d92eaaef58
+> Author: SJ Park <sj@kernel.org>
+> 
+> mm/damon/core: error damos_commit_quota_goal() for zero target_value
+> 
+> This commit validates that a DAMOS quota goal's target_value is non-zero in
+> damos_commit_quota_goal(), returning -EINVAL and propagating the error through
+> damos_commit_quota_goals() to prevent a division-by-zero in
+> damos_quota_score().
+> 
+> Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
+> Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
+> Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 4e6e3d7d0a5c0..8fa788b0d709c 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -807,15 +807,18 @@ static void damos_commit_quota_goal_union(
+> >  	}
+> >  }
+> >  
+> > -static void damos_commit_quota_goal(
+> > +static int damos_commit_quota_goal(
+> >  		struct damos_quota_goal *dst, struct damos_quota_goal *src)
+> >  {
+> > +	if (!src->target_value)
+> > +		return  -EINVAL;
+> 
+> [Severity: High]
+> Does checking for a zero target_value only in damos_commit_quota_goal() cover
+> the path where DAMON is started via sysfs in this stable tree?
+> 
+> In mm/damon/sysfs-schemes.c, target_value_store() updates goal->target_value
+> without holding damon_sysfs_lock:
+> 
+> mm/damon/sysfs-schemes.c:target_value_store() {
+> 	struct damos_sysfs_quota_goal *goal = container_of(kobj, struct
+> 			damos_sysfs_quota_goal, kobj);
+> 	int err = kstrtoul(buf, 0, &goal->target_value);
+> 
+> 	return err ? err : count;
+> }
+> 
+> Meanwhile, damos_sysfs_add_quota_score() reads sysfs_goal->target_value twice
+> without synchronization against target_value_store():
+> 
+> mm/damon/sysfs-schemes.c:damos_sysfs_add_quota_score() {
+> 		if (!sysfs_goal->target_value)
+> 			continue;
+> 
+> 		goal = damos_new_quota_goal(sysfs_goal->metric,
+> 				sysfs_goal->target_value);
+> 		...
+> 		damos_add_quota_goal(quota, goal);
+> }
+> 
+> If target_value_store() writes 0 between those two reads,
+> damos_new_quota_goal() allocates a goal with target_value == 0 and attaches it
+> to quota->goals.
+> 
+> When starting DAMON via state_store() -> damon_sysfs_cmd_request_callback() ->
+> damon_sysfs_handle_cmd() -> damon_sysfs_turn_damon_on(), this branch builds
+> the context and starts kdamond directly without calling damon_commit_ctx() or
+> damos_commit_quota_goals():
+> 
+> mm/damon/sysfs.c:damon_sysfs_turn_damon_on() {
+> 	ctx = damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
+> 	if (IS_ERR(ctx)) {
+> 		kfree(repeat_call_control);
+> 		return PTR_ERR(ctx);
+> 	}
+> 	err = damon_start(&ctx, 1, false);
+> }
+> 
+> Here damon_sysfs_build_ctx() populates scheme->quota.goals via
+> damon_sysfs_apply_inputs() -> damon_sysfs_add_schemes() ->
+> damon_sysfs_mk_scheme() -> damos_sysfs_add_quota_score(), bypassing
+> damos_commit_quota_goal() entirely.
+> 
+> When kdamond subsequently runs kdamond_fn() -> kdamond_apply_schemes() ->
+> damos_adjust_quota() -> damos_set_effective_quota() -> damos_quota_score():
+> 
+> mm/damon/core.c:damos_quota_score() {
+> 		highest_score = max(highest_score,
+> 				goal->current_value * 10000 /
+> 				goal->target_value);
+> }
+> 
+> can this still divide by zero if the race occurs during
+> damon_sysfs_turn_damon_on()?
 
-1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
-   split_huge_page(). The split remaps all 512 zero-filled subpages to
-   the shared zeropage at once, freeing the entire 2MB THP when KSM only
-   intended to process a single 4KB page. This bypasses KSM's
-   pages_to_scan rate limiting, causing ~1GB to be freed almost
-   instantly.
+Nice catch.  I also just found this issue while working on 6.8.  Same issue in
+the patch for 7.2.y [1].  I will withdraw this and that, and work on the next
+spin.
 
-2. use_zero_pages=0: The same split side-effect occurs through the
-   stable/unstable tree merge paths. Each pages_to_scan iteration
-   triggers an expensive split_huge_page() that silently frees 2MB,
-   while the scanner wastes cycles on tree searches for zero-filled
-   pages that were already freed as a side-effect.
+[1] https://lore.kernel.org/20261025172434.161597-1-sj@kernel.org
 
-Introduce current_is_ksmd(), which uses kthread_func() to check whether
-the current task is the KSM scanning thread, and use it in
-try_to_map_unused_to_zeropage() to skip zero-page remapping when the
-split is triggered by ksmd.
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261025172712.164385-1-sj@kernel.org?part=1
 
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
----
- include/linux/ksm.h | 6 ++++++
- mm/ksm.c            | 5 +++++
- mm/migrate.c        | 3 +++
- 3 files changed, 14 insertions(+)
 
-diff --git a/include/linux/ksm.h b/include/linux/ksm.h
-index d39d0d5483a2..41c06a6abf60 100644
---- a/include/linux/ksm.h
-+++ b/include/linux/ksm.h
-@@ -17,6 +17,7 @@
- #ifdef CONFIG_KSM
- int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
- 		unsigned long end, int advice, vm_flags_t *vm_flags);
-+bool current_is_ksmd(void);
- vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
- 			  vma_flags_t vma_flags);
- int ksm_enable_merge_any(struct mm_struct *mm);
-@@ -144,6 +145,11 @@ static inline int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
- 	return 0;
- }
- 
-+static inline bool current_is_ksmd(void)
-+{
-+	return false;
-+}
-+
- static inline struct folio *ksm_might_need_to_copy(struct folio *folio,
- 			struct vm_area_struct *vma, unsigned long addr)
- {
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 910a1307ac9f..e3ab037b1ebe 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2866,6 +2866,11 @@ static int ksm_scan_thread(void *nothing)
- 	return 0;
- }
- 
-+bool current_is_ksmd(void)
-+{
-+	return kthread_func(current) == ksm_scan_thread;
-+}
-+
- static bool __ksm_should_add_vma(const struct file *file, vma_flags_t vma_flags)
- {
- 	if (vma_flags_test(&vma_flags, VMA_MERGEABLE_BIT))
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 7bdcdb57652f..c33ae3fa1043 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -305,6 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 	if (PageCompound(page) || PageHWPoison(page))
- 		return false;
- 
-+	if (current_is_ksmd())
-+		return false;
-+
- 	VM_BUG_ON_PAGE(!PageAnon(page), page);
- 	VM_BUG_ON_PAGE(!PageLocked(page), page);
- 	VM_BUG_ON_PAGE(pte_present(old_pte), page);
-
--- 
-2.56.0
-
+Thanks,
+SJ
 
