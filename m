@@ -1,85 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A13F60A2603
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577BA606A33C
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MBQBoKup
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B4kVC4DG
 Received: by kanga.kvack.org (Postfix)
-	id BCCC76B05B5; Mon, 26 Oct 2026 05:41:08 -0400 (EDT)
+	id 935246B05B7; Mon, 26 Oct 2026 05:41:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7D316B05B6; Mon, 26 Oct 2026 05:41:08 -0400 (EDT)
+	id 8BEE56B05B8; Mon, 26 Oct 2026 05:41:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1EC66B05B7; Mon, 26 Oct 2026 05:41:08 -0400 (EDT)
+	id 786486B05B9; Mon, 26 Oct 2026 05:41:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D5656B05B5
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:41:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01BA4140670
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:07 +0000 (UTC)
-X-FDA: 85364283816.08.5E757CB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EF536B05B7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:41:12 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B353D1A06BD
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:11 +0000 (UTC)
+X-FDA: 85364283942.19.0E78756
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 188F4140009
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MBQBoKup;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id E481640003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B4kVC4DG;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793007666;
+	s=arc-20220608; t=1793007670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tZqjNhLUtMM9qzCfqbSSbYtLAIMBnXc3isIanFGM8jk=;
-	b=0ITPIUrsb8EhBtNUE1mVFdwVhR3H+2HyUAL5/iEFtUf22ZgD3F6w663/p6R+/xR7aSs2Pb
-	Z8xccLpeZs94/9vj2tOkR5bN2Cm7RhabO+oPkBOHE6xwO9ZETtQ7DN7U5/Fw59cDKAFneV
-	PhVyf07ab6B77Vquss/yY4pv6T8OFCg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MBQBoKup;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=+02ILXuK9KfO91BQX+g4W7G7YIbtI1+HIEbgN+bzPNs=;
+	b=f4JFeOJf6jrFAzaTXx8V0eofwYmF/Oh3XqbgxMTs2Gkuxw7O78Y0o0asJGxBWrYdGSbg+D
+	HemwFD+zJ1qaT1pPcLvEEA+hoXN7DSXHdAiLDkSReyB3JN0SbKwqx8Z7FdOA89MHdElbIg
+	+LQ22eKGz9BydEQzl3/Ane6lI9VYoYc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793007666;
-	b=CUneRHc6ND+NAVA7pZQqkpeXsfA4lqBI383PIGTOScdTZS1lOcB0p/gCyiadiEeVakHYPe
-	28aXqfytChWfZJgwxX7vbFZOj8o6GbapDRvY+pWVwMonV9aYSJoMZriUY4ccSXh3ZiUaT1
-	zin1+suUG+ALvFVJ/rWMaFKqgBYICQY=
+	t=1793007670;
+	b=UDF6fgxEV8E5KkAV/Pv7AqKAmzRTdl8SDY5DCV6BIiFfiNegtoXjuh7dklPbE76HwwYQji
+	kzWRedMLuK/SbwaAOYkgL06UTjyDeexwmbvnVC8RulSEeBetvxQjpuM7xOfVYGh8J597bb
+	uHJqV5t3Hr63sIc7FwKvyk7H4hhe98Q=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B4kVC4DG;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D3BC43A0B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4741F43F0F;
+	Mon, 26 Oct 2026 09:41:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55651F01825;
 	Mon, 26 Oct 2026 09:41:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAD41F01828;
-	Mon, 26 Oct 2026 09:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793007665;
-	bh=tZqjNhLUtMM9qzCfqbSSbYtLAIMBnXc3isIanFGM8jk=;
+	s=k20260515; t=1793007669;
+	bh=+02ILXuK9KfO91BQX+g4W7G7YIbtI1+HIEbgN+bzPNs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MBQBoKupOvPboBHAGShCa2KQHrEqsjR/MrgjtQuP2sCUGgdjYOu9EegxmvwTqeS0A
-	 BhyCWDRazJkTCdvKvi93Chg2Dt9yUC3zjnKvtF8cj2a4zGLqh5ZI6f8JR+LbqZAri9
-	 pjdttV/hbpEzrBaTLLeHdF7nRVgYcdVsz67gdzy+qo+ccnK2foO3SKTNOayx62tWdr
-	 B0iw3aidemCTPsAIvkYeMn4HjnRBFXQ7HfWuv2F6iQ02aXFnU/W0VSqZm5u3ao3vNC
-	 Zh9tR/ItbPiOGYbq8CnVXm7Zb27eTS7lH4NUtCOpOAUjhch2Ric3mQEgBHXljExawj
-	 jywrQTpbflAcw==
-Message-ID: <1c0141e8-3033-4f59-b247-34dee14cbb1f@kernel.org>
-Date: Sun, 25 Oct 2026 13:34:13 +0100
+	b=B4kVC4DGdBI0nHvQd38JB3xiE9r0i4N3qGwuJUEdjHaOsRrrDZWTPYEJgHeU9YP9E
+	 x5UEkksaPWu3fLn9gKPRdq9+DlZLl0tmGoNyWUTZOpghl1JA3iJtkPbRWENoHMLND0
+	 8xydXSGcQL+2c4pEPRs5A5JdLRoUtySK0dNJxK8+ahLXPcv+8QCPc5omQkBWFUtcxY
+	 vA7PKr/GgjLz8qst218EKOSDbH04nxpTs0Dx06ndguB6lpIkRNDlWswaSwXP9c+WET
+	 C/MpOG0Myr+GqyGXVQ3kAUP5tjXu3f0N0sDBYOpKbf1s3bAHMKbcHbpeeWxIZKOy/I
+	 oC0Y/U9Fj1mgA==
+Message-ID: <d39e7c09-7098-4563-b5fc-dc90982facee@kernel.org>
+Date: Sun, 25 Oct 2026 13:36:12 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
- PTEs
-To: Zhao Gongyi <zhaogongyi@bytedance.com>, catalin.marinas@arm.com,
- will@kernel.org, Ryan Roberts <Ryan.Roberts@arm.com>
-Cc: dev.jain@arm.com, baolin.wang@linux.alibaba.com, lance.yang@linux.dev,
- mark.rutland@arm.com, akpm@linux-foundation.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
- <daab2f45-56c2-48ad-a24f-aa4f889e4da2@kernel.org>
- <e0f60526-bb95-4d39-9a7a-72cdf32ca5b6@bytedance.com>
- <cc2e3af6-bb56-41b1-9cde-151797c3068d@kernel.org>
- <3b57c214-6a43-4fc7-a531-fb5eac196465@bytedance.com>
+Subject: Re: [PATCH v3] mm/ksm: keep soft-dirty when merging a page
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Samarth Narang <samarth.colleges@gmail.com>
+Cc: Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261021182157.1873726-1-samarth.colleges@gmail.com>
+ <20261023223352.c6de9f2b58fe999814e5bb17@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,22 +121,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <3b57c214-6a43-4fc7-a531-fb5eac196465@bytedance.com>
+In-Reply-To: <20261023223352.c6de9f2b58fe999814e5bb17@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 188F4140009
-X-Stat-Signature: upzuzajrczgmzhe7w75151s1rfrktwuq
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E481640003
+X-Stat-Signature: kbqmncgjsq37up7eqykw6w9xbrg6oa3x
 X-Rspam-User: 
 X-Spam-Status: No, score=-6.5 required=3.0 tests=BAYES_00,DATE_IN_PAST_12_24,
 	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793007665-626640
-X-HE-Meta: U2FsdGVkX1/85a83z0fjML+27JDhr4107seUqBzNDH7V/E+weMtiI1Dm8wcmZ9DAqVH9aPVuL574I/Dntsj1fecnbgA9K3Pwppns1fOWc0akxJYwQGPAyNU2FiAQ1W4yZD1l/TP35ywDWDRNAN/gFlQD1uCiHaE5dpGB4TgOuNDHB1QvHECsh2JUYtCxGYjD4+CKR3Ar3HNkljO8HIuhnkPSkVGEI8RUd0BB4MY9IcUawxo0CLQPPb4hJVPWp+s4q9mOyANAAOzgE+gman8cHUPkQ6FCYE5kiFGknjg0/PxXrj7ecnTkweaNkHBC4ercGsLBWO24lGYNQZfd/8q2SkWPXE4OC0grWo3yBkpEcZgY4o2Fl+p3ZpFxMBTu7qVO0FSFeRF3MYJwlOH7XQ5mvJgrX5d1AEVzAgkbxeQu4r2fbCpjUnoF354vAXBEFatzorbXeOT7FU9Pb5QjKiMfpOLjkxCHwlzXRPMWby/ylX2vOCMQGQNVxCmZJoumHrBYH0HZkrpjAwXj1zeS8LIP6K+EgGfg60ZS+6+kz9WuUhBov1Yw4SPYl0DbXmZtkmYEkqtSzgadsV6jzVMB8Xwn3cjP/b3wVNsUOU723Rj9IXaO6E6SYhgLxGDMCYhLSgNlQ46W7l1X+04Ss+X1rCyd+jpWQQ1u1KOIUP0z8LEotVl5GeBJCUyrehlV/w3CZuS5bgMN3kLZlXF7/WLL8BG5rv5VdJv8hbEyBO3UUOgdUGJ2J62wk81almqCS8t+iGT/Wb81USbHRW3qyOkHl1o+tMKehLpuGu/AviNghwUHR95jJMRLwiD6eNbSJlMCuBmXlblzkSrq8rkLJpamqSHs40urx4B2aiEPuKhMl8+W/ScFl+HPYliR5FoEg5qrtY7fdoWhCeEFRDeHAJS3Z/kARvjMY9lBNp7tRx7V1AjS+AHOl9c18L6HwcNYVM0LYhf+q3Mp2GZAb252E9CSQI/
- qkELsy1V
- /Vid/4KWjcM40W4eUM/DYa5a2ugewzW1goSo49OgpaniMYmcxVVkfh0hvkkYDjVtRBHunIyKPmMgE3lrUpSHqpe+kuorpPpp9QEQ1oxIKpj1JckPQncfVjanWTnLXgh1OmDMquKL3KsHE70PsL5QnS/HcgBStkzM+7RcnYoBCZOyeXvZAXVPZr7p5OO39nhCb7YXJpiiTbI+z1EL32PSQOQTCxooB2RQcqv0Nzvel3tXovyJNuTLf3393LmeOHKd4B7QKrF4gIm99tfNY9MgofkLeivJnyrIZ1I+kap9CBIeMfe2tZ6QT2mF8xS1Jh97E8OyJtBq4H3dzFItQ3d7ClPVsiQ==
+X-HE-Tag: 1793007669-53337
+X-HE-Meta: U2FsdGVkX18P17IbDaWSR/8/xa77susw0avET74FLNJpk9JpC22BLhbGXi4RCydl8T6Yc7QA2NQ1L3mciSVaDydttuA8Iv88CL/B4CDwaI1uhO0WEgihsIeRPuM+FvS6nnjiIHWD0T+RlbTEYj5xmS+Z5zRPZtWWpuFKJKaqjtSttwN+orNtYoGDFWkIydArhJycpxA0Zh2pvc/JBCtp82/UFpLSgn34zYWi2PFU7MAOiQs+bE2EK04Fv2Deg04aCwLOKR8RdJ8Fg7r2dHHe1wQOtLRp/18SRI+aD4+CxE3khjBhIDB/ov6sSN+Rj9m7hfCgBspFcRzPdpo/00qU21XBO1frA8VvLhqK7rWEEqWhqfJYChCtU8fiBJCPe97dyt4c/vNo1gFH0B/jKR6IG+aKvaNVyLgwqScrfpx+tw1mB02TOOymmF4Jx0HlKLmJtCu9l2AStJ4zyR7ghmyVaCfxfUULVBMp+AehPD/Uu+jM0JzIRFltBDyNRwh89Bl2/wK9s7o4AYLm8bDUm30TxAFCDmb2fYWyXz7B+xC9FuO5eD30HtpUze6979PUnmOhLbnyy3GpzyZ89KxVw1p23ZtxUqCujrnSLl4sLo7NEWHUuc9xr9NXXP2ul+w4glQaBnXo+VSoXXFXciWKQAMXd8OX5stNUJqQ303dg5MSWXAHiHctS5/flwJ5p0XKe2lsJrP8vg3+x3X0bo1sO/a+bhiGjqdpm5kTkW0L2LIS71KyrBq3atG6J8JlJx2QEh7wzSoEcD9jHqT19JjUEjg2JDlVOHyVNNIgLhTyCOkudlOHXyX71kxKb3sS2crTE2bqZRIRua2OK3cQCn/4Obi+rKLwDI4acE8hhvZMbbMXcrZ13O4vK6ltsjL+qmQYxW90C5OyJEikFebI5TNVlchGp5XbMREcWD4oBNsG2O6Z2FPZ5yLyKAg9uNmy9Zga38jcozcvn/t81PcAdQ882b6
+ CjS350Om
+ WHqdkSEbthCCiMITb5NxEkzx9cf8zm9ikpxC4QNjIm2aLf9u7GfSBJ80H9eJHr1+ZxhOJhwr4oBOhQ3zrdHm6z12BN9i94pHCrGyaY7euUFnDiJ6QFZ1Qc+ecw6Uw5w52Km3OM/4f3ZBbEdTmTrr1Ime05F6lG2wZhsvzNviAhcORJqDswSjVJ/1TVnQ5gpjevayv7xWrxYsOZe2M016CMJ6cr/lx2g0QqHATZXi6UBIz3mPKboQNHeBt2oWsM0xbBCLzuvWYfVpL7CnWBajbN44sL9Z/2Rk5a9I8MUkd7qV0iRMoKV3g2wmNqGQ0KFvapSY7r5iR/AcOLywZRQa0yCaXj1DDIWiklOzw2QWOoBmEjfw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,39 +145,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/24/26 18:00, Zhao Gongyi wrote:
-> On 10/24/26 4:55 AM, David Hildenbrand (Arm) wrote:
->>
->> Hi,
->>
->> sorry for the late reply.
->>
->> If we have the spare PTE bit, why shouldn't we just use it?
->>
->> It will make batching over PTEs faster. And we care about that for present PTEs.
->>
->> So I don't quite see why the stable fix couldn't just do it right away? Do you
->> have a prototype that shows that it would require significant code changes?
->>
+On 10/24/26 07:33, Andrew Morton wrote:
+> On Wed, 21 Oct 2026 11:21:57 -0700 Samarth Narang <samarth.colleges@gmail.com> wrote:
 > 
-> Hi David,
+>> replace_page() maps the KSM page with a PTE built from scratch, so the
+>> soft-dirty bit of the PTE it replaces is lost. A page written since
+>> "clear_refs 4" then no longer shows as soft-dirty once it is merged, and
+>> a soft-dirty based dumper treats it as unchanged.
+>>
+>> Copy the soft-dirty bit from the original PTE to the new PTE.
 > 
-> I tried a small prototype that keeps PTE_CONT on present-invalid PTEs.
-> It leaves contpte_set_ptes() unchanged and makes contpte_try_unfold()
-> recognize pte_present(pte) && pte_cont(pte), instead of checking only
-> pte_valid_cont(pte).
+> Thanks.  My LLM review thing says:
 > 
-> With this change, the guard-marker reproducer passed 100 iterations
-> in an arm64 QEMU/KVM guest running a KASAN-enabled kernel. The fork
-> and PMD-split probes passed five runs each, with no warnings or KASAN
-> reports. In the earlier A/B test, the unmodified kernel failed on the
-> first guard-marker iteration.
-> 
-> The prototype makes the reported reproducer pass with a small change
-> while retaining PTE_CONT. I therefore cannot point to evidence that
-> fixing this failure requires significant code changes.
+> : There's a separate, pre-existing problem with the KSM zero-page
+> : path which is worth pointing out.
 
-Can you paste the code here for easy review if that it the right approach?
+Cool, more AI schlop.
+
+TL;dr Sashiko raised this before and I commented why we don't care IIRC.
 
 -- 
 Cheers,
