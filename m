@@ -1,85 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62791606A31E
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 10:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ECD606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 10:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g9JNF4nw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VfkkbBlt
 Received: by kanga.kvack.org (Postfix)
-	id 674AC6B05B0; Sun, 25 Oct 2026 06:06:01 -0400 (EDT)
+	id 607726B05B1; Sun, 25 Oct 2026 06:09:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64C8F6B05B1; Sun, 25 Oct 2026 06:06:01 -0400 (EDT)
+	id 5B8426B05B2; Sun, 25 Oct 2026 06:09:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 589256B05B2; Sun, 25 Oct 2026 06:06:01 -0400 (EDT)
+	id 4CE2D6B05B3; Sun, 25 Oct 2026 06:09:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35A4E6B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 06:06:01 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B50611C3DB1
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:06:00 +0000 (UTC)
-X-FDA: 85360717680.30.93759DB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 27A4F6B05B1
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 06:09:40 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 620451402D0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:09:39 +0000 (UTC)
+X-FDA: 85360726878.06.2A9681A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D59E8C0004
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:05:58 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g9JNF4nw;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 85042180002
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:09:37 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VfkkbBlt;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792922758;
+	s=arc-20220608; t=1792922977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W7gJTuVi9tDXgHlyaf5e6Te/gAcfSr0TPEgIwLiJCcU=;
-	b=Ap/XZrhOYQwVf6DhyDmmUEZGdDBvbXUzUp6gr+KXLX65CJdgecdOlNmIk1lPYUFQrrdbaC
-	A4A5cqa/QG70LZOqKm7azP25MTf2Fyhc5I+88YLCxB7ygCz5nACVxjbWsbIyU40zRxyWhC
-	luUgYXX0Ska1GgxO2C9aZ/KTQ+pUYw4=
+	bh=x9QnU2pBsGjIFmv9Euw9yPy4UBXfMcM3EXn/p1BGvaw=;
+	b=duAA0zBeroMrFXJ2JYSIz58V6SkbtuyVN5lDyda7FuL5OMIN8+n/ZQhD+09+M0HEXZtPvS
+	UZl4lamQjcCNL59Z6L9LBfnz9mUS3jmNPVaNznaK5Pcihp8BCs2GooOBa1b67iNU/35ARC
+	lU32Je2IWJVa2v4OThE+HXoht9Odtws=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g9JNF4nw;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VfkkbBlt;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792922758;
-	b=OvXx+elD2F7FFvzpOAJ8PRr6YkBYncvfpJe1UcTlD1CfaKdyLdHBwxgfDEMQCw58Ynmgqv
-	Xq5tFxZEXQVU8TgmHccSUJuCVG6hGdckbvltcQWRN6I/md+7tml2Xdmz5RBvSBH0V4Rmvb
-	kgYat96hptMVSvlyQQCccOo1KQAqyQM=
+	t=1792922977;
+	b=47LdebYfL4mVJulb4BZRd2jFje08tyWJGtcvI9ge5gcMiLu8hwvEaOQ+IFRGhT1HZqAXMr
+	ZJ78g/O1jz3YRJrSsLDhxFBriYWK+xdM5uM8ZRuMLjpmy6lRgQSpVNBjglBuvyX7XAatVO
+	E0/8jkzSsGDJ9ZFITbgQ5sOL4KM96lg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC52C43EFE
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03CA1F031E1
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:05:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BED8C423D4
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F0B1F031E5
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792922757;
-	bh=W7gJTuVi9tDXgHlyaf5e6Te/gAcfSr0TPEgIwLiJCcU=;
+	s=k20260515; t=1792922976;
+	bh=x9QnU2pBsGjIFmv9Euw9yPy4UBXfMcM3EXn/p1BGvaw=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=g9JNF4nwhyjZEs/ZmRDaoMhjB0L73RSQupVBm5JRTYeoBrJv0gN7l+AJKK5JzrreO
-	 DFWfEJdJP3h2ysBnfN9qCKn37wITJF0Dt92aWPzo/uug3aUd/nX+jKQ3rVOsmEj1zE
-	 KI6GS3VtLtlnLUkmoNrs22U0WLxUR7YvWdPj6pJdEqsWTHIiE1Rr4Z7BfFaKpCoYoa
-	 UKkqCjf35AUpWlkaseQGXSrENUrbXG+Thu2FLQPVKSKya4Q4UnWP48NWfIElqMOq4e
-	 G1qu0s+OaWBK274L/Ehzd/nwg/WWf36lzoOd5siZVSCEkW1ge6jFYiWZ3X7gmo96iq
-	 3CJdBb3LHHp7Q==
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f1ca4132bso185034585a.0
-        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 03:05:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBztw0Iqb1EyX+9orywD8ejuF55aWonGCkVA5L01Jd+yELkl+iE9hAIE6Hth3hV1woo30/vmsZXhPw==@kvack.org
-X-Gm-Message-State: AFq9FYIzrNr+SxtHk0MUGuYMko9wqnr7mHrvjCQlgZjf7ZO5fUBs8irj
-	KeQ0rnLuTWNLg7uSa8s0xh44Fv8nf9wG9JEiNAWBFPasiRvWZd+Tt6NO1WlKMnIi4lA7G1fUI2N
-	G4Goh8cUfKMSpcIw59SYJTgIyiTTPtYc=
-X-Received: by 2002:a05:620a:261e:b0:93f:24e6:403e with SMTP id
- af79cd13be357-940ef98287dmr493200085a.54.1792922756979; Sun, 25 Oct 2026
- 03:05:56 -0700 (PDT)
+	b=VfkkbBltC7bsCM+rryO+DA/DdspsX0PfPXpnFrniEqfAR0EmFYeVGINTVujq8fXon
+	 9meZtkY8T5Kp/W52P+22vw7Wwhp+wsRyFuyWjmF8A31c2etBkSTZE5EpmdU5B654vA
+	 sRjKNj4+4Jyuz+OLj4lEVKzwuZE6RxR5Ik395HfjrIY44KorpL2PKvjpyxRzAciL1y
+	 IJS8Ldv9yyiYecnrNhVsTSWsL3KkXYdJ+r9aAphG44pFpYI0qoi/GNiBFzcyWJ3zR+
+	 NhaoeDfPQ1knN3JHF8+4dMP7NXLFJl3YIaglTmUxLj+GqcJ85J6eaLA9IrwbdJnBT4
+	 7RfD5/MuvqHLQ==
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91b83459526so27381656d6.2
+        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 03:09:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy7CzQ4W3pogpJMcQTsjskeiD/Il+xYPrJWXNjXheHtfJlCz38Ctgor09z80kJs4O7xWVymiKOPUQ==@kvack.org
+X-Gm-Message-State: AFq9FYLIMzIkbxdVgo9Am7o97DOHoBV1qOFjHERRBEEHAw5DpqSM90t4
+	LkT1vNzPh+4CI9lEdcZgYekS4C7R25lS9hGf+yGrwKFr2tzzG1HAgIBIhTtCiGu70GwynvMaNvt
+	QkLebYuF3Zp3k07FMQmVBLpF0bJnJJpk=
+X-Received: by 2002:a05:620a:271d:b0:93e:c35b:2332 with SMTP id
+ af79cd13be357-940ef9504b7mr498180685a.73.1792922975943; Sun, 25 Oct 2026
+ 03:09:35 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261025021839.1542805-1-senozhatsky@chromium.org> <20261025021839.1542805-2-senozhatsky@chromium.org>
-In-Reply-To: <20261025021839.1542805-2-senozhatsky@chromium.org>
+References: <20261025021839.1542805-1-senozhatsky@chromium.org> <20261025021839.1542805-3-senozhatsky@chromium.org>
+In-Reply-To: <20261025021839.1542805-3-senozhatsky@chromium.org>
 From: Barry Song <baohua@kernel.org>
-Date: Sun, 25 Oct 2026 18:05:46 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wBz8SHAy_nmv8w1UX7yX_yqhp_ShnNNJ+Ek82S3ZvYzw@mail.gmail.com>
-X-Gm-Features: AclHuK9dW6R5A382Z6S5kYHE3k5MMyEbL-uFyfOty30ebho3VuUUWRklFvN0H7Y
-Message-ID: <CAGsJ_4wBz8SHAy_nmv8w1UX7yX_yqhp_ShnNNJ+Ek82S3ZvYzw@mail.gmail.com>
-Subject: Re: [PATCH v7 01/15] zram: prefix backends printk-s
+Date: Sun, 25 Oct 2026 18:09:24 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xxB1Dp-wFkw0bqF6hUtDERxmjZ9e0k01MYtaECvc2z1w@mail.gmail.com>
+X-Gm-Features: AclHuK_hSR0uvsmfM9khVcfYjoKkHuYjN_xXHvZnCMI2yL_FlRUxprG3VMTY-6I
+Message-ID: <CAGsJ_4xxB1Dp-wFkw0bqF6hUtDERxmjZ9e0k01MYtaECvc2z1w@mail.gmail.com>
+Subject: Re: [PATCH v7 02/15] zram: remove debugfs entry on init failure
 To: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Brian Geffon <bgeffon@google.com>, 
 	Bo Zhang <zhangbo0325@gmail.com>, Minchan Kim <minchan@kernel.org>, 
@@ -87,18 +87,18 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Brian Geffon <bgeffon@google.com>
 	linux-block@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D59E8C0004
-X-Stat-Signature: xa539ripj5imt7i5rkjupq9o7j9wwa1w
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 85042180002
+X-Stat-Signature: kocw36fswrr3wdng9ka9ewup18j64wbn
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792922758-367257
-X-HE-Meta: U2FsdGVkX1832BcQnzRjODMDC3VJgubSJnlO6omV9X11hxDqMii4YBagt2b3IWdI3Mh9v46ELy9wFqygrTguFqeFetwbz9f+RmI5kY7NhhK1dThUC4qOLTmn+68NhCyWWvXSwjhhx1rFutv4OIQo7bo6rdITskKTqGAFaW4crnIKCJHZy1euY7xtI41BVBG49aWh3xDNIF5vGZIYF4JKou+Ya7hlAadatYlUTR6GFcR9BGDoKR+gwrpTjwvNASGzsrSGjP3f7jTJvaOG53H40SP13pVnXaEqAt83+ga3aY2GCwXZeZ75aem3LztCrdgbqIykd84ZQ5IAk8q6d3r4LguTcha5TWwqxcMQWroqnWDQgS1OJFBEHplK8yTH91jATmk/BhWjtai/F3Zxt5XxjeepYsphfZyjrGtwcKPCQpOzj1sOxG7wTKsWFGkKZgNPH54tufK0pqauKM35yuIVJCH+/manDicU2MOkJo+fVm0PCfviUFevHtXvhVpbxITwFt8Jnj/59uAlQt/ad0Hbmn5yy/Q63MIKjvZAfnVs87jsmAEFYE/OoOIIgcsvkJa6vt8k/HbY3vkgop8Xq2PdvDIrRkALOcn1dbgYMii6LrIYLxu66CbvkEr0ET1fnIFEoi6FLBgY+/OPYGJJLJMKlQ+xRyg2Mqreb7n/lqVd9DjDPM9Xu0Rg+0wWNIFIsRi40d4JQ4OPoOnuc5ufjKnRwfuX0tQRAZ49odXTLuJ8oAqTdv/LBZRtw9G54EIHtS+oJkQwP20pn/64jeeS4QnaOmSh55SFGGpfiySBQ42ZMW8Yxwuntgozxx5+dfWbpUn2ENonpb80izXrWO4lF3IknDL0wTfGvSmNM7siRKERBDWstv9tkDvaSjr+GJVdUG9CGJvuaPo2quVqonz3KEFNvulPTWim20BIcyM7JwyPFE4S2hM8LMdGvTkgfp9cuVLZ5Ha/+hHlk6fa7F6psBk
- IQZZs+++
- Lz0ZPrW/Udje0o344MnfJKwKFTtpeDChZ2RGwZ7J07WqNHk93qxw0qEV+/5DlrA+D4JXK7OTAvIJIx7Dw9Dwuq2lfELmPtA6c5Wm5tQYwpaHtRtavBhn6cQ2ZzI/a7tGpSYD7vhoJIeDLlcivQmV73Um7qS430bV+CwcTSuCROxr4bJjorSh+VsbZcV2NSeJni4177miNn2UfifXZCrz+n+ktrL3vzG9l0+P12MrRfIZF4t35S9KvzalZMTYMp6vvI5nb3z2yfU/oDvWETxUxZezMZO65k+2e4ho+gxqxHFibMqIPlbokQezKdVPvUuiATZr++ZxGEN84jME=
+X-HE-Tag: 1792922977-551805
+X-HE-Meta: U2FsdGVkX1/864AEeu7MgfeVOGo7KvQKiWiNVMNo6cZpm+gaJX9iWh/UdvoIg0iQov/h61szZxAkVRtmiAb1pJKs3gJ0fK6JJEfKhbRGA2nyWFFxX6PtRkRV4shfk4u8QJwu7FiLFpNgXeqZ/aACBSzMUzHwXEDLYfdM2bEa4FslGqYplaurNzFJcDOum9vWlqyqz9xJpfeByDMogo5jXjEt3f6G3aGh9pjVhWBz2Yj5WtDYPnJlWrblqrzB2PxIZBUiXK3XTEXziEp3wF31d20jhqO3/v1caEWQ5JRcVRaCCP7w/3VuQ2djuMeNcj5pT1PkUnulVbgjXdJmevlLlRVfd29EavP3UxT3aZL+bWmLFsBw0le7C4KUm7HNqEJrWusYrKgg5DaYvM5iHoAuRSLWLSLWS4BVOwRzAJNS6Q9eTH4XyV2DfoNPKiASxdVZhX6sdRBszUey6F737a9Tggb15gUG5TQzdwPajy+HmZb5pJcRGRFszcUg0k08hRFmIIAp3zK8hVetl749FPgeTPk0HHU2vXdgjpE9KQa1I4D7uG5daRXKdH35jfrW/b7CV/TP3aCcaIFGP0qYjvmgBzL9Q8BrP/QfSc0+ce6j/aXopvnxDGz5lpOSyQy2zkHc/VasMLVtUh9Fnmn5ML854i6QbMWcD41EwNkMalhxxR/yvvcAdyziHxFJ89AgPBK9N06ynE9rD1Jjzm5ZXvJGLd1sndlqqMT5MKQRRQZkWkYIVrQBkezkIJbTYvTdNrubCqg8A6V6J1SKe9sn48t2jDQ9KYK1ezT7v2W6RS2mxv6r+9K2cftJTGLHJqzLL/8Sm4tEbugyzzHD7J1U+ogBuiptkjYVetRWBDbPdZrGhG0ComPXVWGTSqLz81ZF9cEI6sqXwmuC/JyJdIQS3f9YNMveCWiLRpnKTKkk6o1jt/W0cOk5+bbm0bO1Nk9BlxILTn+PgxJD/oyqzda0C6l
+ TiCUs5rs
+ qM3lzdJqsRgdg4FRHY85bNTSbpehmrfjX47tZ+5KzuiRstMSzDfSHJR0pH83GKKI6FK3f6DqQ8AlLPHY1cVETQGN9gzWYjkFAoZgdCIHzhzSlRPLPKhAu2zXc30YokHYKQDjAaEsd8JtiGJGNJxdyNeqCSMxKixK1bLybdS9nrtG5WIem+0XvaWxy/DQdOs6VGZ2aaCZaZJCn8Is3EAPI9DKXtD6FMbM4FvV+NVzd8UIHRWwZONE9+YcxHKwpY4yW8M+p99sin0Zsfy5FqlbKt+37f1gO6hczD9AjNsTjOU/EgqlSMSefSPBfYIrapxBKWhsDhsEBYCcRCaQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,13 +110,14 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On Sun, Oct 25, 2026 at 10:18=E2=80=AFAM Sergey Senozhatsky
 <senozhatsky@chromium.org> wrote:
 >
-> Currently, zram backends prefix printk-s with their names, which may
-> look a little confusing, e.g. "zstd: alloc size 408128".  Prefix
-> backend names with "zram:" so it's clear that the message is coming
-> from a zram backend.
+> Do not leak the debugfs entry when zram_init() fails to register
+> the block device.
 >
 > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 > ---
+>  drivers/block/zram/zram_drv.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
 
 Reviewed-by: Barry Song <baohua@kernel.org>
 
