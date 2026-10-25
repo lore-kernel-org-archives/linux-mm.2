@@ -1,106 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02902606A31B
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 21:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC46606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 22:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gWkUhUFU
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WXWccwxC
 Received: by kanga.kvack.org (Postfix)
-	id 0F8766B05B0; Sun, 25 Oct 2026 17:49:11 -0400 (EDT)
+	id 715DD6B05B0; Sun, 25 Oct 2026 18:12:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A95B6B05B1; Sun, 25 Oct 2026 17:49:11 -0400 (EDT)
+	id 6C6BD6B05B1; Sun, 25 Oct 2026 18:12:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F057B6B05B2; Sun, 25 Oct 2026 17:49:10 -0400 (EDT)
+	id 5DD416B05B2; Sun, 25 Oct 2026 18:12:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D0A1D6B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:49:10 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A2F41C0F79
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 21:48:52 +0000 (UTC)
-X-FDA: 85362488904.19.E484F6A
-Received: from mta1.migadu.com (out-240.mta1.migadu.com [95.215.58.240])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F3EFF40003
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 21:48:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gWkUhUFU;
-	spf=pass (imf07.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FC126B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 18:12:14 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65CD5A064A
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:12:13 +0000 (UTC)
+X-FDA: 85362547746.02.301C927
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CADFD40003
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:12:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WXWccwxC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792964930;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1792966331;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7wQNgAvrV53M6g73xXbn+Hsa5Wpgb9uHDA2CEi88MY8=;
-	b=yot9ZgM260pw+zW/NKnHn5AAPU9pBn60GSc4UwfeKEIDEypNcvHcij/wuApuvnNyb2O0AO
-	8yom8qqQBM0AvJwiOdYy+WoKPVQqXM0ZBOK1zdfjdS1e+YyUvIS9062kVozQNF5ZNsaZ9Q
-	ldg/nLOnj30RCntAUzTCCXPPqEniUGE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792964930;
-	b=zLE+LIbKhWoztDegDJOySOyk4XV3FjihaT7ii54LjPnefjZbWoCJNRjGmfi7GtrXqwScT5
-	d8VRX+/YuM2U31Av4Z8PdGBXg4woUTVQcSSi8yrVm6VfBTxWOvhdpSAjGVKBQS7YOqM23f
-	mOANHaDSZLoD2F+Rpjzhe/YKYGjGZIg=
+	bh=recYVbsPv5/lH0o+j5UEjyEemFAvWbZkKxi0jqSdTOY=;
+	b=Qfs0bdSCeUMqxCBwULyDF9H808Ql1odqZ+QeC1hhUkMDHJkvqv6djmdeqAdK5nSIhlStUq
+	pgmKBqpcE6EIk6Qfz0uZMIqwx4elXbSo24Un3YlysjUFN7lNEDz+IiWZ+xUaIf7gKX33tn
+	zQZFVVTION3BDvAMYlVElD0T5o2hfhU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gWkUhUFU;
-	spf=pass (imf07.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FW93I9g2tFhlVSvMbZvJhIsiJI9bo4PZOSNREMcmxDA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792964928; v=1; x=1793569728;
- b=gWkUhUFUyP2n9w1XqfxuzV06+ZqN3YN+wNJCYBrB4HxP5Nwf4YoA/Ifr7LPlYyKV633fnYzN
- ZQA0k94WlZsm0a64RNpARKHYrHVnMTF+ivYvmRNLgLaeOBang+tBO6hINmNWwGhQVq7MrwtftlD
- 8ilzZwtbnrH9kXJ2kDI26e2M=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e5eed0b9c945e22a;
-	Sun, 25 Oct 2026 21:48:48 +0000
-X-Mizu-Trace-ID: e5eed0b9c945e22a
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e865f7f0-087c-4fe5-b729-6e6946cd20f6@linux.dev>
-Date: Sun, 25 Oct 2026 15:48:43 -0600
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
- underused THP shrinker is disabled
-To: Barry Song <baohua@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Yu Zhao <yuzhao@google.com>, Xu Xin <xu.xin@linux.dev>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
-References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
- <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
- <CAGsJ_4zUVpBJazRxc1CzN6u5XvpUaGnaf-_7JMz-rGK_ZTYMtw@mail.gmail.com>
-Content-Language: en-US
-From: Nico Pache <nico.pache@linux.dev>
-In-Reply-To: <CAGsJ_4zUVpBJazRxc1CzN6u5XvpUaGnaf-_7JMz-rGK_ZTYMtw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F3EFF40003
-X-Stat-Signature: wdto4kgutbjirhypghw41sgcnqozbzjd
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WXWccwxC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792966331;
+	b=JHnhDyC9PoCFBD0ytBz75di1EYB3EXkSBUJmhU0lufKKe5iEp/supSTf3vOBUxz00PoMAM
+	sImFUKO2iFisFy5S8wqVw1XtFTSGHacPhgvSgyb2i9uwARJIigQIWz7y1l+WmFEEkEUH5L
+	5p1QDStS5jSaAbKDcgA2cyvaJuRhALY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D4E2600AA;
+	Sun, 25 Oct 2026 22:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3B01F01825;
+	Sun, 25 Oct 2026 22:12:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792966330;
+	bh=recYVbsPv5/lH0o+j5UEjyEemFAvWbZkKxi0jqSdTOY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WXWccwxCW8czBHLYThjTFTRFRi2Y+WxGS81xvQqjoB9lBgqFCVfxmPqXVsdEKcZpl
+	 e+dlcTJgqc+UlHgnFI4bISTY9K3pmvTy5iffK7NM2Fg04w3x1rkVDi4z/S6GCgCCyC
+	 4gChzrSV8N442CC1m3mUUHwxX4sjxAs0ihI3s3EhEM0hwD3NvHzNXqBuUObVfdCKhu
+	 UDdmss0TyudcZIlPsHEjjKK7Xoiph9IzYBCxsisPutu4nMpRNz3y0zl3iLPnOG2GFn
+	 l64HRAp5FJ+BCXzm+yDCnix4eFzxO3RTBHWywVkiLB5BgJUZKx9h2dL+PDbMOoBn3F
+	 ulHukdNfmskyA==
+Message-ID: <sashiko-outbox-184464@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 3/6] mm: add folio_mark_dropbehind() to mark a folio
+ dropbehind and account it
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mike Snitzer" <snitzer@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, linux-mm@kvack.org
+Cc: "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Olga
+ Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom
+ Talpey" <tom@talpey.com>, "Christoph Hellwig" <hch@lst.de>, "Jens Axboe" <axboe@kernel.dk>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Anna Schumaker" <anna@kernel.org>
+In-Reply-To: <20261024221152.6965-4-snitzer@kernel.org>
+References: <20261024221152.6965-1-snitzer@kernel.org>
+ <20261024221152.6965-4-snitzer@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 25 Oct 2026 22:12:09 +0000
+X-Rspamd-Queue-Id: CADFD40003
+X-Stat-Signature: zidqqgoyngczazwms1r8wak75kqizpq9
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1792964929-41254
-X-HE-Meta: U2FsdGVkX184SSY5UklFgdiMVn16WBRF1HN4YOH75VnWQ9Nfl1Eif5UQ10V1JfC0TIp0QdtPI+xQSzOriGlzKzi25RAhCgcGn5jYFvoIY7NunR38qrz3MGSn3MwJHTOLxxu5nG0G/sAaZm0fKig54n9c0QL3iOJSMHfyucjLdb2P4apRZ0fb6WPrsiKUxgOKQ4C+kG0cRUiVAfLaUAnJFEHm9sPp/wkSiZhdMRBYxrn7IFn/VgAOJ6Sr7rpWU0/Jr4odEH844TCiOazoreIvog4mQfhw0m8I2QgR7/5kZUX0EuCbrrz3lSN17P9HqBGkt5bbzqWG8xBMm/vp8kKE+3Edxd9+ZYaS0c7wYrPqKdhtBj3f5cgsKZVGJ3Q34powr6uQbdI5T20VWOnwalVKE2kdd9eAvJzd1X0Fv6oXd6WY2UX2PzrjBc8PxBhiCeaM+530k/AB/a6dTQ1rdaDuXP3zT2trNkq+yZJRIqWBioqtmxlmqN1W38249GAjXJPutK6U5yhRJgMqAm5F6N/58C1uCmZyVIJLqwCWijg2SBzmCb0arjxALxSeiiLYTnGeUefdNp6/PPCS1b7c2aiFgTD1BOPbn8Al6a8uHwDnp3tPBvRL2YzQ0n9vCVFUlfXN37PWFrXQczEOvgdbA/wGkCLRS+yTrU1GC19Pr/8Qugptv1u8vex4QIQrSRDUfvd1ADaNtvohtf3DL6ky3BHNJIyAjyyzMFcOnBkvKDDBWrkH7ayGrEzhCMYCjYHzpxGxKBLs6bKKOPDyVNjEn1Uu5BvEDnHtikOfEtZB+4/7eVuYvacqXjxFlXmInhPg7YdgC2Z/8JeiKfBjh1Xelh5E6KXcq8jkTn7GQ5yeylH1xB+44WdSXM9c/GT5V6+mm3pP+iGNpbThCU0DBvyL14qu1Xn16jboLr+j2BCemhupZf9gD5o1Oa/JDPiQl7mfrV7Ol0uBvHOpu0E4pIxNH2T
- fOc+xY1A
- fugF2FSdpn4V/WXxnKS6jRi0SG/y841CjJYwm6Gyu/MCb7rjt8XgueAUlHhB8f/mstm/UCPPpRVy6PuUeV45fS/okGPH8wnKl8N5zFO+s/aAgJPSXVoBSBnrhYNVTBCRvxXtn6I/vsU6Lb0vuBUhR7Q9LczYKv0BAKpKkBVRrPNIkwJ5NMnS1YPaIVPgf/AUw5mjrGgPQudYBAh80vJp6R2vlbJ07PhPifZhN8SkjWcGFBX+rAV44SyUHnmB8UYpGqghmPoZ7zfbL0/jNfcWv+QvhRCwOVvQ5k7iANqzAl52Slk649wQvxqLLj58BKZxqu8nNQSiFdqrNhwFp5794TwohTra8KIroT4e1/C+juC/c+coA2c9gQJBt4xQ/XA3mrIt3XAI00f9RArt4/57ZWBvLRhcCeQFNwz2njVq63flrIykI3T6kFJUgEBm/xTEEwUzp
+X-HE-Tag: 1792966331-207457
+X-HE-Meta: U2FsdGVkX182XBVC1VMeEWxuZR1CYklg49rdGaZNRRmCHTKzb1xi9TEJ3F0etOctle/nsnvMKzYPR20KqNkYiAXkq99nYfKIPQbuz8Io5AnDTev4fc7uOVr0hL43NPSKlv8GSB7c86wElCUeA/hM9bHVG85lhYKCtqcL+zmnoD1wmPLn0JqRXEnLReHQA0zD+vzjcJIJvDNdKQiDniavvHgMX5XBE3Uw9DjTOEdZ5ypdEIiS6Bd5KoHLPxidcEhHIELFodADqsUKNoj3kok0EfqnsVAzyTdAkp6+nFW2r0+Fx5tUivsbd7+WDffCoIEhBTT67E8rBA8QzBOncznDTHQD//n2wcwFvLeGIo3duFbThZdQ1V2Ws6CMbvpjDBfcQTutVsoRMo2tksHptM/knA/3cwXBkx1HP8sa69VbCoq0vADw0as+YFuzNXjpzPJLhvpjg+dW14bzpNyrtfnqfkB0OUDfjZpy7InrmcGwudBCQYDbFYpbMbiFB/A6z/2IiPKLmG0wvSX9qaK1qLBDnQfLhQ2PcTRDC1EsHq4gIZrx7b0s5Kvs1Av+nyOT8onuQAsSoVTmP/6Zoj3fQK1dY0BrAqfIA68OAemwAa1AjM5nhCiJuSdcKSrhPbDD+eF80RCK+c3gIoyNjlD98reSFlfBAvTZ7JUZVed0Tc/ouKDWm4o8XacEpiW95txnpGMc/DYV6rwZlZgp3kqwcNmZvrZAOR2vqQhDqjFyomz96fRrTZIZQk7DSbLqn8rRznPIE8lcJTN6Mhfb2UkZDgtCoNsZs2G3DrniV7MYUFDZkBPKjLwFxLd7Occa8nEmuaGQ9h+lJJEsItb4TTSgKv0sFOKs7soMfpjsOIzTz3LkglifQP+n4UvQ0jyptV2/xkBVZxTy5PDxLqUhhb6L/OoH4ueYzMohawQTfDFt77ungzhUKirXOY/TVPwLqpqUCm8njvIcyUNxVVpwbY9mlmD
+ qkhVKmxj
+ H+Cnp9x+LGUvqEB6AVLlOTKEYMLGFq0uup+Nwj9YrWPaAm2x/fLMqqAlvYQjk+Hst4kPrtwbVtCXS62ExAVFeD/6vfDg7S0u2Jzr7O+vCNoT/AcM1UX+0sbHwTl8M1e7wnAuQliKZZoXYpkseb2d/T918cQXwSpjygEEVaXRFmhVluUmwtQUB8qE6btHikpDapIs8RZgaa/HIeT/KIlsObSFva7nbf48j8XZkmuWf+5GbakOhkpY1UinKhC2kCEl2AQNjAu+oB6UAmXmrowJQGP7qe9Utrlq0/Io2o642zhV9wbyWcEkhkg7EUWKxxh+v2cRaGqBWcUuKyWwJxm7Zh1g3Lotlye0Sa5FSOT1DCSsB8sgta6PFLr3jVzvhASfIk2WevnPuipgCWfXiOj8WaceRBa8OduqvZdCNAtj1Xd1RXe7WD1yUoV98Y2RTXju3osM9ROLsr1ycfRtUUC5pX/IbzMpF19VHj6CKGPJLS+4tYtf6lXV1sqN2ulELsOynAcJ3fb26l0JaH0MWHLJYlN78OtIJAWieoETHAIzLopJMwtVkibSnw/wSYO4njPouFK1el5/DAh7zCtM0zC5dj4+xDKnFOiQ4OqqrO5hk9/amjeUK+ue4rc8B7JD3rTYBT/arPkQzIUyOOKfLm16o7yfdj9mZMRxT4iBcLxYkt7LmsFGpAa01/wv938sB8cuu6AzYGLZg6igMCqQ17/kjd+gLyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,36 +95,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm: double WB_DONTCACHE_DIRTY accounting in folio_mark_dropbehin=
+d()
+--
 
+commit c61c906e71a09ef6325d33136e8bd76033c66585
+Author: Mike Snitzer <snitzer@kernel.org>
 
-On 10/25/26 2:28 PM, Barry Song wrote:
-> On Mon, Oct 26, 2026 at 1:40 AM Nico Pache (Red Hat)
-> <nico.pache@linux.dev> wrote:
->>
->> The zero-page remapping in __folio_split() was added to support the
->> underused THP shrinker. When the shrinker is disabled via
->> shrink_underused, gate TTU_USE_SHARED_ZEROPAGE on split_underused_thp
->> to avoid scanning subpages for zero content unnecessarily.
->>
->> Suggested-by: David Hildenbrand <david@kernel.org>
->> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
->> Signed-off-by: Nico Pache <nico.pache@linux.dev>
-> 
-> is b1f202060afe a correct fixes tag? as
-> commit b1f202060afe has no even "split_underused_thp" there.
+mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
 
-I believe so. IIUC these two series were merged together. While 
-81d3ff3c6f7 introduces the toggle, b1f202060afe is where the behavior 
-started.
+This commit adds folio_mark_dropbehind() to set PG_dropbehind on an existing
+locked folio and increment WB_DONTCACHE_DIRTY when the folio is already
+counted as dirty. To decide whether the folio has been counted, it checks
+both PG_dirty and PAGECACHE_TAG_DIRTY under the mapping->i_pages lock.
 
-I guess you could argue that the Fixes should include both?
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 5176c4125a4db..d0e4d1788fd40 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1644,6 +1644,48 @@ void folio_end_dropbehind(struct folio *folio)
+>  }
+>  EXPORT_SYMBOL_GPL(folio_end_dropbehind);
+> =20
+> +/**
+> + * folio_mark_dropbehind - mark an existing folio dropbehind
+> + * @folio: the folio, locked by the caller
+> + *
+> + * Mark @folio so that the writeback that cleans it drops it.  A folio
+> + * already counted as dirty is added to WB_DONTCACHE_DIRTY, as
+> + * folio_account_dirtied() would have added it had it been marked when
+> + * dirtied, so that the clean that subtracts it leaves the counter balan=
+ced.
+> + *
+> + * folio_account_dirtied() counts a folio under the i_pages lock, in the
+> + * section that sets its dirty tag, after PG_dirty has been set without =
+the
+> + * folio lock.  Every path that uncounts a dirty folio holds the folio l=
+ock.
+> + * So with the folio locked and the i_pages lock held, the folio is coun=
+ted
+> + * when both PG_dirty and the dirty tag are set.  PG_dirty alone is not
+> + * enough: a dirtier past folio_test_set_dirty() but not yet counting fi=
+nds
+> + * the flag set and adds the folio itself.  The tag alone is not enough
+> + * either: __folio_cancel_dirty() uncounts a folio and clears PG_dirty, =
+but
+> + * leaves the tag until writeback or truncation clears it.
+> + */
+> +void folio_mark_dropbehind(struct folio *folio)
+> +{
+> +	struct address_space *mapping =3D folio->mapping;
+> +	unsigned long flags;
+> +
+> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+> +
+> +	if (folio_test_dropbehind(folio))
+> +		return;
+> +	if (!mapping || !mapping_can_writeback(mapping)) {
+> +		folio_set_dropbehind(folio);
+> +		return;
+> +	}
+> +	xa_lock_irqsave(&mapping->i_pages, flags);
+> +	folio_set_dropbehind(folio);
+> +	if (folio_test_dirty(folio) &&
+> +	    xa_get_mark(&mapping->i_pages, folio->index, PAGECACHE_TAG_DIRTY))
+> +		wb_stat_mod(inode_to_wb(mapping->host), WB_DONTCACHE_DIRTY,
+> +			    folio_nr_pages(folio));
+> +	xa_unlock_irqrestore(&mapping->i_pages, flags);
 
-Not entirely sure!
+[Severity: Medium]
+Can WB_DONTCACHE_DIRTY still be double-counted here if a stale
+PAGECACHE_TAG_DIRTY coincides with an unlocked dirtier that has just set
+PG_dirty?
 
--- Nico
-> 
-> it was introduced by 81d3ff3c6f7 ("mm: add sysfs entry to disable
-> splitting underused THPs").
+The comment explains two separate hazards:
+1. __folio_cancel_dirty() (or folio_clear_dirty_for_io() when writeback exi=
+ts
+   early before folio_start_writeback(), such as in
+   iomap_writeback_folio() -> iomap_writeback_handle_eof()) clears PG_dirty
+   and uncounts the folio while leaving PAGECACHE_TAG_DIRTY set in
+   mapping->i_pages.
+2. An unlocked dirtier that does not hold folio_lock (for example,
+   zap_present_folio_ptes() or follow_page_pte() calling folio_mark_dirty()
+   under the PTE lock, or mark_buffer_dirty()) sets PG_dirty before
+   acquiring mapping->i_pages.xa_lock:
 
+mm/page-writeback.c:filemap_dirty_folio() {
+	folio_Batch /unlocked caller
+	if (folio_test_set_dirty(folio))
+		return false;
+
+	__folio_mark_dirty(folio, mapping, !folio_test_private(folio));
+}
+
+If both happen on the same folio, PAGECACHE_TAG_DIRTY is already set from t=
+he
+prior __folio_cancel_dirty() or folio_clear_dirty_for_io(), and then an
+unlocked dirtier sets PG_dirty via folio_test_set_dirty(folio) before taking
+mapping->i_pages.xa_lock in __folio_mark_dirty().
+
+If folio_mark_dropbehind() runs in that window, it acquires
+mapping->i_pages.xa_lock, sets PG_dropbehind, sees both
+folio_test_dirty(folio) and PAGECACHE_TAG_DIRTY set, and adds
+folio_nr_pages(folio) to WB_DONTCACHE_DIRTY.
+
+When the unlocked dirtier then acquires mapping->i_pages.xa_lock in
+__folio_mark_dirty() -> folio_account_dirtied():
+
+mm/page-writeback.c:folio_account_dirtied() {
+	...
+		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
+		if (folio_test_dropbehind(folio))
+			wb_stat_mod(wb, WB_DONTCACHE_DIRTY, nr);
+}
+
+it sees folio_test_dropbehind(folio) is now true and adds
+folio_nr_pages(folio) to WB_DONTCACHE_DIRTY a second time, while cleaning t=
+he
+folio will only subtract it once. (And symmetrically, wouldn't
+filemap_clear_dropbehind() in the same window subtract WB_DONTCACHE_DIRTY
+before folio_account_dirtied() has added it, while folio_account_dirtied()
+then sees PG_dropbehind cleared and never adds it back?)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261024221152.6965=
+-1-snitzer@kernel.org?part=3D3
 
