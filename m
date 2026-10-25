@@ -1,122 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BAB606A324
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 16:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CA7606A31B
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 16:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qhcdnjSK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f5b5Tin9
 Received: by kanga.kvack.org (Postfix)
-	id 0008C6B05B0; Sun, 25 Oct 2026 12:47:03 -0400 (EDT)
+	id 72D6A6B05B2; Sun, 25 Oct 2026 12:47:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF39B6B05B1; Sun, 25 Oct 2026 12:47:02 -0400 (EDT)
+	id 6DE326B05B3; Sun, 25 Oct 2026 12:47:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E09676B05B2; Sun, 25 Oct 2026 12:47:02 -0400 (EDT)
+	id 5F5466B05B4; Sun, 25 Oct 2026 12:47:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5E9D6B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 12:47:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01794A8149
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 16:47:01 +0000 (UTC)
-X-FDA: 85361728284.24.DD5124B
-Received: from mail-dy1-f194.google.com (mail-dy1-f194.google.com [74.125.82.194])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 500F21C0006
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 16:47:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qhcdnjSK;
-	spf=pass (imf21.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.82.194 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2670F6B05B2
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 12:47:26 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85430A812A
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 16:47:25 +0000 (UTC)
+X-FDA: 85361729250.04.6D1E643
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E48D8140005
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 16:47:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f5b5Tin9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792946820;
+	s=arc-20220608; t=1792946844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=OfgFlzGjw1v4HVRSf59nbvbgqbjgCU9X1s1eTDVI2XE=;
-	b=6MYqRIazKjSqSarqWuTq4rtaL5Cm4zoG39sPwVa7WTDkz8dwVYPI2PCOtO4nHe8JPSRREy
-	jEBoca46+v9z0JADzFN7E0+Ay0goHkIE4DZOk7x95w+FXW4Tq5hDbBJBUGQxiNeyUo3YDf
-	UvPXfyIeJNmwQD7kHPjPLPcsxvP4xCg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792946820;
-	b=b2r2QwUhjABd/aqQAvf7TmgRzYP2o/zjnmdBHwxxIQLWVHoNfMjFDXaTkFwPAjraTpcGZf
-	i5aA6W7MgFfOa/hzonvcJE0h17xcyGiZL+TjDSuVl6MwNZ7d2bEI8tq2gOLH1W2RoZJDuJ
-	TzbJYU3X/uG4zr1Vb+UCQqyBu51nl5c=
+	bh=VKSqiYoNV2dByJKpxVMj7QeloSi8EsWCiTvTbPWvl+0=;
+	b=wYwTEEPWpBCYgGzoKegjMpaXmxC6e83/EPUIQXeP9ImaSY8dL01ujS56atmhNLEeW903+n
+	e32s0oS4pMWVfP/hKhFmPz1ierRrjBXbPBdB0m365nB4EljZ6e8pVOwdnvun632Xhrd5Jh
+	u8zfVxtciKwpser1uYtVVqInPmoBhnI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qhcdnjSK;
-	spf=pass (imf21.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.82.194 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f194.google.com with SMTP id 5a478bee46e88-35829219da8so4137686eec.0
-        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 09:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792946819; x=1793551619; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OfgFlzGjw1v4HVRSf59nbvbgqbjgCU9X1s1eTDVI2XE=;
-        b=qhcdnjSKxYwt7U/0cjm4//0GOc8hJrleMj4PY8wNs4vXsEXaIzfKkYW6BR5JtUUkx8
-         ZmapWloKAQRt1L10QuL7MDrFasbSrtQLG9e/7DuG9Dwa8IEHvbXtznulA8FDzOyi4ShC
-         fnK4rvn7yIvVjC1Lhom61PiR7WR3F93QhpHN1YHm1TiwuS13VbcKmCVWMlnhqWe1fK+W
-         eXg2i1+4vN80arDz9ypOBJNHppSVbF/Nk+FsnPL46gVj2qFsz7fjJUnzHIPo0lmfA3d/
-         GTkXeWDFJ7m82uMhWc0mI+Ukg9OX9bwzBOWpx8G68PtvecgEkIpW8TsPYwlC+ouBOWTA
-         MoQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792946819; x=1793551619;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OfgFlzGjw1v4HVRSf59nbvbgqbjgCU9X1s1eTDVI2XE=;
-        b=K4pV+S36wpF+XZ0aLJsZpsANlY2jKVgIQvk4xulAHPVoxk/45wyJTK0GYQYwpCi4gK
-         iEUrIR9Ia/00ck+EIH578pkdUckZmJOy9tKYV7HuEp3TTAyS8oqbWzVW9533hkklalsI
-         7rYIHSyCl11hwx9Eco6NjSOapj/jP6i38FJ/LHL8qGmgEV8ECtYs0OsrxMxljXbmIqbL
-         97luNlxNASit2DgtGQZmclxHH6jA4rg/5SCXHxABiziKVcXz1zRa3Cnfylt0xfuKYxiK
-         jBujbhJ6LCxQE0TzvXT5EAxVEuLBgcwfK27LHSVz1TrCtQRKxREU19/TRe57cZhduY4o
-         6dHg==
-X-Forwarded-Encrypted: i=1; AKwUvBypdtCy90wfVLaU4YwquYjMcs9AOBCyO8NgFCNK4g7xGmn1vIvVONRtdVvFWqpB5S+DbJWTL44/LA==@kvack.org
-X-Gm-Message-State: AFq9FYKxN7rTK9hKX0ASoMItKjq0BssSy1OB/+4UkqLhnrYPfyespSjP
-	vO/pyG3/36URi1CoU73q9Db9SPizy6WGe2GWEm9e89umnMzr1vicq+HO
-X-Gm-Gg: AYBFou2MvzYltJ9/5Tu8Fnw//7wnzxWh8McrwURNP4/1xIgOHQQ9RuvRCmLguySiUHj
-	c3c3+zw9apHvovRB+rTa2a24eeJCXRjmGBCipADfTXrCQIFBNMd04S+NoE5iHkTuv8BJr6mJa94
-	vAOe3MQe3A1L9/sA4u/lMro9kQEIivxr2dACdViYyAL0SdZK3kiUJoH9kQpk/dPoPA/T9810QmO
-	NP4K6D7H7kiVFmgLyL2kSlE3X80GRDJIebvgc4Ap14o8b+7+SzSLOlIqHsLkKk7ESrbywH//K4k
-	LA2avMiPncKF3+0nmt1JmWBa8buDR5qVAkNPYJv22P4NKVQmt4VeS5XRNNqQtahyvmA1d9C6n49
-	9z+k3aihWH9D166BrNeQyOilTPMcsZ1Y7MDjjK91sbYh42fZ3tjw4qtTDDlb0YVvXZTVa+MOIxL
-	Uz40Usl5m7GGILgtJiU7XXG8XNeQf/BnUc0pK8CCLlzLipHXOKJr3dZSrrPhqDSzv1EDkn6o5w6
-	aEiGHzGsQAuxfSrXUHwSUAEz1izv0ZoVYkZYgTiXtZDOtaGOWcYmAFlerxwXzlmPIah6C/5KbNI
-	5OXhLCI=
-X-Received: by 2002:a05:7022:439f:b0:155:734:9cc9 with SMTP id a92af1059eb24-19935be7f99mr9441348c88.16.1792946818717;
-        Sun, 25 Oct 2026 09:46:58 -0700 (PDT)
-Received: from localhost.localdomain ([98.148.34.5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-198a0d98660sm18320531c88.9.2026.10.25.09.46.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 09:46:58 -0700 (PDT)
-From: Hungyu Lin <dennylin0707@gmail.com>
-To: hughd@google.com
-Cc: baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	dave.hansen@linux.intel.com,
-	linux-mm@kvack.org,
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f5b5Tin9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792946844;
+	b=fMG1iZnGF2nN6KBxlNYmx/IFdfP34xOMZKATGJ765ZjA0eH1fg25YZqDpHa7NrxmKL4ENf
+	hbS5K9aD2kucuU7PTmrdIuY6g3pEj9OA/090WcTPa7H69G3tu4kQOWRP+ByhWBHTm81h7Y
+	T9V1vqB5zm3r49NhE9q9+gZVNTiHd+0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CA57B409C1;
+	Sun, 25 Oct 2026 16:47:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4E51F01825;
+	Sun, 25 Oct 2026 16:47:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792946842;
+	bh=VKSqiYoNV2dByJKpxVMj7QeloSi8EsWCiTvTbPWvl+0=;
+	h=From:To:Cc:Subject:Date;
+	b=f5b5Tin9u2Wpyny2CDyLlZaIlurlFe2XXMxLakNe+IPOrn4Y+19ADTdhEUpoU+LrM
+	 bIfLv+Yob6sndJJJx+MRVaZS1hhH4m3bed/pU161JpQVPldd38sAOPxnNu4MrS1JES
+	 xWRxAqIlNavZlXlmUBaPVq7FDd+A+q/nAW1js5khsevfP0zmUUX1YbP93Z+6PJfhOe
+	 nsIFcrjNt9TkGcd+bwQ54H61xakInzU2jsst8wYritKNi0RE8kmz7xYvYYOIC52zlg
+	 4HS3FX914Z+C5z89uDVOih834gZUeEtX/1I2J7nuPxxk1md7gW9gBlVmZRpd2i/IfL
+	 8cLSosHxbjNVw==
+From: Sasha Levin <sashal@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sasha Levin <sashal@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Hungyu Lin <dennylin0707@gmail.com>
-Subject: [PATCH] shmem: do not extend i_size when no data was copied
-Date: Sun, 25 Oct 2026 16:46:19 +0000
-Message-ID: <20261025164619.89992-1-dennylin0707@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kbuild@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [GIT PULL] Kernel API specification framework for v7.4
+Date: Sun, 25 Oct 2026 12:47:19 -0400
+Message-ID: <20261025164719.1831477-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 500F21C0006
-X-Stat-Signature: b3xh3r1ey11u3pzdjrok5z58ab4atday
+X-Rspamd-Queue-Id: E48D8140005
+X-Stat-Signature: nd8t5ixsunxxxy4mr8up57wpk6gquymj
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-24.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1792946820-818481
-X-HE-Meta: U2FsdGVkX19BnXlrMMZom33hVPDvkjxe0CFiUmaPbTKDD51X5o9zpvTzHtWlNwlWnr65CONAQlzrFWBXOH9Zj2ddfI2mO54SnOjry0RpKKwQPPWlDx7sVGUX4y6E+/oBrbNESWp8MhLegkvPXVqZsVIASep0VH6tfK9SQ0ejmwKki5MHOK2yz/6ToQMoUX6uPY5P7+FXebcpbXugpUkwu4tIXbdquAujgvG1XMKiarZJIb1+EbTlCX9W5+aeI3SnKgELS8+0Ve43xZGX9qygz6D2pzp4ixMtHtJl5vUOBDZV/u9cGq00rA+Jb/d+unVRIVC4RlY8qsIu619DK+HunyuI+Ozs8shqd0aBOPF9acAvng6NklHmwIQAlhGS79IY3fqyLhNWh/upKWWZp+kRkOu7w02HmaNMU3/WKvo4Xlkh8Ied/MwlNnuMjgOc7+lrqdup4AC2e8TcseFMyQ46EaGzx00euAGjst/UvglDsW4dfkdKmt3VV0MoI7TZfed74UWHLJixCOBxeM/zlBRsCIJxkx/EQrlpRt235IlVP3/7vmvpZYxvcv22t9Z9cif/x3+7ZwPz9ZwUUTclmC7AzMYyrm4tkhJPCX/vZoBIvwiab5FpdvQ1gOtoOtp0VW6KcYm2GrHdXnqE+Un6AhvKhBpyP/fURkXYhhwQrnOmq4NcFaWe1NamOEsnF7LvBoXPfzV8I7VWConWQucvBBu6MVBoGURuTMswVQCELTVekrXNwgCAJEPW/n1qFLrlWV0mYW+f9x37Lk+/1hns94lnM9JZ5hXZH6PGT7DbWuhsLDDFuJzfE00lmBSL//v9xQHYTrmD2zEeJi02Si03/G6el/ScrVOtXXwcspmmxj392hyUwrZQXI21ef77v3bvB9HB+9M47uPX1Jp8G4Zks8Dh9as2aorKmbgzr/VIkCNSPsbF/KcL13tcZCtYDos6q9L9YET0nE5vE0WzPV/LlSV
- MyMWiMn9
- bDf/yY00MhkgE8sM56miv8k1yfV4MLfuawbYbvOdUbIz/6zYzgmTIWO+U8S4rTtOnQ2RLmIvNN9qd0sIbr8ho/XNfarbsvqJbeOtphWqPJXiaCz9Ueg8y8TzMnRuUVOHDoLTQzfkxUC+GL2/PKOX9Bwt2ZETZ7zZIqs26Ha7sW0QfEdpQg+iAwiZlEpniylcsehfI0gUk13JbnbY/c+uRgcDyFq0oR6tZymRSvv9kT99g7eK69haDZJrE+e8gEz5tASqbOzUswD3sDDrJv1wb0maoazVv/TDj5EnRklsI2Mlv22pumKio6xHrlxgbr9B6SRFZXyNT5Wy4BlRj2ecrvWNH5YV14Nz4V2yRBMq5Nl8u9OhhF/JIuBSLC8DLRojWsTT9Ra8ulbnQs9mBwJEBU8UxUm+jonO+YQO4GMbGvTS+UEp+AgZt31KURO6ePtYDlA5oE92EdU3xhchIRIG94GomD3Ni0tFoPn/Y
+X-HE-Tag: 1792946843-789826
+X-HE-Meta: U2FsdGVkX1/huN/oX52IdrnALx48lO2FZQBsPkN7eUd3W8ftapU8KeZkRxMMQByx7NeNROAeFTVTFLSBEPpk/SXMQyT88YmbZxy+adryD5r6epVHHxWzQ0ULY7IBGW/MsPr8rNar9Io0mvt7RxPeqIvan39OTDdhS0DzhRcmahgGBCdsVIAhVX6c9loH10j88EBwkJ0/ZF5zjWzC4gsL3YDPgfZcuPB7IvsIIS+M1Tpxv/x82naJ+KKVCJMFV4iRV0Z8Vwrrv1vCkMm52yAaTBDmiVBMY//IA7V5v/fVuctZLg+/mN7uMyRc3ZgCaimhZ+Zin5vs32qVPOIogbqxELZ8N8iE1S7Dldlv7mOx7HqaQcWnwU5ha4d8WrCAm3E1MOKoK/19vAlfL6DIAZVTO8Pr4Px9g8gBv2PQGAEZbnc+yC85HTfDHzQtemAMznLvvrn5uTpSuafCjz9/+xAFJ9XiSlrgiNpvTmWULoDi08FbXps4lkYLmcr7a8fn2nNRSaU0ZQVkdsG/0Un8yxfPnPR2sUnRwI85vQ3KVG7Kztt3PuzWN8Hmxf9KEyEvo3iYbXE0DjJRMmbERC0zYqItJHA1BdpOw2bFHX05qLUnqiWdkcynEa20r5fT2dt/EVnszmIglVGEarra62WQmLktL9epY8+ftI6jD27IdjpV2+GH4vRvTtHWLlLmSiVUyfVxMmy07hklzptzHZ063T06FooTKS7xAabQZpBluNEdkUuYSZpIZbItguS6eYFvmmg0dspbLP+zKx2Z2XW4AGz1E4cq1ZZHdB1zZWl9PSk6Yam4WXQpzq3EYTDd1hjDQ/+/5BD4ydOuyPYIHYkwTHrxkBU921aSJUB4s57hzecm8R6Mz4Ef0TzQ62RRvNGZY8CdAFUOq6gJf4Cb2I6ZZkk8ZEEkSAn1htClDdlLvbHeEscv2OCqpdeCYbI9ZcDP8abeQc8Nbl1fng3taACB2sh
+ DmA7cI2h
+ dQeBmkGLTUyLMxaQ46lIpoR7ZExy59lc7EqGp7GFdJMEGYeph3ULazi3epPHidfr1G+U8ImAVJQK6UwlGWlgywAp7GWWwZQ+2lp73oxZHoKnIv31yRIsGoioEKlYJbXTtEcjsuC02n/UArlOMl45af2wMe0RG2K3oJ8loPu9seUZbVzzLsEEExmeDPUMdINrPrP0CoB4hYcSo9p1C3kdLznjXOzvCZa02ExVICrkvA3RkU1g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,41 +106,167 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-shmem_write_end() advances i_size to pos + copied even when copied is
-zero. A buffered write past EOF can therefore extend a tmpfs file
-without writing any data.
+Hi Linus,
 
-Moving prefaulting to the slow write path makes this easy to reproduce:
-a one-byte pwrite() at offset 4096 into an empty memfd, with an unreadable
-source buffer, fails with EFAULT but leaves the file size at 4096.
-generic_perform_write() calls ->write_end() with copied == 0 before
-trying to fault in the source buffer.
+Please consider pulling the kernel API specification framework. It has
+been discussed on the lists for over a year: five RFC rounds starting in
+June 2025, then v1 through v5 this year, the last on October 8:
 
-Only extend i_size when data was copied. Leave the existing folio
-handling unchanged so successful writes, retries and preallocated
-pages retain their current behavior.
+  https://lore.kernel.org/all/20261008084956.2911790-1-sashal@kernel.org/
 
-Fixes: 665575cff098 ("filemap: move prefaulting out of hot write path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
----
- mm/shmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The branch has been in linux-next since next-20261009. I held off on
+sending this until the first week of the merge window was over, to let
+things calm down.
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index d97fc32e7c94..55287c370c73 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3487,7 +3487,7 @@ shmem_write_end(const struct kiocb *iocb, struct address_space *mapping,
- {
- 	struct inode *inode = mapping->host;
- 
--	if (pos + copied > inode->i_size)
-+	if (copied && pos + copied > inode->i_size)
- 		i_size_write(inode, pos + copied);
- 
- 	if (!folio_test_uptodate(folio)) {
+There are two conflicts with what you already merged. linux-next resolved
+both the same way:
+
+ - Makefile: kbuild added '*.header-check' to the clean rule at the same
+   spot where this adds '*.apispec.h'. Keep both lines.
+
+ - fs/open.c: vfs added filp_close_sync() just above sys_close(), which is
+   where this adds the sys_close() kerneldoc. Keep filp_close_sync(), then
+   the new kerneldoc, then the existing "Careful here!" comment and
+   SYSCALL_DEFINE1(close).
+
+The following changes since commit a90ee4305c4a5df72c11b31dacfdc76e00fcf78a:
+
+  Linux 7.3-rc6 (2026-10-04 13:45:25 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/sashal/kapi.git tags/kapi-7.4
+
+for you to fetch changes up to ef777ef05ebcc5ea5393b4bd5af6fc3ad1b3aec9:
+
+  kernel/api: add syscall enter/exit tracepoints (2026-10-07 18:26:44 -0400)
+
+----------------------------------------------------------------
+Kernel API specification framework for v7.4
+
+The contract of a kernel interface (which arguments are valid, which errors
+come back and why, what context it can be called from, what it locks and
+what it changes) only exists as prose in man pages and comments, which
+tools cannot check. This adds a way to write that contract down in a form
+that tools can consume, next to the code it describes.
+
+A spec is structured kerneldoc covering parameter types and constraints,
+return values and error codes, execution context, locking, signals,
+capabilities and side effects. At build time kernel-doc turns it into C
+data in a dedicated section of vmlinux. From there a spec can be:
+
+ - checked against syscall arguments and return values at runtime by
+   CONFIG_KAPI_RUNTIME_CHECKS, a DEBUG_KERNEL option for x86 and arches
+   without syscall wrappers; a call that violates its spec fails with
+   -EINVAL before the handler runs
+ - read as JSON from debugfs
+ - extracted from vmlinux, debugfs or the source with tools/kapi, which
+   emits JSON, RST or plain text
+ - followed with the kapi_syscall_enter/exit tracepoints
+
+The first specs cover open, close, read, write and madvise, with a KUnit
+suite and a selftest in tools/testing/selftests/kapi.
+
+Everything is behind CONFIG_KAPI_SPEC, which defaults to off. With it off
+the syscall definition macros expand as before, kernel-doc output is
+unchanged, and the only change to fs/ and mm/ is the kerneldoc text.
+
+----------------------------------------------------------------
+Sasha Levin (11):
+      kernel/api: introduce kernel API specification framework
+      kernel/api: enable kerneldoc-based API specifications
+      kernel/api: add debugfs interface for kernel API specifications
+      tools/kapi: add kernel API specification extraction tool
+      kernel/api: add API specification for sys_open
+      kernel/api: add API specification for sys_close
+      kernel/api: add API specification for sys_read
+      kernel/api: add API specification for sys_write
+      kernel/api: add runtime verification selftest
+      kernel/api: add API specification for sys_madvise
+      kernel/api: add syscall enter/exit tracepoints
+
+ .gitignore                                       |    1 +
+ Documentation/dev-tools/index.rst                |    1 +
+ Documentation/dev-tools/kernel-api-spec.rst      |  648 +++++
+ MAINTAINERS                                      |   13 +
+ Makefile                                         |    1 +
+ arch/x86/include/asm/syscall_wrapper.h           |    3 +-
+ fs/open.c                                        |  557 ++++
+ fs/read_write.c                                  |  710 +++++
+ include/asm-generic/vmlinux.lds.h                |   14 +
+ include/linux/kapi_syscall.h                     |   35 +
+ include/linux/kernel_api_spec.h                  | 1226 ++++++++
+ include/linux/syscalls.h                         |   42 +-
+ include/trace/events/kapi.h                      |   74 +
+ init/Kconfig                                     |    2 +
+ kernel/Makefile                                  |    1 +
+ kernel/api/Kconfig                               |   74 +
+ kernel/api/Makefile                              |   13 +
+ kernel/api/internal.h                            |   25 +
+ kernel/api/kapi_debugfs.c                        |  553 ++++
+ kernel/api/kapi_kunit.c                          |  720 +++++
+ kernel/api/kernel_api_spec.c                     | 1470 ++++++++++
+ mm/madvise.c                                     |  549 ++++
+ scripts/Makefile.build                           |   26 +
+ tools/docs/kernel-doc                            |   12 +-
+ tools/kapi/.gitignore                            |    3 +
+ tools/kapi/Cargo.lock                            |  679 +++++
+ tools/kapi/Cargo.toml                            |   20 +
+ tools/kapi/Makefile                              |   33 +
+ tools/kapi/README.md                             |   33 +
+ tools/kapi/src/extractor/debugfs.rs              | 1704 +++++++++++
+ tools/kapi/src/extractor/kerneldoc_parser.rs     | 3335 ++++++++++++++++++++++
+ tools/kapi/src/extractor/mod.rs                  |  442 +++
+ tools/kapi/src/extractor/source_parser.rs        |  531 ++++
+ tools/kapi/src/extractor/vmlinux/binary_utils.rs |  461 +++
+ tools/kapi/src/extractor/vmlinux/mod.rs          | 1160 ++++++++
+ tools/kapi/src/formatter/json.rs                 |  659 +++++
+ tools/kapi/src/formatter/mod.rs                  |  220 ++
+ tools/kapi/src/formatter/plain.rs                |  679 +++++
+ tools/kapi/src/formatter/rst.rs                  |  802 ++++++
+ tools/kapi/src/main.rs                           |  123 +
+ tools/lib/python/kdoc/kdoc_apispec.py            | 1391 +++++++++
+ tools/lib/python/kdoc/kdoc_files.py              |   12 +-
+ tools/lib/python/kdoc/kdoc_parser.py             |  101 +-
+ tools/testing/selftests/Makefile                 |    1 +
+ tools/testing/selftests/kapi/.gitignore          |    2 +
+ tools/testing/selftests/kapi/Makefile            |    7 +
+ tools/testing/selftests/kapi/kapi_test_util.h    |   31 +
+ tools/testing/selftests/kapi/test_kapi.c         | 1163 ++++++++
+ 48 files changed, 20350 insertions(+), 12 deletions(-)
+ create mode 100644 Documentation/dev-tools/kernel-api-spec.rst
+ create mode 100644 include/linux/kapi_syscall.h
+ create mode 100644 include/linux/kernel_api_spec.h
+ create mode 100644 include/trace/events/kapi.h
+ create mode 100644 kernel/api/Kconfig
+ create mode 100644 kernel/api/Makefile
+ create mode 100644 kernel/api/internal.h
+ create mode 100644 kernel/api/kapi_debugfs.c
+ create mode 100644 kernel/api/kapi_kunit.c
+ create mode 100644 kernel/api/kernel_api_spec.c
+ create mode 100644 tools/kapi/.gitignore
+ create mode 100644 tools/kapi/Cargo.lock
+ create mode 100644 tools/kapi/Cargo.toml
+ create mode 100644 tools/kapi/Makefile
+ create mode 100644 tools/kapi/README.md
+ create mode 100644 tools/kapi/src/extractor/debugfs.rs
+ create mode 100644 tools/kapi/src/extractor/kerneldoc_parser.rs
+ create mode 100644 tools/kapi/src/extractor/mod.rs
+ create mode 100644 tools/kapi/src/extractor/source_parser.rs
+ create mode 100644 tools/kapi/src/extractor/vmlinux/binary_utils.rs
+ create mode 100644 tools/kapi/src/extractor/vmlinux/mod.rs
+ create mode 100644 tools/kapi/src/formatter/json.rs
+ create mode 100644 tools/kapi/src/formatter/mod.rs
+ create mode 100644 tools/kapi/src/formatter/plain.rs
+ create mode 100644 tools/kapi/src/formatter/rst.rs
+ create mode 100644 tools/kapi/src/main.rs
+ create mode 100644 tools/lib/python/kdoc/kdoc_apispec.py
+ create mode 100644 tools/testing/selftests/kapi/.gitignore
+ create mode 100644 tools/testing/selftests/kapi/Makefile
+ create mode 100644 tools/testing/selftests/kapi/kapi_test_util.h
+ create mode 100644 tools/testing/selftests/kapi/test_kapi.c
+
 -- 
-2.43.0
-
+Thanks,
+Sasha
 
