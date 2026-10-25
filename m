@@ -1,94 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E078606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 18:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43BB606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 19:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EckPO1La
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=owrwreaG
 Received: by kanga.kvack.org (Postfix)
-	id 32FF26B05B0; Sun, 25 Oct 2026 14:48:56 -0400 (EDT)
+	id 5B5686B05B0; Sun, 25 Oct 2026 15:01:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E0D46B05B1; Sun, 25 Oct 2026 14:48:56 -0400 (EDT)
+	id 566706B05B1; Sun, 25 Oct 2026 15:01:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F5C96B05B2; Sun, 25 Oct 2026 14:48:56 -0400 (EDT)
+	id 47C2E6B05B2; Sun, 25 Oct 2026 15:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DD38C6B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 14:48:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41EF61C1CEE
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 18:48:55 +0000 (UTC)
-X-FDA: 85362035430.06.3042289
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 88C9E100006
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 18:48:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EckPO1La;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1B34A6B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 15:01:23 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 929A916060E
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 19:01:22 +0000 (UTC)
+X-FDA: 85362066804.16.51B8298
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A4A94C0002
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 19:01:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=owrwreaG;
+	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792954133;
-	b=IvIGvg++F457SvPG8jzQJ7f1RkEhK9TDADOnYBlANpdj7eq84yzpR2jgwUG581RJZ8AyVe
-	v/iovEDTLQtdDsnSMkTjHCpXA+5TRmZ8FzkrvfzlJ8qNVXkKh9K/7GNt0+lheslsyK8Wt/
-	IIRCXWrv0qhZ3t0eFstTCC1WXpp2PRg=
+	t=1792954880;
+	b=a4B1kg1uC3Z9HR+R5gxncPN+ZTVbKsQlmS9cXBuE22+dsYcGznwr9AxG2D5vzjF7S4+P1g
+	AEZhwvMXk0/CfgHwW0J8rKBQ3UxcrCkJAJJvAkA89HvI2L8Ie/Yky/qMA9FnqZ3MVTfd4r
+	zSfx5kY1sjmOeEk7ajhWELLUvSq4WLw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EckPO1La;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=owrwreaG;
+	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792954133;
+	s=arc-20220608; t=1792954880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pznFzyD5BxdTzOagRh9mbfazQSSMPDVThvsWbVF1d2o=;
-	b=Ipr2LV6deqfg86eunpLGxhKAk84L2GCpJWe7PjMVYUsctIiRXZY8Ab8GQ2sE10uY1l1ozd
-	Yyuka0nizeD0oGtgTSFWHoGNdCua/WsPmOOzIJCJaK2guMg2snymZDm2ec1wg8ffcLDldB
-	m8DcZWATBMmwaCvVR5ce91sX8gslfmE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 87E464076F;
-	Sun, 25 Oct 2026 18:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440141F01825;
-	Sun, 25 Oct 2026 18:48:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792954132;
-	bh=pznFzyD5BxdTzOagRh9mbfazQSSMPDVThvsWbVF1d2o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EckPO1LaGYCz5T1lsTmZB4ujCWnoneGjVwZa4Fzod0L6bvuhXJfas33aw9cVtrB5Y
-	 HDzedltEPbA3IhM3selq/hdYJt+dJ+mWyKfTya3s6u4xcbBHPoZUuO47Op5IRkRYKu
-	 kX58KeQNFraZQTfKmfTgSF2twEAdzTL1WCWoMJgs/flJjDcN+lAyPt8duadT8Zkz6/
-	 Nb8ePXKPhdnZ+GJ9qZ01vyAMgiotG8PGKIskZ3U8uGn9WsO3I1H/a7Dv30JRp7uwbH
-	 tIIrnVXxu858Jte3vz4qDIB/NkYan8V5lOM/IZqcf1jXeWe6/umWffMz/FjiAnNs/z
-	 kGPSjjEujF6uw==
-From: SJ Park <sj@kernel.org>
-To: sashiko-bot@kernel.org
-Cc: SJ Park <sj@kernel.org>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 6.12.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
-Date: Sun, 25 Oct 2026 11:48:43 -0700
-Message-ID: <20261025184845.190103-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <sashiko-outbox-184343@kernel.org>
-References: 
+	bh=eep4GL9DCocomrU+bxRgX8heWYBDGizJAyovtrxi+A4=;
+	b=GRkOKwAu09ilAxztbWrj75bgxe2SFXDR2q52un6mJyNEGeaS6wUYQ+xcfRXVJ9zIXYTMBp
+	SV79e5K2uZW5l6yIz9lxlXhTG2YKcERyMUUUqcaY1ygxRk2JEAD4mdPmgxds+e6jSIndBl
+	WEybAz1oK6H/rkwdW3T9/xRqPQU5CmA=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48df4e9d2d4so1309020f8f.3
+        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 12:01:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792954879; x=1793559679; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eep4GL9DCocomrU+bxRgX8heWYBDGizJAyovtrxi+A4=;
+        b=owrwreaGumPCsHeOCe9agX//Yar3abPQkGD4dw2QvnKRwESJZE6ENzxbftQlV79zf7
+         PeE/qA+c28t5eiTiz1HJqIo0w6PrbSnVvnv5f9B8sokTnpW0957TdQDhIxlt7yyAt3qs
+         nm7icL7A3u+JgloIAeZHwE2Ge0fOVuIpRtExVZOR9z/lsAb22ggSXooDY8S8929fobna
+         TGONr23auHyRY6/Oj0ouOLmFKMqv4MB8eRRUMQAmBvu1EJEDtGk+LRuaTJuKCABBzoi4
+         ljEmTFzirxa6jHty/BGkqbQyluXx3f8ZyoSnv67D9ltJYSENNblOhvRTS28FVNTdEsfk
+         VkEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792954879; x=1793559679;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eep4GL9DCocomrU+bxRgX8heWYBDGizJAyovtrxi+A4=;
+        b=cbPBWJR8rTRdtmgpkVVuXoChvDB6InsiYu9ImDYnqxWxeeNFnd+N7OuURJa/+DGjRd
+         GqSeCdixqpZ8EI8vDuNz9O4r3ni8OGC9WHGCaYvGQSzso2ih99zPXZT32pSawDjpFT+3
+         9ur7zZG/8eBaanEhW09CZlVtgBepVshvpi16xK7ty08K/CqzGGilBGkLY0U7RplAgDxQ
+         iOJ3gUYvjT7JDp3lrceRQj78olPhJTI7bcswIlvYsCzYzKT/pUcOvao3S51nBCvJ9/BX
+         fQVi5Z444FDD0BuLB5XnsQO10IaQZ1hex24uxLjpvm/jCAMx4vPpM/F7OlbtnMwRfLe/
+         22qQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz7x6nBOep/7Kkz2FXcJIAtSv0msVL1+rtha5n4/4KxkktdQRu8OrLnC9SBptH/C2ZB2t4c+xRDnA==@kvack.org
+X-Gm-Message-State: AFq9FYLYRX0B2sc85rcIUV9snVNK5Ws9PURSxuSu/Mpk2pK65jd1jQvN
+	GVmapmGm3Zzo70Henl0Q9cHxzLOv0lgmAA8xrlEtQLqO3VElmnuQjQpl
+X-Gm-Gg: AYBFou3s2wHVhmbajZc6+LBMkjL10EPxXOrqc3yhfcJzbE7lh8P1GsvNUlaZjbRttEA
+	w0FMAnLSU/4OoAUWifiw5Ip7uBnwqQXOFVWDT4YK6mDVm871jNJOzBAmEgFKHl4K/wFlO5dfvjp
+	frObdPeg4/MAJO8OlqH1xSb6pNoGphvmiI7X41kSGPVQU1f73sNy5N2qx4meotpOFjlSaKCC1hr
+	fZxpMhe+WviC/V4iWSeTXShkl3pdSZAJWduvN+i76Crm2eREKW40sh9DpntMbXfSmkrXUYmukzg
+	yM6iw/wKN8+H4qee7UPSOvq8DXl4IYqrej6gg9ixdwcwVrJwv8vrXgAfrPq1Xk9BtYGOcR7NKky
+	+RkvWYT9LStAsMik9xolfMQyPUFLrL4Ers6iV7Gfx8tsTahnEK/HMd85kNFvdnXlXvHgbSNyR/H
+	GV8EO1WsjX/qzPgOyZ0px/q0/pFBAv79ezdi26fcw2e5BszUIyR+HtsH64fW2lHLuhvmsteq6y0
+	sAdci49bA7a2CvIXOiTJtp0cMnGLD3L/oCnacpsfYmtbOvvNNY=
+X-Received: by 2002:a05:6000:310e:b0:48e:4300:c6d8 with SMTP id ffacd0b85a97d-48e4300c7aamr8195528f8f.35.1792954878913;
+        Sun, 25 Oct 2026 12:01:18 -0700 (PDT)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebc3bcdsm10026651f8f.13.2026.10.25.12.01.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Oct 2026 12:01:17 -0700 (PDT)
+Message-ID: <533c4ef7-e008-4439-be40-1aa2a074dfd8@gmail.com>
+Date: Sun, 25 Oct 2026 20:01:16 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: na5zom6jr9qmnfcpdziqox5t8rfes8gn
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: q4ann6h5cutjhsnaob8j8urxf6hi4qii
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 88C9E100006
+X-Rspamd-Queue-Id: A4A94C0002
 X-Rspam-User: 
-X-HE-Tag: 1792954133-185030
-X-HE-Meta: U2FsdGVkX18nWj6IYD8dGRAyAdOlPP/jW19W7TKdA9j7sZNeHTZyBjqiIauC61HLfYah4UFX5Wu1674Ps5mPfIuB5Cbh/mlgXMMSImZFOJQWG9yDB3uTbBoTF5WSQ5vsXQWRJVqVg6IquycsJghq6i2gOG5YnTxf5r4OhngW5hbLmkkmKeQhkzv/iI8I9KxnRXgg/1lXacz/cUewsrwGvCMXl2ka8TdfmkRpPD9Sc4VVc0SZIqszXi+h5RbF86teV+ck3PXUD5X+qlWJTscb3AMpUK9ZYKcYqwlgtlRhbe21TQy9Db6hePIn43dehsr75aoOfJ/ZYNVt3fro63/NgRV6LhnSyTa+JIpgWQWr9Et5L/rWgYFmQRir+bjR36EptE0zhNXfJ1e85VG5/psX4kVT3gOxrqXb2guqJXvy/RnCssh1sCLBCqd9qHZYgGbxU+v+iDYNub15lrTdHS5luxDFyASipQFAALpVSBlErzAnl50N8YdgGQ2rpZH5Tm6YspVCZilP4gz3TwaHM5IOQfg6aZEGR8ZhOt/LHuSYZ/wTZsMExhDCjjXfeNsYI88P/2Lx86mNG20jzG8JJaok7kmHGnK137CjblnuiXKPItv/744OwIygO1kZ3M2lIB3YGR4HghQ0ibzo4kzs1An7/kBov+v6rUNjMN+tB+IeDCpxyG36F1p2LTV3ArDYoNmHcdmhOo6B/99d/cwRNzlnIObEr7VZhtaej//JL2uILQyRrehr32SkN/pZ3zMGHZNBNibswY2vqajW05Od7maQOa+f61QFFLxb1dSDha3IdxPbPLwiGR/bq6a7UFHIPhSUysFGn/MCfEHWfQNafqgXDmzBiHJ0dFMAKcMdIQNtI10VFm7WrBOSfvxbb72bX94O8ei07aTOeSel34xV8RYzrjTMvay3KVGRDditZBphmnKp5CJIdl4DZURN/5uVQGN2Y6zcuXloP80AtQLjRaB
- G7zaK0UA
- my5IpPscm+fLtW77WHYm4+DSnymhX7CwWWIGi0dkJmuekNsMANW9L6LK0nshMxkaCWhoTH4Vzyh5YBKJwH1KkDsWuF6CiL6krohdWzZYgfMpy9k/WWfocpjZcsFJCixJoXkRfnZHszJlVoFcoFX07QRKWff1SaUccChglpMq8H+tSuyQBqeMw5NcIgZMipy+4FOCpI+vWKtzPlgb76Xhkb+W8clrWHI6RthtqIPsPmIjew3Rzqo2tO2104kg2uzhnTRpIZbpvAusZe8HN2q8E2II4aBkFYBxwLNUfHByEXOh9ZuZaWgusgcYoHYJgRD9/m7csLl/WYcfteKV/5KFfwVAh9wi3fxjFawNudJxo8U5AOCFy+61GTKHabQ==
+X-HE-Tag: 1792954880-211109
+X-HE-Meta: U2FsdGVkX19g6KOQEYoUpQqHyCepynmSVa3xDK7MAoXxUAUuVBTEcLFlqDsSwFVIs0IBcXqYT7UsSHiWQWiPj7F77QJSJz7fq2IqLtUoNE50zUfty9uDKUWLDPaOtsPQ+AEFF0BaoHoT3VPDVxAm0fJhgd8KWADw1wrGqfnhzNhsuCA+23nPG4JxwOoKXcWfnWAkYMIFAkDd5CjvGOGutDVTMeH2hVhUNX+FvDoXBbS0uQI2+miyHFaz1XD8EU/40qIUPS04cr1+6vbubEh4fHzg9htM0hBzVBSEqVuLkFEizvm/Gt1DAuBlLR8y7US1c0wYHsp9azUVyqRBvKrIino0+RUtlMOMA6qgEqWb5fQgz6S7We0gBnec6W8xUFbd920iExt7lzLbq3eHMx/CsTZDXb4GRLKOutc+92IWrc1WALJTazUCD0tu1oazmlnJywjgYlrUBYbG17UWJMWEvXZ7QscKoiYco/NNgQ/0Bz/K/2erL6HWyLBzOviQ/OmP9sAaP65SSWkFkDcqOE6mnR+a4ZIc19ABOJaiUZCzOJB1n8rnjBaUQE1dPyBY/2sC+0izvjqgakFBoxjZ6mG7gjskexHHGbNpxbSfQhRZ3+vSQ5/3xcxmwfyoY/X6n/iy9E+Y27/4q23KLGQ7XaWRvGBcTl7ZJVJv835jiQFfG0c0QnhkHUTkxp3K0mUMPlV03uwd/qvUQhWa9A07jHYVIX5UorBWjw9QG7HYwnhioSOAhfEzHnqOFiz3g/UvvwnP/TDkyxZQ4jJfd5BZoCwW8S4QTkNn0C9iuRMcAJr0kIrMCRG8yPeVpiN0/jKKEJb3L/s7OujNfxgCOw5PvSPOHmD15w3TBfB0VHkyAAFAv1LN+l0AjW714cTexQecx4eGlgxeierHUOClxJuqoO+VgJs+tb4nW9R90FgOqxUjLuxHGFZ4sPBlq3ygklZAODuut2yIWnA129tXTzKEQsx
+ 5BY5OBT0
+ KexTvTFfegILlo6mLQoTdg0BQK9I6h1tSX1nG62hWXJXBMPRkQGodpuBFFP35dI1hhO85cHUD3SD3SvcCNlTILDpRNlAgI2bnsd1jDtFNz4rgk6bvZOLsFSIa4tCY51tywzT7lqwfoeJVLO8y1fHII1U6ADRqutFanx6zLMJ1euG6RWqT83Zo7NhhHKb3P5szQDNHBoJpCusNM617si19SkgPsb5n2OYcR7tUkeEGHQ/p24wHDsw/9EFWWCqheSk1CJ1DYd5Hfn1DNrJ2+NtFZj0ElBMkXO0BRy/MxnvIssZflPfEVEB1nAFzQlIh9wdAhUD9+uTiSq1qF+jUfJQ4zunGyioSd0S7TCGjIzS0kZpBUCRASETJzeRv/m4XFbCih9nH/iTZlDOFHXZ3i8wxg5Hn3RPPAyCQcCA/1cleTIVzIqdopJ5zUyDTyh3M5gSoAmKhTOenm/+gX/MJLA5+w9FC499v6wJQft+Or0gfmfPJKVdhatDAQ0npvjgwmXJij+7x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,133 +132,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 25 Oct 2026 18:33:53 +0000 sashiko-bot@kernel.org wrote:
+On 10/25/26 11:43 AM, David Hildenbrand (Arm) wrote:
+[snip]
 
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Medium] mm/damon/sysfs: ctx memory leak in damon_sysfs_turn_damon_on()
-> - [Low] mm/damon/sysfs: unknown member targe_value in damon_sysfs_valid_start_ctx()
-> --
-> 
-> commit 1635d9f393d64d22688141e9540fde6f98f5d6bb
-> Author: SJ Park <sj@kernel.org>
-> 
-> mm/damon/core: error damos_commit_quota_goal() for zero target_value
-> 
-> This patch rejects zero target_value in DAMOS quota goals during parameter
-> commit in damos_commit_quota_goal() and damos_commit_quota_goals() to avoid
-> division-by-zero errors. For this stable backport, it also adds a validation
-> helper before damon_start() in damon_sysfs_turn_damon_on().
-> 
-> Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
-> Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
-> Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
-> 
-> > diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-> > index 5aa23c6545cb8..7895b11555d06 100644
-> > --- a/mm/damon/sysfs.c
-> > +++ b/mm/damon/sysfs.c
-> > @@ -1497,6 +1497,20 @@ static struct damon_ctx *damon_sysfs_build_ctx(
-> >  	return ctx;
-> >  }
-> >  
-> > +static bool damon_sysfs_valid_start_ctx(struct damon_ctx *ctx)
-> > +{
-> > +	struct damos *s;
-> > +	struct damos_quota_goal *g;
-> > +
-> > +	damon_for_each_scheme(s, ctx) {
-> > +		damos_for_each_quota_goal(g, &s->quota) {
-> > +			if (!g->targe_value)
-> > +				return false;
-> > +		}
-> > +	}
-> > +	return true;
-> > +}
-> 
-> [Severity: Low]
-> Will mm/damon/sysfs.c fail to build in damon_sysfs_valid_start_ctx() due to
-> referencing g->targe_value instead of g->target_value?
+> Fixes: 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under per-vma lock")
+> Fixes: ea3085dd7a4e ("fs/proc/task_mmu: read proc/pid/{smaps|numa_maps} under per-vma lock")
+> Fixes: 0e985559d72a ("proc/task_mmu: read proc/pid/smaps_rollup under per-vma lock")
 
-Nice catch.  My build test was somehow configured to disable DAMON_SYSFS.  I
-will fix this in the next spin.
+PROCMAP_QUERY does the same fresh lookup, shouldn't d9d1c2d81797
+("fs/proc/task_mmu: execute PROCMAP_QUERY ioctl under per-vma locks") be
+here as well? (commit tracked down by an LLM)
 
-Also, my build test found an issue in macro expansion after fixing the config.
-I will add below change for the two build issues.
+[snip]
 
-'''
-@@ -1503,8 +1503,8 @@ static bool damon_sysfs_valid_start_ctx(struct damon_ctx *ctx)
-        struct damos_quota_goal *g;
+> There is the issue with seqcount overflows that Lorenzo is tackling. It
+> probably interacts here as well? Likely, but that's an independent issue
+> to resolve.
 
-        damon_for_each_scheme(s, ctx) {
--               damos_for_each_quota_goal(g, &s->quota) {
--                       if (!g->targe_value)
-+               damos_for_each_quota_goal(g, (&s->quota)) {
-+                       if (!g->target_value)
-                                return false;
-                }
-        }
-'''
+the saved seq is reset on every m_start() and query, so a wrap would
+need 2^31 write locks inside one read() or ioctl, I don't think it
+matters in practice :)
 
-> 
-> In include/linux/damon.h, struct damos_quota_goal defines this field as:
-> 
-> struct damos_quota_goal {
-> 	enum damos_quota_goal_metric metric;
-> 	unsigned long target_value;
-> 	unsigned long current_value;
-> 
-> > +
-> >  static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
-> >  {
-> >  	struct damon_ctx *ctx;
-> > @@ -1517,6 +1531,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
-> >  	ctx = damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
-> >  	if (IS_ERR(ctx))
-> >  		return PTR_ERR(ctx);
-> > +	if (!damon_sysfs_valid_start_ctx(ctx))
-> > +		return -EINVAL;
-> 
-> [Severity: Medium]
-> Does damon_sysfs_turn_damon_on() leak ctx and its associated allocations when
-> damon_sysfs_valid_start_ctx(ctx) returns false?
+I tested it on x86_64 in qemu with KASAN, lockdep and DEBUG_VM on top of
+mm-unstable, the maps holes I hit there are gone. Also, the code LGTM:
 
-Good catch.  I will destroy the ctx in the error case in the next version, like
-below:
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Tested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-'''
-@@ -1531,8 +1531,10 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
-        ctx = damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
-        if (IS_ERR(ctx))
-                return PTR_ERR(ctx);
--       if (!damon_sysfs_valid_start_ctx(ctx))
-+       if (!damon_sysfs_valid_start_ctx(ctx)) {
-+               damon_destroy_ctx(ctx);
-                return -EINVAL;
-+       }
-        err = damon_start(&ctx, 1, false);
-        if (err) {
-                damon_destroy_ctx(ctx);
-'''
-
-> 
-> When userspace writes "on" to the kdamond state sysfs file with a scheme
-> quota goal whose target_value is zero, damon_sysfs_build_ctx() allocates ctx
-> along with its targets, regions, schemes, quota goals, filters, and any
-> target struct pid references. Returning -EINVAL directly here skips
-> damon_destroy_ctx(ctx) (and target pid cleanup via
-> damon_sysfs_destroy_targets(ctx)), whereas the damon_start() error path right
-> below destroys ctx before returning:
-> 
-> 	err = damon_start(&ctx, 1, false);
-> 	if (err) {
-> 		damon_destroy_ctx(ctx);
-> 		return err;
-> 	}
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261025182326.178326-1-sj@kernel.org?part=1
-
-
-Thanks,
-SJ
+-- 
+cheers,
+jose a. p-a
 
