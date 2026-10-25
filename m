@@ -1,148 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258FC606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 01:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770C7606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 01:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GbaX+Xlv
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ElbwF62M
 Received: by kanga.kvack.org (Postfix)
-	id CF2FB6B05B0; Sat, 24 Oct 2026 21:31:18 -0400 (EDT)
+	id 956BB6B05B0; Sat, 24 Oct 2026 21:38:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7CAA6B05B1; Sat, 24 Oct 2026 21:31:18 -0400 (EDT)
+	id 907EF6B05B1; Sat, 24 Oct 2026 21:38:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1EC86B05B2; Sat, 24 Oct 2026 21:31:18 -0400 (EDT)
+	id 7F6CD6B05B2; Sat, 24 Oct 2026 21:38:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 786D86B05B0
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 21:31:18 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2E651205AF
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 01:31:17 +0000 (UTC)
-X-FDA: 85359420594.15.F905399
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 08A9D1C0009
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 01:31:15 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GbaX+Xlv;
-	spf=pass (imf20.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 420B66B05B0
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 21:38:57 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 28F911C3B3A
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 01:38:55 +0000 (UTC)
+X-FDA: 85359439830.12.225AD97
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4E05080002
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 01:38:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ElbwF62M;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792891876;
+	s=arc-20220608; t=1792892333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NjK0kx7CGIZMdCtURm6ydpz5eb+27HR4F80VrSkDz3k=;
-	b=GhNuBj3hFVZukJC/sbedFw5jh0kTUA93dEgwQF/WDLjL69w9JQ6GbQvvhDjxz2+YNmVAyH
-	XEZi7xr6jzbLtjZATsr8jenVrSQkJKsjd8Y9CBi4Z+/RxUUFhhb903W+4jsYHPSX3FGT/m
-	kCms4P1BB/Td2eseKCO+2nOEOh6vgp4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792891876;
-	b=gkf+1Z+ulJPMfpGDreL0gL2f6sECXiSDzi0fD5IbPpYhOKTcaKsPme/IzgfMfETOTFuCCc
-	cfeIFqiUMm8TC8feW5xd7kJpWf3MrcytRDcbkRlOAphn1Ri2847v6kwE6ZTO+6kcm3VnoR
-	aags1nEU2Szv8VLS20C2b3MsKcDWhOU=
+	bh=vX4jDwUVQE1PbT5Y2KzG++B9u8Cu7vIzDB5HJALt09k=;
+	b=3ZmVij6Hyg2IL2dXZ1FugXp5SC191+NXkkwcBPzZY8cFzvWnP8P8A8BNVmhptbFoPaeXfk
+	9i0kr7diJelEXbCAjw+NCLxFgNY7uQaYXEL0TywoBit/iH57USOO+B4qYRj/VRv9V8k4hH
+	6Fh0ZgA2D+y+/2ONSRybuSohRJLNP58=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GbaX+Xlv;
-	spf=pass (imf20.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso10509985ad.0
-        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 18:31:15 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ElbwF62M;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1792892333;
+	b=dTq2bDw4cCTYiO79RwWgPlnNUegoMqnTA+MCiJnqzJEtaZDbhiukBX6gZ55uLJb3xAXKUd
+	phiGQS/SCO2Bxb2XR+XbKF+ykCsH4/uHg7JjnKFjWkRDr6QKkBuGDEVJfCMQW4ewjFAFu3
+	1kf0C4RwwP+63Zla7mA7dKHh1vi9KpE=
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-14fc585291cso698337c88.1
+        for <linux-mm@kvack.org>; Sat, 24 Oct 2026 18:38:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792891875; x=1793496675; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NjK0kx7CGIZMdCtURm6ydpz5eb+27HR4F80VrSkDz3k=;
-        b=GbaX+XlvkXy5sw5mXzGBFiVo/usSa/tSgqqEBm+xT0JO9ha4dmURtY7IhdaThoqERv
-         gqDSehbv9LzURKtWEcqH0/0cJKcN79H37A9wbhY+8EABuUL4XAGr17+7Rg4jVbnEKvKv
-         tAcPLDMIRs643wQAGTrUcrk8wRBlllNSXtWqbn/DkAI4UMSu392BpeWZx2ao/v9QRzsY
-         byrBn4dMe+Sck3Lfj122EgHO3SshqW2Bj8NPWjZJasz5LrTzoNGA330ll65DYZexfun8
-         CKtLNilJ47EwJ8R65UZw00S00ihn+dUgvGK8dSqyDFsty/MorAjKsoP40fcd0IM8FJMK
-         /ccQ==
+        d=chromium.org; s=google; t=1792892332; x=1793497132; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vX4jDwUVQE1PbT5Y2KzG++B9u8Cu7vIzDB5HJALt09k=;
+        b=ElbwF62MSpJAmlaojIExNSDgw0dmsDIMU7Np9baRq4fCNJrMAuAApv2D/xYYHFd0Dw
+         JLmq8q4MjWLNX0qaF0pCv5NEl+Rwx1odkzNEwn6P7KnG/SdPVq2Gj+UVXE006p5wD3/l
+         FJJWdhCNZA4UM9EjEVIuooON2hIFDJbLtpr7Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792891875; x=1793496675;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NjK0kx7CGIZMdCtURm6ydpz5eb+27HR4F80VrSkDz3k=;
-        b=IqxtVuMzmSSueaMWDLZtPvKw1dgRuctd1KFalMDez/IKZMSnfaWNOn9ZkDD5Su/W9r
-         wpPgH9H/DqjWQhDBBlzPtbZrM9uTwwca0shrVXbYtPbCQeNty73YCxc/aMVvBb2a4C9p
-         BGbMHwf9DMSX7iaXcvptkcJa9GI8Fyuf29S+NstS2PMZm+T3GI+n12p42WW9VahoCQbx
-         3ebm4KNW3qmDSKXEKUxTZz6INQLIkpZugGd0oEwNugUR2GI5TR3aUTfoDtfRh2Ombwpp
-         KQ+beVl7gdy28/IZlZDYMyLZsb8EVZ0xJtJFlokynUCEIalkvRefAg1a6gh5guAjPDiQ
-         HTMw==
-X-Forwarded-Encrypted: i=1; AKwUvBzpRFTArc4eix+r1TVzPpvMrZmuvqodlJ5JkL506JNtwvNQwy1H1K2NXBHgij2o2q3IXQki7VAhcg==@kvack.org
-X-Gm-Message-State: AFq9FYLVi/jfOLZsgu1U8tFAR0PZ3plJGQGOTTQZd1xeu4UcX8EUZtYO
-	L6pG4w3hKwUXp+5z2SN2A0EEXp9zjrjmyaFvE1tEmV0zuJ0SXse9rtXJ
-X-Gm-Gg: AYBFou1m7UP5p35eaSkYI+H5DQ1LOnSGpmN4jB5y5IZGhLGnNHzFhKDjoj/y9bl0/57
-	coRVitsLm3zZmZBH+uOdx2MWPsR3hfk1/j7qyOrNMkkYGn3XYIliLma7MoSiRDD1+8D39mFKwiT
-	LGqk9x5DWowGWlxvbbhS6ADfWlhJJJ+7y7onxqWtGqfVwFCfIaWXvrohpdgHAFq7dMEmVnVriEP
-	Jsf3/MdBTdq50+39aHKI8vJ59lscb0w1Ay+rZAr+qv5TIRhMlkm4+MwFXNyds5f7LV3Iv9rz68d
-	I7aKzb9dJSi/atDvLb77W+wTUXx0QbHuRpYkRVxlKF2g/OZOtzx2PxWO6+uQZGydkE/DbK63f0X
-	GlGR+K9lUca7KYECz+Cz9TBeuJfYmQvM+KRGSnEBrdv/ZnH0+rGYc+/n0UoltlwLPomLrlilxcK
-	PwQ/uHyaowqJ51sQAIlVkhs8k+W2Mg5VBlxmBh2ab5mbJ5lQalFHhTXltw9Db1uFoupoeLrdGJo
-	38QV8x/YB77czrbwcgQBXqLjsp5YGhoBI0r2upX0BM2+fmGpNl8qEOvwC+6o7gupW1PqUe3SjM=
-X-Received: by 2002:a17:903:15c7:b0:2e6:2868:e576 with SMTP id d9443c01a7336-2ea9c87defamr24585005ad.31.1792891874848;
-        Sat, 24 Oct 2026 18:31:14 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b1a1c00sm7197805ad.45.2026.10.24.18.31.06
+        d=1e100.net; s=20260707; t=1792892332; x=1793497132;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vX4jDwUVQE1PbT5Y2KzG++B9u8Cu7vIzDB5HJALt09k=;
+        b=LpJ127LGNgaOdZy+9X10F9X43pYteQUB9fGti0YxR5E7WIoOxy0nxEveINFU1TSmuH
+         xjdN6EMl9VD7nkqJsQpLuOAXnAoML2MoujnWwMLgitne1t5Migsc5OfOUkTJICZD6NGJ
+         OPCvh6hwCgmuS1haxEhy26SUz+8efUKmFkrw8m3QV92bxqv8wlwFj8qzxlhSiRMCmPmZ
+         sZ1tpZRcZfV7FDjRcpZrEOIP0ba5rIqzWI2/d/8OilTyWhSOuxZXM6ICT90jJiiyiIDC
+         Pk7Tj9mz+oqZOUnGdb0bLxd3XMVKO44TbldmULJJ7kTsFE9S73rvSXdVjXbPPQFgp4aR
+         MWog==
+X-Forwarded-Encrypted: i=1; AKwUvBw4CpiPpl89WGK+WIdnsFY5JXq4qzTeibbPt0l/hLfWK1nT/7IH9jbmxMKaBgajv9sOsVjK1Vyaeg==@kvack.org
+X-Gm-Message-State: AFq9FYIMtPWAQnjSjE2SdhIkW9lwu/eHMrIruZpHOeBvns+NXO1PGrXR
+	/rrsXHi5NuYiNtibxPBc9kvm5FRj9qTgdDXHERGnYBMm+aJkKnZzsmAv3gDAuZq5Xg==
+X-Gm-Gg: AYBFou1u3bAGgcSVKd+o0NTEcpKZl++LRqcdQENPwHyRCurdCfmgV7DnemPD05D5uCx
+	OK39vtujzZ3Hdaxf67b9vVSvdHxN3Vs1aHL/rSwAodeQjYRPt/IH15lxDKk+vY+N3iyJBO1gmIs
+	ivrKkOiy+kL+LuLSdOpymt4TR00Jm0ATFX8ae5bmargkCpEmkxyT7tk0CzrOUTyT+d8CfABiS7j
+	Wyp2zzyI9E3+3+aeG0j+u14vhcu/A7tfeL0m/QNpap1mt3vsYwCPNQlTKR3ysMBembPFAnEPqpJ
+	8V6tMNf6nzqQlsV0LMmRgn3x7oYB8FB+Q9AoflVJMLfPpZIT/De9tsp7a0zzrZO5e59rq3xS8lO
+	nAynzuOPmL/G5qoC0yc6wSsE0uLvEN/AxrvTP9U/h3EPHGFYa7n+GAwm67mxDal0cVW9KHM0JhA
+	H/67G5zWJ6iglWvySShcdyjX3SUybTxkyiCdemEceYRnLaNb3Bonunj6I90Bpt53xl87NkIxMC1
+	66MocuYOXM8tL6Ax+YCilQg9msJHnZLgqISthzBJYvj0N8aRRlKoBQgvnuh8RbiRvEkLM0ZAHca
+	fTFekYEmCiDHKxr3qw3qh/NdLeeCHJW7Twzlw7wBDw==
+X-Received: by 2002:a05:7022:7f12:b0:176:2095:1ac4 with SMTP id a92af1059eb24-19935be809dmr4891737c88.18.1792892331865;
+        Sat, 24 Oct 2026 18:38:51 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:9f87:66fc:8c85:11bb])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-198a21bc6cbsm11000132c88.16.2026.10.24.18.38.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Oct 2026 18:31:14 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: sashiko-bot@kernel.org
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	hui.zhu@linux.dev,
-	kasong@tencent.com,
-	kunwu.chan@gmail.com,
-	liam@infradead.org,
-	lianux.mm@gmail.com,
-	linux-mm@kvack.org,
-	liuxiang.277@bytedance.com,
-	ljs@kernel.org,
-	lyugaofei@xiaomi.com,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	qi.zheng@linux.dev,
-	ridong.chen@linux.dev,
-	rppt@kernel.org,
-	ryncsn@gmail.com,
-	sashiko-reviews@lists.linux.dev,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhangbo56@xiaomi.com,
-	zhuhui@kylinos.cn
-Subject: Re: [RFC PATCH v5 14/14] mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO allocation
-Date: Sun, 25 Oct 2026 09:31:03 +0800
-Message-Id: <20261025013103.2742885-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <sashiko-outbox-183280@kernel.org>
-References: <sashiko-outbox-183280@kernel.org>
+        Sat, 24 Oct 2026 18:38:51 -0700 (PDT)
+Date: Sun, 25 Oct 2026 10:38:47 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Hillf Danton <hdanton@sina.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Barry Song <21cnbao@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Message-ID: <at1cSbfBXdYIAIyT@google.com>
+References: <atxFgutP-N3UZex2@google.com>
+ <20261024101401.1035-1-hdanton@sina.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 08A9D1C0009
-X-Stat-Signature: cyoaxcyze7p8q5bo3dpex5sm1q14yh8w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261024101401.1035-1-hdanton@sina.com>
+X-Rspamd-Queue-Id: 4E05080002
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1792891875-116232
-X-HE-Meta: U2FsdGVkX18zyBJ8Oh8sHIVaLl92So+K8Yt7fUVUF8gObpCjmpWOxjM6acxy68czZ1e8fhQBqEomGlIyR07uoecoFiy5sdMtsK9Glr7ThjiDRtd7RjSFKIy+8joAW1otPWaPyOFQq4xh3fuioYmkh0d9txjNRTGjkSwfcOgLL9PVlrRQ23q5VAmOzBwRU1SMrIFhU1WmnwpeLt8L58Sxeg5PbYaGiy8bgDNzxYMwt85aZdjkwCBPO3iWAQ/A+BQYF7Y1UMIXA3dRKjEBtAneWdfGLfFahj6fgCMXDDryYNRJQXV88NA4BUue05mhDuPAtUFIGRpJL/9yjWxQ8Y/ANzvMk/CiSV6TOu7mrdAXnC898lPFQ6yJtr9fXPvaWmoyw6PS21BzdIidpNpIemzfJDxuf+VYLPMwfvfTOUpuFhQh5/atreMYWmcqLv6I0O/e7TIwi18q1Y16dExHxFaoHtrusopJn2FIWHN6vPGce02CHJKep9ZEGJ8uP6aGXDrcftWeHDCRqAYza/LXOYuK4SnLRtrGTcUEAiuQnld+RaFIZcmHSoIiKTJCNE0fFE7ceVra7701PcHizP3Jz/d/GgPEMzptWfObuA0+cUNfla1z7EyygZdvmQSWsEScRLjYHikW8SUQwd86yZduGI9gCB7gMUBZMi/ZiAYyFgobHGMou5ngKWZwqDVUI9G5YJXY9fEKnA8wFAdpom9GqB6NUWI3o81+WWs8BqoFDl954GFRP0b+UlJ716dh1XX4s0eGs+bypamBzKjfZmwPPubGOg7bmLXO59zzT7P/iyp6D29bXBoiwFK5ohffJts0WPMzRoklLugc7lsS2l4i1rk3Mu43Z9lVMpprzgen+PkApJHW/oTjxK1Ol5//Vi0NxA5tcmXS2ldp3bsautVMecB786vw03Fn0xaI9+K3z2am1cX7qzd7fvrxarohP47iKxbzPChWrgTZ11F8ucCciQH
- zxqlt3NX
- 5CSZfRdqRxh1tOmH/fXF8fLRG8rFNKvFyQIZ0Yoc6PET6JJDuTWA/BuhuhrpeIDqni4x7BjSDW22k0kWBa6KmyYKpaR3i2UxG5mcRm4RIgcMAQ27nKBb51ZnldL7zxg60iQmB9gdx5l/jubHVUeoK7LobI7qIaqQjHkTGf8j94awvOAAn43YTlbJfLL77fhzAfoWHJqKf/+4Uz4iA3X34aB1EU0xG9/iFvetDeCfSnpJvEzyBNB4FV12MSjyhsdTIqc1dbL0fc/hlbTL0KDECKJjcxY2Di9ZJ+bUSSK+QIX8diobyJ5tSWeJ9NE5VAIqfAA4bJ7FcY4DNzDzjZ5TfwtAF/8yVcQqOf3VtLU1X+YbprdiCiaJ8wyp2mqAjlQjRJqNhxnwzjpY8qrgDPuSRgupCNnUpyiS9frn3MahpAyAonpH4EYHV6akW4RcTcuQBeFBEoZpdUAvstL3wHMkbiTlNeHgbhPhvBqwmo99tNkc1ebpqk6yxsrY81A==
+X-Stat-Signature: n4dwb8t7nxy6mxkwxuke863m391opm96
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792892333-850951
+X-HE-Meta: U2FsdGVkX18giSkgJXOPHidXj5H8kQHRCcN2WTep0MvxylFefYxusDA3/ILOJo14kYPsZrQIJCPMPVyKUbmi4MS8tAc24kJkOJnxm62g/n1ldWaCMibw3KZsRSAnqn9k7d94qIhuy/blsM9q9zNhGWR9G6y8FAJXc100haZWzFe8GOJzhORctE3Cis1d+JGLJ5Tf151lKaMvdo4h5G+FSIrpj2WfMWaJkpYt1zrzKjmOoidm/YCg7jgCAnwcQy+JEoyeJFAG9J/s2Ob/xjA2qOn/TU4nQ90kdU8sowfmjQSGs28LeEKtET5sgW0w+nM/OlriXepoqMY9HJWiJWa/RaFnaafKFbyduQB8g/yzGIAOAQ7HySQ7+ylMlM8E5QOce8YuXd3A+46Saoc2sn/KZzuvzr2riYgL4ssBD5ne+hsz+9kgDitWEO6Z+sAd5OVzLsAqNq8Y/Zim1L3nO/7A2OBw2DFkqAeI5oaq4XMoRpNqYXD+whEAL2CHiQIbYZBLWHnBc2uJ3VKAYQb5k5wYmGl6y7ReE4comc2D8Z5oMk1TcQW9mGKssqwV2KgyPDQJi97aTPXYsRL/MqMTyEBnpO6uc5NjMnt0A6l3enEjJhliSunzqsrAe+kIO/FOOD3pE1YUsdD6elkFC88BKnyuklinh1UmRWzu7yzrm2wMCsWCIIO0AnaX2Ls5NyTa3wC5QyTKIEpdIA9TYdwAjDp6vNgrQV578oEhOoLNb6soSOHcLcqSpmKqFbZRwLvNlEufersUF7emRUS1F2oWvH0id7cbhq2YElNtuAifn/f0qjEff1iDMQBDBKcLT89tJjaVymMO3Tus+0AyfuZImUoeN5D5eIsCmBRraSSTR3HJBJRlh6XH5fHh6R7Pl3H9XLLCCFn42aTWCD3URbSptqam+07U1AxmSD5xdIlmUsS0uhE9NfnQojoJlXJT4LfqaPyY1P+n1lDYK6Eiye9UZNa
+ tEnPutia
+ eQN+16c1wj5Zuo4TL5MSCw/MHe4LdX0Lq187QduLYuQPDzVvKHec3iwAq6ow2HNhwvLpPlfGKUCbXelHiMvoE9C37Oge1hHYFg0kMG2b1ZcD6K2KC4j8hMd3rmKN82qjCvzYJSoFTj0pzvL/hVgCbH3cJivSC3KyPshhNvNf7bh5DPaZ5y4zelBrlo1SVatXiUfO8kPzEori2dFsmTwNBKmgsu7DP8UZd1+w3jVcHU7orBmd68XDe+udu8G3PZTDxVHn2ZKT+4reOHZiviijoSSHzM4oFOa08/KsZ9KjRxXi/OxgCM1aOPWOql/6JtdAN6gTYE4OMqJTOahd8crAUGhFKGeUdI30DKky2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,153 +123,165 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-I have checked the two sub-issues separately. Both issues are valid and
-the root cause is the same: patch 14 skips anon scanning but leaves
-swappiness non-zero, so every path that still treats anon as evictable
-(scan budget, aging, lruvec_is_sizable()) misbehaves.
+On (26/10/24 18:14), Hillf Danton wrote:
+> > (PE enabled for all tests)
+> > 
+> > ######## zstd compression level 3 W-vs-R
+> >     BASE     IOPS 1,154k  avg 7.84us  sd   444us  max   697,634us
+> >              IOPS 881k  avg 14.16us  sd 2,242us  max 1,387,000us
+> >              IOPS 704k  avg 20.43us  sd 3,499us  max 2,058,300us
+> >              IOPS 563k  avg 29.02us  sd 3,910us  max 1,649,800us
+> >              IOPS 626k  avg 24.79us  sd 4,013us  max 2,085,800us
+> >              IOPS 976k  avg 11.54us  sd 1,518us  max 1,165,800us
+> >              IOPS 1,178k  avg 7.44us  sd    22us  max     3,103us
+> >              IOPS 1,120k  avg 7.39us  sd    21us  max     7,222us
+> >              IOPS 522k  avg 32.51us  sd 4,311us  max 1,598,300us
+> >              IOPS 581k  avg 27.54us  sd 3,626us  max 1,448,600us
+> >              IOPS 1,160k  avg 7.69us  sd   352us  max   702,099us
+> >              IOPS 1,169k  avg 7.52us  sd   129us  max   281,428us
+> >              IOPS 954k  avg 12.06us  sd 1,705us  max 1,545,600us
+> >              IOPS 1,029k  avg 10.24us  sd 1,156us  max   976,065us
+> >              IOPS 1,169k  avg 7.48us  sd    24us  max     4,305us
+> >              IOPS 1,177k  avg 7.45us  sd    53us  max   118,777us
+> >              IOPS 579k  avg 27.43us  sd 3,661us  max 1,615,800us
+> >              IOPS 1,169k  avg 7.52us  sd   115us  max   228,074us
+> >              IOPS 1,110k  avg 8.59us  sd   985us  max 1,288,000us
+> >              IOPS 1,177k  avg 7.45us  sd    29us  max    72,245us
+> >              IOPS 580k  avg 27.74us  sd 3,755us  max 1,507,000us
+> >     PATCHED  IOPS 1,179k  avg 7.40us  sd    23us  max     7,404us
+> >              IOPS 1,179k  avg 7.41us  sd    22us  max     2,857us
+> >              IOPS 1,176k  avg 7.40us  sd    22us  max     6,615us
+> >              IOPS 1,175k  avg 7.44us  sd    23us  max     5,623us
+> >              IOPS 1,176k  avg 7.42us  sd    24us  max     5,625us
+> >              IOPS 1,173k  avg 7.42us  sd    24us  max     5,632us
+> >              IOPS 1,172k  avg 7.41us  sd    23us  max     6,223us
+> >              IOPS 1,173k  avg 7.40us  sd    25us  max     5,848us
+> >              IOPS 1,173k  avg 7.40us  sd    24us  max     7,563us
+> >              IOPS 1,172k  avg 7.42us  sd    24us  max     5,625us
+> >              IOPS 1,175k  avg 7.42us  sd    23us  max     5,626us
+> >              IOPS 1,177k  avg 7.42us  sd    23us  max     4,243us
+> >              IOPS 1,170k  avg 7.46us  sd    25us  max     5,622us
+> >              IOPS 1,178k  avg 7.40us  sd    22us  max     3,213us
+> >              IOPS 1,167k  avg 7.43us  sd    25us  max     7,593us
+> >              IOPS 1,174k  avg 7.44us  sd    23us  max     6,971us
+> >              IOPS 1,179k  avg 7.38us  sd    23us  max     3,477us
+> >              IOPS 1,180k  avg 7.39us  sd    23us  max     2,894us
+> >              IOPS 1,145k  avg 7.37us  sd    21us  max     4,048us
+> >              IOPS 1,177k  avg 7.38us  sd    22us  max     5,620us
+> >              IOPS 1,177k  avg 7.40us  sd    23us  max     5,623us
+> > 
+> >     IOPS: BASE 932k (+-260k), PATCHED 1,174k (+-7k), 21 runs each.
+> >           significant difference at 95% confidence: PATCHED is 241k (25.9%) higher; 95% CI [+136k, +353k], Welch's t-test p = 0.000
+> >     max latency: BASE 3.1..2,085.8 ms, PATCHED 2.9..7.6 ms
+> >           runs with max over 100 ms: BASE 17 of 21, PATCHED 0 of 21; over 1 s: BASE 11 of 21, PATCHED 0 of 21
+> > 
+> > ######## zstd compression level 12 W-vs-R
+> >     BASE     IOPS 690k  avg 21.53us  sd 3,088us  max 1,635,500us
+> >              IOPS 478k  avg 36.51us  sd 4,385us  max 1,941,300us
+> >              IOPS 822k  avg 16.13us  sd 2,865us  max 2,263,800us
+> >              IOPS 1,161k  avg 7.73us  sd   114us  max   190,307us
+> >              IOPS 780k  avg 17.56us  sd 2,717us  max 1,550,500us
+> >              IOPS 1,166k  avg 7.66us  sd    40us  max    94,522us
+> >              IOPS 585k  avg 27.51us  sd 3,847us  max 1,550,600us
+> >              IOPS 1,147k  avg 7.97us  sd   344us  max   496,483us
+> >              IOPS 1,166k  avg 7.64us  sd    49us  max   115,243us
+> >              IOPS 1,163k  avg 7.66us  sd    23us  max     7,006us
+> >              IOPS 1,071k  avg 9.42us  sd 1,489us  max 1,915,500us
+> >              IOPS 962k  avg 11.88us  sd 2,168us  max 1,904,500us
+> >              IOPS 607k  avg 26.05us  sd 3,538us  max 1,591,100us
+> >              IOPS 1,167k  avg 7.63us  sd    23us  max     2,903us
+> >              IOPS 1,157k  avg 7.78us  sd   198us  max   418,930us
+> >              IOPS 1,163k  avg 7.66us  sd    40us  max   100,346us
+> >              IOPS 1,162k  avg 7.70us  sd    32us  max    82,602us
+> >              IOPS 488k  avg 35.43us  sd 4,340us  max 1,786,400us
+> >              IOPS 563k  avg 28.85us  sd 3,989us  max 2,209,500us
+> >              IOPS 843k  avg 15.43us  sd 2,490us  max 1,572,100us
+> >              IOPS 604k  avg 26.30us  sd 3,560us  max 1,555,700us
+> >     PATCHED  IOPS 1,166k  avg 7.60us  sd    23us  max     5,623us
+> >              IOPS 1,169k  avg 7.58us  sd    23us  max     5,629us
+> >              IOPS 1,157k  avg 7.67us  sd    27us  max     5,639us
+> >              IOPS 1,166k  avg 7.61us  sd    24us  max     5,644us
+> >              IOPS 1,160k  avg 7.64us  sd    26us  max     7,543us
+> >              IOPS 1,167k  avg 7.60us  sd    24us  max     7,514us
+> >              IOPS 1,160k  avg 7.61us  sd    25us  max     6,643us
+> >              IOPS 1,162k  avg 7.65us  sd    25us  max     7,315us
+> >              IOPS 1,161k  avg 7.66us  sd    24us  max     6,237us
+> >              IOPS 1,158k  avg 7.62us  sd    27us  max     7,688us
+> >              IOPS 1,167k  avg 7.58us  sd    24us  max     5,637us
+> >              IOPS 1,165k  avg 7.59us  sd    24us  max     7,098us
+> >              IOPS 948k  avg 7.58us  sd    23us  max     7,808us
+> >              IOPS 1,166k  avg 7.60us  sd    24us  max     5,621us
+> >              IOPS 1,166k  avg 7.58us  sd    24us  max     5,672us
+> >              IOPS 1,162k  avg 7.65us  sd    25us  max     6,824us
+> >              IOPS 1,165k  avg 7.59us  sd    24us  max     7,078us
+> >              IOPS 1,168k  avg 7.58us  sd    23us  max     6,191us
+> >              IOPS 1,170k  avg 7.56us  sd    22us  max     2,851us
+> >              IOPS 1,171k  avg 7.55us  sd    22us  max     2,834us
+> >              IOPS 1,166k  avg 7.59us  sd    24us  max     5,627us
+> > 
+> >     IOPS: BASE 902k (+-269k), PATCHED 1,154k (+-47k), 21 runs each.
+> >           significant difference at 95% confidence: PATCHED is 252k (27.9%) higher; 95% CI [+142k, +367k], Welch's t-test p = 0.000
+> >     max latency: BASE 2.9..2,263.8 ms, PATCHED 2.8..7.8 ms
+> >           runs with max over 100 ms: BASE 17 of 21, PATCHED 0 of 21; over 1 s: BASE 12 of 21, PATCHED 0 of 21
+> > 
+> > ######## lz4 W-vs-R
+> >     BASE     IOPS 1,422k  avg 3.84us  sd   418us  max   619,495us
+> >              IOPS 1,450k  avg 3.57us  sd   326us  max   609,723us
+> >              IOPS 1,414k  avg 3.92us  sd   543us  max   879,815us
+> >              IOPS 1,451k  avg 3.56us  sd   253us  max   503,428us
+> >              IOPS 1,460k  avg 3.40us  sd    68us  max   135,825us
+> >              IOPS 1,413k  avg 3.31us  sd    44us  max   188,450us
+> >              IOPS 1,432k  avg 3.73us  sd   503us  max   844,228us
+> >              IOPS 1,387k  avg 4.20us  sd   719us  max   961,827us
+> >              IOPS 1,464k  avg 3.38us  sd    44us  max   133,675us
+> >              IOPS 1,469k  avg 3.38us  sd    22us  max    65,812us
+> >              IOPS 1,465k  avg 3.40us  sd    49us  max   111,788us
+> >              IOPS 1,465k  avg 3.39us  sd    64us  max   174,040us
+> >              IOPS 1,467k  avg 3.38us  sd    36us  max    97,821us
+> >              IOPS 1,445k  avg 3.63us  sd   343us  max   671,026us
+> >              IOPS 1,472k  avg 3.35us  sd    27us  max    86,795us
+> >              IOPS 1,473k  avg 3.33us  sd    44us  max   138,096us
+> >              IOPS 1,439k  avg 3.71us  sd   353us  max   619,815us
+> >              IOPS 1,398k  avg 3.36us  sd    54us  max   206,815us
+> >              IOPS 1,471k  avg 3.36us  sd    15us  max     2,832us
+> >              IOPS 1,407k  avg 4.02us  sd   629us  max 1,074,800us
+> >              IOPS 1,465k  avg 3.40us  sd    63us  max   158,779us
+> >     PATCHED  IOPS 1,471k  avg 3.30us  sd    15us  max     6,946us
+> >              IOPS 1,473k  avg 3.29us  sd    16us  max     5,618us
+> >              IOPS 1,474k  avg 3.29us  sd    15us  max     5,615us
+> >              IOPS 1,473k  avg 3.29us  sd    15us  max     5,625us
+> >              IOPS 1,440k  avg 3.26us  sd    13us  max     2,829us
+> >              IOPS 1,456k  avg 3.30us  sd    15us  max     5,623us
+> >              IOPS 1,476k  avg 3.29us  sd    15us  max     2,835us
+> >              IOPS 1,464k  avg 3.28us  sd    16us  max     6,063us
+> >              IOPS 1,468k  avg 3.32us  sd    19us  max     6,692us
+> >              IOPS 1,465k  avg 3.30us  sd    17us  max     6,834us
+> >              IOPS 1,468k  avg 3.28us  sd    16us  max     7,268us
+> >              IOPS 1,463k  avg 3.31us  sd    17us  max     6,480us
+> >              IOPS 1,454k  avg 3.33us  sd    20us  max     8,418us
+> >              IOPS 1,452k  avg 3.32us  sd    19us  max     5,621us
+> >              IOPS 1,477k  avg 3.27us  sd    14us  max     2,834us
+> >              IOPS 1,468k  avg 3.30us  sd    16us  max     5,617us
+> >              IOPS 1,475k  avg 3.30us  sd    16us  max     3,884us
+> >              IOPS 1,475k  avg 3.30us  sd    16us  max     5,692us
+> >              IOPS 1,471k  avg 3.30us  sd    15us  max     5,616us
+> >              IOPS 1,473k  avg 3.28us  sd    16us  max     7,014us
+> >              IOPS 1,475k  avg 3.28us  sd    15us  max     5,616us
+> > 
+> >     IOPS: BASE 1,444k (+-27k), PATCHED 1,467k (+-10k), 21 runs each.
+> >           significant difference at 95% confidence: PATCHED is 23k (1.6%) higher; 95% CI [+11k, +35k], Welch's t-test p = 0.001
+> >     max latency: BASE 2.8..1,074.8 ms, PATCHED 2.8..8.4 ms
+> >           runs with max over 100 ms: BASE 17 of 21, PATCHED 0 of 21; over 1 s: BASE 1 of 21, PATCHED 0 of 21
+> 
+> 
+> Lets see the data from another pov (feel free to disagree) -- in the android
+> phone/car cockpit environment, the render frequence is required above 60HZ,
+> IOW a frame rendered within 16ms, so what share of the 16ms does the IOPS
+> account for after this patchset, for example when an app in background is
+> brought foreground?
 
-> [High] unclamped scan budget on early return in lru_gen_balance_scan()
-
-Confirmed. With 1 <= swappiness <= MAX_SWAPPINESS and if one of the type's 
-nr is 0, the early return left the other type at its full unscaled evictable
-size, bypassing priority scaling, memory.low protection and nr_to_reclaim.
-Note this is not specific for GFP_NOIO, an lruvec that naturally has only
-one type has the same problem.
-
-> [Medium] inconsistent swappiness state when anon reclaim is skipped
-> Would checking can_reclaim_anon_pages() in get_swappiness() ... avoid both?
-
-Confirmed for both sub-issues, stalled aging via evictable_min_seq(), and
-lruvec_is_sizable() counting unreclaimable anon.
-
-Rather than forcing swappiness to 0 in get_swappiness() (which, as Barry
-noted in [1], wrongly allows anon cold/hot inversion for the temporary
-GFP_NOIO case), I keep swappiness not changed and fix the evictable view at
-its source, lruvec_evictable_size():
-
-1. It now filters out anon here when it cannot be reclaimed (e.g. GFP_NOIO
-   with low swapcache), so nr[LRU_GEN_ANON] is 0 for all consumers. This
-   drops the per-caller zeroing and lets lruvec_is_sizable() ignore
-   unreclaimable anon.
-
-2. lru_gen_balance_scan() clamps the remaining type to total_scan before
-   the single-type early return.
-
-3. should_run_aging() forces aging when file gens run low and anon is
-   unreclaimable, so a stalled min_seq[LRU_GEN_ANON] no longer blocks aging.
-
-Proposed fix on top of patch 14:
-
-[1] https://lore.kernel.org/lkml/20261022102726.56682-1-baohua@kernel.org/
-
----
- mm/vmscan.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index d72a5aef3a0f..32bd9c0fef5d 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4350,12 +4350,14 @@ static inline unsigned long lruvec_gen_size(struct lru_gen_folio *lrugen,
- 	return size;
- }
-
--static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
--				  unsigned long nr[])
-+static void lruvec_evictable_size(struct lruvec *lruvec, struct scan_control *sc,
-+				  int swappiness, unsigned long nr[])
- {
- 	int type;
- 	unsigned long seq;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-+	int nid = lruvec_pgdat(lruvec)->node_id;
- 	DEFINE_MAX_SEQ(lruvec);
- 	DEFINE_MIN_SEQ(lruvec);
-
-@@ -4363,6 +4365,8 @@ static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
- 	nr[LRU_GEN_FILE] = 0;
-
- 	for_each_evictable_type(type, swappiness) {
-+		if (type == LRU_GEN_ANON && !can_reclaim_anon_pages(memcg, nid, sc))
-+			continue;
- 		for (seq = min_seq[type]; seq <= max_seq; seq++)
- 			nr[type] += lruvec_gen_size(lrugen, type, seq);
- 	}
-@@ -4374,7 +4378,7 @@ static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
- 	int swappiness = get_swappiness(lruvec, sc);
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-
--	lruvec_evictable_size(lruvec, swappiness, sizes);
-+	lruvec_evictable_size(lruvec, sc, swappiness, sizes);
- 	total = sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
-
- 	/* whether the size is big enough to be helpful */
-@@ -5058,18 +5062,17 @@ static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_control *sc,
- 	u64 anon_weight, file_weight;
- 	int size_bias;
-
--	if (swappiness <= MIN_SWAPPINESS) {
-+	if (swappiness <= MIN_SWAPPINESS)
- 		nr[LRU_GEN_ANON] = 0;
--		nr[LRU_GEN_FILE] = min_t(u64, total_scan, nr[LRU_GEN_FILE]);
--	}
-
--	if (swappiness == SWAPPINESS_ANON_ONLY) {
-+	if (swappiness == SWAPPINESS_ANON_ONLY)
- 		nr[LRU_GEN_FILE] = 0;
--		nr[LRU_GEN_ANON] = min_t(u64, total_scan, nr[LRU_GEN_ANON]);
--	}
-
--	if (!nr[LRU_GEN_ANON] || !nr[LRU_GEN_FILE])
-+	if (!nr[LRU_GEN_ANON] || !nr[LRU_GEN_FILE]) {
-+		nr[LRU_GEN_ANON] = min_t(u64, total_scan, nr[LRU_GEN_ANON]);
-+		nr[LRU_GEN_FILE] = min_t(u64, total_scan, nr[LRU_GEN_FILE]);
- 		return;
-+	}
-
- 	for (int type = LRU_GEN_ANON; type <= LRU_GEN_FILE; type++) {
- 		int hist = lru_hist_from_seq(READ_ONCE(lrugen->min_seq[type]));
-@@ -5271,12 +5274,19 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
- 			     struct scan_control *sc, int swappiness,
- 			     bool do_balance)
- {
-+	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	DEFINE_MIN_SEQ(lruvec);
-
- 	/* have to run aging, since eviction is not possible anymore */
- 	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
- 		return true;
-
-+	/* run aging when GFP_NOIO limits anon reclaim with few swapcache folios */
-+	if (swappiness && min_seq[LRU_GEN_FILE] + MIN_NR_GENS > max_seq &&
-+	    reclaimable_anon_is_low(memcg, pgdat->node_id, sc))
-+		return true;
-+
- 	/* try to avoid aging, do gentle reclaim at the default priority */
- 	if (sc->priority == DEF_PRIORITY)
- 		return false;
-@@ -5295,9 +5305,7 @@ static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_control *sc,
- {
- 	unsigned long total;
-
--	lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
--	if (!can_reclaim_anon_pages(memcg, lruvec_pgdat(lruvec)->node_id, sc))
--		nr_to_scan[LRU_GEN_ANON] = 0;
-+	lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan);
- 	total = nr_to_scan[LRU_GEN_ANON] + nr_to_scan[LRU_GEN_FILE];
-
- 	/* Just scrape all pages calculated above if this memcg was deleted */
-@@ -6050,7 +6058,7 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
- 		if (sc->nr_reclaimed >= nr_to_reclaim)
- 			return 0;
-
--		lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
-+		lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan);
- 		lru_gen_balance_scan(lruvec, sc, swappiness,
- 				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
-
---
-2.34.1
+A single 500 ms read stall is 30 dropped frames.  Across 126 runs that
+I ran, base+PE had read stalls over 100 ms in 108 runs and over 1 s in 47.
+The worst read with the series+PE, in all 126 runs, was 8.4 ms, i.e. within
+one frame.
 
