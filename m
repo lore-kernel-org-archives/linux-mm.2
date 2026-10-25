@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F662606A32C
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 23:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE2C606A321
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 23:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X/n6M6Ga
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RsKPsTZX
 Received: by kanga.kvack.org (Postfix)
-	id 92B9F6B05B0; Sun, 25 Oct 2026 19:30:10 -0400 (EDT)
+	id 81A3B6B05B1; Sun, 25 Oct 2026 19:30:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DCEA6B05B1; Sun, 25 Oct 2026 19:30:10 -0400 (EDT)
+	id 7F19B6B05B2; Sun, 25 Oct 2026 19:30:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F1886B05B2; Sun, 25 Oct 2026 19:30:10 -0400 (EDT)
+	id 6B9EF6B05B3; Sun, 25 Oct 2026 19:30:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CE826B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 19:30:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CAC77A813D
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 23:30:09 +0000 (UTC)
-X-FDA: 85362744138.06.29CAB65
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3303B6B05B1
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 19:30:14 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 853DD4065C
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 23:30:13 +0000 (UTC)
+X-FDA: 85362744306.08.35443AD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 347A91A000A
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 23:30:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="X/n6M6Ga";
+	by imf09.hostedemail.com (Postfix) with ESMTP id DD2A1140006
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 23:30:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RsKPsTZX;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792971008;
+	s=arc-20220608; t=1792971011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sWx6l1uH67lmRdxqqC1BqRd2rIEg3mHZHVhaXIsbxyw=;
-	b=CGhdU55jpJeSnfPUg6pzlRx+INtB37xhX/x3FokGPEV+t45hAZSo/ulznCOzXSvmq+QPSO
-	f6g5BOge4amTDIR+VPREZTR8hu4eAVT8QH/1hIO1FVmV517yEyS5aAm2tv3gaGgc7BtN1v
-	SdvT/nZNvYVrvjbkTYBGSjv50lcW1Ps=
+	bh=IgHIB6FOcL0bCiYPaegMhdluu/k3cOQL1TguKu3CfbA=;
+	b=2+qDsfO5XEHsBmRQWFnjXcw+21H+MPwUNStExAfxu9ZW8XjKXEt9gM4oHP5yFaI63guEif
+	dC1HheNnpClYKpGdTfF8fvCzWrZ7f/i/OpRcafMuIeL5144sEpPFPwhSJ5oCoSl12Od/sV
+	26w5nCzKNOxmQd0A7btT3nM5Y5FvYqE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="X/n6M6Ga";
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RsKPsTZX;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792971008;
-	b=VN+dTkr7A20ZMkZXm7uC9dCcxJd7ZrTUMo4IYyHNMLhcfxi4bLIpLVy8Fch//1ysDbOube
-	a+2dWIVvAUIIEBGSSc6r/5xkkRQ+9UHxLpfKG75R6kVhlqeqojQuMrm25bbev9N1QsuFbB
-	t5hR8Cz37JfNa0ifR+weJRt/X5IjY4U=
+	t=1792971011;
+	b=PNIazEGTNetu0ZNDa20h2i5gOYN8GBjsOgapBB62qE+hSUqc7mXaQswkQNCCQgK+J68XtZ
+	ADV6GYndK/1EP86j6fUaroxgsBMuZmZVuzqSO3NFTnUzwMb48YhyAutQJNooR9BzWtX7gY
+	yh0Mfk2Ijgs+MNOZLdHvj4gZaL6xi4I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9653040A7E;
-	Sun, 25 Oct 2026 23:30:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47DA1F031E2;
-	Sun, 25 Oct 2026 23:30:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 26E464195E;
+	Sun, 25 Oct 2026 23:30:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452381F031E3;
+	Sun, 25 Oct 2026 23:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792971006;
-	bh=sWx6l1uH67lmRdxqqC1BqRd2rIEg3mHZHVhaXIsbxyw=;
+	s=k20260515; t=1792971011;
+	bh=IgHIB6FOcL0bCiYPaegMhdluu/k3cOQL1TguKu3CfbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X/n6M6Gak7qTGuZ0sZGYSKvc2PxcFkoGCnKt7+53wtrwPR7J6riwEySx7xxnOK2qg
-	 sApWJT9kXgrYRi4WQZGO39X5F/PkGhEpPEu6KY4J3dHQzF/mpp4OEP9hB4HmzbedBX
-	 42hhQB1z0+hbyQMSlu9rzd/IjPlDIRiBwgRb910FFI9SxZk6wju/bgver+aREj5THD
-	 RIaJR17CIm9/Ehdp7HcK4oYmFNV0DLxnC7+rHKnq901Ve70ycNlYpIkIB6/N2XHn1P
-	 sqZYSHaCK5RASMIR3fsYzbNBaL9jp+JugYxdbGibVMPRd/D2mVpIsDdTplj3E0dl9/
-	 KcmvkdkXLMg6A==
+	b=RsKPsTZXjG3XXKmYD9MfedxVJxvR1k+Bngrc8JlS7vFSfL05vAecigviHGlboP0fh
+	 bWrvygLpdpuSlX1T4yW5JHZGUSn0nQm+uM+nxqdvo/AiyTLhOGoSpm+e/wI4VCUuOy
+	 4J5+Plg/tB9Dr4QM8orhdzhNlkNS7FJ4BVrfPY2o1lslo7xZgWlpw+c5V9NQGD5DX2
+	 JzjDJVqks/pk10gpOSQRNW3APUEx9JqBnkVPRKNEsx+uLTGI7iiYghuLaOL6OWHdTr
+	 3x9uaxDSLSwfIzAVjLyfkCnjMWMBepRrweTG5+/4ccYJZNwaQM2FNiHIWNym7IWLuM
+	 BjVrNu3BTHMLQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: SJ Park <sj@kernel.org>
 Cc: Sasha Levin <sashal@kernel.org>,
-	JongHyuk Kim <malhyuk97@gmail.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	linux-mm@kvack.org
-Subject: Re: Please backport aedf2efd1897 ("mm/pagewalk: fix stale walk->action escaping walk_pmd_range()") to 6.12.y
-Date: Sun, 25 Oct 2026 19:29:52 -0400
-Message-ID: <2026-10-25-1-daily-reply-0006-pagewalk-stale-action-6-12@kernel.org>
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [RFC PATCH 7.3.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Sun, 25 Oct 2026 19:29:57 -0400
+Message-ID: <2026-10-25-1-daily-reply-0011-damon-zero-target-value-decline@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261025054505.1448278-1-malhyuk97@gmail.com>
-References: <20261025054505.1448278-1-malhyuk97@gmail.com>
+In-Reply-To: <20261025171526.157414-1-sj@kernel.org>
+References: <20261025171526.157414-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 347A91A000A
-X-Stat-Signature: xu5w9fzix4h9ijucyie9em4mgsdizrj5
+X-Rspamd-Queue-Id: DD2A1140006
+X-Rspam-User: 
+X-Stat-Signature: 9mmc8jknwgobjaiznayxus8ixrke1s8q
 X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792971008-569130
-X-HE-Meta: U2FsdGVkX1+FENOBGPZp76lWzryZzF16t7dv28Hli4mLPpr7sQeaBByMKBMavIG4qg1MNuxBfp4Z1MPY23466tHdaQo8lXtGY4ZtkbahujMI6tf3rX7HGPlvvj9uSPmF1pVp3tLtj6sKqvWaHgGhKayS1CIwE/Ok5+gCzLHO+4k9Q6kJbjk1KgKm9dvV4HOp3/dwvYrR3P4Z3EUsW1/npLEv2zW8NfGusqGHvFI90w2Kk4Kw9JuuaOWqJWfhHtKDfqNtRdiTqJU8/3YyB163155v/eG284+L0qvNZ9UZubRjOnnhn6CUKcAk1iBxiOh5UlZjRCv5KoZkzhMl4H3+2KN3VQuaElcaPE6gg+Oi6OEWOhnZ+mWoXuKclFDd3+0B9uZVOZ6yWEC2IUdNyM4kdOLtuE0XtOZ4NH1ZK96xvcgCGksrYbecmecvzTWWc00xJCbc/Ldoa668kP/p/sJZW0xUCgkYP6KvNoupry07BiWP9thPDn/Ri7pvl3GuUy+yt0J58zmXGMA3dyj+8PFMfufQaIna0bPXwbzFpYoARecS1GPuqiGjWrSh92A7Xa8it+gYEQWmEpxURYj6pvz/tuFU6BXoZRWtMEzD7jm24GT9Gx4esT2WDCdesvEs2LiYwmJZF9hUj/akYz10Y3aYAargFwWq/K/l0NBXaty54ROLV1L24x4X52H5YJDmN1VoBrSKQq7MfDtUFnFAbzZjxj9rPHiNNf8ilBPpdG3xZedbEyN/X8L56h+Pyg9TolQNkg5bnxhQ4DUZxUr++pqM1CkSwy6piuQSUQcvZH0QgSj0WYUHAPVY17myukeFqSVlRFFq8HpPNgvpjWPrNbT9JJVnoIdT4/tEJHkZNIe9dlhkLemy0YuYZH2ac4E3sn13CDvuEjvGbcKOK1i4hF1eB6eNjDvECqrUk4c1mY0wOe7YQebTheGyfkyWmuUZX1DQb0HTEDvXS5p9NNd9zs7
- eFF5d9O7
- /zHfBGMKS2x+9ScwQDIhlZtaaJJ0XXcgiyWYDcv025EvRQ8VCLkNzuzlsMjjXPrSyypbqjlXrR5cXE7jC2PtXEuai0wX+mqjmWDe/BeHGrwAApc1nk5xbZP1gQbdyM5wty4/70k3J2BqU7M9RzKSVHbVtvNPRYhuC2gCP+sGccZZ+dTb8QrdJt809e5ILjQNkKY9ktvIRrM1hfoA5Z4jFXwz/dFMyI879UtTuItC5WpZcEzba6Sap4BGrLbyrgkJt7rxY
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792971011-950606
+X-HE-Meta: U2FsdGVkX19ZxgQ9yUcfpP9ph6XFUfhUOt6qsMdeNdaorhrpbnRU8PIwEsQEBs921K32bjuvZ7xt//FIyGVG6klR8Vgcz4yQGx7fFyxYioh9ExNTQtQz2DQFYmfGRaYS36bIAdI4M1e0KR/i8Y/tD+5ciIoIACPi3nxBBkNqdrXixfDG8z3k12bbBa/osS8CruUOyvrEeaO5PJ5wOETiVg+Ki/lnwtxloSbAwC6/XryehdDxIH22hGnuZSHJMMjYYbf11MFrr9h+8rJTIKvqrhhZ5/1svGfj0cghMD2AgkyLRZPVE1XvsxxpPa+Z44AzqvG2wFr1J4otq0tXVXQ3yUNLV/MJHRXrlU9un7oql+nGTL/vEA095h3Bn7tmixjzIV5JaQt/wsur2LRiXjRohRUOQDadOzkDppePaq5BcUa74ECJvuvD2fA8Esf4GDW7/OttrsDPcaDDHnlTsXBvGkUjAHwECZgxHGZFk8FqlwVOoukl3geTIPALJeFt2fLjpXEuTgKWBg1CfS/+f9xWK7RX/yXmjjgN+VlSYqqMMd9Z8Jkg4HU4vwpzCDxWt81tvo/Dffg8odyXoLq6MYOyEhk1GogY9NUK7MmB93b7qwPl6gEa8+pD6Uz34LSOfplut5Jf7sr8wP3srQwGqzD0bzggzso10w1AnaGnf58zDx8/VextnI2YFWsKgwyyo9dJXT7VLABgOOikpZnKwciDAqNTb6e8Fus1MkVo/oGGH76w+MC0ZHpRR80vGT9dQy3q55trfKbklJnYRLWE2lAGAY8eAGj9yer3o+mQQ1ardrQTqUMSUyYia6akjRQupCSLfJGR5vh1hPFxSBHFt6UqeHSVFGo40GuP9rnoXgbO1TkpK8k0Kx2hsAlY6Z9y0Jyf/LhuIaLVXXm1bTC8e3tpGlvYXnBt2V5GR9RUt4IxgEc/LUt0lm7r7bHde6UJU7r3NNtYTI+6LE+YMsPc074
+ 1jd6PqL5
+ vf3LHIsY8cqxKeP3P3Ux7F5HRavx0y82lxs8cqahSTgNyYU16q1cnv1cyPltVgwhxQqSAUnqJiwNlOMLoLEZoKdTmr1wGpHxM0/CjDqmLkv1VuDupWhDck+3pwwl1QNlHIYWygUMOG+/kA4LKnKN5bVl2IXrt5BW+Taur/tJorPQUWIfO68JuZ9ako9EdUci8CTt5bJ6c9M7TzOBUE6jOgbACgKsy2CXG0cKjFEg1dW/OvpqzoXSzr4obWbmNiki3uiCe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,10 +97,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Please consider aedf2efd1897 ("mm/pagewalk: fix stale walk->action escaping
-> walk_pmd_range()") for 6.12.y.
+> Notes for stable kernel porting.  The upstream commit doesn't have
+> Fixes: and therefore not ported to stable kernels.  It turned out it
+> fixes commit 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota
+> goals user input to DAMOS") which was merged into v6.8.  The user impact
+> is a race condition that can result in divide-by-zero.  Hence backport.
 
-Queued for 6.12, thanks.
+The older trees don't need this one. The callers in 7.2, 6.18 and 6.12
+already reject a zero target_value (7.2 also has 06befa61c427
+("mm/damon/lru_sort: error out for >10000 active_mem_bp") and a16fd3ad9d89
+("samples/damon/mtier: error out for zero quota goal target values")), the
+commit has no Fixes: or Cc: stable, and it is patch 1/3 of a series whose
+patches 2 and 3 remove those caller-side checks.
 
 -- 
 Thanks,
