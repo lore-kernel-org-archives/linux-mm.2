@@ -1,93 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC94A606A333
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 17:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC94606A328
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=IM6MsFC8
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=F2ZVb/3C
 Received: by kanga.kvack.org (Postfix)
-	id 103F36B05B1; Sun, 25 Oct 2026 13:40:24 -0400 (EDT)
+	id 792CE6B05B2; Sun, 25 Oct 2026 13:40:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0926F6B05B2; Sun, 25 Oct 2026 13:40:24 -0400 (EDT)
+	id 71CD86B05B3; Sun, 25 Oct 2026 13:40:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6F5B6B05B3; Sun, 25 Oct 2026 13:40:23 -0400 (EDT)
+	id 596A26B05B4; Sun, 25 Oct 2026 13:40:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AEE616B05B1
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 13:40:23 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BABEB1C3DE0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:40:22 +0000 (UTC)
-X-FDA: 85361862684.07.C108A68
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0B432100008
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:40:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IM6MsFC8;
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2284C6B05B2
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 13:40:25 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9993E805D6
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:40:23 +0000 (UTC)
+X-FDA: 85361862726.13.B4B75BC
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D2128160008
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 17:40:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="F2ZVb/3C";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1792950021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=h3QApbBlAYhRMvgt4baVTZSCZ7KrzPHAuh9ddC7G5Kg=;
-	b=nIH8wQNg+A13UqG1jJplaIuCJeiMRwRHjzxXpreH5f+QyPRMH5NF7KncDUGLjt2YljA433
-	vD/+PKH2Qsw2rgU8DZjrXzMcgYHB6BK4Uy40SXUXTS+g82T1cahHd8qdGpcpwHDrW+UCDV
-	a7CmPcIO+5ijMSgKN1EhywQodUpp3OY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nlyb5eFqjPdmH1nFRtnItgVGTITVkyurMpQB27D3UKE=;
+	b=aE1GmsRau5KH1vMdTIINCAL5P8vWISyT5uhKf0oAPOfQZROD51ba58osmSzGT81fEHd3VB
+	HgHmrA/4ECDeGv8acIXj9s6js4E81Q59+vSpQSHuKiyr2jw+aY1R1bSWX32/G+CXkQifvW
+	E0JCdFJJEY4dTeGh0bHiWy5Jym8s5Ws=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IM6MsFC8;
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="F2ZVb/3C";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1792950021;
-	b=e8uovjkP2xLzt3EgfBCku0SwKjghAYCEIXmEc9b9zDTlllYZzqfAi4uYNUP5YSc5gUYAau
-	oLDoBnuupuMCsBOSyhEmZq1dyXpG2pblShLbwyJ7zSFOkw9zYJOx6eNBdCauX955UXZMl0
-	Vyrb4nqZOqJH+4vCx9tge7pL1yIfUBk=
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5c9e7731b34so1756739e0c.2
-        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:40:20 -0700 (PDT)
+	b=KW/k6alnhlCYtQ2ynPSVVIt/+niId3fPGJYyX6YhKxUd+3sTzJUoq/jtL8XP8QcLBM72F0
+	xkNv4VVvOPvTw8UXrFy/qGdXiJeznUT17YujKiv+U3uZoc8GQ51oM0CsvWKRXoYuOJkW/P
+	KNWxvhMaHA0gPFzPWsBRL1IFraQEslo=
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5ead4026fe6so912888e0c.2
+        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 10:40:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1792950020; x=1793554820; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h3QApbBlAYhRMvgt4baVTZSCZ7KrzPHAuh9ddC7G5Kg=;
-        b=IM6MsFC87wHLiJV9sPfPnMD3PLl6iQkI0bu4ltx8QTCw++X4a6UGEZ3pLVhUS40D9m
-         OC/BLHRbudDJGjQSsSdoOKzlLtMm59hRa2VlFpO8np3vLGzCNIfwXkVS0YciBErVMhKN
-         TyVwEQIBS/+l5Syxd9lLYS30S1Zjt0gK3DSgS1VV8NuRBOd0OuYSPEPn9Mf/es4+rHlX
-         AH/tkF8A5QC9Zzrlq7E8ZGN0qVzr0wZJ3S/bTNp4DYoH8Yjf5WBaiVegE2/W/S4tB5Tx
-         6qWU1AyWtOxkkDjNzWmSxW0o5QbBcLdZXY2gUGRTpFI4cdZc0HVpPuu2JdicmLMd3gcW
-         T2wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792950020; x=1793554820;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=soleen.com; s=google; t=1792950021; x=1793554821; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=h3QApbBlAYhRMvgt4baVTZSCZ7KrzPHAuh9ddC7G5Kg=;
-        b=1NVcmywBYMYjgU6wlmEJcJ/BI0ZvbA42XHC+y8CjgrcHDrOowK5aqGdPluu9sc09FD
-         xVSqCvgMFYBJITwsz2zAs5XMrywmRjAbjxrE6Ry4mLZPhAUa79p8Q5ZXF/ki1JCQKaRX
-         gt3+gC8P6/lBGKEDZ2jNElaZdXagD9aBZ+r5zh93/JXcM3TDu7YAwiozjrO6bLv+pEau
-         sFd6Sp+B3imx4H5bXqOot/yFrRb7n926jAt82eozvtPGt6J9soovrL3ttMDijCa0kNH0
-         JGtOYDeDpplT8SM2r2jhBqJNypI5v8iDOGmUNq0aTdgluNfZR5THkUoHcMGQN9VN7hWE
-         rYlg==
-X-Forwarded-Encrypted: i=1; AKwUvBxmV7oFymtkksYuDte/iRdCQZLCvMYk58j4yDF/yK28bwOvbkt95yqSWBQNvr1cTkeI8TIpoddb4w==@kvack.org
-X-Gm-Message-State: AFq9FYL+rcjDaZylBLHKtpunlAam3GCwDHZg5UPGftH1RoDdFyEVPEJT
-	ksGM6BNC+R86dxypSOIVfvVVy10aMQ37N4fD2yh6fmzB3EcMjnmb0EmkVSzoDUkaMIQ=
-X-Gm-Gg: AYBFou3wAFP9+aM+jtIMv77iqtydGPnwUcpbQKjR4O1i97I5ZAhaI9quRcEVYD4xy7x
-	R4ghw9ZzoaPnHT98ub87LRcGPlC9x94FRq032H2s7rMuOApF1EgaF/gjTyy13GTlf8URHuNe+Qu
-	5sFMP+WZTh/4zLhBE0yZIXBinQfKQ1T8aUcYeWhvM7CWNgqriovv5x/zf0w59aF9ZJhnodw9ITk
-	yauJ/hGZpKf5ISiEzb/xDy1gE3maUAq/Sad+nbNwEJlflgd3U3AyYBkJgbz9jPwNEXR4pd4nj5I
-	hn9dekIVWRYbf8q0kn4Qe2MYBFKb+WKB1z4hPO/cH2CVzTZQpa+FXpowmox/S5NDfpsRkHTxtD2
-	NDRZXDi9+7GXi7MXL/X8MJokN5UkHNSXDGXeLmkyx2xE0luPYfpomQLJPD6LMh9S4oasM9JlLSh
-	4jCfBLWVa7RpXSifx2vTw0AjA4GcwL6KMv4Hc8S6+lS6PTYy+bwP83cCG9FN/wZVUIMjxBcYRiv
-	vSD/HNYSEmGlfkapxb3rdHFJSPjFI4++5mIo5ukFy908IqC/XAp0+tiZmy0IMSdw4dagb+bbs1f
-	CGq15vAJeB3EtQXLdv24nx7uAf81Kj6sbfvg4hM9/Gv3Ed7cdy3XB4iict9R9t1UVtAGmxyZTdv
-	N
-X-Received: by 2002:a05:6122:4893:b0:5ea:c45f:6c4d with SMTP id 71dfb90a1353d-5ec23326819mr1425104e0c.22.1792950020005;
-        Sun, 25 Oct 2026 10:40:20 -0700 (PDT)
+        bh=nlyb5eFqjPdmH1nFRtnItgVGTITVkyurMpQB27D3UKE=;
+        b=F2ZVb/3CX1R5T1A9Qom68jExU8WtlgQwTEOkhin63V6OVU62TFzeiLBBgDUr7XAANh
+         vMzURbrc+cjCyG5j3/eJijJnF33PFrOGmGLijCLnKM+zg+z8dPRd234uMYmSM/+4x0J2
+         Y0ZvH7wwYtWxWlrvaPdl9XabrAijIe27Hiq4kVXHYzywa447ZhnH452IIIQZ7VeFMSHc
+         sFSplqyhP/bb+4jOFIxhh1DWwHf2e9YRQuA1Iy6Drg6lfAm8muoPxBlKjtUZI8HWguNz
+         TuOxN+fsvoSOktu/Lu0Bw1u4j0WftkgSGooKrNCjUpaGtPaUGZieNnrvwJV/4dGAgxXa
+         AYtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792950021; x=1793554821;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=nlyb5eFqjPdmH1nFRtnItgVGTITVkyurMpQB27D3UKE=;
+        b=Q/FvlnQaya64fJqU8vT16S2EHHV9qQFWSDQa+Bsf7/AIdv+AzfcFyRWdHGDzi+C8LV
+         DlLSTxLes/6LLOQsFX+4OUWhMC3X+QTWod/QbQrDYbWQmm+QRU514j/h3kstCHuzIXjW
+         jwEClBJFaPAhNMXOJgQXKTLmHPUWJeMcQuor4Ylom0TjNzf+8he/4MCiOw81iP44y/CK
+         PaEwq5vv79x4bSP2qDRYKjvWzoDEtC5DXETxXDp//KtWhru/oeKUpROJ0XNYAFzGCKlv
+         F5/unk69A813KbwKNJblRPoVtocOwLDlzLu8NbiaTdx561AhY+XNv2ehSu4d8kWZjEwz
+         puwQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzexbSFK3+1icMX376c/EsCxb9+PE6L6oRWcdMQVi8+zw1Hp6JPWohoEIGdhX1iKlxQYQDAGPWMkw==@kvack.org
+X-Gm-Message-State: AFq9FYJYXj8EfbesAntfHJwGFCGpAIqmUWJE5TbhdWYFzz6yZU1phSbT
+	x7gl2fS0oCOdZTrK4nYpHU4qzI1HK0ZB56QHDr7jq63S24uICyH5dqIykQh9bnGqALo=
+X-Gm-Gg: AYBFou0EK3T6HVmyy/D6LED+Hm6XuUo9sOIyjNmP55FE0DqkW/0svwiIvoGG0EsxV7e
+	Ony7IXPOg/zKjg3babF8BUA+iAiDmHFf06cf4S6TowBTLRWDkF1fdF3zsPXal4QAGW9+nSr+NuG
+	unpCObqD+ZWnytj+GmVUbpTboi0xqwOQMGO+rs00W4bw+y2XNTnYKRB7vYGraC6bll/NX0HiTEz
+	i0SzpYiePHk+JZ5SmJdI+jwpr4rRl/CVvC/6wamEOoyoq8hEPSrwDbleU3NdvatCSdVG8pF/2O0
+	xib9p93mJkoHJIdaDWxGS01CDgSuCU3rVOA43EeTm2yJQcCiklUrSSp0iVy+hyLZfIP/diMsb7f
+	rGj+FtQwlcouTDkHGx8jEDqMrsi6ObfdypJJ7j6HORfG4K4pAcCrJfYWubIdWaufhcIq/cxZ3Zt
+	Xhuqq7BkJjIMbA4q+dg/fCQclFTVUDKpIfuy4Os/IFDtwklmD1hZKR6oB1kCGEuMcE5wGZ7xqQr
+	qX3sP/FgmV7iHtH7FQLNagVzwkib2m6DIUuF1wwOVEsH8opIUVFiiSujnCSHNoZd5YaeXP5vhVh
+	c5TdWuuBvS4jMaj80f1gsQrvngSxViYbYTJ+EK5kMr1DWaHnALRYEuP31OITFBhdWLu9qnmXf/E
+	/
+X-Received: by 2002:a05:6122:1829:b0:5ea:d649:d1bc with SMTP id 71dfb90a1353d-5ec232b5465mr1591325e0c.18.1792950021033;
+        Sun, 25 Oct 2026 10:40:21 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec234673ebsm5783333e0c.13.2026.10.25.10.40.18
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec234673ebsm5783333e0c.13.2026.10.25.10.40.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2026 10:40:19 -0700 (PDT)
+        Sun, 25 Oct 2026 10:40:20 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	rppt@kernel.org,
@@ -116,25 +118,27 @@ To: linux-kselftest@vger.kernel.org,
 	lirongqing@baidu.com,
 	liam@infradead.org,
 	jlayton@kernel.org
-Subject: [PATCH v2 0/9] kho: add read-only Kexec Handover mode
-Date: Sun, 25 Oct 2026 13:40:07 -0400
-Message-ID: <20261025174017.3870481-1-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 1/9] kho: expose physical address of outgoing FDT
+Date: Sun, 25 Oct 2026 13:40:08 -0400
+Message-ID: <20261025174017.3870481-2-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+In-Reply-To: <20261025174017.3870481-1-pasha.tatashin@soleen.com>
+References: <20261025174017.3870481-1-pasha.tatashin@soleen.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D2128160008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0B432100008
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: jnhk1mw4mj35sq35bdb8coh7p3qqmsj5
-X-HE-Tag: 1792950020-433697
-X-HE-Meta: U2FsdGVkX19LgxIkWhzCSP1/SsG4SjzlA9SLIcs0uWWbb0Cw3Bc9gTCNUoz9Qoi+MPD30tbiG6JyisH8ysHSBitFw1+tEgS5xYdo/+5WjPYW6eKiCdDC71n7Nngfaiu/P5EyBrCdtzSuTZ2lh1sIRYU6giWWI95Yg7NNtls/3tdAc/HiYCYmLTwMJp+EoBmwQyXsl+XULjlww1xBx31xLCgvssvvj8t3L+YOVUskuz4/7SbuoUpv60lFdpk42ajNGW+o1iN/XF6hvsa86YOn8lZh824bz4GKikrJm58+Zy66IOUd7tzn0TFYzaoEMty2WE3LClcEiTKJ0LurxjnIlqJj3XRcseXOADd142+L1HHMhMgwnfn7qHJ5vUVF1Mk3Yb65J/xeyRf+tWszfzTXWTVbUfGsEwrjpD81jowBH/g5unPRGowkxs/HA1B/teKUGzOmy962ULJwm7yfWcQYBHMI7QYMQQW7eiZ5zUs0G6LGE42MpZkgJHjAe1ZtinOcOh9MY/ecPFHb2WwgDyyKtoaafUkfgf8U4bjeAjWdiWhAtT7CTIRJQns4mHh1kB6v3Y5kSJiEm6QfnLKlvKnJ6khnfRId3ASsTR/VVY2V4WJ5TxgTr5Yf38lyX3oDHFHOz0FBwKXEte9Lzx0bXDh6zL458E0s9paqqstZnyyXfCpk3ValvAXSdIsKbOo/QQQ3dRhmAGE8r1aIpidm0M4izQr/F7IwrYUKbrEn27xhmYTFMnIZ9QVMRIseSXzNEBj3VrOzJ6jls6eawrx1FQT83alOFZc3sYw7mY2KoCPe5dp0Nip/hv1tK90XrJgVlpFxbkG47WTggVaBlDf1Ry10sBWge4UNT25gxW4DcFXi1WdUcsVnC/NY8FMYQx2QqpWD17MlUk8VZpvMkN/WFMb54bn1NiVnvYNGJOnAn+tlPz9dBBchfo9prbpVf8a/U8rPYMrixW2gemlqiaX1oKe
- wZS6pyU4
- T4cXU05eVvW2r7a/lrBjbFnSUarozgwP2w5REKZ4JO4XlVDHGtmyvZ7dYfxDsZ8dmBSD/RY1A/zxEbBVRDrnTt1NlLnXYPRFg80085CNKgw9iw44soylUiW4QJ/N16pjCo1UtVQ0F/LDLkGtPQ3HgEa+H54OR6aaJGD3u61Hb5HfxU54ADhRTcX0Q1yDXBiIZn3D1nAYvxzxNhyYGIFjR+fQ4JgX5fyXK+J8170J9V5oWHYhuCrlkbFunGWgSgf/VPrluvZHX1EH3DkUZWHUZFZBNgtzddHdA4F4Ap1B+IptNq1SwEkOzUSmAuBCbbx6HkoUELsR8SdO79Lo/SQZq4oxLVD57QUdIUqoY
+X-Stat-Signature: a395ptsmmbkmn6c9i75r4psget9ghtf5
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792950021-614718
+X-HE-Meta: U2FsdGVkX1/US3JepsegbzNcZQWf3FlmmtFniqxxV7jH5rDZHmI8U1ePFovgNjlb0C46PHFovcSiPF/UXuZOyW8xtFYL0tucgiKmzS23Y8+FCKB4UwyEgQFnqRGbWzabGEpUD42M70n0kmRKPM5DzLz9xhQeyc+BUo+ihl3h6gmyRfqbr+W7y2euBV5cLmcWcEJezgyE05ozsOvjLTXBfJpYCRm81I3QPAEiXjj3yylcydmlGkFVrkUp27o7ZsFerb7yjVQP/BkU3EQCMMjpHGNzqK3m64NMght5bDs43b52lI3G+3fblbt5A7jrVd+PNSAeDsjAp9gCw+4c/sKNjtn6Q20hz4/KR1r2iQD74AyzzM/OGYSfxwmaYl88S03VaeoeOmm4bJZUjwYBsZ60Fl9Bnd/PI3WDcK/W71tZ0cLr3PMghyE70juuUeyihOojQIpf7pR92eX5CwmPXarjLd7qVdFYKvL8opdPc8IuDgAcs8zgceS9uHYNJvIZM18yF9Ro5izPPhes8XRvC6qSPZm8wWvzknsggyKdDVo/3+M+SEIdMthkJmIkaUNWmWTeiz+Ti6jrvruVoMeaks4exn0GNrMiqjT1ZTOpSmTj0TC0caeFsJod6WPLoppSUVqvWHlnDIn5RfMqEMyJkkcWmWkYOl9MZOp7r1jCIzwCkOf2Am4R60DwtH3xh12QAHxB3uN4zqwLIpnNiWoLXHb0pndVw9yfei/NoJZhvkNJFvy89tzJu9PjBzZwZW7Y7Sz4nB9Hq0w3PhaOuV2SlSYxU6b+AmGHuMgjjvtSbUt6k66ID5BCipSEuD35XVHYdX575wx7DApihEJoZKCCWAmv0tiOw/TNkY6/XbLnLG5a5m4ol93+0yYDeIcB4QAYCOVPV84Gy0bZztonyva0Xw6XY6nkZ3uF6mFpvxmw/ZMTWjFa8kYCUtB9+QFip52OKHpuY5RMb7f/sdqnJqIZwKj
+ lgKLv99H
+ nLZI6Q38X1/mFjXuZafj093amzdh/+QjUE7UzJdJ4lW1h8ZVYE7Eemde03J5fwdt3+sWwqR5A4A4UQ6gv8Rsa/7+JzcxUOQWMSuipxWS0fr2nJbPwd6inVlYykFx3WHOy674c61NcYwZwbaGVVmbVPZMbF8bG4vBMo4pfA5njfa1+RpKdedghfZSPgxRoGpJ0OO0Mmu9h2HignwKnpOncu7BbUeozA3V4u4R5+5mNrSrguMfOqDobc2lusIw9+mRhrxfSGHySU6oRE2nafEoOVBznrHC50FrR7Qx124mkI+1KyELz/I+/4x+lqReHb2bZAUDPcOU6msBtMaQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,165 +147,150 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series introduces a read-only Kexec Handover mode, enabled at boot
-via 'kho_ro=<pa>' pointing to the physical address of the KHO FDT.
+Expose the physical address of the outgoing KHO FDT via
+/sys/kernel/debug/kho/out/fdt_phys (analogous to bootmem_phys) so
+that userspace tooling can locate the root KHO FDT in physical memory.
 
-In standard KHO, the outgoing kernel shuts down or serializes all
-devices into LUO state, releases machine control, and passes the KHO
-FDT physical address through the kexec_file_load() reboot path to the
-next kernel, which becomes the sole "Machine Owner" (MO), initializes
-struct pages for preserved folios during early boot, and reclaims KHO
-metadata and preserved pages back into the page allocator as they are
-restored.
+Also add kho_debugfs_cleanup() and remove the KHO debugfs directory
+if kho_init() fails after initializing debugfs, ensuring fdt_phys
+does not retain a dangling pointer to a freed FDT.
 
-In the "Linux Caretaker" (LC) model (as well as inspection kernels or
-firmware), a minimal LC kernel runs concurrently on dedicated CPUs
-offlined from the MO scheduler while MO is still active or undergoing a
-standard KHO-preserved kexec reboot (Live Update). LC is given
-read-only access to KHO so a minimal VMM inside LC can keep VMs
-responsive (<30ms VM blackout time) by servicing software-only, fully
-virtualized devices (such as virtio-console, pvpanic, virtio-rng, etc.)
-that do not require host hardware interrupts or global machine state,
-while leaving the preserved KHO tree intact for the incoming MO kernel
-to retrieve normally once it boots.
+This is going to be used by the upcoming KHO read-only mode.
 
-LC is never MO: it has no PCI support, does not handle device
-interrupts, and is booted inside a small LUO-preserved memfd region
-(e.g., ~128MB of RAM on a host with terabytes of memory). Because LC's
-direct map only covers its own small memory footprint (both for
-isolation and to avoid struct page overhead for host memory), the KHO
-FDT, radix tree, and preserved memory all reside outside of LC's direct
-map. Furthermore, because LC is configured and launched from userspace
-while MO is still running rather than through a kexec reboot handoff
-from a shutting-down kernel, userspace reads the KHO FDT physical
-address from /sys/kernel/debug/kho/out/fdt_phys and explicitly passes
-'kho_ro=<pa>' on LC's kernel command line.
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ Documentation/admin-guide/mm/kho.rst        |  3 +++
+ kernel/liveupdate/kexec_handover.c          | 10 ++++++----
+ kernel/liveupdate/kexec_handover_debugfs.c  | 22 ++++++++++++++++++++-
+ kernel/liveupdate/kexec_handover_internal.h |  7 +++++--
+ 4 files changed, 35 insertions(+), 7 deletions(-)
 
-Both CONFIG_KEXEC_HANDOVER and CONFIG_KEXEC_HANDOVER_READONLY can be
-compiled into the same kernel image, with the active mode selected at
-boot via the kernel command line ('kho=on' vs 'kho_ro=<pa>'; passing
-'kho_ro=<pa>' disables regular KHO).
-
-Overview of the series:
-- Patch 1 exposes the physical address of the outgoing KHO FDT via
-  /sys/kernel/debug/kho/out/fdt_phys so userspace tooling can pass it
-  to a 'kho_ro=<pa>' kernel.
-- Patch 2 moves the shared radix-tree key encoding, indexing, leaf
-  lookup (kho_radix_find_leaf()), FDT validation, and
-  kho_retrieve_subtree() helpers into a shared
-  kernel/liveupdate/kexec_handover_common.c compilation unit with
-  declarations in kernel/liveupdate/kexec_handover_internal.h, while
-  also checking that fdt_totalsize(fdt) does not exceed PAGE_SIZE in
-  kho_check_fdt() and using get_unaligned() for 64-bit FDT property
-  reads in kho_retrieve_subtree().
-- Patch 3 hardens kho_restore_vmalloc() and factors out shared vmalloc
-  helpers by introducing kho_vmalloc_validate() and kho_vmalloc_walk()
-  in kernel/liveupdate/kexec_handover_common.c to validate the
-  preservation metadata header and walk the chunk list.
-- Patch 4 avoids modifying ser->next and bs->head_pa in kho_block_add()
-  and kho_block_set_shrink_one() when operating on an incoming block
-  set, as the chain is already linked and incoming blocks must not be
-  modified in KHO read-only mode.
-- Patch 5 adds CONFIG_KEXEC_HANDOVER_READONLY and
-  kernel/liveupdate/kexec_handover_ro.c. When booted with
-  'kho_ro=<pa>', the KHO FDT is mapped and validated once in an
-  early_initcall, and radix-tree nodes, leaves, and folio/vmalloc
-  mappings are cached on first visit in a unified RCU-protected hash
-  table for the lifetime of the read-only KHO kernel, providing
-  kho_is_ro(), kho_ro_lookup_folio_order(), kho_ro_map_folio(), and
-  kho_ro_map_vmalloc().
-- Patch 6 wires read-only KHO mode into KHO core (kho_populate(),
-  kho_memory_init(), and kho_retrieve_subtree()).
-- Patch 7 updates kho_block to map incoming serialized blocks read-only
-  via kho_ro_map_folio() in read-only KHO mode.
-- Patches 8 and 9 extend test_kho and tools/testing/selftests/kho/vmtest.sh
-  to build a single kernel with both CONFIG_KEXEC_HANDOVER=y and
-  CONFIG_KEXEC_HANDOVER_READONLY=y and test both standard KHO and
-  read-only KHO handover when preserved memory lies outside the boot
-  kernel's initial memory range on x86_64 and arm64.
-
-This series is based on liveupdate/next commit 27be83a12b24 ("Merge
-branch 'lu-pci-preservation' into next").
-
-Changelog:
-v2:
-- Expand the cover letter with the LC architecture, explaining why
-  'kho_ro=<pa>' takes the FDT physical address on the command line and
-  describing the expected users of the read-only KHO APIs (Suggested by
-  Mike Rapoport).
-- Patch 2 (Suggested by Mike Rapoport):
-  - Move the shared radix-tree, FDT, and subtree retrieval helpers into
-    a dedicated kernel/liveupdate/kexec_handover_common.c file instead
-    of static inline functions in
-    kernel/liveupdate/kexec_handover_internal.h, and factor out
-    kho_radix_find_leaf() for radix leaf lookup.
-  - Check that fdt_totalsize(fdt) does not exceed PAGE_SIZE in
-    kho_check_fdt(), drop the "setup: " log prefix from FDT validation
-    warnings, and use get_unaligned() when reading 64-bit FDT properties
-    in kho_retrieve_subtree().
-- Patch 3:
-  - Move kho_flags_to_vmalloc() to kexec_handover_common.c alongside
-    kho_vmalloc_validate() and add a shared kho_vmalloc_walk() chunk
-    walker used by both kho_restore_vmalloc() and kho_ro_map_vmalloc().
-- Patches 5 and 6:
-  - Allow CONFIG_KEXEC_HANDOVER and CONFIG_KEXEC_HANDOVER_READONLY to be
-    compiled into the same kernel image and select the active mode via
-    the kernel command line ('kho_ro=<pa>' forces regular KHO disabled).
-  - Split the KHO core integration (kho_populate(), kho_memory_init(),
-    and kho_retrieve_subtree()) into a separate patch (Patch 6) so
-    Patch 5 only introduces the read-only KHO backend.
-  - Map and validate the KHO FDT and preserved-memory-map root once in
-    an early_initcall so kho_ro_get_fdt() and kho_retrieve_subtree() do
-    not sleep or map lazily.
-  - Replace kho_ro_restore_vmalloc() (which allocated RAM and copied
-    pages) with kho_ro_map_vmalloc() to map preserved kho_vmalloc
-    regions read-only in place using kho_vmalloc_walk().
-  - Cache radix-tree node, leaf, folio, and vmalloc mappings in a
-    unified RCU-protected hash table (kho_ro_map_ht) keyed by address,
-    size, and protection for the lifetime of the read-only KHO kernel,
-    and drop kho_ro_unmap().
-- Patch 9:
-  - Build the kernel and initrd only once in vmtest.sh with both
-    CONFIG_KEXEC_HANDOVER=y and CONFIG_KEXEC_HANDOVER_READONLY=y
-    enabled, running both the standard KHO test and the read-only KHO
-    test on the same kernel image.
-Link: https://lore.kernel.org/all/20261019021111.990394-1-pasha.tatashin@soleen.com/ # v1
-
-Pasha Tatashin (9):
-  kho: expose physical address of outgoing FDT
-  kho: move radix tree and FDT helpers to common file
-  kho: validate preservation metadata in kho_restore_vmalloc()
-  kho: do not modify incoming serialized blocks
-  kho: add read-only Kexec Handover mode
-  kho: support read-only KHO mode in KHO core
-  kho: support read-only KHO mode in kho_block
-  kho: test: support read-only KHO mode in test_kho
-  selftests: kho: add read-only KHO test to vmtest.sh
-
- .../admin-guide/kernel-parameters.txt         |   8 +
- Documentation/admin-guide/mm/kho.rst          |   3 +
- Documentation/core-api/kho/index.rst          |   6 +
- include/linux/kexec_handover.h                |  44 +-
- kernel/liveupdate/Kconfig                     |  10 +
- kernel/liveupdate/Makefile                    |   3 +-
- kernel/liveupdate/kexec_handover.c            | 284 +++---------
- kernel/liveupdate/kexec_handover_common.c     | 298 ++++++++++++
- kernel/liveupdate/kexec_handover_debugfs.c    |  22 +-
- kernel/liveupdate/kexec_handover_internal.h   |  47 +-
- kernel/liveupdate/kexec_handover_ro.c         | 429 ++++++++++++++++++
- kernel/liveupdate/kho_block.c                 |  78 +++-
- lib/Kconfig.debug                             |   2 +-
- lib/test_kho.c                                |  71 ++-
- tools/testing/selftests/kho/arm64.conf        |   1 +
- tools/testing/selftests/kho/init.c            |  38 +-
- tools/testing/selftests/kho/vmtest.sh         |  65 ++-
- tools/testing/selftests/kho/x86.conf          |   1 +
- 18 files changed, 1121 insertions(+), 289 deletions(-)
- create mode 100644 kernel/liveupdate/kexec_handover_common.c
- create mode 100644 kernel/liveupdate/kexec_handover_ro.c
-
-
-base-commit: 27be83a12b246b6b3783e7d3ac5c378ff7520f25
+diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
+index 902d171a780a..2ba884c620c5 100644
+--- a/Documentation/admin-guide/mm/kho.rst
++++ b/Documentation/admin-guide/mm/kho.rst
+@@ -96,6 +96,9 @@ stabilized.
+     current KHO state in this file. Kexec user space tooling can use this
+     as input file for the KHO payload image.
+ 
++``/sys/kernel/debug/kho/out/fdt_phys``
++    Physical address of the outgoing KHO FDT blob.
++
+ ``/sys/kernel/debug/kho/out/bootmem_len``
+     Lengths of KHO bootmem regions, which are physically contiguous
+     memory regions that will always stay available for future kexec
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 6f1f55fe3181..ce5983abf181 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -1851,17 +1851,17 @@ static __init int kho_init(void)
+ 	if (err)
+ 		goto err_free_fdt;
+ 
+-	err = kho_out_debugfs_init(&kho_out.dbg);
++	err = kho_out_debugfs_init(&kho_out.dbg, kho_out.fdt);
+ 	if (err)
+-		goto err_free_fdt;
++		goto err_cleanup_debugfs;
+ 
+ 	err = kho_out_fdt_setup();
+ 	if (err)
+-		goto err_free_fdt;
++		goto err_cleanup_debugfs;
+ 
+ 	err = kho_kexec_metadata_init(fdt);
+ 	if (err)
+-		goto err_free_fdt;
++		goto err_cleanup_debugfs;
+ 
+ 	if (fdt) {
+ 		kho_in_debugfs_init(&kho_in.dbg, fdt);
+@@ -1893,6 +1893,8 @@ static __init int kho_init(void)
+ 
+ 	return 0;
+ 
++err_cleanup_debugfs:
++	kho_debugfs_cleanup();
+ err_free_fdt:
+ 	kho_unpreserve_free(kho_out.fdt);
+ err_free_kho_radix_tree:
+diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
+index 7d74477da0b7..db3830829398 100644
+--- a/kernel/liveupdate/kexec_handover_debugfs.c
++++ b/kernel/liveupdate/kexec_handover_debugfs.c
+@@ -95,6 +95,15 @@ static int bootmem_len_show(struct seq_file *m, void *v)
+ }
+ DEFINE_SHOW_ATTRIBUTE(bootmem_len);
+ 
++static int fdt_phys_show(struct seq_file *m, void *v)
++{
++	void *fdt = m->private;
++
++	seq_printf(m, "0x%llx\n", (unsigned long long)virt_to_phys(fdt));
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(fdt_phys);
++
+ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
+ {
+ 	struct dentry *dir, *sub_fdt_dir;
+@@ -172,7 +181,7 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
+ 	}
+ }
+ 
+-__init int kho_out_debugfs_init(struct kho_debugfs *dbg)
++__init int kho_out_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
+ {
+ 	struct dentry *dir, *f, *sub_fdt_dir;
+ 
+@@ -196,6 +205,11 @@ __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
+ 	if (IS_ERR(f))
+ 		goto err_rmdir;
+ 
++	f = debugfs_create_file("fdt_phys", 0400, dir, (void *)fdt,
++				&fdt_phys_fops);
++	if (IS_ERR(f))
++		goto err_rmdir;
++
+ 	dbg->dir = dir;
+ 	dbg->sub_fdt_dir = sub_fdt_dir;
+ 	return 0;
+@@ -212,3 +226,9 @@ __init int kho_debugfs_init(void)
+ 		return -ENOENT;
+ 	return 0;
+ }
++
++__init void kho_debugfs_cleanup(void)
++{
++	debugfs_remove_recursive(debugfs_root);
++	debugfs_root = NULL;
++}
+diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
+index e9685e1ef6d7..38181076f603 100644
+--- a/kernel/liveupdate/kexec_handover_internal.h
++++ b/kernel/liveupdate/kexec_handover_internal.h
+@@ -24,16 +24,19 @@ extern unsigned int kho_bootmem_cnt;
+ 
+ #ifdef CONFIG_KEXEC_HANDOVER_DEBUGFS
+ int kho_debugfs_init(void);
++void kho_debugfs_cleanup(void);
+ void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt);
+-int kho_out_debugfs_init(struct kho_debugfs *dbg);
++int kho_out_debugfs_init(struct kho_debugfs *dbg, const void *fdt);
+ int kho_debugfs_blob_add(struct kho_debugfs *dbg, const char *name,
+ 			 const void *blob, size_t size, bool root);
+ void kho_debugfs_blob_remove(struct kho_debugfs *dbg, void *blob);
+ #else
+ static inline int kho_debugfs_init(void) { return 0; }
++static inline void kho_debugfs_cleanup(void) { }
+ static inline void kho_in_debugfs_init(struct kho_debugfs *dbg,
+ 				       const void *fdt) { }
+-static inline int kho_out_debugfs_init(struct kho_debugfs *dbg) { return 0; }
++static inline int kho_out_debugfs_init(struct kho_debugfs *dbg,
++				       const void *fdt) { return 0; }
+ static inline int kho_debugfs_blob_add(struct kho_debugfs *dbg,
+ 				       const char *name, const void *blob,
+ 				       size_t size, bool root) { return 0; }
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
