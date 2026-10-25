@@ -1,90 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B862A606A31A
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Oct 2026 23:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903B7606A31D
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Oct 2026 01:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bL+NkwUn
+	dkim=pass (1024-bit key, unprotected) header.d=sina.com header.i=@sina.com header.a=rsa-sha256 header.s=201208 header.b=WatzQVmK
 Received: by kanga.kvack.org (Postfix)
-	id D3E076B05B0; Sat, 24 Oct 2026 19:01:56 -0400 (EDT)
+	id 41E486B05B0; Sat, 24 Oct 2026 21:11:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC9A36B05B1; Sat, 24 Oct 2026 19:01:56 -0400 (EDT)
+	id 3CEA46B05B1; Sat, 24 Oct 2026 21:11:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8F6E6B05B2; Sat, 24 Oct 2026 19:01:56 -0400 (EDT)
+	id 2E4086B05B2; Sat, 24 Oct 2026 21:11:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6950F6B05B0
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 19:01:56 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A552120584
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 23:01:55 +0000 (UTC)
-X-FDA: 85359044190.07.B2130C4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EA092100006
-	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 23:01:53 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F3D906B05B0
+	for <linux-mm@kvack.org>; Sat, 24 Oct 2026 21:11:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 09ACD1A04C0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 01:11:48 +0000 (UTC)
+X-FDA: 85359371496.15.0D004F4
+Received: from smtp153-171.sina.com.cn (smtp153-171.sina.com.cn [61.135.153.171])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 46ED4100005
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 01:11:43 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bL+NkwUn;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=sina.com header.s=201208 header.b=WatzQVmK;
+	dmarc=pass (policy=none) header.from=sina.com;
+	spf=pass (imf14.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.171 as permitted sender) smtp.mailfrom=hdanton@sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792882914;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1792890706;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ifik7ywdJzSlBWTh4fZClNn0YBG7LwNrhRPYJqoiXR4=;
-	b=Fgc+g9JEXdS4Vphm14rW62m3VoE5I0eHPtebsaENuXRnW/ZTcuOiorHviy69AMbZVb24xj
-	xp+rpp99HBzkWNVRf58RE5cXkWQftoQ69sM4nu9DRDPU0hB7IupWpIqJcQXWlNm2/jtVUe
-	Ku/nL8eGxryd20SHXF/ZTsAdc0u4RWg=
+	bh=Q8QjgI+cguG7bWbedFj22oT8cvaLq++BS/0yoHckLkk=;
+	b=YXHCfD18PDe2+0PACayVcQyvyYelrx6+qrVMZjmY6D32Y0kx2RcSvB8UgAowIgxMIyHTE5
+	gVSHlnn8FKZ7K5W4TG35cenUgqJAm4QYSjS9/YG9TcTt4nbJXrYise6xWaUkcGKOjCRwSN
+	zrdIKm/upslrK6L6JH4Abqn3Rvn3wD4=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bL+NkwUn;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=sina.com header.s=201208 header.b=WatzQVmK;
+	dmarc=pass (policy=none) header.from=sina.com;
+	spf=pass (imf14.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.171 as permitted sender) smtp.mailfrom=hdanton@sina.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792882914;
-	b=WCosj8fCbB5OM12Kg2Z07k8BmM56G6Se+vA+a995aUFMl+cCioe83izuq5IkOpwBoZhqPi
-	SLYqTjj4auJzztxhsKkzJXLjLDWYVecKEoQrfEgALwGl1TZ2IgPikooAXY7X28iZPPrNMO
-	BaDVLXqE+vxRdgwslDgVafOLsLOUjEk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6691142E7C;
-	Sat, 24 Oct 2026 23:01:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C5F1F01825;
-	Sat, 24 Oct 2026 23:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792882912;
-	bh=Ifik7ywdJzSlBWTh4fZClNn0YBG7LwNrhRPYJqoiXR4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bL+NkwUnyBtU1LyTojYqwxxZs6kkrlFJStrOSIGKp4LA28Vn4osiprS+xPImlhwEA
-	 mPTozbJNmKPp3TtSfStLQGWNJNqP2BXgFRajT9Uc/WXW249zKrQyT5QXCEuYc+UgMj
-	 7I7IxgYudAlKo9YA9k2ILmFqF2rxidvluMp8JpIgMfnHTorzF2Mel3LHdg+jQWs70U
-	 294FRfAiR5NfoecIB7h96sOl/5Gfvc72g2eXBb6jhfXUvNzDTejC2SLpLPJTvLPLr1
-	 OLZh30srMxJHciWS/EiGpaQq1uMugYxbFBmHV0Zf0YttoVLSGZGgsG7GSpN4PZcRLp
-	 pLBEo/q3IXAOw==
-Message-ID: <sashiko-outbox-183933@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/3] mm/huge_memory: scale thp_underused() to the
- folio size
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joanne Koong" <joannelkoong@gmail.com>, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org
-Cc: baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, kas@kernel.org, alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
-In-Reply-To: <20261023230006.3759543-2-joannelkoong@gmail.com>
-References: <20261023230006.3759543-1-joannelkoong@gmail.com>
- <20261023230006.3759543-2-joannelkoong@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 24 Oct 2026 23:01:50 +0000
+	t=1792890706;
+	b=BbyiiDkBA42OFY8U+OTbQ7+00eaUsRrjiaRjzzoPnFb0RQ8w2hISkqXjFeNyY7lCxF/ipC
+	oiQ30V6+YZ5yu7fbXfRcfycfJzo/dwAbs5O92kpZ6R5QTpw1PR3rQDt8aKxzRwWQuMsM6b
+	efVbEzaVX8qgLKiWOc3D/FSX+ThrSeo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1792890704;
+	bh=Q8QjgI+cguG7bWbedFj22oT8cvaLq++BS/0yoHckLkk=;
+	h=From:Subject:Date:Message-ID;
+	b=WatzQVmK8F5eXoTxX9UG220qxvpN1JA94Z3YB7uqW46R6b51atuSzip7T1MeWwaj1
+	 OfncNFYxrfHG4pC3bMRNh3x1yEwtiXboOJnVTNaOkuEwYNa7Rst82qH2b6hg2HGmMk
+	 XlFRqkYsOS0aWV0ibT2WlwIQvIXet5PGRqNuUq6A=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.254.1.249])
+	by sina.com (10.54.253.34) with ESMTP
+	id 6ADD574800005F4F; Sun, 25 Oct 2026 09:11:39 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 4931906291679
+X-SMAIL-UIID: 5492C95F558C4561AB8994FC81A21430-20261025-091139-1
+From: Hillf Danton <hdanton@sina.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Barry Song <21cnbao@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Date: Sun, 25 Oct 2026 09:11:25 +0800
+Message-ID: <20261025011126.1100-1-hdanton@sina.com>
+In-Reply-To: <20261024101401.1035-1-hdanton@sina.com>
+References: 
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 46ED4100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EA092100006
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: xtm6h1azczjrcd9mhraffosnqaj7meay
-X-HE-Tag: 1792882913-553494
-X-HE-Meta: U2FsdGVkX19gQJwiVdEBMpA+C7u292h3lqz4/bxtgQnumlgYvY57plJrkWagWPSnLsHcyHYoY1PDV3ounmac/oCsK3597u+ObV8ECtMliWW77kIt8xFLFd+IXlfuJ7KpCCcmmnI10JOCYNWH5z52BKpq7JactL+cp2qyGi8VyQQ49yrigEa7bUu8anovD306MjmFzG6it7p0vKugrSLGoWJYVffecuzoESIJtWqUn81ZqSGEeAlK5ckToGchxx4FJ30D1fO4UfiOFDNbZnU0ftnCZkb1t3cILJY0NvinxaWhE7dkJsE+r1ue1LS4r8LFB18AEmzFeDQj+bF/SsDWFPV/V/fD0F1d3IjEnPVW+bKQqr6FeNbkZeZcPHxfQJLL6/x2n1NDOnG4wK69oqkmdq+MW/BSXaL+1Yoss0FHCzyawlSb+xkejw3L0dTybceKz0yVD7+G08wb27xZsKn0R41v5DRYSxlOG89IMAvtBQ0xAjwXQ2ShPv7qh/Vb1rMAAkQjoMMBXr09Y/GUXPSdUCAlGj7vmPJJHMbwYaA+n399mc/hJx3NlAAcBxH6mPyp07ww1L+wk8y6GLT4SLZOwhROsr0A4LoCI/zkV8KQHxV+62UfCeSzhvZdqvL3bOujpcPH60OpRuTUZLmfAG3Y4aG0pNOxIqi9Nxx6pPGl9VehP1rOju+kMG7tOfeHuQTBUbRc4IFTON3n4oi0CAP5Ul7JMfYiLlkmd1suh0vO2emNiL9xzZ3SIH4vjVoJxYO3ntCuEzCpXWcW7lnTDXzN85u3W/TZCFhBALd4lltobW/UTadCysAL36EBUWElM1KY+S4NWWktn9f8qvJ6ACAo+AipXWfN+NdRlPNwPWweQpZ2XdUq3vwxSVm+ifMH58nZ6xfJK7uJftAsqd3YWidNVSjAM6ncQL1yx9Jv7Q95/rW6FNW3cjxSVSisqDkzLHvWsE3OKxXjg1MlVodwIsf
- dy+s74/F
- LWnJjTz8RlgPwjfLxjly55/vduc8HxT6vJlptr3Z7aY6J6r0XhpWJKcoZ1C9n7mz0i4vMntR9VcJmZqIu8MnlUGvHSpM/nLAl2w7+VQWrYX7xLhOYtsUGm+1K25kD8etajRCV5DfCvRhex1VNyPydhKxy7l3M4CnBUr981pNO5GVQ2keLkMYMQP6Pw7qtTFT50wpYJfVHfqKn/D4Zy36tJMa+ZPwGGkI3biNWPw2i2Rw5uL/V57Hpbk02bITP/DyGj/Tdvc9goeJnc14mJh7bO2i9a3v+7zauD/Dno0XNiYFAGNxQEJMc7SOOjrO/EkSl3QrzHyI/AhtA5bwlHAlrnoyAcFpWDnUToB8L6mF6lkcNqowQv2/QwnaoT0psUA1RZ/hGv2O22TONCx2baitXDFdCKVJBWHPZo6iI22mdFZB/IAUYIFgziOc5qvlGa8KY1ImmTRmpKPVmI5uDuTzUv3mBApN0uIiRmOzTKHLO3VSXOp13HD3stex2WibZGdFaol8UKQfUwSpvOHoWdHAMBWyqaZPIZyT5q8/rnYnwYOuv/vQaQhSWrZeodPSYomIIbV3S9Fk1ebV/QiblFyIpo1CH1fRZTQslV/aEc+z81NcGvZM4Kd2qa6rYzjeIC/ZUlGyYda+mDlsY9Is=
+X-Stat-Signature: aikredfaiudbkt5cfu589r1qo3cburrj
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792890703-799899
+X-HE-Meta: U2FsdGVkX1+wjx8Ct9vmCYL8tyiL6Cnl9Wkcexqw/llkdCAPRYpPvrxA4OkqGdEAmfKqPNJ8ZOsnDLg0w/R+oI+oecXUvRqbpR942uotrXuJP5Fhm3tS7IRVR/MLtIyXyK9rexD+Q8qGShBhaj0UyQWsm3M4TsmNqJTxYFvOIknKTzQ+WQ1vqt+35oUx4OH4UrR13q7fvicN36gbtgZL2NlzAWcY/bNrLfPPuFYaAJHcBb9UhNxYizejGROEHbbr35RJ6+WcOIgdq2djcq+au9CiuclAGj8OrCTUS+RiSGBXqXj2qhCe2YaRLpwmycfmjc9REgpZoOCylYHQZyivrBV7BoY97qf/ysWdngjqiIwXzYhFUDOBC4bY5GCFXW+F2tNSIRKn44E1rZEhrh1lPwPmOLgG3VFLY0zI7OSAI+JgKTJf1O4cV/hRf/PhmmxKnmIY2LG8W1z8HZEiXZ2I7gGquS0plVl89cWeZhCO2h7B+Zvdp7LuZDsPj99ZmSfFCr6+1oN1yGTL5MjGBnS3EIpmv0IfmuOM2CS354kM1MN3IXyd7fCd6hDIgBDC6DMnD+bsHbd3VDOrjq7vtckbshOLqikWzu1nnwxY4JO9OY981oiX7yQVr3HcLckitqy9YBCMMP1WLdXwqyH58yM67TX37mQZ6JXtDobfnHHUL7OC3ADyDQ6wgxfHgTEN0DDt2SWYBIu7N2n8pp17CHUWNFxosID79qRTBlV3xGor5+DtAXugG0/zSBewDUkXydJEfxsRho8rqQLDuzhX3vFHzwKfMjE8BfVT9ztqUr+T86/Zxw9IUUP/B1WHFsHIr+SF9XnEMU7GKmmbo8382kG/H67RnM9kRdnmT/HCA5q20b5swo8cCb5dXwrBwMMWWI3Z+7ysi1sQRunRRLmZh4Jbl8OQzX96J6JC83YdVD01ilpx0j1sdPEQqVNiiSh4elPt5PtAxCCSscAAwCP0GAO
+ wXFQlbBU
+ uZ9wJY0QNGfGZLhb+Byghs5zH7cl5sCZRuwisBPGkb8FQ2R/5iYCyNdtceOM+V6bHw/xMhmCQAfAOeJUILppKZy2FdP/BoxP8z78uDD3UnkverdB4fn+j01RXNCvo8if78DZrOAIJ0NU6+kEWdahsQ1HpUpdTUrI5qc9BJIEjkoJwSimvx0PPH+l1A+dVgJOORtJQ3Uxfct5N1ICbiDYZ9UgVMNcwpKdrYio+vBt/T6aJjnpaBeKxIcH8gYqwiUmOvgE1lFOVW9WAQiIX+AFe/L5eWRAZA9jO4sduPweDJeOmEBQUtfqnAZArJMmO1yuon7ny78P1TXTV6NH32tiiSvSHbTv7vdsdHYw1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,100 +94,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm/huge_memory: wrong rounding in thp_underused() max_ptes_none =
-scaling
---
-
-commit 56eb0cfccba9e5e4276f2a8250815399987bc848
-Author: Joanne Koong <joannelkoong@gmail.com>
-
-mm/huge_memory: scale thp_underused() to the folio size
-
-This commit updates thp_underused() to scale khugepaged_max_ptes_none
-proportionally to the number of pages in the folio rather than assuming
-the folio has HPAGE_PMD_NR pages.
-
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index bd44d58e86845..218259940f24d 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4613,25 +4613,35 @@ static unsigned long deferred_split_count(struct =
-shrinker *shrink,
-> =20
->  static bool thp_underused(struct folio *folio)
->  {
-> -	int num_zero_pages =3D 0, num_filled_pages =3D 0;
-> -	int i;
-> +	const unsigned long nr_pages =3D folio_nr_pages(folio);
-> +	unsigned long num_zero_pages =3D 0, num_filled_pages =3D 0;
-> +	unsigned long max_ptes_none =3D khugepaged_max_ptes_none;
-> +	unsigned long i;
-> =20
-> -	if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
-> +	if (max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
->  		return false;
-> =20
->  	if (folio_contain_hwpoisoned_page(folio))
->  		return false;
-> =20
-> -	for (i =3D 0; i < folio_nr_pages(folio); i++) {
-> +	/*
-> +	 * khugepaged_max_ptes_none is a number of pages out of HPAGE_PMD_NR.
-> +	 * Scale it to this folio's size (rounding up so that the folio is never
-> +	 * split when fewer than the configured fraction of its pages are
-> +	 * zero-filled).
-> +	 */
-> +	max_ptes_none =3D DIV_ROUND_UP(max_ptes_none * nr_pages, HPAGE_PMD_NR);
-> +
-> +	for (i =3D 0; i < nr_pages; i++) {
->  		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
-> -			if (++num_zero_pages > khugepaged_max_ptes_none)
-> +			if (++num_zero_pages > max_ptes_none)
->  				return true;
-
-[Severity: Medium]
-Should max_ptes_none in thp_underused() be scaled with truncating integer
-division rather than DIV_ROUND_UP()?
-
-Because the loop checks a strict inequality:
-
-	if (++num_zero_pages > max_ptes_none)
-		return true;
-
-max_ptes_none is the maximum number of zero-filled pages tolerated without
-splitting, not the minimum count that triggers a split. Since num_zero_pages
-is an integer, the condition that the zero-filled fraction exceeds the
-configured PMD fraction (num_zero_pages / nr_pages >
-khugepaged_max_ptes_none / HPAGE_PMD_NR) is equivalent to:
-
-	num_zero_pages > (khugepaged_max_ptes_none * nr_pages) / HPAGE_PMD_NR
-
-using truncating division. With truncating division, any folio with at most
-the configured fraction of zero-filled pages already satisfies
-num_zero_pages <=3D max_ptes_none and is not split.
-
-Rounding max_ptes_none up with DIV_ROUND_UP() alongside the strict > check
-requires floor((khugepaged_max_ptes_none * nr_pages) / HPAGE_PMD_NR) + 2
-zero pages to trigger a split whenever the product is not an exact multiple
-of HPAGE_PMD_NR, allowing sub-PMD folios that exceed the configured zero-pa=
-ge
-fraction to escape splitting in deferred_split_scan() -> thp_underused().
-
-In addition, for any sub-PMD folio (nr_pages < HPAGE_PMD_NR), whenever
-khugepaged_max_ptes_none is in the range
-[HPAGE_PMD_NR - HPAGE_PMD_NR / nr_pages + 1, HPAGE_PMD_NR - 2] (for example,
-481..510 for an order-4 mTHP on 4K base pages where HPAGE_PMD_NR is 512),
-DIV_ROUND_UP(max_ptes_none * nr_pages, HPAGE_PMD_NR) evaluates to nr_pages.
-In that case, ++num_zero_pages > max_ptes_none can never be true during the
-nr_pages iterations, so even a 100% zero-filled folio scans all nr_pages
-subpages with pages_identical() and returns false, dropping the folio from
-deferred_split_lru without splitting.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261023230006.3759=
-543-1-joannelkoong@gmail.com?part=3D1
+On Sat, 24 Oct 2026 18:14:00 +0800 Hillf Danton wrote:
+>On Sat, 24 Oct 2026 14:48:32 +0900 Sergey Senozhatsky wrote:
+>> On (26/10/23 19:40), Hillf Danton wrote:
+>> [..]
+>> > > writers vs readers 3 runs
+>> > > 
+>> > >     BASE+PE     IOPS 1,271k  avg 5.57us  sd 1,393us  p99.99 27.5us  max 1,581,800us
+>> > >                 IOPS 1,461k  avg 3.43us  sd    78us  p99.99 23.9us  max   227,015us
+>> > >                 IOPS 1,444k  avg 3.48us  sd   222us  p99.99 23.9us  max   592,628us
+>> > >     PATCHED+PE  IOPS 1,457k  avg 3.32us  sd    18us  p99.99 27.5us  max     5,620us
+>> > >                 IOPS 1,464k  avg 3.31us  sd    17us  p99.99 24.2us  max     5,621us
+>> > >                 IOPS 1,475k  avg 3.29us  sd    16us  p99.99 26.5us  max     5,620us
+>> 
+>> BASE+PE looked noisy, so I sat down and tested properly (also tested
+>> zstd and various compression levels).
+> 
+> Lets see the data from another pov (feel free to disagree) -- in the android
+> phone/car cockpit environment, the render frequence is required above 60HZ,
+> IOW a frame rendered within 16ms, so what share of the 16ms does the IOPS
+> account for after this patchset, for example when an app in background is
+> brought foreground?
+>
+I mean cpu cycles are burned to reclaim pages, given zram and swapout/in, OTOH
+given whatever a GPU, slow or fast, if it would take more than 16ms to render
+a frame, then there is no cure for the dilemma.
 
