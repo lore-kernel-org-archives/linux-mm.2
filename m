@@ -1,79 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706EA606A322
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F06D606A331
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QiSloQfr
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoY+nVJd
 Received: by kanga.kvack.org (Postfix)
-	id 73A0F6B05B9; Mon, 26 Oct 2026 05:41:15 -0400 (EDT)
+	id C1B206B05BA; Mon, 26 Oct 2026 05:41:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70EA96B05BA; Mon, 26 Oct 2026 05:41:15 -0400 (EDT)
+	id BCBC06B05BB; Mon, 26 Oct 2026 05:41:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B1CC6B05BB; Mon, 26 Oct 2026 05:41:15 -0400 (EDT)
+	id ABB9A6B05BC; Mon, 26 Oct 2026 05:41:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3173B6B05B9
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:41:15 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B411816070A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:14 +0000 (UTC)
-X-FDA: 85364284068.05.1E53741
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 05650140005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QiSloQfr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D2386B05BA
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:41:17 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3ED9C068B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:16 +0000 (UTC)
+X-FDA: 85364284194.12.CAD7467
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3413040002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hoY+nVJd;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793007673;
+	s=arc-20220608; t=1793007675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=REIzglI+UokdSSqST5CDOezePfcdiVtDX4vr1iybjIw=;
-	b=WeAVdYba8Vp8+mp14zNviPJo4d2NWQo23daMbDCuVLSfDquK/L9KbUSYIyyRFNvjk28L3n
-	DdJMreJJp3bLhkDVT2DmPcnq1rwno+zWBRPk5rytHtUChDJAy0TNcT/Q9ba/PxOHGCop8P
-	dcJGmMU+ZJWaQagqL7py+7YDYDJOlls=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QiSloQfr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=fmErr11J4yiDe+oqOLxrAHXMe+lgqHj/gW1PNNiv0PY=;
+	b=IHBCf42cjm8dKo7LDalms2s6wPr4bnibZ2tDiUs6q0eNmg7qYm10c8LoxGwf6r7Rg0Qfc4
+	nkGara+IDDXGhF2rQ+d4onY007asJoM+Yq0ekOMEYTwy6nUrohTB8MSvxATVW408vhEIyB
+	+K26LgP6Cn3W0zLqCSOE6cmz6xz4+JQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793007673;
-	b=ZeIeZOGffMLiFpxOAbIc1zqXJo1/K8tts+lV17M7KpIWKH7hBwN5URDAiBXoOlAh/5Qhck
-	72XZdTVXxvEx/y+K3gajwtzuhDws9GM4XHel1WcuqMgxWYQZ5pQssIdxF5YpxIwEKU2rrK
-	kOMfkRjxZY+chTMmdHrRs4MuAkC7iro=
+	t=1793007675;
+	b=g6qgd/zN9Zp79EiNy2W+xL1jmXYlPrTuvVnRc6i9JZsKk6MJv4ZwoqH49MA5jVNh9v/q2W
+	92/nXSd1nqP1N+wqZCak+BOpi/OEqIiphkvQHLA/hcHygxwRBhXbhAZIbOn66qhiS4rWes
+	WCrVimTucpT4Ql6JUBUsSNZY+cuG4/o=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hoY+nVJd;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8137960A6A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 85517414C8;
+	Mon, 26 Oct 2026 09:41:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56F11F031E2;
 	Mon, 26 Oct 2026 09:41:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D665E1F01829;
-	Mon, 26 Oct 2026 09:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793007672;
-	bh=REIzglI+UokdSSqST5CDOezePfcdiVtDX4vr1iybjIw=;
+	s=k20260515; t=1793007674;
+	bh=fmErr11J4yiDe+oqOLxrAHXMe+lgqHj/gW1PNNiv0PY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QiSloQfro7y48xGi4gcFNCghKwpJoJ0tKGbEHTBRyyphetxebruHsVADA4ArSYXur
-	 8hVsrDaMZUzgAXNsEMae6m8qD0JSY0GeC9mYZUYW3HBpFztHdb0544QYlbPpTVaWzz
-	 7YBcsNT66LipxPoZ6bopJ4Pqe7irxDLQa6Eq96Wu1HSvlTlrWu1hy4ZackBV5OnSf6
-	 KprOyE0ZVhA0yNVB5Sf8yMQwprTqDaGr5QY56YIcRQXyBpcIBhbRXjjW6aG03+v3Vl
-	 4TcpefDK8jjvxK8uoAnrWkCx+40PxsMvF6jOFIiLFWiYcSz5nnu/hIm1g3ecCB/m8G
-	 2thglL7zp4u8g==
-Message-ID: <d1d58902-cb44-415d-8063-6b3ab054cc99@kernel.org>
-Date: Sun, 25 Oct 2026 13:36:27 +0100
+	b=hoY+nVJdTpF+bOnGRqA60bqEon5wES0uTDgRThXCOwAPT/eYwNotrJ8PurgaBDBH8
+	 6RTUTlsQSoBeGbuLzwDPLxO6Tg9aX0DzEGmjJzZhajmJdWtdQFKWaGv+iqM+2uBKpu
+	 026t64oG7a4GhVyDaiFRtUzs+QhNWsy1qp4OK/oABUnwArhQHMz6REf23JPiDPpyUt
+	 H3PBDpVbqxeuL8lP8i6Dj/GHiIrypsBVaNKkQxsf+1b7KTZ/1TIdboA/vnbPXaRbcE
+	 n8p/qSrc52pFTkI67KgPo+ShAyE6zmyE2/FC0JJN0+EVo+8neJxNDYKWgRVYf+Oiv/
+	 WBm0YdS18Y/Ng==
+Message-ID: <a6cbfb24-efea-41ef-8f1b-dd2bd160cff4@kernel.org>
+Date: Sun, 25 Oct 2026 13:43:55 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/ksm: keep soft-dirty when merging a page
-To: Samarth Narang <samarth.colleges@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261021182157.1873726-1-samarth.colleges@gmail.com>
+Subject: Re: [PATCH] mm: ppm: add PPM (Page-Plugger Under Memory) to Page
+ Fault and Overcommit elimination
+To: dev12124 <joaoanandalima@gmail.com>, linux-mm@kvack.org
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, ardb@kernel.org, keescook@chromium.org
+References: <20261024104552.394-1-joaoanandalima@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,22 +118,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261021182157.1873726-1-samarth.colleges@gmail.com>
+In-Reply-To: <20261024104552.394-1-joaoanandalima@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 05650140005
-X-Stat-Signature: yq48i5yy1oujnns96oba65x8sbnm1qea
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3413040002
+X-Stat-Signature: g1urzyucnof1czw5nofh7itiju8os93r
+X-Rspam-User: 
 X-Spam-Status: No, score=-16.5 required=3.0 tests=BAYES_00,DATE_IN_PAST_12_24,
 	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793007672-25356
-X-HE-Meta: U2FsdGVkX1/lcsAPFpEemI4v+JlM877mIjrM15xD+P6j/sIV9G+hOuHTaqOuuxSPeL2Et55x76O5ODZz6IPla1b7L31OYbTtoFygmim5bhKKqHg0FHlNxMm/HgkHWHHluw1aMlsS2SPto9oWi8uurP5DMmkG9d5bEAlbbVcc/UVN1Pn5yVbbyIt8rLyhAlWJXYAfRng+WS6dQ74wWz/9/DdjDH4dHO+NjONmn19vbT0QQx2oxwG+aYpi/Q8/RFEdXpDP0HFxO4Y/3BZU8DrfJMdhU48NMafPQs30EwI6BHb9CCmrsDaMC/EP3UIupLcc5JuzzFe+Ak1Z7ZNg6QOYqXOi4mcJ1U8XAAJEGYFa4A3bx0izhZ2V45QLK+hUtp4f4D6HZMseOh6xzoXzDuHmQYJHM/DRiqy+O/EMDPHbXRAbjAanG/oeLLnuX72KQWk7urb3wnnL3TawRMt9pNldFI2bRUEDWYzYVdiBSqqUvAD/3rjD+vv965itWkaQstd57hkT4nOxUTBNQUDSsue4hM3ImksqhghtALVqZKyos39kDSsHtjofLSFjavAJCk/6CsSJogYY117xUVP2uFMJhScmrkC9p1zKGt1GaqWDKOYAMur6XVao+Z2rrsbrnCqEnFkZeQ+SLgsPQJn0gedtOLRik5bYja/TNzQv6vd55krNRhoz8ZZG8YKlaf1G9G1SkW19yhyFo7ZnTCLGlKq+lA/zAssmugB0989wxUuQ/9+K6nMe6YmgJMIbOZG+bWL77gtfXYW0a88XX8t3G2Cf0dL1MnDnKReMHJjZ1nAWzR/5XzTKm2WACPwE3ZE+9lhODFovGqUchcnFMEtoDTprKVmL3gWPOvkIZ9rWqhmthFF8O5u6zMohf+YP9w9nIPEFrshhWQfCO3eGYP+JN+BxaPYXtRpRyl22g4El8ej/zwlHZa+7LZL7TYOAMuXzGTiMIw7pHudWCjHqKLrVZOm
- DCFpZaGR
- GeURUgFy1GyiT1+Nlp2RG4ve5gvrpPvIGxeOGWKWvuaibEVdATgvwQTatfY/8Nemr2MNW9F6M323+FuT15PHSj+tOjGN9rLzKXrYcRC+ScFNzOV1CeQ0nGHuheaLCDgWXInQqRyofvcCTDOa+0A002d5WSpkGEVRbEHZjC0huNhbzMG1yjkkYwD455aFOrSAdjsWPwH8BtmvF1NCu5C/p+Nt3uoJxzn4rPDPtzpSbKbKGYJCVsTDvxP064ETBXX2e8m9kH5bxpV6YI2/fmOtoMKgw0PZ6MqrK7rTwczloQe5YPjTUxOC56l1bOqgaODRl4rsNRNT+8k5NHN+2ZOulSEJXE0PQDc2bXC/WTsNd6OUwvLiZrD0P7ZKh4oDbrH++5trD
+X-HE-Tag: 1793007675-261950
+X-HE-Meta: U2FsdGVkX1/eLrB7uH3v+H18XWe4qZuRr81ChaRZM3g/76LaInjdpWBJw+W1KzdYX6S/3JuV0p0A9rGAGYZaluu82RaEtBUo319UFAsnn6be0P4G5Z0h7c2gSGeMQiLVdy6m6GtQtyU3f1zH+gGMDsE0dbf7R6pFT/iT5+aBANASC9Fb8dxhvRy419tw5gTPvTx9hYhzscIAFHj2DkwSkZ3pqYhGLAyMqOMw8I4odjU8x3ours2mXm03tJH4qthEP4k1q3faZ2ZCOa7TRgv/7aCQvuRXYY/NZdvUbgo4VasvzdKFm/9/KmBIBaMCyrg5A4juc9N/27yxOASGQQW1HBikxpEeneQ0H0MnByfBgZjegjGzhs682YpcPbV6jlU9foqfxxu+v8hBFh1+48giWZW4FOUY97x44P/PqqTpmkfUXsId4VNFLjc4ux+oChXyJMfHOuZ9Ha2+9aAkOzHV8MdL5LS0AJrP3wjGCtIAmgmvt7q35sSILoy+3sGeYrzwwVBr/r1UMFCZa6aPG32/I6sXgQeqx/KBFA0xznJVFJnlk81G8QAXo04UBhgjkUSPlATeUBAxaExp1tt10M0O9awoVHoT0XXXRm2MlqUDf1buDqLFY6vSYy3SLTMdEaRcCVNVCkM3K67ka/qE8ctGLLgfEIYuQuw5p+j3EJ2TeVEyhIssUDLHdYth6LCxufP3f+LtVVlhLbD96byIlxj+6espmmi4kY6Md9NrYJqyPUSrJtgO966JYKBJ4AX61p+mdUuhG8pQmneZEipu78Ss/ewL2JohHLFlYIoFCDH/OeW6UDg2UkZEWYTFS3vPU+cGLJHNJmed06GBgVzoWREw2v9q6XFOOrco+X4CniqbvQE0n4Z2U8kpVsMKV4ema1gzawDK0hHAi4jdj0A+6Uct7XE+coW/VkY6j4ZfZQGsMuW4gLq4hurEAE4NZtBA+iFb5Vh3l+kUIT4hNG0FRgN
+ R0hpzxKb
+ U4tzg8MBwl4VeGunF+Mu0yam4FAQ0fqaVB2HgGuD+FftBooGCHO4SqQOtHW3cTuvcGnmb/+jvDIMIh7CvGMui9TjcIkK1xumAslAgA+HyI7M9mcwhMND9TIK7Uxlrz9QS6p0WKgGaSWhrEbiwvTN23XY43ygl0F126RZKKlmM/KHK52/lUbQrvRxJUyqp9eR0RHZuTwLKxKeEOauvI6LD5+wsAZH7tHVSLGa4eEWMF5D5S558QqRwmvZX+qlioUq2F3RiC1PQmnyfGwEZeOacNSpKPc4n9WRZjT6pRWvPXIXEOG7icOk22Tlo9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,46 +142,124 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/21/26 20:21, Samarth Narang wrote:
-> replace_page() maps the KSM page with a PTE built from scratch, so the
-> soft-dirty bit of the PTE it replaces is lost. A page written since
-> "clear_refs 4" then no longer shows as soft-dirty once it is merged, and
-> a soft-dirty based dumper treats it as unchanged.
-> 
-> Copy the soft-dirty bit from the original PTE to the new PTE.
-> 
-> Fixes: 0f8975ec4db2 ("mm: soft-dirty bits for user memory changes tracking")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
-> ---
-> 
-> Notes:
->     v2: https://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail.com/
->     
->     Changes since v2:
->     - Keep only the soft-dirty fix, as David suggested; Lance will be handling
->       the uffd-wp/RWP part.
->     - Fixes tag reduced to the soft-dirty commit.
->     - Dropped the Tested-by tag, since the patch changed.
-> 
->  mm/ksm.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index dbfb8f98b189..910a1307ac9f 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -1463,6 +1463,10 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
->  		dec_mm_counter(mm, MM_ANONPAGES);
->  	}
->  
-> +	/* Preserve soft-dirty when replacing the page. */
-> +	if (pte_soft_dirty(orig_pte))
-> +		newpte = pte_mksoft_dirty(newpte);
-> +
+On 10/24/26 12:45, dev12124 wrote:
+> Hi mm subsystem,
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi,
+
+> 
+> This patch implements the Memory Tatic called PPM, Page-Plugger Under Memory.
+> The Main Objective is: Page Faults and Overcommit Elimination.
+> 
+> A few points under additionate:
+> 
+> 1. Allocation Handshake (ppm_kalloc):
+> Using the GFP_PLUG_MEMORY mask, the allocator completely bypasses
+> passive overcommit verification. It instantly isolates physical frames
+> on the RAM, maps the page table entries síncronamente, and forces the
+> Present Bit and Writable Bit to 1 before returning the address block
+> register to the CPU.
+> 
+> 2. Desallocation Cleanup (ppm_kfree):
+> Triggered via the GFP_FREE_T parameter, the release phase executes an
+> immediate length truncation to 0. It forces a synchronous TLB
+> invalidation (via invlpg execution) and flushes the data out of the L3
+> cache lines using clflushopt instructions before moving the hot clean
+> pages into a dedicated priority recycling pool.
+> 
+> I additionate a Buffer/Cache with store important objects.
+
+Reading this description I have no idea what this patch does, what it tries to
+solve, and why anybody should spend their time to look into it.
+
+> ---
+>  include/linux/ppm/gfp_types.h |  74 ++++++++++++++++
+>  include/linux/slab.h          |  11 +++
+>  mm/memory.c                   | 158 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 243 insertions(+)
+>  create mode 100644 include/linux/ppm/gfp_types.h
+> 
+> diff --git a/include/linux/ppm/gfp_types.h b/include/linux/ppm/gfp_types.h
+> new file mode 100644
+> index 000000000..741122b2d
+> --- /dev/null
+> +++ b/include/linux/ppm/gfp_types.h
+> @@ -0,0 +1,74 @@
+> +/* 
+> +  Memory Tatic: PPM (Page-Plugger Under Memory).
+> +  This File is for PPM Flags/Macros/Functions/Types.
+> +  Engineer (brazilian): João Guilherme da Silva Freitas Lima <joanandalima@gmail.com>
+> + */
+> +
+> +/* Types Include Guards */
+> +#ifndef __PPM_TYPES_MEMORY 
+> +#define __PPM_TYPES_MEMORY 
+> +
+> +typedef unsigned char uint8_t;
+> +typedef unsigned short uint16_t;
+> +typedef unsigned int uint32_t;
+> +typedef unsigned long long uint64_t;
+> +typedef uint64_t gfp_t;
+> +/* For errors in Allocation */
+> +#define __PPM_ALLOC_ERROR -102
+> +/* For errors in Desallocation */
+> +#define __PPM_FREE_ERROR 0x04 
+> +/* For success */
+> +#define __PPM_SUCCESS 0
+> +#endif
+> +
+> +/* Functions Include Guards */
+> +#ifndef __PPM_FUNCTIONS_MEMORY
+> +#define __PPM_FUNCTIONS_MEMORY 
+> +
+> +/* Initializer */
+> +void __init_ppm_memory();
+> +
+> +/* Allocator Optimized */
+> +int ppm_kalloc(unsigned long address, uint64_t size, gfp_t flags);
+> +
+> +/* Desallocator Optimized */
+> +int ppm_kfree(uint64_t size);
+> +
+> +#endif
+> +
+> +/* Flags Include Guards */
+> +#ifndef __PPM_FLAGS_MEMORY 
+> +#define __PPM_FLAGS_MEMORY
+> +
+> +/* PPM inits/starts in Bit 54 of a 
+> +   64-bit variable 
+> + */
+> +gfp_t GFP_PLUG_MEMORY = (1ULL << 54); 
+> +
+> +/* For free memory, the Bit 55 is 
+> +   used 
+> + */
+> +gfp_t GFP_FREE_T = (1ULL << 55);
+> +
+> +#endif 
+> +
+> +/* Macros Include Guards */
+> +#ifndef __PPM_MACROS_MEMORY
+> +#define __PPM_MACROS_MEMORY
+> +
+> +/* For Kernel Kernel tests 2 Bits (54 and 55) in 
+> +  1 Clock Cycle (or in small clocks, example: 5 Clocks), 
+> +  is used a mask using | 
+> + */
+> +gfp_t GFP_MASK = GFP_PLUG_MEMORY | GFP_FREE_T;
+> +
+> +#endif
+> +
+> +/* 
+> +  Notes:
+> +    E-Mail of RFC:
+> +        [RFC] mm: page-fault: overcommit: PPM (Page-Plugger Under Memory)
+> +    
+> +    
+> +    Assigned-Off-by: João <joanandalima@gmail.com>
+
+I don't know if I am supposed to laugh or cry ;)
 
 -- 
 Cheers,
