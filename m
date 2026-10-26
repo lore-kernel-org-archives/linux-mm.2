@@ -1,114 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D466606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 01:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF98606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 01:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nlG6lF8b
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=j7DU650b
 Received: by kanga.kvack.org (Postfix)
-	id 0DA936B05B0; Sun, 25 Oct 2026 21:03:06 -0400 (EDT)
+	id 09B306B05B0; Sun, 25 Oct 2026 21:10:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0648C6B05B1; Sun, 25 Oct 2026 21:03:05 -0400 (EDT)
+	id 04C596B05B1; Sun, 25 Oct 2026 21:10:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6E3A6B05B2; Sun, 25 Oct 2026 21:03:05 -0400 (EDT)
+	id E55E66B05B2; Sun, 25 Oct 2026 21:10:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B87F06B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 21:03:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 10BD11404EF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 01:03:05 +0000 (UTC)
-X-FDA: 85362978330.03.CA570EE
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 87746160006
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 01:03:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nlG6lF8b;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792976583;
+	by kanga.kvack.org (Postfix) with ESMTP id ACE176B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 21:10:45 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 869B0140172
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 01:10:43 +0000 (UTC)
+X-FDA: 85362997566.02.BCDEDFD
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7CBAF1C0005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 01:10:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=j7DU650b;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1792977041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=6KypKBxeY4fKgDZu8C15CxK34EeYHCPZ3YrUNtMGVW8=;
-	b=MpM94/tMutiGPWwRSD8XE7tXQyVE6sqdaOIZWrggBux5jyHKaVBsnOkvFPzxhkSm0gXzzx
-	8OrVT4ldHmBollmqRJJxijI1IHbS5VllIaGhUnDdg60WDPudeeGNN8k5+pAaRbULkP4Bj+
-	l9UjQqsGYbGmuC+n4AJ1nCKafq9X8WA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nlG6lF8b;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792976583;
-	b=HpJtOC7mKeMiD8rvPIX0z4YcRQieR3J8hBQmL2X1QcdbGo26qcZfnssZv/aVrMCu+jL/Ha
-	p6ITbjZgRSQTiXyScir4j7X3RC86/gOZENTa1sJnNeWJXQMP6MJVs3Vwscwd8HqjqjJbGs
-	66Wlez3PkNKxoOgrQ8Ghbb3coWFX9Sw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792976583; x=1824512583;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=MyV6KNfTsD6WaTa9di42yb310veedcMZyi1bBjCc+mg=;
-  b=nlG6lF8b3lHKmdRTTqVxBppdhrM5sLAwlVEbpjB+IjxciwVVDmEMsCgF
-   vlRTKBCRWSFDfAq0o2ysaBCZqdk1+5HJ2wEA5IkUM8egVu2MyJdL4Ppjy
-   6zoyEFsMljXdT3NcAvQ9tCk9JikAvseRQpfqrSX37+DHOcgO0yYBq/y6w
-   kr4em2hLL77DyhibHREvG2aA+hDiq8GLuwOHr7CkyB+zj30C0277uClqW
-   Ckhhru+c0YyH3Njex2664JHcXcHIu6L7lYhJFs3mQg3ndLBL1gqD6gcM1
-   HIGg6vLjSbu4nsGf9ht5G2PXihKopvFvDrZNb3BgBX6fCOR5EjvA04M41
-   w==;
-X-CSE-ConnectionGUID: NeO0jZsKRj+vwZ2vATr+fA==
-X-CSE-MsgGUID: J7IapEGBQ4GoK5S/n5KMrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1625042"
-X-IronPort-AV: E=Sophos;i="6.27,178,1787036400"; 
-   d="scan'208";a="1625042"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2026 18:03:01 -0700
-X-CSE-ConnectionGUID: B+/zTdA0Sf+1LPmPJaauPQ==
-X-CSE-MsgGUID: BumxbCY3S/q3LJG0eBKPMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,178,1787036400"; 
-   d="scan'208";a="4017743"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2026 18:02:57 -0700
-Date: Mon, 26 Oct 2026 09:02:54 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: "Harry Yoo (Meta)" <harry@kernel.org>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Muchun Song <muchun.song@linux.dev>, Hao Ge <hao.ge@linux.dev>,
-	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, "Harry Yoo (Meta)" <harry@kernel.org>,
-	yi1.lai@intel.com
-Subject: Re: [PATCH slab/for-next 14/14] mm/slab: do not set SLAB_MAY_ACCOUNT
- for all caches
-Message-ID: <202610260827.e64ec9d3-lkp@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=serC0Qr3v1AkQ41cs9qFoAlejUw/dVTynlDISylCuz8=;
+	b=Z7yg5mZ1/q0br9n1y7yKq4Tw7WAFi3i7hesJMXHa6nDzYgrGFLyz2R8zDQxcZhmLS/Jbt+
+	hjdsDe7NI5keWaCbCC8Z+XtZo+BckFkS7BK7bjOpd1KMJhnjEGIL7nT5n/OSc/laCphRx8
+	uUkY736gwluX4TazPre9o4ebzDbaCcY=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=j7DU650b;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1792977041;
+	b=OSNDPeJ0V0BB9ZExf3mwKkBSkoPw3w6e1lx4UWTdoSQms6fiLgqT/rA9q7Nr714mqvWPro
+	3/p6iG66iJXfPCYQygVK366FjXco9bC/thd1ycdPJxOw1fqFXRjJI7aLHfeW0f74CCqUwg
+	nS1Jyh/4aZgMf0RkIPWy7U3KIAphPDQ=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b45f9ec1ceso585215a12.2
+        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 18:10:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792977040; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MgL7pDO2c6cWnqbEg885B7nXWBW63b1foH9JwHXBgmgyaamoFLmog/sKg1Jwt0snu0
+         OKYJzWnSZb4wu9AyoBK/sp17ONPHUPsz0/YfP4NQEUYGZ3tvx2MXhCTpXCglPm9evWLj
+         P8HHLQBS6epzR8NL5i5aEasmZOg8elvM7MBn9AAfjEr4Uur297DKBthOT4Z/87yezu01
+         0Z2mp+Jv3uzK2qi0jGLCpnkSbzrrLGk9A+ocfMi3aA/PGftuADbfWqjpQaNqsOdoNKJZ
+         1Et/0q9CeZwoxct2CpsWzEIMNePW/xX2tOU0anX0qPL4k8RVzg2AtxYcfaXAuFMbPdmn
+         A5EA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=serC0Qr3v1AkQ41cs9qFoAlejUw/dVTynlDISylCuz8=;
+        fh=JkRc4CmBscswfodZbFfY1X9uWNLxtEXfRyfy2vx07Q4=;
+        b=WpGMzn2x+03n8Rfkb46xW+ibHWQlN5rLePPYvd5jr/UrKihE4Es31GdA598j+rcOLq
+         uN2hATb5jC3A4yiGbaknEr769FjgKuOVQ3E8MG0luKlitwGGsf8QeB9PIaeQwNliLX+z
+         Re8YjXtK0hcUGlfMFcizzWVwhADF90u9e2UMvAS4XOOv2DBXVaZ520JDqpYFs3TuiKp+
+         ZYD2hrQyYCtQct3ro8sVUeL5P007bYvBb4SxsUbTjmIZou/TAVX5nyKJj21Db7zbjZnt
+         socFCbyS03+NkwMbczY8/t6DwZdtT5aCPwesj+OTdkQt7re9H4k2Xf0hCmJUo+7Ka2cm
+         bFhA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1792977040; x=1793581840; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=serC0Qr3v1AkQ41cs9qFoAlejUw/dVTynlDISylCuz8=;
+        b=j7DU650b9CBT6VakrS2SIu1g6ym7tEZKpotIt/RfLu2VrjyYQk02cX25/YabrTZOlG
+         1Piv9K5m0+A80LVb2zrX1DTU3bILpLGNUJ910D7jfe84Xe4BECm2wSCJ84caL7m3xOFR
+         YcjRf9UOTshv75OlWXf/09lcm3dUSs9XP24BUiLkZ236dnhAID1XXYDpzdOi6RVc+Oj9
+         m797n69g5HghL1bUslfCDHPvVhfVF+2Iu2TfAbHFxei9Yy/cVcKnzbsXMKsSx9nwuvJg
+         6J7F/A5Kdf8uSAe/oYatbQu44XcSyrmbUQJ4wxKhsfaf8CdvV2xACVuHnU3c5LRq2sPL
+         xtvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792977040; x=1793581840;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=serC0Qr3v1AkQ41cs9qFoAlejUw/dVTynlDISylCuz8=;
+        b=WSgjKjkL8y/Lb9oBAk1H6xjszAeghhxycuv7lN8YmIo1rpRVwYi7KE+C1GHFYaILYV
+         CsHcVd+m8kcd8RCJ28gOh9fglcVlUg7a7XkfMd9pdMRUQGVebQb/9khY/JkFSWqKKoiO
+         mbKErNQ01bqK1lSdG1fkZFaTrDCzKu05bniNMckgKdY8gc1mmA3JkIvuKpYNBqSGJQw1
+         1grdAMbXd+BWOL3PYXyns2b/TxnSz3al7EzLFG42naOlfZHELgq7S7cHbM57VhW1h6kk
+         baMwIyrFJlAQabLcSk+G1hCnsl46/gvnef8FHbMhUNvFbBapmRlPSiGpz6KQJ2omAzAf
+         VjHA==
+X-Forwarded-Encrypted: i=1; AKwUvBxQQqYtG/YGFVUxR1YCmAaDUlBD3zuwscNJiO1/f2Jh3PkvTEpQ0YUQiVi46RVRMMBkonPA5wIaIg==@kvack.org
+X-Gm-Message-State: AFq9FYJbVS66IkAtEvCTmCl3OE00ToJZMNV560PI33y+/k+Zqoqe2jpY
+	pV8RtWVCifDqOFBDU/ei/0ccer4wC97071u725KiIO4W6a0Xx9S7OkMkLnQDIXcpAkf6AVBg26e
+	2M6v0dRxmKhYJWAr9AiMXk+XGrNSpvtKdJU/+xQT1ug==
+X-Gm-Gg: AYBFou2lxc7YUZ0IcD+1P9g5pzLovoSpNCzSSdweH9ucdNwIT1F9t7X2xIiw7QUZuys
+	MOoAdCyX73IkuGw2CylLp+mcQUp/xlqVfdqRkUrg7FjBk1hDQqP6+8P1cY+75YXZ6G7/GoJvDhg
+	MCVQDkkVADlMT6NtucKOA60YjQqUtgoUo0aPBUc6NKj5WAWPiRK1u+kIx+/mb4VSGA1LpK+OLjl
+	Ok/IhYNQtvDUGONsofeYMjKbTYPLER/EXX9cpC5emwqIpSMfaAQ5Tg7/1SPgLJvDOqv+wsTBKyY
+	VV9uLnHnc7VHghlx7WTuZQrF2+WhXV9+5LDCRIuerx5+VM+Mz1IjGuTEu0281TbjOgNBf1M/CSm
+	Wf7dpwW6cW0br197C45s9ithVWJW66w7ft/5Z8I8m7+QMKViXnTdKRL1KcwwwXBoYjJC+rQ==
+X-Received: by 2002:a05:6402:440b:b0:6ac:62c2:bd39 with SMTP id
+ 4fb4d7f45d1cf-6b442fe12famr6368009a12.10.1792977039532; Sun, 25 Oct 2026
+ 18:10:39 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-14-096800aa3330@kernel.org>
-X-Rspamd-Queue-Id: 87746160006
+References: <20261020144710.4154339-1-pasha.tatashin@soleen.com>
+ <20261020144710.4154339-2-pasha.tatashin@soleen.com> <atsMZW4ChOWj7Lqv@kernel.org>
+In-Reply-To: <atsMZW4ChOWj7Lqv@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sun, 25 Oct 2026 21:10:02 -0400
+X-Gm-Features: AclHuK-SGyJEu7JWPJQ5FgiFjB9NPuO2-XlJh__utMnCfsTc4KvmMW8PdPmX4kI
+Message-ID: <CA+CK2bD_=gwB-py6U3Y9pdc7RRoACeK9cqyHo65Q2ZKTyKaC2w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl to
+ freeze sessions early
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, vipinsh@google.com, 
+	linux-kernel@vger.kernel.org, dmatlack@google.com, kexec@lists.infradead.org, 
+	pratyush@kernel.org, graf@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: a3qf67tk1fxaua1i7citmmqsdwaof53s
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1792976582-482223
-X-HE-Meta: U2FsdGVkX19Qy2k/kH8QyXqrMbnotSdZxUjQK2gRsOQ7VZZ6+LALNeb7FonxEQtNmaLpQH1LgXgpKpf+tgQbvJyHq7XtVP/QPQqwgBorcF5nHbRDs3SkIzRcvdZirPqgGFSo7urTxJcYrTqFNT4CKDRUSLJvgSL8TZai8pozlLZhozPu3+bYk44NK29AI3vR7COQfHKKurfWeBXt6HTqchO7qWvR2HYjcFOgvE+qysSKqL25ioOL0KchsOeY3/0WNsbMBSDPILvK80jAnoBuzkodZIylFXywx39/ZbLgiDrJ+LAyGvxCDp+b+4jvZy6JQcjb6uLcttZNmesfeByJXJfEuxvcwMlAuf24DH+6EZyAf0JTm7ZtiOdoSvMOTO2f9O86Nvmt7Sb6XtdMDCSbRALVcfNwXyLsm3m8MKIo7CHN9UYI9vNZSEWOc8kwidCQmL+Ax3wGxV0j/PgHG3SVW4a4qtT4G6qUisFEzIOhPacCe2rfBfGCqmPt+N1UeMDQd4dy5tLEuGpVaiuk9zswLVLYJETHAV01O7K4B6t7pDxqLJvSvr4hPsA5hiCDwIm/K0SXGbs0PpfkWHSPkIM8cp44M5EyIFGDattkJXzkLy+VDWBB4kznHmmQBRSXl0IW15ngKqzF/ABOxU0btd2yx0b3qdA2qKacfXBpKu0PS3k7WPFgqE6Yre4jCbVyvgaSZG6t5RKRZuo2aOvjLS3gS7xizBrjaoVwndaOgqvILC78CkgdKybxmRqc/np4JlIuJ3qpbnD1GRRMCK6hC8zzEpKjov894e8muEg5Zy9AXBtDu3RvZHi7x9T5rL9FIb2pOQ2bpOvlPa0BRwLuVvdoD3pU+TYu3BsKyBu5lDsBPh0gaHsKYJpOL28qCSH3cSYDz0/vI+enuLJe/WHnhxvwCFLA6UtGtC0nkKRBDj+a+D5pep07XKnaU4h2daF7GVWHVuj8cfr/jrGCGXiAdEt
- Ypfga34u
- z6r0DHfBsRN5T+6nQaNeEuLtZ1i+pDCmXmI7gSp9wVgndZzVGGaKeBS9YuBH6npjKYzEaxEZ0dKobrmiVIk8FM6Cg8WFBrtEeRRs2UfnOYx93t8uPxqCRVTVnoq7e3t7/DPYrIK3/qd4QpZWrj02tVugIMPObXhaIm9ND4+oEu9os+76EI51PD3OvaUM8TH5zg6qbhiNtFu+2cFXUrBTrGER7IPE9Vwn17WmMf/KsqMYGMiHVNG2S3qfBlldQsQIW2oItzQSSkxdbMu7peZkIYYoX6VIKPmbuBeJKSz07ysFj3xtXEqn1HIVWDETAshZyJlJcplfwXSBcX/pOcmSQTdX/VEpc1zO23ytu/vJrHxIXcBKfWmhllPbfbw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7CBAF1C0005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: yymz4yyagqac51b1gg56167h6d3zg5yp
+X-HE-Tag: 1792977041-607163
+X-HE-Meta: U2FsdGVkX1/vGMlRBByjlCdlpNM3OV1tGiojESuHwJtwL/JOzItBMo749/T+UFVhUh/LSNFZndidE97nN7b5WE9GIFr+ZOdybcf3wjf/DVKNlSpGX5OwroF4eT07k7l6pf1REnWeXoAUJ9a3k8sR1unkeLIE2F0+21MP0mIunDoOA5EoXMyDth9jfpLqnq1QVkX2dfPvtWuSwxyHfs497wU9mbD+4pKCpkAIwylguZM+wuvPKUJZXxtQPttuaTjOVFgFK7kxMziceXX2DndCg+dK1F2BivdQv6Qj0+LNiyT6r7x07N061LNlS7wOd/DgGYOuajZJjqxwfswDj+HFFj/ElwH20oP9VlabzteKEV2IxNfxPEXhJnyCB720sUz5mh63uhMEdOwpcH93DtuZ/pB+9Udk7RVQcESsGaPetLtNFk41KnSKTG6K6Wnz2gSmBRtuGk2qr0F+sBK6cwpUMmooGA+Er3xix5u0D479NwyWFHCeIZ2jg7PED8Ixe5/UQ/LeUhysogGg5Jw6DBOuXu5+u2IpOuSa/ws84Lv1LzY019qERKcuWKmazmSz/XfsfH4s1c9RWavEjmiVlXTX2OfjqbcOEZha06q3glt7+eeQZHpCERz6zbEVUbbJPSCpF3gMIDPDMv6a8yAcHermfq/IT5S2NQRYz0mMRRMONGFTmKFxapfjs7BopLFhlUhBHWVeGOuZgA48au8OuLN5QP2e/sDoIufv5Fcr98IBUtZulESROKqsriXop7Z9iBd4nDxedCkkePtBHqLIJXChiC4yOip3dz8AQOvlm/7QlcPzDfZfVO1mqAj0ONAlVJASe9ka7u1/Iq7wxv/j31OsEDhKos4urgiGx7wE0n5ncVSPdd+rCjN5ZNv1Jduhxz36H8bhT45LLC+vF0J6WKEvmkRwwgeDOhjWuPCOJB9EwIWN+iAvvdzH5I7GJBuVUA5NjkPAiY7viCLOnskhOOS
+ vOV8mLDZ
+ ZibgBmA7MkShRLfvtO7xd9/wYiBLBB4pvVATabo0JrNY7Una9I2KsrQLzRjCTZUwXwUrjqQmbsKEko4MIkgDVFZ1op47hU6HuJdbrGT/FimzGETDPHPQeKzH9pimtpc0f0SlCxK8nrkDwRq68oh0u7aOXAuIlds5Pq/JiZKew6o21vRS4LgGjWdkuyGXTbfcgny2kT1TIm0o6LV1ngAazy62yKGJCo3SdUZfAdd6D4+vIzmY0feRw1szW//L1OlIhm5KPXAyrMjWSSt6cBIIBjrBAudC2Go1JWMSufNfYmRMX4BsVDF1PPACFItczWdZw7TRwF/hpU++QZNj1m6kLZ+MKqI1RDVmnkBNyUuebBzOJUn5IHQdmdx0p46bHitvi1rxGvdhv1T/k6J0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,82 +147,396 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Fri, Oct 23, 2026 at 3:27=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Tue, Oct 20, 2026 at 10:47:03AM -0400, Pasha Tatashin wrote:
+> > Currently, LUO sessions are frozen automatically only inside the
+> > reboot(LINUX_REBOOT_CMD_KEXEC) pathway, where luo_session_serialize()
+> > iterates through all outgoing sessions under global write locks and
+> > freezes them serially during shutdown. Allowing userspace to decide whe=
+n
+> > to freeze a session once it is done with it (and to freeze multiple
+> > sessions in parallel, since luo_session_freeze() only acquires the
+> > per-session mutex) avoids postponing this work to kexec shutdown and
+> > reduces blackout time.
+> >
+> > Introduce LIVEUPDATE_SESSION_FREEZE on session file descriptors to free=
+ze
+> > a session early. The ioctl runs .freeze() across all preserved files in=
+ the
+> > session and serializes their metadata. Once frozen, no additional files=
+ can
+> > be added to the session, and subsequent freeze calls return -EBUSY. Fre=
+eze
+> > is only valid on outgoing sessions and returns -EINVAL on incoming ones=
+.
+> >
+> > During kexec, sessions that were already frozen early are skipped, whil=
+e
+> > sessions that did not invoke this ioctl auto-freeze as before. If an
+> > early-frozen session is released before kexec, its files are rolled bac=
+k
+> > via .unfreeze() before being unpreserved.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  include/linux/liveupdate.h       |  3 +-
+> >  include/uapi/linux/liveupdate.h  | 25 ++++++++++
+> >  kernel/liveupdate/luo_file.c     | 73 +++++++++++++---------------
+> >  kernel/liveupdate/luo_internal.h |  9 ++--
+> >  kernel/liveupdate/luo_session.c  | 82 +++++++++++++++++++++++++-------
+> >  mm/memfd_luo.c                   |  5 +-
+> >  6 files changed, 134 insertions(+), 63 deletions(-)
+> >
+> > diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+> > index 6051abc0612c..851692571e13 100644
+> > --- a/include/linux/liveupdate.h
+> > +++ b/include/linux/liveupdate.h
+> > @@ -59,7 +59,8 @@ struct liveupdate_file_op_args {
+> >   *                compatible with the given file.
+> >   * @preserve:     Required. Performs state-saving for the file.
+> >   * @unpreserve:   Required. Cleans up any resources allocated by @pres=
+erve.
+> > - * @freeze:       Optional. Final actions just before kernel transitio=
+n.
+> > + * @freeze:       Optional. Prepares final state before kexec (via
+> > + *                LIVEUPDATE_SESSION_FREEZE or during reboot).
+> >   * @unfreeze:     Optional. Undo freeze operations.
+> >   * @retrieve:     Required. Restores the file in the new kernel.
+> >   * @can_finish:   Optional. Check if this FD can finish, i.e. all rest=
+oration
+> > diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveu=
+pdate.h
+> > index 4043d4038712..1644c502521e 100644
+> > --- a/include/uapi/linux/liveupdate.h
+> > +++ b/include/uapi/linux/liveupdate.h
+> > @@ -60,6 +60,7 @@ enum {
+> >       LIVEUPDATE_CMD_SESSION_RETRIEVE_FD =3D 0x41,
+> >       LIVEUPDATE_CMD_SESSION_FINISH =3D 0x42,
+> >       LIVEUPDATE_CMD_SESSION_GET_NAME =3D 0x43,
+> > +     LIVEUPDATE_CMD_SESSION_FREEZE =3D 0x44,
+> >  };
+> >
+> >  /**
+> > @@ -236,4 +237,28 @@ struct liveupdate_session_get_name {
+> >  #define LIVEUPDATE_SESSION_GET_NAME                                  \
+> >       _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_GET_NAME)
+> >
+> > +/**
+> > + * struct liveupdate_session_freeze - ioctl(LIVEUPDATE_SESSION_FREEZE)
+> > + * @size:     Input; sizeof(struct liveupdate_session_freeze)
+> > + * @reserved: Input; Must be zero. Reserved for future use.
+> > + *
+> > + * Freezes the session early from userspace before the reboot kexec ph=
+ase.
+> > + *
+> > + * When this ioctl is called, the kernel executes the .freeze() callba=
+ck on all
+> > + * preserved files in the session and serializes their metadata. Once =
+frozen,
+> > + * no further files can be preserved in the session.
+> > + *
+> > + * During the subsequent reboot kexec, this session is recognized as a=
+lready
+>
+> Nit: kexec reboot
 
-Hello,
+Ok
 
-kernel test robot noticed "sysfs:cannot_create_duplicate_filename" on:
+>
+> > + * frozen and is skipped from the late auto freeze.
+> > + *
+> > + * Return: 0 on success, negative error code on failure.
+> > + */
+> > +struct liveupdate_session_freeze {
+> > +     __u32           size;
+> > +     __u32           reserved;
+> > +};
+> > +
+> > +#define LIVEUPDATE_SESSION_FREEZE                                    \
+> > +     _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_FREEZE)
+> > +
+> >  #endif /* _UAPI_LIVEUPDATE_H */
+> > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.=
+c
+> > index a39992da504f..7f79890beb31 100644
+> > --- a/kernel/liveupdate/luo_file.c
+> > +++ b/kernel/liveupdate/luo_file.c
+> > @@ -31,9 +31,9 @@
+> >   *   - unpreserve(): Cleans up any resources allocated by .preserve(),=
+ called
+> >   *     if the preservation process is aborted before the reboot (i.e. =
+session is
+> >   *     closed).
+> > - *   - freeze(): A final pre-reboot opportunity to prepare the state f=
+or kexec.
+> > - *     We are already in reboot syscall, and therefore userspace canno=
+t mutate
+> > - *     the file anymore.
+> > + *   - freeze(): Prepares the final state for kexec. Invoked either ea=
+rly via
+>
+> Nit: I'd drop "early", it seems relevant only to the current change, but
+> will be more confusing than useful later.
 
-commit: 74db9d3510fc1c12bbe4e56d0f034a734dd69d2e ("[PATCH slab/for-next 14/14] mm/slab: do not set SLAB_MAY_ACCOUNT for all caches")
-url: https://github.com/intel-lab-lkp/linux/commits/Harry-Yoo-Meta/mm-slab-allow-passing-SLAB_MAY_ACCOUNT-to-kmem_cache_create/20261021-124642
-patch link: https://lore.kernel.org/all/20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-14-096800aa3330@kernel.org/
-patch subject: [PATCH slab/for-next 14/14] mm/slab: do not set SLAB_MAY_ACCOUNT for all caches
+Good point, will do.
 
-in testcase: trinity
-version: trinity-x86_64-d4c26f234-1_20261018
-with following parameters:
+>
+> > + *     the LIVEUPDATE_SESSION_FREEZE ioctl once userspace is done modi=
+fying
+> > + *     the session's files, or during the reboot() syscall.
+> >   *   - unfreeze(): Undoes the actions of .freeze(), called if the live=
+ update
+> >   *     is aborted after the freeze phase.
+> >   *   - retrieve(): Reconstructs the file in the new kernel from the pr=
+eserved
+> > @@ -48,7 +48,8 @@
+> >   *    handler, calls its .preserve() operation, and creates an interna=
+l &struct
+> >   *    luo_file to track the live state.
+> >   *
+> > - * 2. Freeze (Pre-Reboot): Just before the kexec, luo_file_freeze() is=
+ called.
+> > + * 2. Freeze (Pre-Reboot): Either explicitly via LIVEUPDATE_SESSION_FR=
+EEZE or
+> > + *    just before the kexec during reboot(), luo_file_freeze() is call=
+ed.
+> >   *    It iterates through all preserved files, calls their respective =
+.freeze()
+> >   *    operation, and serializes their final metadata (compatible strin=
+g, token,
+> >   *    and data handle) into a contiguous memory block for KHO.
+> > @@ -74,15 +75,16 @@
+> >   *
+> >   * 1. Abort Before Reboot: If the userspace agent aborts the live upda=
+te
+> >   *    process before calling reboot (e.g., by closing the session file
+> > - *    descriptor), the session's release handler calls
+> > - *    luo_file_unpreserve_files(). This invokes the .unpreserve() call=
+back on
+> > - *    all preserved files, ensuring all allocated resources are cleane=
+d up and
+> > - *    returning the system to a clean state.
+> > + *    descriptor), the session's release handler unfreezes the files i=
+f the
+> > + *    session was already frozen and calls luo_file_unpreserve_files()=
+. This
+> > + *    invokes the .unpreserve() callback on all preserved files, ensur=
+ing all
+> > + *    allocated resources are cleaned up and returning the system to a=
+ clean
+> > + *    state.
+> >   *
+> > - * 2. Freeze Failure: During the reboot() syscall, if any handler's .f=
+reeze()
+> > - *    op fails, the .unfreeze() op is invoked on all previously *succe=
+ssful*
+> > - *    freezes to roll back their state. The reboot() syscall then retu=
+rns an
+> > - *    error to userspace, canceling the live update.
+> > + * 2. Freeze Failure: During LIVEUPDATE_SESSION_FREEZE or the reboot()=
+ syscall,
+> > + *    if any handler's .freeze() op fails, the .unfreeze() op is invok=
+ed on all
+> > + *    previously *successful* freezes to roll back their state, and an=
+ error is
+> > + *    returned to userspace.
+>
+> I think we still want to say that freeze failure at reboot cancels live
+> update.
 
-	runtime: 600s
+OK
 
+>
+> >   *
+> >   * 3. Finish Failure: In the new kernel, if a handler's .finish() op f=
+ails,
+> >   *    the luo_file_finish() operation is aborted. LUO retains ownershi=
+p of
+> > @@ -440,12 +442,11 @@ static void __luo_file_unfreeze(struct luo_file_s=
+et *file_set,
+> >
+> >  /**
+> >   * luo_file_freeze - Freezes all preserved files and serializes their =
+metadata.
+> > - * @file_set:     The file_set whose files are to be frozen.
+> > - * @file_set_ser: Where to put the serialized file_set.
+> > + * @file_set: The file_set whose files are to be frozen.
+> >   *
+> > - * This function is called from the reboot() syscall path, just before=
+ the
+> > - * kernel transitions to the new image via kexec. Its purpose is to pe=
+rform the
+> > - * final preparation and serialization of all preserved files in the f=
+ile_set.
+> > + * This function is called from LIVEUPDATE_SESSION_FREEZE or from the =
+reboot()
+> > + * syscall path. Its purpose is to perform the preparation and seriali=
+zation of
+>
+> Nit:                                          ^ final?
 
-config: x86_64-kexec
-compiler: clang-22
-test machine: qemu-system-x86_64 -enable-kvm -cpu IvyBridge,enforce -smp 4 -m 16G
+OK
 
-(please refer to attached dmesg/kmsg for entire log/backtrace)
+>
+> > + * all preserved files in the file_set.
+> >   *
+> >   * It iterates through each preserved file in FIFO order (the order of
+> >   * preservation) and performs two main actions:
+> > @@ -457,22 +458,20 @@ static void __luo_file_unfreeze(struct luo_file_s=
+et *file_set,
+> >   *
+> >   * 2. Serializes Metadata: After a successful freeze, it copies the fi=
+nal file
+> >   *    metadata=E2=80=94the handler's compatible string, the user token=
+, and the final
+> > - *    private data handle=E2=80=94into the pre-allocated contiguous me=
+mory buffer
+> > - *    (file_set->files) that will be handed over to the next kernel vi=
+a KHO.
+> > + *    private data handle=E2=80=94into the pre-allocated serialization=
+ blocks
+> > + *    (file_set->block_set) that will be handed over to the next kerne=
+l via KHO.
+> >   *
+> >   * Error Handling (Rollback):
+> >   * This function is atomic. If any handler's .freeze() operation fails=
+, the
+> > - * entire live update is aborted. The __luo_file_unfreeze() helper is
+> > - * immediately called to invoke the .unfreeze() op on all files that w=
+ere
+> > - * successfully frozen before the point of failure, rolling them back =
+to a
+> > - * running state. The function then returns an error, causing the rebo=
+ot()
+> > - * syscall to fail.
+> > + * __luo_file_unfreeze() helper is immediately called to invoke the .u=
+nfreeze()
+> > + * op on all files that were successfully frozen before the point of f=
+ailure,
+> > + * rolling them back to an unfrozen state, and an error is returned to=
+ the
+> > + * caller.
+>
+> Don't you want to say that reboot is canceled here too?
 
+Sure
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <yi1.lai@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202610260827.e64ec9d3-lkp@intel.com
+>
+> >   *
+> > - * Context: Called only from the liveupdate_reboot() path.
+> > + * Context: Called from LIVEUPDATE_SESSION_FREEZE or the liveupdate_re=
+boot() path.
+> >   * Return: 0 on success, or a negative errno on failure.
+> >   */
+> > -int luo_file_freeze(struct luo_file_set *file_set,
+> > -                 struct luo_file_set_ser *file_set_ser)
+> > +int luo_file_freeze(struct luo_file_set *file_set)
+> >  {
+> >       struct luo_file *luo_file;
+> >       struct kho_block_set_it it;
+> > @@ -506,9 +505,6 @@ int luo_file_freeze(struct luo_file_set *file_set,
+> >               file_ser->token =3D luo_file->token;
+> >       }
+> >
+> > -     file_set_ser->count =3D file_set->count;
+> > -     file_set_ser->files =3D kho_block_set_head_pa(&file_set->block_se=
+t);
+> > -
+> >       return 0;
+> >
+> >  err_unfreeze:
+> > @@ -519,28 +515,25 @@ int luo_file_freeze(struct luo_file_set *file_set=
+,
+> >
+> >  /**
+> >   * luo_file_unfreeze - Unfreezes all files in a file_set and clear ser=
+ialization
+> > - * @file_set:     The file_set whose files are to be unfrozen.
+> > - * @file_set_ser: Serialized file_set.
+> > + * @file_set: The file_set whose files are to be unfrozen.
+> >   *
+> >   * This function rolls back the state of all files in a file_set after=
+ the
+> > - * freeze phase has begun but must be aborted. It is the counterpart t=
+o
+> > - * luo_file_freeze().
+> > + * freeze phase has begun. It is the counterpart to luo_file_freeze().
+> >   *
+> >   * It invokes the __luo_file_unfreeze() helper with a NULL argument, w=
+hich
+> > - * signals the helper to iterate through all files in the file_set and=
+ call
+> > - * their respective .unfreeze() handler callbacks.
+> > + * signals the helper to iterate through all files in the file_set, ca=
+ll their
+> > + * respective .unfreeze() handler callbacks, and clear the serialized =
+blocks.
+> >   *
+> >   * Context: This is called when the live update is aborted during
+> > - *          the reboot() syscall, after luo_file_freeze() has been cal=
+led.
+> > + *          the reboot() syscall, after luo_file_freeze() has been cal=
+led,
+> > + *          or when an early-frozen session is released before kexec.
+> >   */
+> > -void luo_file_unfreeze(struct luo_file_set *file_set,
+> > -                    struct luo_file_set_ser *file_set_ser)
+> > +void luo_file_unfreeze(struct luo_file_set *file_set)
+>
+> I went several time back and forth trying to understand why we remove
+> *file_set_ser here.
+>
+> Maybe add a preparation patch that does the renames and moves file_set_se=
+r
+> handling?
 
+Yes, this is a good suggestion. I will add another patch  to rename,
+and change the argument.
 
-[    2.984089][    T1] sched_clock: Marking stable (2784008153, 199498551)->(3129505678, -145998974)
-[    3.004962][    T1] registered taskstats version 1
-[    3.007428][    T1] Loading compiled-in X.509 certificates
-[    3.017205][    T1] sysfs: cannot create duplicate filename '/kernel/slab/:a-0000256'
-[    3.021027][    T1] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.3.0-rc1-00024-g74db9d3510fc #1 PREEMPTLAZY
-[    3.021034][    T1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[    3.021036][    T1] Call Trace:
-[    3.021055][    T1]  <TASK>
-[    3.021059][    T1]  dump_stack_lvl+0x43/0x70
-[    3.021066][    T1]  sysfs_warn_dup+0x5b/0x70
-[    3.021072][    T1]  sysfs_create_dir_ns+0xae/0x130
-[    3.021077][    T1]  kobject_add_internal+0xb2/0x230
-[    3.021081][    T1]  kobject_init_and_add+0x81/0xb0
-[    3.021088][    T1]  sysfs_slab_add+0x7d/0x1b0
-[    3.021092][    T1]  slab_late_init+0x79/0xb0
-[    3.021098][    T1]  ? __pfx_slab_late_init+0x10/0x10
-[    3.021101][    T1]  do_one_initcall+0xef/0x330
-[    3.021106][    T1]  ? __alloc_frozen_pages_noprof+0x145/0x2f0
-[    3.021111][    T1]  ? alloc_from_new_slab+0x1b2/0x270
-[    3.021115][    T1]  ? refill_objects+0x2cb/0x330
-[    3.021118][    T1]  ? irqentry_exit+0x89/0x5f0
-[    3.021124][    T1]  ? asm_sysvec_apic_timer_interrupt+0x1a/0x20
-[    3.021128][    T1]  ? __pfx_ignore_unknown_bootoption+0x10/0x10
-[    3.021135][    T1]  ? strlen+0x10/0x30
-[    3.021140][    T1]  ? parameq+0x17/0x70
-[    3.021146][    T1]  ? __pfx_ignore_unknown_bootoption+0x10/0x10
-[    3.021150][    T1]  ? parse_args+0x117/0x2b0
-[    3.021154][    T1]  do_initcall_level+0x7c/0xf0
-[    3.021159][    T1]  do_initcalls+0x59/0xb0
-[    3.021164][    T1]  kernel_init_freeable+0xd2/0x170
-[    3.021168][    T1]  ? __pfx_kernel_init+0x10/0x10
-[    3.021172][    T1]  kernel_init+0x1f/0x130
-[    3.021176][    T1]  ret_from_fork+0xe0/0x1f0
-[    3.021180][    T1]  ? __pfx_kernel_init+0x10/0x10
-[    3.021184][    T1]  ret_from_fork_asm+0x1a/0x30
-[    3.021188][    T1]  </TASK>
-[    3.021192][    T1] kobject: kobject_add_internal failed for :a-0000256 with -EEXIST, don't try to register things with the same name in the same directory.
+>
+> >  {
+> >       if (!file_set->count)
+> >               return;
+> >
+> >       __luo_file_unfreeze(file_set, NULL);
+> > -     memset(file_set_ser, 0, sizeof(*file_set_ser));
+> >  }
+> >
+> >  /**
+> > diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_i=
+nternal.h
+> > index dac6644bfb18..b3fc3dcf5f36 100644
+> > --- a/kernel/liveupdate/luo_internal.h
+> > +++ b/kernel/liveupdate/luo_internal.h
+> > @@ -64,6 +64,8 @@ struct luo_file_set {
+> >   *              previous kernel) sessions.
+> >   * @retrieved:  A boolean flag indicating whether this session has bee=
+n
+> >   *              retrieved by a consumer in the new kernel.
+> > + * @frozen:     A boolean flag indicating whether this session has bee=
+n
+> > + *              frozen early from userspace.
+>
+> s/early/explicitly
 
+OK
 
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20261026/202610260827.e64ec9d3-lkp@intel.com
-
-
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+>
+> >   * @file_set:   A set of files that belong to this session.
+> >   * @mutex:      protects fields in the luo_session.
+> >   */
+> > @@ -71,6 +73,7 @@ struct luo_session {
+> >       char name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> >       struct list_head list;
+> >       bool retrieved;
+> > +     bool frozen;
+> >       struct luo_file_set file_set;
+> >       struct mutex mutex;
+> >  };
+>
+> --
+> Sincerely yours,
+> Mike.
 
