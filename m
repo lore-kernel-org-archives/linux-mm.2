@@ -1,86 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AA1606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 03:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B828606A326
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 03:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=gwev9kVW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m1cg3drI
 Received: by kanga.kvack.org (Postfix)
-	id A3A2F6B05B0; Sun, 25 Oct 2026 23:27:29 -0400 (EDT)
+	id AD17D6B05B0; Sun, 25 Oct 2026 23:46:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EB186B05B1; Sun, 25 Oct 2026 23:27:29 -0400 (EDT)
+	id A82AF6B05B1; Sun, 25 Oct 2026 23:46:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9009F6B05B2; Sun, 25 Oct 2026 23:27:29 -0400 (EDT)
+	id 99BFB6B05B2; Sun, 25 Oct 2026 23:46:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 619A06B05B0
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 23:27:29 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AB576B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 23:46:24 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F06F240493
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 03:27:28 +0000 (UTC)
-X-FDA: 85363342176.09.F9193FB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1DFC640004
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 03:27:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gwev9kVW;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08C5CC0627
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 03:46:24 +0000 (UTC)
+X-FDA: 85363389888.09.D81B89E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 450D940005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 03:46:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m1cg3drI;
+	spf=pass (imf07.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792985247;
+	s=arc-20220608; t=1792986382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=bV85UXCiRvQ6l70rB3jL6zdHTDrBWR6UmB7GcO73pNU=;
-	b=RN//yt8nZTwHy2AsHft/CFsf/zQrwuGUIGilnJ9fsgr+ZZ0wpUr2TZP1hTbPyv5OUZxuip
-	Xm4nDSrbnY73K81p+F4Yutt9Lm5/Mz2XQ95fzTBPVKLE02pU2iALkC4xNa63yjYExSddQ6
-	65A5gpzLFc67/RJUXFF+y1XFaGhhAek=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=8PA9GkfQf2cFoS0ayw2916W2lJqjiT1U9quZNhALY7M=;
+	b=y4waqIVnGm8WPFGZtoqVDiSodAiZbEhQ1WTNY9CaH9ZxLaMCMvl27jZWy7vIEVunTGEMRU
+	Jxpba7q0tdoB72NeljYYlOR1092qYczpzS/MuL1jdQzpEwW3XDgWiB2erXUdrE2M7/g7oA
+	kQXfSJ8yGWp+blbY/kHiXFn8wV7g27g=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gwev9kVW;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m1cg3drI;
+	spf=pass (imf07.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792985247;
-	b=GzD6S/3080AqRqMYrqFrNT2QKzv7jJtg2rxEA6rO4Xo0FulKH+ZIc89spp7Zojvhpwjs3S
-	eWlZdVlemeezKF1iMIPkytal8GH/1NhNhAQkAZiJzinCUHaMTFv4drsGMEGRkfvCbIhQfT
-	MB1eTlWWTxEJIkVZwfQWoxBJ4viRy3U=
+	t=1792986382;
+	b=lMqxJSX6q6dehFfxAy0jxjpSa7OReiWe3d6i+Cxrtz3vkYM2xDvevWOphTjG2W3/VT6xhc
+	bGhBb+Li6n37lQE7IXbU9b0K3d7HRxpAdh4SFaCvZFpNm3OTsA0L4UC5ac7VGgqLvVIc9r
+	oXWyTCcBNJVFyW79MnWds6286B2Skrs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E1C2743C0F;
-	Mon, 26 Oct 2026 03:27:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67251F01825;
-	Mon, 26 Oct 2026 03:27:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1792985245;
-	bh=bV85UXCiRvQ6l70rB3jL6zdHTDrBWR6UmB7GcO73pNU=;
-	h=Date:From:To:Cc:Subject;
-	b=gwev9kVWkU3ConPWM3WLsSAhFY5vUTev7Yo57hj/Xi53fgAExvir2J2nczPGlWtnd
-	 tIMh2pn9jdXVZGrff2TalnobvUfKBsXkxjNRvw/Fbmw/ex5beBSmS9PiuXZFf+coag
-	 37lcGWb24ksGrwvAPDL+C4S5zdPDfaXQuxLAvkOE=
-Date: Sun, 25 Oct 2026 20:27:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] non-MM updates for 7.4-rc1
-Message-Id: <20261025202725.34c617497b6d9a2be352cf4f@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1DFC640004
-X-Stat-Signature: gzh96br4chjukhkt1boh9rngpjmanyph
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	by tor.source.kernel.org (Postfix) with ESMTP id 96D58600CB;
+	Mon, 26 Oct 2026 03:46:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D72A1F01825;
+	Mon, 26 Oct 2026 03:46:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792986381;
+	bh=8PA9GkfQf2cFoS0ayw2916W2lJqjiT1U9quZNhALY7M=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=m1cg3drIxo1khfwcePEIMT5l54AnUfXw6BRWhRgw1NG5ndhvC/r5UpDepyry8rOta
+	 R+pUN+PZhVp2p2JnPF6Yqa2LQi0EppKeoOAdk36FWrUHiYD7qgwfFxy4dMzRwTe30x
+	 QDO5Y+oqDMuQAL6JKCHkOL/TSxQ7MIRq2uxSQ/PXXMz+xSpDegkYvlBcdZ8VD7MoW8
+	 ErRwqUfdp6LUuSktyi2VzqBIH/ipDlNLYxhrdeMqecBImbdqeUCwrY9g2s171zVsCF
+	 xUR4XAZmJ/vD6duPwS96tL67qTrhGB8FPGiUGxixrzQH8ozdC5yw9/0vrd2zKMP00J
+	 p9P/duBXu+KXQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4463439EA761;
+	Mon, 26 Oct 2026 03:46:21 +0000 (UTC)
+Subject: Re: [GIT PULL] kexec: updates for 7.4-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20261024112155.3384616-1-rppt@kernel.org>
+References: <20261024112155.3384616-1-rppt@kernel.org>
+X-PR-Tracked-List-Id: <kexec.lists.infradead.org>
+X-PR-Tracked-Message-Id: <20261024112155.3384616-1-rppt@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/kexec-v7.4-rc1
+X-PR-Tracked-Commit-Id: 833d2b79ed9520e77c5d83eb11644e5239b2c5bb
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: b3593aba315322d875f295eef8b1a19e24658ba6
+Message-Id: <179298637979.2442679.15289838186801073122.pr-tracker-bot@kernel.org>
+Date: Mon, 26 Oct 2026 03:46:19 +0000
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 450D940005
+X-Stat-Signature: dzrcd81cg1179eae8phgjc4z85uio7ny
 X-Rspam-User: 
-X-HE-Tag: 1792985246-692672
-X-HE-Meta: U2FsdGVkX19B7gTHSe9wu2b8GxSstU6kbYVIyqMyrf55Z1vFHcIKEBzSOXKL4w2YoyKexqfDy8aNo6JUtHebj4W2DMtVVY8I1z33K0pr/QMPc4zSYdGWfN+wD4rcwbik4tEFzcYkSPI4IdltykDhp5AJXFMMknn6iD/FPqmI8DLXFoRBaGl3lhlXYKsDsaeUHNbuWQB2XIvxyoH/V5uu2clo1eOAfxVNFSf5UgThJ0GiuV+l5h/5lrdPYxO2efoP1oPY1+g5/2UXHhXghquDT0YvVjVwtRaObuU97k72tRssvK68HJUgM1XbjGdXxpMlRQZmb/b1J6scr4ASujTf+XTQYA8CqsFiiORTsAEDDMPScPZB/Gzcu1kVDpIbdyhEDaPMCh3BHQ68y7XCLvyaiKgCMMdOI2VG6KX2hOwG3QOEtjtHjgtEchFh+Os0JVYHfhZSUkbwXtcV2FUMD+il0tKGj8gcpiydEpRKL8vketm+admlKKGztdVOQmvptlj40ZJ0cHX+uqCbpLz8VIDv/mkLC4Zy5CsdZAaIOFFm87H9IFS/sxaw27mn77vXMZYLOE/Cj2UAV1fUTb7JYN4LtKS7ioIWCV5G9tDbu484DaSIDM+Im/FrEeWCfV2dukYWrrMRAfxBnaWS25kyEbZkUDcx3Mke7O6zXp/qFunmLzJp0XGs5Vayz5H5ndobbCJBO4BrroXmGU7oKomwvREEcQZycAgU2gtUMebA+6c27Hb4yvUO725q2g575oiWtueSmDEcyCUmnUw6pGFAOCPsLc4QTB1eHcJyl60xn4Vbs/JSvEjsqi/nhHrjS3jms9Y9KaoDMQxaN6wl2iHNLws6k5Q6kcu+225Ei+41Iu/Is0S9wAZ8r/tXRfmuk76/MgUxDsmSgVXypZbTnVOCR1ovlTg5qJWRrKg31UayJZMSJD+S0ReJ7U8b1OauXhjGUPqLUFAn1Rm/w47jqH6vHpY
- rXFSPzQI
- sF02jaUQTEn4JKLqDznEmu0koECqbTB2+pxv8egvcHJvhRdUFkb4kTXE/QVcpPxJscwOJEO6bTk50qFjdZERz3nxEg/DxB5+/EfmeX+kpKEAnYDQKvb1AyIfTEYUFLdLjlb26XJAa7IpL1LaZM/HoWZd199LPZ3lCBeBIQ6r4S+/xD5xK2cUi9lBUsck7GGZhIF7IdeWxBoGc2TpPPKcoietBnwCDTcuREZo1i0Pyh9KR3Y+PhA05ASRX4aBVy+vY5pXoTE1aTagwpwW2YJJpn1tWnZTMC5I2WjgWt2tKjvpvVWBigzcbx9VwGZmJ/83QTCeTK16BC5F7q37Ddztsv6PoIs2MkqC9UFeybEGNLKqNBolg1GkauYg2ELxMUYCluwSLgyIg7Z/9NyP1OmJlgmmPpW4CxuAToVtX
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1792986382-412578
+X-HE-Meta: U2FsdGVkX18tszDwBqYTqvVhzibzHV7M3LbxpL2y7hFuEgmd0JonvNiJkTlBXyxd7c5wLcLg+gDYSHXRB22lxY/o300IqJlUKStdO0YJYiQcmT7aFL8H+fE1jsWn38bK6S248EUGMFWQkP7t1nZDwlOo0Dj4TQjPsi6I1ix65jgNryjNQVFHmXH2n94nX0eF0eheC0HVXL8D9nkrVSnbYnj2xxuoFN3aqvIrEwpR+iNXvBavksI8XetYlxjV8wqqYJhSVhuKFfd+2xCa7eU+A9euECwy9TGlBCjYOBXS5ppaG4TUpXBUAUa2NPHsT8X0BurQQsWZIBnJ/DOOdnQUwiIyH6f0LyHPs7kI5VSLG5UiIl1EQBQPCVtvapdgVIE+WisrpFeGkfuF1nJVUj64qNd3WG8+KpF/QHh0kD7KzqS4IyMXwG5ng8h/Bvhlak+X5x1IDGXtjXvJQOk5T4wHQAPy/ygM+KV/RBVs+xvAFT/eW7m3wnPJ/0WGtK/D/HTvg8h5b+SFJjMcv84QU9NHJI2PUtEpuxZ4ezUqACiBvfHfjMLFlwqmtnem8zVZs+hKOaDWF8xRyqN3JyXnOz85BigVWW5RGFGlGTJyG/MTjwb6t5VbHyZoFAgP4afIok4EEeWRj2izgPvH45TrHLgIY8ltFNvez1++j/cEZRkh2KEqfmtzYNU3+79k28EpEoweEJ+/4a18siVGhSIiRTARloOjDvY9RgGPL4PZ682MtXa02pS9vnSwHT7t8DWtaUntjrsnlGtdnYmOgnNbCEdVQr1VPZomvax4xbB+CnH6RQS/26GHLa/MfgVVlEMh3G3Tm8uQja4cmX/uERxQLltjeWr0H7Ap3aqAESQQR+WdfNbtSwiQxENzFOTW+QPIvmg+qfCD+0KRv9OGveBgdPaDwHx1FuIg36HDj/s/qTyIA3MCGQ3cGAmrbaSFtUebfiPSD48gIMbCFyauduusx3q
+ IiHTekYS
+ moAFG7EQu1u5RQtxo3j2tLmNVGiHlzYLn7ovHxeC6Q7/TT9N1zojIRdqOo+QkP7fADm/HiUrpu6YKa3YD+6kpSV5MU29noYzjnCnaxPZ4b+hy0/0XwcRtgRaJ9Is/qFEaSTQwpblzvQmZkpX7H9PjDhIEa9k1Hf1qOc4p5mcjVh7zLkG9U1amakR4smhC+4f9T+zkO09gEa/G3ZX6QQP8fLQuKALHcCqqG5WVdNZxNsp8Rm/lK7SN9QGrayHQh64ATpoNkkDacGZyI46QjBSffpqFkl3Q/AH+XYqyagNHzO/XU62L7f9GBk0NdBF0UOI1BanSIMPrNhzmg3R+saVZNWCdlGlv5CWkTkYW5r+hz/zCZb1lFa6RaB3xxTavxTQeJv6yQJAMIhctpMDJ1Te5qzqjM+jPpDKcXqR0jaBroHlF2AgBnCdt2NvqAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,550 +97,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+The pull request you sent on Sat, 24 Oct 2026 14:21:54 +0300:
 
-Linus, please merge mm.git's other-than-MM material for this
-development cycle.
+> https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/kexec-v7.4-rc1
 
-I'm seeing a single conflict with current mainline, in
-arch/s390/kernel/traps.c.  The linux-next resolution is at
-https://lore.kernel.org/as93Q-hDP5cW6gaj@sirena.org.uk
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/b3593aba315322d875f295eef8b1a19e24658ba6
 
-Thanks.
+Thank you!
 
-
-The following changes since commit ff47652a4b66c067c765a7ad464d930b5a9367cc:
-
-  Merge tag 'cifs-fixes-7.3-rc6' of https://git.manguebit.org/linux (2026-10-02 14:04:11 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2026-10-25-14-57
-
-for you to fetch changes up to b6232ca8d194c60ee603586e42b5ea584d4b7be9:
-
-  scripts/gdb: fix stack depot out-of-bounds diagnostic (2026-10-24 00:46:53 -0700)
-
-----------------------------------------------------------------
-mm.git review status for linus..mm-nonmm-stable
-
-Total patches:       134
-Fixes: tags:         86
-cc:stable patches:   52
-Reviews/patch:       0.73
-Reviewed rate:       59%
-
-Summary of patch series in this merge:
-
-- "ocfs2: exit recovery thread on mount error path" (Joseph Qi):
-
-  Stop OCFS2 recovery before freeing failed-mount state and replay slots,
-  closing use-after-free and double-free races.  Defer suballocator reclaim
-  to break a transaction-lock deadlock with dismount.
-
-- "ocfs2: validate suballoc slot and bit of metadata blocks" (Joseph Qi):
-
-  Validate OCFS2 metadata suballocator slots, bits and directory index
-  block locations.  Reject corrupt metadata with filesystem errors instead
-  of BUGs or out-of-bounds accesses.
-
-- "ocfs2: deal with legacy signed name hash values" (Joseph Qi):
-
-  Restore OCFS2 lookups for non-ASCII names stored with legacy signed
-  hashes.  Use stored xattr hashes during bucket splits to avoid duplicate
-  entries and spurious ENOSPC failures.
-
-- "ocfs2: stabilize dentry names in file and setattr traces" (Cen Zhang):
-
-  Snapshot OCFS2 names during file and setattr tracing to prevent rename
-  races using freed storage or mismatched names and lengths.  Preserve
-  trace formats and the locked release open-count sample.
-
-- "panic: fix panic_force_cpu= redirect races and NMI bypass"
-  (Bradley Morgan):
-
-  Fix panic_force_cpu races and NMI redirection so crash-kernel CPU
-  selection is honored.  Preserve variable arguments on failed redirects
-  and use a static message buffer.
-
-- "fat: allocate multiple clusters in fallocate"
-  (Matheus Alves de Almeida):
-
-  Allocate FAT clusters in batches for FALLOC_FL_KEEP_SIZE and batch FAT
-  updates.  This removes repeated single-cluster allocation overhead,
-  particularly on synchronous mounts.
-
-- "scripts/gdb: fix radix tree lookup and stack depot diagnostic"
-  (Ting-Han Hou):
-
-  Fix GDB radix-tree lookup and its handling of XArray sibling, retry and
-  zero entries.  Also repair the stack-depot diagnostic for an out-of-range
-  pool index.
-
-- "hung_task: Improve warning budget handling and task reporting"
-  (Aaron Tomlin):
-
-  Reset the hung-task warning budget after recovery so later hangs remain
-  visible.  Keep the configured limit intact and emit one summary per scan
-  when detailed reports exhaust the budget.
-
-- "bootconfig: Reject unexpected data after null character and cleanups"
-  (Masami Hiramatsu (Google)):
-
-  Reject bootconfig data after an embedded null while accepting trailing
-  padding.  Validate the full input in the userspace tool, and retain
-  internal tree sanity checks there rather than in the kernel.
-
-- "kbuild: GCOV cleanups following the prefer-atomic fix"
-  (Konstantin Khorenko):
-
-  Use the actual GCOV build flags in the prefer-atomic compiler probe.
-  Move flag setup into scripts/Makefile.gcov and skip the probe when GCOV
-  is disabled.
-
-- "ocfs2: xattr bucket validation fixes" (Joseph Qi):
-
-  Accept valid OCFS2 xattr buckets spanning 512-byte blocks, avoiding false
-  read-only remounts.  Reject misaligned buckets and return errors instead
-  of panicking on corrupt defrag metadata.
-
-- "ocfs2: fix metadata reservation for xattr value trees" (Joseph Qi):
-
-  Reserve enough OCFS2 metadata for new and relocated xattr value trees.
-  Fix shortfalls which could cause ENOSPC, dropped entries and leaked
-  clusters on fragmented filesystems; remove duplicate reservations.
-
-- "Introduce arch_do_panic" (Mete Durlu):
-
-  Add arch_do_panic() and move s390 and sparc handling out of generic panic
-  code.  The architecture-specific actions now follow the end-of-panic
-  marker.
-
-- "checkpatch: userspace improvements" (Petr Vorel):
-
-  Improve checkpatch's userspace detection and suppress kernel-only checks.
-  Recognize standard inttypes macros and add explicit --userspace and
-  --no-userspace overrides.
-
-- "ocfs2: validate dr_fs_generation of dir index root blocks" (Joseph Qi):
-
-  Check OCFS2 directory index generations and leaf block numbers.  Reject
-  stale or misplaced blocks instead of using metadata left by a previously
-  formatted filesystem.
-
-- "selftests/membarrier: Skip an unregistered memory barrier test on Musl"
-  (Chris Gellermann):
-
-  Skip the unregistered membarrier test when libc has already registered
-  the command.  Musl does this during thread creation, causing false
-  failures in the multithreaded test.
-
-- "init: fix array boundary bugs in boot parameter parsing"
-  (Wilson Felipe Pereira):
-
-  Fix boot argument boundary cases which leave stale arguments in init's
-  command line or panic when replacing the final environment variable.
-  Clear the last slot and check duplicates before the limit.
-
-Summary of the 87 singletons in this merge:
-
-The OCFS2 singletons fix deadlocks between xattr updates and inline
-truncation, and during inode reclaim. Corrupt quota and extent metadata
-could also crash the kernel or corrupt memory; these paths now check the
-layout before using it. Other fixes close use-after-free and publication
-races around cluster reconfiguration, node failure, quota remount errors
-and shared refcount trees. New files now retain security labels from all
-stacked LSMs instead of silently dropping all but one. Valid xattr
-insertions also stop tripping FORTIFY on builds with counted arrays.
-
-Elsewhere, a lost wakeup could leave hardware-monitoring reads stuck in
-unkillable sleep and block further I2C traffic. That is fixed, as are
-kernel memory leaks in POSIX message-queue notifications and tmpfs
-casefold setup which could grow until memory is exhausted. A driver
-removal race which could crash the kernel is fixed too. The hibernation
-command through reboot() also stops taking the same mutex twice,
-avoiding a deadlock before suspension.
-
-On the boot side, bzip2 decoding now accepts valid full blocks emitted
-by lbzip2, fixing failures to boot those compressed kernels. Malformed
-bzip2 streams can no longer overflow the decode buffer, and LZ4 initrds
-are checked before the decoder can read past their end. FAT rejects
-geometry which overflows the data-area calculation on 32-bit systems,
-and rolls back entries when inode setup fails, preventing failed
-creations from reappearing after remount. The x86 XOR and RAID6 AVX
-paths also avoid imposing a slowdown on subsequent SSE code.
-
-----------------------------------------------------------------
-Aamir Ahmed (1):
-      lib: decompress_bunzip2: fix integer overflow in run-length decoding
-
-Aaron Tomlin (2):
-      hung_task: reset warning budget when problem gets resolved
-      hung_task: log summary line when warning budget is exhausted
-
-Adam Harshbarger (1):
-      lib/plist: fix plist_requeue() corrupting order in the last bucket
-
-Ali Ahmet Memiş (1):
-      mailmap: update email address for Ali Ahmet Memiş
-
-Andrei Vagin (1):
-      proc: report SIGEV_NONE in /proc/pid/timers if target task has died
-
-Andrew Jones (1):
-      mailmap: add entries for Andrew Jones
-
-Andrey Golovko (1):
-      mailmap: update email address for Andrey Golovko
-
-Andy Shevchenko (2):
-      resource: replace open coded resource_overlaps()
-      CREDITS: fix the ordering and other issues
-
-Armaan Sandhu (1):
-      lib/cmdline: fix get_options() count and overflow with large ranges
-
-Avi Weiss (1):
-      profiling: fix sampling step on 64-bit big-endian systems
-
-Bradley Morgan (10):
-      mailmap: update email address for Bradley Morgan
-      taskstats: fold the two pid/tgid handlers into one
-      taskstats: drop the unused CPU_DONT_CARE enum member
-      panic: fix redirect CPU race in panic_try_force_cpu()
-      panic: flatten nmi_panic control flow
-      panic: fix va_list reuse in panic_try_force_cpu()
-      panic: restore variable arguments to nmi_panic()
-      panic: allow force_cpu redirect from an NMI
-      panic: kill the "buffer unavailable" redirect fallback
-      watchdog/perf: one digit too short in the raw event config copy
-
-Caleb Kan (1):
-      stackdepot: stop preallocating after the final pool
-
-Cen Zhang (13):
-      ocfs2/heartbeat: unlink live slots when their node is missing
-      ocfs2: initialize status waiters before publishing them
-      ocfs2: publish the filecheck owner before adding sysfs attributes
-      ocfs2/dlm: hold a lock reference across grant AST enqueue
-      ocfs2: cancel quota sync work before freeing quota info
-      ocfs2: pin refcount trees before dropping the lookup lock
-      ocfs2/cluster: initialize heartbeat regions before publishing them
-      ocfs2: pin owning modules for open debugfs files
-      ocfs2: drain quorum work before removing the cluster
-      ocfs2/dlm: drain join handlers before releasing module text
-      ocfs2: snapshot dentry names in file and setattr traces
-      ocfs2: snapshot the dentry name while tracing file release
-      ocfs2/cluster: remove zero-address nodes from IP tree on teardown
-
-Chris Gellermann (2):
-      selftests/membarrier: introduce helper to get membarrier command registrations
-      selftests/membarrier: skip unpermitted membarrier command test if preregistered by libc
-
-DAI RENJIE (1):
-      resource: fix lost wakeup when waiting for a muxed region
-
-Daehyeon Ko (1):
-      ipc/mqueue: release notification resources during inode eviction
-
-Danish Khateeb (1):
-      kselftest/filelock: plan for the five ofdlocks tests
-
-Edward Adam Davis (1):
-      kernel/reboot: avoid potential deadlocks during suspension
-
-Eric Biggers (3):
-      xor: add missing vzeroupper to AVX code
-      raid6: add missing vzeroupper to AVX2 code
-      raid6: add missing vzeroupper to AVX-512 code
-
-Fang Xieyan (1):
-      kcov: ignore an out-of-range comparison count in write_comp_data()
-
-Feng Tang (1):
-      panic: remove the unneeded panic_print_get()
-
-Florian Schmaus (1):
-      selftests/epoll: fix race condition in multi-waiter wakeup tests
-
-Frank Li (1):
-      rapidio: use dmaengine_get_dma_device() instead of chan->device->dev
-
-Geert Uytterhoeven (1):
-      raid/kunit: enable RAID6 PQ and XOR benchmarks if KUNIT_ALL_TESTS=m
-
-Giorgi Kobakhia (1):
-      ocfs2: fix array out of bound access in __ocfs2_find_path()
-
-Guixin Liu (1):
-      checkpatch: don't flag ACQUIRE_ERR() assignments in if conditions
-
-Hemanth Selam (1):
-      scripts/spelling.txt: keep British spelling for "initalise"
-
-Hengyu Liang (1):
-      fat: calculate data area start without overflow
-
-Hrushiraj Gandhi (1):
-      gcov: use strscpy() instead of strcpy() in init_node()
-
-Hungyu Lin (1):
-      compat: avoid double rounding in times()
-
-Ivy Lopez (1):
-      lib: decompress_unxz: make it obvious that there is no memory leak
-
-James Kim (1):
-      rapidio: mport_cdev: fix use-after-free in mport_mm_close()
-
-Jiaming Zhang (1):
-      ocfs2: fix chunk number of the first chunk in a local quota file
-
-Jose A. Perez de Azpillaga (1):
-      percpu_counter: annotate lockless read in _limited_add()
-
-Joseph Qi (24):
-      ocfs2: fix deadlock in inline-data truncate transactions
-      ocfs2: exit recovery thread on mount error path
-      ocfs2: free replay slots in ocfs2_recovery_exit()
-      ocfs2: defer suballocator block group reclaim to workqueue
-      ocfs2: restrict OCFS2_INVALID_SLOT suballoc slot to system inodes
-      ocfs2: validate suballoc bit during inode read
-      ocfs2: validate suballoc slot and bit of xattr and dir index blocks
-      ocfs2: validate suballoc slot and bit of extent and refcount blocks
-      ocfs2: allow xattr bucket entries to span multiple blocks
-      ocfs2: reject inconsistent xattr bucket during defrag
-      ocfs2: skip uninitialized lockres in ocfs2_mark_lockres_freeing()
-      ocfs2: validate dr_fs_generation of dir index root blocks
-      ocfs2: validate dl_blkno and dl_fs_generation of dir index leaf blocks
-      ocfs2: retain all security xattrs during inode creation
-      ocfs2: restore -ERANGE check in ocfs2_xattr_tree_list_index_block()
-      ocfs2: fix possible deadlock between nfs_sync_rwlock and fs_reclaim
-      ocfs2: reserve metadata for a new xattr block and its value tree
-      ocfs2: reserve value tree metadata when moving an xattr into the inode
-      ocfs2: reserve xattr value tree metadata only once
-      ocfs2: deal with legacy signed dir index name hash values
-      ocfs2: use the stored hash when checking xattr bucket collision
-      ocfs2: deal with legacy signed xattr name hash values
-      ocfs2/dlm: hold the lookup reference across convert AST enqueue
-      ocfs2: validate the xattr tree root of an indexed xattr block
-
-Julian Braha (2):
-      lib: cleanup "fake" tristates in Kconfig
-      arch/Kconfig: fix dead conditions by removing dead options
-
-Karl Mehltretter (5):
-      klist: avoid accesses after waking klist_remove()
-      fork: honor task_struct's declared alignment
-      ocfs2/cluster: hold a reference on the heartbeat thread
-      resource, kunit: stop selecting GET_FREE_REGION
-      kcov: report spurious PCs in the interrupt selftest
-
-Kazuki Hanai (1):
-      tmpfs: fix unicode_map leaks in casefold option handling
-
-Konstantin Khorenko (3):
-      selftests/core: fix unshare_test with large fs.nr_open
-      kbuild: use $(CFLAGS_GCOV) in the prefer-atomic try-run test
-      kbuild: move GCOV flags to scripts/Makefile.gcov
-
-Markus Mayer (1):
-      MAINTAINERS: update Markus's e-mail address
-
-Masami Hiramatsu (Google) (2):
-      bootconfig: reject unexpected data after null character
-      bootconfig: skip internal tree sanity checks in kernel
-
-Matheus Alves de Almeida (3):
-      fat: remove cluster allocation size limit
-      fat: support adding multiple clusters
-      fat: allocate multiple clusters in fallocate
-
-Matt Turner (1):
-      lib/decompress_bunzip2: fix off-by-one in run-length bounds check
-
-Matthias Goergens (1):
-      kdev_t: shift in dev_t in MKDEV()
-
-Mete Durlu (3):
-      panic: introduce arch_do_panic
-      s390: implement arch_do_panic
-      sparc: implement arch_do_panic
-
-Michael Liang (1):
-      fault-inject: fix dentry leak
-
-Nguyen Ngoc Thang (1):
-      ocfs2: validate chunk and block counts of the local quota file
-
-Nick Desaulniers (1):
-      scripts/checkstack.pl: support llvm-objdump disassembly for x86
-
-OGAWA Hirofumi (1):
-      fat: fix fat_ent_write() for reverting the value
-
-Petr Vorel (5):
-      checkpatch: skip CamelCase cache for --no-tree without root
-      checkpatch: add more userspace directories to is_userspace()
-      checkpatch: ignore <inttypes.h> format macros for userspace tools
-      checkpatch: add --userspace to force userspace rules
-      checkpatch: skip kernel specific checks for userspace
-
-Sang-Heon Jeon (2):
-      bootconfig: remove redundant assignment in xbc_parse_array()
-      init/main.c: remove unreachable check in obsolete_checksetup()
-
-Sasha Levin (1):
-      selftests/proc: proc-pid-vm: fix unused variable warning on non-x86
-
-Su Yue (1):
-      ocfs2: update xattr count before moving bucket entries
-
-Thomas Maarseveen (1):
-      lib/tests: add KUnit tests for errseq
-
-Thorsten Blum (3):
-      init: fix early boot crash with bare hostname parameter
-      init: simplify early_hostname()
-      lib: kstrtox: use isdigit() in _parse_integer_limit()
-
-Ting-Han Hou (2):
-      scripts/gdb: fix radix tree lookup pointer handling
-      scripts/gdb: fix stack depot out-of-bounds diagnostic
-
-Tzung-Bi Shih (1):
-      watchdog: force console verbose when reporting lockups
-
-Wilson Felipe Pereira (2):
-      init/main: fix off-by-one in argv_init cleanup
-      init/main: fix false-positive kernel panic on environment variable overwrite
-
-Yuntao Wang (1):
-      init: simplify initramfs.o build rule
-
-Zhan Xusheng (1):
-      minmax.h: update the stale 'x' versus 'ux' comment
-
-ZhengYuan Huang (1):
-      ocfs2: reject inconsistent local xattr entries
-
-Zhiling Zou (1):
-      lib: validate in-memory LZ4 chunk length
-
-Zi Yan (1):
-      USB: gadgetfs: do not WARN about excessively large memory allocations
-
-zhoumin (1):
-      fat: roll back the new entry when create/mkdir fails to build the inode
-
- .mailmap                                           |   9 +
- CREDITS                                            | 181 ++++----
- Documentation/admin-guide/sysctl/kernel.rst        |   5 +-
- MAINTAINERS                                        |  10 +-
- Makefile                                           |  22 +-
- arch/Kconfig                                       |   8 -
- arch/s390/kernel/traps.c                           |   7 +
- arch/sparc/kernel/setup.c                          |   9 +
- drivers/infiniband/hw/hfi1/fault.c                 |   1 -
- drivers/rapidio/devices/rio_mport_cdev.c           |   9 +-
- drivers/usb/gadget/legacy/inode.c                  |   4 +-
- drivers/watchdog/hpwdt.c                           |   2 +-
- fs/fat/fat.h                                       |   5 +-
- fs/fat/fatent.c                                    |  83 +++-
- fs/fat/file.c                                      |  13 +-
- fs/fat/inode.c                                     |  31 +-
- fs/fat/misc.c                                      |   7 +-
- fs/fat/namei_msdos.c                               |  22 +-
- fs/fat/namei_vfat.c                                |  22 +-
- fs/ocfs2/alloc.c                                   |  36 +-
- fs/ocfs2/cluster/heartbeat.c                       |  51 +-
- fs/ocfs2/cluster/netdebug.c                        |   4 +
- fs/ocfs2/cluster/nodemanager.c                     |  10 +-
- fs/ocfs2/cluster/quorum.c                          |   7 +-
- fs/ocfs2/cluster/quorum.h                          |   1 +
- fs/ocfs2/cluster/tcp.c                             |   8 +-
- fs/ocfs2/dir.c                                     | 131 +++++-
- fs/ocfs2/dlm/dlmconvert.c                          |  10 +-
- fs/ocfs2/dlm/dlmdebug.c                            |   5 +
- fs/ocfs2/dlm/dlmdomain.c                           |   3 +-
- fs/ocfs2/dlm/dlmlock.c                             |   8 +-
- fs/ocfs2/dlmglue.c                                 |  35 +-
- fs/ocfs2/dlmglue.h                                 |   5 +-
- fs/ocfs2/export.c                                  |  10 +-
- fs/ocfs2/file.c                                    | 118 +++--
- fs/ocfs2/filecheck.c                               |   5 +-
- fs/ocfs2/inode.c                                   |  58 ++-
- fs/ocfs2/journal.c                                 |   3 +-
- fs/ocfs2/journal.h                                 |   1 -
- fs/ocfs2/namei.c                                   |   6 +-
- fs/ocfs2/ocfs2.h                                   |  17 +
- fs/ocfs2/quota_local.c                             |  36 +-
- fs/ocfs2/refcounttree.c                            |  42 +-
- fs/ocfs2/suballoc.c                                | 235 ++++++++--
- fs/ocfs2/suballoc.h                                |   2 +-
- fs/ocfs2/super.c                                   |  33 +-
- fs/ocfs2/xattr.c                                   | 515 +++++++++++++++++----
- fs/ocfs2/xattr.h                                   |  12 +-
- fs/proc/base.c                                     |   8 +-
- include/linux/fault-inject.h                       |  10 +-
- include/linux/kdev_t.h                             |   2 +-
- include/linux/minmax.h                             |   6 +-
- include/linux/panic.h                              |   5 +-
- init/Makefile                                      |   6 +-
- init/main.c                                        |  12 +-
- init/version.c                                     |  11 +-
- ipc/mqueue.c                                       |   7 +
- kernel/fork.c                                      |   3 +-
- kernel/gcov/fs.c                                   |   2 +-
- kernel/hung_task.c                                 |  55 ++-
- kernel/kcov.c                                      |  43 +-
- kernel/panic.c                                     | 102 ++--
- kernel/profile.c                                   |   2 +-
- kernel/reboot.c                                    |   4 +-
- kernel/resource.c                                  |  16 +-
- kernel/resource_kunit.c                            |   3 +
- kernel/sys.c                                       |   3 +
- kernel/taskstats.c                                 |  50 +-
- kernel/watchdog.c                                  |   8 +-
- kernel/watchdog_perf.c                             |   4 +-
- lib/Kconfig                                        |  14 +-
- lib/Kconfig.debug                                  |  16 +-
- lib/bootconfig.c                                   |  46 +-
- lib/cmdline.c                                      |  13 +-
- lib/decompress_bunzip2.c                           |   6 +-
- lib/decompress_unlz4.c                             |   4 +
- lib/decompress_unxz.c                              |  10 +-
- lib/fault-inject.c                                 |   7 +-
- lib/klist.c                                        |  16 +-
- lib/kstrtox.c                                      |   2 +-
- lib/percpu_counter.c                               |  10 +-
- lib/plist.c                                        |   7 +
- lib/raid/Kconfig                                   |   2 +
- lib/raid/raid6/x86/avx2.c                          |   6 +
- lib/raid/raid6/x86/avx512.c                        |   6 +
- lib/raid/raid6/x86/recov_avx2.c                    |   2 +
- lib/raid/raid6/x86/recov_avx512.c                  |   2 +
- lib/raid/xor/x86/xor-avx.c                         |   1 +
- lib/stackdepot.c                                   |   2 +-
- lib/tests/Makefile                                 |   1 +
- lib/tests/cmdline_kunit.c                          |  39 ++
- lib/tests/errseq_kunit.c                           | 237 ++++++++++
- mm/shmem.c                                         |   7 +
- scripts/Makefile.gcov                              |  21 +
- scripts/checkpatch.pl                              |  38 +-
- scripts/checkstack.pl                              |   6 +-
- scripts/gdb/linux/radixtree.py                     |  66 +--
- scripts/gdb/linux/stackdepot.py                    |   2 +-
- scripts/spelling.txt                               |   4 +-
- tools/bootconfig/main.c                            |   4 +-
- tools/bootconfig/test-bootconfig.sh                |  12 +
- tools/testing/selftests/core/unshare_test.c        |  19 +-
- tools/testing/selftests/filelock/ofdlocks.c        |   2 +-
- .../filesystems/epoll/epoll_wakeup_test.c          |  32 +-
- .../selftests/membarrier/membarrier_test_impl.h    |  17 +-
- tools/testing/selftests/proc/proc-pid-vm.c         |  14 +-
- 106 files changed, 2229 insertions(+), 683 deletions(-)
- create mode 100644 lib/tests/errseq_kunit.c
- create mode 100644 scripts/Makefile.gcov
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
