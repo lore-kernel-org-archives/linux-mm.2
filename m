@@ -1,29 +1,39 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA75A606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBD3606A338
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=GVHH6YBV
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=pQUd1uHe
 Received: by kanga.kvack.org (Postfix)
-	id 99BB26B05BA; Mon, 26 Oct 2026 17:52:58 -0400 (EDT)
+	id 7C7226B05BB; Mon, 26 Oct 2026 17:52:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94CD26B05BB; Mon, 26 Oct 2026 17:52:58 -0400 (EDT)
+	id 751FE6B05BC; Mon, 26 Oct 2026 17:52:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EDBD6B05BC; Mon, 26 Oct 2026 17:52:58 -0400 (EDT)
+	id 5CB656B05BD; Mon, 26 Oct 2026 17:52:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 482CC6B05BA
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:52:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C41FC40862
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:57 +0000 (UTC)
-X-FDA: 85366127994.23.9B47D1A
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 177F6A0003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GVHH6YBV;
-	spf=pass (imf15.hostedemail.com: domain of 3tsvfagoKCCsQaOVbNOaVUNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jthoughton.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3tsvfagoKCCsQaOVbNOaVUNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jthoughton.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 20C806B05BB
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:52:59 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81FFBC07D8
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:58 +0000 (UTC)
+X-FDA: 85366128036.26.A0A4D9D
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CABB780003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:56 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pQUd1uHe;
+	spf=pass (imf30.hostedemail.com: domain of 3t8vfagoKCCwRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3t8vfagoKCCwRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793051576;
+	b=L3KfdLSTw1lEO367Wb266YSujsz5Kx8vzyGwGz+MHGBfZ1dTy2ICFVtNxw0xEu4WI5pywT
+	c7A5LvM1OaWEREWaLj45SzwVUhYGlgEHLOUI3Jpj0dqDmSPDSdoD6zidPefLjLwtU7Q9Uu
+	MAH+zbdVlnvCgEzd690vlf93vpsPCOs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pQUd1uHe;
+	spf=pass (imf30.hostedemail.com: domain of 3t8vfagoKCCwRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3t8vfagoKCCwRbPWcOPbWVOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jthoughton.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793051576;
@@ -31,62 +41,52 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bFIgocNkSNISRV4CHBI3t0UD1tr56XsmI6e/PuL6mFQ=;
-	b=yvl8fcPwaD3yxHCdummsuq6mcgdYVtSIN7uJ6uqUgvZVYkU0WhOw7bYjijfD4B/8YVpzWL
-	jb8A/h0nHH9eA5ysHMYFkOyz3mR91m5LPoonDL0RUhiAbVDfZMkN/BqBRPqfhRRAnIIzbE
-	Z3Zd4JWTTKbOhlBdwk0HiRNJeFuRjes=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793051576;
-	b=eT5cj8ZyGRpgs06nq9NdgDOg7cyWrTWvA8lLQ/NOP3XcyfHr7+SbJ3+u5jwUnMbadJniKR
-	GhVmHKKzkyovVMzommu9TvZcJJoDJobvpk4HWtic7lVPrAtJ0WewnNWmh1W1XZVt3YoRvu
-	rcIGTAqC1MGAxdrPeAJ/5rUnxD0CplU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GVHH6YBV;
-	spf=pass (imf15.hostedemail.com: domain of 3tsvfagoKCCsQaOVbNOaVUNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jthoughton.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3tsvfagoKCCsQaOVbNOaVUNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2df8484f12cso33290685ad.3
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:52:55 -0700 (PDT)
+	bh=CxmWryDZw0sLLhu4Yu8pG4ro8w6TSaSVJ3F6CzsZUrg=;
+	b=DKLxdf4w7iuvm82rg1W2IRnXR79eBe1EsaK3S+sQkJh7mhcO0A2KqmVbWhaLDE7kLwPmwb
+	5zmY0McNxSy8RuaJ8vAqBZwiZy0rgFQmtn94Oxjvz4ct9g8nPg6FIcVdlBEZCtnKJhhAJh
+	bYBoINNWFrtYjRc/K8uImNR39uE/x00=
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc7e0321ec1so4539298a12.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:52:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793051575; x=1793656375; darn=kvack.org;
+        d=google.com; s=20251104; t=1793051576; x=1793656376; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bFIgocNkSNISRV4CHBI3t0UD1tr56XsmI6e/PuL6mFQ=;
-        b=GVHH6YBVF441BSCzN1i/9GrDqYU2iJUG1uOWFzjUvZLGK6K7107KUZAEfsLN1hW7Hy
-         2lvvHewqVjYvr0lqTzJI2vifu6RyiTy7E4LI1OO4++NEaGSRccJyQrVHAjGeut3cRc4e
-         Lg56OfSHur/kaLK0tpAiHJm+lrSryHtAgxJZwKwy/jDrA6j92oUTFj/8gjNlOEr8IDsz
-         R4vkSPLE7bpagqw/2Xc2kUbR1hhuGwT7n7fb7frJm0kTp0wGTN99PwAAiwUBi22r44Kb
-         lQ0dvVACaRm3WO8eqPQwE+IAJ8z3vgqByUsLKIlyM4/utwWlVN26WdSQq4hAarJgbF39
-         hKpg==
+        bh=CxmWryDZw0sLLhu4Yu8pG4ro8w6TSaSVJ3F6CzsZUrg=;
+        b=pQUd1uHeMx9B+/5AA38eWld8ryWPyf0IAxCGuCxWcUoQC9OZPkvxL0nHRGLNKsMFii
+         9Jqmsj61dZM9eL073gpk6PiMHy+rRwKVdVf+b9yFIguvCcKG5j9DNogUoqBdf2UxvDY/
+         MAXGbCvQ/4/BA5Y7vC84EwsYSNuXL4ctj5qaldCvbnJw3m+m4G1RCdizX9I4265lI/u7
+         ppDI5VQo7f2/BUVr0fxY6HD/6hQumJN4mBK+PYn/OKkJFpaEwcRFJPMH3Hsqd9TR+Lau
+         QCZ5CxWHpwEaz2ay8SH4CK4RYUmHRQdyS7ErJ8fCcKwwZdLWjXEpg4OJYQZ1nmwKQByt
+         magw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793051575; x=1793656375;
+        d=1e100.net; s=20260707; t=1793051576; x=1793656376;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bFIgocNkSNISRV4CHBI3t0UD1tr56XsmI6e/PuL6mFQ=;
-        b=xT4oeHhX9PdFzrR4DXo3YjpnjFKLurgYzZMTQpBJgHX31lrEYEn57YvI2AySBxGHMh
-         yOuBuWWEiSpsSP5SKSf7MSqz4vVS0VpNa5LJpH5/q3IXqp8DiO93vEIB0Em+uM2N7AoH
-         G7h0LSmB22+HTZPST+H9TTipDMM0Exy1iRXBJmeqhW0bEqytV4LwU2CToLsjHpDe+nCD
-         Zt8ZTWJN0KG20rfRzK/rc/zXFTQ1Ir682anbsZhFqNUd6wNox0SDV2ebNBFc5uXy1tMs
-         ou1/0DhgoRkfeblsu+HCtUR9dTb+0ERuBVpIGu+b0RQBctHJSjX9d/Nfpa/TMkUsOPes
-         8cqg==
-X-Forwarded-Encrypted: i=1; AKwUvBws5bfXCnKK9CqpnzIJNfI2M+nAduYdJwoqrmMtceh7f11hwFOdAUpV6h79i0OLP9g4rszbMzXBQQ==@kvack.org
-X-Gm-Message-State: AFq9FYLC5lhL8QFht+aHDQ2SwPxgXTWG8Hy+GDG4gbzAoOhhjTMyTXTW
-	X2636KtffppixcO33Zef+Xr5Ztbn5kO97nrFIvkaLzcToaALYuc+6Zb3LX4ErsendQJtxfedGxH
-	fKqVymVGc7ZRxU5fWE4p3Bg==
-X-Received: from plblg15.prod.google.com ([2002:a17:902:fb8f:b0:2e5:712c:5c7])
+        bh=CxmWryDZw0sLLhu4Yu8pG4ro8w6TSaSVJ3F6CzsZUrg=;
+        b=SdcDPDZrmO+QRMTY8VGXLvo9rjyXsUbwryss35trKNfqAnMEIVmtbTutBnBZ2sOUsh
+         306Gl/zz5E7C4zWUw/V6thuyraWKhA2uuIrByhqaRKbG7+TcLuAaLV2K/EPPlRDzqGlu
+         ozH68SgcMElGsmm/U6TxpGdZbPxc7D1U6mRjL1CQY4Kb5OE8+HfeYtAIM8j4N2Ndq1AM
+         QX9L1elRCm6GxQ4nhknpIWQRT4Nx1NYwjZ34YX0SWLq5gyuZnmOmkoY5ijARitPM2dLJ
+         OPbwuBlnELKDtAxUab0d1aZZyXF5mcb0NKOaWakNPnd+RoAL7BHPlKloV4KmufAe55CI
+         qnEw==
+X-Forwarded-Encrypted: i=1; AKwUvBzlCc0ABagvOTE6zEkp39H87zFC1zowjv8C/VDw2OMSjPRkv+w29oZCAgMJP0pPwYq0TgGhrihY4Q==@kvack.org
+X-Gm-Message-State: AFq9FYKLBvzaHS3GWotuJbjTJ4E+Ijhk5Za60mWWuoBhk9s5IFtJ0FtJ
+	SAzLkBXIcO4jHtzJSdgXYHmiscN80uSb/T8/rsBmVYFaRwRSCfjapkY/4Igmezc5WAgUVvWPjpM
+	TXY/rP/DP9lyG1o9KUOnLZg==
+X-Received: from pjuy5.prod.google.com ([2002:a17:90a:d705:b0:3a8:211b:6c8b])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ebc8:b0:2e2:e0f8:e57c with SMTP id d9443c01a7336-2ea9c95ba58mr63848015ad.70.1793051574627;
- Mon, 26 Oct 2026 14:52:54 -0700 (PDT)
-Date: Mon, 26 Oct 2026 21:52:24 +0000
+ 2002:a17:90b:3b8f:b0:3ac:450a:f9d4 with SMTP id 98e67ed59e1d1-3adeb16364bmr7181921a91.64.1793051575471;
+ Mon, 26 Oct 2026 14:52:55 -0700 (PDT)
+Date: Mon, 26 Oct 2026 21:52:25 +0000
 In-Reply-To: <20261026215226.3713941-1-jthoughton@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261026215226.3713941-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261026215226.3713941-9-jthoughton@google.com>
-Subject: [RFC PATCH 08/10] uaccess: Refuse and warn on __copy_from_user_inatomic()
+Message-ID: <20261026215226.3713941-10-jthoughton@google.com>
+Subject: [RFC PATCH 09/10] uaccess: Refuse and warn on more user accesses
  without an mm
 From: James Houghton <jthoughton@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>
@@ -109,19 +109,19 @@ Cc: Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Ke
 	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 177F6A0003
-X-Stat-Signature: oh567udsmp8bxxpm39faysygsqywys16
 X-Rspam-User: 
+X-Rspamd-Queue-Id: CABB780003
+X-Stat-Signature: i84ur7jq77ixjtifbm3zush9k3h8qewo
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793051575-610962
-X-HE-Meta: U2FsdGVkX19xZq95xrl5c9BaZ0VM+IZYcbM7D59+SVt1HxGhXYFPfoF04Cgag+AQwqh13RHPFoke1+wSViG31zn3ic3f+DkzNMmSGWirY2obnZUzuvYnIQaGRPt+17q9YW4qfA7YPgfsceoy5h06ZI/7Wgagzco/0W0VI32wk2f+xSlXl/yQhbZgM1L+9a0EsxUPni3BVBbbGwIKj9FYYSy5rp6Lo1dozmdyZlDaCNgHa3uxkEldPVSrsiK004J4wIplu9hb1X+IjjfY5CMs2Cc7yG01X4yq809RRadl/p+8DQqYQoUzljsBq6cuaF3XEvIiUrmmkbHUjfcugpg/7iEsPnX9BUxFPW1yEVo8vMA7PxV6emeMEqfi9WvgfFjBBUW0y9qUnftbG8ZR4pxSrs1Ug0/rRVd2Ef+uQsGqgTSvu55lsl9bQ8aH4v/dZL7Qo1o+6+D1PdWIRqfpnuwi4J20+q0AxHCve1H4DtwO9iMbJjlZDfzHJoIcvA8jAHxIOuHQ3iYoUM3k0y4AGiqDKZch9ykZHoMYwL5kudaWLRe2Jb4rdttkcUjNnervgqgquJQRjSzCRWJt8Ml4CojriPhdm6IZnrgnId6CX8VfmUVKweD7kNvqcGfZDObC9s7MoU6dB5Czyv+5r26MhHcE0PAoFUmBBVT7TFURQEXZ5BqPzHW7ATAvvbrmiDaJEOn8EQLgXKIQiZw/gopGeqSzyPsVIScwlqxvgWKVXDEX8/x3HjdHjEK1GUuAdq4I8JjI9UMVYV9Lxv9NIT7LpEjzYSo/58WlzRU56RETol8KqCoLZnuc90/IFIbs2VatQDkGsa2sOQprO5tA3BqSaLiAAaaCp36LRSw3grMyxZswxI3r0Ie4ubPbAnm0tc/uQrPq/lM40G8X+hkVI8oqXmvZgKGT/RiSC2iWBBx8TKWOu1aNla/QGuXRMV+p7q/D+Vw6YC3Iq5jIFrYWfwPyyco
- l688QgEa
- d/Ikqk38Yl+exatPIch2dwsp9rENIsHhik8qK+KDuH0bZX4QTPYlSGqNx5asMslkxhR+EbJNuChowND/kXaDfQ3Ono3WFdfvk/pD1iOrlOqk7lPlYISpBWcnbfjAtk1YJXI+B5r5tqcmVdhQdDXmvdvk5lTFbzZJCONhf2o8uuHtkVwsmgo0xyaLrOzmvRHa+mhvAm3byW43XKRlwciGS1QOwt68PriIi6ruWTEHKKRwkRA+BsLi0pVT0eBYviFiCierxNEZ//QYBVEII+F3OS+Oygfwl/FkJ8vkvkhKXal7dRZk0Mfmmdr3j64ryRnDnIqOqXUKFb8QH3uOUwDTg0Io6Oi6M5ZZEQnq88fpIInlznKIpzERKZhpqemqFA90IIDNgre2gU+6f07Ulgp0J8vUSVVdN55w5feIU3mfCDvihsridT1eJqJjbaOOujtQozPCd0x9gpXLaP6HspBGzRZzCwlOVr+FxSV8X4VXC0JkUe8wspGZZO6k3sY0f+5VQD1NXauzORWMRnMWnelCiJArtDgPVS6JdVEH4upB5CN0e1AeLF4hYEykYW+kQG8L+9MXnX8YcN5HAFsaBL1q0kQsbdgN51Ippfm/LwSHIVggJ53jTw4T7kJXP3hKtGn/5m2tZOda5I37NRY+tn/qXFcAdbnYMZFm2mxqqDofv9j12Y31DHT1tiXtuVFXMTOcGz1qE
+X-HE-Tag: 1793051576-210144
+X-HE-Meta: U2FsdGVkX19bYgUVFxJnkhRKcxuzPD0bhpXd1haB7EsM6MWp9fLjgiMYDKmBAyrCdl9oqKxoo2YQfG8+jA4yepNwIuHdw09i+hb1Hx5rrux5NMW+TPjJSGgE1pn5Ig+wf53MUXTPc10n2Q4y26T5xXjBfOwUm/kOhkRtPTk1YYCwuP1h7R0YbMekNfDj+NStKFhWoDZZxNhVW50NrZ/UvEqk7CZx3DODDurwE/fuNugw2koN3DIsLAd9iWqnsZ8+JPFo5OgeuxkIeTIF8FWPdGO2cb+26j6pH3op9/Ru1KfkcYF5wvSaiDlajuSZ14i1bJmP8CI0f3IA1FDKb2OKturvTS59n8XpRNC92Y9IuuFDPej3HjIVphLpgpkt+EHkT/GMO6edG+3zgev5/cocgBvwepuvOkd8KUi4750wgBC4i/LO+wsvE/K8RsyJy/H5JHGmunNEJJxYSYTD7yGeWggtNpn3u0NRruzbZHvqQ9rmbmj7CbFMPAouE1DYVmxinTRhpP+baFN4ekSB5jSft1akxAOz/2Yrm2nEXybYtm9NvONAL8Ga9Hdlh6gap5LzRQg903NtY1wW5rM+surm1q4sd1M+dkRIAOQmN6v6ILwg9yD/TfUUseQdU+nAHpAymsva7n29XKV4zUoBI008Op4xi6mpKhebAWsjE2hUBqwtMYBHD0NCN2xw3VO/h4cOBrwhnZ1iRqKpKkisBH4GIYjATvd59OmkxxX/nFzsfrFZ1vas8dJPmYvkx4KZ0bmvX9H6Imi1T/Xvn6+uwJAXU6Bvc+le9lhR2Eh7LdJK6fBGWKyK1eVxtNNAnOtZ9U93mTjUPB08kZzFJ4n/br6ewAeZz2pkjjVbFpvss8aX54ERZaRXDV1O51uyuGgMhCUU/JlDD9FggtEquk/+xD7oseZYKOD3bQEx4dhdRwLFwWkX+YTgqH37q3sZz2LZ3yMrvrT3SLCsxeirINC7g9t
+ +dXYTdfZ
+ xaRm80d5VKnMFS8lADfBTNcQF1wNauZjitHYKmKm0/UesNNPN0PZyPclAutvyUNXG78xr5m3BYcRD/nvupIWNJqxMQogjmgrXzNsV4BvgNonTfXx/BnearqK/2ZRP6hClUbdMNTuXS34lZAGDal5MAlgIIPVgOfNoM/JldfZ3Bd6mbsfBZbc80F0ThRcxZhbARS1Sg87rBW+VuunqqaFGkkcyIIDnSqA9mbD9Z3fAxgVrMrEjNnmB8+vlRdBH4tZYwvGcBPZbn+vrXrULzf6B4CkedS9bDUX1Hj558bqgwKQLD86lNv4Cxe3lugc/5VrPG66UOZ2IEJl+G1xs9IK+nFD3TUN1lESUcKVKo+dN6luczyB0rOUH6OYhaSWhOGtWlQkfnGNl62aRnBMXcJFKnI3amexVWPg1BgFHJ60wvOxkeck80V+19vzFK4EZuM0s/3zaXXNzJqx9FLm6d37Wq4ZEy6BmwU/XKpn9WdFrOvFTcMt+dLZgrCoybDv3NC3o128R/TGL4t5AkVcsRI5j5bCHGhpVUI++IEh72+WUsC1LJwtRNQa0kZFXbYZ0RSMLoqmo7U/k3XWXtmqimtKdzlNzlTC+4k79jzCZhR1M1fpyLNIG4Uc1/TNE1KXDHkA2IhNH0uR6UUWhyOk1OvEKX79VnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,83 +130,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__copy_from_user_inatomic() never called should_fail_usercopy(), so the
-NULL current->mm check added to uaccess_should_fail() does not cover it.
-It is used e.g. by KVM's kvm_read_guest_atomic(), by several
-architectures' perf callchain and stack trace code, and by the generic
-copy_from_user_inatomic_nontemporal().
+Several generic user access paths don't go through the copy helpers
+that check for a NULL current->mm. Add the uaccess_without_mm() check to
+them as well, so that they warn and fail without attempting the access:
 
-Split the NULL mm check out of uaccess_should_fail() into
-uaccess_without_mm(), and use it in __copy_from_user_inatomic() to warn
-and refuse the copy.
+ - __scoped_user_access_begin(), covering scoped_user_*_access() and
+   get_user_inline()/put_user_inline() on all architectures, including
+   when masked user access is used.
+ - strnlen_user().
+ - check_zeroed_user().
+ - The iov_iter user copy routines that call into architecture-specific
+   helpers: copy_to_user_iter_mc() (copy_mc_to_user()),
+   copy_from_user_iter_nocache() (copy_from_user_inatomic_nontemporal()),
+   copy_from_user_iter_flushcache() (copy_from_user_flushcache()) and
+   zero_to_user_iter() (clear_user()).
 
-Don't use uaccess_should_fail() there, as that would also start injecting
-failures into __copy_from_user_inatomic(), which some callers don't
-expect to fail in practice, e.g. __wp_page_copy_user() warns if the copy
-fails twice.
+Only check for a NULL mm here rather than using uaccess_should_fail(),
+so as not to start injecting failures in these paths.
 
-copy_from_user_nofault() already fails quietly when current->mm is NULL,
-and the generic user stack unwinding entry points (perf_callchain(),
-get_perf_callchain() and stack_trace_save_user()) only unwind the user
-stack of a user task with an mm, so neither is affected.
+Paths implemented entirely by architectures, e.g. get_user(),
+put_user(), clear_user(), and direct users of user_access_begin() or
+masked_user_access_begin(), are still not covered.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- include/linux/uaccess.h | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ include/linux/uaccess.h | 2 ++
+ lib/iov_iter.c          | 8 ++++++++
+ lib/strnlen_user.c      | 3 +++
+ lib/usercopy.c          | 3 +++
+ 4 files changed, 16 insertions(+)
 
 diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 8ab24e706a22..eae204f7261b 100644
+index eae204f7261b..7d26d2de9599 100644
 --- a/include/linux/uaccess.h
 +++ b/include/linux/uaccess.h
-@@ -51,20 +51,33 @@
- #endif
- 
- /*
-- * Return true if a user copy must not be attempted, either because a failure
-- * is being injected, or because the current task has no mm.
-+ * Return true, and warn, if the current task has no mm, in which case user
-+ * memory must not be accessed.
-  *
-  * Accessing user memory without an mm (e.g. from a kernel thread that is not
-  * using kthread_use_mm(), or from a task that has already gone through
-  * exit_mm()) is always a bug: the user portion of the address space belongs to
-  * whatever mm happens to be lazily loaded, if any, so the access could
-  * silently hit another task's memory.
-+ *
-+ * Note that this only catches a missing mm. It cannot catch a valid mm that
-+ * isn't the one the caller expects, e.g. when a file's release or ioctl
-+ * handlers run in a different process than the one that created it. Code
-+ * that keeps user addresses belonging to a specific mm must check
-+ * current->mm against that mm itself (see e.g. KVM's kvm->mm checks).
-+ */
-+static __always_inline bool uaccess_without_mm(void)
-+{
-+	return WARN_ON_ONCE(!current->mm);
-+}
-+
-+/*
-+ * Return true if a user copy must not be attempted, either because the
-+ * current task has no mm, or because a failure is being injected.
-  */
- static __always_inline bool uaccess_should_fail(void)
+@@ -781,6 +781,8 @@ static __always_inline void __scoped_user_rw_access_end(const void *p)
+ ({									\
+ 	typeof(uptr) __retptr;						\
+ 									\
++	if (uaccess_without_mm())					\
++		goto elbl;						\
+ 	if (can_do_masked_user_access()) {				\
+ 		__retptr = masked_user_##mode##_access_begin(uptr);	\
+ 	} else {							\
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 21e2ccf1e8f2..a0769874241c 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -204,6 +204,8 @@ static __always_inline
+ size_t copy_to_user_iter_mc(void __user *iter_to, size_t progress,
+ 			    size_t len, void *from, void *priv2)
  {
--	if (WARN_ON_ONCE(!current->mm))
--		return true;
--	return should_fail_usercopy();
-+	return uaccess_without_mm() || should_fail_usercopy();
++	if (uaccess_without_mm())
++		return len;
+ 	if (access_ok(iter_to, len)) {
+ 		from += progress;
+ 		instrument_copy_to_user(iter_to, from, len);
+@@ -277,6 +279,8 @@ static __always_inline
+ size_t copy_from_user_iter_nocache(void __user *iter_from, size_t progress,
+ 				   size_t len, void *to, void *priv2)
+ {
++	if (uaccess_without_mm())
++		return len;
+ 	return copy_from_user_inatomic_nontemporal(to + progress, iter_from, len);
  }
  
- /*
-@@ -117,6 +130,8 @@ __copy_from_user_inatomic(void *to, const void __user *from, unsigned long n)
+@@ -296,6 +300,8 @@ static __always_inline
+ size_t copy_from_user_iter_flushcache(void __user *iter_from, size_t progress,
+ 				      size_t len, void *to, void *priv2)
  {
- 	unsigned long res;
++	if (uaccess_without_mm())
++		return len;
+ 	return copy_from_user_flushcache(to + progress, iter_from, len);
+ }
+ 
+@@ -451,6 +457,8 @@ static __always_inline
+ size_t zero_to_user_iter(void __user *iter_to, size_t progress,
+ 			 size_t len, void *priv, void *priv2)
+ {
++	if (uaccess_without_mm())
++		return len;
+ 	return clear_user(iter_to, len);
+ }
+ 
+diff --git a/lib/strnlen_user.c b/lib/strnlen_user.c
+index 4a6574b67f82..45709798eb8f 100644
+--- a/lib/strnlen_user.c
++++ b/lib/strnlen_user.c
+@@ -96,6 +96,9 @@ long strnlen_user(const char __user *str, long count)
+ 	if (unlikely(count <= 0))
+ 		return 0;
  
 +	if (uaccess_without_mm())
-+		return n;
- 	instrument_copy_from_user_before(to, from, n);
- 	check_object_size(to, n, false);
- 	res = raw_copy_from_user(to, from, n);
++		return 0;
++
+ 	if (can_do_masked_user_access()) {
+ 		long retval;
+ 
+diff --git a/lib/usercopy.c b/lib/usercopy.c
+index e2f0bf104a59..9146c729c47a 100644
+--- a/lib/usercopy.c
++++ b/lib/usercopy.c
+@@ -48,6 +48,9 @@ int check_zeroed_user(const void __user *from, size_t size)
+ 	if (unlikely(size == 0))
+ 		return 1;
+ 
++	if (uaccess_without_mm())
++		return -EFAULT;
++
+ 	from -= align;
+ 	size += align;
+ 
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
