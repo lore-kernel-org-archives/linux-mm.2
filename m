@@ -1,104 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187A2606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513D2606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CoGZBwQF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B0t5NWQd
 Received: by kanga.kvack.org (Postfix)
-	id 2A3C76B05B2; Mon, 26 Oct 2026 11:18:34 -0400 (EDT)
+	id 6EAB66B05B5; Mon, 26 Oct 2026 11:19:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27B0A6B05B4; Mon, 26 Oct 2026 11:18:34 -0400 (EDT)
+	id 6C5416B05B6; Mon, 26 Oct 2026 11:19:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 190C66B05B5; Mon, 26 Oct 2026 11:18:34 -0400 (EDT)
+	id 5D9266B05B7; Mon, 26 Oct 2026 11:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBF526B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:18:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 71DF21607E8
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:18:33 +0000 (UTC)
-X-FDA: 85365134106.06.8A6CDA5
-Received: from mta1.migadu.com (out-215.mta1.migadu.com [95.215.58.215])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8FD8514000B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:18:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CoGZBwQF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793027911;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	by kanga.kvack.org (Postfix) with ESMTP id 3709C6B05B5
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:19:27 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96716160713
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:19:26 +0000 (UTC)
+X-FDA: 85365136332.09.523A99C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 66C0220011
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:19:24 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B0t5NWQd;
+	spf=pass (imf03.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793027964;
+	b=GG1q6jBwv23L8+vNIU/2AFqFjqZNGwi7bnSu8IlfS9UlxTs4GdT/ILwKv/1tEhP7LKz+up
+	5FCxVV7g2xY+5HolqyA0tVO82jlaVQLruEo/pFWBLN/gFaGlhJFQrOVRJPbp1WqDaGMdnN
+	v3nPjl3FK7vtSamOKhEevQTel5ZWSI8=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B0t5NWQd;
+	spf=pass (imf03.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793027964;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dbjgGd5jyFwi2LB7RiLsRLky9ZNqcQ5Y8I4y05BC+mM=;
-	b=DvNpMmfgrtCwBRzI9bS2V9FjltT+HpNLSXySTR/YJVvKK/wsJdlmYM+uymGBpsT2ZUc6LD
-	DZ3mwpfhGXIisti08mTvTn2461/BjuhvQ0VPJJRcVxaKbQeMJxcIN+b+Ox29AI3E/8jAFv
-	LvsZEegE9RFHcaHTQKqBTwBgn7vYAtY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CoGZBwQF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793027911;
-	b=4/WFhlCSWHkKpTcdXwDoSc7JGIgJcpVhXpvowKILN5x5aHGIriMlILuC6g3c/QydpK42Z5
-	pzS5NdvafNoeknbkPKMPpYL5Z0EY5xIUuzD0bK9arVSgIRkp2jeRriHYxbY+2rlyP5DxFe
-	n2qg8LwnoZPJnOXeigcs+N8JRdRZeCw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QzQ8eUYlWxznuofzwVjz4DcrB+p+nCNY4+cACo4yskI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793027907; v=1; x=1793632707;
- b=CoGZBwQFOKbcoC0o70OXftyAQNiao4IDpUqHGrR0KLRh/MNnbecrsJdVWwlzzE886XfSDe84
- 4NUFgIYtXJSf/2wDzjOHvuJpcjYJhMUw4OpliWypq/gMHcNSUNukSAf1QGnFslRwfMtjjK8IWbX
- thnmVuUyaIHcIP/Hijq8GEjs=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 2204e93b3b20cb80;
-	Mon, 26 Oct 2026 15:18:27 +0000
-X-Mizu-Trace-ID: 2204e93b3b20cb80
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <a33247c5-4881-401e-aa1c-0de05820c8d5@linux.dev>
-Date: Mon, 26 Oct 2026 23:18:06 +0800
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oec+Wt3gHa1boqU1HQuJjZMLSuduFm7h1veFSZGd5Z8=;
+	b=ousFTxPhbY+p4NSUMpumgFOuQl85+ogBy3zduPiaog81/gf2q11HfJG5N48E+d3HzX3Taj
+	mmvKSyBesTYqgjJ/OCTvuZ+i2qKdvZDNzPCYrauhr6F8K4c9JJ1qlWsKfLeZrqgZMzAXIL
+	o13mKTq0nRuHlAibAhWYpSxv9gSuHAg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B3ED42DBF;
+	Mon, 26 Oct 2026 15:19:23 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793027963;
+	b=yZlmAG/6kDJ1pVk1famdY35V8HRCuDqcAYtQNBzITYb4rx8W/s1o7kYsDx2spE93EJmZ
+	 cz+Z7akQRVle4EjXOafUdwndYsfaCPM2yCCjE3VItEB2bEiVmukwmZN2NcaV9BwgJjEHb
+	 /ElSmt4rr0LE59If3wc/sr4MCfDQR3NTmFaqNJ6PObZC+O9UWksrutrFS01L4PmsbZxc2
+	 TAFpuiBh0iKEOLHS2p7iBJ28OSAzieO5lqoADS5zIamVoYqZC1kTEouFAba4blm4OJ80r
+	 DqfSkuFSeCKljavk/XggL4ywytHEo47xRTcP8XgTfFMSfqMnDwTtrbvchjYr/YBoSdw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793027963;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=oec+Wt3gHa1boqU1HQuJjZMLSuduFm7h1veFSZGd5Z8=;
+	b=TO952MsxUNPxN7ZlFOy4K/t9wqLWIqnplApmrjmXkCRsNKKgpMUTadkG8gpOFTorEI/I
+	 +fQM16CRBd8ZTBusOEt1HYW62V/XwK8YWUtSm8b74uC4qUr4GllALfP2EHZBiBIDUm1pX
+	 bDCqeVJHM+W+A2d0jaghWPsLAFDXLOxt0GQFkthsVVcZ2j7KnMWMJgKoAXpJ/EVwBntSY
+	 CSw5DSstXpxO5vLYeXL/qwnADPlgjaiHy95p4BuT4oZGCfARQYpIOQphUzo1qDQEW1WSO
+	 nE/tL4EKx0DRCc1UZ11Bo9NpaEztq+UCkh34PjLzs38L6uPvdNTGdJP8sgwB/miJ88Q==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id E5D5A1F01828;
+	Mon, 26 Oct 2026 15:19:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793027963;
+	bh=oec+Wt3gHa1boqU1HQuJjZMLSuduFm7h1veFSZGd5Z8=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=B0t5NWQd1nYWesXGLcbrS5kIqaa+VvY0/tbodjEnwvJ5wo1tIqTUI06PKj6l/bMKT
+	 xBd/oyTG7CIhOUfZ0ieIllPHBiBLyaNT47UGekYDpLrda5OoUEpOz/jahJzFjwAjM9
+	 idmReAf/WQBEc+OhKhSP34qzldEOlBeFiiRp8Lxfi9TfUuyVLyzAY/BLv8n2Ps+5XL
+	 VIu5H7skGiDMOUWglf42kNzmVflS2YiiqWw+UJXAmkxzEQrrICeEhpSpRiXFREUz/3
+	 nswRpm4gku5MjlqbJUe0s6QT9ZsnFtaJaY7MJPz411f64fmJlRzAlWYs/W6lZSjDwZ
+	 NdqNPFzFfPn4Q==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 4C90044D49;
+	Mon, 26 Oct 2026 15:19:22 +0000 (UTC)
+From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
+Date: Mon, 26 Oct 2026 11:19:22 -0400
+Subject: [PATCH] mm, swap: stop cluster list scans once swapoff clears
+ SWP_WRITEOK
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/ksm: fix userfaultfd protection during merge and
- unmerge
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin@linux.dev,
- chengming.zhou@linux.dev, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, jglisse@redhat.com,
- aarcange@redhat.com, peterx@redhat.com, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bobbypowers@gmail.com, bgeffon@google.com,
- dplotnikov@virtuozzo.com, dgilbert@redhat.com, hughd@google.com,
- hannes@cmpxchg.org, kirill@shutemov.name, cracauer@cons.org,
- mcfadden8@llnl.gov, gokhale2@llnl.gov, mgorman@suse.de,
- mike.kravetz@oracle.com, rppt@linux.vnet.ibm.com, xemul@openvz.org,
- riel@redhat.com, shli@fb.com, jthoughton@google.com, corbet@lwn.net,
- pbonzini@redhat.com, seanjc@google.com, sj@kernel.org, ziy@nvidia.com,
- stable@vger.kernel.org, samarth.colleges@gmail.com, med08elkadiri@gmail.com
-References: <20261026130054.91461-1-lance.yang@linux.dev>
- <at9d4XJUIM8SgBDs@gremlin>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <at9d4XJUIM8SgBDs@gremlin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261026-swapoff-writeok-v1-1-4f4cd420aa33@columbia.edu>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDINYtLk8syE9L0y0vyixJzc/WTbEwSjNKTEk2SjQ1VgLqKihKTcusAJs
+ YHQvhF5cmZaUml4CMUaqtBQDWLk8TcwAAAA==
+X-Change-ID: 20261026-swapoff-writeok-d82f2adc2a53
+To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu, 
+ stable@vger.kernel.org, Mani Tofigh <mt4022@columbia.edu>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793027962; l=4058;
+ i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
+ bh=13fz6rqNh91gTcPzM8hXNMOTAxUdtQgWk+c7vws4zJ8=;
+ b=vg9IYQzJgsesZ3/7DOx8iiu+UpwzJK/cT7keQ9ZTtaH4xqfxdkhcRRPeZI97Poq9QOz1X1L6b
+ rOOceG7nTAZB9hJbL18eVW0RArdVG4aOyGUa783AMsl5Gc87b5so/gq
+X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
+ pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
+X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
+ auth_id=1322
+X-Original-From: Mani Tofigh <mt4022@columbia.edu>
+Reply-To: mt4022@columbia.edu
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8FD8514000B
-X-Stat-Signature: nbm6pza5g1t3z45phybnqx15qz7o5xu5
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Stat-Signature: n5xbsrqero9y1yns6rkx76cmqrxcacko
+X-Spam-Status: No, score=-24.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 66C0220011
 X-Rspam-User: 
-X-HE-Tag: 1793027909-559003
-X-HE-Meta: U2FsdGVkX1+4C6rEpMi+6Kwwsh1pGT++q5a6EwLRCHfVD3fpyQ3eP2AlrQEOcvUH274xcqWlpubmyeji7GVMZxlAYOFsWsnVo5vOUcY6ajWDPr+T3a3i/YVDVmSAdz4daj4kQIrQ3ySVOLhape6CEepT+GmOKz9Lb3UMXZP6DF3u2SaffU48su17aVHv7xmIT08tX1KdH9BYB0tLYaEDB9h2fnZAB0E3dCMRpbRi6jb/uSblT7A0Y6Dl6jfWGUMAHYEt2CAPcHyPOsZIv4PF339AHF32fdGMr50ibSfqFPT+zhmDF1luDdwAKfgLfUVhoq4Fbb3DHZIDhTmWCiRA9wsvC/ndozTfi2fjRrLJRoCN+tUhTecVSMmgWX2uvLay8enkr88bcCkF7eA3iGHOq4yphOvDLh908ILFSKJCIQVCTbm/np0suIOVrilmqSqnQhzuQSorGQRA8tetXGzWeSobWxvgslXeA01GA7tQx8McZtMxKQzQA9Q34ge2BrX6L4x+XwREn2ydB7XvLKBztzF6eyDos5/7Sq1B++C5i1ScYHTLBRxFeQSmUcQKte/GPtYWo8O17twCkOOswWknXtEZlPxbC5A+1R7k0s+usF7i39zKnbo//T78pcuREFMJdAV9kN0gKvH7fmll6sbrO6L3S6YxtoKVMVZ0m2cKpRx6wLWeDO/4o9aG8k2UuebKqHN3Aas8kKnQFfffQwUL/FgMsj88uZie0rq0zOVUJMB8jtiIuthWGUoUtccNvZgIC3roJmRaFxLyswmlnSujgb1nFz4081EymFKI+/Feoy03xu21fUW7TZuSgTZVmSDFDXsV4vOO9++tFGSD3yY+vUz34nFvC8x+CG2MNqW702eMj6tt5yTqlW50oasXiqfpWnvdyn2JUBx5p/KLry5cAMBYp/eDedUupNOI0RZgspZA6KjVIP5Jfrq7+BWp74Uex77q2CG/W2AbkFI83kq
- MgblkH5r
- 9Rj9kSbFYcKfr07hpqvSwgfbJ2AVNMECXRuhbT+/j7uX31/VljVC7v+5OxSUVFaGQ7fPYpcewmOJA8S6WgnSUrNoEn7JdZcs83m4RNaXp45c5dwLyRMNEbJxi4kr/1xoBNU71hrhNa7AqLs/4jVBL9iFHZe6rzTFVO75sDoS4cC2G5mtp9xuOi0PLmwwQWMPWKok/WrXAsRpHrnkigERg8zrvruBjyps883ETq2KiMXCkPhSmFMKhqTaO9mI/f2TH70phAFP2jJAcTqAw7P9RcYS6d3kYPGLZcJt33g2U4dGFqI4/Q6FxP58S+X7Iy1prw/kOBhVfB4CazbxrEJ4PfNMvTQ7IlLfPlSt3iVHmHnrON77CEHexKuATIQFrSEH6J0NurmUHpCm8z7m+U3aZ7vHGhQ==
+X-HE-Tag: 1793027964-539109
+X-HE-Meta: U2FsdGVkX1+6kh9W8E6yz84bZO8QTPRTc2Fpw0FQDJANdJNqfYigtQLxWj16OHvMA9/mOPUtWj0rBQnEyWyHoRRv/xZXTzJP0DbS1B3JazEol6p2frT8YQ/fBsdvzp8zVkVyIvjkcMlrQqtuXwQSudRMLc6vLgKR0bXRzuJd+m2CFzTcsLb1kh6rK06v5UWZVCHvqLQWftqJpJzAtA6i8SwFf6Ud1VSuJaRbUJnfduuEOcuqFki3GuAhc3Ptqkg+kKoKykNiWa90DzP3aWXKWaTK9se+VyG8qj64bUEdZC/po44yTlR+RvsD0Dnn0CqNzS6ZM7fWYhEr1UmM3WIkXj/A5LQ04f+41K/FOi4jAWePhTigeOcLOUSgsG8nBf+7LDH+f7+zsK2EIZZEsOuFnpEjWwkm8Z7qYsW7grfIIge8YdisY/zD2rzYhVtHosyXwpFCRvdcZ1LWbZHCWK5YjrQfohdZC2FgJ/YNPX2RHzr7265fk9UQct9Qi7Kv0ozIWrmPNhTJy8TZ8ITd6t61C1XuOgz6ztsdnEARxYvinyi+0fyRo3BxuOsVFIO7ICdeHXBLhR8ykj13C1x966lIFNPFvkomjYO2Zsr1Fsl//Voxyp10iuXigzGe+e+/gpgf7wmosj93c8X0EylsVtJ+KLn+H9zETqitXXMUVtR3RoYG6/ZeM67Af4C/zTe9WKLRkBVXzJGPb8ELGHPsuGPASokH34w7dIDn5TbUwOMC++8CcieinHANPBtqURqto1s7n6aY9nyLtjtyhb9JJ6+vCp1sDf8/cUzRXXCa7epcBEwOyZ7Ugz1siphtXLRPoZlmPmOn07UF3bd2LqYChG7JYHt7ZCh/PMkgFV7UQW4Mh/DaRHOCnD0AGgd31nSQMFGHITntldp20fjKtWDfdKjeYjuX+8czPWptM5l4OVWnvpLGHCyufZ2skn4UfsRuQJOCHhfNM26fnHx74ktsARE
+ naM88HbI
+ WrcQGvHOBvKQ0x8bjdItfK2iqSe/SUKHrSf8UhMp32sGPb5rUT8cGxHmpsWdw/PyG2MvWF1b+5Vx+4qT1Ix8OHENwbTFWbXmfpAApph2ET637jBLNpxp2ZH+CKbj6/KPfTMG0SHK65wmBfwLxRw/szdgAIvS5Il6DVitlCk5d1TEArHPQb9uua7hexadtIOpXP95Fuc7BMpPhPmBckd4vCT2Z48VPKeSLNIUA6dz6HVErIuTenJ5XkHVchs//fsQi7ZjvmaB3Bm7fAhWmZlJdd6Rr46lDfFghAkzbaxBiHEVNdDiok8J+j2UL8pObYWtt3BwuyF2Wrzx6p5ZbsDC33uV/0+dT4rYpqVV/+/c4/pw1rbMzipc+JMJQA9Vq6XcY2Z9Z1eNrcz2DYYdWRIwg+S1mTuwzCJeKneTwDQhAfudVAtcDIE4jd1NbLQTYoTIQ1ZKBO6jquBjHTTyTe/cX3GwNHoEZyeMM+weCXuMGa3xF5epo3vMwtPDN6MdAsmoGHszAgi+wd+E/WsvyN2LILSv+Ru0t+fQPRDxrMvvQ41/aBaVDlhe6VegAnEy852cGZKexhDx+WtP4nTTEdHAtUdG3WGq/DpiDYF39GO96hEMuCLo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,147 +142,109 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+From: Mani Tofigh <mt4022@columbia.edu>
 
+SWP_WRITEOK is cleared under si->lock when swapoff starts so that no
+new swap entries are allocated from the device, and try_to_unuse()
+then waits for writeback of the folios that still use the device.
 
-On 2026/10/26 22:27, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Oct 26, 2026 at 09:00:54PM +0800, Lance Yang wrote:
->> KSM loses userfaultfd protection when replace_page() builds a new PTE
->> from vma->vm_page_prot. Dropping its uffd bit lets a subsequent write go
->> through ordinary COW instead of userfaultfd write protection handling. For
->> RWP, a merged page also becomes readable without faulting.
-> 
-> I feel we probably shouldn't have allowed an extension to UFFD while it's still
-> fundamentally a broken feature :))
-> 
-> Which is evidenced by the SLEW of AI bug reports, and human-reported bug
-> reports, and endless history of bug reports and it infecting the rest of mm,
-> etc. etc. /rant
+However, an order-0 allocation that chose the device can race with
+swapoff clearing the flag and then loop forever.  It takes a cluster
+from the fragment cluster list of a higher order with
+isolate_lock_cluster(), the allocation from that cluster fails because
+SWP_WRITEOK is clear, and relocate_cluster() puts the cluster back on
+the same list, so the loop keeps finding clusters on it.
 
-Heh, UFFD isn't winning you over today :D
+The looping task is in reclaim, and it may have set writeback on a
+folio whose write has been queued but not yet submitted.  swapoff then
+waits for that folio, while the reclaiming task, stuck in the loop,
+never reaches the point where it submits the write:
 
->>
->> Keeping the uffd bit and restoring PAGE_NONE fixes merging, but we also
->> have to handle unmerging. An existing KSM page can be protected with RWP
->> before MADV_UNMERGEABLE, so unmerging already needs fixing independently
->> of preserving RWP during merging.
->>
->> Unsharing replaces a shared page with a private one and should leave
->> userfaultfd protection in place, as do_wp_page() already does for write
->> protection. Currently, an unshare fault reaches do_uffd_rwp() before it
->> can proceed to do_wp_page().
->>
->> - With synchronous RWP, handle_userfault() returns VM_FAULT_SIGBUS.
->>    break_ksm() then reports success with a KSM page still merged.
->>
->> - With asynchronous RWP, protection is cleared before unsharing.
->>
->> Preserve the uffd bit when merging, and restore PAGE_NONE for RWP. Let
->> FAULT_FLAG_UNSHARE skip RWP fault handling and keep PAGE_NONE on each
->> private copy as well. Unsharing can then complete with RWP still armed
->> for a subsequent access.
->>
->> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
->> Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
->> Link: https://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail.com/
->> Link: https://lore.kernel.org/all/20261020055518.36087-1-lance.yang@linux.dev/
->> Cc: stable@vger.kernel.org
->> Co-developed-by: Samarth Narang <samarth.colleges@gmail.com>
->> Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> 
-> Looks sensible to me so:
-> 
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+  CPU0 (reclaim)                          CPU1 (swapoff)
+  --------------                          --------------
+  shrink_folio_list()
+    pageout(F)
+      /* F under writeback,
+         write not submitted */
+    folio_alloc_swap(G)  /* order 0 */
+      swap_alloc_slow()
+                                          del_from_avail_list(si, true)
+                                            si->flags &= ~SWP_WRITEOK
+                                          try_to_unuse()
+                                            folio_wait_writeback(F)
+        cluster_alloc_swap_entry()
+          isolate_lock_cluster()
+          /* allocation fails:
+             !SWP_WRITEOK */
+          relocate_cluster()
+          /* repeats forever */
+    swap_write_submit()
+    /* never reached */
 
-Really appreciated!
+This results in a soft lockup on CPU0 and a swapoff that never returns.
 
->> ---
->>   mm/ksm.c    |  8 +++++++-
->>   mm/memory.c | 14 ++++++++++----
->>   2 files changed, 17 insertions(+), 5 deletions(-)
->>
->> diff --git a/mm/ksm.c b/mm/ksm.c
->> index 910a1307ac9f..d6f736a1aa2f 100644
->> --- a/mm/ksm.c
->> +++ b/mm/ksm.c
->> @@ -34,6 +34,7 @@
->>   #include <linux/memory.h>
->>   #include <linux/mmu_notifier.h>
->>   #include <linux/swap.h>
->> +#include <linux/userfaultfd_k.h>
->>   #include <linux/ksm.h>
->>   #include <linux/hashtable.h>
->>   #include <linux/freezer.h>
->> @@ -1463,9 +1464,14 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
->>   		dec_mm_counter(mm, MM_ANONPAGES);
->>   	}
->>
->> -	/* Preserve soft-dirty when replacing the page. */
->> +	/* Preserve soft-dirty and uffd protection when replacing the page. */
->>   	if (pte_soft_dirty(orig_pte))
->>   		newpte = pte_mksoft_dirty(newpte);
->> +	if (pte_uffd(orig_pte)) {
->> +		newpte = pte_mkuffd(newpte);
->> +		if (userfaultfd_rwp(vma))
->> +			newpte = pte_modify(newpte, PAGE_NONE);
-> 
-> OK, so by definition, RWP pages are protnone, and this resets it correctly.
+isolate_lock_cluster() used to check SWP_WRITEOK under si->lock until
+commit 07adc4cf1ecd ("mm, swap: implement dynamic allocation of swap
+table") removed that check.  Restore the check.  Since swapoff clears
+the flag under the same lock, isolate_lock_cluster() then returns NULL,
+which ends the scan; the swap slot allocation for G fails, and reclaim
+goes on to submit the write of F.
 
-Right, we need PAGE_NONE back as well as the uffd bit :)
+Given that this is a race, its reproducibility is non-deterministic.
+We reproduce it by using a non-rotational swap device that is not
+synchronous, with 64K mTHP enabled, where one CPU repeatedly pages out
+two 64K folios and a 4K page with madvise(MADV_PAGEOUT), while other
+CPUs run swapoff and swapon on the same device.  In my tests it
+triggers within 20s in each run, and with the fix applied, it runs for
+300s without any hang/kernel report.  This bug was found and
+reproduced deterministically using a deterministic hypervisor that is
+currently under development.
 
->> +	}
->>
->>   	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
->>   	/*
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 6a93b7fa48b2..99439a7afa63 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4122,8 +4122,11 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
->>   		if (unlikely(unshare)) {
->>   			if (pte_soft_dirty(vmf->orig_pte))
->>   				entry = pte_mksoft_dirty(entry);
->> -			if (pte_uffd(vmf->orig_pte))
->> +			if (pte_uffd(vmf->orig_pte)) {
->>   				entry = pte_mkuffd(entry);
->> +				if (userfaultfd_rwp(vma))
->> +					entry = pte_modify(entry, PAGE_NONE);
->> +			}
-> 
-> Could this be abstracted? You're doing the same pattern here, which also exists
-> in copy_present_page() and presumably many other places.
-> 
-> But maybe that's one for a follow up?
+Fixes: 07adc4cf1ecd ("mm, swap: implement dynamic allocation of swap table")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+---
+Before commit dda8fb68b590 ("mm/swap: also use struct swap_iocb for
+block I/O"), reclaim submitted the swap write right away, so on 6.18
+to 7.2 the loop most likely ends once swapoff frees the slots instead
+of hanging.
 
-Yeah, a helper would be nice here. I'd keep this fix small and do that
-as a follow-up :D
+Reproducer: https://github.com/manitofigh/swapoff-repro/blob/main/swapoff.c
+---
+ mm/swapfile.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Cheers, Lance
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 601979b97f95..2b03d14b5f52 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -627,6 +627,10 @@ static struct swap_cluster_info *isolate_lock_cluster(
+ 	u8 flags = CLUSTER_FLAG_NONE;
+ 
+ 	spin_lock(&si->lock);
++
++	if (unlikely(!(si->flags & SWP_WRITEOK)))
++		goto out;
++
+ 	list_for_each_entry(ci, list, list) {
+ 		if (!spin_trylock(&ci->lock))
+ 			continue;
+@@ -642,6 +646,7 @@ static struct swap_cluster_info *isolate_lock_cluster(
+ 		found = ci;
+ 		break;
+ 	}
++out:
+ 	spin_unlock(&si->lock);
+ 
+ 	/* Cluster's table is freed when and only when it's on the free list. */
 
->>   		} else {
->>   			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
->>   		}
->> @@ -6659,9 +6662,12 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
->>   		 * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
->>   		 * NUMA hinting and must still fall through to do_numa_page().
->>   		 */
->> -		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
->> -			return do_uffd_rwp(vmf);
->> -		return do_numa_page(vmf);
->> +		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte)) {
->> +			if (!(vmf->flags & FAULT_FLAG_UNSHARE))
->> +				return do_uffd_rwp(vmf);
->> +		} else {
->> +			return do_numa_page(vmf);
->> +		}
->>   	}
->>
->>   	spin_lock(vmf->ptl);
->> --
->> 2.49.0
->>
-> 
-> --
-> Cheers, Lorenzo
+---
+base-commit: e9011a65d78258901ba123c5f522bef26d29902f
+change-id: 20261026-swapoff-writeok-d82f2adc2a53
+
+Best regards,
+--  
+Mani Tofigh <mt4022@columbia.edu>
+
 
 
