@@ -1,128 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6069E606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC11606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=WmFrow3D
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jblt39Dj
 Received: by kanga.kvack.org (Postfix)
-	id 846706B05B0; Mon, 26 Oct 2026 05:38:31 -0400 (EDT)
+	id A93F96B05B1; Mon, 26 Oct 2026 05:40:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F6C66B05B1; Mon, 26 Oct 2026 05:38:31 -0400 (EDT)
+	id A44206B05B2; Mon, 26 Oct 2026 05:40:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70B876B05B2; Mon, 26 Oct 2026 05:38:31 -0400 (EDT)
+	id 933606B05B3; Mon, 26 Oct 2026 05:40:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 450516B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:38:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9F5C14068C
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:38:30 +0000 (UTC)
-X-FDA: 85364277180.13.B2A7B62
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F172F20005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:38:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=WmFrow3D;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 665F96B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:40:52 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1A98120743
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:40:51 +0000 (UTC)
+X-FDA: 85364283102.19.24EAE2E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 172F1180003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:40:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jblt39Dj;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793007650;
+	b=LhsM7KwKYlwF8tQF6t8hknWF1SsElWmv8m7awmzJGYNqMUF8wYQJaa4U9ef6ThfUcojp6/
+	55CF1kaJgOjprg1JtpOivtVJV8r0+/Efo+oojUOF8gk73Rzm6yTeSvvtgkdz+msOO+heco
+	oCnreKCARfv7iYYFWsh4AxBjhpgr4CU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jblt39Dj;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793007509;
+	s=arc-20220608; t=1793007650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+EqPqnUrdL97N89dZ6gFIZevXV0kvlIFkPLD7q7NEY=;
-	b=u/svA4N/2byMyOUhawDe2uEfshYdnugCC+Bcl9phCMW5S0fRsZG4j01YhdQqIzVIGcYYId
-	D8cVSxD/9BWLxGwpJK2cxdgVu5ptQmEoJOjYe6QCsv0rBGV9/4W11FWwww2h6W9aDV7gJA
-	zlYoEVED28G87LEN13Eeek6+QgA2la0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=WmFrow3D;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793007509;
-	b=aNlmyJW5ifFs9mhmRcPiX3Tt9+gjVdoThzqXi+skjOHYaSSn3IIW7AuVyvL6FVrodt2scm
-	4V+7DdW4zZv3daq34P95USj0m9MrbnCyTwQYjoJEe/s+ikcph3IUCzF+LeWKu6gxBZUFd2
-	TCqlTLrDqE09ixBsDg1mns9KB7VP0l8=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a2072b9832so19392495e9.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:38:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1793007507; x=1793612307; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=x+EqPqnUrdL97N89dZ6gFIZevXV0kvlIFkPLD7q7NEY=;
-        b=WmFrow3DmQXPY+H9VioYOQQWulsL57GETbqo8bSHSk0k0S2SENdryLFMdA4ocH/nLD
-         dNyj3Aq0wGTQP0/WxRGbMjgC4j6No7diXHNtrzUWLoKBpMoqC7QXr/8AXlvifajyCIUw
-         u8So4mp1Ah2KRWf1e+I5VCj0vouRY65YiU7Loqc/Z5fGYrUTEKCd9zTpawC5zpytM7b5
-         aFSAmYSAPjvp1VX1gsrBKWUoRUYrICc2RrcZySu1RV+jEZ7pbOahw0bXCwyniejkI1zr
-         +LPz/SKA8DwmrOiCykYs/Pw3xMN+p1AfJu5eANcbpupaIZdw468rSfnylX2pQtOIGaqv
-         7f9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793007507; x=1793612307;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x+EqPqnUrdL97N89dZ6gFIZevXV0kvlIFkPLD7q7NEY=;
-        b=FbHGjybtef7ji5H4FjVuMtu3QI5OltIeI9ehQQTa317hn+KV9fAT1+sQ8VLjiGEzF4
-         sGgQXDwJjKECxEhx1q0OckYPxQkNMNsZyCmHU6KUdJdBtIqV1u6IPCgoHzjhhsGYMebK
-         +r7mZn+XwScJWLpLnts0NIgy/E+6olp7orn1y9r4yqEOeGzUVfTKSAGTknQnOD6g2e/f
-         pwkklkaI8iClFhw+G3MJ3OP9fVLtPsmvt1g/lKHXyMg+6I1eUPTVC7O5fXZhv9RdmtZ+
-         HE37mkHS6uA+mVmy8d+mB71AeDhg8XWheImIrA0r5ygAOzmjA1Hik0xeeaZMKjtpUK9C
-         dTtQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxgS+B/EJx25HP3aCqb2+VZKO7IBQGb+xzJHCnETSXRsqVe5FFOKyGobeThB2e/JSetcIE9Txvrxw==@kvack.org
-X-Gm-Message-State: AFq9FYLZm8oeq6RDlFSzBITA4lQR49IivckqhILFr1ySNFHiEHZMsGqS
-	5cX4qrebyrt55cn9EKBq6cu2WbycjJh4Jv3RKMgmdofKqCY4IE8hQI3qJOVDCZMxIZVYcGXUvZy
-	RixFMOUY=
-X-Gm-Gg: AYBFou0LSbBJ4afIAQvF1m5XLC5UIzjKrghJVZXiXZWlm/zZrzdaMxEsX97nKhYJpub
-	gCVrJranuYoFccKUYeHiGi8KlGQ4QoKP1M+GOmP4CcEyTLkTs0E8PLFpuBtIBIs8YFve5s5WpNe
-	9j0rHwMrxWy88COTrDl0mB6cA3QpSWQU/6hvQyPtJPdQvr5xdvhXMK0X1rQF/lS5AFegabWUM9P
-	lQ96K1+Tyte450l08Wl45QJappBzrEnJB57rTOSlu9H5MurEII9LJ778gf3h9jODkEH38rP8jGe
-	mTc7hSVV7/R51QbqId0SL1p0heuzt8+wlGFjMDos+q+TTdNpVLJ7H62fD/O5f+s1d9127b58uah
-	6sYyWrGpefpo/wC1ZFJVLLVS3eeDACKZHmqgkcvCB9lmf+tk2TihcGaxiI6aV9Y77OQwOrzr5Fy
-	v8ZGXoN1P07b0nNWn0eOdNpzKcQeAO510hy093qa4M3fpncJC2lGU3l2ddm1hi+hx5Loy7+iVo0
-	C9PDDnrpKZPHfHpwoTrEiAEAPrPKssnvMqS3Eum2+z7550HCBzGf+/NCWeLwRqrxDPXDKla+eg8
-	eBpTSBrnOaQoYjE0
-X-Received: by 2002:a05:600c:8b63:b0:4a2:1960:6fa with SMTP id 5b1f17b1804b1-4a35ae7027emr123797325e9.4.1793007507462;
-        Mon, 26 Oct 2026 02:38:27 -0700 (PDT)
-Received: from localhost (109-81-20-177.rct.o2.cz. [109.81.20.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a359fbb725sm181656095e9.0.2026.10.26.02.38.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 02:38:27 -0700 (PDT)
-Date: Mon, 26 Oct 2026 10:38:26 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 2/2] memcg: don't go through the lruvec for folio and
- kmem lruvec stat updates
-Message-ID: <at8fkp9hR7Mvjy4J@tiehlicka>
-References: <20261023195417.1391216-1-joannelkoong@gmail.com>
- <20261023195417.1391216-3-joannelkoong@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2BjP65a0dju6snpvx5OIcMNe63lU1CrZcjwyc0/9yUs=;
+	b=j+VeN5CNWRKCOMZxjizqgIU2G3PHofWQPShq9efVKZfXHJ2JabTtkd1E0JD2RUdTk1vNRr
+	d4DMTbo+ND9FwoRfde/lbtyOBmrPriv1LsDX2BvVYPIMfhQd8EW8JujFbZ5fPrQoSMXhdF
+	aXLLDdGAMJayHhmc4Ts8VqqACzOowpc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 109ED43E10;
+	Mon, 26 Oct 2026 09:40:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99C81F01828;
+	Mon, 26 Oct 2026 09:40:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793007648;
+	bh=2BjP65a0dju6snpvx5OIcMNe63lU1CrZcjwyc0/9yUs=;
+	h=From:Subject:Date:To:Cc;
+	b=jblt39DjKjWhCyE2330ECduwS0UxtYU/7n9ZMoQmM00C7NoVq1UENPRqHevUYt394
+	 LMhihUwoEFZQiPQznsRmxR/ZCZe2iKHd4ia6ANaY/JzIUavv4BwjpVgX/hSQmf1VGS
+	 nXuL337J8he9sx6J8mvdIoFUMT8vLD4EtTHhcXmrOsWvRdybiF8EnWEbU9G7JOSGcm
+	 BNBX4DEqPchaadGDXYfPqy70QHZQtR7kBnO3Ae5AHRxKf9wj2ZEd8zaYkkCxxBV9K3
+	 flr1fdXYV7b96+jtpKxju3u9cDO2dkuU1Uj5um/QwS4KZLBQdMksmaRx5+uxaqUaxG
+	 UaOwvCbUKAysw==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 00/16] mm/shmem: various (urgent?) fixes
+Date: Mon, 26 Oct 2026 10:40:33 +0100
+Message-Id: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023195417.1391216-3-joannelkoong@gmail.com>
-X-Rspamd-Queue-Id: F172F20005
-X-Stat-Signature: 1j9yoeu5t4j4a8papmnc4rpjwgawbqon
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABEg32oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDAyNT3bTMitTi+OKM3NRcXSNzCyNzQ8skQ2ODVCWgjoKiVLA0UEN0LIR
+ fXJqUlZpcAjJCqbYWAE47UcJvAAAA
+X-Change-ID: 20261025-fixes_shmem-2782719b130e
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, 
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>, 
+ Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Stevens <stevensd@chromium.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ William Kucharski <william.kucharski@oracle.com>, 
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
+ Josef Bacik <josef@toxicpanda.com>, 
+ Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4200; i=david@kernel.org;
+ h=from:subject:message-id; bh=2I+jzvosTRnUx4luk06Osx1EmmShNw/DPI/mK6ve0MU=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLuK4jmnRLcK1cVtXb5V8EzQTxlJ/L9P6wuWS3hyV/Hu
+ aXo3U7FjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACZSOpfhF/OLQzsbA1cu19rJ
+ vPWr+6Yo0fOpkX5TzvTny84UFboT5MvwP069749jdd3s5VsCZ+1xOPbi4ObXVydLrhdRF/erL1m
+ dzg0A
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793007508-458124
-X-HE-Meta: U2FsdGVkX19NqeeLAI/mSuYbuk4+TA+mrcol//ZTcoa1Ry7Lzrg4s8FpIestrXI2h3Ct43HlkudFVVBoMl4sRJwdpph8a+eO0O26QJ5vpJldyKyTyaEg6IM6Z8xq0DtKdoIL40NjCmenP6+XBaGZtFWvDQ+tOkaXCs6hKjk3Qz9m28uMELpI3mxPsvjCISPz+xaiDWfY1Da0e2HTtYqmg97r/tqBEP3AU9aqCDte3pS67kidQ2NH33Q+kEeiooLayjmjhm0pxj/GaxkstOe/qVLzeOPXkEtfH4ZPeRMn2YEcDxLxVagPailC+XQHCYqzPG4Tqvs0HdG7jGHRpeVHJQrvnK2ryrDwG3aYwpsFJXC0VaUm/nc13/w82RwkzfsL+uj0gsKAsnG+3YrKF0PFhca3qfLXlY+ey+P5TGqolqAK60DlQCbLKbGljEDAw9U36CLnm8kAf2+dLiCcyvHMpUV+KG7jSH4JtDHVqd6p1SHqAyq3zl33XunCT1wCAvwYQzcINzK2SdDaB53bHan4wofokibjvMv3oiZBiD8p1XbG3PmnUK3H3duMCq85kzrYNcqlSPjSkJZ4UgV/DnapYsfV//wSJFJoIYkQt4kyROlOEiJ3bbHHY+bx69hSkZcwvg2CxUv8U2NBkZLsQFjD5Qdr7htept9CpPbJlEu3R3Yo9VRb0VppTQ8NSe0uIUT7E2W9H5gAd9O7nvuXndM1u2rSRzKELF/JBhX5/MDgVRvR2fR0c4zzZ1OonnF0KFHNu6PgSSXM9wlYl8TyRPkVQvihGYx0r92KCbHkId43R/R3O39KuRLLrCTJkbC4ayjZRUwnpgak48cfPIAYm0CKaXbrlDdut8XoNMkljKmOPNMBxKudi3DBOx84imFHem0AVJDJYMuHus8E9RlOZB0iAY/cPWUYb2Dapgwsqjy0zOfN6SXbs66m446/8phxNVAdeQWLDhVrGjVpahK/D4H
- dwx6Tax6
- qlK8gWeQv7caizw7H6dJKkH+/1h9g8NquD8zM4yX6Sa6eNUKlIEb/XPFLon9+xvOsTgoEyrzGcR01VJvwX5lnEy06Mc4LiPtN08wDxfMUFXZWw1uHxRwJuduqbLOg13U5RBhFkYLVgRBd66q+mQQ7s08YGhQX8IoUX6it5ZTJvA4xA/9EBLmFDPgPIKgPxnVR9USDx20Kk1udaX8OJjKSCMQvlJR38Y2fXzUYMSLA3mIItaZ7Y2j3VE6/MCjcJZDwrwENP5nhW/iX+CY6i98r2iKKdllhirzSkUfwzua+xcQZoAq898IWWp4+4yYk0gsx+amTQwM1KV7UjqeWRiArr8BVIu99B8usnYmVCmFI3J1x30xWoxV+egOpz1flUU1ZyHuuHixgE9xSXhfZioftaeqS9o7i9A9C07N0dhcDoFI3dT8qww7VdpRijA==
+X-Rspamd-Queue-Id: 172F1180003
+X-Stat-Signature: 55dzreyimheq65k1mdwhx5wpwif48xxx
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793007649-177934
+X-HE-Meta: U2FsdGVkX18jPPN5qQ/0ArBYuJ3ghYNAo+ArEcnjHY2Chuv3HrZPA9SaACOAwMKjPgB7/oJU5FUqvhsjj9U0o/eLOG8u+J5qxdqWHchgYIPx0+X4aCxFaQB0Umz8XjOEOAGXeJe8TveMOdq5hZuZSOdthHMb98aZnk9GwcaGeeFoLbjsuHPurSkNAmkAKRXPjwpM6+D2hZlqIpYIx5PdQ6EBpgmmOBiWGrsIGZ+Ik5HrytRb/QvpLnoJUAwBTgop8zwFb8bSwGyHD6yG9PzbpCHBeJXnBKUYnoVoQ7GX5qOVnD3CRD7Ju8Q6ap6siclgaYUPJc9aR3HhfeUb8eVj0WTuYUVjxpFNgu0ZbWlsO8mX6w/Poagz/qoFXHtJd2wU8GhSSKimGR44EZy8CtpJWlzxmznPc7btf/FsLV56wXhPCvcUnxeJA0wo8i8ZsxMUtrp+sLubHdeG3IPw1yb1BxTbKbDxWoFwbVLpRsWbCLbjmHujCUKnaryWhtj+xoYwev8PuG9B4JKLBxhSRJmgyHw5LjlyS4ekT5v9o/yql/eafRma2XuZur7FueC8ZdAaBPGlblTcnMuBelnhEqWDViOJLYW+UISC5TxLoHY3IVh6dlAylC8L1XaiEc174iQK7XsjxUIvAMX/NiMjbXkEt7Ru757GQXcBb7OrJNXNEuTIG5/pjldFXMK1h7KDm3/08xGCGMwU+oOdTaItqA/9R0/F4L8JT6dWJojBwc5JeqJInW8HUFkYX3SM2aCz1sp1jYXigk/BdFOjIzuJTVzW/yzgxQo7SvshqptkkU1ArYQQ+akMnV+EOHG6PseVYGzhH9sJ2x21ZJP+KNWYQSVOjvhosIrDbDG1Rziq6b5Q6lrLLB/S3drMVJXcZRMHV9q2RZIa0tkTuroRV9UFxwbcznTCOvEFt04YfURR0Zn96Vw6aCUPUEzueJs+Unxff7nSNTk6uC+6z2BgoN1qyAc
+ +qFuhH3S
+ Ya/DFWj5PrEMtZG7KkIzZbtSGh0Ow/DvvZTdaRZIse6iRBhABgmFXrEAFD80ZewcVJPpCFIyFtkHJCnJVvPnKrUV20ZkMWWgGAsp/yPmHJ3DOTjXJZ1U4KS5JnRMd+e5bWrnC2bLXQDGUf8bPWRbXWxE+sz/8aqdnAzNz3cpkvdVmxM2QnM4/yceS2khDOQFOXYzhoGGt8ltP44DpRZxe/jDKKJesQBGNA6jYGclokvdbVbZo5iUR/QekRe4z7a8sBEn/lXO/3dBgqrBuDStQ+2iRawa6nfTndnj5gelRBH1IqzqAicsRL4ZAAHW5WzJPlfsvNxoTIrX0Scf2nveeGvgOfMTvbHPw7bbq5/PVEn+0ozc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,173 +124,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri 23-10-26 12:54:17, Joanne Koong wrote:
-> lruvec_stat_mod_folio() and mod_lruvec_kmem_state() already know the memcg
-> and the node, but look up the lruvec with mem_cgroup_lruvec() and update
-> the stats through mod_lruvec_state(), which reads lruvec->pgdat and
-> mem_cgroup_per_node->memcg to get them back. lruvec->pgdat shares a
-> 128-byte cacheline pair with lines that the lru_lock holder writes
-> constantly (lru_lock or lru_zone_size[], depending on the alignment of
-> struct mem_cgroup_per_node), so on CPUs that do spatial prefetching
-> these per-folio stat updates contend with the lru_lock holder.
-> 
-> Pass the memcg and node they already know to mod_memcg_node_state()
-> instead.
-> 
-> On top of the mem_cgroup_per_node rearrangement, on a 2-socket Skylake
-> (80 CPUs) with threads faulting in and freeing shmem in a single memcg,
-> this improves throughput by about 3% at 20 threads (5.59M -> 5.77M
-> pages/sec) and 2% at 80 threads (8.66M -> 8.82M).
-> 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Hi,
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+the fixing fun continues.
 
-> ---
->  mm/memcontrol.c | 71 ++++++++++++++++++++-----------------------------
->  1 file changed, 29 insertions(+), 42 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index a05d9a8baa1b..9f33cc5c8293 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -587,7 +587,7 @@ unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
->  	return x;
->  }
->  
-> -static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
-> +static void __mod_memcg_lruvec_state(struct mem_cgroup *memcg, int nid,
->  				     enum node_stat_item idx, long val);
->  
->  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-> @@ -596,16 +596,11 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
->  	int nid;
->  
->  	for_each_node(nid) {
-> -		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
-> -		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
-> -		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
-> -		struct mem_cgroup_per_node *child_pn, *parent_pn;
-> +		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
-> +		unsigned long value = lruvec_page_state_local(lruvec, idx);
->  
-> -		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
-> -		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
-> -
-> -		__mod_memcg_lruvec_state(child_pn, idx, -value);
-> -		__mod_memcg_lruvec_state(parent_pn, idx, value);
-> +		__mod_memcg_lruvec_state(memcg, nid, idx, -value);
-> +		__mod_memcg_lruvec_state(parent, nid, idx, value);
->  	}
->  }
->  
-> @@ -990,10 +985,10 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
->  }
->  #endif
->  
-> -static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
-> +static void __mod_memcg_lruvec_state(struct mem_cgroup *memcg, int nid,
->  				     enum node_stat_item idx, long val)
->  {
-> -	struct mem_cgroup *memcg = pn->memcg;
-> +	struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
->  	int i = memcg_stats_index(idx);
->  	int cpu;
->  
-> @@ -1015,21 +1010,23 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
->  	put_cpu();
->  }
->  
-> +static void mod_memcg_node_state(struct mem_cgroup *memcg, int nid,
-> +				 enum node_stat_item idx, int val)
-> +{
-> +	bool rcu_locked = false;
-> +
-> +	memcg = get_non_dying_memcg_start(memcg, &rcu_locked);
-> +	__mod_memcg_lruvec_state(memcg, nid, idx, val);
-> +	get_non_dying_memcg_end(rcu_locked);
-> +}
-> +
->  void mod_memcg_lruvec_state(struct lruvec *lruvec,
->  			    enum node_stat_item idx, int val)
->  {
-> -	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->  	struct mem_cgroup_per_node *pn;
-> -	struct mem_cgroup *memcg;
-> -	bool rcu_locked = false;
->  
->  	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	memcg = get_non_dying_memcg_start(pn->memcg, &rcu_locked);
-> -	pn = memcg->nodeinfo[pgdat->node_id];
-> -
-> -	__mod_memcg_lruvec_state(pn, idx, val);
-> -
-> -	get_non_dying_memcg_end(rcu_locked);
-> +	mod_memcg_node_state(pn->memcg, lruvec_pgdat(lruvec)->node_id, idx, val);
->  }
->  
->  /**
-> @@ -1058,19 +1055,13 @@ void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
->  {
->  	struct mem_cgroup *memcg;
->  	pg_data_t *pgdat = folio_pgdat(folio);
-> -	struct lruvec *lruvec;
-> +
-> +	mod_node_page_state(pgdat, idx, val);
->  
->  	rcu_read_lock();
->  	memcg = folio_memcg(folio);
-> -	/* Untracked pages have no memcg, no lruvec. Update only the node */
-> -	if (!memcg) {
-> -		rcu_read_unlock();
-> -		mod_node_page_state(pgdat, idx, val);
-> -		return;
-> -	}
-> -
-> -	lruvec = mem_cgroup_lruvec(memcg, pgdat);
-> -	mod_lruvec_state(lruvec, idx, val);
-> +	if (memcg)
-> +		mod_memcg_node_state(memcg, pgdat->node_id, idx, val);
->  	rcu_read_unlock();
->  }
->  EXPORT_SYMBOL(lruvec_stat_mod_folio);
-> @@ -1079,23 +1070,19 @@ void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
->  {
->  	pg_data_t *pgdat = page_pgdat(virt_to_page(p));
->  	struct mem_cgroup *memcg;
-> -	struct lruvec *lruvec;
-> +
-> +	mod_node_page_state(pgdat, idx, val);
->  
->  	rcu_read_lock();
->  	memcg = mem_cgroup_from_virt(p);
->  
->  	/*
-> -	 * Untracked pages have no memcg, no lruvec. Update only the
-> -	 * node. If we reparent the slab objects to the root memcg,
-> -	 * when we free the slab object, we need to update the per-memcg
-> -	 * vmstats to keep it correct for the root memcg.
-> +	 * If we reparent the slab objects to the root memcg, when we free the
-> +	 * slab object, we need to update the per-memcg vmstats to keep it
-> +	 * correct for the root memcg.
->  	 */
-> -	if (!memcg) {
-> -		mod_node_page_state(pgdat, idx, val);
-> -	} else {
-> -		lruvec = mem_cgroup_lruvec(memcg, pgdat);
-> -		mod_lruvec_state(lruvec, idx, val);
-> -	}
-> +	if (memcg)
-> +		mod_memcg_node_state(memcg, pgdat->node_id, idx, val);
->  	rcu_read_unlock();
->  }
->  
-> -- 
-> 2.52.0
+This is a handful of fixes for shmem/tmpfs. I sneaked in a related
+hugetlb fix that stalled upstream.
 
--- 
-Michal Hocko
-SUSE Labs
+Some of the stuff is more urgent (patch #1, F_SEAL_EXEC, truncation
+hangs), others are less urgent but still rather unpleasant.
+
+The majority are fixes from Anthropic that I cleaned up or reworked.
+While doing that, I found a bunch of other issues and tried to fix them
+somewhat cleanly.
+
+In general, shmem + swap handling is a nightmare. shmem_undo_range() is
+such utter garbage it makes me want to cry. I mean, really, WTF did we
+end up creating there. Does any expert here have time to clean that up and
+make it *actually* maintainable.
+
+The following things are still broken in shmem_undo_range():
+
+(1) Truncate/punch of a single page of a large swap-error marker
+
+We don't split. Consequently, read access afterwards will still fail
+instead of returning 0s.
+
+I have a fix to try to split (which can fail), but I don't consider it
+that urgent, really. So I'm not including it. Might send it later
+separately.
+
+Truncate/punch of a partial page can obviously never do the right thing,
+as we cannot poison parts of pages ...
+
+(2) Truncate/punch whole pages within part of a large swap entry
+
+We try to read the entry, but if we are out of memory that might fail.
+Consequently, we will not free up swap space and a re-read will not give
+us 0s but the previous content.
+
+AI proposed a nasty NOFAIL patch which has too many nasty side effects
+IMHO (allowing users to force-read pages and retain them afterwards even
+though memory.max would disallow it). This needs a proper thought. Likely,
+support for splitting large swap entries (and large folios in the
+swapcache, which I recall is under development  by Kairui). But splitting
+can fail ...
+
+(3) Truncate/punch of a part of a base-page swap entry
+
+We obviously have to read the page in, in order to 0-out the parts to
+discard. That might obviously fail.
+
+Maybe we should install swapin-error markers if swapping during
+truncate/punchhole fails, to at least tell user space on later access
+that something went wrong? We might affect unrelated data, outside the
+requested range, though. Anyhow, these are long standing issues and
+I don't consider them urgent.
+
+They need a proper solution.
+
+I did my best trying to test these fixes. I was able to reproduce some
+of the things (including unkillable truncation hangs), and the fixes seemed
+to help.
+
+But again, shmem_undo_range() is just an absolute mess.
+
+Please prioritize review of these fixes, I want to get fixes for the
+issues in a timely manner upstream.
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Chris Mason (5):
+      mm/mempolicy: charge shared policy nodes
+      mm/shmem: honour F_SEAL_EXEC when an ACL is set
+      mm/shmem: avoid moving the truncation start backwards
+      mm/shmem: stop retrying folios that cannot be split
+      mm/shmem: preserve data in clean folios when splitting fails
+
+David Hildenbrand (Arm) (7):
+      mm/shmem: discard whole new large folios on fallocate rollback
+      mm/shmem: rescan after nonuniform folio splitting
+      mm/shmem: fix truncate hang in large swap entry
+      mm/shmem: preserve allocation errors when swapping in large entries
+      mm/shmem: fix truncate loop after boundary swapin failure
+      mm/shmem: fix accounting of swapin-error markers
+      mm/shmem: fix truncation of files containing only swapin-error markers
+
+Eva Kurchatova (1):
+      hugetlbfs: enforce F_SEAL_EXEC in setattr
+
+Josef Bacik (3):
+      tmpfs: keep the quota soft limits of an unused id
+      tmpfs: preserve explicitly disabled quota limits
+      mm/shmem: hold off eviction in shmem_writeout()
+
+ fs/hugetlbfs/inode.c  |   8 +++
+ include/linux/memfd.h |   9 +++
+ mm/mempolicy.c        |   4 +-
+ mm/shmem.c            | 170 +++++++++++++++++++++++++++++++++++---------------
+ mm/shmem_quota.c      |  28 +++++----
+ 5 files changed, 154 insertions(+), 65 deletions(-)
+
+---
+
+base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
+
+change-id: 20261025-fixes_shmem-2782719b130e
+
+--
+
+Cheers,
+
+David
+
 
