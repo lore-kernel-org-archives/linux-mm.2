@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7AE606A32E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4CE606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oYkOuaEL
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UNbUEG/S
 Received: by kanga.kvack.org (Postfix)
-	id A50FB6B05F3; Mon, 26 Oct 2026 19:28:54 -0400 (EDT)
+	id 632BA6B05B1; Mon, 26 Oct 2026 19:29:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A28916B05F4; Mon, 26 Oct 2026 19:28:54 -0400 (EDT)
+	id 60A186B05D7; Mon, 26 Oct 2026 19:29:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93E096B05F5; Mon, 26 Oct 2026 19:28:54 -0400 (EDT)
+	id 4F9776B05F5; Mon, 26 Oct 2026 19:29:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E3816B05F3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:28:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF265A0917
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:28:53 +0000 (UTC)
-X-FDA: 85366369746.05.8E020F7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BF4F6B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:29:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A4D71C429B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:29:12 +0000 (UTC)
+X-FDA: 85366370544.29.CE07AA4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2DC67140006
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:28:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oYkOuaEL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id B77C4180003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:29:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UNbUEG/S";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793057350;
+	b=zRNsf2RiIFPOV+vxn/N9XzGFVjamlSl273SvpJdBwNUBgVsh+fruFCJ9Pmw5zxK/4TxO2L
+	PHV+eGq1LKaJizpK2PwxhPd3bEYi5DkDtaTQ97/FL0uptWbqNUzWA8pN4B1lGbwP5YnLTA
+	XrIJWUL61aAEZe0Hxbi8ElAyyHLf7to=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UNbUEG/S";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793057332;
+	s=arc-20220608; t=1793057350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gF7dfVW7ww5vbIAncWUWYvaJygRoZ4DG20xiWs3pPy4=;
-	b=mp79k4PnnMtPW/adR6A5+s8F16XB43bLhjq2puMe856bO0PEhv8PtPvylID5+5/gqlkUh0
-	mO4yMNF2cm7pbXa1befiIGSMqAqWxCiG+rg3Ff0wn4kg31M9dBedcVi7qbkoA/FlYV6std
-	4VnR9DYGGkdgKjtWvf3dMakzdmBldbY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oYkOuaEL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793057332;
-	b=XEBxk2GrcZbeU/Ekql2LzCsZUC/Ki/o31DLIUqJTt711gZ8U2+IVfMDHHLgHFK2n9jBvyz
-	KCdHMb9YdjrXKnaia2VzAFgo1CJYsN98HjAuL/A7f7+9siqhs/rxFbbdRnwXHX50i4U3i5
-	Taemar6CXw4hF+kzM1g1AmDrPHqPbp0=
+	bh=OoFHaYBhm5BDHRt4hk2dDlai0Lu5WpyAocva34cAfYA=;
+	b=jBdZ20HBT3lfXQu1Mz1yZGtRGsdJmK4qQNmcoaD7b3ub4lOAXDGst+gRHoUSiBBqTUJqx4
+	dW93bgyoEun3nqHsQwK9BKX4gHae2vb9Xl7Awv7qutxL8twE2/y7V9Kc/FKL9ieR91u2K+
+	V0OdB35mL+RP9u1ZmGNugLe8bnSJ/WA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C7A9444F1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 09B454146D;
+	Mon, 26 Oct 2026 23:29:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0091F01825;
 	Mon, 26 Oct 2026 23:28:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF101F01828;
-	Mon, 26 Oct 2026 23:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057331;
-	bh=gF7dfVW7ww5vbIAncWUWYvaJygRoZ4DG20xiWs3pPy4=;
+	s=k20260515; t=1793057349;
+	bh=OoFHaYBhm5BDHRt4hk2dDlai0Lu5WpyAocva34cAfYA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oYkOuaELaYMUn17YBdlpQyUseXxC4wzgiNnmDJaOQTYshvN5UKt+eOpxgTs6OFsxO
-	 irMDteaP8DmEIM3rhJcEOqcTu332c0EkcHZETz328y29O2fbdk+g0ZFbQAEefQ99Te
-	 TPiw9Y3vJv79FrLCvRwXbSvKBfgiLZijII0zrAyFBAOCbu4l1P7wowb7pkTHIntZHC
-	 Qo4FTDYJEtsdK9kUbjP6LyiotCNfu+HkqWY3VIX9YwVY0oulNyftXZdvydxGWYsJhF
-	 glBeBeUDY2xyh7jPwJD9ALhbgDfPl9Ej9TheUjtZTpWni9hCMhjzEJEpA8qTcqoQya
-	 adO2jQ9DmgIjw==
+	b=UNbUEG/SujRxvLabLs1Ob9p21oBhi+rGXvfUKjqMDQc12IUiZnwmTDApSDiN/doHK
+	 Htp9Ipsw+SQp+pFzIORI8kLx2XLdu4rOahJ0TPlelHfX1GJ1qLDkN8+N+aWCn8WCds
+	 tZKLfzo3kEI2Ic5a7yAs64WNXkp0GQ9463s7JB2V/ciJHVqOo5idW1iS2SKYE4l3o+
+	 mmQ3vIfL+tDLHRHgEyxeKpggddER2NA819TKZnVHtRhi+Sq3NPEIiR5ET0FwgZX6ei
+	 fEZXbzJhICbnx1enS+A8NU5WTSrME8TXg/tsHJn7ecpC43Su1OH1tQwLJM8cp/lhBz
+	 YEOm5b5Nlxakg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 00:17:55 +0100
-Subject: [PATCH 35/46] mm: fix unmap_mapping_range() beyond 4 GiB on 32-bit
+Date: Tue, 27 Oct 2026 00:17:56 +0100
+Subject: [PATCH 36/46] mm: fix unkillable fault loop on MAP_DROPPABLE
+ memory
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_core-v1-35-6f74bec9a5bb@kernel.org>
+Message-Id: <20261027-fixes_core-v1-36-6f74bec9a5bb@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,30 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2194; i=david@kernel.org;
- h=from:subject:message-id; bh=yohgL4i9AjCKZukx2CMHvMiMRro+7y2Mtk1tuDA6CqQ=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu359uMWti+vt6tyzNqsIFL978VPj9+m3+/xAF/UNbF
- O1m/efm6ShlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAi3wIYfjKeuiChaXFpBi9L
- y88Ne++/nanp0+U/z/bhwwsuQVlWqpIMf6VXeGYpJt/pz/YO87x+1KhG2j3HwqvfzPD9RNXVTlL
- SjAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1689; i=david@kernel.org;
+ h=from:subject:message-id; bh=pzxM/cFKO4VXQWnP1gi4l+XWqAOEVbNka7bwCiIYBW0=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu358ufnWFRtyuxz0v7f0W/Xstsp+rpij0whZOtoAdj
+ O+fvJVI6ShlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAipR2MDJPYqpQSJzxd+VjV
+ Sur4qftq4hcCTkXs/XHuWWzbsvvV/zwZGT7UT1FdZiUx0a1TNyc2/fYVjS1HumMsfZ2tf/o2Fkz
+ IZgcA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2DC67140006
-X-Stat-Signature: n9h7h6i43zkifuxkgu5etzt4nw75rsss
+X-Stat-Signature: asj6iw7ay1yyif6mcx76uqit4eckr5am
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B77C4180003
 X-Rspam-User: 
-X-HE-Tag: 1793057332-451290
-X-HE-Meta: U2FsdGVkX19Vb1gM/Cb4/pLDqZkaNCtCuqqY5TTdUptF8YltSci/TshoZhVmHHr01Dvk2ixbuP0zWA44LElgvOKNPrYXQxNMYN3bnptYfF0RCe9ZLryJLzVW8ewMUxEdsOtrzFJNRCWxbP+4Vrxs/G7vX5eqEdnTXtN+TeZwy1AfbbvCc3ucXmvbBPg4tLnsLHxg4l5ZGJ4/IgDgERL4LDEw1M0q5GJQ3L1rQDPwqs4FHw3iLYm7foMpRnTLEpdFOBBPzje8THq7f9LgpzgDcc9Uksr/t1LAwLmQA9UKf4yTVZNUFc8b2t97DgwGnxl0zK8auJtX70zpGZvFZ7Fzstn8NC4ut/tbB7oAogMbv4m6j7BxAQXQ9tDyA1SafMtXENBkjVbBWSBN9TIEfoymTaVQSQqEnJxR3oQxQHj7RogbMFl/FK1xK/J0BU2zwkOAp5WEo5V/UN3w3Ncw33o6QrOY8V3mYEFFs60kecOIwo+6+6FUsWEPGFSmti9IvoSGXxR/jwGuQ/hjB1sGDg2SVg8Bdf+ETURqpiWtjM0YiR+Asvb3i0AGaxJWgaXWXGpp2ta0CvZYE+hfyN8O0fhE8DzWaA8Yu7Yz2+8ga2SruS5+BswKuh526X0blCE97FWwbsyPYq1hZRsLPOHw76aOREWKwLaJzXLgehLM4jJ5HDTpQ4/RPV0HlAVK2vXxvcxuimwMCJJH+kjTWB7oAGkZ0DmgINVAbOaVGBmntECXZb1o/lrVhyBtivDAFgPKTb29kOOBVHCCApJmKeBNTWYBAqwB85p3NmZbY88D9SszMb5Cn24fNbN0+P6aYTGyplxrwEm+uzuJRxG1RyFI/HvnKVO61RkF3En9YlRfEfWiD5zecpV1ZdzfrQTGojoQd/mD0WNHSrEA/fHLemB1xpVMZOjIbVW/E5UOP4CsTShk7IVq0c8J8p7WKN/PQ/VyKvHBKTP7vnxnFFRQYp5Frao
- WdXRbRfh
- Sj+ZEzwpNzMtna3p/HQX8CDyqdCKAb+lrBqIA9xOiDwjuNj5iiFlB5zR8VgAzzbS/DkCNF1q7Fuyslz7baLGHlPT6+iU3hxtmIE0rHgjl1I7dZsYLDst0T+NnSSnNIwHVmKZv+QrxRLDdFN4XdcBX4ivm3TeSCwq9UJL509jyrx1lHCTUfl+5fAbuB6ihTlZQcUqyOYloUhKtWEIW4xoYizbHH+X39UjPU54XO0LcthwaqYHKw6cdTl8kGaXy46HzhuNysv/Gp2J9FKKcJlXS3MlMSgrEfdb73hnN2Y3zW7cVuIk8uWz74zO41hBRMYbg8YqPkBxPvs/Ry+srgEDs3nwdQdVzdQ4ue1jfX2XSsHg6s/40va8UivklK4iHXNR28pcpqZ0ddeAJxKqbJQQWr+YKMmDT/27bcRlrZrQViyVq8Ww=
+X-HE-Tag: 1793057350-557894
+X-HE-Meta: U2FsdGVkX18gA6FfysvSgpLe6Qvni9JrRfaG+I8vzF3k8sniyhDL3c3SAz3sO92/D2a+egREHPzdvjoxKFuksT1oKHTqErqhdN2RsuniBNGiOyM5wBF/wKLKAEBmEhKK3ySuyX+TN+mWI5cBaBqTQRzY6Iu+3O4hXQC2XGbsOBIBdlCK53/QkzwsFUrcWljfDOgs6SQ640Z+IiHFMVN6Ra9IUmP8TBttNTcWJRmAi/MDe8TzYdRwGrqX3QFjo2G+OV9paxhEppMmDhyyvJScgoOyf4/1m0kNek/iTMCjkiE1k8K8S2yZzWqWBGxn9nOUXPABh/EQ79BOrPXN1KFNZmXrNhYsBNTX29vMWde4N7VpDtVGSwZ72WcNtoRJkjNh8mTmTkknn1MVGYWMJ3XRyu+6F5pWf17U7kt0BL4aPAvQs/UmAiD2a8huCyTKG3FS2Y6WbJOew8z6B2BVGtFqCKIHY75pyGWG285KpFXYFzp3wf86QQWHEgwZppKKnMB5SfBhzk24igefMxnOy0uQXhMuE/dsXC3wS5xSpc0biiw5rgY5q8hDSzULLPdwAdOs6vzG6b4sn7DMefYhGZZMiv8gp7kxr0PHSRbt67dxbdPVBbk27yXxqZ8KEPjFV/+C3LGJFqwSUNCyfxS6vBFcM5KBKviOGoUWrMG3nz9/mxlN6G+L5bzXf83rBP0e0vEGv2rSTYmfQqmSoaWsuxKzkEf9lxizG602hQ/OriiNJX135hgbcfrkp0te5+o8OzasqhO+NYe7EiIsYVDwPeHauKRJabDk23Dpc75+hI1fVv8HtqZVtyy8pThUWWQN10PlcTbIP7NIBMU7A1W4gHLjN7eoIcOA6RwsnjkvapmYkAMmp5DvLGz43q8H+OOpF3YBpTuaoiJC7B2AWRzMPQKCyhQ0azlCydeNbx22zczKdqdcSwc0rqfD8KD+kEsw82+aDOq3T6kdnqduMxChOKR
+ +DmW4ilT
+ BzQoRJXJQurFLEEupTvzJyO2kowJ4io+utFQ1P447qpvGVOtlBu384yILJgKHdA7cKT38xgoOLRYMLdF55dblFwON1OrJ39SIhDAmI+0iSAFxzRp6dvV/iZ9lplfwea7FyCdEu9x6R2Z3ybfZ08JOyexNunbuWDYOx0PWBCBXhXEKRB6Naj/LpCr97dIGs0Ee7I+jIFDTWXIG7v4KXKrI+/qyYR7zLR8ajX3Z8pIiC7xzJzECal6CH5phmpNqniMS741GnGS+cAivxpvohuR7/lY/6SYW0hbMpyVzM/NDZr+MaBY1kFBUVcLEr06yTKMQ14LlpJJlgALNLpEHZWiK3M7Boa3HF8cVR9/0quHiNM9HAUs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,55 +139,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Chris Mason <mason@kernel.org>
 
-Commit 9eab0421fa94 ("mm: fix unmap_mapping_range high bits shift bug")
-made holebegin and holelen unsigned before they are shifted, by casting
-them to pgoff_t. That is an unsigned long: on a 32-bit kernel the cast
-cuts off the upper half of the two loff_t values, so a hole which begins
-at 4 GiB or beyond is taken for one in the first 4 GiB of the file.
+handle_mm_fault() suppresses VM_FAULT_OOM for VM_DROPPABLE mappings.
 
-truncate_pagecache() passes the new size of the file and asks for private
-COWed pages to be unmapped as well. If a file of 6 GiB is truncated to
-5 GiB, everything from 1 GiB on is unmapped, and what a process has
-written to a private mapping of the range between 1 GiB and 5 GiB is
-lost: it reads the contents of the file again.
+For user-mode faults, pending signals are processed before retrying the
+access. Kernel-mode faults on user buffers instead return directly to
+the faulting instruction.
 
-Where the range has an end, the wrong range is unmapped instead of the
-right one. The page cache copes with that, as it unmaps every folio that
-it removes. The callers which only have unmap_mapping_range() to get
-rid of user mappings do not, for example drm_vma_node_unmap(), whose fake
-offsets reach beyond 4 GiB on 32-bit, and revoke_iomem() with physical
-addresses of more than 32 bits.
+With persistent allocation failures (esp. memcg limits), a syscall,
+such as write(), can therefore loop while not dropping locks.
 
-Cast to u64 instead. Nothing changes for 64-bit kernels.
+Only suppress VM_FAULT_OOM when FAULT_FLAG_USER is set, allowing
+kernel-mode faults and GUP to fail and signal allocation errors.
 
-Fix generated by an LLM and sent by Josef Bacik in private.
+Fix generated by an LLM and sent by Chris Mason in private.
 
-Fixes: 9eab0421fa94 ("mm: fix unmap_mapping_range high bits shift bug")
+Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Chris Mason <mason@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+[ david: simplify description ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/memory.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/memory.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/mm/memory.c b/mm/memory.c
-index ec7a1397ab833..5c5f326b8bcbe 100644
+index 5c5f326b8bcbe..230a2f4dafa13 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -4649,8 +4649,8 @@ EXPORT_SYMBOL_GPL(unmap_mapping_pages);
- void unmap_mapping_range(struct address_space *mapping,
- 		loff_t const holebegin, loff_t const holelen, int even_cows)
- {
--	pgoff_t hba = (pgoff_t)(holebegin) >> PAGE_SHIFT;
--	pgoff_t hlen = ((pgoff_t)(holelen) + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+	pgoff_t hba = (u64)holebegin >> PAGE_SHIFT;
-+	pgoff_t hlen = ((u64)holelen + PAGE_SIZE - 1) >> PAGE_SHIFT;
+@@ -6957,8 +6957,12 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
  
- 	/* Check for overflow. */
- 	if (sizeof(holelen) > sizeof(hlen)) {
+ 	lru_gen_exit_fault();
+ 
+-	/* If the mapping is droppable, then errors due to OOM aren't fatal. */
+-	if (is_droppable)
++	/*
++	 * If the mapping is droppable, then errors due to OOM aren't fatal: the
++	 * task returns to user mode, handles its signals and tries again. A
++	 * fault from kernel mode has no such return, so it must see the error.
++	 */
++	if (is_droppable && (flags & FAULT_FLAG_USER))
+ 		ret &= ~VM_FAULT_OOM;
+ 
+ 	if (flags & FAULT_FLAG_USER) {
 
 -- 
 2.43.0
