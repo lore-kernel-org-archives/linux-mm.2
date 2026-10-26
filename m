@@ -1,141 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883AC606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9431560A2616
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=eCinZKry;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=c7Cedkm8;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=eCinZKry;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=c7Cedkm8
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QzUhuz/y
 Received: by kanga.kvack.org (Postfix)
-	id 96E7F6B05B0; Mon, 26 Oct 2026 17:49:19 -0400 (EDT)
+	id 99C466B05B3; Mon, 26 Oct 2026 17:52:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F8D66B05B1; Mon, 26 Oct 2026 17:49:19 -0400 (EDT)
+	id 94C736B05B2; Mon, 26 Oct 2026 17:52:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79B676B05B2; Mon, 26 Oct 2026 17:49:19 -0400 (EDT)
+	id 814EE6B05B5; Mon, 26 Oct 2026 17:52:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CA256B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:49:19 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF93D16083E
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:49:18 +0000 (UTC)
-X-FDA: 85366118796.13.2130E1C
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 52EB7A0003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:49:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eCinZKry;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7Cedkm8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eCinZKry;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7Cedkm8;
-	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B2D56B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:52:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2DD69804D5
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:51 +0000 (UTC)
+X-FDA: 85366127742.04.053D30D
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 824F540005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="QzUhuz/y";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3r8vfagoKCCQJTHOUGHTONGOOGLE.COMLINUX-MMKVACK.ORG@flex--jthoughton.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3r8vfagoKCCQJTHOUGHTONGOOGLE.COMLINUX-MMKVACK.ORG@flex--jthoughton.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793051356;
+	s=arc-20220608; t=1793051569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
-	b=w/0xDQmEIjh0RjJ+oC/jhtZelFH5dXcq+XcTq2tLDOGTQdK1BdgkDIUx2ZsHWWTd7MTX0y
-	esaWElN6fQUiHX55ZwI7qhllbdfmwDCqJBNcNcm5cKrfy8s2yaEPmzhWFYRUg8OWOtfvJm
-	4+QUUJVkdQZ6+cCO45jDmqaEBbcd10Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793051356;
-	b=q+nD/qw8/uvD8HC5KTqqHXZRS2o0xYm84y7aM8jbimphcYriUDh76taeXldw1WcCrrbsbk
-	KWljmCQvI1WSSK9IdZHdd9dKFh2evF/vmzQPMfBKFCvCzRbH/eo7DBi8HDxBX0YUZcWXa+
-	ul7SspustuFgkr7R8UH7haZipls88+w=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nNWbrH52AzRslkHtbLVib7oaB3pAEHtIJlP9l4sYI30=;
+	b=Z/5j3ChfmPWU/vz3L4kKJCUGYXRzB5ZvhrIw9sOR0hlKYgltJznHoy0rbeosnlb84Bj0U7
+	nQTUBRJSmLuVwH66lYr8ISjsTLI8Ht9cWkT4r1K4wqj1O+FJcMGlX3ws3/bVuhNcHp/wsQ
+	R8Qto94IIc0wDrRpS4/IZXbuQCeWYc8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eCinZKry;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7Cedkm8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eCinZKry;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7Cedkm8;
-	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9F2381F395;
-	Mon, 26 Oct 2026 21:49:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793051354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
-	b=eCinZKry9BdBG2Tuub+XI9hK94YcOOBUoAy5NiqDtrxCIfhiDCpKBYosrzHbGoQPdqVcVF
-	/qUyW0flh+XLgtYLcWFiEdoa2BT99gfRo3PcAl738bcEs9klDFkXP6z2X4Nbo/EaPFu13F
-	/G1VPtqe+OHGGNMTOwe+xOIuqM2+o+Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793051354;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
-	b=c7Cedkm86DrLmBhaRecl63q8E2NQXs91lGx1midza1J1rGGNKflLD0QKxcMpGk83nRyC0X
-	IUBu035ZLkrDe3DA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793051354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
-	b=eCinZKry9BdBG2Tuub+XI9hK94YcOOBUoAy5NiqDtrxCIfhiDCpKBYosrzHbGoQPdqVcVF
-	/qUyW0flh+XLgtYLcWFiEdoa2BT99gfRo3PcAl738bcEs9klDFkXP6z2X4Nbo/EaPFu13F
-	/G1VPtqe+OHGGNMTOwe+xOIuqM2+o+Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793051354;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
-	b=c7Cedkm86DrLmBhaRecl63q8E2NQXs91lGx1midza1J1rGGNKflLD0QKxcMpGk83nRyC0X
-	IUBu035ZLkrDe3DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D9BA13408;
-	Mon, 26 Oct 2026 21:49:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eRk0CtrK32pSBAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 26 Oct 2026 21:49:14 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id CCA06A1419; Mon, 26 Oct 2026 22:49:09 +0100 (CET)
-Date: Mon, 26 Oct 2026 22:49:09 +0100
-From: Jan Kara <jack@suse.cz>
-To: Andrea Parri <parri.andrea@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iov_iter: take an unsigned long segment count in
- import_iovec()
-Message-ID: <yb2p27fkrqamzmzfwqbqjwsxhw7cdlpgjzc26eqtimw2puhxrz@mhrjegarlm5a>
-References: <20261026180619.4147910-1-parri.andrea@gmail.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="QzUhuz/y";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3r8vfagoKCCQJTHOUGHTONGOOGLE.COMLINUX-MMKVACK.ORG@flex--jthoughton.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3r8vfagoKCCQJTHOUGHTONGOOGLE.COMLINUX-MMKVACK.ORG@flex--jthoughton.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793051569;
+	b=FS+ODTMxj1LE+e5jgxxX5Rp5IIWY9u5pG1FvJJgGxmIkd9LWBoi1537jFByRz7/qe9AOX6
+	zHI7A74ifMHy53PeFVnSxl+bw+VOXFob2IhsOXri8AYv5KM80E2ZXd4TOEx9icTdeQoU0g
+	ndAEFfCTwuYt90YfQQhSHkUaTY/POlg=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3abfcf726dcso5158959a91.2
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793051568; x=1793656368; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nNWbrH52AzRslkHtbLVib7oaB3pAEHtIJlP9l4sYI30=;
+        b=QzUhuz/yPthToq2sA2hwm0FNBcHrzDqrfIAg4Balx0CjThPgfxJoD81Rjt1YQowdMa
+         hqEBH0t6Iq3lPlr8uCPDPtHqPGl0klYm2WQDueGJEshll9vwbWeN7QjNg1+aeWiGwAiR
+         7O3h9sik7Aa7ojQ5mR87QCnOpdXkCqY0zqFyUsR1VFGNsYIfO7C/o0yCG3xOep2fqkSm
+         aeTOSc4QUcGRpqW3BTRwGfpcaQnPUfZWQIr044AHpik3eraahi60nnMOr3I9j7qreRm2
+         hp8gKJpg5qCIeOT7cZY7iNRA8hM1Q+dxD+AkOARjTp7f/cykhQ8lRYoZV/gwHTiZcjUK
+         AXwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793051568; x=1793656368;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nNWbrH52AzRslkHtbLVib7oaB3pAEHtIJlP9l4sYI30=;
+        b=Yp9dupFHBlo9l5/iROPbfMxFG5AK4geD/qVWGKcwq6v6sCLtQsqjWD/pJLevISr6Bj
+         bqZ2NZtQ/eaMJJvixqTatPN6ALOWCu6/jKkV9J0Obuw5US3SaA4134PSgN35dqe5d2mO
+         271Il+3IcOT8kWrpiz7Nf5POjWEo9KiEu3V7nmx9FvnUj1vWHcClvLBdgL1SEbeVJ1h0
+         3JmSCLg0gdzRDn2Ix2gp2sFgt4KUYl/1VMzAPbsLRLx4ZiumAfO7KEsr/mly0oz0S7Oe
+         8mXGbBBhgpE/3w8saP67okfG2DgKmzTiUOoooXWTGmO6Z/L+0UYUR8vdWtCGYHqSm0LS
+         iHYw==
+X-Forwarded-Encrypted: i=1; AKwUvBzM0/8Y3mVAAw676gViyJCMv72I/HgTkQbVA0iDHibzeeJNfUBhSwCFl6WR1s0rNgJTp4FIU1PQKg==@kvack.org
+X-Gm-Message-State: AFq9FYJYpggfuW5aGaNyJo0WkCENWi1DsVaiz1R0xDdYWkbuJ4BSyW+F
+	LseDiaAZj4/fdw9QyEZOkMjJP0fq2o+wxT8MBRCSb1hXss8ClzsFKUS3H77yKVgH6pB8TsqbauX
+	4eHqGtqikoeG9HXgv7R5AsQ==
+X-Received: from pjbfa12.prod.google.com ([2002:a17:90a:f0cc:b0:3ab:c012:2f80])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:280c:b0:3aa:ff19:42b8 with SMTP id 98e67ed59e1d1-3adead4792bmr6561021a91.27.1793051567868;
+ Mon, 26 Oct 2026 14:52:47 -0700 (PDT)
+Date: Mon, 26 Oct 2026 21:52:16 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026180619.4147910-1-parri.andrea@gmail.com>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -11.51
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 52EB7A0003
-X-Stat-Signature: kwttz8oye1k6qqhbdzxyt7m5zrsqepx9
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261026215226.3713941-1-jthoughton@google.com>
+Subject: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
+ current->mm is NULL
+From: James Houghton <jthoughton@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jim Mattson <jmattson@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	Pavel Begunkov <asml.silence@gmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason <mason@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 824F540005
+X-Stat-Signature: n134q6j7gb6o6hq59pewucjyexffksnu
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793051356-654506
-X-HE-Meta: U2FsdGVkX1+GQFHjGL4t7C/LwSGOESoAB3fHF/Jidm/hhtT3VZpl5A7MFTEGmRqG1QZwyUxnF5FSMVWYoscZNFGwmaIIOjTJ79h3cJ2DvfF3WVx10ZV/7exsh8tQNaXp/pBw9p3JbYk5qQw1uHZS26ufAlUkkcATVIR0MwFtCrZfwgUXPdMQ4Esho6JD1TW8pbpxCMZgUQozghObZkg+epDTm2M5J8gp6pLxNXAhy09+gaE4FRQjfpZ4ohfFlBISRNi7NfBfiLVJ6z2HxiDe9Q0NMRVMvojHzSS8y4gqWsZ+kRep4dSIhPjwyMW+W7UiWx7ZisxR7MUruudsPdLlhOPuBK9zZeF2coR8qxv/GpqIhp1Dd3HMkBIuXEhQmdSr5AZ5cM/RV3BOlCM31luSfu+MAkXnNf0/Xu3Gv8FHOLE78sx/NFPKv+2F7hRAbHvdLq74CYNmGA/fBDBIjs2hja3mNj0Gz0k+B3ixKMtOg75pVD/6TaueagWNIs3u00XFbqUkIEud3Gl3lO0kvBZbNhGc/eBM6aGMfXheavGce/WW6l/xM7gH+rSEUthu8RM2d8ICZOv+uVwZKHjSLj90VOfg/KHiyD+NDbRV4xiv62sw4mr5vpErQCF+1FmU34Q32uIBtIrYVo3Gt7di5CilB79w7dtFoiambhZ5s4lKmsZ7ly9a+rSf/hScbKkSuDCTxDuxrd2dNbnshuiENRl8oTiVheLfdHCnEEmKQmFk9XlMXAMOVTX816iXopGv2LOBrSaPkrdY15JZBET8MPQwF1p4lDrrUvdD2SA9DPff6PxrXn3SS6VkHAJL+X9J8FKVPWLB3Z6mCnjpzQXCLDKJ54PkXWcwv7HDd4rzkIYkpP2t34VLxPUNn2iR5wr6EktMbc71GJKyIj0EiU/XPtkvpd9FvGtoZeXOXGUySFquUpjqSPt6AJU2xdp7Xfz3lKYyUGyFFYhuRI/f0OkARcw
- libPqAiJ
- YqmFev703ZaC3jNXGzZ+6HjDS8b3EvMoQzqB/LV8cA5BioGWdF+ksP4Ih/aF0KeOH3B4MbezFPiC8ttq/WRvvefq5W8J+p24Qvb3Bk0hf3ms+iK1dGFjs522+pAewZ0TTkxpv8RwsNjHYTPaywqq109FYPoYD+jcE/xKSevOPF9Ugc4wSvaC9EXksM+8cK2uW0c4UqCV/NQVLqC9kQmdFd07amaSnJVNO7DWRJpPik1/ClKC2QJb6RrlCKRpEzh4h1leEUYGUNLE4P53EKh92IW+RJX453kBD3qhN5Gyw5Hnlf3ANHeAtCkm0xet828HF72p8YREaL5/IOst7fiS7Yy9Rq8QOOOm9Paw65UjJhJylOMgX0sTXPMejnuVGOwzT03DZx++1XC9ZOBEaqZygXrolSxKbx24idOWZPO2fAS3EpPBHDoc1NvkhvVMq/gr/iiXWukkKttNHXdUek9LVRwc1XgYgOJqTBvZiR4uyo/vzXXE=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793051569-417520
+X-HE-Meta: U2FsdGVkX19PpgunDh4rD2dVGtJXMR1acEmf9yaeNUYm9YneAlaFgf2FkdGPCzKoYd55WYYoe4hpnpp8pNGmUB62WE0UQeq/GUdkDPPPHEyOCQb9WeDgrxtwBQWqM166ajGM3Mg3gZL91W4HWgIkCnL9OVvx1nQ2OSeBtYXUDozq+ziCAiyJzqo+oiT201meRIl18uClaW9zjhkuC/CIT4T2RhCTvcO9KLjMM+tJeYtn4gEdhuRuvgXtBVv8/qWGSYMZocH9e5QUwMCJVkZdF1iSbPZvYQzcKnq3bbx2giZuxNGaw5daToZVAWf392fZ7uPEOmEgcPtpXfX9dfE1h7yGeEffsyx7F4pdsYAVokzQ6AfDR79IMbkcovMiH/AaDFpM5xd1MmNwhfrUANdQA+fTwZzd/KR8QnZ1YjlA2ntu8Mhr91spLGvh62Oxq3KnirDWMVXvkh4DUmGddDrfmdc8rjC8wylkqB650IpQyp+3ufRfF6bWQv04J0YjywVKKlGk7v9HtIcmfDP18oA+bozMahE5EdwIgfB2Z2iMmBKjrpL/e5NQB2b4oVOOG6CBrfEypsgXokBWcg1f793NsnfhML2xY1eVB9xl5Fx9OLZnf/w90neHJeZNdM71SDZ3k7BR2py+S4Han7MDVgKXzm9fYOVhxLJ7Uvv8meDn6cq9Kb0NtMtFnMQR/QoZy/piJ6ScqM9yal4tzFAIapo3hy98QSH7L1OaYEIx4VxVHD2nbPTD+O+g9Clr/zJl9s4lVbMiWtv1z42lC46af3j98v7Jpq+Jjng3EvU8l7H5OAGpvnDjoqiHr9ENPeIhUviin1GdoiMM45vJT2Q5xLEgFz82Bj8yxUBiK673nrY9sjQ+CyRdQy6NNqhkrVKHUWHplya1rsRjYU34zMPzdwbY/mW3fKNSdSq7qpmoV1rM7eJZfOlBHGycLsMJjxuD7lrckEco5jsWjTjBsu3XFYx
+ 1HF0gE7J
+ FDelSlaJvcHCd0k7w3W6au9tog/Ni6JgL4H6eiIgC1MC5KoCsDdRRVmiGUHwBEGtVqgUf98v6SOGrp4Jz1YXmHKuVGCL5SMODWwmpAKICHuvuYEUY6qeNQajgeP3SYEzWsuDI2ElJTGsL/9QK2HAux+4Ggm2ZOVrGigRI5mUsB/WplT2p3145KUO2MdTpHbO0RjuVoxGa2ZWgARcTmFDoYqzoQx/53Y1/pyYc1CwantpC4ywbR9TZFJXFoAXasEkQ3FR7UjRQKgQwtVbY0sS+ooXXSEMLDIbBCT70b3r1kFbQ0MRSkUFh/zjKEz6oaYj9Vahxe7XnJ7B9qonutGXuwMJubeFA2ZXm/qZby7m1AOvEFP8wGytXwR6Ip7Lw2nZAfwmKy9qtVSSrYapndEmn82ij3I2s2xwappYa5WewSvL2NvcQdc4FCA471osO72Sxm2wQ+/3yOz2s4uo2ij2aQznUFICgVNUNTzwJxq6zKScFRjbGwureY4GiuN92o4MtEemmfb7x+Wnjt+jnbQXlaStb6oGRxkeisWlvJl7js18+MgJbOC+amE+STQJLfOfx8YOG1u+YvDa7QK/SCbCUhvFPIJVOuFbitcllIgyecnc+h+RJs/3dr1qbPmLJ+k0EGcjOmzA3rm2uGXL5QAKF/OFjijKcR6QKlBR0DzgCO0pJfK0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,145 +126,198 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon 26-10-26 19:06:18, Andrea Parri wrote:
-> readv(), writev() and their positional variants, process_vm_readv(),
-> process_vm_writev(), vmsplice(), process_madvise(), vectored aio and
-> the btrfs encoded I/O ioctls all take a full-width segment count, and
-> all of them hand it to import_iovec() or __import_iovec().  Those take
-> an unsigned int count, so on 64-bit kernels the upper 32 bits are
-> dropped before iovec_from_user() checks the count against UIO_MAXIOV.
-> 
-> A count of 0x100000001 is therefore imported as one segment: writev()
-> on a pipe writes a byte and readv() reads it back, instead of both
-> failing with EINVAL.  A count of 0x100000000 returns 0 as an empty
-> vector.
-> 
-> import_iovec() was added with an unsigned int count, but the helper it
-> wrapped, rw_copy_check_uvector(), took an unsigned long, as does
-> iovec_from_user() today.  Until v4.1, readv(), writev(), preadv(),
-> pwritev(), process_vm_readv(), process_vm_writev() and vectored aio
-> therefore failed these counts with EINVAL, as did vmsplice() until
-> v4.18.
-> 
-> Widen nr_segs in both import helpers so the UIO_MAXIOV check sees the
-> count the caller passed.  Callers with 32-bit counts are unaffected.
-> 
-> AI assistance was used to find the bug, develop the fix, and run the
-> reproducers.
-> 
-> Fixes: bc917be81059 ("saner iov_iter initialization primitives")
-> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+Hi everyone,
 
-Looks good. Feel free to add:
+This series comes out of a set of bugs that were found in KVM where the
+kernel can sometimes write to a random process's user memory[1]. The KVM
+fixes at [1] are still required, even with this uaccess series, as noted
+by Sean here[2] and below in this cover letter. The beginning of this
+series includes fixes for similar bugs found through static analysis
+with Claude Opus 5.5. I don't think any of these bugs are more severe
+than the KVM bugs[1].
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+We hit one of the KVM bugs in production, and it was challenging to
+debug. This series makes such bugs, where the kernel is doing uaccess
+without an mm, much more obvious.
 
-								Honza
+The Cc list is wide because the fixes at the start of the series touch
+several subsystems: SCSI (patch 1), btrfs (patch 2), BPF (patch 3),
+tracing (patch 4) and perf (patch 5). They're included because the new
+warning in patches 6-10 would otherwise fire on those paths. The core
+uaccess change is in patches 6-10.
 
-> ---
-> Tested on x86_64 with virtme-ng, base 734bef548a96e vs patched:
-> readv, writev, preadv, pwritev, preadv2, pwritev2, vectored aio,
-> process_madvise, process_vm_readv, process_vm_writev and vmsplice with
-> counts 0, 1, 1024, 1025, UINT_MAX, 2^32, 2^32+1, 2^32+1024, 2^32+1025
-> and ULONG_MAX (LONG_MAX for aio).  The base kernel accepts 2^32,
-> 2^32+1 and 2^32+1024 on every path; the patched kernel rejects every
-> count above 1024 with EINVAL.  Also built every caller with
-> allmodconfig W=1, and lib/iov_iter.o and the readv, vmsplice and
-> process_vm callers with i386 defconfig W=1.
-> 
-> Reproducer (64-bit userspace):
->   cc -Wall -Wextra -O2 repro.c -o repro
->   ./repro
-> 
-> // SPDX-License-Identifier: GPL-2.0-only
-> #define _GNU_SOURCE
-> #include <errno.h>
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <string.h>
-> #include <sys/syscall.h>
-> #include <sys/uio.h>
-> #include <unistd.h>
-> 
-> int main(void)
-> {
-> 	char source = 'x', received = '-';
-> 	struct iovec wiov = { .iov_base = &source, .iov_len = 1 };
-> 	struct iovec riov = { .iov_base = &received, .iov_len = 1 };
-> 	const unsigned long count = (1UL << 32) + 1;
-> 	long wret, rret;
-> 	int pipefd[2], werr;
-> 
-> 	if (pipe(pipefd)) {
-> 		perror("pipe");
-> 		return EXIT_FAILURE;
-> 	}
-> 	errno = 0;
-> 	wret = syscall(SYS_writev, pipefd[1], &wiov, count);
-> 	werr = errno;
-> 	close(pipefd[1]);
-> 	errno = 0;
-> 	rret = syscall(SYS_readv, pipefd[0], &riov, count);
-> 	printf("writev=%ld (%s) readv=%ld (%s) byte=%c\n",
-> 	       wret, strerror(werr), rret, strerror(errno), received);
-> 	close(pipefd[0]);
-> 	return EXIT_SUCCESS;
-> }
-> 
->  include/linux/uio.h | 8 ++++----
->  lib/iov_iter.c      | 6 +++---
->  2 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/uio.h b/include/linux/uio.h
-> index fe2e985d74d24..529c6cd53df7a 100644
-> --- a/include/linux/uio.h
-> +++ b/include/linux/uio.h
-> @@ -362,11 +362,11 @@ struct iovec *iovec_from_user(const struct iovec __user *uvector,
->  		unsigned long nr_segs, unsigned long fast_segs,
->  		struct iovec *fast_iov, bool compat);
->  ssize_t import_iovec(int type, const struct iovec __user *uvec,
-> -		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-> -		 struct iov_iter *i);
-> +		 unsigned long nr_segs, unsigned int fast_segs,
-> +		 struct iovec **iovp, struct iov_iter *i);
->  ssize_t __import_iovec(int type, const struct iovec __user *uvec,
-> -		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-> -		 struct iov_iter *i, bool compat);
-> +		 unsigned long nr_segs, unsigned int fast_segs,
-> +		 struct iovec **iovp, struct iov_iter *i, bool compat);
->  int import_ubuf(int type, void __user *buf, size_t len, struct iov_iter *i);
->  
->  static inline void iov_iter_ubuf(struct iov_iter *i, unsigned int direction,
-> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-> index 2072c04e99d05..55cf2ff5bfdad 100644
-> --- a/lib/iov_iter.c
-> +++ b/lib/iov_iter.c
-> @@ -1362,8 +1362,8 @@ static ssize_t __import_iovec_ubuf(int type, const struct iovec __user *uvec,
->  }
->  
->  ssize_t __import_iovec(int type, const struct iovec __user *uvec,
-> -		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-> -		 struct iov_iter *i, bool compat)
-> +		 unsigned long nr_segs, unsigned int fast_segs,
-> +		 struct iovec **iovp, struct iov_iter *i, bool compat)
->  {
->  	ssize_t total_len = 0;
->  	unsigned long seg;
-> @@ -1434,7 +1434,7 @@ ssize_t __import_iovec(int type, const struct iovec __user *uvec,
->   * Return: Negative error code on error, bytes imported on success
->   */
->  ssize_t import_iovec(int type, const struct iovec __user *uvec,
-> -		 unsigned nr_segs, unsigned fast_segs,
-> +		 unsigned long nr_segs, unsigned int fast_segs,
->  		 struct iovec **iovp, struct iov_iter *i)
->  {
->  	return __import_iovec(type, uvec, nr_segs, fast_segs, iovp, i,
-> 
-> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-> -- 
-> 2.53.0
-> 
+I have a reproducer only for patch 3 (a bpf_wq callback calling
+bpf_copy_from_user(), which triggers the new WARN without the patch and
+fails with -EFAULT with it); some details are in the notes section of
+patch 3.
+
+Patches 1, 2, 4 and 5 are only build-tested (plus syzkaller running on
+the final kernel). Let me know if you'd like to see reproducers (or if
+any of the patches are incorrect and should be dropped).
+
+== Introduction ==
+
+Accessing user memory from a task that has no mm is always a bug. This
+can happen from a kernel thread that is not using kthread_use_mm(), or
+from a task that has already gone through exit_mm(), e.g. when the last
+reference to a file is dropped at exit and its release handler runs
+from exit_task_work(). For example, KVM's nVMX code can write to guest
+memory while a vCPU is being freed during VM destruction[1], and other
+drivers may have similar bugs.
+
+Such an access does not reliably fail. The user portion of the address
+space belongs to whatever mm happens to be lazily loaded, if any. If
+the access faults, the fault handler refuses to handle it and the copy
+fails, but if the page is already mapped, the access silently reads or
+writes another task's memory.
+
+== Fixes ==
+
+Patches 1-5 fix existing places that access current's user memory
+without an mm:
+
+ - Patches 1 and 2 fix io_uring passthrough completions in scsi_bsg and
+   btrfs that copy to the submitter's user memory even when io_uring
+   runs them canceled from a kworker, e.g. after the submitter exited.
+   These are real bugs of the kind this series is meant to catch.
+
+ - Patch 3 makes the sleepable BPF user copy helpers fail when
+   current->mm is NULL, e.g. for bpf_wq callbacks or lsm.s programs
+   running from kernel threads or exiting tasks.
+
+ - Patches 4 and 5 make stack_trace_save_user() (ftrace's
+   userstacktrace option) and get_perf_callchain() (bpf_get_task_stack()
+   on the current task) use is_user_task(), so that they don't unwind
+   the user stack of PID 1 before exec, usermode helpers before exec,
+   or tasks that have gone through exit_mm().
+
+== The New WARN ==
+
+The rest of the series makes the generic uaccess helpers WARN_ON_ONCE()
+and refuse the access when current->mm is NULL:
+
+ - Patch 6 adds uaccess_should_fail(), which combines the existing
+   should_fail_usercopy() fault injection check with the NULL mm check,
+   and uses it in place of should_fail_usercopy(). This covers
+   copy_{to,from}_user() on all architectures (including the masked
+   user access paths, which never call access_ok()), the
+   __copy_{to,from}_user() variants used by KVM's guest memory
+   accessors, the user-backed iov_iter copy routines and
+   strncpy_from_user().
+
+ - Patch 7 makes the user nofault helpers fail quietly when
+   current->mm is NULL. They are meant to be callable from any context
+   (BPF, kprobes, perf), including from kernel threads, where failing
+   is the expected outcome rather than a bug.
+
+ - Patch 8 splits the NULL mm check out into uaccess_without_mm() and
+   adds it to __copy_from_user_inatomic(), without also enabling fault
+   injection there.
+
+ - Patch 9 adds the check to the remaining generic paths: the scoped
+   user access helpers, strnlen_user(), check_zeroed_user(), and the
+   iov_iter routines that call into architecture-specific helpers.
+
+ - Patch 10 is included for reference only. It moves the warning out of
+   line, which removes ~16 KB of __bug_table growth on arm64 (where
+   copy_{to,from}_user() are inlined), at the cost of warning only once
+   system-wide and a slight size regression on x86_64. With defconfig +
+   KVM, patches 6-9 grow vmlinux by +5,884 B (+0.014%) on x86_64 and
+   +40,948 B (+0.10%) on arm64 without it, and by +9,714 B (+0.023%)
+   and +24,609 B (+0.06%) with it.
+
+The checks are deliberately limited to generic code. Accesses
+implemented entirely by architectures (get_user(), put_user(),
+clear_user(), and direct users of user_access_begin() or
+masked_user_access_begin()) are not covered. Please let me know if the
+new check should be placed elsewhere.
+
+The check also cannot catch a valid mm that isn't the one the caller
+expects, e.g. when a file's release or ioctl handlers run in a
+different process than the one that created it. Code that keeps user
+addresses belonging to a specific mm still has to compare current->mm
+against that mm itself. For KVM, Sean's series[1] does exactly that for
+guest memory accesses, and so complements this one: it handles the case
+where the VM is destroyed from another process, which this series cannot
+detect.
+
+Without [1], the nVMX vCPU teardown path described there may trigger
+the new warning when the last reference to a VM is dropped by an
+exiting task or by the delayed fput kworker. The write to guest memory
+is then refused, which is also what [1] does.
+
+For example, running Jim Mattson's selftest for that bug[3] (adapted
+slightly) on a kernel with this series but without [1] gives the
+following warning, and the write to guest memory is refused. The warning
+comes from uaccess_warn_without_mm() because patch 10 was applied;
+without it, it points at the inlined copy helper in the caller instead.
+
+  WARNING: lib/usercopy.c:31 at uaccess_warn_without_mm+0xa/0x12, CPU#2: vmx_shadow_vmcs/5299
+  Call Trace:
+   kvm_write_guest_offset_cached.cold+0xa/0xf
+   __nested_vmx_vmexit+0x1974/0x3fd0
+   nested_vmx_free_vcpu+0xb3/0xd0
+   vmx_vcpu_free+0x96/0x350
+   kvm_arch_vcpu_destroy+0x15c/0x400
+   kvm_destroy_vcpus+0x270/0x3f0
+   kvm_arch_destroy_vm+0xc7/0x230
+   kvm_put_kvm+0x560/0xbf0
+   kvm_vm_release+0x3c/0x50
+   __fput+0x3f8/0xb50
+   fput_close_sync+0x113/0x250
+   filp_close_sync+0x75/0xa0
+   put_files_struct+0x201/0x390
+   exit_files+0x97/0xd0
+   do_exit+0x872/0x2a00
+   do_group_exit+0xd5/0x2a0
+   __x64_sys_exit_group+0x3c/0x50
+
+== Testing ==
+
+Build-tested on x86_64 and arm64. Verified that the KVM reproducer hits
+the new WARN, and that the BPF reproducer hits it without patch 3.
+
+I'm also fuzzing this series with syzkaller on x86_64 (syzbot's
+upstream KASAN config, nested VMX enabled), so far for about a day and
+a half. syzkaller hasn't triggered the new warning yet, i.e. it hasn't
+found any other path that accesses user memory without an mm. Fuzzing
+is ongoing, and I'll report anything it finds in reply to this RFC.
+
+Please let me know what you think. Thank you!
+
+[1] https://lore.kernel.org/kvm/20261001202234.3794060-1-seanjc@google.com
+[2] https://lore.kernel.org/kvm/aqMBidJ_96qroogH@google.com/
+[3] https://lore.kernel.org/kvm/20260911191011.528460-1-jmattson@google.com/
+
+James Houghton (10):
+  scsi: bsg: Don't copy sense data to user memory when canceled
+  btrfs: Don't copy encoded read data to user memory when canceled
+  bpf: Fail sleepable user copy helpers when current->mm is NULL
+  stacktrace: Don't unwind the user stack without an mm
+  perf/core: Don't unwind the user stack without an mm
+  uaccess: Refuse and warn on user copies when current->mm is NULL
+  uaccess: Fail user nofault helpers quietly when current->mm is NULL
+  uaccess: Refuse and warn on __copy_from_user_inatomic() without an mm
+  uaccess: Refuse and warn on more user accesses without an mm
+  uaccess: Move the NULL mm warning out of line
+
+ drivers/scsi/scsi_bsg.c   | 10 +++++++-
+ fs/btrfs/ioctl.c          | 10 ++++++++
+ include/linux/uaccess.h   | 50 +++++++++++++++++++++++++++++++++++----
+ kernel/bpf/helpers.c      | 11 +++++++--
+ kernel/events/callchain.c | 12 ++++++----
+ kernel/stacktrace.c       |  8 +++++--
+ kernel/trace/bpf_trace.c  |  4 ++++
+ lib/iov_iter.c            | 12 ++++++++--
+ lib/strncpy_from_user.c   |  2 +-
+ lib/strnlen_user.c        |  3 +++
+ lib/usercopy.c            |  9 +++++++
+ mm/maccess.c              | 17 +++++++++++++
+ 12 files changed, 131 insertions(+), 17 deletions(-)
+
+
+base-commit: 2a08195e4db5aba84600db6518089a1dbe2d04c7
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.56.0.307.g5fe7bd680c-goog
+
 
