@@ -1,158 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB81F606A327
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFAB606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=V7jA5GL8;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z8TGrGcn
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=B8KqZ4NQ
 Received: by kanga.kvack.org (Postfix)
-	id C030F6B05B4; Mon, 26 Oct 2026 11:44:25 -0400 (EDT)
+	id B8CAB6B05B7; Mon, 26 Oct 2026 11:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BABD76B05B6; Mon, 26 Oct 2026 11:44:25 -0400 (EDT)
+	id B3D446B05B8; Mon, 26 Oct 2026 11:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9AD26B05B7; Mon, 26 Oct 2026 11:44:25 -0400 (EDT)
+	id A2B956B05B9; Mon, 26 Oct 2026 11:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 766296B05B4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:44:25 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C48FA059F
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:44:25 +0000 (UTC)
-X-FDA: 85365199290.16.CE7DEE7
-Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DDC4740008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:44:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 7jA5GL";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Z8TGrGcn;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C1706B05B7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:47:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0CA871C4066
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:47:53 +0000 (UTC)
+X-FDA: 85365208026.01.9B7BC29
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 22CF6A0008
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:47:51 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=B8KqZ4NQ;
 	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793029463;
+	s=arc-20220608; t=1793029671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MsBzCvBBi1qFDcBWHy9H79d/yhN28jLEiEbY1lNFkTQ=;
-	b=VPTqeQ3UoTzpGFQ5GSYagv0nCAOX6XmDO9gKeLb/KLWXqf5hYaxh48SXhvQob0+yrDrSzj
-	CnpW5aF7K9/ehagmRg7OqjSCLkzXLWbSZ/0DSUg+TQI5vh2gdlUm0chMTV5YSkVa6R0rHN
-	hmexqdPzteoOIFqwsjPvq2oTHOzq9JY=
+	bh=35uD3sVJLZUeRHcPV8RyOPRby60btWRa2sdjDc5SOss=;
+	b=QCM+FHV41oR+54eissMk3VbcODsXvS/PoZOSsIKxqB87/9WDeRAai6Gnr+vnWTx0M0Sioz
+	aZeW4COd9j3KzVT/7hmxRvMD5OM9GYAMCiC/94P04nrFBXN0jHudotz84qN/5L5b5NY0CG
+	jWnRxP/WK/uLm/eXZxZQFRL5XY70Rso=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 7jA5GL";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Z8TGrGcn;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=B8KqZ4NQ;
 	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793029463;
-	b=UyKqlqDM7pbypMWp5mWxMW3adRfCOtCvUKdfNKpHcXtRebD3Dln+WbuoMBCdYfuzrFX13E
-	eabGtz8m55b4wyCRAudf7RMlctZ50XNE3mN2IcpzXDCEDN6a12Q9W7kyZjZ2KSLY0jv4TV
-	u1iTMj8G8TpynriA/O+UNYXSTI2x/lk=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 435B41380288
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:44:22 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 26 Oct 2026 11:44:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1793029462; x=
-	1793036662; bh=MsBzCvBBi1qFDcBWHy9H79d/yhN28jLEiEbY1lNFkTQ=; b=V
-	7jA5GL8gC9YVR4ijRaAinUcl+AZfdJTziwrn0WOtfO1ft0A1UQagGKf3u8bQ5Pnv
-	+aBMqH/UJzEdd0YTPBG6bD0Jc4H0uP5rCnv970Lsg+Ur1abpFK1Fh/uzWW4CYiWg
-	QrSMvWEkKkqxRkH0SoPxOyHFL3i1cZgZ/+6gCvsOAJG+GfdxQxx7nxaWJEeTAHRL
-	DPF93ri5kB1iD2ndgo5/UWH4xyN7p5dunh3Atjz3zZ/7jElvN6M9NoTOdInxtL1G
-	L0IKYvEtwQVjJD/O88fe+aXL/U2U1dW5qA4W7PYqRbLy03xsgfTH56JLeoLFHsPU
-	Gn3Lj0kZB7Twc9EOtx6UQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793029462; x=1793036662; bh=MsBzCvBBi1qFDcBWHy9H79d/yhN28jLEiEb
-	Y1lNFkTQ=; b=Z8TGrGcnmqMmQObZXRtGFSxzZEuOQX8GssEByugATGxet8PT6Xe
-	Rj0ymMJhUfNlHxINVs9+A9FnBy+BE4FPaNYvYa1AIF/t4haBwCZVkDNb3MYTyo3L
-	fpDTCSuse1JfKpQBSCzpK5GVIKObchSV/M+glfsvpOSv4KA0eVWl4o6KRZIUz2lY
-	jg8vXwQIGAx0EGfS6jacFQfQ6pOHB5KRMPMyScF/+IMXCYdbLeMC0+KlrcN7BnNu
-	+XDxwpMoOd62/fq4M/DNoyoxy0JUmLdkMnRUjH1z6UI+UJXL2W/uE32lkSXqZPm3
-	pojz6ngWgGF6GnBbv8MrdkV6PTcsbjgq+DQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793029462; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:M35YA9H1ydXmBHd1w4GGSzWdQDQJsG9OCSPE8uHOHb/TaTA
-	pwUSZXlYFIL/NjiiDXf2TQ/ExbRyhn2jgXcG5DY+gUPVbtqvXApUZsA7mygrX0GJ
-	Y951xFIiOKwqyzDfuhzLKBVn9Ko3T4D+s9+rvZv05ylhRKIwx1MSR5yH1NKc3aOC
-	aAF5uKly6d9x7pibT0UrixDDzsWUvaTRFgBMpiGP8GMh5eomgYMTM4McEJzZpvSb
-	zrRA/3wpadIyLlwXwu5HXIKBgoYysTitdJfp14eD73LkwTvWX+BnuvKlm0C86i1B
-	CkxvKyqlRUcm9z0BPIRleEYDQkP++UV0i410N4g==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:XotbD7fpvAzzCGWJuVhuktAumN+rvaA9s3fiyUfgY6c=:XqKWWhJxA+x9auqNjWAMnDG+H0yfN8OP2NNOlTPpJU8=;
-X-ME-Sender: <xms:U3XfaqfcFJS0ZSBxJN2FgyWyDG7MpcXSZ-rYZBadLQNCLAQ_LXgiqg>
-    <xme:U3XfamDL34hubBKFuP9_R_0CsYhct1O6wftrt4GTHjfbdNpAUP8vDlj9Gc50LZBGZ
-    GVzPkg2jhVxpKrXL9_Rn2khpzmCql6PEsYL3NMNYIjlyL_wj0uPeKs>
-X-ME-Received: <xmr:U3Xfaqr1hivuVR2k_d94m95f8QiHnS6SpoigYzePW9IuXgmma9fZVDVJ3fk>
-X-ME-Proxy-Cause: dmFkZTFJ8xjKxkODpSRRf7sUfgHfvt8g6PK2A2CrYeOjgirOm7AGaGD409wBNtw8s2ifQN
-    6SNZlN6LHupXBZ7ClSTK+Va3BkAQr266ey67CD+ar2qxSF2IkJuTlQkn2siFRjQh4V7YzE
-    RvxeuwfChl3oCpci/8krcX+3fg0RpcmlMUWMTWOL4+GOdTK9SD0e1JIbIWu3SAVX3c+cY5
-    CJ4+UQY1jew0wuKOivp7/2GWJwqBUI8j0Ol5fvjPRXkVAl5K9NqBFefrOGaE85oyEYr8ls
-    1J9kXundrAU2oj8ls/7OIxgbvr2IaC/qngmwAMw1u+t8SyL7jWthmDAGSMFWDIjux3Ebqp
-    NVW58DNZcRuPP4M5p1NuFhTCINz/krI2McfXo/RIP1JlNyTFRDiWCkiQ87EG3wCil9LxSt
-    DY2Z+HjW28ACzgXrfS/HPdvMd09KAALKTKvNtqu3L3ZnMhLDWQtOD7u36KnM5NVK8iQ/zw
-    o0FwWC5xllWhu2zJdourhf03u4iFjRga12NdJ9VYm1c4ffKSMkHeNF8JKTnYPYXgGcZ91x
-    RVGz29s6mkkOkHj2qjbFAV1Aev4EnO0bUyGQO0FtdxK0+Ppk+sFUmTsn6MTB+xkguOlDCA
-    KAPRQQZ9+Zlaq4HeYxlSOsUT3aq01sQIGqOekcVMbDNRirLoW8QmsIkUitJA
-X-ME-Proxy: <xmx:U3XfarTevoH8emebj-6ycB_YK6mvmGyfe8R601CeJwb0j6FC2VbEAA>
-    <xmx:U3XfajdchqI6AUO5UIiwUvdYKt9jUgZeWb_mDiQWe7PyYqSm7ay1Jw>
-    <xmx:U3XfalQCcYBMaW9CexLvdEboJGuEHWIAHeGEKYGm3FmvpM6afKbSTg>
-    <xmx:U3XfapPE5WhN66cKsLgIhJhLYMfIJEIrAw_hJc8JqNqHcGJcft_ErA>
-    <xmx:VnXfauoHkdDQBJTFO5-RfGEb6OoR3poF7CFMC1MEudXeqaXg8DERCDaK>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 11:44:18 -0400 (EDT)
-Date: Mon, 26 Oct 2026 15:44:17 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
+	t=1793029671;
+	b=CyiLbMJz116xJcuJW4EkEexfgBPvl9AS12Ca+UXIQR34ujz6YFrfUHjbW1bKzYN2Bglngn
+	TB9rzdZe7UeZXGvfUhhhDxrHd6POx25g9SKfzWYoKFVWAyzbCdP07eo867ZzCZxjRgO9Hj
+	lUWs/Pf9yrYf/fH5B5kHy5XlOUQqWKg=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91c11468b5fso33926426d6.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:47:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1793029670; x=1793634470; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=35uD3sVJLZUeRHcPV8RyOPRby60btWRa2sdjDc5SOss=;
+        b=B8KqZ4NQ41SNECyaqpVRm4ECDEbMRcsUS1p+IudWuEmOdJbqdDHSZv0u1DdvfKAAXy
+         H/3NCsDGv5rVmtbuMSnqCHSoOSRR9ZZTH5KfOxj3yIHCiacwxNCJQUudjxczuMsj6b8y
+         9YKH5heeAQnwL+PzxsklxgWLtFivt8d8R378ysDHPzsw573U6RiTj0eugsNefc6e2ki4
+         6SGSNhVKpoZZP8VP1Pm8RWP3zFLGsVtisui6DGRD9Jk9I/WGKh+lebZcSAUhp5W2KecI
+         0f8shphyqFkqeucbI7CK6qae4/mjUlvEw5JQYCO5AoQwqMYDnxgTqjzs/fS0y3pi0yQq
+         JNOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793029670; x=1793634470;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=35uD3sVJLZUeRHcPV8RyOPRby60btWRa2sdjDc5SOss=;
+        b=rhUoJUY41t6zYMjOzHFybTdKN6qFMxeFv8GtXxtE/L/4KDohG24/PCBpOiIao2cIwa
+         TlMo/SM1iJuyQEoL9oP18S+W6tMgxdMOU0ZVYzgtknP4iJP8zMTEYLZVD2+TuYiUN00L
+         RPiPZg8XBCCB73eNAeGVEChUdf+S/ZvbrxcPiV9M93JiF4Ls8gETLf7Hk7NtjKLSR30q
+         luoZVg8HCXCpXx177MhmP1KbD07E3eJN3CW15aRulm2wX3oWvPTl5DVDts81ZF4/aSqm
+         WVw7OvQd/ooYVOmMNNoC3H0oxNOpG5yg2/ZjS6NO03AwXiJCkxS8zhZBxsAIv9EuyMdb
+         SBfQ==
+X-Gm-Message-State: AFq9FYLFDewGfl+leIClzkcekOCnxRF6eKtCUEGD1b0IJamixa/zzXmA
+	9QjEZFpHa3GPVl7V15hEqXU4WiWrOfoM5WZAIGDziS4pm7/847G1aEJ1u31/Dpfw+HM=
+X-Gm-Gg: AYBFou1eXvXOfQHhJR774/Vyqx5IXQ8GULeFGgeYxB2sKtudQphiFVKws8KiYqWut1g
+	gYwEDb9VfPTpnI99cfImGpfmE+e55h0hIpJLZ74nJQ/Mup8F4N93KqIncECjBTFuli780ATgSE7
+	yhMMqTGC/IPZRQM0OCkobBzz7d1K8vCIgnssphSFd+StYvFXWDAeMFxufL939yN+tXGTIfPXxrB
+	vK7AE0h3Jm1jjL/HfPrwF2ngAg8bb2i4jyRpaeePH637N6v+SZgZdMO/vxbju4uZUJ2PdaYCJOf
+	FEbTRFYvLOw5B4OgYh3n1CDl4rENykE9zdM2bUBdO6FPDQwPRy0gKkZ/cZCySJPQVM/h/MNuiA6
+	mTDMkgClAG70qBg6jE5twFJyvYj5CRDMDCykCPc1bG/Wto5PMukLJw8xGk03/mAp6lRdGHZz4z+
+	I4aXWXXyMZxYGeQZJtBsEqo+97l9XD0N0O9N2X1TbraZSmbLhMRPjSts3HHy6iZhcwNEP25WG6V
+	wxhSVqhcJ9y4AjciUxSURAoH4aD5ZNkknMwX+WI1yLNfEZUG24pmToFFipOeLM+paLJktEp49OX
+	FGp0heFxYld/VSJoyfH+7Gk04NzJsy/IraGX
+X-Received: by 2002:a05:620a:4515:b0:93e:48fc:aa85 with SMTP id af79cd13be357-940ef9571aamr1034017685a.43.1793029670123;
+        Mon, 26 Oct 2026 08:47:50 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f066731esm719609385a.9.2026.10.26.08.47.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 08:47:48 -0700 (PDT)
+Date: Mon, 26 Oct 2026 11:47:46 -0400
+From: Gregory Price <gourry@gourry.net>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 01/16] mm/mempolicy: charge shared policy nodes
-Message-ID: <at90mp4ffsuas-pR@thinkstation>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	ying.huang@linux.alibaba.com, honggyu.kim@sk.com, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/mempolicy: recompute automatic interleave weights on
+ memory hotplug
+Message-ID: <at91WFlW96PH-a8A@gourry-fedora-PF4VCD3F>
+References: <20261024170415.4121901-1-gourry@gourry.net>
+ <e3a1ae72-9370-4c3c-8935-6a410a74377b@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
-X-Rspamd-Queue-Id: DDC4740008
-X-Rspam-User: 
-X-Stat-Signature: 89iyg4x9ri19q4agwzhrnkbhdu574qy3
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+In-Reply-To: <e3a1ae72-9370-4c3c-8935-6a410a74377b@kernel.org>
+X-Rspamd-Queue-Id: 22CF6A0008
+X-Stat-Signature: twtux3p9s51h687aedyocqaixhmrtypq
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793029462-76819
-X-HE-Meta: U2FsdGVkX18BQ8VEb0V4bmjtJXT8D4HRrBsLEWC0jNvR/F8wROZr9jQhEKkPB92BzGa/Cx5Sx9qyWKjHPQ2wFbiPnvZuxBkRbRuHhOPP5j5zG9JJ2Hp66OTOokO+EfenEvb1KjOWniJJgghdFDu1xh+onDGScm2ZdFDQJSS7WRx7ww5gDnvyfrZnxAjR74D2QuFuIoSm2pUwUGGgnAUDsXskcCLKP/o9P565b+luFUjGze5prGK2b6V4mpktSxGTei2rP+ac7P73LGSfWt/yqMN5NdMpiq/uAbh+25OdhiOep10KPRH0UOD34bDcamnYuwwVVo43ariyXyO6MXFQ0JnCo+h7CLf8mGucWN/XLAWQzOoa8aM94ws4I8Zg2zFWntsRKHMLlPm90dXrE+Rtzg/LA3u4NDPPJxTyh8p+qll6lyuBsIVsWVfb2uFUMgNm04ljPyJOztKQZb2TrH4uA5kPF0SsaUMrlFehMFG0g07bhkaK2TSY9grPu88lbywoFic84bo/7GhV0NB0IS7TVGPG/PZCTx1EaqBMY531jlDzPDMAA+H71LmMV4C36GuKGUnEh9U9z6Jhe/bsmA8VvFJR3gcabogeSLhpOFUi1nCKSh9nFWUK9I7Eyw3D0wOpTSG9XjjWU0f10R0lpr383NYfr2S0Ph2Yb4ckECljOzHSuS3muD12UHiqkNQP7xXN2Nz/ZwO3rqAg9xYIF1ZXhiwJ5lpjBbetA5H54JZqkeXUuFnc7cZdy+9OQYM1P6Jh+utnt5l9unTI4FmJtEk1BJTRKUkpsXqobA7xiyL4vDVVz4TX/cTfJap69DM8J8zn8oyHVUJlRT3jJbJyH9Yw2Nxb6dWBn5AQ8ezpKDDDgvinJJjqQQWwTtG90CbqK3csZslt5QnVTveihMSlmWAnA9XVg2NtBdBYks0xt5QzFu1r7WiyE3RtAIiNjJ65ccgA6DcKkPtPhjexUb6Bxbo
- PaXuma0O
- hGZnwyOANnAc1NEZPwj08nYbojneg/jhf0Zk+8DZEcnzFOMKj+F20ukncQuMqf1ltExvWlzSauN5yV8wQ2+dFPunJvKhWyRFyaCbnpPDWpSktYMJ6z7htrr70OR3iy5Ub7ZYugMX/vsi10PBMMm78jc0XDdBrqoA0nEKe7LiZBNdaSNMv9rpjT4q0VF+Yd7KpB2mEgRIfo2AIuA2KLARaqBcIFIV3+e6CwcmP4JnBO3xhFnbg+xVLRJeDxl3SG3TSPkOmnij43CfAonXFvk56866bObGE3r90erEdGUvWfuiMn17PjHnHY1UfyEnBKPF+6KC3o8SgiMyfyrx+OUAOK6sJUfQEDVx7yZ0G66De9PEXnagFgLxBN4u1vFOmrQfhctI7F+Iv3afQszcRy6VNF+f3Uxkc8LJuiY5mIWvtYMiwQJ7xmddyoR43AR4XchyFY2i0vzLVo/UAiJWMr16pJGmMxcPUvZYttkqI2RlYLfg3H4UbLId7Z7ABHn+oBqKHvvEgr9jAfJ/9UJomLRpm0ABkE96wuv/SN0LtuTUgw+9KC4czdxp2B3miWPNbI10h3uMH8+CVnkQFFHBTDbHQ49j51hogBRXREss4jSRDg00zhwU=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793029671-972903
+X-HE-Meta: U2FsdGVkX1/dHzMuOJoCO+vBC5+7s/wOHIBPxeB6eJSQPdVTnUa5acyxZE2a+VYSWIFjohR2Mw8d7d4eTxi3vmHZq1ePXbpdDVENag68+ANAZnwfTsu0q4Ol05tcdbBk5IYoD8RcBGDcps8UHmrTDvLRS68EECOZMRWa3332bxRczH2uvoVNFVA+FQF+zkkFzPs2t0FAt4n9YsXgYvEmsV8M+xEY7KG6eDMnd4JxBnzllq3ZcX6f4+TeNgLj6n8IJCjRYrc/9dZL/FY/fbwkRZ1Js8yZqcJPD5TobrKOMeZmeSD1SNVmMxbMNapOOMyLztyQvepb65eki9wUJMrp6aBfZZd9xX4jtpvaoQup9Bzrvzx8AQ0qjhjlzD6FPFRqtu0zMBmhSxZ1A4owrj/liXZkFH/xQAOn1XRMFd2bqADjCPERF9FFlVhCVBHlXEm6VvEmu1NjV3iqFyExt+K21ms90z4sk1/bely8Tayzt346IPqEYfKQfQIoiW0HLecCmSIGIGwS4aRzixZrJmorUFT4EfmDLZq0jFclgxb4G1CxNMwcLs9td+vKYEZLznsdTmao8SPXwgF7coiFg5zgZP5ugrCeSqMJRhPRxm5GTNlU0G1tzn/55T0X7PHLaYKGGg2jwUAFCLERVUH3UaWxX12Swam1qeUKYZIaH1Pzk92sz03u06fp0OMEzAOaOR/tuFDX0XboWzYer87m/lLoG8g5d5lKXtTNBMtcg+rutM2K9Q0dq9jPT7L+2z0ASHNH2GFNUZwIJg2O2mQ5OsKSco1liTsz12dGISBw7IjEOZYyYEmWhUEvwA39DtTW3XECNQrpk7KRsOmsXsqjk7pVe/l+J0uRZuatApBjmgLRU6PTDrFN97HhabiY8UOzHbsSFxt+pQUnK4tojaz8M8tgSg8CzyIdqB+lJ74sicHrUqqUwZP+uQ5+CUUq5+7tqpjkZjd/Q7f97WOBQsmD5kI
+ wR8RWSG8
+ JhdUn7wDtFPrS9DIxWTEczifuQo/aZRoEVVrli5z6mApicZCoUMbRM/Ask8Xz/ooviCyRM1KSCFC0e1wtNZvtW4ENrvGcyx5IDQDW8JzmQtgrRe5s7JGcuOdpD08mlrdo2Bkg219m3q+XAOuz/9NBynFjryJ3HcZk+tb74Tm7GE2fJUZa5PHjrOb2EOsGwxHFMrIKTWApRpphRdMlmvXpzSdgIGUQHmEI1rAzqPF3yW+/59Jy0hP4SXMSV/KYNKWZqZFjnRc1cv9L7OM8NFP1gwCjsRGJb3384hB4Qh70MDc0Gb9nb+2PNWg9x35wDgGmxGBTOFQZT/5r5JVJZgRXzO6Du15kozyzG7+gE2fgcDhbMNx1f1KFxAtsXS4KfYR0F05PpAflF/SGfTMoyPBeOnQvXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,48 +125,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 10:40:34AM +0100, David Hildenbrand (Arm) wrote:
-> From: Chris Mason <mason@kernel.org>
+On Mon, Oct 26, 2026 at 12:19:21PM +0100, David Hildenbrand (Arm) wrote:
+> > +/* Recompute the weights from node_bw_table, unless they were set manually */
+> > +static int wi_state_refresh(void)
+> > +{
+> > +	struct weighted_interleave_state *new_wi_state, *old_wi_state;
+> > +	int i;
+> > +
+> > +	new_wi_state = kmalloc_flex(*new_wi_state, iw_table, nr_node_ids);
+> > +	if (!new_wi_state)
+> > +		return -ENOMEM;
+> > +	new_wi_state->mode_auto = true;
+> > +	for (i = 0; i < nr_node_ids; i++)
+> > +		new_wi_state->iw_table[i] = 1;
+> > +
+> > +	mutex_lock(&wi_state_lock);
+> > +	old_wi_state = rcu_dereference_protected(wi_state,
+> > +					lockdep_is_held(&wi_state_lock));
+> > +	/* NULL wi_state assumes auto=true */
+> > +	if (!node_bw_table || (old_wi_state && !old_wi_state->mode_auto)) {
 > 
-> Any local user can bypass memory.max with mbind() on a tmpfs file, and
-> allocate unbounded kernel memory.
 > 
-> mbind() sets a NUMA memory policy for a range of a mapping. If the
-> mapping is of a shmem and friends, the kernel also stores the policy on
-> the inode, in a tree with one entry per range of the file.
+> I was confused about the node_bw_table check at first. Maybe
 > 
-> Each mbind() on a single page of a mapping can add one shared policy node
-> (struct sp_node) and one struct mempolicy to that tree. They outlive the
-> mapping and stay around until the inode is destroyed. The tree is not
-> bounded by the file size, so the file can be empty.
+> /*
+>  * We can get hotplug events before any BW data was recorded.
+>  * ...
+>  */
 > 
-> Memory that user space can allocate must be charged to a memory cgroup. A
-> slab cache does that for all of its objects if it is created with
-> SLAB_ACCOUNT. numa_policy_init() creates the slab caches for both
-> structs without SLAB_ACCOUNT, so they are not charged to any cgroup.
-> 
-> Reproduced with mbind() on single pages of an empty tmpfs file, from a
-> cgroup with memory.max=8M: the global OOM killer killed tasks owned by
-> root, and the machine panicked.
-> 
-> Fix this by creating both caches with SLAB_ACCOUNT. This change implies
-> that mbind() can now fail when running into memcg limits. Further,
-> the policy_cache also serves task and VMA policies, so they are
-> similarly accounted now.
-> 
-> Note that per-file limits are not really helpful, as the user could
-> simply use many files; having limits per user is tricky as well.
-> 
-> Fix generated by an LLM and submitted by Chris Mason in private.
-> 
-> Fixes: 5d097056c9a0 ("kmemcg: account certain kmem allocations to memcg")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: smaller description tweaks ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+I went back and forth on whether to do the mutex in or outside this
+function, but ultimately decided inside is just better structurally.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+But yes, this comment seems warranted in this case.
+
+> > +	/*
+> > +	 * HMAT and CXL report a node's bandwidth only when it first gains
+> > +	 * memory, so recompute the weights whenever N_MEMORY changes.
+> > +	 */
+> > +	wi_state_refresh();
+> 
+> If the function fails, should we at least pr_warn_once() ?
+>
+
+The only failure state is -ENOMEM, wasn't sure that was worth warning
+on.  I actually debated whether to just make this a void function.
+
+I don't have a strong feeling here, but happy to add a warn if you
+prefer it.
+
+~Gregory
 
