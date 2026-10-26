@@ -1,96 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7C0606A320
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 11:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE6A606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 11:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Uw2IaIaz
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TVZ5HUZR
 Received: by kanga.kvack.org (Postfix)
-	id AD5046B05B1; Mon, 26 Oct 2026 07:21:26 -0400 (EDT)
+	id 976726B05B4; Mon, 26 Oct 2026 07:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5EA26B05BB; Mon, 26 Oct 2026 07:21:26 -0400 (EDT)
+	id 94EDD6B05BC; Mon, 26 Oct 2026 07:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9749B6B05BC; Mon, 26 Oct 2026 07:21:26 -0400 (EDT)
+	id 864026B05BD; Mon, 26 Oct 2026 07:22:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A6496B05B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 07:21:26 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 009221406D1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:21:25 +0000 (UTC)
-X-FDA: 85364536572.06.5DE397C
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2FCBF4000D
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:21:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Uw2IaIaz;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 570E66B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 07:22:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C5C2C160740
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:22:13 +0000 (UTC)
+X-FDA: 85364538546.19.8145AEC
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F098A2000D
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:22:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TVZ5HUZR;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+	spf=pass (imf03.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.136 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793013684;
+	s=arc-20220608; t=1793013731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YaPrNf7Cus6idRIRbovGwqOwkJFSxRQnPSz6SCMl2RU=;
-	b=F+doyTCYDCtNkY7ecTPfgVdvnLxBFXoOIC2ZMhzp3XfaRCmGasjtwR+U7D3R0YW60LXZ+p
-	UsI6GvYDn0RVybPp4FIZkbACyfwRhTPfQtHpCS9hSbiGC4ru4LERL5tR2sbgLrjhpkh5ku
-	udWVzxxbFjYwZPykZfEkon0m9qvtzhY=
+	bh=olwttAprMPggmCLpbuH0tIcMpbgFFVWXH2pLW4YPALQ=;
+	b=4EFIvjxtczceU/9+nfA5H4l7VZtudOiVWUYHhOCmL3Glbawbr8o1QWvI4PNDJvkwDnuQIH
+	aCUmrayk8vyeqmwflxYTS7VNVYH0/qkhUPi+Prf95YGh++8zJLaKgpdG6pUu3CjFoKONXI
+	LP13mcRIiOgR/mx5sQ3qFowDMibxgjY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Uw2IaIaz;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TVZ5HUZR;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+	spf=pass (imf03.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.136 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793013684;
-	b=ODWd4ztu/slKkf1lX/9+8VvHAzjPHw9PGWwamv/tgqvvr5SR2H0iZtmjlQLwoddR1x7lqW
-	T6h/Cb41Nf3tEyKg4OQqj3cCxDjs0hLQIiCiqFacfxORMLdLqCPRdNItddaaZPh4Da5Wh0
-	ryIWrUkmZGFm7EolgbK4CHfJ68QFN0c=
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-3ab37ea4798so632000a91.0
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 04:21:23 -0700 (PDT)
+	t=1793013732;
+	b=YGlmp7hkYQm/wtAjWSpvAsz2Znrhcnhml7sp0X/1Sof1T9hT5zJvzZbEQ56A76qi8Gj0+W
+	7hTY/SQs6GOccUhS47CXAmIz40eER9FCG7KeBZx0NTBFJf2Fh+tXrtbjUUeD2PtDIl0sk6
+	8y4zvlW1rlz751pJX18aV+ATnps7zUM=
+Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-3ac6fe4aff0so1978404a91.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 04:22:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793013683; x=1793618483; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1793013731; x=1793618531; darn=kvack.org;
         h=references:in-reply-to:message-id:date:content-transfer-encoding
          :content-type:mime-version:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=YaPrNf7Cus6idRIRbovGwqOwkJFSxRQnPSz6SCMl2RU=;
-        b=Uw2IaIaz0fFdBA6LBmNZvYTSGcnXx0w/mRj+A4v/2NLS6OlbZINMpgSdWq0RPorY2B
-         7dJPLXo+YdKkhP7mwNFGGy/Io9IygF9mtofPOFBpTyjrrN0C8Xyxx4yc8NOV2Aiu7OfY
-         y0yYmgVxUSelkYAZSDrsx7HL+o13hCjzUyfwGbwLQvM2ZDPCel/I8M2f+h4zov6qqsDQ
-         n7byjEoqYjT2OC9JPn1VaqBSX7fNSYPPSQoVEmQ23ml27us7im78JZ4UUPsuV8ergG/o
-         COCPNqj/yATTxr6s7Gq62hNpGEEz8mvoOvhzvMTbaaZARyc3aZR/2ZMMjKn6miBhIlRN
-         PPhA==
+        bh=olwttAprMPggmCLpbuH0tIcMpbgFFVWXH2pLW4YPALQ=;
+        b=TVZ5HUZR6zQRPdTy7+mCr26TxzBB1+DZDW/m1kJgxOxm08AoM4HeJUaiL66BlXbFWC
+         MbUVAr25gzqS0wD5HTZSOxSGWn24574eIaKeI330gzns/2bIxOlVXOdj8+mce3hwqqzx
+         RTxp033hzerMqZwSQ1gyw78rs8LoZTwI/r114d/QK4N9E+Fy7Ir88rMJDpxSQ2qyWqk7
+         ftRYh9WDKy5n020hJWc1bWplcE6vOEtzkOcgFCDA/C7Pqh9ziP9TKGHRxiS2aYwF1vBM
+         ce6hq/HXCunqJAjDfUVpwGN/yHFjhRh9T0QjGSWfbwSggZ2ROJEbE+z8gpg3WXtGZxGI
+         Il8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793013683; x=1793618483;
+        d=1e100.net; s=20260707; t=1793013731; x=1793618531;
         h=references:in-reply-to:message-id:date:content-transfer-encoding
          :content-type:mime-version:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YaPrNf7Cus6idRIRbovGwqOwkJFSxRQnPSz6SCMl2RU=;
-        b=QUmDEYA6E51hNvqkvXkZW9b6zr+2u3eY0DLy9IlTayThpEfpyWiYUbdOlZM+WC+hWL
-         IktogVYKLGXC1AbKbBDon9UbGjaHozXZyymt1tkk5x89BosgwWuYLsvH20UrugeUk8C2
-         gWxlWDvTil+BDfcQxvcmnLMxnW7iHkFoHkjtZcP50MG511x5rhBBSzld2SaMaXMiL77d
-         FX76dgrH5NF37tr39Hp8ZBPtbHYdYIUqVkgNFdgFd+CxSBxK9PjxsNMMOToa5oV1yLbJ
-         vLdFzlzGFk+sNaP+VV6sta6nqsWGGD8RTF8EPGoPl1gnTbuvNLYT9QdXtBavjTDfHc6C
-         INAg==
-X-Forwarded-Encrypted: i=1; AKwUvBxxMJgLbyh54CdBR8VvHYH6qGgQ0D781hOy4g2idCMyOGiopOaNSvzpTuLQ8oy58oKaZt53d2pGyA==@kvack.org
-X-Gm-Message-State: AFq9FYJ+WEutapBcV3cn3rgB//t1Nf7iP59WMn8oOqaJEn/7RgkKPAS7
-	O4tikywUEfK/biPMFC9L8qhE4mpe56PPwnVH6KfUDPx+KWVkFCn1p3ZL
-X-Gm-Gg: AYBFou16Ay7wgHrOdAz/lk1VQMa910DzjeCtwVtE4P+GrQhAiCjQR0Xx5IqrylOhkcg
-	Sj4XQm7Ztv8dLI/zma4CFQPGZEsdBXNEB1i+2WcIJmr4I4dViLP03GJmQaoPcT/Qlpx3JI8fN/8
-	o+sfXyaZsnmQgNJ05/cFzLPzQtA4pd2bXTbwrpEViqR5jaWNWjmxuJVHgx85r0HE89kwRWVAzQg
-	G4kGfJOWQOysvbHdZ4mAL5bLZy78CU7KOzU4eo72yZSNRh5MUO4tdKeoWU9CTS3n8oTlab97Khs
-	c6ttVarT/2GOv+2YQYkRjuAJo35niEAAbWZPNJEBByibkxiFHNDl6Lu/6ZeoT+GO4sfxzhtCaFN
-	xCk0v+kuN5CKk6taBpaN7E6Sm9AvFtRo8UwmTp04o/FDaLOBzsRNL02Ay+9NKJjiAMjcj4JkgP4
-	1W9FU0ZTKCKcHJLo2WXMhpQdS7+tduFkTOc/Mk9W72Jf3Nv4ZfRsvGMjYY0UXX4ikC6Z9bi7Rm4
-	3xvmjMKkiJEuawZC//g5HWkv3jWh9utjrJqHfRerCZ1vTzLNnGP0jTZ3Te0mFJxzLgQQBjje60f
-	MY40L4YOmE0KxXMAbH4ir3Za0eJDSOHQz3aVonJgyd6pJRgzQqUQRg==
-X-Received: by 2002:a17:90b:564d:b0:3ac:7f4c:a690 with SMTP id 98e67ed59e1d1-3adeafb0449mr4836978a91.35.1793013682850;
-        Mon, 26 Oct 2026 04:21:22 -0700 (PDT)
+        bh=olwttAprMPggmCLpbuH0tIcMpbgFFVWXH2pLW4YPALQ=;
+        b=jxY1HMx3TSfMe7sJw5aoIb9OgEgKhEVDAUND4wr+dlS4WdneW7sBuFEL+2uTepfwp2
+         8vxDfMQveQ1pTAs19k7ybkfP4bFHpAYVREtuITQzGtcaccGaHC5oln80IK+YRCAOryzc
+         JaJrI+bM/BHUXmENKfqYIKWDGTmHAf/k5bJrdPABmlMWnFpxM0YWkT1vfOgkqgysvMKC
+         MhkwLrHdIU8m0HCJEJW7TKqSBNLNra1l/Jr1A6WWjEv+6Tvhl7gyhnWJ71Qrvq0R6ex5
+         AzvAIV54NYSexLDzledcJBrjTtRDD32kTzzsN17V7AEo2XjjYbVRvDk+ew44J/xh7xq4
+         mzlw==
+X-Forwarded-Encrypted: i=1; AKwUvBz/ZGeWBxCfrOZfR854xeySkyFBhOQ3G4i/uaRXmGxHhxhDpvkcgve2FGm82d4hkkxOpfhA7XkAwg==@kvack.org
+X-Gm-Message-State: AFq9FYL8nh77k1pKl7DccHpA/WNz07pye1gS4wGEsbiO1kZ00ggKoXPt
+	NgtLRl0FxMArFTEkBWDflEt8hhPTzYpRxj5v/3+BfpAFUQx2gvp2E/qk
+X-Gm-Gg: AYBFou2QG91dqKNJyAXiqvDyoKJFdE2PDCPj6Ap/PZ+/ftBgskJmEg2oLyrYIclEMhc
+	vCMIXdC+zXzuWDT/q64wkPOrRP7uzIf8pza5qTWSIzaSsMtYYOikpP+D+wFGsehrJthGzPkxIiL
+	8Cs2TrYwGL22lF1usy6BKnWwjcJIU2W9ChPfVALzGpR0KGGN+3Dn/6lxPHZg7AHwA5KnQBmy2kA
+	ob+YkcZZduRGpA0HAZ6XLaoZCfxpd7j49apcqEUiZ4mtPBV3jdQ/Nu3CScLuuQurJI6ntP4D39/
+	gLYGkWttHTjt+NwT8Qofh5vsAl6GDf1gm72r2wOAiKjS9J++pF0U1xmUUUghawCmsFJLlqmnTTW
+	Y8ENjvDuWly9tqrrKtb2tCJL76KyGa2ENp0OeNv3j8PBVRwf9FBbxZHlJMd/cDQLv6G9jEU4+ro
+	+LhfZyMclCD9RKShSw4EcIoqk9wc7wF6kKgEAM89XNJuGZGlXSBpX6n2ZldaQYeirNdV6IRpWZE
+	CyBARLGlsqT33XMlqS8PJV7I1BgDcAi1vhdRdHQTJJeDe3KC6WRtVv8/KWUlDhEzl4itFhyy6KA
+	hRvapms9mnqibR5ebizrpV5hy22raDvrcWbRtY5/Zy4lzz+Gdr31/O8ribO0+/1jaX7C6dXXxgs
+	=
+X-Received: by 2002:a17:90a:d603:b0:3ad:adfe:5854 with SMTP id 98e67ed59e1d1-3adeae76ff5mr5747644a91.40.1793013730625;
+        Mon, 26 Oct 2026 04:22:10 -0700 (PDT)
 Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebe6af24sm7907912a91.6.2026.10.26.04.21.09
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebae0094sm7960728a91.10.2026.10.26.04.22.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 04:21:22 -0700 (PDT)
+        Mon, 26 Oct 2026 04:22:10 -0700 (PDT)
 From: Aveline Noir <jm5905938@gmail.com>
 To: SJ Park <sj@kernel.org>
 Cc: Jonathan Corbet <corbet@lwn.net>,
@@ -101,28 +102,28 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
  linux-mm@kvack.org,
  linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: [PATCH 4/8] Docs/admin-guide/mm/damon/lru_sort: fix remaining grammar
+Subject: [PATCH 5/8] Docs/mm/damon/design: fix grammar and typos
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Date: Mon, 26 Oct 2026 22:14:36 +1100
-Message-ID: <179301327249.2.16817896016779044743.damon-docs-grammar-4@gmail.com>
+Date: Mon, 26 Oct 2026 22:14:37 +1100
+Message-ID: <179301327249.2.12612582132957329203.damon-docs-grammar-5@gmail.com>
 In-Reply-To: <179301327249.2.4690198998605536207.damon-docs-grammar-0@gmail.com>
 References: <179301327249.2.4690198998605536207.damon-docs-grammar-0@gmail.com>
-X-Rspamd-Queue-Id: 2FCBF4000D
-X-Stat-Signature: 3m1ioja3w5hipnarwi359wuuwngf6tcf
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F098A2000D
+X-Stat-Signature: ur37ia1jm3nf8iczieaoi95m4xryukk1
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793013684-711454
-X-HE-Meta: U2FsdGVkX18YUPWqwG8tFfux9xsDHfaGnfasrVKenpHW3QOUGrt7HEqnAf+RcRnf6+fD6dmKOTi4TdePUDhjCcrtpmLPlcyYTY92RPCWvHnjtB5EoeQrHXQ0q5Z1O0mRGj54AqOcvihtva+ZAU/CNLbEe1AnUHCorghzikMdhLlZQcG/LM+031AQrdnkd8EnVlZLQGfOgQKHf8LVXgZLpOLpBxZAyL98Ni3G6T58Kcys7Uu/ZShtGsPH4R1195PJGFTvx3f0Zct0SmPXOjiXtHPBINaX+nboD+rAFoe6rMu8/+gmTysPymlTxB5M7EgMGYmFDeC8Hnl2Rc09wHW6zyBbZTbKVDreCAz5vzW1IEliMwtn4UhdUTkYdLZaTa2K6f8KCJk862kcCBze2NTVl2NhuxXNRjFmH7UPatrxxegqRqw2fcBHFoJ36RHOvIQpp5h8OqVc8qS9Mf/R/bTAXuMpLlXI849Dlrn7zZSTDm5OVmdosXqE2ryzEeWp0y5CY/ipg+WISCrr+fckFkIXLW0xqjy12kqYXLZoefnW+X+T5iExC/wQX6TWji7tqVUsOhfvYL/eyOcR8stWkXVL62+Id4a0wujIvwbj1aQSQ4m+nFT/HI/CnFv2hX7gfftOHfI+Qheq0JCX+jhIkr2cWxIglSqufu2BxOLy9btjL/QIxhSJ0gIiCt5wooj4NK9rXdfq8kRkh9lZJIN6u4cISegOwuXRQgpHWMUEp7xztrd5fI6D+5Ol4gOz7235R6VAtWxYFu4zqMlp1K2v4rjY8VswCm0XZdbG03bfaOt2HkDiJPYlLNYh5vKYBuEGUrmR5+UHm3IAPagjGsEdDSAlz1Zx4tZfrZxjkS3P9fwfLi9XQm0DcG4xUoRA/7AIDrds1JRfgNKQVP+urfIz/sk6HvyXg36DL3xP6MdDpndByohTQ2llAJC+sRMvP5xa9tfl7IkdAAFXQKMue4Tr6xL
- o8wcVxrK
- xEqqXkJiGzhvUQvMT10dwQY8Vr7lVpHZxbEN4PT0CG0uVk34mx5yelpzUejyNxjvQG8l4onHwKqtlu2g6TeYpK9+eTpXnnIIyrcIfIKgew3A98L1vvy2ibBAuBe0IKXQpTN+6MHpxfN2YUtxfWvVbHif+5AlrEmvIk2ZWgD0EWI95XBX89boqISmI4ViPQibKQn+uPFJ+NwNFJ2hvFLEyZNEpK6ipABQb/TCSZI0ahiAn1sOlLO7rFTmLrmRXMFlGvhxPT1PvyAHXscqrR3WULCOjgBasnlZDAnTVpZWGe9sd5sHS9oa8rnq3T/1cGFE/S6kX7DxsNT7zTy10gBDCxSJS7fIX9A8rR+6n085Xmjabows45CMtoca61hCv2cPELkw1nSSDhrAa0UZ/2VR7AG27lsF4EMFd05n5fHF4faDyo2L5SKc5jeAvOyjgyQpJz6pLyWBNr6g1v6EvqepJGnTj0NpppZj8BYisCkxQ5W7d4Usn2rkMb9SZWtOKtxWZuPP3Qo0CllCYYnp8QwDKuD0Nv91iOl870pdFWY7tMiHDlwA=
+X-HE-Tag: 1793013731-967347
+X-HE-Meta: U2FsdGVkX18x9fiD4dSKEzwM3wq222IpFYOQuWHlz0RXOuMsJPiC+5znjHGsWI2CD3d1Mn7nyPfZyPjVZ9K0+PDGXmR+QWOqoz0jNBiyZ/5n+s78bD79umj61hb/4Pc7MtCtvhAB5NCxsumPrUPKUMoGA9h17CcODDb3mBhiN8BcxG3PgPrXpBdO5Vutl2h+c5mVXqTPdMOdyqglgBzLQSTwLFqLO+FWMaHRxPE15BL+7XRi/LWq00uygxy5Nvz/rbjC7Ci0JpzoSEbjOrPh9fzbyt5Ld5hpfq7kP4eKHv1EQuzS4hZCtsMQP4/E2MJDusLWHGzJotk/8JrrFJSzukhq8CZTK1chKqu1qd7/lHs9l/5BJhNmE7Mw34kBWsqdfn0JM+ePRWE5U/WffK3phC+TqvPnhFnK8tyusCH0ud5HIzZM5YhpzFdj2w86YbE9eFVmDUi+y6sCLa54MfJiFDvsPyiiM3S+FUGlZr325h3da7OF7XCFuKiJSx7TQ1RrlZL3HPcICZJCedTugACQS8lBx5+0l61xOzjcWJLbciBBTZ4XQ1prEDw/ml4CuxXE2Fy1UmvNomsZHYvacZ/wdYEdNheegYPpdE7+llHNeih30Pe68uk5h0uDthu4vm8yV/xCtpWx/GCanS0zJd+nF3dMC9EC6HojhM0KNuP+2TvSddpz3GN7KeyTSKn3CO8Q7345RVwh4wYNS/FyBWYl/tZb29OMxqMGi82qxsQ9HvYTBkriEGG3T45svGcX/y0lMEJ6/tbSaJD4bCSGZtMYNE8O8ruCf+OidZTqWsp5q3dJCUlP4fjMwR9uasrkwlXHCJDDpbFH5kUmEuXtMLW9TSnzs1/Y0IhN7H47qf0pJ9tYOkwOk/PT3YZQk87BjQPSkrKfe2tgkYEe4/JX7ud67utjkPH+6mdG4OExpllJCGgYv9Y7N+TYLU5zUzEeZMcLj1nbtTBQvgbcBLFx5V1
+ m1T2g8jo
+ 2wS/84LFB8ArnkdF6LeXOgm/6PfZvvjAW2V+yHqdx49y35r1Upr80VyW+4TRfHqKfGhpCnVGPaYbEa5Jtx3v6HzPkwjM++Nt9yWPEpdJ7GzB/4lGx3IpZyNHFmrtO0aONKQ6Da7NCergvDYU0hojq/AELcNmT9iMSM0LYFvunNvIZq/RIxx8KJInkhmt5Z7EhMofGc/Cu43kWiDEJ8D3INsU/3fqMyeRKjmwtYeamZvMspfGp5VXZvTg5aX+xRZLa9VomgvLu5iXIIzs5jmgL53QZpUj2045Ei0tudqQZ+FscBPHLG2Ku8VjwB0r3cKekvt0ZanAMGwkk+VBmA0AqHa/JSOwZcSxK1hESucAvn7g6smC89d6HHYhhh5pZmyPvBVyC9bTwPY1lIkLahnJZm663jR5UQG2Vf91M3irKzybnuwoH52wQY85wlHdMQhHPyL6TARkelQv5cSLWY0SptyJiQW7KEN7Jfls29UlqtM1x7Hu9WRAE9p8ZaNOseHmWM4Mh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,147 +132,288 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Manuel's recent grammar fix for this file, now in damon/next, covered a
-good part of it.  This should take care of the few mistakes that are
-left, like "should automatically activated" and "Make DAMON_LRU_SORT
-reads".  Rewrap where the lines got too long.
+The design doc has quite a few relative clauses that seem to have lost
+their verb, like "pages that assumed to have" or "filters that handled
+by the core layer".  Fix those, along with some agreement issues and a
+couple of typos: "Parreto", and "Use space", which I think should be
+"User space".  Rewrap where the lines got too long.
 
 Signed-off-by: Aveline Noir <jm5905938@gmail.com>
 ---
- .../admin-guide/mm/damon/lru_sort.rst         | 45 ++++++++++---------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ Documentation/mm/damon/design.rst | 108 +++++++++++++++---------------
+ 1 file changed, 54 insertions(+), 54 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-index aa4cc90ca57c..c628e3f6e587 100644
---- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-+++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-@@ -35,7 +35,7 @@ deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
- CPU for the prioritizations, a CPU time usage limit can be configured.  Under
- the limit, it prioritizes and deprioritizes more hot and cold pages first,
- respectively.  System administrators can also configure under what situation
--this scheme should automatically activated and deactivated with three memory
-+this scheme should be automatically activated and deactivated with three memory
- pressure watermarks.
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 1e699e3f8a49..4e3c27382b5e 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -35,13 +35,13 @@ Overall Architecture
+ DAMON subsystem is configured with three layers including
  
- Its default parameters for hotness/coldness thresholds and CPU quota limit are
-@@ -55,7 +55,7 @@ DAMON_LRU_SORT utilizes module parameters.  That is, you can put
- ``damon_lru_sort.<parameter>=<value>`` on the kernel boot command line or write
- proper values to ``/sys/module/damon_lru_sort/parameters/<parameter>`` files.
+ - :ref:`Operations Set <damon_operations_set>`: Implements fundamental
+-  operations for DAMON that depends on the given monitoring target
++  operations for DAMON that depend on the given monitoring target
+   address-space and available set of software/hardware primitives,
+ - :ref:`Core <damon_core_logic>`: Implements core logics including monitoring
+   overhead/accuracy control and access-aware system operations on top of the
+   operations set layer, and
+ - :ref:`Modules <damon_modules>`: Implements kernel modules for various
+-  purposes that provides interfaces for the user space, on top of the core
++  purposes that provide interfaces for the user space, on top of the core
+   layer.
  
--Below are the description of each parameter.
-+Below is the description of each parameter.
  
- enabled
- -------
-@@ -70,12 +70,12 @@ condition.  Refer to below descriptions of the watermarks parameter for this.
- commit_inputs
- -------------
+@@ -137,8 +137,8 @@ finding the relevant PTE Accessed bit(s) from the address.  While the
+ implementation for the virtual address walks the page table for the target task
+ of the address, the implementation for the physical address walks every page
+ table having a mapping to the address.  In this way, the implementations find
+-and clear the bit(s) for next sampling target address and checks whether the
+-bit(s) set again after one sampling period.  This could disturb other kernel
++and clear the bit(s) for next sampling target address and check whether the
++bit(s) are set again after one sampling period.  This could disturb other kernel
+ subsystems using the Accessed bits, namely Idle page tracking and the reclaim
+ logic.  DAMON does nothing to avoid disturbing Idle page tracking, so handling
+ the interference is the responsibility of sysadmins.  However, it solves the
+@@ -177,7 +177,7 @@ ranges.  In some cases, the address space for a given operations set could be
+ too large to be handled with the type.  ARM (32-bit) with large physical
+ address extension is an example.  For such cases, a per-operations set
+ parameter called ``address unit`` is provided.  It represents the scale factor
+-that need to be multiplied to the core layer's address for calculating real
++that needs to be multiplied to the core layer's address for calculating real
+ address on the given address space.  Support of ``address unit`` parameter is
+ up to each operations set implementation.  ``paddr`` is the only operations set
+ implementation that supports the parameter.
+@@ -219,9 +219,9 @@ duration.  The resolution of the access frequency is controlled by setting
+ ``sampling interval`` and ``aggregation interval``.  In detail, DAMON checks
+ access to each page per ``sampling interval`` and aggregates the results.  In
+ other words, counts the number of the accesses to each page.  After each
+-``aggregation interval`` passes, DAMON calls callback functions that previously
+-registered by users so that users can read the aggregated results and then
+-clears the results.  This can be described in below simple pseudo-code::
++``aggregation interval`` passes, DAMON calls callback functions that were
++previously registered by users so that users can read the aggregated results and
++then clears the results.  This can be described in below simple pseudo-code::
  
--Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
-+Make DAMON_LRU_SORT read the input parameters again, except ``enabled``.
+     while monitoring_on:
+         for page in monitoring_target:
+@@ -244,11 +244,11 @@ Region Based Sampling
+ ~~~~~~~~~~~~~~~~~~~~~
  
--Input parameters that updated while DAMON_LRU_SORT is running are not applied
--by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
--of parameters except ``enabled`` again.  Once the re-reading is done, this
--parameter is set to ``N``.  If invalid parameters are found while the
-+Input parameters that are updated while DAMON_LRU_SORT is running are not
-+applied by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads
-+values of parameters except ``enabled`` again.  Once the re-reading is done,
-+this parameter is set to ``N``.  If invalid parameters are found while the
- re-reading, DAMON_LRU_SORT will be disabled.
+ To avoid the unbounded increase of the overhead, DAMON groups adjacent pages
+-that assumed to have the same access frequencies into a region.  As long as the
+-assumption (pages in a region have the same access frequencies) is kept, only
+-one page in the region is required to be checked.  Thus, for each ``sampling
+-interval``, DAMON randomly picks one page in each region, waits for one
+-``sampling interval``, checks whether the page is accessed meanwhile, and
++that are assumed to have the same access frequencies into a region.  As long as
++the assumption (pages in a region have the same access frequencies) is kept,
++only one page in the region is required to be checked.  Thus, for each
++``sampling interval``, DAMON randomly picks one page in each region, waits for
++one ``sampling interval``, checks whether the page is accessed meanwhile, and
+ increases the access frequency counter of the region if so.  The counter is
+ called ``nr_accesses`` of the region.  Therefore, the monitoring overhead is
+ controllable by setting the number of regions.  DAMON allows users to set the
+@@ -367,7 +367,7 @@ attributes monitoring feature is provided.
  
- Once ``Y`` is written to this parameter, the user must not write to any
-@@ -87,10 +87,11 @@ active_mem_bp
+ Using the feature, users can register data attributes of their interest to the
+ DAMON :ref:`context <damon_design_execution_model_and_data_structures>`.  The
+-registration is made by specifying a probe per attribute.  Each of the probe
++registration is made by specifying a probe per attribute.  Each of the probes
+ specifies a rule to determine if a given memory region has the related
+ attribute.  The rule is constructed with multiple filters.  The filters work
+ same to :ref:`DAMOS filters <damon_design_damos_filters>` except the supported
+@@ -383,12 +383,12 @@ filter types.  Currently below filter types are supported.
  
- Desired active to (in)active memory ratio in bp (1/10,000).
+ If such probes are registered, DAMON executes the probes for each region's
+ sampling memory when it does the access :ref:`sampling
+-<damon_design_region_based_sampling>`.  The number of samples that identified
+-as having the data attribute (hitting the probe) per :ref:`aggregation interval
+-<damon_design_monitoring>` is accounted in a per-region per-probe counter.
+-Users can therefore know how much of a given DAMON region has a specific data
+-attribute by reading the per-region per-probe probe hits counter after each
+-aggregation interval.
++<damon_design_region_based_sampling>`.  The number of samples that are
++identified as having the data attribute (hitting the probe) per
++:ref:`aggregation interval <damon_design_monitoring>` is accounted in a
++per-region per-probe counter.  Users can therefore know how much of a given
++DAMON region has a specific data attribute by reading the per-region per-probe
++probe hits counter after each aggregation interval.
  
--While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
--increases and decreases the effective level of the quota aiming the LRU
--(de)prioritizations of the hot and cold memory resulting in this active to
--(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
-+While keeping the caps that are set by other quotas, DAMON_LRU_SORT
-+automatically increases and decreases the effective level of the quota aiming
-+the LRU (de)prioritizations of the hot and cold memory resulting in this active
-+to (in)active memory ratio.  Value zero means disabling this auto-tuning
-+feature.
+ Users can optionally register probing preparation actions per probe.  If such
+ actions are registered, DAMON applies the actions to each region's sampling
+@@ -480,7 +480,7 @@ given memory region.
+ Dynamic Target Space Updates Handling
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
- Disabled by default.
+-The monitoring target address range could dynamically changed.  For example,
++The monitoring target address range could be dynamically changed.  For example,
+ virtual memory could be dynamically mapped and unmapped.  Physical memory could
+ be hot-plugged.
  
-@@ -112,8 +113,8 @@ Filter (non-)young pages accordingly for LRU (de)prioritizations.
+@@ -518,8 +518,8 @@ to converge regions with the :ref:`regions adjustment mechanism
+ time scale of the given purpose.  This could happen if the workload is actually
+ making only rare accesses but the user thinks the amount of accesses for the
+ monitoring purpose too high.  For such cases, the target amount of access to
+-capture per ``aggregation interval`` should carefully reconsidered.  Also, note
+-that the captured amount of accesses is represented with not only
++capture per ``aggregation interval`` should be carefully reconsidered.  Also,
++note that the captured amount of accesses is represented with not only
+ ``nr_accesses``, but also ``age``.  For example, even if every region on the
+ monitoring results show zero ``nr_accesses``, regions could still be
+ distinguished using ``age`` values as the recency information.
+@@ -566,7 +566,7 @@ interval`` based on the :ref:`the tuning guide idea
+ users to set the aimed amount of access events to observe via DAMON within
+ given time interval.  The target can be specified by the user as a ratio of
+ DAMON-observed access events to the theoretical maximum amount of the events
+-(``access_bp``) that measured within a given number of aggregations
++(``access_bp``) that is measured within a given number of aggregations
+ (``aggrs``).  The ratio is in basis point (bp or 1/10,000).
  
- If this is set, check page level access (youngness) once again before each
- LRU (de)prioritization operation.  LRU prioritization operation is skipped
--if the page has not accessed since the last check (not young).  LRU
--deprioritization operation is skipped if the page has accessed since the
-+if the page has not been accessed since the last check (not young).  LRU
-+deprioritization operation is skipped if the page has been accessed since the
- last check (young).  The feature is enabled or disabled if this parameter is
- set to ``Y`` or ``N``, respectively.
+ The DAMON-observed access events are calculated in byte granularity based on
+@@ -578,7 +578,7 @@ with theoretical maximum ``nr_accesses``, which can be calculated as
+ ``aggregation interval / sampling interval``.
  
-@@ -125,7 +126,7 @@ hot_thres_access_freq
- Access frequency threshold for hot memory regions identification in permil.
+ The mechanism calculates the ratio of access events for ``aggrs`` aggregations,
+-and increases or decrease the ``sampling interval`` and ``aggregation
++and increases or decreases the ``sampling interval`` and ``aggregation
+ interval`` in same ratio, if the observed access ratio is lower or higher than
+ the target, respectively.  The ratio of the intervals change is decided in
+ proportion to the distance between current samples ratio and the target ratio.
+@@ -587,12 +587,12 @@ The user can further set the minimum and maximum ``sampling interval`` that can
+ be set by the tuning mechanism using two parameters (``min_sample_us`` and
+ ``max_sample_us``).  Because the tuning mechanism changes ``sampling interval``
+ and ``aggregation interval`` in same ratio always, the minimum and maximum
+-``aggregation interval`` after each of the tuning changes can automatically set
+-together.
++``aggregation interval`` after each of the tuning changes can be automatically
++set together.
  
- If a memory region is accessed in frequency of this or higher, DAMON_LRU_SORT
--identifies the region as hot, and mark it as accessed on the LRU list, so that
-+identifies the region as hot, and marks it as accessed on the LRU list, so that
- it could not be reclaimed under memory pressure.  50% by default.
+-The tuning is turned off by default, and need to be set explicitly by the user.
+-As a rule of thumbs and the Parreto principle, 4% access samples ratio target
+-is recommended.  Note that Parreto principle (80/20 rule) has applied twice.
++The tuning is turned off by default, and needs to be set explicitly by the user.
++As a rule of thumb and the Pareto principle, 4% access samples ratio target
++is recommended.  Note that Pareto principle (80/20 rule) has been applied twice.
+ That is, assumes 4% (20% of 20%) DAMON-observed access events ratio (source)
+ to capture 64% (80% multiplied by 80%) real access events (outcomes).
  
- cold_min_age
-@@ -134,7 +135,7 @@ cold_min_age
- Time threshold for cold memory regions identification in microseconds.
+@@ -831,14 +831,14 @@ auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
+ ``target_metric`` be same to ``target_value``.
  
- If a memory region is not accessed for this or longer time, DAMON_LRU_SORT
--identifies the region as cold, and mark it as unaccessed on the LRU list, so
-+identifies the region as cold, and marks it as unaccessed on the LRU list, so
- that it could be reclaimed first under memory pressure.  120 seconds by
- default.
+ - ``user_input``: User-provided value.  Users could use any metric that they
+-  has interest in for the value.  Use space main workload's latency or
++  have interest in for the value.  User space main workload's latency or
+   throughput, system metrics like free memory ratio or memory pressure stall
+   time (PSI) could be examples.  Note that users should explicitly set
+   ``current_value`` on their own in this case.  In other words, users should
+   repeatedly provide the feedback.
+ - ``some_mem_psi_us``: System-wide ``some`` memory pressure stall information
+-  in microseconds that measured from last quota reset to next quota reset.
+-  DAMOS does the measurement on its own, so only ``target_value`` need to be
++  in microseconds that is measured from last quota reset to next quota reset.
++  DAMOS does the measurement on its own, so only ``target_value`` needs to be
+   set by users at the initial time.  In other words, DAMOS does self-feedback.
+ - ``node_mem_used_bp``: Specific NUMA node's used memory ratio in basis point
+   (bp or 1/10,000).
+@@ -927,16 +927,16 @@ number of filters for each scheme.  Each filter specifies
+ For efficient handling of filters, some types of filters are handled by the
+ core layer, while others are handled by operations set.  In the latter case,
+ hence, support of the filter types depends on the DAMON operations set.  In
+-case of the core layer-handled filters, the memory regions that excluded by the
+-filter are not counted as the scheme has tried to the region.  In contrast, if
+-a memory regions is filtered by an operations set layer-handled filter, it is
++case of the core layer-handled filters, the memory regions that are excluded by
++the filter are not counted as the scheme has tried to the region.  In contrast,
++if a memory region is filtered by an operations set layer-handled filter, it is
+ counted as the scheme has tried.  This difference affects the statistics.
  
-@@ -237,7 +238,7 @@ The maximum number of monitoring regions of DAMON for the cold memory
- monitoring.  This can be used to set the upper-bound of the monitoring overhead.
- However, setting this too low could result in bad monitoring quality.  Please
- refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
--defaults.
-+default.
+-When multiple filters are installed, the group of filters that handled by the
+-core layer are evaluated first.  After that, the group of filters that handled
+-by the operations layer are evaluated.  Filters in each of the groups are
++When multiple filters are installed, the group of filters that are handled by
++the core layer is evaluated first.  After that, the group of filters that are
++handled by the operations layer is evaluated.  Filters in each of the groups are
+ evaluated in the installed order.  If a part of memory is matched to one of the
+-filter, next filters are ignored.  If the part passes through the filters
++filters, next filters are ignored.  If the part passes through the filters
+ evaluation stage because it is not matched to any of the filters, applying the
+ scheme's action to it depends on the last filter's allowance type.  If the last
+ filter was for allowing, the part of memory will be rejected, and vice versa.
+@@ -955,26 +955,26 @@ Below ``type`` of filters are currently supported.
  
- monitor_region_start
+ - Core layer handled
+     - addr
+-        - Applied to pages that belonging to a given address range.
++        - Applied to pages that belong to a given address range.
+     - target
+-        - Applied to pages that belonging to a given DAMON monitoring target.
++        - Applied to pages that belong to a given DAMON monitoring target.
+     - probe_hits_wsum
+         - Matches to monitoring regions having a given range of :ref:`probe
+           hits weighted sum <damon_design_attrs_only_monitoring>` value.
+ - Operations layer handled, supported by only ``paddr`` operations set.
+     - anon
+-        - Applied to pages that containing data that not stored in files.
++        - Applied to pages that contain data that are not stored in files.
+     - active
+         - Applied to active pages.
+     - memcg
+-        - Applied to pages that belonging to a given cgroup.
++        - Applied to pages that belong to a given cgroup.
+     - young
+         - Applied to pages that are accessed after the last access check from the
+           scheme.
+     - hugepage_size
+-        - Applied to pages that managed in a given size range.
++        - Applied to pages that are managed in a given size range.
+     - unmapped
+-        - Applied to pages that unmapped.
++        - Applied to pages that are unmapped.
+ 
+ To know how user-space can set the filters via :ref:`DAMON sysfs interface
+ <sysfs_interface>`, refer to :ref:`filters <sysfs_filters>` part of the
+@@ -1008,14 +1008,14 @@ the region is eligible to apply the scheme's :ref:`action
+ <damon_design_damos_access_pattern>`, :ref:`quotas
+ <damon_design_damos_quotas>`, :ref:`watermarks
+ <damon_design_damos_watermarks>`, and :ref:`filters
+-<damon_design_damos_filters>` that handled on core logic could affect this.
++<damon_design_damos_filters>` that are handled on core logic could affect this.
+ The core logic will only ask the underlying :ref:`operation set
+-<damon_operations_set>` to do apply the action to the region, so whether the
++<damon_operations_set>` to apply the action to the region, so whether the
+ action is really applied or not is unclear.  That's why it is called "tried".
+ 
+ "A scheme is applied to a region" means the :ref:`operation set
+ <damon_operations_set>` has applied the action to at least a part of the
+-region.  The :ref:`filters <damon_design_damos_filters>` that handled by the
++region.  The :ref:`filters <damon_design_damos_filters>` that are handled by the
+ operation set, and the types of the :ref:`action <damon_design_damos_action>`
+ and the pages of the region can affect this.  For example, if a filter is set
+ to exclude anonymous pages and the region has only anonymous pages, or if the
+@@ -1034,12 +1034,12 @@ documentation.
+ Regions Walking
+ ~~~~~~~~~~~~~~~
+ 
+-DAMOS feature allowing users access each region that a DAMOS action has just
++DAMOS feature allowing users to access each region that a DAMOS action has just
+ applied.  Using this feature, DAMON :ref:`API <damon_design_api>` allows users
+-access full properties of the regions including the access monitoring results
++to access full properties of the regions including the access monitoring results
+ and amount of the region's internal memory that passed the DAMOS filters.
+-:ref:`DAMON sysfs interface <sysfs_interface>` also allows users read the data
+-via special :ref:`files <sysfs_schemes_tried_regions>`.
++:ref:`DAMON sysfs interface <sysfs_interface>` also allows users to read the
++data via special :ref:`files <sysfs_schemes_tried_regions>`.
+ 
+ .. _damon_design_api:
+ 
+@@ -1124,7 +1124,7 @@ is already running, others will return ``-EBUSY`` upon start requests.
+ Sample DAMON Modules
  --------------------
-@@ -310,7 +311,7 @@ Total bytes of hot memory regions that were successfully LRU-sorted.
- nr_hot_quota_exceeds
- --------------------
  
--Number of times that the time quota limit for hot regions have exceeded.
-+Number of times that the time quota limit for hot regions has been exceeded.
+-DAMON modules that provides example DAMON kernel API usages.
++DAMON modules that provide example DAMON kernel API usages.
  
- nr_lru_sort_tried_cold_regions
- ------------------------------
-@@ -325,24 +326,24 @@ Total bytes of cold memory regions that tried to be LRU-sorted.
- nr_lru_sorted_cold_regions
- --------------------------
- 
--Number of cold memory regions that successfully be LRU-sorted.
-+Number of cold memory regions that were successfully LRU-sorted.
- 
- bytes_lru_sorted_cold_regions
- -----------------------------
- 
--Total bytes of cold memory regions that successfully be LRU-sorted.
-+Total bytes of cold memory regions that were successfully LRU-sorted.
- 
- nr_cold_quota_exceeds
- ---------------------
- 
--Number of times that the time quota limit for cold regions have exceeded.
-+Number of times that the time quota limit for cold regions has been exceeded.
- 
- Example
- =======
- 
--Below runtime example commands make DAMON_LRU_SORT to find memory regions
-+Below runtime example commands make DAMON_LRU_SORT find memory regions
- having >=50% access frequency and LRU-prioritize while LRU-deprioritizing
--memory regions that not accessed for 120 seconds.  The prioritization and
-+memory regions that are not accessed for 120 seconds.  The prioritization and
- deprioritization is limited to be done using only up to 1% CPU time to avoid
- DAMON_LRU_SORT consuming too much CPU time for the (de)prioritization.  It also
- asks DAMON_LRU_SORT to do nothing if the system's free memory rate is more than
+ kernel programmers can build their own special or general purpose DAMON modules
+ using DAMON kernel API.  To help them easily understand how DAMON kernel API
 
