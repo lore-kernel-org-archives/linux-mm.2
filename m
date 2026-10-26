@@ -1,85 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7CA606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FBC606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DAokXhrI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S6NMn3g2
 Received: by kanga.kvack.org (Postfix)
-	id 1FB606B05BF; Mon, 26 Oct 2026 06:38:53 -0400 (EDT)
+	id A18316B05B0; Mon, 26 Oct 2026 06:42:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D2B96B05C0; Mon, 26 Oct 2026 06:38:53 -0400 (EDT)
+	id 9C9366B05B6; Mon, 26 Oct 2026 06:42:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C29C6B05C1; Mon, 26 Oct 2026 06:38:53 -0400 (EDT)
+	id 8B8A56B05B9; Mon, 26 Oct 2026 06:42:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E024E6B05BF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:38:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76475120770
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:38:52 +0000 (UTC)
-X-FDA: 85364429304.04.85908A4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 642106B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:42:51 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E70011A06C0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:42:50 +0000 (UTC)
+X-FDA: 85364439300.15.D356F1B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9CD0F2000C
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:38:50 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAokXhrI;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 27B081A0008
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:42:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S6NMn3g2;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793011130;
+	s=arc-20220608; t=1793011369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/BLhE6A843KDT8+y0mtaljR3lPY00tdB/4nQapDfY8E=;
-	b=i8D9ahzNs51HHlxOQqLOgg+QzhmWsw+ja0W4m53Nw27HEuZuuRKVU3EnxNxL8Ihk9Ab6p6
-	lwe52IgfbWYkYmLrBzPlMbKrtPNKzK89ihL2rnwyFhenHuNuOKSL3dkCuZb4AHQnf0T2H/
-	oBcXcnj2JX8kHXfLlKQjsln44bANu38=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAokXhrI;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=V1oXGc/qKdgvlq4aK/p6VII9u7yL3RrtIDfi2SVQ7v0=;
+	b=mAIUtTmzrik8yPfndkqM5Kra7Foth2RHbiTJe67XbZI/8+WghINKCUQ7bCYHbBxAI+EprQ
+	leH9pPWQlW5nQwLEOhH8/LZRTrWWCRoD/w0BXtXvhtytTTbSyLtWJOpSUgU5g02CKQuS6R
+	ZqiXzMfbZ/SNtb+SzvYUbAFDC76fQz4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793011130;
-	b=zdQLRaox21KV1mfNWRlJm284Yaaj35rEqiG/rYXeQpFOcg3dhbwEZKKD8YuEUb78OWurEW
-	fSXDfEY/Drl/EFrI9n3ll8JeLbxjHxLhWCALgr3bY2vo1Pj0zMwiMQgVbdM6TDVJRPd9g9
-	CU1EJGeJs6q8nfYF52xJIaC+cmqaPAM=
+	t=1793011369;
+	b=iz5yCJsnKgEjrlMxMgKpS40ynapudR5NVmF7qcLzueKmlv/iQTpzGexdDqwiNs4WuVJTf0
+	SbabkgPd0jhGSso9QaoUN8UzL2VG30UdNBb47Ov5f3bA+qfl1cU5c63BbiFI9rzFiA0Ep3
+	znlOX+9egVy5BtFhCCMHQz/61iOQd6M=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S6NMn3g2;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EBCEA43E6E;
-	Mon, 26 Oct 2026 10:38:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431F41F01825;
-	Mon, 26 Oct 2026 10:38:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 557304127A;
+	Mon, 26 Oct 2026 10:42:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A577A1F01825;
+	Mon, 26 Oct 2026 10:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793011129;
-	bh=/BLhE6A843KDT8+y0mtaljR3lPY00tdB/4nQapDfY8E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DAokXhrI31jxzYuScbo35XEhEcxr79cZ8kAnkbToxT9/ue8/BqmP4QcZTyIgwFr4s
-	 WrQDTnU4Z7PLHHPOo7V1mQ9uEoB0nciISo4EFJJ5JwATLvAz8R+NJCvNCfvC07PDBK
-	 Row6ghd03Z7AzOD7m5dxYks0nXQoMHfyZL5kIGiP4JtbjhQMcMmgHLMAEOFv0w2VQ2
-	 pPcjKjSp7tIivkSDIrkJG8v1k3EurLoxIGf2HGUR4RdOMB2QPDN+XQ3T4jdZifymE2
-	 SKGIZPqarIgIR9sUUWwS9qu2oz3PnM/GKk3Ufmwg/dbFuX2cftxjpQh2XPrlUlhZZD
-	 oksob1U8ckOHw==
-Message-ID: <103481d2-f75a-4982-b9a1-3592cda8267a@kernel.org>
-Date: Mon, 26 Oct 2026 11:38:42 +0100
+	s=k20260515; t=1793011368;
+	bh=V1oXGc/qKdgvlq4aK/p6VII9u7yL3RrtIDfi2SVQ7v0=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=S6NMn3g2oAoGG5I0HTSjAWzwfo5Y4QhnSZOZciinMdMwZgCYiokH7EiuT6kiPatSc
+	 rsfDt+cgcO09Qp2uGXCho9OrawV0Qoqlo4bUU9HL2sHKgEacvN8IKU8h9XsNX7KrjU
+	 w1p8KUD8ExZ+c82/nVcNxROxnYEKVIQjSKLrQmeMTaatjdGrHplyvbHx+4M+JRwFXc
+	 EruRBrpAzJbHIOd89Zxe1vINFSXbOkla974/NhJpM9MxvnAJG2mnJfmagDLm1A0/1Z
+	 Qh6R58rgF8bVaGWXrIiZKRKTCgKuKVuD8l3qO6zS+/Sdotz1/m0txf3xsNRxoTRR2i
+	 I3ItrLD1buxAw==
+Message-ID: <24bb4c36-730c-4f04-9cfa-be096d4da9a2@kernel.org>
+Date: Mon, 26 Oct 2026 11:42:40 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] mm: generalize PUD page table allocation
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Arnd Bergmann <arnd@arndb.de>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, linux-mm@kvack.org,
- linux-arch@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261014035910.687847-1-songmuchun@bytedance.com>
- <20261014035910.687847-4-songmuchun@bytedance.com>
+Subject: Re: [PATCH 2/4] mm/vma: write lock source VMA before duplicating it
+ in __split_vma()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, SJ Park <sj@kernel.org>,
+ Kees Cook <kees@kernel.org>, Colin Cross <ccross@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261023-fix-vma-atomic-v1-0-8ff4fae1fc85@kernel.org>
+ <20261023-fix-vma-atomic-v1-2-8ff4fae1fc85@kernel.org>
+ <20261023192627.yj5ltdj4fjzydblp@offworld>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,21 +125,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261014035910.687847-4-songmuchun@bytedance.com>
+In-Reply-To: <20261023192627.yj5ltdj4fjzydblp@offworld>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 27B081A0008
+X-Stat-Signature: dt8r6r4e33da7m9boymkokp153signu1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9CD0F2000C
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: go3rij8p6ns4agwuhrb7thxj8fopwbhp
-X-HE-Tag: 1793011130-229445
-X-HE-Meta: U2FsdGVkX1+9Lcc+LiFkn1Rbs5Lz5i1+iDESBTRpvaG6yPI3GaiGhPl7yqtY9VnUnDLd1dM+fiBlHmXXRKWnIukKoz0NVJOpbuWTgXtMGseyJOKicziCHELZ0fAyERABAgXb+MTO2bvlKGcad24A6a8F7eu8qMpyBrrGKH23qVm37A2PsazFb9zQBnKEqkPF1jqHRc/HAIwFd8XV5B1O2/wULpraYl5WZDUojlrl9a+tqrNrT+loRXJ1zlnhMG8dPM9fY9kvUCe+CjGyDMseT4WC30iVUPPUa1tgVW4ts8EnZ+fNatykDvp1HwelqmqyPVTRj7uj8FWNPF8fWkXzKhstfnF7psUzJ/jXi+acN3o2OVAMcKpeBqJVQGlkqYGWIRnp3hrHbIphdaaNGOmj5KjgB2h4IBA653lgJfCmD4UrlAMUwIKcEhvHGDJcgv1r4yfNM31Ew0sRwqA778lhCdXT1PnTfRbMOJol56cMNewmPSQ+0TO+2m1yPKmNLOS9FoR45dpXweWACsQ/LH0bLEHw7wglJdom42dwQP0Xdxm1QMI3f76dgMKiVLqcKk2r2YLeF7wqQeeM+8foDW/vQ6mX/I0ohKa1gnixt+DOlvTRYFRrUap5QZ3ZdeyMO1xZdtvxft2e7F/xwTf0dAqR3ejNeNxUcLC2PsDjtHVsA1jps305+sdCRxXKGQAEsJXSuzin1JLZpVBvIWvAga2xMt+03crj4AyVIbk6HyTZYl26a2lDhBPU8RyazXWUsoEwHcYYUhK/8tTLGxSP4j+vOooG4/IZoLU3fFzUFCxbbqu61XDxTqjiP4CIqf/I2/mv2hN11689Ac6UoWWoBngIC2Jcu64pcDBAHvQhpEZF3wStG3142+6TpoTINgeW08hZBnRwYrmPq0aJ1w7oSF6dRKMSGqnHHA28JyJXImYjTT3TheGuEW1RQXG26I+m//v7eMMiV0zAw2PMh87RsEV
- qaKfi1xI
- KpSbna74gy7FXI6+7AKDYVrYfeGdGeaEj+8EkLn0pBaV6/T7mIhvk2iTFlzbaxZ/oM6fYrq2UXZ8K79gWIYUcPwd0k5+d8A2E5QaFLZza4eAFZw8f/v+imoE+bzBHAuLf81CIbUtcKDpMJPlBXURpBkYLGQmJ0qlIAMaxdyeHdvyIF1bujY8sGENtAb/8fvrTP/hyxuO5T358BIgtnhoPa00F7nByCoSbmTd+6EPTVpTh9QsWTGbgTH6RzXv95RcTRkQTIf08CZiIyBSgAZvDY55NLSDFsb0jxRkG2IHbow27miOXACq74x688j8BjW6LHj6zC3647T+m3jgqFYSZCWO/zwQPZDyVCEbGJrNOEiCDAjuEh/gbm4X+2atpd30URLqL
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793011369-656719
+X-HE-Meta: U2FsdGVkX1+AP+kMWs5ShIJSRdM9a9P2jDKD0OwopVSoxldp4c7U9KKxah11s476ib2AQEy44ebgy5eWF6MJpT5J3NgwEkNE+6J0VDjldc+Q1pjlAz+oUGH56X+6Yf4Ma8ibxJmhvi+cuBaP7XEEkyBEjTY2yPiMRWyeZNHrKVZhVQZA2SNCBv6UtAAxKtpKY6zqdvHkk43lKL1E7YPJnAxAnshpB4TzfpV92hsvhWixaQf64aoMgwYbUqoCczxJPB3t0uCF47qkcmUCtMzKMD3urkIBChMxpAule4bKU9DJqMvJLyM8EhTvuaO978xPXkDB3ixf1J/r8M/cXHq2oF8y8Yq6FySrnvYUZzJVEzaCGTD+mozG+HRxtTf61PLXs67jAT/8HkzGtkJmXmsRzO2zlDUXcUpiZE0COHrmwOcjl3E9AVIY5bziyHyfq9Y3AN2ZMcWefAMJeSQ80PWJmi6TOdjQ6t/Pibk5TjoEzVMfoJ7M8LZMjYnUWzwypZm13SvNGMiKnlJ60GgRGte6dm/GXf/mYSW0ovi8GVyKZs1kAIke1YfS2KxegOlIKqFAwDkALSyrpeZTl6AXUGCFUA/OMThiTp1jd9a2vIJs7qJisd9ZDPjyWXK0yLj0YFVHHNhzKbqOFjDRurg7IwqxcfFWMP+mzcD739XXe07n16oL7ty77XKZsoyXFuunBWSgdf3u2m6dGc3qltHaH2yV9kZHJ6U5c7PiIObMuSAmlqzkNT5s71t4dR63AAMaUUCVCRlnp0WbaevP/VFKbsdAYZMe52GKMabS5+Zjg2P5+HX5W7Bc703qY1QW1tOo8AVKYDlowdxrw7f6RzhsKLvcCJsmSMx3kgKiCoIqIC1CCs1GsEEL4NX2tNNYTxmbcc4D2eMASqvegoAO/Pvf96lLO6G+UUSCTNJkr40kzMUcy+PQUAE2375gZY9mudNfKypK8Sx/MPGzLVRHWLu/voE
+ U3DrKyOO
+ ZeTyjzsNJOfYrly2EupAG0+wVNChkLM0v54EH2mnHKkMHCtOW2tfeVi3c0RrEXYvein6mcYKVdrPO2m1nQF0yeLESDhN9dFxKsVSDr3UZgZL1B44l5W/uuBT8vdXNhcb7Xqo/5YgkCHj3M8GsD7gaK8SsKnu5Ey5uSQcBRnCTWJ+gG4/hbyocHhw/OX0aJQGK5fP1tQvM2jDBh5bCR/FfC217ewr9LNe0mY9uORqhKTOK8LIs4HezKrUkewHWDjWFlH9BqgT0Y1mboF2TEaePM1cwQrXTOz9FJd6WP3m0L4JIsh8JIlILQ1a4CrFi/w/+AHPXGw0Zc33hWiN62Pc+dvsgfioaVSlJKhsvoyUIqlKXDtw8j8rVWwjOfMfKn7SZojneQ9w5xm/diZHuWxmaQDB0/6qwiOC4sMPO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,25 +149,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/14/26 05:59, Muchun Song wrote:
-> The generic PUD allocator assumes order-0 page tables and zero-valued empty
-> entries. MIPS and LoongArch need pud_init() to install their invalid
-> entries. MIPS also uses PUD_TABLE_ORDER to describe the allocation size.
+On 10/23/26 21:26, Davidlohr Bueso wrote:
+> On Fri, 23 Oct 2026, Lorenzo Stoakes (ARM) wrote:
 > 
-> Default PUD_TABLE_ORDER to zero, honor architecture overrides, and invoke
-> pud_init() from the generic allocator. MIPS and LoongArch can then drop
-> their duplicate helpers and use the generic constructor handling and kernel
-> ptdesc marking.
+>> From: "David Hildenbrand (Arm)" <david@kernel.org>
+>>
+>> __split_vma() duplicates the source VMA before taking its VMA write lock,
+>> and until the VMA is write-locked, a concurrent thread might set
+>> VMA_MAYBE_GUARD_BIT, resulting in the duplication missing the flag.
+>>
+>> If this happens, then fork may fail to duplicate guard markers and, if a
+>> file-backed mapping, THP collapse may also discard the markers.
+>>
+>> Resolve this by taking the VMA write lock before vm_area_dup() and, since
+>> all callers of vm_area_dup() now hold the VMA write lock, assert that this
+>> is the case there, and add a comment to explain why it's needed.
+>>
+>> Fixes: 2ab7f1bbafc9 ("mm/madvise: allow guard page install/remove under VMA
+>> lock")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>> [ ljs - add VMA write assert in vm_area_dup(), commit message touchup ]
+>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > 
-> This also switches their user PUD allocations from GFP_KERNEL to
-> GFP_PGTABLE_USER, so they are accounted to the active memory cgroup
-> context. Allocations for init_mm continue to use GFP_PGTABLE_KERNEL.
+> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
 > 
-> Assisted-by: LLM
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Thanks.
+
+> ... with one nit below.
+> 
+>> ---
+>> mm/vma.c      | 2 +-
+>> mm/vma_init.c | 3 +++
+>> 2 files changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/vma.c b/mm/vma.c
+>> index 1be613044b4a..aa59005e2f42 100644
+>> --- a/mm/vma.c
+>> +++ b/mm/vma.c
+>> @@ -538,6 +538,7 @@ __split_vma(struct vma_iterator *vmi, struct
+>> vm_area_struct *vma,
+>>             return err;
+>>     }
+>>
+>> +    vma_start_write(vma);
+>>     new = vm_area_dup(vma);
+>>     if (!new)
+>>         return -ENOMEM;
+>> @@ -568,7 +569,6 @@ __split_vma(struct vma_iterator *vmi, struct
+>> vm_area_struct *vma,
+>>     if (new->vm_ops && new->vm_ops->open)
+>>         new->vm_ops->open(new);
+>>
+>> -    vma_start_write(vma);
+>>     vma_start_write(new);
+>>
+>>     init_vma_prep(&vp, vma);
+>> diff --git a/mm/vma_init.c b/mm/vma_init.c
+>> index baa7e82f47e3..d661f229a734 100644
+>> --- a/mm/vma_init.c
+>> +++ b/mm/vma_init.c
+>> @@ -127,6 +127,9 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct
+>> *orig)
+>> {
+>>     struct vm_area_struct *new = kmem_cache_alloc(vm_area_cachep, GFP_KERNEL);
+>>
+>> +    /* Must hold a write lock to stabilise atomic VMA flags. */
+> 
+> should just say "stabilize atomic VMA flags".
+
+You mean the s/stabilise/stabilize/ ?
+
+I guess that's just the (uncommon in the kernel) UK english variant Lorenzo
+tends do use.
 
 -- 
 Cheers,
