@@ -1,76 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838CA606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5C1606A327
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f+UaSY8l
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LnoTTF2B
 Received: by kanga.kvack.org (Postfix)
-	id 52DEC6B05B8; Mon, 26 Oct 2026 17:09:54 -0400 (EDT)
+	id 227176B05B0; Mon, 26 Oct 2026 17:13:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8106B05B9; Mon, 26 Oct 2026 17:09:54 -0400 (EDT)
+	id 1D8BA6B05B3; Mon, 26 Oct 2026 17:13:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 359276B05BA; Mon, 26 Oct 2026 17:09:54 -0400 (EDT)
+	id 0EDD86B05B5; Mon, 26 Oct 2026 17:13:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F34106B05B8
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:09:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F8F4C064B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:09:53 +0000 (UTC)
-X-FDA: 85366019466.27.951258F
+	by kanga.kvack.org (Postfix) with ESMTP id D642A6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:13:16 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0EA76C0870
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:13:16 +0000 (UTC)
+X-FDA: 85366027992.02.DACF0D2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 95A63140007
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:09:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+UaSY8l;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 40A3240002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:13:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LnoTTF2B;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793048991;
+	s=arc-20220608; t=1793049194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Km1rvIZ3U8wdp/hbA44AgM+K1KBOJrLBa2SNISYlT0M=;
-	b=eQN0KxVM3OKKs7/Nnv0lurdJDVhxMngFcTx9sAyWx2RM/lZJIlICpGGqbC2SBydtI2/f0U
-	+404+tGB7G0pew0VqzxxFg1XuDNEhXaAjVHK4d/tsV+bRcWsgj7LgKoi0RiZFGkkpnhw42
-	6LYNu7Kr6ztkutQo9NIO6mZky2JoaKs=
+	bh=njk0ZQAErkLe/6hfHsUYKh/D8MGIWnBcyiLvcekjYL8=;
+	b=3mv3Yeug/94957CL6UFXCR6cEfeJhpmFnQ9IS5sXCTusDEBD8qrDS1jyL6S6tRxjiXG/aP
+	qh1bLqEq6KVpBc4TI9AZBhKUCLz4wzUUG2DxnrK04NTJBPFVVw481H4lqfTLQCApLaG7Cr
+	Q4eHuvIZhIo79ejBWllhtwrJVgUH+Oc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+UaSY8l;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LnoTTF2B;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793048991;
-	b=wU+3KKKErwUhO9uHwc4XNG4ZLZzOohkyp0KVydzhmB/SydNjQlYQSoy0WoWTjlzCYEEVBr
-	1IptzSwjV83lx4P+FLqeIjrIc4Zz3D4WE/cZQR60Qy0n/K1oE09JfWMg4EXGe3xkI5xEzN
-	G0t3u/LLMXLC2oDdUnhPylSuc0ZllsY=
+	t=1793049194;
+	b=fzRomylblVQhrtqbPhdMl8veX/gkuuSEk7ve7uhmPCQtyfxAx6Vw8yDhV8KDaWcpr1UuSg
+	CycLrjLHV+pWTB4YXVIRQmCMZoj8KOIAsfjRnOgGhgrknQsrK3mnq6J3WHqq6vRQRdPQAo
+	kNcr+y3Plre0PRdLh/dU7MsvY0vnehU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C5879419F0;
-	Mon, 26 Oct 2026 21:09:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05771F01825;
-	Mon, 26 Oct 2026 21:09:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F9EE413D5;
+	Mon, 26 Oct 2026 21:13:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A851F01825;
+	Mon, 26 Oct 2026 21:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793048990;
-	bh=Km1rvIZ3U8wdp/hbA44AgM+K1KBOJrLBa2SNISYlT0M=;
+	s=k20260515; t=1793049193;
+	bh=njk0ZQAErkLe/6hfHsUYKh/D8MGIWnBcyiLvcekjYL8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=f+UaSY8l63lGr7187Oqi5dgWlzYCfWCFaR+aTlR56miEamPTBI4jbIlQqtDV4H+mh
-	 BLRVFIVd9jZkJpPOplQT67gOCLCjIxjBiDjg6DWbAS1RCwcdMi8TkwxsG5AcBeLf8j
-	 8hgPaTi/N6aVWdyw6QbM8e5ynYzOOsMInDRLXP3Tk2Cxm8qnQvFd0ecIYIAEwDwjD+
-	 GHnAbdyPr1B1jcq0txZD4N+6/U8T6KlIS3FmJXW8dej3Z66+3iVYyi/v8kCg9+3zCq
-	 ST/TH1O9+5Jop7hjGAp31uVHgqKJq3BTf4vFndIHSV+Da7tw148EFhdvLcMoJWhNmm
-	 m9us8+cBvgVMA==
-Message-ID: <5d10eba8-11cb-4031-84e1-a394ca5b4cba@kernel.org>
-Date: Mon, 26 Oct 2026 22:09:40 +0100
+	b=LnoTTF2B7/9xXxLtLqV0L+OKJqjRY+xjxLjysetseXblaQTktKaN7zguN5l6NPVgm
+	 QZHYSfSlThR46oLYxM1Gvsr+byOBqfT+hYd9PO/NmJWBkEyOncChsseK59RXgk9l4f
+	 zQe1xEWo3NbsYiEyPdWs+pQH5Lx2WQJr27KbPChsPstoFEOoYBw6XNa2cl+7JMTo9F
+	 IoUO77kLM+A71s/9AkPOTtuBv443xTVaM0A+evBkMGAVT+jnWX6ET+nB10g64OBMfD
+	 Fy7AFApszXdLoygxETvyRtAS4/TaVdmHmpAkQAABOPsz5EcY5AjRq6m/KbttlXXH8a
+	 AHEZItBorXiMw==
+Message-ID: <583728ed-dc63-4685-9ac5-5a980db55973@kernel.org>
+Date: Mon, 26 Oct 2026 22:13:02 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/16] mm/shmem: various (urgent?) fixes
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
+Subject: Re: [PATCH 07/16] mm/shmem: avoid moving the truncation start
+ backwards
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
  Johannes Weiner <hannes@cmpxchg.org>,
  Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
  Hugh Dickins <hughd@google.com>, Baolin Wang
@@ -86,10 +87,10 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
  Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+ stable@vger.kernel.org
 References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <at-yaxmjeOXtA15M@gourry-fedora-PF4VCD3F>
+ <20261026-fixes_shmem-v1-7-703206d5fa0c@kernel.org>
+ <2E377C76-D62C-4A2A-94E3-ABC40C6FCDD2@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,21 +137,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <at-yaxmjeOXtA15M@gourry-fedora-PF4VCD3F>
+In-Reply-To: <2E377C76-D62C-4A2A-94E3-ABC40C6FCDD2@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 95A63140007
-X-Stat-Signature: rdt18c6hamr4qkh1htknkoqb8oueyic6
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 40A3240002
+X-Stat-Signature: 1iuq9nuj6mt3isp8tw53otma4j6pftni
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793048991-217524
-X-HE-Meta: U2FsdGVkX19zPzcAL+aSHduHFxPFYCo6HY81cV0diNvG4y49X+mgY/pGbJ/ViuZBPc5TcOR3gZE54wNC7k7o+bHLVjs3YG8YmGjrad4HUgDVjGQIFXIrpepst0j7Z4GjoltPa1zNQVnZjYS0ACPQGOw8Evt5WGj8mYIfv5LbEALDCqmiI1uXKwsHgSQIZxpT4S03KqqhdUpY+/cK0/RDpExPXey94TBLO1D8QRj4fssvgtwqyncVksM47xZThlYN5kFJYBVdDHLoVkX3KNlNl3H6u0R9ifAbVB9LXDTK3UXTdoAiEBhgbbsH1SdjXwqcCmZLH9owXxiXmQMnWJvEJdtDZPkvqUBxzoDeep1a7Fh1pUxnFpsPQH6jbD1NHTCxnoZf9KHTm/7hpWAKi+v1hov0ZV2Mlnf3sh+VMlAn0eCshyBI0JJwYdVXiaHu2QXn5TjuUxHeJl1ypVysZg0k3iDcp4840eLUXyf35eaX8O2w+M3o7MDHTTXgi1SJnON1fD+BFSpVdLU9mVU6/Cn0aZqrhQ8GXmyq+1Wx6/wrBNlRLG5ohtFPFy01yzfk/wY5GaerFAlPiFneXXqsq/+L4KMlA60RleaBc/kPI47LuRfFMY10rxxj302FSTZ46foslPbpdOVHug33HQkfpZMa+Kt2CAh8xTcNFKxxhDoPAz3Om549lHVMC0n/i2gL31HcazLkqknH6neFTdL2FR/JNXLVXlDa0re44HhmCI6Tjus1QfYMTAeCoapZxgMbx+2JNGlS2eWmNBJJbJP+x19aug+wdJl3zNQjJUGPv3P4bczOHQB3/Vsa7hP75hvVF/fDFAsFK4KgS9Ui9ejfSHt6LceXXQ2yLOpT+tkBeizd0JbWLrwdsIyJ6qiuF+MyCqbhyXG23yBgo0acFZi2YHhRy8vC1NzRkPcJOnIwezbOuf2/sKNQgQbhnHHXQvD3YI5zQiMThK4dyEiB+wcGMim
- DAMKaUNj
- +ow+eOvp8VG0SgmUqdfk/tBN+Ps8wA+DfVofyGMwBbsNHo9PYttmpi08BqrYRdj4hrRgG3TwEV2svjJQ09JhVx+vRwCYHmAS3ickjgSwXC7Ekc/cTngqIL3x6FodRJ1cwglZ1M2eM8N0omQrtWwk+JX9vVzokaoUAlTuQvSTk0a3uIxwpQRuiBhU5HsFjg0pOB5rrm13LY/9fUhfl3LektFld8VaSBw1uejWLNw96joXlO06ostD8/PnvVcFoZ/tCvUC+EBQEuY4PmbEGKiPKBdNunlcGpV1laewd19a0wyRNm57QNR9fC19s38FKYXmB7QDpMzy/2TlhdTgPjzJ3f3UiHJL+yfFrl9ouwVZRuAAbGJbrbW/zTAZrw4CIkjcVqwRfs8IgqZyc72gyq3vfkIuH9jkjtZ0s5Sf77wZ4jQ2Tl6pDravwy8sZHw==
+X-HE-Tag: 1793049194-424300
+X-HE-Meta: U2FsdGVkX19I4tTICb/Fl62ZcYcPqux4GO6irFWVo8KVcbULk8bWXDcwCSjV+i7yaL/E53m951QF8gSixMsYDaYDomlDBo8IygyICuU+AEXxTQK36hj4SMttDRW7Dtc7ExibryDmg/kbufn92vQegLiZacslQNM1BJBos4uoZZmAo8YNcPfF8KzvLw5aOk1v4ceKjg2ElWgLs8cboEaR6bHBzlJPVWAjkEMy4HNpGlAk8l46Dd8uXBy0YqJVePvBH6tbNR2ot1ClgAIU6H/SoUDMc1yyOqfCHfdmA9uhUBo6LXxrbpbYTjMB7HY2+fOKfsB5cyGZ8VFMqDngVJuYX2nEWCxB+M8fmFcifq5faNT1BPhoLPHW0KIJQE4i80m4hpVqCO3ccbd26t2GljvzOvzTXcqG6C2+jxVME65vdw69JHttAFiTqxmsUKF15ZsCECGphdVus34ZpfQq0swFk9ZSCREG11jrhYlgsVrr+ONUtw+k+6usN2F5UdQvnjnDlgWpNkc0qyP9+/T8Mcz33jylO87l2lnPj0mNT/EHwEYXSVga4gEDHDftC4vrszKIjwSMb+OnnzFNQtzsnywVtY2iZfJq5GgA3w4dPogn/YchDGc+DdKd5metbyEekyjjgs1SpRQNaSqpaSscvmNYaJYvJ9yeS5uTcuOx4WX95GTsQ3NWA6fHEvJEPbrHgdrkAkXGURY5HfDHMzxecpSyrAbj01LCGiGJHamYHJAB97tyitAn8Ej9DCO8NmaxsNE60hfNR7tZ75A2G2XmSuZ0MuIN5a4v/eK8XJV8L4I1wCxOoE5Sh0uCDNxlAQ5s0eKG4SKiBNcSmARIZt86Hsy3iqrigU021lxjoF+gxwZL7vGqdlAdsTOxf/fJLzclTOZBLAlWIS+WJ1n8JCBk1Ld955qg4kewGktW1aF4qpNUE1mibLiMMAMYh2bDg1Y9bIL0kZdih50bv9ad/EzcaYL
+ ZimkR/9E
+ E4FaoQxyBxaVdb/brxN5fehayUdh7ZRV4jMIi3CS1ZU3ELc3QTzZ7EPGOpoVNT+awuLGFA3kjM18xRw9a/gd6tmEx/oRquSyHKAyVZmLO15v2Oruungx8scElxKzXTh6kXxXfuk2JYy6b18L7If+r59PLkNdBGDdB6KzfFq6rfgRTvIAdplCT0eswvrOm+4JAD/yoYMS9vTCEvc7/vDZ9Iz5XYzL00W9UL65jwiq+O/ErwQyqhcOvZjJWoWT12d5QFyKgjgf0I5AUGeX75qw7/aF3tazK0qht8sOOfgUbPKJEFMP7Z97XNo1ZtIYybfvjejb3rDEoaxEYhLYG2I+CC2gpu/9KMBlJKH8PAbIIjUbE6dNXTtUjwmXpJ/ZQGqcWMQkl5oP98VAOfqsHkFRSbXQ41g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,35 +161,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 21:08, Gregory Price wrote:
-> On Mon, Oct 26, 2026 at 10:40:33AM +0100, David Hildenbrand (Arm) wrote:
->> I did my best trying to test these fixes. I was able to reproduce some
->> of the things (including unkillable truncation hangs), and the fixes seemed
->> to help.
+On 10/26/26 20:21, Zi Yan wrote:
+> On 26 Oct 2026, at 5:40, David Hildenbrand (Arm) wrote:
 > 
-> Given the (urgent?) you're the unwilling recipient of my schlopp-testing
-> harness.  The good news is that the selftests (attached) all look
-> reasonable and reproduce quite easily.
+>> From: Chris Mason <mason@kernel.org>
+>>
+>> A nonuniform folio split can fail with -ENOMEM after splitting off some
+>> smaller folios. shmem_undo_range() then sets start to the end of the
+>> original folio, which may now lie before the truncation boundary.
+>>
+>> The final scan can consequently discard data below the new EOF, or
+>> keep retrying a large folio whose split point lies outside it.
+>>
+>> Keep start at least at its original value when skipping a folio after
+>> a failed split. The part in the truncated range has already been zeroed.
+>>
+>> Fix generated by an LLM and sent by Chris Mason in private.
+>>
+>> Fixes: 7460b470a131f ("mm/truncate: use folio_split() in truncate operation")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Chris Mason <mason@kernel.org>
+>> [ david: split fixes, simplify descriptions, adjust comments ]
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>>  mm/shmem.c | 8 +++++++-
+>>  1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+> 
+> This is fixed by Zhang Yi’s truncate_inode_partial_folio() fix[1].
+> I think the commit is ad27479793682 ("mm/truncate: fix data loss
+> when splitting straddling large folios fails") in mm-stable but
+> not upstream yet.
+> 
+> [1] https://lore.kernel.org/all/20260928120833.3440834-4-yi.zhang@huaweicloud.com/
 
-Thanks! Yeah, I had ran a bunch myself, but not as many as you managed to
-trigger I think.
+How confident are we that it fixes the same issue?
 
-> 
-> Everything below is largely clanker-generated, but after a review I feel
-> comfortable with tagging this.
-> 
-> I was able to directly test:
->   #1-#5
->   #10
->   #12-#16
-> 
-> so for those you can add:
-> 
-> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-> 
-> feel free to take or leave the selftests.
-
-Thanks, no time to polish selftest ;)
+Does it also cover #8?
 
 -- 
 Cheers,
