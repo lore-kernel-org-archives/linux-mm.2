@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D768606A31B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1D8606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sc2ZjbzW
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LrSeN6Ms
 Received: by kanga.kvack.org (Postfix)
-	id 976056B05BC; Mon, 26 Oct 2026 08:23:36 -0400 (EDT)
+	id D95BF6B05BD; Mon, 26 Oct 2026 08:23:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 927116B05BD; Mon, 26 Oct 2026 08:23:36 -0400 (EDT)
+	id D6CED6B05BE; Mon, 26 Oct 2026 08:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 864906B05BE; Mon, 26 Oct 2026 08:23:36 -0400 (EDT)
+	id C5B556B05BF; Mon, 26 Oct 2026 08:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 67DAD6B05BC
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:23:36 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0432B1C2390
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:23:35 +0000 (UTC)
-X-FDA: 85364693232.30.D37A843
-Received: from mta1.migadu.com (out-18.mta1.migadu.com [95.215.58.18])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D278C40007
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:23:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sc2ZjbzW;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A29F56B05BD
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:23:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2198AC06E6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:23:41 +0000 (UTC)
+X-FDA: 85364693442.21.236B647
+Received: from mta1.migadu.com (out-20.mta1.migadu.com [95.215.58.20])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 381F01C0002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:23:38 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LrSeN6Ms;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.18 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
+	spf=pass (imf18.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.20 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793017414;
+	s=arc-20220608; t=1793017419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kzYW1DgJ4E/yeX7IrUcYKjM9itbq4nx6go1M1M0lFHE=;
-	b=JTPteiEvj3MEiAbD1pmGabIRuwjoonJbzNzjF1z/MYa+/0RA0Yfbln6Ff4+aXxynXCSc+H
-	OkQ521Mk+h9axrMnbxoMz2iNINSPm4f48pzT1y4U1uvbzbs+lHMxDIcb72K41+nG1Vjdq2
-	PVxsAPlWPc94MjWgACfm6VsQeE/DLdo=
+	bh=R3abIAHkCndJWOaESG+STfCpled7+lksS6AZrZBon/E=;
+	b=uJ375XGDjznxJ7e5i9bKK+THcYJ8iwSASs2pzf5KogFIBQWsZm+px9qeKblw4J7iQOKj2C
+	jobWZvgHBsZnD4co0z+1bQwYVyOhrlv0RuytBbjlRkvV9IM4JYd/7n8FlVminion+WQiJk
+	EmSAsp/w/5yGBhldv+ahWMHWl9G7b24=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sc2ZjbzW;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LrSeN6Ms;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.18 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
+	spf=pass (imf18.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.20 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793017414;
-	b=k/IB6uHO86oXWvG5A29uAFJ7PHloBUmKkeZdiWoAugv6xByxHi7utjRvXbjUvym9Jx/Gur
-	kMesFe0B6IbN1PZdKj9SEIU29r0i87H6GEmRomFrflqeCv1r0Zdc/T8Vxzf04ucT+3TcMf
-	UJmUkhysJ+QaAKtRstabHE+RI7C3HFg=
+	t=1793017419;
+	b=1RxVldkTpgIZ3gjNxqy7nco/89MSoxWc8T3WAyoLbLXVJKRXjlSyLgbDOA4c7WfXVxe0fM
+	AiEZYrNuXDJXQKJgA+0HYgprVbydf2twBuAxKqlJbSflUGUjTQhgwbeZ7E36wAaGKBSy8Z
+	tAki4RZk6CVtVpP5GwisJJO6HQrK8I4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VK+2jIdLGQdX/tQ6IpYW8SlmlBv+Tmuw767vR1hlDsY=;
+DKIM-Signature: a=rsa-sha256; bh=BRur1T5Cd7MQHpgJV027Bta+ISLyg752XtPnkNJ+VCg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793017412; v=1; x=1793622212;
- b=sc2ZjbzWUp+RQBM4LuOA+TLjGhTFc7lvq/MiC3wS1Ywaz5VmPQInFqOh+zUYRARG7qt707sB
- L4oKPjzUrPwujxLfoVk5evSsjWrwwi90zpUPmCKy1UOn3z2j/irCuGLtma6HFF4O3QP9+keHbe8
- i42yC7qfoT9Y5Cca2wfNcVKg=
+ t=1793017418; v=1; x=1793622218;
+ b=LrSeN6MsebCIoP9emGJYMgt74P4QehJ17BhTse5aybDMq/SaLtk/eSJW2C+9EuKKNcgrniJV
+ 7VxFSi7f2VYyn/Yi3v5k9D5Aqx1FczpiS5HDR5xPhrWc5BF8nMZtDJNyLZyLdz09eAkIEF1xMdN
+ xXHkI2bHb3B5yjwI2JapJRdY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 450bc5343032882f;
-	Mon, 26 Oct 2026 12:23:32 +0000
-X-Mizu-Trace-ID: 450bc5343032882f
+Received: by smtp.migadu.com with ESMTPS id cf25d12802c1723f;
+	Mon, 26 Oct 2026 12:23:37 +0000
+X-Mizu-Trace-ID: cf25d12802c1723f
 X-Migadu-Flow: FLOW_OUT
 From: Jackie Liu <liu.yun@linux.dev>
 To: glider@google.com
@@ -70,27 +70,27 @@ Cc: dvyukov@google.com,
 	kasan-dev@googlegroups.com,
 	muchun.song@linux.dev,
 	liu.yun@linux.dev
-Subject: [PATCH 2/3] kfence: clear the pool pointer before freeing pages
-Date: Mon, 26 Oct 2026 20:23:03 +0800
-Message-ID: <16dd0366222031d0f5fe398926b16edd6e956e0f.1793017074.git.liuyun01@kylinos.cn>
+Subject: [PATCH 3/3] riscv: keep booting if KFENCE pool reservation fails
+Date: Mon, 26 Oct 2026 20:23:04 +0800
+Message-ID: <58e3baebbf4e454725e6bde8b7a267fb71cfdaae.1793017074.git.liuyun01@kylinos.cn>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <cover.1793017073.git.liuyun01@kylinos.cn>
 References: <cover.1793017073.git.liuyun01@kylinos.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D278C40007
-X-Stat-Signature: t61xw6cdpgtrdrehg5t78865ref97eg6
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 381F01C0002
+X-Stat-Signature: zox8jix6jgjdnqzyaf3kwbf1z4ougpn9
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793017413-904140
-X-HE-Meta: U2FsdGVkX18ACE3C5p7zig1W4VQBlSAxBiPOE3akPIupAOue7qWW8rpk6zSBctzxFkRsOuMoHZUHYVQ2Q4T0TSR2p+P6h3JCbgOwGpzfQYsvINTgKx1OzI7ws8sVpKz2HK7/MQT+Rzx9991DCuGw1xIuY7lSJx6epwHq5wh2WnTzWlBnx0NLXkOQrRMJ19cOpD8XVo6nF/1+6aihsfR3TQzBZYFbvzlg8IlYRdXEx7E1WfhyXTlfeyA0M13H86eK7I0z5ITyoQ+gT34EE3G3QuSHeBMZ+u2MR1f7NULp0jSodNbm9XcfWYPVV7vZawXlRwj0h9v8pLByjEwX//PpL78bLNgMr2c1D3UsSwwwweCVqzMCSiAW7J1aIVejjfPaZTeuMS0Y0kPjmN4kF3nXUIFpExXOXjSqVcvsZRkkFOmLql0wSFm+B5gsWQbWyNr5qK+8edo9z0OHrBUOGqeUt3p7WO/snC01D3ic93R/Rn54x0mJOfq1SrDmvZdHyX7jI59/0tP4755oYaUQqXQ/yyxl4+NRSDaySNNq67mnYtQN9BzvJJyGsiBt9Z3tbLHXkEFIJycIAD69Uz7pItW9aATqrvr5w23Aj/GdCLlmlKpycWeUVhSds5nraOU/3/BFiqKU1DKh+y3OOai8XLpc7gqN85iklL5xdLBYd+Hsr/xFuj3HTLo02bbQZ20rmUzO0ZHxJifSTTg/cXqXT1Ai+vyqxsmQhos5tX1I4jR1GXtA0U+nmFw1E6ph58AwRS1t7PGk/qeRUSiYnZTF1/r/m7VKpnimAq/y/rg7QrOzFXWEthdpsgvbTzkPd46UeudWH8g43aWZfkLQbHJicc8iDB0t8btLsepE7fOp2XO1G42FPB6F+MRSjLEs9l65odu/wsERagJPEXyXgN4SB00QQBe5xw0eV8Hml1TNw9RTjANJO/SLPab1Fzm6DW2+lLFYmYeMzgenR+tihG1i9pC
- j2WcU2UY
- jg+MMRIsPBl95dt2oNm39bcdaNAXamAMkUaHhcuScbvsl9aPAOjtkt7qTqr3AqSR8JMwFFnTwY3Hp1weBiK/K8Ss8HsWiC840acdRZHO+hWB7lBnQ8s7Ugr6K7wNr18Vb/fMKEzaTmtP3dZkE6ptwCUloeNqfhoLSw7dZn1h/AYxCcvdkE0DcwRfUNmjik4NAXQF3mv/UV8NNnr0U6VBU3g1YRg==
+X-HE-Tag: 1793017418-419743
+X-HE-Meta: U2FsdGVkX18n72WT8gZnuTz8XEfRr67RUj4QsqCYm10PKZui512SsZ9RnXwKlqmfBygoOSghd0lILqns6nkyfZ8MXuhO42XH24Kykk2qbMjuMXvdlnf9UCoU4fjjc+JCVvu4ZCZqczjaoFNdX3uekSa2ltfGmnhubelzcxCwq9+AvLt62erhXmCkfKe/FoUWM498wC0gjNQKndkB83/AILoNVHufGdGEXO/DXf4C+k5gdAF9sFfymp1J8NozIL+T/hpbu5QiTZn2QqSwYELL6gobRHEPcC8SKJK//WDJLWoZY+VwQBlLJBidbtboHEy3FtK6cQpb6FOlT59vVZqWtbMF5/IWS1GF4AuATQbpE5NWyISdqw1/gsl+R2fYmk+a8/fJClp50VKy4iEm6rg9Esr2sDhnDhDtaeK0HL/lrB5D4a4Njjwb4+l77UU6xf4RaSSlIGU+tGkJuEq68Gpp6i9J9HFPqbUzCgQ1kaVi+Yy4J9Q2vRIh/vP/9gMmYNllNnIQdzEXvMsrO6NEGOxicWz9Chn6CllfgJzy0oPhtRjSxE1+NkQ6LJ699axLysVrafjYl0d93QjroPHgy+0LgRLFV2Whr4RhNQMWLJYMGtwdnDQaIY9FxOMwNBX/6sxhuaN5jDqm5RyBXNhiZXJtRqSt/UYd1T3xnaANWtRZ5SC4M5uUwUPaQUeFA0DIbkgQm2SgEMnwC7iB9bPitAfOEOKCxHcZVN+1QvoQCnZuuC8LOL9mDCkdQydd03sPLRdJ9hzrtqThjs4Z7zO0HDgGYXE8DixcPnqHFTgZr+o7WnTRj5nc4+haTlS4FNvvqhY0GJ2eokjIdLEotTqJ6jKUl/QqeL7eDdvekp0c0+X5C6EKTeOP/3GicTBFOgznGZk+zzkmKdheihw7Yv0+NESSSSqJjsn/PK2RWnCkP+4w4NrcZLYfVC71Hy4qoWvmlj2xOZK3Ca0rRv7huFiTRVK
+ Z/R336WY
+ TBiTQkZ1gYrIIlZ6doAVW3glxUWHKoh4sN9fW3Fb9HUiHGXfiKm9eKJYUMXZ4kzB9Q5L444u+tdt1CzdavPlu1F+7NzZrZWyY6xSr7JOpdoDROcNjX76M8YneVxSkL1Pg4p/8e0XmyRBzJ8Bl9n37heP6bbifpIimhlBxLP9jt2Iq9KbIBdfltHQ2geRuhQw7NTArvl9XHxz9MjEEw8FvnMPpPJzuw34iFEuGZRG5SWlWvqKxYf+p3tKL7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,43 +101,88 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Jackie Liu <liuyun01@kylinos.cn>
 
-Late initialization frees a failed pool before clearing __kfence_pool.
-Slab allocations can reuse those pages in between and be mistaken for
-KFENCE objects by is_kfence_address(), even though KFENCE is not enabled.
+A failed KFENCE pool reservation hits BUG_ON() and stops boot. Continue
+building the linear map and disable KFENCE if the reservation fails.
 
-Clear __kfence_pool before freeing the pages, and use the saved address
-for cleanup.
+Reject later pool initialization as well, since a replacement pool may
+have huge-page mappings that kfence_protect_page() cannot handle.
 
-Fixes: b33f778bba5e ("kfence: alloc kfence_pool after system startup")
+Fixes: 25abe0db9243 ("riscv: Fix kfence now that the linear mapping can be backed by PUD/P4D/PGD")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
 ---
- mm/kfence/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/include/asm/kfence.h |  4 +++-
+ arch/riscv/mm/init.c            | 19 +++++++++++++++----
+ 2 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 6e3d01bccdf1..434df6cef7f2 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -1052,16 +1052,17 @@ static int kfence_init_late(void)
- 	free_contig_range(page_to_pfn(virt_to_page((void *)kfence_metadata_init)),
- 			  nr_pages_meta);
- free_pool:
-+	WRITE_ONCE(__kfence_pool, NULL);
- 	free_contig_range(page_to_pfn(virt_to_page((void *)addr)),
- 			  free_size / PAGE_SIZE);
- #else
- 	free_pages_exact((void *)kfence_metadata_init, KFENCE_METADATA_SIZE);
- free_pool:
-+	WRITE_ONCE(__kfence_pool, NULL);
- 	free_pages_exact((void *)addr, free_size);
- #endif
+diff --git a/arch/riscv/include/asm/kfence.h b/arch/riscv/include/asm/kfence.h
+index 29cb3a6ee113..57e57426a7d6 100644
+--- a/arch/riscv/include/asm/kfence.h
++++ b/arch/riscv/include/asm/kfence.h
+@@ -9,9 +9,11 @@
+ #include <asm/cacheflush.h>
+ #include <asm/pgtable.h>
  
- 	kfence_metadata_init = NULL;
--	__kfence_pool = NULL;
- 	return err;
++extern bool kfence_disabled;
++
+ static inline bool arch_kfence_init_pool(void)
+ {
+-	return true;
++	return !kfence_disabled;
  }
  
+ static inline bool kfence_protect_page(unsigned long addr, bool protect)
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index fb37b0b67efe..393106cd25ba 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -27,6 +27,7 @@
+ #include <asm/fixmap.h>
+ #include <asm/io.h>
+ #include <asm/kasan.h>
++#include <asm/kfence.h>
+ #include <asm/module.h>
+ #include <asm/numa.h>
+ #include <asm/pgtable.h>
+@@ -44,6 +45,10 @@ DECLARE_BITMAP(new_valid_map_cpus, NR_CPUS);
+ struct kernel_mapping kernel_map __ro_after_init;
+ EXPORT_SYMBOL(kernel_map);
+ 
++#ifdef CONFIG_KFENCE
++bool kfence_disabled __ro_after_init;
++#endif
++
+ #ifdef CONFIG_64BIT
+ u64 satp_mode __ro_after_init = SATP_MODE_57;
+ #else
+@@ -1229,10 +1234,13 @@ static void __init create_linear_mapping_page_table(void)
+ 	 *  for this region.
+ 	 */
+ 	kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
+-	BUG_ON(!kfence_pool);
+-
+-	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
+-	__kfence_pool = __va(kfence_pool);
++	if (kfence_pool) {
++		memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
++		__kfence_pool = __va(kfence_pool);
++	} else {
++		pr_err("failed to allocate kfence pool\n");
++		kfence_disabled = true;
++	}
+ #endif
+ 
+ 	/* Map all memory banks in the linear mapping */
+@@ -1253,6 +1261,9 @@ static void __init create_linear_mapping_page_table(void)
+ #endif
+ 
+ #ifdef CONFIG_KFENCE
++	if (!kfence_pool)
++		return;
++
+ 	create_linear_mapping_range(kfence_pool, kfence_pool + KFENCE_POOL_SIZE, PAGE_SIZE, NULL);
+ 
+ 	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
 -- 
 2.56.0
 
