@@ -1,79 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F893606A31D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2596606A329
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iBw406SW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AbFmM/nq
 Received: by kanga.kvack.org (Postfix)
-	id 4F4CE6B05B3; Mon, 26 Oct 2026 08:12:22 -0400 (EDT)
+	id 0880D6B05B6; Mon, 26 Oct 2026 08:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CCB86B05B4; Mon, 26 Oct 2026 08:12:22 -0400 (EDT)
+	id 05FEA6B05B7; Mon, 26 Oct 2026 08:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E3686B05B5; Mon, 26 Oct 2026 08:12:22 -0400 (EDT)
+	id E90896B05B8; Mon, 26 Oct 2026 08:12:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 049D86B05B3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:12:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7810716075F
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:21 +0000 (UTC)
-X-FDA: 85364664882.01.143685C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BF1616B05B6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:12:28 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 52605406F7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:28 +0000 (UTC)
+X-FDA: 85364665176.25.E5765A3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B1D3C12000B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:19 +0000 (UTC)
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7B5F0120002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:26 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iBw406SW;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AbFmM/nq";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793016739;
+	s=arc-20220608; t=1793016746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EKPDpnDsxP95BvhQy6gMrx0mg3B9bgjTY7R3pORfF0o=;
-	b=4KFWp3cu1wyHjPDMQ/Q+cVKeIIy36TO/QejyW+hT0/tN/fV+btFhNI8foU8i4EA/6qTxHg
-	gk7R5FQwjN8Ge7VfsQRPVRgAaflzsJzCAlVCD7j4U5kOgHcbpE54ORArjXT79LTTGrXv4l
-	N9Ber3lkGpuvE3vIyC0I53iX14a+y/8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793016739;
-	b=pYatpNLCxu9x7V8Dt0soh/j2iv4D9eSbnEe4IRJzk4yLxt8dM7HWWNnAmf4vQfrhpfAru7
-	G1F8fd5podSXuqUosCv6i/QlfysE7ll/wZDws2EVcunqk3dGxZugoQYdPfw8481WG2LVg4
-	8hlnsOB85gM+7Ukp3qGy4wQ2OROFkoQ=
+	bh=6qj8m8z1wbRyIk6+/HP994xBD+OWRY6Idbk7+z+pqbQ=;
+	b=vh8Rk8T/nUK0+GTmaRDGG1MU9U+GfYqXP5F8msy/oPTVnfbQ3R6TN+3r4r9GiJN3bijd02
+	X1KmbpD8HmSn8DyknICTANfr6ieBpLSTmJUOvIYIzfEGPvaUqORIxBxzL1lEt0Gg7qqAa/
+	H7/EznaLyfePN8KFi9bUTUVwJ3uJdsY=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iBw406SW;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AbFmM/nq";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793016746;
+	b=RVlOeMdYFwOR1Qx7RNmabGhnYOH8yZkIKXWjQ5VeP7fi8W7tECL/uYM4Dc6Hlptu0i2PU3
+	dRxMPr2nznVDmVMP6IyLiXIKrG9zpBCy4y/yrRtR2WeyNalnKpjsgpjS2cr+m6agvcnHtb
+	IV1O2ujZPhTkRd3Hz1IGUAxNdPP72yY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13A56438F3;
+	by sea.source.kernel.org (Postfix) with ESMTP id BC4F143E13;
+	Mon, 26 Oct 2026 12:12:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CFA1F031E3;
 	Mon, 26 Oct 2026 12:12:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F041F031E1;
-	Mon, 26 Oct 2026 12:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793016739;
-	bh=EKPDpnDsxP95BvhQy6gMrx0mg3B9bgjTY7R3pORfF0o=;
+	s=k20260515; t=1793016745;
+	bh=6qj8m8z1wbRyIk6+/HP994xBD+OWRY6Idbk7+z+pqbQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iBw406SWNAyN0iypY6z9eMu7GvnlQWgx71O//+605r5yzwZ0nPS5QYtL2h4pXli4b
-	 jQ/8nviFCI0Ni4rjvPmue0JD1nP7zd9iiL+Vbr+PT5RwYMUo5U4P8srFZooN8q67/O
-	 OS5ASw439ShiiovDUOTFVjawzHGh8ZT0ZO79ney7YB8LWOCivypf9hPnO/TLbgVZ9Z
-	 zwJMbwJIGNsuKg5xVyu63tT+4rAywuC2G/YzpOPeoC4QIpXEd80c0uIVBCaSr+jdfu
-	 3MZtaCRlaL6j16jSTIDbjNvxRDP896Db8tLalPtJcZ7P+R43IhNMGOKbYVg7PygMDo
-	 Lfd9/xbqy5Jqw==
-Message-ID: <e3a1ae72-9370-4c3c-8935-6a410a74377b@kernel.org>
-Date: Mon, 26 Oct 2026 12:19:21 +0100
+	b=AbFmM/nqEku80UT+Aw7V4iA4reTs6onG88eMdzcmBom8o9iffpHF/sioYmaT8MFxS
+	 LtxEjSXM4LrFlC9dmF1WxtG5wWM5ScaShfstE/EfTPFnEroTAzaqvaVB/nvIHa3+AH
+	 4zDgcBgJtT+PVaa/K+cc2GU+45UEeNZmfpm9XFddPWcMaaxD0yOcaxDjMtqh2b4rkZ
+	 RJYozXPKbhWQCK5W3LEtL7Q4isI94VLRu+djE6ouv7LG3VcAcRDhr61UVV7ozu24bo
+	 i7U7SJrXOA+NSjKiHxDwQk6QodHCsJc1KAfo8LO/Kpw2Ya3dK0XfB/CrLALFZbMXy6
+	 R3tK7qaGprDsg==
+Message-ID: <3be96a1c-7cfb-4cd0-a4fb-16209494d041@kernel.org>
+Date: Mon, 26 Oct 2026 12:26:39 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mempolicy: recompute automatic interleave weights on
- memory hotplug
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, ying.huang@linux.alibaba.com, honggyu.kim@sk.com,
- stable@vger.kernel.org
-References: <20261024170415.4121901-1-gourry@gourry.net>
+Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in
+ collapse_file()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>
+Cc: akpm@linux-foundation.org, ziy@nvidia.com, liam@infradead.org,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, jack@suse.cz,
+ djwong@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ hch@lst.de, syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
+ ngocthang2710.1999@gmail.com, willy@infradead.org, rppt@kernel.org,
+ ljs@kernel.org
+References: <20261016065920.4153-1-lance.yang@linux.dev>
+ <27e5aadc-2d68-428f-a958-308e4a75c058@linux.alibaba.com>
+ <atICp2NL8j2z7UFM@pedro-suse.tail5790ac.ts.net>
+ <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
+ <6a005d89-df5b-4524-a4b9-c637cb15f1ee@linux.alibaba.com>
+ <cd6637db-7b30-4cbc-b07f-c2a2b32480fa@linux.dev>
+ <b1b3d8d7-7201-4b75-a0f0-af383d854279@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,22 +130,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261024170415.4121901-1-gourry@gourry.net>
+In-Reply-To: <b1b3d8d7-7201-4b75-a0f0-af383d854279@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B1D3C12000B
-X-Stat-Signature: 6ip64671hg8pz3fzt6azsafgu4sorqgm
-X-Rspam-User: 
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7B5F0120002
+X-Stat-Signature: j4f3z631q37nomtrnimum7ugtxjenype
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793016739-663434
-X-HE-Meta: U2FsdGVkX1+5J4ltrJ407MJWEkLqUqWqtoU3JcVlyrDYN9wSaSfkxMM8jeTWfOmbbgkN8XOr1Cgt99pjLs8DdcLHxSReP+Yowg5Bwf4c6x9yKqU3qeuYvxnnEl0j/Pu6wUAwkg6q6lSkoyyKrMeiXmxK/8LB+3/cMSzF54rFtGFLOt9aUuCz8HDX22szlesWpCrcwxBw+wXf9uYvAC/KNLj34Wha/E0yA/gPjusInMq+p/ex9Yf3KLqtswa665hv54aVhDlF4B3IE+TXokn6HBY8HP7uk7KsoVHc3tuGMPb7+ZiB7Ou74IEhAWpBJ2j3K1yjwkvKbECTD7XSks83ew+pdvVktRCBnkUZow4zcWRiDCEHT5hpSWgGU1ZdPOEnQLqi5+palxWHx5XTEc1jG28vZk4pMBl4u+jxcQjqbMp3eQxmOZb8OkiLOL/hi2kLWn8xCSplWdtSH0Hy8iOIvOqHWfbpTl/2mAWgYRQEpYiL8HPmhPKV23rRwbs05WErWwVWbRD0oslo36zuYC8x0L9ebUKjQRb7DRZQzfk8n3o10VwAR3yyBEdWAI1Q2owcY6DSl/1ttTbGtttD3CULdi3LCeLw/PWyvaxqMVxghT3RoPEiQsVgtyqymnmdPXUNa32lYG+CuKxxoI6ITdf8AH9BWND/cwLmUNIdQ7MXvLz1wmt2CzS8g7LoKZ0VFXtUFXkcy8tYZ/Ev1CTiW+seR4PSaPtGJq/M6bmMJNvjQvVY/g7XqeGKIZW2dTeqWIDdCj9xBOlKyleN8TtaJpiqT4uuc6GLdmU9exzp/l6gTuPvs/W623lB78qeaQJQolOOkwvatpkNn5H/SlexplUcrlTizTBSAdKk4tPmw9YuaNet7slaVsre+KKNVDrPLyw4UM5zaHw50MctJH94V3xyvnrdl+cx9lULAtU8By4WB18SXeF7Kvz9mK8GCRJfbbQ9mO2WHacmwFv5CV2Pnzm
- O+5dEjek
- 0qd0H/me4IrH5Dn2SEulphoaBF+xnioT+S+VbyERYDNquB3QaoZ4H0faZvdxmTGBQ+GKFdc6YEoMaiVwN9tBKYGuOW/I5RWh9/hxTfur1/4k+y2PwaUeeB7+HjUk7hpljCQaH1J+StYlWvoFLeFEE4QHlxfKm+mzzeGrYFQLOXRBpnHlkrg+DxjktVN9LTm3wQW8+yX6+guKmJJTRu0PCepEt3OKJW78QBpCW0sm3NNmB1PWpKqR82537ULv+MY01HGFpt4soeYNASbcsrOAOh8OS8RsYKiy+n7O9H26iiML51KBd6xdRy0m3r7+JCfE41reVhW9sJSxS8fv3Ag/k+CQ9tlXDYPlv+jph5jrcp7t2PzTUXjb/SJtD7kbt9adJ/T3yTP58lCl9llpJq1cK1DxiPeX+uC0uH6St
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793016746-254701
+X-HE-Meta: U2FsdGVkX1+9dFxEx1I1S+uAvvykZc+xlDx9ywwfAgxjsIlCOIWhPZnqLLNdgICbbNAbFhyO1xA0QBw3exhXyDto6ZHVK6/5yjDvwbvGcLwJ53Rda89sFo44O5UYZG6l4yirPQ1tulgnPQ9HDpocQUaaV2vtR8dHe1W/zH/8s2C6rX+kxWA6iNDZnkhTKnuwWkFWtiB5edCp/4W3H9XFaplZCCraYtk8pf+8BgSuMJUZdaN6AsNcAOY2dREe9yZGUq38EHxviRlwAL7qRSwN4NbdqO/bkG0GvwugzRqRjKcYttt0LceoyKP902dAzPi5OoJOFopPigapVFXrHgukK595+OdJfuq4RUU3DrkP6Vyn7XfLSoRpmKMoxxBLckAMdo0duZdiHrYLFKbIqmRJu5b1zY0J9o9J8+PfJr+TPTyaiO6JHgM4NFGS0d6BwsqzZ2uRSEr+kA+WxVoJYR4h6qmFJpHAQvZeXr0YiaflyXhZaibk8yrFCaMyF/3un6NLgkAbijlw5GoI9nWaiBSEmTNrknKabFxEFJ4LpZg9PdeQcwR5HdG9aKQf3rdDYKb9NI1b6hb2mzI7Mm1sMpK9QVl+X00djoxMeeXUONpx1JSb+YbEdeQWosHgS5mIwmYfBKwq6xviIsClro9+4KHmTseD/IHS+nO/G+Mwqh++UNtSn7HV043pcP2/8H2XhB6YVj75ZfDhJFYFmRZq8+2m5TxO9Oxad/xQyYHRsz+j3Ko3JX1aRrqaFFNzl48NzKhiYDUwruy/YPDuU3nslFVR0DExlqrqxiPPa+fVQtoCjzJRsBKTormyW3Ws52WrLVM9HfocDLl05gy7gQbuP1V6TLf+Y2Kxi797SvEHfhWBLkgWyVXpn8Nlf6W2rAAg3LGwsWxUoNDQ9Qm3/WlUdU1FJT5AMN6PCINc9aPB3cnt26lyapSNsGzHtAoUveIRdmUePjBrpw4ca6tJNZ/wXcQ
+ vTaCyJD4
+ lZZ/ESMX2u4MvclYa5Y2z/fT/Nh47clNHog0E5kbJQ1lOSFLcg7CzqXJwrizXtFe+rfYazqjBGgogk+qehHBsyZbIV6Kly65Ysc4PMeEdAueB0z4Wiiw40fgHBObvX72AcEnRhWZsqhiSSXqbwIWERCT/PG8J1K5hePo5p4JQILvPlnXLN/gQWWjBcw//GhtsIwWLenO3cIyxKkRgooBOf7MeCDH4YBaAkWFIg+p7ABOKlcKjj7Vs9iVyCtSMu7a498DA7dSE32el3QqUgzKIjCUa+q/+o8ubOpylD0TUJpYAxS5KMoHRAcVyGI54W8XVHOPRdGJpNat/UIpXc5g+YiMEISZerf6F+N6ZUCcsrY0XzNvt3eXdg3Mojs1F6hMsP46Ryu3cmMu5EpRep5M/SlyAPBLQoD+Nv1CgzdYEyI6PS011tWYEIg4SuTGGVlw0ybyd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,102 +153,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/24/26 19:04, Gregory Price (Meta) wrote:
-> In auto mode, weighted interleave derives each node's weight from its
-> bandwidth, reduced over the nodes in N_MEMORY. HMAT and CXL report a
-> node's bandwidth once, when the node first gains memory, and nothing
-> else on the hotplug path recomputes the weights.
+On 10/18/26 04:47, Baolin Wang wrote:
 > 
-> When a node loses its memory, the other nodes keep weights computed
-> with its bandwidth until another node reports. If one does while the
-> node is away, the reduction skips the node and resets its weight to 1,
-> which it keeps once its memory returns.
 > 
-> With HMAT bandwidths of 100G for nodes 0-3, and 50G and 25G for kmem
-> nodes 4 and 5, weighted_interleave/nodeN reads:
+> On 10/17/26 3:41 PM, Lance Yang wrote:
+>>
+>>
+>> On 2026/10/17 13:43, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> OK.
+>>>
+>>>
+>>> Sounds good.
+>>>
+>>>
+>>> But why not add RA logic in collapse_pmd(), as we do for
+>>> SCAN_PAGE_DIRTY_OR_WRITEBACK? There's already retry logic there, and this
+>>> would also simplify the long collapse_file().
+>>
+>> That would be cleaner, yeah. Some older stable trees don't have that
+>> outer retry loop, though ... I'd prefer to get the fix backported first,
+>> then move the RA/retry logic out in a follow-up, wdyt?
 > 
->   event             node 0-3   node 4   node 5
->   node 4 online         7         3        -
->   node 4 removed        7         -        -
->   node 5 online         7         -        1
->   node 4 back           7         1        1
+> IIRC, the approach to bug fixes is to fix bugs properly and cleanly for
+> upstream, without being constrained by backporting requirements.
 > 
-> Toggling weighted_interleave/auto to 0 and back to 1 gives the correct
-> 6, 3 and 1.
-> 
-> Recompute the weights from the recorded bandwidth whenever a node gains
-> its first memory or loses its last.
-> 
-> mempolicy_set_node_perf() now only records the bandwidth and calls the
-> same helper, so the bandwidth is kept even if allocating the new weights
-> fails. wi_state_lock is dropped between the two steps, which should be
-> safe because the helper reads node_bw_table and the mode under the lock,
-> so a racing writer only makes it work from newer state.
-> 
-> With this patch, weighted_interleave/nodeN reads 6, 3 and 1 as soon as
-> node 4 is back.
-> 
-> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
->  mm/mempolicy.c | 66 +++++++++++++++++++++++++++++---------------------
->  1 file changed, 38 insertions(+), 28 deletions(-)
-> 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 0884c629670d..ffb293a4cc56 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -238,27 +238,45 @@ static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
->  		new_iw[nid] /= iw_gcd;
->  }
->  
-> +/* Recompute the weights from node_bw_table, unless they were set manually */
-> +static int wi_state_refresh(void)
-> +{
-> +	struct weighted_interleave_state *new_wi_state, *old_wi_state;
-> +	int i;
-> +
-> +	new_wi_state = kmalloc_flex(*new_wi_state, iw_table, nr_node_ids);
-> +	if (!new_wi_state)
-> +		return -ENOMEM;
-> +	new_wi_state->mode_auto = true;
-> +	for (i = 0; i < nr_node_ids; i++)
-> +		new_wi_state->iw_table[i] = 1;
-> +
-> +	mutex_lock(&wi_state_lock);
-> +	old_wi_state = rcu_dereference_protected(wi_state,
-> +					lockdep_is_held(&wi_state_lock));
-> +	/* NULL wi_state assumes auto=true */
-> +	if (!node_bw_table || (old_wi_state && !old_wi_state->mode_auto)) {
+> Anyway, I don't have a strong opinion on this. Let's also see what David prefers.
 
+Let's get this fixed in a acceptable way in a reasonable timeframe; it's been
+broken for too long. ... and follow up with bigger cleanups later.
 
-I was confused about the node_bw_table check at first. Maybe
-
-/*
- * We can get hotplug events before any BW data was recorded.
- * ...
- */
-
->  
->  /**
-> @@ -3900,8 +3903,15 @@ static int wi_node_notifier(struct notifier_block *nb,
->  	case NODE_REMOVED_LAST_MEMORY:
->  		sysfs_wi_node_delete(nid);
->  		break;
-> +	default:
-> +		return NOTIFY_OK;
->  	}
->  
-> +	/*
-> +	 * HMAT and CXL report a node's bandwidth only when it first gains
-> +	 * memory, so recompute the weights whenever N_MEMORY changes.
-> +	 */
-> +	wi_state_refresh();
-
-If the function fails, should we at least pr_warn_once() ?
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+@Lance is this version good to review for that purpose or are you planning a resend?
 
 -- 
 Cheers,
