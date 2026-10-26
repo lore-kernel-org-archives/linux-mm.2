@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53A9606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D09606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N0Io6SX8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iytSdu3W
 Received: by kanga.kvack.org (Postfix)
-	id CFCC16B05B4; Mon, 26 Oct 2026 19:18:17 -0400 (EDT)
+	id C12B76B05B7; Mon, 26 Oct 2026 19:18:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACF06B05B6; Mon, 26 Oct 2026 19:18:17 -0400 (EDT)
+	id BC2F86B05B8; Mon, 26 Oct 2026 19:18:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9B9D6B05B7; Mon, 26 Oct 2026 19:18:17 -0400 (EDT)
+	id AB18C6B05B9; Mon, 26 Oct 2026 19:18:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 88F076B05B4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:18:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19A5B408E6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:18:17 +0000 (UTC)
-X-FDA: 85366343034.07.C163A97
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 42EB0C0002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:18:15 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N0Io6SX8;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 15CCF6B05B7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:18:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8FDC1608F7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:18:33 +0000 (UTC)
+X-FDA: 85366343706.26.747CC49
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 08AE51C0004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:18:31 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iytSdu3W;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793056695;
+	s=arc-20220608; t=1793056712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NUBP2xRnXTWkvkzljjau88QTTUDveY6Hz9RAZJBGdTA=;
-	b=KE1Gs1NDxN152S3zKZJMiEZu7cwi6UI6WUhHL+JcJK5XLcnEWcpthGc4vW7VvEct1w2xsE
-	/uhJNQUzS2hYjzszx+GIHymrUyAjadqlM/4ogWuGZ2Nlp53VYSNDb/CMj+piBNTR0RihkV
-	MCmzrKKp8EzWdzTSGVThpzmxpm0M9S4=
+	bh=SxHPlHEX6J1Jb0GTlHUy6KXWfE7ZloX8JtCL08WPSIA=;
+	b=B5vpr0vGOKrglrxC7iVDcBfF5/L3sWu1bX60XQWFCJZbohtkI+3Y1led+5Ut7tACFDgcZy
+	rncSUV2Qzhu7kEMVqivPwINEwgAadz/HyFsp42gnryBwmtZdlU05ePpsuUyw9BD+VxI92c
+	ma4bDq6mgd+Dw4hqp+r83/5akgXOwLU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N0Io6SX8;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iytSdu3W;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793056695;
-	b=3T8eAaf/PSiJ85xvbNfndyJ12JYEqQmoFwVeB5I0aKbnvLbW9RVWDuNvVuHZCZaXNc2bvH
-	gLN/a/SYt+kZmy5aLJmk0fbrJqV8ANANyCPJJaGyQfPkQHgl5WyJbtLO2ephq5TCr8ivJy
-	CdIm7T75FlDfOdA8TIzbEk4IsSUA+po=
+	t=1793056712;
+	b=BddwX/GSkwMqIQ/gq6PXn3Y/zfMYZw2ZMI6+xHi4sYx1BQFNywmleLUePQCUJ8CS0C7YpX
+	P6bhy9v0t5CQi+YNL/CGOBvUKj8Y9F0fdMN2se412ip+kTipHFVWl2fygS48UmwlVYTgRy
+	8gDrZl6uOOlU9kOigm66JKgYgjjcAgc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7390C4095A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 87DC4600DA;
+	Mon, 26 Oct 2026 23:18:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8A31F01825;
 	Mon, 26 Oct 2026 23:18:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4034A1F01828;
-	Mon, 26 Oct 2026 23:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793056694;
-	bh=NUBP2xRnXTWkvkzljjau88QTTUDveY6Hz9RAZJBGdTA=;
+	s=k20260515; t=1793056711;
+	bh=SxHPlHEX6J1Jb0GTlHUy6KXWfE7ZloX8JtCL08WPSIA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=N0Io6SX8cBzzTDOb7cpNCY6FTZU/h+KZanqCjpiuERrlKcwqPUmds2XacPzDJEdk4
-	 PYZRLj+AoUQoLE6z+36JUW94y4Bp88f3cJod9gQlvbGbNdqQlAhw18OBaLdHFRSS/q
-	 AmNfMdre4JdR5YYAE/k4Rm8QdRbDk1YvBQqj3ljM08SjJ/W5VLEH6Of+WTIkuE7YcM
-	 aAnkYNndmFBxnm4FtuLiESvFhlCip+lgP5vzefuhDl3xbxXkMESzxxRjpavTYuronn
-	 umBEwX+v+06COBgPtWP50OU+jEh3Dd9mcFm9RqijNKNh6N3UEEBuJYsTMOvJ5UqGVT
-	 OMLDSeCDpWsOA==
+	b=iytSdu3WRKSm0AWi2Dcs1aQDb7RNBqjiDDM0NMUZJrtMNx0GYDkBNwa8EwDjkQUW8
+	 NPbYuIl9oSbAcWnHairzTpeef2xfSPI1Fjz0L0snR6L9W9kHDS4/03QjrUx+hdcUsx
+	 TsGtwLu2PjpRCZOqaobcS5D1lKHM9Q3/3/2ULRbPw/u8NFjDoXW4Cfh7A3aG/WNFRL
+	 OK4XPzFSPDzZj+JCrE5AsvtSgTyK76yB3xbAI/hSWXiPfGeP7fPNpdsu85wrYjMAJY
+	 RI2ArgsZdB4dstUqZYknWhn64iwP2jU4+koGLpGHKT3sa36fke4yYD2aG3fJfb9A5j
+	 fhpWjZm43KDVw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 00:17:21 +0100
-Subject: [PATCH 01/46] mm/mglru: don't use stack pointers when walking PUD
- and PMD tables
+Date: Tue, 27 Oct 2026 00:17:22 +0100
+Subject: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
+Message-Id: <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,30 +106,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
+ stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2223; i=david@kernel.org;
- h=from:subject:message-id; bh=35PvaXKWWy0wg30tuDie4oWbed0+71n+0SGauq9bLs4=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35+kxCFy6tE/r17VSuMD+w0ueUdwpk73e7hsKZNdZ
- IP9v4zojlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACZyJ5nhD5c65/fu+Q1lbuVX
- lQuzF8Wx5tbVeTgvc1zKKt+8aWesCiPDfdkuFpbL603lW0oeZNmsVj9stXrGL6G3u6s954V9rgn
- hAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3444; i=david@kernel.org;
+ h=from:subject:message-id; bh=NBxDvFwe3/BSRK4CxO/FpUhlaAcubfwNoo3/Au7L+uo=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35+cYVIv0hn0/rU9e7fQ4nX+s6dkL4zkTL727Utjr
+ raB6cdpHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExEw4Lhf7xhWuB7Q+czL40a
+ fzNvW6J487uYXJ1UVNKSN7uvi+0/c5CRYd0ahbcf82ZNkK0tOF/RatTn52YiyyG9q+OuI7ML8xo
+ 3HgA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 42EB0C0002
-X-Stat-Signature: mcow6ok456qu85tf1juiouufra5u5fdj
+X-Rspamd-Queue-Id: 08AE51C0004
+X-Stat-Signature: n8s3ym1siwza18q75kpk7d3b4eqeakcz
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793056695-935708
-X-HE-Meta: U2FsdGVkX181FRh7iAsxAPQSW00/jLUSbyp07gap3yYDDj85wvEhkumawXsdM9SzOsss/RTEr337/Dhc6KfNM03VGxgwqhGIWxn3l5SmpKXWR3Z5mEBeIPz960uHnudgfxN3nHRygEZzW9VMEwJO7WHFJacxExGmcS1YTEtJH5ud29gpMbhpo4UvUmh1iQfko/0m9UFnYTxLM3ui83fasRMTgr6ESo0PpegTdrAMF16Hd68MdsyZgoWAzyF1HOME1MVX6Sr87wUvCVVEhxI+x/oSbfHxF4ctwE0N7vBwdBflzdhYajLdb9G6qTM34Xqndk6awKNh4rXz3ho+lr/7nOpQVSS8DvUl4dI3P+6x7RgSClYGNjchoVZlA6KlT6mQgGGCwyvHOD7Rw51NCRbU2/oTu6z5IowZgX8Ys0gjcXAi9i1242vM9wBtylwcmd91esKZr48z36RcHj+Vs+QeGnGoxaWk2UWOEruAiN5kpgepksFXQrcFGUvY5sYNEPnkWxl721nYmojsfV/sdyWRyCJKY8jSZf5i/ayoCSmKFB38sMTuhHhNXepvMYbbum1Slyu9AhRqEKLp0bxjZ9TS2Pd1XYMX34xOiz/av/OOH9ssUMQOBFCvm98ZCNTfYbtMDHdpuFPGm5St6nr3OWqOSdd88gV4t/yxigiZZG51wdtdyr3Kcn0MxO37X2I0NZyixVJUDAC+rA6PO1hx5MkDhAL0yACKnHkMsaOxOXgFtdfASj31x5V3y7vrswF43z905koJ2L93DwpfKuAfSeVpXIE2ZwxMkiqcXBMMgA5XoppguApSSay9A1U6jJv0XJ8C5bdOrsR8Bwg7dPnxWsawqriYEeH5lDjcufUvQmoBaoxs5BLUT7egzGvg9YhhUq057+ev97zJ/hP7bRLEuGYSD19yKgOW6UriWhTuqQYZ6tZKK+8X5UP4NZ2Cctd/46MO+PA+UsVE9nFyXny8uIM
- l44ePkOf
- euovkEx//86UeXxR99hBU8BsFes7/HxtKcMEU7BhFp3g+l8uVMXTcaoXcYnkyGOekLJArmLUwhMMKGNFCnIK5DLTDQey7fJ8CKEP10xYoB63MJwYTLf8oWznaDyq3rdBZLHdso1jakaa0Bw2JP8teJ6Zape88bl0ftiW3oohK6VdCQ90VrJjtyvQnfpN6sAGoLcYYVx2Ymq/kdPIHxdxljbJi7sIS43CtMGnnEKytFw/6nt/qIyvmf3bAZposaTc6ccW5IDyYCaX0nuh6q5udLdJMT9O3Zo18esoeAA4V/ANidB5eEGah6lJIGMCbNqImCj1XdLXKY4+Oaly9gOtJykRK/Ecx8otKZcIjGHImM9ST1+sjzxMhHwDhmlBSvRIPxCP2
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793056711-760958
+X-HE-Meta: U2FsdGVkX18nfm+FxIput46+sOFkv0hSmT10t5RC1i8PRyaAuvctDlkml72IyfEkKwA8rd/OND0rW/ho0vFKV5SRiAgJvfDN1Dng4cjUJ6AqzADsWDPsFLZrfqG27Yz9Cn5V3aubztS67m+401wC49L+ftn6EiIP9leeVOwyebs1p1HfY2tMIpQZ20ECH4L/PjGfDtHZy6bs4Zzn+VbMNkz0+rb9Y7rWeDfYlD8PijI3QbwmPBdzW3+AJKI4MRfpCfdiIEoL1E5yV6XRdEuZ5QbbT7nrz5PQpl1iThvQVXq0l2wvWcTCETJaye99SFKBOxWVqcw+RJKj75JgLYdPGM+E0AsqqVTraxRMupRZhM5zvzes6sTgyXXxRWt7l4xv7xyH/6yVXvny/WFYPWyfUPqZ8nrTDBRreu/s187cP+bV6NlXpQ8Em2NSb7f2Vhjz3NVSVHA0PI0mUt+jpd+THJ/+DpOD/7dGXdn+MTiRz1g4pXRu5u5mNEAJLpQqNiUKVr2s/8oMbe2Ka1DovaWX3LV62Lrz3LpwovqJgUnzdgx0+cRVQG5P8Z+eXQ9e/iU2WMoe+pPXEi2fbd743WQUOEwEskA4KLfHAbd0Gt+/MxK58mOjg8Z0p806XXTABWHMrIP6bJKxsRmhukWhe6+3h4WCykqJv4ZVGDIBIwrRlggG7UOMgzuc9agnl3FCretwL6NfGcq08nneZ6NLoXYo4Qs5eWqr2ctohIQsXqUvjlOPa9oNHNzxrl+c03O5za85COFcWHDHp2Tx9POEBpHUks8kR6L76EXs8sH1WfQ74uBSuNs5cW54ypbYxtMFVTPydbqWA+F0EhVh5yqwtjfKo0fhZV8rvNqGg0cCnXhC6VjE1/SHEcE/bJXknccXS0Hvt9PgS23/iEUOD93pNzQlXclVUkM4JqqTjd3Y4MCVBWVgwgCx3dX8L0Qv99zMEymS9Nfpj3lZXvUg+xZgRzB
+ lo4Pw+8f
+ O/MRxow4Gj6MKGXDfZx1kpOTQTJwCwlbhvFUbr3A3r5ThZuDtF7ChkYuhSafn8dIKj0haJo2QvIGH2arAtlj/YG6KdZGlU9jmuoBl4lg7lB5twQ+zZ2CC+Lb+d0SSacFjThjzDfqkYsQmpF3g6EeioaurHnoqfyQ+Wl0fox0FF98P8XModfpj4dhV2Lq5rCYKBF2F7cSCFgqBJWgod5mjPflynbELhxzGO6ulBaCx+ymqWJLdsyF+l9YGQP/xiHHb25fkNz4cV/8xbznNGsKbC8G9h3hzjyYiiV1WnlOb57hHJE+TJOnxjo9j40uYshArG0p+/yee4IZr3qatd3LybC+F13JNnAOBhJ4Og0/Uh0qAXe62XGqOWX0SEnWXkuvk+bsR4ffFaHzwLpq4XtwoXomaGE1rmyRbws1JN0LwYrtcot0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,60 +138,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Josef Bacik <josef@toxicpanda.com>
+dup_mm() copies the parent's mm_struct before dup_mmap() takes the
+mmap_lock. A concurrent brk() can leave the child with a stale mm->brk
+and newer heap mappings, causing later brk() requests to fail.
 
-MGLRU passes stack copies of page-table entries in walk_pud_range() and
-walk_pmd_range() when walking to the next level. These copies can become
-stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
-table concurrently.
+Other operations (e.g., PR_SET_MM) on the parent's mm_struct can similarly
+cause inconsistencies.
 
-This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
-support page table walks"). Likely, earlier locking masked the latent
-bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
-retract_page_tables() without mmap or vma lock") allowed concurrent
-retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
-for MGLRU") dropped the walker's outer RCU protection.
+As a simple and robust fix, grab the parent's mmap_lock earlier. This
+way we don't need to update individual mm fields in dup_mmap() and
+keep missing ones. Stop updating the 4 existing members (total_vm, data_vm,
+exec_vm, stack_vm), as that is now no longer required.
 
-The fix is simple, so just fix the original commit so we don't have to
-speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
-RCU-protected lookup and validation against the live PMD. Note that the PUD
-handling is required as well to handle folded page tables correctly in all
-cases.
+Keep releasing the parent's mmap_lock in dup_mmap(), before
+userfaultfd completion, to avoid moving the userfaultfd handling into the
+caller. This should get cleaned up later.
 
-Fix generated by an LLM and sent by Josef Bacik in private.
+Move uprobe_start_dup_mmap() to preserve the lock ordering.
 
-Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ david: handle walk_pud_range() as well, clarify+simplify description,
-         adjust Fixes: ]
+Reported-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/vmscan.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/fork.c | 20 ++++++++++++++------
+ mm/mmap.c     |  8 +-------
+ mm/nommu.c    |  2 +-
+ 3 files changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 9959ca158ce83..6a1af9b92349f 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3911,7 +3911,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 22eaf5fb844d0..c8948cadccf71 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1532,12 +1532,19 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
+ 	if (!mm)
+ 		goto fail_nomem;
  
- 		walk->mm_stats[MM_NONLEAF_FOUND]++;
++	uprobe_start_dup_mmap();
++	if (mmap_write_lock_killable(oldmm)) {
++		free_mm(mm);
++		goto fail_uprobe;
++	}
++
+ 	memcpy(mm, oldmm, sizeof(*mm));
  
--		if (!walk_pte_range(&val, addr, next, args))
-+		if (!walk_pte_range(pmd + i, addr, next, args))
- 			continue;
+-	if (!mm_init(mm, tsk))
+-		goto fail_nomem;
++	if (!mm_init(mm, tsk)) {
++		mmap_write_unlock(oldmm);
++		goto fail_uprobe;
++	}
  
- 		walk->mm_stats[MM_NONLEAF_ADDED]++;
-@@ -3947,7 +3947,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
- 			continue;
+-	uprobe_start_dup_mmap();
+ 	err = dup_mmap(mm, oldmm);
+ 	if (err)
+ 		goto free_pt;
+@@ -1556,9 +1563,10 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
+ 	mm->binfmt = NULL;
+ 	mm_init_owner(mm, NULL);
+ 	mmput(mm);
+-	if (err)
+-		uprobe_end_dup_mmap();
+-
++	if (!err)
++		return NULL;
++fail_uprobe:
++	uprobe_end_dup_mmap();
+ fail_nomem:
+ 	return NULL;
+ }
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 148ba01c03739..7618e72766a52 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1713,8 +1713,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+ 	LIST_HEAD(uf);
+ 	VMA_ITERATOR(vmi, mm, 0);
  
--		walk_pmd_range(&val, addr, next, args);
-+		walk_pmd_range(pud + i, addr, next, args);
+-	if (mmap_write_lock_killable(oldmm))
+-		return -EINTR;
++	mmap_assert_write_locked(oldmm);
+ 	flush_cache_dup_mm(oldmm);
+ 	uprobe_dup_mmap(oldmm, mm);
+ 	/*
+@@ -1725,11 +1724,6 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+ 	/* No ordering required: file already has been exposed. */
+ 	dup_mm_exe_file(mm, oldmm);
  
- 		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
- 			end = (addr | ~PUD_MASK) + 1;
+-	mm->total_vm = oldmm->total_vm;
+-	mm->data_vm = oldmm->data_vm;
+-	mm->exec_vm = oldmm->exec_vm;
+-	mm->stack_vm = oldmm->stack_vm;
+-
+ 	/* Use __mt_dup() to efficiently build an identical maple tree. */
+ 	retval = __mt_dup(&oldmm->mm_mt, &mm->mm_mt, GFP_KERNEL);
+ 	if (unlikely(retval))
+diff --git a/mm/nommu.c b/mm/nommu.c
+index ed44510e37707..6e0f9c7da2364 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1926,7 +1926,7 @@ subsys_initcall(init_admin_reserve);
+ 
+ int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+ {
+-	mmap_write_lock(oldmm);
++	mmap_assert_write_locked(oldmm);
+ 	dup_mm_exe_file(mm, oldmm);
+ 	mmap_write_unlock(oldmm);
+ 	return 0;
 
 -- 
 2.43.0
