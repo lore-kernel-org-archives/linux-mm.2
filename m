@@ -1,156 +1,174 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B374A606A336
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 22:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4380F606A328
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ifj7iHNS
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=YnCT/mJB;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z9BmjjcB
 Received: by kanga.kvack.org (Postfix)
-	id BC1746B05B6; Mon, 26 Oct 2026 18:56:35 -0400 (EDT)
+	id 0D1636B05B2; Mon, 26 Oct 2026 19:03:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B72BC6B05B7; Mon, 26 Oct 2026 18:56:35 -0400 (EDT)
+	id 089016B05B8; Mon, 26 Oct 2026 19:03:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A39896B05B8; Mon, 26 Oct 2026 18:56:35 -0400 (EDT)
+	id EB4EE6B05B9; Mon, 26 Oct 2026 19:03:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 671C16B05B6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:56:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D704B14089D
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:56:34 +0000 (UTC)
-X-FDA: 85366288308.24.F6F0B0B
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E2CE41A000A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:56:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ifj7iHNS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793055392;
+	by kanga.kvack.org (Postfix) with ESMTP id BB7C16B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:03:26 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 39E42806B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:03:26 +0000 (UTC)
+X-FDA: 85366305612.09.65AABD1
+Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B67A62000A
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:03:24 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b="YnCT/mJB";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="Z 9Bmjjc";
+	spf=pass (imf31.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793055804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qh7+bL2tt7/pVu5eSjikO++61ieI9Cj5ZNr8SJkHxX4=;
-	b=lMdGnN3qwELkGeA/Hy5TO1283g1XcD0//kVVadXDD4qHv6BPRqnejoeacXeKtVHgQxXt6X
-	BjtP9Fuve553TpxHSxU8i1lN9h7MJ2Q3lV6LGHwFm9ey0BTUCp31s5gk3vsaM1uo55XJz0
-	Xn5CuO1AnRSG3S7mrmUhyBdnQfms1F8=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ifj7iHNS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793055392;
-	b=S2xz7l90b5YYbETQPddYDq443AroZ4zq31/7PKtECzbml6JDqmbaysdB4A6+wZt54367/l
-	kIUnd0tUsH2J9bACXvb323v2lo6wsrp4eM9qZpe0FlOgkoGDmRZjtr+NWozfZZy8oSK/WE
-	BrJ4mMiMKjeRJLyu7VMh9y8O6qzG24U=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4550d8ab15so454327666b.2
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:56:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793055391; cv=none;
-        d=google.com; s=arc-20260327;
-        b=P12Qod4f1b1xYAO/xUaUtnvxPkjnoqxQQICt41jZpvO8K1AdIE6ZgBf7NbebAaAUf3
-         D+S+/d/+LoCktQbnMg4ojP3UaEx4YP3rWWW5xrCbImaUf0IHKlvPudyDJ6UqgOQAJQdn
-         LYENn8FoyAM1QhNxBmJTctwod2yOs0NfFAsxPT6s5lg/Qc5Ecwf3KTM3+bJgIgpARRt3
-         ii88Sxo2tMlC7s7CFwgryF4F/pOvNJYXHcT6fA98IntWa9WBATzzNcESNm+TZm7ZVf62
-         1TQCnWN6ciay9PitU7seFVKLd1pucS97GIyTXXxqOXJxrXKJmO+WSwQkiCev2CKquU2A
-         xKJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qh7+bL2tt7/pVu5eSjikO++61ieI9Cj5ZNr8SJkHxX4=;
-        fh=+ljMVeykY4tISXistx9psKAq7bm0tKd2SGuId96oItU=;
-        b=PmzdZID83t9iHLR2MyUuMUahzm5KjGgW8JPPOizYBEATOaZIDfgmjXqkM+awFuNFSq
-         uVzHQ9WTy7s+70GZ4JFGPytsk39ThQcJCzgwYYDjNR8r7CvOjCM9OD5QSbSP99dm7F6e
-         0oRktEVXyh6r3+91hh0rUsO8QsHVr6g09komliFEMC+PlTLbE++bxYYNrqeDLV/zZaV6
-         2LgwjE/IAzO1rbbshdIAj4E2mON9alaTHXuRcPYgVZ1W2sNxm7LYm8a85887Ft2euuih
-         9PRoyIIQvt9IgAvBSyCWN56mtQ9Mktjc4JnHVbMFJN6hqrw0t+1ZrCNs9vB2V1LOtVGv
-         ewpA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793055391; x=1793660191; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qh7+bL2tt7/pVu5eSjikO++61ieI9Cj5ZNr8SJkHxX4=;
-        b=ifj7iHNSGNWxZMisNVjHqVVwDr4GGSN44NgG8kR3fvQaOm9/ctWw/DYnuCEi3goM1b
-         wW1ZeMsDI6eBkFXcYkBaLjyb4qIX8DDOI7rwS9d4a9oz2cN/PbCwk9W/KgtwBNTyZNgn
-         TrqdCGlFgLxVC1oQac9gnIMOiQjz+qnWZJjdwT0ZBCC8Nyr+Mz3Ca/almo5sq9wontuX
-         92qw9RmLMcZJSCENBHAdzJO/CyNhkwxFkM8I7BNnedafiHXnKIUi4sLaF/xEQVcWKrPI
-         3kWa/FPej8eVO9fdmKq8oDEPZWoenIIqlELOaY7zGvy+5erF5GzBAkqEiyOhhe+qDNRX
-         ysew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793055391; x=1793660191;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qh7+bL2tt7/pVu5eSjikO++61ieI9Cj5ZNr8SJkHxX4=;
-        b=O3WPUTDuSgUCNx7XRwHgPdyR3mMLkRxwsFeOLiPwpc3/LEk9vzohgL+LbfsinTyTzf
-         K+syhxnlWabhh0HTDYeUq5k2M1fjNEvWYTU2tY6AvLuKcJiZ7fANr1wr7RgoTqFJgMx0
-         rOCadgOCef0y4z5MyZLzQGbjr+7/kIibhXFGEuwCFzm3gidtB06kWXElpzAsdKik9sSI
-         4OTR/ejaeHGFHPmJwE3xxvYfO7ZDLEWqS+/gZIms7V6LWGfDY50GmGSQnxmZFGY7uczf
-         PJCNOn1IAZYhKmq+l1TD5ekZsVWpsgGz3q2LYsKJVVzpm2Nq6rwnRkyQQ1WTB073O4CI
-         aFaw==
-X-Forwarded-Encrypted: i=1; AKwUvBx7VgnFnr+w5r4tpLs0n99guYRm1DDe0LbLB1vi1win5xRUXf32Mdi4N/GPqvRjUtmVedAuZgBj2w==@kvack.org
-X-Gm-Message-State: AFq9FYI3aiN6Q1T+yY7OF+v5VQroGkhFaSOaowIYYlFLedR6JZaha/hy
-	PIOB6iGSpVmEg9pg+ovNi42GHrG1afAfvYwGogQsI7HWLRwmAM1GvT5EzoCk2kyKZDFwiffAb9m
-	vQQqOiYBqj1pDV6wLBfL9raMYYaa2anQNhFiBCwln
-X-Gm-Gg: AYBFou15vbMYEKIuUiNnMdF0R92TLEOx+8uqg/ifNCe33nRnS5WOnD09sN3mi7MTed4
-	iKkQfAj+WS6XmCuOSmbVlkZrfxV2zD6gVVOjONNWegtE4zMQQM1N+O0kOBFDuT5upSJ9+ntf5cV
-	kCzI7JmQNGXSZYRepLIfVp/fYdE8SOWAeXaYuP45xJyxNZq/cRWN8nvrTfsjIA4WMdUHNjgLmCG
-	3FBmw9winaaEXOCZulzxONVxdFB/M+xyqlDpznWKt1keAs0oTesmJcZjhonIv5JFxZUYxFHKRKx
-	Puw7M0OT9wYFIckY0SarXvAdKP+LwXzeqsG07cuQsudMw56fVII/sJIS8QCQMHteklZ7jCcHgLs
-	YPFIpmsb9/PzjgxPJzLpn09qS2rNi77acbXvrswmOD+xM3vBTXZ4m3IY8RYoBzYOqKLXp2yfpO+
-	vpWqzwvKp6wRWujVQxDB20EtgeXUQlF9hmeP/EsMitT4qe9IH3YI2+Ws5q0ZdD/KS5HZU3ySFNj
-	o+qZxme
-X-Received: by 2002:a17:906:9c8a:b0:c2e:7da8:f54f with SMTP id
- a640c23a62f3a-c46bde874d7mr911731866b.38.1793055390933; Mon, 26 Oct 2026
- 15:56:30 -0700 (PDT)
+	bh=D7+yWhNEfwBLVAnh4DVgwdCxL54hx3J7AhdglfNEalQ=;
+	b=uIh91JP8a7SMYEetZDOVTs1WugTvF1BTs23ndvi1HEYOIcctfwNQdSDKTsNSbCa5+G3DR8
+	i6E9z3U2rfAFJhnb2iKGTKK8eZVGbZTbMw7VZFK9OWKdPg5R+rEt7mdQ8UiNMUAT6iWlMX
+	Kz4z3i1iHJqY/pe+6HAchNk9jYhiSNA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793055804;
+	b=ZEP7StqXFhfjxx7vTrX92hEOrUsry8CHKBnKLzg2ggZ5gBlIYFsglWLMx0oZdr11vT/wzs
+	xYkzTbvPp1yxsptE29yC5pRHEDSfPHEfiqHIui5Bnv9/7R0o7SI0LdaXL0qx73S7T/ffh0
+	hjuBesp3ADSn/29qxT4u2+OFa2tAVkA=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b="YnCT/mJB";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="Z 9Bmjjc";
+	spf=pass (imf31.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.phl.internal (Postfix) with ESMTP id 431CA13802B7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:03:23 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Mon, 26 Oct 2026 19:03:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793055790;
+	 x=1793062990; bh=D7+yWhNEfwBLVAnh4DVgwdCxL54hx3J7AhdglfNEalQ=; b=
+	YnCT/mJB73FAGmQIu27ctvo5RESP4K+pTIiK9EhLFaGH8j7kXKQE+tSbzesbfDxs
+	bV+9wV/9mJE87FIh60l/aPw0vUFP1oQOrI5riJBeeRGczFUwDyCLA8/y4BcBY12w
+	wRegLgnRHobHCSF6BA6i0C+reNBRVR2FKTT/gbMwVrLZscUYxkn/44Vw8eG0qSvi
+	tWJdiyjuyg2ickLmpnfR0RB/KUcSZm6NPyieIrb9GtPlZj+tCTyGrh4XFyNGGvj3
+	0mNzbe0+txL9uJr9T4IbJyuT48LYOX1e+ZzKJe7AQTdcUWk+BiA6E+y23Kktm4eF
+	0OdWKJ+MXJqpGpYEJntcLg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793055790; x=
+	1793062990; bh=D7+yWhNEfwBLVAnh4DVgwdCxL54hx3J7AhdglfNEalQ=; b=Z
+	9BmjjcB8Ht97U3XpSdkutzu7KGGU83nJYqys9fKA8A8LFo89cKjsWQGjTr4pUO1L
+	aP9kjNesX0okG+vOVw+RbXwBhTP1dlNpD+KBb13+OcK03C9JQt4JuFOOxyE3GGLG
+	ZspFTpPuZDfO6wPr4qEO2A5TQRvlMMTy9lXbOlVikLCqKHWaoSShkmyr2lAQA0MW
+	I75SaI19xADFJtpVucfW5iXU1oSN1+WUXqV2eC8N5VxDvuOCOwE0yDQK4eXGJuSC
+	Y9wL+SsocvtYeidK4mRb5GFh4Lq5vzciH3Z2KUk3zskK7IRDyEhPwx+HWzKZpC0W
+	mE1pSP6ArkmhYFD6hOYlw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793055790; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:Z+uQ3+7bFMX/aBnq/k5G3/0uBby5fGl2chRhLBn8mML4bOL
+	Iw2T6tPiW0OxgUBbyObj53ZkjLzt4Ye/we/l1cJe0IdoSYJ/sR6XkvEONvb81pZS
+	NdsZ/XxYZg7WIl3KXsPMNSwY+UZ3PrW0teJSvWzWVVlHVDlYxa9ZS3bHCynzSC8f
+	IhYLqFdQMD2wMbmTQilqIsiFivNmDtP/vL3MbjjgQOvleRK73qbOxjQudIOGZJmg
+	sPYFcNbJZcs8CAvLwoxou9GunLApUAqs3TCSTgKFCdtzsmOM0CLxf8EyZMHgL/R1
+	GDwHsj/sU1IRUy0bVCNUK+9iaYjvUgZtgxn6mvA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:t7TmO85uHz3Bu9BudK5SiRDodgnhLHm1Jzu0xBGeMzU=:nc6weggs1vuexqOORIgzQ+8Q4IQMXclbAa/HauyeO68=;
+X-ME-Sender: <xms:I9zfarVlhcJ2BCr_X0f-Oqe3MJ-tfizxDxcVqqJu0UTFnur8n55_Vw>
+    <xme:I9zfaua_l0AUV_QUaHlFQ6Xk6c6S9hDoF9LDP0z9ZWTiBfyLFB6bGMt2m3Qf-Wf2r
+    Gp1aY7E3hmIDYnxO6ClUpLNdypmMNJMMAjKb_KTlIEA5DbBcFarl32S>
+X-ME-Proxy-Cause: dmFkZTG2ipuQjn7o/dduxIouS3rexG2Fs38Yf1mgntfcBayDO96egVm+yZQ4lqIIentjs/
+    mqWlr4cScm3wkM9Qig2xKeks6qaebjWFYjqSr1PEW0Un0mkdsaFkbg+xdJQiG2O2dvowLj
+    8E21v7JskZMeciXQK6+wWU3W5TpMrftfB6Bs3P2KNxD6AlDYn9LdKl79i+Pap9CUN0lvH5
+    Kmf7XF9ELL/4XciMlrED2crBvL0Cr1f1u2ohCkkGXPJJyr9NhF3TZ6Ev/Xhe+zrfxeWaDU
+    CHzGxCZtrUFf0j+qOyVHd7hT7F2sM8dBpGw742e3r2mvfUUQKFeZdDheW6KomSHxo+nEDw
+    iI6qO2cDvY1NeToTkMsmxh+Idwqe78oXaZf4JBivXyC6kcFQnAnTHzPS/v1istw/y4OU7I
+    Ig5+4LcAMjuaK21mmbb4bb1DmpocpNGdDRw9yq3nlrcPMsuuD3uvsbn3xyT972zofrrKbr
+    ymQ2KeWkMRr8lrdJKsZ996mCPszGebzucdgyrtSsUPulGKB9lpIv0RpYgf85X7CxFkC5mx
+    0ahqqI390L+Dj1eTAd45HDhy64TtvMVlHqpgXnFPGAYR24gTjdAn2Wh1e+VqFY1QE9IKWw
+    dT6VBuP/aA1R/oxwzZkn1goeGaMw0LOVAE7QiXpixIzvdkU0wv6eIJAHAEFA
+X-ME-Proxy: <xmx:KdzfajHGJ6tf5pxLJ3v2PfbGRd6Rt6Io_8hyQBlkYOXCV7Lb2b01Vw>
+    <xmx:Kdzfapg-6ACQ-dUEsnrl6Ji_ntio6Ly_-zbhQjCdP4T2kZZPc2mbjg>
+    <xmx:KdzfapZpLCwDwzVm3OeHceISOSkLUArE0NE7AI0C6AgT-FmN177JAA>
+    <xmx:Kdzfam27dS94lXZ5VmP_WcqDu7eLBRosip4J-91RpWhTlpq7UwmFJg>
+    <xmx:LtzfasvLSVKrc-K83R8kLrDibnrCdXZT8NkkCjHCIPMKCuEvlTPp1urH>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id C999832A0097; Mon, 26 Oct 2026 19:02:59 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261026215226.3713941-5-jthoughton@google.com> <bce97570ea9665a2f83216d4dfd7ab7ce17d54aa777f761c3d12db430ba21bb9@mail.kernel.org>
-In-Reply-To: <bce97570ea9665a2f83216d4dfd7ab7ce17d54aa777f761c3d12db430ba21bb9@mail.kernel.org>
-From: James Houghton <jthoughton@google.com>
-Date: Mon, 26 Oct 2026 15:55:53 -0700
-X-Gm-Features: AclHuK_4pEIR4EnpfJkK690R4CHqdS4wt-7zneGKcf5MW03i114xuH5q5kcZiJk
-Message-ID: <CADrL8HXeYRC8w7F7e_6ZXK6MHd6FRepN_zD632j0JPjNUDrLZw@mail.gmail.com>
-Subject: Re: [RFC PATCH 04/10] stacktrace: Don't unwind the user stack without
- an mm
-To: bot+bpf-ci@kernel.org
-Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, tglx@kernel.org, 
-	peterz@infradead.org, kees@kernel.org, arnd@arndb.de, david@kernel.org, 
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, seanjc@google.com, pbonzini@redhat.com, 
-	jmattson@google.com, axboe@kernel.dk, asml.silence@gmail.com, 
-	James.Bottomley@hansenpartnership.com, mkp@kernel.org, dsterba@suse.com, 
-	mason@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
-	john.fastabend@gmail.com, jpoimboe@kernel.org, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, mingo@redhat.com, 
-	acme@kernel.org, namhyung@kernel.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, andrii@kernel.org, martin.lau@kernel.org, 
-	eddyz87@gmail.com, yonghong.song@linux.dev, ihor.solodrai@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E2CE41A000A
-X-Stat-Signature: jqdys4m3z6sbk6y6qs57id8734w1zor5
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-ThreadId: AmKN4IVPaSCN
+Date: Tue, 27 Oct 2026 00:02:38 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "James Houghton" <jthoughton@google.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>
+Cc: "Thomas Gleixner" <tglx@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Kees Cook" <kees@kernel.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Sean Christopherson" <seanjc@google.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Jim Mattson" <jmattson@google.com>,
+ "Jens Axboe" <axboe@kernel.dk>, "Pavel Begunkov" <asml.silence@gmail.com>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, "David Sterba" <dsterba@suse.com>,
+ "Chris Mason" <mason@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>,
+ "John Fastabend" <john.fastabend@gmail.com>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+ "Ingo Molnar" <mingo@redhat.com>,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Namhyung Kim" <namhyung@kernel.org>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <3b0a8fc4-d140-4a90-b810-cbc1283fc083@app.fastmail.com>
+In-Reply-To: <20261026215226.3713941-11-jthoughton@google.com>
+References: <20261026215226.3713941-1-jthoughton@google.com>
+ <20261026215226.3713941-11-jthoughton@google.com>
+Subject: Re: [RFC PATCH 10/10] uaccess: Move the NULL mm warning out of line
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B67A62000A
+X-Stat-Signature: wm3kgtwymtqkxbnkjbioobffo35fosg5
 X-Rspam-User: 
-X-HE-Tag: 1793055392-384905
-X-HE-Meta: U2FsdGVkX1//WIJeeKjmbew8i1eLIlcgFJYUvv2h9Cvh9/RvPISbdenyU7Czau65akk1fg09fR7V0tjr+3ibSSfk0ritat5GCqeEn7yehGrV98gCRt4trZh9cLmn8FeoOgOFkfMQueEuKDR5v4PubmA15MIMxZW0T1mEBkpi31GD7nyCIJO+2Bc4+Aba1VsDS5bt201imopJIeoEOwNRhO5v42ybZzuuDiwj/wP3Bdwh6inkEwbbBClimhZwnSUvlZpWvzs6jCrpECHKbOC8glYGuWbr8WO9Rrxfwe8Rhv4v6NGtgh0iQYAyFu5MMgoMvGpehYI4fI88Bds5xE6Mm3DE2t+gKGjErfcoe9v0GZdLt4vAgj4AWHLj5sgQu39xEmVCxb6S2TbQeiF7d36bXR3VCHO9BgOmgE9VPLgWj3RotNeuNdPXLA6yVLiyZ9OUU60THXrhK+mrVV3AwNYpqjZ1sRqwWpGOyyKDkRocTHpfT5kh/0FMgc+UXBCn6T589vBL8HF3v7L3UACrYCY8ctq53qOlMQMG8pLW6fRQIiAYNJyi/wqookriPgMwA2eig+bmOZBpXZvBR1K1tMNp35W24cmci1L1cF2gSNXhLXcBGx1cz+sPl+rCMhx4xuUTV98w85vN4AjiaWay6tvLQgDodTeNRlF2bc+V2q50+C7jzAHEo5zYjCjBZdEvOndyFRZE92g74wfgEKhQ5M0Oe9LrRj27AGfG/j/aPRdztCXc1if68zquaTJcdwiwMblO2wDKbzBJYGQ7IF8TyACevoeQ82cjarIwIR0QovHHfbitUTyvMIjcUvc4tQFO24ZHf90yn7Ae41zW6W3BCGSLowKF79yMvRq/mabOx4oLn86p+GjJqPZpYbrnlCbRj2JfkK9Tw8fSaeBglAP9B0QCtyMWNKuEI6vgseKWubNI5NhgjgMjNjrvzaNJgunYdmuunaaZIeymweAarW+wLVe
- sjN9a3Zt
- ywhyE2rOp/OUO+lEPT95JJUQYjY6V6l5FAlnwpGSq/G5sR7cr7rKhra9XOdU3jlKLMzCL2IA8NBZw8xZmKn8ZY9J5Ph2IiUnlUyAbdlQsq4Cze1zfFZmOs7vdfUVexsyiRf4rrlhWR5Tbr+S2ypdQgDOCpNem0q2TmnlVia7HAcutZCfaE5usGRXvg78JNPJeptT/SyDDpZUSPnd2JLxmpyTQJ+6T/KwwsdwA5iu9F3ZKo40TbIPw4lCv1q2yGWytB5RMc+R7l6i+bFk2+brCZT/0WGDW+bMh48s3Ckr+rgJ7kUgnLGqdHWUh0lENzi5u8UbI5HMsZdo+RJI8cqSn1DO6fAkl17JxpxrQU1yYjG+yByxtFc6QUj1hz6HTtq8oG+AtjcAbdsz9Scwt3X8nprTupg==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793055804-259838
+X-HE-Meta: U2FsdGVkX1/MzawlmB1hh3K6Y8kQdzD3JK5Hnzb2JOKZi2MxVU7yRC5Wvku5g5yvAmuOfmeCeeYUheJYXQzEusVOyV5q6kjG4VI68VtHY1g7JiXHtspKrL5/NGGCB5S6Evyh5ac9yI76TCbJvoxxjT/gijFbYbAgGndi4DUiaFe3In40Oum2I0VG4zHElskIzSsCbJpWToZHm6o9h3tCSy5sWZW8xBUFNiPavVdSY6ggMQW7XFMXBlb9d89mtI5rnHq5TKd25OhdRFWJoDhOj3z4YiIJEZ3IOkehDoPqChJTJgPnArE3H67zw0LLGa2XjjRAq6nUAwH5cQLD8ELLg3hjg0FmrMKy4sH+aPV92UmKBoZnoddZwFsSrUCJprT/kky93WmVEK+6FLY9dsExZOjaknPBxvcdY3TlGPY7nhQc0/xTCXTaW+14UA33SUIEnmeLf7BefBzf42GRyH7mlAOT8c9T3kocLK7k6Oon46Wq2dwtHCo5V+X0JlCnFYRIDwOOKGCkr36HnTvFZBbq+9dD5+47BM7pHjL+9yGgx+pXY7E7HQxpVmEcD3sLrQIXBepp545afqNAGFIuK5wbvr4ytFZjx1EjSZHfofHAHhN53cZ5YpLlQwMFpc8lym2ENVGuqn+V9PIRMdC0L6rk9lMBH05HA5egEG68+ux6qSTd98Pg9x+v3TnjgUZUjUziGFM/271MAoTW/N56zs4FSH0/Y6i7JND5KaEFAjZN9ehOpO2pF6dsQXW/3TndGUmniB8w/bGsO2K5xh50/iVRTFgMYv6PfVqACQJ4/sy+zm7V/m8WtbwLZO1NhuDxdgAJZWiab9F4VaKGyr0b1aM5An9rlFftrmmu3w7ELziXRTDT1w4eFDslQfuxhkRJtiPYiebUfH63WqK/k3h5Yne3+/kZ+QK24U4MrwwRT1HA17sYKjgHoTj6Ej4gzP3D31naRPIlO6JAaJndJ2PTrif
+ qKvICYSV
+ ZToEG5tgfjEjk8t3qjRdKd9v4Muf+y5a25+CgXrmB5BETByAYcJQdcQgXBmIg7MwweyemScgBPw9EqQkPxDnpWRBvGzOeUOz+47+MR5hVfE0td2acgMHz67fnVKoK8TYe6QxLly1Hay8x/QytjJlWUYOj/EdRgtahrd5Gcfw7MzQNztDEN9J/fsN0EIk/HEE5AyvOsEeMllps8pM/oaAMEPwgcj52JDBQYKE1VnjaHU7J4bbodB3dzRlm2qkjj7bsqZrRQjEU0SXc3YnA47v2lRKJVxVNIdMFqfBA5WvR2r1l97CFv+H23JYLgdGVSRd+QnutgbOgNe17kfCo/tNbWHuOLUg0lXgaP8JfL3rvrz0qatEc5KYAKm/KsY/g8WMxJwqOhRrD0kxZsqA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,67 +177,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 3:30=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
+On Mon, Oct 26, 2026, at 22:52, James Houghton wrote:
+> uaccess_without_mm() is inlined into every user copy, including every
+> copy_{to,from}_user() call site on architectures that define
+> INLINE_COPY_USER, such as arm64. Each inlined WARN_ON_ONCE() adds its
+> own __bug_table entry.
 >
-> > stacktrace: Don't unwind the user stack without an mm
+> Keep the NULL current->mm check inline, but move the warning into a
+> single out-of-line, __cold function, uaccess_warn_without_mm().
 >
-> TL;DR: Commit message only: the Fixes: tag may point at the wrong commit;
-> 7e8e6816c649, which dropped the !current->mm check, looks like the real
-> culprit rather than 214d8ca6ee85.
+> The trade-off is that only the first offending access in the system
+> warns, rather than the first one from each call site. The stack trace
+> still identifies the caller, and the access is refused either way.
 >
-> > stacktrace: Don't unwind the user stack without an mm
-> >
-> > stack_trace_save_user() only refuses to unwind the user stack of tasks
-> > with PF_KTHREAD set. That doesn't cover all tasks without an mm:
-> >  - A user task that has already gone through exit_mm(), e.g. when an
-> >    event fires from exit_files(), exit_task_work() or the final context
-> >    switch in do_exit().
-> >  - PID 1 before it execs init, and usermode helper children before they
-> >    exec, which are created with user_mode_thread() and don't have
-> >    PF_KTHREAD set. E.g. booting with trace_options=3Duserstacktrace and
-> >    an event enabled with trace_event=3D unwinds PID 1's "user stack"
-> >    during initcalls.
-> > With the ftrace userstacktrace option enabled, the architecture
-> > unwinders then read the user stack without an mm. That access does not
-> > reliably fail: the user half of the address space belongs to whatever
-> > mm happens to be lazily loaded, if any, so the unwinder may read
-> > another task's memory.
-> > Use is_user_task() instead, which also checks current->mm, as perf
-> > already does for the same reason since commit 76ed27608f7d ("perf:
-> > sched: Fix perf crash with new is_user_task() helper"). This also stops
-> > unwinding the user stack of PF_USER_WORKER threads, which never run in
-> > user space, matching perf.
-> > Fixes: 214d8ca6ee85 ("stacktrace: Provide common infrastructure")
-> > Signed-off-by: James Houghton <jthoughton@google.com>
+> Compared to the base of this series, with defconfig + KVM:
 >
-> Is the Fixes: tag pointing at the right commit?
+>                      inline WARN_ON_ONCE()    out-of-line warning
+>   x86_64 total       +5,884 B (+0.014%)       +9,714 B (+0.023%)
+>   arm64  total      +40,948 B (+0.10%)       +24,609 B (+0.06%)
 >
-> When 214d8ca6ee85 added the ARCH_STACKWALK version of
-> stack_trace_save_user(), it guarded the unwind with:
+> On arm64, this removes the ~16 KB of __bug_table growth, while text
+> size is unchanged, as a call is the same size as the inline brk. On
+> x86_64, the call is larger than the inline ud2 and causes more .cold
+> splitting, so this is a slight regression.
 >
->         /* Trace user stack if not a kernel thread */
->         if (!current->mm)
->                 return 0;
->
-> That check already covers both cases described above (a task past exit_mm=
-(),
-> and PID 1 or usermode helpers before exec, which have mm =3D=3D NULL).
->
-> The check was replaced by commit 7e8e6816c649 ("stacktrace: Use PF_KTHREA=
-D to
-> check for kernel threads"), which switched it to:
->
->         if (current->flags & PF_KTHREAD)
->                 return 0;
->
-> That dropped the no-mm protection, which looks like what this patch resto=
-res
-> via is_user_task().
->
-> Should this be:
->
->   Fixes: 7e8e6816c649 ("stacktrace: Use PF_KTHREAD to check for kernel th=
-reads")
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+> NOTE: This patch is included for reference only, to show the cost of the
+>       inline warning.
 
-Thank you, yes that appears to be correct. Updated in v2.
+I would suspect that the growth is larger on architectures that
+don't implement __WARN_FLAGS() but rely on the generic WARN_ON().
+
+This would mainly affect 32-bit arm and mips machines, some of which
+are very memory limited, most of the 64-bit architectures have it.
+
+      Arnd
 
