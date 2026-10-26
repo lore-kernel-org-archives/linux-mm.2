@@ -1,82 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9D7606A321
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A9F606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UiY0D2eS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ADibYKa6
 Received: by kanga.kvack.org (Postfix)
-	id 0C5576B05C5; Mon, 26 Oct 2026 05:56:01 -0400 (EDT)
+	id D241B6B05C9; Mon, 26 Oct 2026 05:57:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 075EA6B05C9; Mon, 26 Oct 2026 05:56:01 -0400 (EDT)
+	id CFC126B05CA; Mon, 26 Oct 2026 05:57:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECDAF6B05CA; Mon, 26 Oct 2026 05:56:00 -0400 (EDT)
+	id C11DF6B05CB; Mon, 26 Oct 2026 05:57:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5A726B05C5
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:56:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B7D8406B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:56:00 +0000 (UTC)
-X-FDA: 85364321280.05.AE3FE99
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EE776B05C9
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:57:05 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C1671606ED
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:57:05 +0000 (UTC)
+X-FDA: 85364324010.11.14B3696
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 95C5C1A0002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:55:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UiY0D2eS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4F25EC000C
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:57:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADibYKa6;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793008558;
+	s=arc-20220608; t=1793008623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8im7+ey/5FnzNCNbzYMW8gbmtzOtcHIHPfyk276y0gU=;
-	b=VG50vXh0NegYM4KYbkcVj25hl3g+yaRv8SupozBr4cYVf+QPWWkiydWBE/wTkpBw8UovJm
-	rMNGL8oDXLj7kSRZDuAFV7Lfle9U4cvR0hr+mEog70fpWVDWWsYUfCEO7NrzZI6diS3gQJ
-	cx/M95Xz/g8phelDLN6UcnxGq4wNO6g=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UiY0D2eS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=uEc1Bmciiva82nUX+FVCSYZVGtSGCp8Z+LUTT/EsGek=;
+	b=LLjbS/6E1hvO1jZlVXJr6uB5GYfSqugskZl3BmpGrgiRKTPPm2Tgq4OYulnJL+dka8DT9T
+	BYE2sF+Z/txBEtRBdrQeAcT+b3FZi5+GNoo2lL7o+SSA/T3p8XcNYPOEv9SC1vM0U5LKHL
+	Hj+LT/ki/8xUzy4i34xCeWi/Z67v3Y8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793008558;
-	b=CWlZBbl9nA7khm/Vw57aIuPOxdHdTtuRCDxZfmwVBKELvAum781qvXGBxhNzlpL9eqRAHX
-	E9TOuRR9/oliiUIUVzZ7Xg2bEAGf9xy7xhw1l3DvkZdTlX7p1i6KMPY2HytgKmsasAEWZ7
-	z9ozr6WzskuraACApQeOGkEgiqnSjGo=
+	t=1793008623;
+	b=yPhwJIslOCHCVOWDRRu4UK2zNmE8DkUmlm/BfFed/EKUszaXDb7y+55IG0VupghevnfUcL
+	GoLuM7FOK+CnUfPHTvAhr71UhFSybPOdk+PV0OuTwxZzVNzu1/Qn/Jxxdb+PYhOJ40ufWh
+	z4b65rO7uUsC9AaGCa+a8bGOf3DgFWA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADibYKa6;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2316B6024D;
-	Mon, 26 Oct 2026 09:55:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB9C1F01825;
-	Mon, 26 Oct 2026 09:55:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D819D601FB;
+	Mon, 26 Oct 2026 09:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB981F01825;
+	Mon, 26 Oct 2026 09:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793008558;
-	bh=8im7+ey/5FnzNCNbzYMW8gbmtzOtcHIHPfyk276y0gU=;
+	s=k20260515; t=1793008622;
+	bh=uEc1Bmciiva82nUX+FVCSYZVGtSGCp8Z+LUTT/EsGek=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UiY0D2eS/zDLciz8jMBU34fZpk83Z6KVC2QwvXn96fSYJeb9d7w9P4RqoPp1v60UK
-	 fxFbKWz5eT29zmVk9M6+FSI305SzGr67lQYe4zWklHstJQp15SvEPvGugyfIpl/rvY
-	 CH7xq96IxVIiwp6WB96Ei1GnyegMhj6IWVAWMhOJE6uqByr0fpheeFAMt6zbv6OJqH
-	 fFAqttiuxUfty801NFhA7Xyu3ziO5woaA64HFjQM8WeonkhVM2asDMZc84TIIUcZ4Z
-	 xnHtQcnKnP3UEwLI3gDpnwsRp5j+i6t9q65vHiwXaiGoazVlMfX18dbEEx7cG72qUr
-	 l1B/QHQxRLAQQ==
-Message-ID: <f28b2414-ff07-427c-8e18-e950b492b351@kernel.org>
-Date: Mon, 26 Oct 2026 10:55:48 +0100
+	b=ADibYKa6IDFelyxOrz8R24pUpYscXPB+pjFUqfN2yzvXXexfAjjlvE8xEfbuxib1a
+	 9iuKKqlbVMsfHNfY8DCH1nNOgHe4kTajBG8upwqlZp9HUaz0Jm3ecdaV86Vb7/vNvQ
+	 pVTUkIJ1PrXGqNfuWJj4ilB87T5xg70/iei3rAqXx6qEUbMNQlQKTCvPCNx0BPsKu1
+	 lpfZjxcbWshFPOnI+aAlGyoG1VN7lODhcoXGWlZH27/b+4YYdt8nqCAscjnoWTkJKj
+	 LVXMT/ryh3eVhd+NCWnLLVqiT4ue426VHLCP7J6ORkJwIvkzwPbZ4RahyvrSR2DIY2
+	 D2GTiBGBSgRPg==
+Message-ID: <18602383-2326-4e54-8dec-bb695ae8878e@kernel.org>
+Date: Mon, 26 Oct 2026 10:56:55 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/highmem: refuse to copy hwpoisoned folios in the
- !copy_mc fallbacks
+Subject: Re: [PATCH v2 0/2] mm: don't migrate folios containing hwpoisoned
+ pages
 To: Yuanhe Shu <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org
 Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
- Kaitao Cheng <kaitao.cheng@linux.dev>, vbabka@kernel.org, ljs@kernel.org,
- liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ Kaitao Cheng <kaitao.cheng@linux.dev>, vbabka@kernel.org,
  linmiaohe@huawei.com, nao.horiguchi@gmail.com, ziy@nvidia.com,
  wangkefeng.wang@huawei.com, tujinjiang@huawei.com,
  mgorman@techsingularity.net, chengkaitao@kylinos.cn, muchun.song@linux.dev,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261026025724.1430747-1-xiangzao@linux.alibaba.com>
+References: <20261026025552.1427901-1-xiangzao@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,22 +122,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261026025724.1430747-1-xiangzao@linux.alibaba.com>
+In-Reply-To: <20261026025552.1427901-1-xiangzao@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 95C5C1A0002
-X-Stat-Signature: uptjm7wch51haekw68poessc6wqy7yma
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4F25EC000C
+X-Stat-Signature: secsjm71e5nba1ybijcenw1n63a36ngj
 X-Rspam-User: 
-X-HE-Tag: 1793008558-166120
-X-HE-Meta: U2FsdGVkX1/nF0wZCYsYolzzw1Ez4KglD9QMUmSreG2zuCsby9jLpaFgOXG4/y2WlmXQB8txfnA1qpX7mMsQnz5ayXU69pH5HDc2JidF1E/RQrHBmocrnoEGd8KT3eb/D+bnm5s/NYcqyeKQHePaTgsVClZ4CL3jcGnkA1uPvzJEWdXJ6KdEtC9HGrzyK1N1RtT2DfUFWIHbzdmyXRuvl2R30wbGcrESI8waiO4GW9SgZHSUWjUtMURxGvgg7k21hl8YXFQ4JjuDxSwfyqzT28FP3TtNYSlz13JKx6MjdxiA1lc6duMQJhtcQWfeziNrC5nIPQ+yKFNKEzBt0KHgEJ6zau3KT9V9oJqqiNqFRPpJ9ru2idMteoI/3xwUPG/8nAoRtxcqZ/vdCbp+2EploA1ebbjm/2Ag7DE2HJcCe+l5yK2U2QFj2lEOwBNrp1jvNliEjkqru9mjEVUNGM3UetDupAoCCTVtSi2ARvATEfXs9J4EEfQxFb9S40MOUhh6WoKF0qMljvKt2qP1IlAl21DUm86ayiNIlJ8StsPDNEFcZ4oGmRjPricEmhKW4XFAb3rqfQdTgb3C+6QTtVOsSWlJsRDtkhOQwjPtI15pD3t7fQZVy/yfEFskavkXNOLdIPJQFmL42QRV3zZrQDRnc+zx/CQeDc59PPt4nIzuMkSwv1/Fh94HIQ2ZIxdsaPamldaHJedcTASPevyN8I/18/7fgmzWtvbxG1wKHco9Kw8xvte2ilN0zEfO9ddATZSsIuUVFGz/mOJKwjd1AZFdzgMTPW5nilYsXTlPcgVAW4FkhkvPllkV10w9vuDMwSOnRrctywucBS3h3gtRdmVCzbdegxfS1qhypi6VI5GU7W0Y6Gf8WRCJpYyCe0dTha3fygvDwZMHg6ZniNJPBN1sLVNl4P7Nc35wft5I39BiRlgcxI9gNTTLFrkazdDHU0wCMsOM4vztoHZWu0SEFwN
- LcIcgewR
- UBRf3Q6VvOqsVz60F1dJke2EQbYhFdqYMIcKVmBxRX9aOzbBNsAERMQpQ1GBB9cqmQfVskJWehNyq3+MPf8teHumsB5XSkxwPDpnYOmyMQ/bwqfSbo+WKBZacOhO1kx8PeXiDUrL7PCE+ZnbtuC1Gh9pu1EC+SUmgNmFyq/QYhBR34Nfp27EFffB5DWOBCPDOVp83wFKuI8Z3VIfFLPICwJ8/rYqOVxDmzKHeGrOzQ6QdUVucOsInEr6L5RONEEm+mIkbFgEObv3fVwGvqbGbRxSitVQzxKGBiUBcpybdeINa7MAFwc1SWBcAkXyaAIKs/9/xAcoQdGYwRRDVnMVRGTC8dxYbAU5IpAr3P+w8zGm2mAlCsGhWAhcG7eif6NHFdLy29t2SYpfSMDJBKuHSshoxHkOvdJllmQcILhjCK+Zy3rbYEPyomq5C4Wncw1kwK0K7mF6f+sseAIvr1/DDS+WJpg==
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793008623-776427
+X-HE-Meta: U2FsdGVkX1/FBmUg+DQubc2icsPRENyaBTW3OAasGlZHXJ6ngEGI5fcVSMTd5de9v3mbrJm4vvTieGUitVFDlvTDo7IkSM+hXUuKaBqQW2uJelFQndJe9lKpExDkP8csi/qvcasVkMitmY3N/Nnc758II0CrhOCXzegTZ4WqZ1vALljv4P2W2vM/zmphOlLbSnP0kkuI/i6kQbe3I7nnQYaZczvoypl7Mwh7tjat7cYn45vzuQ1i0mjxLs+5/gmuX+QlnLYAEJigcxC7ac4rQr5sytJU5i1XgweFfVrFmtJbwJGQhfwdW+E5JFyEqGyyhJfWAeJCLDiFDo+peumf8uYS+gRRqpRGMGhPvQXV2QAbhjkB+txaZiALHeHTLP+3RmaDIK136yeiTdSIE2zlHvxk7oKwKpkMh6xssKL2Ewmh+f2UU6CdAVVzzwY5eVJ9HVm1ca4hgMWILsygxT44qWKTK6T78bZ3GR/y8FJjXHoUssxYWXcHvTKcQwSohgLlbHVrP637vWwNHIY2WRoaCZ2SzPsIfVxdOdcPuQty+cP42z8B74BiQELfw9jtET9MTmiqf9Ihofn2mGf5II9NFStVhx6ScOgxSW+m1RwzOpnmj1/hrsANB/mminEQBtU/qPhNTrmj7GkL/evYgR/8NkQ2zbRWuJmHjEv0oeAELw74ADKfcbNO1JHWl38RMVY9lR7TYl7ELzhgrVO8LQ62c8Fra4fo7yqu+iuaWcuCWoTPX//UPi670YbEd9zWRqLoYM4vg/W2PCoylg/QkF7qGlkRNbmMhq/NiwVEEXIx/Mm7keieee26++3S5NootJ7c9FPBtJYNDG+h/0Ti60xuIFAyzHrxAEpmmGBNwFzTzdZ7rXHXQ1k4ddLmH/pC9nPLOC0xmtOow1lSDCVfovzrKkig4t/y9DtjJXVCtFNfz4O4BJ8+W6o3nsibC4GH4x73vgL9FsYvu/dgRF8cHCy
+ 1dci+Vi0
+ F02I2iWrFD9V/KMMw0xLKASzDHp8t8gpjI31RDvMypRLoOVkl00k3uiLaYVITjWZWtbI7SOBChejOTg0H3oFJn2L/1MnRcXKRo9Bxv3hUtwHmOXEVmSPs2D37EpNwAKgH/P0+yAjEbmsLs9lUt/XiuyqTV3uF+xjaH8gHEiZhircV5Lg/ieWM5rDDwCdLbaLFWObMDlmnpSWtjY3P2JUSmNZ2aSCjCaBECs29x9MwoXEM0lUNYi68gMBG9tw7WLx/z3yaUqnt3LXNFPcpi2wADyaba2XDX7fpb7zOv/NZd9f7ynOXTgkfXWmUYQykk5g9O+YeoNkOMZUYKjI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,85 +145,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 03:57, Yuanhe Shu wrote:
-> Where copy_mc_to_kernel is defined, copy_mc_user_highpage() and
-> copy_mc_highpage() stop at a hardware error during the copy, report
-> the not-copied bytes and queue the source page for memory_failure().
-> The !copy_mc fallbacks return 0 after a plain copy instead.  With
-> PG_hwpoison set while the data stays readable - software-injected
-> poison (MADV_HWPOISON, the debugfs corrupt-pfn injector) or a
-> transient hardware error - there is no fault to recover from: the
-> copy completes, the destination folio carries no poison marker, and
-> the poison is consumed silently, the same poison consumption
-> commit 841a8bfcbad9 ("mm: prevent poison consumption when splitting
-> THP") refused to risk on the split path.
+On 10/26/26 03:55, Yuanhe Shu wrote:
+> v2 of this series.  No changes to the approach; the two deltas are a
+> wording correction promised in the v1 discussion and a third check
+> suggested by Kaitao Cheng.
 > 
-> Check the source folio with folio_contain_hwpoisoned_page() in both
-> fallbacks and return PAGE_SIZE, the not-copied-bytes convention of
-> the real copy_mc paths, so the callers take their existing error
-> paths: the COW and fork paths fail with -EHWPOISON, KSM and
-> khugepaged abort, and folio_mc_copy() propagates to the migration
-> core, where this composes with the separate migration-side checks.
-> On archs with copy_mc this code does not compile.
+> memory_failure() can end up abandoning a folio while PG_hwpoison is
+> already set on it.  Two ways to get there:
 > 
-> The check runs after the copy: a check before it would leave open
-> the window between itself and the copy.  A flag set before or during
-> the copy is caught, whatever state the data is in.  A late software
-> injection cannot have corrupted the completed copy, and a synchronous
-> hardware error takes an arch without copy_mc down at the access; the
-> residue no flag check, before or after, can catch is corruption whose
-> hardware report lands after the last check.  Closing that would need
-> architecture support, as discussed.
+>   1. Race: any isolator (compaction, NUMA balancing, move_pages(),
+>      mbind(), CMA, long-term GUP) clears PG_lru from under
+>      memory_failure(), which then fails the HWPoisonHandlable()
+>      check, exhausts the get_any_page() retries and bails out with
+>      MF_IGNORED - without holding any reference, but with the flag
+>      set.
 > 
-> The fallbacks do not queue memory_failure() on refusal: the flag is
-> already set, and memory failure either knows about the page or has
-> abandoned it.
-
-There must be a way to shorten this description.
-
+>   2. No race at all: the THP-split-failure path
+>      (kill_procs_now() + MF_MSG_UNSPLIT_THP) leaves a large folio
+>      on the LRU with a PG_hwpoisoned subpage by design.
 > 
-> Suggested-by: "Huang, Ying" <ying.huang@linux.alibaba.com>
-> Suggested-by: Kaitao Cheng <kaitao.cheng@linux.dev>
-> Assisted-by: LLM
-> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-> Link: https://lore.kernel.org/r/877bjowf9i.fsf@DESKTOP-5N7EMDA/
-> ---
->  include/linux/highmem.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
+> In both cases the migrator still holds the folio on its migration
+> list and migrates it like any other: the corrupted data is copied
+> into a fresh folio with no poison marker, and no hwpoison PTE entry
+> is installed on the way back, so the userspace mapping is silently
+> redirected to the corrupted copy - no SIGBUS is ever delivered.
 > 
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index d7aac9de1c8a..f90f0c6204a4 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -474,12 +474,21 @@ static inline int copy_mc_user_highpage(struct page *to, struct page *from,
->  					unsigned long vaddr, struct vm_area_struct *vma)
->  {
->  	copy_user_highpage(to, from, vaddr, vma);
-> +	/*
-> +	 * The flag can be set while the copy runs, so check after it;
-> +	 * a flag landing later can no longer have corrupted this copy.
-> +	 */
-> +	if (folio_contain_hwpoisoned_page(page_folio(from)))
-> +		return PAGE_SIZE;
->  	return 0;
->  }
->  
->  static inline int copy_mc_highpage(struct page *to, struct page *from)
->  {
->  	copy_highpage(to, from);
-> +	/* Same reasoning as in copy_mc_user_highpage(). */
-> +	if (folio_contain_hwpoisoned_page(page_folio(from)))
-> +		return PAGE_SIZE;
->  	return 0;
->  }
->  #endif
+> This was reproduced on v7.3-rc4-75-g62f4c998b297 (the base of
+> this series): an order-0 stress workload (madvise(MADV_HWPOISON)
+> racing move_pages()) left the poison flag set on 8426 abandoned
+> folios in a 180-second run; 698 of them were subsequently
+> migrated, and in every case the address then served the copied
+> corrupted data with no SIGBUS.  With patch 2, 0 of 9711 were
+> propagated.
+> 
+> The compaction-side guard is needed regardless of how the race in
+> memory_failure() itself might be addressed: the steady state
+> (split failure leaves the folio on the LRU with the flag already
+> set) is not a race at all.  Deterministically validated 16/16
+> poisoned mTHP folios migrated unpatched vs 0/16 with patch 1,
+> with clean controls migrating 16/16 in both runs.
+> 
+> The checks compose with, not replace, copy_mc: folio_mc_copy()
+> still catches real-DRAM corruption during the copy on archs that
+> implement it, and the flag checks refuse software-injected poison
+> on all archs before and after the copy.  Extending the
+> !ARCH_HAS_COPY_MC fallbacks of copy_mc_user_highpage() and
+> copy_mc_highpage() with the same flag check - which would also
+> cover their non-migration callers - was proposed by Huang, Ying
+> and welcomed by David in the v1 discussion; that is posted as a
+> separate patch right after this series.
 
-
-As I said in the other thread, how is copying data that was already poisoned
-(and might trigger another MCE) reasonable?
-
-I can understand why you would want to maintain the second check (although I do
-wonder about memory barriers ... hmmm).
+With that patch in place, why do we still need these changes here?
 
 -- 
 Cheers,
