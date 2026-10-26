@@ -1,143 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1988606A32E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29246606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tGIe4fN+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V8N8ippB
 Received: by kanga.kvack.org (Postfix)
-	id D90676B05B0; Mon, 26 Oct 2026 16:49:10 -0400 (EDT)
+	id 44CCB6B05B2; Mon, 26 Oct 2026 16:54:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D41B06B05B1; Mon, 26 Oct 2026 16:49:10 -0400 (EDT)
+	id 3FDAB6B05B3; Mon, 26 Oct 2026 16:54:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C30706B05B2; Mon, 26 Oct 2026 16:49:10 -0400 (EDT)
+	id 314D16B05B4; Mon, 26 Oct 2026 16:54:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97E7A6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:49:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 16DA580868
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:49:10 +0000 (UTC)
-X-FDA: 85365967260.16.6DB3AEF
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 405551A0008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:49:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tGIe4fN+;
-	spf=pass (imf19.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 102ED6B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:54:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CFA381A0833
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:07 +0000 (UTC)
+X-FDA: 85365979734.23.1B81C86
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 16FED4000A
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8N8ippB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793047748;
+	s=arc-20220608; t=1793048046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PJBAWhG3vQY26e/Nvx85KnaVoYI7FZuNNNc/vdxGNMI=;
-	b=8MJ0uxnwERtxl62ngK+9wNGEH5SEimMhv4NZXvi5pYKzfbeUCXJv4WRkB628VQTIsiWr0h
-	+9Dv26O+Avka8DZ3m/vE2wADmcZ01WoAmh7OlxncR3WSfpH6nxRdZrDMEEDpx6XX6L9HHs
-	vDnVTKn8ST/wvTkvmxyp310PyTMdYI8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Y+asd5FcmQ3i2iF1cd+nZYxacxJNYDOSQpqYG634Y2c=;
+	b=LT239btps5ea6Ma3EofcbMU/OfaGP2IfC68cI3BnAOFle11r9jo50XTp2GZm6zrrTCvVQy
+	ZWn0uomgzL5P/A0jCihXv6s1zRhvTcDwusjHZpZalqDVQ4BVVhxeGhDfJAUlsmrueJ6lFc
+	KyANfQfPKb8vp8Y+vyc5KdjiQEUJT8c=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tGIe4fN+;
-	spf=pass (imf19.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8N8ippB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793047748;
-	b=fBy9lV4Dx23fgE039gM6DHDVv+1SNy7T2W08VB9sHgRbz9MnNDvCLwYfr7fe1q+FDCD33k
-	zP+696VO+HmpsZWgy1w9y11MzGQAHhMrWxt1jlo+IdXwd5M13lwi0zpQzbY2dRlhQmUHM2
-	gbunVN1qh1Ad7fNzAdWIaTAipEawoU4=
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cc1bc88a20eso2044470a12.3
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:49:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793047747; x=1793652547; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PJBAWhG3vQY26e/Nvx85KnaVoYI7FZuNNNc/vdxGNMI=;
-        b=tGIe4fN+Zlxd05NrL4X8+C4cN6bB2RT1qXzkCP0Bwps3k8vPyAOSHx3XNGcN8SBq98
-         r6QsCFpIsNDjcG1pX9OHRJsNre4B4n3um6B1+pejKvVI0NgVxmKDsoeE54/MaqCBT+2x
-         zfn6dzfV8fZFU2pssfT3iqeL3zUb7mpEvKlP15LoJaUfWvh2OD+isV11jVSjXZYKsYo4
-         va1GXZu4KST5Xh3tqqyqsl6moYC3bI6QWyITJ9btTDLDsA/rF0EAQNWLozVCDM0Pa4Fg
-         +B2g6Ue9+CvJKKydn6LvE47VI4rnO1FqR9I9mAg+u9gh3lwJ9wMinq2pq0woryFvaxHN
-         51kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793047747; x=1793652547;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=PJBAWhG3vQY26e/Nvx85KnaVoYI7FZuNNNc/vdxGNMI=;
-        b=xnz/1Fap0kZl9OlPj3dZmjgfb6gyewgVL7QB1R/YX4Gvp3lf2AMyphoq1ztlFMnykW
-         eSUN6i6XGqA6z/3U6/JVobv0KRFnSJmEB/IYdK3M1DHxyniif5C3s1Ulc23BxTGLbB5V
-         Ssh/vtfVUjyDL0n0dD8TrLKWxuFIG+CvRWgtMcBUNXidt5RexbiDLXufnpBlCCtsqaDA
-         /wBm+4gECO+teBjPaMTJrXmhGqDC7b/SN0+BnfCvBYglmkbdii34aRn++4j1V9mTOe3y
-         bmgDhmHVNnGf4LLvK5A3OQs6rDA4wWdqwk+FMXQbrg0cORYR84AsmzcxWCQpXUOMsHJB
-         /rcw==
-X-Forwarded-Encrypted: i=1; AKwUvBxyMjHXnpuYjENPyE734zx8tBW+qtQOUa76YqJoBpdNSiM5bz5bsakz9yCL8RVZZkFR8jUZdViEoQ==@kvack.org
-X-Gm-Message-State: AFq9FYJN1I3eehoVVtBHnJn7WOFa3IBr2pZAQHmUu5f4NoeUmsYALtT4
-	99xKjCnxdGNJoyx6EvaLJMXoAoZRivZZj0CwAhXydPQEOUF38s83CXDuQMv8RJHQNA==
-X-Gm-Gg: AYBFou2wdYhIxOmMggC/jjpvizQfb3XqpqErKPw2HUW4x+hQfav4yMn5UVixnoiQJBd
-	pTmp5T9IqnFCmw9hzrJYqpSSOEBBLwUtS4ub1HbJJql5roYrmE0VsHcpecx7VjkWaKmA4mJtvhm
-	pj0W7ZlYDHiex49UJ8NAY3ejkQTKyLbBye8nxqWdtm+XZGD6ltAguC5pinnAPdVo8tmYMGYeqRi
-	QGuzvTai6eKmnc8gDULql5P4Rf8kx3nwr01BTo4hD1xv/frIX0J3EzA0RF5SHuCtHpPpp2I84nY
-	Tjw9Mhg5TzAVnjF35sCFp7dx3v6+60WlzWjtycczIIwUou10zdEdmA0hoL0oAIiDsd+UmGNDC49
-	gmguRQ+4ZYtK4ZG/S70pxetokrECo8T5UfyvN6vDwK+camNtcdG8B62Gt6ub0KCteM2wHVxnKTd
-	ZW0lyBJ8l7YKvgG41Qg7p+m9M4DXiGKAf9Es63oBGOeR+FyhDBoq6x/Rty18y7YP5Arpl/98Uf4
-	fg3ypUEIHhmVjpoumS+mzcHkxp0PVt7wxGRXMS4RsewGZvYN159o/zFg/XKD+uigsDGQDSpeOfz
-	+iCa/aEumyxw/ccO
-X-Received: by 2002:a17:90b:5105:b0:3ac:9176:e81c with SMTP id 98e67ed59e1d1-3adeae76765mr6903041a91.46.1793047746368;
-        Mon, 26 Oct 2026 13:49:06 -0700 (PDT)
-Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae4066aec8sm743744a91.15.2026.10.26.13.49.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 13:49:05 -0700 (PDT)
-Date: Mon, 26 Oct 2026 20:49:02 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: tarunsahu@google.com, Andrew Morton <akpm@linux-foundation.org>,
-	joro@8bytes.org, Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
-	will@kernel.org, Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-Message-ID: <at-8vkVpN2SF3XgB@google.com>
-References: <atlKsD-aJB3mJr2j@google.com>
- <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
- <atl7peoVHdP5hz7z@google.com>
- <CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
- <CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
- <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
- <atpNFEFIlqAoYIwH@google.com>
- <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
- <attmFVIFU_mS0Y7p@google.com>
- <CA+CK2bDXDWbww_d3sD6OZqpo37V1a3t76_ubbrXLQS=9DB3dWA@mail.gmail.com>
+	t=1793048046;
+	b=e0rm8WHBt57fWT2h+7SBaD8gCzDZrRaOn6q8n/AFd5D5lJWp81b5FMY+lq6XSzYQDFZbRZ
+	fRf7DCKHBR43dUyjBwOM0I7xjl3TTAfbxu8dE2AnGml5h6M+y9O4oVnCqnoi8l8Rnj8+Kb
+	51gWwGJN1LeNJVyosOpCabUAxJIhm90=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 21D88601EF;
+	Mon, 26 Oct 2026 20:54:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276721F01825;
+	Mon, 26 Oct 2026 20:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793048044;
+	bh=Y+asd5FcmQ3i2iF1cd+nZYxacxJNYDOSQpqYG634Y2c=;
+	h=From:Subject:Date:To:Cc;
+	b=V8N8ippBjZTWjNgvaG+rtSMn0Ugh5vnzsVMSrhfrv/o4IyClHiF5RDGfEWdl05RDS
+	 r0anx58IJMeF1VqfmqbhPjY4ET/u3q1Pct2Ir8q3rIZXWsZb74FtTkHsKkq08h7Leg
+	 SONRcbgmD10dv1Xw90+GUlUQWH5R96qbp4kk565Ehq0tlAbPwgLOlso9Fg2AXV65/0
+	 NsY2ztkve0xA75edvwb/8H4D8Uzzwqjn8tPWVcM51YS5Ea82ZSL5wyOIy86BKD6YIA
+	 9reMhiKJ2o8eq2WYNSZw6Y7BF8hVgyB5VtMm3HzEkbTZhZ8BdGbk9sWNtl0vQRO6Bh
+	 JPNyqWU592fcQ==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 0/2] userns: keep the exec securebits
+Date: Mon, 26 Oct 2026 21:53:28 +0100
+Message-Id: <20261026-work-securebits-userns-v1-0-b35473fa1a34@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bDXDWbww_d3sD6OZqpo37V1a3t76_ubbrXLQS=9DB3dWA@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 405551A0008
-X-Stat-Signature: p5ij3a6zmckfd4s1pooc1jajux71zszi
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/0XMMQ7CMAwF0KtUnnGUdGiBqyCGJHWpQUqR3QBS1
+ buT0IHBw7f+fysoCZPCuVlB6MXKcyrBHRqIk083Qh5Khta2nSuH71keqBSzUOBFMRcgKXa2t8E
+ d/SkOHsr4KTTy5wdfrnvWHO4Ul6rVRvBKGMSnONVXdc3fNbtragu27Qtum2LcqAAAAA==
+X-Change-ID: 20261026-work-securebits-userns-6070b18a9cda
+To: linux-fsdevel@vger.kernel.org
+Cc: =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
+ Serge Hallyn <serge@hallyn.com>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, Jann Horn <jannh@google.com>, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1917; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=iujI9aAJYOrnMNbrp/gBJRYkBHmRYoPzBhbDlZk61JU=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTd3/u4PCjlu9GzqZffpKffDVyt+GEhg0D2ggT+SunZz
+ QILv8/P6yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIwWKGfyqdxvddnLp4zgWk
+ x+i43T1SUawhI9v7YobcfqPCfa3M7gz//bvOlohpXH557OWrEjt7Le4zDnc0UpcqybN2Zciu7V3
+ MCQA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Queue-Id: 16FED4000A
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Stat-Signature: d47t91349389fdhtp3xrsp5nsfz9b5qb
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793047748-600887
-X-HE-Meta: U2FsdGVkX1+xT00K58bLdHjRDN+OkF86Y+s1XPtA1uKwz5Io7TyeDjvnmFfu3KTAzeivhoPDHe9c721KggXhD0YTEBZluCOdP+CH+NfSV5UMQI3oMPr3iIdtP3iK9GpoNzc64pGrfdWbYtBwphUqleDYoqNpyM/A9e8vwGlEvffHaxEXZC8sBzW3eBKcG944Bu5EfYN/xbPTIVPNu1BelKxJW3JLhNFavZK/QK77ANL/YX+UBL9dfr//WMOrCWeZ0WXgZPR8O2yVwTNIunUB0bk3+4j+GfpJe42F7PWcVfLGT4szMuIRQFJiD+5eW/SepOi9ua4lSl8w3B8jSvyndYf/O+qANGFArY37uWKmWi28/f2j3UlcWPFMNdj6bGOkBcJQDJpecQ6qNFJGJgOvtYpcveC3WSpwSO4ZNVyPxVduNeZwxneh41hYcLd2qbIYzsyzSToU1D8hYnNFtCmXYreaj6E+CDFuR+AbxrHzHHsm/OwCnTtkokrHL2eu6IowFb2Cv5iisodktTIwNRr8H5I6hFSr0f4o+m6+QwmGCy/PGGswr7brpcwdSrry+9pbOiwrySfA6abU48WA+rCz6wfa/mrQgE+xgBGA4nymI0YawQVFm0wZAtjStIyB3v5QoF2EPPoV9KvZaGLMEV2gJpBlBPHggBxSOToB/7Hdcu8Acgi92qxOtywmyjVfKX3aPKxiF1F37PfUMLpd4iDlo/E+4h0L6m8siFKNgN0ge0luE8YXazwG1qGfHzaI6gbe4Z1T0Ch6AN1B3lpeN3T06eIwXQrHYjg8GXVi1Nv9LDzVv8I3NL623bSSul0ur3uon15V0CUQLkJdG6HDTZHf+HgWHZG2MX283tZTCTrVPtxcV0dMkwt2StVui3NvZ1OhQ+ERtRccfml0Pqc9cK5KAIj5Es6CEZxETVkDMrM9+toVst2dglioCUc9wsUR/KH8bVr4+kWQDa91TR4L5Or
- XezJb8Gp
- K22Jra+doe95Gy+9lNdNzbSV5Fcy6pkKKuX148SG7eCJgwDhRDuGnA386P1Yxg2wO+lJk5+ga45gmdmbkhxEBCfGY5utP4cdGSezGBNP82S4CASqKvE5nIenBpq49sBy8GZS5gNbl+6IxyjpcMYnmMfkkd9a6fikzl7nrK0Cw8+ZaRn9pG8krg53R92LZit82StvpixtQLp6OXEIsNnh+mCpcsg4qCXeUPk/yiP5sgEJm3fLxh6h2LMPJjmXjlLVjdrkmGYJRtY1JtL7HcWHr3TwkQGc8vGxswNNWfAn/nAWq27EuP5XdjEE1CW+OE/zt6o6K6u1+daajTDjnVnNV65pR6HGLuuhOPZUGtdJy9QC4dFAo0kqiq60DMw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793048045-543844
+X-HE-Meta: U2FsdGVkX1/mkY6AJK/gki+X7C/0OtQvI7Tsd9hL6vfi2e+34XFU3gsxXbcxLGDRE1U4/7JemDSuvbSkdDSuxm+86JCkNIz2PDce99hjXZ/iBO38xGVZ9vuKDDrPrQeaY7nA8VWeNADRS/TWyGJH60Rcgv4jhMnx3HGKbUnWkS4T1HK3NdPboNpdAGeotdLg2L0nsm5j2QasK4Qhf6mmdtU4eF9zNR/43oJt2ellZClPvHc8Dw7FiHDi+zsuvw9XeGkC+ZaXmPbzXyI/f6GWJIRodoRB5fGzWHBkwGHdwoiqaznGryKnD/SvJenhCaiQlNUefqows5BoKQKqEKH38d+mm29y/6GCgPjEwFY1rrd/rvG00CJezwUxRl+1DDGtWExOSYRfdRRLG+3kCXYNZzZq5ABZvnGTP1NUi4a1rtmDJz/SMtsShLJI+Wdl0fv1WdK39ltdSa8FrJs5dI1jF1ISLu0o92LBHPDTEaj3P+wocGPyNWSl09Rgt7HBjOzrnO3SdFY/dJS+RV+scMSOdLR7nGazlpzxqDJeaSI8JJu54wtFgdLvwAr/uo32hYHfJ1yIzwqRFG+++6Br+b8ymzqx4LRUk5oWbtXn2LxG84r/thEzw3q3bDm4fogV/VfC6e9lYu5hu/fN+uXfHeJsUoGY+fTCFHSoTk1Q2Ytq9Q1b+LfWr+Li+2+GtLtHV0tag3PV292txrz3jhwfkILkvEV5Xgx9faXAGwMf9ou7gWdsRcYBVFWBC+iMLVhRJEZ7n5brJsvI1lP9CKuTjVLgAT6VcAcv+NHGCI4xLIgAeqzDcFdnPPYrddwSIFxfYNSBxHeKeJh88D8oUXwFzRYW/Q+maLatoVwpMUA676tXv8GIBuQ31War5YTw2cYCeasGWAyn1pkStXlBoMLNq8ttN4fsqu3EdRJ/LwLn2ttehhqrf0JHHiOE6DsAt27EnU8IPLp5qFL3EvPLQYCPyDN
+ em8mKp+6
+ nPd0W2z1/Q91VH74el3dJTuoq4EKCf8OVHydgRF/MVHw9u9VjEkMwF+PkTGduxIykMvWbeXrrJkQFtGpu1pZ9x+9GixaOjHIlDo3EZMs897RyN44A1uhrwciVLkkwy2Qp8f5LFim+vuP1VwSKjiVzMm1TKrND9HwZdX+U1+8g2uDkdffawdktbvn2ieqEeDKNSwTvDhAtZl8EBHn7Pb12z4WkUYcgcc2lezuapI2NAynjuHT+5MTFFv7MZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,130 +106,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-25 04:38 PM, Pasha Tatashin wrote:
-> On Fri, Oct 23, 2026 at 9:50 AM David Matlack <dmatlack@google.com> wrote:
+The exec securebits are meant to be set and locked by a service manager
+so that nothing below it can turn them off again. But creating a user
+namespace resets all securebits, locks included. So anyone who may
+create a user namespace can shed them with a single
+unshare(CLONE_NEWUSER), and joining one with setns() does the same.
+That's pretty much everyone.
 
-> > Sure but why deal with all the complexity just to save 8 bytes? All of
-> > these structs are allocated on folios and there are kilobytes of unused
-> > space to fit this header. And even if we optimize that we are talking
-> > about 8 bytes per FH/FLB... or 16 bytes for structs with arch-specific
-> > sub-structs like the KVM ones.
-> 
-> The reason I care about keeping the header compact is that we are
-> defining a foundational kernel ABI and want to use this header across
-> almost every serialized data structure so we can evolve them later
-> without breaking compatibility. While some top-level structs are on
-> sparse folios today, other serialized structs are tightly packed, and
-> we are looking to add KHO slab support in the future where tightly
-> packed allocations will be common.
+systemd gains a SecureBits= setting for the service manager itself. It
+sets and locks the exec bits for everything it starts, so interpreters
+that support AT_EXECVE_CHECK enforce the system's execution policy for
+their scripts. With the reset "unshare -U python3 /tmp/x.py" gets
+around all of that.
 
-My intuition is we will have a small number of headers per preserved
-file and per preserved FLB. One for the top-level struct and then
-optionally a few more for sub-structs like arch-specific data. That is
-why I am less worried 8 bytes per header, even if we fix the folio
-problem.
+The other securebits are about how capabilities are computed and
+resetting them in a new user namespace is fine. The exec bits grant
+nothing. They're restrictions a task placed on itself, like
+no_new_privs, which a user namespace doesn't drop either. So keep them
+and their locks and keep resetting the rest.
 
-Maybe where our visions differ is when there are collections of
-serialized structs, like KHO blocks. For collections I don't think the
-elements will each have their own headers. Otherwise the elements could
-be different sizes.
+I also keep the exec bits that aren't locked. fork() and execve()
+preserve them and the task can clear them itself anyway, so dropping
+them on unshare() would just be inconsistent.
 
-Instead I think the struct that owns the collection will have a header
-that includes features for fields in the elements. The header defines
-which fields in all elements are valid. The field contents then convey
-the per-element information (which might include 0 or -1 values to
-convey this specific element doesn't have this data).
+The new selftests fail on mainline and pass with the fix. I think this
+wants to go to stable, otherwise the locks don't mean much on any kernel
+that has these bits.
 
-> That said, in your proposal, as long as nr_flags == 0 is allowed when
-> a struct has no feature flags yet, luo_ser_hdr_size(hdr) is already 8
-> bytes and only grows to 16 bytes on the first feature flag. I am OK
-> with that.
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (2):
+      userns: don't drop the exec securebits
+      selftests/exec: check that user namespaces keep the exec securebits
 
-Yeah the header will be 8 bytes until the first flag is defined, at
-which point it will grow to 16 bytes.
+ Documentation/userspace-api/check_exec.rst |  4 ++
+ kernel/user_namespace.c                    |  5 +-
+ tools/testing/selftests/exec/check-exec.c  | 83 ++++++++++++++++++++++++++++++
+ 3 files changed, 91 insertions(+), 1 deletion(-)
+---
+base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
+change-id: 20261026-work-securebits-userns-6070b18a9cda
 
-Great, sounds like we are aligned on the header. s/luo/kho also sounds
-good to me.
-
-> > > This is not an issue on the incoming path, we never cast incoming data
-> > > to struct name##_hdr or access ->payload directly. Instead, we parse
-> > > the incoming buffer, dynamically compute the header size from the
-> > > continuation bits, and cast the payload offset to "struct name *"
-> > > based on the negotiated feature flags.
-> >
-> > How?
-> >
-> > This is the only data structure that describes the header. Are you
-> > saying the incoming path will parse the header purely with a void *? Or
-> > use this header but just be careful not to access payload?
-> >
-> > We should have one header structure that can be used on the incoming and
-> > outgoing path. We should not have one header data structure that can be
-> > used on the outgoing path and one that can be used on the incoming
-> > path.
-> >
-> > Also we need a standard header that can be shared across all structs,
-> > not a per struct header. Otherwise you will need to do weird casting and
-> > overlays to implement the shared helper routines that parse it.
-> 
-> Having DECLARE_KHO_SER_WRAP() in include/linux/kho/abi/ makes it
-> immediately clear just by looking at kho/abi/ which serialized structs
-> have the versioned header and which do not, while also enforcing the
-> header when preserving and static-asserting the combined struct size a
-> compile time.
-> 
-> So with your header (and let's use KHO as we want to version KHO
-> structs as well):
-> 
-> struct kho_ser_hdr {
->         __u32 size;        /* Size of header + payload in bytes */
->         __u32 nr_flags;    /* Number of features encoded in flags[] */
->         __u64 flags[];
-> };
-> 
-> The wrapped struct will look like:
-> 
-> #define DECLARE_KHO_SER_WRAP(name, expected_size, nr_feats)                \
->         struct name##_wrap {                                               \
->                 __u32 size;                                                    \
->                 __u32 nr_flags;                                                \
->                 __u64 flags[DIV_ROUND_UP(nr_feats, 32)];                       \
->                 struct name payload;                                           \
->         };                                                                 \
->         static_assert(sizeof(struct name##_wrap) == (expected_size),       \
->                 "struct " #name " size mismatch!")
-> 
-> On the incoming kernel we don't use struct name##_wrap, but we use
-> struct kho_ser_hdr for the wrapped data, validate the flags, and
-> unwrap it via kho_ser_payload(hdr) to get back the struct name *
-> payload type.
-
-I still think it's not advisable to define name##_wrap since anyone
-could accidentally start using it on the incoming path and we wouldn't
-notice at first (especially since same kernel Live Update tests would
-keep working totally fine). I also don't think asserting the combined
-size buys us anything. The header size is just a function of the
-number of features, and what we are trying to protect against is
-structs embedded in the payload changing size.
-
-So I would just do:
-
-  /* Marks struct name as a KHO serialized payload with a kho_ser_hdr. */
-  #define DECLARE_KHO_SER(name, payload_size) \
-          static_assert(sizeof(struct name) == (payload_size))
-
-  DECLARE_KHO_SER(luo_memfd_ser, 16);
-
-Plus helpers that allocate and initialize the header and return the
-payload as a typed pointer. Both the outgoing and incoming paths find
-the payload the same way, by computing its offset from the header,
-rather than through a struct with a fixed payload offset:
-
-  /* outgoing */
-  hdr = kho_ser_alloc(luo_memfd_ser, LUO_MEMFD_NR_FEATS);
-  ser = kho_ser_payload(hdr, luo_memfd_ser);
-
-  /* incoming */
-  hdr = phys_to_virt(args->serialized_data);
-  ser = kho_ser_payload(hdr, luo_memfd_ser);
 
