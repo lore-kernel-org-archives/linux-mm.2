@@ -1,158 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450F960A260B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9882E606A322
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=b8VWtkd6;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=y+0ALcDW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UJjjE+w/
 Received: by kanga.kvack.org (Postfix)
-	id 600AA6B05B0; Mon, 26 Oct 2026 13:26:19 -0400 (EDT)
+	id B0A066B05B6; Mon, 26 Oct 2026 13:26:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B1DB6B05B1; Mon, 26 Oct 2026 13:26:19 -0400 (EDT)
+	id AE1A06B05B7; Mon, 26 Oct 2026 13:26:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A0D76B05B4; Mon, 26 Oct 2026 13:26:19 -0400 (EDT)
+	id A1E246B05B8; Mon, 26 Oct 2026 13:26:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2592C6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:26:19 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8AF971A0312
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:26:18 +0000 (UTC)
-X-FDA: 85365456036.04.DDA2B74
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6C768180003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:26:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="b 8VWtkd";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=y+0ALcDW;
-	spf=pass (imf24.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793035576;
-	b=GaIA5MDBhJynMQB7AVNcgkbOVepnlYp4Hk1AdAkxIeMIQUY7tL8Hhjg4+EP8ptxCdKjObg
-	RkZwxMDxfJbgla84kRVcMtWIi6tR01ydB03pjejFNtDw1jdyWvMpL/CstfHKwRrXFD8OYj
-	gS9SsmVNCo90lYsVuPbFXBic1J+LRXU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="b 8VWtkd";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=y+0ALcDW;
-	spf=pass (imf24.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DDCE6B05B6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:26:29 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C75A9120843
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:26:28 +0000 (UTC)
+X-FDA: 85365456456.14.183B87D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 26FFE40004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:26:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UJjjE+w/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793035576;
+	s=arc-20220608; t=1793035587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gozRlQP2gdqbfsNX2AM4B2Y+PLg6RWuvQqaTDn2tvas=;
-	b=GJ/dBewjmdOw4wrNhNmts9gBQyvzdWzfeFmQjohbLiIxwiIrzNU7i85SWE4S0aEml5UH7+
-	E9svd5+mR05ejdB7BFNCJqDS0fBRquTI2kH/xZoIY0v4jnj5QwBW6gMZSS+T6/3v+YvKnN
-	AY/bP4Tppn15mLYPzqdL0w2bMTgzgbI=
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailflow.phl.internal (Postfix) with ESMTP id F3DB813802FB
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:26:15 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Mon, 26 Oct 2026 13:26:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1793035575; x=
-	1793042775; bh=gozRlQP2gdqbfsNX2AM4B2Y+PLg6RWuvQqaTDn2tvas=; b=b
-	8VWtkd6ivSPvtKaIADrhl8vqZ0T7gVGFJChcXopg/CW0OT0MZK6KUzDk1DUInA3A
-	DQXd7M/ANUBd3ZGolmlHwqbsN2t/n007uoNRPupxYUYsf2lGZ05faE0Z3xgp+iHP
-	HNyJ3XTI7DVt2nt135NlJXphagsj//Ts17Z1fgZAoPDu0llimgoHavU/362eOt/x
-	0fTYYihiI0pDObelXPDCdxO4Xvz4jPE8gmo1lK+V75WNMEHTG92aptK5kcxgiijd
-	lqYcZgDn77WVHVeoFDrLFs6TEYS0Hrt0pEVVsHOsI0DBjHkw1ctsgNaZwj+x41yk
-	BLTHWJFls30fC5YMeCAUQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793035575; x=1793042775; bh=gozRlQP2gdqbfsNX2AM4B2Y+PLg6RWuvQqa
-	TDn2tvas=; b=y+0ALcDWLZbbQexG18HzxDCXYXQAj67ZHExGPDL+IMp+bC3VD6M
-	9RGkovUeJzcVXxyvTEc/PNnXsjMIVtA4V+Nbw9Os77A9561EjSbyblmgaaTpurPN
-	aB/nqJnyyAmDiOB+vCccGJa5uCJ6r+4FNX88+pCB7TPAH2ohsWrxnHPu2aXdVh92
-	sl4TGQxUbC+pGTYa9tt3f2ZKOkKcbMi7285KQMEnndcWqzKN+LrlY0F+aY31jaIE
-	jvz3wICN6CNwwlYl3Wbu+Che/AtxxVmW0Vtu379Ed8D4RYpG8dy6eNOa7BSaqs+t
-	f0HftapAQoHnG8Ip0t2HWoHADZDwhokWXZw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793035575; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:CbzetVHX9Q75tzu09KXQ6xH7/MmL4rAJWQ0dtjdyddDQ8iu
-	Mk+EDxmm4emDDGtN9veaMakEwELQzqwnlM4KFEJpu/DuhFafWf09LiSssqRWkNI3
-	czP+Yggrdz2KuKnPRxmkNi6Ri2V9tzXQB2WsVYi5I7iOsZE0eGQzV4e9bLcHEaYH
-	rvVdwPC1N0g6keyJQ407jwoxEzlMVeHnf4dBxxLvQOfUtSjgjMaBfOfjeCh6j/4Z
-	6civtheTc9pvE5a8pqTg+Hv3DTfTIVwMO+xVnsSN5Cu4I+oNRUVCUwrAOPY7Xxmn
-	SLXvEZDDnr8hbj4Xf2x49uMdOvxgDOfuIOrckxQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:GufLRvjeK9T9oNyQQq/JPRD8A7tK4hGwgAEL7dOtYz4=:IGb6NM7NJpowcOS7AREsu1vwVu3cjYvnaSjEGyip5II=;
-X-ME-Sender: <xms:NI3fau8C5fYRyEFdBIlwkgvsnGbKTkAjYVlXc-4TRD_AE6qcvpQCNw>
-    <xme:NI3fat00BJ_tzOaPbuYE3NrPun6gIQw5uJce1lSfNDqwAyOcRo_Ln72JzJN4HxcW3
-    whOpfjze-aI6n4gmmJs_74Mg25vWKgB9VkCM3ujQZCXvC1qhSCw5dA8>
-X-ME-Received: <xmr:NI3fapAig9jAm91KpG7iN9M36V9w6iiYGfAlv-eYOnL9fHoY8BaycO8MUlw>
-X-ME-Proxy-Cause: dmFkZTFhALYc8iJiMlQC3g5bs7hQtPkv6lAItKCPDxNXrELyHy6SwWe3pV3Af7XmlPOZjP
-    +TGoPutgWE/CDwNnpX69avMckpL8UV8zdpnMdPlXKkri7okyrxzdU8T+p+iF9UHx5tvwf9
-    75PBrpgk4RnZYSRHo2SZqaMsBdjNFcnEnMHBP0yK25AuDlaeYBfs/9A2LCP9q3CXEEm2Dh
-    7ofMwg9geSlYFfQZ8DFQkdWXrwTAhyDer5ayPZp94JeOiWCWbBcDXCQnyH0azeXwmi2avE
-    rsXZXiu6K0AydSc5T10UD80G0DXte/dNSaj9nP8KPL+lJYKrQdzkiSpt2ehaeU9npH81r/
-    1/AKY5HfzGsR+NtE6hNBVXFH3G64hnQZ9RwKPe/xNtu8bHQ4XuiNnrpZI5Rcxa8r+0NLU0
-    GvNra05Tp9OSU9uDAFiV/4tE37bQglwCh8hd28PMLvcigB+mXgrhVhMisbG+TQ62dJsxZs
-    KsYT2BVS+gQxwLKelcDnyHj2IjigAOXAebzcxhfuBrKuHXbep04KDU8m5elSe5h980yVQD
-    ZUXdForo2hfXobY6hSzY4uvgQUxvw1a5aaAAOT2vhnO1WjAwUr24Al0+BP190B8R0goZHn
-    qNRNozquHcwa7iqNx6dZHBD+6JdAZczycQaU9UNuL9bgcrvMkFpGT+CpfJCg
-X-ME-Proxy: <xmx:NI3famAqp1cporiiSZVpbdgbI2fRAW0qerIqgl-1I40Q4ZMr-Q-kpA>
-    <xmx:NI3farTAeByf3_0qae4dpP1QDSlvFP9gJj-pbYvmmgZBZkWlf3JXiA>
-    <xmx:NI3fai6vsOY5KEKqTZLXzySlqtZRqV88jRXZWr8QzSFTKr5X3dv0AA>
-    <xmx:NI3fajg7YVPru30XaX8_GjeLmRRUMVhCEU1fxO_g-wFza-tL7p7oww>
-    <xmx:N43faiv4vPUoWlf1qYKPSj4XEiHMscYi4G7LrCwZ9hEqiOkBTH1lWchm>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 13:26:11 -0400 (EDT)
-Date: Mon, 26 Oct 2026 17:26:10 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
+	bh=v0WoLkQVcDbSGumghdYohAdB7aedqeHVhzhgY1ziDNE=;
+	b=VEDUzZoh+RcO//8rzzYgKDpi59n4Uy1dudlaB8Fxg1HQq7+KmcekUWDrE8igqJhO5FZ/Zk
+	mUalwIgmnzd2Z2eAO8kgi0aH6uO953OjxDoCmNxoUe5MUfSdnIrZ4q+yS3PxrR2QZgnSRL
+	MRj8BmcnSP1oFlqhllUNNUAateHuKWA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UJjjE+w/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793035587;
+	b=epzhbkgvFTaH7/SUTbQBWwzw/sPhln2XSQiuGC0QngH8gcja49uHEW5HIRX0pTvyixILES
+	o3BKwJG4CipAEKDEP/HhWmkpVB35TygM+8+r/q+uDxI6hfeHsVj1zsww8pCU7YlieP105s
+	XaN6uPku/8pYzbNLlN/lmcnpJJj3TnI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3349F44020;
+	Mon, 26 Oct 2026 17:26:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715BA1F031E0;
+	Mon, 26 Oct 2026 17:26:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793035586;
+	bh=v0WoLkQVcDbSGumghdYohAdB7aedqeHVhzhgY1ziDNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UJjjE+w/YXLWI0UQBaYCVSGw3pw3SwVACw6Xl+vENBzMgcxNnqssVXl0whwdZzcFb
+	 aC6PVbgiG6rlNIXffQ7/CSshM+uJ8wofvwoA1WQbx2twWv05gNKRg4zbsOownetahZ
+	 gFqHdVAHaa3wyS6p0m6KygE/nIb9evXkgph0RHfLnSfIOwZgiTL9LSQdNGAF+1RSMl
+	 IFjgRMmUPEb15cci+VVrTv/2t4ClbdIC5xeM+YipLCAN52E/YyYnQnty8bueg8Kjk8
+	 V9EiWb/e5kJwlanYEdX4xzdWyceuMjAb6jV89DNZrgaxizTDfn/4TY6Ut2Hu0slW30
+	 6xFiw0AichPIA==
+Date: Mon, 26 Oct 2026 17:26:20 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 11/16] mm/shmem: rescan after nonuniform folio splitting
-Message-ID: <at-MPTlXmfs7r5Xh@thinkstation>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-11-703206d5fa0c@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+Message-ID: <at-M5hORjFt6aur4@gremlin>
+References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
+ <at8-42OwXk2z6-HB@gremlin>
+ <CAJuCfpFaxo06yHdVKsEEmFf9qoOYS0DbMvUuAZEhNfDe7dcwJA@mail.gmail.com>
+ <8c5a8fb7-233e-4433-af45-b67cb2528b60@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261026-fixes_shmem-v1-11-703206d5fa0c@kernel.org>
-X-Stat-Signature: oskuzexyq5iiipxbqi1y8zct3r51njao
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6C768180003
+In-Reply-To: <8c5a8fb7-233e-4433-af45-b67cb2528b60@kernel.org>
+X-Rspamd-Queue-Id: 26FFE40004
 X-Rspam-User: 
-X-HE-Tag: 1793035576-721203
-X-HE-Meta: U2FsdGVkX1+JUlAsvagFXBjO/71LDyBCsjCou9ePanRx7gqfkRscKNV5nsuuXSrdDdozfr4blbnEu9P/JniTqjvPcuCLeVcJ9D4KgUtJAIHfCfwaD6eikO9bnsaaFmo5h3D/wDUze0LCzHkTg9L04FL8PIchuSGvzu2Oqd0SoxQJSoUoUqzvg2SW61c2hnq0WqP6uo/D5HRicyonT1t7cfR1XHrBjnQ97Yw13j3XhlVUVMFQhlsL4DHi+yZS8/qTddNyVEn9cjbY0c3SAiZnoZv9Jtds2byqzTOjHsonGiSsuffhDEMhWvulbQRmMIpMfimKelKODeJhx9TdEcuA+EtNEuTpN/nzi4IryTw0bXRE+jPq4X+GGFwuSVCnhyNOf/gA00wm3iyc8h1pwF0D/+84deqUcp3ztbAM8kaM+Zyrq73ktrXo2v4uyHZitB4YrOGzIcbZhXAjbaC3V7FnKZBfGOTxYYICm7d4+IJcdTOrdszXckEAuIv2eRebyVHfhfYcJgoRELqBcGvFBkT7EBHPXg6co3yXSYBC5s9D/Jh09hK0B/a9gablmLwEdewI1kqh5BXtzCBEf1Pb7IeAPY5K/KJdk9OBqCTQQmOulYTn4JHM9vGNMk1H7NdukRdnnIF9ROus8hZvTmwN2uSATTwCTsDmC2SsO+m1IE18ZLu+R/F/I7VKZJqSO3bfdBgLyFtL0ymKfJDfxtu/gD4oaDNf6p6ThQl7ro9NwB1mHohwh5dBFyX6+nmNgU24KjTPn7vKg1IKXZlsIzrFkQ5CjBUcYT9WmP5/wSLkw++3Njq++MN9GrXuU4MivSyVZp8TqJEhrtDNU6fJSvviAPKIWuvDG7CiY7ZQ9TGRXH+TMlzgpQIIv8SPV5X8kbRDgwLumJEdyNEwT+78witW19IN8hYYJl9LIQK9Rdz13laY+J33wbjtyCUwN8seSbVrOLyV7XB4d9MZU/no0UwILDy
- oXP2S4p/
- Ehn6i2T+qWw53krQJ6KPzG35hZDHA/uhM9efgejEpFgt3Lr96zFvqzuYzd98cya45tOm6n7GKvIyvTy9YOY2BSLc6Pc3INGZwI6QMX3C0QTJw6gtjRCgwdg5hdo76EqDp1qLcQ2sPXrQVrEEcCEQ67Sb5LxJfMrHs1vRb9GtyOQIwucqYQ45JwktrS/pgpX/xgp8ZUQOT3QHX35VfbMOs6ek/RTBCJG5z0Y4IC2VH0Hh52/L2Ys3H7q4nfx+3zzrrJNnPDGOYoWCbdnmsDY0kXTnBghY8a30UyEy9VVqbSxwiTO7Xa4rWLkHzJkslNM8W43Wz3mMvbwiPfIJIcnAd96Y0DXdtPmKyuHKKb7VOdphawbhEu+eyLFmRpTY/qd1XkDjUpdrdbbroQlowOPIYozNsG0dqEqWFGH0EN8/V8H3WK7AKuAu/rLQ1H3/eXJBDVpfKxb6LAOzRyStGonRJ017cpMVGpEfxcOqnKmhmVwUEgGKQZUXGSvJSjylWvOuaOC3fHxktIrtVmqoe1rm771jxjSZraYBLXqEwH5eDubf5nxue7GTxs9WNaLTTMifnUGUlyMtaGsO4yKTeFyqVCXDxWvpwqqNM2FEV71kLKewVzBg=
+X-Stat-Signature: roxskj3uq9kw8ikmb7kojjasqtrezw3g
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793035587-16687
+X-HE-Meta: U2FsdGVkX19e7ZCEby4UNogvKn4+tPjlWzhG/a8LPCpZcap8VfA3dWtRfW+/LtiDRin6d+sob52ApdUsyRv9qWO/84/PZWOqQDWSzmhLxPw8V3tbFERZHmgFnwSVq/N3YicOCFsXn6HJFiVgZpL10I3PpUK59koPGPnUe5ME16w9ZW7OYtsM0uD9ECHvV7gFoiOsuf62QKG+z7x+ERnIN+P3p+pKnvWbQ+hqtDU13mmdmwJl2N0CiMrpgFu/WZmTZmhm9xFWiNfpZ1+JJLSkS3YuSVeyj7cBAOgRzRb3KBiySUer9QbRtYNd6resmlFNW5zLxGqRaVSoH7I/obmNRjyeyilkMJKpwG2Io46j0RyKounBfv9mbx2nvm0FglKGG39eZk+FIg5v+tfvKSkCihhSD1OunuEImRJno13v17RI3Pu1KgsDS2Zz7VtMVIXyiBH9gRji8yUBK2H/cthaNx36LusRiHz/0bXF7e/3DRNzPQV/luGbqOgaMaxgtllog2lENLT9i67UlAyo4x5cizJhH7Ahj3Uf67Bo9cCxZGN3/V9rqzaHWdcAndQ9i3rvSG6CnwD3lcKNzNeEbwhQX/2CbJfS5ag57ep+CVGQCm5C4N615KlDLn3UIiklRilJJkSsLrU55igsyVAjYuKu7brRmlNMRPSzdGpYKtjJrZwgTIXLCrj0JFJ/n0QgwkfndUvb+4DEwOh/qep7zDtnCfnquSyN3j2vIpFMrudJhc/2XkqWiBLiKC1fpEc0mJ3f/eBP2//TBnJbXMzO2uJbXKB5ecCxbZ6oSNf+8uXnTrE0HtOAZp4c5crgK2RqRNwN0upMxLypDyqrccc9618c44anUV0AytKEirqs9JwhaY3+56s8LlbKidwzpdIU5lunjWM3biH2fgeIfuRJGQEYdlKj6H7DhTAmH5cDkWFBsgbWuQQJT7ij7Mh4cxTSfPLmt4x9Eo7Z7JOdhBO/2N5
+ ZyOIk+hj
+ ekU6pu0kjtIvsQiZGPGndWaiespOTJwYY9DJF98Jkt6DeYMKjysySXlwN+sf8/PcvtP6SkExaMfCkhnT4EUv/fbgpPBocWi7KQc2uKOi+Ipl4ajTaG2P7Hl1DIjPKsMeZzumr/FGnLZ65gcMkP2mFq89mbTzOnsh8td0GG72Sd4jxz9t8iOtFKSZi/8SYWxxeSrPLmjPAupIdhRlonJiQ08SRw2dJU6WDehJeA8+WsWJySpKRaSw+hFXsC7DWm4ceVOXC1v/0OsCMJNtUC0oqoH9920pwmaxaiZOhS4i3VvZpz98I7nXePIrjeM3W4A2Q7FJf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,33 +100,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 10:40:44AM +0100, David Hildenbrand (Arm) wrote:
-> The final scan in shmem_undo_range() restarts after a successful split
-> only if the original folio is no longer large. A nonuniform split can
-> leave that folio large, so the scan skips the newly created folios.
-> Hole punching then leaves pages within the hole allocated even though
-> they could be discarded.
-> 
-> For example, a fault below the hole can allocate a 2 MiB folio after
-> boundary handling. Punching a 1 MiB hole at offset 64 KiB splits the
-> folio successfully but leaves the original folio at order 4. The scan
-> continues past all 512 pages, leaving 2 MiB allocated instead of 1 MiB.
-> The hole reads as zero, but the pages and their block charges remain.
-> 
-> Restart when the original folio is still in the mapping after partial
-> truncation, identified by checking folio->mapping. If the helper
-> removed the whole folio, no rescan is needed.
-> 
-> Fixes: 7460b470a131f ("mm/truncate: use folio_split() in truncate operation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Mon, Oct 26, 2026 at 06:19:18PM +0100, David Hildenbrand (Arm) wrote:
+> >> +       /*
+> >> +        * No lock was held since the last call, so the iterator's cached range
+> >> +        * may no longer be valid. Always restart by address.
+> >> +        *
+> >> +        * The vma_range_is_empty() checks below avoid unnecessary mmap_lock
+> >> +        * fallbacks.
+> >> +        */
+> >> +       vma_iter_set(vmi, from_addr);
+> >
+> > This is clearly simpler but this unconditional vmi reset is not ideal.
+>
+> Yes, exactly how I ended up where we am right now.
+>
+> I pref my current fix as something to backport that avoids performance changes.
+>
+> If you two disagree, please take it over and drag it over the finishing line in
+> a timely manner.
+>
+> I wasted enough of my weekend with this over-enginered piece of software. (had
+> to change one word before sending, can you guess which :P )
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+No problem, will take over.
 
-Do we want split state after truncate_inode_partial_folio() to be
-communicated more explicit? ->mapping check works, but it might not be
-obvious why. Just an idea for a follow up.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+--
+Cheers, Lorenzo
 
