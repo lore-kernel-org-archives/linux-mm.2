@@ -1,142 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5CD606A324
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E5F606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kzXwZUgx;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sYZQ50X/;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tCXN4/UT;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=axaS3z55
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=HpP/NKGz
 Received: by kanga.kvack.org (Postfix)
-	id 709966B05B8; Mon, 26 Oct 2026 09:07:22 -0400 (EDT)
+	id E61186B05B5; Mon, 26 Oct 2026 09:09:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E0B76B05B9; Mon, 26 Oct 2026 09:07:22 -0400 (EDT)
+	id E38156B05B6; Mon, 26 Oct 2026 09:09:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F60B6B05BA; Mon, 26 Oct 2026 09:07:22 -0400 (EDT)
+	id D4E306B05B7; Mon, 26 Oct 2026 09:09:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F8C86B05B8
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:07:22 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C15E31C3FF1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:07:21 +0000 (UTC)
-X-FDA: 85364803482.30.EB4C684
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 6AB1B20009
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:07:20 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kzXwZUgx;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="sYZQ50X/";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tCXN4/UT";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=axaS3z55;
-	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793020039;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ABCB66B05B5
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:09:36 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 40B1540740
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:09:36 +0000 (UTC)
+X-FDA: 85364809152.27.DF13179
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4C31218000E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:09:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="HpP/NKGz";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of elver@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793020174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p4aTtckkNIZTj3KdHwLDdVPDSaAWMqxSQJcGzbmfPd8=;
-	b=ONwRmYSXFtzU1rLkSNjtGJbETI6cv0qrkClr16iVSWK6/irgLplgRYXEdBsXmIxuh0yGsJ
-	LVTOY7Qn67EJmJzxyXgCWj/W/m6LERS2sx9Y7B6yRzaaIappju8FtVjQ2eya3dFXeSVD5+
-	uA+PZOBBKNN0HtL8A1jVadoNAKMIJ6Y=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kzXwZUgx;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="sYZQ50X/";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tCXN4/UT";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=axaS3z55;
-	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793020039;
-	b=8LmtzULqsOSL9Xrf18teIZYWV5YEnayhm1cbfCnmaR9Bs2BAqMoIDM5cgnk7jThPtqDcAR
-	BRZHr5BWZT2fkp/QfkKsG2IvMI7ld/pr7X360Jt4SAtpoxzaVGNB06p2Eni9BzdvN6SJCR
-	L2foNNubkWPPkhmPdl0eirtRxijjMlI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4B8A621E84;
-	Mon, 26 Oct 2026 13:07:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793020038; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p4aTtckkNIZTj3KdHwLDdVPDSaAWMqxSQJcGzbmfPd8=;
-	b=kzXwZUgxjb3dLMkfPC4/6iPI5q3nlBiWjKcS+LICVn1f7NgrpyijK9kPMkQXmpEQNDgKs0
-	5wRC3t70dv3tfM4m9rjrGyi3sWZHHdagCD65ztwyGgV4bPaAnTCemVzDvw/Cml1vHSdZ6L
-	9w6zrs9dgniLswGBLc6zRCnVi6YE6mE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793020038;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p4aTtckkNIZTj3KdHwLDdVPDSaAWMqxSQJcGzbmfPd8=;
-	b=sYZQ50X/hGcQnVBiApUx0JvHUaM1W8X7Q9/5/pqzMS0x6EMYYvXIdE98tb4CW8gwaS1dAM
-	UrxsYNdfYBQqAWBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793020037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p4aTtckkNIZTj3KdHwLDdVPDSaAWMqxSQJcGzbmfPd8=;
-	b=tCXN4/UTrJkFRabug2fy7KFrUD8//yjdscptoZ2fnQL1W6IvqOP6GOi4p6C1Ow/a0llnl0
-	qKyeiaQiX3zQaqck1GpvjD/4jaCL/ov3M88TtbQtB2KL4aXUxggySnv2p+RDFBmUPjHctf
-	VcYapD8oNUn0plwwEc92uZQGyo/mgqE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793020037;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p4aTtckkNIZTj3KdHwLDdVPDSaAWMqxSQJcGzbmfPd8=;
-	b=axaS3z55G30XACXvwbOHlXmOTQjSeNrlUlKDROuoWn555U5+DlXxrsO8NgblQq/nIYYLA9
-	wnP5qY1NcQLSPOCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 09E6213408;
-	Mon, 26 Oct 2026 13:07:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Vpa6MoNQ32rGXwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 26 Oct 2026 13:07:15 +0000
-Date: Mon, 26 Oct 2026 13:07:14 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Davidlohr Bueso <dave@stgolabs.net>, SJ Park <sj@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Colin Cross <ccross@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 4/4] mm/vma: avoid losing atomic VMA flags when setting
- sticky VMA flags
-Message-ID: <at9QWd9wst333TWx@pedro-suse.tail5790ac.ts.net>
-References: <20261023-fix-vma-atomic-v1-0-8ff4fae1fc85@kernel.org>
- <20261023-fix-vma-atomic-v1-4-8ff4fae1fc85@kernel.org>
+	bh=LUx8uAJnT3d0+7yF1GQKbPBg3JzB/yB9ew9x+QwGKJI=;
+	b=V7dHxdw8RVyrjhAtPOVoY4j2wfaexoqGhenwqwzD0r2IpJmF0na/9fzMPFXvK8sJmZkz7M
+	0VUxj9gsERm6B0hTzAX0Qa5sjrJnU+l0o/MwhCVTwRXf81rH/qsLjKkfRB45fA38SMXfQJ
+	+dAYUF3tb47EGJy3sLSEQSM7UJVc2YU=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="HpP/NKGz";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of elver@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793020174;
+	b=xLdhlj0lyZBWbh4+gRyhsykXBTrC2iulBEC5ld1xt61EH2E+tnscO1t5c2b/pLhZR4yNEx
+	4lwteXeTsLQWMLFYs6qc5KZNhTkj3eEGe6J1upYKC/NYsytGgwEDkrcEyLDEjNkIGsVWK5
+	pl3HR2ZodIASo4Q9UDodsv9XSRl9sZU=
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-157fe9d771bso3517222c88.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:09:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793020173; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ibP1taCmCHcj+EI5wOM9m4Mn3qUXY/8+s1Kh/4GZ5H98Lc6fZeJRfp34vjcDjbiGvn
+         cD/jJ6yvFYF+Z7seiaolkZ4paQWUxk0Zej+qa9+00ynoiUXjcra+5yZX3ONJUQ1KGS5w
+         fIi8/sXyc79LxDdV8TR5Ar1o4iocPyW2K4yASwq4oVHeYmjBLuFxzk3LAqDMewySMJKX
+         mN5gHOv2HCC/5eDjfaGor1LfYhfGYTCru6JH8tvn1igJ2c6a3Lyxldh8nBPhO3aVCMzz
+         zR8rNPRCmQL3ypyynnBTAXZtixxGGGJlXTiVb0298ZOyIdsaa749JAz0kQxUHOTWqZxM
+         bFgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=LUx8uAJnT3d0+7yF1GQKbPBg3JzB/yB9ew9x+QwGKJI=;
+        fh=yOV/Ma2TIuzV6L9TdDW+JA1Yo3OEi4uayJgJZp0pKuw=;
+        b=UYCUbqAmYcnkHKC4TnO9Z43bjQBqo6fQCFyuFCs3+NDCaL2c18HmZh4vIaNXaV7qYg
+         qY3LFRSBsub8Gg7w/S7p29s6I8ASe4fwxDFY63otRQAzy7KDC98bPRqpK8EZO2ku1oZa
+         KbfCZhMf6wYsUy/87a9KfyNO+Aijr6NaqZdbZFCng3ogByj606rcO9MEN08tzqHBABt2
+         w0y86H/nkXi/je9gVJgok/4zn9jwid3BxLBvlocVnKsIewEQUenPBeuyrasSBmn25wpd
+         B/d1xScHRVXuo1QhNMGYY1ompfVVK3SJiVYFZ+5aR0JulNEvHZxakHt5sSv3YAEUKKyh
+         HK3w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793020173; x=1793624973; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LUx8uAJnT3d0+7yF1GQKbPBg3JzB/yB9ew9x+QwGKJI=;
+        b=HpP/NKGztm+zK+tJoH7rhX7bEhGq3Q8JgiQSzM1mSLwjS+g952O0MqJ3t+A8Wx32YC
+         1DjW5Rtet3vYUbC4Ij0SHP64/6/i3UWGKHbVeI8XnXRHJKhxj/26Yen/ssnSq43WBcBi
+         RfA71hmN++KgQe1N8R16+prw3Qh//jlDl9nM6sZFHYUX0ywSDe3Lw/K/EFIUHH27BnMn
+         Dcg8GNuWi+kCxi46RxEx4TM68lHIEC/8SfXQOT7eGJyt1nB6XUZTGWr/jEloRWSPtDUA
+         xlLy4W/cDxcBnJBPuj8nmY+IyBZIz2z03RZiE/vj+qLIN2euXpRgTlpZy+H2PJWP47sF
+         ppsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793020173; x=1793624973;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=LUx8uAJnT3d0+7yF1GQKbPBg3JzB/yB9ew9x+QwGKJI=;
+        b=WiQzLNjkDMeKitRsDZk9aw5i6Z3fE/SVT+YoWgBaTeD/7i3xeePSslQLkbtLGFRoGN
+         Wyvu1fAdJ8GYBBQf66hLhxOf6eHxnC+kXrYT2A5jSjTOdJjhvt5gJ2lTJqaRW2CcB2fv
+         +Rv2Uu4TARz9u4t012itglnlP8L1JrbBeMRk5E3m/NdieFIE13mXjv0OUhHU8/ZcM/eJ
+         kjry1a6JRyyVRDIHvr+sZ2Bwg9+EJTWk1dkLc7b4yWKvmFdY3wH/+0v/32Tfl+tRtt0y
+         iy2dCbnQkh07N0LtkfJtQhKWLj3XKBab7ix6QTiZIe8/5+B/76yxPPQLstziNf/4vPZJ
+         uwNg==
+X-Forwarded-Encrypted: i=1; AKwUvBy5eDeBfg3OD5AfvFkJ18aUOHhc/IqaC7ezN0KHKx3T1urZ2FxYgde56NVyMuDDPim06x4wgAZfOA==@kvack.org
+X-Gm-Message-State: AFq9FYJii15VKKo09psRiQWWYSnUW/XbZLgMzwJwFOM0Ok1+mbITQIbT
+	uUrZdvvyvgxndtw4MYIwz5ToGcIfZhmuaL8mYajlm2S6ChtuXRkinqGDmZf7IlhTjpxJz5/V0OC
+	Ful7LO57J3cXIIB61eYoTRVvG+z30x+ozw5WEYrDI
+X-Gm-Gg: AYBFou2SJE/i6LMqxqZcIPfhnyA94fGBhV/IRYY7DsuGmONxvO1pbBJQYMnW5irhgwX
+	6xFoaDbp8L8Iyo9+fsVJkhkj27QfztU0MBPfbAzfjsjBChbJeEC3ptMSkB+/tTX7lvaIzwJF5z8
+	xkGMnBnZsQCh95huQ+SjosehpVwEI5PH8qCIRnKGcp1Qa5jbhAvHkgC0Akyf9xX6TpIvzs+4+uQ
+	Q+9KCz3WEh4K9MQbgxPAzclx4zH0TSN6IkOhFV/2XNfpfjDAPp+z+zYF5VhTMtEYJDnsE5IDRHL
+	ri74ki3tNQckHPggwPdWpE/NiwzFTKr6R42eb54oKLD3gp9ccsWpdmwM80BBaOzI/XU6PFkizE8
+	KjSv1T3lnsp3QtqdIFZrcMdmYbwzwY9lR0z7mlobRwVkjXOT4Z9Kh5lWw27hhxA0xXBw=
+X-Received: by 2002:a05:7022:5f0c:b0:14d:c53a:f6a0 with SMTP id
+ a92af1059eb24-1993580f7fcmr9793864c88.13.1793020172106; Mon, 26 Oct 2026
+ 06:09:32 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023-fix-vma-atomic-v1-4-8ff4fae1fc85@kernel.org>
-X-Rspamd-Action: no action
-X-Spam-Score: -13.51
-X-Spam-Level: 
+References: <cover.1793017073.git.liuyun01@kylinos.cn> <f6a6154134fd14c21070f280739acbeb5881df65.1793017074.git.liuyun01@kylinos.cn>
+In-Reply-To: <f6a6154134fd14c21070f280739acbeb5881df65.1793017074.git.liuyun01@kylinos.cn>
+From: Marco Elver <elver@google.com>
+Date: Mon, 26 Oct 2026 14:08:54 +0100
+X-Gm-Features: AclHuK9z186pdDjCz6AJnSToOjcvhVoN5e8gTK-5h4m3u7h5mXFXUG7CMtD-ppc
+Message-ID: <CANpmjNMo6z0AtvxwpTCwgqvVdribB7L+WkOxQ++AH4sMegycMw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] kfence: fix pool cleanup on metadata allocation failure
+To: Jackie Liu <liu.yun@linux.dev>
+Cc: glider@google.com, dvyukov@google.com, pjw@kernel.org, alex@ghiti.fr, 
+	aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, linux-mm@kvack.org, 
+	kasan-dev@googlegroups.com, muchun.song@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4C31218000E
+X-Stat-Signature: qr766j7w6gidzym77d81df8q6u19bb3d
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6AB1B20009
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: gto3b7ie94nqeuowkrjkq89nfetf9h7d
-X-HE-Tag: 1793020040-490090
-X-HE-Meta: U2FsdGVkX1/Ak3EqkJv5tqgE23/NRzyNo/agUmOQ86xn3hhppblGZ1D50CsCLHfXs2WXEOx4F3lRwYHemngbKWHWWGA/EJkQfgVei0QFaScAv0pNT9HmWhEFGqINv1X1FgBGb04igaxUZ3po5ihe1qgoyOt/liNdKNJ81pVcg4CPC/KkfgN9grkvbimHG5qapBLS030AYD3uGwJWAVLsfngqy6L8wJXH1yWNhB+Py2hFlP2+BRMMM1pyYgN0M6HGN4I4eDGhEgSf6GimvrUQRMRydacFoY1RQsOr+EpLrQ6RNpElk6LVVuGM/zh2PdLGuqLA7pik2ODY+waNC8v77fMevytB36BhdTEHrC8YBoL5yE88zMGTZymUY70cqSaLfSdYCUw0raHDepd6zOAdyp2kKMYTV02weebOiwBQZ/L5gsponQ4tBKzX4sObX0+15XWWbNG+UbzVXXzUPcHbda3mcXq9T55+wsJzxBMU5fY5I8tAtZSylaBSaICAN/ydbDYTuWHFZraAlA8rkkG9ntUFBGBGZ02iQYSI+HDlBHwwvXNS2Mv8QFN+h2qcL6XpnOh2yDz7Igfv/A/Azjojzn3oYqUefJUCs3WgW0pdpk+kqJrvdFyGbWSrTUJ7SSrUybYeq4NV1vigdGGOnKgRXiMuF8F5nJhqcaTeSUF6xc+b9p8dMswbGNs4NTNPr0pisk+WdNf3zdWmsRRXpC3jV/V/CGILLZ9sjDSBaKVSGkbw8BX9brStwLOZXqBcAaTxQw4i8jiTeicUtLGqGabuABO2mPB/qclK1st+//EwEvSOXHYn0FToESOgxkxB9Zo+gucOuRYBI+ZQ1x56xPhQt2hecWcez624k0qC4GhYhpdGcBjyYjan6RXBlzEsgr1sTwwnxLnqt9/cBXRjhWhd5OcqpNuT3rTl/lcMl8gr4zDGSFWqGWYtJK8fLtnWy5Qy9c7PiT+v8BcQukpW+mg
- zPDpuEAA
- 6ZJ4hLegJ2oPyEGd9Fc4Dtd108HlcnvmMiSQwXMUoDUBW8crgQo6FStSNmdgtR/em2A2oPzcdxo+BgJD+Ow1kgKP5rKZiMxL+xZr3Zy+y+M2zhThizNmzQRysz0TGSBrFSyI66g8aIxJ+8cFXh2USwjdNhGpilN16ewcQpJ0fHqYB1sIIgrJtTjbPkSh6rp3pSyb4YAmb/y5vhU84+NfzJ0B/yPPCuKAYowNtspjjJ1I0jzBoxQoGHN3OVW51D1/sGp+veq13UIjypOIHkDhNKSaSsynXpql9XjR1O+t7TF1sa7Dv9KNovWuaLvzQ5BGBNuCdg2qVyYti6tw=
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793020174-487775
+X-HE-Meta: U2FsdGVkX1/b7GVhfF9ZqsA9KJqiTFUIsF2cL+DBKCls+wENpNxzmJvmlTpVIrnwvXSQfQVTW9jLn5dq0UM4LizpJsUfpLBiFal0lkA3V7yWTpzjNZeezyEAbcikq4kBSs2u2jGFjzxdRSjX+deo8AQI+xjWFTspeAM/yo3tEIfkqMfaDdzQWB52s6ZGsUH2YyBwGieBnZA+81Kc7Tc4nqoamHHR9CmeI+HNtQ2C96rQxlOdkgjqqMAaHZMPaP5hM7VU/j5oBhNbOrItKtSmOZjI5DrmIwjemmm6GrhIq9ZigZsWNjOcRtilh0912t184hK90Jnzx7icHBBfjlu3vesWnP22AtGfmaAhz/7aWtdr1Z0pPJ8iPlpNetIIdHiJihuspvrUJFaQe2jtY+pWLnmzctBkrZ5ksRCuzkS1nHHm02TmO1njkvDr9CoHAu0Sy5Xzq3onz7COKIemKNFfRM6AfMyPiQQRDrBFKrVteiEyHagNRlvm+lDP50/AKINZMEROvMx9tVmFo99lsu9Ot7LTvUpRMEL6p+enRrgOtXsO4EsTPXLItdhOgyb5M0B1sa+s37+XkTfuIhrVJkvvNyWJEEXzEthPK96hwfjvPQnwr1iofBM5c4AlgKwq4CWm8Tpr7YSsPHLQOhnOnTNsjp9wBZyFcrBduOYVB6HxoSwl428bdh1HuW4rDDH/2OtM11X6ugKZVLgkAeNDwRs7nE88JUYzj4lHZrmCL7Lxczaa3c8+e5kdUNtJH3Bp3S6Q3jYDaVlMLP+KyLQJN/UDCykVuMVRI3P1z1ko4YByTPz8saa+V4eeMW5GsdPZfakUrNkKzHCcZbT8/RHzr/m7CuFyAOuJG5TmHt0kmyI0mrZXlnP41ea2Yp4yjFKxRmPfLvSJZTc2a+TfldBAYMHHDOEIHABY09FZcRMR93lzFTMI7lBQqzJ1NrEhcdqP1Mgz6mc8QFZ96PIH1Fjjo00
+ JnF4h0fn
+ qd1Ltk5YJw4kHIcKr/AT4hPEIYbRaWqju1299v5Tyd47HC7BkQa9vhrVij5y5azZXNctd9VLvU9kWU0QQWeftEgBUTHmhVsh9T8yw2zxpqSfPs7WhbfmBhpZ5lIxopy+/udwJXsFmohxzNgzjUrMDUkL9qnVco+u5L4TlvgB4gMUp7mzQ9LqovY/VzFs+twd0IYMvdTaHIHJ7oLJmPnb5lDXkW+IBs9r+LDUZ/gtwzAjGlMfxwfBQVq8udRBwQODeLjIndwlh/1Z9Pgb37gKUMvAT/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,68 +142,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 02:47:30PM +0100, Lorenzo Stoakes (ARM) wrote:
-> vma_merge_existing_range() merges an existing VMA (middle) when its
-> attributes have changed to match those of one or both adjacent VMAs.
-> 
-> Sticky flags are propagated if they are set in any of the merged VMAs. They
-> are initialised from vmg->vma_flags, which is assumed to contain middle's
-> sticky flags when the function is invoked.
-> 
-> However, the VMA write lock is not held for middle when they are first
-> populated, so concurrent updates to atomic VMA flags may occur, which will
-> be lost upon merge.
-> 
-> This can result in fork failing to propagate guard region markers and (if
-> file-backed) THP collapse discarding them.
-> 
-> Resolve this by propagating the sticky flags after middle is locked.
-> 
-> Make life easier by factoring this into propagate_sticky_flags(), which
-> treats vmg->vma_flags as its base (in case any sticky flags are set there),
-> updating it as sticky flags are accumulated from merged VMAs.
-> 
-> Also update vma_expand() to use propagate_sticky_flags() so all merge paths
-> utilise it.
-> 
-> propagate_sticky_flags() also asserts that the VMA write lock is held for
-> the VMA whose sticky flags are being read, with a comment explaining why.
-> 
-> Another means by which atomic VMA flags can fail to be observed is when the
-> merge is finalised in commit_merge().
-> 
-> rmap locks are dropped in vma_complete() before the sticky flags are
-> written, meaning an rmap walker can observe the VMA without sticky flags
-> set, which can also result in retract_page_tables() discarding guard
-> markers.
-> 
-> Resolve this by assigning the sticky flags before dropping rmap locks,
-> factored into commit_sticky_flags() with a write assert on the VMA being
-> written to.
-> 
-> Also remove the vma_set_flags_mask() invocation at the end of
-> vma_merge_existing_range() as this was introduced by commit
-> 64212ba02e66 ("mm: implement sticky VMA flags") to propagate sticky flags,
-> which is now redundant with the introduction of commit_sticky_flags().
-> 
-> The vma_set_flags_mask() invocation at the end of vma_expand() setting
-> sticky flags only is also removed for the same reason.
-> 
-> Also update vma_merge_existing_range()'s comment to reflect the fact that
-> vmg->vma_flags gets updated.
-> 
-> Finally, update the userland VMA tests to reflect a previously missed
-> const-ification in vma_assert_write_locked() which would otherwise cause a
-> warning when building them.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Fixes: 2ab7f1bbafc9 ("mm/madvise: allow guard page install/remove under VMA lock")
-> Fixes: 49e14dabed7a ("mm: set the VM_MAYBE_GUARD flag on guard region install")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Mon, 26 Oct 2026 at 13:23, Jackie Liu <liu.yun@linux.dev> wrote:
+>
+> From: Jackie Liu <liuyun01@kylinos.cn>
+>
+> kfence_init_late() saves __kfence_pool in addr before allocating the pool,
+> so addr is still NULL if metadata allocation fails. The error path then
+> tries to free pages using that address.
+>
+> Set addr after pool allocation so cleanup frees the allocated pool.
+>
+> Fixes: cabdf74e6b31 ("mm: kfence: allocate kfence_metadata at runtime")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
+Reviewed-by: Marco Elver <elver@google.com>
 
--- 
-Pedro
+> ---
+>  mm/kfence/core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+> index 90925c646c4c..6e3d01bccdf1 100644
+> --- a/mm/kfence/core.c
+> +++ b/mm/kfence/core.c
+> @@ -999,7 +999,7 @@ static int kfence_init_late(void)
+>  {
+>         const unsigned long nr_pages_pool = KFENCE_POOL_SIZE / PAGE_SIZE;
+>         const unsigned long nr_pages_meta = KFENCE_METADATA_SIZE / PAGE_SIZE;
+> -       unsigned long addr = (unsigned long)__kfence_pool;
+> +       unsigned long addr;
+>         unsigned long free_size = KFENCE_POOL_SIZE;
+>         int err = -ENOMEM;
+>
+> @@ -1032,6 +1032,7 @@ static int kfence_init_late(void)
+>                                                  GFP_KERNEL | __GFP_SKIP_KASAN);
+>  #endif
+>
+> +       addr = (unsigned long)__kfence_pool;
+>         if (!kfence_metadata_init)
+>                 goto free_pool;
+>
+> --
+> 2.56.0
+>
 
