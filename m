@@ -1,138 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799E5606A324
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE8D606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=baI+UOMl;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7pHTPEqS;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=baI+UOMl;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7pHTPEqS
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=b95hf2oO
 Received: by kanga.kvack.org (Postfix)
-	id 4F28C6B05B1; Mon, 26 Oct 2026 09:34:52 -0400 (EDT)
+	id 5B77F6B05B6; Mon, 26 Oct 2026 09:34:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CA436B05B6; Mon, 26 Oct 2026 09:34:52 -0400 (EDT)
+	id 58DE26B05B8; Mon, 26 Oct 2026 09:34:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E0236B05B7; Mon, 26 Oct 2026 09:34:52 -0400 (EDT)
+	id 4D0B06B05B6; Mon, 26 Oct 2026 09:34:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E72F6B05B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:34:51 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 527F41207C2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:34:51 +0000 (UTC)
-X-FDA: 85364872782.07.EEECFCA
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2A7A81C0006
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:34:48 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=baI+UOMl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7pHTPEqS;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=baI+UOMl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7pHTPEqS;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 287DA6B05B6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:34:59 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 922ABC073C
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:34:58 +0000 (UTC)
+X-FDA: 85364873076.01.A793DDA
+Received: from mta1.migadu.com (out-194.mta1.migadu.com [95.215.58.194])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 766B52000A
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:34:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b95hf2oO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.194 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793021689;
+	s=arc-20220608; t=1793021696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
-	b=cEb4cblI4Q/b36ZC+o87KDHzpRBC0trojQWPwtzAISXwdfGKThYegfPOqVHfQnIKu+agW5
-	Bn16onrxlNp11BGL2psOYw0eCyo7Cwyle6Sfi5FB0pRJX3NF0/e8RNJpkJOIIi3+tV7eqY
-	WxEzrtbYCOgoVlQKvPU/FZPUUCWYsKM=
+	bh=xR/zt8Fn8bNjdz5e+SUp/73xZBn1BSzckF/z3HA7yx8=;
+	b=DZi6TnSDfit4tAD9Y+mUkH5Lw3vKJJbVrdTCNx6VuEfLVUZSv1D222YKKfSn8yxt7u3YKS
+	ywWOy3a/aN9NV80EGMZwWh3B9NeRmTW172OEWMESByAkKr6hLo9Cyi/wYnXPVOPCFjpsWf
+	ub4QOLSQBo5qlMAY7NDnoK4GleriDVI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=baI+UOMl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7pHTPEqS;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=baI+UOMl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7pHTPEqS;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b95hf2oO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.194 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793021689;
-	b=zrPJNTvo2qbIYXQVEoITIjcakTYEKUhBvv3INr2JIiAMntbzKImeH31GdTSi3BXEoNVZT2
-	28P2bQvDqt/Y4NbXDDgHzg4Jld0ZHdqysQ0DPOZiYMERTTccMTKKWiNZBpzYDWsr9z60lV
-	oia6E2MJuSoD8gf0A2CZSmsjXwHaBfU=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B845E1F7A1;
-	Mon, 26 Oct 2026 13:34:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793021687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
-	b=baI+UOMlKVAy3SWCcAr98EiYZLZvmrWlccCTf02DOWVOrnJX/ISyma56FnRwTFbfuCon6h
-	lx/tzrp4GMc1zXOWaDywKiyMLCCR7zodJecV0Zdvx82R9Dp0z4l82nnID/cBxa+Pz+Uq+c
-	QMOerZp32U/ZYvdRD6F9awM2TMH6IuE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793021687;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
-	b=7pHTPEqSTCXYGCNfP9M5J0/15pUqHHP0l/X4U8Nb4FAiZSRQLT/xF1CGaS5QDMbQNLb2u3
-	QKVaoBXGziMD4sBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793021687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
-	b=baI+UOMlKVAy3SWCcAr98EiYZLZvmrWlccCTf02DOWVOrnJX/ISyma56FnRwTFbfuCon6h
-	lx/tzrp4GMc1zXOWaDywKiyMLCCR7zodJecV0Zdvx82R9Dp0z4l82nnID/cBxa+Pz+Uq+c
-	QMOerZp32U/ZYvdRD6F9awM2TMH6IuE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793021687;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
-	b=7pHTPEqSTCXYGCNfP9M5J0/15pUqHHP0l/X4U8Nb4FAiZSRQLT/xF1CGaS5QDMbQNLb2u3
-	QKVaoBXGziMD4sBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B7D3134EA;
-	Mon, 26 Oct 2026 13:34:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G4pgF/dW32pJfQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 26 Oct 2026 13:34:47 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 0753BA1419; Mon, 26 Oct 2026 14:34:43 +0100 (CET)
-Date: Mon, 26 Oct 2026 14:34:42 +0100
-From: Jan Kara <jack@suse.cz>
-To: Saleh Mammadof <salehmammadof@gmail.com>
-Cc: linux-mm@kvack.org, jack@suse.cz, hch@lst.de, dhowells@redhat.com, 
-	linux-btrfs@vger.kernel.org, David Sterba <dsterba@suse.com>
-Subject: Re: filemap_invalidate_inode() - losing -EBUSY from
- invalidate_inode_pages2_range?
-Message-ID: <o5sj6bswd6arkusrxj5w5ww3jwk5hz7ktzxvdik72h7c4uen5i@fnwkmk6hvuf5>
-References: <CAKu0nJUGwnmuuT6fBz0phH=1Nyi6BguH2PHvs9+hDnrc_X0zWw@mail.gmail.com>
+	t=1793021696;
+	b=PuMjJBeJGaCd2bOfh2RPbI4z/j+ti/kmpyqpjwWXJHBCXnSlOuofGVuwc4k5z0HvP7VIXS
+	CQ4bwUdjCXxnN/ZvpM0dHtPZhpWRzeaXwtfIy38mJLfUNIoZr9reVF7NaYijcZf8G1hQrY
+	9dUhwGAiY6lEfKmcsjoSpzj2a7zaGb8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=B/1QP7GemvzA006XUysBM5X7M8mQ9nDSapjnqLDANwE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793021694; v=1; x=1793626494;
+ b=b95hf2oOKU3J1aOvxO5GQ7XBgIFmgP9n5y+cmMnRrCwI8qDXSrZTMZyd9fP76lZ8DHd/AZqi
+ 43xt5cBBI1i5NXZZr0oYDbRfY3lfGbGgjSwixxGldISGM3qUwd4+TX9f6sBOzlBNaC/xAX7nzyd
+ wYb/BfT6laPrUKnolY8jJZ2U=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id c0df3f82cb5f4210;
+	Mon, 26 Oct 2026 13:34:54 +0000
+X-Mizu-Trace-ID: c0df3f82cb5f4210
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKu0nJUGwnmuuT6fBz0phH=1Nyi6BguH2PHvs9+hDnrc_X0zWw@mail.gmail.com>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -12.01
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2A7A81C0006
-X-Stat-Signature: x59h6fphxgwum38oxateooeuxjpkq3bw
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v2] docs: hugetlbpage.rst: clarify HugePages_Total in
+ hugetlbpage.rst
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261026080856.76175-1-lienze@kylinos.cn>
+Date: Mon, 26 Oct 2026 21:34:30 +0800
+Cc: osalvador@suse.de,
+ david@kernel.org,
+ akpm@linux-foundation.org,
+ corbet@lwn.net,
+ danielmaraboo@gmail.com,
+ linux-mm@kvack.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <7B4E34FA-A8B1-41F4-AB0E-681659F38760@linux.dev>
+References: <20261026080856.76175-1-lienze@kylinos.cn>
+To: Enze Li <lienze@kylinos.cn>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Queue-Id: 766B52000A
+X-Stat-Signature: zx46zkn49pj9ctydei7g1ichunq9smds
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793021688-603355
-X-HE-Meta: U2FsdGVkX19vtIhpOdcm5cT0AIqRsWU3OoapQYEV02iAnhAzMhza5tJG4DouyvHBxiGRONdW2RGw28K0Z5k5dHcS+rKuGDPZ0iJcA+VZKRxHqo4NpHbzLXGWZ0GEo4y9hJFsRVxkaKzjgeI0J4fZYVrti6CfiyqKkgOSL+iIkaXVfo/3FF0c7qqc6v5xZBRtbrZBMgr5FcSCZ4EPSHR8h6hJIj/sYXtFqUHT7QRfyr+LlZkClPOCXKtJBix5UENWSUlWIP9AkE1bRY++BHAGC+px4ATP+8pacctD3Xx5LPxPDHfm9MjU4KtVnEYEv2FjBtFSlEEs54v2Qhi7RCY2fwLpgcuiKJMYgk4oyiuVVcolfSFGLUGziBicJCjn9/2noUOyIQxtvsdE8oycOjT4mkLqDHlbKccDL9HmvIPsMK221GsuUpKNjIk1LiWbX5dK5xdXjvJ/0f5NlvQhID0aX639cbwY4XRYaDHRgeSPxTbyaPRf1TB6he+mKe6hwOmHkf6ytWRKYDXglvBrE2DbT4bUxjnNwx2HrvdKvXJTxufwzK0mmaCZWw9/sijurdSgdf6RwwnRcNIicKpx6NqBDyOaJWWg9cVl5JPmmeKVMAcw4PZkxOYVzkCK/0m+jTJl9jinJTae03CVtybywmHhUFySUDjen0uSeayO3p3PcFZ1oZnCTVPPoh8y9HaOlUECVZAZi5LNsdlMToetWVDswapDXSmgHoX5QG9veI2uAcpSryFPZMSxAHK2HcEpB/CUVkUaR7NLogoQBEc7WcqhCcnHG/iRbgI9u7HGofGNo+QcjZjyfIDgDXe8/chjVX8/h3PfYYTr4l2EIZ+c3ppLEZiYGE/ZgK5Sv7GnDA9HLfHq5ufaP7t77eiaEEV5YL/Xq9RcPEdI0GhyQ3oQd+ct1pVM756JvHiZc1DaXfL6vRm2RG8qgmrklz7LhgFVX7KM/R/DnN2CGpB0UW4kQ+u
- Y1jFlJ9b
- yrKBCq+5dkGgsAocqmf9NtCDw8IlIDkf8Q0hfF+R/c5FlghE8kLWDoYKcUldl6pQw5f2dhGzjpK/UbM1smY+qo2SBJogcFqmz+8pV7zizNhsDbmhqClArNxLbI2BsYT7zJOa7vssyohD0KbJMj0mKHmNzgz581NRMtJLdxpaKoonSui8hwVUvBxlWlqVGuJsBuDIkurkBjmR3Cj4i4hVujfOj2umvz2pzxBHicBemCnElsbum8mXyB7/28setS18OHkg3iB/Q8TUbK4vqrMhgHArDJoiDGEd7LC4CT3rTZ2AW5tcRYcg2zIOKwHw4FcRDfBFGxq20+naOy+pkPObzDBh9AXiqxE6GGyhEZ2O6KtlofDcYAxCUTlSBlncsVTu+W/vBaoij4cKbxWZeY8M3ClbS6bCdobWLBoRpJ7GLieGZe1KWSir1nuTPBg==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793021696-968651
+X-HE-Meta: U2FsdGVkX1/FaH7yf8KbRFqrdAvALRF3ecixk5OE3i+K6WjaCwyF4jLrs4WQ8qcf3YfO5wVLXA0DDF8C0LIm+hAnq3ss/lPBn0opEmeGhZF3pC3Dsjy4INQ5zpBDCBs+ELzzScZb7f3ERTaToi9Pg+OTmzwXnoXZJAVzE9jc+9Jy6e+kbISlLn2UmCkUviLocY7fswHIXIzrPXzZ/JuPnIvR57S3O4BW8SXMRH1+ycAqEeGMswgNB4ASN6LIHsCZZpF6BxAyKPAftbdHdc7z0UrOzLJ14+W0tvBpLhVl4+03Rgt4m2GlRQJMtt3lCcDRLWYIvZXUmGIM4B8uWkZllkei4ae8ms2+VN5Dy30kIOEZkwft6Kbb6KYExbq5YEGC7dG7oJvjFXrGtb7NbFaAVC7yGKOtgv5WqOSS/3Oeie+B3iNtyQUjHePGnlTh69V7EKBHF2DvEmxmKii60My03I//spoDGAruyVvTWPoe0BYNEZCoW40fJ1HCPZLhuo6H91TRxtFwQSK7eSlrWzsmVMU10lqSNSC1TSmC1Rj0/paqU2BMZVwTXsQCDDw7jBg7DM5FzYl/yCv6TW7raACISrnJjptZWAjOjjQRjqIQYRo3N2eSMDlk87V/dKWjsqclM6jyT1wDZB8QBG3KKXXdBFhYekY4uX5AMINUk2SRqDxsbfA7SBd6YcAi5zySAanEtP6fwd3NL/n8zPbHMf6LbiaH01GvUjeeYakyAOJhF+MMDlXv6SnOFPH9I1oNlSjbTMzQi6V5g31gzIwO4HKf2Io62Q/xEvX36gef0u0UtF+SkbPVdFXL64y+2VMc3dFhfvjwhkcznmIEJxkSxKzLuO8ULqbFOyCxLSUOHZ7LpPp0BIMovCtlZ9uXRHyQYykOm8Ml7C3TRkto3cH6BIvpfsAlHgP2grL2DugY+dD9rdEF0mjfn5EC5Vuq83I7JRv6yV/gaPEIxIvOnum/6tx
+ v3CYJbX8
+ A5KF3hQvxLIz00VwtajGLOgLqfW7G3n1xRCnawT84yu72qH3CrOs8KLCUaT8kyiszF/IfsASPkmI6oMwZ8DX9wM+mus48o4rOOnBbhkKxMm2Fr4QjcmNOn7kI4DCQsntXAd29nSEYhCpqzOSKyR2wd0oLwZvbmV3rfRg6HVRmFcs5flF2ZJKeL47opXxflDjR18NaJ7eWpiea254UJvySY4z4vM3+RX74XLDn+howjpYh0h7KWxyKf7EOtGuviy7vRegL2ddrVMPD2HvRBIPlDumeVt+2XOaG/TiFd8LuFGsJEs5lPWwKJJEjIXkGhRs0CzejCiVd+CyAAFaWiul0NfcnsthSUZK7p31kxDVtZ2bcT2VCDEGWOikkWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,40 +100,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi!
 
-On Sun 25-10-26 02:27:13, Saleh Mammadof wrote:
-> Been going through mm/filemap.c lately and something caught my eye in
-> filemap_invalidate_inode(). It calls filemap_fdatawrite_range() (or
-> the wbc variant) and then invalidate_inode_pages2_range(), but doesn't
-> seem to check either return value directly - just falls through to
-> filemap_check_errors() at the end.
+
+> On Oct 26, 2026, at 16:08, Enze Li <lienze@kylinos.cn> wrote:
 > 
-> The thing is, invalidate_inode_pages2_range() can return -EBUSY if a
-> folio won't evict (release_folio failing, launder_folio erroring out,
-> folio going dirty again mid-invalidation, etc), and filemap_check_errors()
-> only looks at AS_ENOSPC/AS_EIO on the mapping. So that -EBUSY just...
-> disappears?
-
-Yes. Whether it matters or not depends on the caller I guess so you should
-discuss with the users of filemap_invalidate_inode() what they'd like the
-function to do. Adding btrfs people into the loop.
-
-								Honza
-
-> If I'm reading this right it could matter for callers that actually
-> branch on the return value - btrfs reflink bails out on a negative
-> return when clearing the destination cache, cifs sets
-> CIFS_INO_INVALID_MAPPING again on failure, that kind of thing. If they
-> get back 0 when a folio was actually left behind, they'd think the
-> invalidation fully succeeded.
+> "the size of the pool of huge pages" confused me, since it sounds like
+> a size in bytes.  It's actually the number of huge pages of the default
+> size in the pool, surplus pages included.  Reword it and point to
+> /sys/kernel/mm/hugepages for the other huge page sizes.
 > 
-> Could be I'm missing some other path that catches this, genuinely not
-> sure. Haven't tried to reproduce it, just going off reading the code.
-> Let me know if I'm off base here.
-> 
-> Saleh
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> Suggested-by: Daniel Pereira <danielmaraboo@gmail.com>
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks
+
 
