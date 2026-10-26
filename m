@@ -1,115 +1,175 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F94606A322
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0C2606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 19:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=r6xugff/
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nEX5J9/P
 Received: by kanga.kvack.org (Postfix)
-	id 7487F6B05B0; Mon, 26 Oct 2026 14:58:52 -0400 (EDT)
+	id A666E6B05B0; Mon, 26 Oct 2026 15:07:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AAFB6B05B1; Mon, 26 Oct 2026 14:58:52 -0400 (EDT)
+	id A3CF86B05B1; Mon, 26 Oct 2026 15:07:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5725C6B05B2; Mon, 26 Oct 2026 14:58:52 -0400 (EDT)
+	id 92CFE6B05B2; Mon, 26 Oct 2026 15:07:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 27BDA6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:58:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0B89A0839
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:58:51 +0000 (UTC)
-X-FDA: 85365689262.01.C5B6167
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E9A9080005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:58:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="r6xugff/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 36KLfagkKCAs4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=36KLfagkKCAs4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793041129;
+	by kanga.kvack.org (Postfix) with ESMTP id 6505D6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:07:35 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1CC96A07D7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:07:34 +0000 (UTC)
+X-FDA: 85365711228.26.1241527
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012063.outbound.protection.outlook.com [52.101.43.63])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 41FFF40003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:07:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="nEX5J9/P";
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.63 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793041651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uO/W/z94g5X81Ln9+3SsNcj1ZpjaM4tumvmhkUCPgU4=;
-	b=HvfCNqWTLhAN0alRrBlLpl0If+LL31tKVrt+k4ipMIT2ef6XQZdXMDG0TdmAkSF5T0PX0T
-	RjIk7unbwM7LB0roMzQUc7OtNnbYC1jP4JYX9QMaZpF2CWeAz7p44tZXKOgrGo/RUloR/3
-	nk133bzrWkiZJDCpKi88Zlc2S/sRD8w=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="r6xugff/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 36KLfagkKCAs4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=36KLfagkKCAs4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793041129;
-	b=dgQ1hPzISkIjrjmFvW989C/2snZYLfxcfXZSOpH/m5qFCxP6ZcCZxpUnwrhFdOMF/1rZOV
-	kekU0+2hflOn9aKw9/R2TUwBHSSPo5Yh7R038JS0Cy+kYZcj0+y5zuR5XoHtukKUOBNAFG
-	JxLudw/ZlOcOJfFnmKHJK+axPHHD4wI=
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b1d6c10725so3962190a12.3
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:58:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793041128; x=1793645928; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uO/W/z94g5X81Ln9+3SsNcj1ZpjaM4tumvmhkUCPgU4=;
-        b=r6xugff/k8L7zJIADyC4qcUbA0jS1iAJcSucf0V37l+6wMyVhSTQXIoA1yMP76HpMl
-         06Tg+S7N3CFRfrX1VEvtH9qKwx9+kztjxtkha3QUvtnVkLrN3Wm7NQo1bF2uqmzWalQm
-         vhN1peqQXvk8aYQa2Sz8I2LobD4oIG47ut62P5rx4g3pitua6kIQmFrV8NrZWDC/g532
-         lS13/EVeEEWroJRoizB9YsO4yAKC7liFR9toCqw+2+4ZpGREvwfyKlbsczwDSQI2r6VN
-         MFP+oFpcoqrBKvd3j2B9tsSe3Pjj8HhsIYwCT2D/905lngptfL5kdf032VikCbcnE+Ga
-         HZsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793041128; x=1793645928;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uO/W/z94g5X81Ln9+3SsNcj1ZpjaM4tumvmhkUCPgU4=;
-        b=mIZRFD06VUrtT0C83csdmjduChlUDdWeKlLrBZXw1FD5Wmf+6zbvTnmBDvBVCbjT0w
-         VVUFDxnzvunLaoL23aA09y/Y15hLToD4qZZog5rClfcRj1W+PkuHpBKEoB9ee+epnFCw
-         5qK6WauW+XwZFkvjHfQ/FVld7XdWDQ0WDJCXc3+xHv1dR/1vaGWJ2IP395VYH57YFgZC
-         1aT3Pda0fjwgdmGlUgIsc9P2RqdIASFDZazBjmQSGwiXtHv6q1PVa71HP2LuLMkll7Vo
-         XyLTqmBAYZAjbf7Wrl3vDCwFER8VD0Oj/GC6McVU44oL5WjJ20uvYKc6Unhk0g9evP3c
-         BjZw==
-X-Forwarded-Encrypted: i=1; AKwUvBxDc+kqh7NknSz/CNyyjOz4JvsHT3DVZJG9236yc5k2E3fnXBH1WebdHsmi9CcBqzGLzgVO2jHoIg==@kvack.org
-X-Gm-Message-State: AFq9FYK54Rtljhojs8OS+mKcHGVaXOgPitJwaWHjNmjnUASXyV8QCpPY
-	9zXx7B3lgQ90nbVNuF0CTWqUsHVwg4Eou47MSbl8TCdJRQzFreRUoKwFIwSqoHk2rwxBTTHRcsD
-	PHaJF3TtW3jdi82t9rQ==
-X-Received: from ejzi19.prod.google.com ([2002:a17:906:a293:b0:c40:732:2996])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:9f88:b0:c46:7462:6332 with SMTP id a640c23a62f3a-c46bdebd370mr947991366b.37.1793041128327;
- Mon, 26 Oct 2026 11:58:48 -0700 (PDT)
-Date: Mon, 26 Oct 2026 18:58:47 +0000
-In-Reply-To: <20261026174217.603114-1-tarunsahu@google.com>
+	bh=XIdEvAhvD72pVilhcWiVsqONnHhA17ggokD6xusTGsw=;
+	b=vhxFsxLMjIQ4hzEZDocYuw9XkXyYEFerrq7mQUyEnQWQBI+SgA03rz+WsVtlSEQ3WInXYw
+	xTZnFkCdVlRmWbzoMjw2YwavaHWK6q28e1ekKbxSLEX72LfFrD1LJP75GpmhnvJDr1WXbs
+	w0kcrG14ltHt1m3nbteKWseToE7jbLw=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793041651;
+	b=q1dXzEfIYb9oVS0S4x0eJ1qrm7fndEOZeuW03Buz2OPlIPax1hBTG8lOuu0FLZGG5WTgO/
+	QVo7mjf52aFaohr+kBgfjv7LKXKfqfeHfWlVsnu9S8ZzTmBw3TDVJZ465Bzz+/wf7X5yUZ
+	S+dkw9Tej/seED8YQhYCQGCuPfNcn+w=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="nEX5J9/P";
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.63 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FDYNy2DiG0Fy8D44FZqw4BhIjEjTfV95rXkFzjpA8JQVZ6ODFPdf+ik59MvyISiLhJjERo+ljGIBnWE/2BBuoszmnXSeCFg+KKfZoHeHLYn3v20St7ZefUEIs2lfehoS4mlfO+EduonVxjr9c1EpRwN8AXQz0KrcFuwJnW+LVztDBv56DxPHvHwi0ovoG0i4mXVfaXcSUJdU5gE8H+Ztsd9SUqRafZtWBU8qaBAv1d5NOVINL+l8r34vRtLvluRZ7GeP1Q+QShPNXe148N3gVe+VuftixUYovCnJVKaEn1rtB7XqJidJ/LJsQlVF4QMQXYmUt06xDlPbqua9YUlmnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XIdEvAhvD72pVilhcWiVsqONnHhA17ggokD6xusTGsw=;
+ b=yviIAFs1PmQklQ0Z/d4MpXzdMnsReMrtQN5NzwGdGrXEzW+l+vqUVOGCx7JcQxGxZ5RBeqdZIb73l6Ei6ErqxsVTGOwLnpEAiFy69J50CCJTHqogp3GEIcR7LhKlUcEjeii8GvX9RIsWcPuiqI7liLlCPknaWrDeUEgPuTWXRU19KLEtn1uUu/PbYOs43xfEmAGpSaDKFAMN9a6w30K1H2VAH01a2O4cVhFHB8KESNDQWQdQqGgtLDRkzMldzpeXGyscQu32JlastvKZAcuc4lu8+QCswY4lPs1XL0aXg/CEbQfpftKQMC38BXuQwDUc6AZzzPbI6EyA4gBi0SfXrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XIdEvAhvD72pVilhcWiVsqONnHhA17ggokD6xusTGsw=;
+ b=nEX5J9/PQBH7iU4UpAYqfBn5s6Nbsvt0xPzhhGHMjql3X1H/OouzSuMAmbcNjhA2S5E/7ivnt86jQVBCgzvowlmMAgwNU+stj/oyPeDWhJK2IYM74qZwf5o1z5Eg1L1aR+c8jNPj2QeKLfuYzij7obWR7jyC9bm45gYwZRo9FmokaV1zfh80C0FZeaUauXfcgcuj2mTd5xIM7I8ZnqlSWKiThXZFCR4t/rrFwuKuUbMgcJo7lN1SbmcewOt5GB5tfueFL6CHOYPeum0cuYHVJ8NDP6egDRdFmS+OSTtr9zbfDjx6eZxQThg731JXOy3UDNTbcG6D+7Q/D2izsD89Kg==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SAAPR12MB676730.namprd12.prod.outlook.com (2603:10b6:802:301::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 19:07:25 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 19:07:25 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 04/16] mm/shmem: honour F_SEAL_EXEC when an ACL is set
+Date: Mon, 26 Oct 2026 15:07:22 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <695BF4CC-9285-45C3-93CC-9DB8F7DAC962@nvidia.com>
+In-Reply-To: <20261026-fixes_shmem-v1-4-703206d5fa0c@kernel.org>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-4-703206d5fa0c@kernel.org>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BN9PR03CA0396.namprd03.prod.outlook.com
+ (2603:10b6:408:111::11) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261026174217.603114-1-tarunsahu@google.com>
-Message-ID: <9huz8q3k9tlk.fsf@tarunix.c.googlers.com>
-Subject: Re: [RFC PATCH v3 0/4] liveupdate: Add feature header for
- fine-grained ABI compatibility
-From: tarunsahu@google.com
-To: loganodell@google.com, alex@shazbot.org, dwmw2@infradead.org, 
-	seanjc@google.com, Mike Rapoport <rppt@kernel.org>, will@kernel.org, pbonzini@redhat.com, 
-	jgg@nvidia.com, Pasha Tatashin <pasha.tatashin@soleen.com>, arnd@arndb.de, 
-	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, oupton@kernel.org, 
-	baolu.lu@linux.intel.com, David Matlack <dmatlack@google.com>, robin.murphy@arm.com, 
-	maz@kernel.org, Alexander Graf <graf@amazon.com>, joro@8bytes.org, 
-	Bjorn Helgaas <bhelgaas@google.com>, kevin.tian@intel.com, 
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E9A9080005
-X-Stat-Signature: n1dbmo44dhrxeqirmry73cmxkgrmkf63
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SAAPR12MB676730:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ca30312-9ba5-4430-7045-08df33945f0d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|23010399003|376014|6133799003|10067099003|22082099003|18002099003|56012099006|4143699003|11063799006|261021123027099003|261009223027099003|261021121427099003;
+X-Microsoft-Antispam-Message-Info:
+	jFQEInD64OpSx/3ZaZRya2q9IABCPqvWJk3v+g1OwnYr3U0oSZnJWKzOMIUKmOr97/PDX4b/teT9eeGfzVOwaa/51Rbg0LOkwFjU+7OvcRgRhjem+YHlP+Oi4iZ3sj2byyXLj4EpHQmiHqyAZXVf9ASy6NgahQfo3wKrgFW5gkPBUmR1rY3vT7/VD2EJnxqt0J/FmZOJEEzpZ/7e0lHpffVUbDtIf6/eL/JfXfm/xwBLawhnYSH6wx+HPLaV8JHJzDuQVvatcYbTdDASBilVDzyo3rG73OJseufG+nRRZ/OzJJnZnueQCJxGm721y67B1Zmk3IxZsH2mHx+yYEUyUg3w+vTQHQP2nrkohPZUquRvul9pbQ66dgPYDwcQckISQBUQWMwlVGVQelp9Ni8A14Cpb4wOyjJ53/vh1gjq1H76XxuEHQRBSe8j3435j9z8BAZyEqKqxczbJnaS4QeVlWQBw4C0VidZYoAXkhN4rKTnH4Ex86j8Yq3iK74KCxoRqK9aLImHOumZslIDFe6Z/IWtW7MEB3VKobBj2IDZEz8PNHuCagly+Wnf4Vubjwf2qEVbI7yATQFDtGJIu9FBah6iO5N3CSnUriaBPwetOnta7rdgfG/j9FQdhLRpAbdNMVCEXxvskdKZx4zBkJmqxQRDQuz5Qyj1AuXMJwOd3Rk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(23010399003)(376014)(6133799003)(10067099003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(261021123027099003)(261009223027099003)(261021121427099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zcxPKuH0x295fzAFi9aqG80I4XPESCx68j8gyOBu/LB5PMWr3layVcwUYKNU?=
+ =?us-ascii?Q?bsKd7c7BVMkkOwqdseRWH2LIVeOki+V/9yEKechr38w4gIPPhFr2h+J/ylUu?=
+ =?us-ascii?Q?geAOqVq2b3iRnCqeOj7aBaVyBM7kZGusaGyj0ClaZMSAvFnSrxKIZ72fWwKi?=
+ =?us-ascii?Q?XILa918ly5rzTItI00y6H+1fYY5z+Dry3kry5iNI6hww3lU+RY6xMhiABpax?=
+ =?us-ascii?Q?8fncGLvbAkWfLt6dohNbwhRUNXtT6O542TUswrYZYKFyVkMyxZCYQTEhhQYx?=
+ =?us-ascii?Q?71a+6t2mIZKRT8SNUj2jyqNcnbTMtwUa1Z+IROHiU2GgWCoyS5FVSjxH+WWM?=
+ =?us-ascii?Q?o44ydeWO8yowCjbkgIPkqy72ZXiR5NwBqUwF8pzprr0vaCT4/7zWR1yY9Ynw?=
+ =?us-ascii?Q?RaxyH8cA8p3xoRBfwoZc27lc8WY6fg2cnMc2k2ltKJ0CtHKSKhWWmucHNKL4?=
+ =?us-ascii?Q?BBxG4NxkNKC4xq3XX1qq3AEgtx7dpBC1Z9si7Ri/FufHdt+7Pb06xT+Fq8ho?=
+ =?us-ascii?Q?N0O+4G2t8Y0JahJ1VB4AKckocl3fhN89/9k7EXHOetHFKbT09HEfBwixWvF8?=
+ =?us-ascii?Q?hN7Tcf/30s6V0CjEqKQ6pB1+P8S2Zl48Y1GV228VRFjecl3zshhGEDMALA4C?=
+ =?us-ascii?Q?hK+46jjS6LkW5clhPNOcSCOiI1CSMhJDMbJGBWzEhGnnE7Jb7jumai8XTBI3?=
+ =?us-ascii?Q?4KHujRYkZ9uXK0JII7QcD4XraeGyZf9/KW60teU3sW/K14Ti9aIdrYXmzwea?=
+ =?us-ascii?Q?n3dZC9I5NQh1sp1gDI/A1Sa+pNLuFqMuol63jBa3dqyhIJeRC9wS08OBmwmd?=
+ =?us-ascii?Q?MZHirzx0BZJUNEhB4zC50z7UW/Ok0EFfV1kd8x5BSNQvq3osLPF8eH9lpm1a?=
+ =?us-ascii?Q?Yg94Os9JfSyo3K/k0JmiW+SO3+M7mKezBEZ1bfSmEQBVd44JGaX62XHT9aw3?=
+ =?us-ascii?Q?zojiGuCjVnHTA/sqgstXCtmAZpkG5meDhHD0jTx8CajNeJqfYRnsnh7kUOnK?=
+ =?us-ascii?Q?9ciCxgkY9ooMF9QLpauoh6uXrdovXb6XL/74OFfBv7pQS1q061zqz2hSwC1X?=
+ =?us-ascii?Q?ygsl0x1ja1aGz+VZFMf+fVndc10M6jTkrpC/vFgo858syVImBMafFG5vIT/b?=
+ =?us-ascii?Q?s1RGP8IM+ZaD/pGjP4SOU3e4vSZrdMxEmBQIP5gHTJwvsYpm1puXfEyl24SA?=
+ =?us-ascii?Q?6TWstelud+ObQu7rdw8X81HHHC6YRCCBQilioIeRjWmyK6ckvLN/Vsa8geUb?=
+ =?us-ascii?Q?P9qFEP4wpTrUWyHFLx0QfQFLs5c9IA2qkF2KVNYjgr7J/kb1mqalY2XVU2bF?=
+ =?us-ascii?Q?EpsWroIMi/hBhVPWcGr7aAJQqPlxC2uxEvGjOVueuRP354df9MZaH2Gohnqq?=
+ =?us-ascii?Q?G9XOKatcaRNgFlMSHEMyFpt3JDx5qyXO/bcu7oVE1LtAkYcd4MQL7tyJ3jXk?=
+ =?us-ascii?Q?Rw/YHxLa8a+junagwgyUXF0vsSlmZvugU354KEtE3ZGmMNPx4HtXhxaNiIIQ?=
+ =?us-ascii?Q?X/Sf72q+mwx+wbgWrG4vkaNfxAlU/9HnIK6R1sIzuTx3Z9ZRKWJ3ISrfTsxK?=
+ =?us-ascii?Q?SxjCIMIFecgPVTFQqGHorwKdRPqB3/dVBEl6IpEURH0bu7E9+IuTUG1hSwuk?=
+ =?us-ascii?Q?e4S43Qi3BClmFRt8SEKIXCzPpB3OIP+UgjsCrjgmPUXsS+xS/hGQvBmXFG/U?=
+ =?us-ascii?Q?cF9i64n7BzD2BfeDsnVnZ1Mgwos473xs2QjYoAU29Xz/jKMp?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ca30312-9ba5-4430-7045-08df33945f0d
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 19:07:25.4415
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OIHSxhPUWskJyeFA7Qn/ES/LrUOus4DalOi8gY9yW3GeKNgEoaWZYYiUGYOwGSJ1
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAAPR12MB676730
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 41FFF40003
+X-Stat-Signature: rtp9w331ng5oozsqebn9yi64ahdoakbo
 X-Rspam-User: 
-X-HE-Tag: 1793041129-959235
-X-HE-Meta: U2FsdGVkX19k2VseAemsLh27FPvFamYxFG8YlHnmhtwgaHVo8Y36h5d8PECmgR4Ntun1YGW5yVQFJCNILsxQeMGTORwgAwfOrHiwHfWk5GzSNeCBY6Bv3OCLAWye27dXFxR9F1Gn1W+ZJtHWnrjMXXw+HqvTo722WZJCqwSfV3xUZfD95yC02P2Q0q0f/dZKx9ehC+NoOu8AK7dH9t2lFgmYml62N8LniNs2NBub9HhkJZxuHuNqQy9Qa1xoqY7SmqOTW4axP9V8D22rw3ZvJx5UkbhAZJDThxMK+qSSyGwSmQJh/z1NfeAddeGuPJ01mcY6D4gX1G0bMD6NxG4xHFw0e3Rd6NExy2vbk5NEtxlWyJVUghygC/Mx0qNgAeMOq2fQW5ZoH0DSeH1EBsOHZFx/o3eysCC9hkwsNvspTwol7lqK2nwXlEz74wfjJgWn5s2RBYAi6nv/uIosOvPmBqfJ3f52jpo+ZW+PrlVfn0umXqDPYLm818pjk2a22bVP45Dk2iNlMSuGscYvyzifbW2i/FXXV3wS0cdgNsgdkT7mkR+CJphJ/T3vWJf4Yza8RZ+E2Komf/AAUEBt9qegrKyu6HrkX4uaOHp5JpI/YwBlg2yEqFTLOIHM5WDFq0toM+BW6lD/K54fOHRng7TWZo3YimluNX9PvLd3Xa0ghHDElgAJhjS/bGYkg4Bos9EO/q6jM+2uC/Bokhs7bLj0OJr4Pev+3BSxcZYG5Sa2atFitZHMLx//S4FEbgXGST2iG4nj4ua2gei3Nbruf5jIKF2esm9CdpiGmqEXLQhJIiM/Ts9mqPkuyHiFnpKO7WYXnxsugFqjypEmqi0eVfisDw8aES8ri99hFLsLBbkL0tXxkyrQqt+njJIotSP5F6wBwToi8gkBhcSrHNqQkhhXbVnVCRErvFUbjhI/kg4Pb/JIVSI95MXGhHvTfCRqPLOEc7G8WpM9+KYZqVYiddm
- DLqvt32/
- +DfPzzt7TebVVgJQjdsBUra3KvRgSkdSOY9SN0kpQYCB0dOpuposRLfnB08UEaG5od+nNMylC2fMJOapHD42iYvP3i1dnvis0pOleRPe0muZ3UvbyM2Mi37ORAjYb1CfJVBZOhmQb7vuzLJFXXwYkE1FLOVz9xn1qxWPBRye36vp2q+/lyTHZvcTiOMLtwcqKxbXctNkyie1G+20fU54EAHnvmYiKxOkZWN8BuIIO6CWjdMkzmlQ88AJms1giS6FgeabaBHRxeKEsQbn3hc3G7DjcnkmeNmUarBKP6W4FV4NVsvzwm7xsmS59+TM+8ff6qaUYnCpkfh6Kjlmxs77E9/PQYAO0b1MxFjeHaQcTOQ0ByOYY4yV4JkIVjgO+vZmyYyUCEh55JXT+d/3Paq9rHve89rN8P69ywmtBsqJhiGQJs+tg6vSBpCldenmahSzr0ZFKUoQUDhPld2uIcR2LTYkt/NjTG1xb3AOSvavzL/Mu9k+TqoLRVhWSiHF6iOGJd/osnqv7j0Xl7uREHJAeEv1NCMLdQfoR0fn1YtagvDpRr1ODHnQY81fBHVo9Zua8RWUmTSi/4UpYHffTDiDq7lybEvrurGSZCtb5YEN8YMwdd2I=
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793041651-52537
+X-HE-Meta: U2FsdGVkX19TxisS5TBJbEfxTmJ7V9LvzkIXqoOINNEaT8RVmHez4T7wDWWBcXizmxMz6usILII+tgpUGLIrEkeEdhf0iynxFBtSL/YUrVcn1/UgoQ0JPshtmfq+GIeWeEpMoDCmPmf7YGeFGLcdbGH19HHO8sxYklKmiOjsJANixJmot0sBKiL43y8NzkstwRPPZHTOSyTgu6/kkuVBO98UBBcy7TtMpY5c8BP3CDSqaGWrpYm8KCBmHVJt1DWB8s/SR8u/dVoWbNSdAYK86R2Ttg+u9X1D0xY8Lmvc5gB/t7dJhR3PsnwFl3iRFuux4M/0tj1NHAzRAquR79P/wyRzkfdYhbyaID04lmB999LpfaZYuy2CW5kP0ymwLyWp1NUz6b0P+sm6yGn2VLF9AeAe08TfC6GHD/jauKMM+He/wAN/pwjYulrp2wfWV42p3dvd6kEwmzx5dOGlur4YssEZwOfulx/1W2Q/PRKiiyGlnrY5NObCgKIS+QvUS6AdVrr5p6bzRueRdBZI1PutiYKYq1wXZdRUKfFvp6lY7pkKdM7A6ZAYK+dOdZOMHYzIxO5/fQrdN1DJnaZkfp/sxK5ywL1xxvzYGD4qxLTG8uLuPp2r+yLNeZ4UOu4iZe+/r1cP0zUN8SvgbZuUUJJKVL/S35KqYdgxZ5O19CeGNdfTLcjdVoOOYLrB2HR0nCDLuCHPRKEGjbZdXMzHG10K74yhGycXGzMxu71o87ICsbLVSPlf7TJCZHGvMO9SRXzqllC1xRRZg5o4cEUx9O9hmbAzJHPigG19MYaWlslJUlNE4JK1qK6L1ltpgImw6W9dzV26tlttWVHKZADbY8ZMLtUgzxemLBQf1yjZhq5p2jO/MLvxKI76q6R6UhSdb4sU0HIyv+3HY5MApV5DG85epQsawmP8WmZV/Z6aWk48WuGsW0KA7DtX/TmLa8Kydhz788dbOlDJQWdjRN5Wy3F
+ kNYWdAf9
+ I2psiIWsQXpzQybtd6WMPTj99QJPzkJ66zygES1FRpgdisjgfzBNpBLj7nuTPBdUrwbIHUocyWHNcwO5X189ufuT0mjiDS5i6z9YjHNbZIDRQyvbAWOlaTDd/Nt6Iz9kHbC5stA2bngev0V+vbS2wMQDNRvmMIu6FVbgUAAlwDFM8KCAMcITi21cIT4N8y85S1Qn3RsE4Dp6v3ehL6WeAUewAJKaPxXJH08B4ey47af6zopInhAjjiSVdKND31KMaavm6UCEq07jqFLfEhDzbq4YpI7MufAJOl1qUhvsSPSA3JnCx37DVbI62ZXxNA8VibNLB9eqjrccvMRVTzdgh1zgJxSdbWcCbGOEXU4Sivn+vet1srosPUn+fRJ6PAp1GFmOXSsZMB4/xIF9Kxc5SAPuvs3F6TkBfTJ523HPIOL/xSbfWMAL5YJ9kv2pHBEXqcE7GMofGJUznl/hgoF8WJmkj2+iRvLY37XbsY17RG9IM8puBuYpQ2HRbCSOeZFuByB+3i7/NFF9SQKNM0pot94k5AA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,120 +178,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 26 Oct 2026, at 5:40, David Hildenbrand (Arm) wrote:
 
-Withdrawing this version because of the following reasons.
+> From: Chris Mason <mason@kernel.org>
+>
+> The owner of a memfd sealed with F_SEAL_EXEC can still change its
+> execute bits by setting a POSIX access ACL. With CONFIG_TMPFS_POSIX_ACL,
+> this lets an unprivileged owner make a non-executable memfd executable,
+> bypassing vm.memfd_noexec=2.
+>
+> simple_set_acl() updates i_mode directly, bypassing the seal check in
+> shmem_setattr(). Add shmem_set_acl() to check the resulting mode. Share
+> the F_SEAL_EXEC check with shmem_setattr() using memfd_check_seals_mode()
+> in include/linux/memfd.h.
+>
+> Fix generated by an LLM and sent by Chris Mason in private.
+>
+> Fixes: 6fd7353829ca ("mm/memfd: add F_SEAL_EXEC")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: use common helper; simplify description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  include/linux/memfd.h |  9 +++++++++
+>  mm/shmem.c            | 35 ++++++++++++++++++++++++++++++-----
+>  2 files changed, 39 insertions(+), 5 deletions(-)
+>
 
-1. KHO also has versioning which can also share the same concept of the
-feature flags, And the header can be shared amongst KHO and LUO. In next
-version, I will include this.
+The changes make sense to me.
 
-2. If there are any open threads in the V2, Can be settled based on this V3
-reference. This V3 has included the suggestion from V2, like updated
-truth table, nr_features based flags array, ABI wrapper MACRO etc.
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-~Tarun
-
-
-Tarun Sahu <tarunsahu@google.com> writes:
-
-> Changes since RFC v2 [1]:
-> - Dropped the file handler compatible rename and per-FD handler
->   selection patches.
-> - Replaced the fixed 128-byte header with an expandable struct
->   luo_ser_hdr (size, nr_features, flags[]), kept separate from the
->   payload structure. The header is 8 bytes with no features and 16 bytes
->   for 1 to 32 features.
-> - Each subsystem declares its wrapper once with DECLARE_LUO_SER_WRAP(),
->   passing its feature enum MAX; the macro sizes the flags entries and
->   generates name##_wrap_init(), so callers never pass sizes or counts.
->   The target kernel reaches the payload with luo_ser_payload().
-> - Feature bits describe only what each preserved object uses. The target
->   kernel checks them against its own boolean supported table, and the
->   header is trusted as the source of truth: validation only rejects a
->   required feature the target kernel does not support. 0b10 is reserved.
-> - Moved the __packed removal into its own patch (1/4) and added a KUnit
->   test (4/4).
->
-> Changes since RFC v1 [2]:
-> - Replaced the 3-mask (supp, req, active) design with a header of 2-bit
->   feature states.
->
-> [1] https://lore.kernel.org/all/20261021152527.375070-1-tarunsahu@google.com/
-> [2] https://lore.kernel.org/all/20260903023452.721732-1-loganodell@google.com/
->
-> ==========COVER LETTER==============
->
-> LUO and its file handlers rely only on coarse-grained compatibility
-> strings (such as luo-v5 and memfd-v2) to validate handed-over state
-> across kexec. Any change to a serialized structure, even an optional
-> additive field, requires bumping the string and breaks live update
-> between adjacent kernels.
->
-> This series adds a feature header (struct luo_ser_hdr) ahead of
-> serialized LUO structures so subsystems can evolve their serialized state
-> per feature. Each subsystem groups its serialized fields under feature
-> indices, with index 0 for the base fields. New capabilities append fields
-> at the end of the payload under a new feature index, and retired fields
-> stay in place so offsets never shift. Only a change that feature flags
-> cannot express needs a new handler with a bumped compatibility string.
->
-> Each feature has a 2-bit state set by the source kernel:
-> - LUO_FEAT_ABSENT (0b00): not in the payload; a target kernel that
->   supports it can use default values.
-> - LUO_FEAT_OPTIONAL (0b01): in the payload; a target kernel that does not
->   support it ignores the data.
-> - LUO_FEAT_REQUIRED (0b11): in the payload; a target kernel that does not
->   support it rejects the state with -EOPNOTSUPP.
-> - LUO_FEAT_RESERVED (0b10): reserved, not checked by the target kernel.
->
-> The target kernel checks the header against its own boolean supported
-> table:
->
->   Source hdr  Target supported[i]  Action
->   ----------  -------------------  ----------------------------------
->   00          0 or 1               Accept: feature absent in payload
->   01          0                    Accept: ignore the feature data
->   01          1                    Accept: use the feature data
->   11          0                    Reject: -EOPNOTSUPP
->   11          1                    Accept: use the feature data
->   10          0 or 1               Reserved: not checked by target
->
-> struct luo_ser_hdr holds the total size of the serialized structure
-> (u32), the number of features (u32 nr_features), and 64-bit flags
-> entries with 32 features each. With no features the header is 8 bytes;
-> with 1 to 32 features it is 16 bytes.
->
-> On the source side, a subsystem declares its wrapper once with
-> DECLARE_LUO_SER_WRAP(name, expected_size, nr_features), passing its
-> feature enum MAX, then calls name##_wrap_init(), marks the features the
-> preserved object uses with luo_ser_set_feat(), and fills wrap->ser. On
-> the target side, incoming state is never cast to the wrapper, since the
-> source kernel may use a different number of flags entries. The target
-> kernel calls luo_ser_hdr_validate(), finds the payload with
-> luo_ser_payload(), and reads the fields of a feature only after
-> luo_ser_get_feat() shows it present.
->
-> Patch 1 removes __packed from the LUO and memfd ABI structures. Patch 2
-> adds the header and converts struct luo_ser. Patch 3 converts memfd and
-> bumps its compatibility string to memfd-v3. Patch 4 adds KUnit tests.
->
-> Tarun Sahu (4):
->   liveupdate: Remove __packed from LUO and memfd ABI structures
->   liveupdate: Add feature header for fine-grained ABI compatibility
->   mm: memfd_luo: Add the feature header
->   liveupdate: Add KUnit test for the feature header helpers
->
->  MAINTAINERS                          |   1 +
->  include/linux/kho/abi/luo.h          | 359 ++++++++++++++++++++++++---
->  include/linux/kho/abi/memfd.h        |  43 +++-
->  kernel/liveupdate/luo_core.c         |  62 +++--
->  lib/Kconfig.debug                    |  16 ++
->  lib/tests/Makefile                   |   1 +
->  lib/tests/liveupdate_feature_kunit.c | 118 +++++++++
->  mm/memfd_luo.c                       |  68 +++--
->  8 files changed, 577 insertions(+), 91 deletions(-)
->  create mode 100644 lib/tests/liveupdate_feature_kunit.c
->
-> -- 
-> 2.56.0.307.g5fe7bd680c-goog
+Best Regards,
+Yan, Zi
 
