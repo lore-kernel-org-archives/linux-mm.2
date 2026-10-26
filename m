@@ -1,160 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04129606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BD5606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=UoOJok6X;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=eURMU/YK
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=PumzwmTQ
 Received: by kanga.kvack.org (Postfix)
-	id 15FE06B05B3; Mon, 26 Oct 2026 13:59:46 -0400 (EDT)
+	id BEA306B05B0; Mon, 26 Oct 2026 14:02:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 116426B05B4; Mon, 26 Oct 2026 13:59:46 -0400 (EDT)
+	id B9B006B05B4; Mon, 26 Oct 2026 14:02:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F19566B05B4; Mon, 26 Oct 2026 13:59:45 -0400 (EDT)
+	id AB1AB6B05B5; Mon, 26 Oct 2026 14:02:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C47BC6B05B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:59:45 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5017D12085A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:59:45 +0000 (UTC)
-X-FDA: 85365540330.22.46A5DC9
-Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 31595140005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:59:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="U oOJok6";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="eURMU/YK";
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.136 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 86AD66B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:02:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0B49B1A0795
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:02:00 +0000 (UTC)
+X-FDA: 85365546000.24.110340A
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6B818140014
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:01:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=PumzwmTQ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf23.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793037583;
+	s=arc-20220608; t=1793037718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oOYzlYgPliGkanrzYocQaBwBSFhy+a09Z2xViy9Z+c0=;
-	b=6xylKTfjzksySTMWAkrKiUkEFF3TXg1h88cJvPAfMc6x1ZijYZMLEbXdRykcKQLVeU7O8U
-	8tUIYTq7nZtgL+wXmnaxRGTQY/Ef/Qc56iKGmsffrmuN9WPoSDCn6RhPGlalaKOntsGei3
-	gYAHxQ8Qywu2x4gMp8HuxTkFmv1FjKQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793037583;
-	b=mM1rml1wxoRkqym3P00bNFJw2iFsMv9j8eqrr7nKPw6QaM+UwneVYbdw7pRRIUp1RHfzVB
-	m97xSnthgGCPudN/WGmv/9OD0i0fsRCdWZvKVqKdpMmh/8/PBI12opTodxBYUT48IBY1gz
-	pU8nPVVEV30pWlqdczURi7s+iIW89dQ=
+	bh=3PFsJLihFaPQXHz4UKfvj2WUy9LWdZX9tEl8YZxtmyM=;
+	b=1jh6eoyvwCk0HPjrI4/DfLIqsLvkVLnmmyeDZTpydDMzDAnkQ90DjMNtND6GK/uEUreSWa
+	hb6Zw8/yzhvBYjvVoirACvgR4qdo/IjRcWLfvtFwzVlxbmFDZuwk2J/gVoSks5tgY5YGvq
+	1Qk/KtGTFFiHbmFOECjQI6igtIWY0Zs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="U oOJok6";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="eURMU/YK";
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.136 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 994CC13802FE
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:59:42 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 26 Oct 2026 13:59:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1793037582; x=
-	1793044782; bh=oOYzlYgPliGkanrzYocQaBwBSFhy+a09Z2xViy9Z+c0=; b=U
-	oOJok6X+OIinjewBKwhYYwOxH+PZDJZGMSPwjaGJ6X06l3eFrU9YF4zpKT0ZAWky
-	nA8ZV1skgzjGHlHl1L1BmOeH8T42X/fFTZK4K2esGTRHvenXkmEd0Jwusx14tQOs
-	TJ9cxTf5XOaT8SFhyTZvzVEgxB+fBHL2WR4LNGxirAiwgCSjeVHa4vdiBxNskZMq
-	TSAeVMg1/0zZXZyyWFBzcAJtBP6WbUs9+ytZy5rakO2VqM+rhMegC3edWOphRs5l
-	2dUTepFRzOEc2m8Lf1HyEuowFN8oHJXMl6Hn3VlgnWlNRMUyFYO+QrZWlW4ubCrb
-	yyREpw220eOLNVJ1htcyQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793037582; x=1793044782; bh=oOYzlYgPliGkanrzYocQaBwBSFhy+a09Z2x
-	Viy9Z+c0=; b=eURMU/YKDjSZQVR4C6vNt3B8v1oil6L+SXYpKcDU0e4FaCW+fqq
-	gmiDaaps0zI1U6S6vwAcO312JVPYb7hdrYZfXQsR/GCzTdH9D+g6eXCg/ELt7NDD
-	gJ9qDIDm30mM1jQV5dK+75V9gYayp/Bd6zUdbzSDYLxw6iSSh60j+Vx3952ABm6T
-	Z7EENyIA3iX51pozn+UeOLyXTRorQKKUmbIqPQZdJz+jNCWIakOk5BcxJqFvj28k
-	sLCIGoLne581maJUaf/yJXPWSKm/Z9gRxso33HxSfpWiqHS7XUkYBwDL+vMuA02F
-	Ql73aX5JhHXpdRNdStonBzYH9UeCBVeGPvQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793037582; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:qz1WAu7TAynkSmFdX4RovcMlg+6072VAJbK0m10qLrgyyiF
-	Ok5T+F79e7Wrb1KkjwuTdWuQGnq0ajAOzXRImV6Vxb/V0x+S5TtC0rL67vnWzgK1
-	8HeyMJSaOQCm8NLnMDokk0co7eZ3h2LiwpaNztHu70gFnPTOQ92qXxiETOfB5o5q
-	9qg74wulPRBXlB+E1ShpoW1jh7E7BlQ/aKKf4vGu3HdOPOPQQr0CbiCRlWdngMkL
-	vwIUkZo7I1rGC0wkPgJlqB8OoMShs5hCTGVKed4Ou0Yeh84fD55ZPFKYFpwDW2CB
-	1WvE5dmJZNQXE2EvVE4aliJN0ZCHRNMl2KoYWwQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:gdz0OR2pSb070YT1VXXewMkWi4OHqKYlSy7mq3nTxw0=:xvg2+PKiolvt97hjUN1pagpPFL75bqeploLKqu3QsnU=;
-X-ME-Sender: <xms:DJXfaj6fwcX0ZPAdTR3_f3oEj_vAewN7PlEoD3NZMD6NmLQwbfYlfQ>
-    <xme:DJXfavnRKmmObRDl9VqgO_F1z-2AEhqIYkLWM_KfYMG8m1StqqDFzFSY3XPuE4uMP
-    oYsz6xjJGmUEUWtE5hRPVpQp_DP9Rg_Kdea5WdbUcQGexvgNO9fKQeY>
-X-ME-Received: <xmr:DJXfakrrOEFUYHz0RyjOjRGT_jZDZp7cLBZj5usNadk7-RXTxUiHpjC5q_k>
-X-ME-Proxy-Cause: dmFkZTFCJC346uT6BkgpqQYR4FNPAi1RA63Z+5L1PPhx5EiCpW4UTmnFOpzGWG2lAFxYWG
-    ow1NfL/UTp/Pd4DBanvkvVjQX4/GJ9QHoxX2Gnm+9O7gKo81tMOLCB6mgJceKwlnlE/6R0
-    V2YJ39AyV14l8ouat82SghyoTr/S0qOn4UjCWDfZBVfbZ8H6KBl+RFmwuyJgsMdh+ieuFV
-    d3YZBJi/v/7a8u8UDV+6GBpxXisMoQE/lBwP/kVhG7Ecprx03wwiSqHTSA8W8XkMGFowSD
-    sBsXoX6pbh6kmOG7yuRNSEET/XSSH+CeKPAuXjog7+s9n69YFxLZ6RvMAi2C1P2qu/rzC5
-    xbTppKgEW5DqVCnkns29EM82AVgv+vAVO/P7HKFZ6UL0osfJ6AJYjRnMwpW1TPX9BeetfB
-    dc6qhmwH8Xi1dQs6oE1LR62OT4AJmKrTlyqpxF4iiktYda3iqD+0MCE3TCNGOxXSs3wsZD
-    foWjYya+jJPndrlUXX80JGJ2I6lCY9AK6SG4fFw7uvOXYsG5bLswkhY6a5bczIJM3s7PLJ
-    SYKLyw9v7y+OrzOXgf5/c42Iyg3svUHoiwPaMKLxZ9V+4nKMubFDZ4CLzkH4L1G8r5+Lv7
-    rDqIcyTKMcz4ul/5bLWLl7YgOTtWK4GhApbUsuBHbBrj4tO30MPLAugN1lXQ
-X-ME-Proxy: <xmx:DJXfakzI3ROPAIRF3b0nfYO13OEVCw4FsxyzKavvaXvJGmZ4PwfM-A>
-    <xmx:DJXfaq4ZTBk2GA67S3wXuU3nEDe0dCjvge2ERUkxS9U58ABq-IGRog>
-    <xmx:DJXfaqkUHTdbu04yL1Wlt1QzbiAF-t0P2gNd1oe43PGpk9SfM7zLhw>
-    <xmx:DJXfat72axNJc-yU0k8fSlJLmSeAYGZr27y7o2Zc7U_7leWrrlZPhQ>
-    <xmx:DpXfahmllRgZZFxfHQq0fVy_vAh8-l8eogDyjPm3ajYF7TcOsEE_ublE>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 13:59:39 -0400 (EDT)
-Date: Mon, 26 Oct 2026 17:59:38 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 08/16] mm/shmem: stop retrying folios that cannot be split
-Message-ID: <at-U8JkqnTC9GZyK@thinkstation>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-8-703206d5fa0c@kernel.org>
- <at-AmbZyqUnGAJkI@thinkstation>
- <f7d36a47-6879-40bf-8c24-dfc89d937647@kernel.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=PumzwmTQ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf23.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793037718;
+	b=PtLhfiD+QAXRmVAS44iaXjyE6Hi4w0ZllflmzkwKxobMU0LnEa8TQbRh/WJGOzNVgYmSXj
+	F9EGhuYharYfaXQ9ukoav4x2veDTKFYiPPG4HuGMkHtKvJ81QkU6YHSy9/uYUFrtoEOsz2
+	hJfy5+zmZPgknWyrQ9N/BbWRRQdkH80=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3PFsJLihFaPQXHz4UKfvj2WUy9LWdZX9tEl8YZxtmyM=; b=PumzwmTQ9yri+zottlvBujb8h8
+	G0+sZp8mwMJwQwf5pcjJJvRZICU677fKHFehVVnmMNH6OuFohjOjRL/wBGGFRuHx50Y45Uaf7Ujtx
+	6BZjIXuRDMOoF9PFSiRQm9f5TeQIsPy40Pa0JnSJbPYnUlGD9D3TwDjhHX9wUobWNdRJiy1KDNiaI
+	GfvrMFGXPovbqP8CNFgH9z5EHgOfQuKMvn2mGLRb8Zs9Si6/013n/WuMTHJRb3e8HRRcYF37rSiZ5
+	SGJJMLEGDNNuRSRTbCIfZr1JbW1bYJpnWtfOajpPqWDz9e/ouWg0qnlYgzF0A5SQolcoZIw3jTbd8
+	26Vq1oUg==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xLP18-000000032DW-0VC2;
+	Mon, 26 Oct 2026 18:01:54 +0000
+Date: Mon, 26 Oct 2026 14:01:47 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+Message-ID: <ft4q2mxxiihpvc6wjs2pyku6fvfqg5r4brpgjvz4ikkeh7vwff@s6h5k2dxstk2>
+References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
+ <at8-42OwXk2z6-HB@gremlin>
+ <CAJuCfpFaxo06yHdVKsEEmFf9qoOYS0DbMvUuAZEhNfDe7dcwJA@mail.gmail.com>
+ <8c5a8fb7-233e-4433-af45-b67cb2528b60@kernel.org>
+ <at-M5hORjFt6aur4@gremlin>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f7d36a47-6879-40bf-8c24-dfc89d937647@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 31595140005
-X-Stat-Signature: 76gnet4pmcro7h44kmd8tceg1zkgqk19
+In-Reply-To: <at-M5hORjFt6aur4@gremlin>
+X-Rspamd-Queue-Id: 6B818140014
+X-Stat-Signature: 57d37g4qez5sst89gzkn7wwpjwh1cbxi
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793037583-88559
-X-HE-Meta: U2FsdGVkX198KE55eiZQ7kgHB+lVYKQCeGIzcBiHkdyT4S0FZUxOoSrPYfvPywNSThZhWV62L7PBAjF3E9E+Eo7dJ5BUWhyW0SLNcaXGPoGB8J5fCs1W6eKozTt8ZBlHi9S17x1UEzZBls2CzjsnyPLYhsTlrtiHfyPayuGkkPIiQgkQSKQZuO3Ntw2Vw4YPwJxbb3t5+/HH9D7/w5xIykPbyzG6o8twGXmgd0Z+1Z789Ht7Muc0RlaJ4nGC3V8b3VexSwcdUUsqHMMIpGVZBEUtNMO+XmhP+kunK3CBm0F+EDZQp583unUtpgHp+BXlJvj//m9vPTdQR/OZcm95I5TLgc4WMzp7gLVlRbwKsPu7M+EP/TuQdQ4O2UXbOKmVFq2qHEq36MCLo+guyW0ywBZr1LBSF3ko6VLNnBtNx6i/hLEvkipccIzs/PyrY5H7GYplTfG9YL7KqIxd9XKAxnhvm48qneA/poJlc77wLUi3kqO1YXOXIJoqpZX0gA2zXj8EX4ZKSv1pDnAWOLUmS3BFJasFfmjQ/Niy6SE0io0RDxpvm15uCZUhcBZ/lvH668GZ3hI09zJGPykwsZNqU/cEpxAjJlVhAawNPuah+r1+Y9tbr2rmcDw8gtkNSDs7/yVefZDegcQI1zr0cbzrzLrNKJqM/cdIvcEvDMGwmoeSZK1P5GWORf5HQrnDe11y+4jJ3Du7u7VcazQvbr/R91rASfUqgAJcpW4UCYWjx3qOf69rL1/kfuChpFH8L3qJd/CMKpAq3KyMamrCe8OX8/bShl9NdxQNN35Q3m7dHAT76ht8OHntNbtde0Rjk9H3m03qu1aCwRwkevkPw5nseMs00+1tYvInv0RK4E9zttH7q8dfM94SF1Fun1p0BJxNUWzGD0c+6INzoim9n2tTVr0IPDcBs0TBeWdYnzDhjlBpiD5qARmQJKmFfp4mSWv5Q/Q4TbyP9ZS0hNsGgnY
- wCkisC35
- Afvjet0hlmJf1FSx0aTcYRLTadkAvJMZo4rtGC4GIr7u1dX1gt4z0Wau9dpFaGBBK1+kda1l5ENLa/n95HoK2EG4XpZ28ju4LvddBNUyGT3tkdG0M07llbidbAIHZCdfTQGmZ86ubcFK0D+mZ2n9ki9EdbIL6DhKvb79XZYaKJiNNTS0najRRFVjYhZM98wqiAgGePYxfmQ9rhsaFmBfOPatE+CAgdJ0XWHhcPHYmTiXa06Kp5ocfCO6uZBupV2X9kFIg68XX0TfyUTa82PtXrKMuckCo0nerNTbS7uQqsVlbTP9Spn1gBcZ1X4C5CLLEzqSdTbUiS5+3MlwFeNtHmTqhziwQcrYhg2tBHt1BQeQaeRQ0W4Q0FUfYInj9x4bPf2qTrMKixygmHBJ1/j9oXsXF+cQcdaixgbVhW/rx/Z+xL0bZcmADHCI1Gcg8QFNAO1B8wY11qkPTaiIpQdKFRvbY2gSOo2uy7pDbGnWuWJi4+UEC57g4d3kfkG31XbhHo+HcLl0au23shn+rmW4MsbRTgwDYRcpmkK5PjY1xgwsiSvEOdE4BKmiLOiHYBZKyWDQgyFQpoaNQQTzZFf8QnvmMBmQtx22jStEb2s6NExjGGLU=
+X-HE-Tag: 1793037717-348312
+X-HE-Meta: U2FsdGVkX186DpkcEYx9DNetZiADEZE5skfp2AnQqYbChkbabT+/XAP/f2ZmcR58/zaNtjdQ95hbcSTeqUiABOQ3vZj2HB4OTCAHQgCGU6tOUzw0QgKemxSK3Im8AkQSGZRsq3qPxrFVKznni9dUU40w16ep3Fm2OoIV+cEbLUfH7wGl7JU50errySbpriksk01ElJAJm8xLzneJxhimBz2JqTzt0eU6wt6sBfIVvjKd2FSBQciAaEo30ry0cRfEk2NS0JKqk2nh1mAkHbnmBsPPn7sstJWeaQFJFJysLzUCZoEbsaFXzGBMcNm05fMjcFhJbDkOZY/StZyoGgBzTa2QlxZbIs29m0amCmRwj9ct+6X1UgY0bxTbarFOzTQfLKFbAd7aHtS3HjwR+909l72NiWxqtZNIzJSzMAarAaACToEItKpkyj5qhhnzLUOQumTvFTVjtULwnDesHK325CvhzEREV7GIsWzq9noFnUL4guH1rvuLNA1nQ0/AWYE8AjsBL/Rss/qoa4VQSN5sOxv1/Er9Qsky5rS40uY5vPi2RW7MYPOVuMBC+6r1zjhovevBabeec1QF/zVRQ5wN70XInBdOUbn2o5Emmsw1rGUrSkKBmiypAk0A0hK+rPKCxrMBzqtKTqywYppWfCSiFYMRJYdkWXxT+4972kPzu6iQaeLFqcFdEVGHz1adfBMP/KEg6AFtmeE0i2vTuHZ/YMMFkbKLIi0pBaDFy6A6w8g9VK2DsKrePzrFLcmiVOS+wNOlLFLU/Qsk33mXO66L8TiMNKh8Nq+PkbIE5U46/Udnl1J/Pbz9JGt10tRcEVCiTfWT/JE3CKpGw7PP/YPUnJ0uStTXBDq1pOw0GBxMyHW5ipjVjemfD6s+Z6p9aNyfSgleOGh/jgDW0FHc3zzbvBJW4LHP2+HzbDNR6R7crknkQ58kMUaoTtuj/ZBvy9zAZjdU1PyorSGtoQCf+Bj
+ 2kLN+C1S
+ 6GAWlJQbyqJW1K8dSPoGAG00b94qfKZ6LjItWmUD1Cvg0Snaae0UXNE/JOfTpj/6/UJMDE0vQdXXDWhgvUMumt1NO2AEQ5Oxo/eA6KUKKDWpNuLnrw6Wvg978mrLWvdHx9MhTI2Su0ldsdiBPkGyfPoAUTycQFZ9wdqBg0PE4GiTqe1W9FpP6s5Oy7E1TMs8uxrMimvz7CZ55YX/5SxYE+o2XccH/a2oK6HbQZQ3U6PnmMKk+bCS/8vZMJxYyK82C8R7wkaml0J2I8mU9YwtKpNj6Y8JP+uZt2dZcNdEsRp3ANXF+fQCnvkpNgW+a7gI3hSo5cqaPdO4GUkc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,43 +99,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 06:08:15PM +0100, David Hildenbrand (Arm) wrote:
-> On 10/26/26 17:36, Kiryl Shutsemau wrote:
-> > On Mon, Oct 26, 2026 at 10:40:41AM +0100, David Hildenbrand (Arm) wrote:
-> >> From: Chris Mason <mason@kernel.org>
-> >>
-> >> A fault or collapse can insert a large folio crossing EOF after
-> >> shmem_undo_range() has handled the boundary folios. If splitting that
-> >> folio fails, truncate_inode_partial_folio() retains it when it is dirty.
-> >> The final scan then repeatedly finds it because it restarts from an
-> >> unchanged start.
-> >>
-> >> Truncation keeps the inode lock and ignores fatal signals while looping.
-> >> A concurrent unlink() can then block other directory operations while
-> >> holding the directory lock and waiting for the file's lock.
-> >>
-> >> Advance start past the retained folio, whose truncated part has already
-> >> been zeroed. Do not move start backwards if the failed split has shrunk
-> >> the folio.
-> >>
-> >> Fix generated by an LLM and sent by Chris Mason in private.
-> >>
-> >> Fixes: 55ac8bbe358b ("mm/shmem: fix race in shmem_undo_range w/THP")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Chris Mason <mason@kernel.org>
-> >> [ david: split fixes, simplify descriptions, adjust comments ]
-> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> > 
-> > Any reason, this should not be in the same patch as 07/16?
-> > It is the same failure mode in the same function.
+On 26/10/26 05:26PM, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Oct 26, 2026 at 06:19:18PM +0100, David Hildenbrand (Arm) wrote:
+> > >> +       /*
+> > >> +        * No lock was held since the last call, so the iterator's cached range
+> > >> +        * may no longer be valid. Always restart by address.
+> > >> +        *
+> > >> +        * The vma_range_is_empty() checks below avoid unnecessary mmap_lock
+> > >> +        * fallbacks.
+> > >> +        */
+> > >> +       vma_iter_set(vmi, from_addr);
+> > >
+> > > This is clearly simpler but this unconditional vmi reset is not ideal.
+> >
+> > Yes, exactly how I ended up where we am right now.
+> >
+> > I pref my current fix as something to backport that avoids performance changes.
+> >
+> > If you two disagree, please take it over and drag it over the finishing line in
+> > a timely manner.
+> >
+> > I wasted enough of my weekend with this over-enginered piece of software. (had
+> > to change one word before sending, can you guess which :P )
 > 
-> I decided to split because it's a slightly different error mode (failing to
-> discard vs. endless loop) and tackles two different commits.
+> No problem, will take over.
+> 
 
-Fair enough.
+Just a follow-up, another option: the vma iterator can check the
+previous end from vm_end and set the maple state to the range of the
+current vma if they disagree. Using the set_range() and not
+__set_range(), so the next walk will be a new walk immediately.
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thanks,
+Liam
 
