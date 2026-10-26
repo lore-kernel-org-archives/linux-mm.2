@@ -1,159 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71880606A339
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10367606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=JdL3NJqd;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=jsaKGria
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=vfM+xgkT
 Received: by kanga.kvack.org (Postfix)
-	id 89F416B05B3; Mon, 26 Oct 2026 13:49:47 -0400 (EDT)
+	id 2FD2B6B05B0; Mon, 26 Oct 2026 13:51:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8771A6B05B4; Mon, 26 Oct 2026 13:49:47 -0400 (EDT)
+	id 2AEE66B05B7; Mon, 26 Oct 2026 13:51:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78C2D6B05B5; Mon, 26 Oct 2026 13:49:47 -0400 (EDT)
+	id 1C4426B05B9; Mon, 26 Oct 2026 13:51:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 521126B05B3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:49:47 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D50FF407E6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:49:46 +0000 (UTC)
-X-FDA: 85365515172.22.E16BBD8
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C2E30120004
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:49:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="J dL3NJq";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=jsaKGria;
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EAF2F6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:51:47 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D76D14077E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:51:47 +0000 (UTC)
+X-FDA: 85365520254.05.DE6BBF7
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6373640007
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:51:45 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=vfM+xgkT;
+	spf=pass (imf17.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793036984;
+	s=arc-20220608; t=1793037105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xxV5ov3c0hTKqd9UolE8DYnovGSmzcocUgKkmdnwh3k=;
-	b=THoGVu5LMaV7wUTND0x5APwrPWQoKTxvynmF1nnrVmWgaISi1H14YcEMn7sBn1PWbXfoKC
-	TjSZE3eLab03Pg8sB3oTvd+Bz26OWjYJH9zGDTN3bukW7Wwg1BUZTG16UZ4A845az8cNvR
-	PxaNu1yJerYGXz/o7d8ArvCc5Oasj4E=
+	bh=+zE9kVNs5C7sYZHMxAgpjn8fTZT69NqSWFunM32ji+Q=;
+	b=c9MlAP/KhNHduHOGA6oDd8Al7c8EhnQ1EzY4zZaEuuDtM0r1Oy49cd5qwCLy+6slijHvtK
+	VDiUKQp2d89YJrBs0fwAP2n+9+bKKXrljvmkk/44i+yEeF09JrmgQBPy3Xl/UMbO6DSWIu
+	NRvnfiMK6eV5g68Uok2M1p6Gw0qQ9GY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="J dL3NJq";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=jsaKGria;
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf17.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=vfM+xgkT;
+	spf=pass (imf17.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793036984;
-	b=X+XR3Naw8LE6VKMEuIQF9urVSWaYgOpRqsnfVwAJtTmlzj8wydGPu0mkCDqzdn1Dj0Rhqm
-	NTE0x6iVWOhgMAPRDOy/JX0qsJ9X5WFNlixMFLs3pZ5hQf69g5XvdYUKub4epoTA9zJOGx
-	X6PUNTU5cptrBAKaerbNxVas51WhOjY=
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailflow.phl.internal (Postfix) with ESMTP id 5530213802D3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:49:44 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Mon, 26 Oct 2026 13:49:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1793036983; x=
-	1793044183; bh=xxV5ov3c0hTKqd9UolE8DYnovGSmzcocUgKkmdnwh3k=; b=J
-	dL3NJqdbugJRjuL9LjsbKRphw2KicwxMAV+dxpERQY19YmZ6QzhL4ln9wQHwiRfA
-	TnU5tgHVCMuKDz2ydh5yqEc6EV5jCwljkkQj5ZzyPNS3axhN+/hZgOXyZkM/RtCl
-	9H4yepfmeOHHV3GJJdQv6ve8B9gW3kfR3KxjI7e4KDv8mLQVmsJcmR2Lppfijn+t
-	U0bMcyWlTqeZTEcSSfT1blE7VQo0bfWtsnRymicu6qzh6hPxZ3SKxuYefnpAhLyn
-	K5or2rlyWtepue8dI6zJyXApcau2pJxOGCpQFsxmwhXzgQXmXs+W7obSdzuFvJhB
-	ArncCXmZNz1bgx71MLw5g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793036983; x=1793044183; bh=xxV5ov3c0hTKqd9UolE8DYnovGSmzcocUgK
-	kmdnwh3k=; b=jsaKGriaA692dIgpgEARXfonTPOY41+tEtlzdyhDRdnf0v/lFz+
-	IxIAldbuY99yXj2+uvwHOgBYeG5g2FbmNzgrMSdNjQrdWzYO72La7ZCdUG1f9d9J
-	Af60QpKAvmZ0RHGaWtqd7AiXuoG0sfBjbbg0mrPU4EZ4YR9IOmVFhSc3+nSwNnzS
-	ouQHdvYZsOx4LL9XXeYHdChsXjpNHSbE53VnBXxZFlwuftFZHKE88Ukc6HVdGyl9
-	6nlEbXIzh61dNNA6idTeqYQmheLPlFDf2hj4CxzM5NGSizwEo1XjWs6sPmF1gx50
-	c0KDCCrRBx+TfNBYTIAurgl9KFFzUjhsn1A==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793036983; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:XKEoH/S0AJ5dOiPOvejLl/FeyjMFNW3AsMFVi5jFQbarKI7
-	2PAIwZTSHnQVm2FKjFqEJ1wa5PnQwWT7J3TtXXBMI/Ye43DQlLxWl/XY1sUoia/y
-	UVEQS+nZdUrD7hJBucidxghgcYSXUj9RKKJIVF114Wv7TYFv/ilgyVYmuOAxahRD
-	PLT17PTaCWnAytD7MB+Ae1lpMpPszxXmIEeDl481aY9Vhx5rlBHeCGOBCj2CCdmo
-	fLut2mK46xQT9rK6oN+E9AhcRR3s5pFgf9vPldq+hbOclpdeAtTMwSuPFjCKm2BC
-	5DwW/fjCXZ4pnVB47nUyo7nQ04obO6Ctrrzxw7A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:oAI8CvIbumntInw+4PFy9SOzhfVHaiSI3xBGsLX0Fcc=:cIqzR+dk4dI8U2SGLdBfaB3Z+vbsjVLGPogfgOdxTgQ=;
-X-ME-Sender: <xms:tJLfaiFURCNdynr59obpYBBiVl4V5UzanoXaw9VQTms5MmvDtIuP-w>
-    <xme:tJLfaiezpFzXO-Zfv_74k1daYZBx6nHLGhU7gb5qHt1m95IWKbwRmmHtAaVqg2Wis
-    zafiftWyYeKAGSyT1Kjbi9iIpDJqezGMiLgTiCWhUE99To5FR2lAiWt>
-X-ME-Received: <xmr:tJLfahJkh1-pM4dmfx0_FPH8hg8zgScCWFiPl7YL1n4UUWyyhTGAzxUa80U>
-X-ME-Proxy-Cause: dmFkZTF3TFhuE3wGcZJjUzIyjpcTOyexH41fjQWtbyhLeXHhYokFl+PdzJCSXxGGgJCuOJ
-    dy5xoklUsRtz+csfRFFFJskyhlsSQsto9rVk3Xlz3nETmWH8sqjeYYmCn0LJzkpgO57i5k
-    rdDoyf1u9Kchi7X+0v96xV5zGmpLMOO9JQ5HHJkAv5WxzI0OrT8Sq74zbsPUvq7mGA7rRZ
-    IIwvOGRi06s646S/NkFK+4dyblma9DUxNKJT1uTJkvS+vsg2bD+Upt3/LTu/0HWVZlK0Jj
-    DlFAwQClbZ6XOv6mqbXadmBiTvGlWIFDBKnMCr7YO4yM+t3ktQ/4bZdUK9LFzakP+92+Fm
-    vG79z7HcXs2kjYGMgAzRjuQ0Qg90Hot+Ca0+OaVT98vuHtEbFT0dJOmcOSmfcw/Xw6u2d1
-    ydWX/qnX0spiO/oLJjHsmk+rsjzeachNCfZqYri4OECtaMqBqLsy8GKT4bQbqK5deL+Y+j
-    xz4oi0XTNlD6jG61NGTNYmy4QmHW5t9idNlTTjUXxyjcS9YURryFMnzp27h1BibhDflcz5
-    UY0o1n8SpTQHwQ3/5malhwYKSeSMg8q6/xrtSPPcVMnMpyyR9vsCGY0TTUpc/3e38AVljE
-    CwiXQtNotFjguQ2i5vkeoRsoHb1TyfkFlTP3gRHzl3UveODfQuz8nenQXqlQ
-X-ME-Proxy: <xmx:tJLfarraKcese7WoQH1qripNE2RW3sQ02AnhQpBgIvlz7tnud-QoxA>
-    <xmx:tJLfagazhqAewp0B4A9M3D6fTyn7_VpRNZ0nuifN8YsHYk9-7jyB2Q>
-    <xmx:tJLfahiI7id630K9NmomSvn62flSZaHn2KKrgta1RGySXMbr7guD7g>
-    <xmx:tJLfatrSUI9pQ0K6u_jA0hZM_uWTVUEDYP0jCuf0p5tgifabZsZhnQ>
-    <xmx:t5LfapU-At2geLhbkQFkmFVQe5KK6EYoSm5kLoDw3GYWlWKmcDqAJ0O7>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 13:49:39 -0400 (EDT)
-Date: Mon, 26 Oct 2026 17:49:38 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 13/16] mm/shmem: preserve allocation errors when swapping
- in large entries
-Message-ID: <at-SpfCdyXq18_Ab@thinkstation>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-13-703206d5fa0c@kernel.org>
+	t=1793037105;
+	b=kuxktTb8lLq0Qyy4h6YMmm6UGwjpLXg4zjMjn5a1VmDXEGgy7pYHVhfmpYzmicavpP98Bx
+	WDNfsvGjffVoT8JqDdexql0LkhGi1sToSJ6yZACvrqxSsPxHOtaFrqfMTEgvtMNiZ+ceZa
+	JlfFuQjF0fuCHQDLITrAGQi4f4FTvDE=
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4jD1Ql1YcdzKp50;
+	Mon, 26 Oct 2026 18:51:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1793037103;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+zE9kVNs5C7sYZHMxAgpjn8fTZT69NqSWFunM32ji+Q=;
+	b=vfM+xgkTeSHFp0dpRFW5mvDxLWynvaYYd1UZ+0M8/RjdK3Y/o+kfyc5kjAwpXTIZsr9Eu6
+	iExYX6fI/vZP81wbfVGzOl1iJoKCqxBJmoBTf7rDmFgc7GkX9+CIvi72yb/ZgfofHKatWm
+	CEhmHoyYhPPpDYIG2BX/PYZg6euQ1DnaSJdvglOUm5V7jnR3pJMr3adsVPyyWfe80IThes
+	PV1MfXTDdgA2dDMotzgnU6/3lFKeT8b0eHT0SY7mfG9tZzTHCgiEdq+PwAAqfMMCzCGB+q
+	5PjQz2AM722OC6zZ3Ral0YnsHFgnv2G3dPDeGPmex+WvUtmaIsXIBJ5iXOlHYg==
+Message-ID: <72437017a038310cad48a5ff488377a9f8eb89f1.camel@mailbox.org>
+Subject: Re: [PATCH] mm/damon/reclaim: improve grammar and style
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: SJ Park <sj@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>,  Randy Dunlap <rdunlap@infradead.org>,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Aveline Noir <jm5905938@gmail.com>
+Date: Mon, 26 Oct 2026 18:51:40 +0100
+In-Reply-To: <20261017162706.103996-1-sj@kernel.org>
+References: <20261017162706.103996-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026-fixes_shmem-v1-13-703206d5fa0c@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C2E30120004
-X-Stat-Signature: w66n9c17gj7e6hccnbmzh55zw9oqabrk
+X-MBO-RS-META: 5bdyhnnc1mx585ghi5jiq6o1fnqt5y33
+X-MBO-RS-ID: 6365762b24dbd342937
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6373640007
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793036984-535775
-X-HE-Meta: U2FsdGVkX184iPA7PFULrW5C+M+oof6NdzVb2Cs1oU5MgvUl5jVeNVhSELdHnxRIe/dJQTIeaqzEk++XoHQXFsNTub0IBRnyhgyqOxHhI7yI7NPqz/loySeYnL4PwD0WUIKG5hdcCtaEijKPaUIxVZNM9PDoLttgqTEE87eMvtSg5TC/irnRJ8RcTYRZwcwYTkE2G2+/T1/iXcYs7jgyaM307rYju8dHDDpuxw1zokSobsjQJBxFw7XquMRMErJS5V+ofHepauUfju2f7iU2qQfShrfF4Oorot+6T7DHoYypboWyrsVX2KVpR1KkXvMms3kC9VRYW3VuRSnLhIAM3KMFVh56+RaVVk6zOrv+srXmbTdP+y5ZCoGbd5pkYK5lwqjj+hZL3PLi5O/EB9Fv3X0zsUo8/vyz0T1DFWbWt7+hadXQBry4IeRgZr7YF2nWiTjcCuQFz9BYD34YLTYJRMHgEwbki/YoRFHcZcw9M+VFYfUVNdpTi5jX8XKDk+STnyzivZn2wF6s361gwVUjSWQQfbPPpL0+dUo465Cv3LmJz02P5/60N3Kc2K0xAodXyN9dkesntC3dJcpSKQx66c154s1DoYRU0i99TYzf+6IDd+VX8s+9GBo69Bzrsah8r8dU2MobAuFxZK5qwjCmt5u0+0BnKyEgWA8G3tnF2mvuQTo/RcTZEZwOCXOfu7yBa+atzcmIJGWONxYq58YaV6JQvZCe2g8h4uDQqDZ93hhvLg8WQQZxxYPcpggeh2tEtwa/fIMxUeyO9pOWoSUzdMPD977UpA7eKd236V/nXgw32dxT4bzRp4LtYVhW71FWVGs1V2OhXZTz1tAEA9qXOkw58thFxDgYF60FqoDJI0MFuNvdVuIELeQTQVOJMg1DVuPdNqcbf2LZbQyImWr6tQXRo+EQ2ZkePlqwpAHlmr2GxBVlEIAzv7ELyLRVZOZ1T85BK6au+5UqPX1LvG6
- vnvS6LmC
- GA1448BSC0p6DlFdhMGSjEzOCBexXkq5tTDSVokZvAM+7u+Xp5aZzAiIYD++0KUghAPUr033YIwhAeaf/5+nGN21aDPNkSLQmewjTNxmefViKVLjKemoq5a33/aE9qC0B14KrQij6ZtprkcrszUSDJCKbgbkJoIxDmu/9vPsPoLiqgtmioehnbkn+KYRJ/da5ffllyVQqPEA+31BESVpg+xE9NcoUG+zCIebdW9YJrJj8LPzV2jo80QW+PyPK8nBZfCTjhdRJOEzDWsHh1/1FPggrW7QDPLysNa3PHi3ED5itAOMsPJ8JImz0TVRvBdsZCeckRlDk1mz9FVJbcA8wgA1YGY+kUmO6JbF3xDoeP3uG4OC130GblQH+9ID892k/N0oSyXmIcyzgYuQAuQVZ4TicKkLn0eFxMj41qvYJlTKh+TSxGPU2SmAGhwEk+Eh+QWy+BK+Vw0v+jp3+p0O+nnbD5a5thMw/M/VbggOpcvHT0gXWcyoLoOp0H9ARd/Jd4pExY5umzpSI5MA4r1AAS1BCedTPG3SYo7uLH/VZnIQwvsdQTi0F85WgVXMBUxsPeLDyMUH9VzMoQEsLvYAAK6ulvyBUVTQmM3wFMvBPDXtXdI8=
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 49qx4swbmm9yanpgszf79kzdu1idyoaz
+X-HE-Tag: 1793037105-324049
+X-HE-Meta: U2FsdGVkX1/EhxuvL/2fzIVYZtz9QGpl1UwloO06gvO1qJ9fx3MuEujpsKAvzTNh8c156RDZZU5OFJs1wydFNg9Sszi9aHo2jpOQJ3dEV0k2mkBufFHAuAljhp8jBSoi5B/WGQplhxmzwGdMpMEDn+nntPQhNpSb7pbe/yHYQoncuOFFx40ipLdnWecfPZvtoMSnBdVtwMf5U+rUS+WZTgeU0C3uv01P0GVCqHqspXm97JdECiHQyTMK7fVidQuGFEPUfNMgzIdPVg/aoqrRWs09n+tWmRemyFc9+6oTo9MvnwsdU1n702pBUWiqVFGlWzAUywcEaiSh67ul+XcLW3CJtLYaTSIkfF26EIHb32Epeepil6Rtvb+J22rgi2/Gt7dL0rZpC/b9H7EXr9Sf/6JkgNOrkkk3s0SQhg2uGVyN747AJbXhginakpCsVLZE5MRGXu26OPtKH8rv3UNX5uxoeJRvjhT5h8zRimqGtr1a5JHDL8TKrXVPIKUdu8GEyn+DIDi3zs+t/iquFWVaoujx01/RAEoeyYKEqj6yLCXnByfTYcZRRLiMeUx2TLY5QDCjxtuS1ve7nB2rCjVXJnTqXrjsJGGFNxfr4ewcK0SJ65FH3GrrP/mnd8fD89IP7B1erVhB9kIXh2QHkHFszz8Fyu9976/hd+eUQ/mC24I2Hs6JLmyzPNI3Cvk/iWWyT8MPOg+uSPibKJLd7oBIQ2QsrwtuLNLS8FqL1Iqf/41d9A/W9oPpK4xpXFunrVe4nOkmOwBbUh64SM126mDBmhq8SnwpM/vXoRyrpgFlmqaEZqugFnb+xjYy1IpNoZtFm8nuUfVksfjaQPBaKMBp44b/H5IzQm/4YE5Cv7FvJLiLlU2Xq7chnYL6POE9uO/d3enGJUtU497lKCyi+myA0yIFgI9MVLD8E53nQ0s4LJ7tFzbth9n0RnwnaaCCpURFHqkvE94qOygayi/ujnp
+ chRWAC3a
+ 8XjmBegFJMDDOwj+MdOzuL0vg1EGKZu3SozBnH7PxMRPUYO/5F2zRvTsOxPzmKZJNTj+t9y8eQURhIjLPE13qmaweIwqwH63KQajpEDIcnM58NXAV8d1oxSKldgTOBOVvrM2l0Ia7OjNKgvdz+t7kB4CvWg8AKdBqW+Vr9z1EE4kA7R++ZjGsUPpnlFloNGpDEE0ZOm1I/qT4egjpkvwBq/bcn5TNBHYFEcrxmzk79xf212DcE/3robt2Gg5j4YqgOXOa2cqt8ogk4G2tIxBFy2EHJy9hM0lz/qkfqa99QJSA7ZMnQwdxugCW6q2b/cGcRHuHbly1469mSaM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,30 +102,205 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 10:40:46AM +0100, David Hildenbrand (Arm) wrote:
-> shmem_swapin_folio() adjusts swap to the requested slot within a large
-> swap entry before allocating a folio. If allocation or charging fails,
-> the error path compares this adjusted value with the original entry
-> still stored in the XArray in shmem_confirm_swap().
-> 
-> Unless the index is at the start of the entry, this turns -ENOMEM into
-> -EEXIST even though nothing changed.
-> 
-> The caller retries -EEXIST, so persistent allocation failures can leave
-> the task spinning instead of returning the error.
-> 
-> Restore swap to index_entry on allocation failure so the existing error
-> path checks the original entry. This preserves the allocation error if
-> the entry is unchanged and still retries if it changed concurrently.
-> 
-> Original fix generated by an LLM and sent by Josef Bacik in private.
-> 
-> Fixes: 91ab656ece13 ("mm/shmem, swap: tidy up swap entry splitting")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi,
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+took me some time to respond because of the procrastinations.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+On Sat, 2026-10-17 at 09:27 -0700, SJ Park wrote:
+> On Sat, 17 Oct 2026 11:18:34 +0200 Manuel Ebner <manuelebnerli@mailbox.or=
+g> wrote:
+>=20
+> > Hi SJ,
+> >=20
+> > On Thu, 2026-10-15 at 07:01 -0700, SJ Park wrote:
+> > > On Thu, 15 Oct 2026 10:06:23 +0200 Manuel Ebner <manuelebnerli@mailbo=
+x.org> wrote:
+> > >=20
+> > > > Fix tenses. Replace 'set as' with 'set to'.
+> > > > Rewrite complex sentences.
+> > >=20
+> > > Let's put two sentences in one line, while breaking it for the 75 col=
+umn limit.
+> >=20
+> > Will do.
+> > >=20
+> > > [...]
+> > > > @@ -113,8 +113,8 @@ quota_sz
+> > > > =C2=A0
+> > > > =C2=A0Limit of size of memory for the reclamation in bytes.
+> > > > =C2=A0
+> > > > -DAMON_RECLAIM charges amount of memory which it tried to reclaim w=
+ithin a time
+> > > > -window (quota_reset_interval_ms) and makes no more than this limit=
+ is tried.
+> > > > +DAMON_RECLAIM recordes the amount of memory which it tried to recl=
+aim within a time
+> > >=20
+> > > s/recordes/charges/=C2=A0 or s/recordes/records/ ?
+> >=20
+> > For me charge is such a weird word exepct in 'charge a battery' or 'cha=
+rge a fee'. And
+> > 'recordes' is a typo. Does this work:
+>=20
+> 'charge' in this sentence is somewhat like 'charge a fee'.=C2=A0 I person=
+ally don't
+> feel it is weird.=C2=A0 But 'record' also work for me.
+
+I will keep 'charge' at the later mention in the file.
+
+>=20
+> > DAMON_RECLAIM records the amount of memory which it tried to reclaim wi=
+thin a time
+>=20
+> So this looks good to me, too.
+
+Will do.
+
+>=20
+> >=20
+> > I could do this in a second patch aswell.
+> >=20
+> > >=20
+> > > I'd prefer charges, but my English is definitely bad, so looking for =
+your
+> > > suggestion.
+> > >=20
+> > > > +window (quota_reset_interval_ms) and stops when this memory limit =
+is reached.
+> > >=20
+> > > I feel like readers might wonder what is stopped.=C2=A0 How about "st=
+ops trying
+> > > reclaiming memory when ..." ?
+> >=20
+> > window (quota_reset_interval_ms) and stops trying to reclaim memory whe=
+n this limit is reached.
+>=20
+> Looks good.
+
+Ack.
+
+>=20
+> >=20
+> > >=20
+> > > > =C2=A0This can be used for limiting consumption of CPU and IO.=C2=
+=A0 If this value is
+> > > > =C2=A0zero, the limit is disabled.
+> > > > =C2=A0
+> > > > @@ -125,19 +125,19 @@ quota_reset_interval_ms
+> > > > =C2=A0
+> > > > =C2=A0The time/size quota charge reset interval in milliseconds.
+> > > > =C2=A0
+> > > > -The charge reset interval for the quota of time (quota_ms) and siz=
+e
+> > > > -(quota_sz).=C2=A0 That is, DAMON_RECLAIM does not try reclamation =
+for more than
+> > > > +The quota reset interval of time is quota_ms and of size is
+> > > > +quota_sz.=C2=A0 That is, DAMON_RECLAIM does not try reclamation fo=
+r more than
+> > >=20
+> > > I think this change is just wrong?=C2=A0 quota_ms is not quota reset =
+interval of
+> > > time.=C2=A0 Which part of the original sentence was difficult to read=
+?
+> >=20
+> > 'charge' again, and I think there is the verb is missing.
+>=20
+> If use of the term 'charge' is really making reading difficult, we could =
+add a
+> short definition of 'charge' as a separate patch.
+
+I think it's not necessary, it's probably me.=20
+>=20
+> E.g.,=20
+>=20
+> '''
+> --- a/Documentation/mm/damon/design.rst
+> +++ b/Documentation/mm/damon/design.rst
+> @@ -695,7 +695,9 @@ dynamic.
+> =C2=A0To mitigate that situation, DAMOS provides an upper-bound overhead =
+control
+> =C2=A0feature called quotas.=C2=A0 It lets users specify an upper limit o=
+f time that DAMOS
+> =C2=A0can use for applying the action, and/or a maximum bytes of memory r=
+egions that
+> -the action can be applied within a user-specified time duration.
+> +the action can be applied within a user-specified time duration.=C2=A0 D=
+AMOS tracks
+> +(charge) the amount of memory that the action is applied, and stops appl=
+ying
+> +the action once the limit is reached.
+>=20
+> =C2=A0To know how user-space can set the basic quotas via :ref:`DAMON sys=
+fs interface
+> =C2=A0<sysfs_interface>`, refer to :ref:`quotas <sysfs_quotas>` part of t=
+he
+> '''
+>=20
+> Please let me know if you'd like to send such a patch.
+
+No need.
+
+>=20
+> >=20
+> > >=20
+> > > > =C2=A0quota_ms milliseconds or quota_sz bytes within quota_reset_in=
+terval_ms
+> > > > =C2=A0milliseconds.
+> > > > =C2=A0
+> > > > -1 second by default.
+> > > > +1000 (1 second) by default.
+> > >=20
+> > > Isn't this (1 second in milliseconds is 1,000) easy enough to infer f=
+or
+> > > readers?
+> >=20
+> > Ok.
+> >=20
+> > > > =C2=A0
+> > > > =C2=A0quota_mem_pressure_us
+> > > > =C2=A0---------------------
+> > > > =C2=A0
+> > > > =C2=A0Desired level of memory pressure-stall time in microseconds.
+> > > > =C2=A0
+> > > > -While keeping the caps that set by other quotas, DAMON_RECLAIM aut=
+omatically
+> > > > +While keeping the caps set by other quotas, DAMON_RECLAIM automati=
+cally
+> > >=20
+> > > How about "caps that are set by ..." ?
+> >=20
+> > Yes, this was my second choice.
+> >=20
+> > >=20
+> > > > =C2=A0increases and decreases the effective level of the quota aimi=
+ng this level of
+> > > > =C2=A0memory pressure is incurred.=C2=A0 System-wide ``some`` memor=
+y PSI in microseconds
+> > > > =C2=A0per quota reset interval (``quota_reset_interval_ms``) is col=
+lected and
+> > >=20
+> > >=20
+> > > Thanks,
+> > > SJ
+> >=20
+> > I messed up the subject line, should be:
+> > Docs/admin-guide/mm/damon/reclaim: improve grammar and style
+> >=20
+> > I'll follow up with a [v2], including Aveline suggestions.
+>=20
+> Sounds good.=C2=A0 But let's finish the discussion about use of the term,=
+ 'charge'
+> before posting v2.
+
+Then I'll head to [v2] and make it a 2 part series.
+
+>=20
+>=20
+> Thanks,
+> SJ
+
+Thanks
+ Manuel=20
+>=20
+> [...]
 
