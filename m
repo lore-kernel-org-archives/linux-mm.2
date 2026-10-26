@@ -1,100 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EFD606A320
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD1D606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IxP+N3i/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jc4Gc0Vr
 Received: by kanga.kvack.org (Postfix)
-	id B93966B05B3; Mon, 26 Oct 2026 10:27:30 -0400 (EDT)
+	id F1A1B6B05B4; Mon, 26 Oct 2026 10:29:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1CCA6B05B4; Mon, 26 Oct 2026 10:27:30 -0400 (EDT)
+	id EF0A26B05B5; Mon, 26 Oct 2026 10:29:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E4AE6B05B5; Mon, 26 Oct 2026 10:27:30 -0400 (EDT)
+	id E07816B05B6; Mon, 26 Oct 2026 10:29:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 785D26B05B3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:27:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 11B5A1A071C
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:27:30 +0000 (UTC)
-X-FDA: 85365005460.27.1934677
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5D036140008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:27:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IxP+N3i/";
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793024848;
-	b=4w5QtdQqyyJwWMeELWdDh4QiaIzBmjlw6LK+iJmNGKXppFHtd2fBDBImKON2+Nq6tGaYrW
-	KNzg2zF8c8uTYRYSJFxC+0v83LmKONS9doJMhl8g5RSydgbxFHZLyuMtZP3kvohiS2uAF2
-	PdXPIcqAfnFKFe0yAISEzVV1krKDlxg=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IxP+N3i/";
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C0E2E6B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:29:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2321F1C3FFE
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:29:37 +0000 (UTC)
+X-FDA: 85365010794.24.1B5DC81
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7C90B18000A
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:29:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jc4Gc0Vr;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793024848;
+	s=arc-20220608; t=1793024975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6gmCDvdn2nsesgNhAh+epn0sztNU7HD2eJkAnfX6dkM=;
-	b=MF7/vmTKVqcOQmQZ4RGEA2tk72feNaqCrzMXl1kPLyaJv3GJCCt/J/n5j/1eemkfsihuLb
-	JUT4CXts400ckv61VChMOzy4IFNATttsLX0sq/VQRLYdWadcFuuZp8eDjeGc3pgoKCNZvO
-	/CnIQKJi/iS9boUx9opsejoB3MjFUbw=
+	bh=WZBVupOUuKnSknN2BKYrJ59ZtgUZFU1sRJU3GwWHfSE=;
+	b=DU4DB5o9d2I50qvNAXW6SBP6Y+og7ePDRPtmOTCUSw2zlG5XjGPcAog+OsxN9v9+BmRRCa
+	B85HUAVatRQtHPuRTEQVZXf2r1C09TsHLdakDtb8Q2tyKe6EGAB6Zli9PYx7xZQLSHtBys
+	BcIbj1YIU6LIukFg0RnD8CbrfEhNAKw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jc4Gc0Vr;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793024975;
+	b=cNoWY7wCO7H53c6+saMXICeBZKHAjy/9JtAob8ok05hY8pgLvizMlKadValhrS5XyslkE6
+	HsaBTPsN0XSxUIkEvKzIzTl1jnjAkwZbLPhmapsvAo83hy7Xds+QeYawfnK1rNAEHku0lr
+	D5QF+N9Q6oc2TL0iaPDzgYpBW6RcN5M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9744C41E5C;
-	Mon, 26 Oct 2026 14:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B491F01825;
-	Mon, 26 Oct 2026 14:27:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EC67D600CB;
+	Mon, 26 Oct 2026 14:29:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5146B1F01825;
+	Mon, 26 Oct 2026 14:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793024847;
-	bh=6gmCDvdn2nsesgNhAh+epn0sztNU7HD2eJkAnfX6dkM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IxP+N3i/n2LONGGX+afxhWlsWhOTpuuACZjEFunZuKXhHM/2qN4hqqU64faaUXtI2
-	 b92CvQVadIqScamGEi3o9eCIrTfxGrFzZlCrrDKgiAtx3T5/tzM1rR5eMIeW2po5Pa
-	 urKkl72EYR0eQoR0RdsG8tBvJ4Ol1kKz+lj5Dtmb6mncXA0dTNhWibCCxMDWCYHhEm
-	 JjcPAXaw3eOLZGJ+tQaXLV+RTDRlHI3bdmuftngAJbZneOyCTJ7Qf7FQ5aTrFkvkd/
-	 ctTKXd5FH7EQpXUMrcra1UQ+oWmBwBaVAaQqPbqfNg2IdzzJuTG8DG5krtiJ1R7e/r
-	 RmLfgQDjpJKJg==
-Date: Mon, 26 Oct 2026 14:27:16 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin@linux.dev, 
-	chengming.zhou@linux.dev, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, jglisse@redhat.com, aarcange@redhat.com, 
-	peterx@redhat.com, kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	bobbypowers@gmail.com, bgeffon@google.com, dplotnikov@virtuozzo.com, 
-	dgilbert@redhat.com, hughd@google.com, hannes@cmpxchg.org, kirill@shutemov.name, 
-	cracauer@cons.org, mcfadden8@llnl.gov, gokhale2@llnl.gov, mgorman@suse.de, 
-	mike.kravetz@oracle.com, rppt@linux.vnet.ibm.com, xemul@openvz.org, riel@redhat.com, 
-	shli@fb.com, jthoughton@google.com, corbet@lwn.net, pbonzini@redhat.com, 
-	seanjc@google.com, sj@kernel.org, ziy@nvidia.com, stable@vger.kernel.org, 
-	samarth.colleges@gmail.com, med08elkadiri@gmail.com
-Subject: Re: [PATCH] mm/ksm: fix userfaultfd protection during merge and
- unmerge
-Message-ID: <at9d4XJUIM8SgBDs@gremlin>
-References: <20261026130054.91461-1-lance.yang@linux.dev>
+	s=k20260515; t=1793024974;
+	bh=WZBVupOUuKnSknN2BKYrJ59ZtgUZFU1sRJU3GwWHfSE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Jc4Gc0VrMoeEjDqcZyGdb4FpOMlHCGbAez6wW7ehQcMBBUd9gGlUaK1cCjC/iucc8
+	 w6lImTj1ZUn4R7b+hl9p3NmSwACn0rSD+JOhT5FoczhbcHsjjJWcbEfWCAKHhVNPvy
+	 ClqY+L0T5FBDGMVJTwoXs+RmgRkFbOAnf37tpiW0nTHDv4dihHoVz3/FamBzHRHYeY
+	 eF+3/JpllVXrPk4v0bpidleO5Lxfy2K4rAjRCP2yClGSRM6Ty0eXuwkLfglc7P/LdB
+	 0pDF50wsnHfuIBl0c8GlWeu08A9KXG+hoG9VbLV2w/E3pGQ8bYNNc61wa3uJ9uYofM
+	 2jocnXFmJm0mQ==
+From: SJ Park <sj@kernel.org>
+To: Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: SJ Park <sj@kernel.org>,
+	Aveline Noir <jm5905938@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/8] Docs/admin-guide/mm/damon/start: fix grammar
+Date: Mon, 26 Oct 2026 07:29:26 -0700
+Message-ID: <20261026142927.149910-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <b0d8d0ceda82e303262c0f61324fe8a84fd9f745.camel@mailbox.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026130054.91461-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7C90B18000A
+X-Stat-Signature: 3r7w5q83mjtmurt8hzxp5thjzfj5epnr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D036140008
-X-Stat-Signature: r1jd7oxsksuzmiiupmpdzafsdyyhhc8d
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793024848-791857
-X-HE-Meta: U2FsdGVkX19MVyEr5YAPea93Gn7nBf3cH0udDRclM4+sYuP/fBsC105uGYFKPupvLRd4BK2bMarFbjcswcFBcJMti2l4ypa9kBl/2lptx10jeDSrgATIIOCqIyD7ozc51XMUyejc0paUfjNYThbfnf/YpbY/h4H1Yha7vTyok4F6qHx5yvVh8N/UUZw/HI3+ivwU1+BNu0EoTaobkf7amzrKbPAk1ArQdLLGPDScgHzZN42EPN4OhnHNcZQL6Gb1dG89Svh+Em6X7LknqjI8r5d6WkeZMLF9OD9ogB+cxS0CluMtJ5N5xFcxDklRHHvWEx3i10s3yVSj2JeIqohq3YT+IhYEaUk1CYe52AT25Je4ZbR7d0LENbeCLcRqx6ZvPpRiA7/2wEOlH2g1shAsXcES904UR5K6bcb9UUnycR1FHVO9+Wn4iZGEk5swI7SbZOtYZ70W3BVmcqdkEKTc5t1QYZf5w5oa51x7aQncne+aq+FpzLB2zNE8sOo9TLR5vHBt8TbF5jBBDpp2cyReaeITBfnrpc9clQU1pog7ug3mnpKAFhRZ0L/CWS9RSmEJ3QAUIVe2h5SjIXYLqR5xH7LrIHL0da6AbeBbt1rTveMSrFlgAM2xFTZ1UJbYwbb7+Nk7M0NWIlaQ5NTZvLS45FFMTsjVckObpqeKtcjzgcF7N5mWqWQgkkGyUmEi1HLIAW0eW1Io3ITa0JLlz12s5RnI1smkw+QMuiDuTvjHbUauCC1sNz629Ul9is3q21ZPppvcORmeJpEDOPHdZ2+ouatdTzN6IbPKfrlEgpsFbZ/KRp33FH1h2sliIETGFZBVOrYAtINtMEm8OnKsJotKRn/T/ou3ZlyPx53gtQtgfFcDUlb+y8fosXvy342Xcb0QSIR/7oGLDAEYH65hWZmC9LQpgldcQXROzTvGMWN2+E41h6PEC8itxslR6/T6lyQd/iH42odUoMMkZ3hRFvw
- V4xoI2A6
- R79BRgHzqz1SKT/2/wyKEINGeUSKx6nKTHT/doFYVcFaxyFeK8DmA7VC34UBH/8FX7+X+/4pLI+1tlJPLYsJYSdFiAEc0zFPDKETyHpmAXzIhkEo7Mcsl8n6uN7TONB6PNYgxKXxvDhssjdtYxhrXNrAdWqeoFQijN7kjwY3T4vq4IHLBY9cSZEC73+NoADQ16vDcPNtJ8qNyRApstvakA8a6p8nQIVFYqfMnVqAHkY+vPhItNmihvQbdrIlG5FFCHYLPjkhF7iLuMgJXAJZB2tkW0O2hcDK6jLxkfc61rxQ2g0TP5q7gk+IJ4H7gyIQhjwuls2Kiwo9dCKpIFFqughEFtfL7k5SjZfXuoOoXr8t54PfjyizVOTclFA==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793024975-950791
+X-HE-Meta: U2FsdGVkX1+NN/V65faf5UFbRBqM5KYlNuC5Im1kZYK33QSrwRJaPSMkGoh1lqwhJdKu1WrZqqZnqqOJUNLufiSSGqLGStPcGFLXaQ3i0nvGlEq/R9/BYkgS6JvUazPXV+lW8N9JUrB59zC7csO8crXlqdOddZwi1tuV5RTE4lYgpEtxHaN60LpXvLUrznkSfMcwlxwltfVCqBLOFkiJ39/K8jGwI6es37cP+IcgHo9pkMswsIQG7SaYosMgubKaeDqze/87nhuUbP8j3gCcmiv1HoG0ozYss1Wp2no4UuWYq74UOE2oaQ2QqdgydkPt/0tTlJJzthzDxXIQ7yAaDgRb8NqgsZu60GIXYsGVvw6zrgUlIcle43vpAk5ejsn5iAw0rOrANZxKwzk1ay5bpcb4Djv7+IjactMdK2UAhD9c5odZvdo/gvroq7oj9Wgq83tIBJUU/vYxHKKYNQOTqpHC6RaOAGX7xbr8rRvJihFXEQ4VgPuCBZpG2lw77TCuHjkAWT2dCdQCvazxcb7Nalb1a0vHv56BzirqlsdVzjel3/DQS7AN4DLlZJykUqIW8MhNH0ygnNUukQZsqSuU0GUJe8fgeb7DCZ8UNgazQTLXk6BSdn6eRWUvVmye8XEwEPCorj5JsvpBPmfNfYuVdbxVNZSq0NKg2tmgCsgmYzk6he1KnEcq/kqZxkF+9U8wVmVuV08JAl1EAzie1g1B+MFb9MSiMGdhCg6zoUDzzKVZpR/o//dKGrNqxmUrc3UVuX/6NlEqwpZuuBgka41z4Ezb5CwU1wuohXt7ee8QzK957QLambodheD3PDPi2BwlEi3EGLYtoXPumFsixe+O4SILcv5TH+bg81moE7CLFcwTOr/yznLRuIVrsyfEcd1wvLRL7+s0LyuH1l6CDA+LM9+g3bidbEI5/tFfm8MNtvbPyEWAoCFGVOnxaN6UV+phOIwDi0UBfE+cqeAtry3
+ dACdhhTT
+ XzmVpREPiMNfC3h0++vV93yelPkHKKmPtK7tKoueh9wVQjNcU0u9P0MJtCnJRkd6jTDU4+A4IVWSuI/U1wdYDxz98m/MgSZ/fhfa2OaIVkH9fsaJ6K7LW/83JtQzL3BaG+6uIbN3ckCjeT+jeJ5myppOBDljSV3Rq9CQ4bxmENq5O5+TOyJ4Tc2pdi9or+f5QjENnSQkYRn7n6Kvrv2RlJfXIOPGie6xFti5O3Hvd08J5+NPb3rLamBrV6SMTiS5VAg48tx8xB5EOvQ71BchiSNmssv72NDDwDGcxPmo77be+1OFsLS3+xiySLW++cQBhOWAnXzF28B/tMD4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,132 +102,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 09:00:54PM +0800, Lance Yang wrote:
-> KSM loses userfaultfd protection when replace_page() builds a new PTE
-> from vma->vm_page_prot. Dropping its uffd bit lets a subsequent write go
-> through ordinary COW instead of userfaultfd write protection handling. For
-> RWP, a merged page also becomes readable without faulting.
+On Mon, 26 Oct 2026 13:41:32 +0100 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
 
-I feel we probably shouldn't have allowed an extension to UFFD while it's still
-fundamentally a broken feature :))
+> On Mon, 2026-10-26 at 22:14 +1100, Aveline Noir wrote:
+> > Fix a few grammar slips in the getting-started guide, like "make DAMON
+> > monitors" and a region "that has not accessed".
+> > 
+> > "The line of the commands" used to be "The first two lines".  With only
+> > one masim line left, I make it "The first line". 
+> > 
+> > Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> > ---
+> >  Documentation/admin-guide/mm/damon/start.rst | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/Documentation/admin-guide/mm/damon/start.rst b/Documentation/admin-guide/mm/damon/start.rst
+> > index d98b0eb8e771..a83fcc2265bd 100644
+> > --- a/Documentation/admin-guide/mm/damon/start.rst
+> > +++ b/Documentation/admin-guide/mm/damon/start.rst
+> > @@ -63,7 +63,7 @@ the execution. ::
+> >  
+> >  The first command of the above example downloads and builds an artificial
+> >  memory access generator program called ``masim``.  The second command asks DAMO
+> > -to start the program via the given command and make DAMON monitors the newly
+> > +to start the program via the given command and make DAMON monitor the newly
+> 
+> 'The second command asks ... and makes ...' Thus:
+> 
+> +to start the program via the given command and makes DAMON monitor the newly
 
-Which is evidenced by the SLEW of AI bug reports, and human-reported bug
-reports, and endless history of bug reports and it infecting the rest of mm,
-etc. etc. /rant
+My intention was saying DAMO is commanding DAMON to monitor the process.  So I
+find Aveline's version is slightly better.
 
->
-> Keeping the uffd bit and restoring PAGE_NONE fixes merging, but we also
-> have to handle unmerging. An existing KSM page can be protected with RWP
-> before MADV_UNMERGEABLE, so unmerging already needs fixing independently
-> of preserving RWP during merging.
->
-> Unsharing replaces a shared page with a private one and should leave
-> userfaultfd protection in place, as do_wp_page() already does for write
-> protection. Currently, an unshare fault reaches do_uffd_rwp() before it
-> can proceed to do_wp_page().
->
-> - With synchronous RWP, handle_userfault() returns VM_FAULT_SIGBUS.
->   break_ksm() then reports success with a KSM page still merged.
->
-> - With asynchronous RWP, protection is cleared before unsharing.
->
-> Preserve the uffd bit when merging, and restore PAGE_NONE for RWP. Let
-> FAULT_FLAG_UNSHARE skip RWP fault handling and keep PAGE_NONE on each
-> private copy as well. Unsharing can then complete with RWP still armed
-> for a subsequent access.
->
-> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
-> Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
-> Link: https://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail.com/
-> Link: https://lore.kernel.org/all/20261020055518.36087-1-lance.yang@linux.dev/
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Samarth Narang <samarth.colleges@gmail.com>
-> Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> 
+> >  started process.  The third command retrieves the current snapshot of the
+> >  monitored access pattern of the process from DAMON and shows the pattern in a
+> >  human readable format.
+> > @@ -71,7 +71,7 @@ human readable format.
+> >  The first line of the output shows the relative access temperature (hotness) of
+> >  the regions in a single row heatmap format.  Each column on the heatmap
+> >  represents regions of same size on the monitored virtual address space.  The
+> > -position of the column on the row and the number on the column represents the
+> > +position of the column on the row and the number on the column represent the
+> >  relative location and access temperature of the region.  ``[...]`` means
+> >  unmapped huge regions on the virtual address spaces.  The second line shows
+> >  additional information for better understanding the heatmap.
+> 
+> I have read the damon directory aswell but I didn't find enought to send a patch yet.
+> But I found this, could you add it to your patch?
+> 
+> @@ -78,8 +78,8 @@ additional information for better understanding the heatmap.
+>  
+>  Each line of the output from the third line shows which virtual address range
+>  (``addr XX size XX``) of the process is how frequently (``access XX %``)
+> -accessed for how long time (``age XX``).  For example, the eleventh region of
+> -~9.5 MiB size is being most frequently accessed for last 3.7 seconds.  Finally,
+> +accessed for how long (``age XX``).  For example, the eleventh region of
+> +~9.5 MiB size is being most frequently accessed for the last 3.7 seconds.  Finally,
+>  the fourth command stops DAMON.
 
-Looks sensible to me so:
+Looks good.  Unless Aveline objects or do this by themselves with revisioning,
+I will add this change when I apply this patch to damon/next.
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+> Rest looks good to me:
+> 
+> Reviewed-by: Manuel Ebner <manuelebnerli@mailbox.org>
 
-> ---
->  mm/ksm.c    |  8 +++++++-
->  mm/memory.c | 14 ++++++++++----
->  2 files changed, 17 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 910a1307ac9f..d6f736a1aa2f 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -34,6 +34,7 @@
->  #include <linux/memory.h>
->  #include <linux/mmu_notifier.h>
->  #include <linux/swap.h>
-> +#include <linux/userfaultfd_k.h>
->  #include <linux/ksm.h>
->  #include <linux/hashtable.h>
->  #include <linux/freezer.h>
-> @@ -1463,9 +1464,14 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
->  		dec_mm_counter(mm, MM_ANONPAGES);
->  	}
->
-> -	/* Preserve soft-dirty when replacing the page. */
-> +	/* Preserve soft-dirty and uffd protection when replacing the page. */
->  	if (pte_soft_dirty(orig_pte))
->  		newpte = pte_mksoft_dirty(newpte);
-> +	if (pte_uffd(orig_pte)) {
-> +		newpte = pte_mkuffd(newpte);
-> +		if (userfaultfd_rwp(vma))
-> +			newpte = pte_modify(newpte, PAGE_NONE);
+Thank you for reviewing!
 
-OK, so by definition, RWP pages are protnone, and this resets it correctly.
 
-> +	}
->
->  	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
->  	/*
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 6a93b7fa48b2..99439a7afa63 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4122,8 +4122,11 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
->  		if (unlikely(unshare)) {
->  			if (pte_soft_dirty(vmf->orig_pte))
->  				entry = pte_mksoft_dirty(entry);
-> -			if (pte_uffd(vmf->orig_pte))
-> +			if (pte_uffd(vmf->orig_pte)) {
->  				entry = pte_mkuffd(entry);
-> +				if (userfaultfd_rwp(vma))
-> +					entry = pte_modify(entry, PAGE_NONE);
-> +			}
+Thanks,
+SJ
 
-Could this be abstracted? You're doing the same pattern here, which also exists
-in copy_present_page() and presumably many other places.
-
-But maybe that's one for a follow up?
-
->  		} else {
->  			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
->  		}
-> @@ -6659,9 +6662,12 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
->  		 * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
->  		 * NUMA hinting and must still fall through to do_numa_page().
->  		 */
-> -		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
-> -			return do_uffd_rwp(vmf);
-> -		return do_numa_page(vmf);
-> +		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte)) {
-> +			if (!(vmf->flags & FAULT_FLAG_UNSHARE))
-> +				return do_uffd_rwp(vmf);
-> +		} else {
-> +			return do_numa_page(vmf);
-> +		}
->  	}
->
->  	spin_lock(vmf->ptl);
-> --
-> 2.49.0
->
-
---
-Cheers, Lorenzo
+[...]
 
