@@ -1,123 +1,191 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0F6606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 22:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38184606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 22:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jtr2b4rd
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CyhS7K6h
 Received: by kanga.kvack.org (Postfix)
-	id B97DB6B05B5; Mon, 26 Oct 2026 18:34:51 -0400 (EDT)
+	id 5393A6B05B7; Mon, 26 Oct 2026 18:40:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B22326B05B6; Mon, 26 Oct 2026 18:34:51 -0400 (EDT)
+	id 4EA316B05B8; Mon, 26 Oct 2026 18:40:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A100C6B05B7; Mon, 26 Oct 2026 18:34:51 -0400 (EDT)
+	id 3B19E6B05B9; Mon, 26 Oct 2026 18:40:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 75DA06B05B5
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:34:51 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 118A91607F2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:34:51 +0000 (UTC)
-X-FDA: 85366233582.25.E1AE79D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0D3A7140004
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:34:48 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jtr2b4rd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793054089;
+	by kanga.kvack.org (Postfix) with ESMTP id 196526B05B7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:40:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A6824160853
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:40:05 +0000 (UTC)
+X-FDA: 85366246770.06.5439568
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012021.outbound.protection.outlook.com [40.107.209.21])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 86CED100004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:40:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CyhS7K6h;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793054402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HcaAjZorHHb3l5RdR8AVzhqeikVAxrwM1RaByGmw9Yc=;
-	b=p5Lxki5D6A3lJHP5rD2CDytTViM6ArHUHjDvFPKDSHAJ/ssWFNX4YQYtEVUQYSutcEl62q
-	JdzKHpx+ds+x82NHv2J3K3TAh7d32nptucEVczGrvQ6dHAq8ogFe26AftT+0AB7myNrdld
-	QR/TygJd+XWzfZH1UlTA3YV9MAOQAVI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jtr2b4rd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793054089;
-	b=sSWlprI0ZQdoSRaSsSki95qpLasvJw62o8rG5T7JmyyDdvUTyC1eLiJh4OtseMZCYn+X8B
-	nWYLxiffeJctTBTSI9rOFCA1SjG6HXkX9nJUridKHo6daVTrygcTQ0+iiUdjPG6meM4W7P
-	i2obGv0dqfTU1ZdzrWFIJ+TU9uL6Zms=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27648444F0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:34:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0416B1F031F0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:34:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793054088;
-	bh=HcaAjZorHHb3l5RdR8AVzhqeikVAxrwM1RaByGmw9Yc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=jtr2b4rdy80J8VXiCReV1XjeedXzj0+9hEEOpA7+ZGMMVLgPlChKO1fo5Lyn1x65K
-	 Y+fRecewIzI7QuNArsdnvpTGEuYMCdvJ9m0cWaclc/G0sHFNg1Kc1lu8NYkBrDVgqj
-	 CndmPLaoJLrX5U8Fr1HpinhseNWZwhMw7sBfT19ArnOsZ9SJGoG90qPMdrK74joRd0
-	 fqQTk//dULfyDjSl56Gk8MgXDFQ9PzcCPft5XPGrZe8MmGfiX7WK8UycxRY+ml9hfe
-	 wMCeQi5vIFFnZxmzk48UtEfPEHL7heI9ePDOEAwqrx7pn33V2Eql5FnZar1giwgXlx
-	 2u9A62QSAd4ww==
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-93e7ad9f78dso420220885a.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:34:47 -0700 (PDT)
-X-Gm-Message-State: AFq9FYIMO0VRtrvzjEolq8tXEVM3CMhsDY/Fscm/vPKOx67Y9M5pw39q
-	JfktOS79GZQdYENyIEJqE0WJgdZMOTl0c2Cj/a2VqD9hMFKTPfQixduF8VN9EJYdJppyjC1zjJ1
-	ONMzp+HOHOPHkXEM6y37/jHCd8Q8V3yo=
-X-Received: by 2002:a05:620a:4487:b0:93f:22ae:f8ff with SMTP id
- af79cd13be357-940ef8ea2a0mr1252625785a.46.1793054086667; Mon, 26 Oct 2026
- 15:34:46 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
- <20261016-mglru-fg-v4-4-2106750c0bfa@tencent.com> <CAGsJ_4z3q_q-qyWdj85ZkMZvKOsXu7eO6qkiuQcppnd2oE3dTQ@mail.gmail.com>
- <CAMgjq7Dqa5Thm+tXUMrg5D1oSJxwyuJR5UOU+w33OgiebGvcJw@mail.gmail.com>
-In-Reply-To: <CAMgjq7Dqa5Thm+tXUMrg5D1oSJxwyuJR5UOU+w33OgiebGvcJw@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 27 Oct 2026 06:34:35 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yOtb+qaDtLAEC9-JEGp=1nSE7EVAExusKpuLX=Jy9t0g@mail.gmail.com>
-X-Gm-Features: AclHuK_EgWblfKLU5vwI51ApCslBvbMrsiLYxVpzxVXvBo33Mt1M-XVAW31COos
-Message-ID: <CAGsJ_4yOtb+qaDtLAEC9-JEGp=1nSE7EVAExusKpuLX=Jy9t0g@mail.gmail.com>
-Subject: Re: [PATCH v4 04/17] mm/mglru: frequency guided workingset promotion (MGLRU-FG)
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, SJ Park <sj@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
-	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
-	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
-	Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev
+	bh=66VWupt/mZ6FBgq5tKboKohYjAfYUEXR7z0xP2PP65E=;
+	b=pchz9u3QUA2UBA8p3ZqdzVsl9OQCfI+KW10gP0w/BqmWuVzyuhUFcKwYoh4nGTQUjFzetu
+	HVatZ/CWhlFdJOS/S5k877PmA4TLZLeJeB4UrJjrOY6HiLIngxmNJkKCLlLkZT5bSXKiIv
+	PJsjmIF5JQlJo385W3qMPZvLdfNqLWg=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CyhS7K6h;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793054402;
+	b=wpnLB87WhoxdAIopjCMQ8SsKs7kYj2+/GY6xmPp9fvhElg0XpDnxXLDasZ1fQHsBjoFuxA
+	i7PuLVqPPGihpBdjM8H2j8XvHKxiqARn96aaWgcAYYxd+W0UKvLKI9Cio7uO4keF7kHwIq
+	5LTSa3oIdQsHvGhjVMAg8XZ/J456BpQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iLDJqDPuaqbCrSy/TC5HI/qDExVZ0goG8SAMrKXY7EeuAAxVYFwXBt7y4EZ5DnrC8+w/NTWdwEiGsCgNSpFZPzHubjlIY5SWg9HrwA6qdA4Or5pe3Oy4SpLvZD95IyKKMrzQTcnEAGmOxuTGPUT9gpXOd5TZ5rDpztW6/FkvLeR8lp83nnrSq7ArvlX4g6wwpVw5Ec4gjIjgkHZWf3k+pTty72VjoRhrAv5lwhoVdIBe658CpRkap2aTSP0G4pNr9VHCqak+Amse9M08WKlKv3rH3QGb3nAqQ/XxBJzY2IdCJhmC7IKIlRe4Vz486RLBQKze99LzMUp58y9hYxb+Lw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=66VWupt/mZ6FBgq5tKboKohYjAfYUEXR7z0xP2PP65E=;
+ b=C49wqJZuaoLUTKlV+QBZKr4JBBtG4a9MHgiN+7bUB7kV4KxBMUQnokxWXjcqvjH05jstnukmDGHobdF0UubqtQS9U6LExfmTjj/LmiC32wVwfqxl9RgJTX5tV9sFpwtV2xA/rjFhj/N38Sngsj4julZzK+h/F9qQKvZSMnzpx43smMoPUSk27T5f439zCdV4C2H7UItpe3CyHlEUaM84pVFGmbsWoA9z94Y02yNKMDhGr3RKnFxOTFalB0sjVYY10bmB7LU+CxYjTGmFrTtsnlk584AybV/J+FKoZBtGgCNoupawIYfInw/mN5CAYGOMNLshndvoUOYQMvVs3M9rUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=66VWupt/mZ6FBgq5tKboKohYjAfYUEXR7z0xP2PP65E=;
+ b=CyhS7K6hFjclWoOvANlwXmxAycb8CKazaIWrT65zNzcNNfrlmpcmFF/rCljDRv5kGxejrOxET8CzbtH9qqHUcJZKQj9xK+JgaCZ0CIsGcvc9eIuXffQM1MQorqOlFL0sHj53UHY2QaTv1NmzqpkaGgerI4O6gUPeVeL9ElVesdzNrFbxYRaTLyd6uvJVa5n3MvAIb5ayl4bEoBayuzhsWzTZcMvCcp5vnza+ozZYsZMS5+OjTsAI1J2Eoz21vCEu2+uIyoTQ1MuIwkf/DFQtfRMaszBQ1tWhaFr+ySppTqcwJh6I/q7BcmuwbXXdusOuw817VJepjjqbPpUEFMmfNQ==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by LV2PR12MB863586.namprd12.prod.outlook.com (2603:10b6:404:300::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 22:39:57 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 22:39:57 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Zhang Yi <yi.zhang@huaweicloud.com>
+Cc: Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 07/16] mm/shmem: avoid moving the truncation start
+ backwards
+Date: Mon, 26 Oct 2026 18:39:54 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <B1241F56-8000-411D-A137-24596E599C85@nvidia.com>
+In-Reply-To: <583728ed-dc63-4685-9ac5-5a980db55973@kernel.org>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-7-703206d5fa0c@kernel.org>
+ <2E377C76-D62C-4A2A-94E3-ABC40C6FCDD2@nvidia.com>
+ <583728ed-dc63-4685-9ac5-5a980db55973@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0D3A7140004
-X-Stat-Signature: ojyk673roehkctsden1bncgrse71qroh
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+X-MS-Reactions: disallow
+X-ClientProxiedBy: MN2PR11CA0020.namprd11.prod.outlook.com
+ (2603:10b6:208:23b::25) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LV2PR12MB863586:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ed2f788-9e38-4ac4-9efe-08df33b20fb8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|6133799003|22082099003|18002099003|261026140227099003|10067099003|4143699003|56012099006|261021121427099003|11063799006|261009223027099003|261021123027099003|261022105027099003|261026121527099003;
+X-Microsoft-Antispam-Message-Info:
+	2OKK9tqKk/P+AKYZxGbdN1B4Kgaco0VIE9hS8Eu961mmWlWQo1pa0NxwcmA61+AGpU7cxmDBPD1bZeKnEWYxaIbCdVHC6uI6EZkyPoCcXTlsE3CuTbhKZsMcJ5p5HzPFPq4fsrsFHRow6Sn8C30KEIvho0a6gSDdZa7WBxQFlUFFy3QAh7rTC/ihcnF1WVM8B7WTGfWLmK8xunW7mvWu/kaq0TiBtS9OAHeSV5mn+99dg3T8U4BF5SnmDEGlglNZ/sKGplzuvwvcZT6G0Hl2i2MhWW+jPHee9xITE9xGpFU9s45GH77hm05KkyaACgPZBHZLH0jDqiWtTTUDO/242KyMPSc6ucpiufA/CF/xOG4IZEMe/rw2mic37untFMsyeRZ/Vb5/J9ncBbVmKUqRuCl+qEPRLyhQSEf8fylvw2bs3JFbSJZ1EP/4s9liIEfsgP4Kg3n56f+wkPqdsqvTfi4GDbPVLR/rkUMexeaTmOgbLnTy9K2n85QvBVJaXQjE4qfUWK4chvhnqtkeRzPB8bRGpnKVWhyuLSKsaIWJcr9NtQJVCZ8a7lziGMdOlcImXS0P+OeIYJSq+8v+B+UFWp2i/ZeE/t+kCvGeBMRHvDQaeIIfkE6DKpsBpBFmCe14gJg2wbcsGrfFva6ckaE/rfUUtJF06baYAMWDIL4ci4I=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(6133799003)(22082099003)(18002099003)(261026140227099003)(10067099003)(4143699003)(56012099006)(261021121427099003)(11063799006)(261009223027099003)(261021123027099003)(261022105027099003)(261026121527099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZG51bFBibWM3aVliUDRMY0xHOGxKYWhJcXRkR1NRdzlwVVcrcEgwaWpScTd2?=
+ =?utf-8?B?QWg3ZmltWURsbUdmd3I4TXpWSkppTEZwOWppUVA4dGxEbmNyQ2RwalhlV21k?=
+ =?utf-8?B?OGE0OXUyWnRHekkrZjc4WjRBbzZvS0RJSzZwQjBMQmxSWVc3b2UxZFlBNWcz?=
+ =?utf-8?B?a1F4TlYrOXE3dE05MGtpdmMxWWw3T2tnWmQ2Tjd0VnVDZlRzTUsvbzlmZm1L?=
+ =?utf-8?B?ZS90amhkRTI3RjI3MlNqVExicER6K2krMGdFb3I2ZjZuQ2tVcFJBZWg4QTl5?=
+ =?utf-8?B?RlhGTkVTd1phaWZTSUVrbkFIMC9TaS84WTdyN2pCRWkrWkt6YXFIbjBrbGE2?=
+ =?utf-8?B?WjBHUyt1b0FxWCsyMlRSUitjU3VBYmFhLzdFcEdWOHpudCtZMWhlaTUyOGFG?=
+ =?utf-8?B?eXZJWUZvaXMzVElUcVNxdHhjbUtUaTdCSUF0ekFBdEN5T3kweHNpTGNoTUNh?=
+ =?utf-8?B?SDFVb2FDZ1lxTHpFcmF5SWNheEJYMkxwalRhbUk0dW8rK1Q2a3dESjVFOTF1?=
+ =?utf-8?B?dGZMdVNQcmRWcEM2bTUwRHhwcHN3MlZLUU5selRJczFWcjhqQnpxWFNRVkNP?=
+ =?utf-8?B?L2FEWnBPNW5IOUtFZEhsWElCeHhqV3o4dGtxQTZOZ3FXL05wYnNST1IrekhY?=
+ =?utf-8?B?VnlZbHBkVmMwWDdnTS8weE9OQW1CeWR4R3hCUkFmK2Mya2Q5YStyK25ZMkN6?=
+ =?utf-8?B?RXh0c1JVVUpXUk4zM1padVh4eC9BL3hkUHMzaEhMMUQ4Z0RocFE4YlhIbkhO?=
+ =?utf-8?B?d1J2YzJMdkJvajRaaU9KUFJldUJKUUxJejJEMTZMRXVQOTF0Smp3UjYvNm1L?=
+ =?utf-8?B?cnVDWDZnU2lkczN1dmNFUWpEeXVvUVpJa1EzcW9RZXkybURSMzVZWno0ajBL?=
+ =?utf-8?B?a2x5NGk4QVUrSEpmUEFDWUtGWGxTMmE3WWdQTmhlSW9CSEhuMHdSd3F5TVdZ?=
+ =?utf-8?B?NzdkN1Nmam9GNm8zQVIzY2ZsRCs3b01FdVdXWGZPaWNCRS9OMDJ0aStjU0hm?=
+ =?utf-8?B?WHpxbjNlcGJyclQ1VzlhcmZIclRDTkN4VlF5RksySjFmenc0bmdXYnJRSWxZ?=
+ =?utf-8?B?b1BaaGk1Ry8ycVNKS2pPN0ZtbEFmazdYMGU2QkJWSWNtODh5cGtMNVRVa3dX?=
+ =?utf-8?B?U0t3bllVQkJyMThsSEdGbXBZM3pNRUpyQXZ6b2g0S3NzcG1tcjVyOENZbXd2?=
+ =?utf-8?B?eTY2UDlCSzZMVkpXMkJlN3Roa05WaXd5ejkzYnQ1RE0yVUs4U1dOQWJ2TVh4?=
+ =?utf-8?B?TnBVR1h6aDRFenFrVnp6TjZweXh2dlh1d2FTOUhvMEltbytsWFRObHh5WXJB?=
+ =?utf-8?B?NDNKRmYrVitSeTlnQjlYQUNhYXlIWDVXRmJoMm5QWGV1dXc4bzlmQ3RKM0Zn?=
+ =?utf-8?B?VzM2M1pQWUI1UVBsbEtrMk5VUTNwNXlmeDB0T1lvOUNLblRNcFBqZVhsMjl2?=
+ =?utf-8?B?RFZMblVqT3dUQU1nTGtyQW9XZ1A4OVhQU3k3Vi9RL0pMWHQwWDIxRmFjQ2ln?=
+ =?utf-8?B?SENQRnNDa3FNZk5xVXpvMHdlcDZvaFBqc0VOQnRQdnZTYXRCQmc1MURIVnRn?=
+ =?utf-8?B?Zy9jVnNSQXpTUURra2Uzd3Y0MzZvTTRISXhrdk96QjVKa3hCQm1aNVg3b2dp?=
+ =?utf-8?B?N21TbnlpcFhOUUZsaTh2dkdiYVZBV3lhTnpoV0VDdytRcEYvaEdHbmZEYlBv?=
+ =?utf-8?B?NGF4NmY3SVQzbk82amVwVXB2bitzanFmajlJTWVqM2haelJyTDlqTTRjYk9E?=
+ =?utf-8?B?MWQ3TnNaS1J3Q05PZ3JzZzVyMFRiS0syaUNWR3MydkZFL2FBbnhkdUhyWDNB?=
+ =?utf-8?B?RzZEcWVaY2kzdE9JZThpc0RJMjhkQ1lVWWdqbTRrQVZlaFlsTUkvT3pNU0JO?=
+ =?utf-8?B?QmlpUjJqMFJxWSt0SzNVY3o3QnpCVThtbmdsV3N4dU5EQ2R0am02UWp4S0NP?=
+ =?utf-8?B?T3JBMnpOOVE1UlFwWDZEc0k2aTFlUnpmVDBvTy9WeWFtaUd6eVIxWXl6WXZa?=
+ =?utf-8?B?TjdFNEpqZ3Z6TDdvSWhqNGw0RERnT3UzamdMT0JZaS9oZnFkTEJYV0xQajds?=
+ =?utf-8?B?WTJnSG1sSENyR2I0blRUVWx0U1pFQnFGWStnbUw1NHNGbUM0SzYvNHUvaUJL?=
+ =?utf-8?B?eXZvT3VCYmNrcTZpMjNFYWlVNElocDdtYTBMN2lWbUVBYUt4dTZvN09YaFpY?=
+ =?utf-8?B?MkxEOWRURzROdlhZR3lKaGpNYVB1U3MybXFEVkIrRzFuSjNrSkZkdnJpTVJG?=
+ =?utf-8?B?THo0MUZPMllPWU5nNzJqa000dmFJQ2dDQlRsaFM3RG00WXhabVd4M20zbG42?=
+ =?utf-8?B?N3dFSmxsSkI3bkxCc1VxaytiTTRscEFZMUFnMm91NGl2R3VmSitGdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ed2f788-9e38-4ac4-9efe-08df33b20fb8
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 22:39:57.2206
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Io7Q/vNr8VWLBfQfL+QwRsTpt2s4VD/NiwHzWzTupiCm6hvEtZJlxS6Eq5OlNYVj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB863586
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 86CED100004
+X-Stat-Signature: mzjx1sshxmibmmqpuyozgjgs87kqq9zy
 X-Rspam-User: 
-X-HE-Tag: 1793054088-162073
-X-HE-Meta: U2FsdGVkX182lCAtGsi5WHe0usBgYra/95NTfSgipkUWQo1PSWIVnw5WSxgFYlKOglzbCT9fBHkyjG7rTtUlIKM6Dn9HXTNznIRMY4zEJVQxi1+dfmVvVGYniXjOm39NFNBZ+R5vGI8zcbf2La9lUkRuRNmNWUbZz2lq20imzHculdCg8Fm0TY/ODh3eCZkR8lvUTWkAh8KE55pB0hVTv2Kw38LGUrtxeCCDM4Amfd4m5kymywjQF0YTXWsVFrR/uoLmdwYbY4B+TmK0g86nAE3zMJ2OkuTxdyPfeFyebF+b8Z3kNCQa1KQOlmDYRJygg4o7VgYDumQdBkpx2VWXCPHF1wO1Qm4M7TrgCd39XQwpcJ5CXQPUNkcxDSYJUlsKcY5FqzuExV8vkOY/W+VykBJLgTCgfYuovORd7eSXLa8qyO5t8MLeAwh1jUeN4Y2Uo1Y0Jn6ADN49axfe/IUQ+8SPb2mhDetFxrDGj0/ee6pY+3FR+DHsUaRqxLSvsxwla5lTGTa4iNB4xqSjZUhtUYrnpl9BYo2ueRFQAQkTeJQC3mAqYxPw68eb50Ip+EjdwKED3hs9maE6qeSZWtWyOgWSgm2oD29nyNRpNkbmUZQCG4yFQLMR81ESSIYYg1JMidAVNwOlZ8kZJpMbpuixuQcqScn6L/rjAQMMOZQB9Lgs2hxUueDru4DH123/osTTrphlG3ptiRe2PT3KRDqQz/KNsb1RD2GGejjK7H1jO0ZtVwczYDjWVTiZNUoNHUccSOMsNgmrgHI2YB+4etRgq+QXNwxC7mfUL5lXvWemNLTI9LBBzWwILepdaOgu429505rF9ZALXUXjnfqpNQdcP11zQneJZaJL9K/I54r3PL6TS0G1yzsR0VvWV4+MVFyUuaxMVs75oMTV6MhdzRik+BmuUleVfl1GqvMM01vcRoirvbGVMJdRCJSRghOM4kQjoiPOAA+NGFSS8++gTuL
- V9l5vHqP
- a0KnuKcvIe9bD6fV9tqg/c67aPGzNiW3aJ0sXT6U+TmoDrAab9+5GpDnz6RpnGkWUWrTzTkXXJa/omuk3NJcCMoyrNwWuUuFckXW80uAe/JwVrI5ypXnEFTjPyFMWLtKM3IiiTv95wK7dB0S5drj3k5UsB6FZklJWIUUtnLURkYc2BuFfGMRVTvdrW0KgFtietP/TqvfE/mJ3STNwwygKPBw8C3t8Fw58dxqkRi8UbbMjEJrqvub2I6eIdPPQwmMCTqqxtUqB6ZkF5lt/HeR0hFiCQopsjGg0trjZtTumZLKJExmYMJlS1OWYosiYfINwvkskyaEQPFGlGplBw71dhnI+Sb6xty52uW5A3ItGLm36a4C2bHq7x95XfhXJ36wCk14U/Yd0eqiGe6sb8DFtY+BCw7uJpTk3cy7/Sn31Kt9HLGN70naZQwp3dIaLWC9eoF3BdKX/t9dE8vMqWm3vGC6IOg==
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793054402-53721
+X-HE-Meta: U2FsdGVkX1/5IVCKdmKADnlTJ7ekQyglARKluPfhGjcUB8jbwYmYj2hrvdH1H8+ix43XfbnvNjBJ9phJZe1ytAJ8HSidqOOcZ2unv+NXq86UIHCJPhhqzctJCakJKSX/34/uRCkN3q1ikXmPZNJfg32x656VO+1Ia6mT8F6KGPSHEjY7zXGTsI6ZzC1migEkS4TKwy5W8cxTJneA+WRgjeRiJAS/5g6tXxErWr9gTxjYKAb+3wE/P8G/kptk/9qYN4Rqnw0/tTf+tVxr6BOJWnlcEYE0XnqDRbyyZqKTIO6M8N+KwkeW3+vg+dg00Hxi/LE9aO9hg83S0AKiehnyH3xGeZ/DeN1J+b3CvopJoG28lu6AnrLWCQOxzv6OWw6e2rlx8PmxGzOBn57PQckgNh8WkXJ9pos00QDduqOOtrAdoxYc8q9t//tP/aX1yIehiBNqgH6kVeJVI5KphEhIJZ0zQHr+U694sIgKySq1GIGpSFdxb2PmdU/hRpg7Oyqtsi0N/sSJqhmRZGG+IrEzWVoLhTfalvzF8obAM8bu0rHNUoBSIPGaYui09qXV3J75QuIHY1+bm9mSO2J+xxAGKqyu43zYTlYCGgImrC7PpZBq1Y1k3tFkXyTEbhhgDWr8hFi9Q8QCSx5IN3/G++K9m3NoEV2ChkOzG0bLtEQmWH9exWr0ERWG0IW8kQ60wZbn97Db+OtcXJDZWeSMmD67MITsQ5AnrIOYzWs5UlBl80oEb95bQi1sjCoLmpycE8Q3jzs7RLbsak7MVXHEFyHu3bTYACpugFaq8oQtdGcwFfnjA2to09xX6hZ+MSKsZLX3o1Hri1mlc8a8SEz2BPUBJUGE4vJ0beXbrJ13Yz7Ki0V17fikS8wx6c011rV6NAv7Ml3/sdX+83hepRC4HxxLGd9L5iujhOUymhr6LcAuJHPTh6NCJOVW10/4T84J7nQTUeSAmvPloAjwtznbWdR
+ febQWIPY
+ 2UfVjqrN8HJGgIKjrF9gj9dKYLAyg04CJ3XEl4z/nzZwdohUJ1TAlqJbizx9tHWjHLV5q/Gq8h5cWPgpr3CObQQiW67CVuAqvJ4CKRNLoGCM8eMSYUHJoNbYD5e0WBuF4C5hReW1aUreWqau6/T3gj0fdhFhjymAs/ez/gnQZV7zF7m/4KpcyMBDWoTNkg7nIkMWmMCmzBferu9O7ja/t5QQbxg3hMkvWYLvMNOIj8x62TCjCwXaIqOV3PWAUs2Pj/5gUXiLBFq/HcK68Vel+/bMQPnF4nZISSSD730LvDAJ9k+bqVK50MWV8djZ3G8HlNEGfNXJ3V7TdS3QrQEPlhAv/u7YE6+nmPMV6SAO1bj190nSHBjJxSqYoqUqheHMW+AqkwRs+NjxaiiNnHTUaH70STFgrEP1NT1fWdrCkoFYGU2VmEEo09Iv8eGal8EVBjnLuzSBjlq9Q1PWJrFzECK/IyrkBI45V7X8y4b+tG/eicnUIMbJaY+GMJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,396 +194,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 19, 2026 at 8:09=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Mon, Oct 19, 2026 at 6:10=E2=80=AFPM Barry Song <baohua@kernel.org> wr=
-ote:
-> >
-[...]
-> >
-> > So this is the main course, with the earlier ones as appetizers and
-> > the later ones as desserts?
-> > Overall, this dish looks very delicious to me.
-> >
-> > I ran kernel build on my machine, the result is quite similar with[1].
-> >
-> > W/o patch:
-> >
-> > eal    1m49.094s
-> > user    25m31.484s
-> > sys     3m40.959s
-> > pswpin: 662112
-> > pswpout: 2504415
-> > pgpgin: 4424336
-> > pgpgout: 10355273
-> > refault_file: 359626
-> > refault_anon: 670724
-> >
-> > W/ patch:
-> >
-> > real 1m48.944s
-> > user 25m30.987s
-> > sys 3m34.605s
-> > pswpin: 467952
-> > pswpout: 2319080
-> > pgpgin: 3481187
-> > pgpgout: 9603332
-> > swpout_zero: 602042
-> > swpin_zero: 6250
-> > refault_file: 310538
-> > refault_anon: 474154
-> >
-> > But it behaves in a much more sensible way.
->
-> Hi Barry,
->
-> Thanks for the review and testing. Glad to see it worked for you.
->
-> >
-> > I've had a preliminary look, but haven't reviewed it in detail yet.
-> > I have a few comments.
-> >
-> > [1] https://lore.kernel.org/linux-mm/20261016213115.70515-1-baohua@kern=
-el.org/
->
-> Right there could be some similarities, and some differences, e.g. no
-> more lru_gen_in_fault hanlding here, or difference between anon /
-> file. BTW did you test the whole series or just this patch? This patch
+On 26 Oct 2026, at 17:13, David Hildenbrand (Arm) wrote:
 
-I tested the whole series rather than this patch in isolation.
-
-[...]
-
-> > Could we use the following instead? Coming from a hardware register bac=
-kground,
-> > this looks more like register encoding to me:
-> >
-> > static inline int lru_get_refs_flags(unsigned long flags)
-> > {
-> >     int refs;
-> >
-> >     refs  =3D !!(flags & BIT(PG_referenced));
-> >     refs |=3D !!(flags & BIT(PG_workingset)) << 1;
-> >     refs |=3D ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) << 2;
-> >     return refs;
-> > }
+> On 10/26/26 20:21, Zi Yan wrote:
+>> On 26 Oct 2026, at 5:40, David Hildenbrand (Arm) wrote:
+>>
+>>> From: Chris Mason <mason@kernel.org>
+>>>
+>>> A nonuniform folio split can fail with -ENOMEM after splitting off some
+>>> smaller folios. shmem_undo_range() then sets start to the end of the
+>>> original folio, which may now lie before the truncation boundary.
+>>>
+>>> The final scan can consequently discard data below the new EOF, or
+>>> keep retrying a large folio whose split point lies outside it.
+>>>
+>>> Keep start at least at its original value when skipping a folio after
+>>> a failed split. The part in the truncated range has already been zeroed=
+.
+>>>
+>>> Fix generated by an LLM and sent by Chris Mason in private.
+>>>
+>>> Fixes: 7460b470a131f ("mm/truncate: use folio_split() in truncate opera=
+tion")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Chris Mason <mason@kernel.org>
+>>> [ david: split fixes, simplify descriptions, adjust comments ]
+>>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> ---
+>>>  mm/shmem.c | 8 +++++++-
+>>>  1 file changed, 7 insertions(+), 1 deletion(-)
+>>>
+>>
+>> This is fixed by Zhang Yi=E2=80=99s truncate_inode_partial_folio() fix[1=
+].
+>> I think the commit is ad27479793682 ("mm/truncate: fix data loss
+>> when splitting straddling large folios fails") in mm-stable but
+>> not upstream yet.
+>>
+>> [1] https://lore.kernel.org/all/20260928120833.3440834-4-yi.zhang@huawei=
+cloud.com/
 >
-> No problem; it means the same thing and looks better indeed. I think I
-> better change the return type to unsigned too, refs can never be
-> negative (gen could be though, as a reserved value).
+> How confident are we that it fixes the same issue?
 
-make sense to me. lru_get_refs_flags() is impossible to be negative.
+The issue here is that folio_next_index(folio) used in the mainline
+code can be an index lower than lstart and the fix is use max()
+to prevent start going backwards. (I wrote this to make sure
+I understand the issue correctly)
+
+Zhang Yi=E2=80=99s patch passes start into truncate_inode_parital_folio(),
+which has a new signature, and it is updated with the folio=E2=80=99s index
+within the [lstart, lend] range at the beginning.
+
+So this patch fixes the issue at the caller and Zhang Yi=E2=80=99s patch
+fixes the issue inside truncate_inode_partial_folio().
 
 >
-> >
-> > >
-> > >  static inline int folio_lru_refs(const struct folio *folio)
-> > > @@ -236,14 +240,29 @@ static inline void folio_set_lru_refs(struct fo=
-lio *folio, unsigned int refs)
-> > >         } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_=
-flags));
-> > >  }
-> > >
-> > > +void folio_inc_lru_refs(struct folio *folio, unsigned int flags);
-> > > +
-> > >  static inline int folio_lru_gen(const struct folio *folio)
-> > >  {
-> > >         return lru_get_gen_flags(READ_ONCE(*const_folio_flags(folio, =
-0)));
-> > >  }
-> > >
-> > > +static inline bool lru_gen_at_tail(struct lruvec *lruvec, int type, =
-int gen)
-> > > +{
-> > > +       unsigned long min_seq =3D READ_ONCE(lruvec->lrugen.min_seq[ty=
-pe]);
-> > > +
-> > > +       /*
-> > > +        * Consider a folio is at the tail of its LRU when it is with=
-in
-> > > +        * MIN_NR_GENS of the oldest generation of its own type
-> > > +        */
-> > > +       BUILD_BUG_ON(MIN_NR_GENS !=3D 2);
-> > > +       return gen =3D=3D lru_gen_from_seq(min_seq) ||
-> > > +              gen =3D=3D lru_gen_from_seq(min_seq + 1);
-> > > +}
-> >
-> > If only two generations remain, should both be considered hot?
-> > If three generations remain, is only the oldest generation old?
-> >
-> > Also, the name is a bit confusing, as "tail" usually refers
-> > to a list. Could we rename it to one of the following?
-> >
-> > lru_gen_is_old()
-> > or
-> > lru_gen_is_near_oldest()
->
-> Right, I wanted to introduce an idea of something called tailing gens
-> (e.g. 8 tailing gens when there are 64 gens in total, folios in
-> tailing gens are promoted on each access instead of multiple access,
-> this works really well for fine grained hotness detection, and avoids
-> over protection too). But for now this helper is just meant to tell
-> the caller if the folio is close to be evicted or not, checking
-> min_seq only could easily fall into a pitfall where the oldest gen is
-> very short.
->
-> Maybe lru_gen_at_expiry? Or lru_gen_at_salvage?
->
+> Does it also cover #8?
 
-at_expiry gives the impression that a timer is involved in
-triggering a timeout, while at_salvage is not very intuitive
-for non-native English speakers.
+No, patch 8 is still needed. I am checking it on how to rebase it
+on mm-stable.
 
-I'd still prefer lru_gen_is_old(); it's simpler and easier to understand.
+Patch 9, 10, 11 might need rebase on mm-stable too.
 
-> BTW the whole picture involves three kinds of gens:
-> {tailing/expiry/salvage} gens (promote by one gen on each one FD
-> access), frequency gens (promote by one gen on multiple FD access),
-> times gens (promote to latest gen on PTE access); We now only have
-> expiry gens and frequency gens, timed gens are extensions for the
-> workingset report or pghot design. e.g we have 64 gens, then 8 tailing
-> gens are expiry gens, 16 frequency gens, and 48 newest gens are timed
-> gens.
-> https://lwn.net/Articles/976985/
->
-> I mentioned this in the cover letter that the "climbing of the file
-> cache" will stop at 8 gens or 16 gens, this is the whole story, there
-> is a lot of context and plan so I trimed them off to focus on the FG
-> improvement first..
->
-[...]
-> > >         if (folio_test_active(folio))
-> > > -               gen =3D MIN_NR_GENS - folio_test_workingset(folio);
-> > > +               gen =3D MIN_NR_GENS - (refs >=3D LRU_REFS_WORKINGSET)=
-;
-> >
-> > Could we define the "workingset" variant earlier so we can reuse it her=
-e?
-> >
-> > workingset =3D refs >=3D LRU_REFS_WORKINGSET;
->
-> Looks good, will do.
-
-thanks!
+Since these patches are on top of mainline instead of mm-stable,
+you will need to rebase them. IIRC, Zhang Yi=E2=80=99s patches are needed
+for ext4 + iomap buffered I/O conversion. Hmm, but Zhang Yi=E2=80=99s
+ext4 iomap patches has landed in mainline but its dependency
+is not. So we cannot drop Zhang Yi=E2=80=99s patches and ask for a
+resend. Adding Zhang Yi here.
 
 
->
-> > > +/*
-> > > + * Update the folio's lru refs indicator. The caller doesn't need to=
- hold
-> > > + * the folio lock, isolate the folio, or hold the lruvec lock. Used =
-by both
-> > > + * cache access (flags =3D=3D 0) and page table access (LRU_REF_MAPP=
-ED,
-> > > + * optionally with LRU_REF_EXEC).
-> > > + */
-> > > +void folio_inc_lru_refs(struct folio *folio, unsigned int flags)
-> > > +{
-> > > +       int max_gen;
-> > > +       int type, refs, old_gen, gen;
-> > > +       unsigned long new_flags, old_flags, max_seq;
-> > > +       struct lru_gen_folio *lrugen;
-> > > +       struct lruvec *lruvec =3D NULL;
-> > > +
-> > > +       type =3D folio_is_file_lru(folio);
-> > > +       old_flags =3D READ_ONCE(*folio_flags(folio, 0));
-> > > +       do {
-> > > +               new_flags =3D old_flags;
-> > > +               old_gen =3D lru_get_gen_flags(old_flags);
-> > > +               refs =3D lru_get_refs_flags(old_flags) + 1;
-> > > +               gen =3D old_gen;
-> > > +               if (old_gen < 0)
-> > > +                       goto out;
-> > > +               /*
-> > > +                * Lock the lruvec if the folio is on-list. We are al=
-ready
-> > > +                * doing lazy promotion so in theory we don't need th=
-is,
-> > > +                * but for now, concurrent aging would still corrupt =
-the
-> > > +                * size counters.  This is a temporary limitation and
-> > > +                * will be lifted very soon, so the lock here is not =
-a
-> > > +                * performance concern.
-> > > +                */
-> > > +               if (!lruvec) {
-> > > +                       lruvec =3D lruvec_live_lock_irq(folio_lruvec(=
-folio));
-> > > +                       lrugen =3D &lruvec->lrugen;
-> > >                 }
-> > > +               max_seq =3D READ_ONCE(lrugen->max_seq);
-> > > +               max_gen =3D lru_gen_from_seq(max_seq);
-> > > +               if (old_gen =3D=3D max_gen)
-> > > +                       goto out;
-> > >
-> > > -               folio_set_lru_refs(folio, 1);
-> > > -               return false;
-> > > -       }
-> > > +               if (flags & (LRU_REF_MAPPED | LRU_REF_EXEC)) {
-> > > +                       /* Promote second page table access or execut=
-able */
-> > > +                       if (refs > LRU_REFS_REFERENCED || flags & LRU=
-_REF_EXEC)
-> > > +                               gen =3D max_gen;
-> >
-> > This looks a bit odd to me. Could we handle LRU_REF_EXEC in a
-> > separate branch instead of mixing it with refs > LRU_REFS_REFERENCED?
->
-> Not sure how? They seem to want the same thing: promote the folio.
-
-I mean we could have a separate branch for LRU_REF_EXEC | LRU_REF_FORCE:
-
-                if (flags & (LRU_REF_EXEC | LRU_REF_FORCE)) {
-                        gen =3D max_gen;
-                        refs =3D min(refs, LRU_REFS_PROTECTED);
-                } else if (flags & LRU_REF_MAPPED) {
-                        if (refs > LRU_REFS_REFERENCED)
-                                gen =3D max_gen;
-                        /* First access only defers eviction of a tail gen =
-*/
-                        else if (lru_gen_at_tail(lruvec, file, old_gen))
-                                gen =3D (old_gen + 1) % MAX_NR_GENS;
-                        refs =3D min(refs, LRU_REFS_PROTECTED);
-                } else if (refs > LRU_REFS_MAX) {
-
-
-right now, it is:
-
-                if (flags & (LRU_REF_MAPPED | LRU_REF_EXEC | LRU_REF_FORCE)=
-) {
-                        if (refs > LRU_REFS_REFERENCED ||
-                            flags & (LRU_REF_EXEC | LRU_REF_FORCE))
-                                gen =3D max_gen;
-                        /* First access only defers eviction of a tail gen =
-*/
-                        else if (lru_gen_at_tail(lruvec, file, old_gen))
-                                gen =3D (old_gen + 1) % MAX_NR_GENS;
-                        refs =3D min(refs, LRU_REFS_PROTECTED);
-                } else if (refs > LRU_REFS_MAX) {
-
-a bit hard to follow.
-
->
-> > > +                       /* First access only defers eviction of a tai=
-l gen */
-> > > +                       else if (lru_gen_at_tail(lruvec, type, old_ge=
-n))
-> > > +                               gen =3D (old_gen + 1) % MAX_NR_GENS;
-> >
-> > The logic makes a lot of sense to me. It should be able to
-> > differentiate readahead folios from those that are actually mapped
-> > and likely to be accessed more than once.
-> >
-> > If we allow two generations to remain, this could be a problem
-> > because old_gen + 1 would overflow. Maybe add a
-> > VM_WARN_ON() to guard against this case?
->
-> We just checked if (old_gen =3D=3D max_gen), so this should be fine? I
-> mean overflow and the mod MAX_NR_GENS is also part of the sliding
-> window logic.
-
-Yep, I missed your check:
-
-                if (old_gen =3D=3D max_gen)
-                        goto out;
-
-[...]
-> > Sometimes you use >=3D LRU_REFS_WORKINGSET, while elsewhere
-> > you use refs > LRU_REFS_REFERENCED. Can we unify these
-> > checks or define a workingset variant?
->
-> No problem; I can use a macro for that, as they mean the same thing.
-
-right, thanks!
-
->
-> > > +/*
-> > > + * Update the lru refs indicator of an isolated folio, only used on
-> > > + * mapped folios upon the final eviction.
-> > > + *
-> > > + * Increments the refs count (capped at LRU_REFS_PROTECTED, evict_fo=
-lios()
-> > > + * then caps it at LRU_REFS_WORKINGSET).  Returns true if the caller=
- should
-> > > + * activate the folio (second access or executable), false to put it=
- back
-> > > + * for a second chance.
-> > > + */
-> > > +static bool folio_inc_lru_refs_isolated(struct folio *folio, const v=
-ma_flags_t *vma_flags)
-> > > +{
-> > > +       unsigned long new_flags, old_flags =3D READ_ONCE(*folio_flags=
-(folio, 0));
-> > > +       int refs;
-> > > +
-> > > +       do {
-> > > +               new_flags =3D old_flags;
-> > > +               refs =3D lru_get_refs_flags(old_flags) + 1;
-> > > +               lru_set_refs_flags(&new_flags, min(refs, LRU_REFS_PRO=
-TECTED));
-> >
-> > I'm having a hard time understanding why an activated folio
-> > still keeps LRU_REFS_PROTECTED, since it will be promoted
-> > to the active list anyway :-)
->
-> Right the FG idea is to always retain the frequency counts, instead of
-> resetting them to 0, so folio_inc_lru_refs can promote FD accessed
-> folios much more proactively, when a folio reaches LRU_REFS_MAX it
-> will be promoted by one gen.
->
-
-folio_inc_lru_refs_isolated() is only called when
-referenced_ptes is true, so these should always be mapped
-folios:
-
-if (lru_gen_enabled() && !lru_gen_switching()) {
-      if (!referenced_ptes)
-             return FOLIOREF_RECLAIM;
-
-      return folio_inc_lru_refs_isolated(folio, &vma_flags) ?
-        FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
-}
-
-When you say "FD-accessed folios" here, do you mean that
-these mapped folios can also be accessed through syscalls,
-and that you keep the refs to detect further FD accesses?
-
-> I did a in depth analyze of runtime distribution, with this, we can
-> see very hot folio being promoted from max_seq - 1 to max_seq, and
-> after aging, the hotness info is still kept and workingset stay stable
-> and accurate (it's like the global aging of traditional LFU, which is
-> obsoluted in upstream due to overhead despite having better accuracy,
-> but now it comes with almost zero cost).
->
-> >
-> > Later, I see that you set it to LRU_REFS_WORKINGSET in
-> > evict_folios():
-> >
-> > folio_set_lru_refs(folio, min(folio_lru_refs(folio), LRU_REFS_WORKINGSE=
-T));
->
-> Right that part is meant for aging the older folios and PID controller
-> though. LRU_REFS_WORKINGSET could means historical workingset, and
-> LRU_REFS_PROTECTED means folios being currently actively protected.
->
-
-folio_inc_lru_refs_isolated() is called from the eviction path.
-Folios that are not reclaimed will go through:
-
-__folio_set_lru_refs(folio, min(folio_lru_refs(folio), LRU_REFS_WORKINGSET)=
-);
-
-in evict_folios().
-
-So LRU_REFS_PROTECTED eventually becomes
-LRU_REFS_WORKINGSET(or 0, 1).
-
-I'm still struggling to understand why we need a transition
-from LRU_REFS_PROTECTED to LRU_REFS_WORKINGSET (or 0/1 if
-folio_lru_refs() < LRU_REFS_WORKINGSET), since those folios
-will always end up in LRU_REFS_WORKINGSET (or 0/1) anyway.
-
-Thanks
-Barry
+Best Regards,
+Yan, Zi
 
