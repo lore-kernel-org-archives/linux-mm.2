@@ -1,98 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA676606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F89606A327
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IJrect8G
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=iXfDunGr
 Received: by kanga.kvack.org (Postfix)
-	id CD5146B05B0; Mon, 26 Oct 2026 13:41:20 -0400 (EDT)
+	id 9EE566B05B7; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAC366B05B6; Mon, 26 Oct 2026 13:41:20 -0400 (EDT)
+	id 9A12B6B05B8; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE9F16B05B7; Mon, 26 Oct 2026 13:41:20 -0400 (EDT)
+	id 8B7E66B05BA; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 929DC6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:41:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F7D8120818
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:41:20 +0000 (UTC)
-X-FDA: 85365493920.23.178D207
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5E59940008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:41:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJrect8G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 67F0A6B05B8
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD6671407D4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:42:25 +0000 (UTC)
+X-FDA: 85365496650.05.B7ADA7A
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 113E2180006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:42:23 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iXfDunGr;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3_JDfagkKCPkubsvotbivhpphmf.dpnmjovy-nnlwbdl.psh@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3_JDfagkKCPkubsvotbivhpphmf.dpnmjovy-nnlwbdl.psh@flex--tarunsahu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793036478;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793036544;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0BceteKFIZmrpR2GKFFTTB8WWb9Hq0TCYKNKPvQ0FEE=;
-	b=jXURJpsnggMzeRT+gognRZa+nYn+pj0rwy7zsD8r6nioGecEQ4kvsUKB+gWIrrPexUAbsj
-	zlUtVcEKOURP/slQBYNOwbwREEH1T3Pgp/rGRL9KH12Bg+p5el0SS4/adA15oN4h5WYoNu
-	gdM+/c9Nk2ovQOWg2JM6M/gH1WziFxs=
+	bh=3G8QhvNEpQ3sy+r1BDzvVBq/AXAxP3+qa6H4bl6GlDI=;
+	b=6UskOkOx6CHbw3+DkJIPMa7iN3YheR2J3MzlYJQ3tx+Fs5zL7dq04AZzhkRsxPKToY7cEO
+	3QaHM4aBzS6VMj762ljtcjxyqXYGGxaubbIfMpxyghNduKjJ3MW3xk0+cJ/I0raTgr0KYO
+	x9nv3B65bwYhPAJq5RKjrrD24tOXdx4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJrect8G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iXfDunGr;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3_JDfagkKCPkubsvotbivhpphmf.dpnmjovy-nnlwbdl.psh@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3_JDfagkKCPkubsvotbivhpphmf.dpnmjovy-nnlwbdl.psh@flex--tarunsahu.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793036478;
-	b=fQ9xxI3vz+rHQsHd3TCyv7fQbeJeyVxjeS+GOzt20alGd61kXSXQYng3SgFboMlv9NcN2q
-	jN71Xil+GALiTzAi9qwWGgFqB1W1LkQnfNeoa/FjYjEHqOwGHCKiXAORcFTHvu3H4bbNYl
-	KR6i1+Etc3IxpKRI1VWXqfIKPzv5JMw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD68D601EF;
-	Mon, 26 Oct 2026 17:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7236E1F01825;
-	Mon, 26 Oct 2026 17:41:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793036477;
-	bh=0BceteKFIZmrpR2GKFFTTB8WWb9Hq0TCYKNKPvQ0FEE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IJrect8G0JDD7uJfQDDyZOzbVOYBeULxXPrVViOdLoo/8LPU8Rvhv8F0huqExcZ/l
-	 rDH9W4x0jjWDetD7Q6xGh16S3i+HGyE6TibV/aPk4Cuvxsu51jHzDxAVfdK7LXYNry
-	 dHnsVByAOCYuv048sFKGxcqx33ATICXfBqqdXR5yOcch0a9/iK74O4WkBwlufCeX6p
-	 gIx8m/ysZ8EDSBhEpxiKoErERnDq1/niEI4s/fbit1BtQ+qCDxs0n09xzKaOTonK2h
-	 Msm7YBflCSJMb4ySVY15sV5VLlZVuuxqz+dNCNZ1gmVJcw4JpFvmbDKXgWkuqIHwI0
-	 Dm1qpkraH7ycw==
-Message-ID: <sashiko-outbox-185584@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
- underused THP shrinker is disabled
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TmljbyBQYWNoZSAoUmVkIEhhdCk=?= <nico.pache@linux.dev>, linux-mm@kvack.org
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Zi
- Yan" <ziy@nvidia.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam
- R. Howlett" <liam@infradead.org>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
- Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Yu Zhao" <yuzhao@google.com>, "Xu
- Xin" <xu.xin@linux.dev>, "Chengming Zhou" <chengming.zhou@linux.dev>, "Matthew
- Brost" <matthew.brost@intel.com>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Byungchul
- Park" <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Usama Arif" <usamaarif642@gmail.com>, aarcange@redhat.com
-In-Reply-To: <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
-References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
- <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 26 Oct 2026 17:41:15 +0000
-X-Rspamd-Queue-Id: 5E59940008
-X-Stat-Signature: 6gxowfk3x7cfkwkfrqrbyyzjs9x9je5a
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	t=1793036544;
+	b=VKufJBtygRrFYSD8eong6SA9m9DbiBQpP6jP3PBIOinCXBFZPizUkny/u7KgCe4JW5DFRK
+	92JhTCFlPY0e8Lho/h2jloHBipFuGiHaD17iFglhd0zqrmkVbzxRFmFY+ZLwDgRJaf6Z2z
+	QUPiihIpR7I7659eBS61tXzUMLHgKA8=
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c4322d31021so359603466b.3
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793036543; x=1793641343; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3G8QhvNEpQ3sy+r1BDzvVBq/AXAxP3+qa6H4bl6GlDI=;
+        b=iXfDunGrEUHnc6YOAgZozAZzAApGD61gmr0+1htPnIpA8/7muQmkKFOaQ41ik7ays9
+         N2fRS32J7NIRRnrMA5Ms73Cg8aA1fSG5nRN7ktizJ7kIsY+cVAyX9SwxbJrpEaJP+Lyc
+         TIullJWJCoTJFa9iku+d9WkSzq2cp9wiUtGchKT+oEVqDz15Lw36TWgDCC7V5EtAO+F4
+         HJdDVD4Bl1I+wW6QpYhCL0rJ9GkRypZJ0W/6k2jjCIj3iq/U8SuNzn6M65yWsKDi+7MW
+         EsCJ/UibBxR6F4FrhT1j0er3YhV6CTZSnLgH3WESjwg8i3c7EmwsLot3toAkjirUJf4e
+         P8BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793036543; x=1793641343;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3G8QhvNEpQ3sy+r1BDzvVBq/AXAxP3+qa6H4bl6GlDI=;
+        b=rjdoeoWB1hTCKz0E95dl09Jok+l1tftsjFq57NBTTmJQ0ox8KTYRcIfPmq3vl5KBxc
+         AROCaNP7jxISDsoMhFr6tFPQXtK/qZhrVj1oQ1XmPjOJs06dPBXy2FR1GmvOpxeoHvJ0
+         X198xilifP+X9yXgg5tN7+D/TLfJrOvNysram2yc2kdGJk/7UE82VD0TXbf7AXcpIhgc
+         ovL6ECSriFiBiqDmVS/KUkSp+GeNKD7hYs+uLdFEMFK2p/Gj21skNbtPoOaZ8t85Vzkp
+         JsJQpoDnwxLIQ6SQxcrtRE7FSHrsjOEWTZheyUPBN9udhcCSEhOXNUXj1H40PrJIxnsZ
+         Odkw==
+X-Forwarded-Encrypted: i=1; AKwUvBxi9LEC4S1eObHMpRTWuzp1tcEDueEmL14YUaop+BgyqsroEvOj6IXzR1PZXE2v5r5QjQoswcdsVA==@kvack.org
+X-Gm-Message-State: AFq9FYJeNQfwS9Umbxn5uPTrCYXI3+sBoRBK+S7O4/mYPyZ5sQxDjVZ7
+	+V1GPNm2o7JaPCfrpBauCp4GXHXnq5IH/Lm9qM3j4lW2sb1pWEcwRBr8C+V+hBQCNV+mzVZiMRw
+	+tBX2fnOVK+O4XTEyiw==
+X-Received: from ejaw11.prod.google.com ([2002:a17:906:33cb:b0:c35:60c7:1880])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:d18:b0:c3f:c856:fb7a with SMTP id a640c23a62f3a-c46bdaf85d7mr817347766b.3.1793036540600;
+ Mon, 26 Oct 2026 10:42:20 -0700 (PDT)
+Date: Mon, 26 Oct 2026 17:42:14 +0000
+In-Reply-To: <20261026174217.603114-1-tarunsahu@google.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+References: <20261026174217.603114-1-tarunsahu@google.com>
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261026174217.603114-2-tarunsahu@google.com>
+Subject: [RFC PATCH v3 1/4] liveupdate: Remove __packed from LUO and memfd ABI structures
+From: Tarun Sahu <tarunsahu@google.com>
+To: loganodell@google.com, alex@shazbot.org, dwmw2@infradead.org, 
+	seanjc@google.com, Mike Rapoport <rppt@kernel.org>, will@kernel.org, pbonzini@redhat.com, 
+	jgg@nvidia.com, Pasha Tatashin <pasha.tatashin@soleen.com>, arnd@arndb.de, 
+	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, oupton@kernel.org, 
+	baolu.lu@linux.intel.com, David Matlack <dmatlack@google.com>, robin.murphy@arm.com, 
+	maz@kernel.org, Alexander Graf <graf@amazon.com>, joro@8bytes.org, 
+	Bjorn Helgaas <bhelgaas@google.com>, kevin.tian@intel.com, 
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+	Tarun Sahu <tarunsahu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 113E2180006
+X-Stat-Signature: 7igqgdzr6imt4xa338kjdw1i5jzzix51
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793036478-572332
-X-HE-Meta: U2FsdGVkX19xG4uXxIskLh/mmawKhYr0eMjwQm8MbCVhklolTXIjgk2wwh1ibUGTJGYRlCluLz0Pm+Y7k48oRTFSx1Cs7KtbRZk7Uz9I2B2BSptAY82pTO+f9cVFLftlJ5RolFdiNsuPH7dzWD6tifLX18CY2BWjAyuv4PYoB8Bum8QQcwQLxTXFUFToYLHA4n5MAFGe72RtDS1KLIUesd+MU8/QxCyOo8cpP9K0trHa0MVhv10VYbLtvSqTI4NITEKWtPK8h6Fld2mMXJ3RDzePqxQul/nUgszZ56wkBDnUG8q0GLeMJajxUfAgYKZj2Jp6ydjxDUSkEiorWKO6ZO12GjiRRlId3va6r5n1WD7XY/C4TWtpn7bGVMp8VsIP1EP7/FoeRhxXGM1lXmlLylQwFt4YQXTH16hv5Fk49qK5J6zHpWUx9aQ39tD8ZnLBPPm8DJiYtdpp9NtsKXSROurbFrkPCFv2u6Un1shBjcbjT/IMGnrZzmnn4RnJQuhGm1QHgxSFOLepmniSkG1QtzjKGD2iIb7/0rIK59eMIdOhC35ZJm3Xc3c4UQvngwiV4BiU7DM3nIDW1t7fdvJNqOGqnVzNtoLYrJc+Y0fvSnck61+zLX8ilebmL6baEYjVb1I6w8v768ALGQWJVy7oCZWBh8UgFzraniXKZ4e1nbfW+D5q88ukxqcrM+ODyvD7YkVzmZRFo4G5LXfstGO+CDbi5xqjHhhe/zyBiKTuasHb/92NX6JFpe6Dp1gG5U8ybriviRh7ycUrB6F9lf4kk5eOB2hUJzuSz4Y3mcikRhpqUDp26GniW+aKIIcHbtseU5tXRVyumeeeEU5inWg6MgwPvUKRHUBOUhICPCj7oWNGFfd816jpsQ/brTRWz36d8fsd0wJVzqDKNvdfnSSAda8UIJ08jDECKR+xwZY+oB9poGfELoXobJSWs/1/jmZbMEqfmT86ErfENZndIIU
- L0UaoHli
- ypN8LZfl0mlvi7RzifrSrk4MduhgbXOXABsfV+lpj5sqIM3GIScylK8N4bfXmdb9PkF6nudjzApKeuu7nHOS5+g0gQS04PZ4AGAZ/N/S8E2GFlRN7Asl1uMKxxaMrrUy6xSdNIbqARhxZj504aWRoITe7zb/g6p1DJa/hYBJFq/HWvtjlF4psxluZxMEGXYo2fAtaYDG+X2qX1vdsjtZ1ZaUe6NvYZatBBk5tDC+eTXgEiLB48pWpORifhAn/T1VFEU798jDxIbtTocDik9qY8Bw9AxRJtr37qlu8DMB05N+odxqqD++x/5oTGA0zwNxsbvxwxJGSR0xVMCkewJFEqXyk/Q3mmTadf7dMibEjtYXHjr8wwTTihA+YLLKi3GeHdrRT19/0XcQnky8sf5oi9gC9lCGR1WXGl4UUUgjorDjJrSYwv0T5qLzR8XjiTKK6Mx4aPlYwnD7WCUubW6g8inlz3HM/ni5xsN+7q1B9sU8RHcmMM3paOXZCQEDKFceUEEBkGNGUqF0ta/w89NW/YBWKioBV9ulK+xoGe26UFF65H751HxZlw+WLJX4LUNvpHHnN9KLs13RrA4BtzU1nB/plDT2LT1w1/b2UsyG5h/4twBO6BiJZggIGDpsfEnsT8iwJ1eIKLMb0makkidzXva+zgxur/rogr+DreeY+cKultj168g/cTGssbKAI6nbQrh8EJaqIfQmabC1AUpzO3bML0iN2oCggatvi
+X-HE-Tag: 1793036543-451912
+X-HE-Meta: U2FsdGVkX1+7pOKe3e9DgDjjX743QAjrYAkE8dQ/sa+3M7D5aaX754KCfnKYexuoIE8ut+0WYlEebPQpGO6Lclc4HRPAZyjCgLOskFv3HhoTJ8saxj6RfCsqQyTVgYQfm3x5CoHUEtTilXjxtxqDdWlkvyw/SJCRPfQKHPoZWJKZ8Sl1mvTi5Yk7JCpEK/6bLmUhxaoEIsGBTOKdx2p3KqtTU+lgNZY/pbJ/z0DiGojqVlD7nf2D7KhptVbqmpfX8U5F8BYf2taAr8cRQ2yiR4MEBKUQYtadPOREw54h9sM3+2XcM//lp5aLpMGF+LRYzPrBn+ldJiHCDpCTgAgdeFyM57CPb2x7vHX9q2MkKbAr6j04bt3VkWdxytDVdrLZdlVT7aIxf4KBPXYxYLrHSHfB8+pcEKco1c89qtxjpCIuCQxrUArLciIMNJFhLL97R+1xO6tgoxXbQslEt1SLIrKbCexDa2OoDNv7QqsbRBT/Bk0CjbS8CgPgqYM69GfKMDRAaQNZDgwhGqRON/0s0jS5jy3Z0Pv9mW/X5H9EIf8TQ3yITyj6NTkPAcs7f3JND4stu4qPwnEq4n25BhWoQ370Y7O1+yfCn+q0SjujNtZNo9u1UIkyZCix1j3qxLV72r29pqir4IlKksJydUtSHt1CzN+SRdavngt6mqf7gMv1OYXbYUlB7wBv12achB7uMOPUyCFhpnda17KCCO5VTc/jKhv7zJwTx12/PW3RoNspOrc5SV5SCbqxy6HsLFKAgszW5Na3vTV5YJPYUSmyLvVZYQOnOHpu70n8zTOBuNAlvbjeb3d7QMBwRJiMl7SBWkoP2hamCeKg2UVceH3P4YBbS85Zlc0IZTPK+CYRSI2sTJ3cETwgRa5Ugkr5K2RVhRwDUOJDH7QL+/hjuKX6fzKImyT09PuGKlTh+Nm0hyc89s1NIZQ34g4SGy+iDeqqqZ7G6l9DlMAfhstjiMN
+ J3tTE/ZC
+ 8lMgadBkPiEUznMiVzOI/fsOc4pL5sYLeaB2o8PZdlMW6X0KVMdKh2cabVERqe4DVi+1iqczu7J6hBRI2dj7Y8Zpx04VEPD6v8gPg4ooKLc6tTZzBTsR+Y09p03EXTBKtQxxqdRZjuJds7wFWtQmoL71m4Y3FEY46rMOH53ocBYZ28EtCrVwuOO/3cw4zB4fKI+8vm9SumGLdo80gniOz7kXU2xH+UzUG8iuaDFZuwDxPe9GSvlVpWPK69/8ZvFsh2vNHfWmPSk0a/gFOhKgWkMTZaTfkHB+MshLTUfawT1mliwLvaR0EFXl/SVmo46/1Fr3RMOTRPfWfIw5hrLmTUY4zB9d2x35c+7oGEF8oIxzJCqlRvbsLXZHbAJwyh3qM/VPlwW71itGCjsxUwF3QWgzB4DDMC0sBM0UbH64NejlxcqGG1giK8dlZk4fKc1KKBudq52CfI074DATihH7+MXt02Ps5OglAzwlRic5ztqjVqfd6PDztpkVRcAE/q7HmknW8wTicK4jTJfBLubCsOXXxQuAuxU5iVV3bKZkfyP2aQ+CyvSFZKEsognHwd8MPiJPeOcSJZEIHB/Q3Ur81WGydtl6412jGpRVtDziyDqXjKiMEW8FkwBdqDMWWRgAUdxIEgUOTBqLkQ2kHy9v0u8BhgLQlT8pW0ZhNtiIgqHRPhBYz9gT5OyzfjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,88 +119,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm: pointless underused THP splits in deferred_split_scan()
---
+All structures in include/linux/kho/abi/luo.h (struct luo_ser, struct
+luo_file_ser, struct luo_file_set_ser, struct luo_session_ser, struct
+luo_flb_header_ser, struct luo_flb_ser) and include/linux/kho/abi/memfd.h
+(struct memfd_luo_folio_ser, struct memfd_luo_ser) have naturally aligned
+fields on 64-bit architectures, with no padding holes between fields or
+tail padding. Any future unaligned field addition should come with
+reserved field to keep the structure aligned.
 
-commit ebf8a156b1409b53d86c1c5c41f9ce1ca1b64265
-Author: Nico Pache (Red Hat) <nico.pache@linux.dev>
+Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+---
+ include/linux/kho/abi/luo.h   | 25 +++++++++++++++++++------
+ include/linux/kho/abi/memfd.h | 11 ++++++++---
+ 2 files changed, 27 insertions(+), 9 deletions(-)
 
-mm/huge_memory.c: skip zero-page remapping when underused THP shrinker is d=
-isabled
+diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+index 288076de6d4a..899943877e41 100644
+--- a/include/linux/kho/abi/luo.h
++++ b/include/linux/kho/abi/luo.h
+@@ -58,6 +58,7 @@
+ #define _LINUX_KHO_ABI_LUO_H
+ 
+ #include <linux/align.h>
++#include <linux/build_bug.h>
+ #include <linux/kho/abi/block.h>
+ #include <uapi/linux/liveupdate.h>
+ 
+@@ -82,7 +83,9 @@ struct luo_ser {
+ 	u64 liveupdate_num;
+ 	u64 sessions_pa;
+ 	u64 flbs_pa;
+-} __packed;
++};
++
++static_assert(sizeof(struct luo_ser) == 32);
+ 
+ #define LIVEUPDATE_HNDL_COMPAT_LENGTH	48
+ 
+@@ -98,7 +101,9 @@ struct luo_file_ser {
+ 	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
+ 	u64 data;
+ 	u64 token;
+-} __packed;
++};
++
++static_assert(sizeof(struct luo_file_ser) == 64);
+ 
+ /**
+  * struct luo_file_set_ser - Represents the serialized metadata for file set
+@@ -113,7 +118,9 @@ struct luo_file_ser {
+ struct luo_file_set_ser {
+ 	u64 files;
+ 	u64 count;
+-} __packed;
++};
++
++static_assert(sizeof(struct luo_file_set_ser) == 16);
+ 
+ /**
+  * struct luo_session_ser - Represents the serialized metadata for a LUO session.
+@@ -131,7 +138,9 @@ struct luo_file_set_ser {
+ struct luo_session_ser {
+ 	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
+ 	struct luo_file_set_ser file_set_ser;
+-} __packed;
++};
++
++static_assert(sizeof(struct luo_session_ser) == 80);
+ 
+ /* The max size is set so it can be reliably used during in serialization */
+ #define LIVEUPDATE_FLB_COMPAT_LENGTH	48
+@@ -152,7 +161,9 @@ struct luo_session_ser {
+ struct luo_flb_header_ser {
+ 	u64 pgcnt;
+ 	u64 count;
+-} __packed;
++};
++
++static_assert(sizeof(struct luo_flb_header_ser) == 16);
+ 
+ /**
+  * struct luo_flb_ser - Represents the serialized state of a single FLB object.
+@@ -175,7 +186,9 @@ struct luo_flb_ser {
+ 	char name[LIVEUPDATE_FLB_COMPAT_LENGTH];
+ 	u64 data;
+ 	u64 count;
+-} __packed;
++};
++
++static_assert(sizeof(struct luo_flb_ser) == 64);
+ 
+ /* Kernel Live Update Test ABI */
+ #ifdef CONFIG_LIVEUPDATE_TEST
+diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
+index 08b10fea2afc..7115a8a77cfd 100644
+--- a/include/linux/kho/abi/memfd.h
++++ b/include/linux/kho/abi/memfd.h
+@@ -11,6 +11,7 @@
+ #ifndef _LINUX_KHO_ABI_MEMFD_H
+ #define _LINUX_KHO_ABI_MEMFD_H
+ 
++#include <linux/build_bug.h>
+ #include <linux/types.h>
+ #include <linux/kho/abi/kexec_handover.h>
+ 
+@@ -20,7 +21,7 @@
+  * memfd uses the ABI defined below for preserving its state across a kexec
+  * reboot using the LUO.
+  *
+- * The state is serialized into a packed structure `struct memfd_luo_ser`
++ * The state is serialized into `struct memfd_luo_ser`
+  * which is handed over to the next kernel via the KHO mechanism.
+  *
+  * This interface is a contract. Any modification to the structure layout
+@@ -54,7 +55,9 @@ struct memfd_luo_folio_ser {
+ 	u64 pfn:52;
+ 	u64 flags:12;
+ 	u64 index;
+-} __packed;
++};
++
++static_assert(sizeof(struct memfd_luo_folio_ser) == 16);
+ 
+ /*
+  * The set of seals this version supports preserving. If support for any new
+@@ -85,7 +88,9 @@ struct memfd_luo_ser {
+ 	u32 flags;
+ 	u64 nr_folios;
+ 	struct kho_vmalloc folios;
+-} __packed;
++};
++
++static_assert(sizeof(struct memfd_luo_ser) == 48);
+ 
+ /* The compatibility string for memfd file handler */
+ #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
+-- 
+2.56.0.307.g5fe7bd680c-goog
 
-This commit gates shared zeropage remapping in __folio_freeze_split_anon() =
-on
-split_underused_thp so subpages are not scanned for zero content during THP
-splits when the underused shrinker is disabled.
-
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index bd44d58e86845..2d56d1bff0eab 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4104,7 +4104,8 @@ static int __folio_freeze_split_anon(struct folio *=
-folio,
->  out_no_split:
->  	local_irq_enable();
->  	if (anon_vma) {
-> -		if (!ret && !folio_is_device_private(folio))
-> +		if (!ret && !folio_is_device_private(folio) &&
-> +		    split_underused_thp)
->  			ttu_flags =3D TTU_USE_SHARED_ZEROPAGE;
->  		remap_anon_folio(folio, 1 << old_order, ttu_flags);
->  	}
-
-[Severity: Medium]
-What happens in deferred_split_scan() if shrink_underused is disabled at
-runtime after anonymous folios have already been queued onto
-deferred_split_lru?
-
-Since split_underused_thp defaults to true at boot, anonymous folios
-allocated via map_anon_folio_pmd_nopf() or collapsed via collapse_huge_page=
-()
-are queued via deferred_split_folio(folio, false) without setting the
-partially mapped flag. If a user later sets shrink_underused to 0 (setting
-split_underused_thp to false), those previously queued folios remain on
-deferred_split_lru.
-
-When memory reclaim subsequently runs deferred_split_scan(), the
-!folio_test_partially_mapped(folio) path does not check split_underused_thp:
-
-mm/huge_memory.c:deferred_split_scan() {
-    ...
-		if (!folio_test_partially_mapped(folio)) {
-			if (folio_test_mlocked(folio))
-				goto next;
-			underused =3D thp_underused(folio);
-			if (!underused)
-				goto next;
-		}
-		if (!folio_trylock(folio))
-			goto requeue;
-		if (!split_folio(folio)) {
-			did_split =3D true;
-			if (underused)
-				count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
-			split++;
-		}
-    ...
-}
-
-Because __folio_freeze_split_anon() now omits the shared zeropage flag when
-split_underused_thp is false, remap_anon_folio() -> remove_migration_ptes()
-skips try_to_map_unused_to_zeropage() and remaps all subpages (including
-zero-filled ones) back to their split order-0 folios.
-
-Doesn't this cause deferred_split_scan() to still scan subpages via
-thp_underused(), shatter the huge page into order-0 pages, and increment the
-underused split counters while freeing zero pages? Should
-deferred_split_scan() also check split_underused_thp (for example, skipping
-non-partially-mapped folios via goto next when !split_underused_thp)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261025-b4-ksm_fix=
-v2-v2-0-8b61ad0491f1@linux.dev?part=3D1
 
