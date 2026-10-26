@@ -1,97 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711D4606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD31606A326
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RIVm7Hnt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ip6XgOhe
 Received: by kanga.kvack.org (Postfix)
-	id 88E5C6B05B0; Mon, 26 Oct 2026 10:10:44 -0400 (EDT)
+	id 50DC36B05B4; Mon, 26 Oct 2026 10:11:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 866B16B05B3; Mon, 26 Oct 2026 10:10:44 -0400 (EDT)
+	id 4E7846B05B5; Mon, 26 Oct 2026 10:11:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77B976B05B4; Mon, 26 Oct 2026 10:10:44 -0400 (EDT)
+	id 3FC796B05B6; Mon, 26 Oct 2026 10:11:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 55B9C6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:10:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD4C5120491
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:10:43 +0000 (UTC)
-X-FDA: 85364963166.18.1ACC703
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4C84780007
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:10:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RIVm7Hnt;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 15EEB6B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:11:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 862D8C0756
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:11:33 +0000 (UTC)
+X-FDA: 85364965266.17.F6E37C3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EE2BF14000E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:11:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ip6XgOhe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793023842;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793023892;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1uGhooVb7WlP2KlaxqAzBvfXLtzPF00viCLXLgK+SkQ=;
-	b=bSgBhsyl/WcsKgJZA8B+bK6q9VPR4sALAZRJqN0aS/Z69dl4sAzkmpCL7uDWFBrqKDxk7T
-	zwoO70CcUROTaw00Kp1ARcJrJ2YJ56W6iOlUNPbkANS9aUSMRo7ZY4JzgFg/0V3RgMU6n3
-	x3G9ALebbdICThg0sMglgulaCUaGvE0=
+	bh=b1z6uUx4ZdMo2N5+aoAcDCMioFr0x+B/lAmEEynuZSk=;
+	b=ReiMZnIoU9qJdb+VInS59gJxMUz0W6TniOXgmNdFSLgWcpFYwhdQEoncfxHk9x8/h4I/jN
+	LBK/d3a9cgqZmoK32Wht1B6nb0kVy588gtrRqxJV7IXbboqRuLtRugmWlul2yOB9rWuj1E
+	qspnFCFRseiQaAoAoz1h7TxaLWXQDxI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RIVm7Hnt;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ip6XgOhe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793023842;
-	b=h99QLl2T5YY6PmPbHuopnsvdultIjsSMrJaIO+O8RiiX4GaVwdnPWVxiFFH675iFjSGxdC
-	uebS3Ti1PNgtaAyEXj/b/dKuDckpxWJDN19HC8o1eJmobcSxwkz1LJtH5ULLYRk7A+MEK6
-	2IN/rVB1PGsBQz9D0Os6jH4umSCHl5k=
+	t=1793023892;
+	b=mwAuBaSTLxF1va5xchaxy3OQ4YH75z10CW5wW0uQCk80VZwQ5kdnmKd+F5y5q0fNsZVVRf
+	2+TVJcKlDAZijCskCg6CSSV2NQ26AfO4laSOpUPK9ItBP+fuv+7xRnh756WfrQ1ItTK2bG
+	YnrD/J8laZnx9NZunFym2qrHJWhWygU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76C6E436D8;
-	Mon, 26 Oct 2026 14:10:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1611F01825;
-	Mon, 26 Oct 2026 14:10:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 74C48600CB;
+	Mon, 26 Oct 2026 14:11:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F2E1F01828;
+	Mon, 26 Oct 2026 14:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793023841;
-	bh=1uGhooVb7WlP2KlaxqAzBvfXLtzPF00viCLXLgK+SkQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RIVm7HntxQq1Jf5/1cO1bg0u1npQiHUzCVIDLBjVA57QOyWohX0WEBROClmkHrs4M
-	 FU5O4ajaRbq3bv/uZTaBk7zmG+fBxwntZzcp9F/f0fIImov8Wo+ySx8lnwtAIzKKUK
-	 QaPfzr4F78T/ddNvo3MZe6Gqt7cf44SmPZwvdfFAOcSuT/VS2tl0GLl0f3k7JJb4YT
-	 NmgAu56f2WHs5Ym93I/g0RwZUZ6gI4oYlQowiJ7/53MEvOeQLdKRqXfBmjKDP1262z
-	 lBnUL+8TMBcgECQ8yX6zo3GekOjiKMGmfqHjOm+/CIlJ01WJvS3f/vhpvlXir8dPBD
-	 Hjs73DoEA1Ohg==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Manuel Ebner <manuelebnerli@mailbox.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/8] Docs/admin-guide/mm/damon/start: fix grammar
-Date: Mon, 26 Oct 2026 07:10:33 -0700
-Message-ID: <20261026141034.149489-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179301327249.2.1796164575094900927.damon-docs-grammar-1@gmail.com>
-References: 
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4C84780007
-X-Stat-Signature: 7pu7g59q1p89ieoewmi3k8dh3hg54tod
-X-Rspam-User: 
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793023891;
+	bh=b1z6uUx4ZdMo2N5+aoAcDCMioFr0x+B/lAmEEynuZSk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ip6XgOheGZu2j4YrE8jAzgPZ+SjimhRitLbh3QzOKUEj+yEGJFz5C1OwMD3qz+TmB
+	 GelXorRMy2PlR5g+G2HF3N1AmCrdiT31xCq9bxJM/fbDMc/Z0EAqk//AnJrRD1Fi+O
+	 Q7UPbG7iR7uTHL+kxiI2b93UptBMFo4pX46xpWl3XEnKG4PzmZVSGTymS9keFynLoi
+	 h2/DtRx4PzAoC2mXfQEiUwcgChce9ee0M45wTnCnt90NlorIu0e8rsebicIhPndvqN
+	 SvXAJDrUqSYKmoDJ4UUF3806BPUYOV+3jl+qpJRRjZtkBcClc65W2hEFdmJCl5JMR0
+	 rCNc8R9OYEA2Q==
+Message-ID: <sashiko-outbox-185379@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 6.12.y v2] mm/damon/core: error
+ damos_commit_quota_goal() for zero target_value
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "SJ Park" <sj@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261026135555.149244-1-sj@kernel.org>
+References: <20261026135555.149244-1-sj@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 26 Oct 2026 14:11:30 +0000
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EE2BF14000E
+X-Stat-Signature: 1jdy83ihiab77rf94r6a6gmctafqtow4
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793023842-698156
-X-HE-Meta: U2FsdGVkX1+J6HBHTHr8LiSgudXijoT4QlQrepjXOb3D4CMImq60MDWKHumeBV+goqeggeVcrbMbe+9V2oe9I7hsAuSKiVUXYUSlaeHVoZBHbkvXH5Qidcw0mXC8tGCTgkZ4lb9751YI+CwDzLBLG4UGD1LJoL3U+nCNYL0lX+NoagMZcXYqePv77/2pbx/406gQss6cY4QZpTHjWRpjkCjqG80dWaseqVvWzfkDogqrWK2by1uZ7BP3i9L1BA7kSDOWKmVXjdCtoQmeH3oAF8ZjlkW2bZSsoFaKxluyEtwAoPllgdT5WDaaz9QMGV//OxsE4CWQAyzcmW21bIpUhqg6PGRUFGZguoqU4kK8JLzmvcwoRUMOI9Ss/jvVElqsHgJXdtVXKSkFHOzQWT9s7MD2KvQhM/7XCVe9I/mIpFKp79Lgy8xZ4eA7o9DvE3c3aHth86vvxbRmhE2i3mlyjC52/JtjGFdUAsbT0uXl+M5Jx4cALuPJmXEkGnFqq8puDvxZYvKHRILVabEPY1bpeXKN81eHMPGTyqUmlBpoOa3S9C+EWKzxssR5pqYC/vEQIkrkXBvdMcPZ2W0MIXELJ5BRzDKaMoVeVBFQpa5ZXnJl58xt0NqRqgYefrRWDApKqV3ifZgw5KfNAzhEBINzae/hiekm2hOvunwrb2/l0JEXBsZBYnKcFRQakzZVeYzhKEU5QdaStOu73a+41qc81WKW1PlW5PwQLxyWBRvlFtcC4R4Cqoo+6mMAwg0ntMW5RPzX/jPsXIZG9rwSh6OVeulv44t25co7Kb/8IRk5hrCmoFI48MpRZi13Z1VToVHbtxAn1w0KBsH9CQQltaG2mYSvLpk0X0AAHJThnFqq6xAUa+fv7vTAalbPlza8IAhcEStc3bLSSFXhbYSSwGtxjVC0SoG+C7I/yHlwYDx9UeOAYW+eATCawZjFesvmp6zsGrrXcrLMJ5a8WvoUQ7V
- ZxJ3OowU
- +bHRVefsXptCtmRgVzrPWH0P4s1Zq2xMu/vnHgH8/3tAI0TWIqzNsI7HhOFP2u8Wq77NjWmSDLdjH7p8QH63WT37RdpNAxWQQ7vQN0x7dDnqe+t9tE+10UmQ1E4UyEeqEEa84qH0+hP1Tq4AvI3qBO3C4VjOJY8So4t+mBvDnpGD359BiXkAKlCqVboXFvjBJyY1FNEXevXAL/A+rUfJF2G4P3mQVe8lQ++i+bd2jGlEO6GpqIHhwZdnt4rVXNHJhuVLG
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793023891-934196
+X-HE-Meta: U2FsdGVkX1/UAGeYewMUUIEMZHJjtnbOhGPXOoWa8zd4kMedD3ef6QD3DGs26jM8hy7MdbiIlkogRUJruCZtsyuJ0B9TFasxwe5b+5pZiC3lihUwxrFzIK8EUM/rXfNzof8dXsFO9LWuZfJBXxbVTTfbAtlemkM+6ydL2QjL5+/Gi4R75xnci/ea9mZvnwbIKlS/L0u947PgIzcVx4dHL9Btth2NTa3ISzZqnzrXTBRyJejdXEJwXuwxZzGd7N9tAdCPbIJbHioZIcT2pFSg58RQ44FH/XgTmCoTV+zbvmNJWYoTg1/ZTb8SRbp+buzZD3e8iM/9Oc7A4+PCUHx+r+z+8j06zf+Of+26Ks/iVxM2b8exF2GTW73YuAVgPLQWIK1k5XGQY99Oipupm4BJMI7G8JxOOI0MUm+NEKjTaYuRnyr5FYUWjGTlj3GpiuzNa8yeCKk1lj6YVZU8n1nLGdKQr8HmNjv+gIpz/qdnNMVnWgTvhmUbqCw+0iz3AFLUuMBJUOjNLBYQtW5uvHIIc/SZD4Se1PisavDCLfNuWG7CtSvp71NQ4Ps0LfjuOozS3Fb11PQ4+9uOwMQX1YwPDPGZFBZighdTqP4g5P317StlBB+/BaOH66NoHLdMHlYp+5y2aEPlelCWcxgZ4amwIjdAW+/JVFSbnRKG4cxROSS1xL5jbpz9s1ZHrZTN0zoDBxBudBmR017Nl/Iy6JyQlCxcUxpJQKVBN6Qzr2qT/LDAW5REjWPOmQKWXCd8HNtG43SMxzISfP5dOAuPF4V8ol9q8GNFZc5YaI5f6NAsPob9dheb2H/ZS4qWqg+o/zkC10FwXPnXXyGYbv7eulG35G4zKnj6HZ0Xo8Yhv6y+Y1K9To0376s2+wqJidZlGkUHRxK3Y5MMpg+onQWwqNwsW0K9XFoYOVxcFXLlGeXEwBs9IEVT+IdmAPGMuiD2nCgG5+jZkuBDYWYhq4wfC2R
+ N/hfy/tI
+ BIG0lg+dq7cmZrFbsDDXB8xic7xB7EEoPFx3ZLLczHxi0cwGS/qU/zPuwL8l0DzEK866DmajAxw2hzt2uQkU4TNbxNFAur6sixomonq47upbdzLmMLgVmteeGuIC5qQAMv9qwChdlPki4TYSXmQG2o7uXyI2dLtBMaXQH93JESfUHoRLa2tjK/3CsAspdS5150sDxLB1NvJhak1pODafmu53j1BdPfcNlffmWLsmCWalcudfPUTCE5GddDRq20l7baCqlD2VD3V1o8Bb2Se9an8vITvNuoKq4p8hKhFb/8ngc6LGF/vf95LgVxaFrWMfNh1qwsIkqUoybrkOy88/iRk0ZfcYxWjvVw+5wHhpcQ248jCYD33v5QA8NAnmLRTh7EGaJCg30wVM5ZpjzWiQq2DFS2USFUg8EBbGVqkV5BQlUIfQ5sl2NVqYQ9nPSp+NnNRM1HjxWwd9EHbIPsUtXbbDNtH/4FeLqXInjCN/mUCouat5QHvLuu5JdvpZEzCZsuVPKe/QXkPzSYSD6o5vAb0AZrTsL6uNecoMDt89GWU5inOowAT371rlgyU71KhSbVBS4xeZX18f2WtHH4Xo3ZqzG/hOU34fBnvII6d202GC7Fm9a71N9y25ljFw9A+Mnb34X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,25 +91,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Mon, 26 Oct 2026 22:14:33 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/damon/sysfs: pid leak in damon_sysfs_turn_damon_on() on inval=
+id start ctx
+--
 
-> Fix a few grammar slips in the getting-started guide, like "make DAMON
-> monitors" and a region "that has not accessed".
-> 
-> "The line of the commands" used to be "The first two lines".  With only
-> one masim line left, I make it "The first line". 
+commit dc23c827b1a01b5ed768b0a218bb6a67def40106
+Author: SJ Park <sj@kernel.org>
 
-Looks good to me.
+mm/damon/core: error damos_commit_quota_goal() for zero target_value
 
-> 
-> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+This commit validates that DAMOS quota goal target_value is non-zero in
+damos_commit_quota_goal() and damos_commit_quota_goals() to prevent a
+division-by-zero error. For the stable backport, it also adds
+damon_sysfs_valid_start_ctx() to reject zero target_value before starting
+DAMON in damon_sysfs_turn_damon_on().
 
-Reviewed-by: SJ Park <sj@kernel.org>
+Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
+Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
+Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
 
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index 5aa23c6545cb8..2c8749b62c621 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -1497,6 +1497,20 @@ static struct damon_ctx *damon_sysfs_build_ctx(
+>  	return ctx;
+>  }
+> =20
+> +static bool damon_sysfs_valid_start_ctx(struct damon_ctx *ctx)
+> +{
+> +	struct damos *s;
+> +	struct damos_quota_goal *g;
+> +
+> +	damon_for_each_scheme(s, ctx) {
+> +		damos_for_each_quota_goal(g, (&s->quota)) {
+> +			if (!g->target_value)
+> +				return false;
+> +		}
+> +	}
+> +	return true;
+> +}
+> +
+>  static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
+>  {
+>  	struct damon_ctx *ctx;
+> @@ -1517,6 +1531,10 @@ static int damon_sysfs_turn_damon_on(struct damon_=
+sysfs_kdamond *kdamond)
+>  	ctx =3D damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
+>  	if (IS_ERR(ctx))
+>  		return PTR_ERR(ctx);
+> +	if (!damon_sysfs_valid_start_ctx(ctx)) {
+> +		damon_destroy_ctx(ctx);
+> +		return -EINVAL;
+> +	}
 
-Thanks,
-SJ
+[Severity: Medium]
+Does this error path leak the target struct pid references (t->pid) when
+damon_target_has_pid(ctx) is true?
 
-[...]
+When damon_sysfs_build_ctx() constructs ctx via damon_sysfs_apply_inputs() =
+->
+damon_sysfs_add_targets() -> damon_sysfs_add_target(), it acquires a struct
+pid reference for each target:
+
+mm/damon/sysfs.c:damon_sysfs_add_target() {
+	...
+	if (damon_target_has_pid(ctx)) {
+		t->pid =3D find_get_pid(sys_target->pid);
+		if (!t->pid)
+			goto destroy_targets_out;
+	}
+	...
+}
+
+Because damon_sysfs_valid_start_ctx(ctx) fails before damon_start() is
+called, kdamond never runs and ctx->callback.before_terminate
+(damon_sysfs_before_terminate()) is never invoked to release those
+references. Calling damon_destroy_ctx(ctx) invokes damon_destroy_targets(ct=
+x),
+which frees each target without calling put_pid(t->pid):
+
+mm/damon/core.c:damon_destroy_targets() {
+	struct damon_target *t, *next_t;
+
+	if (ctx->ops.cleanup) {
+		ctx->ops.cleanup(ctx);
+		return;
+	}
+
+	damon_for_each_target_safe(t, next_t, ctx)
+		damon_destroy_target(t);
+}
+
+In comparison, damon_sysfs_commit_input() cleans up an unstarted context fr=
+om
+damon_sysfs_build_ctx() by calling damon_sysfs_destroy_targets() before
+damon_destroy_ctx():
+
+mm/damon/sysfs.c:damon_sysfs_commit_input() {
+	...
+	err =3D damon_commit_ctx(kdamond->damon_ctx, param_ctx);
+	damon_sysfs_destroy_targets(param_ctx);
+	damon_destroy_ctx(param_ctx);
+	return err;
+}
+
+Should damon_sysfs_turn_damon_on() also call damon_sysfs_destroy_targets(ct=
+x)
+before damon_destroy_ctx(ctx) here?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026135555.1492=
+44-1-sj@kernel.org?part=3D1
 
