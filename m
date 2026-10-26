@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3B4606A326
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFDB606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZFBvqtH5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GiO4u4AK
 Received: by kanga.kvack.org (Postfix)
-	id 4FAA76B05D7; Mon, 26 Oct 2026 19:29:32 -0400 (EDT)
+	id F0D066B05F5; Mon, 26 Oct 2026 19:29:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D2286B05F5; Mon, 26 Oct 2026 19:29:32 -0400 (EDT)
+	id EE5766B05F6; Mon, 26 Oct 2026 19:29:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C1806B05F6; Mon, 26 Oct 2026 19:29:32 -0400 (EDT)
+	id DFC396B05F7; Mon, 26 Oct 2026 19:29:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D25E6B05D7
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:29:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B4931C425A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:29:31 +0000 (UTC)
-X-FDA: 85366371342.13.19A46A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CC86B4000A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:29:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZFBvqtH5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B6E7B6B05F5
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:29:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 56C57140181
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:29:49 +0000 (UTC)
+X-FDA: 85366372098.16.B722A23
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8CD54140005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:29:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GiO4u4AK;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793057369;
+	s=arc-20220608; t=1793057387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HyerqdN9V6rSLHC49oQACaillcwP3cbkiHNmujfeDmU=;
-	b=zUpKcUZD14+MNkI1D4K2FoTBmKHJNXITdVSaS1sU1lTgw1JMkCYuMCXTOkVUxa+6cpjb8Z
-	4H6DqBz+GGIuhhMkl8gex4LUUyRUx34Oer2iiL/6GbCHTqcsJnXDrbDYsysxf+cN17Yf2X
-	oBAz88alrMlPX0yN3N98F3Oh/ptXOx4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZFBvqtH5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=coOQRGDsT+wJUVW51ZA0Qbw+6l1l2M6ICO7oefEeEsg=;
+	b=jEX0LPzsIpEGkI33kWP6WI1uAnhvkjZB5Hz4m9C3OS2xbPNXRxJvmC+htgnYi6JdRBJIbp
+	YNfXvK9IfYnSAs2yB+VTl2dv2T0S9W/LC3uMT7FmOQ4giSuZJ30j/7jpRB6h1JEUYzt++l
+	ABOunLW3i0W1XBRuksY+BP6chZl1DC4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793057369;
-	b=huFsQfMJDEx41YCSYmhGlUJYCbInKYEUAhY39PPiXTQREVk+XdandNRh1jtkMxdGEwBxTi
-	VaPG3D6STl3OwyY4TPy9bNOy4xnlGCA8Cpz1FHVjH4mLud8y4F3N+yd5RO/n5aCGScFcoz
-	AJOEV5tbZVA4hApK0tyagKLhOIoObXA=
+	t=1793057387;
+	b=CikJDSro84kr6NUMGUHoMEtop1zGWxgL5SBD1e2cKLl95LxxgX7iwv93j148WkyZ9D9g3w
+	KbsNih2PaVD/91IA1gmRVrGGR3d8rDltkSqvhPudNQSHLmG54SRrtoXyJebMq3Y2nzkFtj
+	FPM6cYkWR1syFiYa8V12z0Mz3JnnMKE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GiO4u4AK;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 481AB601FE;
+	by sea.source.kernel.org (Postfix) with ESMTP id C57DB40B83;
+	Mon, 26 Oct 2026 23:29:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776751F01825;
 	Mon, 26 Oct 2026 23:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3761F01828;
-	Mon, 26 Oct 2026 23:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057369;
-	bh=HyerqdN9V6rSLHC49oQACaillcwP3cbkiHNmujfeDmU=;
+	s=k20260515; t=1793057386;
+	bh=coOQRGDsT+wJUVW51ZA0Qbw+6l1l2M6ICO7oefEeEsg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZFBvqtH5IADMlgNO0uy3rx3l5cOFMuo3MtkzLrJUctzSfsauqvHpYYawOE6ZWmOx+
-	 2QGiUrSmm//a8PdA3l7763zw7RfsTGZQlSkzoIglFvRQXseDwAn+ke64FUa7Ux//Aw
-	 7Vsyj4prJ6Y+YstEkWbiVh/OIp6AvwpoNTf6eTCtdKZOLDwHrvPb9c//+GRpb/TUwc
-	 lKivGqZhRue4H/c1DlQDKYbkKNFzg6EtlwKOhka+XN04dsBgN8tMz8mchong9AofaF
-	 9MqcPxTrvJaL8M2P50LKvtYZK4yFBe5hqXzoN6IqyJY2jme6BKpSEFzZv7M/0kqHpx
-	 y/pQPZgKE24wQ==
+	b=GiO4u4AKmDnNc8YPvYmnDQq3BaIr+RptwEAcqRK360IcwrF2iBXGw1J4DWyV4sHLw
+	 MSmQi5baxNEw+IWu5HmCurp2H0sINX0XT1PqKiMpshw1F2bnM249lb1mP7hvV3dxpi
+	 N+m8PyNfp4nCcfiSAuW26vuJptP/q9S+unB4blp/je/Ms+iGljDFKSrQg9w5cS7geq
+	 1CVPNZZRNDlD5jgns/lYTAziDHZsp0MK3FeSKb4cJb9NqDwRkM1P3hdksaafMGCq6r
+	 tMOZBP+r6O5Og0wsloC7zDVaRJvM5uwjDSdXuTuIZRJxrM835hsFQah5qSZ7+y6oUc
+	 T4SZkCG4ibHWQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 00:17:57 +0100
-Subject: [PATCH 37/46] mm: fix deadlock of mremap() against UFFDIO_MOVE
+Date: Tue, 27 Oct 2026 00:17:58 +0100
+Subject: [PATCH 38/46] mm/ksm: reset the unstable trees of all nodes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_core-v1-37-6f74bec9a5bb@kernel.org>
+Message-Id: <20261027-fixes_core-v1-38-6f74bec9a5bb@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,30 +106,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
+ stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12216; i=david@kernel.org;
- h=from:subject:message-id; bh=PYOFR7aTH8Q6o9DTZH92yL/ROpD56juX+Wsmc7rFLYQ=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35/Om2A7q3rm0ju6D4RDnqa83rVWeP5EXwO/RX1nr
- 92YaO98taOUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJ2B9i+Kci/4y96No2vvfO
- OtwNJz3L5n//ILci08p6fYz/RqHCC1GMDH/Kqopu3cjbtlNj/T/VSfpn3qTkOc26duFe+MS8vGl
- Ju1kB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2111; i=david@kernel.org;
+ h=from:subject:message-id; bh=FsjPKsNWJYzmMrPhyxtJFP2mccjtdE2o5Mf6O6Ctwdk=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35/BVZrBpbfEKWi9gCZPyGl1UYv5LxucgjodX84/d
+ nXj1IAzHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExkcSMjw92qMGGWqxeDpB/t
+ 55ue9/pO5JsfnUq5j/YnlKxvV5Iv38fwv0hX1t79y//MtLXGB8QSL6zP3r7r9IbVn0+8efTB5KH
+ fXW4A
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CC86B4000A
-X-Stat-Signature: pngbd3en1rx4k3wehrnwqwqy58jujomx
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8CD54140005
+X-Stat-Signature: c43a18neymmb7jyo3dq364ncjzh8ecwu
+X-Rspam-User: 
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793057369-898968
-X-HE-Meta: U2FsdGVkX19aABUb4XVMStH4tQCMhBqx88dx40+JFNrBRHuwd8k7qvs5KdkPXHuyb6DjQ6EY4t3iGO1GpC4b/0xO5dS32TlWE7q4rUbPET+VPwrXRB6Nvd7ADDFFVYcjgD2KEyULOa2H2oRib6bYYttxAe0LAI7zn4u3V5q+Bv0i2rTC3ZOF/AhB2lFp2vRrGinp7NODVxG+D4Hm3Sts2VNB86gnpAl8qALxuPJOoU5iaBdk8n+qpnNeaG5qOpxYQHNc5cpkXYvU39CpkWlCmVXd4xxXvM23ahzcsf8ibSobkcSa/rrhOEx71j7Fitf/HY6akt3o0QP70hgTyPddEDTt8Yji4B4fWi8aaAJDyDAqeRpz1eHfeO1CA3L10iWkxjhz2CzgJ+TZZY9mnKQoTjcEWEPLQLuVNF+mBzu4tRZUiXkAojtSkifcYs0uIXxBC1xviEqCdhDOvhf7qP6zxL3HqJkXE+HsTukT2Phl3o7XDFDeOB/mftTTnib7xM2gD5PDooPf2qYDspl813kFeyzJJLPrwcl0aysJ0mHoOgymJmzhQeXYZKgJfyN36WE4+f0p8J+94GUP6KfJAXOITMXMI8gu7WTbZ3+0axhq2mh7MEC+wNKDb53uZ6yYdSNZK+vBm1L76cbQlxbQGqxHysZbz1r0MjCk1rfNhT7aJh7kVykbPQsruiDiDESJIIVUmekO6yZebYOxvaGqFOZQMv6jES7JT8MhgsPuuDaAI2+9D3br1rCnoGwYiKCX80Q/60GNcbPtnDgoNQt1MCfhHJwvB4GCOmCvkAz0cl9UbkgK4UoMuyyx9z2sbDz8wH3PvsKl8bf24tT6rrJwy0jUh4/PcmDGyYa5yzZsS0ifLceJ8VoQpasAuv7S7QAfS4d99FGG10lFEgjS6dwrjAaaxqAWMFSSEkds9tNf5Hr7Leh+7anND3ZwGpkT3BB7ZMTY5+FjaMmaDy4aaIyxfFs
- 3WeiZ7cY
- CaBt5g8c2cA9NMZvkEfd6KBviqzX86fTJnYfOdZaEBjOlkCxJTkLJTPTH2DC4FQOipWMCCshwAOfoIWAaiHGvfBcotMVNg3i3YNliyW5nNC5qF0pmL1gNgx3qsgbdOa/sc+ePGhl9hireLbeQs0rpQy+ByVP+JnjHWAJ2CcfWgw3e2omC3ZgN/ak6GrH1xTtNQqPNtom+8C0yoraVWMSLi/h6+AJCvlrOmRbhbKZFD7xb72ejCKXna+FyQZ2vcQ2DaZLCEU1pDsM0SDZ9tlOhoW8kk76DXElw3HBzQ/azLuZS8dlndzh7AN1HJV1KFFLQrqvNE+MHZ4xA9ieFv3PDggFMWrOQss088Zk+2kM4QR1EA/Q=
+X-HE-Tag: 1793057387-344937
+X-HE-Meta: U2FsdGVkX18csBcQyNV02Tmv+A3ERGF/ARR8N5snzRMp1/0CQvizaG7p/IKRDk/B6x8kYMGFV4Tvakukiuee1TXfaP5EcAqYbjPinq6Fu3Fim0eIkK99BX5UzgJfQU6Dv3KUNuhr8G+8d28kNUXD8/ImaDDxVP3NYlvIvwDoz6ccAKqRtlSBdf7ras/OQFubUj/MnFQ1qjuDJV+P0sYFkvcDZhA28xb1Cpz8hzMlx2zv1+TMgPEeha1oDrftlN4vfmZqGXI6HSCIkzFz/K/aniZXVv8G/JGxThgrezUY+B+ySws4d8NLJ6k3RIsj018t89Ps/zKNJTW5Peyxua4rht+gCjI8sy15Brw1cdBU7V7Cdhs6oZM3AwGk2ly0IaHsIKDAhLLj5znf3ejNyNVAFrG2yamwyILaa/8kgZxyAyFwRwRYDebmJ1GY6Sm2KTlEb7GfYgK2J09s2w9gOwGNWeEC7GKYoXHM9YsUuIs5EfnQqxEVfSk2x/ZazUfLfr5zdpfEKtOa8SuNY7rfjQSYzaEWiNbDPuBIBnlkVSyianG4j5/D/PLtJxOScK8LWP7h6woURH7YaBQqrM31bOFuOZ35migTIpcFThKHubQNGnvb0Pz2S0xmeJdU6/anumGZDu8OwRMDUZuNMSeQ2YLajx4NYLlxYbDS/seotb7k0bFz5uE0EAlVnSuiPe7v6Mgo9U/iYsOgT4wEhs4vk4m+bW/12RThfOv+gso6XLiRql0jo9av6u/KT5lOZl/JX5bA9zanlsAbH/w1EPBV33pBaSGXyGP4h5DXmWxSxTNu78sq+BAdfrqNGpnF4U9atuau9ug5IHwiLCU+EiawokQp3pAOg9QYXCwnoewhzsk97vG/rAoKArdZzEgWLrXWiD68Y/Ox004G2YMFuzIHJ04dBLg5Nv87MA4hBugqozPmybq6dkDPv8oDZxpl9pzK21IaLuvruaPq9YGQSNx4M9P
+ MWl+Z67w
+ EKXYtQoA6nFhDZyAWzBpuNLI9WYajDU/SSlDeAN0ND+GSTJ3TyvMCsVxq7JLQIGCPbyYgNpxWzx5zve3fijDLwB5Ue8wQIgsoPZQk36MIBHlnJSjQ0IRBVOWU1rjlZE/Kcm7EmloL7sYiTR7N1Z7jklqVn5MHdcM/JVUhCu5aWpa8AdUzpQyORhNYpT9IJh31iApa9/h6P1H41KPEfEGY1BbqUCZWSm5JAdqJAhWwD5nrWs2hn3L4QxgcBnGXTviAkYzIZG0t77e3/W0a5Cr7ljwqLeP6uWbQLKytEQ9IeYV34LA5xt9gaqy0c7odoYE4IdBvBaXQvttqZwphAxn9bjZQthKaLusSllqRj2QKVv0TDzS8joKo6SqYJrMrDsecGrJq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,369 +138,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Chris Mason <mason@kernel.org>
+Each full scan resets ksm_nr_node_ids unstable tree roots. Enabling
+merge_across_nodes resets this count to 1, even if per-node roots were
+previously allocated.
 
-With per-VMA locks, UFFDIO_MOVE can run concurrently with mremap()
-on different VMAs in the same mm. Those VMAs can share page tables, so
-both operations can acquire the same pair of page-table locks.
+So when toggling "merge_across_nodes" 0 -> 1 -> 0, a scan that starts
+while the setting is 1 and continues after switching back to 0 can
+encounter stale unstable tree roots, resulting in UAF.
 
-UFFDIO_MOVE orders the locks by address, while mremap() takes the source
-lock first. These conflicting orders can deadlock; mremap() holding
-mmap_lock for writing no longer helps.
+Only root is allowed to change "merge_across_nodes", and the documented
+sequence is: "merge_across_nodes setting can be changed only when there
+are no ksm shared pages in the system: set run 2 to unmerge pages first,
+then to 1 after changing merge_across_nodes, to remerge according to the
+new setting."
 
-Move double_pt_lock() and double_pt_unlock() to mm/internal.h and use
-them for all page-table moves in mremap(). Preserve the source entry
-checks after acquiring both locks. Remove the comments claiming that
-exclusive mmap_lock makes lock ordering irrelevant.
+Let's fix it by tracking in ksm_nr_node_ids the actual number of
+allocated tree roots.
 
-In move_ptes(), make sure to just recheck source and destination PMD
-after taking the locks and drop the overly-long comment.
+remove_all_stable_nodes() and ksm_check_stable_tree() will now scan
+more tree roots (skipping the empty ones), which is harmless.
 
-Fix generated by an LLM and sent by Chris Mason in private.
-
-Fixes: 867a43a34ff8 ("userfaultfd: use per-vma locks in userfaultfd operations")
+Fixes: ef53d16cded7 ("ksm: allocate roots when needed")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chris Mason <mason@kernel.org>
-[ david: use new helpers consistently; simplify description and comments;
-         move_ptes() fixup ]
+Reported-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/userfaultfd_k.h |  2 -
- mm/huge_memory.c              | 19 ++++------
- mm/hugetlb.c                  | 14 ++-----
- mm/internal.h                 | 28 ++++++++++++++
- mm/mremap.c                   | 87 +++++++++++++++++--------------------------
- mm/userfaultfd.c              | 27 --------------
- 6 files changed, 72 insertions(+), 105 deletions(-)
+ mm/ksm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index a14b8a9ffb7b1..565e98f342dc8 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -153,8 +153,6 @@ extern int mrwprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
- 			    unsigned long len, bool enable_rwp);
- 
- /* move_pages */
--void double_pt_lock(spinlock_t *ptl1, spinlock_t *ptl2);
--void double_pt_unlock(spinlock_t *ptl1, spinlock_t *ptl2);
- int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pmd_t dst_pmdval,
- 			struct vm_area_struct *dst_vma,
- 			struct vm_area_struct *src_vma,
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1b50cc2b35351..08e58cda7d37d 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2645,15 +2645,11 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 		return false;
+diff --git a/mm/ksm.c b/mm/ksm.c
+index dbfb8f98b1892..9c51925825cbf 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -475,6 +475,7 @@ static void advisor_stop_scan(void)
+ #ifdef CONFIG_NUMA
+ /* Zeroed when merging across nodes is not allowed */
+ static unsigned int ksm_merge_across_nodes = 1;
++/* Number of allocated stable and unstable tree roots. */
+ static int ksm_nr_node_ids = 1;
+ #else
+ #define ksm_merge_across_nodes	1U
+@@ -3636,14 +3637,13 @@ static ssize_t merge_across_nodes_store(struct kobject *kobj,
+ 			else {
+ 				root_stable_tree = buf;
+ 				root_unstable_tree = buf + nr_node_ids;
++				ksm_nr_node_ids = nr_node_ids;
+ 				/* Stable tree is empty but not the unstable */
+ 				root_unstable_tree[0] = one_unstable_tree[0];
+ 			}
+ 		}
+-		if (!err) {
++		if (!err)
+ 			ksm_merge_across_nodes = knob;
+-			ksm_nr_node_ids = knob ? 1 : nr_node_ids;
+-		}
  	}
+ 	mutex_unlock(&ksm_thread_mutex);
  
--	/*
--	 * We don't have to worry about the ordering of src and dst
--	 * ptlocks because exclusive mmap_lock prevents deadlock.
--	 */
--	old_ptl = __pmd_trans_huge_lock(old_pmd, vma);
--	if (old_ptl) {
--		new_ptl = pmd_lockptr(mm, new_pmd);
--		if (new_ptl != old_ptl)
--			spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
-+	old_ptl = pmd_lockptr(mm, old_pmd);
-+	new_ptl = pmd_lockptr(mm, new_pmd);
-+
-+	double_pt_lock(old_ptl, new_ptl);
-+	if (likely(pmd_is_huge(*old_pmd))) {
- 		pmd = pmdp_huge_get_and_clear(mm, old_addr, old_pmd);
- 		if (pmd_present(pmd))
- 			force_flush = true;
-@@ -2682,11 +2678,10 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 		set_pmd_at(mm, new_addr, new_pmd, pmd);
- 		if (force_flush)
- 			flush_pmd_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
--		if (new_ptl != old_ptl)
--			spin_unlock(new_ptl);
--		spin_unlock(old_ptl);
-+		double_pt_unlock(old_ptl, new_ptl);
- 		return true;
- 	}
-+	double_pt_unlock(old_ptl, new_ptl);
- 	return false;
- }
- 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index da5d04edf7c10..84141527fe73d 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5153,15 +5153,9 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
- 	spinlock_t *src_ptl, *dst_ptl;
- 	pte_t pte;
- 
--	dst_ptl = huge_pte_lock(h, mm, dst_pte);
-+	dst_ptl = huge_pte_lockptr(h, mm, dst_pte);
- 	src_ptl = huge_pte_lockptr(h, mm, src_pte);
--
--	/*
--	 * We don't have to worry about the ordering of src and dst ptlocks
--	 * because exclusive mmap_lock (or the i_mmap_lock) prevents deadlock.
--	 */
--	if (src_ptl != dst_ptl)
--		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
-+	double_pt_lock(dst_ptl, src_ptl);
- 
- 	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte, sz);
- 
-@@ -5190,9 +5184,7 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
- 		set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
- 	}
- 
--	if (src_ptl != dst_ptl)
--		spin_unlock(src_ptl);
--	spin_unlock(dst_ptl);
-+	double_pt_unlock(dst_ptl, src_ptl);
- }
- 
- int move_hugetlb_page_tables(struct vm_area_struct *vma,
-diff --git a/mm/internal.h b/mm/internal.h
-index b1b0f29d2216e..7e4d88b2fb02c 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -619,6 +619,34 @@ static inline void force_page_cache_readahead(struct address_space *mapping,
- 	force_page_cache_ra(&ractl, nr_to_read);
- }
- 
-+/*
-+ * Take two page table locks at the same level in address order such that
-+ * we cannot deadlock.
-+ */
-+static inline void double_pt_lock(spinlock_t *ptl1, spinlock_t *ptl2)
-+	__acquires(ptl1)
-+	__acquires(ptl2)
-+{
-+	if (ptl1 > ptl2)
-+		swap(ptl1, ptl2);
-+	spin_lock(ptl1);
-+	if (ptl1 != ptl2)
-+		spin_lock_nested(ptl2, SINGLE_DEPTH_NESTING);
-+	else
-+		__acquire(ptl2);
-+}
-+
-+static inline void double_pt_unlock(spinlock_t *ptl1, spinlock_t *ptl2)
-+	__releases(ptl1)
-+	__releases(ptl2)
-+{
-+	spin_unlock(ptl1);
-+	if (ptl1 != ptl2)
-+		spin_unlock(ptl2);
-+	else
-+		__release(ptl2);
-+}
-+
- unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
- 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
- unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 1237718848f5c..70b7264aa6bf5 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -202,7 +202,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
- 	struct mm_struct *mm = vma->vm_mm;
- 	pte_t *old_ptep, *new_ptep;
- 	pte_t old_pte, pte;
--	pmd_t dummy_pmdval;
-+	pmd_t old_pmdval, new_pmdval;
- 	spinlock_t *old_ptl, *new_ptl;
- 	bool force_flush = false;
- 	unsigned long old_addr = pmc->old_addr;
-@@ -234,31 +234,30 @@ static int move_ptes(struct pagetable_move_control *pmc,
- 	if (pmc->need_rmap_locks)
- 		take_rmap_locks(vma);
- 
--	/*
--	 * We don't have to worry about the ordering of src and dst
--	 * pte locks because exclusive mmap_lock prevents deadlock.
--	 */
--	old_ptep = pte_offset_map_lock(mm, old_pmd, old_addr, &old_ptl);
-+	old_ptep = pte_offset_map_rw_nolock(mm, old_pmd, old_addr, &old_pmdval,
-+					    &old_ptl);
- 	if (!old_ptep) {
- 		err = -EAGAIN;
- 		goto out;
- 	}
--	/*
--	 * Now new_pte is none, so collapse_scan_file() path can not find
--	 * this by traversing file->f_mapping, so there is no concurrency with
--	 * retract_page_tables(). In addition, we already hold the exclusive
--	 * mmap_lock, so this new_pte page is stable, so there is no need to get
--	 * pmdval and do pmd_same() check.
--	 */
--	new_ptep = pte_offset_map_rw_nolock(mm, new_pmd, new_addr, &dummy_pmdval,
--					   &new_ptl);
-+	new_ptep = pte_offset_map_rw_nolock(mm, new_pmd, new_addr, &new_pmdval,
-+					    &new_ptl);
- 	if (!new_ptep) {
--		pte_unmap_unlock(old_ptep, old_ptl);
-+		pte_unmap(old_ptep);
-+		err = -EAGAIN;
-+		goto out;
-+	}
-+
-+	double_pt_lock(old_ptl, new_ptl);
-+	if (unlikely(!pmd_same(old_pmdval, pmdp_get_lockless(old_pmd)) ||
-+		     !pmd_same(new_pmdval, pmdp_get_lockless(new_pmd)))) {
-+		double_pt_unlock(old_ptl, new_ptl);
-+		pte_unmap(new_ptep);
-+		pte_unmap(old_ptep);
- 		err = -EAGAIN;
- 		goto out;
- 	}
--	if (new_ptl != old_ptl)
--		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
-+
- 	flush_tlb_batched_pending(vma->vm_mm);
- 	lazy_mmu_mode_enable();
- 
-@@ -317,10 +316,9 @@ static int move_ptes(struct pagetable_move_control *pmc,
- 	lazy_mmu_mode_disable();
- 	if (force_flush)
- 		flush_tlb_range(vma, old_end - len, old_end);
--	if (new_ptl != old_ptl)
--		spin_unlock(new_ptl);
-+	double_pt_unlock(old_ptl, new_ptl);
- 	pte_unmap(new_ptep - 1);
--	pte_unmap_unlock(old_ptep - 1, old_ptl);
-+	pte_unmap(old_ptep - 1);
- out:
- 	if (pmc->need_rmap_locks)
- 		drop_rmap_locks(vma);
-@@ -395,14 +393,9 @@ static bool move_normal_pmd(struct pagetable_move_control *pmc,
- 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
- 		return false;
- 
--	/*
--	 * We don't have to worry about the ordering of src and dst
--	 * ptlocks because exclusive mmap_lock prevents deadlock.
--	 */
--	old_ptl = pmd_lock(mm, old_pmd);
-+	old_ptl = pmd_lockptr(mm, old_pmd);
- 	new_ptl = pmd_lockptr(mm, new_pmd);
--	if (new_ptl != old_ptl)
--		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
-+	double_pt_lock(old_ptl, new_ptl);
- 
- 	pmd = *old_pmd;
- 
-@@ -418,9 +411,7 @@ static bool move_normal_pmd(struct pagetable_move_control *pmc,
- 	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
- 	flush_tlb_range(vma, pmc->old_addr, pmc->old_addr + PMD_SIZE);
- out_unlock:
--	if (new_ptl != old_ptl)
--		spin_unlock(new_ptl);
--	spin_unlock(old_ptl);
-+	double_pt_unlock(old_ptl, new_ptl);
- 
- 	return res;
- }
-@@ -452,14 +443,10 @@ static bool move_normal_pud(struct pagetable_move_control *pmc,
- 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
- 		return false;
- 
--	/*
--	 * We don't have to worry about the ordering of src and dst
--	 * ptlocks because exclusive mmap_lock prevents deadlock.
--	 */
--	old_ptl = pud_lock(mm, old_pud);
-+	old_ptl = pud_lockptr(mm, old_pud);
- 	new_ptl = pud_lockptr(mm, new_pud);
--	if (new_ptl != old_ptl)
--		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
-+
-+	double_pt_lock(old_ptl, new_ptl);
- 
- 	pud = *old_pud;
- 	if (unlikely(pud_none(pud)))
-@@ -473,9 +460,7 @@ static bool move_normal_pud(struct pagetable_move_control *pmc,
- 	pud_populate(mm, new_pud, pud_pgtable(pud));
- 	flush_tlb_range(vma, pmc->old_addr, pmc->old_addr + PUD_SIZE);
- out_unlock:
--	if (new_ptl != old_ptl)
--		spin_unlock(new_ptl);
--	spin_unlock(old_ptl);
-+	double_pt_unlock(old_ptl, new_ptl);
- 
- 	return true;
- }
-@@ -503,16 +488,14 @@ static bool move_huge_pud(struct pagetable_move_control *pmc,
- 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
- 		return false;
- 
--	/*
--	 * We don't have to worry about the ordering of src and dst
--	 * ptlocks because exclusive mmap_lock prevents deadlock.
--	 */
--	old_ptl = __pud_trans_huge_lock(old_pud, vma);
--	if (unlikely(!old_ptl))
--		return false;
-+	old_ptl = pud_lockptr(mm, old_pud);
- 	new_ptl = pud_lockptr(mm, new_pud);
--	if (new_ptl != old_ptl)
--		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
-+
-+	double_pt_lock(old_ptl, new_ptl);
-+	if (unlikely(!pud_trans_huge(*old_pud))) {
-+		double_pt_unlock(old_ptl, new_ptl);
-+		return false;
-+	}
- 
- 	/* Clear the pud */
- 	pud = pudp_huge_get_and_clear(mm, pmc->old_addr, old_pud);
-@@ -523,9 +506,7 @@ static bool move_huge_pud(struct pagetable_move_control *pmc,
- 	/* mark soft_ditry when we add pud level soft dirty support */
- 	set_pud_at(mm, pmc->new_addr, new_pud, pud);
- 	flush_pud_tlb_range(vma, pmc->old_addr, pmc->old_addr + HPAGE_PUD_SIZE);
--	if (new_ptl != old_ptl)
--		spin_unlock(new_ptl);
--	spin_unlock(old_ptl);
-+	double_pt_unlock(old_ptl, new_ptl);
- 
- 	return true;
- }
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 710e913c73bfa..76de84510340c 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1206,33 +1206,6 @@ int mrwprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
- 	return 0;
- }
- 
--void double_pt_lock(spinlock_t *ptl1,
--		    spinlock_t *ptl2)
--	__acquires(ptl1)
--	__acquires(ptl2)
--{
--	if (ptl1 > ptl2)
--		swap(ptl1, ptl2);
--	/* lock in virtual address order to avoid lock inversion */
--	spin_lock(ptl1);
--	if (ptl1 != ptl2)
--		spin_lock_nested(ptl2, SINGLE_DEPTH_NESTING);
--	else
--		__acquire(ptl2);
--}
--
--void double_pt_unlock(spinlock_t *ptl1,
--		      spinlock_t *ptl2)
--	__releases(ptl1)
--	__releases(ptl2)
--{
--	spin_unlock(ptl1);
--	if (ptl1 != ptl2)
--		spin_unlock(ptl2);
--	else
--		__release(ptl2);
--}
--
- static inline bool is_pte_pages_stable(pte_t *dst_pte, pte_t *src_pte,
- 				       pte_t orig_dst_pte, pte_t orig_src_pte,
- 				       pmd_t *dst_pmd, pmd_t dst_pmdval)
 
 -- 
 2.43.0
