@@ -1,102 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B70D606A32D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A02606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NxkksvOg
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=DH43oW4G
 Received: by kanga.kvack.org (Postfix)
-	id 8707D6B05B4; Mon, 26 Oct 2026 16:54:10 -0400 (EDT)
+	id E61A26B05B6; Mon, 26 Oct 2026 16:56:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 818E96B05B3; Mon, 26 Oct 2026 16:54:10 -0400 (EDT)
+	id E12736B05B7; Mon, 26 Oct 2026 16:56:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AD7E6B05B3; Mon, 26 Oct 2026 16:54:10 -0400 (EDT)
+	id D27F86B05B8; Mon, 26 Oct 2026 16:56:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C99E6B05B3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:54:10 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A78AB80878
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:09 +0000 (UTC)
-X-FDA: 85365979818.23.A045C53
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DBC42100008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NxkksvOg;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A39566B05B6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:56:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 063F11608C4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:56:05 +0000 (UTC)
+X-FDA: 85365984690.04.E344996
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 43465120004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:56:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DH43oW4G;
+	spf=pass (imf29.hostedemail.com: domain of 3Yb7faggKCLoxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3Yb7faggKCLoxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793048047;
+	s=arc-20220608; t=1793048163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NIm3ZS5KbjzsYJ0WSulRKaxitX/G7rtbCDL/MIRA6Dk=;
-	b=sugTv43zQMM57Xdx13FLgN4ukPsf/Klu4LQ4KcTtRCFB57M9VB+oKm3znZzJljJCac+PU1
-	k79SRes0EEANDaBJ7fT5KkuuOIObBdPtVV39MVNPMjNdBb8eu7UL8wNpunl0wGpShrJbq0
-	K3a1UGGpeImtPKXw0kil4KOQdE8uAUk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NxkksvOg;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3B44qYC1y1oMWzUzev4ii49MY2PIUQMP+MPnvqlHD0k=;
+	b=jZ6jLY564f7zgcWKqly2VNkQXGhee/rFHHBqFNVYdCe1YMviWn/QxLuU7m7TmHoLcx1+nn
+	/5Cso2TbNCv4AbyylmKlPM8fvdqY7nW54k2VtYr/WsTYb4V4T9tlqzMHzv28YTwVjBCKTT
+	4xFtzX+r72PVYZywS6XU0F82JX8HRvk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793048047;
-	b=arUvNgeieCF6GZ47GxOigN6JwdtbZ/XCX6hEIKWvhPOureolpVrEH5fC9PCj5hZxvmcDDy
-	avmHvGkqo31sa00ccH62awgxWQbHJdpQcTx13T//hcqZKczPxho8x+LH573gg8CPQFsRRg
-	4HUIOiIZi7lOKgMgLNKmueaDV7JUUsk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 433C6601F0;
-	Mon, 26 Oct 2026 20:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4966D1F01828;
-	Mon, 26 Oct 2026 20:54:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793048047;
-	bh=NIm3ZS5KbjzsYJ0WSulRKaxitX/G7rtbCDL/MIRA6Dk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=NxkksvOgoUJHDLEYuqZxoDN5w6CVnX11WAHXavjWLJdqMAD7f4eIg6lK7/L6FE42Y
-	 mDawIcxsUDXZB96MfiHTVnvxKvW84UxjxKGbhI5jX08pPzNU4+wCJj96guJTzgbhdP
-	 ySjO1NE7g4mrWrlDutJuY01uq16Eq0ZXqYGGXp3d3QNxRqtAB8pRMrRKWw8sYSfw1J
-	 huEYOB8iz4jSxyI6UgiF1MoW/dw8NSvpcS8jQRYvh4RfJ3ZsxSYxWxV6OFflFgC5Xs
-	 cJ/ZxtgWZnDoh1Gtp4Nzd5n3XbpZ8hNW/VPjKJTfL+RUbArRbUnkTGUHJNmzcgHZO1
-	 c0M9B2lg17dUg==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 26 Oct 2026 21:53:29 +0100
-Subject: [PATCH 1/2] userns: don't drop the exec securebits
+	t=1793048163;
+	b=U1FXaN69+zC8N9VBXEFmm3gXuWYP8ql1lY9ecHNfLzdT+MtVSMhAJMVg2Urn5529L4xaSX
+	qf7l8+DLNBVo5JUtviC9rY7cBoSaiK8QzD+b2RlD6nr9Cxt8obKUEAv94VQQNcMnPdMYHl
+	+M1Qe5CfIu6hd/DFQICAeOT2joEw5BQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DH43oW4G;
+	spf=pass (imf29.hostedemail.com: domain of 3Yb7faggKCLoxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3Yb7faggKCLoxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e9d52f684fso34105135ad.2
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793048162; x=1793652962; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3B44qYC1y1oMWzUzev4ii49MY2PIUQMP+MPnvqlHD0k=;
+        b=DH43oW4GaDAXJRuKPO1GDnxla3vMOoz2qAM4lr5YN4SQ3r5EBPgTlq/OFknB9h9+eb
+         /WjPwfMZQjOdJN1Uywy4ZjtSY0ajL6c9CkaJVOMNQDH5ECZ93AX/43KZVusu3jdAiD9Z
+         6zlQ7sJcwhVvniL6PGdHwgbhJ9ZyeUZznyn4tfOpFZayPADTbD3KehbrpXzQ5LKIijzi
+         jm9tmk+dcNRiIT9jSWykq5arialq5E+sXyaTQdr6IiG3H1cclmPkQIaYG98sur6or6jt
+         lcOXvWJsOZgsJKjzgcj0Y+TEDlXLIND6xY1M7UXALnHIEkR/aqBAgfEk3Iv4nS6SeZuC
+         RCSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793048162; x=1793652962;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3B44qYC1y1oMWzUzev4ii49MY2PIUQMP+MPnvqlHD0k=;
+        b=mx7F5yJeIwWYdz4hq7EKmnaePwTtqSIax4jj9Yjv72e9AZeHtIGmZn7NE8cNwCiUCM
+         wSeeEQHp++AX4TwHvbU2Yc0T+lZQBqSKtF4AW5VR17KEe/xTYOC8KdbWFxS1evfmfqGa
+         RCK3AFRHknOw8poayj7CNT5IKJSNsh+LrmxMktYddQYRnthKC5xvjNEp5G8JHowsdG+D
+         dKVY9MatR70MxSaOAN57Bb8gfPUAPVoYuEiOBGu7UG09sN+gA5G93t4OoDrMyZXOKT/V
+         sSdILhg3UMUHPpxMJlXmjXt8YD2JLD3C3iHQ6/osQs169LoIACYZaol1pMV7jdeScniW
+         D1og==
+X-Forwarded-Encrypted: i=1; AKwUvBwk6u7un0n+MMF0wbiu7QK3P4fztD/NqywHy1BfMK6FHy61B8e5Uaa1tD6wp060WTE0oLK9ZU5zAg==@kvack.org
+X-Gm-Message-State: AFq9FYJQ7PuwLSHN6nerAB8r2kgUW69R7vtZnOBqsgcIg4vEquStN9oJ
+	+5Q+M8giyK/pkgCjUICXQ1CLJIwnzYjNu8ddaYjh5DNS9hvyfekRGoLw53YOgvKAttnNqJbZsu2
+	QDhUFWh8RmOLtkg==
+X-Received: from plot20.prod.google.com ([2002:a17:902:8c94:b0:2e9:6468:1ffe])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:3806:b0:2e9:5175:2eb with SMTP id d9443c01a7336-2ea9c0f388fmr65823665ad.1.1793048161845;
+ Mon, 26 Oct 2026 13:56:01 -0700 (PDT)
+Date: Mon, 26 Oct 2026 20:55:55 +0000
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261026-work-securebits-userns-v1-1-b35473fa1a34@kernel.org>
-References: <20261026-work-securebits-userns-v1-0-b35473fa1a34@kernel.org>
-In-Reply-To: <20261026-work-securebits-userns-v1-0-b35473fa1a34@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
- Serge Hallyn <serge@hallyn.com>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, Jann Horn <jannh@google.com>, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4204; i=brauner@kernel.org;
- h=from:subject:message-id; bh=yXUxhGjrM0vd95PWJeUZxGZvenzi/6XOwtjTBjMe3FE=;
- b=kA0DAAoWkcYbwGV43KIByyZiAGrfveijG/63VwF2dnEFNKUYyMAEz4cxYRc2NV6OHRsTnZeRt
- Yh0BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmrfvegACgkQkcYbwGV43KIu2AD4nj3u
- VIkyHvgxybscgEGv//3yG9Ldw5lqqzgdkEbALwD/cz6zk+fUQ9NjW+dckrZYKWtR+NuGsOsh9XU
- g0aP6zQg=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
+Message-ID: <20261026205555.2918396-1-skhawaja@google.com>
+Subject: [PATCH] hugetlbfs: enforce F_SEAL_EXEC on chmod
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@kernel.org>, Jeff Xu <jeffxu@google.com>, 
+	Daniel Verkamp <dverkamp@chromium.org>, David Matlack <dmatlack@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 43465120004
+X-Stat-Signature: r8q53kyr3fsuyaux4okgezjb4zd65rnu
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DBC42100008
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: d7rui1ngcc7s8af14bw8hdd9zxfjj7of
-X-HE-Tag: 1793048047-465196
-X-HE-Meta: U2FsdGVkX1+EMIr1xY9g/yVgK9rvM+oJjgdfb639VOT3AAIrKyQoooGXY3WLp8pRH2d91fqd8iRZb8PusJbrF+/vzhzsjsIa6z3xxs4PenWlnonSI8QZDf2DzO+htBZKFCCZWGOJ5tQlntTTDTkH8R+rLIbeq9bPpzUGy2JDDt0s1/r11bQJ6oNLsHPTpQ8fRy21oSH2xa5CdPzKk9CThgIVOr5ztQpwT88Jo6A4mh8AYMDbJqOXdyIowguWHZdG6ky7QVLbntOkXmq4k0Sf9u/5CR8Tu0oJDGZ1kdV9EQQxp3PBlWrFQEfrOqdvfRWrGLj4eYH84wci0GJLaftScVGQT2p6buKNSrXEExZrHOxwftdHGe49AkkDolfoR6XCSPyIz3wVR0GWjx2itXZ74lW1GXsMu+g4eum3katZmxQaryHK+CxueyGXl2eekRib7g9sZXZyRDD1bttv2dfjAOVXq6xmgVxjaT+GHnZ1qqIWi7pvBOhcsLjCf0gSu9yBSoK5Z/Pr2RRkdNQvGMvjmaQmJsqAmUy6tCOwU2MUc8+OcoDUCN6qGWChQfwTMhdadB5lxkdkpRni3kjQ8pJt5dlSAd6YyWpKEKYFCHYI86IJXOelsfrt/MEauB1EHrin1d2tY1cqPwXHyifC2p/sd7/Xn2bIE92fFfWCD4qWX4ksU3snVaWvYHxvmuUdr5Ac39Tyv9nsapOd9aSdviYR3v9rlk2B69gU8x8SiBWiZlu+En7sYCqRhKoEALiHsEued4qFVMMVV5HfKMuvDHc6uGJW/isywMXK+jnypqD7RCNuoKTVzOYxsiQAZOXNMUoCACLY/nXk4WgEfAWxGH3k2iDH2TaBxOkS3Yi97mjKlk44IuagpRIyn4+WG9OxhluiuywtDFp1gB67EGbOJ9le3m0DyekdC9vuOFfBEHl17SLmJeylu68AFiFxHeGFnzcX0ALiG6kMHFZzUORrcZ1
- 1jjBEABH
- OTxU20LFIbGLzGoFv3/1oL8cwHIxktE7eT0vmGnQRe+VHSVZ8xmNdXfroK9I3pEtHD5SLQ9A3W2MdpUdZ1Pd5Q73y6S3xNWiDD80jA2b9YC1qIUxkfX5fekAq3V/emDOuOhgNeVEEXAhYtHtZdwElsyfyQr8t9xK5EanoFcFfTDEmqjjLnY3Ix1lWtov/BEyETq3DPqXSSg5LJF+Dmkml3ngIJFxxqKxgZInJ58Da+ZmOtbgHiBQvQ0mzuA==
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793048163-11334
+X-HE-Meta: U2FsdGVkX19AV412cf6H3C21aSw7HQg2XA76KLIWF3pipYI8RuNxGppCHXfKE89X//uLx5HQTM3w1aoQqZNJoHdNItgBtGSzo82j1KrGwUQ0jxx00IuDJ4OSb4b6DWBV1mdFvmPuNYOg2GiX66BFUFHqbCmNp336hbjPWiVw3UN6FhAxcQAv+vzQlwrbZZruL3F7/RZD4a3okXofF3w+I/KnvJeZZPWHmd7YpU1JnuPTXV8GKp2SiWK8jV6oOYwL2ByzqeLqacYsPvi85bZr+/RevvOk/aF6bGtiEOCWfMVTSaFJ2v6u2N7XK9D9zqmKuhxaGZiE4mg/QvGGdcmhEbWBEatRCYyNar2otc9+teNEMwzEKojfMk9RtslOC1jpHweMk1xcR0lN6G+nVm/8jXNF4riEl+QwqszoGJrkDvfiZy8ftm7bqz1sYR5M2yAaKtmPVIeCM3ZEdt1XDMTXN30YcAzFgi6dZ1xeNx1P4TtR12nsC4QPrJ+3ZL3WUSXLWM2nlzOHoTkPZgkm7A2Pehx1opAmXcPdmJ4k5emKUXwLEAbpyJr1/S9QnxsgCU5ZIap5gWPQED7pIfNsCL1ae91YLtq3hOOKb/+5I77dF8IMwCxGk96kstnhIlk+IIMNYo6OhXD/7MrBxZUtqGZBOjKkGMm1QVSYnoC5dYbrgp4Y2iFswIDFAoiOBguLB3rh7HWZK2CVMS4x40ZQD2f+2ceU2dWRxIEeEK/ezWavkyKHdtgBZn3GRg0L3XPeVJ4YndVL++WJAMoG4ZJpFPt+5E+PG1xAHf5p0hPAkyRKnzrS9UMr4isEEZeQVS6EYkZ6RB6OpUKTBIbWsFnINpF2YOMhW9tqP7FqJhVUAeToKAO1kFQTZzevQ0idNaIx69OJ+gfBIigTIF0QjR78vJbO3Hz6dSCqfmVePLBf/ojwIgs9e7gz8hCa8Ck+suY2GsyFYjLW2Rls5uzM+ryeYu7
+ xe9JmiaW
+ IN9buMn5EfUATX+9H0DeF9yUd/ku8lCBysysVfL65WjJlx2M7YxzO1Mu3n91VyA4eEuSaMSUaD2lBOQofRBkuHP+wRdHFPZCrNQgwtk3OkttNXqsCsQ0zjo5nIO5A2RHsobGNa8dEhezS1JFLuyicmunsfQu0lSylFGh4W0ZfbCYf+/fH3Sq28F0gib8hXLWeV/r4fkPq4xe7Xx6UGaTMt6UB/sfwHvECbXL6D42lw/qouuptj8LOgIhqEya4Oil9zsx4quoV7Z965pKJWkBer1W49dcEk8RkKS7I1zEcm9OKdANOc0A2Clrgf/0j33tPjyzV7iuqWMFBh8ZwqQ2M8dh/qJ4KAuku8FQV4swbyMeUMv64xC6MuEdrE+SQ7UlMc2oFcPIOrCJ/xKz+hWpWwYp3tJPoHJUnicmM8S4pU3YSMdi+k5u/A/PWcWXkF1Hs9OiXdef6qH3u0JYTNveNSx2wXfgOpBcWK1pyeyJpBPMpKsW/1DkMkJdPm84XjWRU9YFYjHKkfO+EogrffFbFZH8o06J/WLWgM3/8EqmPxVREvdJtc1U+9C+SMwOinFr8vYnGtAvneL3GIInZxWwoGGsejDkjvImGD7okV8NmSv3fYh/RF9TwHM5dF4GY3cKt/K4KboAPFqiEgUj2M9qk35odg4wkx7l9bd49
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,103 +112,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-SECBIT_EXEC_RESTRICT_FILE and SECBIT_EXEC_DENY_INTERACTIVE tell script
-interpreters to only run what AT_EXECVE_CHECK allows and to refuse
-interactive input. A service manager sets them together with their lock
-bits so that nothing below it can turn them off again.
+F_SEAL_EXEC prevents the exec bits of a memfd from being changed once
+the seal has been set. F_SEAL_EXEC is included in F_ALL_SEALS, so
+userspace can set it with F_ADD_SEALS on hugetlbfs memfds just like on
+shmem memfds, and F_GET_SEALS then reports it as set. However, the check
+that rejects the mode change was only added to shmem_setattr().
+hugetlbfs_setattr() never looks at the seal, so the owner of a sealed
+hugetlbfs memfd can still make it executable with chmod(). For the same
+reason, MFD_NOEXEC_SEAL provides no guarantee when it is combined with
+MFD_HUGETLB.
 
-But set_cred_user_ns() resets all securebits to SECUREBITS_DEFAULT. So
-any task that can create a user namespace sheds the locked exec bits
-with a single unshare(CLONE_NEWUSER) and joining one with setns() does
-the same. The lock is pointless if anyone who may create a user
-namespace can drop it, and that is pretty much everyone.
+The memfd selftest already covers this, but only the shmem run passes.
+When run as "memfd_test hugetlbfs", the test aborts in SEAL-EXEC because
+fchmod() succeeds on a sealed file, and none of the remaining tests are
+executed.
 
-Resetting the other bits is fine. They are about how capabilities are
-computed and a new user namespace starts out with a full set of
-capabilities anyway. The exec bits grant nothing though. They are
-restrictions a task placed on itself, just like no_new_privs which a
-user namespace doesn't touch either. So keep them and their locks.
+Add the same check to hugetlbfs_setattr() that shmem_setattr() has, so
+that a mode change touching the exec bits fails with -EPERM while
+F_SEAL_EXEC is set.
 
-Reproducer:
-
-  // SPDX-License-Identifier: GPL-2.0
-  /* Lock the exec securebits, then create a user namespace and look at them again. */
-  #define _GNU_SOURCE
-  #include <sched.h>
-  #include <stdio.h>
-  #include <sys/prctl.h>
-
-  #define SECBIT_EXEC_RESTRICT_FILE		(1 << 8)
-  #define SECBIT_EXEC_RESTRICT_FILE_LOCKED	(1 << 9)
-  #define SECBIT_EXEC_DENY_INTERACTIVE		(1 << 10)
-  #define SECBIT_EXEC_DENY_INTERACTIVE_LOCKED	(1 << 11)
-
-  int main(void)
-  {
-  	int bits = SECBIT_EXEC_RESTRICT_FILE | SECBIT_EXEC_RESTRICT_FILE_LOCKED |
-  		   SECBIT_EXEC_DENY_INTERACTIVE | SECBIT_EXEC_DENY_INTERACTIVE_LOCKED;
-
-  	if (prctl(PR_SET_SECUREBITS, bits, 0, 0, 0)) {
-  		perror("PR_SET_SECUREBITS");
-  		return 1;
-  	}
-  	printf("before: 0x%x\n", prctl(PR_GET_SECUREBITS, 0, 0, 0, 0));
-  	printf("clear locked bits: %s\n", prctl(PR_SET_SECUREBITS, 0, 0, 0, 0) ? "refused" : "ALLOWED");
-
-  	if (unshare(CLONE_NEWUSER)) {
-  		perror("unshare(CLONE_NEWUSER)");
-  		return 1;
-  	}
-  	printf("after unshare(CLONE_NEWUSER): 0x%x\n", prctl(PR_GET_SECUREBITS, 0, 0, 0, 0));
-  	return 0;
-  }
-
-On v7.1 this prints "before: 0xf00", "clear locked bits: refused" and
-"after unshare(CLONE_NEWUSER): 0x0". With this patch the last line
-reads 0xf00 as well.
-
-Fixes: a0623b2a1d59 ("security: Add EXEC_RESTRICT_FILE and EXEC_DENY_INTERACTIVE securebits")
-Cc: stable@vger.kernel.org # v6.14+
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Fixes: 6fd7353829ca ("mm/memfd: add F_SEAL_EXEC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 ---
- Documentation/userspace-api/check_exec.rst | 4 ++++
- kernel/user_namespace.c                    | 5 ++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ fs/hugetlbfs/inode.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/userspace-api/check_exec.rst b/Documentation/userspace-api/check_exec.rst
-index 05dfe3b56f71..0904810e1d8d 100644
---- a/Documentation/userspace-api/check_exec.rst
-+++ b/Documentation/userspace-api/check_exec.rst
-@@ -99,6 +99,10 @@ This secure bit may be set by user session managers, service managers,
- container runtimes, sandboxer tools...  Except for test environments, the
- related ``SECBIT_EXEC_DENY_INTERACTIVE_LOCKED`` bit should also be set.
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 01c4d6f44ebe..56e0588d295d 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -842,6 +842,10 @@ static int hugetlbfs_setattr(const struct mnt_idmap *idmap,
  
-+Both secure bits and their locks are inherited across :manpage:`fork(2)` and
-+:manpage:`execve(2)`, and they are kept when a task creates or joins a user
-+namespace.
+ 	trace_hugetlbfs_setattr(inode, dentry, attr);
+ 
++	if ((info->seals & F_SEAL_EXEC) && (ia_valid & ATTR_MODE) &&
++	    ((inode->i_mode ^ attr->ia_mode) & 0111))
++		return -EPERM;
 +
- Here is the expected behavior for a script interpreter according to combination
- of any exec securebits:
- 
-diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
-index 50c374ed4687..cd748e1cbace 100644
---- a/kernel/user_namespace.c
-+++ b/kernel/user_namespace.c
-@@ -46,8 +46,11 @@ static void set_cred_user_ns(struct cred *cred, struct user_namespace *user_ns)
- {
- 	/* Start with the same capabilities as init but useless for doing
- 	 * anything as the capabilities are bound to the new user namespace.
-+	 * The exec securebits grant nothing, they are restrictions the task
-+	 * placed on itself. Keep them and their locks.
- 	 */
--	cred->securebits = SECUREBITS_DEFAULT;
-+	cred->securebits = SECUREBITS_DEFAULT |
-+		(cred->securebits & (SECURE_ALL_UNPRIVILEGED | SECURE_ALL_UNPRIVILEGED << 1));
- 	cred->cap_inheritable = CAP_EMPTY_SET;
- 	cred->cap_permitted = CAP_FULL_SET;
- 	cred->cap_effective = CAP_FULL_SET;
+ 	if (ia_valid & ATTR_SIZE) {
+ 		loff_t oldsize = inode->i_size;
+ 		loff_t newsize = attr->ia_size;
 
+base-commit: f1ac44c32cba88ad65dcecd4a279661d14e93651
 -- 
-2.53.0
+2.56.0.307.g5fe7bd680c-goog
 
 
