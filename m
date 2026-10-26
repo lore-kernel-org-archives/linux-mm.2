@@ -1,103 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA0C606A31D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C4A606A32E
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gp/6q80U
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gC3U5SKs;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FQwhEslu;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gC3U5SKs;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FQwhEslu
 Received: by kanga.kvack.org (Postfix)
-	id 58EDF6B05B0; Mon, 26 Oct 2026 08:53:24 -0400 (EDT)
+	id 03F016B05B6; Mon, 26 Oct 2026 08:57:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5406C6B05B5; Mon, 26 Oct 2026 08:53:24 -0400 (EDT)
+	id 0162C6B05B7; Mon, 26 Oct 2026 08:57:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4565F6B05B6; Mon, 26 Oct 2026 08:53:24 -0400 (EDT)
+	id E6DF86B05B8; Mon, 26 Oct 2026 08:57:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F3656B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:53:24 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 814341C1C0B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:53:23 +0000 (UTC)
-X-FDA: 85364768286.28.E6FF1C4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CE707100008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:53:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gp/6q80U";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BFF636B05B6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:57:11 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5541AA82AF
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:57:11 +0000 (UTC)
+X-FDA: 85364777862.13.0DDE0D3
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3AD11C0003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:57:09 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gC3U5SKs;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FQwhEslu;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gC3U5SKs;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FQwhEslu;
+	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793019201;
+	s=arc-20220608; t=1793019429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VIxTiNRgypXMaqJ3sKqKWSTzccttj631MPKMikg/mfI=;
-	b=D6kpUhlAUNI/BKmKvgMNs4OCJffFlQuT8revcb1deX6M9ezkBj128gGyCdkOzm/C133U53
-	X7ltwwSOaZQIfhALMDtAmLqPqtWypSHB2aSAM3UdDWvH3hD9KfATfWhjBmNlip8L5CPSKD
-	RawdK07RGDZf8jX+sk3JJH0lbIysAWo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gp/6q80U";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org
+	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
+	b=5cbidJhSAftaZFjme+8kpFLI1ot4ZUbZ6oTysPTEj9S9gfI7QCX21pae5MnU2LIVRVfeMS
+	6UF+yiGYCCu0kWOKeZ8qJVEMsUc3mOw+ZZzmyP1tYRi63BjW2cBBryq5/+e7uy+BJnp1bN
+	ovaJ5dRQ2di0WcbY2XEVFqc286y9OMk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793019201;
-	b=ZNVWqGqUgSv7E/D0OZKwrRCMUEasxHFeybm6tgnCA9yE/JkK99WNwVLR0A1ks1OwYdhMsK
-	dV4su1pw5iRMcKUF6vJyJ3LopaqbSN2T7+X8q1HswX2jeeQ84v2V4d9gQwf6a75dqS+xUk
-	nN4cUms7CrdX1ImIvqbCJYwilRrO1HI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E7C24020F;
-	Mon, 26 Oct 2026 12:53:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FF21F01825;
-	Mon, 26 Oct 2026 12:53:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793019200;
-	bh=VIxTiNRgypXMaqJ3sKqKWSTzccttj631MPKMikg/mfI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gp/6q80UQa7H3T+mI9Qp2Mly9TnA3bLnYUSDuIVxjJPVzooXT1imqeZ1sxvuWbIOG
-	 LYVKUiqdbq7fCSyHHUCaasxU212uwFC+l8Guh7izu7tVOVGfz7y5ILaAhaBKVpzBFC
-	 a8FcnusT7OWdWh8zf2VYD/mfncAaOAM1jML9Ey9nmbN09VZoqub54qzT4Z6atUX4eG
-	 HsAMGyjYnmp7WTD4GFYCLrtlfcCjUsRvyYrIP9cJoB7eQeQOsmHY6LZ9TC5ineBii+
-	 KueuN8O9SJSwwR3j5yjgAsM5CdCWy8/Z2qoW1lKaGMjwwZ3rScf+H5hw51T4/5Flnd
-	 CzmxNfeNYudqg==
-Date: Mon, 26 Oct 2026 13:53:12 +0100
-From: Gao Xiang <xiang@kernel.org>
-To: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Jialiang Huang <huang-jl@deepseek.com>, lance.yang@linux.dev,
-	baohua@kernel.org, damon@lists.linux.dev, david@kernel.org,
-	kunwu.chan@gmail.com, lianux.mm@gmail.com, linux-mm@kvack.org,
-	mst@redhat.com, ryncsn@gmail.com, sj@kernel.org,
-	virtualization@lists.linux.dev, xueyuan.chen21@gmail.com,
-	Matthew Wilcox <willy@infradead.org>, xiang@kernel.org
-Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-Message-ID: <at9NOPA2VqV54yan@MacBookPro>
-References: <20260925054408.10431-1-lance.yang@linux.dev>
- <20260929123241.1408414-1-huang-jl@deepseek.com>
- <aruyFPzEe3pS_Qzx@XiangdeMacBook-Pro.local>
- <AA71E56E-F29A-44B2-B5A0-7806CD684B21@linux.dev>
- <ary5Nn9le4xG7_-N@MacBookPro>
- <CEE47F27-874B-486A-995F-E223249659FE@linux.dev>
- <arzlfSOgtC-CLoZt@MacBookPro>
- <8839b7e4-a830-4c88-9e7d-dd35757c5167@amd.com>
- <at9LyF8xIIPKcLSD@MacBookPro>
+	t=1793019429;
+	b=gkcBXDuGFFjrMJ5U2MKTLcuDRTqU7m/7GFlW7whA7BwIxp25S9BCNtd3tG/KwgxK/WFdre
+	g8k4E59xj651tNVZqZYEaXYvlmr+j5qHdK/aiDG1B/5BHkkA1cvrFVk9fOwKbxM92aqnbD
+	cBD45Dgse/uY2R9h0Th4WgpTNNjVaDw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gC3U5SKs;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FQwhEslu;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gC3U5SKs;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FQwhEslu;
+	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B8EB21F46E;
+	Mon, 26 Oct 2026 12:57:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793019427; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
+	b=gC3U5SKscHPXg8RjeWwr3oZamighRtqxYQRxVNIjY/Y6YK8s6TQqmhGyALsdAWqI8ejswA
+	T+rG5lmAVGUtVhaN/yYAcLf4QrIQObD0vS4ju5KSjgp0or4xwNEXd04cxTcIUKXOcdGriZ
+	ococ2Hfp6IrF3/SNKrEO3nZKgi8u8PE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793019427;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
+	b=FQwhEsluY/yj6aGnxk6vNIjdQg6JMSvTMi1YubrRCm6nbZKeGaLY7aLGkcZyAfsEiVUZ4Y
+	oZhfSEg8RUKZwjDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793019427; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
+	b=gC3U5SKscHPXg8RjeWwr3oZamighRtqxYQRxVNIjY/Y6YK8s6TQqmhGyALsdAWqI8ejswA
+	T+rG5lmAVGUtVhaN/yYAcLf4QrIQObD0vS4ju5KSjgp0or4xwNEXd04cxTcIUKXOcdGriZ
+	ococ2Hfp6IrF3/SNKrEO3nZKgi8u8PE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793019427;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
+	b=FQwhEsluY/yj6aGnxk6vNIjdQg6JMSvTMi1YubrRCm6nbZKeGaLY7aLGkcZyAfsEiVUZ4Y
+	oZhfSEg8RUKZwjDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 15BE513408;
+	Mon, 26 Oct 2026 12:57:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id eyl2MyFO32rLVAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 26 Oct 2026 12:57:06 +0000
+Date: Mon, 26 Oct 2026 12:57:04 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Davidlohr Bueso <dave@stgolabs.net>, SJ Park <sj@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Colin Cross <ccross@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] mm/vma: write lock source VMA before duplicating it
+ in __split_vma()
+Message-ID: <at9NKAYk-W7PhlGu@pedro-suse.tail5790ac.ts.net>
+References: <20261023-fix-vma-atomic-v1-0-8ff4fae1fc85@kernel.org>
+ <20261023-fix-vma-atomic-v1-2-8ff4fae1fc85@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <at9LyF8xIIPKcLSD@MacBookPro>
-X-Rspamd-Queue-Id: CE707100008
-X-Stat-Signature: nkep3ogda17aajy8gtkpo6smaqonikd6
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+In-Reply-To: <20261023-fix-vma-atomic-v1-2-8ff4fae1fc85@kernel.org>
+X-Spam-Score: -13.30
+X-Spam-Level: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3AD11C0003
+X-Stat-Signature: 3yqyrwtufh8iixqjyxbtjp996nt76j7k
 X-Rspam-User: 
-X-HE-Tag: 1793019201-306851
-X-HE-Meta: U2FsdGVkX18hbBIajLyL3YuQ9k2fTIHbjzj+SMbSBA4WAmMI4zBLzbT+gPEfwPFClJtJvT/BI1Lh49FLKyIIOR+txIcZ9XdXgt6BbwPMVYTfmV9JyZRwLl+RKOnOoxskTOYgkYddxSkfRTCtpi7d5t45btv3fxC+sxe4/urQvPUqX3jQwJWKKMxwOXtG7nAZrukb0l2FSDuLdW9P2rhAm0TwSv2NsOuCKKorW+39EOK3A3BqsVhTYwyexZIxVPectQ5bI7GRMuJ2IyAohjEPsUqc6FwGvIhoOfD5RetDndYomglP4xbv6ebRvYiO9HB2viyq+ez6vJ/6G1b5lka50GLdxE437bsY6KmjiQoWED0Cb4BBooBpkZ2yp4+3VtoMYKDs8iSpzusNwTUAz2P4uSW6DUJpBm2K6ldiznJ7SH7ILDpqv0RcwPQsUddNsNEQvAAZPAVD1aDqfIgLUE86/1QmGr0Pb5i+eP+27sTEPoZbr+lo5oA5yyQ2hRU+Pr1ZYzUJCd3VgULmyZhnd/vWIupq9zviZtw6IBJmsQEJYQzxxjBbwpwtYICdIup5Ad2ciYWeDGuIUhPaNgaGmYsG3JKmkhwIL7iL9Soia3fQC1gUyvk9rL6/uWD4sLtFEZowqcCOBO9jPdM4EWKsfGwwV+p8w2gg39swWcOeFT2c+GPjKT9GYAhfX3AzkVphEi46qPN+i9AqHjBvRZTOkVRGxgTHB5aHfuguunX/QwiNopgwORgfzWFk9/E34qJqd2Xs99u6ZZ1o8ayBVIWuBQhQENPI05DkHj0DzI7Kwae3IpZjJ6ldsZI2dt0BKg/FwsHqn5io0YdQpXMq6adr6zzHGcMqsXi4zbEf1S8GwWVRFeeezSzUmCZfarj8ndXt7IxtLQIDHkiRzPwBPREyK9zNL5kW2yI2QLv1bfESgQuYNQcZBTvUqFF4xZHPFoNKi5DDUwwaGPTOq2TMTammPKR
- CxSQ68qX
- 15uxqAOmoKYKyuzK3AD8mEe336RPqdwk+2Hv88p/S7631YnvYJ0bzjReHFBC/I8lMdyJzCHrnj9/pClNyCrYseUzCByWC/xyO19MwP6XSTNcvseSK+ZnkWbyVFMhg5oOrFZGF2CL3b0+a18ZjLlNpbsDA1ceF4PHgG9sdZYKRBR+K5/Va1bAMQmrOWylGNL/oDhuK/zwcaf1skRAn28GLbDeZdSMYLZg9OvbstD4HDQcwc16677Q00ay0LXa6fy8th0BdMUFoERjVCN1AQCvY3vkBKo+6mgwWh+emH+nZuac+e3BP3cPlzKug76PAe+PEYIdFIlF3Ga/KrtF7/bskRTlRew2UCkt1zK+TNVKZdPVOmJo9uFu5ekOd3g==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793019429-453576
+X-HE-Meta: U2FsdGVkX1+1AJQdPD6bfw2PCnr5cmocpb+Cq56HksYtB6vOXQqO9pdy5xTQn8+qZMogNCBGgop+vAdPllecf6HnBXZvDbtjtnGozvPLKhI9B4OdXGfhGAzJHo4Ut8WS5YohdxaC7pZ74XOUkoIF+9GuD9L8rccb1a5NdpF1ZxD/jn3UQot4Pr1VdJK1SqMOQeg5aCJNGMdoCcchDdgG4ZE9H7YMiuRHuBegxvuUSRgwhUOWRbzrtX8DnmJ1tBQyfNT/TStu0bFQiohIDdYDrp5Kn8WMAN6kSdK27sSvSX4P4x61WyapUZ0IlqaZZ6E5nfF3EROQNLWy8A2w6YxzTxwFUz0B26GwpVKCpJSmSVqPkMy/cpz/hzyWWC+q7ywXngILrqJR/nB5nTRIEgRQzG1BE9uFrvCIXh7n3gjQTnz2lxN3Fpri5nSTC8gOOKXf1MmyBEEXpklLvK/PRS2sV7UTqsnedQVFJrU8MkLc7rj0qK/0O0yKl9blneQeodYsVDeGT0F901ficG7N8sPF57GxNnqGqu8Bypt2L2P2Ev5i16AiMxwx/gZSDhWKZeJCEykrbPaeqfKqMqMc2w30z6hRvGzPSqRNkMRiTQbmvb78JcYs/M/jmOPRBmcZvDNyptHkNLAXmg+AdSUtfKLZrphE9vq/y/RmLw/MeJY4Ptil+TztgxxbpX82RSqn8w0oHhSuKwh3MU+OSz17SlEDeMlRLsVnruvER5xEg8LDQPiUPJ6+iT0Iw/zG2oH/sWEhLo0MI+M9dCIiMpEyiMWb66384BoLvLEMm2u+gEkdKd7+Gfq4PgGPLKE9dgOqX4eIbZfwljpVt83VOszaYnDDGPE9bZUV1l16hGCJtZ3jfiWNYayfRO108jTw5xxOmM640c0BvpZ2H3SUWcoqb+m5AfXvLk8pvWtiKcx6V+f9ohAkNAN8tpwM33Ojiepx8I2hMKkEBvkzACY+cYXK8xK
+ RlmvMH+3
+ Bj9e4B15zAsTc0yTSJ/6BIwLmPVSdZbbM8dkRu1UxezAj+fIpSLPbGUndoPjTlV5Qc4CmZQWV+u9AnpeRqaojQLMg+KPzewXBXgscThZPqPV/uRrdBvzEeGYjYZ0ohDExtsjcr41X3V7ZMwrzhs4BTckGijjYMgxNH2kFqmPym+Xc1zxr8p2x8fxWEgynhu4fYGx0UpN44DpNuRfRlOB2hpNv4fICkcOLaFZzRoFa+e/2UMKm3ciBC+OFdcDGd/Qj0Xs17tCzXYgHvEMBArS48HWbSU8xR2IYMh4zW7Xf/mFqZF6qOVT0V3+tUBqWwfAsys5nCx+z7p5+X2dMwBaBcusgGTafW/1DgfTctPeEhNqqznJcu5PelKnWOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,77 +144,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 01:47:04PM +0100, Gao Xiang wrote:
-> On Mon, Oct 26, 2026 at 01:35:44PM +0100, Gupta, Pankaj wrote:
-> > 
-> > > > > Anyway, it'd be better to get some numbers with RL or agent workloads
-> > > > > (especially the host memory is under reasonable pressure) before
-> > > > > landing all these new infras upstream if proceeding in this way.
-> > > > At least for now, as far as I'm concerned, I don't intend to land all the
-> > > > features mentioned here. The first thing I want to address is on-demand
-> > > > allocation of struct page.
-> > >  From my point of view, on-demend allocation of `struct page` for FSDAX
-> > > is indeed useful and can be landed upstream, mainly because `struct page`
-> > > initialization takes much long time for large FSDAX devices even a small
-> > > range is used, that impacts the guest startup time a lot.
-> > 
-> > Would on-demand allocation of 'struct page' from the device itself (a
-> > variant of the altmap case) solve this problem?
-> > 
-> > For virtio-pmem, since device memory is backed by host page cache. So, in
-> > the worst case host will provide memory for all the 'struct pages', but the
-> > guest itself won't OOM.
-> > 
-> > Just sharing this idea. Anything I am missing? It could be another
-> > optimization on top of Muchun's work.
+On Fri, Oct 23, 2026 at 02:47:28PM +0100, Lorenzo Stoakes (ARM) wrote:
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
 > 
-> I know virtio-pmem struct page can be allocated from the device itself.
+> __split_vma() duplicates the source VMA before taking its VMA write lock,
+> and until the VMA is write-locked, a concurrent thread might set
+> VMA_MAYBE_GUARD_BIT, resulting in the duplication missing the flag.
 > 
-> But I don't think it changes too much, since guest kernel implementation
-> shouldn't imply anything of the host. So that the pmem and struct page
-> can be backed by anonymous memory or other types of memory, and it can
-> still cause unexpected large amount of memory on the host instead. But
-> allocating on the device is sightly better than allocate struct page in
-> the guest.
+> If this happens, then fork may fail to duplicate guard markers and, if a
+> file-backed mapping, THP collapse may also discard the markers.
 > 
-> The problem is it's hard to make sure the on-demand allocation is always
-> successful since the guest knows nothing from the host, so that it
-> exposes security risks like denial-of-service or more.
+> Resolve this by taking the VMA write lock before vm_area_dup() and, since
+> all callers of vm_area_dup() now hold the VMA write lock, assert that this
+> is the case there, and add a comment to explain why it's needed.
 > 
-> If this security concern is not resolved (e.g. implement a reclaim path),
-> my thought is I think we shouldn't overcommit the struct page since it's
-> a functional defect if virtio-pmem is reasonably large.
-> 
+> Fixes: 2ab7f1bbafc9 ("mm/madvise: allow guard page install/remove under VMA lock")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> [ ljs - add VMA write assert in vm_area_dup(), commit message touchup ]
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-But I agree that allowing on-demand `struct page` allocation from the
-device (rather than allocate using the guest memory) has lower risk,
-maybe allowing this can be the first step to enable on-demand
-allocation (actually it's not an overcommitting from the guest view
-since the whole pmem memory range for struct page is reserved).
+Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
 
-Thanks,
-Gao Xiang
-
-
-> Thanks,
-> Gao Xiang
-> 
-> 
-> > 
-> > Thanks,
-> > 
-> > Pankaj
-> > 
-> > > 
-> > > But in order to make it safe for production, I suggest reserve the
-> > > guest memory in advance for the worst cases of `struct page` at the first
-> > > stage, otherwise it could cause unexpected issues for many guest workloads:
-> > > it's hard to perdict if the guest memory is still enough, it's unfriendly
-> > > to system designers as well (that would completely based on their
-> > > experience and hard to ensure the service quality beforehand.)
-> > > 
-> > > Since the guest memory for `struct page` is touched on-demand, the memory
-> > > over-committing on the host is still workable, the memory reservation
-> > > can be removed after the reclaim path is done.
-> > 
+-- 
+Pedro
 
