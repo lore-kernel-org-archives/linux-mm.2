@@ -1,147 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA4D606A322
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF89606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=bDDhCwYq;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=4i+RWwt2;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=bDDhCwYq;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=4i+RWwt2
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bsqsLudo
 Received: by kanga.kvack.org (Postfix)
-	id 97B466B05B9; Mon, 26 Oct 2026 09:49:54 -0400 (EDT)
+	id 5D18C6B05BB; Mon, 26 Oct 2026 09:50:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 953A36B05BB; Mon, 26 Oct 2026 09:49:54 -0400 (EDT)
+	id 5A95E6B05BD; Mon, 26 Oct 2026 09:50:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8692B6B05BD; Mon, 26 Oct 2026 09:49:54 -0400 (EDT)
+	id 4989F6B05BE; Mon, 26 Oct 2026 09:50:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 55AFA6B05B9
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:49:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DBFE5A07D2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:49:53 +0000 (UTC)
-X-FDA: 85364910666.15.074844E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C14ED14000D
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:49:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bDDhCwYq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4i+RWwt2;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bDDhCwYq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4i+RWwt2;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CB576B05BB
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:50:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7CDC6C0715
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:50:01 +0000 (UTC)
+X-FDA: 85364911002.16.B1781D2
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BCB50C0006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:49:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bsqsLudo;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 3hlrfagYKCBcF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3hlrfagYKCBcF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793022592;
+	s=arc-20220608; t=1793022599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gw+DWrBcThdkD94LPR2Xt2VdzoiGn+S55/InX1ltsOA=;
-	b=3fTByVlu8um6ZazsnwlX9GlsnQfmsl+xXLaTsBvulyZub+fHCHXYONZVPo8zH5Re20faw3
-	m8+J0zL8AAs5sC7xD2x6H62j1TwjMoh/SnJYNfgFvhk1wnfnjwgfGbHmAEqqeyJKetDQtn
-	r8C1SgB/v/0+BLYZQLoB16AsUg+9/vg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793022592;
-	b=o6kYFLqd9YWmbztSAr/Yy7VNcjYg6GbAWh4N7FoWpWOQuAghfDOrVEf25XH5km5omLEjQF
-	P6vQ1ReCm6XABQFJgzrYcNA2YWV7CvIP7EZHsLLK9c0m3/kXdqny9xLj/jYLYMeNbY7GDH
-	/L77BgSgi+k9IMUmEggNNt60MoLaauE=
+	bh=c7my5rSEsn+U+kYhoFnNu7P7PE6jHz+gWSHK/wcS/Mk=;
+	b=l6HCY/5exBviqFq7S+JbAu5+Q0+T9YlLz3z+MGrx6paudN3rnYEdGaCny81TUCjFaLTTtN
+	7pHnJHuaKjkKatvmsZ1/4mgHGkYb2pSQW8h2+lV23qS4vXxrgLEIWo/W5PUgmRGfxqpQg4
+	/nZaQ0z6N59HOQN0q62SZBdLoy1PXCY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bDDhCwYq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4i+RWwt2;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bDDhCwYq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4i+RWwt2;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 703A61F7F1;
-	Mon, 26 Oct 2026 13:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793022590; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gw+DWrBcThdkD94LPR2Xt2VdzoiGn+S55/InX1ltsOA=;
-	b=bDDhCwYqko4Spqtn/GFssUjt3KhO6TLY0yoGN3uHLvrc10lcc/Rk3KBcvnyXc1lGnmF0zo
-	zDg1TSaOVRSSbo5n9O79NLsNzqbOJzWwuQSDeBEEweJwcmQus0uBSq0Lto6pPrTUXqt16p
-	3+UUpVcliemrFSyjci68XAtAkpCFH60=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793022590;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gw+DWrBcThdkD94LPR2Xt2VdzoiGn+S55/InX1ltsOA=;
-	b=4i+RWwt2clyt3QcGQr+qFHHmtwtaBmXorY1fQMFlNGoQLuHIJL/ippU5nn279+kzZHUy8H
-	hDe06thWEnOBUrAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793022590; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gw+DWrBcThdkD94LPR2Xt2VdzoiGn+S55/InX1ltsOA=;
-	b=bDDhCwYqko4Spqtn/GFssUjt3KhO6TLY0yoGN3uHLvrc10lcc/Rk3KBcvnyXc1lGnmF0zo
-	zDg1TSaOVRSSbo5n9O79NLsNzqbOJzWwuQSDeBEEweJwcmQus0uBSq0Lto6pPrTUXqt16p
-	3+UUpVcliemrFSyjci68XAtAkpCFH60=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793022590;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gw+DWrBcThdkD94LPR2Xt2VdzoiGn+S55/InX1ltsOA=;
-	b=4i+RWwt2clyt3QcGQr+qFHHmtwtaBmXorY1fQMFlNGoQLuHIJL/ippU5nn279+kzZHUy8H
-	hDe06thWEnOBUrAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E5F7C13408;
-	Mon, 26 Oct 2026 13:49:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vtLFI3ta32qIDgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 26 Oct 2026 13:49:47 +0000
-Date: Mon, 26 Oct 2026 13:49:46 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Eva Kurchatova <eva.kurchatova@virtuozzo.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 05/16] hugetlbfs: enforce F_SEAL_EXEC in setattr
-Message-ID: <at9aZtyyhrilX9iL@pedro-suse.tail5790ac.ts.net>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-5-703206d5fa0c@kernel.org>
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bsqsLudo;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 3hlrfagYKCBcF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3hlrfagYKCBcF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793022599;
+	b=0jMx6XLpqUG5RsrIM3KRkcKGFa8KybKGO0b2DYztizV+r3W5zfZmLt5hSST7l84RljB9M7
+	W3fLijiGXN/zG9rgRW5ZKC/iQfAT/UE00nndZv7P22ry2dX0lm66RR0C35IX5IY2uKCUhR
+	7pPDOnPsB1d8jH2FKrbjfeHfsrziXMc=
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3addd73e66bso1976072a91.2
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:49:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793022598; x=1793627398; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=c7my5rSEsn+U+kYhoFnNu7P7PE6jHz+gWSHK/wcS/Mk=;
+        b=bsqsLudo79561g97jiGy4bFhatle1qvMjlYHRgddddmNwHyzdMZ0bahW9escQv8OG/
+         GGXHGKT4/7GvlgvOLUl3cl78PxMVtGsHdM9b4v1Lm8r+a9Waa+OqGmZ9Msy1N3xgeGHi
+         CmD94QJ30kC2fqOJclicgfZs9ge6ZMkFTR8bGMDXzsLluVE+o6c4464EMOuZxQo2jJKS
+         4JHh9H3jC2YhrgvsbARaKaAS+HJCZY4OeIsSfkaYjP6MwdZTBfKmxhBCJdmkkXO1Owwv
+         Al1FlDNuvGTuWGJuQOtntrNnUew20RK17JS9EcElKbA+afDT6jjWpRSPz9DcFq0r3r7O
+         /X8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793022598; x=1793627398;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=c7my5rSEsn+U+kYhoFnNu7P7PE6jHz+gWSHK/wcS/Mk=;
+        b=V7ZV2wKfQCa6hazXdSw1qAyZmX/9MIWiv0WqT8Synw0L639+RjwTdKBVaYKm7i0Dtg
+         y2C4TwUW8GezPHrHSLVDsE6/uvE82QwBQv0JuU2eDn/PSX3voVRDPUQ2AszJbb2J9e6u
+         055uf9kGccO4XzPrlg6pN3csmKLDL5ZovnjefkTjX24LrbxFA0jQvXQy+HKL3FfMZr6P
+         EUKlW3tB6tZ1H24BaWDYV9kAYiXx3FKZk82u1zrll/5M6rOHDXCDoxZdnQXryxsX1dpN
+         ucNE263vN+uDlljuw9fp8KxTYz+FzC3GgDoobNKJPQNDfAvFy8v2s0OmN9gnKjkowMy/
+         RTGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw27+Xu1DN6B0kv9JvrlW3kra+0wc7Tnp3FwGMsHDsDPpjJ4cpIi0IM4AGZmYYKUVKH6MlOKih5EQ==@kvack.org
+X-Gm-Message-State: AFq9FYL3uEzkofGG2fBoyZHROEP5X4Sa8jonkWuAY5LY+0wyRlNjv2Uo
+	YxaR26uPUQ9rEY9qqdBs6D2crKFqO8Mg/twzEflL4TJuTNRJ+PCd8tG6vLGLL32PGKaFDpMTscy
+	SfDkzqg==
+X-Received: from pjbbu22.prod.google.com ([2002:a17:90a:ee56:b0:3ac:c43b:e322])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:564d:b0:3ac:7f4c:a690
+ with SMTP id 98e67ed59e1d1-3adeafb0449mr5178332a91.35.1793022598376; Mon, 26
+ Oct 2026 06:49:58 -0700 (PDT)
+Date: Mon, 26 Oct 2026 06:49:56 -0700
+In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026-fixes_shmem-v1-5-703206d5fa0c@kernel.org>
-X-Spam-Level: 
-X-Spam-Score: -11.80
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C14ED14000D
-X-Stat-Signature: ph4daizwj71ko79yrfm5gi6rkhh7xeap
+Mime-Version: 1.0
+References: <20260804120529.1730187-1-pbonzini@redhat.com>
+Message-ID: <at9ahKiYsVtH8kpU@google.com>
+Subject: Re: [PATCH v2 0/6] mm, drm: fix interaction of .pfn_mkwrite() with fixup_user_fault()
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Christian Koenig <christian.koenig@amd.com>, 
+	David Hildenbrand <david@kernel.org>, dri-devel@lists.freedesktop.org, 
+	Fei Li <fei1.li@intel.com>, Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, 
+	linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, 
+	Sergio Lopez <slp@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BCB50C0006
+X-Stat-Signature: odo96i5mxf6tokb9dzj7kq7h9g3dd4fp
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793022591-742814
-X-HE-Meta: U2FsdGVkX1+/2n95Gd5CaQIk96riDpb9suVmdHOJpBOV5dsxFVlugGxkYClWAO1T3uGJZOrCQqfuizDVGb6Tk1Ptxf3q56KOLrVeO+ndwVUx0Bayruvn8XnqYvXn8xPRrO5cfpSfMo+0Rkq89g8tLx+zYThBz7LieqsnI1vQVu/4kVO1mUY0ZJpH9XK122Ixk3ZXOdBU1S9pB+XozK8JrnYb/+Tka7cDqSQX2i0Qc0l3UXh98FNaek3apEajrihXj7GzkhPy3hFMCdk5KiKgyDJ4h3HxZxFeVNFZNBivh+G5rWzLyAqORHAAGJe5ens5XQqmBg4Tv4qR1ytVdQM9NaaR+XxH7H+MCMTpfaX2LcC3AsTMzFOpASh5Wfa94jfUr4iwkT8EB76IUJOFktZYrKig5BZ8WEw//K+diEUF9XOLt6zbfQLqXhHsFco6gEp6BwCJl/Sz0B9k+drswjG51A7vYEg8vIH3oiarizRGRd+WBoswfemedmxPISHjbArfHQJbvjubPEZe/GOXI3ZsQz0QZM4IciPmcDrcV8feh0oHAgA+ZiHGht6a1+JNTK7cUYhn93wvC5zK3dZJy/g8cC8c++rm47Ca3EgT4XJzC9hbmwB+XzFI2Q4uNEw2WhwbQtFEXhDXLhZCj6EAvTTW5aEkDh5U+6MJ1v5cFs6MV81OEN7aaMKwmnaRC4dCF2Wjr5ozZ6F1XIAjdYlmK0846SzwQ9IFnmsfDiHneQpzJjaZhf7uD9udG4M9zDoo1QX7usnHUMRKkn8MhaBumpPvOUQZ8tRwbDvJUBsFSsOf/QrZiJTF3mMe6LPMQAv+Nd2gdffqhhrYTtPooMLRWD5S4Bv+uGNM4qBCIsXpa1D/ShXRu9xl8yqj9RFEkql9N7idG65LgN08R5oT+UdWrEoesp4wnNe6jSJ8umvVMNSn96nGG1N0TlN3Qbc1w+H5fqcDWCCNyiaQg2qZyRO/yS0
- fc7f83Ne
- 0z+jqLAv6Gs9jvY/tofRfPl7jQNbOpeV8NdGTPs38RmXhqJumdc+ras6CZNzU/flNvQ7M+LhQXfgY2blz1+WbdqTUQ9SMZDixW5OR+7yamzPy0wy6vj3d5/Qkb6FuQOFUTBGwKfLQiM/DkiHs6Gg31sUoA7CEyJ8K3nAPHhntJB/L7HDdnCDFILL0fqdPkrfQjklB+cEMjuy5B53D5cU65bKhX2F3VHQOgwZYFWV0tol5xE9T5hy0NZaIFmA1GI5zXr2/7urA9E2LLkLvWaQHyDropFbD1zBNnrYQIYxWvjGZYxZZlMnQsARTanmazCXO5FlUEv1qhFDrFbnsJIxr4E3XTt6kFLFUeeG/6lFOnFb9ByUrWNqtcPse3sNkuL5V8Qhksq0krYH7nmNb5tUwYe3+biT6KXcHycPUs6ZYfkPyD8EBmCd+/J90F0KHrNMOad/5Ru6jipgAmk/i1qtB0bQj2z2hIbMXo5kU9U13K425YLahju4ocT3AEfPMXNlmj2gllQKPzg69QUGIAdfMm1ctLWRbZjw6NxTtzIyyClcwLRw=
+X-HE-Tag: 1793022599-173731
+X-HE-Meta: U2FsdGVkX18lpuwaaUgforYHy6h4NGHYoZ+0Rsk+6MamSpmSVNQ5LHEqDny3YVompchCweNF/ANglPQo0ZPXYTvUFFSOmAelTuqqZdRW+SsreaE7DqVtRrr8VTZB90h7xMnSWF0WqrpFRBrWq6tmdgPwgxnV8pTydp3GfDGh7pYRTZb/ByTirsyC6r0EXf+k73/tCL0+m7hnzdMcXxlzlMPi20wK6sqRf0xO9VkHzPhDIf+rYEW5DyAcCocmZwUIurL0/htkwXsrVmzWOvgpiiIt6jKxu+oI3kBhhcSuyt5sAbk8FjfjrQipQRBoqclpLhzh+MqMZkTfjPUVQmTPJASM2JqPmDTgSjayWokgp1Kk5Jx925PeOZLlKVHQMAFH9T3HS2fliUXez81Sm3YUIMdjCAef+61Vv/6874seVV74mHEMgJaklw2UuZlzV6iS5GgkShhCiAknWiLu3+K7Evcpq9v6eIpk+5kgunvEEdFfdCqCSvz5146JIxESNuWKudoQZPBhDQIMRFPpVrEmYWlfxaVa8woHehj1vbV/6aYvjEewNz6Lx8k1MYoVdfVipqQD11Gx+4YY+uuMFoBzQyjN/R15ruk27PTH/A7bOM2AgiJUj/gxn8iIvFqVzUPPY3YQYrRxuNYh1wvESLFs71X2Q9xK76ibJ34kFKfyUpm/1JQLfvnijfO4OD498wjJZR6Kb2gyWWH/JFEH029s2COVniJj5b8dErNqX5nGoKImoK2/6Y5lxcBpB++KRFQFoiW5anIgE8emoDKhzgv4k7inNklaZoqEEbmThxwDAeN2eoEKTIXvsodjAot6Yr0t7FvFeM9CSYgz5qb2EzOs0KlCivUFQKVwhys5UWLHS6/vxL2xH643nB3PY+YbfswvEg9C7OT7DUAK68437BizrZm9KaUZ5mEMROK+pS+/KMp+cqk/afpAm4tJiOe3TjvAlVeSdzbjNPxSRKc8yvz
+ Gmo46lDl
+ JUwefd2+gc5dRo3s93WzRaxdmGJ656yeXmav/Ed7jQNINTn07hHryFpV4CjaN5ORzdIOWPChtIXpAaMFil4EOB/gVCETQ2IvOoT/3wbDKaKoVaNmrlDWl1991G2F0gSfLzM+qmLS8pdAMLhaV+NAGxXw3ya28eYgDDryd4DKJ8CuBBPfe2NpRnarqNsJH7JARLLg/MEvVLPVbekvq1l+888lRP34ohqkUYRoQRTJtzrjE5uZnmvgQth5YETyy48f0lwfM/Vw4pKK4gZ78y0Tu9Ltp29FLt2QsKeJmWX1dm9FFOxUnOjgKNcPHNxpZMerOdKKtsXBNe1/lR0iHqJo8DWaN+2ut2Crf58wEoum68HNPYK6KzdPTLc50yaOTAJQ83+RJojO+C7hBd8MNKufndyW+xry0Ashms6Ao/raaK4jY40NhoJYLRA6+us1KTNpBlEbI8U4tN221NI+wiRFa6ycf7hJrWtuAr2uZUBRFzhbRobkw90Egld1RRdPgfpnvWkz4y34Tsppe82C6MDQTmRVBbyi5aFbGxlTKQeQ3VvRop+jTcYOcrRriL2eegUt8NXH+XScCLqDaK1peg5g/0WLAL9w2gVQARZNfxDoQCg46JZoeavSVsQieHs3vnxHr0JKGQaMM1jcf2LR/PkCmBWhRwu5VhqPibsv4imhAar5emqn7425KFvkck7uE4qmXlcK5lpSi9aqde/praaSHjZE+xQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,32 +116,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 10:40:38AM +0100, David Hildenbrand (Arm) wrote:
-> From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+On Tue, Aug 04, 2026, Paolo Bonzini wrote:
+> This "v2" combines three series that I have previously posted separately to gather
+> reviews and tests:
 > 
-> F_SEAL_EXEC is enforced by shmem_setattr(), but hugetlbfs_setattr() does
-> not check it. As a result, fchmod() can change the execute bits of a
-> sealed hugetlbfs memfd.
+> - kvm: apply VM_READ/VM_WRITE checks to all VMA types
+>   https://lore.kernel.org/kvm/20260731175834.1121005-1-pbonzini@redhat.com/
 > 
-> Use memfd_check_seals_mode() in hugetlbfs_setattr() to reject changes
-> to execute bits when F_SEAL_EXEC is set.
+> - mm: pull writability check to follow_pfnmap_start()
+>   https://lore.kernel.org/kvm/20260731160514.1101989-1-pbonzini@redhat.com/T/#u
 > 
-> This also fixes the memfd_test hugetlbfs SEAL-EXEC subtest, where
-> fchmod() incorrectly succeeded after applying F_SEAL_EXEC.
+> - mm, drm: ensure .fault() does not have to be followed by .pfn_mkwrite() for write faults
+>   https://lore.kernel.org/kvm/20260731164341.1109827-1-pbonzini@redhat.com/
 > 
-> LLM assistance was used to reuse the helper and revise the description.
+> All three, together, make it possible to write drivers that use .fault()
+> and .pfn_mkwrite() callbacks for VM_IO|VM_PFNMAP regions, and that also
+> interact correctly with users of fixup_user_fault().
 > 
-> Fixes: 6fd7353829ca ("mm/memfd: add F_SEAL_EXEC")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-> Link: https://patch.msgid.link/20260629180247.2343229-1-eva.kurchatova@virtuozzo.com
-> [ david: use common helper; fixup Fixes: ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> The problem is that if you define .pfn_mkwrite(), vma_set_page_prot()
+> clears the writable PTE bit in vma->vm_page_prot, at which point
+> the .fault() callback has no way to create a writable PTE.  Users of
+> fixup_user_fault() will then see a read-only PTE and have no clue that
+> the page needs a *second* fault to reach its final status.
+> 
+> fixup_user_fault() itself does not have a good way to notice this, because
+> vma->vm_page_prot is an opaque pgprot_t, so the fix needs to be somewhere
+> else.  Other preexisting functions, namely vmf_insert_page_mkwrite()
+> as well as vmf_insert_pfn_pmd(), suggest that this has to be the driver.
+> In fact, of the five vm_ops that use .pfn_mkwrite() together with .fault(),
+> three are in file systems and are not buggy: all of them ultimately end
+> up in dax_fault_iter(), which uses vmf_insert_page_mkwrite() to correctly
+> insert the PTE.
+> 
+> The two problematic implementations instead are both in drm code.  One, in
+> drm_gem_shmem_helper, was reported as a KVM regression; the other, in
+> vmwgfx, was found by inspection of .pfn_mkwrite() implementors.
+> Both of these use pfn-mapped regions, but there is nothing like a
+> vmf_insert_pfn_mkwrite() function that they could use; the first part of
+> this series thus adjusts mm.h to provide two new functions for this
+> usecase---vmf_insert_pfn_prot_mkwrite() and vmf_insert_pfn_mkwrite()---and
+> then teaches drm's two users of .pfn_mkwrite() to call them.
+> 
+> This however leaves another case buggy where fixup_user_fault() is preceded
+> by follow_pfnmap_start().  Most callers of follow_pfnmap_start(), seeing
+> it return 0 for a PFN that is mapped read-only, would not attempt to
+> call fixup_user_fault() on it, and thus the PTE would not be upgraded
+> to writable.
+> 
+> This is arguably a bug in... almost all the callers of follow_pfnmap_start(),
+> but fixing it is much better achieved with a small improvement to the API;
+> if follow_pfnmap_start() is told by the caller that it needs the memory
+> for a write, most callers are simplified because they were doing such a check
+> anyway and now just see -EFAULT.  They then proceed to call fixup_user_fault()
+> and everyone is happy.  This is done in patch 5.
+> 
+> To sum up:
+> 
+> - patches 1-3 introduce the new MM API, and use it in the DRM .fault()
+>   callbacks to install writable PTEs in response to write faults
+> 
+> - patch 4 is a preparatory fix in KVM, eliminating inconsistencies in the
+>   handling of !VM_READ and !VM_WRITE VMAs; these would return different
+>   error codes for a !VM_WRITE VMA depending on whether the PTE happens
+>   to be mapped (but with wrong permissions).  This needs to be here
+>   because the next patch would introduce even more inconsistencies.
+>   
+> - patch 5 moves the check for writable PTEs from follow_pfnmap_start()'s
+>   callers to the function itself
+> 
+> - finally, patch 6 is a KVM addendum that will have to wait until
+>   the next merge window; it removes yet another inconsistency in
+>   KVM's handling of !VM_WRITE but is technically userspace-visible,
+>   and therefore it shouldn't be included in stable kernel releases
+>   unlike the rest.
 
-Similarly:
-
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-
--- 
-Pedro
+What happened to this series?  It seemed liked something semi-urgent, but AFAICT
+it got silently dropped?
 
