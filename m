@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E6560A3808
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7293F60A381E
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Q7RXZKGp
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mZByVa8g
 Received: by kanga.kvack.org (Postfix)
-	id 72B336B05B4; Mon, 26 Oct 2026 17:52:53 -0400 (EDT)
+	id 57D476B05B5; Mon, 26 Oct 2026 17:52:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D9986B05B5; Mon, 26 Oct 2026 17:52:53 -0400 (EDT)
+	id 52E646B05B6; Mon, 26 Oct 2026 17:52:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 507E46B05B6; Mon, 26 Oct 2026 17:52:53 -0400 (EDT)
+	id 4443F6B05B7; Mon, 26 Oct 2026 17:52:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A9D96B05B4
+	by kanga.kvack.org (Postfix) with ESMTP id 008AD6B05B5
 	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:52:53 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 93D0316063D
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:52 +0000 (UTC)
-X-FDA: 85366127784.22.449360A
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DB843140005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q7RXZKGp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of 3scvfagoKCCYLVJQWIJVQPIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jthoughton.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3scvfagoKCCYLVJQWIJVQPIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jthoughton.bounces.google.com
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 74A251C41DE
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:53 +0000 (UTC)
+X-FDA: 85366127826.16.5234991
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B1B7D1C0006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mZByVa8g;
+	spf=pass (imf18.hostedemail.com: domain of 3ssvfagoKCCcMWKRXJKWRQJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jthoughton.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3ssvfagoKCCcMWKRXJKWRQJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793051571;
+	b=2fEHS3paMk+Lh9l6TDgIyqEWxvp5YmhntqApaWlVgVIP95gHJgta+g59FCG0NVMNSjeez5
+	HSn1/XcHDsSJKPY8RzcpYjNTuw9R1u39JKwKj+VsZBTLFM30Wmer2fFSSpGWZzHr06nDx1
+	FRuuuMZ5Z8izt3ERuCIDXERMI5mz64Y=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mZByVa8g;
+	spf=pass (imf18.hostedemail.com: domain of 3ssvfagoKCCcMWKRXJKWRQJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jthoughton.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3ssvfagoKCCcMWKRXJKWRQJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793051570;
+	s=arc-20220608; t=1793051571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/8L34Uc9Xo1d4oJ1WUUvtNMd/yh9NNapi89sPDAfm6Y=;
-	b=1H8dcujOnMwnW0WPLYw2zqSHjz9jKWYl/n5HtimY/RWoBAOsIq7GBIr9Wfljd9+c0w6qCA
-	/n38JzCqLTiyCiiOzg9eLGjia6QpS2yLQA64bc5KNk8AHD0wubzvwLpEMqlY0pdhVv+9eX
-	uPeiGD5phTFJeFhIJG1PfotLNrow5Is=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q7RXZKGp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of 3scvfagoKCCYLVJQWIJVQPIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jthoughton.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3scvfagoKCCYLVJQWIJVQPIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jthoughton.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793051570;
-	b=yAyU3xHUzMow4AHsJXWBxlXFOPUXCi0Y2SYMSoy5+ui7UfMNj120hgmFVirQF8vLW/AJXU
-	sMYs3zl4KpRCa5GqMYRhcHpZ6lkjNM1/WavELjjR5V8fVp1U5JAHlsool6ZASiHaCEXuqY
-	fb9l+3wODMenox9yOeR5eCOOiJDz5X4=
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ad840053c7so3402232a91.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:52:50 -0700 (PDT)
+	bh=oogWXdI71uSApWoisQtM4clnwhLv0Vs2bmtqChsuYec=;
+	b=1QTUW3fq6x17+/XMtkIOZfdQuQo+/QlfnrwYBnA5iCP1uy0BGZ5SXvbn1x4F70hKYg+z+W
+	W3xsuWmk0v49RTnyGZZyiNNMtjy4soXV+hWzJDjiWOJWRGLLJvXaqscvK5LV0iufCi9lh8
+	DTs8FZzDJ5QTicCsPbPUIdbKIIkV8Wg=
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd3b9e70f88so4489079a12.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:52:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1793051570; x=1793656370; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/8L34Uc9Xo1d4oJ1WUUvtNMd/yh9NNapi89sPDAfm6Y=;
-        b=Q7RXZKGp6GBdNRxz/8XKgJ+xQn7bxDSFTJT72zAF2gkiweExfZvhWlWoCj8QJOFTSK
-         MiJh+un158M/o5kQ46V/wNCoKNs8NX5zKZp1EGtjcvokiOJLh9hQiSVBAf5sKFvKNUXo
-         rL6N5TPm1iY+QD1T62Vy7dm81xefcke3RVQsVIKytI967qrMs6ZdbKWmKx0TVD24eCEH
-         gLbL6LFmed1XgR1ngj9dyB+GDrBFsyyu+fmvQcOc9FYQFJMOd3Z8GCfOldPR1LHdfAnU
-         A7r/gmPWaEjg5+lXcb/m9tc5LQ7FaS+p7nbDnw9nyctz4ltHzFv44SZt9dbuisKrRAKz
-         c5GQ==
+        bh=oogWXdI71uSApWoisQtM4clnwhLv0Vs2bmtqChsuYec=;
+        b=mZByVa8gOwOqd9QRllpLsziXL7QkV8qNP+2pji1R5W7nBOCbSrc74xTHnJ9k0GaRx/
+         ygFKv+wirwpNZSDuceFp6+n6N1OHHGLhWKOnPWBbtHhTTjMFrEunoInjnUR4X5EBLCFn
+         UcI7cWY2AuAO3Ctba36rAs/vqhAjYObLBwba+/5ut1CLkkLqYcESRq77MwTXVLNOiPn/
+         00lQWr4qumuiEQ3VFMKVqFHTr2nA1N4Cm69HqY2ciQ4AIOFHRUnsqmeck4PFgfyGDjwc
+         MB9rLIDhYoS44LKY+hk+d+uS2OexD9LQU1bj8+scS7A/3PcXQ7Is/P37dAzzsfmJIQxJ
+         GPIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1793051570; x=1793656370;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/8L34Uc9Xo1d4oJ1WUUvtNMd/yh9NNapi89sPDAfm6Y=;
-        b=YVFuZxOP2mIYC+OMGRvrUKzIjWcErgGtwt7+gSNaxRlsi0S6NsW7Bp5gxTXIyWroDg
-         xYP3QJZfHlnCBNO8aDS3nhfN7RiEF9N2NR8hKITqkW7KEvCZxZpVTmsG6aTCLQD8ClZj
-         fmcqR1ofuKdiRrAo0tuoJ3rCxRurCmZ5ROomUP7u1aWiL38bMyqktDd9b4JR4sRRHZyT
-         JFBGcTTjF7jWOB99KWM0TQMhXhCfHbmNZgpvX5vrpmk93XhhQKKPcKy0eNxpRoBMLw34
-         w18kxSqpn5q20UYrL0Uj6hNz7LTplUTM7Ale1L7WlPAVMaBcyPJKVR1LCfMB5bnHxQBT
-         gFFw==
-X-Forwarded-Encrypted: i=1; AKwUvBz1l7Rke3JI8DqOMxUURi/GnR7ozGwsBK86Cd334dBe08OwTqGWurAOBfJSY0SYxe7ZEI3kOT9/GA==@kvack.org
-X-Gm-Message-State: AFq9FYKnya5b+6+g7QMEipyz6p9Okz6hU4JuHqvGvMXZLPiaxpNSCJsH
-	mPPro824HWG1pDbNoPWbkO9wvWMjwBM1Gj5qJJfveVx968ykpACvUq6R4Xaj0Toh9wYuK2yIj0Y
-	X7zjfLolVJKD+pABHUoWUBA==
-X-Received: from pjbme4.prod.google.com ([2002:a17:90b:17c4:b0:3ae:349e:2bcd])
+        bh=oogWXdI71uSApWoisQtM4clnwhLv0Vs2bmtqChsuYec=;
+        b=nOens4PrW/60Ac3/gFNr72PeKGikOWVCnknqzbbojCtJ6e3qldvH+rKTHz71EeTXGB
+         vsgnM3SNYUvzAIAwu+1UM+bwrh3ve+muveWruJ2MQ+pqfp1WAS2W6MDuL7d3w2CILrN9
+         IBuiEkb53zTGFKWjlNosbHf92Hh3oWCPiSRBmrJiyO+ZPLXHzV5DQQ9qaoIN2wNeV3I0
+         YG0O/B/c2uDGqa/T4wtl34oL1eU9voHk3wC/+/J0+z6SCrfJoNPulcieSCeNlm9Ma9mf
+         F4gAXqEKp4stVIUl5+EB2f9t3jp4mUMnShs9hk09GoNGErl63JRtSBY43zp3FB5Lqyq2
+         rjZg==
+X-Forwarded-Encrypted: i=1; AKwUvBz0JrZtP51WxtSTRRMbEjxu88TZrA6oXqAvw1HxXMor4FjCS+wrB7atGjAN/urhDB4yRoECPHNY6w==@kvack.org
+X-Gm-Message-State: AFq9FYIOC1GIQx46+08U8iSNHrzmz9RFp5lYLekTHpfxeI97wwOJNo2K
+	nNYf1at6Lxmu/uyYmoggTmjcah88No+LMb4w06H1GNOkMpHeAGutkMzhnltvaP4m0G+c1sNpEor
+	ToS3wAX0dEX1qJ4rLWisb0Q==
+X-Received: from pjbml16.prod.google.com ([2002:a17:90b:3610:b0:3ab:54fb:2a3d])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:35cc:b0:3ad:1b31:92d8 with SMTP id 98e67ed59e1d1-3adeb16ecffmr5865801a91.60.1793051569572;
- Mon, 26 Oct 2026 14:52:49 -0700 (PDT)
-Date: Mon, 26 Oct 2026 21:52:18 +0000
+ 2002:a17:90b:56ce:b0:3a8:9d0d:ca50 with SMTP id 98e67ed59e1d1-3adeaae618emr6704272a91.10.1793051570356;
+ Mon, 26 Oct 2026 14:52:50 -0700 (PDT)
+Date: Mon, 26 Oct 2026 21:52:19 +0000
 In-Reply-To: <20261026215226.3713941-1-jthoughton@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261026215226.3713941-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261026215226.3713941-3-jthoughton@google.com>
-Subject: [RFC PATCH 02/10] btrfs: Don't copy encoded read data to user memory
- when canceled
+Message-ID: <20261026215226.3713941-4-jthoughton@google.com>
+Subject: [RFC PATCH 03/10] bpf: Fail sleepable user copy helpers when
+ current->mm is NULL
 From: James Houghton <jthoughton@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>
 Cc: Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>, 
@@ -109,19 +109,19 @@ Cc: Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Ke
 	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DB843140005
-X-Stat-Signature: 8qkhcawofs5sn3eb8dcwge5jp1jf96ti
+X-Stat-Signature: ba8ihknmpis7ijmwgy69j3wo8fedguia
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B1B7D1C0006
 X-Rspam-User: 
-X-HE-Tag: 1793051570-988224
-X-HE-Meta: U2FsdGVkX18OFGIfTnY87sZbMuXS5LzA/xdui2EaOyowf4/LEYBFXfD75/+Nsc0GMXh4LDbSWk8zUle5NoGeAZvyEvMA30zt0eh+Xv0AOMznj4q9Lab5EseRp7+Gm0yCI26WMqiyccr4h6E1Gwl1ryCN0jvZPJeajjEDPAlK7v79tyxMyUunP5svy6j9LiM4YTqw7RBiUYQHq4enty9WPWvC4hKtxQrKZWe3cJWz4jiwm1K3CdlefSxZstw54VWVp0aiaw7uFSkD/946VmImY1RbeelLzn8qeLOV8p5/rkVt341Vxjs7yCF2xyPIhUWHfzmA9p+poEjmpJGXbIyrjbtXuog7CDuuO1M7ZDCqrYL+kW7BU8shXq1ffXM5hCsupb/FyWCwVulhD1iLh4SOD/LP9S7h0xof/1BTsr5QJ3voeatf6zfgUBDcm6wWdda3EG6n2Lun7RTn3YEZjGaNQgIVUgav7nKa2f8ZygArazFxNJV6RBQNaj2CHj9/1uaYoQBVRcsQDO/KGH6kymUaf3yMRUri5rfbZ+AwVyvxfpH59uZFaG44mD4+qUoGLLK9Qcp4MegeootVPkWmykReEbRevWAN0SgwJqd+v8xWxei/F8IMfDWG49UjYsgna9ZSgGwdzXQrbaQUbWMJu44ABVqohA682urUslxkCivf0kKDYGiEj8lkQOlvR63fFJIFnZJc23BnfmMx81H9tkxHmodqvPqqmxp3WMLQjxwR+OIYXUyFZEG2nMbi+YyyltDA1pUnVeh1p+aUuzOl7PxPrjKd68vbFuJvRBVU86Q6jZldaeG7XmNlBNMf+rGmG/RaNoSrH6jd+r7fFS/GL5LxWqVVjbp8fS6SdeQ5x4r4Ecf7e+9tQD06c/vY85htJ9qYE9FzwOWW+YqN9H+wD3gQQIqB209XCIttoYKmuNl9yKpnXogpoMFMYKb+rVWXsXM+q1YY9OM94jVCJm2VhKS
- Ih23CHN2
- cVgnwjI5SL6qdg6nUxyiQL43MS0G1UeAtvGT4HARU5NQrgJ6sMhJ4wxielmFU3dTdKnL86uc+Ha3duUWw1CiVZhDVReOzkD1Q5zpxBYMR9phXm2Umygvmvduktmad69K+e6LyPBun0Vqbo2LG55QwIkU1apVXsoVzrV7tX4q55oEz2Csqvp0VlJDBWX7IFWTTnqO4ArIG+bNZYOqhzDwFKdCv0mP/D+UCeEAnQNL5FRGQf2f1+p+FK5FJwF9CQvR6L6Egx9mSC3HqqvtNdib0Rkm74j6dXn1pi1iQPYjkHmt2bwr7aPKifrUH+M9/SVq3CEZbHWiE1KdFPBmKhfMQQ9URdEJaIO2m1dKpFeBECrpHp7XzcDCv/NvydC6rirnfRV22om5I8BbxKObEvoEJBUEYT62Jo4UBkrd603pUpJfyXpUGTVC79l+L45XbWMG3HuTuuE2Vrcrnj3v2bCKVRCCqIxELT41kJxNoJK1Rp97s8ClnkVWtJYchjvq4PbCEml9f8U7Wnv2DNodZPo088U+/bhNUwgBAVjEdQPBUrfw0olLQ8PxF1He7Xz3T7qKwIA3p418JmfZxoM66iYtHwwQGPqULZkzNJeQT5L4OkGm2NRrmbHopVUB7yiaO3bAa1DYGnOekzyj9tLehB4K8V8ZcSA==
+X-HE-Tag: 1793051571-461534
+X-HE-Meta: U2FsdGVkX18nC3XFTbFeeiSP2g0sUBqXWBr2YAxy9htN9NBibcwRYdQI4mrQ+La9xBcZaOR4HTMF10UhdA2KwU1nSfIgd+O4c+j6G68waneJRhAqu4QI0swCGekcmZL5JKBAgLURm9X5LxM9Vp/HfemwdqXMVHX8hOYn1zMlimMYWm90FKhsT4p7gAddwk3B00XxfhqMNFNNr4xy/eBCUk1JFWNtelocSi1mzbSAConSwKzxTbFGq6BdU7GCeMtzsTC1uDzVSesUrGgwsWFDnLdBPQa6nEkv7GZrvgt0NK3z2jHyIdI3TvpbB3FJJvwJQsIKQLFDfWduMHhr5g+zUopVhsiB2OfOR7yLWy74NfG2Sdu35uu1j9FCGMYp+IWYBHKkcdpUl+kR+g6H67C3ZpPklUdcCs2YdKWHU8z5hE7TdTFCc3Pror4U5Alx3bMBaLKKTyOm2Sb3cwi6u5bh6GHxr2jy63xTi0uCmflsBrM49kjKcwjM5bProIAzcncVUtLyDzHyAEepJyj2WM0URTxUJ1Uqv0XlG8QFlAV2qNY4PMWMyArVPv8d9Lcim9HxgPi1YvzdCnTPAvrI4gju32cWffOD3q+tA3xiKAk+9S+TjzaCbNq2HvXdlyp8ArbiC9U1+T4nQqL/u7Ai3MEOJOYJc3qD7JYS3uBAQkAQwRWSFniq8kabg6ygyjA5rSTY5yARnG/KlxQOmyuzJbmI30I3AbIqCuIXsWVqcB7PvAysatSIBTvi1eV6zIwE3YRnhfe05LoUO4xKvYHULGSyTWO/RT3Tzs09ot2PQyx/dY7hnbQchh9t+P6CX3xxrPVMUmcIzfRUBSYPql8I1C+8eb3dGMOIre5xouyrp9u9bfwIUwBKCPo1Elv+h7E7sQJHJS87YNa6wcHxyRG0AArx9bEykw9ECTp+bC70EfCex7rKzFUC7ANt+KjQYgpAKi7ybrcMaXkBfsDNxFlsDow
+ gGO5mGxQ
+ dHW52fWnZMRP2BkpXpTI4Cubk5pgG6p+9pdolXwaOhbbMpugPlMZf8oXUgcGgJoRlCH25PBE1LYFtmQBDFEp0FJbMsolDu+bwQjvO42HS2TZVRSavvIxIqhy8HY1BCcU/1I0goMAGT60fGKN6Y3kZWn0qvjI+3XUzTVan8/Wf2IF2xssiHstfbx82GumZeL/eCw8Jkn8E8DibrC6NNE1uPKXrGQROHlgirSmNn1Bb0Y6QPLiACi9AsIno0mozqJ7wyRTaVbfm5w+7q2ur9p8O2X7K7CtXdLqrrRK1vZh+8njU7ogi3jWud6LNGdv1TukvidtaYftvs7wXQY4xDG3QXL2HlXuuZkUvBB9cV7s5cQAigMv2nbSTadvL359l16zwxbiiZISp/vRwhXMbpFfV5fgNKobCBJU0+2U9lHeleM3ImFeqe+y0hz5BzATUNCpyhF4UClPxVEgf2KryYX78fnZccKvlCNtCcdM8+xGnO4pb436lq+7zgtKyaRyy3FIYhP0z7Ye8KEuSsnYbw+Vc9ESAIkVO4dwrDZQQdZg3HOoW2ahess5mzpg8xV+fMSosIytPGJeSeDHj9SgxJi3b89QIKAXtcw93SnvSkoEbgpxbYi9F7NgVJjYFlTDIrE1RwcmXSwKPHcX+xtKlEjO7znYzeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,48 +130,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-btrfs_uring_read_finished() copies the data of an io_uring encoded read
-to the submitter's buffers with copy_page_to_iter(). It runs as io_uring
-task work, but io_uring may also run it with tw.cancel set from other
-contexts when the submitting task can't run it: from a kworker when the
-submitting task has exited (io_tctx_fallback_work()), or from
-io_cancel_local_task_work() when a DEFER_TASKRUN ring is torn down.
+Sleepable BPF programs can run on behalf of a kernel thread, or of a
+task that has already gone through exit_mm(). For example, bpf_wq
+callbacks always run from a kworker, bpf_task_work callbacks queued
+late enough run from exit_task_work(), and lsm.s or fentry.s programs
+may be attached to functions called during exit_files(),
+exit_task_work() or from kernel threads (e.g. security_file_release()
+from a kworker running delayed_fput()).
 
-In a kworker, current->mm is NULL, and the copy does not reliably fail:
-the user half of the address space belongs to whatever mm happens to be
-lazily loaded, if any, so the data may be written into an unrelated
-process.
+In such contexts, bpf_copy_from_user(), bpf_copy_from_user_str() and
+bpf_copy_from_user{,_str}_dynptr() (when reading from the current task)
+call copy_from_user() or strncpy_from_user() without an mm. That access
+does not reliably fail: the user half of the address space belongs to
+whatever mm happens to be lazily loaded, if any, so the program may read
+another task's memory.
 
-Don't copy the data when the task work is canceled, and complete the
-command with -ECANCELED.
+As there is no user memory to read from in this case, fail with -EFAULT
+without attempting the access.
 
-Fixes: 34310c442e17 ("btrfs: add io_uring command for encoded reads (ENCODED_READ ioctl)")
+Fixes: 07be4c4a3e7a ("bpf: Add bpf_copy_from_user() helper.")
+Fixes: 65ab5ac4df01 ("bpf: Add bpf_copy_from_user_str kfunc")
+Fixes: a498ee7576de ("bpf: Implement dynptr copy kfuncs")
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- fs/btrfs/ioctl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Tested with a small bpf_wq reproducer: a SEC("syscall") program arms a
+bpf_wq whose callback (which runs in a kworker) calls
+bpf_copy_from_user() on an address in the loader. With the uaccess check
+from later in this series but without this patch, that triggers the new
+WARN from bpf_copy_from_user(); with this patch, the helper returns
+-EFAULT without warning. I can turn this into a selftest under
+tools/testing/selftests/bpf if that's useful.
+---
+ kernel/bpf/helpers.c     | 11 +++++++++--
+ kernel/trace/bpf_trace.c |  4 ++++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index f3e2afe221be..d9044fbd9547 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -4609,6 +4609,16 @@ static void btrfs_uring_read_finished(struct io_tw_req tw_req, io_tw_token_t tw)
- 		goto out;
- 	}
- 
-+	/*
-+	 * If the request is being canceled, e.g. because the submitting task
-+	 * has exited, this may run from a kworker or in a different task, so
-+	 * don't copy the data to the submitter's buffers.
-+	 */
-+	if (unlikely(tw.cancel)) {
-+		ret = -ECANCELED;
-+		goto out;
-+	}
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 712dca5a2c5b..c4aa8bcaf2bd 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -659,7 +659,11 @@ const struct bpf_func_proto bpf_event_output_data_proto =  {
+ BPF_CALL_3(bpf_copy_from_user, void *, dst, u32, size,
+ 	   const void __user *, user_ptr)
+ {
+-	int ret = copy_from_user(dst, user_ptr, size);
++	int ret = -EFAULT;
 +
- 	if (priv->compressed) {
- 		index = 0;
- 		page_offset = 0;
++	/* Sleepable programs may run without an mm, e.g. on kernel threads. */
++	if (likely(current->mm))
++		ret = copy_from_user(dst, user_ptr, size);
+ 
+ 	if (unlikely(ret)) {
+ 		memset(dst, 0, size);
+@@ -3642,7 +3646,10 @@ __bpf_kfunc int bpf_copy_from_user_str(void *dst, u32 dst__sz, const void __user
+ 	if (unlikely(!dst__sz))
+ 		return 0;
+ 
+-	ret = strncpy_from_user(dst, unsafe_ptr__ign, dst__sz - 1);
++	if (unlikely(!current->mm))
++		ret = -EFAULT;
++	else
++		ret = strncpy_from_user(dst, unsafe_ptr__ign, dst__sz - 1);
+ 	if (ret < 0) {
+ 		if (flags & BPF_F_PAD_ZEROS)
+ 			memset((char *)dst, 0, dst__sz);
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 88c3b5b513ab..793fb3dce5f1 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3556,6 +3556,8 @@ static __always_inline int copy_user_data_sleepable(void *dst, const void *unsaf
+ 	int ret;
+ 
+ 	if (!tsk) { /* Read from the current task */
++		if (unlikely(!current->mm))
++			return -EFAULT;
+ 		ret = copy_from_user(dst, (const void __user *)unsafe_src, size);
+ 		if (ret)
+ 			return -EFAULT;
+@@ -3590,6 +3592,8 @@ static __always_inline int copy_user_str_sleepable(void *dst, const void *unsafe
+ 
+ 	if (tsk) {
+ 		ret = copy_remote_vm_str(tsk, (unsigned long)unsafe_src, dst, size, 0);
++	} else if (unlikely(!current->mm)) {
++		ret = -EFAULT;
+ 	} else {
+ 		ret = strncpy_from_user(dst, (const void __user *)unsafe_src, size - 1);
+ 		/* strncpy_from_user does not guarantee NUL termination */
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
