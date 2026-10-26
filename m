@@ -1,100 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20718606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 07:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A058606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 08:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MzBYhwda
 Received: by kanga.kvack.org (Postfix)
-	id 23DF56B05B0; Mon, 26 Oct 2026 03:47:22 -0400 (EDT)
+	id A23076B05B1; Mon, 26 Oct 2026 04:02:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EE936B05B1; Mon, 26 Oct 2026 03:47:22 -0400 (EDT)
+	id 9FA576B05B2; Mon, 26 Oct 2026 04:02:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DDAE6B05B2; Mon, 26 Oct 2026 03:47:22 -0400 (EDT)
+	id 937946B05B3; Mon, 26 Oct 2026 04:02:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DEEBB6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 03:47:21 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 89F7FA8269
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 07:47:21 +0000 (UTC)
-X-FDA: 85363997082.28.B261431
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 443D980005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 07:47:16 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 66DA26B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 04:02:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F2F2B1A0674
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:02:38 +0000 (UTC)
+X-FDA: 85364035596.29.7D29AC1
+Received: from mta0.migadu.com (out-70.mta0.migadu.com [91.218.175.70])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CD55C140003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:02:36 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MzBYhwda;
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793001757;
+	b=QU1c27bGtJSnQ3P2PcPaPw5phBsOZ8hU3vQa2zR/Xpap06w+g0HcG0U9m1/7LM6Hua2j7C
+	KfvGQithprlz5+zMwFGT6VK2UjYD5475c7Jm0qjgvhNcMDWQv/obDrUj8mASnpWhVpcjq9
+	HP6JQhd3Myzx0gZ9Js8umfEZKCcdrhQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MzBYhwda;
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793000839;
+	s=arc-20220608; t=1793001757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=efvClWXmzSCJ2hWGmB2r4EDae9BDwVMUS1T+/Zenuoc=;
-	b=5uMZu/Qm3UJ+XKXo6VYHvESdTC9sb0649mIt9X11OgLGnaAFLYQuVnki31fOL9rxEaPbD9
-	K+smHgt8XksDSMTGJDmZ/zrcJyGyO4BN1dOQKqocOTjk0Naqum5V/u/vZaK+3q8qC0Rw7a
-	i7sW++DAbAWQR0WW2dTa/itSGvgocvk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793000839;
-	b=DYh7tRcgsw+9eh6z99GIkT6IghP21UkN7IWzPvj1N2rlmC05JEC/pJIt0El5aN6+3hfG45
-	aQ27UaZI+yizrz3H9HLHR+xQJNbf0WNeChiAvS9lQakK52SIgmdRQW89+lIBq/TxUedhFQ
-	ZDYoKUD7vG1mLVXNJicFprolQuO81rI=
-X-UUID: 6fbdeb0cd11111f19a56ed5b684f684d-20261026
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:aa9a0a8f-2a65-4209-83bf-e5d80d96e8ee,IP:10,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-INFO: VERSION:1.3.19,REQID:aa9a0a8f-2a65-4209-83bf-e5d80d96e8ee,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:7db8b62,CLOUDID:4a10ed235e5d1ca5ec8e33e3e9b6f124,BulkI
-	D:261024181021U0XYGX9T,BulkQuantity:4,SF:17|19|64|66|78|80|81|82|83|102|12
-	7|841|865|898,TC:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil
-	,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
-	R:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6fbdeb0cd11111f19a56ed5b684f684d-20261026
-X-User: lienze@kylinos.cn
-Received: from [192.168.111.179] [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 654595180; Mon, 26 Oct 2026 15:47:04 +0800
-Message-ID: <dd64df01-da75-483e-92f1-8a19a995f610@kylinos.cn>
-Date: Mon, 26 Oct 2026 15:47:01 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=s7UpNzJhxi6pbxSVCU4gh2Lq8z17O8RRANPyNHLrRsA=;
+	b=izBoASdH608tH6fieGPnpFGT5PpJgfDAdSJjrTunDKF5TaC/FJUx0lTQWnXar7KdVx/aZM
+	EQRPr0e4FRG6zip5CwK/BQni9p0CltPPai3HlmtHwi4pPPzCZEfEaesi1ZOzSBvGOVUZOr
+	XujBzBFPvBk4OZMD8fRNCRe17eieygE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=L2pE27MmJcqFI/acr+I6vj36nyWahlUmHNuT0rwtvaI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793001752; v=1; x=1793606552;
+ b=MzBYhwdazgqKxbT8ZAb4m6s2G9C1kFBWt1vRGp06s/GhtBMAiCv9s4PJjX9DLM/dGZ1KSfnU
+ MtsBTVSdIDgeZmorvRomIHQop5G+IWdl8irPeO6s39z/0EJg/nEcuWxp05puVXVEitr6rj7bMYc
+ 3bu5yn2Z8lVWzX93zxJzCr4g=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 57ab905e822cd4de;
+	Mon, 26 Oct 2026 08:02:31 +0000
+X-Mizu-Trace-ID: 57ab905e822cd4de
+X-Migadu-Flow: FLOW_OUT
+From: Hao Ge <hao.ge@linux.dev>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Hao Ge <hao.ge@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dev Jain <dev.jain@arm.com>
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org
+Subject: [PATCH v3 00/10] mm/vmalloc: fix up vmap error handling
+Date: Mon, 26 Oct 2026 16:03:19 +0800
+Message-Id: <20261026080329.140244-1-hao.ge@linux.dev>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: hugetlbpage.rst: clarify HugePages_Total in
- hugetlbpage.rst
-To: Daniel Pereira <danielmaraboo@gmail.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- akpm@linux-foundation.org, corbet@lwn.net, linux-mm@kvack.org,
- linux-doc@vger.kernel.org
-References: <20261023100859.70744-1-lienze@kylinos.cn>
- <1792998249167036.77.seg@mailgw.kylinos.cn>
-Content-Language: en-US
-From: Enze Li <lienze@kylinos.cn>
-In-Reply-To: <1792998249167036.77.seg@mailgw.kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 443D980005
-X-Stat-Signature: 99dsxhmiz53jhmdw64rnezns7hpce31p
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793000836-477322
-X-HE-Meta: U2FsdGVkX1/muySJ428ByuwBYy9UK0xmJI/TwEEIMyChdMcPbTKgw7sU9L2DOo4TywZnNrnfo+Tg7Usd45IcuQ11UVnOnnMGctyfjSsQ++T4ZjkJ/Vm4eLm8jWaO8BAywQUjNXd4NX6cbh96evXaBz36vT1whTdNizp0+hJycqIuTfX+IRz8M+Dli0jwT8s6YUnU/HnDrkGUFoo25US6YFcwyXtGhBKDxmoGIzalSHABMJ+gpgR1M3cVDwjp4wX6FxGFhiso7tqz10Vw4JL1IRb8bkvVxmzHRu1HdL9yvCjy3LLGmmrKKR6sI1q3UxpZ4bmL/zeSu6kkrcMCdoN3aRAY+AdHgXq7cI9OLlrgcdVGG9O4vdT7QeT774sk+0FCtI9AXe/zxCa0DGW3iFkIQvQprliJoXZEqaKA8KlulwVGO3XV5/GS8mFNIFsQI0rOAOJzmcrOIlzu/fEuLD+9JNSZC/Gt+XtypKjC/oHSJsd4e23z3lts5IxAYcCEuXaCYHxk5PovDjtfJMxDmkPxvYoKp44408O6QdSGCBX6dJZ28N/qSopweQnKWlALtuHC0sGZzYs/5M8nVH1f3ed/uXGkTZZ3YsT9L0BP0arBF8Qw3CN+Au7Ac+CN9TK6sZNH0umfOBsOOaB2VbcXOb0OBPaFyHFJcEzs/gGfrWeJpIEDqgp6dtw73NjtJp2bT17zzRTrPj579O53sd0RxL0hRWUCn7L+oyeZLS3FaaXVuaI7DVZu2z3106kR5yemkmVGO0Q6ujEB2PjrhzPqNatW9vBphZs1iFyqsty13tG/b5286XvUwPU+nxF7BskoSQbKFwUExYMS9FPYaLodIYFYAo5GXa+aM7RmSJfiSKgMRNfHzsgQs2GFYidX/7C3Ml+mjXRg7P5FxLYxvHCiGStuRSWoag6y6UNRcJkpBAaEAOI3tjSahpKRzxxtCGwfuAtnq7gxXhsHT0h7COsaGP5
- /3teQPWS
- lRq+4yKVQ0rlh+1b/od1+le/xoyDfux3iEskmbfMCAi3R4MzAzzqHlEdJfiLFlJGnALsw6h/pkbkcvWqX2gXLtPtwWjw/lppquUbcJHYIeN/p25+IZNCmTEPf3KG/C7+P2QxT
+X-Rspamd-Queue-Id: CD55C140003
+X-Stat-Signature: d61jyg7fktft75sy7t7o9mckbwmbbj9g
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793001756-445353
+X-HE-Meta: U2FsdGVkX1/g8LcXK/RP4nFpZB9NlVqDXg04/rcsgEGn1fvzI4/XfkW4ps7psPOmjE2JPZ6l9F4SJWlhVCGZqhk7t0A/ECogLxHZvWBIovMiULqc8rzn0A2jtu54IVX16uNcNotBL/6KyfdGbonBRlh2NTse9Qyeytyn/S8sdSR+xcToC0C8eFHeCiKAQAH9a2Cx4j3VPps9YFIwdk3rIE+8wgzm66c0oKxou+zhHSXScr2IuBpv/Xa6Fp5/a3Liaeqin3jtVYkurHBVwfcNgGfiWD72YyDnSwrxctD+N6mxYFe63PxzMnrVA30MHIJ6hYY5wlzRE5GMyDCBKIIqvgBN46H+KRg2EAyBZxjxvfCST/x1mOBlp+wJGczQzyQ+UKuNeVwVII+asXs0vGzISuXYccbIcuRx/xvsXAXZKmIZZgTZFO7Fqund9gGWRrNFmG446KvE6gno+S4YOEXJBnirps8Pl+Me8CpNsZzvhFDZl0m5jvR34qm4qrh1A3P24SnJjROkuCtWrLUsC9axjuYei9gUNnop63gbnQ0d6PEtN5g/HWcEdQgHVh4t5LaryVhN70Lmlq8m9wsd7V/WASM+ZIwREtVro7GDPlBY/nBeqxbaPtaB7xsFzTFuEKs/zftjwCmy8O2xIjcx4//Jkv3gVmSrLB5eyr8d58nFUnR6ozVw1zOAY1gZ7KfuPuXNVEDaffRuQVLJGBGMy23HLEVJGtx+9X9uSMjCrNhUuHQqBjeMR8bLF7Pj2yJ2cd85fHNKIyg364Rv+XMGoNhuwgExuf03Cdc3Q0i+WabS9my7YSPOVxTagqeT6w+ktnDti/9x+msFwy1aR0Uvtcrs3fVW3yY6xTAZgk4kyorhbi/G0vhJiEmxAV+Zu6smgz1cBKlVHAzONGBexiIvE9lJpnj8DJqIlPqAYAjiuXeKjcLw3lLQuLS+j2+fRWydmAK5pUrya8O2LTk1phpEjLg
+ wn7knozp
+ jj4hp5ec877jWLaEZScxQ2fxL6wBivxFk2CCJOhFmKfh2JoQT8BgtXbcP+Z+kRy5KnO4XBUcMcR4RZMtxxkKRdva/7tqQWvPLzSvfCXRCdfomEC6XsLHTeL5+vSwXz5v2LtGaebZUREGDHt07+/cwixz/9XnJFEDR6vgWO/HvJM+DodHn+4nYDTfO4mx2j3rGepRG8U5AT89BYqc3AFF2oUbFSF14UJeOihvjIaB+a5U+uUUgformrAn9s/sod90eHwLhLZrAKUt4JT76xjru/0EziTiNSNxbfl/5lp+FppWNSZTo6MVtmAgJAhe+TmP5z/fEWDw+TgSp9ek=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,102 +107,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Daniel,
+__vmap_pages_range_noflush() and friends can install some PTEs before
+failing and leave them mapped, and the kernel callers do not agree on
+who cleans them up. pcpu_map_pages() and kmsan_ioremap_page_range()
+roll back what they mapped before the failure, while
+vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
+__vmalloc_area_node() rely on the mapping functions cleaning up and
+do not call anything like vunmap_range() themselves. When the same
+range is mapped again, the attempt hits the leftovers and fails, with
+a BUG() in vmap_pte_range() for huge mappings and a warning on the
+small-page path.
 
-Thanks for the careful review and for building the docs.
+After discussing with Suren and Ulad [1], we move the rollback into
+the mapping functions. A failed vmap leaves nothing mapped, and the
+callers no longer clean up after it.
 
-On 10/25/26 9:25 PM, Daniel Pereira wrote:
-> On Fri, Oct 23, 2026, Enze Li wrote:
->> HugePages_Total
->> - is the size of the pool of huge pages.
->> + is the number of persistent huge pages of the default size
->> + in the pool. Pools of other huge page sizes are not shown
->> + here; see ``/sys/kernel/mm/hugepages`` described below.
-> 
-> Hi Enze,
-> 
-> Thanks for this, the current wording is indeed confusing. I checked the
-> new text against mm/hugetlb.c and have two comments.
-> 
-> 1) "persistent" is not accurate. hugetlb_report_meminfo() prints
-> h->nr_huge_pages for the default hstate, and that counter includes
-> the surplus pages: alloc_surplus_hugetlb_folio() accounts the new
-> folio in nr_huge_pages and bumps surplus_huge_pages in the same lock
-> cycle (persistent_huge_pages() is defined as the difference). The
-> HugePages_Surp entry just below already says that surplus pages are
-> "in the pool above the value in /proc/sys/vm/nr_hugepages". So with
-> overcommit in use, HugePages_Total can be larger than nr_hugepages,
-> and describing it as the number of persistent pages would be wrong.
+Patch 1 is the KMSAN part. The shadow and the origin of a range are
+mapped by two separate calls, so the rollback there has to cover
+both. Patch 2 is its disabled-KMSAN counterpart. Patches 3 to 7
+clean up the range checks and error reporting: unaligned ranges are
+clamped or rejected, the callers get the real error code instead of
+a flat -ENOMEM, and the cache is only flushed once the mapping
+succeeded. Patch 8 adds the rollback
+to __vmap_pages_range_noflush() and vmap_page_range(). Patches 9 and
+10 drop the powerpc and percpu cleanups that are not needed anymore.
 
-Good catch on "persistent" -- I forgot nr_huge_pages includes surplus pages.
+Changes since v2:
+- new patches 3 to 7 fix the range checks and the error reporting;
+  the empty range check of v2's patch 3 moved into patch 6
+- patch 8 (was patch 3) skips cond_resched() in the rollback when
+  the caller's gfp mask cannot block
+- commit messages reworded
 
-> 
-> 2) "Pools of other huge page sizes are not shown here" is not quite
-> right either. The Hugetlb: line, a few entries below, accounts for
-> pages of all sizes (as a total in kB) and already points to
-> /sys/kernel/mm/hugepages. What is missing is only the per-size
-> count.
+[1] https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/
 
-On "here": I only meant the HugePages_Total line itself, which only
-prints the default hstate's count, but I agree "here" reads as the
-whole /proc/meminfo output and clashes with the Hugetlb line.  Your
-wording is more accurate.
+v2 link: https://lore.kernel.org/all/20261019054531.87652-1-hao.ge@linux.dev/
+v1 link: https://lore.kernel.org/all/20261009063619.112313-1-hao.ge@linux.dev/
 
-> 
-> Something like this would fix the confusion and stay accurate:
-> 
-> HugePages_Total
-> is the number of huge pages of the default size in the pool,
-> both persistent and surplus. Counts for the other huge page
-> sizes are available in ``/sys/kernel/mm/hugepages`` (described
-> below).
+Hao Ge (10):
+  mm/kmsan: undo the shadow mapping when the origin mapping fails
+  mm/kmsan: skip vunmap_range_noflush when KMSAN is disabled
+  mm/vmalloc: clamp an unaligned range in vunmap_pte_range()
+  mm/vmalloc: propagate errors in vmap_pages_p*d_range()
+  mm/vmalloc: reject an unaligned range in vmap_pages_pte_range()
+  mm/vmalloc: reject empty and unaligned ranges in
+    __vmap_pages_range_noflush()
+  mm/vmalloc: only flush the cache after the vmap succeeded
+  mm/vmalloc: undo partial mappings inside the mapping functions
+  powerpc: drop redundant unmaps of failed vmap mappings
+  mm/percpu: stop unmapping the CPU that failed to map
 
-I'll send a v2 using your wording and add your Suggested-by tag.
+ arch/powerpc/kernel/isa-bridge.c |   5 +-
+ arch/powerpc/kernel/pci_64.c     |   4 +-
+ include/linux/kmsan.h            |   8 +-
+ mm/kmsan/hooks.c                 |  21 ++++--
+ mm/kmsan/shadow.c                |   9 ++-
+ mm/percpu-vm.c                   |   5 +-
+ mm/vmalloc.c                     | 125 ++++++++++++++++++++++---------
+ mm/vmalloc.h                     |   6 +-
+ 8 files changed, 127 insertions(+), 56 deletions(-)
 
-Best regards,
-Enze
-
-> 
-> I built the admin-guide/mm documentation with your patch applied and it
-> adds no new warnings, so my comments are only about the wording.
-> 
-> Thanks,
-> Daniel
-> 
-> 
-> Em sex., 23 de out. de 2026 às 07:10, Enze Li <lienze@kylinos.cn> escreveu:
->>
->> "the size of the pool of huge pages" confused me, since it sounds
->> like a size in bytes.  It's actually the number of persistent huge
->> pages of the default size, and pools of other sizes aren't shown
->> here at all.  Reword it and point to /sys/kernel/mm/hugepages for
->> those.
->>
->> Signed-off-by: Enze Li <lienze@kylinos.cn>
->> ---
->>  Documentation/admin-guide/mm/hugetlbpage.rst | 4 +++-
->>  1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/admin-guide/mm/hugetlbpage.rst b/Documentation/admin-guide/mm/hugetlbpage.rst
->> index 2075f1f14a42..01fa9f61c9a9 100644
->> --- a/Documentation/admin-guide/mm/hugetlbpage.rst
->> +++ b/Documentation/admin-guide/mm/hugetlbpage.rst
->> @@ -43,7 +43,9 @@ The output of ``cat /proc/meminfo`` will include lines like::
->>  where:
->>
->>  HugePages_Total
->> -       is the size of the pool of huge pages.
->> +       is the number of persistent huge pages of the default size
->> +       in the pool.  Pools of other huge page sizes are not shown
->> +       here; see ``/sys/kernel/mm/hugepages`` described below.
->>  HugePages_Free
->>         is the number of huge pages in the pool that are not yet
->>          allocated.
->>
->> base-commit: 3fdcce698abd9193752ee89fb1a440cdceb1b74a
->> --
->> 2.56.0
->>
->>
-
+-- 
+2.25.1
 
