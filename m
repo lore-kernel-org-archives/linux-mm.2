@@ -1,135 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31F7606A31B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5627E606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=apiQEG5i
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n+vLYLtK
 Received: by kanga.kvack.org (Postfix)
-	id 45D016B05D6; Mon, 26 Oct 2026 19:24:52 -0400 (EDT)
+	id 7FEB46B05B1; Mon, 26 Oct 2026 19:24:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42E236B05D7; Mon, 26 Oct 2026 19:24:52 -0400 (EDT)
+	id 7B00C6B05D7; Mon, 26 Oct 2026 19:24:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 343936B05D8; Mon, 26 Oct 2026 19:24:52 -0400 (EDT)
+	id 6C5C26B05D8; Mon, 26 Oct 2026 19:24:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 008906B05D6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:24:51 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 899DDA857B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:24:51 +0000 (UTC)
-X-FDA: 85366359582.07.0BAD7F8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D76121C0004
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:24:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=apiQEG5i;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A1E36B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:24:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D6CD4A091C
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:24:57 +0000 (UTC)
+X-FDA: 85366359834.02.1B27457
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1B39280006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:24:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+vLYLtK;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793057096;
+	b=gZ3pme3iv0PJvVh2u8dZIEm7XDop413K21mfqoJ4vH2kwN3Rh+0M3mpGV6eaHLJ48fNkL5
+	xgYmm6j1PIfKnRfdIXC2g5mZSNJdkPO7iQL6vqiKmrFVdtHg5fDXNeCToAsWRzXf5jxRaD
+	XdFVb60SFY/H/Ri4rjmqrxVpnbm03Vg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+vLYLtK;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793057089;
+	s=arc-20220608; t=1793057096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qQBYoODQ+YQypvvJ/bxf+QZV6zHatXlRhHg5nFuEkjY=;
-	b=t30NfbQ7c9q9g627RR2/kP9AyKufyy116G0c/mRrtS8zC4y3KqQERfmf5QpznszDS2wQbL
-	GNJJ6eGGugTddZSyLGgQLeuhI7KZaBSU4mY5ph/VNmbeqEBEc0coNCqIG3XXxmIGM+919d
-	JbdcANVtBgdvxkaqc8o2d5U9bl4iv5g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793057089;
-	b=0FwfUjVAi6W91wRFnd60o60pa+5K07Lib7NGi9rfXZyzJvmBv/37YjaJ53kjWgST7nSjoM
-	OqCbTlclbW2dZBV7bIeVx6Lho3+jYsw0xoTkZ1dGO7lUR/QV4iebNV17LdHqU+8j0j/bbX
-	y1G8lz9rcCS5mrT1zkFYuu1P3ge/jGA=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=apiQEG5i;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=kd3Dml8l3wq2mpKC3ZlVeUqbWcVHK5sKBx/wLEoqeB0=;
+	b=6UERDWCp1V2n7Pb6ZqmUqkqmhvg2iIgiGWUCg8OVSgpJpPxlKLqUHVyMlMlDNFaK/2ksAp
+	zN5aOG9TH+w4oowFV2gm6XmcdV5KdeMBP8V9iLuWlxMKC0HXqUzLoXLw/grMRDhP17PWKb
+	/xJU+LrRTWCh6JTbuE4tnHgEii4bGCc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 80986601F9;
-	Mon, 26 Oct 2026 23:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13A81F01828;
-	Mon, 26 Oct 2026 23:24:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 569F643A59;
+	Mon, 26 Oct 2026 23:24:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBCE1F01829;
+	Mon, 26 Oct 2026 23:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057089;
-	bh=qQBYoODQ+YQypvvJ/bxf+QZV6zHatXlRhHg5nFuEkjY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=apiQEG5ikFEGzk70lvNqgcSuFbxsqv3KoY+cdbi/CXgRNvwDaThsY9M5RovpEEfFo
-	 JFu4/56U0E++OV3FBySS+H1tdOulH/Xt6CCEu3CGKpMEe0mUXtqJSJP9tRS6x5AJ31
-	 m+ndyvHcLpq9OAW6nIACsnOC6HrvGmJMoMlpGQYK/jThBCwuCcSKNUEAxCW5t7xDNB
-	 fMVR4TiZ2J0xQ9Jvws7WPcLF4R7Nvdr7TVW1if1FFkP9Mbip4u6YJm2tr3KsE9sF6z
-	 xzpiQJB5NBcKKSuheBGTIIOW8lkxwrcHd257sDU9t8MbpXu6q2KjpsZ0YlL42ux0QL
-	 GAcroa840G2Qg==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 00:17:42 +0100
-Subject: [PATCH 22/46] mm/gup: check for overflow when converting nr_pages
- to bytes in GUP-fast
+	s=k20260515; t=1793057095;
+	bh=kd3Dml8l3wq2mpKC3ZlVeUqbWcVHK5sKBx/wLEoqeB0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=n+vLYLtKcNv22bWBkMUGXCCk9gajovYZy6u8dQ6jFeLyq4kpoCxdJi0VGVXm/RKKr
+	 TnmJczfopJdIqOKC/bvueb8a1IUKSpHq0MkO3GERMNwu7TWiZRyatNv9gw/jgFmi6l
+	 Q8BLjog93OMzQB4vESNPiBsCz8e3mhea/ge8JeHM6/8pAJbY4IcRf+ZDno2W3EI7mS
+	 NssvA4u/wjqlObgc4uiZDqRGTMQHigLSUgLw+3wYkpC/VA/Qry13ipXJOJ6YlRA1tL
+	 am+DNTfRuyttb6yiNo69/enwFUs3hEtDaPhRTtD01NkLO7sg3EUPIsRen7n35FtD9F
+	 +R6TlPI70Fwew==
+Message-ID: <c267c29a-5678-4c0f-a15d-e5c12ae8c427@kernel.org>
+Date: Mon, 26 Oct 2026 23:33:31 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
+ PTEs
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ Zhao Gongyi <zhaogongyi@bytedance.com>
+Cc: will@kernel.org, Ryan Roberts <Ryan.Roberts@arm.com>, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, lance.yang@linux.dev, mark.rutland@arm.com,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+ <daab2f45-56c2-48ad-a24f-aa4f889e4da2@kernel.org>
+ <e0f60526-bb95-4d39-9a7a-72cdf32ca5b6@bytedance.com>
+ <cc2e3af6-bb56-41b1-9cde-151797c3068d@kernel.org>
+ <3b57c214-6a43-4fc7-a531-fb5eac196465@bytedance.com>
+ <at9H9Vkx57pIcPos@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <at9H9Vkx57pIcPos@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_core-v1-22-6f74bec9a5bb@kernel.org>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
-In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1166; i=david@kernel.org;
- h=from:subject:message-id; bh=xmWshrb3+Xou48CaDcjPkXm82MkuoZo6NmHK5/nuQPc=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35+aeTNfcdI97pS5wQm7FPTWmh1Unr01g9eJPX+Bl
- UAIt9SGjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbCtYDhn2Fw+YTli4MZd/M1
- hdXvvvO+YDZr6cVrBREH3i/9tpjT9AfD/1Q724PTdmWLiq3IYFMDOiS8cHKfUes+/QXfD+c+fba
- OCQA=
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D76121C0004
-X-Stat-Signature: ughus1gi5pxxc7up4hd8m5pxgs33ny9z
-X-Rspam-User: 
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: yxeru896ozjgn5ragcn9qtqxx8rs7aw5
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793057089-681345
-X-HE-Meta: U2FsdGVkX1/Z5vdwhJqbFa8LWFYGE71p1OpV4RGUUwc7cbcemi7Q+wQje/yvf0nlDECDiiK7k5o5EeWitCMxHhUQSQhgG9dgmNRvT6vmAHtrInVQ8HXMn2WDfXIumSBduOQbSSFa7ex9xm9FWuSVoqpqGvn5GdAJHJuJhmn6Co35KMrSc4pEgk9BcmObIm+JOLYBeQ1NkUqc1qVXefAFZ8CWoqN25VQBE9DcMF5eiUusnoxsCXEv3YmpS/q/IkBuQ6Ahzb0/dDCw4pXI9wmkJXDWADlwNYJMPEIlz59Wg/Tdz8V61dig0cmGnNruASCxp5Iodzjcm+i3gV4HJpay/AzCzMoQQV/hPKeoOkw6RVu+zVkVwAFTVs47TTG8RxV9sxmgnkQLeTSNWXc1Dhje+R/2BC5a/+F0NisNLSvPqWyvPniMTe+k2HrrORqJCX1KZAD0l2+H7cJmzLI37iWDVr7/dQjjuEWHS+026AN1EbNUVC1yA45Tnd/wVwvUbI1BtG5BHZ9vMBTyqx6ZDF9HZCJVUxZGbqY6rckelHDMH/mpxtlPx5NQOWk4BlcNGuQZ8lZdM1t9oY7Y0JmnEQ3Kg1UwXk8ja1+z1F8QOpK6vEvqmyQyKwEE0M2ASejVGihSMXxDUjScyxzuFlAF51xDrCO9xcBpbxFBqFbwx6vMkURyAZx5UM9EvUYjyJGVpzuf1XtiatFCq2UDlZfeAY3xIDiBlFNUjqh6Ym/le0dcNVjyngDYtP0Ku8ld9gdK+bqPLjZyuOGhZbLFyCEh3k66k7SDtNe4sHdHoKLxrA4r+HpIj94EkBhXiJtz4s2hNrZIp3PMtHWGA+lVv8qTgxpOuqiFJ0rCeIzeGJvwUQhFTMHYYVdw9PF5JhI00Ghlx9wRr9Qo3vCocxk+DGxfOirdTA9KPEintf422V5RlptzIVsY07A89nEeeK6Dl3cBkbl8XC9UGS6pPRE0AaSFxgA
- pQjTBaGM
- eQ/H7W5vQ2ae99AubuBkVs24+aqYOslESciqEJs/duWzwIhhlP5YQhtXNjvebSL+Ek1weJiMme3JSTXTDE60wO6bMLpQDKRjyE0BJnKNbvxyHIwKNOk/wkSi7ZrCOijDIhXiS80QBgV//5tehMh+Kdfvg7LmAog1Ea2dafD5j2v9FM/Kz8G80IWYo6jA3+QG/HS9AOhgXiiKMuprwLUAD/Rm0hiQuQMH0TR2rJgoDWxQaUc8EyqGdrc2najpDcEWZ9Jx0S9hiu4qQw/c5pMcN8GjoTy/WWAXDpmf2Ebtdwpdz97hWHWN0uCO5reOjtYbu3Vm86YBaWkpEYvxcVp6IfqeyA5CM39MWNp0IQW5KLStx7rQ=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1B39280006
+X-Rspam-User: 
+X-HE-Tag: 1793057095-791148
+X-HE-Meta: U2FsdGVkX19n6eJ8ILmPcnHx+npUkSMfFhD1heQHVPib/WUnJqpUCaruKNVIULROhCGPkOQBaRRCjf9Wqnw1/DuoD0KxKbEZhwerNtjSJrb4NSxZecvTTyZSh0ZiK9XiDX8AJvTmS0KM0sWspdG5mF5f7fgNUKuupCdmeck/seWs2+I2fpMHeEI5Fpf4mMrZEB+5rutJllS8BmRhrWkB/F4lE4cPPa4A54VpJztubHjf1ldHrAs0L7z+en/ZJfVCv6z/L+bfhBTeMqNsuTGfYoM89CQ5+N6E5JQsxoKo5gZpgVmcXwne8WNJetbdwfA0ReU6+9t7kldBBtGHPXWdnRdoC9hkX7zNvCM36TNh3xneZ4+htWaxbvycmdhjH+uFCv1GaS5doJm5UkNDWOKNXeGq3VFCpL4E+9uxDfcl9NoyeX+1GpmwDNro5iAEJeX06QCvppM918r8KYIMCU2bqlucJeP1DOtPRJTO/HX/GNhGBQaNNT3J3wwXgfusNEBimaIPFM7KRyPyiZWEL6oJGo2a41E0XrQ+aPs0BxXqGZ7CxouAl/KdYgEzVPhadhuCz2akxW4IDrBcHjLTjjkVw/QRLre4wqYOniNM+Dd9FW3omO1jYx+aMM5/q/riGsRJqysFT2InuP0ErzK00aXlvXpVR3A06YMlPYxBkWh3BOhwlP+fE4f9DKPvX5Zn7jefyZAhwDSXnnfIhnQdo1E4As9o/JvaFC0TQbanTSiDoDu84tfbHFeFvzvFIv2o4CvES9OHDCA2lw/kc4XagAgi2sezWyVp1aEcloP3pVr0EbsUukaMUeWEaoY9WHa28GB/nRpAukiak5EhzN7mVwm248ceYQyAXCQm35l0wWfzfZ2o6insn3oSLIoNxJtUCwYaJPkF1sfKhljK9exMT6y0qCQQvnb0N1xuI2Zrk/XvZHvgJ0wZgntZNMvBTGhuVqWjIvPwaLd588AEOEcmBVk
+ FiX+XBu3
+ +QTS+vrqVu17QRszffFB0QOEEH2dbEyKvdnhCcCLNY3NHn2KsI5BXVhQNLeHnrtdJR7sYyFpE12BEvrh7wvlU0PqZnqff+i29LQ8bl7w3TGpBDNX96Q1cFJWrZ9mWe1jgmfiWnIMTB7bqkHwDjklEhmkW9a0v8ptcuZII3sU25VvldLCCSW6LKlsta3b7z269fcNVxAktEF6mBfQoMnHQSzodPbnbXObfFDyPHmAUi7f+YiXRmmW4dAUPPib7XKA3v0Gooejvolfa6rZzGXR58r9+VzYgqT2b8nl1+OBdCqO9jWRCkbWq+EREqSB7TnggZmQZAOuO2xa+jIN85jKuwG9BGD5ZQbTH3waBH7dC7a2QycbVGU1YjtNsNKlSCSiVwq8c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,40 +151,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The overflow check in gup_fast_fallback() only covers the addition to
-start. The preceding nr_pages << PAGE_SHIFT can already have truncated
-the length on 32bit.
+On 10/26/26 13:30, Catalin Marinas wrote:
+> On Sun, Oct 25, 2026 at 12:00:33AM +0800, Zhao Gongyi wrote:
+>> On 10/24/26 4:55 AM, David Hildenbrand (Arm) wrote:
+>>> If we have the spare PTE bit, why shouldn't we just use it?
+>>>
+>>> It will make batching over PTEs faster. And we care about that for present PTEs.
+>>>
+>>> So I don't quite see why the stable fix couldn't just do it right away? Do you
+>>> have a prototype that shows that it would require significant code changes?
+>>
+>> I tried a small prototype that keeps PTE_CONT on present-invalid PTEs.
+>> It leaves contpte_set_ptes() unchanged and makes contpte_try_unfold()
+>> recognize pte_present(pte) && pte_cont(pte), instead of checking only
+>> pte_valid_cont(pte).
+> 
+> I think it's worth doing but currently not sure it buys us much unless
+> we also change pte_batch_hint() to cover such entries. However, if we do
+> this, we need to audit the other pte_valid_cont() callers (e.g.
+> ptep_get() needs updating as well).
+> 
+> So, if we aren't going to change pte_batch_hint() as a backport fix (I
+> don't think we should, it's an optimisation), I'd rather take v2 now and
+> continue with a proper pte_present_cont() etc. patchset on top.
 
-Users such as RapidIO's rio_dma_transfer() can derive such page counts
-from a 64-bit userspace length.
+Your call, the version actually looks quite clean:
 
-Let's just check_shl_overflow() to reject any such overflow with
--EOVERFLOW early.
+https://lore.kernel.org/r/52e7e1f6-3535-474d-9b46-6bb62f96eefc@bytedance.com
 
-Fixes: c28b1fc70390 ("mm/gup: reorganize internal_get_user_pages_fast()")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/gup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/gup.c b/mm/gup.c
-index 9906965893431..48e1bfe5ab9a9 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -3214,8 +3214,8 @@ static int gup_fast_fallback(unsigned long start, unsigned long nr_pages,
- 		might_lock_read(&current->mm->mmap_lock);
- 
- 	start = untagged_addr(start) & PAGE_MASK;
--	len = nr_pages << PAGE_SHIFT;
--	if (check_add_overflow(start, len, &end))
-+	if (check_shl_overflow(nr_pages, PAGE_SHIFT, &len) ||
-+	    check_add_overflow(start, len, &end))
- 		return -EOVERFLOW;
- 	if (end > TASK_SIZE_MAX)
- 		return -EFAULT;
+But yeah, audit needed (e.g., no need to flush when shattering such entries that
+are not valid)
 
 -- 
-2.43.0
+Cheers,
 
+David
 
