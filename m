@@ -1,194 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24181606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C986C606A32E
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=UHVEcdZa
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=OyyM6arR
 Received: by kanga.kvack.org (Postfix)
-	id 08BEB6B05EF; Mon, 26 Oct 2026 19:28:36 -0400 (EDT)
+	id DF9CF6B05F1; Mon, 26 Oct 2026 19:28:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 064756B05F0; Mon, 26 Oct 2026 19:28:36 -0400 (EDT)
+	id DD1A96B05F2; Mon, 26 Oct 2026 19:28:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E94B06B05F1; Mon, 26 Oct 2026 19:28:35 -0400 (EDT)
+	id D0EE96B05F3; Mon, 26 Oct 2026 19:28:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B67896B05EF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:28:35 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 343E840868
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:28:35 +0000 (UTC)
-X-FDA: 85366368990.02.ACD8657
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013024.outbound.protection.outlook.com [40.107.201.24])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5AE8720009
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:28:32 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=UHVEcdZa;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.24 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793057312;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AD84B6B05F1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:28:49 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3EBD6A084C
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:28:49 +0000 (UTC)
+X-FDA: 85366369578.03.6204671
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8AA831C0004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:28:47 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OyyM6arR;
+	spf=pass (imf18.hostedemail.com: domain of 3LeLfagkKCM4DuBE7Cu1E08805y.w86527EH-664Fuw4.8B0@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3LeLfagkKCM4DuBE7Cu1E08805y.w86527EH-664Fuw4.8B0@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793057327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0IDwwo08Ui6ELPjZti1Uf9wOJHM64ZNc05F8Hlz3zvE=;
-	b=4N0sX9sFEorHHv4jzRURh6em6VO2nQVBsls7oH7b5zOaBicRsWo6qxAAN20D9PF9Syf1AT
-	OeV5TrgLtpy318Atc3Zl66ZH++TBYkzepyTIs+xybLVyEyWhi/9/njN9VGzT8FtgucO23w
-	iDhKQGv0cwGZCtRLlk0qLexgkkVYj8s=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=UHVEcdZa;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.24 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793057312;
-	b=DsXzuPJ+ELinLtG4WJQA7OnfVBXiI9GyZ+ByIojegjHiB1u3HzTaY/RreEYXTWI4IBV0Sp
-	Plk/iZuxyq8Q8DlnI3/hu/MlYrsqda0ReH1QHthpklu4RwgRivJOfkW3yp4nzYJcXGfiZh
-	T3mOCPJ/SLH0RxaDKBrLEcIP2zQz20s=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m3/FD0kEgPJV7qI6E3DQp4otfhAY85YUZNHlKclgOV4h2tqYbBygrFWAZlMVlZgUX9cu8CuDLIeRA5Xcdy0blsJMBt9J1ALjm0HwQgg8v4KSciW7MTbaGjseNvZJTrs7cL8WOIv75UPDnUyM8COzNfAIc1sI1zAdNhL0i2hijfI+RNiNbuaGr9cOvSjF3uXWGzCH+j7UQES7Vus5GOjC57Q1UZ2N1wUS/D0kv/AJ1DqTzjz3wHrOnvScsbOVXQEjhvkPDspS0QOq69ff0F4g+NTtyncMPd+dOuU9kI0t+UUjlhUR6/6yr3UoWKuE7cYPz3Rte2LEnWRHzUxzK5y+Hg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0IDwwo08Ui6ELPjZti1Uf9wOJHM64ZNc05F8Hlz3zvE=;
- b=AgARSlK+GVnLTo3LrmWzNRexQ63aNi8pDfUOaAF9PPxT7tR6mnT3yD0Lt8YjO9rDIGo87ZeDUoK4PzXfj2ynl/c3du5zDAjNVgFahomzHaAYNyeCxq8SYkxj1A1mBeX3siMtGHyw8EbBLzQA+bug1yMcZIJGb/LzdXA0+tf69jLkiGd/JjIxp5H1u2V6GDiR1acEpXmKTICG5XGomz0P4Xlyg0jCAcYuP7ukAI2ASJJ21iHGFBqSMJ5ppoQXxjTJaLVYDRfLJYM8ob5UrW4WPfXfrvM4iXQ9KuZx+vftFHSftEkc1yLrUbLuObT3v9ZlXaQH+dqHgKTuGA5ZfYLlbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0IDwwo08Ui6ELPjZti1Uf9wOJHM64ZNc05F8Hlz3zvE=;
- b=UHVEcdZa42iQMlFSpAE6wNBRcQkZKVjVfnsb+iNTfXcr6oUEhDmf8ggboXwrB+l/igfhPZ+orTaBNzsMqR/4QkNyGN6ReAP97neaxKRXXMqDDu5HTTMp4NjLMPwiwLEfpAdPOzJ5WCBB53iLLTNdNEJX/ipVEcgm+TimFy99+SzGxv55pET0wxg14puUPXNg5QqOmDIB2K/hBY2TU6OLjTrcexDqoY+bE3TxwrvrUzMreYF/EHzwweSmUZATrAuUBHZsQ+a9jvZ+DZUUUS2tfT61cbCik0yrcMAjIx7l9EAcOFs2k6DWtrnTZ5YkYo+SCcHfKtEoNFlc6ND9VoO4Bw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by IA4PR12MB9761.namprd12.prod.outlook.com (2603:10b6:208:550::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 23:28:28 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 23:28:28 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Zhang Yi <yi.zhang@huaweicloud.com>, Gregory Price <gourry@gourry.net>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Stevens <stevensd@chromium.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- William Kucharski <william.kucharski@oracle.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH 07/16] mm/shmem: avoid moving the truncation start
- backwards
-Date: Mon, 26 Oct 2026 19:28:25 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <FA2807F3-66EC-4EAE-864E-BB1DE436A1A2@nvidia.com>
-In-Reply-To: <f0029758-5f2e-4c26-9b25-dbc4b3f33701@kernel.org>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-7-703206d5fa0c@kernel.org>
- <2E377C76-D62C-4A2A-94E3-ABC40C6FCDD2@nvidia.com>
- <583728ed-dc63-4685-9ac5-5a980db55973@kernel.org>
- <B1241F56-8000-411D-A137-24596E599C85@nvidia.com>
- <0D22B04E-5730-4D3A-ADA6-9F1AF94F06AA@nvidia.com>
- <f0029758-5f2e-4c26-9b25-dbc4b3f33701@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BN9PR03CA0437.namprd03.prod.outlook.com
- (2603:10b6:408:113::22) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
+	b=BDL81lT1n6elz3m7ksTIupYEJ5yXXBosTWv+6qcZbLnuj2Aj1BufXizhjclfTAih/jnnTk
+	EMHFm8xDgcHGLaqAEBr9ues2wBmaYNOIXREj2DkbU1sKxnUiIfMJfBQOh+2h9fqkrNGJQS
+	ML9ED9EDRVlV6iFSvVUjuawZJxZDDFk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OyyM6arR;
+	spf=pass (imf18.hostedemail.com: domain of 3LeLfagkKCM4DuBE7Cu1E08805y.w86527EH-664Fuw4.8B0@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3LeLfagkKCM4DuBE7Cu1E08805y.w86527EH-664Fuw4.8B0@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793057327;
+	b=M9rVBkabSpvOYJsh+Hjo5Rmcu4opLyZBY2fggaIyiqBg75Bazg+5gyK9p+hlboedGfUPX+
+	WL/4cQcB22fe7dGS4+6DZMb9tcF5zM0bj0lmknD6PT73uifod+SQzcfBim3H+Q4xFAl8fH
+	G9ZJjHUbgdx2C525EW6sD777GP5rG1E=
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b1f5b673baso3524730a12.3
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793057326; x=1793662126; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
+        b=OyyM6arRXWeKUzOKNtgTKrenH7Dg7jAw+ILIoFZnp0rl3SeL1AEGub0KyU4Y0piE/4
+         Yw5UzCWljOpfORS/J2cT8NGwiiuPHFQMVUA0tWfg6FaZ7tBwzqvR0m/F12S1zI3Ctf34
+         mW7LCZrowPzmXQ8+w2n+9SRSIrLj7WZ+rY8qlMt7Hp2bxF0glGdEWpW7595k8ovbSUkD
+         VdZC5GOABOq+8auBmgvgb+Ur3Gezow0mEywTDv8JYHcJEb9OF3+bd6oy4HdCvreLNHSX
+         0sQolROnQTtGr3bzyXjrAwdhf/sVfD4rlhalMNRmFHYarPwtwB5x7eGcPfKbNUddUHPs
+         /Hhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793057326; x=1793662126;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RxRwD13OM0fFBvRZdfnXU3z0HVhv0MS7kXCqcjKQ5Ko=;
+        b=RpHuJsh4avsif4abUtZX0c3zXDz88xRiDTmsz9JWuCmaAL4HXyRC/aberUvWId0vgW
+         3Rw0DEWTLq8H34iJ5AtL48Yo6oJas5fxHoWbCUq6de1r784xsIFHtOSveABSipEsABJN
+         Q4SIOKly7lZI2pFZlRivZgXW9ipYYGvL2k1l9niVe2n7WLwpoM2F3s/y5dIM2s6wVKjt
+         grwmQBcl1EHx3FG4RSqDBSjbxF6wvlbBigyJcVgYk8Ko0T92ENZOVDcpgDIB+3UZknI/
+         wu8SfKQgQUiqw9/u9NxtRsdUe3BgL2YVhotAdnu/lQzBuLiu8ti2PWn7sMS39xiySy2l
+         0MgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwR46bIRk0Qx2M5i07++FRVafcwYKikYUerkRVo/3vgOZGqzu2rKOZBi60NbE0l1AvKMiveYkW2kQ==@kvack.org
+X-Gm-Message-State: AFq9FYLyIdUK2xZLDVrrYYbC8RD9W3jNCp2xxP1+bg5wqQCrjolluZ41
+	Wos3iP8rmYdj/orEKa8A67e256wYs58mvN2dSNmX8IZxG6m1QntUzEGthhEFWKHPwrltpa9ZrxG
+	D0QaBWfUiOeOkrTTe4A==
+X-Received: from edxw25.prod.google.com ([2002:a05:6402:719:b0:6a7:4541:3de3])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:4026:b0:6b4:1037:2b87 with SMTP id 4fb4d7f45d1cf-6b44300b84fmr9392138a12.31.1793057325809;
+ Mon, 26 Oct 2026 16:28:45 -0700 (PDT)
+Date: Mon, 26 Oct 2026 23:28:45 +0000
+In-Reply-To: <at_CncIPYCxOVkLo@google.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA4PR12MB9761:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed99e851-55e1-410c-1c6f-08df33b8d6db
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|261026140227099003|4143699003|11063799006|56012099006|261022075727099003|261021121427099003|261022105027099003|10067099003|261009223027099003|22082099003|261026121527099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	NYhO6iGEim2/VdZE/ksunZVJtcBej+awTiKBFqmShiR3kilxA+HqJceSW99e9F9MOG4YD5YSbXARjb7K+23bvJ4jwl7kKcn+mq/6NtN8lWbvaUuEzOKAi+GY7tQQ0sLtkxs25LSaBL7HTqHXdLIx3QOwIG9uGpuR5wh8f7C8q+vcnwmzn2J11jysdgDG8XHOS5A2VlK2hWEglsPGJZpxzhOJv+3AbU061pf8PT4zp9/856xxcGcKwZhEzQUiW+/rTkYcnP6IgTsotiMpYf2lPTiwR5DsPHmWHF1HbAMpSKVQWQfNnYQM+Ea6RppwUXY4hqf3ABb6U6LPY2x0Rs+CErZNWTFZS2XWODapCKU0r5F+3/JZUtXUOqXnhvP+0b6uue1aNIMslSD6anQuVu6/h9COx7aie1/yR7tb+U8TiRpojJR/24AI8zY+gkMhfjN8ZCuQ7hZ80tvFaOlnuivENhL8trWxdRwyOBttyObKMBk8h9iukAXQosKranl4erLCPYa20G1ijA6XrHU+Cnoxl9jNg6r9Gy7umV6bdaOzvrxzJEv9UHcAuXuybuvItFjbD7UUNTwRE14YBaMQp+LGHTZjFL/lrfIYnyti+6gHkmBJ/1YYBqv/4tTscX0fgPmLBY2x+8hSRYGO2kYEbaZjC+aHPXt1CJBSQdadmt7vB20=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(261026140227099003)(4143699003)(11063799006)(56012099006)(261022075727099003)(261021121427099003)(261022105027099003)(10067099003)(261009223027099003)(22082099003)(261026121527099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SVZqWXkyNXptN05SR2lxc3NoTklXS1hQdUZDcHNMNXdDWFJLYWxpSTNwMmEy?=
- =?utf-8?B?RHJtZFowWW1UMVRDL2ZrVk5NYkJXaTVlM3JBcmlrYU0yQ0NYRDBsN3RHUUNz?=
- =?utf-8?B?bVRta2JEbnQ5ZTRXQkpodzBNdmlYVFJ5UUNTcHZlUGUrT05JemJOcCtJU0ww?=
- =?utf-8?B?c1pBQ2tHc2FLWFNOMXkzZkxGT1RLVFhTWU1SaGhSVEFtempYcHliV01hbW56?=
- =?utf-8?B?aSs1WDg3VThKNitHVTBmUVVBaVNJUWJZeHFRUlVnWVNUMUYyYkxuWWdGUFQ0?=
- =?utf-8?B?QW1sNzdCV2MvQkdTdUtBczdpTm45SkNaY0djNE5LOUNPbDZDVXZMZTNiL2xV?=
- =?utf-8?B?Z29saHprWnE1blMvZjVlV0k0cXRnaTFmWkwxM3o5Ni9oa01sYzFzdjU4Vnp6?=
- =?utf-8?B?YTRnRVRpQjRkM2xDVm0rOXdaV29BOVNQZGVoQTdNUWZuWjUxU1Nqb3JGZzJr?=
- =?utf-8?B?cVRCT3NZalBWclZxanUvNEhyQUJncWlieDRXM202MUhXbTNZM2swNTlxRk9E?=
- =?utf-8?B?a2J3NWM1UWUyZ2pNRDJNaFU3TEJKbUxCV0lFVUhlbnBhK0YyekhMS0NTVGZK?=
- =?utf-8?B?UGVpTTNSSnE5dXJEam53THhPZGV2NVZsYTd4N3JRdGsvT1dHenNjSktRNEd1?=
- =?utf-8?B?a0tWVldqZktLRFFrU2xBeERtL1hRb3l3TWoyU3pIQlVoTU1PcU5GY1BpSU9h?=
- =?utf-8?B?OWZIYXRZaWQzWjVkTGtzU2ZlUnVzbnpBRUhBR1kvNFM0anVJdkRVc051eEtG?=
- =?utf-8?B?ejhIa1JuMUFnQ3NUYlJLWHNKQXpaZjQ4N2hpdWtyR3U3Zi9Nd25xZFNSZDh6?=
- =?utf-8?B?bTRia2dmT1FoT0g5RHFsM0hYWFFzeG1OL2R3REMwUGhsaUdpeXFQeWh6b05j?=
- =?utf-8?B?V3htMExJMVpPejFkNVlETFRlM1E1VzlnMGoxYUdSNVhoWnRDUDJLa3cxUGtU?=
- =?utf-8?B?RHZSejdic0lCcHJnTytoaGhEQ0NYYUlQaExBL3ZJMXNZRnJHWGpOdFZMRUJr?=
- =?utf-8?B?VWFBbXNxVnE0ZmFhVzExL2NnWDZyUlZzbllGdGdRSUo5NzRmM0xBWXEyTDV0?=
- =?utf-8?B?L213WG9PNG0wcCt2amZQeXVSZDF0b3pjQnk4VzJ1VS84ejFvRTM4YlBKNzd4?=
- =?utf-8?B?SHNpRkVEMnZWL3N2UDhRYU1ZTi81eEF0N0V6K2ZoeXpiVE9yUVNaZXNEZEwz?=
- =?utf-8?B?ZWJ4cVdnUFhmWll4a2pNL1FMZ1BpS002cHUzTHh0Q0QxNFVwRVhWK0dYNzJB?=
- =?utf-8?B?eWU4MXo3cGNjb1lMNjZIZ3dzL0x2QjVkdGtMTmJ2cTF5SG41Zng1M2FueWpC?=
- =?utf-8?B?RnNtM1NLT3NMMzZYbjd3VmJ6MXgvK0pUVVkweksrR0x5WDF4SXFCQVlDeGND?=
- =?utf-8?B?eVJ1WXN0Y1VqazJYOEY1THJBR3ZLVm9sb2treFFRLzc3MnBHd0RBeFVzdjl2?=
- =?utf-8?B?aXcrV3NXR2hXMHdlTnVuZlY0WU9JdTdWd2RZdGdQL25tUVIwWEhoZkhDK1lO?=
- =?utf-8?B?NWZwVlBKQy9iUnY0L25odC9uZm9PMEZGbmZOdGVuRUs1cC9IZUM5U3doYjU2?=
- =?utf-8?B?U2lLOE9xK2MxZjlDK2txNVVrdFFPaktLMmM5NGY1eHNNNVh0WGkwV3lBMVkv?=
- =?utf-8?B?cmlYWUgzWms4VVhyaHRaNi93T3V2WEwzVDBITUhCRkRaMWR5aEdLZnRiL3ZB?=
- =?utf-8?B?bjRkUGdRZlgxWkVXUU11T09UVTdEMExSQWEvKzFQVWYwRTVxUWFaOCtsSGJx?=
- =?utf-8?B?YUlJQVJrMll5WVRmV05qTllUMVlZNHM2ZURycVZ3QXhJWFZTYWFUSkJRUmRq?=
- =?utf-8?B?U2Z4SmVqSHRhdGVrOTRhaGZqby9RU3h6ZnNQdmlrdDRTV3dvSG9EakdxSUJm?=
- =?utf-8?B?T0NHN0xDN0dkcTZyYWl1RjZtMXlhUUN3SGg0OXExbnRqWERiSGNPQzhSSkE4?=
- =?utf-8?B?QUhUWGxSK3dpNXl6d3VVanVON2N3MmtHeG1mYjUyamtodDVwT1psTXFKSEsy?=
- =?utf-8?B?clBva3l1bHF0RGtKcVgvN0FiQjdINnRna1FsbFZSY0t4WGVKd00wNmNNNEMy?=
- =?utf-8?B?bDltbTZaakxJRTdhbkdhd1o3YStnVFV1VXZCSGhkdkh5SjBncUVPM1crc1p5?=
- =?utf-8?B?L1Y4Mk0vYkdmNlBqdVgwN3E5UzU2d1gwMEloS3ZML3FMZTRucTN5WkRzaDgv?=
- =?utf-8?B?eUZhMkJIcTk0MHRTeXMvdDg4T3F1U0xQSStTaFJIMERzMFAxd0pqVFNXYW9o?=
- =?utf-8?B?cFR4UUNrUk1QRk5BMzY1UTN5RWUxL01mRGNnbzRTa0EyZlhQY29ScFRNbDlh?=
- =?utf-8?B?dUx2aGdHOWl4Q1U1Z0dnUnF5TndjdWVKYyt0RGs1b1JyRSsvQWM1QT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed99e851-55e1-410c-1c6f-08df33b8d6db
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 23:28:28.2422
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 30dWDx4TCFwBmEjG0MIzikHl5WTAla7iBb4YOuToJc3Zu7jFkg/+FJ51hlCZaKEy
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9761
-X-Rspamd-Queue-Id: 5AE8720009
-X-Stat-Signature: cmy9hriy3zg7i7dtqjqq93xe8r7t7g7m
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+References: <20261021152527.375070-1-tarunsahu@google.com> <20261021152527.375070-4-tarunsahu@google.com>
+ <atlQ_Er0Ig7CCSxv@google.com> <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
+ <9huzzew0el59.fsf@tarunix.c.googlers.com> <at_CncIPYCxOVkLo@google.com>
+Message-ID: <9huzecdcghxu.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+From: tarunsahu@google.com
+To: David Matlack <dmatlack@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de, 
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com, 
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org, 
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com, will@kernel.org, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com, 
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org, 
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org, kexec@lists.infradead.org, 
+	skhawaja@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8AA831C0004
+X-Stat-Signature: n49c79hbqxp756pbqwjio1pkdweouxzw
 X-Rspam-User: 
-X-HE-Tag: 1793057312-434485
-X-HE-Meta: U2FsdGVkX1++rH9fX5wYn7+6bSLGNQxd7MeLxdI/9JZCeb93DQBO7zxOAnk3dF+abvDFG2DyFyfyFViAqu3RKEMKw1XTjwI22i4IqOWyDiEAqU9+TxVDt5HFJIiwyng9t7/C7R62sE4WuPui8V6GM6aku+miCv91S9pWrryjLGl2s88lTz98Rr81nMtQsuvZZPYprZFEBeMfqeo5Q29zQivTnBwvD8JcGt4CA79aNn3wN/G488plTqdRKvak3wFT6ER2+P+XmT4dttTL4j984y9Wvbf9gSxpjQOYcmvrtJDEkVhAh86BhSnpyvc3OtzluBHBgUNUv+Itj6MzQohdjc2/fyBZgDaWNXkobQA5w/zpyHSEbZ2M/W0yz7yzSs73VgcPeIxHS+wVJZKhluRspn+DR/basIYKu+XNnm3V+mpPVN9tmCktgOWGzM98+pPWVGbLieS96r1zHHiFhUaOV9M8YWGT+rhD4mEPyfpkqszkbWUc3voWVeYqBC7JWUoa0I3NQVlwyNFtAsA7botHEhW5+FI8o34vcH/T2ZHKqVEQUiXnhCDeQtBJhD0tkHKJhJ9wWNjlxeDU9GLX1/4EC2iOLTGFYfUt3yG1QnhSfQsw5dpofF6J5HhSyElGz50px7rFEG+BDuLYWLc/6uD/6+J8RM/MpgmTiH4XTRvzVfZ0t1/W2sgIGBkypuh4mwePUZm/IRlekEsMqWQ+1Z9rjxhtgNluzmnhQlK5em3t/rztB0U0xcfI6yQSNpOT79Cp0rC3zpuBTY/vI+IDUmlc3CuvTYUL74gv84/+ABh36kkVNLf3PzALUuGeCt2Mvpt+hN4oZZjc8EzWSNfcZ9nlbdNtUl/9gwl6g8hkVjubSifXFzH7YeO1dl7Scyj67LwSbWsUVr+rVNlTb4un3BB9Gzl5S0REbDl+ZgGNdt07D36iECBevOboKVRsLuVNU8znpYbYEPUlcJs514XA0/0
- PSMACnd4
- p0p/5vyrBShxWRj32wrfs+dJ8/CQlaRPzlQgD1tk0n4wVD0kNz7E9Qqt9V/1XgCyITQtoYdrwWiHqQlpyGhVFZtoOjfgeDm1olehOg11M2nkjVVqeOInP1p5RAIzxVq6lvJibJiPt0CMsCXyqULweHsjruDDU+qb8/hbOeOm5SiO1eRmzA3N2loDrzdURpghgf+LxbOVHFiSxwzF9Q0WRo9ZeTOP1eyMw60alnWk/DLkGNAevHaIIV0kfAm4rJ6bhZXY/WFRn7QtLNjAGSlPI+mYbQb0hLIg+LDMYTaPiuJOzTProeWKps3PB+EEoOiBce+Y8oXP7JoLWKvbNO5MXR5L4hZKnbR0QMlzmlpBtQHJj359zH+hi+8e7sGyUxbv3UZRTNLxzaX62HQ/WNBoEqiyVwLb4ZjvliRtYi5Lmf+PRtVZdAchgGdnWAlgI1qeQ+6rTmdoYMYjBBATjLqpjRqms7hX0woq6M/vh
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793057327-696131
+X-HE-Meta: U2FsdGVkX196aDLDBZ2n+sJ2RnKI+wUwZUz07xqUmZzbAP4cLWZZFYrOyTik0fNyjW2Zg6Mz7thEkmtkr4d/wewbiWrmh2uUb5DkUJwv6GdODRUWOevUhdPs/XwnrQ0jUnE+08zIuKxiYnmpWokXbcu2yDQKmzlAGp2F8UK2pGgPkTjo0VNSpf+dqSXFk6hGWCNjUuZFMbB2jG1F8MEIndWCnezxvaej3MZqitS3Nz+mv2qWVhmTGrk54jK4FzA46Snxjkqfns7gOkFQxakLaTha5Zj11/2knSPdi73wfN4Xw3f9RUJnke7sSJ2lJuBBaCcovD6AXZit41ZFLwyy4LBLybMbKjSiRbpYuS2LB+4FFyuwOOtrtuBp1ZT7jmlQAhLD8PhKPBe4cOsB4VHzl/gWrPkQXUm4Be7UAX28y2EQjJpMeV4/1gc6KBskN7u9nuJfHp3mHa6mbbuCl42lbv8IFs7JlaGvnd5w9EwmfdV+EeSbkDyYnILoj4bGPI+FxM+e84W0uuc0KOdHx5e4XQB85BUpMaCBuj7zIt7nQPto712BGNJv7Zzh5lq/GFsfw/71HP96Ea2rhyrbCWkWzNsQnSSiWDOZpGypWGXbkhqjK3B5OPoQuSchnIVOBlQThCQc49WqFgrr7DnCMsiOvtKBq1zb7dIw8CcEUvyWZzGupeA4aoNlxAv8TN2pqc/T5uhS5xSVfQNMUIZimq17ylPly+QAi+znbUQQo2vJuuQI6LZ7VW+gRE7eNPPvD+BOrqnrrvjoMHgA5CPz8+8HZj8iX5EKuEwpmM2YIZHlmbzf1Mhx95QKBWDoMzoqTl44pzcINk3HKH5gTxxRsjB2SEi2SX+kkEvPBNf1rs9alqs/tWuyMzVwHjMn2ejlXEDudqG/bQIRJDJDTXy7zn0UVcuQ1hLf7g6E/WA9Mrkpt3daE2CEInpldTqeKqyBvIgYyrOnTS8oh8Tep+b929L
+ lrDKvDbA
+ cBkljSV089MjHXtFoSvHuzaTI1VsU6VURdmal/dt3QUIAPdWQGCRjzyNzDxuCLe/iyyQWlCpH+47RRKryFs7xTfhoHO4+GR2KCLVUHvKP+HCWdb94pBAq1DU7Oo/xcM7NPQQP9tFMPECLC0+V9h+6t9+WSR7q6ZkAE2kYt5iqXPqUQuQ+ZQdIFlHi9E+bArgPFF+Tue3gQMTid0f4BRbz7sX5lwjlMbdbC2dUoSuz7imab3DleVoRtje8rZ9xBt52T4sW2fPfmWcH/37XVViwaUjb4ouODmIajchD4KZw9K26WNJF9TX4n/YXkZcy/t7ndJIisQ6L+41z7zgGItxHSC8C9CDU2Mr2Gx8fq/JMDRc54fFkbUyGP6rNb7TlglR1NzK6+WnMGmz3zezmeXcKiKlJ/Vw3xkLDv256EcqOJ/ryE15V07VLZjRi65ZsDCHQwkZu6xirEvNOBxagXcpVGX9bcmZ2FOgYdcywXHwzhuqve6fp+Mh9DtatRITze242+Axcx6K44tY1t66NXOrowpwCxRDqa7HSXamWJ7IlOTwDRH9F6NtVTwToTEIbeItpIxIXO5tfqTJ0ekl8gGYhXp8kTSSOBHv4i/g1ENLb70sugHI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -197,74 +123,142 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26 Oct 2026, at 19:24, David Hildenbrand (Arm) wrote:
+David Matlack <dmatlack@google.com> writes:
 
-> On 10/27/26 00:16, Zi Yan wrote:
->> On 26 Oct 2026, at 18:39, Zi Yan wrote:
->>
->>> On 26 Oct 2026, at 17:13, David Hildenbrand (Arm) wrote:
->>>
->>>>
->>>> How confident are we that it fixes the same issue?
->>>
->>> The issue here is that folio_next_index(folio) used in the mainline
->>> code can be an index lower than lstart and the fix is use max()
->>> to prevent start going backwards. (I wrote this to make sure
->>> I understand the issue correctly)
->>>
->>> Zhang Yi’s patch passes start into truncate_inode_parital_folio(),
->>> which has a new signature, and it is updated with the folio’s index
->>> within the [lstart, lend] range at the beginning.
->>>
->>> So this patch fixes the issue at the caller and Zhang Yi’s patch
->>> fixes the issue inside truncate_inode_partial_folio().
->>>
->>>>
->>>> Does it also cover #8?
->>>
->>> No, patch 8 is still needed. I am checking it on how to rebase it
->>> on mm-stable.
->>>
->>> Patch 9, 10, 11 might need rebase on mm-stable too.
->>>
->>> Since these patches are on top of mainline instead of mm-stable,
->>> you will need to rebase them. IIRC, Zhang Yi’s patches are needed
->>> for ext4 + iomap buffered I/O conversion. Hmm, but Zhang Yi’s
->>> ext4 iomap patches has landed in mainline but its dependency
->>> is not. So we cannot drop Zhang Yi’s patches and ask for a
->>> resend. Adding Zhang Yi here.
->>
->> To clarify the dependency, without Zhang Yi’s
->> truncate_inode_partial_folio() patchset, the ext4 + iomap changes
->> would cause data loss. We probably want to get Zhang Yi’s patches
->> in first to avoid that.
+> On 2026-10-26 11:50 AM, tarunsahu@google.com wrote:
+>> Right, Required bit should be source kernel payload property to tell
+>> target kernel that the payload must be handled to correctly deserialize
+>> the data. It should be source kernel (userspace) responsiblity to make
+>> sure it understand the target kernel before doing liveupdate.
+>> 
+>> Saying this, During deserialization, target kernel's required bit is not
+>> necessary. So I propose the following truth table.
+>> 
+>> Source hdr  Target supported[i]  Action
+>> ----------  -------------------  ----------------------------------
+>> 00          0 or 1               Accept: feature absent in payload
+>> 01          0                    Accept: ignore the feature data
+>> 01          1                    Accept: use the feature data
+>> 11          0                    Reject: -EOPNOTSUPP
+>> 11          1                    Accept: use the feature data
+>> 10          0 or 1               Reject: -EINVAL (invalid encoding)
 >
-> Ugh, what a mess.
+> Yes, this matches what I had in mind for the semantics.
 >
->>
->> Patch 7 to 11 do not apply cleanly on top of mm-stable due to Zhang Yi’s
->> truncate fix, where
->>
->> 1. patch 7 can be dropped as I discussed above,
->> 2. patch 8 needs a folio->mapping guard for the added statement,
->> 3. patch 9-11 can be applied with fuzzy, but I need to look into
->> them about functionalities before fully trust what LLM says.
-> Yeah, let me take a look tomorrow.
+> To be explicit: the source kernel should set the bits for each Live
+> Update based on what is actually preserved, rather than generating the
+> header from a static per-kernel array. E.g. memfd would only mark a
+> feature present for memfds that actually use it. That's what allows
+> rollback to an older kernel as long as nothing being preserved depends
+> on the new feature.
+>
+> But looking at this again, I think the required bit is redundant. Whether
+> a feature can be safely ignored is a property of the feature itself, not
+> of any particular file. Every file that has a feature present will have
+> the same required bit for it. The only thing that actually varies per
+> file is whether the feature is present.
 
-I will reply to these patches individually in terms of rebasing on
-top of mm-stable and how they interact with Zhang Yi’s changes.
-It is not too bad at first look.
+The required bit is subsystem property not the per-file. e.g. memfd_luo,
+it is set at compile time for a kernel. So every file will get that required
+bit set. It is not per file property.
+
+struct u8 memfd_luo_feature_state {
+       [MEMFD_LUO_CORE_FEATURE] = LUO_FEATURE_REQUIRED
+}
+
 
 >
-> I cannot put into words how much this shmem + pagecache shite annoys me.
+> The required bit still has to be conveyed to the target somehow, since
+> the kernel that needs it is the one that doesn't know about the feature.
+> But it can be conveyed by the feature's number rather than an extra bit:
+> split the flag space into required features and optional features, and
+> assign each feature to one of them when it is defined. This is similar
+> to the required_flags and optional_flags approach in struct pci_ser [1].
 >
-> What a piece of crap people created here. And looking at the massive changes to
-> fix stuff, what a piece of crap people are creating.
+> Keeping the same header shape as discussed with Pasha:
 >
-> I better go to sleep now :)
+> struct kho_ser_hdr {
+>     __u32 size;           /* Size of header + payload in bytes */
+>     __u16 nr_required;    /* Number of required feature bits */
+>     __u16 nr_optional;    /* Number of optional feature bits */
+>     __u64 flags[];        /* Required bits, followed by optional bits */
+> };
+>
+> Required feature N is bit N of flags[], and optional feature N is bit
+> nr_required + N (using nr_required from the incoming header). The length
+> of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both spaces
+> are numbered contiguously, so there are no gaps, and up to 64 features
+> still fit in a 16-byte header.
+>
+> Each bit just means the feature is present, so the truth table becomes:
+>
+> Source bit       Target supports  Action
+> ---------------  ---------------  ------------------------------
+> Not set          -                Accept: feature absent
+> Optional set     No               Accept: ignore the feature data
+> Optional set     Yes              Accept: use the feature data
+> Required set     No               Reject: -EOPNOTSUPP
+> Required set     Yes              Accept: use the feature data
+>
+> There is no invalid encoding left to check.
 
-Good night. :)
 
-Best Regards,
-Yan, Zi
+IIUC, I believe this will not work.
+
+To Communicate between source and target, We are defining a protocol, A
+protocol which will be standard for all the kernel. And each bit location in
+flags must have the same meaning in both the source and target kernel.
+
+Now in you approach, If Source kernel send feature N to target kernel,
+target kernel must understand Nth bit as the same feature. Even though
+the bit position in your approach is not fixed but they are fixed
+relative to their starting point.
+
+required: reference is 0th bit: So target kernel will undersatnd the
+          bit as the same feature as source kernel.
+optional: reference is nr_required: So target kernel will understand the
+          bit as the same feature as the source kernel.
+
+To make sure there is harmony between these two kernel. Even though a
+bit is not set in required for a feature that must be 0 in required
+range. and similarly for optional bits.
+
+So flags will look like 0b 0 0 1 1 0 0 0 1 0 0 1 1 1 0
+                               o o o o o o r r r r r r
+
+                        0b 0 0 0 0 0 0 0 0 1 1 1 1 1 1
+                                           o o o r r r <= This is wrong
+                                           because target can never know
+                                           which bit mean what feature.
+                                           So as you said there will be
+                                           no gaps which will not work here.
+
+So, Based on the first, We still using same number of bits and increased
+complexity and no gain.
+
+
+For the current appraoch and V3 [2]. Think the below one as msb is
+required bit and lsb is feature present in payload bit.
+
+00  FEATURE_ABSENT / DEPRECATED
+01  FEATURE_OPTIONAL
+11  FEATURE_REQUIRED
+10  IS INVALID (analogy: required set but feature is not present) which can
+have different meaning in future if in future, a need arises to reuse this
+field.
+
+Deserialization can happen per feature from right to left. without
+jumping back and forth.
+
+Because of all these reasons, I believe current approach presented in
+V3 [2] is the better. It is close to your PCI series with two flags
+field for required and optional except I combined both field into one
+flags. In your above approach you do have two counts but not having gaps
+(which is wrong) and the way you proposed to parse with an offset is different.
+
+Let me know what you think.
+
+[2] https://lore.kernel.org/all/20261026174217.603114-1-tarunsahu@google.com/
+>
+> [1] https://lore.kernel.org/linux-pci/20261013162529.1928093-1-dmatlack@google.com/
 
