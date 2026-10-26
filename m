@@ -1,96 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1D8606A31B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70AE606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LrSeN6Ms
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=a51umk1S
 Received: by kanga.kvack.org (Postfix)
-	id D95BF6B05BD; Mon, 26 Oct 2026 08:23:41 -0400 (EDT)
+	id 05C9B6B05B3; Mon, 26 Oct 2026 08:30:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6CED6B05BE; Mon, 26 Oct 2026 08:23:41 -0400 (EDT)
+	id 033F36B05B5; Mon, 26 Oct 2026 08:30:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5B556B05BF; Mon, 26 Oct 2026 08:23:41 -0400 (EDT)
+	id EB3B36B05B6; Mon, 26 Oct 2026 08:30:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A29F56B05BD
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:23:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2198AC06E6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:23:41 +0000 (UTC)
-X-FDA: 85364693442.21.236B647
-Received: from mta1.migadu.com (out-20.mta1.migadu.com [95.215.58.20])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 381F01C0002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:23:38 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D2FD26B05B3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:30:53 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 659811A05E3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:30:53 +0000 (UTC)
+X-FDA: 85364711586.20.BF4027B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5D7FD1C000A
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:30:51 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LrSeN6Ms;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.20 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793017419;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R3abIAHkCndJWOaESG+STfCpled7+lksS6AZrZBon/E=;
-	b=uJ375XGDjznxJ7e5i9bKK+THcYJ8iwSASs2pzf5KogFIBQWsZm+px9qeKblw4J7iQOKj2C
-	jobWZvgHBsZnD4co0z+1bQwYVyOhrlv0RuytBbjlRkvV9IM4JYd/7n8FlVminion+WQiJk
-	EmSAsp/w/5yGBhldv+ahWMHWl9G7b24=
+	dkim=pass header.d=arm.com header.s=foss header.b=a51umk1S;
+	spf=pass (imf18.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793017851;
+	b=E7bduqtlp3rH8HcL18d5qioupm9DoNyl9zNoECpp0j3ZdC7+q6lvp1GkpBdw9YwjcKBlVK
+	DwqUEPNZ56gzARQTWF4mZWrAD/xHstwhXnx/9XizqiaVLBpGAPBsmBR6gM+EsecdB73RM+
+	xt+0ywTUj3kW9x68zJz+AaoMxKwUAGQ=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LrSeN6Ms;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.20 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793017419;
-	b=1RxVldkTpgIZ3gjNxqy7nco/89MSoxWc8T3WAyoLbLXVJKRXjlSyLgbDOA4c7WfXVxe0fM
-	AiEZYrNuXDJXQKJgA+0HYgprVbydf2twBuAxKqlJbSflUGUjTQhgwbeZ7E36wAaGKBSy8Z
-	tAki4RZk6CVtVpP5GwisJJO6HQrK8I4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=BRur1T5Cd7MQHpgJV027Bta+ISLyg752XtPnkNJ+VCg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793017418; v=1; x=1793622218;
- b=LrSeN6MsebCIoP9emGJYMgt74P4QehJ17BhTse5aybDMq/SaLtk/eSJW2C+9EuKKNcgrniJV
- 7VxFSi7f2VYyn/Yi3v5k9D5Aqx1FczpiS5HDR5xPhrWc5BF8nMZtDJNyLZyLdz09eAkIEF1xMdN
- xXHkI2bHb3B5yjwI2JapJRdY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id cf25d12802c1723f;
-	Mon, 26 Oct 2026 12:23:37 +0000
-X-Mizu-Trace-ID: cf25d12802c1723f
-X-Migadu-Flow: FLOW_OUT
-From: Jackie Liu <liu.yun@linux.dev>
-To: glider@google.com
-Cc: dvyukov@google.com,
-	elver@google.com,
-	pjw@kernel.org,
-	alex@ghiti.fr,
-	aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org,
-	linux-mm@kvack.org,
-	kasan-dev@googlegroups.com,
-	muchun.song@linux.dev,
-	liu.yun@linux.dev
-Subject: [PATCH 3/3] riscv: keep booting if KFENCE pool reservation fails
-Date: Mon, 26 Oct 2026 20:23:04 +0800
-Message-ID: <58e3baebbf4e454725e6bde8b7a267fb71cfdaae.1793017074.git.liuyun01@kylinos.cn>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <cover.1793017073.git.liuyun01@kylinos.cn>
-References: <cover.1793017073.git.liuyun01@kylinos.cn>
+	dkim=pass header.d=arm.com header.s=foss header.b=a51umk1S;
+	spf=pass (imf18.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793017851;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TRZt7x37p8LUgQOIpKaz3b3988dBzwRGltnd5ZVeEBQ=;
+	b=xBgFLOF1JZ65+X5HZoxdvt1rW7XLwowGnVtQrKJGZjVY/vSDRYEF3372o0zTN+W3E0brl1
+	iaO3tv6iVlv0WHYKjlNyGi2N0DlrhluRb0vsg6xFXU87iz2gNgpZI7XN0BPYlMyPy0b0Wi
+	pqDgu80BhS9mzeMapRh+y2SVJJzKn8M=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F3F025DF;
+	Mon, 26 Oct 2026 05:30:47 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16F583F7B4;
+	Mon, 26 Oct 2026 05:30:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793017850; bh=X7sXgG5KeOSy1aHvYxzPYxQhid9EVso1C+EnXtpcXiA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a51umk1SJn3Qg0uasCVQzZnOrDFKghUAEP7EkrWFXdPPNFIMzLLrV9N8cjkr3aGKF
+	 z8GG4zNZ3Tm/0q6VoX6Psp3ZxfySUkB3fkJWOhbNWs22m0DRA+otCMqkcURphbPTl5
+	 fFeWa3OFzRFlj5VqI9kqkZNToJ4SuBOlO68fncXY=
+Date: Mon, 26 Oct 2026 12:30:45 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Zhao Gongyi <zhaogongyi@bytedance.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, will@kernel.org,
+	Ryan Roberts <Ryan.Roberts@arm.com>, dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com, lance.yang@linux.dev,
+	mark.rutland@arm.com, akpm@linux-foundation.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/mm: restrict transparent contpte mappings to valid
+ PTEs
+Message-ID: <at9H9Vkx57pIcPos@arm.com>
+References: <20261013093600.54995-1-zhaogongyi@bytedance.com>
+ <daab2f45-56c2-48ad-a24f-aa4f889e4da2@kernel.org>
+ <e0f60526-bb95-4d39-9a7a-72cdf32ca5b6@bytedance.com>
+ <cc2e3af6-bb56-41b1-9cde-151797c3068d@kernel.org>
+ <3b57c214-6a43-4fc7-a531-fb5eac196465@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 381F01C0002
-X-Stat-Signature: zox8jix6jgjdnqzyaf3kwbf1z4ougpn9
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3b57c214-6a43-4fc7-a531-fb5eac196465@bytedance.com>
+X-Stat-Signature: af3agg6dan1znqucpyjnatyacowrrkh3
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5D7FD1C000A
 X-Rspam-User: 
-X-HE-Tag: 1793017418-419743
-X-HE-Meta: U2FsdGVkX18n72WT8gZnuTz8XEfRr67RUj4QsqCYm10PKZui512SsZ9RnXwKlqmfBygoOSghd0lILqns6nkyfZ8MXuhO42XH24Kykk2qbMjuMXvdlnf9UCoU4fjjc+JCVvu4ZCZqczjaoFNdX3uekSa2ltfGmnhubelzcxCwq9+AvLt62erhXmCkfKe/FoUWM498wC0gjNQKndkB83/AILoNVHufGdGEXO/DXf4C+k5gdAF9sFfymp1J8NozIL+T/hpbu5QiTZn2QqSwYELL6gobRHEPcC8SKJK//WDJLWoZY+VwQBlLJBidbtboHEy3FtK6cQpb6FOlT59vVZqWtbMF5/IWS1GF4AuATQbpE5NWyISdqw1/gsl+R2fYmk+a8/fJClp50VKy4iEm6rg9Esr2sDhnDhDtaeK0HL/lrB5D4a4Njjwb4+l77UU6xf4RaSSlIGU+tGkJuEq68Gpp6i9J9HFPqbUzCgQ1kaVi+Yy4J9Q2vRIh/vP/9gMmYNllNnIQdzEXvMsrO6NEGOxicWz9Chn6CllfgJzy0oPhtRjSxE1+NkQ6LJ699axLysVrafjYl0d93QjroPHgy+0LgRLFV2Whr4RhNQMWLJYMGtwdnDQaIY9FxOMwNBX/6sxhuaN5jDqm5RyBXNhiZXJtRqSt/UYd1T3xnaANWtRZ5SC4M5uUwUPaQUeFA0DIbkgQm2SgEMnwC7iB9bPitAfOEOKCxHcZVN+1QvoQCnZuuC8LOL9mDCkdQydd03sPLRdJ9hzrtqThjs4Z7zO0HDgGYXE8DixcPnqHFTgZr+o7WnTRj5nc4+haTlS4FNvvqhY0GJ2eokjIdLEotTqJ6jKUl/QqeL7eDdvekp0c0+X5C6EKTeOP/3GicTBFOgznGZk+zzkmKdheihw7Yv0+NESSSSqJjsn/PK2RWnCkP+4w4NrcZLYfVC71Hy4qoWvmlj2xOZK3Ca0rRv7huFiTRVK
- Z/R336WY
- TBiTQkZ1gYrIIlZ6doAVW3glxUWHKoh4sN9fW3Fb9HUiHGXfiKm9eKJYUMXZ4kzB9Q5L444u+tdt1CzdavPlu1F+7NzZrZWyY6xSr7JOpdoDROcNjX76M8YneVxSkL1Pg4p/8e0XmyRBzJ8Bl9n37heP6bbifpIimhlBxLP9jt2Iq9KbIBdfltHQ2geRuhQw7NTArvl9XHxz9MjEEw8FvnMPpPJzuw34iFEuGZRG5SWlWvqKxYf+p3tKL7A==
+X-HE-Tag: 1793017851-311014
+X-HE-Meta: U2FsdGVkX1+AOctzw2WnFI5g0UNXruN1kY233T4fxSXK1JE/tQhEzwSAhlUygoFXmdyBKEmekb6Tuj+O2gHniSEHIy4HGEq+1XRYLRJM1vQqiYBg/ITf0ODuEV3R7fx0t27WsQHny04zsw07Ouqy7tn/tXPNVuTkMzCLwuKq/L1vqurYSjFhWwlbRr/l5a6Qyc+DGhUvN5V6n2vXwutL+jUlqOEVxF4DCG7c7HLGczyQaBU9RL3OvMoVF7VmJ1UtrGkf2K9dT5T7MM4bZhQbqihOfOVcRdHuXKI6S3TFIqhOTZUxLRKI9eeeLT2LZQ3XdHKij7u8Dl9WjxA7YpJcS/RpS9YHooujubap4PaRH/geg9Y670bP0IpYiaRgGT7OZGhKIRL5LqwuwYLq9JKli4S66BlL3r0Qt7PkQ9Qy80a8IS0xtMkR2E/Xx2eErd28VDUqYy1S2pynk0QV9wn3RocpoUl5fG5CjRgFDH1sIsOuB1Cs8HSMyBDr//w00WryeY/8jURSNAonkzczM78j78TK0XErcN1+fAifMggTnosFq9wrFkAn6rtlJ9zED4vb3ZYZzC+Bt78+Z8Amnshr5qpRkK5CcEteLKAWlR9TsrHAmL/L7GdeinAO0gm4glHYfPkoKzRhV55uTqFAvD8Ag7YuAYyj4MhBs8RC+B0FgzZlZq8uhjNLiq6fna7xIziNmLBaR+6ihqvh8gu2uoTTnTm54Uo1mwbI66RVvF6hCCf9Qdaid4UWw2USCJbjJbkFaGenkYEJpPbw+5ikJJo65so+NqRaE+quJbW9KxuJxLbJ0QjU2uIG3PTn91W4Ba7AgHxBKbM3lEAYOToZ10DaOQOVsFe5U4wSVWzoOEkUA7t/FGQnaQa/EpRFDa3AQuidixI6n+AL6C9OrVhQuudTrAnXffxCsEO5weK3WcpKFk5Lx6bQ9FcSFL+wVhGbhPP1emiSdn8naOP+qF/sstQ
+ RFGUW89w
+ ZU9umTYZ+5RU5Tdd6nqm9rROIy7sg/I6nJXUeZc+1LQcthG+U4yA7gAvMF8xV9MdJ9gfEIPK7tturDRu8yhIVZU+hwN1/uLK+GUQvx3vU5c+SAhv5HcufA8nKBAUJMpQYMN/rqrfNafgsfQo7aBY00SQbi2c7T2T3AicHBA71mM1Lo75P2uGz1lLY8ofNvuqmxd5nfnFrtDpSNM3k53OfGYrnrr8eDsM/VGDnozOlJJBsY3ZxdyPREkSzP55GvbhCkwjvvXK/OFTSaUanNZSvIYFJeO7iFC9amYWPJlOpi5v+msVxNLjeBAhSnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,91 +101,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Jackie Liu <liuyun01@kylinos.cn>
+On Sun, Oct 25, 2026 at 12:00:33AM +0800, Zhao Gongyi wrote:
+> On 10/24/26 4:55 AM, David Hildenbrand (Arm) wrote:
+> > If we have the spare PTE bit, why shouldn't we just use it?
+> > 
+> > It will make batching over PTEs faster. And we care about that for present PTEs.
+> > 
+> > So I don't quite see why the stable fix couldn't just do it right away? Do you
+> > have a prototype that shows that it would require significant code changes?
+> 
+> I tried a small prototype that keeps PTE_CONT on present-invalid PTEs.
+> It leaves contpte_set_ptes() unchanged and makes contpte_try_unfold()
+> recognize pte_present(pte) && pte_cont(pte), instead of checking only
+> pte_valid_cont(pte).
 
-A failed KFENCE pool reservation hits BUG_ON() and stops boot. Continue
-building the linear map and disable KFENCE if the reservation fails.
+I think it's worth doing but currently not sure it buys us much unless
+we also change pte_batch_hint() to cover such entries. However, if we do
+this, we need to audit the other pte_valid_cont() callers (e.g.
+ptep_get() needs updating as well).
 
-Reject later pool initialization as well, since a replacement pool may
-have huge-page mappings that kfence_protect_page() cannot handle.
+So, if we aren't going to change pte_batch_hint() as a backport fix (I
+don't think we should, it's an optimisation), I'd rather take v2 now and
+continue with a proper pte_present_cont() etc. patchset on top.
 
-Fixes: 25abe0db9243 ("riscv: Fix kfence now that the linear mapping can be backed by PUD/P4D/PGD")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
----
- arch/riscv/include/asm/kfence.h |  4 +++-
- arch/riscv/mm/init.c            | 19 +++++++++++++++----
- 2 files changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/arch/riscv/include/asm/kfence.h b/arch/riscv/include/asm/kfence.h
-index 29cb3a6ee113..57e57426a7d6 100644
---- a/arch/riscv/include/asm/kfence.h
-+++ b/arch/riscv/include/asm/kfence.h
-@@ -9,9 +9,11 @@
- #include <asm/cacheflush.h>
- #include <asm/pgtable.h>
- 
-+extern bool kfence_disabled;
-+
- static inline bool arch_kfence_init_pool(void)
- {
--	return true;
-+	return !kfence_disabled;
- }
- 
- static inline bool kfence_protect_page(unsigned long addr, bool protect)
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index fb37b0b67efe..393106cd25ba 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -27,6 +27,7 @@
- #include <asm/fixmap.h>
- #include <asm/io.h>
- #include <asm/kasan.h>
-+#include <asm/kfence.h>
- #include <asm/module.h>
- #include <asm/numa.h>
- #include <asm/pgtable.h>
-@@ -44,6 +45,10 @@ DECLARE_BITMAP(new_valid_map_cpus, NR_CPUS);
- struct kernel_mapping kernel_map __ro_after_init;
- EXPORT_SYMBOL(kernel_map);
- 
-+#ifdef CONFIG_KFENCE
-+bool kfence_disabled __ro_after_init;
-+#endif
-+
- #ifdef CONFIG_64BIT
- u64 satp_mode __ro_after_init = SATP_MODE_57;
- #else
-@@ -1229,10 +1234,13 @@ static void __init create_linear_mapping_page_table(void)
- 	 *  for this region.
- 	 */
- 	kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
--	BUG_ON(!kfence_pool);
--
--	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
--	__kfence_pool = __va(kfence_pool);
-+	if (kfence_pool) {
-+		memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+		__kfence_pool = __va(kfence_pool);
-+	} else {
-+		pr_err("failed to allocate kfence pool\n");
-+		kfence_disabled = true;
-+	}
- #endif
- 
- 	/* Map all memory banks in the linear mapping */
-@@ -1253,6 +1261,9 @@ static void __init create_linear_mapping_page_table(void)
- #endif
- 
- #ifdef CONFIG_KFENCE
-+	if (!kfence_pool)
-+		return;
-+
- 	create_linear_mapping_range(kfence_pool, kfence_pool + KFENCE_POOL_SIZE, PAGE_SIZE, NULL);
- 
- 	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
 -- 
-2.56.0
-
+Catalin
 
