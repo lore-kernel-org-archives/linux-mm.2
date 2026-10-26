@@ -1,141 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C4A606A32E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B3A606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gC3U5SKs;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FQwhEslu;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gC3U5SKs;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FQwhEslu
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=FCJOn1u+
 Received: by kanga.kvack.org (Postfix)
-	id 03F016B05B6; Mon, 26 Oct 2026 08:57:12 -0400 (EDT)
+	id AA0C36B05B8; Mon, 26 Oct 2026 08:57:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0162C6B05B7; Mon, 26 Oct 2026 08:57:11 -0400 (EDT)
+	id A51246B05B9; Mon, 26 Oct 2026 08:57:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6DF86B05B8; Mon, 26 Oct 2026 08:57:11 -0400 (EDT)
+	id 98E516B05BA; Mon, 26 Oct 2026 08:57:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFF636B05B6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:57:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5541AA82AF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:57:11 +0000 (UTC)
-X-FDA: 85364777862.13.0DDE0D3
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3AD11C0003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:57:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gC3U5SKs;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FQwhEslu;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gC3U5SKs;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FQwhEslu;
-	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 735966B05B8
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:57:57 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 04E9514070E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:57:56 +0000 (UTC)
+X-FDA: 85364779794.01.77C9020
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 07521100005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:57:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=FCJOn1u+;
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf14.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793019429;
+	s=arc-20220608; t=1793019475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
-	b=5cbidJhSAftaZFjme+8kpFLI1ot4ZUbZ6oTysPTEj9S9gfI7QCX21pae5MnU2LIVRVfeMS
-	6UF+yiGYCCu0kWOKeZ8qJVEMsUc3mOw+ZZzmyP1tYRi63BjW2cBBryq5/+e7uy+BJnp1bN
-	ovaJ5dRQ2di0WcbY2XEVFqc286y9OMk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793019429;
-	b=gkcBXDuGFFjrMJ5U2MKTLcuDRTqU7m/7GFlW7whA7BwIxp25S9BCNtd3tG/KwgxK/WFdre
-	g8k4E59xj651tNVZqZYEaXYvlmr+j5qHdK/aiDG1B/5BHkkA1cvrFVk9fOwKbxM92aqnbD
-	cBD45Dgse/uY2R9h0Th4WgpTNNjVaDw=
+	bh=kZI3MT1fgSFZtZ0NsU7CZ4YdGhUuoHZE2FDP+AhJ0Qk=;
+	b=gKcuuNO1C2lEbmyCPblurl/EbZprnDpXI3MBNtUDDrCmcTxSkzoK2+VU/aMubep1AqZSgb
+	3pmpmoGVxQOUkfv0bV30u//unlWMLd4hdK9JNRZ0qsBrDmUk+cNgKbn3HiSlx2szCgTAxl
+	lmKZpGaXBsV9Le/DQiJaD34nWLWsTPE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gC3U5SKs;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FQwhEslu;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gC3U5SKs;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FQwhEslu;
-	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	imf14.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=FCJOn1u+;
+	dmarc=pass (policy=reject) header.from=mailbox.org;
+	spf=pass (imf14.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.152 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793019475;
+	b=K1h7MiXGVpI3yOm1gbyMkfQY6NNKNHbUh0o7a/blLZWqJsX/dBd1Yh81isoXrtu1GKboRt
+	XQ/zARl3+evBrJVgYkJMfIKBXO0gATlAxzfKca69TzaybmIiFfx4r6NZOpe5HcAWm3cnSk
+	shWZdw+e8FuMd5l9L40una3Ipmav8qw=
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B8EB21F46E;
-	Mon, 26 Oct 2026 12:57:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793019427; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4jCtvg6Pv6zKnCH;
+	Mon, 26 Oct 2026 13:57:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1793019471;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
-	b=gC3U5SKscHPXg8RjeWwr3oZamighRtqxYQRxVNIjY/Y6YK8s6TQqmhGyALsdAWqI8ejswA
-	T+rG5lmAVGUtVhaN/yYAcLf4QrIQObD0vS4ju5KSjgp0or4xwNEXd04cxTcIUKXOcdGriZ
-	ococ2Hfp6IrF3/SNKrEO3nZKgi8u8PE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793019427;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
-	b=FQwhEsluY/yj6aGnxk6vNIjdQg6JMSvTMi1YubrRCm6nbZKeGaLY7aLGkcZyAfsEiVUZ4Y
-	oZhfSEg8RUKZwjDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793019427; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
-	b=gC3U5SKscHPXg8RjeWwr3oZamighRtqxYQRxVNIjY/Y6YK8s6TQqmhGyALsdAWqI8ejswA
-	T+rG5lmAVGUtVhaN/yYAcLf4QrIQObD0vS4ju5KSjgp0or4xwNEXd04cxTcIUKXOcdGriZ
-	ococ2Hfp6IrF3/SNKrEO3nZKgi8u8PE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793019427;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rtIcRoPsuzvE303euSvkccl6Hv/dLG7a9Be0HhrqmYI=;
-	b=FQwhEsluY/yj6aGnxk6vNIjdQg6JMSvTMi1YubrRCm6nbZKeGaLY7aLGkcZyAfsEiVUZ4Y
-	oZhfSEg8RUKZwjDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 15BE513408;
-	Mon, 26 Oct 2026 12:57:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eyl2MyFO32rLVAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 26 Oct 2026 12:57:06 +0000
-Date: Mon, 26 Oct 2026 12:57:04 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Davidlohr Bueso <dave@stgolabs.net>, SJ Park <sj@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Colin Cross <ccross@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm/vma: write lock source VMA before duplicating it
- in __split_vma()
-Message-ID: <at9NKAYk-W7PhlGu@pedro-suse.tail5790ac.ts.net>
-References: <20261023-fix-vma-atomic-v1-0-8ff4fae1fc85@kernel.org>
- <20261023-fix-vma-atomic-v1-2-8ff4fae1fc85@kernel.org>
+	bh=kZI3MT1fgSFZtZ0NsU7CZ4YdGhUuoHZE2FDP+AhJ0Qk=;
+	b=FCJOn1u+/3qCGOcdCmyWy6c3EnJJbMA7p+5O/jZIFJVDNl1nGPzgOOVLBR640V8uM6B4cg
+	zZ/Pd2cWtaHFlZ2pzYBrz6T8KveM3Ja4nPS1wx3z4Wn8ndDqGTKe5L/mql743iB0WWg8lX
+	HHAQLFQCKkrwRu0z/ka2d+4N+34Sh3RcPoZd9cF1GK069gPmtg42dz5bpiLp1RqXhxfrZB
+	FIDbd/IYVmY3xvi/CNqOTra5g/Fn9Sa8sxo8fcx+OvMjmzwY8p7tLWhCZXYIroA5v5p+kn
+	lDyEXt0TiCcLdn8DJdli6UFmFLuwBeO6MNGSyJIOgLiWhB2msBOouLoOYzOUXQ==
+Message-ID: <d054b7a2653a2ff3d419b689a50a53290c2cafbb.camel@mailbox.org>
+Subject: Re: [PATCH 4/8] Docs/admin-guide/mm/damon/lru_sort: fix remaining
+ grammar
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: Aveline Noir <jm5905938@gmail.com>, SJ Park <sj@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>,  Randy Dunlap <rdunlap@infradead.org>,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Mon, 26 Oct 2026 13:57:49 +0100
+In-Reply-To: <179301327249.2.16817896016779044743.damon-docs-grammar-4@gmail.com>
+References: 
+	<179301327249.2.4690198998605536207.damon-docs-grammar-0@gmail.com>
+	 <179301327249.2.16817896016779044743.damon-docs-grammar-4@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023-fix-vma-atomic-v1-2-8ff4fae1fc85@kernel.org>
-X-Spam-Score: -13.30
-X-Spam-Level: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3AD11C0003
-X-Stat-Signature: 3yqyrwtufh8iixqjyxbtjp996nt76j7k
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-MBO-RS-META: nzgmngh1z81sf44u537fisxxmnjw44kz
+X-MBO-RS-ID: c5f618f06e0dfd708bf
+X-Rspamd-Queue-Id: 07521100005
+X-Stat-Signature: z9woh8asy998ye4aiobuqz9zej6byhdr
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793019429-453576
-X-HE-Meta: U2FsdGVkX1+1AJQdPD6bfw2PCnr5cmocpb+Cq56HksYtB6vOXQqO9pdy5xTQn8+qZMogNCBGgop+vAdPllecf6HnBXZvDbtjtnGozvPLKhI9B4OdXGfhGAzJHo4Ut8WS5YohdxaC7pZ74XOUkoIF+9GuD9L8rccb1a5NdpF1ZxD/jn3UQot4Pr1VdJK1SqMOQeg5aCJNGMdoCcchDdgG4ZE9H7YMiuRHuBegxvuUSRgwhUOWRbzrtX8DnmJ1tBQyfNT/TStu0bFQiohIDdYDrp5Kn8WMAN6kSdK27sSvSX4P4x61WyapUZ0IlqaZZ6E5nfF3EROQNLWy8A2w6YxzTxwFUz0B26GwpVKCpJSmSVqPkMy/cpz/hzyWWC+q7ywXngILrqJR/nB5nTRIEgRQzG1BE9uFrvCIXh7n3gjQTnz2lxN3Fpri5nSTC8gOOKXf1MmyBEEXpklLvK/PRS2sV7UTqsnedQVFJrU8MkLc7rj0qK/0O0yKl9blneQeodYsVDeGT0F901ficG7N8sPF57GxNnqGqu8Bypt2L2P2Ev5i16AiMxwx/gZSDhWKZeJCEykrbPaeqfKqMqMc2w30z6hRvGzPSqRNkMRiTQbmvb78JcYs/M/jmOPRBmcZvDNyptHkNLAXmg+AdSUtfKLZrphE9vq/y/RmLw/MeJY4Ptil+TztgxxbpX82RSqn8w0oHhSuKwh3MU+OSz17SlEDeMlRLsVnruvER5xEg8LDQPiUPJ6+iT0Iw/zG2oH/sWEhLo0MI+M9dCIiMpEyiMWb66384BoLvLEMm2u+gEkdKd7+Gfq4PgGPLKE9dgOqX4eIbZfwljpVt83VOszaYnDDGPE9bZUV1l16hGCJtZ3jfiWNYayfRO108jTw5xxOmM640c0BvpZ2H3SUWcoqb+m5AfXvLk8pvWtiKcx6V+f9ohAkNAN8tpwM33Ojiepx8I2hMKkEBvkzACY+cYXK8xK
- RlmvMH+3
- Bj9e4B15zAsTc0yTSJ/6BIwLmPVSdZbbM8dkRu1UxezAj+fIpSLPbGUndoPjTlV5Qc4CmZQWV+u9AnpeRqaojQLMg+KPzewXBXgscThZPqPV/uRrdBvzEeGYjYZ0ohDExtsjcr41X3V7ZMwrzhs4BTckGijjYMgxNH2kFqmPym+Xc1zxr8p2x8fxWEgynhu4fYGx0UpN44DpNuRfRlOB2hpNv4fICkcOLaFZzRoFa+e/2UMKm3ciBC+OFdcDGd/Qj0Xs17tCzXYgHvEMBArS48HWbSU8xR2IYMh4zW7Xf/mFqZF6qOVT0V3+tUBqWwfAsys5nCx+z7p5+X2dMwBaBcusgGTafW/1DgfTctPeEhNqqznJcu5PelKnWOg==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793019474-501911
+X-HE-Meta: U2FsdGVkX18mMeHn+HZkO3pONg4arxL0hLgtYdHeP20iH8qILhItZH5R64qua5db7qdW7f04jKxNVlK9xUXEQsu9OKc5JKrptoxVeoHzQpQYy/q98T2fD5cQc9D71GrP6NWycQQGa1Qd0htkC5fNLRQT/eTzPbuipVAFFMAJHQXLQsjtSSoVz2Mna4q+Vz7mzPs3JB1vrC5Qj1VzgFexXWxUZ9n++Hka25Gzwt5bNijXI/BqYhs9rS8+gBtiXHrh4svtFPBSnqT/tsZhTr0RAOTn3MNlwIT1Xj6HqaUXvPqMJKqwa1LjwkZURJFh8AFMxs4eetNG+X6A+zs+8an0RTSj7RunINkywSaNUwqQaEQoQAvZv48mQSpLPe+BVK4AVY6PCY2lHZJt+TSE2ejZL231MC/zd70DUXmMmWOWrFsqtFpVEf8OV5AkiG8k3Z6yM6xGMlEca5nv184vpIaw4LJUn/PILh9hwqNnfPcTsGn8S00+F9j4C8jKxcAeAteZEi3x8668wJ1qUNM2YfLt1Dju7rhDWNyBfH9fnCo1LHNZ29CCZV9M/o3s1NKGd4jF8tl3JOmib7qyEa3ATSbicTl3obTvysbKGaEVxAss9neLMr8sR3s43neMMHfmgUMuJd4+hVUZRosXKYWlrHeCuHlKjg9cqrgenF+OpLB25bojUGei9nx2dAb4Yw/tBfX1srGEw7y7xh+RrreOfyIkax//XaTBVJG6O46mOTa+4relrZZZoTloTaTeHU7uaSTEfrDu9v35iP9Fl5ZOlbj7EhmywmzqiNaeclcdHNQItbUc4+R7/UcOwq+YzcZjPtvIlk7voSkT/CAo2bc1UHFLWHNEyAg163WLFXsEX5MMafYya4K9/JSIZ0r1ChvsFKw59Lecl886Jvk22iJm7U6ECK0M2QP0FqUKPa3S03rfgbB5vOd4JuES/wmQsSgioU7XA0aytkRxSsI8Sw1/tHP
+ HwCtWISk
+ REik4e4oK3Uiu18+E8BO+KG8zEk7AKtz6nsoT83vx02SBMwsE3jXGpRF0hU0cBVQdDdWWGtzRSk2amE07tT2qyOk/dp6wmWT+yaJItHtutsptHkpM18LbbGOi26Xk4g4vNrsq8gKdueZX+Ut45sfN1AkmiN66Ud4A5snXiB4U2NJ+NrDXhMFP6c9Cr1AM/tKjezRNV7+6KTUWLAolRYfhqQ4DOhLNlldnYj3Qvi3svEr8kdb3mnEmttzYlbZX5bceSlDH8U5EVQJJJJCRUFs4UFDOFXJvy+oByR3wRgO9Wm68aDSbOnnssyWrZZbMGmclV/N8aun3B3C+bqRXlfpIgAk/scBYrA5onWfwcbEB3RZRTj+7L/TYO3pxDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,29 +105,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 02:47:28PM +0100, Lorenzo Stoakes (ARM) wrote:
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> 
-> __split_vma() duplicates the source VMA before taking its VMA write lock,
-> and until the VMA is write-locked, a concurrent thread might set
-> VMA_MAYBE_GUARD_BIT, resulting in the duplication missing the flag.
-> 
-> If this happens, then fork may fail to duplicate guard markers and, if a
-> file-backed mapping, THP collapse may also discard the markers.
-> 
-> Resolve this by taking the VMA write lock before vm_area_dup() and, since
-> all callers of vm_area_dup() now hold the VMA write lock, assert that this
-> is the case there, and add a comment to explain why it's needed.
-> 
-> Fixes: 2ab7f1bbafc9 ("mm/madvise: allow guard page install/remove under VMA lock")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> [ ljs - add VMA write assert in vm_area_dup(), commit message touchup ]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Hi again,
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
+On Mon, 2026-10-26 at 22:14 +1100, Aveline Noir wrote:
+> Manuel's recent grammar fix for this file, now in damon/next, covered a
+> good part of it.=C2=A0 This should take care of the few mistakes that are
+> left, like "should automatically activated" and "Make DAMON_LRU_SORT
+> reads".=C2=A0 Rewrap where the lines got too long.
+>=20
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> ---
+> =C2=A0.../admin-guide/mm/damon/lru_sort.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 45 ++++++++++---------
+> =C2=A01 file changed, 23 insertions(+), 22 deletions(-)
+>=20
+> diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentat=
+ion/admin-guide/mm/damon/lru_sort.rst
+> index aa4cc90ca57c..c628e3f6e587 100644
+> --- a/Documentation/admin-guide/mm/damon/lru_sort.rst
+> +++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+> @@ -35,7 +35,7 @@ deprioritizing cold pages on their LRU-lists.=C2=A0 To =
+avoid it consuming too much
+> =C2=A0CPU for the prioritizations, a CPU time usage limit can be configur=
+ed.=C2=A0 Under
+> =C2=A0the limit, it prioritizes and deprioritizes more hot and cold pages=
+ first,
+> =C2=A0respectively.=C2=A0 System administrators can also configure under =
+what situation
+> -this scheme should automatically activated and deactivated with three me=
+mory
+> +this scheme should be automatically activated and deactivated with three=
+ memory
 
--- 
-Pedro
+Yours isn't wrong but I would make it:
++this scheme should automatically be activated and deactivated with three m=
+emory
+
+Choose as you like.
+
+> =C2=A0pressure watermarks.
+> =C2=A0
+> =C2=A0Its default parameters for hotness/coldness thresholds and CPU quot=
+a limit are
+> @@ -55,7 +55,7 @@ DAMON_LRU_SORT utilizes module parameters.=C2=A0 That i=
+s, you can put
+> =C2=A0``damon_lru_sort.<parameter>=3D<value>`` on the kernel boot command=
+ line or write
+> =C2=A0proper values to ``/sys/module/damon_lru_sort/parameters/<parameter=
+>`` files.
+> =C2=A0
+> -Below are the description of each parameter.
+> +Below is the description of each parameter.
+
+My choice :=20
++Below are the descriptions of each parameter.
+
+
+> =C2=A0...
+Looks good to me.
+
+>=20
+> =C2=A0--------------------
+> @@ -310,7 +311,7 @@ Total bytes of hot memory regions that were successfu=
+lly LRU-sorted.
+> =C2=A0nr_hot_quota_exceeds
+> =C2=A0--------------------
+> =C2=A0
+> -Number of times that the time quota limit for hot regions have exceeded.
+> +Number of times that the time quota limit for hot regions has been excee=
+ded.
+
+I would go for this, but I'm not sure:
++Number of times that the time quota limit for hot regions have been exceed=
+ed.
+
+Number of times that ... have been exceeded.
+
+Thanks,
+Reviewed-by: Manuel Ebner <manuelebnerli@mailbox.org>
+
+> =C2=A0...
 
