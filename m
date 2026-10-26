@@ -1,92 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F89606A327
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FDA606A327
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=iXfDunGr
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LkBSVsKT
 Received: by kanga.kvack.org (Postfix)
-	id 9EE566B05B7; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
+	id AEEE66B05B8; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A12B6B05B8; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
+	id AB2E86B05BB; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B7E66B05BA; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
+	id 952C36B05B9; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 67F0A6B05B8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C3026B05B7
 	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:42:26 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD6671407D4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:42:25 +0000 (UTC)
-X-FDA: 85365496650.05.B7ADA7A
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0445FC07A8
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:42:24 +0000 (UTC)
+X-FDA: 85365496650.07.FF4AEF6
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 113E2180006
+	by imf07.hostedemail.com (Postfix) with ESMTP id 669CB40007
 	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:42:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iXfDunGr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3_JDfagkKCPkubsvotbivhpphmf.dpnmjovy-nnlwbdl.psh@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3_JDfagkKCPkubsvotbivhpphmf.dpnmjovy-nnlwbdl.psh@flex--tarunsahu.bounces.google.com
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LkBSVsKT;
+	spf=pass (imf07.hostedemail.com: domain of 3-5DfagkKCPgyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3-5DfagkKCPgyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793036544;
+	s=arc-20220608; t=1793036543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3G8QhvNEpQ3sy+r1BDzvVBq/AXAxP3+qa6H4bl6GlDI=;
-	b=6UskOkOx6CHbw3+DkJIPMa7iN3YheR2J3MzlYJQ3tx+Fs5zL7dq04AZzhkRsxPKToY7cEO
-	3QaHM4aBzS6VMj762ljtcjxyqXYGGxaubbIfMpxyghNduKjJ3MW3xk0+cJ/I0raTgr0KYO
-	x9nv3B65bwYhPAJq5RKjrrD24tOXdx4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iXfDunGr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3_JDfagkKCPkubsvotbivhpphmf.dpnmjovy-nnlwbdl.psh@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3_JDfagkKCPkubsvotbivhpphmf.dpnmjovy-nnlwbdl.psh@flex--tarunsahu.bounces.google.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=B4ANvDZKg/XTDKTxx6DRbKMCW8lIWCNJ9Qz1jlrn4KM=;
+	b=v0+H4kK7p5H6cAeTbI70gDvvTauz/zfMPe6oitReDCRNPeZst+PJJ/yri0lmXQreOimwKD
+	EpTa25Iy8e/P8yG7IS7IqxFZDsn/+EFVLfjPp/J0lFULGWnCAHUiE/7OJDC1xoZA0zkVLb
+	2EGpyrcnkq3ET5Ak70zqcf3Z/3z191E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793036544;
-	b=VKufJBtygRrFYSD8eong6SA9m9DbiBQpP6jP3PBIOinCXBFZPizUkny/u7KgCe4JW5DFRK
-	92JhTCFlPY0e8Lho/h2jloHBipFuGiHaD17iFglhd0zqrmkVbzxRFmFY+ZLwDgRJaf6Z2z
-	QUPiihIpR7I7659eBS61tXzUMLHgKA8=
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c4322d31021so359603466b.3
+	t=1793036543;
+	b=pWW7aue550G3NWudE9Mzb/9iWyBfmy/LAXJ+9g33Kq93Ypp5TQlSiR+obHdNFnTa1KANUD
+	0dGvK6nGY/XsCbAEmo6EeaPaQGBBXVGN9waoXZ6UhahRB7vmoD+EecBJiOVZ4fsAIHRZhv
+	bwFmqRmd13ZbIwRY3aYtugTsEzev85E=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LkBSVsKT;
+	spf=pass (imf07.hostedemail.com: domain of 3-5DfagkKCPgyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3-5DfagkKCPgyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c40285df2a0so191133066b.2
         for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:42:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793036543; x=1793641343; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3G8QhvNEpQ3sy+r1BDzvVBq/AXAxP3+qa6H4bl6GlDI=;
-        b=iXfDunGrEUHnc6YOAgZozAZzAApGD61gmr0+1htPnIpA8/7muQmkKFOaQ41ik7ays9
-         N2fRS32J7NIRRnrMA5Ms73Cg8aA1fSG5nRN7ktizJ7kIsY+cVAyX9SwxbJrpEaJP+Lyc
-         TIullJWJCoTJFa9iku+d9WkSzq2cp9wiUtGchKT+oEVqDz15Lw36TWgDCC7V5EtAO+F4
-         HJdDVD4Bl1I+wW6QpYhCL0rJ9GkRypZJ0W/6k2jjCIj3iq/U8SuNzn6M65yWsKDi+7MW
-         EsCJ/UibBxR6F4FrhT1j0er3YhV6CTZSnLgH3WESjwg8i3c7EmwsLot3toAkjirUJf4e
-         P8BQ==
+        d=google.com; s=20251104; t=1793036542; x=1793641342; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=B4ANvDZKg/XTDKTxx6DRbKMCW8lIWCNJ9Qz1jlrn4KM=;
+        b=LkBSVsKTiT7AMDJvnjCB1u0K6vUj6qwNJ1R1B+t5DTO16+3DKhheeci/+kPj8K2zuW
+         W0c2kkqCdoHS3b3HJnmlMqdyFtFmsd/2T0toQbKBjl7CHewkYS/8eexDtGrNrkepQxsx
+         J4coNY35YyxubQ2CAilBcdafKZGwu2HyOh0n74q0i+8SmrNPkbwcEVt96C+qWojiLb3B
+         vKLOpxzxn0HCGWIiJNJRLaqAPzsgp85DpDyNnDe2A3AvwtHCQA0EOKXFkmFeZp0D16DB
+         gmS/Eg1WWHfSg4Y6FpozoBeG+6pvHH+KyjSI5wtwasi2xTUdJ6fMy7BOPOh8WgDRL7Ip
+         /oEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793036543; x=1793641343;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3G8QhvNEpQ3sy+r1BDzvVBq/AXAxP3+qa6H4bl6GlDI=;
-        b=rjdoeoWB1hTCKz0E95dl09Jok+l1tftsjFq57NBTTmJQ0ox8KTYRcIfPmq3vl5KBxc
-         AROCaNP7jxISDsoMhFr6tFPQXtK/qZhrVj1oQ1XmPjOJs06dPBXy2FR1GmvOpxeoHvJ0
-         X198xilifP+X9yXgg5tN7+D/TLfJrOvNysram2yc2kdGJk/7UE82VD0TXbf7AXcpIhgc
-         ovL6ECSriFiBiqDmVS/KUkSp+GeNKD7hYs+uLdFEMFK2p/Gj21skNbtPoOaZ8t85Vzkp
-         JsJQpoDnwxLIQ6SQxcrtRE7FSHrsjOEWTZheyUPBN9udhcCSEhOXNUXj1H40PrJIxnsZ
-         Odkw==
-X-Forwarded-Encrypted: i=1; AKwUvBxi9LEC4S1eObHMpRTWuzp1tcEDueEmL14YUaop+BgyqsroEvOj6IXzR1PZXE2v5r5QjQoswcdsVA==@kvack.org
-X-Gm-Message-State: AFq9FYJeNQfwS9Umbxn5uPTrCYXI3+sBoRBK+S7O4/mYPyZ5sQxDjVZ7
-	+V1GPNm2o7JaPCfrpBauCp4GXHXnq5IH/Lm9qM3j4lW2sb1pWEcwRBr8C+V+hBQCNV+mzVZiMRw
-	+tBX2fnOVK+O4XTEyiw==
-X-Received: from ejaw11.prod.google.com ([2002:a17:906:33cb:b0:c35:60c7:1880])
+        d=1e100.net; s=20260707; t=1793036542; x=1793641342;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=B4ANvDZKg/XTDKTxx6DRbKMCW8lIWCNJ9Qz1jlrn4KM=;
+        b=Eyu38O91qPG6xPKvT0n62G2WEIxPWPIGmGRwV+pG7JmlOZlrL/tTM1RVL89U7doxZv
+         FK6sQycXuQexVYKF/nELQCLZ/Z2ym+UIPQzH2dj6xk2N0+aamQIjvWYzukqoLQnGKE2f
+         j00XTVwiRPjL+zJ3f4QKICbusLQq6D3aOOanuCn2ml/erHncDimyH/Ysrwu83NjDQV71
+         bat7NJjnwzyaZ2e0b3vSk2EUt1dFSPkJQDPInWgBv1LHce3crlRTBKU1RR1dzem7bdD2
+         mZ9y2AVY8RvJRs2AqZtuzgRg8iSgyCVsgWUx304S51YquiN3p11Y1NJNx4zsEU0XlfAq
+         P+Sg==
+X-Forwarded-Encrypted: i=1; AKwUvBypjAOlvnhTsoBQDv8+Lvf5/UkbdqEiqbmdn4rAsC1Tqtp767TDl0cp7q9uTt9TLBPsKlIk3p/ajA==@kvack.org
+X-Gm-Message-State: AFq9FYL7KSGMxrLLBKwliadEYo385MyAuJN4TKX7JxYdvK1xOUVHZxlC
+	czyPWaamjeNQsectgNNuGHbn0ZAjH/FPrAjey6owH+o/ZFkkefpzKRvKsyYL53qLIvDau44iwUh
+	LuAFzh7J8bmhW1+ewWg==
+X-Received: from ejjj17-n1.prod.google.com ([2002:a05:6938:a091:10b0:c46:a6d4:6c2b])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:d18:b0:c3f:c856:fb7a with SMTP id a640c23a62f3a-c46bdaf85d7mr817347766b.3.1793036540600;
- Mon, 26 Oct 2026 10:42:20 -0700 (PDT)
-Date: Mon, 26 Oct 2026 17:42:14 +0000
-In-Reply-To: <20261026174217.603114-1-tarunsahu@google.com>
+ 2002:a17:907:608e:b0:c46:8b87:c1f4 with SMTP id a640c23a62f3a-c46bddc4a4emr843314466b.20.1793036539136;
+ Mon, 26 Oct 2026 10:42:19 -0700 (PDT)
+Date: Mon, 26 Oct 2026 17:42:13 +0000
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-References: <20261026174217.603114-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261026174217.603114-2-tarunsahu@google.com>
-Subject: [RFC PATCH v3 1/4] liveupdate: Remove __packed from LUO and memfd ABI structures
+Message-ID: <20261026174217.603114-1-tarunsahu@google.com>
+Subject: [RFC PATCH v3 0/4] liveupdate: Add feature header for fine-grained
+ ABI compatibility
 From: Tarun Sahu <tarunsahu@google.com>
 To: loganodell@google.com, alex@shazbot.org, dwmw2@infradead.org, 
 	seanjc@google.com, Mike Rapoport <rppt@kernel.org>, will@kernel.org, pbonzini@redhat.com, 
@@ -99,19 +96,19 @@ To: loganodell@google.com, alex@shazbot.org, dwmw2@infradead.org,
 Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
 	Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 113E2180006
-X-Stat-Signature: 7igqgdzr6imt4xa338kjdw1i5jzzix51
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 669CB40007
+X-Stat-Signature: zu7nwj1crtn7w54atwgk7macot5zobi1
 X-Rspam-User: 
-X-HE-Tag: 1793036543-451912
-X-HE-Meta: U2FsdGVkX1+7pOKe3e9DgDjjX743QAjrYAkE8dQ/sa+3M7D5aaX754KCfnKYexuoIE8ut+0WYlEebPQpGO6Lclc4HRPAZyjCgLOskFv3HhoTJ8saxj6RfCsqQyTVgYQfm3x5CoHUEtTilXjxtxqDdWlkvyw/SJCRPfQKHPoZWJKZ8Sl1mvTi5Yk7JCpEK/6bLmUhxaoEIsGBTOKdx2p3KqtTU+lgNZY/pbJ/z0DiGojqVlD7nf2D7KhptVbqmpfX8U5F8BYf2taAr8cRQ2yiR4MEBKUQYtadPOREw54h9sM3+2XcM//lp5aLpMGF+LRYzPrBn+ldJiHCDpCTgAgdeFyM57CPb2x7vHX9q2MkKbAr6j04bt3VkWdxytDVdrLZdlVT7aIxf4KBPXYxYLrHSHfB8+pcEKco1c89qtxjpCIuCQxrUArLciIMNJFhLL97R+1xO6tgoxXbQslEt1SLIrKbCexDa2OoDNv7QqsbRBT/Bk0CjbS8CgPgqYM69GfKMDRAaQNZDgwhGqRON/0s0jS5jy3Z0Pv9mW/X5H9EIf8TQ3yITyj6NTkPAcs7f3JND4stu4qPwnEq4n25BhWoQ370Y7O1+yfCn+q0SjujNtZNo9u1UIkyZCix1j3qxLV72r29pqir4IlKksJydUtSHt1CzN+SRdavngt6mqf7gMv1OYXbYUlB7wBv12achB7uMOPUyCFhpnda17KCCO5VTc/jKhv7zJwTx12/PW3RoNspOrc5SV5SCbqxy6HsLFKAgszW5Na3vTV5YJPYUSmyLvVZYQOnOHpu70n8zTOBuNAlvbjeb3d7QMBwRJiMl7SBWkoP2hamCeKg2UVceH3P4YBbS85Zlc0IZTPK+CYRSI2sTJ3cETwgRa5Ugkr5K2RVhRwDUOJDH7QL+/hjuKX6fzKImyT09PuGKlTh+Nm0hyc89s1NIZQ34g4SGy+iDeqqqZ7G6l9DlMAfhstjiMN
- J3tTE/ZC
- 8lMgadBkPiEUznMiVzOI/fsOc4pL5sYLeaB2o8PZdlMW6X0KVMdKh2cabVERqe4DVi+1iqczu7J6hBRI2dj7Y8Zpx04VEPD6v8gPg4ooKLc6tTZzBTsR+Y09p03EXTBKtQxxqdRZjuJds7wFWtQmoL71m4Y3FEY46rMOH53ocBYZ28EtCrVwuOO/3cw4zB4fKI+8vm9SumGLdo80gniOz7kXU2xH+UzUG8iuaDFZuwDxPe9GSvlVpWPK69/8ZvFsh2vNHfWmPSk0a/gFOhKgWkMTZaTfkHB+MshLTUfawT1mliwLvaR0EFXl/SVmo46/1Fr3RMOTRPfWfIw5hrLmTUY4zB9d2x35c+7oGEF8oIxzJCqlRvbsLXZHbAJwyh3qM/VPlwW71itGCjsxUwF3QWgzB4DDMC0sBM0UbH64NejlxcqGG1giK8dlZk4fKc1KKBudq52CfI074DATihH7+MXt02Ps5OglAzwlRic5ztqjVqfd6PDztpkVRcAE/q7HmknW8wTicK4jTJfBLubCsOXXxQuAuxU5iVV3bKZkfyP2aQ+CyvSFZKEsognHwd8MPiJPeOcSJZEIHB/Q3Ur81WGydtl6412jGpRVtDziyDqXjKiMEW8FkwBdqDMWWRgAUdxIEgUOTBqLkQ2kHy9v0u8BhgLQlT8pW0ZhNtiIgqHRPhBYz9gT5OyzfjA==
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793036543-329395
+X-HE-Meta: U2FsdGVkX1+WCrYb4G6FhH7Mu4DI0k7ea6qdUIEmnGj5/wr/8Mww1v6MUsDCe08ji8PNk05AzJnPL+KJGDC27Ym8DdBLVFwwZUcr2D8bisz5ezocfZAzloovL17jPXELSNx6koWTCMQwJkRQyE0XazOC2nMGhu6B+8nk5aoQRr5U+3+deP2KFwuy0HVb9pjL5s6cv7LVWTeUnEFKxGGsULMfgh8ZHLUEceJQReDQnI8Jdol9dwStncE+YJC26XqdcgKYAvyavE/oJycmsZNyyg/5p0K37aHI108+adOV1IYY/kTGJbfQn5gpX42Awhhh+Cl49EUEgKTurG7/ZqvaS6g7FPiZbVCHH2lDyMxG1VFApobOPHZWEIXPS7D+QRFpbxl1Haaf9TGRWuaGwZkoHWo7hKl2hoSx7CD2nL8XCmf4Us3roowT/lqStgSgtM3cXw9yFu1fMJuD4Vw8r1q8+RuQMBzsGQebH4N+zcKAMBuuAisxzLRZC/q7rt+xa/fUf2l3fIiH2Jkkx/neCUUXBOWU+G4DPmhOHY9QBy3HtZ74P+UOVcs+zv1Z8mGIRrbvViE/yxM6t9UPvRroZR/fgCcxdtnxz2SUZ+7D/fBRb9adVElmgUD7i8I4r5kvXQVjcKJsEJDsyy0Un2QKjTQuuhFXxoMKClmcfmQ6x1rGgTcxoCu5SipNoTZ4590jRtKFJH17e/1Ph9HYvVtH6vky/oPwB/VwIrDcEfOJA0iH41lB2gNposhIxZUQ3szGLxYVRhhw+zb3DbgCZTJ/BLDDLJSr+S88c+j9W8HbON3yK0uOgA1QY+MqtImg+AoyKBYBmQSgi1p95YHVGMUuYGqQi3Xfa0anvaV64qB3wepi0FeQ8H85V8k/86ow9E1MAXog7AjCUdvhmMlOMooUiB4Bk50aIwtavrfXWLGUuLwEtPKpMdFJ5cmUocUAb5qZJHhkCHRShojPIMWTRSBxUzI
+ ew9F6Zou
+ sBge4iFkn7D1aVt84WCGI+o+7LHznK+2CaSIPKDcOKX+Sm7271QnldWFAEThBKiYgQWqlEJUXU0xtTvqMQvmBx4Xsmp7sgRGWDfS7fcx5PyGHf/unkaWNTa68n7DkiKEKVgddZDs16FOjEUgBIpX4GYTv5AHbm6PmgWiI5H0Zm2jX5C8EpugaLhXmJd+XBhG3Z6gKMyBlwdxX2Il9jaE5fhPiPWRIa505vy8qQ/3BRaw0M8bHGUWG/vMpBCYh706VQULYeDJ0UKwA59OKsGPSL5XgK0xgzkUVXGcic6irn7n62SoddNhAjd3hAt/Lz18fQf9cue29tHuIeIvlYNm7YuohGpTXoE8if9nAtroDftcrKK/STQvUKiP0/Ds5H22pOTT/05nhrxa9PlQrORSb6whOhSzm5BRc1fGsUEcx0Dm6P5VcOdMHUO9Ox2thTuC+xte+j8WoMd+wMd+d8WwexN1u37P88QjUDwohl8kLJxWUCA0NBW3dybwA7ilfsLZozGTcF+T32hSYLfQPCA23F/IeyTx4+SbAOHjRHMjvN7W7NWqJg7Kh2xP79TBa6o2I2zLiJSUW3KCA3dxtxGrSsTfWkqim4TrnMKq9g2q0P4aHYy3sttyLV8R4oQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,141 +117,104 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-All structures in include/linux/kho/abi/luo.h (struct luo_ser, struct
-luo_file_ser, struct luo_file_set_ser, struct luo_session_ser, struct
-luo_flb_header_ser, struct luo_flb_ser) and include/linux/kho/abi/memfd.h
-(struct memfd_luo_folio_ser, struct memfd_luo_ser) have naturally aligned
-fields on 64-bit architectures, with no padding holes between fields or
-tail padding. Any future unaligned field addition should come with
-reserved field to keep the structure aligned.
+Changes since RFC v2 [1]:
+- Dropped the file handler compatible rename and per-FD handler
+  selection patches.
+- Replaced the fixed 128-byte header with an expandable struct
+  luo_ser_hdr (size, nr_features, flags[]), kept separate from the
+  payload structure. The header is 8 bytes with no features and 16 bytes
+  for 1 to 32 features.
+- Each subsystem declares its wrapper once with DECLARE_LUO_SER_WRAP(),
+  passing its feature enum MAX; the macro sizes the flags entries and
+  generates name##_wrap_init(), so callers never pass sizes or counts.
+  The target kernel reaches the payload with luo_ser_payload().
+- Feature bits describe only what each preserved object uses. The target
+  kernel checks them against its own boolean supported table, and the
+  header is trusted as the source of truth: validation only rejects a
+  required feature the target kernel does not support. 0b10 is reserved.
+- Moved the __packed removal into its own patch (1/4) and added a KUnit
+  test (4/4).
 
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- include/linux/kho/abi/luo.h   | 25 +++++++++++++++++++------
- include/linux/kho/abi/memfd.h | 11 ++++++++---
- 2 files changed, 27 insertions(+), 9 deletions(-)
+Changes since RFC v1 [2]:
+- Replaced the 3-mask (supp, req, active) design with a header of 2-bit
+  feature states.
 
-diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-index 288076de6d4a..899943877e41 100644
---- a/include/linux/kho/abi/luo.h
-+++ b/include/linux/kho/abi/luo.h
-@@ -58,6 +58,7 @@
- #define _LINUX_KHO_ABI_LUO_H
- 
- #include <linux/align.h>
-+#include <linux/build_bug.h>
- #include <linux/kho/abi/block.h>
- #include <uapi/linux/liveupdate.h>
- 
-@@ -82,7 +83,9 @@ struct luo_ser {
- 	u64 liveupdate_num;
- 	u64 sessions_pa;
- 	u64 flbs_pa;
--} __packed;
-+};
-+
-+static_assert(sizeof(struct luo_ser) == 32);
- 
- #define LIVEUPDATE_HNDL_COMPAT_LENGTH	48
- 
-@@ -98,7 +101,9 @@ struct luo_file_ser {
- 	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
- 	u64 data;
- 	u64 token;
--} __packed;
-+};
-+
-+static_assert(sizeof(struct luo_file_ser) == 64);
- 
- /**
-  * struct luo_file_set_ser - Represents the serialized metadata for file set
-@@ -113,7 +118,9 @@ struct luo_file_ser {
- struct luo_file_set_ser {
- 	u64 files;
- 	u64 count;
--} __packed;
-+};
-+
-+static_assert(sizeof(struct luo_file_set_ser) == 16);
- 
- /**
-  * struct luo_session_ser - Represents the serialized metadata for a LUO session.
-@@ -131,7 +138,9 @@ struct luo_file_set_ser {
- struct luo_session_ser {
- 	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
- 	struct luo_file_set_ser file_set_ser;
--} __packed;
-+};
-+
-+static_assert(sizeof(struct luo_session_ser) == 80);
- 
- /* The max size is set so it can be reliably used during in serialization */
- #define LIVEUPDATE_FLB_COMPAT_LENGTH	48
-@@ -152,7 +161,9 @@ struct luo_session_ser {
- struct luo_flb_header_ser {
- 	u64 pgcnt;
- 	u64 count;
--} __packed;
-+};
-+
-+static_assert(sizeof(struct luo_flb_header_ser) == 16);
- 
- /**
-  * struct luo_flb_ser - Represents the serialized state of a single FLB object.
-@@ -175,7 +186,9 @@ struct luo_flb_ser {
- 	char name[LIVEUPDATE_FLB_COMPAT_LENGTH];
- 	u64 data;
- 	u64 count;
--} __packed;
-+};
-+
-+static_assert(sizeof(struct luo_flb_ser) == 64);
- 
- /* Kernel Live Update Test ABI */
- #ifdef CONFIG_LIVEUPDATE_TEST
-diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-index 08b10fea2afc..7115a8a77cfd 100644
---- a/include/linux/kho/abi/memfd.h
-+++ b/include/linux/kho/abi/memfd.h
-@@ -11,6 +11,7 @@
- #ifndef _LINUX_KHO_ABI_MEMFD_H
- #define _LINUX_KHO_ABI_MEMFD_H
- 
-+#include <linux/build_bug.h>
- #include <linux/types.h>
- #include <linux/kho/abi/kexec_handover.h>
- 
-@@ -20,7 +21,7 @@
-  * memfd uses the ABI defined below for preserving its state across a kexec
-  * reboot using the LUO.
-  *
-- * The state is serialized into a packed structure `struct memfd_luo_ser`
-+ * The state is serialized into `struct memfd_luo_ser`
-  * which is handed over to the next kernel via the KHO mechanism.
-  *
-  * This interface is a contract. Any modification to the structure layout
-@@ -54,7 +55,9 @@ struct memfd_luo_folio_ser {
- 	u64 pfn:52;
- 	u64 flags:12;
- 	u64 index;
--} __packed;
-+};
-+
-+static_assert(sizeof(struct memfd_luo_folio_ser) == 16);
- 
- /*
-  * The set of seals this version supports preserving. If support for any new
-@@ -85,7 +88,9 @@ struct memfd_luo_ser {
- 	u32 flags;
- 	u64 nr_folios;
- 	struct kho_vmalloc folios;
--} __packed;
-+};
-+
-+static_assert(sizeof(struct memfd_luo_ser) == 48);
- 
- /* The compatibility string for memfd file handler */
- #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
+[1] https://lore.kernel.org/all/20261021152527.375070-1-tarunsahu@google.com/
+[2] https://lore.kernel.org/all/20260903023452.721732-1-loganodell@google.com/
+
+==========COVER LETTER==============
+
+LUO and its file handlers rely only on coarse-grained compatibility
+strings (such as luo-v5 and memfd-v2) to validate handed-over state
+across kexec. Any change to a serialized structure, even an optional
+additive field, requires bumping the string and breaks live update
+between adjacent kernels.
+
+This series adds a feature header (struct luo_ser_hdr) ahead of
+serialized LUO structures so subsystems can evolve their serialized state
+per feature. Each subsystem groups its serialized fields under feature
+indices, with index 0 for the base fields. New capabilities append fields
+at the end of the payload under a new feature index, and retired fields
+stay in place so offsets never shift. Only a change that feature flags
+cannot express needs a new handler with a bumped compatibility string.
+
+Each feature has a 2-bit state set by the source kernel:
+- LUO_FEAT_ABSENT (0b00): not in the payload; a target kernel that
+  supports it can use default values.
+- LUO_FEAT_OPTIONAL (0b01): in the payload; a target kernel that does not
+  support it ignores the data.
+- LUO_FEAT_REQUIRED (0b11): in the payload; a target kernel that does not
+  support it rejects the state with -EOPNOTSUPP.
+- LUO_FEAT_RESERVED (0b10): reserved, not checked by the target kernel.
+
+The target kernel checks the header against its own boolean supported
+table:
+
+  Source hdr  Target supported[i]  Action
+  ----------  -------------------  ----------------------------------
+  00          0 or 1               Accept: feature absent in payload
+  01          0                    Accept: ignore the feature data
+  01          1                    Accept: use the feature data
+  11          0                    Reject: -EOPNOTSUPP
+  11          1                    Accept: use the feature data
+  10          0 or 1               Reserved: not checked by target
+
+struct luo_ser_hdr holds the total size of the serialized structure
+(u32), the number of features (u32 nr_features), and 64-bit flags
+entries with 32 features each. With no features the header is 8 bytes;
+with 1 to 32 features it is 16 bytes.
+
+On the source side, a subsystem declares its wrapper once with
+DECLARE_LUO_SER_WRAP(name, expected_size, nr_features), passing its
+feature enum MAX, then calls name##_wrap_init(), marks the features the
+preserved object uses with luo_ser_set_feat(), and fills wrap->ser. On
+the target side, incoming state is never cast to the wrapper, since the
+source kernel may use a different number of flags entries. The target
+kernel calls luo_ser_hdr_validate(), finds the payload with
+luo_ser_payload(), and reads the fields of a feature only after
+luo_ser_get_feat() shows it present.
+
+Patch 1 removes __packed from the LUO and memfd ABI structures. Patch 2
+adds the header and converts struct luo_ser. Patch 3 converts memfd and
+bumps its compatibility string to memfd-v3. Patch 4 adds KUnit tests.
+
+Tarun Sahu (4):
+  liveupdate: Remove __packed from LUO and memfd ABI structures
+  liveupdate: Add feature header for fine-grained ABI compatibility
+  mm: memfd_luo: Add the feature header
+  liveupdate: Add KUnit test for the feature header helpers
+
+ MAINTAINERS                          |   1 +
+ include/linux/kho/abi/luo.h          | 359 ++++++++++++++++++++++++---
+ include/linux/kho/abi/memfd.h        |  43 +++-
+ kernel/liveupdate/luo_core.c         |  62 +++--
+ lib/Kconfig.debug                    |  16 ++
+ lib/tests/Makefile                   |   1 +
+ lib/tests/liveupdate_feature_kunit.c | 118 +++++++++
+ mm/memfd_luo.c                       |  68 +++--
+ 8 files changed, 577 insertions(+), 91 deletions(-)
+ create mode 100644 lib/tests/liveupdate_feature_kunit.c
+
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
