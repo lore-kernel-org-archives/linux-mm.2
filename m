@@ -1,178 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75555606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE163606A325
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=kIqEX5ia
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QDYnBlVj
 Received: by kanga.kvack.org (Postfix)
-	id 76A596B05B2; Mon, 26 Oct 2026 08:35:56 -0400 (EDT)
+	id 8A3C86B05B8; Mon, 26 Oct 2026 08:35:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71B616B05B4; Mon, 26 Oct 2026 08:35:56 -0400 (EDT)
+	id 82DB86B05B7; Mon, 26 Oct 2026 08:35:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630876B05B7; Mon, 26 Oct 2026 08:35:56 -0400 (EDT)
+	id 76A066B05B8; Mon, 26 Oct 2026 08:35:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 39A386B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:35:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7EB0A04FC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C07C6B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:35:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7CE1C070F
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:35:57 +0000 (UTC)
+X-FDA: 85364724354.30.B7CE282
+Received: from mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7E147180005
 	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:35:55 +0000 (UTC)
-X-FDA: 85364724270.22.33CF12F
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011052.outbound.protection.outlook.com [52.101.52.52])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DE7A2140008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:35:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=kIqEX5ia;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf26.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.52.52 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793018153;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QDYnBlVj;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793018155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dA1WsAFM4CA5VMBWb/lIlNYRchfNZZexmLX+/O1mJ1Q=;
-	b=dKCNqQHd9zXVtL0WeDpZIoX+OTNC2uiVeKx7Yd1L0n0+2MIRSDL4ARCpSnRfc9wG/ZZM62
-	fAzVY1QGeAyXZG1+SkT0SL6gNZFI0daLU+8pXYv00mrVrz0BFYcG1evwX54EgK/ErwwR9Z
-	siFsjo4NXOYGw4auyxqZQgXWO2uy76M=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=kIqEX5ia;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf26.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.52.52 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793018153;
-	b=wSLjfoeF+WRB4acoATkyn8djcNDr4xAcfc3vOQqiQr8T35YvT2UvmHNugl63CkrzjF4qKR
-	cLi5tbOupbZBJal5Fatbi7mab6vu4dTtRqDySPf1lID5SbcEOdTMRwV0cZSCyjwgqaalbr
-	0pzKNRNdpdhKBd5qmbAO1JPTmW08M0I=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tRkZnWngMoK7Qi78R6Di+w9o/qLeNJslbqjnnPkliRHLHk8kaLggZe+xq3VGgUvfAeVQpuF1aHL1h9Oclel6ZNU4AsjNzmR3bmNvF+C7qGwLIT2r6cn7Idmldvcwv60boSsaq8rT8RAccvtv9vGNZ/ZcsgaV8xSYPRYkfvz/N/vXFEjC6+sJdH2/rYsRT2c70gHcW9m1YBhR5BRpUwNpO770rBjNy+n5cw0m+NiSp/e+RmX+bJ4e4DFChyE3NzgrU4N3uA4jQVegIS0HEfl6tSZyqqx9UmWym7gGuPBXODWPb07Wk8lofQfZ64OIGBd0n+2XrF1F/67ohRc0AfmAmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dA1WsAFM4CA5VMBWb/lIlNYRchfNZZexmLX+/O1mJ1Q=;
- b=tmHqi2bpKHcDSz16AA7tDNVvgdlZHA7TJTLpKUq4nLbdRxMynaaQKjwrNPvcvUmOvo7YeBiRadQYxhVc54oapYab3UBPgvIfSKYyNQxtMXlKL/k6h9om6Qr0Quxc3WbHA/ZQqYA64sP6IW6IolPdpC2hUpxtG4djuit2eFBMrU32eSMhb+J8pGleB/Z4Z9kcMe/g+SttVEu4Niw22E18h68x1VwgSLXH47ITVdD0s/WZaM4R3+JKBxzJJedo5KI/BMiGVBDk56mr2Bn0s3Rj/T4vkKD7RKaWwW/qM1JleD5u4B77c2vhC6JsXbk0WxtaIwbLEjF53qLlOMUiBpaAsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dA1WsAFM4CA5VMBWb/lIlNYRchfNZZexmLX+/O1mJ1Q=;
- b=kIqEX5ia+OrY1UCuVEqlueSuK6lyOXq1aecwilLoMggQxKQvFD1COAmzxLJSo74Xdar4mmrkxxHmLiBcYIsBU15wCqBv6vaiYcc3A37YF0ytW7Me1Wm5sXvCpMcnb1gzfbJe6zob1mhwEEOI/ZMXahmnkK7Hu0BOjLtOv82iODM=
-Received: from DS0PR12MB7771.namprd12.prod.outlook.com (2603:10b6:8:138::6) by
- DS0PR12MB8414.namprd12.prod.outlook.com (2603:10b6:8:fb::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.22; Mon, 26 Oct 2026 12:35:50 +0000
-Received: from DS0PR12MB7771.namprd12.prod.outlook.com
- ([fe80::9a3e:791f:33b6:3d8c]) by DS0PR12MB7771.namprd12.prod.outlook.com
- ([fe80::9a3e:791f:33b6:3d8c%4]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 12:35:50 +0000
-Message-ID: <8839b7e4-a830-4c88-9e7d-dd35757c5167@amd.com>
-Date: Mon, 26 Oct 2026 13:35:44 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-To: Gao Xiang <xiang@kernel.org>, Muchun Song <muchun.song@linux.dev>
-Cc: Jialiang Huang <huang-jl@deepseek.com>, lance.yang@linux.dev,
- baohua@kernel.org, damon@lists.linux.dev, david@kernel.org,
- kunwu.chan@gmail.com, lianux.mm@gmail.com, linux-mm@kvack.org,
- mst@redhat.com, ryncsn@gmail.com, sj@kernel.org,
- virtualization@lists.linux.dev, xueyuan.chen21@gmail.com,
- Matthew Wilcox <willy@infradead.org>
-References: <20260925054408.10431-1-lance.yang@linux.dev>
- <20260929123241.1408414-1-huang-jl@deepseek.com>
- <aruyFPzEe3pS_Qzx@XiangdeMacBook-Pro.local>
- <AA71E56E-F29A-44B2-B5A0-7806CD684B21@linux.dev>
- <ary5Nn9le4xG7_-N@MacBookPro>
- <CEE47F27-874B-486A-995F-E223249659FE@linux.dev>
- <arzlfSOgtC-CLoZt@MacBookPro>
-Content-Language: en-US
-From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-In-Reply-To: <arzlfSOgtC-CLoZt@MacBookPro>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0140.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b8::8) To DS0PR12MB7771.namprd12.prod.outlook.com
- (2603:10b6:8:138::6)
+	bh=M7EefUh3aqRq+/kXeTZJUHXPcDw8CBwlgMa4LUajmOY=;
+	b=614j3C2UZrDmbQ04aYhnxyxHQFM1wIWvUxNJ1HxIN0EDOQanY2u3LYgiBUQiIv/Vk1Hr04
+	haD27kiuTGXCAhyY6c9SjNVlXK+JFmxyiwl9db3l9cYOD9eNlSs9R0uG20Iuhesx7J7msa
+	RXdoFBsFKZfi4Z1mzYHbk0tq/VT6gAM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QDYnBlVj;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793018155;
+	b=i9tw+R8JDBbExlnZKh8lZx1QIMriBOPe9JWuBIQfAR32Q5TaHFaHcg2t3kHaUgceB2Z1IX
+	uta6wyGX9xlad2lq/BAp3mXx/pEr3S5izjPBhBxmOBiQxvYSgehanFFiCN7foUHvWkF5UC
+	kUyfI80S1+lyL6uFMfGP3fR5Glm5wZ4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=P4HvR1T1qWQJ8zvWY6aCuA2NNhAyIJqSmu7qznxYcdI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793018154; v=1; x=1793622954;
+ b=QDYnBlVjApUfVb32w5CMpG6fcutS3RlXBpwWR9XiQXVZUC+e7uI7/TcWUVsYf+tY3g0+6vM/
+ ypyeq8TSPTvWOkU4fkRnEiyoq9E0lNqt8nlfltcBIHKN61C4wkdWp0sjHeXj5rTvqds0iAJd2ID
+ 4nUIefE0ECKycUHjLyRD1cyY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7e1874fcba217f36;
+	Mon, 26 Oct 2026 12:35:53 +0000
+X-Mizu-Trace-ID: 7e1874fcba217f36
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <67e0c2ce-c763-4705-a965-1ca84898e438@linux.dev>
+Date: Mon, 26 Oct 2026 20:35:39 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7771:EE_|DS0PR12MB8414:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3aed4381-2377-4a49-a76b-08df335daaa5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|18002099003|6133799003|22082099003|56012099006|11063799006|4143699003|261021121427099003|10067099003|261022075727099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	58Zox8wmON7Bnjf0AW0i/gzeVaf5RCFI6tv/Idjl2RnmWSMru22MNWNYCTblUB3ZcWexwJIrCgqtWUXLBaw/3RzeqEyQFaj9lC9i7vcuirAcJX3A/xlTwE0lJUB6kh4zIzBj7M4duMrJIOb2MhZKAybDXUOfWBlc4lV/lBzOYy8lJO7yA+SOBwx185UEhag1IpXq9YlgcOthT4atthRbKTlBUste46okbVetUKAUHYxbogi6BahEOibt/6GgbKDNJ8aJMuISYOTVeQ4jUTz0x3ox37y+izLosJwCmm6pJXM3NPocbUsmDMBKpDOgzX7oBlN2fsuhUMvmiYjYwQQXteOAuUXol7sJTutXhwXZBgV+Aj8gY74xWOnfQyS1GahhElhJT+grJW1xvrxqbR5RhNQk7gnAua0cLBtd9s+txdpiq+8tNAc0p1ogkUSgIeDyTWY28SHONEwVsNYuYXKpoA4Xitewix2HPTgG29K6sVibzrlCgRAIs/Jb4uQXbZ+RP6oFZGJFV0hTf8Lv2cVfXCLfofTLk2hATq3EOF0Df8ncpznStUPA2zBquyJh3vMOp22WjBONLktka51Fg89syqVuE2jQgFU4Qt5k8O5t4TvN8GF69CuzmSbnDK1HdvZqPQ+Xbx21sZiX0Ty7rObmynFSvsXrmIEUl+Ov7JftrYU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7771.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(18002099003)(6133799003)(22082099003)(56012099006)(11063799006)(4143699003)(261021121427099003)(10067099003)(261022075727099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K0FZQWZLQmdLaHJKSTFPaGFyV3dVcWEwRTh4MVZxd0NsTTdkRElDSTVZTFlS?=
- =?utf-8?B?c0g2WEZGdmE0a3ZFZFZmQURGUEVpRlpmbitFRVhub0JBUlZIRE9TOW9pWG9P?=
- =?utf-8?B?ZmtDV09JZkRQOFlpalg4aVA1WGNNQjlIZXo1Q2xpY2lNaVg2eXFPdnc2Qzls?=
- =?utf-8?B?OGJGTUJ1bDFhUlRuOXVmVmo0UWRpRnROb0RXOE1uVzhnbmw0c0FVSndleVpq?=
- =?utf-8?B?TFhmTmV5emhwZGRjODFUNkVtNGlyTU9CTThxemFjTDJpSE1xNW9VVGxOZ01O?=
- =?utf-8?B?bHZzcDlaRE0xODlIaXdnNFdnRC9mYkdhM1RmN2pvbG82dXNSMjdXS0lWNFgv?=
- =?utf-8?B?cUdmVitzOUl5VnpsRWswdTlYUytnLzRJZjhYNXc0SmZxRmZFNzM4L1VwRHhY?=
- =?utf-8?B?S29ZYjREdEZTTnZYVzRpVlhyQmwxOTBDQVV1QUhLYTNkaCtYa2hUTmd5QlBq?=
- =?utf-8?B?YzVKQkZENzZKMllpdnpTSWNrN0htN3NGamZWN0UxamMyQmFTUDFRdlpYL1Zt?=
- =?utf-8?B?ZjJWRHZtczNZeHROZ09ZTTgxTmxCSGJDbzgwRXBCRTJZOUV5RXVzZ01FamFY?=
- =?utf-8?B?NTN6RGVXT042TkZhakJCamt1N0RxU3BnVnNIMnNTZWhoNlRrMUtta2syWXBT?=
- =?utf-8?B?Q3NjNVBwVHV5ZjFNckJVTzBJQ0Fnb0RzOUhLZTlBWFR4T2t5K2xDdnVWMWFp?=
- =?utf-8?B?cElCY2VFdEcvamN5eHhMZ1I3cm1EWG0zZEgwd2k0eUJSQXpqbzlvVHZKdHJN?=
- =?utf-8?B?Zm5TVy9yMjRsNHZ4K28xVDZSdVpzOGtsKzZyWmlMaGpndXNsQjRoRjlZUWRS?=
- =?utf-8?B?VjdESFIyRzlpblpleTU1ZWVhd3lwSEZ2S2hFTXRoSmVzMEFIeW1XTHpLZzA3?=
- =?utf-8?B?cWtwOHhIMUpBeFZ0a3VMdFB2bUh2S2hqRDBGK28ybEtLa1NkblRpOGtiKzFy?=
- =?utf-8?B?QVhQY085U3lDODFxK2RrVk9ia2hNR1QvV3RLTThhbGl5bmJxQUdVSWZRcXA1?=
- =?utf-8?B?N0VYWEZKNDk4dEdhRUNWaFlJTjJzbW5KL0JWRGVsNHFtVlJub2VnZ1AxRkxG?=
- =?utf-8?B?ZHVYNTRUcWFzMDNqaFhGL2JCSzFiWlpZQWg4MHFFOXlCaHBod3IxYm0vcGpP?=
- =?utf-8?B?V3NwZ2VIRXBDTmpJdUtlcFFQcnErdHhySENvN21zR2ZJRnNUelNrako1dEVY?=
- =?utf-8?B?MzBPTjB3cERoUVREWE9wYURyR1dSazZIemRuQkhUMkdVeG81bWJhY3ZTY3N3?=
- =?utf-8?B?NlpoTitQOWw2S0YzR0ZqNFdiSyt2dUxKY3IwV3hxRldqZ2FqKzhKR1R6K0lu?=
- =?utf-8?B?TnplNEIzTFNIcnVGN2lkQmpRNktyd0xiNFpITk9jbkpBY2pkbTRYdmVmNFEr?=
- =?utf-8?B?ekRiYnRlMXNCV0JLVTM2NmxMYktSaGtweVJ2NTV1M3JPci9vSlhGU1pXRmFE?=
- =?utf-8?B?d2M5VW1RSXF4dklLTVpBY3RUVUE1dCs5WmlWN3lJNnAvT2tvVnBWT0dKSmlh?=
- =?utf-8?B?K2cyd0pHY05CTm51d2oxZm9NdnVZNTNHZk1WRzk4blJ5WWJGSnZYazhzMTV0?=
- =?utf-8?B?Tkdza3M5VVljMXZSVk9zL290Qk8wV1llbmlYR0JhZFk5Q29haGpDMXJ6L3Iy?=
- =?utf-8?B?eUw2bytTODYyZVUyTnExL2loR3o5UVUzYWtwL0pBenpYUGZ1cU54Rk5nUTR2?=
- =?utf-8?B?ZkpYVjFmc1VKMkdmUXdnN1lGbGlZS0JzclJacEEwcmxjK3VMdTdBSzhPNFRG?=
- =?utf-8?B?cVpnallmRzJZT1gzdDU1bGRsdzVud1VTVWRaVXFQYm1CbkkwM0ZuV0l6UTA5?=
- =?utf-8?B?Rm13YmRuOGUvcUVMaHF3L3R6U05EYXpzTWU5Z2VWdmtocFROWUZ3ZFNNWXVI?=
- =?utf-8?B?THluZkVsK2cwZlJ2Mi8rY3RaYWZjZ1VMejFIQUI2MW5BSmIwZjUraDlxQXlM?=
- =?utf-8?B?UnNSMll5dHpXdEhlM1A0RUMrbE9LWDJBckZTMC9MUXA5dExkSmtLL0c5S3lW?=
- =?utf-8?B?cDhWZDVaMktTM3BKdExaYVoyNFBhZ3Y2MjhlNjg2aE4zZ1gwcGdzMW5NNU8y?=
- =?utf-8?B?RGp4TnNwYzhLZUZ0bERRNmpZenBBOVl1OC9OSFJCZTVhZ0IwY2RtQ0RQQnNJ?=
- =?utf-8?B?RE95clZmVXM5NHp2b3cyRTNKb2NWVzV6NnhsUTN1TEpsYjVYSzJ1aEtwc0dk?=
- =?utf-8?B?WjZiUmVyMXdEU1VCRXNhSS9tSndUdWtLZSt3ZW5XSEpFWVJxb2k2WVlNT0tU?=
- =?utf-8?B?NE9GUG5nbGhIREZWZzZ4VGNKQWN3OTMwSVNqMnNQd0drSE94bTY1S21vUk1H?=
- =?utf-8?Q?Hp/GRpO/h2YnyoN70B?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3aed4381-2377-4a49-a76b-08df335daaa5
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7771.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 12:35:50.0343
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XGvktr8TFO5bEcXSDeG4Z4aeyJ5ybywnHBmBMdEpnZoYLBtItPdq5dw0GApRzQwo8dnBOcMOTP7y0BYomWDa2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8414
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DE7A2140008
-X-Stat-Signature: 59ss8kbcnstzjmgmspz3p3iasqwsskqz
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in
+ collapse_file()
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, ziy@nvidia.com, liam@infradead.org,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, jack@suse.cz,
+ djwong@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ hch@lst.de, syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
+ ngocthang2710.1999@gmail.com, willy@infradead.org, rppt@kernel.org,
+ ljs@kernel.org, Pedro Falcato <pfalcato@suse.de>
+References: <20261016065920.4153-1-lance.yang@linux.dev>
+ <27e5aadc-2d68-428f-a958-308e4a75c058@linux.alibaba.com>
+ <atICp2NL8j2z7UFM@pedro-suse.tail5790ac.ts.net>
+ <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
+ <6a005d89-df5b-4524-a4b9-c637cb15f1ee@linux.alibaba.com>
+ <cd6637db-7b30-4cbc-b07f-c2a2b32480fa@linux.dev>
+ <b1b3d8d7-7201-4b75-a0f0-af383d854279@linux.alibaba.com>
+ <3be96a1c-7cfb-4cd0-a4fb-16209494d041@kernel.org>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <3be96a1c-7cfb-4cd0-a4fb-16209494d041@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7E147180005
+X-Stat-Signature: nn3jtmyxtf51acpwfh5g1uw4doowghwk
+X-Rspam-User: 
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793018152-9367
-X-HE-Meta: U2FsdGVkX19qv3/eX+Ifbp8u2xfJMEnc3ZuDTc31UyMzYI+S7ZgN4L+FY9a41nDSuykBuFC74nABl1HCR+YptLhuKrjGE7KDeIVD3JpmqMU9xkfuqc60ZHR9qV/kNTSwDI8jt+EqyiSqCfvJxXIwzg5ErwjwpvFdB8T+NTUTbgBZP99Lt6pfl6ZOp/piDn9IWZlsPYzKWM539zwH4IXHitadTfP7uEZMaVlJx3ynzxD6oSuLVbW2IgfvDctHQFbSB4YVyYjBUD3LD5oMYc7b39qmdNO6HH6yRxlf1pQElUcsZBYm52mtnxBSz60AQxz2fK4bLyIEr8WwqtDNy3t6yEO/jZ+LnUjMH99BCeJw/O0Z9eCbHEzoziyQC1EQy3un6Ag5liaL3GXdOQiM8UTKz90hOD6bncEzB1mQHgj0IR5mDLVbLxGp3duut/fvHCdRQooOmWU4Feqodt2dsFRKrpqAzqfbttRwxZRHv93INVKJTrMyQhMxtHrwdhK3MXMhgllPbuUGAihQmBzSLEnFvOQdn0+EX+bsSNOn3dontsdgFdFZ4J428WmOsYUQ7lcitUP7m36kxDqlzW5Q3L7dILbud7TBNAptVE91g08zxeckqRgYLB0sPx9QbsUoZc0ofDzYY7no2jBaDLukF7P5wHPuhy26z1vnxXFP6P5hrnsb4rHt1Io7awhkj7zzaqkWSToKM97jFBtKTdKhX0a3cLb+0E/QBO1HESwI9hEljJC1NbvAKCto1p0k2AyvWThVsviisB9CrfeJR1mder2hSBJkw0sXqMX3teT2GM1EE7BMvyWgy0uetunoOo4D4IUStTDMIAODZRJsd8k4hYlHU3DDA8C5I8BvmhjfEOGxFI6IxsGOZM6dsBPXXDw4z1I5kwfvhsybzttpBfnBEJMwiiAUhhKx3C/9AcKEqcb98vEaRUvxWrcE6phgoysgI26ib+PcM6YrPPG2fJImGCq
- Voejo5tk
- 8X44/1c38+CpC7jiWBIdUyVEdEI/IgQBheeb535KRYzAVqRV5Y5Ywba8kaX8LGXdssjEXf9aK8rq8wmUNTjb7zKwNa53wvlGs8rYkpVmuLJ10zAAjjfAwbyKnQC+lY3YVpGnEP7DAAdebruVGwUAwBH6tRBujMQ5LLGVfsxd2CfomX+dL5DGQv5D856U24QbpXC6iDanOThLdePIh6e6Vquj0DYdPvbHM1o0GqwO4g/pe0QmIR3Gme2TO1Qy+iTqdnmsXCP3949b5lfNRYaNxd2X3PofuXG9sgVcP162Cr/h/XXTakjPE0TmpUo3Dx9eWbYUV1ctVKleW7RP/MjpxwMpTQi8Btb3qaXCe+FVDpMLoyp2JVf+q9kGZ66zuxWPjqLY/XjvMGejMng1hKdvdTl84SQsdQIsc2vMCuvJk4zQ7RVkMr3Vu0p2lK/pyjy8bIkvk5BUExqAOGa5XuX0RvI8BTSNKrBbneme4
+X-HE-Tag: 1793018155-226224
+X-HE-Meta: U2FsdGVkX19yO/OSY4yKUH46K4Og+0dH5OAfPz0bGGsZuR8mgJ6GnstJWEYCbiVZY6Kyw3nmtbZPo64DQ//pc5W42Nvv9ecE323JU9YLK6Fnszp45yiwc9H8Yoo8CgyBhckYQE3nIi58byop05aKDVIenJfROJw5WUrlQOSkNfGa0DQYlP8+UEhSPy24XKt+6ntUBcxxSS5nKiekhBPTTp/cHQR0ZvPlthqFXpYdr3/TBmNb2s/eRaOR6n7qF8OjuYrI/QrMGBRTg5HbMXhCo/PoXY4+6ZWOW047UZVOAb8P/fue6fJWgYFlMtmWZOE32EVWB6eUxFfuOZhiF+OluiOEUNSwlSocernRMzCMoOWS4X+gy7H23m/tdWoK0ZOEv1IfuoMOAx93lnjEiLMkdGjBELJCHbSFV4Ioou8rN9VFXrpxXu+QA5bsaFlxuQ1qjJstHLQEYgOZ/LVbp0zrVolj8RQrHv9b+nY1WU5PSBPxfSeIYWOi9TPPrkcX72eqoEgVqGntZ3nYAGTe4dmnWOgGgEU5g3XpPufkMxKikpYL+IKp1nN+t2TPBqloDbbWHMAGAl0glfVotc3IZn+O8uvwtcvmVBgqIAgZSnoxrw+myWOj/Kdyy09JR04k4cr37YIUqItiKQ0/uHTxaU1l8a2J9Zh+m7fZQ51KrOHzOyqiZxYKQI/6Xg9jGOMsVbeGrloZU5axii+KFo0vLGUTKOLdMGWUZIfMz/EBv1RryKr2NpPR2JhQ9yB7xG9MhT9/mvkONyAnVjbBED+geDcO+WhesAKB+RPau9vaC/GtAUWfWTNM9EaEdrJAi4sRbvyRirKldUJEMP3/uyI57/i09kA3zTZvbijiQ3KVelsY7/i18bKiVRdb9yDYQLGLX9WTxZ7iMGySwzDAyibiL6oKdGX93R8FMwRNwgkyUdR1G86pDoOjkXJNH3qtnGzDtHChOrQ53nfoFT6WR7PBxGQ
+ wDvYq9Pf
+ CnlP9azhxJdSsylpwJhTlGh91+kuN5gHauJwNdJQPvFNnKLjuu0oL/E4Rh5vbohyerC5Sq4amQ8Sa3aF1OLPq54emBwweFbkoiXmxYf3iQ1r2Je5w9/+J7jSk1ErIam98qaWOmauzySPYWn2vj1SzPvHYt43xrk9GLK3K/ChIACOQ24gjzLmGtDOdIpoAcR2DHl2kvQCmz69nySo0gG0HHFqVdvgbWkLBzl1tBEhw/Mr7WZaLUjIfCFxkVFJI0EGNP4841JMgkYvIoEDkTxZZk8xFDVB4HdcBcNMw5n75HZFOOpc3I16WmNzrr4l+3SzbEUir9qIKn5R2SH+YIvOsnendvMlLQ5thY7wGtCFg64qd3wnMCCl/RKYfrvQo92RBVqa9P9MR6ID+5KfvKls1eCyZ9fpoQkcEcaqlYDp44HjJxlqWPoidHJzv25CeQCZ6thOFf3z13lRKlMc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,41 +109,43 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
->>> Anyway, it'd be better to get some numbers with RL or agent workloads
->>> (especially the host memory is under reasonable pressure) before
->>> landing all these new infras upstream if proceeding in this way.
->> At least for now, as far as I'm concerned, I don't intend to land all the
->> features mentioned here. The first thing I want to address is on-demand
->> allocation of struct page.
->  From my point of view, on-demend allocation of `struct page` for FSDAX
-> is indeed useful and can be landed upstream, mainly because `struct page`
-> initialization takes much long time for large FSDAX devices even a small
-> range is used, that impacts the guest startup time a lot.
 
-Would on-demand allocation of 'struct page' from the device itself (a 
-variant of the altmap case) solve this problem?
+On 2026/10/26 19:26, David Hildenbrand (Arm) wrote:
+> On 10/18/26 04:47, Baolin Wang wrote:
+>>
+>>
+>> On 10/17/26 3:41 PM, Lance Yang wrote:
+>>>
+>>>
+>>> On 2026/10/17 13:43, Baolin Wang wrote:
+>>>>
+>>>>
+>>>>
+>>>> OK.
+>>>>
+>>>>
+>>>> Sounds good.
+>>>>
+>>>>
+>>>> But why not add RA logic in collapse_pmd(), as we do for
+>>>> SCAN_PAGE_DIRTY_OR_WRITEBACK? There's already retry logic there, and this
+>>>> would also simplify the long collapse_file().
+>>>
+>>> That would be cleaner, yeah. Some older stable trees don't have that
+>>> outer retry loop, though ... I'd prefer to get the fix backported first,
+>>> then move the RA/retry logic out in a follow-up, wdyt?
+>>
+>> IIRC, the approach to bug fixes is to fix bugs properly and cleanly for
+>> upstream, without being constrained by backporting requirements.
+>>
+>> Anyway, I don't have a strong opinion on this. Let's also see what David prefers.
+> 
+> Let's get this fixed in a acceptable way in a reasonable timeframe; it's been
+> broken for too long. ... and follow up with bigger cleanups later.
+> 
+> @Lance is this version good to review for that purpose or are you planning a resend?
 
-For virtio-pmem, since device memory is backed by host page cache. So, 
-in the worst case host will provide memory for all the 'struct pages', 
-but the guest itself won't OOM.
-
-Just sharing this idea. Anything I am missing? It could be another 
-optimization on top of Muchun's work.
-
-Thanks,
-
-Pankaj
-
->
-> But in order to make it safe for production, I suggest reserve the
-> guest memory in advance for the worst cases of `struct page` at the first
-> stage, otherwise it could cause unexpected issues for many guest workloads:
-> it's hard to perdict if the guest memory is still enough, it's unfriendly
-> to system designers as well (that would completely based on their
-> experience and hard to ensure the service quality beforehand.)
->
-> Since the guest memory for `struct page` is touched on-demand, the memory
-> over-committing on the host is still workable, the memory reservation
-> can be removed after the reclaim path is done.
+Right, as for the bigger cleanup, that can come later. Will resend the 
+current version as-is :)
 
 
