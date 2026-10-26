@@ -1,105 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE163606A325
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A1D606A32F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QDYnBlVj
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=fiQPD5+F
 Received: by kanga.kvack.org (Postfix)
-	id 8A3C86B05B8; Mon, 26 Oct 2026 08:35:58 -0400 (EDT)
+	id AF7646B05B2; Mon, 26 Oct 2026 08:41:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82DB86B05B7; Mon, 26 Oct 2026 08:35:58 -0400 (EDT)
+	id AA8326B05B3; Mon, 26 Oct 2026 08:41:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76A066B05B8; Mon, 26 Oct 2026 08:35:58 -0400 (EDT)
+	id 9969B6B05B5; Mon, 26 Oct 2026 08:41:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C07C6B05B4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:35:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7CE1C070F
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:35:57 +0000 (UTC)
-X-FDA: 85364724354.30.B7CE282
-Received: from mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7E147180005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:35:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QDYnBlVj;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D6776B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:41:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1BFCAA80FB
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:41:40 +0000 (UTC)
+X-FDA: 85364738760.11.7BB892E
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 11B0716000B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:41:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=fiQPD5+F;
+	spf=pass (imf08.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.151 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793018498;
+	b=M/A1Q3zAfpbZJcUOXTarAi/LO09vG1hM3uEfo4aobKk1UyNgtTwZif4q5j8Vz5pETtJ9iD
+	YcMWqsdOVZ3ZyMaVCaHIot5fdTwWv4A46HKA8IlkRxeOQquAtzCIpLQt1uOH5KjrZRMIJX
+	DyOn9q7VGW5RYNHQCqkdbdLRxwerUp0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=fiQPD5+F;
+	spf=pass (imf08.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.151 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793018155;
+	s=arc-20220608; t=1793018498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M7EefUh3aqRq+/kXeTZJUHXPcDw8CBwlgMa4LUajmOY=;
-	b=614j3C2UZrDmbQ04aYhnxyxHQFM1wIWvUxNJ1HxIN0EDOQanY2u3LYgiBUQiIv/Vk1Hr04
-	haD27kiuTGXCAhyY6c9SjNVlXK+JFmxyiwl9db3l9cYOD9eNlSs9R0uG20Iuhesx7J7msa
-	RXdoFBsFKZfi4Z1mzYHbk0tq/VT6gAM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QDYnBlVj;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793018155;
-	b=i9tw+R8JDBbExlnZKh8lZx1QIMriBOPe9JWuBIQfAR32Q5TaHFaHcg2t3kHaUgceB2Z1IX
-	uta6wyGX9xlad2lq/BAp3mXx/pEr3S5izjPBhBxmOBiQxvYSgehanFFiCN7foUHvWkF5UC
-	kUyfI80S1+lyL6uFMfGP3fR5Glm5wZ4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=P4HvR1T1qWQJ8zvWY6aCuA2NNhAyIJqSmu7qznxYcdI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793018154; v=1; x=1793622954;
- b=QDYnBlVjApUfVb32w5CMpG6fcutS3RlXBpwWR9XiQXVZUC+e7uI7/TcWUVsYf+tY3g0+6vM/
- ypyeq8TSPTvWOkU4fkRnEiyoq9E0lNqt8nlfltcBIHKN61C4wkdWp0sjHeXj5rTvqds0iAJd2ID
- 4nUIefE0ECKycUHjLyRD1cyY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7e1874fcba217f36;
-	Mon, 26 Oct 2026 12:35:53 +0000
-X-Mizu-Trace-ID: 7e1874fcba217f36
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <67e0c2ce-c763-4705-a965-1ca84898e438@linux.dev>
-Date: Mon, 26 Oct 2026 20:35:39 +0800
+	bh=rSbZwM6ArFWnjmuYAFuqV0i8s7gBfvuVh2SoTZC+x8A=;
+	b=rxHefXSLM/DXzuhLNTeYq5brfQ5/p0e9rHXgUfXx4XVsuNnfHeq04g2L5etl50y8k15fOr
+	BO8lmE1UJp1dwqWkd9BNGTLGMFUEeDH+h+116y19KyPu6YSuPQpZPaSNf7rWTlljGxhNe8
+	zV7Xe5Hv5Ve533JzKWXxkil2B2/bMyE=
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4jCtXt5zckz8tdk;
+	Mon, 26 Oct 2026 13:41:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1793018494;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rSbZwM6ArFWnjmuYAFuqV0i8s7gBfvuVh2SoTZC+x8A=;
+	b=fiQPD5+FuSpQJSMpZyF6nTiKVYDjeyTmcs7Cu5S+MsGVtGAI/MMb1z7ywb8u720v78tsav
+	zb04/v/nC25BBabOPHqTyjvDYtHWyp5U/xpbb3CJq6Zn6csh/9GNbyhnk6FC+For3REk/g
+	GHu5Ses02GQywNtmwY/u+AFbZG1xM6uEQbLTRfXVuqmTF/Oi4MXBDlbkN1HbtIeoXfg8e7
+	362pw7UP/rggRrs2Bfw1Xm97vOrqi/WUtsfcPEwBB3Ck6lZaRgmJkKP2QXS3EsjC+XAqKh
+	KsQFGWn+mdZu/oSVUrXQI5tZzZdaCrvgwclzxpAEwgB0kXXhPBITAd/MtzeJGg==
+Message-ID: <b0d8d0ceda82e303262c0f61324fe8a84fd9f745.camel@mailbox.org>
+Subject: Re: [PATCH 1/8] Docs/admin-guide/mm/damon/start: fix grammar
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: Aveline Noir <jm5905938@gmail.com>, SJ Park <sj@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>,  Randy Dunlap <rdunlap@infradead.org>,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Mon, 26 Oct 2026 13:41:32 +0100
+In-Reply-To: <179301327249.2.1796164575094900927.damon-docs-grammar-1@gmail.com>
+References: 
+	<179301327249.2.4690198998605536207.damon-docs-grammar-0@gmail.com>
+	 <179301327249.2.1796164575094900927.damon-docs-grammar-1@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in
- collapse_file()
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, ziy@nvidia.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, jack@suse.cz,
- djwong@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- hch@lst.de, syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
- ngocthang2710.1999@gmail.com, willy@infradead.org, rppt@kernel.org,
- ljs@kernel.org, Pedro Falcato <pfalcato@suse.de>
-References: <20261016065920.4153-1-lance.yang@linux.dev>
- <27e5aadc-2d68-428f-a958-308e4a75c058@linux.alibaba.com>
- <atICp2NL8j2z7UFM@pedro-suse.tail5790ac.ts.net>
- <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
- <6a005d89-df5b-4524-a4b9-c637cb15f1ee@linux.alibaba.com>
- <cd6637db-7b30-4cbc-b07f-c2a2b32480fa@linux.dev>
- <b1b3d8d7-7201-4b75-a0f0-af383d854279@linux.alibaba.com>
- <3be96a1c-7cfb-4cd0-a4fb-16209494d041@kernel.org>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <3be96a1c-7cfb-4cd0-a4fb-16209494d041@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7E147180005
-X-Stat-Signature: nn3jtmyxtf51acpwfh5g1uw4doowghwk
+X-MBO-RS-META: oduzt75dmocrdjqeru19648ieiwqcoim
+X-MBO-RS-ID: bcd2318e5fcca3399dd
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 11B0716000B
+X-Stat-Signature: fx1hj6gmytsrsi7bhkzpqg5wakq15wes
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793018155-226224
-X-HE-Meta: U2FsdGVkX19yO/OSY4yKUH46K4Og+0dH5OAfPz0bGGsZuR8mgJ6GnstJWEYCbiVZY6Kyw3nmtbZPo64DQ//pc5W42Nvv9ecE323JU9YLK6Fnszp45yiwc9H8Yoo8CgyBhckYQE3nIi58byop05aKDVIenJfROJw5WUrlQOSkNfGa0DQYlP8+UEhSPy24XKt+6ntUBcxxSS5nKiekhBPTTp/cHQR0ZvPlthqFXpYdr3/TBmNb2s/eRaOR6n7qF8OjuYrI/QrMGBRTg5HbMXhCo/PoXY4+6ZWOW047UZVOAb8P/fue6fJWgYFlMtmWZOE32EVWB6eUxFfuOZhiF+OluiOEUNSwlSocernRMzCMoOWS4X+gy7H23m/tdWoK0ZOEv1IfuoMOAx93lnjEiLMkdGjBELJCHbSFV4Ioou8rN9VFXrpxXu+QA5bsaFlxuQ1qjJstHLQEYgOZ/LVbp0zrVolj8RQrHv9b+nY1WU5PSBPxfSeIYWOi9TPPrkcX72eqoEgVqGntZ3nYAGTe4dmnWOgGgEU5g3XpPufkMxKikpYL+IKp1nN+t2TPBqloDbbWHMAGAl0glfVotc3IZn+O8uvwtcvmVBgqIAgZSnoxrw+myWOj/Kdyy09JR04k4cr37YIUqItiKQ0/uHTxaU1l8a2J9Zh+m7fZQ51KrOHzOyqiZxYKQI/6Xg9jGOMsVbeGrloZU5axii+KFo0vLGUTKOLdMGWUZIfMz/EBv1RryKr2NpPR2JhQ9yB7xG9MhT9/mvkONyAnVjbBED+geDcO+WhesAKB+RPau9vaC/GtAUWfWTNM9EaEdrJAi4sRbvyRirKldUJEMP3/uyI57/i09kA3zTZvbijiQ3KVelsY7/i18bKiVRdb9yDYQLGLX9WTxZ7iMGySwzDAyibiL6oKdGX93R8FMwRNwgkyUdR1G86pDoOjkXJNH3qtnGzDtHChOrQ53nfoFT6WR7PBxGQ
- wDvYq9Pf
- CnlP9azhxJdSsylpwJhTlGh91+kuN5gHauJwNdJQPvFNnKLjuu0oL/E4Rh5vbohyerC5Sq4amQ8Sa3aF1OLPq54emBwweFbkoiXmxYf3iQ1r2Je5w9/+J7jSk1ErIam98qaWOmauzySPYWn2vj1SzPvHYt43xrk9GLK3K/ChIACOQ24gjzLmGtDOdIpoAcR2DHl2kvQCmz69nySo0gG0HHFqVdvgbWkLBzl1tBEhw/Mr7WZaLUjIfCFxkVFJI0EGNP4841JMgkYvIoEDkTxZZk8xFDVB4HdcBcNMw5n75HZFOOpc3I16WmNzrr4l+3SzbEUir9qIKn5R2SH+YIvOsnendvMlLQ5thY7wGtCFg64qd3wnMCCl/RKYfrvQo92RBVqa9P9MR6ID+5KfvKls1eCyZ9fpoQkcEcaqlYDp44HjJxlqWPoidHJzv25CeQCZ6thOFf3z13lRKlMc=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793018497-524314
+X-HE-Meta: U2FsdGVkX18QP9jUG4gPaPJHbOzqylcyik3i7lDv0ETtCmasMlGnXUaLlGG3ZVjsH6oB36Dy+X+/VXb6Yo6TG0ubG6RSPKqeBLySPd+Sj5SuZt9UjtRpAYHsyGUviiLAqG2XMtSMkBiDbrnDo8kWuF1N55DMG7c0jtHub9LWJLpEbsG6IlaAv030X+V++tJffX6LNVWWgBKJQPouXAYsPxHf3nd9/81JvglHFXVb7DJIWvPFgP2P1ZfUbL3ndfh2ljB+6QgsEhhHwzeQkbmDFE0sNP9FS9hJ7s1iQTYn32EYYS51XH3w91/8Q958T12k84vY2A9CVN+7sbMm7RUiScpL2PFLwkc/LqFnwlYk3lerldOIG8oWVyMSXINq6o546r70I9fZAwXekmZfHRxK6QP/vP4Lhtq77dUc2PZ4SuMYllRrKIqjwpGqzGUL+X8n3dorIXqTx3vJ8XVvhpJCmQrcuXkknyRzo5MrmFaqzDL+uGLM4wPdBE7i2SF8uVZ5aa5vLR+Rr7ffmeY+rvO/hJyDCUXa8ON56MeWKQJpyrFUUVahFrvi/kaChb4JeXLEe0ITjcLJlVOIeubTNn3SayaiGpRoYn85/V0N2NGIfkK76p71Q3s+FRgGVCZEk5PiQnzqwE5Bx2KyBTAyeMvpmeu0iObRrCKklTMvwTd7MJeieWvlQWzbPoqM2Xjf/o1qqppF4iuogPa0P4gkBQzw4H6h9bc1uaotV8x+J80K032UzzIGqMDR525ZOuv/oFGhApzQyukU0Nz2c9R6KHPVa5on4U+FeBrosnWS684ZGpWSKjYfkoZyVJf1/8gw886xxe1fhOGnHG5mCRGX1JHzcFIbSma3mkTRU9pXhs2Y4YposaotHnxg7AKTD78kr9Fw0jBnLTAPe8lAQHjSz8Wyg+zkrU15ytKyQktneahYyKxGXtyeHocCOKi87nck3h8OVPAKKuBMT/69dedArrL
+ FR3uotGI
+ rIVlg+NoNYmOucqoVro0sX9DBSuEQnoPUSoEyd0xm+6QTqmcOX4YDg+e2C0aNBt9L2BrGq+GaAwdbAd4yqXzuyknqzhXAAWu1vKe49CtvMJyVkyl3liDbb0hBp0xbrtobrtHxXclMWc0c40oiv8MufPNpXO07CguIZcgVqVKrxAN1YxN1xdBCkugh1j17ZHL50cqh7VaBfZi2t/wVvvrN+A1l01mId1R2c34ikiw9oPMuzQKLgSepPS+ESCu3vigMRjPm6UVOQiWiB2xguwByNqCryQ5LSdwVOSneYh1Oj+DNsTa6R6Okjud0j6OHlP+KPOJyj2V3V825aUc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,44 +104,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Mon, 2026-10-26 at 22:14 +1100, Aveline Noir wrote:
+> Fix a few grammar slips in the getting-started guide, like "make DAMON
+> monitors" and a region "that has not accessed".
+>=20
+> "The line of the commands" used to be "The first two lines".=C2=A0 With o=
+nly
+> one masim line left, I make it "The first line".=20
+>=20
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> ---
+> =C2=A0Documentation/admin-guide/mm/damon/start.rst | 10 +++++-----
+> =C2=A01 file changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/Documentation/admin-guide/mm/damon/start.rst b/Documentation=
+/admin-guide/mm/damon/start.rst
+> index d98b0eb8e771..a83fcc2265bd 100644
+> --- a/Documentation/admin-guide/mm/damon/start.rst
+> +++ b/Documentation/admin-guide/mm/damon/start.rst
+> @@ -63,7 +63,7 @@ the execution. ::
+> =C2=A0
+> =C2=A0The first command of the above example downloads and builds an arti=
+ficial
+> =C2=A0memory access generator program called ``masim``.=C2=A0 The second =
+command asks DAMO
+> -to start the program via the given command and make DAMON monitors the n=
+ewly
+> +to start the program via the given command and make DAMON monitor the ne=
+wly
 
+'The second command asks ... and makes ...' Thus:
 
-On 2026/10/26 19:26, David Hildenbrand (Arm) wrote:
-> On 10/18/26 04:47, Baolin Wang wrote:
->>
->>
->> On 10/17/26 3:41 PM, Lance Yang wrote:
->>>
->>>
->>> On 2026/10/17 13:43, Baolin Wang wrote:
->>>>
->>>>
->>>>
->>>> OK.
->>>>
->>>>
->>>> Sounds good.
->>>>
->>>>
->>>> But why not add RA logic in collapse_pmd(), as we do for
->>>> SCAN_PAGE_DIRTY_OR_WRITEBACK? There's already retry logic there, and this
->>>> would also simplify the long collapse_file().
->>>
->>> That would be cleaner, yeah. Some older stable trees don't have that
->>> outer retry loop, though ... I'd prefer to get the fix backported first,
->>> then move the RA/retry logic out in a follow-up, wdyt?
->>
->> IIRC, the approach to bug fixes is to fix bugs properly and cleanly for
->> upstream, without being constrained by backporting requirements.
->>
->> Anyway, I don't have a strong opinion on this. Let's also see what David prefers.
-> 
-> Let's get this fixed in a acceptable way in a reasonable timeframe; it's been
-> broken for too long. ... and follow up with bigger cleanups later.
-> 
-> @Lance is this version good to review for that purpose or are you planning a resend?
++to start the program via the given command and makes DAMON monitor the new=
+ly
 
-Right, as for the bigger cleanup, that can come later. Will resend the 
-current version as-is :)
+> =C2=A0started process.=C2=A0 The third command retrieves the current snap=
+shot of the
+> =C2=A0monitored access pattern of the process from DAMON and shows the pa=
+ttern in a
+> =C2=A0human readable format.
+> @@ -71,7 +71,7 @@ human readable format.
+> =C2=A0The first line of the output shows the relative access temperature =
+(hotness) of
+> =C2=A0the regions in a single row heatmap format.=C2=A0 Each column on th=
+e heatmap
+> =C2=A0represents regions of same size on the monitored virtual address sp=
+ace.=C2=A0 The
+> -position of the column on the row and the number on the column represent=
+s the
+> +position of the column on the row and the number on the column represent=
+ the
+> =C2=A0relative location and access temperature of the region.=C2=A0 ``[..=
+.]`` means
+> =C2=A0unmapped huge regions on the virtual address spaces.=C2=A0 The seco=
+nd line shows
+> =C2=A0additional information for better understanding the heatmap.
 
+I have read the damon directory aswell but I didn't find enought to send a =
+patch yet.
+But I found this, could you add it to your patch?
+
+@@ -78,8 +78,8 @@ additional information for better understanding the heatm=
+ap.
+=20
+ Each line of the output from the third line shows which virtual address ra=
+nge
+ (``addr XX size XX``) of the process is how frequently (``access XX %``)
+-accessed for how long time (``age XX``).  For example, the eleventh region=
+ of
+-~9.5 MiB size is being most frequently accessed for last 3.7 seconds.  Fin=
+ally,
++accessed for how long (``age XX``).  For example, the eleventh region of
++~9.5 MiB size is being most frequently accessed for the last 3.7 seconds. =
+ Finally,
+ the fourth command stops DAMON.
+
+Rest looks good to me:
+
+Reviewed-by: Manuel Ebner <manuelebnerli@mailbox.org>
+
+Thanks
+
+> ...
 
