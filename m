@@ -1,124 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE3B606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA676606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kX3sdO2/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IJrect8G
 Received: by kanga.kvack.org (Postfix)
-	id 5317B6B05B4; Mon, 26 Oct 2026 13:40:09 -0400 (EDT)
+	id CD5146B05B0; Mon, 26 Oct 2026 13:41:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 509146B05B5; Mon, 26 Oct 2026 13:40:09 -0400 (EDT)
+	id CAC366B05B6; Mon, 26 Oct 2026 13:41:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41F906B05B6; Mon, 26 Oct 2026 13:40:09 -0400 (EDT)
+	id BE9F16B05B7; Mon, 26 Oct 2026 13:41:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C3E76B05B4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:40:09 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02C6D1A05EC
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:40:04 +0000 (UTC)
-X-FDA: 85365490770.30.B44FA68
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1DE5FC0008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:40:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="kX3sdO2/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 929DC6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:41:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F7D8120818
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:41:20 +0000 (UTC)
+X-FDA: 85365493920.23.178D207
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5E59940008
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:41:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJrect8G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793036403;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1793036478;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TdZI+A/T6veaOF7Fsd3qi5AF2bBsWKQ3dAj9xuoYJUM=;
-	b=JAZWP9SwF9wWbQDU98g0Z7OIaesrUfozl7/0W+z5Qv9u00geg6dDGIfrAVPXqHX68ykWXd
-	PyZBsvEKWa83sKOb+D5e63fqfVWpf7FjUdz9RGnSzCEPIXxGyl48x2ld/nrsYyiISeAOWX
-	J/w48MIWq5lWhPS0DwtW0GDGfe40aMo=
+	bh=0BceteKFIZmrpR2GKFFTTB8WWb9Hq0TCYKNKPvQ0FEE=;
+	b=jXURJpsnggMzeRT+gognRZa+nYn+pj0rwy7zsD8r6nioGecEQ4kvsUKB+gWIrrPexUAbsj
+	zlUtVcEKOURP/slQBYNOwbwREEH1T3Pgp/rGRL9KH12Bg+p5el0SS4/adA15oN4h5WYoNu
+	gdM+/c9Nk2ovQOWg2JM6M/gH1WziFxs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="kX3sdO2/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJrect8G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793036403;
-	b=tb+fbtGij6nbTZnxN3bRZp0L9MyrizqfQMhNnwFlPL3Cxhw89zi2x2GQRm/AOvUT5sUSp1
-	VXTeIH+kN++Jgn94DDFjxVl1sjxuR9aLBcvKtF34W5Q8sR45/nuaRPiySxDgIAuQr97SGB
-	L6LsYS+rszU9DzEZSaFaYegoTGSo6So=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b1aa2848d2so5335211a12.3
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793036401; x=1793641201; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TdZI+A/T6veaOF7Fsd3qi5AF2bBsWKQ3dAj9xuoYJUM=;
-        b=kX3sdO2/vkWt12oo2ADVuCJSNQds5D8qXjsL24W094U6sdedbYTcptNRCm6GGgZKEl
-         rorZAJeJcf7x+NS/+0Eytq519xDOUzqucODayIuqs2gsfjLUKUwQjESIkNTiQy4Q4Ehd
-         U4D/LynyfyFsnZx7fcAC95glaekc7Srid3LOBTzDFgRKPcrDOHZ3D6dEt7J/7aAlbhKL
-         SlpFWsW5+F3fI7crRXKS+AMh0DvE+5oBYQNAAtm6VOkiJP5F8mvQgMHpvrOXEnH4XM8x
-         7M0hJ0X2fY4E4DfqGWxU0aRGJmEAnaRW4Dgs704+q7ILy9JIW/pmS1914Z+6yF+TOy5x
-         zSNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793036401; x=1793641201;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TdZI+A/T6veaOF7Fsd3qi5AF2bBsWKQ3dAj9xuoYJUM=;
-        b=bNXny/P6ZN/xf1CJ8veYot1IV3WrEo6x70hnwc2+noc8C/BkIwmH8hom7cpWvKQKHe
-         GPSOdl3EMunabYe+6QMmLsQ4Tbo3lJIxr/1PAgo+GY5zi++exhK6U7+FPeVLYnAlYagI
-         SINL/KzfRFRHIzeL9s5Ff7kJFTLqIBfd0/Ww1984Xe7s7oydctB1q3AV5snHhtYBIyzz
-         w2K9yyRprSlfsOdXVguI2ZU2rkp8/eLVeQa8U9RM/Rym6fVlKy3JX0Ro85FKLz0Tn8fM
-         kfe2tpyKPVfI867HlKjqLkTYFzwTJtNrftQPNsYrbe6dz+BbBv5mUUPOPQ8u+XYGv2Ui
-         eEqw==
-X-Forwarded-Encrypted: i=1; AKwUvByWnrpzHLeUValuj4QO2y9Wzgf70OuepULzI84UM+qW52+RnWzxWO+dbCvlVmiizgf4UkIMOokb8Q==@kvack.org
-X-Gm-Message-State: AFq9FYIe6rAevd0JiHqu6VpqwaUdtqAJdjyMnG9dYBumnkThvDC+wOH4
-	tvCSU2j2C0f15MTqy6k5XcZAGl5L9e+knrahVGxXqbuxCd2YkJpbPZ6N
-X-Gm-Gg: AYBFou1RZxRrLOKP7oe0qCoB13xlIf+9cQcYak16TltsjKa3SvqI7QoDDMyW7fpNLhZ
-	u71D3mSGDLx8a/95QyqqOh7wTRV7HEG0tCxRogzFjQLM68B7awcIgu3yJs25UXzfPHaNbfNQEeP
-	xfVj4tK/P2wRrOpIoL8NcUHSHP7Cy6YsyCYKUdKF+hYH55XKI09flkSYUP8sCvyyKUM4zo7CGIs
-	DVK8w7i7ONwhZnWUjh5Rk6hxpSpbGc4IM8n8shb70DJtSzbYsPf8/SbZt4VrqN+aQK4xNs01JGm
-	AQCBVWwxqlzHdVKEPq5FWub4Os6S4jLVkGP+tnTB1DA3ysUiYiiFGPs9RYd7YSPtS1L+IuN+mPF
-	44caWxBdZFAjKn4q2onSsK+u8WUVx3DPhLy8Ktg2Mc/5RfiWs7BuGZXKTtGfZFPmDkxWI/g+bMH
-	99+nQoLNPm63azXWlZPgHsKsI/9adIjkl83ODWyMeVPJrchbjPGWtzXbr/tiIc67XQanO0z/S7p
-	Upu73/sEDG2OwAlsE7d
-X-Received: by 2002:a17:907:944a:b0:c29:f5d8:9c6b with SMTP id a640c23a62f3a-c46bde4346cmr829233566b.26.1793036401209;
-        Mon, 26 Oct 2026 10:40:01 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c49954c8ff1sm101721166b.78.2026.10.26.10.40.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 10:40:00 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 26 Oct 2026 18:39:58 +0100
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
-	Baoquan He <baoquan.he@linux.dev>,
-	LKML <linux-kernel@vger.kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH] mm/vmalloc: Bail out if in softirq context
-Message-ID: <at-QbgvltXF0pmcd@milan>
-References: <20261026102503.30860-1-urezki@gmail.com>
- <20261026090421.e4bd83f3e20fb82852abec4e@linux-foundation.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026090421.e4bd83f3e20fb82852abec4e@linux-foundation.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1DE5FC0008
-X-Stat-Signature: ypx364g6imne3iwgow45zm1e3d5frpwn
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	t=1793036478;
+	b=fQ9xxI3vz+rHQsHd3TCyv7fQbeJeyVxjeS+GOzt20alGd61kXSXQYng3SgFboMlv9NcN2q
+	jN71Xil+GALiTzAi9qwWGgFqB1W1LkQnfNeoa/FjYjEHqOwGHCKiXAORcFTHvu3H4bbNYl
+	KR6i1+Etc3IxpKRI1VWXqfIKPzv5JMw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CD68D601EF;
+	Mon, 26 Oct 2026 17:41:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7236E1F01825;
+	Mon, 26 Oct 2026 17:41:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793036477;
+	bh=0BceteKFIZmrpR2GKFFTTB8WWb9Hq0TCYKNKPvQ0FEE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=IJrect8G0JDD7uJfQDDyZOzbVOYBeULxXPrVViOdLoo/8LPU8Rvhv8F0huqExcZ/l
+	 rDH9W4x0jjWDetD7Q6xGh16S3i+HGyE6TibV/aPk4Cuvxsu51jHzDxAVfdK7LXYNry
+	 dHnsVByAOCYuv048sFKGxcqx33ATICXfBqqdXR5yOcch0a9/iK74O4WkBwlufCeX6p
+	 gIx8m/ysZ8EDSBhEpxiKoErERnDq1/niEI4s/fbit1BtQ+qCDxs0n09xzKaOTonK2h
+	 Msm7YBflCSJMb4ySVY15sV5VLlZVuuxqz+dNCNZ1gmVJcw4JpFvmbDKXgWkuqIHwI0
+	 Dm1qpkraH7ycw==
+Message-ID: <sashiko-outbox-185584@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
+ underused THP shrinker is disabled
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?TmljbyBQYWNoZSAoUmVkIEhhdCk=?= <nico.pache@linux.dev>, linux-mm@kvack.org
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Zi
+ Yan" <ziy@nvidia.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam
+ R. Howlett" <liam@infradead.org>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
+ Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Yu Zhao" <yuzhao@google.com>, "Xu
+ Xin" <xu.xin@linux.dev>, "Chengming Zhou" <chengming.zhou@linux.dev>, "Matthew
+ Brost" <matthew.brost@intel.com>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Byungchul
+ Park" <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Usama Arif" <usamaarif642@gmail.com>, aarcange@redhat.com
+In-Reply-To: <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
+References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
+ <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 26 Oct 2026 17:41:15 +0000
+X-Rspamd-Queue-Id: 5E59940008
+X-Stat-Signature: 6gxowfk3x7cfkwkfrqrbyyzjs9x9je5a
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793036402-294745
-X-HE-Meta: U2FsdGVkX1+RFMNOqhN4LSdWM2cGhnDzahfSI7cbd/0sNLb8q07iVSFkGmg8wOzjozOhMz9E/oWhVa+DYMqZLN/NFznH8VENHsLkcisUO2iy2O5YbogHQIDq3bVK5Zpu9UvNkm1CFezAPLDIwPZ8vmiurE/al6mLAk7vbYf3jbttSIPGWgLAay/hI++Oteqq2mVuerbZkrmqlC/uEP9aUF26snk2ccearxg3hNByHqu58EHTvo3qaKCkJbJycynhszRysGxMsokt8dT2eu4tgJOp2Z4r8xpiBInyVoYyDkum0U4TRFZx1g1d52iajS1BQ/d09ehO6YLJzAq9GkRjxB7heshpy0sXJJCTJ6ilIYvfBX+z3UXikMKKZKGwntTZ9iNKDsVHt/PhxW6L80c1KitoV7wt9h8whlZasd1iUc3EtFPkniB9U+5/bzMZtL833zk1ru1LNcbeBiRFr3wTEMT20s02ZXMAOuFiOF0dxqYK5X+mMGkuqZb0a5lnjwKGS1XVpdF3d/0JwTS2J/UgmC8Pi0+FA1MF3FOLMvrieyJKfw+QMc0Cc3nCXU9iyc8Ht+sOeAGZ4OE2z3bDPE6PAM1WnsZpWQVnosv8lWL1yAE4QjIX+sQYNu94r3l8BYryM7rPDDxd45d3ZuBon76N+Qq+2CiGM6q4mIQSIl6xqGIshIXaWVReova7P5O/t0JDFx2GEIrog3c69x09z2169PLZEKdG0FJXIT1KnZTRNU4NfQXtqKii8EJ6D2vWHYtq9XMAUHWkQQwen0J17cRjNKCURWSB9V0uDZ/HXPu4yKfXhKLJEajEPTiFblee5eJ6hmqGmN+hkHJ1AhOBFOkUyM5phTZYBzxXIlj46JE81Nj3wAG5Tsk6UfG+mlw7jzXGuL6M4CSJVaIPcUm8C7XrpCL8oTbVgtdGaXU+8807WCO+aW6OpPNk+6lIfhwaIyEmzFOP/EmAjBQNjrir4wx
- xMpTDyoL
- f5r6J5RZeEj6ZJ/yy1nkqNMkiHh8GjWRcKVhX4NEiqEiv5PHb2Pczu8B53w+p5CDWl2ufh/7nBrqSAp5+iIOOr0RaFS3bIaQnaj5p9gd81XHDc+u3ViOQ5yQKfexwRmhjpeCZAeG9hhVIWf/A5eJW4R+58SJ2iii9z+6J26l7uwp7y+HaH7PN+rdz3vWoQYNRWxdLaonbQlu+B/Ub/K6DhhKvRLyO4FeMOUZ91x3m56JmDtK/ZU7Ll/uuiFftDqubHESCtDKa8Jq7kB72nWE5tDFFpkYHSUgO7r3SuAUlaqSItNcrWz3TPqs7IYWfD/npSBwCCtPtTsujYf8yE1qrVIZEBKtwpKSpNYXrWMCx3HlSAjJgt2GZOhZ6CIRABKptj/IyMZLx7NQPDCIL8uBunI+M/zli3cZE8Mu46HyFdunp9TMiwnpkyC3N3IHlRlb2dHPWjriQ2mrHQhWqMkSFA8rtjA4zBNUi3ymVyLriEHlj9kk=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793036478-572332
+X-HE-Meta: U2FsdGVkX19xG4uXxIskLh/mmawKhYr0eMjwQm8MbCVhklolTXIjgk2wwh1ibUGTJGYRlCluLz0Pm+Y7k48oRTFSx1Cs7KtbRZk7Uz9I2B2BSptAY82pTO+f9cVFLftlJ5RolFdiNsuPH7dzWD6tifLX18CY2BWjAyuv4PYoB8Bum8QQcwQLxTXFUFToYLHA4n5MAFGe72RtDS1KLIUesd+MU8/QxCyOo8cpP9K0trHa0MVhv10VYbLtvSqTI4NITEKWtPK8h6Fld2mMXJ3RDzePqxQul/nUgszZ56wkBDnUG8q0GLeMJajxUfAgYKZj2Jp6ydjxDUSkEiorWKO6ZO12GjiRRlId3va6r5n1WD7XY/C4TWtpn7bGVMp8VsIP1EP7/FoeRhxXGM1lXmlLylQwFt4YQXTH16hv5Fk49qK5J6zHpWUx9aQ39tD8ZnLBPPm8DJiYtdpp9NtsKXSROurbFrkPCFv2u6Un1shBjcbjT/IMGnrZzmnn4RnJQuhGm1QHgxSFOLepmniSkG1QtzjKGD2iIb7/0rIK59eMIdOhC35ZJm3Xc3c4UQvngwiV4BiU7DM3nIDW1t7fdvJNqOGqnVzNtoLYrJc+Y0fvSnck61+zLX8ilebmL6baEYjVb1I6w8v768ALGQWJVy7oCZWBh8UgFzraniXKZ4e1nbfW+D5q88ukxqcrM+ODyvD7YkVzmZRFo4G5LXfstGO+CDbi5xqjHhhe/zyBiKTuasHb/92NX6JFpe6Dp1gG5U8ybriviRh7ycUrB6F9lf4kk5eOB2hUJzuSz4Y3mcikRhpqUDp26GniW+aKIIcHbtseU5tXRVyumeeeEU5inWg6MgwPvUKRHUBOUhICPCj7oWNGFfd816jpsQ/brTRWz36d8fsd0wJVzqDKNvdfnSSAda8UIJ08jDECKR+xwZY+oB9poGfELoXobJSWs/1/jmZbMEqfmT86ErfENZndIIU
+ L0UaoHli
+ ypN8LZfl0mlvi7RzifrSrk4MduhgbXOXABsfV+lpj5sqIM3GIScylK8N4bfXmdb9PkF6nudjzApKeuu7nHOS5+g0gQS04PZ4AGAZ/N/S8E2GFlRN7Asl1uMKxxaMrrUy6xSdNIbqARhxZj504aWRoITe7zb/g6p1DJa/hYBJFq/HWvtjlF4psxluZxMEGXYo2fAtaYDG+X2qX1vdsjtZ1ZaUe6NvYZatBBk5tDC+eTXgEiLB48pWpORifhAn/T1VFEU798jDxIbtTocDik9qY8Bw9AxRJtr37qlu8DMB05N+odxqqD++x/5oTGA0zwNxsbvxwxJGSR0xVMCkewJFEqXyk/Q3mmTadf7dMibEjtYXHjr8wwTTihA+YLLKi3GeHdrRT19/0XcQnky8sf5oi9gC9lCGR1WXGl4UUUgjorDjJrSYwv0T5qLzR8XjiTKK6Mx4aPlYwnD7WCUubW6g8inlz3HM/ni5xsN+7q1B9sU8RHcmMM3paOXZCQEDKFceUEEBkGNGUqF0ta/w89NW/YBWKioBV9ulK+xoGe26UFF65H751HxZlw+WLJX4LUNvpHHnN9KLs13RrA4BtzU1nB/plDT2LT1w1/b2UsyG5h/4twBO6BiJZggIGDpsfEnsT8iwJ1eIKLMb0makkidzXva+zgxur/rogr+DreeY+cKultj168g/cTGssbKAI6nbQrh8EJaqIfQmabC1AUpzO3bML0iN2oCggatvi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,74 +100,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Mon, Oct 26, 2026 at 09:04:21AM -0700, Andrew Morton wrote:
-> On Mon, 26 Oct 2026 11:25:03 +0100 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
-> 
-> > vmalloc() is not allowed to be invoked from the NMI,
-> > hard-irq and softirq contexts because doing so may
-> > deadlock on internal locks.
-> > 
-> > Commit 04aa71da5f35 ("mm/vmalloc: do not trigger BUG()
-> > on BH disabled context") replaced the deprecated in_interrupt()
-> > macro with explicit in_nmi() and in_hardirq() checks, but
-> > unintentionally dropped the softirq context check.
-> > 
-> > Example:
-> > 
-> > <snip>
-> > vzalloc() in a task
-> >  spin_lock(&vn->busy.lock)
-> >   <------ Hard irq
-> >    irq_exit()
-> >     process softirq on the same CPU
-> >      vmalloc()
-> >       spin_lock(&vn->busy.lock)
-> >        spins forever
-> > <snip>
-> > 
-> > Restore the check by checking the caller's context with
-> > the in_serving_softirq() helper. Note that, it is still
-> > allowed to invoke vmalloc() with disabled bottom halves.
-> > 
-> > Replace BUG_ON() with WARN_ON_ONCE() for in_nmi() and
-> > in_hardirq() case.
-> > 
-> > Cc: David Hildenbrand (Arm) <david@kernel.org>
-> > Fixes: 04aa71da5f35 ("mm/vmalloc: do not trigger BUG() on BH disabled context")
-> 
-> Sounds like a cc:stable is needed?
-> 
-Yes. Should i resend and put cc:stable?
-
-> > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > ---
-> >  mm/vmalloc.c | 8 +++++++-
-> >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 7521b9b3bfd2..36e6e3be6ba4 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3252,7 +3252,13 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
-> >  	struct vm_struct *area;
-> >  	unsigned long requested_size = size;
-> >  
-> > -	BUG_ON(in_nmi() || in_hardirq());
-> > +	/* IRQ re-entrancy -> irq_exit() -> process softirq. */
-> > +	if (in_serving_softirq())
-> > +		return NULL;
-> > +
-> > +	if (WARN_ON_ONCE(in_nmi() || in_hardirq()))
-> > +		return NULL;
-> 
-> WARN does a lot of stuff and I rather doubt that it's all nmi-safe.  I
-> don't think this matters much - it'll probably work out and as long as
-> *something* gets printed, it did its job.
-> 
-Yep. I checked before the kernel sources and saw that people use it
-with WARN. I thought switching from BUG() to WARN() is better.
-
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm: pointless underused THP splits in deferred_split_scan()
 --
-Uladzislau Rezki
+
+commit ebf8a156b1409b53d86c1c5c41f9ce1ca1b64265
+Author: Nico Pache (Red Hat) <nico.pache@linux.dev>
+
+mm/huge_memory.c: skip zero-page remapping when underused THP shrinker is d=
+isabled
+
+This commit gates shared zeropage remapping in __folio_freeze_split_anon() =
+on
+split_underused_thp so subpages are not scanned for zero content during THP
+splits when the underused shrinker is disabled.
+
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index bd44d58e86845..2d56d1bff0eab 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4104,7 +4104,8 @@ static int __folio_freeze_split_anon(struct folio *=
+folio,
+>  out_no_split:
+>  	local_irq_enable();
+>  	if (anon_vma) {
+> -		if (!ret && !folio_is_device_private(folio))
+> +		if (!ret && !folio_is_device_private(folio) &&
+> +		    split_underused_thp)
+>  			ttu_flags =3D TTU_USE_SHARED_ZEROPAGE;
+>  		remap_anon_folio(folio, 1 << old_order, ttu_flags);
+>  	}
+
+[Severity: Medium]
+What happens in deferred_split_scan() if shrink_underused is disabled at
+runtime after anonymous folios have already been queued onto
+deferred_split_lru?
+
+Since split_underused_thp defaults to true at boot, anonymous folios
+allocated via map_anon_folio_pmd_nopf() or collapsed via collapse_huge_page=
+()
+are queued via deferred_split_folio(folio, false) without setting the
+partially mapped flag. If a user later sets shrink_underused to 0 (setting
+split_underused_thp to false), those previously queued folios remain on
+deferred_split_lru.
+
+When memory reclaim subsequently runs deferred_split_scan(), the
+!folio_test_partially_mapped(folio) path does not check split_underused_thp:
+
+mm/huge_memory.c:deferred_split_scan() {
+    ...
+		if (!folio_test_partially_mapped(folio)) {
+			if (folio_test_mlocked(folio))
+				goto next;
+			underused =3D thp_underused(folio);
+			if (!underused)
+				goto next;
+		}
+		if (!folio_trylock(folio))
+			goto requeue;
+		if (!split_folio(folio)) {
+			did_split =3D true;
+			if (underused)
+				count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
+			split++;
+		}
+    ...
+}
+
+Because __folio_freeze_split_anon() now omits the shared zeropage flag when
+split_underused_thp is false, remap_anon_folio() -> remove_migration_ptes()
+skips try_to_map_unused_to_zeropage() and remaps all subpages (including
+zero-filled ones) back to their split order-0 folios.
+
+Doesn't this cause deferred_split_scan() to still scan subpages via
+thp_underused(), shatter the huge page into order-0 pages, and increment the
+underused split counters while freeing zero pages? Should
+deferred_split_scan() also check split_underused_thp (for example, skipping
+non-partially-mapped folios via goto next when !split_underused_thp)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261025-b4-ksm_fix=
+v2-v2-0-8b61ad0491f1@linux.dev?part=3D1
 
