@@ -1,89 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2596606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428C3606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AbFmM/nq
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J5hXer1y
 Received: by kanga.kvack.org (Postfix)
-	id 0880D6B05B6; Mon, 26 Oct 2026 08:12:29 -0400 (EDT)
+	id 4F5D46B05B8; Mon, 26 Oct 2026 08:12:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05FEA6B05B7; Mon, 26 Oct 2026 08:12:29 -0400 (EDT)
+	id 4CCB66B05B9; Mon, 26 Oct 2026 08:12:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E90896B05B8; Mon, 26 Oct 2026 08:12:28 -0400 (EDT)
+	id 3E3336B05BA; Mon, 26 Oct 2026 08:12:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF1616B05B6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:12:28 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 52605406F7
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:28 +0000 (UTC)
-X-FDA: 85364665176.25.E5765A3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A0BB6B05B8
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:12:37 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81AD9C06EC
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:37 +0000 (UTC)
+X-FDA: 85364665554.07.2E65EF8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7B5F0120002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AbFmM/nq";
+	by imf21.hostedemail.com (Postfix) with ESMTP id B339D1C0003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J5hXer1y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793016746;
+	s=arc-20220608; t=1793016755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6qj8m8z1wbRyIk6+/HP994xBD+OWRY6Idbk7+z+pqbQ=;
-	b=vh8Rk8T/nUK0+GTmaRDGG1MU9U+GfYqXP5F8msy/oPTVnfbQ3R6TN+3r4r9GiJN3bijd02
-	X1KmbpD8HmSn8DyknICTANfr6ieBpLSTmJUOvIYIzfEGPvaUqORIxBxzL1lEt0Gg7qqAa/
-	H7/EznaLyfePN8KFi9bUTUVwJ3uJdsY=
+	bh=sCtZvtAR22Ami4S2eIk3HMfDGlAC6il3qa+TGty4veQ=;
+	b=PAzWBopS3JknT2ow1vUSreBZVoMcCV3geOzO/1lri6++PCzb2CK/K67f9IjbxPvuX+qZNK
+	ydV+YREU+XQGN2lxQczRu+YzvbyEoZEx2mbzeVTAvJZuyIkNZHgGunyHmPFZeIc7GAMOaG
+	ZNbQBWwi7dpTVsMuuxF1QA54FxXcmxs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AbFmM/nq";
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J5hXer1y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793016746;
-	b=RVlOeMdYFwOR1Qx7RNmabGhnYOH8yZkIKXWjQ5VeP7fi8W7tECL/uYM4Dc6Hlptu0i2PU3
-	dRxMPr2nznVDmVMP6IyLiXIKrG9zpBCy4y/yrRtR2WeyNalnKpjsgpjS2cr+m6agvcnHtb
-	IV1O2ujZPhTkRd3Hz1IGUAxNdPP72yY=
+	t=1793016755;
+	b=IWobfIOmvTmWuubByW+vRIr/fZPoxuCnYMXvrH4QSjEr6VklBBSuJHxnIz6DQLj5O4jx3q
+	krWQ1300rquEwnRMSNG1BqfXWq4TiWKS0upnTPc3qRLhG5no84bEUe42pkSHS6IfLMEYfw
+	NqX4lB/gv6vYvK041d76CIFE7grd0EQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC4F143E13;
-	Mon, 26 Oct 2026 12:12:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CFA1F031E3;
-	Mon, 26 Oct 2026 12:12:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F379943D4A;
+	Mon, 26 Oct 2026 12:12:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF3B1F01825;
+	Mon, 26 Oct 2026 12:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793016745;
-	bh=6qj8m8z1wbRyIk6+/HP994xBD+OWRY6Idbk7+z+pqbQ=;
+	s=k20260515; t=1793016754;
+	bh=sCtZvtAR22Ami4S2eIk3HMfDGlAC6il3qa+TGty4veQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AbFmM/nqEku80UT+Aw7V4iA4reTs6onG88eMdzcmBom8o9iffpHF/sioYmaT8MFxS
-	 LtxEjSXM4LrFlC9dmF1WxtG5wWM5ScaShfstE/EfTPFnEroTAzaqvaVB/nvIHa3+AH
-	 4zDgcBgJtT+PVaa/K+cc2GU+45UEeNZmfpm9XFddPWcMaaxD0yOcaxDjMtqh2b4rkZ
-	 RJYozXPKbhWQCK5W3LEtL7Q4isI94VLRu+djE6ouv7LG3VcAcRDhr61UVV7ozu24bo
-	 i7U7SJrXOA+NSjKiHxDwQk6QodHCsJc1KAfo8LO/Kpw2Ya3dK0XfB/CrLALFZbMXy6
-	 R3tK7qaGprDsg==
-Message-ID: <3be96a1c-7cfb-4cd0-a4fb-16209494d041@kernel.org>
-Date: Mon, 26 Oct 2026 12:26:39 +0100
+	b=J5hXer1yoooeUjppZ6vg8NVJpK4TPTZVdh9mBwO8PTZfOuoo4QYTexYN5v+PEzfkn
+	 +TkbN4+MdUGit7k3nxjDNTPx8XlLTmXCOWgk0q2jT0c6clk4Y+U204lwBOg4QpKeTb
+	 2GrghX99FnCH1TA4q2dZ42c0kJQsGRxKR+N71jDq5SPhPn2abEnXgHtfFFbV3dCGpJ
+	 ZQby89YbBNK/CL7OkyiRCB9dXnyaZV7aCgMFQmE7ikIFxWmT3ZBZCV6pY1hl3k8x4B
+	 +VChZ6FM7OBEfqPxPtdnRfDXLcbT3EA2eUVGeSOVcQT4WGvNP89jipV5fpMMyTiwEe
+	 6vW1Y4+W21ACA==
+Message-ID: <1398e842-db91-4482-949a-e21197a48b9c@kernel.org>
+Date: Mon, 26 Oct 2026 13:12:02 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] khugepaged: fix readahead lock inversion in
- collapse_file()
+Subject: Re: [PATCH 00/16] mm/shmem: various (urgent?) fixes
 To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>
-Cc: akpm@linux-foundation.org, ziy@nvidia.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, jack@suse.cz,
- djwong@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- hch@lst.de, syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com,
- ngocthang2710.1999@gmail.com, willy@infradead.org, rppt@kernel.org,
- ljs@kernel.org
-References: <20261016065920.4153-1-lance.yang@linux.dev>
- <27e5aadc-2d68-428f-a958-308e4a75c058@linux.alibaba.com>
- <atICp2NL8j2z7UFM@pedro-suse.tail5790ac.ts.net>
- <atIiR1NWNssDvgt6@pedro-suse.tail5790ac.ts.net>
- <6a005d89-df5b-4524-a4b9-c637cb15f1ee@linux.alibaba.com>
- <cd6637db-7b30-4cbc-b07f-c2a2b32480fa@linux.dev>
- <b1b3d8d7-7201-4b75-a0f0-af383d854279@linux.alibaba.com>
+ Andrew Morton <akpm@linux-foundation.org>, Gregory Price
+ <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Lukas Czerner <lczerner@redhat.com>,
+ Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>,
+ Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <a8f01101-7d7d-4982-9cf8-04b754ba132a@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,21 +137,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <b1b3d8d7-7201-4b75-a0f0-af383d854279@linux.alibaba.com>
+In-Reply-To: <a8f01101-7d7d-4982-9cf8-04b754ba132a@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7B5F0120002
-X-Stat-Signature: j4f3z631q37nomtrnimum7ugtxjenype
+X-Rspamd-Queue-Id: B339D1C0003
+X-Stat-Signature: d9ktig6cjbfc3t76xunahjtjuoow9sok
 X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793016746-254701
-X-HE-Meta: U2FsdGVkX1+9dFxEx1I1S+uAvvykZc+xlDx9ywwfAgxjsIlCOIWhPZnqLLNdgICbbNAbFhyO1xA0QBw3exhXyDto6ZHVK6/5yjDvwbvGcLwJ53Rda89sFo44O5UYZG6l4yirPQ1tulgnPQ9HDpocQUaaV2vtR8dHe1W/zH/8s2C6rX+kxWA6iNDZnkhTKnuwWkFWtiB5edCp/4W3H9XFaplZCCraYtk8pf+8BgSuMJUZdaN6AsNcAOY2dREe9yZGUq38EHxviRlwAL7qRSwN4NbdqO/bkG0GvwugzRqRjKcYttt0LceoyKP902dAzPi5OoJOFopPigapVFXrHgukK595+OdJfuq4RUU3DrkP6Vyn7XfLSoRpmKMoxxBLckAMdo0duZdiHrYLFKbIqmRJu5b1zY0J9o9J8+PfJr+TPTyaiO6JHgM4NFGS0d6BwsqzZ2uRSEr+kA+WxVoJYR4h6qmFJpHAQvZeXr0YiaflyXhZaibk8yrFCaMyF/3un6NLgkAbijlw5GoI9nWaiBSEmTNrknKabFxEFJ4LpZg9PdeQcwR5HdG9aKQf3rdDYKb9NI1b6hb2mzI7Mm1sMpK9QVl+X00djoxMeeXUONpx1JSb+YbEdeQWosHgS5mIwmYfBKwq6xviIsClro9+4KHmTseD/IHS+nO/G+Mwqh++UNtSn7HV043pcP2/8H2XhB6YVj75ZfDhJFYFmRZq8+2m5TxO9Oxad/xQyYHRsz+j3Ko3JX1aRrqaFFNzl48NzKhiYDUwruy/YPDuU3nslFVR0DExlqrqxiPPa+fVQtoCjzJRsBKTormyW3Ws52WrLVM9HfocDLl05gy7gQbuP1V6TLf+Y2Kxi797SvEHfhWBLkgWyVXpn8Nlf6W2rAAg3LGwsWxUoNDQ9Qm3/WlUdU1FJT5AMN6PCINc9aPB3cnt26lyapSNsGzHtAoUveIRdmUePjBrpw4ca6tJNZ/wXcQ
- vTaCyJD4
- lZZ/ESMX2u4MvclYa5Y2z/fT/Nh47clNHog0E5kbJQ1lOSFLcg7CzqXJwrizXtFe+rfYazqjBGgogk+qehHBsyZbIV6Kly65Ysc4PMeEdAueB0z4Wiiw40fgHBObvX72AcEnRhWZsqhiSSXqbwIWERCT/PG8J1K5hePo5p4JQILvPlnXLN/gQWWjBcw//GhtsIwWLenO3cIyxKkRgooBOf7MeCDH4YBaAkWFIg+p7ABOKlcKjj7Vs9iVyCtSMu7a498DA7dSE32el3QqUgzKIjCUa+q/+o8ubOpylD0TUJpYAxS5KMoHRAcVyGI54W8XVHOPRdGJpNat/UIpXc5g+YiMEISZerf6F+N6ZUCcsrY0XzNvt3eXdg3Mojs1F6hMsP46Ryu3cmMu5EpRep5M/SlyAPBLQoD+Nv1CgzdYEyI6PS011tWYEIg4SuTGGVlw0ybyd
+X-HE-Tag: 1793016755-157899
+X-HE-Meta: U2FsdGVkX1/5FcyEBX4/riVNR6TMlT3rRmJUIdzA/AV7QjXalcBbwgSgRNvEtNgDeA3ixOJI3n9ehsxmKv1Pz3R8lNNmmnMmVwhm3Wz785UYG9sUVeWhPm5eQZMHALGAeBzAQLkdbSsm9YrCobDa+PwSmGFfu+qw3Nj8rm0afoN7WOicOUtfzW8uTP/j9w5UMteFYNfmE+U3zq3WBejePx/ktGhxX8OZA02kEvzFPEcwj5jw7C60cqLsslVHAkbF1Jas+povXVYmL8mhMbG4tjTDCuuccZsVdt9nh5hq1LldxtWkSFvFRUNIzQjPbnPmn9aKvUw+NVkc2avvb0CgjYIpiBfNASpUOwTnsLE4JVkjVoZzYaUyFuIe9wNByh1dX+S3iD1FFi79eoGVmH+NdZhvUQpLNG1JPAGpvkMuQ4l57SgZSGpl9/aFpRvsb0OQPWm8wDQgKKvqOPOj5NPQr1u7+05zL08yzboOCmmm1QlM5+PKZeGh7MhmyVrXIT5d0iws0P0vAxnub2QYfiwNWSksahFB7TbGAyRISmYC/aRhCpOeeS4coE+g43yEYHN5shOOkVaDHru23BRldRYqWZ5FGM89spgY7aXVi3KVViSanwiGYk/ZbwYYLmOQLH3PrnsxW4d/cQ6zoWKPjQV+Ka3uc7c0nnRG3XI51B2YuWIR5BSgUZwfD8ECVyvIO3RkjlLgMzgoSlonSwBYCVTmJrsSn+edVBE5aQuC1WNKSUJHaKvqXCIv9UjC1QPRt2AZW3tGUUL8AxrK0KziOjwzFRUR6tJ7cpf1Vpn1xfZsrwMll2PWW7/09vXbQzZTQ1G/Xbs8fpuD/zDR5+pItRk0WRQoWdKNvVzls6r6OQFtfXdE7nZ5BvUKRTxk23c3DeDgGjcJqskH4awmWGFG9A0vrbM1p5QHnC+/nMiCG33HquUFURDYPQeCmdzCZ3Ig3w77xrpLwmzCFx9OWX/Xqeg
+ dTWywDFx
+ Gn9GyRmWk6OakfGWa/zcNAIlZa1xteASVPrNGsZDaFBilCx1l5DSVeqzP7awHZam6uXU7NZ3Y2s/7iv/adIHvYaJ+ovdAxb1rsCmx7yuW/S9mvxi5n4AL/oOjYk+BwLPLVUpCtfWV5Diz2GFnowGVsnzeGf3xHX/FTcFwFQqspV6ero2KpTV7QT8AG1/Whwvura+1tn9HjU2Hc6IOcT3YHCMaWSiO3CtFt/qw++DW6YA9aLWywdPGtJjXE7W2vPMNihNn+sqzDmMjoLSgNgrrcIuKzUDXYYqtDNInoc5dTuYacYggtq+jJmdhtq5ZXP8iYHGAMpRQQrxkM6z7IbVvUYMnONXGHc3/+1WadcMeh4HpB7ATiyn1WWoqo3RDffemuWAaIf4cMadnXbQ+qFpFSsUQMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,39 +160,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/18/26 04:47, Baolin Wang wrote:
+On 10/26/26 12:11, Baolin Wang wrote:
 > 
 > 
-> On 10/17/26 3:41 PM, Lance Yang wrote:
+> On 10/26/26 5:40 PM, David Hildenbrand (Arm) wrote:
+>> Hi,
 >>
+>> the fixing fun continues.
 >>
->> On 2026/10/17 13:43, Baolin Wang wrote:
->>>
->>>
->>>
->>> OK.
->>>
->>>
->>> Sounds good.
->>>
->>>
->>> But why not add RA logic in collapse_pmd(), as we do for
->>> SCAN_PAGE_DIRTY_OR_WRITEBACK? There's already retry logic there, and this
->>> would also simplify the long collapse_file().
+>> This is a handful of fixes for shmem/tmpfs. I sneaked in a related
+>> hugetlb fix that stalled upstream.
+> 
+> Wow, thanks David!
+> 
+>> Some of the stuff is more urgent (patch #1, F_SEAL_EXEC, truncation
+>> hangs), others are less urgent but still rather unpleasant.
 >>
->> That would be cleaner, yeah. Some older stable trees don't have that
->> outer retry loop, though ... I'd prefer to get the fix backported first,
->> then move the RA/retry logic out in a follow-up, wdyt?
+>> The majority are fixes from Anthropic that I cleaned up or reworked.
+>> While doing that, I found a bunch of other issues and tried to fix them
+>> somewhat cleanly.
+>>
+>> In general, shmem + swap handling is a nightmare. shmem_undo_range() is
+>> such utter garbage it makes me want to cry. I mean, really, WTF did we
+>> end up creating there. Does any expert here have time to clean that up and
+>> make it *actually* maintainable.
 > 
-> IIRC, the approach to bug fixes is to fix bugs properly and cleanly for
-> upstream, without being constrained by backporting requirements.
+> Agree. :) I'll re-read shmem_undo_range() and take a close look at the issues
+> you raised, and see if I can make shmem_undo_range() more readable.
 > 
-> Anyway, I don't have a strong opinion on this. Let's also see what David prefers.
+>> The following things are still broken in shmem_undo_range():
+>>
+>> (1) Truncate/punch of a single page of a large swap-error marker
+>>
+>> We don't split. Consequently, read access afterwards will still fail
+>> instead of returning 0s.
+>>
+>> I have a fix to try to split (which can fail), but I don't consider it
+>> that urgent, really. So I'm not including it. Might send it later
+>> separately.
+>>
+>> Truncate/punch of a partial page can obviously never do the right thing,
+>> as we cannot poison parts of pages ...
+>>
+>> (2) Truncate/punch whole pages within part of a large swap entry
+>>
+>> We try to read the entry, but if we are out of memory that might fail.
+>> Consequently, we will not free up swap space and a re-read will not give
+>> us 0s but the previous content.
+>>
+>> AI proposed a nasty NOFAIL patch which has too many nasty side effects
+>> IMHO (allowing users to force-read pages and retain them afterwards even
+>> though memory.max would disallow it). This needs a proper thought. Likely,
+>> support for splitting large swap entries (and large folios in the
+>> swapcache, which I recall is under development  by Kairui). But splitting
+>> can fail ...
+>>
+>> (3) Truncate/punch of a part of a base-page swap entry
+>>
+>> We obviously have to read the page in, in order to 0-out the parts to
+>> discard. That might obviously fail.
+>>
+>> Maybe we should install swapin-error markers if swapping during
+>> truncate/punchhole fails, to at least tell user space on later access
+>> that something went wrong? We might affect unrelated data, outside the
+>> requested range, though. Anyhow, these are long standing issues and
+>> I don't consider them urgent.
+>>
+>> They need a proper solution.
+>>
+>> I did my best trying to test these fixes. I was able to reproduce some
+>> of the things (including unkillable truncation hangs), and the fixes seemed
+>> to help.
+>>
+>> But again, shmem_undo_range() is just an absolute mess.
+>>
+>> Please prioritize review of these fixes, I want to get fixes for the
+>> issues in a timely manner upstream.
+> 
+> OK. Will review and test this serires this week.
 
-Let's get this fixed in a acceptable way in a reasonable timeframe; it's been
-broken for too long. ... and follow up with bigger cleanups later.
+Thanks!
 
-@Lance is this version good to review for that purpose or are you planning a resend?
+If there are better simple fixes, please do suggest them. Any bigger cleanups
+ideally come on top.
+
+BTW, the next time I get a flood of these patches, would you be willing to do
+the early screening+revise? But be careful, some of them are pretty, pretty awful :)
 
 -- 
 Cheers,
