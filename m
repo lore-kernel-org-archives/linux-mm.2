@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B91606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A44A606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DwrNqaSW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q5+lXO5E
 Received: by kanga.kvack.org (Postfix)
-	id A1C2F6B05B7; Mon, 26 Oct 2026 10:56:19 -0400 (EDT)
+	id 8C1536B05B9; Mon, 26 Oct 2026 10:59:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F3116B05B8; Mon, 26 Oct 2026 10:56:19 -0400 (EDT)
+	id 899C96B05BA; Mon, 26 Oct 2026 10:59:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 908806B05B9; Mon, 26 Oct 2026 10:56:19 -0400 (EDT)
+	id 7AFCA6B05BB; Mon, 26 Oct 2026 10:59:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 748B36B05B7
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:56:19 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0DA3C14076F
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:56:19 +0000 (UTC)
-X-FDA: 85365078078.10.F9E96C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 711A210000E
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:56:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DwrNqaSW;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 604A66B05B9
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:59:34 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 043B91A076C
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:59:33 +0000 (UTC)
+X-FDA: 85365086268.07.07CE5D9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6365F14000B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:59:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q5+lXO5E;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793026577;
+	s=arc-20220608; t=1793026772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g+ewwf0fRAznTV0KhsKm4y9B++fPaaKir0FyeSsvlOQ=;
-	b=ZkERrg/P5wFlmltXFLoe6LHod0r8zFtl+1d51v7DyqDLuZplFjwg5oCOVz/g7SRRRB/P/2
-	gZB1w1w6KcoUQMXJitxyQ/iQgIkisGWAkAZ1IS6uF1Yqbam8DAldvJRNHkKqzeeisNq0dg
-	zkfqVScmGVFrBGQ8qMjKZKqCTNVm5HA=
+	bh=5XGT9zayb74NMaQfkHtdMf2rxcAZC1OQzMLQh8262C4=;
+	b=xfVPnPipc4Ig0hNqFfYhDE2SdScURuvY0nlLvFDIa8yqhtRDqq/p+Yg/+N5qvmFxnHQBUz
+	S5Nd+KwebTXeSECSHUbLUqHXdGruZogeRINt91d7ylPZiMVsEVXIyMvVeUrzDIynV1RfKZ
+	pK7BfHmnVUQgv58ChWXLWUtL97GI6Ss=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DwrNqaSW;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q5+lXO5E;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793026577;
-	b=epj8H/Qt3tl/LN4wU7fAU2KaYlbWf/2JR6iSsJFcoeg89CHXYqXek6vxbGs/bN1xYEh7WW
-	UismcAzJcGJFm06N85wLksisxO4VuwEClO474ld3L2ZISSFAOGobqxu5c4Y8sLGrzem5sX
-	pf1aOvYmvbrhdET4r9Z99fQUVb2BK+c=
+	t=1793026772;
+	b=ka16iO4PozB0Qm9RmrIljQKs9z7m3bdAum6Pb0/GvzNZuUmQf6GI3zguc7r3kOPBLu64wr
+	T92T/TtxLyFRi6b4rHFmS7E+VRH4ltiB9uOZN/0PnSQ9cOcXYgzA+2g61ShxZHxzjE2mu1
+	GOfEW5AFOXQPIiVP/xfWPrYo243nI2g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B9BE344014;
-	Mon, 26 Oct 2026 14:56:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5059E1F01828;
-	Mon, 26 Oct 2026 14:56:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CA2AB6021D;
+	Mon, 26 Oct 2026 14:59:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E98A1F01825;
+	Mon, 26 Oct 2026 14:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793026576;
-	bh=g+ewwf0fRAznTV0KhsKm4y9B++fPaaKir0FyeSsvlOQ=;
+	s=k20260515; t=1793026771;
+	bh=5XGT9zayb74NMaQfkHtdMf2rxcAZC1OQzMLQh8262C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DwrNqaSWq8Tg6MoN8nZMgsOOLvoTK1JmbYmIfZGg0mIe04rMdVWmPY+Mzek5RH5hB
-	 3/1jO2omDuIEizsqzHBqzgkDWwKzNtvLn3JZ4YClVmBsbHbf37/cAdk4vcwPLgaiNG
-	 PHd7uZ6RWiPx7O3AsB8ToQnn7BhKrL1P9q5sMEHPBP1h1VVaH1swnJnuaciS0TOEOV
-	 2rFnYpLBLTtY00Sbs892Sw3h6PeXpiv0wAl+KgN6gL8G9TJ160y18AZNKrFdLljd/v
-	 F5djteKE6F7ZCq9FNYCtc61G+JIOHeaKk1aEDk3Iv21fzp2nK+6QGPWTfNjiOLNC2f
-	 fKyCVTnWovgZw==
+	b=Q5+lXO5EpTR35gK7UDBt9Dr29o4Ac65z6kAbDynbPJdj5oe3/UV8IoH5cEByDCTrj
+	 z8MQbpxrHEdtfP7wfQD2bdG1cppB70hJUeakAyZaKls7m1GYc0oQd9kowzyyXa6gkL
+	 OyL9qwY2NeZiAu2oaD89cJd2RkAlSMN+0IvS6YlIFAhjx8m0Mb/tSMgcJfu4cNDyn0
+	 kjTt2cR90jqwR544omfMrplkKXjARr63p5+556Epuk2l8DLXBII349bxY5QL/ToIkD
+	 YzNqD9y0KUirtbu6yabSHcwAO7Qu2q/2LOt196AGS714jv02m3PqUfdPC7waeVt5fq
+	 ZF4W5YqQZOISQ==
 From: SJ Park <sj@kernel.org>
 To: Aveline Noir <jm5905938@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
@@ -71,27 +71,27 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/8] Docs/mm/damon/maintainer-profile: fix subject-verb agreement
-Date: Mon, 26 Oct 2026 07:56:08 -0700
-Message-ID: <20261026145609.151036-1-sj@kernel.org>
+Subject: Re: [PATCH 8/8] Docs/mm/damon/monitoring_intervals_tuning_example: fix grammar and typos
+Date: Mon, 26 Oct 2026 07:59:23 -0700
+Message-ID: <20261026145924.151190-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179301327249.2.2109326531018240569.damon-docs-grammar-7@gmail.com>
+In-Reply-To: <179301327249.2.2968995103662294177.damon-docs-grammar-8@gmail.com>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6365F14000B
+X-Stat-Signature: tqhcri3981xkxkzf7pxxsd4fhkm718kd
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 711A210000E
 X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3yq3d94j9mrbquw4xdroo1b9kshawtby
-X-HE-Tag: 1793026577-922632
-X-HE-Meta: U2FsdGVkX1+Etdcl/tXAz3WIxTsasnOAXm5ikscqRtqmLB0jR3+Gb1JTw8+80upahLWCIJidB6zqQfhepC2Ar2CJUbVAbOQZmikT7O0DsarFAugPRcA4KwPnXijUejfD3xED+PuzSW3mRV3sHKFvYeuMMfgaxpzESPOE4zOoP/vlPkWEjXplDqukYGYTFjMTucFtsmj2ooJnP63O4Yl2L7HcwlHUjTDz/XfGjSFMOEAVyBPoa/EY6Tihdlg1NM6GXsSej5oUycpYzFIeMCQguaXR7PQ/2Ce67W9iC3ZbBlzQzdSh5zS15sE8D4tKB7PYRgr0u3urObrOFfLHHygPDpGaHcKue6NjHjbO6t0SQ82DsphjM1iBTQ66TYjUy8dd52yEFZyWgKrp0dfNYG3xF3QGkAQEFE/P5+L2+xapbPEZ/9065r2/8rhJnlldhDwukNzG/3Z6rb99TlPFLm3Hv+0aNRruEunYvxbZTGKA+AoRmOXd8HP0qGqBgiDXhDywJEo37w5eduR455LnQayT8S2rI5XVQAqbzIFEZoWptH2UgWQuLr7ibYwkiaw1grc8ldXWkNVFPdpGiDI/vYP9nXUIszDHg0U1skto0D0zTM1OYvlbKYmfd/geFpUWcrj319RDkQrytxzrUAmsi6chwb2lG4aUW9d0/fxFZNyotl0Buk+hgEoqNQ7Bp0UKtiKdrYupwYiHNJM0i1iU1hb5psOHVdqUKcyVxM3qgA+Nh2VkN4cBWgIGvxEhWONEJBC+ACZiroWwkifKN64oV307vRU3/jQm2dcgzVXf4rpiP9ALqb53fpYEG7nkMHQPMfkPT3B+JneUHZ7rb+uk5AJPTn0saaEnm60An4OJcKn2eWPIawvYWKvjW1frOxSAkIT2oaE5whbLuhl8oRqznPWE4+WEV640kpmtYnTG4ZXu1ZCvrRSXWp669E8nkve6yWwQZohJBNlDkQ/Q8IX2Ns5
- G8s7uYjU
- hddh7eLaCuWaWgDTNkqVkxXc3FL0H1n7nFluxEySB8i577gqWENm49gLSs4WGEnOMckv2Nqq8rzl4hxDYB3pMW9D4CDMDXt9s50JewVDBlt9f8YjBt/l8bH9abKlamEJ9ZwPDmAnvi9AeoLYHZ00x6yoITpeewHeeRyCFEEhlhqu/iEk8QRwhHwaAIBCGbR4eekxwq3eE326PayzOEpz8s8YEqgf68FUtwu6NjQgAmfdPKTbgg2+GYIfdsMF0mrbMOBSnSWs46WHP7elVAx/n9LFRzQ==
+X-HE-Tag: 1793026772-753985
+X-HE-Meta: U2FsdGVkX1/iFrFKp7D3zJ+nk+c/mabEn8lx1y0SrrOPWBQ2kQQb9rhLueSbnFARz9nH6OGfWrWiUYdFoENPB7nV7ROku5G+xJ9vhQ/TzZTH/DYKjNb0c0BrvsBmBgC7UGsLKsmNvpFtog9CYAJvPfqAZo1YnK3M96qdocBMdvsT0zZcPNThq9pyi61kCIVLahrrhZc2RfmSasMt6QN2snvS81t3Cx3CQ25oTlHh7h7xM0zhJkAuetMdRjOBAbjSXIbEH9Tvrt4q6u/s06T4yratvwgPu3S50beEZHdkkcBvWzWYaqMBuXV2BW7KND3/zEi2doFD6h4gIZ2DYD8QynyRmMeO2PfEwwJDmEMudW/+lqXjb3/B0TBmY7EXIM7AJRk8FzyihLrC+o9yf9DA+NWITjTnhF4APNFJ7+sEGFn0QDnLkVCJwPkjkL951OrHnYueA+lNh/YmLgSc866ysISudtxyCkI0U3UTi5cbzAwu47knJVyj0d+bc9JEMWB+O7NGne7cqe9L4ztAZ9NLvRmAebEaezObjZWRlIaGcooN3uQVcAte/lovJAowXeJ3UG2txu4RjZLzT1ePFvX38w0jUwqK9fqe06Cm0YVAGGPRuoM3n6+IvzbmmcKLKmPle2TpSFkwtw8jdmdVsOIsJEWXTBZxf2YTFnV/WB3ac4dfMI8WHlE8O6iBjXAbEdZ53Aeo4ZpfklOFd0bwKGKy3ydTeyR43ovi2jqykXihq8hz4UFTZ2r2zkLc9NT9M3ej8mfCRbDHMKLCDCrFxLh8DP+UAPlNP8H1vD/1yw1VpuGkvFrcpu/uGoy5JPH/6IWLMcnFmqv2FIHhl57mEqsoAgKzzAtmQtgEfl1rK7RUhnVg7HRDA+N8StqMOOy35hBKjxJX7vCQdE4FYU3c+1UmhmaGrF5scmzFFfJIB3WayT1GHpbtu3BND6InwnMTKjoRsqyt+zyNpfC+zWMVxzq
+ VnT1i0Nn
+ 63xUGtOC7EYzUHC6RAIx/5DnztGrDTaNbbegOgXqeoXexdn8ir1Wid+ldd6Vxs5gNJdmrBLQ5Z5w019/ngP5OrwOYg7A1C4wlr4nq2gdLUVY1uaR3D2xrM0N06LHvAqQoRl6wpyhxcUdzYaXAnWkU9epd926r2eAEKdQ0k98Qq/7yrtw/ZmK8BxWZmiBIJIiOIReM/WPEF+JIAf6P7XSluzVrt9OHDbaG3rCGXg9RBWBKWLzTCxJVKftJQfVHJP7JQNyX1v6vFwktXMM5qtiDMX64iGQNdutVUjWASbWDDW1+Arw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,9 +100,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 26 Oct 2026 22:14:39 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+On Mon, 26 Oct 2026 22:14:40 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
 
-> "The DAMON maintainer usually work" should be "works".
+> Fix a few typos, including "Moniting" in the title, and some grammar in
+> the interval tuning example.
+> 
+> "starts looking degrading" should be "start looking degraded for", as I
+> think the sentence means the cold region detection starts to look worse.
+> Rewrap where the lines got too long.
 > 
 > Signed-off-by: Aveline Noir <jm5905938@gmail.com>
 
