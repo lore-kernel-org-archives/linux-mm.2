@@ -1,109 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A02606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B20C606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=DH43oW4G
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c8Ahxz+L
 Received: by kanga.kvack.org (Postfix)
-	id E61A26B05B6; Mon, 26 Oct 2026 16:56:05 -0400 (EDT)
+	id 406066B05B0; Mon, 26 Oct 2026 16:58:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E12736B05B7; Mon, 26 Oct 2026 16:56:05 -0400 (EDT)
+	id 3DDB26B05B1; Mon, 26 Oct 2026 16:58:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D27F86B05B8; Mon, 26 Oct 2026 16:56:05 -0400 (EDT)
+	id 31BB26B05B8; Mon, 26 Oct 2026 16:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A39566B05B6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:56:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 063F11608C4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:56:05 +0000 (UTC)
-X-FDA: 85365984690.04.E344996
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 43465120004
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:56:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DH43oW4G;
-	spf=pass (imf29.hostedemail.com: domain of 3Yb7faggKCLoxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3Yb7faggKCLoxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 125B26B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:58:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 914A81A082A
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:58:18 +0000 (UTC)
+X-FDA: 85365990276.26.551EB71
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C5E50180002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:58:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c8Ahxz+L;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793048296;
+	b=xmjpB3N/aYrpJ21CvvdSEIglVQ/j+EOCN3UtTq6wC+V488azIhvNeiK5e4Yq00sGUXklJY
+	oWYLfSjhKN1IBBI3YVjY2jZlehD4IU/9DSnPX9+vcWSkD5QfZm8xwFJNOFTmeQ6YQo25x8
+	bZrUpceHCqf13fWHBzAXjCpf5tdztVw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c8Ahxz+L;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793048163;
+	s=arc-20220608; t=1793048296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=3B44qYC1y1oMWzUzev4ii49MY2PIUQMP+MPnvqlHD0k=;
-	b=jZ6jLY564f7zgcWKqly2VNkQXGhee/rFHHBqFNVYdCe1YMviWn/QxLuU7m7TmHoLcx1+nn
-	/5Cso2TbNCv4AbyylmKlPM8fvdqY7nW54k2VtYr/WsTYb4V4T9tlqzMHzv28YTwVjBCKTT
-	4xFtzX+r72PVYZywS6XU0F82JX8HRvk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793048163;
-	b=U1FXaN69+zC8N9VBXEFmm3gXuWYP8ql1lY9ecHNfLzdT+MtVSMhAJMVg2Urn5529L4xaSX
-	qf7l8+DLNBVo5JUtviC9rY7cBoSaiK8QzD+b2RlD6nr9Cxt8obKUEAv94VQQNcMnPdMYHl
-	+M1Qe5CfIu6hd/DFQICAeOT2joEw5BQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DH43oW4G;
-	spf=pass (imf29.hostedemail.com: domain of 3Yb7faggKCLoxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3Yb7faggKCLoxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e9d52f684fso34105135ad.2
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:56:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793048162; x=1793652962; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3B44qYC1y1oMWzUzev4ii49MY2PIUQMP+MPnvqlHD0k=;
-        b=DH43oW4GaDAXJRuKPO1GDnxla3vMOoz2qAM4lr5YN4SQ3r5EBPgTlq/OFknB9h9+eb
-         /WjPwfMZQjOdJN1Uywy4ZjtSY0ajL6c9CkaJVOMNQDH5ECZ93AX/43KZVusu3jdAiD9Z
-         6zlQ7sJcwhVvniL6PGdHwgbhJ9ZyeUZznyn4tfOpFZayPADTbD3KehbrpXzQ5LKIijzi
-         jm9tmk+dcNRiIT9jSWykq5arialq5E+sXyaTQdr6IiG3H1cclmPkQIaYG98sur6or6jt
-         lcOXvWJsOZgsJKjzgcj0Y+TEDlXLIND6xY1M7UXALnHIEkR/aqBAgfEk3Iv4nS6SeZuC
-         RCSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793048162; x=1793652962;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3B44qYC1y1oMWzUzev4ii49MY2PIUQMP+MPnvqlHD0k=;
-        b=mx7F5yJeIwWYdz4hq7EKmnaePwTtqSIax4jj9Yjv72e9AZeHtIGmZn7NE8cNwCiUCM
-         wSeeEQHp++AX4TwHvbU2Yc0T+lZQBqSKtF4AW5VR17KEe/xTYOC8KdbWFxS1evfmfqGa
-         RCK3AFRHknOw8poayj7CNT5IKJSNsh+LrmxMktYddQYRnthKC5xvjNEp5G8JHowsdG+D
-         dKVY9MatR70MxSaOAN57Bb8gfPUAPVoYuEiOBGu7UG09sN+gA5G93t4OoDrMyZXOKT/V
-         sSdILhg3UMUHPpxMJlXmjXt8YD2JLD3C3iHQ6/osQs169LoIACYZaol1pMV7jdeScniW
-         D1og==
-X-Forwarded-Encrypted: i=1; AKwUvBwk6u7un0n+MMF0wbiu7QK3P4fztD/NqywHy1BfMK6FHy61B8e5Uaa1tD6wp060WTE0oLK9ZU5zAg==@kvack.org
-X-Gm-Message-State: AFq9FYJQ7PuwLSHN6nerAB8r2kgUW69R7vtZnOBqsgcIg4vEquStN9oJ
-	+5Q+M8giyK/pkgCjUICXQ1CLJIwnzYjNu8ddaYjh5DNS9hvyfekRGoLw53YOgvKAttnNqJbZsu2
-	QDhUFWh8RmOLtkg==
-X-Received: from plot20.prod.google.com ([2002:a17:902:8c94:b0:2e9:6468:1ffe])
- (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:3806:b0:2e9:5175:2eb with SMTP id d9443c01a7336-2ea9c0f388fmr65823665ad.1.1793048161845;
- Mon, 26 Oct 2026 13:56:01 -0700 (PDT)
-Date: Mon, 26 Oct 2026 20:55:55 +0000
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=icmUq+qL2c/gwZjRUiz00O2bxdKoJyT2ITQRS8SDc+k=;
+	b=Nl80N8Yj28whRciTspS6MSy4B48bRRJjDXyuHbWkfBCZYGHaJFwyQ/CvAt2y7KO2uoV+pu
+	BbvNPWt39Cws00zK4Wt8gEw4o4Gdm2rCAdzgyvxw+BMw1BsZ6dsPBQh41mXMZcijWJt4hq
+	BPfdYZk3qewbqxPDXRYXSBxc7Ua472o=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 864DE601EF
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:58:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC7D1F031E1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:58:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793048295;
+	bh=icmUq+qL2c/gwZjRUiz00O2bxdKoJyT2ITQRS8SDc+k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=c8Ahxz+LtK0cK80zV6kg8UGyAghjfA0p3hs9m5IKO7imlTjuRbPZ+YWwVA8GXrV1J
+	 vHHpMylEfor90qdVsHO1EWbJ711CTvV5FnEqmxY+jAh+oj16Uu3g4JU/ULctNeQBT8
+	 M81B/4dEEle7aqWzOV4XkJqegLUGDxysOYzRVj6ddtAUxeJP47tcufPOhTXsEIQMd/
+	 d1prtaXbqKqDbuQtZpXPZTcbpNO9gMrTeWXNbCbOJvPcWLij3ylBetKULwzCWyWkbU
+	 QQRvZ3kC+eMRggyFSpjcmFJPkmo+Wdko+nPmjJNTXclQgtZlIJtITyoXQMnL9OxBMW
+	 GsnMkvZrRP4mA==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93e7ad9f78dso411894585a.1
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:58:15 -0700 (PDT)
+X-Gm-Message-State: AFq9FYJ9l+5R6iTmAFzZ14f37k7a4O7FCmE2gvVWTrboSo2YCpdWGjkd
+	NkYfmy6GbIrWu/GamC7tAVnWRk+o1pmGDof/TyhDOCD/OMFmaIMg5eBQskhyIUn9WnUDvffCLWH
+	fht8bIIMOm8HnNYGmo2HDdQbutIkFHjY=
+X-Received: by 2002:a05:620a:271d:b0:93f:e53:a55c with SMTP id
+ af79cd13be357-940ef95200fmr1180262885a.78.1793048294632; Mon, 26 Oct 2026
+ 13:58:14 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261026205555.2918396-1-skhawaja@google.com>
-Subject: [PATCH] hugetlbfs: enforce F_SEAL_EXEC on chmod
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@kernel.org>, Jeff Xu <jeffxu@google.com>, 
-	Daniel Verkamp <dverkamp@chromium.org>, David Matlack <dmatlack@google.com>, 
-	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
+MIME-Version: 1.0
+References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
+ <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev> <CAGsJ_4zUVpBJazRxc1CzN6u5XvpUaGnaf-_7JMz-rGK_ZTYMtw@mail.gmail.com>
+ <e865f7f0-087c-4fe5-b729-6e6946cd20f6@linux.dev> <CAGsJ_4wp_jCtCeMx39nW0Z1Jm5pja7_V6XNwLB6p7zTan0c3VA@mail.gmail.com>
+ <dee39669-b726-480e-8ca6-10f19512da68@linux.dev>
+In-Reply-To: <dee39669-b726-480e-8ca6-10f19512da68@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 27 Oct 2026 04:58:02 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4w4ozXM+=T0qGBAhC323F49Y4LxrrKKt3GFCs+en_TVCg@mail.gmail.com>
+X-Gm-Features: AclHuK87m9cZBrXF70X-vghHkwSRiCol7Tl6VccIZSTsfEiuILsGNXgum-WwE1U
+Message-ID: <CAGsJ_4w4ozXM+=T0qGBAhC323F49Y4LxrrKKt3GFCs+en_TVCg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
+ underused THP shrinker is disabled
+To: Nico Pache <nico.pache@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Yu Zhao <yuzhao@google.com>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 43465120004
-X-Stat-Signature: r8q53kyr3fsuyaux4okgezjb4zd65rnu
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Queue-Id: C5E50180002
+X-Stat-Signature: 8p5mxmwkbgod13mg3tqquaspt9p31ujf
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793048163-11334
-X-HE-Meta: U2FsdGVkX19AV412cf6H3C21aSw7HQg2XA76KLIWF3pipYI8RuNxGppCHXfKE89X//uLx5HQTM3w1aoQqZNJoHdNItgBtGSzo82j1KrGwUQ0jxx00IuDJ4OSb4b6DWBV1mdFvmPuNYOg2GiX66BFUFHqbCmNp336hbjPWiVw3UN6FhAxcQAv+vzQlwrbZZruL3F7/RZD4a3okXofF3w+I/KnvJeZZPWHmd7YpU1JnuPTXV8GKp2SiWK8jV6oOYwL2ByzqeLqacYsPvi85bZr+/RevvOk/aF6bGtiEOCWfMVTSaFJ2v6u2N7XK9D9zqmKuhxaGZiE4mg/QvGGdcmhEbWBEatRCYyNar2otc9+teNEMwzEKojfMk9RtslOC1jpHweMk1xcR0lN6G+nVm/8jXNF4riEl+QwqszoGJrkDvfiZy8ftm7bqz1sYR5M2yAaKtmPVIeCM3ZEdt1XDMTXN30YcAzFgi6dZ1xeNx1P4TtR12nsC4QPrJ+3ZL3WUSXLWM2nlzOHoTkPZgkm7A2Pehx1opAmXcPdmJ4k5emKUXwLEAbpyJr1/S9QnxsgCU5ZIap5gWPQED7pIfNsCL1ae91YLtq3hOOKb/+5I77dF8IMwCxGk96kstnhIlk+IIMNYo6OhXD/7MrBxZUtqGZBOjKkGMm1QVSYnoC5dYbrgp4Y2iFswIDFAoiOBguLB3rh7HWZK2CVMS4x40ZQD2f+2ceU2dWRxIEeEK/ezWavkyKHdtgBZn3GRg0L3XPeVJ4YndVL++WJAMoG4ZJpFPt+5E+PG1xAHf5p0hPAkyRKnzrS9UMr4isEEZeQVS6EYkZ6RB6OpUKTBIbWsFnINpF2YOMhW9tqP7FqJhVUAeToKAO1kFQTZzevQ0idNaIx69OJ+gfBIigTIF0QjR78vJbO3Hz6dSCqfmVePLBf/ojwIgs9e7gz8hCa8Ck+suY2GsyFYjLW2Rls5uzM+ryeYu7
- xe9JmiaW
- IN9buMn5EfUATX+9H0DeF9yUd/ku8lCBysysVfL65WjJlx2M7YxzO1Mu3n91VyA4eEuSaMSUaD2lBOQofRBkuHP+wRdHFPZCrNQgwtk3OkttNXqsCsQ0zjo5nIO5A2RHsobGNa8dEhezS1JFLuyicmunsfQu0lSylFGh4W0ZfbCYf+/fH3Sq28F0gib8hXLWeV/r4fkPq4xe7Xx6UGaTMt6UB/sfwHvECbXL6D42lw/qouuptj8LOgIhqEya4Oil9zsx4quoV7Z965pKJWkBer1W49dcEk8RkKS7I1zEcm9OKdANOc0A2Clrgf/0j33tPjyzV7iuqWMFBh8ZwqQ2M8dh/qJ4KAuku8FQV4swbyMeUMv64xC6MuEdrE+SQ7UlMc2oFcPIOrCJ/xKz+hWpWwYp3tJPoHJUnicmM8S4pU3YSMdi+k5u/A/PWcWXkF1Hs9OiXdef6qH3u0JYTNveNSx2wXfgOpBcWK1pyeyJpBPMpKsW/1DkMkJdPm84XjWRU9YFYjHKkfO+EogrffFbFZH8o06J/WLWgM3/8EqmPxVREvdJtc1U+9C+SMwOinFr8vYnGtAvneL3GIInZxWwoGGsejDkjvImGD7okV8NmSv3fYh/RF9TwHM5dF4GY3cKt/K4KboAPFqiEgUj2M9qk35odg4wkx7l9bd49
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793048296-859157
+X-HE-Meta: U2FsdGVkX19VEn0zAE1GvyVr0sZ2J5/lbNW1I3EDBkMBkLCcIXbgOxlLpK5jArFqEmbr46CNvRstJqUtAaHVH7OuqWyQek/FxJVS3KcmxeyTUdfG1R4wV2YfpRiCqWqTs0tXuwNGQQ5+8rZ6cunZwntYMSMR8FQDaaJCRrc89EGo71EpBKK0kIubQRll7hRUQt98xO1nyLnC8jgVcza0G0XeaJHeonGCLbZj5V4tFt/MDjnJJAlrnJingbfrtsKFpMFiQQ6fVpuSSez5zKKQVOWTBFpEajCp3cw8mlwKUlAVF/cnpIC0WgHV7C5LfXI3davEZgk4krRjWlmhttuonE60Dt7myhCqsdJsdaO2eQHB/fR5/yfFtlKakgiRhXd0ymfvAf4OmjZALqJ8wmmvKnXybJcMOYzhSDIUBYq4pbloq0+iJIMxSJbdRewkDCUuJEFN6xK51pYcGKxHI4kVIB1ZinMQrai6+Kjk91SICMgQ5K3o+h6vs8iL7o5HOrvMbo1Imq4/iKJa3Oy2jb+8FmVkNQPFp6aNv+2niu2NbABIqBKOqC8i1+5ff9+hQpzkw8P57DM0auuPuKNIhO9KfSr0hNcuzYMDJLJz0O34rbKBkC/TJXeyNJvGsTxwM2rXmRWtdlzPPYaNP463AcsdLwxHOn457J43iQMs72PSFS9n5kMjfak8iuhXIX6ksCNAOI9M1HgwZq7aLH/OD+hmopwLzLw0ANvMW353x1OJyog211mf9sqNtYRv+PqjxAVw2sHt4WC1Hd6m2QDM7SI6ogPQcjio4OtMJC01VpITz3n/nTWqVIIY7G8NiqkLGyWpqP6dV7ptVPflDfp/giObBzYP4pXWp3vXWKnW88hooONAsHugzU2leoO+JMoTJe6/nZiZJsj/xljIfUVWjzqiczCGeJdcQ7vvjZH8Zdy2uv1xUxVof+ve9GZtOkSsVqaCO4JGPhKhEKfllpsRB2Y
+ TVHrT19p
+ Nh7Tx+PtNgTD9VgVQJXrkq+r7OTM965zVhiLy9MCreGyYM/kclCCaCzUwoiqnHPn2t50TKiRobvy9F2qU0rpU7A7MEucSq6zrlC7q2zKbbpIcy2KtgX1Uf9Mo3zCeNNUNvQE8pcOdRfFPsx1CzN3Myw/NcXMADddkZaYm0WUvMxDWQc0nAHj3dHt6yPG2viGDFHgluVSM5o0KhKWpG4HYa/vtm0UFrxmrskrimieVFC8uttF0BAzEK9crJUfqsOjpSujTE1XNbqTgo91sFFh+osFNOez7SwDJpAgUdTG7cv32rua5Ew4C1AQ0C/4ht04BhLJm2CHhbmLzdE8n7/feRZBIvKTZng4qLFqBGL/D3/DsN9VeUFOs3LLZJ5hsIlm+8k51uKgBXMw2EMuMK64i6PPz8VyTtw6/eu9WzmcYsEmgd7lFKW1iTj0BBLC7LpoM984oafc+UadnGy59tUjSsWMnsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,50 +116,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-F_SEAL_EXEC prevents the exec bits of a memfd from being changed once
-the seal has been set. F_SEAL_EXEC is included in F_ALL_SEALS, so
-userspace can set it with F_ADD_SEALS on hugetlbfs memfds just like on
-shmem memfds, and F_GET_SEALS then reports it as set. However, the check
-that rejects the mode change was only added to shmem_setattr().
-hugetlbfs_setattr() never looks at the seal, so the owner of a sealed
-hugetlbfs memfd can still make it executable with chmod(). For the same
-reason, MFD_NOEXEC_SEAL provides no guarantee when it is combined with
-MFD_HUGETLB.
+On Tue, Oct 27, 2026 at 4:02=E2=80=AFAM Nico Pache <nico.pache@linux.dev> w=
+rote:
+>
+>
+>
+> On 10/25/26 10:52 PM, Barry Song wrote:
+> > On Mon, Oct 26, 2026 at 5:48=E2=80=AFAM Nico Pache <nico.pache@linux.de=
+v> wrote:
+> >>
+> >>
+> >>
+> >> On 10/25/26 2:28 PM, Barry Song wrote:
+> >>> On Mon, Oct 26, 2026 at 1:40=E2=80=AFAM Nico Pache (Red Hat)
+> >>> <nico.pache@linux.dev> wrote:
+> >>>>
+> >>>> The zero-page remapping in __folio_split() was added to support the
+> >>>> underused THP shrinker. When the shrinker is disabled via
+> >>>> shrink_underused, gate TTU_USE_SHARED_ZEROPAGE on split_underused_th=
+p
+> >>>> to avoid scanning subpages for zero content unnecessarily.
+> >>>>
+> >>>> Suggested-by: David Hildenbrand <david@kernel.org>
+> >>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage w=
+hen splitting isolated thp")
+> >>>> Signed-off-by: Nico Pache <nico.pache@linux.dev>
+> >>>
+> >>> is b1f202060afe a correct fixes tag? as
+> >>> commit b1f202060afe has no even "split_underused_thp" there.
+> >>
+> >> I believe so. IIUC these two series were merged together. While
+> >> 81d3ff3c6f7 introduces the toggle, b1f202060afe is where the behavior
+> >> started.
+> >>
+> >> I guess you could argue that the Fixes should include both?
+> >>
+> >> Not entirely sure!
+> >
+> > Thanks for the clarification. I guess it's fine.
+> >
+> > BTW, with the code below, we no longer add fully mapped
+> > folios to deferred_split_folio. So the scanning code only
+> > handles partially mapped folios to set up zero-page mappings
+> > for their subpages.
+> >
+> > I'm still not quite sure whether this is really harmful, though.
+> > Am I missing something, or was there some discussion I missed?
+>
+> The issue is not in the actual shrinker code or the deferred split list.
+>
+> The issue is that any split leads to this zero-page remapping
+> indiscriminate of the actual toggle. The same way this toggle is gating
+> things going on the deferred split list, we should be gating the actual
+> zero-page remapping too.
 
-The memfd selftest already covers this, but only the shmem run passes.
-When run as "memfd_test hugetlbfs", the test aborts in SEAL-EXEC because
-fchmod() succeeds on a sealed file, and none of the remaining tests are
-executed.
+I'm not quite sure this is true. The toggle prevents fully mapped
+folios from being added to the deferred split list, so their
+subpages won't have a chance to be remapped to zero.
 
-Add the same check to hugetlbfs_setattr() that shmem_setattr() has, so
-that a mode change touching the exec bits fails with -EPERM while
-F_SEAL_EXEC is set.
+For the remaining folios that are not fully mapped, or those
+that were added to deferred_split_list while the toggle was
+on and remain there after it is switched off, allowing
+remapping to zeropfn doesn't seem to violate the toggle's
+intention of preventing fully mapped folios from being added
+to deferred_split_list.
 
-Fixes: 6fd7353829ca ("mm/memfd: add F_SEAL_EXEC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
----
- fs/hugetlbfs/inode.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Anyway, I don't have a strong opinion on this.
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 01c4d6f44ebe..56e0588d295d 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -842,6 +842,10 @@ static int hugetlbfs_setattr(const struct mnt_idmap *idmap,
- 
- 	trace_hugetlbfs_setattr(inode, dentry, attr);
- 
-+	if ((info->seals & F_SEAL_EXEC) && (ia_valid & ATTR_MODE) &&
-+	    ((inode->i_mode ^ attr->ia_mode) & 0111))
-+		return -EPERM;
-+
- 	if (ia_valid & ATTR_SIZE) {
- 		loff_t oldsize = inode->i_size;
- 		loff_t newsize = attr->ia_size;
-
-base-commit: f1ac44c32cba88ad65dcecd4a279661d14e93651
--- 
-2.56.0.307.g5fe7bd680c-goog
-
+Thanks!
+Barry
 
