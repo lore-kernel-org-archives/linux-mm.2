@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14677606A32D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925B5606A32A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WLVL6FXg
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ox2i2FSH
 Received: by kanga.kvack.org (Postfix)
-	id 2B43C6B05FE; Mon, 26 Oct 2026 19:31:29 -0400 (EDT)
+	id A080D6B05CD; Mon, 26 Oct 2026 19:31:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28C8B6B05FF; Mon, 26 Oct 2026 19:31:29 -0400 (EDT)
+	id 9DF936B0600; Mon, 26 Oct 2026 19:31:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C9A36B0600; Mon, 26 Oct 2026 19:31:29 -0400 (EDT)
+	id 8F7666B0601; Mon, 26 Oct 2026 19:31:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EDEFF6B05FE
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:31:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8481E1408C1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:31:28 +0000 (UTC)
-X-FDA: 85366376256.27.E552962
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EB506B05CD
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:31:47 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CFEA3C0890
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:31:46 +0000 (UTC)
+X-FDA: 85366377012.12.19BE753
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BB6311A0006
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:31:26 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WLVL6FXg;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0C954180003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:31:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ox2i2FSH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793057486;
+	s=arc-20220608; t=1793057505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lkeUnC+ke2SeHckxsNXGFCsvZLAe8AN/2/cLkPRumtM=;
-	b=yanbAvxfkVr6CFDOA8go2IH72uzRvf5wFAzWoVnXcAYHr+GLSX7cUL576TjVccC8LXS5o5
-	ozDzsrA5yepTBdxHDJRiTyKmN8aGaukt01lZpeRFbmr6eKH+6RwkBgUi4KgXBIOlFfd9UW
-	RBWPCR5CffUfsCzOE1W3CGO6VZrINik=
+	bh=JOZA/d3RnlEXnMB1S+vtRBXnoN845YtQMJ+bQJINkeg=;
+	b=6VuS7C+WEl7mFBizNkCVhgs7L9pfcdRNu96Tps/PrBguCfckb8oq8B4Wnu3oU+DqNzjCl9
+	oliHOIwgqonphvELkvJ/JL5fxCBDU8XsQgYgUkciqHddr7b7888ywPfe0WS42iOEbpj/NX
+	q/DkUMPvkx9iKdQPrUi8q4EwGBoN2Cg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WLVL6FXg;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ox2i2FSH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793057486;
-	b=vwiUD8sfLH4U8UR6k7ikLlrJw50M3T1vJ70oKLfhXtzE/56gXbsp+Ni66w6fjZuou0I7AM
-	W9gOa88i+23WxQakQlzLDVDSjbP+/3a2HEyuTCLR+mSbf+qUEnXVwaFxRiSSHvIc6udg9+
-	wa1rRfHZM/yii9WcNkVlI08gwOgRKCQ=
+	t=1793057505;
+	b=edex3bODKpjhwk0VhK8XIVcXKojtkc7T79ioE7i0wHdn+ah2VeLtbW9ReJr6sXsJMpARhw
+	chNtzpgxlgjX265gEm87ZdxrLwYam56oLdu1ZFMjKtdnQoBXGA56X8vKkZ1drrW6Mv39dK
+	KoIxHvi+LP6JfgZ6PjE8pGaBtJld3mY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0906240C43;
+	by sea.source.kernel.org (Postfix) with ESMTP id 56EF940953;
+	Mon, 26 Oct 2026 23:31:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A76E1F01825;
 	Mon, 26 Oct 2026 23:31:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4037C1F031E4;
-	Mon, 26 Oct 2026 23:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057485;
-	bh=lkeUnC+ke2SeHckxsNXGFCsvZLAe8AN/2/cLkPRumtM=;
+	s=k20260515; t=1793057504;
+	bh=JOZA/d3RnlEXnMB1S+vtRBXnoN845YtQMJ+bQJINkeg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=WLVL6FXg0vHz/gidKve/pjODS+0haZDG7Pz9wt1w6lIJRrIezoVOGFFxeQnFGWJUC
-	 Oh1S/7Ts9XcXEHskvuXv4xWsR9U6n5+ghh5PrusNb19hSOJZLkpWQW7jm+f7LppoLp
-	 nRdmsTY5ydvVfPPBYKfSFog8rg3u7fckoyrMVJcewFoW32wez6F1F681g1rez9jjlo
-	 VpYGoehVJXN5aYjbNK/5aiFRgWQlMXHycy1oszm2PIaDU4bSRaezAblXErdFsv+nGK
-	 WVM4CKwy9q9O57aOMot6Sxcl2q9ipgojiGwZK2yMXBqW8slqmRQD5V5djgEkP6/coW
-	 4+3g/vQdhBtFw==
+	b=Ox2i2FSHOypqrcZwgXnwxa5pmucASOgMRL5vDYqMTASHl2rf75YW3wQoVrkuPIuIi
+	 qWBaawkuI8mbHfObP4rg08odrulxxwWOwc2kIfSbm6V7kYxzS7kix5XDxbFQgiI57R
+	 vd/KGBmW9fqjr2ojLTHGLQyXB6fpiqHp4DCbdpXJvJtGtlMg8tu48HAXtQUxYfibsT
+	 JsLarU2SHDjaAj8xnSGSrXvbdAGQU1FoX1lIooc+b6p0m+NHqmvpSisMO7dcd3rVVw
+	 AUARD/nIWCCPO2WzwdlkLwUwJeQDZtBN2zbbbs27Pi0cCpSRpugWYDmuEeJDHrz0qE
+	 2Nr+Rh3Vvxf7Q==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 00:18:03 +0100
-Subject: [PATCH 43/46] mm/vma: don't leak the charge for stack growth
+Date: Tue, 27 Oct 2026 00:18:04 +0100
+Subject: [PATCH 44/46] mm/cma: don't release CMA pages still in use
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
+Message-Id: <20261027-fixes_core-v1-44-6f74bec9a5bb@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,30 +106,29 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
+ stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1191; i=david@kernel.org;
- h=from:subject:message-id; bh=ALGNQwhpLft8D6XNQK7dKBbPofsh/OWRq1n/Y7LvvI4=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35/xmeH/Ej8mv/5em33yHRWMvuIu37qv79rNdMFa0
- H1pQcX+jlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACZSfZyRYfrPY5yHLG8pNPFE
- GU/wzQmSbHFNljx4/M/6qv9bn2izcjL8D1125f3Rlhh7VfZ6A4uzkXN7GiZLX9/2JpXJkNnP+P8
- xLgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2157; i=david@kernel.org;
+ h=from:subject:message-id; bh=nx05kHs+vYnlpcYo2GO368aldzvpDGoDSteIsZANA+4=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu359h9zUpMrRK7P9OThHTp6//rRVNZj6uMbl9Wn3v9
+ c5EY4H9HaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzk7RKG/1EXTeqmP/GzifCZ
+ ePbvbCfeC7W/VWUvTCi5K3vki/Mam/cM/ytneLn+m+4vm8X6VsRtVrGe72WWIDPnlSqnFA5NmLY
+ kmAMA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BB6311A0006
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0C954180003
+X-Stat-Signature: xe8qf14ci5ojunapw79u79mx8xegpqaf
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: zgw991et9j7pnsupd5aqsbbi8jyj9tfj
-X-HE-Tag: 1793057486-493105
-X-HE-Meta: U2FsdGVkX1+kazeSf7hf5IFJpons4/qmi0X0d4/pAw9o1gaa83uTtBB+kPZpcT0GwrZAWSdeMVOWzJ3eA6JkoD7jR99qzudkRNuS5JtNs7W53Pj4epiTQgSVWytXQU1wmJZWadzF8hzYPxEk22+E6njBvUyy2L1i0NkeUZbdmhS/2AdVcO9keBM8qlGuqDjkJUiEPcXyxCZYUGnbzymlQvOdKuJtvfFm89McmSkJMc29VIVsA37tYsAxrbPynyVRVcw1aThQ62SmpYQb5ghH/dZenK+fJvhNGdCClFO7tDOqMkUMBLYKNEUmTqzI7sMFQtwLYdYn+26LknY847WbjXeJPcLvJXHuuedZFAb6k44O8oM8pEvAvcnn13fj5p6IlxRNOariT0O1bdUyxUmULWs7L4/LcL898gLJdoN4O7Eja1uqeFFrpRPtcxOUuPzSigIVYDLAQpfClLV72MtaoKOb8AZGEoABGkw/cKJI34VQZ7i8orOGvdkZ5TR9RmrGUfdV9ShBeNVGHBv+MN9OENBK07T33NUIHIBu2rqKz1nq5zeJd8KwUgHLGuLfiVy600S/MrxxeNTxmQ/aEtnpdH82a4wO9Ef4jnW5ANuC7MF0rOWQpecel+lztFu514QFvVXnTdAFAkT+GbrMQR9Yvx/4C3RIMUfmVIQh5gV+ecDRT8dT1EokyuYgiSxHq8qrPm1BMlrEpZ87J14LvHugT4NwLliaX01aVZOZtCdAy5SMDgHYXvx5fG90IIzTeELuU3JczrA1/BBd0KL/r+oMSldL1N9UBuzBaD2TypEw8n630LXH8iNv4iFXo9wcgCUq2w5vFqZ+9Iwjgb+/HH/8tVVfiNblbTgz1YQF7mjOpbVeAXpXgDtvi3YxhQYBC0PZ6qmR7NlN7dqUSvfdhZcBEgEWvmwluE1dWQcCNBnK2xj9hsvtZo6A/sY4IkVdeT0rr/boNiHlfFZxv9ZP5iL
- 0ip9a9/e
- nqgI/7sno1i2x/hgzFQZ4WAZW6IkBIJIy2v5TPQ0aHAbVge5OxDIo7bKccRVn7dd7Ky+Qy0wk2vCOAqKKrMwW/fUNQugoTUzbVNq0pPKzJKEcEqEca+Dj6GoRPibduvymR2KPfFsI/X/5KvpP5SbXiZoDzzQu8UKZq7bI6ZYG6HU/9uQl2hwcoklYVcVCX0ZXB4UmI6OfwjXCEo4iaOW4usOPg7b+2uhSDk8OZIcEeltFw6s2nO2DfWxFFqxvBxD9cZ+MouDEmJ6CUKT05UGeopYdWBWy9zM0iy6+HysB9FOvK5aDfX5YkARudMNz46DMZC2E7BY0i7DfQfuxOiItnckAoB9WeDiXt51FxocBXuIUDYxyiySqk8lR9RKG4OcEUCsL
+X-Rspam-User: 
+X-HE-Tag: 1793057504-625242
+X-HE-Meta: U2FsdGVkX1959iRN727TqXvbEmXtHFtK/zk9/Mru6+adj9+XnV7nV84Z9N1noOF6qPqa/PkYYA0+eXHtlFrCbNOeMJzZSexwEhOnDfn2jYAdSis594iY6eyRhZn3PoBArfQXMyk7wXoLBsvOpQ03R9LdKu7OycN/XU/Z8yrvcls5XUm1S66UdojL07FIToyEORxRfBNxGjZqFYXy/nefB9GyEiPIE91V1IfCBxJqefKNJl3qTC4KuLz0QOrJ0tyeZHqsfWtWtWYsTy0gIrNtWmHo12/L/rf/EYYmitE1HeJ8rK5BuHzWkzJgrXfulj+3mVXB8VRAms97G3ftbmp8eAhjpexXjK5j8Z/3jtHjtdHOOzbvrokdGmgtthF3AbA+ac66+oC63Z6wdvOXU9zWAP0SLRSFvywrlzoQJT9QxU7THlqP14wacc50EfiImuRW7NObVnLoZV6h0SbrhVPFCVhKWkklRdkw7ckG0C7/gkSqpfhbaU8Sxzj/m85FUbkcKq+BSkv09YbG8JPZ357FvKr3xwXx9WNemfLZ2SnpMSU8SqRzP47rN0na6GASCa4eEZWzlruHrGIIU9WC2hQVzer01DEwNg/kRaIW6f6rYZVPERMM9k/qaaOmvXBiEav73WSjTRxURRKaPIhQiBeTInryL5nvXf2p05QNXfc6GlKwVNYG3XT4X9QO6xZxdihNs+kgeMgoRNPZmAEULjKnUZA1FWL59rBizbEvfdPnwV1iW4n5QTpB20ErYrEddniMln9lYBtd7zo6sp77magdGnlA2yIx53PTob8/PBfFItdwc4diZsZ26SHs5TcJPswlaGWQJXdZ8/azS7/wlPpyANkMWUcMtzgtZr6sYqI1iTWkf6kaENMJZAyy0d8mJr3DYlGcDYo1+tGDIqvHKNLg+rr7sUmvTXD+06MLSgy8t+dpYPTgOxeAao1b2PjSvsi7w8N+1or4zwljctwuxbz
+ eXk/EshS
+ 1FGkv+MKHmVz6cK2lYY2XO1nX1i6yU6ZtC92U+w0K97+x4nuvndMFAXesiObe+jRkvcqvYf6mkWOd2JYjQjFp3WpEDxOtolB7LxZG2Y0ORV3JcFEUC1YVhU9YxoJkon78qzMYk/Mf8TDwzfCXYiaeOsniQjGwVW9GoRnl2Twhro9sgN22rNJt3VNLsg78hGJypfyvUD98k2uJWJVPS2xapV5Zj5fxR1AtntuqPe9A+B0NaIaTcUk3PIo5ROO+o389yVqr31YdylNOuXyVlUXL2HppGKSRNpVlczsOl1wRcweGj69rlz41HIEU9e1919ECtxNMJnmtkG8bpc74+QiDm3K2JXJT/fAXQpMnhqH9cmFhwJIPEAx/ccPZXuma5CW0IJ7Ayhql8psZS8AKvnlVmx0cBs/va8Ia4i8W1ruimHDzqpcPxo5bMwQFDYK5ZhyM2Xxf/4my95q36Eni3Ohk2ckCuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,38 +137,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-acct_stack_growth() charges stack expansion even without VM_ACCOUNT.
-This can happen for read-only or MAP_NORESERVE mappings created with
-MAP_GROWSDOWN. Unmapping these VMAs does not release the charge, leaking
-Committed_AS.
+From: Rik van Riel <riel@surriel.com>
 
-Only check and charge growth for VM_ACCOUNT VMAs, matching mremap().
-Unaccounted growth skips the overcommit check while remaining subject
-to the other stack-growth limits.
+When a driver calls dma_free_contiguous() before quiescing DMA, the
+page might still have a reference from the device.
+put_page_testzero() there returns false, WARN fires, but the code proceeds
+to free_contig_frozen_range() putting a live page onto buddy and clearing
+the bitmap. A subsequent allocation can hand the same PFN to a new
+owner while the original holder still references it.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+A concurrent put_page() that drops the last reference between the
+testzero loop and free_contig_frozen_range() can double-queue the page
+via page->lru, corrupting buddy lists.
+
+Avoid the corruption by not freeing a CMA region if any of the
+pages inside are still in use.
+
+Make it explicit in the warning that the driver allowed a leak.
+
+While at it, use page_ref_freeze() to make the semantics clearer and
+switch to pr_warn_ratelimited().
+
+Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
 Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Link: https://patch.msgid.link/20260811132045.5f114772@fangorn
+[ david: use page_ref_freeze() + pr_warn_ratelimited() ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/vma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/cma.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/mm/vma.c b/mm/vma.c
-index acdf00346cda5..695d0be85ac86 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -3391,7 +3391,8 @@ static int acct_stack_growth(struct vm_area_struct *vma,
- 	 * Overcommit..  This must be the final test, as it will
- 	 * update security statistics.
- 	 */
--	if (security_vm_enough_memory_mm(mm, grow))
-+	if (vma_test(vma, VMA_ACCOUNT_BIT) &&
-+	    security_vm_enough_memory_mm(mm, grow))
- 		return -ENOMEM;
+diff --git a/mm/cma.c b/mm/cma.c
+index a10ea37a261da..871f95c9ae9f0 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -1020,7 +1020,7 @@ bool cma_release(struct cma *cma, const struct page *pages,
+ 		 unsigned long count)
+ {
+ 	struct cma_memrange *cmr;
+-	unsigned long ret = 0;
++	unsigned long leaked = 0;
+ 	unsigned long i, pfn;
  
- 	return 0;
+ 	cmr = find_cma_memrange(cma, pages, count);
+@@ -1029,9 +1029,13 @@ bool cma_release(struct cma *cma, const struct page *pages,
+ 
+ 	pfn = page_to_pfn(pages);
+ 	for (i = 0; i < count; i++, pfn++)
+-		ret += !put_page_testzero(pfn_to_page(pfn));
++		leaked += !page_ref_freeze(pfn_to_page(pfn), 1);
+ 
+-	WARN(ret, "%lu pages are still in use!\n", ret);
++	if (leaked) {
++		pr_warn_ratelimited("%lu pages are still in use, not freeing CMA region!\n",
++				   leaked);
++		return true;
++	}
+ 
+ 	__cma_release_frozen(cma, cmr, pages, count);
+ 
 
 -- 
 2.43.0
