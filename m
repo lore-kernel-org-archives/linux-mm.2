@@ -1,153 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FA5606A31D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4027060A2601
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=UuBOkFgs
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=OXuoreeF;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6D0vMvDa;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=OXuoreeF;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6D0vMvDa
 Received: by kanga.kvack.org (Postfix)
-	id 52E706B05B1; Mon, 26 Oct 2026 09:24:43 -0400 (EDT)
+	id 557996B05B3; Mon, 26 Oct 2026 09:25:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DE6E6B05B3; Mon, 26 Oct 2026 09:24:43 -0400 (EDT)
+	id 52EA56B05B7; Mon, 26 Oct 2026 09:25:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A6586B05B7; Mon, 26 Oct 2026 09:24:43 -0400 (EDT)
+	id 41D6C6B05B9; Mon, 26 Oct 2026 09:25:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 15AFB6B05B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:24:43 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 261F5C06ED
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:24:41 +0000 (UTC)
-X-FDA: 85364847162.23.2A2D07E
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 34211C0002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:24:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UuBOkFgs;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793021079;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 199756B05B3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:25:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3C4FA8302
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:25:47 +0000 (UTC)
+X-FDA: 85364849934.06.A6F0B3E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A3BD720006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:25:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OXuoreeF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6D0vMvDa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OXuoreeF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6D0vMvDa;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793021145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1akx8mxhc3uRZxvnnRf5cLwnJZH5AVzhLNQJJ8zSIso=;
-	b=0mZjNsvEQy4QSPuIWOoE6A2wea/BMScjQEazJkqU7BWbV3qTiD9wZojnlxrTeZUx41mCWF
-	wMSPwhycCVD7Ancuywon4UfOXESL/ywueTaKiKqkXE89ypkkOBIHsmd56Wf5qpTYexPjli
-	JGMg4S+p3SpWMLw/o5qXPD3EQahEoxg=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UuBOkFgs;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793021079;
-	b=wSZZB4jUWB2bZMWdTcU1dHt/EsRX1oesQKF+GP31WLxH+xkYrz5/Ug8DrKhiX+oKxHfVcr
-	UmCeR+ZXPn4XtBqmAJJtXzcFxsjAVqElaRBuSCBPw72fudj/TQOwncBZU3hDQTSNkD2p+H
-	7lttmRVvMTvk7aq49GekvKuFnMj3JW0=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so3989587a12.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:24:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793021077; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dm3QBxoiQa5vqP1BG0hfmzUxZmY1tm85cIfLsH/SyCr9zT80/rVKuHdftOEm+6obrg
-         Nvtb+ADo9AxNbGsN0rAyYUPARkbEdaK1ralej2Ej6pjsVSFagoHc8dLVi1VhaepC0zp1
-         4kY6mGDtbdp+W/nJZgZg1loscm4HGri+PS65fDca9/t9fFUhRsRhfb/bssyoEMcVQgmY
-         7bKHmGE1CMoqRMUB0y3sZA+Mm7JSRf6TuMC6Q6dovrKn0BQt96Wg4XcE3rPuoXEy71w8
-         bgbZxxZKLcmCZnnpnTWB992mPhRFJHwAVUmtB4YXes4pk5Fqw67O0sXNQW6Evr7uYC0f
-         zKFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1akx8mxhc3uRZxvnnRf5cLwnJZH5AVzhLNQJJ8zSIso=;
-        fh=1KJHh9zZQvlDxXebCmvy6Hx4Pr3UYZSzmXGC3+lhuvo=;
-        b=Gg0Ykpm1MqQDrjZ6WD0dhvfkxYmhRv76GXegoIqxOAWjUHo57QSYGELHlk/atFNjqY
-         KSYe7tfM9+JZCnLVKfJi/cbEmDCLvrQxfSuMVEt54sy8f//x/DzDbbc19HWBj2GMgdfW
-         WwO8kX31qyCnrxsxi3czVmTm5FgUtOKGwmM5Eui6RZlUHsDjX+sbrL77qnc8/WsX1Sy2
-         +OJp7SBBKQZASjlLu4pcjwQecM6ltSsscSP7uZkERGXNuBDNUtJFNnGjVVwjoOw8kSG5
-         zcZt1HwIiBXiyj19ihI6B9XUPhL4CcjgHCzcUxlyTDGjTyFfzlXAPJ6zxkQWcGIt7Sgq
-         hy0w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793021077; x=1793625877; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1akx8mxhc3uRZxvnnRf5cLwnJZH5AVzhLNQJJ8zSIso=;
-        b=UuBOkFgs6QfwzCB4HTLBQwl3f0R3RbuZlDlv9mLqZUAneXUEidK0XOtvwziJi/+Yye
-         gij+SCey70RekCxjVg6OhbxB0wcsAXQDgES4hjPWCstg6brFFrVhgxKeNILHP47V4Egz
-         qlNZy/5mVphmPBVh3TuhdmOhPRaNepAzdEVPNvaJla9WqvhaIJxLxfRsscUsCUaLEunk
-         J9hkdSVUZ1E2UMrlo8ddyNsVXBtR26yUmpAdLbtGTahO3HKeDmnGRCknyYyHKlRVYhtK
-         nteapWP6zwJWCGceu1Zz4VN+7KqurpZ4qziPzeF6YsE0gU6Xn8NayJYrjr1MOGt8g9GL
-         xLpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793021077; x=1793625877;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1akx8mxhc3uRZxvnnRf5cLwnJZH5AVzhLNQJJ8zSIso=;
-        b=G4EVGqGAAK63Hx01j64RV0h94se3RDvn/ckEbjPGANxPth27WPHM1DlAA4YpWwiIZr
-         5Zs69JsAk5vZV54qxM9izKV0BvhezWqf36qZB1/0lDZ31SJ2SDIZq9hS+xDXL3KP+ucR
-         4teY+SWoCZyhMIBhfJuc1eWPtqiay6/nAKMqeJGRIuBPTCor4aYdqSizZfm6ZhUgiWI9
-         LSIsbNqAZIBc+aOGAF5jz6dgAGvcWUdllgvTviVjRSXtRV7TIaw1AF+s1HKu3/u9rj+7
-         hmRnM+Oo0mJfHeTwfljeFKGmqbqIeolmIkW4aepVj+1PAfQuyTgtbQjYxZUUJWAi40oB
-         IBcQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzkgehW582royzLd6PxO1qVJEwdQQ/dGkrO1JgS367Ij/xhsMZuqsLrtFWOuscfRdZn3eugiGzbxQ==@kvack.org
-X-Gm-Message-State: AFq9FYKtPKlQxOlu92Hhdf+0eQh9vfqS5oa3Td2vSfEL4BZ71P7ksmto
-	fWm8sek2Hufv0y5QADmESwlbPF2R7Qi6KEhPAeI3GGwLDyyPCwh4aa3kEl/Znv5e6xyIG/XPByI
-	/3v4v8JDdfkLA/HF6hHipvwkMoZN0IXE=
-X-Gm-Gg: AYBFou2x/kDpPXq9xFs1uXBEHipSZv2l+H342Q0YwvmKmApRyyBxo19so7r5v7WgWo9
-	AOt6T5tp36MRdsbztzcLIsCfSPO0mBqanuh9zp8B5+BpRXrgyx0aac5txNDGJoq+KKECotbgPNF
-	I8Q8Pc4FVqHPYzC1OcEK1mjoTfMRF+GboTxVRYu/AxRDPbazr8NIS4BG1S5TLx7V3NAhVyBu+OI
-	dRcFlJFOizkJRks+WLEYF8qssz7ETdTBuDr40EO5DZv/LPhGfS19xwjB5m0qa9+tC+VgsKrGiBg
-	GHZ4svYHpEmxp2Rutm8+JNQQSvWHcHJsEoMpwo65LBg1PER1dCOiUhqYsJjy81Ul0oSW/oa/e3D
-	aMNGQpVHxu3rsdhtixSqLMcpOVK2ShczYrk5vlqYbO8ttqnKzv8sRdAMFW9YOgaf/Gu7q8g==
-X-Received: by 2002:a17:907:3e07:b0:c27:420b:7c79 with SMTP id
- a640c23a62f3a-c46bdec7fa6mr869390566b.48.1793021077106; Mon, 26 Oct 2026
- 06:24:37 -0700 (PDT)
+	bh=yRPCNA7q22mNYbPLjS+vxZpi/8u+Qm+QOc21SCkQ9tk=;
+	b=nr0DiCvKf1SDoehCI7nJiSLIZze90jHn9qt/OQRgirN7rkR+vo2KIn/w/UfqoynD/lZmQI
+	zNno7/U/cs5msJb32MHewsULz4x1Sg7K2lkeIsyV8ZACLCVmOhCVabxnXxtjxTqfdnqczR
+	3edm+ObW8/9ci0B7bDbpsMbBxDXsDVc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OXuoreeF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6D0vMvDa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OXuoreeF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6D0vMvDa;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793021145;
+	b=iJpu+73jRmvB/ZsGznRWSAbm/DvOm1HJ1n7EzAhzQGnxpWXdHuhP5IZnGeuZEAar9EvZD7
+	xpqnwSuI+loc08fiiUtIdacw8TB1+DraPNt8DWGWOSLrTUxuEvkKNQ2lI/zYq/oto1UYYH
+	sKyGrQroKXzBPPGPnd2xSfNJeE+jjI8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7A55F222EF;
+	Mon, 26 Oct 2026 13:25:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793021144; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yRPCNA7q22mNYbPLjS+vxZpi/8u+Qm+QOc21SCkQ9tk=;
+	b=OXuoreeFlFTH8oQICNZHe/5aaneDHnDEEK62Mx+VR8WyQ3vTEh1ib+DJ9NkqYg345EnLnG
+	UBC1UdQJylhv4vRFlU5XvLs89oVTm1lkiDBAeMvqBTfGSj4xg/ACk8R/3yPoR4g1EFjU8n
+	PrIbHovoWD3PPhl84HO5AgxpXlNMgjA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793021144;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yRPCNA7q22mNYbPLjS+vxZpi/8u+Qm+QOc21SCkQ9tk=;
+	b=6D0vMvDaE9d67fTH0ibs7NBChKNZ8ES2v7d+Io0T/NWF3lz+m+SsBLNYRKMCtkcS1uS7+4
+	cn7LE22YETP6yBAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793021144; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yRPCNA7q22mNYbPLjS+vxZpi/8u+Qm+QOc21SCkQ9tk=;
+	b=OXuoreeFlFTH8oQICNZHe/5aaneDHnDEEK62Mx+VR8WyQ3vTEh1ib+DJ9NkqYg345EnLnG
+	UBC1UdQJylhv4vRFlU5XvLs89oVTm1lkiDBAeMvqBTfGSj4xg/ACk8R/3yPoR4g1EFjU8n
+	PrIbHovoWD3PPhl84HO5AgxpXlNMgjA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793021144;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yRPCNA7q22mNYbPLjS+vxZpi/8u+Qm+QOc21SCkQ9tk=;
+	b=6D0vMvDaE9d67fTH0ibs7NBChKNZ8ES2v7d+Io0T/NWF3lz+m+SsBLNYRKMCtkcS1uS7+4
+	cn7LE22YETP6yBAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B3CD13408;
+	Mon, 26 Oct 2026 13:25:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +MmFDNdU32pPcwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 26 Oct 2026 13:25:43 +0000
+Date: Mon, 26 Oct 2026 13:25:41 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Ngoc Quy <ngocquy0700@gmail.com>
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Muhammad Usama Anjum <usama.anjum@collabora.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/task_mmu: pin mm_users in do_pagemap_scan()
+Message-ID: <at9Uv59VV4_R1lgH@pedro-suse.tail5790ac.ts.net>
+References: <20261014095540.3261469-1-ngocquy0700@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
-In-Reply-To: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 26 Oct 2026 21:23:59 +0800
-X-Gm-Features: AclHuK_NnGMoCvEgkVlwGinh-S4Fg9jmm7mGH3lQNtt4b6ijBwpE8tzVis4U-Rg
-Message-ID: <CAMgjq7B19MT6t3-BisvQ_V8xoxkZyQXHXNH457UT98kwzVMGKg@mail.gmail.com>
-Subject: Re: [PATCH 00/16] mm/shmem: various (urgent?) fixes
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>, 
-	Hugh Dickins <hughd@google.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Stevens <stevensd@chromium.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	William Kucharski <william.kucharski@oracle.com>, Chris Li <chrisl@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
-	Josef Bacik <josef@toxicpanda.com>, Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 34211C0002
-X-Stat-Signature: 6zokbsbfeu87666niztwkthctb3ugmuc
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014095540.3261469-1-ngocquy0700@gmail.com>
+X-Spam-Score: -13.30
+X-Spam-Level: 
+X-Rspamd-Queue-Id: A3BD720006
+X-Stat-Signature: d75d8fs1ugiqj3gdxdjkt6aw5uncqc9h
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793021079-482395
-X-HE-Meta: U2FsdGVkX1+oxYIRhXQ6FxwKWH8A6+zyHw6PeFZg0Tuy8GBrd8vM3/Yy4egI7GTQKkHtF+WInjWnB33YF6xL6+NPZZgtvtwPAUpmqlmivOcf2rxRJsDGl1ADExwyBQXfu2TKj2EPeqxtO8GyLPxEIlrphfEumd4B7U2tALuXJRKk41PYpBgrTHmy0dsIigsvunYwCnyzXUDO2WsXiJ3Ygf3dyKeDBPBR/ADAGc35eJxuqtYVD7FqnqjtonFyUVW9urNdaaZQCmx8lDZvye/nkSbrcqvo3J9MMETrwX9hKofW/EMwb2J6CqxbeaxOZQ5emINRNrmVJqZ7I5LlTmTheUQ5ME3ZdaDaDp4QNGk0eZoHSANc2GKaX2E+oVwTdarMitYAwkW+xWCs2bjaMroRuqmolLiH4u4YbRoXRjFG2vMELtKkuWyvb6fkh3YrFpG3PJNiHVqnWDrrVXEZm4+U4UfNUJvLlT0zeXT1G50iFaYBy8FXtgu6LUzufIjOVg5u7mllPz7Wjuw1bg1TlwW4BlKnOkunkatpk5NC0BKBq9XTxdQj4LBZLO3JUvFxHApxFcFkRc0oCszfWqeNrTVGj+MI2fA/T1RWNAwt80/9KYyZTGNEaXMU73Lhn0TuVA1dxzypRFQ7Sa3lYq0C3X/6T3M6SNsPFx2bApYxevFowNAwVFK7vSTx4442WfNk8XodXq805xbXPZYYTYsAEjIIedupSuVZZKAnA35oc/Kfs3w90JeKiqsjlC+FTy2c+c4PVND63zcFa6WYq870S+bDNjHywBpz67vM5asqTbKbF2W6TLUbYTYgGfTiXv8wNaqy3NhJj55PyyeK99FIGJ4hPak0gLg40V9iljuXFcNv5LBoEmvJhhQGznhGlcSbcuq+JPYNegHELx0x+ShVOsvXnm3Kf6nZKYozOIgkyb+BcLLIzDxl55u221AH4iI/C2WjnwwvxdRJB7T48K3gmca
- EEYh9LOP
- 3wE0hKTxRv/JhZYO3j+IRNgigjwG37Bqsz8zgX5eRYE9na2V6vKRedDFlA4bzgl/4xSNHynKqZK7wLLfWTkr0iN12p4XppUpSYuZpDyfZs/JVYmv415DVLkupnmvHbdA9gZLd3+N9jpI9TiwxtP3dHEn6AoUIv6xVJPYgdP6rCN2jlJLN2NWjwYhtrKrsqmwwkBGXifaIOFU7WsH5GBKhLw8OqCVzlLoOIACbIFCrLcRSiai7Z4LBKGJ+minsavwnPGj+NgH70IMc/jGiga2VQf/WD1CnWzt5UwOUeYeL0I48NLl+vIXMtQHxuSY4ZbiloypNGw7d0aww8x8vbBCdxHRTZzVrTiIrrSglpA8fQLX2/EsbCLh5/B9h7LwfghrYAxvV5KTeBU5ls4/BZkp7ggpccAW5gd4dybjM/8YYQ0TPUfNNRm4ejzK9zndOen/jxWoJbBVUvjQhQz3P2qID3kSRTspDA8a7+MQ9K8rtrntJGoERKrMOQNKzwzTEee8IVqbCC79jA/RboJ529wJkm/v/UgTFkNj0+tXi
+X-HE-Tag: 1793021145-461309
+X-HE-Meta: U2FsdGVkX18iDi4shIeY9TbU2Yg3nLu0mxec1KCWZ3OR/uIBfnx3uN++mtKntKHT4TdU9RyqCOw8YsDwFajVnkF8aqsF4MPjGOPQXtKuDBMWmUzf6gl7uO4Kez6dcKiwvoU0EBfGbB76Ihon1hUR+QwxZMi4hUHpQvGTg64Ej/8+qjODRKeXfMEv+R+gx8Uk0uS9q/vAlvHXLcX+LPL+hdk/S2t2vuyfRtP4QiW6VczWMuuSOdNdzuU0hbIteHgcfLXMRTEBDl4wBJgnSGbowccrJwB+Hj+dfPvTA7yOSmPvg8c3+Rz8DMryVs+ao9p3Pn05+igk8nDJdpzM69Rp9cAjRGRRJdCx5RNGklVNk62z1jDYrNYVcJoDBTVM3oWvipHBQoFp9+4829mLyaVMIDhfHBewmyeOZSJXAqG9qNXTqKnZFioIHIUBiNJ4iyRxsIwVIgf4dDV3JsQETtZiEtj/HzvbmP7SGksqDxV5vPhnZEGpmHWYQLHVw8RgcR79wTog8J4M9tcJCEXYkD/rdmfITAEpJeItp6RGt2lIy+VVKe88A3tUdYCzpqU6qQyw5vWC80p/uzQyJuAJ7n7F3qAIWfdmyn7VV93od6BgRYONWpzICIv71rM8VsEw/XLvYARYl2im/2Z5BIwYA8u4qvQdA5Sn49dZHQbMIqhsCxwJuToJKqAato8kWkQbUgP/AM0iNe60wBQpZBWWE4g/2UqsAL565V3Rpdg9SWx9wpIv6pAIlgQMmJFLyI3mBRxLj1B1svGja0CWVqtxM+glFavAByVk8ehj+yfszomo6nWk0sCWABth98Z4vqYC3sQG7A56EENvQ8HjArJQ+UrjAPfpCbrP9gX5Xqy8GwQxyMsHlO2GWhrtRVuWWgLVK4CnN8EXk0B1yrDR8B2iLINLm4e9cUNgZII6BomMzJ+SQxIE/3Pv9KoDrIAzwSUiHU4+8bTgOLuSOvznqY6waQm
+ gh3P+4+G
+ kSli5oX2OflFtZBD/m4hElcSzzhYdAA6Ta29aecU4kwBJtL0PKoQ2/2IHqsrWf/ieCBJ928XfEs11ktdwvJzULjVaHMdB3xJIvMm5SXkVs9nizYQdkVTZLNjK1l5vDNCmHB37el7cVxiUcyu6NDsWnAAAWQp5H3RndYV3W/wFdWMxymYRhlO/vV+bKCah5isT/k/rbf53Zc1y9SFB4aRQxnWV6H5z4ek4cYylvIo5KNqnGurSOglAfX5HY/l9x+2ArtY4wWY5oBRmwe8nQ0Oepap2tlnahtVIdmBf0YG2TuUaz6Qp0i+bN6aIqba/sJX5U6e2UecxTpmH43Mq6v4QCmB9vfxD9wr4Utmema9tWU1tXH4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,90 +139,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 5:44=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> Hi,
->
-> the fixing fun continues.
->
-> This is a handful of fixes for shmem/tmpfs. I sneaked in a related
-> hugetlb fix that stalled upstream.
->
-> Some of the stuff is more urgent (patch #1, F_SEAL_EXEC, truncation
-> hangs), others are less urgent but still rather unpleasant.
->
-> The majority are fixes from Anthropic that I cleaned up or reworked.
-> While doing that, I found a bunch of other issues and tried to fix them
-> somewhat cleanly.
->
-> In general, shmem + swap handling is a nightmare. shmem_undo_range() is
-> such utter garbage it makes me want to cry. I mean, really, WTF did we
-> end up creating there. Does any expert here have time to clean that up an=
-d
-> make it *actually* maintainable.
+On Wed, Oct 14, 2026 at 04:55:40PM +0700, Ngoc Quy wrote:
+> The PAGEMAP_SCAN ioctl takes mmap_read_lock() on an mm obtained from
+> /proc/<pid>/pagemap without holding a reference to mm_users.
+> 
+> proc_mem_open() deliberately grabs only mm_count, so a consumer that
+> touches the address space has to call mmget_not_zero() first. Every
+> other consumer in this file does -- m_start(), do_procmap_query(),
+> show_smaps_rollup() and pagemap_read() -- but do_pagemap_scan() does
+> not.
+> 
+> Without that reference the target can reach exit_mmap() concurrently,
+> and exit_mmap() calls unmap_vmas() while holding mmap_lock only for
+> reading, which does not exclude the scanner. For ordinary VMAs this is
+> harmless, as free_pgtables() and remove_vma() run afterwards under
+> mmap_write_lock. A shared hugetlb VMA is different: __hugetlb_zap_end()
+> frees the VMA's hugetlb_vma_lock inside the read-locked phase.
+> 
+> walk_hugetlb_range() can therefore load vma->vm_private_data, have the
+> lock freed underneath it, and then down_read() a freed rw_semaphore.
+> The load happens before the freeing side clears the pointer, so this is
+> a use-after-free and not a NULL dereference. Any unprivileged user can
+> reach it with no huge pages configured, as hugetlb_reserve_pages()
+> allocates the lock before the VM_NORESERVE early return.
+> 
+> Pin mm_users across the scan, the way the other consumers do. mmput()
+> from the exiting task can then no longer reach exit_mmap() while a walk
+> is in progress.
+> 
+> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Ngoc Quy <ngocquy0700@gmail.com>
 
-I had a nightmare understanding what is going on there when I was
-trying to fix a few swap related bug... :P, and hesitated to clean it
-up... I think we will have a cleaner codebase on this part soon as
-Baolin is working on this.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-> The following things are still broken in shmem_undo_range():
->
-> (1) Truncate/punch of a single page of a large swap-error marker
->
-> We don't split. Consequently, read access afterwards will still fail
-> instead of returning 0s.
->
-> I have a fix to try to split (which can fail), but I don't consider it
-> that urgent, really. So I'm not including it. Might send it later
-> separately.
->
-> Truncate/punch of a partial page can obviously never do the right thing,
-> as we cannot poison parts of pages ...
->
-> (2) Truncate/punch whole pages within part of a large swap entry
->
-> We try to read the entry, but if we are out of memory that might fail.
-> Consequently, we will not free up swap space and a re-read will not give
-> us 0s but the previous content.
->
-> AI proposed a nasty NOFAIL patch which has too many nasty side effects
-> IMHO (allowing users to force-read pages and retain them afterwards even
-> though memory.max would disallow it). This needs a proper thought. Likely=
-,
-> support for splitting large swap entries (and large folios in the
-> swapcache, which I recall is under development  by Kairui). But splitting
-> can fail ...
-
-Right, will post something on that swap cache splitting part soon,
-what I found tricky afterward is lazy reclaim of swap cache so I think
-a bit further clean up of THP splitting is needed first for better
-swap cache splitting.
-
-For shmem side, we don't have to swap in at all when truncating
-page-sized holes for large swap entry. There is nothing complex from
-swap side, just lock the cluster, then put/free these sub-entries, and
-everything is good. It has to do a swapin for shmem right now just to
-make the shmem part easier to reuse the folio entry split code and
-better synchronize, IIUC. Nothing is blocking this except that we
-better cleanup for the large shmem entry splitting code too?
-
-> (3) Truncate/punch of a part of a base-page swap entry
->
-> We obviously have to read the page in, in order to 0-out the parts to
-> discard. That might obviously fail.
->
-> Maybe we should install swapin-error markers if swapping during
-> truncate/punchhole fails, to at least tell user space on later access
-> that something went wrong? We might affect unrelated data, outside the
-> requested range, though. Anyhow, these are long standing issues and
-> I don't consider them urgent.
->
-> They need a proper solution.
-
-This part is tricky though... perhaps swap side needs to provide some
-helpers to trim sub-page sized content on the backend (not sure). If
-that's too complex maybe limiting the trim window to just 1 page a
-time won't be too ugly?
+-- 
+Pedro
 
