@@ -1,132 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A0D606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 19:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E0B606A328
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BDuFowmd
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RwQPWwj2
 Received: by kanga.kvack.org (Postfix)
-	id 7ABEA6B05B2; Mon, 26 Oct 2026 15:53:48 -0400 (EDT)
+	id A06816B05B2; Mon, 26 Oct 2026 16:02:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78A9D6B05B3; Mon, 26 Oct 2026 15:53:48 -0400 (EDT)
+	id 98FD26B05B3; Mon, 26 Oct 2026 16:02:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 673896B05B4; Mon, 26 Oct 2026 15:53:48 -0400 (EDT)
+	id 8302C6B05B4; Mon, 26 Oct 2026 16:02:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EA356B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:53:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 77AFF1C4139
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:53:47 +0000 (UTC)
-X-FDA: 85365827694.28.55827FD
-Received: from mail-dl2-f7.google.com (mail-dl2-f7.google.com [74.125.229.135])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BAD7B20002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:53:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BDuFowmd;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.135 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B3686B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:02:31 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0D5BC083E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:02:28 +0000 (UTC)
+X-FDA: 85365849576.30.E26D4B8
+Received: from mta1.migadu.com (out-163.mta1.migadu.com [95.215.58.163])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 58AF140009
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:02:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RwQPWwj2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.163 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793044425;
+	s=arc-20220608; t=1793044947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DTIyB5b+yzQFZkwGlBG+chET3oIYSbYIvUVhe1jopHU=;
-	b=3hOKzYNk5RYbhCc/yor+om+6PBCb8EZQItd97r/J4qncmHwfkAtwtjuxgi/vSJ7ySgwOPn
-	3Rdgu44fOfxBokjukAN/fFi4MOS8jfexXHo2XnqVYFaMbvyG8oIx/IGkKlTIcOTvwrDJLH
-	9RbycRV+ItG7SBh+aHCqFglLUlBiR70=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=N2COgMJdxeQAvx7S+Q6UBvbh8mW4nF5CYPzexiu1PKI=;
+	b=CjpyxKfr3Ydbdjtp8Di0l4AB++Pm1mI5jVsM/6JNkkX3Uohjvz+RgwZi0zgjmXYSriMd31
+	CTszf4yc4+whimY8Cty2iQlvOOcptpek0fMx/ku+ZjD8NM5kQNTr1CDAKEnMNx7o9swusA
+	yLYNcmlI2B9/I9oRWfO4SL70Fjswgi8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BDuFowmd;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.135 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RwQPWwj2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.163 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793044425;
-	b=I0OhIpPM1//nM5zJAwzG4GgwN1U0Od0HaShT5tIcxPfSmonyvC5k3yNyaxJK4RjyUCDkrH
-	ILCA9hE2rf9Jcl2l0i5sw3Zpc113eTwnAyibdrM2SpV5I4ymbSCDeP/Zy56RrwAm4ZtTEA
-	zNZgv/SIF3BHim/R4AVGryWqSq+KGkk=
-Received: by mail-dl2-f7.google.com with SMTP id a92af1059eb24-139b659a45eso585110c88.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793044424; x=1793649224; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DTIyB5b+yzQFZkwGlBG+chET3oIYSbYIvUVhe1jopHU=;
-        b=BDuFowmdcgjhEdl8XRuES8ZzolH9EfDbWQ2+NOrBz0NStpNG2E3XrMpKzGoIb+8ra6
-         lHgxMqzU+3pt1cTLiWvLGbiZZt39heOMcGixKBM1yRvffIFkpDDVgtmjZYHOD39M42yD
-         NWZxBNJ4ko042Fg4Z6PEzFXlgy1ekqe9Yq+fR2GcDeAg2UYRq2iIv/PIq2RFrNT4uHxe
-         zY9Oul8Iqq+Yu6qJWgr6Rmni+LRg82kKD/LNr8JEk/HqGiTrVACQdaBtKRGhiDYoPMbZ
-         8mAShTQhArERGWrBPkgbWUqT8I+J7d8lNBGtm7+Nm4Ca0ZKKXQRJbnu+8oGFK4bbALKP
-         TGMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793044424; x=1793649224;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DTIyB5b+yzQFZkwGlBG+chET3oIYSbYIvUVhe1jopHU=;
-        b=fv2KpeT2OtYhb/o0o0SG7x25k7qFoIE8aiYPqsdWJgJPVH/daTA93dQSdm457dtgYG
-         WsQwG51aDMmtCzHQuUS1m9WatA3M0s3VY1ITwVeFXwV67dw9Gl+qluECf/CQ3w/t/W5e
-         Spg1AnlAN+3o88TNLAxyPNzCyq34S4etlC1sarpL4yNy1/1hKaTmmkbEs6GtlJ052AHu
-         3w2+P6/S5Nd3QetGn8NpvUqlbYgyFWLMRxtuCSo3Mmox1OFSJiMe9ytHoqfIKdo/O3VK
-         OXx5b86N55PSbkdd6kWeLpdro3VoxRR7fV+BLdh+MiAUSpN9EuZm3BnDSeLRqsit7GXv
-         Ufvg==
-X-Forwarded-Encrypted: i=1; AKwUvByl8xm0SX+bkhPKxRwFZM87K3JIP+eA+M46mB31RtnPIGg6TEs8LBzs5DOp8dWBidTe8bhyrBjL/Q==@kvack.org
-X-Gm-Message-State: AFq9FYKOe+H6nh3w/W2/nCDLnb+yJ8RBOvtoSlhNAKohGulQCjId0Xog
-	DXIu/Oa+ovTFWl/A8y3Ge+oR2vHMYDHzlvNw7tzFyrvcppeqCt1CzRCT
-X-Gm-Gg: AYBFou3KGyjEielUDwg1UNqWGOafN/MvBvUjkHFVAEyQtdJkKt5hDCSedpSA4sDQdws
-	4m/N7asOFmhhsuoAlIIr41ios69YmnLPUUMCNVCo83JGtCj8d5GC6uDyb3fLoXqDPjwlP/9RU/L
-	9yqRj1p4UTqTe4iJS4kX2nG3LUEeIDqm+WALuH5ADZiUBViP1SeBmyl96C/AdsjWmyhlt8R4X7W
-	Rrl/2zfg0rjwwlsuUHWvJsrYLvERf6Ptl9xZhYUyALXmqjFocKYW1urg9da5eNARnTzJB1vYmTZ
-	LtJs9n/uRBhSJ4ntE1PqdNuK300Q3O1knsYaTwnWW6OLdEc5Z5BfxpK1zRVRceGCzH4zuSW/HeQ
-	SZx4/kpj+uayVlefH86HX0b9gQKZ1WFqsli+qPcbf0IvN9Uc1Lw5OgE9Dy+EoSS38CrncI61NYx
-	HxJGz1txZU6DjN4eKMsS6fnOY6hNfx17pjm/V/+pYIQgPJha9XUwxvbRmZAwyM/hqhHbZ0KJuga
-	S++um4L1lQckBvC2udgR5YcPXIpR6rUFQZe2cIDl6CyOm3dxHPdzkuHTeI8ohSrspqXmdxO1G0T
-	+A0VrEUP
-X-Received: by 2002:a05:7022:1508:b0:182:6c6c:d876 with SMTP id a92af1059eb24-19934a928c1mr12215723c88.8.1793044424317;
-        Mon, 26 Oct 2026 12:53:44 -0700 (PDT)
-Received: from localhost.localdomain ([98.148.34.5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-198a32ff780sm25821501c88.22.2026.10.26.12.53.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 12:53:44 -0700 (PDT)
-From: Hungyu Lin <dennylin0707@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	andreyknvl@gmail.com,
-	catalin.marinas@arm.com,
-	vincenzo.frascino@arm.com,
-	odys.yuan@gmail.com,
-	sashiko-bot@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	dennylin0707@gmail.com
-Subject: [PATCH v2] mm/migrate: untag addresses when querying page nodes
-Date: Mon, 26 Oct 2026 19:53:29 +0000
-Message-ID: <20261026195330.46757-1-dennylin0707@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	t=1793044947;
+	b=Usm/4KREU8o5OJvjLsGz2Qa8DCNHhqM+xmxByYgT5MSHxyfVHCWZEzPRDewzxu7CBC+8zG
+	ux5f+LgCuiC/U4pc35srIjKAOtZMpZTi428cRobnu7LacCsyQy6hYtVgJhd2yO0a3YIoEa
+	VOOddS5V/2pVO7s5BW4hB8YrPsqwfRw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=3c5zx73qa9zbzHK/OsBfgB2TbAsXfenQkA8z7M0+31Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793044944; v=1; x=1793649744;
+ b=RwQPWwj2gNAPc2T9Da0Ydt7uByrbnkZxx893QmEYC78jdsFuEgrVG/Kz8kkqwubbEVmakYnX
+ F7O/IQde9Y6WKxftAjM7IBrsfIwVzA6bUDD8otYjayJlk36aIPQBSVNtpDHgmx9MtuV/plrcJh2
+ HZxw+2wIlJDc/bkdvmwBBr/4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ea248a7b7212ccb7;
+	Mon, 26 Oct 2026 20:02:24 +0000
+X-Mizu-Trace-ID: ea248a7b7212ccb7
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <dee39669-b726-480e-8ca6-10f19512da68@linux.dev>
+Date: Mon, 26 Oct 2026 14:02:19 -0600
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
+ underused THP shrinker is disabled
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Yu Zhao <yuzhao@google.com>, Xu Xin <xu.xin@linux.dev>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
+References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
+ <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
+ <CAGsJ_4zUVpBJazRxc1CzN6u5XvpUaGnaf-_7JMz-rGK_ZTYMtw@mail.gmail.com>
+ <e865f7f0-087c-4fe5-b729-6e6946cd20f6@linux.dev>
+ <CAGsJ_4wp_jCtCeMx39nW0Z1Jm5pja7_V6XNwLB6p7zTan0c3VA@mail.gmail.com>
+Content-Language: en-US
+From: Nico Pache <nico.pache@linux.dev>
+In-Reply-To: <CAGsJ_4wp_jCtCeMx39nW0Z1Jm5pja7_V6XNwLB6p7zTan0c3VA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BAD7B20002
-X-Stat-Signature: 3mx8qxx4rpgsogoowy6snnce4i4ni3kk
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 58AF140009
+X-Stat-Signature: 8a4yn37sumc6y4mg8grbat4a1z3j59mm
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793044425-621048
-X-HE-Meta: U2FsdGVkX18GSBikbjq592E2Xgwgj8rrB/c24xzJhiKpuqbEjy07jJG1UF7tMmQZ0kUex5YvRaGRhnKJ01J9gFdqtX66etVzrlW4uzD6O3OYkP9/+4fzv0GD/7r0XP+r2zwDoMmzJXpu81ENnKiQQCcbmNx06Nc52SNQzRCUqBAsZ/3b5ClPCKFQ22dvYqcYjeYWgO6xIH9JuY4x1VTPs2z+yx0w2ed28VJ/MyUEb445zdLvbWlyO9YhyLXtAvxGmrN3CUuILJH7j80G6WrPVlZtrXrlD2ypptRRVOX66WQW28c56CzprmvoBhPxITQxAMjVfpFQDz7AfZjhZCHZyEOpyCNaRFsrdlA8DOdEfhq2AfadgigX/7AxlLrivhp7uptsLvAS6g1tlJCGZvPi4mz9FHKsNz63lMigZIjqqJ1/XbhglKT6ZxyzLzM0AI5bNsFFCjdv2PWWMjHzX6MSmkkBQaIREyAfJAsbYMowzO9pY2l5WW0MloTgMKDCI9RmCldfPRNn5zzgFCHGI8f/vIiHonpMu5XDX0QTKXb4PhIiJ11cdkHxKOEa8l5KYFOwLW0iru4LTm13vAtbSkTQZKJ9L4A/fOBy+jQA7MuzrpnZpT0q8rI5+7YZBYaDESy9c3R/agTD76h2SPR2GnjcXy1jGeYfGLmUu+A5ulPUDYoAZKPAxK+ZdgD4nXrxOGfYa1Q4rrLJKPWHosR6mBXAhTKK5thgBzeZna5fXqtmOvu6aj1otw2xTfRjHQg77TuYRP7oSTcdjE/NPsq3+MGvBOsS3b0s2SavNm/t/HkQBjVr9ZVPep+OY88HM70vsl2rpuQDP0SswREk/KSQDpciM0Z8Juppa5QkqL8wEEs/rBB8hhXW4i8OZRXEFi43Duz3YIZg/8lpSQEp9XkC79tI2d7pvqR7bE42wicBzLAGdQLALuWrXaO6hWbZo6KemlsqQSobqumVuHXCdWkzu8m
- OPH+cSNK
- wmeiz8wxHgyymTMZCzNuL2uJ9woIiFzZn/S0P7FoMX/FsD3yk9AbKxgW3G77fO4ZY8Jw740DjHwQAwQ7Pymi+J0innbG3AYnNcHQVLJ1V7atxJw7qqZo7yvQD0Op59fYou3LKHtQsLWtheTcTB4YQQz7PKr6FIczbdb3iUlPDJVNyWEnSC7Tlcj3ZHwmTkZNxBOmKpqFG+cBo29dqdzJsVLDZZxBc2ki1PiZsjDBcsdI736VO7Q2+9C0dtIX+KeFwelIWno7DvXt2zb8hVIbgvQIYr9ScV0YvL6RteZMJlbTHkW6ABSEnbB1VTxNrYCSH+OT9hfuYxsdvbL1zlUJfwQ0UAmzzMcdEpx5wGH5T8BOVq/nAYv+HGG47W2YETwG0uqokOVzK0lJPtuYNUjr95o7YzKat/zZOGynz59VP/qHjZRv+uuafPu/LjSzvV5E8yIJYHNVu5owXLoCV1IpzddpOrFYcQBAKuTTqwu0GXiXYWujFPgTXhkEq6SqQel/cJRd+diHk9APdciJKuqCOmkRHuw==
+X-HE-Tag: 1793044946-580124
+X-HE-Meta: U2FsdGVkX18jjvYaraA4O+cO06JKeBw40PAefoLZ8Q0RPyvgn8ITvBGBZML+K/Ct6N7N5ztKbi71MvZLvCkN6SReClj7EuHKF844QgcdtebP8OMQ7YlDEUfeqMEEy1tDB4BOM/bb/jDTPLgxqNRzg8VTFf2TO7MTYZpkkZ5GStn99xmR9eZnowZhROhzBvrIeDcF9tQQ8x+xwcpS5LexDBCNj9EK229gklqLxwjmpMkJruWmqMXTKz8tB53dDHaWp3rQz3R+1OfrCa3LSxB0Dj+W94CWkVkezEmxM5gcz6g5Ae4dGHwd/Sy99bDbt6uYZH5stOYe/nfMJS/x6DW+9cLXFJ2HpPJiCTa15QNeedWUnwdQGNWdygDEd+i9u7gQb+MfjaA3b/XhhCvRL9wkeINVJb/H+q6Fnhr0G7mB0qHi9dAc3PcuHyYobVTIwgHO91YXaJppvb9F9OLOS3NnS20zYz0CVl8/lnvpqnXYePyJErKybM3YXLeEiNwo4pDunrnFGzhQL/k02NAY/c/UCLQQIo8Px1MSCef4+pmdewBU6YP2ME84wU+kdJMMgE9SMOFt136fBuwUmXfogT7EaJdoIHMbBEeHxS/7jTI3ALBSWKwoUmX+JJsZMGZGETBYlMKQewHYFsUzVq5Y++jrGiwiP3GkuGsIkZbRqTKMG3rp4O/xYN19H6gW3y3zoLHK8mwVaTDhtaYOEhfsIwfXx4CnKjvno23VI71te0kZgj/3RXpKMVAPx2MNOjKOBF88TSB26t8t1dpgONMzjh3YP39DUfaEGkqdFHFIki27Rl6wmdfe7ahwO5iNPqjZ0QIZ4SQUGT2bC+8Ik4E1nwoHRRjrevR+FItPY7T5sBVbHkJeMrDbNF6Is1N9CG65r6f2QQz26fnSZNLW+7YjrGg9sdpc6DBnZiYgwFkiLxVXjO0xI9E2vzlgCXl+VCZS4nJ0SHrcIoWbrR7V+eMxgoc
+ hbmmMtBu
+ Gjp/v+c5NQ6m+bSLGDWXwervQSOz1dBfgIS2SfIxU3UkKy07vWqTBSf1faAv9pClRH97xWI5EvdsjhQNgNWtSlG4cZ2YdvrUIjnpbTJovv5YsNw77r+lmsFiGjITewONzFbz1+zZ/3ek37yVbGq3G7hWn0P+6Q50K/8AYsHG8MHfry8PvNP9wd7mKRnAqUzm7U0wKkHhMYOzR3nW1xu4Y+7+z2C/KrrWWqA3z/RVKzGNVAaHVw9upMG5m/PtUnJBj/eTBTxpbmYoCKp5xMKKoduC96XNLJUvWVyQGwIW5C6/dr9IVuOMnhZ7h8OiIZFjX0W2v9/kF3qec1TgWWfW6swo3CY/9tTG5ZmGPsmzN0Qy3FkDf8AyZpHRUhgiLbrvTfh5hA70LnmhHA8OvpI7f+JgKL98UJyoo6xRx80ZRRT7hEOaw95ILknsCR1mGc019RZniJrFwgChq4uQdgNavwqUJCK4ByAxNNUnc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,44 +111,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When move_pages() is used with nodes == NULL, do_pages_stat_array()
-passes each page address directly to vma_lookup(). A valid tagged address
-therefore fails the VMA lookup and gets -EFAULT in its status entry,
-instead of the node reported for the corresponding untagged address.
 
-The tagged address ABI permits these pointers, and the migration path
-already removes their tags. Apply the target mm's untagging rules to
-the query path as well, while holding its mmap read lock.
 
-Fixes: 057d3389108e ("mm: untag user pointers passed to memory syscalls")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/r/20260721183257.706661F000E9@smtp.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
----
-Changes in v2:
-- Replace the report Link: tag with Closes:, as requested by Zi Yan.
-- Add Acked-by tags from Zi Yan and David Hildenbrand.
+On 10/25/26 10:52 PM, Barry Song wrote:
+> On Mon, Oct 26, 2026 at 5:48 AM Nico Pache <nico.pache@linux.dev> wrote:
+>>
+>>
+>>
+>> On 10/25/26 2:28 PM, Barry Song wrote:
+>>> On Mon, Oct 26, 2026 at 1:40 AM Nico Pache (Red Hat)
+>>> <nico.pache@linux.dev> wrote:
+>>>>
+>>>> The zero-page remapping in __folio_split() was added to support the
+>>>> underused THP shrinker. When the shrinker is disabled via
+>>>> shrink_underused, gate TTU_USE_SHARED_ZEROPAGE on split_underused_thp
+>>>> to avoid scanning subpages for zero content unnecessarily.
+>>>>
+>>>> Suggested-by: David Hildenbrand <david@kernel.org>
+>>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+>>>> Signed-off-by: Nico Pache <nico.pache@linux.dev>
+>>>
+>>> is b1f202060afe a correct fixes tag? as
+>>> commit b1f202060afe has no even "split_underused_thp" there.
+>>
+>> I believe so. IIUC these two series were merged together. While
+>> 81d3ff3c6f7 introduces the toggle, b1f202060afe is where the behavior
+>> started.
+>>
+>> I guess you could argue that the Fixes should include both?
+>>
+>> Not entirely sure!
+> 
+> Thanks for the clarification. I guess it's fine.
+> 
+> BTW, with the code below, we no longer add fully mapped
+> folios to deferred_split_folio. So the scanning code only
+> handles partially mapped folios to set up zero-page mappings
+> for their subpages.
+> 
+> I'm still not quite sure whether this is really harmful, though.
+> Am I missing something, or was there some discussion I missed?
 
- mm/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The issue is not in the actual shrinker code or the deferred split list.
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 7e3a81f06974..994c78782a54 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2461,7 +2461,7 @@ static void do_pages_stat_array(struct mm_struct *mm, unsigned long nr_pages,
- 	mmap_read_lock(mm);
- 
- 	for (i = 0; i < nr_pages; i++) {
--		unsigned long addr = (unsigned long)(*pages);
-+		unsigned long addr = (unsigned long)untagged_addr_remote(mm, *pages);
- 		struct vm_area_struct *vma;
- 		struct folio_walk fw;
- 		struct folio *folio;
--- 
-2.43.0
+The issue is that any split leads to this zero-page remapping 
+indiscriminate of the actual toggle. The same way this toggle is gating 
+things going on the deferred split list, we should be gating the actual 
+zero-page remapping too.
+
+There were two pieces to the underutilized shrinker, first we check if a 
+THP is underutilized, if so we split, and the split+remapping handles 
+the freeing of that memory. However, functionally this also made ANY 
+split do this zero page remapping, not just those coming from the shrinker.
+
+-- Nico
+
+> 
+> void deferred_split_folio(struct folio *folio, bool partially_mapped)
+> {
+>          ...
+>          /*
+>           * Order 1 folios have no space for a deferred list, but we also
+>           * won't waste much memory by not adding them to the deferred list.
+>           */
+>          if (folio_order(folio) <= 1)
+>                  return;
+> 
+>          if (!partially_mapped && !split_underused_thp)
+>                  return;
+> }
 
 
