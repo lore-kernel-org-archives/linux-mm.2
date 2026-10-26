@@ -1,94 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16F8606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AED606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NCcwr8l9
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=okADKsBv;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ookcr4Qy;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=NTS9H0Uy;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SUx3dPdq
 Received: by kanga.kvack.org (Postfix)
-	id D8D536B05B3; Mon, 26 Oct 2026 11:08:35 -0400 (EDT)
+	id 5A8286B05B0; Mon, 26 Oct 2026 11:14:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D16F26B05B4; Mon, 26 Oct 2026 11:08:35 -0400 (EDT)
+	id 5592B6B05B1; Mon, 26 Oct 2026 11:14:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C05D36B05B6; Mon, 26 Oct 2026 11:08:35 -0400 (EDT)
+	id 4484D6B05B2; Mon, 26 Oct 2026 11:14:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A06326B05B3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:08:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BD4A80767
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:08:35 +0000 (UTC)
-X-FDA: 85365108990.06.1CBBF98
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0A03314000B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:08:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NCcwr8l9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 199F36B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:14:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8BE9AA07DA
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:14:32 +0000 (UTC)
+X-FDA: 85365123984.05.A7CAAC6
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 65DE2C0002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:14:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=okADKsBv;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ookcr4Qy;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NTS9H0Uy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SUx3dPdq;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793027313;
+	s=arc-20220608; t=1793027670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nNXUTVFn4ste1wqd8vmAxSpwftg5otrNRXmIT6BWIlw=;
-	b=wa7NqpKgZr+HPOAlDH91/g/+soC3aDzKzHzP4Fen6sI49nLXyGYMG60aNHa4x4pGRN7bcs
-	cXruRF21jsDlVdM5+en8dxBd5EWeB15AokRvjJxZyDiugZXIshMgh8D4odp+fNxEB/71rp
-	HmdRS9QhADfMbvTtYuRp1sOw4Ubs6Zs=
+	bh=A390b+RkOufGHgkEjGHNdu4x5HPryHev6YTwANlMKMQ=;
+	b=sVQy4lO9dPUVLJ7h1xWjCkjEPVGfz1na0gE+U83cqQJ216+/8iushibH2F1l3ZnC3BwabS
+	gyrGCjh1VC5ddWwRrgvo9BIpIvcrZrLrcy2OwqN945BlJ6M6duxYflQmF2VsY/pb67EdKE
+	VlwSsgLKdzWfr22d4SiT/N5YMawCZDk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NCcwr8l9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=okADKsBv;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ookcr4Qy;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NTS9H0Uy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SUx3dPdq;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793027313;
-	b=V3coNJaM52IXtnQtHYd/kZZMGft7y7UeEUOUhXSUA63hi7sySjIXrXysX2hCHGsdJ95TZ/
-	IW8sdgkqkU+g1zrDlfncmwRkTw87OqtybYcOB0/AK8CZQfO5cUsAen+a+w+CjuJGpAYZQX
-	f6mfVpo6xtXCZO1wBaYJDpvAsMoy7eI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 82D99600DA;
-	Mon, 26 Oct 2026 15:08:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8731F01825;
-	Mon, 26 Oct 2026 15:08:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793027312;
-	bh=nNXUTVFn4ste1wqd8vmAxSpwftg5otrNRXmIT6BWIlw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NCcwr8l9A+OwZ3fur1MZwljx7AVLXFA8Jfla3QPDnCJBLp8cBIjtUBqz0sgPoIok9
-	 YVW9ArL+npfG9DTPxSueUFV2wDO8Xsdvrxs2Bfa60xo8ZvzsAmucH++Aww1gOXNO2g
-	 0Ciz21JONsjlHYm/Hw9K1/ctQZElaFVhE7IuHUy+ch43+el9b2pQs6YIFT7kLdFQYy
-	 jZOf/QmOA4Ut1EEVxouaHofHQWqOCkP+zqEJDk8cXVq03OOY/p3Jq++BPAD2DdiCyk
-	 FlftrmtrdN+TUQqa0ndaC8LvYiwtzKVFAXuT0uNIbLLpiiTSH9rB18Sfe4eZZoO4Sg
-	 bWEnz3BRSvR/g==
-From: SJ Park <sj@kernel.org>
-To: sashiko-bot@kernel.org
-Cc: SJ Park <sj@kernel.org>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 6.12.y v2] mm/damon/core: error damos_commit_quota_goal() for zero target_value
-Date: Mon, 26 Oct 2026 08:08:23 -0700
-Message-ID: <20261026150825.152576-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <sashiko-outbox-185379@kernel.org>
-References: 
+	t=1793027670;
+	b=BXdlLong6BVfejN/sAQ5lddycXR2IB4ab/uDcgmGDoztOBt1aBTy0P1lI5TPc+ayN3bBhW
+	glxLB79CclDiSdIKBmv/E5DSEIZKfXFGcKtu2SZx9Q7e/994uU27aPwMk3Jqmt/OkwRFO3
+	kW+1bPGpj/ouq1Y0XGwWJ7mmqWLlX0I=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D120E2211D;
+	Mon, 26 Oct 2026 15:14:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793027669; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A390b+RkOufGHgkEjGHNdu4x5HPryHev6YTwANlMKMQ=;
+	b=okADKsBviTfid89FMXFeDRM8EJUw2C1sWJJZsEVk7e0Vp6e06w6ck7+oj/pPwrvx4ReEZ3
+	ksVnr5glsgNqQYJORiKjtUBTqLyKtllbDhqI6gb8wMbpF4uoOoTtROHFykZRvn6xy7Ii1+
+	893dfVR+HmLQoRle1prQpmyfkIJnyuI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793027669;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A390b+RkOufGHgkEjGHNdu4x5HPryHev6YTwANlMKMQ=;
+	b=ookcr4QykwNQ/NdHhJtHrMhKMqk8N8I3PNoeVCAkMeHDR1+iwHGIpvEveVWMzU7bpheFmh
+	Tqd1TI8QhJZGaaAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793027668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A390b+RkOufGHgkEjGHNdu4x5HPryHev6YTwANlMKMQ=;
+	b=NTS9H0UySzS9ohriVwrte8GIrkpmqPVao+ls8fqbTdVt+2Cti+LmXhgtEvZkfiZ3FiOAXC
+	hhUa2nQuTa4BnSb/Kt2ycb1UvqqLdmCwfYTnkDG3ylaRzi+n1kiApPUb0Kgl6aV7k2Qmsz
+	UzGTb5EuLDysD4D5mYCeH4UuSIiVIDA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793027668;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A390b+RkOufGHgkEjGHNdu4x5HPryHev6YTwANlMKMQ=;
+	b=SUx3dPdqUjrsTRC1YkBdtvGKZ00LIIvl+tZJjwjXt4yQ/6fIMG3MIODzRNmiojpszCZsqg
+	QsFMQv9KynNVxuBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C2B4613408;
+	Mon, 26 Oct 2026 15:14:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Qp7jI1Ju32oVZwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 26 Oct 2026 15:14:26 +0000
+Date: Mon, 26 Oct 2026 15:14:25 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
+	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 06/16] mm/shmem: hold off eviction in shmem_writeout()
+Message-ID: <at9hs0Unq0EOg2M2@pedro-suse.tail5790ac.ts.net>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-6-703206d5fa0c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0A03314000B
-X-Stat-Signature: hko9x6p3jbrwjsau5h19haq4sd9dxkrt
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026-fixes_shmem-v1-6-703206d5fa0c@kernel.org>
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 65DE2C0002
+X-Stat-Signature: qx8k3oh8n9r8arzqn4iep3i6hqhun3ej
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793027312-700802
-X-HE-Meta: U2FsdGVkX1+DVaoKlEshss/hl5p9KgNiE8SKyiRddv0zX677psldH9BNInNnS+/yxb5ekLNAFwnawvyEBFQVo/aLLr0DDFNYUwvMWXHe1D94/lpm94TNxrnPXtgmyvmcMaEe7dxjCdup6ndidWHI0QvnFVmATwkXj8pZ8SPrggTrtOqHtHKbmGHQQgXBWNn7JpwkhvTPdcMNWHCgiHfIq/Es0Kglx3Ymhnc7H1KCWU8PT3S1zmIOv86PK9PGrzGaLd9VbUyJpsaEvJ0Z7T1u1yU4gqpZkpCq5LKZIn8+QNYRio+Gt8Z1/aS9avrICcpwHqFq6G7oA4l4uO03OmXpggrtl+VBtXDObhJXF78q4uTOBHTagCjaSWW4w7nUuH+2Wm4/JR9wPLC6Y4D64g+9iTsHoB/VIO97Pg1JEZMKfm1lKTddzcThFBfLDGQmClsJbPT6/MsiW/mWanWqrznuPw9aduQhWCtVprdFhOVrGFnc3UBBF8BWpcGW4OaKQie236qwQHg/khW4CXLm0OpFxOfHQm5OcLiDm6CF47UzY1Gx2s4IQKMQsxwAke85SgMqCsSmuHauNItvaspHAULy8NmcbkkzwLMjba+9rLH7sTC7Lr2KMz9W+CzS2q8r7VUROecyY3c8oY9KrttcUUuCr2gBzODZt8ojmXhSo+VwfeXeK05O80TgfH6ObesfOJ4uxrXhUavYUgv6ishabY5cQRFnEPnju7u2wdyHhRIefr5Tvix/0pipN/WbB+IbKJduLaDpNO5wxkfBi6liy6KAANX+35+3G0ATZRhj1iSiZv3JuSIPwhSuhO2jS7pGDXymhkvxVKt2BJ1bzpkeJLLUv15IM0UkrEDZvvYEXSN57Ir1HKveXOIvFg9F+bD3ytkvfkNSakFohW2l8h3urxDANtgRSf4qAeiFHmEe3np+U/cNQ35sIYYm3kq6QmKohM6Oh+DR9R5QB9a7khR9eUK
- Te/YYv5Q
- bC43fKXh/dEJrK89gwvjpvELwYXcPP9l78/aKzrXSkPY/DwUR5s1RpYbMxK/N0K1wlHdcMeUVdtHbt85mVIjRes536DGb+vh+DuBipncAbhP6TbrXTm2a0TZMpUzpEyGoG7Rg2ncNeqULY+c+e81LSV8kxxz00CjeH1oJNtQXGSgkBraw7t2oZmbLD3PZ7M+/zjz/WBB2Th35xiZRfz3URGyBTF7prSJI2XdKP8tqblX2QshlF25lVSHmM+7S9kJFzI4gQrDlAEa3QRqz2PkS2Dr9xZr5Q3raX+XiaA9v7VNwIjYzViD4TPxpjGglRGJnhRLQd0C6X9119OQAAbigh319sTfU8Ix+KX4UGLQAthhnsbhgs/hZJuLD0w==
+X-HE-Tag: 1793027670-45008
+X-HE-Meta: U2FsdGVkX19wwGGgmS0StmZZUjzvyUfp0qfVkW12ACyv7Ux+KXNIMoRV08z+gU65Vxf2MuMaYWw8H/UgX6X6WtJrOx5sral9vOBbuoWMUtKCfmtAxQO2h/MmAaHNlGQSd8pqTDOLBnFDW78+fZGAEC0qmshgNsLNBNmt67fCyzUb0l3EfTZI+frFy0b//7kBGf7DOTNnD5EwylQA0uec3roPD0WSGQOC7V5te1oJEfZ/p/J/dOgJHcwcXdx+5CYzC+CmMVfgQ6Wfv+ZzDCO5I5/FnpgZC/jCyD7kh8hVezjmSKVapH0XVZW85HFacOVB/9s9CupKT3LRJK1HZkobBuFe7YoyI8ltvTwdyIbYfF2uDFxiRnsP2wkXbk56g6sppSJOdsdIEp1d+2PcXrF2t9c3hopO8xu8FH9PV+ldT0FUypYy05ip080QT4FpiiTncVdEgO6qjHpGvUu7XQ4cDONCY18MoKS68hoqOPoJNHT+YX6u6ey5gRziEe7FbBZ32aST6ymGUIdt9ctWiT54wk2vHHaHy2v39Dot16UA9l2IOdKF8kEdsypCW7uoO2zgipvpWTORhkwPOWKO8yV+tqitQ57sKoKfUZnrxb1dKnLCYbpdbKVNhPdgJxiv1G6510UjJu/jSTDSFpBTzWvT8u0c7lcM0eETM2ABgpPoTd8n5DoY78zI/1v4VTBT2qZORc0pg3BpBLC70aQnliI1vJV3ezELpqGZzHR6bZLkLG3gJIC1dHl07bXnRyh5oWuTvKXrXDFRqaAfSEeoOuMRoHRK15UqHKi97FUZAUayyDzPxu9NhXA8MGh8SCnRNeFEJ91OitViM+gGDPgyhdWDw9rnkXV/jv+qGzivsFnQ8A9jgpivZXgp/PUgkKbr4AU+7n6N/GTjvuX0XLyZWyzXZfqzbykz4pQvD5vviPLwXFY6mMUISw20/NkGQKhN2gP51EzswY8erUaCp1+ciLV
+ iZpxyQAs
+ /unMxLVxOSwaUq5EpTVFCWIFcAgtLVULorJzKb5lqyqjuVrTwh++P6FRGe5V7X9WV+FxbdagCV7qxV+h/m0VpzCQvpJVhy1QFSM/NoEV1B91Z+Hq/xbOYlOQih4Qi9MDDOGSWARzoUlXJPdyZoCpLYD6zSW8YcMYTir3PWk8t/+4sX5KQa2hzz1FWxeTgCy09OpDIGPSh8bdZvYjY0eCd4M/Z7/OHSuOgFb+SYNxhdir80Z8jrstULLlOUq3ohCZZOPW721OuKmuWx6Ge8l7HjVzX2ViIY/myYoLL4GEOOH+2Fq1D3nPvkOqVwAr6bBFT5OfDeJvaCnSRyYLbhK9R9IVwRK29j/oZWsfKDFs7Wf2movitUfSD5nrIMjFAHo/G9xbne2V2drtmtgroRd93tisZ8EjkqnlN2qJry6wFzwNhSzbXaS5OH01iXXyz8jTLhm0b57NNo9QKlepkQF4FeM/DKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,124 +150,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 26 Oct 2026 14:11:30 +0000 sashiko-bot@kernel.org wrote:
+On Mon, Oct 26, 2026 at 10:40:39AM +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> Once shmem_writeout() has moved the folio from the page cache to the
+> swap cache, the folio lock no longer keeps the inode alive: truncation
+> and eviction find a swap entry, free it and do not wait for anybody.
+> That did not matter as long as swap_writeout() was the last thing the
+> function did.  But since it puts the folio back when swap_writeout()
+> returns AOP_WRITEPAGE_ACTIVATE, it uses the mapping and the inode
+> afterwards:
+> 
+>   reclaim                               last close of an unlinked file
+>   shmem_writeout()
+>     shmem_delete_from_page_cache()
+>     swap_writeout()
+>       zswap_store() fails               shmem_evict_inode()
+>       writeback is disabled               shmem_truncate_range()
+>       return AOP_WRITEPAGE_ACTIVATE         shmem_free_swap()
+>                                         destroy_inode()
+>                                         ... RCU grace period, freed
+>     shmem_add_to_page_cache(mapping)
+>       xas_lock_irq()            <- use after free
+> 
+> swap_writeout() behaves that way if zswap is enabled, cannot take the
+> folio and the memcg or one of its ancestors has memory.zswap.writeback
+> set to 0.
+> 
+> shmem_unuse() already added infrastructure to deal with that.
+> Reuse info->stop_eviction to protect the inode during writeout. Increment
+> it before removing the folio from the page cache, and decrement it after
+> swap_writeout() and any attempted reinsertion and inode accounting.
+> In shmem_evict_inode(), wait for the counter to reach zero even if
+> swapoff has already removed the inode from the swap list. Add some helpers
+> to make the code easier to digest.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: 6344a6d9ce13 ("mm/shmem: writeout free swap if swap_writeout() reactivates")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: code cleanups; improve description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] mm/damon/sysfs: pid leak in damon_sysfs_turn_damon_on() on invalid start ctx
-> --
-> 
-> commit dc23c827b1a01b5ed768b0a218bb6a67def40106
-> Author: SJ Park <sj@kernel.org>
-> 
-> mm/damon/core: error damos_commit_quota_goal() for zero target_value
-> 
-> This commit validates that DAMOS quota goal target_value is non-zero in
-> damos_commit_quota_goal() and damos_commit_quota_goals() to prevent a
-> division-by-zero error. For the stable backport, it also adds
-> damon_sysfs_valid_start_ctx() to reject zero target_value before starting
-> DAMON in damon_sysfs_turn_damon_on().
-> 
-> Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
-> Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
-> Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
-> 
-> > diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-> > index 5aa23c6545cb8..2c8749b62c621 100644
-> > --- a/mm/damon/sysfs.c
-> > +++ b/mm/damon/sysfs.c
-> > @@ -1497,6 +1497,20 @@ static struct damon_ctx *damon_sysfs_build_ctx(
-> >  	return ctx;
-> >  }
-> >  
-> > +static bool damon_sysfs_valid_start_ctx(struct damon_ctx *ctx)
-> > +{
-> > +	struct damos *s;
-> > +	struct damos_quota_goal *g;
-> > +
-> > +	damon_for_each_scheme(s, ctx) {
-> > +		damos_for_each_quota_goal(g, (&s->quota)) {
-> > +			if (!g->target_value)
-> > +				return false;
-> > +		}
-> > +	}
-> > +	return true;
-> > +}
-> > +
-> >  static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
-> >  {
-> >  	struct damon_ctx *ctx;
-> > @@ -1517,6 +1531,10 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
-> >  	ctx = damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
-> >  	if (IS_ERR(ctx))
-> >  		return PTR_ERR(ctx);
-> > +	if (!damon_sysfs_valid_start_ctx(ctx)) {
-> > +		damon_destroy_ctx(ctx);
-> > +		return -EINVAL;
-> > +	}
-> 
-> [Severity: Medium]
-> Does this error path leak the target struct pid references (t->pid) when
-> damon_target_has_pid(ctx) is true?
-> 
-> When damon_sysfs_build_ctx() constructs ctx via damon_sysfs_apply_inputs() ->
-> damon_sysfs_add_targets() -> damon_sysfs_add_target(), it acquires a struct
-> pid reference for each target:
-> 
-> mm/damon/sysfs.c:damon_sysfs_add_target() {
-> 	...
-> 	if (damon_target_has_pid(ctx)) {
-> 		t->pid = find_get_pid(sys_target->pid);
-> 		if (!t->pid)
-> 			goto destroy_targets_out;
-> 	}
-> 	...
-> }
-> 
-> Because damon_sysfs_valid_start_ctx(ctx) fails before damon_start() is
-> called, kdamond never runs and ctx->callback.before_terminate
-> (damon_sysfs_before_terminate()) is never invoked to release those
-> references. Calling damon_destroy_ctx(ctx) invokes damon_destroy_targets(ctx),
-> which frees each target without calling put_pid(t->pid):
-> 
-> mm/damon/core.c:damon_destroy_targets() {
-> 	struct damon_target *t, *next_t;
-> 
-> 	if (ctx->ops.cleanup) {
-> 		ctx->ops.cleanup(ctx);
-> 		return;
-> 	}
-> 
-> 	damon_for_each_target_safe(t, next_t, ctx)
-> 		damon_destroy_target(t);
-> }
-> 
-> In comparison, damon_sysfs_commit_input() cleans up an unstarted context from
-> damon_sysfs_build_ctx() by calling damon_sysfs_destroy_targets() before
-> damon_destroy_ctx():
-> 
-> mm/damon/sysfs.c:damon_sysfs_commit_input() {
-> 	...
-> 	err = damon_commit_ctx(kdamond->damon_ctx, param_ctx);
-> 	damon_sysfs_destroy_targets(param_ctx);
-> 	damon_destroy_ctx(param_ctx);
-> 	return err;
-> }
-> 
-> Should damon_sysfs_turn_damon_on() also call damon_sysfs_destroy_targets(ctx)
-> before damon_destroy_ctx(ctx) here?
+I've been looking at this for a while trying to get a smoother fix, but:
 
-Nice catch.  I will fix this in the next revision.
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
-FYI, this patch for 6.18 and later kernels doesn't have this problem, since
-they have commit 7114bc5e01cf ("mm/damon/core: add cleanup_target() ops
-callback").  The commit made damon_destroy_ctx() to do the pid reference drop
-by itself, and merged into 6.17.
+Things I looked at:
+1) Could we just drop this logic? No, it's fairly recent and seems to have
+impact on zswap setups with no writeback.
 
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261026135555.149244-1-sj@kernel.org?part=1
+2) Could we reorder swap_writeout with removing the folio from the page cache?
+Perhaps, but it would be a larger change. I'm not sure if the logic all works out,
+but you could possibly have a:
 
+error = swap_writeout(...);
+if (error != AOP_WRITEPAGE_ACTIVATE) {
+	shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio->swap));
+} else {
+	/* the other swap bookkeeping */
+}
 
-Thanks,
-SJ
+But I'm not familiar enough with the swap logic to reason about possible
+races.
+
+-- 
+Pedro
 
