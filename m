@@ -1,90 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD3B606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 16:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871B960A3820
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 16:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=XMmkvF29
+	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=oJmC6Xsf;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Cb1maXTk
 Received: by kanga.kvack.org (Postfix)
-	id 939976B05B3; Mon, 26 Oct 2026 12:04:25 -0400 (EDT)
+	id A36F06B05B7; Mon, 26 Oct 2026 12:13:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 912A46B05B6; Mon, 26 Oct 2026 12:04:25 -0400 (EDT)
+	id 9C1036B05B5; Mon, 26 Oct 2026 12:13:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 827346B05B7; Mon, 26 Oct 2026 12:04:25 -0400 (EDT)
+	id 860766B05B6; Mon, 26 Oct 2026 12:13:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 655FA6B05B3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:04:25 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00D904079D
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:04:24 +0000 (UTC)
-X-FDA: 85365249690.13.6FFD46F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3589610000F
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:04:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XMmkvF29;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C3296B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:13:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8DD7A07D6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:13:32 +0000 (UTC)
+X-FDA: 85365272664.18.2ADC411
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AB5094000B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:13:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="o JmC6Xs";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Cb1maXTk;
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793030663;
+	s=arc-20220608; t=1793031210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZOLHKlto0pXJF6loPpjpa0OycjxvrBLzXBWdK09FWNI=;
-	b=OhSwpQTGxBiuQNRhhXEjyxEpyKJnB3VZD4LlikQ2zNxS73/wU9S8kEjhsJwTH0UHQf0jxA
-	vspZ4EmOXlo3r0UImFCUlo0oskzJA6n71hzI3WOcrVVbUnJ8vUuTeI+SuomAbeqp3bSUh4
-	0QYVbBKVnZYj3yNkvGUa911ZQ1GBsTw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XMmkvF29;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=SuEMA61PD8ypCGtu9RwAMCLG5YHaMT/lSDKBxP64Lpw=;
+	b=twqXGcNRwrwFkROEagL54lVMVfHlweWD0uaW6qNSJKQcDpN9CPYC6/I4ci4uc2MgEVf4Or
+	0wYDpJC7mE6MYI+CP0dKMOwiAXBi7hYxzEbn3X2elrMSsQBWi55LZQ/26YEpk34RAY8S1/
+	WnJfxC0bJNidSonvFLz3ygqrPdnVv5M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793030663;
-	b=4BqlJMXmrCK0P5uMeVy/xAIYx+bnqdRMVJKXP61s6r3LxukPVTynyeKeLOBRELNiDnvxTI
-	ul0wug3VLcURG92xSNql0rHKGJHkDxe+7Bd1CfLy1NC+yfn/wiPz5mA5uTsibaYS0ZnqO8
-	jEOdqQV4P2JY6wMY5Zpl+MAdL64ShzM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A39D3601FE;
-	Mon, 26 Oct 2026 16:04:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E541F01828;
-	Mon, 26 Oct 2026 16:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793030662;
-	bh=ZOLHKlto0pXJF6loPpjpa0OycjxvrBLzXBWdK09FWNI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XMmkvF293u0Pe0kiXpCN0KSKP9el8rfDin08+YvXxK9dubjg35ZPnvU5agpBBaYTE
-	 /ncryhCA7ppNhpCL8zjTuawEGahS+R6IVuTFWuua/vS3zNAjzPvhwyr7P5Y5Al9iQZ
-	 4zTfx7NlZyvVeCNpgvhpcLInRQFtHN2zQZuC4Jgw=
-Date: Mon, 26 Oct 2026 09:04:21 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Baoquan He <baoquan.he@linux.dev>, LKML
- <linux-kernel@vger.kernel.org>, "David Hildenbrand (Arm)"
- <david@kernel.org>
-Subject: Re: [PATCH] mm/vmalloc: Bail out if in softirq context
-Message-Id: <20261026090421.e4bd83f3e20fb82852abec4e@linux-foundation.org>
-In-Reply-To: <20261026102503.30860-1-urezki@gmail.com>
-References: <20261026102503.30860-1-urezki@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	t=1793031210;
+	b=McKD69n/4hfXCWylwXw3DuHbMsClgFQvA4KPETRC+hVax8B0ryFMlwz2xPTZSolk/tZ4C9
+	BYcM6lcniWDn0UnGV0+ZvFsuRn3KbT6YebUHiIlWHuqHbv8SMckF3sDptHbxC/y65qowWA
+	Fox4x2GTGJXH3eU0t3i0n5lAKrgydoo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="o JmC6Xs";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Cb1maXTk;
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.phl.internal (Postfix) with ESMTP id 25617138007E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:13:30 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 26 Oct 2026 12:13:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1793031209; x=
+	1793038409; bh=SuEMA61PD8ypCGtu9RwAMCLG5YHaMT/lSDKBxP64Lpw=; b=o
+	JmC6Xsfow1yjAZvNP33bJMXf5QY+i5XLHravTrgfuUCsaWbIpBFuTAyiBGRWfzjV
+	1dlqnm623/dOTK6ZeM9oXZ012Glr2ZzTSWB5cbMUYaQNOhfvSb+br37HHzad7Mew
+	YSoqZ1bQIt+/HrK86GlC0l8ihnxPo++AyQVR/CL6z4c4B7H/j6hEts7HjWqmCYi6
+	Dij5oR+kOfo7I4m9b0H0RIgf1Y8DVcG4zMb0gtKvFxUiCssnLsTAUw7wBN8CSXun
+	Rv27Eex5wPm0gULIAO7uqy45Bl7M2JvPMmURWBRR4YgwcAZFygUuOmXf3GL5fwVp
+	HGLRFuIjafJGovqd/yD5Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1793031209; x=1793038409; bh=SuEMA61PD8ypCGtu9RwAMCLG5YHaMT/lSDK
+	BxP64Lpw=; b=Cb1maXTkRxdSrJDSeCUZhRNJVEOAhC0nIyYPlubphV/2InsX1vj
+	CKga3SeUmjNJb6ZRxYxf7o75fVEESWgnYk2DFP2D0JHiEZA07AN2P0/b9PYWyKoW
+	5ZS83JtRizqFf7/rbcjXl2BmOFBs7RweB/9A4QBfclyL+Y6NQQWXVl+k58gwZPj6
+	oyg8vo+1lkXqSiEFI1opSznaGLXkVzNf3HVhXZzqF5WLE+2w4WTptzclGxpCACJC
+	fUhhD1p2/DXENyImJ9kxipMuSKZFpOPZZBl6O7q6sLLHyid/Xyr9Vk8r0K6xBsrV
+	fripqVEVRosLWlqDqD1IQIDUzY5kxMZm0SA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793031209; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:oPc47HClo1RvIt+2dbvddZYZrkWcbRjZp8WgcHglc/e0BZE
+	aQfr0zhX6KcTHzrModzjLM3U0MH+Rn1mdgPmWAPG+aUApmLazlfHGmONGI1aeiWU
+	BGuCjHU5ecgwYeNh5u2j51DEmY7YL9Mcd1E8vX7DNXPmspV4XDRzINK7QwnmIDD7
+	c8gbXFZBQkGrBzzMNIXVtuJpsiyZ9mjk2O3POkUFaJ8Abb438DnhFBDXv8JAgD0u
+	Y/yezzq4u7gPpmiw1UMQvlpL6vHz4oqqhZsOooK91IGa7iFIoPgvITPVO2MWl5ay
+	ZKkgqRZj5CNfPDGBISdKKSqYXIkFXhPKphMs/+Q==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:P9tqkjtr7xJ0LZI83z6SZ6DETyMxibEyw+1uHfVj6Zg=:JLuqQrk98leSnt6vv9Cw5t0oqfF/5BKxz1YFDI+HSBc=;
+X-ME-Sender: <xms:J3zfalgYzmFLkjivWEpvSfZqG2OoqNdinomxBIXdw0khYzSPk8Ia0w>
+    <xme:J3zfagu-Pz_FO68c6gFQ9AsJDcOloRLceN5gDhUDkwHZKXCfw5XH0j887loyEWRuM
+    9xqnPBm-XR6YUT2AMrrN_APFTdTp27asP8TrpCG2-u7PUZSB0eEkD-w>
+X-ME-Received: <xmr:J3zfavSa0XBfO4-iC9Ee1B3PxoCm5kctj88IxDRhA7pPrpGJrK-uOmVtTd4>
+X-ME-Proxy-Cause: dmFkZTGBB2cNjuELTs67fGgvkDQEDSU8qux6+8nxtLoE35+WVs+aWAZCsMVW4zWZvl//3o
+    d+Nts1yMBYhfz0A2pBdaxzFlZZaoafSDu63LVpeb+vxy9Vwm87V8WMyFLNk7rWQLoUa5/G
+    k0yzKLjsyVStCe8yZI9HHv7vy5dspIr4hypntb/PIB9H4GNYku4+EG1lzv/wuo8fa87di9
+    +CF8ONEHEzQPPZF0ighPmGYTs5ZHVZOXemZ2aI7j2mAiAgvuUBkiiwxC2GgD8XiB+Phzk7
+    kD0l7xy/HxT+YKPa/yncQBqQq8O7UuH9+4cIXrnIxtjuWoj2OdbkHw4f/dvsCiGqt0GPJ6
+    5XToz1kkUWDtBnx/w21CqNEaW1qZCvZGci3D50ojvkPRVd8HZEg01/INknz4HMFlhsZqAX
+    BgPwRhczFxR3vNXil2moy+KyOZlL14BR/CppwtBzFCXgKpreiHrIjMKpLWLmW0aV/9ND7x
+    o2+CZ0TyrN34nBMGfM1olHAEhI2/mxv3mkAWJHEz8epr0WELvKEStcO2gFrRIN1FQC7sPV
+    RVysmrQ+pAibpu010ENwev3dXzBi0OYRiVIY3IoRKhCaAuO2k5glaEdwhGn+EUxT/nggPe
+    OKKPMnGTGlBnPIt3aeIzpw/5QeNySULr6bW8Ff0Rm+pBvg06Se3/TBr3MdOw
+X-ME-Proxy: <xmx:J3zfaq5Pa-KToeTPK8EsXreG0-ZZRQpQfP5oche3lz2EtpVZb99A5g>
+    <xmx:J3zfamjKiP0dGK1Zh6_Z6YQcsHArXWREOXYSfXPzaUYkwyJfx7b1CA>
+    <xmx:J3zfattvMyNG8zSYSZXeVAfaFOviFi2vceffpzvUOZP_SnZ6KiqLFA>
+    <xmx:J3zfaii39xyfykCc74-fjNwcC1MJZwle20cXhV-3PTdJ2RtNOAXukg>
+    <xmx:KXzfahsomsDyKod-euTcJeG0g_T_Ta9KwojHvoPH_natJJqeuGKu88An>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 12:13:26 -0400 (EDT)
+Date: Mon, 26 Oct 2026 16:13:25 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
+	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 06/16] mm/shmem: hold off eviction in shmem_writeout()
+Message-ID: <at97dZY434e1maVl@thinkstation>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-6-703206d5fa0c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3589610000F
-X-Stat-Signature: z5ek5ux58x15mktyaqseji98sepdhcx9
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026-fixes_shmem-v1-6-703206d5fa0c@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AB5094000B
+X-Stat-Signature: pfp917eb5mq6h46utuzy77wumarsgndk
 X-Rspam-User: 
-X-HE-Tag: 1793030663-391610
-X-HE-Meta: U2FsdGVkX19y38uRWdQL3BpEjDPjF0FkVyC1XMRowlOSvjLEUZ9XR0Fq9TdnNss+b3YhZkvhcHvtsp2F4OS3WVu0qbOgwu/8l4z2aofEQSps7mxBXMuEBa1fdQhxOabmkGs8X9a3JSq2jz7YwO0eh1vTNKhB7LL7n3yWakSYbSHLxFQ3z7Bs4+3WcO1OIphQXO6R4+XATWjPfw0LT1oiElBvuFzZS9SupPD23lZ1pizmOsvOEQztNfYHhsZd1dXuC/fQHoakBlfj1SOj3KxXme29IkmuTfEEJYySCURaRfjTNqvOyYCAYbgje7ISr2PJLO9AsiR+YCZZmTnIklQQcIK+4FvWX3Mcgh+yU0ppsx8mQyIZSBbFTPopDAfzglfrBdww+loPY1Yv5usF5aste1rxQz4+UnciFGut5yoLKy2gvXGsF7aazbjSZCdhkmBsTVzAuzl2yMwz4VDnQZSKoSHHzGXMu1YO+Rdw1pdSG1bJa1hHYCucg3eX+tPEhrNgpgNHAw2uEQV5rTGP7aBVrbjMwqa86hfhbDRrM8Q57a8jUbfm5Xh9yA7cSmrLR55mGZZ0gXjmFA4IC9BFfeOG1R9ItApuFYaoCtQq7l1o/Ug1laLU2ZBQLlPtvSWAKmWflEHtgDPRMzTU82pbtNAqWxO9OZQL/Yz9le2RwY6n8+lZysr52fBlT07zDAQOdCVZOP4u7k1H4zMlovnt9t1ImkGB63bAq3OL/cXKo0fzAkgXsrC1nmirlC5UNuG/9OF/8ziQkKYqm6dKKToBX0mLM1JU43MX0Z0WjssNT7cqV4b77J4gW2xoJFYMYZ9QVwOEzWhzq/PS7A1bMjAKt8o9KMko0aNO5VmbjTxWItqIChei92qQAE+omVLzPHYdXw3VZQvsSB5RRZVb+wBHG68nxfv9nJGx6nLtHsQqGZmSZnq+Zf0o8m1i/YAI1kb/PP84uD6bk75wBsJF3sqYAe9
- Al+B97iG
- 5/T/apL5t+6EmUAfG7kuUk17otQqE6U32MHVOJ8O8AUZCn9441We8wIgPszoLSOd7FU/9IZvmz8AvQQFPpyIslNKNrLd/7bW9DdJV+0gSjF4SpVCr99nbudV6jjlhlAHabBeGLyY66E6VZ2Z1CW+cIoflm6VjbCXOWwzpHVaecufPl8ugf/sLkXT4RRSXhs9N8KQTg7ua2d+zoed4Z9MQsU7rasaq6nB7I66Nbt7aoYdZTDV8/+8jC6LYyJAzLDnmaJhNa1w8SCYqZHXbiHJf8I9Qv93emfsJLV7/
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793031210-330028
+X-HE-Meta: U2FsdGVkX1/It4fHdSBnmyKd0LEFqKugGJHg/kqgEHsqmc4aEds7zuBK7NTvYSXrQq9zfopsGKZXyWOMOI0dcgf067O3TJR8ReX6NPBEiFuQQ0QwUjAUUIl6YDdmJplpgh9fmclvBj5PjiVlnannkB64e2joHgKQvhD9dbzPlhZixyiUoRXkO/rlgM3H5oxSxOhAhCWgtNOSPZ/DmStoAHmrV8D0xLLiJIJZI07XCA0YJ6uzy9CjYpWQs10NE7z+adflhhe97VOXuCh5Fz5hyAnEJEtM3YdZfqv/048X99cFYDlOKKFVVgsmqPRTLg/asxBKkG548luj9riRCxUAER1o8H22c3cTFddC4JIvhlz2lq/l6Nid4/nLKY+piaDZfFWqUa5i2axJnd0jQeE0FbwWko47DAkhwfbQ+zh5bPgS7zQ2fO2ZQsdRfC3h0Il22J9gc4hwdSwe4b4p3NTg5APrPj40c4tCVf+3CYSCmXE7wpRuiRWjfOsUvCEOKAZb8dJf+dRlDRSom2qYh8FCEvY/c/+j3NSAB5XDYTXWLXZVu/tOp+1wvXpqENedQsm1Hn1vwReD1CBhFUm53hdUxcxxGjI4RZ/yGkRh4GHw5esl9NOwTYfvpdqj70ezQiPGZew53fVMZgHenw6cgDRweW0on6wljDx3WneKIzFbTv1tqUTj20ICdrtR1DFSp5e5L1BWMcOE2w+Y28qSfEdqnKNIk6j2xVHDQV9uFJ7ZtIysYLXLFKj0KnGPbi1uOoO7NjlSdByuiZqW08OcmsrjhrpdHRdkyaa6Fs0ACXSSblXV6U+BrkmLG+p2PgcJOcpxwIube6zYrLCFGfnYC6apzd17Be5esNMEj0NOIv1f2ePRl0iSkCm0SWzliiRJ5jh9AqSS/N+ygM9GuEgOYI05BhLlEpF6ny2HhAoTVQaTtJTJzLI6bxVBucixKczGcALdGTpWL/lkkXB4Itpjvoz
+ i2duA6If
+ uC7RpKYFnfuRitmhgJD/5Kbi4wwNj/lGvtK1b6mWmEx79d/9em/HySiqcxjVbqJ282LwJnS6ioFYLyxjDNm90WGIlPXblJZdZFXaSZ9a36txpbL4DahbxUiJ+V+iDIcvg525/mO7qvUs4wFCAPcjtWnVomZr143TQhORV7DlupBm8KTMEDEV05ZWZPmVpOQ1SjanbDEf/+c+7Hs82YjGEwote/Eq2Ps1rW9j3KamdN9TFOekqx+u9Ep4p4RiIYmw1OxIQVXTolGz54I+Ein1vNWmPhRshy+Z9p2onB4Cxvb8ynY84ITaotXQ6Tk1lGmZdorsrYMSvETrBgnYDumx7wRABlvJijT0cEIdXsUeotMLHpddCwETxgMNPsjdW8ymVrkWrY2Moq6XmTHZ7PG1X4MLIJ23s2O3LTcvluvBX0PFWTxjibDOaNs24SCmggSJhJ26Xllf0EZ+OXOccjqQzIwIBATQCsZcvg9xS/7QGRfsJ658tispbJKxQX1oikV8pWppBJqcvQqrCZsTlb6Qfd1jTXwQdnQiRU7JpX67PsJ/XuM6g4/SWYOyO1gzHAjhUF1o4VgB63Go/FCbL5oXOC49YxguOsqQWwcdMZxSSCFV0CIIy+6a7iwLMwCsfQ9RUeLhs6jkkQV0b3nkv10olAoLXyN0+RlCfxXukVPjJ8+8l6FyVPHzPMP92EPeKNvjg5Al5NxHZrNNfykSXWlGVgp8Zbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,70 +161,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 26 Oct 2026 11:25:03 +0100 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
+On Mon, Oct 26, 2026 at 10:40:39AM +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> Once shmem_writeout() has moved the folio from the page cache to the
+> swap cache, the folio lock no longer keeps the inode alive: truncation
+> and eviction find a swap entry, free it and do not wait for anybody.
+> That did not matter as long as swap_writeout() was the last thing the
+> function did.  But since it puts the folio back when swap_writeout()
+> returns AOP_WRITEPAGE_ACTIVATE, it uses the mapping and the inode
+> afterwards:
+> 
+>   reclaim                               last close of an unlinked file
+>   shmem_writeout()
+>     shmem_delete_from_page_cache()
+>     swap_writeout()
+>       zswap_store() fails               shmem_evict_inode()
+>       writeback is disabled               shmem_truncate_range()
+>       return AOP_WRITEPAGE_ACTIVATE         shmem_free_swap()
+>                                         destroy_inode()
+>                                         ... RCU grace period, freed
+>     shmem_add_to_page_cache(mapping)
+>       xas_lock_irq()            <- use after free
+> 
+> swap_writeout() behaves that way if zswap is enabled, cannot take the
+> folio and the memcg or one of its ancestors has memory.zswap.writeback
+> set to 0.
+> 
+> shmem_unuse() already added infrastructure to deal with that.
+> Reuse info->stop_eviction to protect the inode during writeout. Increment
+> it before removing the folio from the page cache, and decrement it after
+> swap_writeout() and any attempted reinsertion and inode accounting.
+> In shmem_evict_inode(), wait for the counter to reach zero even if
+> swapoff has already removed the inode from the swap list. Add some helpers
+> to make the code easier to digest.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: 6344a6d9ce13 ("mm/shmem: writeout free swap if swap_writeout() reactivates")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: code cleanups; improve description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> vmalloc() is not allowed to be invoked from the NMI,
-> hard-irq and softirq contexts because doing so may
-> deadlock on internal locks.
-> 
-> Commit 04aa71da5f35 ("mm/vmalloc: do not trigger BUG()
-> on BH disabled context") replaced the deprecated in_interrupt()
-> macro with explicit in_nmi() and in_hardirq() checks, but
-> unintentionally dropped the softirq context check.
-> 
-> Example:
-> 
-> <snip>
-> vzalloc() in a task
->  spin_lock(&vn->busy.lock)
->   <------ Hard irq
->    irq_exit()
->     process softirq on the same CPU
->      vmalloc()
->       spin_lock(&vn->busy.lock)
->        spins forever
-> <snip>
-> 
-> Restore the check by checking the caller's context with
-> the in_serving_softirq() helper. Note that, it is still
-> allowed to invoke vmalloc() with disabled bottom halves.
-> 
-> Replace BUG_ON() with WARN_ON_ONCE() for in_nmi() and
-> in_hardirq() case.
-> 
-> Cc: David Hildenbrand (Arm) <david@kernel.org>
-> Fixes: 04aa71da5f35 ("mm/vmalloc: do not trigger BUG() on BH disabled context")
+->stop_eviction is ugly, but, oh, well...
 
-Sounds like a cc:stable is needed?
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> ---
->  mm/vmalloc.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 7521b9b3bfd2..36e6e3be6ba4 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3252,7 +3252,13 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
->  	struct vm_struct *area;
->  	unsigned long requested_size = size;
->  
-> -	BUG_ON(in_nmi() || in_hardirq());
-> +	/* IRQ re-entrancy -> irq_exit() -> process softirq. */
-> +	if (in_serving_softirq())
-> +		return NULL;
-> +
-> +	if (WARN_ON_ONCE(in_nmi() || in_hardirq()))
-> +		return NULL;
-
-WARN does a lot of stuff and I rather doubt that it's all nmi-safe.  I
-don't think this matters much - it'll probably work out and as long as
-*something* gets printed, it did its job.
-
->  	size = ALIGN(size, 1ul << shift);
->  	if (unlikely(!size))
->  		return NULL;
-> -- 
-> 2.47.3
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
