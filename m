@@ -1,158 +1,157 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6BF606A33E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 16:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8A1606A320
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=I7iVn24v;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=pR36kdmG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FCQlYwRh
 Received: by kanga.kvack.org (Postfix)
-	id C36B96B05B4; Mon, 26 Oct 2026 12:37:08 -0400 (EDT)
+	id F2D396B05B0; Mon, 26 Oct 2026 13:08:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0D506B05B5; Mon, 26 Oct 2026 12:37:08 -0400 (EDT)
+	id F04896B05B1; Mon, 26 Oct 2026 13:08:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFC7E6B05B6; Mon, 26 Oct 2026 12:37:08 -0400 (EDT)
+	id E19F86B05B2; Mon, 26 Oct 2026 13:08:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 88EC16B05B4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:37:08 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04452A081A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:37:07 +0000 (UTC)
-X-FDA: 85365332136.22.5A1D6C0
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E1FA0180002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:37:05 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="I 7iVn24";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=pR36kdmG;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B36766B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:08:32 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3570680788
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:08:32 +0000 (UTC)
+X-FDA: 85365411264.03.E429E5E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6CC35140005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:08:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FCQlYwRh;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793034510;
+	b=f5iY5xC7t2NI9ywPLGdGeu0lHWPYgRx2Qpdi+AqXFPhiY+LnPG9+IF8VLnhzXM5bTvC6cG
+	zwL7s1o39q51TDoCiqZX9bQPqTUMXbK6jaQrk0Z9xlMm7zrEO/v24NDL1/LeBy+HoeuCuN
+	BqRlf4Bj7nI0Nqf96cmBmakl0eS9c7o=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FCQlYwRh;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793032625;
+	s=arc-20220608; t=1793034510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M788Xk3PB4yK/5EzK9J0RWEJS4zUyVPbx3h+aJGAnIE=;
-	b=wuK6uaSzE/XE8f05NHoG/ULieU3wlkxdtgC1zqaHkLNsKOef2MWveljAkVzpTCKOa7R3ia
-	fB6R9uuW1jWKo/Tyupyv+MnkTLqburptMN5lF+icW5eZSrpuDsi1IG8/xuiXmAHFG3qzHR
-	46t1YxWRh7bOgFS23OcSwz4slrKLONg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793032625;
-	b=LpEfnXWXrqJcR8OM7js04SolQgMc/X00tu3Jvb2JUsAxSOG+0iYgb04sXcqwoEattRnTmb
-	Nm0zMwXLA7T9zhlsnImcBgWlDCD0UkB3vemjL/DdDbUXqIIb2GCNMcs4LBhjOB2mSH304P
-	y2jskp67azAr8K2DA0eHgmOSiiiXT8M=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="I 7iVn24";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=pR36kdmG;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 6E275138028B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:37:05 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 26 Oct 2026 12:37:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1793032624; x=
-	1793039824; bh=M788Xk3PB4yK/5EzK9J0RWEJS4zUyVPbx3h+aJGAnIE=; b=I
-	7iVn24vfD41AJXP0/BUpnXd1RvWqMCB3FN3N+xkeoOyTcWM8oXGZQcV4ZzOtbt5A
-	gZMERr//QEIClHkEEpDk0Pg64ptxuKkMUVqDmMNkfOY/HTNsqRFlpzNtAF7Lv9AN
-	kdb0x0yGuYutcx/Vn+YzFcCqrNH8y5M6XznsHneblgFSNwbupCCjmKQEgw08H6E1
-	gpKtxTgOTxETLXIQqrbEDJE97FWt29gHIfWfqRmJ+YPlDGTgePqdTeiFpBANMaH+
-	H2qCZQP9SyTVv+3mnuo/wa2yuS4Dp34BJGZNOZmjPxntK6moKt8P5swXI0h49nsw
-	m3Q5MLYnBxUTnqLdENlfw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793032624; x=1793039824; bh=M788Xk3PB4yK/5EzK9J0RWEJS4zUyVPbx3h
-	+aJGAnIE=; b=pR36kdmGlxLIaC6DYbG+KyTIgggdBXwH6daDGu7VElTmmotgqbC
-	8ogM0UYCjAD+ZstXpYuq8+yxKPYk5JQzyuB0hNvLMdl9ZSwwI1wPT4pBqpsePr7B
-	OXIlziLLErhBjE+5qXwA0AtwbW9xJtjeVm+o3l3sfQYI4RgUIJ0+1gA+GksG58V0
-	LV8TURjx1ItDcsmN9UjVw7HVAZOBHKLIPVe1sHACRb64jBNZnOf932CuhMybN0Vk
-	2QlgU+Luu4iO+sBjwNbvxXzF5sj1AeeZaKBYzbpa6GmiXJNeEe7cYfWF6j5YCzCp
-	f1cQdkU097cgIYje2AFWpk6XkAbgXJwb8Ow==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793032624; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:YmUSdNOHJw89+jmfeoGor/cC3xbTB1UrnghNvOHdvir/MKh
-	sXRHYnosizXpGk5SjNq4+bCsWUSl/hQfWoAnfjvPnl1sHL19UYZIDcRQ+I5BllE5
-	XWRYRCoT+UYEiO0BbptyUpmonhAiKvFHIhqWf2p2HJqBGes84onyPoqWeF1rxyFT
-	hqM285n/VXUv3OMJiUa0gb2O/a/PBiH6BGKPW8NUMWDwEkggsgUkK7Xj1o9gaQRl
-	TP6mDweEHj7kgqQbgXcZ/bmICpRbTnGV0twDXw6vGTc6UWYY++MlE2RxlW3HLhpy
-	/P9k+2xco6Me4ap1rmUs97OndgxE3hjVBogx/Cg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:8u+ljPUjNWAURUdkRgzi4ZvInM4ZjrblckocDAlPWYs=:ogWzqwUh+YwSKRYnV6B3XtBbR1nMJ/BN+dvXfmC+6os=;
-X-ME-Sender: <xms:rYHfanQGM7Mzhl34gLG4et5x43xQbH93vi1lSKzIqoV4zVMr1CohPw>
-    <xme:rYHfavdH9l4s4BXJXSOIMdqdKdPjYcjzpTdUBCyw8prJVvZ0DpDN6_EyT1qeodBSL
-    5Na6TCoFDJK0ASgwnqAV_xfv4y4pUSGwsDTFs0POBX6FUttMu6C0QA>
-X-ME-Received: <xmr:rYHfanBcBL_kqsp1g79Jds2IGWxkQfu3HfcDa6UIv7QZQE0CYV5rzHNYRCM>
-X-ME-Proxy-Cause: dmFkZTF85toFBxe00b6Lht/0YohMnaHZ+kOqQSwWlzVS3n6NaDaTp+3L55+ckhhLGOFqI/
-    gROlgw7KartkRyVU/1mD5EUn7ZFgUh5++lX4Rxl7IqqhV/09tBN8FrMq0XcJNcfIXM/fcs
-    jAN3rc34tCVSgiB8+XaigqTvbo0SI8kdb6oHLKuBaaC5tk1Hc04ITbUeokPS7u+7cdi2D8
-    8UVAypEv3LhlCg+OpfyjybH+wj3IC6vQs1RMPTTrUTwx8MsPvH0qQzqCcCGcBOeLJ7pYW5
-    z57AotUZstf5//pTxw0fi+3Mab6IqWyQVB4QmZR9HHsUERQ/jOfPhnTRd1nMTKX/WyXFZE
-    OXulAZaWcFzCXx+U6qd1iF80o1UBPD6T8nnLTxxx1EtSp+URplR05o6ShthzUEiNykbNFQ
-    OEgBGu8LFPSR8k0wiFDaXMo+rGCqQeLRyj9UpmcfV1/DtePTZ3rAPENl1QZsy9u+YZMCHB
-    yGC+vn7MvXAWw3lGX8X3mGl6bIf7ga0bPO7BN52iaOodqOfajOmX3isATAt+Xtje/ZUDV7
-    UWYj+S1udZApPfGvPyYauzCGzTabSWb/1SPUrYrD+YOry4Kti1y2QGCx2CB/7tHJ22olLk
-    KDBtj+h15jxdS848WxIIPWMXHIcl+GSCel774lZjsjdGaU6R/ZeRAUoSnngw
-X-ME-Proxy: <xmx:rYHfanoZLa6oRb6cRI6obhzerCoRdv_bYmeHbvMsO4WKGgndTFQq9Q>
-    <xmx:roHfakT-aMoPYOh0yt5Uk-dAP1XSLv4GCYHVkDOx8Z10KU4D_IjiZg>
-    <xmx:roHfaocsEWSHJDeQ_WQKhF0iEo-7Sxb_WLiOOG9vcFaStUfrR78Z_A>
-    <xmx:roHfamSUcwl4ir6MPwBZcQlXpUgfDHbsh27wR2SyIo8Y3TDzNUsXmQ>
-    <xmx:sIHfaqfPuip1Z6RnZ2x6Boa_jaULUh_WvfP5KJngoUZHr7tTOpKu5-ds>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 12:37:01 -0400 (EDT)
-Date: Mon, 26 Oct 2026 16:36:59 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 08/16] mm/shmem: stop retrying folios that cannot be split
-Message-ID: <at-AmbZyqUnGAJkI@thinkstation>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-8-703206d5fa0c@kernel.org>
+	bh=CzWJjwBFyt0mJS6gIeLBcNf6u3PnEIP/+Vjr2fleQfw=;
+	b=GpnqPOprcSKzgfoPYB+7LZTPd1GwSnb+53jHtu21iSTGaD4zorixzCbPCa/JOX7GRA3VTF
+	SIfqX+0Nxuusppxxapj+viiFHR4wGAH92gwpRMyC0g3mBWCbjU4qKIK0EGwzmiIkwWGnsw
+	q2kvd1EHlPdFUJNEX5n30xn+9ik/C0s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B664D601EF;
+	Mon, 26 Oct 2026 17:08:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E9C1F01825;
+	Mon, 26 Oct 2026 17:08:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793034509;
+	bh=CzWJjwBFyt0mJS6gIeLBcNf6u3PnEIP/+Vjr2fleQfw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FCQlYwRhKz18x+BCUAsSnasMtbCBZauPVDLi9efN9SPT6orCxZxB/B978d6hv8ww7
+	 sCimhwZKhlDsnQjLSYb8mKRjgK/wUI44P1QJiQuEViQk1gJIVvzfXsHKoWDD3yq94b
+	 d2ZVPxTMkxGnkxDKrdspFNsYa44hVz4BwIjd17D0wk93sZ1VpYgFFG3msX8A3oT2hV
+	 RBO8BvLERw8RefL500hIpcsNU3UbAdhM2tnVNd/F/dBbHiZRq4OCdgLo+iEvV02gt7
+	 gNN/cDNpPQOenAmzpN+hCvqmJHrOOYKTX8yrRPwWdecl/pjWgdRmTx2RSFo7Mojehv
+	 ZtjCYHrCmpj1A==
+Message-ID: <f7d36a47-6879-40bf-8c24-dfc89d937647@kernel.org>
+Date: Mon, 26 Oct 2026 18:08:15 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026-fixes_shmem-v1-8-703206d5fa0c@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E1FA0180002
-X-Stat-Signature: cqjabpcmky97hn7gt6rm3doaut4ihqaa
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/16] mm/shmem: stop retrying folios that cannot be split
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>,
+ Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-8-703206d5fa0c@kernel.org>
+ <at-AmbZyqUnGAJkI@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <at-AmbZyqUnGAJkI@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: g6yhoq6nyosdor1myrt9k7aeofzhohp3
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6CC35140005
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793032625-513406
-X-HE-Meta: U2FsdGVkX1+U1TSuK7czOIkBw+8brgeVgH6Oxrk+SITaEzPfNssL+qayE6uiYt62cp5oV3Jlew9dnCfGTi3j5pdYpHRRjGg6KUM7W1XxHsZhN/ARul5JtIaloifUs9/6imis1xcQu2jwGr6ZQta5PZp1u9l7jU9d8leSGZEcxXVT0bSxGKZyR5xb6dmsN46oOYedM99MVC04lIZ9k6cAx9yr+EdcDl6bUIue5BCEXLjZX1IpJd2t1HrCLJdD9m/OkaM7ix/k3jP/seJV9VtqLMA+wMMZ89MmMm/cHmU1lVaSEjxFmOqbIT8TS5Yny90e5bUiwdlTReDzH9xpJvFW53mAuEooLrYLAMaV2j20moSPu+NsoOFES5BY9L5k2FPY+nxeQwv96yCSOqQEXEJqaAFnN69dB0qExF34nTFA8QkvRgsQGtBGZ/xIPv6AqFG7yoqN7l409RwdrmUSX7tQ2Yhl4XW3tAJlNf+gDRY6pw9F0w4csf6plA6jD3ONYHnpgBcMJXkMQEA6PPlD+/qqNrea/T1T8edZJmq5dJkCl9xMZYjEfdH6mlIlBay84zFdLIjrhPnNfrjnlFaIQUvwM7E0n0ypU5AyEORyMtyBNAaYay7aNYhDR1ouTXXjfNV1SRWnBcI1A59Yv7dtMdNMisBiNm1URY8kvPRlg7VZ6Rbb9WZWzUCQ5bYC7HH/dyNWlod0GubRvgPbnYkNxGhrbfn5QO3ZZom1IB0rkV2bJqbcHbCVA7shU1Qsjg2LX0ZDWhS1b2LOm45Qxi4fVYubAyPQTmrmbg7UqJLajkl10hMP8zXzzGZhyn0L6Qsh1V8b/kxLXX1cibs3Hacn/Nq66/tgnU3TJFTVVm9ojpXS+1qeBx5MIVzUlO2s76Ux96rv25esVcheBC6z8MflEKAsMNMoyBQvIB8dURDh39N1xgumjFnLYDpUyEZXp5dM0OccmL+mEvh/r/hObcm8UdI
- s1SGymjK
- Ej0Apra6x14jg4mITvesetNasBx1xUcG+lAe/8ZUpO1z2sJf+OO+S2Saqus05BbzteGf4er6ddgeHYe9UFC43Q585LyomxUsCy8hp7DF6DgTMEU2dn6AGNFFhhQ4HjupVIDoPTe6VWNPNPS1NvbapXfxgyotbwm7sfKp0oKJY6j2FMMzUEbcTW5QbQB8s0mgPNis0SnjyFTKJMiJspt2dXNLnZpeni9ISv41PMXPpo9RTRngVdQQ/hMQVEsvze60+sJrJ1SgkQwRVRQqzFNWOgfjESpUHONadRembrjQ8VrAjqSjMacy8uq25gYNIQsNLyTiEIbahDis2GCBfo+5M6C+BgSsK9U+jSZ6HsdGGXaxbc+EoXObErGbL4QtxCjAeKVlcszQtTubaiWn2mDKUqdQi304TDpm+cYbS2ISajgdkFp3UFxWHZqk6dfrWgis7kTx54zd14RRb5qCwiQACsFgU7i2JTP6C9LHqoC+xGYDkI8If2ruaHIrcvP/72cpneWZjUKxxv7Osh4ikKXZObOn9bqlhepv9d1HcrC/9VzTmIk0Je6CMP8mQp/nx1ZMidEL8hE64zKeYxzznGp8f3XUHc/nxhcLqXFkizhgIEqWa8Sk=
+X-HE-Tag: 1793034510-253900
+X-HE-Meta: U2FsdGVkX18fMfJi573NVo82fbdt553bm8vRqfMpJJFowh0dsKAZbLnxAfIL/4zrGBWxqphJGXj+8HIOhAR4HGs0C97ITSVeAsx7vzzDelN6bAEUVb+ES/pGoYs/fHzfzR7a+OwTu0dfV+j9WsKKwBzYnLMn18dpwbjt/OJR5M+qBBdHKIJOQfq5CGd7Z0nBvzTSeYIefMJL1nAqidD9hJ1rqB750QigeXhahNascTn0dzOhjDxCyPj04fyoKlVzyzlowyPm0ldUU6sHQOz2tfZ8IAuQ15t7JJ3wqU/u66m98oR5WORpJiQD5GptmeYusO928nduGnBCE+SoNtrUHZBaYWOYQYj1z2YplRY/oQPP7unWmXZIpCXr/6MXpLZ7G2uuZzb+NvBiL7oo2PvE4ti+Frvu/XHG84O67f966/YNyWsK1l5D8Fce5DcfAQeV4Ec6qVgp6axEwaIdKBR5gcB4v8DAKqhx+SI9L/9NOLyu9kFZVIV9+X3TMRfetASuYj3yPlU61C74Pf0f28DQ+Pik9cn5PQC1IvDUi6nzut5CS3JhvYN0ZARzB9qfvCJxtXglqwdoqpRjS/wPAZrfFEbut2JFC++sC6R+qsrMVlFzBNLZaEM+ZvzkJlAMhA5NFIJzutWYQduBdPiU+LEXlQ6GPfRFoTu9hIipi5qNPgTsIYWYUGcSp37upBaBR2MLygUqdiZdiNU70vzduIl2Q3l5sFgJRhKEqxQQq/nKhm1cNcCDXmQ4LYpJjrc56tXa+fx1Kexd0X+9smj39J8s9nnhiMQzRMkZdEOFD19cFXHzsSPyLsZUpm8/ojQ8YNeeAZj3/nH3rDQbVh++T45mEYpYA7irWpHFILd/K83Fi+msYIbSNYtsRQpicIcdOB4JsB2BkvWMciDZs91NXdPS13whVA8XIVyOhU+H7Jrls+83LlBUuT5W6mg34dCqWb8DXO6fvElWgs0hPRRKT2V
+ 6yyfzJVx
+ nu9dpMxf3rbn+LkprnvXO0ozxixGM7eui4OzXnYg8poNMlTGS+2RkVmb+utT6AHovUGNuBY29JEBYWc08TuzkffDvg5Niooe8FbJP2qj58KVuXIm392DZLHJUFPz8ympZ4K8GuXcfe/eWhnhD8VbaZKhrkxdvAnvfHYLiTNhxu3ZEXmpd1hwWB4fNauVO0ZYX6t8LORkqhTpw0KpNvzFbwU63arctcDZpB7SUWUI9QRNtGv332RXb5d5RfzVkvw455Y9tRJzoa3VUxfpQcLQj7kgjDqSnUTvrSES10K3d13ebBFD9dD0NJjIjZni6scdSxptp/cUGoTYcfJ1CHovRI5w4NcWmUhwKHrryvEbefENLTEs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,34 +160,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 10:40:41AM +0100, David Hildenbrand (Arm) wrote:
-> From: Chris Mason <mason@kernel.org>
+On 10/26/26 17:36, Kiryl Shutsemau wrote:
+> On Mon, Oct 26, 2026 at 10:40:41AM +0100, David Hildenbrand (Arm) wrote:
+>> From: Chris Mason <mason@kernel.org>
+>>
+>> A fault or collapse can insert a large folio crossing EOF after
+>> shmem_undo_range() has handled the boundary folios. If splitting that
+>> folio fails, truncate_inode_partial_folio() retains it when it is dirty.
+>> The final scan then repeatedly finds it because it restarts from an
+>> unchanged start.
+>>
+>> Truncation keeps the inode lock and ignores fatal signals while looping.
+>> A concurrent unlink() can then block other directory operations while
+>> holding the directory lock and waiting for the file's lock.
+>>
+>> Advance start past the retained folio, whose truncated part has already
+>> been zeroed. Do not move start backwards if the failed split has shrunk
+>> the folio.
+>>
+>> Fix generated by an LLM and sent by Chris Mason in private.
+>>
+>> Fixes: 55ac8bbe358b ("mm/shmem: fix race in shmem_undo_range w/THP")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Chris Mason <mason@kernel.org>
+>> [ david: split fixes, simplify descriptions, adjust comments ]
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> A fault or collapse can insert a large folio crossing EOF after
-> shmem_undo_range() has handled the boundary folios. If splitting that
-> folio fails, truncate_inode_partial_folio() retains it when it is dirty.
-> The final scan then repeatedly finds it because it restarts from an
-> unchanged start.
-> 
-> Truncation keeps the inode lock and ignores fatal signals while looping.
-> A concurrent unlink() can then block other directory operations while
-> holding the directory lock and waiting for the file's lock.
-> 
-> Advance start past the retained folio, whose truncated part has already
-> been zeroed. Do not move start backwards if the failed split has shrunk
-> the folio.
-> 
-> Fix generated by an LLM and sent by Chris Mason in private.
-> 
-> Fixes: 55ac8bbe358b ("mm/shmem: fix race in shmem_undo_range w/THP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: split fixes, simplify descriptions, adjust comments ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Any reason, this should not be in the same patch as 07/16?
+> It is the same failure mode in the same function.
 
-Any reason, this should not be in the same patch as 07/16?
-It is the same failure mode in the same function.
+I decided to split because it's a slightly different error mode (failing to
+discard vs. endless loop) and tackles two different commits.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
