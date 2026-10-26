@@ -1,143 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C28606A31D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC16D606A32C
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CintjnD4
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=E3iBpB3+
 Received: by kanga.kvack.org (Postfix)
-	id 9D6106B05BF; Mon, 26 Oct 2026 06:04:33 -0400 (EDT)
+	id F28FD6B05B0; Mon, 26 Oct 2026 06:25:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986A06B05C2; Mon, 26 Oct 2026 06:04:33 -0400 (EDT)
+	id EDA196B05B1; Mon, 26 Oct 2026 06:25:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 874EE6B05C4; Mon, 26 Oct 2026 06:04:33 -0400 (EDT)
+	id DF00C6B05B2; Mon, 26 Oct 2026 06:25:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FC9D6B05BF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:04:33 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EB108406B6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:04:32 +0000 (UTC)
-X-FDA: 85364342784.13.0369C0F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1E5A3140004
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:04:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CintjnD4;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BE5776B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:25:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4EAA6A0741
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:25:09 +0000 (UTC)
+X-FDA: 85364394738.04.1ACF1C6
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A9984C0002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:25:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=E3iBpB3+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793009071;
+	s=arc-20220608; t=1793010307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PRfBqEtZY9vLSO/v1o7cinPO/v+UATyLQat9ERvQExs=;
-	b=vpqB4lzJoFX55Z4OGldj9BwG6gNKcoJq8rhdaL/mPUKZ8Nt2J2c9Fut7r1pJsxHJ2YNuQH
-	aDNjmxED0cSQEADkpB6d1pGx4dwG+tT7yHTsDu6I/yuOMgmFMMhExp/HD7hsuwSBnM3LwZ
-	jutTF7agJesiRqWtH9ZbojrwtcckNFo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vC3+m1bXV4BFKZGwxaXpJ49T5jUkMEzs9Tuz0+gllWI=;
+	b=Ea1OSxUU3hP6919pLklow61Wk3TtQq7xMPtkHkXCFdwZyxVcb/TkSAdYMdNxYCLraQ99o8
+	7ylEMnQbY0ip7DhIiu0duDzye7KR7yqZWp7K8yxJhHhhDziRBQyPcFn9yENwGece+68Xsw
+	+0RcSv59FgB7BWPsMa+Z/qTUeg41xWk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CintjnD4;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=E3iBpB3+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793009071;
-	b=dr7ciKb6F/YhNM8mPyIGvjVF0n51lHfpBB1SRuz96bgCF5LtOTPiIUeH1ZLceOa2skJXC2
-	bv46WiiS5ZJxeADu51dAE/la9kUBXj6ybpW1w6S7VyoxkdddB6YjbYOMIU5VBVTvmumU/l
-	KFrDT2hIHr6gHbXcaV78GSUBWMu/ZIU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9DCA560A70;
-	Mon, 26 Oct 2026 10:04:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36B01F01828;
-	Mon, 26 Oct 2026 10:04:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793009070;
-	bh=PRfBqEtZY9vLSO/v1o7cinPO/v+UATyLQat9ERvQExs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CintjnD4Et7gXs29ZrsCkod5VJq2bgilI/ipEqW97jU/PCLADSUO2wLwnPcyLl1hB
-	 NraxPlpqgH76NLpNh9tq4QpPKO/RnpKUO7lN8i0e/NPBvfaWIliCqxAecCuPZMoE6W
-	 b0yAiOf05Eg3CzC8NBbutl7l7OQbglYh5lDCaeRaw309XoDIJVnVDoYPgHKbekqnR5
-	 aWgW6GhEm7LvqD+NASSvfBhSuatTJ8THAJ8OURJVGdiQWPWHHas52cNXbNQFrk66CF
-	 1UNoUibOuxvARe5xG+1QdAFEysnJnwhl/T7w6ae4Z7Iutb8mle1Wiy6RQh9GZiJNzI
-	 dSM3s1M6DpjCA==
-Message-ID: <44405019-7494-446a-86b4-05b2ac03f768@kernel.org>
-Date: Mon, 26 Oct 2026 11:04:23 +0100
+	t=1793010307;
+	b=uqLJlga1jbCvlWB1vLfL1eIF4JNVowD4dtfN8UxqYcW78v1YMAOOxLq2vl49Y8oMdmIgFa
+	I79MG6VxVvw56tmTq+7seZzdfloIuCDcyVS0Nf974pcQSKaLDvGJkKzNLiVHZ4eCcOZqqE
+	EfNeWFzFltg9Je5ErfJYzXwGQW0xQ38=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6acb57c2b88so3254216a12.2
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 03:25:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793010306; x=1793615106; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vC3+m1bXV4BFKZGwxaXpJ49T5jUkMEzs9Tuz0+gllWI=;
+        b=E3iBpB3+CvIjcuovx6M6yEun/0In6QSSmpbFE/qB1amK+byF7eH8D7DkxU/x+DlqOF
+         hky33wC18sAZ0ZFQcmucZd74HrSnp3oyKNx/ra6kimeOYFV4AfUPQrBdFon9sT6YVauJ
+         nYxd2wpovZ83v08S6ZEq7J53xGlxvW4/fDajhoR4OBAE/Hipl08P/GMs89ZNXPN3QUUa
+         jTFJ2FDwzCncsSGA0mPR8Zqqys96ucTmm7Sh+mtNQkCJpxQqOl9pGPYR2Xgk0y+yzP9F
+         W96/3IneKFSjkdSX7ZubaiLKQD6FnGHqKbkhwjK9G7pceUBTBJWKnRTcBDN1DyziioTo
+         F8YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793010306; x=1793615106;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vC3+m1bXV4BFKZGwxaXpJ49T5jUkMEzs9Tuz0+gllWI=;
+        b=nXC+efiZTJrXeyOUtxq4MnHhgtcbWR6KMncPQuEL91nZmMTSWmEuY9KpGyS1sVb2AX
+         WuRXHB5QukZlFG7Ourp0TuVX5G7jp49v0s7USg4vU0WG7y84w52SPpFj4lFl/v+JD82e
+         qAlPYBWMOq/TDDPzFDPfvmeU/XilAxyBiq6fb/G10MmUEnMlybLT3rlw/v6OfuOpOokg
+         yC8I/rtj0ba/0EQymGAChE11GbrmcFlj4CiJc5/uFiaKJS6MMlfe821PDa0KbELV0ZtZ
+         Tq6+sDjNRJjPk2iYZtVHUjDSfFXvi4EvpFXZ4TkeyHFO7V0onmX51JI/N6Z7I434pDTT
+         br5g==
+X-Gm-Message-State: AFq9FYLPlML89Nzz6nvYcWUnc9RIO5Lo7iauxEMDNgCXy4HvCdC4UvSx
+	f8rCnu2dJj/ZJcwt5c8QfoktoWXRLezshxQY0/gvYs4yEA1CmCzZsXkykSQ2VsSx
+X-Gm-Gg: AYBFou3D9DnrNY+WZ+CMCJ93zxvxPWOlXMzluxp43DlCzEkGwMe+LvBVUXL4KbZNkHx
+	BYoUqFd6g0Jn312ewNTsFEy4p6YTCVI325z0R1959UulzRJy7vmaRix+H9pUJOIi9oXG13ZRK9k
+	zvBfkFQFZ1q/F4QuZpDXsERakkk8IYfFgX+aty2hifaWglwtqbF9M0ye4V68PImUB0t+FlVKB/+
+	/nq5GGpW/sE9MF9ILIUZ+uJTtoBRkDGfgp5FeWAeFkxOLJFOyoxwpET8pKCrwYEMiCqKTyX6GwA
+	ouTgHRx1hIzFCJe3kj/iIsQP7/yqcv0tDB3SbBxR8nRk9BCz3C9oeds3P3DvbLj3R3c7loIs5aJ
+	EbwDXGdWlnGLUOFAq1CY0EEdEfJ1eJE+sdNkuTPuqJ2ISUznSMUEGX9GhtC3+esry3L0NLPGBer
+	t4hwkRQ0RSji+s+W1ElCRWkVAz8Smu9N7nDr9WArOREwqLpSaCjSgLPT+oCmtFRBvwVLh3GcECC
+	CSEVZi/733DZjc96LBrFRl7bNGn1ZtLy2ZbCgkz7rhUZCE=
+X-Received: by 2002:a17:906:3a88:b0:c49:901c:d9f with SMTP id a640c23a62f3a-c49901c2556mr174648266b.49.1793010305891;
+        Mon, 26 Oct 2026 03:25:05 -0700 (PDT)
+Received: from localhost.localdomain ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd52435asm298667066b.36.2026.10.26.03.25.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 03:25:05 -0700 (PDT)
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <baoquan.he@linux.dev>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH] mm/vmalloc: Bail out if in softirq context
+Date: Mon, 26 Oct 2026 11:25:03 +0100
+Message-ID: <20261026102503.30860-1-urezki@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
- /proc/PID/maps and friends
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
-References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
- <533c4ef7-e008-4439-be40-1aa2a074dfd8@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <533c4ef7-e008-4439-be40-1aa2a074dfd8@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1E5A3140004
-X-Stat-Signature: wpsh5g49pyxpmu18dsktk35q8ii594iq
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A9984C0002
+X-Stat-Signature: rz9eigtox19f16m8rsxgsiouysoaod4i
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793009070-484040
-X-HE-Meta: U2FsdGVkX1+f0HvINashdnxIkFEfNCMxFAcyT3wNhscGm/G4Yz222PotBQzVnFgiGasvutz8qyCQvpZ06+wTpaZGTSBrLj1PHFWi/8nNAtKtq9DH1KGrm9oM7bAJWw+HNIzAvbtzoFrXbkIb/bqOXNTIbPgOjgR56PVwj9Iuj4YHF40Ap/qbozQtdyEsaXxuHvJAMQVwXf3cTfdWF0URG6vqNaf5Wl3ICgdmVjA304o3kUFqhqtg0RbXRw0/GZ7m1eD4Sc3kYEczqpyazT1l59XAU2RMfSGEgYJSHuz6e14jND9GVRbdTsOV2GvQ68gPukFgsrwMtd30HmUS8U0Y9XNfNzZ8QquxYGFk8j/1qwExK9PM61McyxZeENPXNK0P2OmwbNrzMFMFKUWaDNFbpGhDCVw9SVJBXEka5/r1a2802VcszRz0KQuWBfXLmPrsxyWqMOl70a+/h3JwkKKflx4eHncVvhmIkvHUdDUqugce1OtFcE+falxqy5QoMw/bMUuxi2noCIMUHxCM5MhZdLGunZWMYFYhLjDQlImoe96zM2+ldoZlkStlGb1WdIeIqegCzZ+HVdm3O6/5/59HH4jI8dcJQ1EJ4HNH0SY4eRhqLA2tlyY6/Cc7DMrcvZR77v1Ws3Iqf7eOa/AA2NB+TYnP3fmYGQDTfTrLKEl7jDEFkpIqGRu41JMxt5twiA/0mflLUV1UMazgihEoVjQv8bWrB4XjZvf9KcBg8JmZVT4ESlAPfuNAyu6mCMeeOY6803Bw+6Vu4pEA0orPm9ygpBLKMDtH2wf7n0dt4C3s0Rjn7TuejVgd0BEZGG6o/Bu0Nz91awzsaWvGjvsyYXfhaJKPA3h1tHYsh4y/z/7OzZ/8oznFYv8fNIArPqStOO4Jf0VkufWEbhP/LOGseMF6NDOT0YPcjuJ5odLoxEByVM36O3uHqfy92OBzns+OnDwOtAGUZhedNU0iQgl/OqY
- yp07FXxN
- CGupqEG96xQXysTKkxt8pK6BE1bZEkKwSAK8u28W8ESiGqiW/lTfi4CiUoDXrzYbwANcd15DXrlvFnphK81lDXWbYpeUWrkKixZC2AlwY9Ltz4dAm9mwvf7cc2Eb4Z1CLR3EI9x9Ebfk7pjZLt/eHJg2HcYGfgPl9NwxNqrV3OXGK9XbfYr9I1Ldt2tcK05cCABoDWxJ6vL6H3KIEIlFaPO86kdPe5yhckpe25tPVbENsWTVHp7BZkzO07uXdsnjCAPzl65u/rYhLG7FrE7x8qSwU1YofCTeGkcXnvk/749NZvbqhT9lfCURk+LmAwWGSNK+pJckrUGjISyg=
+X-HE-Tag: 1793010307-633805
+X-HE-Meta: U2FsdGVkX18ZtDCooHANFn4Q2t2XHyrbSeYJmR9chhhNAQvt90nstTh4YhMXYNk7eS+tE8WB22KIkljjVnm11QihoIq4mQemYIDVBIRPzSSOK3JE323QNAU1wgzxTXerRStjOXAXtwdi92wWZ6g2yl7nPZ8ZI1zONEDvD6o23gg48YcpgSgXHbs0oWUlaxJEo8OTtAVRrD2/YIzn4ueIRa18bnmlssQGXo2HCZAoOSwvMSBZIIoofLNV0FYjB7UmBs8L+QRllsAFgjbpA2YP0qiMBJ0rKa+695tk7rxf809Fet7EC32F7AapBbSgIx882Andwd/trEBndtD5TZnua3d2pAenGKwpI+n+AA5qyxc/e07eDEbYhU8geXVDssGhD4xB40a8S0P6uq4hjtkt6rCN++LAnlcivImEP9cI2fpUgKs2cNPJjHxRl3bDWB5zKG+DEgJLC4jPU5Q3TWqfy8AfPEvic0ulUwLupZ6LDNjXW+dHGWVaw8bFU1pg2t3f6IlPq4BhVpjgf9+ixN4+JpKXGQeBh92jzlUwqvPlch/I1P0quRea88ywWmwaGKqfNzPSzX2ntwcyLF6erCGnXB/JW4J3vPJKFxdHPBf0MaIHg82tnxkME5qooV+v5GJOYaH7IYLmN3ZY71upHp8XokQyRGKwHtt3jN4xD4KWFqL1/lzNu/vZw8hGDWV8pi+n+zcwLAdI93L7clSKk0n0EQeKl7atkpumDmdJjfZhQJwJwu42DSGC/sVEyNYDdYG9A0KcRM9m3x0OqdltJneWOFE05zlc0ZurIWCf/8gcsd8M4JbubKNA/xS2FmeTj2m/ob9tuYyP44oZ6IE6o0Xrx8bYCVRdqweOI1B5N4B2XeGIn2H8LxsPDpjt1IfLzBn3cRQnyMSKP3oS21u+nOg04imAM/R+GQpxkCN9qyC0F72aRO8nfS3pLAOCSkQ8BqXFFxK94B5kUsgVY28L1ZZ
+ prnSI7jk
+ MK7FpmJtzRqe3jI8JQbFyzd+MZqv4zd6yk5oNHgMkqq7NnjCRvU9SyaqylpsBWn4FvWoXxs7P/Tdu3VMEoG5l0yQeG/QcnEzKG4HdzU2bV+jVl3s9z0gU4Ij94bor6ezApivxnSQQfOcTWQZlivKsB0rBBepbIY1yVVfKdtEzWj1y1TOuy7d+uO5LiHbWfVadi374wL8ruErVx5UtwApCtEj3S+zAnqmLGT/XfY/MI4LVAqGGjk8Nc0RCRDoFYv5L+siv7Ii/pChH2rKxtgT5DGE6dzcmuhWj9mbWzGzGFI2UObXbhp0eENwWmom8i8r6Evei4ae4RSLRfnsdNtB4IfPBDyzf/xzVpCfZ6qK7suoPhJR69DKplYZvnyTWjjQTuYOcuRHmtpKnOus7Nzhz5038YRUu68+b4v2ZMVpzkFkdpgnxIadPGBksugQixv5z3oXz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,44 +121,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/25/26 20:01, Jose A. Perez de Azpillaga wrote:
-> On 10/25/26 11:43 AM, David Hildenbrand (Arm) wrote:
-> [snip]
-> 
->> Fixes: 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under per-vma lock")
->> Fixes: ea3085dd7a4e ("fs/proc/task_mmu: read proc/pid/{smaps|numa_maps} under per-vma lock")
->> Fixes: 0e985559d72a ("proc/task_mmu: read proc/pid/smaps_rollup under per-vma lock")
+vmalloc() is not allowed to be invoked from the NMI,
+hard-irq and softirq contexts because doing so may
+deadlock on internal locks.
 
-> 
-> PROCMAP_QUERY does the same fresh lookup, shouldn't d9d1c2d81797
-> ("fs/proc/task_mmu: execute PROCMAP_QUERY ioctl under per-vma locks") be
-> here as well? (commit tracked down by an LLM)
+Commit 04aa71da5f35 ("mm/vmalloc: do not trigger BUG()
+on BH disabled context") replaced the deprecated in_interrupt()
+macro with explicit in_nmi() and in_hardirq() checks, but
+unintentionally dropped the softirq context check.
 
-Hm, very likely I missed that. So yeah, let's just add it. I assume it won't
-matter much because 5631da56c9a8 is the oldest one either way.
+Example:
 
-> 
-> [snip]
-> 
->> There is the issue with seqcount overflows that Lorenzo is tackling. It
->> probably interacts here as well? Likely, but that's an independent issue
->> to resolve.
-> 
-> the saved seq is reset on every m_start() and query, so a wrap would
-> need 2^31 write locks inside one read() or ioctl, I don't think it
-> matters in practice :)
-> 
-> I tested it on x86_64 in qemu with KASAN, lockdep and DEBUG_VM on top of
-> mm-unstable, the maps holes I hit there are gone. Also, the code LGTM:
-> 
-> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> Tested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> 
+<snip>
+vzalloc() in a task
+ spin_lock(&vn->busy.lock)
+  <------ Hard irq
+   irq_exit()
+    process softirq on the same CPU
+     vmalloc()
+      spin_lock(&vn->busy.lock)
+       spins forever
+<snip>
 
-Thanks for the review!
+Restore the check by checking the caller's context with
+the in_serving_softirq() helper. Note that, it is still
+allowed to invoke vmalloc() with disabled bottom halves.
 
+Replace BUG_ON() with WARN_ON_ONCE() for in_nmi() and
+in_hardirq() case.
+
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Fixes: 04aa71da5f35 ("mm/vmalloc: do not trigger BUG() on BH disabled context")
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+---
+ mm/vmalloc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 7521b9b3bfd2..36e6e3be6ba4 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3252,7 +3252,13 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
+ 	struct vm_struct *area;
+ 	unsigned long requested_size = size;
+ 
+-	BUG_ON(in_nmi() || in_hardirq());
++	/* IRQ re-entrancy -> irq_exit() -> process softirq. */
++	if (in_serving_softirq())
++		return NULL;
++
++	if (WARN_ON_ONCE(in_nmi() || in_hardirq()))
++		return NULL;
++
+ 	size = ALIGN(size, 1ul << shift);
+ 	if (unlikely(!size))
+ 		return NULL;
 -- 
-Cheers,
+2.47.3
 
-David
 
