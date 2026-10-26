@@ -1,125 +1,175 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43114606A328
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE10B606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=pmzTkt34
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=bf4bd5vu
 Received: by kanga.kvack.org (Postfix)
-	id 64D956B05B7; Mon, 26 Oct 2026 14:06:29 -0400 (EDT)
+	id 0D7966B05B0; Mon, 26 Oct 2026 14:11:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 624ED6B05B8; Mon, 26 Oct 2026 14:06:29 -0400 (EDT)
+	id 0AF406B05B2; Mon, 26 Oct 2026 14:11:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53B046B05B9; Mon, 26 Oct 2026 14:06:29 -0400 (EDT)
+	id F06DA6B05B6; Mon, 26 Oct 2026 14:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2366C6B05B7
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:06:29 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94EC0A0829
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:06:28 +0000 (UTC)
-X-FDA: 85365557256.14.7A9F90E
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D34FB1A000E
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:06:26 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pmzTkt34;
-	spf=pass (imf19.hostedemail.com: domain of parri.andrea@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=parri.andrea@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793037986;
-	b=4b+dklqRWjogrDBHcrwevO5nREuAnURJ9BO2VjfQmowHBd2Js460+2eRMmosl+ienBl0TQ
-	wl7JbxBjjJ40sr1L/GOyfbWPYDIZs31TVZjCa6mkphPreExhDYOlA1RG8qMIt6vz6apOf4
-	6K1Uy7OVEHnvZ3zPOF/TZvPh2xOoiVY=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pmzTkt34;
-	spf=pass (imf19.hostedemail.com: domain of parri.andrea@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=parri.andrea@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793037986;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CA11F6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:11:02 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DAF7B80770
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:11:01 +0000 (UTC)
+X-FDA: 85365568722.03.1D279E4
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011062.outbound.protection.outlook.com [40.93.194.62])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BB93420005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:10:59 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=bf4bd5vu;
+	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.62 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793038259;
+	b=l5/G+M2DNBEF39LtPbQ3GNXHOLPxm/IX/GTkbidpl7Eaujg5f1N0xdAWhULGATrcSq1rTq
+	Ypn/RPpCYIe+vVN6KEj64LhM9DUTQuhfcSiZmply/6cv/g3I8Krf70Whm0AnlgGi2OFSwe
+	9uYKoEXuoK/x9jaEELbnQAX4MivHxJI=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=bf4bd5vu;
+	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.62 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793038259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xHfjRrcnHq0gMjmE8KEiw2pb4RTHUukE8vXn8oTU6AA=;
-	b=ugHxNc8psXg7XC+JWyHebge+YyskgmDkkxzKzptmz/Okjbqjb5Tedeye786PJILGVdUna1
-	rRj08T6lVP9firR54cjiQHQpQVZyTzRHlsIsKtkYsT5UeeFi1guyEm+H0IiFk4yluPyhaz
-	cT/eCTHu2gaPcixE/+2srCRKcmuziio=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48e0d885929so2202326f8f.3
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:06:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793037985; x=1793642785; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xHfjRrcnHq0gMjmE8KEiw2pb4RTHUukE8vXn8oTU6AA=;
-        b=pmzTkt34ZajCwuZqucqd/LIfqSqo9vMBH/tqfAqZiCPrmazvlQQ7H6lXUfKmng9jB7
-         zQpcQ+jUNezeMGBEcwvwokgxGnLcXYfux0n8jUY31iV5vQqao9oflUS3aNFmYZhuAxRg
-         8+oByG0NalbRtki9BQl8UhnSWORzspy8XPfl9ru4iFc8HZ82VtKSttyuMPBLCt6PxgEi
-         kmBT7Vz+kDI+vc+DejdKetf1E54Y3hU9/rj1Qw45WRn6CJAOc0WWv2QyKBQZbKGhPuuL
-         KGPiej19jXvuwWqFYK0sK2cB2HiouxubMp4LiH7qW6X9oXlcq2Un5oNMCSFRPmr6WxmQ
-         TdxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793037985; x=1793642785;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xHfjRrcnHq0gMjmE8KEiw2pb4RTHUukE8vXn8oTU6AA=;
-        b=I8KU1vFcR6H/7Vw8BXIYNQLBhanD/eim9NflQHiwNY4MW/SPVBgUhr2mcclVOaXIkW
-         6NQsc4B3kpzI1JS6rqynRnVr9Swi9Vacv58Su4nAHSZoGP78c3jYKuFlF8UmlFx39dFR
-         H4MPiGO32oD6ZonANC/hRfwSR4X75H1uHq6Siv3TzZa7CwfdadJXdrGHMQLmgH0SiG8Q
-         r+E0ZL3dMGJNOOX6ugIgMhPa3B9ZBn8iC/Vth1a9EbPETOJKK643NzrixYidIHhgjc5p
-         jNWY4GGXudBtmqwvjzRLCl3ud0COcKybPs6nPVXa+QYZsfSGihYfM34j3Sf7Tob29Fsw
-         qVTg==
-X-Forwarded-Encrypted: i=1; AKwUvBwZnhR6U7hsYCdayjBIQs1JzwsTVw+jzupBgmTRamW6rQRCfXLpernKW7ao5xNPN3YOxtBt653scg==@kvack.org
-X-Gm-Message-State: AFq9FYI0QManRTMSlN3mJ4GHCS3X7U4rv5nxyfOVHWiW1N1oIaSBauDg
-	CFUkyyItYxAnEIo0NK1hNShoG9lPIGg8PVTNemZosWk08UNj8jsqw+fA
-X-Gm-Gg: AYBFou2hVakkWcyBzrWWFBJoSSVGJH4PBP8xvsZWs4sb7SqURFrpc4q+44Ub+EclmF9
-	5+vU2+5fCPIDRVihyLI6uaBvuZCqtxdYUPeBWXjmlI5fPTKJj3MAGx+MV6z5yvu8BelW65utLno
-	J9IwQkIvEhnf2u7bKxa7wgY9jgoosemrzeIF1kmwggDGNcPa81sHcL8ZgSa/xcMeUEpdDhSlI1T
-	cJ9VCKSZZk97n+KO3iuapzqm4VNhRREzP9fQAoEIkDJKv6TaNvUzXBvO0jGfwEYlkZaD17wR8EC
-	PIB8GkpSyWmVZRhFey0EDCk5gIpDyr/JjvHo1+HtR/ghLpZuzdm+HqrkXrxMQWFVFjNh/vwobrd
-	WqwTptNC2jkYbkOmk8sfUYmDVdf2LqqHLqJqCcN1+k16h9mARxIy5xQ/1zpOXcNq6wbxHXM3QWC
-	L2PSffvfSDEoONfedPYu91iwQXxJJaQjy7xQOlRyZtsxplPrzrU2UwLA7dawGRNF4nrcUTphbyC
-	7FptRQcnsMT0FN9xr1ypLNbio6uLuuvYwsMEd+Lv/gQDgfCdLWKjsCISUtkMxCDQIKEO+N5d6Kl
-	he9e6Q1/600ZCCvINLxy3nA+HPA=
-X-Received: by 2002:a05:6000:2405:b0:48e:517b:cf21 with SMTP id ffacd0b85a97d-48e517bcfedmr5799152f8f.26.1793037985247;
-        Mon, 26 Oct 2026 11:06:25 -0700 (PDT)
-Received: from andreayoga.wind3.hub ([31.189.109.255])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd48fasm17694846f8f.31.2026.10.26.11.06.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 11:06:24 -0700 (PDT)
-From: Andrea Parri <parri.andrea@gmail.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>
-Cc: Andrea Parri <parri.andrea@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-api@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iov_iter: take an unsigned long segment count in import_iovec()
-Date: Mon, 26 Oct 2026 19:06:18 +0100
-Message-ID: <20261026180619.4147910-1-parri.andrea@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aHbLGME1zLdpD+ZxcXS3dYUDC7BfDhB0kmRSRoqnWEQ=;
+	b=MTZMxjmgsi7/xX+zKWdGW+cwed7QftCRxaacr9kkL3S/kfmhXe9KsaJAjMwObyMNTJg/jk
+	wTSF/oZSYp3OGN/8Dk6XkSCPcaWTiC3kwE7i09LOvk7od6fnon7VubpECLoVzIYI5zEXpz
+	bk8f1EWzHwphMmcLQJcIzmC93LRAgQw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DSp4TzAwSylI95jEYt8YMKswBCTPlCHkofBIwFIikNF8W/eBJXehFPKQwlJoB07v0RUfT40Y3jk4Qui1kcwPCiV5uE/N45Lco2AqvEs9OJJtTvsrcj/G+gMu1VBfDKm59J90sBIn93f/rsjtyEI04zGGDSFL5OOfDIzbhndBzj9Z3Lk8f/3euqr2mezbHscAwyTci4VqTWTHGDRttDNkR4Hq5MeG1wd9BtbcVv6C5cHtES03rm1bqUOXqLgxtYbq+qvOm+rVah4nQsZhg6YkZSMx/bCJ89+I2vboSAWDYeLXtaeL4tYPwOungE3fGsqH32mL64Ez9O9VQAr7PMCuvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aHbLGME1zLdpD+ZxcXS3dYUDC7BfDhB0kmRSRoqnWEQ=;
+ b=lYZ8PgwZTyCSCR2BeeE8jnQeCu3IKZn7i9GJZN3z8SotXXW7xaDHwpgBXZTd/cXQR+5oGi6eO+TiWHL/oYMXUMky10DwQv6sSNVSA4j4K7Jed+Hxqw08Myuxp35h5Evn//w7hG/HDfbBgD3q3aLukecJ1EIOpbZU0mWrZlbs1YlvGfsmRr1u2p0jbqCQxEmnDnGp2Zb4BSkul0NMmIDcu9YtTCXCLn3xqU0W2LH9EugX+nbnvj+aW4BgbTwmY30NA4gPBCoZpYSDX8yuVshIVHq2014tfSbk68peh3jH4fuhqJhpLoQGsoJrfkICG6EhE22eBOSxB/pq+IzChxmLLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aHbLGME1zLdpD+ZxcXS3dYUDC7BfDhB0kmRSRoqnWEQ=;
+ b=bf4bd5vu66XJMdj7bGFpxHvhPMT/tAhNB1R0oVeIOCt7Y9hfvWxo+UMWDfQGg3ntpZJ1aq/EJyKkyAg5NjEaFMpilUSs1StqqdD2N+QDU8Rf34h2birFOLrit7Fq6MIdfA2q9hifpGQ1z1B/blZEvoBVBTnpWe0VYFYx7IlHRbEJUTDE7GB+/u+Ns2zC2Bqhq19XIqDtGl+cpnPy407rpLLLfBm7GDTZsrRJrWvMAsPV3z1UoaUIne8YyxeCtUWbPnMIFcom84ikYgTNilG7fOx8yQMr6P0VMfxi+228u+e5W1nxFvJF/uVqpRT9X+AYXqtEjE+3x1Oz6iFtm3ScSg==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by PH0PR12MB8126.namprd12.prod.outlook.com (2603:10b6:510:299::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.21; Mon, 26 Oct
+ 2026 18:10:50 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 18:10:50 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 01/16] mm/mempolicy: charge shared policy nodes
+Date: Mon, 26 Oct 2026 14:10:45 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <56FAECE6-6DD7-4890-93A8-274776B22776@nvidia.com>
+In-Reply-To: <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: CH0PR08CA0009.namprd08.prod.outlook.com
+ (2603:10b6:610:33::14) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH0PR12MB8126:EE_
+X-MS-Office365-Filtering-Correlation-Id: b371e49a-2450-4070-8f9c-08df338c7798
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|366016|7416014|1800799024|261026140227099003|4143699003|11063799006|56012099006|261026121527099003|261021135927099003|261021121427099003|261022075727099003|261022105027099003|261021123027099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	VO3EO+y0r20K9UX5gVJ1ONVNjf6RZaSzQM0oWehNeh/BMbzuMGzuYdKSp4zPUA/mC2pgN0qrsWNxbjK/RG2tAHGO0+n/6/x/8UDfdCuStUyh/yXOQYiu3PRS6sGHUXEDhuE5wOJCZKI9ldyDuOZ76US4fgq6ltHCARmFRcsOo4VXaNFfcuLG8CNzNJEKht2hqIQmqvCDeJdOcFW/erx+ous+p7NMvnBUC3/dXWB831IR2MS/jYqfhGLDbazJu1+6x3GDvMABMThkNKnsJf7I39pFs7qowb8qKbNy2iDE2Eaf7PMzZ0hZXzLl8uz5CBcjlA0sB02NKrSL9nlyLZKBxTEncqiOlkpseLkQFpNHenP4eX2jAxr0/AsETotzEF1CVIcfUDvccq2eCJ59LANlYm8aW2IIDAHH5I7WXjVAx3eNPujj9ooqiagmTcqJo/d/JuC/dqCF3MBwaNJSxML3OOUIiRDL4kZUSs2xctFT8Rj9N+gKQCsfz9zqTuYM/ZImsDCKVYk2EjWaSkRuat/T/cPHKMOgqp2WdR1UiPo5kJuVZl6w5AkMX7WM69Dzh/xScGXqxfqOePKjQfl2kelAhD8WfXlSte62xP/xkJsxX8ebxtLNHzMfy7p1b1DN+sIAe/L/o0zQ5s/uzS6LI8obJfIf6TfCoPNfLL1Xwyq4PjM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(7416014)(1800799024)(261026140227099003)(4143699003)(11063799006)(56012099006)(261026121527099003)(261021135927099003)(261021121427099003)(261022075727099003)(261022105027099003)(261021123027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uQjUqPxi5ztEl4WJBKJp22xEJhngQpxIfFXeM18he4MrN2UN/E9InJqhVIno?=
+ =?us-ascii?Q?npzgyoIZQdkrcr7IHVy25S2gmKVdyfCpv3ihsUNwpL4uQ9OBt9KIJoJ9G+rV?=
+ =?us-ascii?Q?gjXTREk3NY9vNLfy/c7IRiQ27JHNeigF7vvMOkIWGxe8vWgVSlT+S+GZglnJ?=
+ =?us-ascii?Q?gTiwVXcvYEgGpkh9pnqXclJhFOWYSDGqjnG5ZpoPpu9zhI+NWE3/Bj05haU5?=
+ =?us-ascii?Q?4LXKg9D3mba/G4fo8evUrxSY5dI8wM+GlzR2acoZ3lGkilTNd8vCV39BcGTb?=
+ =?us-ascii?Q?heRDxyNEHnu/1PU6PREpWqFOEyDR4EO4MFFujDd6iFp9m/JyGv7WSIbtL2vC?=
+ =?us-ascii?Q?jMsq7H7UYGj0f+SpA50hZn2lFdE8NmGLd2skg+YbOS93m4pPFl8I7bQXY8tI?=
+ =?us-ascii?Q?t0N35SN4kQjnFZSCd5hAg4mHv7ngAoeebBZHmuFe6l5qXoDoJXc5+5P1ov2X?=
+ =?us-ascii?Q?+MrC8tncj8Sv/r+53/aoiBc78uLonb/Tg4IqFHVPOuxR0QutcTqBn5vrnlDj?=
+ =?us-ascii?Q?v+Sfz+1W5WXAPDe0FopDaajYqZoEf8KruFChsY1pfsz0+ILHBcvdbslw9pSY?=
+ =?us-ascii?Q?mBVjao7wsnDxpX587Xk0MROuLftlJACbhq1/85LTq1gzwFzCeyd+TSza5R3e?=
+ =?us-ascii?Q?a/C3XWT/la3sc378oM6Yxb3m381SYo7sEjUp04GtfRRTS8NEM28GYRwba+1H?=
+ =?us-ascii?Q?X09Z45NOxt2YW6UK1oz+ukizmcMLl78JwI+7LhN2hUO6avIiIv4x3LIebBDq?=
+ =?us-ascii?Q?PmfHQJjz9qVWjK0hEKLOO4I/+cj4vhuV5fpBLCpxigzYBTUjIpDtXSlKV4rk?=
+ =?us-ascii?Q?lN0RBMo9PFGiRE+eeA9AdMewe+HFZlPYPzCu9LjA6BAB0xl6MvWeOqTV8Rj4?=
+ =?us-ascii?Q?xniFo2CvMpBHkI115B+XN8sP3oIjJEEV5vgxYJCTZRAaOsqKmccjPLHlg8dl?=
+ =?us-ascii?Q?yCL+6QAPj4YcSnd3gPJHwd9Lmq9QKJ6E7htP+iNAReGqX2ndvUfo688kQBsy?=
+ =?us-ascii?Q?gLulKaTv+qimUpqzeMiQGG4buYj7W+KeBQM5lORk5nNxQqcQV/PE3xr1CBSu?=
+ =?us-ascii?Q?cGE5uoDMX4ShPB97v/loQ3QGSBUaE6943QyWaLcVTjRt4Pq9i2JiEJzsjIkh?=
+ =?us-ascii?Q?NBDhsoMrnLkUxwGhdfijCBU5WnInb1BYFnxgVLfvQnKaH8+NeTHSTosIpAP+?=
+ =?us-ascii?Q?BFWJoPZkmFBnT8Rz8y1C9bYLMGJhvpRbBbUwHr+1u/HKYylxgnhQFrLrWxbp?=
+ =?us-ascii?Q?SOIMYHmULxWsh53ioKHNPP0dDjUITSEErH1NVkADt2rbO8xiCk5oiwSBjdCk?=
+ =?us-ascii?Q?4hk2AM9VPpxV/halUefcBk/h4avQk/ATg0RodIc9gBs2mls3o17n9062vKRv?=
+ =?us-ascii?Q?YGT5IcYS1MPp8nt5/jumDhkQOW+kVcEK672dKvA4ikZoHe3X77i/w3PkhyCW?=
+ =?us-ascii?Q?chj7gj6gS1FcS2In6LYav+f8Urfy/feiSY85rldWmv7olS0twgRfQ4rEihBQ?=
+ =?us-ascii?Q?KcJB3W2+j2CT2RIuP0URRfWhvFPEjWsvbywbPX5t5kR+YK41IWsBOf4aKPlv?=
+ =?us-ascii?Q?O6mlv6P57qfXLac/qQK/m0P+cdmFvAsDDDpkcOk0m+cKcC69lreMbaz0FfCY?=
+ =?us-ascii?Q?teht0s5dyETCxx9eOL90o0gc4ghGOM0E98/Ivi/Hu5x3cVhgAWyw8CtuM9I3?=
+ =?us-ascii?Q?JgXPkeZcPN5+YuChn1OsGfEpEVKRGGWHF7oM2FYMBgr95/V1?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b371e49a-2450-4070-8f9c-08df338c7798
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 18:10:50.6361
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7Gat0S3lz8vWWFFQKCP3QvmXerfnvfQjPcUrgtjTa6wXvvrhln1BtvilXPVS1Ic2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8126
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D34FB1A000E
-X-Stat-Signature: 5kdxqfr1z6o89u3p7gp81x75d5xj4ydj
+X-Rspamd-Queue-Id: BB93420005
+X-Stat-Signature: p95bquc3xu4bb58znn864ike96a5uxnb
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793037986-833373
-X-HE-Meta: U2FsdGVkX1/6gYs5QSGn8mz9i81FhCODWPaErSML5n0g5mRXKlKWACLCL9uGYd0LVH8USyCW7/1PBaN8teqcAXXtmdbP91utHasO27NJz+SbRGWZpBPzLdluL7xD30l3OP9VaqsXMaOiixZY2b9M73MIbVqTE5HCqi4OI1chmrR5i4uO5zUv15NH0AB0Us9iTQFL6JD88p17VgHGLXJLXzAsqH0e1duGDDe7cXpEbdJ+dKhOBtNlQVFEFxTNSxZJI35Dk0J9bw0w0oQqcvYdae7SFWxmWuC3HXSDq0xcAm2BL11h1VRpoqA/vr+9mvoItaUwleY4JyMMiBO7AmfhbF1VbqdKxXGL14OqZTsibZCpRItaDjVxNmKG/MNm+VEsNe8hITHybdjw3dGWDuBQknQ5GId6I3cyIlhSK01bj1BkJde4HEujUewRDeEQ2jTPH489FhvnUb3FRQjruZA/2PPoljxjjeMbkBegxcRNGBhRdX0YDj/8rB2EE2nFXtIe9Jq5WbqymvTuun7otTTBtTcycVFbSdwGO+y1P3HZET+M1K5ZS9S/lfv8jF41Yjril3UWMfG9wgwcSojVt13APIt7XsPsxRueAUekqXcZxb8yix/lzD2Cpx/JM022xiKWEBMuK0/StslKc2lAnUeyCR1IafGEGeFPD5ymIJ8qzPbYhnX1/oivjY/7AFhCgDRGKE5PzCaP0DA9H0q9SYGrUdeglfnEpotSgpkAnH5JSQBHKzySgXBu63w3Z7mti3Nc/kw1p4b/czxrQ74A4IWe3CpkUxJjhwuRGA0YyU6RUB8ttCFAV7HwkLeSe1XI1xr07Bb13lMfLQf4ehXCyv5UGVA/pYc5dbdJXE95HeVeQB6Ilfr9xpOhNM8cBlNFHxQJcQKHHQVw53jNNvu/DcvbmsoErpcSflNGcwVbwa1wktVUwlkOgRYiAjycflRVKSrdrxX8nfzoMszq/PGYnZG
- DpBXq9FC
- rf00qIC/1+c1JRYPCJkgAl4ry7kf+6jDsP8OdTvy/LsPfc9wRb7cLGtUKVF/jYpBPuVH73gnHswfaPe4z/9FMx29sPX3dB8chwfAAAvWzTxwq1cXcRe6ysyqmW/cL9SewkPo5EyDtjkj3AQFpiyDoCAjrTc64u/zSZ48v8PU5qCyIW8I+oxn3dgT1/4pMJc/qItlZBUCFQK6pwhKh0V0w9CDy3ex0kOeFY443WLLqe3/4ew1wlLSjmU3lbEOpGZJzpOGlr3/EdCxVJH3Y77+A2DCBHFHI0K/LMPcJA6TYp+wIHAoo8vbFqZW2j1LdfPpZxfDDhzpdpzzfY+f1xRZKvQVX/IkLyJoHigEggTLL3/E8RQ9VtQqIsCziVuanDw/F4MsJU0xaUjmD03qcFwRiO2AujliJvnGlQ88/qLFvuGpcDBnosGGNyuQXaG4JLjUaCSazq2iW6vecahQfCgub9dus4W/AgFqFFmcV1XZTnaMKDwaKy+KBR7lNOArEYMwJJXlzJmb208UlbwGkrXh1KpCvEPSX8s+vKadd
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793038259-543290
+X-HE-Meta: U2FsdGVkX180W41L5MhEfQ2PxRIgSG+ZLhJ5YnIVcxo1S6GQ9WU9cMg1tDb3KLXj04s+AV9ISRkxBkm/7/H0xwtg+QsQ6yaHq7pSNesy8rnxe2GANbkASpB7M5oJql5TomTedwlyJozlKybwAZQxKu60xfeDDMNaNP8ey4o+ibtN4swg/C6BqPV+FTrZS2tM5RPbOMbro7QSbVSh2ux5vGNFcge+zL4fuf47qEgk2WKw7qaMGb4XZGaBYTw2DXkBjHdmCuvFiIrhAfI/zAwfA6U+91IKA6yq+jkRuUhHlxhwb3LQjYLNfowj4DNLDx2kmpaiV+scWtbnIe5guaaf/CRyOiFnXanHcqNBoMLBy2fgSU/5eG5OQbxelLWlwxQAs849FYU4vUKxTdyACPszYw5UABCV1b1Pf6KQ/datD5lMkV6243oVS2cUXvhgHpXUSMwYY4gmZ0cMKth47yVBPoA/mJMfqPubbwSSYb1OUsa0AIjGIsP0Om7hwVBE9qG2sceU8plijLjeEEoU38Hn9GYoouhmdlyuRxX25LbLZSAe8UJsGR5CauToIR2NOX9Ie2wsDTK+n6KLsJdceLsftEJ6nnfraoep0N91BsTMvlgq4jbFdISKgMsp9A+r6p4BMHbT88QgYFlp3W7GX43plAzgYUhzXwuf1biGm2RUXeAWBZkSijcucixpgX8L0wojUPWaTX1Z5DReg9s35f0zGp4gZCz4KpGgNNQ21H+1BUjnmX3mMkorPB7eOR18Aqe56p+8RAHKSSz5nT1qvjYCi1e2JBlc9xbATuLO+giLDqYgRmky9WwByBdyuQq9wfEpITsMaanJcdut+QkgntPLbl3IYsRTm9dXa9RnxuOjGQOtY0cnw/3dZ9AGfJcnMSKjMmDzJae41Dcp9ZhEpQ+TAAQrSfWf/yAggf5fSi3hyorXVHKk+Do4VMwyreDbCBhC361ma0mT+TmumxO453o
+ weU8LGpi
+ R+BYepOlyX08DSgY2rQ5Y466NTymC3gDhv6batiPcNmPcaJLp5i36FVhBPSkZG5x+nyUW+MdEwEesuO5BLFfntSRLyE7II1AXIyzcWqeyPyJxk40sUxM+vKr06qVuhHg6PwB8y56Wt+nyWHHIobZw2ReOsDewWuoc0viMnd8mr33DCXqR8Uu7QxdiNYvKvI5b3BztPYphOhPwZKHOM2wRe7Y4zPYEzKmL9EVD4PGA7H9juKQC8f0VSRVzVCGnno7hWENvtDHUoyNRLUq3ckbhdDzQgao4pP7v4Na87Ze3KWAhCOVv0t11bCBYaFj9DgldsU+KzLbu1BkiQ23Ky0AoiHr7v1R/bUMTnIS9zqPJtnyiFJdnVdxBMdi1ljUTxYKxP/qheyOl2MGMCjnmAszVRn1or/KUkXLWRfrQ5bHkWJpd3fgVxBg6q9Vsp/eDsQEN67c2OjnjwUX134AAq7gjxWL+hegU0j7H2OS9vlF9FpdB4Hw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,134 +178,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-readv(), writev() and their positional variants, process_vm_readv(),
-process_vm_writev(), vmsplice(), process_madvise(), vectored aio and
-the btrfs encoded I/O ioctls all take a full-width segment count, and
-all of them hand it to import_iovec() or __import_iovec().  Those take
-an unsigned int count, so on 64-bit kernels the upper 32 bits are
-dropped before iovec_from_user() checks the count against UIO_MAXIOV.
+On 26 Oct 2026, at 5:40, David Hildenbrand (Arm) wrote:
 
-A count of 0x100000001 is therefore imported as one segment: writev()
-on a pipe writes a byte and readv() reads it back, instead of both
-failing with EINVAL.  A count of 0x100000000 returns 0 as an empty
-vector.
+> From: Chris Mason <mason@kernel.org>
+>
+> Any local user can bypass memory.max with mbind() on a tmpfs file, and
+> allocate unbounded kernel memory.
+>
+> mbind() sets a NUMA memory policy for a range of a mapping. If the
+> mapping is of a shmem and friends, the kernel also stores the policy on
+> the inode, in a tree with one entry per range of the file.
+>
+> Each mbind() on a single page of a mapping can add one shared policy node
+> (struct sp_node) and one struct mempolicy to that tree. They outlive the
+> mapping and stay around until the inode is destroyed. The tree is not
+> bounded by the file size, so the file can be empty.
+>
+> Memory that user space can allocate must be charged to a memory cgroup. A
+> slab cache does that for all of its objects if it is created with
+> SLAB_ACCOUNT. numa_policy_init() creates the slab caches for both
+> structs without SLAB_ACCOUNT, so they are not charged to any cgroup.
+>
+> Reproduced with mbind() on single pages of an empty tmpfs file, from a
+> cgroup with memory.max=8M: the global OOM killer killed tasks owned by
+> root, and the machine panicked.
+>
+> Fix this by creating both caches with SLAB_ACCOUNT. This change implies
+> that mbind() can now fail when running into memcg limits. Further,
+> the policy_cache also serves task and VMA policies, so they are
+> similarly accounted now.
+>
+> Note that per-file limits are not really helpful, as the user could
+> simply use many files; having limits per user is tricky as well.
+>
+> Fix generated by an LLM and submitted by Chris Mason in private.
+>
+> Fixes: 5d097056c9a0 ("kmemcg: account certain kmem allocations to memcg")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: smaller description tweaks ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/mempolicy.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
 
-import_iovec() was added with an unsigned int count, but the helper it
-wrapped, rw_copy_check_uvector(), took an unsigned long, as does
-iovec_from_user() today.  Until v4.1, readv(), writev(), preadv(),
-pwritev(), process_vm_readv(), process_vm_writev() and vectored aio
-therefore failed these counts with EINVAL, as did vmsplice() until
-v4.18.
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-Widen nr_segs in both import helpers so the UIO_MAXIOV check sees the
-count the caller passed.  Callers with 32-bit counts are unaffected.
-
-AI assistance was used to find the bug, develop the fix, and run the
-reproducers.
-
-Fixes: bc917be81059 ("saner iov_iter initialization primitives")
-Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
----
-Tested on x86_64 with virtme-ng, base 734bef548a96e vs patched:
-readv, writev, preadv, pwritev, preadv2, pwritev2, vectored aio,
-process_madvise, process_vm_readv, process_vm_writev and vmsplice with
-counts 0, 1, 1024, 1025, UINT_MAX, 2^32, 2^32+1, 2^32+1024, 2^32+1025
-and ULONG_MAX (LONG_MAX for aio).  The base kernel accepts 2^32,
-2^32+1 and 2^32+1024 on every path; the patched kernel rejects every
-count above 1024 with EINVAL.  Also built every caller with
-allmodconfig W=1, and lib/iov_iter.o and the readv, vmsplice and
-process_vm callers with i386 defconfig W=1.
-
-Reproducer (64-bit userspace):
-  cc -Wall -Wextra -O2 repro.c -o repro
-  ./repro
-
-// SPDX-License-Identifier: GPL-2.0-only
-#define _GNU_SOURCE
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/syscall.h>
-#include <sys/uio.h>
-#include <unistd.h>
-
-int main(void)
-{
-	char source = 'x', received = '-';
-	struct iovec wiov = { .iov_base = &source, .iov_len = 1 };
-	struct iovec riov = { .iov_base = &received, .iov_len = 1 };
-	const unsigned long count = (1UL << 32) + 1;
-	long wret, rret;
-	int pipefd[2], werr;
-
-	if (pipe(pipefd)) {
-		perror("pipe");
-		return EXIT_FAILURE;
-	}
-	errno = 0;
-	wret = syscall(SYS_writev, pipefd[1], &wiov, count);
-	werr = errno;
-	close(pipefd[1]);
-	errno = 0;
-	rret = syscall(SYS_readv, pipefd[0], &riov, count);
-	printf("writev=%ld (%s) readv=%ld (%s) byte=%c\n",
-	       wret, strerror(werr), rret, strerror(errno), received);
-	close(pipefd[0]);
-	return EXIT_SUCCESS;
-}
-
- include/linux/uio.h | 8 ++++----
- lib/iov_iter.c      | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/uio.h b/include/linux/uio.h
-index fe2e985d74d24..529c6cd53df7a 100644
---- a/include/linux/uio.h
-+++ b/include/linux/uio.h
-@@ -362,11 +362,11 @@ struct iovec *iovec_from_user(const struct iovec __user *uvector,
- 		unsigned long nr_segs, unsigned long fast_segs,
- 		struct iovec *fast_iov, bool compat);
- ssize_t import_iovec(int type, const struct iovec __user *uvec,
--		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
--		 struct iov_iter *i);
-+		 unsigned long nr_segs, unsigned int fast_segs,
-+		 struct iovec **iovp, struct iov_iter *i);
- ssize_t __import_iovec(int type, const struct iovec __user *uvec,
--		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
--		 struct iov_iter *i, bool compat);
-+		 unsigned long nr_segs, unsigned int fast_segs,
-+		 struct iovec **iovp, struct iov_iter *i, bool compat);
- int import_ubuf(int type, void __user *buf, size_t len, struct iov_iter *i);
- 
- static inline void iov_iter_ubuf(struct iov_iter *i, unsigned int direction,
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index 2072c04e99d05..55cf2ff5bfdad 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -1362,8 +1362,8 @@ static ssize_t __import_iovec_ubuf(int type, const struct iovec __user *uvec,
- }
- 
- ssize_t __import_iovec(int type, const struct iovec __user *uvec,
--		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
--		 struct iov_iter *i, bool compat)
-+		 unsigned long nr_segs, unsigned int fast_segs,
-+		 struct iovec **iovp, struct iov_iter *i, bool compat)
- {
- 	ssize_t total_len = 0;
- 	unsigned long seg;
-@@ -1434,7 +1434,7 @@ ssize_t __import_iovec(int type, const struct iovec __user *uvec,
-  * Return: Negative error code on error, bytes imported on success
-  */
- ssize_t import_iovec(int type, const struct iovec __user *uvec,
--		 unsigned nr_segs, unsigned fast_segs,
-+		 unsigned long nr_segs, unsigned int fast_segs,
- 		 struct iovec **iovp, struct iov_iter *i)
- {
- 	return __import_iovec(type, uvec, nr_segs, fast_segs, iovp, i,
-
-base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
--- 
-2.53.0
-
+Best Regards,
+Yan, Zi
 
