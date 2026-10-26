@@ -1,95 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABFE606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D54606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SNjygxAU
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OGWsLmku
 Received: by kanga.kvack.org (Postfix)
-	id 181356B05B0; Mon, 26 Oct 2026 05:51:58 -0400 (EDT)
+	id 68DCF6B05CD; Mon, 26 Oct 2026 05:54:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10BEF6B05C7; Mon, 26 Oct 2026 05:51:58 -0400 (EDT)
+	id 63E6B6B05CE; Mon, 26 Oct 2026 05:54:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EED2A6B05CA; Mon, 26 Oct 2026 05:51:57 -0400 (EDT)
+	id 553BE6B05CF; Mon, 26 Oct 2026 05:54:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B9D236B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:51:57 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 426C9A0721
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:51:57 +0000 (UTC)
-X-FDA: 85364311074.02.AE9F582
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 246D36B05CD
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:54:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A3494806D1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:54:00 +0000 (UTC)
+X-FDA: 85364316240.10.2657D1F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 888521C0003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:51:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNjygxAU;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id EE88A80008
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:53:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OGWsLmku;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793008315;
+	s=arc-20220608; t=1793008439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lYPa8kg2EtIwfOZw7CZi0DilOcT4hEy9fRcyMfL076k=;
-	b=WJBqGFEoxTMxZFlszOCxWTZma6oZspglC52DZR2VnRLLfJT9YGyZhPtHjv8Vy1MUgXLqdO
-	6aZFZMcWGzSxuIri48Plx7izZxdMo8pqsx9C9rHNL58OeAK2VEVucCEiR2Kh1VyUs38y8P
-	kSzR+RiTgyjjMyOAnyqd6z5njWkaP7o=
+	bh=slLtyZO10w1Agq5+WTU12Vy8+fAIdVvdd23Nhz33tbg=;
+	b=i1S0B79bvjwvuyqZbneD7C2LRH7PHXY5hi6fa0jO0g3HrV245MaE8TWbb92ssTl2suhjXR
+	f34yAGtOWLkHW5+w0YmWZMIsqFE1etAk7rVvkjkQrswAkp3xLp9AqglO8zICVP9hB7UPYn
+	9ozwEpGDic6eZn8rRc+oNVd8orCvalI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNjygxAU;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OGWsLmku;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793008315;
-	b=mllEXF1gnDCoFYcK1n3VE9+uVyRXUcVYM+MhkkoMY14lY2Do0kiQ93HhmArMa+7YknN9SY
-	KEYgF/442TvJPs52sK0AJLWefi2c/R2POojyFLe7HiQRg2XA5b3PqZURSHgyb/3x9JW+pl
-	+zyLp+eWwM0CAoFwGiQU92W7Kz59fxE=
+	t=1793008439;
+	b=prcbAnYzxgPFRBUYNwLn1kB7MEMS0hauwQDzGCJB+oXg48MXeZ3oNS37AYgPFeDdEFs4Lq
+	5SUCrhCv3INtMmgs/I3N6Ee56pNNczjU1gSf9W/2Ofg8vIZY0wFrBpKmlE2OUIkWGSLBLm
+	avtDXLAv8S8LQItllyYtkBZoQ914IZw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F3406022B;
-	Mon, 26 Oct 2026 09:51:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A1F1F01828;
-	Mon, 26 Oct 2026 09:51:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 74E326022B;
+	Mon, 26 Oct 2026 09:53:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088A81F01825;
+	Mon, 26 Oct 2026 09:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793008314;
-	bh=lYPa8kg2EtIwfOZw7CZi0DilOcT4hEy9fRcyMfL076k=;
+	s=k20260515; t=1793008438;
+	bh=slLtyZO10w1Agq5+WTU12Vy8+fAIdVvdd23Nhz33tbg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SNjygxAUKQsgRdJGwwkDVu6actTZe3YlqOk3+VTB9UT07TKVL0SC3SZnOGZeCr0Rt
-	 oIYgl0c/ZF4m8TGW4iEQ27iHikTPnaGnDGxbny+iuWk37x1Dgr7VzceulskaMmxBaJ
-	 Haq0V0rLxbev+ZMQJOmS+AQLWYH1nPyMPKwW+3Ox64YA4W+mN9HNjirc201upz7/lV
-	 2MVGUv/X0tOJj5TlSmxeTbm94EV3gW0vioHNIpEoGbSncQS9/Xcex/zNEkkI2mJpLX
-	 XjaTU9U9xI6p1HMs/4sXGdtizAXnGpd4huFlpWVpOM6HhipDDOUOzXbDksBCw2Snvf
-	 Py050TJGKoaSA==
-Message-ID: <916c7258-5b2f-438f-b59b-db9dde28889e@kernel.org>
-Date: Mon, 26 Oct 2026 10:51:47 +0100
+	b=OGWsLmku8ODdB37K8iQi0trNYZrXne6AjZhuAAh1Smvl++2TW1xnw9hm+QSCUjUv9
+	 Ude+atIpxUC1dJPKRFZzEZT/bKs3DEIjrieG6f6SD5YuqC2NoO7Bf489V2K7g/XEP+
+	 8dhbC0dEM0bQLNWD6Z/8C9hSxJvqLHhYRRUOCwIe6iG7Nj8RWzRj/3YP7RY6Zog0bp
+	 8UMWp70aX12dXlePnzU7H8GOP+Iwr9SFIUC2J0Af0Qq0c9d7t8Mx6zSbBb09Ztnv4t
+	 h1e9l/qdchOUutNDko/jz4cPB0CTDyZf2ewusmvWeFR7+79ApnHIh2SCPlp+J1ZN63
+	 icDzHLvEiqqOw==
+Message-ID: <384f2307-8531-43f2-8ec4-4b2dedc31e36@kernel.org>
+Date: Mon, 26 Oct 2026 10:53:53 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/compaction: skip folios containing hwpoisoned
- pages
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>, kaitao.cheng@linux.dev
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>, akpm@linux-foundation.org,
- vbabka@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
- ziy@nvidia.com, wangkefeng.wang@huawei.com, tujinjiang@huawei.com,
- mgorman@techsingularity.net, chengkaitao@kylinos.cn, muchun.song@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260928105805.1215770-1-xiangzao@linux.alibaba.com>
- <20260928105805.1215770-2-xiangzao@linux.alibaba.com>
- <99cbd960-439d-4672-aba9-6b49697db8b3@kernel.org>
- <20260929034123.2705745-1-xiangzao@linux.alibaba.com>
- <331b4e40-8d0c-4333-b2b6-b81e4c4b2e17@linux.dev>
- <877bjowf9i.fsf@DESKTOP-5N7EMDA>
- <20261020071600.3695395-1-xiangzao@linux.alibaba.com>
- <95a5ab94-5d91-4a01-a417-19f27aa91b54@kernel.org>
- <fbd5ae06-b6da-48f6-9c46-188fb6ba9684@linux.dev>
- <bc1b3255-99f7-49c8-bb52-bada6df80f72@kernel.org>
- <23d3756c-1a87-402d-80b4-c838dfc29f4d@linux.dev>
- <9da90d76-031f-4211-b9de-439cbf7bc63d@kernel.org>
- <49966df8-c092-40de-a05a-ff6d69382dd4@linux.dev>
- <e4c3ce3a-c19b-418a-a92e-40e077f1ea63@kernel.org>
- <58cfeba3-a3c0-426e-ba97-8f82da5b1e8d@linux.dev>
- <20261026025747.1432066-1-xiangzao@linux.alibaba.com>
+Subject: Re: [PATCH v2] docs: hugetlbpage.rst: clarify HugePages_Total in
+ hugetlbpage.rst
+To: Enze Li <lienze@kylinos.cn>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, corbet@lwn.net, danielmaraboo@gmail.com
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org
+References: <20261026080856.76175-1-lienze@kylinos.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,21 +118,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261026025747.1432066-1-xiangzao@linux.alibaba.com>
+In-Reply-To: <20261026080856.76175-1-lienze@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 888521C0003
-X-Stat-Signature: sdci3a448jww6dih3y1n5tiem1nyjmo1
+X-Rspamd-Queue-Id: EE88A80008
+X-Stat-Signature: 4e6wn8pypr5fjkgg5gnggk9x4eaa5755
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793008315-51031
-X-HE-Meta: U2FsdGVkX18BSEuSLFsO956FrRRgzHfKHXIHFG4uyH1lzK1r3voRbYrxAt6JFS+D2v2Dm00BtyYnIasKJuv0cF+SD/tZyiPSXF9EDKWprGiUi4I2lwqLuds0qGOwmKbkeZ9DYXlizL+O6GWG+vRIvCIQFMJ31DOaBrrmFatYcmxC8p17xgwwHDZeaTjtyJbC46h5l/7nQ6YC2CiOhovcluGZ7G4+hq6TjAo9wk82tVp8xaWN9X2eYfba8Jh7smg6E8zgGAjvB1yte8ZxHzyZxpp5Z7GqeY/3GqOospZdD8iCNbcgwkAIN4BfpXTJEdRv68bsvlyMtxTTPKbIjN+X5+DbL1kC6WtsYQDGw0SxaUpQ8WZtFDnvWsAZ9y23C78GVBVwV7f1vi2uXqi3RvN1EjnIeqpu/q78+MW6Rj8whfV5QRuTydL7xpALPd7LXKptRyoMsWBdlCipx0mu/UQ+PcbqKL8AZb6V9aIQYypRspQiXYbdalWT1zo3tFHYz9MnxaoLzB4m3YmTylkoa4Z7VbUQcukJQivLXpT7mAYxNvK0z7ox8/LFTU+vYUmLX6oYed9Ja2dQMkQ4Lz4CPPhbjXF8rXRjV8uDGutxkO+n954V+5iLXvYFlxyDxYBrT6navy0qKmjT5Dt3zwhLAGSKk5WYjLLhniNZ0d6zW52DyA1Ta8lOpz/QZjLNwkkZ8DtZ4w3LQasIlhEbbrK12ZNd9+dwopVZscJ/QakiVjMnUpYjVnVyEGDF/+HzlCem0rfd5H2cmacgfUq6AUhcFQwv1Qqm4sQ2tF3lNAqURXSFYMa28du/VcMoD2JNdxBS/mPOsqs4FgVb2Bsxlr+T+d8CjID/bkzEIa0saAYXMebOx6KBs7uuTwIHd5AG17HUbI7EZIXFwNU1WVxO7N2B3Fnk2j8JdGyhOZI0huAGoxEjS8HN+dM3yCPquzbU2Cn1eGLnCG0bYSOmJ3oxVb3vxeu
- Yt4e8epH
- zbh6jmecjWHFTagvZd0199thqDbM6t23o5WBM6Yf82FI3unhb+IfryEJh+OW0+MggetiqgLtuvc3pJQ3PJhjTnPxcspiJ8xEZDD44MRIeC/9z+1TT8JdN9/JDlg1hENVhhbdp0Hm3wRBfigGQgMboTeMKY9ev0457xnjFO1Vt1eIYjsT2hzQzrXC1pHqSE/4CS82wYYTGSOrSvoCASZ8x4ZXzuwa81wFj+03o85yzWiYc0sgxHpCnxMIzW/xkSKbM9kW4i1MBsa/paJCM11p2BWTF/unEELFCHqBGLSjD3YUqoZ6z0fTySZcAAGgEJ6/o2jGNwUobg0t+02M=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793008438-494122
+X-HE-Meta: U2FsdGVkX18BNWL96Tp1Rgo+azv0YkMfmQTVonMP6F0R8Sob+xpR8/Jl19IIrriKk1WpaDH8ldI/xuYDGrLDEpgX0Vzl018fvlmwES0GP25UndRQ8Q/3jBF+ZGA2yEyRW1R+gYzm1ytymFzZ0BISdMVduIgFvr3KO9jWZd2tswn8TvP+fuhiGa/QTDKTmgWScgBA8DKDfY6Offu7hH7X/h0mgbFjvqWZF6lcagC8sq1yU3QgkZdFzq45l2FBpLxh38WiDdTmLj7QG50QA+Ajlv8Oa/RvEVFQdt08q3HB649iXeaERm8JuAAXfSyceE7hco/sz4tkS6d+5bl9szA5FIHp/JcZTYuJPZpYNWfOZicdcce/z23mjp+Up+sXAoZD0d/8FQA4xmusc+IifPatKtAuQ4E+g2ubJJSkl9IgeR32svmQVfM461PmOGvM/G0ZKILoUrw9gBIjPvHrYy0xbPdGjq17J5AHmfcy8kGc9I/2HDoINMaNOD9qVm4M/85KUJ0WmGDdBYwyhgHo3EClSs3ZRkX6kxYKCv+jXZGUmlpP8xXRugUxu/nyAMyD0iQUgTI+d9F44mubc2xEB8NI1Owzm5R8X+9TyQk3cW8G4KM9vITye9stc3uurUVUbM/vc6RRmCnP099vEDMyID5UdHXkFR8SYHEx22yZomSOET0MPDn3DkuIYkWuM2hiRedw6vxXWvi6Sg25+P436BSrft+g+rr9H+COUbsoRZT+CudiJXQIXJwLyj8dIboQxoDjFmeOMaYLtp6vlQp5a4a3skHxVaIAyvvdUhUeZWgZAcdQsAybK3cwmYoKbWejjNcaVWekFdyX3J3j/qgg9Fe4dPoAwF7R1SVBBqTLpkSoyniJqOKNAPrTIhapsE7F1mVPFCqceHgmvL+r+iNE0u/YjP2uzt46aiTqCXr3e0gZtZS5/Ux+KxVhagrUA+LTbX1iPmIib0yJ9uaallRaK7B
+ AFTMDArb
+ 6PU4+LetgI59AO/NFNIh6ADwg9/R5o5pQKEI471z8tUFdWAZkIX2R83Nqwp2PAIbCjdseZS7uMitdSp5Wfns+UB54EeG4MvaLKhp9Vg+bMblHdCDEhOP5bVmVMuLELFwFox5KPYEXEoTtuTVfZsodhiwiik8pxbNlPNDXvhuSWX0MdwxyP3teJGvTqcLo9fR0KrMkh+Y/ZpPIvU1i7AYdfvzmAcGITFmIk9C4+HLsNds/tJ+U+HnsdWhwNe+8MT6zIupTdyDgmReg/6iZVqqu4OiU/8A3AMkHPVAcn+tK394XflWEYlCWDuDy/9SeDSMbN4TYkeeR03511hGgPYv7AQ4FcO0ZQe2xPZCB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,30 +142,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 03:57, Yuanhe Shu wrote:
-> On 10/22/26 20:39, Kaitao Cheng wrote:
->> Here are a few subtle corner cases I came up with. They may be
->> extremely unlikely to occur.
+On 10/26/26 09:08, Enze Li wrote:
+> "the size of the pool of huge pages" confused me, since it sounds like
+> a size in bytes.  It's actually the number of huge pages of the default
+> size in the pool, surplus pages included.  Reword it and point to
+> /sys/kernel/mm/hugepages for the other huge page sizes.
 > 
-> Both cases set the flag while the memcpy still succeeds - that is
-> the "how this makes sense" for checking after the copy: a check
-> before it misses them, the recheck after it catches both, and the
-> refusal is the same either way (the data is still good in case A,
-> already bad in case B).  What no flag check, before or after, can
-> catch is corruption whose hardware report lands after the last
-> check; that needs architecture support, as David noted.
-
-Yes. And you really want to avoid reading corrupt data an triggering some
-undesired HW reaction (MCE )etc.
-
+> Suggested-by: Daniel Pereira <danielmaraboo@gmail.com>
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+> ---
+> Changes in v2:
+> - Drop "persistent" from the description
+> - Reward the note on other sizes.
 > 
-> The migration paths spell out the same placement and races in v2
-> (patch 2, just posted), and the fallback patch ("mm/highmem: refuse
-> to copy hwpoisoned folios in the !copy_mc fallbacks") is posted as
-> well, with the races in its changelog.
+>  Documentation/admin-guide/mm/hugetlbpage.rst | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/hugetlbpage.rst b/Documentation/admin-guide/mm/hugetlbpage.rst
+> index 2075f1f14a42..282bc420d97b 100644
+> --- a/Documentation/admin-guide/mm/hugetlbpage.rst
+> +++ b/Documentation/admin-guide/mm/hugetlbpage.rst
+> @@ -43,7 +43,10 @@ The output of ``cat /proc/meminfo`` will include lines like::
+>  where:
+>  
+>  HugePages_Total
+> -	is the size of the pool of huge pages.
+> +	is the number of huge pages of the default size in the pool,
+> +	both persistent and surplus.  Counts for the other huge page
+> +	sizes are available in ``/sys/kernel/mm/hugepages`` (described
+> +	below).
 
-Sorry, which patches did you post? Do you have a link? Do the supersede
-both patches here?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
 -- 
 Cheers,
 
