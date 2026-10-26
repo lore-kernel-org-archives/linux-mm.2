@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43210606A31B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10EC60A2608
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOHFpuhe
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evu1XW/7
 Received: by kanga.kvack.org (Postfix)
-	id 51D6E6B05E9; Mon, 26 Oct 2026 19:27:20 -0400 (EDT)
+	id EBAA86B05EB; Mon, 26 Oct 2026 19:27:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F55B6B05EA; Mon, 26 Oct 2026 19:27:20 -0400 (EDT)
+	id E97E66B05EC; Mon, 26 Oct 2026 19:27:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E4496B05EB; Mon, 26 Oct 2026 19:27:20 -0400 (EDT)
+	id DAB556B05ED; Mon, 26 Oct 2026 19:27:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A6496B05E9
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:27:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A37BA14083C
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:27:19 +0000 (UTC)
-X-FDA: 85366365798.25.38AE971
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BB9016B05EB
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:27:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 473EFA08B6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:27:39 +0000 (UTC)
+X-FDA: 85366366638.29.C58C898
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E8A5CA0003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:27:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UOHFpuhe;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8A51BC0004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:27:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="evu1XW/7";
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793057257;
+	b=vInCLXYfyevEFlDbj/hGDAYPHFQNk+rUC8hlvH+9My+NAoIdvtEdpqd5ba9WRw++fOi5dJ
+	ljnqUGyn77+3JwAupRfuYXQuoTtQGoOrOuYxmq9PN8BkwL5o2H3NhPigEiu7gxkHUGpbSG
+	iwK3991x4qDaoIeVrxVjZFU1sxtKUlc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="evu1XW/7";
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793057237;
+	s=arc-20220608; t=1793057257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mTs2GwunrLwQHmmSbQHxry+Q3bjPD02b5DRaizzO8u0=;
-	b=xF2N+uqLmEvrKs4nHHphkr3GCMZtPqqFUooJ/WD0XrNQt0z06Bb5RXd/BW0veEKRBGr8fa
-	oVnZO827pIrMCVx5YVd0a4xUQInd90lDrPFG5euJe3aC73d5ru7l0MjJFY4s4ilr/poO4t
-	g4hEiZdvg8wa/uBNr0MzACzFzQfZNeI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UOHFpuhe;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793057237;
-	b=ZpQLVkn07Nro34fu/FbEGhKynpI2L9x3xNWjZxMhOzoC7ZfaO01jXPlE1h1rZBZ1yRL7GC
-	pvhL26AVEuR2C0GJermbfXY5MTp+YnVVqVybl/RWSD82P3cmBUwb+5sqwva3eViITjEzvE
-	bYKCtJKKpDCHBX1Wx7FIPOmfJNbFuWA=
+	bh=W7+b44oyozv46Rxfjs2BdSgv4+W+us3N9SjMGx4NrpQ=;
+	b=K3HPtA+IKdph4nffrsUxOsXwm4xs7pQkm+vGLVAEHQi6a9xstYzzDtQheoEyAZl2OjccsN
+	037y3Px/S1mRTsX6+3SqkNjRff/B7tt6E8l7LildQEeOmtubEMBkPKzQb8Q4tzruhPnWaU
+	0pxX7A6liXgfMlHy6Ie1AoIqa4QFLew=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 764C6601FB;
+	by tor.source.kernel.org (Postfix) with ESMTP id 239F8601FB;
+	Mon, 26 Oct 2026 23:27:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19781F01825;
 	Mon, 26 Oct 2026 23:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97F21F01829;
-	Mon, 26 Oct 2026 23:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057237;
-	bh=mTs2GwunrLwQHmmSbQHxry+Q3bjPD02b5DRaizzO8u0=;
+	s=k20260515; t=1793057256;
+	bh=W7+b44oyozv46Rxfjs2BdSgv4+W+us3N9SjMGx4NrpQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=UOHFpuheZQHsTAc56z0KufOjEShFawYMdcpWG4L9/RyqdOhOQsL5R8Sbu7NayWn+S
-	 x/mtr1q0KjP/gxenYKzidAb0IIWRucgx7F4GratJpJ9LE1diQSB+4cDmGcUM0DBgil
-	 Jt9+/7a4DnuFwWE8xkyYwZthGOGRFbNki1fdHP+qsFHcQufZ9T1f+FQy9fVPQiVR8S
-	 iNthWlpixuHd8TTlBW+CAeyS6sUknd0khcSYxQn6KUUfrAs5i3CwFSqpJPZaDW6T0m
-	 xLToTVLa+KO7t9J4BS8w0MTMXRtsX51LB9c7gDMrS8glPBDvTxW5BFBXGwiuJrBRsk
-	 YBMypIhsGQMoQ==
+	b=evu1XW/7y1R64K47ukh34E+hAs/6HfE3JuNKx2qvcK11wZMq86dZPM3DsMEp/EC+J
+	 p82x7dsIx59ezC5CkSB4jD1ZOKsPv598Qz4acNyP3aEwCNi0XShjPBGHlKOv0HV/N4
+	 NSoQGgLBupcZtuemFQo0kEG4lyMup7+do3oA7kILcP3NxBBesLVl0UdbIcKqGpOSx7
+	 VcBkLBkGa/sGXBxgWW7om8v3vJ6tPDxEdfIbxw1jhhUBD/VtoLzaQ8Q1+gcgnUbAxD
+	 UeeDOGx05fXjprwHz1vXYI3mcjV2luOlB+4p806KHfYlIbeeXbp48/u/Y/kRdKtHFT
+	 duoIbzi2a7gwA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 00:17:50 +0100
-Subject: [PATCH 30/46] mm/mremap: recheck PUDs under the page table lock
+Date: Tue, 27 Oct 2026 00:17:51 +0100
+Subject: [PATCH 31/46] mm/mremap: fix moving PUD leaves
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_core-v1-30-6f74bec9a5bb@kernel.org>
+Message-Id: <20261027-fixes_core-v1-31-6f74bec9a5bb@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,29 +106,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2335; i=david@kernel.org;
- h=from:subject:message-id; bh=XqIc47B98euy1xZsTgJLG+HPEvLDbYPwpls8mFrjLko=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35/+nuloHL+i7Gzt5riT7MeNJr+acemve9vTq+v+d
- W3MX695oaOUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJiL1lZPisIqzaaFonkqp7
- puGr1eKbr55WXg5cXsKUG9A9pzZ8/RqG/66nHXc6y3b+luLN7V/qYqv/hLN04okSz31TJcxn27v
- MYwMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2177; i=david@kernel.org;
+ h=from:subject:message-id; bh=xaFHaOsTg/KKNqVl7kj20OnAYFH/hrUerHWjoic7u1E=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35/u8LPiwNykGsmlh4tmBoRHZGrmm0hZn8xguGt8+
+ kZ9foZCRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABPhK2L4Z3xhmcexC+anMk7X
+ 7HWTz59XxGDnY2N+9ivT1mbFWVNeSDIyvI2atG6Ge5X1mqkuar+2vj3snufgxW9T0aN29EaI1A1
+ LFgA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E8A5CA0003
+X-Rspamd-Queue-Id: 8A51BC0004
+X-Stat-Signature: dqhieuhez4hr7cq7b31thrg4tbz4gfbb
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: dmsjczu7fpbfnw6hzjfks9tk8qsytijk
-X-HE-Tag: 1793057237-971460
-X-HE-Meta: U2FsdGVkX1+r48FrDiEFlhtJ23d8KIgRUmJvDl0/Jutc9WF8oGWQHLJoEBJ2Zmmn/hiAUE77+uEjc9xLrfGs3279lQcyYjjOW18pCNVNgCj17PBPMc5EFQTjac8x2wybXZkBotlE871/97Q3eCvKn2McMXznT4oYPBidKPoMaVbHexV7bamylLqtyC6MIPF++nKbNl7J2+4uY8EBDtg/f+opKpxLGat1rSu+JVxIJn0RJaWQ+iK2LpvC6e0cVqcj+CVC8zj0LVkIO9ISmI9Jkd6XxJDqczaIA1yb+s/VuyY6x09AfFJ1UJc+PSZlUEAJww5dQYyw9wrHf9WVIxnoqB9UCgQvasQ3JH4YwkuhRyL4RzbP7c4PgI6SFT5ljs0JX/Dq3PXsXo/Y9Dk3Q/GS8HneWNe8qzUer/IsPIptLzWynYmJFovT94cVQN2VJJhMpjubAsuulbcy7a/djHUxjJ/5N1GxnsC8v6cRfPtAWZKVFtUdEH3TVVi+0YUuIbWnaWX/z0UTcGSMN7UtlXsG7RwTtUL2YA8GZlMkfNbU6pEE6+5lV6TCw9gkx2+MPyYbJGpDOZBjBYcmUdrAIcxf9WSagLh8tk6u1JgdiywsSc2e67rz3sdyT75GH4R807YaVKL7hK/1J036Tmx7u8XPUYQNXg/XqP68c8O3RF5zCJOo4jr2ipp79zPnI2PqVvQd0tEu+LtMGYIjinYlBT35ytGJ39gRZivRQAX2LbyEMsYKLCdRIiP89mOfE/0NkhPwtCB24Yqn7dwBMbTLGHCDtVZ9Q1LwbZyYwRar5FFkx9C/RNBRVUo4+5OpVm0efwd93/EJPKr3I6N1TdsncojNa6dOY1z3idTREb30Cpzjx53lSaxy38SpVuxXUxfRFa2blFOc2et5nFuBGVQkkplDlj22yFM1olG2hbnZL7JuZ5f5pp1XIAvhNQ39DGAg4nlRQ7izf3CyL6+jh461s4U
- 0FqF7Rib
- BjjeMD9G+v0ALfTrqjE6V3xEnw7VL7QKTXWoDerpVV7aVaayDvixB5xS7My/D08XO/yCnH481Uu3+ZyOiiOUyHS2HDwSW+AExqoI+AiYZ4qXDVgIdWDoz7LRL1Q1/wQjFLpnLJQpMQL3bR2JBVZWDP+cMbL1/8oyx0oVyHngBIZSVkUDdv/4rtL0AABjvIC6ilPIxl6a/DVbVTuxAB1gZxKmms4lvf+m9t3NAH6P+y+P7SGOgXOSlewBQ5M5o1WvpsopyRQwxTa6+9p2ctQ7tTufV0hS21PNGpBg8BB2KHdkQoEOv4wV8kZH64SY7AOThE7+L
+X-HE-Tag: 1793057257-858120
+X-HE-Meta: U2FsdGVkX18houafPzLSqcHnkC720wfjt6uAECbu2v7eEcekQeruLe3tOznrjr+7G4tt3IE9fzkeNE4/ZOiR8sBEGorKfaLNYrw2IrT78VAyb9dXu6AKc+uDMrMu/AE5BC38dt/dTtJKbTtnNXDcRofyp2P+cCiYZ1C0Ujr3pwOLfuZukMkD0Y800FEr7PZAGN+vgxNOy+T0Od911/u8dEMzNdhNdCDKmowOvipROQ7dREXBtw6wKpsJdsS+pw84fq99AkVIGhJRRRamyVLbOLyTn1G3NehVUDjrvMEYAEC8OPgzmKoEcrP+XRBWKAd9qJBNTG+zGf8Pnc4ZRwd02oBNN1enrrQTwJxeOn/va+lejpJhBwW0p65UIW+sHBJmb1VeBL3OJvR3VN+NLJ3FXGEARuJ2QWbLPtetKLUn90Mxul4aMUyfibT0GF1ndhgvKDuRQ5yRHoDdCQAIAb3eypdDL4rcazDGmKUiBuD91h+nEoVgV5mNWrc8/xQ4Pm+MVpOn37FsaPKlcK+GY8lJTI9BPgSiY0io01RPO9EQ/5PiIl6kboK0wbZT4IAOa4gQcgZLCuJLnUXuBbHvTyp1mUiFkQII//apOpcVze3xBcOPMNV2pqNCs5VSdslpaBAdXe1lUSGfUjG1cw/yL/HaesGusU0kNSzjSsM99H7vfxfRMXdAwF2EZVvvXqt3GoRqLg42iwwpmbMIzlAded/xGPfwlvC5Tv27FZdO/C4aQcXNpPwPpO1MWSG4/OP68grndLIAaKetTu7xr7uJINqsT75gnuw9Z2RkKtCDbQHmbrBsPxrdV3HSaQBrj0OXCSmiqB4l2c1QWZ6Hs3eYyPyGNhc/pRtCeNk6XJgfv+Pln9CbzPqSb8xtwmGCfVcK2xbHrqBBwJH72w6XKnQFkUzcrV7g7od0K6iOC9jiO/N12GEkJRDe1LHiWLfqqk+daxAAxkMMvbdPu6MJJdwG76/
+ eKrOErh7
+ 9ti7AHpD5Yi7PP/sKW7y0E3uZsaC4ylRJT+O6EHX8P0uoaSlwwMydPC77XVFTr55YncqlzHxwgUbpWWhHwDfBdXZeyQ6IommU65Mq9zZ10q1/Jb6pIb7otmqgIhngr700IC2DTk6srW8zijWmYA9LiQjdJIR5v5PN6d+Zq65ukn9sCMfTRrCTRdn9wO5AKIubjPSOfpZRK1yBXlut4tCai9SIcHWtrBvjIJnZbxQqu1KXHGruRys77oHFlqWDgSozwcYXLx+2Yk815oDmK9GrZ5wOdSQKNT2XrU6hm4bt1aSg8zdXkQHk7WLPSqnMa6+nHutDDBrZELslWJ2HivWy06hqhQDc9dH5anxeWCp6GnnUOLsf9/b6wRBClPNQJ67zPvrF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,69 +138,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Once get_old_pud() is fixed to accept PUD leaves, unmap_mapping_range() can
-clear a leaf between the lookup and the move. Holding mmap_lock in write
-mode does not prevent this.
+From: Josef Bacik <josef@toxicpanda.com>
 
-If the zap happens before move_page_tables() tests the entry, an empty
-PUD can reach move_normal_pud(), where pud_populate() turns it into a
-present page table entry. If it happens after the test, move_huge_pud()
-can instead try to move an empty entry, triggering CONFIG_DEBUG_VM
-warnings on powerpc.
+pud_none_or_clear_bad() only really works on page tables. PUD leaves
+confuse the check and make us clear the page table entry and print a
+warning.
 
-Recheck the source under the page table lock in both helpers. Treat an
-empty source in move_normal_pud() as a completed move, and use
-__pud_trans_huge_lock() in move_huge_pud().
+Since commit aed877c2b4257 ("device/dax: properly refcount device dax pages
+when mapping"), this also leaks device-DAX folio references, mapcounts
+and RSS accounting, resulting in "Bad rss-counter state" warnings on exit.
 
-In the future we should likely have the code lookup a PUD/PMD lockless
-once, instead of multiple times, because one of the problematic bits
-here is the:
+Allow PUD leaves in get_old_pud(). If a PUD leaf cannot be moved as a
+whole or the move fails, split it. This unmaps it with proper accounting
+instead of treating the leaf entry as a PMD table.
 
-	pud_trans_huge(*old_pud)
+Keep using pud_trans_huge() for now, in the future this code should be
+cleaned up to just check for PUD leaves.
 
-Fixes: 0881ace292b6 ("mm/mremap: use pmd/pud_poplulate to update page table entries")
+Fix generated by an LLM and sent by Josef Bacik in private.
+
+Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
 Cc: stable@vger.kernel.org
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+[ david: fallthrough after splitting ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/mremap.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ mm/mremap.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/mm/mremap.c b/mm/mremap.c
-index 16e736c72d9cb..91f0865f6aeea 100644
+index 91f0865f6aeea..1237718848f5c 100644
 --- a/mm/mremap.c
 +++ b/mm/mremap.c
-@@ -461,14 +461,18 @@ static bool move_normal_pud(struct pagetable_move_control *pmc,
- 	if (new_ptl != old_ptl)
- 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+@@ -87,7 +87,7 @@ static pud_t *get_old_pud(struct mm_struct *mm, unsigned long addr)
+ 		return NULL;
  
--	/* Clear the pud */
- 	pud = *old_pud;
-+	if (unlikely(pud_none(pud)))
-+		goto out_unlock;
-+
-+	/* Clear the pud */
- 	pud_clear(old_pud);
+ 	pud = pud_offset(p4d, addr);
+-	if (pud_none_or_clear_bad(pud))
++	if (!pud_trans_huge(*pud) && pud_none_or_clear_bad(pud))
+ 		return NULL;
  
- 	VM_BUG_ON(!pud_none(*new_pud));
- 
- 	pud_populate(mm, new_pud, pud_pgtable(pud));
- 	flush_tlb_range(vma, pmc->old_addr, pmc->old_addr + PUD_SIZE);
-+out_unlock:
- 	if (new_ptl != old_ptl)
- 		spin_unlock(new_ptl);
- 	spin_unlock(old_ptl);
-@@ -503,7 +507,9 @@ static bool move_huge_pud(struct pagetable_move_control *pmc,
- 	 * We don't have to worry about the ordering of src and dst
- 	 * ptlocks because exclusive mmap_lock prevents deadlock.
- 	 */
--	old_ptl = pud_lock(mm, old_pud);
-+	old_ptl = __pud_trans_huge_lock(old_pud, vma);
-+	if (unlikely(!old_ptl))
-+		return false;
- 	new_ptl = pud_lockptr(mm, new_pud);
- 	if (new_ptl != old_ptl)
- 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+ 	return pud;
+@@ -847,11 +847,10 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc)
+ 		if (!new_pud)
+ 			break;
+ 		if (pud_trans_huge(*old_pud)) {
+-			if (extent == HPAGE_PUD_SIZE) {
+-				move_pgt_entry(pmc, HPAGE_PUD, old_pud, new_pud);
+-				/* We ignore and continue on error? */
++			if (extent == HPAGE_PUD_SIZE &&
++			    move_pgt_entry(pmc, HPAGE_PUD, old_pud, new_pud))
+ 				continue;
+-			}
++			split_huge_pud(pmc->old, old_pud, pmc->old_addr);
+ 		} else if (IS_ENABLED(CONFIG_HAVE_MOVE_PUD) && extent == PUD_SIZE) {
+ 			if (move_pgt_entry(pmc, NORMAL_PUD, old_pud, new_pud))
+ 				continue;
 
 -- 
 2.43.0
