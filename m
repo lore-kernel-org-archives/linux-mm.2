@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93BD606AB1F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E6560A3808
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ZgU9/52i
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Q7RXZKGp
 Received: by kanga.kvack.org (Postfix)
-	id AFCD26B05B2; Mon, 26 Oct 2026 17:52:52 -0400 (EDT)
+	id 72B336B05B4; Mon, 26 Oct 2026 17:52:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A872D6B05B6; Mon, 26 Oct 2026 17:52:52 -0400 (EDT)
+	id 6D9986B05B5; Mon, 26 Oct 2026 17:52:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B07C6B05B4; Mon, 26 Oct 2026 17:52:52 -0400 (EDT)
+	id 507E46B05B6; Mon, 26 Oct 2026 17:52:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 52E886B05B3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:52:52 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CFD0516089B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:51 +0000 (UTC)
-X-FDA: 85366127742.28.ABBE19E
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2EA0440003
+	by kanga.kvack.org (Postfix) with ESMTP id 1A9D96B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:52:53 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 93D0316063D
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:52 +0000 (UTC)
+X-FDA: 85366127784.22.449360A
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DB843140005
 	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:52:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="ZgU9/52i";
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Q7RXZKGp;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3sMvfagoKCCUKUIPVHIUPOHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3sMvfagoKCCUKUIPVHIUPOHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--jthoughton.bounces.google.com
+	spf=pass (imf09.hostedemail.com: domain of 3scvfagoKCCYLVJQWIJVQPIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jthoughton.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3scvfagoKCCYLVJQWIJVQPIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jthoughton.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793051570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RD5MWqHEB8iYDLFdQXvkJ0xSc6fsoJ0ZXufXHQQ7zgM=;
-	b=nPp9KCw5uKP8XkeLJiQQjx2gcdQpZGQ5cd3NZ0OCoTq/SVdT5tc59ELxqednfojyuT22bh
-	F22rVF9zDoy625dXAvVnKe4Z3ixHA5gSf9ha3WkuPZH0n7bKzxDCeuprRYZzVI9uT8VBTq
-	MnXjf8qVR+H0Aw4tZy0ypNWASGj4VjI=
+	bh=/8L34Uc9Xo1d4oJ1WUUvtNMd/yh9NNapi89sPDAfm6Y=;
+	b=1H8dcujOnMwnW0WPLYw2zqSHjz9jKWYl/n5HtimY/RWoBAOsIq7GBIr9Wfljd9+c0w6qCA
+	/n38JzCqLTiyCiiOzg9eLGjia6QpS2yLQA64bc5KNk8AHD0wubzvwLpEMqlY0pdhVv+9eX
+	uPeiGD5phTFJeFhIJG1PfotLNrow5Is=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="ZgU9/52i";
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Q7RXZKGp;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3sMvfagoKCCUKUIPVHIUPOHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--jthoughton.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3sMvfagoKCCUKUIPVHIUPOHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--jthoughton.bounces.google.com
+	spf=pass (imf09.hostedemail.com: domain of 3scvfagoKCCYLVJQWIJVQPIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jthoughton.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3scvfagoKCCYLVJQWIJVQPIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793051570;
-	b=UkXVB4XzxUziLsGFgYjdTYpXd5DXYz0wVVd7rsJs/PzaNuc/W1L/C60GAQetPZxsxmAhBR
-	hSzB1ou5BDSuIK9tqEiKwMb1uFNNtwsfXuSgB0m+6O27TyFClmQc2Z9iu4pvFh9EA+P5bS
-	1Pt9+NPrVFYO+j6bjvpxxuWqXtbr29c=
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cd8b7226694so1541144a12.0
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:52:49 -0700 (PDT)
+	b=yAyU3xHUzMow4AHsJXWBxlXFOPUXCi0Y2SYMSoy5+ui7UfMNj120hgmFVirQF8vLW/AJXU
+	sMYs3zl4KpRCa5GqMYRhcHpZ6lkjNM1/WavELjjR5V8fVp1U5JAHlsool6ZASiHaCEXuqY
+	fb9l+3wODMenox9yOeR5eCOOiJDz5X4=
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ad840053c7so3402232a91.1
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:52:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793051569; x=1793656369; darn=kvack.org;
+        d=google.com; s=20251104; t=1793051570; x=1793656370; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RD5MWqHEB8iYDLFdQXvkJ0xSc6fsoJ0ZXufXHQQ7zgM=;
-        b=ZgU9/52iPQaPMhw5HD/5jpSck2xlKwZYXdvSkgV2JpVD59yWrrpfm671v/2Jq5gs1q
-         iuqEq2AXwXngj00P215oz/By4hXNMXO5S7mnFanwte4cFOLgQk69jJSB9RQUmN68TKZ/
-         cxWelZe9m4KeGTO+AW4yul/y2HS+3tZYZTYLFCjj70OsRY5qQ59I19LTCnrYGip3HlwR
-         IphBfkKjBIIWPtsi1WBavhKZRZZ7ntIfj452eUi0tE3+3LDGtKJV6bidKqck3TB2zG0H
-         91B5dT8bTaVloQQG39xrbOjT//T6p9kU82+RDjt5H4qA0qBINDVGaoFNTOZkByzwbEWF
-         6ESA==
+        bh=/8L34Uc9Xo1d4oJ1WUUvtNMd/yh9NNapi89sPDAfm6Y=;
+        b=Q7RXZKGp6GBdNRxz/8XKgJ+xQn7bxDSFTJT72zAF2gkiweExfZvhWlWoCj8QJOFTSK
+         MiJh+un158M/o5kQ46V/wNCoKNs8NX5zKZp1EGtjcvokiOJLh9hQiSVBAf5sKFvKNUXo
+         rL6N5TPm1iY+QD1T62Vy7dm81xefcke3RVQsVIKytI967qrMs6ZdbKWmKx0TVD24eCEH
+         gLbL6LFmed1XgR1ngj9dyB+GDrBFsyyu+fmvQcOc9FYQFJMOd3Z8GCfOldPR1LHdfAnU
+         A7r/gmPWaEjg5+lXcb/m9tc5LQ7FaS+p7nbDnw9nyctz4ltHzFv44SZt9dbuisKrRAKz
+         c5GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793051569; x=1793656369;
+        d=1e100.net; s=20260707; t=1793051570; x=1793656370;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RD5MWqHEB8iYDLFdQXvkJ0xSc6fsoJ0ZXufXHQQ7zgM=;
-        b=hRgr/m3OZ3+G5MBqFLA83qgHojYquZlxaUG0sdM9k+iSb6nFEdVae7/h2PF5UcD4Xc
-         5IyfQyd777DBl9jT5sVD+QDjxiguHGrI/fEbQmDy6QsE8fgYekplT1/gZUEaWuHETxRj
-         IODhynmbDHwZZ9E2+xTSpVqgsNZE/L2ijMVV2WGLA7H0C9CLhdnTf4ZpZdHuXGjW6fS5
-         w5a1mlaeI+B8Y62IdwsAaNHFDox79aFylOaqf7RtsGks94G0BcqP2pbrOyyS9U7gcMkV
-         5hjbNkAjYK70tRJOJ1xwlTFcv+CJYUodEN3ioidAGmZ/yvOHyh3LVRd3nhYvn+F/bY+M
-         Zivw==
-X-Forwarded-Encrypted: i=1; AKwUvBxL0/qc8aBD5teb8Z/wu1tZCv0WHKo7lKy7OtEZVJdQfujfVkSEMYWB3yy7FR2guu4phwaYPtyVkg==@kvack.org
-X-Gm-Message-State: AFq9FYJ465p1Be8ZhoIvJVHcX9CaLpf2/LpWvZk97VXlwPaVNsaiS/eG
-	RaoNWvIGbQnFkyLFDdAC1mNyPw7UiRzAq/FhYQIAyUbAh/Nj+M8i1bHvF40ckFSmGTCW+UgwbH6
-	l0bMQEbz++Tmu3tPFrhipiQ==
-X-Received: from pjps6.prod.google.com ([2002:a17:90a:a106:b0:3ad:c8d8:70c3])
+        bh=/8L34Uc9Xo1d4oJ1WUUvtNMd/yh9NNapi89sPDAfm6Y=;
+        b=YVFuZxOP2mIYC+OMGRvrUKzIjWcErgGtwt7+gSNaxRlsi0S6NsW7Bp5gxTXIyWroDg
+         xYP3QJZfHlnCBNO8aDS3nhfN7RiEF9N2NR8hKITqkW7KEvCZxZpVTmsG6aTCLQD8ClZj
+         fmcqR1ofuKdiRrAo0tuoJ3rCxRurCmZ5ROomUP7u1aWiL38bMyqktDd9b4JR4sRRHZyT
+         JFBGcTTjF7jWOB99KWM0TQMhXhCfHbmNZgpvX5vrpmk93XhhQKKPcKy0eNxpRoBMLw34
+         w18kxSqpn5q20UYrL0Uj6hNz7LTplUTM7Ale1L7WlPAVMaBcyPJKVR1LCfMB5bnHxQBT
+         gFFw==
+X-Forwarded-Encrypted: i=1; AKwUvBz1l7Rke3JI8DqOMxUURi/GnR7ozGwsBK86Cd334dBe08OwTqGWurAOBfJSY0SYxe7ZEI3kOT9/GA==@kvack.org
+X-Gm-Message-State: AFq9FYKnya5b+6+g7QMEipyz6p9Okz6hU4JuHqvGvMXZLPiaxpNSCJsH
+	mPPro824HWG1pDbNoPWbkO9wvWMjwBM1Gj5qJJfveVx968ykpACvUq6R4Xaj0Toh9wYuK2yIj0Y
+	X7zjfLolVJKD+pABHUoWUBA==
+X-Received: from pjbme4.prod.google.com ([2002:a17:90b:17c4:b0:3ae:349e:2bcd])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2688:b0:3a8:cb54:e135 with SMTP id 98e67ed59e1d1-3adea899125mr6172313a91.19.1793051568668;
- Mon, 26 Oct 2026 14:52:48 -0700 (PDT)
-Date: Mon, 26 Oct 2026 21:52:17 +0000
+ 2002:a17:90b:35cc:b0:3ad:1b31:92d8 with SMTP id 98e67ed59e1d1-3adeb16ecffmr5865801a91.60.1793051569572;
+ Mon, 26 Oct 2026 14:52:49 -0700 (PDT)
+Date: Mon, 26 Oct 2026 21:52:18 +0000
 In-Reply-To: <20261026215226.3713941-1-jthoughton@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261026215226.3713941-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261026215226.3713941-2-jthoughton@google.com>
-Subject: [RFC PATCH 01/10] scsi: bsg: Don't copy sense data to user memory
+Message-ID: <20261026215226.3713941-3-jthoughton@google.com>
+Subject: [RFC PATCH 02/10] btrfs: Don't copy encoded read data to user memory
  when canceled
 From: James Houghton <jthoughton@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>
@@ -110,18 +110,18 @@ Cc: Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Ke
 	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2EA0440003
-X-Stat-Signature: 34ki74f4i7pr87soyb4u8od3t4edziry
+X-Rspamd-Queue-Id: DB843140005
+X-Stat-Signature: 8qkhcawofs5sn3eb8dcwge5jp1jf96ti
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793051570-797967
-X-HE-Meta: U2FsdGVkX1/4b/mV38FZPcPwjsMmwXJKu3uXnDA2sbEG9zhCLZ0or2uoFbiT4z6xnGC3Y+gmjJOCD8nT/JJTofWkpyY2+mlMnV68I1+Sr8Y5Mgauf1U9/qiING8r1G3aKDyTSqQsKuFRZmDgcJxacusfYs2TeURKzqQnz5506swqtHNK1eYudr+lz6Q2AgV8JUWvQy+/CM1rfIaUGXFJBUoK5k78F6byDLag0SExX9Bz+HP3GIp1PxZTSDCjdvtYCcXobSq6pZAhvhp3VH5Ye5g5VcKrgLfruiT+Ei+oooxZ3HSWEBs7C/S5TIWiUj2KHANReRhVNzTZfPCXNKgCz9KJchj3cTDDs3NryyghRZPeOQvUV00GBpbm368x3O+vc+d7TYAEW1vl3DfzbjGkste3hxUoeeVnTaXSUTvaOqhrE6yJ+iu+FST4D/mAfhemkRN0LYVf2qcGItYuveD2xFGyan1PPvN57HWv664Hdcx6VuhL56Jxbvr/rUJXo+2WiquFVZBC65mjXq3F0E2WfAfyGbtcRdwUndtGM8cnddCCGiFAiGf95neca6B1kRHXlf2PgtKNwUzfFfOdzuZA1wbsD2aHMU3lK6Islvjp1p5AWM3pAI915HejQfQK2WzzeqvgNzoMlOlz+/IKYvis2N/7Pb8F+3lWt80KzNzOLV0sg75qsBHHVCrDXuW15m3hp/cE7WXgIWMwxv0FTsoOIDr96H++xMl+I9tBPM/4+UtaJqPxw7STqhP7bN7jq+DELOvYOzfEIPGGqv+C/AT1Qf9/1Mw5dVw7fzX/aagAtkHWouScix/lkp2GJBQtAblgkM+desSIV+yeWK/AVr6zjOmGwUvUZiq/zkZsJWZv6rBAg8oYCgMop43niE9J+Ep/HVQT2NE+JoJ7cBvzjN00E6JPt8drJdOSHWaQTEY15NzYbauKORC1ZEKSyHyWSABMNW6tzAImNFMQ2sW4LHI
- hZoel0Nr
- iN1QyoFStIZRN3rqAShJhUR4hZspIu4jDp0mBGcvRCIyE9H4RJZ3LQzUorqiJZ9Ykt3ZHx6HyfgFS69mWaaUy0Ce88rjxKnx6x4+iQ2rA6hsyDtVKY85Gfi0hP8Dnz56pURgBjz7HOXur50rhsEv9g5uB6PVDqo1ECOsFMNDTDdZmqxrV6sYqKXvJR5ElKUPr3B9+DDgYg29wWXkvxNrd7ypZ+Vppf6ZJkvC2bB/GE2PbGHvBZ0B26Bbvz2Q7uNZOa83r6RLxkQWJxd8ZtvhmhmJBkQfROgUq5bO1t2MNdM8ukv9461cwhB7i2n3lVe30W2owFlLUfFaK0QNpZoEFvzzHyxdXdBPdjQ0qfrvLwaWhhMs50hFG35WDbgUwA8e19UJhLkhSR1QN/KXbCioCPixiLhiXlN2OKF1wlLR5O9Tsk4rCEIP6VXmI4k0uQY9jj18pJyaKAmvf9wa/staHC4BHZ8UcH6Gl5q+rxfYm8tSMEksl0pL3sC58PDgkIiclCpYfX+E/qhTYLJYKOR67ykSCET+gH3ZBetiBv9rD+k7GgIfpCgv+S+nWTbsVyJNqLaJixrXcxLcDNZHjS9CAzAa4hEJUbiT2EMGoxaCuJOhVUiAf0L5g303HuK+VeNPv2301fRdkYiNUjnlLNxJQtvpqyw==
+X-HE-Tag: 1793051570-988224
+X-HE-Meta: U2FsdGVkX18OFGIfTnY87sZbMuXS5LzA/xdui2EaOyowf4/LEYBFXfD75/+Nsc0GMXh4LDbSWk8zUle5NoGeAZvyEvMA30zt0eh+Xv0AOMznj4q9Lab5EseRp7+Gm0yCI26WMqiyccr4h6E1Gwl1ryCN0jvZPJeajjEDPAlK7v79tyxMyUunP5svy6j9LiM4YTqw7RBiUYQHq4enty9WPWvC4hKtxQrKZWe3cJWz4jiwm1K3CdlefSxZstw54VWVp0aiaw7uFSkD/946VmImY1RbeelLzn8qeLOV8p5/rkVt341Vxjs7yCF2xyPIhUWHfzmA9p+poEjmpJGXbIyrjbtXuog7CDuuO1M7ZDCqrYL+kW7BU8shXq1ffXM5hCsupb/FyWCwVulhD1iLh4SOD/LP9S7h0xof/1BTsr5QJ3voeatf6zfgUBDcm6wWdda3EG6n2Lun7RTn3YEZjGaNQgIVUgav7nKa2f8ZygArazFxNJV6RBQNaj2CHj9/1uaYoQBVRcsQDO/KGH6kymUaf3yMRUri5rfbZ+AwVyvxfpH59uZFaG44mD4+qUoGLLK9Qcp4MegeootVPkWmykReEbRevWAN0SgwJqd+v8xWxei/F8IMfDWG49UjYsgna9ZSgGwdzXQrbaQUbWMJu44ABVqohA682urUslxkCivf0kKDYGiEj8lkQOlvR63fFJIFnZJc23BnfmMx81H9tkxHmodqvPqqmxp3WMLQjxwR+OIYXUyFZEG2nMbi+YyyltDA1pUnVeh1p+aUuzOl7PxPrjKd68vbFuJvRBVU86Q6jZldaeG7XmNlBNMf+rGmG/RaNoSrH6jd+r7fFS/GL5LxWqVVjbp8fS6SdeQ5x4r4Ecf7e+9tQD06c/vY85htJ9qYE9FzwOWW+YqN9H+wD3gQQIqB209XCIttoYKmuNl9yKpnXogpoMFMYKb+rVWXsXM+q1YY9OM94jVCJm2VhKS
+ Ih23CHN2
+ cVgnwjI5SL6qdg6nUxyiQL43MS0G1UeAtvGT4HARU5NQrgJ6sMhJ4wxielmFU3dTdKnL86uc+Ha3duUWw1CiVZhDVReOzkD1Q5zpxBYMR9phXm2Umygvmvduktmad69K+e6LyPBun0Vqbo2LG55QwIkU1apVXsoVzrV7tX4q55oEz2Csqvp0VlJDBWX7IFWTTnqO4ArIG+bNZYOqhzDwFKdCv0mP/D+UCeEAnQNL5FRGQf2f1+p+FK5FJwF9CQvR6L6Egx9mSC3HqqvtNdib0Rkm74j6dXn1pi1iQPYjkHmt2bwr7aPKifrUH+M9/SVq3CEZbHWiE1KdFPBmKhfMQQ9URdEJaIO2m1dKpFeBECrpHp7XzcDCv/NvydC6rirnfRV22om5I8BbxKObEvoEJBUEYT62Jo4UBkrd603pUpJfyXpUGTVC79l+L45XbWMG3HuTuuE2Vrcrnj3v2bCKVRCCqIxELT41kJxNoJK1Rp97s8ClnkVWtJYchjvq4PbCEml9f8U7Wnv2DNodZPo088U+/bhNUwgBAVjEdQPBUrfw0olLQ8PxF1He7Xz3T7qKwIA3p418JmfZxoM66iYtHwwQGPqULZkzNJeQT5L4OkGm2NRrmbHopVUB7yiaO3bAa1DYGnOekzyj9tLehB4K8V8ZcSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,50 +130,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-scsi_bsg_uring_task_cb() copies the sense data to the submitter's
-response_addr with copy_to_user(). It runs as io_uring task work, but
-io_uring may also run it with tw.cancel set from other contexts when the
-submitting task can't run it: from a kworker when the submitting task
-has exited (io_tctx_fallback_work()), or from io_cancel_local_task_work()
-when a DEFER_TASKRUN ring is torn down.
+btrfs_uring_read_finished() copies the data of an io_uring encoded read
+to the submitter's buffers with copy_page_to_iter(). It runs as io_uring
+task work, but io_uring may also run it with tw.cancel set from other
+contexts when the submitting task can't run it: from a kworker when the
+submitting task has exited (io_tctx_fallback_work()), or from
+io_cancel_local_task_work() when a DEFER_TASKRUN ring is torn down.
 
 In a kworker, current->mm is NULL, and the copy does not reliably fail:
 the user half of the address space belongs to whatever mm happens to be
-lazily loaded, if any, so up to max_response_len bytes of sense data may
-be written into an unrelated process.
+lazily loaded, if any, so the data may be written into an unrelated
+process.
 
-Don't copy the sense data when the task work is canceled, and complete
-the command with -ECANCELED.
+Don't copy the data when the task work is canceled, and complete the
+command with -ECANCELED.
 
-Fixes: 7b6d3255e7f8 ("scsi: bsg: add io_uring passthrough handler")
+Fixes: 34310c442e17 ("btrfs: add io_uring command for encoded reads (ENCODED_READ ioctl)")
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- drivers/scsi/scsi_bsg.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/btrfs/ioctl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/scsi/scsi_bsg.c b/drivers/scsi/scsi_bsg.c
-index 5eec248a77a6..3755e33fcdd2 100644
---- a/drivers/scsi/scsi_bsg.c
-+++ b/drivers/scsi/scsi_bsg.c
-@@ -43,9 +43,17 @@ static void scsi_bsg_uring_task_cb(struct io_tw_req tw_req, io_tw_token_t tw)
- 	if (pdu->bio)
- 		blk_rq_unmap_user(pdu->bio);
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index f3e2afe221be..d9044fbd9547 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4609,6 +4609,16 @@ static void btrfs_uring_read_finished(struct io_tw_req tw_req, io_tw_token_t tw)
+ 		goto out;
+ 	}
  
 +	/*
 +	 * If the request is being canceled, e.g. because the submitting task
 +	 * has exited, this may run from a kworker or in a different task, so
-+	 * don't copy the sense data to the submitter's address.
++	 * don't copy the data to the submitter's buffers.
 +	 */
-+	if (unlikely(tw.cancel))
++	if (unlikely(tw.cancel)) {
 +		ret = -ECANCELED;
++		goto out;
++	}
 +
- 	if (scsi_status_is_check_condition(scmd->result)) {
- 		driver_status = DRIVER_SENSE;
--		if (pdu->response_addr)
-+		if (pdu->response_addr && !tw.cancel)
- 			sense_len_wr = min_t(unsigned int, pdu->max_response_len,
- 					     scmd->sense_len);
- 	}
+ 	if (priv->compressed) {
+ 		index = 0;
+ 		page_offset = 0;
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
