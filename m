@@ -1,97 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74622606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C5C606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D20H8oLN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VKutAHz3
 Received: by kanga.kvack.org (Postfix)
-	id 93F016B05B1; Mon, 26 Oct 2026 10:43:11 -0400 (EDT)
+	id F36186B05B6; Mon, 26 Oct 2026 10:45:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 916D96B05B5; Mon, 26 Oct 2026 10:43:11 -0400 (EDT)
+	id EE6F66B05B7; Mon, 26 Oct 2026 10:45:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82C716B05B6; Mon, 26 Oct 2026 10:43:11 -0400 (EDT)
+	id DAE296B05B8; Mon, 26 Oct 2026 10:45:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 66E676B05B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:43:11 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EE455A07EF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:43:10 +0000 (UTC)
-X-FDA: 85365044940.02.7B71235
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 62D4A80007
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:43:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D20H8oLN;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B8D6D6B05B6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:45:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 44B2C1C2413
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:45:06 +0000 (UTC)
+X-FDA: 85365049812.17.2438D22
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 79650A0003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:45:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VKutAHz3;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793025789;
-	b=JNliK32soS+R2UNPl+71yH1xbXC2VG+W8JyrnbKaoOWnXVqwnw6M/jDKSKdjthphYKnFvr
-	15lzsUXlGq3wvknMuOplPcfYZVnHNd2OOWnCMtPCXYWtp0P09CvpbwCAjuDTvIPZyAfjEv
-	blvY/qEeJi8kcVlgCUC1Ke1bunWHHwU=
+	t=1793025904;
+	b=UsOGNsvmNt/tllhdhLwsVD804J93IFwHpMBUpLX93G8bdRtyOBcNkbmnVsuCj018wvYIip
+	oLJbBah2xaJzO+FPo9uSydD7zhyo068tdqre6PPrKqTb1kQWjsCjAwL6yczQHtOANM1HnN
+	xzaWM7fWbpdOBbp6XWVIvuI8+LqJ37k=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D20H8oLN;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VKutAHz3;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793025789;
+	s=arc-20220608; t=1793025904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RrYs5r78deoBJ9Dw8ytqmVZU3I9/wl2AOXZaDAj5RqE=;
-	b=lDm1yGbixqYf2/24PrtyS5GfgOhEVEj+K73y/ZJuTo0+rlFdn9gNMOjlagQDvLsteSNL50
-	yICc6ZgsO6Mkyov34VofsopkWOXo8+UY7biNgPk1lWz3u1qfVtGMgjc9U3cc+ZxF30cRdE
-	GivO01NA7hdaYVaq/XLoK7x2Uduhveg=
+	bh=FT1RdVZKFn+emuIq4wyVAsdeeZxKAtKJ3BuQVSeNiXM=;
+	b=krns4QEl6OtlFjtWaJS6Dj1aa7hfZZca04qQ6lmZd0fzJaSuXGTYhlODsXNgVyzJAoZftb
+	zr9OLRC9E2lDashpLlm4gA/9MdM/QQcCF1VjvKFENgIFEmFFDbOZtPhOKGP9YooE2ViYxo
+	orHEvaQPboTOslo1j3pihkP6stzgd5s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7B2A602C3;
-	Mon, 26 Oct 2026 14:43:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515111F031E1;
-	Mon, 26 Oct 2026 14:43:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A5B5343914;
+	Mon, 26 Oct 2026 14:45:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344B31F01829;
+	Mon, 26 Oct 2026 14:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793025788;
-	bh=RrYs5r78deoBJ9Dw8ytqmVZU3I9/wl2AOXZaDAj5RqE=;
+	s=k20260515; t=1793025903;
+	bh=FT1RdVZKFn+emuIq4wyVAsdeeZxKAtKJ3BuQVSeNiXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D20H8oLN6BZpOOZUJ1qL0Xv4S4dpsgiCPtzFIyu5ruJIuvlTihAIxGVsuxWioWI/m
-	 ULjJ47lKnw0OBl0+YT1jJLLiSw07yLju/PazLSV8+7gLtByV5+DmnK/KwxpT3gupX7
-	 jI0Zjp505x3PCsm9T/ZoT8pDgk2D+1RIM/XizPPiBRLmJrqwYHv6D2DqEUc1ZvObSi
-	 rJz9G1Ll7LG0xLaZOaui9AUvC8FvmLOYpLgT1PlksU+Uaj+ROciQOQXojTPMHGpaA1
-	 nUuvK0DP/PQ5k4ln1IBTRhXC5a4XaaYhyAIThMDoqfkRZ4zLDq3o2YhMmrR4Sc4XIv
-	 1hJsjE/64cDhw==
+	b=VKutAHz3mI7cYrCfwND0ANbGs1pVOCiHmR1hqXLQ8nqksJZqgRcOL5Iesy9WQ5C+q
+	 ri1OfR+RVSMTC8uY4CxZmbCaWqINlZJZ7LTg5r94rRde0PBEStAxV96r2oVCvzDhcC
+	 +5pW9w02Uh9QI4HgkPy9ufqM6+jC1JcsjswnufEtI3HmhT6hkGvxQBj6tXGB81GA4T
+	 vEPVVuHMS+5kDWYWsKhjhgw+2hILYm43edDkdTCvNid1Fyp+p7U5bOjSUtaMOaahy2
+	 6fv6utu6SXRQpiFABFMsYycZ/hFSwmXTPgySiwEDS86x5od+1cK7TOwHq/ctKPAGHt
+	 nkPdwHkZfhQoA==
 From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
+To: Manuel Ebner <manuelebnerli@mailbox.org>
 Cc: SJ Park <sj@kernel.org>,
+	Aveline Noir <jm5905938@gmail.com>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Randy Dunlap <rdunlap@infradead.org>,
-	Manuel Ebner <manuelebnerli@mailbox.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 4/8] Docs/admin-guide/mm/damon/lru_sort: fix remaining grammar
-Date: Mon, 26 Oct 2026 07:42:55 -0700
-Message-ID: <20261026144256.150394-1-sj@kernel.org>
+Date: Mon, 26 Oct 2026 07:44:50 -0700
+Message-ID: <20261026144451.150560-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179301327249.2.16817896016779044743.damon-docs-grammar-4@gmail.com>
+In-Reply-To: <d054b7a2653a2ff3d419b689a50a53290c2cafbb.camel@mailbox.org>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 62D4A80007
-X-Stat-Signature: qu8z1666eyfjtggezpkijk3dfsepjizp
+X-Rspamd-Queue-Id: 79650A0003
+X-Stat-Signature: 1b47tygoe1qr5gt1x3h11itfm3xqh7j7
 X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793025789-187676
-X-HE-Meta: U2FsdGVkX1+8Q642e3SjtRtZvkgi0XbkiHPJg4M3mnoih1+tkDgcmoEeX4nfqgGl4dVue3QrPNzSF7jeq3GPIXmG8Fmqxr4L4SRJslt54rLbELuBlQV77RXvhohJFJcwYs/0wSR4rFQTRRLHPyOCVeytFGNMUYL06wqcdhQwfFl9mmoR1V50OaPvokwmmbzgKvB/CPbCgVeU7Sy2B1tBwRkgVKP5VTK9oGVE6fc/9C4hngEY8wG/19eZi8uZAe0eIfWH4Y+2ctk+OpxpyqLl6mm2RjDDB0qU8E8QwqhHzvLOWpJtDghtzk9h8Qj+vXZ2yd3QeMaX2a4FU2eqaugM96BCrqu+opMwlR+Fbgm753xvuEDv1S6Ki+8oLoMntGhL+/s+OIoGluqn7cShHr4bAnAnlr4nZzGbbyQp+RhFMXn0Isr4umpKtOIKKneyo1PDsu9W0ImP5+Z8XtYdQ5CGy0h5tgXGzj2M/ZZ7VFZ+BSGenkafRsv1jXqTgjXc1DIvtOqGVA2IKYVd9soZY1+mzzG35ugWBV4SFONVVg82gXxkP7OS1DkRxX4d+/UkPY69FhpjNNwKdY6STR20MWVZCosnFxk457vX+u6/9DGv0ggv+T5zgQETSlSUqc20dVAd2Qs047fMPx5wHdcUyP8bVvNcuozoF08oxifTAzh7lu2rQjVSKHqR+iYtHFbTHm5b0kzeR3k+84r/dsuXTTklLYV53Ai9i95BaE2VVNgqz16sFAO78ns1T6yDb5XrvWlPwSE/HKWyULFHBAnYXqW4Ko97aYHOw2gOBtvy+cHcreiSGTFvV8yBFLm+HXaO7p2Tw7VcqrtRJ7YYeFSiXz5I4mAaecPvL8kFKt43EGybbp3Wb1o85uccfuNcdlIKGtxIhc+UjYSHC2vtlRFZX8UFsXeIU4fjHeGIb7ttMnmPp27x6yUElqr8gy+wLulHUhkIsxUPGs5VrPvFhLOfe6m
- TdU75HWb
- kXHlCvTEgRCg8dbRsi0vHfEUXnpA7gdWDwYnThbPV8VamB5zNntNIsJdcRarTVRh/CKmcao6HndvPy3s0jHmpCwCvdCMSQxYJN/6Gl5BbcIN7lh7Afd5Hu6ypLQaM1PiZSoWqO5psawn8PuwJFpWNLhiiwF/OID3qF829I3uxozjaojr8oMV2q2t4UXB5UQYOoXHB9+qhI5feqvZHJzrfi5ULCyphlUhj1oOlTZVHTce6jYWIwKtabuwC3yILNh/CNqbjELwJ7s7nO/d5D1gmk1bSY/6Z89WNt6zDH0cFiC4xYYc=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793025904-666904
+X-HE-Meta: U2FsdGVkX196C/kik+MPsRXJetMiLZ8TrngGUP+LlKkXLHA6GLlsQt6oq9Q65QVQVlqoK0pNW/+kdlEISd49jXhYMg03xtqo9M3y1nZmY2+0zvlDkodHSDTVprz4KIOKSrWB8f5ari5GsDnEGCSaUsR+B0l4ZwonpJvdxgL7QwOL890GkQqNAxp7gEY1UK8wexSnrYUXXKJBXSyKj2raJFWJY48MapflmpxFKZGsqbqr3LOGNNJ63vhm/0gaGDTjoqp44trcVDeiiBOopke5l/Zo7Ox6d7tAvHV/oMBCAhBQvubriSDmMB6SbjXQCb12Btq2ztMGgYjEMwPyZXTXoGpSFOd8NNANeRfWftAw697akAXVpCMckW2avhJwSk5WKRB7oSe67A8ZCNkR4xEJsZxdGS5yURxDYWkUFnCGBWQ0YQn78ZRFVYV+URH+jqP0A+ioVkKb3xd+55cu6fLXkF16skikwaI+oX7QdTyMLbMuHD2PkUJbCPm1ncATAiZ4LF/FqOFoqlYcVZ6iWjPOVXmj29sOHegUvmzgbhiC9KtUl0vqKlQLd7HDekYaHDDWRE7ZaxFHUittUIUBCqx+Mhq+aznOd/lU5rV8YeOVmdoXmrY+djeXLuK8mchcoEkiEZP81yAyZwUtb+pkx1QLOMlwxKenwhlnrqlxYA3AoM0H4v8EFVJTqVpFsPktfl2uLNSRen+4lYVbPGD9/D4CX3nrc4xjvsa/Rd708Bf7TaYDbB56LWVORM+MWo3VoAgFjT6uyeRRYIH+DOvZM70Mlw26dFNr4WJ8eWSqURnOXhX2lLIfKTr2vnc9ydtd5S1BuyjHIDeKoLBSHJJKm6q5WB7tgzo0DJLHpGPbqs5xsjLGmAvs8Ps3PY5FaFlh9P6BqET5VM2QKpcNQ0Qe/Y7BzCPxkExP0CUTdgeJqTtFjk7b5Ma/Y9qzFI75TJUaVWNqTLMDizPHSpnI//Bx59b
+ fb+KbZo9
+ iOJ9/9u/GmkUEZeWbhFDkpGLwEsM7RE6BWaUqhS+sMpvPrtqEd/FG4Y0RoW+13YS/gO5e7RAjTjLbqT3cHpr3ZVo/QXJLIxCwlgd9A4j7TjAvq9SSMBAD1DUvcpc9dgIa9qUsbguKYShrQ3JjZUCZwGWPQ1aREaIBuH1PyDmqkzdNT9unW2OHzAtW0dWz3Dikb/CrVfY74I4S7Wl3IXF2LZh4KfmabzdXcya9D0lstzRF+PFQHChz4zueJAg4xJVDPq8+tudi6dXrzBNAvlwbV++p8Q1UczAdSneK34gPgh8rnPvCVbANTm97hJA0qUtpDFpAdPAOHSfcan8FBjyOwDkBOLDWDodbPYhhMjzPMD/aUwLOBPQsuX2FOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,16 +102,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 26 Oct 2026 22:14:36 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+On Mon, 26 Oct 2026 13:57:49 +0100 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
 
-> Manuel's recent grammar fix for this file, now in damon/next, covered a
-> good part of it.  This should take care of the few mistakes that are
-> left, like "should automatically activated" and "Make DAMON_LRU_SORT
-> reads".  Rewrap where the lines got too long.
+> Hi again,
 > 
-> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> On Mon, 2026-10-26 at 22:14 +1100, Aveline Noir wrote:
+> > Manuel's recent grammar fix for this file, now in damon/next, covered a
+> > good part of it.  This should take care of the few mistakes that are
+> > left, like "should automatically activated" and "Make DAMON_LRU_SORT
+> > reads".  Rewrap where the lines got too long.
+> > 
+> > Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+> > ---
+> >  .../admin-guide/mm/damon/lru_sort.rst         | 45 ++++++++++---------
+> >  1 file changed, 23 insertions(+), 22 deletions(-)
+> > 
+> > diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+> > index aa4cc90ca57c..c628e3f6e587 100644
+> > --- a/Documentation/admin-guide/mm/damon/lru_sort.rst
+> > +++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+> > @@ -35,7 +35,7 @@ deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
+> >  CPU for the prioritizations, a CPU time usage limit can be configured.  Under
+> >  the limit, it prioritizes and deprioritizes more hot and cold pages first,
+> >  respectively.  System administrators can also configure under what situation
+> > -this scheme should automatically activated and deactivated with three memory
+> > +this scheme should be automatically activated and deactivated with three memory
+> 
+> Yours isn't wrong but I would make it:
+> +this scheme should automatically be activated and deactivated with three memory
+> 
+> Choose as you like.
+> 
+> >  pressure watermarks.
+> >  
+> >  Its default parameters for hotness/coldness thresholds and CPU quota limit are
+> > @@ -55,7 +55,7 @@ DAMON_LRU_SORT utilizes module parameters.  That is, you can put
+> >  ``damon_lru_sort.<parameter>=<value>`` on the kernel boot command line or write
+> >  proper values to ``/sys/module/damon_lru_sort/parameters/<parameter>`` files.
+> >  
+> > -Below are the description of each parameter.
+> > +Below is the description of each parameter.
+> 
+> My choice : 
+> +Below are the descriptions of each parameter.
+> 
+> 
+> >  ...
+> Looks good to me.
+> 
+> > 
+> >  --------------------
+> > @@ -310,7 +311,7 @@ Total bytes of hot memory regions that were successfully LRU-sorted.
+> >  nr_hot_quota_exceeds
+> >  --------------------
+> >  
+> > -Number of times that the time quota limit for hot regions have exceeded.
+> > +Number of times that the time quota limit for hot regions has been exceeded.
+> 
+> I would go for this, but I'm not sure:
+> +Number of times that the time quota limit for hot regions have been exceeded.
+> 
+> Number of times that ... have been exceeded.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+I have no strong opinion.  Aveline, let me know if you have some.
+
+> 
+> Thanks,
+> Reviewed-by: Manuel Ebner <manuelebnerli@mailbox.org>
+
+Thank you for review, Manuel.
 
 
 Thanks,
