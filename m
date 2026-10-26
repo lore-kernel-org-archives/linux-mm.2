@@ -1,70 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D60606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 02:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408C6606A329
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 02:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=A4TATAUp
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=P3SRir8W
 Received: by kanga.kvack.org (Postfix)
-	id D64326B05B6; Sun, 25 Oct 2026 22:57:40 -0400 (EDT)
+	id 48AEC6B05B8; Sun, 25 Oct 2026 22:58:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3BA06B05B7; Sun, 25 Oct 2026 22:57:40 -0400 (EDT)
+	id 43BD26B05B9; Sun, 25 Oct 2026 22:58:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C78836B05B8; Sun, 25 Oct 2026 22:57:40 -0400 (EDT)
+	id 378C16B05BA; Sun, 25 Oct 2026 22:58:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A1D1F6B05B6
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:57:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A5FCA06A7
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:57:38 +0000 (UTC)
-X-FDA: 85363266996.25.EFFABE0
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A0797A0007
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:57:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=A4TATAUp;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 079BE6B05B8
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:58:02 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 87220140500
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:58:02 +0000 (UTC)
+X-FDA: 85363268004.03.7CCBD3D
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1F43F80003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:57:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=P3SRir8W;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf15.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+	spf=pass (imf02.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792983456;
+	s=arc-20220608; t=1792983480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=NzJdTpJrDb5R72neOAFckZsEzGBQ8VMj8qau5faLwV4=;
-	b=kmbxKQ7rlEd3SVsoT3T9R/PAl0DA61t2TPjZYpxnteEDaEKIJX/4XqQ+gjs9dnNCmBqixL
-	ZI3vag8FtTyPVxVeSkZ9UOwsh7+0u6Zs8s6uObfB3tnrUtYui2DlttvOzPhapTf3tzW+32
-	OM5aDn9gmzEcwaAxim6dF19GmPMNUKM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8M/3vq7XpKzMqLSjMclXqdhAjifEnbo76yvSfWikbsc=;
+	b=VdUD2zXnn/iygk5Yl2SHKampXUjPWNdXub5k23/WKGy3BpfUKWPsJ+GWYNU9aJ9ujgqXfH
+	Bt/ShsPWDMCS0DPs9JRIuruhIjp4+TxK3BNEizVMsKKqXJNJqbVyBdSocTSqPob1w2lka3
+	E1GFVHi0+earCF7KbyapmUhh1Hjo+IA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=A4TATAUp;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=P3SRir8W;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf15.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+	spf=pass (imf02.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792983456;
-	b=PttBKuxnk0GL4Rox/gFa80tUBd/dIFEXqZzXTF2bQnO+sjnAyGZBHGaRefXUeLGvYlJyGP
-	LFKBX08JCt4UAYtt25LQuYbVPC93jSfuX2nX7moEsFrO5o7wtnJIeiWx29FRfsg9XCeWqo
-	l/XF6eFQlUDQxSNu0k3RvFhzVGWsXxk=
+	t=1792983480;
+	b=cP8koKF79QO6p3MV/1m5b/dGnJxgbIm5e5uYnS2c5rjyjexTjqtQ69Ejf2mQ+4C3b0TEn/
+	W32P9hsknXusKPKRShEn5te29M9jYwQs1pohbmNilje54dcDvhQj2Ol8rSLsIoLOIiI/5R
+	p/q6uYwOdjme4U9pICi3bIcHH/gHrwk=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1792983453; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=NzJdTpJrDb5R72neOAFckZsEzGBQ8VMj8qau5faLwV4=;
-	b=A4TATAUpLx7wM35b9j7A15JDDeAOfpxrdKCNUtgnyJ+onSKyhoGmvlWiD4bWBDJEPuEENXl3lT3VDGAq0mkmClOZbzUdsTJO//B8pvzu+YGzVXqWFAfZiK0Q6q++IryiN6pnxpB7cEu9ZJ3alvDNWPR2j1pVW/fhwQOADXzH2h0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R541e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XDRaNAX_1792983444;
-Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XDRaNAX_1792983444 cluster:ay36)
+	t=1792983477; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=8M/3vq7XpKzMqLSjMclXqdhAjifEnbo76yvSfWikbsc=;
+	b=P3SRir8WmnxRe6H7KVhK8b1z3EO8un5dP6rKqgJLnXajWWayMXhTLq/s6/H6z61zCaqZCwitJAvlVQeo8y4Bl8Bo8Hcy3zDxGqc05uLKHsIE1SvV4pjj1eGYSn03ubAkU8ypdzG3BPAzmcy26ZIA7y8H4/D8JroVz+Z5nrsLb3E=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XDRaNKg_1792983468;
+Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XDRaNKg_1792983468 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 26 Oct 2026 10:57:32 +0800
+          Mon, 26 Oct 2026 10:57:56 +0800
 From: Yuanhe Shu <xiangzao@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
+To: david@kernel.org,
+	kaitao.cheng@linux.dev
 Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Kaitao Cheng <kaitao.cheng@linux.dev>,
+	akpm@linux-foundation.org,
 	vbabka@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
 	linmiaohe@huawei.com,
 	nao.horiguchi@gmail.com,
 	ziy@nvidia.com,
@@ -76,26 +71,28 @@ Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	xiangzao@linux.alibaba.com
-Subject: [PATCH] mm/highmem: refuse to copy hwpoisoned folios in the !copy_mc fallbacks
-Date: Mon, 26 Oct 2026 10:57:24 +0800
-Message-ID: <20261026025724.1430747-1-xiangzao@linux.alibaba.com>
+Subject: Re: [PATCH 1/2] mm/compaction: skip folios containing hwpoisoned pages
+Date: Mon, 26 Oct 2026 10:57:47 +0800
+Message-ID: <20261026025747.1432066-1-xiangzao@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <58cfeba3-a3c0-426e-ba97-8f82da5b1e8d@linux.dev>
+References: <20260928105805.1215770-1-xiangzao@linux.alibaba.com> <20260928105805.1215770-2-xiangzao@linux.alibaba.com> <99cbd960-439d-4672-aba9-6b49697db8b3@kernel.org> <20260929034123.2705745-1-xiangzao@linux.alibaba.com> <331b4e40-8d0c-4333-b2b6-b81e4c4b2e17@linux.dev> <877bjowf9i.fsf@DESKTOP-5N7EMDA> <20261020071600.3695395-1-xiangzao@linux.alibaba.com> <95a5ab94-5d91-4a01-a417-19f27aa91b54@kernel.org> <fbd5ae06-b6da-48f6-9c46-188fb6ba9684@linux.dev> <bc1b3255-99f7-49c8-bb52-bada6df80f72@kernel.org> <23d3756c-1a87-402d-80b4-c838dfc29f4d@linux.dev> <9da90d76-031f-4211-b9de-439cbf7bc63d@kernel.org> <49966df8-c092-40de-a05a-ff6d69382dd4@linux.dev> <e4c3ce3a-c19b-418a-a92e-40e077f1ea63@kernel.org> <58cfeba3-a3c0-426e-ba97-8f82da5b1e8d@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A0797A0007
-X-Stat-Signature: k63mmy9ra56gahhyhrkf18xg1nxi5j93
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 1F43F80003
+X-Stat-Signature: uwcow5g85yekfuxrfi4tkirfa9kz7f3u
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1792983455-453016
-X-HE-Meta: U2FsdGVkX1+sDbWZ9YiPLZM+AXs/v/Tp7btMwnZWLH7efY4dNSDok3579O3tcJXw1IhtqshXNEOrfTPfJ+BaQ0h96OABz6+9+lvBFwxMN/l1kb2I0S35UyK+2Ce5GESyCMJ1J9d7QwM4821/TleGdb2UcLFGfWiumz9UKk2yQLMIxtBVhtHqJii0vmsG0aNuAlloWwTwYX+7YTz5xPiom41VFV6EB8VT4MZPzfYmT4xS2XLYgmj7Po9k0EilLaY3nUafDYgd8DD5WxgOqtGcL5L1ZOiMokr7xNHpvSm7wzedThkpx07YSkCnMAvoWql7hsmlQtJvqZKcGDc91M0Ht6OhQ7RqGqgazFNCUIuzLbHa4F2EbjT9wQXZXFySp6V9BgxQxhu2eeqvQ661Vwm7vsDRv/GTzBVn5KVKCb2Xpsd1+F7wkjM1XuEFn+r7HmLN0wSacMslyRNOWduKAFm9msV8xc2OG1iYVKkF0IoQL2o1a40bAgkOzrlejWeUTi/2Ae28D5gv6mDQPwq1ush92lRW9HS87vwCxr3xZwJ82EiG9Yj3G2KtGomUEQ8VwaC9ZDcW/a/2VFzMrVu+db794Ln3Ko67IEHtY/fD1TAG4OoHtMHhglRIOnSeVcueEusaSOjJPHAid/1qOxzXvD7Q75pT7O4xGvw6VV9PhhmBZTRHCuQezGe4RDMwPs/ieAZRyJSuBJycCGrZVTV0y/A1ql0cdOR6pQYhfkUKOa7KpNnxUhm1Z+cRNTVSu632azN8hMJxeVFx+0bT3GfskTpoDI2Y8Uy0Viuypj7BzGTCrxYMH89Nq6S5xSHtFQMXh+eq15LkstpiaOL7/qLrZ6F1gl/ldt5aIDWPHgnd0wDeq+BKfSyV8lRx4GrTR7XzmySw5M0VlrK3hwqMJk1mjhM1b/Mq9ymucVtmxfB7vKK1CusslYQxeM8g8P1Jnj8UbwlQP6XGL63ZzT/bT8FW6Dv
- JEaI84Ca
- tLQMs8j8vaFp66jTlh18ynxUVr9Swx+RZCyBf/5kdBtP1DafeKZsHB1GsGddmRjnipXhuuFifJmiS9Mze3Olx5fcMNJJ3v1HeSc7lJ/bQ6oOWeJeZMo5G+OYLyVSEkE7YjHHkn3xQ5V0BZJcUX/8ukmM10UjaPjqLMo/pSFeB7goGQzlHxs/vkLkvWf1q28mPOZezWZMiHWxXfdDUsfZATJhLlap/UP4+GZTzHNsiUONTwGjitdDwAnPlriV+SRnCHmexNcYhJCMMWMpYoK/jeIvPaRrfA7gMSaQGD2phJ4mCADW8GDucFz+KJo6chNR4fVn6PmYn0DgBylk1EpiMJf9YAQk3ReSvR0GM3WCY6nkmKF0y5JnDLCCFcMBMIp1XRzC7UuXPMr72v7AoFUvLNj5BFO/qFxPXgGci0zLctfA02RLKmUo9lfM7Ng==
+X-HE-Tag: 1792983479-318010
+X-HE-Meta: U2FsdGVkX19Um5PJlTu9WxWxn1afWnytT28LdQdUNTeEWe6Mn8RPXYuhtRy+B+Sz6HEtaGg/by/OO3g34TGBhBXLbPd76ASld7NKq+hEb82BL7igcteZFDZDKLdSsz6RtBwtPwuRO6rBrjlHm1QUK+UTOtLwkrOsl+WzlVfmNuoF8X5UPtvD2SsGOiGLiD0oRj3pbJlm7UxAg9ddfxpOvFqJ7fA+bDqYsVDQ1RDdtNnr4NxU8feAppSYpkkPVfyP7AVIyeHQmCMHuYBYJZRSLMAk65JNiCqgnLH7cCTF5zMctdVxZeAGJX27RQ4DnbEiqhaBxbL2N/Uq6tPeT+ZqEgGyfbXmQ1DYinfxj1mpbKFO6mE4tgCgUeQQNfXbwGMeOP8DfSUR9mbXFtNIx0dLX2Y4Z88pnFqMUAbLdJVDEYr/uGdb18Bv0y/AOF4DeSNjY3E0+4gLII6lt3ARW5WIBTNKBeEge9Y202G/Ip2a+J4oUwVXXo3xfVlSIo5w+5F0qzrmZyVdnsEJX3sAeya4GuFWsWUzlkcItBZ6TWiOnQPG6tGtPXUzrgXR8gQAtwlzeQtgb9PHx35c+NdpTLk1TkJTDXdUWBRFGsnFK0nFPPkJhfH6hX+7lkUH8x9KBH16Vx4rWywx9yK8Bmvcq7KuzIMlsSB1lGK/XsdQwzkymLMNXTdW4p+MvZo+XZq/cKHT9YCG/z1EaOPn3Sjy66sWhy1PpfWx3WWVD+xezJN6vAY58QRgyPlLZOFsKwwQXjjI0qhR0azDdc2NRTPOI2VUaMOYSEwXk6mEKnhtIRQSQQUnpQDDx+c/GKc22+bRXVM6MgRxt8HosyG+Yv+eLO9SwPveA8SiyA8gN7E8pOevWa9sxvkJh6Qg5nFraAwwyAZjIBTw3A5T90xAb+b9tJ/u+Hw5Zo5FCpftsTBlB6pjEm716/jYOIAugc1oTY4LCYkX+d8X29RyFTHm1qD9tTN
+ FK46p5ob
+ m336kHAYMPJXgNb6C/4KVNMMXtvRkpphlfgCijCzYQ2mFLZCdengPk60BIIgMtD4MwcK4J3dsErrbdPNC5/DkSkCoJEeHNA21XFDdnpBrmzquKOvNNd4/fFNFWtbLAt4LBwzKWhSqT9WuVHa/6kUc51ttnYXjtwYioqA6mClbLerGo4lhdJnogcbecUexJznNmpj3cv5qTcb6z+4EJzO0TOJbizvwz6njZqzEQ8ammNASvacQR58mbVUvirUPwKiX1TPyIMcU4Q1NFWiMUGm2tL5Bg6MVOkdn0dpGWMY7ee8Fu8EzLHD+cgYBmdjmzKu/lW9MRHbCcEKmSHuKKpkTohrT9Gnx1HYYnrVfXyI2Uhh1O7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,75 +101,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Where copy_mc_to_kernel is defined, copy_mc_user_highpage() and
-copy_mc_highpage() stop at a hardware error during the copy, report
-the not-copied bytes and queue the source page for memory_failure().
-The !copy_mc fallbacks return 0 after a plain copy instead.  With
-PG_hwpoison set while the data stays readable - software-injected
-poison (MADV_HWPOISON, the debugfs corrupt-pfn injector) or a
-transient hardware error - there is no fault to recover from: the
-copy completes, the destination folio carries no poison marker, and
-the poison is consumed silently, the same poison consumption
-commit 841a8bfcbad9 ("mm: prevent poison consumption when splitting
-THP") refused to risk on the split path.
+On 10/22/26 20:39, Kaitao Cheng wrote:
+> Here are a few subtle corner cases I came up with. They may be
+> extremely unlikely to occur.
 
-Check the source folio with folio_contain_hwpoisoned_page() in both
-fallbacks and return PAGE_SIZE, the not-copied-bytes convention of
-the real copy_mc paths, so the callers take their existing error
-paths: the COW and fork paths fail with -EHWPOISON, KSM and
-khugepaged abort, and folio_mc_copy() propagates to the migration
-core, where this composes with the separate migration-side checks.
-On archs with copy_mc this code does not compile.
+Both cases set the flag while the memcpy still succeeds - that is
+the "how this makes sense" for checking after the copy: a check
+before it misses them, the recheck after it catches both, and the
+refusal is the same either way (the data is still good in case A,
+already bad in case B).  What no flag check, before or after, can
+catch is corruption whose hardware report lands after the last
+check; that needs architecture support, as David noted.
 
-The check runs after the copy: a check before it would leave open
-the window between itself and the copy.  A flag set before or during
-the copy is caught, whatever state the data is in.  A late software
-injection cannot have corrupted the completed copy, and a synchronous
-hardware error takes an arch without copy_mc down at the access; the
-residue no flag check, before or after, can catch is corruption whose
-hardware report lands after the last check.  Closing that would need
-architecture support, as discussed.
+The migration paths spell out the same placement and races in v2
+(patch 2, just posted), and the fallback patch ("mm/highmem: refuse
+to copy hwpoisoned folios in the !copy_mc fallbacks") is posted as
+well, with the races in its changelog.
 
-The fallbacks do not queue memory_failure() on refusal: the flag is
-already set, and memory failure either knows about the page or has
-abandoned it.
-
-Suggested-by: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Suggested-by: Kaitao Cheng <kaitao.cheng@linux.dev>
-Assisted-by: LLM
-Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/877bjowf9i.fsf@DESKTOP-5N7EMDA/
----
- include/linux/highmem.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index d7aac9de1c8a..f90f0c6204a4 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -474,12 +474,21 @@ static inline int copy_mc_user_highpage(struct page *to, struct page *from,
- 					unsigned long vaddr, struct vm_area_struct *vma)
- {
- 	copy_user_highpage(to, from, vaddr, vma);
-+	/*
-+	 * The flag can be set while the copy runs, so check after it;
-+	 * a flag landing later can no longer have corrupted this copy.
-+	 */
-+	if (folio_contain_hwpoisoned_page(page_folio(from)))
-+		return PAGE_SIZE;
- 	return 0;
- }
- 
- static inline int copy_mc_highpage(struct page *to, struct page *from)
- {
- 	copy_highpage(to, from);
-+	/* Same reasoning as in copy_mc_user_highpage(). */
-+	if (folio_contain_hwpoisoned_page(page_folio(from)))
-+		return PAGE_SIZE;
- 	return 0;
- }
- #endif
 -- 
-2.43.7
-
+Yuanhe
 
