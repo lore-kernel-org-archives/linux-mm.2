@@ -1,98 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408C6606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 02:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E44606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 03:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=P3SRir8W
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BL5h+qaI
 Received: by kanga.kvack.org (Postfix)
-	id 48AEC6B05B8; Sun, 25 Oct 2026 22:58:03 -0400 (EDT)
+	id 5D6DD6B05B0; Sun, 25 Oct 2026 23:09:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43BD26B05B9; Sun, 25 Oct 2026 22:58:03 -0400 (EDT)
+	id 560E56B05B1; Sun, 25 Oct 2026 23:09:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 378C16B05BA; Sun, 25 Oct 2026 22:58:03 -0400 (EDT)
+	id 4284C6B05B2; Sun, 25 Oct 2026 23:09:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 079BE6B05B8
-	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 22:58:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 87220140500
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:58:02 +0000 (UTC)
-X-FDA: 85363268004.03.7CCBD3D
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1F43F80003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:57:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=P3SRir8W;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DB396B05B0
+	for <linux-mm@kvack.org>; Sun, 25 Oct 2026 23:09:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8F6DB1206AD
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 03:09:44 +0000 (UTC)
+X-FDA: 85363297488.12.BFF2F97
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AED8E140006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 03:09:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=BL5h+qaI;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf09.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1792983480;
+	s=arc-20220608; t=1792984182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8M/3vq7XpKzMqLSjMclXqdhAjifEnbo76yvSfWikbsc=;
-	b=VdUD2zXnn/iygk5Yl2SHKampXUjPWNdXub5k23/WKGy3BpfUKWPsJ+GWYNU9aJ9ujgqXfH
-	Bt/ShsPWDMCS0DPs9JRIuruhIjp4+TxK3BNEizVMsKKqXJNJqbVyBdSocTSqPob1w2lka3
-	E1GFVHi0+earCF7KbyapmUhh1Hjo+IA=
+	bh=z+4adjsji42YunpnXzr153PsIW3465KG5I6YOnRXsyQ=;
+	b=bX7fWUx/QzE9YO+hCQgKGu3bLI0GLUXYOVBVwOWJA3CDR/yOqmOCNjUluJOiKsEnQEvVUM
+	uWOfEg//sexT7QuflVazR6fNbdVZejgW9bKBhC+ata66WQuCDz/6DSk5m3Vp4PC5Ht6Fng
+	5Frc0iesljPn1HtPGnnow5jhgVpNyA4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=P3SRir8W;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=BL5h+qaI;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf09.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1792983480;
-	b=cP8koKF79QO6p3MV/1m5b/dGnJxgbIm5e5uYnS2c5rjyjexTjqtQ69Ejf2mQ+4C3b0TEn/
-	W32P9hsknXusKPKRShEn5te29M9jYwQs1pohbmNilje54dcDvhQj2Ol8rSLsIoLOIiI/5R
-	p/q6uYwOdjme4U9pICi3bIcHH/gHrwk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1792983477; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=8M/3vq7XpKzMqLSjMclXqdhAjifEnbo76yvSfWikbsc=;
-	b=P3SRir8WmnxRe6H7KVhK8b1z3EO8un5dP6rKqgJLnXajWWayMXhTLq/s6/H6z61zCaqZCwitJAvlVQeo8y4Bl8Bo8Hcy3zDxGqc05uLKHsIE1SvV4pjj1eGYSn03ubAkU8ypdzG3BPAzmcy26ZIA7y8H4/D8JroVz+Z5nrsLb3E=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XDRaNKg_1792983468;
-Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XDRaNKg_1792983468 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 26 Oct 2026 10:57:56 +0800
-From: Yuanhe Shu <xiangzao@linux.alibaba.com>
-To: david@kernel.org,
-	kaitao.cheng@linux.dev
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	ziy@nvidia.com,
-	wangkefeng.wang@huawei.com,
-	tujinjiang@huawei.com,
-	mgorman@techsingularity.net,
-	chengkaitao@kylinos.cn,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	xiangzao@linux.alibaba.com
-Subject: Re: [PATCH 1/2] mm/compaction: skip folios containing hwpoisoned pages
-Date: Mon, 26 Oct 2026 10:57:47 +0800
-Message-ID: <20261026025747.1432066-1-xiangzao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <58cfeba3-a3c0-426e-ba97-8f82da5b1e8d@linux.dev>
-References: <20260928105805.1215770-1-xiangzao@linux.alibaba.com> <20260928105805.1215770-2-xiangzao@linux.alibaba.com> <99cbd960-439d-4672-aba9-6b49697db8b3@kernel.org> <20260929034123.2705745-1-xiangzao@linux.alibaba.com> <331b4e40-8d0c-4333-b2b6-b81e4c4b2e17@linux.dev> <877bjowf9i.fsf@DESKTOP-5N7EMDA> <20261020071600.3695395-1-xiangzao@linux.alibaba.com> <95a5ab94-5d91-4a01-a417-19f27aa91b54@kernel.org> <fbd5ae06-b6da-48f6-9c46-188fb6ba9684@linux.dev> <bc1b3255-99f7-49c8-bb52-bada6df80f72@kernel.org> <23d3756c-1a87-402d-80b4-c838dfc29f4d@linux.dev> <9da90d76-031f-4211-b9de-439cbf7bc63d@kernel.org> <49966df8-c092-40de-a05a-ff6d69382dd4@linux.dev> <e4c3ce3a-c19b-418a-a92e-40e077f1ea63@kernel.org> <58cfeba3-a3c0-426e-ba97-8f82da5b1e8d@linux.dev>
+	t=1792984182;
+	b=XeY6oX+cL/thx8LQJ0UpQMZC6JOHQnJNuA+wNzxoEyv9/oZ1AslfpMPWuSfe4PnTRpqC6H
+	qveKUmpSSkCf2rhLxYxfZQzGA3K4WTgf74zVYPrBsQCcRNtIYQ30xmTFtBRj2/W6nhzbnQ
+	VU+BHJA671moHO0XTHOigfjTSHsGFRw=
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3282db206d3so4950443eec.0
+        for <linux-mm@kvack.org>; Sun, 25 Oct 2026 20:09:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1792984181; x=1793588981; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=z+4adjsji42YunpnXzr153PsIW3465KG5I6YOnRXsyQ=;
+        b=BL5h+qaIfffb8YP2qD5s2kTAiW4jzuogJ1W2DEkaOcRd/bKZYQYUmMOShyHnJeXWTM
+         F7uE/nm7OJLkDHwldSVty6tEHI5XQfzQsXSQiQTVP/QpMiaEQc8pDQ/RWIwFCo8jJyQy
+         Jr+mou23UBDS9sWk3WAxMblrEqsNQkK46MjrM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792984181; x=1793588981;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=z+4adjsji42YunpnXzr153PsIW3465KG5I6YOnRXsyQ=;
+        b=2bMohsus+Qhge9E/zYrbQsjysRVP1sIShHeBM/B+xxefw7MVLea2HKl3U9X02VXwNg
+         2k39fyZForUJIUEjforNWY/Fc5T+7lAkcCzcQsRsv81F9vzvYnWSDiasIsW83tbsuj/R
+         8KZ8RJLXxRlENR5BrbfJjVwGX0J0e9mz4zaV7Gqo+ryaeWDTc9WXWsI7fwYjzQ/1yttY
+         GSN83Zn30ct96okCwwld8EwO/1s0VrfpYyyeac3wq/5g1IIhSA2LkTpcxQsiDO5HCLtF
+         nH7ldG8H+SbHbKT4XbJKY4bsjhF+jU2y/PwBqUW2XRZcHGeLQjAkT4bs07Mde75TF3Fz
+         /7tw==
+X-Forwarded-Encrypted: i=1; AKwUvBzh21F4sgbl/SOt1Em9DwOS/hcVvlxt0t/megExP+IKfW4bFRsAGsRFleuyDyfftJzUwDFDkV3dpw==@kvack.org
+X-Gm-Message-State: AFq9FYLPejOM+2Kx7zLeSCy6yKq+P0YsED4LkgvD52l9cJ7GMKkQba57
+	Jk1CL8TrmUxs/COYbPSd+tFj3qW/0ppcRDcoIJ019kqWhs2JZ1TOSMYZX1qOPHsc/A==
+X-Gm-Gg: AYBFou2ElJETMn84vRZQZ1yWPXxwIVs7IrHYOewY7+S8uDDX8BT/ipclmwScEDPNRcv
+	ccFrpP+4GJxdBR8zjHgCZQDAwpD/GPMDY69oSYXM+GlBssoVVjwXXw1LfTgKdGslnm9nlF/fTrW
+	ahR02zDjpgexDUlJs6CMBaU2T93QYW067IkMO+T2cnbl4ZxeczL6EGva5uV/khD/8FdxVqvS9Ii
+	YMT3k1jTx02SWDfq8tUowUxfI98zsaoAdxteBmG95OCg4ue3FiXmD8gNCs4/I9ehnTAqKN7tth8
+	FHKU/wJybrn67WBWswWTwE/JffbRC1uCUM0fAUR145ZyKTRQPmrJgf760jbonohtd+gxKuUmyEx
+	PcFbOlRXBB+rS2sux+WKMbuQxz13Sb0TAV82/KDYoFxYZvJQsdKOK//tXc0vevHBvQ7g20SjnBF
+	vimjbqY5HG7mCOEk1V9l1RH/sjZZ6q+rk44oQpOoGdBsnL1vUqyF5WhTYz+jeUB/h1lua73SAeK
+	HvyeesAYq7qvdLCAOnrDjsy1nO/+HmGd5B501eCtRug88JtY84G+0jq/q4EOJR8z3nEZip/GDUw
+	MmlUSF/nZM3pfjGMEg==
+X-Received: by 2002:a05:7300:3d13:b0:361:39c0:c393 with SMTP id 5a478bee46e88-369e848a6dcmr9746177eec.13.1792984181239;
+        Sun, 25 Oct 2026 20:09:41 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:4346:aa6:8d90:326])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369f4164886sm13681062eec.7.2026.10.25.20.09.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2026 20:09:40 -0700 (PDT)
+Date: Mon, 26 Oct 2026 12:09:32 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Brian Geffon <bgeffon@google.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Barry Song <baohua@kernel.org>, Bo Zhang <zhangbo0325@gmail.com>, 
+	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/13] zram: split zcomp into separate R/W streams
+Message-ID: <at7ECnijIur1XOAG@google.com>
+References: <20261021024236.1787884-1-senozhatsky@chromium.org>
+ <20261021024236.1787884-10-senozhatsky@chromium.org>
+ <CADyq12xeONu-+YRP79KaH4XCsSrNK5DdoKw6T5YSEyW7Acxh7w@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F43F80003
-X-Stat-Signature: uwcow5g85yekfuxrfi4tkirfa9kz7f3u
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
+In-Reply-To: <CADyq12xeONu-+YRP79KaH4XCsSrNK5DdoKw6T5YSEyW7Acxh7w@mail.gmail.com>
+X-Rspamd-Queue-Id: AED8E140006
 X-Rspam-User: 
-X-HE-Tag: 1792983479-318010
-X-HE-Meta: U2FsdGVkX19Um5PJlTu9WxWxn1afWnytT28LdQdUNTeEWe6Mn8RPXYuhtRy+B+Sz6HEtaGg/by/OO3g34TGBhBXLbPd76ASld7NKq+hEb82BL7igcteZFDZDKLdSsz6RtBwtPwuRO6rBrjlHm1QUK+UTOtLwkrOsl+WzlVfmNuoF8X5UPtvD2SsGOiGLiD0oRj3pbJlm7UxAg9ddfxpOvFqJ7fA+bDqYsVDQ1RDdtNnr4NxU8feAppSYpkkPVfyP7AVIyeHQmCMHuYBYJZRSLMAk65JNiCqgnLH7cCTF5zMctdVxZeAGJX27RQ4DnbEiqhaBxbL2N/Uq6tPeT+ZqEgGyfbXmQ1DYinfxj1mpbKFO6mE4tgCgUeQQNfXbwGMeOP8DfSUR9mbXFtNIx0dLX2Y4Z88pnFqMUAbLdJVDEYr/uGdb18Bv0y/AOF4DeSNjY3E0+4gLII6lt3ARW5WIBTNKBeEge9Y202G/Ip2a+J4oUwVXXo3xfVlSIo5w+5F0qzrmZyVdnsEJX3sAeya4GuFWsWUzlkcItBZ6TWiOnQPG6tGtPXUzrgXR8gQAtwlzeQtgb9PHx35c+NdpTLk1TkJTDXdUWBRFGsnFK0nFPPkJhfH6hX+7lkUH8x9KBH16Vx4rWywx9yK8Bmvcq7KuzIMlsSB1lGK/XsdQwzkymLMNXTdW4p+MvZo+XZq/cKHT9YCG/z1EaOPn3Sjy66sWhy1PpfWx3WWVD+xezJN6vAY58QRgyPlLZOFsKwwQXjjI0qhR0azDdc2NRTPOI2VUaMOYSEwXk6mEKnhtIRQSQQUnpQDDx+c/GKc22+bRXVM6MgRxt8HosyG+Yv+eLO9SwPveA8SiyA8gN7E8pOevWa9sxvkJh6Qg5nFraAwwyAZjIBTw3A5T90xAb+b9tJ/u+Hw5Zo5FCpftsTBlB6pjEm716/jYOIAugc1oTY4LCYkX+d8X29RyFTHm1qD9tTN
- FK46p5ob
- m336kHAYMPJXgNb6C/4KVNMMXtvRkpphlfgCijCzYQ2mFLZCdengPk60BIIgMtD4MwcK4J3dsErrbdPNC5/DkSkCoJEeHNA21XFDdnpBrmzquKOvNNd4/fFNFWtbLAt4LBwzKWhSqT9WuVHa/6kUc51ttnYXjtwYioqA6mClbLerGo4lhdJnogcbecUexJznNmpj3cv5qTcb6z+4EJzO0TOJbizvwz6njZqzEQ8ammNASvacQR58mbVUvirUPwKiX1TPyIMcU4Q1NFWiMUGm2tL5Bg6MVOkdn0dpGWMY7ee8Fu8EzLHD+cgYBmdjmzKu/lW9MRHbCcEKmSHuKKpkTohrT9Gnx1HYYnrVfXyI2Uhh1O7s=
+X-Stat-Signature: njjrxf157rkh991nuz5rxxymq7bn67do
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1792984182-565488
+X-HE-Meta: U2FsdGVkX19icbAG/u3ri7uZW3A/N3HGKUDaR85QZBGsrYSdqqMRTZI5/2Zz29255DafMnXE7bw5+wSlGOwXO8O7RTfY6Vo9F9UklAjjijegLEKSCbja6CxmKbwkLKJgnWrs1gQwrKj2LksB/rbqcPLCum9pPU3JyA6S23d8bInaLqDozUGU7JaJXKGLJBTE0DCEL9xhbEMd/dEEnHMF5ObmMXaJ/1tQFh3PvFyA+UBCV3cpRRxOX2+Aw0NuhpNg4pY67jdJugiF1q0aqdtQWx2qis7SSQWDx7zr8tjPtTUffLhl14Cs2Q+Woks1sMEz6cUo5Dh6NxAGlNlHbFXcOSUie/Gmc82BCsRHapNXMESBAJ5dsDFm8htXfx4HZpg7L3l4zsbzRHVFEZU82xOSESwoqK8LJv6dWKtfBBqxY46mN5UOYRG0IIU2ZANVqJJYP8063lxhlDrHuRbHJDfALoH/Lipqv8fg0UAzL0O7HrKsV6O98BiAnnHjF0+NTo0chsfOwoPURS9aiDZHdISCgqIaQc3W2fpZ1wsTNw/L1W3WtdgB/ePacxSP1aQ+fwJ4W7Ism6Xb8Po2DiFnY+GooER9SmbDVekLvEdVP+OJlW2DUjf4x3zh9Tw25iAaTC4cYHhFAKD5XpF48xzgQb7tmBJu6ziCFP/X1xWHGSe8VwBV02g2GYBgJfmpOg/OmwrWCljYV473MEPIUWTI0Q6Jg0i46c14MCH9hGf06YtD20/aPdV7bINE/LOCUNRD0jqNqkpP+rbXt2paUgg9EFmkaXgBd2ggRf1J8OinH35YWBOYE66rw4zyBd83GXfHD5eBdobjJOTRfzw7+LUif9UCnBvsvCqHVTrJnh82QNWS5DE/Dudgf5lPvo/THpbgdn2fA2I/ABxBCmVTB01389MOiM6UOCshjt+77Q6/7C2bKFVR5n3kIJcamE9opbxSi8K4dgyxshbX+/qXEWQcFS/
+ Z+BpBr+h
+ zIsvSBAWjXicebnAGCSHPuv9fuyt/GKfsdEJLB26oXtqKbPLTmSgvKvBXETNm1BnkhgQH9EbVKXEElfImsHvA/IJq5ocaEDy267xrJn3A5PXMBlrE1WrfHCirFNAq6xN4pFFpM4ui2Ajn0rmxgfhFbu3G5NIicmDxSceoXG2tMEQt7mtHTT0XdACgpD5o8k3u23FauXKENthE1GhnZhBo6vRfaEailTMsVk7SZX7XHdITMCikDdP6bJLm7FO4G8lgrbHiWuydL7BuDZtrYaJfUcWpXRdd/+SryG9WeoTo/rHeo+pURKDrvVdNAM1rK8SvXPs7y2Tu5lkWGAhyU6ZdFbJ5D46oT5hvUfWCwQq1DNijl7Jr1hcTFn49o3DdyCjPLzERLoq3BPGBoCAeg3Yejg1UJ8RFKpvUhS6Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,23 +126,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/22/26 20:39, Kaitao Cheng wrote:
-> Here are a few subtle corner cases I came up with. They may be
-> extremely unlikely to occur.
+On (26/10/23 13:05), Brian Geffon wrote:
+> On Tue, Oct 20, 2026 at 10:43 PM Sergey Senozhatsky
+> <senozhatsky@chromium.org> wrote:
+> >
+> > Split struct zcomp_strm into separate compression (Write zcomp_cstrm)
+> > and decompression (Read zcomp_dstrm) streams, and split zcomp_ops
+> > context creation/destruction into create_cctx/destroy_cctx and
+> > optional create_dctx/destroy_dctx callbacks.
+> >
+> > This decouples Read (decompression) and Write (compression) paths so
+> > they no longer contend on the same per-CPU stream mutex (Writer vs
+> > Reader priority inversion).  Currently, a (low priority) Writer that
+> > holds the stream mutex can be preempted by a (higher priority) Reader
+> > on the same CPU, which then blocks on that mutex until the Writer gets
+> > to run again and releases it, which can take a long time when there
+> > are other runnable tasks on that CPU.  The good news is that Read and
+> > Write contexts are completely independent - compression uses its own
+> > scratch buffer that decompression never touches, and decompression
+> > uses its own local buffer (for spanning zsmalloc objects) that
+> > compression never touches, so the Read/Write context split doesn't
+> > noticeably increase memory usage.  In addition many S/W backends have
+> > stateless decompression contexts.
+> >
+> > A quick synthetic fio test for Writer vs Reader inversion on 24 CPUs
+> > (preempt=full, zstd, 48 low priority (nice 19) writers, 24 normal
+> > priority (nice 0) CPU hogs and 24 high priority (nice -19) readers):
+> >
+> >   Metric           Base               Patched
+> >   ----------------------------------------------------------
+> >   Read IOPS        207k               1,150k        (+5.6x)
+> >   Read clat avg    101.50 us          7.76 us       (-13.1x)
+> >   Read clat stdev  5,615.90 us        30.78 us      (-182x)
+> >   Read clat p99.99 258,998 us         111.10 us     (-2331x)
+> >   Read clat max    1,342,600 us       11,217 us     (-120x)
+> 
+> These results are awesome and thanks for exploring other options. I
+> agree this sounds like a great path forward.
+> 
+> >
+> > Suggested-by: Barry Song <baohua@kernel.org>
+> > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> 
+> Acked-by: Brian Geffon <bgeffon@google.com>
 
-Both cases set the flag while the memcpy still succeeds - that is
-the "how this makes sense" for checking after the copy: a check
-before it misses them, the recheck after it catches both, and the
-refusal is the same either way (the data is still good in case A,
-already bad in case B).  What no flag check, before or after, can
-catch is corruption whose hardware report lands after the last
-check; that needs architecture support, as David noted.
-
-The migration paths spell out the same placement and races in v2
-(patch 2, just posted), and the fallback patch ("mm/highmem: refuse
-to copy hwpoisoned folios in the !copy_mc fallbacks") is posted as
-well, with the races in its changelog.
-
--- 
-Yuanhe
+Thank you, sir!
 
