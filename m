@@ -1,89 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD31606A326
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6954F606A31E
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ip6XgOhe
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JhmotoTd
 Received: by kanga.kvack.org (Postfix)
-	id 50DC36B05B4; Mon, 26 Oct 2026 10:11:34 -0400 (EDT)
+	id 919806B05B0; Mon, 26 Oct 2026 10:22:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E7846B05B5; Mon, 26 Oct 2026 10:11:34 -0400 (EDT)
+	id 8CA106B05B1; Mon, 26 Oct 2026 10:22:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FC796B05B6; Mon, 26 Oct 2026 10:11:34 -0400 (EDT)
+	id 7DFE96B05B2; Mon, 26 Oct 2026 10:22:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 15EEB6B05B4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:11:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 862D8C0756
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:11:33 +0000 (UTC)
-X-FDA: 85364965266.17.F6E37C3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EE2BF14000E
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:11:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ip6XgOhe;
+	by kanga.kvack.org (Postfix) with ESMTP id 5B18D6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:22:54 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DF1B3C0761
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:22:50 +0000 (UTC)
+X-FDA: 85364993700.09.C378663
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4354218000D
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:22:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JhmotoTd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793023892;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793024569;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b1z6uUx4ZdMo2N5+aoAcDCMioFr0x+B/lAmEEynuZSk=;
-	b=ReiMZnIoU9qJdb+VInS59gJxMUz0W6TniOXgmNdFSLgWcpFYwhdQEoncfxHk9x8/h4I/jN
-	LBK/d3a9cgqZmoK32Wht1B6nb0kVy588gtrRqxJV7IXbboqRuLtRugmWlul2yOB9rWuj1E
-	qspnFCFRseiQaAoAoz1h7TxaLWXQDxI=
+	bh=aKt6+bsKfLK53L2GaRA3WWqLfNzUo0lW3V0HdvcPXJI=;
+	b=YqZgkhlxcIfRF4Va2fAaBx0417Q9cnObmu+DlqHFHQUORaEYmavPpkgK2kTM7FZsTLIixs
+	7r1X49sDrsz3px9IB4Zd/iGgV2lilMHhznSzQ/uCK6c/4dTBL7qTCBp8i4ddzZwk6PpiXT
+	3jt+Mbl15Krk+3co4kjUKEcMTcQwtXE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ip6XgOhe;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JhmotoTd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793023892;
-	b=mwAuBaSTLxF1va5xchaxy3OQ4YH75z10CW5wW0uQCk80VZwQ5kdnmKd+F5y5q0fNsZVVRf
-	2+TVJcKlDAZijCskCg6CSSV2NQ26AfO4laSOpUPK9ItBP+fuv+7xRnh756WfrQ1ItTK2bG
-	YnrD/J8laZnx9NZunFym2qrHJWhWygU=
+	t=1793024569;
+	b=kEAskauMMZ4rMoHQPm29EalOiUHTrrex2WH1y95mZpOwmzLx2yDGu34whRL8QzkB0e0TjL
+	k7Sgc6QTvNUEedGO2UwtArz4ViBPBFCHffzY5ejkiSHygOPvL+OUf9RGgu9Y1S7aPVrffF
+	VUz3CQYdGGTZpAnAdOyMK4o0MlzAJ+k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 74C48600CB;
-	Mon, 26 Oct 2026 14:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F2E1F01828;
-	Mon, 26 Oct 2026 14:11:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2FCEB43DD2;
+	Mon, 26 Oct 2026 14:22:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9813F1F01825;
+	Mon, 26 Oct 2026 14:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793023891;
-	bh=b1z6uUx4ZdMo2N5+aoAcDCMioFr0x+B/lAmEEynuZSk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ip6XgOheGZu2j4YrE8jAzgPZ+SjimhRitLbh3QzOKUEj+yEGJFz5C1OwMD3qz+TmB
-	 GelXorRMy2PlR5g+G2HF3N1AmCrdiT31xCq9bxJM/fbDMc/Z0EAqk//AnJrRD1Fi+O
-	 Q7UPbG7iR7uTHL+kxiI2b93UptBMFo4pX46xpWl3XEnKG4PzmZVSGTymS9keFynLoi
-	 h2/DtRx4PzAoC2mXfQEiUwcgChce9ee0M45wTnCnt90NlorIu0e8rsebicIhPndvqN
-	 SvXAJDrUqSYKmoDJ4UUF3806BPUYOV+3jl+qpJRRjZtkBcClc65W2hEFdmJCl5JMR0
-	 rCNc8R9OYEA2Q==
-Message-ID: <sashiko-outbox-185379@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 6.12.y v2] mm/damon/core: error
- damos_commit_quota_goal() for zero target_value
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "SJ Park" <sj@kernel.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
-In-Reply-To: <20261026135555.149244-1-sj@kernel.org>
-References: <20261026135555.149244-1-sj@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 26 Oct 2026 14:11:30 +0000
+	s=k20260515; t=1793024568;
+	bh=aKt6+bsKfLK53L2GaRA3WWqLfNzUo0lW3V0HdvcPXJI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=JhmotoTdkwlq5uP+ikQwsrku1uYQ8w4CrgqDBBQGrnSQ8fncJUV6Sg905Qdo1IWoS
+	 5RyHMQ7joXXGnvEG/1EEYSGiS+fLiKMyOC8UeUvJQZDWmT+oo0byF9GStp/mEVtj5E
+	 ChnLqvVcXxkRNtJxnlqXq4hdQhEBH/HXm1MRVUSwBiRAhXMf5D/fnqlFHX2ADL6hI/
+	 +qHBoI+zrEtXkaf6vly/J70BbMg6yeiklwe2d7rqLCbTkhql199+pp796ACDzhd/9v
+	 B5ceaRbvY0LkNByK5/2141SWcFvqID77OmSGU2mRIkLCzh3iZzeWxIqW8xyeft5E08
+	 jl44bha+xgC6g==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Chen Pei <cp0613@linux.alibaba.com>
+Cc: rppt@kernel.org,  pasha.tatashin@soleen.com,  pratyush@kernel.org,
+  graf@amazon.com,  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kho: Skip zero-sized bootmem areas
+In-Reply-To: <20261026131851.9942-1-cp0613@linux.alibaba.com> (Chen Pei's
+	message of "Mon, 26 Oct 2026 21:18:51 +0800")
+References: <20261026131851.9942-1-cp0613@linux.alibaba.com>
+Date: Mon, 26 Oct 2026 15:22:45 +0100
+Message-ID: <2vxzld7kpmmi.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EE2BF14000E
-X-Stat-Signature: 1jdy83ihiab77rf94r6a6gmctafqtow4
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 4354218000D
+X-Stat-Signature: fph4xcszjesmde88g3m94f4u51ye3g8o
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793023891-934196
-X-HE-Meta: U2FsdGVkX1/UAGeYewMUUIEMZHJjtnbOhGPXOoWa8zd4kMedD3ef6QD3DGs26jM8hy7MdbiIlkogRUJruCZtsyuJ0B9TFasxwe5b+5pZiC3lihUwxrFzIK8EUM/rXfNzof8dXsFO9LWuZfJBXxbVTTfbAtlemkM+6ydL2QjL5+/Gi4R75xnci/ea9mZvnwbIKlS/L0u947PgIzcVx4dHL9Btth2NTa3ISzZqnzrXTBRyJejdXEJwXuwxZzGd7N9tAdCPbIJbHioZIcT2pFSg58RQ44FH/XgTmCoTV+zbvmNJWYoTg1/ZTb8SRbp+buzZD3e8iM/9Oc7A4+PCUHx+r+z+8j06zf+Of+26Ks/iVxM2b8exF2GTW73YuAVgPLQWIK1k5XGQY99Oipupm4BJMI7G8JxOOI0MUm+NEKjTaYuRnyr5FYUWjGTlj3GpiuzNa8yeCKk1lj6YVZU8n1nLGdKQr8HmNjv+gIpz/qdnNMVnWgTvhmUbqCw+0iz3AFLUuMBJUOjNLBYQtW5uvHIIc/SZD4Se1PisavDCLfNuWG7CtSvp71NQ4Ps0LfjuOozS3Fb11PQ4+9uOwMQX1YwPDPGZFBZighdTqP4g5P317StlBB+/BaOH66NoHLdMHlYp+5y2aEPlelCWcxgZ4amwIjdAW+/JVFSbnRKG4cxROSS1xL5jbpz9s1ZHrZTN0zoDBxBudBmR017Nl/Iy6JyQlCxcUxpJQKVBN6Qzr2qT/LDAW5REjWPOmQKWXCd8HNtG43SMxzISfP5dOAuPF4V8ol9q8GNFZc5YaI5f6NAsPob9dheb2H/ZS4qWqg+o/zkC10FwXPnXXyGYbv7eulG35G4zKnj6HZ0Xo8Yhv6y+Y1K9To0376s2+wqJidZlGkUHRxK3Y5MMpg+onQWwqNwsW0K9XFoYOVxcFXLlGeXEwBs9IEVT+IdmAPGMuiD2nCgG5+jZkuBDYWYhq4wfC2R
- N/hfy/tI
- BIG0lg+dq7cmZrFbsDDXB8xic7xB7EEoPFx3ZLLczHxi0cwGS/qU/zPuwL8l0DzEK866DmajAxw2hzt2uQkU4TNbxNFAur6sixomonq47upbdzLmMLgVmteeGuIC5qQAMv9qwChdlPki4TYSXmQG2o7uXyI2dLtBMaXQH93JESfUHoRLa2tjK/3CsAspdS5150sDxLB1NvJhak1pODafmu53j1BdPfcNlffmWLsmCWalcudfPUTCE5GddDRq20l7baCqlD2VD3V1o8Bb2Se9an8vITvNuoKq4p8hKhFb/8ngc6LGF/vf95LgVxaFrWMfNh1qwsIkqUoybrkOy88/iRk0ZfcYxWjvVw+5wHhpcQ248jCYD33v5QA8NAnmLRTh7EGaJCg30wVM5ZpjzWiQq2DFS2USFUg8EBbGVqkV5BQlUIfQ5sl2NVqYQ9nPSp+NnNRM1HjxWwd9EHbIPsUtXbbDNtH/4FeLqXInjCN/mUCouat5QHvLuu5JdvpZEzCZsuVPKe/QXkPzSYSD6o5vAb0AZrTsL6uNecoMDt89GWU5inOowAT371rlgyU71KhSbVBS4xeZX18f2WtHH4Xo3ZqzG/hOU34fBnvII6d202GC7Fm9a71N9y25ljFw9A+Mnb34X
+X-HE-Tag: 1793024569-685156
+X-HE-Meta: U2FsdGVkX1+4rACSQ0Ddq/NAp2wdZlmylwsS6KcqdLgi9iq4GOvqF3OxHqp4l1qF/UO3jKPnhqHaaE7zxbhdV8yv2IVkAYf663qHmrB3vH6P4OffClzwO6gJd1lSJVdIlTSe02LXwxT/MJmC4nf/A8VFxzE4Fe1iKfg+p5+1UH1j1SFQR6BRqNDmyeKInZiki72LRe55wuCFgDRP1OxN+IAIF4iJZVu8qQf1KEd7on+6OWr4lP4XMdxLBYBKn5tSUAUMnQsWSEN7/IpsJMg2DODoYyTbDSmbPrfUejeWiW4nB7EpBd5Lzrg3iqARYv4udoQPhKi2lm0tHVfbI45Tsb17U9hcqTc4pW01EIuuhYY5jwqOwnKlehRRTKC7XwnR4jFLzuo9iE2Q0A7okBCBsR1qCKvqD2faUMtVfsZJZTmnSf7SlG8e2EcNPA30dtXVIiwhI4wwG8TtTL44jHRm7h71jTr1tUOnAnC5vdzYv5qcu/YLJBhT96qQ05dzWYjM+VteejNR8qR3RnliFnGllVJmQ79KNaVIu0agHkGf5eDc/chpOeZETH6VzAw7unVSob/zNOnfbHXO+7Yv52/tg/Z0ei5sWioU/xN/5ztkNw55Z5eig78yUjZsn65Od5PmaoHR86PMLUxHuwvc4DcdB1AOS79UN0GAdsEIlxNWJ+E01RLqPFIIkoJvPdkpCCorAQnELaGXzIAbRzAAZHC7Ha0CvNOtOgN64BpLzAjX23chR4H+OZjUjCocWLLbCryPgMw0Hb013VWmhQKLP0RYJ4+4xyK88fGeJQzSghnLIRuwsveO08SwaiRe1EH5waXQsHCeXQOc8nShTvHuoPdnUlABSsN6NxbLrErxoWyqqsMy5C6R1L95a6zO/jSIBV5rgJg74G9QHE2ZFws7D4Nnvoc2y9nnNx5l+M0tcn4kckR/Xocp6JOZ4UqmniN99t8u5pZ48j12o7eFI9I8yVU
+ HL3+8nhm
+ k5fpkKXiSNKosHszJJ+nI6X6AgodUgd/CQwMgjZusWP0hYWS9hKVGXzQOD9SGfp9QcsY+tRWIxeQ+IelYXGUcfhHY3SKgBlYkJ2/N0U/raIjlwBxm/SR92U0lqb/PoHp+UtKeK49weHamSHgYJY4j7wegLD/MFXDmRx6xjnRZ0AJES/ehBDsD6sDIXxbd1WM1x8IKaY3f5GboIU3a3PdSER9LgDafiIzv8n70jsGDv6aQlq4mBhyu74WkZbN4QK4lD8pH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,120 +95,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm/damon/sysfs: pid leak in damon_sysfs_turn_damon_on() on inval=
-id start ctx
---
+On Mon, Oct 26 2026, Chen Pei wrote:
 
-commit dc23c827b1a01b5ed768b0a218bb6a67def40106
-Author: SJ Park <sj@kernel.org>
+> The lowmem and the global bootmem area are reserved unconditionally,
+> while the per-node loop below already skips nodes whose size works out
+> to 0. Either can legitimately be 0: the global size is the scaled total
+> minus the lowmem one, so it is 0 whenever all measured reservations fit
+> below ARCH_LOW_ADDRESS_LIMIT.
+>
+> Reserving 0 bytes still succeeds, so an area covering nothing gets
+> recorded with a valid address. That is not neutral:
+> kho_bootmem_overlap() reports an overlap for any request straddling
+> that address, and memblock_alloc_hugetlb() aligns a request to its page
+> size, so a 1G hugetlb allocation retries a free candidate on account of
+> an area that holds nothing.
+>
+> A machine whose memory all starts at or above ARCH_LOW_ADDRESS_LIMIT
+> hits the other side of the same code: the lowmem size is 0, the range
+> below the limit is empty, the allocation fails and KHO is disabled
+> although no lowmem area was needed.
+>
+> Skip a zero-sized area instead, as the per-node loop does. The
+> descriptor count stays consistent, as kho_populate() derives it from
+> the segment length that kho_fill_kimage() serialises.
+>
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
 
-mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Do you see zero sized lowmem or global scratch in practice? If yes, how?
+What's your setup?
 
-This commit validates that DAMOS quota goal target_value is non-zero in
-damos_commit_quota_goal() and damos_commit_quota_goals() to prevent a
-division-by-zero error. For the stable backport, it also adds
-damon_sysfs_valid_start_ctx() to reject zero target_value before starting
-DAMON in damon_sysfs_turn_damon_on().
+Note that I already fixed this for per-node areas since those do end up
+with no allocations with movable_node set [0].
 
-Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
-Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
-Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
+[0] https://lore.kernel.org/kexec/20261014131547.259138-1-pratyush@kernel.org/
 
-> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-> index 5aa23c6545cb8..2c8749b62c621 100644
-> --- a/mm/damon/sysfs.c
-> +++ b/mm/damon/sysfs.c
-> @@ -1497,6 +1497,20 @@ static struct damon_ctx *damon_sysfs_build_ctx(
->  	return ctx;
->  }
-> =20
-> +static bool damon_sysfs_valid_start_ctx(struct damon_ctx *ctx)
-> +{
-> +	struct damos *s;
-> +	struct damos_quota_goal *g;
-> +
-> +	damon_for_each_scheme(s, ctx) {
-> +		damos_for_each_quota_goal(g, (&s->quota)) {
-> +			if (!g->target_value)
-> +				return false;
-> +		}
-> +	}
-> +	return true;
-> +}
-> +
->  static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
->  {
->  	struct damon_ctx *ctx;
-> @@ -1517,6 +1531,10 @@ static int damon_sysfs_turn_damon_on(struct damon_=
-sysfs_kdamond *kdamond)
->  	ctx =3D damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
->  	if (IS_ERR(ctx))
->  		return PTR_ERR(ctx);
-> +	if (!damon_sysfs_valid_start_ctx(ctx)) {
-> +		damon_destroy_ctx(ctx);
-> +		return -EINVAL;
-> +	}
+[...]
 
-[Severity: Medium]
-Does this error path leak the target struct pid references (t->pid) when
-damon_target_has_pid(ctx) is true?
-
-When damon_sysfs_build_ctx() constructs ctx via damon_sysfs_apply_inputs() =
-->
-damon_sysfs_add_targets() -> damon_sysfs_add_target(), it acquires a struct
-pid reference for each target:
-
-mm/damon/sysfs.c:damon_sysfs_add_target() {
-	...
-	if (damon_target_has_pid(ctx)) {
-		t->pid =3D find_get_pid(sys_target->pid);
-		if (!t->pid)
-			goto destroy_targets_out;
-	}
-	...
-}
-
-Because damon_sysfs_valid_start_ctx(ctx) fails before damon_start() is
-called, kdamond never runs and ctx->callback.before_terminate
-(damon_sysfs_before_terminate()) is never invoked to release those
-references. Calling damon_destroy_ctx(ctx) invokes damon_destroy_targets(ct=
-x),
-which frees each target without calling put_pid(t->pid):
-
-mm/damon/core.c:damon_destroy_targets() {
-	struct damon_target *t, *next_t;
-
-	if (ctx->ops.cleanup) {
-		ctx->ops.cleanup(ctx);
-		return;
-	}
-
-	damon_for_each_target_safe(t, next_t, ctx)
-		damon_destroy_target(t);
-}
-
-In comparison, damon_sysfs_commit_input() cleans up an unstarted context fr=
-om
-damon_sysfs_build_ctx() by calling damon_sysfs_destroy_targets() before
-damon_destroy_ctx():
-
-mm/damon/sysfs.c:damon_sysfs_commit_input() {
-	...
-	err =3D damon_commit_ctx(kdamond->damon_ctx, param_ctx);
-	damon_sysfs_destroy_targets(param_ctx);
-	damon_destroy_ctx(param_ctx);
-	return err;
-}
-
-Should damon_sysfs_turn_damon_on() also call damon_sysfs_destroy_targets(ct=
-x)
-before damon_destroy_ctx(ctx) here?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026135555.1492=
-44-1-sj@kernel.org?part=3D1
+-- 
+Regards,
+Pratyush Yadav
 
