@@ -1,110 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DF1606A31B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883AC606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EUMUGfJy
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=eCinZKry;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=c7Cedkm8;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=eCinZKry;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=c7Cedkm8
 Received: by kanga.kvack.org (Postfix)
-	id D22FD6B05B2; Mon, 26 Oct 2026 17:33:58 -0400 (EDT)
+	id 96E7F6B05B0; Mon, 26 Oct 2026 17:49:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFA896B05B3; Mon, 26 Oct 2026 17:33:58 -0400 (EDT)
+	id 8F8D66B05B1; Mon, 26 Oct 2026 17:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C10106B05B4; Mon, 26 Oct 2026 17:33:58 -0400 (EDT)
+	id 79B676B05B2; Mon, 26 Oct 2026 17:49:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 90C576B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:33:58 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 820EEA84EA
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:33:56 +0000 (UTC)
-X-FDA: 85366080072.22.8100A08
-Received: from mta1.migadu.com (out-115.mta1.migadu.com [95.215.58.115])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 37C5340003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:33:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EUMUGfJy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CA256B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:49:19 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF93D16083E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:49:18 +0000 (UTC)
+X-FDA: 85366118796.13.2130E1C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 52EB7A0003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:49:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eCinZKry;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7Cedkm8;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eCinZKry;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7Cedkm8;
+	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793050434;
+	s=arc-20220608; t=1793051356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dz35/3AuvDO18S1ap1WD5Da+psq9zQUaDV9gOjeP834=;
-	b=JVEMOKa+AB0VmLchANDB/Adzc1gm8A3GjxkbovVyYXseqQ/0JkniSVuY6VOZ/G/8+Nk+j6
-	TXtexwSRrGVoIm3Wxw7HoKDW2NcQusc1SK2kpTIXdnIJCu1NdJn0N0ZvmxiIrA/95QofJS
-	VO7uX5c5GBrmMUCzcJZ18eOQT0D+08k=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EUMUGfJy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
+	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
+	b=w/0xDQmEIjh0RjJ+oC/jhtZelFH5dXcq+XcTq2tLDOGTQdK1BdgkDIUx2ZsHWWTd7MTX0y
+	esaWElN6fQUiHX55ZwI7qhllbdfmwDCqJBNcNcm5cKrfy8s2yaEPmzhWFYRUg8OWOtfvJm
+	4+QUUJVkdQZ6+cCO45jDmqaEBbcd10Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793050434;
-	b=7xOQJEx7t8+d4Gk++GaoKcs5S82VwPkv1FPuFOg6fus3RO5VR0c8qaP+ng3RWkWUWX7ngD
-	uYTLN76GwzTP0qXc5wlHF7v/jo0VqoJpEOttd2vlPUDZvzaaZV3y5ZUGKiTSwAHt93Tp5s
-	HZbc8XmsC4w0IzClhM606gQjYuN1v4U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RhJVRUhhLZt+aePS7fCAUtL8lWa14lc3+sdZ/JP8HZw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793050432; v=1; x=1793655232;
- b=EUMUGfJytvdpOG0PIQz5BaNE7I4aLO63MuJHXueRJd0aP53cD0ZnyLnfI6Ub5CnQkHFC7l9d
- PorKV4TDXTyACJYzU8y8mJSewGi+3z2tZH9zLSrhpXzEu8nLLRnYr5gsDLvcfB3IlUG81/SjY/+
- DFO12jUjzYF+7FUrfYGV2cm8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 34d1e3635c42cd72;
-	Mon, 26 Oct 2026 21:33:52 +0000
-X-Mizu-Trace-ID: 34d1e3635c42cd72
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <a4dfbe84-aaf4-4711-8eac-6455470d1e7d@linux.dev>
-Date: Mon, 26 Oct 2026 15:33:46 -0600
+	t=1793051356;
+	b=q+nD/qw8/uvD8HC5KTqqHXZRS2o0xYm84y7aM8jbimphcYriUDh76taeXldw1WcCrrbsbk
+	KWljmCQvI1WSSK9IdZHdd9dKFh2evF/vmzQPMfBKFCvCzRbH/eo7DBi8HDxBX0YUZcWXa+
+	ul7SspustuFgkr7R8UH7haZipls88+w=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eCinZKry;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7Cedkm8;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eCinZKry;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7Cedkm8;
+	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9F2381F395;
+	Mon, 26 Oct 2026 21:49:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793051354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
+	b=eCinZKry9BdBG2Tuub+XI9hK94YcOOBUoAy5NiqDtrxCIfhiDCpKBYosrzHbGoQPdqVcVF
+	/qUyW0flh+XLgtYLcWFiEdoa2BT99gfRo3PcAl738bcEs9klDFkXP6z2X4Nbo/EaPFu13F
+	/G1VPtqe+OHGGNMTOwe+xOIuqM2+o+Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793051354;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
+	b=c7Cedkm86DrLmBhaRecl63q8E2NQXs91lGx1midza1J1rGGNKflLD0QKxcMpGk83nRyC0X
+	IUBu035ZLkrDe3DA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793051354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
+	b=eCinZKry9BdBG2Tuub+XI9hK94YcOOBUoAy5NiqDtrxCIfhiDCpKBYosrzHbGoQPdqVcVF
+	/qUyW0flh+XLgtYLcWFiEdoa2BT99gfRo3PcAl738bcEs9klDFkXP6z2X4Nbo/EaPFu13F
+	/G1VPtqe+OHGGNMTOwe+xOIuqM2+o+Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793051354;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bVpJ81jbb6s/k9oeKUE3zACKDLs87mB6qiXsiIpROrw=;
+	b=c7Cedkm86DrLmBhaRecl63q8E2NQXs91lGx1midza1J1rGGNKflLD0QKxcMpGk83nRyC0X
+	IUBu035ZLkrDe3DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D9BA13408;
+	Mon, 26 Oct 2026 21:49:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id eRk0CtrK32pSBAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 26 Oct 2026 21:49:14 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id CCA06A1419; Mon, 26 Oct 2026 22:49:09 +0100 (CET)
+Date: Mon, 26 Oct 2026 22:49:09 +0100
+From: Jan Kara <jack@suse.cz>
+To: Andrea Parri <parri.andrea@gmail.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iov_iter: take an unsigned long segment count in
+ import_iovec()
+Message-ID: <yb2p27fkrqamzmzfwqbqjwsxhw7cdlpgjzc26eqtimw2puhxrz@mhrjegarlm5a>
+References: <20261026180619.4147910-1-parri.andrea@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
- underused THP shrinker is disabled
-To: Barry Song <baohua@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Yu Zhao <yuzhao@google.com>, Xu Xin <xu.xin@linux.dev>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
-References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
- <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev>
- <CAGsJ_4zUVpBJazRxc1CzN6u5XvpUaGnaf-_7JMz-rGK_ZTYMtw@mail.gmail.com>
- <e865f7f0-087c-4fe5-b729-6e6946cd20f6@linux.dev>
- <CAGsJ_4wp_jCtCeMx39nW0Z1Jm5pja7_V6XNwLB6p7zTan0c3VA@mail.gmail.com>
- <dee39669-b726-480e-8ca6-10f19512da68@linux.dev>
- <CAGsJ_4w4ozXM+=T0qGBAhC323F49Y4LxrrKKt3GFCs+en_TVCg@mail.gmail.com>
-Content-Language: en-US
-From: Nico Pache <nico.pache@linux.dev>
-In-Reply-To: <CAGsJ_4w4ozXM+=T0qGBAhC323F49Y4LxrrKKt3GFCs+en_TVCg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 37C5340003
-X-Stat-Signature: exz16gsp3aey6bhc9uw9kzc588rerdap
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026180619.4147910-1-parri.andrea@gmail.com>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -11.51
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 52EB7A0003
+X-Stat-Signature: kwttz8oye1k6qqhbdzxyt7m5zrsqepx9
 X-Rspam-User: 
-X-HE-Tag: 1793050433-566686
-X-HE-Meta: U2FsdGVkX19uu+M4YAEIMWaaGIu6CMBw9um18zEDUdSzfSc0vjgMUotQCKcAuxe1yKUSI5wxOtimOmfTMW1HDyJ60KyzEI0GYZCQnrVR5dLd0HSeJ6kBOS3JLhVNV7qa7IWk0fwHhzuYHJeYArw2qBVR/+vWjKOLNzohk4Hjg8a5U8fJKoaZuzF0kWwHNP46koLXwF4WugaFfANx4+7esO+kt8CVQi9W1MsLesvO2KAqfvXZpz8w9rqXGIwlp9+SGsKYdjqg30vkxPxjEfl2XjJ09kg2yIiuLZQeoOPbceePfwpnL0EkQDdrpD8O2VUlYeUXoNhMloPH9GGOHJumjmZzLKpMwPiPvajN8XYmzF4LSivOfk2osL1chatCpDbOgPAlEUIcUGYwZl1WjLegAcxxWRaCgpG9eEn02nezL2XqOjJP3VF5hFNHY1GhNSgXNp7e8sLQnlS+13kqPCzSD+UokXSc9v7+iALRZMFlYORJYIviG7QNmEhtvdYkoz23ri3F5ZAiaVDaJ2VVnVi881zNhLDP3uX2mSVyYIv91uNyjpN0UH8ZzsMCUijNuXW71d/JtXBVF8x5QmNeV13iqryZ+IOaVk2fkivrNr2H5xbcAPBReD3fOAnFySV9fBpEVw1Q+iSuNY4/z8uYRoO8uEw23tWvXOC1aHXNVLdhBqBROrf6CC+Hw2tioEgET5r/yMgh+9hupA5dgMeiq4a0I5ahF20T10OJR9rtBKgd7jIrONvinGhLyjawHb6itRj7uh2sw2Xl6KG6AJAHQ7Q5v0cFQWJgte7h4a4Rsk/A/fr/49Nvy0dY2U3sudOkacmtTy5AER5yW1XQ0AN3QaAjHTXJXfVAyT8Fj+uMQLCYJoIMA5zIl6R75W4Prx8JqYNmL1NVdF893r6S1xbIShY95H78FfxUxG0w6hBMfC2xRWvHuvzwzSwOEnn2DwNy8in/stAiv7NK4KsfsySZYw7
- s37cByiL
- eB6c9QF/TJD4sSXeN/hyJPNQ/E0Sudsqfp2jalqn5YMm72t3XXZLbm4bL7WR4Pa43tX2U1n7wyH7OSXI4qHpOpN/w/NoEgPxi/06j2n59Hj5aQFdg4DtaBrxsWR/kIXnpx6ZZgEnvLrNQgj4zqPptbsiAuv96kLa3qRrUu13N9AZF2hnb3SZDd1J2JXTvAw6fdvmxG2wAjz9Fxa9rYMZnhyCsjYpOWhz7fxODSVG7xKek5yQVFQMmgPpIwapQze81pT4oYKLAZ0ZHbkaGUkNrkUxeWlBb9OheURPkxUiO2++5ZQpeVgLlJFc8NZEKXV3KOZ86JVJzNu2NSYnt9CvhUMoJ19uiEwUshNNnO/GOlHGXs5TScLjS8TfYpjoGzBWX/H3/eNHJsvq9OhOvs70xqTrIwwgUyCE+zKLBOmlUxH5oyUjPBcqYV3sz26Mi6CDv7SD2mp8OV5Ek6m1gc9vkaZt+uUITLFYfYMm2ui725ZHbc4w=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793051356-654506
+X-HE-Meta: U2FsdGVkX1+GQFHjGL4t7C/LwSGOESoAB3fHF/Jidm/hhtT3VZpl5A7MFTEGmRqG1QZwyUxnF5FSMVWYoscZNFGwmaIIOjTJ79h3cJ2DvfF3WVx10ZV/7exsh8tQNaXp/pBw9p3JbYk5qQw1uHZS26ufAlUkkcATVIR0MwFtCrZfwgUXPdMQ4Esho6JD1TW8pbpxCMZgUQozghObZkg+epDTm2M5J8gp6pLxNXAhy09+gaE4FRQjfpZ4ohfFlBISRNi7NfBfiLVJ6z2HxiDe9Q0NMRVMvojHzSS8y4gqWsZ+kRep4dSIhPjwyMW+W7UiWx7ZisxR7MUruudsPdLlhOPuBK9zZeF2coR8qxv/GpqIhp1Dd3HMkBIuXEhQmdSr5AZ5cM/RV3BOlCM31luSfu+MAkXnNf0/Xu3Gv8FHOLE78sx/NFPKv+2F7hRAbHvdLq74CYNmGA/fBDBIjs2hja3mNj0Gz0k+B3ixKMtOg75pVD/6TaueagWNIs3u00XFbqUkIEud3Gl3lO0kvBZbNhGc/eBM6aGMfXheavGce/WW6l/xM7gH+rSEUthu8RM2d8ICZOv+uVwZKHjSLj90VOfg/KHiyD+NDbRV4xiv62sw4mr5vpErQCF+1FmU34Q32uIBtIrYVo3Gt7di5CilB79w7dtFoiambhZ5s4lKmsZ7ly9a+rSf/hScbKkSuDCTxDuxrd2dNbnshuiENRl8oTiVheLfdHCnEEmKQmFk9XlMXAMOVTX816iXopGv2LOBrSaPkrdY15JZBET8MPQwF1p4lDrrUvdD2SA9DPff6PxrXn3SS6VkHAJL+X9J8FKVPWLB3Z6mCnjpzQXCLDKJ54PkXWcwv7HDd4rzkIYkpP2t34VLxPUNn2iR5wr6EktMbc71GJKyIj0EiU/XPtkvpd9FvGtoZeXOXGUySFquUpjqSPt6AJU2xdp7Xfz3lKYyUGyFFYhuRI/f0OkARcw
+ libPqAiJ
+ YqmFev703ZaC3jNXGzZ+6HjDS8b3EvMoQzqB/LV8cA5BioGWdF+ksP4Ih/aF0KeOH3B4MbezFPiC8ttq/WRvvefq5W8J+p24Qvb3Bk0hf3ms+iK1dGFjs522+pAewZ0TTkxpv8RwsNjHYTPaywqq109FYPoYD+jcE/xKSevOPF9Ugc4wSvaC9EXksM+8cK2uW0c4UqCV/NQVLqC9kQmdFd07amaSnJVNO7DWRJpPik1/ClKC2QJb6RrlCKRpEzh4h1leEUYGUNLE4P53EKh92IW+RJX453kBD3qhN5Gyw5Hnlf3ANHeAtCkm0xet828HF72p8YREaL5/IOst7fiS7Yy9Rq8QOOOm9Paw65UjJhJylOMgX0sTXPMejnuVGOwzT03DZx++1XC9ZOBEaqZygXrolSxKbx24idOWZPO2fAS3EpPBHDoc1NvkhvVMq/gr/iiXWukkKttNHXdUek9LVRwc1XgYgOJqTBvZiR4uyo/vzXXE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,92 +144,145 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 10/26/26 2:58 PM, Barry Song wrote:
-> On Tue, Oct 27, 2026 at 4:02 AM Nico Pache <nico.pache@linux.dev> wrote:
->>
->>
->>
->> On 10/25/26 10:52 PM, Barry Song wrote:
->>> On Mon, Oct 26, 2026 at 5:48 AM Nico Pache <nico.pache@linux.dev> wrote:
->>>>
->>>>
->>>>
->>>> On 10/25/26 2:28 PM, Barry Song wrote:
->>>>> On Mon, Oct 26, 2026 at 1:40 AM Nico Pache (Red Hat)
->>>>> <nico.pache@linux.dev> wrote:
->>>>>>
->>>>>> The zero-page remapping in __folio_split() was added to support the
->>>>>> underused THP shrinker. When the shrinker is disabled via
->>>>>> shrink_underused, gate TTU_USE_SHARED_ZEROPAGE on split_underused_thp
->>>>>> to avoid scanning subpages for zero content unnecessarily.
->>>>>>
->>>>>> Suggested-by: David Hildenbrand <david@kernel.org>
->>>>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
->>>>>> Signed-off-by: Nico Pache <nico.pache@linux.dev>
->>>>>
->>>>> is b1f202060afe a correct fixes tag? as
->>>>> commit b1f202060afe has no even "split_underused_thp" there.
->>>>
->>>> I believe so. IIUC these two series were merged together. While
->>>> 81d3ff3c6f7 introduces the toggle, b1f202060afe is where the behavior
->>>> started.
->>>>
->>>> I guess you could argue that the Fixes should include both?
->>>>
->>>> Not entirely sure!
->>>
->>> Thanks for the clarification. I guess it's fine.
->>>
->>> BTW, with the code below, we no longer add fully mapped
->>> folios to deferred_split_folio. So the scanning code only
->>> handles partially mapped folios to set up zero-page mappings
->>> for their subpages.
->>>
->>> I'm still not quite sure whether this is really harmful, though.
->>> Am I missing something, or was there some discussion I missed?
->>
->> The issue is not in the actual shrinker code or the deferred split list.
->>
->> The issue is that any split leads to this zero-page remapping
->> indiscriminate of the actual toggle. The same way this toggle is gating
->> things going on the deferred split list, we should be gating the actual
->> zero-page remapping too.
+On Mon 26-10-26 19:06:18, Andrea Parri wrote:
+> readv(), writev() and their positional variants, process_vm_readv(),
+> process_vm_writev(), vmsplice(), process_madvise(), vectored aio and
+> the btrfs encoded I/O ioctls all take a full-width segment count, and
+> all of them hand it to import_iovec() or __import_iovec().  Those take
+> an unsigned int count, so on 64-bit kernels the upper 32 bits are
+> dropped before iovec_from_user() checks the count against UIO_MAXIOV.
 > 
-> I'm not quite sure this is true. The toggle prevents fully mapped
-> folios from being added to the deferred split list, so their
-> subpages won't have a chance to be remapped to zero.
-
-Correct, but the deferred split list is not the only caller of 
-folio_split(); all other callers get unconditional zero page remapping.
-
-Additionally theres a difference between being fully mapped (and zero), 
-and being partially unmapped. the zero-page remapping checks the content 
-of the page. We could add folios to the deferred split list that are 
-fully mapped but contain mostly zeros. With shrinker_underused turned 
-off we no longer do any underutilized scans on reclaim, but other 
-splitters (KSM, vmscan, migration, etc) will still scan the content of 
-the memory and do the remapping whether this is on or off.
-  >
-> For the remaining folios that are not fully mapped, or those
-> that were added to deferred_split_list while the toggle was
-> on and remain there after it is switched off, allowing
-> remapping to zeropfn doesn't seem to violate the toggle's
-> intention of preventing fully mapped folios from being added
-> to deferred_split_list.
+> A count of 0x100000001 is therefore imported as one segment: writev()
+> on a pipe writes a byte and readv() reads it back, instead of both
+> failing with EINVAL.  A count of 0x100000000 returns 0 as an empty
+> vector.
 > 
-> Anyway, I don't have a strong opinion on this.
-
-I think theres a misunderstanding here, but hopefully the above clears 
-it up :) if not just lmk!
-
-Cheers,
--- Nico
-
-
+> import_iovec() was added with an unsigned int count, but the helper it
+> wrapped, rw_copy_check_uvector(), took an unsigned long, as does
+> iovec_from_user() today.  Until v4.1, readv(), writev(), preadv(),
+> pwritev(), process_vm_readv(), process_vm_writev() and vectored aio
+> therefore failed these counts with EINVAL, as did vmsplice() until
+> v4.18.
 > 
-> Thanks!
-> Barry
+> Widen nr_segs in both import helpers so the UIO_MAXIOV check sees the
+> count the caller passed.  Callers with 32-bit counts are unaffected.
+> 
+> AI assistance was used to find the bug, develop the fix, and run the
+> reproducers.
+> 
+> Fixes: bc917be81059 ("saner iov_iter initialization primitives")
+> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
 
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+> Tested on x86_64 with virtme-ng, base 734bef548a96e vs patched:
+> readv, writev, preadv, pwritev, preadv2, pwritev2, vectored aio,
+> process_madvise, process_vm_readv, process_vm_writev and vmsplice with
+> counts 0, 1, 1024, 1025, UINT_MAX, 2^32, 2^32+1, 2^32+1024, 2^32+1025
+> and ULONG_MAX (LONG_MAX for aio).  The base kernel accepts 2^32,
+> 2^32+1 and 2^32+1024 on every path; the patched kernel rejects every
+> count above 1024 with EINVAL.  Also built every caller with
+> allmodconfig W=1, and lib/iov_iter.o and the readv, vmsplice and
+> process_vm callers with i386 defconfig W=1.
+> 
+> Reproducer (64-bit userspace):
+>   cc -Wall -Wextra -O2 repro.c -o repro
+>   ./repro
+> 
+> // SPDX-License-Identifier: GPL-2.0-only
+> #define _GNU_SOURCE
+> #include <errno.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <sys/syscall.h>
+> #include <sys/uio.h>
+> #include <unistd.h>
+> 
+> int main(void)
+> {
+> 	char source = 'x', received = '-';
+> 	struct iovec wiov = { .iov_base = &source, .iov_len = 1 };
+> 	struct iovec riov = { .iov_base = &received, .iov_len = 1 };
+> 	const unsigned long count = (1UL << 32) + 1;
+> 	long wret, rret;
+> 	int pipefd[2], werr;
+> 
+> 	if (pipe(pipefd)) {
+> 		perror("pipe");
+> 		return EXIT_FAILURE;
+> 	}
+> 	errno = 0;
+> 	wret = syscall(SYS_writev, pipefd[1], &wiov, count);
+> 	werr = errno;
+> 	close(pipefd[1]);
+> 	errno = 0;
+> 	rret = syscall(SYS_readv, pipefd[0], &riov, count);
+> 	printf("writev=%ld (%s) readv=%ld (%s) byte=%c\n",
+> 	       wret, strerror(werr), rret, strerror(errno), received);
+> 	close(pipefd[0]);
+> 	return EXIT_SUCCESS;
+> }
+> 
+>  include/linux/uio.h | 8 ++++----
+>  lib/iov_iter.c      | 6 +++---
+>  2 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/uio.h b/include/linux/uio.h
+> index fe2e985d74d24..529c6cd53df7a 100644
+> --- a/include/linux/uio.h
+> +++ b/include/linux/uio.h
+> @@ -362,11 +362,11 @@ struct iovec *iovec_from_user(const struct iovec __user *uvector,
+>  		unsigned long nr_segs, unsigned long fast_segs,
+>  		struct iovec *fast_iov, bool compat);
+>  ssize_t import_iovec(int type, const struct iovec __user *uvec,
+> -		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
+> -		 struct iov_iter *i);
+> +		 unsigned long nr_segs, unsigned int fast_segs,
+> +		 struct iovec **iovp, struct iov_iter *i);
+>  ssize_t __import_iovec(int type, const struct iovec __user *uvec,
+> -		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
+> -		 struct iov_iter *i, bool compat);
+> +		 unsigned long nr_segs, unsigned int fast_segs,
+> +		 struct iovec **iovp, struct iov_iter *i, bool compat);
+>  int import_ubuf(int type, void __user *buf, size_t len, struct iov_iter *i);
+>  
+>  static inline void iov_iter_ubuf(struct iov_iter *i, unsigned int direction,
+> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+> index 2072c04e99d05..55cf2ff5bfdad 100644
+> --- a/lib/iov_iter.c
+> +++ b/lib/iov_iter.c
+> @@ -1362,8 +1362,8 @@ static ssize_t __import_iovec_ubuf(int type, const struct iovec __user *uvec,
+>  }
+>  
+>  ssize_t __import_iovec(int type, const struct iovec __user *uvec,
+> -		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
+> -		 struct iov_iter *i, bool compat)
+> +		 unsigned long nr_segs, unsigned int fast_segs,
+> +		 struct iovec **iovp, struct iov_iter *i, bool compat)
+>  {
+>  	ssize_t total_len = 0;
+>  	unsigned long seg;
+> @@ -1434,7 +1434,7 @@ ssize_t __import_iovec(int type, const struct iovec __user *uvec,
+>   * Return: Negative error code on error, bytes imported on success
+>   */
+>  ssize_t import_iovec(int type, const struct iovec __user *uvec,
+> -		 unsigned nr_segs, unsigned fast_segs,
+> +		 unsigned long nr_segs, unsigned int fast_segs,
+>  		 struct iovec **iovp, struct iov_iter *i)
+>  {
+>  	return __import_iovec(type, uvec, nr_segs, fast_segs, iovp, i,
+> 
+> base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+> -- 
+> 2.53.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
