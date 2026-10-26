@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6E3606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD5A606A32C
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M7Bbv5tH
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L78BWvfM
 Received: by kanga.kvack.org (Postfix)
-	id 95B476B05B2; Mon, 26 Oct 2026 05:41:00 -0400 (EDT)
+	id A46616B05B4; Mon, 26 Oct 2026 05:41:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90C146B05B3; Mon, 26 Oct 2026 05:41:00 -0400 (EDT)
+	id 9F7246B05B5; Mon, 26 Oct 2026 05:41:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 822A16B05B4; Mon, 26 Oct 2026 05:41:00 -0400 (EDT)
+	id 9339D6B05B6; Mon, 26 Oct 2026 05:41:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CC466B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:41:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E36D0406AD
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:40:59 +0000 (UTC)
-X-FDA: 85364283438.29.9A973F9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2FBBC180002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:40:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M7Bbv5tH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D20E6B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:41:07 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8ADA1C3F73
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:06 +0000 (UTC)
+X-FDA: 85364283732.21.01EF8B0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 103F6160008
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:41:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L78BWvfM;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793007658;
+	s=arc-20220608; t=1793007665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P8sRDgQW1w3D4pWC1B8XyfoJvD5sWAzdleJVC62/pts=;
-	b=LdgKqHNiG0uCW9eXrdbH96uuRBqLA6S1nc17soAiNk4UxvC0H+WmCFC+j9ct3D4qePQSdW
-	51HTyqE/ZEim5m/Hw4oVWA8DFCUuqD9mlQbC6zXee8k9eWBRBJ03/rr62N9lzxZl7cDEGL
-	2BcXedvClgoB3p9BxufLdsBWB4VkDME=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M7Bbv5tH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=Vn7d8HcL6l9EfFDO02stSAeg32JgseybYZFulW1VvWw=;
+	b=KOoPw9v4KDz1XS59SP6D+1AI3a0OYxR3F8NcuJZ2H+5iR4BUxGx1nooPOa//OLqEzr61m9
+	e8x3lScs11/Id7tvBR9cXMU4mTzvr8qX/OeOB3Z/qZAn7l3mPnjzH+sUAuZq4c1/2b8Drn
+	ZsWoFbGcj1FrlqSMnEw73jHPz+cJbsk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793007658;
-	b=iAAam5nwUxCWy7u9CsLPACXTU6iXvalfUer8g729KZwm65/gc2AT7HFiPB9ofI0cqrDnB2
-	Pfv/ZtZoiT+bAGD/r4+E4ui7o9/pooy0plEecPGLVPW09bKeifceS4uXbm7nY5Kv8iAqkL
-	8l7iGkw72AL/WiRomdz7MxkExSpmS/Y=
+	t=1793007665;
+	b=2X9IL1m47JPJnS911TKNMwH6+WBRhgnC0j7yFJJLRp+E1V+FkTv3kBBmSwB/oKkbdH74Pa
+	uQzpsCA4QGPkR6KjIbWY0Llq9gqGmp6oWHDNUnF+/066td+35Uo1MN4B+Cgju0nRYkgkJo
+	WcW3NPtAqMGmcmdonQ6W6i3C6qjeAr8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L78BWvfM;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 834E2602A8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 61F38402DA;
+	Mon, 26 Oct 2026 09:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07401F01825;
 	Mon, 26 Oct 2026 09:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2A21F01829;
-	Mon, 26 Oct 2026 09:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793007657;
-	bh=P8sRDgQW1w3D4pWC1B8XyfoJvD5sWAzdleJVC62/pts=;
+	s=k20260515; t=1793007664;
+	bh=Vn7d8HcL6l9EfFDO02stSAeg32JgseybYZFulW1VvWw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=M7Bbv5tHudJU27SzaTTiM57hAYPlMRoINrrJZbFPMn2lw3yOmpkdpT/uKJEKi2Zam
-	 sBxTY6XSDaJESuHbZ+MuIOhOYEoo/wuWGYZl1c4zpTJRX13i9J1zZmtNJz1E2h/JbE
-	 GpcrXhvetmnVnbe1KHwKauk+2G/b4hlM7yEnvN81Kmwo8VWcku8xlBJ+m+rqv9nDdy
-	 yD8gBW7SYzxQEAYfk+oa98UiNarMStxkokouevqUGo16SrxNCTqfwx1+z3lYYckupV
-	 oMS6GdTI+6LAQOW9s9MlVCx6RWFVUPdURQoIpzGUlOty5l2YirUkSEk567VIKDeqOK
-	 4nkxf+Wv2+xhw==
+	b=L78BWvfMcfWtf0OGq/x/m6dTt93g6YYB+jj+3oULkWdXypbX6F88y3ydkZqibKWC3
+	 HQcNulIH3pHBCli1bK1KmBfB6Sb3Cz4BOnXacrpBsZsWzAu0KM+5j5ourum8Co2dzO
+	 bkWndL2aLeBjHqyk/eFBIrNwB4JGJGNp4Znzv10v1iH5V/uCcPn8JeJiLRX5JP5Hwb
+	 jJq42G9SQSfUZcF707QRmY66JjR/DePfYA5+ndNvUFRmnlolR5DW8S5iC7jXSuS++D
+	 QYGbD6EcosZg5c12OCu6Gd+L/LnoKEXN2+Qcye5fT+Dl6SqfvZIFbVbu+ZTmhu4Z5o
+	 JqLWvHX7rGwvQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 26 Oct 2026 10:40:34 +0100
-Subject: [PATCH 01/16] mm/mempolicy: charge shared policy nodes
+Date: Mon, 26 Oct 2026 10:40:35 +0100
+Subject: [PATCH 02/16] tmpfs: keep the quota soft limits of an unused id
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
+Message-Id: <20261026-fixes_shmem-v1-2-703206d5fa0c@kernel.org>
 References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
 In-Reply-To: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -91,28 +91,28 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2442; i=david@kernel.org;
- h=from:subject:message-id; bh=owxyvXACeldrYZYA+sOC4Awt4JHmThu8F6n4QgaspJk=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLuK4jp79RZ5tcrUla5uSki/OCNtluGRZceX/jvuc/iO
- 9v1bwf9OkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZiI3W1Ghhalibzvju9h2pho
- cZ7rkd3FRdvkV9xm8XcymFA5oXvK2maG/xHv3HWWqG8NeM7bO/3Y7jXFYZ+i/lttEpix7SeXdlN
- UBD8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1590; i=david@kernel.org;
+ h=from:subject:message-id; bh=M7xAc6hQ4qkVX+uGz6S8AcR/OPyms3MLaUujNvMuOQ4=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLuK4itD9/NJCctMSMq1PFQ8MYL6ZMTzm1OuKXbkHUiw
+ u6whtCvjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACbSnMLwz+hcdrZtbZ5s4ozJ
+ PEGXDFWPRgV9C/9+iVdsV0CN8oqdbQz/bBrmt29bdiEyzaVc9r5MmtOPhmdPKxZZb1QK03iwVJW
+ NCwA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2FBBC180002
-X-Stat-Signature: 81zsth6zgmdgnbtsm91kefxaajbtn1tb
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 103F6160008
+X-Stat-Signature: pr1erktpejc3caga37tfbpjg8z7oo7rt
+X-Rspam-User: 
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793007658-585050
-X-HE-Meta: U2FsdGVkX1+JlgGXcteNQFxppc3apJLP2phh0GDZwslatthMft/u8RREyydLQK3CNq3MwXxSlRFzdkGbVKwGLUGZJuYjBCPG7EZaCuZhnkKZnZyd37Ezn7y+fPns1kT3g6dpCSTgxmRDt0SZLRRntNvBonJF7dlDEJ/Ifa3J9rxm6jXDmu/5elHG2KrWaAxNrMVbjEXKJ5N/8nx3cVj8Gh6haaR+Hcb7U/pJWdz3LVueGx1s/WWDAdu6oWBf1dPw8Ig5WAHhSHVP7/AYdC9TP5rI3juKPd436N3C+AxO+BtH7kXlm9c5kdcgO7mgsd70GuzU8w1kaUP5cOx2zvXvJMCWp9eX2kjVKHyzbzBXwrl5jr7Gj/q/a8IUfRGG+AJU0L97T12VVD5Sb6nUBAIuDOZHTN7OQyoaDe4/LXnR7/PiylwhgONt6OW1ctazXWu2GQNHMvEgmERMy9mvlikCSzHyeCbLTasC/4WVgBMi0DS8jVjk4qUOXrPf5IFLNR7z5huzxO4WEUSjAcEpR0tW3W/G12vITFpH8Wih2CiuwJk/IQfH03EjuoHVcPCz8T793mbdJCsCTkNM+w29lsZVB6K8IZqVNtSJoeJ5Tci96cZBjWSiDz5qdMc+QEZOZ8xydj5fvoR6tc2Qpia19d6LNVU7fhpry40uY5WpI1tebXI0Fa1j8seWdYXkzg1Z/1BAMGclMr06G7liV9vbWqi5RxwwG7Vp8P7drI6Nk87VhqIiIaYbnMWNOJVJdq9ubFqMSND5lnn57/lyxjlQcYi+xJ44/+wWIelFRJWayXfuEbzE2oINBSJXLLPAb3iXa2UnWeGIPd0+A3P6uSN7s7l1sNuO1VGoUB5132mTwtby+bKbjtU7BdNKPQq1VB2tWD7FBYElph6UsimINgyd3cn7D8JBOrUEY2UIsszev0wwTql2t+hPPrB7A/dC3XakmvfabG2988zCTcQzFu3kQUx
- d224cwhG
- lpJy6mhOWCwnzluEs1lRyk8PRnnF6vLEuhq3WR8YgKDfViUB9a6Gfj2MDr9GZT2rgli8A35ya1kc2d4sMmeGgOYuumi2vzoZrop4BNP+QvmUoKWFQdstCJtuR/K6UyC1AP4rEySKrGgGjpcsUQ5pQtZaky8FI3MsULoQotw/J81eoWVyB6PHvcDgKKJOmjruzJ7mnF/Z2HOfb/4uBMAglQhfsvLRLzxhlSl8wBJhk9GGtLhZh38ZxN8pSiRjPvgk1S9ZrIm3+oaowSpE2gaol+awxgGarJzBeceramFwIrsSvcN2YhRTIutYCuiG+fuH/J3HK
+X-HE-Tag: 1793007664-964709
+X-HE-Meta: U2FsdGVkX1987kovOhZZXZCkLQ19wu85kX921DcmgKMqpT24Qmw6sAjKbHOQIZSuXmLNbZqBAWGkmh1JRcETP0RfS7PlOaMaKpNXKYgspDCXOXiSAcg8NCuMh9p7G5+ftriM1T29rUJRojYzIBXLM1vLGTmSQsozdMyzFSZJl8LXJYHJzIcImS6LbpI6F6sAOM8FQhdzPKmdDwrh2/VHnxa26YFMVfaWwGiYhlfSQl6ohf/O0KizyMx8ZcxdkfgoLX/YLiE7kZaUPkuxphOWAW2ZL0B65Fb4TcR9WQ7YBDGQvmXaBwPNqKIIZPFeLHbaMdOOuN9e2DG9yK4mIWhfB3LcHaMGIX9JV9It7dIgVF21/z8lBv1m8Uvnbd4j/AMcYUuIwLeF9NhvIOR4gP57ViM4CuqNtHoJgPWG8Zmsi2gQb8jaYNll+fEPFy6ifoKkVOZZaHuQTDwKRzceU5oHtUUce/Hy84TRCy8y9NHmDPzHQ9NtmdnVj11/bTGItRyfbAbzCPAK+Ew3PwoW59SIbXFDlem35CQx6X8DB7Bqt2/7ZlPSgEgmDC0Pv+jKhtQhp9VXBP8nTCVVwYD/Mcj8bcRVYrM4TesJwBb9lfetvJf+lIZoCjwbd5bnuXFuxgiAXNS8jq9WrIz4a9E0f2g7mtGZ//Folxw8q4Yz+wwqEbCYJLlMJzZL/Lfj3+rFXfDP3SrmJHMcTRj8+3uQe7U0TbfsGuAD7RLj/KNdyM74IcTr5TEhMvLXVT4DgaRoQjbwJ6mkkuOLrJl06BUXxFs6vygqidjcd4qdwJKx6I0lyxIZUPeH4V3wY6klMnKBgn5679fK6YF8aDfVc4FSZAdQC4Ka+hu8ww7gReIHjfuyzdWMSvMzAQVoP2Dz8Vrp9YW9+nu8SSSnPRD7yP41TxMoVK0TEJRE31+8RIsBG5Kbh5xLRQ9Nmio2DfSbrpVPWCTaP4OpTA4gg+blKzZzZe6
+ OKFBn4rX
+ hv2sm4qvfQnHGsfRkiIi3QeWVimupallw+Zmy4njAOXBz3o94bVfdRTZGIHaEzzzpLGB/EOsg85nMeqqPAZUlBlZ11u6derZyK/JpYDG+Y/7++rXJAZFiyjOZo4K/AP0Pd9WiReSDZg2MjGZmqc9AKhVsiU0j05n3+TevmjrZ/cmMbj7pPr4MhKXIrpP+PRq0MUZ9EGx/cEFqU0Z+ipa/JSsl7/lzwRlB6BpeVkCSKWw3iPdUjo++3+V/wg9rDNdRPjfzHWBBgrEraF252ebCvXcv3DA4e+ZAwDM5QXGHmUtysaQrYsPYS4O4SrbnqusUok6uvfeHeyCpUExPId0BMDRkjSQdN9PHmVWWdPIQZKXfFBW5IXTm1LgD7Q7AzQcRgtQeZYyMsKcw2WFXkI+GU6G8jmhrR4TqcTYR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,66 +121,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Chris Mason <mason@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-Any local user can bypass memory.max with mbind() on a tmpfs file, and
-allocate unbounded kernel memory.
+When the last reference to a dquot goes away, shmem_release_dquot()
+stores its limits in the rb tree of the mount, unless
+shmem_is_empty_dquot() says that there is nothing worth storing. That
+function looks at the usage and at the two hard limits only.
 
-mbind() sets a NUMA memory policy for a range of a mapping. If the
-mapping is of a shmem and friends, the kernel also stores the policy on
-the inode, in a tree with one entry per range of the file.
+So if the administrator sets nothing but soft limits for an id that owns
+no file yet, the entry is thrown away as soon as the dquot that
+Q_SETQUOTA used is released, and the id never gets to see a limit.
 
-Each mbind() on a single page of a mapping can add one shared policy node
-(struct sp_node) and one struct mempolicy to that tree. They outlive the
-mapping and stay around until the inode is destroyed. The tree is not
-bounded by the file size, so the file can be empty.
+To fix it, compare the soft limits as well: an entry can be empty only if
+both soft limits are zero as well, which is exactly what
+shmem_acquire_dquot() sets for a new entry.
 
-Memory that user space can allocate must be charged to a memory cgroup. A
-slab cache does that for all of its objects if it is created with
-SLAB_ACCOUNT. numa_policy_init() creates the slab caches for both
-structs without SLAB_ACCOUNT, so they are not charged to any cgroup.
+Fix generated by an LLM and sent by Josef Bacik in private.
 
-Reproduced with mbind() on single pages of an empty tmpfs file, from a
-cgroup with memory.max=8M: the global OOM killer killed tasks owned by
-root, and the machine panicked.
-
-Fix this by creating both caches with SLAB_ACCOUNT. This change implies
-that mbind() can now fail when running into memcg limits. Further,
-the policy_cache also serves task and VMA policies, so they are
-similarly accounted now.
-
-Note that per-file limits are not really helpful, as the user could
-simply use many files; having limits per user is tricky as well.
-
-Fix generated by an LLM and submitted by Chris Mason in private.
-
-Fixes: 5d097056c9a0 ("kmemcg: account certain kmem allocations to memcg")
+Fixes: de4c0e7ca8b5 ("shmem: Add default quota limit mount options")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chris Mason <mason@kernel.org>
-[ david: smaller description tweaks ]
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+[ david: slightly adjusted description ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/mempolicy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/shmem_quota.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index e9860fb9f73f8..ad49b7524064a 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -3372,11 +3372,11 @@ void __init numa_policy_init(void)
- 
- 	policy_cache = kmem_cache_create("numa_policy",
- 					 sizeof(struct mempolicy),
--					 0, SLAB_PANIC, NULL);
-+					 0, SLAB_PANIC | SLAB_ACCOUNT, NULL);
- 
- 	sn_cache = kmem_cache_create("shared_policy_node",
- 				     sizeof(struct sp_node),
--				     0, SLAB_PANIC, NULL);
-+				     0, SLAB_PANIC | SLAB_ACCOUNT, NULL);
- 
- 	for_each_node(nid) {
- 		preferred_node_policy[nid] = (struct mempolicy) {
+diff --git a/mm/shmem_quota.c b/mm/shmem_quota.c
+index a3fa4bd93e753..43d3b4fd6cb1b 100644
+--- a/mm/shmem_quota.c
++++ b/mm/shmem_quota.c
+@@ -256,6 +256,8 @@ static bool shmem_is_empty_dquot(struct dquot *dquot)
+ 	if (test_bit(DQ_FAKE_B, &dquot->dq_flags) ||
+ 		(dquot->dq_dqb.dqb_curspace == 0 &&
+ 		 dquot->dq_dqb.dqb_curinodes == 0 &&
++		 dquot->dq_dqb.dqb_bsoftlimit == 0 &&
++		 dquot->dq_dqb.dqb_isoftlimit == 0 &&
+ 		 dquot->dq_dqb.dqb_bhardlimit == bhardlimit &&
+ 		 dquot->dq_dqb.dqb_ihardlimit == ihardlimit))
+ 		return true;
 
 -- 
 2.43.0
