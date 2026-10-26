@@ -1,81 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A9F606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22817606A8CB
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ADibYKa6
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ly97WAR+
 Received: by kanga.kvack.org (Postfix)
-	id D241B6B05C9; Mon, 26 Oct 2026 05:57:05 -0400 (EDT)
+	id 4C4536B05B1; Mon, 26 Oct 2026 05:58:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFC126B05CA; Mon, 26 Oct 2026 05:57:05 -0400 (EDT)
+	id 49AE26B05CA; Mon, 26 Oct 2026 05:58:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C11DF6B05CB; Mon, 26 Oct 2026 05:57:05 -0400 (EDT)
+	id 3B04E6B05CB; Mon, 26 Oct 2026 05:58:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EE776B05C9
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:57:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C1671606ED
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:57:05 +0000 (UTC)
-X-FDA: 85364324010.11.14B3696
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 15E2E6B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:58:20 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE2921A06CE
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:58:19 +0000 (UTC)
+X-FDA: 85364327118.03.48313FE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4F25EC000C
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:57:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADibYKa6;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0218720002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:58:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ly97WAR+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793008623;
+	s=arc-20220608; t=1793008698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uEc1Bmciiva82nUX+FVCSYZVGtSGCp8Z+LUTT/EsGek=;
-	b=LLjbS/6E1hvO1jZlVXJr6uB5GYfSqugskZl3BmpGrgiRKTPPm2Tgq4OYulnJL+dka8DT9T
-	BYE2sF+Z/txBEtRBdrQeAcT+b3FZi5+GNoo2lL7o+SSA/T3p8XcNYPOEv9SC1vM0U5LKHL
-	Hj+LT/ki/8xUzy4i34xCeWi/Z67v3Y8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793008623;
-	b=yPhwJIslOCHCVOWDRRu4UK2zNmE8DkUmlm/BfFed/EKUszaXDb7y+55IG0VupghevnfUcL
-	GoLuM7FOK+CnUfPHTvAhr71UhFSybPOdk+PV0OuTwxZzVNzu1/Qn/Jxxdb+PYhOJ40ufWh
-	z4b65rO7uUsC9AaGCa+a8bGOf3DgFWA=
+	bh=ONdHuIF3arLP4vmgBYYOQGACA53JodskiOkfBwcJbcI=;
+	b=rkA8xWfluHwSLEGEIlsFTE1gjSavkkdsHhceDA+OrbsXLb0d4VRt33sVwmvy44jinJ4mwZ
+	WAXIiC0crwVo4UA7Rb7Is7AIZe7DfuwecfHsorrqkOMxLYi6lOpn9DvnelOv5nRd737zZX
+	tJV+A1/331vwglMj1CoTjW+9NCJEc6c=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADibYKa6;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ly97WAR+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793008698;
+	b=H6BA9yRoR7sojxsRAfID/RWdN/dtI69h+6CdiyMiJhnQNgrI0wbf0Yp9NcPx8G8is5qpQv
+	E2iKjP7k3g2Nk/byYOoy3fDK9ZHMYi0OzuK8P9NylLGBMvgXGkGMhgV0GxC9bJKfC4u+iQ
+	9AiVDEm28t8Q3RAeXGvZWVxGglmbKOE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D819D601FB;
-	Mon, 26 Oct 2026 09:57:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB981F01825;
-	Mon, 26 Oct 2026 09:56:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 82BBA6021D;
+	Mon, 26 Oct 2026 09:58:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45A81F01181;
+	Mon, 26 Oct 2026 09:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793008622;
-	bh=uEc1Bmciiva82nUX+FVCSYZVGtSGCp8Z+LUTT/EsGek=;
+	s=k20260515; t=1793008697;
+	bh=ONdHuIF3arLP4vmgBYYOQGACA53JodskiOkfBwcJbcI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ADibYKa6IDFelyxOrz8R24pUpYscXPB+pjFUqfN2yzvXXexfAjjlvE8xEfbuxib1a
-	 9iuKKqlbVMsfHNfY8DCH1nNOgHe4kTajBG8upwqlZp9HUaz0Jm3ecdaV86Vb7/vNvQ
-	 pVTUkIJ1PrXGqNfuWJj4ilB87T5xg70/iei3rAqXx6qEUbMNQlQKTCvPCNx0BPsKu1
-	 lpfZjxcbWshFPOnI+aAlGyoG1VN7lODhcoXGWlZH27/b+4YYdt8nqCAscjnoWTkJKj
-	 LVXMT/ryh3eVhd+NCWnLLVqiT4ue426VHLCP7J6ORkJwIvkzwPbZ4RahyvrSR2DIY2
-	 D2GTiBGBSgRPg==
-Message-ID: <18602383-2326-4e54-8dec-bb695ae8878e@kernel.org>
-Date: Mon, 26 Oct 2026 10:56:55 +0100
+	b=Ly97WAR+7t3TUBYbtBXG5Cl67uFMpHyxMsFbLGuvN5TOlpDssYVm+ROFpJ1jXEx7X
+	 ZSVu/tZJkNZYNEq/tNneRpJccolHlGTp9S4vx3GVjn2/FNkgsCXYdQG5iZMEI5WFXl
+	 3mP10XHD6ijiDaqDnzVxtMQJsB6Vbss2NHY8wueWSW0A4VBpLtyAXkTalv65owI12W
+	 L+oHhJCSqpeFhUPm8xUPkkMDRHBMyLHFgPI1NVzdKflm+AsGcFjPxkKJnWoLronuqz
+	 dZpEgFrZbp5x/WuzYkdFcaz0SZzqxdTOcG2isnCCPywHopb4n72oi44Xn434DWz6DN
+	 dllmYfOoQ0ukw==
+Message-ID: <29919c80-7901-43ea-97f9-6b74c7e73965@kernel.org>
+Date: Mon, 26 Oct 2026 10:58:08 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] mm: don't migrate folios containing hwpoisoned
- pages
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
- Kaitao Cheng <kaitao.cheng@linux.dev>, vbabka@kernel.org,
- linmiaohe@huawei.com, nao.horiguchi@gmail.com, ziy@nvidia.com,
- wangkefeng.wang@huawei.com, tujinjiang@huawei.com,
- mgorman@techsingularity.net, chengkaitao@kylinos.cn, muchun.song@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261026025552.1427901-1-xiangzao@linux.alibaba.com>
+Subject: Re: [PATCH] mm/migrate: untag addresses when querying page nodes
+To: Hungyu Lin <dennylin0707@gmail.com>, akpm@linux-foundation.org
+Cc: ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, andreyknvl@gmail.com, catalin.marinas@arm.com,
+ vincenzo.frascino@arm.com, khalid.aziz@oracle.com, odys.yuan@gmail.com,
+ sashiko-bot@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20261025223226.33740-1-dennylin0707@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,21 +121,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261026025552.1427901-1-xiangzao@linux.alibaba.com>
+In-Reply-To: <20261025223226.33740-1-dennylin0707@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4F25EC000C
-X-Stat-Signature: secsjm71e5nba1ybijcenw1n63a36ngj
+X-Rspamd-Queue-Id: 0218720002
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: tca7qpcat9tfxrs3fcorghx66ggwj35p
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793008623-776427
-X-HE-Meta: U2FsdGVkX1/FBmUg+DQubc2icsPRENyaBTW3OAasGlZHXJ6ngEGI5fcVSMTd5de9v3mbrJm4vvTieGUitVFDlvTDo7IkSM+hXUuKaBqQW2uJelFQndJe9lKpExDkP8csi/qvcasVkMitmY3N/Nnc758II0CrhOCXzegTZ4WqZ1vALljv4P2W2vM/zmphOlLbSnP0kkuI/i6kQbe3I7nnQYaZczvoypl7Mwh7tjat7cYn45vzuQ1i0mjxLs+5/gmuX+QlnLYAEJigcxC7ac4rQr5sytJU5i1XgweFfVrFmtJbwJGQhfwdW+E5JFyEqGyyhJfWAeJCLDiFDo+peumf8uYS+gRRqpRGMGhPvQXV2QAbhjkB+txaZiALHeHTLP+3RmaDIK136yeiTdSIE2zlHvxk7oKwKpkMh6xssKL2Ewmh+f2UU6CdAVVzzwY5eVJ9HVm1ca4hgMWILsygxT44qWKTK6T78bZ3GR/y8FJjXHoUssxYWXcHvTKcQwSohgLlbHVrP637vWwNHIY2WRoaCZ2SzPsIfVxdOdcPuQty+cP42z8B74BiQELfw9jtET9MTmiqf9Ihofn2mGf5II9NFStVhx6ScOgxSW+m1RwzOpnmj1/hrsANB/mminEQBtU/qPhNTrmj7GkL/evYgR/8NkQ2zbRWuJmHjEv0oeAELw74ADKfcbNO1JHWl38RMVY9lR7TYl7ELzhgrVO8LQ62c8Fra4fo7yqu+iuaWcuCWoTPX//UPi670YbEd9zWRqLoYM4vg/W2PCoylg/QkF7qGlkRNbmMhq/NiwVEEXIx/Mm7keieee26++3S5NootJ7c9FPBtJYNDG+h/0Ti60xuIFAyzHrxAEpmmGBNwFzTzdZ7rXHXQ1k4ddLmH/pC9nPLOC0xmtOow1lSDCVfovzrKkig4t/y9DtjJXVCtFNfz4O4BJ8+W6o3nsibC4GH4x73vgL9FsYvu/dgRF8cHCy
- 1dci+Vi0
- F02I2iWrFD9V/KMMw0xLKASzDHp8t8gpjI31RDvMypRLoOVkl00k3uiLaYVITjWZWtbI7SOBChejOTg0H3oFJn2L/1MnRcXKRo9Bxv3hUtwHmOXEVmSPs2D37EpNwAKgH/P0+yAjEbmsLs9lUt/XiuyqTV3uF+xjaH8gHEiZhircV5Lg/ieWM5rDDwCdLbaLFWObMDlmnpSWtjY3P2JUSmNZ2aSCjCaBECs29x9MwoXEM0lUNYi68gMBG9tw7WLx/z3yaUqnt3LXNFPcpi2wADyaba2XDX7fpb7zOv/NZd9f7ynOXTgkfXWmUYQykk5g9O+YeoNkOMZUYKjI=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793008697-301500
+X-HE-Meta: U2FsdGVkX18y+GuROO3SB687UQICILfgZWKwWgkOryeXmrWD3g/37Oz7DWS+vwHR+JAYB8QGK75I8kvrPogp6wVGJg/l/mdu5JdkG4uBZhl3szUaAINjgDqqphXVAMCZkt88kL+322cjCTq03yLXTkh56SLOS376W4usWFtmBGuPV47xE85oZPkFvtSag5oChWKWpayNY/Zn1WoiqXBcJMxQJGipYmrmm6JoV6cFUBM8uzb8nWlktjTtcLtT5sV+GsRibKPOQJAAacYFJC9jHCSi1+2MLKExEoL8BADjFWgjx7V3xsB69u/cHqhgEcC2VSotI7vpQm2uZ9UI1z6rucSmrhFiSaeORQjE4n1LkZcDmQbAA2aEgyFLT/NwfBtUHqNRrjY3l3sP6vDE7wt2rAdqoFecO6HmHFA/ug27UY3YxlrYvM/RXFrLnyFMZEwI0RsomYy+dRPy88U4jyTi9oCklVNVWWXROlY86uRf5hgm01QWxZd+gjqTI2r+qUbJwmEjcCZ15DO1KcCsqaA0fUySToPma1S8w57kifoYKesi/GkinphtwSk3xAy+OCCzJE8LZJoMq8lAN5QcC8/xouLblbxR7/5fA+zEdpA7AEuataZh2WRMBAkzQ5sCakHbsetMBqQUKggqWqYDJO641YTw6B/siHTmXh/54+FrPupIkoY0N0s25KpaNmqe18NxMmjWQsnxQ8QS9W+yH2qvDwbO61yEkydzl/MG4igrii221fo4RuA0JPaP3bmt1Thy5rB98+BOEwS4x52rB7C9YuWQ8Gs6VLaTfmrbMlR2YpiglLOvWnVJp71kVk/hwvpb6M9kdn3lMHMaoD4gC0OTUVgW5/hOqNHsT0Zt0LqKJS1xe33RWb82IMbGyj8QXncU14vmmXxNhK0LvISx2w9AYFjOOrxY+idB9yy7mWh3BfcvMgYzrTZRn8xVT6U+zsLX6YzMTsDw8gUMyfhDM2Q
+ WTIYdKnb
+ EwE5vVNEoTI7MeuqfFyJlvQMlp1eu+TM+/4I+NU48gKsmFALscPp8o1wsnKcCH8LxJ/yY2/xVWyQMPn6hHm9ENf9WEmEa9XWiBDW7HrRhhNUaaDqkpS1PrZ6F/TYPPNYLWlBdHOWRTsPIiAO1jj+vGSP0Eydt0IIC0lSGIr1Ay5OS+Peb3jdnh/khMU3xQ8kVNC27PHzJKSOzBo8+jn3neINYRJRMazxg0OWvhoofj9K1eI3fqUq3Vq7dGHNHQgYQJeSDs/VLG2Yug1kZeL+m+u2GTe4XWT/kz2S3vuPBzrKJol1UUNrIoFJA4qObZKs3Kq5ElusYxVPYw5TLgVFXeQktGp4dKkOToTk23cuIXq/q2yzqa/7GcW1Lu+OvEGS1zkwC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,57 +144,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 03:55, Yuanhe Shu wrote:
-> v2 of this series.  No changes to the approach; the two deltas are a
-> wording correction promised in the v1 discussion and a third check
-> suggested by Kaitao Cheng.
+On 10/25/26 23:32, Hungyu Lin wrote:
+> When move_pages() is used with nodes == NULL, do_pages_stat_array()
+> passes each page address directly to vma_lookup(). A valid tagged address
+> therefore fails the VMA lookup and gets -EFAULT in its status entry,
+> instead of the node reported for the corresponding untagged address.
 > 
-> memory_failure() can end up abandoning a folio while PG_hwpoison is
-> already set on it.  Two ways to get there:
+> The tagged address ABI permits these pointers, and the migration path
+> already removes their tags. Apply the target mm's untagging rules to
+> the query path as well, while holding its mmap read lock.
 > 
->   1. Race: any isolator (compaction, NUMA balancing, move_pages(),
->      mbind(), CMA, long-term GUP) clears PG_lru from under
->      memory_failure(), which then fails the HWPoisonHandlable()
->      check, exhausts the get_any_page() retries and bails out with
->      MF_IGNORED - without holding any reference, but with the flag
->      set.
-> 
->   2. No race at all: the THP-split-failure path
->      (kill_procs_now() + MF_MSG_UNSPLIT_THP) leaves a large folio
->      on the LRU with a PG_hwpoisoned subpage by design.
-> 
-> In both cases the migrator still holds the folio on its migration
-> list and migrates it like any other: the corrupted data is copied
-> into a fresh folio with no poison marker, and no hwpoison PTE entry
-> is installed on the way back, so the userspace mapping is silently
-> redirected to the corrupted copy - no SIGBUS is ever delivered.
-> 
-> This was reproduced on v7.3-rc4-75-g62f4c998b297 (the base of
-> this series): an order-0 stress workload (madvise(MADV_HWPOISON)
-> racing move_pages()) left the poison flag set on 8426 abandoned
-> folios in a 180-second run; 698 of them were subsequently
-> migrated, and in every case the address then served the copied
-> corrupted data with no SIGBUS.  With patch 2, 0 of 9711 were
-> propagated.
-> 
-> The compaction-side guard is needed regardless of how the race in
-> memory_failure() itself might be addressed: the steady state
-> (split failure leaves the folio on the LRU with the flag already
-> set) is not a race at all.  Deterministically validated 16/16
-> poisoned mTHP folios migrated unpatched vs 0/16 with patch 1,
-> with clean controls migrating 16/16 in both runs.
-> 
-> The checks compose with, not replace, copy_mc: folio_mc_copy()
-> still catches real-DRAM corruption during the copy on archs that
-> implement it, and the flag checks refuse software-injected poison
-> on all archs before and after the copy.  Extending the
-> !ARCH_HAS_COPY_MC fallbacks of copy_mc_user_highpage() and
-> copy_mc_highpage() with the same flag check - which would also
-> cover their non-migration callers - was proposed by Huang, Ying
-> and welcomed by David in the v1 discussion; that is posted as a
-> separate patch right after this series.
+> Fixes: 057d3389108e ("mm: untag user pointers passed to memory syscalls")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: https://lore.kernel.org/r/20260721183257.706661F000E9@smtp.kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+> ---
 
-With that patch in place, why do we still need these changes here?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
