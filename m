@@ -1,126 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F846606A320
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6069E606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 09:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=j68Gm7s5
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=WmFrow3D
 Received: by kanga.kvack.org (Postfix)
-	id 54FF46B05B2; Mon, 26 Oct 2026 05:30:09 -0400 (EDT)
+	id 846706B05B0; Mon, 26 Oct 2026 05:38:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 500AE6B05B3; Mon, 26 Oct 2026 05:30:09 -0400 (EDT)
+	id 7F6C66B05B1; Mon, 26 Oct 2026 05:38:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C81A6B05B4; Mon, 26 Oct 2026 05:30:09 -0400 (EDT)
+	id 70B876B05B2; Mon, 26 Oct 2026 05:38:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 159BE6B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:30:09 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD52F806A9
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:30:08 +0000 (UTC)
-X-FDA: 85364256096.17.BA60B91
-Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D6CFD14000B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:30:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j68Gm7s5;
-	spf=pass (imf26.hostedemail.com: domain of wangqing7171@gmail.com designates 74.125.227.136 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 450516B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 05:38:31 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9F5C14068C
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:38:30 +0000 (UTC)
+X-FDA: 85364277180.13.B2A7B62
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf13.hostedemail.com (Postfix) with ESMTP id F172F20005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:38:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=WmFrow3D;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793007006;
+	s=arc-20220608; t=1793007509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hTY8VQIlE+Xjvg0Xp6QPO+Pn1Af1VD1rvxxNkn+l+OU=;
-	b=oCI23AQHZiVZzavTNsFKMsdvtT5OJpJsylPZg4eB28mWS24oIKc3trISbOvKhKy3xskWq+
-	12jUfvysKm0kvLoLbNDTjrGXk8RcFhBCLjuLpFhmXKlTdFJL388OI71liHgtazwaa8Ma5a
-	NJbYqbq8lCQQ0+U/5r35L++6F/P9kqI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793007006;
-	b=FuYE1XSBK4tSHB8JnSJrOjIiLuEk3qxBI5E8TpDPkmZMphRq3BjpU1g4qjnumC4zNefs50
-	FIJXfKBwJ/cI+LmXhW2STNJMzsM3rJdHqJdcUwiG25IDD2zPGXVzBRJkYx/MIQ1eoFzZa7
-	tgCRvFyI5gqB4ZlOHEJ2+4znWD647aE=
+	bh=x+EqPqnUrdL97N89dZ6gFIZevXV0kvlIFkPLD7q7NEY=;
+	b=u/svA4N/2byMyOUhawDe2uEfshYdnugCC+Bcl9phCMW5S0fRsZG4j01YhdQqIzVIGcYYId
+	D8cVSxD/9BWLxGwpJK2cxdgVu5ptQmEoJOjYe6QCsv0rBGV9/4W11FWwww2h6W9aDV7gJA
+	zlYoEVED28G87LEN13Eeek6+QgA2la0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j68Gm7s5;
-	spf=pass (imf26.hostedemail.com: domain of wangqing7171@gmail.com designates 74.125.227.136 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-3ac6fe4aff0so1916831a91.0
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:30:06 -0700 (PDT)
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=WmFrow3D;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793007509;
+	b=aNlmyJW5ifFs9mhmRcPiX3Tt9+gjVdoThzqXi+skjOHYaSSn3IIW7AuVyvL6FVrodt2scm
+	4V+7DdW4zZv3daq34P95USj0m9MrbnCyTwQYjoJEe/s+ikcph3IUCzF+LeWKu6gxBZUFd2
+	TCqlTLrDqE09ixBsDg1mns9KB7VP0l8=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a2072b9832so19392495e9.1
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 02:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793007006; x=1793611806; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hTY8VQIlE+Xjvg0Xp6QPO+Pn1Af1VD1rvxxNkn+l+OU=;
-        b=j68Gm7s50OlvuBqzJlxrtMBx9T1vHnRnVxOHg5SdUna7mPfeNB5yS3amObNs+Nn8+9
-         SwL0HfYkeIUPOC0jacQDJxFp8cLrbJ3VtXndvEk3F5itEg/WCIMJXjhroglxgl+swX++
-         /Y4apfm+Dop5IzeboOq/ZE4BgviFdgBxPMCuSe5vF8wpsqyTsWCyn7I0D3K2TEuFadrj
-         LTXhqGDsRGACL7WGQkBAgQ9WH6pEtJinAE2DXVNCs8/P4JcunEyu4g0iDBruEYTeS30S
-         x2OfoIhwjAINgB/F2YXxdapxqXVj640GRkp/IgGGUaWac1VPBvZbvyjHYuUjsZPTR97f
-         8uRg==
+        d=suse.com; s=google; t=1793007507; x=1793612307; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x+EqPqnUrdL97N89dZ6gFIZevXV0kvlIFkPLD7q7NEY=;
+        b=WmFrow3DmQXPY+H9VioYOQQWulsL57GETbqo8bSHSk0k0S2SENdryLFMdA4ocH/nLD
+         dNyj3Aq0wGTQP0/WxRGbMjgC4j6No7diXHNtrzUWLoKBpMoqC7QXr/8AXlvifajyCIUw
+         u8So4mp1Ah2KRWf1e+I5VCj0vouRY65YiU7Loqc/Z5fGYrUTEKCd9zTpawC5zpytM7b5
+         aFSAmYSAPjvp1VX1gsrBKWUoRUYrICc2RrcZySu1RV+jEZ7pbOahw0bXCwyniejkI1zr
+         +LPz/SKA8DwmrOiCykYs/Pw3xMN+p1AfJu5eANcbpupaIZdw468rSfnylX2pQtOIGaqv
+         7f9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793007006; x=1793611806;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hTY8VQIlE+Xjvg0Xp6QPO+Pn1Af1VD1rvxxNkn+l+OU=;
-        b=raowHmtnX4UyEI5e4dnk1A9J4JTutUG1rIdlYSCQzvk2qcvxg7Aac8MKECKoMpe9hc
-         MTHvoE5V54JTQn/oIy4ZLFhBAMr/DoNJ4/11kFqo/DldVb1vH4mc5g8ahC+6I8gEgxxa
-         HHwF9BbRvq/tW7sz9zQt7hFfR2LoBsl3uyn4/ZnJzdTPPxukoyf4hkk/zrdnZwbSH19G
-         HbULOyZTDyRmxfcQZp8wsgMSrb4LmQsVw5RWELI8gim1HLSk9A0Cx93SubrGjPBZ3pRP
-         OuWxz8o6AIQyaFLwE2uF9gq5gO4e3EtrlctbgHRnrzrgbYqRhk1VdClajnQ91h+yFoa8
-         zn8Q==
-X-Forwarded-Encrypted: i=1; AKwUvByD+MNTfKViBYdoOSStbQ99StONnnoeB7dJJEHnVBaO67cd2qruhZpXDRFNi+FpfFIg75oRSds6Jg==@kvack.org
-X-Gm-Message-State: AFq9FYLSdZcmjmhJ2R9byFcEMW7Y94vdD6gY4Gko4aJnxmgPvqj0oS/+
-	EIIYMH9XN5/jhZdG2LaEojWiHSgh8oGYCsiLE5fs4bmWWBH7X5mweJLs
-X-Gm-Gg: AYBFou1jNhlVQeE0CSN3UNvuHrskEPJ0QBazrwOklVgiLT7PzHlqecPNruzIF9kAO+c
-	tYS5EwfChqZlBK1ET5tZe99o0KL+lBTAoQNCdXkRpKVFQJzJHiXQIYucYEH+USlDzm25cv/zamu
-	fSJ4hyCGEIDvkOYfPE0dCp5HUSZEnlCpnWPtaq4vOL/rW09t4bOp7pXl9UIuUL+fGeXB9vNMD7+
-	VSbpL5y06N/iT784Cy2qHpqWj93UDgbwEy7pn+Ojl3utKWvkxPcdpmCDgoLd5XE6Mjn81Uc5eFh
-	2JQbKukbq//XvCvQe36EwXah5etIspx2Knln7+BgxOPitvCOlUD0mTfnirIm8g7KJCBEL6S890c
-	l700Q5dgfJ1+znVrQtFxl2HprD/svl6gPBM/aihu9C3L4rc/G0wLftl9P8QoILyy9CFY/GNi1bu
-	aMRuMw8hhcnpBnwUBs5gG0zXCo1M46nmj2oysy9kMel9dJz21QLbUk10goS48BjIy3trKJHOufz
-	Kq/kJSTKJC99VPVnnJKItHFuaFKk1Y31sclOVvOYEE/eVJS0yiVH/oVhD9Lqr9+2GyZclJLTc0/
-	A6vnIj8=
-X-Received: by 2002:a17:90b:1c8f:b0:3ab:3384:1a44 with SMTP id 98e67ed59e1d1-3adeaae6ab1mr5668619a91.12.1793007005446;
-        Mon, 26 Oct 2026 02:30:05 -0700 (PDT)
-Received: from lima-ubuntu.hz.ali.com ([47.246.98.219])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adebaddd45sm5436708a91.2.2026.10.26.02.30.01
+        d=1e100.net; s=20260707; t=1793007507; x=1793612307;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x+EqPqnUrdL97N89dZ6gFIZevXV0kvlIFkPLD7q7NEY=;
+        b=FbHGjybtef7ji5H4FjVuMtu3QI5OltIeI9ehQQTa317hn+KV9fAT1+sQ8VLjiGEzF4
+         sGgQXDwJjKECxEhx1q0OckYPxQkNMNsZyCmHU6KUdJdBtIqV1u6IPCgoHzjhhsGYMebK
+         +r7mZn+XwScJWLpLnts0NIgy/E+6olp7orn1y9r4yqEOeGzUVfTKSAGTknQnOD6g2e/f
+         pwkklkaI8iClFhw+G3MJ3OP9fVLtPsmvt1g/lKHXyMg+6I1eUPTVC7O5fXZhv9RdmtZ+
+         HE37mkHS6uA+mVmy8d+mB71AeDhg8XWheImIrA0r5ygAOzmjA1Hik0xeeaZMKjtpUK9C
+         dTtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxgS+B/EJx25HP3aCqb2+VZKO7IBQGb+xzJHCnETSXRsqVe5FFOKyGobeThB2e/JSetcIE9Txvrxw==@kvack.org
+X-Gm-Message-State: AFq9FYLZm8oeq6RDlFSzBITA4lQR49IivckqhILFr1ySNFHiEHZMsGqS
+	5cX4qrebyrt55cn9EKBq6cu2WbycjJh4Jv3RKMgmdofKqCY4IE8hQI3qJOVDCZMxIZVYcGXUvZy
+	RixFMOUY=
+X-Gm-Gg: AYBFou0LSbBJ4afIAQvF1m5XLC5UIzjKrghJVZXiXZWlm/zZrzdaMxEsX97nKhYJpub
+	gCVrJranuYoFccKUYeHiGi8KlGQ4QoKP1M+GOmP4CcEyTLkTs0E8PLFpuBtIBIs8YFve5s5WpNe
+	9j0rHwMrxWy88COTrDl0mB6cA3QpSWQU/6hvQyPtJPdQvr5xdvhXMK0X1rQF/lS5AFegabWUM9P
+	lQ96K1+Tyte450l08Wl45QJappBzrEnJB57rTOSlu9H5MurEII9LJ778gf3h9jODkEH38rP8jGe
+	mTc7hSVV7/R51QbqId0SL1p0heuzt8+wlGFjMDos+q+TTdNpVLJ7H62fD/O5f+s1d9127b58uah
+	6sYyWrGpefpo/wC1ZFJVLLVS3eeDACKZHmqgkcvCB9lmf+tk2TihcGaxiI6aV9Y77OQwOrzr5Fy
+	v8ZGXoN1P07b0nNWn0eOdNpzKcQeAO510hy093qa4M3fpncJC2lGU3l2ddm1hi+hx5Loy7+iVo0
+	C9PDDnrpKZPHfHpwoTrEiAEAPrPKssnvMqS3Eum2+z7550HCBzGf+/NCWeLwRqrxDPXDKla+eg8
+	eBpTSBrnOaQoYjE0
+X-Received: by 2002:a05:600c:8b63:b0:4a2:1960:6fa with SMTP id 5b1f17b1804b1-4a35ae7027emr123797325e9.4.1793007507462;
+        Mon, 26 Oct 2026 02:38:27 -0700 (PDT)
+Received: from localhost (109-81-20-177.rct.o2.cz. [109.81.20.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a359fbb725sm181656095e9.0.2026.10.26.02.38.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 02:30:04 -0700 (PDT)
-From: Qing Wang <wangqing7171@gmail.com>
-To: harry@kernel.org
-Cc: akpm@linux-foundation.org,
-	cl@gentwo.org,
-	hao.li@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	vbabka@kernel.org,
-	wangqing7171@gmail.com
-Subject: Re: [PATCH] mm/slab: only require the requested size when refilling
-Date: Mon, 26 Oct 2026 17:29:57 +0800
-Message-Id: <20261026092957.2305785-1-wangqing7171@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <attrLy_Q-53FnjhL@thinkstation>
-References: <attrLy_Q-53FnjhL@thinkstation>
+        Mon, 26 Oct 2026 02:38:27 -0700 (PDT)
+Date: Mon, 26 Oct 2026 10:38:26 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 2/2] memcg: don't go through the lruvec for folio and
+ kmem lruvec stat updates
+Message-ID: <at8fkp9hR7Mvjy4J@tiehlicka>
+References: <20261023195417.1391216-1-joannelkoong@gmail.com>
+ <20261023195417.1391216-3-joannelkoong@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D6CFD14000B
-X-Stat-Signature: izdykiqaywuh47b9hapwjbkpu9podsws
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261023195417.1391216-3-joannelkoong@gmail.com>
+X-Rspamd-Queue-Id: F172F20005
+X-Stat-Signature: 1j9yoeu5t4j4a8papmnc4rpjwgawbqon
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793007006-777296
-X-HE-Meta: U2FsdGVkX18NBTGSXEwefcG6Fe65DH+/yEa64kRzn/gxcm+S8wCRfwpvQbE8iUpWpjifCL4j7HN4kId7YPvuGs+7ZmZif5aTCJ9cpOdBFWFL7vyjdBEmz+bfPBvaYnS9z+bVkkvcpQZVyM5s8JvYqkOuKlfI9reNizjBITngAJ9HfUGSgmibBDUXHMFYfQIwnqUhwYAss4w+ZktiXflSymMTPX4F/xECIck/DCssX6ldFR5Jvhxg6tQc49dEF9qxC1jwSlDBJm172iitQ4aPd6X2cshLwYSW6Yb3rd6jY1sZoDxbmZn+v85n8QodbKYpdLp7Cy7+9+sTBiUgjEAbsVEBbG/RGH7gQFFn/PhIqIqKiV6/GrUbHKeOz1mYL4n3sWLDUL78++q5AzegjwO2MHOfflC8qPxG0ZQbwzQicLyBuZCuZ+NbesKbowRXNqz1guFJmWQgG+WSyuv0ZxPcKJJmJKhw5XGfyGoZD6EAhevYL/ecJ0yrVj6rRN6sge0SoJZvMbpDkPc70GDKcUZc6uBQIL5Ff54uIWZqz4mcvgc37dz8i4aBn467WpywNiQpwl0yXCB+wapidqtvfFijXRp6/D5rVHX8GxMKfigLS4qtjnK9KfMphzFwAgW7/jNZjhySq814WCFTbHLY7Bqb6cRMXDtQuOEz0FxHOp6/y3u0Zn4WiY1B37JKa+yOB+u1FPRFLXHY1OD5TBa8Uekn/Ik8W4mCwjgt5vC+QVw1iHz5P33h9dG0rp8TiVtthZuX/J/gfEv0oCCdx2D8jHxadbseu1b8yc9tNQheAjN1tEwUM+199vZLF1iF/ZQjL2gclIazWGEf1ERySL+3xOF8Gg1P9Nz4mi3jF1HvCEo/QhwOrcHe2WVoJ14KS/mP+tqDxUS/wG4d9dZUFt0CoewVBXn1/WD5I0EdyEjAxqI/r8R/Q4nx4II9vEqEdckAqkZ9aXyueqxvBr0R8hBApCS
- /ary3CPh
- ED60rQLvex9LJbKFACjKxnFX+2Dx9sFNJFgeDy8wUgxcqBy9dls7L+7JDGtGJ+B2fZRdICJCTXXlMHPAY9aAAsPmVrvTyJn/aSfUGWIZNF4mobopyDaS6a77lPp++wVH39EB2TPARLsnFr80X0KdFnsmfM74Pb/LNJN5NwF39OK+KDcTKClL+rcuUZIJOYZ6SdbhyEOwQkqFJGBqTj0wgo6OVRkuw5ry2u7cPl85bcph7qcpCdmldDxW+ecG5feaMC7tXswmNCwdykTxvaCup6JrdORM4r0fyPoXw9VCjYYZXyZWo4WKJ29ZKXRrnSWiYQ/r18ra/z6rFDyjsiWqTZx3SiFSyHoG4eTmYnJ7guHi33wDN89HvtMIczEoGcFsyv6Xqom+i9RsUzvES8hkWbQjv9w==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793007508-458124
+X-HE-Meta: U2FsdGVkX19NqeeLAI/mSuYbuk4+TA+mrcol//ZTcoa1Ry7Lzrg4s8FpIestrXI2h3Ct43HlkudFVVBoMl4sRJwdpph8a+eO0O26QJ5vpJldyKyTyaEg6IM6Z8xq0DtKdoIL40NjCmenP6+XBaGZtFWvDQ+tOkaXCs6hKjk3Qz9m28uMELpI3mxPsvjCISPz+xaiDWfY1Da0e2HTtYqmg97r/tqBEP3AU9aqCDte3pS67kidQ2NH33Q+kEeiooLayjmjhm0pxj/GaxkstOe/qVLzeOPXkEtfH4ZPeRMn2YEcDxLxVagPailC+XQHCYqzPG4Tqvs0HdG7jGHRpeVHJQrvnK2ryrDwG3aYwpsFJXC0VaUm/nc13/w82RwkzfsL+uj0gsKAsnG+3YrKF0PFhca3qfLXlY+ey+P5TGqolqAK60DlQCbLKbGljEDAw9U36CLnm8kAf2+dLiCcyvHMpUV+KG7jSH4JtDHVqd6p1SHqAyq3zl33XunCT1wCAvwYQzcINzK2SdDaB53bHan4wofokibjvMv3oiZBiD8p1XbG3PmnUK3H3duMCq85kzrYNcqlSPjSkJZ4UgV/DnapYsfV//wSJFJoIYkQt4kyROlOEiJ3bbHHY+bx69hSkZcwvg2CxUv8U2NBkZLsQFjD5Qdr7htept9CpPbJlEu3R3Yo9VRb0VppTQ8NSe0uIUT7E2W9H5gAd9O7nvuXndM1u2rSRzKELF/JBhX5/MDgVRvR2fR0c4zzZ1OonnF0KFHNu6PgSSXM9wlYl8TyRPkVQvihGYx0r92KCbHkId43R/R3O39KuRLLrCTJkbC4ayjZRUwnpgak48cfPIAYm0CKaXbrlDdut8XoNMkljKmOPNMBxKudi3DBOx84imFHem0AVJDJYMuHus8E9RlOZB0iAY/cPWUYb2Dapgwsqjy0zOfN6SXbs66m446/8phxNVAdeQWLDhVrGjVpahK/D4H
+ dwx6Tax6
+ qlK8gWeQv7caizw7H6dJKkH+/1h9g8NquD8zM4yX6Sa6eNUKlIEb/XPFLon9+xvOsTgoEyrzGcR01VJvwX5lnEy06Mc4LiPtN08wDxfMUFXZWw1uHxRwJuduqbLOg13U5RBhFkYLVgRBd66q+mQQ7s08YGhQX8IoUX6it5ZTJvA4xA/9EBLmFDPgPIKgPxnVR9USDx20Kk1udaX8OJjKSCMQvlJR38Y2fXzUYMSLA3mIItaZ7Y2j3VE6/MCjcJZDwrwENP5nhW/iX+CY6i98r2iKKdllhirzSkUfwzua+xcQZoAq898IWWp4+4yYk0gsx+amTQwM1KV7UjqeWRiArr8BVIu99B8usnYmVCmFI3J1x30xWoxV+egOpz1flUU1ZyHuuHixgE9xSXhfZioftaeqS9o7i9A9C07N0dhcDoFI3dT8qww7VdpRijA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,34 +131,173 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 23 Oct 2026 at 22:22, Harry Yoo <harry@kernel.org> wrote:
-> On Fri, Oct 23, 2026 at 05:44:01PM +0800, Qing Wang wrote:
-> > kmem_cache_prefill_sheaf() and kmem_cache_refill_sheaf() only guarantee
-> > @size objects, but for standard capacity sheaves
-> > __prefill_sheaf_pfmemalloc() uses refill_sheaf(), which actually fills
-> > the sheaf up to s->sheaf_capacity.
-> >
-> > The call thus fails with -ENOMEM > whenever the sheaf cannot be filled
-> > completely, even when @size objects were already obtained.
+On Fri 23-10-26 12:54:17, Joanne Koong wrote:
+> lruvec_stat_mod_folio() and mod_lruvec_kmem_state() already know the memcg
+> and the node, but look up the lruvec with mem_cgroup_lruvec() and update
+> the stats through mod_lruvec_state(), which reads lruvec->pgdat and
+> mem_cgroup_per_node->memcg to get them back. lruvec->pgdat shares a
+> 128-byte cacheline pair with lines that the lru_lock holder writes
+> constantly (lru_lock or lru_zone_size[], depending on the alignment of
+> struct mem_cgroup_per_node), so on CPUs that do spatial prefetching
+> these per-folio stat updates contend with the lru_lock holder.
 > 
-> This is extremely rare condition to happen, and so...
-
-Yes, I went to measure the number of times of
-kmem_cache_prefill_sheaf() and kmem_cache_refill_sheaf() in qemu. It's also
-very low.
-
+> Pass the memcg and node they already know to mod_memcg_node_state()
+> instead.
 > 
-> > This leads to needless flushing of the partially
-> > filled sheaf in kmem_cache_prefill_sheaf(),
+> On top of the mem_cgroup_per_node rearrangement, on a 2-socket Skylake
+> (80 CPUs) with threads faulting in and freeing shmem in a single memcg,
+> this improves throughput by about 3% at 20 threads (5.59M -> 5.77M
+> pages/sec) and 2% at 80 threads (8.66M -> 8.82M).
 > 
-> It doesn't make much sense to micro-optimize slab in low or out of
-> memory situations.
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 
-I agree with you. Because it's so rare.
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 
-Thanks for your careful review.
+> ---
+>  mm/memcontrol.c | 71 ++++++++++++++++++++-----------------------------
+>  1 file changed, 29 insertions(+), 42 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index a05d9a8baa1b..9f33cc5c8293 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -587,7 +587,7 @@ unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+>  	return x;
+>  }
+>  
+> -static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> +static void __mod_memcg_lruvec_state(struct mem_cgroup *memcg, int nid,
+>  				     enum node_stat_item idx, long val);
+>  
+>  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+> @@ -596,16 +596,11 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+>  	int nid;
+>  
+>  	for_each_node(nid) {
+> -		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+> -		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
+> -		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
+> -		struct mem_cgroup_per_node *child_pn, *parent_pn;
+> +		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+> +		unsigned long value = lruvec_page_state_local(lruvec, idx);
+>  
+> -		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
+> -		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
+> -
+> -		__mod_memcg_lruvec_state(child_pn, idx, -value);
+> -		__mod_memcg_lruvec_state(parent_pn, idx, value);
+> +		__mod_memcg_lruvec_state(memcg, nid, idx, -value);
+> +		__mod_memcg_lruvec_state(parent, nid, idx, value);
+>  	}
+>  }
+>  
+> @@ -990,10 +985,10 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
+>  }
+>  #endif
+>  
+> -static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> +static void __mod_memcg_lruvec_state(struct mem_cgroup *memcg, int nid,
+>  				     enum node_stat_item idx, long val)
+>  {
+> -	struct mem_cgroup *memcg = pn->memcg;
+> +	struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+>  	int i = memcg_stats_index(idx);
+>  	int cpu;
+>  
+> @@ -1015,21 +1010,23 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+>  	put_cpu();
+>  }
+>  
+> +static void mod_memcg_node_state(struct mem_cgroup *memcg, int nid,
+> +				 enum node_stat_item idx, int val)
+> +{
+> +	bool rcu_locked = false;
+> +
+> +	memcg = get_non_dying_memcg_start(memcg, &rcu_locked);
+> +	__mod_memcg_lruvec_state(memcg, nid, idx, val);
+> +	get_non_dying_memcg_end(rcu_locked);
+> +}
+> +
+>  void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>  			    enum node_stat_item idx, int val)
+>  {
+> -	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>  	struct mem_cgroup_per_node *pn;
+> -	struct mem_cgroup *memcg;
+> -	bool rcu_locked = false;
+>  
+>  	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+> -	memcg = get_non_dying_memcg_start(pn->memcg, &rcu_locked);
+> -	pn = memcg->nodeinfo[pgdat->node_id];
+> -
+> -	__mod_memcg_lruvec_state(pn, idx, val);
+> -
+> -	get_non_dying_memcg_end(rcu_locked);
+> +	mod_memcg_node_state(pn->memcg, lruvec_pgdat(lruvec)->node_id, idx, val);
+>  }
+>  
+>  /**
+> @@ -1058,19 +1055,13 @@ void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+>  {
+>  	struct mem_cgroup *memcg;
+>  	pg_data_t *pgdat = folio_pgdat(folio);
+> -	struct lruvec *lruvec;
+> +
+> +	mod_node_page_state(pgdat, idx, val);
+>  
+>  	rcu_read_lock();
+>  	memcg = folio_memcg(folio);
+> -	/* Untracked pages have no memcg, no lruvec. Update only the node */
+> -	if (!memcg) {
+> -		rcu_read_unlock();
+> -		mod_node_page_state(pgdat, idx, val);
+> -		return;
+> -	}
+> -
+> -	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> -	mod_lruvec_state(lruvec, idx, val);
+> +	if (memcg)
+> +		mod_memcg_node_state(memcg, pgdat->node_id, idx, val);
+>  	rcu_read_unlock();
+>  }
+>  EXPORT_SYMBOL(lruvec_stat_mod_folio);
+> @@ -1079,23 +1070,19 @@ void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
+>  {
+>  	pg_data_t *pgdat = page_pgdat(virt_to_page(p));
+>  	struct mem_cgroup *memcg;
+> -	struct lruvec *lruvec;
+> +
+> +	mod_node_page_state(pgdat, idx, val);
+>  
+>  	rcu_read_lock();
+>  	memcg = mem_cgroup_from_virt(p);
+>  
+>  	/*
+> -	 * Untracked pages have no memcg, no lruvec. Update only the
+> -	 * node. If we reparent the slab objects to the root memcg,
+> -	 * when we free the slab object, we need to update the per-memcg
+> -	 * vmstats to keep it correct for the root memcg.
+> +	 * If we reparent the slab objects to the root memcg, when we free the
+> +	 * slab object, we need to update the per-memcg vmstats to keep it
+> +	 * correct for the root memcg.
+>  	 */
+> -	if (!memcg) {
+> -		mod_node_page_state(pgdat, idx, val);
+> -	} else {
+> -		lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> -		mod_lruvec_state(lruvec, idx, val);
+> -	}
+> +	if (memcg)
+> +		mod_memcg_node_state(memcg, pgdat->node_id, idx, val);
+>  	rcu_read_unlock();
+>  }
+>  
+> -- 
+> 2.52.0
 
---
-Best regards,
-Qing
+-- 
+Michal Hocko
+SUSE Labs
 
