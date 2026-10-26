@@ -1,84 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3235D606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A379606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=yvlmz5wuurh5rfsoiol3dfcmfy.protonmail2 header.b=zU2lBZAR
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ctFl4FCF
 Received: by kanga.kvack.org (Postfix)
-	id 36B206B05B0; Mon, 26 Oct 2026 16:17:38 -0400 (EDT)
+	id 794FD6B05B0; Mon, 26 Oct 2026 16:23:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31C176B05B1; Mon, 26 Oct 2026 16:17:38 -0400 (EDT)
+	id 71E446B05B1; Mon, 26 Oct 2026 16:23:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230896B05B2; Mon, 26 Oct 2026 16:17:38 -0400 (EDT)
+	id 5E5956B05B2; Mon, 26 Oct 2026 16:23:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E84BB6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:17:37 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78BDAA088E
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:17:37 +0000 (UTC)
-X-FDA: 85365887754.19.81A4B20
-Received: from mail-10697.protonmail.ch (mail-10697.protonmail.ch [79.135.106.97])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D475F1C0010
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:17:35 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=yvlmz5wuurh5rfsoiol3dfcmfy.protonmail2 header.b=zU2lBZAR;
-	spf=pass (imf21.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.97 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793045856;
-	b=6gd3IyHVJccnFX58G3URma5jqskua7g4LKnmAR98o/dcN9HtY5jeTEGKXhU47/qk2W7MPk
-	pIWO0k5olOFSPWRAMBdRDdweWJSH2ohEh3LkdrOoEzYJAbjN94w3ne+6iwco38u8ZYh75j
-	9QEQibA+uVCgaHMZVSf7/fT0qcUVUmc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=yvlmz5wuurh5rfsoiol3dfcmfy.protonmail2 header.b=zU2lBZAR;
-	spf=pass (imf21.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.97 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 38C7E6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:23:42 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ADE8240870
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:23:41 +0000 (UTC)
+X-FDA: 85365903042.21.45299B2
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 037E040005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:23:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ctFl4FCF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793045856;
+	s=arc-20220608; t=1793046220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=sVSjN/XqWDLZDr7IXQQnJDQT7Ga3u1tyb5UkYEWZhRk=;
-	b=RE4tP/4xD3N/AC/b3sY7n40r70vPYaPl+HbEvd8T/TeimbfniN+mA/q9GAb436OMgHBt3p
-	/joVN18g/i7VKsVZB8y0gpzD6qMpZ9Vm8CZWbo8Wax/iSgGWcXIuoSsAUuO+ZHK4WvPHtG
-	kC59LxrCJdgynJYZsgk3SJUzyrTVsSc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=yvlmz5wuurh5rfsoiol3dfcmfy.protonmail2; t=1793045853;
-	x=1793305053; bh=sVSjN/XqWDLZDr7IXQQnJDQT7Ga3u1tyb5UkYEWZhRk=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=zU2lBZAR2+tXbDzRvPC8eEgaPslt5ccH5CgJ6w6DgGQIWCDYiaWlrkAc90YdsVG0H
-	 iMeWt3zEBBBZwAF01E+bVRJYqKV6oPWPndut+foblGBxfiG8SXEUiLEIlLly/x94nr
-	 TQ8tFAiYAf2rJBwCoEx0POuwvDgGv9xXvOwQLMHabQVY4/4h8O21RIPM3zdREbOqOs
-	 DIhPCcoXZRa2ylzG2mRWwlKunEdsbcOescd62Pk7phVGhshd3wDWMvJovMYgAs6oZ4
-	 5pxZdgru7l4ckNfqzdsR+ZiqdQ8WNqZ6vc1HEPMD6uNrfqyQ0ZHLf8nb6sgvW2R1J1
-	 eIfaJvPymTZtg==
-Date: Mon, 26 Oct 2026 20:17:26 +0000
-To: "brauner@kernel.org" <brauner@kernel.org>, "kees@kernel.org" <kees@kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>
-From: BoxStrikesTeam <BoxStrikesTeam@proton.me>
-Cc: "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "jack@suse.cz" <jack@suse.cz>, "mhiramat@kernel.org" <mhiramat@kernel.org>, "mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>, "jkoolstra@xs4all.nl" <jkoolstra@xs4all.nl>, "farid.m.zakaria@gmail.com" <farid.m.zakaria@gmail.com>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: [RFC PATCH] binfmt_misc: add binfmt_misc_select tracepoint
-Message-ID: <cmtfuzYFZMj7WozUoEjFs3RxYWe9UgdY5rK3ZGT7CPwO1mpemvEwNhG4v5ucoKBgUHMqFa7kSzOvLjFcVcxAybfmKdURZ4h-qoKX1lHXlAA=@proton.me>
-Feedback-ID: 205449183:user:proton
-X-Pm-Message-ID: c38ae376d3bc2a6c337eca8d28b04e53faf2a787
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=bKvNc5FHva93Nru6Wk+U/7p4AvuTN2mzzP8feyVue2g=;
+	b=2jjvZHZm/n0u47TyQRNHs4q2dE0/+Vsib5P/18Ih3XVcdo/u8XifT5Zejfssm0FdwqO6Ap
+	Gox8TZZzg5hnj4hvKev4NR9GQFziEoH4GydqNVNcWWR9/V+B4m88JPJiLH8NLLV3CJt1GX
+	YPmQbhJWdh8dLgdO68u/CT2mBUCvwUg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ctFl4FCF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of sidchintamaneni@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=sidchintamaneni@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793046220;
+	b=1cYkyGmQmkr1lenElPEhsqCAcaUhXroXdvImjZUUZUcSyghAbbhGEP7mVY57w7nVLY0Nw9
+	SFJ23xjCVXWhFCUgqgyR+SJu3+OwfsGWQw69SXBjCLDU2/uTudV0RCl8ITnAFFvv9X/juQ
+	7v+WVVDXW0eQ3Yyy7ecJhtSLKzEzgvA=
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a0880a46e7so153433b3a.1
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:23:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793046219; x=1793651019; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bKvNc5FHva93Nru6Wk+U/7p4AvuTN2mzzP8feyVue2g=;
+        b=ctFl4FCFw0R7Jp9MYQqyWNS2jL6w3aY2HYloaItgRq3U8fNVUwvhB8XfF+QCeQOTL8
+         ehl//8CicxQF8L9xHjNusXtdd+D6FTP3i8Ncye8L0v1tZoW2Kt5Cwje5phvtnIt8ccPl
+         576vkDmnIdb0R+1574pGfusf+o7SoifJXWUTU8SnmORs7NeETzrwKuiaefZKXIDSRj3N
+         fusw7n9m5vwYnAuKMzkhWXu3pQ4QRw/FCPHCv0yhfLWPbhecvTl+9c6Uj1Rm3HxavYl3
+         F/rpHKhBjKClfcDZ217pGjjojjVF/bQRuKfvqhb3VARUhUC9eHvj94noFblue1kMxO8L
+         HU5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793046219; x=1793651019;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bKvNc5FHva93Nru6Wk+U/7p4AvuTN2mzzP8feyVue2g=;
+        b=NDjAJ78RmCTg+JvoLLivAEbZEhGsztwl+3frKRO5xHxG7KffTkzMk6AUuGr6h5BKGh
+         sSOza5x8c0AKRDlJ5mbe58PEwT1KXUfxeb0idSUK9GRcs4ptA32TO+hHRSONfRQnn7YV
+         1HbOwOr78mop2zLT7upSLACYQ1H2ZM1KhFUuxpSlQJDe3KMgucSd1sILV2OoMYeWQTKV
+         B/9lJnw/q5DlyBAwlV6w3Kav3G/PS27lOAoXIUuDc81RXYsWXC/ZOQ9pS8lXSUMmSWrJ
+         dy92yOTSKwwkaPtvMszs7etguMQ9qetsW3eZq5X8ZP3V8SGQuXbRRUHQVra1KEueYcNj
+         q6vg==
+X-Forwarded-Encrypted: i=1; AKwUvBzIL87cAlrpI/QZKG6lNfLAyJTapvuoUnwnfLXEtM8akKKi7rGS+a+wTuZmvHpcC7fZJW0aEzz3FA==@kvack.org
+X-Gm-Message-State: AFq9FYLu7Rfe9SN+SXsWwCJXrwynxhEZ6bUivANGrmi61Mu3k3drsfAt
+	AR07YYxctBxhqwxyC7LccrW+zjOgtgdcSQLKGaOU1u6ipXLvKR2igR7l
+X-Gm-Gg: AYBFou3uFgq2PguLnMoXRerdp/3fJBlpnSJk2GLNDlHItUXIe8PwYN1Gi7EDUZSfHdK
+	ype9nNcm62i56koLptpHiNK80/toy8uNaj7xaTDYdJEhs8tylFh7MX0Q0mOVPGhAvzfqF+5S1aM
+	x3yOJvZPGWK1nNEpZTqfsuXwyyLaYk1gTIXk0fmeyzwfoioMtYfWrdmoG6f0D5MWm247SjoqrXG
+	1fqd6KGO9HeLScQMuRI2adzLve79u3z67iff4xjZVbsduPQ+YnsBHGApps2NI66zuwIhtk13aXi
+	AHVSQvtqeqEvMHlvzl9ecv8XpCayDAn42WBnZRypt1Wt7r1N3kD3L6osG2zjPmtT6oY1AAPBPmy
+	yhQz8FUG5MYPnk05IxNAhVUluug7/C5Gb2Dl5aT4LIXuiTEj/Kt9JdTns5/4nAPrUJo0lrgnEaj
+	zNKoaNAp1NlFNKx+Owf32IYPJzENT7A+201CCGJReDNX5/qUdrYay4bN//MrzY4Siju2vUAqxCH
+	pjaIZnSkfyc/oNe6bCB8zPJn5fveC+RdII3vkEGsSGZvDf8WjMnsyng/p1ZPw/zGCPKOwpPrpaI
+	GVoQtCBJ4ZgffZfQ09BfVgwXSF+87SrKgfY4RoCCZFmte4orSbDkEbrrkcgrfBS+Jz890SVGB5B
+	FoW3GLWPNA0aVG4Mn8G4LU/+pzmnpeqYgSb6+dn0BEPo9TI0lKMTluhlp+R3byjSZDnQ=
+X-Received: by 2002:a05:6a00:b46:b0:884:831e:d0e3 with SMTP id d2e1a72fcca58-8a5a601c56dmr360543b3a.17.1793046217922;
+        Mon, 26 Oct 2026 13:23:37 -0700 (PDT)
+Received: from sid-dev-env.cgrhrlrrq2nuffriizdlnb1x4b.xx.internal.cloudapp.net ([4.155.54.158])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a36bb29546sm1627846b3a.33.2026.10.26.13.23.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 13:23:36 -0700 (PDT)
+From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+To: akpm@linux-foundation.org,
+	hannes@cmpxchg.org
+Cc: david@kernel.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	yuzhao@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	apais@microsoft.com,
+	rlmenge@gmail.com,
+	Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+Subject: [PATCH v2 0/2] mm: multi-gen LRU: replace get_lruvec() with mem_cgroup_lruvec()
+Date: Mon, 26 Oct 2026 20:23:11 +0000
+Message-ID: <20261026202313.63122-1-sidchintamaneni@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="b1=_kzBFLx7iHgjUHNurMWuTQCh250lsH2OVRDJ5zxSdQ4M"
-X-Stat-Signature: oa1f8y6gzqdcreauyop3s3uotw17w8mn
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D475F1C0010
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 037E040005
+X-Stat-Signature: ae351ejdpaeutouq3zzc8sojktqxbj5k
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793045855-16865
-X-HE-Meta: U2FsdGVkX1/SCUUS8G8+h+uoXxP5CclgnWefJspg0AzhIwTK276o1yD7vJLrqhlNsRbUfed+IerZ4pQmQuPKnN/s1WDhVLR6yWVrAf1Rneleqy9kQfryqA0pW1RZv646c9ZiyR6EeAYrSByWnCpm66G8CEMRDZJw8PvtJGaGTG8dSXB6pmN3FUOmIuS1XfaDQ+Y2mYpD8sRtMECF6sclWxGqtXfoLb+jLjeQ5zGo8VrpVBgFgztQKX7JVPbVJEcLTEwaj2iDvHWadD5HsIlhtsdtOrueKMkaItTTysFc39EXiRU8NitLDOqGPo2+r68Hk+OGS5rLWdsU01zMvF3FBFwYR+q03RtJIpaKta4mU7eDBdgInxWrs0BxvSQPhfxYrBVwwFroScwPl6sNfLDq6RTzHMPhntxg55ez/oLC9gNXXjhfdpEOgN3e2a+SYMN1umHCMtWRYg9O6GKpVIvSoZcFhodY5xgZDMPhT0ZS27uTH8HolfIFFybN4ughvk/6EJD6Sg0fnZSPttdiB2pD7R5Nau0ZwMfRjOADs6SZ3awjtZc/pzL/PAURleEXnThQT2U6brgRiv49g63G4NCOuMT/K8fwtOvNA3f4DSpsQn1Hfr/m3m2Hm459R5+r9rSHNzXvHLMkRnrM580V/RyoUGOSV2RgBFrAJG0oNS/vFnHDjKuhwhybMTCBwRiDUJJIzkKXWFBO/Z1Xe+Jgmj9s+YqcK85nawxkYtEe38cRgjKiQ6QzNBBMPG+7DpRfSe5zPI13KS9L6u1fxQ99yukdPaQucZx3OVu85N7eb6sEEfVkv+G52BGTvqt4PVQiZug7NC+vMKHSPIXgst2DxVwW8Ix8X/Z2Oc/RhEcahAw+QgtTEk13sJ0HD6oNcBpaozQYoWR5W8GkhTlVV5mj0/jjBVKZ5mdKtL2HoM2xmvuq0GPifEPyF/p2Yjz0JTjjEcW9/wft5stof6Ua+D9XGi8
- JjfeHPln
- T19bL2QeIjybaCD9q2xNp3ZX4+yjFoeIMmuF/B52n4jbIIolj+tZQBP1C2LlIsFl99dxUC2IvKvygEKCmHG0gezrn+yNH6SloYCcYsxS8msVvQxctHPxz6zu3As4q7BrYlYvVzFxvqFD6l62rI5NrDeUvwp49b1xFW4URId/NEc/ciZF+NtlDAC+SaYcnHhKmsaNvh9y4/l/bEi+rbK77KDGW3BycxRlD59Rbgg9FzK2QC7VveA+DZriyXBr7pnGTy5BI8O2833+jvDlUbZYkcKIA3nofdSnEhstnlM31sOw/fjHRnRwRGIF062PEa/1NqTuL6NycbewEgTVw7RIN8NryOsCIi+u5X3lDW58ikt2hwP3LjuNo4njXeGZGldqMmqJ9phUxKeLtuW3XK5sya4pEuhibkm7tM8GAXT5SuMDbrMrapKUn4AJDH/a5zSijVdmaFeh0kEEWcQgbg2g54SimqB7tvAxhxvxTtiopW9fzeojA5r1vqYkRTx6Xk6Zo5Sb1FUzXQGlpZ121ogn55zPimmXVy0i2GaHhJeGheqyIT4a1WpxCyU7Ld9zysXBOJ/aydJMiW3RcVESWKFkruHim8YSoUC/7iBqR+2sVpoNQB20UnH0I5ppLmrfuLkMyuzNSomDBclcLE/ICpOnh0mCPgapXUqMK6Vi/lPtdvZru3vLX6Cir1ByszX7JeOsUVbgj3g/ycpM0oxj8wvUqYAJO9u/mlDoMQb6w
+X-HE-Tag: 1793046219-923579
+X-HE-Meta: U2FsdGVkX1/r8cKH8NLVK8IQsiwLNs0r2HYtAbd0I0qcmrNWV3uCqbq+CKFnPDdS8F5WUl7r+gKB1pRtzcLS3V8phxDh02vHgj9wAyBWAHYWQP5kM3pLWmu59sdWNoxi8LfR7CT6d3LV9s4+a9SjV0sZxFIzpLjBrgmq+IPcB0cgRXhlL0BMsXFhgI8yOyMBtLfsWb9MiizOG6hWjam/lueyYwU7h4OHkWkyT7ZXa0mA7xX622dROjd5NMvRP8JJYcWekEn386JRg0V9wxb4+gbec2nROSYaRVt2Tw/P6cFXicTQ7iFKwvNVU3DfCL3Ghr8/6AOqdnBTcdHhKZ650n4EybOpx/8yhPPSxmRg6rPWMUZYKSlKcFWactRGT1Z/hEIvc2eMGAsBj1aezpnC+YN133MhkMvWNdImsOwyogjrfJpNTBl2xZ6BO9MBkE1Q0cf6fksW9ukqi241MpyU1uhA2u7DBs6ZmyXwYbB+cl/UiCXVP1z/ftiZAIlHbr4XfeolaWJo6iNSfcdmZyWutGb/AzO4kbmnxgEvBQMjs7rZLYbtriBCqtUfQM0xti9ysKmUfp7qjfXQrHZxhj8/RpfHVd8qVxzrydYbUtYPzAOauE6I9OvDn2EQu+v4x11zz4PpHy92gz3ayiBER8uH44aEtOTMfry5SrI86wpfk68g/+MP1OBEgXWtnD7b59f/k5ZrrWg0A+jlmV/NPW+ON8HKZvDxLV+Z5038194n/GpYnAzvUBrHgDe3jhQj50+RaeRO6/pjWQur0ATjJBNT0LVBXauTSasN/O/X58f8XPlvcWJaZ/ccUvs6zGaPK6xSiPOIObwn6EeYLshztOicJkdE6I34QRvIFABPCQ8zC5jgx1aPV9YSXaWDh5KQMekW+vPC5jyS63fMFjrPfAU2jReXpIARK6/fNJ8SIvbi+TrqceXDgGlBj4HZW5NZSFs5LvC0WCw5vvTjjqh4QNv
+ zPQQG+dJ
+ 5cMDP1ScUtx11hV/aHlXeWkw0PQXlv2OPpTi5ulivG8G3DqIYUqPyCklLcWW1VGcf3463acUsy3+iZyvZrSGmk5oRNr2y8yKL7JPbc8Q6wuX/pHiX+WrmW1O3TiIwrQHSqbuOYG/d5XCCuZh76H2YPN1sNflv/ARYgjqXjKYFmGyZ8ugsG1msQGmDszU3Qs6fLXnOzI+ZcYko31ReTI5XPpXf6jhGZiB9P3Iy5aWg0Mhk/bbL+085MR8KT7CXejwvp9A6w4Ydv2fYjQQ6J8rDUNkKBlTISfyjn2qL/EGmk/PGuI+AmRxaw4dL040O0zDo0MBUqaOc9aqNSEReYeT4TJNYHvcF75LKwWT8vlu0jlaL45pLAXWfZc6S40KLWMk9WKI0XUJUS+/Y0GW2wFzmY8wrKasqLLlIS+s4L46XHKUYLyrwapDLvCZ0rQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,94 +138,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---b1=_kzBFLx7iHgjUHNurMWuTQCh250lsH2OVRDJ5zxSdQ4M
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+This series cleans up MGLRU's get_lruvec() helper in mm/vmscan.c.
 
-Hi,
+Patch 1 updates get_lruvec() to delegate to mem_cgroup_lruvec() rather
+than returning &pgdat->__lruvec directly when memcg is disabled on the
+kernel command line.
 
-This is an RFC patch for a binfmt_misc_select tracepoint. The patch
-was tested on v7.3-rc7, but I currently have limited computer access
-and no usable SMTP setup, so I could not send it with git send-email.
-I know patches should be inline; the patch is attached as
-0001-binfmt_misc-select-tracepoint.patch, and I can resend it inline
-once I have access to a suitable environment.
---b1=_kzBFLx7iHgjUHNurMWuTQCh250lsH2OVRDJ5zxSdQ4M
-Content-Type: text/x-diff; name=0001-binfmt_misc-select-tracepoint.patch
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=0001-binfmt_misc-select-tracepoint.patch
+Patch 2 removes get_lruvec() completely and replaces all 15 call sites
+with mem_cgroup_lruvec().
 
-RnJvbTogRW5lc2hhbiBFcmRvxJ9hbiBLYXJhY2EgPEJveFN0cmlrZXNUZWFtQHByb3Rvbi5tZT4K
-U3ViamVjdDogW1JGQyBQQVRDSF0gYmluZm10X21pc2M6IGFkZCBiaW5mbXRfbWlzY19zZWxlY3Qg
-dHJhY2Vwb2ludAoKQSBiaW5mbXRfbWlzYyBlbnRyeSBjYW4gc2VsZWN0IGFuIGludGVycHJldGVy
-IGZvciBhbiBleGVjLiAgV2l0aCBhIEJQRgonQicgaGFuZGxlciwgdGhhdCBzZWxlY3Rpb24gY2Fu
-IGJlIG1hZGUgYnkgYSBCUEYgc3RydWN0X29wcyBwcm9ncmFtLgpUaGUga2VybmVsIGNvbW1pdHMg
-dGhlIGRlY2lzaW9uIGluIGJwcm0tPmludGVycCBhbmQgYnBybS0+ZmxhZ3MsIGJ1dCBpdApkb2Vz
-IG5vdCBlbWl0IGFuIGV2ZW50IGF0IHRoZSBzZWxlY3Rpb24gcG9pbnQuCgpFeGlzdGluZyBvYnNl
-cnZlcnMgaGF2ZSB0byByZWNvbnN0cnVjdCB0aGUgZGVjaXNpb24gZnJvbQovcHJvYy9QSUQvZXhl
-LCBBVF9FWEVDRkQsIEFUX0ZMQUdTLCBvciAvcHJvYy9QSUQvbWFwcy4gIFRoZXNlIHNvdXJjZXMK
-YXJlIG1vZGUtZGVwZW5kZW50OiBhIHRyYW5zcGFyZW50IGRpc3BhdGNoIHN0aWxsIHJlcG9ydHMg
-dGhlIG9yaWdpbmFsCmJpbmFyeSBpbiAvcHJvYy9QSUQvZXhlLCBhbmQgYSBzaG9ydC1saXZlZCBw
-cm9jZXNzIGNhbiBleGl0IGJlZm9yZSB0aGUKb2JzZXJ2ZXIgcmVhZHMgaXQuICBBIGNsYXNzaWMg
-ZGlzcGF0Y2ggcmVwb3J0cyB0aGUgaW50ZXJwcmV0ZXIsIGJ1dApub3Qgd2hpY2ggaGFuZGxlciBz
-ZWxlY3RlZCBpdCBvciB3aGljaCBpbnZvY2F0aW9uIGZsYWdzIHdlcmUgdXNlZC4KCkFkZCBhIHRy
-YWNlcG9pbnQgYWZ0ZXIgdGhlIGludGVycHJldGVyIGFuZCB0aGUgaW52b2NhdGlvbiBmbGFncyBh
-cmUKc2VsZWN0ZWQuICBJdCByZXBvcnRzIHRoZSBiaW5hcnkgZmlsZW5hbWUsIHRoZSBzZWxlY3Rl
-ZCBpbnRlcnByZXRlciwKdGhlIGhhbmRsZXIgbmFtZSAoZm9yIEJQRiBoYW5kbGVycyksIHRoZSBp
-bnZvY2F0aW9uIGZsYWdzLCBhbmQgdGhlCnBpZC4gIFRoZSBmbGFncyBhcmUgbWFza2VkIHdpdGgg
-TUlTQ19GTVRfSU5WT0NBVElPTl9GTEFHUyBzbyB0aGF0CnN0YXRpYyBlbnRyeSBzdGF0ZSBkb2Vz
-IG5vdCBsZWFrIGludG8gdGhlIGV2ZW50LgoKVGhlIHRyYWNlcG9pbnQgaXMgb2JzZXJ2YWJpbGl0
-eSBvbmx5OyBpdCBkb2VzIG5vdCBjaGFuZ2UgZXhlYwpiZWhhdmlvci4KCkFzc2lzdGVkLWJ5OiBM
-TE0KU2lnbmVkLW9mZi1ieTogRW5lc2hhbiBFcmRvxJ9hbiBLYXJhY2EgPEJveFN0cmlrZXNUZWFt
-QHByb3Rvbi5tZT4KLS0tCgpUaGlzIGlzIGFuIFJGQy4gIEEgc21hbGwgUG9DIGFuZCBzaG9ydCBB
-L0IgcmVzdWx0cyBhcmUgYXZhaWxhYmxlIGZvcgpjb250ZXh0OyB0aGV5IGFyZSBub3QgbmVlZGVk
-IHRvIHJldmlldyB0aGUgcGF0Y2guCgogZnMvYmluZm10X21pc2MuYyAgICAgICAgICAgICAgICAg
-IHwgIDggKysrKysrKysKIGluY2x1ZGUvdHJhY2UvZXZlbnRzL2JpbmZtdF9taXNjLmggfCA1MiAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogMiBmaWxlcyBjaGFuZ2VkLCA2
-MCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZnMvYmluZm10X21pc2MuYyBiL2ZzL2JpbmZt
-dF9taXNjLmMKLS0tIGEvZnMvYmluZm10X21pc2MuYworKysgYi9mcy9iaW5mbXRfbWlzYy5jCkBA
-IC00MSw2ICs0MSw5IEBACiAKICNpbmNsdWRlICJpbnRlcm5hbC5oIgogCisjZGVmaW5lIENSRUFU
-RV9UUkFDRV9QT0lOVFMKKyNpbmNsdWRlIDx0cmFjZS9ldmVudHMvYmluZm10X21pc2MuaD4KKwog
-LyogRW50cnkgc3RhdHVzIGFuZCBtYXRjaCB0eXBlIGJpdCBudW1iZXJzLiAqLwogZW51bSBiaW5m
-bXRfbWlzY19lbnRyeV9iaXRzIHsKIAlNSVNDX0ZNVF9FTkFCTEVEX0JJVAk9IDAsCkBAIC02NDQs
-NiArNjQ3LDExIEBACiAKIAlmbGFncyA9IGVudHJ5X2ludm9jYXRpb25fZmxhZ3MoZm10LCBicHJt
-KTsKIAorCXRyYWNlX2JpbmZtdF9taXNjX3NlbGVjdChicHJtLCBpbnRlcnByZXRlciwKKwkJCQkg
-dGVzdF9iaXQoTUlTQ19GTVRfQlBGX0JJVCwgJmZtdC0+ZmxhZ3MpID8KKwkJCQkgZm10LT5icGZf
-b3BzLT5uYW1lIDogIiIsCisJCQkJIGZsYWdzICYgTUlTQ19GTVRfSU5WT0NBVElPTl9GTEFHUyk7
-CisKIAkvKiBObyBhcmd2IGlzIGJ1aWx0IGZvciBhIHN0YWdlZCBhcmd1bWVudCB0byBsYW5kIGlu
-LiAqLwogCWlmICgoZmxhZ3MgJiAoTUlTQ19GTVRfTE9BREVSIHwgTUlTQ19GTVRfVFJBTlNQQVJF
-TlQpKSAmJgogCSAgICBicHJtLT5icGZfaW50ZXJwX2FyZykKCmRpZmYgLS1naXQgYS9pbmNsdWRl
-L3RyYWNlL2V2ZW50cy9iaW5mbXRfbWlzYy5oIGIvaW5jbHVkZS90cmFjZS9ldmVudHMvYmluZm10
-X21pc2MuaApuZXcgZmlsZSBtb2RlIDEwMDY0NAotLS0gL2Rldi9udWxsCisrKyBiL2luY2x1ZGUv
-dHJhY2UvZXZlbnRzL2JpbmZtdF9taXNjLmgKQEAgLTAsMCArMSw1MiBAQAorLyogU1BEWC1MaWNl
-bnNlLUlkZW50aWZpZXI6IEdQTC0yLjAgKi8KKy8qCisgKiBUcmFjZXBvaW50IGZvciBiaW5mbXRf
-bWlzYyBiaW5hcnkgdHlwZSBoYW5kbGVyIGRpc3BhdGNoLgorICoKKyAqIEZpcmVzIG9uY2UgZm9y
-IGV2ZXJ5IGV4ZWMgYSBiaW5mbXRfbWlzYyBlbnRyeSBtYXRjaGVzLCBhZnRlciB0aGUKKyAqIGlu
-dGVycHJldGVyIGFuZCB0aGUgaW52b2NhdGlvbiBmbGFncyBoYXZlIGJlZW4gc2VsZWN0ZWQuIFVu
-bGlrZQorICogc2NoZWRfcHJvY2Vzc19leGVjICh3aGljaCByZXBvcnRzIGJwcm0tPmZpbGVuYW1l
-KSBhbmQgL3Byb2MvUElEL2V4ZQorICogKHdoaWNoIGEgdHJhbnNwYXJlbnQgZGlzcGF0Y2ggc2V0
-cyB0byB0aGUgYmluYXJ5KSwgdGhpcyByZXBvcnRzIHRoZQorICogaW50ZXJwcmV0ZXIgdGhhdCBh
-Y3R1YWxseSBydW5zLCBzbyBvYnNlcnZlcnMgY2FuIHNlZSB0aHJvdWdoIGEKKyAqIHRyYW5zcGFy
-ZW50IGRpc3BhdGNoLgorICovCisjdW5kZWYgVFJBQ0VfU1lTVEVNCisjZGVmaW5lIFRSQUNFX1NZ
-U1RFTSBiaW5mbXRfbWlzYworCisjaWYgIWRlZmluZWQoX1RSQUNFX0JJTkZNVF9NSVNDX0gpIHx8
-IGRlZmluZWQoVFJBQ0VfSEVBREVSX01VTFRJX1JFQUQpCisjZGVmaW5lIF9UUkFDRV9CSU5GTVRf
-TUlTQ19ICisKKyNpbmNsdWRlIDxsaW51eC90cmFjZXBvaW50Lmg+CisjaW5jbHVkZSA8bGludXgv
-YmluZm10cy5oPgorCitUUkFDRV9FVkVOVChiaW5mbXRfbWlzY19zZWxlY3QsCisKKwlUUF9QUk9U
-TyhzdHJ1Y3QgbGludXhfYmlucHJtICpicHJtLCBjb25zdCBjaGFyICppbnRlcnAsCisJCSBjb25z
-dCBjaGFyICpoYW5kbGVyLCB1bnNpZ25lZCBsb25nIGZsYWdzKSwKKworCVRQX0FSR1MoYnBybSwg
-aW50ZXJwLCBoYW5kbGVyLCBmbGFncyksCisKKwlUUF9TVFJVQ1RfX2VudHJ5KAorCQlfX3N0cmlu
-ZyhmaWxlbmFtZSwJYnBybS0+ZmlsZW5hbWUpCisJCV9fc3RyaW5nKGludGVycCwJaW50ZXJwKQor
-CQlfX3N0cmluZyhoYW5kbGVyLAloYW5kbGVyKQorCQlfX2ZpZWxkKHVuc2lnbmVkIGxvbmcsCWZs
-YWdzKQorCQlfX2ZpZWxkKHBpZF90LAkJcGlkKQorCSksCisKKwlUUF9mYXN0X2Fzc2lnbigKKwkJ
-X19hc3NpZ25fc3RyKGZpbGVuYW1lKTsKKwkJX19hc3NpZ25fc3RyKGludGVycCk7CisJCV9fYXNz
-aWduX3N0cihoYW5kbGVyKTsKKwkJX19lbnRyeS0+ZmxhZ3MgPSBmbGFnczsKKwkJX19lbnRyeS0+
-cGlkID0gY3VycmVudC0+cGlkOworCSksCisKKwlUUF9wcmludGsoInBpZD0lZCBmaWxlbmFtZT0l
-cyBpbnRlcnA9JXMgaGFuZGxlcj0lcyBmbGFncz0lI2x4IiwKKwkJICBfX2VudHJ5LT5waWQsIF9f
-Z2V0X3N0cihmaWxlbmFtZSksIF9fZ2V0X3N0cihpbnRlcnApLAorCQkgIF9fZ2V0X3N0cihoYW5k
-bGVyKSwgX19lbnRyeS0+ZmxhZ3MpCispOworCisjZW5kaWYgLyogX1RSQUNFX0JJTkZNVF9NSVND
-X0ggKi8KKworLyogVGhpcyBwYXJ0IG11c3QgYmUgb3V0c2lkZSBwcm90ZWN0aW9uICovCisjaW5j
-bHVkZSA8dHJhY2UvZGVmaW5lX3RyYWNlLmg+Cg==
+Siddharth Chintamaneni (2):
+  mm: multi-gen LRU: use mem_cgroup_lruvec() in get_lruvec()
+  mm: multi-gen LRU: remove get_lruvec()
 
---b1=_kzBFLx7iHgjUHNurMWuTQCh250lsH2OVRDJ5zxSdQ4M--
+ mm/vmscan.c | 50 +++++++++++++++-----------------------------------
+ 1 file changed, 15 insertions(+), 35 deletions(-)
+
+-- 
+2.45.4
 
 
