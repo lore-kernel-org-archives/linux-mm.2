@@ -1,89 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1794606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D23606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQuxmZUJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hwhsj8kN
 Received: by kanga.kvack.org (Postfix)
-	id A0D9A6B05B1; Mon, 26 Oct 2026 17:08:29 -0400 (EDT)
+	id 838406B05B2; Mon, 26 Oct 2026 17:08:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BE5A6B05B2; Mon, 26 Oct 2026 17:08:29 -0400 (EDT)
+	id 7C1DA6B05B4; Mon, 26 Oct 2026 17:08:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AC7E6B05B4; Mon, 26 Oct 2026 17:08:29 -0400 (EDT)
+	id 662D56B05B7; Mon, 26 Oct 2026 17:08:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C9356B05B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:08:29 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97B314088B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:08:28 +0000 (UTC)
-X-FDA: 85366015896.03.CCE06E1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AFE1B160006
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:08:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQuxmZUJ;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C2CF6B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:08:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6BF9B1608D3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:08:31 +0000 (UTC)
+X-FDA: 85366016022.28.ECFD6E1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AE11440005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:08:29 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hwhsj8kN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793048906;
+	s=arc-20220608; t=1793048909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PC1CXbiHzhQLku5W1cl0FjvjhWJ5KEZGUIcph1ecHwY=;
-	b=knNyujXyG2gufH3Cbu4w35Zh7jLiA5Rl3vOk7nBVFaIX8TBZ3n0fwVqcLpOoeTPCwCKhrK
-	6lDIMexxvjseHYNNeLKQhYhxQZyrJC2dfHuc9FLedLGqTDvsqve8wCmGpdZsnOaAuCXmjx
-	qtTPuXzyeNyt6DAwGS8+gMNZJTrTbYE=
+	bh=aZY6emueEsceME7nXNq6gUfKhqrQcT2cFezDIABkUGw=;
+	b=O+sehghO3LGc9jHifgmptWHHQqZhF6UHC91aSo71FaKdezh9OSr/3zDlmhu5lauYwhKf0z
+	92ZjpxMOpHDSV+yKi0CyxYkjCm+LZiiT3HdHSczNsGrnkeaVM5LSZCbtHRdvQ5n8HqOn1+
+	qleHs74Pby+JpvRsconkiQunEL+2Q7U=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQuxmZUJ;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hwhsj8kN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793048906;
-	b=2gTC+h4zyNkUSx/uq0W7nLkVymMGZT3rIbrGXsSVOXBd06X6I0NwW/FMmRFz6Ke95Rytu3
-	4m10iGAXHRGT8fdQwoXa/TBWbjlZ5RxzqcGfusKv3+v9aCSquR3PthmP4gJhkC5ay8K5TE
-	150kJNaYP5eMT+vKAUDJX3ZCNKAt/BE=
+	t=1793048909;
+	b=cv7NnHMuqeC4jnPNNZoro37ke9YfREbk6pJbcDFtiDUs3R5jwRDUTz/QRqtLP1ep7hVUQk
+	jMkkqxSRwk1gae2pxKArDhZNbeNNDlSv38n+d5Y4wO+sRgp//3HW+gwJ7sdTWqVttB1kDp
+	9U2WzgRxnCwJbKjXkutXxq7g6uWhCVA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BBA36405FB;
-	Mon, 26 Oct 2026 21:08:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCDF1F01825;
-	Mon, 26 Oct 2026 21:08:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3871F601EF;
+	Mon, 26 Oct 2026 21:08:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4DF1F01828;
+	Mon, 26 Oct 2026 21:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793048905;
-	bh=PC1CXbiHzhQLku5W1cl0FjvjhWJ5KEZGUIcph1ecHwY=;
+	s=k20260515; t=1793048908;
+	bh=aZY6emueEsceME7nXNq6gUfKhqrQcT2cFezDIABkUGw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CQuxmZUJFoHe/jVdB/Td1vVaISzkT31yz4kuoP+9Yf6XgCaMbl6F5B4zTdm8amOx6
-	 Z2zDvTa7sws8ye+cXb9w90RQJ1xrpGccTMU/inaNNbT9EOS+7YKzBDHxrl8TVHJpKi
-	 jQVOUH5FOREAqLhZHRorelHQKb4HpsMDpXypnX13JNXddnVaAyripGFIM3k/BAYi3t
-	 qhee9qBa0Muu2zQtovUANgP48Gz45LaFAzSypGrjypZDV75SDXJOWSKQO9cLhgq8IV
-	 aahuPEKJro72FUipgua8rXcW+Tz43i0i+D+bXeiJ5dnHRDltvwZPwpMrkGuVDew2YA
-	 VT7p4t6xKB7Qw==
-Message-ID: <ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org>
-Date: Mon, 26 Oct 2026 18:45:48 +0100
+	b=Hwhsj8kNM/003xoVUCIY6kkGhTMwCG7vilt/Dph6Rs2EcwYc9BgMFYtM3gSdCLUv4
+	 I+tMEzKtq5KAbamFFvZx7+ti1rXjRJsMZjvz0qerVCMxXjC93hhuyyMUiLAmtzc1/W
+	 LR4Z/+Pq0jLyAo39zmyDSxqVjNIeiDuZTxpYCVfdxa8mhWwNuCyhOz1ppbvUAknygE
+	 3GYifpJYvEc3MVOEyQZ5/oL5Xo0WCWkoroRzPUaoRpTDIFj7D2vLbekCufU0BWV8ka
+	 oeA1q6H6o0L+DLOpROZC2NULQUuPdxHZ3YYT75nxwHQAPF+Dr37k+z7MxY7tkjCqzh
+	 wc8fUODq2yO1Q==
+Message-ID: <5d441cff-ef78-4bdf-b727-9eb697ca7478@kernel.org>
+Date: Mon, 26 Oct 2026 22:08:16 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+Subject: Re: [PATCH] hugetlbfs: enforce F_SEAL_EXEC on chmod
+To: Samiullah Khawaja <skhawaja@google.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260227194302.274384-1-kas@kernel.org>
- <20260227194302.274384-14-kas@kernel.org>
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
+Cc: Jeff Xu <jeffxu@google.com>, Daniel Verkamp <dverkamp@chromium.org>,
+ David Matlack <dmatlack@google.com>, Pasha Tatashin <tatashin@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261026205555.2918396-1-skhawaja@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,22 +120,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260227194302.274384-14-kas@kernel.org>
+In-Reply-To: <20261026205555.2918396-1-skhawaja@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AFE1B160006
-X-Stat-Signature: n9c6xge79gimoz4muguynxp4ad59pprp
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
+X-Rspamd-Queue-Id: AE11440005
 X-Rspam-User: 
-X-HE-Tag: 1793048906-856729
-X-HE-Meta: U2FsdGVkX1+09dn0eZSf4ft8GLkUMBvZIGbcmZAcm/xzC4VasWw0VuNQqdNxAiAUuJcq674cxHgbTzIe2EwGeDTrqMX1dBaRrgLm3uJ3E5h9WBt8u5zBg9F7EyiZXE2v9o41cTqsEBTgYS2ZDiBfz13MhVppvQL5iFO8qD4sBauOV/Fn7Xj0T4aZVhfHqjv2quOb+9HxW5uPy4c+yOuzlSZYMO2Q/6gNBtXfDw7N2JlHFCDL8ulrlvC0SIEaTi/e0lGqoJx+/bhg77be+HE3HNq/rr7lgbknYvytB0PMkk6O/PYFhCuUruiHxagQqmZqsLPRM0knyt6I0jnTvIHOUcrJ42jQ6SLLjNgDCC+vlRNFyFDvxO7xyTe5xbar5lvSWpaln104x8QhrYfMVbX4vTMm6bsM+M37vuRosFzgpAqDTlhbzrOgSerB9MgQ6KZDTLYdlofyqP9pCrTjsw1UtFRfG3PO/yVjVxIAmgHKStM0AUGskIHHMhx99LZgmjvvk4IHOlb/6PlYywENvAC9P5vf/2F1Lew7aIf267dsTNer4swsC9rNY9HSq2c14eVSne+1YyEC1jkwzWvuyYOg59tGRBouit/Cbe3CrPQKH+ftQpwFk38CNg1ToX3dvNT+kpN35Hox05KW3L3h39OSRXJGGUo6FfZ93fn32Jv32s+NibU1y/vlq28NTmeEC7SmDtJTA0hrmncIQnQpy4Ukis7DzccwVN4n/1b2/WeFBEFkdHk2mVDaUPvsNWcsCSLZv5wrnfIh4nFQqoUEkLzlzNwbbus4hSnvTMpUi0jIJ33JRNAvfcJKTvk920OceJJmBQEy7oLmBtYy+qw5kbuCsgJ0y0qYgAW+jFDq9LR1Be/5r92z8CQvzIJgfpUBonmideZTtRI9GGRr9Coozv1luAxLCrkIpivea0nVNF4MlxSUZUStpW2RlbxP+iyO4y+vHsOydYpdh0kSC1swuHy
- cvmnn8qV
- M6B+DZ6oz/uB/RRLQxHq+Qkp7vowqj0xm8Fo1GkzIAL8NV4NhLneughNrABSd06nMxUuFQv4GT6YLJOXFHIyDAm6y4RPIvp4/cUNiIwnOUhson85Xln5QuEe5VFGsjG6ifCO90061NnKiJGk4pGN38X8Z7RG+Vl2N0GE6aEOgCIUTG9MBJYI6BnUBVchnxVuOyvvrFPdW0OMAx3qN3iXgxG4G+B4b3hmoZO7clkjnftkidgx5UOb1AvmwUPYSjp+KsCZ05wJRQe7iIDrIq+IORw8F53WuFBzBMKw1
+X-Stat-Signature: fznuhb4qufky1wh9gmu7ng7qnrt67o7b
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793048909-188489
+X-HE-Meta: U2FsdGVkX1+LjZr80Sr2jTjBS8WLxTuWjf+q6q2xDb6mQd/dBgNH/u/rGeS6ALKzJ2ePtMAulVx1jAWZIepC2iNZB8KpM34odVv8uTf0hNPe+h8c+NoqTvG9FohP7aAqiePeBSwZUxXTqnQeW9h5zzOVxwAHhHp4HYshgTxp+AR2H+EKibStXGPxfaMe8qKvhKmecPXLfn4j402tJ0CMDOR92iFTN68MzDn9QF3R/AcHb+eP1nZFJfZIpj6kuodiaqrlVB2br99anEhGP/d0nRn6bzHDRT6CS+rtsTxxqpS5sz8yjubeq+H3g0Pt8xQAwo58NClB8ZH62FoV+ZOxBpwWqccVFuv4APi7NRXiE5bGtQGm/uhvG+VesiRea3OWbze7FZsq3zfOKx6Qs2h4r4A/e7JWbVVuHuuChgRdtY+iDn1Pp72+46qkcxq7Lue1CynvAIV/wQT/5suXbE7p6xyhfqiYkCrcLuOSjwytr+9GWuE0CjWB+3dmze4En1bYpXpr9tNiH4eDx51AD0Jf72RkTFv1vnBg1jZyBKnORkr42aB2YbT0Fc4rFlRzQ5w56BTOsnsT5KXt4cgW/4q2orJBhZ3bwuAPIQyiyAxd7J3ccqlcXsMcBDQPjosuQDqHzYojR5xKgT8qWEkkZ4k2ytalsGnxWI6udhApFODlwbZAHlimA9uTxN+HdPGK8DVTlKANLo5UfLIRmD+UdGqqnHp9DFbpjOdDrhbFAx+gzEeDQlBKX5wEOxEiWMfkPzPJQV3QsHct4kkojRGir1kfG/AqFBeCSIv+0EytuExlQ7Cw14KjFs7KmgT3f4i6HWLW5o72207eSzxwLbv7U1DtGN2ZP9AocKWNSz0+r8t0xZjUh2KI2fG5uPAqbOP/2UNQKFYCa2fK8JIEyELoHKr5MZeAwvrxinn9TcgyTtXqYTHL1BMw0Xfh9BS5tpFwo7ZkdfmIBtE0e4EKorBxhfU
+ khHjknjm
+ FSBPuDyuL5r6o4lzgKEjzDaWinuwLYz4CZhNmOP7HD9ZZuuY3RnOwqtu4MHNX+QixeLfKDomnMxbjseyxt3C5CLWgM6dloUhhZzus6YWcgHOwO4dy8s1dwbZdzR9SDRmQv6ULprkaGHmWyAi+jKqITT2ghRCyzngGEONgXTEDUR1+rr2AmT/lMfcJzQgyxlj8lstIgqAdj8ANwkli65TtmoPlLBHRt8QGaT+qfjGrHxdcbLSm9bhlXnSv3+0vcYYa3jk60ZmuhQbIy8yaYx7YcXMrI16j6lYBqkb5mm3c4mgbcxYfW32ltjxrFl2iiv8sj40jGnwnXoBsmhZuXIwNm/LpRPM9fZQ2N39F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,49 +144,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2/27/26 20:42, Kiryl Shutsemau (Meta) wrote:
-> From: Kiryl Shutsemau <kas@kernel.org>
+On 10/26/26 21:55, Samiullah Khawaja wrote:
+> F_SEAL_EXEC prevents the exec bits of a memfd from being changed once
+> the seal has been set. F_SEAL_EXEC is included in F_ALL_SEALS, so
+> userspace can set it with F_ADD_SEALS on hugetlbfs memfds just like on
+> shmem memfds, and F_GET_SEALS then reports it as set. However, the check
+> that rejects the mode change was only added to shmem_setattr().
+> hugetlbfs_setattr() never looks at the seal, so the owner of a sealed
+> hugetlbfs memfd can still make it executable with chmod(). For the same
+> reason, MFD_NOEXEC_SEAL provides no guarantee when it is combined with
+> MFD_HUGETLB.
 > 
-> With fake head pages eliminated in the previous commit, remove the
-> supporting infrastructure:
+> The memfd selftest already covers this, but only the shmem run passes.
+> When run as "memfd_test hugetlbfs", the test aborts in SEAL-EXEC because
+> fchmod() succeeds on a sealed file, and none of the remaining tests are
+> executed.
 > 
->   - page_fixed_fake_head(): no longer needed to detect fake heads;
->   - page_is_fake_head(): no longer needed;
->   - page_count_writable(): no longer needed for RCU protection;
->   - RCU read_lock in page_ref_add_unless(): no longer needed;
+> Add the same check to hugetlbfs_setattr() that shmem_setattr() has, so
+> that a mode change touching the exec bits fails with -EPERM while
+> F_SEAL_EXEC is set.
+> 
+> Fixes: 6fd7353829ca ("mm/memfd: add F_SEAL_EXEC")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>  fs/hugetlbfs/inode.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 01c4d6f44ebe..56e0588d295d 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -842,6 +842,10 @@ static int hugetlbfs_setattr(const struct mnt_idmap *idmap,
+>  
+>  	trace_hugetlbfs_setattr(inode, dentry, attr);
+>  
+> +	if ((info->seals & F_SEAL_EXEC) && (ia_valid & ATTR_MODE) &&
+> +	    ((inode->i_mode ^ attr->ia_mode) & 0111))
+> +		return -EPERM;
+> +
+>  	if (ia_valid & ATTR_SIZE) {
+>  		loff_t oldsize = inode->i_size;
+>  		loff_t newsize = attr->ia_size;
+> 
+> base-commit: f1ac44c32cba88ad65dcecd4a279661d14e93651
 
-I have an AI report that removing RCU read-lock was wrong.
-
-The sequence is trivial:
-
-1) read() -> .... page_ref_add_unless_zero() -> atomic_add_unless()
-
-	int c = raw_atomic_read(v);
-
-	do {
-		if (unlikely(c == u))
-			break;
-
-We pass that check. Then we sleep (rescheduled, vcpu rescheduled etc)
-
-2) Page gets freed
-
-3) Huge page gets allocated and HVO makes the struct page read-only.
-
-4) 1) continues
-
-	} while (!raw_atomic_try_cmpxchg(v, &c, c + a));
-
-
-Then we try to write to a memmap that has been optimized by HVO and is read-only.
-
-Apparently easy to reproduce by adding a delay before the cmpxchg().
-
-
-The AI fix I received alongside the report is obviously complete garbage (as it
-causes severe overhead on all fronts) and I am going to spare you from it.
-
-Can you look into it?
+https://lore.kernel.org/r/20261026-fixes_shmem-v1-5-703206d5fa0c@kernel.org
 
 -- 
 Cheers,
