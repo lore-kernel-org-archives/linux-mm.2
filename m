@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B815606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E518E606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k3l8wKJU
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U97lsdiu
 Received: by kanga.kvack.org (Postfix)
-	id 3B0146B05BE; Mon, 26 Oct 2026 19:20:09 -0400 (EDT)
+	id EAD5D6B05B3; Mon, 26 Oct 2026 19:20:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 360AD6B05BF; Mon, 26 Oct 2026 19:20:09 -0400 (EDT)
+	id E5DDE6B05B5; Mon, 26 Oct 2026 19:20:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 253636B05C0; Mon, 26 Oct 2026 19:20:09 -0400 (EDT)
+	id D74606B05C0; Mon, 26 Oct 2026 19:20:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB8516B05BE
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:20:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B9B0408E6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:20:08 +0000 (UTC)
-X-FDA: 85366347696.01.895BA6C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ADD5D6B05B5
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:20:26 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46FC11408A6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:20:26 +0000 (UTC)
+X-FDA: 85366348452.17.967D164
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BADA2100004
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:20:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3l8wKJU;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 71324180007
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:20:24 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U97lsdiu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793056806;
+	s=arc-20220608; t=1793056824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QYsoVGWHtkw2Et3oC6m6nwjVDwbfipWvq0mSAbdveQ8=;
-	b=Q9himpw1TZBJE+QZ8P+VwHAhyaF5a7pgUjzo0IZn5j1cEhgWS0+K5/9eGv97srO1jp/DJF
-	PhS9Zy/5LdvnNiXXsjneWobyXyJBZ5upDaStWxSXIDo8Iv5ZLb0/ERK1k52pszKuZ09wcQ
-	3Gq219LAyUJFG1rtsLEtMRGY+jAZ1HE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793056806;
-	b=VHKtyVJ2UD1LXehsXORpTuY1HG9uaYeeB/cprJZ9x9Cgahfyy5P34sVpHUIAli2x+NHJ2S
-	SYwEySE1fw7RgNk3Z6P2/hF1p1DS7AAwd0mBHw6BcRYHe55V6UISA/TLcOw5ymiKgf+6l8
-	kU7B+py+MLEgZeiMTm5+uHaiS+yt+zk=
+	bh=hyfT9UeYB82/Suh3401TnHPdPR4zRtp/VCfqHa3Pal8=;
+	b=woP92KOFGQPR/Jv1+kHP8C3bEtwqbi9Pft+4QbdmdHRZt0EYpRFY89H/4mW/Wvx2EsSbEZ
+	p/z52rDqYz5AyiFwQ9y/OeGpWbp1kl1pkgdPM6e46jkdTfpGQQNtW5sogR8jbiHVBsRhz9
+	CfS7MOgCwfZAfq9G290+0U5EkUL7rG0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3l8wKJU;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U97lsdiu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793056824;
+	b=RR+vt7ntM54d6FlItg63G9ByMWVT8ufXYmZLnHIkEHJaMVU/whkLiO7tMH8YIWDk6BTcla
+	P1u3diZqWqDXuaZLKNpVAXL4w8MD97yQstihlQQLdLgH/hx4xLu1n+F2CdNIuQQmwPWxya
+	K4rw0+UUtwjTEtC1D5U7NP3ZyV6JKzE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 458F5601EF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1822460213;
+	Mon, 26 Oct 2026 23:20:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999B61F01828;
 	Mon, 26 Oct 2026 23:20:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A727F1F01825;
-	Mon, 26 Oct 2026 23:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793056806;
-	bh=QYsoVGWHtkw2Et3oC6m6nwjVDwbfipWvq0mSAbdveQ8=;
+	s=k20260515; t=1793056823;
+	bh=hyfT9UeYB82/Suh3401TnHPdPR4zRtp/VCfqHa3Pal8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=k3l8wKJUPoLuBGJhtUSrracjfjSgaR01/bX2LZmIh3c4sbgMmZhLpWd33Xnee7CFH
-	 eUNbDLr0zx54SOLCoUXJffQTOXAE48jWy0melTLiUWPZYrXpGfyW4gtylg1ZrpqNk4
-	 tAqVUCS9P3zOuTzRW0zV6rxJdwAMnEz9sqZoEKhdn0nlQGxhuXj+pL6EoNoKyDXXnL
-	 ANyz/IY2YvRZ17k9m1vlaYARKC4L77al7sh0EEJ/I/Tet+XrmOZhTpKwG7wL65w2nz
-	 HCoGo/QKW6LyjEQxXookQg+D/15sIGcbWDPeXv24ecDgdjdxn+jHi6McygfzLLbHCR
-	 pqvdTr16YPXgA==
+	b=U97lsdiuuUuPQkUAKKTWJuTgmH9WwQHN0iCh+iz6wbLPc5h+rl05TXy57cN86b+/Q
+	 FI4xdeXdn6F4RwcU+GrHn4zbLcRBGAyKA0Lp94FBikfdN8ltNLD6PqHgZ/Qn+xkRM5
+	 ckNapyH5LMmD/Nv7BZRtRCk9aTWJxuFyhfp8YxDlk+ZGHwanXE/Viut+BZGtWwN+Tl
+	 C/3i0Eaa6ClOJyTpfYezrhNOGzQTHbcD94eIRkISQHhuJQHkpvFsOdxrAHdvB1oYou
+	 ctYbGfccTpd5kBRo6Z34hbpbaAMaG+Ij1gx1yy1hr/uPLT7j/mYnTvcQ+JcEReUht9
+	 s/mnuLs9M7+pA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 00:17:27 +0100
-Subject: [PATCH 07/46] mm/filemap: don't lose a folio lock wakeup to a
- signal
+Date: Tue, 27 Oct 2026 00:17:28 +0100
+Subject: [PATCH 08/46] mm/filemap: finish fault cleanup before dropping the
+ fault lock
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_core-v1-7-6f74bec9a5bb@kernel.org>
+Message-Id: <20261027-fixes_core-v1-8-6f74bec9a5bb@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,30 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
+ stable@vger.kernel.org, Chris Mason <mason@kernel.org>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2175; i=david@kernel.org;
- h=from:subject:message-id; bh=Enq14m+9WKyv+oFe+xM7f34ozLLSwL77LPK+FMBugx8=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu359s5eS+49Spvoe8HVNr1wfK+bz+aOrRZTFxf2iJk
- IJzRKp7RykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABPxKWf4X3rz4dQJizbNz9j0
- LP24XsGx/l6WivwJlzpu5D1zPys33Zjhf4XwVJ8bFss+nJ54IPb5q18X5G8c+75huei+w11JzjY
- 1XNwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4015; i=david@kernel.org;
+ h=from:subject:message-id; bh=53xEYTkQp6IA0uXj6MOe1vM8W7peAp/MfOvPesJ6Ry0=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu358cKuG90E2q9Vcd72l1E0eTh6vv8Uvc2KRaes5xD
+ /e1U5/mdJSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCRVQkM/0O+p3RP//jQ+0D6
+ hjiOc2uW3FZ7Y//nAetjz8/HDU8uUpdkZLiUlzPnxGrjWVNvzWdXOsCVUvPzyUpVwdSczgtBD1p
+ zj3ABAA==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BADA2100004
-X-Stat-Signature: f8m5bdxe6yte7uqchntdrbcg3ckij3du
-X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 71324180007
+X-Stat-Signature: yb6opbmzudhdzyzehc87mz6x3rx5idm4
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793056806-220099
-X-HE-Meta: U2FsdGVkX1/2/2vbqr6RXzP1FzEBIQINgKlr4oby30OBdfMk+8SMzUMnlzXKmFYASS+Deql2B37ewcLbYaeClnffZq8KrN29wleXt8nV4mkVfTsI15OSFkY2VvCawDQWwPizCszYgm3UN13eR9O4qIdf5cqmtX8xOTKz/PrX/uE3Nkkfb9yNrfY6EPFVkFC+/aCTs2aK5Rv8Ud8QmnH7XjL3eWxBgx7I6cSNAA1hGxOmxxzruwqBj6RtJG1TqSts9363R5PXOse4Rs92cF4/5ZFVNa1pz08Ja/P3cAEmXjde85xo5EbS+ZRjbvHnt2l3eRVgFYFA7w6+J7at9WtNJExmjBxePhWN2Q2e9TrdEjfVxpbD4V+xDmkKdrfPkD8Xfgx9LeWVqFMcVp5jflynuCt9D54Chvq1ZcW4D/Kv/7oQDAbpLxYdMSUG4RYxmRhCUh/6zkM2AFsKR9kAN0lb8gN0LJp7JKiRWWK93CFMudpzPh/r2ZTCqboPDlWdhnzTEdFDRUo6t3Za5o3GKSqzFq0Px6K78K+fmYR6DVTcTk8daYHJJr5ZsTu7nCMcZph5JHEzzdUhxqfs23jvaYDfyz4Hs3KgSai0QzQlwI1X0JTP2GejkMdxf2wo5jf7sk9jJjBHdMp0gbcTsxfaUemgbiz102R2fY4afRoDv9QTOEerweNcu2LjMWFnXegjQmZ112XBPE83gEKdVhee+xWpfalZzuHmf39DOSrElEtWSMUhzaHinC4GUNkDcrYSTFVAc0UiUGs23NobfwNO0ZbvYTI/qDKFTTEZlKqobUTb+FoUQdfswe8OT2pd/ufNjKHSgYZfRrYLiH4Inp8IQAMA0q8zK0gaaOBpkqTAphHJqs5QBUo9CRUmGZCunopWNkCX0h8C0JeZwsnWOLNNoS+FDq4VbEgIy07VVi+BJ6sGXkjI0JK4ZPxA9p7Tj0yzfiN26cQtIn6c+JaM6Y64Cm8
- 7xJ31vq9
- mVJRXRmIMuHPjaFgFgb+rEFPgKs53v05MUSKxZcstRb+c9lRrY2ngRaBZTMzecxGDTz/utX/vWex9Xtg4Gb/ZF5ayaewobgUa6lo/fxR5nqIccOA3zB1K78js5ZAOxgXxMz6S0Ob5pE3WMnCbS+OKBoF0hTet/W0Pb6oXctar0XblO69BjrOz3Q/+WAT6RIhNmVN5W/6z/8+On5oga/K3N3rCoqp1Ril2zrwDs+BDHVMyTPxDxs+EDiSln52aPjyRTANvvBZbxMI26CgANCpKXROPIRUTcZW1BVxCzK0vaSc8Jk67J0UfS5ocFPqxEy0rg8Do48lyJs1hC8exrvIx2d5jt4MF5Mvhm4oCnrXuvcg3TAj4tRx8hZrk3dV0mH9ZHLxA
+X-Rspam-User: 
+X-HE-Tag: 1793056824-222581
+X-HE-Meta: U2FsdGVkX1/vfdOIIyn0OnQNpQTE/y+OtYY4iaA2Zt3wnvahEM8+Hzc0dslXSFAlnfYjlQjnWsE0HN3Gh/aonotSNekr5f16gzFf+KFcrzc+zz3/2huP3t+26skWev6lnPHqMtd31NyPQHyiFsLCqVBh3un181x/C4YJSrjXS758Ga1BiXzNhpr0bK3t0toll47eLCWv+dgaGG5ipxeiLxtnoFnEIaiKMnH6nXeaPSBJImDSJUB7VRDAUXld/pVzigm9oJgrd/fZq8z4vuT/9GbsVPVWouM7FZilsC7XGbPAMq8ybBMSm2kHmUsehQ9suD5Idi0uzb4g7z5/7rItrhLyunPwWuuvEFXdqr0S3vIQ9LjrCh5Ftd9ZZwc+9C3WJMIDdW8l1kKn/rPnLgQ2l52q/vZl18lg/3CIq7C0RqdqTNXjxcxmTK3Grn1qPZ4a03cqA+p2VpzBAfTdpelylwBXKarrDBcVmQ0+qmKCnXt7h1K5cGvHrvVM65LrtsSecRcSxRPszRGNUVWKdENJYPEApAryY13Zku55cD+HFWy/rpv3HM3MRsr4jIztoq6enaULfThS4JNmdxN046aTPSmk2sng3Judt6hBGekX6qnxWfZ4OFhNt7qgYdNpSQe1aviReweb+Obkc5lJoGL9O9/RSju8zOBYOtzLs9e9+akLUNxm+iZkWM8cMI9VjXd9PTEsLtdDMk+MQw+J4qqvqaZcw7zqjw16bP0Y80qn8/0ym6BNCRVal1kbFo/04A3zn/M7ETMYEsInF/0nm3lxR115N6v0mpe2MBXrxpWDSyi2XKxs0jJpwaR1nfqTYx1aRX5X16IxYdbXmeDGuBy8O2ZNnx4dLWnhus+yS3kn5jjRNoyVXJNGz+BtWTB9NWjryu3mgmRNOuBnTKMKYtGFYK40ybLB6RnADuBkI0KSYRXjNqHDEfvy6q6BvDtIKAY+R1kAfa0cWJgBAfPEToK
+ tsOnPiQo
+ tDbovr+thf6FbTaXwB/gyScwDuMO2YSB7pjNYEYOPt5FQ1BtqvAtuxYcG2eJ0thBzqrVRr7YOyMsFhEtjE/SJtbOKI7sDHgT/Q7rKVMmnv1i1NEj4kCu6REHmSpSA11ENLfLbwvYpcoYr4yoGibMzSg0iO/HeXMOCTMu6DZJpbNYUx83GObwf25SwrSIiaqhmXfZnXW2Iwc+eG5lOoA7Q4POl+4k7aRSzMzOcDzvAfT/tTjN+CEhGFi/f5mul0+fT+POsPWAmYS6FUFvUsJp/T267x/FnvM9gLgMx1ogAujh2oNqPFweffxXxEj8iGnU48xXf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,63 +139,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Josef Bacik <josef@toxicpanda.com>
+On a retried fault, a fatal signal interrupting the folio lock wait
+makes lock_folio_maybe_drop_mmap() drop the fault lock without pinning
+the file. However, filemap_fault() may still need to release
+mapping->invalidate_lock. A concurrent munmap() can release the last
+file reference and free the mapping before that unlock.
 
-An exclusive waiter in folio_wait_bit_common() can leave the wait loop
-because of a fatal signal, then be woken by folio_unlock() before
-finish_wait(). If the waker did not hand over the lock, the waiter returns
--EINTR without trying to acquire it.
+Defer dropping the fault lock to filemap_fault()'s retry cleanup, after
+releasing invalidate_lock. If the fault lock was already dropped for
+I/O, release the existing file reference instead. Keep the fault lock
+held for FAULT_FLAG_RETRY_NOWAIT as before.
 
-folio_wake_bit() stops after waking the first exclusive waiter, so this
-loses the wakeup and can leave other waiters asleep indefinitely on an
-unlocked folio.
-
-After finish_wait(), let a waiter woken without a lock handoff try once
-more to acquire the lock. If successful, return success so the caller's
-eventual unlock wakes the next waiter. Otherwise, the current lock owner
-will do so.
-
-Fix generated by an LLM and sent by Josef Bacik in private.
-
-Fixes: 5ef64cc8987a ("mm: allow a controlled amount of unfairness in the page lock")
+Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ david: clarify and simplify comment + description ]
+Reported-by: Chris Mason <mason@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/filemap.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ mm/filemap.c | 37 +++++++++++++------------------------
+ 1 file changed, 13 insertions(+), 24 deletions(-)
 
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 906b013c11eb3..6b5e1d866a9e0 100644
+index 6b5e1d866a9e0..b04be64a5069f 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -1373,10 +1373,22 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 	 * return value based on that state without races.
- 	 *
- 	 * Also note that WQ_FLAG_WOKEN is sufficient for a non-exclusive
--	 * waiter, but an exclusive one requires WQ_FLAG_DONE.
-+	 * waiter, but an exclusive one must also acquire the bit.
- 	 */
--	if (behavior == EXCLUSIVE)
--		return wait->flags & WQ_FLAG_DONE ? 0 : -EINTR;
-+	if (behavior == EXCLUSIVE) {
-+		if (wait->flags & WQ_FLAG_DONE)
-+			return 0;
-+		/*
-+		 * We might have just been woken up and the waker will not
-+		 * wake up anybody else. If we ignore that now, the remaining
-+		 * waiters may not get woken up: take the bit now if it is
-+		 * still free.
-+		 */
-+		if ((wait->flags & WQ_FLAG_WOKEN) &&
-+		    !test_and_set_bit(bit_nr, folio_flags(folio, 0)))
-+			return 0;
-+		return -EINTR;
-+	}
+@@ -3308,11 +3308,11 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
+  * @folio - the folio to lock.
+  * @fpin - the pointer to the file we may pin (or is already pinned).
+  *
+- * This works similar to lock_folio_or_retry in that it can drop the
+- * mmap_lock.  It differs in that it actually returns the folio locked
+- * if it returns 1 and 0 if it couldn't lock the folio.  If we did have
+- * to drop the mmap_lock then fpin will point to the pinned file and
+- * needs to be fput()'ed at a later point.
++ * Returns 1 with the folio locked, or 0 if locking failed.
++ *
++ * On both entry and return, a non-NULL *fpin means the fault lock has
++ * already been dropped and the caller must eventually fput() the file.
++ * Otherwise the fault lock is still held, including on failure.
+  */
+ static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
+ 				     struct file **fpin)
+@@ -3329,21 +3329,9 @@ static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
+ 		return 0;
  
- 	return wait->flags & WQ_FLAG_WOKEN ? 0 : -EINTR;
+ 	*fpin = maybe_unlock_mmap_for_io(vmf, *fpin);
+-	if (vmf->flags & FAULT_FLAG_KILLABLE) {
+-		if (__folio_lock_killable(folio)) {
+-			/*
+-			 * We didn't have the right flags to drop the
+-			 * fault lock, but all fault_handlers only check
+-			 * for fatal signals if we return VM_FAULT_RETRY,
+-			 * so we need to drop the fault lock here and
+-			 * return 0 if we don't have a fpin.
+-			 */
+-			if (*fpin == NULL)
+-				release_fault_lock(vmf);
+-			return 0;
+-		}
+-	} else
+-		__folio_lock(folio);
++	if (vmf->flags & FAULT_FLAG_KILLABLE)
++		return !__folio_lock_killable(folio);
++	__folio_lock(folio);
+ 
+ 	return 1;
  }
+@@ -3572,7 +3560,7 @@ static vm_fault_t filemap_fault_recheck_pte_none(struct vm_fault *vmf)
+  * vma->vm_mm->mmap_lock must be held on entry.
+  *
+  * If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
+- * may be dropped before doing I/O or by lock_folio_maybe_drop_mmap().
++ * may be dropped before doing I/O or when aborting an interrupted wait.
+  *
+  * If our return value does not have VM_FAULT_RETRY set, the mmap_lock
+  * has not been released.
+@@ -3728,9 +3716,8 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
+ 
+ out_retry:
+ 	/*
+-	 * We dropped the mmap_lock, we need to return to the fault handler to
+-	 * re-find the vma and come back and find our hopefully still populated
+-	 * page.
++	 * With fpin set, the fault lock was already dropped. Otherwise it is
++	 * still held. Release invalidate_lock before dropping either protection.
+ 	 */
+ 	if (!IS_ERR(folio))
+ 		folio_put(folio);
+@@ -3738,6 +3725,8 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
+ 		filemap_invalidate_unlock_shared(mapping);
+ 	if (fpin)
+ 		fput(fpin);
++	else if (!(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
++		release_fault_lock(vmf);
+ 	return ret | VM_FAULT_RETRY;
+ }
+ EXPORT_SYMBOL(filemap_fault);
 
 -- 
 2.43.0
