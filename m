@@ -1,137 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22182606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927B0606A325
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IrNCpGg3;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=evaYlFvL;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IrNCpGg3;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=evaYlFvL
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mGVZ47wI
 Received: by kanga.kvack.org (Postfix)
-	id 49A156B05B8; Mon, 26 Oct 2026 09:28:52 -0400 (EDT)
+	id 957E76B05BA; Mon, 26 Oct 2026 09:30:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 449C26B05BA; Mon, 26 Oct 2026 09:28:52 -0400 (EDT)
+	id 9082B6B05BB; Mon, 26 Oct 2026 09:30:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 360B46B05BB; Mon, 26 Oct 2026 09:28:52 -0400 (EDT)
+	id 81DF66B05BC; Mon, 26 Oct 2026 09:30:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B2D36B05B8
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:28:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FD60160799
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:28:51 +0000 (UTC)
-X-FDA: 85364857662.16.6A1AA7A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 809A02000A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:28:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IrNCpGg3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=evaYlFvL;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IrNCpGg3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=evaYlFvL;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 608EE6B05BA
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:30:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA6B2A079F
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:30:40 +0000 (UTC)
+X-FDA: 85364862240.04.DD2E17E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5013840011
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:30:39 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mGVZ47wI;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793021329;
+	s=arc-20220608; t=1793021439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oty3F1v8cHRij6MsFcAkM4dOfnw3za3E009u5RN2KoY=;
-	b=RtBAxK/7NZvvTvl2y49a7z6G8BZY05sPwBhWJdqEzlk1HbukcW68g8JXlLqmdSYCEZyZkV
-	ovLlzcgV1jrBRiRLbyEo7tsXnf3O/YkidDl5e+SpDDxqIUeksxIW1HNs2iUDJMmDMDtiJL
-	kWXyQvPAzB+kfV85nAfqaQVn4+Y4oqk=
+	bh=toIxbZaluxY/csBPcQI9DXYgAKoZ5TBqxydeOi+bj/c=;
+	b=n+69HNGacJKCuyx5XygSastodaWf8pN+GbDq+OLY42svzuFXzvt9mIOgVCZhzAxnTWaMJb
+	KQAmqS7zwxTKo0zFqN4If4U5/nuhEeouiscA9K9FE0mHcuMRIX3ZbvZRjQhj3nWPdtFj6o
+	Dm1PGJS2Ny/xNT7aWUwNrW/PgspdUTw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IrNCpGg3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=evaYlFvL;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IrNCpGg3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=evaYlFvL;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mGVZ47wI;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793021329;
-	b=CsuekGdo6d1Ncr8WPuZUZg6s3oOLoUc8zmOSAtYeBDzsyMynyURpOP45UK2clWyugg8tci
-	8fuXueIGetocv2SoHoVVFKW5cxvoyC+Wp1Q8p8T75EKLwxF413bi2Fyjm9y28Mc+yzIqxB
-	3H5/kEGTqoRcit3mn49mkUU/j94rw0c=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 144D91F43B;
-	Mon, 26 Oct 2026 13:28:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793021328; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oty3F1v8cHRij6MsFcAkM4dOfnw3za3E009u5RN2KoY=;
-	b=IrNCpGg3PmRU3tVVIsdu920TKWXWQhTySyyL3oNlqSBN/yPWpGeH+rCVlsGISw++vDmtKK
-	KfDZkTFyGrDjqMcGOxfaU+DhRgk0cju6QATu6wElZ1cJap3WN/4F5MqjDnIndqQ/lF4AWp
-	Nkn7vrFk1EPUDNhaYZnjU2MyN8yfeOc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793021328;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oty3F1v8cHRij6MsFcAkM4dOfnw3za3E009u5RN2KoY=;
-	b=evaYlFvL3iFuuisfPphGwmzMbdy5aGQP9Hy+/2QZ42qhcYVNFO8uW+cgQaAGynniU1GyFh
-	x2VCs6PXZhvIESDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793021328; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oty3F1v8cHRij6MsFcAkM4dOfnw3za3E009u5RN2KoY=;
-	b=IrNCpGg3PmRU3tVVIsdu920TKWXWQhTySyyL3oNlqSBN/yPWpGeH+rCVlsGISw++vDmtKK
-	KfDZkTFyGrDjqMcGOxfaU+DhRgk0cju6QATu6wElZ1cJap3WN/4F5MqjDnIndqQ/lF4AWp
-	Nkn7vrFk1EPUDNhaYZnjU2MyN8yfeOc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793021328;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oty3F1v8cHRij6MsFcAkM4dOfnw3za3E009u5RN2KoY=;
-	b=evaYlFvL3iFuuisfPphGwmzMbdy5aGQP9Hy+/2QZ42qhcYVNFO8uW+cgQaAGynniU1GyFh
-	x2VCs6PXZhvIESDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3850A13408;
-	Mon, 26 Oct 2026 13:28:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KpbhAI9V32q2dgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 26 Oct 2026 13:28:47 +0000
-Date: Mon, 26 Oct 2026 13:28:45 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Jakub =?utf-8?Q?Mat=C4=9Bna?= <matenajakub@gmail.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Luiz Capitulino <luizcap@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vma: fix expansion of VMA_MIXEDMAP_BIT VMAs
-Message-ID: <at9VEGvlpDwiV1tx@pedro-suse.tail5790ac.ts.net>
-References: <20261023-vma-expansion-fix-v1-1-6142baf1f46b@kernel.org>
+	t=1793021439;
+	b=5Fe/P4OYRuEkUweGHRi1iE1qo0xsilA0T0xPMJq6y4wtOLAK4JjsA16ip3P6KXirZlPGvG
+	+mEdpIQdMAcdRVUy8Cdh0xAdFBhIq3uqZcW51gT0HDpRT+wF4ONIiIlS3rTBP0cVurdZs8
+	+ZOf6tsr+YG84hNQqT4QPpQOByVW9DQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 84DF4601FB;
+	Mon, 26 Oct 2026 13:30:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036271F01825;
+	Mon, 26 Oct 2026 13:30:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793021438;
+	bh=toIxbZaluxY/csBPcQI9DXYgAKoZ5TBqxydeOi+bj/c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=mGVZ47wI25337aHc0NOtWv1yyF4Wr13lGlNU0XG3sGX8znCtezXzr6SETOrGIy4gV
+	 i5WKCyfjhnilMzrc6VZxQnvxoqHnZtR8dV3Cp5v5duGQMgSOHt3Bdii9a8O99M+4D8
+	 OwPzFtmfewyHhjItkGYU1CeJhM7ZE4noVYUAb7zp8Yh6aUfVDep8hXGd7G4cCYaaH+
+	 ZHAjy6jmkKFxeRJmQj7WqJTZFkxCymp2z9q3lQdhrk8G+VQBto3BJX8CL3JTHDQ7tO
+	 CdtL8rvP+tCLOF4CAcx5CMh9YpoNG3UoNLMk6c0qptiabQzLy8Rr0FjsbQWrlKRdiQ
+	 Wctnd8UfBfyBw==
+From: SJ Park <sj@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [RFC PATCH 7.3.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Mon, 26 Oct 2026 06:30:30 -0700
+Message-ID: <20261026133031.26195-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026-10-25-1-daily-reply-0011-damon-zero-target-value-decline@kernel.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023-vma-expansion-fix-v1-1-6142baf1f46b@kernel.org>
-X-Spam-Score: -13.30
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 809A02000A
-X-Stat-Signature: wbdkurus9xqjmprajtuu68s431n6jrbd
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5013840011
+X-Stat-Signature: xdqsy7y7hkib1hhioin9z9h66d64j9ae
 X-Rspam-User: 
-X-HE-Tag: 1793021329-844154
-X-HE-Meta: U2FsdGVkX1+vjO9plUM4ud8VbqECf67ucAyowbK0Wvkp1DXPAZZxq5WlVe2QeBgfisZsccuGZjc7PsjfExQj5GRHhROyvTvvmxoKBOlXXFOD1yslLuGtMD78/YPmG2v1G5v4amTZ8W+Zmi1xLvkCA3pAbiHXlDxsh16BXYIdYCzSrk4L77Km7o4Rb3cEgPbzkeD0MgBcld/6CynouylOhGkwGVQRgVPgHAWQA+Wj7rNuRJeIdmetPJWQWq8RVm8IsTsjcpY2rNlZEG2E/cpMez8tPJ2lU78oNxD/7maGeYnpt2Jmb4nJwWOWEmH3ZA2MmdQbFNU+alvPV3CeHN9Mwk9h6BccxcwGHyqyOytP5ZeK3SHhZAwu4WExB9SKSIzR61Og+HSXYuksGw2GHuzl+oG0BeYCEEAHd04wBySXkvxBYPhcmwv71LwMWrHTAsu0qMnl7Wxa9rTk+9bX3NjU8J7igGOwisCHGs7csgaR6ZwAKo6oC120I6ggZpLWkh0vv7JcqWDI08E3U8WiYQZrd60H8wfZuWbf7YlaqRLNsBC5RQaG0UbT66C+pqSGgBy6kevuZlfgfQFGCasEu3IaJHEbO9zYTXk+AASTU6cq2bfbiz9Jylj5M3g9V7S8ogp3Nss7asy5LHNT0ViJ3eIAxGqvDDSm7rBrW/M+AZn3XVnYs0l0dcpLtKepFU2u6/4ukIwcZUAPQ/m7ldqUpjZqwUE1ubnyLWkQsX0no+EZvfWDbnt/gp2GX5hm05VXKKF2oO1Ubczu4beS7h2eHyjsXaG7aGvSO5w+penzhoOiGgWNorEJzWHmi5lUH85ZzurRSyMLnsBF88BHzgAE4EDFCIwLiqL5D/BB9g/ANA1xcZtjtfq/M/0qTMhf8MqDvhz/XKzPzU71FYo4fe2v2uaUAd6SbFQVH2Ba1GxiIeZe2uktxo+l9ySATtgKOiHiBd5ql3kBYDKLl+mtifUC8Nw
- bo4oDd7n
- sY0hj8hUNW6o0fP9GXKG1M1T4/J1vpGqxHlgkQzl5AIrxPl1wqQK5V8Po9okl0/QR9a7E8HFoYPqNGR2GkOC9Hy7wHgDNnFdzAQv5eFlwSj3E/HU+J5+Oj8VZ7PqRo4pseXcSr473o79plilmrN5jxyl0M5D3+DinfqYwz0bvQIHJVK0/NpYJuM4YW9Lhw12Ttvck34Dl+Z8wGxGacmHYA7+xgtjRzvy7xnDtc5z6MjtQ58Ju6kFi6xD+bOFuxcv0RTkRYjnjQrERjRXx+C9ovQzCB2l40k9mhTvAGiU2+dE7jVLfBc8Q5ogTTYfIRJ8/Qh8lW91XnBR+rguOebE1r3LdkNuRbTK5wxFAtwFz5RqVeFE=
+X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793021439-426870
+X-HE-Meta: U2FsdGVkX18OAHoRf6V1ccyny9Vbj5k803U2kmxuz8kbI+OCRt5khMIoL4ionYstX/ZT8yqfx5H5xtzCdi6/zLhzGrxsVqr0jC4fb6B6HiuhJ3lSxutKWpcgO9na/ucD31HRJnoK4gWMi5wwF2AMAeJXrDbCLGkE1Z8yl4NNvSWTOv5819sBAKGzO7WvVmqOwHdZVl96HuAWpQFakg5y+uODwZX6NqT3t/E4sCTFHfamjU5DzH9w+jTB8BipSBu/bu/qiCP4rOPIOPmOa99b8LioA3rc46JK52fM1dt489gw4ftpGF9rxhRV9aZpVNGwm4SWbFFqnl6MhvZjAqEdgZuHoaCkZMEg1aNoXq4oouHK/bSFuTRHh5v8eT/qEZl0DBEGiukoifr6nwWJZXMzj9WK0p6DcNPea2Ewpc+4cG/p52MprkSK5+uxb9Hb3aQK/RtYNmY1YIOG8V1kTQH4hwVbjmgE/hveYp5BLClsNeJwal0DcG8w6K4yf4AqiRKD0ZaxHLRJQuCS0eUdEkWgePhJzWRtdT2HMpQsEmh4J5J7+c7zvYPtXfe6yx+Ry3nc8SqKh21WxlQO4Oo8DDo6o5Ug1BSgnLKZT/5zeU/UeAIMCnfE2tZkWPOGnjMrUKLK2AoGfF51/Y1V0VaDKf1+37THnoKGT1mu5BUHp20K3VBDs/LJazeBTxSGWn+JRHQH1fkS1o7VEqQe5UkM67g4TxqJ8NZalXOe5ku+chG6IJ8bEVsjKxC2IPfbf/OuYPiaURfYo9JOZDKzecSFU2W/Y0qEQIeAxBr0MSTZdd7QHOF+7x8uyDa0IxMY0cxM/0QBovmDxQxhcMxTlwT8ZIfObJx1s5vGQrmHd3TMySQumwjaA/MwvRkw4FZVkrQz4f2d67zUaBTEWmCgVb50VtiznrZeOmg4wq81ChjRLYdGBvzDQdCWSi72A6WuOkjsVw8jQ+RAmbVV7fYFjdux+W2
+ MQKJGXUR
+ iU7UuMCsXJDxkC2hYJY6Et4wSRPOcl3i6ixtjUSVc1XVVH2P1p6bzmc1V4GrLPXsMar/fzTT2EesEjy4zy4S+ZUkbybz93fRzK/st0KVkD/PqTlUzFJPT/PPXjb6LmALhlt0AXMpYHudGPxW1FFhfw1T+BLe8racKVrTqihBnTloClJW/eqgXQp53EHDHvlmoaWXoL3T/aFR3ccZuDtNcgpIvXpXRLwnUAz1+TTjXE6SENaAyY5IDrMSu7p4sHdrhylSJ7Ym/Od6zvze8pM20HNVNew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,47 +97,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 04:17:31PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Commit ca3d76b0aa80 ("mm: add merging after mremap resize") combined
-> merging with expansion of mremap()'d VMAs, however it also unintentionally
-> disallowed the expansion of unmergeable VMAs.
-> 
-> Previously it was possible to expand a mixed mapping which mremap() had
-> already ensured was a legal expansion.
-> 
-> This is clearly seen in the mremap() logic, as it checks
-> vma_is_fixed_mapping() to determine legality of an expansion rather than
-> vma_can_merge().
-> 
-> Additionally, copy_vma() allows for a failed merge to result in a new VMA
-> being instantiated if MREMAP_MAYMOVE is specified.
-> 
-> However, this is not attempted, as a failure in vma_merge_extend() is
-> assumed to be an -ENOMEM failure.
-> 
-> Since vma_merge_extend() is used exclusively by mremap() to perform a merge
-> and/or expansion, resolve the issue by invoking vma_expand() for
-> unmergeable VMAs there.
-> 
-> Explicitly assert that the VMA is both non-fixed and a mixed mapping.
-> This provides double insurance against broken changes in future.
-> 
-> Note that khugepaged_enter_vma() (which vma_merge_new_range() runs) is
-> redundant in this case, as a mixed mapping is not subject to khugepaged.
-> 
-> Also update the VMA userland tests to add a required predicate.
-> 
-> Reported-by: Luiz Capitulino <luizcap@redhat.com>
-> Closes: https://lore.kernel.org/all/20261023023106.515365-1-luizcap@redhat.com/
-> Fixes: ca3d76b0aa80 ("mm: add merging after mremap resize")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Hi Sasha,
 
-As much as I think this is smelly and filesystems really shouldn't be
-using MIXEDMAP:
+On Sun, 25 Oct 2026 19:29:57 -0400 Sasha Levin <sashal@kernel.org> wrote:
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> > Notes for stable kernel porting.  The upstream commit doesn't have
+> > Fixes: and therefore not ported to stable kernels.  It turned out it
+> > fixes commit 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota
+> > goals user input to DAMOS") which was merged into v6.8.  The user impact
+> > is a race condition that can result in divide-by-zero.  Hence backport.
+> 
+> The older trees don't need this one. The callers in 7.2, 6.18 and 6.12
+> already reject a zero target_value (7.2 also has 06befa61c427
+> ("mm/damon/lru_sort: error out for >10000 active_mem_bp") and a16fd3ad9d89
+> ("samples/damon/mtier: error out for zero quota goal target values")),
 
--- 
-Pedro
+That's true.  DAMON_LRU_SORT and DAMON_SAMPLE_MTIER are patched to be safe from
+this issue.  But DAMON sysfs interface can pass zero target_value under a race
+condition.
+
+> the
+> commit has no Fixes: or Cc: stable,
+
+I didn't know the race condition when I wrote the patch, so didn't add Fixes:
+or Cc: stable.
+
+> and it is patch 1/3 of a series whose
+> patches 2 and 3 remove those caller-side checks.
+
+I'm not sure if this really matters.
+
+So, I think we still need to add this patch to older kernels.  Please let me
+know if I'm missing something.
+
+
+Thanks,
+SJ
+
+[...]
 
