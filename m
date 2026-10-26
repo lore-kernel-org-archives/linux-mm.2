@@ -1,171 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEECE60A261B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB81F606A327
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RhppWDtC
+	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=V7jA5GL8;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Z8TGrGcn
 Received: by kanga.kvack.org (Postfix)
-	id DCBCD6B05B2; Mon, 26 Oct 2026 11:42:06 -0400 (EDT)
+	id C030F6B05B4; Mon, 26 Oct 2026 11:44:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7C0E6B05B3; Mon, 26 Oct 2026 11:42:06 -0400 (EDT)
+	id BABD76B05B6; Mon, 26 Oct 2026 11:44:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6B0A6B05B4; Mon, 26 Oct 2026 11:42:06 -0400 (EDT)
+	id A9AD26B05B7; Mon, 26 Oct 2026 11:44:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BF246B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:42:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FF708079D
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:42:06 +0000 (UTC)
-X-FDA: 85365193452.01.D5FE3CB
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013019.outbound.protection.outlook.com [40.107.201.19])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6B9BA40003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:42:03 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RhppWDtC;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793029323;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 766296B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:44:25 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C48FA059F
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:44:25 +0000 (UTC)
+X-FDA: 85365199290.16.CE7DEE7
+Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DDC4740008
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:44:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 7jA5GL";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Z8TGrGcn;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793029463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wrMdSDSkUL/R7RnR2JBCyofEx2S1ffPrgucJXDAyDm8=;
-	b=PaPYtBhpVUdmyQ9Z0tTfy1oJ6XnplEjj488NLzmBxlwJDWYvSUyloiurKt63oxvVkJXMe3
-	TTrD1D6owRavouSDJc/IjhjQkD5jm9xEn8K/6ydvav+hwBq7x28KckDpWPeZf8BFKucKuE
-	HyaT+szr9ufrAvKheMix+0LnQCsBI0o=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RhppWDtC;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf04.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793029323;
-	b=Ymx2TuUTKMmJcXtLrTiaA99DQwnCqtk7XgMKPfrHdZTkSfeMS3gJ8EdnUshkurdGueauYG
-	RBZjcOM+1wb/5OOXby7E8zbOb7y0/FgZ7TQb3fAgIlOSDb63lf2TSujAkxgx/YSWddBEqj
-	89GqKcyFkzVb+LeDwtZWvXnkDqdOFfQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=spB74e2xdMRwHNzuk1dPlpdtskfgdlxoX111BrWv2BkJl4ev85xxK/zgcwfvJyDEJGuIFQ4FWqCVVRNN875T6uoH9x5MyoBYtl7H6xZHsJqPEnZI98DYNANOR0U5JptLsq/4P1OZ0Rciw/lY8koW58l8x3V6SVWQBZ7MQwUgwTzQ2P0s7dLgTp+YMJ2y1W3b0HjIpZYD+hJGzWdBCZ14wehdPQgRaj2B6eI8c+mB0c25VLUNPi0XvixULQFLI8AaFpAqi3X7EOjBmC1gDuHLGplmfXgFFlOy9WmKSeG1xM6rrEGzF0+YPECiQW0zaqjgP2O4bGJwiJB1ILSq6v41xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wrMdSDSkUL/R7RnR2JBCyofEx2S1ffPrgucJXDAyDm8=;
- b=MKHjVMDCx4cmmAElzK20qvDrv5J5NLMTb5hmRmy5VXB4rQ3vJ2RdUop6e64Lx2MzjEm4UKyR8gjeVYlGS/5CdrHUyblqqO/9rJnCZu2EFrPi8ZChL/HrUQvBt1LbbAnt6j34renJQwDtGnyvz+HEpB+w1rK+bWodYRmlisGfN5AQjqP1epXeqVa8Bt6ned94ritPKHa22bKgRSJWTHC/Qq/yaYP+jADYNJk1CoJ4QlFteZFaWfFTaASrohWvtk51cGn16t7UEFo3JYdtxArrwMANiuois9nwQNpzr3sD0WLj+HEcTsJEGyDUiK+5oOeYuCrJPu4gusSNowNTGg5aTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wrMdSDSkUL/R7RnR2JBCyofEx2S1ffPrgucJXDAyDm8=;
- b=RhppWDtC/VamABL1SeHDvt4W79GbX8sc5rEiTH9di7mimOWHcZT1z1rC/bhwbKAwWOJR5Xc2YDWedK4nnmplPX6FuxFPWwjYg+0T2krtvM59JOn5sVtOWX7YgjhRC7zfdiBbW9PC6Ua7qhZYJYBa1CegkgR9qBJAExAHxOX1SXiHI/U7EJMERG/aCoOe7jY6stw8C+lQGeOoId2FfQ5jF8dey9kOoTRwTYprRo9G/UTX8O6Bpkl+YqvqdhANPQ6YCC2tc0TCguOW2bhXkX2aPxgYoZSjvXqcKSPSUYZ1uqsAitq892kfdgRmnXX2KC47LkjQdGb+yU7QT2n5Ak8x8w==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DM4PR12MB6327.namprd12.prod.outlook.com (2603:10b6:8:a2::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.22; Mon, 26 Oct 2026 15:41:55 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 15:41:55 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Oct 2026 11:41:54 -0400
-Message-Id: <DMEVUFVL2D1Z.3AOCMD4UUMT4V@nvidia.com>
-Cc: "Leon Romanovsky" <leon@kernel.org>, <linux-mm@kvack.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Kiryl
- Shutsemau" <kas@kernel.org>, "David Hildenbrand (Arm)" <david@kernel.org>,
- <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Jason Gunthorpe" <jgg@ziepe.ca>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH] RDMA/uverbs: Don't return the shared zero page from
- rdma_umap_fault()
-X-Mailer: aerc 0.22.0
-References: <20261025-fix-rdma_umap_fault-zero-page-v1-1-186255624f1f@nvidia.com> <20261026114955.GP3977851@ziepe.ca>
-In-Reply-To: <20261026114955.GP3977851@ziepe.ca>
-X-ClientProxiedBy: MN2PR06CA0009.namprd06.prod.outlook.com
- (2603:10b6:208:23d::14) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=MsBzCvBBi1qFDcBWHy9H79d/yhN28jLEiEbY1lNFkTQ=;
+	b=VPTqeQ3UoTzpGFQ5GSYagv0nCAOX6XmDO9gKeLb/KLWXqf5hYaxh48SXhvQob0+yrDrSzj
+	CnpW5aF7K9/ehagmRg7OqjSCLkzXLWbSZ/0DSUg+TQI5vh2gdlUm0chMTV5YSkVa6R0rHN
+	hmexqdPzteoOIFqwsjPvq2oTHOzq9JY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 7jA5GL";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Z8TGrGcn;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793029463;
+	b=UyKqlqDM7pbypMWp5mWxMW3adRfCOtCvUKdfNKpHcXtRebD3Dln+WbuoMBCdYfuzrFX13E
+	eabGtz8m55b4wyCRAudf7RMlctZ50XNE3mN2IcpzXDCEDN6a12Q9W7kyZjZ2KSLY0jv4TV
+	u1iTMj8G8TpynriA/O+UNYXSTI2x/lk=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id 435B41380288
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:44:22 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Mon, 26 Oct 2026 11:44:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1793029462; x=
+	1793036662; bh=MsBzCvBBi1qFDcBWHy9H79d/yhN28jLEiEbY1lNFkTQ=; b=V
+	7jA5GL8gC9YVR4ijRaAinUcl+AZfdJTziwrn0WOtfO1ft0A1UQagGKf3u8bQ5Pnv
+	+aBMqH/UJzEdd0YTPBG6bD0Jc4H0uP5rCnv970Lsg+Ur1abpFK1Fh/uzWW4CYiWg
+	QrSMvWEkKkqxRkH0SoPxOyHFL3i1cZgZ/+6gCvsOAJG+GfdxQxx7nxaWJEeTAHRL
+	DPF93ri5kB1iD2ndgo5/UWH4xyN7p5dunh3Atjz3zZ/7jElvN6M9NoTOdInxtL1G
+	L0IKYvEtwQVjJD/O88fe+aXL/U2U1dW5qA4W7PYqRbLy03xsgfTH56JLeoLFHsPU
+	Gn3Lj0kZB7Twc9EOtx6UQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1793029462; x=1793036662; bh=MsBzCvBBi1qFDcBWHy9H79d/yhN28jLEiEb
+	Y1lNFkTQ=; b=Z8TGrGcnmqMmQObZXRtGFSxzZEuOQX8GssEByugATGxet8PT6Xe
+	Rj0ymMJhUfNlHxINVs9+A9FnBy+BE4FPaNYvYa1AIF/t4haBwCZVkDNb3MYTyo3L
+	fpDTCSuse1JfKpQBSCzpK5GVIKObchSV/M+glfsvpOSv4KA0eVWl4o6KRZIUz2lY
+	jg8vXwQIGAx0EGfS6jacFQfQ6pOHB5KRMPMyScF/+IMXCYdbLeMC0+KlrcN7BnNu
+	+XDxwpMoOd62/fq4M/DNoyoxy0JUmLdkMnRUjH1z6UI+UJXL2W/uE32lkSXqZPm3
+	pojz6ngWgGF6GnBbv8MrdkV6PTcsbjgq+DQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793029462; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:M35YA9H1ydXmBHd1w4GGSzWdQDQJsG9OCSPE8uHOHb/TaTA
+	pwUSZXlYFIL/NjiiDXf2TQ/ExbRyhn2jgXcG5DY+gUPVbtqvXApUZsA7mygrX0GJ
+	Y951xFIiOKwqyzDfuhzLKBVn9Ko3T4D+s9+rvZv05ylhRKIwx1MSR5yH1NKc3aOC
+	aAF5uKly6d9x7pibT0UrixDDzsWUvaTRFgBMpiGP8GMh5eomgYMTM4McEJzZpvSb
+	zrRA/3wpadIyLlwXwu5HXIKBgoYysTitdJfp14eD73LkwTvWX+BnuvKlm0C86i1B
+	CkxvKyqlRUcm9z0BPIRleEYDQkP++UV0i410N4g==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:XotbD7fpvAzzCGWJuVhuktAumN+rvaA9s3fiyUfgY6c=:XqKWWhJxA+x9auqNjWAMnDG+H0yfN8OP2NNOlTPpJU8=;
+X-ME-Sender: <xms:U3XfaqfcFJS0ZSBxJN2FgyWyDG7MpcXSZ-rYZBadLQNCLAQ_LXgiqg>
+    <xme:U3XfamDL34hubBKFuP9_R_0CsYhct1O6wftrt4GTHjfbdNpAUP8vDlj9Gc50LZBGZ
+    GVzPkg2jhVxpKrXL9_Rn2khpzmCql6PEsYL3NMNYIjlyL_wj0uPeKs>
+X-ME-Received: <xmr:U3Xfaqr1hivuVR2k_d94m95f8QiHnS6SpoigYzePW9IuXgmma9fZVDVJ3fk>
+X-ME-Proxy-Cause: dmFkZTFJ8xjKxkODpSRRf7sUfgHfvt8g6PK2A2CrYeOjgirOm7AGaGD409wBNtw8s2ifQN
+    6SNZlN6LHupXBZ7ClSTK+Va3BkAQr266ey67CD+ar2qxSF2IkJuTlQkn2siFRjQh4V7YzE
+    RvxeuwfChl3oCpci/8krcX+3fg0RpcmlMUWMTWOL4+GOdTK9SD0e1JIbIWu3SAVX3c+cY5
+    CJ4+UQY1jew0wuKOivp7/2GWJwqBUI8j0Ol5fvjPRXkVAl5K9NqBFefrOGaE85oyEYr8ls
+    1J9kXundrAU2oj8ls/7OIxgbvr2IaC/qngmwAMw1u+t8SyL7jWthmDAGSMFWDIjux3Ebqp
+    NVW58DNZcRuPP4M5p1NuFhTCINz/krI2McfXo/RIP1JlNyTFRDiWCkiQ87EG3wCil9LxSt
+    DY2Z+HjW28ACzgXrfS/HPdvMd09KAALKTKvNtqu3L3ZnMhLDWQtOD7u36KnM5NVK8iQ/zw
+    o0FwWC5xllWhu2zJdourhf03u4iFjRga12NdJ9VYm1c4ffKSMkHeNF8JKTnYPYXgGcZ91x
+    RVGz29s6mkkOkHj2qjbFAV1Aev4EnO0bUyGQO0FtdxK0+Ppk+sFUmTsn6MTB+xkguOlDCA
+    KAPRQQZ9+Zlaq4HeYxlSOsUT3aq01sQIGqOekcVMbDNRirLoW8QmsIkUitJA
+X-ME-Proxy: <xmx:U3XfarTevoH8emebj-6ycB_YK6mvmGyfe8R601CeJwb0j6FC2VbEAA>
+    <xmx:U3XfajdchqI6AUO5UIiwUvdYKt9jUgZeWb_mDiQWe7PyYqSm7ay1Jw>
+    <xmx:U3XfalQCcYBMaW9CexLvdEboJGuEHWIAHeGEKYGm3FmvpM6afKbSTg>
+    <xmx:U3XfapPE5WhN66cKsLgIhJhLYMfIJEIrAw_hJc8JqNqHcGJcft_ErA>
+    <xmx:VnXfauoHkdDQBJTFO5-RfGEb6OoR3poF7CFMC1MEudXeqaXg8DERCDaK>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 11:44:18 -0400 (EDT)
+Date: Mon, 26 Oct 2026 15:44:17 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
+	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 01/16] mm/mempolicy: charge shared policy nodes
+Message-ID: <at90mp4ffsuas-pR@thinkstation>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DM4PR12MB6327:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9b06e59-720b-4637-2102-08df3377a9ff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|261026140227099003|4143699003|11063799006|56012099006|261022075727099003|261021121427099003|261022105027099003|10067099003|261009223027099003|261026121527099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	HAktKA0Rex6q+Lbhdfn2vkAxIJZNn2QqXM8saIIrf2MaugFrDSUix8xitsZIXjkec8ut6ybEEYy20+/LI8ZIZLTTxLJhvBXqgraKmmyn/J3cuoUUOfSzLINQKmCiQnj8ikEzKkGbOgRVIskW8+o7KHV2dt1GB3cwW9ojaVsoyUSAYNx11VIw1/Hup276+/lQ9GBMojY2yTKKuOmO5ywNz3PtI0loTO63NvC6PhOE2C3yxIYTDynraKt34Q11LX/KUXFX3/+zpuIrac4RycTfyIYgoglDQ7aa+0kyqqt8fKAx/HauGNmQPnyP/QOQkhKUF8bnrZcV2D0vycqU4g+aMklF5mXge6OOr/AHsguJFE0P2PcgJTXjfO+9FP7PewiT4lT8hqamGL3qRwtEtv2vSb4B2J6yewefs9WsTfuqkMpqGKGaet3mDbJfom6y359Tyob7BqcdY9LWGrYPXzmiYAxeUW5/kjiAi06OvSuIigxaPZJLphRIxR7tKEhaz0S0Lmtb80bg18zslSDKA/Z71Q8DloDyZOe+29dJY9hu2XAT7mbPWZwEG3RHrOKfxXzKiZEeqkcaBP3qEg+nKo7N3FosLvp9YbKtvsAGQw2ARivDQe/TPdwz21CNpvCQdisi1J8hSLCGAGUZ9fx9HFJKmCsEQ8hec/ZPdTK6iN5I3Ko=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(261026140227099003)(4143699003)(11063799006)(56012099006)(261022075727099003)(261021121427099003)(261022105027099003)(10067099003)(261009223027099003)(261026121527099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TGYrcFlnK05hTURpK2F6NHdQL0F3T2FzcDZuSWgxNUp2bk51SjBwc2tLMUs1?=
- =?utf-8?B?bnZSbG5oY0RlTzVVZHNxdVlqYVE0K3o2cmFYcnRvZ2FGT254N29xMFBxd1Mx?=
- =?utf-8?B?MmQvRGRUUitpNWo4YVN2U0ZJS2FGT1RXT2ZPcy9qVWZYM1JVMlVmRzJSQy9U?=
- =?utf-8?B?QU9BTWJoOS9rY0FjYjlua1F3cDd0YTJJaUROMkxEUDF6azlsV3kzWWxyNDBU?=
- =?utf-8?B?V0dvMGVlMFJjK0N2NExRTGZ3VWlpSnBKb1Y4ZTBxcVRiSUlLVkx2SWxWbkcw?=
- =?utf-8?B?TnpFbk96Sks2Mnl3bXdSVGZIK3VmZmxadXBjMVh3bTFyRDg3S0xjNnlCaThY?=
- =?utf-8?B?QUZSOUlSNklYWUx2VU5uR0lBTW9hS2JFL3lNcXZnakdPVUtSUFJaTDFKb3dh?=
- =?utf-8?B?UXVjRGV2SWtHU213aWFaeGFuc3VSK05VRkxJU21mNHhEQUNsN1kvT3pXZXE3?=
- =?utf-8?B?Y21qQUxuTEozT1JmYlNUMUFCS3c1S2VmMlpmS1NzT0xucWVHb3BVQTNmMWJG?=
- =?utf-8?B?cVdOL2w4TnRHdFhFR0YxYyttZmIyYzd5YXJBdmxzeWNDc1ZreGJhTHBNU1o5?=
- =?utf-8?B?WkdYVW5wRng4NHc5TUNtMXpIbHdOTWE0ZTQvdGlHSXhGR0hXNUh0NXJHTCs4?=
- =?utf-8?B?M2Z2RHNkVGtLMWFtcXowS0dRSkhNN3RWNURKN3o0UXJhN054R2VXUDdMSXQ4?=
- =?utf-8?B?YmZuQUpISkFNS3R3K2VOcHlpbVFTbFRsdlJ4Y2ZZN0FLM005VE9nU0dOeWlh?=
- =?utf-8?B?SDNCbUR0eVppdDc5QUhvaHBLc1VOTFZxT2VmVnk2Z0JtaG56WjR1NDdSSkc3?=
- =?utf-8?B?ckd2Q3duQVEwN1M0OG9hYVN6VVJvQ0dFTkdVSDB1a2RKc0lVeDJaNFE2eGlH?=
- =?utf-8?B?RUVwTTU5aXFHR3pJVVFyTUphbmxzeEkvV09zRjFlRzF5aUVncTlXYnFKK2VF?=
- =?utf-8?B?V3hzY1U2QkJxOEY1Rlo2VE11dE8wb3M5M0ZtUlRBV0VJOHhpKy9UeEYzY1RE?=
- =?utf-8?B?VUNoaTZMSCtXdU0ySXd5T3VjaEJjaGRaWGd6THJFbFhwU2F5Mll1ZnpCeGFr?=
- =?utf-8?B?MXF4cGFQekVKWk5VN2hHVmhDMXVUdThxZDBDbllwYzExUTdCQXkxM25oRVRp?=
- =?utf-8?B?bEVIaXlPa1RFUTVYS3VLR0FVRVJjNlJ6NnRUSlhQK3RyZURvT3Rsa0RpRFdO?=
- =?utf-8?B?cC9OMTNTanB6ZDRjL3RKSkRISWRQTWV1UkpyWUFaUUh3bldxVlRhQ1QzN1l2?=
- =?utf-8?B?dWRFVTAvdlMxSUJPbEk4SVliVm1nRnpSNWpNTml2TXNqNXlZakt3YlpkeCtx?=
- =?utf-8?B?a2pGRkkrNmN0SVVFMzJFcjMvZWhFVThZbmcyd0g4VEJVWkpJNlNxeXZzaWww?=
- =?utf-8?B?ZEkxTlR6ZU5lQkt3N0NnaHVhd0V4ci9WM3pUZlB1V05pODg5QVBRV1lERTFs?=
- =?utf-8?B?RW5idWhua3pDbld2WThuT2g0clJaSmc5WUdjeUd2RkhzanRNcEx4TmVEYkdE?=
- =?utf-8?B?U1djZG9TZm9vT0lFVXNHNXN6ZFMyWHY3d1FHOEZtRmRWSWYyNWhGaHBwQWFF?=
- =?utf-8?B?a3Q0Umx0NWp0ai9VQmJOSGhUZkQxWHhvVy9yU2NHeWQ5WWgweW81WSs1b0Yv?=
- =?utf-8?B?U0l1emZVKzhSRFdJQjRqVGl2L3VZdmxIejRJdHNMdTk4R0tvWVJoSGtQR2J5?=
- =?utf-8?B?U2ozWkthMXAzdm5YRHFPUzNNbDhwdDFqdWEvNytQV3VUa3hnUjAzYW8wd1cz?=
- =?utf-8?B?SThINTVNM2d6L1Z5Y05wRjR5bWZ4YWhtTEs1a29ncEFtSlFENGF1OWlHZmVD?=
- =?utf-8?B?Mk5odmdyK0FRNU42bTZPVDFibnpYVnBIM3dVWGdYNCtrOGlSOUY4R3dyU3ZT?=
- =?utf-8?B?MGduc20zVEtqdEpnNDNIL0ZhSklvMGlQcEdHbVFoVmIybVBqa3NPYm13N3kw?=
- =?utf-8?B?MS9PNFpnWjlpTGFsR2xqaWxKbnJNNFM2bmgzaTBmeU1oYVQ5c2oyTVFDKzRq?=
- =?utf-8?B?bkdiYklMRHFJYytqeEtVeHRWRkF5S09sRlBweFdwQ3dkVElXbUM4OHM1OFAw?=
- =?utf-8?B?akNlSi9yZWM0VEM3aUVQbkNxZ2FJNHRGdFArQzB3TmJVNDlrOTd2cnpXdUpJ?=
- =?utf-8?B?YmppY09CUEdaUkJ3OEFuTk5iS0YxUXRTV3VMcTUzcjFiUDYyTzNUYWt4aG1R?=
- =?utf-8?B?YmozVkxSTXBxZGY4ME1TQnM3VWpkVUx6M3hWN1JOc21EWDhPaG8xZkNWQWJo?=
- =?utf-8?B?WjhwcWd1UG8zbXdoak53ZjNPNXFiaTlpOVRpZ0ZlVWpTK3ltazU1dWRIZ0hU?=
- =?utf-8?Q?9OZ828/kSiLJm4XNFe?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9b06e59-720b-4637-2102-08df3377a9ff
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 15:41:55.7401
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CmER9XIT7VqWXohT2BO6QHq75tcj2orP2IrF24otd7qEEhssSu2+lh48Zuc+XU/9
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6327
-X-Rspamd-Queue-Id: 6B9BA40003
-X-Stat-Signature: x86ajhwnu9r9ffexj39edrtx7y3hogjk
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
+X-Rspamd-Queue-Id: DDC4740008
+X-Rspam-User: 
+X-Stat-Signature: 89iyg4x9ri19q4agwzhrnkbhdu574qy3
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793029323-304319
-X-HE-Meta: U2FsdGVkX1/lafG0bTXND6MU1XFONs9BFzRnp3nhdfEXQpEsiY9opNzX0VhnxFziL/rZjQjjx1Wn/rWxaDT2JeKYcbfOplSmJc5GNMurv5MDzcUrVzNMfNzjT+7ZstA39AQ4smnRExamA4TFTWEe/eF1/JVxEPapOuBA9lcitQxXoK6u5fKjl6HuxYZg70yvm3r4/WzpkxB1QkIb25uq4JlfTIbbsi6c8n7MPzH4ZgBbj7SZI0MS5P3LbFAjjQWcwBnYHqnET3b8EazdDG88D1DCTX5oCsn1NNR7svrv+2qrd6IfzpLMTvdMkEhiQhVcwBnrplxG+L0ojcq7ZQQRb3wPHUZs2FgD6BA/Sbwc9eb6Sd3+YF5S0mVCWkB7iTzUVMhjWNMXREvTF1Vaq89yJ6UK0Ei0ZQ7hBAWykBlaDHgPy336pYcOY19p3FnFKznMP+Z9LW72JdXdE27qsd1pK2Y8kKfUE9LN04vQat0GqS/JU+Eopg9+UVcRGE92Z4e55LBPT8fliIwQYgTHmZWfz+eBf6Dv4QwW8RylPM3qZaf1/pO4VXGNVv1Ap9jW+4kpuudvOcq1PGpdH0dcTtEk4z01kyzknigFg8CKp6I275eVMUESZ7tldmMsVBsfXG/LsQKgyTG0f3YJYLVlv6TfGDTgb8b77KyaKfv7cV5CUV1LJobIhAj71uqTI4ojhkGTAVG9zAnsgl0dJCazaa7aZR2I/FITXTs5uvwleoK920k6a3tRjO8WGA7w6Vi6MC2kvO9qxZSl6CrrQH/TrhYa4IONcC8IET82fvVMUq7pk+yYa57WtvlWFfwmtYrYFOMQxsDQNdc21ouaAIbnS8ZUA+Dd59lQJ9Nq+1mw1lh4GhVb/HeSUe6muqfIWfGcdhZ60gU0o1qOS12nLqAs2v8ILylsOlgy5eRVbGWvSkcqJ6E0rfemnpAKLoRc1cMGP3EoOvgkWABaAEked+aBKue
- W3bWN1el
- bk91o2jgzwg+Z/OyTYlxXf/sNmf0KVk82hQbVY/eT93zOFuhEWksbhUmP1Pm/JYoXV6CK0FrjqNNmlqo8tWjks/bGnwfSHF9dPhz9N7xntkzZMpMbPPoFH8sPdrdnA6s/E0x8LQ7FjrpXHQ35ketOHLraopHxBZx0AdAWLwjW+3FzLdgXc5zkQ+Hqsve2kx/1wCPvIDGXrCdDSTdpdkhFwSYBFMfEVybK0O5540VnzXT43wGzQJopNUXoSx821UeZIYFS8DgDh0y8p93eEPNaa4d1KelYx3xXlf/RlNAmCixx5FNb2MvPM0CH2LC9YnZA1K5xBSXvvkP2BjQGJc2Rd79sT2UEgYplDlInsIZL6zSpHG3qKopt67k3rQmr0kSQN8b71d3t9p8IlqLOoJ5z7ciMg5xvMpHClwLZvFhNTZMrsQR6N+3/mSwBbRynS4W02d5UWtjaVpqI93kdZr3gVu22YQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793029462-76819
+X-HE-Meta: U2FsdGVkX18BQ8VEb0V4bmjtJXT8D4HRrBsLEWC0jNvR/F8wROZr9jQhEKkPB92BzGa/Cx5Sx9qyWKjHPQ2wFbiPnvZuxBkRbRuHhOPP5j5zG9JJ2Hp66OTOokO+EfenEvb1KjOWniJJgghdFDu1xh+onDGScm2ZdFDQJSS7WRx7ww5gDnvyfrZnxAjR74D2QuFuIoSm2pUwUGGgnAUDsXskcCLKP/o9P565b+luFUjGze5prGK2b6V4mpktSxGTei2rP+ac7P73LGSfWt/yqMN5NdMpiq/uAbh+25OdhiOep10KPRH0UOD34bDcamnYuwwVVo43ariyXyO6MXFQ0JnCo+h7CLf8mGucWN/XLAWQzOoa8aM94ws4I8Zg2zFWntsRKHMLlPm90dXrE+Rtzg/LA3u4NDPPJxTyh8p+qll6lyuBsIVsWVfb2uFUMgNm04ljPyJOztKQZb2TrH4uA5kPF0SsaUMrlFehMFG0g07bhkaK2TSY9grPu88lbywoFic84bo/7GhV0NB0IS7TVGPG/PZCTx1EaqBMY531jlDzPDMAA+H71LmMV4C36GuKGUnEh9U9z6Jhe/bsmA8VvFJR3gcabogeSLhpOFUi1nCKSh9nFWUK9I7Eyw3D0wOpTSG9XjjWU0f10R0lpr383NYfr2S0Ph2Yb4ckECljOzHSuS3muD12UHiqkNQP7xXN2Nz/ZwO3rqAg9xYIF1ZXhiwJ5lpjBbetA5H54JZqkeXUuFnc7cZdy+9OQYM1P6Jh+utnt5l9unTI4FmJtEk1BJTRKUkpsXqobA7xiyL4vDVVz4TX/cTfJap69DM8J8zn8oyHVUJlRT3jJbJyH9Yw2Nxb6dWBn5AQ8ezpKDDDgvinJJjqQQWwTtG90CbqK3csZslt5QnVTveihMSlmWAnA9XVg2NtBdBYks0xt5QzFu1r7WiyE3RtAIiNjJ65ccgA6DcKkPtPhjexUb6Bxbo
+ PaXuma0O
+ hGZnwyOANnAc1NEZPwj08nYbojneg/jhf0Zk+8DZEcnzFOMKj+F20ukncQuMqf1ltExvWlzSauN5yV8wQ2+dFPunJvKhWyRFyaCbnpPDWpSktYMJ6z7htrr70OR3iy5Ub7ZYugMX/vsi10PBMMm78jc0XDdBrqoA0nEKe7LiZBNdaSNMv9rpjT4q0VF+Yd7KpB2mEgRIfo2AIuA2KLARaqBcIFIV3+e6CwcmP4JnBO3xhFnbg+xVLRJeDxl3SG3TSPkOmnij43CfAonXFvk56866bObGE3r90erEdGUvWfuiMn17PjHnHY1UfyEnBKPF+6KC3o8SgiMyfyrx+OUAOK6sJUfQEDVx7yZ0G66De9PEXnagFgLxBN4u1vFOmrQfhctI7F+Iv3afQszcRy6VNF+f3Uxkc8LJuiY5mIWvtYMiwQJ7xmddyoR43AR4XchyFY2i0vzLVo/UAiJWMr16pJGmMxcPUvZYttkqI2RlYLfg3H4UbLId7Z7ABHn+oBqKHvvEgr9jAfJ/9UJomLRpm0ABkE96wuv/SN0LtuTUgw+9KC4czdxp2B3miWPNbI10h3uMH8+CVnkQFFHBTDbHQ49j51hogBRXREss4jSRDg00zhwU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,135 +161,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon Oct 26, 2026 at 7:49 AM EDT, Jason Gunthorpe wrote:
-> On Sun, Oct 25, 2026 at 10:04:42PM -0400, Zi Yan wrote:
->> After disassociation, rdma_umap_fault() returns the shared zero page fro=
-m
->> ->fault for VMAs without VM_WRITE and VM_MAYWRITE. Such VMAs come from
->> rdma_user_mmap_io() in drivers that clear VM_MAYWRITE and they are share=
-d
->> VM_PFNMAP. A page returned from ->fault is mapped as a normal page and g=
-oes
->> through rmap code. Two issues:
->>=20
->> 1. shared zero page causes VM_WARN_ONs in rmap code,
->>=20
->> 2. normal pages in shared VM_PFNMAP VMAs cause accounting leak on arch
->>    without pte_special(), namely the page refcount, mapcount, and vm sta=
-ts
->>    are never dropped.
->>=20
->> Map ufile->disassociate_page for VMAs without VM_WRITE and VM_MAYWRITE,
->> with vmf_insert_pfn(). The page lives until ib_uverbs_release_file(), wh=
-ich
->> cannot run while a VMA holds a reference to the file.
->>=20
->> Writable VMAs keep returning disassociate_page in vmf->page, thus its
->> accounting leak on arch without pte_special() needs a separate fix.
->>=20
->> Userspace can see two differences after the patch. A mapping without
->> VM_WRITE and VM_MAYWRITE now reads what was written through writable
->> mappings of the same uverbs file instead of zeroes; after disassociation
->> both are dummy data. The first fault now allocates the page and fails wi=
-th
->> VM_FAULT_SIGBUS if the allocation fails, as a write fault already does.
->>=20
->> Fixes: 67f269b37f9b ("RDMA/ucontext: Fix regression with disassociate")
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> ---
->> The issue was discovered during PG_folio development when making sure on=
-ly
->> rmappable folios can enter rmap code path.
->>=20
->> Alternative: map the zero page with vmf_insert_pfn_prot()
->> =3D=3D=3D
->>=20
->> Read-only mappings could keep reading zeroes if rdma_umap_fault()
->> installed the zero page itself as a special PTE:
->>=20
->> return vmf_insert_pfn_prot(vmf->vma, vmf->address, zero_pfn(vmf->address=
-));
->>=20
->> It does not work today. Commit 7b466529307be ("mm: disallow raw PFN
->> mappings of huge/shared zeropage") makes vmf_insert_pfn_prot() return
->> VM_FAULT_SIGBUS for the zero pfn. vmf_insert_mixed() does not support
->> VM_PFNMAP, since vm_mixed_zeropage_allowed() warns on VM_PFNMAP.
->>=20
->> The first version of that patch [1] did not change vmf_insert_pfn_prot()=
-.
->> Due to no in-kernel user at that time and complication it can cause,
->> vmf_insert_pfn_prot() rejects zero pages now.
->>=20
->> Fix to writable VMA path
->> =3D=3D=3D
->> A new vmf_insert_pfn_mkwrite() is needed, since vmf_insert_pfn() has a
->> narrow failing scenario. When a process mapping the disassociated page h=
-as
->> soft-dirty tracking enabled, vm_page_prot becomes read-only;
->> vmf_insert_pfn() then uses a read-only PTE instead of a writable one;
->> fixup_user_fault() is used to write to the page (e.g., KVM with the uver=
-bs
->> mapping as guest memory) and fails, because it does not take the second
->> fault to upgrade the read-only PTE to a writable one.
->>=20
->> LLM was used for investigation and code development.
->
-> Is that why all of the above was so hard to read?
+On Mon, Oct 26, 2026 at 10:40:34AM +0100, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
+> 
+> Any local user can bypass memory.max with mbind() on a tmpfs file, and
+> allocate unbounded kernel memory.
+> 
+> mbind() sets a NUMA memory policy for a range of a mapping. If the
+> mapping is of a shmem and friends, the kernel also stores the policy on
+> the inode, in a tree with one entry per range of the file.
+> 
+> Each mbind() on a single page of a mapping can add one shared policy node
+> (struct sp_node) and one struct mempolicy to that tree. They outlive the
+> mapping and stay around until the inode is destroyed. The tree is not
+> bounded by the file size, so the file can be empty.
+> 
+> Memory that user space can allocate must be charged to a memory cgroup. A
+> slab cache does that for all of its objects if it is created with
+> SLAB_ACCOUNT. numa_policy_init() creates the slab caches for both
+> structs without SLAB_ACCOUNT, so they are not charged to any cgroup.
+> 
+> Reproduced with mbind() on single pages of an empty tmpfs file, from a
+> cgroup with memory.max=8M: the global OOM killer killed tasks owned by
+> root, and the machine panicked.
+> 
+> Fix this by creating both caches with SLAB_ACCOUNT. This change implies
+> that mbind() can now fail when running into memcg limits. Further,
+> the policy_cache also serves task and VMA policies, so they are
+> similarly accounted now.
+> 
+> Note that per-file limits are not really helpful, as the user could
+> simply use many files; having limits per user is tricky as well.
+> 
+> Fix generated by an LLM and submitted by Chris Mason in private.
+> 
+> Fixes: 5d097056c9a0 ("kmemcg: account certain kmem allocations to memcg")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: smaller description tweaks ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-LLM drafted the original long and full of details commit message and
-cover letter, I trimmed down as much as I can but kept the necessary detail=
-s.
-Let me know which part is hard to read.
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-I provided the details because:
-
-1. the original code returns a page on VM_PFNMAP VMAs instead of a
-   proper vm_insert*()
-2. vmf_insert_pfn_prot() is the proper fix but it has been changed to
-   block zero_page, so I would like to know it is worth the effort to
-   add complication for this single user.
-3. the writable path needs a separate fix, which also requires
-   additional MM fixes, a new vmf_insert_pfn_mkwrite() function.
-
-Probably I should have sent it as a RFC instead.
-
->
-> The zero page was used because things like the clock page really need
-> to be zero. Reflecting back random things from the disassociate page
-> is not going to work out.
-
-Got it. I did not realize that each ufile has only one disassociate page an=
-d
-the read-only page and writable page can be used in a single ufile.
-
->
-> I don't think rdma supports any architectures without the special bit
-> so I'm not sure this is a real issue in practice.
-
-Sounds good.
-
->
-> I guess using vmf_insert_pfn_prot() consistently is the right answer
-> since these VMAs are not supposed to be mixed maps.
-
-It requires nontrivial MM changes[1] plus rdma_umap_fault() needs to
-handle when mm_forbids_zeropage() is true. Basically, it needs to get a
-zero page itself when that happens.
-
-Maybe it is better to add a dedicated zero_disassociate_page for it, to
-avoid the fallback handling.
-
-In terms of allowing vmf_insert_pfn_prot() to accept zero_page, I would
-like to get inputs from David and Kiril. Or the rule can be no zero_page
-for PFNMAP and device needs to manage its own zero page and do the
-vm_insert*().
-
-
-[1] https://lore.kernel.org/all/c0979ad4-9fec-49f1-8442-d90061b79504@kernel=
-.org/
-
---=20
-Best Regards,
-Yan, Zi
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
