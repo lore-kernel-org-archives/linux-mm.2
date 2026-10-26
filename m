@@ -1,101 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BD4606A31E
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6ED606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lG5nRJrJ
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=arf/kyW3
 Received: by kanga.kvack.org (Postfix)
-	id AAE3E6B05BD; Mon, 26 Oct 2026 11:53:57 -0400 (EDT)
+	id 3F81A6B05BE; Mon, 26 Oct 2026 11:54:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A853D6B05BE; Mon, 26 Oct 2026 11:53:57 -0400 (EDT)
+	id 3A8B76B05BF; Mon, 26 Oct 2026 11:54:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99B556B05BF; Mon, 26 Oct 2026 11:53:57 -0400 (EDT)
+	id 2BE196B05C0; Mon, 26 Oct 2026 11:54:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 79C2D6B05BD
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:53:57 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E2E41C3FE3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:53:57 +0000 (UTC)
-X-FDA: 85365223314.02.35BA44C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9F8C2180003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:53:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lG5nRJrJ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0A97C6B05BE
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:54:34 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 89A081C40B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:54:33 +0000 (UTC)
+X-FDA: 85365224826.08.9EF0870
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B714F12000A
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:54:31 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="arf/kyW3";
+	spf=pass (imf29.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793030035;
+	s=arc-20220608; t=1793030071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=VqxzS8fwgzLWYbePYKVt+w8xAcU28yr4TDFbVUA1IHc=;
-	b=oaHC795BzvitKpzVPq63ERKF4sZzOpm7A3rTEH8qr3WSvynKj25u5Icp2m/rsag5oxzYJc
-	F7cS4knZ+wW1bfyiLHQe1QMt7mXlHUvaCo72LCaPiMEfHIOoVLyO+jafYOjuJDQVfpK4X4
-	BEsKHS9J1DssXXYjqe48nLWm+ajdioE=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B8FTqo2cthF1N8/EPSwd5W+NmZQX4EUuEeAqIs6bJK8=;
+	b=SFUiT4NJ64dEOd7nO8G/R1988jQ1whR+I5E/UkL/QrU5gU4k79rQeITLqHTolRqvPAjf0R
+	+jmvfxCcuFl4t9EG+C/hweUcpTJTqFObjWHklH0TLrVCKsRvlLaGf5cMX6fLLgpbsF02dm
+	ApwAZm/xYpbBdrtE+cg6DCEcZ2ZrTqI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lG5nRJrJ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="arf/kyW3";
+	spf=pass (imf29.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=jm5905938@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793030035;
-	b=MvkMGAx59PAnk5HOSvIfdgBQ+9gQTU6jdFEbk3XZ7kvJZA3RpSV2O6YeQHzZYUFPY/5ceV
-	EI0eF2V9AMZMX3mRO0SdS6MfIkoCpHEFWwZ7TnYAQ4Fo9N+MFXkAzSwWYYiIknljRe97AN
-	o2NrKTIMBwhTfcj6h43AgTPgmWuhL8s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793030035; x=1824566035;
-  h=date:from:to:cc:subject:message-id;
-  bh=V1LNmW1CHrNm69ucLl2xVsTweBKFJp7gHFdBmSZIikE=;
-  b=lG5nRJrJZHEsEHXxva0rFKAb0Z8iM4wlOE6+M5TEhIzdOf43RmM8iqcT
-   0We/X/B5NQW0MDIw4306xgU5T3L1qRKCpHL6MgljZHNKuWMxWbZPJO7mC
-   +Mr6iSx8ILShLhKIqC39umnEZ8YHrQ/ENdi797T7MztHm2CBdfWt4vKGy
-   eB5H/EyKDS1Nw0TiGN60f+6an4HvKffhBYOBFO1XCtsvYufe1r9t/kVlu
-   jUzB6ILVubhYLW5NHMKAy1GBl4Ge8Nw5p5SwBedZf1HkPNcGMl2/ndhcH
-   ck2HmZJFErkDCXwX8L2SKEIV5jNB8UafpF05fltbwv9FoRbpo9Pbl5exO
-   g==;
-X-CSE-ConnectionGUID: ixrTZOWyScOfCPyzyLjNrw==
-X-CSE-MsgGUID: EDnnIjUwTK+P2polm8LMjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1694332"
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="1694332"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 08:53:37 -0700
-X-CSE-ConnectionGUID: /CVOf7moT6O5j9eoSA81ZQ==
-X-CSE-MsgGUID: +oJ5XFDwSBO1OPEUsD3iAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="4446541"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 26 Oct 2026 08:53:35 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xLN0v-00000000WB0-0Opp;
-	Mon, 26 Oct 2026 15:53:33 +0000
-Date: Mon, 26 Oct 2026 23:53:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- 73b6c575e9b3679e871df98b23758e90df2c6efa
-Message-ID: <202610262301.ot4w6DSx-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: 9F8C2180003
-X-Stat-Signature: yuc1fmjmz4acjhaf9ciyiqfbgyuctt45
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+	t=1793030071;
+	b=bJvXyokV+J2vT4Q7TMqnUWrPj0k+5CSTDd3klfJyH0REwnn34Q1fN8dssGtC7EW6RSvQHz
+	Mz5fpGWkP8+s++uTK7/ciIjr3RmfE5dTLYCrc2bKKs318M4rSu1+7deF1q4KdOE8ay0Mq8
+	EveQC9WIvy+wr0BRF5TKm5qVW6d2KkQ=
+Received: by mail-pj2-f11.google.com with SMTP id d9443c01a7336-2ea993271f2so10687505ad.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:54:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793030071; x=1793634871; darn=kvack.org;
+        h=message-id:date:mime-version:content-transfer-encoding:content-type
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=B8FTqo2cthF1N8/EPSwd5W+NmZQX4EUuEeAqIs6bJK8=;
+        b=arf/kyW3PCvHPWD+Ju4/imMqmuifKVdx+GrYgP5pYq5F/q/2Xhkn7fKl/s6wO84jKU
+         VjWVw8Aw8cVz3yfipZwc+m3DME2sA/QHIyCz4/mMug+4JVKRrqnMdyWl2pmC/Pmj76aD
+         1tAeyjF49sbVY8TmMtg7trPOJuVVa6AZ24evOJNvtb4W9fD/vPTVfyCaIrmrFhYPOf3y
+         O9ITVVHmrZPd/CsM/UgyJbmxMibOH4S+7M+96j7YVOcj8pzCAwrSTpQqowjiqL3XdEVs
+         kYMNOg1b/JtS/3skZEJ3Bz7KkgzWF6F3XLzLoMedDqBnpv+6plpnv7kPWS2N+4eu0bk8
+         3JSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793030071; x=1793634871;
+        h=message-id:date:mime-version:content-transfer-encoding:content-type
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=B8FTqo2cthF1N8/EPSwd5W+NmZQX4EUuEeAqIs6bJK8=;
+        b=mKzNWBBXQoWsOljNmuUQQHvsDTTIKHZin32tELcEpEGEzKIguIKu8baCxjhxR4q5Te
+         wsFrA3mT3zFJNb0GU0dSCfYkidrzXRGlvPvHR3UxChzSE206+Vj5bPcox32OgA5dCBwW
+         w600gziBqvmWDX3hJLJVGYqvxGFmLEXx768HqW0PKbGwxLl/nzstXca1eXAyFrpuZSIw
+         nXc7I+19Z2y5aDtv/p2G9oWmOVZRfcwd2GdbUfdvr79bmJlTipLopY961dglX5g0cEDV
+         GFIaC715ooW4DmNU4ynBSzNMysqk4nQtny+hl5uOPvSqMGs8ZjDU4sJjmzibMFaKMRuf
+         2HAg==
+X-Forwarded-Encrypted: i=1; AKwUvBxJp7H1BLcYHUcVnhApAAJ3Xc9pD1XOlXkKMvR8I6z7TZee1az2t6oieF+O8o5K2Oc/zQgYh7T1Fw==@kvack.org
+X-Gm-Message-State: AFq9FYIJtNdg/N1o3dJrNNsm/Fsh8C5TNiXRjccZVB8JNQvhaQ5z5Qq2
+	8XoI5uR47+LX1VUfA7rxeQ2Ecb7HmYck+0bD0wjDLxWZ8gBAsR0XBJAY
+X-Gm-Gg: AYBFou05Wo2IwjdBl5l3leMUGvebGda4nXSaHA/VUD+02jHs8gfpympmVXmq5EFqLp9
+	mgjTM5DXSjneAyeUstKSiheiD6+4AsQ5Ljo7JsoPtT0oC8hG4KK/g5ImK+kHJL5LPFSnrPT4/cF
+	+cdP8SsNxpyKue3Uo9uo0GGUZFpR0WDy8JD1mhEzgatZzplSqYlWe7UBAIjW/NsYNnCQwU/tSuE
+	N9RYSwa1mYVN3Q1WnKtPmiKiv60J4F+1xp+nBpNZX4dyft8U/CD9/LHyrRfuVPIDlgiX5MidiAA
+	pRESBzo6LgrJO0clknDf0mR/cTDLiw36NTjRa+JAsUg5XzMnO8UCbZo+1OVG6M7dRYoRnggxPVW
+	NrU2VhWqsxBMsVtRByNn3z8yb34kHgvLamJPzai/9QRTeSd9kJIBtWEPzoaG4gdOUVsXy95ej/q
+	sflr1CYLD68NFmRoshXb8LS6+VDLzjL8T1fmF3Tj86O6ILCPhx0IbTFaAeyTQMbJxsoozPOtizb
+	MJLaPU5c65dNkAyf8jHYDRIhE1sKbArERRBZbdn+Z9Ug1NRz0ofDmfhIGlmPCdL2HOzzRJMFIOo
+	zTAdTYW+uaRbupC4kirv50U/oiTS4UNSV30dqnaDA2+g0pimjUvU
+X-Received: by 2002:a17:903:988:b0:2e9:5059:4477 with SMTP id d9443c01a7336-2ea9c6c82f1mr52579075ad.23.1793030070524;
+        Mon, 26 Oct 2026 08:54:30 -0700 (PDT)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea9b221101sm19099555ad.71.2026.10.26.08.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 08:54:30 -0700 (PDT)
+From: Aveline Noir <jm5905938@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH 4/8] Docs/admin-guide/mm/damon/lru_sort: fix remaining grammar
+In-Reply-To: <20261026144451.150560-1-sj@kernel.org>
+References: <d054b7a2653a2ff3d419b689a50a53290c2cafbb.camel@mailbox.org>
+ <20261026144451.150560-1-sj@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Date: Tue, 27 Oct 2026 02:50:54 +1100
+Message-ID: <179302985414.2.11997096580844017569.damon-docs-reply-04-lru-sort@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1793030034-902332
-X-HE-Meta: U2FsdGVkX1+4lxpRwPXbuTXu+K63GEKhGibFV0J+C6kOZuIr1ZC1reDgGobMO0C+Vp1QbV747HxTMAc4VviKDoQUNlk481Su++MKI30UcNQpfIvXvO1ZWEag7DX9v52bMwJQHbp7rMCihjX/QghDBoZN9IkqW1ph58y3lp+iKKOUNO/HBZFF+8k/w1pyRo+e42A8bChXyYo0VnJJZ0fF4AZL2A9gOiY/olT0TpeDoEHINkJPPt1WkRVaKCVwkh9gWq/xWprRfLDdxNAk5qwB2ydr10FoFfeZ4RfMeZXF3MzZodBh6XUUTqjwpnv0AI2CWxd/JhQ6WsbIEvKcx+/iQhKcwIT63rLZPd3YXR05oFylyOkVBmKVdzbk52qApV11DruFYDhmezlLkKAfQFeiyJl9kRX4z2C72hoeE4r+A/7ycee5h6F5WhQ9DgbYUN5wH9ZGZAK89DugYxlBemn0g2uSpyT3z7FLuqHh/nVySN87KrTEJXeRREnhmvfGkLKHSU3cxWLDSXVkCKQ0vZtMBGl2pvE5MsLmrWfAYb8QcCjvd9c0nTvYJYPYpP8UgTq6FvyJJgjDtTfDSDiTf1GVtiGG8PVBhpX0gRhMf3EPF0M3elGVDJPFVK2IiTtS8qfd9P/0ls6r+fqxq+YhoGXPngOxB5kd4v2jXG7xPNRf2e8bwIfZxbd77HvVE2z7cvaExPN5s20sCKzTXRQh5aZmfdP+SkYdAojoMHn+uhawQ5XW0P0W4OUFV2PCdGw2thdjcxylovlJbqcNMwoImd1loYtnaS30GMltErjD1Gkc9J4SVDur6hsQPH2yMDNW/HObxcIKWr8Xrk2LEcCnsUVGfidLn5ZziPZwmT2X51MenxgHvPZip4QYEXJjlIfYidCmdA14rySVhNN27hnb1cyJkYllOuS2568s45q0aAqrVgNqWSo+6tLptRxoX2jUa/iHffMu3qMeccJeNHipzgy
- lyiTMF2a
- Bpns2ECgAj3usE8OwyYtsjnnyKtDzZo93zj5vwor5udnc+7JQc8BKWJZRGW6Ep8U2LLnyTRTz4HrQpP8Qy/ybhf1e9Db61dpgmia4k2tCfGl137AYqtAYzGJev8/1CGT/43f/l5NV5xKSeAdehS1FJ0nWHoGthYwn1aBj5BAvgc1FuDmYoaZzuLd9MVqL4Rjp1BnCBwRbgNaJBPs=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B714F12000A
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: 1zihc5zzcnun9g8qqwnht1iscqkb3jde
+X-HE-Tag: 1793030071-671029
+X-HE-Meta: U2FsdGVkX18gAEoaEg+p1YqB1zzWUzZy317ZTlCOE3M6w4R1K3NcO+3jUeXDfRJHS4sDJIgHPaV03lIHI9X4fxs+jzC+Vw8JMrS6baoNZf5nzierfPGgRZGIPuAyn6+7j5+GIpdvutNsjTHKX2JMzoDpeW1kxT5iPC3u2HVbLt4oiAlCHKKjR+gqNK/MBnST4BEuuPl2rj2ezAfcEuYcMo+ltw/5TqaAbsiV6CHlVh8OEJl8wnfr0bx4dwxCEDwJUWqNZUU4+cLeHD3zM6kHxFv2nFuNxrz+p8unbDdj4VgNdJjRktkyuPbQN3juk/WTYDCbopOJSSUai21LXcLyxc8n0+39Tk+vN+1vAC+lm6sdVnPnM72EiZieAe0JaE+501Kqerk9tNaZOsAAHLcybTn+5j7krK4clhKWIRm93YVUmofCMoCRWR9cwibKfT5QWWbWIrvsDweGl76lgvLR04vK6/xd+5ku0bfvJMC5NC7ywcpXRUOXkF1yB3ExqZ3LwF64qP/VkFhXF4k/0qopml6oWu532KrbursgSlnf2FOlIBFTZRBWcNgISMNNlNNaIAr8jsrz1Apo7as8dy4eNOSi9SMOxiv1/GNeS/q9Ie+F5bz34dSowpLLth1k2DQZGbZvMRZTzkXh+Nxdgnb13dwOffYJ5PrWkg/1w4Lg/zRc6o9OLkFciPtiNmr8X/hrmNBcDeTXSXtfP42gxt1E2viq0cIK9KvzopXyW+8qUrpLY5GkU85YHdMRA+lpLINvAwmhkkYNMA7nGfIvJJOO7ZeJRler9QDlynox/go0S2yGNGVpMYRkZBj0DHly+PEPmASujU8+AFHitnQs8cn+u2sxpXySiOT8HiUiKeOzM6czSyb9TtHBLA9JDY1BQa2aG/YPxhPw33Pl/NE/4AtwszcWtsA6AklaXALK6Ct/ulPfg1wPwM8HHE1Il6Z+IruEFxiAP4IklbzahBwpDHX
+ B8uYBKiR
+ ADP1bcriHJXI8UGEda/kRx5QRA1qx3MOQC1o78zzAC/vlPHX6RhuBJ0WwZgEHNiHco+nsrlpnFR8qCkNO619Wvkx+5H45IqsDoqFKCWtJ8TiT2ixCLZ9KXYpcg/eDTPifWoZxapWmnth1Y6Rp9MIkZG+GyawDkJqpo2JrLMRgTo164FMeQLi1jucpXl0iDcKPtyyGkUHWZpDBI5bNykbK9//IrwbGKuAlozmZHOMHQs4BkrjkBmiO8wY08x5O/HCbAq4V9RkYi5g67Sa8Icg68UqweErT0lsEoaOxbQ3jjLgcqvZ3w84ZC3NDhkZozFPMbUuRE65pn5cxcxXHuiFwimHT+0zvX9tYmGIBrZLkPJ4qzzwLNyhwas74LM1TRe5SO0U+CDhs2/t1HEbnUVSoZUcC8pan7jCbRwcJC2RRN3b4uw6FhMnuGh7sb0TftAtDUv9U18zdsmEXjmJgpA/qu2ti8WKKzbq2jDdVebv8izmh9VjH9oQgCgESoO3M/exdcXJJ2h/DsATEcKyXq2YxY97l6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,180 +127,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 73b6c575e9b3679e871df98b23758e90df2c6efa  riscv: mm: fix concurrency in mark_new_valid_map()
+Hi SJ and Manuel,
 
-elapsed time: 1000m
+On Mon, 26 Oct 2026 07:44:50 -0700, SJ Park wrote:
 
-configs tested: 158
-configs skipped: 11
+> > Yours isn't wrong but I would make it:
+> > +this scheme should automatically be activated and deactivated with three memory
+> >
+> > Choose as you like.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I feel my wording reads a little better here, so I might lean towards
+keeping it.
 
-tested configs:
-alpha                              allnoconfig    gcc-16.2.0
-alpha                             allyesconfig    gcc-16.2.0
-alpha                                defconfig    gcc-16.2.0
-arc                               allmodconfig    gcc-16.2.0
-arc                                allnoconfig    gcc-16.2.0
-arc                               allyesconfig    gcc-16.2.0
-arc                                  defconfig    gcc-16.2.0
-arc                   randconfig-1000-20261026    gcc-11.5.0
-arc                   randconfig-1001-20261026    gcc-8.5.0
-arm                                allnoconfig    clang-17
-arm                               allyesconfig    gcc-16.2.0
-arm                                  defconfig    clang-24
-arm                           pxa910_defconfig    gcc-16.2.0
-arm                   randconfig-1000-20261026    gcc-13.5.0
-arm                   randconfig-1001-20261026    gcc-15.3.0
-arm                   randconfig-1002-20261026    gcc-13.5.0
-arm                   randconfig-1003-20261026    clang-24
-arm                     vt8500_v6_v7_defconfig    gcc-16.2.0
-arm64                             allmodconfig    clang-24
-arm64                              allnoconfig    gcc-16.2.0
-arm64                                defconfig    gcc-16.2.0
-arm64                 randconfig-1000-20261026    clang-17
-arm64                 randconfig-1001-20261026    gcc-14.4.0
-arm64                 randconfig-1002-20261026    clang-24
-arm64                 randconfig-1003-20261026    gcc-8.5.0
-csky                              allmodconfig    gcc-16.2.0
-csky                               allnoconfig    gcc-16.2.0
-csky                                 defconfig    gcc-16.2.0
-csky                  randconfig-1000-20261026    gcc-16.2.0
-csky                  randconfig-1001-20261026    gcc-9.5.0
-hexagon                           allmodconfig    clang-24
-hexagon                            allnoconfig    clang-24
-hexagon                              defconfig    clang-24
-hexagon               randconfig-1000-20261026    clang-24
-hexagon               randconfig-1001-20261026    clang-24
-i386                              allmodconfig    gcc-14
-i386                               allnoconfig    gcc-14
-i386        buildonly-randconfig-1000-20261026    gcc-13
-i386        buildonly-randconfig-1001-20261026    gcc-14
-i386        buildonly-randconfig-1002-20261026    gcc-14
-i386        buildonly-randconfig-1003-20261026    gcc-14
-i386        buildonly-randconfig-1004-20261026    gcc-14
-i386        buildonly-randconfig-1005-20261026    clang-22
-i386                                 defconfig    clang-22
-i386                  randconfig-1000-20261026    clang-22
-i386                  randconfig-1001-20261026    gcc-14
-i386                  randconfig-1002-20261026    gcc-14
-i386                  randconfig-1003-20261026    gcc-14
-i386                  randconfig-1004-20261026    gcc-13
-i386                  randconfig-1005-20261026    clang-22
-i386                  randconfig-1006-20261026    gcc-13
-i386                  randconfig-1007-20261026    gcc-14
-i386                  randconfig-1008-20261026    clang-22
-i386                  randconfig-1009-20261026    clang-22
-i386                  randconfig-1010-20261026    gcc-12
-i386                  randconfig-1011-20261026    clang-22
-i386                  randconfig-1012-20261026    gcc-14
-i386                  randconfig-1013-20261026    gcc-14
-loongarch                         allmodconfig    clang-19
-loongarch                          allnoconfig    clang-20
-loongarch                            defconfig    clang-24
-loongarch             randconfig-1000-20261026    clang-24
-loongarch             randconfig-1001-20261026    clang-24
-m68k                              allmodconfig    gcc-16.2.0
-m68k                               allnoconfig    gcc-16.2.0
-m68k                              allyesconfig    gcc-16.2.0
-m68k                                 defconfig    gcc-16.2.0
-microblaze                         allnoconfig    gcc-16.2.0
-microblaze                        allyesconfig    gcc-16.2.0
-microblaze                           defconfig    gcc-16.2.0
-mips                               allnoconfig    gcc-16.2.0
-mips                              allyesconfig    gcc-16.2.0
-mips                 econet_en751221_defconfig    gcc-16.2.0
-nios2                             allmodconfig    gcc-11.5.0
-nios2                              allnoconfig    gcc-11.5.0
-nios2                                defconfig    gcc-11.5.0
-nios2                 randconfig-1000-20261026    gcc-11.5.0
-nios2                 randconfig-1001-20261026    gcc-9.5.0
-openrisc                          allmodconfig    gcc-16.2.0
-openrisc                           allnoconfig    gcc-16.2.0
-openrisc                             defconfig    gcc-16.2.0
-parisc                             allnoconfig    gcc-16.2.0
-parisc                            allyesconfig    gcc-16.2.0
-parisc                               defconfig    gcc-16.2.0
-parisc                randconfig-1000-20261026    gcc-9.5.0
-parisc                randconfig-1001-20261026    gcc-15.3.0
-parisc64                             defconfig    gcc-16.2.0
-powerpc                            allnoconfig    gcc-16.2.0
-powerpc                      mpc83xx_defconfig    clang-21
-powerpc                      powernv_defconfig    gcc-16.2.0
-powerpc               randconfig-1000-20261026    gcc-8.5.0
-powerpc               randconfig-1001-20261026    gcc-8.5.0
-powerpc64             randconfig-1000-20261026    clang-20
-powerpc64             randconfig-1001-20261026    gcc-14.4.0
-riscv                             allmodconfig    clang-24
-riscv                              allnoconfig    gcc-16.2.0
-riscv                             allyesconfig    clang-24
-riscv                                defconfig    clang-24
-riscv                 randconfig-1000-20261026    gcc-10.5.0
-riscv                 randconfig-1001-20261026    clang-24
-s390                               allnoconfig    clang-24
-s390                                 defconfig    clang-18
-s390                  randconfig-1000-20261026    clang-17
-s390                  randconfig-1001-20261026    clang-24
-sh                                allmodconfig    gcc-16.2.0
-sh                                 allnoconfig    gcc-16.2.0
-sh                                allyesconfig    gcc-16.2.0
-sh                                   defconfig    gcc-16.2.0
-sh                    randconfig-1000-20261026    gcc-15.3.0
-sh                    randconfig-1001-20261026    gcc-13.5.0
-sh                            se7722_defconfig    gcc-16.2.0
-sparc                              allnoconfig    gcc-16.2.0
-sparc                                defconfig    gcc-16.2.0
-sparc                 randconfig-1000-20261026    gcc-8.5.0
-sparc                 randconfig-1001-20261026    gcc-8.5.0
-sparc                        sparc32_defconfig    gcc-16.2.0
-sparc64                           allmodconfig    clang-20
-sparc64                              defconfig    clang-24
-sparc64               randconfig-1000-20261026    clang-24
-sparc64               randconfig-1001-20261026    clang-24
-um                                 allnoconfig    clang-17
-um                                allyesconfig    gcc-14
-um                                   defconfig    clang-24
-um                              i386_defconfig    gcc-14
-um                    randconfig-1000-20261026    clang-22
-um                    randconfig-1001-20261026    gcc-14
-um                            x86_64_defconfig    clang-24
-x86_64                             allnoconfig    clang-22
-x86_64      buildonly-randconfig-1000-20261026    gcc-14
-x86_64      buildonly-randconfig-1001-20261026    clang-22
-x86_64      buildonly-randconfig-1002-20261026    clang-22
-x86_64      buildonly-randconfig-1003-20261026    clang-22
-x86_64      buildonly-randconfig-1004-20261026    clang-22
-x86_64      buildonly-randconfig-1005-20261026    clang-22
-x86_64                               defconfig    gcc-14
-x86_64                randconfig-1000-20261026    clang-22
-x86_64                randconfig-1001-20261026    clang-22
-x86_64                randconfig-1002-20261026    clang-22
-x86_64                randconfig-1003-20261026    gcc-13
-x86_64                randconfig-1004-20261026    clang-22
-x86_64                randconfig-1005-20261026    gcc-14
-x86_64                randconfig-1006-20261026    clang-22
-x86_64                randconfig-1007-20261026    gcc-14
-x86_64                randconfig-1008-20261026    gcc-14
-x86_64                randconfig-1009-20261026    clang-22
-x86_64                randconfig-1010-20261026    clang-22
-x86_64                randconfig-1011-20261026    gcc-14
-x86_64                randconfig-1012-20261026    gcc-14
-x86_64                randconfig-1013-20261026    gcc-14
-x86_64                randconfig-1014-20261026    gcc-14
-x86_64                randconfig-1015-20261026    clang-22
-x86_64                randconfig-1016-20261026    gcc-14
-x86_64                randconfig-1017-20261026    gcc-14
-x86_64                           rhel-9.4-rust    clang-22
-xtensa                             allnoconfig    gcc-16.2.0
-xtensa                            allyesconfig    gcc-16.2.0
-xtensa                   audio_kc705_defconfig    gcc-16.2.0
-xtensa                randconfig-1000-20261026    gcc-13.5.0
+> > My choice :
+> > +Below are the descriptions of each parameter.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Agreed. The plural "descriptions" reads better here.
+
+> > I would go for this, but I'm not sure:
+> > +Number of times that the time quota limit for hot regions have been exceeded.
+>
+> I have no strong opinion.  Aveline, let me know if you have some.
+
+I think "has been exceeded" fits here, since the subject is the
+singular "time quota limit". The same applies to cold regions.
+
+Thanks for the reviews :)
+Aveline Noir
 
