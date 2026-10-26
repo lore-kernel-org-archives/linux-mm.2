@@ -1,159 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCE1606A33A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321C3606A320
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=fZ/mmV5g;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=T2a+0L1C
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ABc53r48
 Received: by kanga.kvack.org (Postfix)
-	id E781D6B05B8; Mon, 26 Oct 2026 13:15:36 -0400 (EDT)
+	id 493916B05B2; Mon, 26 Oct 2026 13:19:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E02086B05B6; Mon, 26 Oct 2026 13:15:36 -0400 (EDT)
+	id 4441A6B05B3; Mon, 26 Oct 2026 13:19:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA1066B05B7; Mon, 26 Oct 2026 13:15:36 -0400 (EDT)
+	id 333046B05B5; Mon, 26 Oct 2026 13:19:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9686B6B05B4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:15:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E9C0F12083C
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:15:35 +0000 (UTC)
-X-FDA: 85365429030.09.B66CF5A
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B76D7100008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:15:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="f Z/mmV5";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=T2a+0L1C;
-	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793034933;
-	b=awh+q3JxBoZxSG7f/80F5JaKSOc+5ryDYQMwMUqPlWlei+Ev+yEb+UJyDRxCcZTyC2bIzM
-	qTVJ38nVbwb7cVLJ80AmidrN7TIzI3wp4Cesp6CufuwtZzFSnizd0QIY9YsvJNR7tOlPpz
-	UTpLOQCuJEDycosg2K25iSr6OU+Wmv4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="f Z/mmV5";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=T2a+0L1C;
-	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0029F6B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:19:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6F4311C2304
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:19:28 +0000 (UTC)
+X-FDA: 85365438816.15.F446DD2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A2A4E14000D
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:19:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ABc53r48;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793034933;
+	s=arc-20220608; t=1793035166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WgWZTIZ7qHEcd9eqvBpm5VFp1o1TmVO9nxe8IAIt6xQ=;
-	b=q0O8I8dG0dUZeGvNXb8yx9kv7sjk57B0P/JLygs8YnCz7cw53vGcAP39M7yufFP3IQoxYz
-	tnBlSn8MA92UOGdIMR14abk7MSm+aNk51hKfzswW6pG+q/lDSwmh/P78di2OVAmeFup7zT
-	HbKvWRMqZgldnMk7D7TzLmavZ7Kz2uA=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.phl.internal (Postfix) with ESMTP id 4D91813802A0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:15:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 26 Oct 2026 13:15:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1793034932; x=
-	1793042132; bh=WgWZTIZ7qHEcd9eqvBpm5VFp1o1TmVO9nxe8IAIt6xQ=; b=f
-	Z/mmV5g9zLaRu5j3caYih8wYVeK7pKR2YtVumaOb7e9AEDxtWwuyOeOFmO+eXRSm
-	1PSO/VFOy/+mWa9abx3T/2yAELqvdnmAeSJu4fzYNvWJTRR2Jy9srIM+XYmCKdSN
-	34dn8nODhQxO4aGw97WCjkzr51iOwn3ruBlaWbfWsb19OudhJxbB5YDBf5pTNnXU
-	+85Hyy13345QP8VDIx7HQEcye1Kq3tAknpXR1YgWlU1X/KWCkckpXky9L9/pqTyz
-	ooN8GW80M1NG7tct3Au1Qb4j8E/mEuaXsdTCAaG59G/O7w4TwqAvgb5t+bXBUdLR
-	V/bb8NEqSPXsjaQ2/6n/A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793034932; x=1793042132; bh=WgWZTIZ7qHEcd9eqvBpm5VFp1o1TmVO9nxe
-	8IAIt6xQ=; b=T2a+0L1CD1iecshjOU3hWu8d37blUekwLbjtDS5gZpKwM9pjLG9
-	Vh5wjo2Yl1LE3RquV44L5MZlVhg7ag1UV0M73oLMBcwkzOTV1CLOD7lFHm741eds
-	5JoDvLpHNfPTRMvfMpOtrtztR3jMnXJWgPZWUrmoeGxD7hBnGsMLrcEjsVQIAF53
-	vto83Oo4BV8/3XsguCeiXq5ueq1ezjOFmuP1zROLHt6nCS1xsspUVr+0RPfxa0u5
-	02AlJc5y2VQEx4RkptibYJOCx6zM4phKtMB08UgWHrGyWEGZ68xWXDPNiMuiIId1
-	UNfzNs6wjmOLNqXYP2to8UYt7mU5mcEMQYw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793034932; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:P8uyKZaalEF9kO5xM7B9rttUkFvOydiMHxdX2EPPowgYevw
-	mMOLc850LgLXn0D14WRKMlnNlCPlwXBB7/dz/9NaSF3q7GBX3Zs0M2VIbFMUKXWV
-	Hy67Guk+LB/b1fq1jqkFN1ieu0750YKiOHzxRfw6nam9nkEF0Xt8DdCtk+12nv2Q
-	88BrS3LmuP4TIthd6HNooEEhrGktyYa+4BYodBHVlh5BLFJI+sm+CE4m9r7IK/GP
-	lC9VcHZYq7t5UuPpy6LSDx8wwWZw5Zxo6MdlfXDLuHX3rRoeFuhfEQPvmC7K3GiL
-	cMoI41sypd26iCo0pMlB8zuZRGOgbG4U9uodepA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:CwTqFkX92AiYgrdq5UPorGiNimGP5HguOsZVh3B4CWU=:5B4/pBpvFw4Mf5/ZSFPGmD+cCMlqrVZFb5WHDs2mwGE=;
-X-ME-Sender: <xms:s4rfag58y-RJ_XDZpFZWVrazj564_G53BdUi_PptTtpdDPSLEW2lSg>
-    <xme:s4rfahChi4WKT9gRwf_v0J-xS1spZmaNKWGYOzR4IT59tRyctsE9lE_ag6xsXsNph
-    RRuAOVYRa9nEt1iJnji-zjC83WAUgaHOjEbBHy7FzNNtSBNgTZwa9HH>
-X-ME-Received: <xmr:s4rfakcGZqQLYXC2H57zOUOZqsixT43wyiUlZ7bmVPj2z9IMwBSTgVoP09M>
-X-ME-Proxy-Cause: dmFkZTFB6PNGhMhAXmj0ZOtRvHKd56A9JXD4WvNPHaZaK2XiU5P65xov6wStY5RJjkvPKO
-    XSPqLzkGO4Zo4ODwiKKxS0X6P41grxvQjvP6oiDZiTh+fpDH0yL2MunT0+fjiS+FaAqY1/
-    PaJgc/5aspdPW1Mj45Bp7VVVdrPLEgSlrB+JkwItGH4qYwuHSgEwJtjBUZKOymAYKJScIB
-    KoMf/Q5MRD1DE9DmWfw9Wo0qm6Ock8Jg/0ZvcH/PY8Ox+HjLKJTKKASZNlPl8RIBfaFzN+
-    hv3kzzwRvjniNu6oVve34NyDlpJcCbxEX6LePZcQhFmYCUOx0RpGtkzk9m5jAP/xJV1jqB
-    qmfqQgYHKFDf/konLHPaAJTbFRfxuWNuwXsBKupI59MnPZtXUnXHlo+/ycyFM1EouEFEOx
-    7zcJr24zTYLLO1S6FjnCnGL33sOzapaodQgyvAUHSR+M/pjoi3r1wj6VJRM+aigFAfINZQ
-    VhhPPtbohfWHOpzxaDLQmMyoBtRLSztcPzs4dLBl1kNw79rRydZoPrFc01SCGpo8oEKDNH
-    wHV4Oldi896kOORnjwO8XhqyPwv4StCU+V/qewoqv2I6NmJul/pFVodwr6eWAdHuancEy4
-    TgqJLAjDjyDuZTnngn7454DY/QRz+2UE3Wx2GivQVzMxTOcFQZPY0oQk91Xw
-X-ME-Proxy: <xmx:s4rfakuJjJ6-h0mknCrr9JvZdH7hQUDw35nzt6NEtELk3WpJKPuJqA>
-    <xmx:s4rfasNMDaq6ohN-_TuZ-en2CdiRi5XkgSxs0kvFu5pl5w_Yv2ruAw>
-    <xmx:s4rfapHLmcRWRAKMDXbGPP_ApfgdpsicwQ4b7apUy01Q4IuctmCrIw>
-    <xmx:s4rfal9DZ0S-IpAzW3tGo-tkqwsJYFiR6l7ih97I4dUG4PAROuBgTQ>
-    <xmx:tIrfas6H2672-_gf-0iJEJOe_gcSKJw9pgPdfdJgSt2h7xlz9Ix8uzMA>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 13:15:30 -0400 (EDT)
-Date: Mon, 26 Oct 2026 17:15:29 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 10/16] mm/shmem: discard whole new large folios on
- fallocate rollback
-Message-ID: <at-Kn5yabin1E1Jw@thinkstation>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-10-703206d5fa0c@kernel.org>
+	bh=y7D/pdzVN/EOHLF1gwbwRGUqI6dGzbr7tUliJl/6fgo=;
+	b=jGBK5F8E/9MQqC54/K/vF3Uxpv9tibuWZpUTQ2JZVmOSUpeYYqvfxpNKQ5c/w2XN/p3SRT
+	hFUuseLCC9HWvJnwWFWpnyVHxiFNI42f8yibkZSWObtChRgiq7gcPeb/331BuLzpLuapqd
+	0Gb/4o7r03zwu/nSfJjnWYetpZN7pGk=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ABc53r48;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793035166;
+	b=xI0wZQp2+PLwd0RtxwBIhp5V6RbrjzmuJCKvs5IzBMTfucK90q2CjEcGPd8YSYxqf9w13+
+	r0qAppsRVOUl5sCX8dbBvj+eXo8+NTx51eJ9XnBsdn9F+6y1aA4XMaVoiYqM0yBZZeTVjZ
+	CmQfI7BKYArD4Mmnof1IBBM5+qFi9Y4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E4CB6601F9;
+	Mon, 26 Oct 2026 17:19:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1700C1F01825;
+	Mon, 26 Oct 2026 17:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793035165;
+	bh=y7D/pdzVN/EOHLF1gwbwRGUqI6dGzbr7tUliJl/6fgo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ABc53r489ndRB3kIsExwwubwn6BqoifdFxeF1V+6mq9C7La+CDHEtMJsqgEEPoSND
+	 8vUaIBWAZh58EgGBXLGaH0CqTeEtQVtVnOZ3msKhpQnjFswQWULV8YPtS3I+otpqxK
+	 /5aUBOFZfYFSniG7HO3v+Bjovn3HoHc/s2iL9OPHtHBHugWWuzTK5KLorEyBm87JXr
+	 zbNyqybGDw0b8DwJbika7xM4e1ZSJrqdk4ef4rOIQKOfEwCPPl8xGCFN4q7LqiEHbY
+	 7qR8Qv4YWaiChOlyAmpq9ADrjRahNKDRT2aPT0/BjCzB7SLIv1a1ApZFkTFrh7VmTO
+	 PE5ISzb4Lg8jA==
+Message-ID: <8c5a8fb7-233e-4433-af45-b67cb2528b60@kernel.org>
+Date: Mon, 26 Oct 2026 18:19:18 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026-fixes_shmem-v1-10-703206d5fa0c@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+To: Suren Baghdasaryan <surenb@google.com>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
+ <at8-42OwXk2z6-HB@gremlin>
+ <CAJuCfpFaxo06yHdVKsEEmFf9qoOYS0DbMvUuAZEhNfDe7dcwJA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAJuCfpFaxo06yHdVKsEEmFf9qoOYS0DbMvUuAZEhNfDe7dcwJA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B76D7100008
-X-Stat-Signature: bpwkknq96wpnsqs1j4xfaz1fsamqikhe
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793034933-494334
-X-HE-Meta: U2FsdGVkX1/qW2M6pciALfILjJIYDuRVzlt47+yfcpIGv/HBRTLcd0QnTUTj440Ixq1Eu7OGU1hLOrBJIov85yXqiVNphH/SgX6Xh96FxnocNaJcHSjZUbLMFAxw06tYEQlQ2NKhR7cFp7tpPPkTNUwlbiLUKROvLXh02QXl7D+dE0tLYDuzMqiUiXRsINWL5s0RAuH46AtOCo58MH2Wwo/QEHFWJn1Qpr7lvNqUVOtQ7j2zyzAz7qPSM556o7YOK8lsG1+uY99QBd0sdSjgsaAa8Iytu/2WV63oZMl2QJ+ql7rvdkfbfhl3gxh6sRt8Vw3GnuDmM3N8NUJfUE9EDy3GOUO3AxfRk1gzdXjBWdb+uflHRLhn3FUjFiMQnXSalDs9NVQnAnQ9ZUTteOgPDDQyn5s43BU4sg7qxXR3L4YVGA9q1B6phmwiXCHdCGox8pgX99hBJlRbw5NdqycvbZ0N3JQ4FxcFnyD8uCLanUJb8XXrD9iOGL8ZdrkkHlMBCGMNYoltXlChQnMTikXYejVG/yB3v1Fsc7edw/ecfon1Q3BwZPvPqatlCNy7IlVySKgOpoZ3UXN0fdEe0YiJzSUi0gYI4BBwdSkiiyxE84ILVQ6G27xYAWpLBe8d5UmbY78c2c4ztR2xbmv1nCBG9wJES+ze8S/W8J7NlBWmW6aQ304huDH9f7rtXWVes9UlHXTPv3oNeMoohkvkjVCTiMdgwen29ecw1uki8K7YYAxzsyO8wW06vimji6QV2a7bhvcKNgld51uQsiu+oHDchs+4M14wWc//vaO7zUvapKKYqR9GJIOTKN1CbbXFk92ho1HNFvSxNjaT+1nM5Fv2wGHGytLnr33R/Js21HTulf3IXTYCi1h8j4MgRVwLzmpLTOh5MVQVjUo0o3lZw2sK6PXPPplQWWYzCETY9u6DGeSSgUfsw5injcXrmXx2kB1K2JmorOO0rEHHz0aEgjF
- 9l0mEwCH
- uB5vqJW8QebBl6ZjqVGm0wLLcvXbaz61R7LzPqxGiM87P/U/ztQ4oaROfRqTNHbe00hv/275kF3kigbcW99wQr2aOl0hmGAdNKvk7xhlyUr0FKxdjISMlrn+hgA1xn6MfLQ5PdpBspNngVJabKH14IyKNfttUgPWhEurtoqNVNY95qcm6BWIxvnvmOEcGdrHiIfkDIbi0qB0XfY+hGNgDha48x+lfORBYqe/KN+DregqW9pu9fs/vRrnuuxR45eUrt0r15ZjFL43aW94fTbqk2yJORVJXBr90m8/l+8zg8hM0usR3UrW1FA4ZoC3KWFnXQ4f6XiokU8T7jj1jw9xmSb9tLEWg07nO4OHO8SaHo/PnyP0zqcf7EoFQQWF0OwXhzZIBciOiLvJOOame5QMEhG+r5BSdtcdbn+3A2N9yTlS74Q+gAyE6XxAJDr7WyhrjVrb5SoPP59q28QFn8JwhzaAe7AfVbR6aMIxkWr/C0XPC9N3jdg4F+lnjQ546khAB7kOEZNFh3ju7PNe5wV069wkD7gahGN8TyRqcm9ErWSpOfbMtRIcO9ApUKU6uHo85OgMOqoY3SRLmps7/miKAfqKtvDPRfp4XKqyR6NaoROh5BLVgkuLH8w3lSoCKioSzCA41
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A2A4E14000D
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: top8x8dqzag531gmog73m844pktwrtsh
+X-HE-Tag: 1793035166-66835
+X-HE-Meta: U2FsdGVkX1+KLFtw9D/q0cIjvoN+oHSTjOGl8Jl+sy1EsnEYpdM0N4MgC4SN9tutto9UVpsE7J0IONbuWRpT55A0HmKpAWA0tkbKrjol6Qg9bQkQriFpqbLdmWwc0nPFwQp+6/YdAkLwq1eh4v13Hyde9+bgMYC3hJSBD5cQK5fic2amiov/H+X357T/W7TzCSiy1gmxe1Rmhto0JBEc4ZHk/5FDMFIJBW0uEbTXJgHwRvVH5ko3DdOwanFynluYKTXLdWZJXLePYtUg3cgdSiOwo6haMVL/rwFChuCDeHwpMYVZKiy0Ml1idciLocE07uy5QChsgYiWDyNlv9iEJC2YTE4RnqcUAgUd1JqPsu6NOAQCLoTOk4q90sdtTWd0wIKwUpiB/kgyNj9kD7Nf6NpjvJXsZHtXUmhe+H/Lu4fLpY17mrAyOHt/66B6s1eOqqfYEaFLZlDXSmofA5PAX7Nv0HBwTCELsCPq+xQHeZIBl8/8podt9C1jUUtH7u0z9lbAthW1KuocqtJHQjs06SvzsNh7GT9xWhlFTBh9UN+ZeWAP165d/2qVUkz6Bjg6mtKHATz7cbxLJoDbP+3+ijqsfd4TmN17DqlmdXZ/zMJt8E2LPRi/K+sByINNvGEDkKy2J0ON77qj0QPTUysdbV6VKxSOYQ9HGD5qJBXmZy4Im1EkuvzUFugJhpKjPQVsp+A6KiHDKyat1g6PkRkx/MrREXYoGz2IyIBtLObK5i0owZPrdxYUQlqbK1aAZETu5q4CYyX3wfuKCWpznk2meiyu2ZAJPD/iy5u3EN/jWhhoxHlY5Ap7gH6KKLvvSUGijocEeZBguj75kiVBN/rUB5Igy1Hi3c4e+XzDRMNS2YuixsWC+R/hLyGwTIN8hvQnyAU5cE9Us18BiY7RSTiFyQN4M8WyJjmGrua6laWHJGU7DMlRKtNt1MokanFXM35fBpXl6nKmleS3MIUQ1oL
+ irv5KJL0
+ cAgVQNT2tNj45DJuizNu9UBuTMLc6wNU1rYzWCremqyW/T9qwAKH3k8JomSyJtL7RfLWkM79eqp4Vf3c7mHBBZN3194pXknNYD3f8V1OZBG015qpJVBiXt8Ca2xe6uDA8cpZGl0a9u1vb727DdaoCZTQFfySlHVPnaVQaHJi5piTw5C9/ePPn1naGV7ApjlhzgrqNkFqdxjk/wcn7cHFbWOnYfGhQoauyrNomc1kkKb4EFjchI3ryX3if47oHIrz3WaRxe3O3Abs8wYxlS2Cw4RwaAk8ouJ+lqPNDne/NoWf5RzONFaFkwch7q6k7Ndzo5J6CZVlzn6rabPo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,26 +147,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 10:40:43AM +0100, David Hildenbrand (Arm) wrote:
-> When undoing a failed fallocate(), shmem_undo_range() must discard each
-> newly allocated folio. Its second scan instead passes large
-> folios to truncate_inode_partial_folio(), which does not necessarily
-> discard the entire large folio, but instead tries splitting it to
-> discard only the requested range.
+>> +       /*
+>> +        * No lock was held since the last call, so the iterator's cached range
+>> +        * may no longer be valid. Always restart by address.
+>> +        *
+>> +        * The vma_range_is_empty() checks below avoid unnecessary mmap_lock
+>> +        * fallbacks.
+>> +        */
+>> +       vma_iter_set(vmi, from_addr);
 > 
-> For example, with huge=always, a failed allocation starting at offset
-> 4 KiB can leave page 0 allocated in an otherwise empty file.
-> 
-> Discard the whole folio when unfalloc is set. Note that we enter this
-> path only for folios that are not uptodate, and can consequently be
-> dropped without losing any data.
-> 
-> Fixes: 55ac8bbe358b ("mm/shmem: fix race in shmem_undo_range w/THP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> This is clearly simpler but this unconditional vmi reset is not ideal.
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Yes, exactly how I ended up where we am right now.
+
+I pref my current fix as something to backport that avoids performance changes.
+
+If you two disagree, please take it over and drag it over the finishing line in
+a timely manner.
+
+I wasted enough of my weekend with this over-enginered piece of software. (had
+to change one word before sending, can you guess which :P )
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
