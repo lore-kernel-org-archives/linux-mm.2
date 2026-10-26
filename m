@@ -1,92 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CB3606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C6C606A325
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ka/7Sxsk
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cevX3BAN
 Received: by kanga.kvack.org (Postfix)
-	id DC73E6B05B0; Mon, 26 Oct 2026 10:37:13 -0400 (EDT)
+	id 479916B05B1; Mon, 26 Oct 2026 10:37:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D781A6B05B1; Mon, 26 Oct 2026 10:37:13 -0400 (EDT)
+	id 4297C6B05B4; Mon, 26 Oct 2026 10:37:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8E5E6B05B3; Mon, 26 Oct 2026 10:37:13 -0400 (EDT)
+	id 341FF6B05B1; Mon, 26 Oct 2026 10:37:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A94E86B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:37:13 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3AFF2C0771
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:37:13 +0000 (UTC)
-X-FDA: 85365029946.30.1553D5A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 02DD16B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:37:14 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FF331207F0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:37:14 +0000 (UTC)
+X-FDA: 85365029988.18.7A176CD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A7EE580005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:37:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ka/7Sxsk";
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id DB66B10000C
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:37:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cevX3BAN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793025431;
+	s=arc-20220608; t=1793025432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sl9wycySHELWIYxBYAxwb0s27UAcNsM0vqaNzM0OM3o=;
-	b=kE+LW8lGjzU5EceCnTbwrErbNDYjD8hz+fqwc0eA2B2W7qf1abcqjjjNZp6zQZtEJ3xcQF
-	b1CzsSTKH4gNhpKQVYW8sgjNrKBfSHyzbKix2SuiUhqGmX4aQWroKmS44+rHRg/Wo7Yf0L
-	aEVFexmi2F13/tJFxYY1TkTMUACftWY=
+	bh=8PHEbKOgIuYghLeVCFmg8SLPsx9HPWBRfgbGFvrH17c=;
+	b=OAdzu/Omjhu2Q2BhjsJTdYi66+Hc32qWBsAIfNER1XsfCcIJTON6mlnkiKF0KyGN5BsRLX
+	9anhBrlEMc9T07RhoaYmcebP+5gxlhA36ePR147vt0U/V96MSfy1R+FuQMJeFXo90X+7WE
+	h9yK3EmvXBrvQnxTb6kF2Ah7G2qHrX8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ka/7Sxsk";
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cevX3BAN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793025431;
-	b=S/sG3xwTCXPDK/3Ct9MxxV9g8MAI4+LgTDJuj0ewESZNINdY6i61MR9pH4ZVPvSs9a4gbF
-	9/0ree7YToSMhGbx0oIygd270YeGeamSE+IxDBofRM75oE8dcMfLM9RuMXcSCQMBh4UcjP
-	rem83kNqz8kWWygXLvgQXp5ej5CzGQU=
+	t=1793025432;
+	b=f0NWQpxQjqF4++GlvHcobuGjODY5+B5tPbvkrrjClVYLw44phbuKjvV7lO34TUwUWdGEqw
+	Tqf2DBfil7F/gcAoqhryl0p1w5PXcyIK0N6rCcA/o2NIL1JO0mJBysvowzYtFo9Dw7d2/H
+	wNyDEOuagcatKT0UTRfeaJWI3Kw/V0U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDE7F601FB;
-	Mon, 26 Oct 2026 14:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA76F1F01825;
-	Mon, 26 Oct 2026 14:37:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7704E6021D;
+	Mon, 26 Oct 2026 14:37:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D6D1F01828;
+	Mon, 26 Oct 2026 14:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793025430;
-	bh=sl9wycySHELWIYxBYAxwb0s27UAcNsM0vqaNzM0OM3o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ka/7SxskYU2X8HL9aFrMsSmohChlAIIZ8CqxW5S8KxSfV/fmq5SxQPV1sJOqYwepk
-	 61cs3TwGMcQOa7Ma1/IW9h7U5F67h9S4kMsQaaTaYkPDuvYpWyrnCbZaByHyM4gN9G
-	 LFr9UBBC1GKpUxScLdzwZ1kqVkzNcseCy6PRhYemqbFTymHwK8dItOaB19+4lUisDU
-	 1UkWga42Y1EU9ifGgERxGI3o5x+QT9zmNpRgYN40KcKFvD9v6NkDftUdA2Yoh2t1Wf
-	 GJkmfyxuLbdXZRMtWVwp7vueyBAUxQBl35c7aVJE1qyA8/xKa3U5BMpLqJuMY7WFAJ
-	 EL+YIbmiq6Mtg==
-Date: Mon, 26 Oct 2026 14:37:05 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Ngoc Quy <ngocquy0700@gmail.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Muhammad Usama Anjum <usama.anjum@collabora.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/task_mmu: pin mm_users in do_pagemap_scan()
-Message-ID: <at9jXXDoMLi3X2EF@gremlin>
-References: <20261014095540.3261469-1-ngocquy0700@gmail.com>
+	s=k20260515; t=1793025432;
+	bh=8PHEbKOgIuYghLeVCFmg8SLPsx9HPWBRfgbGFvrH17c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cevX3BANmffQu1qgFyv4HRuz8GW0FWfyx9uJqCXhZxAaiRMvlBOfO5dDbdqgN/HfH
+	 XoRQ2EdMkdq9BScuvVuiOCS0DQ4K4Vc72eWHn+QYnoEyRZW1TKqa4szPjOZbGDCqR5
+	 do8uY9SBE+0z0lI0qmghksHnTFh9WOpYEjfXxjxQD09lVNQ2p6kFaQ7cQ8SIrgYLeF
+	 kI1VnfXebszpr3HB55cK4JmN1Al7Lvf4JSqWtbLE9Dht2w1XGmBgrO8/yWK10O4Y2I
+	 8prW0ADDRSdd70UvO8HIhebwL7EExfseHMMMbSPyTHcJNCJ1k0K7DIFjtTb4Ibg2Lg
+	 iZ4b7VA8bHnVw==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Manuel Ebner <manuelebnerli@mailbox.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/8] Docs/admin-guide/mm/damon/usage: fix grammar
+Date: Mon, 26 Oct 2026 07:37:04 -0700
+Message-ID: <20261026143705.150221-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179301327249.2.6830202812762243627.damon-docs-grammar-3@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014095540.3261469-1-ngocquy0700@gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A7EE580005
-X-Stat-Signature: n45f8akym68jdunrpaos9cbs3tgzauak
-X-Rspam-User: 
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DB66B10000C
+X-Stat-Signature: 6pqb8bzfxjzhhs9kk51gpocwmqzs7ebr
+X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793025431-785582
-X-HE-Meta: U2FsdGVkX19MGD6qM9zkEAl17dKxPp+NZzr19ZaP8dn26IFXhBSZZQtH948gLtrmQdifOWtiakBDoMDE4bQGz8deC1jbAJDiM4jl7C7uJZ1rN2O0g1o9XFuzVUk3a3REb6gIsD1XibOACQoG0tkV2T6QwF+aFl9Bd2w9kS89ZAjZR5ppNxez/8sUsPLOeDORu2+nKjDksJ7jMYx7vBDNsyVZ2NmmASFEbv810QNKvS4WpioVTCNzVSp6vrMxmwd4T9+WbkwsfHWRXJ9yfHlwaFg4agzJafg8J7egsJdEeN0tRmqt7EWyMvaElHEV6muFLAxBBLeTqCEgY07uMrw4On1+lo2zD5N6IRb469xrYQQgfuJazUlNJRN+PBgjr8CryB6/qj57wisCV17Ax72CxUuSrPHYQGznFlMctGJI0sXP5agIhfOwbQU5W5ofzvLViAe1xq8VD/jEbU6cZ9nZQEGjk9Xi9RUiTuafzhYfdWqhDJa8V9TQ6acKoCXLroFvQKH9PcnGh5ksVG2/qJzVl2fnB/GfpfgGpcpzLAGnrdlnDlIWNbh5wBLE7Py/85wHmauESCo+uUziW2rd2ahytHte02zUCXvn1Y/WOLFuU4r747zuMrA1Jz5dHrLjjHITGB+BJjBdhHtqGrmT/VkPb2i1dwuGnWwhDW81O8ayWl+UsMlaFIgRVtADbMBR25LyJB2oYbFYMg2pDjXiYjxJ7ezGoy3X+XhGc1Ix16ctrQvMJgHQ8OLOkmJLqFe3TeteiE8MHKZqVupzn2/DSELHNgIPCg9ah07J2LERqZw0Dd4Z3ayse39pNJE9eVE+O+3STp/G3Qedvsc//quoQ/LL+dIyJvATB3rMWJLwkYlDfofE4NOdWfsQeIWYbBHrv7kkLYc1KxJA85/kI2GcyKaYLk83PiB4pLjmv9mXrYHi2nakaud87bI2TVASPjUAonMgTIOSit6Hwyka0OcSsV3
- Q83WYkbs
- j/9lN7mFxDh4IkVOeuvuN8kOA6WK1eSHMJEn0n3P2na2twFaV+R3zRkLHWPJ50TWeK8zjq534Lb4uQ/MKo93gPl+A9/AR9cPQBqliaORLaEwxzYV12JwGjDb/G87zHj1wB+LmBywUJ2bb2Llgyu4c2KQqfspx24oXX7MCzQwk8xDHZRIAusr/Usv4AVbEXlfZfkDlvsN8Q/+OnRVRbNw4Bi3H6WAmhDOnogcv5wjoPdeAKIaRumZyUyYnOKx72VwKKhx3DSM9zE3Hh2/YkgMqscvoU2paGgZY2h98uCKx/xAnbzD9n6qpxusP/dNS7w9KYUjzNR3EHtydJlJXy23+O/zBTA==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793025432-427984
+X-HE-Meta: U2FsdGVkX1/N0UHWNlpX/TD8zBPeACkpZsLsYcfsR5ZCyR/YEXxfHjjIUPjBH1OwFDXrTM1jYrClbPmlZf2O2FsvrXQGbHqB19DQPvGefkE527SI1chxSJJlwp75+3zUx05PB54KQf0VdOHSLv5VmnVTmDLvPvFNmnqsMXbuivgiRN+Iaghl5mB2tFJvEhf6R5OEIITvvKlp3zsB1smVQGo/5Z1Nfr6l8e1Aq5+rn3EWM6jhKglpazVF0T9A5PCyFuEkBAjFRB13RDZsrMG93XPF4NYfwPGX7bQvs3F8V/HVPB2r1O3FZcLIHfj1nByf+WwDJed/+GrxFXQKCaT7Fi3Df96RN/LLVSfdNiDVuHCzpPKkkjTHPDbJbvbeZ8GJSdMSXmb0I+7E/9V3cMv5ktRW70TzVCY9+lmKi1Lb9ZodABzWsenptWNv+kHk5CQF6f01mUMgGOjqVdhI21qW/tDPYaohoo9TO2IYzb8B8EpiJu/Z2a8cHq2SZGnQuMqAwJt0ZqUkotQdl2vun/QME3EiW+SeRlAWluCgSPFuTWRc4AeCdvqQh5YbAOzJgi1GNCDeAEM8TRt52vvKduBFHLTC7YdXLA4yr80+xO06kYV4Qnzx/wMvgTzb/bes9UwWsIKfI8Wp9M9PLLef80aaYKYXmSsEyCigQgCqTkm9AaC0PgRJ6QrKQBn7me/F5VXqMIpi1g8hjF/snPxtH4pl5c4qHsZX/yOpzaXNTZzHLm17EKYnzyswcD57vaNHahcyGtmLEXLsgBjlYVlhowYKgBEixDEtN26DY94AbJPROhW+/jtXaaSCf4j6VN1OAk1Vo83CndoPdCuYQpbc3vSyt2ytILXH2rwhtoyjxG4mao/YQusLhIfgfI7Qfp25obfWL3qUdalT1RVN7ZxIXfxBakKHvQWjRnw/AdKc2hwDY3Y7JpiMzpzmDd/0AL0yeCsU3C0OsOp8cNRnqwUsrW7
+ /EtP3n2y
+ WxTIjkV7PWGRLk+J/fg2zBNYPIQVa+ZZtkElC4mWaUqIUAXrXIbJA1O1EsrBvRq0HrCnB8z5DhLIWFfVoU+u5tgWzVnL4v659vwUctrm/ZSUoMdgxLpPT6qXDsqNN+Ag2PyCcw2TO5fVFmqyvX7NrxEwVO71lY+KUR2yJ8CqszfSJcbv/hFf0GOjp/YCG6FTEH4vc7H8dkaxBhUskzsMy+8gevGZTer70MkRCAeoCdlyYnJuuowzBEESo9uy8znmF9Q3G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,97 +100,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 14, 2026 at 04:55:40PM +0700, Ngoc Quy wrote:
-> The PAGEMAP_SCAN ioctl takes mmap_read_lock() on an mm obtained from
-> /proc/<pid>/pagemap without holding a reference to mm_users.
->
-> proc_mem_open() deliberately grabs only mm_count, so a consumer that
+On Mon, 26 Oct 2026 22:14:35 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
 
-NIT: just say mmgrab() here. Its comment already explains the
-mmget_not_zero() semantics.
+> Fix a handful of grammar mistakes in the usage doc, mostly
+> subject-verb agreement and a missing or extra "be".  Also turn "Below
+> commands applies" into "The commands below apply", which I think reads
+> better.  Rewrap where the lines got too long.
 
-> touches the address space has to call mmget_not_zero() first. Every
-> other consumer in this file does -- m_start(), do_procmap_query(),
-> show_smaps_rollup() and pagemap_read() -- but do_pagemap_scan() does
-> not.
->
-> Without that reference the target can reach exit_mmap() concurrently,
-> and exit_mmap() calls unmap_vmas() while holding mmap_lock only for
-> reading, which does not exclude the scanner. For ordinary VMAs this is
-> harmless, as free_pgtables() and remove_vma() run afterwards under
-> mmap_write_lock. A shared hugetlb VMA is different: __hugetlb_zap_end()
-> frees the VMA's hugetlb_vma_lock inside the read-locked phase.
->
-> walk_hugetlb_range() can therefore load vma->vm_private_data, have the
-> lock freed underneath it, and then down_read() a freed rw_semaphore.
-> The load happens before the freeing side clears the pointer, so this is
-> a use-after-free and not a NULL dereference. Any unprivileged user can
-> reach it with no huge pages configured, as hugetlb_reserve_pages()
-> allocates the lock before the VM_NORESERVE early return.
->
-> Pin mm_users across the scan, the way the other consumers do. mmput()
-> from the exiting task can then no longer reach exit_mmap() while a walk
-> is in progress.
->
-> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-5
+Looks good and correct to me.
 
-This is the old-format tag, but the tag is no longer required, so let's
-just drop it.
+> 
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
 
-Instead, write something under the --- about AI usage.
+Reviewed-by: SJ Park <sj@kernel.org>
 
-> Signed-off-by: Ngoc Quy <ngocquy0700@gmail.com>
 
-LGTM so:
+Thanks,
+SJ
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  fs/proc/task_mmu.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 5c54aebe2118..8825b01f5e38 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -3231,15 +3231,18 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
->  	size_t n_ranges_out = 0;
->  	int ret;
->
-> +	if (!mm || !mmget_not_zero(mm))
-> +		return -ESRCH;
-> +
->  	ret = pagemap_scan_get_args(&p.arg, uarg);
->  	if (ret)
-> -		return ret;
-> +		goto out_mmput;
->
->  	p.masks_of_interest = p.arg.category_mask | p.arg.category_anyof_mask |
->  			      p.arg.return_mask;
->  	ret = pagemap_scan_init_bounce_buffer(&p);
->  	if (ret)
-> -		return ret;
-> +		goto out_mmput;
->
->  	for (walk_start = p.arg.start; walk_start < p.arg.end;
->  			walk_start = p.arg.walk_end) {
-> @@ -3294,6 +3297,8 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
->  		ret = -EFAULT;
->
->  	kfree(p.vec_buf);
-> +out_mmput:
-> +	mmput(mm);
->  	return ret;
->  }
->
->
-> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-> --
-> 2.53.0
->
-
---
-Cheers, Lorenzo
+[...]
 
