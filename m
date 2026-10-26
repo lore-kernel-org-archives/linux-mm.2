@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A058606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 08:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9307A606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 08:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MzBYhwda
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=drf6L/9Y
 Received: by kanga.kvack.org (Postfix)
-	id A23076B05B1; Mon, 26 Oct 2026 04:02:39 -0400 (EDT)
+	id BD1D56B05B0; Mon, 26 Oct 2026 04:02:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FA576B05B2; Mon, 26 Oct 2026 04:02:39 -0400 (EDT)
+	id BA9286B05B2; Mon, 26 Oct 2026 04:02:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 937946B05B3; Mon, 26 Oct 2026 04:02:39 -0400 (EDT)
+	id ABEB66B05B3; Mon, 26 Oct 2026 04:02:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 66DA26B05B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 04:02:39 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F2F2B1A0674
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:02:38 +0000 (UTC)
-X-FDA: 85364035596.29.7D29AC1
-Received: from mta0.migadu.com (out-70.mta0.migadu.com [91.218.175.70])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CD55C140003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:02:36 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MzBYhwda;
-	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793001757;
-	b=QU1c27bGtJSnQ3P2PcPaPw5phBsOZ8hU3vQa2zR/Xpap06w+g0HcG0U9m1/7LM6Hua2j7C
-	KfvGQithprlz5+zMwFGT6VK2UjYD5475c7Jm0qjgvhNcMDWQv/obDrUj8mASnpWhVpcjq9
-	HP6JQhd3Myzx0gZ9Js8umfEZKCcdrhQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MzBYhwda;
-	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.70 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 8D8FA6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 04:02:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95D851A047C
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:02:44 +0000 (UTC)
+X-FDA: 85364035848.01.C6822E5
+Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A69EB180002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:02:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="drf6L/9Y";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793001757;
+	s=arc-20220608; t=1793001762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=s7UpNzJhxi6pbxSVCU4gh2Lq8z17O8RRANPyNHLrRsA=;
-	b=izBoASdH608tH6fieGPnpFGT5PpJgfDAdSJjrTunDKF5TaC/FJUx0lTQWnXar7KdVx/aZM
-	EQRPr0e4FRG6zip5CwK/BQni9p0CltPPai3HlmtHwi4pPPzCZEfEaesi1ZOzSBvGOVUZOr
-	XujBzBFPvBk4OZMD8fRNCRe17eieygE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hfZXr5B4QU7BP5U94Iy0bbprGRMIU7jhwwRUqW3NVmE=;
+	b=7i7ogFUQ4DZJhl7hHuBRNDlJH0feUhTef4VMYof+beggSoRD4AynDNQKBWjNxCAkQ/iuZG
+	4IGbKs1AWY/CP0Vy82Ar1cVEdmi+GIaRLjtUqJON7WNI9qiP70BgQK00wi0AT+CIa70+l1
+	zIRPHtde67IwxNgLjrgSUhrI9itGHSQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="drf6L/9Y";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793001762;
+	b=z8iHr0xiKfnz3h4oWAnZK3AWUPWGfoe7G8o6+LwOfQIu1aqF33u/BRIqD52ux3tMnAvF6f
+	EWx3fxI3EtJlXTqWm0YJTWPzbuB1ihmW3KpZDpAnUdNMlsIFolwT37nmIVIqPadH+znoA1
+	5DwQukoVLfvwqAiSeE8rXHaKnuDlBjQ=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=L2pE27MmJcqFI/acr+I6vj36nyWahlUmHNuT0rwtvaI=;
+DKIM-Signature: a=rsa-sha256; bh=oeHSWM4q5xftJC3Ex7Fav4XAopE6RwVOINuuoKO7m0c=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793001752; v=1; x=1793606552;
- b=MzBYhwdazgqKxbT8ZAb4m6s2G9C1kFBWt1vRGp06s/GhtBMAiCv9s4PJjX9DLM/dGZ1KSfnU
- MtsBTVSdIDgeZmorvRomIHQop5G+IWdl8irPeO6s39z/0EJg/nEcuWxp05puVXVEitr6rj7bMYc
- 3bu5yn2Z8lVWzX93zxJzCr4g=
+ t=1793001761; v=1; x=1793606561;
+ b=drf6L/9Y2ANMwz7OLHgvyXSgRtBP5A91HYPS9zwd2ypvpeHLD4AsQW2rZToy81jjeYql77ut
+ C5OyZfLmvP44UJHVFsdr9XxNwIgvwGrtOy0DKJa74gVIRPSYRlstHsMLMTuPu3JwCbl9RLr3yat
+ n641TwF9RCUQ2JtgvMyVAO/k=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 57ab905e822cd4de;
-	Mon, 26 Oct 2026 08:02:31 +0000
-X-Mizu-Trace-ID: 57ab905e822cd4de
+Received: by smtp.migadu.com with ESMTPS id 9a1cb61258a50e8b;
+	Mon, 26 Oct 2026 08:02:40 +0000
+X-Mizu-Trace-ID: 9a1cb61258a50e8b
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -79,26 +79,29 @@ To: Madhavan Srinivasan <maddy@linux.ibm.com>,
 Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org
-Subject: [PATCH v3 00/10] mm/vmalloc: fix up vmap error handling
-Date: Mon, 26 Oct 2026 16:03:19 +0800
-Message-Id: <20261026080329.140244-1-hao.ge@linux.dev>
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 01/10] mm/kmsan: undo the shadow mapping when the origin mapping fails
+Date: Mon, 26 Oct 2026 16:03:20 +0800
+Message-Id: <20261026080329.140244-2-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261026080329.140244-1-hao.ge@linux.dev>
+References: <20261026080329.140244-1-hao.ge@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A69EB180002
+X-Stat-Signature: 5nem8x3ymxmhimqofu644yum9muagd3n
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CD55C140003
-X-Stat-Signature: d61jyg7fktft75sy7t7o9mckbwmbbj9g
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793001756-445353
-X-HE-Meta: U2FsdGVkX1/g8LcXK/RP4nFpZB9NlVqDXg04/rcsgEGn1fvzI4/XfkW4ps7psPOmjE2JPZ6l9F4SJWlhVCGZqhk7t0A/ECogLxHZvWBIovMiULqc8rzn0A2jtu54IVX16uNcNotBL/6KyfdGbonBRlh2NTse9Qyeytyn/S8sdSR+xcToC0C8eFHeCiKAQAH9a2Cx4j3VPps9YFIwdk3rIE+8wgzm66c0oKxou+zhHSXScr2IuBpv/Xa6Fp5/a3Liaeqin3jtVYkurHBVwfcNgGfiWD72YyDnSwrxctD+N6mxYFe63PxzMnrVA30MHIJ6hYY5wlzRE5GMyDCBKIIqvgBN46H+KRg2EAyBZxjxvfCST/x1mOBlp+wJGczQzyQ+UKuNeVwVII+asXs0vGzISuXYccbIcuRx/xvsXAXZKmIZZgTZFO7Fqund9gGWRrNFmG446KvE6gno+S4YOEXJBnirps8Pl+Me8CpNsZzvhFDZl0m5jvR34qm4qrh1A3P24SnJjROkuCtWrLUsC9axjuYei9gUNnop63gbnQ0d6PEtN5g/HWcEdQgHVh4t5LaryVhN70Lmlq8m9wsd7V/WASM+ZIwREtVro7GDPlBY/nBeqxbaPtaB7xsFzTFuEKs/zftjwCmy8O2xIjcx4//Jkv3gVmSrLB5eyr8d58nFUnR6ozVw1zOAY1gZ7KfuPuXNVEDaffRuQVLJGBGMy23HLEVJGtx+9X9uSMjCrNhUuHQqBjeMR8bLF7Pj2yJ2cd85fHNKIyg364Rv+XMGoNhuwgExuf03Cdc3Q0i+WabS9my7YSPOVxTagqeT6w+ktnDti/9x+msFwy1aR0Uvtcrs3fVW3yY6xTAZgk4kyorhbi/G0vhJiEmxAV+Zu6smgz1cBKlVHAzONGBexiIvE9lJpnj8DJqIlPqAYAjiuXeKjcLw3lLQuLS+j2+fRWydmAK5pUrya8O2LTk1phpEjLg
- wn7knozp
- jj4hp5ec877jWLaEZScxQ2fxL6wBivxFk2CCJOhFmKfh2JoQT8BgtXbcP+Z+kRy5KnO4XBUcMcR4RZMtxxkKRdva/7tqQWvPLzSvfCXRCdfomEC6XsLHTeL5+vSwXz5v2LtGaebZUREGDHt07+/cwixz/9XnJFEDR6vgWO/HvJM+DodHn+4nYDTfO4mx2j3rGepRG8U5AT89BYqc3AFF2oUbFSF14UJeOihvjIaB+a5U+uUUgformrAn9s/sod90eHwLhLZrAKUt4JT76xjru/0EziTiNSNxbfl/5lp+FppWNSZTo6MVtmAgJAhe+TmP5z/fEWDw+TgSp9ek=
+X-HE-Tag: 1793001762-374494
+X-HE-Meta: U2FsdGVkX192jzyn4ioHsmji/vHMM7KaaGrXKEzLPF0aM0Wex4EK1hUcxKq3ivzhsblppSpunvw4E4G+LRnguTIMIvNW2CRO6eA7g9OH9dwPk6gW1F4aj5Hr3HkpRabI5nqsCYRw/VQHpwtBKbn+EZiGk9q+i+zmLhehB13bhxvdMRvTYHimJc9GfXDAUYvfg6o5JCzHW+G6YRttgmaezuxXx3MJdC2PzGWD0wwQCh7qEonTccxGCAlFmMF4IhSsvZwcLVtRoWhW5YEYpxpf2/ltIxXT6JcZjeWDUio9Ed7qoiCP0Xmu/GlPFuCge24wyt4IVyYQBDrFa3dp0ndL8bse0tVGEPtadcC+/0yWyaYQzqlQ/F2AK+T3XsPhcowzwg9c/INc4ExvagDP8oPuK2dSIl1felZ/ZhGTEjzrIbMis/jAeRMKqH3PZDsHW1vvryfI5FxScNZYUPvpXSqRF1/0FBI2uvx47ry0KpZY3mjt4Rf2vLcTS6EkLm1eS9WMn/oaXdl/GL0G05FiUIEyHXTxRTCqp7MjYwa/u6ZJFacXONaFdxWUl3A+S0qZVwDNo404+QvZhsj7eoVn/EwHnDLRWyAAM3W7cDQEOke0QjNZTWuHZ2SZFJlZhluAsPNSTFzc+cB6LaBHMyXf+DZEWx+gxHdqaJ+TkbZlt+p/Y+0NspOeqQKBEqcc0bTVyR/Q05YrGk8YGTYTBOnBdtiECvcKSNYfMP9pfoA44GAfA715ZbBYc+dKByrk179F6+WWIIJI5sQS7gBTzDazg5MW3yaGT3DcAH9qza/edO2QyY+F3Yz8szn83M7qFlIo3AucsIPQcH/S4B11+PoSrEgLrbRXF0rvqpe8EgRi40DO1/eYLqlw3FwexNt2WAZK6LSXorIf67/+KZbKSKZgJjmR2quI5hN4j0fkJbAJxAhAO0c3CIZZQdomklc+L4j1YV9+EN04O7gaiVKrSU121i/
+ MKijoydd
+ 4RgN2HJxYgY7NYVt0yx2IJn/QOqjJ/VmbGdI836WpKaRXGmdio5TbztbM6vl34U9fjpRWZP4A1hRfwIngzbc3x4ZDOcI69nbGDrWygZOTSIF0M9N+XPNrvx+NYJpF4u4k9LRl3tvSVJEiF3qeI9d3kQKOcD/SSBVG9nOd+GojYSac8GUDs43u784P+Rt+Jrpv4y3dAetvBIkgGv7HbKz2ToisJpLqXlEdw7XhZQ1h3xEDikjx8eZQJf2AEOtihtwFnbuhzpKsXV9/k/TsqwnmfmdGVH6+39mCiI2nhdvBGsui327YyyOxhrkziKQ8jEyJkR9TTXT22O1IfjyeofizbijzaqlBEYPlEbSB5kxQeIIUA5RwJog1h5g0iWtWZTbSnp+o/y8v7NF59fg1eEVTEEPG8cD/SsaISm0b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,66 +110,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__vmap_pages_range_noflush() and friends can install some PTEs before
-failing and leave them mapped, and the kernel callers do not agree on
-who cleans them up. pcpu_map_pages() and kmsan_ioremap_page_range()
-roll back what they mapped before the failure, while
-vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
-__vmalloc_area_node() rely on the mapping functions cleaning up and
-do not call anything like vunmap_range() themselves. When the same
-range is mapped again, the attempt hits the leftovers and fails, with
-a BUG() in vmap_pte_range() for huge mappings and a warning on the
-small-page path.
+kmsan_vmap_pages_range_noflush() first maps the shadow pages and then
+the origin pages. If the second mapping fails, the first one is left
+mapped, and the callers do not roll it back. The next vmap of the
+same metadata range hits the stale PTEs again and BUG()s on the huge
+mapping path, or gets -EBUSY with a WARN_ON() on the small page one.
 
-After discussing with Suren and Ulad [1], we move the rollback into
-the mapping functions. A failed vmap leaves nothing mapped, and the
-callers no longer clean up after it.
+Undo the shadow mapping on that error path, the same way
+kmsan_ioremap_page_range() cleans up after a partial failure.
+__vunmap_range_noflush() only clears the PTEs; nothing has touched
+the shadow mapping, so no TLB flush is needed.
 
-Patch 1 is the KMSAN part. The shadow and the origin of a range are
-mapped by two separate calls, so the rollback there has to cover
-both. Patch 2 is its disabled-KMSAN counterpart. Patches 3 to 7
-clean up the range checks and error reporting: unaligned ranges are
-clamped or rejected, the callers get the real error code instead of
-a flat -ENOMEM, and the cache is only flushed once the mapping
-succeeded. Patch 8 adds the rollback
-to __vmap_pages_range_noflush() and vmap_page_range(). Patches 9 and
-10 drop the powerpc and percpu cleanups that are not needed anymore.
+Fixes: 47ebd0310e89 ("mm: kmsan: handle alloc failures in kmsan_vmap_pages_range_noflush()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ mm/kmsan/shadow.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Changes since v2:
-- new patches 3 to 7 fix the range checks and the error reporting;
-  the empty range check of v2's patch 3 moved into patch 6
-- patch 8 (was patch 3) skips cond_resched() in the rollback when
-  the caller's gfp mask cannot block
-- commit messages reworded
-
-[1] https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/
-
-v2 link: https://lore.kernel.org/all/20261019054531.87652-1-hao.ge@linux.dev/
-v1 link: https://lore.kernel.org/all/20261009063619.112313-1-hao.ge@linux.dev/
-
-Hao Ge (10):
-  mm/kmsan: undo the shadow mapping when the origin mapping fails
-  mm/kmsan: skip vunmap_range_noflush when KMSAN is disabled
-  mm/vmalloc: clamp an unaligned range in vunmap_pte_range()
-  mm/vmalloc: propagate errors in vmap_pages_p*d_range()
-  mm/vmalloc: reject an unaligned range in vmap_pages_pte_range()
-  mm/vmalloc: reject empty and unaligned ranges in
-    __vmap_pages_range_noflush()
-  mm/vmalloc: only flush the cache after the vmap succeeded
-  mm/vmalloc: undo partial mappings inside the mapping functions
-  powerpc: drop redundant unmaps of failed vmap mappings
-  mm/percpu: stop unmapping the CPU that failed to map
-
- arch/powerpc/kernel/isa-bridge.c |   5 +-
- arch/powerpc/kernel/pci_64.c     |   4 +-
- include/linux/kmsan.h            |   8 +-
- mm/kmsan/hooks.c                 |  21 ++++--
- mm/kmsan/shadow.c                |   9 ++-
- mm/percpu-vm.c                   |   5 +-
- mm/vmalloc.c                     | 125 ++++++++++++++++++++++---------
- mm/vmalloc.h                     |   6 +-
- 8 files changed, 127 insertions(+), 56 deletions(-)
-
+diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
+index 0c88d89bf0d6..2166086d3dc3 100644
+--- a/mm/kmsan/shadow.c
++++ b/mm/kmsan/shadow.c
+@@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
+ 					    o_pages, page_shift);
+ 	kmsan_leave_runtime();
+ 	if (mapped) {
++		/* Undo the shadow mapping set up above. */
++		kmsan_enter_runtime();
++		__vunmap_range_noflush(shadow_start, shadow_end);
++		kmsan_leave_runtime();
+ 		err = mapped;
+ 		goto ret;
+ 	}
 -- 
 2.25.1
+
 
