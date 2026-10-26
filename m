@@ -1,121 +1,153 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA02606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0AE4606A324
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W9GnUFoc
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=U5RFi0qB
 Received: by kanga.kvack.org (Postfix)
-	id E7A766B05B0; Mon, 26 Oct 2026 14:18:48 -0400 (EDT)
+	id C98E56B05B0; Mon, 26 Oct 2026 14:32:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E04756B05B2; Mon, 26 Oct 2026 14:18:48 -0400 (EDT)
+	id C49186B05B1; Mon, 26 Oct 2026 14:32:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCBB66B05B4; Mon, 26 Oct 2026 14:18:48 -0400 (EDT)
+	id B37F36B05B2; Mon, 26 Oct 2026 14:32:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A6D926B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:18:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A6B0A0830
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:18:48 +0000 (UTC)
-X-FDA: 85365588336.28.D6644D6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2880EA0006
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:18:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W9GnUFoc;
-	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793038726;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 82F6F6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:32:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BEE271C4187
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:32:26 +0000 (UTC)
+X-FDA: 85365622692.15.24B52E9
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C524310000B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:32:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=U5RFi0qB;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793039544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hF6zy/Y0w18f+U5+lO+T+mBpU9y/36ue5olFOfJt/uo=;
-	b=kHIxl/ZX93q+spdw16O+R4NrVjG8LC5qRXPqfo9VDmu+Y34YP5p9Ja2gn1LHCNvY0Frfhx
-	7aYQEYnd1x1d2xokpt9LmjTHGF94hZ9Mg/CbNySy4oeTle/iN24+QHXvJL6TnhSzVCjKoe
-	lYXeSQIa9stQozEzFagqk1NzXV4rAGc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793038726;
-	b=oeNp/S7pn3NUn3KDDSYhRqFOF6t0yRTQRbf49Bsgq3dqoigqeUlZIXSEKOD7F2J4hi7uYg
-	ZArhOhFpkoBQc86XrUoSE1nw5CKrVwzgcV7/U7sEcPtl+BDViPpQdtgEb04xhzFI4yNZUp
-	I7OIOc9S7VcRSoFzVi3f4P6ZeUCsKDQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W9GnUFoc;
-	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9BA2C601EF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77361F01825;
-	Mon, 26 Oct 2026 18:18:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793038725;
-	bh=hF6zy/Y0w18f+U5+lO+T+mBpU9y/36ue5olFOfJt/uo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=W9GnUFocgwsxd9FmECRmMuS13L+i3z/j/5i+ff/vMPfHNfN5P2uwHVuqthdn9HP/L
-	 fIyKKWJNGHCuksVDuMKvwwh9vUpBY0N1KbHC9Y2dt0Uh+ozXHlEHfnfMfjCEyAFzux
-	 6bthXZXG1RnQonjMEcs/M/RDrYaLHejEdIDVJZNyo+BEucPqzeVeAZtmGgyDlYKupD
-	 RJh2XcDQoY69BxDkPtnQX22voeppBJSHfwJSFYB5WLPbUuuFQDMtl0ct0tcswfYgHK
-	 S1gmjO6TA8izLPdb34wJRY+2HnHo3sarTOikw0TWEKi1BFk20HbtTFdB97nb5ji2Ks
-	 rmZ0TffR5xwZw==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 9A5FC198003A;
-	Mon, 26 Oct 2026 14:18:41 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 26 Oct 2026 14:18:43 -0400
-X-ME-Sender: <xms:gZnfajZ-BHts4MBHXWFnW-gFp81JJN1vpJiEKvdsdfrbKSJhN8knDg>
-    <xme:gZnfamWIQGYuHM68Kd6jnmjPguLYksU5g4Jw_AddnVo2gcvKZ_0da_c7maXj23Hof
-    _T8rAAC1UhevvlnBddDZKe3O1kxHrTrd4SMmYPOc2HfZ9Ew74LqzJnbcA>
-X-ME-Received: <xmr:gZnfaucQ3h9h4FkGosoq6ov7rhDK0QujE015HThBnfJxyGvlZYeJK4tt-sA>
-X-ME-Proxy-Cause: dmFkZTEC6jaU8WSvdlYj4erYp5aRUyJbFL4tgzgG/uQqFE4vkk2Ztkn6i+N1Ul3PwjXj5u
-    D20bYcJ5jjhuGT8nryltaojXVsoT+8ZOnEMBt9S/7aS1YRSG7dsokqX+kHK4DEBIg4c5Eo
-    5xlUdcBx/qw2dml5xc1tuTg/O+U3f6ne+q9J03Y2b95iSFa8NrzvpAM47RG8hhktz73InX
-    SFDDxM0RUNrTg8iD0m2U31nVOYGD5BcF18/dItqb/iD5FcOTNFNOOeEgPKogiCBuWIZfgV
-    iI1kRdoA4bLUgQZcqKXElpW7HW7jbsF9gaHt8mu/7Ht6wXzutN6KcNIZflodDM92pgq5e6
-    CLBddXVbonCCpdm9uNlwGyShwzs1vPdX853BI882TVLTvRSFRDEjJyE/oZEeo89hKoY6Ut
-    sRPvR0dpJ+IZx6OBXXpX/u99FYSgbXkvjNzjC7a3sq7f3ATNFPFo22uZZqB3nmQWJC0oHf
-    dUpW1W+mUrrtc7GaGQUQJxeFY/+0Mo6LEObWdXzJ6bOm9LLFMjGJq1YmfF5flTd0iuaJku
-    fLLV0X8YfRAppyG4sYKpGui02bQvVMr8lCIOBecMZVZTmW8q1HDHnIdD6nME48ZsPCN2Dx
-    3kGIVDkAlPbzvruiVEZcky8DfF/YWgAoeauu8l/u2z/YFRtQh9ishjxf3Pjg
-X-ME-Proxy: <xmx:gZnfajPNjG2RbHJxB75I-_r715n7cKOjptqf11wBj9HCFJW9PnwwiA>
-    <xmx:gZnfamKDG1lQgXhV-HyfW2-wrvQnTb8NGhOkgAakKn6hIvmKN05Nwg>
-    <xmx:gZnfapkOYsIM1ZxSuCF8K8UHrW4QN15-y51cOf1JB4A5lBr2FhqhCQ>
-    <xmx:gZnfalbT2k_iMvQpQnfHXYxI2Um8QTaZNros-SDUE7Kl1JVTGxzFrg>
-    <xmx:gZnfaohu9Vkucs2pLBN8yypcdtfw3NWKeOnFysRWS4miLEyctDXIPwEj>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 14:18:40 -0400 (EDT)
-Date: Mon, 26 Oct 2026 18:18:39 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Hungyu Lin <dennylin0707@gmail.com>, willy@infradead.org, 
-	hughd@google.com, baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, 
-	dave.hansen@linux.intel.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] shmem: do not extend i_size when no data was copied
-Message-ID: <at-XtWBQg3jv3H8Z@thinkstation>
-References: <20261025164619.89992-1-dennylin0707@gmail.com>
- <at9xXRhD2xZhszEj@thinkstation>
- <xmp7ni65vbinfj4j2baisrhp6xzro3asbepuq7xp3mvx6maptn@r4dnoj63uw4t>
+	bh=WEX9+sqg9KeVky/NcPkirTK8PMNoKH+/ZsoFca1T+0s=;
+	b=oi/RphfpYwE7rc/OH/r0HJ+acGGSAdaUstcDRpOmZFsXq+ONHSyrMBWW7kFHzV4sPOlJv/
+	EaYYJB6TzlMft/bG370usXf6C+1DSSJ5JUf6DOJUEY1GfYNEzmCycm9p5mkPLc9tDTTiXy
+	0Bw2Jy1rPE9EoTHAEDWB7rICO186LdM=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=U5RFi0qB;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793039544;
+	b=W5jgI0M8bf3wwxfbwDXI/dSbhpqDsN/a+0zcpUNpWWWaOwOjthPYrT6HF/WMkp1jGkoQFR
+	cb86cTyv7FdtoRie7NuCRYTz2fYHmnj9D71C79cHSg9nfxTOfpnU1zuqAMi/HpTJqeLii1
+	CGx18yHcMZhRqivGbjhluHk+MpQkZyA=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a20bde60a0so28613515e9.3
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:32:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793039543; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OglpVeFmqrpc4QnDII86mzm+QQoBjTgIg8YV/SGGjaISdov6OR4PuZ5AVeaMjhnHDz
+         8AgLK4Jgcf3cDijxBJ4nIYcoHUu+G+0lBMDqAo0RM4c27CXlYBtIG39u6861BWPl9nSu
+         j7ta+16ps5TdsA1NXviqqRTuXf8qcdxDqyck24ZfilXApYkYXSrIb5c9jvCd/be0qzhz
+         c/uDVb7gt28U4Bqc6jR9jeXHJp1bkn2IzlTbjrFUa2oWZraQq5qnjHGPOU6yFImLBpzy
+         26k0n3ZpZ1TUPJu/FxTflrQvWhpGQDfbjIQKS5qiTU/ixgRlDdhoTvI3nIQVhJixt2Hl
+         BXyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WEX9+sqg9KeVky/NcPkirTK8PMNoKH+/ZsoFca1T+0s=;
+        fh=7yMbT6LKo22ldLoNjSxOab/U7RYllEYIMKO6jv9uJpQ=;
+        b=S78ijk9TKp42jU1xTZ2xelPw1a9TxlK6586Hyb0KT8OebOqILSKdMteMaZeJ1NsIrr
+         NV/wTdAVwliFKEI6f/sqNOw/jaeg+4Rfy7OX/5soeQSrN2Q7/sli8FVZOGraGZ8D7Q+4
+         RqSyt7AV232ai2WJ3LbYlf/0eyU9iJLnKvdufYrdob5zQZYc9e1zg9IoP7LQwR70svkv
+         hkJPh+rZRMW1oNsj+Xq1DQUU7k2B+NP3twGBmtQLJ4RJ92JocV17PUC+2etr+Z4YI/1a
+         IfHFX1VpvJC5z6+107wimG9wXNs6ByqH/VpKfwpb35Kjhj+L1h5HDdxX98++MpkmsI7x
+         9tHg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793039543; x=1793644343; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WEX9+sqg9KeVky/NcPkirTK8PMNoKH+/ZsoFca1T+0s=;
+        b=U5RFi0qBaLecQzV7ZF+kYqZraNTeGLpJg0AapaAD9FLIctIwPSaE1Oh2/+h8t88s7S
+         rI5NzoniSqp9g24/jynB+vewgCM+JjchJSY3IwNTCjRs8Sw+uPjPfrLUAtAzX9tfJ261
+         DPU10qJ6nVFYKbTD/PUk8LBNjQ0/Ft77ortipw21a0789mU6XPfVpnAcWlaNwDjj7aNy
+         Kd1T3rnOOduGnQ32cmxCsUmi0bYamW2OnNJcZvlkfqOItaMPe4/NCZ/umVzW4RkY7AB3
+         q3IHo/aIZTYSJR6pf0K05Ggk8M8YAwMX667+XHyb3CCiGAx+Nxm4CO4zFi6XPHv17o/Y
+         TYwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793039543; x=1793644343;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WEX9+sqg9KeVky/NcPkirTK8PMNoKH+/ZsoFca1T+0s=;
+        b=XcBTi7YfPvm1vEhKmNNbCU+PzWbRXu0pxF8sbEq0GLLivF8S9FboPTM2unl8cI2Gup
+         B5OOIqtxQVAq7Z4pwqIVOndGH1+tagypwdSa5Zh0WPltLSxmyRk4DfdUPUWePx6W+bko
+         C4gX0KATXacboTaBuQPCq2xaPbEXHtT1ga1g8Yek/3qULuQBD/Tf+1BXjfg8uT2oF1jf
+         nS23QvcN5zHkdvU6uAf9L7WKMW/vydnO8ytF/H3u1yMX/oTMo6GYwKpca2k3QNcoaR5X
+         qinn8+n1jBw/RzrEXrjWsPV0MfJ52hJEaneGjIffGDDkK/7incVJBqPaeuoahm75542a
+         TOmg==
+X-Forwarded-Encrypted: i=1; AKwUvBw62HsYgjfIMInUo35sXDYGFpHPeuQ/TySxmWUsCQqIQity3JaZ6XadoE7Cn7O9HK0d0r2JUcoDyg==@kvack.org
+X-Gm-Message-State: AFq9FYINsdz3qiULxvdZ57mC2zG+eumA7OxX1X5ldETyaEjQEYDQdsnR
+	uiLHYDR1y3UYyNlYlUzLKMnsW7dvPUv2yAtrrycqVhjHBEP2aumJCOP/R4BRqKoaswoxzv0aYVa
+	nmYvz84cAnVAusWci/lpFXakft9sosIk=
+X-Gm-Gg: AYBFou3pZaFVU12xAOC1Uj0aqu9P9Tw13jDuSyYW+B8dsV5g38zSFd6P9BYkzNfdZkj
+	obFzKGI7VRLmbPWnU0H/bb8f7Vesh6FCE2LmC7/s9/9jMkUGNcQhyZItTJ8WhZL93ZeQlM8v9F9
+	eiKmjQ2029Gsq3+EpOaxQtA+Bkm8YQBHlRGA8o2tc1mU4urU70g0HV9tKLvDWxNKmyWJKPDfZua
+	f0rBZaYcXFdMTyzjv9GREs1r3ZKvYaDo9RGl4nCjwFTceWWj2KbEFo1Xtb7Cp1efUw1mq42mhsG
+	4y/edzdrQ/WdXWkXAzTw5L2XmSWn9B2S0EIMuxBav2RsekaWi9sEAYViQ7kbwsZQdOlYilTn/Zr
+	Nib0vo6MyIWaLQYob04kFJUkBkcyYD2toYgZnGvIX3jqOa7F2iPXuyTGypLB/QuSuKsYxWJLDCX
+	uz9ULDRAGhFnXgyemkCC0T/5qVmG0zBqNEadt5lwBeb/cCNMdM3+GO
+X-Received: by 2002:a05:600c:4e87:b0:4a1:a2c0:7b73 with SMTP id
+ 5b1f17b1804b1-4a35acaa6c3mr145207195e9.30.1793039543135; Mon, 26 Oct 2026
+ 11:32:23 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <xmp7ni65vbinfj4j2baisrhp6xzro3asbepuq7xp3mvx6maptn@r4dnoj63uw4t>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2880EA0006
-X-Stat-Signature: z9uz3pz7mwdjca9qy7t4xb45eb1p9k61
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org> <20261026-fixes_shmem-v1-6-703206d5fa0c@kernel.org>
+In-Reply-To: <20261026-fixes_shmem-v1-6-703206d5fa0c@kernel.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 26 Oct 2026 11:32:10 -0700
+X-Gm-Features: AclHuK_E_LaW5XNIuZY1k1mQOjBZJvvQ1cVrvsfMHmbvxMe_yR0Z_CAYp1s13eU
+Message-ID: <CAKEwX=NJfyZMgC1trXKnr3G_PMau+j5wqMxBty6QtHCyMdmYrg@mail.gmail.com>
+Subject: Re: [PATCH 06/16] mm/shmem: hold off eviction in shmem_writeout()
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Gregory Price <gourry@gourry.net>, 
+	Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Stevens <stevensd@chromium.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	William Kucharski <william.kucharski@oracle.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793038725-472084
-X-HE-Meta: U2FsdGVkX19AuFEoIL/wkGkmD5BDsapUCU+2pAj3aw6vPk3pU+KFqzt1g3kFexCURcCQ/JDKDCmd6IEZ7f82/iJNr/BFdZf2XbUcydSvLOP6RP5hTwIKfPAd6rBO7xMWFgKFUFdNJ1CB3ENwnnEw8kZ5YLeoWJjm/QgGOmcVC4ZgBQPcIqHWancBVmH06Fb0U+1LY4DPSnLs3qsZ9ajlwHeJmNSGOCq2eDKg4PbjI+zq/l4Ta2BXAWqPYjbQbW3XKcepKHSiEN2S1as7CCPIdNqqAKyn9QtdmAubZNdiY0Jt1QgmDSf6DLVp44XrB4dWg/Wypm6hyh/Z1q7RDxATJ8WiKach5hvisqCWdZdOrhZQxJQRYYmc2UKpCKYvIkqDqiySth+NUZPNvH9WR563VQ5gR9a1sTQCnzXoFUkjkIDD4+63yPfKlDGI7klkp8j+RuN9dfuT49GK0SuTbgCm2Tb4CU6jDIzKBLTeSgF8y/+jMZtnAk/MCdJWMGyX13Q5vj8Afk54ZhN7yjjbPBRCop8HXCgKuMLXUYWe6PYG0Mno2dxsQbxBT4egP1z/oz94ad3W8lB0q48TGwbV86XgfNwEhUVTcA0Km4uhLWcZDtvssYZSt7jiHAf6EUP+98PlMlioXwCZQwEzab8VXK+RVc6a9Wc3dJYWksgHv7fhF/Vzcoyy0l7dDuqhvQsbpaK1RNTtEWeD2PcXp8+4jcAZPb48IXy3cLIADUI63RL0IKsJBRrqcNkzeFCPtftqcswCtOeDeI2t/w52nfK8qF/bs7SFAk2uefj89AhHiJjTISwG/hwyV5pkXldrQHO3t0r74CdlugwgTby/4d1pPsJSMoGY7wfHuWfcDhdvZdz2T1+SNp6IjyutZiDmx044NghHKW+u/C46ZrIa8gytECfBXR79EKRI/6jZQwH0G5u+WpJyF2LGkPDpQ1TW5FzilXxk1+glvqQ/hDwN9f4ZDhF
- G+WSGIMm
- haUru3ZuYTL1/PxSLCxHB723DsAHOttFs0e67nRl+dqH7FTU0MDb5m+YklfGN/+jYUV5SCii3ERwGWHrrSkuIst7g/3LQciFlnRHNeQ4TxooaSCTlpEq86oSMpjoIzuIP5B377Fles9Sh19AULjifgjAPY4OgzBsydnRL8KycsHQx3vrVw0k/m0vWIc8T8uzcwJ5xEFvWpjzlTISk3uaZy4Pg4HAee92QTpXJC8a9kghJRqqV+F5gVbYNox9SSfGUcROnV4teMlH1LRdxe0+9q+b/L9QU7dbbp20FlsiI4i/JflbEVkLDvHqh99wiJBQ4u2tWzfwSRMaBe8iuWtSdcvKU4RQM723hR9ZCXyqm8XA2ZjfNuRvDJsY1jEw3qIDX39PJpD6C3uuqUnw=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C524310000B
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: m9eg8em8a7gb86n86bux7oadb1z5hiro
+X-HE-Tag: 1793039544-74489
+X-HE-Meta: U2FsdGVkX1/iBQS1AUSN/LXOum4nUquX102BWZt5sG+P12GT4RmFkmTKPyWDsdIpaw3S+l9Uv2+F8hfV0Krctp1Jti4rddhp31SlQ+j9IBMuwLcRc5WVIanu2uEJUPpsp9vviHAlBgpCZj35naMN4zwqKGhlidz8ZfrZ4UHI4tgvbdR5+Bc6Lfv68qbxa1+tTxs1PT1zAHuvZN36t5vh6uNgl8nQVgZ4gLepEnrakwfsZ/9arJ+1HwD0GHMGTUSJbLSEloKjIW0q3H5NK73esOLNJJAdnpshKlVvx0zdQweBFn21Y5By5xXtpiHn/JhT0/0cji6Ske1KANDoVCkjjgw1K+K4RBfIf01/L7Ew1h5jcNDONK2jvTwaeMxO4tL0BUeyfeaWR0QGoo8Qwljfc7PQ9cy71mkbKrV2L8FCmvn/2D03IebjLxtp/aUQX9TaE0DWbbMoazequLo+VfhiaJa2jCTfxrVpFKBTTzshhNkF7mtsgtgz8b2idXNLscR4NzAYY5CiUG1nPo1SMgGYVZD0P9DCGL7jell/22dI0s3KqUNFICfTkOlNIhfhyOTsJh9w0i/2aRMfXIx56Y41tVOMSVSzs5RV2tV3WHzoqviBwLvOYK1e60UN52wZY3SJMVMTUpdzZPWBtizI+GeoO+525tkgddbBto9QYgaPCr8heFstlz/G4Hd0zCo/yhhb+MoxQ1MuGMXd++O3joEvMgcvYd7olxgiRuEw5d9udBrf2/yBrRLs2MSPlGqGjPH3BlIhJqC9dty5j+WdxniRU93JJYpETPPVYWXiQCUIszL8m9pDqpbDlG4c9upxrq/p91yzZYP1qMhJWeB7EzDA/8WKhOTOqKenuuiCks4GaD7ZZURp6sVf2o0rkCsOOHTwE3MB4aiGO5Xn6IIMfQDlotuTzOFP9rmVDLGQsnd6edVlWRq5Lty8uFjFbMOy/fY91cYhc/KwKBsj7HDsjMT
+ MqCU5kXK
+ uG6h44QJwmWCDB4ClwwWDcpMr0He2rrXhaChugeQCeF/nwvxSXrp6044OoQzyKNZzSCs9ab83ukNiM1KKgGUQhVYSIfbY/prH6emwZUMSFiwP+Lv8bilu1rIBG4eag7M8umDokj+5o4UsWwT92t7ktu6fQTX9P/9Pis1SB2esMAj0wH90BcMNvZmIXix5jM0n7RmfFoQ6NahchWctra/B40bpWykXyJzZ/0Ekj1ixEGv5ZppXbValZKhn9qLQDDxV1LLibZKtc5V3A6xKCwlsZ0wtBqOlM9fg+e/zm464xoMFdHIuCmW+nUjjYFlM5YB784Kf3hYxpTjvXsMrKJVdtivBfwgxoh4nc58HcCRedEp+n/wbjNt4lCw8KXKAY4UVDw41e3gbDRNB1DamYOlidrS3zInKxCd4Yd8rudWMOemY7EqMUD6AS/mB+1076TrhUWD+ZW8Kn5O/LeuWAC7n7yH/TaSVEPLhWrIgVQeJhZgqV2BYdaLVtbahyMDt4TbI6MnVM/fC10iXnNKOpC7qcXaC2jUo7Th1YXyl3Ru+8EeVaNmBQZY6lXZvcd7PSiEfy+oPqJoTx+DOoV7y2UOADHI3VqRN1Utztr1pjmG3RXi+bz9LvG+aIT+UrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,50 +156,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 04:48:58PM +0100, Jan Kara wrote:
-> On Mon 26-10-26 15:34:08, Kiryl Shutsemau wrote:
-> > On Sun, Oct 25, 2026 at 04:46:19PM +0000, Hungyu Lin wrote:
-> > > shmem_write_end() advances i_size to pos + copied even when copied is
-> > > zero. A buffered write past EOF can therefore extend a tmpfs file
-> > > without writing any data.
-> > 
-> > + willy, jack, fsdevel.
-> > 
-> > This doesn't seem to be tmpfs-specific, right? I see the same with ext4.
-> > 
-> > simple_write_end() and generic_write_end() check pos + copied the same
-> > way, so filesystems that use them through generic_perform_write() are
-> > affected too.
-> > 
-> > It makes me think maybe generic_perform_write() is the right place to
-> > fix it. Hm?
-> 
-> Well, that would be nice. But how'd you like to do that? i_size update is
-> the responsibility of ->write_end and we have to call ->write_end if copied
-> == 0 so that is undoes what ->write_begin has prepared.
+On Mon, Oct 26, 2026 at 2:41=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> From: Josef Bacik <josef@toxicpanda.com>
+>
+> Once shmem_writeout() has moved the folio from the page cache to the
+> swap cache, the folio lock no longer keeps the inode alive: truncation
+> and eviction find a swap entry, free it and do not wait for anybody.
+> That did not matter as long as swap_writeout() was the last thing the
+> function did.  But since it puts the folio back when swap_writeout()
+> returns AOP_WRITEPAGE_ACTIVATE, it uses the mapping and the inode
+> afterwards:
+>
+>   reclaim                               last close of an unlinked file
+>   shmem_writeout()
+>     shmem_delete_from_page_cache()
+>     swap_writeout()
+>       zswap_store() fails               shmem_evict_inode()
+>       writeback is disabled               shmem_truncate_range()
+>       return AOP_WRITEPAGE_ACTIVATE         shmem_free_swap()
+>                                         destroy_inode()
+>                                         ... RCU grace period, freed
+>     shmem_add_to_page_cache(mapping)
+>       xas_lock_irq()            <- use after free
 
-Hm.
+Yikes on a bike yeah I think this race is definitely possible. Good catch.
 
-A zero-length copy only moves i_size if the write starts beyond EOF.
-So we can bring the prefault back just for that case, before
-->write_begin():
+>
+> swap_writeout() behaves that way if zswap is enabled, cannot take the
+> folio and the memcg or one of its ancestors has memory.zswap.writeback
+> set to 0.
 
-        if (unlikely(pos > i_size_read(mapping->host)) &&
-            fault_in_iov_iter_readable(i, bytes) == bytes) {
-                status = -EFAULT;
-                break;
-        }
+Acked. It just takes some incompressible pages to trigger this with
+memory.zswap.writeback=3D0.
 
-Overwrites and appends keep skipping the prefault. It is racy against
-a concurrent munmap(), as it was before 665575cff098, but that is
-userspace racing with itself.
+>
+> shmem_unuse() already added infrastructure to deal with that.
+> Reuse info->stop_eviction to protect the inode during writeout. Increment
+> it before removing the folio from the page cache, and decrement it after
+> swap_writeout() and any attempted reinsertion and inode accounting.
+> In shmem_evict_inode(), wait for the counter to reach zero even if
+> swapoff has already removed the inode from the swap list. Add some helper=
+s
+> to make the code easier to digest.
+>
+> Fix generated by an LLM and sent by Josef Bacik in private.
+>
+> Fixes: 6344a6d9ce13 ("mm/shmem: writeout free swap if swap_writeout() rea=
+ctivates")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: code cleanups; improve description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-The per-filesystem alternative is a 'copied &&' in every ->write_end.
+LGTM from (z)swap perspective.
 
-And generic_write_end() cannot take it as is: generic_cont_expand_simple()
-relies on a zero-length ->write_end() extending i_size. So we need some
-replacement.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
