@@ -1,91 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624C7606A31F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799E5606A324
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d8gwXBfE
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=baI+UOMl;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7pHTPEqS;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=baI+UOMl;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7pHTPEqS
 Received: by kanga.kvack.org (Postfix)
-	id 7FCCE6B05B5; Mon, 26 Oct 2026 09:33:32 -0400 (EDT)
+	id 4F28C6B05B1; Mon, 26 Oct 2026 09:34:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ADEF6B05B6; Mon, 26 Oct 2026 09:33:32 -0400 (EDT)
+	id 4CA436B05B6; Mon, 26 Oct 2026 09:34:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EABC6B05BF; Mon, 26 Oct 2026 09:33:32 -0400 (EDT)
+	id 3E0236B05B7; Mon, 26 Oct 2026 09:34:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4564D6B05B5
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:33:32 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFE391C3FF5
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:33:31 +0000 (UTC)
-X-FDA: 85364869422.20.A641566
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4F7091C0011
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:33:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E72F6B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:34:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 527F41207C2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:34:51 +0000 (UTC)
+X-FDA: 85364872782.07.EEECFCA
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2A7A81C0006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:34:48 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8gwXBfE;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=baI+UOMl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7pHTPEqS;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=baI+UOMl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7pHTPEqS;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793021610;
+	s=arc-20220608; t=1793021689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3QJjgBNhhMcU2h8ryMvyVAOJo+FmKjFcCzZY6PKW7M8=;
-	b=gS+ePn1KzWfDEpy1LuzPnWGNDvk3WuujfwE7/XJzrdOUXNQ3diqzszOdPDD0zUomfMyYh8
-	tiSalQPF7aSiiaGPApUUIP0VwosK4zsLF1i5xSUr1tQp+LBESDYXa9KQaYo+5mHb/JmCbv
-	FitGGhvOwE8fHR/FZa9eGmRdeYl2l8Y=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
+	b=cEb4cblI4Q/b36ZC+o87KDHzpRBC0trojQWPwtzAISXwdfGKThYegfPOqVHfQnIKu+agW5
+	Bn16onrxlNp11BGL2psOYw0eCyo7Cwyle6Sfi5FB0pRJX3NF0/e8RNJpkJOIIi3+tV7eqY
+	WxEzrtbYCOgoVlQKvPU/FZPUUCWYsKM=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8gwXBfE;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=baI+UOMl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7pHTPEqS;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=baI+UOMl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7pHTPEqS;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793021610;
-	b=2IdAhXxCNURR+8z+gC6El+RFkQCUEADphcgzId7orChlCFbS0lzGv/Gmw1A6Vz6I8j7RmI
-	7mLH1g26ToNTR9zTZdBHepOYd6sHaQynaO6ijMQlFEyU3NUe48K1lUSYj1HXMFJmdIlATT
-	F/oz51We/eqHuFGX6c58R22ZZf98Buc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BEFD8601FB;
-	Mon, 26 Oct 2026 13:33:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1CE1F01825;
-	Mon, 26 Oct 2026 13:33:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793021609;
-	bh=3QJjgBNhhMcU2h8ryMvyVAOJo+FmKjFcCzZY6PKW7M8=;
-	h=From:To:Cc:Subject:Date;
-	b=d8gwXBfEJjO1rmMFiYe3Ur+g7oPaJCfSXRVjqlORKGG4scOzcIY9NsU46uIErcxZP
-	 nIXuqF7X/B78sTjJdf0FDC3r4xDSAp7rFeQsbBtQzCeToh74fGL2UHzvv/4uk3v5Fz
-	 Ub0Pbei+dlTqQ0wNVDPmggdAPCto0QzjDesvuS5+rNk5mmgyMVTd8PbqAjBVOpe881
-	 JCHNQvKyRtsz0/IMKprpdc9rVIJeU7Z8y/a2f0meIXaT6pDjYP9FK3ZtrXOwMKLHWm
-	 k+LPldK9/bEqSHejvXSogwMO2m3PsAbAYtNNuRLYr0OUGJeB0hJSxKEd7aWIoFGSmt
-	 A4Vxra7J4HCuQ==
-From: SJ Park <sj@kernel.org>
-To: stable@vger.kernel.org
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 7.3.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
-Date: Mon, 26 Oct 2026 06:33:16 -0700
-Message-ID: <20261026133320.68445-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	t=1793021689;
+	b=zrPJNTvo2qbIYXQVEoITIjcakTYEKUhBvv3INr2JIiAMntbzKImeH31GdTSi3BXEoNVZT2
+	28P2bQvDqt/Y4NbXDDgHzg4Jld0ZHdqysQ0DPOZiYMERTTccMTKKWiNZBpzYDWsr9z60lV
+	oia6E2MJuSoD8gf0A2CZSmsjXwHaBfU=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B845E1F7A1;
+	Mon, 26 Oct 2026 13:34:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793021687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
+	b=baI+UOMlKVAy3SWCcAr98EiYZLZvmrWlccCTf02DOWVOrnJX/ISyma56FnRwTFbfuCon6h
+	lx/tzrp4GMc1zXOWaDywKiyMLCCR7zodJecV0Zdvx82R9Dp0z4l82nnID/cBxa+Pz+Uq+c
+	QMOerZp32U/ZYvdRD6F9awM2TMH6IuE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793021687;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
+	b=7pHTPEqSTCXYGCNfP9M5J0/15pUqHHP0l/X4U8Nb4FAiZSRQLT/xF1CGaS5QDMbQNLb2u3
+	QKVaoBXGziMD4sBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793021687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
+	b=baI+UOMlKVAy3SWCcAr98EiYZLZvmrWlccCTf02DOWVOrnJX/ISyma56FnRwTFbfuCon6h
+	lx/tzrp4GMc1zXOWaDywKiyMLCCR7zodJecV0Zdvx82R9Dp0z4l82nnID/cBxa+Pz+Uq+c
+	QMOerZp32U/ZYvdRD6F9awM2TMH6IuE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793021687;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4UlIvTTjkwmlBrzOjLPzKgJbLMN24EsBnbSBGjdQ+TE=;
+	b=7pHTPEqSTCXYGCNfP9M5J0/15pUqHHP0l/X4U8Nb4FAiZSRQLT/xF1CGaS5QDMbQNLb2u3
+	QKVaoBXGziMD4sBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B7D3134EA;
+	Mon, 26 Oct 2026 13:34:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id G4pgF/dW32pJfQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 26 Oct 2026 13:34:47 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 0753BA1419; Mon, 26 Oct 2026 14:34:43 +0100 (CET)
+Date: Mon, 26 Oct 2026 14:34:42 +0100
+From: Jan Kara <jack@suse.cz>
+To: Saleh Mammadof <salehmammadof@gmail.com>
+Cc: linux-mm@kvack.org, jack@suse.cz, hch@lst.de, dhowells@redhat.com, 
+	linux-btrfs@vger.kernel.org, David Sterba <dsterba@suse.com>
+Subject: Re: filemap_invalidate_inode() - losing -EBUSY from
+ invalidate_inode_pages2_range?
+Message-ID: <o5sj6bswd6arkusrxj5w5ww3jwk5hz7ktzxvdik72h7c4uen5i@fnwkmk6hvuf5>
+References: <CAKu0nJUGwnmuuT6fBz0phH=1Nyi6BguH2PHvs9+hDnrc_X0zWw@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4F7091C0011
-X-Stat-Signature: 9ph7h7gzd1rqno6uugcm65eb56fe7hiw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKu0nJUGwnmuuT6fBz0phH=1Nyi6BguH2PHvs9+hDnrc_X0zWw@mail.gmail.com>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2A7A81C0006
+X-Stat-Signature: x59h6fphxgwum38oxateooeuxjpkq3bw
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793021610-390757
-X-HE-Meta: U2FsdGVkX1//b3dUUZnc69YLVVvDmBJmihIp6MlnMoWk2dKdiaxgcWF7n8+vr8lFFsEKnxqsd+D4EFygSs0rfEBFOMrxk9uSXXMCEw+Ba4wEInjOAsmkiiByWe2MZptbgSoFa3YJ2DFmXZAgCjXPVlDBtKszwRdB8Cf19oR3Uzf7kLHVW1LOxdOZyKpbmHmSbvSwpGhMyNRasqy2C3lvf48TJ9jU6BsLEfDvekGxNG3lL2pS5R27b3Yy8FGzTknsmyXeRIKlaQfBRTEtriyDQry5REo9MHkhqZevJ/t4KjuHUmQcScYTO3JnAi68nqKZKHemymA0xlAxEpauwT/ujmaqssR24hz8Sd1gbL503mAcS4sDtNMaaxmVJ+LwwPTMS3mWSnXR8nZdEN/CbMgWXarEVQaP9lqKuuyzOvnTR61Tg+exLWTFjSWtzWH8rZuZ3EGxYG+VnHTxCZMVJ8gMVLz1EmZ0XE8vxIiEUZZxCYGooNXuLNLHMOyPrCbhJYlcEz43NFhk7CQW+2qT545UF9L6TrZXb7Q98xiVy+3ip943VVaj4t1HdFj8GOCpbUOdq6ozr+oggFLlP8NgSHJHn8Gc+j8Vc2NzZpjSCwqQ1MsevemKSqdWAVQV07NgwPrZWTvwZkBkwvEteJ6ofYfoD6XdNtU/5ZQ/uxZfzeyLi7rdceu0Xo2d3hZqayKzJqjpr5a6pebqs/HpvQra4WNDySw7fXokGsmcyfzmQC8DIj8VscvSy3PuDwQYCEpbTRD6DsIfDrA3mKy8ekTzgt6ht8IgBCP8iIGzukQAPbR1qyFPN5hs6CcV1NqupQdFIj/jIgCcmqmJqDylBG2rq2V/+YRKP/d7ChOAprZAXH/aBgG7myboWBZeEo0lfw0HgqM3DLeOmX5VGMzD50asY848VfyNhwJnt3cyLeOxnpez4rHLB+pOYbh3BRBVnbLilgymq4IM72NLncPaCqgMA3w
- HJcQMxIg
- jjclWAC8+/xmRjCzJRdp56GEwb1gOD8EXheNC9kixR/AK4yP36TbSX9LB+uqUK+PY3RNkgTKimjLHsWSdpZ18+avpguwdXnWFpZc6Y+dLDW9WNyJ1S5rTsklW5Annk/3HGthYeg1FpDj+CDR3Gctw4zt1tX5HqA9FGwA4F++X02nC5SQV46HeKV1D9MmYcpiDIwLfGBUUzpR7JCH4DZvyxY2ZOxg8exgPx20vGEvHJDsztm8OALea2IF1iW50vGA4Z0fA8C/lw/jzSasDXo65QRaGLV0hTQwiIImewF8xvGX+00DvtrVISHcH1qHcUZNwYxL1JX/d27H/GkefWJ6Rf7s6kM7ydw2PVJiyHyWl+qKx2FhlJ49qI2z7prmcUnWZMN58GLuwHsX2HXY=
+X-HE-Tag: 1793021688-603355
+X-HE-Meta: U2FsdGVkX19vtIhpOdcm5cT0AIqRsWU3OoapQYEV02iAnhAzMhza5tJG4DouyvHBxiGRONdW2RGw28K0Z5k5dHcS+rKuGDPZ0iJcA+VZKRxHqo4NpHbzLXGWZ0GEo4y9hJFsRVxkaKzjgeI0J4fZYVrti6CfiyqKkgOSL+iIkaXVfo/3FF0c7qqc6v5xZBRtbrZBMgr5FcSCZ4EPSHR8h6hJIj/sYXtFqUHT7QRfyr+LlZkClPOCXKtJBix5UENWSUlWIP9AkE1bRY++BHAGC+px4ATP+8pacctD3Xx5LPxPDHfm9MjU4KtVnEYEv2FjBtFSlEEs54v2Qhi7RCY2fwLpgcuiKJMYgk4oyiuVVcolfSFGLUGziBicJCjn9/2noUOyIQxtvsdE8oycOjT4mkLqDHlbKccDL9HmvIPsMK221GsuUpKNjIk1LiWbX5dK5xdXjvJ/0f5NlvQhID0aX639cbwY4XRYaDHRgeSPxTbyaPRf1TB6he+mKe6hwOmHkf6ytWRKYDXglvBrE2DbT4bUxjnNwx2HrvdKvXJTxufwzK0mmaCZWw9/sijurdSgdf6RwwnRcNIicKpx6NqBDyOaJWWg9cVl5JPmmeKVMAcw4PZkxOYVzkCK/0m+jTJl9jinJTae03CVtybywmHhUFySUDjen0uSeayO3p3PcFZ1oZnCTVPPoh8y9HaOlUECVZAZi5LNsdlMToetWVDswapDXSmgHoX5QG9veI2uAcpSryFPZMSxAHK2HcEpB/CUVkUaR7NLogoQBEc7WcqhCcnHG/iRbgI9u7HGofGNo+QcjZjyfIDgDXe8/chjVX8/h3PfYYTr4l2EIZ+c3ppLEZiYGE/ZgK5Sv7GnDA9HLfHq5ufaP7t77eiaEEV5YL/Xq9RcPEdI0GhyQ3oQd+ct1pVM756JvHiZc1DaXfL6vRm2RG8qgmrklz7LhgFVX7KM/R/DnN2CGpB0UW4kQ+u
+ Y1jFlJ9b
+ yrKBCq+5dkGgsAocqmf9NtCDw8IlIDkf8Q0hfF+R/c5FlghE8kLWDoYKcUldl6pQw5f2dhGzjpK/UbM1smY+qo2SBJogcFqmz+8pV7zizNhsDbmhqClArNxLbI2BsYT7zJOa7vssyohD0KbJMj0mKHmNzgz581NRMtJLdxpaKoonSui8hwVUvBxlWlqVGuJsBuDIkurkBjmR3Cj4i4hVujfOj2umvz2pzxBHicBemCnElsbum8mXyB7/28setS18OHkg3iB/Q8TUbK4vqrMhgHArDJoiDGEd7LC4CT3rTZ2AW5tcRYcg2zIOKwHw4FcRDfBFGxq20+naOy+pkPObzDBh9AXiqxE6GGyhEZ2O6KtlofDcYAxCUTlSBlncsVTu+W/vBaoij4cKbxWZeY8M3ClbS6bCdobWLBoRpJ7GLieGZe1KWSir1nuTPBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,127 +141,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Patch series "mm/damon: move zero damos quota target_value handling to the
-core layer".
+Hi!
 
-Having zero DAMOS quota target value can cause division by zero.  DAMON
-API callers are checking the target value parameters to avoid that.  It is
-easy to make mistakes in some of the multiple API callers.  Move that to
-the core layer.
+On Sun 25-10-26 02:27:13, Saleh Mammadof wrote:
+> Been going through mm/filemap.c lately and something caught my eye in
+> filemap_invalidate_inode(). It calls filemap_fdatawrite_range() (or
+> the wbc variant) and then invalidate_inode_pages2_range(), but doesn't
+> seem to check either return value directly - just falls through to
+> filemap_check_errors() at the end.
+> 
+> The thing is, invalidate_inode_pages2_range() can return -EBUSY if a
+> folio won't evict (release_folio failing, launder_folio erroring out,
+> folio going dirty again mid-invalidation, etc), and filemap_check_errors()
+> only looks at AS_ENOSPC/AS_EIO on the mapping. So that -EBUSY just...
+> disappears?
 
-Patch 1 adds the corner case handling into the core layer DAMON parameters
-validation logic.  Patches 2 and 3 remove no more needed DAMON API callers
-side handling of the corner case in DAMON_LRU_SORT and DMON_SAMPLIE_MTIER,
-respectively.
+Yes. Whether it matters or not depends on the caller I guess so you should
+discuss with the users of filemap_invalidate_inode() what they'd like the
+function to do. Adding btrfs people into the loop.
 
-This patch (of 3):
+								Honza
 
-If a DAMOS scheme has a damos_quota_goal of zero target_value,
-damos_quota_goal() could trigger division-by-zero error.  Hence each DAMON
-API callers should do the zero target_value validation.  It is easy to
-make mistakes.  Actually such bugs in DAMON_LRU_SORT and
-DAMON_SAMPLE_MTIER were found and fixed [1].
-
-It is better to handle the corner case only once in the core layer,
-instead of multiple places in all DAMON API callers.  One straightforward
-option is using an alternative denominator for the corner case in the
-damos_quota_goal().  However, the zero target_value is meaningless.  In
-this case, the quota goal is always evaluated as achieved or
-over-achieved.  The quota will only keep being reduced.
-
-Simply avoid using zero target_value by adding a check in the core layer
-DAMOS quota goal parameters validation/commit path,
-damos_commit_quota_goal().  Update it to return an error in the case.
-Also update its caller to propagate the error.
-
-Notes for stable kernel porting.  The upstream commit doesn't have
-Fixes: and therefore not ported to stable kernels.  It turned out it
-fixes commit 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota
-goals user input to DAMOS") which was merged into v6.8.  The user impact
-is a race condition that can result in divide-by-zero.  Hence backport.
-Reproducing the issue requires sysfs write permission, certain DAMON ABI
-usages that are supposed to be uncommon, and a rare race timing, though.
-The issue was discovered [2] by Sashiko as a part [3] of its bug report.
-
-[2] https://sashiko.dev/#/bug/linux-7f814c9a-986f-4103-a55a-ef9537dcf62b
-[3] https://lore.kernel.org/20261021005234.94107-1-sj@kernel.org
-
-Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
-Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
-Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
-Signed-off-by: SJ Park <sj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 610c4438fb66e06d9e693c0ad3b2c1be54c0d61f)
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from RFC
-- RFC: https://lore.kernel.org/20261025171526.157414-1-sj@kernel.org
-- Drop RFC tag.
-
- mm/damon/core.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index ab3c4d7549644..74d22a596fc13 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1136,15 +1136,18 @@ static void damos_commit_quota_goal_union(
- 	}
- }
- 
--static void damos_commit_quota_goal(
-+static int damos_commit_quota_goal(
- 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
- {
-+	if (!src->target_value)
-+		return  -EINVAL;
- 	dst->metric = src->metric;
- 	dst->target_value = src->target_value;
- 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
- 		dst->current_value = src->current_value;
- 	/* keep last_psi_total as is, since it will be updated in next cycle */
- 	damos_commit_quota_goal_union(dst, src);
-+	return 0;
- }
- 
- /**
-@@ -1162,14 +1165,17 @@ static void damos_commit_quota_goal(
- int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
- {
- 	struct damos_quota_goal *dst_goal, *next, *src_goal, *new_goal;
--	int i = 0, j = 0;
-+	int i = 0, j = 0, err;
- 
- 	damos_for_each_quota_goal_safe(dst_goal, next, dst) {
- 		src_goal = damos_nth_quota_goal(i++, src);
--		if (src_goal)
--			damos_commit_quota_goal(dst_goal, src_goal);
--		else
-+		if (src_goal) {
-+			err = damos_commit_quota_goal(dst_goal, src_goal);
-+			if (err)
-+				return err;
-+		} else {
- 			damos_destroy_quota_goal(dst_goal);
-+		}
- 	}
- 	damos_for_each_quota_goal_safe(src_goal, next, src) {
- 		if (j++ < i)
-@@ -1178,7 +1184,11 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
- 				src_goal->metric, src_goal->target_value);
- 		if (!new_goal)
- 			return -ENOMEM;
--		damos_commit_quota_goal(new_goal, src_goal);
-+		err = damos_commit_quota_goal(new_goal, src_goal);
-+		if (err) {
-+			damos_free_quota_goal(new_goal);
-+			return err;
-+		}
- 		damos_add_quota_goal(dst, new_goal);
- 	}
- 	return 0;
-
-base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+> If I'm reading this right it could matter for callers that actually
+> branch on the return value - btrfs reflink bails out on a negative
+> return when clearing the destination cache, cifs sets
+> CIFS_INO_INVALID_MAPPING again on failure, that kind of thing. If they
+> get back 0 when a folio was actually left behind, they'd think the
+> invalidation fully succeeded.
+> 
+> Could be I'm missing some other path that catches this, genuinely not
+> sure. Haven't tried to reproduce it, just going off reading the code.
+> Let me know if I'm off base here.
+> 
+> Saleh
 -- 
-2.47.3
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
