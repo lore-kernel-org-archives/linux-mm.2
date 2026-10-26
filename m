@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDC9606A320
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8B4606A321
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nBlG95Jj
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=csHXg4wZ
 Received: by kanga.kvack.org (Postfix)
-	id 9114B6B05DC; Mon, 26 Oct 2026 19:25:25 -0400 (EDT)
+	id ABF3B6B05DE; Mon, 26 Oct 2026 19:25:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E9B36B05DD; Mon, 26 Oct 2026 19:25:25 -0400 (EDT)
+	id A70076B05DF; Mon, 26 Oct 2026 19:25:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FED16B05DE; Mon, 26 Oct 2026 19:25:25 -0400 (EDT)
+	id 986A46B05E0; Mon, 26 Oct 2026 19:25:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DB856B05DC
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:25:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E1233A8508
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:25:24 +0000 (UTC)
-X-FDA: 85366360968.10.0F383D1
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 671896B05DE
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:25:44 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB0A6C08A9
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:25:43 +0000 (UTC)
+X-FDA: 85366361766.12.1B30719
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 111DC20002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:25:22 +0000 (UTC)
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1C1AE20003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:25:41 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nBlG95Jj;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=csHXg4wZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793057123;
+	s=arc-20220608; t=1793057142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wk8fHmHyhf8+gOZCyOM9u2jGkcwPVKHrhCqeaA1oNlE=;
-	b=2fRg16Yu/XlRaFiUDECkcsE7RDQsuKB29iy3c+p2PGwDLXIVeejwoKUWLank56MzTibSli
-	LpfFM4j0VvC9646A5VecjmqXLknbuUqDMqHyYES50PI9DM/IXB4V2iGqOLxVu4WqfjAGmW
-	WWH6E/uTCbXrv+PDagwn/Va5+1DjCFo=
+	bh=d4MV77Ak5yM3C1+7NxJwT8IeWvwmREROuL+a3NtDfRQ=;
+	b=wC+pASoTQ9PtW43H6iv7Z25sqDaNrTkhsES5DNuuBrPwl8b01OrsXireP0QF8gGaLnM9mB
+	Cc0X105TAy/2ypzQcAynLiheBdn7gn50ipYKcoWFy5NIJ/mDvrEGV7V8NUm/hfCY0ZHpYQ
+	K/4yNihYqfhQFP1b9v69SUyWULR8W+M=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nBlG95Jj;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=csHXg4wZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793057123;
-	b=A0nR1mIytNlOSBb6Nht/XATXty6UW+ul0zhDDQd+BbNDQfsnTU6z32sMlENnqb9Q+dNxqW
-	YnmDXKIikk7xj4yrz3XniEfNuZcqal4YL2+EbLEiUWxxw0tkhymANBsoY+zIW4BsdHxdVw
-	JhNy3BM5sgmi4MaiiM1RsIARffMO/GM=
+	t=1793057142;
+	b=xq1l1G6rPRPvjA65294OLFcueiPo6lCKeLWpQ0mIm2U/IQgIYa5/taZcLIMC0Cmf2wkbeW
+	SuJKbGjvQlb+aMBzS6qoGEdiRuVwsTYesdenqpojfxbSyKLORGlk3Ails8MahCLFbzhucT
+	GC+8KwrrZpJnffasSnrs5laI/6nV5q8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62E5B43A59;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3FB5940349;
+	Mon, 26 Oct 2026 23:25:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD50C1F01825;
 	Mon, 26 Oct 2026 23:25:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB9A1F01829;
-	Mon, 26 Oct 2026 23:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793057122;
-	bh=wk8fHmHyhf8+gOZCyOM9u2jGkcwPVKHrhCqeaA1oNlE=;
+	s=k20260515; t=1793057141;
+	bh=d4MV77Ak5yM3C1+7NxJwT8IeWvwmREROuL+a3NtDfRQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nBlG95JjLTKQS1vsnDjG3NAtGsrJsDj/kWHYnsNPwR/Kc0irpHvaXwIB38KpMmMaH
-	 aJUO172YL7skHXpfcdKZZL3xndwdNhmEt2wuFrTZJ/6vzkZFBNrVgwh5j6lHQPqNr8
-	 FA2RwtRCOwbPj6WLRe7QN8lDe412PsOUyKPQhJRU8dHjTUhNKSKli/BFSl1+hMJhFc
-	 B6E8BVR8WCWG26bqcALXH43Cp89W2ZE2U7vJW/EApfYOtJIoOvx1au8dpIsJblyBbu
-	 CQ/IA1Jopa5qol5YYDuCEkY2gLlCoYtmIuFrL7HJ2t1GVIN5bStSPzqSJg/dcuOsUC
-	 HfPG3U6ect9TA==
+	b=csHXg4wZ8V2CmRF41ciyNKcq+nBGY98nOFGquFQV1I4FOR2ZqNkkrBhldXkbQA73s
+	 kqedJrXPlEw/GuLeiEQWDKrNumdYNi7vhd3rTRVxjzw/ieirH3dPmp6u/as6YmvrVJ
+	 iZVtw5PMFX/jnw2wY7gllsWdINeETnRlf6f6Vsm9gTVUB/vzHDYRNW77UUNKHK5vf0
+	 Bqeq21Tg4d6xJhLwKyTxEuaoXxDsLIbY0SrDQTLoSeu3UpGhMLhfsPmkHFvrYS/6oI
+	 c2/1w6D8Hg0KPF7JckRXaIQGKRF2A3XeW1iG0jHdwzqpLBslT2ot9ceobK3MBvzzoe
+	 qXYq7+4TRovEQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 00:17:44 +0100
-Subject: [PATCH 24/46] mm/userfaultfd: wake all waiters on unregister
+Date: Tue, 27 Oct 2026 00:17:45 +0100
+Subject: [PATCH 25/46] mm/userfaultfd: wake waiters when registration modes
+ are removed
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_core-v1-24-6f74bec9a5bb@kernel.org>
+Message-Id: <20261027-fixes_core-v1-25-6f74bec9a5bb@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,30 +107,29 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>
+ stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2267; i=david@kernel.org;
- h=from:subject:message-id; bh=VWyRnUh5UUmddqRoYe/RjEaFtJoCER021E7Zl4sKkh8=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35/m5/Zf4afPirVSuw4bnlaL3XBgkWdEX+7eJ/nbD
- qi3+js3dJSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCRDEWG/zUzPd5+511kL8MS
- WSulJCHq8trETpxv7aHmc0vVdIP2ZDAy3BXRPcHVdu+soPf6/ivasxpqVdJX5kcavou8kHhieqA
- YKwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2728; i=david@kernel.org;
+ h=from:subject:message-id; bh=E+83r7S624k5EPCZEmcEXyyfHzl5/kgAEPI++IJBHPI=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLu35+WIeW5rKpx0pvbIdt016lonXeLtHmhY9T1TzZjs
+ 2/d3hvsHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzkkyUjQ1votYCOD5eP6p1d
+ wta/KW2Lx6N81v1HnfwbZF37HwhPCGD4p3Rb9PXpo3MvSN91cbu8pm+zTknZg8xeGZ60n/eON9n
+ vZAIA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 111DC20002
-X-Stat-Signature: ju79mxbb6jrws9yp7h367egkkzzteom9
-X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1C1AE20003
+X-Stat-Signature: jhmjozkhw5pf11w4ocxhyxoxgotnmjh4
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793057122-793815
-X-HE-Meta: U2FsdGVkX19CbmDAEVfvtQ22H90vIlw7s9ZjfY/XTO8x0yf8W37y4IxxviDszVWG0/lJ4Tvc4TGaU1oxYPCecqMU52qgcxvdkMGpYHdwbNbdK9AMni9UDSERbhsH8zD1vYHDju8PK2lHsag0O6Pb4FWmyUI4+UVbgEnERWY6HKQYPe69K7zOHfKFEBvLLaLd1a3Gvn2knlkIFG5AFUc2ulAwYFlJvVJ+SwPsl5bkPL2vSolb1IswNXo7uVPXxNLHNYi2oDC95HoHO300e4CsHI5KKcly1LPAOldndXVErQ0XANtgtCMW6v4xw42wgfjghl15GhSQJtHiFZDDPVImJ9YjLJ4Q/8quuJcsIaDzpiaBuKBwKJntlyGfWGWxiFP7shjvPYEnLaxGR6L8UreC7EIz0OOY//Fzx0VX8WiNWQD8Cw+QEhcP2kkOR1fNhdd+EpQ4x+/Iu2TnzetKAiQYlvTOAcQvX4kgiwuOxsu3zgWkNu+mjBU3gcH5dDvH0pxO/g12UjTfygHax26UQbh2JJb8KetuumY/nfYYjRteV97VymSRfvRDd42v8776L0pMFdVqon4P9tB14fE83gBWg3hegZUuCAWcAjKRBtIicQo9EHK9aqVeabGzjYGXYfLbeM08qe8g6g8LpE7Ag2H8SIa0u+VZs7tHWdJdM9+xNPGnbI85PByvODvsB/ABqZRFStVkH+Xyy7BcPpek6pYOXOlh0KcNxSBz4wN9Sw/zqvK3UlI5/dD/i6Jh9Ryd/3SoeKvWnERQbNbGRV4n5Nu1pKN5jYWEHdufYevBCeCp2vy6PQp9/B3dWDZXxVezn6TLpOPREF6um4cyIgTy/eTInGMJlLIJIyNVwzAcsXdSu+FC9NJ+lO6qRcktMuV1AS4X8124a4VKRDjsj2mBp0hfGjhcx4I6soEYs5R0AtrCFXKd8ihTF7/tAePHP/L0tc6fkCDXdbxztpzUBwSsjIC
- mfYL1CoG
- BxTqhSQVweGR9/fCx5D9STI2qd/KLXUWhg7zyd+HOM/RIIZUrBJH02XRHALtOYg271tERXWjaQ5m2IyOFJ6b0d8m1W1ybEKavjoRDab2G1npbpPRe82oyvJ+r8mV7dFobcff29hhTayXwBOV4sAR/czCceodmIcKEnOpjp9Vid0Il4s40QwYrj6Rxx9CMo3oDikoufv+jHUZ06+N/70V6SNVtLXIXU5Y/lxKPcWeUz+g91N79ZspyQkk6IdPJVYkjtHgkno3SqgbTDINLsGo+p/TlcG4wr7dlbkMGbHsMdL6PGZJKMWbZfJ4cLJGxuH+owRMWQz7JfD74v3WpFYgsmdiaSt+xFuN2twNdIy5wp2y9VPnCs1nKVtt/4lpNQOULtSe0
+X-HE-Tag: 1793057141-911876
+X-HE-Meta: U2FsdGVkX1/Rnt2vF5zkPHPNmXXP+lUoIBIjF/UWsvNAcU377dRv6KNkNhyx1033Z6PQjU0ta9eGZVxIQ1EoEBrL9bhAxeozLoyNEKzuKU+4CKjfU3PC08BIJfCXkJ5QWivQDjt06EeY3ExI7gReehod/PMqY3iY0VTT4wYfrcOYEjSdQLZhF40q5vYP2MoZLEjWSYv5tcH6CBtYzEhDiy39tEZNmuy1nFkoVy73mKMb0XY6TW/rtluHu6M0Zzpwk0LvG45igIQBueXcTHRDS2WwSmiWJmDsdl9V79mXYRgjdrzSEJi0eaAEeJwV8eYR4uShGoJxWYaI3bDV5z24Q31LjM4GfzObDAdXkMUw+mzGDy2DajxW3++dbVPbRQnc7P19l6S04q1jNgOZnPmVtAG+Dz/tw0v0y8FYkXORzDx0OUb1CIdyGhFmZYW+9wCSCZDGeRyD78MEAP+GQSwrHnZ8PQKoSdWYEznGvoFzu/WvQawAr0xNzcSamWgDvOs1VP5suLgaLBRDqqMSQK9nEgJtAqkFfjBzzU/d9eB7JpCCnDUVWXEwQPUmGRweUAGrAkSip63Mq2ODyaUSAMfU3PwSl14pjaZKIADjd2noCPudrDwuFq6STA6DtTI3KlLZq3LGTG5YOAECbAw7zSAJErfYIBNF/jjhcw91BBKqQz5FISVBZIJ7LhXydTQxs1oFaqCxIT1tbOvO9j8SJrkeovdtjPkI8gQ3IDzes01dJ3qQqpQ1JybpViyjVi2mM83FqpHjkpNVnwQf20+NyGgZpo3aCnbea5q4f10kwZQdDCTYinV70917CapwdVbwDlz6aFYguVa+OS1RmZ/yuUF3rfw4Fo7vJeKf2ZXO/m0Sz4Ci3KPBcUZlQI26YqYvBrflhUZ6chYczNRTZmKpTH+1BSW7peuQcqCED4pvQQDdhrD0Q+PgQfhEBQXKykPz8TLUH7Pq51pV4cHqIYogO75
+ stl1cKEJ
+ /7VWk4zwBjzf4VzD+aLdsK/EjFp6RTY1zpmva3WlNOD43DYYvcBADCGow97+yLSd6T4qfCqTXd8cud9IcebaGrz8WFYaxaR8L3vByxh/UQ8O7GLIAoWBrE9x5GkEIhKdnRXL+0H4pzlRrLej/onZMpVgETc8h/tdwL2DMJ0w3fcCNt5tmyfcvAazCVCp+OW5ayufdb5R0eg1DNXtJsgKF+FRBUs07NqoE/GPaeO2M+4CQrRnQYpTOfqasYi+fT0Y5b0lDLGKlmcLjZWvEcK74pZ4TVZ4kqugR4pz6WwxGQ0GwTNaV7sEBv8v9VwZOpdFzvlxlJA9HzcKkKq3CeSmMR61Wtsmy3mJQ7h7IQMNqebZflR+Cd4j4+/cCuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,68 +138,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Josef Bacik <josef@toxicpanda.com>
+UFFDIO_REGISTER can replace MISSING or MINOR tracking without waking
+faults that are already queued. For example, switching an anonymous
+range from MISSING to WP leaves a missing-fault waiter asleep until
+userspace explicitly wakes it.
 
-UFFDIO_UNREGISTER only wakes pending faults if VM_UFFD_MISSING is set.
-Threads waiting on write-protect, minor or RWP faults can therefore remain
-asleep after unregistering a range that does not track missing faults.
+When a registration change removes a UFFD mode, wake waiters in the
+affected interval after updating the VMA. The VMA is write-locked at
+this point, so no new faults can queue under the old modes and woken
+threads cannot retry until mmap_write_unlock(). Waiters for retained
+modes in the same interval may also wake and refault.
 
-Wake pending faults regardless of the registration mode so they can retry
-without an explicit UFFDIO_WAKE or closing the userfaultfd. This matches
-the existing behavior for missing faults, including removing unread fault
-messages for the woken waiters.
-
-Fix generated by an LLM and sent by Josef Bacik in private.
+The hang reproduces for MISSING-to-WP and MINOR-to-MISSING transitions,
+with both read and unread fault events.
 
 Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ david: rebase; simplify description ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/userfaultfd.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ mm/userfaultfd.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 7e30b5ff17be1..2122676c4220f 100644
+index 2122676c4220f..710e913c73bfa 100644
 --- a/mm/userfaultfd.c
 +++ b/mm/userfaultfd.c
-@@ -3977,6 +3977,8 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+@@ -2270,6 +2270,9 @@ static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
+ 	return ret;
+ }
  
- 	ret = 0;
++static void wake_userfault_range(struct userfaultfd_ctx *ctx,
++		unsigned long start, unsigned long end);
++
+ /* Assumes mmap write lock taken, and mm_struct pinned. */
+ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+ 			       struct vm_area_struct *vma,
+@@ -2287,6 +2290,8 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+ 		prev = vma;
+ 
  	for_each_vma_range(vmi, vma, end) {
-+		struct userfaultfd_wake_range range;
++		const bool any_mode_removed = vma->vm_flags & __VM_UFFD_FLAGS & ~vm_flags;
 +
  		cond_resched();
  
- 		/* VMA not registered with userfaultfd. */
-@@ -3994,18 +3996,14 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
- 		/* Prevent new userfaults from being queued after the wakeup. */
- 		vma_start_write(vma);
+ 		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
+@@ -2332,6 +2337,10 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+ 		 */
+ 		userfaultfd_set_ctx(vma, ctx, vm_flags);
  
--		if (userfaultfd_missing(vma)) {
--			/*
--			 * Wake any concurrent pending userfault while
--			 * we unregister, so they will not hang
--			 * permanently and it avoids userland to call
--			 * UFFDIO_WAKE explicitly.
--			 */
--			struct userfaultfd_wake_range range;
--			range.start = start;
--			range.len = vma_end - start;
--			wake_userfault(vma->vm_userfaultfd_ctx.ctx, &range);
--		}
-+		/*
-+		 * Wake any concurrent pending userfault while we unregister,
-+		 * so they will not hang permanently and it avoids userland to
-+		 * call UFFDIO_WAKE explicitly.
-+		 */
-+		range.start = start;
-+		range.len = vma_end - start;
-+		wake_userfault(ctx, &range);
++		/* Retry faults for removed modes while the VMA is write-locked. */
++		if (any_mode_removed)
++			wake_userfault_range(ctx, start, vma_end);
++
+ 		if (vma_is_hugetlb(vma) && uffd_disable_huge_pmd_share(vma))
+ 			hugetlb_unshare_all_pmds(vma);
  
- 		vma = userfaultfd_clear_vma(&vmi, prev, vma,
- 					    start, vma_end);
+@@ -3648,6 +3657,17 @@ static __always_inline void wake_userfault(struct userfaultfd_ctx *ctx,
+ 		__wake_userfault(ctx, range);
+ }
+ 
++static void wake_userfault_range(struct userfaultfd_ctx *ctx,
++		unsigned long start, unsigned long end)
++{
++	struct userfaultfd_wake_range range = {
++		.start = start,
++		.len = end - start,
++	};
++
++	wake_userfault(ctx, &range);
++}
++
+ static __always_inline int validate_unaligned_range(
+ 	struct mm_struct *mm, __u64 start, __u64 len)
+ {
 
 -- 
 2.43.0
