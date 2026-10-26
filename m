@@ -1,113 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B20C606A31B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1794606A323
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 21:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c8Ahxz+L
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQuxmZUJ
 Received: by kanga.kvack.org (Postfix)
-	id 406066B05B0; Mon, 26 Oct 2026 16:58:19 -0400 (EDT)
+	id A0D9A6B05B1; Mon, 26 Oct 2026 17:08:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DDB26B05B1; Mon, 26 Oct 2026 16:58:19 -0400 (EDT)
+	id 9BE5A6B05B2; Mon, 26 Oct 2026 17:08:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31BB26B05B8; Mon, 26 Oct 2026 16:58:19 -0400 (EDT)
+	id 8AC7E6B05B4; Mon, 26 Oct 2026 17:08:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 125B26B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:58:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 914A81A082A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:58:18 +0000 (UTC)
-X-FDA: 85365990276.26.551EB71
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C5E50180002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:58:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c8Ahxz+L;
-	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793048296;
-	b=xmjpB3N/aYrpJ21CvvdSEIglVQ/j+EOCN3UtTq6wC+V488azIhvNeiK5e4Yq00sGUXklJY
-	oWYLfSjhKN1IBBI3YVjY2jZlehD4IU/9DSnPX9+vcWSkD5QfZm8xwFJNOFTmeQ6YQo25x8
-	bZrUpceHCqf13fWHBzAXjCpf5tdztVw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c8Ahxz+L;
-	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5C9356B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:08:29 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97B314088B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:08:28 +0000 (UTC)
+X-FDA: 85366015896.03.CCE06E1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AFE1B160006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:08:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQuxmZUJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793048296;
+	s=arc-20220608; t=1793048906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=icmUq+qL2c/gwZjRUiz00O2bxdKoJyT2ITQRS8SDc+k=;
-	b=Nl80N8Yj28whRciTspS6MSy4B48bRRJjDXyuHbWkfBCZYGHaJFwyQ/CvAt2y7KO2uoV+pu
-	BbvNPWt39Cws00zK4Wt8gEw4o4Gdm2rCAdzgyvxw+BMw1BsZ6dsPBQh41mXMZcijWJt4hq
-	BPfdYZk3qewbqxPDXRYXSBxc7Ua472o=
+	bh=PC1CXbiHzhQLku5W1cl0FjvjhWJ5KEZGUIcph1ecHwY=;
+	b=knNyujXyG2gufH3Cbu4w35Zh7jLiA5Rl3vOk7nBVFaIX8TBZ3n0fwVqcLpOoeTPCwCKhrK
+	6lDIMexxvjseHYNNeLKQhYhxQZyrJC2dfHuc9FLedLGqTDvsqve8wCmGpdZsnOaAuCXmjx
+	qtTPuXzyeNyt6DAwGS8+gMNZJTrTbYE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQuxmZUJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793048906;
+	b=2gTC+h4zyNkUSx/uq0W7nLkVymMGZT3rIbrGXsSVOXBd06X6I0NwW/FMmRFz6Ke95Rytu3
+	4m10iGAXHRGT8fdQwoXa/TBWbjlZ5RxzqcGfusKv3+v9aCSquR3PthmP4gJhkC5ay8K5TE
+	150kJNaYP5eMT+vKAUDJX3ZCNKAt/BE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 864DE601EF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:58:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC7D1F031E1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:58:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BBA36405FB;
+	Mon, 26 Oct 2026 21:08:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCDF1F01825;
+	Mon, 26 Oct 2026 21:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793048295;
-	bh=icmUq+qL2c/gwZjRUiz00O2bxdKoJyT2ITQRS8SDc+k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=c8Ahxz+LtK0cK80zV6kg8UGyAghjfA0p3hs9m5IKO7imlTjuRbPZ+YWwVA8GXrV1J
-	 vHHpMylEfor90qdVsHO1EWbJ711CTvV5FnEqmxY+jAh+oj16Uu3g4JU/ULctNeQBT8
-	 M81B/4dEEle7aqWzOV4XkJqegLUGDxysOYzRVj6ddtAUxeJP47tcufPOhTXsEIQMd/
-	 d1prtaXbqKqDbuQtZpXPZTcbpNO9gMrTeWXNbCbOJvPcWLij3ylBetKULwzCWyWkbU
-	 QQRvZ3kC+eMRggyFSpjcmFJPkmo+Wdko+nPmjJNTXclQgtZlIJtITyoXQMnL9OxBMW
-	 GsnMkvZrRP4mA==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93e7ad9f78dso411894585a.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:58:15 -0700 (PDT)
-X-Gm-Message-State: AFq9FYJ9l+5R6iTmAFzZ14f37k7a4O7FCmE2gvVWTrboSo2YCpdWGjkd
-	NkYfmy6GbIrWu/GamC7tAVnWRk+o1pmGDof/TyhDOCD/OMFmaIMg5eBQskhyIUn9WnUDvffCLWH
-	fht8bIIMOm8HnNYGmo2HDdQbutIkFHjY=
-X-Received: by 2002:a05:620a:271d:b0:93f:e53:a55c with SMTP id
- af79cd13be357-940ef95200fmr1180262885a.78.1793048294632; Mon, 26 Oct 2026
- 13:58:14 -0700 (PDT)
+	s=k20260515; t=1793048905;
+	bh=PC1CXbiHzhQLku5W1cl0FjvjhWJ5KEZGUIcph1ecHwY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CQuxmZUJFoHe/jVdB/Td1vVaISzkT31yz4kuoP+9Yf6XgCaMbl6F5B4zTdm8amOx6
+	 Z2zDvTa7sws8ye+cXb9w90RQJ1xrpGccTMU/inaNNbT9EOS+7YKzBDHxrl8TVHJpKi
+	 jQVOUH5FOREAqLhZHRorelHQKb4HpsMDpXypnX13JNXddnVaAyripGFIM3k/BAYi3t
+	 qhee9qBa0Muu2zQtovUANgP48Gz45LaFAzSypGrjypZDV75SDXJOWSKQO9cLhgq8IV
+	 aahuPEKJro72FUipgua8rXcW+Tz43i0i+D+bXeiJ5dnHRDltvwZPwpMrkGuVDew2YA
+	 VT7p4t6xKB7Qw==
+Message-ID: <ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org>
+Date: Mon, 26 Oct 2026 18:45:48 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261025-b4-ksm_fixv2-v2-0-8b61ad0491f1@linux.dev>
- <20261025-b4-ksm_fixv2-v2-1-8b61ad0491f1@linux.dev> <CAGsJ_4zUVpBJazRxc1CzN6u5XvpUaGnaf-_7JMz-rGK_ZTYMtw@mail.gmail.com>
- <e865f7f0-087c-4fe5-b729-6e6946cd20f6@linux.dev> <CAGsJ_4wp_jCtCeMx39nW0Z1Jm5pja7_V6XNwLB6p7zTan0c3VA@mail.gmail.com>
- <dee39669-b726-480e-8ca6-10f19512da68@linux.dev>
-In-Reply-To: <dee39669-b726-480e-8ca6-10f19512da68@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 27 Oct 2026 04:58:02 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4w4ozXM+=T0qGBAhC323F49Y4LxrrKKt3GFCs+en_TVCg@mail.gmail.com>
-X-Gm-Features: AclHuK87m9cZBrXF70X-vghHkwSRiCol7Tl6VccIZSTsfEiuILsGNXgum-WwE1U
-Message-ID: <CAGsJ_4w4ozXM+=T0qGBAhC323F49Y4LxrrKKt3GFCs+en_TVCg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] mm/huge_memory.c: skip zero-page remapping when
- underused THP shrinker is disabled
-To: Nico Pache <nico.pache@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Yu Zhao <yuzhao@google.com>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Usama Arif <usamaarif642@gmail.com>, aarcange@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+References: <20260227194302.274384-1-kas@kernel.org>
+ <20260227194302.274384-14-kas@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260227194302.274384-14-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AFE1B160006
+X-Stat-Signature: n9c6xge79gimoz4muguynxp4ad59pprp
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5E50180002
-X-Stat-Signature: 8p5mxmwkbgod13mg3tqquaspt9p31ujf
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793048296-859157
-X-HE-Meta: U2FsdGVkX19VEn0zAE1GvyVr0sZ2J5/lbNW1I3EDBkMBkLCcIXbgOxlLpK5jArFqEmbr46CNvRstJqUtAaHVH7OuqWyQek/FxJVS3KcmxeyTUdfG1R4wV2YfpRiCqWqTs0tXuwNGQQ5+8rZ6cunZwntYMSMR8FQDaaJCRrc89EGo71EpBKK0kIubQRll7hRUQt98xO1nyLnC8jgVcza0G0XeaJHeonGCLbZj5V4tFt/MDjnJJAlrnJingbfrtsKFpMFiQQ6fVpuSSez5zKKQVOWTBFpEajCp3cw8mlwKUlAVF/cnpIC0WgHV7C5LfXI3davEZgk4krRjWlmhttuonE60Dt7myhCqsdJsdaO2eQHB/fR5/yfFtlKakgiRhXd0ymfvAf4OmjZALqJ8wmmvKnXybJcMOYzhSDIUBYq4pbloq0+iJIMxSJbdRewkDCUuJEFN6xK51pYcGKxHI4kVIB1ZinMQrai6+Kjk91SICMgQ5K3o+h6vs8iL7o5HOrvMbo1Imq4/iKJa3Oy2jb+8FmVkNQPFp6aNv+2niu2NbABIqBKOqC8i1+5ff9+hQpzkw8P57DM0auuPuKNIhO9KfSr0hNcuzYMDJLJz0O34rbKBkC/TJXeyNJvGsTxwM2rXmRWtdlzPPYaNP463AcsdLwxHOn457J43iQMs72PSFS9n5kMjfak8iuhXIX6ksCNAOI9M1HgwZq7aLH/OD+hmopwLzLw0ANvMW353x1OJyog211mf9sqNtYRv+PqjxAVw2sHt4WC1Hd6m2QDM7SI6ogPQcjio4OtMJC01VpITz3n/nTWqVIIY7G8NiqkLGyWpqP6dV7ptVPflDfp/giObBzYP4pXWp3vXWKnW88hooONAsHugzU2leoO+JMoTJe6/nZiZJsj/xljIfUVWjzqiczCGeJdcQ7vvjZH8Zdy2uv1xUxVof+ve9GZtOkSsVqaCO4JGPhKhEKfllpsRB2Y
- TVHrT19p
- Nh7Tx+PtNgTD9VgVQJXrkq+r7OTM965zVhiLy9MCreGyYM/kclCCaCzUwoiqnHPn2t50TKiRobvy9F2qU0rpU7A7MEucSq6zrlC7q2zKbbpIcy2KtgX1Uf9Mo3zCeNNUNvQE8pcOdRfFPsx1CzN3Myw/NcXMADddkZaYm0WUvMxDWQc0nAHj3dHt6yPG2viGDFHgluVSM5o0KhKWpG4HYa/vtm0UFrxmrskrimieVFC8uttF0BAzEK9crJUfqsOjpSujTE1XNbqTgo91sFFh+osFNOez7SwDJpAgUdTG7cv32rua5Ew4C1AQ0C/4ht04BhLJm2CHhbmLzdE8n7/feRZBIvKTZng4qLFqBGL/D3/DsN9VeUFOs3LLZJ5hsIlm+8k51uKgBXMw2EMuMK64i6PPz8VyTtw6/eu9WzmcYsEmgd7lFKW1iTj0BBLC7LpoM984oafc+UadnGy59tUjSsWMnsQ==
+X-HE-Tag: 1793048906-856729
+X-HE-Meta: U2FsdGVkX1+09dn0eZSf4ft8GLkUMBvZIGbcmZAcm/xzC4VasWw0VuNQqdNxAiAUuJcq674cxHgbTzIe2EwGeDTrqMX1dBaRrgLm3uJ3E5h9WBt8u5zBg9F7EyiZXE2v9o41cTqsEBTgYS2ZDiBfz13MhVppvQL5iFO8qD4sBauOV/Fn7Xj0T4aZVhfHqjv2quOb+9HxW5uPy4c+yOuzlSZYMO2Q/6gNBtXfDw7N2JlHFCDL8ulrlvC0SIEaTi/e0lGqoJx+/bhg77be+HE3HNq/rr7lgbknYvytB0PMkk6O/PYFhCuUruiHxagQqmZqsLPRM0knyt6I0jnTvIHOUcrJ42jQ6SLLjNgDCC+vlRNFyFDvxO7xyTe5xbar5lvSWpaln104x8QhrYfMVbX4vTMm6bsM+M37vuRosFzgpAqDTlhbzrOgSerB9MgQ6KZDTLYdlofyqP9pCrTjsw1UtFRfG3PO/yVjVxIAmgHKStM0AUGskIHHMhx99LZgmjvvk4IHOlb/6PlYywENvAC9P5vf/2F1Lew7aIf267dsTNer4swsC9rNY9HSq2c14eVSne+1YyEC1jkwzWvuyYOg59tGRBouit/Cbe3CrPQKH+ftQpwFk38CNg1ToX3dvNT+kpN35Hox05KW3L3h39OSRXJGGUo6FfZ93fn32Jv32s+NibU1y/vlq28NTmeEC7SmDtJTA0hrmncIQnQpy4Ukis7DzccwVN4n/1b2/WeFBEFkdHk2mVDaUPvsNWcsCSLZv5wrnfIh4nFQqoUEkLzlzNwbbus4hSnvTMpUi0jIJ33JRNAvfcJKTvk920OceJJmBQEy7oLmBtYy+qw5kbuCsgJ0y0qYgAW+jFDq9LR1Be/5r92z8CQvzIJgfpUBonmideZTtRI9GGRr9Coozv1luAxLCrkIpivea0nVNF4MlxSUZUStpW2RlbxP+iyO4y+vHsOydYpdh0kSC1swuHy
+ cvmnn8qV
+ M6B+DZ6oz/uB/RRLQxHq+Qkp7vowqj0xm8Fo1GkzIAL8NV4NhLneughNrABSd06nMxUuFQv4GT6YLJOXFHIyDAm6y4RPIvp4/cUNiIwnOUhson85Xln5QuEe5VFGsjG6ifCO90061NnKiJGk4pGN38X8Z7RG+Vl2N0GE6aEOgCIUTG9MBJYI6BnUBVchnxVuOyvvrFPdW0OMAx3qN3iXgxG4G+B4b3hmoZO7clkjnftkidgx5UOb1AvmwUPYSjp+KsCZ05wJRQe7iIDrIq+IORw8F53WuFBzBMKw1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,73 +154,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 4:02=E2=80=AFAM Nico Pache <nico.pache@linux.dev> w=
-rote:
->
->
->
-> On 10/25/26 10:52 PM, Barry Song wrote:
-> > On Mon, Oct 26, 2026 at 5:48=E2=80=AFAM Nico Pache <nico.pache@linux.de=
-v> wrote:
-> >>
-> >>
-> >>
-> >> On 10/25/26 2:28 PM, Barry Song wrote:
-> >>> On Mon, Oct 26, 2026 at 1:40=E2=80=AFAM Nico Pache (Red Hat)
-> >>> <nico.pache@linux.dev> wrote:
-> >>>>
-> >>>> The zero-page remapping in __folio_split() was added to support the
-> >>>> underused THP shrinker. When the shrinker is disabled via
-> >>>> shrink_underused, gate TTU_USE_SHARED_ZEROPAGE on split_underused_th=
-p
-> >>>> to avoid scanning subpages for zero content unnecessarily.
-> >>>>
-> >>>> Suggested-by: David Hildenbrand <david@kernel.org>
-> >>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage w=
-hen splitting isolated thp")
-> >>>> Signed-off-by: Nico Pache <nico.pache@linux.dev>
-> >>>
-> >>> is b1f202060afe a correct fixes tag? as
-> >>> commit b1f202060afe has no even "split_underused_thp" there.
-> >>
-> >> I believe so. IIUC these two series were merged together. While
-> >> 81d3ff3c6f7 introduces the toggle, b1f202060afe is where the behavior
-> >> started.
-> >>
-> >> I guess you could argue that the Fixes should include both?
-> >>
-> >> Not entirely sure!
-> >
-> > Thanks for the clarification. I guess it's fine.
-> >
-> > BTW, with the code below, we no longer add fully mapped
-> > folios to deferred_split_folio. So the scanning code only
-> > handles partially mapped folios to set up zero-page mappings
-> > for their subpages.
-> >
-> > I'm still not quite sure whether this is really harmful, though.
-> > Am I missing something, or was there some discussion I missed?
->
-> The issue is not in the actual shrinker code or the deferred split list.
->
-> The issue is that any split leads to this zero-page remapping
-> indiscriminate of the actual toggle. The same way this toggle is gating
-> things going on the deferred split list, we should be gating the actual
-> zero-page remapping too.
+On 2/27/26 20:42, Kiryl Shutsemau (Meta) wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
+> 
+> With fake head pages eliminated in the previous commit, remove the
+> supporting infrastructure:
+> 
+>   - page_fixed_fake_head(): no longer needed to detect fake heads;
+>   - page_is_fake_head(): no longer needed;
+>   - page_count_writable(): no longer needed for RCU protection;
+>   - RCU read_lock in page_ref_add_unless(): no longer needed;
 
-I'm not quite sure this is true. The toggle prevents fully mapped
-folios from being added to the deferred split list, so their
-subpages won't have a chance to be remapped to zero.
+I have an AI report that removing RCU read-lock was wrong.
 
-For the remaining folios that are not fully mapped, or those
-that were added to deferred_split_list while the toggle was
-on and remain there after it is switched off, allowing
-remapping to zeropfn doesn't seem to violate the toggle's
-intention of preventing fully mapped folios from being added
-to deferred_split_list.
+The sequence is trivial:
 
-Anyway, I don't have a strong opinion on this.
+1) read() -> .... page_ref_add_unless_zero() -> atomic_add_unless()
 
-Thanks!
-Barry
+	int c = raw_atomic_read(v);
+
+	do {
+		if (unlikely(c == u))
+			break;
+
+We pass that check. Then we sleep (rescheduled, vcpu rescheduled etc)
+
+2) Page gets freed
+
+3) Huge page gets allocated and HVO makes the struct page read-only.
+
+4) 1) continues
+
+	} while (!raw_atomic_try_cmpxchg(v, &c, c + a));
+
+
+Then we try to write to a memmap that has been optimized by HVO and is read-only.
+
+Apparently easy to reproduce by adding a delay before the cmpxchg().
+
+
+The AI fix I received alongside the report is obviously complete garbage (as it
+causes severe overhead on all fronts) and I am going to spare you from it.
+
+Can you look into it?
+
+-- 
+Cheers,
+
+David
 
