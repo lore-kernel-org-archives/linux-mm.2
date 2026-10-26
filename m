@@ -1,96 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6BE606A320
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F893606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 12:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rjr6L2lQ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iBw406SW
 Received: by kanga.kvack.org (Postfix)
-	id DCDCC6B05B2; Mon, 26 Oct 2026 08:12:18 -0400 (EDT)
+	id 4F4CE6B05B3; Mon, 26 Oct 2026 08:12:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7F9B6B05B3; Mon, 26 Oct 2026 08:12:18 -0400 (EDT)
+	id 4CCB86B05B4; Mon, 26 Oct 2026 08:12:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C463D6B05B4; Mon, 26 Oct 2026 08:12:18 -0400 (EDT)
+	id 3E3686B05B5; Mon, 26 Oct 2026 08:12:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 969036B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:12:18 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C63C8A8300
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:17 +0000 (UTC)
-X-FDA: 85364664714.18.44ADBC4
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 049D86B05B3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 08:12:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7810716075F
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:21 +0000 (UTC)
+X-FDA: 85364664882.01.143685C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F0EA3140004
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:15 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rjr6L2lQ;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id B1D3C12000B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:12:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iBw406SW;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793016736;
+	s=arc-20220608; t=1793016739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YVOuksGVEghG5uOYmYA58z5wJk+3kOw2LcsR/GcjPto=;
-	b=vtPUI6w3bR3wL9ZMaRgEPKCxwRM2WhAgN085ZKG+umSTB1QfQX+sF1jnhZ+IYy/nO382WF
-	Tg0NvCixRbN+t87F2+kVhE9adfw5F7HTWcqNKemkg1ESFS9TIhKAPn1MAPZAPVu3Ma/+G5
-	q+8aF9qG50/VLQJHZSJI2oeIPPME5/w=
+	bh=EKPDpnDsxP95BvhQy6gMrx0mg3B9bgjTY7R3pORfF0o=;
+	b=4KFWp3cu1wyHjPDMQ/Q+cVKeIIy36TO/QejyW+hT0/tN/fV+btFhNI8foU8i4EA/6qTxHg
+	gk7R5FQwjN8Ge7VfsQRPVRgAaflzsJzCAlVCD7j4U5kOgHcbpE54ORArjXT79LTTGrXv4l
+	N9Ber3lkGpuvE3vIyC0I53iX14a+y/8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793016736;
-	b=7OJCL8OCpwReFnaaeYIoEO4H4qE/sn0sx8+jltpZSYtcbQeDMYI6+Tct1MWJzFEUInYpg2
-	rooT3ynKHd/3/lS6Ta9Z6Vbt1wP3Bo6S5sMqbSg7CHI6UTbP4zKbh+LLn66QEoZ5b0BV7/
-	LoRMXBvHDSvBnNIodVUlIZwddTB3su8=
+	t=1793016739;
+	b=pYatpNLCxu9x7V8Dt0soh/j2iv4D9eSbnEe4IRJzk4yLxt8dM7HWWNnAmf4vQfrhpfAru7
+	G1F8fd5podSXuqUosCv6i/QlfysE7ll/wZDws2EVcunqk3dGxZugoQYdPfw8481WG2LVg4
+	8hlnsOB85gM+7Ukp3qGy4wQ2OROFkoQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rjr6L2lQ;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iBw406SW;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E54B7438F3;
-	Mon, 26 Oct 2026 12:12:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5C81F01825;
-	Mon, 26 Oct 2026 12:12:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 13A56438F3;
+	Mon, 26 Oct 2026 12:12:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F041F031E1;
+	Mon, 26 Oct 2026 12:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793016734;
-	bh=YVOuksGVEghG5uOYmYA58z5wJk+3kOw2LcsR/GcjPto=;
+	s=k20260515; t=1793016739;
+	bh=EKPDpnDsxP95BvhQy6gMrx0mg3B9bgjTY7R3pORfF0o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Rjr6L2lQ9XEI4uTeOr8KZuQnr4s0v0pMB3V2pMGjT1TVV1p6X4QQr3Gsv6yN5by2t
-	 NZiDmu+xT/xRdbsFKJfpHOBhbBPrB0H2UcJ2LbhECD21PacVYLnOPAu8H054dHx+tx
-	 rj8JMWxUO7jm++/rTrmRzGAq1MbcSeK3DkkzvnXTRl2IxzuSkb+3sdZ+iEsvuMpPiE
-	 gRrf04EBCMYejn2A7DZMegDJPvvwEMw2v1UdUs8t9dBfDgK0CQ48WghYvKNGHc/TPY
-	 KwRxYSk3bnCKD6VDoZKqaV4qOGb5OMKKamoFmYkUx2zn+uNeMgiSfT75uuc+me3hv6
-	 +lFJWdkv3Z1QQ==
-Message-ID: <c7d83d5d-2431-4a38-adda-b07afc8194b1@kernel.org>
-Date: Mon, 26 Oct 2026 12:00:46 +0100
+	b=iBw406SWNAyN0iypY6z9eMu7GvnlQWgx71O//+605r5yzwZ0nPS5QYtL2h4pXli4b
+	 jQ/8nviFCI0Ni4rjvPmue0JD1nP7zd9iiL+Vbr+PT5RwYMUo5U4P8srFZooN8q67/O
+	 OS5ASw439ShiiovDUOTFVjawzHGh8ZT0ZO79ney7YB8LWOCivypf9hPnO/TLbgVZ9Z
+	 zwJMbwJIGNsuKg5xVyu63tT+4rAywuC2G/YzpOPeoC4QIpXEd80c0uIVBCaSr+jdfu
+	 3MZtaCRlaL6j16jSTIDbjNvxRDP896Db8tLalPtJcZ7P+R43IhNMGOKbYVg7PygMDo
+	 Lfd9/xbqy5Jqw==
+Message-ID: <e3a1ae72-9370-4c3c-8935-6a410a74377b@kernel.org>
+Date: Mon, 26 Oct 2026 12:19:21 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/16] tmpfs: keep the quota soft limits of an unused id
-To: Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>,
- Carlos Maiolino <cmaiolino@redhat.com>,
- Christian Brauner <brauner@kernel.org>,
- Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Stevens <stevensd@chromium.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- William Kucharski <william.kucharski@oracle.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+Subject: Re: [PATCH] mm/mempolicy: recompute automatic interleave weights on
+ memory hotplug
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, honggyu.kim@sk.com,
  stable@vger.kernel.org
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-2-703206d5fa0c@kernel.org>
- <xre5aqctyk464ao7gdrg4fzbamccmo2w5jnqxzultltfhm43gm@xtab77j3yetz>
+References: <20261024170415.4121901-1-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,21 +120,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <xre5aqctyk464ao7gdrg4fzbamccmo2w5jnqxzultltfhm43gm@xtab77j3yetz>
+In-Reply-To: <20261024170415.4121901-1-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F0EA3140004
-X-Stat-Signature: jmjpjif5zc6eghf5zbbrdoynxkcjq6ud
+X-Rspamd-Queue-Id: B1D3C12000B
+X-Stat-Signature: 6ip64671hg8pz3fzt6azsafgu4sorqgm
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793016735-367422
-X-HE-Meta: U2FsdGVkX18AW11eqpQ+Sh0rpB2IsQ17yGDu2ATVq9cUKGyl3/P0IfLwe7jcHBuLOsOx3zOC5AfGOFY6HpcReOTfZWPm1dVIIfRNYrmcINDNTibrQzv2iw1v+JyUNlLxxw4Qv0SxMZULxVTak0WS9pExNVOZ+Qp2dMuqLfe0TKPXLdXzU1P7ztb6pz5Coqu6TpMQ3Ig40h5MzxmlbvwKFjI8VPRa0mqdg834EORYY1RuPy2fiTgeMCeF1TBXgk2Ohzyk+0HPL8nBeOElrRnC0LZj6gfG2pByG9OF87kg5LjdWbFDQoyXK02AVNFJdceCOdzwfxXFcr/8aYpk6jK/sUd3DTne+YX2t7GlnHVLJyxOZ4itMjBoiW2V96XRPjtWZjK4wXDst923Agvdt+qOD9CYlEFu0a3fwuAfJ2/IH1f33Y/sxH7NvOwYtzqOv1wrvLts/RBxMEZaL7oO1qx1yaBZwcBgIo0ONIXtg3bFPFvifhpc5BF3JvKkcvCRIfFD4Ax/E+jXQam50J9kjS0bmrooxuNqkJDg+/ZS1+OgsKMzW0GNE5G8kIQIHPby86YVBRpm2bWZ1uc+dXTw8eLmzwKB6o0OvdGre5oSuKJRWi33J13XK3ndf8D9PFSRWa0CBCgK2NRbifHHDtDUB4PWb5Z7Qmjbdb8l8IJ5S558FChJEqKXkuPFd94X5aovf2HvKpyHwRjCBYXE+IUEH/tpsM3PzxMv8DCymDbw6G03F1bIzXQYcBt9mYn5agtJg0N3msBOPjDVKdZQRvZUylAKLXMJyKk1COFn57DazZdNu5alU4s/aIGkTTTyVf+8Yfe2ko6+Su0lv5QUzrQyowuI/IGLxw/b3RmPszoFqCttkwbWDpdSgbLfuO9PpklhLCQeuraABFlZDDVSCh0lo+VINly5VLu7TG+ctGCvbDvyFTiS3o7vZtpxSKsocO5C3Ls6jnwFTbcZjYhMJUh8cy5
- 1VcUWdVw
- 01UoNgZ9s5Lo3Uwm/G3BszSpl5trS9he8OF/7XUDqv2GlCsDoqUhf7hwP6IbaAfhAjdIlN1bERTVyECkzQ4MYZKCc/NeJr0WjDODSW6fcq3Pc4EAZijaaUXaV8HIH3HMpfF5iD807H5t5t6NPt7OUzgjcGb6kxKEzcBAj5tZJ6nxca8pC2hNcoa6wNryUzjixxlqmqLrO3/u6jeYEESodLPWVsohJ1kf3WoATpGzj/d2yYAl9JILUdZcp/oOXU7G38IJ48OWpWeaPk/cyMIhfgUP/Z6XS+jnrY2ob0HnC5qtEUCvpt2VYe4IFzHT0xGFjtqDOn9oe0P2uJmJkEIEgsDT3T5D5pJ1Yb8Rwjx3aJsbtALvV1llngStO9LZ5b9FaqkH+U435mADY8gnbDHMkU+zvvDmDYxA2j32fw/Rh1zrkw/tU46pBJV4Pl+6EuGVTAjst
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793016739-663434
+X-HE-Meta: U2FsdGVkX1+5J4ltrJ407MJWEkLqUqWqtoU3JcVlyrDYN9wSaSfkxMM8jeTWfOmbbgkN8XOr1Cgt99pjLs8DdcLHxSReP+Yowg5Bwf4c6x9yKqU3qeuYvxnnEl0j/Pu6wUAwkg6q6lSkoyyKrMeiXmxK/8LB+3/cMSzF54rFtGFLOt9aUuCz8HDX22szlesWpCrcwxBw+wXf9uYvAC/KNLj34Wha/E0yA/gPjusInMq+p/ex9Yf3KLqtswa665hv54aVhDlF4B3IE+TXokn6HBY8HP7uk7KsoVHc3tuGMPb7+ZiB7Ou74IEhAWpBJ2j3K1yjwkvKbECTD7XSks83ew+pdvVktRCBnkUZow4zcWRiDCEHT5hpSWgGU1ZdPOEnQLqi5+palxWHx5XTEc1jG28vZk4pMBl4u+jxcQjqbMp3eQxmOZb8OkiLOL/hi2kLWn8xCSplWdtSH0Hy8iOIvOqHWfbpTl/2mAWgYRQEpYiL8HPmhPKV23rRwbs05WErWwVWbRD0oslo36zuYC8x0L9ebUKjQRb7DRZQzfk8n3o10VwAR3yyBEdWAI1Q2owcY6DSl/1ttTbGtttD3CULdi3LCeLw/PWyvaxqMVxghT3RoPEiQsVgtyqymnmdPXUNa32lYG+CuKxxoI6ITdf8AH9BWND/cwLmUNIdQ7MXvLz1wmt2CzS8g7LoKZ0VFXtUFXkcy8tYZ/Ev1CTiW+seR4PSaPtGJq/M6bmMJNvjQvVY/g7XqeGKIZW2dTeqWIDdCj9xBOlKyleN8TtaJpiqT4uuc6GLdmU9exzp/l6gTuPvs/W623lB78qeaQJQolOOkwvatpkNn5H/SlexplUcrlTizTBSAdKk4tPmw9YuaNet7slaVsre+KKNVDrPLyw4UM5zaHw50MctJH94V3xyvnrdl+cx9lULAtU8By4WB18SXeF7Kvz9mK8GCRJfbbQ9mO2WHacmwFv5CV2Pnzm
+ O+5dEjek
+ 0qd0H/me4IrH5Dn2SEulphoaBF+xnioT+S+VbyERYDNquB3QaoZ4H0faZvdxmTGBQ+GKFdc6YEoMaiVwN9tBKYGuOW/I5RWh9/hxTfur1/4k+y2PwaUeeB7+HjUk7hpljCQaH1J+StYlWvoFLeFEE4QHlxfKm+mzzeGrYFQLOXRBpnHlkrg+DxjktVN9LTm3wQW8+yX6+guKmJJTRu0PCepEt3OKJW78QBpCW0sm3NNmB1PWpKqR82537ULv+MY01HGFpt4soeYNASbcsrOAOh8OS8RsYKiy+n7O9H26iiML51KBd6xdRy0m3r7+JCfE41reVhW9sJSxS8fv3Ag/k+CQ9tlXDYPlv+jph5jrcp7t2PzTUXjb/SJtD7kbt9adJ/T3yTP58lCl9llpJq1cK1DxiPeX+uC0uH6St
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,37 +144,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 11:53, Jan Kara wrote:
-> On Mon 26-10-26 10:40:35, David Hildenbrand (Arm) wrote:
->> From: Josef Bacik <josef@toxicpanda.com>
->>
->> When the last reference to a dquot goes away, shmem_release_dquot()
->> stores its limits in the rb tree of the mount, unless
->> shmem_is_empty_dquot() says that there is nothing worth storing. That
->> function looks at the usage and at the two hard limits only.
->>
->> So if the administrator sets nothing but soft limits for an id that owns
->> no file yet, the entry is thrown away as soon as the dquot that
->> Q_SETQUOTA used is released, and the id never gets to see a limit.
->>
->> To fix it, compare the soft limits as well: an entry can be empty only if
->> both soft limits are zero as well, which is exactly what
->> shmem_acquire_dquot() sets for a new entry.
->>
->> Fix generated by an LLM and sent by Josef Bacik in private.
->>
->> Fixes: de4c0e7ca8b5 ("shmem: Add default quota limit mount options")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->> [ david: slightly adjusted description ]
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On 10/24/26 19:04, Gregory Price (Meta) wrote:
+> In auto mode, weighted interleave derives each node's weight from its
+> bandwidth, reduced over the nodes in N_MEMORY. HMAT and CXL report a
+> node's bandwidth once, when the node first gains memory, and nothing
+> else on the hotplug path recomputes the weights.
 > 
-> Good spotting although I consider this pretty minor (unlikely setup proven
-> by the fact nobody complained so far). Feel free to add:
+> When a node loses its memory, the other nodes keep weights computed
+> with its bandwidth until another node reports. If one does while the
+> node is away, the reduction skips the node and resets its weight to 1,
+> which it keeps once its memory returns.
+> 
+> With HMAT bandwidths of 100G for nodes 0-3, and 50G and 25G for kmem
+> nodes 4 and 5, weighted_interleave/nodeN reads:
+> 
+>   event             node 0-3   node 4   node 5
+>   node 4 online         7         3        -
+>   node 4 removed        7         -        -
+>   node 5 online         7         -        1
+>   node 4 back           7         1        1
+> 
+> Toggling weighted_interleave/auto to 0 and back to 1 gives the correct
+> 6, 3 and 1.
+> 
+> Recompute the weights from the recorded bandwidth whenever a node gains
+> its first memory or loses its last.
+> 
+> mempolicy_set_node_perf() now only records the bandwidth and calls the
+> same helper, so the bandwidth is kept even if allocating the new weights
+> fails. wi_state_lock is dropped between the two steps, which should be
+> safe because the helper reads node_bw_table and the mode under the lock,
+> so a racing writer only makes it work from newer state.
+> 
+> With this patch, weighted_interleave/nodeN reads 6, 3 and 1 as soon as
+> node 4 is back.
+> 
+> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
+>  mm/mempolicy.c | 66 +++++++++++++++++++++++++++++---------------------
+>  1 file changed, 38 insertions(+), 28 deletions(-)
+> 
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 0884c629670d..ffb293a4cc56 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -238,27 +238,45 @@ static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
+>  		new_iw[nid] /= iw_gcd;
+>  }
+>  
+> +/* Recompute the weights from node_bw_table, unless they were set manually */
+> +static int wi_state_refresh(void)
+> +{
+> +	struct weighted_interleave_state *new_wi_state, *old_wi_state;
+> +	int i;
+> +
+> +	new_wi_state = kmalloc_flex(*new_wi_state, iw_table, nr_node_ids);
+> +	if (!new_wi_state)
+> +		return -ENOMEM;
+> +	new_wi_state->mode_auto = true;
+> +	for (i = 0; i < nr_node_ids; i++)
+> +		new_wi_state->iw_table[i] = 1;
+> +
+> +	mutex_lock(&wi_state_lock);
+> +	old_wi_state = rcu_dereference_protected(wi_state,
+> +					lockdep_is_held(&wi_state_lock));
+> +	/* NULL wi_state assumes auto=true */
+> +	if (!node_bw_table || (old_wi_state && !old_wi_state->mode_auto)) {
 
-Yeah, similar to #3 really minor.
 
-Thanks!
+I was confused about the node_bw_table check at first. Maybe
+
+/*
+ * We can get hotplug events before any BW data was recorded.
+ * ...
+ */
+
+>  
+>  /**
+> @@ -3900,8 +3903,15 @@ static int wi_node_notifier(struct notifier_block *nb,
+>  	case NODE_REMOVED_LAST_MEMORY:
+>  		sysfs_wi_node_delete(nid);
+>  		break;
+> +	default:
+> +		return NOTIFY_OK;
+>  	}
+>  
+> +	/*
+> +	 * HMAT and CXL report a node's bandwidth only when it first gains
+> +	 * memory, so recompute the weights whenever N_MEMORY changes.
+> +	 */
+> +	wi_state_refresh();
+
+If the function fails, should we at least pr_warn_once() ?
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
