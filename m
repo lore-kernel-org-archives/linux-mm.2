@@ -1,147 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FD8606AD02
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE63606A31B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fP4jfNbD;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LiRzvW77;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fP4jfNbD;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LiRzvW77
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i5V4VCQr
 Received: by kanga.kvack.org (Postfix)
-	id 632AE6B05C0; Mon, 26 Oct 2026 09:39:01 -0400 (EDT)
+	id B16DB6B05BA; Mon, 26 Oct 2026 09:39:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E3FC6B05C1; Mon, 26 Oct 2026 09:39:01 -0400 (EDT)
+	id AEE4C6B05BB; Mon, 26 Oct 2026 09:39:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D2866B05C2; Mon, 26 Oct 2026 09:39:01 -0400 (EDT)
+	id A072A6B05C2; Mon, 26 Oct 2026 09:39:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 178AD6B05C0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:39:01 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1E43A079C
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:39:00 +0000 (UTC)
-X-FDA: 85364883240.23.7FDF211
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7F2634000D
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:38:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fP4jfNbD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LiRzvW77;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fP4jfNbD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LiRzvW77;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FF786B05BA
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:39:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F14D9160769
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:39:46 +0000 (UTC)
+X-FDA: 85364885172.10.0A180AD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5EF37180005
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:39:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i5V4VCQr;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793021985;
+	b=Pj7HRhrbb4Kzt5c1P9iKuqNI+hHhixfIgF8PEXmRJkS05BzGXtnC49Rj7uyfEBo8vaLk3t
+	vrDqw+QL+jLOk+Hc1pzmMxSnfz4oWcxJnPt9O8qPqVCnhMHxqKQaa2js4TFbAMBNSYDYBo
+	y2FG+K+HGwX4yRFDikWMcfqiojZbBhM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i5V4VCQr;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793021938;
+	s=arc-20220608; t=1793021985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J8msHD21z81Jfe07/YVkn5bSt0UwqtrZZbU29bnedd4=;
-	b=D359sADLtZIQMl2SeybY+eUXhUxKMPououMMTj9dpcBMyOqFXPoQGTjgsJ8iIogIoPvthT
-	JHn0K9S3nl6zaY46h0sGadnsGK6zhPkCgPjh6Vpjx1Nx5XNqAuxQLvBdBL/6CwitHw0dCS
-	kRpkBDKf4vHW3JfDi7P6AyYwi0MkQmc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fP4jfNbD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LiRzvW77;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fP4jfNbD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LiRzvW77;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793021938;
-	b=ffsBtLEKmlcKKU9Uqx03w5kOEWOPjXqAl5qDMTfIzncpnJhqv+S+MdoQYXi5ZSjpT7xzal
-	qXrT1VEKfnClcaIizUwYD/g1fxdx7ZoXtomJlyV1IuifPrsYHSOa1M1nzr+W3ndK3YG1Ih
-	YNf5qwbv/2BfmdMfoIgrtbOpq/PluJI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 39DC51F786;
-	Mon, 26 Oct 2026 13:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793021937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J8msHD21z81Jfe07/YVkn5bSt0UwqtrZZbU29bnedd4=;
-	b=fP4jfNbD1FR5VVI/DTKWhcq7P+Y9GJUxfi1o6dM2weL2quwWjcS5bomyCLz9jOIzLInfl0
-	E809AnNdxpKzM7SEbLyB3yRa6bOdj+KPb3BSanzkQqtwN2IkfLrBEWLlbQp89tdS0vycOn
-	HMbJ+RyFbH66tgPVLHQxngpG3HrPSQ4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793021937;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J8msHD21z81Jfe07/YVkn5bSt0UwqtrZZbU29bnedd4=;
-	b=LiRzvW77nvqygtAgd0aQr7xC3bchc4P9JJzhqnzl9AdA3W5p93SKtt+j0KKfSN45EA6vUQ
-	iRvU9WNmUfueZsCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793021937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J8msHD21z81Jfe07/YVkn5bSt0UwqtrZZbU29bnedd4=;
-	b=fP4jfNbD1FR5VVI/DTKWhcq7P+Y9GJUxfi1o6dM2weL2quwWjcS5bomyCLz9jOIzLInfl0
-	E809AnNdxpKzM7SEbLyB3yRa6bOdj+KPb3BSanzkQqtwN2IkfLrBEWLlbQp89tdS0vycOn
-	HMbJ+RyFbH66tgPVLHQxngpG3HrPSQ4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793021937;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J8msHD21z81Jfe07/YVkn5bSt0UwqtrZZbU29bnedd4=;
-	b=LiRzvW77nvqygtAgd0aQr7xC3bchc4P9JJzhqnzl9AdA3W5p93SKtt+j0KKfSN45EA6vUQ
-	iRvU9WNmUfueZsCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7048A13408;
-	Mon, 26 Oct 2026 13:38:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KBSoDe5X32qCAgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 26 Oct 2026 13:38:54 +0000
-Date: Mon, 26 Oct 2026 13:38:52 +0000
-From: Pedro Falcato <pfalcato@suse.de>
+	bh=+29/JeDTgI2q6Zdd2oPF6MhnTmquWtxwp3oevCRZyMI=;
+	b=Hc3CeCONf/wuv3P+KTTlOJo2MefApvIm0e+Wo5A5/FKDBoMscEGyH4ROFRgI9wRd265Djd
+	xUasUKFi6YPIp4X1mLrZ6KY6nGvnljOCXVMiXQwTtglI7T/nKlcC3VNwjeYfKZf5bZVjwJ
+	T5zVlb8aGXhDSQE5JXeQuMupd+fVUIA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DCC9D601F9;
+	Mon, 26 Oct 2026 13:39:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DFA1F01825;
+	Mon, 26 Oct 2026 13:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793021984;
+	bh=+29/JeDTgI2q6Zdd2oPF6MhnTmquWtxwp3oevCRZyMI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=i5V4VCQrdHU+uG2pJYqRPhqkSzGsM4xSLU1XJ0z+Tn+sGBvGl6PS5AjTKVdmcv7K9
+	 UfzYyrhEX+CTogKDpTIY8lSfX1ObveUxmAkok+oz+mpAYPvI8fHZHyt0umP7bvrRHs
+	 BeNRToBTnOZoQW8aS/ryia3YZ/4UTSkJso5hJLv3xJLZ2C51/dd1tulN+/RHimZul7
+	 DiXbkdNPUq/Nv5Ktmq35EoqixXG6MoyeZZg4wNF0PxRH4sBVkkbdL3yOv4vcKZi4tz
+	 BpWuka+s9hoS3MQ0yrRcYrO7hYd8o7kThsrGemf08Ua37ljn+RT6XbUviQ0AeCcBh0
+	 YvlSe4qWWm1Sw==
+Date: Mon, 26 Oct 2026 13:39:39 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 01/16] mm/mempolicy: charge shared policy nodes
-Message-ID: <at9X2LBkv8Df9Tt6@pedro-suse.tail5790ac.ts.net>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
+	Ngoc Quy <ngocquy0700@gmail.com>, liam@infradead.org, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Muhammad Usama Anjum <usama.anjum@collabora.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/task_mmu: pin mm_users in do_pagemap_scan()
+Message-ID: <at9YDZXEccL0a1Pn@gremlin>
+References: <20261014095540.3261469-1-ngocquy0700@gmail.com>
+ <20261019174659.42c3529d5e35563cc6e5244c@linux-foundation.org>
+ <9aa49812-1132-458e-9bf5-6dba8b476b26@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261026-fixes_shmem-v1-1-703206d5fa0c@kernel.org>
-X-Rspamd-Action: no action
-X-Spam-Score: -12.01
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 7F2634000D
-X-Stat-Signature: 5u1wj1wfthccgbdhh3o51i838cgj6poh
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+In-Reply-To: <9aa49812-1132-458e-9bf5-6dba8b476b26@kernel.org>
+X-Stat-Signature: 9fr7wspjupkhqonqhppre3ekmngxedbx
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5EF37180005
 X-Rspam-User: 
-X-HE-Tag: 1793021938-446873
-X-HE-Meta: U2FsdGVkX19xpCWFlffJ/+ZiUq/n6sm1JFxRgvYOBh2F0YVn/FsD375dzrU8PMyhEvMb8mcmbXjRc8PimzUub2HWUEV3yX7MrMD4AOOo9ctGTOqHN0UXPd4lJ3uOtWrSkt6PgqjE7rAlXSCL2/5MHqolOrFx3+F9B8SacV47oGTl4lW0duMQjs9O3Sku0RrVRZy8FMZvjtFFva5xBfGC3bGCsKuU2AMGU9Qjw+7jgHHmJ2mFKfoXD10qSnqhVXoPkIzMI1rDUkitVDaEr7WsOBv6f9W/psCpiBAN2cif3UCGUJ4uS6shaZnv0+XEQGkFhR+hv5ez3IhshYXIhNNa+eTqRLhxJR/+qjImw//qKDE+YmTWa8hDC+eTN8fCjzTe+bOS4fDvhJhUHYnmybWZNLj+xMoLWDtwrfpWFw/Rlv0WG1G5C4yjOK5j05YrSz/AiTTaOE0vsBEldkwuHv1d9D6ZEYsoSg6SyRwae5ktH6jS7Dsenubop+godmkmeysWlNurEZXAbLxSEDqlkvpusFhQ+tyFfc8qapQdf/SP7ksho89YgdgFZlARIRw0n5uWk/jwfWpNViTz4m5bAuZn8aLUVpw0YFx2+BEtEnMN8nyncERtzabBy9I/zMalwGB6f2p2RPEzFRbpISmcINL7vOw3va74R57pvcriD+/tpZrDBnplbXe0AeO7mnYtu1Bxz08rprBtlgTA1nvGImodL0aeSF+OT9cMWXTu/39rwe1igPTrFvwuMEh8ZoUSg6DF7TAxAYec0Qy8sSxPZPaH30sZw/kQ5nv69PlI4YFB7gJC/MOeKI82f4RzfLYxM1P9LjQsqpiBW3/YbsZvAb+cVHcX8vDXUDdxq6J324T6e/7cGqbAYij4BWjX6CbTR5WeI4eH5A1epSc+WStRfjO/WQ2EBb0jAzJ3sB+hbXIC3dL6QCmHOv8RBxTdQvbmTJ8glNcYyGHOWbfkBRi22i9
- pbNKpgN8
- 6MHtxZjdRO32gzQkGjjkO1cqhBsy+qh/1zUzoWdY/GugU9Yzs01Ila6q2ac1XB/e0o+ayGuhAt+OHEsKjl4d6iqYjBXOEfKKcPSt3M1oWm0jiM5w+HTGjdHUxe60e3Cr/AMSB+HiOYJLN6brBsl8aYcl1J7tpuTsOQo0GNvMvVoc5SjwfO83/TniqPbiTXVSKpXGZpW3BTC7yi2599FAkEq14TDZc5x45s/0M3ytDB7j/rx0hj+47aOvu/LFtd70ckabbZoMeL1huP7IffrCV/Lz593B5+Vth9FtsA7/6KmouRS1L0c5G6NaPXASAI9TSRWbXXR00Ibcx5MtwDs+SDkZJNH4BQXdwU4ntnL62eBZ4k/M=
+X-HE-Tag: 1793021985-73578
+X-HE-Meta: U2FsdGVkX1/aRyshykUPKZ4VL07ZAN0UH457ON7QhwwPy8PC9YjKMogOEyvAKLp03IKwn8FPVwm+oYv0fgfv0IuMlwcVFgsqyWtWRiyyBbD0BPkp9tVvYCOm8ly6CgzOlZyuzg/TbZMZqrzDu3zgQ1T5mWoHAyPA/c5KgLSs8YoiN/fmecm7np2aBxpYVqKFmA2wP9/6BqHCK3MoRXS91kP2k39Ep69dazJnpbWLo8M1UVsqC6ybcoW7S5Onzc9yPBh1FpolysjBWFarc0FCcFmbuOetrQCI2x9+Grjf0j2m4K4VM/WQ4V/v+wPzmJUz3/W1W/qBV4ssxDf4BUUgaB3e2A9ihjbr1Q7L8/4CfZYNNdNIZG4gy7pSZxswC1UpaqccL3oVTXUv75YRwVJD4QpPLLo7sEkNDeMvUJgSTNxHAVWvldWtJccJpKs05sM9BRfiMBbdpF+He/YcwR0odq7EDK5iHKXiW/z2YJp3H4MirNnE2FvFUObNFZb9noG6oR7wGdEOpCp9ZkO8aCpA3m531PDf4q06mjRVklR3geVy2NsX/QrqZk+BIVbP2kaQ/0YAs9WShHzoJb2zIuRDhtQF8eeEnpSdSqsSUMC2JQZ2RUccx6ydf+ka7/4/kN10/uwR5OfU5kAKWjHCQ74kbhWH3HuD7VSPgHhIEXhInERufjqNr3npxoJIplaCOaVaHvifBWNXB9XXjJmdLc7QpWFpneWSRrUQoMPVYIWko+Keg+1KpC1mL93QYvBxN3dVFp5EfBhdk2ig6zSFwX8H3iFj74a8m77dwIfR4Gr2HnAoXDKvJEsjrHbYsnBRVmNbyBJpawyHCu/hZMx4t5DqrhU2P446xaPBpkTqfDLkVAcVsq5YGSVbq6zONSzAWsBlhpkMghqBoqRQeVWj26VXaF7dMM9ga9dERZsQjA/rZdLbvSba9k1V95lYIkVz3ySC8m6sGiRmyGaBGxl4sO/
+ f/hk3ntf
+ 6d4AHj0DlY9utiuOUCwk7LMKhlPgO7LWnwoX4MKK990pDXBnwkJL9CuWunlFbRYFX3nOB/bItR2ZIO5kNRvLHxV1xCvh9+U0Y5pToqXZ1g+T8TnC2E0MlLDdwxj+u6wKHsUVGh4Lh7XKCdXfOgEF2prqVRFsuUb9Ul8+iYCaGb749rU/GaFyaw+uFQXvMZ7QjGen1X9HKGMadpBM3evXeN7UGNBt3csSXBcbps2FOtl2E5qkSTRn6DU2gi4ql5B/5O6RvG117Cg3O0TXAF1XQQUdIeEFzqEvfuz05Fg14SbvT7bQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,48 +98,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 10:40:34AM +0100, David Hildenbrand (Arm) wrote:
-> From: Chris Mason <mason@kernel.org>
-> 
-> Any local user can bypass memory.max with mbind() on a tmpfs file, and
-> allocate unbounded kernel memory.
-> 
-> mbind() sets a NUMA memory policy for a range of a mapping. If the
-> mapping is of a shmem and friends, the kernel also stores the policy on
-> the inode, in a tree with one entry per range of the file.
-> 
-> Each mbind() on a single page of a mapping can add one shared policy node
-> (struct sp_node) and one struct mempolicy to that tree. They outlive the
-> mapping and stay around until the inode is destroyed. The tree is not
-> bounded by the file size, so the file can be empty.
-> 
-> Memory that user space can allocate must be charged to a memory cgroup. A
-> slab cache does that for all of its objects if it is created with
-> SLAB_ACCOUNT. numa_policy_init() creates the slab caches for both
-> structs without SLAB_ACCOUNT, so they are not charged to any cgroup.
-> 
-> Reproduced with mbind() on single pages of an empty tmpfs file, from a
-> cgroup with memory.max=8M: the global OOM killer killed tasks owned by
-> root, and the machine panicked.
-> 
-> Fix this by creating both caches with SLAB_ACCOUNT. This change implies
-> that mbind() can now fail when running into memcg limits. Further,
-> the policy_cache also serves task and VMA policies, so they are
-> similarly accounted now.
-> 
-> Note that per-file limits are not really helpful, as the user could
-> simply use many files; having limits per user is tricky as well.
-> 
-> Fix generated by an LLM and submitted by Chris Mason in private.
-> 
-> Fixes: 5d097056c9a0 ("kmemcg: account certain kmem allocations to memcg")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: smaller description tweaks ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Sun, Oct 25, 2026 at 11:55:59AM +0100, David Hildenbrand (Arm) wrote:
+> On 10/20/26 02:46, Andrew Morton wrote:
+> > All looks good and checks out for me, thanks.
+> >
+> > Except...
+> >
+> >> --- a/fs/proc/task_mmu.c
+> >> +++ b/fs/proc/task_mmu.c
+> >> @@ -3231,15 +3231,18 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+> >>  	size_t n_ranges_out = 0;
+> >>  	int ret;
+> >>
+> >> +	if (!mm || !mmget_not_zero(mm))
+> >> +		return -ESRCH;
+> >
+> > Why the new test for !mm?  The current call chain guarantees this is a
+> > cant-happen and the current do_pagemap_scan will cheerfully oops if
+> > mm==NULL.
+>
+> I'd just keep it for consistency with all the other checks in this file?
 
-Acked-by: Pedro Falcato <pfalcato@suse.de>
+Agreed.
 
--- 
-Pedro
+--
+Cheers, Lorenzo
 
