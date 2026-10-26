@@ -1,78 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0B860A2603
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C28606A31D
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h7s+2xSM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CintjnD4
 Received: by kanga.kvack.org (Postfix)
-	id 9F5506B05CC; Mon, 26 Oct 2026 06:00:39 -0400 (EDT)
+	id 9D6106B05BF; Mon, 26 Oct 2026 06:04:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CD376B05CF; Mon, 26 Oct 2026 06:00:39 -0400 (EDT)
+	id 986A06B05C2; Mon, 26 Oct 2026 06:04:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E3136B05D0; Mon, 26 Oct 2026 06:00:39 -0400 (EDT)
+	id 874EE6B05C4; Mon, 26 Oct 2026 06:04:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 69C7A6B05CC
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:00:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0203F406B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:00:38 +0000 (UTC)
-X-FDA: 85364332998.20.2DEED46
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2E81D100003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:00:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7s+2xSM;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793008837;
-	b=YCp5POh5xyWnRs6yjbD0cZa9GCuktPJIvXXwqoavgyXiU3VBSpETKhL94lHGHMB91V7JTH
-	uciBB5S9bENA/Mv3/vt8wEcL11F4lv+tRHcp89GUaW/nsLX9UX9RXAq1XbEAvXGSeJv9Mg
-	dONQNOsGJf7/BNPZxYOEZsMAGVJB9Wo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7s+2xSM;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 5FC9D6B05BF
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:04:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EB108406B6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:04:32 +0000 (UTC)
+X-FDA: 85364342784.13.0369C0F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1E5A3140004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:04:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CintjnD4;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793008837;
+	s=arc-20220608; t=1793009071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jShkiWdLlDgPXb5QV1zTppDSdv7OslzLO75z7LLDk5Y=;
-	b=rrkJfRJLLb6xS+azPOO53zGyayNPVcJy0uoRD/u727IyOsWoM+RMjxfpGwN6HmIbxVgqdk
-	z2ViICtJ/aB7Jv2TjUtn9uYqS096XZ7WWfFsB/MorAc1MIOfg//CAZ0mpLwFzrcvVsarC1
-	J6b+78RaXxrutwLb0OXSZyHCr2hnTuI=
+	bh=PRfBqEtZY9vLSO/v1o7cinPO/v+UATyLQat9ERvQExs=;
+	b=vpqB4lzJoFX55Z4OGldj9BwG6gNKcoJq8rhdaL/mPUKZ8Nt2J2c9Fut7r1pJsxHJ2YNuQH
+	aDNjmxED0cSQEADkpB6d1pGx4dwG+tT7yHTsDu6I/yuOMgmFMMhExp/HD7hsuwSBnM3LwZ
+	jutTF7agJesiRqWtH9ZbojrwtcckNFo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CintjnD4;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793009071;
+	b=dr7ciKb6F/YhNM8mPyIGvjVF0n51lHfpBB1SRuz96bgCF5LtOTPiIUeH1ZLceOa2skJXC2
+	bv46WiiS5ZJxeADu51dAE/la9kUBXj6ybpW1w6S7VyoxkdddB6YjbYOMIU5VBVTvmumU/l
+	KFrDT2hIHr6gHbXcaV78GSUBWMu/ZIU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5FBEA40A68;
-	Mon, 26 Oct 2026 10:00:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBCA1F01201;
-	Mon, 26 Oct 2026 10:00:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9DCA560A70;
+	Mon, 26 Oct 2026 10:04:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36B01F01828;
+	Mon, 26 Oct 2026 10:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793008836;
-	bh=jShkiWdLlDgPXb5QV1zTppDSdv7OslzLO75z7LLDk5Y=;
+	s=k20260515; t=1793009070;
+	bh=PRfBqEtZY9vLSO/v1o7cinPO/v+UATyLQat9ERvQExs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=h7s+2xSMry6qNTwi670I8Q9YEnaCNBKYZ1F/zhDMcnmQdWEbBZcqbufvJNZKkESx8
-	 iaorYtQYdiKFXKURE68yn4sCh5n+Z+ZtOUcT7KA8CTYcMrNqFFs/8ogUExIX5y61Mu
-	 rzDT8gYjxbH0WbElBxHJmYiOQxLH1LDtXjQ5wUXLvyzpfvzONUHASqog/CWIW9JTIG
-	 E5lS52Xl0PyhGhNnTrOaFwDb1GKLVR+vKzjUXAv+ONQzIU4aRT+eoA9xfxtBWndYPn
-	 9YRhYhL+9AqfHFx4RJWemfgOtWFj/zay+zB4XLbVtjUwS8YiosIXq6ZVbvqm4hka6L
-	 2CDxoIKueZF0A==
-Message-ID: <c3dd24e7-68e4-47f9-a9d2-067c5534a4c4@kernel.org>
-Date: Mon, 26 Oct 2026 11:00:29 +0100
+	b=CintjnD4Et7gXs29ZrsCkod5VJq2bgilI/ipEqW97jU/PCLADSUO2wLwnPcyLl1hB
+	 NraxPlpqgH76NLpNh9tq4QpPKO/RnpKUO7lN8i0e/NPBvfaWIliCqxAecCuPZMoE6W
+	 b0yAiOf05Eg3CzC8NBbutl7l7OQbglYh5lDCaeRaw309XoDIJVnVDoYPgHKbekqnR5
+	 aWgW6GhEm7LvqD+NASSvfBhSuatTJ8THAJ8OURJVGdiQWPWHHas52cNXbNQFrk66CF
+	 1UNoUibOuxvARe5xG+1QdAFEysnJnwhl/T7w6ae4Z7Iutb8mle1Wiy6RQh9GZiJNzI
+	 dSM3s1M6DpjCA==
+Message-ID: <44405019-7494-446a-86b4-05b2ac03f768@kernel.org>
+Date: Mon, 26 Oct 2026 11:04:23 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: memory: fix truncation removing mapped folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <4cc521a118564b4145edf0324066ab532fb41181.1792979870.git.baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
+ <533c4ef7-e008-4439-be40-1aa2a074dfd8@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,22 +123,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <4cc521a118564b4145edf0324066ab532fb41181.1792979870.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <533c4ef7-e008-4439-be40-1aa2a074dfd8@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hbqwfm6rnr9khbrimi55p33xhckcrher
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2E81D100003
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1E5A3140004
+X-Stat-Signature: wpsh5g49pyxpmu18dsktk35q8ii594iq
 X-Rspam-User: 
-X-HE-Tag: 1793008837-255597
-X-HE-Meta: U2FsdGVkX1/ttVXAsO8cUrqTN9UGc+PUEIQLuhvn9npbi+uHP0hp5N8wUXO7ljjHSv8KjI6vHs7Ygc6IGoG9O38JEsIUe3qMeSmuvyiGBFBWwsuyZimCRk/RAXxXVG5BNCN3yItKMQ5CvnPj6EdaCBMAgNA7J1qCTDsZs/Bu0rUalG6rIeIBVfMOo/UhXcpF90uircpexYtLy+nJhE7M1uAgRtXdqZLCuo2LQRZ+WwR0+UjQBiIY1cbGlVzi4XwL9cICGA1+A9LDq5FLJna7bT3ZCwAddHx7uYWbi0tuk/j9p1XCqAaVNdvgP8OUlqhAIxeIcD0cwBWDgMq0a9FeZht1VgR01ZMqtMuJ2FbaBYVddXka5q5Xw7kIZMOc9Ii3ErivExEpNRNVwiNFHjChXioWa6YPl7WrW0kGgyhiNZTOT2aB64QFS1ggUvn461MiuW62IBmrjS5Bm+Rw6dtOpRchtVT4IlefMls02/LP/v9dLXvHpjJSvsyOfAFqISLRhkVD3KXaJfZ0TIFJ+DFIPjT5fbjE1umymE2dXSUdjJg4CRYBh7eulob42aRkrIYcHaQ+ti2zHx0BKylokRKijtSY7RtFacNEewT53BYnjp117VFJGbUeR78NJiFhTa/nwBPBdlL3O0zrX4q12s49Y8Esn0+JXdRRZEOrLeigDlor8Pel4LdyMJKOwakB11xMOoWDnWwEu/4hMEb9rklzFF5FRkvqPzfl7VaeYAKafZhEoumwPanfJ+eY0qjGzcfcUv6333qba7zgTGAneURtscyx8z6F62fC9jrE3OiHxWaABuYLv1Gh/d6tbPuUdUr6LK3cPN5R6R91EW2conlBmeVhjtb/CbG6veu4MWXLot/4jyaRkCZ7E7cqXhrdbHlzB8UTLt0Bp5yvMvay5zwBqfaYA0ItUXarp2Gpmg7ZI8def2zzn7CHK4hlmsmFaCkHJNFFVUSuwmLKITr7yEa
- 3eEBqKHm
- dflTy1zs4CGr0x/TkpVaqKO1tCvXtC2TMS1202JtJurMLuAtmMTWNzbVDnpapQX7LuszX91FrCWvXhMOG25c2bvc+jUFjFHz/4aH5ZftVYgndj5GCiMKVx8ZrYfncOrNrm/mdjfVIkxeNJ0cEcS/48NXiQM2pnXQ2smlXxfsG3g51ArFyhCjGXBdKqj769LDuLi/nWl27qm6Rqf2yYgW8FyOM00sp2MomN0L09oH5SdR0TepVPl6kU2PKAmPtDfJAVrc2wnZ1//neehodZ0BRlJWHb2UE/o4hP5mzQdEr4vDv9DFl4ZMV4O9MX+oP278WarwMtQOzjGMkxt3RosfLLyF+tCht5DzGCwNQ0LP5wK/6R7VqNY3R+5LvRg==
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793009070-484040
+X-HE-Meta: U2FsdGVkX1+f0HvINashdnxIkFEfNCMxFAcyT3wNhscGm/G4Yz222PotBQzVnFgiGasvutz8qyCQvpZ06+wTpaZGTSBrLj1PHFWi/8nNAtKtq9DH1KGrm9oM7bAJWw+HNIzAvbtzoFrXbkIb/bqOXNTIbPgOjgR56PVwj9Iuj4YHF40Ap/qbozQtdyEsaXxuHvJAMQVwXf3cTfdWF0URG6vqNaf5Wl3ICgdmVjA304o3kUFqhqtg0RbXRw0/GZ7m1eD4Sc3kYEczqpyazT1l59XAU2RMfSGEgYJSHuz6e14jND9GVRbdTsOV2GvQ68gPukFgsrwMtd30HmUS8U0Y9XNfNzZ8QquxYGFk8j/1qwExK9PM61McyxZeENPXNK0P2OmwbNrzMFMFKUWaDNFbpGhDCVw9SVJBXEka5/r1a2802VcszRz0KQuWBfXLmPrsxyWqMOl70a+/h3JwkKKflx4eHncVvhmIkvHUdDUqugce1OtFcE+falxqy5QoMw/bMUuxi2noCIMUHxCM5MhZdLGunZWMYFYhLjDQlImoe96zM2+ldoZlkStlGb1WdIeIqegCzZ+HVdm3O6/5/59HH4jI8dcJQ1EJ4HNH0SY4eRhqLA2tlyY6/Cc7DMrcvZR77v1Ws3Iqf7eOa/AA2NB+TYnP3fmYGQDTfTrLKEl7jDEFkpIqGRu41JMxt5twiA/0mflLUV1UMazgihEoVjQv8bWrB4XjZvf9KcBg8JmZVT4ESlAPfuNAyu6mCMeeOY6803Bw+6Vu4pEA0orPm9ygpBLKMDtH2wf7n0dt4C3s0Rjn7TuejVgd0BEZGG6o/Bu0Nz91awzsaWvGjvsyYXfhaJKPA3h1tHYsh4y/z/7OzZ/8oznFYv8fNIArPqStOO4Jf0VkufWEbhP/LOGseMF6NDOT0YPcjuJ5odLoxEByVM36O3uHqfy92OBzns+OnDwOtAGUZhedNU0iQgl/OqY
+ yp07FXxN
+ CGupqEG96xQXysTKkxt8pK6BE1bZEkKwSAK8u28W8ESiGqiW/lTfi4CiUoDXrzYbwANcd15DXrlvFnphK81lDXWbYpeUWrkKixZC2AlwY9Ltz4dAm9mwvf7cc2Eb4Z1CLR3EI9x9Ebfk7pjZLt/eHJg2HcYGfgPl9NwxNqrV3OXGK9XbfYr9I1Ldt2tcK05cCABoDWxJ6vL6H3KIEIlFaPO86kdPe5yhckpe25tPVbENsWTVHp7BZkzO07uXdsnjCAPzl65u/rYhLG7FrE7x8qSwU1YofCTeGkcXnvk/749NZvbqhT9lfCURk+LmAwWGSNK+pJckrUGjISyg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,187 +146,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 03:05, Baolin Wang wrote:
-> Ayush reported an issue that shmem/tmpfs folios are still mapped when
-> truncating them on production:
-> "
-> BUG: Bad page cache in process ...  pfn:...
-> page dumped because: still mapped when deleted
-> "
+On 10/25/26 20:01, Jose A. Perez de Azpillaga wrote:
+> On 10/25/26 11:43 AM, David Hildenbrand (Arm) wrote:
+> [snip]
 > 
-> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
-> branch, and I got the following crash info. From the dump message, we can
-> see that truncate_inode_folio() is really trying to remove mapped folios,
-> which is incorrect.
-> 
-> "
-> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
-> index:0x3880 pfn:0x191647
-> [  189.171995] memcg:ffff0000cc073d40
-> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
-> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
-> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
-> .......
-> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
-> [  189.172026] ------------[ cut here ]------------
-> [  189.172027] kernel BUG at mm/filemap.c:155!
-> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-> .......
-> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
-> 7.3.0-rc4+ #277 PREEMPT(lazy)
-> .......
-> [  189.183986] Call trace:
-> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
-> [  189.184391]  __filemap_remove_folio+0x34/0x160
-> [  189.184633]  filemap_remove_folio+0x4c/0xb0
-> [  189.184859]  truncate_inode_folio+0x34/0x58
-> [  189.185087]  shmem_undo_range+0x220/0x658
-> [  189.185308]  shmem_fallocate+0x2f0/0x470
-> [  189.185527]  vfs_fallocate+0x128/0x328
-> ......
-> [  189.187078]  el0t_64_sync+0x184/0x188
-> "
-> 
-> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
-> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
-> MADV_DONTNEED synchronously releases the pagetable page before calling
-> tlb_flush_rmaps(), this could cause another thread's truncation to skip
-> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
-> as non-zero. A possible race scenario is as follows:
-> 
-> CPU 0                           CPU 1
-> shmem_fallocate                 madvise_dontneed_single_vma
->   unmap_mapping_range            .......
->   ......
->   (filemap_map_pages() remap folios)
-> 				  zap_pte_range
->   truncate_inode_folio		    zap_empty_pte_table(pmd clear)
->     unmap_mapping_folio
->     ......
->       zap_pmd_range (saw pmd none, skip)
-> 
->   filemap_remove_folio
->     BUG_ON(folio_mapped)
->                                     tlb_flush_rmaps(remove rmaps)
-> 
-> To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
-> to after tlb_flush_rmaps() and use sync_with_folio_pmd_zap() to sync with
-> concurrent zapping, so that when we find a pmd_none() while unmapping a folio
-> without holding the PTL, the folio's mappings are guaranteed to have been
-> removed via tlb_flush_rmaps().
-> 
-> [1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
-> Reported-by: Ayush Ranjan <ayushr@modal.com>
-> Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
-> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
-> Changes from v3:
->  - Collect review tags from Qi, Pedro and Lorenzo. Thanks.
->  - Update the related comments per Lorenzo.
-> Changes from v2:
->  - Use use sync_with_folio_pmd_zap() to sync with concurrent zapping (Per David).
-> Changes from v1:
->  - Add an smp_rmb() to pair with the smp_wmb() (Per Lorenzo and Pedro).
-> ---
->  mm/internal.h | 10 ++++++----
->  mm/memory.c   | 28 +++++++++++++++-------------
->  2 files changed, 21 insertions(+), 17 deletions(-)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index b1b0f29d2216..ffb8eaec90e3 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -584,14 +584,16 @@ void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
->  void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
->  
->  /**
-> - * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
-> + * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
->   * @mm: The mm_struct.
->   * @pmdp: Pointer to the pmd that was found to be pmd_none().
->   *
->   * When we find a pmd_none() while unmapping a folio without holding the PTL,
-> - * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
-> - * indicate that it's unmapped. Skipping the PMD without synchronization could
-> - * make folio unmapping code assume that unmapping failed.
-> + * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
-> + * mapcount, and zap_empty_pte_table() clears the PMD only after the rmaps
-> + * for the table have been removed, but nothing orders the pmd_none() read
-> + * against later mapcount reads. Skipping the PMD without synchronization
-> + * could make folio unmapping code assume that unmapping failed.
->   *
->   * Wait for concurrent zapping to complete by grabbing the PTL.
->   */
-> diff --git a/mm/memory.c b/mm/memory.c
-> index e911e63ba1ed..6a93b7fa48b2 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->  		}
->  	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
->  
-> +	add_mm_rss_vec(mm, rss);
-> +	lazy_mmu_mode_disable();
-> +
-> +	/* Do the actual TLB flush before dropping ptl */
-> +	if (force_flush) {
-> +		tlb_flush_mmu_tlbonly(tlb);
-> +		tlb_flush_rmaps(tlb, vma);
-> +	}
-> +
->  	/*
->  	 * Fast path: try to hold the pmd lock and unmap the PTE page.
->  	 *
-> @@ -2043,18 +2052,12 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->  	 * to hold the pmd lock failed, then we need to recheck all pte entries
->  	 * to ensure they are still none, thereby preventing the pte entries
->  	 * from being repopulated by another thread.
-> +	 *
-> +	 * Clear the PMD after the rmaps for the table have been removed, in case
-> +	 * an incorrect mapcount is observed after unmapping the folio.
->  	 */
->  	if (can_reclaim_pt && direct_reclaim && addr == end)
->  		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
-> -
-> -	add_mm_rss_vec(mm, rss);
-> -	lazy_mmu_mode_disable();
-> -
-> -	/* Do the actual TLB flush before dropping ptl */
-> -	if (force_flush) {
-> -		tlb_flush_mmu_tlbonly(tlb);
-> -		tlb_flush_rmaps(tlb, vma);
-> -	}
->  	pte_unmap_unlock(start_pte, ptl);
->  
->  	/*
-> @@ -2102,12 +2105,11 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
->  				continue;
->  			}
->  			/* fall through */
-> -		} else if (details && details->single_folio &&
-> -			   folio_test_pmd_mappable(details->single_folio) &&
-> -			   next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
-> -			sync_with_folio_pmd_zap(tlb->mm, pmd);
->  		}
-> +
->  		if (pmd_none(*pmd)) {
-> +			if (details && details->single_folio)
-> +				sync_with_folio_pmd_zap(tlb->mm, pmd);
->  			addr = next;
->  			continue;
->  		
-Sorry if I sound annoyed, but why don't you keep the
+>> Fixes: 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under per-vma lock")
+>> Fixes: ea3085dd7a4e ("fs/proc/task_mmu: read proc/pid/{smaps|numa_maps} under per-vma lock")
+>> Fixes: 0e985559d72a ("proc/task_mmu: read proc/pid/smaps_rollup under per-vma lock")
 
-} else if (pmd_none(*pmd)) {
+> 
+> PROCMAP_QUERY does the same fresh lookup, shouldn't d9d1c2d81797
+> ("fs/proc/task_mmu: execute PROCMAP_QUERY ioctl under per-vma locks") be
+> here as well? (commit tracked down by an LLM)
 
-above as I suggested?
+Hm, very likely I missed that. So yeah, let's just add it. I assume it won't
+matter much because 5631da56c9a8 is the oldest one either way.
 
-Because we fancy unnecessary PMD table lock cycles?
+> 
+> [snip]
+> 
+>> There is the issue with seqcount overflows that Lorenzo is tackling. It
+>> probably interacts here as well? Likely, but that's an independent issue
+>> to resolve.
+> 
+> the saved seq is reset on every m_start() and query, so a wrap would
+> need 2^31 write locks inside one read() or ioctl, I don't think it
+> matters in practice :)
+> 
+> I tested it on x86_64 in qemu with KASAN, lockdep and DEBUG_VM on top of
+> mm-unstable, the maps holes I hit there are gone. Also, the code LGTM:
+> 
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> Tested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> 
 
+Thanks for the review!
 
 -- 
 Cheers,
