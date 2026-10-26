@@ -1,158 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871B960A3820
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 16:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F9C606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 16:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=oJmC6Xsf;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Cb1maXTk
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=AFgyscCL
 Received: by kanga.kvack.org (Postfix)
-	id A36F06B05B7; Mon, 26 Oct 2026 12:13:33 -0400 (EDT)
+	id B9B206B05B4; Mon, 26 Oct 2026 12:16:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1036B05B5; Mon, 26 Oct 2026 12:13:33 -0400 (EDT)
+	id B728A6B05B6; Mon, 26 Oct 2026 12:16:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 860766B05B6; Mon, 26 Oct 2026 12:13:33 -0400 (EDT)
+	id A61CB6B05B8; Mon, 26 Oct 2026 12:16:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C3296B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:13:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8DD7A07D6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:13:32 +0000 (UTC)
-X-FDA: 85365272664.18.2ADC411
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AB5094000B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:13:30 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="o JmC6Xs";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Cb1maXTk;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793031210;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 73FAD6B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:16:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B51CE160810
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:16:25 +0000 (UTC)
+X-FDA: 85365279930.11.352E188
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BF85810000D
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:16:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AFgyscCL;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793031383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SuEMA61PD8ypCGtu9RwAMCLG5YHaMT/lSDKBxP64Lpw=;
-	b=twqXGcNRwrwFkROEagL54lVMVfHlweWD0uaW6qNSJKQcDpN9CPYC6/I4ci4uc2MgEVf4Or
-	0wYDpJC7mE6MYI+CP0dKMOwiAXBi7hYxzEbn3X2elrMSsQBWi55LZQ/26YEpk34RAY8S1/
-	WnJfxC0bJNidSonvFLz3ygqrPdnVv5M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793031210;
-	b=McKD69n/4hfXCWylwXw3DuHbMsClgFQvA4KPETRC+hVax8B0ryFMlwz2xPTZSolk/tZ4C9
-	BYcM6lcniWDn0UnGV0+ZvFsuRn3KbT6YebUHiIlWHuqHbv8SMckF3sDptHbxC/y65qowWA
-	Fox4x2GTGJXH3eU0t3i0n5lAKrgydoo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="o JmC6Xs";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Cb1maXTk;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.phl.internal (Postfix) with ESMTP id 25617138007E
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 12:13:30 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 26 Oct 2026 12:13:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1793031209; x=
-	1793038409; bh=SuEMA61PD8ypCGtu9RwAMCLG5YHaMT/lSDKBxP64Lpw=; b=o
-	JmC6Xsfow1yjAZvNP33bJMXf5QY+i5XLHravTrgfuUCsaWbIpBFuTAyiBGRWfzjV
-	1dlqnm623/dOTK6ZeM9oXZ012Glr2ZzTSWB5cbMUYaQNOhfvSb+br37HHzad7Mew
-	YSoqZ1bQIt+/HrK86GlC0l8ihnxPo++AyQVR/CL6z4c4B7H/j6hEts7HjWqmCYi6
-	Dij5oR+kOfo7I4m9b0H0RIgf1Y8DVcG4zMb0gtKvFxUiCssnLsTAUw7wBN8CSXun
-	Rv27Eex5wPm0gULIAO7uqy45Bl7M2JvPMmURWBRR4YgwcAZFygUuOmXf3GL5fwVp
-	HGLRFuIjafJGovqd/yD5Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793031209; x=1793038409; bh=SuEMA61PD8ypCGtu9RwAMCLG5YHaMT/lSDK
-	BxP64Lpw=; b=Cb1maXTkRxdSrJDSeCUZhRNJVEOAhC0nIyYPlubphV/2InsX1vj
-	CKga3SeUmjNJb6ZRxYxf7o75fVEESWgnYk2DFP2D0JHiEZA07AN2P0/b9PYWyKoW
-	5ZS83JtRizqFf7/rbcjXl2BmOFBs7RweB/9A4QBfclyL+Y6NQQWXVl+k58gwZPj6
-	oyg8vo+1lkXqSiEFI1opSznaGLXkVzNf3HVhXZzqF5WLE+2w4WTptzclGxpCACJC
-	fUhhD1p2/DXENyImJ9kxipMuSKZFpOPZZBl6O7q6sLLHyid/Xyr9Vk8r0K6xBsrV
-	fripqVEVRosLWlqDqD1IQIDUzY5kxMZm0SA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793031209; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:oPc47HClo1RvIt+2dbvddZYZrkWcbRjZp8WgcHglc/e0BZE
-	aQfr0zhX6KcTHzrModzjLM3U0MH+Rn1mdgPmWAPG+aUApmLazlfHGmONGI1aeiWU
-	BGuCjHU5ecgwYeNh5u2j51DEmY7YL9Mcd1E8vX7DNXPmspV4XDRzINK7QwnmIDD7
-	c8gbXFZBQkGrBzzMNIXVtuJpsiyZ9mjk2O3POkUFaJ8Abb438DnhFBDXv8JAgD0u
-	Y/yezzq4u7gPpmiw1UMQvlpL6vHz4oqqhZsOooK91IGa7iFIoPgvITPVO2MWl5ay
-	ZKkgqRZj5CNfPDGBISdKKSqYXIkFXhPKphMs/+Q==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:P9tqkjtr7xJ0LZI83z6SZ6DETyMxibEyw+1uHfVj6Zg=:JLuqQrk98leSnt6vv9Cw5t0oqfF/5BKxz1YFDI+HSBc=;
-X-ME-Sender: <xms:J3zfalgYzmFLkjivWEpvSfZqG2OoqNdinomxBIXdw0khYzSPk8Ia0w>
-    <xme:J3zfagu-Pz_FO68c6gFQ9AsJDcOloRLceN5gDhUDkwHZKXCfw5XH0j887loyEWRuM
-    9xqnPBm-XR6YUT2AMrrN_APFTdTp27asP8TrpCG2-u7PUZSB0eEkD-w>
-X-ME-Received: <xmr:J3zfavSa0XBfO4-iC9Ee1B3PxoCm5kctj88IxDRhA7pPrpGJrK-uOmVtTd4>
-X-ME-Proxy-Cause: dmFkZTGBB2cNjuELTs67fGgvkDQEDSU8qux6+8nxtLoE35+WVs+aWAZCsMVW4zWZvl//3o
-    d+Nts1yMBYhfz0A2pBdaxzFlZZaoafSDu63LVpeb+vxy9Vwm87V8WMyFLNk7rWQLoUa5/G
-    k0yzKLjsyVStCe8yZI9HHv7vy5dspIr4hypntb/PIB9H4GNYku4+EG1lzv/wuo8fa87di9
-    +CF8ONEHEzQPPZF0ighPmGYTs5ZHVZOXemZ2aI7j2mAiAgvuUBkiiwxC2GgD8XiB+Phzk7
-    kD0l7xy/HxT+YKPa/yncQBqQq8O7UuH9+4cIXrnIxtjuWoj2OdbkHw4f/dvsCiGqt0GPJ6
-    5XToz1kkUWDtBnx/w21CqNEaW1qZCvZGci3D50ojvkPRVd8HZEg01/INknz4HMFlhsZqAX
-    BgPwRhczFxR3vNXil2moy+KyOZlL14BR/CppwtBzFCXgKpreiHrIjMKpLWLmW0aV/9ND7x
-    o2+CZ0TyrN34nBMGfM1olHAEhI2/mxv3mkAWJHEz8epr0WELvKEStcO2gFrRIN1FQC7sPV
-    RVysmrQ+pAibpu010ENwev3dXzBi0OYRiVIY3IoRKhCaAuO2k5glaEdwhGn+EUxT/nggPe
-    OKKPMnGTGlBnPIt3aeIzpw/5QeNySULr6bW8Ff0Rm+pBvg06Se3/TBr3MdOw
-X-ME-Proxy: <xmx:J3zfaq5Pa-KToeTPK8EsXreG0-ZZRQpQfP5oche3lz2EtpVZb99A5g>
-    <xmx:J3zfamjKiP0dGK1Zh6_Z6YQcsHArXWREOXYSfXPzaUYkwyJfx7b1CA>
-    <xmx:J3zfattvMyNG8zSYSZXeVAfaFOviFi2vceffpzvUOZP_SnZ6KiqLFA>
-    <xmx:J3zfaii39xyfykCc74-fjNwcC1MJZwle20cXhV-3PTdJ2RtNOAXukg>
-    <xmx:KXzfahsomsDyKod-euTcJeG0g_T_Ta9KwojHvoPH_natJJqeuGKu88An>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Oct 2026 12:13:26 -0400 (EDT)
-Date: Mon, 26 Oct 2026 16:13:25 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
-	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 06/16] mm/shmem: hold off eviction in shmem_writeout()
-Message-ID: <at97dZY434e1maVl@thinkstation>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-6-703206d5fa0c@kernel.org>
+	bh=S9cWTqlHZ0AXy66/w1FV4ZcQB4fXYGLMwkkMMKyxuEI=;
+	b=Hzu59J2LtbM9M2XFXIlPaFGXibifFoceRqYmBWC4Xhn2nsWoDCzUAqstIpy3BB5GC4++db
+	sHk1N31tY1cYaJO6qAnVDHPCHaZekhdsE/isHbBR+OdF9KlbSHk6ueFl/PL0J3GuGbMGBu
+	y9PhsRoVMWTa6GiKM3rf+OYAoHiKZe0=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AFgyscCL;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793031383;
+	b=6iQMXGE4AmAgVUL4SI2BSKgHhTpCtkxIJ8cz3BnnB/zIY9DAxO0qtrTxXGo77zR2lbh/mI
+	ruDMGtKdHcQ+mT8loBMMwnMWEjoSwAFwIqe6u5kVMx35jjpZSv0avVAbMmhAyCzWKv3zkn
+	Pk2tyFVVrXsJejOrEiIB+4USyxZeGcg=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5337c7b9937so498921cf.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:16:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793031383; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sphjrrW7MBMrPL6wxI1iJY0uQvegWRbccXg9iy73k122/08BaFpH/14vgZXzxilzpP
+         Pj0r5wc9+VbF4sDh02YMqe+BLQmyH8GBnKB+wpHTLUR8yZi47vcJOVGjyS06MClEP6eR
+         Lc5HUVAUal7NbW5Pq8tm3B7g89qyRhi0nliTRgEzrqXGwCr9KKva1OPqe+HfBcpQeoVR
+         Ozez4KVSkdcz8i7xzzdw+GwvynlDbaxdoeCNhtDaJK/Hjv2EwUkSQtPGNqGsXBBvFYVp
+         5MDjyIHFez20/fBlCZlfV/Hi0ULztG+jxxF0LltusGN9H+TY72bQ5KsFDGD2wdy3gwtK
+         pnCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=S9cWTqlHZ0AXy66/w1FV4ZcQB4fXYGLMwkkMMKyxuEI=;
+        fh=020gxxlIKWSPJAlzskJrms6PbIVCKksmWpY8rpnhUwE=;
+        b=FV6hjm874EEbE44FJkp970UmRf5uvS0lBoIEswj3vOMh7q1RWhxV4/xrvEYtEU+jX2
+         ovLWXpMwwcTFEkPimICZOtVbeVWCL2h8bgj9FQ8YH36EEbmgJzKa6K7+JPokIJbdffe1
+         vLcWeB53YcBSho4CLF6BLB97zm+I9Z+o7hCRpBPdk2aGbnGT1vUCaqZEDLqN2kaK+0FX
+         WhcbjA+ACFY3+Nq3wuMB/Ur1YRpgODYz5XRXELVeIct6EbaBSPYixsGqzlybsP4r+zTk
+         VYUm0lw1lv7E5GKdu8EI7Dnm7KseqMG3h7nIcTVMeyny48rp7AMiuzXJY/lyPzmRXD62
+         vOnw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793031383; x=1793636183; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=S9cWTqlHZ0AXy66/w1FV4ZcQB4fXYGLMwkkMMKyxuEI=;
+        b=AFgyscCLH7gl3P7V0IMc2xkYZQkK0HCWlJfPVm/NITe2/E5qRCOOITIv/PNkHKcZkY
+         G06GwW+iWPFi3lJCOqmH/Yzbl3A+aBDKMJ4EONPmMkIGVXdoRbgaGWOvEHS1rlaeKCyY
+         WYYpMIHm4Pw4jAQZMlW7R2e6z3pvC+iYNA6Oj7mU8bxuOkkrreIiHNiC+s3qpdpvKiMw
+         kRTcCa2y6HGbwMA0J9rsA0I2mpSxhN4Z8j8xWvjzDw4Qfiuvl/cNEHdL61kehqc+cY6T
+         WeCWf92jaNtzUl87EgLZjGpKbQ8xJKbVKou/rTlh+liuIbTJFBE5HYjctF23PX3bKgB2
+         UZvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793031383; x=1793636183;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S9cWTqlHZ0AXy66/w1FV4ZcQB4fXYGLMwkkMMKyxuEI=;
+        b=zw1FdFo5MZLgRPH14A37yQi5yp5YTNt90JdrwEf5AFUwVQOCye0onRQtMq0dFm3/Z9
+         Id2kb9yZI3t1j2dYg9eDVnAss5IfFJAWObCXQV5RW/wRO2GPzPdDHqGSKWTe0hFo42Pc
+         zCbE75O7kUEan20fRFi2gneraOT3b23Q1UHJsvuj22Q4u2f/OzCamkG8jXFjZj+7J6mn
+         PLTDPujQoMwsfaD+rBbe+qH8dqMB4IkraA2hiCT9DYlMHyYbX4x1uoTRSf8+5E6NF2Cn
+         97R6NEYAPxjyon0SHRVfE1siPAIkno90K0/HXLeWhEjhzEE+ocVW9jT1pyhNkHBGIG5k
+         SVkA==
+X-Forwarded-Encrypted: i=1; AKwUvBxT/T6wGUn4zeq1WgSur/g1okaMSxruzRPkRS4jdA93S7/R5pmzKd3CMuJTCgv8t3rCkGB/jUbUxA==@kvack.org
+X-Gm-Message-State: AFq9FYIkyXjpHIeryRCtC2pHCjUy7lWXB5e73WQahvgo5B44PQkpSEow
+	Cg3rJ/v9wV+tPCO8hNSRUm/0W9am4b8Xh6C2QmV5f7/jpP3mTSQ4fbY1s7QRsXR836ABiLAPcO3
+	wrzc6X+xKjuauTRjGqk225zt8zoJaobIyBMf5k6l9
+X-Gm-Gg: AYBFou0KX0Onql+leHb9n/viFny75CVlaLEv9nWssSpz+Bgj7L3E0rz09yhkAYnhsT1
+	eKj+b5+nsJQUeBGbtQv8wWupmSIIC+Lv2d11AUZei8BONFp8WW/fl8coX0PbXEza0uQhfOsvI2D
+	KOdcU+Yq813n/mP8f2LxKSBdshaS3QKQN68ZCYChx9nfPjV2ANH/1IjdNn1H8A513al4A45CLrv
+	fi4qP8FUAdU31dX6arElGmX/wExkghrUieTlr6ywx3ReWS8PfpCNbE64nkIqW4t77yUuLulDgWp
+	GL05Fh+f/WI313ezPq0D40coD+d+WOn4yngZNHcNzlajmBvKD6UgTRx5CMT8rpFUjdfzQD9BJje
+	0vF6vxt/Ou2pKqFaL69HS57V4XYQ81Mw3r3w=
+X-Received: by 2002:a05:622a:c84:b0:535:84ef:2e26 with SMTP id
+ d75a77b69052e-53e23e1bfc3mr3103651cf.7.1793031380612; Mon, 26 Oct 2026
+ 09:16:20 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026-fixes_shmem-v1-6-703206d5fa0c@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AB5094000B
-X-Stat-Signature: pfp917eb5mq6h46utuzy77wumarsgndk
+References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org> <at8-42OwXk2z6-HB@gremlin>
+In-Reply-To: <at8-42OwXk2z6-HB@gremlin>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 26 Oct 2026 09:16:08 -0700
+X-Gm-Features: AclHuK-CXE-6CGVLQD9ykuQkf9j4lmUBURpnlf3ELNWcvGLrSOzQd5BnzAWf8SU
+Message-ID: <CAJuCfpFaxo06yHdVKsEEmFf9qoOYS0DbMvUuAZEhNfDe7dcwJA@mail.gmail.com>
+Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: BF85810000D
+X-Stat-Signature: 69csfzhjnruggfeecbgxzkjdaau5tz11
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793031210-330028
-X-HE-Meta: U2FsdGVkX1/It4fHdSBnmyKd0LEFqKugGJHg/kqgEHsqmc4aEds7zuBK7NTvYSXrQq9zfopsGKZXyWOMOI0dcgf067O3TJR8ReX6NPBEiFuQQ0QwUjAUUIl6YDdmJplpgh9fmclvBj5PjiVlnannkB64e2joHgKQvhD9dbzPlhZixyiUoRXkO/rlgM3H5oxSxOhAhCWgtNOSPZ/DmStoAHmrV8D0xLLiJIJZI07XCA0YJ6uzy9CjYpWQs10NE7z+adflhhe97VOXuCh5Fz5hyAnEJEtM3YdZfqv/048X99cFYDlOKKFVVgsmqPRTLg/asxBKkG548luj9riRCxUAER1o8H22c3cTFddC4JIvhlz2lq/l6Nid4/nLKY+piaDZfFWqUa5i2axJnd0jQeE0FbwWko47DAkhwfbQ+zh5bPgS7zQ2fO2ZQsdRfC3h0Il22J9gc4hwdSwe4b4p3NTg5APrPj40c4tCVf+3CYSCmXE7wpRuiRWjfOsUvCEOKAZb8dJf+dRlDRSom2qYh8FCEvY/c/+j3NSAB5XDYTXWLXZVu/tOp+1wvXpqENedQsm1Hn1vwReD1CBhFUm53hdUxcxxGjI4RZ/yGkRh4GHw5esl9NOwTYfvpdqj70ezQiPGZew53fVMZgHenw6cgDRweW0on6wljDx3WneKIzFbTv1tqUTj20ICdrtR1DFSp5e5L1BWMcOE2w+Y28qSfEdqnKNIk6j2xVHDQV9uFJ7ZtIysYLXLFKj0KnGPbi1uOoO7NjlSdByuiZqW08OcmsrjhrpdHRdkyaa6Fs0ACXSSblXV6U+BrkmLG+p2PgcJOcpxwIube6zYrLCFGfnYC6apzd17Be5esNMEj0NOIv1f2ePRl0iSkCm0SWzliiRJ5jh9AqSS/N+ygM9GuEgOYI05BhLlEpF6ny2HhAoTVQaTtJTJzLI6bxVBucixKczGcALdGTpWL/lkkXB4Itpjvoz
- i2duA6If
- uC7RpKYFnfuRitmhgJD/5Kbi4wwNj/lGvtK1b6mWmEx79d/9em/HySiqcxjVbqJ282LwJnS6ioFYLyxjDNm90WGIlPXblJZdZFXaSZ9a36txpbL4DahbxUiJ+V+iDIcvg525/mO7qvUs4wFCAPcjtWnVomZr143TQhORV7DlupBm8KTMEDEV05ZWZPmVpOQ1SjanbDEf/+c+7Hs82YjGEwote/Eq2Ps1rW9j3KamdN9TFOekqx+u9Ep4p4RiIYmw1OxIQVXTolGz54I+Ein1vNWmPhRshy+Z9p2onB4Cxvb8ynY84ITaotXQ6Tk1lGmZdorsrYMSvETrBgnYDumx7wRABlvJijT0cEIdXsUeotMLHpddCwETxgMNPsjdW8ymVrkWrY2Moq6XmTHZ7PG1X4MLIJ23s2O3LTcvluvBX0PFWTxjibDOaNs24SCmggSJhJ26Xllf0EZ+OXOccjqQzIwIBATQCsZcvg9xS/7QGRfsJ658tispbJKxQX1oikV8pWppBJqcvQqrCZsTlb6Qfd1jTXwQdnQiRU7JpX67PsJ/XuM6g4/SWYOyO1gzHAjhUF1o4VgB63Go/FCbL5oXOC49YxguOsqQWwcdMZxSSCFV0CIIy+6a7iwLMwCsfQ9RUeLhs6jkkQV0b3nkv10olAoLXyN0+RlCfxXukVPjJ8+8l6FyVPHzPMP92EPeKNvjg5Al5NxHZrNNfykSXWlGVgp8Zbg==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793031383-603225
+X-HE-Meta: U2FsdGVkX18Pyk76EJ0H0vY93Pxolu6wYb30FS3+b41q8hIxMiM+YVnWp8ldBqAO4wieaGHVn+VDpGBmbx8Hd1LOUKMrhYBSFfX0cjewFUbUCJ6JwwHC+w+EBwzupLnI96Uqe93GxiN/z9t2CCRM0oSI+SZPr1pxkVZjbZFIO4M8Oq7BRp90cyp2QmDyiW0MpBufhQSxBdz/DG5l6bB+Va1pdpLRwuOWyKbm83VhI3p7E6YUurRXQwcFlV6RxGPmV5utQ3813nxaJlm9jkRCyRDLgTw5VOY3hKejG0GPJ7ARvqLH2oEpPBHc0OfWuxCHLTGxVOowWBMjXPo7t6WlOCFa0whjMXga+X41kBq+0Ebcu15OtN4nv5ggTE9M/2EgCgSHM2Wr11GCpW4b/wDm9rZuX54FMMcnFF2pc58c6sHzjs5tDP5R9tYlz2P7nT+rbvoVUp3+lOhPxcE8FnBWU2Y0dsXKrHO/sL+cS89CT31aj0eh753TybKwXhSfL/TL0p16cjB4L2pIoQm7zGeGkdYNByQ7FFuA22pg2PDIqV6ehWJIDLcesXw8+keEX13Czkv+iYv/lPqa8/EgWqd/rtZe2Kf0TrWHYsD4v3ESKqsmsRVkiEdecb7GHppmZWvo3AzD81resCqybwh7WB0Ckz28BzxlEaUD5FqmjZJ2B+psPDLuHPbv8YZQSySZlzc5IxzcfU2TY+uk9auVhNnzTaiXwKhe+tADZQi+lE/8B3fFyZdyqTyI0Qyk1/vrvbAubUuEGvkMZSg9HuVRh7Lf1RTr5xpuiv4W6KI0V+pVaLNw2sZIv75G6iSWBkeCwSm8bopddh6FMO2Ec625ThjZggSthuZ2HNl0ynaq2Q0lhOHK3Yx5/WLesdnYlGfZCGPJPEtl8/Uvz2gIrnCHR28xGocNov1aWtp2Q54XNOudiTd0YTYKfIbsVB/Nh8lwTf8dk74EYCcoFWmIKzbJWq8
+ qaW3Z9ob
+ KHdBMmq27AL3y6qhn+x7FK8GDIFO9hPy3sV5mF4wYUbUaKNKsynNuVgzuZuBj6W5aDWZCqO05gqHMeaftAdRpB1NUhygU4kee9cf5nosVDEhGTA72sX23qo+MQrBXSeFwojk7Owu9hOCUsqax1iJw05xHkx3RKqrXhlbmQjjiXdEnmxZ8n0MEC5lu0pjiH0YOv6owq3BM7SMtWp3UKTyY9hbpbVLcpdzznfzU5Hipby2slWQZc3zq5z9HOczCzsXuRO1M1ZvFp2oDEClufG7u3Ij8k4Mkolfd08CCbfYWT0rFk6n/5NbRs3/TTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,53 +147,705 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 10:40:39AM +0100, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
-> 
-> Once shmem_writeout() has moved the folio from the page cache to the
-> swap cache, the folio lock no longer keeps the inode alive: truncation
-> and eviction find a swap entry, free it and do not wait for anybody.
-> That did not matter as long as swap_writeout() was the last thing the
-> function did.  But since it puts the folio back when swap_writeout()
-> returns AOP_WRITEPAGE_ACTIVATE, it uses the mapping and the inode
-> afterwards:
-> 
->   reclaim                               last close of an unlinked file
->   shmem_writeout()
->     shmem_delete_from_page_cache()
->     swap_writeout()
->       zswap_store() fails               shmem_evict_inode()
->       writeback is disabled               shmem_truncate_range()
->       return AOP_WRITEPAGE_ACTIVATE         shmem_free_swap()
->                                         destroy_inode()
->                                         ... RCU grace period, freed
->     shmem_add_to_page_cache(mapping)
->       xas_lock_irq()            <- use after free
-> 
-> swap_writeout() behaves that way if zswap is enabled, cannot take the
-> folio and the memcg or one of its ancestors has memory.zswap.writeback
-> set to 0.
-> 
-> shmem_unuse() already added infrastructure to deal with that.
-> Reuse info->stop_eviction to protect the inode during writeout. Increment
-> it before removing the folio from the page cache, and decrement it after
-> swap_writeout() and any attempted reinsertion and inode accounting.
-> In shmem_evict_inode(), wait for the counter to reach zero even if
-> swapoff has already removed the inode from the swap list. Add some helpers
-> to make the code easier to digest.
-> 
-> Fix generated by an LLM and sent by Josef Bacik in private.
-> 
-> Fixes: 6344a6d9ce13 ("mm/shmem: writeout free swap if swap_writeout() reactivates")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ david: code cleanups; improve description ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Mon, Oct 26, 2026 at 6:35=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
+>
+> Another note about this - we need to update the tests to actually add
+> something that can catch this. The selftests only check the last line of
+> one page and first of next, and latter always implies vma_iter_init() in
+> m_start() so it never tests the iterator actually being cached.
+>
+> Obviously something for a follow-up.
 
-->stop_eviction is ugly, but, oh, well...
+Yeah, I'll look into it. David, you mentioned you were able to
+reproduce the issue. Could you please share the reproducer? That would
+help me cover this case in our selftests.
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>
+> On Sun, Oct 25, 2026 at 11:43:15AM +0100, David Hildenbrand (Arm) wrote:
+> > Reading /proc/PID/maps under per-VMA locks can skip continuously mapped
+> > address ranges during concurrent VMA splits or merges. This violates th=
+e
+> > guarantee in Documentation/filesystems/proc.rst:
+> >
+> >   "If there is something at a given vaddr during the entirety of the
+> >    life of the smaps/maps walk, there will be some output for it."
+>
+> Right.
+>
+> >
+> > lock_next_vma() reuses a tree iterator across calls under RCU. The iter=
+ator
+> > remembers the range of its last entry. When its node is replaced,
+> > mas_next_slot() walks the tree again at the last index of that range, t=
+hen
+> > advances past the entry containing that index. If VMA boundaries change=
+d,
+> > this can skip a range that has not been reported:
+> >
+> >  - A lookup finds [A, C), then mprotect() splits it into [A, B) and [B,=
+ C)
+> >    before vma_start_read() locks the first VMA. The reader reports [A, =
+B),
+> >    but the iterator still covers [A, C). The next call starts from B ye=
+t
+> >    advances past C, omitting [B, C).
+> >
+> >  - The reader reports [A, B) and unlocks it. A concurrent mprotect() th=
+en
+> >    merges it with [B, C). On the next call, the iterator resumes at B -=
+ 1,
+> >    which now belongs to [A, C), and advances past C. Again, [B, C) is l=
+ost.
+>
+> OK so the key thing here is that the _iterator_ is the issue.
+>
+> Essentially what 'next' means changes depending on the state of the
+> tree. All very subtle.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Right. Subtle details of how iterators work...
+
+>
+> I wonder whether we shouldn't have a vma_iter_next_after() or something
+> where you can specify the position you are at in terms of an address rath=
+er
+> than a node.
+>
+> But that's one for a follow-up.
+
+That would be nice. I'll discuss this with Liam. That would make this
+fix very trivial.
+
+>
+> >
+> > Checking the mmap_lock sequence only within the next call misses writer=
+s
+> > that completed before that call began. Also, a NULL result is currently
+> > accepted without validation, so a race can terminate the walk early.
+>
+> Ugh.
+>
+> >
+> > Even a fresh lookup can skip a mapping. Suppose it finds a gap before
+> > [B, C). A writer inserts an adjacent VMA at the end of that gap, then
+> > merges it into [B, C), replacing the node. The lookup resumes at the ol=
+d
+> > gap's last index, now inside the merged VMA, and steps past it. The
+> > original [B, C) remains mapped throughout. Repeating the forward lookup
+> > is insufficient: another merge can make it skip the same mapping again,
+> > returning the same later VMA or NULL.
+> >
+> > The fresh-lookup race also affects /proc/PID/smaps, numa_maps and
+> > smaps_rollup. Resetting the iterator after gathering each VMA's statist=
+ics
+> > does not prevent a merge during the next lookup. Fixing lock_next_vma()
+> > also prevents omitted entries and incomplete rollup statistics.
+> >
+> > Keep a saved sequence in the proc maps locking context and validate it
+> > before each lookup with mmap_lock_speculate_retry(). If it is even (no
+> > pending writer) and still matches, reuse both the iterator and the save=
+d
+> > sequence. Otherwise, restart at from_addr and sample the current sequen=
+ce
+> > before looking up the VMA. Only refresh the sample when resetting the
+> > iterator, so a writer between validation and the lookup cannot go
+> > undetected.
+>
+> I think this bit is unnecessary, see below.
+>
+> >
+> > The smp_rmb() in mmap_lock_speculate_retry() orders the previous lookup
+> > before rereading the sequence. It pairs with smp_wmb() in
+> > do_raw_write_seqcount_begin(), which separates the sequence increment i=
+n
+> > mmap_write_lock() from subsequent tree updates.
+>
+> I'm glad this is at least abstracted :)
+>
+> >
+> > Validate detected gaps (from_addr < vma->vm_start) and NULL from
+> > vma_next() against the sequence. If there were concurrent writes, use
+> > mas_walk() to check if the writer could have interfered with the range
+> > of interest. If the range is not empty, something interfered concurrent=
+ly
+> > so we retry under mmap_lock. Checking for empty ranges avoids taking th=
+e
+> > mmap_lock just because an unrelated writer changed the sequence.
+> >
+> > Original fix generated by an LLM and sent by Josef Bacik in private.
+> >
+> > Fixes: 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under per-vm=
+a lock")
+> > Fixes: ea3085dd7a4e ("fs/proc/task_mmu: read proc/pid/{smaps|numa_maps}=
+ under per-vma lock")
+> > Fixes: 0e985559d72a ("proc/task_mmu: read proc/pid/smaps_rollup under p=
+er-vma lock")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> > I neither understood nor liked the original LLM generated fix that was
+> > provided to me, and I (and codex) think it was incomplete. So I tried t=
+o
+> > come up with a better fix that avoids additional fallbacks to the mmap_=
+lock
+> > while trying to keep it simple.
+> >
+> > I won't claim that I am now an expert on the code, or that this is the
+> > most elegant fix. It is quite complicated what we built ... too
+> > complicated. So if this goes into the wrong direction I'll be happy
+>
+> Yep, I do think the VMA locking implementation is too complicated in gene=
+ral. I
+> did work to simplify the structure of the implementation at least so it w=
+as more
+> intelligible.
+>
+> Hopefully with this and other fixes we get somewhere better.
+>
+> I think we could do work to simplify the VMA iterators also.
+>
+> > if someone else wants to take over ;)
+
+I'll gladly do that.
+
+>
+> I think we can make this a bit smaller. Patch attached.
+>
+> But that incurs a perf penalty, so if not that, I also suggest some small
+> wrappers that de-duplicate and make things much clearer.
+>
+> >
+> > I reproduced the races with /proc/PID/maps, and with this patch they ar=
+e
+> > resolved. I did not manage to reproduce the races with the new
+> > smaps/smaps_rollup, but the races are slightly different and harder to
+> > trigger.
+> >
+> > There is the issue with seqcount overflows that Lorenzo is tackling. It
+> > probably interacts here as well? Likely, but that's an independent issu=
+e
+> > to resolve.
+>
+> That impacts VMA seqcount, and this logic only touches mm seqcount so all
+> good (claude agrees...)
+>
+> > ---
+> >  fs/proc/internal.h        |  1 +
+> >  fs/proc/task_mmu.c        |  6 +++--
+> >  include/linux/mmap_lock.h |  5 ++--
+> >  mm/mmap_lock.c            | 58 +++++++++++++++++++++++++++++++++++----=
+--------
+> >  4 files changed, 51 insertions(+), 19 deletions(-)
+> >
+> > diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+> > index df873df9afc56..f3e846b574d79 100644
+> > --- a/fs/proc/internal.h
+> > +++ b/fs/proc/internal.h
+> > @@ -386,6 +386,7 @@ struct mem_size_stats;
+> >  struct proc_maps_locking_ctx {
+> >       struct mm_struct *mm;
+> >       bool mmap_locked;
+> > +     unsigned int mm_wr_seq;
+> >       struct vm_area_struct *locked_vma;
+> >  };
+> >
+> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> > index ee9fc2fd2b2fe..dc3adcffb6d9c 100644
+> > --- a/fs/proc/task_mmu.c
+> > +++ b/fs/proc/task_mmu.c
+> > @@ -148,6 +148,7 @@ static void reset_lock_ctx(struct proc_maps_locking=
+_ctx *lock_ctx)
+> >  {
+> >       lock_ctx->locked_vma =3D NULL;
+> >       lock_ctx->mmap_locked =3D false;
+> > +     lock_ctx->mm_wr_seq =3D UINT_MAX;
+>
+> Kinda horrible to just have to know this needs to be odd etc.
+
+Well, this interface was never meant to be used directly like this. If
+we indeed go with this we should introduce an abstraction.
+
+>
+> >  }
+> >
+> >  static struct vm_area_struct *get_next_vma(struct proc_maps_private *p=
+riv,
+> > @@ -160,7 +161,8 @@ static struct vm_area_struct *get_next_vma(struct p=
+roc_maps_private *priv,
+> >               return vma_next(&priv->iter);
+> >
+> >       unlock_ctx_vma(lock_ctx);
+> > -     vma =3D lock_next_vma(lock_ctx->mm, &priv->iter, last_pos);
+> > +     vma =3D lock_next_vma(lock_ctx->mm, &priv->iter, last_pos,
+> > +                         &lock_ctx->mm_wr_seq);
+> >       if (!IS_ERR_OR_NULL(vma))
+> >               lock_ctx->locked_vma =3D vma;
+> >
+> > @@ -523,7 +525,7 @@ static struct vm_area_struct *query_vma_find_by_add=
+r(struct proc_maps_locking_ct
+> >       unlock_ctx_vma(lock_ctx);
+> >       rcu_read_lock();
+> >       vma_iter_init(&vmi, mm, addr);
+> > -     vma =3D lock_next_vma(mm, &vmi, addr);
+> > +     vma =3D lock_next_vma(mm, &vmi, addr, &lock_ctx->mm_wr_seq);
+>
+> I think this is challenging to reason about.
+>
+> But with the suggestion simplification we can avoid it.
+>
+> Otherwise, it should probably be tied to the iterator to which it belongs=
+, like:
+>
+>         struct vma_rcu_iter {
+>                 struct vma_iterator vmi;
+>                 unsigned int mm_wr_seq;
+>         };
+
+Agree.
+
+>
+> And pass that around instead, e.g. change the signature to:
+>
+> struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+>                 struct vma_rcu_iter *rvmi, unsigned long from_addr)
+>
+> And have something like:
+>
+>         static void vma_rcu_iter_init(struct vma_rcu_iter *rvmi,
+>                         struct mm_struct *mm, unsigned long from_addr)
+>         {
+>                 vma_iter_init(&rvmi->vmi, mm, from_addr);
+>                 /* Set write-locked so initially treated as maybe changed=
+. */
+>                 rvmi->mm_wr_seq =3D UINT_MAX;
+>         }
+
+Right.
+
+>
+> >       rcu_read_unlock();
+> >
+> >       if (!vma)
+> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> > index 28e3696ce9ff3..e33d15ce6a876 100644
+> > --- a/include/linux/mmap_lock.h
+> > +++ b/include/linux/mmap_lock.h
+> > @@ -511,12 +511,13 @@ struct vm_area_struct *lock_vma_under_rcu(struct =
+mm_struct *mm,
+> >   * Locks next vma pointed by the iterator. Confirms the locked vma has=
+ not
+> >   * been modified and will retry under mmap_lock protection if modifica=
+tion
+> >   * was detected. Should be called from read RCU section.
+> > + * *last_seq must initially be odd and is kept across calls.
+>
+> It's quite odd to have callers need to know about this, feels like a leak=
+ed
+> abstraction.
+
+Yes it is. We should not expose these details directly.
+
+>
+> >   * Returns either a valid locked VMA, NULL if no more VMAs or -EINTR i=
+f the
+> >   * process was interrupted.
+> >   */
+> >  struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+> > -                                  struct vma_iterator *iter,
+> > -                                  unsigned long address);
+> > +             struct vma_iterator *vmi, unsigned long from_addr,
+> > +             unsigned int *last_seq);
+> >
+> >  static inline void vma_assert_can_modify(struct vm_area_struct *vma)
+> >  {
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index 2f94ee0fdee2a..0f3a4e0c5520d 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -400,21 +400,50 @@ static struct vm_area_struct *lock_next_vma_under=
+_mmap_lock(struct mm_struct *mm
+> >       return vma;
+> >  }
+> >
+> > +static bool vma_range_is_empty(struct mm_struct *mm, unsigned long sta=
+rt,
+> > +             unsigned long last)
+>
+> Be good to add an RCU assert (lockdep only). Yes, lock_next_vma() holds
+> the RCU lock over this but it also releases it at certain points and it
+> makes things clearer and zero cost.
+>
+> > +{
+> > +     MA_STATE(mas, &mm->mm_mt, start, start);
+> > +
+> > +     return !mas_walk(&mas) && mas.last >=3D last;
+> > +}
+> > +
+> >  struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+> > -                                  struct vma_iterator *vmi,
+> > -                                  unsigned long from_addr)
+> > +             struct vma_iterator *vmi, unsigned long from_addr,
+> > +             unsigned int *last_seq)
+> >  {
+> >       struct vm_area_struct *vma;
+> > -     unsigned int mm_wr_seq;
+> >       bool mmap_unlocked;
+> >
+> >       RCU_LOCKDEP_WARN(!rcu_read_lock_held(), "no rcu read lock held");
+> >  retry:
+> > -     /* Start mmap_lock speculation in case we need to verify the vma =
+later */
+> > -     mmap_unlocked =3D mmap_lock_speculate_try_begin(mm, &mm_wr_seq);
+> > +     /*
+> > +      * Restart by address if a writer could have changed the cached r=
+ange.
+> > +      * The retry check's smp_rmb() orders the previous lookup before =
+reading
+> > +      * the sequence and pairs with smp_wmb() in do_raw_write_seqcount=
+_begin().
+> > +      *
+> > +      * The vma_range_is_empty() checks below avoid unnecessary mmap_l=
+ock
+> > +      * fallbacks.
+> > +      */
+> > +     mmap_unlocked =3D !(*last_seq & 1);
+>
+> If we keep this logic, this really has to be abstracted out, e.g.:
+>
+> static bool mm_seq_is_write_locked(unsigned int mm_seq)
+> {
+>         /* By convention, odd means locked, even means unlocked. */
+>         return mm_seq & 1;
+> }
+>
+> > +     if (!mmap_unlocked || mmap_lock_speculate_retry(mm, *last_seq)) {
+>
+> This is pretty subtle, and the VMA lock code is confusing enough as it is=
+.
+>
+> So abstracting the speculate/retry bit would be helpful I think.
+>
+> Maybe something like:
+>
+> static bool vma_tree_maybe_changed(struct mm_struct *mm, unsigned int las=
+t_seq)
+> {
+>         /*
+>          * Write lock held when sampled (VMA can change), or write lock a=
+cquired
+>          *  + dropped since.
+>          */
+>         return mm_seq_is_write_locked(last_seq) ||
+>                 mmap_lock_speculate_retry(mm, last_seq);
+> }
+
+If we follow your suggestion and introduce vma_rcu_iter then this can
+be abstracted as an operation over vma_rcu_iter:
+
+static bool is_vma_rcu_iter_valid(struct mm_struct *mm, struct
+vma_rcu_iter *rvmi)
+ {
+         /*
+          * Write lock held when sampled (VMA can change), or write
+lock acquired
+          *  + dropped since.
+          */
+         return mm_seq_is_write_locked(rvmi->mm_wr_seq) ||
+                 mmap_lock_speculate_retry(mm, rvmi->mm_wr_seq);
+}
+
+>
+> /* Returns true if mmap write unlocked. */
+> static bool reset_walk_if_mmap_lock_dropped(struct vma_iterator *vmi,
+>                 struct mm_struct *mm, unsigned long from_addr,
+>                 unsigned int *last_seq)
+> {
+>         if (vma_tree_maybe_changed(mm, *last_seq)) {
+>                 /* Reset walk and re-speculate. */
+>                 vma_iter_set(vmi, from_addr);
+>                 return mmap_lock_speculate_try_begin(mm, last_seq);
+>         }
+>
+>         return true;
+> }
+>
+> (Can return true at the end because the write lock can't be held at the
+> point of being sampled.)
+>
+> Then this becomes the self-documenting:
+>
+>         mmap_unlocked =3D reset_walk_if_mmap_lock_dropped(vmi, mm, from_a=
+ddr, last_seq);
+>
+> > +             vma_iter_set(vmi, from_addr);
+> > +             mmap_unlocked =3D mmap_lock_speculate_try_begin(mm, last_=
+seq);
+> > +     }
+> > +
+>
+> This seems like a bit of an over-optimisation for a fix, we can always
+> reintroduce it later.
+>
+> Simpler I think to just keep the mmap_lock_speculate_try_begin() and
+> unconditionally perform the vma_iter_set().
+>
+> Also easier to reason about. Better to reason that the vma iterator might=
+ be in
+> a questionable state, so just reset it.
+>
+> Also eliminates adding last_seq + all the churn in the fix.
+>
+> Patch suggestion attached below.
+>
+>
+> >       vma =3D vma_next(vmi);
+> > -     if (!vma)
+> > -             return NULL;
+> > +     if (!vma) {
+> > +             /*
+> > +              * There is no reason to fallback if there really isn't a=
+nything
+> > +              * in the remaining range.
+> > +              */
+> > +             if ((mmap_unlocked && !mmap_lock_speculate_retry(mm, *las=
+t_seq)) ||
+> > +                 vma_range_is_empty(mm, from_addr, ULONG_MAX))
+>
+> Quite a lot packed into this single expression.
+>
+> If the write lock is not held (VMA can't change) and it wasn't acquired a=
+nd
+> dropped since last we checked, or, if when explicitly checking the range =
+to
+> see if anything is left, stop.
+>
+> It seems to amount to me to 'can we trust that vma_next() didn't just ski=
+p
+> us over stuff?'
+>
+> With the vma_tree_maybe_changed() helper could be:
+>
+>         if (!vma_tree_maybe_changed(mm, *last_seq) ||
+>             vma_range_is_empty(mm, from_addr, ULONG_MAX))
+>                 return NULL;
+>
+> Which self-documents this.
+>
+> Actually given the logic below you could have:
+>
+> static bool should_traverse_range(struct mm_struct *mm,
+>                 unsigned int last_seq, unsigned long from, unsigned long =
+to)
+> {
+>         return vma_tree_maybe_changed(mm, last_seq) &&
+>                 !vma_range_is_empty(mm, from, to);
+> }
+>
+> Then this would simply be:
+>
+>         if (!should_traverse_range(mm, *last_seq, from_addr, ULONG_MAX))
+>                 return NULL;
+>
+
+Right. Refactoring definitely makes sense.
+
+> > +                     return NULL;
+> > +
+> > +             rcu_read_unlock();
+> > +             goto fallback;
+> > +     }
+> >       vma =3D vma_start_read(mm, vma);
+> >       if (IS_ERR_OR_NULL(vma)) {
+> > @@ -442,15 +471,14 @@ struct vm_area_struct *lock_next_vma(struct mm_st=
+ruct *mm,
+> >        * it was not shrunk after we found it and another vma has not be=
+en
+> >        * installed ahead of it. Otherwise we might observe a gap that s=
+hould
+> >        * not be there.
+> > +      *
+> > +      * If speculation fails, avoid taking the mmap_lock when a direct=
+ lookup
+> > +      * confirms that the gap is empty.
+> >        */
+> > -     if (from_addr < vma->vm_start) {
+> > -             /* Verify only if the address space might have changed si=
+nce vma lookup. */
+> > -             if (!mmap_unlocked || mmap_lock_speculate_retry(mm, mm_wr=
+_seq)) {
+> > -                     vma_iter_set(vmi, from_addr);
+> > -                     if (vma !=3D vma_next(vmi))
+> > -                             goto fallback_unlock;
+> > -             }
+> > -     }
+> > +     if (from_addr < vma->vm_start &&
+> > +         (!mmap_unlocked || mmap_lock_speculate_retry(mm, *last_seq)) =
+&&
+> > +         !vma_range_is_empty(mm, from_addr, vma->vm_start - 1))
+> > +             goto fallback_unlock;
+>
+> Again a lot of stuff on the same line, and a lot of duplication.
+>
+> With above could be:
+>
+>         if (from_addr < vma->vm_start &&
+>             should_traverse_range(mm, *last_seq, from_addr, vma->vm_start=
+ - 1))
+>             goto fallback_unlock;
+>
+> Which also self-documents.
+>
+> So if the perf penalty for simplification is too much, this stuff can mak=
+e
+> this a lot more understandable and avoid code duplication.
+>
+> >
+> >       return vma;
+> >
+> >
+> > ---
+> >
+> > base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
+> >
+> > change-id: 20261025-per_vma_maps-ceab0eb860d5
+> >
+> > --
+> >
+> > Cheers,
+> >
+> > David
+> >
+>
+> The simplification eats the cost of a new tree traversal each time from
+> root (ugh).  It makes the fix a LOT simpler, but incurs (claude says)
+> 13-17ns/VMA cost i.e. 10-25% of the per-line cost of reading
+> /proc/$pid/maps.
+>
+> I think we care more about lock contention than raw /proc/$pid/maps
+> traversal time, however, so I'm not sure this matters.
+>
+> In any case, an optimisation can be introduced with appropriate abstracti=
+on
+> as a follow-up, I think better to do the simpler-to-reason-about version =
+as
+> the fix.
+>
+> But if we are bothered about this, then it needs abstracting as suggested=
+.
+>
+> ----8<----
+> From 2c87f4865b415b90b6b833b51323f2267d1a4f1f Mon Sep 17 00:00:00 2001
+> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+> Date: Mon, 26 Oct 2026 12:11:21 +0000
+> Subject: [PATCH] simplification
+>
+> ---
+>  mm/mmap_lock.c | 47 +++++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 37 insertions(+), 10 deletions(-)
+>
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index 83b7d3ded0dc..6568dda0aba4 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -428,6 +428,16 @@ static struct vm_area_struct *lock_next_vma_under_mm=
+ap_lock(struct mm_struct *mm
+>         return vma;
+>  }
+>
+> +static bool vma_range_is_empty(struct mm_struct *mm, unsigned long start=
+,
+> +               unsigned long last)
+> +{
+> +       MA_STATE(mas, &mm->mm_mt, start, start);
+> +
+> +       RCU_LOCKDEP_WARN(!rcu_read_lock_held(), "no rcu lock held");
+> +
+> +       return !mas_walk(&mas) && mas.last >=3D last;
+> +}
+> +
+>  struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+>                                      struct vma_iterator *vmi,
+>                                      unsigned long from_addr)
+> @@ -438,11 +448,29 @@ struct vm_area_struct *lock_next_vma(struct mm_stru=
+ct *mm,
+>
+>         RCU_LOCKDEP_WARN(!rcu_read_lock_held(), "no rcu read lock held");
+>  retry:
+> +       /*
+> +        * No lock was held since the last call, so the iterator's cached=
+ range
+> +        * may no longer be valid. Always restart by address.
+> +        *
+> +        * The vma_range_is_empty() checks below avoid unnecessary mmap_l=
+ock
+> +        * fallbacks.
+> +        */
+> +       vma_iter_set(vmi, from_addr);
+
+This is clearly simpler but this unconditional vmi reset is not ideal.
+At this point we could make vmi just a local variable of this function
+because we don't use the stored state anyway. I guess we can use this
+as a quick temporary fix.
+
+For the long-term fix I want to check with Liam about feasibility of
+adding vma_iter_next_after(), in which case this issue can be fixes
+easily and vmi reset can be removed.
+Otherwise I can refactor David's patch to hide some of the details in
+abstractions like Lorenzo suggested and post that.
+
+>         /* Start mmap_lock speculation in case we need to verify the vma =
+later */
+>         mmap_unlocked =3D mmap_lock_speculate_try_begin(mm, &mm_wr_seq);
+>         vma =3D vma_next(vmi);
+> -       if (!vma)
+> -               return NULL;
+> +       if (!vma) {
+> +               /*
+> +                * There is no reason to fallback if there really isn't a=
+nything
+> +                * in the remaining range.
+> +                */
+> +               if ((mmap_unlocked && !mmap_lock_speculate_retry(mm, mm_w=
+r_seq)) ||
+> +                   vma_range_is_empty(mm, from_addr, ULONG_MAX))
+> +                       return NULL;
+> +
+> +               rcu_read_unlock();
+> +               goto fallback;
+> +       }
+>
+>         vma =3D vma_start_read(mm, vma);
+>         if (IS_ERR_OR_NULL(vma)) {
+> @@ -470,15 +498,14 @@ struct vm_area_struct *lock_next_vma(struct mm_stru=
+ct *mm,
+>          * it was not shrunk after we found it and another vma has not be=
+en
+>          * installed ahead of it. Otherwise we might observe a gap that s=
+hould
+>          * not be there.
+> +        *
+> +        * If speculation fails, avoid taking the mmap_lock when a direct=
+ lookup
+> +        * confirms that the gap is empty.
+>          */
+> -       if (from_addr < vma->vm_start) {
+> -               /* Verify only if the address space might have changed si=
+nce vma lookup. */
+> -               if (!mmap_unlocked || mmap_lock_speculate_retry(mm, mm_wr=
+_seq)) {
+> -                       vma_iter_set(vmi, from_addr);
+> -                       if (vma !=3D vma_next(vmi))
+> -                               goto fallback_unlock;
+> -               }
+> -       }
+> +       if (from_addr < vma->vm_start &&
+> +           (!mmap_unlocked || mmap_lock_speculate_retry(mm, mm_wr_seq)) =
+&&
+> +           !vma_range_is_empty(mm, from_addr, vma->vm_start - 1))
+> +               goto fallback_unlock;
+>
+>         return vma;
+>
+> --
+> 2.56.0
 
