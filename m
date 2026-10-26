@@ -1,147 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29711606A31D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 22:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E8A606A336
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 22:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amacapital-net.20251104.gappssmtp.com header.i=@amacapital-net.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=CJjg7Ks8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JA6O2W7j
 Received: by kanga.kvack.org (Postfix)
-	id 03DA06B05B3; Mon, 26 Oct 2026 18:46:52 -0400 (EDT)
+	id D6D546B05B1; Mon, 26 Oct 2026 18:56:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 014766B05B4; Mon, 26 Oct 2026 18:46:51 -0400 (EDT)
+	id D1E146B05B2; Mon, 26 Oct 2026 18:56:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E455D6B05B6; Mon, 26 Oct 2026 18:46:51 -0400 (EDT)
+	id C347D6B05B3; Mon, 26 Oct 2026 18:56:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A5AEC6B05B3
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:46:51 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3F2CC16056F
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:46:50 +0000 (UTC)
-X-FDA: 85366263780.18.12F7DBA
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 42E6E140002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:46:48 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b=CJjg7Ks8;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of luto@amacapital.net designates 209.85.167.41 as permitted sender) smtp.mailfrom=luto@amacapital.net;
-	dmarc=none
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793054808;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D71C6B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:56:10 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C71DA8322
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:56:10 +0000 (UTC)
+X-FDA: 85366287300.23.1E1CB31
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 99A73C0004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:56:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JA6O2W7j;
+	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793055368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sKnr+HaOzY7Irrp2H9F7r4w2uph5h2kmhEeFaXwyEMA=;
-	b=8RVAKueR3dAHi0Prjhb8b9ZCpNIU9AwKDP+8H4ZCCBHRQ2xxl4lkVkCYTaB467smaezSXX
-	2QRnd+QP+JfgAagV4xlbVizKhfxOImOYSd8Cc8RQ1l6kj4Jr84PJigeroLEIBMklv1XZ9X
-	GijZGJp1Fp5qG8PDKKshewy1ED/wq30=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b=CJjg7Ks8;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of luto@amacapital.net designates 209.85.167.41 as permitted sender) smtp.mailfrom=luto@amacapital.net;
-	dmarc=none
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793054808;
-	b=EW/5Hr3FAoy4UqWzLE3tjzu3lg6id5IfChWCrr5SjsXDQvgEYqrhJBqQKmJh5/Tw/eoP9E
-	1ZnHCXZhDyI6N2INwb/IH/z0eu5f8V9gNGQaT0q2q6Lrq0agaEFhewI0y9644XuGpOYNLv
-	2uU0HJmRxfchY3gW9fK0gBKcgU2S91g=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5be47aa555cso4060585e87.3
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:46:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793054806; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aX9riIlSPlq8VMbJb10BDU1mc1zH9yiznWqfF5O2XjZLyLoIIPPEA/qq8MUIt92Bc8
-         OFhsqQjJAlSbHQqznM8cOAo6/Yar+JcM4XB8gpAAo0Uc1ju61rR6dp+nU+KPrcfBqH3s
-         0YBT0iVrCFW935sQ8M/YYuPjDzxRuZGEsGQq/Y30Iuw60ZCJWi587bmf2jlZVSo54n4m
-         OiFLB4wem0qMrzt3dUw2CsXGTUCBb74kQyki8FdkASV2ZvHtElV90hBjGXL5lDqFirCJ
-         aTIsuR7pmHe/itE5QOM39FNMJkE9N6Al7QlTzfhCdYu7tLANOLTMgIndpCggZ7E+8p+o
-         WQyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sKnr+HaOzY7Irrp2H9F7r4w2uph5h2kmhEeFaXwyEMA=;
-        fh=AzYjr0Obxs9+v9ztrgzBJQ8DPB+mbC/p3W4I9KCl94w=;
-        b=fREzAt8EEYl8qRodg+JxTaCNAjddoUIvAtBiMeZaRUxEmga6mvlXYgBvUL67V6u1hg
-         rl6O85jHuXjo1WvRIIqqZYTiO9zmzYowmME23FnCSO+VDBsz90k0ECPWc8msVI2U2Hvc
-         L5Xoxu79dXwLhJQ1VZ+4fnRMw9zClyD+jtJCMB8S4ssNdA9CdhNw31GoiOmLydADe3J6
-         yZzlOiYwchghjz5UdP+zmjvDtI3w44MfOU7bJ6T7A/Lp7X6wGSzw+1gpnNDozNFNIZnX
-         Cpy0Ej7NzJvZwlJVP8fyLm47FNuPmPS4SNj14rkEeSuopE/SEttLIZWPZRrXoUCTftUe
-         rhqQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20251104.gappssmtp.com; s=20251104; t=1793054806; x=1793659606; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sKnr+HaOzY7Irrp2H9F7r4w2uph5h2kmhEeFaXwyEMA=;
-        b=CJjg7Ks8abw8gr1axbaSe3sxUZyAszdvFVvp4GQQ528W3tLtpiv77lrQiy23Tbu81F
-         MmDfVBkqIxD/ImINBH7rv+7pmB4ioJ0ver6xHEwPqr/B1BrcGnpAsSEqQ0LSBB/4C1kJ
-         y8xtnh0v+kRfNtBVmDVmfVVNXeCXUnOKB3bwHoxYx7GBk+bBRC0RYMyJrMvqXHrQstdO
-         9dvj/i0of2W/MijoW4TvSwaG/FZhLgkNOR2/4YAf6H9MwzEIPIIuazzyIy7VxLfHmtxf
-         Mj7s7BHMq2KX5vYAJgFAwrdlUly/zVJDuJyO90IQ+pvCx2ofEDb6DBtzd1qhUvsUchtu
-         IGdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793054806; x=1793659606;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sKnr+HaOzY7Irrp2H9F7r4w2uph5h2kmhEeFaXwyEMA=;
-        b=oNdcEhFmIMCF/c7AB0AC5/yWwE22rA416BgQ5TJH51yi3yNq/FSejdtjfJpeqXa6lR
-         JM7EZXwQt9yQFpAv9445y7Ox4mLHZGqhdDUu10gOTT/ilXTytw8AFPX1Ml5t/4YKVWDS
-         WrcqQfeLhs7pjpqDWt1eCvpdXlqU72elZptATAhiF/VbiDAaFfj9PL1l995mhBPg/FzV
-         ETxGSduA80IN/d0eCrcREAzm/lrvbcZxFiEcfbCvjkdoK0XSk+gVLmXntfUS+QhVMEgZ
-         raxQLMXAnjc+nrVnqCrEoDaGy0blPNJB2HViruIMDJUDY1cxjZm7dSTuZaRQpWtPtHZI
-         Wgkg==
-X-Forwarded-Encrypted: i=1; AKwUvBxKcnQ+P5OcV1h/kFvn/Ujm9dYKzcPepo1FwIzc0pibyB6joixJV1QhQUPuiAbzW7IO8G+wb1Bn3Q==@kvack.org
-X-Gm-Message-State: AFq9FYKYOt9tsu0RgYyO/FqCfTP8PGD20Lm7vboDN4EAzt+EpoPHVgzH
-	udA6OUX3vv3kmb14SgWaKOxSwrNEbFytVP7fnzds/k/smt6zO/8lfydAV+i3drxtfDNMaHidMxP
-	641DFql2kbWVsbJ++Lblm9MIvXe3UjUBW3go6bWHM
-X-Gm-Gg: AYBFou1YrcE5HhVUB/cspYFMzmVOGMMsow/zontRZxhQKo/VwvlMg0btjG1EGwa6mrH
-	yci8WLThHh5Ivbb3RUJFOKJd8VCEDunKGbFBH8b9D3+cv+D83ePqUQo49bbcRjiHt7e3vHYqMUK
-	CPlnoGaoX8p2fW6Cnqg33wPIUc5ROCjFnXq/fGAxPJX1lRIaGwJFVntgcdWSwNPPSOgwluuJIVE
-	9KZ/nUYysU9x4Tt24YQwi/4S1EuRCZOhncY4Y3YYH4ySsEdgqdaI8abep7/CltAwbi+QJ+3reI1
-	84BVxPrn5rwxiBKY1+I7KIwOokBQNYDoHRpaVescF8H8tFi6KRcu6akWmrSmeBLf7i0okCR2hW6
-	jn7mr9SahnfbFNAVsgacdbGVmEWzwEV59Qw==
-X-Received: by 2002:a05:6512:3e0d:b0:5bc:e28c:1349 with SMTP id
- 2adb3069b0e04-5bfb71fd555mr2854881e87.56.1793054806319; Mon, 26 Oct 2026
- 15:46:46 -0700 (PDT)
+	bh=kDRiWJeMZqvF6vqXY+N9yfNAfM6lhJN4gULkYvRyiak=;
+	b=nD4U+pYN2DOiZ7dzOmS9dc+IeeS5WpAK/PgALWQfBrfVUggV5LNx8MPt00Kifa16TuAqYq
+	Z9bUoW+EbR4OsI7M+QERKq5Qcv4uES7PBe+DvKxrNUDbfBA9VSKnir+nAxd5xw+HYH9TEh
+	iwiTtybDUAUDsUH/6d6WVCK1J5bhvpc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793055368;
+	b=TWGAzZS9vUl2kN2FXr2nyVR/QraoiUrk9Ar6QR0zQuvWmtGpOAlzq2sdAT9jtmwJPsVsV9
+	pmKyQTJBz1emqzuU+aBK18mvCvVmSbR6/1DbOfP8jZ8MVvG+6pFNXOH2k+4jSSZzo8leAk
+	EbM3nyAxaLc2+1/I8Vesq3Ll8CPZSng=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JA6O2W7j;
+	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CCAC743689;
+	Mon, 26 Oct 2026 22:56:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29761F01828;
+	Mon, 26 Oct 2026 22:56:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793055367;
+	bh=kDRiWJeMZqvF6vqXY+N9yfNAfM6lhJN4gULkYvRyiak=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JA6O2W7j6unWHhshHnkD/s//HD6Gtrrxz19ZJJp88yY8baS14aOi/vhUL9vmbQFoS
+	 YlCnw7TvFUMhJk64ZYoPjt3OMOnK8zJ2oQjFkyu9W+VNz93QO51yxzDj1RmljmeT49
+	 jCw0KgpYmfxg3j7ZZM4qmjjs6fx0/qNxyAs0s9SWeOnQzFA8SHMclQsgU83RHmaTsD
+	 hkNT63KrvO/8yXP1sZU3TQ3kuzUPk4y+K6dMrAzpF7eWXz37BThopS4aUsG5FNh6sr
+	 /VEgJeNMtrTnrhtLZ+0zdQAAvDBEURk95nPKgwo+ut9jeN7y8uxuG8lo4HwSab71fV
+	 Q1MzPx4yhnwAg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 7.3.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Mon, 26 Oct 2026 18:55:55 -0400
+Message-ID: <2026-10-26-1-daily-reply-0004-damon-zero-target-value-7-3@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261026133320.68445-1-sj@kernel.org>
+References: <20261026133320.68445-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261026220546.3114241-1-skhawaja@google.com>
-In-Reply-To: <20261026220546.3114241-1-skhawaja@google.com>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Mon, 26 Oct 2026 15:46:34 -0700
-X-Gm-Features: AclHuK_ddIvC0f7JBYWchwOFfRRqT-a0AZ_RsWY_MxD_DGe6_YpRsBjkP2gzVDw
-Message-ID: <CALCETrXNEWQNPjtuHnTfVFOafeJ7APXq288Cq16Q5adDNYx9+A@mail.gmail.com>
-Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
-	Jeff Xu <jeffxu@google.com>, David Matlack <dmatlack@google.com>, 
-	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-api@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 99A73C0004
+X-Stat-Signature: e15ww5h1hn6t3hds9c4qymy3e4udsyum
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 42E6E140002
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: oxswcwjm73r7czgi8jkbifh591mix69d
-X-HE-Tag: 1793054808-2535
-X-HE-Meta: U2FsdGVkX19myefGRV380ZAR7yLyT7dN7woiCgMh4k/uTSIY+SZu9XexH6qaJ4snEdDXs6SQtXPDmzoSqMIQ8svkswZAmQOdPxu6qoPb48zr9ZkwayL6xBQbi3Pfk9DrPFskxjq/D4HgaWaDL8rIHNPN/hpOJLXMIJXJ7wOG5ahAJtb5yXngBEPUEdxL/4zL61mCslPrC/fGqZu11iR/pE5ErYB/cOCBcvKPxq2m3n5YAbannvvVNfVPNUTityFn16GAhb6xtTQxMg+RrpBs5vjVQrWPU5fku2uGOAmQRxmPZ7ws998BH0gocOiedWEAETPaRbWMzwnsanDvrPX1ckbeePbapr5AKFuL3J4JYh7A9PXtYdGXIW02jMAfYbUPF4lkhqpBvWRtZ5itfh7/9O/8zXjnNqQEZ+6i831stZS5FnsTCGn6lygjRo59jLZ1oA/IkFMxkXZS5NT9DE9sjdKVDEeH6UBjLss80MefGdTVRP0l0ItXOvpW2tQ5BFfBqtnFZTpOoNvsKgia/usrEobC/JPhzRUYs0nInRBwpH3HlKHQ0ogmt8O+2Cl+z2eXWy3LyJXkO8f8fD8Cy7jqQjXFJWzNOWCRHKXtS2YKREmn9JMUr8Mm58ik66sjnYbYvhrJn2xCT1IkmZOKNVVxRGLJmDk5nAVGPyi+eiwYKrlsLSsyqfbpfprZrX2xrmC1d36z0NC/KdjRcL21+MzSZLflYlkjGFjO0kHgKXocucR/oPpP4pRPz3fqtdJSxJSydp6QHkU1bIMPiV81OQJ6lEbAstXnpsZFLrvgiqT7WwTYlCk5GLf+cPh/K0fkPcjk0XR6tbMSYOgaitOCS7a/wYQ+rtd2AexA+3cNYKE6zGR8q6wWZS6pYzWuhmnSlfiRLpJEUN/X/hOVzhL1xZ8nPSuFAf2Dd+9Rq/1n1xEuVvplga5wR4c/4cfOhHopexXGYP3JOi7pA0ZeHvWQp7r
- D1XcRLfR
- L9jpHcZtfgKLAlfZglwr7zuTMohXW/jqGWxeFcTlOn4aWQc5DpjF4LRp6wlTAeqOt+0N2StzH6CE5NcogymM6lWydUvl3BFmQSWZMDAAJvN+17JoMZ8GUmrA4LAOtwRWuGLHB4VJYacgV/n2In87gSx46UR2d2Lk42jj0CIX6LAg67WbCVN0ZkAaenTEdex7GoZpvob9Y+2qALgUcCWjucCZ3jA/tDUhbEd3Ig+XEH1JO71M9NMUXhJWt2bDiXMQdJ8wq/XilVAlZxhOcOhIsEcQFjnBH0znKi1Wzx9NDqyWrHqKBhpJqqlT3v0mO5ixI49edQT/YYho5i47kw1Ga5DMLDbrjL+j/mTIEnMe1gFtuVQvWXoU3LvqrkclxgXRygjdOVMaXB5+HkgzrhlGbGdu1nOeyDHGmIppxTLuCSN/jLHZeiYxDkYz9GDNECki85PD0jUlnEJ5fvG0hbKotb4lMxhGqcKrRsNdt
+X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793055368-678731
+X-HE-Meta: U2FsdGVkX19KCTKtllXUZe3kTaUG1F2ZzqtUi0o6vUswBB13rmfRiTRbZdzMraob8/5FC9OUJgGK2Xb4eVMkHgTN/ONlZ0Y0HJJt9zjqeYuNIqe7B2yEXA+bknwmH/7IXXKQrcFkdbG9TtSNbxkvRbjVcyB1qGKbTLbXsB1BqzydD4p0OXjM3jBrCAX5zV0UgrsChq/2lKgUBgqDgp7/C0eCzZitNFGVpAX9bPdbV/YEoIHgr32UnaEPrQj5C+qRO1gT/rCfaY6bTw5SqBze7aVBYw469Y4NSgGvTmXihLBYVUrwKKSdqRV3qLlmMVD5Q/IXoyS7LrRUZA7Jf8nZsR/WY/aktj6lYgkMfRdSyiiFVevdKNssmoXU0aC8cJxd6zgZXwsvyDgS75Oa9+k+ZAn0YMoZPmuwHszDE8Wy5hWwwhaB/W4RyxuvnHqhoHxjrvwn94B6E23aas0gpUhgbW5XUcEVtegcebP1KLpiIEGPdCYXBUo5gXO+VIWz+zo5KGMah1TA1+g27CjWEJpBlRgyZOUrqBMLW8u4R6ny5lxdfffKpjY2owsL4AZ0bdeSBA+fOUf+CqGBav7XqDNYlbAgDc3eadJnlo2Wa9OOKdvrAe6hFt27ILOXBaJs0xB+QI5S5oNLvyHaiGj4emtXkRcB5Ko2FX4qLZnxk1UUXJs6FG2afJ0mWailaVUJPT8Ir0Rl65TfG+aHtfaWbRKJEKInQSsPE0VomeyMPUzqHepWFUgPNM/786WB44t2LymaumzKlC/hik7CpmP2SuUJBHuOB4aGrjtdv2uKniR9vWcH172W7JBISDPB9ULYgkhpb2bFr1qAEZ5Ksj4daaYbhXLFOlj9/1JldaFpiK0gQFfc0MEs1QqWgYvWbiDrCUojgFWa/cSliU/D3tfl+S2mgXv+CpjBGM5FycpmgJ2YckIfp3cOAhkoXC3y8KMvqml70O1J6HqfcN+5dIta+kC
+ tSJSNIhp
+ oMsUZuYtMpLunBsEUZ/xUB6hsba/CprqAiqn4PuSapIHDMBVoi+XF6qA/HJwzWvCfDGpmBVl+/0kec2WCptmA1XnajMV7/jgNzXVb656E211ivrjOFu8uiJBT6tzfdPnN38b4fSwFpj03NOtf1xJaQQNf25RRGYY3OSOOnMmUoC0C+2VHo16JaIXcmckGa4TN8w0p4ZGUC0cxbB2FIT5KS5/tytzMwsgS+yUjJ2EGhKyI3/6OQqzhw1mnjd5evVKy03Dk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,59 +97,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 3:06=E2=80=AFPM Samiullah Khawaja <skhawaja@google.=
-com> wrote:
->
-> This series introduces F_SEAL_PUNCH_HOLE, a new memfd seal that prevents
-> holes from being punched into a shmem or hugetlbfs memfd while leaving
-> the file fully writable.
->
-> Background
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Drivers such as udmabuf and iommufd (via IOMMU_IOAS_MAP_FILE) use
-> memfd_pin_folios() to pin the folios backing a memfd and hand them to a
-> device for DMA. Pinning keeps those folios allocated, but it does not
-> keep them in the file. If userspace later calls
-> fallocate(FALLOC_FL_PUNCH_HOLE) or madvise(MADV_REMOVE) on the range,
-> the folios are dropped from the page cache while the device continues
-> to use them. The pin holder is never notified, and from that point on
-> the device and the file silently diverge.
->
-> The existing seals only partially address this. F_SEAL_SHRINK prevents
-> pages from being dropped by truncation, which is why udmabuf requires
-> it. Hole punching, however, is only blocked by F_SEAL_WRITE and
-> F_SEAL_FUTURE_WRITE, and both of those also forbid writes. That makes
-> them unusable for memory that must stay writable, such as guest RAM or
-> DMA buffers, and udmabuf explicitly rejects memfds that carry them.
->
-> Proposal
-> =3D=3D=3D=3D=3D=3D=3D=3D
->
-> F_SEAL_PUNCH_HOLE fills this gap. Once it is set,
-> fallocate(FALLOC_FL_PUNCH_HOLE) and madvise(MADV_REMOVE) fail with
-> -EPERM, while reads, writes and resizing are unaffected. Combined with
-> F_SEAL_SHRINK, it guarantees that userspace cannot remove pages from
-> the memfd while the memfd remains writable.
+> Notes for stable kernel porting.  The upstream commit doesn't have
+> Fixes: and therefore not ported to stable kernels.  It turned out it
+> fixes commit 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota
+> goals user input to DAMOS") which was merged into v6.8.  The user impact
+> is a race condition that can result in divide-by-zero.  Hence backport.
 
-How does this solve the problem?  F_SEAL is about a userspace
-contract, and if there are existing users of the APIs in question, it
-makes very little sense to start making those users fail because they
-haven't taken the appropriate seal.
+Queued for 7.3, thanks.
 
-Would it make more sense for the drivers in question to set some flag
-(refcount?) on the file to block hole punching?  Or perhaps to have
-the hole punch code notice that it's trying to punch out a folio that
-is pinned or otherwise referenced and to refuse to do it?
-
-To some extent, the issue you're describing is maybe broader than just
-the APIs you're contemplating.  If I open a file and then do something
-in thread A that GUP's the file and punch a hole in the file in thread
-B, I'm doing something weird, and I can imagine plenty of ways it
-could go wrong.  (Especially if it's GUP for write.  I hope we already
-get that case right.)
-
---=20
-Andy Lutomirski
-AMA Capital Management, LLC
+-- 
+Thanks,
+Sasha
 
