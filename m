@@ -1,99 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0918B606A324
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43114606A328
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kpQTgW3r
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=pmzTkt34
 Received: by kanga.kvack.org (Postfix)
-	id 1687E6B05B1; Mon, 26 Oct 2026 14:05:12 -0400 (EDT)
+	id 64D956B05B7; Mon, 26 Oct 2026 14:06:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 119C46B05B3; Mon, 26 Oct 2026 14:05:12 -0400 (EDT)
+	id 624ED6B05B8; Mon, 26 Oct 2026 14:06:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 056216B05B7; Mon, 26 Oct 2026 14:05:11 -0400 (EDT)
+	id 53B046B05B9; Mon, 26 Oct 2026 14:06:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB5576B05B1
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:05:11 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F450A845B
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:05:11 +0000 (UTC)
-X-FDA: 85365554022.07.10BBA71
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C55C6C0002
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:05:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kpQTgW3r;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2366C6B05B7
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:06:29 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94EC0A0829
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:06:28 +0000 (UTC)
+X-FDA: 85365557256.14.7A9F90E
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D34FB1A000E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:06:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pmzTkt34;
+	spf=pass (imf19.hostedemail.com: domain of parri.andrea@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=parri.andrea@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793037986;
+	b=4b+dklqRWjogrDBHcrwevO5nREuAnURJ9BO2VjfQmowHBd2Js460+2eRMmosl+ienBl0TQ
+	wl7JbxBjjJ40sr1L/GOyfbWPYDIZs31TVZjCa6mkphPreExhDYOlA1RG8qMIt6vz6apOf4
+	6K1Uy7OVEHnvZ3zPOF/TZvPh2xOoiVY=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pmzTkt34;
+	spf=pass (imf19.hostedemail.com: domain of parri.andrea@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=parri.andrea@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793037909;
+	s=arc-20220608; t=1793037986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rSYE5PMCjtkYE/2kg/ihUpsjoSDnaarE8/1GfnhKwlM=;
-	b=I+qtSqr5wkoqoNJpH7CpCMGOl3KobJBlg0+YCtTeK3FeBRwaWMVaFYM6g/ZEPlxFRNpkMY
-	MBnsR+U/t8E7E9RLS5xkVrtmvXCV/gJVR74ooRMtLsCKxRW7rCCPWG94+HzZfBSqYNdKsY
-	sGjpAQI4ORJbs68v+z4EDC/nL1zIQow=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793037909;
-	b=bBPEZCjwOZsJe5+uF56WVhaVWzw/md3QxV76NZluHqdynyMeBaRsWgyc6VposQ1ZYz2ePU
-	ULtub/FOBUR0r174ytsUHccHaVxmKQmFPMkEEETa2GmYcm6kC/FX2CqXaV+8fBrPaMOoBe
-	OMMDjOe8dtelb6AYJHsgi9FPglaQHY4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kpQTgW3r;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 53091601EF;
-	Mon, 26 Oct 2026 18:05:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB101F01825;
-	Mon, 26 Oct 2026 18:05:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793037909;
-	bh=rSYE5PMCjtkYE/2kg/ihUpsjoSDnaarE8/1GfnhKwlM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kpQTgW3rDY1kY36F1bdm0miYZ7qkvzMiHcyoMuGIRhSZg80yhPvKxdxRJ5W2DNpt0
-	 I6gAYk6hYOTLAEqH8qI+X+i0GZYNv6AQtPmYUNOwMxyD08Xio9hJR6JDhtVPjtt+2c
-	 6OeChc//KC/hSRQsCQVeiyvmDo2C0KxPexzZTGLkw6rRpeSbjIG3QpImoUcRwULz8n
-	 j7Uj660lB9mz/vFlMFInPEpDIr4WMSbX+ZasjwDlpJ2ZUcqqD7jiusTg8dOL1WNMI1
-	 qo4w2j4PCvXPc32fKnnFbTQ8yj8gVUXudf+qfpREfOBTUskjKmklrsJle6s9kfkx/A
-	 Ybfqosydthhlg==
-Date: Mon, 26 Oct 2026 18:05:03 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
- /proc/PID/maps and friends
-Message-ID: <at-WKy_zj2SYUhBa@gremlin>
-References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
- <at8-42OwXk2z6-HB@gremlin>
- <CAJuCfpFaxo06yHdVKsEEmFf9qoOYS0DbMvUuAZEhNfDe7dcwJA@mail.gmail.com>
- <8c5a8fb7-233e-4433-af45-b67cb2528b60@kernel.org>
- <at-M5hORjFt6aur4@gremlin>
- <ft4q2mxxiihpvc6wjs2pyku6fvfqg5r4brpgjvz4ikkeh7vwff@s6h5k2dxstk2>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xHfjRrcnHq0gMjmE8KEiw2pb4RTHUukE8vXn8oTU6AA=;
+	b=ugHxNc8psXg7XC+JWyHebge+YyskgmDkkxzKzptmz/Okjbqjb5Tedeye786PJILGVdUna1
+	rRj08T6lVP9firR54cjiQHQpQVZyTzRHlsIsKtkYsT5UeeFi1guyEm+H0IiFk4yluPyhaz
+	cT/eCTHu2gaPcixE/+2srCRKcmuziio=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48e0d885929so2202326f8f.3
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:06:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793037985; x=1793642785; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xHfjRrcnHq0gMjmE8KEiw2pb4RTHUukE8vXn8oTU6AA=;
+        b=pmzTkt34ZajCwuZqucqd/LIfqSqo9vMBH/tqfAqZiCPrmazvlQQ7H6lXUfKmng9jB7
+         zQpcQ+jUNezeMGBEcwvwokgxGnLcXYfux0n8jUY31iV5vQqao9oflUS3aNFmYZhuAxRg
+         8+oByG0NalbRtki9BQl8UhnSWORzspy8XPfl9ru4iFc8HZ82VtKSttyuMPBLCt6PxgEi
+         kmBT7Vz+kDI+vc+DejdKetf1E54Y3hU9/rj1Qw45WRn6CJAOc0WWv2QyKBQZbKGhPuuL
+         KGPiej19jXvuwWqFYK0sK2cB2HiouxubMp4LiH7qW6X9oXlcq2Un5oNMCSFRPmr6WxmQ
+         TdxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793037985; x=1793642785;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xHfjRrcnHq0gMjmE8KEiw2pb4RTHUukE8vXn8oTU6AA=;
+        b=I8KU1vFcR6H/7Vw8BXIYNQLBhanD/eim9NflQHiwNY4MW/SPVBgUhr2mcclVOaXIkW
+         6NQsc4B3kpzI1JS6rqynRnVr9Swi9Vacv58Su4nAHSZoGP78c3jYKuFlF8UmlFx39dFR
+         H4MPiGO32oD6ZonANC/hRfwSR4X75H1uHq6Siv3TzZa7CwfdadJXdrGHMQLmgH0SiG8Q
+         r+E0ZL3dMGJNOOX6ugIgMhPa3B9ZBn8iC/Vth1a9EbPETOJKK643NzrixYidIHhgjc5p
+         jNWY4GGXudBtmqwvjzRLCl3ud0COcKybPs6nPVXa+QYZsfSGihYfM34j3Sf7Tob29Fsw
+         qVTg==
+X-Forwarded-Encrypted: i=1; AKwUvBwZnhR6U7hsYCdayjBIQs1JzwsTVw+jzupBgmTRamW6rQRCfXLpernKW7ao5xNPN3YOxtBt653scg==@kvack.org
+X-Gm-Message-State: AFq9FYI0QManRTMSlN3mJ4GHCS3X7U4rv5nxyfOVHWiW1N1oIaSBauDg
+	CFUkyyItYxAnEIo0NK1hNShoG9lPIGg8PVTNemZosWk08UNj8jsqw+fA
+X-Gm-Gg: AYBFou2hVakkWcyBzrWWFBJoSSVGJH4PBP8xvsZWs4sb7SqURFrpc4q+44Ub+EclmF9
+	5+vU2+5fCPIDRVihyLI6uaBvuZCqtxdYUPeBWXjmlI5fPTKJj3MAGx+MV6z5yvu8BelW65utLno
+	J9IwQkIvEhnf2u7bKxa7wgY9jgoosemrzeIF1kmwggDGNcPa81sHcL8ZgSa/xcMeUEpdDhSlI1T
+	cJ9VCKSZZk97n+KO3iuapzqm4VNhRREzP9fQAoEIkDJKv6TaNvUzXBvO0jGfwEYlkZaD17wR8EC
+	PIB8GkpSyWmVZRhFey0EDCk5gIpDyr/JjvHo1+HtR/ghLpZuzdm+HqrkXrxMQWFVFjNh/vwobrd
+	WqwTptNC2jkYbkOmk8sfUYmDVdf2LqqHLqJqCcN1+k16h9mARxIy5xQ/1zpOXcNq6wbxHXM3QWC
+	L2PSffvfSDEoONfedPYu91iwQXxJJaQjy7xQOlRyZtsxplPrzrU2UwLA7dawGRNF4nrcUTphbyC
+	7FptRQcnsMT0FN9xr1ypLNbio6uLuuvYwsMEd+Lv/gQDgfCdLWKjsCISUtkMxCDQIKEO+N5d6Kl
+	he9e6Q1/600ZCCvINLxy3nA+HPA=
+X-Received: by 2002:a05:6000:2405:b0:48e:517b:cf21 with SMTP id ffacd0b85a97d-48e517bcfedmr5799152f8f.26.1793037985247;
+        Mon, 26 Oct 2026 11:06:25 -0700 (PDT)
+Received: from andreayoga.wind3.hub ([31.189.109.255])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd48fasm17694846f8f.31.2026.10.26.11.06.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 11:06:24 -0700 (PDT)
+From: Andrea Parri <parri.andrea@gmail.com>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>
+Cc: Andrea Parri <parri.andrea@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iov_iter: take an unsigned long segment count in import_iovec()
+Date: Mon, 26 Oct 2026 19:06:18 +0100
+Message-ID: <20261026180619.4147910-1-parri.andrea@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ft4q2mxxiihpvc6wjs2pyku6fvfqg5r4brpgjvz4ikkeh7vwff@s6h5k2dxstk2>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C55C6C0002
-X-Stat-Signature: ory9athiz3xpj77zdgi1ojh5myb5h4mp
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Rspamd-Queue-Id: D34FB1A000E
+X-Stat-Signature: 5kdxqfr1z6o89u3p7gp81x75d5xj4ydj
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793037909-622889
-X-HE-Meta: U2FsdGVkX198aiYRuGfcjWgrq0coRCo0wNWDwiZ1jr5xsAGu0Cham0sXXd80DEB0h6nO4LG5z2tGfQKqTHo3L/ozDWpkBorrDRfjpWpIJKEap9R8trOGtwglR1SUzhjleRh5sl3ebqaLdWPUwA8bIb8yCy+/2OEGHi55nBTs2wdszP2//AmOP3RC373Je09XjGNESoQD8JXc2LSHnv/UTcuBLBhZogj9v9TmINo6wqyNX60piplZlD0S1mFF5eK4ZpBSytLn3ht1egyEE+sHGmPDxkTl6a1lrvFe/EMOBNtA+b6uHxAWWjCZ3Md6I8S2MgkYBEkji/pxX+709ZWTb12swFyQlJo8X+0wJAbfHpOJ/Qn9gNb4ly7wqOk3+rFivR5dY+e9Pr7tUgdjqiC9ae3/6/8c3D3laqmnhmZZXS79ANfGiQnhv3kJFT46kpE2VVBYrCWVom/yZcx8lofCthey9kK1FKeLmbovNbU+CS+jy+pxmiIWMsKY681KIeyvYWBGqeg7+NogfI4NsSClcPcDHa5ZNdOb9MZPVa8jJnNBTcnvsFmhanJzr2yf6sTeTyTjFHOlJNRfkxuo4O2KvEj0kHbbVcrPFj5bVbMJTi1l2cF7ikh7AFenzPegBWfBotl0MtJ+X1pJU+Tr1GyQnW75G9Toq0ruXcPo6Kg0zWBg6Bhf8wajM+Xhb3RxGEOF2Bae+iEs96GRIKonDLUWRo8DCOia1QkLolxvJMb/IuhJGNdy6hLiapycFbI8PTBFMrTRD4B+e6TLs8RSjtYPL1GWzhwj/PvYbv4I0lZenpc9URJXZML2jvhkR8iLo2V+e95IE3o06FlFsRPBCQrwx72PXO5Ew4RlHxbLzArTWe/uHuZOCBLTwGPgab2EGcxyzUYuKi+sCFnVdjGOq6w5XSxK1Qg9p2rlA6/UTI5UPIpK/ttPSvTHYwIXuA/51J+JEg2RMKqWKG1mG94WRYC
- sJV3CwdW
- 67n5GSehrnUkyf5d5aKv5VCIY09MbpwYed2tIZCAzv6DoIB3giT4nAIwLR++33mBGs0yV8oB4XxfTLgDd/Fl6W207jPgzjbwZm6I/JSnEzXGhwdL4xhVLSGJ0MIGpcmU2TaBJ0asFS7o6tGZumhY62d1CD0maJkYwJ+RKjEEJZyvFPH9SaWInka2Kb2oYNZSp+rcTN/P3bFCT1VIn2dJpg/w6pPSjQ+xPudvpxontEQ15SGalmfhGLanFFTNNU0zP23uUNq1bzEr1tgNFrK2la5osDjQr7IcDz1pga38E+Z1ioE4=
+X-HE-Tag: 1793037986-833373
+X-HE-Meta: U2FsdGVkX1/6gYs5QSGn8mz9i81FhCODWPaErSML5n0g5mRXKlKWACLCL9uGYd0LVH8USyCW7/1PBaN8teqcAXXtmdbP91utHasO27NJz+SbRGWZpBPzLdluL7xD30l3OP9VaqsXMaOiixZY2b9M73MIbVqTE5HCqi4OI1chmrR5i4uO5zUv15NH0AB0Us9iTQFL6JD88p17VgHGLXJLXzAsqH0e1duGDDe7cXpEbdJ+dKhOBtNlQVFEFxTNSxZJI35Dk0J9bw0w0oQqcvYdae7SFWxmWuC3HXSDq0xcAm2BL11h1VRpoqA/vr+9mvoItaUwleY4JyMMiBO7AmfhbF1VbqdKxXGL14OqZTsibZCpRItaDjVxNmKG/MNm+VEsNe8hITHybdjw3dGWDuBQknQ5GId6I3cyIlhSK01bj1BkJde4HEujUewRDeEQ2jTPH489FhvnUb3FRQjruZA/2PPoljxjjeMbkBegxcRNGBhRdX0YDj/8rB2EE2nFXtIe9Jq5WbqymvTuun7otTTBtTcycVFbSdwGO+y1P3HZET+M1K5ZS9S/lfv8jF41Yjril3UWMfG9wgwcSojVt13APIt7XsPsxRueAUekqXcZxb8yix/lzD2Cpx/JM022xiKWEBMuK0/StslKc2lAnUeyCR1IafGEGeFPD5ymIJ8qzPbYhnX1/oivjY/7AFhCgDRGKE5PzCaP0DA9H0q9SYGrUdeglfnEpotSgpkAnH5JSQBHKzySgXBu63w3Z7mti3Nc/kw1p4b/czxrQ74A4IWe3CpkUxJjhwuRGA0YyU6RUB8ttCFAV7HwkLeSe1XI1xr07Bb13lMfLQf4ehXCyv5UGVA/pYc5dbdJXE95HeVeQB6Ilfr9xpOhNM8cBlNFHxQJcQKHHQVw53jNNvu/DcvbmsoErpcSflNGcwVbwa1wktVUwlkOgRYiAjycflRVKSrdrxX8nfzoMszq/PGYnZG
+ DpBXq9FC
+ rf00qIC/1+c1JRYPCJkgAl4ry7kf+6jDsP8OdTvy/LsPfc9wRb7cLGtUKVF/jYpBPuVH73gnHswfaPe4z/9FMx29sPX3dB8chwfAAAvWzTxwq1cXcRe6ysyqmW/cL9SewkPo5EyDtjkj3AQFpiyDoCAjrTc64u/zSZ48v8PU5qCyIW8I+oxn3dgT1/4pMJc/qItlZBUCFQK6pwhKh0V0w9CDy3ex0kOeFY443WLLqe3/4ew1wlLSjmU3lbEOpGZJzpOGlr3/EdCxVJH3Y77+A2DCBHFHI0K/LMPcJA6TYp+wIHAoo8vbFqZW2j1LdfPpZxfDDhzpdpzzfY+f1xRZKvQVX/IkLyJoHigEggTLL3/E8RQ9VtQqIsCziVuanDw/F4MsJU0xaUjmD03qcFwRiO2AujliJvnGlQ88/qLFvuGpcDBnosGGNyuQXaG4JLjUaCSazq2iW6vecahQfCgub9dus4W/AgFqFFmcV1XZTnaMKDwaKy+KBR7lNOArEYMwJJXlzJmb208UlbwGkrXh1KpCvEPSX8s+vKadd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,41 +128,134 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 02:01:47PM -0400, Liam R. Howlett wrote:
-> On 26/10/26 05:26PM, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Oct 26, 2026 at 06:19:18PM +0100, David Hildenbrand (Arm) wrote:
-> > > >> +       /*
-> > > >> +        * No lock was held since the last call, so the iterator's cached range
-> > > >> +        * may no longer be valid. Always restart by address.
-> > > >> +        *
-> > > >> +        * The vma_range_is_empty() checks below avoid unnecessary mmap_lock
-> > > >> +        * fallbacks.
-> > > >> +        */
-> > > >> +       vma_iter_set(vmi, from_addr);
-> > > >
-> > > > This is clearly simpler but this unconditional vmi reset is not ideal.
-> > >
-> > > Yes, exactly how I ended up where we am right now.
-> > >
-> > > I pref my current fix as something to backport that avoids performance changes.
-> > >
-> > > If you two disagree, please take it over and drag it over the finishing line in
-> > > a timely manner.
-> > >
-> > > I wasted enough of my weekend with this over-enginered piece of software. (had
-> > > to change one word before sending, can you guess which :P )
-> >
-> > No problem, will take over.
-> >
->
-> Just a follow-up, another option: the vma iterator can check the
-> previous end from vm_end and set the maple state to the range of the
-> current vma if they disagree. Using the set_range() and not
-> __set_range(), so the next walk will be a new walk immediately.
+readv(), writev() and their positional variants, process_vm_readv(),
+process_vm_writev(), vmsplice(), process_madvise(), vectored aio and
+the btrfs encoded I/O ioctls all take a full-width segment count, and
+all of them hand it to import_iovec() or __import_iovec().  Those take
+an unsigned int count, so on 64-bit kernels the upper 32 bits are
+dropped before iovec_from_user() checks the count against UIO_MAXIOV.
 
-Ack, as discussed will give that a go and see how it looks taking on board
-Suren's feedback also! :)
+A count of 0x100000001 is therefore imported as one segment: writev()
+on a pipe writes a byte and readv() reads it back, instead of both
+failing with EINVAL.  A count of 0x100000000 returns 0 as an empty
+vector.
 
---
-Cheers, Lorenzo
+import_iovec() was added with an unsigned int count, but the helper it
+wrapped, rw_copy_check_uvector(), took an unsigned long, as does
+iovec_from_user() today.  Until v4.1, readv(), writev(), preadv(),
+pwritev(), process_vm_readv(), process_vm_writev() and vectored aio
+therefore failed these counts with EINVAL, as did vmsplice() until
+v4.18.
+
+Widen nr_segs in both import helpers so the UIO_MAXIOV check sees the
+count the caller passed.  Callers with 32-bit counts are unaffected.
+
+AI assistance was used to find the bug, develop the fix, and run the
+reproducers.
+
+Fixes: bc917be81059 ("saner iov_iter initialization primitives")
+Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+---
+Tested on x86_64 with virtme-ng, base 734bef548a96e vs patched:
+readv, writev, preadv, pwritev, preadv2, pwritev2, vectored aio,
+process_madvise, process_vm_readv, process_vm_writev and vmsplice with
+counts 0, 1, 1024, 1025, UINT_MAX, 2^32, 2^32+1, 2^32+1024, 2^32+1025
+and ULONG_MAX (LONG_MAX for aio).  The base kernel accepts 2^32,
+2^32+1 and 2^32+1024 on every path; the patched kernel rejects every
+count above 1024 with EINVAL.  Also built every caller with
+allmodconfig W=1, and lib/iov_iter.o and the readv, vmsplice and
+process_vm callers with i386 defconfig W=1.
+
+Reproducer (64-bit userspace):
+  cc -Wall -Wextra -O2 repro.c -o repro
+  ./repro
+
+// SPDX-License-Identifier: GPL-2.0-only
+#define _GNU_SOURCE
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/syscall.h>
+#include <sys/uio.h>
+#include <unistd.h>
+
+int main(void)
+{
+	char source = 'x', received = '-';
+	struct iovec wiov = { .iov_base = &source, .iov_len = 1 };
+	struct iovec riov = { .iov_base = &received, .iov_len = 1 };
+	const unsigned long count = (1UL << 32) + 1;
+	long wret, rret;
+	int pipefd[2], werr;
+
+	if (pipe(pipefd)) {
+		perror("pipe");
+		return EXIT_FAILURE;
+	}
+	errno = 0;
+	wret = syscall(SYS_writev, pipefd[1], &wiov, count);
+	werr = errno;
+	close(pipefd[1]);
+	errno = 0;
+	rret = syscall(SYS_readv, pipefd[0], &riov, count);
+	printf("writev=%ld (%s) readv=%ld (%s) byte=%c\n",
+	       wret, strerror(werr), rret, strerror(errno), received);
+	close(pipefd[0]);
+	return EXIT_SUCCESS;
+}
+
+ include/linux/uio.h | 8 ++++----
+ lib/iov_iter.c      | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/include/linux/uio.h b/include/linux/uio.h
+index fe2e985d74d24..529c6cd53df7a 100644
+--- a/include/linux/uio.h
++++ b/include/linux/uio.h
+@@ -362,11 +362,11 @@ struct iovec *iovec_from_user(const struct iovec __user *uvector,
+ 		unsigned long nr_segs, unsigned long fast_segs,
+ 		struct iovec *fast_iov, bool compat);
+ ssize_t import_iovec(int type, const struct iovec __user *uvec,
+-		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
+-		 struct iov_iter *i);
++		 unsigned long nr_segs, unsigned int fast_segs,
++		 struct iovec **iovp, struct iov_iter *i);
+ ssize_t __import_iovec(int type, const struct iovec __user *uvec,
+-		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
+-		 struct iov_iter *i, bool compat);
++		 unsigned long nr_segs, unsigned int fast_segs,
++		 struct iovec **iovp, struct iov_iter *i, bool compat);
+ int import_ubuf(int type, void __user *buf, size_t len, struct iov_iter *i);
+ 
+ static inline void iov_iter_ubuf(struct iov_iter *i, unsigned int direction,
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 2072c04e99d05..55cf2ff5bfdad 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -1362,8 +1362,8 @@ static ssize_t __import_iovec_ubuf(int type, const struct iovec __user *uvec,
+ }
+ 
+ ssize_t __import_iovec(int type, const struct iovec __user *uvec,
+-		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
+-		 struct iov_iter *i, bool compat)
++		 unsigned long nr_segs, unsigned int fast_segs,
++		 struct iovec **iovp, struct iov_iter *i, bool compat)
+ {
+ 	ssize_t total_len = 0;
+ 	unsigned long seg;
+@@ -1434,7 +1434,7 @@ ssize_t __import_iovec(int type, const struct iovec __user *uvec,
+  * Return: Negative error code on error, bytes imported on success
+  */
+ ssize_t import_iovec(int type, const struct iovec __user *uvec,
+-		 unsigned nr_segs, unsigned fast_segs,
++		 unsigned long nr_segs, unsigned int fast_segs,
+ 		 struct iovec **iovp, struct iov_iter *i)
+ {
+ 	return __import_iovec(type, uvec, nr_segs, fast_segs, iovp, i,
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+-- 
+2.53.0
+
 
