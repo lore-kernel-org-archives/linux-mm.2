@@ -1,144 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A96606A329
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0918B606A324
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 18:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=gwaevzNT
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kpQTgW3r
 Received: by kanga.kvack.org (Postfix)
-	id 6458B6B05B4; Mon, 26 Oct 2026 14:02:09 -0400 (EDT)
+	id 1687E6B05B1; Mon, 26 Oct 2026 14:05:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61DD06B05B5; Mon, 26 Oct 2026 14:02:09 -0400 (EDT)
+	id 119C46B05B3; Mon, 26 Oct 2026 14:05:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 533616B05B6; Mon, 26 Oct 2026 14:02:09 -0400 (EDT)
+	id 056216B05B7; Mon, 26 Oct 2026 14:05:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 33E126B05B4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:02:09 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C84151A0760
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:02:08 +0000 (UTC)
-X-FDA: 85365546336.30.2BDAEF7
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C9DA9180009
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:02:06 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=gwaevzNT;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793037726;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DB5576B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 14:05:11 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F450A845B
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:05:11 +0000 (UTC)
+X-FDA: 85365554022.07.10BBA71
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C55C6C0002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 18:05:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kpQTgW3r;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793037909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tE7RP4VYsHqrXApguz8sNdRczbXmH+5NrdAtgpflwuU=;
-	b=ImY0I3WU1c2nDZZ6+eerGKRJbf48x2Oe9JFh/W106GpA1gvPVhemUnEb6J4Hjrq/4r3g2M
-	FzbKxv0k7auPWekUOz6o3fUgDju0VQ3MaUVAvOm7V58q739BhaE4M+mi/vqd55wzMyzQ9l
-	Og3ZoieqSCTBfc7COL+5a7JXXfP4UQY=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=gwaevzNT;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793037726;
-	b=0gQHvXoMo3IovWE75YiyeRq50+eKvYRvKmA/44yLq83CD8tt1OG6Qj0TEFPJ2RcQC74h1t
-	Qd4fRBNSlBznAbzSIxNYtj1DLO7w3p8lUUaR9tr8x92DAEcW1NjF2K2VR8ATfYQ4k5Y6Ww
-	6Zl8udFgsml8ZfMsB1MnQDd3doARnOk=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a20d7a8984so3595e9.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:02:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793037725; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mpaHGpi9NyEkULmgzHR682UVvPvXdyaPdhtiQTdFlH49lA3VlOU+0ejJ5XiKvRrWQq
-         /0NZv6H2/tYOZAlJfHTQxQQsTHrKQI6sn3taDmR9kUNM3RPWWqCiR/v1SmB30BJf4feA
-         e436Aw5LFhvMJV7Xa5wJJkyftP+yxUkuA7DkP1d6fmFGUDYE19aLnlOpLBY6HJiX8KSD
-         rLwTBVOUHeGpC82w+S0kU5piZOkUW6OlgufujYAVBpqIuIV5O/q211Q/hauuTAflLBov
-         OPK8nct9duHJ5+IDQAGsPak+V1HVxNf9xSvB0yQ+jEqAHNrYfEL8mtIFePcw4GjCVc0p
-         iXUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tE7RP4VYsHqrXApguz8sNdRczbXmH+5NrdAtgpflwuU=;
-        fh=0d4rqCF9vdGI5hltbls4wqqpSXvZmmKTX0HmX25oDTU=;
-        b=OoBIBxr1x0DQPklcDXi1lpd/PHuUIZ7mX0FVnFch3JapA6HMHo2TSUsbIjp9dwCTBM
-         3EYXm3IwuyjaanZGTuT5BSDMfwhHm/fqQCfSZ68Bu958UwQyt3pw8KGTye3y3sI117DW
-         UT37JeKWWncuD47+GMg1Z3Bgg/rlYKWNuJWdtx2H7SNr/HcLJI+/qFaeTrxtWM8fLu1/
-         8uoE47838PnM15TI3NyOiMYj132Ub1JDKhu664qKoRrEsaGbXz1fcubwnzlaK1SlwrYv
-         5jppPMhFZ7caZgA/zCRq5bHHIzt6DOjGDrNTReXi7fj8mdqe+8qVdtaxzTVYZFJwlqlz
-         GPCQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793037725; x=1793642525; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tE7RP4VYsHqrXApguz8sNdRczbXmH+5NrdAtgpflwuU=;
-        b=gwaevzNT3hcQtgnppCnuWr6arCkT8OGLscdaSJ3iecjACluINnjbNJXa/8CkUgzSjQ
-         Ap2ApAtCu3I48bHKXtgFksgGVK4MzzqSnMjdW27Wi52vHYyxQfJY7mDglkSWH81A9dV9
-         WH5IwjS9MAxpOnzDxMoROouCRMBWc1Vk1593mZkNwUrB/GQ+gl4DSok/Wk9D64pPABlr
-         vLJnP2IQ7C/6XvhXiQ/CVKneQgiNP1PFz984ZvrQK12X6zBpaenWjHiP1XnDgqyfZfTp
-         dPy56bCW7HV96+IrFhYpi/rR2DGHTN1uqz+KmB7Ox2mCDgOKavKOKCl1uejZUSlyLNqI
-         ebGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793037725; x=1793642525;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tE7RP4VYsHqrXApguz8sNdRczbXmH+5NrdAtgpflwuU=;
-        b=KcHm++eFFEuHTdLmIl/SThhWOIRqIuVYVZ2IRcF4YU2F/PFvvyzuWflE1DXs9FcCEa
-         pqCI5CQAx7S2ZLC48GGFpEjgRUkD+7HLcpi1GsGjbXB/k4yXWebrqeqU2cHFsXSxSDCd
-         hh+t/cD+r7fUKYDyndUBp5CPe4AD0euKCc6sT1MxJKgPfpcCcBFPYDvYBD49VtnMP/H8
-         mCzx+6ubgFvZcxXPJS5aGBvW49u5Zi16o9u2w74Sq940VzBHoawJnOLC3TbJiu1bxNuQ
-         diTTxSFKFHl6EKvZL78sjdTbyaiDowifF40px9PA7rz7rpclrZzd2AFgLMl8g3II7GEt
-         5ZFA==
-X-Forwarded-Encrypted: i=1; AKwUvByRPKaUpFdorbx03QRf5ra2kmtEhrwN3Vujdrulw4v3SG2WI+djyimRvoQdDb2CsYLNppdzH4kkYw==@kvack.org
-X-Gm-Message-State: AFq9FYL4A32P4OyYcR4biZeUDuRcX5vsk/y5fXocG8OtApHsM8hSeObM
-	+LwJgSIs4InHkQK2JGhUOQuSSCibpzi+Jt58PoRPHx1JWSKjM4Y0UuM+cOYy3oLzMLsuLwwrn+E
-	Ia9z7dIuuf0pGIn8p8LPNeqX05Nevxg1kUtIbYdaW
-X-Gm-Gg: AYBFou1+HWCYFNnoKjRGrUUykpsOUBTDKwv/I1RgjbjXB1nMnJGYeW1GAwPv4JZDLS4
-	+98XYImMsh8pq+/BoRLcv7aZydIkcOh4LAMNV7PiWpVGuDbejCS2XEaPaAjAuD8NI22DyyhvrMa
-	vLOeKn/xkAqZpw0LF3vMNEbg9aS32L9MRSCtCkWXeHILy1PaWV4PIOzROvaiEjXpch6vOgN5EiB
-	Nj6ExvyoGznhIzq1OXuH+dM2g3ozsnpZDkzz9Bl7eBq4qL4SIOShw727Ioi3qqpFQn1/vwtmGIg
-	FHexRxr5wuVn7Wd4xWl/3bTWoEU8Lb0rwk726DlbwJXbOUt44mXm9hUUgPHTBw2JJiO/ME2O+DB
-	KOFh7Lc63z8VRnT8Rl0w46/UZNSu7QE33xzIGgT/9Yb0jUXki7QnLyW0H/s5p1o+Bg6z+am0fLD
-	M+27NcFA1wrR6yvm912anYWw==
-X-Received: by 2002:a05:600c:2295:b0:4a2:bd1:a80a with SMTP id
- 5b1f17b1804b1-4a7d73b0af0mr46865e9.2.1793037724801; Mon, 26 Oct 2026 11:02:04
- -0700 (PDT)
+	bh=rSYE5PMCjtkYE/2kg/ihUpsjoSDnaarE8/1GfnhKwlM=;
+	b=I+qtSqr5wkoqoNJpH7CpCMGOl3KobJBlg0+YCtTeK3FeBRwaWMVaFYM6g/ZEPlxFRNpkMY
+	MBnsR+U/t8E7E9RLS5xkVrtmvXCV/gJVR74ooRMtLsCKxRW7rCCPWG94+HzZfBSqYNdKsY
+	sGjpAQI4ORJbs68v+z4EDC/nL1zIQow=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793037909;
+	b=bBPEZCjwOZsJe5+uF56WVhaVWzw/md3QxV76NZluHqdynyMeBaRsWgyc6VposQ1ZYz2ePU
+	ULtub/FOBUR0r174ytsUHccHaVxmKQmFPMkEEETa2GmYcm6kC/FX2CqXaV+8fBrPaMOoBe
+	OMMDjOe8dtelb6AYJHsgi9FPglaQHY4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kpQTgW3r;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 53091601EF;
+	Mon, 26 Oct 2026 18:05:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB101F01825;
+	Mon, 26 Oct 2026 18:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793037909;
+	bh=rSYE5PMCjtkYE/2kg/ihUpsjoSDnaarE8/1GfnhKwlM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kpQTgW3rDY1kY36F1bdm0miYZ7qkvzMiHcyoMuGIRhSZg80yhPvKxdxRJ5W2DNpt0
+	 I6gAYk6hYOTLAEqH8qI+X+i0GZYNv6AQtPmYUNOwMxyD08Xio9hJR6JDhtVPjtt+2c
+	 6OeChc//KC/hSRQsCQVeiyvmDo2C0KxPexzZTGLkw6rRpeSbjIG3QpImoUcRwULz8n
+	 j7Uj660lB9mz/vFlMFInPEpDIr4WMSbX+ZasjwDlpJ2ZUcqqD7jiusTg8dOL1WNMI1
+	 qo4w2j4PCvXPc32fKnnFbTQ8yj8gVUXudf+qfpREfOBTUskjKmklrsJle6s9kfkx/A
+	 Ybfqosydthhlg==
+Date: Mon, 26 Oct 2026 18:05:03 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+Message-ID: <at-WKy_zj2SYUhBa@gremlin>
+References: <20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org>
+ <at8-42OwXk2z6-HB@gremlin>
+ <CAJuCfpFaxo06yHdVKsEEmFf9qoOYS0DbMvUuAZEhNfDe7dcwJA@mail.gmail.com>
+ <8c5a8fb7-233e-4433-af45-b67cb2528b60@kernel.org>
+ <at-M5hORjFt6aur4@gremlin>
+ <ft4q2mxxiihpvc6wjs2pyku6fvfqg5r4brpgjvz4ikkeh7vwff@s6h5k2dxstk2>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261023222313.3979455-1-tjmercier@google.com> <at9U2HvyUP-iYOCt@tiehlicka>
-In-Reply-To: <at9U2HvyUP-iYOCt@tiehlicka>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Mon, 26 Oct 2026 11:01:51 -0700
-X-Gm-Features: AclHuK-fek2ms36qxSTQ8kH_qS9sI-bAShEDJFdyR3pRLqFaZUwSwPiYlTTU9KA
-Message-ID: <CABdmKX1mLKEJNiecW+meJ=LB_Kb8-ieeWdZDd4T6rNR9gKuq_A@mail.gmail.com>
-Subject: Re: [PATCH] mm: memcontrol: fix NULL pointer deref in
- high_work_func() on dying memcg
-To: Michal Hocko <mhocko@suse.com>
-Cc: hannes@cmpxchg.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	muchun.song@linux.dev, zhengqi.arch@bytedance.com, akpm@linux-foundation.org, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C9DA9180009
-X-Stat-Signature: scj4m39i959uagwjunbb74u5m3o96ute
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ft4q2mxxiihpvc6wjs2pyku6fvfqg5r4brpgjvz4ikkeh7vwff@s6h5k2dxstk2>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C55C6C0002
+X-Stat-Signature: ory9athiz3xpj77zdgi1ojh5myb5h4mp
 X-Rspam-User: 
-X-HE-Tag: 1793037726-705355
-X-HE-Meta: U2FsdGVkX18LHpgKjn8psSASu5NzXcIlyybwYrF7I/naureCnbvalStLlv9uNbcl4xjQFhDm56hbEKzMzITpP8qdkG3o51ZHqXfwea7BQTIxmblNsD62X9SYbNjmTX5F/+s5KyXJ1T0f1WlM3pmxoSZXqPjoZc9OndZ7kvXqKhiglgVBUXeL40n8vk4h/qIr2MIDq/kbjaokMbFgMwAUS+Q84xgk01/lWGHa86hANIF4elLgjb7KQy0zCXIl62dX2owbmi3+HzEhLNSZ0K3BL8+QFN1lU2xaFA8sJmbEm4AGMzMGbb9NHzo7Wqw/WHMkSB1lfNM2w6LxR24zOc+YZNK0Kj3KC8sYmPnjQlco8AplgVfSj3xV6O4ZBXC9WpjEZ6kPFbNMgigxFa1MA9mYClgMNYHtqhOZXGphOOqGNpnNVr/BmoQzjN+U8eO/cpnYuYMUkNOAmTCQUrvjGDlZKdrYWT/R1E53U0bB4Gr1xm+3ZHS73uyH5kKUy/RFgXjcc7X7AUaJE9cQSBSNVZasR0AodqkZuFQ5ksbYvE0z3ZmbRtov6GRmCrUfiTcLz0jr4Rdt31ySQf49ayQq9wrgmeMOpINDLVU+7u1vqFh3MU3M9Wgl6IdU7xsiE7M6GCPPEjEcOlJxYxRRjEzH2pJOb2dtHvIqvfA1Z3pVhxonR/a+DJTNj9z1CSUGi0h5KHRMtdB0Z7aIZEjD/87/OnX9XDtPnHzI6MoSpq76/9Xsqeeb9NMnJeJuJYF2/z/2aIWFhMI+vFZBK7dnhfnamxEw/eqYShv5t3YExJTmRrF/WkkihGdEZZj+YX0mO1DeMeckDunQEYGQZ80+bTs0/3gG4MZFIZvE3VIFvnxg2MlJWVW9SLUyUF1am1ymQVAM7xIpZGL2A9MeCm8SlUXVFhqTZ2STso2tRhV6T9Dd9r3Pm5saI8H/noeyDgZ0atQYheop50X1/Ge7aa/R2sDxCEG
- y0KYPutG
- k2qkShKQN8SwnTJt+RgBMxkyT1SluRu7VOQgdphMU2eY8DTG8pIBksObGTFtxYVACUPxc0RzD2ZUOXPShgvPIf5js2CR1RuvBfjjyv2afDpC8RWTbdFvBpK6AQP/z/GRUVv59HGov07HQtFLuMrw6RLY9jfPjoR95MxxnM9O9A0xp9/5n3nDZ4WnXJz9oMg10dHEswEBmFQdxkU+ljCmmPVGh01jssSW3zUiYa3nVtDBpdnyHeug3AmybGhfkH/wlYJYRct9O2nDn64p22HT720pFkC8SH4A6tc94jdeCgjpZdWGBSvfih7ZdBqCUBKFHMZXB5H2ygujhByioWZ3VPm8MdKukQcRTPQpNBDOItmRQu8A=
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793037909-622889
+X-HE-Meta: U2FsdGVkX198aiYRuGfcjWgrq0coRCo0wNWDwiZ1jr5xsAGu0Cham0sXXd80DEB0h6nO4LG5z2tGfQKqTHo3L/ozDWpkBorrDRfjpWpIJKEap9R8trOGtwglR1SUzhjleRh5sl3ebqaLdWPUwA8bIb8yCy+/2OEGHi55nBTs2wdszP2//AmOP3RC373Je09XjGNESoQD8JXc2LSHnv/UTcuBLBhZogj9v9TmINo6wqyNX60piplZlD0S1mFF5eK4ZpBSytLn3ht1egyEE+sHGmPDxkTl6a1lrvFe/EMOBNtA+b6uHxAWWjCZ3Md6I8S2MgkYBEkji/pxX+709ZWTb12swFyQlJo8X+0wJAbfHpOJ/Qn9gNb4ly7wqOk3+rFivR5dY+e9Pr7tUgdjqiC9ae3/6/8c3D3laqmnhmZZXS79ANfGiQnhv3kJFT46kpE2VVBYrCWVom/yZcx8lofCthey9kK1FKeLmbovNbU+CS+jy+pxmiIWMsKY681KIeyvYWBGqeg7+NogfI4NsSClcPcDHa5ZNdOb9MZPVa8jJnNBTcnvsFmhanJzr2yf6sTeTyTjFHOlJNRfkxuo4O2KvEj0kHbbVcrPFj5bVbMJTi1l2cF7ikh7AFenzPegBWfBotl0MtJ+X1pJU+Tr1GyQnW75G9Toq0ruXcPo6Kg0zWBg6Bhf8wajM+Xhb3RxGEOF2Bae+iEs96GRIKonDLUWRo8DCOia1QkLolxvJMb/IuhJGNdy6hLiapycFbI8PTBFMrTRD4B+e6TLs8RSjtYPL1GWzhwj/PvYbv4I0lZenpc9URJXZML2jvhkR8iLo2V+e95IE3o06FlFsRPBCQrwx72PXO5Ew4RlHxbLzArTWe/uHuZOCBLTwGPgab2EGcxyzUYuKi+sCFnVdjGOq6w5XSxK1Qg9p2rlA6/UTI5UPIpK/ttPSvTHYwIXuA/51J+JEg2RMKqWKG1mG94WRYC
+ sJV3CwdW
+ 67n5GSehrnUkyf5d5aKv5VCIY09MbpwYed2tIZCAzv6DoIB3giT4nAIwLR++33mBGs0yV8oB4XxfTLgDd/Fl6W207jPgzjbwZm6I/JSnEzXGhwdL4xhVLSGJ0MIGpcmU2TaBJ0asFS7o6tGZumhY62d1CD0maJkYwJ+RKjEEJZyvFPH9SaWInka2Kb2oYNZSp+rcTN/P3bFCT1VIn2dJpg/w6pPSjQ+xPudvpxontEQ15SGalmfhGLanFFTNNU0zP23uUNq1bzEr1tgNFrK2la5osDjQr7IcDz1pga38E+Z1ioE4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,66 +102,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 6:25=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
-e:
->
-> On Fri 23-10-26 15:23:13, T.J. Mercier wrote:
-> [...]
-> > ---
-> >  mm/memcontrol.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
+On Mon, Oct 26, 2026 at 02:01:47PM -0400, Liam R. Howlett wrote:
+> On 26/10/26 05:26PM, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Oct 26, 2026 at 06:19:18PM +0100, David Hildenbrand (Arm) wrote:
+> > > >> +       /*
+> > > >> +        * No lock was held since the last call, so the iterator's cached range
+> > > >> +        * may no longer be valid. Always restart by address.
+> > > >> +        *
+> > > >> +        * The vma_range_is_empty() checks below avoid unnecessary mmap_lock
+> > > >> +        * fallbacks.
+> > > >> +        */
+> > > >> +       vma_iter_set(vmi, from_addr);
+> > > >
+> > > > This is clearly simpler but this unconditional vmi reset is not ideal.
+> > >
+> > > Yes, exactly how I ended up where we am right now.
+> > >
+> > > I pref my current fix as something to backport that avoids performance changes.
+> > >
+> > > If you two disagree, please take it over and drag it over the finishing line in
+> > > a timely manner.
+> > >
+> > > I wasted enough of my weekend with this over-enginered piece of software. (had
+> > > to change one word before sending, can you guess which :P )
 > >
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index a05d9a8baa1b..84f4a8fd4d16 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -2457,7 +2457,10 @@ static void high_work_func(struct work_struct *w=
-ork)
-> >       struct mem_cgroup *memcg;
+> > No problem, will take over.
 > >
-> >       memcg =3D container_of(work, struct mem_cgroup, high_work);
-> > +     if (!css_tryget_online(&memcg->css))
-> > +             return;
-> >       reclaim_high(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL);
-> > +     css_put(&memcg->css);
-> >  }
 >
-> OK.
->
-> >  static void high_irq_work_func(struct irq_work *work)
-> > @@ -4463,6 +4466,8 @@ static void mem_cgroup_css_offline(struct cgroup_=
-subsys_state *css)
-> >
-> >       page_counter_set_min(&memcg->memory, 0);
-> >       page_counter_set_low(&memcg->memory, 0);
-> > +     page_counter_set_high(&memcg->memory, PAGE_COUNTER_MAX);
-> > +     page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
-> >
-> >       zswap_memcg_offline_cleanup(memcg);
->
-> Should we simply disable_work_sync when the memcg is going to be
-> released instead (mem_cgroup_css_released)? That should both prevent
-> the run reclaim_high during the memcg shut down and and also avoid
-> plaing with limits to work around.
+> Just a follow-up, another option: the vma iterator can check the
+> previous end from vm_end and set the maple state to the range of the
+> current vma if they disagree. Using the set_range() and not
+> __set_range(), so the next walk will be a new walk immediately.
 
-Hi Michal,
+Ack, as discussed will give that a go and see how it looks taking on board
+Suren's feedback also! :)
 
-Unfortunately that won't work for shrink_many() ->
-!mem_cgroup_tryget() -> lru_gen_release_memcg() which can occur before
-mem_cgroup_css_released() runs. (mem_cgroup_css_released() happens
-through the cgroup_release_wq.)
-
-The high limit reset is also needed for targeting live ancestors above
-the offlined child in try_charge_memcg(). Without the resets,
-high_work is never attempted on them since it gets dropped when
-attempted on the offlined child due to the first hunk, and
-try_charge_memcg() breaks out of the loop.
-
-Shakeel's remote charging patch
-(https://lore.kernel.org/all/20261010210957.1350874-4-shakeel.butt@linux.de=
-v/)
-sends remote charges through high_work too, so without the resets
-those would lose ancestor reclaim the same way. Before that patch not
-performing the resets means reclaim_high() runs unnecesarily against
-current's memcg (not the remote memcg above memory.high).
+--
+Cheers, Lorenzo
 
