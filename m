@@ -1,127 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AFC606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB3E606A320
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 15:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=C35Jq0pf
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hYGedghM
 Received: by kanga.kvack.org (Postfix)
-	id 797886B05B2; Mon, 26 Oct 2026 11:28:04 -0400 (EDT)
+	id 46E6E6B05B0; Mon, 26 Oct 2026 11:34:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7478B6B05B3; Mon, 26 Oct 2026 11:28:04 -0400 (EDT)
+	id 4250D6B05B1; Mon, 26 Oct 2026 11:34:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C2E66B05B4; Mon, 26 Oct 2026 11:28:04 -0400 (EDT)
+	id 30E336B05B4; Mon, 26 Oct 2026 11:34:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C0366B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:28:04 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D12951207FC
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:28:03 +0000 (UTC)
-X-FDA: 85365158046.13.CFDD888
-Received: from mta0.migadu.com (out-240.mta0.migadu.com [91.218.175.240])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0D2E218000A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:27:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C35Jq0pf;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.240 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 050DC6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 11:34:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0D3AB1C3C0F
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:34:18 +0000 (UTC)
+X-FDA: 85365173796.16.9B07B68
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1EAC320006
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 15:34:15 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hYGedghM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793028482;
+	s=arc-20220608; t=1793028856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4YP/4sMLmMrBNwv0rmr3CgPfxwdrbgn3B1FIYdO1TaM=;
-	b=bAyYU4tIT/GxgnspjgHSeQD0WzmULevxcOzAXXX6MXhGaXQhvcjN6EHMxnwCuiBH11YVpA
-	1U9qtBD59R8BEuzLqLqZXLZJwnKLvz3JgviDcGQ7T/kyi1Lp5b5R54DAbrf6Pi3R0bwWK9
-	jTNRtjlQ05/Yg+MtfEAFPMXv5QPDBJI=
+	bh=enXAkrWKOg+OnmNqIxb5MDjoHdnjUwcVFg3yFO3gsOw=;
+	b=mUjh8HUvqez/+qGILOpQVwXgs8YirxPs11jZwWd+ppRxQYG4VFt8H8+a9N5t4/8VDF48lt
+	bu3uAfWTMHk2fnzgYTG1XL5S17oGcR55R6jWntVYra1aAvXjZ/zo+nj7D1xcNWlSFZ159b
+	fAvnWx/vVxQrtoMyZYCaYP76063AN5Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C35Jq0pf;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.240 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hYGedghM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793028482;
-	b=dUUtlp9/VjilxBuL/+C19A3rER6RIDDO638AwrsAgxR2gX612kAfeSF/kf7cFbRB+H0yzV
-	Jc2kZ2i1OEjIkcGWPkYWR3+x2DFpCr0+cq6gu/7WwbPcFM9Sa1PIAGATLnIDnnVyj+w46C
-	alXQJxNikN1oE5J4MnLr7JwIuVU3Xgs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=BD5GR4twj1Y0cxe10dqIpaa4/qJ/AH8RfmV9ehRX730=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793028476; v=1; x=1793633276;
- b=C35Jq0pfAi43X24zs7+pws0mYLmITR+OUzEveCg0XkZvazu8n4wJD73zrHK7x5S+fEpLQuLX
- P49c8d0YGrGpUtVW23hk8Og+UipwHF8cebaDl0rHVHYY/y46DZkmAf4UXIXMFQh48UVakZafxcK
- AZ370RiZGW/kNAJoqjyubAWo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b2b5afc969dd0a08;
-	Mon, 26 Oct 2026 15:27:56 +0000
-X-Mizu-Trace-ID: b2b5afc969dd0a08
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: alex@ghiti.fr,
-	palmer@dabbelt.com,
-	pjw@kernel.org,
-	aou@eecs.berkeley.edu
-Cc: akpm@linux-foundation.org,
-	zhangchunyan@iscas.ac.cn,
-	rppt@kernel.org,
-	kas@kernel.org,
-	david@kernel.org,
-	andrew+kernel@donnellan.id.au,
-	rmclure@linux.ibm.com,
-	debug@rivosinc.com,
-	baolin.wang@linux.alibaba.com,
-	usama.arif@linux.dev,
-	wangruikang@iscas.ac.cn,
-	namcao@linutronix.de,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	alexghiti@rivosinc.com,
-	viro@zeniv.linux.org.uk,
-	ajones@ventanamicro.com,
-	arnd@arndb.de,
-	axelrasmussen@google.com,
-	brauner@kernel.org,
-	conor.dooley@microchip.com,
-	conor@kernel.org,
-	jack@suse.cz,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	paul.walmsley@sifive.com,
-	peterx@redhat.com,
-	robh@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	yuanchu@google.com,
-	stable@vger.kernel.org,
-	pasha.tatashin@soleen.com,
-	linux-mm@kvack.org,
-	me@ziyao.cc
-Subject: Re: [PATCH 1/1] riscv/mm: fix soft-dirty migration PMDs being treated as present
-Date: Mon, 26 Oct 2026 23:27:45 +0800
-Message-ID: <20261026152745.11239-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261004030312.90163-1-lance.yang@linux.dev>
-References: <20261004030312.90163-1-lance.yang@linux.dev>
+	t=1793028856;
+	b=bLp5eZRVq7ZcgkK7iyMY7S+m6Ex2HvS+Z8+DhZzufN+CrDSwuxoc13t/Xdyjn1tfilL4qw
+	OenM6P+38ic26Y4yNd5j4OqEvptpNCDNoWJFytdal2+E9E08XakX7xVWl10wkS+k0tn9Hf
+	6hWzzA1dhXr4BInAe1Q/QuSVJIB3Zos=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 73E64601FB;
+	Mon, 26 Oct 2026 15:34:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A0B1F01828;
+	Mon, 26 Oct 2026 15:34:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793028855;
+	bh=enXAkrWKOg+OnmNqIxb5MDjoHdnjUwcVFg3yFO3gsOw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hYGedghMubVMClDJg8UjWJMPTv1naRWZLHo697LqQ1NjJFFIW3A8z6OiuPm5amsZK
+	 817PrEtBwLXo2grKB3+JJOXabGO+zkyV8rqrnzu+GUiWa5EXeMU+HSJeOpqbRGbTuj
+	 mxwEQfmskRo7b0x/jML5dWtyFpr6ot32rvD80UbE+Efxr1B2/cwsjfYgY8I0LP0C+N
+	 C3DXm1HeJOokgfAgsMo6II1fKAfvoTievNq+9Z7q1Gj9Ols22ZaCpg5oSrBrMXEAjY
+	 w5fvPfLODiXzNcoK9k6c1tpxQj3QfQElWrco5vXv2FXo8OwCGzdk5wikjtYD9EW8S5
+	 arbgWnx6hwdrA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 34BFA198003A;
+	Mon, 26 Oct 2026 11:34:11 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 26 Oct 2026 11:34:12 -0400
+X-ME-Sender: <xms:8nLfasmfM_A-8C6FdWnJR4MHx7n7Fo7vyQTnWJp3zKtP3nYBEhxX1w>
+    <xme:8nLfavzl_xCYhIJLLpgJh-8VYiGaAi7HY0RQXA9j6TC9hHjdekDNQyRy-8eY8JFFd
+    Ff4pCUEW-dzMzcC3YPZ7H1T5eDJsdlcfhGStKqYRdyNE16t6fNCTWYu>
+X-ME-Received: <xmr:8nLfajKUovqMB16oEA__sc1etkZHnuNI6tVhz8wdpB7mtQixETQS5gGollY>
+X-ME-Proxy-Cause: dmFkZTFChFXNPhfha3/sK9OQCU8ZlQFCIc2lL//QxSk/v80tP++TpcUbd8oBI/UC2hCcQi
+    dysjiuRL+Umb1+5MgKTxHJCkcRB06cFautIOspS/IbW++kG8/nt8ByYqmCqa61kOqjjIkZ
+    5B1b7xPTLC8gMOzABjCI1erXXuf49nuLg074PCjSRrrp9+Oq7WC3QUM0ucvNkrWxZrrCG5
+    MVs6FZFG0Aaw+DL35JWwRyN0VG4Fp22qKOZ53y3IQDxZIkjTk8a1YbfdrS4W5R/sbrBkRC
+    UBedcz1USRKX28DOANmsb5RQXnQUKOL0yrp2AoqRpq0xZ+5hUhJdrd4k3LnrmS7tNTH2jF
+    +hrceKOpzCT+YgvEo6Tidp/DIQQXN+eysGfT3Nunq9RrOxcrzaKuoL24LSxJcWMRTCQ7JB
+    GbyChTM3CE2oDN4OuBozGAgz0BtZ/66gj/UKJZn5e/XsKdnswLwtpoCwCrum5WoWiMT0vK
+    I1CHxlqCouIb6mBk7vYnOSlrtbnJaDjNzT8MT0NGEhwnzpFTSWbHMyMNDxXDshV6DKo36T
+    m3GWcwxg4sHSxn6V1+ADIZM9hb++0XNTk1dIRJNH7sonrxwjvO1m5o5RnDM06kMMYbQQg5
+    P3GMfvvNuuOZPzbclJKODWSzYrt4rBUgQCMlvQYsuLNJ6//cwaoVT9IQP4/w
+X-ME-Proxy: <xmx:8nLfaiIWUjTM3Uzj9zDV0cUQxWekHdcdUFfzUe5i-gXZ4cohLZetaQ>
+    <xmx:8nLfaiVL9ri3TDtKf021iCV3YxqSv_NYyxWJ5WffayAlEiPBGXaBbQ>
+    <xmx:8nLfaqBOxmM8eyw4vmNZCC_6I-16pxlgLBJXgS9Ni0JZDC-FCKbeNg>
+    <xmx:8nLfalFghDFHw7Ivc7lOozgqdNDSlBAYOgJnKh_WFhEr_IPCMToVWg>
+    <xmx:8nLfamf3M2UKMwUNzKOTyHsHgSG9tI6zGNoyZOnoRhh_O5poW5mpXUsU>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 11:34:10 -0400 (EDT)
+Date: Mon, 26 Oct 2026 15:34:08 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Hungyu Lin <dennylin0707@gmail.com>, willy@infradead.org, jack@suse.cz
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, 
+	akpm@linux-foundation.org, dave.hansen@linux.intel.com, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] shmem: do not extend i_size when no data was copied
+Message-ID: <at9xXRhD2xZhszEj@thinkstation>
+References: <20261025164619.89992-1-dennylin0707@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0D2E218000A
-X-Stat-Signature: zn1kgx4jz9wi8ju7gnakmz1tgf3awmuo
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261025164619.89992-1-dennylin0707@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1EAC320006
+X-Stat-Signature: qjszhsaymfgn3rthgh4qih7fg5tmimq8
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793028479-548063
-X-HE-Meta: U2FsdGVkX1+gK1sg0az6HqfdvDWXdPdzBZ1ZZbpK36u7pMZrZTL3Ukei1ag0bnq3Zl2cmrMX0hS4pJz6pB7RM8PFXzkpSfuF0Xuc3emwFPKoNYQAhipgur8EMBwB/pUu1LBrC7JItSDZLnOjGdW2C4ZwNlAAkw/vj2AveC/0CemqCKPD4iMwXImoqzXOMtuieDk5L/dzGXAwV1eLWBii4JLsQ9P1GP+GhKzPaQ9sVjYOuPkDn1+7m2P6tjPiQjR6uAEEFEKTEf2TeSJnxhYJfsuCwhLVmszx4II6IyngBf16pgXMDFRQUzNiRk7MrpR5+khJYOr66gf+hpiYBCQL4idtvF72kjqq4qkdZ2yMo3MN7SlgKC+uGgAD6MoqBrgkaKG0a95KPnpnzAigELy7smmcTlbirKpIN7lxj32ONP7LdzR3IwXSe5rsrFSw/6e3EXqPGtCm9XvVG6CiyR7iieyAm7jElxFAwh+ns+hNi/+AhVnhFpothvSA81PZZyh8y1bIui8zLgd3CDl23qYnyH2/Gm4mtQr1Eibc+X3v2z0SAbmvqfF61QIlJ2ovM4JrT2zCrpmVt39ify2TClml8+LMxKe26xyM4jsu6RP4aJlNh55aqPLxuZpHVUFQjfVVJlNwUKsRkAOU13h98+/QRkrsTUrhCFWMMW6ijBsohh9Hxdo5BKXNCRp2UJi/KWqj8Ipc93a+0ynCSFkO4FmEzgMrY3pzZkkogkM0ROX1f+2NoCNUCwh7kB+syjICrNZshKvPUUw+Vk9GDnHENDxl8gaUo2L+tcKo57AhF1Mpa9V4VW8HssXORGuM2aWvUp3mP4S/YseeuGnL/tqWpJm/asqBIfqkrkN8dAwGvHkMltxtiFHw+PgAsszaTcwaz94lYlNE62zWGUMrY0z3NxwIHpooT0sN8+VzfktfK/2i7O9I2kF+L80xiXwG8/FkJDIQtvGEOyRlCJtpMCfpWGL
- tq8bZKEY
- sm703qDuaCRi1cTA6XNfWwcbLjvVq9qv4nLxDi09C1eVWxfTC1LdNRmeMCJsmDXQsSQS0uYu5+XOaJw43+2vjl4E6+BGVYfuiquPHpgVGHmt2QaCFwvm5SVmT8Qb+USwUByFLiGuikOR7d0lLy+hehv2At5p6QkGyPz/SVUNe//pjXuIEchHMOFgipAZnpWzSUB+BoVvLBucu8gDAYJQrEzQGLlws2YJgnaKOJecg0vqiN/0PSug/3qadZ2Y9WfnCQcOUmU3rdrhmaQ96S91Yw1ZWVK8MmIXEd2w22L5+uh2AyMb9pfKmIGHay7ha+/GlLc4BolGFC5TOGE5MlXbPsPFbe7tEYG+sPy/ByyeS/0bs4/PBMeLGQGXxvA==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793028855-571098
+X-HE-Meta: U2FsdGVkX1/ERH0xR98q8PSdNBQbFTb4l+570AdmEHshB/SrU5D7sbYsnfcjEhWeqWJgnKiXgSVc9bP95nscDW8HVJEcEY1Z4GVi2qq5VR6aY61GbiFoz7TZcrt3UIxDNtaqSKuF8DxkzpKeOG7T9ftFMWP9/IHAJJbEYskTIpX7Cc2AVS8Gsmk/kEfoxn4ErYhZZ3fdMRAqGxfoP+1F7qKH228za+/cZ1AaXTUQov7Bp7uA+MHcZ0byb7oQIYE0SwvWOC/vAF9TIJjxdZ1NDEgKhDMc0RZih1SaYc6yDlsCR4klTagV0SfSwji4gW4qo/n0niivE5+63Z48wt9exq2DeL6N0fWA5mtkugSxgn2W2eGolue3ltosDKeFrfJ3hDKD/xMRrcVS8PSxKRVJfBR0Nc63cf41X09luM4zt1t6InJ1CfGLiiBG2lt4/5pG1o6H8qDuR+zam+bdVdhhoeRa7nNyr/BRZBqRaFLRP+6HPrP2DPPd9+nB+3LBPXDB0+HzrUMKMcHcYwX9aXEk0INiziylKdilYJ0h43HtaTKx4m0d956esEz2dzCqXi6kmSWnvx4weu1D0Jyk5wWplzHAPJcNgwGOZSCpZTA3Y4Hr5Pu8c6Jert6IBCzH2MfiX9RLslsqPExXAoNP0m6zSnWfAZVDCer/myLQwBOtcFNQIiQJ9H1bJ4blxHiTB6DFkFqGbyMbZCMzULkyq7t2IVOcLppe3lYDpdTqebpNP6wDvXdqwVeeKXJL7PqJKCk78G98Tq1NBygxFuZp8MKVW/UU7Eo8Nlk1+3CXVCHa+/Dm26D1yxtMTBpj/i2qnpAqlXMpJrbwd2OhP0yYzlYS13yt8SlHYUYmX8RFEUiTb+YruMWvwRQw+wAmj2nVps+bIbxe1xjacNumkGjPvQjKOwCifsPDAi+sgHiobOSM29QFArzuQOUrf2pWQfd30niByOH8eImrjffOK8rTGxj
+ WdD6vfAv
+ ZK2mMDLvTwqUPXkbiBrvvrQA3VQO7/Ky+OrwzCbQRUaMM/Mm1a6gLD7Bpdh95fJJnuEJ4ljo9of6j4zFnyveQIu6T/WacLJVaxpGBOkeB6yhd/b8HKmSIsgf0aoj7SSrsomCHtUyR1fCmfqPcnEwu2h/iPdESUtskN4XhGyriiOhnv5lamtfQ85pRG3w4M4bH1tztx8LptV8NUQDh+UwkkaRJVbdwUkoLzIGS/2MNHLTKkKQARMWaInTpE5PgpUlheJh3rlAIoC3NZHEBoPvhKZAziSu0pP0i0nRemRz5xIJNumHEeKedCooUvVL70aarV0JmwURuMXqg2pqx/MtlY9a85Aq8idPTIS4QzcxsczfQhq4e2guVb6hZxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,94 +121,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Gently ping ... Hi RISC-V folks, any thoughts on the proposed fix?
+On Sun, Oct 25, 2026 at 04:46:19PM +0000, Hungyu Lin wrote:
+> shmem_write_end() advances i_size to pos + copied even when copied is
+> zero. A buffered write past EOF can therefore extend a tmpfs file
+> without writing any data.
 
-On Sun, Oct 04, 2026 at 11:03:12AM +0800, Lance Yang wrote:
->RISC-V uses _PAGE_EXEC for swap soft-dirty tracking when
->CONFIG_MEM_SOFT_DIRTY is enabled and Svrsw60t59b is available. That's
->a problem for PMD migration entries, since pmd_present() also checks
->_PAGE_LEAF (R/W/X) to recognize THPs with _PAGE_PRESENT temporarily
->cleared during splitting.
++ willy, jack, fsdevel.
+
+This doesn't seem to be tmpfs-specific, right? I see the same with ext4.
+
+simple_write_end() and generic_write_end() check pos + copied the same
+way, so filesystems that use them through generic_perform_write() are
+affected too.
+
+It makes me think maybe generic_perform_write() is the right place to
+fix it. Hm?
+
+> Moving prefaulting to the slow write path makes this easy to reproduce:
+> a one-byte pwrite() at offset 4096 into an empty memfd, with an unreadable
+> source buffer, fails with EFAULT but leaves the file size at 4096.
+> generic_perform_write() calls ->write_end() with copied == 0 before
+> trying to fault in the source buffer.
 >
->When a soft-dirty THP is migrated, set_pmd_migration_entry() preserves
->soft-dirty with pmd_swp_mksoft_dirty(), setting the X bit in the
->migration PMD. Even with _PAGE_PRESENT clear, we end up treating a
->migration PMD as a present THP! The fault handler skips
->pmd_migration_entry_wait(), and a write fault can end up in
->do_huge_pmd_wp_page(), where pmd_page() decodes the migration entry
->as a mapped PFN.
+> Only extend i_size when data was copied. Leave the existing folio
+> handling unchanged so successful writes, retries and preallocated
+> pages retain their current behavior.
 >
->Move the swap soft-dirty bit to bit 12 and start the swap offset at
->bit 13 when CONFIG_MEM_SOFT_DIRTY is enabled. This keeps R/W/X clear
->in migration PMDs and lets us keep the existing pmd_present() check
->for invalidated THPs. Leave the offset at bit 12 when soft-dirty
->tracking is disabled.
+> Fixes: 665575cff098 ("filemap: move prefaulting out of hot write path")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+> ---
+>  mm/shmem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->Fixes: 2a3ebad4db63 ("riscv: mm: add soft-dirty page tracking support")
->Cc: stable@vger.kernel.org
->Signed-off-by: Lance Yang <lance.yang@linux.dev>
->---
->I found this while reviewing Usama's PMD-level swap entries series [1]
->and comparing the swap flag bits with the PMD presence checks across
->architectures.
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index d97fc32e7c94..55287c370c73 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -3487,7 +3487,7 @@ shmem_write_end(const struct kiocb *iocb, struct address_space *mapping,
+>  {
+>  	struct inode *inode = mapping->host;
 >
->[1] https://lore.kernel.org/all/20261002095503.3585565-1-usama.arif@linux.dev/
+> -	if (pos + copied > inode->i_size)
+> +	if (copied && pos + copied > inode->i_size)
+>  		i_size_write(inode, pos + copied);
 >
-> arch/riscv/include/asm/pgtable-bits.h |  6 +++---
-> arch/riscv/include/asm/pgtable.h      | 10 ++++++----
-> 2 files changed, 9 insertions(+), 7 deletions(-)
+>  	if (!folio_test_uptodate(folio)) {
+> -- 
+> 2.43.0
 >
->diff --git a/arch/riscv/include/asm/pgtable-bits.h b/arch/riscv/include/asm/pgtable-bits.h
->index d5a86b4df3ce6..d84b459e010c1 100644
->--- a/arch/riscv/include/asm/pgtable-bits.h
->+++ b/arch/riscv/include/asm/pgtable-bits.h
->@@ -27,12 +27,12 @@
-> 	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
-> 	 (1UL << 59) : 0)
-> /*
->- * Bit 3 is always zero for swap entry computation, so we
->- * can borrow it for swap page soft-dirty tracking.
->+ * Bit 12 is reserved for swap soft-dirty tracking. The swap offset
->+ * starts at bit 13 when CONFIG_MEM_SOFT_DIRTY is enabled.
->  */
-> #define _PAGE_SWP_SOFT_DIRTY						\
-> 	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
->-	 _PAGE_EXEC : 0)
->+	 (1UL << 12) : 0)
-> #else
-> #define _PAGE_SOFT_DIRTY	0
-> #define _PAGE_SWP_SOFT_DIRTY	0
->diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
->index b644db16bda94..acaf6d3b54d04 100644
->--- a/arch/riscv/include/asm/pgtable.h
->+++ b/arch/riscv/include/asm/pgtable.h
->@@ -1178,18 +1178,20 @@ static inline pud_t pud_modify(pud_t pud, pgprot_t newprot)
->  *
->  * Format of swap PTE:
->  *	bit            0:	_PAGE_PRESENT (zero)
->- *	bit       1 to 2:	(zero)
->- *	bit            3:	_PAGE_SWP_SOFT_DIRTY
->+ *	bit       1 to 3:	_PAGE_LEAF (zero)
->  *	bit            4:	_PAGE_SWP_UFFD
->  *	bit            5:	_PAGE_PROT_NONE (zero)
->  *	bit            6:	exclusive marker
->  *	bits      7 to 11:	swap type
->- *	bits 12 to XLEN-1:	swap offset
->+ *	bit           12:	_PAGE_SWP_SOFT_DIRTY (CONFIG_MEM_SOFT_DIRTY)
->+ *	bits 12/13 to XLEN-1:	swap offset (without/with CONFIG_MEM_SOFT_DIRTY)
->  */
-> #define __SWP_TYPE_SHIFT	7
-> #define __SWP_TYPE_BITS		5
-> #define __SWP_TYPE_MASK		((1UL << __SWP_TYPE_BITS) - 1)
->-#define __SWP_OFFSET_SHIFT	(__SWP_TYPE_BITS + __SWP_TYPE_SHIFT)
->+#define __SWP_OFFSET_SHIFT \
->+	(__SWP_TYPE_BITS + __SWP_TYPE_SHIFT + \
->+	 IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-> 
-> #define MAX_SWAPFILES_CHECK()	\
-> 	BUILD_BUG_ON(MAX_SWAPFILES_SHIFT > __SWP_TYPE_BITS)
->-- 
->2.49.0
->
->
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
