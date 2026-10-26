@@ -1,139 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468AC606A330
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624C7606A31F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 13:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=UX1M8Er+;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AstCp0Vn;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=UX1M8Er+;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AstCp0Vn
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d8gwXBfE
 Received: by kanga.kvack.org (Postfix)
-	id 624F26B05B0; Mon, 26 Oct 2026 09:31:44 -0400 (EDT)
+	id 7FCCE6B05B5; Mon, 26 Oct 2026 09:33:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D5856B05BD; Mon, 26 Oct 2026 09:31:44 -0400 (EDT)
+	id 7ADEF6B05B6; Mon, 26 Oct 2026 09:33:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EB8A6B05BE; Mon, 26 Oct 2026 09:31:44 -0400 (EDT)
+	id 6EABC6B05BF; Mon, 26 Oct 2026 09:33:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1837F6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:31:44 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E2F6A8337
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:31:43 +0000 (UTC)
-X-FDA: 85364864886.01.99B7D74
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 45D261A000D
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:31:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UX1M8Er+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AstCp0Vn;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UX1M8Er+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AstCp0Vn;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4564D6B05B5
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 09:33:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFE391C3FF5
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:33:31 +0000 (UTC)
+X-FDA: 85364869422.20.A641566
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4F7091C0011
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:33:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8gwXBfE;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793021501;
+	s=arc-20220608; t=1793021610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LKf/jI/bjj0oPXrviRNSHjeXeMp3TxZx0LrRFINXjVw=;
-	b=6LE6mfXM7PTvOCXfO4xGLnYeVW1cDhqDkhH4dNCXRmLTeo7kieyFy+W7evZxJLxnhM1AWQ
-	h/yy/tzPjt+OywfB6CaMNgS+MqudUI5EOYMUy2CqerJNIBSaffwA3RRaEtQ2X/yyn42uv4
-	Ccu4ciNPoEH8rlDAKn1BN5payjdFtQo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=3QJjgBNhhMcU2h8ryMvyVAOJo+FmKjFcCzZY6PKW7M8=;
+	b=gS+ePn1KzWfDEpy1LuzPnWGNDvk3WuujfwE7/XJzrdOUXNQ3diqzszOdPDD0zUomfMyYh8
+	tiSalQPF7aSiiaGPApUUIP0VwosK4zsLF1i5xSUr1tQp+LBESDYXa9KQaYo+5mHb/JmCbv
+	FitGGhvOwE8fHR/FZa9eGmRdeYl2l8Y=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UX1M8Er+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AstCp0Vn;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UX1M8Er+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AstCp0Vn;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8gwXBfE;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793021501;
-	b=3IKvP8sdba1LlBoVtK/c+g1IM+3xTEV8cqKOMkr9UCVutFY3EIPiqccX0VP41B3dcYSgNW
-	/u8/QNg6iIIDSsNnirG4Bzr2B9kESm9ZfQ5a6D7NslImKC+jvDfNfxDtkQ1mBV8Z+OIcqU
-	k/jO5KDmgw/DGJhAcnTKhDdAGTHg8Og=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 27FB721EBD;
-	Mon, 26 Oct 2026 13:31:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793021500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LKf/jI/bjj0oPXrviRNSHjeXeMp3TxZx0LrRFINXjVw=;
-	b=UX1M8Er+JZvgKRP+DnkHGie/LMyRJLqLTRWNMKOj+vLBPyOqyiDN7H22WQIJiAm1tmExF2
-	CYQ/CL6epAdiKivnKyhe70jXQhl8NoosTUaZFT0RvqQzP0fX2uNnOSRmuun6FjyfoohMgI
-	J5/ZxwjV5WS8j4OIIQL2O9Bc7I7UW7U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793021500;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LKf/jI/bjj0oPXrviRNSHjeXeMp3TxZx0LrRFINXjVw=;
-	b=AstCp0Vn8QLm3QFjXiGbZoQjWqLwTJCuYYh/PwSlR9ZX5+HNTFcIgFeuvV0dzZzoKJOcsd
-	5BHy+myC12caKbDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793021500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LKf/jI/bjj0oPXrviRNSHjeXeMp3TxZx0LrRFINXjVw=;
-	b=UX1M8Er+JZvgKRP+DnkHGie/LMyRJLqLTRWNMKOj+vLBPyOqyiDN7H22WQIJiAm1tmExF2
-	CYQ/CL6epAdiKivnKyhe70jXQhl8NoosTUaZFT0RvqQzP0fX2uNnOSRmuun6FjyfoohMgI
-	J5/ZxwjV5WS8j4OIIQL2O9Bc7I7UW7U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793021500;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LKf/jI/bjj0oPXrviRNSHjeXeMp3TxZx0LrRFINXjVw=;
-	b=AstCp0Vn8QLm3QFjXiGbZoQjWqLwTJCuYYh/PwSlR9ZX5+HNTFcIgFeuvV0dzZzoKJOcsd
-	5BHy+myC12caKbDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F334913408;
-	Mon, 26 Oct 2026 13:31:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ulRbMztW32qOeQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 26 Oct 2026 13:31:39 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 80BEEA1419; Mon, 26 Oct 2026 14:31:31 +0100 (CET)
-Date: Mon, 26 Oct 2026 14:31:31 +0100
-From: Jan Kara <jack@suse.cz>
-To: Jiale Yao <yaojiale02@163.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] filemap: drain in-flight DIO before buffered writes
-Message-ID: <ddkjou5djippzkzf4euqg4wvsnjsc23fw4qldwi3hru5cxg4ul@eyts4mtzasxt>
-References: <20261025124115.3178287-1-yaojiale02@163.com>
- <20261025124115.3178287-2-yaojiale02@163.com>
+	t=1793021610;
+	b=2IdAhXxCNURR+8z+gC6El+RFkQCUEADphcgzId7orChlCFbS0lzGv/Gmw1A6Vz6I8j7RmI
+	7mLH1g26ToNTR9zTZdBHepOYd6sHaQynaO6ijMQlFEyU3NUe48K1lUSYj1HXMFJmdIlATT
+	F/oz51We/eqHuFGX6c58R22ZZf98Buc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BEFD8601FB;
+	Mon, 26 Oct 2026 13:33:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1CE1F01825;
+	Mon, 26 Oct 2026 13:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793021609;
+	bh=3QJjgBNhhMcU2h8ryMvyVAOJo+FmKjFcCzZY6PKW7M8=;
+	h=From:To:Cc:Subject:Date;
+	b=d8gwXBfEJjO1rmMFiYe3Ur+g7oPaJCfSXRVjqlORKGG4scOzcIY9NsU46uIErcxZP
+	 nIXuqF7X/B78sTjJdf0FDC3r4xDSAp7rFeQsbBtQzCeToh74fGL2UHzvv/4uk3v5Fz
+	 Ub0Pbei+dlTqQ0wNVDPmggdAPCto0QzjDesvuS5+rNk5mmgyMVTd8PbqAjBVOpe881
+	 JCHNQvKyRtsz0/IMKprpdc9rVIJeU7Z8y/a2f0meIXaT6pDjYP9FK3ZtrXOwMKLHWm
+	 k+LPldK9/bEqSHejvXSogwMO2m3PsAbAYtNNuRLYr0OUGJeB0hJSxKEd7aWIoFGSmt
+	 A4Vxra7J4HCuQ==
+From: SJ Park <sj@kernel.org>
+To: stable@vger.kernel.org
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 7.3.y] mm/damon/core: error damos_commit_quota_goal() for zero target_value
+Date: Mon, 26 Oct 2026 06:33:16 -0700
+Message-ID: <20261026133320.68445-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261025124115.3178287-2-yaojiale02@163.com>
-X-Spam-Level: 
-X-Spam-Score: -12.80
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 45D261A000D
-X-Stat-Signature: 5qi1kro85osmaxpinbsdkrdyxcyfiwwh
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4F7091C0011
+X-Stat-Signature: 9ph7h7gzd1rqno6uugcm65eb56fe7hiw
 X-Rspam-User: 
-X-HE-Tag: 1793021501-592393
-X-HE-Meta: U2FsdGVkX18npcwpGJclOuB3JBlobSYqHOZZo+YNduQgKk5uAhrgxeyFYllnRmQjtZlhPesczK94P6P4n7mGq68XbOUNvCLAXT6Vjt+Ne1fK2BqoJzhwZaq17QdSFH2YExw2Ps0OsZ5FOQrfPrz8YmOCZPKGlrA+zVmz3WkoLHwk+/eDTi+xNHBSSCK1XaWnRlaWyVbyCrsOQfW0SDN3vGp1gnmwoFVd9obaaA2ZLn0zDIkDb7Ir4tgKEKcYoP45cG9xT2SR1DPJ2OnTuXh/1luo91Dd2GR+8Vk2/rVcrEbg+n0FZ0woSGldZLM+kq7OkfHMkA2kPduRJl6yQbPM9MPIbl8mL1+dnBqG/AhF5x4gPIbYrHqmPENyLQHVb65IngOUEa8GfpU6vUd7Tc1G6ET0/YDgDPyD2wdq1F/Rna0008ys30wUBRmGHce2GBDkeAPvQDJjtT44UVGXDVbCExeCWtqa1FYAEHPyhGGCI6rvr7cTQrd/7IvZYA6F92Vin1i+cJwl4exkachJnzbr7O+hMKYU29kzNT5irJ8ZtdlBKUW2wNkyWo4nt4c+oTcngwqeU2FpUrxkOLHL/Lbv1NQyDXJQLCoR8LpReWqmtvh3yiOX1xS9TMfYhWrKBnzUPSyH2PL9CUrmfe0tCM//RvXyBnsbvM2tU0D0Hrl+NIlIfxKDctOjngUtHzxrpocGR1XBvqQTI2kD18iGDfMRD5Y3r8/j8EKTlY9GxWY+isn0vAcCMLOz2bTahV8mIRlMJOeou/B81Ubg6ZW04CR0sbq5t/5VjBkwPVo93MIc1KE+ARNk93ypbZJhYYn4HmKi9yTMfRyRHJexhC6BXVkGpVlFakJQ3z7mkMzXYndRRQyOc2BK43j+oEMA2p7Y5bPDA6m0MSIk2hO1aGTgXCS20woqQBEUVnHemKBZ33DhjhTy9NxqMwftAAtWEru0PqdPdZNo8rFrGPaStvK6HWO
- r5JCtHHl
- QS+0G8LeBXi8sGMhcOwcblB0HFz7VsVzusZ0uNZ5fmSQ0jF22fvI63mRVBnZl865R7yu67A2rEHM2tfZhZUP3qy773C8zU89ZubuI1Re36ZrQdFrNdkJdsY9WZO51G4dbWtk6sCrj/uYnqB/xVx+10mLHVIv2X4XBSFiKQ51RODOu78mHDGdQZL2+nhdiWlqzSNeEVEDWC+Zp8+WMwygEYhOpmfuRuXUcJvHIRC4Uf3Yj/rnQUgCjrZjCuwx0EkKFkgE/p6vn2zf9zbzCJpzzaoJGxzsDGRq+u3XV65mUMJp1FWUcVyE/ZfJM2Q/xRbv6UFuMtxCXTSmTFlqY6YtdiqvE2XfiviQhLzcMdBcOKpxa+Fq5DB4eFy+mjfLJyypcb/Io
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793021610-390757
+X-HE-Meta: U2FsdGVkX1//b3dUUZnc69YLVVvDmBJmihIp6MlnMoWk2dKdiaxgcWF7n8+vr8lFFsEKnxqsd+D4EFygSs0rfEBFOMrxk9uSXXMCEw+Ba4wEInjOAsmkiiByWe2MZptbgSoFa3YJ2DFmXZAgCjXPVlDBtKszwRdB8Cf19oR3Uzf7kLHVW1LOxdOZyKpbmHmSbvSwpGhMyNRasqy2C3lvf48TJ9jU6BsLEfDvekGxNG3lL2pS5R27b3Yy8FGzTknsmyXeRIKlaQfBRTEtriyDQry5REo9MHkhqZevJ/t4KjuHUmQcScYTO3JnAi68nqKZKHemymA0xlAxEpauwT/ujmaqssR24hz8Sd1gbL503mAcS4sDtNMaaxmVJ+LwwPTMS3mWSnXR8nZdEN/CbMgWXarEVQaP9lqKuuyzOvnTR61Tg+exLWTFjSWtzWH8rZuZ3EGxYG+VnHTxCZMVJ8gMVLz1EmZ0XE8vxIiEUZZxCYGooNXuLNLHMOyPrCbhJYlcEz43NFhk7CQW+2qT545UF9L6TrZXb7Q98xiVy+3ip943VVaj4t1HdFj8GOCpbUOdq6ozr+oggFLlP8NgSHJHn8Gc+j8Vc2NzZpjSCwqQ1MsevemKSqdWAVQV07NgwPrZWTvwZkBkwvEteJ6ofYfoD6XdNtU/5ZQ/uxZfzeyLi7rdceu0Xo2d3hZqayKzJqjpr5a6pebqs/HpvQra4WNDySw7fXokGsmcyfzmQC8DIj8VscvSy3PuDwQYCEpbTRD6DsIfDrA3mKy8ekTzgt6ht8IgBCP8iIGzukQAPbR1qyFPN5hs6CcV1NqupQdFIj/jIgCcmqmJqDylBG2rq2V/+YRKP/d7ChOAprZAXH/aBgG7myboWBZeEo0lfw0HgqM3DLeOmX5VGMzD50asY848VfyNhwJnt3cyLeOxnpez4rHLB+pOYbh3BRBVnbLilgymq4IM72NLncPaCqgMA3w
+ HJcQMxIg
+ jjclWAC8+/xmRjCzJRdp56GEwb1gOD8EXheNC9kixR/AK4yP36TbSX9LB+uqUK+PY3RNkgTKimjLHsWSdpZ18+avpguwdXnWFpZc6Y+dLDW9WNyJ1S5rTsklW5Annk/3HGthYeg1FpDj+CDR3Gctw4zt1tX5HqA9FGwA4F++X02nC5SQV46HeKV1D9MmYcpiDIwLfGBUUzpR7JCH4DZvyxY2ZOxg8exgPx20vGEvHJDsztm8OALea2IF1iW50vGA4Z0fA8C/lw/jzSasDXo65QRaGLV0hTQwiIImewF8xvGX+00DvtrVISHcH1qHcUZNwYxL1JX/d27H/GkefWJ6Rf7s6kM7ydw2PVJiyHyWl+qKx2FhlJ49qI2z7prmcUnWZMN58GLuwHsX2HXY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,65 +94,127 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun 25-10-26 20:41:10, Jiale Yao wrote:
-> An asynchronous direct write can remain in flight after its submitting
-> thread releases the inode lock. A buffered write can then dirty page
-> cache before the direct write completes its post-I/O invalidation. The
-> invalidation finds dirty pages, reports a possible data corruption, and
-> records -EIO in the mapping error sequence.
+Patch series "mm/damon: move zero damos quota target_value handling to the
+core layer".
 
-Well, when you do stupid things, you get stupid results. We were always
-saying mixing buffered and direct IO in the same file isn't a good idea and
-we try to not screw users too badly but give no promises. This falls into
-that cathegory... So I don't think there's much to fix here. The only
-sensible exception here are simple filesystems which have only simple
-support for direct IO and fallback to buffered IO for the rest. But I think
-we should handle these on a case-by-case basis and either drop the support
-for direct IO altogether or convert them to iomap and properly handle the
-waiting in their .write_iter methods (like e.g. ext2 does it).
+Having zero DAMOS quota target value can cause division by zero.  DAMON
+API callers are checking the target value parameters to avoid that.  It is
+easy to make mistakes in some of the multiple API callers.  Move that to
+the core layer.
 
-								Honza
+Patch 1 adds the corner case handling into the core layer DAMON parameters
+validation logic.  Patches 2 and 3 remove no more needed DAMON API callers
+side handling of the corner case in DAMON_LRU_SORT and DMON_SAMPLIE_MTIER,
+respectively.
 
-> Drain in-flight DIO before both regular buffered writes and direct I/O
-> fallbacks in __generic_file_write_iter(). Preserve IOCB_NOWAIT semantics
-> by returning -EAGAIN when waiting would be required, while retaining a
-> positive partial direct write result.
-> 
-> Fixes: 8174202b34c3 ("write_iter variants of {__,}generic_file_aio_write()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiale Yao <yaojiale02@163.com>
-> ---
->  mm/filemap.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index b74bc1e5015c..289b8ca44ada 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -4502,10 +4502,19 @@ ssize_t __generic_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
->  		 */
->  		if (ret < 0 || !iov_iter_count(from) || IS_DAX(inode))
->  			return ret;
-> +		if ((iocb->ki_flags & IOCB_NOWAIT) &&
-> +		    atomic_read(&inode->i_dio_count))
-> +			return ret ?: -EAGAIN;
-> +		inode_dio_wait(inode);
->  		return direct_write_fallback(iocb, from, ret,
->  				generic_perform_write(iocb, from));
->  	}
->  
-> +	if ((iocb->ki_flags & IOCB_NOWAIT) &&
-> +	    atomic_read(&inode->i_dio_count))
-> +		return -EAGAIN;
-> +	inode_dio_wait(inode);
-> +
->  	return generic_perform_write(iocb, from);
->  }
->  EXPORT_SYMBOL(__generic_file_write_iter);
-> -- 
-> 2.34.1
-> 
+This patch (of 3):
+
+If a DAMOS scheme has a damos_quota_goal of zero target_value,
+damos_quota_goal() could trigger division-by-zero error.  Hence each DAMON
+API callers should do the zero target_value validation.  It is easy to
+make mistakes.  Actually such bugs in DAMON_LRU_SORT and
+DAMON_SAMPLE_MTIER were found and fixed [1].
+
+It is better to handle the corner case only once in the core layer,
+instead of multiple places in all DAMON API callers.  One straightforward
+option is using an alternative denominator for the corner case in the
+damos_quota_goal().  However, the zero target_value is meaningless.  In
+this case, the quota goal is always evaluated as achieved or
+over-achieved.  The quota will only keep being reduced.
+
+Simply avoid using zero target_value by adding a check in the core layer
+DAMOS quota goal parameters validation/commit path,
+damos_commit_quota_goal().  Update it to return an error in the case.
+Also update its caller to propagate the error.
+
+Notes for stable kernel porting.  The upstream commit doesn't have
+Fixes: and therefore not ported to stable kernels.  It turned out it
+fixes commit 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota
+goals user input to DAMOS") which was merged into v6.8.  The user impact
+is a race condition that can result in divide-by-zero.  Hence backport.
+Reproducing the issue requires sysfs write permission, certain DAMON ABI
+usages that are supposed to be uncommon, and a rare race timing, though.
+The issue was discovered [2] by Sashiko as a part [3] of its bug report.
+
+[2] https://sashiko.dev/#/bug/linux-7f814c9a-986f-4103-a55a-ef9537dcf62b
+[3] https://lore.kernel.org/20261021005234.94107-1-sj@kernel.org
+
+Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
+Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
+Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
+Signed-off-by: SJ Park <sj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 610c4438fb66e06d9e693c0ad3b2c1be54c0d61f)
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from RFC
+- RFC: https://lore.kernel.org/20261025171526.157414-1-sj@kernel.org
+- Drop RFC tag.
+
+ mm/damon/core.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index ab3c4d7549644..74d22a596fc13 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1136,15 +1136,18 @@ static void damos_commit_quota_goal_union(
+ 	}
+ }
+ 
+-static void damos_commit_quota_goal(
++static int damos_commit_quota_goal(
+ 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
+ {
++	if (!src->target_value)
++		return  -EINVAL;
+ 	dst->metric = src->metric;
+ 	dst->target_value = src->target_value;
+ 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
+ 		dst->current_value = src->current_value;
+ 	/* keep last_psi_total as is, since it will be updated in next cycle */
+ 	damos_commit_quota_goal_union(dst, src);
++	return 0;
+ }
+ 
+ /**
+@@ -1162,14 +1165,17 @@ static void damos_commit_quota_goal(
+ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ {
+ 	struct damos_quota_goal *dst_goal, *next, *src_goal, *new_goal;
+-	int i = 0, j = 0;
++	int i = 0, j = 0, err;
+ 
+ 	damos_for_each_quota_goal_safe(dst_goal, next, dst) {
+ 		src_goal = damos_nth_quota_goal(i++, src);
+-		if (src_goal)
+-			damos_commit_quota_goal(dst_goal, src_goal);
+-		else
++		if (src_goal) {
++			err = damos_commit_quota_goal(dst_goal, src_goal);
++			if (err)
++				return err;
++		} else {
+ 			damos_destroy_quota_goal(dst_goal);
++		}
+ 	}
+ 	damos_for_each_quota_goal_safe(src_goal, next, src) {
+ 		if (j++ < i)
+@@ -1178,7 +1184,11 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ 				src_goal->metric, src_goal->target_value);
+ 		if (!new_goal)
+ 			return -ENOMEM;
+-		damos_commit_quota_goal(new_goal, src_goal);
++		err = damos_commit_quota_goal(new_goal, src_goal);
++		if (err) {
++			damos_free_quota_goal(new_goal);
++			return err;
++		}
+ 		damos_add_quota_goal(dst, new_goal);
+ 	}
+ 	return 0;
+
+base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.47.3
 
