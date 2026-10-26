@@ -1,117 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02E2606A31A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71880606A339
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 17:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=VuXym00R
+	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=JdL3NJqd;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=jsaKGria
 Received: by kanga.kvack.org (Postfix)
-	id ED3256B05BA; Mon, 26 Oct 2026 13:42:28 -0400 (EDT)
+	id 89F416B05B3; Mon, 26 Oct 2026 13:49:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EABA36B05BD; Mon, 26 Oct 2026 13:42:28 -0400 (EDT)
+	id 8771A6B05B4; Mon, 26 Oct 2026 13:49:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C881B6B05BA; Mon, 26 Oct 2026 13:42:28 -0400 (EDT)
+	id 78C2D6B05B5; Mon, 26 Oct 2026 13:49:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 93ABF6B05BB
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:42:28 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7F6E1C4121
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:42:27 +0000 (UTC)
-X-FDA: 85365496734.25.B93C068
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1FE9B1C0005
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:42:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VuXym00R;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3_5DfagkKCPwxevyrwelyksskpi.gsqpmry1-qqozego.svk@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3_5DfagkKCPwxevyrwelyksskpi.gsqpmry1-qqozego.svk@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 521126B05B3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:49:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D50FF407E6
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:49:46 +0000 (UTC)
+X-FDA: 85365515172.22.E16BBD8
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C2E30120004
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:49:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="J dL3NJq";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=jsaKGria;
+	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793036546;
+	s=arc-20220608; t=1793036984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6FbknuYB2KaKiO/nAwNHeWF6UfDvsJ7xQW+UNHo6NJE=;
-	b=EwFUxjOUw8WdJ4bvhWnjrpM/xhGwohiEfJRPFxk9AAY/LsOS1n+FIMSIPySVUMTyqHuRYQ
-	k+ZTlB3s+RsX3D92GKT8tiAv4RPHK7vNswJXkvAj41oOuXG2H8nDRsSeooX67XyoSYzpob
-	aScTyZyggWUo1zJ9+3W/LjYtvhH9C3c=
+	bh=xxV5ov3c0hTKqd9UolE8DYnovGSmzcocUgKkmdnwh3k=;
+	b=THoGVu5LMaV7wUTND0x5APwrPWQoKTxvynmF1nnrVmWgaISi1H14YcEMn7sBn1PWbXfoKC
+	TjSZE3eLab03Pg8sB3oTvd+Bz26OWjYJH9zGDTN3bukW7Wwg1BUZTG16UZ4A845az8cNvR
+	PxaNu1yJerYGXz/o7d8ArvCc5Oasj4E=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VuXym00R;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3_5DfagkKCPwxevyrwelyksskpi.gsqpmry1-qqozego.svk@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3_5DfagkKCPwxevyrwelyksskpi.gsqpmry1-qqozego.svk@flex--tarunsahu.bounces.google.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="J dL3NJq";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=jsaKGria;
+	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793036546;
-	b=6l0UWeGoDDQRIFOMUvz74iX5j/+W4cf7t8wUe0KdrodkSpK4SQAHCkddrrpZ3Oa1L0J7DL
-	Xe4kUyYYTdvtFWkL0gUe8TFaa75jWp90GryBt8aC0cIJWz7ESuh62orQM2CMpddiPmo+Ye
-	raQEbdNzI8C2axjDOWN+3HEYE6x064M=
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c2e8c76334fso292562366b.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:42:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793036545; x=1793641345; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6FbknuYB2KaKiO/nAwNHeWF6UfDvsJ7xQW+UNHo6NJE=;
-        b=VuXym00RzExrjWCchOw7mDjnFokJcrc1XHELj6ftPHqwAuukhNCjiV7lku5A7wGGRe
-         lj739j/Qn+XXG3azhTtRR7jyXfii367fTHLgP2OJzlG9zIiNLo5EIAQexpxJ9LgCg2tn
-         DoT4z1hU7B00SQgO4HQMU+UBnlwgExAdAwN4rIwWmDEk+BGFIFRkXAkI7TUzrf1Achk5
-         KqnANnr76oqVt7Iiqcz7RJk4pi7HtuJmDSobJuska413/WGsUpx+B1/izEnl3+Z36yig
-         C0tiD1Jm2It/1rGTfpJeak4Gp6Iar8Vz2SWmFqRpAAoUtn2Qp67M2bHSbmbetpUjygIJ
-         zXww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793036545; x=1793641345;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6FbknuYB2KaKiO/nAwNHeWF6UfDvsJ7xQW+UNHo6NJE=;
-        b=aerZjArYfNH4DOFUnjfDYp60eQoBBOFhCbPvzj5hwoaZMtV48d3z/2ftZel3FEPktJ
-         quDYTqHkTfqHBjzeydQwlXZ6d0NxnOhzSbnK7eMvRfLhij/2WP6pE+Fo+SIvnlhb2g3X
-         7P2EsvVoNTzRb+APPFP+RbhTxwGyYYha7arfxlj4X8DMPjeJgvE4UoQLD01pDmjrE2B5
-         ko6X9vgE0OoWVrsxQmfguCvEUOhX0XdjqlKZcP7RaAb8mQwHvy1Nmdn71+lKrMJW7vIv
-         JtPaE9xF71tvx4Xr2O5K4L9G6nk3a5CPHtUVFYmUlWZl0kXPSV2IQp7qIx92qr7pSVFa
-         ZAFQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxiFxm/Hs8RG+x5YF420vQe161wl6IsQS+nV7sJjtKiDfDAb49AHu0xgMw7UN/2JR63wJj0dTy4cA==@kvack.org
-X-Gm-Message-State: AFq9FYIZOckWMPOTsaX9HytdoEki6SD1NvXg0GwmZCnLdXQiVa8MYZkh
-	5ETtrBZBXD8Tr2hyWH9X87AXCJsvcGWs1EXr0G62j44p9XYUPQ7h3aJysSy5hTGttI7a7fwugoj
-	AJZr/csmrodQQUAIjiw==
-X-Received: from ejczw1-n1.prod.google.com ([2002:a17:907:e001:10b0:c42:73df:9346])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:f585:b0:c41:e75e:5889 with SMTP id a640c23a62f3a-c46bde3a942mr794298266b.33.1793036543707;
- Mon, 26 Oct 2026 10:42:23 -0700 (PDT)
-Date: Mon, 26 Oct 2026 17:42:17 +0000
-In-Reply-To: <20261026174217.603114-1-tarunsahu@google.com>
+	t=1793036984;
+	b=X+XR3Naw8LE6VKMEuIQF9urVSWaYgOpRqsnfVwAJtTmlzj8wydGPu0mkCDqzdn1Dj0Rhqm
+	NTE0x6iVWOhgMAPRDOy/JX0qsJ9X5WFNlixMFLs3pZ5hQf69g5XvdYUKub4epoTA9zJOGx
+	X6PUNTU5cptrBAKaerbNxVas51WhOjY=
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailflow.phl.internal (Postfix) with ESMTP id 5530213802D3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 13:49:44 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Mon, 26 Oct 2026 13:49:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1793036983; x=
+	1793044183; bh=xxV5ov3c0hTKqd9UolE8DYnovGSmzcocUgKkmdnwh3k=; b=J
+	dL3NJqdbugJRjuL9LjsbKRphw2KicwxMAV+dxpERQY19YmZ6QzhL4ln9wQHwiRfA
+	TnU5tgHVCMuKDz2ydh5yqEc6EV5jCwljkkQj5ZzyPNS3axhN+/hZgOXyZkM/RtCl
+	9H4yepfmeOHHV3GJJdQv6ve8B9gW3kfR3KxjI7e4KDv8mLQVmsJcmR2Lppfijn+t
+	U0bMcyWlTqeZTEcSSfT1blE7VQo0bfWtsnRymicu6qzh6hPxZ3SKxuYefnpAhLyn
+	K5or2rlyWtepue8dI6zJyXApcau2pJxOGCpQFsxmwhXzgQXmXs+W7obSdzuFvJhB
+	ArncCXmZNz1bgx71MLw5g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1793036983; x=1793044183; bh=xxV5ov3c0hTKqd9UolE8DYnovGSmzcocUgK
+	kmdnwh3k=; b=jsaKGriaA692dIgpgEARXfonTPOY41+tEtlzdyhDRdnf0v/lFz+
+	IxIAldbuY99yXj2+uvwHOgBYeG5g2FbmNzgrMSdNjQrdWzYO72La7ZCdUG1f9d9J
+	Af60QpKAvmZ0RHGaWtqd7AiXuoG0sfBjbbg0mrPU4EZ4YR9IOmVFhSc3+nSwNnzS
+	ouQHdvYZsOx4LL9XXeYHdChsXjpNHSbE53VnBXxZFlwuftFZHKE88Ukc6HVdGyl9
+	6nlEbXIzh61dNNA6idTeqYQmheLPlFDf2hj4CxzM5NGSizwEo1XjWs6sPmF1gx50
+	c0KDCCrRBx+TfNBYTIAurgl9KFFzUjhsn1A==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793036983; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:XKEoH/S0AJ5dOiPOvejLl/FeyjMFNW3AsMFVi5jFQbarKI7
+	2PAIwZTSHnQVm2FKjFqEJ1wa5PnQwWT7J3TtXXBMI/Ye43DQlLxWl/XY1sUoia/y
+	UVEQS+nZdUrD7hJBucidxghgcYSXUj9RKKJIVF114Wv7TYFv/ilgyVYmuOAxahRD
+	PLT17PTaCWnAytD7MB+Ae1lpMpPszxXmIEeDl481aY9Vhx5rlBHeCGOBCj2CCdmo
+	fLut2mK46xQT9rK6oN+E9AhcRR3s5pFgf9vPldq+hbOclpdeAtTMwSuPFjCKm2BC
+	5DwW/fjCXZ4pnVB47nUyo7nQ04obO6Ctrrzxw7A==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:oAI8CvIbumntInw+4PFy9SOzhfVHaiSI3xBGsLX0Fcc=:cIqzR+dk4dI8U2SGLdBfaB3Z+vbsjVLGPogfgOdxTgQ=;
+X-ME-Sender: <xms:tJLfaiFURCNdynr59obpYBBiVl4V5UzanoXaw9VQTms5MmvDtIuP-w>
+    <xme:tJLfaiezpFzXO-Zfv_74k1daYZBx6nHLGhU7gb5qHt1m95IWKbwRmmHtAaVqg2Wis
+    zafiftWyYeKAGSyT1Kjbi9iIpDJqezGMiLgTiCWhUE99To5FR2lAiWt>
+X-ME-Received: <xmr:tJLfahJkh1-pM4dmfx0_FPH8hg8zgScCWFiPl7YL1n4UUWyyhTGAzxUa80U>
+X-ME-Proxy-Cause: dmFkZTF3TFhuE3wGcZJjUzIyjpcTOyexH41fjQWtbyhLeXHhYokFl+PdzJCSXxGGgJCuOJ
+    dy5xoklUsRtz+csfRFFFJskyhlsSQsto9rVk3Xlz3nETmWH8sqjeYYmCn0LJzkpgO57i5k
+    rdDoyf1u9Kchi7X+0v96xV5zGmpLMOO9JQ5HHJkAv5WxzI0OrT8Sq74zbsPUvq7mGA7rRZ
+    IIwvOGRi06s646S/NkFK+4dyblma9DUxNKJT1uTJkvS+vsg2bD+Upt3/LTu/0HWVZlK0Jj
+    DlFAwQClbZ6XOv6mqbXadmBiTvGlWIFDBKnMCr7YO4yM+t3ktQ/4bZdUK9LFzakP+92+Fm
+    vG79z7HcXs2kjYGMgAzRjuQ0Qg90Hot+Ca0+OaVT98vuHtEbFT0dJOmcOSmfcw/Xw6u2d1
+    ydWX/qnX0spiO/oLJjHsmk+rsjzeachNCfZqYri4OECtaMqBqLsy8GKT4bQbqK5deL+Y+j
+    xz4oi0XTNlD6jG61NGTNYmy4QmHW5t9idNlTTjUXxyjcS9YURryFMnzp27h1BibhDflcz5
+    UY0o1n8SpTQHwQ3/5malhwYKSeSMg8q6/xrtSPPcVMnMpyyR9vsCGY0TTUpc/3e38AVljE
+    CwiXQtNotFjguQ2i5vkeoRsoHb1TyfkFlTP3gRHzl3UveODfQuz8nenQXqlQ
+X-ME-Proxy: <xmx:tJLfarraKcese7WoQH1qripNE2RW3sQ02AnhQpBgIvlz7tnud-QoxA>
+    <xmx:tJLfagazhqAewp0B4A9M3D6fTyn7_VpRNZ0nuifN8YsHYk9-7jyB2Q>
+    <xmx:tJLfahiI7id630K9NmomSvn62flSZaHn2KKrgta1RGySXMbr7guD7g>
+    <xmx:tJLfatrSUI9pQ0K6u_jA0hZM_uWTVUEDYP0jCuf0p5tgifabZsZhnQ>
+    <xmx:t5LfapU-At2geLhbkQFkmFVQe5KK6EYoSm5kLoDw3GYWlWKmcDqAJ0O7>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 13:49:39 -0400 (EDT)
+Date: Mon, 26 Oct 2026 17:49:38 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Vladimir Davydov <vdavydov.dev@gmail.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>, 
+	Carlos Maiolino <cmaiolino@redhat.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Stevens <stevensd@chromium.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, William Kucharski <william.kucharski@oracle.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 13/16] mm/shmem: preserve allocation errors when swapping
+ in large entries
+Message-ID: <at-SpfCdyXq18_Ab@thinkstation>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-13-703206d5fa0c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261026174217.603114-1-tarunsahu@google.com>
-X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261026174217.603114-5-tarunsahu@google.com>
-Subject: [RFC PATCH v3 4/4] liveupdate: Add KUnit test for the feature header helpers
-From: Tarun Sahu <tarunsahu@google.com>
-To: loganodell@google.com, alex@shazbot.org, dwmw2@infradead.org, 
-	seanjc@google.com, Mike Rapoport <rppt@kernel.org>, will@kernel.org, pbonzini@redhat.com, 
-	jgg@nvidia.com, Pasha Tatashin <pasha.tatashin@soleen.com>, arnd@arndb.de, 
-	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, oupton@kernel.org, 
-	baolu.lu@linux.intel.com, David Matlack <dmatlack@google.com>, robin.murphy@arm.com, 
-	maz@kernel.org, Alexander Graf <graf@amazon.com>, joro@8bytes.org, 
-	Bjorn Helgaas <bhelgaas@google.com>, kevin.tian@intel.com, 
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	Tarun Sahu <tarunsahu@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 1FE9B1C0005
-X-Stat-Signature: 6hf659cyw6edxsf6gn7736wuhcok8zqw
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
-	autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261026-fixes_shmem-v1-13-703206d5fa0c@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C2E30120004
+X-Stat-Signature: w66n9c17gj7e6hccnbmzh55zw9oqabrk
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793036546-936368
-X-HE-Meta: U2FsdGVkX19bAg1/0x3gXLk+Ij2WDXTYLfdg1Bp+ZkxZPN7OZXktMMdpGqr06hM6HkqFT7PS3ciEMnJ82+hBX8ZUGytUBHRHhfK18DKohfOoTOsWIoxRWgmg+vMgAQaVIl2MG5NQnfHsE6oYuJZ7EZ5vG7GUIiTUoe1O2yUHmaeACc9Yw1nTKwMLwD9rpEyCMAZ8rRW3rgZDWqeHi+qZFaXdCtEZpWdL+SDXSAJZ3o2kLiCawcuuihXOVn+OyI07UgMl1ihZVdpOkUQnpVcQeVKfZK5D8cuYOUZEQyX5Sp+wtWGmIuNFiFr+fqda07Iy5acvMWCvLkryDOQi4hz/FCaiPoutgFBizaZ8EBnjKpcYXJ6jjaHDRZOGnyCxOtw4Pn4DTbnJ2ocWWifH2z75lqLGUWGBjPVElB0woji1UQ+uj5LF/Tw6dZ2g1rk3AnaeGDomFpeSCR8SX+ov+lXwhCcFl4Ka3uOl2/rbzyYd0Y6kbwjoCPX//SdrYmV3fDBreUv0a5YhkoE6DlgxQ4M+TxPzGPL3F7o92tXSQQqUBE4lqy0wy6k86t4ZMV8lZaoMiWCXwM0QlQJ81woDfEukvzIy8a2gX+IyTZYrtGOMti+vVZHLkWLW8yW9aQkC3PQHKYAXd+pDjNuzHIwe02jbFLDlG9nbqH2xNjIQXU0BjIxieDbfZnDVlW0v6rbGqst1k+jhm093ie99yBMAEQNodxcrH2mgPm+qrXjILXfdmAcSSkg9I6ist72J+3w+bdRwUtYmNtDaW3zpaFK2lo0aEw1AjRs5IubmCWouVx4bEmQDsjrOGS6zFUBT1V4aE3CFOe7s9MLPTybbWPDcRs9MA7wKnnXPcNndXrAM9TvbOGElQuHl9iSjBohMXwwpUEFiJgGhhNGyT7VouSWt5BL1L7lzmg26y1X8sMFYpyYA/LShgk3xywMyQMDumD/VrCsRb398FT87VNSF4guuIpz
- cCSG+vHl
- 0F23afKpxqa1+Pop56ue5c+NprZE8E9x2ccErkO+0uvPDguulyj0eC7ezca1bbqbTDl5JPxAcC9CuCgGtPP94WSMG2adM9uje8zWEW/P8uvpz3jaGJf6AtXIHbeiaYtRKkLpVb+PmRosnIgoKZCZeXoXdhaZDi/2qvU64tOSPJ3S7cngPW4guG3s8W312z9PbOBlNBWA3gk5BXhZFDnRs+LpGWHGEdYgNl6DYrbxxVGJMy/TFD7aqOjUFu80dMdxdG7n5NLvnDcgheU0h/zLCBNQhLwMYSzNDwZ4Gvx8hq8OZ+IEI8/RKNs3SoGjCiSo9c+FplUF79yI3zQW88xGuaLirdy1l8zjcrDuWh9QcdyjZYd6jKbV1yhaDZeoTgERD+q7LoHvdXX/GFmfwxo9dquJegRjF5WiH7Urg3/vIzQHg87utudeCFKPoqMdLPGB7gdJpycS1yCyfWTjPmzf4JOl2++xBCBkcOe4Bdu5CQ90CamL8v4PB+oZerUevMhRwDOJLUnz/WFSaladVN6ZBE49wdN03k9EvT/uHsK5XhjkGVypgLdjaJYysjanM4a65RQ0OZmGNDCiPe6RluslU9OCm4F+Cd97d2wBl
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793036984-535775
+X-HE-Meta: U2FsdGVkX184iPA7PFULrW5C+M+oof6NdzVb2Cs1oU5MgvUl5jVeNVhSELdHnxRIe/dJQTIeaqzEk++XoHQXFsNTub0IBRnyhgyqOxHhI7yI7NPqz/loySeYnL4PwD0WUIKG5hdcCtaEijKPaUIxVZNM9PDoLttgqTEE87eMvtSg5TC/irnRJ8RcTYRZwcwYTkE2G2+/T1/iXcYs7jgyaM307rYju8dHDDpuxw1zokSobsjQJBxFw7XquMRMErJS5V+ofHepauUfju2f7iU2qQfShrfF4Oorot+6T7DHoYypboWyrsVX2KVpR1KkXvMms3kC9VRYW3VuRSnLhIAM3KMFVh56+RaVVk6zOrv+srXmbTdP+y5ZCoGbd5pkYK5lwqjj+hZL3PLi5O/EB9Fv3X0zsUo8/vyz0T1DFWbWt7+hadXQBry4IeRgZr7YF2nWiTjcCuQFz9BYD34YLTYJRMHgEwbki/YoRFHcZcw9M+VFYfUVNdpTi5jX8XKDk+STnyzivZn2wF6s361gwVUjSWQQfbPPpL0+dUo465Cv3LmJz02P5/60N3Kc2K0xAodXyN9dkesntC3dJcpSKQx66c154s1DoYRU0i99TYzf+6IDd+VX8s+9GBo69Bzrsah8r8dU2MobAuFxZK5qwjCmt5u0+0BnKyEgWA8G3tnF2mvuQTo/RcTZEZwOCXOfu7yBa+atzcmIJGWONxYq58YaV6JQvZCe2g8h4uDQqDZ93hhvLg8WQQZxxYPcpggeh2tEtwa/fIMxUeyO9pOWoSUzdMPD977UpA7eKd236V/nXgw32dxT4bzRp4LtYVhW71FWVGs1V2OhXZTz1tAEA9qXOkw58thFxDgYF60FqoDJI0MFuNvdVuIELeQTQVOJMg1DVuPdNqcbf2LZbQyImWr6tQXRo+EQ2ZkePlqwpAHlmr2GxBVlEIAzv7ELyLRVZOZ1T85BK6au+5UqPX1LvG6
+ vnvS6LmC
+ GA1448BSC0p6DlFdhMGSjEzOCBexXkq5tTDSVokZvAM+7u+Xp5aZzAiIYD++0KUghAPUr033YIwhAeaf/5+nGN21aDPNkSLQmewjTNxmefViKVLjKemoq5a33/aE9qC0B14KrQij6ZtprkcrszUSDJCKbgbkJoIxDmu/9vPsPoLiqgtmioehnbkn+KYRJ/da5ffllyVQqPEA+31BESVpg+xE9NcoUG+zCIebdW9YJrJj8LPzV2jo80QW+PyPK8nBZfCTjhdRJOEzDWsHh1/1FPggrW7QDPLysNa3PHi3ED5itAOMsPJ8JImz0TVRvBdsZCeckRlDk1mz9FVJbcA8wgA1YGY+kUmO6JbF3xDoeP3uG4OC130GblQH+9ID892k/N0oSyXmIcyzgYuQAuQVZ4TicKkLn0eFxMj41qvYJlTKh+TSxGPU2SmAGhwEk+Eh+QWy+BK+Vw0v+jp3+p0O+nnbD5a5thMw/M/VbggOpcvHT0gXWcyoLoOp0H9ARd/Jd4pExY5umzpSI5MA4r1AAS1BCedTPG3SYo7uLH/VZnIQwvsdQTi0F85WgVXMBUxsPeLDyMUH9VzMoQEsLvYAAK6ulvyBUVTQmM3wFMvBPDXtXdI8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,204 +162,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add a KUnit test suite in lib/tests/liveupdate_feature_kunit.c covering
-the Live Update feature header declared in include/linux/kho/abi/luo.h.
+On Mon, Oct 26, 2026 at 10:40:46AM +0100, David Hildenbrand (Arm) wrote:
+> shmem_swapin_folio() adjusts swap to the requested slot within a large
+> swap entry before allocating a folio. If allocation or charging fails,
+> the error path compares this adjusted value with the original entry
+> still stored in the XArray in shmem_confirm_swap().
+> 
+> Unless the index is at the start of the entry, this turns -ENOMEM into
+> -EEXIST even though nothing changed.
+> 
+> The caller retries -EEXIST, so persistent allocation failures can leave
+> the task spinning instead of returning the error.
+> 
+> Restore swap to index_entry on allocation failure so the existing error
+> path checks the original entry. This preserves the allocation error if
+> the entry is unchanged and still retries if it changed concurrently.
+> 
+> Original fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: 91ab656ece13 ("mm/shmem, swap: tidy up swap entry splitting")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-The suite contains two focused test cases:
-- luo_ser_hdr_set_get_test: verifies DECLARE_LUO_SER_WRAP structure
-  sizing, header initialization, payload pointer resolution, and 2-bit
-  feature flag setting and retrieval across flags entry boundaries,
-  including out-of-range queries.
-- luo_ser_hdr_truth_table_test: verifies luo_ser_hdr_validate against
-  all rows of the feature state truth table (absent, optional,
-  required, and reserved 0b10 encodings), as well as empty supported
-  tables.
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- MAINTAINERS                          |   1 +
- lib/Kconfig.debug                    |  16 ++++
- lib/tests/Makefile                   |   1 +
- lib/tests/liveupdate_feature_kunit.c | 118 +++++++++++++++++++++++++++
- 4 files changed, 136 insertions(+)
- create mode 100644 lib/tests/liveupdate_feature_kunit.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5d1b58271989..dad09961c275 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15191,6 +15191,7 @@ F:	include/linux/liveupdate.h
- F:	include/uapi/linux/liveupdate.h
- F:	kernel/liveupdate/
- F:	lib/tests/liveupdate.c
-+F:	lib/tests/liveupdate_feature_kunit.c
- F:	mm/memfd_luo.c
- F:	tools/testing/selftests/liveupdate/
- 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 134b15a44625..d8208f3f4515 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2906,6 +2906,22 @@ config LIVEUPDATE_TEST
- 
- 	  If unsure, say N
- 
-+config LIVEUPDATE_FEATURE_KUNIT_TEST
-+	tristate "KUnit test for the Live Update feature header helpers" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This option enables the KUnit test suite for the Live Update
-+	  Orchestrator feature header helpers defined in
-+	  include/linux/kho/abi/luo.h. It checks the feature flag encoding,
-+	  the flags array sizing, the source/target kernel validation
-+	  truth table, header initialization and the payload size checks.
-+
-+	  The helpers are self-contained, so the test does not depend on
-+	  CONFIG_LIVEUPDATE and can also run under UML.
-+
-+	  If unsure, say N.
-+
- config CMDLINE_KUNIT_TEST
- 	tristate "KUnit test for cmdline API" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
-diff --git a/lib/tests/Makefile b/lib/tests/Makefile
-index 3cac3b63a752..2f1f1f765617 100644
---- a/lib/tests/Makefile
-+++ b/lib/tests/Makefile
-@@ -33,6 +33,7 @@ obj-$(CONFIG_KFIFO_KUNIT_TEST) += kfifo_kunit.o
- obj-$(CONFIG_TEST_LIST_SORT) += test_list_sort.o
- obj-$(CONFIG_LINEAR_RANGES_TEST) += test_linear_ranges.o
- obj-$(CONFIG_LIVEUPDATE_TEST) += liveupdate.o
-+obj-$(CONFIG_LIVEUPDATE_FEATURE_KUNIT_TEST) += liveupdate_feature_kunit.o
- 
- CFLAGS_longest_symbol_kunit.o += $(call cc-disable-warning, missing-prototypes)
- obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
-diff --git a/lib/tests/liveupdate_feature_kunit.c b/lib/tests/liveupdate_feature_kunit.c
-new file mode 100644
-index 000000000000..fc9d2de263d9
---- /dev/null
-+++ b/lib/tests/liveupdate_feature_kunit.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * KUnit tests for the Live Update Orchestrator feature header helpers
-+ * in include/linux/kho/abi/luo.h.
-+ *
-+ * Copyright (c) 2026, Google LLC.
-+ * Tarun Sahu <tarunsahu@google.com>
-+ */
-+
-+#include <kunit/test.h>
-+#include <linux/kho/abi/luo.h>
-+#include <linux/module.h>
-+
-+struct luo_test_multi_ser {
-+	u64 val;
-+};
-+
-+static_assert(sizeof(struct luo_test_multi_ser) == 8);
-+DECLARE_LUO_SER_WRAP(luo_test_multi_ser, 32, 35);
-+
-+struct luo_test_one_ser {
-+	u64 val;
-+};
-+
-+static_assert(sizeof(struct luo_test_one_ser) == 8);
-+DECLARE_LUO_SER_WRAP(luo_test_one_ser, 24, 1);
-+
-+struct luo_test_zero_ser {
-+	u64 val;
-+};
-+
-+static_assert(sizeof(struct luo_test_zero_ser) == 8);
-+DECLARE_LUO_SER_WRAP(luo_test_zero_ser, 16, 0);
-+
-+static void luo_ser_hdr_set_get_test(struct kunit *test)
-+{
-+	struct luo_test_multi_ser_wrap out;
-+	struct luo_test_zero_ser_wrap zero;
-+
-+	memset(&out, 0, sizeof(out));
-+	luo_test_multi_ser_wrap_init(&out);
-+
-+	KUNIT_EXPECT_EQ(test, out.hdr.size, 32U);
-+	KUNIT_EXPECT_EQ(test, out.hdr.nr_features, 35U);
-+	KUNIT_EXPECT_EQ(test, LUO_SER_NR_FLAGS(out.hdr.nr_features), 2U);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_size(&out.hdr), 24UL);
-+	KUNIT_EXPECT_PTR_EQ(test, luo_ser_payload(&out.hdr), (void *)&out.ser);
-+
-+	/* 0, 31 in flags[0]; 32, 34 in flags[1] */
-+	luo_ser_set_feat(&out.hdr, 0, LUO_FEAT_REQUIRED);
-+	luo_ser_set_feat(&out.hdr, 31, LUO_FEAT_OPTIONAL);
-+	luo_ser_set_feat(&out.hdr, 32, LUO_FEAT_REQUIRED);
-+	luo_ser_set_feat(&out.hdr, 34, LUO_FEAT_OPTIONAL);
-+
-+	KUNIT_EXPECT_EQ(test, (int)luo_ser_get_feat(&out.hdr, 0), (int)LUO_FEAT_REQUIRED);
-+	KUNIT_EXPECT_EQ(test, (int)luo_ser_get_feat(&out.hdr, 1), (int)LUO_FEAT_ABSENT);
-+	KUNIT_EXPECT_EQ(test, (int)luo_ser_get_feat(&out.hdr, 31), (int)LUO_FEAT_OPTIONAL);
-+	KUNIT_EXPECT_EQ(test, (int)luo_ser_get_feat(&out.hdr, 32), (int)LUO_FEAT_REQUIRED);
-+	KUNIT_EXPECT_EQ(test, (int)luo_ser_get_feat(&out.hdr, 33), (int)LUO_FEAT_ABSENT);
-+	KUNIT_EXPECT_EQ(test, (int)luo_ser_get_feat(&out.hdr, 34), (int)LUO_FEAT_OPTIONAL);
-+
-+	KUNIT_EXPECT_EQ(test, (int)luo_ser_get_feat(&out.hdr, 35), (int)LUO_FEAT_ABSENT);
-+	KUNIT_EXPECT_EQ(test, (int)luo_ser_get_feat(&out.hdr, 100), (int)LUO_FEAT_ABSENT);
-+
-+	memset(&zero, 0, sizeof(zero));
-+	luo_test_zero_ser_wrap_init(&zero);
-+	KUNIT_EXPECT_EQ(test, sizeof(struct luo_ser_hdr), 8UL);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_size(&zero.hdr), 8UL);
-+	KUNIT_EXPECT_PTR_EQ(test, luo_ser_payload(&zero.hdr), (void *)&zero.ser);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&zero.hdr, NULL, 0), 0);
-+}
-+
-+static void luo_ser_hdr_truth_table_test(struct kunit *test)
-+{
-+	struct luo_test_one_ser_wrap out;
-+	bool supp_yes[1] = { true };
-+	bool supp_no[1] = { false };
-+
-+	memset(&out, 0, sizeof(out));
-+	luo_test_one_ser_wrap_init(&out);
-+	luo_ser_set_feat(&out.hdr, 0, LUO_FEAT_ABSENT);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, supp_no, 1), 0);
-+
-+	luo_ser_set_feat(&out.hdr, 0, LUO_FEAT_OPTIONAL);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, supp_no, 1), 0);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, supp_yes, 1), 0);
-+
-+	luo_ser_set_feat(&out.hdr, 0, LUO_FEAT_REQUIRED);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, supp_no, 1),
-+			-EOPNOTSUPP);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, supp_yes, 1), 0);
-+
-+	out.flags[0] = (u64)LUO_FEAT_RESERVED;
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, supp_no, 1), 0);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, supp_yes, 1), 0);
-+
-+	luo_ser_set_feat(&out.hdr, 0, LUO_FEAT_REQUIRED);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, NULL, 0),
-+			-EOPNOTSUPP);
-+	luo_ser_set_feat(&out.hdr, 0, LUO_FEAT_OPTIONAL);
-+	KUNIT_EXPECT_EQ(test, luo_ser_hdr_validate(&out.hdr, NULL, 0), 0);
-+}
-+
-+static struct kunit_case luo_feature_test_cases[] = {
-+	KUNIT_CASE(luo_ser_hdr_set_get_test),
-+	KUNIT_CASE(luo_ser_hdr_truth_table_test),
-+	{}
-+};
-+
-+static struct kunit_suite luo_feature_test_suite = {
-+	.name = "liveupdate_feature",
-+	.test_cases = luo_feature_test_cases,
-+};
-+
-+kunit_test_suite(luo_feature_test_suite);
-+
-+MODULE_DESCRIPTION("KUnit tests for the Live Update feature header helpers");
-+MODULE_LICENSE("GPL");
 -- 
-2.56.0.307.g5fe7bd680c-goog
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
