@@ -1,78 +1,78 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29655606A324
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC27E606A329
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=NnlnGHIJ
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=iGWxkRJG
 Received: by kanga.kvack.org (Postfix)
-	id 153B76B05B2; Mon, 26 Oct 2026 06:32:01 -0400 (EDT)
+	id D883F6B05B4; Mon, 26 Oct 2026 06:32:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12AA86B05B3; Mon, 26 Oct 2026 06:32:01 -0400 (EDT)
+	id D5FE26B05B5; Mon, 26 Oct 2026 06:32:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 040546B05B4; Mon, 26 Oct 2026 06:32:01 -0400 (EDT)
+	id C27A56B05B6; Mon, 26 Oct 2026 06:32:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C7F846B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:32:00 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 39E86806E6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:32:00 +0000 (UTC)
-X-FDA: 85364412000.10.8B8E50A
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011018.outbound.protection.outlook.com [52.101.52.18])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1E1E68000A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:31:56 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=NnlnGHIJ;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0FE6B05B4
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:32:14 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 406FB160721
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:32:14 +0000 (UTC)
+X-FDA: 85364412588.05.C7AC15E
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010061.outbound.protection.outlook.com [52.101.201.61])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 073EC40003
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:32:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=iGWxkRJG;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of shivankg@amd.com designates 52.101.52.18 as permitted sender) smtp.mailfrom=shivankg@amd.com
+	spf=pass (imf27.hostedemail.com: domain of shivankg@amd.com designates 52.101.201.61 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793010717;
+	s=arc-20220608; t=1793010731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MDZGFnq1guYAW8pw467X5VXLvibb4aCvLrPKmuhnonE=;
-	b=jcI6u3NyAR5/Yw2q4U3Kj283uOXTiNB3TWeBWaJHutP3gyzT3Q/bBVPzEUZmbJeqPhuKWl
-	4FbqhntSWnHg23Si4BDPJ/8zyWmw4mSvRjj6H1hiCPE6lMlqXOi7m7DyAnGWGF+vcwnFZX
-	hQk71ojFK3kbieGvTlHXacGrK2wGvZo=
+	bh=cKQuU8FWpJ8D8dulIHu/87PdGR24YF7Bm3/2w3/VeOg=;
+	b=ZqfA5pZ63TlP3+JD8Sj5sp8lyD59pRtB/QkGhgTKPtofEI0Sxo+jqAuc8y/63PCyXkXiWx
+	RFND65tvcisFVdzoK7GHZOTPxXs6velU85N4MZpwKWNZe+q2Jazzc+w8yTlROUZC3HPe0j
+	unttPcvQnbfW1UVE8StikE0ukzc/G2w=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=NnlnGHIJ;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=iGWxkRJG;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of shivankg@amd.com designates 52.101.52.18 as permitted sender) smtp.mailfrom=shivankg@amd.com
+	spf=pass (imf27.hostedemail.com: domain of shivankg@amd.com designates 52.101.201.61 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793010717;
-	b=OCSw3NZX2vk1AnHKElwspOZdPapMRcKi1LovjjhQ1aqwrLNFFPbX0o0q0w1e75h4Rg1Ccv
-	0i4I1Q8vfjHuzIZs9e9T2ue3M+UL7Xc+caR6tuk4o6LtXiQiHXSk7vMVaZO9ffiU46faGF
-	vkYT10X0gtPae2IJJsYpxXXsTFpXfjg=
+	t=1793010731;
+	b=VJFXzS+K+JAzd516mnKEIa+vmmHwh86gFF4Tyw/8jbevNXJxT2ZUOLPWbVXTE//faSQXX8
+	70fq3trRguXtCFLJH+J7FW7fGAdkMFybqvCQq1MHTHlT+Uj4BrcUddBgfkpurnlqGtlFKf
+	lyhdOvZuI+Aosq8slHQf2thOxMzpwIg=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SjdiaVU84QhsjuIiQLApsCrtJteL2GtakDUx6FeVKbI2ubLEoNZUPGutPJIL5gD5WwUGRfrkCc6PJg6wDTi7MZnCTDPhbt5+E+GsFxNfeonqvAr66dPTHOp8xW9EDEzeT/tCsyoEXS8VWbHewYN6oRhmSauBzPSAg0d7k4hytRMFKAUQAdi6G3Ud0w0p/3eb5zoPfnOv8G0wYzXPuwT2XL5yjSYGvPdEg07MEP5zwU7v0hvcPUekpXsSb1ak0pfzshVIHoma1f8PA50yXpzvle2Fk5OcSWvK6FQLrTLSDHayzYrLL7ux2ltr+DCGIBmydeUpKN8XCbdI86oQu13gwA==
+ b=D7MXymBQ9S8sk7X9O7YeiPcaYc9mzCzcdBSEMUHr70d+KjqczAN4ygDvffQBQtRgRUHf8DDjaBmvEwDNx7/lwZV5QiY7VIIaa34Xg7z1RFB22OHFPuQffg5bM43y+aYVhPoXwvcr8fibYWbI4kKelcwc5TvK+a7Irp4eF7rdxPt/lgv3BXKLGm0MvZXza8KZcN+YVtUu5ifw3YjiL1+YziPCtpj7/MRNmvoFzV6TwckyXRqk6Lc4Uh5XG1MSfLSpoqKKM54+Wf5SDGll45u2X97lK4ozj7VLJ+pMjS8S3hqqd0RR5wgsAtzT9xt6szup2NW4yzgJXuUYWFVPiH9GrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MDZGFnq1guYAW8pw467X5VXLvibb4aCvLrPKmuhnonE=;
- b=FY0VUeRM2CzRCM+VFp7etnHuiCG+ErrJ6W8rP40tq4vOS3+lbI4gbYCuEbP8+2w3XfJryFDIk77lhwVm6E0q43fk49Zaaf2AtX2yH+BUqAyI6OhSAPoGygDGKkQBZlSTZTdNX5sNx+0KhQyxbiKM9zEIcjw6B3iNEF0jwp0jvnapFcdyyqDFGQtaRdHo/ncSVr6/W/MVLTVG96hKOVKlZdlTcYUgn8eR0NN1H2Sm0YSP4425Y+/FVI0cYWH0b4JlsSgJ+LQ0JRFJvypLBIYLnNxcLiKeXDGgKBADX8LAEanSquo6j5rDg7IrYXtfx25v4xeqrnDN5+Ne/sd3FRTwwA==
+ bh=cKQuU8FWpJ8D8dulIHu/87PdGR24YF7Bm3/2w3/VeOg=;
+ b=W6zxwQo1XOaRJUUNEQnx9pw7hx8LFMVr48R9OHl8hoVmkLg7Mcdl0hAyJePXQHB8yOd23gJ357uTVHah4R9WZAwmUp78vBGbgCzb5X54+ecIjb8j3fBXN5Afldjkmkao1ojYeR8IRyKxlkzaQnusnSIho3dBpvTFlMv3h2BYWdw8ZNniBNi9DbQuIX6cjYKlArOAx7FqdpRFx9J+ZVvT4140HK+AacVQewoLtggCs/knJeANLh5Rh+kZKMgiomWfqPvGKDT4kO15uYKW0UotlNij0Wtg7NEus8iC8Bb3JxSnY3o1ZHwDyngKrvVj5yHy7t5hg7wLJuHjUbyBhhdzZg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=infradead.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MDZGFnq1guYAW8pw467X5VXLvibb4aCvLrPKmuhnonE=;
- b=NnlnGHIJLSx2RExyYlmnAzKRwLOIQoSMfZTOamerXlE6t8+CKh5CmQXuwN1ZsMa3m1TI1XWnX78obTDWtM/j/UH5Cgr61+2rWSXNw3Jp1DKJCWD/zNgD+zXMsdSRp71pS3ZNLesCU1jhisSfAAhmTl2YIYxXTXx/Db8/tQD/jbY=
-Received: from CH2PR04CA0010.namprd04.prod.outlook.com (2603:10b6:610:52::20)
- by SA3PR12MB8804.namprd12.prod.outlook.com (2603:10b6:806:31f::11) with
+ bh=cKQuU8FWpJ8D8dulIHu/87PdGR24YF7Bm3/2w3/VeOg=;
+ b=iGWxkRJGdX3Hkzmbc8tUXN3wNu45CAWajK1vqP/pBfWQpiBHcBdIkfH34VLsZB5EfKGpEvUt7f63adUq2BWgBKn0sFzkmh8Mv9i4G9d1dgoD0XVe3S9bD1Aeh+I3112af8LK7/qlB43ZjcMe6RtEuPb+kmhU8jTLt9RlXoGi/MM=
+Received: from CH0PR13CA0014.namprd13.prod.outlook.com (2603:10b6:610:b1::19)
+ by SA5PPFDC35F96D4.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 10:31:51 +0000
-Received: from BL6PEPF0006C3DF.namprd02.prod.outlook.com
- (2603:10b6:610:52:cafe::a4) by CH2PR04CA0010.outlook.office365.com
- (2603:10b6:610:52::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Mon,
- 26 Oct 2026 10:31:51 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Mon, 26 Oct
+ 2026 10:32:05 +0000
+Received: from BL6PEPF0006C3E1.namprd02.prod.outlook.com
+ (2603:10b6:610:b1:cafe::87) by CH0PR13CA0014.outlook.office365.com
+ (2603:10b6:610:b1::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.7 via Frontend Transport; Mon, 26
+ Oct 2026 10:32:05 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -80,21 +80,21 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0006C3DF.mail.protection.outlook.com (10.167.249.234) with Microsoft
+ BL6PEPF0006C3E1.mail.protection.outlook.com (10.167.249.231) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Mon, 26 Oct 2026 10:31:50 +0000
+ 15.21.569.4 via Frontend Transport; Mon, 26 Oct 2026 10:32:05 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 26 Oct
- 2026 05:31:39 -0500
+ 2026 05:31:50 -0500
 From: Shivank Garg <shivankg@amd.com>
-Date: Mon, 26 Oct 2026 10:30:31 +0000
-Subject: [PATCH 3/8] mm/page_ext: remove unused page_ext_iter_get()
+Date: Mon, 26 Oct 2026 10:30:32 +0000
+Subject: [PATCH 4/8] mm: remove unused helpers from pagemap.h
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261026-unused-sym-v1-3-82ca2dceabe1@amd.com>
+Message-ID: <20261026-unused-sym-v1-4-82ca2dceabe1@amd.com>
 References: <20261026-unused-sym-v1-0-82ca2dceabe1@amd.com>
 In-Reply-To: <20261026-unused-sym-v1-0-82ca2dceabe1@amd.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
@@ -124,53 +124,53 @@ CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
 	<bpf@vger.kernel.org>, <damon@lists.linux.dev>, <kasan-dev@googlegroups.com>,
 	Shivank Garg <shivankg@amd.com>
 X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793010663; l=977;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793010663; l=1463;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=35jwmwykYZJtQ1SqvCGsIgxwetZpyo8G2gOL9icVWFA=;
- b=C/Ay+2xhf3NGI2rrHC53Tr4l9l2B7dKxKNbQ5CE+vuH8Z0L22mKvuNhQemV/3MrQUq+9UfcW8
- Vmt8XqNEZmVC/SFZv/F5BLBxbb7glh3nRjV6mung7mZyqh+KK9SN5LO
+ bh=MKRG0Tut7D1LURgzKk6ngApEOX0i2KzX06LbNh9bmyE=;
+ b=DjOptxCcbj7el2V+oiBO+EOF98q21rTg/sUAkvtEaHrmH4a7spldpEpa0+wYgW8V75iIId6mF
+ nkLbtRdoYX0BFdhsxJ1E9VKbLUMPGqY7aLQwzhK82e5NVhdO6aArrGH
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0006C3DF:EE_|SA3PR12MB8804:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8641c4b4-b36b-4005-247f-08df334c58b4
+X-MS-TrafficTypeDiagnostic: BL6PEPF0006C3E1:EE_|SA5PPFDC35F96D4:EE_
+X-MS-Office365-Filtering-Correlation-Id: 903ee56a-9bca-41a7-52f0-08df334c6147
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|1800799024|7416014|376014|22082099003|18002099003|921020|11063799006|56012099006|261021123027099003|10067099003|261009223027099003|261022105027099003|261022075727099003;
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016|23010399003|7416014|261009223027099003|261021123027099003|18002099003|22082099003|10067099003|11063799006|921020|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	5q8u3c58+35LcTFBpFydJQnIv2oaHvSJht38ZQyl2Qf59f/X6JoH/ZHjfW1CP5la71+D7CdyR4IPW3hG5fw2c7fzhMDijJUtDHk70NO/UwNXLiRmgxcm84d4brEhYErkd+4qE0zqkW7tY1X90bEwtZSy4hYs5RRa/L4KotVHe9ExFMmrHbXfBYT8F8Iw0rN/kU7G2YDc/OmxZpqAqHY4q5aCJVdjYl5dj6ECiWBYkRd/aID1KQ2IWGUbDznHBYvrNSpUmd5rRtzT5N89lv6/xehCOy4asCVRXv5mrTWJSRsvIYiJDHdzncvSsayWkY2epL7Htxgc8N94FJEAYMZmi+EOJU0aXmTOQ3Oe/EThgYl4id+O3zPxw7NsKIt5IGcYqUfKDIZuhBwdzsZgLPWyYBwAllT1cMNHWns3zu15mKHP1Jvy2zaSWF0QPV5QxTbhSE28pkFbI1xyYF8IKI4UsocwSdxHFn/G3yJl2zAn3SB2gY9+JBZrzhsQ8xHLirv89hkIUjJTW7GrCKlxOgN1M9MtCzXU8BXCzPMrE1b0SUFl7z2zDVMAPvge9gNWqNAlXvmnOy6HO6ahjkZCQIt2AbMiUrR7r6z364AguXbzHLyXj/QizQHMhwX+3owLK2UsCsAJNHi0RPOG91TuM2vKCnD9MzxvX5Il44Zn+y8xRLidy40hCHI4g0sGZeeUt8kxAPM19uaHSftKWXdcNwhxL1ByuHhJlX+euYkGLG9l7S9LeEBcZwtUgEZ7mQQ01P7A
+	cUQoI33ejbzvJm0q3DhD9WlkhQSmXlzacrvXCMWAaewmu81h6fRgFXXTg333QoTSJ8jShtIYAxw7KvtKLGHQG9tKAFltpcA7aLIbi8b4rfT7B3QeuWckXRBa9GSL647g3ebNsvnHxYy2r5Cccdt1Ynq67dHaMtPHDb3b14IYa4q9Z9d68c4HhflrHouAP1ZLwN2SgAGSFfeCQEOMbevV/RKYmQh57j1KlvHJBXcY+IbF2RxVx2TXvISMBEGvXC+16JXJZTLjxqCiNvNH2zJCFej1ZfczsCrlXxgxadxWZFdnR1TSBHm7D12zZ93S7cNIxRfvrWT5MNefOhIjlnYMKz1cCumhcFs5Wj3ETFuanhbJq9Frw6DMOAYPvp71GwN9DSy/TH8jaxnAdkHfv3uDC8PAt2/zOpp3qA6Oe203RK+xH+seYL3APRHVNo4ebUGJ5kEY2p0dj/NGekbc3E4Z3CnhfZwT9mJwKHDZbt/0yNzWIijWBCv0LlxeURZ218JObsLF7ilHxPCWJ72YvDObrOmxFBiLZfi8sTobkpctBcwNhljRvrgnhURjzDjRxm3/p44SyGlKhzyRlixJE8Vk+EKL/elnqyQg9/UWCuX3MZ1aTd/g1gOWcm0tOljdRCHTG/ji8GVzMXRl/GKGmVDZ33sVABH+NNRCEDQcLpZxOtm0VIljBHta1Dk2dnzJHfqw+NryA13UEV+DWSBd2cZZJiFFp5l6MmhdipfWsg+2tRTcY1fyh/3h2CgLvscAF9xt
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(1800799024)(7416014)(376014)(22082099003)(18002099003)(921020)(11063799006)(56012099006)(261021123027099003)(10067099003)(261009223027099003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016)(23010399003)(7416014)(261009223027099003)(261021123027099003)(18002099003)(22082099003)(10067099003)(11063799006)(921020)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	gXQvCbbDbWxNZJsmj2mr1kWontar5G8A2JhvTQzbFxbkR6OIGmXlf8Zb/IiJrg+1f5e1rf6Y6XGhqcX7k1eZRiG1LmmEgGhJuFz0GCVVnwQo+F88WFb1X9nrOnb6TByM6mVVqQFsjwB6D4WmZKmdxhG6vXjJw5g5y7Py0WdUux8f9VODwPA0yD5n9Yn9ahjkeXAhUGlQ2E5caJErxNsSJd00dT9l2j7shbUp1q5bgQMwAjdWw2Uy53n+7c9z1S+/nrJsm+c+6rjWfjqCSYglweM+7978ePRNpEXlBX4MVY0RBMT/koF8vfbV6JNtNYqcufhPPDFcF8EYd6YKoP9MPPgIULQ3YjU1XYz6xSGBOWzRBjmdVot3Ym/upxndc6+H1Hr7Wi1fQEZxbMdCHzYJrzmZP5ZX1tW55QAvIrUiBIjHfSYNdSxNIzfwWSXYhtRt
+	Z0OC1atot80ge79DjlTv85YGfDJWk4moYwMJ5hMh9+HTF4cqjb3zRJi7ZHDaoh5V9a6y7iSk5W7KKNASZp3QZI1hI/zDMcFNKRRKy+pgJfniIW3nL4c4dalctwdqQ+liMu98BmecMejo2CoPpwpgtm3FuOQTuFQ72WS4L7Fnf03fMetCxTHlKXvEGn0EbtIqiPdZb3Pn8txny1ChA2mrIJOXbEZr/MYM7ih71o+mBC3bx+ApvTt5CW/EzMUfyWmL+cyoUW9MBck2egmUT29UPubiW7uyyA6M6gKhyiOp2RX6f0h6E3k6GH7mW5NzP/lEKxq/QmS43c2s0NnPVL78bghmFELeIUYq5XjZB0PatJCgPgpSP2qmF0A/vF5vCMjuLHxAuac3TfdwO6MLb0oXKLQ4M3hfbpHEWB7SHidWh4cg7GA0KsnbjJ9fBxJAgDFz
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 10:31:50.8183
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 10:32:05.2084
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8641c4b4-b36b-4005-247f-08df334c58b4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 903ee56a-9bca-41a7-52f0-08df334c6147
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0006C3DF.namprd02.prod.outlook.com
+	BL6PEPF0006C3E1.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8804
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1E1E68000A
-X-Stat-Signature: hszj1hbuixd3zkirzhs5utnkjsekw9bt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFDC35F96D4
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 073EC40003
+X-Stat-Signature: wr9wf45omdjcpk3x1unt4sq5b3a3eq4z
+X-Rspam-User: 
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793010716-355904
-X-HE-Meta: U2FsdGVkX18j2jef6U0riuTWtLj0O5nTT6mrGG5fPfeAdYjfemBzCQeKvHYuDssf2miXCaLfglsKl1MNc029BcMqxnr4vXsfFhI+2SDmRKHAi+MJHP/BAUD//fKC0TXcKR3t1eggc452xSGeQSM1BQ5uuORnY1b+GICF2EXpu0njnhVcAEn16BNSX6LLtgmyItTU73wlLScbEm/88LRsuJxZIHFoC96PTpn3h8pEhUiao6mUckAKdPncobi2ZWIyZW/xnD3mOmAVymmxTHPo8CkYRUmFqow+PjvgRhuhJiZDAikmbxjw1RJwZF0QbeJEF+uXc2NopnwsJ9rQf000gpB+0tL6D3s1Mt/uhdTAYh+AZY0OxzAYT5h+YL6X9pNoUw2GJu5ne7N/UhJ55nuIX+0m/GBbwFHWjVmCksd6SJXdmJUvwCOCy0IXeM52ovrfC8fuSmO00pzkdBJtkWtPL7R3fKfqHheq9C6v7oMv3MHXmjTdYHjco40JDTnIyMUSwLOpyASKz9i2xmZWc/p6VQVCDqKZA1s9tzoDXkvFkA/mTfer5ktqrKjeY2a7airVscw0txRHDjvjFZ9a8Utw5EcCI9OLvxDlr3JB+QNF/vG9m6V2ubbI7k9mehDZLY7iRtYFlLbHTjiFqQV5K3UFQunqqPrTw5GuGjk/IZgmRcWHMyKQUtlf/4oQx4CBgwrY+b3XEmfoGsbGa26iX2aZtNk0i/Hh+4oFApIHhea9oD4pxWfTaWROorlwKpDNCXwRfleWr/i6Fxs0ynhuxOWi6DOMv3WL54wPCfBexar/8tbWj59iF6yNVPbxXaAPHCb8TIHP2WVRiwIUTxR9uYr33XNsUPx7e9v0zTU6cfJzsvxSHEUpRtix5RQHqU3KPCkP721kx5EttnWw6fstektwvBxQ4dyEpXJW8BRMhWWt0VXN7anGTeZFXNpIIMPs5Nxt3/KF4R9HfUUA9Gi3yEZ
- TPgzOuEw
- BFIwk1jDfDH3lWCHIylniLKRy02Rhh9YIG+nczE6+r3oqKZrQ5fGX2a6G32We7oLMcVQPHc9aWjy4du4qHuZahMeOzOhx+05+ffrRPc0NudjmoDKvxfkh/LbP/z+/+iVb+JEYToa1TzbHLjDjlcBmXOCM5ZzmxS9g+mwqnVXkreCWcxLCt6/wOs43zlTa5TxR5G9TpOW7ZWgvoOdbgMPRHKLOpBoVKOW8sN1pCn+KYvMP+wnnIQkuZhcHS+HfJs8eFdWuKb1qc8S2qCjXyOmWS3kIS3DNn5Nue+CFat0kDNSdhLUFMUdP6y3JuLoW/Ah3YFkQdBwk4w5g2CD3vZOW7ecrrEh/0ZgL7swtOvLanTSE8A2/Is+6lYqXp8p68Qym+cEBmxQO7MxRDSD1nEswhyZoE9s79giQsYAAyQ5TI8040uTqr0GUFjB8ssUvODlYHl0lU7nsuDBcnZcnKDfifZCBksh2OBfc8eYFcYaxgPGWlno=
+X-HE-Tag: 1793010730-250260
+X-HE-Meta: U2FsdGVkX19/8z4hq4Zci+MQ2cIl7bAv99Jo4M8J840A7WPN9cgPvkN42jzrEvmmnC1VNbvOASsc9cs4xz1BLLTBdQiswqyxbNPaePrmfnGF76L5zWG5TQs6brKZ+mFavGlz25hz4OSteaRxpeLSn28slApGUPSBqK6EycBFB0hFcnOagST2qgiydUcUxLTmN3OFjlQj+9j1+GOfx3SJq6YU+vIDOXBEhdiPg+4ANu2/aqKwddJPwgdYcNdYcer5L2JfiTOP1dvt9zF/mcRvKzf4P4wZ0HdYb5hEMjkUYXuzVJpCfnQmUH0tK1lL/2svTKge+ctovaTbmAe2HzPu4RZqn9pmLgBwRh8L8T1VVli02wUppkVaq8QdDb9b9gEi+Acf+rJAZcXGXurguDCFpqE38Z6EoWSwwac2Fwf0t/ESKDOpB5f/hGfgqefKolhlZH26dA/riBEZEPFQXA3Kh+w6G0IRc0PfX9RfhpdsxeIptZ0nf2HeoK9VHfldf9ftXXtHDl1k+FB/Ffq0sdKAcPD6CFRIsujXRvW3cr3Xg/WUboEwK9UROpmlhDi52UcxnyWwRMq00e5mSgrssb+UVQBG8yZx7lThCOCdk9KzTYhQ4LdUxXrcYiwGZMeiAlnmGxDu1OLXG4c6pYpotpBL+vAOBG1ar7ZnPm0KGoJTcW/FmrpKanlkxgtVPEd0Rpo/JR8BMvLKvhFljcaK8Ks8KVFDyG+CmNUQ8fcmeAYxW0OTHJAr3AMQi1TNwoZ5QleuLLYHmJCG3shsNYPeHP/Nj5umqSwqNrAxl5fuvP0dQSriy+94fMCjH9o86XlyE7UjsoG/3+/QGJWG3q3vagrXv9zShsK1dSuCUhX31at2N30CqLVPBO1n5U/eKJONMp9HkbEVjZXuiQ1D0McfLI2RIB4B0B6dZ9S1BN9lRq0809PysRKf0lS4IRgi/wRS4x0kS6pHi2ojHXbDfMYLL3d
+ kKaUE+Ve
+ 56nmczCTAj/7JRpV4ER9Dc4kpJUxqLpGh4OJDUouo4YAHRecEZZajimZcuI1LEo7emRYqpPPU8wggZKgYBukPM+I9kPx6JAyssHaTRt1sXAf822qiJchXTa5fIYi0Qw7VVpZspVwf7Uai3LjhrZRUFfAaIslcFfJh2KpQczoPPHfUabxLkFOSBc0Rrrx7uj2Fj4L0F3BWPNw0RkLNOiFWOiWC/sOnXd7PJEgwKwbHD9U/5G8A5QSy3MB8R0+gRTsuL0Ewj8g4IdqWgxgrBe3mQQcml9rqPIRuQHn8/T8yJQ3NirTeLDdXNh/Yr5UQMuY41rH8hCO8VlJtfJSukMQbnYQPMPLoPkxegGXZ9fAtwllslu8IPBgItGeycgfvHYxswWKrKHsy8z1rwJtwhaXwr8Exfifdlgs433SkJ3Nldt/dh+WTq3t2bFqasA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,36 +179,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-It was added in commit 9039b9096ea2 ("mm: page_ext: add an iteration API
-for page extensions") but has never had a caller.
+invalidate_remote_inode() lost its last user in commit d73065e60dcc
+("afs: Use alternative invalidation to using launder_folio").
+mapping_clear_release_always() has no callers.
 
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- include/linux/page_ext.h | 11 -----------
+ include/linux/pagemap.h | 11 -----------
  1 file changed, 11 deletions(-)
 
-diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
-index 79c53ec45dfa..52a8b70c525a 100644
---- a/include/linux/page_ext.h
-+++ b/include/linux/page_ext.h
-@@ -167,17 +167,6 @@ static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *iter,
- 	return iter->page_ext;
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index bcbb0afe1a68..b6ff219a78d0 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -21,12 +21,6 @@ struct folio_batch;
+ unsigned long invalidate_mapping_pages(struct address_space *mapping,
+ 					pgoff_t start, pgoff_t end);
+ 
+-static inline void invalidate_remote_inode(struct inode *inode)
+-{
+-	if (S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode) ||
+-	    S_ISLNK(inode->i_mode))
+-		invalidate_mapping_pages(inode->i_mapping, 0, -1);
+-}
+ int invalidate_inode_pages2(struct address_space *mapping);
+ int invalidate_inode_pages2_range(struct address_space *mapping,
+ 		pgoff_t start, pgoff_t end);
+@@ -299,11 +293,6 @@ static inline void mapping_set_release_always(struct address_space *mapping)
+ 	set_bit(AS_RELEASE_ALWAYS, &mapping->flags);
  }
  
--/**
-- * page_ext_iter_get() - Get current page extension
-- * @iter: page extension iterator.
-- *
-- * Return: NULL if no page_ext exists for this iterator.
-- */
--static inline struct page_ext *page_ext_iter_get(const struct page_ext_iter *iter)
+-static inline void mapping_clear_release_always(struct address_space *mapping)
 -{
--	return iter->page_ext;
+-	clear_bit(AS_RELEASE_ALWAYS, &mapping->flags);
 -}
 -
- /**
-  * for_each_page_ext(): iterate through page_ext objects.
-  * @__page: the page we're interested in
+ static inline bool mapping_stable_writes(const struct address_space *mapping)
+ {
+ 	return test_bit(AS_STABLE_WRITES, &mapping->flags);
 
 -- 
 2.53.0
