@@ -1,103 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29246606A32A
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E6F606A324
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 20:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V8N8ippB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XPb67244
 Received: by kanga.kvack.org (Postfix)
-	id 44CCB6B05B2; Mon, 26 Oct 2026 16:54:09 -0400 (EDT)
+	id 50F326B05B3; Mon, 26 Oct 2026 16:54:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FDAB6B05B3; Mon, 26 Oct 2026 16:54:09 -0400 (EDT)
+	id 499396B05B5; Mon, 26 Oct 2026 16:54:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 314D16B05B4; Mon, 26 Oct 2026 16:54:09 -0400 (EDT)
+	id 3AF516B05B6; Mon, 26 Oct 2026 16:54:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 102ED6B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:54:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CFA381A0833
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:07 +0000 (UTC)
-X-FDA: 85365979734.23.1B81C86
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 16FED4000A
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8N8ippB;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 07AB46B05B3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:54:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0FAD21208ED
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:12 +0000 (UTC)
+X-FDA: 85365979944.16.09FD29E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3B61EC000D
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XPb67244;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793048046;
+	s=arc-20220608; t=1793048050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Y+asd5FcmQ3i2iF1cd+nZYxacxJNYDOSQpqYG634Y2c=;
-	b=LT239btps5ea6Ma3EofcbMU/OfaGP2IfC68cI3BnAOFle11r9jo50XTp2GZm6zrrTCvVQy
-	ZWn0uomgzL5P/A0jCihXv6s1zRhvTcDwusjHZpZalqDVQ4BVVhxeGhDfJAUlsmrueJ6lFc
-	KyANfQfPKb8vp8Y+vyc5KdjiQEUJT8c=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bMnT/4trapZ7pJUm3w1Qwlc7Feo2DJc90apJ/xjlYRs=;
+	b=rn0ZsMg6N3ACZDC1+rICeAtLvnwPh0aCptHPWvkSRIBfAvLosT3opx/VwOaJk/C1/1euhj
+	NwqKmKAff0Xc40GBix2vkawbvbfBiKBZm7YH0GQPEG37jWge9qJS8I/LjUJpsUYycDzvYT
+	bnM0qV4CghL3q7GGrsPqEBOYn7ocS5I=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8N8ippB;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XPb67244;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793048046;
-	b=e0rm8WHBt57fWT2h+7SBaD8gCzDZrRaOn6q8n/AFd5D5lJWp81b5FMY+lq6XSzYQDFZbRZ
-	fRf7DCKHBR43dUyjBwOM0I7xjl3TTAfbxu8dE2AnGml5h6M+y9O4oVnCqnoi8l8Rnj8+Kb
-	51gWwGJN1LeNJVyosOpCabUAxJIhm90=
+	t=1793048050;
+	b=FzD0NThJGgW1hSls3h8Ka0It+PixQ73fNvGLMgjE45omFWbytswnkFRE4lBeeGHkqL42xP
+	P2IhdinoekeWTd73HH/k61vG7ESABLP36JNLpaePAbGXlF+bF3vqlMhnMGUzA0lyTz7aVU
+	Q1syIVqBQliZwIhgSKc7tPY4HMy3OQU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 21D88601EF;
-	Mon, 26 Oct 2026 20:54:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276721F01825;
-	Mon, 26 Oct 2026 20:54:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 049E643B3A;
+	Mon, 26 Oct 2026 20:54:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBC61F01829;
+	Mon, 26 Oct 2026 20:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793048044;
-	bh=Y+asd5FcmQ3i2iF1cd+nZYxacxJNYDOSQpqYG634Y2c=;
-	h=From:Subject:Date:To:Cc;
-	b=V8N8ippBjZTWjNgvaG+rtSMn0Ugh5vnzsVMSrhfrv/o4IyClHiF5RDGfEWdl05RDS
-	 r0anx58IJMeF1VqfmqbhPjY4ET/u3q1Pct2Ir8q3rIZXWsZb74FtTkHsKkq08h7Leg
-	 SONRcbgmD10dv1Xw90+GUlUQWH5R96qbp4kk565Ehq0tlAbPwgLOlso9Fg2AXV65/0
-	 NsY2ztkve0xA75edvwb/8H4D8Uzzwqjn8tPWVcM51YS5Ea82ZSL5wyOIy86BKD6YIA
-	 9reMhiKJ2o8eq2WYNSZw6Y7BF8hVgyB5VtMm3HzEkbTZhZ8BdGbk9sWNtl0vQRO6Bh
-	 JPNyqWU592fcQ==
+	s=k20260515; t=1793048048;
+	bh=bMnT/4trapZ7pJUm3w1Qwlc7Feo2DJc90apJ/xjlYRs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=XPb67244qTZDbAZwCKsjKX7Wa43nK9Yl31/j58LBJZCBq1c61pQCUJCUnj1+RkLuz
+	 KCa2wz280Wxv+llBXjpmtki+bWqrp/LxirJXr6cmYGNJd6ECSUNMCKwwXY1RpuYs9e
+	 bJB6A7vT9iez9Cqx1124jczOaQac9gqrMtwb427/MIYaC/ZlFXk2q0YY8uNf30KfCt
+	 xBByToK7cwWUPVtzPT9WdpVyt7QbNMzKxO1hRf5OfwcIMhNdK5/K2WV6tsNSIXACy5
+	 gIyIsh0BR6sAbzh8f9RhgdPZnzQCk94hUiYki3hqJaUb/9YJppO1B7XXqVRCmKIyGS
+	 wM29CWwVkcFcQ==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 0/2] userns: keep the exec securebits
-Date: Mon, 26 Oct 2026 21:53:28 +0100
-Message-Id: <20261026-work-securebits-userns-v1-0-b35473fa1a34@kernel.org>
+Date: Mon, 26 Oct 2026 21:53:30 +0100
+Subject: [PATCH 2/2] selftests/exec: check that user namespaces keep the
+ exec securebits
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/0XMMQ7CMAwF0KtUnnGUdGiBqyCGJHWpQUqR3QBS1
- buT0IHBw7f+fysoCZPCuVlB6MXKcyrBHRqIk083Qh5Khta2nSuH71keqBSzUOBFMRcgKXa2t8E
- d/SkOHsr4KTTy5wdfrnvWHO4Ul6rVRvBKGMSnONVXdc3fNbtragu27Qtum2LcqAAAAA==
-X-Change-ID: 20261026-work-securebits-userns-6070b18a9cda
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261026-work-securebits-userns-v1-2-b35473fa1a34@kernel.org>
+References: <20261026-work-securebits-userns-v1-0-b35473fa1a34@kernel.org>
+In-Reply-To: <20261026-work-securebits-userns-v1-0-b35473fa1a34@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
  Serge Hallyn <serge@hallyn.com>, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, Jann Horn <jannh@google.com>, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1917; i=brauner@kernel.org;
- h=from:subject:message-id; bh=iujI9aAJYOrnMNbrp/gBJRYkBHmRYoPzBhbDlZk61JU=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTd3/u4PCjlu9GzqZffpKffDVyt+GEhg0D2ggT+SunZz
- QILv8/P6yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIwWKGfyqdxvddnLp4zgWk
- x+i43T1SUawhI9v7YobcfqPCfa3M7gz//bvOlohpXH557OWrEjt7Le4zDnc0UpcqybN2Zciu7V3
- MCQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3798; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=nECyytmiEdouw3xcpnbysOjPPBsO49O6sByTJMX2B9o=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTd3/si/8v/bbE/rqxrm8J9h9dyM4d8+sG9j31/as0M2
+ zupTibuXkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEXoQzMtxSY3BOvzR9j14m
+ p4rLmem74+TF0950hax6ue3H1Fe6yh0M/0tr7FNP1J3WFqhbPEE9k3PhIZetqod+77taYufnprD
+ xMzcA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 16FED4000A
+X-Rspamd-Queue-Id: 3B61EC000D
 X-Rspam-User: 
-X-Stat-Signature: d47t91349389fdhtp3xrsp5nsfz9b5qb
+X-Stat-Signature: 3qr4hbuydtwsejut85toyhigbsm17ju4
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1793048045-543844
-X-HE-Meta: U2FsdGVkX1/mkY6AJK/gki+X7C/0OtQvI7Tsd9hL6vfi2e+34XFU3gsxXbcxLGDRE1U4/7JemDSuvbSkdDSuxm+86JCkNIz2PDce99hjXZ/iBO38xGVZ9vuKDDrPrQeaY7nA8VWeNADRS/TWyGJH60Rcgv4jhMnx3HGKbUnWkS4T1HK3NdPboNpdAGeotdLg2L0nsm5j2QasK4Qhf6mmdtU4eF9zNR/43oJt2ellZClPvHc8Dw7FiHDi+zsuvw9XeGkC+ZaXmPbzXyI/f6GWJIRodoRB5fGzWHBkwGHdwoiqaznGryKnD/SvJenhCaiQlNUefqows5BoKQKqEKH38d+mm29y/6GCgPjEwFY1rrd/rvG00CJezwUxRl+1DDGtWExOSYRfdRRLG+3kCXYNZzZq5ABZvnGTP1NUi4a1rtmDJz/SMtsShLJI+Wdl0fv1WdK39ltdSa8FrJs5dI1jF1ISLu0o92LBHPDTEaj3P+wocGPyNWSl09Rgt7HBjOzrnO3SdFY/dJS+RV+scMSOdLR7nGazlpzxqDJeaSI8JJu54wtFgdLvwAr/uo32hYHfJ1yIzwqRFG+++6Br+b8ymzqx4LRUk5oWbtXn2LxG84r/thEzw3q3bDm4fogV/VfC6e9lYu5hu/fN+uXfHeJsUoGY+fTCFHSoTk1Q2Ytq9Q1b+LfWr+Li+2+GtLtHV0tag3PV292txrz3jhwfkILkvEV5Xgx9faXAGwMf9ou7gWdsRcYBVFWBC+iMLVhRJEZ7n5brJsvI1lP9CKuTjVLgAT6VcAcv+NHGCI4xLIgAeqzDcFdnPPYrddwSIFxfYNSBxHeKeJh88D8oUXwFzRYW/Q+maLatoVwpMUA676tXv8GIBuQ31War5YTw2cYCeasGWAyn1pkStXlBoMLNq8ttN4fsqu3EdRJ/LwLn2ttehhqrf0JHHiOE6DsAt27EnU8IPLp5qFL3EvPLQYCPyDN
- em8mKp+6
- nPd0W2z1/Q91VH74el3dJTuoq4EKCf8OVHydgRF/MVHw9u9VjEkMwF+PkTGduxIykMvWbeXrrJkQFtGpu1pZ9x+9GixaOjHIlDo3EZMs897RyN44A1uhrwciVLkkwy2Qp8f5LFim+vuP1VwSKjiVzMm1TKrND9HwZdX+U1+8g2uDkdffawdktbvn2ieqEeDKNSwTvDhAtZl8EBHn7Pb12z4WkUYcgcc2lezuapI2NAynjuHT+5MTFFv7MZg==
+X-HE-Tag: 1793048050-86168
+X-HE-Meta: U2FsdGVkX1/JIgoOEys6qM6O4m141PiuAhhDSxiD32MINHNO2GIqpMzPlODxxvwE/7xoiUllrkPGksvsf//QAq7lps0HfFwCdFl6z1HS98OT8LW7PzsOeoIapxNG499dje18RW5BtZ5kNyZMVYMIIpw86jQFi7QKekwzcY/7WzX7b0QCzPdTsRovv6vsQTsM/oDh5S3gEGXMye/rpROE5862xBMDuWdoi3BP6lBl9iY7ZbbHKC5jCgj0IZMWhycfLC+yfY1XBl+49EEmDwmOcTh/yNWA4kB97i7Z5MjwtugjaG+fUIHjQ9MJJqmEbJTdjCwAO8hfdpVmdgjIkmvoVZEgO3i4E/2U1G1cb91pMJQEof+HJPPmVFVJuNunGtlUI8Jsrd9g7ZdmJ9oAU5jYk46YwKtOkI5Pkh5TqdZwITdDzv7tvZ5x+9ZU4F4f2tChzPBADr/v3OTKcdvaZbzoilVoj8C1e+J+h0ovgtoQSJyZ6Nz8Uw/HDjatGh7tmZIzm/hneE++Ebnoqk/C1Qhtiv8HQ0eDfqezn+Je9sSpXTPYSFdAf8miuUjOpOTs2+S+dgVDhb+gdbWWOXCqo9Pl5v+3T8tq81CLSDZeosUKFqt34A8jPXhHswAWpPSNMZHxQP1yEs4zhjE4pcD1nqUUDQk+PiHe+AHwLWTY+YniT3lyle8Lv+oWYalSmivHNGlZGKuyXsDoOWF5JhsLl8r+POAh2yD5446Tm+mk+ddmOUC49JRkaaBiLEXNVKBHpYhvgEfElLyqnRniiDX9dGhB4k8girAndh2wWoFVEDeZ3061MhkMG+MCT+4WL8PETRXPGS6rvEz+1T5eGMhibhpBus1WB7S5JF45f3XWbCam8V5tIYD7nfhcS1vlu5GHSQHrTiEM8qMgcdhdOS+h0aICYpKy47LT8csyuy9+6gtFxriBaVIZijq3O99apbXDpzF4RkkszSoQtVaACQOfgP/
+ x/vfseV6
+ CxAfXRBeSkwyxiUNuGZ/u99jLE15KJT7PAOrR2iGbfHwB4Lg5AROh6gz7JoCIlpiLlxpl6gfkzySMSx3Q/EUpkGVugVh10mgtTbTtcKxn/igHoAaTWVQZgEDtK2FK/rhYIlGXCPhQXt9wGJMulLF5Ur2vx2WaHQucwmIsi70TePn1JPVYBt/dSgkK9oiqXSgRgTEmNIdruUqsG9rPo8a/9pIH3zcTsOa0fba3PUPfVgw5FEhrUqaXZfH4FKsPjSI2M2ajUzIJt7cdq8AJ7HUJN+q1F4mHAxp9QHTDCapLdGAvshwqp7pmXnbtO2DHlmGqezSoZMtD6ZjBIEA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,45 +106,133 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The exec securebits are meant to be set and locked by a service manager
-so that nothing below it can turn them off again. But creating a user
-namespace resets all securebits, locks included. So anyone who may
-create a user namespace can shed them with a single
-unshare(CLONE_NEWUSER), and joining one with setns() does the same.
-That's pretty much everyone.
+Check that the exec securebits survive creating a user namespace with
+unshare(CLONE_NEWUSER) and joining one with setns():
 
-systemd gains a SecureBits= setting for the service manager itself. It
-sets and locks the exec bits for everything it starts, so interpreters
-that support AT_EXECVE_CHECK enforce the system's execution policy for
-their scripts. With the reset "unshare -U python3 /tmp/x.py" gets
-around all of that.
+- both bits with their locks, which can't be changed in there
+- both bits without their locks, which can still be cleared in there
+- only the locks, which keep the bits from being set in there
 
-The other securebits are about how capabilities are computed and
-resetting them in a new user namespace is fine. The exec bits grant
-nothing. They're restrictions a task placed on itself, like
-no_new_privs, which a user namespace doesn't drop either. So keep them
-and their locks and keep resetting the rest.
-
-I also keep the exec bits that aren't locked. fork() and execve()
-preserve them and the task can clear them itself anyway, so dropping
-them on unshare() would just be inconsistent.
-
-The new selftests fail on mainline and pass with the fix. I think this
-wants to go to stable, otherwise the locks don't mean much on any kernel
-that has these bits.
+The other securebits are reset as before.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Christian Brauner (2):
-      userns: don't drop the exec securebits
-      selftests/exec: check that user namespaces keep the exec securebits
+ tools/testing/selftests/exec/check-exec.c | 83 +++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
- Documentation/userspace-api/check_exec.rst |  4 ++
- kernel/user_namespace.c                    |  5 +-
- tools/testing/selftests/exec/check-exec.c  | 83 ++++++++++++++++++++++++++++++
- 3 files changed, 91 insertions(+), 1 deletion(-)
----
-base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
-change-id: 20261026-work-securebits-userns-6070b18a9cda
+diff --git a/tools/testing/selftests/exec/check-exec.c b/tools/testing/selftests/exec/check-exec.c
+index f2397e75aa7c..5753c657808e 100644
+--- a/tools/testing/selftests/exec/check-exec.c
++++ b/tools/testing/selftests/exec/check-exec.c
+@@ -10,11 +10,13 @@
+  * Author: Mickaël Salaün <mic@digikod.net>
+  */
+ 
++#define _GNU_SOURCE
+ #include <asm-generic/unistd.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <linux/prctl.h>
+ #include <linux/securebits.h>
++#include <sched.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/capability.h>
+@@ -24,6 +26,7 @@
+ #include <sys/stat.h>
+ #include <sys/syscall.h>
+ #include <sys/sysmacros.h>
++#include <sys/wait.h>
+ #include <unistd.h>
+ 
+ /* Defines AT_EXECVE_CHECK without type conflicts. */
+@@ -460,4 +463,84 @@ TEST_F(secbits, restrict_locked_unset)
+ 	CHILD(EXPECT_EQ(EPERM, test_secbits_set(0)));
+ }
+ 
++static const unsigned int exec_bits = SECBIT_EXEC_RESTRICT_FILE |
++				       SECBIT_EXEC_DENY_INTERACTIVE;
++static const unsigned int exec_locks = SECBIT_EXEC_RESTRICT_FILE_LOCKED |
++					SECBIT_EXEC_DENY_INTERACTIVE_LOCKED;
++
++/*
++ * Checks that the exec securebits in @exec survive creating and joining a user
++ * namespace, and that in there they can be changed exactly when they are not
++ * locked.
++ */
++static void test_userns(struct __test_metadata *const _metadata,
++			const unsigned int exec)
++{
++	const int error = (exec & exec_locks) ? EPERM : 0;
++	int ready[2], done[2], userns_fd, status;
++	char path[64], c = 0;
++	pid_t pid;
++
++	/* A user namespace owned by us to join later. */
++	ASSERT_EQ(0, pipe(ready));
++	ASSERT_EQ(0, pipe(done));
++	pid = fork();
++	ASSERT_LE(0, pid);
++	if (pid == 0) {
++		close(ready[0]);
++		close(done[1]);
++		if (unshare(CLONE_NEWUSER))
++			_exit(1);
++		if (write(ready[1], &c, 1) != 1)
++			_exit(1);
++		if (read(done[0], &c, 1) < 0)
++			_exit(1);
++		_exit(0);
++	}
++	close(ready[1]);
++	close(done[0]);
++	if (read(ready[0], &c, 1) != 1) {
++		waitpid(pid, &status, 0);
++		SKIP(return, "Cannot create a user namespace");
++	}
++
++	snprintf(path, sizeof(path), "/proc/%d/ns/user", pid);
++	userns_fd = open(path, O_RDONLY | O_CLOEXEC);
++	ASSERT_LE(0, userns_fd);
++
++	EXPECT_EQ(0, test_secbits_set(prctl(PR_GET_SECUREBITS) | exec));
++
++	/* Creating a user namespace keeps them... */
++	CHILD(EXPECT_EQ(0, unshare(CLONE_NEWUSER));
++	      EXPECT_EQ(exec, prctl(PR_GET_SECUREBITS));
++	      EXPECT_EQ(error, test_secbits_set(exec ^ exec_bits));
++	      EXPECT_EQ(error, test_secbits_set(0)));
++
++	/* ...and so does joining one. */
++	CHILD(EXPECT_EQ(0, setns(userns_fd, CLONE_NEWUSER));
++	      EXPECT_EQ(exec, prctl(PR_GET_SECUREBITS));
++	      EXPECT_EQ(error, test_secbits_set(exec ^ exec_bits));
++	      EXPECT_EQ(error, test_secbits_set(0)));
++
++	close(userns_fd);
++	close(done[1]);
++	EXPECT_EQ(pid, waitpid(pid, &status, 0));
++	close(ready[0]);
++}
++
++TEST_F(secbits, userns_locked)
++{
++	test_userns(_metadata, exec_bits | exec_locks);
++}
++
++TEST_F(secbits, userns_unlocked)
++{
++	test_userns(_metadata, exec_bits);
++}
++
++TEST_F(secbits, userns_lock_only)
++{
++	test_userns(_metadata, exec_locks);
++}
++
+ TEST_HARNESS_MAIN
+
+-- 
+2.53.0
 
 
