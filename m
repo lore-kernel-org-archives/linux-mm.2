@@ -1,72 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A088606A323
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D850606A31A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 10:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UetnZjY6
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZNFcno64
 Received: by kanga.kvack.org (Postfix)
-	id 1E43E6B05B7; Mon, 26 Oct 2026 06:47:34 -0400 (EDT)
+	id 802D86B05B0; Mon, 26 Oct 2026 06:50:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1944A6B05B8; Mon, 26 Oct 2026 06:47:34 -0400 (EDT)
+	id 7DA156B05B2; Mon, 26 Oct 2026 06:50:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 083676B05B9; Mon, 26 Oct 2026 06:47:34 -0400 (EDT)
+	id 6F04E6B05B3; Mon, 26 Oct 2026 06:50:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D63276B05B7
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:47:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 721761A06E4
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:47:33 +0000 (UTC)
-X-FDA: 85364451186.29.886A3F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9B649180003
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:47:31 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UetnZjY6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B20F6B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 06:50:14 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E36C91C400E
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:50:13 +0000 (UTC)
+X-FDA: 85364457906.30.F0E4252
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 32CFFC0002
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 10:50:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZNFcno64;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793011651;
+	s=arc-20220608; t=1793011812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCm/g3rUcyKZ1+NtoTVxUUIZZdtpcxA7CoFy2Hyn1ag=;
-	b=P5TsZkd5xY2GLuGLCCpaB8+h0WztgCjI+CJa4/SJDQnyPEW/aZrQ1PPmXVexDM0PcNHqGq
-	8k96n+GGobIrgiBh6sZjDkZfVFKJD7mdxj/fc/HnzBewtN+/ondRxxm5zSh1IQob/SphTX
-	jnK9HbkOY2bSOs45qriASrjwXJ69hf8=
+	bh=DY0xynj2BuvcQfpKNa55nqUlTfhCGDJICJ4nB0KZOrU=;
+	b=yxffTodF2iicgoZ9Nl7xIycpDHYYVOgUJLtMmIozLj03DtIUxpCY1KG46txX3jCjffywn0
+	hCeXwYjWlsYw3vC6WNyrVay2oRVa2wSiGK2OsHv5AzAKiRbosd+1EkMwHClHoz+/dUiTwj
+	J28rD/s3+QCG/VD7pTi7raVRfXNSh10=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UetnZjY6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZNFcno64;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793011651;
-	b=FiWlTpnA2vnyHjKgGUWLx+O1hK/f714TjE2FOtqd3ldfUBEERqsMdT5X/9KWKcJUTo/yr1
-	5zOmB+yEW2PXte5ncSsF6as5eSu6g/7L2NjIbxlU3G9sr44tm19CWr/nsbVdb0qKS236eF
-	rpVx9EzyZu5kXSQcFzsMS9XwhdCgJuY=
+	t=1793011812;
+	b=Es/isMoeU4ah/QLjdCn68F0DHPgz3+i4Lt8DPcMORns5BTVIXVpnlHM0cmz9wIfE0x8f79
+	BH0+OaYA3Q874YTBVBCbeATuRXITml6vqZBp9YuFFuCjSdJGIU4HaqJ/mj8zAu/5THDn1L
+	IrIvLfqEQWU1bIgAotrCYDiS6+bBcbQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CD52840AC2;
-	Mon, 26 Oct 2026 10:47:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8DF1F01825;
-	Mon, 26 Oct 2026 10:47:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AFBCB60A54;
+	Mon, 26 Oct 2026 10:50:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FE81F01825;
+	Mon, 26 Oct 2026 10:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793011650;
-	bh=PCm/g3rUcyKZ1+NtoTVxUUIZZdtpcxA7CoFy2Hyn1ag=;
+	s=k20260515; t=1793011811;
+	bh=DY0xynj2BuvcQfpKNa55nqUlTfhCGDJICJ4nB0KZOrU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UetnZjY6MfvWbi60HZpHtL7Tekegir2yz8Hvdoty2oYPiw/rHr+dQukKtCnGa7hOK
-	 5ljeICvZdgY2bxtWFBzEw5EAbtx9lXQQ/A0jQ6FI0aIT9LDsQbN2hdCkpYqmMOT7Y0
-	 wh35e//fpN6nmINe6m7AGEn67xiNPOdJf3PJmGwoXIMOKbuyQCPAaRJjetIiAxl3ew
-	 /UF7g6huzUt+iwJcYcQ/v4OpK7NHBd3DbbwiHd6hEpvsIPGFol86+9Me9MU2Nb40A6
-	 jUdEPVg445d5TTdkZaYaO4q2oXetuHENgTei/3+kW2Vj7ymsGnbsOS/WuaLPL2Nq8E
-	 Qv2lI0dXf6rxw==
-Message-ID: <190c8e19-d532-4ba2-b493-3510cc785adc@kernel.org>
-Date: Mon, 26 Oct 2026 11:47:22 +0100
+	b=ZNFcno64kcHcB3X4mVYYrxBv6nlifsAlqGJwZNpBSt89J4pheTzEFoPBx8BP+zofr
+	 bPQqcGJFRbvVc985BAtUDlnk+BrJp2u0Kb1izuHqHiSZGuhXGsINGHIRWwnwuPYfN/
+	 E8NIXTXtMAkqWs+VuMMyEAmCvDeX+uppHya/sZ1qPAYBavFbrfhS9LZHa6R0+/8Uao
+	 3DmUVVx90fJ7JBoYn0vVeywHxkBpBWxVW8F9vaQ/N2CYwVfQCIawH9oZ4AP3E5LJgq
+	 r9lCBAqTGt/YUYsnZif3SUiyGnC7bii7/H8bQh0gw9kzDJq+aqbwJpoa/hhnL/KEtj
+	 EQr9PhCLWUh4w==
+Message-ID: <fac8ba4f-1437-4510-8a9f-1257b2c8f350@kernel.org>
+Date: Mon, 26 Oct 2026 11:50:04 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm: do not unintentionally overwrite atomic VMA flags
+Subject: Re: [PATCH 4/4] mm/vma: avoid losing atomic VMA flags when setting
+ sticky VMA flags
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -77,7 +78,7 @@ To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Colin Cross <ccross@google.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20261023-fix-vma-atomic-v1-0-8ff4fae1fc85@kernel.org>
- <20261023-fix-vma-atomic-v1-1-8ff4fae1fc85@kernel.org>
+ <20261023-fix-vma-atomic-v1-4-8ff4fae1fc85@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +125,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261023-fix-vma-atomic-v1-1-8ff4fae1fc85@kernel.org>
+In-Reply-To: <20261023-fix-vma-atomic-v1-4-8ff4fae1fc85@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9B649180003
-X-Stat-Signature: fho9tyhs4uxo6rryrzfddgdzdkjsg9ax
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 32CFFC0002
+X-Stat-Signature: h75corsi3jkkqrcyphuahmw6385qbgbp
+X-Rspam-User: 
 X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793011651-57263
-X-HE-Meta: U2FsdGVkX19H2HK4dfkgVKVN7L/6SHbYaBew+Jq0iDrR81NOWiOqb5QpbPT52DCyJji7QvYtPHFB14nE652XOpELI78CtIHyNtpDaQmVMXOuLnswACFSpk2b3M1ylG3f5RPhlscsf0VRmCHoG4nPzOwnRq2WXthjE6Ea2ZV1UzoZtdYAPWNZtjvwvZlucqk5NLr3OUEK/uYCH42cko4ScWmf8dHivKivtdE9S/wueS63Ty/wyhpRe5TQrVFydimyDo7omGPCPXRX+Z4JPLz4ndgB8ZOikCNvkoMiOSKoWq3JTJLa0XVpj2cPHRpqSfFYXSMTGZ9/CrSRR0tyjZgPYT0YY/VYXxikqSwsDt1FrRIJZkkIfitZ92BGvY3AdzJTK/5puFWsA3x0cj4ZaBX67YYw2JGKpUptr+SvJLhHQtGK70HX0ci0mY1XI5n9A7vahi7fExvyzHImTMSyG14HzV1aWJhXLrPxa7fMZo53oqv7m+mJGjYvqV+KMfkY6G3lzEaaUxd1YuZOe2V8e2QShPkfJNNF67voKamIDqycxqwkNdFujaNxvOgLUswZaxycCn9VhfTVLEmdlIp84L73lJOUVm0D24VJC3LcNBcfdCrhQ/ukqrs8AubrLn0UEmXpRb5OVnUldAWPFKFBhdFvtgIvc5S+krsRnWVIK2S5beUZX477ZCCNEaj7U8DfgBQxlqPCr4TIteoYg6H5yBEvDX60xVP3j55koVWokJ/99sd3vaxpJCQyGzXlm+aHjN6EIY0574BrSI0a8vQDjpAJqBJ1iai2EOZlXlA/dNRbi0UbwN3q+XV5j0bu+rZyyIOC4F/M9eoheBGzaKp1i7f3GrLp50i6SAPzLv+h6AD1kx4OttvsLMZZrvgyzXzUgWueTqeLSExcTNv3OzFYffYPPQbWwyFdkB4fXbcxtTp/DCtcsjjF44/C7cVKzidzPBRGRDeysHPlS9OSXjNj3j4
- h8j9o4C/
- ycNcT8lWFZy0d65ibUW8pA5leUuRwFc3Cvyf3UtNvDXgyMnjNt/qNlhZkqSogh59SV/esqhhOMLiu2jwwiamQj5XAqOj/JFpc2O/xGWR73YDMC7PULibak7cld2szXVw1mJmEHMMnEqQs/vj0m5Nb9njp6Rhnh7YNmpz5qsmimkGhw4Fy+OmUOLs5Fptj1/uPo2sRYYVA9/XvfuhcWwtrtjzf0DkhwSQYHD7QGyI/l+TJty7OFwMOlAQ3zVujhAf8rRtE1/9BWaT3QJt8AqHqUYixpbteDcq5p998IL2d4CJMBEqLpFOE1q08G7fmz6jfJ45m
+X-HE-Tag: 1793011812-993444
+X-HE-Meta: U2FsdGVkX19HrBeC3ddJKwQlBxhI2KIjM1grEFJ27BZ8FhpguCn4PsPH/QWNerEtUTD8323kjTogykfIyxRpIqr9Ay9QlXG2BCcOQQnOx2AQUk3NF7CIccd2KhIWrFLTo06XIkvDSelhhDNDjDywYvOAPymx0CLcbDS1EqdPC66S0M1JDMSd+LyzFydijbB5y82ZAMhaktnvHv9WlSFMWTWnvpXc5aF4uSlP2KEzz+PbM8SnadodSsOArWABdni4Sb4r2cy8psE8Jy6li+pGbOCbKpCl4z2jVJDMVkoSirMcUzZFvpazUJCgjSHxCQql+4nbvvCu+zDmadIJ74LEO24kUZZU+MtM7dmy2p5P74R/TOTNkRFSpk4isRg4zsEEjU9Kpr3dL9SDObEpQAbgsTgnYaY2X9c1AxzVaWHgdl7KVoBaHVks++rsBoxUK26zqGgWxaB9qLzFpFrAmJWMwn846pqLWhSTrf1tWw5CCgU5qGu5/JVtyRsP1ev/zsuAQQKb/swvK+z52m3Ka8l3ENxa/82i7DQffEyRGojm95La8tHAPgCTXCDLrbW03NM/msuEJK38SfI7fjgWUZDLEByKYeVOugi3Saa/AWrQXz6VBw3rPvcEP+pKEzXixYgs45+je3GMtnpNsZoRSXX1RYrN9ZMy3U+Yj9xCrXc0YpduIyTF0csyORbgGeepbB9rCSs+LQRZLmC/hRM1hS8itrq8Z1T/KJzZj0DrF043LnHExkFtYsyzqdQ9euiYV3ztkkBG7nzwYhck6dFrMmVo3cjOuED/ixepwWoHNTl7/M0EmbFQkhP4yIG5lzi0qBuz9k7N0s7e0WrYKEVZ1nla3fpuTOT72pPPfgWlhD/c7g7SqEwJkHqkqaaxvocudWOnV6jv9d4HxzMT7z2xqsNyTYNnosclrlzKwN5HZkG0iVb2i91j4mR7i8ABoPYPcPWf4H1IuTMnE1HIqWQtfY4
+ JFL/ruQE
+ CwNhSV+M31od/p1nVOjoAyoheHntzhaYFpkoz3tfI3mLv/7wW2Ai6WcjMRK3UWPJ+t+prae21WRCb9rml8YkVnMAPW/RYrEQA41ZPSiVUGlBFr+gaqr7oCbAnx4NEB197uwdBq7qLc/vSLX2bdczwDKmnW/n4JLgtTEQPfHp0Ah6tK5P1jCXqLN3cBZjyfW7eKSmxQR+9jABgZ+jJyRB1JYv2TNx9M0gedcvPKT9BafIREOpihy3mdZIc9HQWnnh3ZJMJpBX3omlYT36zhcqdvHN+ouQsaI0UXvM/i+KJJZARmpjb30faTEX7GMEkn3H3rQxy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,56 +149,62 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 10/23/26 15:47, Lorenzo Stoakes (ARM) wrote:
-> madvise, mlock and mprotect take a copy of a VMA's flags holding only the
-> VMA read lock, later writing it back under the write lock (in
-> madvise_update_vma(), mlock_fixup(), mlock_vma_pages_range() and
-> mprotect_fixup()).
+> vma_merge_existing_range() merges an existing VMA (middle) when its
+> attributes have changed to match those of one or both adjacent VMAs.
 > 
-> This was done on the assumption that VMA flags cannot change with a read
-> lock held.
+> Sticky flags are propagated if they are set in any of the merged VMAs. They
+> are initialised from vmg->vma_flags, which is assumed to contain middle's
+> sticky flags when the function is invoked.
 > 
-> However this changed in commit 2ab7f1bbafc9 ("mm/madvise: allow guard page
-> install/remove under VMA lock"), which allowed VM_ATOMIC_SET_ALLOWED
-> flags (currently only VMA_MAYBE_GUARD_BIT) to be written concurrently under
-> a VMA read lock.
+> However, the VMA write lock is not held for middle when they are first
+> populated, so concurrent updates to atomic VMA flags may occur, which will
+> be lost upon merge.
 > 
-> The actual write itself is safe as this is done under the VMA write lock
-> at which point no further concurrent writes can occur, however at this
-> point the stale flags mean that these callers can unintentionally overwrite
-> atomic flags incorrectly.
+> This can result in fork failing to propagate guard region markers and (if
+> file-backed) THP collapse discarding them.
 > 
-> The consequences of this are significant - a missing VMA_MAYBE_GUARD_BIT
-> could result in page tables not being copied on fork (the vma_needs_copy()
-> check can return false) or being overwritten on file-backed THP
-> collapse (the file_backed_vma_is_retractable() can return true).
+> Resolve this by propagating the sticky flags after middle is locked.
 > 
-> Resolve the issue by always taking care to retain existing atomic flags
-> when overwriting VMA flags, replacing the inconsistently named
-> vma_flags_reset_once() with vma_overwrite_flags() to do so, and always
-> invoking it when flags are overwritten like this.
+> Make life easier by factoring this into propagate_sticky_flags(), which
+> treats vmg->vma_flags as its base (in case any sticky flags are set there),
+> updating it as sticky flags are accumulated from merged VMAs.
 > 
-> Reads are a problem too - madvise, mlock and mprotect all compare VMA flags
-> without a VMA write lock held via vma_flags_same_pair().
+> Also update vma_expand() to use propagate_sticky_flags() so all merge paths
+> utilise it.
 > 
-> This has more serious impact, as concurrent changes to atomic VMA flags can
-> cause two sets of VMA flags to be wrongly considered different.
+> propagate_sticky_flags() also asserts that the VMA write lock is held for
+> the VMA whose sticky flags are being read, with a comment explaining why.
 > 
-> For mprotect and madvise this causes a useless split, but mlock is impacted
-> more seriously as it can result in mm->locked_vm underflow.
+> Another means by which atomic VMA flags can fail to be observed is when the
+> merge is finalised in commit_merge().
 > 
-> Fix this by updating vma_flags_same_pair() to disregard
-> VM_ATOMIC_SET_ALLOWED VMAs - VMA equality is the same as VMA mergeability,
-> and atomic VMA flags are disregarded when comparing VMA flags for merge -
-> so this is justified semantically.
+> rmap locks are dropped in vma_complete() before the sticky flags are
+> written, meaning an rmap walker can observe the VMA without sticky flags
+> set, which can also result in retract_page_tables() discarding guard
+> markers.
 > 
-> Additionally, remove the redundant vma_flags_same_mask() and the unused
-> vma_flags_same() as part of the change, and replace VM_ATOMIC_SET_ALLOWED
-> with VMA_ATOMIC_SET_ALLOWED, using the new VMA flag API.
+> Resolve this by assigning the sticky flags before dropping rmap locks,
+> factored into commit_sticky_flags() with a write assert on the VMA being
+> written to.
 > 
-> Finally, update userland VMA tests to reflect the changes.
+> Also remove the vma_set_flags_mask() invocation at the end of
+> vma_merge_existing_range() as this was introduced by commit
+> 64212ba02e66 ("mm: implement sticky VMA flags") to propagate sticky flags,
+> which is now redundant with the introduction of commit_sticky_flags().
+> 
+> The vma_set_flags_mask() invocation at the end of vma_expand() setting
+> sticky flags only is also removed for the same reason.
+> 
+> Also update vma_merge_existing_range()'s comment to reflect the fact that
+> vmg->vma_flags gets updated.
+> 
+> Finally, update the userland VMA tests to reflect a previously missed
+> const-ification in vma_assert_write_locked() which would otherwise cause a
+> warning when building them.
 > 
 > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Fixes: 2ab7f1bbafc9 ("mm/madvise: allow guard page install/remove under VMA lock")
+> Fixes: 49e14dabed7a ("mm: set the VM_MAYBE_GUARD flag on guard region install")
 > Cc: <stable@vger.kernel.org>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
