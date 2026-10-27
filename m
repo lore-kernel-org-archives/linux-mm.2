@@ -1,96 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61DD606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0B3606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Syv1OBCV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y99aIv3d
 Received: by kanga.kvack.org (Postfix)
-	id 94F976B0723; Tue, 27 Oct 2026 09:04:29 -0400 (EDT)
+	id 5CC916B0725; Tue, 27 Oct 2026 09:04:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 900336B0725; Tue, 27 Oct 2026 09:04:29 -0400 (EDT)
+	id 5A4966B0728; Tue, 27 Oct 2026 09:04:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F4846B0726; Tue, 27 Oct 2026 09:04:29 -0400 (EDT)
+	id 490FE6B0725; Tue, 27 Oct 2026 09:04:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54C166B0723
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:04:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C1864A8724
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F5F96B0725
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:04:31 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BF14160A11
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:30 +0000 (UTC)
+X-FDA: 85368425100.17.0E41C20
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B4E57100017
 	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:28 +0000 (UTC)
-X-FDA: 85368425016.27.67F09E7
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8B3AB40005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Syv1OBCV;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793106267;
-	b=tM/e85q4aOPI2bA1/RgnwTAkGGY798cMpRNsxrEICP1KLEqh2H2+TU+3iTqJIDlex/8NPp
-	HGUFLBfdD+WBSdXjCRNHAPXpc+9B5Z5RdVId1D92RAsZYi86EWGNx5I/8IOXwxlA4wZXOC
-	GIB7YAno4wIV6v7LgZMrJ/9oDXe0SVo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Syv1OBCV;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y99aIv3d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793106267;
+	s=arc-20220608; t=1793106268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gC/pRsYim10huITDmGzR2CXBohnwZSkq49YKoF5hze4=;
-	b=WrKs2/XWsJItlf/LMIkAWdA4OhEJApvoi+I/NrACRnpRlWv5ob3wZ7hOXd534I3erMGuUY
-	xRhPHWUq43bbmwA4LLtoy/O6jA6ro1rU4cvwSe2tn/gyX8c+5uaXeqQDxBVaY5hE8RBGWx
-	Yjf0jDGUItyKaVk3fAzBSMoI/c+f8dE=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793106260; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=gC/pRsYim10huITDmGzR2CXBohnwZSkq49YKoF5hze4=;
-	b=Syv1OBCVvxlQ3xaCIk2I8+H9FP4vQkDT+z4/6mkWV0QuUvs1V1ksuwRsW5Xahy5VgHOTXn/0avR/pHoMSDp/nzdIA4JgRipCOOQLZP0B3iVbJExdACsLlU8Qe/LZ0UYvTurnmRhzfq4uFBmKaS3MYWujcL289pUeiRdTO33i8VQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R761e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XDdo7mv_1793106258;
-Received: from 30.74.144.191(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDdo7mv_1793106258 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 21:04:19 +0800
-Message-ID: <2890601a-e842-4321-94e9-673df94c97a3@linux.alibaba.com>
-Date: Tue, 27 Oct 2026 21:04:17 +0800
+	bh=NOESXTHj7ZHJ0QSzwAvNg5THsJXn1CEoruRa5FHdNnM=;
+	b=X4dk5fyoVLWN3hQ1FpXE0u8aH89TYJ7pswITAFeXuJfaIL8Pv96hZ3kmFJMRFXG5J8CpOC
+	g5CxlnfpiPAqszldmF8zwjKLfXK/qxh1MjyjKeSnDXQ6mlXR7npxqOA3C5qsSsHpoAP/wZ
+	bLcuDJLdOBs+oeHF0uhwK+rdS7Ehdhs=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y99aIv3d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793106268;
+	b=rrAAQFoJTgvkhS16uYaP027pRpHXzfZTir5U3e1MJYdFpCpljarj/0xKB/aXeouLyi1kFW
+	l9NlUWOFZN28NRGwwRCB1vulCHOm8CkMBLk0OsDurbqeBoe/0Z4cN4Ib0vc3DDUanjHNNi
+	+/SHx+CKteFP+BJnpd/67oWVFoM9vgc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 53BB4602C3;
+	Tue, 27 Oct 2026 13:04:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77491F01825;
+	Tue, 27 Oct 2026 13:04:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793106268;
+	bh=NOESXTHj7ZHJ0QSzwAvNg5THsJXn1CEoruRa5FHdNnM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=Y99aIv3dpJ5iCx+yDapSlDEzrTGUQU6aM5QKk9+CnMu9PBVS8s7zcUkvWvFNdbRww
+	 e1hTCxxzpD0X1JpZc6hIkncozeWfy25BfWvcEQnvf/qG+Nu32EHm9/50Z5i9JoB76D
+	 YLFdfbMkcTbTSNXvB3EvFpZhmBs10lAT3aeetcoliHAEln7qHXCK17cwYyTCvlDlle
+	 oltykfwmn9+/1XIXl/kMUPK2DuhUN0cRYIbfJtXQdjFuruPRwLSIMfD2F4a45pLCJC
+	 DtnjUkzQULHjKCDN8rJxCFP2fPJXDMUuF8KNHhir/Zx6ZpHnfyPrMryZfhmEIIo5R2
+	 L1q+M7lOrgFpw==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Tue, 27 Oct 2026 14:03:13 +0100
+Subject: [PATCH v2 08/14] mm/shmem: discard whole new large folios on
+ fallocate rollback
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm: memory: fix truncation removing mapped folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <d7f009c90b11ded86654885b5ebcb8c9308fa31a.1793067441.git.baolin.wang@linux.alibaba.com>
- <2ba579e8-06fb-41f5-9eb2-f02b2aabe29b@kernel.org>
- <87e32afd-75de-4407-8f0c-fb70b40d5eca@linux.alibaba.com>
- <81ee2c92-f342-4f7f-aacd-d9558e67a980@kernel.org>
- <de0b41fb-4ae2-46a5-afe0-c021134ebba0@linux.alibaba.com>
- <4880d4ff-8486-4e22-9923-bd4f2407b1cb@kernel.org>
- <f41d0720-ca14-4aa3-a2e4-3ba2de3280d0@linux.alibaba.com>
- <3c73fe54-68d8-41f3-8f9f-06c4a1891e01@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <3c73fe54-68d8-41f3-8f9f-06c4a1891e01@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261027-fixes_shmem-v2-8-86a00952acb9@kernel.org>
+References: <20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org>
+In-Reply-To: <20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, 
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>, 
+ Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Stevens <stevensd@chromium.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ William Kucharski <william.kucharski@oracle.com>, 
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1590; i=david@kernel.org;
+ h=from:subject:message-id; bh=oPg88T3p1DTSdeYY5B0XA24Ulyfbj8Z+CfGvtqwsdVM=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeLBQsadu8ylJBw3LrBCsxnovvDSaVHlw5wf24Zt6j3
+ J1s7Uc0O0pZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZhIzS1Ghuec3AJcmd9DFnX+
+ LNsU4aw5Y+lv9ulqLT63V/+dGeTYfoWRYWv33yV9E2vnfp12TWShXYT+CdlzIW37SlRPhu6KXcl
+ gzQ0A
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Queue-Id: B4E57100017
+X-Stat-Signature: bg1j6hpc8wp7gkqumiuyhgjgue741qii
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8B3AB40005
-X-Stat-Signature: x7dcznfkk3r4eeixtpqhdqcto3n3rzbu
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793106264-19047
-X-HE-Meta: U2FsdGVkX1+veYUmWL/bJyJHII+W20DuEciRfpGZHmunIWE4vyadApGmnl4RYgVSe8nE025dpLDilDTx4yDqP/hEIMBUMMnY0Ohtds/uaIGCvCcKLrZ6P+ya5eUxhipU+Iki60Ab2nT8GIz153yCAGxcSyuthBHk2cty2ZG0vE7UkTN41LfLCMRgL8PwKKZs28GI66jWcRTNfVpDp/TKqY1cIkxHplOm2nB99IlynkeOfUo8PGSFvED7PPz923UX7MzXqfwA0MIoCJy0S3nV3++RVmWRfbcY6KLZFpbcCm4cu5DpnSCqHNT+a1hkB1GA6tFPxTjDWPbzashx7bj+cMZY81dNot6eS3955HwIsuyUVaPFNYXd+YaxMVqhjKDAKCB3yVRbwv4r5BKDKE8gh5t5D5OiRzwgmBo2bvETVb3suf5iCUv1JRhROux+Qoan33T3Xhs57kxdiM1OXS6P4QGvAJQA9ZGLshds6KAZm8OpAuc/wJ1mJAQkLFiL1Lh+FuZG6qKx26QlDPRBf682Vs3cU67MDyILLrzEC1xAvgYBQQeU1EF7mOgGV3m/5S4npdPeMey1lPqUJ6+Yp8Eys2t5JZj0orUT7hvzl69/khVNAhSUHbI8bNG+Zn9oRXDREM7qxt40TwOi/YdrSi7TyPYVnH/2SdDyQmIVxkiaXNN66q1gX9MsOsLC1qZdRGkh6BNxn1Qljw52nta3BVVlicUDRHcvSBRr7tMWc+rG/vN0flwna06gBRF9rVHMQzmHyrBKWXRsA7Su7843UT6vsoWNTStQ7rrGya4+mxSpYBfWl0T+W9SRdLq8KKvW7KhExDA/ryY9qRKApFbHPG2L5eeC/vb098rw2iknxcm9ecF0b7Guzy4GgBxoMyZ/vC8gtHmqqKcwtTnnWKIww0EJO2jCaIXITjcdPPVzIC8NJM4lSdsOi4PDiHYTHfSxZ8UK8uXLmzbr5FYcCEmPfVz
- Ng6ZJ88X
- SMd33dZZeQrpfbFwKHw8PYKs/DAXeNs/UrdQJTR0UNZYBmJOjCr2LEt7oU8J3SULoRbrGBw8I9i1n9uA3wQDJPZi1AFAHWkV0/xTHXYrUcbzgaTzFO9FeDa6QXRCl4+Qie3PW0nGQ6d7nlMH3l17oj0E9/34CgwWWKRgqvWSlwyoV5cKhb5/F7aSZ/HhYn9aaBQ01gr7hN3lLY9DtJnJGUJSSbi2IkjHzH8Nvw5HYj9RGuqvqS73nonGyw0BSsCAJOfIFAnSvXIlZNBeYLsXpchRnKB0pUozboV6xVpGyjuVOiPWh2NIFdtJ9H+5OxwsduedS
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793106268-7234
+X-HE-Meta: U2FsdGVkX1/PS0BC/6ofZEMH+IBfeiJRpXsJZdCxwYelz8geLhBst/JIFh/m2U3QMgVcCbxzqYjmj+LQS9RtqA3IPBUutMR59/oYZLgaNxLcDuEz8Q97fev72fnWr9CEcz3NBaRBNYVEAwaADqYMMU3O9InnU4Geai2qgsQ+cAFlVCDFRx4243/rvBHxt7fhYyFvR+CqCSqyZ3eSXotdecVjD2YO247DR2zE4I7jnQ+ZpqRCGgkWMkT3GYNdUewrPicizYpGzNYJOGctfUDpSMnSvXfJHh7kGJGMgcGBfrLHsaQkTlzQ8BSJPtsHY8XxWqvSvBhoWa1chcFlClNBXVbCfOSqL3+gp2NuQnC5DOSE7YGSySm7rtO3wQJe5MXM/UhiBCVAzym+qZOIDBZv72lXwPEUsQvJ+8/WpNjh9XD4bvdJ3k1wROqrDrxdsjYdRkyBc2XyJK2JquHOa6sWkoLpPDMd+vZwykHo5ZdX6dY+vA8hN3RNBQ3A16n0s1kE4Vl8182beAd0V0JgYAAewSgNGwqMPdaXp2c8Y1OSjKNl0WIP+9SlU5UVUlUl0lUWuuSF61wI+BpcDa6SGiSyldGDHAoXFlJxaTEYcflqPaLqfl8aVcW+5h00gyvgEXWPVDaAf3hxvu+Q7BZOh52o9mX8HrPY0cEUgBvYKW1fuT8fK7QhjmM4eECy0bkzSAhq5d1VsUXc8Zc+MSdlmnmai9bIalkuawxRj7yTCqw2a3rTPahKsGnLNofLKjJVRhPD+Kn+s/ZPxEyf5x8ZawnFX5VSnnn/IR95wPBScsjNh1aGFDKMzrCB4mvCFdFl39+UVwz+xH0lF05U3lcdXlxBSK05YE3lwA2CXIABXNumQU4ftX2WCmj3Vhuj+6J7TGEB6Pgf258ZA5cdifuCH9KD7hRVvKzKYeYW1c3mGhpiv9xJG+o+EG9JlvsP9THbuKPrtn5tYBmhQ5UasIPvytu
+ +oyeYeYO
+ Q2mXmNEUII6sd5ghaGgiSVVKtZt0vOWLcesDOZ/Wxy798KjWD+swzL98eK7wV7sCAd5GfRNb35Tvqep5tIs9gTFpeHGBfHWwC06onRX25TS5BJX6xcbbon1QBBHVedO2D9lhgqEbU/7MjMtbsFKApF9DddEX85ymmEn36flKP1Sd188w5tvz0xHE5cDpDc7QLltrjWLR/YC9z3mNwa0fbgffqKZQQiKCwssA9IMoGOYZGpXEy6HmoKofdPB+ptyYahUDbYG7KpI6qvecxCWAdmryE/WcHP2rWFHZHKb//sGa+hgJmhZFd7gUFp7SXeYYUcy3ci3mrPHRkp7jW7jgNTyWjOz5NqN01+OMA2yhwjphHPzqXv6jeR0khwXoPyD7wsli1ZjLRY/Lb7+cLDhCQNCAnWT5lncNOuabqGGqxf2iFRpo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,54 +122,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+When undoing a failed fallocate(), shmem_undo_range() must discard each
+newly allocated folio. Its second scan instead passes large
+folios to truncate_inode_partial_folio(), which does not necessarily
+discard the entire large folio, but instead tries splitting it to
+discard only the requested range.
 
+For example, with huge=always, a failed allocation starting at offset
+4 KiB can leave page 0 allocated in an otherwise empty file.
 
-On 10/27/26 8:53 PM, David Hildenbrand (Arm) wrote:
-> On 10/27/26 13:50, Baolin Wang wrote:
->>
->>
->> On 10/27/26 6:55 PM, David Hildenbrand (Arm) wrote:
->>> On 10/27/26 11:35, Baolin Wang wrote:
->>>>
->>>>
->>>>
->>>> Sure.
->>>>
->>>>
->>>> IMHO, I'm not a big fan of adding two pmd_none() checks just to avoid an
->>>> uncommon concurrent sync.
->>>
->>> It's what we already had. We had to: one for handling pmd_none() directly and
->>> one for handling zapping while splitting (file THPs).
->>>
->>> We just managed to let the second also handle the final piece of the former.
->>>
->>> Anyhow, let's get this fixed.
->>>
->>> If you think the code is clearer your way (where I disagree)
->>
->> Fair enough. Though I have a different taste, I'd still like to make the
->> maintainer happy.
-> 
-> Don't worry, it's hard to make me unhappy :)
-> 
-> (just a bit overloaded right now)
-> 
->> I'll send out v6 tomorrow following your suggestion.
->>
-> 
-> That looks good. 
+Discard the whole folio when unfalloc is set. Note that we enter this
+path only for folios that are not uptodate, and can consequently be
+dropped without losing any data.
 
-Thanks.
+Fixes: 55ac8bbe358b ("mm/shmem: fix race in shmem_undo_range w/THP")
+Cc: stable@vger.kernel.org
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/shmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Are you planning on following up with the memory barrier
-> optimization for smaller folios?
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b615301a311e0..e6532c9b0cbdf 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1473,7 +1473,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 				if (!unfalloc && folio_test_large(folio))
+ 					folio_mark_dirty(folio);
+ 
+-				if (!folio_test_large(folio)) {
++				if (unfalloc || !folio_test_large(folio)) {
+ 					truncate_inode_folio(mapping, folio);
+ 				} else if (truncate_inode_partial_folio(folio,
+ 						lstart, lend, NULL, NULL)) {
 
-If I can find some time, though I have quite a few pending TODOs now :). 
-I don't think this is urgent, so if no one else picks it up, I'll add it 
-to my TODO list.
+-- 
+2.43.0
 
-> I hope below doesn't end up in some performance degradation.
-
-This is not a common case, so I think it's fine.
 
