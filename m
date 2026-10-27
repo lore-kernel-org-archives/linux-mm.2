@@ -1,70 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA849606A322
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B81606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=CWZKUMOl
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=I4TZvnuF
 Received: by kanga.kvack.org (Postfix)
-	id D27BB6B05B7; Mon, 26 Oct 2026 22:06:04 -0400 (EDT)
+	id 870DE6B05B2; Mon, 26 Oct 2026 22:08:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD9A96B05B8; Mon, 26 Oct 2026 22:06:04 -0400 (EDT)
+	id 821566B05B3; Mon, 26 Oct 2026 22:08:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC7A46B05B9; Mon, 26 Oct 2026 22:06:04 -0400 (EDT)
+	id 710DA6B05B6; Mon, 26 Oct 2026 22:08:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 92A9D6B05B7
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:06:04 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 272301405E6
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:06:04 +0000 (UTC)
-X-FDA: 85366765848.26.75A2174
+	by kanga.kvack.org (Postfix) with ESMTP id 4A6966B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:08:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8819A1405D7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:08:04 +0000 (UTC)
+X-FDA: 85366770888.30.4552DC4
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 79D86140004
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:06:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="CWZKUM O";
-	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	by imf14.hostedemail.com (Postfix) with ESMTP id BF066100008
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:08:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="I4TZvn u";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793066762;
+	s=arc-20220608; t=1793066882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BbcsaSvYmqsc1/PGogALmAlsxQ4NtVNgPQ1FxMhmi+A=;
-	b=7X9WClx/OfytirEaCcrXIugr+jjnRCrA+dd6171k+GxXq25rbp1hgyCnrw48WfrFr5m61H
-	Db4FgIBrQ5dZSYTY6Z4SsKY4QBNfwvC8xVqKJjmnPVnkx8IGzgr81GHV6IO8DzN4tjGDeZ
-	G9uFq9sOIu5ri+3ZvrZju4+hruLqrMg=
+	bh=oLq4wxz5oEh5R1sh+VJJCccBAQfxGPFlpx22HnajP3g=;
+	b=Cq3jIlqT0bKPh5UlPwPMHovZa/DoiTljLPpH7VklCnc8dt4lC//Js6ocLNMo0H80sqjSXr
+	G3DO9EnEhwoVcmsAF9xpsw/1g+2JswPCC9ULwjZIpGWH91VqAe2sPXUE2iMKRKGKFLi9+h
+	M49dQzMq10J3Tddq0pZ+ZGsLtrhwQjw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="CWZKUM O";
-	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="I4TZvn u";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793066762;
-	b=Xu0vnVEX/PrZOIpAlq8g6O3Z4FychAYbhaM2AeG4M2L/oMVZwj9yRE5B2qg2L3A1+1PudS
-	Tbq11IUwDpIdCaoJIqoSR3xcgcO01IyaWnfjh08PDByG0KzISTKvx8Aj7vRWJU5t+Qc+QA
-	aHgH6S0g0nBccnGv/uEHquMN+uYKNyI=
+	t=1793066882;
+	b=r9GhFftaB/+aLQJtfKcOEsD/ZsNluOpTuaa0H+0d0paoSMTlmL/Vn3SW+bQKahSMDJTfGu
+	0/BFrr4odblftapPrZakeWwuPXV9uUlNFvJOcHJgKAM1qLxBus7zO6Ttu+l9rOnUyeed8G
+	PCDJhIeNuYdG/mPPzSWXbDehzNn4yoU=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=BbcsaSvYmqsc1/PGogALmAlsxQ4NtVNgPQ1FxMhmi+A=; b=CWZKUM
-	Olnx3u/Gk5d/OR91etCdue5a5CeEvh9PUqUSqSygUk5of/q0VBUBLnXBtQ2IAvjkhbniPBjcGJ5AJ
-	zBfQQUrA0ZeKI7TGX302NhHs/ur3FPzRcq5M6b0MbQR0vP9icJJX5f5CLh/ck9GLTlhxJTH3OYQdd
-	WvMY6xVWwNwR+GZMzxMuGji7f82nyk0ZKOcdh6DgF0SppBH9V107GJT6RjHLvk6VFYHa2mO8AqRKg
-	r0D6xxl2JO9boBueLIeID4FZrS8rSfqex+cOpROWqy4bTb6t0CjFI5zmTuuIJNeHNGcWzLHLf97l7
-	vOiE2PSWsmxrt/oipmdtcnhFJauQ==;
+	:Resent-Message-ID; bh=oLq4wxz5oEh5R1sh+VJJCccBAQfxGPFlpx22HnajP3g=; b=I4TZvn
+	uFx5nXaNn5b4N6dTFJOZnQFvfCyMSRe1WmZf0oJ6ac5FdYlGx4P4oZcraSi6f8oHxdUKQRL2hhMv2
+	k1T8Qhk4DMEliLIEGV8Z9vwg9OjZR0LHm1fw7Q4EGvmnlyqmSPcCxJDJVd3+v/SvoT1lDE5OhhWJh
+	bB0TywZtbrrrqxcpI/RWp69SqjcAEJ93TnMT1V6Mt8msESZgTNg0CoUeCX2noFZdIztNs0cPT7B/y
+	9e9Au7mlP2j0PqR5y1+9tf4+O0p9v7VEND/Q6vD2t3xAaX7LNz89F3FQppIO6jBl/Ye+nt7mv8PxY
+	jNU/oTDZc+eq68lcC1MXDWmrSHAA==;
 Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
 	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <riel@surriel.com>)
-	id 1xLWY0-0000000B0qk-3U0e;
-	Tue, 27 Oct 2026 02:04:20 +0000
-Message-ID: <35420f2a3d5f3af10cd88fd9e3a977b4e17a0476.camel@surriel.com>
-Subject: Re: [PATCH 03/46] mm/memfd: check for real shmem inodes before
- accessing shmem state
+	id 1xLWaN-0000000B10v-3TRT;
+	Tue, 27 Oct 2026 02:06:47 +0000
+Message-ID: <639cb6dca4ab423272e05b90562ec49c7bdb12f9.camel@surriel.com>
+Subject: Re: [PATCH 04/46] mm/memfd: make f_pos accesses atomic
 From: Rik van Riel <riel@surriel.com>
 To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton	
  <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal
@@ -97,12 +96,12 @@ To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
  <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  kexec@lists.infradead.org, 	linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, 	linux-cxl@vger.kernel.org,
- stable@vger.kernel.org, Chris Mason <mason@kernel.org>
-Date: Mon, 26 Oct 2026 22:04:20 -0400
-In-Reply-To: <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
+ linux-arch@vger.kernel.org, 	linux-cxl@vger.kernel.org, Josef Bacik
+ <josef@toxicpanda.com>, 	stable@vger.kernel.org
+Date: Mon, 26 Oct 2026 22:06:47 -0400
+In-Reply-To: <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
-	 <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
+	 <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
 Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
  keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
  eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
@@ -132,18 +131,18 @@ Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+X-Rspamd-Queue-Id: BF066100008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 79D86140004
+X-Stat-Signature: giyhhq6zagbif9ir4b5x1gotyrtdbwbr
 X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: af99pg3y5mfkjimb5zo4e943yf6q36rz
-X-HE-Tag: 1793066762-39697
-X-HE-Meta: U2FsdGVkX1/TQz5BArEL5hae3NInX87b3WaSvFqlLrC3QfJCCd26S7BL/RiJv0hq2p/PH/zjK19DuUiyBSaUBtTWnLIXpb/4z8yIp9L4M4NTfAbZAnC/3kQVOHAW3LoHWwHClEnC+MxHkR/jpavRFzY3h6MQnRUtFlVsT0fKaS9g8g+zW1S4cwHjvdj+kA3RIDMzLOX6r+k0wl8atIwQQAog9rBlbjltaRGB3Q8HMeZ6tn2EJfvOhO6/Q2mhuGazgsPDrrbDPomwg1SlDW6k6Cj7MIagUKtCMRQzN4eZV+09pwA7Y4VaQF5hFewYc0WOsX7G+c0ZuMcfen4AZGbiM54w2/gFRUi5aounF8M2n8feAgGC+9DACIxEbKKwqmuGpyJsWllrluBS/A+1UkOL5GMzMVCz3pnb/yLO5MpomLJaQaciLJUYeNisPAvUhv6CtRqUy7yiJ3uEAQHk5dylP2ccYChZk/o60hxfBFGOebjmbqCIoghdLhcOori0pzD1jhvohBmVD6Lapiudgt1GKIWIb4MXppsHS3kuKX9PrF132xMRhQIr1wOBONgyZPXjaV/EpocQMbNZuf9zyEB9WmhzQfpvY1z/HNc5L8IHI7lz6f/QnFBgEbAPwyEB2XVECaVW293zCQi/377YFAk3ylbPFwZNcOEWpFvG+Me/pV1pGvkEoc7euF9q9PgLGJ5Kp0btNS6OTveAFc8o93mqxnWlEQBOsCaMIXrWUw5LHLBQmK9MrcphecyxIF74FFHAVdYSp6/zeHdtCV9DrISC6AI70tRokmN+4MM89MFRNkRn/dJ/dVlRb2cfkQHO7lH8a2ZaBcXKv9pnF+ocTUXjGBvB61zeld2i4GT8NFo1hG1+k97gJlXcEdxhj2VYCHbO4s13dHSTCEqD0VrguYFxzJtdABigvOahMfBt9F7dvHAX5WBPJio+WWfjOd6B0b20wRsRICfL/4Cafq7yjch
- 2UDwiYjI
- 02VYmpikw8mEAU2N5eQrG2Kg2le1Uu3nLxDndkfQCcyqwC6uRqXCd4l0qhsxQadBYlWxMTfHroxQeK0kXSb884ZY4YlHGPgSQ83lnJLn3wdQJeq6DTIvSKjVFah3I268XP7Bwh4ZSZmPzjncDN9fTzBrcm8g3ylA8N3WomDQCd3pWKo84kL1r86RQELG1+tsewpOsmYQ/xGJe6IHvVRnfdj3UA6NPX3+iUwsbh9/m2Z0pgy1bpKlbmQGWEJXUMCdgD9H0DRjva7XBGxwFinsaAiDunqFDxsc/fwFniB5THeJ/UpS4cu+tfphZ4WvavFOIRjvutqqrCV38er5Z5Lnj0oHVx+wZNgVb8ucfh4WK1FEdHBomMpoSWtW9dlXOLmZ1ViyRVZsoNseE0ttlaMYIdpZBwurgCa6qArsP+84lNr6XFFhIc/O/Hh+u8A==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793066882-535716
+X-HE-Meta: U2FsdGVkX1/rYfoK7Ck1G8Mlo3CAeuiarmDv7jl89aBl/jtm0IFl9+28ZY6xMStsO9McZVkmGmXD11jYSRM7F+QjcbjsUrRc9ps2kZCbkScsuMoHlA6jhLD8YZ2F54UJj/buHYROx3jkPslgYMZlh2T8DqfyPPGVFCRf0qbXq3y+IPmfqjNFsZAaHB0LQ5NcQ4BwkxTbStqFhYO9YJ9BL54mFeozoTkocN8WiNbvnF8HDK4g+UDjSlFjtVrwqnCIbkb446QAeW2eLUGwo1eGqOte2wY3LV6IcZrW/ofcwxBIaB1JE0IgF4YzIasiQGloe3f4rC56ERmKmgQZJOY5o6LsB1HjdDMJF59mQMh+qH0AGriYxxsWs3f9V71nkIH1d3B9BPSmXt6C3WSbqaewvIZzJXVCT+kciuGsr89mO9WU+ndJrbd5ZAw0HenksZHl1qQyiQCOeWgfEWSk1oPj04gXLtjh+42fKULh/bWNpmo477CKzvcFQmmSjYoKumFddiHyNaN3X9kQvfY8WAgnCOR13TzxRxrDkmk6kBH+Ul6FlkhB8ZA2P27iVSHzR2N+VCCXslf4lEr8HIPTuCKEjUe99Q/9Hrlvt/jdLCZALyg09PXYxyzSy0wTv81k89VNxYdrSsLbdF6GkrhEdNCVM6uh8Prq13VW8so0xJ/9cEEiLnTa1kD0EigNWj+riqqXMc16DpCcVQrXyeT48WYRQ8UTqBVEY1MRcVwdxDkkJAa95SsiirmnRR3Z0VUBfrgQAUxWmEq6aYMIf61IbhH2HucSe/PiCljnQz0C8VPXzWgj0Yyzj96XneDPDpo0r2i6UhXCbBgW9jfnGm074w7gTLUYFkdowl53bUIVZ+PqW0F25xEXEcfK/rVv/5JyIWZsN/9bNm82AQihznbTel/uEXARLpqDNvaL5tv9d8blwD9YTXxWt7uztT22hu5wrIRU1EqForNQ/HpaUaLgzzK
+ ekWbKE/u
+ u6UD0GI7uAsQn8xdaePMmmy5IwNUPngFP4J7SIZhN+1JTPXdS/sK8VHB7+6ieuG/xxyVjpshmx+tNhaWl6DcC/UjZAvnx+5DM4JPfdesKI7CxwLsayw+6TXsAr165eHJTHZfIhpsOBoB8G49gYCWv09xvan86nMnCB+EA1s0uUFHTqWHle8P4ks4Cp9jkkBiC/sBgrmlTdknp2n6L5FU08PcfEMRyWfgPrKzWtakWFisSx/tsjzZ2K0wXXVQEkVOcIg9U6JLs761oYV0IoIK5Dr+cb0eDNiYL8uKdlOrit9o/HGiYolsODzjoXaesZ7ayaiowQ3/P5Yx5p7zglEj8CRpHLQbu2oVgLioxAjpQb+/TNpynzH4Em1RjIrwU9qqdKYuIMCK/StofMsEQEyu7PCx9lzmdab0uSFNP/NTtnq7v+wKO4DGEk4B9XVLiOUCSpzhNPVi2i05lYuE2b7362YDDyBgB24wbgQ5aHY3+bSfz1ycbbyC19K8vBoC0n/FHpglBLTbCptpGgZ1L8i2RsziLBQISP5GMwPm04EHjnz+idv8erRbiPyffG3fXS1lPt0JX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,26 +152,26 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On Tue, 2026-10-27 at 00:17 +0100, David Hildenbrand (Arm) wrote:
-> shmem_file() only checks a file's backing mapping. That mapping can
-> belong
-> to another file, as with a Coda file backed by a tmpfs container
-> after
-> mmap(). It does not establish that file_inode(file) is a shmem inode.
+> From: Josef Bacik <josef@toxicpanda.com>
 >=20
-> Seal handling and memfd preservation use this check before accessing
-> shmem inode state, so they can access an inode of the wrong type.
 >=20
-> Add file_inode_is_shmem() to check the inode's file operations in
-> both
-> paths. This identifies regular shmem inodes, including those used by
-> memfds and ordinary tmpfs files, independently of wrapper file
-> operations.
+> Set the flag when the memfd is created.=C2=A0 As for any other regular
+> file the
+> lock is only taken if the file is reachable in more than one way, and
+> nothing a memfd does in read or write waits for another operation on
+> the
+> same file.=C2=A0 This cannot be done for all alloc_file_pseudo() files:
+> anon
+> inode files such as eventfd are S_IFREG as well, and a blocked read
+> holding
+> ->f_pos_lock would lock out the write that is supposed to wake it.
 >=20
-> Fixes: c49fcfcda8b5 ("mm/shmem: update file sealing comments and file
-> checking")
-> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+> Fix generated by an LLM and sent by Josef Bacik in private.
+>=20
+> Fixes: 9183df25fe7b ("shm: add memfd_create() syscall")
 > Cc: stable@vger.kernel.org
-> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: minor description tweaks ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Reviewed-by: Rik van Riel <riel@surriel.com>
