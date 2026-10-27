@@ -1,97 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85ECD606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 23:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE89606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 23:10:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88C606B0915; Tue, 27 Oct 2026 19:10:25 -0400 (EDT)
+	id 5A7806B0918; Tue, 27 Oct 2026 19:10:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83D016B0916; Tue, 27 Oct 2026 19:10:25 -0400 (EDT)
+	id 5589D6B0919; Tue, 27 Oct 2026 19:10:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7081A6B0917; Tue, 27 Oct 2026 19:10:25 -0400 (EDT)
+	id 446246B091A; Tue, 27 Oct 2026 19:10:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 353A76B0915
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:10:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1E1CC0B69
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 23:10:24 +0000 (UTC)
-X-FDA: 85369951968.12.40A8E85
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 075C940005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 23:10:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0403C6B0918
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:10:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B613160B5B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 23:10:55 +0000 (UTC)
+X-FDA: 85369953270.23.92C1DC2
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BAA0CA0002
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 23:10:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf01.hostedemail.com: domain of 3Xi_hagkbAJ8RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3Xi_hagkbAJ8RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	spf=pass (imf15.hostedemail.com: domain of 3fC_hagkbAL0v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.72 as permitted sender) smtp.mailfrom=3fC_hagkbAL0v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793142623;
+	s=arc-20220608; t=1793142653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references;
-	bh=odh1FEY3gfv9Oaa4XSlvByT1MReTjq4xb466aItSTqw=;
-	b=Xuaiqu+6vXvKzXeFf6bU2xwPJEtOcugFa8jiS+C0iHn3XWKOTlAXAf1gzn1+jc2bgnuyyD
-	h5tCwkkmfGwK3E5mC+u0gVs23aOQdNinKdYfDGeYpTMh5Uudv//xF1K+ls7Jx7iQzYKHsA
-	3hFbuFrYd6Vzy4oEAMzne4XygCVgzKw=
+	bh=A3E77K8iCCovhISJvCAtXH/UuMVbqTit6GWjoYdyLWE=;
+	b=pU/8LWdxVx4xMfJfVQMJDduw/MZWoFF51u74xuSXl4TNY8X+1q0T9YtR20A7ej+9ECfMiP
+	BRWs1QD2iVaES4Nqhne7LOYa/XpJfaFEGX0PwQGQb1W6c9YGwADNLBsUWDHnOQ4hAtyY/u
+	X72FYs2q2mmYXM0rNniy7CkaZccTlmw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf15.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf01.hostedemail.com: domain of 3Xi_hagkbAJ8RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3Xi_hagkbAJ8RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	spf=pass (imf15.hostedemail.com: domain of 3fC_hagkbAL0v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.72 as permitted sender) smtp.mailfrom=3fC_hagkbAL0v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793142623;
-	b=T8w+OPq2rErHFIDyUH2H1RH3Ha2HKqy6c2hJLo/87aLLGg52yyHoCVCoHn3y36T3JGI0tO
-	GQtlst/43mtH8C3Niu4FAd0CiG11/N+9V54t95DsRi8BVbo8CnGIJHTt+/+pW0JP2yzxin
-	Kw2XdY4sP82J6nXnKo5Xu+08p82qAWA=
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4f2040e10d8so406298b6e.3
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:22 -0700 (PDT)
+	t=1793142653;
+	b=e1DUpl9cARy55mE+acnsbWspYRnBHwTsbJgrsKLerymlhOoH14ziMRVzYLYxy6DgUn3tju
+	PXHNMExL6SRe2y3Z3uNj/YJ5PXRst72mIJHQi/LM8mDi3f+LzHPFy0sfovtASQX9Hame8g
+	tDMJNcshhoerRA0d7mc//xzrB+h4K9M=
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-847e2926d94so777188a34.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793142622; x=1793747422;
+        d=1e100.net; s=20260707; t=1793142653; x=1793747453;
         h=content-type:cc:to:from:subject:message-id:in-reply-to:date
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=odh1FEY3gfv9Oaa4XSlvByT1MReTjq4xb466aItSTqw=;
-        b=yyj0MRIucP9/GsTuQl6DbUEaR/mPM3mugrU/sE5pKYrxGfUZk++5IjCNXo5dxsYYVo
-         OQyixL9C2+cAgyYV0QwAibtjde02en75D4UGsgnZsSAddEB7CtHzHntqGrjYrt2A4zja
-         BJvlQj8tpPhl8tpqzFrTgjclHMcnlhT95gq7fBjKHzgcBVcfpF/sdk0klWp2zFz7GoRW
-         gc29HVYszcONb599jYv//jk1Rm1kA1lOFVrX9uVwTEo9VM9ztWUXiQrw/oQf+6PB/6Wh
-         9TUVZJTMM24uE1bCBpSRetkxBtR8qZu/6L4FAcWCvOzH+erHRkYXdYbQtYmRClZQb0ft
-         XUiA==
-X-Forwarded-Encrypted: i=1; AKwUvBxv2n+6V35p/E9gGfppllDKrHGcNOWHhHdg84O1PRVneyITjC/8aCEkK2TdupQtwVoYJ3icv+n8Kw==@kvack.org
-X-Gm-Message-State: AFq9FYKFYBe4roi2A3oHFThSqBiQhcn2aa4YKz95hfaCbSoJmsgmXsef
-	qUrCzoBUNS3QrUEJhzPn6ckcuExoPO57AUphl3GUuRQCw9HsJG1kfumj4VDJDPl1a3cy4b9F8GL
-	0dRU+wWSAh26USMb0YbiNXuTQlB72czeiXm6pbsqGNn0H/DdJECrn2I/IKKQ=
+        bh=A3E77K8iCCovhISJvCAtXH/UuMVbqTit6GWjoYdyLWE=;
+        b=r6CP87kwgHNj43dm73VjNIvwO/4VtB+1QQ3ml8Ua85CyONuMiCb9FrIj80U8hPHO4T
+         dgqaWQZEV8UQgEONEMw+x0XIhRR9cwi1mIBxnNk5loGJ9IFwfdQhDMYNCC+jPTJySLFI
+         DOFxXa46Z953gzBx10iCjL+t9uncyg1q6v4eMks6P8N74NZzqJi9/QB7jNIpu6wIOKiq
+         qLx+rkRFgPW/DyjfyAjd9GxEeOM7Hz7RYM+1UEU0vuPCg25qnSrU+2XooUEsGsdhYIBI
+         5qesZc4NazJhG8cojP6XEWZlO8Ynkhs2qSSUNAs/xi73sKUfzR2F63kqPTLVI/IUUApl
+         rEZw==
+X-Forwarded-Encrypted: i=1; AKwUvBzahw+qsqk1zl16AfWn9pVJs1z6T9g4syoYEOgAgqL4ds+Wk+MPQBMKL7tY+KkpKhs0yjs+5pQFKw==@kvack.org
+X-Gm-Message-State: AFq9FYIVs2i+HTQL2cxORpuy7SzeXGZq/J75Hk+Vxn3xwPiAC5jEnBTI
+	ue9yY5teQTHJHq4iCmMMcI4St5ghwUrCG+CDKv9MIJUSZPwHG/XhT1/f3xXS7qLiM8MWo5H2T/b
+	XmyKujk+x6QZHELToTu05gWggq1cLeCBkge9bWu5r2oDcAguYKCMCM3+tGOU=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:f12:b0:4b3:7b31:8df0 with SMTP id
- 5614622812f47-56382c83592mr462249b6e.10.1793142622081; Tue, 27 Oct 2026
- 16:10:22 -0700 (PDT)
-Date: Tue, 27 Oct 2026 16:10:22 -0700
-In-Reply-To: <20261027113813.1332096-1-trintaeoitogc@gmail.com>
+X-Received: by 2002:a05:6808:c1f4:b0:55c:836:597e with SMTP id
+ 5614622812f47-56383e9013amr518556b6e.31.1793142652810; Tue, 27 Oct 2026
+ 16:10:52 -0700 (PDT)
+Date: Tue, 27 Oct 2026 16:10:52 -0700
+In-Reply-To: <20261027112702.3747009-1-dipiets@amazon.it>
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ae12f5e.985912ea.1e5798.00c8.GAE@google.com>
-Subject: [syzbot ci] Re: mm: clear pmd in pmdp_invalidate()
-From: syzbot ci <syzbot+ci4a2df3f964e29c5c@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, surenb@google.com, trintaeoitogc@gmail.com, 
-	vbabka@kernel.org
+Message-ID: <6ae12f7c.768774f5.3237ab.002d.GAE@google.com>
+Subject: [syzbot ci] Re: mm, iomap: account dirty at page granularity for
+ per-block dirty folios
+From: syzbot ci <syzbot+ci96d4e003e13d8147@syzkaller.appspotmail.com>
+To: abuehaze@amazon.com, agruenba@redhat.com, akpm@linux-foundation.org, 
+	alisaidi@amazon.com, almaz.alexandrovich@paragon-software.com, 
+	apopple@nvidia.com, blakgeof@amazon.com, brauner@kernel.org, byungchul@sk.com, 
+	cem@kernel.org, david@kernel.org, dipietro.salvatore@gmail.com, 
+	dipiets@amazon.it, djwong@kernel.org, dlemoal@kernel.org, 
+	exfat@lists.linux.dev, fuse-devel@lists.linux.dev, gfs2@lists.linux.dev, 
+	gourry@gourry.net, hyc.lee@gmail.com, jack@suse.cz, joshua.hahnjy@gmail.com, 
+	jth@kernel.org, liam@infradead.org, linkinjeon@kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org, ljs@kernel.org, 
+	matthew.brost@intel.com, mhocko@suse.com, miklos@szeredi.hu, 
+	naohiro.aota@wdc.com, ntfs3@lists.linux.dev, ntfs@lists.linux.dev, 
+	rakie.kim@sk.com, ritesh.list@gmail.com, rppt@kernel.org, rvvandan@amazon.com, 
+	ryan.roberts@arm.com, sj1557.seo@samsung.com, stable@vger.kernel.org, 
+	surenb@google.com, vbabka@kernel.org, viro@zeniv.linux.org.uk, 
+	willy@infradead.org, ying.huang@linux.alibaba.com, yuezhang.mo@sony.com, 
+	ziy@nvidia.com
 Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 075C940005
-X-Stat-Signature: b56xwf853w7xu7q97ow7zcxwj8fg7nxq
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+X-Rspamd-Queue-Id: BAA0CA0002
+X-Stat-Signature: wntqqhbth6hratdkwqu34aqsdrbg5nti
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793142622-456154
-X-HE-Meta: U2FsdGVkX180ouL3G9qxXLvyfFbWyXknQI+dLuY3ga3Qv0w73awlpwJTSPiDl3TcXr+J+/b9kOrI4egMarpsZttW9QAChwqjcrL+vR4+OXHSelIqcjNQeztbgMOmOdYKelqWs2D0x5DIAKUrcdEz1nWQROsC7aRNJoSs7eWZyKJPYeK1T/VR/LqQOPOgydz0kLjNFLI10WrWNzkFkaoMzFeoshVSyrpDZNlCtfnSOui+5JAbNFB+LY903KsDvQ6vnHDWJOyX7DKo0pdn2br+cBCWqXKVx/h4trGCrdjvamfh73sGl6kYWtLSv+WmlajmvKXhEJfWaLI934kR5PrbkhP+3TZR0kNO2c+ueR+1JeEMkd4SSXfRARvg857s3eKBdzZPOKe944eP6xEsW0yrEKxBSByZlNA9jVElMd4AsGQx3ZkD88Y8JbE/PTpxpQW0rvftq+lZoSQaw4TtkHdRu4ZD7BG77dtBpQTsQQdBESTHx0DTZYxwYP7ossTYNKLjcFnTWoDfHinTRxt5Uf7rW/samILzbCXBv5cXAgtTAj/qdi0ApUDwg8ydv3nQWohx6cVIgX30+8zM47LY0FnULeTcXJRvWcSo+++qC984TEI/jQZrF153nZ7l3xyAKNLY1LOvDtWkv2GdNt3vRmNz94ForqNjjEt8G2/M3AksycHmBUOtCSNWobCYTYcaTnvSa5nlWAfbDLqYLQe57JWnHYzcQgec/ulal64n+kfO8Q3Oe3wLhx1aQRsM6rJIL84w2QiBl47jQOvH03VY2NE3F84wxkQAIaTOd68oSVbyi6/vhw7Gx0j0cWtxwVnesYKjeC6heCh5vozq6oko6gKJmyyCn+GkyaLz38krbZwnemvVJ7tLHk17YFkaNEAtR6JPObWIUKak9jATVqmD7OQwDkIVW7F8Pucyvw/G8jxEDkdwirx3zV5OfxmHo7Riscatuh5DoowNcI/b7np/XXQ
- JxPTL7x2
- tl2X4tKp2+I3On2Kefy8XknA/oeqMmc+a2rak9llKTB8SJyHuapogDQ/DWc58qdtO+fNgQhyF9uakrccc2T/ZCIYH8LLZfvKd4pI3DGBE+9zgkOy7+9vYyr7D4nbXEdiPBE94nZ1i9cKpF+CssLuk2tZJ62vzNyz1qRJ9GqGy5tjzQInBZVL9Qdn7xEscSqe80BafPFBppT++TjqWblKFttONZR9Rj7LfopUCNc/XBOGx5lxlD2mptrImmIYxz1WcdKwm1qQ5dYnaFI8S9eMOApXbn3PK/tjsDNfgPs2Jg6uYO/I0RSuCes3o/bONrz6kgHYsJemHjJVN0MVH0rDvMM+cm9wG84VHG/GksGFJABkacuNdj3OgbsG+JeR71VQjqaFw/R1oS0LSDIq7CvLZES3LBI2kucJtft/rgoxlzDP4qqDUwS8F+OR5RPSodIP39E6pq3twzS2IANLSo64oQRWCJu3IZWM5VqimgO3zs6ysaqVHJuUO5C5FTqXYsa6Z3KKQYawz0UlCojP3B02W+kuZC2cxa9Pt2eQPpChUhwaZq8TPwqsz8BgL8QayUcwr5w/T0pVXt1EosjTa1morLN8xpw6lL9rzj3KIVKKBlvYN0T3OO78eON3ojwy8R4XlK8xyw9shnoKC7VnP6ASfe7lAGO3phr+JpfkSnkak/8oLW5BCtd/z6OCrP4E9qeb50pmCfs0xYNvtti/TW253oYFT6dpiTyJV6tQmDbm4FUrxLb3u86o9oeDr+mio3eXNob0Z1BX9ulrXs5PSJHDvdaFqsz5WZJssz/3vP7Gvnmyjxp+t80lBKquLvmzRmzCPQh7oyQK6pQlDI/zqM4efPwSOpgLSrHVdFULtqFfICO1yVi5vyvlYdd0p+6EbP567hEVjf38B3FeeZzcpn7wmsPPY+HE/d6bBVpMGseGsaHyzhvCy/CuDei6h5OxVUYOZC3uFIL3TQWNrmucNsZn4uHRKNjUZ
- 61x2BK9x
- UxSIgMVCPdo5CuqcdQcoUw==
+X-HE-Tag: 1793142653-783621
+X-HE-Meta: U2FsdGVkX1+w6gsRofe+QEAqekYoN9GvCD6h+spTEOpOipU0+nNn/E1sclmrwIzDYaq2F4wPu13zCTRdTKsASHpaFNAxUUEC4yw5CgPXQsMnb15d0Qkkf1Xw1gx0nr1mMuWTSQsrrX0MSrIAvnrLcC8DHp7pxIw5jIrRCbGY/geSqZ/Lt01ehsRxNp6F/TaUDrp1xCxFOkAfSvhKsmhLiH6R3UaqEa610i66r16beK7Fpxt08XtwBoyvj+zASTC5Q6HlbtUSJ1fsYyekHoBqiKU2MtzEPlB4qXyDwUWK5gO013lAUdZlBlqhp5D47mWTYxE6eqgTGDULs/0msSvZg8047tLp3eZ2g0pfXuWhMAUTO40CC8hkWJbKoRZR0dbhIhdHAeIDvtmHhD/I3DoMNNoy6eaBB0sJBnWF23ouEJQk5zhUDw1sIr+5duCnpZKl6amPM5S5a3je/xjJ6NeHhw3J26boACeFNyp7AhwRJGabegCWN07CvC6vMoTbYyGGO/t+PSKzbG00Rm77S28dVZ39anonO76+Zyk8dkvmo0WjDynz5TX5i9kCM6ZnF8llkVG1lFFu4kCZzILvnJqORNftpM6edphp2NRNQzBu1+dliQuS8ONA6iqGn+6e3QXCJntUw7BKAwZY8Q6n5ubVmZr+2KKJkFVk9w4Gz7YoUL5ZfqIbRAzEpx5gAe2kh9uAwzqH5/O0Zl8ntrb1skk946jIT/6gmlLtj0jkoMj6VLKQwINOJZY/o9eWlJn9rutpppjdadzx1zbXX1VPqlo4KCVTwEBU/Yu8wuHnyJ367OU4W3jh9TcSlWvY9I2WCTyauvpTTsQHBNmurjUJrdi4w4020l1arjg+j6XOeAa+vmXe24Xgba74FQRGict9ABDgcb3Q2orBINFaBKVTXErG/PcOa6TUnffyrw3bje70Vbkh/Rl86Nkh3xUFhq/pZwDwSteV52LVxja6UDf0t/E
+ eSvcUGO3
+ f35SWrJQbV+ehmVjX1/HxZJ7TI1SCjSE6VH2ykKVbo01yW/KHK/9GCgd8qBvGYNz8lfbvx2GCeLdsKlo2qh0qHzpqI2VA5N8pgh0vRY7HPk1PDI7PyyF9UQDj3eQajf3A82ta7hQGwt2RLhjejbiqbaNZCx7gXuFIBbI5OKN0mXztMww/OzpWPP1qSH1DlLOxPaQVn7O6z3rIA146NQoZ/bNEFi4dAr1LtmkmrXqxggUY8OkYvGSKRiB682xBSwDFQvrK9v/soLeiAFbpPEWuWX3BdE/ptq2SzQUvO0kY/ANNSz0RvnYJGWXej83P1UdJ88CWv+ZpGEjRKjMhzU/y7jbLHt4ntVxTrBPDsUw3A69fm11Msbq9ixPPnzyoksDmg7F8JysvrqwyJUGXTiHgPdoam0prbo/mqyE7N0RpYrGMeOLbkv2cjUMgHhU0o+EQravJNymIVFZbCBNVok5zX5zYvU1J2ngL+bqKpSxQz51qoHYLfA2Kg65e/uKIXMcBIBv194yYw2P3jggKlwnrmUmxyjy6W9vWa4LpRBi1+NOnVAUr19Spn8J5qAFHgnEwLQJaKiFcId4C/JIIYEs6jndh6EUqH06jZd4FvXy0AVknmydZ8eX3TGKiL56TiHBEvE+paJikDFfR7RBKcC6ikKOQl+gVzqWHAFRL2QG5WHGQFZYjBhAiANFEDlULm9rjzzNCO2UlwzGsJQmQpOIttHIxWYocV0iyvFnitrzj7qZyh88CdoqEv98+TNFk+7H5GHypI7ELYXDctDyPy9G537+IvEgrjbO9mfj+87YPxredU/dcnydPbIul4WJ3ajql/hnsAeTTeA0ER3U6ACF7S/fjXWhGnswFiZ2vUO1Prl2qe4B59HYitZjL3TdA+tfX0Ss3iVOc99xqvo4mqg4M36WB3uREDW8QZTSvcNA/531OsF4n74I+FPGJ5H/1PpR+81uZKSkoCI3xCj0FjQ/K56RAUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,90 +115,386 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 syzbot ci has tested the following series
 
-[v1] mm: clear pmd in pmdp_invalidate()
-https://lore.kernel.org/all/20261027113813.1332096-1-trintaeoitogc@gmail.com
-* [PATCH] mm: clear pmd in pmdp_invalidate()
+[v1] mm, iomap: account dirty at page granularity for per-block dirty folios
+https://lore.kernel.org/all/20261027112702.3747009-1-dipiets@amazon.it
+* [PATCH 1/2] mm: add infrastructure for per-dirty-page accounting
+* [PATCH 2/2] mm, iomap: account dirty at page granularity for per-block dirty folios
 
-and found the following issue:
-kernel BUG in page_table_check_clear
+and found the following issues:
+* KASAN: slab-out-of-bounds Read in folio_accounted_dirty_pages
+* KASAN: slab-use-after-free Read in folio_accounted_dirty_pages
 
 Full report is available here:
-https://ci.syzbot.org/series/ea6c690b-0dbf-4e3e-8367-2b5092d2878d
+https://ci.syzbot.org/series/05041e6c-d357-4fc5-9bbe-6aae1760d639
 
 ***
 
-kernel BUG in page_table_check_clear
+KASAN: slab-out-of-bounds Read in folio_accounted_dirty_pages
 
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      01146870c415f6ff70a469fb7ceb962a3f2c8c52
+tree:      axboe
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/axboe/linux.git
+base:      24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
 arch:      amd64
 compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/b4be77d2-e026-48a2-b906-ba8967ba2d37/config
-syz repro: https://ci.syzbot.org/findings/8fa94c36-acda-4fe5-a760-1dea60977f77/syz_repro
+config:    https://ci.syzbot.org/builds/9865cf75-69fb-4fbd-b5fe-d0be9cd03802/config
+syz repro: https://ci.syzbot.org/findings/98cdf846-0b4c-4f94-8430-3b7db9efe057/syz_repro
 
-------------[ cut here ]------------
-kernel BUG at mm/page_table_check.c:83!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 5817 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+==================================================================
+BUG: KASAN: slab-out-of-bounds in instrument_atomic_read include/linux/instrumented.h:82 [inline]
+BUG: KASAN: slab-out-of-bounds in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: slab-out-of-bounds in mapping_dirty_per_block include/linux/pagemap.h:319 [inline]
+BUG: KASAN: slab-out-of-bounds in folio_accounted_dirty_pages+0x53/0x1f0 mm/page-writeback.c:2654
+Read of size 8 at addr ffff888168669f89 by task syz.1.47/5860
+
+CPU: 0 UID: 0 PID: 5860 Comm: syz.1.47 Not tainted syzkaller #0 PREEMPT(full) 
 Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:page_table_check_clear+0x4ec/0x500 mm/page_table_check.c:83
-Code: 89 e7 e8 f7 1a f4 ff e9 bd fb ff ff e8 4d 37 83 ff 90 0f 0b e8 45 37 83 ff 90 0f 0b e8 3d 37 83 ff 90 0f 0b e8 35 37 83 ff 90 <0f> 0b e8 2d 37 83 ff 90 0f 0b 66 2e 0f 1f 84 00 00 00 00 00 90 90
-RSP: 0018:ffffc900035eed50 EFLAGS: 00010293
-RAX: ffffffff8244dd9b RBX: 0000000000000200 RCX: ffff88810d88bc00
-RDX: 0000000000000000 RSI: 00000000ffffffff RDI: 0000000000000000
-RBP: ffff888104dea000 R08: ffff888104dea04b R09: 1ffff110209bd409
-R10: dffffc0000000000 R11: ffffed10209bd40a R12: 00000000ffffffff
-R13: 0000000000000001 R14: ffff888104dea048 R15: 0000000000116200
-FS:  00007f8b11ee36c0(0000) GS:ffff88818c4c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000000140 CR3: 0000000112c36000 CR4: 00000000000006f0
 Call Trace:
  <TASK>
- page_table_check_pmd_clear include/linux/page_table_check.h:64 [inline]
- pmdp_invalidate+0x2fc/0x310 mm/pgtable-generic.c:206
- __split_huge_pmd_locked mm/huge_memory.c:3323 [inline]
- split_huge_pmd_locked+0x100a/0x2e50 mm/huge_memory.c:3476
- __split_huge_pmd+0x202/0x2e0 mm/huge_memory.c:3490
- zap_pmd_range mm/memory.c:2136 [inline]
- zap_pud_range mm/memory.c:2179 [inline]
- zap_p4d_range mm/memory.c:2200 [inline]
- __zap_vma_range+0xb85/0x4f80 mm/memory.c:2240
- zap_vma_range_batched+0x3e0/0x5b0 mm/memory.c:2351
- madvise_dontneed_single_vma mm/madvise.c:868 [inline]
- madvise_dontneed_free mm/madvise.c:959 [inline]
- madvise_vma_behavior+0x252b/0x41d0 mm/madvise.c:1370
- madvise_walk_vmas+0x924/0xb00 mm/madvise.c:1687
- madvise_do_behavior+0x385/0x540 mm/madvise.c:1916
- do_madvise+0x327/0x3a0 mm/madvise.c:2014
- __do_sys_madvise mm/madvise.c:2023 [inline]
- __se_sys_madvise mm/madvise.c:2021 [inline]
- __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2021
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description+0x55/0x1e0 mm/kasan/report.c:378
+ print_report+0x58/0x70 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:82 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ mapping_dirty_per_block include/linux/pagemap.h:319 [inline]
+ folio_accounted_dirty_pages+0x53/0x1f0 mm/page-writeback.c:2654
+ __folio_migrate_mapping+0x3d0/0x2830 mm/migrate.c:624
+ __migrate_folio mm/migrate.c:893 [inline]
+ migrate_folio+0x10a/0x1a0 mm/migrate.c:920
+ move_to_new_folio+0x1ed/0x460 mm/migrate.c:1135
+ migrate_folio_move mm/migrate.c:1401 [inline]
+ migrate_folios_move mm/migrate.c:1758 [inline]
+ migrate_pages_batch+0x30b3/0x4f50 mm/migrate.c:2014
+ migrate_pages_sync mm/migrate.c:2044 [inline]
+ migrate_pages+0x1b9f/0x2920 mm/migrate.c:2153
+ migrate_to_node mm/mempolicy.c:1322 [inline]
+ do_migrate_pages+0x656/0x8b0 mm/mempolicy.c:1421
+ kernel_migrate_pages mm/mempolicy.c:1935 [inline]
+ __do_sys_migrate_pages mm/mempolicy.c:1953 [inline]
+ __se_sys_migrate_pages+0xaa2/0xc90 mm/mempolicy.c:1949
  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
  do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f8b10f9f559
+RIP: 0033:0x7f04fcf9f559
 Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f8b11ee3028 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-RAX: ffffffffffffffda RBX: 00007f8b11225fa0 RCX: 00007f8b10f9f559
-RDX: 0000000000000004 RSI: 0000000000003000 RDI: 000020000015e000
-RBP: 00007f8b11036b20 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f8b11226038 R14: 00007f8b11225fa0 R15: 00007fff02a6aba8
+RSP: 002b:00007f04fc5fe028 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
+RAX: ffffffffffffffda RBX: 00007f04fd225fa0 RCX: 00007f04fcf9f559
+RDX: 0000200000000040 RSI: 0000000000000009 RDI: 0000000000000000
+RBP: 00007f04fd036b20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000200000000380 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f04fd226038 R14: 00007f04fd225fa0 R15: 00007ffc667db8b8
  </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:page_table_check_clear+0x4ec/0x500 mm/page_table_check.c:83
-Code: 89 e7 e8 f7 1a f4 ff e9 bd fb ff ff e8 4d 37 83 ff 90 0f 0b e8 45 37 83 ff 90 0f 0b e8 3d 37 83 ff 90 0f 0b e8 35 37 83 ff 90 <0f> 0b e8 2d 37 83 ff 90 0f 0b 66 2e 0f 1f 84 00 00 00 00 00 90 90
-RSP: 0018:ffffc900035eed50 EFLAGS: 00010293
-RAX: ffffffff8244dd9b RBX: 0000000000000200 RCX: ffff88810d88bc00
-RDX: 0000000000000000 RSI: 00000000ffffffff RDI: 0000000000000000
-RBP: ffff888104dea000 R08: ffff888104dea04b R09: 1ffff110209bd409
-R10: dffffc0000000000 R11: ffffed10209bd40a R12: 00000000ffffffff
-R13: 0000000000000001 R14: ffff888104dea048 R15: 0000000000116200
-FS:  00007f8b11ee36c0(0000) GS:ffff88818c4c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000000140 CR3: 0000000112c36000 CR4: 00000000000006f0
+
+Allocated by task 5729:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ unpoison_slab_object mm/kasan/common.c:351 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:377
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4683 [inline]
+ slab_alloc_node mm/slub.c:4996 [inline]
+ kmem_cache_alloc_noprof+0x2b9/0x600 mm/slub.c:5010
+ anon_vma_alloc mm/rmap.c:94 [inline]
+ anon_vma_fork+0x88/0x540 mm/rmap.c:395
+ dup_mmap+0x954/0x1dc0 mm/mmap.c:1781
+ dup_mm kernel/fork.c:1543 [inline]
+ copy_mm+0x115/0x480 kernel/fork.c:1595
+ copy_process+0x1e79/0x4400 kernel/fork.c:2311
+ kernel_clone+0x2d7/0x940 kernel/fork.c:2771
+ __do_sys_clone kernel/fork.c:2913 [inline]
+ __se_sys_clone kernel/fork.c:2897 [inline]
+ __x64_sys_clone+0x1b6/0x230 kernel/fork.c:2897
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff888168669e70
+ which belongs to the cache anon_vma of size 200
+The buggy address is located 81 bytes to the right of
+ allocated 200-byte region [ffff888168669e70, ffff888168669f38)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888168669108 pfn:0x168669
+memcg:ffff88816db0e201
+flags: 0x57ff00000000200(workingset|node=1|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 057ff00000000200 ffff888101687140 ffff88816040c7c8 ffffea0005b62950
+raw: ffff888168669108 00000002000f000b 00000000f5000000 ffff88816db0e201
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0xd2cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5535, tgid 5535 (rm), ts 43255388535
+ set_page_owner include/linux/page_owner.h:33 [inline]
+ post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1871
+ prep_new_page mm/page_alloc.c:1879 [inline]
+ get_page_from_freelist+0x2209/0x2280 mm/page_alloc.c:3943
+ __alloc_frozen_pages_noprof+0x217/0x5a0 mm/page_alloc.c:5436
+ alloc_slab_page mm/slub.c:3347 [inline]
+ allocate_slab+0x7d/0x620 mm/slub.c:3462
+ new_slab mm/slub.c:3513 [inline]
+ refill_objects+0x2d5/0x350 mm/slub.c:7418
+ refill_sheaf mm/slub.c:2885 [inline]
+ __pcs_replace_empty_main+0x2c8/0x6c0 mm/slub.c:4774
+ alloc_from_pcs mm/slub.c:4850 [inline]
+ slab_alloc_node mm/slub.c:4984 [inline]
+ kmem_cache_alloc_noprof+0x399/0x600 mm/slub.c:5010
+ anon_vma_alloc mm/rmap.c:94 [inline]
+ __anon_vma_prepare+0x10e/0x4d0 mm/rmap.c:201
+ __vmf_anon_prepare mm/memory.c:3961 [inline]
+ vmf_anon_prepare mm/internal.h:572 [inline]
+ do_anonymous_page mm/memory.c:5478 [inline]
+ do_pte_missing+0x2f18/0x34b0 mm/memory.c:4698
+ handle_pte_fault mm/memory.c:6558 [inline]
+ __handle_mm_fault mm/memory.c:6707 [inline]
+ handle_mm_fault+0x1a53/0x3750 mm/memory.c:6876
+ do_user_addr_fault+0xa4f/0x1340 arch/x86/mm/fault.c:1343
+ handle_page_fault arch/x86/mm/fault.c:1483 [inline]
+ exc_page_fault+0x6a/0xc0 arch/x86/mm/fault.c:1536
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
+page last free pid 5049 tgid 5049 ts 18476194117 stack trace:
+ reset_page_owner include/linux/page_owner.h:26 [inline]
+ __free_pages_prepare mm/page_alloc.c:1418 [inline]
+ __free_frozen_pages+0xc93/0xd90 mm/page_alloc.c:2962
+ __slab_free+0x274/0x2c0 mm/slub.c:5823
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x99/0x100 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:361
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4683 [inline]
+ slab_alloc_node mm/slub.c:4996 [inline]
+ kmem_cache_alloc_node_noprof+0x354/0x610 mm/slub.c:5068
+ __alloc_skb+0x1db/0x7a0 net/core/skbuff.c:704
+ alloc_skb include/linux/skbuff.h:1384 [inline]
+ alloc_skb_with_frags+0xc6/0x760 net/core/skbuff.c:6803
+ sock_alloc_send_pskb+0x878/0x990 net/core/sock.c:3022
+ unix_dgram_sendmsg+0x4da/0x17b0 net/unix/af_unix.c:2144
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ sock_write_iter+0x2de/0x3e0 net/socket.c:1266
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_write+0x150/0x270 fs/read_write.c:739
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff888168669e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888168669f00: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+>ffff888168669f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                      ^
+ ffff88816866a000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88816866a080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc
+==================================================================
+
+
+***
+
+KASAN: slab-use-after-free Read in folio_accounted_dirty_pages
+
+tree:      axboe
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/axboe/linux.git
+base:      24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/9865cf75-69fb-4fbd-b5fe-d0be9cd03802/config
+syz repro: https://ci.syzbot.org/findings/f9e47a91-9c37-465b-b43c-7404e404cbfd/syz_repro
+
+==================================================================
+BUG: KASAN: slab-use-after-free in instrument_atomic_read include/linux/instrumented.h:82 [inline]
+BUG: KASAN: slab-use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: slab-use-after-free in mapping_dirty_per_block include/linux/pagemap.h:319 [inline]
+BUG: KASAN: slab-use-after-free in folio_accounted_dirty_pages+0x53/0x1f0 mm/page-writeback.c:2654
+Read of size 8 at addr ffff888111a3d539 by task syz.0.17/5870
+
+CPU: 0 UID: 0 PID: 5870 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TAS
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description+0x55/0x1e0 mm/kasan/report.c:378
+ print_report+0x58/0x70 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
+ instrument_atomic_read include/linux/instrumented.h:82 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ mapping_dirty_per_block include/linux/pagemap.h:319 [inline]
+ folio_accounted_dirty_pages+0x53/0x1f0 mm/page-writeback.c:2654
+ __folio_migrate_mapping+0x3d0/0x2830 mm/migrate.c:624
+ __migrate_folio mm/migrate.c:893 [inline]
+ migrate_folio+0x10a/0x1a0 mm/migrate.c:920
+ move_to_new_folio+0x1ed/0x460 mm/migrate.c:1135
+ migrate_folio_move mm/migrate.c:1401 [inline]
+ migrate_folios_move mm/migrate.c:1758 [inline]
+ migrate_pages_batch+0x30b3/0x4f50 mm/migrate.c:2014
+ migrate_pages_sync mm/migrate.c:2044 [inline]
+ migrate_pages+0x1b9f/0x2920 mm/migrate.c:2153
+ migrate_to_node mm/mempolicy.c:1322 [inline]
+ do_migrate_pages+0x656/0x8b0 mm/mempolicy.c:1421
+ kernel_migrate_pages mm/mempolicy.c:1935 [inline]
+ __do_sys_migrate_pages mm/mempolicy.c:1953 [inline]
+ __se_sys_migrate_pages+0xaa2/0xc90 mm/mempolicy.c:1949
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f600f39f559
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f6010302028 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
+RAX: ffffffffffffffda RBX: 00007f600f625fa0 RCX: 00007f600f39f559
+RDX: 0000200000000040 RSI: 0000000000000009 RDI: 0000000000000000
+RBP: 00007f600f436b20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000200000000380 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f600f626038 R14: 00007f600f625fa0 R15: 00007ffcbfa14028
+ </TASK>
+
+Allocated by task 5645:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ unpoison_slab_object mm/kasan/common.c:351 [inline]
+ __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:377
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4683 [inline]
+ slab_alloc_node mm/slub.c:4996 [inline]
+ kmem_cache_alloc_noprof+0x2b9/0x600 mm/slub.c:5010
+ anon_vma_alloc mm/rmap.c:94 [inline]
+ __anon_vma_prepare+0x10e/0x4d0 mm/rmap.c:201
+ __vmf_anon_prepare mm/memory.c:3961 [inline]
+ vmf_anon_prepare mm/internal.h:572 [inline]
+ do_anonymous_page mm/memory.c:5478 [inline]
+ do_pte_missing+0x2f18/0x34b0 mm/memory.c:4698
+ handle_pte_fault mm/memory.c:6558 [inline]
+ __handle_mm_fault mm/memory.c:6707 [inline]
+ handle_mm_fault+0x1a53/0x3750 mm/memory.c:6876
+ do_user_addr_fault+0xa4f/0x1340 arch/x86/mm/fault.c:1343
+ handle_page_fault arch/x86/mm/fault.c:1483 [inline]
+ exc_page_fault+0x6a/0xc0 arch/x86/mm/fault.c:1536
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
+
+Freed by task 5646:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:264 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:296
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2748 [inline]
+ slab_free_after_rcu_debug+0x12a/0x220 mm/slub.c:6571
+ rcu_do_batch kernel/rcu/tree.c:2650 [inline]
+ rcu_core+0x926/0x1260 kernel/rcu/tree.c:2919
+ handle_softirqs+0x226/0x860 kernel/softirq.c:645
+ __do_softirq kernel/softirq.c:679 [inline]
+ invoke_softirq kernel/softirq.c:519 [inline]
+ __irq_exit_rcu+0xcb/0x220 kernel/softirq.c:758
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:775
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+
+Last potentially related work creation:
+ kasan_save_stack+0x3e/0x60 mm/kasan/common.c:57
+ kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:556
+ slab_free_hook mm/slub.c:2709 [inline]
+ slab_free mm/slub.c:6509 [inline]
+ kmem_cache_free+0x45e/0x650 mm/slub.c:6636
+ anon_vma_free mm/rmap.c:137 [inline]
+ __put_anon_vma+0x12b/0x2d0 mm/rmap.c:2974
+ put_anon_vma mm/internal.h:293 [inline]
+ unlink_anon_vmas+0x544/0x720 mm/rmap.c:540
+ free_pgtables+0x663/0xb70 mm/memory.c:401
+ unmap_region+0x29d/0x330 mm/vma.c:534
+ vms_clear_ptes mm/vma.c:1383 [inline]
+ vms_complete_munmap_vmas+0x427/0xbe0 mm/vma.c:1425
+ do_vmi_align_munmap+0x3b7/0x4b0 mm/vma.c:1684
+ do_vmi_munmap+0x252/0x2d0 mm/vma.c:1732
+ __vm_munmap+0x241/0x3e0 mm/vma.c:3415
+ __do_sys_munmap mm/mmap.c:1094 [inline]
+ __se_sys_munmap mm/mmap.c:1091 [inline]
+ __x64_sys_munmap+0x60/0x70 mm/mmap.c:1091
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff888111a3d528
+ which belongs to the cache anon_vma of size 200
+The buggy address is located 17 bytes inside of
+ freed 200-byte region [ffff888111a3d528, ffff888111a3d5f0)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888111a3d528 pfn:0x111a3d
+memcg:ffff888111a3df79
+flags: 0x17ff00000000200(workingset|node=0|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 017ff00000000200 ffff888101688140 ffff8881006957c8 ffffea00047d6bd0
+raw: ffff888111a3d528 00000002000f0009 00000000f5000000 ffff888111a3df79
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0xd2cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5634, tgid 5634 (syz-executor), ts 59634551582
+ set_page_owner include/linux/page_owner.h:33 [inline]
+ post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1871
+ prep_new_page mm/page_alloc.c:1879 [inline]
+ get_page_from_freelist+0x2209/0x2280 mm/page_alloc.c:3943
+ __alloc_frozen_pages_noprof+0x217/0x5a0 mm/page_alloc.c:5436
+ alloc_slab_page mm/slub.c:3347 [inline]
+ allocate_slab+0x7d/0x620 mm/slub.c:3462
+ new_slab mm/slub.c:3513 [inline]
+ refill_objects+0x2d5/0x350 mm/slub.c:7418
+ refill_sheaf mm/slub.c:2885 [inline]
+ __pcs_replace_empty_main+0x2c8/0x6c0 mm/slub.c:4774
+ alloc_from_pcs mm/slub.c:4850 [inline]
+ slab_alloc_node mm/slub.c:4984 [inline]
+ kmem_cache_alloc_noprof+0x399/0x600 mm/slub.c:5010
+ anon_vma_alloc mm/rmap.c:94 [inline]
+ anon_vma_fork+0x88/0x540 mm/rmap.c:395
+ dup_mmap+0x954/0x1dc0 mm/mmap.c:1781
+ dup_mm kernel/fork.c:1543 [inline]
+ copy_mm+0x115/0x480 kernel/fork.c:1595
+ copy_process+0x1e79/0x4400 kernel/fork.c:2311
+ kernel_clone+0x2d7/0x940 kernel/fork.c:2771
+ __do_sys_clone kernel/fork.c:2913 [inline]
+ __se_sys_clone kernel/fork.c:2897 [inline]
+ __x64_sys_clone+0x1b6/0x230 kernel/fork.c:2897
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 805 tgid 805 ts 42732995302 stack trace:
+ reset_page_owner include/linux/page_owner.h:26 [inline]
+ __free_pages_prepare mm/page_alloc.c:1418 [inline]
+ __free_frozen_pages+0xc93/0xd90 mm/page_alloc.c:2962
+ __slab_free+0x274/0x2c0 mm/slub.c:5823
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x99/0x100 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:361
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4683 [inline]
+ slab_alloc_node mm/slub.c:4996 [inline]
+ __kmalloc_cache_noprof+0x29f/0x600 mm/slub.c:5559
+ _kmalloc_noprof include/linux/slab.h:991 [inline]
+ _kzalloc_noprof include/linux/slab.h:1312 [inline]
+ drm_atomic_commit_alloc+0xa9/0x100 drivers/gpu/drm/drm_atomic.c:258
+ drm_atomic_helper_dirtyfb+0x129/0xfd0 drivers/gpu/drm/drm_damage_helper.c:128
+ drm_fbdev_shmem_helper_fb_dirty+0x160/0x310 drivers/gpu/drm/drm_fbdev_shmem.c:117
+ drm_fb_helper_fb_dirty drivers/gpu/drm/drm_fb_helper.c:339 [inline]
+ drm_fb_helper_damage_work+0x84c/0xf20 drivers/gpu/drm/drm_fb_helper.c:365
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Memory state around the buggy address:
+ ffff888111a3d400: fc fc fc fc 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888111a3d480: 00 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc
+>ffff888111a3d500: fc fc fc fc fc fa fb fb fb fb fb fb fb fb fb fb
+                                        ^
+ ffff888111a3d580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc
+ ffff888111a3d600: fc fc fc fc fc fc fa fb fb fb fb fb fb fb fb fb
+==================================================================
 
 
 ***
