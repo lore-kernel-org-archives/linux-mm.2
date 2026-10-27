@@ -1,149 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CD8606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8632B606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=AAVc/08V
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=n4ScyBza
 Received: by kanga.kvack.org (Postfix)
-	id C07046B05B6; Mon, 26 Oct 2026 22:18:19 -0400 (EDT)
+	id 94B736B05B8; Mon, 26 Oct 2026 22:19:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDE8C6B05B7; Mon, 26 Oct 2026 22:18:19 -0400 (EDT)
+	id 8FAE56B05B9; Mon, 26 Oct 2026 22:19:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACE316B05B8; Mon, 26 Oct 2026 22:18:19 -0400 (EDT)
+	id 8118C6B05BA; Mon, 26 Oct 2026 22:19:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 85EFD6B05B6
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:18:19 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0F2454090F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:18:19 +0000 (UTC)
-X-FDA: 85366796718.28.FC9A947
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6D6B918000D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:18:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="AAVc/0 8";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 561956B05B8
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:19:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A5887808D6
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:19:34 +0000 (UTC)
+X-FDA: 85366799868.16.6D8920D
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 70FE640005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:19:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=n4ScyBza;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793067497;
+	s=arc-20220608; t=1793067573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qGaKz0ghX7Lbonx8PvJJJqD0p/WMYPC2YliZwFbr0fY=;
-	b=P89x591gKycmn9Ex3WUl5yr3j4d4FTcOUSi+epTQgvTHn5RRM01LS2YPzAGvR4RP1+RyRc
-	PTLw2iaOcX3cq7aMGXOcgblP2zFOD6xw2roYmzS/Qsbe8pYCIntRasD1ng95Lj1I4kMWF5
-	L0fIx4ZIjvKMsC5LUpvuJub6XbrnVbc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="AAVc/0 8";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ccdnAYb1+Un6I4/SsLverI+ggeaZSybTW2CMNCYr3HI=;
+	b=L7Kgj19AsuhP+OcFleFYM8K0a+EK5yJRcMjTUNZNpfLHVb0QFSM8eKo2Dej5kbs4UF+DCm
+	sjQkoD/4nMqTtakTcbZ0n7wY0PT69T24aPgRYNR71iBSglKzK0d0T+VgrhqOnwTGGk6oeK
+	hbujPfHJKCsmatrjat65br8yHDo2J0g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793067497;
-	b=05i73yrCEJRxJTAcWSWqquIStV6HwE8iXP5rtI9zomvRukmnXkLFNcqmcxeecokmZQCLVD
-	RJuByYbvm1sw+12s7uqQ9nlqcxdU385VLSCNwl5vu6R9c3OMl8fs19xLhdS57aTEBTuYN8
-	Jp0pTLozqxkgiGzUBW62zr/OobhEJVM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=qGaKz0ghX7Lbonx8PvJJJqD0p/WMYPC2YliZwFbr0fY=; b=AAVc/0
-	8VsTK9mY92KOp5wEbhgroVTHRCfftI50sRYAJL1JakNYXe+BTepKbKwB6Z414AlpfS+DUDqYZ+/Eh
-	nj5OxnhFMAPMtHr6a/UJArBMlo0zPGvXYzSP1AyfZimUEGGpKcN/pXFGUhEd5cPb7Dgv67jI1G4uP
-	55e644clgrRX4+HyA5EnIo6nQpVv4Na5C+pF7/iF0yMcG+jx4Pb5juMQq7eJznU+ew7NwWmld1Do7
-	JjXyIXADjvO6IyFgjI58QIOi9mZPYlrJwYQaR08EmI3Mg0q8v1woNBDGgbAYg+CVCPeVTETY9liEP
-	8I8zspCUGpVJFYfua7YslrF00KSg==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xLWkM-0000000B1GF-0On5;
-	Tue, 27 Oct 2026 02:17:06 +0000
-Message-ID: <db8ec1a4c7cb160c794888a0aa51b8f3eacb2044.camel@surriel.com>
-Subject: Re: [PATCH 05/46] mm/truncate: look again if a folio left the
- mapping
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton	
- <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal
- Hocko	 <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt	
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Kairui Song	
- <kasong@tencent.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen	
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu	
- <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, Baolin Wang	
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>, Kees
- Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Jann Horn	
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Hugh Dickins	
- <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush
- Yadav	 <pratyush@kernel.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Lance Yang <lance.yang@linux.dev>, Harry Yoo	 <harry@kernel.org>, Alistair
- Popple <apopple@nvidia.com>, Nico Pache	 <nico.pache@linux.dev>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain	 <dev.jain@arm.com>, Usama Arif
- <usama.arif@linux.dev>, Kiryl Shutsemau	 <kas@kernel.org>, Matthew Brost
- <matthew.brost@intel.com>, John Hubbard	 <jhubbard@nvidia.com>, Peter Xu
- <peterx@redhat.com>, Will Deacon <will@kernel.org>,  "Aneesh Kumar K.V"
- <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Oscar Salvador
- <osalvador@suse.de>,  Minchan Kim <minchan@kernel.org>, Muchun Song
- <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>,  Chengming Zhou
- <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, Kemeng Shi
- <shikemeng@huaweicloud.com>,  Nhat Pham <nphamcs@gmail.com>, Youngjun Park
- <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>,  Joshua Hahn
- <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Ying Huang	
- <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, 	linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, 	linux-cxl@vger.kernel.org,
- stable@vger.kernel.org, Josef Bacik	 <josef@toxicpanda.com>
-Date: Mon, 26 Oct 2026 22:17:05 -0400
-In-Reply-To: <20261027-fixes_core-v1-5-6f74bec9a5bb@kernel.org>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
-	 <20261027-fixes_core-v1-5-6f74bec9a5bb@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	t=1793067573;
+	b=lrCjCFYhqMc14nB5sP2NvGYpcCZ7kjiPHsVCTzvSIQa+gJ2KEno3kjyj/W1aGPzB5EPBcv
+	EXctMRUF8pFzYmF4kbTsf9K9qVSVl7lpGdfZpH9D9K3IbS2b0DZehHfdS+DscnDudbz8HB
+	EvdmBze/A+M7hwWeZ0jZdTY+oD5UjuQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=n4ScyBza;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793067567; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=ccdnAYb1+Un6I4/SsLverI+ggeaZSybTW2CMNCYr3HI=;
+	b=n4ScyBzazG2cz7xo3Dl7caSMTkFH870zbnK5eNjPhk3Em1zA6D8+CWzZmiZ2bn3F+WHV9Ky1kjfAlanmf7RQ3smHdZkrZn/S0EeJR3GN3P9x5ayNWSNalUu0aG3X9NafgTCl6DeqfeiICCrhtucXYQEW05TeXjECD0liHgOrHoA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R861e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0XDcCurx_1793067563;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDcCurx_1793067563 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 27 Oct 2026 10:19:25 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	qi.zheng@linux.dev,
+	jack@suse.cz,
+	pfalcato@suse.de,
+	ayushr@modal.com,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5] mm: memory: fix truncation removing mapped folios
+Date: Tue, 27 Oct 2026 10:19:19 +0800
+Message-ID: <d7f009c90b11ded86654885b5ebcb8c9308fa31a.1793067441.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 6D6B918000D
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 70FE640005
+X-Stat-Signature: kty53uwi1e3e1wcgzgmjo1tcswq1bast
 X-Rspam-User: 
-X-Stat-Signature: hu8o5swxsx595no88wj4dkch5hnmrthd
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793067497-395799
-X-HE-Meta: U2FsdGVkX19gYCSpyvunAyDdKzJ3KMaZgroqvwDbOpB//+mWati4REQstBtnbCXK6sGcBfacfM5gimQLwKk48HxGxd9wF7obfLDoCVUpVFbLuiR1MzqLKoRTJ5oBq0O9G7xpTVgx6MHaTVxZZeCh8928y9OL7c/XC6g973gRzuQ51Vb5D/4xX/buTTagbs3Zd0uWOFaIOHM6uuqx/mi16E3LcvN3/fnMVvv14l+p8IuDqPwX7zPtkszJMbxC35o9F+RJZzBFxXy0k4v7lzTVa0dJrFemZztjMnmIV5Z2Z9QLG1wyQ/qnTXu7anRYaMvsS8zPCHpd0fOdUOTmYFSnZ5T6YWvSxs4zn/r4VjzxmZihF2+O7SGzh75yYWPTwSxyX309O1tSgfCrtLz1oUaX0gE1c+etWCAPMWKv9BT93Er5snfBcUDZZ3A2MyYtjhCsLW732BP7wxKC3DkhvKz0VuIRKlLj+TgKIr/GqJ1AxsWlF2/Mq20Niuh3Y6oDUIdxJ0qy3PkmcM8QHHcA7lwXYkOuYqrCMuZ6KNT6Ojy7bfRgMou98MaEGwTxSJM9EXkkkVG2WedwOBNCVFEd9GqiqrrMKwwgF+VjNsrxJtwIX2G4c2wkpk4QkmHxXXQFPSMhybBGOZBbnHC9lSFnJfQu9iKzkm5N3YHzLG3TzYTbjXIfK+u0kHMa3om+GYhR/664P8zF9ERg2GDgLWFI59+ZQyBIkuP/33JZO1LRc1q8Geqln+xt9T+K+YnHw08RlGs1k39tsOs0aOvkPSQPBhFsJP1yCikMtSK6R/ulzm3hfj/4B0Y2zNZTYpM5r+ExWxDvaxaAMj/njMOItiDwRTQByaKIuWYbYS05Q+dJPaCDcXW+mLIXPLPkwLh185yEGKiK+ioOil5jV6GPcPeHCvbxx3mbXPtbpD60HuX8IBfLBF8k443xXT4iIHzMyjReMq0nteIOkxpLMG9K91kOOgK
- BWMAUYNA
- PpjtPHXjNiJ8gGqJts8qCPs5C56yoF7gAIKUU2b7MEgzd8TWb1H3k2+s39uJmC62biC+ZvRoNEF5IDNJvFfY6A/Vl0ZhWCFrLhQInHq6BxAjUcVrE/IsFt4zKCJPWBvsvXBLI12Hroq9taLIIo46J0kMbQh1KAdoNASrfzSbGP3ZMVV0ckxV5Ue/u7hj8+k5eqSLWKBvd9rmnzqNcB3Dc1E3gRTJHVt2D7z4egzlLVLpa2w/DLMhbN1YRiRhFERQTgi3VpRo/mFUVvIjvUesupc/zQOWumxgxoJK29rkUsgEefwV1WOG2iac2zB4G//RVO7NZB79GDvR9p04+H5IzWR1OXhL05zi9S8qVU0mI7p35OFHK9HfCayF7X5cZTN5iN9re/A0WYVCGk/MjV8GSN6TBrKUit3Sf8RPkFVYsnNtJDNK36fzIwQLIPB/+h1Bi1oGqh+fF9+MGGonh+V1FXRwkP/TcmFGi/i9g12OQj1tDokOtqjhvngibiMzGcVJxbBdt0ahr2/ehYWyOvvLatwiYFg==
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793067571-294204
+X-HE-Meta: U2FsdGVkX1/+D9uRI5giyYZcnmAa+414pTRoF5cAmgRSIJ1fRPKPBwpfE0+MU4x8YAOvkej5yk3SNkdAqlzhK4iixF5gLZhsYBR/19bx41xpZCBsB0agnhwlkcB8p5TUMVxFc6TUPBmJiS9zwtGvsZAnw4J821RZKmjow/OuDbdMKUCSPwcPOiEztHmJOxuzdG8sPM4OhNak+F6Ju9OIvZ9psLE5sXFRzlouPBRxUlbnt58gDpP6jeIJx0Yf4zjJCY9/ZMm3aB5t02kXa1geuZhqpBxkIZ6hdQJycL1nQVLj/+Tp9Vuq6oG0Hx7blOUEYJfpPDpE1T6ejk89GdfnddiWijoI/QacptFuKytGVvmgEL77w0aT2TcBQ8KBXkiE2nQCv2OGwgJRapNKQEdN8A4TgFbjOXVOHfFtjC7Q0dG6qCH30wzCDj6TkkAIVLXZyeFPhDss3JJDycCLywGBMkrRSFkvicr1fizAIm+5Ap9Ui4tb8SYy1AH7KRFg6FkK9Sa5O/ULApI7ze5/7nU67pwsOSu1z79gd6u8UzRzbLmL2JTkE34ICBKkzc6WH57Hox9bY15qNwN5WauXna7ORRWMC4AA2B0kLqpuXKMj3ZTHa3V7fJVDV1jc1pw0TDJfT+nX0tngkuIom40CqmgnOoswkTBNBw1a+rdQcGnfOtVemmzwLxzaa1aCNO2IiWKI1Ig+X5qeOqvA+geTM2f8VV4j96yWhlVFyHhEzWh6ELCMD7ci3v3/PJTJLKO7oI/UeZB5o9/rDG+7OMIirMvQkSGhZ9ecFvVjG2GevTCkkrnozZNXww7FN1S1P5MRDb+pUOFZbVyDMCWH5cJlwhzw5FkmoqUeG3yG7wMRRhF8K/WmekMhdQNN8pBo6gJUmMihpWVletrCBxI+MncEc69ZkON/AMODz7sGcYCYtAok6eweq2DdSd76XxtINYpRei0zrfh+95GZXFTfAPiOgA0
+ sS2wZJ5e
+ gDLaC3uvpM4itmVVCwwVCegSFKZbWgTgO/amGLILxLsEKzjNXA0h1s14Xaq3YKiiSgP1XOTnidAxiXfAuln/UoynSdmcAej2Tn2ACfIuaiRvXdqa2yJ4iFXGUbutxiT6gpsvAng5a8R/wiKup0mQaoDCsnPYc5tFt41avOHrXDBORRMsPKJXx988kHJNevBjJ2uMW5mG7HPpejUdKy0sjtXKRYJL7fQFO+8y+xuNamyHSW6OlO7eQdEJkkOFkdMXyV02xRCtmB1nYarzjC+RDZjMNZpPT9jJaZNaj5Uozmg2cwDPanuEzNbTDcNjbkveImaRD7/kbizvgIhGibqQ8bjYcsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,29 +98,181 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 2026-10-27 at 00:17 +0100, David Hildenbrand (Arm) wrote:
->=20
-> In that scenario, the collapsed folio with the data from before the
-> write
-> stays in the page cache after the write has returned.
->=20
-> This used to be impossible, as khugepaged only collapsed files that
-> nobody
-> had open for writing.
->=20
-> Restart the lookup at that index, like shmem_undo_range() does. The
-> same
-> problem seems to exist in truncate_inode_pages_range() as well when
-> truncate_inode_folio() fails, so handle it there as well.
->=20
-> Fixes: 1b6444331beb ("mm/khugepaged: enable clean pagecache folio
-> collapse for writable files")
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Ayush reported an issue that shmem/tmpfs folios are still mapped when
+truncating them on production:
+"
+BUG: Bad page cache in process ...  pfn:...
+page dumped because: still mapped when deleted
+"
 
-Reviewed-by: Rik van Riel <riel@surriel.com>
+I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
+branch, and I got the following crash info. From the dump message, we can
+see that truncate_inode_folio() is really trying to remove mapped folios,
+which is incorrect.
 
---=20
-All Rights Reversed.
+"
+[  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
+index:0x3880 pfn:0x191647
+[  189.171995] memcg:ffff0000cc073d40
+[  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
+[  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
+workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
+.......
+[  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
+[  189.172026] ------------[ cut here ]------------
+[  189.172027] kernel BUG at mm/filemap.c:155!
+[  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+.......
+[  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
+7.3.0-rc4+ #277 PREEMPT(lazy)
+.......
+[  189.183986] Call trace:
+[  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
+[  189.184391]  __filemap_remove_folio+0x34/0x160
+[  189.184633]  filemap_remove_folio+0x4c/0xb0
+[  189.184859]  truncate_inode_folio+0x34/0x58
+[  189.185087]  shmem_undo_range+0x220/0x658
+[  189.185308]  shmem_fallocate+0x2f0/0x470
+[  189.185527]  vfs_fallocate+0x128/0x328
+......
+[  189.187078]  el0t_64_sync+0x184/0x188
+"
+
+After analysis, I believe the race exists between truncation and MADV_DONTNEED,
+and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
+MADV_DONTNEED synchronously releases the pagetable page before calling
+tlb_flush_rmaps(), this could cause another thread's truncation to skip
+zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
+as non-zero. A possible race scenario is as follows:
+
+CPU 0                           CPU 1
+shmem_fallocate                 madvise_dontneed_single_vma
+  unmap_mapping_range            .......
+  ......
+  (filemap_map_pages() remap folios)
+				  zap_pte_range
+  truncate_inode_folio		    zap_empty_pte_table(pmd clear)
+    unmap_mapping_folio
+    ......
+      zap_pmd_range (saw pmd none, skip)
+
+  filemap_remove_folio
+    BUG_ON(folio_mapped)
+                                    tlb_flush_rmaps(remove rmaps)
+
+To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
+to after tlb_flush_rmaps() and use sync_with_folio_pmd_zap() to sync with
+concurrent zapping, so that when we find a pmd_none() while unmapping a folio
+without holding the PTL, the folio's mappings are guaranteed to have been
+removed via tlb_flush_rmaps().
+
+[1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
+Reported-by: Ayush Ranjan <ayushr@modal.com>
+Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
+Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+Changes from v4:
+ - Put the pmd_none() check in the 'else if' branch (per David).
+Changes from v3:
+ - Collect review tags from Qi, Pedro and Lorenzo. Thanks.
+ - Update the related comments per Lorenzo.
+Changes from v2:
+ - Use use sync_with_folio_pmd_zap() to sync with concurrent zapping (Per David).
+Changes from v1:
+ - Add an smp_rmb() to pair with the smp_wmb() (Per Lorenzo and Pedro).
+---
+ mm/internal.h | 10 ++++++----
+ mm/memory.c   | 30 +++++++++++++++---------------
+ 2 files changed, 21 insertions(+), 19 deletions(-)
+
+diff --git a/mm/internal.h b/mm/internal.h
+index b1b0f29d2216..ffb8eaec90e3 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -584,14 +584,16 @@ void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
+ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+ 
+ /**
+- * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
++ * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
+  * @mm: The mm_struct.
+  * @pmdp: Pointer to the pmd that was found to be pmd_none().
+  *
+  * When we find a pmd_none() while unmapping a folio without holding the PTL,
+- * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
+- * indicate that it's unmapped. Skipping the PMD without synchronization could
+- * make folio unmapping code assume that unmapping failed.
++ * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
++ * mapcount, and zap_empty_pte_table() clears the PMD only after the rmaps
++ * for the table have been removed, but nothing orders the pmd_none() read
++ * against later mapcount reads. Skipping the PMD without synchronization
++ * could make folio unmapping code assume that unmapping failed.
+  *
+  * Wait for concurrent zapping to complete by grabbing the PTL.
+  */
+diff --git a/mm/memory.c b/mm/memory.c
+index e911e63ba1ed..d9c54549b85b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 		}
+ 	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+ 
++	add_mm_rss_vec(mm, rss);
++	lazy_mmu_mode_disable();
++
++	/* Do the actual TLB flush before dropping ptl */
++	if (force_flush) {
++		tlb_flush_mmu_tlbonly(tlb);
++		tlb_flush_rmaps(tlb, vma);
++	}
++
+ 	/*
+ 	 * Fast path: try to hold the pmd lock and unmap the PTE page.
+ 	 *
+@@ -2043,18 +2052,12 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 	 * to hold the pmd lock failed, then we need to recheck all pte entries
+ 	 * to ensure they are still none, thereby preventing the pte entries
+ 	 * from being repopulated by another thread.
++	 *
++	 * Clear the PMD after the rmaps for the table have been removed, in case
++	 * an incorrect mapcount is observed after unmapping the folio.
+ 	 */
+ 	if (can_reclaim_pt && direct_reclaim && addr == end)
+ 		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
+-
+-	add_mm_rss_vec(mm, rss);
+-	lazy_mmu_mode_disable();
+-
+-	/* Do the actual TLB flush before dropping ptl */
+-	if (force_flush) {
+-		tlb_flush_mmu_tlbonly(tlb);
+-		tlb_flush_rmaps(tlb, vma);
+-	}
+ 	pte_unmap_unlock(start_pte, ptl);
+ 
+ 	/*
+@@ -2102,12 +2105,9 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+ 				continue;
+ 			}
+ 			/* fall through */
+-		} else if (details && details->single_folio &&
+-			   folio_test_pmd_mappable(details->single_folio) &&
+-			   next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
+-			sync_with_folio_pmd_zap(tlb->mm, pmd);
+-		}
+-		if (pmd_none(*pmd)) {
++		} else if (pmd_none(*pmd)) {
++			if (details && details->single_folio)
++				sync_with_folio_pmd_zap(tlb->mm, pmd);
+ 			addr = next;
+ 			continue;
+ 		}
+-- 
+2.47.3
+
 
