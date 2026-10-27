@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A94A60A2600
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CD2606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wi3ycDQp
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E12ZfgfY
 Received: by kanga.kvack.org (Postfix)
-	id 331A96B07CB; Tue, 27 Oct 2026 11:46:45 -0400 (EDT)
+	id 79EB06B07CD; Tue, 27 Oct 2026 11:46:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 307FE6B07CD; Tue, 27 Oct 2026 11:46:45 -0400 (EDT)
+	id 74ED66B07CF; Tue, 27 Oct 2026 11:46:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F81C6B07CE; Tue, 27 Oct 2026 11:46:45 -0400 (EDT)
+	id 554846B07D0; Tue, 27 Oct 2026 11:46:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EDC8D6B07CB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:46:44 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 521FDC0A3E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:46:44 +0000 (UTC)
-X-FDA: 85368833928.09.F3983D8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8E39320011
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:46:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wi3ycDQp;
+	by kanga.kvack.org (Postfix) with ESMTP id 23C2E6B07CD
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:46:48 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A5E00C0A36
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:46:47 +0000 (UTC)
+X-FDA: 85368834054.29.6095AD4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DE942100006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:46:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E12ZfgfY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793116002;
+	s=arc-20220608; t=1793116006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JZkvBXJ1M4cprmGAnU9nv4mrWfliu5LNDxbLf5XaiBg=;
-	b=MEwtW8OGoZp0KXSQ/gkTx9yda/vWac/ebf86AH0WROycQFyhEta4GR8+6MZdeqIen2xnxn
-	Yim8IowBexr3dTG/l7spO6L5v0guKpkz98Jg2dAXAL8YaWe+wllGWnzsu9OJhgJdxe3USZ
-	pEHrZe3vPpp8RwkGo+z7kjwg8S62Rus=
+	bh=30qAFA6CCzSksl7jqcRR+D8NveKerXteOKC7Yb7cCqk=;
+	b=wY9AaGXmlducjUAOvAcsDDaeM7tiSlHZz3RdWW5cTFg1DQC91/fpfmPVAH3DOcNiNs9/1J
+	dkZQuv0aAkseox6RtKEGGPprRufflhWPolO5PkLsVYtwOl0tNY7oYC+rVmQU5cbfzhzMEI
+	8BvvOXPNeWAZY/9vxRzoDOMbupfrIKs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wi3ycDQp;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E12ZfgfY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793116002;
-	b=6Plwzj1NL5njamJmVx6YhEA/IX+zwNGSGQi3yB0GhEYxFCv6xqtfn6rnhs0+V5H1a1ZoHV
-	8A3hB9rrohLDcGttXkriAn6DDAKS4XuBHQQeaTo0/YUQYmzjEOHkfdTtbEXaxjuL1ny7SY
-	6n33+DZEJgwUk0+QXWnJmKfayHX1+GE=
+	t=1793116006;
+	b=YjK6irk1fJs3Acn8DWaKtxzyH8yVLKey6F1ntWbUz2iCo6QpHT/xNoLcJteY4+aWKQqplf
+	qJz8TBfSE4CDDiXptNlhIuqs72c0q03PacTv2gBh/TRhoXFuzO2WTMjqKDIgk4lwSU2CBC
+	3B+T0XVSoiID/7DdA7A6RDC3knzi/8o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B0D936022E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 369B943E58;
+	Tue, 27 Oct 2026 15:46:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5F31F01825;
 	Tue, 27 Oct 2026 15:46:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17F91F01829;
-	Tue, 27 Oct 2026 15:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793116001;
-	bh=JZkvBXJ1M4cprmGAnU9nv4mrWfliu5LNDxbLf5XaiBg=;
+	s=k20260515; t=1793116005;
+	bh=30qAFA6CCzSksl7jqcRR+D8NveKerXteOKC7Yb7cCqk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Wi3ycDQpHF+2DIQxiDwQjdSsO80VWcpydnlA755H+EKJMGT8hFyb11qJN+Gseajqt
-	 Byo+QhM5RwKb2KaoAkOnY8OD680CD011e5np2eh5OvSj9jNHK1VSl96bA92YWs81BZ
-	 yX3UDHGZs7N7CIsp2y4BIuKhbks1JtLfBADzO6vesqXSur5M5wM3ZruF6VCFjA/T9s
-	 mGBc39SYbWerm/Qh9VTg2baNXgVabajJy3pjqmbOJOLzT6yK5buRJ4WXMmUbWSOLi+
-	 84B7Yp5bQkRwVMiqoZcMxHGwGPo8lfgIOsv6f/Koddk4FP7pNe1Pu1J2b9ZxMjMxIT
-	 Z60vbzB3zih/A==
+	b=E12ZfgfY9ynMlsq27sp3+JPTml03yPMJtxySRvItV0bZeT/oBcKyDuGbdDrwJ7G/g
+	 /3yTyW3G2KdkQEkm7nATNIpbNf5GGLbUPJ2hlys+9e3n/nP3DQogyfyN/8Ine0Wg8K
+	 eTKj345nI26OzTolIvYj2lP0WeVmQMqVWvW7ZfSUBpJewvOxP/DmoDKYrpm8oYLaIt
+	 UjUZ+njZG2AOdpBIw79hu+wj6ia6FcGeNNRRRfdbGVMBlP8eaQyw/Je33Fa2uHH12E
+	 mANIpIC1zrp6cBBxBwtI4LvzIfFQmKD8Qq9zHZSgOZhdrvfPBJjWQL40tSdbjEoznl
+	 zEA2ZqWTrwzRg==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Tue, 27 Oct 2026 16:46:28 +0100
-Subject: [PATCH 2/9] mm/page_alloc: clear ->private of deferred free pages
+Date: Tue, 27 Oct 2026 16:46:29 +0100
+Subject: [PATCH 3/9] mm: page_frag: refill the cache for large fragments
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-pgalloc-ai-hotfixes-v1-2-9c7d1aca801e@kernel.org>
+Message-Id: <20261027-pgalloc-ai-hotfixes-v1-3-9c7d1aca801e@kernel.org>
 References: <20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org>
 In-Reply-To: <20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
@@ -81,18 +81,18 @@ Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
  Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Rspamd-Queue-Id: 8E39320011
-X-Stat-Signature: qn815nj9iaorj8ydwuprgt67b7ps3njr
-X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DE942100006
+X-Stat-Signature: rug4jmiepzjaenzk5f1hrz55jwo3otb3
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793116002-140049
-X-HE-Meta: U2FsdGVkX1+pLlbHmMkCcs8ztuqX5L3m3jWC0KjTLzl9dwQm5FbcR3Mhvmpyx4tru2EbepjfxVc2dXhpqOP/jzCddMG9j5RrXeTAtgCOHwzSQ2MBRb1MQe+W7bo5W1WVa68xWb52EAhppthjaUu07GCXQWvrLTXL8zfR0TyH+yw+3i1hS6aTUc3rdogKEl8AXhzHOlbNTnnxQ/d24oqBYl1KHuZ6bZTD/lChQh342p4LWEhCeNtXl9GgKYz0SdD0PRVyPv6UP9l5mmj4Mylf+dSt35zKhd7T1E/4QLwFNH8F91GL1irD6MJSFIepLtrGjV5vI36sw5rdlFkirJmz8BOofD2z3KL2fUAwazdFBWI7M4iE4xDrkkbOVa1pOB+Ihl4X30YEwFSv0kb+DD95xh/Q4P3z9a/sKdEO0l2dE44lEQMeurXs0zYGzvi9RF1otq6R5YID+h4eWmbl9l+Us20bk/igKMlcy7xo0fmWZ71GHRsQXuFx86RNmyCJBAHuyyQFzgqbb6M6TLEgyaCloH0ImFYmzoeiqQwPAY8sqrR9nP5X37Tt+1fbJmQ4F5it5xLG+2FVJ0pnb4TgLhgi/wde/WqaU67SSiGswFxkNmtrga3mm9cLGgUeKuNp+7vBhCThBlvALKhSvPZsv8omw1U2zxLyiuZA0yfblQRci8JfduUC76BARCTA1Og9FxU+kADrNRYDbB7stX1587aYDijCnvSQw8lV3H0VYwn/aOQLEWdM7kouzwlxy6o0h9KaK8X2Cx9blUrYK1pg31o5pGmNpaIrzRGUBOQ+hTXgAwBNxamOp7oM5SNWAsk0xKdzu/47+hUjGma7vlDSCU90WB2/DYIIxCD9sB9U4coY9hllXKFjASpjo8GqNjC222U/2n6hGCtX7KVItDAn/1VBAB90RwE8J451EGLsKdmksL2tlkRVD1vuJC/aovLZbSsHH77iXPvib+YazESLBmf
- sEHXpNuv
- SmIqk7t1I2NbHK7R99VgZ3mdtTXgaMKiX2JbV9VRJm1dyy5OSWex/tV4Vz/TWxjM6mA3FHvO43UieBR+geVQsSC5XeSJXrXuHeAN9LiLBsmRjFHT9P8S4ewTItNhcjs17rYOcFKLl7Fx+pfSUv3xm7Dr0x22nXfEVqczPGDoSQeNu45FCLf8rFESCIaHqQmwTI/kXzK5IOE7ZtGYCKdOTa2ysfJVP7OMxkwuYj+bBcZCbT5awgXPYY31YFQoKuC21FJQdE/YxWvynDtDU8jbXi+8bt4UxQowRldKNGCCIAdBeTGECxC/5ysDS6F2UlYBbyAA0j5am2I7U2Pumb+XxgP64mGxpmIQyJhHh
+X-HE-Tag: 1793116005-755019
+X-HE-Meta: U2FsdGVkX19Z+lmnID9nHwp72e13jXzVP8EDZTkAV9NgDC23bp60m+gV2MrvOjId1qsCO8DjPVGSR0uiGwpDf0sujMzxz1Cy/YCeeCsK050z4IU+2g6AltuN93l6X+B5IBl8KF4AoOE8b9o95BpYKfJ/MTMitbrqpnLiWX4Dj0a4xxV5iBoCYKqzrBvhXIsAJsIaQE5cHnPJXJUfAU+2dUlh+YNzidCDY7G09KqhNRtJEREADGu8FnYp/aWK3XH0dT73mj5YtLssx9SxyiuYM9otc7YCyIB+VvX1II1jOuAe7UnlU9JKQztMU7ejYk1d2xP0PA4a7hZg6myfmHYEFNA/aHBp852RaXXM8qGvtmNEoD09gl32wj+V5agK4w/Dk5++/2fx+aBUJ7srat3q5U85OOe/XIQ0K70CX6iMY4rmGwFQ8PXlfh4bLiWXIlUfDENnciq9Vc7ImqC/Hw4fs59U968iwM5e3wyWqPB17AnaHIqot9J+KHgP1nD5APt50UAS1rxaApAlOtYlF3kp8TftIuetM85WUu5blTU1RGA3+i0+fhfM4svT6k2CEGcJMwD6Djp8TgjrL3kjUDDYXqIEUdPg5uqSGhwZMI+4yvSXmtACz/RwLVKDZ2lN2v1LX9kUpXde7hhDkuc3kxpxQTiTr9XFWGUsQUvVJ1l2xl1pBDg7WzeYvfpS76TARnjXsxDg2+PpWYWjqCVenNJKb4DTYhAK7hEKT6zodgBgMecH97v79tQTEWkqsz46sRHtqK2RmVD5NQ7Iv70oG5hsOHBp9UDSH0oj1eZDzmkhCpZ7vnQbCeE3nmhX8K6y469sARPHLTi24MOqjJd9ZXl1UVXtQ827Qo3V4D7ydpwQNA6XiVqzJV49uqBi20IjFvFWI7Zy8za6ZsOk+AHj4AsXRBYj2K7OZVqV2MspoKDRnf3GrWBxMnCyHZKbclEGM6A7No/P3vg+BFHq3y9+94s
+ a5u5Cyfx
+ eQlRE4S0tar4W1FE/Eb5kITPpNSY5h6nY7qv9GXTKRJn5GuLF1fg8wRUdzIeUzr8kQFow+98OhacRqa3AavWBf8HtophHuezOnAv1ZhAthK7jQMX1kocrAUMzJgGyFWDMubkBtU5gf7C0TjhUN50tVTyGp80z230PUwAsezBav7gt8/c049VbZDQCku4Zj3QdpK6G5aNRHBj7q4Xut1ygK5s88yhzwZSeh6EEC3wb8n/67hs5cJIrhVrC9P4XUm7oMU3OeGsHApDPKAktmaGSa6i4YIEo4CKqI2k80QvwT56RxNHSX9XpWUvmhsnHrVBPKxrEo62aeEWQtE8MXhv+iAHPEseCBONfqS7LrKgI3qWyaQ4Y3nUgy9NIySqTEh3knrnvCfO+s/Dfv7FXOR2HOBz1k/6O9Qh4aqPf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,55 +103,71 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-free_pages_nolock() and free_frozen_pages_nolock() put the page on
-zone->trylock_free_pages if they get neither the pcp lock nor zone->lock.
-add_page_to_zone_llist() keeps the order of the page in page->private.
-The next free_one_page() which does get zone->lock passes these pages to
-split_large_buddy() with ->private still set.
+A fragment which is larger than PAGE_SIZE can only be served from the
+32K page of a page_frag_cache. If memory is low and the cache had to fall
+back to a single page, __page_frag_alloc_align() returns NULL and keeps
+that page.
 
-__free_one_page() writes ->private of the head of the resulting free page
-only. If the deferred page is merged with its lower buddy, it becomes a
-tail of that free page and keeps the order in ->private.
+Since the offset counts up, this check comes first and is made whenever
+the fragment does not fit behind nc->offset, no matter how big the page
+of the cache is. So the cache is never refilled on behalf of a large
+fragment: with fragsz = 10000 the first three allocations succeed, the
+fourth one and all the following ones fail although memory is plentiful.
+nc->offset does not move either, so this lasts until smaller fragments
+have used up the rest of the page, which never happens if the cache has
+no other user.
 
-All other free pages which are not the head of a buddy have a ->private
-of zero, and since commit 819bfbd47e49 ("mm/page_alloc: remove
-set_page_private() in prep_compound_tail()") the allocator relies on it.
-When the stale page is allocated again as a tail of a larger page:
+The nfp driver allocates its receive buffers with napi_alloc_frag() and
+netdev_alloc_frag(). They are larger than a page with a jumbo MTU.
 
- - prep_compound_tail() hits VM_WARN_ON_ONCE(tail->private);
- - with the page checks enabled, __free_pages_prepare() reports
-   "BUG: Bad page state", "nonzero private", and leaks the whole page;
- - without them the value is seen by whoever uses that page next, e.g. as
-   folio->private of a folio which is split off a large folio.
+Only give up if the fragment does not fit into the page at all, which is
+what the comment describes. The fourth allocation in the scenario above
+with a 32k page will thus now proceed to refill the cache.
 
-Only pages of an order above zero are affected. Those can be freed
-through _nolock() by the stack depot (order 2) and by SLUB (a new slab
-which cannot be added to the partial list by kmalloc_nolock()).
-
-Clear ->private when the page is taken off the list.
-
-Fixes: 8c57b687e833 ("mm, bpf: Introduce free_pages_nolock()")
+Fixes: 8218f62c9c9b ("mm: page_frag: use initial zero offset for page_frag_alloc_align()")
 Cc: <stable@vger.kernel.org>
 Assisted-by: LLM
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+[vbabka@kernel.org: make the comment more obvious]
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/page_alloc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/page_frag_cache.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ee013db45ed1..9a4d3352c037 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1562,6 +1562,8 @@ static void free_one_page(struct zone *zone, struct page *page,
- 		llist_for_each_entry_safe(p, tmp, llnode, pcp_llist) {
- 			unsigned int p_order = p->private;
- 
-+			/* It may end up as a tail of the merged free page. */
-+			p->private = 0;
- 			split_large_buddy(zone, p, page_to_pfn(p), p_order, fpi_flags);
- 			__count_vm_events(PGFREE, 1 << p_order);
+diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
+index e63efe78b7d4..8914437ddc51 100644
+--- a/mm/page_frag_cache.c
++++ b/mm/page_frag_cache.c
+@@ -119,15 +119,20 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
+ 	size = PAGE_SIZE << encoded_page_decode_order(encoded_page);
+ 	offset = __ALIGN_KERNEL_MASK(nc->offset, ~align_mask);
+ 	if (unlikely(offset + fragsz > size)) {
+-		if (unlikely(fragsz > PAGE_SIZE)) {
++		if (unlikely(fragsz > size)) {
+ 			/*
+-			 * The caller is trying to allocate a fragment
+-			 * with fragsz > PAGE_SIZE but the cache isn't big
+-			 * enough to satisfy the request, this may
+-			 * happen in low memory conditions.
+-			 * We don't release the cache page because
+-			 * it could make memory pressure worse
+-			 * so we simply return NULL here.
++			 * The caller is trying to allocate a fragment that's
++			 * larger than the whole cache page.
++			 *
++			 * Either fragsz is larger than PAGE_FRAG_CACHE_MAX_SIZE
++			 * so this cannot ever succeed.
++			 *
++			 * Or the refill has fallen back to order-0 due to a low
++			 * memory condition. Then we don't want to release the
++			 * cache page to attempt a new large-size refill because
++			 * it could make memory pressure worse.
++			 *
++			 * So in both cases we simply return NULL here.
+ 			 */
+ 			return NULL;
  		}
 
 -- 
