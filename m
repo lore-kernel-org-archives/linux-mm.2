@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B17606A33A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426B360A262E
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LgqyktbL
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fBTZK+5F
 Received: by kanga.kvack.org (Postfix)
-	id AC9C66B05BD; Mon, 26 Oct 2026 22:56:57 -0400 (EDT)
+	id 1F1D26B05C0; Mon, 26 Oct 2026 22:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7A626B05BF; Mon, 26 Oct 2026 22:56:57 -0400 (EDT)
+	id 1C9D16B05C1; Mon, 26 Oct 2026 22:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 990F96B05C0; Mon, 26 Oct 2026 22:56:57 -0400 (EDT)
+	id 091266B05C2; Mon, 26 Oct 2026 22:56:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 641506B05BD
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:56:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA8CD80338
+	by kanga.kvack.org (Postfix) with ESMTP id CA54C6B05C0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:56:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BF831408DE
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:56:58 +0000 (UTC)
+X-FDA: 85366894116.30.8DF3302
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 96B0F100005
 	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:56:56 +0000 (UTC)
-X-FDA: 85366894032.12.D7C1379
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EFFEA1C0006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:56:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LgqyktbL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 39RLgag0KCPgpj0nsqtzlmqnslttlqj.htrqnsz2-rrp0fhp.twl@flex--kevinloughlin.bounces.google.com designates 209.85.160.70 as permitted sender) smtp.mailfrom=39RLgag0KCPgpj0nsqtzlmqnslttlqj.htrqnsz2-rrp0fhp.twl@flex--kevinloughlin.bounces.google.com
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fBTZK+5F;
+	spf=pass (imf14.hostedemail.com: domain of 39xLgag0KCPomgxkpnqwijnkpiqqing.eqonkpwz-oomxcem.qti@flex--kevinloughlin.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=39xLgag0KCPomgxkpnqwijnkpiqqing.eqonkpwz-oomxcem.qti@flex--kevinloughlin.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793069815;
+	s=arc-20220608; t=1793069816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LCdG6rFn11zBCazpVzMCvIt14BjXcoxSwJ2DZpHTKik=;
-	b=ilBpZDcnK8g+PtTy0WjXYVM9mQMjYV142GzQZ0Rl88Q0aGa/WzY7v3e2vCV0AlzgN3PLK3
-	3nObXuO8B5z2LvyhJQntb6FHcwLCNlqyiZK3wIiraHWty+pvjOr4Us8Sw7DbGb1A+PA7yR
-	elrjEjJN6seYcLgHC8my1mOo3LVSECs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LgqyktbL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 39RLgag0KCPgpj0nsqtzlmqnslttlqj.htrqnsz2-rrp0fhp.twl@flex--kevinloughlin.bounces.google.com designates 209.85.160.70 as permitted sender) smtp.mailfrom=39RLgag0KCPgpj0nsqtzlmqnslttlqj.htrqnsz2-rrp0fhp.twl@flex--kevinloughlin.bounces.google.com
+	bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
+	b=2hP3wopZOzVUQTLrVBIor4AYQVEyVxTrC/OkfR6Z2iRbcQKusMz1nnWm+ReytLbkhUBMww
+	moKRmVKI8kNPLuK5WFWUWfvQIMmrdb2DzSM7umKFM4A349HgSV9ALxOvi/tf14p8r9//BM
+	dxIUZHRwGsDlgYheLcMR19epFkbjvmE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793069815;
-	b=K94UnJsWiu1fDmUESiUSwbShlgFgmS4qxwHPeN9/GMyOYzvOo/4w3i4C/e9GoNvZge/MHJ
-	FLKHQF2y12PLm5FdkeWoxFKdF0oBpGDa2DiReX7FfvCoV+KX07skhF1p0uqOK0qSS08j4+
-	NQjiTCBkspmdsZBlk4roIJqMEAsSdwE=
-Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-44899f99756so6644858fac.2
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:56:54 -0700 (PDT)
+	t=1793069816;
+	b=6FnJpEHTmSeNyVMncFCImftX7Qr7k7ld2neU7LWwjeInWq+dwtN136CnKPC1kUKdH9zPw0
+	UIxEZ4SR3F22QPXVVyEQ3UlT8ah+Gd4XLK07jtQx8BrdpuT5iHcd0n2vWS8FW62GcYLx9U
+	rS6EHp4062vuPaJbP9/33ukXVlYfRLw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fBTZK+5F;
+	spf=pass (imf14.hostedemail.com: domain of 39xLgag0KCPomgxkpnqwijnkpiqqing.eqonkpwz-oomxcem.qti@flex--kevinloughlin.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=39xLgag0KCPomgxkpnqwijnkpiqqing.eqonkpwz-oomxcem.qti@flex--kevinloughlin.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-7026e2e80f0so4293868eaf.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:56:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793069814; x=1793674614; darn=kvack.org;
+        d=google.com; s=20251104; t=1793069815; x=1793674615; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LCdG6rFn11zBCazpVzMCvIt14BjXcoxSwJ2DZpHTKik=;
-        b=LgqyktbLyHngMc9o65Ts5+VIL0LdjAHMuLutiVlew7RCpYiFkO1w17wjdod4hugY0u
-         CqEsiEIwlvhQRXcqBnSRP7ewyzr+Ma2R83vw9t3tzpb/7IJxTU4/KLVj3mOhzj++wWiB
-         dcqNPLBcZ+RfA12oWozRCWl+nDVrcaOt4XKA5+3ubLDayEWPxBzvdzy86V0T1sGe4Kad
-         shX8KDmNfbgAKuBloreNPVc/Yd/BDo+zriy8K4phODnp0GWhJvloRo7sm3YR9XE8igKR
-         SzoTUkaHxjynmCu3NjKEkHbxa9cJrIBzOUS1gxq/mBjYASdPprZPj0x1afFPQkB6mMjw
-         FHMA==
+        bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
+        b=fBTZK+5FUljLFUyfHEL6vabFAVdBnvmF25COjq7GibKRAFHReHwNFNZhtRF1ZpWi7k
+         xHkKN3R0pk3tQsyc3uQI5q3U4lb0GR0IEO5MTZzPDE4SpT2WcgUaWKvn6i3e11RlGUrZ
+         HDMmxsuo/AtPhAwIIUXVMPsJ7oOga+lbo6P0Kp/XAg3VeVaPq+OLwyb4DYj4OKY4JdR2
+         XgvDJgPJQa7TsFqUe5nkDH4Rd0dGdVyZlK8KJVSiqIUtf2S+AAMYtFvdSX6eISprv6oX
+         3ZQ6C4/3pSklR0RCOH4+JzbdFg0Pn8TlRMDMMu/dEHqMvCtZjMWQo8SZbGnmB6NJNI7L
+         ZMqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793069814; x=1793674614;
+        d=1e100.net; s=20260707; t=1793069815; x=1793674615;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LCdG6rFn11zBCazpVzMCvIt14BjXcoxSwJ2DZpHTKik=;
-        b=ZLXDYkdfAQP7wqq6FJCuNgZjAl9mhqUuDhWcoh254euAA7Myxqrdu3gbe8QxYlSuYj
-         wPs9CzsetkULU6jXqjv33InR5420l8udkUppj53Q3ewFOIJM2yMc9jyemC/9OnHLXZ01
-         Coh5kdwiKowfE22uA3UrpoGAYeBI1l7IAXgGfRL2Q6lKRUFnJmlwzGMvBwJAS8+FWShR
-         xAPcFml7M/CCyqrWOqLAtODct9eKaZIY1zhq0WKprymUqXVBPBNFAXYjI+duEprCT3rd
-         zOHtEuIwd+NnfMVivBE/tEujXzBtW86/LncDoTx1AlqRZtr32mURwfq5cayalJDfHJVW
-         2Qcw==
-X-Forwarded-Encrypted: i=1; AKwUvBw5Szo+2EhqgTuD+CyVs8hJxpHXY0ImDX+Iw7OB+Lz8KQEAAA7BE15DR/qLhEIRD/6S8w7O03nAlg==@kvack.org
-X-Gm-Message-State: AFq9FYKm48UfsX1t8AyB+ZHZPbJ1LrdIpgSViNLf2iDbGN+hFNWSexq8
-	GwCSh4HqsAYiLME2QuKIAPYwi7bPKRF1CuHAP5+g24Axwp4HFiI2k+hPGeMOq6frEGH7YCWfrn1
-	8X4jc/N2MyDwF5YgH/QgjNLV+VZhWbk2dhQ==
-X-Received: from iohd14-n1.prod.google.com ([2002:a05:6602:86ce:10b0:9c4:b80b:7605])
+        bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
+        b=KzHPvLBgcORx2Ruq5zlUncFZRgOGDZEDj/3eHLpc1rDxXCFYWN5sX5Qj0OSTbA3n0U
+         B7nlCGqB6tSlKmhN7jfla/wnSBJ49ID9oVHrTASk5Gp4BxLojzI/iDGvNvNO6xdmvD9M
+         0Nk5hr632HTR3nx4/YZ4Kijj7ODhLfz79pNzVroAKaACNEL7bHTWvp+UozewbZRX7fA7
+         nGHYDTFy5pL/4hG3a96EU+u8I3km3odZRR5632Gmk5HACi1GcRJIvabHJroMcGDo5ErN
+         923NS4zRXb/HULpjqDQVPv8qH1OPMKzHmkZw3AcXzi8UN0btHs7JRkR0hJxptywoZWSm
+         Zppw==
+X-Forwarded-Encrypted: i=1; AKwUvBzLQ08VzsJZi8KgGHAnim3zsYEZLGJwPMa5pmsCbluRbF8vyAZUdKhaqK6O0P+Vs2kNw/kR87rgWQ==@kvack.org
+X-Gm-Message-State: AFq9FYLsw0eKnleB/aKbSn3ICk+uWd3RCyXFyjuJykYbX7Px+BR8pE9J
+	eHzAcp/Kpx1JaKThkkCqLZ1ALtAIkWi+abT982Hf9bTMSTQuIZ8ZulJmGygxKBASRCPqGNt9JwO
+	jPyssIpNP0EW+7bPnsZ15v0ur/i0gggHlvQ==
+X-Received: from ioda11-n2.prod.google.com ([2002:a05:6602:204b:20b0:9c4:dfbe:8634])
  (user=kevinloughlin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:1b2b:b0:4f4:73a9:f853 with SMTP id 5614622812f47-55bfff91bbdmr5294339b6e.1.1793069813464;
- Mon, 26 Oct 2026 19:56:53 -0700 (PDT)
-Date: Tue, 27 Oct 2026 02:56:11 +0000
+ 2002:a05:6820:603:b0:70d:8086:e452 with SMTP id 006d021491bc7-70d8086eebemr3032864eaf.25.1793069815271;
+ Mon, 26 Oct 2026 19:56:55 -0700 (PDT)
+Date: Tue, 27 Oct 2026 02:56:12 +0000
 In-Reply-To: <20261027025616.1632690-1-kevinloughlin@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261027025616.1632690-1-kevinloughlin@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261027025616.1632690-9-kevinloughlin@google.com>
-Subject: [PATCH 08/13] mm/page_alloc: route unaccepted isolated pages
+Message-ID: <20261027025616.1632690-10-kevinloughlin@google.com>
+Subject: [PATCH 09/13] mm/page_reporting: account for unaccepted memory
 From: Kevin Loughlin <kevinloughlin@google.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>, 
 	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
@@ -107,19 +107,19 @@ Cc: virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
 	Jacky Li <jackyli@google.com>, Steve Rutherford <srutherford@google.com>, 
 	David Skidmore <davidskidmore@google.com>, Kevin Loughlin <kevinloughlin@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: EFFEA1C0006
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 96B0F100005
+X-Stat-Signature: t34q6chhuraxxju4y7tstx3oxk3epccz
 X-Rspam-User: 
-X-Stat-Signature: w4cxdspawpq1db4gpukmqn3efzsek94c
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793069814-288963
-X-HE-Meta: U2FsdGVkX19VCL+Kg+08bJcNIS/afZeUsNcchuV+CmDgAD1aP2SFWwcc1HXm6e/0Em99zKwlb8gzJzV8+u34cKojLHVc1Mo3cf7DrYXj2hRm/yHyDCSMEsqFLTf02WiyjZP8lfF1nxYjidejmc3hG09h9sVDmzIsH1/XtSVNDeJzKjJceDJFROKduaeZFgzUkKeEyLXO+S5qqSwHj2DiSXcJ64CnoedJnBiXBDoiX09Wh/ELO8agmtsQ4wEwn5ul/MR4EUScPv7i4b2Y+4HMeUR0TduD+PQ6SIl06VQC4nnGlMA9nfeqFkSkSDRiMQzR12I6L/N4yFNhPtbOsfNf7qnNA+CxhC9OySFg8gO7Oc6GUdzEWyKYrNxvHpSDaHBJrdm8Ejf5seBGAFx0Y1fICEbH5BdN16LGHtm0ofj+cEFo48PRO3f3YtsfFRV6Ezz19RIZZABAfZvm5md20u2CsHgt81HzHU8a7OMtmLK2ZOqnGkMWmpLpppfmchhaSKk79mw1+2f95Dyuqj2muZRNrqJS1tFz9bz0+AeJi29S4sJDznL+OG+szEyExrygLR/odEvoG9t6ZOopIe52/QrjcoOcjtzAI/KuMrXDWkKQZqQcy5Oz24PLzpVuBnaMkb31PRYliKyLfBRcIXBfswjHVOw7vHZFH0Utro4OXmRW+rro1M7C3KEu7cHrTYBULWfMKbIm0k6zrXFEc6reviuHyxjddDPvjAJ5teKo6wNr1STa+4l/2n1ZtrcXGThbjWAcaZVBnALL4tDtYotEYg85STacz+oV3V4yMh99tCGdESqwm6haR3kufnROzTloMlKYRFK1jl9aFvbQS9t5VT1FLDfGg4fw6t17i5GcIvCkO76ND0X39lvc3JhHofun5c3wABtBmc238auLvZbi7zlshH3Rp0dX2dGYmO4V+frdhE4cXcZwHDGVmOGMlAadWGx+vAC/1kDgJ3H1Aiv6h7Z
- TQNfpto/
- /OOb1acpT47A9oFgxcpegOz0zduRZ6sPoqB+rP9NMnFIpfRXSpiaUDI3xZkYB1+jHlSGUqlIsJ/HZTFQVwZ6uBalxdBoU8F2OrZeww3XhEjuF76qd7p6bQqKfR7AkLddjxzxpqJBIxsCLM6aFIqbj+R/r9rqYbWhVZqtgHsMPn4ntVgyCnDBGl/gRDOl9jOkBhUzDXLb6ZZyMtPt0YVAR3WpH/YEBPwsLQGd58rNVAzYItZBNiwXo2UKOiHt7MH/M3UsXDolR6Ca6hHaNK422xfPUOy81iNhdWusSWz+rUIJFdzlEnYwR1G8T0I+ocjDnGINsaxsfvvhKSFrELKtmYYWUHqeEe6v59Ql0Ory1yNgBu2+OAvWzsXloP6Me1QMDLD07WvM1vqHhejIKnEFbjj0p6kMhMp3yn/w7lbTKGAIfI/GWQgVddBbTARg6omJvJG69wnYlkbhFnLNV9QwgZ/ud1tTpwclEP15NGobmcCznHCufhB2B6xywZWiARnCfk7DcYDpr9tTyGhQeYMnlWFZ5DaTs7N2JtURKb8rL6WCmfPoxwS+kw992WBi+F53GNPZznry3+jiNxcRNpwl24oS8EfbtG5bvJhF0iae3Me3yt0IeUf0XoHiu1krlJW/mLakVO4I5Yf44OWBEkAO51N/5gAFH5B6MTz2zxGSYK/kf65Lk2qyIS3O9EQ==
+X-HE-Tag: 1793069816-104611
+X-HE-Meta: U2FsdGVkX19NymXJDLAXW7N9mItpSz9o0npR7ljC5fRvi1sMCRCcgd3+Fa+CCwVpNivrnRYQQOkn4jOr6FwS4CTK5RTYCryP5rYU4sHiomKFIAL/ZHiZM4b0EIrDGuyvUQ3Egz1XdgMBjh3OZ8cy1SCe7bgcOzyl0l4MHG4t6zeRIYBX5IHKxzBlAoRKZkqO7wfUp/j9DqOAeYcCAD9sN/3Daupkz/crlBZafwjENkYT7YqXYPEjpN8IRzM40vWWW80L7IE4ny1VaMqHceMU7562UCKSTFRoR8D4FSGLszBi0mBfknPacB1Hk/HsJqFQlHiRdszwe58Da3VbC5nZfT0/KwMTL2jcEsMG5LIQY6GGIWpUaK72FI7yhBW9PMn4JAZq/kIaKbWsjbfU3APxNO56gVcExAbFOjdR6U9Mh5/LozSbZUFzQFf8sdW2qmrrJttQPuUbS9kSCozb6i3PmcRWZwTcEy4BukClLRR/tSbtk9/gHKbm37XmtokjRZkzXp5o9xF4eZC+CZLf9TzzAb5gs7qYIuNOT/SlcVwSS7wcj97tbxpFDCuLC46TDbXQvHaUF8hl1cxMj2AY6umWWTbmMKaKABmmqK6yEC3J1UCd2aCO+qjbG4N5llf/YLKFnV3zoScjVPpSQsigrvp0EZCCTtWdVr6LCFkWRlCx8p35I/agZnhAFlvxKQLsjm7NiiBVxaqXKnHRxhGjO+zLxJkCahNUVMGEY1wddTyknEBd+Og9j6H1t2EMbvsGy2OMVRNKU4aivOpkAIyDRBT34nOvNuZY5T9w0Rgk1UP+lXBrPa+u7iERNhWmrECZ5cMq6xJGfipICqt09IuXQwCF7ZMR+ZO2QAVz3X0H3QZMjD4CnO5bbdwgXuWILJRyBOLMt5ln4CsUVRsCeszOrrwtfHwiWwiJ5g8KMZTtJq3T/RSDI7kj03RA45GhDoW04cpHf6mKEvLgxr0k7WOEnao
+ 1t3n2ztF
+ QzM0Fnn/8YK0EuqL8qcIVIcF5erT1CMeQ5cak7rB6wsnMfFFpCpEG9ZZr22CF8YO4edrhw/FYKRqQ8ZCRr4lPhNurZ98Bmn7CX2G+hzbH8gcaIup09QAJSeYzHY2lpMnvsgKgNWArv2AtdsQ4f4/itoNYkEFPiA5NzdoFI9PNpZaZUXCIYy1k21ZUDsFJ3TLt6Uwl4+tRjTJnpuZCbop0uOzvhovmAZdDZficRn+BzuYgx+Ff94AW/mIjkmUO/cEjF+HpvT2s+R2CeTVmObUNeVrHef6Qnk4d/DvDFKUG30WriRNC+VmDS5BWltO/bStkgcnvczh5THSd85zCUFCHSxsk/ncS+f3qc+xWOeT8uL1tOxTSfgZQeKb5CERrw5opE3m7UBf9m+VpJrJyRr5e9CLIm8f/g+IW5WOm2cETh7BI/LNS/fSQ0JlO/P02fmjh7B4GlMtoVtKXvqweAy8ClOH2FycsCCPBOeb6pdmEyQt+GsWylUUOxXhCE21Ul+10WChY6VsGwas+xlxyyBJMwUSsfa1Qgv1n4aWdHaeQjdfA2VXH6gtWHFkaSL7MPKlzn0g1ySr39BR7gbHdD2gfMis58wo8jaBquRw3nNBL4pm+HGzsBnohmwjutb9oCYf5rjKMkvyc9EpcBcczzIQDAlXKvoOx0CDwxWpmnM681+7AqCcSBa2sebJxuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,217 +128,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When free page reporting unaccepts isolated pages on confidential
-computing guests, __putback_isolated_page() must not return those
-unaccepted pages directly to zone->free_area; doing so would violate the
-allocator invariant that all pages on zone->free_area are accepted.
+When lazy unaccepted memory is active, pages on zone->unaccepted_pages
+are counted in NR_FREE_PAGES (MIGRATE_MOVABLE) as well as NR_UNACCEPTED.
+Without accounting for NR_UNACCEPTED in free page reporting watermarks,
+page_reporting_process_zone() and __isolate_free_page() treat
+unaccepted pages as already-accepted free buddy pages and can over-drain
+accepted free lists.
 
-Update __putback_isolated_page(), __free_pages_ok(),
-__free_frozen_pages(), and free_unref_folios() to route dynamically
-unaccepted pages to zone->unaccepted_pages via __free_unaccepted_locked()
-(falling back to immediate acceptance for isolated or CMA pageblocks).
-
-In addition:
-- Extract free_pages_prepare_init() so post-acceptance poisoning,
-  zeroing, KASAN tagging, arch_free_page(), and debug_pagealloc
-  unmapping run after accept_memory() without touching unaccepted pages
-  in __free_pages_prepare() or re-running metadata teardown in
-  __accept_page().
-- Pass FPI_SKIP_REPORT_NOTIFY when __accept_page() frees a freshly
-  accepted block into the buddy allocator so it is not immediately
-  re-queued for free page reporting before allocation.
+Account for zone_page_state(zone, NR_UNACCEPTED) in
+__isolate_free_page(), page_reporting_cycle(), and
+page_reporting_process_zone() (using promo_wmark_pages(zone) for free
+page reporting watermarks and skipping non-mergeable migratetypes when
+has_unaccepted_memory() is active), and enforce
+unaccepted_memory_order() as the minimum page_reporting_order.
 
 Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
 ---
- mm/page_alloc.c | 120 ++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 85 insertions(+), 35 deletions(-)
+ mm/page_alloc.c     |  3 +++
+ mm/page_reporting.c | 34 +++++++++++++++++++++++++++++++++-
+ 2 files changed, 36 insertions(+), 1 deletion(-)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 46ae8c6f3814..c10b77304633 100644
+index c10b77304633..541b2eaf34a4 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -1298,12 +1298,53 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
- 
- #endif /* CONFIG_MEM_ALLOC_PROFILING */
- 
-+static inline bool should_free_unaccepted(struct page *page,
-+					  unsigned int order,
-+					  fpi_t fpi_flags)
-+{
-+	return !(fpi_flags & FPI_NOLOCK) &&
-+	       page_contains_unaccepted(page, order);
-+}
-+
-+static void free_pages_prepare_init(struct page *page, unsigned int order)
-+{
-+	bool skip_kasan_poison = should_skip_kasan_poison(page);
-+	bool init = want_init_on_free();
-+
-+	kernel_poison_pages(page, 1 << order);
-+
-+	/*
-+	 * As memory initialization might be integrated into KASAN,
-+	 * KASAN poisoning and memory initialization code must be
-+	 * kept together to avoid discrepancies in behavior.
-+	 *
-+	 * With hardware tag-based KASAN, memory tags must be set before the
-+	 * page becomes unavailable via debug_pagealloc or arch_free_page.
-+	 */
-+	if (!skip_kasan_poison) {
-+		kasan_poison_pages(page, order, init);
-+
-+		/* Memory is already initialized if KASAN did it internally. */
-+		if (kasan_has_integrated_init())
-+			init = false;
-+	}
-+	if (init)
-+		clear_highpages_kasan_tagged(page, 1 << order);
-+
-+	/*
-+	 * arch_free_page() can make the page's contents inaccessible.  s390
-+	 * does this.  So nothing which can access the page's contents should
-+	 * happen after this.
-+	 */
-+	arch_free_page(page, order);
-+
-+	debug_pagealloc_unmap_pages(page, 1 << order);
-+}
-+
- static __always_inline bool __free_pages_prepare(struct page *page,
- 		unsigned int order, fpi_t fpi_flags)
- {
- 	int bad = 0;
--	bool skip_kasan_poison = should_skip_kasan_poison(page);
--	bool init = want_init_on_free();
- 	bool compound = PageCompound(page);
- 	struct folio *folio = page_folio(page);
- 
-@@ -1411,34 +1452,10 @@ static __always_inline bool __free_pages_prepare(struct page *page,
- 					   PAGE_SIZE << order);
- 	}
- 
--	kernel_poison_pages(page, 1 << order);
--
--	/*
--	 * As memory initialization might be integrated into KASAN,
--	 * KASAN poisoning and memory initialization code must be
--	 * kept together to avoid discrepancies in behavior.
--	 *
--	 * With hardware tag-based KASAN, memory tags must be set before the
--	 * page becomes unavailable via debug_pagealloc or arch_free_page.
--	 */
--	if (!skip_kasan_poison) {
--		kasan_poison_pages(page, order, init);
--
--		/* Memory is already initialized if KASAN did it internally. */
--		if (kasan_has_integrated_init())
--			init = false;
--	}
--	if (init)
--		clear_highpages_kasan_tagged(page, 1 << order);
--
--	/*
--	 * arch_free_page() can make the page's contents inaccessible.  s390
--	 * does this.  So nothing which can access the page's contents should
--	 * happen after this.
--	 */
--	arch_free_page(page, order);
-+	if (should_free_unaccepted(page, order, fpi_flags))
-+		return true;
- 
--	debug_pagealloc_unmap_pages(page, 1 << order);
-+	free_pages_prepare_init(page, order);
- 
- 	return true;
- }
-@@ -1572,14 +1589,31 @@ static void free_one_page(struct zone *zone, struct page *page,
- 	__count_vm_events(PGFREE, 1 << order);
- }
- 
-+static bool handle_unaccepted_free(struct page *page, unsigned int order,
-+				   fpi_t fpi_flags)
-+{
-+	if (!should_free_unaccepted(page, order, fpi_flags))
-+		return false;
-+
-+	if (__free_unaccepted(page, order))
-+		return true;
-+
-+	accept_memory(page_to_phys(page), PAGE_SIZE << order);
-+	free_pages_prepare_init(page, order);
-+	return false;
-+}
-+
- static void __free_pages_ok(struct page *page, unsigned int order,
- 			    fpi_t fpi_flags)
- {
- 	unsigned long pfn = page_to_pfn(page);
- 	struct zone *zone = page_zone(page);
- 
--	if (__free_pages_prepare(page, order, fpi_flags))
-+	if (__free_pages_prepare(page, order, fpi_flags)) {
-+		if (handle_unaccepted_free(page, order, fpi_flags))
-+			return;
- 		free_one_page(zone, page, pfn, order, fpi_flags);
-+	}
- }
- 
- void __meminit __free_pages_core(struct page *page, unsigned int order,
-@@ -2955,7 +2989,8 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
- 	unsigned long pfn = page_to_pfn(page);
- 	int migratetype;
- 
--	if (!pcp_allowed_order(order)) {
-+	if (!pcp_allowed_order(order) ||
-+	    should_free_unaccepted(page, order, fpi_flags)) {
- 		__free_pages_ok(page, order, fpi_flags);
- 		return;
- 	}
-@@ -3024,9 +3059,13 @@ void free_unref_folios(struct folio_batch *folios)
- 			continue;
- 		/*
- 		 * Free orders not handled on the PCP directly to the
--		 * allocator.
-+		 * allocator, as well as any pages containing unaccepted memory.
+@@ -3183,6 +3183,9 @@ int __isolate_free_page(struct page *page, unsigned int order)
+ 		 * exists.
  		 */
--		if (!pcp_allowed_order(order)) {
-+		if (!pcp_allowed_order(order) ||
-+		    should_free_unaccepted(&folio->page, order, FPI_NONE)) {
-+			if (handle_unaccepted_free(&folio->page, order,
-+						   FPI_NONE))
-+				continue;
- 			free_one_page(folio_zone(folio), &folio->page,
- 				      pfn, order, FPI_NONE);
- 			continue;
-@@ -3187,6 +3226,16 @@ void __putback_isolated_page(struct page *page, unsigned int order, int mt)
- 	/* zone lock should be held when this function is called */
- 	lockdep_assert_held(&zone->lock);
+ 		watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
++#ifdef CONFIG_UNACCEPTED_MEMORY
++		watermark += zone_page_state(zone, NR_UNACCEPTED);
++#endif
+ 		if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
+ 			return 0;
+ 	}
+diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+index de587be17801..adacdb015b55 100644
+--- a/mm/page_reporting.c
++++ b/mm/page_reporting.c
+@@ -17,11 +17,14 @@ unsigned int page_reporting_order = PAGE_REPORTING_ORDER_UNSPECIFIED;
  
-+	if (page_contains_unaccepted(page, order)) {
-+		if (__free_unaccepted_locked(page, zone, order))
-+			return;
-+		accept_memory(page_to_phys(page), PAGE_SIZE << order);
-+		free_pages_prepare_init(page, order);
-+		split_large_buddy(zone, page, page_to_pfn(page), order,
-+				  FPI_SKIP_REPORT_NOTIFY | FPI_TO_TAIL);
-+		return;
-+	}
+ static int page_order_update_notify(const char *val, const struct kernel_param *kp)
+ {
++	unsigned int min_order = has_unaccepted_memory() ?
++				 unaccepted_memory_order() : 0;
 +
- 	/* Return isolated page to tail of freelist. */
- 	__free_one_page(page, page_to_pfn(page), zone, order, mt,
- 			FPI_SKIP_REPORT_NOTIFY | FPI_TO_TAIL);
-@@ -7933,8 +7982,9 @@ static void __accept_page(struct zone *zone, unsigned long *flags,
- 	spin_unlock_irqrestore(&zone->lock, *flags);
- 
- 	accept_memory(page_to_phys(page), PAGE_SIZE << order);
--
--	__free_pages_ok(page, order, FPI_TO_TAIL);
-+	free_pages_prepare_init(page, order);
-+	free_one_page(zone, page, page_to_pfn(page), order,
-+		      FPI_TO_TAIL | FPI_SKIP_REPORT_NOTIFY);
+ 	/*
+ 	 * If param is set beyond this limit, order is set to default
+ 	 * pageblock_order value
+ 	 */
+-	return  param_set_uint_minmax(val, kp, 0, MAX_PAGE_ORDER);
++	return param_set_uint_minmax(val, kp, min_order, MAX_PAGE_ORDER);
  }
  
- void accept_page(struct page *page)
+ static const struct kernel_param_ops page_reporting_param_ops = {
+@@ -206,6 +209,21 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
+ 
+ 		/* Attempt to pull page from list and place in scatterlist */
+ 		if (*offset) {
++#ifdef CONFIG_UNACCEPTED_MEMORY
++			if (has_unaccepted_memory() ||
++			    !list_empty(&zone->unaccepted_pages)) {
++				unsigned long watermark;
++
++				watermark = promo_wmark_pages(zone) +
++					    zone_page_state(zone, NR_UNACCEPTED) +
++					    (1UL << order);
++				if (!zone_watermark_ok(zone, 0, watermark, 0,
++						       ALLOC_CMA)) {
++					next = page;
++					break;
++				}
++			}
++#endif
+ 			if (!__isolate_free_page(page, order)) {
+ 				next = page;
+ 				break;
+@@ -275,6 +293,12 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
+ 	/* Generate minimum watermark to be able to guarantee progress */
+ 	watermark = low_wmark_pages(zone) +
+ 		    (prdev->capacity << page_reporting_order);
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	if (has_unaccepted_memory() || !list_empty(&zone->unaccepted_pages))
++		watermark = promo_wmark_pages(zone) +
++			    zone_page_state(zone, NR_UNACCEPTED) +
++			    (prdev->capacity << page_reporting_order);
++#endif
+ 
+ 	/*
+ 	 * Cancel request if insufficient free memory or if we failed
+@@ -289,6 +313,11 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
+ 			/* We do not pull pages from the isolate free list */
+ 			if (is_migrate_isolate(mt))
+ 				continue;
++#ifdef CONFIG_UNACCEPTED_MEMORY
++			if (has_unaccepted_memory() &&
++			    !migratetype_is_mergeable(mt))
++				continue;
++#endif
+ 
+ 			err = page_reporting_cycle(prdev, zone, order, mt,
+ 						   sgl, &offset);
+@@ -384,6 +413,9 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
+ 		else
+ 			page_reporting_order = pageblock_order;
+ 	}
++	if (has_unaccepted_memory() &&
++	    page_reporting_order < unaccepted_memory_order())
++		page_reporting_order = unaccepted_memory_order();
+ 
+ 	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
+ 		prdev->capacity = PAGE_REPORTING_CAPACITY;
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
