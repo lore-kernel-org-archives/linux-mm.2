@@ -1,206 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8FF606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15A960A2609
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=est.tech header.i=@est.tech header.a=rsa-sha256 header.s=selector1 header.b=S78x6J7p
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KRbWh4Rt
 Received: by kanga.kvack.org (Postfix)
-	id CB57C6B083D; Tue, 27 Oct 2026 12:35:07 -0400 (EDT)
+	id C446D6B083F; Tue, 27 Oct 2026 12:37:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8DFD6B083F; Tue, 27 Oct 2026 12:35:07 -0400 (EDT)
+	id BF5496B0841; Tue, 27 Oct 2026 12:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B55FA6B0840; Tue, 27 Oct 2026 12:35:07 -0400 (EDT)
+	id B0BA46B0842; Tue, 27 Oct 2026 12:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 900CE6B083D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:35:07 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 047F240A87
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:35:06 +0000 (UTC)
-X-FDA: 85368955854.18.4A225BB
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011028.outbound.protection.outlook.com [52.101.70.28])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 171D6140007
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:35:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=S78x6J7p;
-	dmarc=none;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.70.28 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793118904;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 94DF86B083F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:37:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 199DFA876F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:37:11 +0000 (UTC)
+X-FDA: 85368961062.17.FBB9CBE
+Received: from mail-dl2-f4.google.com (mail-dl2-f4.google.com [74.125.229.132])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 629874000A
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:37:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=KRbWh4Rt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.132 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793119029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jZAvvvHun6aalGq5kU3xbJGdnoWrIc1LoWTmjMlrfpA=;
-	b=YTOV6vc3kdI4eGQuYzNhW4mqS+OUS6jx+RDftAd1+5rqy6rFD2jYbiHXJFfezXy0KHYk4T
-	zqSSEIGQajgvZ20zEnSHuVGq3Iow1F+gUA914kqRbNvdnJ8NYsVvS6G5cgqEWrv+9BXpwv
-	UxIwa7O668FRtnx+kjr5RRgDhlmtkLo=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=S78x6J7p;
-	dmarc=none;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.70.28 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793118904;
-	b=ZyIcdqmO4vFTlKafKH8CVy5ZDLzRbXr5NoW2sZJFAvC2+GwT+T1vQp3aPVIhNTSr4q/Oan
-	hVFHhuzQFjhb0tRVGkAtSOyXXaXm1Ps4PsJJy+pyrLfchDR40FeRy+P3z6h/V/NUKalIzi
-	cEj/3iWBxmkax3+MA+iAPxt/Y5O9fFc=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dqq1wciStRazrrVS3ROLro2uA6yVZBlJQtVZmogVHeGWiYuPHaETSAnQn2MoFC1HmloFXEH/xX2Znn/bCK/jFFd2JdDt7uHtKIa0M+Mey13TEYbuVe/ghAkGp8Fhb9du+p4ytz6MfsFKw3XFuLzkS+oGkQCPtTEUIIHz0CEX0/qhn3r4UVN7/VE9IMHiGx4kW+sZebo9PuNBxMlxO2SFIZ6pqbmHu2qaCNZGyF6klP1d+urzQUwdUX1DfBMtNpDKBYB7IQW6IVbJQLbjISWVPBEz43EgieLyzs63I8Xgl+x2Fn+iNXHaZ5rtPPdacqqK6YE4zqM3vnjHkcb8x8vwRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jZAvvvHun6aalGq5kU3xbJGdnoWrIc1LoWTmjMlrfpA=;
- b=EPVbDM0/WTu7nNI/0GLrxaQ1SqoZnjU/TDXYSgx4Z15oNMgp1nG/++wbGUjUACmdqF15sIMh8RSPUcN8po3Li3DmTzGAudE/epaA30JUeqCX5HsipwJMvRs4Sux1NeckY6B+fI3xfLNYTOOoUGWPV73Daao5CsqI8xU7VRWogIgU7z/hzTxCi3bc+KZ/q5izeatDSZo2vb7rO/Ch2kHHukHRUEAeerpRJHnsmVUuorHaurCKlCkKHbwVJMXp+O0JTsWQBlQyPd/bYO0V0IKbQGw/HA/uGD//lalW354hi1DiWzCyRNopeFeueAa9pVwIvLH16cEPITuYt9lWsfCtXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jZAvvvHun6aalGq5kU3xbJGdnoWrIc1LoWTmjMlrfpA=;
- b=S78x6J7pzZK+Grs+p2XwhAVoM273emPqJVXRuFB+Wl8cRvW6+EuP++U15O1KuvEf10OJ1JFlq/GQufmTUKdY4srrBHoLmey4lXjxYnLTej7E2wEZJi2xQ0WVM/kknSwLihyIv3BEqYDwb2w6rpyAvmumpitNMPmMxYWVpkXW7pmACfaaPw7Mt2siKH4u15CM7KyCX/aK5F+R/v4VIr/N46aLGw2feObgBJR/U4jp+Poo+45Pvv+6//BGV2DZYqNFnRvfatnDeM9lVbNZ0pSjIrP9me63cQOvm/G9/WP59aYmqOicQb4SH9FCZN7Jfb5jVlxJd5TL4lmn83+ml49FJQ==
-Received: from FRWP189MB3398.EURP189.PROD.OUTLOOK.COM (2603:10a6:d10:1a3::22)
- by VE1P189MB1135.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:148::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 16:35:02 +0000
-Received: from FRWP189MB3398.EURP189.PROD.OUTLOOK.COM
- ([fe80::4658:dbd6:d572:896a]) by FRWP189MB3398.EURP189.PROD.OUTLOOK.COM
- ([fe80::4658:dbd6:d572:896a%4]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
- 16:35:02 +0000
-From: Yunseong Kim <yunseong.kim@est.tech>
-Date: Tue, 27 Oct 2026 17:34:09 +0100
-Subject: [PATCH RFC 2/2] x86/kcov: allow instrumenting noisy objects for
- early boot coverage
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-early-kcov-v1-2-6f2f053255ad@est.tech>
-References: <20261027-early-kcov-v1-0-6f2f053255ad@est.tech>
-In-Reply-To: <20261027-early-kcov-v1-0-6f2f053255ad@est.tech>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, James Morris <jmorris@namei.org>, 
- Randy Dunlap <rdunlap@infradead.org>, 
- Andrey Konovalov <andreyknvl@gmail.com>, 
- Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Waiman Long <longman@redhat.com>, Luis Chamberlain <mcgrof@kernel.org>, 
- Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
- "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
- Joel Fernandes <joelagnelf@nvidia.com>, 
- Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
- Valentin Schneider <vschneid@redhat.com>, 
- K Prateek Nayak <kprateek.nayak@amd.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kasan-dev@googlegroups.com, workflows@vger.kernel.org, 
- linux-modules@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org, 
- linux-kbuild@vger.kernel.org, Yunseong Kim <yunseong.kim@est.tech>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793118887; l=3249;
- i=yunseong.kim@est.tech; s=20260824; h=from:subject:message-id;
- bh=XFup3h7UWloVBflNudxisL9cA+gOhcl+s7k8IxtKVKQ=;
- b=21InQGEVzGa/xXsjiaQcAKIzvWuhynLYuI5/cWIYRBiNPwLmEGn/X2vBrjeMyDVkYE3/ErMMk
- OB3Wg8bZZk0D/b1kYnHii2X+SjhEDjib8INCLs9Yn6hsXkxGtJ7ZXpv
-X-Developer-Key: i=yunseong.kim@est.tech; a=ed25519;
- pk=nfdmjNawkxBHo9UNdzLNBEht8sYmXp0MYUsa/hwC7vw=
-X-ClientProxiedBy: LO4P123CA0017.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:150::22) To FRWP189MB3398.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:d10:1a3::22)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6W47LdRVzDR/azT+us/9EkPK5g/BEdP8gTOrXRV0SRo=;
+	b=2PS/PUD3XVvPEqtH+s6+LqpMZpowBoga+rE5y7fMX9Vd426wCRessQtNUbSFNAXpISn3pj
+	TFxe75+O9At8rPumjcDXZUP2FJiwfmBmE4jPToedG3BgRH62opj2eoHgaZr7HaLBu9S49W
+	eGV69aF/WqK49R9ZPuWWm/HaGl6i89Q=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=KRbWh4Rt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.132 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793119029;
+	b=Z+x839KoUFvzkFFxWfz6wsTANiYN1+hh6tFHDQDfgFpbe8ENQvF9TTVdfc6+/LIw5M+VfN
+	+endo0x86u6ZWGL32YSxC5MBzD4GO0bSsJA4bMVFIyZbpEpuSQgvn1KvQ4atFHV5zy0Wj7
+	LgUJD5UAiufZgLlrpg3kyzAGu32gfrM=
+Received: by mail-dl2-f4.google.com with SMTP id a92af1059eb24-1922a6f0d23so1520261c88.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:37:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793119028; x=1793723828; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6W47LdRVzDR/azT+us/9EkPK5g/BEdP8gTOrXRV0SRo=;
+        b=KRbWh4RttLKAvhbh51UHo4jtJvKIa0URjklUrKI+3lnHzV5M9BNDYKjQbpx5hJyrpd
+         yCcaTGhfKtyUWgSlcqWML5zbK0+NRyodSc78cb3SpcsLNFfHTc4d7McZMFl54lEp2n9k
+         TKAOAwKRlqu3s/FhegdEQha7AmWXdR5YzM9X6PLd6q1IM9Gao3mdxM875ptYvD7hNwyp
+         bWN/V6qCEmXP2DWNqt7dluRBi7UQ0iC9MbdLP3pIEuMx3qH2UTtFOOnSSLxLuVwBnS3i
+         iC9NyCG5XdwPL3CNWZmVbZIpECxO2wNyR5XC2tuK4+8+55VapUaYGgFPh1M6H8/97flV
+         aAIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793119028; x=1793723828;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6W47LdRVzDR/azT+us/9EkPK5g/BEdP8gTOrXRV0SRo=;
+        b=F0UU8NQgyilwSphae3gdF9ZGksOIeuieQD6BTp2nREulfRba6XgPx3eMt13QEUdDq+
+         HODf0NoAl5BIsWjwD3mCcIlXW4yERD7t70u+AAQWj7Qpr3evAPepl+Gip8GQOx5xsNLO
+         etyjZ/ey4Gz/I095NWc5bz8Fzo0ynHZ4aV+MKJFkDNCWzwj8KCawD/S1E8VJQeLpv7fr
+         4ki4D9ZKM1JTweX8e7mHovZW4ovrdFTDlROUJKDQfGdDL6DvlhuVRrWCw2HYhDmdek0H
+         boGEgivITi+RPNQEo5+tcAFwWikVbXchHFNkJDeRgHRLaeEahKZwFVproUqxvn4CItWn
+         uajA==
+X-Forwarded-Encrypted: i=1; AKwUvBxYEDBGG7gGiQItVv4aUzIi/O9yCocsZRi79++/NzeeYkOS81IFmMZRFESYIJzB+yODjeQM8fIxIA==@kvack.org
+X-Gm-Message-State: AFq9FYKwDO2xol/jlzjoO2A/1kIU4Js9LgXVfMIS7IhE/8ItqnkRx6UJ
+	8hDnefbK4Z9LEMa6SjC6lUZJASD/1Y/iGSoQDnsuIYF2sKoLCDSHUnDL
+X-Gm-Gg: AYBFou3V+tLqrh+ta6RdZVysvD2W8tgSlBojnPScbz9VuUd9Rjg1aqabnmHJTVvlLqT
+	sjQcUj3iFmsZb1hWxqZO7NBNodt6AlBWLaMoyyRpnf3aeKjUTVBIDntkoAOP7KAXQvth9mHKc8x
+	N7UYv3gIwwczMqHbFptn7fipgHunysnkiSy5nmZhXO/FV9j7gAHpVjEOJMBVNfD7sQRNetX0P9i
+	6O+F6iU0270u5h2BKANe0zikGBXXslZIauBvKMkDCqxY6nHt4qUdLyiJxQabzGdG5BN+dkunRbs
+	5rmsyqfQl5ASceF/6z2ewd8POkctzxATe2iHvbb+/F6uZYr0fObkgk23+B8J4QRY9VJi9wQ5vch
+	UIWepyp49VAnsQGXRsBbKYpQ5WQytM3A42y/v0J4vva7X7EZboNBKUBR5u/u3AOlS59xnwh5yr5
+	6o8bI33oDBZCRDM0+MH5Be9YZRiUe21xjevodoAtykO1gd0mtdTzWlIn7u7uyhu6zZxoX/SV2u4
+	nSJpsoFaZO0j01rwsgiAES/+MDQCON/u8H6U5KwHHOEXSd5qka0Ul5xzr7wamqkypWM9hay2708
+	rWqtzUuWEapVeOkTRkItTHkidPk/6VeYzVpsAjEagNKQmxSgBc9mDKJI
+X-Received: by 2002:a05:701a:ca07:b0:14f:5cd:f286 with SMTP id a92af1059eb24-199373095e3mr16662744c88.34.1793119027895;
+        Tue, 27 Oct 2026 09:37:07 -0700 (PDT)
+Received: from localhost.localdomain ([98.148.34.5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-198a21bc6cbsm33902579c88.16.2026.10.27.09.37.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 09:37:06 -0700 (PDT)
+From: Hungyu Lin <dennylin0707@gmail.com>
+To: hughd@google.com
+Cc: baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	tim.c.chen@linux.intel.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	dennylin0707@gmail.com
+Subject: [PATCH] shmem: clamp negative used-block samples in statfs
+Date: Tue, 27 Oct 2026 16:36:53 +0000
+Message-ID: <20261027163653.82661-1-dennylin0707@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: FRWP189MB3398:EE_|VE1P189MB1135:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd0c8e78-ddfc-4148-774b-08df34483fa4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|921020|261026121527099003|5023799004|56012099006|11063799006|261009223027099003|261021123027099003|261022075727099003|261022105027099003|261021121427099003|22082099003|18002099003|6133799003|10067099003|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	QTu7N3PHQb36IBbIPETx1Bfo2DSurdJHbifEnc6xTyDtDxHpAsWzVlaqs862Do/GOoti+BPm9zuCrNN8caBIEN7InRM4iDXszD7vwITPKphMq++TTTOKOrdCuegExqrP7GsGoCoo4NpQm689r2j9iHbebUNpp4MzYzQ4AzJYa+UTUBErd0jvnYTfSeteNp46iVdFqgcetx6E17uk2tGuAszQE+ciVgWLXxP/uBq3hliHLwj4Bd8zur1N/59xsZGXR8Vzs2XW0d4RqzOej7XaBUykQXMmBYjhA8PIMT3qtUyNWvMBTmAj5bDjkZcnhCNYggE/6xUG4MDSFixnif4IS2SfKTvnnkeRIH1jhNBI3gf80BglW1+9dKa0T49OLJ2C25G2/i/LAYa9CIwBfOKprzqEylXds7d+hTNKlBLw6bmd5+8STtOrxjO7cwyBXgwsGCyWQwta2v5nppYulH67HJlefvJcCoDqEkU1eXIK7+UTAjIFOkRONk05X+xwPNU+W8O7p2xprMkxhSTCWApiHd4P6ZnGk2Hm6yc5P0DepJTO222Iw90JJAT+KxOqCJ5NnMmExSEWdWVgs/pOs85JmqGAiJ/1M5HARIqq0+GYOcuba2YBw+pQ8j3R2Yvi6Rf/mdZeExFvGmeDIGp7YjuX8bSt6zY+7fuBUGJyiO3UDER3+inEeAypq2A03AgkViJ43Lvedmwn371bjjl56JuIsg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FRWP189MB3398.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(921020)(261026121527099003)(5023799004)(56012099006)(11063799006)(261009223027099003)(261021123027099003)(261022075727099003)(261022105027099003)(261021121427099003)(22082099003)(18002099003)(6133799003)(10067099003)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eTNCZEo1cm9JK2ZsckVjSFV4dXNXejJTLzJ6YzFFZjRzMkIxd1JMMkdDR2ty?=
- =?utf-8?B?aXkzQ2d1WGRnb2grWlI2Nkt5Y0k0T2pvUTFiOWdPV2crOWNTc2JqeGcwSzEx?=
- =?utf-8?B?TFRjeUhjTXdLalZEL0xETitmeHUvTFZxTVp0TlAyai9tQnpVaFgvYko2M0xO?=
- =?utf-8?B?VnNwYVJLSWwvdVNrdjc1NU1VRkg0WUd6REtHZEpHQ2ZFNk9aUnpESFdpc1pU?=
- =?utf-8?B?SjBHYkJBUGZLaGM5Qy9RZnFWNnlLWUpzeTBZbjQvUklwcDlKVW9tdWxXL253?=
- =?utf-8?B?d3BjeGExeHA2YlhHenNpNWdocVMrNHdWaFZuS3Y0a3pSWE0yOTFYaXc4L0NL?=
- =?utf-8?B?bE9YQTZSbXlEd3dVbHg4ODhQYUtPTVRJbERObU9tczJPTnptV1lYU09ManJH?=
- =?utf-8?B?VE9tNFdlL2QrMUZaOHZ3c1BOR1lpTFpXU0kxUXdhSUpsZ0xibDlSWTFnSUZl?=
- =?utf-8?B?anNWck9VRWRYby9EcytIWGc2UjZNeWVyN2UxR2tBY1RJQ0Z3V2JSUlhoc3Jk?=
- =?utf-8?B?SDIzUFJyVEMrWnkvMytxUm1ySWZtckh5Tm5Hd1NFK1NFcjlUcnphZU91dzJY?=
- =?utf-8?B?SngxK3VNaGNmdGc0aHJFanpNV3FIRGEvVzlZTUF1bHdMamV3emV4RGhCT254?=
- =?utf-8?B?dlZlMlVTTVROL09wMCtlUENDZEhOWjdCREp0cGx1bWVnWTNFSldQdVdvVmVn?=
- =?utf-8?B?M2tMWU53OEpodWtrUGtNQXBxWno1N2NpMFhpSi8zNTA2SXJObE1tbHYvZVo0?=
- =?utf-8?B?bmlMeng2dmQrNklqN2FRQ05Hc240VGkxbFRqNmFXNDIxdENNMXBsc2RVVWRU?=
- =?utf-8?B?UFBhSS9hT2VYaTl5OFJzamxPSWJscG9IZkNLUDdwMmRQUmU1Uk1FdUhqTitI?=
- =?utf-8?B?V0N4Zk9RakRGdHdweGl2K3o1eFZCQlk3QVg1clZVb3QvY1RtVmRwS3RLVVZQ?=
- =?utf-8?B?VHZxUjkzK1FoVmhhNnlQNVZQVGcwWCtERldHK2pOclNRczNNNE5LRVZ5aEc2?=
- =?utf-8?B?bk1FaFFwVjk2SktWd1dwLy9EL3pDNGtkak1UZ01DNEJXZjJrc1U5SEJKbzho?=
- =?utf-8?B?ZFZTaDA0N0d2VDhLZFNQVlpQQU53WUJ4WVBHOVFUTjBFS0NSVEpuQnY3SDFF?=
- =?utf-8?B?cUFPc1ZGMjRxRytwOUlDYnFROTV5UERpVVg0U1JGRlpvcmZLMFVEWkl4aVhr?=
- =?utf-8?B?b3pVY1RSNmpMZ3VuVjZDcUYzV0czWDg0SHJqVEZJeFA1YmVteDRWekpIdEUz?=
- =?utf-8?B?TUxFNHptK3J2cGJNY0VTc1lkZU80VEQ3ZmpsOUZDN29WYXZZMXhOZDl3dUpH?=
- =?utf-8?B?TXBmT2tqdEVIZURBbTZISWlMQVFLeTlCSzNVM2wxYlZhdmd2L3p6VnhZRVZh?=
- =?utf-8?B?UjU5RW56SnlteUY2N29Rb0NUZDNoUnNZTTVVYnBZNTk3eVN1TTNwenovWms2?=
- =?utf-8?B?R2loNGZzRmpUZVF1NFpPbHZ3VlNzVDNFMExhR0pDTE9EYk95aC9pN1FVUlhV?=
- =?utf-8?B?RkFBODMvS1NWeHA4cDd0VTZTT0hYS2ZKdEsrQzFWMnFVOHFXbDJ4a25sbFBS?=
- =?utf-8?B?OUpPVUNCOFBOOUplM1VpVmlvN1gvbGNmbCtGY0EyTitMOTZ6S25xNm5DTW9V?=
- =?utf-8?B?aE81a01hc0lpZmhyMHFIcUNqZGY0RHBtSXh2L1hPVEppNnFkQkdNcmFQYjRR?=
- =?utf-8?B?c2d0UThUN3EwdVc1OE9XS1Q5REx3Tk9TRGppcUVobDFOcGpFaUg0NVY2WXpu?=
- =?utf-8?B?MFRvYUpwWnIrWVlPYm1mMjhabE9kNmV2eFVBNjU0c2VoUUhVL2VBRk9zVnlZ?=
- =?utf-8?B?UTluNFpoWHdBZVFtRzJzKzFoZmkvcHplYTRLb0ZId29LbEdiSkdqaEVCMHlq?=
- =?utf-8?B?SGtoN3NhWmdmdWQ4Y0Jzb1EwTFJVVlFSNVplYkMvWnNKSnR4d0lmcW45RmVn?=
- =?utf-8?B?RHY3NjZUUzZ0bWYrRnlSb2RHQjZaVmtSc3I1MVgwTGlEeGVaTnYwSkwrbTA0?=
- =?utf-8?B?TnQ3SEJFUlNyZTQ0dG5QRU5IaTRETElnMVNmVkphWGg5MDdJTnFpenV2WDZz?=
- =?utf-8?B?UmtHaXhRWDc2QU1sMlZ5RW5GQTAzcHdyVmdaQktCT3BYU2RpUmFMNkdsczJV?=
- =?utf-8?B?WUJESFEwYWhxTjRmL1ZkTVoxSmlJeU94VTNKejRMaTJDVHU3b0RlaElIazNa?=
- =?utf-8?B?bkhQWDE0d21PZ1lIVmUyQkhrV0kyaGNiZm1sRkhGejFZcURYZWk2bUg5UkZQ?=
- =?utf-8?B?ZWsyN042NjhqbEdmTFlvY1RFSGk4WHVGbFNXMno3QVhkR3hrTUV3WTBDeUVK?=
- =?utf-8?B?bExhclZsZ3pDNWtKZEw3RzF4SjlzSW5Rck9jdFNqZmR3S1MrckxrZz09?=
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd0c8e78-ddfc-4148-774b-08df34483fa4
-X-MS-Exchange-CrossTenant-AuthSource: FRWP189MB3398.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 16:35:02.0795
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9UoDXaGbTsjbnfmeD6lNiwRCbDlR7PmmTmUWoB8oAvL47/P+Ce3r05M/oqitw3YZwj3Ncbxk/Hhp1WmYRzlIhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1P189MB1135
-X-Rspamd-Queue-Id: 171D6140007
-X-Stat-Signature: 8m51nzp8cpa6djfrfiax346umozc4wre
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 629874000A
+X-Stat-Signature: qfg3wu8b4af1hoay1ddbaz5jy9n85zpw
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793118903-420914
-X-HE-Meta: U2FsdGVkX1/p5cOtTALi1X5OV8DSej9xjJDmlqASTUuDo4jAQhH0Z9cfPhOaw1A0J+49L8lgXlULaXpqNoSEFcoIC20wB1sM3b+NwIDG01TocCZAS0D0ROl4r5RutKCwUjsCQ2A0BefygJr5Ip9WX7wGQ3VJJYsEsWUWoPbzOEHTlreTOYyaPcHa7Yx+bARAJrDuYY5gFZd0DCi2mz53Ga3iAcp9+LUmij0soOh+hiIkJjAFyUBVyR3veOS8XvAf1Scd9vTXxVIJJSLETPd0FV+7bb2hzbZlDdlNm7fjZSU448kFQlrSTlfB7qfXgUoZUvVXdFZ5lJCwaMPQjnv/52XnmrPqvSkK7klmNluSzaq4ReM3RfCMB8dIm7Cbrsv4lACy1+tvPr1ma8oNz2iEHgRtg8lTEkZZiOEnrtSTnQ+8pGABMCEvf86SzX2bnV1Jly1vp+KWzsKsNNlapR81yPwJo8J2/AU9F+CfQ+gFvubotv85IZyvz7B/Ox/GUIFmC53Y9gNIYbYGPocGfod/gJwR26TQbls4U/mPsJZVMP7kKqLKAivY8/l7nWLp8KNaigGFNLPIJcslcJI1EovPqaTiGYErzjal3ijE9Ggmn23c8QMBjfWIaEMbgvjHu1t6x/5ll42OJOgnRs+SEpAfh2yQ6ijV1H/BcdvSiIrxKoWIMaAGjKhod2cs9Uoy8zbKPsM1hVmUEln9aLIVKtDTOeJLKwI+5spWGrpIe7WZsFIrAO0i5u1GRSnBzn1c0xe4w4C+kTs/HGsjQ1S7x/TvjPDfwQdGUXbAwiYiDuAZGvA6XWQR1wkxBCTvalh+d5hwOSQCOsbtU541SrEePt721m0au2RVVtunV3zNr7kYZSRSa7xHTKQrZbWo2esjIb+N1vH4wXFwcaopLNpWwVPndj7kK2FSnTfmwjTocFYcG6zXlTofbhiCW+I+DkRSBS7lgYVKY3uT5I6VWU4+w/J
- l7BLFrWs
- rkWloCwTxeH12wDspwYGU8nwn8SwfzJdRtPhkP9nf/EAvgq9fvandugKNkDE5yt+o+LtigPapIifnN+jF+caKeEBucvuvwUh4/JAxomu1EQXGH/jjAJZOP0k2G2V88lvOT/nZvViujSJEJ4bK0FQDY/KuuBN8wmAjU+E7d1K7yDAK/F+c5kEboXitdYMQ7aqH+CtYxEZeuJhcLBKPbJ+tzAGdnSvn6wEcL5kbSLsp4jdsLsQMDcmGhLfbScGPe8zG6qnclQXpFujthN9uJqHO/s8wzk/aB5ChMozE+N/MCrH6hdT1T0g1a0+0MPmcpAVeT/XgERLobYO0U65ucHfQnodfJPk1N5aT1wcJuPJ61Lf3Q/5RhT5JPcXm/KKZeMqbSzrqIEC5sezDh0wjmf6btzj/I1a/pOoHJyKB9z/3phVsG+N7LqOatoBZWckMs5y3pa8RwFNjfLRlN+em0k6mfA7NiA==
+X-HE-Tag: 1793119029-326227
+X-HE-Meta: U2FsdGVkX19XsZ6SDzkjW++SiU+XGkZALg5sCllQSYmfLIlH1VyrhjsS926u3WuchKw6q25wjd0x05JFeDMP9gpuX2NEBLgeMDVlCMaWZQT9vZl1hdChReGhQKAmWVZ2sWKtYorFYmUZXWV/wvT5Fx8Z90OZpVrQ1grulTBedzlwvkx8BCzYpYtt19mT2xoLheKSQUN40eKTzQMjUjhPdqN+NY2zdHHtbePbfsXKEsS50uqU0Wnbd1Om9XRTEQBb9MOz9jRCRFac3P+bwFsT2q6mpnnua62eGjTvj2bDZ8kLEcVsMclaLzMZ9npRANzaP0k7DLvnAxpQ3ltU859Fbx7o7q3aYNSk21dFhWhbF51MC2rldACKzQcrql/XRUMm405Bw7h/0Z1+vUkQGsqmMWbWV1QjnFLM4e0IWmQnGkG9FN8WUnZody89TkIc0VsoYTebZac04mhgG9qQRcyKLcb/bcr8ezY4uC5Tv/jW94NJr1WpU9qqcW8TZVD0KT5g2RhCvEF45iIBr9zTJVX69ggcSVFtpY3g2AZcfPuWn1TZK5xVJVzQo8in5mSqnFMrKap1XzSmAWlUkEa9mVKia8jc5AdxzzNHiTNmjflldYEM1C26W/g8EnKs4A6XLKk9ilet7FQPQfYPEBPZCF6SaUAX33Hoio9L/gWNa+TbBQE3oQmyJmvodNgLmKUI1iuq4uqEEMxcsDI7bD/a0R8hTmMyEVDs/BxnLgvcegkFdr0yFt12k3ko/RsoR4iIkd2xSYG0zVKKNxlCLRJBxe/qtA4zB/A+/5pIbl9aBmT1Wyxri3dvkEC/8Df8n1imiNF5/JYiupREtjdudHrJhuwvd0/qzpW/RJpQxAYUVQzq2JrqxvdiqIWxcfPgWHXzRkol2b4qNxIZyDFN4Sq0AAfS7BC0ZlwgbMZCwRCD/7+Y1xZTPr2SMwqVxKrsTYImruETEAqZzSHHGp9OdyTAaYA
+ hd0NmLh7
+ KR2nJ9a5635FsbF25oWWn8NaLRaZd+EeoCiSuNXNaPde1qMiX7mK55k+nnWU1G6StoFtpaigW0mNU9m2WcsTV5ecle5eJ9skVpKmsP4fZnXhWQYwlVUiN/B/+6/h/BDS7Sf0OJR24HukQWX/aN3Dp0MKnXM2ZRHAZoqT6AqxfJKfnP9XgaLZPaNqfTYtSbTPFYzCFHShVecih2tBbWj7J47jUS/Rtw/gYhsatwi493Fgxf9HWZYsEUo5K1D58EwPOnR/MNAqZuqbXSSC0OS0Fd+8Z/E+QYco/OWLUZ1B7Fza00q3nz6mvQWf80SQYBXfaUs9fwkL6cFDNPPAvXVpvag8POUeVdG5HQNKMJABmgKv8sIitb/5J4ZqcVH9YAp38PYp4AzylXIsXzgEd2OcIo/5zpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -209,83 +124,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A few x86 objects are excluded from KCOV only because their coverage
-is noise for syscall fuzzing: the APIC code (interrupts land in random
-places), delay.o, and the stack trace, dumpstack and unwinder objects.
+percpu_counter_sum() holds the counter lock while scanning the per-CPU
+values, but local updates can still proceed. Concurrent allocation and
+freeing on different CPUs can therefore produce a negative sample even
+though the number of used tmpfs blocks cannot be negative.
 
-Use $(kcov-noisy) for them, so that CONFIG_KCOV_INSTRUMENT_NOISY=y
-includes them in early boot coverage. With the option off nothing
-changes.
+shmem_statfs() subtracts this sample from max_blocks, reporting more free
+blocks than the filesystem's total. With a one-page file being written
+and truncated on separate CPUs, GNU df reports negative used space, for
+example 67108864 total bytes, -28672 used and 67137536 available.
 
-The objects excluded because the kernel does not boot or hangs when
-they are instrumented (head64.o, cpu/common.o, perf_event.o, tlb.c,
-mem_encrypt*.c, pgprot.c) stay excluded, as do machine_kexec_64.o and
-physaddr.o, which must not use KCOV during kexec once load_segments()
-has invalidated the GS base.
+Use percpu_counter_sum_positive() to clamp a negative sample to zero.
+This retains the approximate accounting and does not change allocation
+or limit enforcement.
 
-With FRED, the system vector wrappers in apic.c are not noinstr and run
-before the hardirq count is raised, so with this change interrupt PCs
-such as the LAPIC timer can be recorded as if init_task executed them.
-The same already happens for the wrappers in irq.c, smp.c and others.
-
-Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
+Fixes: 7e496299d4d2 ("tmpfs: make tmpfs scalable with percpu_counter for used blocks")
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
 ---
- arch/x86/kernel/Makefile      | 12 ++++++------
- arch/x86/kernel/apic/Makefile |  2 +-
- arch/x86/lib/Makefile         |  2 +-
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ mm/shmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 31f46fd005278..44cfd3781c30a 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -37,12 +37,12 @@ KMSAN_SANITIZE_nmi.o					:= n
- KCOV_INSTRUMENT_head$(BITS).o				:= n
- # These are called from save_stack_trace() on debug paths,
- # and produce large amounts of uninteresting coverage.
--KCOV_INSTRUMENT_stacktrace.o				:= n
--KCOV_INSTRUMENT_dumpstack.o				:= n
--KCOV_INSTRUMENT_dumpstack_$(BITS).o			:= n
--KCOV_INSTRUMENT_unwind_orc.o				:= n
--KCOV_INSTRUMENT_unwind_frame.o				:= n
--KCOV_INSTRUMENT_unwind_guess.o				:= n
-+KCOV_INSTRUMENT_stacktrace.o				:= $(kcov-noisy)
-+KCOV_INSTRUMENT_dumpstack.o				:= $(kcov-noisy)
-+KCOV_INSTRUMENT_dumpstack_$(BITS).o			:= $(kcov-noisy)
-+KCOV_INSTRUMENT_unwind_orc.o				:= $(kcov-noisy)
-+KCOV_INSTRUMENT_unwind_frame.o				:= $(kcov-noisy)
-+KCOV_INSTRUMENT_unwind_guess.o				:= $(kcov-noisy)
- 
- # Disable KCOV to prevent crashes during kexec: load_segments() invalidates
- # the GS base, which KCOV relies on for per-CPU data.
-diff --git a/arch/x86/kernel/apic/Makefile b/arch/x86/kernel/apic/Makefile
-index 581db89477f92..146cbd766c924 100644
---- a/arch/x86/kernel/apic/Makefile
-+++ b/arch/x86/kernel/apic/Makefile
-@@ -5,7 +5,7 @@
- 
- # Leads to non-deterministic coverage that is not a function of syscall inputs.
- # In particular, smp_apic_timer_interrupt() is called in random places.
--KCOV_INSTRUMENT		:= n
-+KCOV_INSTRUMENT		:= $(kcov-noisy)
- 
- obj-$(CONFIG_X86_LOCAL_APIC)	+= apic.o apic_common.o apic_noop.o ipi.o vector.o init.o
- obj-y				+= hw_nmi.o
-diff --git a/arch/x86/lib/Makefile b/arch/x86/lib/Makefile
-index 2dba7f83ef97c..151ecee2229f3 100644
---- a/arch/x86/lib/Makefile
-+++ b/arch/x86/lib/Makefile
-@@ -4,7 +4,7 @@
- #
- 
- # Produces uninteresting flaky coverage.
--KCOV_INSTRUMENT_delay.o	:= n
-+KCOV_INSTRUMENT_delay.o	:= $(kcov-noisy)
- 
- # KCSAN uses udelay for introducing watchpoint delay; avoid recursion.
- KCSAN_SANITIZE_delay.o := n
-
+diff --git a/mm/shmem.c b/mm/shmem.c
+index d97fc32e7c94..092bb45a076c 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -4005,7 +4005,7 @@ static int shmem_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 		buf->f_blocks = sbinfo->max_blocks;
+ 		buf->f_bavail =
+ 		buf->f_bfree  = sbinfo->max_blocks -
+-				percpu_counter_sum(&sbinfo->used_blocks);
++				percpu_counter_sum_positive(&sbinfo->used_blocks);
+ 	}
+ 	if (sbinfo->max_inodes) {
+ 		buf->f_files = sbinfo->max_inodes;
 -- 
-2.47.3
+2.43.0
 
 
