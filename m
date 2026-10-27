@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F96606A336
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D85F606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ayiRgza/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=M5HfFoAj
 Received: by kanga.kvack.org (Postfix)
-	id 395B26B0674; Tue, 27 Oct 2026 05:47:29 -0400 (EDT)
+	id 56C466B0675; Tue, 27 Oct 2026 05:48:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3463D6B0675; Tue, 27 Oct 2026 05:47:29 -0400 (EDT)
+	id 51CE06B0677; Tue, 27 Oct 2026 05:48:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20E866B0676; Tue, 27 Oct 2026 05:47:29 -0400 (EDT)
+	id 40F1D6B0678; Tue, 27 Oct 2026 05:48:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F2D4B6B0674
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:47:28 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A19FA867F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:47:28 +0000 (UTC)
-X-FDA: 85367928576.06.54C7BE7
-Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7C9DDC0006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:47:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="ayiRgza/";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B9D76B0675
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:48:53 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A6369A09AE
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:48:52 +0000 (UTC)
+X-FDA: 85367932104.18.1FCB91A
+Received: from mta1.migadu.com (out-137.mta1.migadu.com [95.215.58.137])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9F331180005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:48:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=M5HfFoAj;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.137 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793094446;
+	s=arc-20220608; t=1793094530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vkRbVEYH/IpHfx5799qbaRy/Rz2dM/B52EsX44m71XA=;
-	b=pzIXj91Tt0dNG11vHG9VNXlrlJf3nP4JOcBY5cQFdfQoRJ/dgd7a+PH7EAtTEM2bdmOVVg
-	CqsFhfnzYsOBETvGXdFR/X/ySar6+YkVBOTtfuIfnR+MKJIMVVRHeHzbva8bQpWa597TF4
-	ZnuxYPIurRXbAuBctcIp5AfCw0Rhy4s=
+	bh=w+/m5TRiUEroTYi/JhU/ZMYvRJ27fL3IgAeL8IYLhOs=;
+	b=0ClmnFlLrJdE4skzWf8iTlSP33rwqWCubDrfWUL+3PNeYsi0RWqPPXdLktqV3NKYz+UPw4
+	nKOd8xTPBSVUIvNNWlu9EsJpTP7xfdlYhIhqnHU3SJZF1s1nqVQy6oUKcwDgXmgtrtxKC0
+	gMlsy9huXR5gHhriSZIGA66M4cwfkng=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="ayiRgza/";
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=M5HfFoAj;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.137 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793094446;
-	b=tyrz9TY14FLrmW1h9vAD4DPZ8S5p/qDQnWdJQnimiETBOeVtQ+F1rhJH7/Ua4GbT4cqlSr
-	eIZE7yufdoJHdnsz63ktvpQaWlriz7eZiu8OvannWfAYT+YLRayszTlJHs/heUgfGGYZon
-	6mJv0PMgasRGgLU0tMVSoO4l/R4aUag=
+	t=1793094530;
+	b=aTbFc1WthspSRU3jISO8PaQ+Wqg/f2baBNilYV78cZG0vqsUAiqcGJOikG2XMq2rQDYTbK
+	FwWo96Gn4t5A60N2+bTbvCJp7n4zNoqLBcE13yx1TMGu5KDhmCFQEYzh2NFDDg9BomaUTT
+	r9NMPaK+f7MJeoCiweTdbEGzxV5Q6Fk=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=cPhbwrLxrBeT9JsGny5RJdPlGOD/1Ehjle0H8Uiu/2w=;
+DKIM-Signature: a=rsa-sha256; bh=w+/m5TRiUEroTYi/JhU/ZMYvRJ27fL3IgAeL8IYLhOs=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793094445; v=1; x=1793699245;
- b=ayiRgza/GxxmiVI9rgFsykUvChZWAtRADU5um6RBV71Km8e1c4L5jy/cPURegap7ZDCx6IFM
- bX37cSFeF5CycBHA7SWLRaiZAOMH3jO6XedepEVuCZJjsKpGXjjrmoB32a0QwIDJDb6RMbWFhbi
- OUBk4/abpc9TguYGICF4Oc9k=
+ t=1793094529; v=1; x=1793699329;
+ b=M5HfFoAjUDnRgQrtlqwxlCzg/yUz3ct1gnJFOAIpEV4mZEEV3dK1BLmaugjdYXhR6Y1192oO
+ bvxwaI9qa6LHkm0LAQTLWGbPluusZ6PGzBIq6PiGDoL/kcvoOndbK+wUxRwtkmmdvKO7NuAJ/E3
+ CZvZDj4wGfkHNKwOBZvMDrNc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 4eebca5cdaffa06c;
-	Tue, 27 Oct 2026 09:47:24 +0000
-X-Mizu-Trace-ID: 4eebca5cdaffa06c
+Received: by mta11.migadu.com with ESMTPS id 74e52af488cb4c06;
+	Tue, 27 Oct 2026 09:48:48 +0000
+X-Mizu-Trace-ID: 74e52af488cb4c06
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 37/46] mm: fix deadlock of mremap() against UFFDIO_MOVE
+Subject: Re: [PATCH 44/46] mm/cma: don't release CMA pages still in use
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261027-fixes_core-v1-37-6f74bec9a5bb@kernel.org>
-Date: Tue, 27 Oct 2026 17:46:54 +0800
+In-Reply-To: <20261027-fixes_core-v1-44-6f74bec9a5bb@kernel.org>
+Date: Tue, 27 Oct 2026 17:48:18 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>,
  Michal Hocko <mhocko@kernel.org>,
@@ -129,26 +129,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-fsdevel@vger.kernel.org,
  linux-arch@vger.kernel.org,
  linux-cxl@vger.kernel.org,
- Chris Mason <mason@kernel.org>,
  stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <EE612F16-A900-4E5C-8F9F-523F1CA690E6@linux.dev>
+Message-Id: <C94DBF32-62A3-4010-808D-DEB2E17DC552@linux.dev>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-37-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-44-6f74bec9a5bb@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Queue-Id: 7C9DDC0006
-X-Rspam-User: 
-X-Stat-Signature: 66x7ywfo3oh9g7m163k5qptt6sauzoyc
+X-Rspamd-Queue-Id: 9F331180005
+X-Stat-Signature: pur4uyx897ayk6iqptsfpayujrhgkxx1
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793094446-162579
-X-HE-Meta: U2FsdGVkX198g7bjjUpUtJhHY8pEyMpm1Qd28r2p/grmgOQyaCtDHXHvtatNU0IRuQbL1XOGK+IHaa5GTb5PWIapXZ3ltPAmLoM0oujuyaI2F1oysQ104GvnO1fu7/PDpavrAMd+3jEpFN3OocqRRtmKIjtPftU0LX3askVRV+KMxKyZGThgywyXexJfuNuzJj+LtSngFLinM4yB7Ac8ppBsAtXoYi6p0s0ESBNbrNnE8hr2DDuyAKlYtk5nmGa/YKQH2GWxfHYHXfwhtXkmVXKgdWOpZpth/qJvJ17Rb8sVoU8v9eAdJ3+a24Fmhn+faqMyw41jZn/tyM8l0IrL+OenrAFYE70F+aOFr7i89ggLjWvUaeVoZU1x9tDQAhp2/+YP+AeF5eQVvUSv34KbugcRE1jnH6rOFe0K1sQ4ADuotmbtWGSv4Xen+bjS+VCD+CifgGbvaY7iaGNE9gaOiYeF3bDBOnqnrSW0RInlG5Q3TSyUzCDTbFdA7XzqMfPNAb2UHlzb8Mm03NKHNu0p/h4Lbo4ugyddh9E23pbqhRmZprchee9Extxc8bgLM3hyao4b+Tv2Y9nhauTIanVBm9Xyd3s0NN2COkbB8eY9eLpVJ+P2p5IZyEPcIEdTnZfy6VQ+Kj3DSV/hAPgkEaIv624hULy2/nUhBCEpkeyf3MdJgMylWnpjQAJaSl4Uoo95W+ZCOIwPelIQGsvBCuDivq3NLkvmaaKpll1sFvAvG93sW4P6Ny9hKzO+M+53a7jB6YCCXGUIbh6St8/CXnSVpDTaaQPn8dhdGHywB5H6rr3MOFUCLkqHyxAbYsG5TS66/bPUHazcaDJTb9GJJVerlInyJYqjZXqn9M9DD97u1S/wa1nM70AHC5SiixacRkbdChrn4tR2SQj/jV5OoTO/r6rRaRWdL/RGPlBx/MXBGs7qsAfWcg8ZTd5JMbzB/75a61xTUaL9BiFCI0RmiKW
- FlMmoTNz
- Hj0hia1OFI8icpaQ6STAfs4Qj4FGfoAlP+kofEUimVI9wZDEZOs9NU2KGV5ZZTzDQMkMTFIXRtc+kubvsqowW3Jc/k9Ndcf/Q26NdvPAOCtHCO0b87gVeO928tkuKwLVQrABf5qU5ZLpFdBieZgt5i1oJoXqws71q2W5Wz+zq9joTIqSuZSoqGzsFXggTdfJdR0920rwme+B4kn6+EABizUrhkQAArlQjgsbK6bUE8XLcEW/kOVLE1yKQEISLASfn6DEFNUjL4wkYnjqR13INw+QLVQjUEkqxr3ucFY8UZpgQLgLavo6WAHjN2fSaB7BmiCfe3Z7My2pyWMFknG5evUULPib96ez+LI/VPnufrXuEzHU7NpAErBpvxWCBurTzghWBtlFQhmVRfYI8UKBrEo23I3c05vDL+934mToCekZ1P6n1PeYIHuPfzeECh4QcUWrx
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793094530-196512
+X-HE-Meta: U2FsdGVkX18Ya9ptbM9a1SzLQTBfoqXM8MCEys+2w7nGhCYUfghn6XOFKBBGVWMQ8LvUvrJkB2NVKHgXk72xHM5R4bEz1gZfUvVw1t5a7+YBw521/pBBzMeFog+vkqI7dwxqPZoKfQ84c+TIKlKpAgeBAbpuT+HhqtW9AC5xXnNOOySQvgp5MrjTfdjGP/dWJeRZVfgVUJ4orgKmOJ0o7uQFifE+rybB4BxxU65HX1LnLHjDoS1LBY5JTY6a4w8/cPVQ4HXbGbSL3aYO7C3G2WPQ9VZmX+TijrJiUdkthWI31QmRhPLTpMcaeWXQ5w5HXx648A3LYoJJAkrs13vis7TER9LKuvRQMYXLx2G2+Wnuct4G/pTW1j1hxwLKh05rFdxQCSMsDbZzOgP+kPq0FYHnoEycwYFhBCAMnFwHvG/aqrvXfhrQuWIMgphfzx9wsfz8fHql/Xo/n3mue7t+D3QU0bnKIgbRJlH8L1kLNKdaP+/d5I8ozbr/AcHgY8FMAgbfmEwAajg8rKpoa3toNFj1EXtGZ1+povMA0USFUzuDjrG1+7u4Yjw7X7WpjUksMpoKuEaGpqvfWGHc3iNWTNH/76kQqvDzvAG7nNKnQyhjcw3EfSl/gxERnMm9b634lI+SfC9wTH6uzDylNnlIWmGAc/GnWMq5oxr6nz3pDtPNi51Mg0BfVzP2/eMfdNsdNL8EmYZliR1Vy5LWUN22C7SGENZOVOQ8gu/w4Lc7srFAtSAbe4iAck1WseBVX0ShUaDUYSyohV4F4V0hgsO569ThGhY/wZHJKUPJ+T6QeqfyzUuEllJy45L5TWDMSeMtBSc0QK//+SmMu1xu/eGDQ0Rg/etOy4ldWXFLFcO1DAOyr0HQ5OBjZ3uPECBV12JFukA2tQ6CwhIXAz8AdBg+a0zKecOzSJf3gY5fj/9gtpL/zm0HE/oJJNazXqDb6eMKmljHrGnI5Ev+xE3hYIX
+ Va14aXun
+ GneFfRt+fW3F773O/lU7Nu7iGTgZlQ53tZ+QePcKDWOVnib4HNd0a7rIc6n80kGu0Ci4l+Ttro5s+QOY9I32fSIxPu5X26p0J1hny57SzFJzLUvCJLK5r7DMN88AhHcSbeU1F5jSnEM7ExIs/hNfc5zTN4zNIarsFzmss21FiQJpYjZZYWrrZZXsnJ03ujBvet0KRBE2WjruxHZZTyxLTJwBUnAeMalzP7PDVyTmml6H5/1bfHBiBdX++KwqtgW+xFaj4rgrfw09IgTiWFmEPxKnia1tZlyzSAu4rOXvXkvVYDgCag/djRwRFdYUOvSsIPTAj604odcbBhgYcpcxBQ1r+CQ1APh0Y15Xy450fqM7WEybDOBlMA78mqaAk6KMhO64ZfMw+snd/l/X5bSGtdCPkIYhNP0Tq1YkYmmWY2Z0VTrnuIiI0kMG2BYcHERFRxOmIU9xkyESf0aOKJIBcoZajb8lYl9Vi866L58XGJhNYrAOSd6/yZraA8WIyQatSs6Gz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,41 +158,41 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Oct 27, 2026, at 07:17, David Hildenbrand (Arm) <david@kernel.org> =
+> On Oct 27, 2026, at 07:18, David Hildenbrand (Arm) <david@kernel.org> =
 wrote:
 >=20
-> From: Chris Mason <mason@kernel.org>
+> From: Rik van Riel <riel@surriel.com>
 >=20
-> With per-VMA locks, UFFDIO_MOVE can run concurrently with mremap()
-> on different VMAs in the same mm. Those VMAs can share page tables, so
-> both operations can acquire the same pair of page-table locks.
+> When a driver calls dma_free_contiguous() before quiescing DMA, the
+> page might still have a reference from the device.
+> put_page_testzero() there returns false, WARN fires, but the code =
+proceeds
+> to free_contig_frozen_range() putting a live page onto buddy and =
+clearing
+> the bitmap. A subsequent allocation can hand the same PFN to a new
+> owner while the original holder still references it.
 >=20
-> UFFDIO_MOVE orders the locks by address, while mremap() takes the =
-source
-> lock first. These conflicting orders can deadlock; mremap() holding
-> mmap_lock for writing no longer helps.
+> A concurrent put_page() that drops the last reference between the
+> testzero loop and free_contig_frozen_range() can double-queue the page
+> via page->lru, corrupting buddy lists.
 >=20
-> Move double_pt_lock() and double_pt_unlock() to mm/internal.h and use
-> them for all page-table moves in mremap(). Preserve the source entry
-> checks after acquiring both locks. Remove the comments claiming that
-> exclusive mmap_lock makes lock ordering irrelevant.
+> Avoid the corruption by not freeing a CMA region if any of the
+> pages inside are still in use.
 >=20
-> In move_ptes(), make sure to just recheck source and destination PMD
-> after taking the locks and drop the overly-long comment.
+> Make it explicit in the warning that the driver allowed a leak.
 >=20
-> Fix generated by an LLM and sent by Chris Mason in private.
+> While at it, use page_ref_freeze() to make the semantics clearer and
+> switch to pr_warn_ratelimited().
 >=20
-> Fixes: 867a43a34ff8 ("userfaultfd: use per-vma locks in userfaultfd =
-operations")
+> Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: use new helpers consistently; simplify description and =
-comments;
->         move_ptes() fixup ]
+> Signed-off-by: Rik van Riel <riel@surriel.com>
+> Link: https://patch.msgid.link/20260811132045.5f114772@fangorn
+> [ david: use page_ref_freeze() + pr_warn_ratelimited() ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Acked-by: Muchun Song <muchun.song@linux.dev>
 
-Thanks.
+Thanks
 
 
