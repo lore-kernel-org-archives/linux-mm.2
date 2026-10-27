@@ -1,98 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE743606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D055B606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Arjlk7Qt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BNoPTNH2
 Received: by kanga.kvack.org (Postfix)
-	id AC3A86B0748; Tue, 27 Oct 2026 09:35:26 -0400 (EDT)
+	id DAC616B0749; Tue, 27 Oct 2026 09:37:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9B2C6B0749; Tue, 27 Oct 2026 09:35:26 -0400 (EDT)
+	id D5D476B074B; Tue, 27 Oct 2026 09:37:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B1056B074A; Tue, 27 Oct 2026 09:35:26 -0400 (EDT)
+	id C28316B074C; Tue, 27 Oct 2026 09:37:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BD556B0748
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:35:26 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7C89A8751
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:35:25 +0000 (UTC)
-X-FDA: 85368503010.15.E31A93D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1DDD440005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:35:23 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Arjlk7Qt;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 99B266B0749
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:37:13 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A2531C43F2
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:37:13 +0000 (UTC)
+X-FDA: 85368507546.18.8108720
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6EFDC100007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:37:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNoPTNH2;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793108124;
+	s=arc-20220608; t=1793108231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXXfHQerXMejJc/h/G8QmxS8zRqgGjGP7S6FBaiQJf8=;
-	b=1bA0khzacFltOQxynGgUdL0FmSutd2htaD3vcC859afX4MoJQf53Oi4EH0J4XR/y+9FBjr
-	oe2HK6t1H97FBNVlvhpIV9FazM9f1Yhm08kQZVzb+HD6Ix+QcZ6jv1re+msggWgK/jd1jm
-	BCV2/p9AsLqPCGdNmVo3WN+OR6DSH2E=
+	bh=xeh0h8/al9334KMAYnmna8mlBpnyruhKQ6eKh9bOxag=;
+	b=y05KZB1iUDsckZ92PmG1nOLcUMvVbZ7mgZ1xADoMd2oZl/qZm8qefdmNT241OplrlI3CoR
+	UtPYfX5kCTgey1Xm6Qa2aVluYYChYRUMwaUnblekYmMSb/oMJkE0U/GLIyuYWmwTpTr24K
+	g8NXDPChvQJLTfD/WuCEtr+XDbrZtsA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793108124;
-	b=2Yk0R6v7tYONHFQTPjpF6F+H5sGNlerYPv41Gqy98gAEIwpDAv+XPnkd5Lh0xXWbdo+Rdl
-	6vKh9zvXEVpNyF4Oe3w2X8zq+VF+wP+U85xs6F307Krm4nG5hmXz2F9NGo35D9L/gO7kun
-	S8hdDLIewVucPRX2a1D5Ib3yBphUGBA=
+	t=1793108231;
+	b=tLxkra8OOnE1Ilcd7lwE8b2DLTzvAimGF2rGDvUdCrITKef1IRjHakzClwLzJHTeiJNWjR
+	Yrabc0Wyhl8tgRLIrsDltYtaY2TYiPf9CY81q7SPPCkZrIk+emRX8GKQaSiADYRoZNgp3W
+	RFmWUob197lXcQfgtco5efTuLLbkYTE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Arjlk7Qt;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNoPTNH2;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3DDC4410BD;
-	Tue, 27 Oct 2026 13:35:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BBD1F01825;
-	Tue, 27 Oct 2026 13:35:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CEC84601FE;
+	Tue, 27 Oct 2026 13:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAB21F01825;
+	Tue, 27 Oct 2026 13:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793108123;
-	bh=DXXfHQerXMejJc/h/G8QmxS8zRqgGjGP7S6FBaiQJf8=;
+	s=k20260515; t=1793108230;
+	bh=xeh0h8/al9334KMAYnmna8mlBpnyruhKQ6eKh9bOxag=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Arjlk7Qt+D1zP0rhgU2TwlPbSPFeu6d5zAdGJpJ/2t/12E+ySLcT7HupgwQfHwTAR
-	 CKigig4dKa9KrHuLiIIcZnpXkxuj+2s0w/PHf6jcH05B8QTQjwpYAWFdaECJtjh3FY
-	 yHCoG1lLYscIjICHqfjZOpOBtu5IPgdZCTQS08TfhBNied3uoJHdEBCQw6sQEnQIHU
-	 W7k1Op/YP3pkt+lNUUPbs+5oMoWSQ6DmsbAqQzi0/kjOQsKXohLK5IxIzR8UjKgdRV
-	 oXJXb79cWZVJqnEf/ALW0tnCrC4p78g9GZJHxS+jZNchp2c2ip3sb69ZGxq1YGrBDS
-	 DyMPPLUExJ0yg==
-Message-ID: <d7a634b6-8668-4753-8bfc-e9334dde705e@kernel.org>
-Date: Tue, 27 Oct 2026 14:35:13 +0100
+	b=BNoPTNH2mY6hAGlBSJMX1nCiPi/BoGcEcnnfFq6+h+wDjw1G0y3hs+ebQAtAiOELD
+	 yJgwrrd+Ds0GpFEn8jauqMs8Ehpf+VQDtoj4/b6jGVizI7Ad9DgH0pv2uuAGGif266
+	 OEHVIx4AvTC1axwF8GssWq1nVxDxxYHCzUnB9V7JIgH/pNrP9bqVUhtnJW/Ac4lRbX
+	 fIDxYERC1b21qEqhiEx+KpoEDgSx9BuagIKuqrxTN4GJvtB90vSRNFLEQgrldSHxxm
+	 LsT5zfRiRhFmJ0HPZLYF4fdDqnqwgIEqAH7zIVU2uyHIUGvEyYpQ3IINiIuWcUgelT
+	 o6ASz9eiq/Z3w==
+Message-ID: <a4fc92b5-7d99-49f4-94ac-89fdee699042@kernel.org>
+Date: Tue, 27 Oct 2026 14:37:01 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
-To: Muchun Song <muchun.song@linux.dev>, Kiryl Shutsemau <kas@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>
-References: <20260227194302.274384-1-kas@kernel.org>
- <20260227194302.274384-14-kas@kernel.org>
- <ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org>
- <at_f43oDv73y-t7O@thinkstation>
- <f97a8d33-50b2-4a86-8381-ee840cdfa2f9@kernel.org>
- <20261027110028.GH2668564@noisy.programming.kicks-ass.net>
- <auCKv_omLGRc6wv2@thinkstation>
- <f3f3aca9-bdb7-4aec-9099-9fb63a60e61d@kernel.org>
- <auCZFckDfBMrlfxV@thinkstation>
- <070DDE5C-2183-4A8B-AC2D-891CAE15E581@linux.dev>
+Subject: Re: [PATCH 4/6] mm/page_alloc: don't undo another isolation in
+ alloc_contig_range
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+ kernel-team@meta.com, akpm@linux-foundation.org, vbabka@kernel.org,
+ surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
+ hannes@cmpxchg.org, ziy@nvidia.com, linmiaohe@huawei.com,
+ nao.horiguchi@gmail.com, ljs@kernel.org, liam@infradead.org,
+ rppt@kernel.org, osalvador@suse.de, muchun.song@linux.dev,
+ iamjoonsoo.kim@lge.com, anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20261027042204.3741307-1-gourry@gourry.net>
+ <20261027042204.3741307-5-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,21 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <070DDE5C-2183-4A8B-AC2D-891CAE15E581@linux.dev>
+In-Reply-To: <20261027042204.3741307-5-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1DDD440005
-X-Stat-Signature: mtb1nhozdf6s9sn1zeauujrjbz6e1h75
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6EFDC100007
+X-Stat-Signature: pdotffsqzqexbbpuw18oxpn6f8thjxwd
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793108123-433733
-X-HE-Meta: U2FsdGVkX18S61Qxp7RfIGfwRcgeuWo6zVD9KR0YFvL7aPW76X83SrLR+qvmR+6rDkRyH3n4Ymp6YuUAyZYrFfPRBYc68u9bP4JwavwZZ4wCQq7/OdIkEaumC9bdgmxLVCgzRLe50AHPJkztI39CaD+1fhBPsU9ek1JsfkoKIckJ5tDay8XTJN6O/ZZ5tpe5pXB+sKU7F+Q1tAdlr+N/71Qd6GFa4fKAN3MbmUrRUxqQJ8bs7xx/68EP3bBdN08BlQ26JUXq54NAy9LeseIMkQYg13C4NbxavXDhfGPfgd/C8zMHTMh2Iv2xVakK2bkXFqJEzYjo+lnDKS5ROBGB7vXjduxDkp6mmFCQdjcPrV+W2Zi+wo4gIugRuWDzWqyxGp8KeoGdelIrqK07egJKUrKMGvVrFMlAgC4swUuI3e012QA4qJ/62GuNCaFH6L2il5pvG1pOV/zwlfb43oalgfexG+cmNDWi/bblZzXCOhrp5OYBcmqIz2fyT9oUClLx5RkbWbmUfE+3dOZWS9RuTnPXW0f+4MSEbz3hxltWAkO1dFVVGPNdf9hS8TgBKANicyKWnvnP9o5CFhJCvyGHyA+fRqAIJgVYVptFWb7VBVQzuPwMzDgazrvJN0eZ+tnHlsVb4+WezmNTCY93Kk9qlRQZjGqeW00rmrbNYQGlZ4AxT2HT2wjOLFk1neBdomo3348MD+FRCAhzDgy8LAm8iOkNYu8nKezcIQRH71gkFdjB0Ti3LFv1Y5RHBl43FoWN96PBRKHTtwRtAJIYxfxXxxbWABoR6yd2bR8gCDa8/6X3eB7G5DiCzouRlwSQ1oq+ZhItZceDnwH4JwPwgFP48CSl6irjx/5bHK9FBmsc01k//4fx3xVPMzI1jwFptFk01eC6vFTUMIlN1TBM1xAb7qFfRM6LlU8L3v0rlr1jrD4WZJnEav00Hxdn+d3WAkKUmazUBcNqfQ7HLncWTpx
- hFz68wLY
- Os8KWY64KIgytHOF0fsh2gW3jrITjWW1fsiuXfYLOubSXh8NVwJbyYn3z5LvZnWegbNlzu8N11ioyfP0zITOhMEEISRJ1gjaYVJI2byNytdkQElKjnuJT9FBJjaY2dQNXmIolPPS9ptaKvTVcNvTcpOy44L9QOz6LW3snaUEMJMn4rNSz4Gr+Yb2jucZXr2SbcYlqo95mlmxNF/sypN31s1zHYv/hClolpRN6Z0ooKO06WFb6RSIoCE8QNNBcnGjOPDeP2u2hoissBklOrkwT2P5mgCZeiPSw2xTI
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793108231-537711
+X-HE-Meta: U2FsdGVkX1/bm5q5Baj4YaPPSUbzlyzniqEW7oN32GHyHRGlCMMzIq4bZ81C7bIiDsIP3krRodeS+9QP7i3+OVWqdgrhsZrQLwkVYSjbcTHBoeyRicFEHxbibXoQ7AcIwkwuKBkEnR+yIlzQaDja87dmn6sus57FqMvC3uxHRj7eBiJcIdQPyKIX2ZQyeja8og47j/RJ2PAI8U7Z5HlmLArWUs7YSvyS3vp9JyHHVlJuNw7wRNyjWG+ll0tH3wYXOXIuFpWqFhLmAazh3GXRvHshn4N8QuCqpvGqbc9e/cy4eCADn+5EinyG49t7aPX1sxlmlXN9XyXeRyoanGpNxoGm772L6h30TH4AbcfN3mNPWRyF5n+1qoiWQQTdRf6IHM3ikDsWZbWORm25r2IQNzAFwwrAox6OVKRMY18Re+J9eTONOzJ29k2Z2Ay+ACt87mqhyU5T+FyuOCQv2cIpWXamc7Ppl/q8kAwKa9R+fcquytnm+PZJmpJSPORK5P9mETGSjeAMSiB6rWe5TZ6Y1o42a2cnUDS0kK09i8Og2EjFUFonwSwxHhzxMEzC9wwbh2n8SxfI4zz+vTBLO7JeyFzOkLbAKsZg628E9O6DySPrCRjKVyCMA67pi5FVR3v0eTf4VLEKXoDm+Mdg9DPEg1JsHCELIcECHKZnAjb+9sx2+cNtDsIG7eyZu2IFqDJb8GpHmL9aznhRwbqEUhTCedceRDxmWctG9mYuxDeelHUTYT/Mlk+uvkQnPa/Z+1rA44xu/k66GLZhzo3NAyL1ZaSdsMfwPGhRpeMnoe5QEuBxljUXV4q6Kt6JF7emGxAVYhS4bTCMAwBw1cf2RgP3mHex86t4IGoHhVU7Mab9oTXVNKwcKUOgIETZFZo19Wcu8ho6SfcYdQq3NOvaglFGSWdYl5ZIOnkvXzJL+AAsig0tKRQJfRvfxzDzekdUY9BHkmNoNpmy7XsX5t89Y8t
+ Xuk5bcwk
+ kqz0RdwYY3C9epcbr+o1wsRTRBS+YYC6J2UjeWXK6Djy39s9E/2g2gwcNJxb44FfCtcIKu5r6qnfH5LbRQDCEUA7SuJ4bNlEl9c1ZKMxlF/VfME7LbEIsg6SNNYR+5fQkuQFnp45dUZz/ZObjj+RME1LznvJrNNF8WgGfpKO3zXDV5iMaee0p6EqSGVe/dVQ8oud5oxCHcgBQcL55lgTIVVE/ZxNhVUgAy8pvt2BYYhwYkkZ1YW+In0cqVexJrr/iVccoQXRSYykUClt5OrYtnJ00dnIsCx4Fp5vnFhf/boKohXhkE+tO81X7TTwbwm96v04v0ePfnN9l5UvkFXVgouUhOCVegvEigHjMq4sjPTMQgoM81EEAEDxoECqBnHthyGVLOpveyu/gw0t3C/KlKPEzPbyBEcc7r+9/lj9EE2K9gidofxx71YjFLeQie0bkLL/NOUeS4I8Fyi4jcpfbr7620w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,37 +147,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 14:13, Muchun Song wrote:
+On 10/27/26 05:22, Gregory Price (Meta) wrote:
+> An alloc_contig_range() that overlaps a block going offline can leave
+> the offline spinning until it gets a signal, holding the device hotplug
+> lock.  When isolation fails, alloc_contig_frozen_range() undoes it over
+> the whole range, clearing the offline's MIGRATE_ISOLATE too:
 > 
+>   CPU 1 (offline_pages)               CPU 2 (alloc_contig_range)
+>   start_isolate_page_range()
+>     blocks are MIGRATE_ISOLATE
+>                                       start_isolate_page_range()
+>                                         -EBUSY on CPU 1's blocks
+>                                       undo_isolate_page_range()
+>                                         blocks are MIGRATE_MOVABLE
+>   test_pages_isolated()
+>     never succeeds again
 > 
->> On Oct 27, 2026, at 20:31, Kiryl Shutsemau <kas@kernel.org> wrote:
->>
->> On Tue, Oct 27, 2026 at 01:05:58PM +0100, David Hildenbrand (Arm) wrote:
->>>
->>> Right. Without HVO we would just corrupt pages in the single folio (which is
->>> also not nice).
->>>
->>> I'm also questioning whether we need this RO protection all the time active.
->>
->> What do you have in mind? RO only under a debug option, or switching the
->> tail page to RO some time after the remap?
+> start_isolate_page_range() fails only on a block someone else isolated,
+> after undoing its own, so this undo only ever clears another caller's.
+> Return directly, as before alloc_contig_range() went pageblock granular.
 > 
-> I don't think enabling RO only on debug kernels is a good choice.
+> With offline_pages() parked after isolating a DIMM block and a 1G
+> hugetlb allocation made over it, the offline on base still loops 30s
+> later in 4 of 4 runs:
 > 
-> Within ByteDance, we once successfully caught memory failures using RO (because
-> we backported HVO, but some missing commits in memory failure caused write
-> operations on tail pages to persist). These operations triggered invalid writes
-> to shared tail pages.
+>   offline_pages+0x5b2/0x1570
+>   memory_subsys_offline+0x17e/0x470
+>   device_offline+0x250/0x340
+>   state_store+0x88/0x110
+> 
+> With this patch the allocation still fails, and the offline completes in
+> 3 of 3 runs.
+> 
+> Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
 
-But would you have caught it with debug setting on in initial rollout / experiments?
+We have an existing AI fix for that as well already handled by Vlasta.
 
-> 
-> Under the old HVO schema, this invalid write only corrupted one folio, but under
-> the new schema, it corrupts all HVOed folios. Therefore, I personally believe
-> that for the new schema, the value of RO is even greater.
-But doesn't that mean that you would find serious bugs faster one way or the other?
-
-Silent corruption of any folio state is not good.
+I think we'll have to establish some model of "ask David first before posting"
+because otherwise we just create duplicate work for everyone.
 
 -- 
 Cheers,
