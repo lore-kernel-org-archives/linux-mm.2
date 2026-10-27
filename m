@@ -1,162 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A11606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02968606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=jMAe2coB;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ThWU3S/l;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=jMAe2coB;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ThWU3S/l
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g5dpc32J
 Received: by kanga.kvack.org (Postfix)
-	id 0BFF96B0698; Tue, 27 Oct 2026 06:39:37 -0400 (EDT)
+	id 0EDA16B0699; Tue, 27 Oct 2026 06:43:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 098376B0699; Tue, 27 Oct 2026 06:39:37 -0400 (EDT)
+	id 09F656B069B; Tue, 27 Oct 2026 06:43:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEFE36B069A; Tue, 27 Oct 2026 06:39:36 -0400 (EDT)
+	id ECF4F6B069C; Tue, 27 Oct 2026 06:43:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BBDC76B0698
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:39:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5880A409B7
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:39:36 +0000 (UTC)
-X-FDA: 85368059952.28.2C35064
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 45DB1C000B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:39:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jMAe2coB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ThWU3S/l";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jMAe2coB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ThWU3S/l";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CB82F6B0699
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:43:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9CBC3C099A
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:43:39 +0000 (UTC)
+X-FDA: 85368070158.06.5EC7F6F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C900E40009
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:43:37 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g5dpc32J;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793097817;
+	b=zU3s6qoDAUQVTFj8M4JC/UX8rbKZNc0PqinTnjNzPNMIp8Y3r1UFqiRJ8frIa16hjQXCcW
+	AslmBFvrm6WUToyQHiUmTVR21UgVkh5txLShxYwLLx1p7Kwoxu7Ps+ic9qrOVj9qVDI+y+
+	Cb9CbTpAq5flool0P/U+pKH8mTL/C0Y=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g5dpc32J;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793097574;
+	s=arc-20220608; t=1793097817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
-	b=UjtxVVvBWtQbYEFR/ZuJM2HMFK9WUXezE0N3+/BSvIHHcUIm/pifQ1YUuDO6AIMKgUN4+K
-	GZJmCnsrbig9auIV3o0jORYZ1vYZTu54L/z0XHnWkdkLYLooMl+qE17Fjv+5Mc0DsuW2qK
-	Hf+wTDIQU3int2WwK3/WjLGvHGV8ai8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jMAe2coB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ThWU3S/l";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jMAe2coB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ThWU3S/l";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793097574;
-	b=afO5nBMKZp17LYNpSIqZCNLNc0tboj3x5MjwTuC2Ya2hbvDsszD0BVw3kL3G+6uaImBg1J
-	wG6Df5jPPMDvmMZR3W+ycx7YmGGUNSV4+8FIQJgYsla83Kt6JTUgaxFAYZIgD/JPvD3Qrk
-	qWIGW65P21KYOz4KAdXDkKRUAI8vUYg=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0C4381F7D5;
-	Tue, 27 Oct 2026 10:39:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793097573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
-	b=jMAe2coBUlccty3WHc8e5eFbxGa/FQ2n05z85wuM0uaTiaKhJdl7ZM93Izvk+dMu+SIVP7
-	SuAVTUjb87RyCHK0ewstc6yfcUCkiry0A71eE1ZaAONOd+4FRscZSDEBSmxEttk4iK9uBP
-	BFGgiIC9hZRc75BpwrdNUNGp5cR5iSE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793097573;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
-	b=ThWU3S/ly60GNL1To5OVEGzTl7xGFF0ft9/lW1WdUqqvby+qiJh4XfliFTrN0TZPcLVbcA
-	00sIFGt5kj9La7Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793097573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
-	b=jMAe2coBUlccty3WHc8e5eFbxGa/FQ2n05z85wuM0uaTiaKhJdl7ZM93Izvk+dMu+SIVP7
-	SuAVTUjb87RyCHK0ewstc6yfcUCkiry0A71eE1ZaAONOd+4FRscZSDEBSmxEttk4iK9uBP
-	BFGgiIC9hZRc75BpwrdNUNGp5cR5iSE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793097573;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
-	b=ThWU3S/ly60GNL1To5OVEGzTl7xGFF0ft9/lW1WdUqqvby+qiJh4XfliFTrN0TZPcLVbcA
-	00sIFGt5kj9La7Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 588A81321C;
-	Tue, 27 Oct 2026 10:39:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wIn6B19/4GprGgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 10:39:27 +0000
-Date: Tue, 27 Oct 2026 10:39:25 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 04/46] mm/memfd: make f_pos accesses atomic
-Message-ID: <auB_QkUwsP6sRfYS@pedro-suse.tail5790ac.ts.net>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
+	bh=XbJa13RjfN6919cMZzDU3gy2a1c9YqXQ9xqZ6+QCABc=;
+	b=O3J8hWO1XXHriz0lyOBhMkSLkyskWI8q8ZCfMaJBZGiWkoKAWsuyOn9gSyYA+KCIB7IDoC
+	hdLwjREWxJ2/C7m5AeqtSL6GjSs+1SMUa+dX/29eIuCxmfA/fdGz2qRpK0rXdjNOZuItKw
+	fyQHlte4efYx7i9LwEtwoPP9cSwvi3k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A661140D7A;
+	Tue, 27 Oct 2026 10:43:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48011F01829;
+	Tue, 27 Oct 2026 10:43:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793097816;
+	bh=XbJa13RjfN6919cMZzDU3gy2a1c9YqXQ9xqZ6+QCABc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=g5dpc32JNKqIkhyHWDOEi5UqQbRy0Xl/siRc8G+C1x4stC4Sg1XdCA281G3SQ+aWu
+	 s0ByXluqi4gjOnDvTfcvY79PvjMrgo/HfAl6GZ65DItvU5QoAetsN5Ffy2Cbqm4UdL
+	 rgBsVa22PtnNFp3OkZNAtboIGRRIN0NDqn/DqjBnGEYjiXtLnQ5MK1c3AM08h5FCXM
+	 FFx0QjTRPnQzRolETg5TgzngAjW5IYRGTGruo9yn8IOY/CVG0JOd79/vD87r49v1YQ
+	 cTPQkk3zmRhG9tfqZHeIUXLAwYgTFHehPBP2LSm5K7d1Z7Nza/CviBXX2mz4Tor9XG
+	 VIVL7PNu6Z4DQ==
+Message-ID: <c7adf7fa-a1f1-43d3-be75-4532a3274415@kernel.org>
+Date: Tue, 27 Oct 2026 11:04:58 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
-X-Rspamd-Action: no action
-X-Spam-Score: -12.01
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 45DB1C000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/16] mm/shmem: stop retrying folios that cannot be split
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>,
+ Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-8-703206d5fa0c@kernel.org>
+ <at-AmbZyqUnGAJkI@thinkstation>
+ <f7d36a47-6879-40bf-8c24-dfc89d937647@kernel.org>
+ <at-U8JkqnTC9GZyK@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <at-U8JkqnTC9GZyK@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 1eyhesm1dc3i6uumctnxpqpyhenb6ksx
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793097574-439437
-X-HE-Meta: U2FsdGVkX1/0C9iZ/zjUw8d+kwWj2ztY6ARutSm5o/Kq0kGl3+G+3VD4Bvy3y7cIuscTEaMFwIgV56kykYssrrnOvoiEdLFWq+d3LuuAPGU88UydtphMYRtogK+hSusxdHPHHXJd5n5JnRaU4SBwMz12ErAH3mR3Fo4CSn1sBRaW4dJYQQmjnZhTfl3TKY0JRhol800TjkLswsoDjBSi133bue28R+GOdCIDNirGTWupnYuWnoGYQuZoRgaFUmvRKL5c8ZtOi/BCGbL9FmYRUYzX8MsjjvSe6MwdywPy/P0K9lQHlFLWO9pTcXzu1OMVodtp/bm397WnQpZqbRY28g3ni6rD49QexKs8auCSJOwgkCfw2+98jJVfYBUKt24KAq435rUlnWCpxOOMHZcPgRIigEDOSyEXmSJl+2tnmY07IWjuq5oeGzy1A6aPqG8m3gQFPOglKC59rFu77hjraa69BeMekEBPIgiqK3JfK5cRakS/WmW+5Y3a1m6wrvuiL8eucaukStdb0y60fKWdX+60r4mzUco6+xJ96f0iU9BEW5MSvF+p8UmYpcv35+6Pm2J+13gRXhH+Ay952vTbYYYFAHQarPc18ijMPDD8nUFpEyy+5Y3+b83sVnsHc+IJ230yxpBwgLJ1rs0w4tW4efCxrS++OQSMk1sHeB0LUwGnE6/Kjwqh+MOy5+o9EWdYJ/ap+6byCIeAYSpY9btGtj3kGDFNw3QoSPyPqpNEYdQk2tkKSLGxKZ+jWzPNNAZFkGtyEu1LaqaTwweRuyxw4mPWStQVcoejTZGuFESgyIoNCiCJUzfPHqWdsgG4ndDxEUuM8NZMaNKs/iPKUF9VFh/7Q0ilscdwwIiiTh+kpUmuYrp1/B4d08q4S98JCF2mSyf8kNl1R5ieQEQeZZShStLq1f3eIxnUSQey0TySErBFssYoES6xVq7Xf7DEsKbGbPIAlPsx8sdJLx9BvXj
- Bpt/PO5D
- VLOa+pxE28O3eHWFN33NbGKlbBL68mzAL2tHSYg+91Z+coRFHpSkYxanLTL8q1yUbuqWD/G9ChoJomSETUWt2qOJwk3fMmBQON86fmmvtneIFLEeOpRAh6BjsCe5gl599lVNK7X5meaA6/rUcu0oYR7f7liESp6U9g3CjyW7Y1qL1OkVL/yqJTlRH7KGTbHUDtnF4vs6zHnUoYslIt7dusSXEhZih8q6opeU8ukFe9bHD4g/ujvno+zIwKFHsQdaV7Xoxp0UjZtNZgWv5rmi8s7uG/q35QaQ8yU4fs6yRXWk64cRokgFK6E99i1rAopBfZDGBJQtvCkmw6BkSBVAeA5HaHtk80ohuj9YgSd61C8UJxx1kmz4ofIa4v+TXaWYUPYu3GvuJic9vZEEuW2XffBVcrhbfYvWrROUq1DSUTPIzVHvxje9GvUw+Vfgb/CPqMf6PuhdX7X7R2n9Kqi1wmi8wIg==
+X-Rspamd-Queue-Id: C900E40009
+X-Stat-Signature: dfqatsxns8farpaiu1zgdka1qoe7kp5k
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793097817-540663
+X-HE-Meta: U2FsdGVkX1/Hsrynl2LDy5RpwEjGvOsvKaqxoG329jZBF/g+u0x/GsiRIAKnx1EmQ86OKNUwBdlUxjFJqsf2sICVf7BwDS9FOU5kIqZD8lmh91Fe37PPBa8hVXfxD+BxGSliOgIyhkVplFPbQ/rbfDSMhv7vBgNIlpnHbUSePz6rmOkA6XfLzotJT0DBVjeB2+eQ1AqJxxA3t3hgc0CDDKBExXTwOjrVN8AOgWZn+xNZ3SeN5uxIcpXtDtzJg4Q3mUqk7qfHsLpGNd3CVUZgt4IvUYcSpTAFAc/CfCS3AQMl+0xNoxy2e2VyXFyT61FBv/yFH7NyHh/zXHkOQyrtkKQUKW8OcRxp+nB3etE7kyKz0Dd5PX5RbhuUwt9PGXw0FbWKRMEljgJtLXfR1AY8AOJZUj6n7BI0Ql4Y8jonbihSWqx0icu+Hilikw06EGG9RAvUmkasi3JX+ypxzBvgFubd2obAacJNEO6+r/kRDurrRhQcFPe1n5/VV4eJ8nSuoYiG4/034dR2DH3Hy84AnlZdvo2aGBBqitfD1y/LnnygSfgVJtviH71mn4ra25ZVshVXxzsPNRoRy5elTC5PDwClqmqps2oPPhceTsMOuxulC4hF7CihI5DSXfFV7hkRPAh3Rx+Z3YNWMCB47AfCw8GTpYYjieMlP6SiMR/gfXssVDwxVbvfTVZ0ntzbwbYMWNZXPnlMFB4w7mY4ybbrJGihCvwatgoy31ctqTIvYaOlDCs07N8RmDYwNZocMQDM6VEbE4lXFrUQERJ8/R8HfAqPqDQ8hunw7ZROSllp7N3mm9OuS3tpH3ZueGo0TzIcAtXNObIHwWoasrOo22y/uRLSuxL3J/tXTRXvsNINyEPCJM6iPOLSY0+/PIs66W/7DE00HEXziEnfGzZVxr+7PUdTV3nPfLh/lOYfrEspW4TOFCdIy8g7O8F/YTz1lCqANlI8wtvfuTxCSEWO2Eo
+ ojYunh8u
+ u33XmQs4jxbO3RgZkdHQCUiZUujSCE2ampEaKPUYbCd8JMssKaKtvWi5hc7s7WGr2G4LTY0FWuDGJP6F4J91m/kkp5Ef/d7l5NQJGYnf+ALba8/HG38uhYrlQmiQfpNovjDFZkgaIUl0Rrsem8/ELYOr/hA/k886tA9Fcqo8iA6BD0j3VQmsc5YSnXBsEQ9XDAUVBxHBEJ49JEQj9RpzUHqE9QDmY/wZbnWfK/Av7gxj5dbUgYiI01YDjxbIB6/Jtm1CUYqBfJAngI+VyOML/MNEHyWdn4WFVciqnaKt4ovbOs6j0MoKUyUBsS5RZysFKSvbwetZzWrVw0/IkIG/mcf718Pzgh6bIM3rJ2bT8fmjsJco=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,46 +162,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:17:24AM +0100, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
+On 10/26/26 18:59, Kiryl Shutsemau wrote:
+> On Mon, Oct 26, 2026 at 06:08:15PM +0100, David Hildenbrand (Arm) wrote:
+>> On 10/26/26 17:36, Kiryl Shutsemau wrote:
+>>>
+>>> Any reason, this should not be in the same patch as 07/16?
+>>> It is the same failure mode in the same function.
+>>
+>> I decided to split because it's a slightly different error mode (failing to
+>> discard vs. endless loop) and tackles two different commits.
 > 
-> Commit 9c225f2655e3 ("vfs: atomic f_pos accesses as per POSIX") made
-> read(), write() and lseek() on a shared open file description of a regular
-> file serialize on ->f_pos_lock.  The flag that asks for it,
-> FMODE_ATOMIC_POS, is set in do_dentry_open().  A memfd is a regular file
-> too, but its struct file comes from alloc_file_pseudo() and never passes
-> through do_dentry_open(), so it does not get the flag:
+> Fair enough.
 > 
->   CPU0                                CPU1
->   write(memfd, "a", 1)                write(memfd, "b", 1)
->     pos = file->f_pos  (= 0)
->                                         pos = file->f_pos  (= 0)
->     vfs_write(..., &pos)
->                                         vfs_write(..., &pos)
->     file->f_pos = pos  (= 1)
->                                         file->f_pos = pos  (= 1)
+> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 > 
-> One of the two bytes is overwritten.  Two threads writing 100000 bytes
-> each, one at a time, to a memfd end up with a file that is far shorter than
-> 200000 bytes, while the same program on a tmpfs file never loses a byte.
-> 
-> Set the flag when the memfd is created.  As for any other regular file the
-> lock is only taken if the file is reachable in more than one way, and
-> nothing a memfd does in read or write waits for another operation on the
-> same file.  This cannot be done for all alloc_file_pseudo() files: anon
-> inode files such as eventfd are S_IFREG as well, and a blocked read holding
-> ->f_pos_lock would lock out the write that is supposed to wake it.
-> 
-> Fix generated by an LLM and sent by Josef Bacik in private.
-> 
-> Fixes: 9183df25fe7b ("shm: add memfd_create() syscall")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ david: minor description tweaks ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
+Thanks, but I'll drop that tag on the changed version, so please re-review :)
 
 -- 
-Pedro
+Cheers,
+
+David
 
