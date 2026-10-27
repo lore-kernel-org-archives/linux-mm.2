@@ -1,104 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5603B606A322
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 21:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D030A606A329
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 21:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YXwtVjEW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EGI8e3OM
 Received: by kanga.kvack.org (Postfix)
-	id 5B3926B08FA; Tue, 27 Oct 2026 17:30:08 -0400 (EDT)
+	id CBCA16B08FB; Tue, 27 Oct 2026 17:32:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58BE66B08FB; Tue, 27 Oct 2026 17:30:08 -0400 (EDT)
+	id C94126B08FD; Tue, 27 Oct 2026 17:32:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C8996B08FC; Tue, 27 Oct 2026 17:30:08 -0400 (EDT)
+	id BA99F6B08FE; Tue, 27 Oct 2026 17:32:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B3EF6B08FA
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:30:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACEEF140B06
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:30:07 +0000 (UTC)
-X-FDA: 85369699254.21.08A41EF
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D13B240008
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:30:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YXwtVjEW;
-	spf=pass (imf01.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793136605;
-	b=Mz/vLD3yfW0m90ZIt2x/BZPLCgj5ukseBEF04Xrp9EdDDZKSTr72v+jJdqvGD9cekZ4fPg
-	DAeMRpXOjbjp9FOZTD21mFzm3qNIjq4l3lss0cuBUQBaZj9HXFzUoKWIyZh/MO+1Djyjif
-	dyVMlQ79tfiP8eIfuYpRNOLopAXn28A=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YXwtVjEW;
-	spf=pass (imf01.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9A2FB6B08FB
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:32:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F1D1140B10
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:32:08 +0000 (UTC)
+X-FDA: 85369704336.09.9AD4A83
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A5995A0007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:32:06 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EGI8e3OM;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793136605;
+	s=arc-20220608; t=1793136726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h62RQbHCN4jYYnI4HCsDoNJhT/SvAu6VniCIwMUQi1c=;
-	b=EH+msKFF7tkTA510dweRUXYRS0vIkTGfqdXrtsZW8M9SGXZbigGx033JK17IjTQCCjrOjj
-	h+qUXVy/BHa1e4KeYNjQ5v03hpSSaTmv+DrKmY0W+0Ipi2xHBrzazyalcXOp7j6gSo+Dcp
-	ZoXsKqg1TtSrW6evBn+1IF1e7bz1AUM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793136605; x=1824672605;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=Erwsend1mndK0SW1NuLrrKcjtadjWzVZXkakCqhyDRI=;
-  b=YXwtVjEW8VxbxTzGfht8nnT1feiKXvoIBeFannW8Vqj5ISJ06gwXzoX9
-   6OBnSYO3R+zjyRhTbQf/M+zbizvp/qnBlmk7MmaHkce6Y+J84efNnBozd
-   UAragf528ra5jxkJwKCtIpitdEYpoogLFrP/ATE5K2uNpuPKvQP/MJdVC
-   yFcJ4ez4BZSBn31sDO3YoSHK1BLfm9nlHFdWye+MVB6ZZOvl5bpQv5o82
-   n5eXCMgrCu8QcHvcHrS02kS2x+LuQ7S8/oZgNCBLE48EdsmBBWtQh34Ob
-   gYOb1jMznEI+gS6licd8+5opAXXzsdWjro4e2v3WoXa2ZxtQmxAHdpdHr
-   w==;
-X-CSE-ConnectionGUID: QE0yMTIWQ6ueCSCiLHqjaQ==
-X-CSE-MsgGUID: Xyns7Mk+RBudyOHTk2Bg3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1881255"
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="1881255"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 14:30:03 -0700
-X-CSE-ConnectionGUID: zA0JgX2tQuy+3qz4O3YUeA==
-X-CSE-MsgGUID: EeGVrouuSUaELzegzYgTfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
-   d="scan'208";a="4651688"
-Received: from unknown (HELO [10.241.242.209]) ([10.241.242.209])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 14:30:04 -0700
-Message-ID: <361569b659ccb6aae7c0d9935f65e16f472eb2b6.camel@linux.intel.com>
-Subject: Re: [PATCH] shmem: clamp negative used-block samples in statfs
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Hungyu Lin <dennylin0707@gmail.com>, hughd@google.com
-Cc: baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Date: Tue, 27 Oct 2026 14:30:03 -0700
-In-Reply-To: <20261027163653.82661-1-dennylin0707@gmail.com>
-References: <20261027163653.82661-1-dennylin0707@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	bh=S908WbS6sl8a+ccaT1hu8oFrTY/8mXQRTyc6SNjkEfE=;
+	b=KmxF5pza7riN6AGfaG3w473QM/pZuncMlBx3SD+Fv42A8u50qoamC8x5lWKRiLeYhhV8tC
+	5HY8wnkalzY+yR1Zhmui+FFcG+Mxwd4n+BH5fEckwYk6v/+yRykig1ViidJKxLpFLSOC2x
+	GxsM7YXUEkCggL6fDaiebXf57+SGf7c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793136726;
+	b=u4f7c6JBu0C1Gok4XqDLV1NIQNCALSloz2miT5UYkulqGW9P4zNaelLkToXZeL+3Qh2hjJ
+	rxiIwou5dtaYq6wUYozjAYCnG7dNro5458kzeHQkc5yuRltTLcfHznwAH7Y3utgDmt4LfN
+	H3B1xeSHMswDTuz1Ty6ZXp5vDDaF1Zc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EGI8e3OM;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D125043E7D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:32:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41841F031E9
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:32:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793136725;
+	bh=S908WbS6sl8a+ccaT1hu8oFrTY/8mXQRTyc6SNjkEfE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=EGI8e3OMSj8oudPsWvxnIieFF6gTtab2PYp1pWyo2hMoHwm9k9vSCCBUrRG6xC8MH
+	 0KGkcd0cCIQIKtaEwW9h9u/ChT04cEjChqjY1CDO6ZnF5ZAGMZXsI/3+Hd+Q5LXBkS
+	 tstKAH5wHNK3/OGFItDDgQcCGMMsJehCZKVi5x688GOJAnc5FMB9Yl2vm4YMrbJS8z
+	 GH6396g8Z26BXcomQK7YLP1JeyvPWoPTLaXD4wMHyikZsuZfVkFw4ACyB8DThiSEpJ
+	 8mEUpcgXD7tk/pPGlMJZHaXf0LVXktt2gvyJsjPwxg15Yv9qrjFy1MJTjCjDoHGfaX
+	 kdeNE1WPuUlqw==
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-9440304604aso36884585a.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:32:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzJHZNxSaarf9B4DunG/gF14MbivYUkBCuvtxhKf0JyryipucWAmyIfewReNt93SQ1wrKg16Y3lBg==@kvack.org
+X-Gm-Message-State: AFq9FYIl67l52fr+3Z1v1o4fzIHdk7q3IvpWK+X9sQ+bRTbmLPq0XWoj
+	0njyzJhY2jqTQTmsWmSFGILigylKCK0IGV5z8R0kJE1Uh22+E5bvnEesWdlErPILaBqGhQIB9DR
+	+uiNzY7Ih5zB49KjYPH//0KOm+ie15uM=
+X-Received: by 2002:a05:620a:6013:b0:93e:7156:f814 with SMTP id
+ af79cd13be357-94408a65be4mr32182585a.11.1793136724949; Tue, 27 Oct 2026
+ 14:32:04 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Stat-Signature: wwe4m4n6htqwy4iqdos1jkpkku8uzkos
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D13B240008
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org> <20261027-fixes_core-v1-22-6f74bec9a5bb@kernel.org>
+In-Reply-To: <20261027-fixes_core-v1-22-6f74bec9a5bb@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 28 Oct 2026 05:31:53 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wPwBz8OB5opbuKsVh-ceKqyqi4d1aB8Emx4ChqDe4qzQ@mail.gmail.com>
+X-Gm-Features: AclHuK_Qzkd3NBrrAvAlcTVmJZ8ovWd4rfeoh503KU3yWFCYVC_zuTNZmwxW4A4
+Message-ID: <CAGsJ_4wPwBz8OB5opbuKsVh-ceKqyqi4d1aB8Emx4ChqDe4qzQ@mail.gmail.com>
+Subject: Re: [PATCH 22/46] mm/gup: check for overflow when converting nr_pages
+ to bytes in GUP-fast
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A5995A0007
+X-Stat-Signature: ruyt51g39mdtoctr33bmdkg7s5fm7ab8
 X-Rspam-User: 
-X-HE-Tag: 1793136604-848734
-X-HE-Meta: U2FsdGVkX1+gOuMykHHX7S2HvyL7hkixM9kR15gg8gbu4HPgTRkpnR+ZnG3+CAPKX+w3zjgn31tTEykR7/FL70QrJYEH8zT6KZhrIXRzZtvosHhQGo/820Vu9ducHGgmLOmKPQ6Vtf3wIohA00+Ea/IMBZz1TxexI3UTmIETHKjsvrWAd90J6YTHCNtGCDKdFK8+oO0KvN1W6z0SJGB1LoanBVvx+2a42GQqVkvdbBqnJtd/dwbEw8yIdUiDSQDPYNyenaS4iDIGisDoduBxplOlPa77xdwB67IizAka5u9LzVhHK2GE1ye9eDyel/qZANkLj+aZNDZnzH1j7PMLT0q5MDS0oLAOjPKKeuSEIfTZu88ZNcCJEHXV7Y/b3pfvwFWpiZI2BtjpNe0wecDwyPu3jS3s5STcQhAgZ5bs5MJeabKi/VxvfIDjUIWn5ylPKq2V6vkKXceOsUA5w+5qZxU0HJz4J3bBZsX6dYdf+ReAHY1K8KAeCmbwWEOqhoysmhyid3UVcDQ2F/i/+q8F2PSgO8gVzbt3pnSYNHYtub1RSAeW35D9SDE1aVPxeGmcO9kmHTFVSq+GHy75eYJ0Olcfat8zYSWIUqoVyMMYtOoXbTjc8cCTJ6qvrRNqJMZZVmulFFg0+vnNkebgstIzV/Yrjoo5xCB6CIPszcSS/tKDJRnln0mibZ/bibcH29HJJFNUxyG1t1jOCvapf6sF3OYYXiEDyslDhM5Mz1puUJXo3riL+XiLvcSvRn0rpDqUv+fBpCt1dBR+5EXPUcX0pKg+dOClNSmcP5PKfsviQMVS7TsyLBu0BVsyLzUX1u8XEKVhbZk3CChnwI+aNWLqHyY5/0TH7QpEwuyF3v8hh0PxcMNUtK3+waWbt0l+GrRZ52dTun3r5IRQsmWD/Gd5Npepl2UUs43RTXwvPXINdb0vdMfeu1jLgevr1wFnGwFLM+vKPGjdDUk50Ma+wEP
- Vu2QqlKs
- 80y61y5/82xT5v8in0Wj2NLeGcGAhxTFgE7LUkh+D4VwnZ9Hr57KreuUwpa1VZ+l0l8SM2a6Nq8qwDBG2UPY8faJa+odKVvllAhaAfSkoGrHf7oMyoYwF0q/3lgjuO6SLRHaX8W/XBpIw6DSyzMcq98Q1ZM4JZ+GB874HepBt7G/zt13F5otYAT4/6wyuAyFCFyWPlPQ+X+363GTS43y5mNilVslHrfsLB4xUptZuXD8YNyBD+5Z4gLcpjI7Z4/de5KTo
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793136726-691428
+X-HE-Meta: U2FsdGVkX18o9QGMyiyHKlzGgTnv+b6SvekXMLX5VytAp3lJifVrsVKSFNRZeuMZCqVcLUftIQ0iEX+2q9uRlc/xq08sMH8tkqEjuvoiu6wvibfk5xho3783aMlclJGhKxuRxLZj3ONfOD+Qzgxt6IQJKxVdyxXj4XgDqdu/mGKipeDxHkmW7OIJKCEJCudpPcvduX5KqNbvhjSiCLapv3GsiYxaZm2vlPdwxZ3tTm6RtPa26F3zSswjdqA+AaAVZGZl2mhplMgoOhoN91jbyN53nS42xjAGe5TjsNf6cTjZOasNfhg+i5IL7eD40ZpOY7OO5/3NxaJtlsbkKz10SzGcZEwpwC0Vc5eSq27cpu8Q7pV/yUGrE85lgxkq1UTXW17vbHl796mXuZOy6+H9TAmX8kmnPOwB+u2coM5HHcOOIvldsCiKOG/N0P1wPzAr6joHn7O501bynkt3pjdF4TO+VTENdmxQpe2wcjZh+ymMvUiihpHKGX+dfoEjXMs1i7fNv30irQOXdYmoAXQtC0pkG4+TS9QjV/yjZAzO1Is+1n0MTFbTnaXj4h2+Qdwc1SSjpUlYKN7jXXw7ftPWxGE855JFzpWQ8JHdbK6carZC3GkKrPlSx0ItphA1gmIL3jG8pRyYu95mAsyhIt01nNkPnm8Q8ZyMWZ9PszdVB8yW6oNs4iIxA1ARgx3xc/Mv/Lr2no+Rlk85sLtvtHq61AmK+d5kFhuKymZEOPq3xl6CJI8W29wYhXNhvFMCM+fwkg7UamGnQNvpFq0PhWXnhMLuFNWB3FbzLUb8h4HMTgNuY2VPD1AOQ3APfFxvmrqNL9WxscxFh8EPXTmY6zCpNLNSkDqMfSUK1ktQnhlJK11K812LfAz4C+WZrKFfJBw79Ki1utXLT+hX2G5fwUHcZcvgz4oran/bETiOOJWXj/05Nv/PV3hUSmpPpKzzMMuHskSG712SpG+o8Kblb6D
+ zw9TIJD7
+ 5Vcjh6vRbr+np6hecvFPbTXiophgNhoUdYXMlO209HD3l0lAw4+XiSmDHRHRWbx6gWDVj+SF8rKJGG4JnTtR6a3oSrONHt5OQuO/Jlkdh3b8qnJ2ryFHxQDKbmHmFBJacoAdqFcuROg6tMkBBTQQUqQDgLCNr2YKXewuYj0pLdsPNPHZfkD/YneOBmZ+IA4a34o/o+lUE3FSmER1JnM60gJpj3F/lX4JxeWua29cLYz6J3pmgZ+5UIO+9Yu7BiT5mEsQCMBIbJpGsEGwhs7kgUnDmZJSlNT8J8uphqxBmi9RfPSRB0IcJRa8uqLLFmww3kZ+3yUyCX0BO1+JDlcLjiwjMipi8hjJwXEAgJcKKF4MxyoneRCEe2dbYIK8ie2z6VoPrvh8P5XAo0bbrr6uKWuEvUmMAv59bXnOuLyMEtF3GXhc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,59 +133,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 2026-10-27 at 16:36 +0000, Hungyu Lin wrote:
-> percpu_counter_sum() holds the counter lock while scanning the per-CPU
-> values, but local updates can still proceed. Concurrent allocation and
-> freeing on different CPUs can therefore produce a negative sample even
-> though the number of used tmpfs blocks cannot be negative.
->=20
-> shmem_statfs() subtracts this sample from max_blocks, reporting more free
-> blocks than the filesystem's total. With a one-page file being written
-> and truncated on separate CPUs, GNU df reports negative used space, for
-> example 67108864 total bytes, -28672 used and 67137536 available.
->=20
-> Use percpu_counter_sum_positive() to clamp a negative sample to zero.
-> This retains the approximate accounting and does not change allocation
-
-Nit: I wouldn't call this "approximate". percpu_counter_sum() is the
-best-effort accurate variant: it adds up fbc->count and all the per-CPU
-deltas under fbc->lock. The lock only excludes batch folds, though, not
-the lockless local updates, so a free on one CPU racing with the scan
-can make the sum briefly dip below zero. If an approximate value were
-fine, percpu_counter_read() would have been used instead.
-
-Maybe something like:
-
-    This keeps the existing best-effort accounting in statfs and does not
-    change allocation or limit enforcement.
-
-Otherwise the change looks good to me.
-
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-
-Tim
-
-> or limit enforcement.
->=20
-> Fixes: 7e496299d4d2 ("tmpfs: make tmpfs scalable with percpu_counter for =
-used blocks")
-> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+On Tue, Oct 27, 2026 at 7:24=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> The overflow check in gup_fast_fallback() only covers the addition to
+> start. The preceding nr_pages << PAGE_SHIFT can already have truncated
+> the length on 32bit.
+>
+> Users such as RapidIO's rio_dma_transfer() can derive such page counts
+> from a 64-bit userspace length.
+>
+> Let's just check_shl_overflow() to reject any such overflow with
+> -EOVERFLOW early.
+>
+> Fixes: c28b1fc70390 ("mm/gup: reorganize internal_get_user_pages_fast()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  mm/shmem.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index d97fc32e7c94..092bb45a076c 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -4005,7 +4005,7 @@ static int shmem_statfs(struct dentry *dentry, stru=
-ct kstatfs *buf)
->  		buf->f_blocks =3D sbinfo->max_blocks;
->  		buf->f_bavail =3D
->  		buf->f_bfree  =3D sbinfo->max_blocks -
-> -				percpu_counter_sum(&sbinfo->used_blocks);
-> +				percpu_counter_sum_positive(&sbinfo->used_blocks);
->  	}
->  	if (sbinfo->max_inodes) {
->  		buf->f_files =3D sbinfo->max_inodes;
+
+Reviewed-by: Barry Song <baohua@kernel.org>
 
