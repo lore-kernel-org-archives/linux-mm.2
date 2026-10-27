@@ -1,131 +1,162 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6113E606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D2F60A2601
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yQ+IWAEl
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CWV+pd7v;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dH0yVuWP;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CWV+pd7v;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dH0yVuWP
 Received: by kanga.kvack.org (Postfix)
-	id 6205B6B0819; Tue, 27 Oct 2026 12:10:55 -0400 (EDT)
+	id DE7F76B081B; Tue, 27 Oct 2026 12:11:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F6A16B081B; Tue, 27 Oct 2026 12:10:55 -0400 (EDT)
+	id D986A6B081D; Tue, 27 Oct 2026 12:11:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50DB36B081C; Tue, 27 Oct 2026 12:10:55 -0400 (EDT)
+	id C610B6B081E; Tue, 27 Oct 2026 12:11:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A4E46B0819
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:10:55 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BED6C160AA0
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:54 +0000 (UTC)
-X-FDA: 85368894828.12.6AB05E0
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 37B2320005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:52 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=yQ+IWAEl;
-	spf=pass (imf13.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793117452;
-	b=26HxjwbDFoMEOn8M28ZBTINDvO5iEO2CBbKVt7X9Ah3onlzPdggNA3lhCL+V284+sOutGl
-	BGyhpz1RuCzxvWL9YOV/tuxS/PNVcL4jWcoK5pc1jjyS/F66OZSLFzOpICIbbPSeXS4/L8
-	sXgs3U52t75w1jnIFU2nf+FplVZgtI8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=yQ+IWAEl;
-	spf=pass (imf13.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A2E906B081B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:11:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EB26D4035C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:11:06 +0000 (UTC)
+X-FDA: 85368895332.19.0A24A32
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C6B78180002
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:11:04 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CWV+pd7v;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dH0yVuWP;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CWV+pd7v;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dH0yVuWP;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793117452;
+	s=arc-20220608; t=1793117465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BMVK9C6kjD2I/C8Mw6stURXeaeBe+UoUZ1aPJYJvbec=;
-	b=uTS85PCLq9dUAySVN2t1y5h+S8D81+hOp3DVcrmhVpZWbU6R/THvgzpb46J8F8CYUdktZ2
-	m3a3ZkSCSXu/5d8ZIQVQvYKtZUVBUo54f6fjKIBQUBdnoEGn5czyntp3BECztw/5J9ukhH
-	UxYsDjoDkirSYclqB7kLpudl9gtaZpg=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso53508a91.0
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:10:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793117451; x=1793722251; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BMVK9C6kjD2I/C8Mw6stURXeaeBe+UoUZ1aPJYJvbec=;
-        b=yQ+IWAElMsm/hvBXg9MTj38X0bV0RDSBUyB3HZ77gI2J3zu5l8KR5PwU0Ys3tGzOQo
-         Es2FnLBuPrvLHCv0h5ZjdaY9eTYtKWNnO76efraHG77ENX2sn3EDYPpK4GyHrUAVa1yD
-         w33tGxFhbzy3rc/ROhN+q7mAi6mGXWrpA8Y6ifuPNWf0xUECFbqAXEjsoNmExvvEQL2V
-         P3a7pXeaVEuXKlNJJUqoJSn+zoEcni8GklVup4QQSDq6+R+4I/Kaqjt5AV0FZ2dsbWzi
-         yP/6RsnNJLKr7JrnD73pQpEZnQrh9xNbHISJ8RK5tO+JHHTawRgafyMCGMR2ny5ppwNN
-         GBsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793117451; x=1793722251;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BMVK9C6kjD2I/C8Mw6stURXeaeBe+UoUZ1aPJYJvbec=;
-        b=jpebIrksp8pQdTmVS4Fn3GsEIH4zhF9lRttMuT0gtX9T6ygDjrDCElhosiIrTTli1W
-         6o437T+/kgXyVgSHkPJQJBxVIypEaZV4DAtRqkxTh2XwpllE52ISU6tuqBJrEiuWHCqc
-         GHyfXumCUa8lriuAIw2UBLwdKZ6F8hj3vcnP8okD7SDJ27Cq0c+BP3aFhUIVk20V9hS+
-         MHt6AFqZoAZWiEnovqrzyo4uS01XRjZZdcjtPY80K9lOfgPfs2SNKFPyXJFxRafCludS
-         PkKtqbCLEWiaDN0wvpYyCPvHWJv68cr3EGD5/strDeWhKy4ghpoGwvUmtTnrYi7XsJkr
-         LFbg==
-X-Gm-Message-State: AFq9FYJmQWycE9zhDxXbFjH52bzkQNJjGET0RKKFV1eeJM5CS0v4dIyo
-	yNlF/uV4NIbhkhyEk5h+g5PC03DOHK057aFTO/vUa6xzOoeru3lGwlRhsZ/XXA==
-X-Gm-Gg: AYBFou1AawEj+K9sJ0F/0ZWplkG2nH5DncQNKfGHLNNOaLfpVNbiFSqpmDpBi9lOYF6
-	KW1BYqtUL6rGqWoNQin3rfum5CKIiNK4nKsQEPuI94iXosFVCjliqjQslOKEOtdova/H8EaVsNG
-	MjIEfu7JCJfgBBTr7IaRXDxq+vhOq+LPa+8rn6Qck8xOW2cbw0WpNnSFEZaXO2Xo6neoAJ0Osqn
-	XjIe6q/6jzWuB6uhAa3CWvBWk+fZV8PcK7ffeNCBXvl3D6U8/YOSpVRjTo5hnwCNzzjs6uqGmS0
-	vM0eH/mFobOfDBnbZVxgbC2pQsOJEfG7hdkrZsviIwz5TsJsT5c59bnz8B/LxxbLMrT0j9mA3fc
-	wIy/N+TxcQfyYvxjwEN+2zFO9uctwhaORRqjaZe6bUKhiq3mv6zBTLwMCjHX5QGlLKNZPbd5Qdw
-	JRKTIFjDgAdXTdb4l8Qv29EIDQa9ne5HCWMWTYNBBYN4TLM0ExsdSZxT4hT/nT4YXuHEmx/vpAk
-	v89r6wupxpe9bu05R61+cmkTnSBkCX5xZk7ZfYKxsRcsOHNTjLT84RtnD6h9Yl22j/xIaQIHHvs
-	7yXyLbRuRwft7HTzk/Y=
-X-Received: by 2002:a17:90b:3141:b0:3ac:9a54:e3ce with SMTP id 98e67ed59e1d1-3adeafb073fmr8492945a91.63.1793117450954;
-        Tue, 27 Oct 2026 09:10:50 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae402a0692sm4393099a91.2.2026.10.27.09.10.42
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 27 Oct 2026 09:10:50 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	shikemeng@huaweicloud.com,
-	kasong@tencent.com,
-	linjh22s@gmail.com,
-	kunwu.chan@linux.dev,
-	kees@kernel.org,
-	gustavoars@kernel.org,
-	tglx@kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [RFC PATCH v3 12/18] mm/swap: bound synchronous discard during allocation
-Date: Wed, 28 Oct 2026 00:10:24 +0800
-Message-ID: <1de96c68db9d3ac83ae485a1eddabcea1a2524a1.1793106426.git.lianux.mm@gmail.com>
-In-Reply-To: <cover.1793106426.git.lianux.mm@gmail.com>
-References: <cover.1793106426.git.lianux.mm@gmail.com>
+	bh=YfHrAfI9Raij9s83r70SYcL5s7BnI9+K8vQC+GWWGI8=;
+	b=TA0w/xzFJAlpQG1CMxUMnqdx0BOs1MQCTcX1yduB2bbAUhfQXUzZ/seDoA+R6ymvwmzEgm
+	8kDFSfl2Zv+RlGksvPbBWb1FJeQjAY/8QyRNwOYqtqpU+iKNvloOooz2zmf0dAtrXhxD9r
+	1mCn3VrmFkbaVAZQAict/vlIyDSkYUk=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CWV+pd7v;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dH0yVuWP;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CWV+pd7v;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dH0yVuWP;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793117465;
+	b=oGuJ0fABDS56EOTouMZoVQ6ZeY0OmUr+AQtb//i7TF2ZKXtCurOhwXCQfkwa58+48SY7Hs
+	8Pleo38E0XVs8bUCz0B154uH3SDvelgCfgiNpSWW618UqYl7FtT/4uLXvJexGy/ArKBPrP
+	lPkFlJrkRgGHzUZC/e1JOccRMma5yLc=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7C9131F456;
+	Tue, 27 Oct 2026 16:11:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793117463; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YfHrAfI9Raij9s83r70SYcL5s7BnI9+K8vQC+GWWGI8=;
+	b=CWV+pd7vX6TrUdMXNaxESYJ1slGQOcP06ic+g4xxjnPvWnvKsCWHc5jQdxIPIQbRLzO9R/
+	diRP0hoJuL/mI0KQkpa3xxmXRWeSg74DGGEU77lFzSpCYYlDj7PdkWYefoW4nkJgVCUPf3
+	QaNpFGuQxCzB3SqNtBvKB0BxwcTkqYc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793117463;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YfHrAfI9Raij9s83r70SYcL5s7BnI9+K8vQC+GWWGI8=;
+	b=dH0yVuWPJUPJUjY+esjPpF+hgG8gt8lOiUDib4DBNfyZ2FqTmjKurTJ9mNNDDjXKRirJJN
+	V99f8i/6XejizRBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793117463; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YfHrAfI9Raij9s83r70SYcL5s7BnI9+K8vQC+GWWGI8=;
+	b=CWV+pd7vX6TrUdMXNaxESYJ1slGQOcP06ic+g4xxjnPvWnvKsCWHc5jQdxIPIQbRLzO9R/
+	diRP0hoJuL/mI0KQkpa3xxmXRWeSg74DGGEU77lFzSpCYYlDj7PdkWYefoW4nkJgVCUPf3
+	QaNpFGuQxCzB3SqNtBvKB0BxwcTkqYc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793117463;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YfHrAfI9Raij9s83r70SYcL5s7BnI9+K8vQC+GWWGI8=;
+	b=dH0yVuWPJUPJUjY+esjPpF+hgG8gt8lOiUDib4DBNfyZ2FqTmjKurTJ9mNNDDjXKRirJJN
+	V99f8i/6XejizRBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7B83C1321C;
+	Tue, 27 Oct 2026 16:10:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qrX6BxPN4GrwdAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 16:10:59 +0000
+Date: Tue, 27 Oct 2026 16:10:57 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 07/46] mm/filemap: don't lose a folio lock wakeup to a
+ signal
+Message-ID: <auDM5mvsb5ilIdsg@pedro-suse.lan>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-7-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: z5om6wcxhsrq16nb5uje1up885wai18x
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 37B2320005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-7-6f74bec9a5bb@kernel.org>
+X-Spam-Score: -11.80
+X-Spam-Level: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C6B78180002
+X-Stat-Signature: jfdytiymihh9t6a8ftm8osf5zgsuoiik
 X-Rspam-User: 
-X-HE-Tag: 1793117452-146321
-X-HE-Meta: U2FsdGVkX1/YvPm6l+zSPSV1C8oj2vUyhBAYxnQvjFUQpy/12JQfSPYSzB+ZBzkAUfieeIJt6zTAjOIPGzpCqlZNe+ZdA8b9ltDMKSs1m54yr30byxqQo7URNrHDMb56cfT5EZp8HOOvXLBGElXjqr0EjE+ZKmT3p4S16+HgunuKK7/dKvwMMZ+J5lo2v87FPQxpqQ2pcHk4OPjLj44zXFUKAvalXAIk1tYVnNc7PZlRI+S00xNx0iCDqZvva+zS8Xu49n3LlxIGnINy/tLo2ZDq5+7wzWxdf17PhblaF6RCW1QaPP7FTurIzTSYpkE9Bhv1L3E//fCg91om3guEEGAHAbxydL81uqBOVEOaq+4V/kAfyJFyP2I1Hq+mVs3ULpEbu76fz0t2SEOCwJJBb2QDI69sp3Xx9uzRm1BoHjB4S3fiytOuf5zAT+TsJvgJZFnsTkGfr3mzE35bBl+BmELHYW05OgWple6LbsqMN+KKNCb/dH/BU+nTHshy7Q6EFgvdBXXuQ7PBNYnTvotARL5MibZorhQd+qNmtUesxOgJU43gq07x9TpQqjFwoB45kpnPSTt/xP/rv9BNRt5Jv0KDI4NUG30eQ0cfc7bt6hNvduPZG7WA49t3iqNKfK89xlHOnrGlV9th6TimLjjnz8cuL0aDeA3Fq8NeKnpJ3YPHPJnntKTo4+NgHqUCwmzp+VIC0Tn1ciF5mBkxd9mfbV6yKAWr2G0P5jp8HfUIiYLCJro4HUsJs9ZuFQI3OWwecqDE3yWmHRiq0B5bp7opEl/aFcoUTVtwfQVBat0CmliywBRvBpejHzH5BNMUYC0fvCwLG5rukVEHKq77Pnp/66hTJuMHMg1BSVk4x/VJEuKpQmWzd3WrhiErhbNPcUycTMpi6HlxZl7uJPRM8iYsWpuJxdLSsBbtujJEW3jGjmEX/gKpONpKNQHyW5nXawnEMlEK1Nv3WaeULbUer5X
- 732YXh+E
- 6QmIVpS5EzNYr+yFEW2kTUY7MyD+O7qyzC+USuv917XCHFUXS+nRMElh0/brpX7uNcIGLLNiBzsFbgJiFnuJBXKVz65u4CMH6lD33jyjDDtuFtRvyoah94xj2m8zOrfbcXfa24Oo4PpCKvRsxLrhB3eWKFy6tejy2LMGgamlL3vAB/VzH5yc+B1tqtcAK8eCDyEQCE2SE0PTSz6CHOXZbrYau6hdWmcZ+VHpFuyxgq7C3f/e1Ea0PmpH6Ri0Gxb3o35rMlIIi+1JrsW53PB+B+wj6UBr0lQ2z6PrzNVqKFqxLiAe56Piu5KEBdTePWNGEKUXCbtZv6u5ChpV9EKDpcYxloqFgBlNRfmCQavsM5v9KbeZ0TCWpUAS3Gz/EN5ZGhnWg5VCzLaxEmZthF1+ng0qXE0yr6lVvYvamTkudPgnCTu05i424rdJONdBj5etE+Tf6xluB10H6fEBiB8Htu6g2wi8mmaibkXCCZtugSrraJ2WYYsBOF5nbmCdx2a1dS2O+aN5JQfHfcEswyrb9oguifQ==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793117464-978416
+X-HE-Meta: U2FsdGVkX19f6Xys5KbS9lzo5BbI0eP09Cw2Mgyac42xxKt8b3FM4B62mC9ak33gfTizs6pNg2daJ6Hb4OsQ2oI6AEHBGmd9Z+1gLi6yrMy3ABbZIA6im784CdEeRlTyn1D6bITvltdA9SrZn/rAJJ5Lg6Z3pzxl5BXR2nifeOBa40icbKMQqf6FxvMcXtJ/MCCZ8RUTbXo09pPKpYpwRh2KzNETAKQbOqmybujLUWLdkpLU0N8yUteQvSiVWZD/H4OS3CTTX6TMLXqkC14c0A+b77VQtrqG9jSusZ7+E4H0rZu8/Pdp2FJlv6ylwOMdsHMh6wue5h8rCbOpQyoV2SjIb9+/GPb6WHLCYjmRyKfKW3zd6qSazNHT7cD06E/fLsGxHeGe8Q2mwVZR7gWR6ikVDNV9sjB28L20XRZ9NywQDIZ93sdy7wYr2JTHSzhn/Jf1U+29TN45FUsO+SjZCAjGN+ggxC088AobEQ2wa7wH6vdccHCxBNrSYDXCnlOIXnqPHDB0An3XI4IxnDaSZKGUjKm/sc79Ils8TFi8G86cELy/ekVasverygZbgr6P8YxXXpGCmBLtt2VdwnmQrixWiZa4ohOLTSFxDVHe1Vw/B/CnjOYrlWhiPMvDyNU69QGg4g8DgHK8INrOAAyslHO7L6Nw5vhH+G1USBP5rs224riR7aZcCI7ad2pvJXnqmDlBwe6sMrhKe7g9h2FlGBHfeW+iyFCMDjS+WKk6edfOFAF2UagkW3Ol6WqImwZhfyajE4szDbUc9Pa1gxhNAMRPZJXdyThmtmGxGNzWUHiHsdLGHMEOu1ynXzI3C8i9BXmTng6jFThJbiKAJMXd25S062WImLzk6RmujEidR80P/BtiPnohzq9bAhHOV/EDpR9DDDB7Btxuaz2YutL2XxFRqMVHz1cdnJ2Ioqpwi8ghR23vlsuDpHR4KBPxDI0xLOLnrSeztf55hb7xyRB
+ c6vegJmq
+ +3NCueoPRy/XA8SMRaLKuEqV29H+wEp8emUORAgkyzH751iCOYbFrlXRN6Eg5YI7tZ4TEgMMbSOJUsKjYzz3p0YN/IYO8luVgajx7aH0WVZBH0XsNKl08eD03qPuFHQ48QsLFjn3YndbBZxYKXPROrE9Igm8o8z5iZqIPCE4jDwFDh9zk/NxtgSsJ8CHqe09d4FDGZWNfl9cljCmuK3bFD920tYk3/5SmBNztSPMUrA9YyoA0FLf8UT+rqcSSbt4FncMqWbU0skb/ZEV8vc6USYBPpewJz3x91nr9cPA0YGSYWL/xmMWgbEic1Zff6ehwQ0K09TjCOAAfYrYTXqxXyx2GncFDEvli1qUjGcDvfGjpuJ7uMBd4XT5GJ7lvQMW+cJxG/a5DuYnciQxYFNsaUCslxMRW/H6AkpIOab8JysWYmJk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,273 +165,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Kairui Song <kasong@tencent.com>
+On Tue, Oct 27, 2026 at 12:17:27AM +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> An exclusive waiter in folio_wait_bit_common() can leave the wait loop
+> because of a fatal signal, then be woken by folio_unlock() before
+> finish_wait(). If the waker did not hand over the lock, the waiter returns
+> -EINTR without trying to acquire it.
+> 
+> folio_wake_bit() stops after waking the first exclusive waiter, so this
+> loses the wakeup and can leave other waiters asleep indefinitely on an
+> unlocked folio.
+> 
+> After finish_wait(), let a waiter woken without a lock handoff try once
+> more to acquire the lock. If successful, return success so the caller's
+> eventual unlock wakes the next waiter. Otherwise, the current lock owner
+> will do so.
 
-The per-device cluster cache lets the allocator select a device before
-handling that device's pending discards. Issue discard on the selected
-device when its free-cluster list is drained instead of waiting for a
-global fallback scan.
+Has this been reproduced? I feel like this would've been found out by now?
 
-Do not drain a discard list that freeing paths can replenish. Factor
-out swap_discard_one_cluster(), isolate one cluster under si->lock,
-retain CLUSTER_FLAG_DISCARD while I/O is in flight, and return it to the
-free list after completion. The background worker keeps processing the
-list.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: 5ef64cc8987a ("mm: allow a controlled amount of unfairness in the page lock")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: clarify and simplify comment + description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Each call to the device-cluster allocator handles at most one cluster
-synchronously before retrying allocation. A folio allocation can try
-multiple devices, so this is a per-device-attempt budget. It bounds the
-amount of discard work, not device I/O completion latency.
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
-Link: https://lore.kernel.org/all/CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com/
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Co-developed-by: Lian Wang <lianux.mm@gmail.com>
-Signed-off-by: Lian Wang <lianux.mm@gmail.com>
----
- mm/swapfile.c | 149 ++++++++++++++++++++++----------------------------
- 1 file changed, 64 insertions(+), 85 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 0a16343a5b03..5c26682c0bab 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -585,6 +585,26 @@ static long swap_usage_in_pages(struct swap_info_struct *si)
- 	return atomic_long_read(&si->inuse_pages) & SWAP_USAGE_COUNTER_MASK;
- }
- 
-+/*
-+ * Serialize the allocation on single CPU or globally to avoid
-+ * fragmentation and make the workflow easier to follow.
-+ */
-+static void swap_alloc_lock_device(struct swap_info_struct *si)
-+{
-+	if (si->flags & SWP_SOLIDSTATE)
-+		local_lock(&si->percpu_cluster->lock);
-+	else
-+		spin_lock(&si->global_cluster->lock);
-+}
-+
-+static void swap_alloc_unlock_device(struct swap_info_struct *si)
-+{
-+	if (si->flags & SWP_SOLIDSTATE)
-+		local_unlock(&si->percpu_cluster->lock);
-+	else
-+		spin_unlock(&si->global_cluster->lock);
-+}
-+
- /* Reclaim the swap entry anyway if possible */
- #define TTRS_ANYWAY		0x1
- /*
-@@ -982,10 +1002,7 @@ swap_cluster_populate(struct swap_info_struct *si,
- 	 * which could give allocator hooks and failure cleanup reserve access.
- 	 */
- 	spin_unlock(&ci->lock);
--	if (si->flags & SWP_SOLIDSTATE)
--		local_unlock(&si->percpu_cluster->lock);
--	else
--		spin_unlock(&si->global_cluster->lock);
-+	swap_alloc_unlock_device(si);
- 
- 	gfp = (GFP_KERNEL | __GFP_HIGH | __GFP_NOMEMALLOC) &
- 		~__GFP_DIRECT_RECLAIM;
-@@ -999,10 +1016,7 @@ swap_cluster_populate(struct swap_info_struct *si,
- 	 * could happen with ignoring the percpu cluster is fragmentation,
- 	 * which is acceptable since this fallback and race is rare.
- 	 */
--	if (si->flags & SWP_SOLIDSTATE)
--		local_lock(&si->percpu_cluster->lock);
--	else
--		spin_lock(&si->global_cluster->lock);
-+	swap_alloc_lock_device(si);
- 	spin_lock(&ci->lock);
- 
- 	if (ret) {
-@@ -1092,44 +1106,40 @@ static struct swap_cluster_info *isolate_lock_cluster(
- }
- 
- /*
-- * Doing discard actually. After a cluster discard is finished, the cluster
-- * will be added to free cluster list. Discard cluster is a bit special as
-- * they don't participate in allocation or reclaim, so clusters marked as
-- * CLUSTER_FLAG_DISCARD must remain off-list or on discard list.
-+ * Discard one cluster. After the discard is finished, the cluster will be
-+ * added to the free cluster list. Discard clusters are special because they
-+ * don't participate in allocation or reclaim, so CLUSTER_FLAG_DISCARD must
-+ * remain set while a cluster is either queued or being discarded.
-  */
--static bool swap_do_scheduled_discard(struct swap_info_struct *si)
-+static bool swap_discard_one_cluster(struct swap_info_struct *si)
- {
- 	struct swap_cluster_info *ci;
--	bool ret = false;
- 	unsigned int idx;
- 
- 	spin_lock(&si->lock);
--	while (!list_empty(&si->discard_clusters)) {
--		ci = list_first_entry(&si->discard_clusters, struct swap_cluster_info, list);
--		/*
--		 * Delete the cluster from list to prepare for discard, but keep
--		 * the CLUSTER_FLAG_DISCARD flag, there could be percpu_cluster
--		 * pointing to it, or ran into by relocate_cluster.
--		 */
--		list_del(&ci->list);
--		idx = cluster_index(si, ci);
-+	if (list_empty(&si->discard_clusters)) {
- 		spin_unlock(&si->lock);
--		discard_swap_cluster(si, idx * SWAPFILE_CLUSTER,
--				SWAPFILE_CLUSTER);
--
--		spin_lock(&ci->lock);
--		/*
--		 * Discard is done, clear its flags as it's off-list, then
--		 * return the cluster to allocation list.
--		 */
--		ci->flags = CLUSTER_FLAG_NONE;
--		__free_cluster(si, ci);
--		spin_unlock(&ci->lock);
--		ret = true;
--		spin_lock(&si->lock);
-+		return false;
- 	}
-+
-+	ci = list_first_entry(&si->discard_clusters,
-+			      struct swap_cluster_info, list);
-+	/*
-+	 * Delete the cluster from the list, but keep CLUSTER_FLAG_DISCARD
-+	 * set while the discard is in flight. A percpu cluster may still
-+	 * point to it, or relocate_cluster() may encounter it.
-+	 */
-+	list_del(&ci->list);
-+	idx = cluster_index(si, ci);
- 	spin_unlock(&si->lock);
--	return ret;
-+
-+	discard_swap_cluster(si, idx * SWAPFILE_CLUSTER, SWAPFILE_CLUSTER);
-+
-+	spin_lock(&ci->lock);
-+	ci->flags = CLUSTER_FLAG_NONE;
-+	__free_cluster(si, ci);
-+	spin_unlock(&ci->lock);
-+	return true;
- }
- 
- static void swap_discard_work(struct work_struct *work)
-@@ -1138,7 +1148,8 @@ static void swap_discard_work(struct work_struct *work)
- 
- 	si = container_of(work, struct swap_info_struct, discard_work);
- 
--	swap_do_scheduled_discard(si);
-+	while (swap_discard_one_cluster(si))
-+		cond_resched();
- }
- 
- static void swap_users_ref_free(struct percpu_ref *ref)
-@@ -1536,6 +1547,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 	struct swap_cluster_info *ci;
- 	unsigned int order = likely(folio) ? folio_order(folio) : 0;
- 	unsigned int offset = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
-+	bool discarded = false;
- 
- 	/*
- 	 * Swapfile is not block device so unable
-@@ -1544,15 +1556,12 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 	if (order && !(si->flags & SWP_BLKDEV))
- 		return 0;
- 
--	if (si->flags & SWP_SOLIDSTATE) {
--		/* Fast path using per CPU cluster */
--		local_lock(&si->percpu_cluster->lock);
-+restart:
-+	swap_alloc_lock_device(si);
-+	if (si->flags & SWP_SOLIDSTATE)
- 		offset = __this_cpu_read(si->percpu_cluster->next[order]);
--	} else {
--		/* Serialize HDD SWAP allocation for each device. */
--		spin_lock(&si->global_cluster->lock);
-+	else
- 		offset = si->global_cluster->next[order];
--	}
- 
- 	if (offset != SWAP_ENTRY_INVALID) {
- 		ci = swap_cluster_lock(si, offset);
-@@ -1576,6 +1585,15 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 		found = alloc_swap_scan_list(si, &si->free_clusters, folio, false);
- 		if (found)
- 			goto done;
-+
-+		if (!discarded) {
-+			swap_alloc_unlock_device(si);
-+			if (swap_discard_one_cluster(si)) {
-+				discarded = true;
-+				goto restart;
-+			}
-+			swap_alloc_lock_device(si);
-+		}
- 	}
- 
- 	if (order < PMD_ORDER) {
-@@ -1624,10 +1642,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 			goto done;
- 	}
- done:
--	if (si->flags & SWP_SOLIDSTATE)
--		local_unlock(&si->percpu_cluster->lock);
--	else
--		spin_unlock(&si->global_cluster->lock);
-+	swap_alloc_unlock_device(si);
- 
- 	return found;
- }
-@@ -1818,36 +1833,6 @@ static int swap_alloc_entry(struct folio *folio)
- 	return ret;
- }
- 
--/*
-- * Discard pending clusters in a synchronized way when under high pressure.
-- * Return: true if any cluster is discarded.
-- */
--static bool swap_sync_discard(void)
--{
--	bool ret = false;
--	struct swap_info_struct *si, *next;
--
--	percpu_down_read(&swapon_rwsem);
--start_over:
--	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
--		percpu_up_read(&swapon_rwsem);
--		if (get_swap_device_info(si)) {
--			if (si->flags & SWP_PAGE_DISCARD)
--				ret = swap_do_scheduled_discard(si);
--			put_swap_device(si);
--		}
--		if (ret)
--			return true;
--
--		percpu_down_read(&swapon_rwsem);
--		if (plist_node_empty(&next->list))
--			goto start_over;
--	}
--	percpu_up_read(&swapon_rwsem);
--
--	return false;
--}
--
- static int swap_extend_table_alloc(struct swap_info_struct *si,
- 				   struct swap_cluster_info *ci,
- 				   unsigned int ci_off, gfp_t gfp)
-@@ -2149,14 +2134,8 @@ int folio_alloc_swap(struct folio *folio)
- 		}
- 	}
- 
--again:
- 	swap_alloc_entry(folio);
- 
--	if (!order && unlikely(!folio_test_swapcache(folio))) {
--		if (swap_sync_discard())
--			goto again;
--	}
--
- 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
- 	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
- 		swap_cache_del_folio(folio);
+-- 
+Pedro
 
