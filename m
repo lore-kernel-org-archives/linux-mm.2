@@ -1,71 +1,71 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4466606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 03:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4595A606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 03:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c65rOCZf
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OmJvHkyF
 Received: by kanga.kvack.org (Postfix)
-	id A18096B05B7; Mon, 26 Oct 2026 23:05:37 -0400 (EDT)
+	id 4E9316B05B5; Mon, 26 Oct 2026 23:06:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C84E6B05C5; Mon, 26 Oct 2026 23:05:37 -0400 (EDT)
+	id 499FC6B05BA; Mon, 26 Oct 2026 23:06:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B73B6B05D3; Mon, 26 Oct 2026 23:05:37 -0400 (EDT)
+	id 388FE6B05C5; Mon, 26 Oct 2026 23:06:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 675476B05B7
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:05:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0A311208EB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:05:36 +0000 (UTC)
-X-FDA: 85366915872.06.FE3600D
-Received: from mta1.migadu.com (out-149.mta1.migadu.com [95.215.58.149])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5D8451C0002
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:05:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c65rOCZf;
-	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.149 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1410F6B05B5
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:06:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0282A0969
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:06:52 +0000 (UTC)
+X-FDA: 85366919064.03.5222A42
+Received: from mta0.migadu.com (out-198.mta0.migadu.com [91.218.175.198])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EEAC9160003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:06:48 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OmJvHkyF;
+	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793070410;
+	b=jvVlCzU6fseUfwDTr74ZZZH3v2KYk5I5YCFfbuuaJvXZI+C+lmYF6mm3SitV3Te4FKmMb9
+	S0hlvZnnC4bxNPULq07CDIZdMomMsNOCQ6bLlf4FYMV4eCHzkN5j0BD3FXWG89A8EGtgT5
+	+nZk+y7XUmZFx1LG3qRiK1JIpdvuZjM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OmJvHkyF;
+	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793070335;
+	s=arc-20220608; t=1793070410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S2fYp0D+kux7GkOrzGv4DxJUQ1pHehCh6wWsm9VP8mw=;
-	b=nrrXAlFrXLNTxcng5rKOqWpdLmbgUxNTgf0LNHCTCSbHqu+PUt6UHVhCWJY0lUv/gIX0tv
-	rFXorxXIfE1MpULCwupNT2GN+oIs+kEUch4rb5rWnhyi2zgmCNJKu2dmjbZhDvxAYzI3vN
-	iwQ9f8QZrAV+j/5Q13hoRlbHTE1RBZ4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c65rOCZf;
-	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.149 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793070335;
-	b=mQQvk8QO6iBKNONVCV9fZAANHLklnK+z1wFlV4VxKOmr5s1i6x/yoY3peWSVT4Vl2fIyHs
-	OkcZcTEUKzcHr9hff8ufGFaUsIa/3d6b3bbo4ItWvV5miY/IIIS+do9dLldiJUfnthInFA
-	AekZrVRG/WvTBFt7IaTKlmqpF4cNsIc=
+	bh=NfiBYouQ7SUxOIRjsg6uwpg+DvPUrarmQVPVZOSrssU=;
+	b=6HNfrW35qiJ6C9CsM2Vn+CxixPRw2EE6iglI/2KceYut7TzvtvrNFAg6LjnC+k5VkR2ZN4
+	la1+1PGtXNDi4TNzRLSqAvHTFuXhAHzr041yE2rZEfNgyoJ7wrwf6d1hqN0+vvg41XSi+N
+	4vWp4wuDF41PFf6bQsdKzxwwPBgT0V8=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=PpgTbepyGCQbdry0Tl9jwBnnjb4CaWXJ3ss5elRPGCc=;
+DKIM-Signature: a=rsa-sha256; bh=AqI8n299OICKahJhyCKFqs0u3m8/ZWmCuQo8Rk556kA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793070330; v=1; x=1793675130;
- b=c65rOCZf1Vlq0GQPAQmQqm5wf83ltLhRtUxYonNAqk4jRy4mWveQ6FYHE0z2KgSx0vBBuhwh
- I5BSaMM8kbNm5zMj9kh6fIQDiuHKd5Weox4bLMD3rtVDFQIbo7eTm65U5091811U3kGr9K6AGAx
- 2ioEyZte5hznqL0+wFow5F8A=
+ t=1793070407; v=1; x=1793675207;
+ b=OmJvHkyFxsfeKypToUZ7LSGC2sUxdtwI3R9o6a19BnFlQ/VY2YusuFobH1ESXjXmdW4D/0v1
+ 2U+cDF/TlFIvOXWIa+BCKSj8lSkeCR2P5jwvU83YvE2C4LcKuDnPaa1N3Qp/AhtOyPyWtF6jp0r
+ X5a1YWHseL+TPDdj7Y10H9cA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9170fb527649b4ac;
-	Tue, 27 Oct 2026 03:05:20 +0000
-X-Mizu-Trace-ID: 9170fb527649b4ac
+Received: by smtp.migadu.com with ESMTPS id fa452c266040fd6e;
+	Tue, 27 Oct 2026 03:06:46 +0000
+X-Mizu-Trace-ID: fa452c266040fd6e
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <62dfb28c-1078-440e-ba23-9068f4958570@linux.dev>
-Date: Tue, 27 Oct 2026 11:05:01 +0800
+Message-ID: <b0f16e9c-691a-4ab1-9ac4-d76b92c58b60@linux.dev>
+Date: Tue, 27 Oct 2026 11:06:27 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/46] mm/mglru: don't use stack pointers when walking PUD
- and PMD tables
+Subject: Re: [PATCH 26/46] mm/mmu_gather: fix flushing ranges with 4 GiB or
+ larger
 To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
@@ -103,24 +103,24 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
  Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
+In-Reply-To: <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5D8451C0002
-X-Stat-Signature: juumxzgin68h8zq1ojzhu6b75hxo1uwx
 X-Rspam-User: 
+X-Rspamd-Queue-Id: EEAC9160003
+X-Stat-Signature: qfm7dtajjpxkzxkqfk1upxf66n6czqgd
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793070333-259194
-X-HE-Meta: U2FsdGVkX1/fp4878hagdAJ0IqCPz6ySdYoynvcPE/KJ2EGH8CebdBXTn4A65uv2WGpAeNoqdnQyS77FGWOywOm3XnUvRliMNHifEXWvYOL283f2MvbGA7VKJ5XNMX9ItSYLqleabBKhISN9XafrNXTa3lCxboqTNppDROkP2OEMLiazxMQjzIBlK+EZYw3AWx2bUXPr20HXavF8SVQ5M9gd2erzPXI5gmFc8TuWdwSGizd0FD2or8fObOZ2d2z7qq6idd03U22N2CyHrtXgRQ8sWmAbX7Sy0QU0UQgeFxGckpzOOWnZxPtb9BsmYQnnXe12yhN2gguQrzLgHnrz5HIOBUYIlm0+bQ4zv1iXC4bM5PFnTt9UCnxujGl1VBRr84XQqOtH2DNLMU4vf8C7ngTrCbIiJlwllayFMe6Jv3GRX5xvE716hXVCPP90ZIgQBtT0xp0R/d0FEY9fbM4Vsn+G2Mb5FAJ0n/Rji2V5VxAoLIzo/yXdAAG0UkKvyb5AGYWoosyV/Ija326iLcbfrOQ3V6s3VGsFJ9h3SV6wpVjptcA8d76o5EcMEyv0O6/Iefm6Nrcedoti2TzzuqLITfDIHKSpn/LpvEiTwpXtzG5hFkyr5oVmjrLscPOrelt4QyPg4jZ/g8Md5CObwfOH20x9+I6ejOJSK0JkM2+3FzorIeJC8fJq5LKVPncXAeX9QyjnehB3NFKocV3O9uqqQAP2QfYTY/SuEtOxyuVIRI95Mu+vYmCWKyfzfNi2piZ7bEMfhKvxob7ftF2f1Nm+Se+riqlQSosIF+vDs77MeimdZmEPKyWXhEWbjPl76VMWuBkR/m9iuq4yGM/oa7/XA68pF3AdGq5gVmjVM6gfBnW+pbpGMoEf9k3DD3F76E7VT5W+zExciFJQamQ41cgOOXowUNmx1v0hgs3oXniGC4QRxTF5ly/r/Y3TtHR+FVjjyRctDImeRR2G8gwWx5X
- SckppSdc
- y0QwJsCEbT6SKi6G65/hfkionws53QqR0rDpyc2O+RksYT7tz+2B2Y2tMt4xjy5egFWpivu/K5P2JGF5hpiq+UP+RT+wQGcIXe1/Zv5mDKvxHH6CZ/FgrPSfbAtKbVh//FfweyaEd7IgcIdzdExIEIwm8QI+t9nImUFlb9SpmQkK4f+asBLG6mznVQm0PqCBE7nmrhQjv5tXSLJwMkTOpLl36fhb2csCO4HB0kbcAdClfu88igoOnLUSP8dJDLJzcxqmeugh5WbYyw6H1Cv5ImKzDFb1olAxYwV03arsk5FdOz03uRi3zVmqEWnvXAwMSCjPseuHzKgaQ5v7mX7KTl+EC4GpCtENjJ7vO4aoyhBWvJfhk6aOccuHobdzc93B2TqJKRkRaQSf9qK8qBtELhayRl2y0i/laxES11yhPw4VzU/ZGTIGQ2T5h3Q==
+X-HE-Tag: 1793070408-803325
+X-HE-Meta: U2FsdGVkX1/TE0LBl3MNgPDlWftk+U78LCUSPAiinz8LKxLNOE5CzMTQbLXBSPuWVEpz2S0QNHo69uWDLbw8BH+XJ1jTwubQ77a121KAk4ZzF9o+A8TrB4Hqv1XgmDEzvMDHVqUuA63HJ4axw68Iw3F6Y98jY1I/jL/65asrYn0xfzRQZ04Yk8p6WtwIMGp3+QEddQKfSZbaKhSO2PSUn6L7t08UH0sEJGfvk4feGeKWGAzCDS0UwNOx5wsYBwvh2XRReopRprd8AT7i/irDH4s2bvMJ1HaveFKyZtY99s7kW+myG5U68ee+UBq18igdznZ7Kf8mHCa6XM6jEizs6PtXD78fioCwtKRjXFL7z4uGw0HB/0r2pWi+RxJLBtqvIP+JjyqMQLhA1qvx3M6jb7JE+uJD4Ia37R9R6xh2zvMg/mGNJuF8dzFzShkSSmd63CCYVr2lZapWcGT1qTU+aY14IHpCdlziedSERtBkKNGjv6NeQ9y5JL7cbaNXyvZXwaG06eZs0IzK05DNS+RhdvSPmYNo3Ki8kod/n4c1CW23q5C60/7zK/WX4KRwUTvge/ag4LqfCmnvMzbv05z67LePJ1V5qZdIonmNjNHuEWFMNr2lAKIHk6neUuMACovMfCix3wG0uvm5byxczM1ztY3xse3Iezdf9ZIpVFm2rMBOB98Sb4Ar7LmDL4rTiZ7qwWCoSi6mlQkMlJC+lCJkkmJm6rrg7iMoAN6TDUvj3XjejO67JbF9E4LRGtjvoKNMai7b51yLRR+P8DFcne4UZoOmBoiOfwyecR2MSAQhJdBX6baushVNkK+6viNAiCek42IsB0IYIvDBs4FPepME7eYU4baFqS/GFa6rA8djUphIS3u5ZkGh2zpo06cZ1FozxuQuiCeTmvZXzgAUPGU6xuO9G+XPTZCSJpXVmT2gcVYp2bHjcs0vNsxDO5zjOLlN8nmrzaDfezfH8le9tT4
+ CYfnl22n
+ 3wmqlOBvgMvoTO8cF0NK3wjlMq/6s3tt+CROFMJ8OL2P7iIXARq79Hw7WqtNqHv5OKRFxAYuzCzDaDwLBbh6Tw+pLssUL8+nbvtWLbliFalB2dCnj6mqXveNQ36Cab7tScvaLDJJFzCIqmBkC3QaFtt39+QLO3l9FZzdvzJTJOhDwUqrkg2KjrM1LqtD/oGM6MPgRv7jfcJKJtqT2MuCEIyrJWz4bXmhBBxZor5W76snxSDWYPB755RaFqJW0VM8CkQmC9j41kVn/xjheu7JTKbLMjzGEAgHTgpLEkjQ5c7jk89XDThUeJ5aoGTEcXGhBE6FcP6WAAyyy+Yu3kIuex/oOrqR/2+s+ed+P9K+vOlp0wqCupzcfsjnuvgXZvC9VGAjrMqY5rnh5VYj7jVYU+ptwqpKNq2+EXyLWeSZu/GzyxWwSF+TW7pX029iralbmlDnlSp6qDmif0hf7ufjOr1tKdzqGRfbp/x/t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,39 +134,50 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 On 10/27/26 7:17 AM, David Hildenbrand (Arm) wrote:
 > From: Josef Bacik <josef@toxicpanda.com>
 > 
-> MGLRU passes stack copies of page-table entries in walk_pud_range() and
-> walk_pmd_range() when walking to the next level. These copies can become
-> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
-> table concurrently.
+> __tlb_adjust_range() takes the size of the range which has to be flushed
+> as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
+> and pass an unsigned long. Consequently, a range that is 4 GiB or larger
+> gets truncated, possibly to 0.
 > 
-> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
-> support page table walks"). Likely, earlier locking masked the latent
-> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
-> retract_page_tables() without mmap or vma lock") allowed concurrent
-> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
-> for MGLRU") dropped the walker's outer RCU protection.
+> On arm64 with hugetlb, a 64k kernel can flush 16 GiB hugetlb PMDs, and a
+> 16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
+> at least these two scenarios are affected.
 > 
-> The fix is simple, so just fix the original commit so we don't have to
-> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
-> RCU-protected lookup and validation against the live PMD. Note that the PUD
-> handling is required as well to handle folded page tables correctly in all
-> cases.
+> Fix it by flushing the proper range instead of the truncated one.
 > 
 > Fix generated by an LLM and sent by Josef Bacik in private.
 > 
-> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
+> Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ david: handle walk_pud_range() as well, clarify+simplify description,
->           adjust Fixes: ]
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> [ david: use two-tab indent, simplify description ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->   mm/vmscan.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   include/asm-generic/tlb.h | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> index fbe1114e9a443..3f4a180b48f3c 100644
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -350,8 +350,7 @@ struct mmu_gather {
+>   void tlb_flush_mmu(struct mmu_gather *tlb);
+>   
+>   static inline void __tlb_adjust_range(struct mmu_gather *tlb,
+> -				      unsigned long address,
+> -				      unsigned int range_size)
+> +		unsigned long address, unsigned long range_size)
+>   {
+>   	tlb->start = min(tlb->start, address);
+>   	tlb->end = max(tlb->end, address + range_size);
 
 Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
 Thanks,
 Qi
+
+> 
 
 
