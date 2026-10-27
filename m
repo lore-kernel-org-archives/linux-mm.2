@@ -1,92 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687A4606A32F
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86C8606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zvwT7Q2x
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nYkZT74l
 Received: by kanga.kvack.org (Postfix)
-	id 76B3C6B07FF; Tue, 27 Oct 2026 12:00:45 -0400 (EDT)
+	id D3D4C6B0801; Tue, 27 Oct 2026 12:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7428A6B0801; Tue, 27 Oct 2026 12:00:45 -0400 (EDT)
+	id D14F76B0803; Tue, 27 Oct 2026 12:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6580D6B0802; Tue, 27 Oct 2026 12:00:45 -0400 (EDT)
+	id C51D96B0804; Tue, 27 Oct 2026 12:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C6DE6B07FF
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:00:45 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C054D1C4477
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:00:44 +0000 (UTC)
-X-FDA: 85368869208.16.39E95C8
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0BC9EC0012
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:00:42 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=zvwT7Q2x;
-	spf=pass (imf28.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793116843;
-	b=rwmjFj3G5aeBQLCbXNMy143YWdQSpOApLD0G+qejMCMMELjWAsuKBeWkjv6cui+co7e7Pg
-	Vp9aZm/a7w0FNC6hFDaQxGLgeGod3/iCXdgl7OUkMjvA+f1jm7iX1MHpLIeIqG3foeNVZ9
-	DWRcOfYmldRjGH3ha2bkhoIjKlNsNrw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=zvwT7Q2x;
-	spf=pass (imf28.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ACDED6B0801
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:03:45 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B3BE21A0A30
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:03:43 +0000 (UTC)
+X-FDA: 85368876726.14.5B98824
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 002A31C000A
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:03:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=nYkZT74l;
+	spf=pass (imf18.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793116843;
+	s=arc-20220608; t=1793117022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lUFPvWUhnbq1nlKdj+4iPr3v7FCFuq1r2DJKFXSbd2o=;
-	b=4zNDPQq6YPtDG+moSgS/Fd3dBalnCKUeKMDZ84yylRgj0MwjFguDqhGF5Qg3xYRzjZWaa9
-	a0dL5WjiBVz4Ji3YcDrBP9zkPHlWnahiwXySyTQD9E4O+5YOiVHauRUr3SMROTAK6zvzPO
-	jZVjJWmEnlj8Iwc0qXeATCmdUlhr9Hc=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cdab8873d9dso49378a12.1
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:00:42 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wzW+q10RWKie6Pha9KgepWUrxRSzuZH0wvLMyxYlSms=;
+	b=SprJ0IGOsQYTlq/7po53JOm+y9IrF43ao4KVAoWdHThDInoZnlTeVR1GFXuQkSdMHKH5G7
+	wNgHvIQ+ZfD9mcpdvJB5qRJ/+1bZUHJXc21v+YPP7qigdXfCNp/nxXg/bHfEAP34htp4Qh
+	9DFMfHkITI3KFPP0X9aanH0Cv66A7w4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793117022;
+	b=grT7pO6sRxw0zHXDOXhhf3DsFch3GDqL26+Xqp35WufASryYcdnGunCA8IUhkoNsA5LUV1
+	xYT/GO/tuTt/t12DJwb94QdLD+baE86zF6egreQ+WB0l9BvW661bo9w2wMw0ptouGHR08P
+	SSdbwsQIR4YGzIXvM8uIePkO5qfs41s=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=nYkZT74l;
+	spf=pass (imf18.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3adf5f6833cso43835a91.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:03:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793116842; x=1793721642; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lUFPvWUhnbq1nlKdj+4iPr3v7FCFuq1r2DJKFXSbd2o=;
-        b=zvwT7Q2xUtRqSljk2W7NU+Z77sCQkeTQ38xBrzg0yeg0CwN4ZlgJ9CL0RjuoC6o0hJ
-         BJft/USImgH56nG3yGz7QFz9h22mhAwK96nVp2cRlGm/8k8nI2/Xl1XiAIT2ChpA5li1
-         tRAIrEA+OogvTy6QObkze/DBf/R4gC+0cY46NZ7kIr0llTua1qHwfMu9wtmfQB9h6eIC
-         wLE7FdFYjXGISgWMm7+JfsSjT4/boI0fH7A9aOPt5xJmFvpQhjIhKTSIa8VIC8h3nJ57
-         Jm8Imdhj2LAufUzQecr8RB0VJvO1jExsADT1O7P3FHbfy33MMRqZjcG2885Pa52j97Ur
-         SnSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793116842; x=1793721642;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793117021; x=1793721821; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lUFPvWUhnbq1nlKdj+4iPr3v7FCFuq1r2DJKFXSbd2o=;
-        b=qsXLkAxBCTGx4U7lyGner8+7ACVgRjN95Lm+gRiYE07z1gCqeywYzyBfFbpDgtNSYq
-         S5hDEUkqhKXg9IVBdoFB1ky7C983pkkbYwC3TB12lMp5oHLTQngvRKXYVXq+Ir//wzdX
-         SBcxyd2yMqxYT1NcIajLYD/hqp+Hwm8u8ynGnvNZmvBprrDEFVFfkBYoS9hLKTn2ANgP
-         huienN/q166InoU6SUhR2LiYmt6rhJxXb6Q6TSBvLV1w25/sC1Ru6IKWlHFBZtquX2zI
-         EWFf2TmGtwuaDrZ9M30u8W9Aha0B9z8uytf1PJixmVsFATueRyWfuIT6YY191unZy1EJ
-         CTXw==
-X-Gm-Message-State: AFq9FYKYJhf0ighrdetsnNeM2/DcLoRT/GmsjZZZIxSw44VsGxeDEp6J
-	MPxuEdv156b1W9HLUwllsLCPqssekwIQx8N5blRy/9pjNMoSeZeqN2DicRMWDg==
-X-Gm-Gg: AYBFou045zcO87HiIYVrRw0nuxAiwEPiC2QVMs+vyad1c0X4fG8JZY4G5sUFpkkCj8M
-	Tuf7tFwhSR1unNo1Lw8pfIQGKrX3FbN6a01m0jhDhfY296RD4ChIK2ncK5V0Nt6EQwGqA28LqgI
-	ZvGJgoERlXRplx5jtK7jrG4gue3aJ+v1Bdwd6ScXiKTD4Okrnhyt5G7NapbUBl5Dsy0JCAfbdhi
-	c3hdmlW0+wo8rVc/dzxUCnTlHIkG/WYhHS6TsIcM5s1t9Ec1UZ3K4fOll2vQEVR+sjD8tYem+Zj
-	mPcFJ/YreejdqqB0V5H9y+ilGo3ivT3H5emjMFs1FOT42aXJgpB6z7/xpA8j6NMT/7M0o8EVREK
-	icylxJhLJ7Z1LmRJWoly8jzwx/mNCTTKpsikMvjWl12atDSa+2iPzjUW4Gxh1tDWLE9a8HIBH19
-	yjxdrryYK8u6TzmYVfAjGMAESaaczBvgyYl/XMkgD5eoiEtObVJZmBv4bBJhW9k/2YzE7O33J8T
-	RKmtvXCgrM0dUCKHudi0pEsbNPayILshB1DV2JOoJ4DobIpkzMm/f0PUoWwdW4jjB17TBEcCYTZ
-	GQgd8bz+3qE3D7/eW2ktXH2NKv/DcsLTKy/nYFxS0/Y7Hb5FM7aHqBdAaZG6tYSYI05u
-X-Received: by 2002:a17:90b:528c:b0:3a0:e4ce:31fd with SMTP id 98e67ed59e1d1-3adead444ecmr8771470a91.10.1793116841476;
-        Tue, 27 Oct 2026 09:00:41 -0700 (PDT)
+        bh=wzW+q10RWKie6Pha9KgepWUrxRSzuZH0wvLMyxYlSms=;
+        b=nYkZT74lI66yFui1r/CEfqlX+Ui5gC/3crghvWLgIGDQU8/GRTFRMDBV6TQSnoTgkb
+         Xijg3zGD6Ee2x18tcQ7h7badhzfBsy9OtZA6ycaL+3pmzuQBXgpCXkBlBB/rtYGIdzHx
+         IuVxYRX3rmoMf8hYWPDlRuVwKFWKZCn6kSihkQjnzV919f0Eu2A7B3RUwQzWTFsu4efc
+         e6kHwS1iN3mGu3gq0+qByBLd3sBYqDvHPxh3G6YIzschlJLUn1vXjhRHcJJySp+whojw
+         awG/b+b5ZOEsyBnaQN79utakQerU6tWyX+GEMz4VbM2FrNowELCjGCaSJFR++EJec9ki
+         6ZNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793117021; x=1793721821;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wzW+q10RWKie6Pha9KgepWUrxRSzuZH0wvLMyxYlSms=;
+        b=OJ2E+8yrLqbsUWG6664ANs6FVfx/Bla91HBJ4fZdPDJCveNtVWzoUNHRM0fPNkvoJy
+         fcZVOznceuGErXYZZHffWprm+J6BdfJWfHkROO4BHMNOJvkyG2D9Zdjz+sSq2DCxTw18
+         LDhQCXYaNIz+owDiTBTVGSve0Z02Sbeu/SK9I0nH+U96nbgMntKjCAYSysWXwGpead2b
+         qCp/eQ1du5lY2vVvizFxUbFVzKF7AphZ7rC7TSqbtgb/Wwg0gmvNdLkd0qtdwEaC4EVt
+         BxjsygWVLdq8J7J6Sj0RTKk05QrErZwnHjdAZ1DzMMzwE2OIarVMcO684efByVI+Ysu3
+         z0IQ==
+X-Gm-Message-State: AFq9FYIdcEUacUderUkw/l1HDIeDcF67e4n+RSu+g5qEjeRUWS3f1yKJ
+	Vb2qYPPelyi/hdTetSFzeqB7yG57ayjRsLvbrdpkYwLoorzruZZEotxkEN2eKw==
+X-Gm-Gg: AYBFou1uZBCndOo5fAF8dy5FVm8Is0wyv6Y0i/jXaQYRAPBWfKZzkKrHB7Uvd63BfTt
+	pXAIJWxpOeRcXBfwIYBn+FpPQKp/WvrZ+Cc6GvkLep/Rb8mVMEVpKwCkt5s+VA7ex6Q7hIbkw4X
+	fJLPe1qtQlsywx0f1lFg6zl+VnE4Hh2Jb3srCF0vGFPUh0morF54aIL/i/OtOZLUoHXHtTnmpWw
+	/B9yqovKFyDSYl31NUhU3IIyIMEoznrna63nZCEkMkJT2Vz7nnJUIh83j96LBIcQ2jlhSmoJt8i
+	D1DRjvL1AxbkCiIGCvJZWNqPBSJVmjResCEVOQAgc8p8Zt2FGwhiZGi+ef0bSKkqOTdF17tV+mB
+	95GV04Rv1/7brcst48in6qGI0zfN1gOpB6BfFJ+ZR9AN8sh6Nf3it7E5CkxcvMdV4fdrsC8E0gU
+	8pJ6A/+JqQXeCTCVU/A0dYIZdxDM4c9wbZCjprTUXeDKzDN/kd2L4ldvPqUnQbogUHR/qWFbl/2
+	lwNCtjPTTOhtdqhOBJ0waSNJKcQfOErCDezaak2GOM1pqDnxgxvsvQhQ6hG/wpaWm9JGHounZd0
+	uMiGeR7vT9D7zDseuKBoQTGRHDSz1OHUv9VQ4+I/
+X-Received: by 2002:a17:90b:2cd0:b0:3ac:77c8:ac29 with SMTP id 98e67ed59e1d1-3adea89910fmr7468966a91.15.1793117020581;
+        Tue, 27 Oct 2026 09:03:40 -0700 (PDT)
 Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae4064f4bdsm4334209a91.11.2026.10.27.09.00.30
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae406519fesm4273776a91.12.2026.10.27.09.03.32
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 27 Oct 2026 09:00:40 -0700 (PDT)
+        Tue, 27 Oct 2026 09:03:39 -0700 (PDT)
 From: Lian Wang <lianux.mm@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -104,24 +105,27 @@ Cc: linux-kernel@vger.kernel.org,
 	gustavoars@kernel.org,
 	tglx@kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [RFC PATCH v3 00/18] mm/swap: introduce priority queues for swap device allocation
-Date: Tue, 27 Oct 2026 23:58:40 +0800
-Message-ID: <cover.1793106426.git.lianux.mm@gmail.com>
+Subject: [RFC PATCH v3 01/18] mm/swap: remove unused parameter for reading swap header
+Date: Wed, 28 Oct 2026 00:03:17 +0800
+Message-ID: <50b9084b4845d8a93bba7cecd1d65e13808e012f.1793106426.git.lianux.mm@gmail.com>
+In-Reply-To: <cover.1793106426.git.lianux.mm@gmail.com>
+References: <cover.1793106426.git.lianux.mm@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 002A31C000A
+X-Stat-Signature: 3sotphjsoj7nabkmxpcnuokkhn5yt74c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0BC9EC0012
-X-Stat-Signature: gb7aoqfeteientz18uqnrb67ac6sogqj
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793116842-431592
-X-HE-Meta: U2FsdGVkX19zo6aIudP+rHoAvqJlhY6pwf5FImvFSkT+jFo/PzuFsbRhCL4Z8tT5Xp+R4ruVCKNeEhpIcBDkN+Dg26ymIzNn3g7EgpQ2J5s5E9fhYybXDCyou2SajnGzi6HWAkfnilNuKbNOS9G+jaZEesNflfxgxRBEF43xcGsPPNjIDRa2aXBqxStHtlUXxov9Agwbx2eFwv1ekZt/bcwsqL/Wtn8zWL738q+o4muW4ymBM+kEuUTq5Sl+im4iXAWixA/5bPRSkKUwXciUbZAqBP9yktlwT66hU08cnP0W1BScejJCGswy8qmNOw2EHVMzv0ukm+D2BYPEnVmj+lfPApw/C/QJ7K+NU4x8SovNUoVyExEIWHsp3rntP/QLb6q9WJmYQt8p1PP/x+bNykdApsDRVJ6uayoRH19w/WDd3f9sgwTdvb2rK4Vmi/30IVEznlJklOzazNp1Bhwe5XXXyw85sggrRU8etQr6Umyj/H2frl1gDcH9Loqc2ug7uNGCZlRk2WkGSGgjMssKf9bzHBsIrvbASRWp7WYpNg0n8AG6uGzPoJiiRruc+MdFpD6Sa4NAcoR4tE9zUOAVM3p5xAjoMvOdcmZ/+3f7MyQMGdGN/XwI41krSPLAuz2MAngEZjg4L1AEjKRmdp0t75vAS/ah+KUeuloXgym0Ye5NxshRbLBxz6Kdd3h8r4r+Ratc9QW8jx/Mq5gGaHZgYaj0cBFKgzRmepuQdSqFiRXc3R85l1M1H8heYqrR4eGvDSz/xclj3iTe7gkmVmOyRYCzT3qBJDyCN7YEcqXCgeM8x4BKf3Sz9riD5ydN6NFTbrkn/3LnMjkhyHwoqCVkQ1OrfIlgFKo6jw+8C8atkA/j7kp+DoYeFrg2DHYFwq1//pPRiRppzB18kkmK9BVpe6e6gxtEX8T2RtKvO/BsK2Cu0IkLuZU/6533e9yUBs1sRRRRvkt12Jy4pLBH9Sh
- nWI8DmUJ
- mKBTdT23+bMubm0LIi2SrV0TkQglZwwFWqsV6GSa06+InFwjhecRzAo6+tfg39TqnUhYE6ejgS31wGgsLWboj8alIbzw/AvV12L0OGnVfBv+MLJOtfShp3dq2nGz5k1HpSduJwle2Bc9ExlGZb95SMFaW3IUAbM9HlCC9eNJy4TgYHsr5l3s+by8bZ7ZZ5CUC6Haem/1PTnhb6Z7XOFYBYp4gDnkjsQo36eWNVndycPJJ1QZJtRI2VqXjSvo8TkcIMI/QdCtcngE/bCwP1RFFq5LtgW0IEZdXFRAdSb2GuOlCa2o/gK94uoSaoxC/zc6/VpkWiNwBdf1TLTeVuWROkPg+J6DrEWKoVeo93qeBE3s1tYS79/iQ22cl3B6iBpOQntOPfjtik4mwGPl2C7HM7KA/pMz+3mqUGXuzfHL7i95C1yMulpBh3/PbEhq6gZTkBE2sGP241XX0+0gJpUeU7CfoDV6WVbSjR/LnW+On6+odBb29MSTuJK7KQdrpzJmQjZ2nrtY/wmPPK1Q=
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793117021-312442
+X-HE-Meta: U2FsdGVkX1/KAz3Y1/lzHESzeM1N77UyCuXR4pOPRSCL1n8MXdpRF0psgKqucdNHOWusVNujHAAzO8DCMwqargnRXbrvPCD73x/Sdznw79ydFGdrNRMuaFljGumdzPPgPbC9tNSBiYjLIgmeB0x2O0B1Elc2Hn1LiDRJpvwkSu1RIf61eGGSrrdfoAcI2YhRzRvzDukrCqUoYplyT6yXqlYWZRQRoKj3Qwd3h1oeDwzsD8xBqSESHKwaySpcTVXLI2DU71aGqiju7YDOGFS1N5NAe1jJzE082Gp/51Ys6mU7Lqtn1KHY2A+GHz36MmB5wcrchKwbLIpE7unPXT+Uq/DDH8ev2/gQHKSd9FW58LdsQgmqWI3zIwlsH2KNvQn6SrawjObtzP1c9Koxu2BLRSdYoN0WYSf62+0ABpcMZxRUQj0nykNSifevb/ZJAqZGvHE6t905mAy4o3jdtirftftk8Jk9HB3DMH9KStHDzIk3SM2rjAAjyQokzpcxN0fvCFMrFvswqseukDHj7DHkOZvW2W2Q4a0gjW+QiGrgeU5C6TRi1tmJXC62vjfqUzFsHiXM1mHrYLJVuEVfYjn2d8OrUzK24wsI5K8XUKby+Lh10YImj8PtH+XViG/uoZKYwWcmicLIXFy88TCWclnk8pmGTO/D8Q+sj9M6O9VfJqNPcD3Dfc+MoRXdru3g1BcL6UVPIpecmQxiEUfQrcmRo98AjesQ9nd/dQm688CW1SGgDj9tTIu3HTZW8gOjYZfSVSUubb1CwJ9pbz6yoEK/sL0isR9F++WMjG8qSkAuzs870jOrCKaYMRnFNQVF9abenacWit+Ir10CsVZWYtdpS36Lr09X0jvVgKJpjRjlnjh8vVYpj+RloLKf3uvdKESAM9ToNqRytYraiogNSaRjFc82rORCV7JubzDZV7VtUoLqfkdDuDIIIDAgW7jgOTMfGixX5ZeDMeIQRF5nq0v
+ QGBlvRB8
+ LrhkeG6VARNcdM1l3CuEDEr73LSWgK5kNmKmYI4QR413oZTXpFkFHQcn/n5j2nlLQSoaWs/W6Ms/Hq1y+2C//VKFDOqJ9i+xB7vedh2GB1JVBfHq8uG0zGhQbqVCxXHrmYleMoSB08uqP3YyNK7WHfYDwFmnf2JDYVAso1MuDUt21isb1ocQ27BPqdqsOeSVNCHMQQ14mW3Y+I3o0OtXX5RSCvAnUFI3FMDNCzQzudpjr05CQ+HN+AVfCEKDIt2oeyg7n9kq0tIsjsIMVaBDtj5j41J94oZtHxMTtSGBvHF6ltlJcgMS88lvnY0SJ0c2xZxrvBI8J5NRn6p7zBQmzBvIB4fv/gCtihxoxXnsTNn8VAphD1IV4FQ7QjnvlivcP1D92HYMZbR3J4ni1sV3+IhtXUzp7tvriI5EdsSZDXRFdrt5ML4kpdaMjsYhkrvbkcwV0n7IXaLx4CAY7ed6n2EN7j6aKro0Pydjf8xsOPcihWq1vRRZMQuUyxHmWH8k+9T3E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,201 +134,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi all,
+From: Kairui Song <kasong@tencent.com>
 
-This is v3 of Kairui's swap priority queue RFC [1, 2], retaining the
-original authorship. It separates device selection from device-local
-cluster allocation to support integration with the ongoing swap tier
-work, while preserving existing swap priorities, the swapon interface,
-and memcg swap accounting and limits.
+No feature change, just a minor cleanup.
 
-The global per-CPU cluster cache couples device choice to cluster
-locality. Moving that cache below device selection gives each device its
-own allocation hints. The available plist's shared rotation is then
-replaced by a priority-ordered array of same-priority device rings, with
-per-CPU starting offsets and quotas. A task-local cursor keeps each retry
-walk stable. Rotational devices retain per-device sequential hints shared
-across CPUs.
-
-This remains an RFC. I would appreciate feedback on the allocation model
-and its integration with the ongoing swap tier work.
-
-Following v1, the changes address related allocation problems:
-
-1) A cache above device selection couples the chosen device to the cached
-   cluster. Device-local ownership lets selection determine the eligible
-   device before consulting its hints, which is useful for tiering.
-
-2) Rotating the available plist changes shared state under
-   swap_avail_lock. Per-CPU readers keep rotation state off that shared
-   selection path, with a quota measured in base pages.
-
-3) Device rotation was tied to cluster draining and the fast/slow split.
-   Selecting a device first also lets allocation handle its pending
-   discard directly, with a bounded amount of synchronous work.
-
-The series is organized as follows:
-
-  01-04: Cleanup, device-state boundaries and iteration helpers.
-  05-07: Locking, writer-serialized publication and accounting.
-  08:    Restore per-device per-CPU cluster locality.
-  09:    Keep cluster metadata population out of direct reclaim.
-  10-11: Introduce the safely published queue and remove the avail plist.
-  12:    Bound synchronous discard to one cluster per device attempt.
-  13-14: Preserve priority-aware throttle selection while removing the
-         active plist and unused plist_requeue API.
-  15-18: Reuse reader capacity, advance cursors directly, bypass singleton
-         rotation and redistribute reader phases on membership changes.
-
-Test results
-============
-The kernel-build and BRD tests follow the v1 workloads on a newer
-baseline. The results below compare the unpatched baseline 4dbe24720eb3
-with queue revision db66c58fac8f. The additional usemem and lock-call
-results compare the same baseline with 18ec4b962755. These are
-measurements of the named revisions; this posting contains revision
-fdfe5fac0d5b.
-
-Eight-ZRAM kernel build
-----------------------
-The workload used eight 8-GiB ZRAM devices and make -j96 in 2-GiB and
-3-GiB memcgs. Each case had 12 fresh-output builds per revision, with no
-warm-up. The workload source was fixed at 4dbe, using x86 defconfig and
-the targets bzImage modules. The revisions ran on separate boots, Before
-first; the 12 samples are within-boot repeats.
-
-Mean system CPU time in seconds (lower is better):
-
-                         Before       Queue (db66)       delta
-  2-GiB memcg          4469.0100          4457.1575       -0.27%
-  3-GiB memcg          2352.7325          2338.9325       -0.59%
-
-Mean elapsed time changed from 170.1283 to 170.3675 s (+0.14%) at 2 GiB
-and from 136.6125 to 136.6775 s (+0.05%) at 3 GiB. No clear regression
-was observed in these kernel-build runs.
-
-Twelve-BRD usemem
-----------------
-The same Before/db66 pair used twelve 8-GiB BRD devices and a private
-memcg with 24 GiB of memory and 64 GiB of swap allowance.
-
-  usemem --init-time -O -y -x -n 32 1536M
-
-There was one complete invocation per revision. Mapped throughput below
-is the requested 48 GiB divided by elapsed time, in MiB/s.
-
-                         Before       Queue (db66)       delta
-  elapsed time (s)          7.00                7.11       +1.57%
-  mapped MiB/s           7021.71             6913.08       -1.55%
-
-All 50 kernel-build and BRD invocations exited successfully, reported no
-memcg OOM events and performed swap I/O.
-
-Additional eight-ZRAM usemem and lock-call measurements
------------------------------------------------------
-A separate experiment used eight 8-GiB equal-priority ZRAM devices and
-the same usemem command, with memory.max=24 GiB, memory.swap.max=64 GiB
-and memory.zswap.max=0 in the workload's memcg. Both kernels ran on the
-same x86-64 host with configs differing only in LOCALVERSION. There was
-one workload timing run per revision, with no warm-up, on separate boots,
-18ec first.
-
-                         Before       Queue (18ec)       delta
-  elapsed time (s)          7.97                8.59       +7.78%
-  system CPU time (s)     175.13              192.39       +9.86%
-  pswpout (pages)      6,317,548           6,317,684         +136
-
-Both runs exited successfully and completed 32 workers, with no memcg
-OOM events. The times increased in this single-sample comparison; the
-cause has not been established.
-
-Separate sampled runs recorded 12,451 swap_avail_lock acquisitions at
-the selected allocation callsites in Before. Source and binary inspection
-confirmed that these calls are absent from the 18ec allocation reader
-path. Availability-update callsites recorded zero acquisitions during
-both sampled workload windows. This shows removal of the shared
-selection-lock calls, rather than an end-to-end speedup.
-
-Current revision checks
------------------------
-All 18 patches in fdfe replay to their expected intermediate trees and
-pass checkpatch. Static review and userspace checks of the actual helper
-code with ASan/UBSan cover publication, ownership, rollback, selector
-progression and throttle priority selection. These checks use userspace
-shims and do not constitute kernel runtime testing.
-
-Cooperation with swap tiers
-==========================
-Device-local cluster hints remain below device selection, so a future
-tier policy can determine the eligible candidates before those hints are
-used.
-
-V1 proposed taking tiering first and rebasing this queue onto it as an
-optimization [1]. I am happy to follow that route. Another option, if
-reviewers agree, is to take the refactoring under the existing swap
-priority model first, then work with Youngjun on adapting the queue and
-reader scope to the tier infrastructure [3].
-
-Youngjun, which ordering would fit your current work better? Are there
-constraints we should preserve to make a later rebase straightforward?
-
-The integration should have one authority for device membership,
-swapon/swapoff publication and lifetime. Tier policy would determine the
-eligible candidates before any device-local hint is used. Within-tier
-priority semantics need agreement with that work; this series adds no
-tier ABI or per-memcg device-selection control.
-
-Link: https://lore.kernel.org/all/20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com/ [1]
-Link: https://lore.kernel.org/all/20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com/ [2]
-Link: https://lore.kernel.org/all/20260916183437.2946306-1-youngjun.park@lge.com/ [3]
-
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 ---
-Changes in v3:
-- Serialize file/ref/writable publication when removing swapon_mutex.
-- Establish metadata and writer allocation safety at their first use.
-- Preserve priority-aware blkcg throttling when removing the active list.
-- Add reader-capacity reuse, direct cursor advancement, singleton
-  selection and membership redistribution.
-- Present the completed ZRAM/BRD results with their tested revisions and
-  sample counts, including the observed time increases.
-- Add measurements of shared selection-lock calls.
+ mm/swapfile.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
----
-Kairui Song (12):
-  mm/swap: remove unused parameter for reading swap header
-  mm/swap: slightly cleanup the code for hibernation error handling
-  mm/swap: cleanup and document swap device availability flag usage
-  mm/swap: introduce swap device iteration helper
-  mm/swap: change the swapon lock into a percpu rwsem
-  mm/swap: serialize swap publication before removing swapon mutex
-  mm/swap: consolidate swap inuse accounting helpers
-  mm/swap: add priority queue for swap device allocation
-  mm/swap: remove available list
-  mm/swap: bound synchronous discard during allocation
-  mm/swap: drop swap active plist
-  lib/plist.c: remove requeue function
-
-Lian Wang (5):
-  mm/swap: avoid direct reclaim when populating swap cluster metadata
-  mm/swap: reuse per-CPU queue readers across priority changes
-  mm/swap: advance the global queue cursor directly between priority
-    rings
-  mm/swap: skip reader rotation for single-device priority rings
-  mm/swap: redistribute queue readers after membership changes
-
-Youngjun Park (1):
-  mm/swap: change back to use each swap device's percpu cluster
-
- include/linux/plist.h |    2 -
- include/linux/swap.h  |   43 +-
- lib/plist.c           |   64 --
- mm/swap.h             |   12 +-
- mm/swapfile.c         | 1421 ++++++++++++++++++++++++++---------------
- 5 files changed, 926 insertions(+), 616 deletions(-)
----
-base-commit: 4dbe24720eb3811563cd56b35d87ddf3f9beed2a
-
-Best regards,
--- 
-Lian Wang <lianux.mm@gmail.com>
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index c3288910b3e3..7acb33cd8b71 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3568,9 +3568,8 @@ __weak unsigned long arch_max_swapfile_size(void)
+ 	return generic_max_swapfile_size();
+ }
+ 
+-static unsigned long read_swap_header(struct swap_info_struct *si,
+-					union swap_header *swap_header,
+-					struct inode *inode)
++static unsigned long read_swap_header(union swap_header *swap_header,
++				      struct inode *inode)
+ {
+ 	int i;
+ 	unsigned long maxpages;
+@@ -3801,7 +3800,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	}
+ 	swap_header = kmap_local_folio(folio, 0);
+ 
+-	maxpages = read_swap_header(si, swap_header, inode);
++	maxpages = read_swap_header(swap_header, inode);
+ 	if (unlikely(!maxpages)) {
+ 		error = -EINVAL;
+ 		goto bad_swap_unlock_inode;
 
