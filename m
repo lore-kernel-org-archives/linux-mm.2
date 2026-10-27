@@ -1,136 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091C7606A337
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EB7606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=tl3E0Xsd
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WT+zS295
 Received: by kanga.kvack.org (Postfix)
-	id 19CD26B0847; Tue, 27 Oct 2026 12:40:39 -0400 (EDT)
+	id D110B6B05E5; Tue, 27 Oct 2026 12:42:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 174336B0849; Tue, 27 Oct 2026 12:40:39 -0400 (EDT)
+	id CC1A96B05E8; Tue, 27 Oct 2026 12:42:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0635F6B084A; Tue, 27 Oct 2026 12:40:39 -0400 (EDT)
+	id BFEF06B05EA; Tue, 27 Oct 2026 12:42:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D33606B0847
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:40:38 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5670440A76
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:40:38 +0000 (UTC)
-X-FDA: 85368969756.23.9A1691F
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6E523A000C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:40:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=tl3E0Xsd;
-	spf=pass (imf25.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.47 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 954ED6B05E5
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:42:01 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0BD8F160AA9
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:42:01 +0000 (UTC)
+X-FDA: 85368973242.29.B7CC4E1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9E001C0003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:41:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WT+zS295;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793119236;
+	s=arc-20220608; t=1793119319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0vGOrY3CisGPc8VMRVO//aXg6OQh93vx7xg6bEqOVs4=;
-	b=8E6hMn3iHayNlRIVp7hVFPdKpTfVK1wslwRYK/aT94jdd31zUyNVKHT8YKnkjjlcR+rU/t
-	4+dLm3/EAjhnc6jOpqEtB5ep6p9LKhTK6OkTn9p8cOdVKac+Rwktj4BrssXl2GYZkUVHNY
-	xoqUubhfb1K91WMnDijo9RhCyXYe7z8=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=U2+NgVVulxRc8ahHRVCwgPRTd6JNZHZQ/ltArk8SrNU=;
+	b=FTDm60RC87YIunJLF4YV5oLNl6S6mjvh/06MhnCMGUjFJ6Moi5Serl2k42fcTaD4olMHeE
+	tMG/WfBhDtb/RQv5GVWWtBNKcpmfq6yWdo3kd8G2W+RFQa+VXUB15KK90nWWjDDY4+Ric6
+	y1GJ3kZsKEGiXHGgroCchhIn4wTELp0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=tl3E0Xsd;
-	spf=pass (imf25.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.47 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WT+zS295;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793119236;
-	b=0WzrzpIglA2f5Y+Er66TYdWweUID0N1bgYkq4FR8aP2rDK9kxjacENERxKw7gzjDYcfffO
-	Nnc3NLbiQKpuapbWG/TMQeYQd217gtVNxJCxYkmaikg45RR5oh0ObhjVQbhIFHPKttvzDz
-	txJocrt4sTfTG5emOT05P4VQpDNi+k8=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ab41538192so87258a91.0
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793119235; x=1793724035; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=0vGOrY3CisGPc8VMRVO//aXg6OQh93vx7xg6bEqOVs4=;
-        b=tl3E0Xsdyt5Wj+IaE+dSuTFcWiyGoJ0lxJiYZEp4O/nMleD+QAf6bD+LkV6s16rPYV
-         YiHE4DOLi4Jo2E6Zhorn8pbhg/3xEsxZP9sJRZ1fAv8XRsVwiV5/RuYw5z95726/bxq6
-         Rz29p6h9b57j1PKrLVLIvsqI7HwFjuoC6wjlk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793119235; x=1793724035;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0vGOrY3CisGPc8VMRVO//aXg6OQh93vx7xg6bEqOVs4=;
-        b=Wil/3GBYFFj0VaUqfMwf2/wdon5V0KF0TJz5/EgS10wqfuh8WcQIXNm6cTcTM0l9ov
-         shnb7KmIFnYo3vPEraAymzwHcuqZotzfC+jnIe3WvYkBhe6K/xrmyF2lhlWiIJnaYafX
-         aUUCoWS5cw4x7N4laM9jp3P5mpmhRUR2LEt6Sz5HgorudeuV9l/XlfCSGdB+S7MtbqDj
-         27MY7VV0uYWlAA3BPah9RjQ9DgNmw2UqS1Uvh2lmh6Gsp9VZ20Etvj2pcOx9w8kZOp8m
-         +Gof2lTC7LRoZI9BP47AIZOH7C2nMyrKka+1/g63yGm4m/njtMRLaSCJUv5ibSN8gTpY
-         F4uA==
-X-Forwarded-Encrypted: i=1; AKwUvBxm3i3/Efj7nn4b1M7BJ1lhubhMlRPEKPHtF2quks9JewktElcIy/KsBXm166l/VAIHP5MmMpwciw==@kvack.org
-X-Gm-Message-State: AFq9FYJaMm5n+j98qAKwY43PpbcvCp6qBQNNkTnqHX6i2Ut2OUI/Ir4s
-	adqwDdR1JK1QKgZjiWwCLEYs8hnTzvQMibSDqfYOfVrWtAO8KFXPpxPNfEfHWt0veg0=
-X-Gm-Gg: AYBFou1uflaA/jEVsWJ3WjlfRyA9U9LukyE8Wpegsbvr97UoQUmlwOVfaZykyhWhDT/
-	E+B/W9xjJfsORgOCMAMLZu+/9YwXffBgIN3MDEgWg2CL7c7i6vKWz9WWF2ODeqRtekpfNNBzvpy
-	Hw/k0X9SxD/WX5yGM/WNTZ3ZXvPqLcE3LR4Rtxus65CwoFv3VWBG/pQug7Oxf/6XG1y2Typ60BT
-	8gEweiCZZoa0JjKdA+TuW5mj+9JcCDd8n/JKfSvIpR35d92qxR/U/opsy/AX7iJtKiTLO19NNpW
-	YudH9S2BoPwhSwtVQIYT1qLg/e8JZ/kxC253oQ52f01B64LLGu+W/f/AgngLu2DP8fnLuupFuul
-	98vDeBRvPZW0bIffXAQmDwuYxHTda82W8Tvtyp5UlzZZxm5rBMxpTiMmj4kBT2uzwm2gvm6WANa
-	pcaq1R3bzE/6V2m/AeCDMbunAUR2jveeW9CKFv4K6O0r/gBRpK87mmznFYV8fiwNakeV8rt/A9v
-	UoMXcBB/rtU7oJMYltoLPIgo8g5PDQtRmj1FR1TSz/PjHRz99YAYP5hANS4gKxjbECwkHwpgYqm
-	dhGDavPisIJwGqYUQd9mL8UcALEOh4we/jmakA+Dd5kp1KR5tyVIAll97tyz64ht3lKGJj2iznv
-	7usns/vSrfLyAE9ikPcOKXl6I74an4trcZ12gG5p9CJuvmTmJ3a1D0Gj1WwunixkXvEZRrBr5aA
-	==
-X-Received: by 2002:a17:90b:528a:b0:3a4:b061:2765 with SMTP id 98e67ed59e1d1-3adead57da9mr8291010a91.15.1793119235223;
-        Tue, 27 Oct 2026 09:40:35 -0700 (PDT)
-Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae4066d631sm4569992a91.17.2026.10.27.09.40.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 09:40:34 -0700 (PDT)
-Date: Wed, 28 Oct 2026 00:40:32 +0800
-From: Chris Down <chris@chrisdown.name>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+	t=1793119319;
+	b=LQLEYW98wNNUW30mmqA5dlH9mi1uLShUIE7r1eUMJ03PqOrw9WRkhJFZ22rNykkJqj+tEM
+	qsXiOPx1orA1duBZf8bSdiwAgi4nu2ZeEzwEqGb5TwCzK5BjlWtu1a4w1gZJ/GhoafImXZ
+	6lRM1A3HFBcxEW2t8JfNPDcsl5YpRL0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793119319; x=1824655319;
+  h=date:from:to:cc:subject:message-id;
+  bh=dFfn4QXTGS2lBVup7ty5eBIeHER8pfxxsVUC3O+sdRc=;
+  b=WT+zS295v9yIUGlOJ4qQ3tjaa7d+Pi6QMBA+fU5oxYITi4e34Gd1xo3p
+   9JUVxY8Are13foSWUNtwHbv45pDRRyFD5BnFwnK6FsKpslBv+9Pmkwr9u
+   F4iz94cxQXgzwqaMrVPmiRZENjY0+TZZqWEgxnypYjhbXWsS7QfmWeH0W
+   zjyudWKSU61GYMRjqU3xW/DJmhXzz3PNoGuytUwTtcvtkk35HQXLhnN7q
+   RvC4Dtq3ooQlidtjN87V3RgyfL7uhWcEoLVg/ESfqL2nh/SQ+cAs4O8Nr
+   niBlVlBUqMVoybxuRE7UUHHhRksZ6d/6Nwx9GU9fN7oyd86lmuUuWy9m4
+   g==;
+X-CSE-ConnectionGUID: h/QSAlyzQr2OmmwSe4/CcA==
+X-CSE-MsgGUID: Wm1JZ3oYSwy6HU/XdwsObw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1839928"
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="1839928"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2026 09:41:57 -0700
+X-CSE-ConnectionGUID: 2RfWKlaxRdy4e0fCjvk7pA==
+X-CSE-MsgGUID: MnMWm26dTyK9r5CwQ84gHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,181,1787036400"; 
+   d="scan'208";a="4931352"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 27 Oct 2026 09:41:56 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xLkFF-00000000XVU-0Ft5;
+	Tue, 27 Oct 2026 16:41:53 +0000
+Date: Wed, 28 Oct 2026 00:41:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>,
-	Jeff Xu <jeffxu@chromium.org>, Andrey Vagin <avagin@gmail.com>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>, Shuah Khan <shuah@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 3/3] selftests/mseal_system_mappings: Test vdso unmap and
- remap
-Message-ID: <auDUAN9xAQRQhnCo@chrisdown.name>
-References: <cover.1793094611.git.chris@chrisdown.name>
- <621847973ba2ec49d0a58e0261da35a9f3a97eda.1793094611.git.chris@chrisdown.name>
- <auC7_5XYr31fimvL@gremlin>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <auC7_5XYr31fimvL@gremlin>
-User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6E523A000C
-X-Stat-Signature: hf35ur7tqgwcy7iwagx6nx31jo5po9tb
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS
+ 7bf01f16a4d05028fbeff4d90bab40df25142a24
+Message-ID: <202610280012.QUR2Xaq7-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9E001C0003
+X-Stat-Signature: zcqp4atp9fciz5rxe6gu19b169cnsosq
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793119236-769113
-X-HE-Meta: U2FsdGVkX1+VYvFXq+bfrgae4OjJ4eSiQG6KsqZO9Yh0YEylBHqnJpHsc9trkEcADHrzm0TZlidn69Md6F7gGtnDWsEgodwjewccrzXKg7htEOUUn1VQEwL4Ypy93TdGQteqtnDPqr1dptcUOr7tdDHNk/XJHDvc9AdcK3ls+S2AmKGMhy8TxjzwqepMam/XHa1Q5zRHqdfe5cG1ZumGeLLB+GxcZoqMKVoT0/wCDytPbTUo17X2DKIl/2GQA+5Z0gQBxr7SRBIVCH6e8Z4wEuTW84gcOSxdyIWrmCv+6Leq0CrfCNPEhE2DvAWLQUDa9c/D1xcxnVinqdpVSB42b6B6BHn9YmgIzrgHcUf4+S27vR6zB0b8YFhR6k6bCId4bLB4g7tYcvds0+pIWwGN7anfb3CHzz9SECXrWh+xh71LoidHKzBG5AZligeroL37hKEgshFA46iaM4GvE9mPW2eGD34OaeFGwUk127aQ1Gon/i/JYJCb+2e7axv7ckaDMU0j7m4xEQ8WzgrWpeRvO3Lo6CTas3ZrTaH57OcmNbU2JjMVJPxi6oPFEMSScfaMjjkJhMz2o/6UeEZcHOxyF6O1RENRbHh2pIeqn/zS96Cnc0Z0nnKOqrOhaDqA0FYr8JIweutZpyg6m0gEFpalmYMrLUWix9x6BrwtWkpHrx2dyCHPYIJRXpinqFhllTbbsMy6xWBxvFa0FZfhG3JxQMH3uIhF87lzbrVMcM4VNbr/FF7s7NOkQqJhFBM7F1Q9K2OWegDqJgtXU9wuoyAFD8rEXI6TQuDa6JkKd0fNDPzUPBgyJ9a/Rm+kmwlp9FmE1Hcz7VKit/CodfRIFAHPQ21ov9tUa5mmXrJgl537ntFSJ317vWgwZFQS83RJQV9NBJDyK3KATfEzhDizz5UOtJ7GfjTfioHoVBABVVyKQTJrlolO1Th6IedEJQfAYDfhNnujlLkXjNviCW/AKv6
- SDyqHjcs
- BgSr86HGJ2sliiQ3qQbw86T+mBwHDtQASpuhOndYA3QdvWLRuCEb4w6gMNN+u68UH9W1NLAUB6vsKsW6RvhO4mE7BISTEHI615CPuhM3FpxDQxwmVMi99slNXss/8+1aHJXdInNZX986H8sy0MKb5Efdw8mKXHAIFlKiPoyx6I9z1zbMn6p/H4wq8P7AzQA3rNPshHoB2pEE13D6fAAKSeW12ZUn3XeVnWls54ZrLtvWOCiPEroAWR3cHBP5MhPBRO4lf1CCFvYAM2ZaTeqUFipeisstjeWjb4I0HTa9Xbkr0nn433qCYnf/23dTCLZ3lVGDeOXZxiH9Byoe8eCwlLS8Jk0t1eKgbZnisIqz2UIrIBdWz9T62Oxsj97JJ1d7LElgjwlT8z4Cn9N1XvvB3Zgqdn5GuoeTiF6xr5ep4ZrK+pud0vjMN700E7haWw6ZG28/qSj2fOxwN5IlqqTtrb9xywBIJ/kOQl/mBJl8uqrcel6LdyfImrR/47aBmn6Bq9cH6bzDyCA+kx+k=
+X-HE-Tag: 1793119318-478988
+X-HE-Meta: U2FsdGVkX18EUOYBmNQ7CNAxhNu5fn+ia0M3I0rrmPkoGnrObPuNJzu4bSjxgFcXHLaO7BDd8v6ydC/mgpuhQrNyC/Vm9EGqYSScxyxW54nu8wnwPMHamUYdba4QIro7J7r1W9LYdnBZRPcMcDNc4BU+SkGmz6Wx0jwqxgTa51lhGJVmk9C0i/R/nwq5a0vXSHERGsgvEcfC2jX6LaNoMfVqWnSydNtskTOLG9pwMrojRujQ+h/mNYNWRex/c3DPL8C8gH9Itxie9oYQtAil8HBPufhN2JxB5lf6iBhy0SFiOoTrrxvBQOH84yTpHs6eUPfdyhxpBAh3M+o1dXozgisTC3wePPnQCOrWSTdrx/S4briyZN+QDos3gouleLGPTlNLWWwOzNyMBqjGOmdJ5n57MBs++5c4vcDr1bxS44NWd0MGs5PNDpV5vQyYq80c6OoB0DlZSHgR+2ntoPiU7V2R+jZyGWpsmePUVCM1bLxzUsrLxfe+SAsTuHSQhW59pDIrxGsEIVvOiAQy4BZgIJsb/pCbhr1iARdBMXQADijKeVJ9/LqCz5dMd11sXlBCxzGUXiIK1ysdQvNAAtx9uC4mFDM886auQNio+pAhQkYfFf8ZpI/lF8AQKpTZUhBDlE8loGRX/93C3MdGksVmmVJz6J+lONv9q/fUFem698/Y20zSd0Bq0D1jjC2tipCbPq/svIK/460fg+dMMyavTsAERHifXxDdI4ylQS9wdi3g1KGhsW8N9ET6hIFs8AJd1mB3ciouVeohAHXY3AwFMLdZAGS7iedEmO+e1IksTw5WNiSPNjgHJbenZxpcTwItFbceE6tH06tUhD6/jkV1HNbmlHQzUOEBkoLZqH3igzAwjzFzazpcoH/JbUGXXN5r71YP9sV2JQAo/oOp3VzGRS7WEzRE50pe3zmjJDd2LlilbHp679sdmfmfX7FV9A21RiUBLwk877qsbFhFQTf
+ FiMLwaAm
+ 4jy1WmM2UMYrlNORSRY1K23cnIndxhV1EKbZ013F2sM14AjXOkTVSC6lYCDlPPuLYuypcl2bxFFM29U77wJuvcfRH4MTGNw0xtgDsghx3d1otW1wi0O+wadUVJ3bCIrkYFpmcLzoYXMGnW+v+JNDgx0f7+FbWDkX6egacFTyVlTQXtTgAP2UXA85tkDrHw/5M9FPWkQJASQw94OE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,97 +103,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Lorenzo Stoakes (ARM) writes:
->Sorry, in mm we require commit messages. Even for tests :)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 7bf01f16a4d05028fbeff4d90bab40df25142a24  riscv: mm: fix concurrency in mark_new_valid_map()
 
-Sure thing, I'll add one.
+elapsed time: 1139m
 
->On Tue, Oct 27, 2026 at 07:43:25PM +0800, Chris Down wrote:
->> Signed-off-by: Chris Down <chris@chrisdown.name>
->> ---
->>  .../mseal_system_mappings/sysmap_is_sealed.c  | 92 +++++++++++++++++++
->>  1 file changed, 92 insertions(+)
->>
->> diff --git a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c b/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
->> index ea75ad537620..83b4fadfbfe7 100644
->> --- a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
->> +++ b/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
->
->Why on earth does 'mseal_system_mappings' have its own directory...??
->
->Ugh I don't know how I let this stuff go on the original series :/
->
->Please, for the love of all that's sacred, move these tests over to
->tools/selftests/mm/. This is an mm feature, for our sins...
->
->You can do the move as a prerequisite patch in the series.
+configs tested: 159
+configs skipped: 11
 
-Will do, I'll make the move the first patch.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->(And, again, I really do insist on your change doing some cleanup here as
-> well rather than extending this stuff.)
+tested configs:
+alpha                              allnoconfig    gcc-16.2.0
+alpha                             allyesconfig    gcc-16.2.0
+alpha                                defconfig    gcc-16.2.0
+arc                               allmodconfig    gcc-16.2.0
+arc                                allnoconfig    gcc-16.2.0
+arc                                  defconfig    gcc-16.2.0
+arc                   randconfig-1000-20261027    gcc-10.5.0
+arc                   randconfig-1001-20261027    gcc-16.2.0
+arm                                allnoconfig    clang-17
+arm                                  defconfig    clang-24
+arm                   randconfig-1000-20261027    clang-24
+arm                   randconfig-1001-20261027    gcc-10.5.0
+arm                   randconfig-1002-20261027    gcc-8.5.0
+arm                   randconfig-1003-20261027    gcc-10.5.0
+arm64                              allnoconfig    gcc-16.2.0
+arm64                                defconfig    gcc-16.2.0
+arm64                 randconfig-1000-20261027    gcc-13.5.0
+arm64                 randconfig-1001-20261027    clang-17
+arm64                 randconfig-1002-20261027    gcc-8.5.0
+arm64                 randconfig-1003-20261027    gcc-8.5.0
+csky                              allmodconfig    gcc-16.2.0
+csky                               allnoconfig    gcc-16.2.0
+csky                                 defconfig    gcc-16.2.0
+csky                  randconfig-1000-20261027    gcc-16.2.0
+csky                  randconfig-1001-20261027    gcc-16.2.0
+hexagon                           allmodconfig    clang-24
+hexagon                            allnoconfig    clang-24
+hexagon                              defconfig    clang-24
+hexagon               randconfig-1000-20261027    clang-24
+hexagon               randconfig-1001-20261027    clang-24
+i386                              allmodconfig    gcc-14
+i386                               allnoconfig    gcc-14
+i386        buildonly-randconfig-1000-20261027    gcc-14
+i386        buildonly-randconfig-1001-20261027    gcc-14
+i386        buildonly-randconfig-1002-20261027    clang-22
+i386        buildonly-randconfig-1003-20261027    gcc-14
+i386        buildonly-randconfig-1004-20261027    clang-22
+i386        buildonly-randconfig-1005-20261027    clang-22
+i386                                 defconfig    clang-22
+i386                  randconfig-1000-20261027    gcc-12
+i386                  randconfig-1001-20261027    clang-22
+i386                  randconfig-1002-20261027    gcc-14
+i386                  randconfig-1003-20261027    gcc-14
+i386                  randconfig-1004-20261027    gcc-14
+i386                  randconfig-1005-20261027    gcc-12
+i386                  randconfig-1006-20261027    clang-22
+i386                  randconfig-1007-20261027    gcc-14
+i386                  randconfig-1008-20261027    gcc-14
+i386                  randconfig-1009-20261027    gcc-14
+i386                  randconfig-1010-20261027    clang-22
+i386                  randconfig-1011-20261027    gcc-14
+i386                  randconfig-1012-20261027    clang-22
+i386                  randconfig-1013-20261027    clang-22
+loongarch                          allnoconfig    clang-20
+loongarch                            defconfig    clang-24
+loongarch             randconfig-1000-20261027    gcc-13.5.0
+loongarch             randconfig-1001-20261027    gcc-15.3.0
+m68k                              allmodconfig    gcc-16.2.0
+m68k                               allnoconfig    gcc-16.2.0
+m68k                              allyesconfig    gcc-16.2.0
+m68k                                 defconfig    gcc-16.2.0
+microblaze                         allnoconfig    gcc-16.2.0
+microblaze                        allyesconfig    gcc-16.2.0
+microblaze                           defconfig    gcc-16.2.0
+mips                              allmodconfig    gcc-16.2.0
+mips                               allnoconfig    gcc-16.2.0
+mips                              allyesconfig    gcc-16.2.0
+mips                  decstation_r4k_defconfig    gcc-16.2.0
+mips                        rbtx49xx_defconfig    gcc-16.2.0
+nios2                             allmodconfig    gcc-11.5.0
+nios2                              allnoconfig    gcc-11.5.0
+nios2                                defconfig    gcc-11.5.0
+nios2                 randconfig-1000-20261027    gcc-8.5.0
+nios2                 randconfig-1001-20261027    gcc-8.5.0
+openrisc                          allmodconfig    gcc-16.2.0
+openrisc                           allnoconfig    gcc-16.2.0
+openrisc                             defconfig    gcc-16.2.0
+parisc                            allmodconfig    gcc-16.2.0
+parisc                             allnoconfig    gcc-16.2.0
+parisc                            allyesconfig    gcc-16.2.0
+parisc                               defconfig    gcc-16.2.0
+parisc                randconfig-1000-20261027    gcc-12.5.0
+parisc                randconfig-1001-20261027    gcc-10.5.0
+parisc64                             defconfig    gcc-16.2.0
+powerpc                      akebono_defconfig    clang-24
+powerpc                           allmodconfig    gcc-16.2.0
+powerpc                            allnoconfig    gcc-16.2.0
+powerpc                  mpc8313_rdb_defconfig    gcc-16.2.0
+powerpc               randconfig-1000-20261027    gcc-15.3.0
+powerpc               randconfig-1001-20261027    gcc-8.5.0
+powerpc                      redwood_defconfig    clang-24
+powerpc64             randconfig-1000-20261027    gcc-10.5.0
+powerpc64             randconfig-1001-20261027    clang-22
+riscv                              allnoconfig    gcc-16.2.0
+riscv                                defconfig    clang-24
+riscv                 randconfig-1000-20261027    gcc-15.3.0
+riscv                 randconfig-1001-20261027    clang-20
+s390                              alldefconfig    gcc-16.2.0
+s390                              allmodconfig    clang-24
+s390                               allnoconfig    clang-24
+s390                              allyesconfig    gcc-16.2.0
+s390                                 defconfig    clang-18
+s390                  randconfig-1000-20261027    gcc-8.5.0
+s390                  randconfig-1001-20261027    gcc-9.5.0
+sh                                allmodconfig    gcc-16.2.0
+sh                                 allnoconfig    gcc-16.2.0
+sh                                allyesconfig    gcc-16.2.0
+sh                         apsh4ad0a_defconfig    gcc-16.2.0
+sh                                   defconfig    gcc-16.2.0
+sh                    randconfig-1000-20261027    gcc-16.2.0
+sh                    randconfig-1001-20261027    gcc-16.2.0
+sh                           sdk7786_defconfig    gcc-16.2.0
+sparc                              allnoconfig    gcc-16.2.0
+sparc                                defconfig    gcc-16.2.0
+sparc                 randconfig-1000-20261027    gcc-14.4.0
+sparc                 randconfig-1001-20261027    gcc-16.2.0
+sparc64                           allmodconfig    clang-20
+sparc64                              defconfig    clang-24
+sparc64               randconfig-1000-20261027    clang-20
+sparc64               randconfig-1001-20261027    clang-20
+um                                allmodconfig    clang-17
+um                                 allnoconfig    clang-17
+um                                allyesconfig    gcc-14
+um                                   defconfig    clang-24
+um                              i386_defconfig    gcc-14
+um                    randconfig-1000-20261027    clang-24
+um                    randconfig-1001-20261027    clang-20
+um                            x86_64_defconfig    clang-24
+x86_64                             allnoconfig    clang-22
+x86_64      buildonly-randconfig-1000-20261027    clang-22
+x86_64      buildonly-randconfig-1001-20261027    gcc-14
+x86_64      buildonly-randconfig-1002-20261027    clang-22
+x86_64      buildonly-randconfig-1003-20261027    gcc-12
+x86_64      buildonly-randconfig-1004-20261027    gcc-14
+x86_64      buildonly-randconfig-1005-20261027    clang-22
+x86_64                               defconfig    gcc-14
+x86_64                randconfig-1000-20261027    gcc-14
+x86_64                randconfig-1001-20261027    gcc-14
+x86_64                randconfig-1002-20261027    gcc-14
+x86_64                randconfig-1003-20261027    gcc-14
+x86_64                randconfig-1004-20261027    clang-22
+x86_64                randconfig-1005-20261027    clang-22
+x86_64                randconfig-1006-20261027    gcc-14
+x86_64                randconfig-1007-20261027    clang-22
+x86_64                randconfig-1008-20261027    clang-22
+x86_64                randconfig-1009-20261027    gcc-14
+x86_64                randconfig-1010-20261027    clang-22
+x86_64                randconfig-1011-20261027    gcc-14
+x86_64                randconfig-1012-20261027    clang-22
+x86_64                randconfig-1013-20261027    clang-22
+x86_64                randconfig-1014-20261027    clang-22
+x86_64                randconfig-1015-20261027    clang-22
+x86_64                randconfig-1016-20261027    clang-22
+x86_64                randconfig-1017-20261027    clang-22
+x86_64                           rhel-9.4-rust    clang-22
+xtensa                             allnoconfig    gcc-16.2.0
+xtensa                            allyesconfig    gcc-16.2.0
+xtensa                randconfig-1000-20261027    gcc-8.5.0
+xtensa                randconfig-1001-20261027    gcc-10.5.0
 
-Yep, see my reply to 1/3.
-
->> @@ -10,6 +10,7 @@
->>  #include <unistd.h>
->>  #include <string.h>
->>  #include <stdbool.h>
->> +#include <sys/mman.h>
->>  #include <sys/utsname.h>
->>  #include <zlib.h>
->>
->> @@ -232,4 +233,95 @@ TEST_F(basic, check_sealed)
->>  	EXPECT_EQ(expected, sealed);
->>  };
->>
->> +static bool find_vdso(unsigned long *start, unsigned long *end)
->> +{
->> +	char line[MAX_LINE_LEN];
->> +	bool found = false;
->> +	FILE *maps;
->> +
->> +	maps = fopen("/proc/self/maps", "r");
->> +	if (!maps)
->> +		return false;
->> +
->> +	while (fgets(line, sizeof(line), maps)) {
->> +		if (strstr(line, "[vdso]") &&
->> +		    sscanf(line, "%lx-%lx", start, end) == 2) {
->> +			found = true;
->> +			break;
->> +		}
->> +	}
->> +
->> +	fclose(maps);
->> +	return found;
->> +}
->
->There's shared code for this kind of thing, please don't duplicate a
->/proc/self/maps thing if unnecessary. Also there's a nicer ioctl interface for
->all this.
->
->See vm_utils.[ch].
-
-Oh thank you! I will use that.
-
->I mean arguably this is an mremap test that belongs with mremap? I guess
->debatable...
-
-Hmm, I'd lean towards keeping it with the sysmap test, since it's really 
-testing that the seal is enforced on these mappings rather than anything about 
-mremap() itself, but I don't feel strongly if you insist, just let me know.
-
->This all just seems like work that should have been done in the past when this
->feature was proposed, and doesn't depend on your changes at all AFAICT? Maybe I
->missed it though.
->
->Valuable in itself, but probably worth sending separately as a result? Otherwise
->it's a little disconnected from the actual change you're making.
-
-Yeah, it doesn't depend on it. I can send it separately on top of the move if 
-you like, I just don't like touching things without tests where possible.
-
-Thanks for the review!
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
