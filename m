@@ -1,59 +1,59 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB684606A31F
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC094606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=kBIzq5IY
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=TrzuZUhY
 Received: by kanga.kvack.org (Postfix)
-	id 684DB6B05F8; Tue, 27 Oct 2026 03:49:28 -0400 (EDT)
+	id ACA3E6B05FA; Tue, 27 Oct 2026 03:49:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60E366B05FC; Tue, 27 Oct 2026 03:49:28 -0400 (EDT)
+	id AA2446B05FC; Tue, 27 Oct 2026 03:49:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 523F26B05FE; Tue, 27 Oct 2026 03:49:28 -0400 (EDT)
+	id 858766B05FE; Tue, 27 Oct 2026 03:49:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D8176B05F8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AEFE6B05FA
 	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:49:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ADC971A068C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:49:27 +0000 (UTC)
-X-FDA: 85367631174.20.4338AC3
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 78BF51A0006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:49:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kBIzq5IY;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf19.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BED9B80639
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:49:26 +0000 (UTC)
+X-FDA: 85367631132.27.BE4588F
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D026A100006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:49:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TrzuZUhY;
+	spf=pass (imf05.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793087364;
+	b=wEiw7/1HiYuieoQHlS3U4fNfqhKnLFDDGxF3CKLSMHlmXWUnwiLTtFzewW0Sx5sLw7P5XD
+	flu6Avwt/6sEP+PCfaVuEKw7wOk28ESVmN0rVUU54m/MJ617YmlH6dno61qQAWbruGytlF
+	BDME2yfb2gE43R1m7YMUl43+ey5aiwI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TrzuZUhY;
+	spf=pass (imf05.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793087366;
+	s=arc-20220608; t=1793087364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BqtrTiVGwsNpn71i6YH5euzAwJ7WMZ7rm1kLCewwZ1A=;
-	b=zX1ZvBtqn7oqSEOuuia/aClWZ2YPwfa8TTuJDZ28rDmZBMYkEeysIWbbEktV1c8/VuY6Ct
-	s4YLbW/h6t7YG2+UuO8ciWy2E+L7ud+evHaaHFdRiTKZJpzKS4kdEW+6ce0uxEONOoMk39
-	HoSzw95LuooXmYQwraIbUsqZqBGvDL8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kBIzq5IY;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf19.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793087366;
-	b=XqO0RGh49WLXduaxItntoMZYe7UhWQBXcx9mvu0UGzk6/Ys186lR0JKI6fnfXXJcJZwyMP
-	EewYXGaajtwWlx2BxHr3IUXw3Vpz8++hGEKd1yl/UwQeDVPybvlXuyRlHwghZX1wsqxKhU
-	s0M0CvfSHhxzGRStTEaPZVjh83MWTlQ=
+	bh=N2JsolwadF0ifSqnijIzcvLeMzpHcVPvB+pPL56nmno=;
+	b=QiQtQMrII192SRzKxV/EOvam50GElf6fvCpEGt76T10xC5q53Eq/njklhyYykLiquXriyZ
+	/z8602ndemfW7APNLh4Axavp1Ti0M49A+RkQsCS/IaREdVJrp4xXwyMcWvSNz9RphRxhHh
+	pfVein9wo7lZWMAC0Noiuoayzspw/Os=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1793087363; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=BqtrTiVGwsNpn71i6YH5euzAwJ7WMZ7rm1kLCewwZ1A=;
-	b=kBIzq5IYA9lk72EvGV+dRcY1h5OClbKb2jw+0y62WZr9OA1Ctzvnkc0d50GOiF9ljf6xWt/SL3pIsrVKuS9n1h09RoT6A0kJNUjtuYrbnQAN1A6IOBH3NUdDI8WeWfqKtLFu0RTjihw3IZHzTDXnlXepJFUpbSvkwUL8S/Dqqug=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XDd8d51_1793087359;
-Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XDd8d51_1793087359 cluster:ay36)
+	t=1793087361; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=N2JsolwadF0ifSqnijIzcvLeMzpHcVPvB+pPL56nmno=;
+	b=TrzuZUhY2KkudCZKz3GSZan0Ejvinl2cY/LwKMmgk5My8LtfhdO0FT83kKPOPdoZ922n1KzsPxJvCjfLrAkMdru43LhWaKbEDdBMmYuX0O25/4T9TkDFpXHHnZAUs1SvYaNBkT1a52H4TdX0MR3aflqhoo68PXCOdird3djDym8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R351e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XDd8d4v_1793087359;
+Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XDd8d4v_1793087359 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 15:49:20 +0800
+          Tue, 27 Oct 2026 15:49:19 +0800
 From: Weilin Tong <tongweilin@linux.alibaba.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Ryan Roberts <ryan.roberts@arm.com>
@@ -61,28 +61,28 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] tools/mm/thpmaps: fix missing mapping names
-Date: Tue, 27 Oct 2026 15:49:04 +0800
-Message-ID: <20261027074904.3328878-4-tongweilin@linux.alibaba.com>
+Subject: [PATCH 2/3] tools/mm/thpmaps: fix missing order-1 file THP statistics
+Date: Tue, 27 Oct 2026 15:49:03 +0800
+Message-ID: <20261027074904.3328878-3-tongweilin@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20261027074904.3328878-1-tongweilin@linux.alibaba.com>
 References: <20261027074904.3328878-1-tongweilin@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 78BF51A0006
-X-Stat-Signature: o74fmhyj59bbzikcz8ehfd5grzawjfpm
+X-Stat-Signature: z8fd8d96z1r4of8izjtw1z8hfyaonr7b
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
 	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D026A100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793087365-518163
-X-HE-Meta: U2FsdGVkX189E1sy1Bp7GM94e6oom9hbS1i1evF5NtIhrgtEnFYgp1MeCmme3HFG9fMqrDyvQBBPrlXVvVNOoUEKS/0HmZDZOD18foYBf6adOwkM8fh2jNWLDeXMmb7BromW6fy8mTWOdcZuUbJBH37fJvjcj7hu/S3ft/TOV8X9BqIjDESrnUkxbkUn40QfuC7u4lk31PL6NLNPtevtY5H63QQSifbNfG6lrsB8tEebdduJWdt/ci2RBmHn4laYSC0+HSCV6IlAHOR104FxUYnvVJo3ibhPjF4OXMlrbLmFDxqGeircHZBkHLf+RV+ShJzmAF6fP23BV3y3Cz1wSwNJPXQEcSz/8Xqz4iSfbw5FAfCMxwJEiZnXbrZ/Z8rta7kLndT7zAhcyZ1kxLqp7bDtcCt4/39TNi0hTL35H3pYli+Q7sCfLShOorrmddzBN6qZl8vua5YABu8CojTOHs1MQyUj/gC2CKPdYKtiBhvRvDMYwrd9WfD8If1AumQzJR0zq93nl5+0q5JkilVcuZWO1eKBdq0oJEOqZrSViHaE2wNuwrsR+2vq/j6drEQGpXAwfBx5eZ0mAxWx/HeilL9CPHAgzZsVtGrtVXaaDdEPn1F5MjZ9F3qDUFBc/m3APMdjGJn/3tU3eC501QzkilloLTMXX45POVyPWmySQrd8BuAuvN2rMjYCHk0SXSEga2Y8B00bKRKAVziUYhHIX6wQMKakSoWJ0uz74DuX9N8fgT3h54c7IfSYkNy0YErn6y5r+cEUSxQhqKtWKPeg+Y3SUBGOgmk4/ldcs+JN2Icc+a3Iqg92rTfKdLxsvF6p3ORAMMR8vus2H1RYEb2Dfp6yL1z8lsI/NKA5PvQpsBOzfT2Q/msb3vPULOXodhy/KQvb+60UU41SqX6vddzKeFujia6z+nxeJDFON3iZGGc+Ba+KYbub7+nJBzlQZEhYnLfy2kl+CF+Q6Zkk760
- Bq8yXy6o
- 1bQMdugwOKkasxS9L5Y0qGbervMB8my7EJtqJIUUKwo63K+kAyMwOvs9lHbPTgjR4hxrlH371FksT7Myps3DRA11s/tqA4GaA+ZP3O/tiA3itdTlyhcNAnATSY9oIOM221TiPi30eoyLu0//WRyCXN/dSwB9c1ukshxloEmiSKDfVlyrBcZCs0olIUKmztNg2ZnyUpvb+vFrBED7+abXUaT+mil85juxgZYzXeBqLXsRxvdCKOPA8kvqbQA==
+X-HE-Tag: 1793087363-345021
+X-HE-Meta: U2FsdGVkX1/AssaEd7PDp0ZiRVoQsaicOroBtBHMpXo+BHHhU5tT7G8BVFBV9kStqaPbGx2O2kxCTmHmPj/Ly7SdHVJPR3pS16ofPs2ynuNIwNfRdxLY7hIkVd+foxqS5mqWr8OfitbXN5aK/PvYcq4lVbdtaymfa1YTYNF7PJu5vLBzsUtwsrJWfiICvtgXmXkbSGIFvQf8FozRJ+qEobWR/ei0cCQT2Cx0o2Ny7Dr4orRtBnI2r6VynNhL2YiFkTaJTJMYZCP7IcRksX6SRYSPsLYJf8dpm1325ZLWzCY4hQJrfjuICRzrut17Kc+tkzrjq1C07ATJ/zgqhB4UsIzD9UwnpCAl+F3ktn+i6aS15scEXaJMFUuG7z5+eIyGrn3Qje+oufPy8Fa8c96I0IKcumr3aDDJotmH7fF9DA2R5ABM0bg8Q8T2UZD+s9gTrk1zMmDEdUvmoYI29YvY6hnoUWRPrRCiuHo/k+F8JSWiqTo1ueWhEPMFO/8HGBwWLRQiWcbEdg4s02PQuitOjfIMG97p7IcvHRT1/b2uUNM0lfJ8HRBlKvAKZnUsBYzXSnQmU9cXLvX08Gi64X0jUcaAcgsB2wCRGI7ino/d07GJgLaG8dRZyVfLldP0kDjPie7WkkTUlU2k7dpKajlhjvrApbWGrSF1gzl+ZYKeAoj6Nar7RcnZgznEK659j36nZAAnhwds3h6yU31QDdpBKY7juSvREEaAhSlnOeCnclHAfd6Gz0LXHo6WPxUyY7LenJZTqo2FRmCkURnrmeGp5V6CM1XFXIuzKxJM4eV7/J3SQ803U4HdprMUi+wR3Km89v6c0BpTInNnRKHWieTYtlABlU7HdZz9ATf8paoqouiTiTxTkVriTKwSLIYqz3kK2eak886RIR57kQ1z3jmKnR2iuyBtVTQot4HQdClmZaKAsCMe1gDimhnVFykNRA+Vk0EdaDffeCHa1vYgtEg
+ Kolbshmp
+ bu08nb0LAjpEmquo1U/gBUidx88g47mlm2/jK/wybNtFak6juMlA9yxQbbBfhxbC5Rf7epRzrHcCIfdDwIrCFu3xNNRubo7WVUc2FF9bp+2El38TBo80e4CNpD2e8zd/mKj39UNmcXHEt+en7qcJr1ezseRCEOkSXSBcKMBN7l//tT2jTMZ7n8osaHeN5D/0TL7EbUAWfjrvo2MrR+nSrDO5EQfOYJ/Zj0WAEZh2b6tzzw+oL3NnKRzG6wQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,12 +91,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-VMAList splits smaps lines on whitespace and only keeps the mapping
-name when there are exactly six fields. Names containing whitespace,
-including paths with a (deleted) suffix, are therefore lost.
+File-backed THPs can have order 1, but the per-size counters are only
+emitted for order 2 and above. Fully and contiguously mapped order-1
+file THPs are therefore missing from the output.
 
-Limit splitting to the five fixed fields and preserve the remaining
-name.
+Start emitting the per-size counters at order 1.
 
 Fixes: 2444172cfde4 ("tools/mm: add thpmaps script to dump THP usage info")
 Assisted-by: LLM
@@ -106,18 +105,18 @@ Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/mm/thpmaps b/tools/mm/thpmaps
-index 30a8e915d677..a1a9bc30514f 100644
+index d92aace005c1..30a8e915d677 100644
 --- a/tools/mm/thpmaps
 +++ b/tools/mm/thpmaps
-@@ -198,7 +198,7 @@ class VMAList:
-         self.vmas = []
-         with open(f'/proc/{pid}/smaps', 'r') as file:
-             for line in file:
--                elements = line.split()
-+                elements = line.rstrip('\n').split(maxsplit=5)
-                 if '-' in elements[0]:
-                     start, end = map(lambda x: int(x, 16), elements[0].split('-'))
-                     major, minor = map(lambda x: int(x, 16), elements[3].split(':'))
+@@ -295,7 +295,7 @@ def thp_parse(vma, kpageflags, ranges, indexes, vfns, pfns, anons, heads):
+ 
+     def flatten_sub(type, subtype, stats):
+         param = f"{type}-thp-pte-{subtype}-{{}}kB"
+-        for od, nr in enumerate(stats[2:], 2):
++        for od, nr in enumerate(stats[1:], 1):
+             rstats[param.format(odkb(od))] = {'type': type, 'value': nrkb(nr)}
+ 
+     def flatten_type(type, stats):
 -- 
 2.43.7
 
