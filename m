@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426B360A262E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CBB606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fBTZK+5F
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fVKB+kaB
 Received: by kanga.kvack.org (Postfix)
-	id 1F1D26B05C0; Mon, 26 Oct 2026 22:56:59 -0400 (EDT)
+	id AF0826B05C1; Mon, 26 Oct 2026 22:57:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C9D16B05C1; Mon, 26 Oct 2026 22:56:59 -0400 (EDT)
+	id AA2716B05C2; Mon, 26 Oct 2026 22:57:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091266B05C2; Mon, 26 Oct 2026 22:56:59 -0400 (EDT)
+	id 91B3C6B05C3; Mon, 26 Oct 2026 22:57:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA54C6B05C0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:56:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BF831408DE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E0AE6B05C1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:57:00 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACF7F16092B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:56:59 +0000 (UTC)
+X-FDA: 85366894158.19.949B401
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+	by imf31.hostedemail.com (Postfix) with ESMTP id AA38B20008
 	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:56:58 +0000 (UTC)
-X-FDA: 85366894116.30.8DF3302
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 96B0F100005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:56:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fBTZK+5F;
-	spf=pass (imf14.hostedemail.com: domain of 39xLgag0KCPomgxkpnqwijnkpiqqing.eqonkpwz-oomxcem.qti@flex--kevinloughlin.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=39xLgag0KCPomgxkpnqwijnkpiqqing.eqonkpwz-oomxcem.qti@flex--kevinloughlin.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fVKB+kaB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of 3-BLgag0KCPsnhylqorxjkolqjrrjoh.frpolqx0-ppnydfn.ruj@flex--kevinloughlin.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3-BLgag0KCPsnhylqorxjkolqjrrjoh.frpolqx0-ppnydfn.ruj@flex--kevinloughlin.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793069816;
+	s=arc-20220608; t=1793069818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
-	b=2hP3wopZOzVUQTLrVBIor4AYQVEyVxTrC/OkfR6Z2iRbcQKusMz1nnWm+ReytLbkhUBMww
-	moKRmVKI8kNPLuK5WFWUWfvQIMmrdb2DzSM7umKFM4A349HgSV9ALxOvi/tf14p8r9//BM
-	dxIUZHRwGsDlgYheLcMR19epFkbjvmE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793069816;
-	b=6FnJpEHTmSeNyVMncFCImftX7Qr7k7ld2neU7LWwjeInWq+dwtN136CnKPC1kUKdH9zPw0
-	UIxEZ4SR3F22QPXVVyEQ3UlT8ah+Gd4XLK07jtQx8BrdpuT5iHcd0n2vWS8FW62GcYLx9U
-	rS6EHp4062vuPaJbP9/33ukXVlYfRLw=
+	bh=8uOyeoIi9QhKAYiQPs1BFfiuxWbIrsz7kuwNrIhzcWE=;
+	b=i9/F2TZmi8B1Dr4dE7HOeglWndbaOmAZjUaWRuZDPmdTin/fiPsOIHfAOnAOuuI4Jcxjvn
+	O7EM/NpZ8Ou3p/7PyhaNqrj3vsrWU+yX68BYFlfoAzcNqKkW5LBhuX0LLxvQ+EtNZmJ1pg
+	G6Xbgflt+X/JdqbwmJff75nv+I+v86A=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fBTZK+5F;
-	spf=pass (imf14.hostedemail.com: domain of 39xLgag0KCPomgxkpnqwijnkpiqqing.eqonkpwz-oomxcem.qti@flex--kevinloughlin.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=39xLgag0KCPomgxkpnqwijnkpiqqing.eqonkpwz-oomxcem.qti@flex--kevinloughlin.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-7026e2e80f0so4293868eaf.0
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:56:56 -0700 (PDT)
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fVKB+kaB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of 3-BLgag0KCPsnhylqorxjkolqjrrjoh.frpolqx0-ppnydfn.ruj@flex--kevinloughlin.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3-BLgag0KCPsnhylqorxjkolqjrrjoh.frpolqx0-ppnydfn.ruj@flex--kevinloughlin.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793069818;
+	b=q8kLQCH/ikuBIPr902dun4cDZW0OHbT1qEVXuTj8oCqCBeliBL0WK190GVtszgdY+oZjlw
+	p8zJg6tUlUnXeaCRyp1FTqn+U23pAacAjQVh5nuYoykU5Uj84nqk3uwxJDNLNLVADY39Tu
+	A9SeLAg34xMJRdeOab5yBfPt7ljRwJ4=
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-702a3e438dbso3794968eaf.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:56:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793069815; x=1793674615; darn=kvack.org;
+        d=google.com; s=20251104; t=1793069817; x=1793674617; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
-        b=fBTZK+5FUljLFUyfHEL6vabFAVdBnvmF25COjq7GibKRAFHReHwNFNZhtRF1ZpWi7k
-         xHkKN3R0pk3tQsyc3uQI5q3U4lb0GR0IEO5MTZzPDE4SpT2WcgUaWKvn6i3e11RlGUrZ
-         HDMmxsuo/AtPhAwIIUXVMPsJ7oOga+lbo6P0Kp/XAg3VeVaPq+OLwyb4DYj4OKY4JdR2
-         XgvDJgPJQa7TsFqUe5nkDH4Rd0dGdVyZlK8KJVSiqIUtf2S+AAMYtFvdSX6eISprv6oX
-         3ZQ6C4/3pSklR0RCOH4+JzbdFg0Pn8TlRMDMMu/dEHqMvCtZjMWQo8SZbGnmB6NJNI7L
-         ZMqg==
+        bh=8uOyeoIi9QhKAYiQPs1BFfiuxWbIrsz7kuwNrIhzcWE=;
+        b=fVKB+kaBDrWPk+UsXmqkm5PPU8nF2lYFAbz3RVS251WGk5MgQt4l9yma8G7f622qbg
+         hDAudoqS0N1AgJUQg1Lv+sRXgqHcoWkg9srmdmaF580z4t++cjpLXXWcdGsiBlPQH32R
+         5loynPQeyhiIdl/czIhDATznQokVv9YeLNeHf1nZe9sArFIu5Q+4xwCbzsH18tiBjHGZ
+         yEGdo55328EcVAkmmm5bPVi0F9n85R8dne7UQ8RRRs5xAI928iH3aK6T1RmW36wZ4fjY
+         A6sC/kK9O4whEWtyb5iqdsUzqA0bhKJfnRb5ti1hEEND7MG5N3urQKg/P/dYhrdBwysO
+         DIog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793069815; x=1793674615;
+        d=1e100.net; s=20260707; t=1793069817; x=1793674617;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eHj0mfeE/EOyly5xUtGq8rmazujhmFPCCIldDauievA=;
-        b=KzHPvLBgcORx2Ruq5zlUncFZRgOGDZEDj/3eHLpc1rDxXCFYWN5sX5Qj0OSTbA3n0U
-         B7nlCGqB6tSlKmhN7jfla/wnSBJ49ID9oVHrTASk5Gp4BxLojzI/iDGvNvNO6xdmvD9M
-         0Nk5hr632HTR3nx4/YZ4Kijj7ODhLfz79pNzVroAKaACNEL7bHTWvp+UozewbZRX7fA7
-         nGHYDTFy5pL/4hG3a96EU+u8I3km3odZRR5632Gmk5HACi1GcRJIvabHJroMcGDo5ErN
-         923NS4zRXb/HULpjqDQVPv8qH1OPMKzHmkZw3AcXzi8UN0btHs7JRkR0hJxptywoZWSm
-         Zppw==
-X-Forwarded-Encrypted: i=1; AKwUvBzLQ08VzsJZi8KgGHAnim3zsYEZLGJwPMa5pmsCbluRbF8vyAZUdKhaqK6O0P+Vs2kNw/kR87rgWQ==@kvack.org
-X-Gm-Message-State: AFq9FYLsw0eKnleB/aKbSn3ICk+uWd3RCyXFyjuJykYbX7Px+BR8pE9J
-	eHzAcp/Kpx1JaKThkkCqLZ1ALtAIkWi+abT982Hf9bTMSTQuIZ8ZulJmGygxKBASRCPqGNt9JwO
-	jPyssIpNP0EW+7bPnsZ15v0ur/i0gggHlvQ==
-X-Received: from ioda11-n2.prod.google.com ([2002:a05:6602:204b:20b0:9c4:dfbe:8634])
+        bh=8uOyeoIi9QhKAYiQPs1BFfiuxWbIrsz7kuwNrIhzcWE=;
+        b=UMPqCOrjmjPmHQo8VTqpzOpZvUraebm+Sc/h19DxFToJIut6k1J9dwUzc7SXbHJnh2
+         sQRmluAKDaO2muW0KjSc/YO8GcMZm+7kM3TqamhHZNUMrmgFNFR4EesasdIYFFJd2ZMS
+         lKURLMViaRFMTW9pbUeDZsnQOQvNNiMiG89QPI8JvL4XKJ07WXRTiLPlALG/Yg0fn8e7
+         Y7x/Xhe9z+GLS6/hr84Bim/bN8M++5i/hgdPrgUX/U7pSEkJ2g9kzwK35HfQTqewipV/
+         C419Kbnop7Lbf/IOStwz4SM1rb8PaDqG+gjkU2ecaYWQxyw0UOK0vYyL2U5n7clZ93Zq
+         vHiw==
+X-Forwarded-Encrypted: i=1; AKwUvBxNO4LxMR29azCp8Vqone25r+zfFR01Z7R4WTQKVN2KEZPnWBHPOSNB6XWXLTQ2XOHQbGZ2AzaB5A==@kvack.org
+X-Gm-Message-State: AFq9FYJiIGH1wgP6Z0KPeQxJ02EKInc2no+kIPumvAjlTXl+MbPONkY3
+	YQEei8Axnn2bbKDYzieIQVuDVEb8xNUhY3cCrMXt83geVBvufzBh5908Ps59IbrFR/7l0Hx9TSD
+	eyY0XreoCCDU7uRYVX2r3c2bwFtWjI7QQKg==
+X-Received: from iowl9.prod.google.com ([2002:a05:6602:2dc9:b0:9c7:5a74:531d])
  (user=kevinloughlin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6820:603:b0:70d:8086:e452 with SMTP id 006d021491bc7-70d8086eebemr3032864eaf.25.1793069815271;
- Mon, 26 Oct 2026 19:56:55 -0700 (PDT)
-Date: Tue, 27 Oct 2026 02:56:12 +0000
+ 2002:a05:6820:7094:20b0:6d7:aca3:bba9 with SMTP id 006d021491bc7-70ba0e5ee88mr3818249eaf.38.1793069816905;
+ Mon, 26 Oct 2026 19:56:56 -0700 (PDT)
+Date: Tue, 27 Oct 2026 02:56:13 +0000
 In-Reply-To: <20261027025616.1632690-1-kevinloughlin@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261027025616.1632690-1-kevinloughlin@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261027025616.1632690-10-kevinloughlin@google.com>
-Subject: [PATCH 09/13] mm/page_reporting: account for unaccepted memory
+Message-ID: <20261027025616.1632690-11-kevinloughlin@google.com>
+Subject: [PATCH 10/13] virtio_balloon: add higher-order page inflation
 From: Kevin Loughlin <kevinloughlin@google.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>, 
 	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
@@ -107,19 +107,19 @@ Cc: virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
 	Jacky Li <jackyli@google.com>, Steve Rutherford <srutherford@google.com>, 
 	David Skidmore <davidskidmore@google.com>, Kevin Loughlin <kevinloughlin@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 96B0F100005
-X-Stat-Signature: t34q6chhuraxxju4y7tstx3oxk3epccz
-X-Rspam-User: 
+X-Rspamd-Queue-Id: AA38B20008
+X-Stat-Signature: kcwuxtjubfk8tzn6n5hy8ey1g1i75zi8
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793069816-104611
-X-HE-Meta: U2FsdGVkX19NymXJDLAXW7N9mItpSz9o0npR7ljC5fRvi1sMCRCcgd3+Fa+CCwVpNivrnRYQQOkn4jOr6FwS4CTK5RTYCryP5rYU4sHiomKFIAL/ZHiZM4b0EIrDGuyvUQ3Egz1XdgMBjh3OZ8cy1SCe7bgcOzyl0l4MHG4t6zeRIYBX5IHKxzBlAoRKZkqO7wfUp/j9DqOAeYcCAD9sN/3Daupkz/crlBZafwjENkYT7YqXYPEjpN8IRzM40vWWW80L7IE4ny1VaMqHceMU7562UCKSTFRoR8D4FSGLszBi0mBfknPacB1Hk/HsJqFQlHiRdszwe58Da3VbC5nZfT0/KwMTL2jcEsMG5LIQY6GGIWpUaK72FI7yhBW9PMn4JAZq/kIaKbWsjbfU3APxNO56gVcExAbFOjdR6U9Mh5/LozSbZUFzQFf8sdW2qmrrJttQPuUbS9kSCozb6i3PmcRWZwTcEy4BukClLRR/tSbtk9/gHKbm37XmtokjRZkzXp5o9xF4eZC+CZLf9TzzAb5gs7qYIuNOT/SlcVwSS7wcj97tbxpFDCuLC46TDbXQvHaUF8hl1cxMj2AY6umWWTbmMKaKABmmqK6yEC3J1UCd2aCO+qjbG4N5llf/YLKFnV3zoScjVPpSQsigrvp0EZCCTtWdVr6LCFkWRlCx8p35I/agZnhAFlvxKQLsjm7NiiBVxaqXKnHRxhGjO+zLxJkCahNUVMGEY1wddTyknEBd+Og9j6H1t2EMbvsGy2OMVRNKU4aivOpkAIyDRBT34nOvNuZY5T9w0Rgk1UP+lXBrPa+u7iERNhWmrECZ5cMq6xJGfipICqt09IuXQwCF7ZMR+ZO2QAVz3X0H3QZMjD4CnO5bbdwgXuWILJRyBOLMt5ln4CsUVRsCeszOrrwtfHwiWwiJ5g8KMZTtJq3T/RSDI7kj03RA45GhDoW04cpHf6mKEvLgxr0k7WOEnao
- 1t3n2ztF
- QzM0Fnn/8YK0EuqL8qcIVIcF5erT1CMeQ5cak7rB6wsnMfFFpCpEG9ZZr22CF8YO4edrhw/FYKRqQ8ZCRr4lPhNurZ98Bmn7CX2G+hzbH8gcaIup09QAJSeYzHY2lpMnvsgKgNWArv2AtdsQ4f4/itoNYkEFPiA5NzdoFI9PNpZaZUXCIYy1k21ZUDsFJ3TLt6Uwl4+tRjTJnpuZCbop0uOzvhovmAZdDZficRn+BzuYgx+Ff94AW/mIjkmUO/cEjF+HpvT2s+R2CeTVmObUNeVrHef6Qnk4d/DvDFKUG30WriRNC+VmDS5BWltO/bStkgcnvczh5THSd85zCUFCHSxsk/ncS+f3qc+xWOeT8uL1tOxTSfgZQeKb5CERrw5opE3m7UBf9m+VpJrJyRr5e9CLIm8f/g+IW5WOm2cETh7BI/LNS/fSQ0JlO/P02fmjh7B4GlMtoVtKXvqweAy8ClOH2FycsCCPBOeb6pdmEyQt+GsWylUUOxXhCE21Ul+10WChY6VsGwas+xlxyyBJMwUSsfa1Qgv1n4aWdHaeQjdfA2VXH6gtWHFkaSL7MPKlzn0g1ySr39BR7gbHdD2gfMis58wo8jaBquRw3nNBL4pm+HGzsBnohmwjutb9oCYf5rjKMkvyc9EpcBcczzIQDAlXKvoOx0CDwxWpmnM681+7AqCcSBa2sebJxuw==
+X-Rspam-User: 
+X-HE-Tag: 1793069818-962208
+X-HE-Meta: U2FsdGVkX19PLo7W02mTyyOGlXlUBEm1MRDW2+3XCJrrN+/q0Vabi27CeX6D4Uf77dG9eq6dwfOGgmQEh6OHM2i1mMZL4sB6c+HUzWdO4tAhj159ZpUkzeOAa+d43CW3SpHLt+dzYzeiBf81sZUo7BduycokedeCnJmmPmX6hILBE1r0/ysL90ScdHpx7lbP2wF9cBGxC64x0TuANB4+isScc5wvm7wzDlZcLRgIm82rYGJZstl6O6rvwgThAnSmw+Uu4qflGuhU8qEVWEL+L5AyYkKhXLO5MWI3TK5VLVjEQBemPdaqoDS3nJ2/3cWLdJ4GbpWK77pYSfx+1be7P/P3mVe2lY/A1fVsLUFnhNA6eM9JzZ/CyZxt5Z1PRrYtOgk6858+S1HG5naxKBGr5RCsq7DCm1s8O7D162/kdCabqYHhCFFVW9uPkFcP/EpbD7+jlygFFxI2pdHxzdc5jf6+JCH7+uU3d6Xac0me5U6CkbPcqcQOPWqkJjpxmdOnqdDZr/NRmSJKjTOdNIt9O4psSP7O5mRzAX5zEAjqJ8U6fWni0JL6SMQbUYZdl0k9SZOSNrGFVjwx0Ktb7ADAPgipkFcB4lNV11cverTArWUK9OrOkWHROIxwY2G3OR8bh5lUdVj+5j1LaqPn4/pvxAr6klpP3PuvkysXLgqbXwpRmHIVWSr54NKpycKWck05ixJTBXmsY2OuRxc+rxWvnHIQfXmKC07ZkbdHrLJudgNx8ZltsKdQgRT4Q3UCR7tQx7d/vuj+6hpTkuSdS4nndeWYM20Um+0iq++bTySKTa300S5b8ddcJ1A+A6jmPd/hk5UtXcLb6JEdQLx2TyMk2Dji+Se2qaz5agUs3yFTDzGv5Obatf6Jc7tILCsu4WwKZ0l6EpGK66aVsk+amoOboHxQjAdMER/uFpeGCMT4YqlrIzT1IkSSHZmzWuF9RqvFQkUg6wlcUh4BUHlYgdV
+ xwa8dlyO
+ vCGev2Ev0IbRGGS6+MUyMZFOqg8uzZNZO3XJk/5AYKt9tK3oYtdkOtRv8fc6bdS6oWIeh6yyjnCnzI8pzFg8QuR9ot21L8Pdt67BC1+c7Xy551XFBL71itm3wRGEKlsCiRjm+CENYswKBnvBu0Hlj0DtEhATGqDodx/kW0dXpfEDDgB/gQn3x0OWQHQs2NNuxSftQyVDbgyIl2X2FwbObt9vCSDiA3YGzaoa+TGlbLEjINB7T1G9sWB5FTJpMe8JzovaIwgOTCCRXtiQ1G3t9ibTXnaOt1K98XQcetme2GXFkerfJHALcL06Vwt8dlWJleiu5/z0TUDkGUOGTEvFOguW8z7fjqTSnb0hFCloJF3qWAMZSsHlggP6JlyGeVhaO8BFvVV8B+dQLDeZGFSHgOjwVXaoZTMqcCrPnO3Tls3b9vYr+yZ04aPAGsIpdwfXFOxcnxmCZhD6H/HYJ/RvWYSL01/e9YYnvMn+rxOCOEc+kBWt7YoodVumNXGQRKJUc+RXtyasRVv+blbGGs2Lsyno/krV19eoE4Vat91ua795eXo2OuVQYd9H6c5Djr+h2qy2G0iOYOL5S3/rmZpr80uuvxvYPYYf+r/cQqLtCmStC6V05hfZHtMwPAzNl4lHATNX/kgsJluCylmcRsPc2UNvXZPKND9Z0U//kLf72uVRaO8oymCf9Ij5Pxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,117 +128,323 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When lazy unaccepted memory is active, pages on zone->unaccepted_pages
-are counted in NR_FREE_PAGES (MIGRATE_MOVABLE) as well as NR_UNACCEPTED.
-Without accounting for NR_UNACCEPTED in free page reporting watermarks,
-page_reporting_process_zone() and __isolate_free_page() treat
-unaccepted pages as already-accepted free buddy pages and can over-drain
-accepted free lists.
+In confidential computing guests requiring page state transitions,
+unaccepted memory tracking operates at the EFI unaccepted memory unit
+granularity (typically 2MB / order 9 on x86). Inflating the balloon
+with 4KB pages would prevent unaccepting the backing 2MB unit.
 
-Account for zone_page_state(zone, NR_UNACCEPTED) in
-__isolate_free_page(), page_reporting_cycle(), and
-page_reporting_process_zone() (using promo_wmark_pages(zone) for free
-page reporting watermarks and skipping non-mergeable migratetypes when
-has_unaccepted_memory() is active), and enforce
-unaccepted_memory_order() as the minimum page_reporting_order.
+Inflate balloon pages at unaccepted_memory_order() when
+virtballoon_cc_needs_state_transition() is true, while retaining
+order-0 allocations for non-CoCo guests and CoCo guests that do not
+use unaccepted memory transitions. When a higher-order balloon page
+spans more 4KB balloon PFNs than VIRTIO_BALLOON_ARRAY_PFNS_MAX (256),
+transmit its PFNs to the host in VIRTIO_BALLOON_ARRAY_PFNS_MAX chunks.
 
 Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
 ---
- mm/page_alloc.c     |  3 +++
- mm/page_reporting.c | 34 +++++++++++++++++++++++++++++++++-
- 2 files changed, 36 insertions(+), 1 deletion(-)
+ drivers/virtio/virtio_balloon.c | 87 ++++++++++++++++++++++++++-------
+ include/linux/balloon.h         |  1 +
+ mm/balloon.c                    | 67 +++++++++++++++++++------
+ 3 files changed, 121 insertions(+), 34 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c10b77304633..541b2eaf34a4 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3183,6 +3183,9 @@ int __isolate_free_page(struct page *page, unsigned int order)
- 		 * exists.
- 		 */
- 		watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+		watermark += zone_page_state(zone, NR_UNACCEPTED);
-+#endif
- 		if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
- 			return 0;
- 	}
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index de587be17801..adacdb015b55 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -17,11 +17,14 @@ unsigned int page_reporting_order = PAGE_REPORTING_ORDER_UNSPECIFIED;
- 
- static int page_order_update_notify(const char *val, const struct kernel_param *kp)
- {
-+	unsigned int min_order = has_unaccepted_memory() ?
-+				 unaccepted_memory_order() : 0;
-+
- 	/*
- 	 * If param is set beyond this limit, order is set to default
- 	 * pageblock_order value
- 	 */
--	return  param_set_uint_minmax(val, kp, 0, MAX_PAGE_ORDER);
-+	return param_set_uint_minmax(val, kp, min_order, MAX_PAGE_ORDER);
+diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+index 11f74848fdc4..d162c162b496 100644
+--- a/drivers/virtio/virtio_balloon.c
++++ b/drivers/virtio/virtio_balloon.c
+@@ -182,6 +182,13 @@ static void balloon_ack(struct virtqueue *vq)
+ 	wake_up(&vb->acked);
  }
  
- static const struct kernel_param_ops page_reporting_param_ops = {
-@@ -206,6 +209,21 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 
- 		/* Attempt to pull page from list and place in scatterlist */
- 		if (*offset) {
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+			if (has_unaccepted_memory() ||
-+			    !list_empty(&zone->unaccepted_pages)) {
-+				unsigned long watermark;
++static inline bool virtballoon_cc_needs_state_transition(void)
++{
++	return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) &&
++	       cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
++	       has_unaccepted_memory();
++}
 +
-+				watermark = promo_wmark_pages(zone) +
-+					    zone_page_state(zone, NR_UNACCEPTED) +
-+					    (1UL << order);
-+				if (!zone_watermark_ok(zone, 0, watermark, 0,
-+						       ALLOC_CMA)) {
-+					next = page;
-+					break;
-+				}
-+			}
-+#endif
- 			if (!__isolate_free_page(page, order)) {
- 				next = page;
- 				break;
-@@ -275,6 +293,12 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
- 	/* Generate minimum watermark to be able to guarantee progress */
- 	watermark = low_wmark_pages(zone) +
- 		    (prdev->capacity << page_reporting_order);
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+	if (has_unaccepted_memory() || !list_empty(&zone->unaccepted_pages))
-+		watermark = promo_wmark_pages(zone) +
-+			    zone_page_state(zone, NR_UNACCEPTED) +
-+			    (prdev->capacity << page_reporting_order);
-+#endif
+ static void tell_host(struct virtio_balloon *vb, struct virtqueue *vq)
+ {
+ 	struct scatterlist sg;
+@@ -243,24 +250,49 @@ static void set_page_pfns(struct virtio_balloon *vb,
+ 					  page_to_balloon_pfn(page) + i);
+ }
  
- 	/*
- 	 * Cancel request if insufficient free memory or if we failed
-@@ -289,6 +313,11 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
- 			/* We do not pull pages from the isolate free list */
- 			if (is_migrate_isolate(mt))
- 				continue;
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+			if (has_unaccepted_memory() &&
-+			    !migratetype_is_mergeable(mt))
-+				continue;
-+#endif
++static void queue_page_pfns(struct virtio_balloon *vb, struct virtqueue *vq,
++			    struct page *page, unsigned int order)
++{
++	unsigned int nr_pages = 1 << order;
++	unsigned int i;
++
++	for (i = 0; i < nr_pages; i++) {
++		set_page_pfns(vb, vb->pfns + vb->num_pfns, page + i);
++		vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE;
++		if (vb->num_pfns == ARRAY_SIZE(vb->pfns)) {
++			tell_host(vb, vq);
++			vb->num_pfns = 0;
++		}
++	}
++}
++
++static inline unsigned int virtballoon_preferred_order(void)
++{
++	if (virtballoon_cc_needs_state_transition())
++		return unaccepted_memory_order();
++	return 0;
++}
++
+ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+ {
+-	unsigned int num_allocated_pages;
++	unsigned int order = virtballoon_preferred_order();
++	unsigned int page_pfns = (1 << order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
++	unsigned int num_allocated_pages = 0;
+ 	struct page *page, *next;
+ 	unsigned int num_pfns;
+ 	LIST_HEAD(pages);
  
- 			err = page_reporting_cycle(prdev, zone, order, mt,
- 						   sgl, &offset);
-@@ -384,6 +413,9 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
- 		else
- 			page_reporting_order = pageblock_order;
+-	/* We can only do one array worth at a time. */
+-	num = min(num, ARRAY_SIZE(vb->pfns));
++	/* We can only do one array or preferred-order page worth at a time. */
++	num = min(num, max_t(size_t, ARRAY_SIZE(vb->pfns), page_pfns));
+ 
+ 	for (num_pfns = 0; num_pfns < num;
+-	     num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE) {
+-		page = balloon_page_alloc();
++	     num_pfns += page_pfns) {
++		page = balloon_pages_alloc(order);
+ 
+ 		if (!page) {
+ 			dev_info_ratelimited(&vb->vdev->dev,
+ 					     "Out of puff! Can't get %u pages\n",
+-					     VIRTIO_BALLOON_PAGES_PER_PAGE);
++					     page_pfns);
+ 			/* Sleep for at least 1/5 of a second before retry. */
+ 			msleep(200);
+ 			break;
+@@ -274,15 +306,17 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+ 	vb->num_pfns = 0;
+ 
+ 	list_for_each_entry_safe(page, next, &pages, lru) {
++		unsigned int page_order = compound_order(page);
++		unsigned int pfns = (1 << page_order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
++
+ 		list_del(&page->lru);
+ 		balloon_page_enqueue(&vb->vb_dev_info, page);
+ 
+-		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
+-		vb->num_pages += VIRTIO_BALLOON_PAGES_PER_PAGE;
+-		vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE;
++		vb->num_pages += pfns;
++		num_allocated_pages += pfns;
++		queue_page_pfns(vb, vb->inflate_vq, page, page_order);
  	}
-+	if (has_unaccepted_memory() &&
-+	    page_reporting_order < unaccepted_memory_order())
-+		page_reporting_order = unaccepted_memory_order();
  
- 	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
- 		prdev->capacity = PAGE_REPORTING_CAPACITY;
+-	num_allocated_pages = vb->num_pfns;
+ 	/* Did we get any? */
+ 	if (vb->num_pfns != 0)
+ 		tell_host(vb, vb->inflate_vq);
+@@ -304,28 +338,42 @@ static void release_pages_balloon(struct virtio_balloon *vb,
+ 
+ static unsigned int leak_balloon(struct virtio_balloon *vb, size_t num)
+ {
+-	unsigned int num_freed_pages;
++	unsigned int order = virtballoon_preferred_order();
++	unsigned int page_pfns = (1 << order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
++	unsigned int num_freed_pages = 0;
+ 	struct page *page;
+ 	struct balloon_dev_info *vb_dev_info = &vb->vb_dev_info;
+ 	LIST_HEAD(pages);
+ 
+-	/* We can only do one array worth at a time. */
+-	num = min(num, ARRAY_SIZE(vb->pfns));
++	/* We can only do one array or preferred-order page worth at a time. */
++	num = min(num, max_t(size_t, ARRAY_SIZE(vb->pfns), page_pfns));
+ 
+ 	mutex_lock(&vb->balloon_lock);
+ 	/* We can't release more pages than taken */
+ 	num = min(num, (size_t)vb->num_pages);
+-	for (vb->num_pfns = 0; vb->num_pfns < num;
+-	     vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE) {
++	vb->num_pfns = 0;
++	while (num_freed_pages < num) {
++		unsigned int dequeued_order;
++		unsigned int dequeued_pfns;
++
+ 		page = balloon_page_dequeue(vb_dev_info);
+ 		if (!page)
+ 			break;
+-		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
++		dequeued_order = compound_order(page);
++		dequeued_pfns = (1 << dequeued_order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
++
++		if (num_freed_pages + dequeued_pfns > num &&
++		    num_freed_pages > 0) {
++			balloon_page_enqueue(vb_dev_info, page);
++			break;
++		}
++
++		queue_page_pfns(vb, vb->deflate_vq, page, dequeued_order);
+ 		list_add(&page->lru, &pages);
+-		vb->num_pages -= VIRTIO_BALLOON_PAGES_PER_PAGE;
++		vb->num_pages -= dequeued_pfns;
++		num_freed_pages += dequeued_pfns;
+ 	}
+ 
+-	num_freed_pages = vb->num_pfns;
+ 	/*
+ 	 * Note that if
+ 	 * virtio_has_feature(vdev, VIRTIO_BALLOON_F_MUST_TELL_HOST);
+@@ -474,7 +522,8 @@ static inline s64 towards_target(struct virtio_balloon *vb)
+ 	 * Aligned up to guest page size to avoid inflating and deflating
+ 	 * balloon endlessly.
+ 	 */
+-	target = ALIGN(num_pages, VIRTIO_BALLOON_PAGES_PER_PAGE);
++	target = ALIGN((s64)num_pages,
++		       VIRTIO_BALLOON_PAGES_PER_PAGE << virtballoon_preferred_order());
+ 	return target - vb->num_pages;
+ }
+ 
+diff --git a/include/linux/balloon.h b/include/linux/balloon.h
+index ca5b15150f42..bc46e36b997f 100644
+--- a/include/linux/balloon.h
++++ b/include/linux/balloon.h
+@@ -58,6 +58,7 @@ struct balloon_dev_info {
+ 	bool adjust_managed_page_count;
+ };
+ 
++struct page *balloon_pages_alloc(unsigned int order);
+ struct page *balloon_page_alloc(void);
+ void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
+ 		struct page *page);
+diff --git a/mm/balloon.c b/mm/balloon.c
+index 96a8f1e20bc6..e9941d08d8e9 100644
+--- a/mm/balloon.c
++++ b/mm/balloon.c
+@@ -27,9 +27,12 @@ static DEFINE_SPINLOCK(balloon_pages_lock);
+ static void balloon_page_insert(struct balloon_dev_info *balloon,
+ 				       struct page *page)
+ {
++	unsigned int i, nr_pages = 1U << compound_order(page);
++
+ 	lockdep_assert_held(&balloon_pages_lock);
+-	__SetPageOffline(page);
+-	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION)) {
++	for (i = 0; i < nr_pages; i++)
++		__SetPageOffline(page + i);
++	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !PageCompound(page)) {
+ 		SetPageMovableOps(page);
+ 		set_page_private(page, (unsigned long)balloon);
+ 	}
+@@ -45,20 +48,31 @@ static void balloon_page_insert(struct balloon_dev_info *balloon,
+  */
+ static void balloon_page_finalize(struct page *page)
+ {
++	unsigned int i, nr_pages = 1U << compound_order(page);
++
+ 	lockdep_assert_held(&balloon_pages_lock);
+-	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
++	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !PageCompound(page))
+ 		set_page_private(page, 0);
+-	/* PageOffline is sticky until the page is freed to the buddy. */
++	/*
++	 * PageOffline is sticky on the head page until freed to the buddy,
++	 * which resets the head page's page_type in __free_pages_prepare().
++	 * Clear PageOffline on tail pages here as __free_pages_prepare()
++	 * expects tail pages to have a default page_type.
++	 */
++	for (i = 1; i < nr_pages; i++)
++		__ClearPageOffline(page + i);
+ }
+ 
+ static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
+ 				     struct page *page)
+ {
++	unsigned int order = compound_order(page);
++
+ 	balloon_page_insert(b_dev_info, page);
+ 	if (b_dev_info->adjust_managed_page_count)
+-		adjust_managed_page_count(page, -1);
+-	__count_vm_event(BALLOON_INFLATE);
+-	inc_node_page_state(page, NR_BALLOON_PAGES);
++		adjust_managed_page_count(page, -(1L << order));
++	__count_vm_events(BALLOON_INFLATE, 1UL << order);
++	mod_node_page_state(page_pgdat(page), NR_BALLOON_PAGES, 1L << order);
+ }
+ 
+ /**
+@@ -117,15 +131,18 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
+ 
+ 	spin_lock_irqsave(&balloon_pages_lock, flags);
+ 	list_for_each_entry_safe(page, tmp, &b_dev_info->pages, lru) {
++		unsigned int order = compound_order(page);
++
+ 		if (n_pages == n_req_pages)
+ 			break;
+ 		list_del(&page->lru);
+ 		if (b_dev_info->adjust_managed_page_count)
+-			adjust_managed_page_count(page, 1);
++			adjust_managed_page_count(page, 1L << order);
+ 		balloon_page_finalize(page);
+-		__count_vm_event(BALLOON_DEFLATE);
++		__count_vm_events(BALLOON_DEFLATE, 1UL << order);
+ 		list_add(&page->lru, pages);
+-		dec_node_page_state(page, NR_BALLOON_PAGES);
++		mod_node_page_state(page_pgdat(page), NR_BALLOON_PAGES,
++				    -(1L << order));
+ 		n_pages++;
+ 	}
+ 	spin_unlock_irqrestore(&balloon_pages_lock, flags);
+@@ -135,8 +152,9 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
+ EXPORT_SYMBOL_GPL(balloon_page_list_dequeue);
+ 
+ /**
+- * balloon_page_alloc - allocates a new page for insertion into the balloon
+- *			page list.
++ * balloon_pages_alloc - allocates a new page of given order for insertion
++ *			 into the balloon page list.
++ * @order: allocation order
+  *
+  * Driver must call this function to properly allocate a new balloon page.
+  * Driver must call balloon_page_enqueue before definitively removing the page
+@@ -144,16 +162,35 @@ EXPORT_SYMBOL_GPL(balloon_page_list_dequeue);
+  *
+  * Return: struct page for the allocated page or NULL on allocation failure.
+  */
+-struct page *balloon_page_alloc(void)
++struct page *balloon_pages_alloc(unsigned int order)
+ {
+ 	gfp_t gfp_flags = __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
+ 
+-	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
++	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION) && !order)
+ 		gfp_flags |= GFP_HIGHUSER_MOVABLE;
+ 	else
+ 		gfp_flags |= GFP_HIGHUSER;
+ 
+-	return alloc_page(gfp_flags);
++	if (order > 0)
++		gfp_flags |= __GFP_COMP;
++
++	return alloc_pages(gfp_flags, order);
++}
++EXPORT_SYMBOL_GPL(balloon_pages_alloc);
++
++/**
++ * balloon_page_alloc - allocates a new page for insertion into the balloon
++ *			page list.
++ *
++ * Driver must call this function to properly allocate a new balloon page.
++ * Driver must call balloon_page_enqueue before definitively removing the page
++ * from the guest system.
++ *
++ * Return: struct page for the allocated page or NULL on allocation failure.
++ */
++struct page *balloon_page_alloc(void)
++{
++	return balloon_pages_alloc(0);
+ }
+ EXPORT_SYMBOL_GPL(balloon_page_alloc);
+ 
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
