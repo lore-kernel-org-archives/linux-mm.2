@@ -1,123 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC44606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 17:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600C8606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 17:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SnmuDiL+
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PqMgZKnx
 Received: by kanga.kvack.org (Postfix)
-	id 6310B6B0873; Tue, 27 Oct 2026 13:43:13 -0400 (EDT)
+	id 6584F6B0875; Tue, 27 Oct 2026 13:43:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6083D6B0875; Tue, 27 Oct 2026 13:43:13 -0400 (EDT)
+	id 62F896B0877; Tue, 27 Oct 2026 13:43:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51E046B0876; Tue, 27 Oct 2026 13:43:13 -0400 (EDT)
+	id 521796B0878; Tue, 27 Oct 2026 13:43:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C9B76B0873
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:43:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A9A5140AA7
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:43:12 +0000 (UTC)
-X-FDA: 85369127424.25.968D735
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 28BD380002
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:43:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=SnmuDiL+;
-	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793122990;
-	b=ufKSjmzlxSABVTolgrilvqrlfJs1kYjTR26n82HpJZSVTlIQHja6v8slYrAQGPP/nblBxc
-	IgXRBBHpd72mC5hG4JR71bn/1P3EyIsOFwKWjhZeQPJnPwhJdW1zpIksLNwPiDcvGkcB16
-	icus5/by56MJYLAVMBVGJIZJWJ47DAg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=SnmuDiL+;
-	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793122990;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 27AD96B0875
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:43:29 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE6E81C44D3
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:43:28 +0000 (UTC)
+X-FDA: 85369128096.23.BB46490
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B948C4000A
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:43:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=PqMgZKnx;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793123006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4rIPaOGkz4dA6rLpWkpTWRnAekHyjd26NnKIbMaNQKk=;
-	b=i+JqKkDiKTKLYLY5aKAP4UotfP8m/rt8OYCDISY90MMEJGr0yv32q1T2vdg1XHQNt0Meoe
-	ovg/wC1aB8UfQKjy06xwjW64ZcjPddxhN6liVOFKv6IclZdglhHznwllwaKfFuLspYgFIa
-	ihI2BwAoqAs4xTRn45WgVg55g7NL5lo=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c418e215671so12038766b.0
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:43:09 -0700 (PDT)
+	bh=p3B3dOUVUprYHGKVW+MiktwDFrlXxMAYs/IueGeZxSQ=;
+	b=DJudPxn8WB45G/zbjLFkE2fPmt1k51f44yTvTNv3IWbqkdsyvjYCcO9AimM0NG4s94mepc
+	BuJrlyw8CcfjnuJyKclQ6oJ66m6IE7EyBMJJcekSiMuYng0uv0IUcFIUB1psSuueYaEd35
+	eiES/boHcNKMhcwAJFWslM2dR1tZ+GI=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=PqMgZKnx;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793123006;
+	b=Ai0jQhwNkNbpWOUOvRwkF9bq1Y1vFAwopIODt3pMo5WcE7+5Z6lWisp8S6E7DkujP2jofp
+	VQIp/u3rDyntI1T95biEZMOgcSRvBNqC2zBq3uClmfj8Y6wBGGohzwYss2rKg7wpDpw2SZ
+	DVm2NFPh1x2txwBfl11SoiTf9nYQjy8=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a20d7a8984so2865e9.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:43:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793123005; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pSBvQ4J+Gp5hgaKbMFNdtbBTpaZDNDzCvgE091O9Z5oikPEPQvIxSRrkO+7k11OYMh
+         h1uQzgfwAt2JoSKoK33y1A2YSi2f6pZ7F0s0W40y/VY6nBBZkj1GgwE3jX/TWJ6QGB2x
+         75HGsy9bTY5/nwMWqkTzWcwvYNAnjTj0U9Mdso6PJBqQXBWDzz9ZCnYX186rP0rEjvp6
+         PtM+p3/H21zrurAzBIsASnqvcMFEgmoeEcouSxNnbG9LTW+rnvXBXkLNO1q5i5IPSDVI
+         ojCQ7jCjBUpAPNo+pyw9j7SERf33NMIC8k/MZJrLkYm9gTxKxqzv/5J2wPuHPD1SaxTY
+         I18w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=p3B3dOUVUprYHGKVW+MiktwDFrlXxMAYs/IueGeZxSQ=;
+        fh=0RCkTXE8ZSr8sxh8cxIT+6r+pwa2J0O8Q6r2RveTSO8=;
+        b=pE+9vKeCqDy9LKNMEPD8QGMPIZtuy88wg86VMJr/AVZ1zMPseLBXQ4ix6X43lW+A6T
+         kQDBQViBpnLiEUSaKom4CLMsrXsuoMTs2F7vb+f7xoqjKx0tnLnEh7RLVIX7/dgSz9Tu
+         eGSgthjhsr+wWRVvu8lqiiebujG8ueB8UwdFZNti2OKA5U8cr46/GCf1/42gxTuLMgEW
+         pWVL1Qnc1SNEPaI3Ih0j4gfxngOrfQmbv4jkO+oTIvVusCVLOK0T+e/EP4qfXgtWrmph
+         IPeacOVMZoduklxK0/i95tRA5Q/++DWlTJz5hGtdIv0YM0UxbNHSEEVw1jnjXfRSNy1n
+         8XTQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793122989; x=1793727789; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+        d=google.com; s=20260707; t=1793123005; x=1793727805; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=4rIPaOGkz4dA6rLpWkpTWRnAekHyjd26NnKIbMaNQKk=;
-        b=SnmuDiL+3D9hwnao8+XSPk6BM4wp+NTUsyOjWc5cGG2p6qqgMA+yoxWoOxtEuGggo9
-         lnPRXkN9rd5hXBu9v/3Kt6r22vaudxdyFSxDVJQGypS8WJNknwEA8sZA48xehz7NRUAu
-         IcOMlTbKO+09+EoLZK4bV6zfJlL2HpyhohDhLvRhshggFMeAiv9kGF7wOa3Fve2PcfHX
-         IYvDx8sZdh1RrDPNkujL1wsCQ7Jyrb2OK2dIChjrVmb1MgD7hEv9euPUsR87ZCRVcmFR
-         H8xzFvzI/l7N7NS0X+CRODeQVkAH8X+W3Y1DEVdb1y5gLysSClVdSt0w4/CNdxllSQ3y
-         /G5A==
+        bh=p3B3dOUVUprYHGKVW+MiktwDFrlXxMAYs/IueGeZxSQ=;
+        b=PqMgZKnxEdvOmObZeSv7/s6Dl3t0OSQNZHLBJeJMTi3TLQdqYdq9Vnm28pBQfk9gcW
+         +lSHcjoQBFNb2OHDaXIFsSWQTJXkq0HmE+1rGGzSV9YsBL163YeGznurgYjUA93D02I4
+         b8yjS1s9lml/S3Aaqfis5yHQXLn3IaI/ISUyAaHAvLJEsGjDVSVQgpmo+RdopKtLYDmh
+         NB8FxF6FB8ab+fk0OU8rt5IJOqCPNKVfV7FQcp5lT8jxRCyXVG/TACoosdr/J5lyt/76
+         IYKj0rW/U2sYFWI/cOPon1euY0027ktInWZnnfdqird2URghAX4cpJ0G5pOTfyVrha8A
+         msNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793122989; x=1793727789;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1793123005; x=1793727805;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4rIPaOGkz4dA6rLpWkpTWRnAekHyjd26NnKIbMaNQKk=;
-        b=CEiVBtekK+Neapb0CAFYhf0pu3a/jGSzc/k6aypPaytsOp4XNlXwjR3+nzROIpKGAF
-         4oxAQ/qLfFOAptwFOQJJyA3RBB3HInrwyKVfw0lvW3xEQ2MjEktLi6S4GwY3c4EvgRyv
-         sxv1y7vL6JRvyNETS9dTN4N67GNXVTWoTf8QtHBRBuoc3kb76qKH1WuaHk1uxrrmZa9r
-         2BAIjA/V/gxfS+XZqQxMbHZer0Tnv5CbPKi5Bf8atPElpcNz4/pIaZrxQXMb37UzL600
-         OMXsY1yzsStTWQfK83W2HBgDp2EyuFauC3H+yd+noKAMMyhWYRP37IqaeSfkBF5wshFO
-         MQXA==
-X-Forwarded-Encrypted: i=1; AKwUvByMvsdWeJe9nOuPnZcCGKi3S7jU0SFy/S9EENsuAfhbkuK6z/7qeBJl1y2+V4CCA0kbn5BDGgRObA==@kvack.org
-X-Gm-Message-State: AFq9FYJw+k+hVv+SuqYeJmeEGxQ5jS41ZWleiX2+skVyFhavZ4FrqGSO
-	P2t0ImAx/fkIQ6RcqoOpzUJWNAwYGeestQbrqJrHgWZCFHnSMyHKwnP2
-X-Gm-Gg: AYBFou0Q9dfRtPmc/hFHZWg2V3oFWcX5Sfbz0fUZIdkQNffJT2uajC83D8xDfBpS9r0
-	mKkwJ/VWTFDwULa+rrGeRfqAkGV4InkXM3XjIscBKbZ87cvQ2e/Gdkivm8pxbvovKxHsrGhwJ9l
-	ExGiMo0BSgcTu7shgJtJkj3loXMEomm++Quh9hRhhepRECHkmvdNTf4UL3tngi7wqXnKAZE/wFA
-	d3X00x0/N6sUCDKLNEUVM4fohNWkpvja9yNzPL1h2CD+5swOKakC6Lg099BHsPerAuaXVwsrn6m
-	Rj1FluHZCqaqmULRQ9avbnK+lO9i+dmirTCTCXEkz3h2lyec7sgNfrdS1ETGqH5lWGZeDRoEAzP
-	HYSjKfWaqQGIoE41mfrCLZdlblYf4x2vHgrF72G9WuFxiXCgyPXvX/WwsFl4nJXyHix+417PnS0
-	SjRXVKazTA4c8yBbE3CBzWf26m9nvQuNrbSvI5zYV4Q1S9ADUKw02GQ6psRaydi29I2zW7Ncmc0
-	fki9gtCOvW4a0uOQ2Us
-X-Received: by 2002:a17:907:3e07:b0:c27:420b:7c79 with SMTP id a640c23a62f3a-c46bdec7fa6mr1214967166b.48.1793122988624;
-        Tue, 27 Oct 2026 10:43:08 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd7a7c2esm484748666b.80.2026.10.27.10.43.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 10:43:07 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 27 Oct 2026 18:43:04 +0100
-To: sashiko-reviews@lists.linux.dev
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH] mm/vmalloc: Bail out if in softirq context
-Message-ID: <auDiqLSjI1qrn3rd@milan>
-References: <20261026102503.30860-1-urezki@gmail.com>
- <sashiko-outbox-186354@kernel.org>
+        bh=p3B3dOUVUprYHGKVW+MiktwDFrlXxMAYs/IueGeZxSQ=;
+        b=A1EBMzvLkQBGW35fSku6/x73Al4Dl7bijX2D76oq5hdVZUZCrrHAGeWK+aKbvbJpDB
+         sAaj7FMaFGJkGVlh50jl+wK35XSGXV7ShGh7luMGdhu9EOamOPVr1YPFGvWqvsae7Je7
+         TCzwNFwFe3NImdAbsazIGswqEHDBzLhIDAStGMRkOJMi9YOZMdekJPgVJJV6XJQoz8Nt
+         dEzMvAlN/lYkNAwNv6XV5FxecUlA8fNvU33yAezNSjM8lShgRyEZQ1YkGLdOCjzaD9RU
+         X/EdhV9y7vJqRorvLTI80AaKnbNpTF8nXa3dwHj7Wdf2NyJiW8qJPLrigaKGjDqAPYwP
+         gQjA==
+X-Forwarded-Encrypted: i=1; AKwUvBw6S0+AQ1cV4AjP8PQheaOvVaF9Qr4Lp8mHlSL+TQu3u9FSS0d4Mx0IsT28HcGddsCgDThfDH5c5w==@kvack.org
+X-Gm-Message-State: AFq9FYK8kfmJ8BTVBwVSWDcjgtvV5xLGXSgd9tOuSjaUlvdxadXHdvqf
+	WyN7zEOiyYkLFT5S7YhU66GDUeFyAlxWzGM1nb2mHDvEURjhmll767+w9Rn7USYsQkggcoIQ9kl
+	PyyLAvY6bjDW+Ets8ZefE7lOkU5gNvo/Mk0mt1NDN
+X-Gm-Gg: AYBFou2X5oWEZmtb724Q5jqvEc3QvcQUxrsUPRJEE6EJlXdlOyRIHfdyoCpDIOOSels
+	uKrkOTqroQFPkgKIj8Iyek5+zvQ5LOE6mqAaPpMXLtRWmBpu2bLvUQUwigbB4wUIE6Kv2xzc8dE
+	oWbol1CElKP6WvuaGxy3kpe9UNFXmLyYKubXM6EDWVAIyQ92veFPD6+qJKDh6dC01QhmzIv6vox
+	XPoR0h69nsJpBwMfSyqiDJoybEvCE8KdCpdJLiiotBkzc4ZzKV19pE78W7XuDntQuJfhtH0Urrr
+	dpoGDGRWFhNN3fUl3FuO2sN0Pc38WfO1i8oiB9KxMfpjiuLhHFmz8NzNctIQholewau0vzf/2v+
+	1aN8+A79ZwlBwTxao61VuLCYE1drYJNXibkZ43tM6Oj29yezAWYLY8bVqbgKZVYDglQa+1QY4OQ
+	vAfuwkJogT4dXJxQ==
+X-Received: by 2002:a05:600c:1092:b0:4a1:eb02:37c with SMTP id
+ 5b1f17b1804b1-4a93cd51d37mr18155e9.6.1793123005040; Tue, 27 Oct 2026 10:43:25
+ -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-186354@kernel.org>
-X-Stat-Signature: q3beux9een86og6ijr847aze1ruhyaxy
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 28BD380002
+References: <20261023222313.3979455-1-tjmercier@google.com> <DF7DBE4B-E0BA-423B-BDA7-DB07D1C9E564@linux.dev>
+In-Reply-To: <DF7DBE4B-E0BA-423B-BDA7-DB07D1C9E564@linux.dev>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Tue, 27 Oct 2026 10:42:00 -0700
+X-Gm-Features: AclHuK_QytrvT9uNtK6TFZfkFqcTUjqFLup9uHHWt2PGssnl21GD_10Q-N8u7ck
+Message-ID: <CABdmKX3-XKWXwZe5f=VwZeSuKH6xM0dsK7TvY7u9B1hgaPOm4g@mail.gmail.com>
+Subject: Re: [PATCH] mm: memcontrol: fix NULL pointer deref in
+ high_work_func() on dying memcg
+To: Muchun Song <muchun.song@linux.dev>
+Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, zhengqi.arch@bytedance.com, akpm@linux-foundation.org, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B948C4000A
+X-Stat-Signature: owsph1fsrgf6j5qhrrn9z5ycpqyqdz9j
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793122989-331007
-X-HE-Meta: U2FsdGVkX1+//YXWHREcNNiOQQHvBePmmJPwD4BCX28t65bZYZGFb+Eo4rRkm3DMWSqjJxedFH3r795F3Oy3TSVD6wnOLhkl/vFkwLXtLCQvXARChItJerqxLTTb1jmYJsGkBfPkfD3kySgysd1rpx9NVOsYdvM6qTYIH3i9EMZ5fSSATF6KzJSn/OA4o8z5fX9+qUEy8G6s0fs0a5jSE0fs/n77+UslvwZweWtxJI84LcDInzknLdaJYsP8HT+7nkyNnSQoq3EPS5EGtKuExdh/IUC8NvHd1kW2n1v15WZ13Fk1X1l60Hdy2w0Cx2IMIQbfJBCaYKfJeuiKGZTUVl++O1eOB2PiWAQEZAlYZan0pmg3FQ3tEadJWO58D0e1IdoHra9hoYYVjK6RkQngO2+2n3lg1BK1xx/qozSf/4VqkYLTEne/L7dlr/mS0lxetVoIxmXZBtowo3lZ7h8U8ygG0C/pQd/+1aUwehK44Tc3tjSnnnYy286lnu6HyHdLyuC7nAh00TnovbFkFwPfXHe+5HhQ7gQrmnM3NV17z4Sk0gA4Rg/5jCQFS5vgUHPnw/2+Yw98J2FOd3xHV76Ao4ZxmOQ11/WDgk8cBcukv82u2s6rmR96rNDAdnvYuJdvsoKOWQRisPQVir6X8AWaIqs+a/3dvtBY5Ofk8uJyd+HH8Jli1sNZQvuBaoQNEBelSZZsEeqbPF4njF+6HAZzMasLdV3y/1KQXSyS2+JIUoPDG3kVPyef78qy7Q4E3ScYbGi/dq4cOVlqt9ewnxNNhqkLVjq7lOS51zShmnWXEVM3sPCqbh/kMy3Qt8GBff262+XKZdakJp6LkD86jcxYYtq/gSjZDO+3GsHbBgo6VAZAhEvcxm7tGH7yuA1PvCrGY/+zWFP4Azx9H81sfKv1SFehxHj+cORWtL2iag434pmDrem7ANKevoPyiwEMh28kdmlnwIXTEVEu0CpcJZC
- X3+v6eI6
- 3JmfeNDpj+n5xAwTgO3n5eYjQTbkmFW8HttVB3V1JoP8qSXWqYkik9iWpVMcYH4vx97dSU4gR7aU2bYaZv8BTVHSVx3hB0UlldeADgvCyYQ6m54EEIxkLr7S/YSgA1qO92jESyXeT9zD1rh9Z/WV/yxYwX/b3c/jancuLgIZHz0LeEqWMOY2rvXTQWZ8rI1UrI+KGSm0zegHVrJGj8vlRUeFNp7luL6N8kmMa/fi8JNCVYvXEcRH1tEm80gXmZV6/nw7f67SmPbAxxZQsiK2+pRxA07UNHR4kDcAQB3tsxLJ7ZsT364g2/xgM6d9odLll13FuIiI/LXcJc7W8H+p7gNHpVnF7vcduq1BPEn2LtY67ODIRlcXrmiOxNmkrPr9lMNp0SyVJ8O0MN8fNTrpWb8aSXht9jusiltI44aP5LhgzxK9v7214aIgbd63ZB3b//fHph9eqU9GGAIcQC6yNerdO7vjknoM0cjTSHI6iuuTs8G8=
+X-HE-Tag: 1793123006-304915
+X-HE-Meta: U2FsdGVkX18rAQ4KPCBkySOKztCKwyMVINe445/xng95KawZtdvr6uKBSViWxEEjNbmyJBMloS9DK6+HSAcPUUcgVyXzm6s6DbA7iqPjNakSjQ08CLncrbzh9OoLLy+oivtMfE0Tm7J2iFrIq6mrz2cKI7qlcq9XYLjqtNd3qGFl681ag6f2AdkcqF9tVIAdp5WfSC9gYwOX9GDWlyx9EXt9isJGo6esyL1EHp1ZUE+R2PWH1DGt4I/k+38adWI+wQI+SCgnqI0BM3GARrLDzN1GZXOXf/Jo4Shq3CMN89gTnCFLBvzqvWBL4VOf+emJ+ijo2MFVPrRxH/j7uZOLNOGK0hIkTipn05peMGJWWzhq0oLuaDw39FIZDwmg3MIijD5WiUMgAs4nJQOZuFe6Rez41YkRGayllcvgRTVy7RfSErVKT2GWukoQojW5kOgaa64HPX5euKOsV/1xX00w4o2upSvR1XgROIiQy2f5qH4xPwo64ehJnjYXjZMal1pFguXjtZ7TmRx1O3wuuop4csjL+YHHCMI9X8RhNaGEtJd4ctsdizNiqx40V5VvM1LfKZEn67yMw7m0f5mtrFBc+tRrxwxf6yo6FK2Ef3W554JGvS5tNWRS7CkE3xgCUTCRNXlPQib+zcTao1zTFRRdmgDQLPDsQDbs98JUnT+MJPOoxw/aiHgcvRGT5HM5SLaRfvinGwYCwufGNMSF/cJcdYCXD8XSh1j8pfDmNSWiNFFs4zI4SQGGDHaZWi3zyeO4N/BoAf5oyEq32BpPVXoO9yRhy1CJ3H0oEzPCYkq7hlC9/EiV16amm1dj+LgOnSNKkaIpLZp4r4Bf06ME9JwyjCt1/C6F9ilJEGY6+ey9INeI6m4evtYdJyfWwQmI3IfW/ifxUupXEAokPyGx+cryBMXrgkOac81Kp8nv2yUe6prYWHI0xD3WGEzv8IrFJsJtkuqy09yDcMnUPykU6TV
+ x9GJJWfG
+ 8IF+K4FKZHlXLKZNCarBPQRoetM7NF/rWm2DWcj9RNJtGln7s/8TkEhzMFZeJx5yWJCPAQgd6S9zWZbMPY10lLZGxf0J5DqYsyFCH01WXX5nve0id2uEXuq6ijGZ5WsXf/6A8D5v7/9oc4ll1VooGdBqPknoG3MaOWtfan74RhCyqyhDYGpsU9HXPZg2gYlM/Phr8CG0C4eoR+2Coey9in6+iWOSKEtjyZ+Z0tCXBJBZeEFXgGDv3oryC9aO5zUH7pZk4Y6dNfjBPJWUcjibfJwInG4jOmWQqTBZH/L7zFpsqQog9ArVUY1sWQcs7hk2/Sb6sBUxCTJ8WJAdRliH9Zpfm8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,53 +147,179 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 10:25:23AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] mm/vmalloc: ABBA deadlock when calling vmalloc() with BH or IRQs disabled
-> - [Medium] mm/vmalloc: __get_vm_area_node() irq bailout triggers warnings and retry
-> --
-> 
-> commit 9fea18279139941aa247a1a577dd5e101116871a
-> Author: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> 
-> mm/vmalloc: Bail out if in softirq context
-> 
-> This commit restores a softirq check in __get_vm_area_node() using
-> in_serving_softirq() so that vmalloc() bails out when invoked from softirq
-> context while still permitting callers with disabled bottom halves. It also
-> replaces BUG_ON(in_nmi() || in_hardirq()) with a WARN_ON_ONCE() check that
-> returns NULL.
-> 
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 44e0eb32708f1..5a949525b9db8 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3271,7 +3271,13 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
-> >  	struct vm_struct *area;
-> >  	unsigned long requested_size = size;
-> >  
-> > -	BUG_ON(in_nmi() || in_hardirq());
-> > +	/* IRQ re-entrancy -> irq_exit() -> process softirq. */
-> > +	if (in_serving_softirq())
-> > +		return NULL;
-> > +
-> > +	if (WARN_ON_ONCE(in_nmi() || in_hardirq()))
-> > +		return NULL;
-> 
-> [Severity: High]
-> Can allowing vmalloc() in task context with bottom halves or interrupts
-> disabled still cause a multi-CPU ABBA deadlock on vmalloc's internal locks?
-> 
-CPU_0           CPU_1
- vmalloc()       lock(B)
-  lock(A)         vmalloc()
-   soft-irq        lock(A)
-    lock(B)
+On Mon, Oct 26, 2026 at 7:42=E2=80=AFPM Muchun Song <muchun.song@linux.dev>=
+ wrote:
+>
+>
+>
+> > On Oct 24, 2026, at 06:23, T.J. Mercier <tjmercier@google.com> wrote:
+> >
+> > When memory.high is exceeded in non-task context, try_charge_memcg()
+> > schedules memcg->high_work without taking a CSS reference on the memcg,
+> > and high_work_func() invokes reclaim_high() without pinning the memcg.
+> >
+> > Before commit f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of
+> > dying memory cgroup for LRU folios"), memory usage above memory.high
+> > kept the memcg's refcount non-zero. With reparenting, folios and objcgs
+> > charged to a child memcg are reparented to its parent in
+> > mem_cgroup_css_offline(), leaving the offlined child's memory usage
+> > permanently above its memory.high even after its last reference is
+> > dropped.
+> >
+> > cancel_work_sync(&memcg->high_work) only runs at the end of teardown in
+> > mem_cgroup_css_free(), so high_work_func() can start or still be runnin=
+g
+> > reclaim_high() after mem_cgroup_css_released() or shrink_many() has
+> > called lru_gen_release_memcg() and unhashed lruvec->lrugen.list. This
+> > causes lru_gen_rotate_memcg() to dereference a NULL pprev pointer.
+> >
+> > Fix this by acquiring a reference with css_tryget_online() in
+> > high_work_func() before calling reclaim_high(), and by resetting
+> > memory.high and swap.high to PAGE_COUNTER_MAX in
+> > mem_cgroup_css_offline() so that charges via references on an offlined
+> > memcg do not trigger high_work on the dead child or skip checking live
+> > ancestors in try_charge_memcg().
+> >
+> > Oops: general protection fault, probably for non-canonical address 0xdf=
+fffc0000000000: 0000 [#1] SMP KASAN NOPTI
+> > KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+> > CPU: 1 UID: 0 PID: 27 Comm: kworker/1:0 Tainted: G    B   W           7=
+.3.0-rc5-g2bba28e98578 #284 PREEMPT(full) <- Taint from lru_gen_rotate_memc=
+g() VM_WARN_ON_ONCE
+> > Tainted: [B]=3DBAD_PAGE, [W]=3DWARN
+> > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debi=
+an-1.17.0-1 04/01/2014
+> > Workqueue: events high_work_func
+> > RIP: 0010:lru_gen_rotate_memcg+0x1a3/0xe90
+> > Code: fd 7f 09 45 84 ed 0f 85 64 0c 00 00 48 89 cf c6 83 6a 07 00 00 00=
+ 48 c1 ef 03 88 83 69 07 00 00 48 b8 00 00 00 00 00 fc ff df <80> 3c 07 00 =
+0f 85 ec 0b 00 00 48 89 31 40 f6 c6 01 0f 85 4e 00
+> > RSP: 0018:ffa00000001ef4c8 EFLAGS: 00010046
+> > RAX: dffffc0000000000 RBX: ff1100000779e440 RCX: 0000000000000000
+> > RDX: 0000000000000001 RSI: ff1100000779b9b0 RDI: 0000000000000000
+> > RBP: ff110000bffd8e40 R08: 0000000000000000 R09: ff1100000779ebb8
+> > R10: ff1100000779ebb0 R11: 0000000000000246 R12: 0000000000000000
+> > R13: 0000000000000000 R14: ffa00000001efb30 R15: 0000000000000002
+> > FS:  0000000000000000(0000) GS:ff1100011c0e7000(0000) knlGS:00000000000=
+00000
+> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > CR2: 000000000251ac88 CR3: 0000000009d6c000 CR4: 0000000000751ef0
+> > PKRU: 55555554
+> > Call Trace:
+> > <TASK>
+> > ? read_ctrl_pos+0x22f/0x3f0
+> > shrink_lruvec+0x16cb/0x1b80
+> > ? ret_from_fork_asm+0x1a/0x30
+> > ? lapic_next_event+0x15/0x20
+> > ? clockevents_program_event+0x2bb/0x6f0
+> > ? lapic_next_event+0x15/0x20
+> > ? __pfx_shrink_lruvec+0x10/0x10
+> > ? __pfx_clockevents_program_event+0x10/0x10
+> > ? _raw_spin_lock+0x84/0xe0
+> > ? __pfx__raw_spin_lock+0x10/0x10
+> > ? kasan_save_stack+0x30/0x50
+> > ? psi_group_change+0x381/0x740
+> > ? __pfx_sched_clock_cpu+0x10/0x10
+> > ? save_fpregs_to_fpstate+0xc4/0x2c0
+> > ? finish_task_switch.isra.0+0x1de/0xac0
+> > ? __schedule+0xf62/0x42c0
+> > ? __pfx___schedule+0x10/0x10
+> > ? __pfx___irq_work_queue_local+0x10/0x10
+> > ? shrink_node+0x626/0x31e0
+> > shrink_node+0x626/0x31e0
+> > ? ring_buffer_unlock_commit+0x11d/0x5c0
+> > ? kswapd_clear_hopeless+0xa0/0x150
+> > ? __pfx_shrink_node+0x10/0x10
+> > ? 0xffffffffc0000095
+> > do_try_to_free_pages+0x255/0x13b0
+> > ? ring_buffer_unlock_commit+0x11d/0x5c0
+> > ? reclaim_high+0x10a/0x1b0
+> > try_to_free_mem_cgroup_pages+0x1f9/0x5a0
+> > ? __pfx_try_to_free_mem_cgroup_pages+0x10/0x10
+> > ? irqentry_exit+0xc6/0x670
+> > reclaim_high+0x10a/0x1b0
+> > ? __pfx_reclaim_high+0x10/0x10
+> > ? process_one_work+0x5ff/0x1030
+> > ? __pfx_high_work_func+0x10/0x10
+> > process_one_work+0x6e2/0x1030
+> > ? __pfx___schedule+0x10/0x10
+> > ? __pfx_process_one_work+0x10/0x10
+> > worker_thread+0x422/0xbb0
+> > ? __pfx_worker_thread+0x10/0x10
+> > kthread+0x2cd/0x3a0
+> > ? recalc_sigpending+0x15c/0x200
+> > ? __pfx_kthread+0x10/0x10
+> > ret_from_fork+0x368/0x590
+> > ? __pfx_ret_from_fork+0x10/0x10
+> > ? __switch_to+0x588/0xf50
+> > ? __pfx_kthread+0x10/0x10
+> > ret_from_fork_asm+0x1a/0x30
+> > </TASK>
+> >
+> > Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying me=
+mory cgroup for LRU folios")
+>
+> Hi T.J.,
+>
+> Thanks for fixing this.
+>
+> I have one question about the Fixes tag.
+>
+> The changelog says that, before f1cf8d2f36dc, memory usage above
+> memory.high kept the memcg reference count non-zero. This is true for
+> LRU folios: before that commit, each charged LRU folio held a CSS
+> reference until it was uncharged.
+>
+> However, I wonder whether objcg-based kmem already provided a reachable
+> path before f1cf8d2f36dc.
+>
+> In particular, BPF alloc_bulk() mostly runs from irq_work. It obtains a
+> temporary memcg reference from a persistent objcg, uses set_active_memcg(=
+)
+> while performing __GFP_ACCOUNT allocations, and drops the temporary
+> reference after the allocation. The charge can therefore queue
+> memcg->high_work in non-task context without transferring a CSS
+> reference to the work item.
+>
+> If this races with memcg offlining, objcg reparenting can redirect the
+> objcg to the parent while the old child's page-counter usage remains
+> above memory.high. Once the temporary CSS reference is dropped,
+> mem_cgroup_css_released() can call lru_gen_release_memcg() before the
+> queued high_work runs. The worker can then enter reclaim_high() and
+> rotate an already removed lrugen.list.
+>
+> This path appears to have all the required pieces after:
+>
+>   e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+>
+> Commit 6867c7a33206 later changed the release operation to
+> hlist_nulls_del_init_rcu(), which explains the exact NULL pprev seen in
+> the reported crash. Before that, the same invalid second deletion would
+> instead encounter LIST_POISON2.
+>
+> So f1cf8d2f36dc clearly broadens the problem to ordinary LRU folios, but
+> I am not very sure it is the first commit after which the underlying race=
+ is
+> reachable.
+>
+> Is there an additional lifetime guarantee that prevents the pre-f1cf
+> objcg/kmem path above? If no, would the following be more appropriate?
+>
+> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+>
+> Thanks,
+> Muchun
 
-Such callers have to be fixed at their call sites. __get_vm_area_node()
-cannot detect ABBA deadlock which involves a lock held by a task-context
-caller.
+Hi Muchun,
 
---
-Uladzislau Rezki
+Everything you said sounds correct to me. I don't think there's
+anything preventing kmem from keeping the memcg above high while the
+refcount hits 0, and hitting the same problem in
+lru_gen_rotate_memcg() from lru_gen_shrink_lruvec().
+
+So using Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node
+lru_gen_folio lists") sounds good to me.
+
+Thanks,
+T.J.
 
