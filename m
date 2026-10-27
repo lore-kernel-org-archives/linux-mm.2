@@ -1,160 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C34606A332
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Oct 2026 23:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796BD606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 00:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=kdrhsCv8
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=oVAVblGb
 Received: by kanga.kvack.org (Postfix)
-	id 7E4C66B05B0; Mon, 26 Oct 2026 19:52:12 -0400 (EDT)
+	id 732A36B05B0; Mon, 26 Oct 2026 20:01:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 795476B05B1; Mon, 26 Oct 2026 19:52:12 -0400 (EDT)
+	id 6E37F6B05B1; Mon, 26 Oct 2026 20:01:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 683CB6B05B2; Mon, 26 Oct 2026 19:52:12 -0400 (EDT)
+	id 5D30F6B05B2; Mon, 26 Oct 2026 20:01:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 358286B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:52:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3CEAA091F
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:52:11 +0000 (UTC)
-X-FDA: 85366428462.18.1B19F30
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9E6561A0008
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:52:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kdrhsCv8;
-	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793058729;
-	b=RlAVLJwkXAH64D1eBaXNb76XirT9mISEFXmHNv1t2CMn6jVrqQMxw/3aPfx+KwGm0g9Gj5
-	mkNF1aV0THK6AhWivYmeD1KpglzuxoKuOApF1kUGc+IpZx3v2uFLmgVnd6oI8YO2Ap3GoU
-	BQP15h86HXqoIAyAsyINWUXu5uFsmjU=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kdrhsCv8;
-	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793058729;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 28E706B05B0
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:01:19 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 838A2120930
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:01:18 +0000 (UTC)
+X-FDA: 85366451436.02.E74C373
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9DC5A4000C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:01:16 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oVAVblGb;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793059276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wkDgiw/AqsIfVPHoMoSGYbq8gYoliaNoZ6zCaoCS6us=;
-	b=oKoi/GhKKXXWOYSW5GsBe/EZvnMMkGnDb54h7d7xq9GDFvk/uGzEF2Jdo9peBV3zHDb9WZ
-	0+jtRBusSOHZ5/ZBY8PBLG/9PL2KOP9LyZC89ecEXKK+m2SkX6aYZaWPh742dg+eKDD3cN
-	iSGW6vJBo3XNWm+Pu0Hp8Ux/XJs2o3o=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c4322d310e7so528651866b.0
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 16:52:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793058728; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eBHOUu+WjfRkFYlFWo56wLgMWfNv/Sp9AFy6MSirCKzA/SD0VjR5vQFRbrzfddkIMM
-         I/By7VO48JLf9RWtJmWKsutdS3OKSeU0UKtTD3QTwaHd4tudKZC3DAvIsYx3kNjzTf5F
-         kZ6VoNYCUkNgzCs62MWH+HL8nNbSwKHHqKPIlrbxmwlhbPmGELrXhKZjO03smlFN38IU
-         vwygagnDxw75N1Hlc+QWmUXt8UHjt9H6Q/Lk/3LZKk4ylWpyq/X8vDBGP0n5fAWWqROF
-         BmhDSeomCs50E0B5j6G7lM0/w2FKn6p0SEtCQtA4KCbi5nHSrUMLkt4VN1XjY0sInDPs
-         87jQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wkDgiw/AqsIfVPHoMoSGYbq8gYoliaNoZ6zCaoCS6us=;
-        fh=w5aLCRE2Zpp/oqi+zNXBBHNI1fPevFaUVHzagCt1DTM=;
-        b=szJSfGVKPsg/chaIDziBbAjIthZk1I9zZkgHP+FfAXlICCt87RPI78CCuuKkIsrpUx
-         0lbyThMGVjfwyuuCFEBTWrtxyMKodzVA/Bby9HeYQT3ibuOFwvsIThj7ZPC++VPf+Kew
-         T7jbgTZDlISgT+l7ijRO0hDgo9T8pUG3b+PNLnH5IARfx0IBMS9/lSksHb4dD9ELODLf
-         yTTKGDbJVsweZrQbWW9bqZ85+sYu52J2R0IgGrm1VaNc+bGtQ5vGc8S++2R4F92Ax3ml
-         pdyiYjc5NJPVj7QfFkdBXLOwAFDOTZDmGr+2lR3Ga2x5iadGDa8fNplZ0BP/C8b2jm5m
-         i8Fg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=ixKouDoUlCLHB71PytJx4w1v0AUAxSqI48/quFxSDg4=;
+	b=Yw5427lfv1EWsawP7Lcxupk4bUK431Ptx5QWcAvYRPQBMSa9w9eB9c9WblIW9vdXbuOyto
+	G+Qw/6+EG20tQi2nR210OeZzZT3pvZfwmfYsGa+OyB+1OVaIfcJL8hZT5DVA2pn75LOz9c
+	6+WnJxZmO9fwxy8BlNQcytQU8F2D7mo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oVAVblGb;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793059276;
+	b=hSH2mN3tGziHQ1a7RiWUfyYi5Df56vrw73vrCm9CfqfjGaIDqo2Sq5VazG0wtx27RqEeeK
+	wWo4dVr/oiZ4ZegrFLmi6X+MvRKnN62TmAl+fzSTg+0HdoYyR6wi3iuqwerA0rgiAAEds/
+	C+oBM9yMIrnJbj1ewGKTyJyMASKOVKw=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ab98332238so1969583a91.3
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 17:01:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793058728; x=1793663528; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=google.com; s=20251104; t=1793059275; x=1793664075; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=wkDgiw/AqsIfVPHoMoSGYbq8gYoliaNoZ6zCaoCS6us=;
-        b=kdrhsCv8lFEl3RI4Oukxcu32dgDOuPtrV9JMXv8JvANpBwDrQoJYMplwGc5I6ejgHy
-         GWsXuLhWxzoxFpFaNkDoQdCZ+1NBDrfYthS9Rba1OUUM2cRkyMmHMx3mVyX/NDBe0bkt
-         pyGZim4nhYZEVZvQ2fnu3P3ZKVkVlO6N1rvZo8X5+LoON6JN9IgMmP+L2PNneBDwagP+
-         VP5C/JHy7IGNcp+RyDkHQonOMOrphqUfjetHVWD983mF5U8BUPcWdtkVH7lHWk9PuqVK
-         l7OGp0RGKS176G08eznFalLsEBWu+5l2dDL1Ygt5BZbXeV7o4SW83poQFzT+173aBG6j
-         YWhQ==
+        bh=ixKouDoUlCLHB71PytJx4w1v0AUAxSqI48/quFxSDg4=;
+        b=oVAVblGboy6LCCd6AhD9bVjg78YSky9OVGsw1IdTJViJTBL4lXK5QvSuYqley+bgZF
+         24QEVyCJPKgLLKt2UJ0jHG2CB9LenLsPfxxBhbbxshr+MdxQLhdclFVbOOtiI9nRvFgz
+         hd+6wZOB/rLXqWm0KD/QMsa/Jyvz630UjZd+acqYIk+pcEbr/wCzWtMDwv/P5vXggvoj
+         gokNiyLtmZCFewRfKjhMltGjMV2UuOQtBTKyToBUIsgzTbbIBJdrqfmQ/PisaJUNMQKI
+         ogmo5Rr0PyqgFAIKcstYcxEc2o/iVzLaGodXSdx9BamyzA+hbn643AknGnEPYtrNFLlg
+         FoFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793058728; x=1793663528;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793059275; x=1793664075;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wkDgiw/AqsIfVPHoMoSGYbq8gYoliaNoZ6zCaoCS6us=;
-        b=SCPZ7P+e8L7OI+YZBKUMZ/SRLiOBwibBfXi6WOjdj7nBIGZWt4Zq+n4y6fpufkI0er
-         JaxeTdSw8BA4KfbaXSdkWIj1HoCndNM66oCpInf3qsvaudpGr9S6he4OwXNOnX/UNKJM
-         Ct8z8qOmAPEKdCGEaOCOhhnnvi4S3uG0xjC5sAiGiR2IQZnfiwVPqhJXvmaRtXCr+NLO
-         zMug6AeklOhMStTeckkrkairCRRL/nPGggsfkCjE2S7BC6bKcHUl9lbgpfvcv7VBrQnY
-         +LMWgOk/l7wVuYWpSA7bkB5jFTi/+txzBCsb0lD3WdGXzKWdTDdSwZc9zGjd3WYCnQu1
-         Wcdw==
-X-Forwarded-Encrypted: i=1; AKwUvBxA/q3kd2smO4EGgfVfADmB3mJ1C4z9LvQvy0JsI11Ud7fU2UtI2ZLJrtjqkQTVv8fcOCS5StP89A==@kvack.org
-X-Gm-Message-State: AFq9FYLqkz6GT63BI8QKYnMh+xWpG7YNlxP143fZfKHiAmFk2TXAe1TB
-	CMaj07OcYbLVK0MOmLD38gFojkCNIqFLNJDcgSFSvu22vFa9rwDVh2jmAFjsjPRTYdFdUAPgQCD
-	ib2s3cAc+sqyxb/0rEWNwW5yyyzK/Rh1vaAQnbv6+
-X-Gm-Gg: AYBFou3o4DSlz4p4CkEbbVv9ZpmeFzkwGFw7M6i6MxPf3Nx/YoF6lYOfeGuN4FiO7/m
-	ifhvlny/J5c++SvcF6QlphsS7HlSqnlah1ibsnl2iynkiCvxVGAN9uYpWm8dfnj91crTWplkZTJ
-	4IQcvh2wB+73QGKyujrOa/W9KLIvDxit7P6dsAwk26UzdEC5s9/8y9OilCHsvCLLam5hHdn2NyO
-	fxWepd7lCzmTARGrtX54ZfknERP5RDrMcszKNc+fABJlnnTO4NGxcxPjtlLZjy7nyJsRb89QkVa
-	/NNfH1tkszYk2GYjzqgo1S2ICosbR3oeli+R8jvexRspw+K52fMZhBNJFGPpvff3Z2fOZJICyP8
-	MKCFYIxvqPSwVW3QWkN5AGFadGq+v1BNk6ajRiEIK1We0nGDXawVbuSKiT6ufX3kCQr/zQpDo8i
-	qkdp+6R9l3dN0zkWUow07zkcvqWbh5wgpbRe8w4rLeRg/dAfTKkN7Imp2Zja5kl8XNDXXHkFRzD
-	nm1G1bChQ==
-X-Received: by 2002:a17:907:80c:b0:c46:6a50:40c2 with SMTP id
- a640c23a62f3a-c46bdee2675mr943075666b.39.1793058727681; Mon, 26 Oct 2026
- 16:52:07 -0700 (PDT)
+        bh=ixKouDoUlCLHB71PytJx4w1v0AUAxSqI48/quFxSDg4=;
+        b=PbRzX9SEgpfWcQCUZRUBDGakSN50mkAL0DB5YssLSy/dSuq4NBeaFV90rIwduCw/+W
+         +vRg4w6Ep5OzjUD4hsmBNoezeMgMGNGa1rBIISu1RSVzJSGEY17D2oACRdDmT/rvh9oG
+         OgmkSUzCSeZMEx8c1eC2bc7wtnes4GGXjdndSiTtDHtYObh4SNvdAUkmjOHmXsLrDDG/
+         X3Zzu3+jNLo6cDaCLiyvCimuGAOUUX0csq3XW6Uf2Bwa8nhI+TPQT1tBzbo7tbWb3vu1
+         tUODSWxll4+g2XxSIFzhQjPoMa/4x4gTU7RuWzfBySi9KvcKeb2CjIL52gRgIKQl28hq
+         nZlg==
+X-Forwarded-Encrypted: i=1; AKwUvBzPan8VVHK/iBDKTzZFmp6NGtmkfML21DiCurkv7gBdSAnQDkzbR7DgJpOlu4f/8bvG8hcZeZ1PRg==@kvack.org
+X-Gm-Message-State: AFq9FYLxkGzsJoDmmTHoVN1XsEiPPWpA1ipHVO0e4V7hC9BkjL8eYrdI
+	KkpYeo8EV3llMug5/QBxQefnnjs0XNEjlbmteUKVDk8pct+qegHjUfk3UBMqvWpbVw==
+X-Gm-Gg: AYBFou38iKIXRw867pbkooqmfdef1e9i7JI8jICigUr9gfZU+q5iWPHjVpti0E8ueNs
+	aWAjmDDFXSBpHxQnX1LlhGjLm4qSWk6P15TAMGp+WTs6L+hCiD22HZFc5i/uCdjXuXWGQANGlQO
+	KCrEqd90W7h4T3REkB/gBSm15ssbpZRfWpB7OSmzT8pFzIPBHFT2/Hj6pQ/ruYzB9zNpBMSFIvQ
+	+AB1OdaAigcswswccxIe6Vpo80+7WIEbrfEGEduJZkYX4bzp/0pMNi6BGkalUeHieiPq0YdB/uM
+	BOJcdMjVwmlqn3P+VLhfkIrXjyRc+F1LnD9VGmGXYScYxKbMuxuP9RIBKGHEeTgvGs4ENoiPngs
+	P3QJ12z0TvsReG7YMinxNvZG1VXaZgkvV4p7arl7UCFhhlAi8ZifE+WgfOdxUn0tY71kVOmiKTP
+	PsprCY4OcjDIJHL+ORrMnbjRu0Erq3VKnPNU6Yj8GjIktsxcJlitAwJhriFcpWXva12EUSNmu+i
+	MvJfBY5KJ8p3qcsNP7vqCr6Xb8i87+YLm49Y/qYOzk7VFi6Y8NQpjWFcBXOWHbFH8gmy7QSprXU
+	gd9y+nxsfaukHdCF2bGRgJdpF13n2jIF3Ju/AcoQMDRnCk3vGurKM5w4NEXIkHxggmYWrow=
+X-Received: by 2002:a17:90b:528c:b0:3a0:e4ce:31fd with SMTP id 98e67ed59e1d1-3adead444ecmr7102022a91.10.1793059274755;
+        Mon, 26 Oct 2026 17:01:14 -0700 (PDT)
+Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae4066cf2dsm1119900a91.16.2026.10.26.17.01.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 17:01:14 -0700 (PDT)
+Date: Tue, 27 Oct 2026 00:01:10 +0000
+From: David Matlack <dmatlack@google.com>
+To: tarunsahu@google.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
+	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
+	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
+	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
+	will@kernel.org, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
+	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
+ a 2-bit pair feature header
+Message-ID: <at_pxoULR1Tp5anN@google.com>
+References: <20261021152527.375070-1-tarunsahu@google.com>
+ <20261021152527.375070-4-tarunsahu@google.com>
+ <atlQ_Er0Ig7CCSxv@google.com>
+ <CALzav=f00C4yOAseNunW8GgQTDUGWT927Qy=TLm-3-J0TEDH8Q@mail.gmail.com>
+ <9huzzew0el59.fsf@tarunix.c.googlers.com>
+ <at_CncIPYCxOVkLo@google.com>
+ <9huzecdcghxu.fsf@tarunix.c.googlers.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261026215226.3713941-1-jthoughton@google.com>
- <20261026215226.3713941-11-jthoughton@google.com> <3b0a8fc4-d140-4a90-b810-cbc1283fc083@app.fastmail.com>
-In-Reply-To: <3b0a8fc4-d140-4a90-b810-cbc1283fc083@app.fastmail.com>
-From: James Houghton <jthoughton@google.com>
-Date: Mon, 26 Oct 2026 16:51:31 -0700
-X-Gm-Features: AclHuK-Nhf6TYTDNWSq0v6hReecRKBdo5ExoV8oZWGVCIO9BK-126Jv082Kq0QQ
-Message-ID: <CADrL8HUZ3t8RdMEeBPfqsy1_1rN0Ty9B2c4iP6OzNS12te6vOg@mail.gmail.com>
-Subject: Re: [RFC PATCH 10/10] uaccess: Move the NULL mm warning out of line
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jim Mattson <jmattson@google.com>, Jens Axboe <axboe@kernel.dk>, 
-	Pavel Begunkov <asml.silence@gmail.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason <mason@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E6561A0008
-X-Stat-Signature: xrfaxgxeat9w9d48p6gxn9hz1wdbnsbq
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9huzecdcghxu.fsf@tarunix.c.googlers.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9DC5A4000C
+X-Stat-Signature: r5dgz6sfm8pmdtafhu9nkmajyqpcgi6c
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793058729-382639
-X-HE-Meta: U2FsdGVkX1+KG81VEe7b6cDRkJCY9w41526nzw7J0Z8I6rz3gu9x4ZxwaauqETs7V7rNG/OymyE3c9bsQUWLPWdFLkCdONAZoxt38j5fHcVEUQhmq+vNE6+GIkySbEABMQJY1Nb5uKYf2ARsK1ygd+GkEC7sIDOya8V2l9yCZSRgN8094RtPNe8xjzp64FDkqHZVk92hMv/EF0QWU+4KskX+jPLTxmKZYbWsD9dQe7i3o2IbxWKdnHz/f/+oHfWy1ZG7SvTTRCYwfnrPKSAt19HKkFnpUD+LrTcKfn+ooo+BOQq8QjBvVFaxMGR/ED4oSSxesPs5ChLqKkpvt5EcggTk5NN+HyZg7svAca8v9zzo0AABfLbJD8UVxBE8z+RZkOSgBs1mcOAc0fx9Q6ZXu35Eeejyf0FsQes4VdWtVBJ8RD3okJc6X6U4NcXZUgbuF2Y2gKWCaOXspPNhQl+KANKfTPHUjpi5ejF/hmbkvL6VQS5/ehYcNB7+SVBe9rd6Fov3U6UVMoLRqXqTpICMPUaI99jysBplO8uHktNlMM2YMrq50k1HmPiKxXa2ang8wk4p3xPnFn8VNE+npWtnnDw1DUH8HesO6euvwAPNuexkqIAYGjQPf4YFwbLmWF9KjH6C15AsaO0usxeEPoegSzaGSe1zxrHe3xKZS/qsjBXfwTJW84GTH5C73zRX6uli9ThE7n7ixGFFZiYO6mWH9sQReOmrUHNADCXAPefe9SZoGQ51X9+maVLiXToqXcQd6u9mrYVfiQR1hPNrhHlYngaQwZ6Vhvhwfv96/Cw6ilL/5bUeLZA1HiP0ttign1zr/2MfC+o/bQ/jmFJp3G9axSgT5tboOKuJePUCnzddoPBjZ0xgtSZi+sjRKVIae/l82bsXdUGm6dkTBaEsKH2rRmdTdIog+nV20O5ZxRTcnAabF6ZPDQizU3Vmr3RPSnLyEYZNzFp/U00QVgYkGVY
- G+sz1bz6
- TQ9VmW1gsVwujmQvPdvtjjEvf3g/qDTWFWm/vXTBL/5ajuC4wLiV3doVaFTFI5fZFiQceXv0KH/eCkGNpQF5ICLdt6VX1gnn55LgyFfJ4jK/w0kar00saCEG5O/gyGSnVNP+Li7eaT0ePUVAi1lvznloLDGBFoy46wIm3otdzXoqROWLtevg/qGo2LReefKE4z5W7iaGgLFWUUNQhFwg+kMZJR1pv/xtWs6sf1KGhppERiQ6q+AaYIxtVNAGYWMQr3KLdC9dExa1HOVe67kq34HBsS0XIzMXlcBTGSEauF2uzSMQhgLaRxMfBcXPK0cIthlevIXX4fKdrOEwAYpavxmS28w==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793059276-969241
+X-HE-Meta: U2FsdGVkX1+p4ndEFRCZCrjYQyZi4aonNFpo4jQA4C/zTlU3CZM6LA4f34ax5FrnLoBKlHhrRMoxow1PcUHjOCEwmaPX3svsRRg5iV4IxXMrDCkyEKitBeniuqA4cnKEtF3XukjHzQH0Q1jDK7wFrEKvtRIpqmZfX9JxbLWiqwz1iS+Xs11Wd46koEai/wFw0mbEi55zBRwE06uB/OzcGQhDMVCanzQaPD1sAl3QDCh0QMP5RJ08CgfxLwHJhd10gmWnpKUhubHpT8OgDGSkbNiKYZQYH5pwu9iHtCTvXXIDHSfvWe0hW65FT7ccW9bjuvDpl8gVFvoUEaSEDZR/Szy/jh+o9c+J2iKDEt1zjSBE5s9eSTtk37khws8m0rF+8/OVHY+rPQUAWuSRZ+HeWQjha0YGBtUQLcLGwHdNhKXGqYcChBmcxwvg6ZYZlvGFgNd24nOnT8gLoAFhBOBg3LPOsWv60w3E4WQOXGIDFgqx6w5qjWPiOW73cwW4gwkHxXoZ3DuYVAcuUiI5kfOhR9VKjDbO2Dbrxqd3aZDcLrBTGGD+4IE1DuGBCy15QqOg2R9tTeHYphle5eOlMoL50aSGZ72IvQ2YPDx00i84ef7r1lhqAxeHms5q6L2ikKNkXuH72ynI0xGQKXgYFPo4ege45uhxDtCtrfsF43PHCdBffDpt9Ik8IZgiQ9L4+4UZ21HC598bgoJqiCk+o1++PctSPPVyh0AcWtHWNgVyHpPgZI4hJdqDBP8jV7QV6kyHlgXUwPomTwWwk7jxPlw2mET7nJT2v6zgV2gP+c4NbPmkSk7ELiEKsuBEjW2DG8O+jFHY/c4Br5nwyhJgZJPITfeqUcjwuqt57f/obRXVTDUWr5MKuLXsMiFHSuUv7w6wHib42YFUdQfc3UVBIJ0VWgYqf/c8sfWUoY/PnG/lw3jrpXUwNb3vrnH1roEWoPi+i72OEjs9NSNdFr484nQ
+ oX1q+EoS
+ Gs7HlmqIcVcsSfY3RH0DPg6OsRwELtgVcvH1ksoGhUH8C7cVnkozmiCwz0zYUvt0SoLXr9CHV7jSLgc6i9t5KqVVMfGOX3syAxi7TRPvXD3RS5CTbFUw4T2xISPNNs30U+o2V/JOIULoqqS6bx6l6CMsjE5B4ZW6WaJYLSnC5WrJvP5zMlDg5VY60zdwOsdyLh0OEWmXq5wWa1maYqXe/+CrroEL8/7UTiGIdYK69Q862d9cywJ7ernURm7HtSUKKMWJ7aLCigTINBvo4fcq9eEI7IPOucN9BC5dW2ZuaEebS1zU9PCXAQ5cxjwyJBPLM3k6G+GBfyZMPeDv5KJKcZ36T/pDCIyvbfL2m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,62 +142,127 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 4:03=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
->
-> On Mon, Oct 26, 2026, at 22:52, James Houghton wrote:
-> > uaccess_without_mm() is inlined into every user copy, including every
-> > copy_{to,from}_user() call site on architectures that define
-> > INLINE_COPY_USER, such as arm64. Each inlined WARN_ON_ONCE() adds its
-> > own __bug_table entry.
-> >
-> > Keep the NULL current->mm check inline, but move the warning into a
-> > single out-of-line, __cold function, uaccess_warn_without_mm().
-> >
-> > The trade-off is that only the first offending access in the system
-> > warns, rather than the first one from each call site. The stack trace
-> > still identifies the caller, and the access is refused either way.
-> >
-> > Compared to the base of this series, with defconfig + KVM:
-> >
-> >                      inline WARN_ON_ONCE()    out-of-line warning
-> >   x86_64 total       +5,884 B (+0.014%)       +9,714 B (+0.023%)
-> >   arm64  total      +40,948 B (+0.10%)       +24,609 B (+0.06%)
-> >
-> > On arm64, this removes the ~16 KB of __bug_table growth, while text
-> > size is unchanged, as a call is the same size as the inline brk. On
-> > x86_64, the call is larger than the inline ud2 and causes more .cold
-> > splitting, so this is a slight regression.
-> >
-> > Signed-off-by: James Houghton <jthoughton@google.com>
-> > ---
-> > NOTE: This patch is included for reference only, to show the cost of th=
-e
-> >       inline warning.
->
-> I would suspect that the growth is larger on architectures that
-> don't implement __WARN_FLAGS() but rely on the generic WARN_ON().
->
-> This would mainly affect 32-bit arm and mips machines, some of which
-> are very memory limited, most of the 64-bit architectures have it.
+On 2026-10-26 11:28 PM, tarunsahu@google.com wrote:
+> David Matlack <dmatlack@google.com> writes:
 
-Thanks, Arnd! I ran some build tests on 32-bit arm and mips:
+> > But looking at this again, I think the required bit is redundant. Whether
+> > a feature can be safely ignored is a property of the feature itself, not
+> > of any particular file. Every file that has a feature present will have
+> > the same required bit for it. The only thing that actually varies per
+> > file is whether the feature is present.
+> 
+> The required bit is subsystem property not the per-file. e.g. memfd_luo,
+> it is set at compile time for a kernel. So every file will get that required
+> bit set. It is not per file property.
+> 
+> struct u8 memfd_luo_feature_state {
+>        [MEMFD_LUO_CORE_FEATURE] = LUO_FEATURE_REQUIRED
+> }
 
-arm (multi_v7_defconfig):
- - base: 31,913,726 B
- - patches 1-9: +64,816 B (+0.20%)
- - patches 1-10: +23,193 B (+0.07%)
+Right, whether a feature is required is a static property of the
+feature.  That's exactly why it's redundant to send it in every header.
 
-mips (malta_defconfig):
- - base: 11,830,177 B
- - patches 1-9: +61,168 B (+0.52%)
- - patches 1-10: +25,881 B (+0.22%)
+> > The required bit still has to be conveyed to the target somehow, since
+> > the kernel that needs it is the one that doesn't know about the feature.
+> > But it can be conveyed by the feature's number rather than an extra bit:
+> > split the flag space into required features and optional features, and
+> > assign each feature to one of them when it is defined. This is similar
+> > to the required_flags and optional_flags approach in struct pci_ser [1].
+> >
+> > Keeping the same header shape as discussed with Pasha:
+> >
+> > struct kho_ser_hdr {
+> >     __u32 size;           /* Size of header + payload in bytes */
+> >     __u16 nr_required;    /* Number of required feature bits */
+> >     __u16 nr_optional;    /* Number of optional feature bits */
+> >     __u64 flags[];        /* Required bits, followed by optional bits */
+> > };
+> >
+> > Required feature N is bit N of flags[], and optional feature N is bit
+> > nr_required + N (using nr_required from the incoming header). The length
+> > of flags[] is DIV_ROUND_UP(nr_required + nr_optional, 64). Both spaces
+> > are numbered contiguously, so there are no gaps, and up to 64 features
+> > still fit in a 16-byte header.
+> >
+> > Each bit just means the feature is present, so the truth table becomes:
+> >
+> > Source bit       Target supports  Action
+> > ---------------  ---------------  ------------------------------
+> > Not set          -                Accept: feature absent
+> > Optional set     No               Accept: ignore the feature data
+> > Optional set     Yes              Accept: use the feature data
+> > Required set     No               Reject: -EOPNOTSUPP
+> > Required set     Yes              Accept: use the feature data
+> >
+> > There is no invalid encoding left to check.
+> 
+> 
+> IIUC, I believe this will not work.
+> 
+> To Communicate between source and target, We are defining a protocol, A
+> protocol which will be standard for all the kernel. And each bit location in
+> flags must have the same meaning in both the source and target kernel.
+> 
+> Now in you approach, If Source kernel send feature N to target kernel,
+> target kernel must understand Nth bit as the same feature. Even though
+> the bit position in your approach is not fixed but they are fixed
+> relative to their starting point.
 
-I think it makes sense to include patch 10 with these results; cutting
->50% of the size increase for arm and mips seems worth the trade-off
-of only WARNing on the violating callstack. Let me know what you
-think.
+I think you misunderstood the proposal. I'm not proposing to pack only
+the set bits, and I'm not proposing that each feature have a bit in both
+ranges.
 
-Is the increase even with patch 10 too much for mips or arm? I can add
-a Kconfig in that case.
+In my proposal, there is no such thing as "feature N", there is
+"required feature N" and "optional feature N".  Required feature N can
+be found at bit position flags[N]. Optional feature N can be found at
+flags[nr_required + N].
+
+In more detail:
+
+ - Each feature is defined as either required or optional, once, when
+   the feature is added. That choice is permanent.
+
+ - Each feature gets exactly one bit, in its range, and that bit is
+   always at the same position whether or not it is set. Required
+   feature N is bit N. Optional feature N is bit nr_required + N.
+
+ - nr_required and nr_optional are the number of features of each kind
+   the source kernel knows about, not the number of bits set. They tell
+   the target where the optional range starts and how long flags[] is.
+
+ - A set bit means the feature is present in this file's payload. A clear
+   bit means it is absent.
+
+ - There is no invalid or reserved encoding to define. Each bit just
+   means "present".
+
+ - The target doesn't need a supported table. Required features are only
+   ever appended, so it rejects any required bit at or beyond its own
+   MEMFD_LUO_NR_REQUIRED. Optional bits need no validation; the target
+   just checks the ones it knows about.
+
+> For the current appraoch and V3 [2]. Think the below one as msb is
+> required bit and lsb is feature present in payload bit.
+> 
+> 00  FEATURE_ABSENT / DEPRECATED
+> 01  FEATURE_OPTIONAL
+> 11  FEATURE_REQUIRED
+> 10  IS INVALID (analogy: required set but feature is not present) which can
+> have different meaning in future if in future, a need arises to reuse this
+> field.
+
+In v3, 0b10 is reserved and not checked by the target. That means an
+older kernel will silently accept it, so the only meaning it could ever
+safely take on is "safe to ignore", which is what 0b01 already means.
+A reserved encoding is only useful if older kernels reject it, and at
+that point it's no different from adding a new required feature.
+
+> Deserialization can happen per feature from right to left. without
+> jumping back and forth.
+> 
+> Because of all these reasons, I believe current approach presented in
+> V3 [2] is the better. It is close to your PCI series with two flags
+> field for required and optional except I combined both field into one
+> flags. In your above approach you do have two counts but not having gaps
+> (which is wrong) and the way you proposed to parse with an offset is different.
 
