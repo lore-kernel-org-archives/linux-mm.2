@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD4F606A333
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6113E606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=C6CueXdC
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yQ+IWAEl
 Received: by kanga.kvack.org (Postfix)
-	id D4AC86B0818; Tue, 27 Oct 2026 12:10:21 -0400 (EDT)
+	id 6205B6B0819; Tue, 27 Oct 2026 12:10:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D22FB6B0819; Tue, 27 Oct 2026 12:10:21 -0400 (EDT)
+	id 5F6A16B081B; Tue, 27 Oct 2026 12:10:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C38536B081A; Tue, 27 Oct 2026 12:10:21 -0400 (EDT)
+	id 50DB36B081C; Tue, 27 Oct 2026 12:10:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FFC86B0818
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:10:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03E3E1C4471
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:20 +0000 (UTC)
-X-FDA: 85368893442.26.5FAA616
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3098A16000E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:19 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=C6CueXdC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2A4E46B0819
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:10:55 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BED6C160AA0
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:54 +0000 (UTC)
+X-FDA: 85368894828.12.6AB05E0
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 37B2320005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=yQ+IWAEl;
+	spf=pass (imf13.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793117452;
+	b=26HxjwbDFoMEOn8M28ZBTINDvO5iEO2CBbKVt7X9Ah3onlzPdggNA3lhCL+V284+sOutGl
+	BGyhpz1RuCzxvWL9YOV/tuxS/PNVcL4jWcoK5pc1jjyS/F66OZSLFzOpICIbbPSeXS4/L8
+	sXgs3U52t75w1jnIFU2nf+FplVZgtI8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=yQ+IWAEl;
+	spf=pass (imf13.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793117419;
+	s=arc-20220608; t=1793117452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K3Fc6Qd16BKiEoRWwD8fs3AmZLAKUuVGN6JC9AyRnB4=;
-	b=N4eID4Izh60X9zCA8aVBpkVS3YFbOl8oE0OXGslhofhv2jAgmmTJLwAa4HMspkdxFJMCpd
-	nSeM2MzqUdQqlNLHeoaIRgep+eEEta4/nncWqttM2pmJQlvb42kImGiuuI1ix6JEl1+sNL
-	mC0Imf8FR5M1/nMS5u0GLZuShfyK//M=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=C6CueXdC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793117419;
-	b=dhNHgwrD4WAc0sV0x9cOQAsS9xWWXacQKbdoTSvWuYAXBKwKVr7JM+pN/VBszLsaSPrllZ
-	nl0r9LAwftmuPH9hrSYQIzRgtpYcZKixnjMFx/ZHynlDvbTZUDpzkTq5wUMDLKhVfK8ZLQ
-	zq513pXtpI6jRpM7/svi2V1HRC/HMw8=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e9eb579c0eso25556465ad.3
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:10:18 -0700 (PDT)
+	bh=BMVK9C6kjD2I/C8Mw6stURXeaeBe+UoUZ1aPJYJvbec=;
+	b=uTS85PCLq9dUAySVN2t1y5h+S8D81+hOp3DVcrmhVpZWbU6R/THvgzpb46J8F8CYUdktZ2
+	m3a3ZkSCSXu/5d8ZIQVQvYKtZUVBUo54f6fjKIBQUBdnoEGn5czyntp3BECztw/5J9ukhH
+	UxYsDjoDkirSYclqB7kLpudl9gtaZpg=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso53508a91.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:10:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793117418; x=1793722218; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793117451; x=1793722251; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=K3Fc6Qd16BKiEoRWwD8fs3AmZLAKUuVGN6JC9AyRnB4=;
-        b=C6CueXdCyBNRFMikbNRnFDoSelvj9XhEkxOOhUeva3aTAcV3iyH0mtngMoz394Xg5J
-         HyXS+nZDWYR3LedWtQW7WUHJIwq5B/TDvw6glMHI7eofihdnl3+H4c3GuSdzr7UnFYZ8
-         52fElk/sge81x2yxiY6H015nWQebWGpSNFMoS+eXpfyGZ1exvl89giD60/dam5zRCNym
-         Y8fBljTd8nkuCkdLZWkCf2lBQdvr3nEzkILkUfULqAqYRVze9yt3jaLBNqNV69kvdMkH
-         WPcg8HwP26PDaWlbSDrOJNnAuMAcKEnh9VJG1p+6vXIHDL/FeXN0shJVHoBZuTyPzOp5
-         p8pg==
+        bh=BMVK9C6kjD2I/C8Mw6stURXeaeBe+UoUZ1aPJYJvbec=;
+        b=yQ+IWAElMsm/hvBXg9MTj38X0bV0RDSBUyB3HZ77gI2J3zu5l8KR5PwU0Ys3tGzOQo
+         Es2FnLBuPrvLHCv0h5ZjdaY9eTYtKWNnO76efraHG77ENX2sn3EDYPpK4GyHrUAVa1yD
+         w33tGxFhbzy3rc/ROhN+q7mAi6mGXWrpA8Y6ifuPNWf0xUECFbqAXEjsoNmExvvEQL2V
+         P3a7pXeaVEuXKlNJJUqoJSn+zoEcni8GklVup4QQSDq6+R+4I/Kaqjt5AV0FZ2dsbWzi
+         yP/6RsnNJLKr7JrnD73pQpEZnQrh9xNbHISJ8RK5tO+JHHTawRgafyMCGMR2ny5ppwNN
+         GBsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793117418; x=1793722218;
+        d=1e100.net; s=20260707; t=1793117451; x=1793722251;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=K3Fc6Qd16BKiEoRWwD8fs3AmZLAKUuVGN6JC9AyRnB4=;
-        b=FSgxolzzMAG5z0W5TNCGfHvGOf/avFUCxa2prtjadJbl7M7QTY638zW4HWn0K83CI3
-         e3q6xIwN2FPy/xga5HEH7kI4NaDVmsuEShOb9B1iPyylmrrIW9BzhX6wt33mefhk8BJr
-         L0/CL/o0QPlsdsXl5WQnQw2n2ticzvS6+0YWzo8QSMivijO9wJy9+RmQz2Qad7WxaTQt
-         pOFRFrSvP7JUxnjP6Gy2U5p5uhoBaiDE5EbJR6Rl5R2TX/Lca7lX+Zgre8Ri7NJibuxg
-         O4o2s6wstJeEQTZ/D4f+cs1cIUqOh1ey5YoK7dGWo5KjguTp1NeMSBrtp7zjJmKRsvgk
-         VVgw==
-X-Gm-Message-State: AFq9FYJRj2ym9v81+lMg/SskC4KdyKw4JMkctWYDrP9n6Bwc5b76jkM+
-	2+ux+6cN97ESo2AGWO0ivOf5ksDLL/QPkKzPqrPRG/rnPIgqW0yjvm2g3MIysg==
-X-Gm-Gg: AYBFou3HxULxxaM7/aYWp9v5S02GmTbQRJj4L1f7yFFic0T5DMOuxxLvrO+1uMXHMUy
-	isaioghq5psxe9EBCdJH1G8bjmkY/wEr8erUZEfG/3iwz1CaNrw0izggCFE7RHy/8+/lYJvMUip
-	/fhYaxbDELXH2Jy1LZDOkjYFAy1OMPxCiipBnrEWG0FKY/7p56We3itOq+3UTsIBc+Bab6iZa11
-	yLW22Q30jrjDw9Qe7F2lAHBV/3zIoF9Y8v8r2CamCZ3zC1twpugDe3EiT0rp9TdF2kWwxxETlxr
-	5jeVl9gFcWZhWIl9RK6AA1cifrQC4jq8H9bJGDyuEOY8mMKIr0sZFo1OWje0vzWdTjCTTztfdGQ
-	X6p5NRCy2oYtZ4lGhgZhrjOIr9jMzXsJQF0L9NDZCBsvIdXhQETEksl4GaCS41HHNEmSrEX9Jbw
-	g6VU3fISTGyd9qPm0agoQ8cFKBCOCsz3EoJje4wBCgGTuzQ7jDeo7Vz0c0nUjgV1ufJ5qA8Pwac
-	RUmMN00OZ3bkcSYpftGh1Ktl+f2hQ8in/eZIMvyzYO38a43m9ibRRabZFs+bb0OQIcrTbXMIrAf
-	50HOzYCP/dvCqLeaX1oD3/bfuueZIm4RvoNc/bOA
-X-Received: by 2002:a17:903:3c63:b0:2e9:87a1:98b8 with SMTP id d9443c01a7336-2ea9c95ba29mr81806135ad.73.1793117418072;
-        Tue, 27 Oct 2026 09:10:18 -0700 (PDT)
+        bh=BMVK9C6kjD2I/C8Mw6stURXeaeBe+UoUZ1aPJYJvbec=;
+        b=jpebIrksp8pQdTmVS4Fn3GsEIH4zhF9lRttMuT0gtX9T6ygDjrDCElhosiIrTTli1W
+         6o437T+/kgXyVgSHkPJQJBxVIypEaZV4DAtRqkxTh2XwpllE52ISU6tuqBJrEiuWHCqc
+         GHyfXumCUa8lriuAIw2UBLwdKZ6F8hj3vcnP8okD7SDJ27Cq0c+BP3aFhUIVk20V9hS+
+         MHt6AFqZoAZWiEnovqrzyo4uS01XRjZZdcjtPY80K9lOfgPfs2SNKFPyXJFxRafCludS
+         PkKtqbCLEWiaDN0wvpYyCPvHWJv68cr3EGD5/strDeWhKy4ghpoGwvUmtTnrYi7XsJkr
+         LFbg==
+X-Gm-Message-State: AFq9FYJmQWycE9zhDxXbFjH52bzkQNJjGET0RKKFV1eeJM5CS0v4dIyo
+	yNlF/uV4NIbhkhyEk5h+g5PC03DOHK057aFTO/vUa6xzOoeru3lGwlRhsZ/XXA==
+X-Gm-Gg: AYBFou1AawEj+K9sJ0F/0ZWplkG2nH5DncQNKfGHLNNOaLfpVNbiFSqpmDpBi9lOYF6
+	KW1BYqtUL6rGqWoNQin3rfum5CKIiNK4nKsQEPuI94iXosFVCjliqjQslOKEOtdova/H8EaVsNG
+	MjIEfu7JCJfgBBTr7IaRXDxq+vhOq+LPa+8rn6Qck8xOW2cbw0WpNnSFEZaXO2Xo6neoAJ0Osqn
+	XjIe6q/6jzWuB6uhAa3CWvBWk+fZV8PcK7ffeNCBXvl3D6U8/YOSpVRjTo5hnwCNzzjs6uqGmS0
+	vM0eH/mFobOfDBnbZVxgbC2pQsOJEfG7hdkrZsviIwz5TsJsT5c59bnz8B/LxxbLMrT0j9mA3fc
+	wIy/N+TxcQfyYvxjwEN+2zFO9uctwhaORRqjaZe6bUKhiq3mv6zBTLwMCjHX5QGlLKNZPbd5Qdw
+	JRKTIFjDgAdXTdb4l8Qv29EIDQa9ne5HCWMWTYNBBYN4TLM0ExsdSZxT4hT/nT4YXuHEmx/vpAk
+	v89r6wupxpe9bu05R61+cmkTnSBkCX5xZk7ZfYKxsRcsOHNTjLT84RtnD6h9Yl22j/xIaQIHHvs
+	7yXyLbRuRwft7HTzk/Y=
+X-Received: by 2002:a17:90b:3141:b0:3ac:9a54:e3ce with SMTP id 98e67ed59e1d1-3adeafb073fmr8492945a91.63.1793117450954;
+        Tue, 27 Oct 2026 09:10:50 -0700 (PDT)
 Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c9d2cesm12213585ad.65.2026.10.27.09.10.08
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae402a0692sm4393099a91.2.2026.10.27.09.10.42
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 27 Oct 2026 09:10:17 -0700 (PDT)
+        Tue, 27 Oct 2026 09:10:50 -0700 (PDT)
 From: Lian Wang <lianux.mm@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -105,27 +105,27 @@ Cc: linux-kernel@vger.kernel.org,
 	gustavoars@kernel.org,
 	tglx@kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [RFC PATCH v3 11/18] mm/swap: remove available list
-Date: Wed, 28 Oct 2026 00:09:49 +0800
-Message-ID: <485a50f467e22ab0801b0ff16f2465fc4ed8c429.1793106426.git.lianux.mm@gmail.com>
+Subject: [RFC PATCH v3 12/18] mm/swap: bound synchronous discard during allocation
+Date: Wed, 28 Oct 2026 00:10:24 +0800
+Message-ID: <1de96c68db9d3ac83ae485a1eddabcea1a2524a1.1793106426.git.lianux.mm@gmail.com>
 In-Reply-To: <cover.1793106426.git.lianux.mm@gmail.com>
 References: <cover.1793106426.git.lianux.mm@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3098A16000E
-X-Rspam-User: 
-X-Stat-Signature: ayc9qekumiewpoxjc3nt9u9bx83x778w
+X-Stat-Signature: z5om6wcxhsrq16nb5uje1up885wai18x
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793117419-495000
-X-HE-Meta: U2FsdGVkX18BjRNN/g4IXZhDU7D+7nf/x8K00fKZHFrbdwi6ZIsiRHWx08He5WIbpvfIEPI73abvzei7iBFoayR0Yr8TjU9qs7BcxkggGdnPfeiXp77o6imnbvW2mtP8daBlfhXwbugHqG5RwDkhkpqxejA1DbEe2oq1FidspQUPk8uId/cK8yp5M/DK1Ka7Q0eqID4x7NRWDlk5vNQdJ3f9SKX1BGuNv+cn7IuHx67kgGVqZcmBKZXAEaMnNTGdZQVMSacIsGJdtESAqqZXjudEC2s8/X9NFAF9qIORK/O1RSU2WAK5Gh23pX0SdXkCKp09NawAKTWqFOd7LHpxlM022ut5SsAatPq18+8t641mSJidxOYNXT8S1/jjRlg8gPvKBzOyat1VrE87i6Zz4AvqUfIwoQTzeQ1uthyAlCV4NeD+tZNJDnKSFBphV8atKGbu4gzWwL1j9inHTTxzWlg+XwXfWR6UbDjohDRrfnbgDATzWM7vErLoI3ZsEMls7ayxhj1secoQftzaTcXMK3uJMsGtDSQThYM7Q/0JrouQmO4i8acx7Ce8hKFqgyHbBClEg42GxnFE4AtWPE2UFW+YN1cJahvl0kwFjNEwdTV8JG845KfKJ8DxvXpWFo6cFnky9Szct64OVPQTw3FJbeCaMRQjC6pAlMqaR3i1ZA8u0NNeExAZvSGnscC5BjUxOm2ALaXKnoWEyLgR+HoNF1XxNTp3C/2g21W8njOfA894UK1YscFHKchk3zPaUzQdib3EJdKbbw82Nyo+3J7ll35KVE5G++R3lIhrqX+awlKV/Wh97F1mBFbaeGzBBx2aru3nTkHd2OyvSDfHxrvUutLSIzmlpKQ0G9agkxvyCP057KrKBv0ZQw2ZqHqVzKSl9dPbRYlRN1FS0QycKQ3nLt9Xv2VvFYfEkDRZzQhpTVE16/NtkRq2uUOd8FAXXKnPBZ/mOCVJF1Cchwqu6e3
- AnKlTHSa
- T93S4vFWrv5SfZpeulAnWAZdRRE9j5NbbVj9i3qd6hHH0lV6LUMx6gZdXai4rsB+X6cP5J8/UCXN1T9LPou5iy1p17OsEANg4O65uDt8NtP7Dt6VD6B88CrobFvN8CnlZZmC2/iu90YQGAYG23LAWUzvNWS4ULfWisW5aTYsx2rcUwGduDCgHWklH2/dN9t4By0xjQKBk2ioanMTiC6kjpCy73Oac0zmgrk634F1tFHO8SXa51FtLnfWjvp2taZ7t6ox2gbmcODjYOLM919NkMRMrwmsk1AKO03iU8R2uc6feg5Y/gdjGjtZJ4NbdIuhvm1xkk7RLkgoMgoDqUlY6mP9OOBpt652OUklcS3Ug34mZjossxgiWSMaY0dFJjF+LtNta/KuD3zYEvjGOVfwCeqeOwnc4ZXdLWDoumJ/Qb8iHEG/E/SppQooa9LFvjwdd3ao+pidRudExhJhUUGV/RDnG3FK/iF/2AwlqAWzxbRBoF5cWld9Sd6mlCz/XC6ekY6w7
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 37B2320005
+X-Rspam-User: 
+X-HE-Tag: 1793117452-146321
+X-HE-Meta: U2FsdGVkX1/YvPm6l+zSPSV1C8oj2vUyhBAYxnQvjFUQpy/12JQfSPYSzB+ZBzkAUfieeIJt6zTAjOIPGzpCqlZNe+ZdA8b9ltDMKSs1m54yr30byxqQo7URNrHDMb56cfT5EZp8HOOvXLBGElXjqr0EjE+ZKmT3p4S16+HgunuKK7/dKvwMMZ+J5lo2v87FPQxpqQ2pcHk4OPjLj44zXFUKAvalXAIk1tYVnNc7PZlRI+S00xNx0iCDqZvva+zS8Xu49n3LlxIGnINy/tLo2ZDq5+7wzWxdf17PhblaF6RCW1QaPP7FTurIzTSYpkE9Bhv1L3E//fCg91om3guEEGAHAbxydL81uqBOVEOaq+4V/kAfyJFyP2I1Hq+mVs3ULpEbu76fz0t2SEOCwJJBb2QDI69sp3Xx9uzRm1BoHjB4S3fiytOuf5zAT+TsJvgJZFnsTkGfr3mzE35bBl+BmELHYW05OgWple6LbsqMN+KKNCb/dH/BU+nTHshy7Q6EFgvdBXXuQ7PBNYnTvotARL5MibZorhQd+qNmtUesxOgJU43gq07x9TpQqjFwoB45kpnPSTt/xP/rv9BNRt5Jv0KDI4NUG30eQ0cfc7bt6hNvduPZG7WA49t3iqNKfK89xlHOnrGlV9th6TimLjjnz8cuL0aDeA3Fq8NeKnpJ3YPHPJnntKTo4+NgHqUCwmzp+VIC0Tn1ciF5mBkxd9mfbV6yKAWr2G0P5jp8HfUIiYLCJro4HUsJs9ZuFQI3OWwecqDE3yWmHRiq0B5bp7opEl/aFcoUTVtwfQVBat0CmliywBRvBpejHzH5BNMUYC0fvCwLG5rukVEHKq77Pnp/66hTJuMHMg1BSVk4x/VJEuKpQmWzd3WrhiErhbNPcUycTMpi6HlxZl7uJPRM8iYsWpuJxdLSsBbtujJEW3jGjmEX/gKpONpKNQHyW5nXawnEMlEK1Nv3WaeULbUer5X
+ 732YXh+E
+ 6QmIVpS5EzNYr+yFEW2kTUY7MyD+O7qyzC+USuv917XCHFUXS+nRMElh0/brpX7uNcIGLLNiBzsFbgJiFnuJBXKVz65u4CMH6lD33jyjDDtuFtRvyoah94xj2m8zOrfbcXfa24Oo4PpCKvRsxLrhB3eWKFy6tejy2LMGgamlL3vAB/VzH5yc+B1tqtcAK8eCDyEQCE2SE0PTSz6CHOXZbrYau6hdWmcZ+VHpFuyxgq7C3f/e1Ea0PmpH6Ri0Gxb3o35rMlIIi+1JrsW53PB+B+wj6UBr0lQ2z6PrzNVqKFqxLiAe56Piu5KEBdTePWNGEKUXCbtZv6u5ChpV9EKDpcYxloqFgBlNRfmCQavsM5v9KbeZ0TCWpUAS3Gz/EN5ZGhnWg5VCzLaxEmZthF1+ng0qXE0yr6lVvYvamTkudPgnCTu05i424rdJONdBj5etE+Tf6xluB10H6fEBiB8Htu6g2wi8mmaibkXCCZtugSrraJ2WYYsBOF5nbmCdx2a1dS2O+aN5JQfHfcEswyrb9oguifQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,133 +136,271 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Kairui Song <kasong@tencent.com>
 
-Pure cleanup, no functional change.
+The per-device cluster cache lets the allocator select a device before
+handling that device's pending discards. Issue discard on the selected
+device when its free-cluster list is drained instead of waiting for a
+global fallback scan.
 
-After the priority queue replaced the allocator's device selection,
-swap_avail_head and swap_avail_lock are no longer used. Remove them.
+Do not drain a discard list that freeing paths can replenish. Factor
+out swap_discard_one_cluster(), isolate one cluster under si->lock,
+retain CLUSTER_FLAG_DISCARD while I/O is in flight, and return it to the
+free list after completion. The background worker keeps processing the
+list.
 
-The throttle path now walks swap_active_head under swapon_rwsem.
-Check SWP_WRITEOK and the existing off-list state. This preserves the old
-priority ordering and does not select a full swap device.
+Each call to the device-cluster allocator handles at most one cluster
+synchronously before retrying allocation. A folio allocation can try
+multiple devices, so this is a per-device-attempt budget. It bounds the
+amount of discard work, not device I/O completion latency.
 
+Link: https://lore.kernel.org/all/CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com/
 Signed-off-by: Kairui Song <kasong@tencent.com>
+Co-developed-by: Lian Wang <lianux.mm@gmail.com>
 Signed-off-by: Lian Wang <lianux.mm@gmail.com>
 ---
- include/linux/swap.h |  1 -
- mm/swapfile.c        | 33 ++++++---------------------------
- 2 files changed, 6 insertions(+), 28 deletions(-)
+ mm/swapfile.c | 149 ++++++++++++++++++++++----------------------------
+ 1 file changed, 64 insertions(+), 85 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 9357a9065f37..17b8ec654ee2 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -287,7 +287,6 @@ struct swap_info_struct {
- 	struct work_struct discard_work; /* discard worker */
- 	struct work_struct reclaim_work; /* reclaim worker */
- 	struct list_head discard_clusters; /* discard clusters list */
--	struct plist_node avail_list;   /* entry in swap_avail_head */
- 	const struct swap_ops *ops;
- };
- 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 2065e566b7a3..0a16343a5b03 100644
+index 0a16343a5b03..5c26682c0bab 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -96,21 +96,6 @@ static const char Bad_offset[] = "Bad swap offset entry ";
-  */
- static PLIST_HEAD(swap_active_head);
- 
--/*
-- * all available (active, not full) swap_info_structs
-- * protected with swap_avail_lock, ordered by priority.
-- * This is used by folio_alloc_swap() instead of swap_active_head
-- * because swap_active_head includes all swap_info_structs,
-- * but folio_alloc_swap() doesn't need to look at full ones.
-- * This uses its own lock instead of swapon_rwsem because when a
-- * swap_info_struct changes between not-full/full, it needs to
-- * add/remove itself to/from this list, but the swap_info_struct->lock
-- * is held and the locking order requires swapon_rwsem to be taken
-- * before any swap_info_struct->lock.
-- */
--static PLIST_HEAD(swap_avail_head);
--static DEFINE_SPINLOCK(swap_avail_lock);
--
- static inline struct swap_info_struct *__swap_iter(int *i, unsigned long flag)
- {
- 	lockdep_assert_held(&swapon_rwsem);
-@@ -1652,7 +1637,6 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- {
- 	unsigned long pages;
- 
--	spin_lock(&swap_avail_lock);
- 	spin_lock(&swap_queue_update_lock);
- 
- 	/*
-@@ -1672,10 +1656,8 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- 	}
- 
- 	swap_queue_mask(si);
--	plist_del(&si->avail_list, &swap_avail_head);
- skip:
- 	spin_unlock(&swap_queue_update_lock);
--	spin_unlock(&swap_avail_lock);
+@@ -585,6 +585,26 @@ static long swap_usage_in_pages(struct swap_info_struct *si)
+ 	return atomic_long_read(&si->inuse_pages) & SWAP_USAGE_COUNTER_MASK;
  }
  
- /* SWAP_USAGE_OFFLIST_BIT can only be cleared by this helper. */
-@@ -1684,7 +1666,6 @@ static void add_to_avail_list(struct swap_info_struct *si)
- 	long val;
- 	unsigned long pages;
++/*
++ * Serialize the allocation on single CPU or globally to avoid
++ * fragmentation and make the workflow easier to follow.
++ */
++static void swap_alloc_lock_device(struct swap_info_struct *si)
++{
++	if (si->flags & SWP_SOLIDSTATE)
++		local_lock(&si->percpu_cluster->lock);
++	else
++		spin_lock(&si->global_cluster->lock);
++}
++
++static void swap_alloc_unlock_device(struct swap_info_struct *si)
++{
++	if (si->flags & SWP_SOLIDSTATE)
++		local_unlock(&si->percpu_cluster->lock);
++	else
++		spin_unlock(&si->global_cluster->lock);
++}
++
+ /* Reclaim the swap entry anyway if possible */
+ #define TTRS_ANYWAY		0x1
+ /*
+@@ -982,10 +1002,7 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 	 * which could give allocator hooks and failure cleanup reserve access.
+ 	 */
+ 	spin_unlock(&ci->lock);
+-	if (si->flags & SWP_SOLIDSTATE)
+-		local_unlock(&si->percpu_cluster->lock);
+-	else
+-		spin_unlock(&si->global_cluster->lock);
++	swap_alloc_unlock_device(si);
  
--	spin_lock(&swap_avail_lock);
- 	spin_lock(&swap_queue_update_lock);
+ 	gfp = (GFP_KERNEL | __GFP_HIGH | __GFP_NOMEMALLOC) &
+ 		~__GFP_DIRECT_RECLAIM;
+@@ -999,10 +1016,7 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 	 * could happen with ignoring the percpu cluster is fragmentation,
+ 	 * which is acceptable since this fallback and race is rare.
+ 	 */
+-	if (si->flags & SWP_SOLIDSTATE)
+-		local_lock(&si->percpu_cluster->lock);
+-	else
+-		spin_lock(&si->global_cluster->lock);
++	swap_alloc_lock_device(si);
+ 	spin_lock(&ci->lock);
  
- 	/*
-@@ -1715,10 +1696,8 @@ static void add_to_avail_list(struct swap_info_struct *si)
- 	}
- 
- 	swap_queue_unmask(si);
--	plist_add(&si->avail_list, &swap_avail_head);
- skip:
- 	spin_unlock(&swap_queue_update_lock);
--	spin_unlock(&swap_avail_lock);
+ 	if (ret) {
+@@ -1092,44 +1106,40 @@ static struct swap_cluster_info *isolate_lock_cluster(
  }
  
  /*
-@@ -3844,7 +3823,6 @@ static struct swap_info_struct *alloc_swap_info(void)
+- * Doing discard actually. After a cluster discard is finished, the cluster
+- * will be added to free cluster list. Discard cluster is a bit special as
+- * they don't participate in allocation or reclaim, so clusters marked as
+- * CLUSTER_FLAG_DISCARD must remain off-list or on discard list.
++ * Discard one cluster. After the discard is finished, the cluster will be
++ * added to the free cluster list. Discard clusters are special because they
++ * don't participate in allocation or reclaim, so CLUSTER_FLAG_DISCARD must
++ * remain set while a cluster is either queued or being discarded.
+  */
+-static bool swap_do_scheduled_discard(struct swap_info_struct *si)
++static bool swap_discard_one_cluster(struct swap_info_struct *si)
+ {
+ 	struct swap_cluster_info *ci;
+-	bool ret = false;
+ 	unsigned int idx;
+ 
+ 	spin_lock(&si->lock);
+-	while (!list_empty(&si->discard_clusters)) {
+-		ci = list_first_entry(&si->discard_clusters, struct swap_cluster_info, list);
+-		/*
+-		 * Delete the cluster from list to prepare for discard, but keep
+-		 * the CLUSTER_FLAG_DISCARD flag, there could be percpu_cluster
+-		 * pointing to it, or ran into by relocate_cluster.
+-		 */
+-		list_del(&ci->list);
+-		idx = cluster_index(si, ci);
++	if (list_empty(&si->discard_clusters)) {
+ 		spin_unlock(&si->lock);
+-		discard_swap_cluster(si, idx * SWAPFILE_CLUSTER,
+-				SWAPFILE_CLUSTER);
+-
+-		spin_lock(&ci->lock);
+-		/*
+-		 * Discard is done, clear its flags as it's off-list, then
+-		 * return the cluster to allocation list.
+-		 */
+-		ci->flags = CLUSTER_FLAG_NONE;
+-		__free_cluster(si, ci);
+-		spin_unlock(&ci->lock);
+-		ret = true;
+-		spin_lock(&si->lock);
++		return false;
  	}
- 	p->swap_extent_root = RB_ROOT;
- 	plist_node_init(&p->list, 0);
--	plist_node_init(&p->avail_list, 0);
- 	p->flags = SWP_USED;
- 	percpu_up_write(&swapon_rwsem);
- 	if (defer) {
-@@ -4260,7 +4238,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	 */
- 	si->prio = prio;
- 	si->list.prio = -si->prio;
--	si->avail_list.prio = -si->prio;
++
++	ci = list_first_entry(&si->discard_clusters,
++			      struct swap_cluster_info, list);
++	/*
++	 * Delete the cluster from the list, but keep CLUSTER_FLAG_DISCARD
++	 * set while the discard is in flight. A percpu cluster may still
++	 * point to it, or relocate_cluster() may encounter it.
++	 */
++	list_del(&ci->list);
++	idx = cluster_index(si, ci);
+ 	spin_unlock(&si->lock);
+-	return ret;
++
++	discard_swap_cluster(si, idx * SWAPFILE_CLUSTER, SWAPFILE_CLUSTER);
++
++	spin_lock(&ci->lock);
++	ci->flags = CLUSTER_FLAG_NONE;
++	__free_cluster(si, ci);
++	spin_unlock(&ci->lock);
++	return true;
+ }
+ 
+ static void swap_discard_work(struct work_struct *work)
+@@ -1138,7 +1148,8 @@ static void swap_discard_work(struct work_struct *work)
+ 
+ 	si = container_of(work, struct swap_info_struct, discard_work);
+ 
+-	swap_do_scheduled_discard(si);
++	while (swap_discard_one_cluster(si))
++		cond_resched();
+ }
+ 
+ static void swap_users_ref_free(struct percpu_ref *ref)
+@@ -1536,6 +1547,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 	struct swap_cluster_info *ci;
+ 	unsigned int order = likely(folio) ? folio_order(folio) : 0;
+ 	unsigned int offset = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
++	bool discarded = false;
  
  	/*
- 	 * Publish swap_file before making the percpu ref live, then add the device
-@@ -4409,14 +4386,16 @@ void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
- 	if (current->throttle_disk)
- 		return;
+ 	 * Swapfile is not block device so unable
+@@ -1544,15 +1556,12 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 	if (order && !(si->flags & SWP_BLKDEV))
+ 		return 0;
  
--	spin_lock(&swap_avail_lock);
--	plist_for_each_entry(si, &swap_avail_head, avail_list) {
--		if (si->bdev) {
-+	percpu_down_read(&swapon_rwsem);
-+	plist_for_each_entry(si, &swap_active_head, list) {
-+		if ((si->flags & SWP_WRITEOK) &&
-+		    !(atomic_long_read(&si->inuse_pages) &
-+		      SWAP_USAGE_OFFLIST_BIT) && si->bdev) {
- 			blkcg_schedule_throttle(si->bdev->bd_disk, true);
- 			break;
+-	if (si->flags & SWP_SOLIDSTATE) {
+-		/* Fast path using per CPU cluster */
+-		local_lock(&si->percpu_cluster->lock);
++restart:
++	swap_alloc_lock_device(si);
++	if (si->flags & SWP_SOLIDSTATE)
+ 		offset = __this_cpu_read(si->percpu_cluster->next[order]);
+-	} else {
+-		/* Serialize HDD SWAP allocation for each device. */
+-		spin_lock(&si->global_cluster->lock);
++	else
+ 		offset = si->global_cluster->next[order];
+-	}
+ 
+ 	if (offset != SWAP_ENTRY_INVALID) {
+ 		ci = swap_cluster_lock(si, offset);
+@@ -1576,6 +1585,15 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 		found = alloc_swap_scan_list(si, &si->free_clusters, folio, false);
+ 		if (found)
+ 			goto done;
++
++		if (!discarded) {
++			swap_alloc_unlock_device(si);
++			if (swap_discard_one_cluster(si)) {
++				discarded = true;
++				goto restart;
++			}
++			swap_alloc_lock_device(si);
++		}
+ 	}
+ 
+ 	if (order < PMD_ORDER) {
+@@ -1624,10 +1642,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 			goto done;
+ 	}
+ done:
+-	if (si->flags & SWP_SOLIDSTATE)
+-		local_unlock(&si->percpu_cluster->lock);
+-	else
+-		spin_unlock(&si->global_cluster->lock);
++	swap_alloc_unlock_device(si);
+ 
+ 	return found;
+ }
+@@ -1818,36 +1833,6 @@ static int swap_alloc_entry(struct folio *folio)
+ 	return ret;
+ }
+ 
+-/*
+- * Discard pending clusters in a synchronized way when under high pressure.
+- * Return: true if any cluster is discarded.
+- */
+-static bool swap_sync_discard(void)
+-{
+-	bool ret = false;
+-	struct swap_info_struct *si, *next;
+-
+-	percpu_down_read(&swapon_rwsem);
+-start_over:
+-	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
+-		percpu_up_read(&swapon_rwsem);
+-		if (get_swap_device_info(si)) {
+-			if (si->flags & SWP_PAGE_DISCARD)
+-				ret = swap_do_scheduled_discard(si);
+-			put_swap_device(si);
+-		}
+-		if (ret)
+-			return true;
+-
+-		percpu_down_read(&swapon_rwsem);
+-		if (plist_node_empty(&next->list))
+-			goto start_over;
+-	}
+-	percpu_up_read(&swapon_rwsem);
+-
+-	return false;
+-}
+-
+ static int swap_extend_table_alloc(struct swap_info_struct *si,
+ 				   struct swap_cluster_info *ci,
+ 				   unsigned int ci_off, gfp_t gfp)
+@@ -2149,14 +2134,8 @@ int folio_alloc_swap(struct folio *folio)
  		}
  	}
--	spin_unlock(&swap_avail_lock);
-+	percpu_up_read(&swapon_rwsem);
- }
- #endif
  
+-again:
+ 	swap_alloc_entry(folio);
+ 
+-	if (!order && unlikely(!folio_test_swapcache(folio))) {
+-		if (swap_sync_discard())
+-			goto again;
+-	}
+-
+ 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+ 	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
+ 		swap_cache_del_folio(folio);
 
