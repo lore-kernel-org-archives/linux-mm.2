@@ -1,111 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBD1606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36268606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JLRsA5zy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YLTdJU5x
 Received: by kanga.kvack.org (Postfix)
-	id 797C56B08B0; Tue, 27 Oct 2026 15:10:51 -0400 (EDT)
+	id 29D536B08B1; Tue, 27 Oct 2026 15:18:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F746B08B1; Tue, 27 Oct 2026 15:10:51 -0400 (EDT)
+	id 24F276B08B3; Tue, 27 Oct 2026 15:18:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 685146B08B2; Tue, 27 Oct 2026 15:10:51 -0400 (EDT)
+	id 1168E6B08B4; Tue, 27 Oct 2026 15:18:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4656F6B08B0
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:10:51 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D21A3409BA
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:10:50 +0000 (UTC)
-X-FDA: 85369348260.18.009C9A1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 156541C000C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:10:48 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JLRsA5zy;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D04F06B08B1
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:18:37 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 55EA3160B15
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:18:37 +0000 (UTC)
+X-FDA: 85369367874.12.F327F00
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8052840007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:18:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLTdJU5x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793128249;
+	s=arc-20220608; t=1793128715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gxw22+dUBVHsNmkwZBBvZhpzn7DjpEcijhpCagz+H44=;
-	b=PyvE9YepHJnBFVhxGnqtC2ESxr74WuIfnWCuqBvVRNj6C023B62tLRasUAyMFeCT6nLgkn
-	A3agIhLLDHPa7X21g0jZqf1fkh3Zjg455eHqTju2UT2IIOSQDjdMF1sSzw2afVIyv9GVb8
-	yNb3O54ZE2uXoKqh48R2aTWBqh7Taco=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793128249;
-	b=EsWCXSCmAOtM7L6KboFCuGwEmInU94/eWBlBL7fhCIGp72H6pwlOCuV+HAfp0BygOvQ93F
-	DOsSF4qvWc38OdWQSYdehTuIZC6bKtUMtRBADGxpWseD/2Y1eg6xPP13AAz20m3KEKUlOF
-	+fklC2nuS945JLMWEADqZdVlwhe++n8=
+	bh=RZNM0QAvkjv2toljsz6cT0DUeLHvWGObkljY6MMux0Q=;
+	b=I+wV66xa3h9jLLKs77Tr0hp+lSbn40E5wYFrVc4KyRuGjPLVrmk0X0QW+RqjbVDoImmFNY
+	M2HBzVSigRxMN1D6V9NhM2WLg4bsGTp16cHGVFbT5D8WvEkSI49XksnHBEa1NgDXSFH7nN
+	a4S1qlBHEFWyvoKEwuTNVUlww5Zst2I=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JLRsA5zy;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLTdJU5x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793128715;
+	b=pDCfZP8NAwdwQ0cMmBJUTrrJsAyXKDNmODOB8OZq65PlpK+/3YO/dPRCG08sjsNVkNfbkK
+	wRGAhaGL0K3uKcSnjjRpfZOTID159lgdOS8k7PMBR//eyoz4VQvOe7b3SgOHRmIilCg3k0
+	n8XcJNh7b0FLHztnoA25GJb5Xj0e9+0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A5BE46021D;
-	Tue, 27 Oct 2026 19:10:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF241F01829;
-	Tue, 27 Oct 2026 19:10:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A989140A09;
+	Tue, 27 Oct 2026 19:18:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F571F01828;
+	Tue, 27 Oct 2026 19:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793128248;
-	bh=gxw22+dUBVHsNmkwZBBvZhpzn7DjpEcijhpCagz+H44=;
+	s=k20260515; t=1793128714;
+	bh=RZNM0QAvkjv2toljsz6cT0DUeLHvWGObkljY6MMux0Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JLRsA5zy6lBMaJmnj1OuZDWK7USr/fw9H52uehWRrOa/1j8WudtcfkokPA36DPpQP
-	 S0rcY4Q/4pP+YF+byKiwleEgDfpZwaUDVDm4L7dPRJIfN292VDlcwOc90kWkBxY6b1
-	 Mi8DZt6gPGhhyfK5+ZRUlwvd29AYr89em87D8L5KbOI1ZjOc3pnjoO99WUhQdMSkwB
-	 Kd8v2WIYlELKJVpxwWEEssNQoRGjucCE81+gjs5//M4+n2M/ral1GW4g4bdGx/h0lV
-	 9ntzmhQGFkbsCzUTDYBHkrEOBWleeXSGrd95OomWvfwcKf7/2yVImSsxRlxqZR1HRK
-	 AiDKFUxA3cIPA==
-Message-ID: <3d5e6a17-3ca5-4e87-baab-f349073ab8e4@kernel.org>
-Date: Tue, 27 Oct 2026 20:10:27 +0100
+	b=YLTdJU5x4o/hyyOxOFwqDIU1Y1ZNR6KV42KTsOrPC3aE7fsc7yxHnDHmlusk1ZAbc
+	 7WbghDU5l1NvCkEtJodjasUhWzXCgfr9Vha9UktQimiDcYzzLg0LinN4/zyoZDs/d3
+	 xfVJdoPYVZikMrjRBlxg3rIShOQQ8xtdT4qpb5cOTugMevkB5DTpGK+9lx5QKKrr3s
+	 RyHvkSeezsGEWBuWOGF0Wz9rAaW4YKD2jM7O1WA/e7eicq1Lz93J6oO28CTPO/D4Pd
+	 RVDg5X3Wj+ZwE0ZbdDEia09ullo9NdzzRIZxY/uH0ERFDqHqyUI36UAodcWUnV9aDO
+	 Dxn7IlIn18beQ==
+Message-ID: <11b91d57-85e6-47d0-87ab-5fa8624e8068@kernel.org>
+Date: Tue, 27 Oct 2026 20:18:18 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/46] mm/filemap: read mapping->a_ops->free_folio under
- i_lock
-To: Rik van Riel <riel@surriel.com>, Andrew Morton
- <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+Subject: Re: [PATCH 07/46] mm/filemap: don't lose a folio lock wakeup to a
+ signal
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
  Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Harry Yoo <harry@kernel.org>, Alistair Popple <apopple@nvidia.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
  Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
  Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
  Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
  Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
  Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
  Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+ stable@vger.kernel.org
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-6-6f74bec9a5bb@kernel.org>
- <f12ffd4cf8933452ef13adae55d6d238a3069235.camel@surriel.com>
+ <20261027-fixes_core-v1-7-6f74bec9a5bb@kernel.org>
+ <auDM5mvsb5ilIdsg@pedro-suse.lan>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,21 +153,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <f12ffd4cf8933452ef13adae55d6d238a3069235.camel@surriel.com>
+In-Reply-To: <auDM5mvsb5ilIdsg@pedro-suse.lan>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 156541C000C
-X-Stat-Signature: gycgjr9p3wtt5xfrjnn5n6ji4ufmi7gr
-X-Rspam-User: 
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8052840007
+X-Stat-Signature: 7niz9dsezicybke16ywe3q4ipps9i94e
 X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793128248-215658
-X-HE-Meta: U2FsdGVkX19Yq4qdiB4cK18oXn6duArylJYO6cKn8RmL+NAD6B1wIQTb210F2NLJN4EoGSc4EqK8Z5LlikODosGtjfZU+60zxV0VZcFMiaIg2yC4o0jTJuYiirUrr1WvZPcOb9wcEA2HgxQyITgcckcFxJzcHu9BjdH1M8ZW/bBYpRvRizFOg/xaAUCwVoIqXXev/p6ZBEz1IqGAoTmFRR2PGnFgy1SqYGVaozwWZY1iuPUKQkYK4FjqBRHxYeFVJDc5kqWptyYB57Pck8PDqyWV1iGleWx7d9d407asHRoL1p53wbXfsZdS026tT3YG0n7bb+fWFanHOJnG/gN3amnpy+goxFy/Y2F7GYG/uzIelYV/7Q2ALcHa/oNOon9cMS5OQUmJ+5VhyvPQOaUTi7hzw6//EUcu+zbzZyhJotMR+b3FavqRFw77fb+ydUnRdbA07EhYuLhM1HKFseUm3FHSdDO4c2K9IJkJOQaafIGev2Xnz2PbaLXGYeq84KQ9bNCLTr7Ya2QWji5OCqBfQf+nznbfIJDGnLWLdkwWM4yGsgkHAO9FcvzOdHCAmg6nz8v6SrhvsefNfBACQLRSABrQzCCTahUCHCZARxisNU3rvoMzCjzhv1oNcO+lmK2FZq1BGgvUW43Qpf9rfYOJxk2qRw/kxTGloy7LekNIGt7HktBvthKOfjy5JAJdt5kZVdOf+4c/DHgVUjDwDHz/bupuZQKx1SzqxkQ5dNACrZzMTGwXWYaNOO2jN31ZVbZMHUjNmqXKcyHNEWsghS6NbigGooAFGFSfAr4moaADqVU5ulqulm2q2hexQUSe2ZgXJBO13onadQKqyi0h8GL/NHLU5wp9MsPto0iJa24LDZbSItD6iKMJeA777WM8EHGuW/UFRDsGZcOE63bIwrcWMSBLX1dwqcED32Siru0JwBcQ+uqklmJJQtcA1OoTFAA2vF6bZI0dyoP4f4+RwP9
- I0QaN4EA
- aVnomz3MtPjJLkqA7HP4VshrX2W0zpdIThx3rW+8pDPVLiMnGX7KyOENCza4+mO9ysukTHTdPHKje5CDnLyuMCLIh4Wsaj+G1mdjkdYy7TVSdracYLQe6iehJnr3xzTE8vlQTPAdkQ299L6YN3hloK4xJ78Fhv4jBoveh0RxZlr+521/dTi4v1kOouY1GXfP1zI7Ezj1LUV5l2D8LxjlEM8SpFkKPi0mA6wfwB3FcXsdw23HgKIItHWNmc/YCf3pJvT8S2dNwzUFJLp5Y2nA+9A4PI2uoOXU//4mh+ckanjtjUXgQHeD2sXbSAUg76xnNwIegepKKgCSpf1c9muSFHNDNyEdDngDPKVcC/NWL4ss8o1bNfh8xnvVZ8bk8VAS2TS4sDpNls/Zsktt8IdBlZgQtw/PaBYrS+qu+q8DSHCTLc9v/OgBAkJfhbo32NGKwmlKM2osP/6Imk/3vfk1HJV6nUA==
+X-Rspam-User: 
+X-HE-Tag: 1793128715-489750
+X-HE-Meta: U2FsdGVkX18uLkvkCgTUzIz6Mhmiva1SQ6185k3SYfc36SYNx1Tzg91H6GsaAKaJjDWDj3k9k7HybmygIsAtnEkCCKRcZamvP3B0fs/JuM5eez3kkb+tAGpxRgHlujSV1H24vZ/UfJHX4ySkYgC5boQfM2FmBXKjESQiCqoESZrObPfV3Ve3eAQ7dUXJu5bHYZiMeUOdegiTq7UtS62yhS0rSh391+crSYG3c6zzsqL/v40sbHnMPyiOVZgUy6avtLpnL75Hh2HSboEV3EGuP6rxsAnPRZ38rn/6u2N1eUSmI+5mxaSATQXKdZCGBr8TAvvV/nMZ7mvngN8muRfZvkeBQiOss5xWJSys7k25KtTU/IfjUEDqftgFQO7i6uneMnEI8aDUwztn+YttcBbofAVzGvFcNZg8jJ0TJc/pvydhVonRo2EFQuzVkBIxa4xp5L+3GIL80FrlvAu5d6C13McEBrHVIiWrjQO22NVin58RSjkY6/rSctZdqgzgZv2jx1sjWJG6uGxdGrQP0ZtVR5WiP41wxgO9+uu5iRRmhF2Ex1pApVO/TgR3Zr8pzpoCiwC0KqcGS+T/uYyYFVF9bj/YxIDPuTivT4Am61NGUWGUCpoSt+QCTHKMMHSGjpJ4DgraTDruHIIPa1xnVbMe8Lz8c9+SRHJ8ZWmhjd7mW7RgTMcplFpyDgtpxlL7yIEa+Kr39TRU+FdapSM1SMkNmeHXGUIyzGzaNQ0NgT7UR2mvNKbrkcWxWqcT7HJLI5Jgi9iXkrhGMGXJY+PRUO6LsY68jTXoO6PmW1euviy8UCs/FBu2CsT9pCIBVPt2PfWMw/vwOAl2A5M8op3riYWq6BAYccI0ZqfrWZ6LPPmjFtUuBvkQsHNltKX20bjLSCWGlY1GM9Climm2gQQW9etgh7OFNaFJxebhUCjMPxoci1FwpvmqKLDPH92MAQWQ11WAMPmFJMdK2W53p+23Gpr
+ ib3kbhvo
+ u30+mjS4AfYr/L0788HRB0iAYQSH+oCkb50rfr1upNzyBTh47V00TVFJgQfHVtzo5LfvaKwOxga6oSaqUudh9kWqGt0Ggdd7hP6QEns7GvVe/NoUUT6rOzEqX1ZatxqZoIWlId/k/xFNsdO3nOWEPfbLkqwVZcMHT3YcYdyC4jsbETYRM5lB4mvMgu9MxERAjFRb91X+dSa6FZeo5kwjEUWILBiFnsrQXAaTdXzDlpYQK3+dgdzIhY/iOLXM4PnqmciHSlVL70KN1COj1YTTBQFq6w8/dmk1rNKPbB0sNKbCkZ671fsU9HzWTEbIIiOXWd/uC1XgTqcgL8B+rsP22RfexDc9fjaFL3JdLsodItXMREcmq4XUhYFgkGHnCUFBdhOkACV2ejx+JUWU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,20 +176,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 03:43, Rik van Riel wrote:
-> On Tue, 2026-10-27 at 00:17 +0100, David Hildenbrand (Arm) wrote:
+On 10/27/26 17:10, Pedro Falcato wrote:
+> On Tue, Oct 27, 2026 at 12:17:27AM +0100, David Hildenbrand (Arm) wrote:
 >> From: Josef Bacik <josef@toxicpanda.com>
 >>
->> The bug was found by code inspection and has not been reproduced.
+>> An exclusive waiter in folio_wait_bit_common() can leave the wait loop
+>> because of a fatal signal, then be woken by folio_unlock() before
+>> finish_wait(). If the waker did not hand over the lock, the waiter returns
+>> -EINTR without trying to acquire it.
 >>
-> I can't say I'm surprised ;)
+>> folio_wake_bit() stops after waking the first exclusive waiter, so this
+>> loses the wakeup and can leave other waiters asleep indefinitely on an
+>> unlocked folio.
+>>
+>> After finish_wait(), let a waiter woken without a lock handoff try once
+>> more to acquire the lock. If successful, return success so the caller's
+>> eventual unlock wakes the next waiter. Otherwise, the current lock owner
+>> will do so.
 > 
-> I see clues that a most bunch of these issues
-> occasionally happen in our (rather large) fleet, 
-> but not this one.
+> Has this been reproduced? I feel like this would've been found out by now?
 
-IIRC it's mostly memory_failure() only that can trigger this today ... so not
-surprised :)
+Let me dig ... I don't find mention in the notes, but I was told that most of
+these things have reproducers.
+
+I guess it's harder to hit in practice, because you need a fatal signal and then
+keep the other waiter alive while nobody else will take that lock in a timely
+fashion.
+
+I asked codex to try writing one but it refuses for security reasons :)
 
 -- 
 Cheers,
