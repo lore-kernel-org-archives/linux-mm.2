@@ -1,83 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61757606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A67B606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RhL4d8Zu
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OyHe/4xA
 Received: by kanga.kvack.org (Postfix)
-	id 62A236B070E; Tue, 27 Oct 2026 08:51:40 -0400 (EDT)
+	id 36DCB6B0711; Tue, 27 Oct 2026 08:53:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DB606B0710; Tue, 27 Oct 2026 08:51:40 -0400 (EDT)
+	id 31EF66B0712; Tue, 27 Oct 2026 08:53:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F1C36B0711; Tue, 27 Oct 2026 08:51:40 -0400 (EDT)
+	id 20F0E6B0713; Tue, 27 Oct 2026 08:53:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2833D6B070E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:51:40 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84BDA1606A9
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:51:39 +0000 (UTC)
-X-FDA: 85368392718.07.3CAFA93
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id ACA1A20003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:51:37 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhL4d8Zu;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 083B36B0711
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:53:43 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9B093409F8
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:53:42 +0000 (UTC)
+X-FDA: 85368397884.18.EE5809C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 88EA62000A
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:53:41 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OyHe/4xA";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793105497;
+	s=arc-20220608; t=1793105620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8+uXv1eTUrQghL/izDMabbpVY73PTdHTwOJoJlIUerY=;
-	b=zpkUk1d9aASC5zKNm8L3I8ZK0imu4iXQ0hG8DUQxWlKeCe5rDTXMQh0/7sclaZOAgcJhr1
-	5Q0tI7CC0WBEZmQRWNkMBJxLkTQPGXk1vGmMglQpB6Jf4VcGkGZaeRFHiXg/1cPWuY2OJv
-	FxAdS2hG8OZqB/aQ00FKGXHbBZMFIxc=
+	bh=3A3b2z5R5PgLMJaCVunBQCGAvsKmINFfocdONRkdX1E=;
+	b=rvAzeNhY+d21X3PzOrriRNncveOf8wbM0z6oN/aRhBycDARWjm05Sxed4RECwsA5iO7+Nq
+	iYx5ZASHpaKDZY+rCjClF+O5NRfkiNNVGlcalB91owQrQahF/PDVYkhIkoE5cmuQEruSnU
+	Rc6SpY5/KX2W05tRH4GraV8ZOHnsagU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhL4d8Zu;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OyHe/4xA";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793105497;
-	b=mrzneBfeScrqfLn+S10XrWMGTJcXtA6pcBoFrIiPmIHQ+4JjdDtkP5QYPgpnvsBkPRV6Zt
-	BN6ZfQ5BvMk+8VRPe9UrapmElvS2HW86Rz0RKDgIhTBCl6Hdi8Hf4FL7FMq+OTVdp2a0TT
-	63AxhDrbw1hVDZsg61AlSBuHLmJEw6I=
+	t=1793105620;
+	b=5dWr2fFev57TDNJzRWLsXnlZq5ECCNTRK3LzQPH8PpIoyNve2Nru6Y1n9rn1BuVWHpGYrT
+	BEsfCCdH5+KM10nhqfDMyAZv3+SPJ37gAEgAcmHzk4nYoAhqisOmvt99bhP2qFHKxybs6N
+	OmU48mQbCxKAvJfauGn/2uU50iPtyUk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A0E0742B03;
-	Tue, 27 Oct 2026 12:51:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC36D1F01825;
-	Tue, 27 Oct 2026 12:51:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5797F60267;
+	Tue, 27 Oct 2026 12:53:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F281F031E1;
+	Tue, 27 Oct 2026 12:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793105496;
-	bh=8+uXv1eTUrQghL/izDMabbpVY73PTdHTwOJoJlIUerY=;
+	s=k20260515; t=1793105620;
+	bh=3A3b2z5R5PgLMJaCVunBQCGAvsKmINFfocdONRkdX1E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RhL4d8Zu1trOGOtBxu31hp1z9kcJI8StIU9PdApiow/lWbyJJBgk7hPgSOjQi+nAE
-	 AKRePsFov/ULoC1TkpsBYIh6pWvxp8cze0hi1b2Wj8sLc9y3xwHg8T0wDhk0ansqEn
-	 xFcuEFexIhMX1R7GeGxuEMbA0gzNR2uL86P4NnOrvqPqGKbhNY533fFW5lgDp3HMkO
-	 504rU/EFttXr0YSzHwfQbLXRy4PfREzzWOw4vyCXu8y4Crjzx/Lypni7HK9LVH3BLR
-	 jeWfadnld7ZEOg5OWEy6erd+YZ29bgw202P1j9QdjZ/At4MBlPey/BdaPcmJfXSfIR
-	 LjesHhmkVS7rQ==
-Message-ID: <9051ac3d-60b9-4ed2-b781-b7191898bc83@kernel.org>
-Date: Tue, 27 Oct 2026 13:51:28 +0100
+	b=OyHe/4xAP6WCorugyhRh2YGYy1BO8A93QVK/QxBl2JzDgugFa9HrveviyxJbzlrWf
+	 N33EqbM2ND75BtjehLURhzxhyjHyl6NniMAEsJfnDZYeTbAg3hK+IvI3x0YjG4vo4E
+	 n+yqhpr8ii7uWk60fU5cm/53Qe9WInE/L2P/WP2PE5NuZdk1NKioHg/186/EFHaLJQ
+	 QJA1prI/67wzJVaDtoSH4dTgG+vmi/JAJ+74NvRX8dmeMW6VdBZA/QHDC4jYJnMqfU
+	 FvOAocq2S8xNemSBNQtWykHxyrmVAymLc2QykuIICKnMqKWn3A073a8l7gcEpSJiVL
+	 J/Kct1lCTTz1g==
+Message-ID: <3c73fe54-68d8-41f3-8f9f-06c4a1891e01@kernel.org>
+Date: Tue, 27 Oct 2026 13:53:34 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] mm: fix pfn walker races with memory offline
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org,
- vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
- linmiaohe@huawei.com, nao.horiguchi@gmail.com, ljs@kernel.org,
- liam@infradead.org, rppt@kernel.org, osalvador@suse.de,
- muchun.song@linux.dev, iamjoonsoo.kim@lge.com, anshuman.khandual@arm.com
-References: <20261027042204.3741307-1-gourry@gourry.net>
- <01d7d54d-0047-4eb6-a1d2-5b3f113f26cf@kernel.org>
- <179310071902.664110.12994053710961856591.b4-reply@b4>
+Subject: Re: [PATCH v5] mm: memory: fix truncation removing mapped folios
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
+ pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <d7f009c90b11ded86654885b5ebcb8c9308fa31a.1793067441.git.baolin.wang@linux.alibaba.com>
+ <2ba579e8-06fb-41f5-9eb2-f02b2aabe29b@kernel.org>
+ <87e32afd-75de-4407-8f0c-fb70b40d5eca@linux.alibaba.com>
+ <81ee2c92-f342-4f7f-aacd-d9558e67a980@kernel.org>
+ <de0b41fb-4ae2-46a5-afe0-c021134ebba0@linux.alibaba.com>
+ <4880d4ff-8486-4e22-9923-bd4f2407b1cb@kernel.org>
+ <f41d0720-ca14-4aa3-a2e4-3ba2de3280d0@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +125,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <179310071902.664110.12994053710961856591.b4-reply@b4>
+In-Reply-To: <f41d0720-ca14-4aa3-a2e4-3ba2de3280d0@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ACA1A20003
-X-Stat-Signature: pg75qgmt95dqthfmdixiiue8jgmedbp7
-X-Rspam-User: 
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 88EA62000A
+X-Stat-Signature: rx8tx3zo89a8p6immc81kjssacraagut
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793105497-335131
-X-HE-Meta: U2FsdGVkX1/GgiVCz8GSSaHQp5zg4oQZhlFsiI+iYk7HAisuUOR95MeiYbbv1T36M/Wqnac3j0ujubUzdruuVCc0seKNSqiMRuacQ8Sx73KB5rCDTPGO+FWrKZrrzKwXHO4hRjqCZommdv29Z8Yh69TpCoWrD3ZFRi4eJXgnPkxLI2N0yYZS3bkx5sVqH0+abJaCLjhBkOGTiLXmK3EtrA7Xd7dwzYfMvtgxzR9BQzunSyZcegr7BoC8HAqQnJlCp+BeB7YqnjcaoVQVSRKEu8aAO1okGXilMNAj/zqK3Ch8qb5nrqaQbLilPiDVmiGRgUyRVKjHqDfpth+CkTcrfZA8Z/P+3zkvJ0PaUfd6Ry12yyhi2GsBRxlx1Gljs/FM3destPumjvHmqySQQ1ob/+3HFT64SeJaz5t6Em+VD1VxO5CxBAbYVs0nVAM+J7e4F62QDUSOk46aDf//wL/c+H8qOoF321XRwt8j8s+lDQHXH317TPshMXFUYpdrpieQizDyr2BFBMiwgvQpG4UNR9S+3uy6STVPHgXZDeQnobPcQWrBIjZtGT6fB6p9iXNbZR8QPxnhi4rN5WpnoiUvppuZvRKbO2e/TXqG5zswS5YwraN/PCcghTqbbO4BAqcPb2TycUipy0zrYrBLK892fbXKv632DWFmGJQOEDpy2nUOkUncddG/wrb+oJT+hi6XWIDIRneRKhCQdoh/tosKMOVSRRXFWM7akLjIzXFyAINK0i/liFSIypXnPPhWr51U6GEiFUcHULXepCRFj3cCPWdZ1pfRHtinGVjlRXK1OY3CcstR8FmK6tHzVEnGZBWj7nHctoNb39eUovHq/cj+a/fsnbSQMnMU1ZEZnAQQtGoPGvljWXSh2jBEVEw7cfJWSbIWr4SF0NbSRMdI4iXOLP9PQtq/eNyrs21NzKHnCXZiGY9LpL5b1mS9ey/mryR3psn5ZrlYb+NfKyneFYS
- 2r5RcMjn
- Kv8strdHhKvA2yTQR8y/yW2kVaCdeZiThoGqVU+4ulD0yILIYpAA6Xj/8p7By+eqhNLj7KW6qmd+mvptRvQb72BcQR48s1iitguQtXkRkzCn/UxZHH2luVTUKs4pzo3EudGhlzHeQwXdvdmiri79w9I8Jefr4AfseONw3LI4PX7P7DE7Gy0IyM7IVaWWy5RBsuNn0BlmdIFMDeprX/EZECtPuUYsHvbb6OlL74bkEtwuvHbISxSUlhW6XEChIK2Zvkz8+kbPlwFUXFOFNDZX5eaI8vxHsHagoSAR/ngPWJTA2cUfw3V7JlXC/ApNVjuSGPa09ZlgL68ZSfcX7ln7Nez0aY35ns7xldwhMWnncqLdyzmAN9WHOjbi2AiEry2JKM9Y+
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793105621-431720
+X-HE-Meta: U2FsdGVkX192du6R1fGnfdOwa2y6lcPmy3QmFVytZISurXtqU4xNVxy1pali2wTrwP8Gybx1d4jr1SPKWssSlFIbjAo/EyGCt7nJbS8awEndlephEdWgsy4QzJAk28z8pS6uoEMl4ko8iOrji8g7QA1KsCt+rl6FmVhO35wwlfphkTCa0cPyqbwWNsORZzEscMfXVNpxk442a9HCFJgk8ukB4Xzj/aQ7TgKB/rHhJ8o+9/Hj/bR/Hn9dldwu99bKhTfVjt96HhHGEDoeTShM0JUYWLq7IGrynks5Wl5lRYXwcaxR8Ad5PMYNHWNd4MA/0DdKI/EmEJ21Ix0pFaLymNjXadcvJmtfI7l3+8vdxqOLPdMYelmEu4tPSbe7EaPWAd1XR8r4dz7PY0Ut8qeP3pNH0cNPWypyehWCgvvuS2AXKtpofGQzhNITELvRoFmkkCDwsIDZFNkIGYUyVcjc9hnex2/Fl/lKIFQHKHPOBk9ftc2m18iLjRUk0P6416wUD+PlU0fK9I0Wsr/Z0p0T9fNhsZ19A6e3fHou+o1PTxHy3nvG0z9aR793PdT0a5i64rUHNRMl0NCquG3YO7xnznRGt4Jqs6ZKq5VX0eetT9j3bXFiWEseWZpORvFoZAPCyI0qDuvqvWxEvyQjky3yDobU/QnOJmlr2qUm859+Pao0xCPkbQo77O1sNmbC4nSvACG1h92UdgI9/moHPcC7QhdCeTc1+RkYJv+b31dc5VzQKqcGMCC8foM/qRrlz1T7ERUSTtOTFATDIiuGthRyRXYLj/OeNQEI+pAKrjfJcQpoaKNzKxGZ7lUubVtMmBXqoDVOkbopSbq6RRStkDzz9AzuVyZsH5sOZNo5n0tlM6a8qECsbdyPETZeDLcnMC8mzsaBzvJ0GIsUsZptQ5SmnPEuep/6EvaJQ9NtddpAhIA2RE19YwhLN1DUiK0P7841P7DTh7nIFuY85YU6LBq
+ +YZuIsIL
+ Zq4L2IiFyAaZAzNJC9t+ZVnpt2i/6YjgfachNLwUz5+Kf1JU5gIGyR7u+7yjz4HmrQKA40DaPa9M/7L9oGoS0bC33vLjkb3yREqnI8bVualruSL7bHCKNgwdMZC35YPfXHwkurHP9YNakyrr5BVffVEEVQ1h9+XKIMKXOfy1J9LMUTMJsxgXAQ9/c+GCvoxDU050RZcM5d/QPtNBy/3nGZFTwQwL+sgOipFGw4j9yJB2r7iaq435rzLzDjS/yd20EI/Gf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,185 +148,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 12:31, Gregory Price (Meta) wrote:
-> On 2026-10-27 09:57 +0100, David Hildenbrand (Arm) wrote:
->> On 10/27/26 05:21, Gregory Price (Meta) wrote:
->>> Several pfn walkers check that a struct page is online, then use it
->>> after memory offline has poisoned it (CONFIG_DEBUG_VM) or removal has
->>> freed the vmemmap.  Five of the races crash the kernel; the sixth leaves
->>> an offline spinning with the device hotplug lock held.
+On 10/27/26 13:50, Baolin Wang wrote:
+> 
+> 
+> On 10/27/26 6:55 PM, David Hildenbrand (Arm) wrote:
+>> On 10/27/26 11:35, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> Sure.
+>>>
+>>>
+>>> IMHO, I'm not a big fan of adding two pmd_none() checks just to avoid an
+>>> uncommon concurrent sync.
 >>
->> I have roughly the exact same list of AI garbage fixes here from a certain company.
+>> It's what we already had. We had to: one for handling pmd_none() directly and
+>> one for handling zapping while splitting (file THPs).
 >>
->> And I consider this all extremely low priority.
+>> We just managed to let the second also handle the final piece of the former.
 >>
->> So this is something to discuss throughout the next months and do it properly.
+>> Anyhow, let's get this fixed.
 >>
+>> If you think the code is clearer your way (where I disagree)
 > 
-> I actually have a reason for these fixes other than "bot said bad".
+> Fair enough. Though I have a different taste, I'd still like to make the
+> maintainer happy. 
 
-So you found them on production kernels?
+Don't worry, it's hard to make me unhappy :)
 
-We did not have a single real report of that for probably a decade or
-even longer in production.
+(just a bit overloaded right now)
 
-Recently, we had the single first report about the compaction case from a
-stress test (no production):
-
-https://lore.kernel.org/all/20260903095543.3752338-1-yuan1.liu@intel.com/
-
-"We are not sure whether this race is reachable under realistic
-workloads or only under this synthetic stress test."
-
-Where I motivated that we need something clean.
-
+> I'll send out v6 tomorrow following your suggestion.
 > 
-> We leverage ballooning and hotplugging as VM memory overcommit tools
-> and are finding that some of these race conditions crash them with
-> large MTBF.
 
-yeah, that makes sense.
+That looks good. Are you planning on following up with the memory barrier
+optimization for smaller folios?
 
-> 
-> While most of these are insanely narrow, they are not as unlikely to
-> happen as you think. A vCPU can take a vmexit in these windows much
-> more easily than a host can take an NMI or other interrupt.
+I hope below doesn't end up in some performance degradation.
 
-Jup, that's what I would expect.
-
-> 
-> Thankfully none of these (or the other series) appear to be obvious
-> security issues, but they are stability issues.
-
-Right. And DEBUG_VM reports are irrelevant in production.
-
-The thing is that the race between offlining and actual memory removal
-is extremely long. Poisoning is just a mechanism to find these theoretical
-issues that could cause issues faster.
-
-And with all the other things going on, this has lower priority, and I
-wanted to get back to the AI patches I have once the other thing is sorted.
-
-> 
-> I have a reproducer for every single one of these (and the other
-> series) - but a handful are unreachable due to a 2-statement read
-> being emitted as a single read by the compiler (which can be undone
-> by a targeted compiler flag). Those were included for completeness.
-
-
-In general, I think we want something that will protect all
-pfn_to_online_page() + zone->contig thingies, not just selected ones.
-We discussed in the past using some sort of rcu for that.
-
-get_online_mems is usually the wrong approach.
-
-The infrastructure for that should be added in a clean separate patch, not
-mangled into a patch that fixes a DEBUG_VM splat.
-
-This is nothing to rush in or to schlop around.
-
-The AI patch for compaction I have here does something similar to your first
-patch, with a bit less churn, and converts a handful more users.
-
-E.g.,
-
-
-+/*
-+ * Nothing keeps a section online once pfn_to_online_page() has returned. A pfn
-+ * walker that holds no reference to the page does the check and looks at the
-+ * memmap under this guard: remove_pfn_range_from_zone() waits for it before the
-+ * memmap is poisoned and can be freed. That wait cannot be interrupted, and
-+ * whatever a walker sleeps on under the guard, memory offlining waits for as
-+ * well: leave the guard before copying to user space. mem_hotplug_lock is held
-+ * during the wait: never take it under the guard.
-+ */
-+extern struct srcu_struct memmap_srcu;
-+#define memmap_walk_guard()    guard(srcu)(&memmap_srcu)
-
-
-and then
-
-
-diff --git a/fs/proc/page.c b/fs/proc/page.c
-index 260772b20bd99..c5f6d7fe12d9a 100644
---- a/fs/proc/page.c
-+++ b/fs/proc/page.c
-@@ -58,13 +58,39 @@ static u64 get_kpage_count(const struct page *page)
-        return ret;
- }
-
-+static u64 kpage_info(unsigned long pfn, enum kpage_operation op)
-+{
-+       struct page *page;
-+
-+       /* The page is not ours: keep its memmap until we are done with it. */
-+       memmap_walk_guard();
-+
-+       /*
-+        * TODO: ZONE_DEVICE support requires to identify
-+        * memmaps that were actually initialized.
-+        */
-+       page = pfn_to_online_page(pfn);
-+       if (!page)
-+               return 0;
-+
-+       switch (op) {
-+       case KPAGE_FLAGS:
-+               return stable_page_flags(page);
-+       case KPAGE_COUNT:
-+               return get_kpage_count(page);
-+       case KPAGE_CGROUP:
-+               return page_cgroup_ino(page);
-+       default:
-+               return 0;
-+       }
-+}
-+
- static ssize_t kpage_read(struct file *file, char __user *buf,
-                size_t count, loff_t *ppos,
-                enum kpage_operation op)
- {
-        const unsigned long max_dump_pfn = get_max_dump_pfn();
-        u64 __user *out = (u64 __user *)buf;
--       struct page *page;
-        unsigned long src = *ppos;
-        unsigned long pfn;
-        ssize_t ret = 0;
-@@ -78,29 +104,7 @@ static ssize_t kpage_read(struct file *file, char __user *buf,
-        count = min_t(unsigned long, count, (max_dump_pfn * KPMSIZE) - src);
-
-        while (count > 0) {
--               /*
--                * TODO: ZONE_DEVICE support requires to identify
--                * memmaps that were actually initialized.
--                */
--               page = pfn_to_online_page(pfn);
--
--               if (page) {
--                       switch (op) {
--                       case KPAGE_FLAGS:
--                               info = stable_page_flags(page);
--                               break;
--                       case KPAGE_COUNT:
--                               info = get_kpage_count(page);
--                               break;
--                       case KPAGE_CGROUP:
--                               info = page_cgroup_ino(page);
--                               break;
--                       default:
--                               info = 0;
--                               break;
--                       }
--               } else
--                       info = 0;
-+               info = kpage_info(pfn, op);
-
-                if (put_user(info, out)) {
-
-
-protecting individual pfn_to_online_page is just whack a mole. Likely we want a
-way to check whether pfn_to_online_page() is called from the wrong context, and
-maybe we need a variant that can be called from "wrong context" for a good reason.
 
 -- 
 Cheers,
