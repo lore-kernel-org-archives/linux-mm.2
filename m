@@ -1,155 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E84606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3418606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RWHqK3S3
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YTtRLCQ3
 Received: by kanga.kvack.org (Postfix)
-	id 267BD6B065E; Tue, 27 Oct 2026 05:53:21 -0400 (EDT)
+	id EA2F86B067E; Tue, 27 Oct 2026 05:56:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23F876B065F; Tue, 27 Oct 2026 05:53:21 -0400 (EDT)
+	id E79EB6B067F; Tue, 27 Oct 2026 05:56:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156036B0664; Tue, 27 Oct 2026 05:53:21 -0400 (EDT)
+	id D8EF46B0680; Tue, 27 Oct 2026 05:56:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E13266B065E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:53:20 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70FF18090D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:53:20 +0000 (UTC)
-X-FDA: 85367943360.09.6B8C2C0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B965F40006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:53:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RWHqK3S3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793094798;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A7D426B067E
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:56:23 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2A4A940986
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:56:23 +0000 (UTC)
+X-FDA: 85367951046.02.7B5D902
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 42E6DA0002
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:56:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YTtRLCQ3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793094981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qb/Av3iFxq2T/XinHqpaMyorZTBvtSl0sjYD9zEFaGA=;
-	b=vhXyHeSozIqSyDCK8OcmioLd7oA+pZuGl0hj1Eobaw0oL9DffsHPRB6bGWPOmGeQzu57Tt
-	fTdZc1dj+onXiDpRjuvRyFPv6eE7CRpfJG0kRd/oBZ8yZZ/m/ERBfEzwtQeE2LGEhC3v4x
-	13v1YzX+kjB1AIevwOnM4qzOUA2326E=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RWHqK3S3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793094798;
-	b=qAay+B2//d2kjESODLDzRQKuKo1FACqGThMjP6t8JNzl+xWs/WmREnWZ2vPjYRuT6bT8kO
-	yD+5/51e+l8Y6ggSzTLLVUSrw+ybD7FX8aFVcLhkhiJlQGw4U19ZZV13YHUc6eWkGpOmXt
-	D61VdvihWirL1QpS6UYwGz+ytXboLaA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 477C06020A;
-	Tue, 27 Oct 2026 09:53:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739161F031E3;
-	Tue, 27 Oct 2026 09:53:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793094798;
-	bh=Qb/Av3iFxq2T/XinHqpaMyorZTBvtSl0sjYD9zEFaGA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RWHqK3S3qatsdfVyfkwJd+wmD6PBE+gLSXhLcog0Et/IwzOgkm8aYa6gQI9jitp49
-	 bYl3JbBm7vyk3NIM1Vati07UdXPc8CkCM/lMNiC3R26e2tV3ZiMiWfrZL+lO6C3MAw
-	 9iddEyT16tjnC6r//StpgqZQfQicqQq2qaSHsxv36YsbsEshJsOl+gIHVdn7aF+yTe
-	 27DLMb7VBJSNSG0PTk5Qcs2g0LwY3qTQaeJZQeYRZXSggYTtOiPSqrVdSi6p4jtoBQ
-	 eITXrRXA7giOLSBJsd3XqFqQeV2aJjDEO4Df9sjqXgi+zFxpQecINrhcroxQQdES+c
-	 N2bjhIrEcEGSg==
-Message-ID: <ed59aa45-0ce8-4e5b-8a19-b5323fbe7864@kernel.org>
-Date: Tue, 27 Oct 2026 10:51:00 +0100
+	bh=bm9jOSKbHeFb5Ll3Ot50G1jHQC3KYW8p/DmkltzWt7M=;
+	b=IRh2r5N+OSj5+tcvYvEFdVr7To+c2KysksfI01NfoaHY+w8WonpRbBOJ10ezMYqNDFbOJY
+	bhv8QFMbzb1UJC24yMU6BzmWmHR2ZOAnIytCgJanVxQLgSs2wINLoDD+Sl1hHOKwNOlQoG
+	jg1bnQYgwICxD2kZf3V3k4SROoSlDcU=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YTtRLCQ3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793094981;
+	b=4S8zOVPhOFk4hTShV/qt3LkeH6g19ZYWILbixva3f0XPJgM6trHj2i/Twm+8hVShO3KHLA
+	MBYzbozMRLlJDv3yKVg9RoZwF4MNtS66nWD16ZJzFApH/r5XTB/RO7GblDigYwcv0B6AwM
+	hUVDulWwzIqxQUBTdqAOTxSy7iYFZjw=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49d05d51553so27009165e9.2
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:56:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793094980; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pUJTNSCRavmM8ASoC1b+DNGv11IRN7JVRhEldEWMijlbB6wL7AiFaOSRxsS/WxXGPT
+         bBgGhZZjRDCVakQaaiK5a2BRPz8PHbMNZfhc9g3G31Wn4L2bnbPVHnsbBN5IynSfVzhq
+         2cyUKypCqkiSUfGtlGNo9p/C1AXokYCbEI2dqtZaBuZE0HWn+JuurzG5hv7TBySsM7xJ
+         IU6oPPCYJSx1wy+vA1z+E4pXnjZatzVd9xS2ZemlMfZZMWFMMaY1CVURtGzafzMbjRFb
+         ffKLwl7CWuaufCrS36y1iz/GVntiTgkvvxTI++ttaRkkFcGc7jzHnD8J5eHztWXJlEag
+         zekw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bm9jOSKbHeFb5Ll3Ot50G1jHQC3KYW8p/DmkltzWt7M=;
+        fh=ViAUOb6au7ZKoXATT+r75uydUygDEH6Vunsn0o98Sfc=;
+        b=EJhhDOv0BVlaBUqOnjSKsWGbLgq+HeBszDMYh1dKMYcTW1s+I629IXkIrFDDLnzQtO
+         YhbyfExl6rQooHfn/rCPLUrXODywj88ZGqAt9oKM0fg58kGnYfe+dFaiVMvY0uOLnSIE
+         8neW1iJ/l2UrlU5DbqjIXBvcYh19nzkcFiK2FBs5S26h8Q/K971UGQ9Jz0R2YSEAyyiF
+         FQCXqGOmjVhXNnSJK/psytce6nG2GpZQwN7kDznSI6iev5i9FXRfk++0rIvWlBwlmazf
+         uXfGvwF0lBaNXBqawcdXA5vawrgVm78ybyVSxxASo0YgSatnsd7hswZdg3iM2IjXKCBY
+         XD/A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793094980; x=1793699780; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bm9jOSKbHeFb5Ll3Ot50G1jHQC3KYW8p/DmkltzWt7M=;
+        b=YTtRLCQ3vMx09BSYimtI4ScqkZNzMUKhr9Q89OpYWsXFd++FqIwFu75yp7liD1ZxCt
+         0EPzNf0nwOQ6lVrLdt4/wWadNkRWf5H6y194nG97mY6wAQFd0qShYjmsPfiW/LRmH0S3
+         O976fl+n7FfzkmwDfIVRAWUZLdWXliYaY0K8o76jVSf0xfapPpwV9UO1NGDKqtZYIE63
+         XrhbcgUk9QceQJKS1pmj5ew/46sKutigNEZEErwY3CDShV8DMQ776f3VwmH8AVnpHjcu
+         VKoiYLWDwD92eOXBWsZdKktrF+qizynRzD5D7xgspSlEHOJ0aVib3Z/cbk/LeNIvPw/m
+         vliw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793094980; x=1793699780;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bm9jOSKbHeFb5Ll3Ot50G1jHQC3KYW8p/DmkltzWt7M=;
+        b=2RZLgl4Pz80jhZ5FFaS0d2E0HbioXc+6DlAJEHUTqBtXRBAqSMxvbdjNhfMamSR+nG
+         5evDYvrD3SfuhsT72AwQs4mVu9s5PTfsSUcUQMTz/ED5a7JWO+jkGEYhiciNldAVvBvh
+         cYNknIsuVBDIlI84afnOJ/nuFwaluwsW9y1EqC+LSPXBUQlbtvk5lwSN0yArA34Grc2S
+         Ih1+Mcl5Q9ynQuPe8pvXvzPyece4FjVDfZ30yw09ildnZ5kHCH2KVCIsAgZ9OUkIiEY/
+         u4YYe69MEY2KcBENgtv+RgIQ2bf95zSuBuj2LckRBQSfkpJZywQlymvCE1WXY8HTB18q
+         g5Eg==
+X-Forwarded-Encrypted: i=1; AKwUvBzn77KbcJi4r1H3XDCtbiCFHA8ix3bymX2YA4e1FSaMdajI+zFdGnhgQ2zQuN5jTTWtwqTq53uogA==@kvack.org
+X-Gm-Message-State: AFq9FYLzlZKBmplnr+wueEamzftAyThwK/TuMlGO+u7HeCgyqirbzQRk
+	JTosxJlUo0nAI5/cLlN5DWCzp3UMeAKdYlu2sAUjyTLAZo7sBtRRqypq7MkiDKJrqMV71l5eQ3K
+	TVo/6kjiVD9v5cRH4G43vtJlTtBojM+s=
+X-Gm-Gg: AYBFou2hv9WmcT7aj9bzFI4j5AIxew+M2ZPKKy2q09FESWkEGgmtwWSK0/8x2xIL5x+
+	b2uusbqDEK4UFK9qCg43C6ivh/yOz1PMfcgo/KAXHuQ8CAV0xIVqYtefXV3bLQKFUX0hV2lx227
+	6BmJj79vBouPpebOYeER0Nspf9/WZoyudlQS+FhJoXoz9dnjx384AsI9hUMA74Nr6DP1JhbdbcH
+	5+WMyKhiBY+qSONi3MaCbHCI1DOQqDvGLuZ5NLk4h+VUr9puyN5mwX9WnOyBMH4RUTCNN8h6FEQ
+	noAwCscRc8XjniOjMxknxynfgCe3XHvAOCKAdUstcXH2qem0adsrCGDli8nebSbAN4vucZvmBKD
+	dVZ8dRxOWB0+sDJOqMU/x3x0Mpx+EnDwj4xjTD/nzi6J+5ln4wzX+NvqZMPIHWUldgPZs9sc=
+X-Received: by 2002:a05:600c:3f0d:b0:4a1:9663:7639 with SMTP id
+ 5b1f17b1804b1-4a35accbcbcmr174565425e9.34.1793094979168; Tue, 27 Oct 2026
+ 02:56:19 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/16] hugetlbfs: enforce F_SEAL_EXEC in setattr
-To: sashiko-reviews@lists.linux.dev, Andrew Morton
- <akpm@linux-foundation.org>, Gregory Price <gourry@gourry.net>,
- Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>,
- Carlos Maiolino <cmaiolino@redhat.com>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Stevens <stevensd@chromium.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- William Kucharski <william.kucharski@oracle.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: linux-mm@kvack.org, Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-5-703206d5fa0c@kernel.org>
- <sashiko-outbox-186003@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <sashiko-outbox-186003@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B965F40006
-X-Stat-Signature: peiumr4zcfnse9438n6xsw9te7fcbdra
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+References: <20261022220203.91911-1-baohua@kernel.org> <20261022220203.91911-4-baohua@kernel.org>
+In-Reply-To: <20261022220203.91911-4-baohua@kernel.org>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Tue, 27 Oct 2026 17:56:06 +0800
+X-Gm-Features: AclHuK_kakz01byG3bVjUGAzouFDztXZLeqCiwVm50JfGRxN9K2TCJfc75PXcc4
+Message-ID: <CAN_Opa_QB7Mwppa72f_UXP1k2FZFGxgLKf7FtzH-KyabebLWhw@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 03/14] mm/mglru: reclaim from the oldest populated gen
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, hui.zhu@linux.dev, 
+	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, david@kernel.org, 
+	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+	mhocko@kernel.org, qi.zheng@linux.dev, ryncsn@gmail.com, 
+	shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com, 
+	zhuhui@kylinos.cn, baoquan.he@linux.dev, liuxiang.277@bytedance.com, 
+	wangzicheng@honor.com, lianux.mm@gmail.com, kasong@tencent.com, 
+	liam@infradead.org, surenb@google.com, mhocko@suse.com, rppt@kernel.org, 
+	zhangbo56@xiaomi.com, lyugaofei@xiaomi.com, ridong.chen@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 42E6DA0002
+X-Stat-Signature: sonexkfe7gozkumcqqgdgm7h5gx9qkar
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793094798-29835
-X-HE-Meta: U2FsdGVkX1/8SeCljOkT78kiIMU/D91JDVBQM0ex3KVny5BxFdPne4mhmcl3TkfWvmpUY/o4+f2Du+v9OxKRAhrRGK4iJhn/vgB929uAmmUJrIId28rOE8JEhjSk1aBOkD5jxAzNm5jULUaQ6pLey+b9CQ9lOIRAe2K5+o9Ju/gGj3vqsYp6U1KjVc4IExh+2y778RyIXHZ5uTLw8TQq6w5Txsd+xDPwxsmmx6ih7AB9thGPQ+zPCu4nxLO/E/KvjpMXmGZl4837SwWs3yk9rWVr8ezSgyhVkDOA23BcdOjR/H9F4r03aG8lPa/rbuZmop5vXPzbJSwzuyw0/Jj/NcqsRHimW7VdpUiNNe90hdYPBP3N3lEEqw2GyMR6vgJDeEDNPOFOrYnl0gkSvejChecKo9oMAnieKqTyFHEzPGMtmpVSVHjTeLjg4WUX42QdgvLIKfD8XI4YfQkGJo70K7OLOiqRsxIVtbyObEqp17n4KgFUjkBg4FR0g/75bUivKuaGW16nSs6IJO/8OkyTQ6A1yCnNLh1WDTwuf/bMWw4ik2Vl5eIHp9MNLoqDWcKgKt0ixPA5rTqnAu3HKYQF3Py2BoGyU/sbzhI0Z1PQqLYTD+y+8eQIVzO5yMvuSzsYJe/bH3c437F0TuK3tNyaxE3aqV0aRSU5LbrNbf4YhiIZVCAnruG84TU2lyIYKk6UmqQUmarBlj8VeND3Jt3LTEL67iqHje155wDioJN1mAFqN/jqx1ElLRu5iCUQOM+SPMEDqYcmji1mzY+eMkqXg8v0Ts4QQTVQT3pMes+DtH+wj3ounOilqGbtZfxKOmKhHUOl2udL8NInBS6F+oQiWcVl//OAVpQHvLQIJGT2elXq1/jLG26XWlgH6qP9s30RMHdKEdgiPjewrWT57YriG7EK8ylwZ7r+SbSdTp5au+7TgZIj3bv5BlonkQedSwMZwzGrOUc1NsBPJPkZ0sb
- NHcdpURG
- 3/DnbNaUJBcpZ/4xD1jkIWcY45M4knrRSnBhU/+lJ2J8w3WbCY6R21BVcGxONDfz29CFhEsDeXX1UoeQgr3lmkYFtj/Y19mb76ctpCz84YfGO+o9KFNgblgVyqUKZy0Y5dt9s8+vxG65yhyjSg3U/VoW7wbLH0zTNQ5WQeXKIqDEsS+E6ikjJ/HerBMVedYQ/RdwrZL/QRCaPsO/t9XUF8XdocHlI2DA14cls8QqLReLlb6936OT+0TyMsElvuDKXwy+bkm02L5/zvnhLZWL+P2AC5qAPVyajkCsgjwUcH/sLtgP9vC6RRVzwETIoQIji+djw627iJuoLKeIP0q1ExdndX1mDFqhNG/Vi8hNzhhdfwUPFOQMKazsVirQEqH7gekuR8ilt5C/NyvT7ckn1hKbxTm0pYXS3nd8mxOZ4HzLevMexJpaRn82l5aq4dftSf6QUjJ9HVeS9/YjVVMBcvjIWBQMzmUUOPwQnIqdCJPZvpLxLrUOf58AmtAlJlxfYlkcxsfxQhL4nkyfpMJvSYEUBEucreP2/Alu5f6TSOYB9qVU=
+X-HE-Tag: 1793094981-515176
+X-HE-Meta: U2FsdGVkX1+cZG9nDP65ilzt/mhuPene4q3NuHtnKm72aqa+hVSrGrmsZhtK2lxt/bEMBHPMCY6C5yN/cFdunE48ieyw4HGQ84c4h2TlClSqs+OvJGH7PyxHJd4MKykR2KN3Qoi5HKY8pIkirvyVkxLs6Ie31vof2gujbNmCeg6EQzo8oGbiciCOdD09tFT9T4QJZjjvBavgSlQJjnoC6Y2TzryBZ6WAvuCkMKPJl/g7VnaH6DfBvaYZV5qsha4H0SXMFVgXNnbxaeipvafAL0G1w+QvqRD6e5KKMrtbZYt+7X+K+DkrS/WQpnQkvKa2JHl36lVrVd8udhVhe4drCApWDZ0b9AahiBnWPIO1EcDF1jKKICdivqD+FLEC8f+jqeqMo0uLM/D4vz+BXOymKb1FEYbyyuG60UASrDoCcfQcVs/jhklFqYlJ5aOy1gMGwnpamvi4qkJw/IhSyKY89Ne7kfOgRp7ojXxzhtC/V/hvOkdcEwpM1vFIAp+lfsBYoK5q2re3AlZHAKbC+JeXCYFuLbtxxXOnZ4pCFrtZNFDHxGPWga+ZS5TDp0ICn3g4Ju80UILXpgXGCQ80UV4vHXwxOx1EZUvUamt7yLZCnOWcYYswu/w2hgNBhkOnM6Yp0UM8mcuBrI68cp5wPhDDsdL+4EKuV6JQf+NQ3QTUpBvxNmLHLdsU2p1zr163GhrDZfCr+MHtj19cwA63s0KCVpPthCRxuLu+3GEfXpn74vwQvjuVRFQapoTDsc4YvNwvJTpCI5037AChIVxkPdBOuyWJIwDU8g/UUde7AqILw7xx1uVXRS8z+7R9ngZx9AGrCdDylw91c7IKKsoDFPiKqEExARXQpBkPazqcOjRQIBiZst+zhAA5IKKAb5STT6kLR5mQzPl7NtRED1w85DDgEjgN3saEI30yT8Ej51BaZiv2VftjcHdjzxhp3JsWHgcSNIwiCfssQ4TWwWvDTUS
+ P8PWPNK6
+ J081yBwAkLgWfi78GMk4Rn3hKJryXBU+fDafqR6mtaZizH/m4f/deGwlgwQxqoorbjwawFHOWtIG4Z9uJSz+0S9UiD3xH2AejrD9jLq7WCf9qo43JcWiIxdidSFk4DJ2Tmtd3E6/4zj1MN+LIi+QFIzU1Cf2WM8PqK8DfaBsdL5tQHGRrJGKU24k0/4GW8rFHdVOx37bH0KH9DTqfvsZklOcRlvAh42+rxWvAx+aOjZTNWstVTDyREoGjPN85NVFcDj5akDdbFd09XKuEHA7NKcvH/acuKtEkjeSKze7Y8yFm4ZO+G3zr05f9CgUbMSmHAp/YuBqBczzgYvvfZ6+58ozezGAVApPpOBPQ3VCzKkr7AODrZ1t90Pd/PcHy7M5DDkHp9q2vieHCpf8r7dtuLtCrpPYeK6gTmlb9B0Xi/VXQ27GhwX0UFOQ2B5/Zib0T09o+G1OO/S9Uk36/AdDZFFlf1/ZtE/fJEU2gaD8HEpSKXdZvfKxEODaGxjdh/khpV5pKdO6f8qaJmbH3FO98e9qGdYBj7cbd60hv1XubYfUMe6I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,99 +151,169 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 03:22, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] hugetlbfs: uninitialized info->seals read in hugetlbfs_setattr() on root dir
+On Fri, Oct 23, 2026 at 6:02=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
+org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Currently MGLRU tries to keep the gen numbers of the two types in sync,
+> avoiding reducing the gen number of one type when the other type has
+> more gens, as described in the comment in try_to_inc_min_seq().
+>
+> This makes scan_folios() stuck reclaiming the type with fewer gens: it
+> always scanned the oldest gen of the type, even when that gen was
+> empty, so reclaim made no progress on that type unless forced aging
+> created a new gen and eliminated the dead empty gen.
+>
+> There are other approaches, like lifting the gen number
+> synchronization [1]. However, that would break the gen layout used by
+> lru_gen_folio_seq(): newly added folios would no longer have a
+> well-defined hotness according to their gen number, which reduces
+> accuracy. It is also not pressure-aware, since with gentle reclaim we
+> still want to respect the gen layout (hotness).
+>
+> Instead, reclaim from whichever populated oldest gen is left, but only
+> when the default reclaim priority can't satisfy the reclaimer's
+> requirement. This is typical for swappiness limitations: e.g., low
+> swappiness asks the reclaimer to reclaim from file, but file gens are
+> drained, so the reclaim cycle fails and priority is raised.
+>
+> At the default priority the scan quota is 1/4096 of the evictable
+> size, and the old behavior is kept there to respect the hotness
+> distribution. Once priority is raised, the quota is at least 1/2048,
+> so the hotness bias introduced by reclaiming from a younger gen is
+> bounded by that quota, which seems fair. Global reclaim for MGLRU may
+> start with DEF_PRIORITY / 2 (1/64); the ratio is still reasonable at
+> that point, and when global pressure is more critical, we should
+> reclaim harder.
+>
+> Note that scan_folios() still refuses to reclaim a type left with only
+> MIN_NR_GENS gens, so a completely drained type still requires aging.
+> This change only avoids scanning empty gens when populated reclaimable
+> gens remain.
+>
+> Link: https://lore.kernel.org/linux-mm/20260726122123.7614-4-baohua@kerne=
+l.org/ [1]
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Barry Song <baohua@kernel.org>
+> ---
+>  mm/vmscan.c | 30 +++++++++++++++++++-----------
+>  1 file changed, 19 insertions(+), 11 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 500ef23949fd..d7eb15533de1 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3451,11 +3451,9 @@ static int __folio_inc_gen(struct folio *folio, in=
+t old_gen, bool *increased)
+>  }
+>
+>  /* protect pages accessed multiple times through file descriptors */
+> -static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
+> +static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio, int=
+ old_gen)
+>  {
+> -       int type =3D folio_is_file_lru(folio);
+> -       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> -       int new_gen, old_gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
+> +       int new_gen;
+>         bool gen_increased;
+>
+>         new_gen =3D __folio_inc_gen(folio, old_gen, &gen_increased);
+> @@ -4836,7 +4834,7 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memc=
+g, struct mem_cgroup *parent,
+>   ***********************************************************************=
+*******/
+>
+>  static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struc=
+t scan_control *sc,
+> -                      int tier_idx)
+> +                      int min_gen, int tier_idx)
+>  {
+>         int gen =3D folio_lru_gen(folio);
+>         int type =3D folio_is_file_lru(folio);
+> @@ -4854,14 +4852,14 @@ static bool sort_folio(struct lruvec *lruvec, str=
+uct folio *folio, struct scan_c
+>                 return false;
+>
+>         /* promoted */
+> -       if (gen !=3D lru_gen_from_seq(lrugen->min_seq[type])) {
+> +       if (gen !=3D min_gen) {
+>                 list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+>                 return true;
+>         }
+>
+>         /* protected */
+>         if (tier > tier_idx || refs + workingset =3D=3D BIT(LRU_REFS_WIDT=
+H) + 1) {
+> -               gen =3D folio_inc_gen(lruvec, folio);
+> +               gen =3D folio_inc_gen(lruvec, folio, min_gen);
+>                 list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+>
+>                 /* don't count the workingset being lazily promoted */
+> @@ -4876,7 +4874,7 @@ static bool sort_folio(struct lruvec *lruvec, struc=
+t folio *folio, struct scan_c
+>
+>         /* ineligible */
+>         if (zone > sc->reclaim_idx) {
+> -               gen =3D folio_inc_gen(lruvec, folio);
+> +               gen =3D folio_inc_gen(lruvec, folio, min_gen);
+>                 list_move_tail(&folio->lru, &lrugen->folios[gen][type][zo=
+ne]);
+>                 return true;
+>         }
+> @@ -4919,17 +4917,27 @@ static int scan_folios(unsigned long nr_to_scan, =
+struct lruvec *lruvec,
+>         int scanned =3D 0;
+>         int isolated =3D 0;
+>         int skipped =3D 0;
+> +       unsigned long min_seq;
+>         unsigned long remaining =3D nr_to_scan;
+>         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+>
+>         VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+>         VM_WARN_ON_ONCE(!list_empty(list));
+>
+> +       /*
+> +        * Respect the gen hotness distribution at low priority to avoid
+> +        * aging and scan cost, but prefer to satisfy the reclaimers requ=
+est
+> +        * when under pressure to respect swappiness more and reduce IO c=
+ost.
+> +        */
+> +       if (sc->priority =3D=3D DEF_PRIORITY)
+> +               min_seq =3D lrugen->min_seq[type];
+> +       else
+> +               min_seq =3D lruvec_populated_min_seq(lruvec, type, lrugen=
+->max_seq - MIN_NR_GENS + 1);
+> +
+>         if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS)
+>                 return 0;
+>
+> -       gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
+> -
+> +       gen =3D lru_gen_from_seq(min_seq);
+>         for (i =3D MAX_NR_ZONES; i > 0; i--) {
+>                 LIST_HEAD(moved);
+>                 int skipped_zone =3D 0;
+> @@ -4947,7 +4955,7 @@ static int scan_folios(unsigned long nr_to_scan, st=
+ruct lruvec *lruvec,
+>
+>                         scanned +=3D delta;
+>
+> -                       if (sort_folio(lruvec, folio, sc, tier))
+> +                       if (sort_folio(lruvec, folio, sc, gen, tier))
+>                                 sorted +=3D delta;
+>                         else if (isolate_folio(lruvec, folio, sc)) {
+>                                 list_add(&folio->lru, list);
 > --
-> 
-> commit dfab7a0d71278312f805e82ce52518a8ea2f538d
-> Author: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-> 
-> hugetlbfs: enforce F_SEAL_EXEC in setattr
-> 
-> This patch updates hugetlbfs_setattr() to call memfd_check_seals_mode() when
-> ATTR_MODE is set so that fchmod() cannot modify execute bits on a hugetlbfs
-> memfd sealed with F_SEAL_EXEC.
-> 
-> Link: https://patch.msgid.link/20260629180247.2343229-1-eva.kurchatova@virtuozzo.com
-> 
->> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
->> index 6656807ce4377..7f5c3962b5d56 100644
->> --- a/fs/hugetlbfs/inode.c
->> +++ b/fs/hugetlbfs/inode.c
-> 
-> [ ... ]
-> 
->> @@ -841,6 +842,13 @@ static int hugetlbfs_setattr(const struct mnt_idmap *idmap,
->>  	if (error)
->>  		return error;
->>  
->> +	if (ia_valid & ATTR_MODE) {
->> +		error = memfd_check_seals_mode(info->seals, inode->i_mode,
->> +					       attr->ia_mode);
->> +		if (error)
->> +			return error;
->> +	}
-> 
-> [Severity: Medium]
-> Can this read uninitialized or stale slab memory from info->seals when
-> chmod() is called on a hugetlbfs root directory?
-> 
-> hugetlbfs_dir_inode_operations wires .setattr to hugetlbfs_setattr(). Unlike
-> hugetlbfs_get_inode(), which sets info->seals = F_SEAL_SEAL,
-> hugetlbfs_get_root() allocates the root directory inode via new_inode() ->
-> hugetlbfs_alloc_inode() without initializing HUGETLBFS_I(inode)->seals:
-> 
-> fs/hugetlbfs/inode.c:hugetlbfs_get_root() {
-> 	inode = new_inode(sb);
-> 	if (inode) {
-> 		...
-> 		inode->i_op = &hugetlbfs_dir_inode_operations;
-> 		inode->i_fop = &simple_dir_operations;
-> 		HUGETLBFS_I(inode)->resv_map = NULL;
-> 		/* directory inodes start off with i_nlink == 2 (for "." entry) */
-> 		inc_nlink(inode);
-> 		lockdep_annotate_inode_mutex_key(inode);
-> 	}
-> 	return inode;
-> }
-> 
-> Because hugetlbfs_inode_cachep uses the init_once() slab constructor, which
-> only calls inode_init_once(&ei->vfs_inode), newly allocated or recycled
-> hugetlbfs_inode_info objects are not zeroed on allocation.
-> 
-> Previously, hugetlbfs_setattr() only checked info->seals under ATTR_SIZE,
-> which is not reachable on directories. With the new ATTR_MODE check, changing
-> any execute/search bit on the mountpoint root directory reads info->seals
-> and can fail with -EPERM if the F_SEAL_EXEC bit is set in uninitialized
-> memory or left over from a previously freed sealed hugetlb memfd.
-> 
-> Should hugetlbfs_get_root() also initialize HUGETLBFS_I(inode)->seals =
-> F_SEAL_SEAL?
+> 2.34.1
+>
 
-Shouldn't we just skip the check for directories?
+At raised priority, scanning from the oldest populated gen avoids
+wasted work on empty generations. The change to pass min_gen through
+sort_folio() and folio_inc_gen() keeps promotion semantics correct
+when the scanned gen is above min_seq[type].
 
-
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 7f5c3962b5d56..293c7965f4894 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -842,7 +842,7 @@ static int hugetlbfs_setattr(const struct mnt_idmap *idmap,
-        if (error)
-                return error;
-
--       if (ia_valid & ATTR_MODE) {
-+       if (S_ISREG(inode->i_mode) && (ia_valid & ATTR_MODE)) {
-                error = memfd_check_seals_mode(info->seals, inode->i_mode,
-                                               attr->ia_mode);
-                if (error)
-
-Because sealing of directories does not apply.
-
-Thoughts?
-
--- 
-Cheers,
-
-David
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 
