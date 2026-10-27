@@ -1,84 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A67B606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43245606A33A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OyHe/4xA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S0xegcMv
 Received: by kanga.kvack.org (Postfix)
-	id 36DCB6B0711; Tue, 27 Oct 2026 08:53:43 -0400 (EDT)
+	id 39EFC6B0712; Tue, 27 Oct 2026 08:58:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31EF66B0712; Tue, 27 Oct 2026 08:53:43 -0400 (EDT)
+	id 34F516B0714; Tue, 27 Oct 2026 08:58:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20F0E6B0713; Tue, 27 Oct 2026 08:53:43 -0400 (EDT)
+	id 217FD6B0715; Tue, 27 Oct 2026 08:58:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 083B36B0711
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:53:43 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9B093409F8
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:53:42 +0000 (UTC)
-X-FDA: 85368397884.18.EE5809C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EBB776B0712
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:58:13 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6649D120A51
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:58:13 +0000 (UTC)
+X-FDA: 85368409266.10.AC4414B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 88EA62000A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:53:41 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OyHe/4xA";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id A43FA100006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:58:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S0xegcMv;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793105891;
+	b=J1c/Q5mIUOe0/9ulZQWQfZEtgyX7Ix7kzRJXPrgu7tooVc2ObP7k5ADyib3LAvHjJv2nY7
+	qrexRHBvVzjMqI6VyfFwEN9SLID2TkHqGCltYljM/b7u2X7cN7xVj6iIwpyDpu9PFFkqi8
+	s9dUtUMT+bEaoaFf07MRm0hPhL1IXSE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S0xegcMv;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793105620;
+	s=arc-20220608; t=1793105891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3A3b2z5R5PgLMJaCVunBQCGAvsKmINFfocdONRkdX1E=;
-	b=rvAzeNhY+d21X3PzOrriRNncveOf8wbM0z6oN/aRhBycDARWjm05Sxed4RECwsA5iO7+Nq
-	iYx5ZASHpaKDZY+rCjClF+O5NRfkiNNVGlcalB91owQrQahF/PDVYkhIkoE5cmuQEruSnU
-	Rc6SpY5/KX2W05tRH4GraV8ZOHnsagU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OyHe/4xA";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793105620;
-	b=5dWr2fFev57TDNJzRWLsXnlZq5ECCNTRK3LzQPH8PpIoyNve2Nru6Y1n9rn1BuVWHpGYrT
-	BEsfCCdH5+KM10nhqfDMyAZv3+SPJ37gAEgAcmHzk4nYoAhqisOmvt99bhP2qFHKxybs6N
-	OmU48mQbCxKAvJfauGn/2uU50iPtyUk=
+	bh=2qo0Fds2+mYFVrZRAJ8lmAwaqUsuanIMWx5DL5WUc/I=;
+	b=K9mFvmyAd0jo7R7Ea+zLUPebD6+e9Im7SU9xXZ869O3LWHJAZgXBFY3rdKNHVi19OkyPWj
+	FQp9OhQkAippX35pd9TmDrPtIEGCCNxB4IyTs7gEYvb3vVmIvXz2iK51XrjitHd9CK7qXn
+	zKJbhNmYdIY7TkEN5ajjImNvJgxwt7Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5797F60267;
-	Tue, 27 Oct 2026 12:53:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F281F031E1;
-	Tue, 27 Oct 2026 12:53:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2F0F56021D;
+	Tue, 27 Oct 2026 12:58:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C2C1F01828;
+	Tue, 27 Oct 2026 12:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793105620;
-	bh=3A3b2z5R5PgLMJaCVunBQCGAvsKmINFfocdONRkdX1E=;
+	s=k20260515; t=1793105890;
+	bh=2qo0Fds2+mYFVrZRAJ8lmAwaqUsuanIMWx5DL5WUc/I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OyHe/4xAP6WCorugyhRh2YGYy1BO8A93QVK/QxBl2JzDgugFa9HrveviyxJbzlrWf
-	 N33EqbM2ND75BtjehLURhzxhyjHyl6NniMAEsJfnDZYeTbAg3hK+IvI3x0YjG4vo4E
-	 n+yqhpr8ii7uWk60fU5cm/53Qe9WInE/L2P/WP2PE5NuZdk1NKioHg/186/EFHaLJQ
-	 QJA1prI/67wzJVaDtoSH4dTgG+vmi/JAJ+74NvRX8dmeMW6VdBZA/QHDC4jYJnMqfU
-	 FvOAocq2S8xNemSBNQtWykHxyrmVAymLc2QykuIICKnMqKWn3A073a8l7gcEpSJiVL
-	 J/Kct1lCTTz1g==
-Message-ID: <3c73fe54-68d8-41f3-8f9f-06c4a1891e01@kernel.org>
-Date: Tue, 27 Oct 2026 13:53:34 +0100
+	b=S0xegcMvB3vaMSGrnrPh/wkamJQSwPrkkfuF2Kw75WfR03KJfD4IOUdA+PcoQs7yi
+	 bnTII5sJUgEX6cD/0Aj25/PTp9/yyvKS0Ycgs2qbKm9Ndj4Nwyod4OK8wlt7Q0ftYj
+	 JvsWQ7XWCCRARuJNEOMACCfJiswERXgOBVaIGZMWK8T8qkv3gDmIAICof/BPyrgomE
+	 LXZUoTVJ06rcHporAuBkxK1n42uq83vfPCfEvEqzKSfnh6hdPnVcYlmqeovXH1uj2m
+	 IvCBH8EheSB3VwaRbprItF7Bnn2KsfKJ3u4dUXd1KrXv+NDN64O5UXb03eEZ9MfWbd
+	 85NfjscKJ2WlA==
+Message-ID: <1de9a768-5cb3-435b-8a36-d8b590c8a33e@kernel.org>
+Date: Tue, 27 Oct 2026 13:58:01 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm: memory: fix truncation removing mapped folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <d7f009c90b11ded86654885b5ebcb8c9308fa31a.1793067441.git.baolin.wang@linux.alibaba.com>
- <2ba579e8-06fb-41f5-9eb2-f02b2aabe29b@kernel.org>
- <87e32afd-75de-4407-8f0c-fb70b40d5eca@linux.alibaba.com>
- <81ee2c92-f342-4f7f-aacd-d9558e67a980@kernel.org>
- <de0b41fb-4ae2-46a5-afe0-c021134ebba0@linux.alibaba.com>
- <4880d4ff-8486-4e22-9923-bd4f2407b1cb@kernel.org>
- <f41d0720-ca14-4aa3-a2e4-3ba2de3280d0@linux.alibaba.com>
+Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
+To: Peter Zijlstra <peterz@infradead.org>, Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>
+References: <20260227194302.274384-1-kas@kernel.org>
+ <20260227194302.274384-14-kas@kernel.org>
+ <ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org>
+ <at_f43oDv73y-t7O@thinkstation>
+ <f97a8d33-50b2-4a86-8381-ee840cdfa2f9@kernel.org>
+ <20261027110028.GH2668564@noisy.programming.kicks-ass.net>
+ <auCKv_omLGRc6wv2@thinkstation>
+ <f3f3aca9-bdb7-4aec-9099-9fb63a60e61d@kernel.org>
+ <auCZFckDfBMrlfxV@thinkstation>
+ <20261027124716.GC2668804@noisy.programming.kicks-ass.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,21 +139,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <f41d0720-ca14-4aa3-a2e4-3ba2de3280d0@linux.alibaba.com>
+In-Reply-To: <20261027124716.GC2668804@noisy.programming.kicks-ass.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 88EA62000A
-X-Stat-Signature: rx8tx3zo89a8p6immc81kjssacraagut
+X-Stat-Signature: ozwmznswqjb4qxfqpojko3xoye3h9ygx
 X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A43FA100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793105621-431720
-X-HE-Meta: U2FsdGVkX192du6R1fGnfdOwa2y6lcPmy3QmFVytZISurXtqU4xNVxy1pali2wTrwP8Gybx1d4jr1SPKWssSlFIbjAo/EyGCt7nJbS8awEndlephEdWgsy4QzJAk28z8pS6uoEMl4ko8iOrji8g7QA1KsCt+rl6FmVhO35wwlfphkTCa0cPyqbwWNsORZzEscMfXVNpxk442a9HCFJgk8ukB4Xzj/aQ7TgKB/rHhJ8o+9/Hj/bR/Hn9dldwu99bKhTfVjt96HhHGEDoeTShM0JUYWLq7IGrynks5Wl5lRYXwcaxR8Ad5PMYNHWNd4MA/0DdKI/EmEJ21Ix0pFaLymNjXadcvJmtfI7l3+8vdxqOLPdMYelmEu4tPSbe7EaPWAd1XR8r4dz7PY0Ut8qeP3pNH0cNPWypyehWCgvvuS2AXKtpofGQzhNITELvRoFmkkCDwsIDZFNkIGYUyVcjc9hnex2/Fl/lKIFQHKHPOBk9ftc2m18iLjRUk0P6416wUD+PlU0fK9I0Wsr/Z0p0T9fNhsZ19A6e3fHou+o1PTxHy3nvG0z9aR793PdT0a5i64rUHNRMl0NCquG3YO7xnznRGt4Jqs6ZKq5VX0eetT9j3bXFiWEseWZpORvFoZAPCyI0qDuvqvWxEvyQjky3yDobU/QnOJmlr2qUm859+Pao0xCPkbQo77O1sNmbC4nSvACG1h92UdgI9/moHPcC7QhdCeTc1+RkYJv+b31dc5VzQKqcGMCC8foM/qRrlz1T7ERUSTtOTFATDIiuGthRyRXYLj/OeNQEI+pAKrjfJcQpoaKNzKxGZ7lUubVtMmBXqoDVOkbopSbq6RRStkDzz9AzuVyZsH5sOZNo5n0tlM6a8qECsbdyPETZeDLcnMC8mzsaBzvJ0GIsUsZptQ5SmnPEuep/6EvaJQ9NtddpAhIA2RE19YwhLN1DUiK0P7841P7DTh7nIFuY85YU6LBq
- +YZuIsIL
- Zq4L2IiFyAaZAzNJC9t+ZVnpt2i/6YjgfachNLwUz5+Kf1JU5gIGyR7u+7yjz4HmrQKA40DaPa9M/7L9oGoS0bC33vLjkb3yREqnI8bVualruSL7bHCKNgwdMZC35YPfXHwkurHP9YNakyrr5BVffVEEVQ1h9+XKIMKXOfy1J9LMUTMJsxgXAQ9/c+GCvoxDU050RZcM5d/QPtNBy/3nGZFTwQwL+sgOipFGw4j9yJB2r7iaq435rzLzDjS/yd20EI/Gf
+X-HE-Tag: 1793105891-106976
+X-HE-Meta: U2FsdGVkX19jwqoyJNRpoJEyhj90lm0zofIY/rsCQGxyUrMBLA7zhbcc9pldJLl/YnPuF8WE1TwzjvGlHmP0OniSklHRcQzhHLIVmOJ0a3sSbQqaj8EpZXmlDQoEX0dFshF/oQw86MmzQFBaADi0rhrht8nhkJM74TXIHphI00uQ5AZGja40TceyhF4XmYwRTiOuJxrbuZSZKx94jcIv6e682TaxoV941+iNHP7L4GNmFkCNG94FVT0tjm2eKs9x/l74zX4lUGPpWrVV0DxtECIFqD6qOzp3WmdjvHL/IKGe0u++EwUL+gCA9nBvS7OEpzNm2jtz1zS0MQ+6F9rGhZKsHI3k9XbT6ZpgZCdeO76kxC+xHf1Hx9/IguZ2V4lYRH0YHIJiLMkAbcOPrQ9ZzL8DJlCF2cnWDlb5bTUI8Dk93GzU/jgZRcVctGeXVcwJQkBDoftZmVr60+2pu6Il74v934hckPrI/L5uy22B6N6Q/H4AZUMWzabu2/tAJB2whTYkAsaISurAt5H+eJm0Zq//ebvcMf3MXk7HYdmusplOpD6FNlUDo/i/HE1CWEt/P7tjJWxDCSoiehp5vw3E3MY9Vy5CC/UhQhb3YwJ5Xo+deIXW1dTUWqcwYEvgrsPwEmWR6cofXI/qkzWZfu3rSrfAnfbVVyhWPNXooi1smxjP9kjv5EXiYwFAuMCGOc7XcVEN21rOaKMbx28+sROVqGVqDbzWFV7889i1kUPNvSjgulEyRHYDHn7P/Wapf1EkHx+VtF4sdkSHCMRW2NiHfb7Heu7uCfJKQecmt9v5vUxfQK6my6GM9WF+WnqlOe9SnrkO/ezim5fC90bSNRxY913fQ1w9OWu2RTvQIBMvT7DDlj5W1JWxay2D5OYQ8UHWCz7pAOxoD4prUs/thSj1MzwEa3L4EQlOWdv1ZKg02cw9oFi3w4L7++H1Jt/EEu+JjWAasBw9Lf82OwtP2BT
+ ZbaHyo6e
+ pbEo1Re7LBpVqnkrXr44bydvEQBrSOcgFjrXd9AxXibULrLcMsLNyJRVlYxXnt94NCN0nqMQpSufj+USbL8Ys/SnI7vymi4+kzx/dSj4ekN+gCKycQSwvV+lrOV3t8irMTQX/j+kwY+x/KrPFZ9hyTCR96Mj0avv13YXTHT2jzeAni9EwY2vEvY4jeWNz4AxBaZnKxpFgC1aBc5NRx8YS/DJFU2BTJVDtDkzLXtSBDNJLMBq9bdE83jf3o5jmFEYb/cEs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,44 +162,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 13:50, Baolin Wang wrote:
-> 
-> 
-> On 10/27/26 6:55 PM, David Hildenbrand (Arm) wrote:
->> On 10/27/26 11:35, Baolin Wang wrote:
+On 10/27/26 13:47, Peter Zijlstra wrote:
+> On Tue, Oct 27, 2026 at 12:31:09PM +0000, Kiryl Shutsemau wrote:
+>> On Tue, Oct 27, 2026 at 01:05:58PM +0100, David Hildenbrand (Arm) wrote:
 >>>
+>>> Right. Without HVO we would just corrupt pages in the single folio (which is
+>>> also not nice).
 >>>
->>>
->>> Sure.
->>>
->>>
->>> IMHO, I'm not a big fan of adding two pmd_none() checks just to avoid an
->>> uncommon concurrent sync.
+>>> I'm also questioning whether we need this RO protection all the time active.
 >>
->> It's what we already had. We had to: one for handling pmd_none() directly and
->> one for handling zapping while splitting (file THPs).
+>> What do you have in mind? RO only under a debug option, or switching the
+>> tail page to RO some time after the remap?
 >>
->> We just managed to let the second also handle the final piece of the former.
->>
->> Anyhow, let's get this fixed.
->>
->> If you think the code is clearer your way (where I disagree)
+>> If it is the delay, a grace period alone does not close the race. We
+>> would need rcu_read_lock() back around the get, and then it is the old
+>> scheme with the wait taken off the allocation path.
 > 
-> Fair enough. Though I have a different taste, I'd still like to make the
-> maintainer happy. 
-
-Don't worry, it's hard to make me unhappy :)
-
-(just a bit overloaded right now)
-
-> I'll send out v6 tomorrow following your suggestion.
+> So it used to be; back when Nick introduced try_get_page, that it was
+> only allowed with IRQs disabled.
 > 
+> And looking at gup.c now, I see gup_fast_pgd_range() still has
+> local_irq_save/restore around it.
+> 
+> So what do you need that rcu crud for?
 
-That looks good. Are you planning on following up with the memory barrier
-optimization for smaller folios?
+Pagecache lookup (and other speculative page table walkers) call it as well.
 
-I hope below doesn't end up in some performance degradation.
-
+Some with IRQ disabled, some with RCU, others with no protection.
 
 -- 
 Cheers,
