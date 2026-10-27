@@ -1,129 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516BC606A33B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59191606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IhOoCzdN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F/aE3Kg9
 Received: by kanga.kvack.org (Postfix)
-	id 439F56B0790; Tue, 27 Oct 2026 10:40:29 -0400 (EDT)
+	id 685F76B0791; Tue, 27 Oct 2026 10:41:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EBD16B0791; Tue, 27 Oct 2026 10:40:29 -0400 (EDT)
+	id 636E36B0793; Tue, 27 Oct 2026 10:41:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DADD6B0792; Tue, 27 Oct 2026 10:40:29 -0400 (EDT)
+	id 527C56B0794; Tue, 27 Oct 2026 10:41:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E64E96B0790
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:40:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ED84EA0A72
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:40:27 +0000 (UTC)
-X-FDA: 85368666894.05.11E0CFE
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1985C40003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:40:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=IhOoCzdN;
-	spf=pass (imf04.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793112026;
-	b=mUUgXlUjMqZHyinQYjgOLdzExo+1DoKwcqSfdwm3lfu4rfnL/7PrsfJ8e0YlC9Gy+8D4M8
-	0VpQGTJ4HfATYTf+IY6BsKGfOUKPWDLcBduNDqTKblxIcspnj7WXFZJwZS8TjOl4SVM0LB
-	gZqAl9hgvUf2kM+CftZDaRVxGUIloxU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=IhOoCzdN;
-	spf=pass (imf04.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 28A2B6B0791
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:41:49 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A06341A05D8
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:41:48 +0000 (UTC)
+X-FDA: 85368670296.30.A624D72
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E5253160009
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:41:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F/aE3Kg9";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793112026;
+	s=arc-20220608; t=1793112107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=T1E/r4jGzpmWVwuykcjDGwY++XCWizWnAfM22Qf0RY4=;
-	b=zhwbYfA1jGtvjeIZvv4qxcfrsTsTAEU8dZhOS9RW2tEWqihhPbq8noKcf5/WlAIVz//TLJ
-	gHPJKVxHYx9wWEuBzF5ZLA1ZF51eS/V+/hKEKSggNKI/DDX6+IA/mjw8iwyulnEidavEK/
-	mNHCvpq/DbicXb1eXK1ZyiRU7GAZw9A=
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso611281eec.0
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:40:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793112025; x=1793716825; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T1E/r4jGzpmWVwuykcjDGwY++XCWizWnAfM22Qf0RY4=;
-        b=IhOoCzdN9dB/3Ot2Us6zTyWWssFOikaC2OTCNoMZ7oTZQH9NYh1/Jl+itk+E4G6/po
-         Uolt+Gsdvz+xbS5/sCEoPemSJsPD/F35gKlZ5uHnrvtHp5p+2Yd9rj2LKNWrsQi5+t57
-         3L350hc+J8lI3xVTzPjpwyRthP84RMU3dsvGRXyfPqF5V5T5RJhxrqIH5zuVuRe3+pIm
-         HWPnSD073r8LMpBZzqXN/v+i4tLSrQLzGs2pXf9zwZIv38aUgxqeZ8e9Y2Iu0EWuF610
-         qWvWq03W4wk08aEXZ4fEJEf5uX9RvFDmcNdhvWLB6sboNmYMnTWZLp7EURs/HSjanMed
-         tajA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793112025; x=1793716825;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=T1E/r4jGzpmWVwuykcjDGwY++XCWizWnAfM22Qf0RY4=;
-        b=woadUX/Z4EZaNyvYxo0dfn4n9mBIngnPoDI/S20uhfjiO7pljBMipb+B4pHGhHACOq
-         8gO6W4pvUpmz1xm8nm6tay0S3bOybQhR2DlM4c/pZAnn4eWIjTAfiAIdSMPRfkI3i70Q
-         3y9RuEX5xt6FoM0ucfrBhRSBzknbcZLBYHKUSaMV/kgv0b1dPC7uaYM6rdEk+ab6Y1My
-         +2E7AdaNo7gAbNDv8xn/5OAPhBLmQRSw1Bp763bNNUDh/m0pKfg0OzxR8tN5+xeDdnFL
-         jPWLix/cFyiIEhYaozc2aZ0/7ofnqqnFz0WMBQJDZwUzTT/ir3WxM4YAR5bVG7DTz7kN
-         k0gA==
-X-Forwarded-Encrypted: i=1; AKwUvByTOul+Y+xKEIaRrwh9TWif0ViK9Yi40Y9boUjIPdhkj8hAK+WKbWm9A9PKqWY7P6+63Jyir0T0oA==@kvack.org
-X-Gm-Message-State: AFq9FYLnPiXwjCdqDM+Bj3VeUmpEjL2BET7KpiqVr6gZeJYBbi6pTnxE
-	8m51gdUr82u3L52clw6FgILLyzonVRgcIv2GW5o/SzqbHglhYAUTWs6kvR6k5g==
-X-Gm-Gg: AYBFou2QJSkBh607+sn5J4EvE0qdlp6Dkthimz36NLqaK2Rze5VenTmTN0NLnAOLCye
-	DzfLwKhjgXSFIger6BWUHofnuAwsuq98dNcUFs40XamEFyHLScyTklLrL7WVA8CUmv85sL0tpVk
-	UkqO+tqwkWkuCLVQ/jtF2pkXGu30BT/kQalxvOE+/awxTMfTwH5RaGEl1Q+cwuZiRWLgww3bR17
-	sQif/rcrsGuwprX+5DDpxULX+Mj4KOYcmbgFJiBxLiChi1vEJ+K0+n6hyIvABHWkydLjB3dIbAD
-	JvM5OCYPdWXiY9zqXzFT4Z1fPx4fYKapp1+2OEnn94KjKf1DkMvq2A+YMNe7QKSWxNvRVhMTfVw
-	TjgSjeZDx23AdPciR65DeScrLXcs9ApagZ/p+xReCcI/qHExXVkM2dCBp3WNBXS47U5S/ja3vY9
-	oD0UsQb4ZJx2VVfkmrknLBRldZiwNAgkDeDD9f3eynjuItriWCmh+xtQkgsZYD2gnK1VzAjzSAQ
-	xK8BewSAs+vLfFC70ai/ywGO0VzQHGvhbGL42unBQFVrrdCE7YFDMq3TXVsTXFZXyAmsOG98Qd7
-	xBwo66QV8Hz2P0vsjA==
-X-Received: by 2002:a05:7300:2301:b0:347:8d01:164f with SMTP id 5a478bee46e88-369e84b15ccmr22877138eec.19.1793112023769;
-        Tue, 27 Oct 2026 07:40:23 -0700 (PDT)
-Received: from osman.mioffice.cn ([43.224.245.178])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369e8db7e73sm34727318eec.20.2026.10.27.07.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 07:40:23 -0700 (PDT)
-From: Zhan Xusheng <zhanxusheng1024@gmail.com>
-To: akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	penguin-kernel@I-love.SAKURA.ne.jp,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	cui.tao@linux.dev,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	zhanxusheng@xiaomi.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm: memcontrol: don't miss processes whose leader has exited in OOM scans
-Date: Tue, 27 Oct 2026 22:40:16 +0800
-Message-ID: <20261027144016.2582880-1-zhanxusheng1024@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Cxbcd97TigLbOc2nsbdYTtwGKr7cyQITuDlutqpOwp0=;
+	b=KAAtj/4DQDFXRi/OzDhhTEby+d+t5nNf59O+NLnAM2aG7bmqXcCWQ2kzfmh3ZCCz6z3GIo
+	KeqDHjEvm+02wJQwCp+F7ABw0OLtbcr/Evmy8Bh3tQ+XXqENy5XGOlNLe+gXhM1jiW1TAo
+	+fQOiR/Kf9K4n8OV/gt9zqAKwmWUAEI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F/aE3Kg9";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793112107;
+	b=HRBU+G3X3bids4MVzgNianBtVEIGTZqc+46T9kpTq5ns7rEAi6IOZiSNSwPKaRotbAb/OL
+	lfc7lpFIvcDfUipG14eWiPTLQXcXaRbC0d8Mz3FkJl+3uTfNtD7tsuCUt3Z8MgZnjkfQJc
+	7/XgqOfHhYfPbYOzw8heG3mdb/1IKwo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1495641A3F;
+	Tue, 27 Oct 2026 14:41:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A8B1F01825;
+	Tue, 27 Oct 2026 14:41:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793112105;
+	bh=Cxbcd97TigLbOc2nsbdYTtwGKr7cyQITuDlutqpOwp0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=F/aE3Kg94sj9fXVFeMOGEhnFPh7IPM73CFA/LmgAAZfItP5Nw7PY1j3LmhUrie3RF
+	 WWOkZE/CrqgRjQtrY5czn2Xyhnu7Jhr5cpxZIRN6ucwFL7953eyR9cc+xJIfYeqrtx
+	 x427FQ040+6sFoWm3ZQYEETyJqIrMT+OQrZXuAnXJaqqyPl1iBQjI9L2UIFGYkQFmj
+	 rXT+tzW5xd2XQNYXVDL7CnDknr0SBZMXfP2tLX56GVF5sYE25tWUnjur3LSUQsNAM/
+	 e9FZ57Wpnn2LjlHGFOu9V+hCx07zuXfQscJu7g4AtCiXI1sCKypZwCMKvsYpJoK5pk
+	 vtVZ2ljYGxZvA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Johannes Weiner
+ <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,  Qi Zheng
+ <qi.zheng@linux.dev>,  Shakeel Butt <shakeel.butt@linux.dev>,  Lorenzo
+ Stoakes <ljs@kernel.org>,  Kairui Song <kasong@tencent.com>,  Barry Song
+ <baohua@kernel.org>,  Axel Rasmussen <axelrasmussen@google.com>,  Yuanchu
+ Xie <yuanchu@google.com>,  Wei Xu <weixugc@google.com>,  Baoquan He
+ <baoquan.he@linux.dev>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
+  "Liam R. Howlett" <liam@infradead.org>,  Vlastimil Babka
+ <vbabka@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Suren Baghdasaryan
+ <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,  Kees Cook
+ <kees@kernel.org>,  Peter Zijlstra <peterz@infradead.org>,  Jann Horn
+ <jannh@google.com>,  Pedro Falcato <pfalcato@suse.de>,  Hugh Dickins
+ <hughd@google.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>,  Jan Kara <jack@suse.cz>,  Zi Yan <ziy@nvidia.com>,
+  Lance Yang <lance.yang@linux.dev>,  Rik van Riel <riel@surriel.com>,
+  Harry Yoo <harry@kernel.org>,  Alistair Popple <apopple@nvidia.com>,
+  Nico Pache <nico.pache@linux.dev>,  Ryan Roberts <ryan.roberts@arm.com>,
+  Dev Jain <dev.jain@arm.com>,  Usama Arif <usama.arif@linux.dev>,  Kiryl
+ Shutsemau <kas@kernel.org>,  Matthew Brost <matthew.brost@intel.com>,
+  John Hubbard <jhubbard@nvidia.com>,  Peter Xu <peterx@redhat.com>,  Will
+ Deacon <will@kernel.org>,  "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+  Nick Piggin <npiggin@gmail.com>,  Oscar Salvador <osalvador@suse.de>,
+  Minchan Kim <minchan@kernel.org>,  Muchun Song <muchun.song@linux.dev>,
+  Xu Xin <xu.xin@linux.dev>,  Chengming Zhou <chengming.zhou@linux.dev>,
+  Chris Li <chrisl@kernel.org>,  Kemeng Shi <shikemeng@huaweicloud.com>,
+  Nhat Pham <nphamcs@gmail.com>,  Youngjun Park <youngjun.park@lge.com>,
+  Gregory Price <gourry@gourry.net>,  Joshua Hahn
+ <joshua.hahnjy@gmail.com>,  Rakie Kim <rakie.kim@sk.com>,  Ying Huang
+ <ying.huang@linux.alibaba.com>,  Jason Gunthorpe <jgg@ziepe.ca>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-fsdevel@vger.kernel.org,
+  linux-arch@vger.kernel.org,  linux-cxl@vger.kernel.org,
+  stable@vger.kernel.org,  Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH 03/46] mm/memfd: check for real shmem inodes before
+ accessing shmem state
+In-Reply-To: <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org> (David
+	Hildenbrand's message of "Tue, 27 Oct 2026 00:17:23 +0100")
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+	<20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
+Date: Tue, 27 Oct 2026 15:41:34 +0100
+Message-ID: <2vxzh5i7p5nl.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hxtcou97em8nfqshrb46mhi3gcby8i97
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1985C40003
+Content-Type: text/plain
+X-Rspamd-Queue-Id: E5253160009
+X-Stat-Signature: pxmja9nk3nk13yntmc7oqnx5se65txz3
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793112025-88492
-X-HE-Meta: U2FsdGVkX18FJ/zWwul0UfQAqExTpfm5aGN3HLs9cIsJKZeDUR8heP2twgBmkz42IxfFqEiQfRaVKCvZ9O4CKkcmH2eH0bcBU2EEBKVYbuFohf4E53/26DqM7ObRGav0vBI589jTnhucFcyQSaUWo+TnidO/yuw9N32cFb+UI4rkgRZwrjWOtvQd/4tBpDTDIrwCUctlB+wUSWCBLmDJ1fbabDlVYn98s1rAxDb2KUWT0yJlxagMfjSd5nluVg+RcEc1MCPAdCpXOFXSjKUP3uMtRNtx1ZEDKgg0ejpJbd/itTMJi5bYEue/zOFMcT/+QshNNFSvjlpqvLpWZr3fGAi4DnJTW4YMypI4bMGlNC0gLy2IZyoKP/6xOkszezX7YI2uQj4AN2WAS3ktXvuq1ftkoYJeBOTZJ/fLyGnJff9JnFJbxvb9MYDK6CoTMNykbeCqNhJRcrtxdD9ne/CZILzWlORs3INyuWeyFDdh53HHvC3p22BquzKRsQQLXhINjZ71nDGxZnXMFMgGl8L0dSrwhxDWDmuyYdvGsoRsIhR7vI1aE4m1UQKddROhlfHLBU+j4VzwvMfwyxFZ78GAahZ90iOoZIvv/Y/eFZSAJ1T/u3NZPQJOrzqUJ++2T2aPMOmnDwdRVTxyBkfIdYk9R1M+qssOyagVwSQE/jxJs+l6Wgneg+9ns2xz3REE8aHM9cSsph1gCwQ2qXqxB6HQCp7APsatH/Z0yjJjBKEg/o4dtZfGRb1M2WcpSClmt5fkqNEseE49+EwxX58Qpc9Xq5z93sZMeYFoS8fnxLFKMbd0UcRjIaBXd/+UBEpDWmCoEVzTiHycnpoSoWiRhyvqPrRLn8t/rtSduC3h2UkngnY4usiTPiOU1sTtiN+pd+ZIt7Qn9kglVchJUkcCwzXyVses1mB/1G7SMFAjSkIN2E/Nn+uhhudsmGLGsCawUBXJU4AoVhk2ydEMW6D0p//
- +2/sjkny
- YX8T8+LiWWR+dnXvAPxyPGugoRrZ9N96Qsc4cpGrvUWXwuMkWzTeeO/fssD8d6pTweGPqaPJboKZ+AGZCL/geQc/PvwqvHKOKy73moeJMOuK4GoDzAyf+ULWJh9dh7scvj7Atnf3kFrED3DPvlppO78Y2ud4cPnOC2kjbVDhEOOcJpCqlgvBaodVZasqCwyKD1NIuzOygjtk20v6LfFUg2P1INhQ2TTjJZ3a1vRaqR+GRvQ1kq5yLWPnajfQ/tZEmOsdpPT4Kc7VWnFoaT/LhS5eFzbc2bn5TPW20NzgH9GLa6DPGNFQJWwras6di8Y3+bUWY/6BRvWL9Fab4mdkUNUddxFQWiNS1qIlRO5DfbdUtmGZhfThh8yD/23x71bXzfB/DiHDkljvuM0IsdqD19JOYBncd51umiQ4zMW1qRQVBPyeFjx/WMggNLPIJXGIiKFLw+9739s3UU4wQtC2RNFWJZIs+pzgjBkeGJccJjZrMpNyXzHudkrlHMsZ0K2jkrO1ohXvtc6hzkNsebEJxHdihAg==
+X-HE-Tag: 1793112106-593856
+X-HE-Meta: U2FsdGVkX188c8IeVZqkb+CFwtzZQyYtG81xTt132zDHLRA8uZBt7vVzc1qNUKgskhK6jmoxKVL07bdv5D04YHn0LYphfW0u0277t+HfOvoInwJzrBXtZ2vstIpNp/E0dR5jCaTqYFX+KvNSCk5k+iSyljHXCR12vuRY1hPms6P8bE0RFv8Kv4jthPZDoXJ2pLhGHE1eK1hmf44+HvrXf113qrxJAANhn3MtPRu42urCHmv+voAQTJ4VQhox8xWpW3Y/+J9AFtE68pE8lqjNb9s2B0wgsDSFy7jCHAfJZVTUx9SFCJOb4NDlrvWFuaXI4dx+4JtDiM4JYCSQ378DvUvcrYPc+c1mWWHd3xJV6riBlMm8kz4VgPveFJW6rpW/jFKaR2QpN2gLB1dxrOAHMyxucN7J8MJJLJWmC2AhuR1vmaNF/CiESzRQP0Jet/7NcqW6ukQYzp7pM/Ew26LHwfh01bXkfdXP4MtFWozlAg1lJB7oYkFR2EaMQ9EMgx+qtsC8mpfNzJLZBSi9GdFKUElwgSsE4E2cgIZueM/J+OsJPGQPBCHXkP6XNcNj5MAQJRvd+Tq5MfeJMMoG952z1mS1jshG7i3oyWpIPoVMwDiFqRbrHAb3Sap9DFngXHu8sb2uGxoMe2w5huN+PRG3yNhS7c82R1gAh4YVI0oayqkuhk/TlDDmz1rVgpvv92VjiUdXCCF8j/hPS0apMpw/XaEwFIpTJ+QStaYrmGptuCiSD+xsEdRhBBkMT8j8xcngldprEecUfMGGQx4kSZhRuUM9HuNnyi7q/Z9xtiVC3OQL49CDGBKCNfHnCRc6K/sLIlf9cqDYzhm46oNT5i2ZzQoMsjKbAWUZDYNWQ3aB2fKxAD6xDf3lg3YaDHNhgncbzP4P4gpTcCOOXBb5xflv2vkZYg/nmo5GffOfnNKpkeD9p3qhDS/x8YhLLCunysN6b5ViOLyhkKNA4L8+Eme
+ YZGDW/SC
+ NWOxVJAPueFx74kea2X0+xscFofQmRyLUDfOC4f/gO8r/ggRZh2Eqtuzm9eW06RjpJw6GIsZHiNP7s7J+mw31pIoTtwhYSyFCZY1YovqG6bZ6hmPufw03imDOjJJX7DaUxY4fHATfs6OoPlhQssdDncjpsP1mjunyuBcECxrmi9Qn2XildwYUauER6teJSyXam7YIPwvDJNA4PijKchHmJQOAzRUlNCadWr/Y5+CMm9ny5R6jwkIrYydWZjGqOp+zxlHj9F2fay0y7FlyV6eZocZQOnlTVxMYlvxEywGvahjsV0T41BYbgjqJaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,117 +129,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
+Hi David,
 
-mem_cgroup_scan_tasks() walks with CSS_TASK_ITER_PROCS, so it sees only
-thread group leaders, plus a dying leader that still has live threads.
-Moving a process whose leader has exited, by writing its PID to
-cgroup.procs, moves the live threads but leaves the leader behind, as
-cgroup_migrate_add_task() skips exiting tasks.
+On Tue, Oct 27 2026, David Hildenbrand (Arm) wrote:
 
-The destination's OOM killer then cannot see the process.  If it is
-alone there, every attempt ends with "Out of memory and no killable
-processes..." and the charge is retried indefinitely, and
-memory.oom.group kills nothing; otherwise another process is killed in
-its place.  The source's OOM killer still finds the leader, reaches the
-moved threads' mm through find_lock_task_mm(), and kills a process that
-has left the memcg.
+> shmem_file() only checks a file's backing mapping. That mapping can belong
+> to another file, as with a Coda file backed by a tmpfs container after
+> mmap(). It does not establish that file_inode(file) is a shmem inode.
+>
+> Seal handling and memfd preservation use this check before accessing
+> shmem inode state, so they can access an inode of the wrong type.
+>
+> Add file_inode_is_shmem() to check the inode's file operations in both
+> paths. This identifies regular shmem inodes, including those used by
+> memfds and ordinary tmpfs files, independently of wrapper file operations.
 
-Walk all tasks and let one task of each thread group in the memcg stand
-for it: the first one that is not exiting, or the first one that has not
-exited yet once the whole group is exiting, so that an OOM victim stays
-visible until it is gone, as the leader does today.  Exiting threads left
-behind do not count while the group has live threads elsewhere.
+Why not update shmem_file() to do this check instead? Having a
+shmem_file() that might not always return the right result on a file
+seems like a landmine.
 
-Tested in a VM with memory.max=64M: in each case above the process using
-the memory is now killed, and a process whose exited leader was not
-moved, or whose leader is alive, is killed as before, with and without
-memory.oom.group.
+For example, you missed check_memfd_seals() in udmabuf or
+memfd_pin_folios() in gup. Plus, someone later down the line might use
+shmem_file() without knowing this subtle problem, and we probably would
+miss it in review.
 
-Fixes: f168a9a54ec3 ("mm: memcontrol: use CSS_TASK_ITER_PROCS at mem_cgroup_scan_tasks()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
----
-v2:
- - Do the whole check under RCU and walk the group through task->signal;
-   v1 read task->group_leader, which a reference on a thread does not pin
- - Keep exiting threads visible while the whole group is exiting, so a
-   concurrent scan still finds an OOM victim and aborts
- - Pick the representative among the tasks in the scanned memcg
+For callers that only care about the mapping should then use
+shmem_mapping(). Perhaps that would be collapse_file() but TBH I don't
+really understand khugepaged all that much. All other callers of
+shmem_file() seem to care about the actual inode.
 
-Tao's Reviewed-by and Tested-by are not carried over, as the check
-changed.
+>
+> Fixes: c49fcfcda8b5 ("mm/shmem: update file sealing comments and file checking")
+> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+> Cc: stable@vger.kernel.org
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  include/linux/shmem_fs.h | 6 ++++++
+>  mm/memfd.c               | 8 +++++---
+>  mm/memfd_luo.c           | 2 +-
+>  mm/shmem.c               | 5 +++++
+>  4 files changed, 17 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+> index a7c7a96a7cbf9..2ceca7993e4f5 100644
+> --- a/include/linux/shmem_fs.h
+> +++ b/include/linux/shmem_fs.h
+> @@ -117,8 +117,14 @@ extern unsigned long shmem_get_unmapped_area(struct file *, unsigned long addr,
+>  		unsigned long len, unsigned long pgoff, unsigned long flags);
+>  extern int shmem_lock(struct file *file, int lock, struct ucounts *ucounts);
+>  #ifdef CONFIG_SHMEM
+> +bool file_inode_is_shmem(const struct inode *inode);
+>  bool shmem_mapping(const struct address_space *mapping);
+>  #else
+> +static inline bool file_inode_is_shmem(const struct inode *inode)
+> +{
+> +	return false;
+> +}
+> +
+>  static inline bool shmem_mapping(const struct address_space *mapping)
+>  {
+>  	return false;
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index 0f6fff004f5e4..7d2da23157003 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -211,12 +211,14 @@ static int memfd_wait_for_pins(struct address_space *mapping)
+>  
+>  static unsigned int *memfd_file_seals_ptr(struct file *file)
+>  {
+> -	if (shmem_file(file))
+> -		return &SHMEM_I(file_inode(file))->seals;
+> +	struct inode *inode = file_inode(file);
+> +
+> +	if (file_inode_is_shmem(inode))
+> +		return &SHMEM_I(inode)->seals;
+>  
+>  #ifdef CONFIG_HUGETLBFS
+>  	if (is_file_hugepages(file))
+> -		return &HUGETLBFS_I(file_inode(file))->seals;
+> +		return &HUGETLBFS_I(inode)->seals;
+>  #endif
+>  
+>  	return NULL;
+> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> index 59de210bee5f9..c0811407ce397 100644
+> --- a/mm/memfd_luo.c
+> +++ b/mm/memfd_luo.c
+> @@ -582,7 +582,7 @@ static bool memfd_luo_can_preserve(struct liveupdate_file_handler *handler,
+>  {
+>  	struct inode *inode = file_inode(file);
+>  
+> -	return shmem_file(file) && !inode->i_nlink;
+> +	return file_inode_is_shmem(inode) && !inode->i_nlink;
+>  }
+>  
+>  static unsigned long memfd_luo_get_id(struct file *file)
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index fadf23f9e21ed..0d41aac125df9 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -275,6 +275,11 @@ static const struct vm_operations_struct shmem_vm_ops;
+>  static const struct vm_operations_struct shmem_anon_vm_ops;
+>  static struct file_system_type shmem_fs_type;
+>  
+> +bool file_inode_is_shmem(const struct inode *inode)
+> +{
+> +	return inode->i_fop == &shmem_file_operations;
+> +}
+> +
+>  bool shmem_mapping(const struct address_space *mapping)
+>  {
+>  	return mapping->a_ops == &shmem_aops;
 
-The walk visits every thread again, as it did before f168a9a54ec3, but
-the check stops at the first thread of a group whose first thread is
-live and in the scanned memcg, which is the usual case.  A group can
-still be visited twice, or not at all, if the task standing for it
-finishes exiting during the scan.
-
-v1: https://lore.kernel.org/all/20261026120248.2188024-1-zhanxusheng1024@gmail.com/
-
- mm/memcontrol.c | 37 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 4d00748c8a5b..cdb8ca4d4625 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1427,6 +1427,38 @@ static void invalidate_reclaim_iterators(struct mem_cgroup *dead_memcg)
- 						dead_memcg);
- }
- 
-+/*
-+ * Let one task of each thread group in @memcg stand for the group: the
-+ * first one that is not exiting, or, once the whole group is exiting, the
-+ * first one that has not exited yet, so that an OOM victim stays visible.
-+ * The leader is not enough: a group whose leader has exited can be moved
-+ * without it.  Exiting threads left behind in @memcg do not count while the
-+ * group has live threads elsewhere.
-+ */
-+static bool mem_cgroup_scan_skip(struct mem_cgroup *memcg,
-+				 struct task_struct *task)
-+{
-+	struct task_struct *t, *dying = NULL;
-+	bool live_elsewhere = false;
-+
-+	guard(rcu)();
-+	__for_each_thread(task->signal, t) {
-+		bool here;
-+
-+		if (READ_ONCE(t->exit_state))
-+			continue;
-+		here = mem_cgroup_from_task(t) == memcg;
-+		if (!(READ_ONCE(t->flags) & PF_EXITING)) {
-+			if (here)
-+				return t != task;
-+			live_elsewhere = true;
-+		} else if (here && !dying) {
-+			dying = t;
-+		}
-+	}
-+	return live_elsewhere || dying != task;
-+}
-+
- /**
-  * mem_cgroup_scan_tasks - iterate over tasks of a memory cgroup hierarchy
-  * @memcg: hierarchy root
-@@ -1452,9 +1484,10 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
- 		struct css_task_iter it;
- 		struct task_struct *task;
- 
--		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
-+		css_task_iter_start(&iter->css, 0, &it);
- 		while (!ret && (task = css_task_iter_next(&it))) {
--			ret = fn(task, arg);
-+			if (!mem_cgroup_scan_skip(iter, task))
-+				ret = fn(task, arg);
- 			/* Avoid potential softlockup warning */
- 			cond_resched();
- 		}
-
-base-commit: d135ab453a7400a34930bdda1ef4bdc8acfac80e
 -- 
-2.43.0
-
+Regards,
+Pratyush Yadav
 
