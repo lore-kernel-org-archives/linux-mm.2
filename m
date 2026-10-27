@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4CD606A328
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 08:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E063E606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 08:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J/USOVMi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TohUlqMB
 Received: by kanga.kvack.org (Postfix)
-	id D42286B060F; Tue, 27 Oct 2026 04:14:15 -0400 (EDT)
+	id ECBC46B060E; Tue, 27 Oct 2026 04:15:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D19FD6B0611; Tue, 27 Oct 2026 04:14:15 -0400 (EDT)
+	id EA44A6B0611; Tue, 27 Oct 2026 04:15:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32FB6B0612; Tue, 27 Oct 2026 04:14:15 -0400 (EDT)
+	id DBA216B0613; Tue, 27 Oct 2026 04:15:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4FB6B060F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:14:15 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C45840692
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:14:15 +0000 (UTC)
-X-FDA: 85367693670.03.5DE9E4A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3A2E120008
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:14:14 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="J/USOVMi";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B54D26B060E
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:15:32 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52096A8629
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:15:32 +0000 (UTC)
+X-FDA: 85367696904.21.0432C89
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B948E180008
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:15:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TohUlqMB;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793088853;
+	s=arc-20220608; t=1793088930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X817yPMZ1OWa0GxllLA7n65tTL4HKJjURd5YVC5upNo=;
-	b=00jSb6YDorn4isx24DU4CO5Dl4iNEjyJaDCZA5yNK5RLZ72GeXW4gWHBQdMrJFftu6/tbr
-	fp0oEA/Mx7sQY9kYBjD7gQmixYkkqpJGHyf1jTntVp2JnyaWW/TWvSbAnpUwT052k1x97b
-	lVAyNqhUC/OguvknSXz+saQ+RI1GC+I=
+	bh=5kxHiEVY3AkdeOmkiyMicYxXOYN4StpWVAs8/ArHz0o=;
+	b=XBcM0VRbdLFJuUWwMJqQPwPFgidL5binm4LY+sc+XhAOFnSbizvUhXpPVlCYVDL9vbZtJO
+	208BwmTvmFSilk0SkT5VIyal7xQ/Fqemt+/5jGDfWOJYmZ89CW/sJmLl4QUn1+Yinhb8b/
+	5weX4ySDVYyECoUVPrcYCYApQsGsECY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="J/USOVMi";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TohUlqMB;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793088853;
-	b=vnO6ldYCoatLciBSPcGeUKqPSJvW3bDXRcsOCxa0Jiyhdb/Y88OuRoTv8i1m4dfUrtrXsT
-	i/d+dOjAao79GGlUNpJfMvdGNMNdcBpBDMpUYL5gkcybzu3ZrbF3gFpgKTATnIc14xbdt6
-	2MPOQjV2kMzn6rJmNfoCfrqLnPFdGzs=
+	t=1793088930;
+	b=adXQ7r1YZ/MIVscG3vDrWNEk1Du488Z6NHPzDaQbUMB2c3PRzdgNL6mX5afZZC5kjJCCuv
+	/ja9EJheteEyadkgWSw85lmAIzMe8CDi7XOi+6+RmAvzFNelNVOLgTXz4NLzDyrVRKoPcz
+	g/wxw3BZzYaYEnJomYLc3gs1tvJ0k4I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2DA6421F3;
-	Tue, 27 Oct 2026 08:14:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252CE1F01825;
-	Tue, 27 Oct 2026 08:13:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EB7F9601F0;
+	Tue, 27 Oct 2026 08:15:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC241F01825;
+	Tue, 27 Oct 2026 08:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793088852;
-	bh=X817yPMZ1OWa0GxllLA7n65tTL4HKJjURd5YVC5upNo=;
+	s=k20260515; t=1793088929;
+	bh=5kxHiEVY3AkdeOmkiyMicYxXOYN4StpWVAs8/ArHz0o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J/USOVMiZdHACMBPrC+zND6awTBbtGUCKpChcm6jDubxlHzRsgGJJ33u8eAyXrHmm
-	 Dhgy64k1zoGSzetJ6uUKZtYgTjriJplQrDD5QgepgCioCGZAn0H/62PsYvRrAHq7MD
-	 l6KQxPT3ek/jTP3ay9yQuCHmqyJ6vEXgWsvrHA/OVEIl8w0qY2qNXPJSzKqR527RVT
-	 FfER0j6vK3yc1dfQ0wPeN924r3/nVS5+UFCB/hPBBJU9NfLcCTsCBk+HMbQu7cKkEk
-	 Dk6dNn7PD/Yz5EgpKrvi4Sup3qa7fOHH3IAb+PJBxHnNh8DjdBkIMjNxtAjcJHzrHd
-	 rlwjmVWf2kcCQ==
-Date: Tue, 27 Oct 2026 10:13:48 +0200
+	b=TohUlqMBXvTV6SqJFuiC+dqJjW/ij05cgrKtKEOfYxV88J5WLixwsYKmPfpSGBA2B
+	 C+OmR9z5ZQPvnP70HVJyU7RC/CroJIV4UeBShTJu8eqdqUxUaoqOarZFm1dzPQXqFd
+	 9tm6W7ZBJjPSXKIvNDqJIqzVvCngxMhyCkgQuyeGljrVxcZZ6+6MOELxqy231soY3X
+	 GqAKIoz4S+Xnh6OouG5YutTdPxrxAOYEgd5VJ3AkybBIYVwdQ4Zz9O/MVH8vdiCTjr
+	 p4b/83kRK763X0IwAQe+MCH3KJ3GHP5MK8a903LLNXFYeAbx5wprUZo5Jf2y+jOZpP
+	 WoD4aFVO/XgLQ==
+Date: Tue, 27 Oct 2026 10:15:07 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -106,30 +106,29 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org, stable@vger.kernel.org,
-	Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH 03/46] mm/memfd: check for real shmem inodes before
- accessing shmem state
-Message-ID: <auBdPOKXJpE-lX8d@kernel.org>
+	linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 04/46] mm/memfd: make f_pos accesses atomic
+Message-ID: <auBdixo2E9rqB_vN@kernel.org>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3A2E120008
-X-Stat-Signature: 91jrut3ii3babh5yg6g11ajomfri9b4j
+In-Reply-To: <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B948E180008
+X-Stat-Signature: ku1nn6huc9ijfsq47md4b7raox5horwk
+X-Rspam-User: 
 X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793088854-533686
-X-HE-Meta: U2FsdGVkX192dyqd7uAa7dC+kLegG3lH0cIFsyA5CB8Bw5VGdiI5pkROhjK7lEafd1kb1HZ3TNhsKHRZgjFbawNdG/S0AVM2YYN8fuCGmYrx5Y1XkRy1pvpyGi8aWcrRRoe8itWKLn/m3eSEiTANqfCV7lpXMJ3UG1q0p+FY/zgQVwO+W0UTMSe/XcLMZIJDS0Q/y9lQWUwjSbihKobEs87o/e2Aw5spvMvik2mikh5rdhNEnXBTa2M2YY9WlHTwAaNwspZo0DZ27LSm6E8R2Up5zStXeF4IG+itMIDfnjfZnEoam+Ip+9KhI/yeAk2d5QclITzSwweMwaasXPIsZTRn8pxqnruENZoQA0STlBHN4Srqffi5zK5kZyVJi+Wq/GYrIPSg03/ovnLJDpCJUbVHWMQEHdnNw+e5Xz/HeGlygJPjBKpuqfED+KO0ggT9MKpbHhancKBUMBbjYGO8W3OJ68wX9zJXzc7dFGh9+sSV12vcy3mXjednKFqDPzomE+o6C5wkqWgviWqGyGMmPtZAMRF0Aw2Y8kXCbNJSmWUWZwLatbKfF7Uk84GLnpVeUaFuI2VdAu63xXxEWZk6H0gQhXsCjBG8mWuQpy3N3KRpneZ7IZrm7krJw0ru/lJgE7+cCUl8zV78x14Xxcwx6PDdDnDbxxJooWYIOTLOPX64LtB9bZMBaYUuFCustAOlyvuRyRnMTjp17cMWmC9vb0IhCDK1M382uID2e5bXuj8ee6p4wN3HE2G4p4wY5sL4X4IE+isw64A7v7ck7xZXd9lJkVbPIFGsGp4J8TxdO5SkuNcjBYuX+AHCjZuy1jeasZOLFmvxTjanJPD+UUagrVzkIaggnHQHKVvEUHDGAMN1XAOVqUdCnSlzp6E/pahCDW7b20Qa6i9V+OemMTfQAhQWSuI/v8IHqM4pSd4vlRFHw97zb9H79sYuLLg3PAI5cNQ9LRxPZAk5en6V4Sz
- 81go/Lvd
- 2NA/FnWaclMBh2UOfBS9ddN1LtjCnZ6RCA/VPEy5y/01yKfqDCImC0YB0QNei14CWtRDLokOHPej3AArpsCvifEy5cMo1tzsc8QsbO+2jjWRwE5zl7uJbVGDJV0e3NqmS2BMYyaAFVvbO5fG8SO+lM+auEiSqI10ZCv2nUino8w/hJqtLdhV1zKlAIVRIRHeXFMmcNJUsCqIAk/PeBYHEgTJb/nYTc+dTO7srXZ/znx3hJO/Yup6l6IXqrBFDL1Cx3WKh22hjf05yqGHIq86QSdv9/ebBcvcqDV0DWCyNJP7enDOqMsSqMJrq77lkLMgxeRmDMPbLPxOpMzbspcmX0ztqWXisruvhv0qB
+X-HE-Tag: 1793088930-68679
+X-HE-Meta: U2FsdGVkX19ROIDkIRtZEed+l6DhXZBjfcVMYvruU5fejNfdXsu8quuwBr4FNIHJTaB2jYx3370ByeU3arTaAeB70krGJV2+bsSRPMAcR54HFOk1hl/R73PrtvlGF4BXnYAdcQx+3wiNMBugLdAPAHHa6DVVbj8S0AxFOB9V+7iKSsB7f48whEawnxhOSwqxrkn1cl5Ugpl57HXDimcufAWpGeJWUqsbMwrxKYLM9Rs/+QjbHiwWPk7mlZMilRcbkIwSPiinM5OKXduWgj9R1rebfjMI5ehgVJCabN9+gLO+nJrnCaY/vT85kKKiIIPtklB3KO9s+fFqUr/V4Ib8f9SXt9k0G48Ghfecjw2vGHRpRhBONJ8dgt3UZddtpgs1r64stZiGpEvt3hx89sigpXl1h8TiQoLCBVWBAlS+tDe+cJtVI99SZWQR43V7ShJsey0UGdavN89LDvq5YSWrKUs5mE2CphBl5Jps9ZdjVvkBIaZ0FdEHJqttIFPL9xpFLbyrRYa2Lc0ZmXPsSs+VIrVOa40EIR5R45OQmDZ/eGimaty4Y0TGufhVL75HamMibXkSZ5Apq2XQJo3uvNnwQgT73cm1sJN/zA5ExVHgzyaXRKc29fyDLMDY2G2yLxIMlJO7s2UuR8hK3EYbPQbCSDa1vPTuHLGGUoTWhKxrC53LmN2TCVJM0jaUzind2j/GXc6jED33G5mfGqLnbJ2xwDJF+NsAMO2vO6fWR5Pkk3k79A1Bq4c8hoFHd2YcXsKB+BHs9f06XaMZ4uhmR5XS9quLSuKQZri4APclWVxIY4mxVftW4N712QUMrnMqEw4zIPlONmG5HsMEo5nMw/O1rPyCOHOWT0M/XoU5U+P6WW2ndXYjOiqAmG4JDXdx8wQ85DiikpQnLjrgrW8lPTmH99vHd76mL9rQiHYESgT71n9zCVKeqncYykg+xLrk1WoUJKreYshvmmWao5g10h7
+ 2JsLstIV
+ la+L3QQE8sANX/dspj82mQJ3LV9wvmQ9rA4vG2tfo8s3LIICSCkd/YRjxkbK6LxvVTj5RWEvgTdl+57Zsa9ktOESWjdMDGixPcAy6TH66WEFJ3k/6K+J2uNzgpzCdbEIvYuXTMj0shjakHPYpuELyuf2sek1MSnDOCr4W2RtwnciY68v63+kq/EgtyEL8zoCXb5r+/aPAm7uXlgS9h29RV5B2w6Yb5azK3Dg+4IeJ4O8tnj6EiRDtsqS6/TlEghfvdIVYDQl2S0ozt20cyFDs7LemGRAHWCV1kp8wbBVu2IfKQQBrX8P1lMLMyQzgq/PgFX2C/fe+delYZfnPn0cj9dbsZ5QLofmx7O4QbnuHrv/hwBhRRb3f2cjdBKWbv8qUUt9LAySjrxNjuVV1Wq8o49PpfN6UbuQFFfob79kUWNve1+LQbncjvBF9Mj/gg2U+KHBfDUgBLt089SA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,48 +137,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:17:23AM +0100, David Hildenbrand (Arm) wrote:
-> shmem_file() only checks a file's backing mapping. That mapping can belong
-> to another file, as with a Coda file backed by a tmpfs container after
-> mmap(). It does not establish that file_inode(file) is a shmem inode.
+On Tue, Oct 27, 2026 at 12:17:24AM +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
 > 
-> Seal handling and memfd preservation use this check before accessing
-> shmem inode state, so they can access an inode of the wrong type.
+> Commit 9c225f2655e3 ("vfs: atomic f_pos accesses as per POSIX") made
+> read(), write() and lseek() on a shared open file description of a regular
+> file serialize on ->f_pos_lock.  The flag that asks for it,
+> FMODE_ATOMIC_POS, is set in do_dentry_open().  A memfd is a regular file
+> too, but its struct file comes from alloc_file_pseudo() and never passes
+> through do_dentry_open(), so it does not get the flag:
 > 
-> Add file_inode_is_shmem() to check the inode's file operations in both
-> paths. This identifies regular shmem inodes, including those used by
-> memfds and ordinary tmpfs files, independently of wrapper file operations.
+>   CPU0                                CPU1
+>   write(memfd, "a", 1)                write(memfd, "b", 1)
+>     pos = file->f_pos  (= 0)
+>                                         pos = file->f_pos  (= 0)
+>     vfs_write(..., &pos)
+>                                         vfs_write(..., &pos)
+>     file->f_pos = pos  (= 1)
+>                                         file->f_pos = pos  (= 1)
 > 
-> Fixes: c49fcfcda8b5 ("mm/shmem: update file sealing comments and file checking")
-> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+> One of the two bytes is overwritten.  Two threads writing 100000 bytes
+> each, one at a time, to a memfd end up with a file that is far shorter than
+> 200000 bytes, while the same program on a tmpfs file never loses a byte.
+> 
+> Set the flag when the memfd is created.  As for any other regular file the
+> lock is only taken if the file is reachable in more than one way, and
+> nothing a memfd does in read or write waits for another operation on the
+> same file.  This cannot be done for all alloc_file_pseudo() files: anon
+> inode files such as eventfd are S_IFREG as well, and a blocked read holding
+> ->f_pos_lock would lock out the write that is supposed to wake it.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: 9183df25fe7b ("shm: add memfd_create() syscall")
 > Cc: stable@vger.kernel.org
-> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: minor description tweaks ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-With a small nit below
-
 > ---
->  include/linux/shmem_fs.h | 6 ++++++
->  mm/memfd.c               | 8 +++++---
->  mm/memfd_luo.c           | 2 +-
->  mm/shmem.c               | 5 +++++
->  4 files changed, 17 insertions(+), 4 deletions(-)
+>  mm/memfd.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-> index a7c7a96a7cbf9..2ceca7993e4f5 100644
-> --- a/include/linux/shmem_fs.h
-> +++ b/include/linux/shmem_fs.h
-> @@ -117,8 +117,14 @@ extern unsigned long shmem_get_unmapped_area(struct file *, unsigned long addr,
->  		unsigned long len, unsigned long pgoff, unsigned long flags);
->  extern int shmem_lock(struct file *file, int lock, struct ucounts *ucounts);
->  #ifdef CONFIG_SHMEM
-> +bool file_inode_is_shmem(const struct inode *inode);
-
-Do we really need the file_ prefix in this name?
-
->  bool shmem_mapping(const struct address_space *mapping);
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index 7d2da23157003..6f5fbce74f21e 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -484,6 +484,8 @@ struct file *memfd_alloc_file(const char *name, unsigned int flags)
+>  	}
+>  
+>  	file->f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
+> +	/* a regular file like any other: POSIX.1-2008/SUSv4 Section XSI 2.9.7 */
+> +	file->f_mode |= FMODE_ATOMIC_POS;
+>  	file->f_flags |= O_LARGEFILE;
+>  
+>  	if (flags & MFD_NOEXEC_SEAL) {
+> 
+> -- 
+> 2.43.0
+> 
 
 -- 
 Sincerely yours,
