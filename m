@@ -1,131 +1,162 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EDE606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A010606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fpCYP8x/
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Pf9TMmXl;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CvY1UKHl;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Pf9TMmXl;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CvY1UKHl
 Received: by kanga.kvack.org (Postfix)
-	id 7FA046B0823; Tue, 27 Oct 2026 12:13:27 -0400 (EDT)
+	id D787D6B0825; Tue, 27 Oct 2026 12:13:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D1776B0825; Tue, 27 Oct 2026 12:13:27 -0400 (EDT)
+	id D4FA06B0827; Tue, 27 Oct 2026 12:13:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E9DC6B0826; Tue, 27 Oct 2026 12:13:27 -0400 (EDT)
+	id C3ECD6B0828; Tue, 27 Oct 2026 12:13:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 43A426B0823
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:13:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B4E1D120ACA
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:13:26 +0000 (UTC)
-X-FDA: 85368901212.15.D08D0C8
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 09233180009
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:13:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="fpCYP8x/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D6986B0825
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:13:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20E20C0A5C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:13:57 +0000 (UTC)
+X-FDA: 85368902514.22.773A5C0
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E2DF340007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:13:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Pf9TMmXl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CvY1UKHl;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Pf9TMmXl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CvY1UKHl;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793117605;
+	s=arc-20220608; t=1793117635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gSfoXLj/ogs4a9m4nRtbyh1f84TZ6iRvaVldSIlGJOM=;
-	b=v4ct6e8BU03QwVcVO8XdFow4SsGaHxcSH5qe1KScSL2AgWmYJcZVbFOyJdbiselwTbXrMm
-	GNj8XRkSFboEOC8hnvP6vufoyOAm1YgFsnOB5AkX23njb4F6qMd5laETWZT5juN+3pjEpl
-	3QpWhBqClHdfvPJZZxkI+rImWF+je1I=
+	bh=MBEQAycQgkIcEKsq6ztpW2tH5GM0tXm64sgJ8VgKzao=;
+	b=yRt/ylmQpNeJpJ8JjqgsSwZrIoiCooZxb6GCC3ZoI0ESGh8v5LwRubddfVjfvquS1fkfmf
+	sco3tqwXCJV6VyQ9JRwAl5ncnG+K3xe5te5N6GVIPbvuw3bYMFCpLS0b9SYVJ+3I0TkjHC
+	PioIy+RZoBoERM6ML2cvMoW/1Zd7d94=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="fpCYP8x/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Pf9TMmXl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CvY1UKHl;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Pf9TMmXl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CvY1UKHl;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793117605;
-	b=4l903snRmSNoQGtM6tiP4VXAbwppQH/v8snIj8crBtondWnirqtTn1aYaNmup7Uiest2yG
-	ZsJv6YKsQcA08qnynA6YLVkt6uHSC4jx6d4CAEQ6CiOKhMlaq0yNlflgF3faXZkGe0sbiE
-	TOCnNMo+kekk2jDw4JjUB76WsiEiYr8=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ccce6d9abfeso98657a12.1
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:13:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793117604; x=1793722404; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gSfoXLj/ogs4a9m4nRtbyh1f84TZ6iRvaVldSIlGJOM=;
-        b=fpCYP8x/XIhG1r51knbGqDKrLYlgW1+haNYkrpVoDAq6aMOdAFETnNsC4+kh9JjKQc
-         +q6VyuGf45l0Pauhz59v3IX7ClcT/ziL64fII33niLIfCWW6DSQDvpmjFHSgbZTccdaO
-         nX3P+7Lw+GMsZTUoNtskSWSJXm3Wgw/hbkkROfSwalLTam+URB4rag7790YiF+t+nC6H
-         Knu63rS77UDBJrpgZqIur+JNFcOOZVdUl1lm24NSGBeM/BbX6R6G9UMkzvlxYe4HWXdD
-         CnTVisPn4vjYsW2MZUsSxV4iKrjuh3gGjNP6lLEDyLOys3bovUX0duQmuuqIMRdH3Asf
-         XLbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793117604; x=1793722404;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gSfoXLj/ogs4a9m4nRtbyh1f84TZ6iRvaVldSIlGJOM=;
-        b=ZOesrRtnEsbYZ8XXa22+bgU6fUbKB43jpAP9hE2VNBHp7uYdEHLRs1tQJzNEpb5RgF
-         mNTPZQqlOs+/MMNiG0AcCIgxGnRKPtQ2n2YHsXnXoytbQfcyqsFHUXcCQ3jnpvGmkgSO
-         BenCuR5/kS99Y9FNfReKyeSlu7WGtiyPlltoTet4uxPXyhwv99Kp2w13HXsYEs0/E/jL
-         zo31nCqSrHsdBZ3nKWNiNuNKsh/kLnaWhnbXX28E8D4mLNSgMjizG2BfhwGldZapuH57
-         H1Skv/jMyhLNS4SP6SEejzRRpuZllqUNkxhqeEqwABhEXItmiEEPl+YiOLXOPD/ZSftO
-         Ww3w==
-X-Gm-Message-State: AFq9FYLJWE91rMVoRoHv1SIKq02/gINxFaZiftaGkXfWt3zNX8bgTSQP
-	CXm5El49UStbHj51myUTRYd3SZupkveJwMbsoOU/GHa4pK0hIO3zYLJykC7I7Q==
-X-Gm-Gg: AYBFou1LEE2X0/8dfY63StY/odeoZIVAOmf0t+Wi8yyt9GG3x34OnQ9bTAJmOTYYY49
-	FoynRXclAR2vVGo/g3nXEpKar6NmPssOr03vjHuiKHVruugJBaY7Hb7EPB6qAfvgG0xoIgHb9Yo
-	Rk2fc1NPZViOfYdHqeP51g29EzitqrCtjRLKqRqdQQKUPHHr/54ehOvZrNqIBJsbc9EW0/O1vXn
-	KKAhgdm5Yp7Cpoaj1uS7WLtdANhwnhDlzb+gEC4DiLE2Jyd77X9vZyRFSVsVjpfZqVaXL81OC7h
-	8Dbc3dCs8gzp6DdqNB/XR4GTRxso3RSrI994P++6t1fU0cBCkh2auL/XK6EcAfDrGObTibPqzQW
-	Z/1OVEOyjxU+h4gs3JSrlD65rPJUwUXAqugtI1L3IiypEWFMp6M7JezRYiUzR+BbpnYZBMj6Zcw
-	WR+1QPUeFNhoC9UKZO56WJAPbFlf+VSEAerrPwjgHbh8vTkJOA5TX91t1Cy1NK84Xy8CvrtI+Sv
-	mCdge7a6PStkZZ+He240drEW5t2DktMV2fzt879zoZ5IU4SkAKHdw5rFBD/P+U9ukz4I07vVINF
-	UQ9B9hsVg8NvFkW5EeY=
-X-Received: by 2002:a05:6a21:1bc7:b0:3e2:3bc5:bb6e with SMTP id adf61e73a8af0-3e7bfc13b47mr7649508637.51.1793117603789;
-        Tue, 27 Oct 2026 09:13:23 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd8cccd4cfbsm3233902a12.28.2026.10.27.09.13.15
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 27 Oct 2026 09:13:23 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	shikemeng@huaweicloud.com,
-	kasong@tencent.com,
-	linjh22s@gmail.com,
-	kunwu.chan@linux.dev,
-	kees@kernel.org,
-	gustavoars@kernel.org,
-	tglx@kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [RFC PATCH v3 16/18] mm/swap: advance the global queue cursor directly between priority rings
-Date: Wed, 28 Oct 2026 00:12:56 +0800
-Message-ID: <03c9f51439f1b457d7f9af40d6bbdf846f2776ed.1793106426.git.lianux.mm@gmail.com>
-In-Reply-To: <cover.1793106426.git.lianux.mm@gmail.com>
-References: <cover.1793106426.git.lianux.mm@gmail.com>
+	t=1793117635;
+	b=Ai/UJkn8VPsgSC6vmcz63IhkzUuaoxUlsFehcKFtp/dAggcVUmbSxji/FAGfL1pj4frrWl
+	755SKjpIF+OjA9G7AG9icEEan93hvYKcLEXHtejSqLDd/5jAi5jP6QIZCDBIh0NmWI2WvI
+	RyNKJlSe7413MY6rIXssKJalKFfJopo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A72371F7A0;
+	Tue, 27 Oct 2026 16:13:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793117633; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MBEQAycQgkIcEKsq6ztpW2tH5GM0tXm64sgJ8VgKzao=;
+	b=Pf9TMmXlDhCO4ynIeOuzNkis0rtWRzFwFx2jgiRQmuRDnln2k7nvVvhmkcP0jEP7dIidfr
+	Bk9Z91c21pllbjuaaPr2fgK73IzUBOFhJWiWnPXD6TINWJnxzMN0TQKPGVdS/+GbDA8Z3m
+	W8oQyc3pYUvTbT9+XEhV6lxyovFdl3I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793117633;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MBEQAycQgkIcEKsq6ztpW2tH5GM0tXm64sgJ8VgKzao=;
+	b=CvY1UKHlmsc3sDkKp60Jh/ntQBcPqvbbbFSuHsUIh7jEbt5Go2TV2gTcqvAb3Q7XhLiFBT
+	DMyyXxV3RhKSHVDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793117633; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MBEQAycQgkIcEKsq6ztpW2tH5GM0tXm64sgJ8VgKzao=;
+	b=Pf9TMmXlDhCO4ynIeOuzNkis0rtWRzFwFx2jgiRQmuRDnln2k7nvVvhmkcP0jEP7dIidfr
+	Bk9Z91c21pllbjuaaPr2fgK73IzUBOFhJWiWnPXD6TINWJnxzMN0TQKPGVdS/+GbDA8Z3m
+	W8oQyc3pYUvTbT9+XEhV6lxyovFdl3I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793117633;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MBEQAycQgkIcEKsq6ztpW2tH5GM0tXm64sgJ8VgKzao=;
+	b=CvY1UKHlmsc3sDkKp60Jh/ntQBcPqvbbbFSuHsUIh7jEbt5Go2TV2gTcqvAb3Q7XhLiFBT
+	DMyyXxV3RhKSHVDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8A7221321C;
+	Tue, 27 Oct 2026 16:13:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dzfmFb3N4GrrdwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 16:13:49 +0000
+Date: Tue, 27 Oct 2026 16:13:47 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>
+Subject: Re: [PATCH 46/46] fs/proc/task_mmu: refuse addresses beyond 32 bits
+ on 32bit
+Message-ID: <auDNot5mks8D_TJq@pedro-suse.lan>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-46-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 09233180009
-X-Stat-Signature: qo8ogtbmxs5qykjdhs6xaso8oki7ywie
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-46-6f74bec9a5bb@kernel.org>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
+X-Rspamd-Queue-Id: E2DF340007
 X-Rspam-User: 
-X-HE-Tag: 1793117604-498939
-X-HE-Meta: U2FsdGVkX1/MSVUn/acj9LkKyINEwS26q3LKXInAkoT5IjHodbyrIShe7Ca83FpSDxgUFEtGJlkbfrwpBO34yA2TqIZjQhUE+YCDNUD2y94uOYsYvL4os/5VPc8jFg6jE5Z4554/X+6UgsvXhGnTprbYkVPgl/F40zWcb00byySHLfr6m/rGJqPonTw7IiBeSS0qYEsNHRSBCN/rcPEGOGn8KxXyuQ0IOwv9uzRTZFuhNFIVQrTXY280uXP/nEs5T0CKrS3QSbD8ztjkIylv2LrwAmIHJRLgXaQtx1ggZqrC++cKA89wIc4TegE9wlbfm2Sxlt5Nk/klrYZXRu5iZgPo5YlSdGnBDVjcov1PPsq3419dtE2Y4MlObw/U9Ub/VQAAGujMMeJUbRYWa0bPCrkHBZmNWPpYfsGyLPMaaftf8tEs3G6ilgN5oW41h4Z8KsR8s70Rg5rDWIqvORX0RKhj4GqYmIPqZVR89dkLSf8PYGdfLRHOlZVscoywRvnu5+ymA/fZD6dldrnVWbgTwXvD78s+xHHjMqrv3R++E6UGX3ST3CbW4QxyZcGdKO6OqNO6BShUWcaljmrfo9PgdDh7pmwLek/ban2EuR9uwvBD151SdSRG7kKm1MQvdL2nAb0X6C2VyCifBDu19B9QmmI/cv+wkHk19W9y7BvUXnz2BTgJNJPU/uYKITattybJ0Y7gv8qJ98qjlhGGGQF8fxDKnH2JYN9Eap/OTyXZ1A1LyJLGQiRPwY0tdrTSSIdtn0KhtPdf3l6iXA/WZNgU3EVhlG47bFhlwodQt21p58MrjKcn73t1xi9zimhUdCdfsENztjgxU8U0U69/aD7l6nC/0Rw8ORsTILUa62eauxi3CXYFCaQOMl3qwL3k/JhqCwl6Oe/3s9QWVOHau0nF7pAzezuPaXnO6FppAKqtPYjB/Oww049YLsLwATghQeoR7IdKa6bycwhhyMqYSQI
- edU4EIp3
- nQgf3TnBRAR1ybZeSIy8cuGUc8B2BmZ5Ej/rBmmuzwTK0jkHWIyjEoavgVQxObFNg3y73PiQEp2iDDA5zrPR8nK86aQHYXvmOtCzpRqviC6aohdhFeICuTEbIQWI68zd/yAbKVMLCsIs/T+exrs+G5rX2BPFEs36f0Z8Vc+52NOPO6Mf2q9fcgk/SE7LZ0tEPSz9RIQ6RM90irvcFgiQg5NfknBTBw4M2iMzyhBpNov7xnzAayEUEs8AyNipO+UrUKkNtOU9jGPs10TXrURxUzAZIRoRR8faFO2egdJZucJmDzyRwuuCuTByjxT2Hf6EPlIpgB+oRVjuR+CAzpjiENN25h8wqU6zOlFtDuv4JbLBejHXPC6za21Ir8g41VX+XlmOE42IqGrFUPEYsiTfnOmmbqJd7rkB51qHixZiYPp4m6j35+LFMB9dV+DxcU8YrBt63e0AdWtNPC0zV+hgSvULqkjj9VwjKzmNVpAiZWH4W5GY=
+X-Stat-Signature: ukegcn9dma1nggjq8hxo1xnooph37hy6
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793117634-545964
+X-HE-Meta: U2FsdGVkX1//8XKBm0bW61Alt8LzGz/A4IbCdBMSg9keo+LyIZq2tGOlWJkqDMWRjLbapko/KofQ6jFqF8/LmLYh0MhXuayckskTR6345Z3vBHUQcx0A95ZH+Jdf8Beq2b3WfM4NSOsqUm0na/PBbL7vUWgF1JGCLM0PMDTq9tfeUWSf/bX8tDvho1LXIH5167+OXN6NMNjpZfVg7GOOdTz2W2bc8abqXsrOPf9HzakuHUveyZoQzqZtq8b8vfSNfXeDdhdKmy5YWGQeV1KiFonMecWFbrbeDrKPtUHeQVzjeyOmSkWgOmzOJOYJVJ2FnPe+JC9/zOdhv32cCCXm7hULa9bmWdMD11lNx2ikZF2SXRMwtiYYScTbrZg1i93Ur/rGOYeqFS4XbAzQgGlb4PJ4mX2/coxxys2ryrd9p4LGTMxSH/uPWCID/BXJ/eNHFC7V/0yXfbxqdyyYGMAv9+DSUyyzivAJLWv93MlM4AJuKlsiLeKhxZ4jaFA3tk9uG4xWDSDFre49CKcEaNrBXBNou2qmKfX00Xc98XSo8+zmPwR1Tj8N9CdyqtkdeOYakClJl3S56n2+zQhweiRkHqHZhKmoJwDerq53BVofD06pv39Z1qgpWpm96/qkmbra9fdksLExdxd6/hGiSyDV6xBdDYACr+3tlUp4yL0lKh1RUFd22E4+A0FMnCYIUDpPa4s9qJLMt8pmZ5Wm4Vfu7xp9tPSTo367QSbU8VRk6OMLCSMtryJWQjYeygylNSiRpyu1GghKudK8w1+oK3PIPPIFJCbv/QDaIGhXzLgzsBE1Dvi+S4Gs0v73M2mIDEY+FV1m/ia1NXXr32sr5/OgtXVTkStuJ5cOZr3xfftOEBe9Wg4jHxtIh4XPmBB/AdSNZMLSTh4uHJDHTQoKmWpx3Bxrfc2kUSSuEa8by5783rTAmYrEUGOrrtrdOdj4C0mmlQH/Fu1+deBM94xOd2I
+ FBaIU45K
+ c7XMyh56R+RyyLA8R6OQ+g1cwc0WZsYadKMChd3NQSxoJfdRGQoadWtHNnuHLK1nF6H6eEBpV9IikP4Aun5csfPaDwlHiqmmKrKpfIzfvng8nXs7v+HSLfda2GXvup3Vy8tve9MNKfii8LTmYGE8WrX/GH1Ds3io5x+L8p9VsXe0aWcbnRsA2U/7+XhaC/masPROq2W/bIldi0kSAgmINS+NmJTyhDj6Bnx9h/RlGOY66Z2xI24YsqKJ1F5a3VoX0j2ozpuJZQ/h2Ab0Io3Q6Kj95SRjfBj3BaNyQxqM5K3fB6010UDraUVvR2LiM4b0VVny7KdH1/p9t3KwNyDaEnZHipCFMRLqjiBqDCOOfaidu0X6nTb2TJFCz5q8Jbkl7Gn2ZGXE87eObkjjrOFraD2/PzAFINd26fzKIeSk+55YX6JeFr9ccJB97rhFqK6J+2aNUnreTfZ+zntDWOG50OncWnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,142 +165,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The allocation walk previously passed a total retry index to the selector.
-Each retry translated it back to a priority ring by scanning from the
-beginning of swap_queue. Keep the ring index and the number of attempted
-peers in the task-local cursor instead.
+On Tue, Oct 27, 2026 at 12:18:06AM +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> The addresses in struct pm_scan_arg are 64 bits wide.  The first thing
+> pagemap_scan_get_args() does with them is to cast them to unsigned
+> long.  On a 32-bit kernel the upper half is dropped without a word:
+> PAGEMAP_SCAN of 0x100001000-0x100002000 scans, and with
+> PM_SCAN_WP_MATCHING write-protects, 0x1000-0x2000, stores the result
+> at the lower half of vec, and reports success.
+> 
+> Return -EFAULT, as for other addresses outside of the address space.
+> 
+> This is probably not worth CCing stable.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Snapshot the starting device only on the first visit to each ring and
-advance each peer exactly once, including masked entries. Preserve the
-large-folio same-ring boundary and the stale reader-offset correction.
-The selector's complete walk is linear in the devices and priority groups;
-device cluster scanning and availability updates have their own costs.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
 
-Keep the topology read lock and CPU migration protection across the walk.
-The global selector uses only existing priorities and adds no per-memcg
-device-selection state or ABI. Existing swap charging and limits remain
-in folio_alloc_swap(), whose failure path classifies allocation errors.
-
-The walk no longer returns an ignored internal error to that caller.
-
-Signed-off-by: Lian Wang <lianux.mm@gmail.com>
----
- mm/swapfile.c | 49 +++++++++++++++++++++++--------------------------
- 1 file changed, 23 insertions(+), 26 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 5b6492b1bdc6..bbd114f043ab 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -194,10 +194,10 @@ struct swap_queue_reader {
- };
- 
- struct swap_queue_cursor {
--	bool valid;
- 	bool ring_only;
- 	unsigned int ring_idx;
- 	unsigned int offset;
-+	unsigned int nr_iter;
- };
- 
- static __percpu struct swap_queue_reader *swap_queue_readers;
-@@ -307,28 +307,32 @@ static void swap_queue_install_readers(struct swap_queue_reader __percpu *reader
- 	swap_queue_reset_readers();
- }
- 
--static struct swap_info_struct *swap_queue_get_device(long nr_alloc, int nr_iter,
--						      struct swap_queue_cursor *cursor)
-+static struct swap_info_struct *
-+swap_queue_get_device(long nr_alloc, struct swap_queue_cursor *cursor)
- {
- 	bool rotate = false;
- 	struct swap_info_struct *si;
- 	struct swap_ring_iterator *ri;
- 	struct swap_prio_ring *ring;
--	unsigned int dev_idx, queue_idx;
-+	unsigned int dev_idx, queue_idx, nr_iter;
- 
--	if (!swap_queue_len)
-+	queue_idx = cursor->ring_idx;
-+	if (queue_idx >= swap_queue_len)
- 		return ERR_PTR(-ENOENT);
- 
--	queue_idx = 0;
--	while (nr_iter >= swap_queue[queue_idx]->size) {
--		nr_iter -= swap_queue[queue_idx]->size;
--		if (++queue_idx >= swap_queue_len)
--			return ERR_PTR(cursor->ring_only ? -E2BIG : -ENOENT);
-+	ring = swap_queue[queue_idx];
-+	if (cursor->nr_iter >= ring->size) {
-+		if (cursor->ring_only)
-+			return ERR_PTR(-E2BIG);
-+		queue_idx = ++cursor->ring_idx;
-+		if (queue_idx >= swap_queue_len)
-+			return ERR_PTR(-ENOENT);
-+		cursor->nr_iter = 0;
-+		ring = swap_queue[queue_idx];
- 	}
--	if (cursor->ring_only && cursor->ring_idx != queue_idx)
--		return ERR_PTR(-E2BIG);
- 
--	ring = swap_queue[queue_idx];
-+	/* Consume masked peers too, so every walk remains bounded. */
-+	nr_iter = cursor->nr_iter++;
- 	local_lock(&swap_queue_readers->lock);
- 	ri = this_cpu_ptr(&swap_queue_readers->ri[queue_idx]);
- 	/*
-@@ -336,9 +340,7 @@ static struct swap_info_struct *swap_queue_get_device(long nr_alloc, int nr_iter
- 	 * iterator can move between retries, but the cursor must visit every
- 	 * device in the ring exactly once before falling through.
- 	 */
--	if (!cursor->valid || cursor->ring_idx != queue_idx) {
--		cursor->valid = true;
--		cursor->ring_idx = queue_idx;
-+	if (!nr_iter) {
- 		if (ri->rr_counter < nr_alloc)
- 			rotate = true;
- 		else if (ri->offset >= ring->size)
-@@ -1794,29 +1796,25 @@ static bool get_swap_device_info(struct swap_info_struct *si)
- 	return true;
- }
- 
--static int swap_alloc_entry(struct folio *folio)
-+static void swap_alloc_entry(struct folio *folio)
- {
- 	struct swap_queue_cursor cursor = {};
- 	long nr_pages = folio_nr_pages(folio);
- 	struct swap_info_struct *si;
--	int nr_iter, ret;
- 
- 	percpu_down_read(&swapon_rwsem);
- 	migrate_disable();
--	for (nr_iter = 0;; nr_iter++) {
--		si = swap_queue_get_device(nr_pages, nr_iter, &cursor);
-+	for (;;) {
-+		si = swap_queue_get_device(nr_pages, &cursor);
- 		if (IS_ERR(si)) {
--			ret = PTR_ERR(si);
--			if (ret == -EBUSY)
-+			if (PTR_ERR(si) == -EBUSY)
- 				continue;
- 			break;
- 		}
- 		cluster_alloc_swap_entry(si, folio);
- 
--		if (folio_test_swapcache(folio)) {
--			ret = 0;
-+		if (folio_test_swapcache(folio))
- 			break;
--		}
- 
- 		/*
- 		 * For large allocations, try every device at the same priority,
-@@ -1831,7 +1829,6 @@ static int swap_alloc_entry(struct folio *folio)
- 
- 	migrate_enable();
- 	percpu_up_read(&swapon_rwsem);
--	return ret;
- }
- 
- static int swap_extend_table_alloc(struct swap_info_struct *si,
+-- 
+Pedro
 
