@@ -1,101 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB98D606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 17:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2245606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 17:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LX9oQFb3
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=HWK8m1XM
 Received: by kanga.kvack.org (Postfix)
-	id CA1A16B0856; Tue, 27 Oct 2026 13:06:19 -0400 (EDT)
+	id E08256B0857; Tue, 27 Oct 2026 13:10:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C796A6B0857; Tue, 27 Oct 2026 13:06:19 -0400 (EDT)
+	id D91E56B0859; Tue, 27 Oct 2026 13:10:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB5F76B0858; Tue, 27 Oct 2026 13:06:19 -0400 (EDT)
+	id C59526B085A; Tue, 27 Oct 2026 13:10:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A13C6B0856
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:06:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A10A1207AB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:06:19 +0000 (UTC)
-X-FDA: 85369034478.21.B349C4D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3B7FF40004
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:06:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=LX9oQFb3;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9F52E6B0857
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:10:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 35352120ADE
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:10:13 +0000 (UTC)
+X-FDA: 85369044306.14.2B2F797
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5F647100008
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:10:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HWK8m1XM;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793120777;
+	s=arc-20220608; t=1793121011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CIRKIW6FyjGByuy1vcj3Kaosm6T+AEo/GoygfORs3IQ=;
-	b=aJq1OCtPnu9fdB2dVTbLwkNAqKE/WkeWhyOl2S8sxtzIkn7jnq4iCxH6fCVk3h5Hq3vCeq
-	RMhZNg/XOFpzyuEGiFr1sqv8f/kLs7P9L6eVAW4vI+Z8U6WY8DVBECc6vciCGuP9nXv+ih
-	c0CButBk/21wdl1IoQJaWMnaqiTZW2k=
+	bh=6z1Q2FnRPqUpv8sUMbKaLkx2bL6vjkoG2SyuClqSAmw=;
+	b=zz9NmAfGPE9YR+UYMKjllAVIQmvEWwxHprdKlW1a6RC4fXdiVoGrOyHAgsPojazBtQTkaV
+	2mDpmWEJU+7dVxEFPIy0gDBTHRB17hJDcLYusBttXCguBgmyw+46ISPsmAuL3DL02Y2+M4
+	0s3cmL91VX71MdaQIcCWallHfJC2a5k=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=LX9oQFb3;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HWK8m1XM;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793120777;
-	b=XvIW3Z1TNc4A1XoeNL/2rY2J60qTOsjxuvcWBKXPJjThSa+a+f92ALgRaGbC6OjoJV334m
-	MM5MATpiZ4ppFLra/KxOwotM8zxMwZEiaXyD7hSiivAYkAQK9yjgDS7xGDkcJpHCkJojcy
-	aMfbM4M28dlmY3ZT/07KJuhNieldWMw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D61871650;
-	Tue, 27 Oct 2026 10:06:12 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8FEFF3F7B4;
-	Tue, 27 Oct 2026 10:06:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793120776; bh=YfBOcf/1p0yKe28rQCyfQziZDw3iZcDMCiJAcTFH3s0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LX9oQFb3JCU/nRh3HOHfyGm75yvY2AqOJkXgl4H1OUrL+YV/yfv5t2j4NyOmkDQk9
-	 wJjiz2smZNW3BasgYXW2q2tqg9DtW18Hjbi6WScVSvfUxSgq2xS9N/BwOrfVKoiH+i
-	 KRo062zN72Uh7zYRswDgomQDOFjW4Mykh8WDYZzM=
-Date: Tue, 27 Oct 2026 17:06:11 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Dave Hansen <dave.hansen@intel.com>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
-Subject: Re: [PATCH v3 4/4] arm64/mm: fix destructor for unconstructed
- hotplug page tables
-Message-ID: <auDaAw5IR-ZFvqJ5@arm.com>
-References: <20261023063428.3658761-1-songmuchun@bytedance.com>
- <20261023063428.3658761-5-songmuchun@bytedance.com>
+	t=1793121011;
+	b=iPwFVuLU3rEMuK5qp5vbDLf/qcuJyVSf+nSauAWVEB+YkWYmSGHaSQeDJD/PZzsRoQbkG1
+	7A6w6BFaOfja7aP1Lq5RsTsjomsJ7JxDDR1KjOeaJCAMn9HjFr889QY8pUwt8h97fey8+k
+	pvUr2cYjEYlb9Cr9+lHkdkFSY5vEeIY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 981A7601FA;
+	Tue, 27 Oct 2026 17:10:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89321F01829;
+	Tue, 27 Oct 2026 17:10:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793121010;
+	bh=6z1Q2FnRPqUpv8sUMbKaLkx2bL6vjkoG2SyuClqSAmw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=HWK8m1XM89Z1t2ZqEzF0wRXMZCN9YZF/stXxZmx4P5l48J3KslfwBTpVL1ZkY5d3L
+	 cFvF95td4+ABHcQ5gNSdxOOvGC2DaMLIdn9qCisjLWSWqYS2Hu0bLOOfjFyE4JONkm
+	 3yjLt1FT3xNx6nJCxFHXlGgb9Rl8NYHV9oLjIDEg=
+Date: Tue, 27 Oct 2026 10:10:09 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com>
+Cc: cl@gentwo.org, hao.li@linux.dev, harry@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-usb@vger.kernel.org, rientjes@google.com, roman.gushchin@linux.dev,
+ syzkaller-bugs@googlegroups.com, vbabka@kernel.org, mchehab@kernel.org,
+ rohithmatham@gmail.com, hverkuil@kernel.org, duoming@zju.edu.cn,
+ linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [syzbot] [mm?] [usb?] WARNING in corrupted (4)
+Message-Id: <20261027101009.18e9136537144533915008e4@linux-foundation.org>
+In-Reply-To: <6ae09458.f0fe5aea.79aa1.008e.GAE@google.com>
+References: <6ae09458.f0fe5aea.79aa1.008e.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023063428.3658761-5-songmuchun@bytedance.com>
-X-Rspamd-Queue-Id: 3B7FF40004
-X-Rspam-User: 
-X-Stat-Signature: 8xqgkuq5hiath7qf5gmi9jp6iufbzxk9
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5F647100008
+X-Stat-Signature: 1uqyjbayp99xpt8dq3tkffzppn3ccodi
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793120777-305641
-X-HE-Meta: U2FsdGVkX1+hqkxkicntevrjdROBaCxYaSR0zfWXjkr8C9LlTEzzwEX97/nhf2gVOgzwTpcNztURnyGWLGveFnYvntv/rpQ2/Pozi2T3xvSo+r4xr+Xu4FGzDRpSyReo0FVhZjgnI0ymeXO+Gs04BLnHamWqRbp4qRKORg/X/7SGGZtT38Qk213u+ChzdffKKjqvlhgI0vQTr5uPRxAn5ZRO8RVxpWlxNIZHMfr9VkmrN543aS++JdaoAVjF0yude1FpgI0OmfxbYrqUPuPRVW+w1DZuVEw+vUzAmjpgfybjeClubN+z6eDP/slQbInqP0qM3n9VxTHK03WiNCtZ1pUTpFQYUotjIs2aiVgCJ6g5pdxj1epyTmilk77/vZIsGCQu5mig4dcfmueIUUi6Dm1oD/6Pk5U/z4/mwOWSHPIycMnZp2Z1Q0TGA2ko10I6w6eU524XN8tAH2rGffZlQcNU+N5Ey++F3FDDvs79sgi4b3iIcJuqZrj74M3DDTA4i7ikKbVwLhmRA9xH3qUwRYMGHhJUPcjYndp4CAD3NQzwB4jIifqUTuP2Vu8AQqy55qbM4qN2/pMGaVqJkLTWoFqG8mc/1IJvtEdPkEZA9a4bzfnmwtIc3olqnhHV9lx1b348dZ8dMAuyzMZRULnmucXxDao+7ybUNn0GqkkmQL892evM195KiUdO6zdfBKvLcvUmbXsUg5xMtPYD+LtsfqgbaOvJaMSM8PKH5an7bbO32q/bzu7ABQBBBjdYat/ObxcatZuJnDhAVB1b96X9K7bq+L5jEBL9NqepXOzjFT/AdGL2r/ZTBMbso1vrfOfTaTb9yT+lMoJJs2j1F3Eyjxt5O7FbtANHqf7+Ggro5aOc62a4tS8wM8Isex55T2Po0L17NyLQTZtRlC9rNbwlUWK6pCc/nwgd0QYJH9ODPn/sGkPuSG83J5lCavprrJ9oofgfqFq4Rso6W0u4Nl8
- AWGJDMos
- AnGqfuGQitaKljxm4e+DySSh1luHzTqq8NapuKjOFGpkG6i6fWKZWpjAEOn9rnUqzJEty3FkpdG5WcQehhze4ycT0ffXDDKTWUAFkEU7P1clsrmtAJwn0qCvYv9AN19dPyqU6fgVSlvyytIrwPNpdZGbEyq+tIg/oGPWCJxjWuEmSaFkscD9FUyGnjCnS1cJPl3Q48tnBZ18RcSODpr3DbA5r8mK5YH+L64WhQigjK9M9d/YuE3k4TOLHTO9OcyoFIJO9qHwiplBaIdAQVoHeQaasHr1YX6B0jyuPQbHNpLGpPL4U+A0vyliE1ET4srEdIXmFAMSE8yQ/3zkNZ8H/7WpTkg==
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793121011-444313
+X-HE-Meta: U2FsdGVkX18o4/zbXN0IdqYL5zpxvV61afmDKfxRi37pe9FytIWzL+jxdCNhrprNAmZ0iZ6CWEyjlLK/4TlSDI5Q/DScY88hor3UtMmsr9uzjXwUY3suvp+FeVJxULRFA6Se4vTJnffksBpjm49YWFO3pywrLekk/pCDPrLzT4ApPRfDXKqJPvyvX7Dccs4ob/Bj95X3DI1QYnbBWYFie/v3pV4nHUICfO2wns03gO9eps1P2IMt1n0r801w5RYBwwPv8XtFKjeSNvjagtDe8cYhSz8X5s0kmn3z0DKnA7bOZKUmmviD30oXS0LTeclaf0XUn2Z0z6kFrZuzEGmqiQga65h6qPmcyr0u/b2Booge7oLiC5k2zf5Bd42owFMCmv9GfHqcfsnbHvt1Ot9BBGomS07ORPAJmVTqft3EgB9R30wW15Nvd56W8BiquMs3DmdVwMg/fnBq2uJmIxOtpq7mkFPENXL/x14tr94JzzUBpaiC+Al8Nwv5UkseekNew4OoxM/cf2XEQQfN6oppHDVZkHSwsGpYyco8SAuwHcFZM4tIjg0j5wt/4hcBlvGFKZJMxm9RPG4MNd4+TOEQt2Qq/RlYIzOxJFuFtvSN/Ry9crzhdP1JzDqQa8sa99zF5JtcvUzFLmYg6BoiivWmLUJ5UkbaaudLUo8/lLPtG42nO6B5N/RvcEt2RGdPKuEUhfCdh2Cj6GQUe1oj6mnrA7aH/veLeVm/+m8BALk+b9ih+Qmg1kE4bf8vh0uCd9JnAkYyzQWjHIvV4CzCxmpQ4nxb6LXUVeqTVZr2lmCAhBR1LOZvD/BIHBeidzuBw6de9D5WGHAKpV9A9xQkhgmYNX2vIj7r0nZv/6JUZ0tlrvyOJHjpAbC4bubPngfyqC0DKmZdyZWuajHX6faZ5Kw1S9aec0YKt8F2s9clYKkl/de8wgh1CpIrisXBU03S3SZ86thA4LpGGJdqRAHYqCx
+ 8nNkjlYp
+ 0xlYQy8ZPV3bQUGggIooVfm9fPDh57C2kBFI8FjAoI56EGPve2/PoX4BH9OhrnE2VkHK31GkZQkvFTEc0wpZWX7yDsXaxGOix/dsU/szldB75QyxzkHjAOZupIGcMlz03OrlcGm1hit5HXUCi49UVw3/xwyp3HajuYpTsRbeuOa1fTi1w6ltMn14NSZYxxFiNEpBzlOhNeYU3S7yBDbIBXQ5HMhsYoVdcHdrwgbKQgyRf/nDFyhrBIdnflf4sN81kVsFbunDMqIhhfAUHG2xXUrU1nlNDI+ORK3xuL52sg/DKc9h6xQxBsW9/aI7gKRqzzyVBq8zOa0kh4CJMPJ7et+g1cj7UdBYU0l0f//bR8KIMv7tFA1Zk0X4/tK1bvsRRwGftjlIaB73bMDqYn1REC0deoFHXnHBjs8RkfFJpySuCcEP1y5a1xIpBw5o7tPj7axvoWVqLfNmYzpgpEP4yN5AqCCJF/KseHnZ9dB4Oo0zTQwjm4eaZ9/fdiTDyE4NmDDsDYI4Zh7wVJVUgd/sy0AIQ+BN0txoLGoL4+w3a6SyPuzDjwN2vY6HdtTAZ8NpXYOWgDGI5cbP7Hr2mmghX4p84G4eGxvHr+h8I/dtei0fatDz0EtkeYPzkGJSuQRDQK70HzHdwcucZBc2L7qb77eXBBi7ApfY5oBNIPBZYRiSjwuMZ8SeddzfsPXHhK7+Uw1mf0D9E0C2SWEwKG9lvIHeawepBAcx2bMuZ8ArXx558GgFJGO9HDbOqcU0pejFaydBMqYfUvcMBDHhvFY9MEhPUll9pD2z889mQKcaKZ8buAdgl4bL6H6lAR0gRQnSVX4jnKS//khsEByFgBw9AkIitqbE+i413xFPLPzlHX4GWg4Cg1wp72py8jH0I1eRl062kYTbd8/4NNOZDSYqeLfa58gdpkeRXz9b+Lj5rMm0V1a9ZEI/98JcerjdX25C+zgh0QREhVkqNsvvGDPIFoYjbdESC
+ EnPdwes3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,29 +98,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 02:34:28PM +0800, Muchun Song wrote:
-> Commit c594b83457cc ("arm64: mm: call pagetable dtor when freeing
-> hot-removed page tables") made free_hotplug_pgtable_page()
-> unconditionally run the page-table destructor. This matches page tables
-> allocated by the arm64 mapping code, which runs the corresponding
-> constructors.
-> 
-> However, arm64 also uses the generic sparse-vmemmap population code.
-> Runtime intermediate page tables allocated by that code do not run a
-> page-table constructor. Freeing one during memory hot-remove therefore
-> runs a destructor without a matching constructor and corrupts
-> NR_PAGETABLE accounting.
-> 
-> Free intermediate page-table pages through pagetable_free(). It runs the
-> destructor only for constructor-backed pages and then releases the page
-> through the page-table freeing path.
-> 
-> Fixes: c594b83457cc ("arm64: mm: call pagetable dtor when freeing hot-removed page tables")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+On Tue, 27 Oct 2026 05:08:56 -0700 syzbot <syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com> wrote:
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    5b0764a53235 Merge tag 'drm-next-2026-10-21' of https://gi..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=13739fc9580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=fd1433abd362f255
+> dashboard link: https://syzkaller.appspot.com/bug?extid=9fe09db3795456e0b442
+> compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+> userspace arch: i386
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11cb9b0d580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/05ac8658d211/disk-5b0764a5.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/9cfb73243216/vmlinux-5b0764a5.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/fc45c7faf785/bzImage-5b0764a5.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> !PageLargeKmalloc(page)
+> WARNING: mm/slub.c:6855 at free_large_kmalloc+0x97/0x110 mm/slub.c:6855, CPU#0: kworker/0:1/10
+> 
+
+Thanks.
+
+> This report is generated by a bot.
+
+So is this report ;)
+
+This looks like a double free in the Siano USB media driver, rather
+than an MM bug.
+
+The failure occurs during USB probe error recovery. The allocation
+comes from smscore_register_device(), and the page-owner records show
+that smscore_unregister_device() has already freed it. The USB core
+can then attempt to free the same memory because smsusb_submit_urb()
+sets URB_FREE_BUFFER on a buffer owned by the Siano core.
+
+Rohith Matam posted a patch in June which removes URB_FREE_BUFFER
+and fixes several related URB teardown races:
+
+https://lore.kernel.org/r/20260601201639.63171-1-rohithmatham@gmail.com
+
+I don't know why that patch hasn't resolved this problem, but it
+would be worth revisiting before developing another fix.
+
+This doesn't appear to need any MM changes.
 
