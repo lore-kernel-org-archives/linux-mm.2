@@ -1,167 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57CA606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DD1606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=eqkS1+6R
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=f7Zzhskc
 Received: by kanga.kvack.org (Postfix)
-	id C89426B0795; Tue, 27 Oct 2026 10:49:26 -0400 (EDT)
+	id 9F1CF6B06FD; Tue, 27 Oct 2026 10:50:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C60566B0797; Tue, 27 Oct 2026 10:49:26 -0400 (EDT)
+	id 9A2156B06FF; Tue, 27 Oct 2026 10:50:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2AE66B0798; Tue, 27 Oct 2026 10:49:26 -0400 (EDT)
+	id 891B56B0702; Tue, 27 Oct 2026 10:50:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D2B46B0795
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:49:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27F31140A0D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:49:26 +0000 (UTC)
-X-FDA: 85368689532.04.92EF22A
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011028.outbound.protection.outlook.com [40.93.194.28])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EFBFF1C0009
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:49:22 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eqkS1+6R;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793112563;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FE776B06FD
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:50:35 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4739B409C1
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:50:33 +0000 (UTC)
+X-FDA: 85368692346.26.24AD7BA
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 765B6C0005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:50:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=f7Zzhskc;
+	spf=pass (imf28.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.221.173 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793112631;
+	b=TSFmIRy7eXh5YVcRI/Wregf2qKfCcLZS2P6xcOgsXeucKfQ9mbtDyPkaztg8SFjd4iTBz6
+	48A6gr0PnUME4cDvM+IfeVY4P8mjvuhFxAVSFWFXqKq8HpgBwlDDAp8RmP9ZWlBRSEOqUp
+	HPX0OSRjwZgJhAeb/AL3mpxJkOfiNTg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=f7Zzhskc;
+	spf=pass (imf28.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.221.173 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793112631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dIfiK8RLUovcjpZQvUlWYSY0E4HcBzMfTj89oi3cQE4=;
-	b=TXcczBPPheQy1c+Al3kWIlJirli9eC2ivl9EljnZ0EiqR569HyqJLs//zJ7mgheD7hoVwk
-	8kqg4Uqcud2Up9X0JZuALvaI88aToEReEaTBRnYLxZZosDwmy552OeDnzNZwV4V/aGgRYm
-	UQkv0uFg1nj5+OTGsGCb0o8Sz6HzAUY=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eqkS1+6R;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793112563;
-	b=670pejQjU/Az4CjWyhwj8x4rjVxsjWJvBBK1/HG3QS6vqLZc4N4bg8yXj5EEbT+/IcDKnb
-	pDIZxqfYOFNskIqRjSHmZyU2oSdDkmwvB8xlSATeswwQzIkm5KyYMrUNsuTrqKIhAt4rBu
-	yANeiQVU5/QUtpyz82GG+FXJ0X8z57E=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RwspnxW/fQhd5NugdXIbFpLEaI1NIY4pL4I5tDtDXZllE8wC9QIEvFgoWnsFAC729DT1mJ5qeaM2Fr/Ku2FOJYoDeOdLRwSaV5Q2IOe0OioOqJDN2KB6+SRjYD/7CrkMPoYS9/PYY1Djk11zVFMIH6MUc51LDIrKVUDk8nlqGA6iFvpFKTFuiYUAQfpzEFoZUJHhxyt7MDyLEkzFhUzdcMSXLVlWHGxs9nB5N7bPQ1lT0nDPjDUivOVqvj/Sg5+Vz6xjmVJdgITcqXaSNr1WivjcNKBdUSE5v/vzAmi/juxNsuBrV7YI/jGdlgK1wil3pUNPOTvyC6tnQyNpKq27CQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dIfiK8RLUovcjpZQvUlWYSY0E4HcBzMfTj89oi3cQE4=;
- b=Sz5HZV558LpNuKCBMCXe9ICL2Jlka6U0X9MlrDNvd3CkOltXlIe0kdYlGObS/UHyAe0HlONIJqh5zMo50KN9jutsKaHgkfFoXt1ei3LrLSDIXXBweE0uVCrFirpnYJbRm53beDnKzMq5jiVPiG2qTgVPVqM0gSGeTAQ2cjumx+g6SDc1/9S78dg2zNIM2drR2wLD1Z5ZOR3vg6vO3tA4BCQi9CwVI9O3LVGmNhiox29G+J80HMWUY3H1ifYFT8t+Xp31vDE8+Fr1rHyEUa6JEQ7ipQAsULt2IZlLvCnQxVtrCB4IUmwxK9/yHteOx5cpeudy2AgL4N9OVwewjoISWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dIfiK8RLUovcjpZQvUlWYSY0E4HcBzMfTj89oi3cQE4=;
- b=eqkS1+6R1dTOmp1NU1jN7Mt/DjK2MqQ96snTrmvIhAXbgIPF7g6a+GKpvy2YlKjkKaoSPPeJt2d3Zn6RP9h5Ql0p94mECLwGcbElaT1dH6vjdKZwAd0ciVETjocOs/W2GWGR6br4MtIuBj5KD+IrpBoNWZNiyyndIHrEE1ecWNdg11q80xPjRqI7NXJplIU/5gt0poaxlHsa0/hNReQP1JFDoDcaBA4dPIIinmzvOHT/+lSK9qmMxVqBzmu51d40VhT3Sb7WcJeBnvCKDa/NnLWMN0QX3hH8sCT/fG6tMe1FdyG5rrVZbmeARn9eCdIZRebkfUZ4teWfBXyowUB5jw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by IA1PR12MB6115.namprd12.prod.outlook.com (2603:10b6:208:3e9::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 14:49:19 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
- 14:49:18 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Boris Burkov <boris@bur.io>,
- Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Shivank Garg <shivankg@amd.com>,
- Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH mm-new] mm/migrate: move NR_KERNEL_FILE_PAGES on
- cross-node migration
-Date: Tue, 27 Oct 2026 10:49:15 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <83B7AC09-235D-4C0B-A0D0-90EA688D3CCE@nvidia.com>
-In-Reply-To: <20261027043214.2248986-1-ridong.chen@linux.dev>
-References: <20261027043214.2248986-1-ridong.chen@linux.dev>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: CH0PR03CA0334.namprd03.prod.outlook.com
- (2603:10b6:610:11a::25) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=GrQrPLClmrsE+He4Exu1Cy0LMOiiaKKo07ZDQ53Bndk=;
+	b=DmoSlLh5b/+WKsH5htdzfLvsJTc/dG2ZIAFIx6jthrYPLXvsPupM6df5aqaDsq20/YaVvp
+	xaj5Pp906QEyGi+0cgcRJMKBkIr1l7tYDp2+pf8Viy6Vw03HqNPpZ92D0xtejM2B+5AsZ+
+	qCmPkRP6Y8CEKI4JsZVBuTlacKijCVo=
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5c9e7731b34so3040658e0c.2
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:50:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793112630; x=1793717430; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GrQrPLClmrsE+He4Exu1Cy0LMOiiaKKo07ZDQ53Bndk=;
+        b=f7ZzhskcQ3RsprVjhvEfUhTJ1IZeddFrXhL2+WTbbw7oP3AY1dHvBVXLIoWbibBtG/
+         dGtIyW7GQJTr6ZdkMOgjcQ3erGt1kb7qdZrlFO83Y3kfbI6jgnDePQ5D0yf5mlOqz4Kz
+         PewfABSuMKnnQ5zfaNEP1ZSLXkSRAmiW8yzj+kAzrkyDH3wIsnybP4tzsEq+g/EGET8V
+         kPt/G+7TfmxJXQBYhnt5gNSWjzHNXCzhIwyFmG1CdUFKnEg/l2QrEiOK4HQqRqC4pwPc
+         eC5n2iYcV68q/KobbePK8rbnDoNVwHtccS7jC7iOyFh+tBdeyBdIpcivxGL3Lmj58SJx
+         SmqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793112630; x=1793717430;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GrQrPLClmrsE+He4Exu1Cy0LMOiiaKKo07ZDQ53Bndk=;
+        b=NIC4/INRipRrG9iXzC+6mC6U0eb2MnjB3B7cEnNGfQXLRla5OA1ymFjDCDIrmNjJ14
+         ajCjj8s6l4UN3Zdg60Qmdr2gtYtoszeA/SAVzcdw9EUL/4y3K50na3DDmCa0VNkwgafH
+         0QkhVn3v9IYHTJRj7RPqvKDQphkmAu0WVnQ6Barf0sf5rVr0lOKsHfzvgEK9rt69XSOf
+         crzuF1G5h3nKfUObdWagTysFIXgLWjtncqf/RdJL1w4TtdaDkopwS9r/4tsk/gUlDLM3
+         povP0gL+sUJfDytE/ZSSv9+uUd5QYDXzd0Lgscfhc1qjpaXf+u779IJoKduN5ReBZ/Kd
+         Kz2Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwFIwOKRL+FY9l2XCT+6YOnuUUIC4R+nNgtsn6t2MZhTmelriGh1OaZNwOyOadDCEHjR3U+0FKnJA==@kvack.org
+X-Gm-Message-State: AFq9FYJVtYu/PcrLr6BBsB5q0ImxYmtA5x9W21pAXXeaqeAC4+4CA4Rd
+	zWfBsDZqbHcu+UYXsF7eK8BtBFAIn5J+YfqKbxSlAxcgPAYJ+DYsRykH
+X-Gm-Gg: AYBFou1sAcfOtbx9sAOoghs+KeSJFisXmk+kLwwZMHpHF/s4ilhBGjZxOh7ZiRfGvRU
+	3N0CN4wR9VArSc3AH2tygTonyi4DxqU3dCiqRZmLyQSJDrh12IxCyADYSk3997/PVWUq7qBDDMj
+	o2ZBn0Be+bSTFPjQGn1SyByE+0AL4R498HsLYPxOWq9EpaK03NgLFCwlwjwaSnnw1mW3wb4e9YQ
+	29cGYbAR1k33/fcz4IlCLwDscxcb9An+Od7aH2alzxPNeRL9XM8eA2aLoOdap0hGs7ebzEi7Ay/
+	Fr9+v79VdfV1wtL/ilbQGH25sQmv7HgwS1NhapSBPGRNgw7PKbHe/jJFLGbV79KaLffKg7/y1Zy
+	mkWsqfOY12hBuc6QCjfkQW4lirfLM+bNliT+BGXSFLySprbrThcL40kbKGhmnNNQFKK839ELIgR
+	jUiGjDT+YRY4jyKlhZiKouqdbgQJnZHMzKDVm4BuLdEup+tQ47iNE22FuJN0jMchkM/Y2c+LC7y
+	M0DXjwcGVt04KKyr4g4/7DltNMl/YmalBVNsZhhVv2qf7wvJHpBkE+DEkU5HpbnUVPdy0CBujLh
+	MJk8KLTC772p3LAF7lRgqZW4M5fcdcgpmg/NjdMSh4UiSYnQ1AB7j1mM
+X-Received: by 2002:a05:6102:5809:b0:7c3:c0b9:8d50 with SMTP id ada2fe7eead31-7ce5cd9de6emr3685058137.21.1793112630369;
+        Tue, 27 Oct 2026 07:50:30 -0700 (PDT)
+Received: from fedora ([187.120.134.44])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec4a4b4b09sm110371e0c.3.2026.10.27.07.50.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 07:50:29 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: trintaeoitogc@gmail.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH] mm: clear pmd in pmdp_invalidate()
+Date: Tue, 27 Oct 2026 11:50:15 -0300
+Message-ID: <20261027145015.1338865-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261027140950.1337359-1-trintaeoitogc@gmail.com>
+References: <20261027140950.1337359-1-trintaeoitogc@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA1PR12MB6115:EE_
-X-MS-Office365-Filtering-Correlation-Id: b639e876-a616-4f3e-8d82-08df34397ac1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|7416014|23010399003|261026140227099003|11063799006|56012099006|261026121527099003|261021121427099003|261022075727099003|261022105027099003|261009223027099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	8l2adlDtZiPaJ/h9ytDLWzAD2iSD7AfiLehdf9zE8mbH5bB+eHByS9xtJzzldocJpZI43RsQYBbWAJhQRyd0smvKeaCQyNBboYAaGOb4tMrNAQbbcyqFF0kfwIwpmIRSPMOdJMFURMxLnhxjRzSkGDNbUojWkud17PeqI2A+r0Q9maZlBd7VdbZKrQP6Leoz7d2g2X4B3yDCCBkEdHRe0sJDC0Navzl4DG54qb65HuAbZSw7ea2vLfoBreN2GoqizQw6MI0WkuVS4gX//Vi+7jnMSDpxK3e5c35stOKPyAFTsefGekjFtSZuhv8TgfzlPANcq4QSWlGUEuc31Sw9WthTimvf0u2eqREmcUpReu7FQRjTyKY2V6YCyqMqEzBURINbUbwwq05etHmg3YhAY9I8nnCGQO2rsbTYl7w9Ugb/FAHKkD9r30l2MpkB9Vgjb+h6d6B9MhMwA4rGEIHhsVjmyhTZ+VEibjUB5fwrGnUwgcta377f2gbeHqwU9Hawxog0YwFNXB8hOdRWO6dI3bhynbu+rMZGlP3z5oOpMVGjH+LZH6O1x1sBVxQb2xFcBpqyMRweKHC9qKrndtvjIpL2Uk2x/myFaffe32hozUuJDkbiMaiQlwKRRZvekJ1Cbeeww+EF77OcwEZgtV3KktYzwCrvH5eu9/Je8AxWK2c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(23010399003)(261026140227099003)(11063799006)(56012099006)(261026121527099003)(261021121427099003)(261022075727099003)(261022105027099003)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bvtOvr31X98lFEgx4u8Tr1roWrvurLBs70I6Ibh5uAF41s2N8Sk63kONDEVC?=
- =?us-ascii?Q?Q9gJm5X7tDFbcdLwSPsilqKIwmG6uz5tDMWjy8+40hIPEo+LUDdhkHSUsn8F?=
- =?us-ascii?Q?elMcGldbQoAf9GOvOkkLV/ERJZocQOGCytfZHKp/e7GsYGi7JwAL2I9FCF/o?=
- =?us-ascii?Q?0dxEMesfYnaFj54OzGyyn1JZ+9itieERKdaKUwtw51TfaBcJwyqJZ8LlJgRB?=
- =?us-ascii?Q?gi3miNJ4mYA9/8UIMltON1MbOGvlEUA+cxvyB0Wm3RFJCo+TuSKufODnAqcS?=
- =?us-ascii?Q?oht4L/1rL+MN10ycSFxLE0vHY8FrCc7qn1gCjXgTkoAdiSt7A9yL99qMpp7j?=
- =?us-ascii?Q?fxqreM5UpyFPQFO1Rildl0PZA1yW/fwDRnXTlO7Hmm6xVYA/c17tOzoooJR9?=
- =?us-ascii?Q?GveuzuM/dnwob3VOeSmyQvB+yVXHGz8poQKRp3K37CUZiZf41sEUC7wXE6Gd?=
- =?us-ascii?Q?DXBTHkrWWqra2G/w0AmBLriM77yxqLGsMkMuT7NQ7m0iyb1TTyRx9dARH3VI?=
- =?us-ascii?Q?CZOvwzzB/9abyOIB2rkZP3SR0VdQEEaFk+H+PGFkOQOO1hAsxP/B0EJvUSoL?=
- =?us-ascii?Q?aiPieW4ttUI4rBOxRoNe80sdoQFeYv7ucgpBarSsjfIBRF2DtVQ9PsFJQDG5?=
- =?us-ascii?Q?RPrJXQtsY/FddzWsacPPjGVvr+BgYCmkCmsXzkK8q48nxc8ECCsYN8V1Iqo/?=
- =?us-ascii?Q?sms2a7XpJuqelIjM65UoD2nMyZACgAWJfTKPQN+8DDHxRAKqjXDWZQRfqAYx?=
- =?us-ascii?Q?Ml6va5840r7mMxUoO7iA8uRevyaTPx2U9L2iu6F090rXHQt+h/Iqf1ESYT7F?=
- =?us-ascii?Q?8bj62G4uyqMSwnZkeSUBPTnykvwph3DBg2S3yfJKuh8LTyfii848y2O4iFrH?=
- =?us-ascii?Q?KeTOAVD71vW35uyhLXbuCO9pK+GaXeHA2NXPFRuyazTrYVmOCzlb4RkkC0Tr?=
- =?us-ascii?Q?uXuZuk1FKjTGCj2Gb/x0UNVO4RHcJfhkLhCNTF6ZbgHKNSsuzQUASIoJrjh3?=
- =?us-ascii?Q?1Lwa61CgRtQOaLhH0EAASOb6bh9F6VS2G7hgOI56aKFpywzDFAmvroBeB/3u?=
- =?us-ascii?Q?tN5XkytWYslkw2KjDITULhkAnNYMmf02v54weDKFSyFBL6sq9dFN918WAbzz?=
- =?us-ascii?Q?HDdtj5EFvyUCeXCqXn+FiU/RBN3rPg06s5OBzEegByP02dF3cfvevfNhkdnF?=
- =?us-ascii?Q?J7cWNtupyj0Tm/wFCals5qevNtLVhSdA1ycf1PTLXsNBii8q0QXnevGjVLtJ?=
- =?us-ascii?Q?0eiIEl84RALmwAO4d4pWECVLotcHxtOlKBxPLXfCNphTohYhMpfrNizsd+SM?=
- =?us-ascii?Q?whw7YN+s3yiNMEgMGfbN3J+JZ45RKAXUFUdyvvJOmzGqZrFW5plP9BNp/v5i?=
- =?us-ascii?Q?b/6VjrqCVL+xD9vKq5D6RGF7z5/m3FAW7144gTCzOE2OgtNHf25k1/GAQx/7?=
- =?us-ascii?Q?VK9BHVc9g/og179JncB/3BEDhol6J7yeghcXbCcBzeCuw/hK5vU9+gN8HuYq?=
- =?us-ascii?Q?2li/sueMOULmMl2HkVxorCOGEwyAVegdhrgiXdYwseZbYAkHSALVHapdpl8e?=
- =?us-ascii?Q?xBgh06iFN16YeGzVZcGImI2k/nhL4EWbunrd2HAm+c0gkmSApkBNjI7tYK2e?=
- =?us-ascii?Q?CguT4zQDumw2OcI8claVX7qHUVUKT0jyZTZKYvHbjejuvkRlTDiQl6Sx40dR?=
- =?us-ascii?Q?0UWnxsuuhm3o2oOsqboUKGZLYQ4nrT4iyWyKev9hmBsqsgrjX8uJuAB3O4Es?=
- =?us-ascii?Q?pVt9upm8mA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b639e876-a616-4f3e-8d82-08df34397ac1
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 14:49:18.8511
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gP0wak3cTMcqVmBmXjb64gQplrdmn3iQMcDW1XSwlNKM7hjlLVdF39+AT3S9t/vQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6115
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EFBFF1C0009
-X-Stat-Signature: icnfp9kxt4s1qyuo1shyi6smbka3q76x
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xzd8rbb41ft7a1z71rbf8ukhtgm17mnj
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 765B6C0005
 X-Rspam-User: 
-X-HE-Tag: 1793112562-792024
-X-HE-Meta: U2FsdGVkX18HIqNl5U9jYd+GqnyV+NbbWPNvrejqgEZKlyXRjJiHKb1TPemH+HNM4iNk7RIjbFdb5LNW5R51yg8WXsGlo5hBKodLqfVwJSD5G69JmJuiPS1LUzOqFKOLSU2BFMOp9p59hIOdvHK8NpSBRmS9fMgbWemILRaw8sXlqcQ0uef45e2WNB1MqhZFcDFEYC96Oxe+Erto9adgaoWATOfVxsDfQJXD5Hu7E/eWyOol+2RyYZ5S3Voso9vRGFJEdhUTm9y8NZLNwxHVsh/Q8BiujX5fmItNyu4wal/zcXLhQW2w+BCAcyiEMz4T2t6W8AfCRDI9KPYWyWFz8kj0FtavfDl8N0CGpYC5nVA/s9BU4eepymIGt/SVogzNqx+Y5m3TrqhraKQU1Tbe6SNDuYHHcN9SghsBK5vGOLDKjoxbrKGH6jOj7hs92ErAoRaRG8uXxvnzjB/GLbvUXdyI3yl2epYmDI0KDer4puqhHWoug+5nNyVMuAnOH3vyZ5B2XXR+hhVBfrSZJUNG3+z+3ijOjCKIgnNUtK2hIfa3+y3Qc2do7lFWn4y2k4hAGzWVJIcbWKxAVV+WmFsOzFphmbKaCQo1hfsseAg9tshYTqpyrwaue4/k3t0HMdwtIEpS+8ofQOdntJB63ZNwUyCPSzC5th2jjzG10mMIudvQlcDsoa7ujvwghnBhyI0D7YaBOCJuAiPIq1sVfkrK2I+3EQ5IRXfPeTHebRxfa0ZTA+M2IkjBHuaLJETJyJqE3RgXYvG1nfpcAHd8AMfy7ST09s5GcxiwnEHpHGPS8BARM0sAJHIuxO2/OLdgfUSLAyWoOxoDHCx5+z7ES/GdL02TIFfPtjqKpjXKNQMrNqwsXjx6Yx0p4QtfjK2W+BXY2vSxVWwJFBGNX9TdWxarnETwe8/fobEr/TxPNw8ErrOaFuHbo+Kb3kXq1vBIAwpg1haDi5YaNvbJfJQ22ep
- xZCt7oKo
- ajuagQFhW5jqvWTDRvffgBLYws9bDzFyCyOY2w1JKHk9jq2TI3JmjxywyHk1wzIzseWexOeBwe2HOzBa3YswS2NQY0ZMGb2G4qkeu9nOVVnCWQbfsB3BZozRV4RrKSu/92L0rkjFTtZaNBEC2PAD71r5s2kmWRng0stprjyXJHOxfj4rmZq8GoZlouTsIZ/SPqy7xNh8AYTmYLmy+hOtIJiWhuM4EvtXNykDHsHF17tZwnugvJ6uX1THj8yV4mwjvPxJsNbMRVEZtzQ8KR7WcAReUa8zO+9/tXCuQierfAQUEy4WQKzC+fgE6YFuHlOeZfAZOaDsDTluVXzHMoPFuBa/eOmibDR2F7xQ00wnrA/HPBjtBlFPzeaMtBNX1rWBkY91LTsxxNuZ5G7pIPZkop66YMgDowObc87av/Zc/C93bcEZU1xQRokav9d2LdMgsRI/+8G1/VyIvGBtSX9cX9YAUUYH8DuUV+7LZfUQ8MzjvBA+be6UfKYyCl/G0Bmswd2aXOhikoePLiaUAYIrqj8TmM+EE6nu6rK2W22Q6gYAuKI8=
+X-HE-Tag: 1793112631-306395
+X-HE-Meta: U2FsdGVkX1+AwSnxru04DhKNb/H1BlFYfENjHnK9O926hW3Wo6qSl51M5BdPu8TSzkobLd1z5b4mBVtrjUuBumFJ6H8lJH0dpwuRIY0ntsYJbarTI9O6deDSAniaJf6JGUFWQ5dYWfR+DwIL+LEP2NOzd0yi78Rmz2NatyE60/Ch6FQp46Sbb9qEGMhHgVFUsBsRUVOuiU+M60eRHiXHt+iETZgt6XfPr3E5tIt/Qva1ezx/JZJoBJnuil80LlMwb7dfU/7etd8sl/WG3JDMEeKkLdZ9S4w6s5syn7M6HnWb6RqUeBo0s6xsTU6Mt4KoAWVkNowSyzWtGbAPDmUwuS4f1NC5PJ8ILE7zjjhOgJhMcBputvazywNxfO2WTsYHJugE3NWUNCPwThzxsUnD5EaNORJq2izpOry0Dw84F2SJrzGTfF0qLKkDfOCAMZsQvx3Vg8RnOuyPSAc3ss7K6tvZW1RGRQm9r71yKoDLmZhfBUU/N43WLCyueD/b++kHHSd3/S1F09Im+c69/N2yMxwh23uUuqQf/9NgytVRAagjW6GF/18T0gWpTEJToqJrnMf/Vkj3mYJG55hrdy/KXcgM3pl67x8rcma4FF6fpLNmvAYAQ2cAX9q7cQrjsfbK/MhKZkCBQsgqOpMLQG1OvXUl9ScZT7ZsnCBdLd0YfRufVZyvPtLC7iUgvt0y0U/vQkImGRy+dimV+XNKN0wF19zpVNKRA6AIJXY+DUk4kE0P+OKZoe0AWrIW/b+3edKB46tD00pqh6PPMJYH+MGb57UO9A+XLeOW9MLwY49iKqpRm3KmZCwEKGy7LhWUQb2GRwrKGqW4fzeHMeONwvGcyow0fE2dyMhUCmmqmP+X0jrrxqts3vKdUBHYE6SnBMs4VHoSB11279MZQ5HRBI21NNELLj5cLnmmUHYANUak+V8fJ+N+qbv8XMsQ47pYFiETGFmKKsa0hiN34vWF285
+ 2MD+RlmK
+ S8CQZQJrOVtqEObvUOsKwuCic4lOx3FjpU37GRxvw0XtxuvRj7GrmFad2V5m9rpGhPrhan7lDSn4rxnmENEFxBv2E1thmB7EoPExwc71sXcrKYi4dJnyFnCcw1/6VC5tTfA0nhjI3OClYRYdHhOhk8Rvx3I0V3UFe7HzYWUBowYb3BrFLsEMvwdMEsGBRSE9iLQOZEicheq3E8MyevtWSpR9YfC0t1VbEZY6CiCRFIn5z0tgTtpzj6/3dhmI+ZuKg16Q2g7o+Y0Q6mEegEwPzQYLzwFOu1kqLHUexzg5jga1HMN42qa3u78LQnIk6BL5PA2WgeeTWxSs4XX+hQ7HQ+Rf4aKvk02Gxe/CLN4TpKDrGuaxfFhYEb7ZSMKyZ3RuDNaFvxi5XfKLRtfS8XZV9i5rrZVteVW8GTLwEkKiSHXukjJ12Nhvrq+vg9eWvPY1Q4f7SsZiqjUY09RWSt9Kf/5SVb/BwV39SouJt5254GD0KO25swlgXIX/UUgNwFz2pEXEpQ+VfoK4xCHwQbh1XLiDqd7Ky4MJjvmYdnlY/FWVw0HUBYLctGEkBTqx3PPa414FDQBGH6WZKiRqmIgvUcx9HbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,66 +131,202 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 27 Oct 2026, at 0:32, Ridong Chen wrote:
+Guilherme Giacomo Simoes <trintaeoitogc@gmail.com> wrote:
+> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> > > when attempt to do a madvise in a chunk of memory allocated by mmap, the
+> > > folio_split is called to split a portion of memory, and despite the path
+> > > leads to pmd_mkinvalid() they do not clear the pmd and clearer wording,
+> > > leading to a BUG_ON inside page_table_check_set() because the map count
+> > > is more than 1.
+> > >
+> > > Call the page_table_check_pmd_clear() inside pmdp_invalidate() generic
+> > > function to ensure that the pmd will have they map count decrement.
+> > >
+> >
+> > The subject + description is rather confusing: you are not "clearing the pmd",
+> > you tell page-table-check that the PMD was cleared.
+> >
+> > This is all about apge-table-check.
+> Yes, you are right, i'm not clearing the pmd, I will improve this.
+> 
+> >
+> > Can you post the actual kernel splat you ran into? Or is this generated by an LLM?
+> Of course, the stack trace of error is (already decoded):
+> page_table_check_set (mm/page_table_check.c:118)
+> __page_table_check_ptes_set (mm/page_table_check.c:223)
+> remove_migration_pte (include/linux/page_table_check.h:83 arch/riscv/include/asm/pgtable.h:642 mm/migrate.c:448)
+> rmap_walk_anon (mm/rmap.c:3053)
+> rmap_walk_locked (mm/rmap.c:3169 mm/rmap.c:3164)
+> remove_migration_ptes (mm/migrate.c:483)
+> __folio_split (mm/huge_memory.c:3640 mm/huge_memory.c:4289)
+> split_folio_to_list (mm/huge_memory.c:4435 include/linux/huge_mm.h:416 mm/huge_memory.c:4499)
+> madvise_cold_or_pageout_pte_range (mm/madvise.c:420)
+> walk_pgd_range (mm/pagewalk.c:147 mm/pagewalk.c:237 mm/pagewalk.c:278 mm/pagewalk.c:319)
+> __walk_page_range (mm/pagewalk.c:427)
+> walk_page_range_vma_unsafe (mm/pagewalk.c:737)
+> walk_page_range_vma (mm/pagewalk.c:747)
+> madvise_cold (mm/madvise.c:594 mm/madvise.c:614)
+> madvise_vma_behavior (mm/madvise.c:1364)
+> madvise_walk_vmas (mm/madvise.c:1721)
+> madvise_do_behavior (mm/madvise.c:1916)
+> do_madvise (mm/madvise.c:2014)
+> __riscv_sys_madvise (mm/madvise.c:2023 mm/madvise.c:2021 mm/madvise.c:2021)
+> syscall_handler (arch/riscv/include/asm/syscall.h:112)
+> do_trap_ecall_u (arch/riscv/kernel/traps.c:341)
+> handle_exception (arch/riscv/kernel/entry.S:237)
+> 
+> And the repro.c that I writed to reproduce bug:
+> ```
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <unistd.h>
+> #include <sys/mman.h>
+> #include <sys/syscall.h>
+> #include <errno.h>
+> #include <linux/mman.h>
+> 
+> #ifndef MADV_COLD
+> #define MADV_COLD 20
+> #endif
+> 
+> #define HPAGE_PMD_SIZE (2 * 1024 * 1024)  // 2MB huge page on RISC-V
+> 
+> int main(void)
+> {
+>         char *addr;
+>         size_t len = HPAGE_PMD_SIZE * 2;  // 4MB - two huge pages
+>         int ret;
+> 
+>         printf("Testing page_table_check bug with madvise(MADV_COLD)...\n");
+>         printf("Huge page size: %zu MB\n", HPAGE_PMD_SIZE / (1024*1024));
+> 
+>         // Fallback: try without MAP_HUGETLB (kernel will use THP)
+>         printf("starting THP...\n");
+>         addr = mmap(NULL, len, PROT_READ | PROT_WRITE,
+>                     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>         if (addr == MAP_FAILED) {
+>                 perror("mmap failed");
+>                 return 1;
+>         }
+>         // Enable THP for this mapping
+>         ret = madvise(addr, len, MADV_HUGEPAGE);
+>         if (ret) {
+>                 perror("madvise(MADV_HUGEPAGE) failed");
+>                 return 1;
+>         }
+> 
+>         printf("Allocated memory at %p\n", addr);
+> 
+>         // Write to the pages to ensure they're mapped
+>         memset(addr, 'A', len);
+>         memset(addr + HPAGE_PMD_SIZE, 'B', HPAGE_PMD_SIZE);
+> 
+>         // Touch pages to ensure huge page allocation
+>         for (size_t i = 0; i < len; i += HPAGE_PMD_SIZE) {
+>                 addr[i] = 'X';
+>         }
+> 
+>         printf("Memory initialized, calling madvise(MADV_COLD) on partial range...\n");
+> 
+>         // Call madvise(MADV_COLD) on a partial range of the first huge page
+>         // This should trigger the huge page split and the bug
+>         ret = madvise(addr + 4096, HPAGE_PMD_SIZE - 8192, MADV_COLD);
+>         if (ret) {
+>                 perror("madvise(MADV_COLD) failed");
+>                 // Don't return - the kernel might have crashed
+>         }
+> 
+>         printf("madvise returned: %d (errno: %d)\n", ret, errno);
+> 
+>         // If we get here without kernel crash, the bug might be fixed
+>         // or the conditions weren't met
+>         printf("Test completed (if kernel didn't crash, bug may be fixed or not triggered)\n");
+> 
+>         munmap(addr, len);
+>         return 0;
+> }
+> ```
+> 
+> I see this BUG here:
+> https://lore.kernel.org/all/69851c62.a00a0220.37c87e.002e.GAE@google.com/T/
+> 
+> Yes, I'd should mencioned "Reported-by: syzbot+227179d5a8a87e9df90d@syzkaller.appspotmail.com", my bad
 
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> NR_KERNEL_FILE_PAGES counts page cache folios of mappings flagged
-> AS_KERNEL_FILE (currently the btrfs btree inode).  It is a per-node
-> counter: filemap_add_folio() adds to folio_pgdat() of the new folio and
-> filemap_unaccount_folio() subtracts from folio_pgdat() of the folio
-> being removed.
->
-> __folio_migrate_mapping() does not move it when such a folio is
-> migrated to another node, so the source node keeps the count forever
-> and the destination node underflows once the folio is freed.  btree
-> folios are migratable through btree_migrate_folio(), so demotion,
-> DAMON-based migration (DAMOS_MIGRATE_{HOT,COLD}) or memory offlining
-> all hit this.
->
-> Reproducer, on a QEMU guest with two memory tiers (node0 is DRAM with
-> all CPUs, node1 is a CPU-less slower node described via HMAT) and
-> /sys/kernel/mm/numa/demotion_enabled set:
->
->   1. mount a btrfs and create 20000 empty files, so that btree folios
->      are cached on node0;
->   2. echo 2G > /sys/devices/system/node/node0/reclaim, which demotes
->      them to node1;
->   3. umount and drop caches.
->
-> nr_kernel_file_pages in /sys/devices/system/node/nodeN/vmstat after
-> each step:
->
->                   without this patch     with this patch
->                    node0     node1       node0     node1
->   1. cached         1868         0        1868         0
->   2. demoted        1868         0          36      1832
->   3. dropped        1832         0 (*)       0         0
->
->   (*) the counter has underflowed to -1832; negative values read as 0.
->
-> The global value in /proc/vmstat is 0 after step 3 in both cases.
->
-> Move it together with the other node-keyed page cache counters.  It is
-> a node-only counter, so use the node accessor, matching how it is
-> accounted elsewhere.  Interrupts are disabled here, as for the zone
-> counters below.
->
-> This was pointed out by Shivank while reviewing the NR_FILE_THPS fix
-> for the same function.
->
-> Fixes: e3a9ac4e866e ("mm: add vmstat for kernel_file pages")
-> Suggested-by: Shivank Garg <shivankg@amd.com>
-> Assisted-by: LLM
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->  mm/migrate.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-LGTM.
+At first, I suspected of pmd_user_accessible_pages() and I started analyze this
+function. In a brief search I found a CVE that fix similar bug:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=21e5eca0ac9046da9918a919bc92b7b5a78d27e7
+They do this:
+```
+-	return pmd_leaf(pmd) && (pmd_user(pmd) || pmd_user_exec(pmd));
++	return pmd_leaf(pmd) && !pmd_present_invalid(pmd) && (pmd_user(pmd) || pmd_user_exec(pmd));
+```
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+but, inside riscv-dependent code (where this fix happen), the pmd_user_accessible_page() is:
+```
+static inline bool pmd_user_accessible_page(struct mm_struct *mm, unsigned long addr, pmd_t pmd)
+{
+	return pmd_leaf(pmd) && pmd_user(pmd);
+}
+```
 
-Best Regards,
-Yan, Zi
+and the pmd_leaf() do:
+```
+	return pmd_present(pmd) && (pmd_val(pmd) & _PAGE_LEAF);
+```
+
+and pmd_present, do:
+```
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+	(pmd_val(pmd) & (_PAGE_PRESENT | _PAGE_PROT_NONE | _PAGE_LEAF))
+#else
+	(pmd_val(pmd) & (_PAGE_PRESENT | _PAGE_PROT_NONE));
+```
+
+So , the pmd_leaf() looks like good enough to check if the pmd is accessible to
+page_table_check.
+
+... Too , I suspected of PAGE_PROT_NONE, because the doc above they declaration say:
+```
+/*
+ * _PAGE_PROT_NONE is set on not-present pages (and ignored by the hardware) to
+ * distinguish them from swapped out pages
+ */
+```
+And this lead me to think "if set a not-present pages, so maybe this not should
+return true inside pmd_user_accessible_page".... 
+
+So I check the `git log` to see when and why this is introduced. But how is
+mentioned by git commit message:
+```
+commit e3613bb8afc2a9474c9214d65c8326c5ac02135e
+Author: Stefan O'Rear <sorear2@gmail.com>
+Date:   Sun Dec 16 13:03:36 2018 -0500
+
+    riscv: Add pte bit to distinguish swap from invalid
+    
+    Previously, invalid PTEs and swap PTEs had the same binary
+    representation, causing errors when attempting to unmap PROT_NONE
+    mappings, including implicit unmap on exit.
+
+    ...
+```
+
+So , they is introduced to distinguish between swap and invalid ptes.
+
+So , I concluded that this is not the problem, but maybe the documentation is
+not good enought about the PAGE_PROT_NONE flag.
+
+And, after a lot of thoughts, I try to call page_table_check_pmd_clear() ,
+inside pmdp_invalidate(). I attempt to do this because, I see any architecture
+dependent pmdp_invalidate() calling this function and think that probably this
+is the solution... 
+I apply , test with my repro.c and , this WORK. 
+
+I implement this inside generic pmdp_invalidate() because, in my mind this is a
+generic problem and can happen in any architecture not inside riscv specific.
+
+
+thanks,
+guilherme
 
