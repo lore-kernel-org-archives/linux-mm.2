@@ -1,91 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFBA606A32C
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2F960A2600
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 11:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hc95gwYr
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MXi70ByI
 Received: by kanga.kvack.org (Postfix)
-	id 9DEA26B06A5; Tue, 27 Oct 2026 06:55:37 -0400 (EDT)
+	id 4DEDF6B05CF; Tue, 27 Oct 2026 07:00:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6A86B06A7; Tue, 27 Oct 2026 06:55:37 -0400 (EDT)
+	id 4900A6B06A7; Tue, 27 Oct 2026 07:00:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F2916B06A8; Tue, 27 Oct 2026 06:55:37 -0400 (EDT)
+	id 37FB06B06A9; Tue, 27 Oct 2026 07:00:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 668146B06A5
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:55:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E74501209FD
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:55:36 +0000 (UTC)
-X-FDA: 85368100272.20.562F697
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1918CC000B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:55:34 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=hc95gwYr;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 18E156B05CF
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:00:56 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D74C80766
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:00:55 +0000 (UTC)
+X-FDA: 85368113670.04.C0D2F8D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7E5E940003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:00:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXi70ByI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793098535;
+	s=arc-20220608; t=1793098853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AKbxYvklE+RtW/4px6T7qZCglKItX3GKgrMwqEp3qDw=;
-	b=ueEo+6NX514uHISGUBqcoTU2Y53gt5gTYAIuCuuZCDu2g5VX/gwAplMIQGkVwronrFCNya
-	7wN7AaSpE7e1eTkQXw/rKnlrpvWGE1dhn2bRhwhfskSpnvfMye0sNQPxz5XhSstFvOCDMy
-	ew96QZ+uXdkDw789/oRIV9kDf4sNKRg=
+	bh=iYbvF08NWfCm8zT3/Z6YZVWDxLXQALtM59UBUKduNM8=;
+	b=3eqf2mDL9J6bt3HTLxG3JSNcb7eTbQIsj4Zlmbhp5JsBCkfPlgAVUBylAS4G7sS0xiK6BP
+	8iTiUFFODpqkV6aJaeXPbvrz+5yCWRgThmGturr/6o+bLyGC02g3ltjWWDC/MM9AIX2uVw
+	14HWpMIl5Qx7EYu7Eai8GLywKDuHPFY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=hc95gwYr;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXi70ByI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793098535;
-	b=p5zkY/UICMBzRSZ/6LSkvKjnNiI0fJ4ro/8yxKrRIVdeN83ugcQcrUbsWYamRTNl75JcGG
-	/2EPvKbpcAEP/Arx52fYQaOG95/w8qqWeKX1aud5nex+HiJKAer5Jw6WWSYvePhk0jP36K
-	oZY724zrRPLcSXPb5teUz1BiqMob3rE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D800615A1;
-	Tue, 27 Oct 2026 03:55:30 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E00023F59E;
-	Tue, 27 Oct 2026 03:55:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793098533; bh=2KWWEm3YGgOg7VXROLDs0BaAsOc3yp6g0LrHlJpAeJ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hc95gwYr4hlRyW/o5zs0jyhfOGs74Do+ch0sJPW5V5HxppF6ribgfdRKL5l+Ph1qM
-	 divMRR/TWoxxKhidxaYV5/bLcdzmWWzi7zrZ3SsmUbA2ws9BGJeDnbCnPVa+mkE9Qm
-	 v0KvihGVOgmtbN05Kl4GX9PpZb6J8aJNpWqTJH9I=
-Date: Tue, 27 Oct 2026 10:55:29 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Hungyu Lin <dennylin0707@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	andreyknvl@gmail.com, vincenzo.frascino@arm.com,
-	odys.yuan@gmail.com, sashiko-bot@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/migrate: untag addresses when querying page nodes
-Message-ID: <auCDIcgPP2tKq32y@arm.com>
-References: <20261026195330.46757-1-dennylin0707@gmail.com>
+	t=1793098853;
+	b=U0gFHhMb+nwb7qp+iAZ7JJgMPR62n7JOg16zUBqg8BMr2REhdXiw/DS+UkWEfhd0LHM5yc
+	Q5sFBc+cxxifdXimtcQP2/oYVdHCl5i309cERfGraOWmWpqFjRX/She2fCkWKdPyPaopa1
+	f36DQx+PZDBETDunLpBDflCr9HFFCUY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A951343483;
+	Tue, 27 Oct 2026 11:00:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A967D1F031E3;
+	Tue, 27 Oct 2026 11:00:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793098852;
+	bh=iYbvF08NWfCm8zT3/Z6YZVWDxLXQALtM59UBUKduNM8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MXi70ByIYNx77IpBcMisOiA+9HTw5hMBbP5PnuL7cKbARfcX2YXFB3C0Nb8UcfqNa
+	 W7Py7K5dxU+H/LWwf90HvhPlYti70w25ed3Bp0XXEM8yFJBsr4Jae0JcwB/LPddQBj
+	 wbowNiyNG+uQUPwXlzw25efd1WcYa5K8q9TIwEwEjBufCI3hm8x35zsP5yMFHCjTNw
+	 Fr+cX9g11qAge5j4vG2+CaxU+wLE5q0RxEbrRC3L0X1UUh32Yz8DPU0bfxHKZXbr42
+	 cKcoCYG4Q+EvbNRoEihL7XrPdCrZ1C4s5HXW6eSRescu4f3xtYyjY8jB9a1Ud29OET
+	 K3vcGXk5udPLA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id A87A5198003A;
+	Tue, 27 Oct 2026 07:00:47 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 27 Oct 2026 07:00:50 -0400
+X-ME-Sender: <xms:X4Tgak2R7XlAMxcuTmHRzIr7ez5GNzfvlc70VSppEbBPNEMAWKFcOg>
+    <xme:X4TgavBMDxN8HAJYhYhfI8m4xF2uNV9ZSAzubmbB7aMp-_f92eJf20VVeRqptRDxU
+    Cpa1N0lq_PxcAeagHDkZn-OkAixEYe-lWIifrOcDWbMx7lWKGKNDBQ>
+X-ME-Received: <xmr:X4TgaoeA5PmS20bEiK9t_Jq2sJ-hY3OIDNV6rg_RAdKVzRC1nvYEofvM2TA>
+X-ME-Proxy-Cause: dmFkZTEH5HcaTFB4/RSeaBPIM8m/gt3cZoCwfpNH3mXXlPR7GLTQw5jDkbvPewCqEOsVW5
+    cFwyaWOhWKFVYwv12P22aj+aNYkue0yC9RBewdQlwm3Lh3/GIwjOvZCoQCwESE22iMt+rh
+    K9T29xYowPMV6PoNNSwNRKOg9HnvGZjwlpo4yoYgKeM1P/BKABmzBZ2MncxxCS+Kn+QHVD
+    dBW5I7Wpc5cjpsBHe18buzhlkBhbz+2tFZ1iv8sxotsh1H/xAtJfGKxmlZfoe23OAa8Bts
+    +IUtsL4HURjwW3AnXk/HWNPAfrdT63zSAgtUeGNTW/U4jjGTdLpDA0lfnnJ6EyT9m//LeO
+    F8OOJyjMwigGTLKPuE7tOzr4pBjRYCkn+ZhJJVjYQsYV47lnK3smN4lP1ypn0oDOxLSTnK
+    dPobhxLCH5U+tXuBHS6r5KDsKTNQ9vOglz8aLeDlDh+ixB+GcC+6nYH7w50tei2rn9NTNP
+    Um/BNOVL0QXu4E7SuGkf7ITb+dUbtQu3iJGcyFePnaTVSEFCMidZ1SSdQ8j4rfcf30IVjk
+    cP93VEA6C2iukCpvePyZh7cMyIaxgTcJE+S0LkMyoAaHh16JtGDqUNiygiYlF3PYfSzH6C
+    fyz/477qLwuIohL8Qp5Laa6y1CXUQBE0IPhVmjljA5bwOUsAMyfu2nqb0nFw
+X-ME-Proxy: <xmx:X4TgaixYAJ0pnTaK9IF77X7UAhfUDhUA_P2PfnAlXTSilca0kERg9g>
+    <xmx:X4Tgagm35jXAkw7DgzpwTcMJnAvzrFpPkF5Lsc7HdPrVpJphW6zocA>
+    <xmx:X4TgajBizeJZjVL1GncyI3tnBYYKXr8HvhpRPyMqcMzn57rmeMFKog>
+    <xmx:X4TgalcEF7WkatxqDIh4WEP5_y-l9lknxMulooU9hr75sog7f05sHw>
+    <xmx:X4TgahogeNgFVcLmxeBz7YDbAUm6oVdAwlYmbmuIFIUe4VLDYP2oguiy>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 27 Oct 2026 07:00:46 -0400 (EDT)
+Date: Tue, 27 Oct 2026 11:00:45 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-ID: <auCDnqJc7fsBpUW2@thinkstation>
+References: <20261014202936.GC371161@cmpxchg.org>
+ <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
+ <atDMN5MoGrwJNpAj@thinkstation>
+ <4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com>
+ <atiCG2iPrHwDznSZ@thinkstation>
+ <d2b8edf0-39ab-4a44-bd0d-58230dee2fad@arm.com>
+ <ats7oFM-fsYdUS8y@thinkstation>
+ <attOFXch_TchIfEv@thinkstation>
+ <atty0n4UzTfI46eN@thinkstation>
+ <0757f1b0-9af6-417c-a4cb-eff0b05ba277@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261026195330.46757-1-dennylin0707@gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1918CC000B
-X-Stat-Signature: h465f1mnnxohdfo48if19kx44fkayswb
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+In-Reply-To: <0757f1b0-9af6-417c-a4cb-eff0b05ba277@arm.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7E5E940003
+X-Stat-Signature: 65hp6u8hiusgnd6rguhoc958ndoqe1yh
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793098534-808208
-X-HE-Meta: U2FsdGVkX193s2fILfwJtEVmG+DZIm1dvIX3HggAVxI4toyO+gbiXuHkaxdMxMl3dheESHe2B06UdmGHN4gB5qIJKDkwDwy7feIPJ0NXgDTW31SYkd45QK6Sa9kXmpDEZNolXqgaey9rIivxHIezsUdrMo0HxYH+BrIFf4rgGt1UOPASb+9qj6zv0H2HZf2UlwckYBTbDCY8e2//g9umKg+amu9FtwkvH8T+sKB2yHJ6wCxuLGrkz7U8ioJoo4/RuLGMAPM4cXSzrndrDP+XW0HL/nhdyld9mW5OdMqaNox39melAlNNnq/LJSNbA6u8zZYTqTMdd173oIHL0rJPFVEY5lf5VjOpo14VI5uSPwZJa3HHBoH1d/ujI2IQcLAykbboYadSg3XvMnndf763L7mRtJ+vaRXSHnJEinTeW0uEJoCSMBMy3Udcn8/ZBEN7IwTko2+SPIqtZJVWKajZepjwx5qdsGyU9qGPUmdg6Aa0C6GR8+jNf0PgFMIcM/VW2S1il32nWTy9NMqeFEKvHC5VlBbslrIavDYGlWFs/2wi8l6u9I7byH7naWKwhJOgilGrEZq2JH7o6Zkiv+E4USYlVZnFvKJ/L9KQrRifDKs80DARWlvfTBQgfsLicMa7J7dSrJUMGpSgVjo7dIntdJTNyEYbR6gE6lRDqtfFGcEtPO0Sv6e3bqA6noGJE7s8fRZ4WfPqDID5rffXPnr7kFWbLdPbgdKYiOo5gWW0XS5yiyyQLy2Kk45bKlMaBHAW85yI0Sw4LES7vNCjn6U7HL1t5ii9+3GCoDckshVQpviV3z21p9TnQfrO3urHE2EfFSlq3S9HiFYS7pB2UDbx8gvyU2tB0AA+rRF20Swka5QiDQfCDeY7OSMgl9YxJ48rHg9/XtCPv22sUa8Tzqpf2cxHUuzzm4q4jp9sbgszjjTtkLpE7NNcJEE2f7kQRqcrYPUdSpYWHghesEum7jU
- JepUnjV0
- pBw9caQmuSZ+c0V3IbqBG/vwavJoIr/gipmB/0h3jNFQ9G0smt28JQ9j536E759kefgcXpFB7+wmDfCmcxmmMm4zAIsSjxyLPgiEOYV5MUY4rvQObCf93sekQBpgzz5Pmo8s3uxUNADSswQvlLQKF2AQfdByOrf6A7D6HwgV8qhZkJ1F11zgWNaSI0ZSLdDYocvJraP4XHj1lTr8X6oFaPeOl9vLqt4vbud0JzB3KejjClKfVUxdvvQZd/z9Iew2u0XP5hs+e1CbjRuNlAGgkagfojXT28X9PAb2h+7xTDHrRQHxd6gCgMW1zxGyu9EsweDTUWUYegW3B3NRDWmfFNIZacV5PsCvQu7+xyNQ4AZiKks5Z3YRlbOmYy3fdna9RNErCdFENv7qPlGAiNm8sTd7WV7ddSRKvpHandssNG/kk33DdLid98Cp+BQ==
+X-HE-Tag: 1793098853-273112
+X-HE-Meta: U2FsdGVkX1/XuRXxXcP9V5QfGiMX5dcxbV55Xpk03jBaDDPbtT3ePSvn/ky9peSGTIAwz6i4AsDoxn/rsXii8huZCvBsJz/nWRV3klA0ARpd+H1v3xNn5EkpfKa1DF0ZB9mPGzfxJaM5FExuNP2oYxf+PCJjL4ekyBYSZ1IBMqehvHju9fgXRGZ6vGbbRcL2hKXzS5Pav3Im+oln22ak6Ep9gdhw7O5EvoQNRRCpjaiZc5B9t4cjF5yvkj/s/WdTP3Md/0tmB9f0AXpZC11hysCIHDSp4+VEaAbvaRZP8mvykNo5Nc9mDj32hAwyXN5UIaod12fesl+yqm0UesgsGbrv93SIZIOtAWzEzZSoWLeZHf6EGeTdiVwBBKzlbFTGSLToUCf2BPL/xWOJ1aV/SPO1LzbV/hUHzCIUYn3HcWIlWXQxdb7dhpG1gGtODPhFUKFVTvfOFTfnXBYuGzPM/Iohn6jq3LEH25EiWw/iDzNF25/cY3bjok26Fiwmds+BZ090SdiM3mZ4OkT24AqGUytLYh4eGibAXWmQD2LeC2kX18hk7Mczrf/Nju3gaCU4SMQ0/26d8cmN8bWzudKvu4Okwc+mYwTakCxftZewwAPVTQ1xbkf3MMpRPz8K1H4Z42F6MPgKxPEyuNHvLijB75p1kg6Qf0eCeUI3aOfbc3q42d/sCumyQ0tGdVAcYUDWtsL2zkXSJVSDZlz/VXjK4FBVxOX6QZozbkCzbWUQS+/YPeKE4Ja1cAVNt4CLF9Df42pZImM+yEkxziSNBEO67BSXa0OejZUH1mvAHc5DnuoE0+0rTrycSTsL0y26HMmFNp1I2h79yLneX4TD4qZ7GWP5XoKFbf6iVhzWYfPalqj6vz2U4tuErQpiDp/dWPrVrSatWTNTC/lzDpkfl5mTlrdLojBVQ0AmJQeZLzXdUwtimX4gvFb6jtj7JUalKkeX/ggnBWbJ5ETM2TKrfIp
+ Xbin4Att
+ Tu3Cm51yrX8dUKglKTeXOlPYlhy0FEMyM8ZTvH3mGcJij/bbgcbHAFDgwjBMYP7BUKTUKeBpGJIju/aYJbc8HRBDq5BQgJy/4srdx2Zjb7Mj0C4PqCW4KuaYrcoUY6VGAz5IeZGW1uDCLIwFfKSqX1kd06RYCvrp9r9RpaAzGTwstOR7fcAaeZZbLYYi7eVvfCD/lDKNH0g9J1+Ckp3Ip5wyQ3Jm7Gw47SxSIM5MHL0xiqybaCt3PSGY0wM8nxxPKlUDJ2TYk7kw/jg1RqLUrts096mKq7kcFKna+Qkdprs5ioJarbAimCpuxIdK9O5/qKXBpMZ80AKtgDn5Mpm1IuaVPT7bCAAJgC+30
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,23 +135,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 07:53:29PM +0000, Hungyu Lin wrote:
-> When move_pages() is used with nodes == NULL, do_pages_stat_array()
-> passes each page address directly to vma_lookup(). A valid tagged address
-> therefore fails the VMA lookup and gets -EFAULT in its status entry,
-> instead of the node reported for the corresponding untagged address.
+On Tue, Oct 27, 2026 at 12:42:12PM +0530, Dev Jain wrote:
 > 
-> The tagged address ABI permits these pointers, and the migration path
-> already removes their tags. Apply the target mm's untagging rules to
-> the query path as well, while holding its mmap read lock.
 > 
-> Fixes: 057d3389108e ("mm: untag user pointers passed to memory syscalls")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/r/20260721183257.706661F000E9@smtp.kernel.org
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> On 23/10/26 8:16 pm, Kiryl Shutsemau wrote:
+> > On Fri, Oct 23, 2026 at 01:12:02PM +0100, Kiryl Shutsemau wrote:
+> >> The diff below replaces the previous one. It needs cleanup and splitting
+> >> before it goes upstream.
+> > 
+> > Proper patchset:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git page_alloc/nofrag-watermark-v1
+> > 
+> 
+> Thanks! I applied the 3 commits on top and the results improved a lot. Your patches
+> make sense to me.
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Thanks for testing.
+
+Can I use your Tested-by?
+
+> But still, I see more compact_stalls and a worse compaction success:fail ratio. The
+> limitation must be by definition I believe: we still won't be able to use 64K blocks
+> from non-movable pageblocks.
+
+Right, that is by design.
+
+defrag_mode keeps the free space in unmovable and reclaimable blocks for
+those allocations, so they don't spill into movable blocks. Your 64K
+faults never take it.
+
+The price is that defrag_mode needs more free memory for the same
+workload. In return, the system does not fragment over time: huge page
+availability stays steady instead of decaying under load.
+
+The benchmark runs right at the edge: it fills 99% of MemAvailable and
+then faults another 20% in 64K. defrag_mode=0 takes the 64K chunks it
+finds in non-movable blocks without compacting. defrag_mode=1 has to
+build them inside movable blocks, and with memory full there is little
+free space there. So more compaction, and more of it fails.
+
+The 64K fault count ends up close anyway: 20.1k vs 20.7k in my runs.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
