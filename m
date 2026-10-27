@@ -1,130 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA2A606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8873D606A330
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=bRAzYnWU
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ShPz/LB/
 Received: by kanga.kvack.org (Postfix)
-	id 274696B05EF; Tue, 27 Oct 2026 03:35:50 -0400 (EDT)
+	id A3C256B05F1; Tue, 27 Oct 2026 03:35:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24BFD6B05F1; Tue, 27 Oct 2026 03:35:50 -0400 (EDT)
+	id A145E6B05F3; Tue, 27 Oct 2026 03:35:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 188366B05F2; Tue, 27 Oct 2026 03:35:50 -0400 (EDT)
+	id 929D76B05F4; Tue, 27 Oct 2026 03:35:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF3816B05EF
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:35:49 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 82405120972
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:49 +0000 (UTC)
-X-FDA: 85367596818.24.B0D4294
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9941C20006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=bRAzYnWU;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf13.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.53 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FB476B05F1
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:35:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 017C3C0927
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:54 +0000 (UTC)
+X-FDA: 85367597070.27.4D5670B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0816540003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="ShPz/LB/";
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793086553;
+	b=os1pz6Do9vhGu6F97jcXJx4EqPJ3ExM1vUxQxwCLTRTUfC3x775Xt/0yCmn/Ut2MvlsVOi
+	JU4n+ILnZoV+OXW+7O6/Z32XAJ3vOxaAQS+c4GowqWGkViMRoU4ETcJ8LGtkk5RUyCx38Z
+	dfzLGzGy1xK/no8Ojqn05SmINNKv88c=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="ShPz/LB/";
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793086547;
+	s=arc-20220608; t=1793086553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sN6UGPpUTXeJgZ2lTe0CetjR/EEvcG4cIahELjc1+Mo=;
-	b=bsBuY8qgCpN4id5tGV80pcw8vRz/vmZ8hCRaYS0kcjvoUwdRqGmbDUtol2rkPzmMqr2jFp
-	0ukBCw6LqJG2G2i04mT5rg+PYwhMCipB83jGI3INqjO9Ki6L3RYIXSakzqtcttmn5g8hRW
-	cOdxhUfgXE830xQlQ41I5r3wAlQ6DFo=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=bRAzYnWU;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf13.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.53 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793086547;
-	b=gyy+Hj2vHOmqNisN6ZJ4h+BmLIw58WeJFuPa3ktg5ttgh374CzDbN/GKZhMzZeRySWzAdj
-	InR+GqAY8q++jX9/XJVY5NZIKWGlBUVjHobdi/JWrW4k8fSP7RD9m5MQpm0H14WUJL7sYJ
-	Xn/fi1y4MM5eYxIsNx8Ox8nP+rBgkJ4=
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac77270fbfso1946802a91.2
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:35:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793086546; x=1793691346; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=sN6UGPpUTXeJgZ2lTe0CetjR/EEvcG4cIahELjc1+Mo=;
-        b=bRAzYnWUQD+OA8uqiRfzcsctpetwXCpOWJ/4OlqnmDAVMKMFU9vKDPEuLl+JNOSvG9
-         O3/+Uqi59uWMrVa5rzpZAXLIbsqWhhLIkg9iBfhCWAHTd9fPRlP56GI1knjlSzoDEsY7
-         vdIi6hwTuGO7YGBJMW8D9i/kM1GTfAUYSoiMA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793086546; x=1793691346;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sN6UGPpUTXeJgZ2lTe0CetjR/EEvcG4cIahELjc1+Mo=;
-        b=1AYhjc1PNvge29M7JkzE3n4bDBitfJYt0cXOSSMHCybEPczses1uIYaUJWErhNIQJP
-         LBnMvfF3pQKln6Hnu0sXOrXRSdC7LmzyFubUES9CwIiVdNX3MDwrBiRvW3W4muF76oZT
-         huTJ1Mef71y3nJ6B+3QZB9ymT/Mw/yDT/JdgvMmgGfD6EryJEcU0K4vSY5joxG+lipCd
-         nivpPFRYtIgQRexmxzm4aqswAoXt+1nVL+lMqFkSLSJyeUSDKe2bL0rQyTCq8Ho4yz7/
-         pLBroheotc6Nsp4IU9k5hITNKKKUsK10M+4Kk9QbmKJBcfXU0p/DyQE7+lk/SAeA1DvZ
-         6RPA==
-X-Forwarded-Encrypted: i=1; AKwUvBzX6sKs1NidC3jNoHUjWeiQ+fggK/oAQhLONV3NrzBxb0yPxWHAMqrQQ6emKbOyGvQWTYqYsqTPdg==@kvack.org
-X-Gm-Message-State: AFq9FYJtAAdNQrJeCfLv6kLrqRXSkphJvQcM8IP/fzUeaKXKSXENukZN
-	Cm/ZYnUE3zDkH5uSwX09O5yRbQs5XRGzQIyZbvZ8kK2bMQov90/N3vfHVxSDTlB0ZfgQZzJI1R+
-	8YVkZ5v0=
-X-Gm-Gg: AYBFou1/PnGniQzHvlDISfj69fzv+og6QXub+0bqtorwOcuk3gc/+7HBi9lyXdp480d
-	7aZZ2C9WRILf8bUTXYjkWDQP1cTSBqiPLlpFJHIJjdYGOmlI09YgNWLUbSCk8nCq5zlBxRWd1ve
-	udDUIjolC2ygBDfolwP1b8A17iY1u1919EWdhtO1oZttF8NDmodvoUcb3g1j6otvoOrE8dELpVd
-	nKI7g/k4htjTFLQCAMfKhb6fHF9CKAC8Hd3uivGaCPD/GykO2CVvBt6rkqSf917KeCfcDrNenXE
-	E3Vh8oEiyKcBuq/xaSFyfq3OAXLsjNg8ejo+vU6h5UEAErwqkLBwAU7DtMU+bUoIL6OFk+vWI5K
-	lmLxbZWAFdEaSUIU9bML6xA993gL1w2v34dd2xqNsil+PC9iCdEwJIkwND21lD3PpZ/tLkGINAp
-	NSP/UDjpAEus/oaVcl04ZcjBSYYq2uxnJo/yQLotNIzTA3mKIqErYH4j+JY7w26E2sN+oT6VUCE
-	mMaSwPmzbCytpiVg0ijUOdcGbllaxv187AXbgNDwrv97bMN9hSQAYEM1JviYwrYsMHpnbM24dLv
-	x2UpBHQHEPcSp1MO4qPUBfLNYbguLcJQiw1YrsHc6Rg/+c29bcl8uC2KC2eNCWXHE6oDXcin/2m
-	SbgrLYqVwqOFyfdznzxPvwpk=
-X-Received: by 2002:a17:90b:4b92:b0:3ac:6fcf:81a2 with SMTP id 98e67ed59e1d1-3adeb137d1cmr7346559a91.57.1793086546607;
-        Tue, 27 Oct 2026 00:35:46 -0700 (PDT)
-Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae40614daasm2511140a91.4.2026.10.27.00.35.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 00:35:45 -0700 (PDT)
-Date: Tue, 27 Oct 2026 15:35:42 +0800
-From: Chris Down <chris@chrisdown.name>
-To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
-	GONG Ruiqi <gongruiqi@huaweicloud.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: [PATCH 2/8] slub_kunit: Add a test for slab_freelist_hardened=
-Message-ID: <b5bab23337f5448d8a134c71d42a9e3165ba3366.1793086056.git.chris@chrisdown.name>
-References: <cover.1793086056.git.chris@chrisdown.name>
+	bh=5jc2ZtnsslhTBje2qQpVD7MrTZfTUlL74O4i/llDB/M=;
+	b=CHZFbe1WSbpt+HpYNmngjq/bVT76qyx/zyAhTN6eo4M1nhvmTTKTt6uTM8oxrhu9gP3jeq
+	2SUxl3kfnNO8y5Chqkt65E8ElpxdWfFusCh02gXsoxSdxToPLMxSI+dLll9xzHrWmio2ZJ
+	rz7l/SXmqayBcTR1dycLWu3U0TImGRE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB8F81477;
+	Tue, 27 Oct 2026 00:35:48 -0700 (PDT)
+Received: from [10.163.152.160] (unknown [10.163.152.160])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 316693F673;
+	Tue, 27 Oct 2026 00:35:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793086551; bh=n2WrtA8FsjLacOwP70K0qkcnkliELHh0b55ywQMgrm4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ShPz/LB/JTXMSaXWoN89wpg1R0MFhTQ3+OYAWgQenVr07qFiwcr+BtH2v6xKKQfRM
+	 QrYTx4Q3mPU1qcZAPdg41yN63hG8hPH4qkEAk45cxkJ8LLmOSK716gyfQv1IvIJqjZ
+	 R/89T7N51QEEo+TuFrpiXNQLA0t0iBWtwxXvK0jA=
+Message-ID: <21091d4e-0afb-4b5b-84ac-b36bac58e40f@arm.com>
+Date: Tue, 27 Oct 2026 13:05:27 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1793086056.git.chris@chrisdown.name>
-User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Rspamd-Queue-Id: 9941C20006
-X-Stat-Signature: sfdxj9p1w5p5mmahdepceijfcd1n9szn
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 26/46] mm/mmu_gather: fix flushing ranges with 4 GiB or
+ larger
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 0816540003
+X-Stat-Signature: e3c8qnus9hp7dbzhzq7gf6o1aeyetju1
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793086547-615301
-X-HE-Meta: U2FsdGVkX1/rTm8fZFVBcDX1JtAkwHyAAz9x8ZoGRTj45tLFXWyBR4M61HTWHtxtJVIgh57ARMUB+2GEQdIbmyAipKYfCC/LVN+kJLuKaVSPN0t/LyZYENic8HRGBgkOlAScPv30Gg1WsUGKwTmG/ROhQV6+OC/OA/f99eWWv9xQGc1ESxuHIKs1m5aUtyrEqyHs/ZETSlVg6TCoD6RI41OGKrLf59MIJgPHWbWNILRMAKGjEEG0nHeSDL/+KyerwaK2XHcKSQ3KtwNOtZmSc/zeN7ohVHfT6GfJUZkEs0DlbZSGtoUerbVQ7C0oSe8apeFEBjY1S42TwS0VogsbyFAk4aXeZURLD3aCYsYqC9KEL4uKsixQpO/5McPF+pRmTRlNng+gLEa57Gg+bAGWMWtziPQRpo8s6KW9sU9596wFUqoJjgxzA8IGRuRgtnXnGdfJpNdgFBsGK+efv+c+YDqVlCFm3tz9O5qKrGv8aKA8D66Icadm8tzcgFhLNa4VuLKLEu632IS0vAvyD8QAtPq8nwNwJ94lgMValPBtYUm6718sjmaKMwMx9354rwix7p+u2w38I/dE/MRzB/Z757PAVKAF/TNDMoHqSM5tvkZ4MLMbb2Huau91kffvkNPlbEsaZTgaxfpL3VkFSumd2JzbFjPFaB7XXePNBVaozApXxn1FEFJCbLOXl1Gaz+4q20eY3qzMJ15tbAG7v7JmXb9aMOsA3H7nUrCd0HGCLwYkbJqLfvU/w36CVNqmcSk3sOMGKfDHKnzlaaHPdlBCd9eCNGrdjLXvRJlUTI6VhjSoeI/0yexZQSPmm+9jc14dy/UgyeF/WKmZf6Pj3ra2k521m+5yvT/ezBeTlasFGw4Mal981nIhEFwO5Whx6xQXYgqMPaPD0r1sMNvc/SRs3XlztoWKVxIUOdAERWxgXqTecZgLNQHH2zB4+Ml9OnMxQsz8ODto/7W8cQ/OcHA
- c3bw6Cxv
- dmmdFKbwY0+56Z/RT0llx/bTfFQqDsnLepKGAxgF1owLLokV1dv4PsW84L5INuJLZQn/8rUC0jZkDPyJUkp+AsPKBSRXu+haApyi6hSzDqDyOjAgfumSDh2YUAZB4k3RZP3u4s1Fil86GibGndLCN6UZX/+OMPHCPdmjE5SWtHX8zWinpgiGvPXt3bk9DpzF6vX/QGM4bSq8Gn4JbpXhpuRScGP/5otkxu+mbN4VkXlyGfQ7L2DxlxoA6BQnwBtRu5XCiuywAxeS37vOdbFkRLpBFoFHXQdxaYo7z0kMiZasGa8lFw94EOUl7s3VLElE+hAuyD0t0wbwksbkbaUZZFOy7Wc40VJey819LG/9yKUmlbqQNVve91hvNs4XUeNhs8DaZy7sYTCEDRDxi4Vv9ojysxNlIBbZaVaWi5V4Vf181T5qhnf3QlPKSbLnzfXIWahazCjwc6uGn6XwzdFoIRFwrfFzPjWqDuSu40jlXHMhKwBtHLCwKQkZzVncnlkqYsBR3Fx1wcUPB5FU=
+X-HE-Tag: 1793086552-743909
+X-HE-Meta: U2FsdGVkX1+wgrNmJgG3x6ZBN/xSK6JUlezju9ZalC7jCqkpex1klGmuXAbp6Hpiad1r401dTy/uHUrCmRITeEhaloTMvzUAIS6niqVRX5urPDN3KiunIQ7ugUNA/bN3EILhWluoclRLN/DLzTYBSJPk1sU/6SWwlToRuX5qLqn46ijegDvoS8vsMJ1KkW3Dc3ZZwQgK02xyLG4ATfk7ms75t2+3WSXLFXiy1RyTxTd++6WYr+rRWG7Z6qqp0YOVVZ1/5V02yt977hNQh0zHX0/p2lZz28AI50VCaVmfscHwIHdNuS9ZUdvswAIi0Dp1cWL5hXjhYJV0/Tv/d9Cti4sb6V/rgsGM+8Al8paWkiSyyRt7itaQDrV5T4uD9zZXCo4JCNWXPPgGbBjLPwcjBTaTUmBIxyOzCEQLjBbG9e5UnBvqCVz4s0CRKZp+zNTWvrGPHiVtF+Vf0HnQrIh53RI+8g2BL4ZoIYdhMuU5VJ3D4ZzimcTZRrTS2E3lmYlW+/PGZgCCWo45Fex7d3a/ICHl+4ssHc975P7+qFWIobvt6WAgdJ4R+Y3zlzQLj/HklFHS7tRzNuSho6ZOo6m/bmEm9Pay7FdKjd7EOluBVgcY7QkK8Hxl2d6RktL/CeFuPF5FlT7RA18BxqxC7rLdIgFp1EtbA+bGnK3bZ5V+qzXkoDWoaYGErI/sUc2jGlE0Hh2oOiuLoM0anXT1PtoXjiA1UB64sMaNTcH79MdTcQ/Aqu1Ot8j2JRAAuvhiv4ZiYDoLh2xMycuZPwIS/jg2DBxsIKYzlbV2k05vIuFCB0jtUd2mI4+BsCVwpCCaMT1yUFP4LWi6k9rtv15uQlRXSlvTjfthzsSj7gCvZQkFDCkeUZbOWjhjDIYveI9Vu8AbIC3FURudoso1nkjYCM0nyhUDEOdbZB6W9SAIXZbjHC7kvg+Cwj38OhFG/sMZFZ4H4d4j+nrp0qQFI9C/UAE
+ GGCB+MV8
+ W3xLfdeu/ciUvyoEb3b/YiXY6z4PBSk/0GKaJO+oe4sk56Zno82WcJXClml4N+iNMrTlhPMuG6EFDqNXv1Hmlo9qVafRUUFlvf9CjxXpIvf43WetDEJqggSyCpIJ+dYr6Qkxdq7bRMAN4jG8EuEu/mPdzNGhWiQ+tQtQkWAiH7hiorkxNObghvHS3zy6ncnHGtdKMdqgBQs5VDGFI2JGCzY9D0wj+V3+5f4dGx0o71haJ0LFBs0x4NNfudkLIF61HgSa+cbZpL53BTvvcJmRgtRjhXXmNsnM07dgbcaj/9T0oa44SVsp5u+ncxlGgoDV3xtLT2OB7EZu+LWQ+nDtD+Bovj/39G3YvH78VKCr9DjpbPRVQy78z7OVf0j0Q84iCllBvpnY3PnucK13bdx5mtez+XqnVtnc1+L9y4sDvhVKUXRkg4IYRvKd63v6HzpOFWvQ2wSNIt8K9zZNT47dbEdevpMhY7fHyVkl6Hbb1euCqIzi8oUwVLY/yfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,116 +129,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Signed-off-by: Chris Down <chris@chrisdown.name>
----
- lib/tests/slub_kunit.c | 52 ++++++++++++++++++++++++++++++++++++++++++
- mm/slub.c              |  2 ++
- 2 files changed, 54 insertions(+)
 
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index e3b63f0338d5..5ace73368523 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -9,6 +9,8 @@
- #include <linux/delay.h>
- #include <linux/perf_event.h>
- #include <linux/kprobes.h>
-+#include <linux/string_choices.h>
-+#include <linux/swab.h>
- #include "../mm/slab.h"
- 
- static struct kunit_resource resource;
-@@ -107,6 +109,54 @@ static void test_first_word(struct kunit *test)
- 	kmem_cache_destroy(s);
- }
- 
-+static void test_freelist_hardened(struct kunit *test)
-+{
-+	struct kmem_cache *s = test_kmem_cache_create("TestSlub_freelist_hardened",
-+					64, SLAB_CONSISTENCY_CHECKS);
-+	bool hardened = slab_freelist_hardened_enabled();
-+	unsigned long ptr_addr, raw;
-+	void *a, *b, *c;
-+
-+	a = kmem_cache_alloc(s, GFP_KERNEL);
-+	b = kmem_cache_alloc(s, GFP_KERNEL);
-+	c = kmem_cache_alloc(s, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, a);
-+	KUNIT_ASSERT_NOT_NULL(test, b);
-+	KUNIT_ASSERT_NOT_NULL(test, c);
-+
-+	if (virt_to_slab(a) != virt_to_slab(b) ||
-+	    virt_to_slab(b) != virt_to_slab(c)) {
-+		kmem_cache_free(s, a);
-+		kmem_cache_free(s, b);
-+		kmem_cache_free(s, c);
-+		kmem_cache_destroy(s);
-+		kunit_skip(test, "objects were allocated from different slabs");
-+	}
-+
-+	/*
-+	 * Caches with debug flags have no sheaves, so a and b are pushed onto
-+	 * the slab freelist in that order.
-+	 */
-+	kmem_cache_free(s, a);
-+	kmem_cache_free(s, b);
-+
-+	ptr_addr = (unsigned long)b + s->offset;
-+	raw = *(unsigned long *)ptr_addr;
-+
-+	kunit_info(test, "freelist hardening is %s\n", str_on_off(hardened));
-+	KUNIT_EXPECT_EQ(test, raw == (unsigned long)a, !hardened);
-+#ifdef CONFIG_SLAB_FREELIST_HARDENED
-+	if (hardened)
-+		KUNIT_EXPECT_EQ(test, raw,
-+				(unsigned long)a ^ s->random ^ swab(ptr_addr));
-+#endif
-+
-+	kmem_cache_free(s, c);
-+	validate_slab_cache(s);
-+	KUNIT_EXPECT_EQ(test, 0, slab_errors);
-+	kmem_cache_destroy(s);
-+}
-+
- static void test_clobber_50th_byte(struct kunit *test)
- {
- 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_50th_word_free",
-@@ -480,6 +530,7 @@ static struct kunit_case test_cases[] = {
- #ifndef CONFIG_KASAN
- 	KUNIT_CASE(test_next_pointer),
- 	KUNIT_CASE(test_first_word),
-+	KUNIT_CASE(test_freelist_hardened),
- 	KUNIT_CASE(test_clobber_50th_byte),
- #endif
- 
-@@ -505,5 +556,6 @@ static struct kunit_suite test_suite = {
- };
- kunit_test_suite(test_suite);
- 
-+MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
- MODULE_DESCRIPTION("Kunit tests for slub allocator");
- MODULE_LICENSE("GPL");
-diff --git a/mm/slub.c b/mm/slub.c
-index c82bc626b657..de4937fcb293 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -46,6 +46,7 @@
- #include <linux/prandom.h>
- #include <kunit/test.h>
- #include <kunit/test-bug.h>
-+#include <kunit/visibility.h>
- #include <linux/sort.h>
- #include <linux/irq_work.h>
- #include <linux/kprobes.h>
-@@ -220,6 +221,7 @@ static DEFINE_STATIC_KEY_FALSE(strict_numa);
-  * so it must not change once the first slab has been populated.
-  */
- DEFINE_STATIC_KEY_TRUE_RO(slab_freelist_hardened);
-+EXPORT_SYMBOL_IF_KUNIT(slab_freelist_hardened);
- static bool slab_freelist_hardened_early __initdata = true;
- 
- static int __init setup_slab_freelist_hardened(char *str)
--- 
-2.54.0
+
+On 27/10/26 4:47 am, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> __tlb_adjust_range() takes the size of the range which has to be flushed
+> as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
+> and pass an unsigned long. Consequently, a range that is 4 GiB or larger
+> gets truncated, possibly to 0.
+> 
+> On arm64 with hugetlb, a 64k kernel can flush 16 GiB hugetlb PMDs, and a
+
+Nit: this wasn't obvious to me. Better expressed as:
+"a 64K kernel can have 16 GiB hugepage mapped contiguously at the PMD level"
+
+
+> 16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
+> at least these two scenarios are affected.
+> 
+> Fix it by flushing the proper range instead of the truncated one.
+
+Nit: after reading this I thought you are passing some other parameter now.
+But that is just a type change.
+
+
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
+> Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> [ david: use two-tab indent, simplify description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
+>  include/asm-generic/tlb.h | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> index fbe1114e9a443..3f4a180b48f3c 100644
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -350,8 +350,7 @@ struct mmu_gather {
+>  void tlb_flush_mmu(struct mmu_gather *tlb);
+>  
+>  static inline void __tlb_adjust_range(struct mmu_gather *tlb,
+> -				      unsigned long address,
+> -				      unsigned int range_size)
+> +		unsigned long address, unsigned long range_size)
+>  {
+>  	tlb->start = min(tlb->start, address);
+>  	tlb->end = max(tlb->end, address + range_size);
+> 
 
 
