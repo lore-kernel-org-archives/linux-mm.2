@@ -1,100 +1,165 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F12606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A70606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dW3YpsGA
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FeGPJMsK
 Received: by kanga.kvack.org (Postfix)
-	id EB3ED6B079D; Tue, 27 Oct 2026 10:54:02 -0400 (EDT)
+	id 4348D6B06E5; Tue, 27 Oct 2026 10:57:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8B706B079F; Tue, 27 Oct 2026 10:54:02 -0400 (EDT)
+	id 40B696B079F; Tue, 27 Oct 2026 10:57:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1B46B07A0; Tue, 27 Oct 2026 10:54:02 -0400 (EDT)
+	id 2D4516B0798; Tue, 27 Oct 2026 10:57:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B88EF6B079D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:54:02 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4808A1605E2
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:54:02 +0000 (UTC)
-X-FDA: 85368701124.05.BCBC687
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 957FC10000C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:54:00 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F19056B079F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:57:54 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62B6AA0A8F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:57:54 +0000 (UTC)
+X-FDA: 85368710868.02.B024A7C
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010043.outbound.protection.outlook.com [52.101.46.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 57C3A100012
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:57:51 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dW3YpsGA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793112840;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FeGPJMsK;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.43 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793113071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aCG2e9yyNs6h3rkDXnjBqmb1knCApUuqekvjibfwuKE=;
-	b=oIZKJUeG71L5gBeXMyuOXGQXiJN4LDd0iXbiGL9HhsOUKwU8vB3bghSh4UbdZjeBdJgSB3
-	QJuYLgHBfkk1CZKHKQm+ZtA4yCVWmpRD5ysOlkbCvGF8koPRFlPu7s+80S9nm6dbT+R9q1
-	LcgHnlLZHbYjpYFSNraSxwJqUfG1zNM=
-ARC-Authentication-Results: i=1;
+	bh=E7kAyhjWyQ1BiZTz6J/b4VMlp8msICTkeq7uCPviZj8=;
+	b=4UqritQT88LBQTdrEoGJMCOP63gdumxHTpF5uhD1GjYi1xVmDOjhXGZ7dguEIoHwSdUxiv
+	9Pm8zlsEPDyqZx0OeU3RdXPWGfHSI6q8ng5ZVIG/VEopBMrXMmbBLtgvjuiGsSXnnKhwDw
+	Jg9vNd9AYVSQQWkGrcFJzT4zyHbMiy8=
+ARC-Authentication-Results: i=2;
 	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dW3YpsGA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793112840;
-	b=mAClZgqVllZn6Il0x6nUW+kYX7TkWlZXTJ2osnuO6pOa1Z9EAXH3MIjJPWMCB+8vCnrPrr
-	oIgrHnrFLAUWSCivwNGs4YKKLzJtcNZkkzZRdCCBOgIEmS0rIECeMw1KKsDHVZnIil0eVn
-	zkcuy/4YLYW2Iww/kBlpO3t1O9Hbsl4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C4BE44384B;
-	Tue, 27 Oct 2026 14:53:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7256D1F01825;
-	Tue, 27 Oct 2026 14:53:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793112839;
-	bh=aCG2e9yyNs6h3rkDXnjBqmb1knCApUuqekvjibfwuKE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dW3YpsGACz/EAPjYgqSNBpOyxnbaJ0HrDTFxMIIQrr9uq1i63jB1zsxRbOCar8YcO
-	 Xya8AAQGE8TFqPsXoao75xAE/lyj7zDN8lJECuzuP6L+UJTHs00lgeMYqW9gv2Xmrx
-	 b7RZeMDOe/79t09LjREq2TfiASpKRw9t23qmMtsLStJXwOlpa7Vjwu0hUQfRoJPzMT
-	 u11Vef2g8ZAqihaKn8NzCm2e4FgqcCnu9bucnoin6pdJn0JmXI+pIbDgeiLfNJCoCR
-	 /zpn34aSUMbhgjOr3cjRQluY78/ov2+fnbo+1wVhVGm7UQ4jsNEYcsgeog7r9Fo3U9
-	 hbGxzcD5eOfzQ==
-Date: Tue, 27 Oct 2026 14:53:51 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Chris Down <chris@chrisdown.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>, Jeff Xu <jeffxu@chromium.org>, 
-	Andrey Vagin <avagin@gmail.com>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/3] mseal sysmap: Add mseal_system_mappings= boot
- parameter
-Message-ID: <auCxjbvY3qPv1sV6@gremlin>
-References: <cover.1793094611.git.chris@chrisdown.name>
- <5bd3c89d733ad22224f296dfa8900769de937de0.1793094611.git.chris@chrisdown.name>
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FeGPJMsK;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.43 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793113071;
+	b=1dnZTOLlqRqUdZSRXZRk6tgRjDopiKtE6FOL/vidyvf9HjyIZemYgTrW+3M1wgzzKIdn6F
+	4/g+UyTEB/nOvkNkbaUduZiOVB22aX7AOioTUBy1090BrVRt859pnIoHppVHwjnssaWPZc
+	TEqyapovgLOXjsead2hjxriJMbCjgJk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jy6USLn2oynhKKLOcVZaPrTLE4HUTNY4wMlOMbSb/w8txGV6ZxIxjEfCukH2o4z7bczUgNOnCnQ2thRZrs7MqmBMwLYAjYFau5rmpnU+f8SmeLCULbEmIu2pKz3Ea9t7Ndnp4kUBj2RoMZaDi/xPlRPi3mUmwk1fm1PZzdZ2D1KZE2wuqB7abcOviRJ00znU5nekL5Ds1mgQy+JG/+3i8y1OIz62KF6cz+YcSY3YQteyvM7K9oF33mhsF75gAQxC2qSjMvHyfMLiVhrojPdyLXXKOTKkyOUrHjWmLj9/8THOJT+bXjOxjKoQ46HCGFpbK73SsyJJKwZjouOjM5eqig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E7kAyhjWyQ1BiZTz6J/b4VMlp8msICTkeq7uCPviZj8=;
+ b=sGm0WXW/k6TLWrhdeog6rEyABBR+4d2fxF4x6uAOBdelFwPGo6hm4RjbpS4mgtqGW0wv0+UOB3vU9ITTAryGWc6yrqSridKOxZLzvi5NkJzRzEWJRgn5PgcGiOU/s+AqdYo6l4F37E1u7BHp2+lnm/+KvGnJMRTfEuqfXFxPLjra3qO48eJ42K4zZugxziC78rXBdHBWMyBwLZOBpITZuMly3Be18hSOUIQw9KIfdGbaz34Uo5GC8OXSBhxxouda+zrOTtv+n9yrO3ahnZw/2/aGuy3cohgzZJXxcL1Z7lbHkLPcb3pS+T+58RLBlp6KG6bUg2NIT8t+fUCWJyQ72A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E7kAyhjWyQ1BiZTz6J/b4VMlp8msICTkeq7uCPviZj8=;
+ b=FeGPJMsKY5Gbw/FQc/8bVHQL+3uSE9Li3tFWGIQTE3MKPQQQ/KxM6F8RAABaRzNP+ER+0Jz9EFsK10WKcPKujhKK0G2+RAhM7lbEOeSa+8foZGzjLqPubcUVqS0O788m8SG1tQssui3uDRPrhOYyGc2Z3W7KR9Tr9+mqy3cYRqQer2RYmvWCGg+B6SQ6AVfME8eLeq4SPlG7aPxe/kMwcu20d7hf8fjWSncJnmxnCKXmrW4MNZyDFfkI3RIU+7ayCXfg80qkBIWT+8Aac//3CKJwNx7bLbfFZVUGaHR0I1B3U4kvUjNd4aA9Bn0QuZBdKipE3jG0A8cRDv1FZpcinA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DS4PR12MB9681.namprd12.prod.outlook.com (2603:10b6:8:281::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
+ 2026 14:57:44 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
+ 14:57:44 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH] mm/migrate: move NR_FILE_THPS on cross-node migration
+Date: Tue, 27 Oct 2026 10:57:41 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <DB41BDCE-B28E-4CBF-AC22-971A09CF7179@nvidia.com>
+In-Reply-To: <20261025110209.4105994-1-ridong.chen@linux.dev>
+References: <20261025110209.4105994-1-ridong.chen@linux.dev>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BN9PR03CA0985.namprd03.prod.outlook.com
+ (2603:10b6:408:109::30) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5bd3c89d733ad22224f296dfa8900769de937de0.1793094611.git.chris@chrisdown.name>
-X-Rspamd-Queue-Id: 957FC10000C
-X-Stat-Signature: kwb4s5j6p43ueiggnp9tq6dcn9g5qeon
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS4PR12MB9681:EE_
+X-MS-Office365-Filtering-Correlation-Id: 58a7d7a1-8ad9-4de4-f97a-08df343aa7cb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|23010399003|11063799006|56012099006|261026121527099003|10067099003|261022075727099003|261021121427099003|261009223027099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	5zLseNvUF2j7ZPrKsT3pXpBQj4/MVqsVwjq3/bh08cfqZnJUDVAFeIAHQci9wbDIQ96rl0qkc54FkJNVzb9c1AjcSa/0BGbiff+zpokcyfxjLljpmsSBXtT6nBSHLUBJaQJnFHjTv08w97WlOQaPbru2mhft3F1UVN5G6905q9RhyeNI4EiW7Xm0wrNl+gEXK4wZeleAZ92H3jFxntWZYV0dORImIxUtdUOc8lVIz96KykYtx+izMOVkWYrCB4vDRkNjfzB9JqynwWNcYBIcDoXIif/Jx3TDZsEpT4uwn1tPyyA5ySRbez1R1S7qv9alwVgoqhewqbFm5pM1mvIyYz4wqveHbbV+FbJrY3jrQK6FJ4x+VrpWirgi1b+QmSDPsDGzIa6PZkf97bSql5YteaGcmKjHQHDZFak9BmrcljajWBjDUmwZD4woR7SHVWCHaDakORgKGaQLD6AUGY4/cVemwBhdF5L16ffqYvR+zw4cJawWq54iZFBIe7D5zBwmARJ8eSNXplbTOhWXIs2hihK6vwmSQeNmUjlWhfWU3qOZDt7E7Gnqq/4IQHOanVYEYf91s+C5WhkIDf+VF43PanNXKNlmgo2IWh/lS5RrAQTDQ48kCO6/L5weZsMn1MgbeHAOB11T4EnT0eT37nwyf3Zt3eHHdYBzPFRHcOAb3SU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(23010399003)(11063799006)(56012099006)(261026121527099003)(10067099003)(261022075727099003)(261021121427099003)(261009223027099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?soQO+LlAj7X+wANRYPwOQjtBRMvutbHdw2CFmRrI6rSWurS7LA1q4BPVzS/7?=
+ =?us-ascii?Q?qAEoqjm7dlSZRtt9WnBStFdmTGUVMXUmIRh7gCwdtJODSDBihyj1lb4RWxnd?=
+ =?us-ascii?Q?a/FDatv5zedgqiELgdU8nrW9r9CgyuBKYwlesPBplutiQyFxLhcl/Bfrc4uf?=
+ =?us-ascii?Q?d5lgt2qXYzqkhfXi6dHR53wiYjpVfzgK2zCrepzbg6DECJWwJrmi2RaDrDhw?=
+ =?us-ascii?Q?XGUyKtYGm5hekO7EhfzyjM9JdtCh+NHL+7qym1hOLGbDU1i7ohk80y1lchqu?=
+ =?us-ascii?Q?xYEshEV28ETwgI+il7eFIdV01SZnO26jyh0XUNHb/2RzvJH6nKdmYX0pJNmw?=
+ =?us-ascii?Q?Q2ErTneMoh9DllDDKK5VYTJArQ3vWceoSHVikJk8cW1Kz+sbKv9Qpj4w48i0?=
+ =?us-ascii?Q?R83J6M19RtB4f/nHoUM0pOJynciwwC6+pxOkdu/5J8FIKiNgdWZ4afvjlKSM?=
+ =?us-ascii?Q?Pcjfz2qT89lK++SK3G570wdeShx88NZrRc5UDkIfxcEbk3Dnm77VcWZtGQP3?=
+ =?us-ascii?Q?+2g7x6rNbG/S3GIBfAFidG3kzblA5K7rng/6BN+zvXFaUGQvSTUJi7oC04bp?=
+ =?us-ascii?Q?IErXgeoDxnKpeIJs9cMki8VXPH/sKqRmLAg3wQKgDTTrAenabbDohZviV4PH?=
+ =?us-ascii?Q?ujLfkhPUWU1ZhR4XOxxZadJN1Xk9i6iWDfSOC7tc7cLucntehqio6q7J6Qsi?=
+ =?us-ascii?Q?CDrfRyRf9nq9ZntrH5o9nbqiRrNraJWM2UgRFYW4x0cgZk4Di/cQUdeCvGEr?=
+ =?us-ascii?Q?IuFSzKCG3zmhn2tcudNfZ5A3DRKwSFOqxylSzWR8DqvyVlwIRXaWVoDxRCNO?=
+ =?us-ascii?Q?Lw2DBWWAwK1cVUNR+JIHw8gksHABe7+YowilUKSa4MrYkShcPeVkwOhu/j7c?=
+ =?us-ascii?Q?rN7GS5Gv23WutW25PkTdnecAq2YHb4p6/R22vZnxaNE3T3Abok0pp37sZ/u/?=
+ =?us-ascii?Q?iHZFc9uk4D0kbpdda/dZOE8IYDRo968E6Yat50A7Et4UcRa8aNz/c6AlzAGu?=
+ =?us-ascii?Q?4ZOfuXMQQnOsfFoqRzbgxwBI8BDwg2I0Go0wCFNNXqkTkwP+BoyT/7qLMlwo?=
+ =?us-ascii?Q?Py20L7b3QMnYXjD56ROYO22ZKMkMinPCX7Ori5C8fBCbkXU0hL6xBZ9yrRiI?=
+ =?us-ascii?Q?AGvhdH6z5QXM6ZZw/onHWJAJjJiNWWwQHiQln90h5njPXAEKhmxxOdpPWef+?=
+ =?us-ascii?Q?AKHk4+pUzDyXLMTmawczwZFABMyNWe7A2aN600I5g7ynsi7F5yZjp4hvT/c2?=
+ =?us-ascii?Q?Q1kq2BWOjEOW9b7Jh2UKQEyR8wc4K0eSDz1OpTgkxy3zdm06eDl0nT69sBpU?=
+ =?us-ascii?Q?oRZJV5Q0/tvhvC01FvkkpQ9LirK6XhE+TUwUsTR7WTyQdeDtQKCTeZ5Wdifa?=
+ =?us-ascii?Q?0rYjcmo39XOPLvjzKpPlQPiQ2DmNt8qwMGjEvVaLE6CzzjTzp3KXaKxTBGY6?=
+ =?us-ascii?Q?OrRWPr3GIL/yUb3ylYwlEOi1Wz1zOM8/6sBwdYzJWLhH/sSM100sWK9pYGvQ?=
+ =?us-ascii?Q?NaNqyQTqIgGpZL/lB3dO3jxat+Rif5OvLCR+5cwWMEfWmJ/iakGpQDvKK5z1?=
+ =?us-ascii?Q?3fEbcB2DsNKneqgEhiKLY5SHJT25ZjaEyZj2e2MfW5hjxGIB/wZQo+8XoZRL?=
+ =?us-ascii?Q?T3FmRgFYw1pzmF4fgyBPtfG7oCCSYjur5bREhmu1dQnWksVxSPcC8/trzMLY?=
+ =?us-ascii?Q?LjKh6w+8uRIEk4wu6b/ASZ4UFuoHiDd9u/uRjw1fvNtjuES4HtXlzX+9LYQZ?=
+ =?us-ascii?Q?9bnIn/Th/A=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58a7d7a1-8ad9-4de4-f97a-08df343aa7cb
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 14:57:43.9059
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4n0yCeeEBrB054ltYdEB/3j7Mq37LKhknpr+hqZZUJ4gqT4iG8kt+m2VPFUvHypi
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9681
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 57C3A100012
+X-Stat-Signature: rjdtuh93zipoig5187yo995jr8mxcnnu
 X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793112840-695302
-X-HE-Meta: U2FsdGVkX1/aMAp6YfwZVEyM/A4P1wubIW+94a04myIFwj/e6RkwqPOzqwDOxh/IqPqLQ/EB0Kl2BFpfOIkzXTnsBntIPqaN1Wdk3ziW66QrO8P9rHjFcT/ckL3dG2bHkOsjiiLRVCgOkg5MT3JuN3TFOJ1KriVShhDb/9s7/b2o+pqWKuOtAKK55oMmWYF1d5+sw9mI2kd9qXaFpfP37Wvyl5rvhzyv6QJvhjP2fOola7vkNxsMWhSqFAMAbl7bOjjfgwp2Jtl2+LvGdb+Z8RfGUk8b/4K/DT0mOz4R1XISoplAl6SK/zpuFZBiLkRCctdJpeMaZWEtSfzoWtqDICQYTmN92AhGmdgB/z8cWcvkilM2F1xh1aGN2iwS1aAT5U2E7FK+AxBLcV30l2dQ4+LBdhlQklgmK5b7FnNAtpXZvDpmSPeIzl7+Xk6uQPOZNeZ8jDUuX+9dz7wn4b/jNoeevbAo2mrE1ebDGmBAmIYeTc0Slo2FIVXLgEszJt/6VemHguzcGbhPpAzMW8telof0eXfkkluiq05RpwGyU0umnCx4l1Z4LLUjj8pMIoNs7gKCQcUzMr/tIaMqT6hSBhFeFe+YGykO89eC1JGOrrm9gdzpg6y8u4k8USbHtAlsh80RXddqhuHDzNiifonm9cfcTuFUPkUuYZ5eMwsFNPhG9ZKGl9ulCjjGNx6jwSr7wwHFO1/KhEQ4pcRCCfdCfhLwmgBYGwwHjuVtSkEpORdwdYE8HUh73UJKeNDUvass8MR9++WozNjYyEcO+bBOclhSaeXP0NmUGhRGPOha3+v2Hd4tx3iZiMcry8wDM4xra5YEdU4ieVTm56uPEbpqnlEHC2XvmQY5mRv9Vln1Ri3vo66MAyLYkWCejRkjsbfZOGJHd1ExmdAjs63clWDJj8AKMbxN1LTK+phb5YJEo0T46S46/R9Fa6uotLRiLrZPzNLNtbP/QrI0iNS4+o6
- ErabWoCz
- u1nDvDgrRokuzJi0uZcHN66J06VdVCvGmvvMbPxPnvoq8rV8lIIvHQ/3Q6QPe/mGw3iw8cpMBJqpZAJSe+1TNSk8tadwMCMqnIFoV/zmp0xPVVP0tt+7Qg3IgTEeQLV8Jxy7CWb5wJy+3lie9TFJbL1AnHbw91Y3JoEnO0Jvakhwkz+p4IJrpGwc83EjTHZ5sFh4Ry2YGt4HKDJVkb7piPjQoI8ZR/ZX5o0511tBlnZEiy7xe7kXvRKJZNT+c/J5MMvgpV5tQDAL7jH0QDGySR0NLI2iEtH/R39x5FrsS64FEi02f6VDRnEtO6bJd3N4N1CgRJQw8UVwmpSQ=
+X-HE-Tag: 1793113071-101483
+X-HE-Meta: U2FsdGVkX1+ICQbQFfhpFpO8j1BlIf8ji9JZEGDr5YlYYc1TSk8xchmslLp2xdFca7OSGqzz0WppTq2pZn9KHXsWDyLiishXKMcb7edGyBpcYB8jN1a6L+1zZWoFJ7e6iIsRGlYkWBgs56mtZXtMAzCh+M2+tGCCF93msE/tZH1WDCGAJg5ZfYAXGOSO6+HB9MYkp2/IC6bxiXAMz9H79aHcA1ChTeCnZFIH5sEvgTXnxAz5NqbqAFd0iC/QikQpRjwckswSxgQQ3tBOop3LLgcJHtYaFYCkFSnUNFSzICCVrwe01ykfKtM8UbzdK6GfTo7snsQBPrOjv4DpXv+9V5KS1gpQeE1AZdOE/KODw+JV1+VxNTkFpH+OvYvgyM9LDuQL7J7mxAEX5K0alk5GRgJlBlXyuaPW0YidYx8YXlA+mRJxtILq2QpG5WEVyk8AgRTn+TToCP5IJWw1YFf+kqlB3UsZIWgDhGs4Gx745pcpJUqcjqdbNJsGF3QQmZHHiFFC2KcN2h48UKfb4psA/o6jLHsLZHpLn/ZrHkUFoD0fusbEnESv8R2cFlFM7ZAvBrlcq3aTBG0w8tA4CGmkSF0z3llFQxzaufEx/+RxACHYiTf74A4NS18XS62LIgPRIEkwCYujk+gjMzwGviak3mkB1qk+kh7hbqMFxFIdN85SnJj6a+jeb8I2i8YozdmYIzgnGC+BR9D5NOm3TP7dzhiZYeTvoFbvpAZuTeoYdI2vYaTIDhjvzdx5moPN0l9N0L99W+BVqbWaGkANKabFfT51rhGfGCpNwq3v+H9WQqiTHbrM477x/WeAh1RHgADgericP6Wc8jRrU4nRzhOneVZv1hsPJaOLSvr0qgfqvaGuktYzBoZoylqzmjb9GZaPq4LrbtAncsLKbaZfvqYJ1zYeQqQcx93dnOmrYp5JC1FZcf4yeiVvR6XwM1iw4IYFoOhRshOqwYAsnJKvTPy
+ Za5ROTtZ
+ J6TB9a6S097ITBJ8uj2IlAIR25O4ywfNHMEDqM53pODG3x9VCXBaJCX0VwXrCskuTpNO6T122EBe9UY0u5IIPRtrV8k2s5dnb9m5/eF7V2VsB90nCEUIMUgY8DE/IvviEvE8zJ3COW1RmnTst703jfEJpy5rXrFjcY35nfHuWDgkhXBX+j4ugRIgnebWTGeUDN3hpdkzOvdaoYOV2pcKFf6V/akYH03WPXS7FsHF9z7jNNFAF/FgAJ9DjUw3TSQPdPoZFlyHia0k4F46PK36I+cOrqbJNc0/8+W2g5HnQMXDxNWUBVIvHXsTbHzFUBELzbzIJZZd9bHX89BlzxP1M0pixsmDJZGz7evJmof0jD7XidY4N+rsjdRevCMCGfVrDy0xEMWz2oHWwBB0oHexpDWuUlwk1RC0OLefhafy9GOEGov6hj7u6Cg3uhxr6A8ETRFLVSvy8hGZvkPNR7z8FZ/afLxinsCc3iC6h15E2Y2TTaR8KryvPBXr+ZjPu0c6X5JmuIE2h7nO0+X/zGlFlSGRtig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,382 +168,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The existing implementation is a bit of a mess, so any work that extends it
-has to put in the work to improve things first.
+On 25 Oct 2026, at 7:02, Ridong Chen wrote:
 
-I _hate_ VM_SEALED_SYSMAP. It's a hack. A tasteful way of doing this is
-really required for a series touching this to be taken, honestly.
-
-See below for implementation ideas.
-
-(Also it's the merge window, so no more revisions until -rc1, when you need
-to resend, thanks.)
-
-On Tue, Oct 27, 2026 at 07:43:04PM +0800, Chris Down wrote:
-> CONFIG_MSEAL_SYSTEM_MAPPINGS seals each process' system mappings when
-> they are created. As it is today this can only be toggled at build time,
-> so hosts that need sealing and hosts running software which moves or
-> unmaps these mappings end up with separate kernels. This is not ideal
-> since it adds more complexity of deployment, it would be great to be
-> able to have one kernel which can configurably do both.
-
-Could we have some actual justification for the use of the feature please?
-So far I've seen arm-waving.
-
+> From: Ridong Chen <chenridong@xiaomi.com>
 >
-> So, to improve this, let's add mseal_system_mappings= so that this can
-> be chosen at boot.
+> When a page cache folio is migrated to another node,
+> __folio_migrate_mapping() moves the per-node and per-memcg counters
+> that are keyed off the folio's node: NR_FILE_PAGES, NR_SHMEM,
+> NR_SHMEM_THPS, NR_SWAPCACHE and NR_FILE_DIRTY.  NR_FILE_THPS is not
+> moved, although __filemap_add_folio() charges it to the source node and
+> filemap_unaccount_folio() takes it off whatever node the folio lives on
+> when it is removed.
 >
-> Signed-off-by: Chris Down <chris@chrisdown.name>
+> Commit 0b52c420350e ("mm: fix shmem THP counters on migration") added
+> the NR_SHMEM_THPS case but not its file-backed counterpart.  Now that
+> ext4, xfs, btrfs and erofs can all have PMD-sized page cache folios,
+> migrating them via NUMA balancing, mbind(), migratepages, demotion or
+> memory offlining leaks FileHugePages on the source node and underflows
+> it on the destination, in both /sys/devices/system/node/nodeN/meminfo
+> and memory.numa_stat.  The global value is unaffected, which is why this
+> went unnoticed.
+>
+> Reproducer, on a 2-node QEMU guest with THP set to "always":
+>
+>   1. read a 256M ext4 file through a MADV_HUGEPAGE mapping while bound
+>      to node 0, so its page cache is 128 PMD-sized folios on node 0;
+>   2. move the mapping to node 1 with mbind(MPOL_MF_MOVE);
+>   3. unmap the file and drop its page cache.
+>
+> nr_file_hugepages in /sys/devices/system/node/nodeN/vmstat after each
+> step (in units of PMD-sized folios):
+>
+>                     without this patch     with this patch
+>                      node0     node1       node0     node1
+>   1. cached           128         0         128         0
+>   2. migrated         128         0           0       128
+>   3. dropped          128         0 (*)       0         0
+>
+>   (*) the counter has underflowed to -128; negative values read as 0.
+>
+> Without the patch the 128 folios stay accounted to node 0 forever, and
+> every further round adds another 128.  The same happens to the per-memcg
+> per-node counter: after step 3, memory.stat of the cgroup shows
+> "file_thp 0", while memory.numa_stat still shows
+> "file_thp N0=268435456 N1=0".  With the patch both are 0.
+>
+> Move NR_FILE_THPS together with NR_FILE_PAGES, using the same condition
+> filemap_unaccount_folio() uses to take it off, so that THPs in the swap
+> cache are left alone.
+>
+> Fixes: d68eccad3706 ("mm/filemap: Allow large folios to be added to the page cache")
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 > ---
->  .../admin-guide/kernel-parameters.txt         |   7 ++
->  Documentation/userspace-api/mseal.rst         |   3 +-
->  include/linux/mm.h                            |   3 +-
->  mm/mseal.c                                    |  12 ++
->  security/Kconfig                              |   2 +
->  .../mseal_system_mappings/sysmap_is_sealed.c  | 104 +++++++++++++++---
->  6 files changed, 115 insertions(+), 16 deletions(-)
+> Note: prepared with help from an LLM-based assistant (Kiro, claude-opus-5.5).
 >
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index e75344f4e0cd..b1ec9a8a979e 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -4270,6 +4270,13 @@ Kernel parameters
->  	MTD_Region=	[MTD] Format:
->  			<name>,<region-number>[,<base>,<size>,<buswidth>,<altbuswidth>]
+>  mm/migrate.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> +	mseal_system_mappings=
-> +			[KNL,EARLY] Under CONFIG_MSEAL_SYSTEM_MAPPINGS,
-> +			whether system mappings are sealed for this boot.
-> +			See Documentation/userspace-api/mseal.rst.
-> +			Format: <bool>
-> +			Default: 1 (enabled).
+LGTM. Thanks.
 
-You _have_ to duplicate the list of things this breaks here please.
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-> +
->  	mtdparts=	[MTD]
->  			See drivers/mtd/parsers/cmdlinepart.c
->
-> diff --git a/Documentation/userspace-api/mseal.rst b/Documentation/userspace-api/mseal.rst
-> index c039d782f9f5..4e50215e4762 100644
-> --- a/Documentation/userspace-api/mseal.rst
-> +++ b/Documentation/userspace-api/mseal.rst
-> @@ -142,7 +142,8 @@ Use cases
->
->    If supported by an architecture (CONFIG_ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS),
->    the CONFIG_MSEAL_SYSTEM_MAPPINGS seals all system mappings of this
-> -  architecture.
-> +  architecture. The kernel command line parameter
-> +  ``mseal_system_mappings=0`` turns this off at boot.
-
-This is just really confusing.
-
-Adding a flag that defaults to on but only defaults to on if the config
-option is enabled...
-
-Let's just refactor this properly to stop abusing a 'VMA flag' (which is
-really not a VMA flag, but an alias).
-
-Let's negate things first. Make the boot flag 'no_mseal_sys_mappings'
-rather than confusingly implying mseal_system_mappings=1 could enable it
-even with a config option not provided.
-
-Then add something like:
-
-static inline bool mseal_system_mappings(void)
-{
-        return IS_ENABLED(CONFIG_MSEAL_SYSTEM_MAPPINGS) &&
-               !mseal_system_mappings_disabled;
-}
-
-And call that in _install_special_mapping().
-
-The LLM overlords tell me that only uprobe trampolines would see a delta
-from this given the ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS restriction.
-
-This would improve things a lot.
-
->
->    WARNING: This feature breaks programs which rely on relocating
->    or unmapping system mappings. Known broken software at the time
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 5f82be0fcde5..2329d81b7d46 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -568,7 +568,8 @@ enum {
->  #define VM_STACK_FLAGS vma_flags_to_legacy(VMA_STACK_FLAGS)
->
->  #ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
-> -#define VM_SEALED_SYSMAP	VM_SEALED
-> +extern bool mseal_sysmap_enabled;
-> +#define VM_SEALED_SYSMAP	(mseal_sysmap_enabled ? VM_SEALED : VM_NONE)
-
-No, you don't use the legacy VMA flags API for new work. Sorry.
-
-See above as to a pointer as to how this should look.
-
->  #else
->  #define VM_SEALED_SYSMAP	VM_NONE
->  #endif
-> diff --git a/mm/mseal.c b/mm/mseal.c
-> index 7a8ac66dc215..e0563796cfa3 100644
-> --- a/mm/mseal.c
-> +++ b/mm/mseal.c
-> @@ -7,6 +7,8 @@
->   *  Author: Jeff Xu <jeffxu@chromium.org>
->   */
->
-> +#include <linux/init.h>
-> +#include <linux/kstrtox.h>
->  #include <linux/mempolicy.h>
->  #include <linux/minmax.h>
->  #include <linux/mman.h>
-> @@ -16,6 +18,16 @@
->  #include <linux/sched.h>
->  #include "internal.h"
->
-> +#ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
-> +bool mseal_sysmap_enabled __ro_after_init = true;
-
-See above re: rework of this.
-
-> +
-> +static int __init early_mseal_sysmap(char *buf)
-> +{
-> +	return kstrtobool(buf, &mseal_sysmap_enabled);
-> +}
-> +early_param("mseal_system_mappings", early_mseal_sysmap);
-> +#endif
-> +
->  static bool range_contains_unmapped(unsigned long start, unsigned long end)
->  {
->  	VMA_ITERATOR(vmi, current->mm, start);
-> diff --git a/security/Kconfig b/security/Kconfig
-> index f7bf6cdc6229..d5e83af1bfc6 100644
-> --- a/security/Kconfig
-> +++ b/security/Kconfig
-> @@ -67,6 +67,8 @@ config MSEAL_SYSTEM_MAPPINGS
->  	  of writing includes CHECKPOINT_RESTORE, UML, gVisor, rr. Therefore
->  	  this config can't be enabled universally.
->
-> +	  Sealing can be turned off at boot with "mseal_system_mappings=0".
-> +
-
-'With this configuration option set, sealing can...' right now this reads a
-little like it's defaulted on.
-
-Also can we move this Kconfig option out of security and into mm please?
-This is explicitly an mm feature, and it should never have been added there
-(mm needs to know if somebody sets this default=y or something for
-instance).
-
-In any case, as above, no_mseal_sys_mappings is probably a better way, then
-this becomes something like:
-
-"With this configuration option set, the feature can be disabled
-with the no_mseal_sys_mappings boot parameter.'
-
->  	  For complete descriptions of memory sealing, please see
->  	  Documentation/userspace-api/mseal.rst
->
-> diff --git a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c b/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-> index cb0ca6ed7ebe..97348c2a0689 100644
-> --- a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-> +++ b/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-
-Tests as separate commits please.
-
-> @@ -1,12 +1,12 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
-> - * test system mappings are sealed when
-> - * KCONFIG_MSEAL_SYSTEM_MAPPINGS=y
-> + * Test system mapping sealing and the mseal_system_mappings= boot parameter.
->   */
-
-Can we have test changes as separate commits please.
-
->
->  #define _GNU_SOURCE
->  #include <stdio.h>
->  #include <errno.h>
-> +#include <ctype.h>
->  #include <unistd.h>
->  #include <string.h>
->  #include <stdbool.h>
-> @@ -17,6 +17,73 @@
->  #define VMFLAGS "VmFlags:"
->  #define MSEAL_FLAGS "sl"
->  #define MAX_LINE_LEN 512
-> +#define SYSMAP_PARAM "mseal_system_mappings="
-> +
-> +static int parse_bool(const char *s, bool *res)
-> +{
-> +	if (!s)
-> +		return -EINVAL;
-> +
-> +	switch (tolower((unsigned char)s[0])) {
-> +	case 'e':
-> +	case 'y':
-> +	case 't':
-> +	case '1':
-> +		*res = true;
-> +		return 0;
-> +	case 'd':
-> +	case 'n':
-> +	case 'f':
-> +	case '0':
-> +		*res = false;
-> +		return 0;
-> +	case 'o':
-> +		switch (tolower((unsigned char)s[1])) {
-> +		case 'n':
-> +			*res = true;
-> +			return 0;
-> +		case 'f':
-> +			*res = false;
-> +			return 0;
-> +		}
-> +		break;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int sysmap_sealed_expected(void)
-> +{
-> +	char cmdline[4096], *tok, *save;
-> +	int sealed = 1;
-> +	bool value;
-> +	size_t len;
-> +	FILE *f;
-> +
-> +	f = fopen("/proc/cmdline", "r");
-> +	if (!f)
-> +		return -1;
-> +	len = fread(cmdline, 1, sizeof(cmdline) - 1, f);
-> +	if (ferror(f) || !feof(f)) {
-> +		fclose(f);
-> +		return -1;
-> +	}
-> +	fclose(f);
-> +	cmdline[len] = '\0';
-> +
-> +	for (tok = strtok_r(cmdline, " \t\n", &save); tok;
-> +	     tok = strtok_r(NULL, " \t\n", &save)) {
-> +		if (!strcmp(tok, "--"))
-> +			break;
-> +		if (strncmp(tok, SYSMAP_PARAM, strlen(SYSMAP_PARAM)))
-> +			continue;
-> +
-> +		if (!parse_bool(tok + strlen(SYSMAP_PARAM), &value))
-> +			sealed = value;
-> +	}
-> +
-> +	return sealed;
-> +}
-
-This seems total overkill, you're checking whether a boot parameter works?
-
->
->  bool has_mapping(char *name, FILE *maps)
->  {
-> @@ -30,7 +97,7 @@ bool has_mapping(char *name, FILE *maps)
->  	return false;
->  }
->
-> -bool mapping_is_sealed(char *name, FILE *maps)
-> +int mapping_is_sealed(FILE *maps)
->  {
->  	char line[MAX_LINE_LEN];
->
-> @@ -43,7 +110,7 @@ bool mapping_is_sealed(char *name, FILE *maps)
->  		}
->  	}
->
-> -	return false;
-> +	return -1;
->  }
->
->  FIXTURE(basic) {
-> @@ -67,53 +134,62 @@ FIXTURE_TEARDOWN(basic)
->  FIXTURE_VARIANT(basic)
->  {
->  	char *name;
-> -	bool sealed;
-> +	bool sysmap;
->  };
->
->  FIXTURE_VARIANT_ADD(basic, vdso) {
->  	.name = "[vdso]",
-> -	.sealed = true,
-> +	.sysmap = true,
->  };
->
->  FIXTURE_VARIANT_ADD(basic, vvar) {
->  	.name = "[vvar]",
-> -	.sealed = true,
-> +	.sysmap = true,
->  };
->
->  FIXTURE_VARIANT_ADD(basic, vvar_vclock) {
->  	.name = "[vvar_vclock]",
-> -	.sealed = true,
-> +	.sysmap = true,
->  };
->
->  FIXTURE_VARIANT_ADD(basic, sigpage) {
->  	.name = "[sigpage]",
-> -	.sealed = true,
-> +	.sysmap = true,
->  };
->
->  FIXTURE_VARIANT_ADD(basic, vectors) {
->  	.name = "[vectors]",
-> -	.sealed = true,
-> +	.sysmap = true,
->  };
->
->  FIXTURE_VARIANT_ADD(basic, uprobes) {
->  	.name = "[uprobes]",
-> -	.sealed = true,
-> +	.sysmap = true,
->  };
->
->  FIXTURE_VARIANT_ADD(basic, stack) {
->  	.name = "[stack]",
-> -	.sealed = false,
-> +	.sysmap = false,
->  };
->
->  TEST_F(basic, check_sealed)
->  {
-> +	int expected = 0, sealed;
-> +
->  	if (!has_mapping(variant->name, self->maps)) {
->  		SKIP(return, "could not find the mapping, %s",
->  			variant->name);
->  	}
->
-> -	EXPECT_EQ(variant->sealed,
-> -		mapping_is_sealed(variant->name, self->maps));
-> +	sealed = mapping_is_sealed(self->maps);
-> +	if (sealed < 0)
-> +		SKIP(return, "could not read the mapping's sealing state");
-> +	if (variant->sysmap) {
-> +		expected = sysmap_sealed_expected();
-> +		if (expected < 0)
-> +			SKIP(return, "could not determine the expected sealing state");
-> +	}
-> +	EXPECT_EQ(expected, sealed);
->  };
->
->  TEST_HARNESS_MAIN
-> --
-> 2.54.0
->
-
---
-Cheers, Lorenzo
+Best Regards,
+Yan, Zi
 
