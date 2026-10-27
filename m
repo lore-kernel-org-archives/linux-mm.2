@@ -1,130 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CCE606A322
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 11:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BB0606B589
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 11:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=Jh2pV0sw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c/6Wo8In
 Received: by kanga.kvack.org (Postfix)
-	id 36D1A6B06BB; Tue, 27 Oct 2026 07:32:04 -0400 (EDT)
+	id 78EF36B06BD; Tue, 27 Oct 2026 07:33:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F6FC6B06BD; Tue, 27 Oct 2026 07:32:04 -0400 (EDT)
+	id 73F606B06BF; Tue, 27 Oct 2026 07:33:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BF6D6B06BE; Tue, 27 Oct 2026 07:32:04 -0400 (EDT)
+	id 62EDC6B06C0; Tue, 27 Oct 2026 07:33:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E86F46B06BB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:32:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53531120A13
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:32:03 +0000 (UTC)
-X-FDA: 85368192126.06.DA5E78B
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 74414C000C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:32:01 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Jh2pV0sw;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F5D96B06BD
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:33:26 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B160FA0A11
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:33:25 +0000 (UTC)
+X-FDA: 85368195570.08.3874F2D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BBFF840007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:33:23 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c/6Wo8In";
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793100721;
+	s=arc-20220608; t=1793100803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RdtQZXTbTiwwiCOERJQ/97tzbS8/zwPttXhgydj9WAE=;
-	b=K8QyuQIHxL4AjRk85QxIQOOpFHtqSjyB6+t2oExS5pMmqZmrAo37VYkn6a4JFInOGu0AXJ
-	7Li7fXaFfKumdRyPKhQX7/LFi05JD1pFnRqbbnra+VBpXcZ6u+kwkA4UDC0iV4KDie1Jtp
-	zHrneIJFGysf0MWE/R2G5ML/o8tIqh8=
+	bh=YJ4KhwrLt3mSjQzIDeyl2KzSTIVdhJovj7+98ElkoQw=;
+	b=BH8Ic4osM0j0w89jf4fJVSyPPxN5ccahswO5g4deHuQJoahGmYHIETlKI8BChJH49sU+n3
+	F3oRJcyouhuWHgrD6oJCyIVTzWIh4mkJ4Cpn0XuofZxP4eBHGO+EUrU1VZHFakLqHsjVf6
+	DaU5+XDB4Uo2kq6fPfhZtoy+2fTCFl8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Jh2pV0sw;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c/6Wo8In";
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793100721;
-	b=iuQPOCZPBqhGJDHXquMkgWLoA/YaqP6w/Pzgzvz9Yy4n57Mzdg1RMjMqzhiVKBXEaQBdZ2
-	s3sMK1sQ1rooUZUF0qln09wxAXbVIygfhzOnaj0V46RhHXdz4Q7NTHE0JVEZ0AVnzkOIHO
-	HTSrioFCCG8sGJbM/3eztCKr0/yGSfg=
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93f269e335eso417863885a.3
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:32:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1793100720; x=1793705520; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RdtQZXTbTiwwiCOERJQ/97tzbS8/zwPttXhgydj9WAE=;
-        b=Jh2pV0swdfLsv52E0zyc1iOAOeWZ5HE3F84YOgg+/NUQguN5D1gGEh/SBrvxT6Orwy
-         myv4cv2Bs5bU2ZVv3J9yLfZ25hQiAsyJUEIHm+eCF5BccUZ8tMpJYqFdnWacj6xxbH3J
-         vg0rDx3zb8HwJEeQZ+YXaucIDjg2BLVQ2CXBY+WKigr8n/xDembHyq65DxrFIZgDuzay
-         eYqOClpzkAEmndWdxNoSEL8FLRbzpQGl34//IgtQCiRukGpQ75EipqXaFp1ox36gSWbD
-         CRQiFNLn/LBMJB/4JSWM7fL7sbHyipCCmGIRhf9vbCXqUnPVEHB+11YnKyhsoH2woOnj
-         xjqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793100720; x=1793705520;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RdtQZXTbTiwwiCOERJQ/97tzbS8/zwPttXhgydj9WAE=;
-        b=GdELpjRaPBvJCAJ0fEessQv8rzPUJlsehT4YLbmUTibZFJSi7Urzk0njfhaVIw1a2V
-         9kj3rnDrc7Pe5VXt2Ggydrj6yyaZbiFF2YwH9pITG1r8rSGMEPOp4O8bO3D8Q+ubERf4
-         07pfHrqSCDgk+86/6haWjpzdUER4DA9DDyyfcyljyGJiqL6xjW5MJrwNc7iGZEYYHxXi
-         kxFjw627vYdfruKGmihTA/ymD8V/uIRrU5VherDFy2JiS4sbzgbi0ih09kgrM39vYC+B
-         rqkCNZO7G4QaP5MhxgUASH4Tg15G3MHsyt+jiSuHURTFppTCXxob7IiZhHOKyOkBqdrK
-         gGqQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwKtMrP8mYbilPD2psIPxn1OpVeeIuK2Kfmb90hoxmyd90RXvIrLW/82BRbT78T2Wrx2rqZsbTljg==@kvack.org
-X-Gm-Message-State: AFq9FYIGgAblJ6SsVTXdsyrDsP1mERNtvXiXMQYWhJcs6MjE9s95RbfD
-	f9Y5qcfGSCw4UNHgD0Y7TxJOi0Lq7k9hUqmYLuf4LvDLx5kxC5EEgt2B6Qn8eDXtV93KhDJFX/5
-	Bb0HQ9bE=
-X-Gm-Gg: AYBFou2jy/l6uHMrOvrBn4XsqHxkpi6thkY92/z7ZrrVZ5W1W+g3JbXZS02Q4+AVjJq
-	YWb4UGemV6K9elGVJYsi67LLfKxeV5z1ZmcqXlLdQgv4d9iHD/xWTNdDllqQyFap+1ECfOUQgVF
-	T308bIHnMnym6ArQ4OmZDPouttHH7Gqof5/3h8q4neCd/2E0gAEso6ZMcyOjC5FGH/33CUhzWFl
-	Fjv14x6WuCkCzwBJWG6TkbFgC+hKpDo8FYwRyvfKY1TwKofnxHljxZVjgbUy2islggak6Elv7Mb
-	s7jMk5PhA4dB9nA6mlixoCHWmk3HKino29Ypq1pSUpCv8oRq2bypx/D1WWE6f5Bj4Wu3CAqwBJ6
-	/z9v9wEJuOypHZD9KZ8A5gbMsZE00y7BGIVTp16NXUdQaOweFu6Az2zAWjRynR6N4AS0yuZViCh
-	sIRVnr6ofEg9bZubbQV5U5t9JzrwQZwVYfKQLlFje+h79gnmw3/EvXqqDT5I4Nh9czvDADXuFa7
-	/80AnB2RcMcVDTDJD8Cw5cFQY55MR4llBsGysjqU40ZDz5GnBtELMJTnaXuyvA4oTp6ZYy1tATr
-	3IXQ4vQTp7/PSFAh7NaVO+1QJ5y7ShLcRPGRtlW/JmJUl0vt
-X-Received: by 2002:a05:620a:4556:b0:93e:5cf8:e5aa with SMTP id af79cd13be357-940ef9380d4mr1524401485a.61.1793100720515;
-        Tue, 27 Oct 2026 04:32:00 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47a6d598sm99588996d6.3.2026.10.27.04.31.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 04:32:00 -0700 (PDT)
+	t=1793100803;
+	b=MIuebaZB8JxHP0OSYaGWfV708IdTNVjmELx3nXnsoOQJZKq8LUK9wfAy89jJLyY4l2+Qtb
+	5DX2FyXWYR+9n7O97JOhPQZKq78CsuqgaN+yshPp5xwNcv1Ydqwg0BTDkeR8hAt/GmYfxy
+	9ULTMaLjHfuGkPMDLIIEczp/e8bAmdY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 35C5960A58
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:33:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09951F013C4
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:33:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793100801;
+	bh=YJ4KhwrLt3mSjQzIDeyl2KzSTIVdhJovj7+98ElkoQw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=c/6Wo8In+boLLDqakrzUyFmlACTCliA3iOZiTLnxHU4QwL5dnqhQhynNDY6DYzgu8
+	 U+FhNhk497xOqOa5k8g2NmnzpoWtbKuI2T68/ccOUMf68+cFm1Sjo52QOjTfNK3C0M
+	 4Okz7ybXwovG3T/qC3YfNflP8GShDh/JDqRO8QaNRBrD7buOHfhUU9XhVF6FlPE2Tu
+	 FoLeW1UvaBoZ4pg6aX+Dr9pVBzSul9sSWV6bicdLb4ZVsaAF0bBxUAoQ2s7GiFEGL6
+	 0OKDgpl06/U8IsOidKkyXsUorbhdHTIjdHXcZJhcIuXUGUSrSXDgQRwpBqASPxcrTk
+	 8WwOI8qupiS1w==
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93f3c616c84so330372585a.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:33:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBw99ClcaWaUxRlxy0irSIVY+MHKWztlP7w4eONrB1YIkQJ4khspnLu6nL1vOJMqOz0C2nNMWR7q7Q==@kvack.org
+X-Gm-Message-State: AFq9FYL0lJgP1aCR7Iww3tdZoi4ImGCL0c/5kmk/N2HzCPpKK3WKL0jM
+	KAy3vtcuEeNap9QjEp61R2pENHTqVIKGAm2WjAsXrW3Ah90ccP9BVf3z1k4MN/hMnCrDPLS7am9
+	d7klyt4DRzFxDLu2zzz05w2bB2gHxXq4=
+X-Received: by 2002:a05:620a:4543:b0:93e:c12c:9dd3 with SMTP id
+ af79cd13be357-940ef9efaecmr1359298785a.83.1793100801302; Tue, 27 Oct 2026
+ 04:33:21 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 0/6] mm: fix pfn walker races with memory offline
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, 
- kernel-team@meta.com, akpm@linux-foundation.org, vbabka@kernel.org, 
- surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, 
- hannes@cmpxchg.org, ziy@nvidia.com, linmiaohe@huawei.com, 
- nao.horiguchi@gmail.com, ljs@kernel.org, liam@infradead.org, 
- rppt@kernel.org, osalvador@suse.de, muchun.song@linux.dev, 
- iamjoonsoo.kim@lge.com, anshuman.khandual@arm.com
-In-Reply-To: <01d7d54d-0047-4eb6-a1d2-5b3f113f26cf@kernel.org>
-References: <20261027042204.3741307-1-gourry@gourry.net>
- <01d7d54d-0047-4eb6-a1d2-5b3f113f26cf@kernel.org>
-Date: Tue, 27 Oct 2026 07:31:59 -0400
-Message-Id: <179310071902.664110.12994053710961856591.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 74414C000C
-X-Stat-Signature: 8dkq47oeq31357eahndqbjjexpzdkjjk
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+References: <20261026084035.535989-1-hui.zhu@linux.dev> <CAGsJ_4z46o6fs16T0ctLcTXiinL1+0CXpvueDN1rVc2-rLT6NQ@mail.gmail.com>
+ <c42ec8e1-6be4-4faa-8175-174fd2f11218@linux.dev>
+In-Reply-To: <c42ec8e1-6be4-4faa-8175-174fd2f11218@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 27 Oct 2026 19:33:08 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xsc6CZL3YLBQcXCOxL=xwTdZpWsRiSrZFwuHzti1RC7A@mail.gmail.com>
+X-Gm-Features: AclHuK-61WBlBg98b5PE6LnRMMAHlWD0i0f-CRpjM6_4wkBHIJZA5jcGM8k9Gts
+Message-ID: <CAGsJ_4xsc6CZL3YLBQcXCOxL=xwTdZpWsRiSrZFwuHzti1RC7A@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree()
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Yu Zhao <yuzhao@google.com>, Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BBFF840007
+X-Stat-Signature: 9w8xgqtzajtiky4s5ou155u3ahosy4cu
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793100721-646592
-X-HE-Meta: U2FsdGVkX18JlEAZ8msJxRVDR6F2lImp72mZbKYJVYdGOGcN0kWUa1K5ojfR3f8tac12QEuMDir00bUP1Rhv6qspu4HoTl0Sdi02C0eXpSRXHuehJe5e5JkatcYP0Je1YdQu3pMokf/U+0HdEucbawjeN4XX5kBEbBFO5Nh0r+1bB9jEQuDlxlF2C6Vvd88jD6540d5VOYjfdq3FIHb/Rj/1fymD3sjFvwvDNVwi8YJo8prxDSMVAnaZRGYtBBlEob+G1b1UQ8TEPtbF5u8Sa7g3aHH3LuYOWe4qQAkUMmkXAaGcpCi74L7//UnRaQGhxVTIBZSPzRPziFIKJMjFm3JoqlIq+MHl/R16xHFOM890a9nmyS+DsqPa8GL3iA4DyqrpngEMMhN5qf8dbmwoFDdZw90IiWWBsKxpLW+TPTihgtBQTApNNU+vQwbRMNeeEy4V13/EKZmBoSCO8jvbIjMkGhJ6iosgzsRZ4rsD/KLMKyrwZ5LF8M1QA0o1F+wIebrKfFvMzsDdTw6GQTweqOuQZc9WEkNgLTAovoQyLrqKrys3y1EFkxGdvejJ1Vp9UcMkh0mIPootv6Fwn9ZOwQSzimBl8SiyAUFbUesqtvFNgzUtyyk3jfmFXuZ4x/nfq6fsdI1REUdKc/FBH37eqi3ogBTQL9lyQXk1HmZKFvGw1d6P8jHNFDKp/hzf4WyRv9ZpPtLPKrhDriD3wuia3E9Trvc0p1hEJyxaK+50j5bl/QNlpX2WrwxMq+qbI5v4KWqilTfbia2O2bfpWtXYWMkjoVMOVEhd5hIgekowCLo6N8vaXoUPmJU2fHBydoYC60MyES9dqzDDVw/W6wGaWJ7Jcm8dSWiGqMuY41kHzqh3Uee4CwXea92NW+axqrMRKlQFBYscZoKGXTkfRJWG8X7v7FOHyIcxv0QV8r0yvlHLnvKz5+RbTUHPerCf2GLV/qECtj4H3meXlgIMwFk
- eew65soV
- CYbjLtTRZakXJ4rD7W9SARukodcIGRfJzwjeeAkEfZJf3fhUwq+PVs3Dx2jOMtkQEIyEpxXQR+klxBgcNLxUtm9nLPJIOVzdCYMVwu4KkizeBYl2xeCcqaHszq8CKnmVM4bWXguYVROHKgYbRuMjkFezny1NhjfLe0ODmPYuT0Y7V/qzuHtaFps0aWm2rNhc5qdB3wWObIQjnY1eUfzBWHuCLt9s8a6BzvPClELC3pjOsu1RWr5bTnSlRKhIg7yj2twAvsde3NYgnY4uQaV8Y+eUkckID+jkiNgiPwWtMuK8DLEqntlmqOOv8TthRtNXvBqDab/XGXybc/bs=
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793100803-141421
+X-HE-Meta: U2FsdGVkX1/0qcyKeUiZz6asnotRU4wbD56M3Jvd/EFhtA4+Ab2sB/K5x21fISNEl7hVQpoKXU4iSJpyjntoXDYxNHJr4NSJeQ+bZgX/wamZZ73anNbeE94KL+5mwj44+0LtbO/4TUeET//I/OcB0wsV0j9JBNL0hiRY3QtFf4X69bUeLFYQqU92IIYRpTwU7ALI1CwUxSodD+ilDLpuxJFtxwkc15n6qZLzhUtMq1C2/HrvmwjCKEkEZoS5Gp1FCcBbn/O2DxJUIk6CG8LOScam0JQZvKrQuPfUq88E8t7rN9tPRuIAlFW7EBn+ldPX9SN2EC5syEjJlIlRd/fPHSzPuTHUHfDrlhXksA4thY4xz5EYAVXJXVkoTRzSxIS7gTmlHc14r71uFh+MnqD0GFv3t6z8w2iPZs40EC8tuunMep8nujkOUEOIlJPUu67Q5RXoz+5haTipBi/VMBsyQlZRoFIIULAuFufNLG+gkeac6i4ECCAsc2JIDEXqMl3xci5yeRQjk39DRVhKFHM5mmZEaWTpdsfZSaB7o/ybnLHUATaKimGOVSejm43EH7xjkAnvHVy0itTMcZhbmXW9O7lob9uRHV9t1mEfC56iMXoEkFbvEkGdVKIJV70IUyvGklLAR+7yH/pWDE/PjPnEoznh8+IixeGwMh2mTs0WJ5YgbEWR0hJPJCQFz6ULig//2jIMJmrV0I3Bdq0q9qMuRyQAS+t5H7HZRhMXRNILQfubcRjLFYKXlo29Gak6ktphtjEjcIr0vQVqhk9mr/UHNNNwazsXGA3s8EyboQJeG4YRKARFP7KLyrviJOUd/aAt7N1Umn/MAXysUrU4o5Bu1xhhNiR2H6MVA8HowoS95XJ1Iv0JXqLsK2MTvDZ7kDjUSSwMu3+cbPmdLlLQeBdnGedUyPKxAfR8IIfGPqryNSGAuBZuFgjLhUT8hEhqsZTAL8UK/lQHshORyNxsy8N
+ v/+bU6U5
+ m6kGUuAIX+2uaB+csEyAD94UODHHR0pkkI79oXgWy/BcmlkJ/9ay/ymvjAN8O8ba6O7NSAGvWQKpJCASHHw88NJkSUnZgniuVTO88Qh+VTGqHqprY2azI1ulRKxSDH+ukc8qN/8nOUYL5JTociEMlAgDt6UWvKEqUuqadopcZtLKZ6jEmahwhUDiP+NFvtDThhrphtdLCzaih893eonrIdzWs3TqmW+tbe7QGXjKkTnDDTpY+RVItOlsQEkGbsKAnhyYrhIlCf5Okau61k0ydUQdJygV36e7AB7LLCvYxxkS2oCb2wXSWyN4vuPqdA7pUWaIza1O2Ud09b7Lkqj0NrbXu7o2dWNLEz7cX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,50 +109,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-27 09:57 +0100, David Hildenbrand (Arm) wrote:
-> On 10/27/26 05:21, Gregory Price (Meta) wrote:
-> > Several pfn walkers check that a struct page is online, then use it
-> > after memory offline has poisoned it (CONFIG_DEBUG_VM) or removal has
-> > freed the vmemmap.  Five of the races crash the kernel; the sixth leaves
-> > an offline spinning with the device hotplug lock held.
-> 
-> I have roughly the exact same list of AI garbage fixes here from a certain company.
-> 
-> And I consider this all extremely low priority.
-> 
-> So this is something to discuss throughout the next months and do it properly.
-> 
+On Tue, Oct 27, 2026 at 3:25=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
+[...]
+> >> +       lru_gen_clear_refs(folio);
+> > The only thing I'm not sure about is whether we need
+> > if (lru_gen_enabled()) here to keep the semantics consistent
+> > with other places where we use it.
+> >
+> > ...
+> >     2    676  mm/folio.c <<deactivate_file_folio>>
+> >               if (lru_gen_enabled() && lru_gen_clear_refs(folio))
+> >     3    695  mm/folio.c <<folio_deactivate>>
+> >               if (lru_gen_enabled() ? lru_gen_clear_refs(folio) :
+> > !folio_test_active(folio))
+> >
+> > So maybe we still need
+> >
+> > + if (lru_gen_enabled())
+> >          lru_gen_clear_refs(folio);
+>
+> I think we maybe don't need it here.  The other two sites consume the
+> return value, and that is what the check disambiguates:
+>
 
-I actually have a reason for these fixes other than "bot said bad".
+You=E2=80=99re right. Thanks for the thorough investigation.
 
-We leverage ballooning and hotplugging as VM memory overcommit tools
-and are finding that some of these race conditions crash them with
-large MTBF.
-
-While most of these are insanely narrow, they are not as unlikely to
-happen as you think. A vCPU can take a vmexit in these windows much
-more easily than a host can take an NMI or other interrupt.
-
-Thankfully none of these (or the other series) appear to be obvious
-security issues, but they are stability issues.
-
-I have a reproducer for every single one of these (and the other
-series) - but a handful are unreachable due to a 2-statement read
-being emitted as a single read by the compiler (which can be undone
-by a targeted compiler flag). Those were included for completeness.
-
---
-
-On properly - I have a follow up series that fixes the zonelist walks
-structurally, but it uses SRCU-fast on the fast path. The catch is that
-PowerPC (and i think others?) don't SRCU-fast without atomics, so they
-take a performance hit.  (It also doesn't help us for backports)
-
-I've been weighing that solution over never freeing and/or prepopulating
-zones - but this also results in performance impacts (leaving dead zones
-in the list forces the allocator to walk them for no value).
-
--- 
-~Gregory
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
