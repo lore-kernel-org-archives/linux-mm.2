@@ -1,177 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6417C606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E0C606A333
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nhRbbv7L;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=dqBTENOQ
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=ZWqQZ5ju
 Received: by kanga.kvack.org (Postfix)
-	id 5F27E6B0716; Tue, 27 Oct 2026 14:32:55 -0400 (EDT)
+	id 0EE9A6B0890; Tue, 27 Oct 2026 14:35:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AB3A6B088F; Tue, 27 Oct 2026 14:32:55 -0400 (EDT)
+	id 078456B0891; Tue, 27 Oct 2026 14:35:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 474A06B0716; Tue, 27 Oct 2026 14:32:55 -0400 (EDT)
+	id E88A76B0892; Tue, 27 Oct 2026 14:35:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FCCB6B0716
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:32:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81FFB1C4487
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:32:54 +0000 (UTC)
-X-FDA: 85369252668.11.2DA781C
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 41ABE40007
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:32:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=nhRbbv7L;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="d qBTENO";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.142 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF9CA6B0890
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:35:19 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F4251A0ABA
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:35:19 +0000 (UTC)
+X-FDA: 85369258758.08.D79E76B
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5668818000C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:35:17 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ZWqQZ5ju;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793125972;
+	s=arc-20220608; t=1793126117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pW0YX5uTyvs0iTQboMCcpjVYnLuET6JVZiidtK9lRiU=;
-	b=SC2igQ2T9zZSTweCiyuiSMIFuTAye7hpv6uU7qMXBzcn6gyUzYnCqLB2lgcM9B0G9HE9no
-	R6OIe0xvJ0f6ShvkiEz073X4I1uRO6Jimiw+ryvlyLQ3lj3jvnOv0yFikRRDjpy7ieWv9x
-	Khhyh/MzlZkyY5OhBNbkFqvVPi212Mw=
+	bh=68JN5QHnKCq47WQPiHLxuMujC+xRd0JDDXBuUw27i9U=;
+	b=mtzQUC6PL8njvaUbcmKD7292LRxIwnaNdCTwIlnEyprD+iPMQSAZcbLnyf+GF6MPVVTuBT
+	ZOjlHITCnwOiRsEX2L9fMDT7pVI7txnh3RIHjChImci+PhI4XSAwK2OXiGnXB5iaKuOTvz
+	bmmtNOAobJbzvdOiNrYVRMnIr3kcz8g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=nhRbbv7L;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="d qBTENO";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.142 as permitted sender) smtp.mailfrom=arnd@arndb.de
+	imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ZWqQZ5ju;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793125972;
-	b=fsDVQIuZddAdHRBM3j/Op79ejiKRMvZcAhX3TvoT+KAnzG+EBoqK3MRJCv96XAwz0zEuiY
-	kKV0nlGXDPB/uGLk5B7ooIfCjEynvZQ9ssA2drm2JI8iecrVC+/UZpfuoRbXDv8/A6S4HI
-	SIwB2gx2NvaWOuHOY7CQvycxnNdj7wQ=
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailflow.phl.internal (Postfix) with ESMTP id 5FE8B13801D1
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:32:51 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 27 Oct 2026 14:32:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1793125958;
-	 x=1793133158; bh=pW0YX5uTyvs0iTQboMCcpjVYnLuET6JVZiidtK9lRiU=; b=
-	nhRbbv7LCz1ZQpaeWyensFpQo4X/3syWjrNRhf0TPa3WpxX/X2VdpFqv537v9O9I
-	PGhjORRx1kESGQSaPHfa+QRKJpjpqdcACu5FAN3p52dFUSynF/VeBDjNcw+LEo95
-	UNVVfCF+1iy7jr1xBQICX7G6IzE+zAW2IpvIGzT+P30DaFT615CXM7aNuU+rahRd
-	1GUKsYa+gXVhGk/EI4Ywqj2q+VbAxE5UYf7OFubEdoAAzfhu0f2ST004eaCG4GLQ
-	F1D1Q2WkugYqzgcxYwKxVL7pm03H7LMx0dT/XGKTKPQS0mI+iEZcMTRkca0vag3/
-	RDWKomvJBzIYN06yZe7uWA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793125958; x=
-	1793133158; bh=pW0YX5uTyvs0iTQboMCcpjVYnLuET6JVZiidtK9lRiU=; b=d
-	qBTENOQ45NO1fMBSlIFoaed4KzgJDaJVEDwxaWy0AU1ee6zNudEy0DlCDndCnLS6
-	2Mky/tZzM0tAjCf7N4u7bi/4+2ykMhG2ESY1Sf7giCpL6gbAEOpbD5EIxKBbICPt
-	usmzcw6mAAaTgxfbDhYZYxO2tvSv+8uUtfRzlCLEIP3lG32cfLfeY50SbL6O6Io4
-	SgQw2YBRCXwq56w+6p7UjBanfKMGDYqL3wt7dbLsVl8wtknfLVIzXXPvDsCBbGKW
-	AtxiHzQeIKi/D6MVVDwZTvVos2hYu3DWzHZsBX4JLmmgFKlBmi78/sjOEDPTgAML
-	sjhtTrMnUgKadM/vzmJrA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793125958; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:YVDE8oPwHqFgHaYV3j+wJE28FEtv600mVqbqTBpWnTyYazm
-	pKu7Z1socw0b+6Tu2iJF/k6uDiHG9aLdvLUA2tD+RtOKgAJrZ4ZQaFPBFwDzo4PD
-	AUXtLLP5pHRUkUHeU6OjXmTh+bsM0L1FWIynHFFg+CdVjOLWPMNYtBshBju8F3ch
-	tdQN1u9UT4zhnBQrewocrlYKZnzH7uMSTJe/+zqSM2qCn7cfxbF5ak2sraZ+Xkss
-	l7qHRflwgk9Dk/jx5yqqsPTrdVMP+H65hejXkSDxrdKgbxtMInEFvB4B1EZfFKvW
-	NchmlLR+yC8zh5xOsUjYGtCGMwgNdWOpVlU3ORA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:C7HxDmq442sA516hPg1WVqijzSVzVZyCGy6pQZqDYDY=:4/DSvQfZqcYprX4ziRRYVwk6oH+PWA9EoraJfbgloO0=;
-X-ME-Sender: <xms:PO7garY621kKyqojOqTb7yy-_Jxdn-Kzm4gl1mIkpb01V8TjHgldxg>
-    <xme:PO7galNXbgg3oxvhvN_4CaBu9hMm0jyCxqhA6a-T7eDOTCaJJJZAFol5ERGDjsLqK
-    2259_D1ZXy5t5UtRcS7lekN3e5e2Iz3wvWTc8ZMKjdCe5rWsux30H3E>
-X-ME-Proxy-Cause: dmFkZTFBrGBMzD/7DKUk8DMjlpJSCDxpPKrzK68BEfeXOQ/MXmVsz3qalb7yQm7DbWy68D
-    mdR7SERoL7p1SipE/Hgrz7O8Jk/YUwS5P3bCp2T9rw+yUUT025kCXndTxgJzUfF2A/LmwU
-    OoshLwBoL+gLtWMZ1eOjSZC00MjyyUjQsfwaX27BJBN1pGwR2iGIXqOSxLJd8LAZ7Ies03
-    pHbxu2/tinn1z/on12HNzhMOuElx6kqVt1d934g47Fvev3+j+hQdPBK+wKrHQuA/MqaMQm
-    +YwFlvGVG7S2iiDu84WQfMEEhxn2uOBT5zg/mL0ozhSd1uzGOGScjRvF7ClHEfMSlJfxcq
-    YnPF1zz+aUEeQFHBKYIkKYLrgp1kUHAokLo109tnO0NExqhQz8UwJIbWoTRGGabU2W726Z
-    Dhb2CJzkcYCahSEgI2QZnhI9rp+Sax2lb2xVGCjVpBRvKLDXz5qYKxyqd2QqtR2ElCh9YH
-    sk3iHLFKWwH3F6St/x0/gv09bz+pznkee8K/sd27QfN9Gwd3fo2BUAJ25G4dopbDOQnb4A
-    P/8JBDeUxH7I8cBQFkugJH97mQ3vUVptVMshXk/wrMwfeGdw1Y1ScOXkp/5PrPH7+diEiQ
-    JTFMCYOkqnX2m+s2VfejdOjHHP+4aWKR319KAAcE5zQTI+rTtC/ZyD4VTbUg
-X-ME-Proxy: <xmx:Qe7gaoJUmon3FH4sGaBdEIKD5fHQ0oH3bMQFHqz81k9r0kK1FDN-iw>
-    <xmx:Qe7gahWdNxTBRCJjJwTwB9P5rA_fL9OS-9G-iMSBpvVqcHmxmO9j9w>
-    <xmx:Qe7gas_yFzXCxWyV59ZvbLz29NvVSPTASADzMdDMlPDM-V9XYgRHIA>
-    <xmx:Qe7garJelIc0ZjXXdljbcuMtjXIos4JgOEY9ZOwRs4BJzuv-Dex5fA>
-    <xmx:Ru7gaoAQZNTTFpuQBw_xTScK29TJcstSl3feioQOcb1p07_GUyAqFEK0>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 94CBA32A0097; Tue, 27 Oct 2026 14:32:28 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	t=1793126117;
+	b=S9yRo98O1gK2PTB8q2PdY+xeu01Y3LKDTaDBNWaHTO8GVIBWLBLAzpFf25SOWioJ32xb0r
+	zO0PpZCqnqQjl1oFG1tWSpqzQGoTzOiCnbpQ2MXk4yHySFwNnbQAmoqjFDEg8TfdvF1dsW
+	Uc50cZa/dQoiAytuyDkWRH5Tp1LzKIk=
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-91c79a9a739so2560666d6.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:35:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1793126116; x=1793730916; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=68JN5QHnKCq47WQPiHLxuMujC+xRd0JDDXBuUw27i9U=;
+        b=ZWqQZ5juO5xQY1GhfBc8q2Gh29Ybe1NYJudlUktEU7DLc5ZE0f2//O0CIe2GzwSGL4
+         9vt4xQeXzpKiW+VXEWXW1hySbXnfYPXKJadyRlN/7Bw2GKkbXvnIf0QjMBVQuEU2sVZr
+         3HCSfe3AbPwIqGNcfEDn0PQ71PQph4P1YIK+CM5NRXsjSjAfjQzZHwaXxE9zgClf93e1
+         pwptr9rYZWj737ODnitpkAGS90D2DubbUiZbxNcTYOa857PoE/UDR7d0jK63Jvtg1KjM
+         4Z9VGeUdtF3hhw4E2+Cpek0k7eHT49jlI7WK3vhEGKpgR3VhL1qpY0H/Aopg86OeUKp2
+         MYqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793126116; x=1793730916;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=68JN5QHnKCq47WQPiHLxuMujC+xRd0JDDXBuUw27i9U=;
+        b=FX57dQ28LRcsgrSrL2fXXKtgnqSCIWlJLvjhL/S7qBzE9SakisCYGteZl2zLn4B3Uw
+         J37yIvteyYg2SXV5fS7TcRtpQpRXf5WhIJKrCphZWgfA9GKakuMM2n5gWeTibqWFrOrR
+         7dRbdmD5FeR7xcQP5jQlY7WWpdyuZyUN6OSEF+4v6huUR/0BR+rFnmJ56M+GjeSe0a11
+         xO7hRBVsJecqzkcb0UqVtBDjDdERYW8mdoCfBY7sn76xXwbCvKRYLvBuFsQ7sTrVHtdN
+         dq132o/UXKmJjO1ZdFl7ejNeVGpUo2W1NMn6CJfh5GAaTyODiGh1aDfaGGFx7QEv+TXk
+         dmNA==
+X-Forwarded-Encrypted: i=1; AKwUvBxG7VqCuawVClp0aqrh6sclMZ2eoWa/b/01LFU2U7n/zCTsNWbMN0kaNNNr8J/wLmkXUnx29EQ4kA==@kvack.org
+X-Gm-Message-State: AFq9FYIbtKk58pwBMc1pHrXxZTC+eagrvaPQJwl2eziEKWO0cfZ97y8U
+	q+AZIMrnQmECboWYrvv5tiKJRlomiCzDSi6QAdoDGe7o1tQyB4oTQ1MreQz+PCAKZ1M=
+X-Gm-Gg: AYBFou3JwVjrG/JwLVpis8bP6ecLiQP0zkyiXiE6v23FU4ADQLtcMhTdu1sfOxeIfU7
+	lE3T7/xaw4H5sBCgNB6mqurwv8Z71qfBtcSSqYWTMapLaAIkiUGJrBxRX7botTpKyBl7ltoqCFw
+	Fkc8PqvGyFIGbITlYLIhUGV0a5kTyMPlpD+iGfUeKzCZ+svWqPaevZV9yGwxbEMcrjY140Ijg3x
+	8HiV1IuGDX8Q1tKbJZNFOlXcdp/P8NXSQ0Jz0hZiZBuIDwxQ4Tc3YmgPA1LxeYkUt2PpWeYRWz/
+	CP9q6NjzzrGFltgXflw/g/zAei4LGdWCGh/ISiMENzM85Duc7MDeDNgU+2l/JS+Pd9PCDlT63Yc
+	ZjR6jBLApB/2gZe9I2Afo0ZBb6De7z2XmEsN0aRWLfdPuospfEDVgPf7cGE6zotY91mtHmWYsK9
+	S758sWhch9cD7DX4Kr/aIBZiw+ab6uLFjvWxVd4exfM5eEaS588DeckQRb03dvtS8wFD+JBIFO/
+	QiCHsr/N2BOe5ZLAvYpOmQoK8K1n1UNlg/yYkTQLwocbp99SokcvXE5RKu5AV7SJN/ekXSC2NgI
+	8tyl+gn51t/nA30hJ6WxygymCWBcBQrlRwkoIJHHjr3BhCok
+X-Received: by 2002:a05:6214:4792:b0:91c:6d83:60ed with SMTP id 6a1803df08f44-91c6d836156mr52476076d6.55.1793126116366;
+        Tue, 27 Oct 2026 11:35:16 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47c0ffd4sm110412956d6.16.2026.10.27.11.35.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 11:35:15 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AUJ1OXWu3nCJ
-Date: Tue, 27 Oct 2026 19:32:08 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "James Houghton" <jthoughton@google.com>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Thomas Gleixner" <tglx@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
- "Kees Cook" <kees@kernel.org>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Sean Christopherson" <seanjc@google.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>, "Jim Mattson" <jmattson@google.com>,
- "Jens Axboe" <axboe@kernel.dk>, "Pavel Begunkov" <asml.silence@gmail.com>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, "David Sterba" <dsterba@suse.com>,
- "Chris Mason" <mason@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>,
- "John Fastabend" <john.fastabend@gmail.com>,
- "Josh Poimboeuf" <jpoimboe@kernel.org>,
- "Steven Rostedt" <rostedt@goodmis.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- "Ingo Molnar" <mingo@redhat.com>,
- "Arnaldo Carvalho de Melo" <acme@kernel.org>,
- "Namhyung Kim" <namhyung@kernel.org>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <ac22215d-3e58-4aab-851e-47c30836e058@app.fastmail.com>
-In-Reply-To: 
- <CADrL8HXQdzcroeGN-ACjyy-jSAdBNHiT1_BCVVe0P+Y8ZueiyA@mail.gmail.com>
-References: <20261026215226.3713941-1-jthoughton@google.com>
- <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
- <CADrL8HXQdzcroeGN-ACjyy-jSAdBNHiT1_BCVVe0P+Y8ZueiyA@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
- current->mm is NULL
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 41ABE40007
-X-Stat-Signature: gg77mw863sbi97d5jpqszwsg76w46ggb
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 5/9] mm, page_alloc: pass zone pointer to
+ trace_reclaim_retry_zone
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20261027-pgalloc-ai-hotfixes-v1-5-9c7d1aca801e@kernel.org>
+References: <20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org>
+ <20261027-pgalloc-ai-hotfixes-v1-5-9c7d1aca801e@kernel.org>
+Date: Tue, 27 Oct 2026 14:35:14 -0400
+Message-Id: <179312611485.3837667.16073234237109614963.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 5668818000C
+X-Stat-Signature: sxqp6fwmyr6i6h3y1j6eb7ddtg53tcak
 X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793125972-953929
-X-HE-Meta: U2FsdGVkX18M++7RrCnbx97RiVuHReYIiaEliR7EsheqEzbO8rYrYQqYXjUWoerFw0IfiVahiOlBsP57Zdj1U+YbtgZmgoJhVOh17Akc6btI6BZcZQBzxC6ye6Uy+2Kc8sApaMAiPiJVTwdnJrbhEUEvmaCBIoEE6VL0n441WvLRV36xQV3lMwz/usLLs+E1L/iohXgvWl/GaSxrm1PFSIvRP9UFfLgnTRYSDg8iwkBx59T0bHrmuOmxPMpPb22wsywT0HvLn6h6caMn3fh8DTyO/RWoewKJBMKEQThhJZfwlehrztofQhZ6Vud1ZGaHp+eL5VRCATAi+WuV8LxsRIhUHuAYW3E6qT1iZJQpc6c6lEazl55NXh1iXo+O06xMIyXzAgcNdDn55G9IvgvW+j6kXpLsYjjpkEJA19REFGeDwAqBo8r5AAYwAKOMuN+cYAOnXNGp3FgQ+8m+aultMqKS3XhyX4ap3ZE+IhOpsAo3vJam0DWvRQ6//QQHh8ExIa5JPw3ycH1MU+ffROpSvOHEQSOcvT2M7LukAD2NAf/PrMUtTIwv7mp8I1fE8+1Fs0Rv5nvnXuszKvgNeHm2PeS+1ZUPcfGzS3cDEyckplnSdzfmROt/ExeKFSRyn+sBiV6TjiFOAerAbbwJhpGNys4jjZPdNdyX6jTccANtpbOlzbWJkqMPySv1Z7iZTAKu7bE0FW2JofgReiqpuywj/RVmvD89ac2JeRntrkVNI86wQvQNo+CK90z9RAiFb8ovESX75glNadfmWSyqCVTeLmPiATPIhX2DT76EBqFJ0vryaLKYbSt5UgO5PsYxIkqnJ0mYXTS8VVijAQpUlh0odeoMj1L0IkERcr3GbDR0cfzpW1j9GTFOSnejnlqU6g1cZVNLv/wM8ijPi3CkervpzecmzuWjSo9QY+IHFnWfUyW9Lfbf//DPvEwzAugvqIzpaV9hqyrtLQ4riw4xCo6
- 2dZvC0hy
- kwbUxDpzBi3fC/G9Ce4X/VjqvgWD0xWPKFvyTmPSm4e7h2TcRlqxpMUoHVMTPYBhYoMmtoVBpkGlf74fd62LKdfBnYtCiH5F7/lqowEyNA5j2H1JJj3Fk9DBFCeJNQlYTCMOdcT5OQCsEETouBRpPfJtfkXikMi+E04mjynvKL07759UkEjzJBD6+yScHko+PSYi0Sy9UF8MbNrp0oXKnfN3A/09OkR2owM4q57kCjejcqTjHWhJHyfR6X9e14DEwkCCngWwPou85zuIFRM/0MB0JByOyi+l5c69fKkQe4MhkTHRBJxWnRvbEGJE+sinnCdbl71ixK91UO84S298aLLJGAgub+P/m9dZfOe2zVu8Hq8WtkJHzuj1IZhLLE34Vht3m5GTc2iIar4SFoVn3fg2ziiT6p79oSEyNceVvVtBc5jVT7Z4M766M7yGnrNg7FKiwDfzCPZoHW6c52l6bzdtllUfVc4FFKXob
+X-HE-Tag: 1793126117-462751
+X-HE-Meta: U2FsdGVkX18Maouej/Z0RvAH3KPaA6Jf55N+kb/uO1sNxFdTojT/gEdkaXA21WQrVbvSVkRuGIBpEvBv9OLYmMcCvsNnt98NuaY6usgIgOICttdIGRKHRoEkDb6adOEhq3AuX/VakHHFoqapbeMb9csk/um/rasjmthd0FrfIHz5AVQuKHQ51cNwNImwZANg8vc13HoL6r2z0HyXcQOXrnf2QjwR/FeFRxTz5sQG7/Q8vfTD7R0h0jcQq+opG40qYAwDpCgGbtoQcgJQClC/hBBPX+Gmhc8Jy1TGYwmLXq1SSfnagL7/V440AQX6DyGkNOj1KJ1HezdqyyO7KhSqOS5Wxr3mjPP8R3CIeYuIOyzNj2oXJttHxwCujqeW6Ze5R++vE9BbnqpQ6JM9kcQiYkbYVgEaQ/8i088NLD665e5nWGNG/YiilUeMTEPf71Olg8esz8X8JQ3TvYN8uZw8KHoCgc0S/0sDa/6Z22Lbav4K+fGQjtpLTh/HxvKL9nJ7zt06J53tBh9xi1IU5bcNTahrZF5V5fWmusCK5WsUXqLeha7KflI0l1L5phmW6a/k1AibkVbS7HaojzD578V6JRtRrBAFIN4j4kh2FXvG6fN35AvZ1pl+B9rlI28ZCo+Z1bDin0wcqunv7ZzpIamuV4KGCnG9zyzZz72d5E2srNptdrWuu2jwFTrFYcxeohdnbb4oomqGdQMoJDMCLPiZOB6K9ee4352Y937wpe82GUO3j6rHfxeZQshGth28KxHwy5xwL0AIXiyFoUgp3Ut/7Fof/M0hyetgb22EA+73Q/wg+xNxCnaIb1Xx+cezMv1fDKWg8BO6AwiQuh7LYoBGLHPNmNxZOBM11TS33wZlDhx1t2nN2sF/JcvG3Ji/npOWlvtObPbdmY06obROZlE3Ex8h3u1nFMZFQEr8BwAdl0tkZv2EkfjCTGOBJrPk5u3s1G3Pqu9gLugzPYiF3Ei
+ obmAO5qo
+ 0o/e3Y7OxASCCSw2/Qg07ZhzP11uJ9zjibYwfq3bFGssYa7Rzqa+oqG1EWhBAZK44FLB9AqZrBOYEOXzrk5zZHqZ7V31pR7mGJgKJs7wk+8Ag99kzvbaBd/fmSjxiQdPXhtJE0OvE6CnZMLrxQRhoCiYc+7rv3I2FjqABmrfqZhL3QkU3bM6+3+4DmU92K/RGNLUeuaPGs6nu8BcIMfyzR1sp3jbangfrKR9q3HrfWnwzJ2JNeSGj5U1UmnzSQlI7pfepgNavYqXqzjjYlFk1Nyt0ZuzKmoBSG51qheKamxbKg5mgjgiu9OI10Cw73i9BlmUZITU6ErZn1e8cubmON7SRV4Y+MjKWU4wX8oQ05RI/jI0/EswCbJINenROntd2J5h6/skaEFz3QhCkjsi6AIYPoOmf5WQD2ax9wPgujPoocj7blWL9tYgduF0u5omSbqxZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,101 +134,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026, at 18:29, James Houghton wrote:
-> On Mon, Oct 26, 2026 at 5:13=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
-wrote:
->>
->> E.g. on arm64 with CONFIG_ARM64_SW_TTBR0_PAN, the page table base for
->> the current process is only set in user_access_begin() and would
->> not point to any task here. Without ttbr0_pan, it should be
->> covered by cpu_set_reserved_ttbr0() turning off all user space access
->> for kernel threads.
->>
->> Should this perhaps be addressed in architecture specific code
->> instead of in a common place?
->
-> You're right that whether corruption can actually occur depends on the
-> architecture and config. I'll write a note about this in the v2 cover
-> letter.
->
-> That being said, I still think the right thing to do is to have the
-> new check(s) in common code. Instances of improper uaccesses are still
-> bugs, even if no corruption occurs.
+On 2026-10-27 16:46 +0100, Vlastimil Babka (SUSE) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> should_reclaim_retry() walks a zonelist and passes the zoneref pointer
+> to the reclaim_retry_zone tracepoint, which loads the zone from the
+> entry again to find the node.
+> 
+> Memory hotplug rebuilds the zonelists in place while allocations are
+> under way. When a zone in front of the zoneref entry has become empty,
+> the entries move up, and this one can be the end marker by the time the
+> tracepoint looks at it. zonelist_node_idx() then dereferences a NULL
+> zone. Short of that, the event can name another zone than the one its
+> numbers belong to.
+> 
+> Pass the zone pointer instead of the zoneref pointer.
+> 
+> Fixes: d379f01de095 ("oom, trace: add oom detection tracepoints")
+> Cc: <stable@vger.kernel.org>
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-I agree we have to do something to prevent the problem for most
-configurations and find any newly introduced bugs.  The questions
-that need to be properly decided are
+Similarly found separately and tested the fix.
 
- - does there need to be any compile-time configuration to skip
-   the extra checks and/or the warnings?
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 
- - are there any cheaper ways to make it safe than to add a
-   condition on each user access?
-   E.g. the original lazy mm switch was intended to avoid
-   expensive TLB flushes when switching to a kernel thread and
-   back to the original task on 32-bit x86. On modern CPUs,
-   the MMU can deal with multiple ASIDs cheaply, so turning
-   off user access in a kernel thread may be cheaper than
-   adding code to uaccess depending on the architecture.
+-- 
+~Gregory
 
->> I would think that user_access_begin() is a more natural place
->> for the added checks, as this should be called exactly once for
->> any function that accesses user space and also stays out of the
->> way of the copy_from_kernel_nofault() etc.
->
-> user_access_begin() isn't used in a lot of places that I want to
-> catch, including the KVM case. Roughly:
->
->   kvm_write_guest_cached() --> __copy_to_user() --> raw_copy_to_user()
->
-> There's no user_access_begin() in there. :/
-
-Good point, yes. After the changes described in
-https://lwn.net/Articles/1102061/, I had assumed that all
-__copy_{from,to}_user() are going from common code, but it looks
-like the series so far only touches __{get,put}_user().
-
-There are of course few enough of these left that I think
-we can consider doing the same thing here and turn them all
-into the checking version:
-
-$ git grep -wl __copy_'\(from\|to\)'_user  drivers mm virt
-drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-drivers/gpu/drm/i915/i915_gem.c
-drivers/gpu/drm/i915/i915_query.c
-drivers/usb/gadget/udc/atmel_usba_udc.c
-drivers/vhost/scsi.c
-drivers/vhost/vhost.c
-mm/kasan/kasan_test_c.c
-virt/kvm/kvm_main.c
-
-> I do think user_access_begin() should have the new check though, so
-> I've added it in the v2.
-
-I had the details confused here. Seing that user_access_begin()
-and the other accessors always call access_ok() at some
-point, maybe that would be enough?:
-
---- a/include/asm-generic/access_ok.h
-+++ b/include/asm-generic/access_ok.h
-@@ -33,6 +33,9 @@ static inline int __access_ok(const void __user *ptr, =
-unsigned long size)
-        unsigned long limit =3D TASK_SIZE_MAX;
-        unsigned long addr =3D (unsigned long)ptr;
-=20
-+       if (WARN_ONCE(!current->mm))
-+               return false;
-+
-        if (IS_ENABLED(CONFIG_ALTERNATE_USER_ADDRESS_SPACE) ||
-            !IS_ENABLED(CONFIG_MMU))
-                return true;
-
-(plus the few extra copies of access_ok()/__access_ok())
-
-As a quick fix I would probably start with just the 'if (!mm) return fal=
-se'
-bit here to get something merged while we still discuss the other
-details.
-
-      Arnd
 
