@@ -1,131 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3380A606A31F
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8035606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X1ektPkr
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f/91R5wp
 Received: by kanga.kvack.org (Postfix)
-	id 2AC2D6B08C7; Tue, 27 Oct 2026 15:48:24 -0400 (EDT)
+	id BD30F6B08CA; Tue, 27 Oct 2026 16:07:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2647C6B08C9; Tue, 27 Oct 2026 15:48:24 -0400 (EDT)
+	id BAB0E6B08CB; Tue, 27 Oct 2026 16:07:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14D7A6B08CA; Tue, 27 Oct 2026 15:48:24 -0400 (EDT)
+	id AC13F6B08CC; Tue, 27 Oct 2026 16:07:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D7A4D6B08C7
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:48:23 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65FCAA8874
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:48:23 +0000 (UTC)
-X-FDA: 85369442886.07.8A8F89B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B8A06B08CA
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:07:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EE5551A0AE4
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:07:55 +0000 (UTC)
+X-FDA: 85369492110.18.452E54D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 88DD180006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:48:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1ektPkr;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6CECE80012
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:07:54 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f/91R5wp";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793130501;
+	s=arc-20220608; t=1793131674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dBXyCpRHgO+MYx+nOUuoDTL78tUn9LIeQ2aFxfEucBY=;
-	b=CzE2+KoTNfbUmy8DbW4sBdK0yswqMawHL7Yh7jos6IT3ezp8F6ya24qwF4ddRJBG6JRRHR
-	mJTdM+546NRj9k+EtB4ifOtw/OGL4cNmMsU1x8Tw5/eAe+WS8qu+Te9phbzoRxK5YqOXOn
-	YjPUuIf8CPjQlAwmEqbYyT/KwNjOyms=
+	bh=7GmJ1pURkrI2M4cFdKYZZ2Ya/fgG59abQ7Yb/9UtrSs=;
+	b=refKcAz9x6gClZ+D1/h7JHWhlx5ZIuzPD3iXkggRxG5GaGnS/IIkQuHNSWOX5aqn6fq6ai
+	Ae8avzkJuF3FGBhaZ+Ib2DqhxHpqYiYv/tzrR8qmL+fj9W8GsCntQ14u0g1fQMpKP7i41r
+	vyAL6DVFkjZd06FQf2rNFLqqAtIA86I=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1ektPkr;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f/91R5wp";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793130501;
-	b=kpw0k1kN2MTqhpPDmdtMwHrwTgh3srndRo5tyL7useXJnd/E6ZQ9hahAeGaQihJvfCnB1F
-	uYmicMyU2hP1ZnPBEqXng9bMrQAMU6BKL8B/sqxKWOjcLuR1X+5BE7Liwf7Q59Nq4IMe1u
-	oWgrprke83sYM+kOf8FfVH/UcwqrWcA=
+	t=1793131674;
+	b=NaUQf4VCo1rrs4pTXYh3AKSLkBZ9GWdrNZwnItWrYaOizcphBiTPPbDF5HdAVOvWPVLCW/
+	zMhN+H9kParOY6U9eh0W5UDIMHtpLHbAUDICINir00O0fxCSyMpYDc3GJhJLy4C2xvwOXd
+	9Hpqq+Udp6ivOf1hl5G7+I1HejGysMo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D884F6025F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E41B1F031E6
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:48:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9C0486021E;
+	Tue, 27 Oct 2026 20:07:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CF11F01825;
+	Tue, 27 Oct 2026 20:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793130500;
-	bh=dBXyCpRHgO+MYx+nOUuoDTL78tUn9LIeQ2aFxfEucBY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=X1ektPkr07/Laf4mhxGMYACp9EUSpX9DhVF1/tTXmR8R3XJLK/ig9jlr5MNsopi6V
-	 JXYaaZS4Ka/elkmjbJrVLj6hijeKuf4QN82dz5bxl8JMRYZES6pWFYL4LcNRV97ZOg
-	 30nkS6WxaeT5i9Y3h0Qx9ngL/znS/aDemcg2PGM/o4P3ucWR1i25zowTWWrQrK+FJY
-	 jOeXt+P0QWk2sWEf6svV5gj6s1S9b3wJVh8jSa6YxX1LC/nmhQeIffDpIU2q694IRl
-	 Yl9+/FsVZi0pSIShvD0DD6xRjE0byx72bsDp3J7k+jPh8yWCvohBZQShVXxaoXrYez
-	 q7nUtfNlrno2A==
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f1e5d7450so12552185a.2
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:48:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwSCR08hYzbOzpND7e2CHTYCLOUu39G05rvu922T4qHEHcre8NFq9rxaHnvKFIZcDE7haZ6utGFHw==@kvack.org
-X-Gm-Message-State: AFq9FYIS10aLfvksPVkk8GLyZKoytSFMnLLM7IvQGm31t/IR6sCSnwQi
-	VP27Uk/5SHzqCOd/ctgIug2s+MoLAf8S2EzTyB6SRZtzNWBDQ7hyJwCScSJg2t1QkdZs4ALfduI
-	d+JEV9Mj0upmo5W992ZDp/ZH0Eu8KaaM=
-X-Received: by 2002:a05:620a:171e:b0:93e:c12c:4409 with SMTP id
- af79cd13be357-940ef99a3dbmr1852566585a.69.1793130499936; Tue, 27 Oct 2026
- 12:48:19 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org> <auB-3BQn_rR6IfY8@pedro-suse.tail5790ac.ts.net>
- <22b819a2-631d-468e-b724-770caf9f94e4@kernel.org>
-In-Reply-To: <22b819a2-631d-468e-b724-770caf9f94e4@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 28 Oct 2026 03:48:09 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z3qgCPBpCDitVTq+xiGsS=-yEhKSbEO4Lbdn9MVAHK0g@mail.gmail.com>
-X-Gm-Features: AclHuK-TztIwEQBE6javSaaaoybdbPKwOAcVqEYuGwGbjltsm1heJMFfzyWkRwA
-Message-ID: <CAGsJ_4z3qgCPBpCDitVTq+xiGsS=-yEhKSbEO4Lbdn9MVAHK0g@mail.gmail.com>
-Subject: Re: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
+	s=k20260515; t=1793131673;
+	bh=7GmJ1pURkrI2M4cFdKYZZ2Ya/fgG59abQ7Yb/9UtrSs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=f/91R5wprezD4KJkX2Jx7eMJXK4zGt7nCjRBu4zWgh8B2lozTbjxHynKIIEt9/m3f
+	 KmyPkE3l8j/1agfXZbGkBypO2fHwU0XhSfNULcLHjxjA52K9g29144aOXDupqH3gVj
+	 OT3eLlqbs0BTCVZVhirng7gxbOWPZ8yfKPk5IvDDERvJBacYahHrZc6ze7rglgM8w6
+	 imkuTFKf8yCjOjgLHdSu9sDjLJshaUz/ScopTOXRxeyoDso5ip229Mq5ygKszg6hf8
+	 HikkJKqYHXvk2V7qmSpaCnNcIPX5qKKye2psG5orwcoufcMa2jqaetc2Dy2c7kS6jc
+	 2bZ5YYFxsJP3g==
+Date: Tue, 27 Oct 2026 20:07:51 +0000
+From: Harry Yoo <harry@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
 	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Alistair Popple <apopple@nvidia.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
 	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
 	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
 	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
 	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
-	Josef Bacik <josef@toxicpanda.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 88DD180006
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 01/46] mm/mglru: don't use stack pointers when walking
+ PUD and PMD tables
+Message-ID: <auEDQlAfJZZzaape@thinkstation>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6CECE80012
+X-Stat-Signature: ab5h7dp8dnq5qwiw4bg5wraym5hdt4rt
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: agdpya1i59zoyppze7fqfsscbgr9r7gz
-X-HE-Tag: 1793130501-670937
-X-HE-Meta: U2FsdGVkX1/k2DOFibqBW9lYaXnTu6X45S886A3SC36bz6xiORPQmhDEVeCpCZsVdWRoYjiBwA1OZZj4jlDlOaGw/pddriVEghV0CwG3PvgLX8j7tewHjmAqTQIPlfJDgp8VJOuELHX3aO6ZjGUtmjfFMVmL3JEdiAzDJ108Ix9zYuK0yB9jqMvVnLTLG5QLuQpdkdzspha3nqdoWWc07QgiIWV/pukWlgKvYxVxx2+xmKeTYLHzvfjsUL75H9XpHXPctJH1pKVjnpjzELjIFeu1o2Beat6+bbAdnRyCWzKAUUSd949LmZ160GjlTT7bhuo9loNhCZSN72u7yPNNW+D8LsMFsiQlBdTx6cnbUnsihTIqWwZZjYCv1DfPgfYEjPq0oEIW+WCMEtxYen99ZxpUaQIr7RrhjqcYOEiIgUBmnbRqLpOqPQ7OOJS+IegERsE/FfuldWwArozArzZiGfk/IIkYO7ztMEDI1qUFbATFdEyqC0wlzlt8zPPYgotB7hOUFZALG4dRMi8kY3af2SZkognfCxLtxW6EKwbQ+TF4tBDtH8jRzmBQ7nAdz73VBUwTi/ka1PF1/0a4gjEnT077cGUJNm5OrM/AN+pEFgy+JazQBEWA4SN6jyf/2ErZs7gqVZnAZeLbtBuebCcMnzfvayNTrVvPbkFKlZnPVhFfCqhxZf0ebH/kbr2fNXINxmfEdovconhdtg03QiwuJDLVSbg+4vER+0VUqZwRcRO22xL19nl34m2kWNCcoL4xa9N2hJ3hRWcq3zZSBE/NMfIo6KtCiMk9ZR9goTTmxC734rbshe4ZfFZTJd44c+1V3RjtSG8MyKXX55dodGM38c0vudodIg1DN2q2ahqRdJMh2rO6W0OkO8rZ9RJ3bJyPo+MmFAzoridDWNLtf1KIEAFoBKx52/AIUpWQtw4ZvUEzx9ySWU8aZu2WgyPv8Y7NR61REBzqLa0DN1h9Rif
- bxBbJbIH
- NMDLYsD0sapjORExV+Zln7Vetbcsr3aF3IYPASRwvSh7BLdcHdLXMxB6yM6b/JEIbv8egqEprjfhvQEZwdmczhnBrEH8pFrFHERoZR8IO/0ULRl8X0WcutfS36nmyeVqK+TcS10XQ01i/JiqdMi03TDPdYxA/Z76Y7f3bI3E2o0/AXYbNjCxpTHIZL0O59kJzpXFJBfdt7bhMiv/aI+Xs8P1dnyp89a6ZnKktT/aFSmiZFcuvgnMZiw5fWkW3fhr0dNhNnj7v7A+tcVR8GWWAijZvKs+Th/PQUN47ml0sF6EV6y5cwfxS/1i9QNqxWl4y0Dmneh2NRJPbGl5pO+7RnUP03zT8Y8zZL08lfoY4o8T+Ome1SmnxsC5gqj2e+r19y6G9qOQt/I1uN/8vnIt364H/iDHME+2rr7P8/7XBwNxMjJ776O3Hso4q1ptHD2WOly/3v8RjFKEv7lzisSLJXXgrPuBfU5wOQkwqSLoIOIlGNBMdIH3GanrCNjy6X16BjEol
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793131674-477051
+X-HE-Meta: U2FsdGVkX186WgQtI/euAffhNzLars/tITYqK4gIHPxkG2MwRATF8ou5DKUTD0I+38WlSR4pOIGNUm2mHVTPvKcUfQUKsT/eJTO/gPqKajFiviZdGZc5dkKumDgpG0TTi9A0Po1bQJLWB8sara/k9obykn+WPaymNWyMLo6jO7rkiEoLhZe/6cuQEzGEuHN07agI1YW3QePBvvfZQH7JddLnEfpSoj6Ai5suRpJOFd9Ls/0AG/1JLKAHcciwaUxD2v8x0WQx6ffMRkpdP1fje8uoshtZE/yhaU/soUw6P0fs78JDhpxQZr2p9Jbug0fMyZIZY1K23/n+6HuDhrdXUDuKRGfjd+duKPQcnmcuCMztm00SvMt+sRZT0QZ03dOj6yqBNF0cNRVXSiCTUzG23RkPO/qbV+l07ZS7kib0Jn6DEsSENO5d+goo1D9WT/o3hboJ96narSSyqzbCYsK76K7GRoqoJrbIqVIqSkIaTIMf+K9S0H/Dt5UGk3K5ZwpAp/gQ7XwJizeNusYnFk+7YwBlpq+GQ4Wq0ZQ+iZLaYQXppQ7FEMZERdHqG+q+j7IBMtw3eA+GaYO/bG70/JmSgYKahCzXTA1Yup+Onrkd/en2P9A5c25L4yuWlxpvzl+QZ1kjBxZZjb9j0f0WetC84zX3TgpV/RWmuMnwtT5sSvNjgGbWDPO0QH2uUfVANYJi8aHY8wMQjfWnXjZL/xHG9YxzT8XkERWIZt/JWUfMJZ3Du7M5QGf0oFCf8GNjp+Ak3KgucIagco69RLNetxeMcDwzRZ0fS5At5uAyreJc3G8byvwWyOAzbBQW1QhaSGjbHS44zRi/BzTythnE13sLlWkipg2Jd/2w2OSoVPBidPkPAx2oGXI7TK8ercTm1kRxJ4sijZnlewBmKyDaU/oCkX/NJCI/6eXUxK7s36tZwpaQdPG14JAZ8v6ciLM3SoEmcWD+Hv13/LDQzM+LUUh
+ Z2ZqY/cv
+ 2o5DcsZ3pEcW2PHLrIc/281UN8f5UegAkESi95resfQFNt2bRc6MkMoGT3Rn1Ue3EGlLzkS3sCScffDuheeMuaIPXK+8u76uB29UlJUasMRywanSW5gwuf6OzlVYksaGEAL3W+VdVgFQQ1cmuUWMMrE9pfRXQyDliRLCI9ZPQBZwe1Ctx7uSx8wZ62/Ns3fVQvCrIDQT8v4nBWvmkrURQJEwTM26zhWjWb9+zevfXPXJpiorYCVgOb8m4mqrSTpVPDM6k2GU0fQMMA1ZXSywrb76PLu8GhsjOZQgqD/2DTIwUbehum5kZ1qn/HVizEOvHOeuExbgYI3vVFYU1ozso7HRvEEL/5ZYpcTydgqiE/RnFJkGpq+CrTsd/xcegg9QDIvjVt27/P6C5IWx7iUSK98xeaknQEJKAi3FG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,57 +121,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 3:07=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 10/27/26 11:38, Pedro Falcato wrote:
-> > On Tue, Oct 27, 2026 at 12:17:22AM +0100, David Hildenbrand (Arm) wrote=
-:
-> >> dup_mm() copies the parent's mm_struct before dup_mmap() takes the
-> >> mmap_lock. A concurrent brk() can leave the child with a stale mm->brk
-> >> and newer heap mappings, causing later brk() requests to fail.
-> >>
-> >> Other operations (e.g., PR_SET_MM) on the parent's mm_struct can simil=
-arly
-> >> cause inconsistencies.
-> >>
-> >> As a simple and robust fix, grab the parent's mmap_lock earlier. This
-> >> way we don't need to update individual mm fields in dup_mmap() and
-> >> keep missing ones. Stop updating the 4 existing members (total_vm, dat=
-a_vm,
-> >> exec_vm, stack_vm), as that is now no longer required.
-> >>
-> >> Keep releasing the parent's mmap_lock in dup_mmap(), before
-> >> userfaultfd completion, to avoid moving the userfaultfd handling into =
-the
-> >> caller. This should get cleaned up later.
-> >>
-> >> Move uprobe_start_dup_mmap() to preserve the lock ordering.
-> >>
-> >> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> >> Cc: stable@vger.kernel.org
-> >> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> >> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> >
-> > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> >
-> > FWIW, strictly speaking malloc() isn't usable in a forked
-> > (multi-threaded) child, but glibc/musl provide this in a best-effort wa=
-y.
->
-> Yeah, I'm more concerned about other things that can race ... :)
+On Tue, Oct 27, 2026 at 12:17:21AM +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> MGLRU passes stack copies of page-table entries in walk_pud_range() and
+> walk_pmd_range() when walking to the next level. These copies can become
+> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
+> table concurrently.
+> 
+> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
+> support page table walks"). Likely, earlier locking masked the latent
+> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
+> retract_page_tables() without mmap or vma lock") allowed concurrent
+> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
+> for MGLRU") dropped the walker's outer RCU protection.
+> 
+> The fix is simple, so just fix the original commit so we don't have to
+> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
+> RCU-protected lookup and validation against the live PMD. Note that the PUD
+> handling is required as well to handle folded page tables correctly in all
+> cases.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: handle walk_pud_range() as well, clarify+simplify description,
+>          adjust Fixes: ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
 
-Regarding the race with memcpy(mm, oldmm, sizeof(*mm)), we
-still have one [1] even after this patch.
+Looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 
-That is, copying mm_struct can happen concurrently with
-lru_gen_del_mm(). However, this race doesn't seem harmful.
-I might be missing something here though.
-
-[1] https://lore.kernel.org/linux-mm/6ab08265.71f81b7d.15fa6d.001d.GAE@goog=
-le.com/
-
-Thanks
-Barry
+-- 
+Cheers,
+Harry / Hyeonggon
 
