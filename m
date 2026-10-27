@@ -1,105 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF628606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10C5606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=MYFQzskI
+	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=rxmtt7fQ
 Received: by kanga.kvack.org (Postfix)
-	id CC33D6B05E9; Tue, 27 Oct 2026 03:26:21 -0400 (EDT)
+	id CFB5F6B05BE; Tue, 27 Oct 2026 03:35:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9A5F6B05EB; Tue, 27 Oct 2026 03:26:21 -0400 (EDT)
+	id CD2286B05EC; Tue, 27 Oct 2026 03:35:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDB676B05EC; Tue, 27 Oct 2026 03:26:21 -0400 (EDT)
+	id C0ECD6B05ED; Tue, 27 Oct 2026 03:35:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E88B6B05E9
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:26:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 33EF81A08F8
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:26:21 +0000 (UTC)
-X-FDA: 85367572962.07.6A02FD1
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9819AC0002
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:26:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MYFQzskI;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9996E6B05BE
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:35:24 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 140F91209A7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:24 +0000 (UTC)
+X-FDA: 85367595768.19.46BB71C
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 565101A0006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=rxmtt7fQ;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf19.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.46 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793085979;
+	s=arc-20220608; t=1793086522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Voi00V0tdXCD/BPkPI2PBi2izLO04MVewLq5+Eoz9wA=;
-	b=eyTvD5JazcE8siySxE+BnkH28lGl6wS0SbXPOCUBTYdnT6jHYvJDsH/atvMDoQ6Px+Xk61
-	HLVFh8MsI0g8/wsHBB4tH7MFxPdDpvB44MKZxqnBGgU3QFYd1nUeVYR7s3saZuVLGd478y
-	NqYhlGcbFTA8A9YG6YowDRUfLQIvfkg=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/YRCUcykH2kxr7zY9j/CVMJiW+kRaXQLZ0+Ryrw32iA=;
+	b=DS6tbb2pH7KC0+1nOKs1mH5xoYdYUuvFa7VyfKzMeB1RlxpvnANAteQHR3u+12R6mlIe5t
+	D66GbYTam0CAo7u9UWsKmwiLV4g0UDcbbv2g+tHA7mb4iEg4+cGjuqVbLZnXBMEbtdB59J
+	+8Klwdyk1NnodRMGuji8XyRhI/DuA/c=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MYFQzskI;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=rxmtt7fQ;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf19.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.46 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793085979;
-	b=TcbBF2i3mAVg+K1eXcumCvf6V2CaXcJKYpEqn+6Q250sjcNli0AGBmzLplqE1gnNMW4p/L
-	mZsVHfrSBQ6N8ZC8HSdlXptHm0QzSH9JsjODdSSauKORkVEsmqg1ruz3mE9icLf9APBXbc
-	1HGmxXUiw4jBikwxTX92EvHkweQWMuU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793085973; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Voi00V0tdXCD/BPkPI2PBi2izLO04MVewLq5+Eoz9wA=;
-	b=MYFQzskItQC/i4x/0bsJ9JcPM5OfxSv4QW3bwB3I3AROp/mRJercbUep2fjoJr8tlUw4M17kuulmMhg+PF1kyB8VDjRzZwgNYOYs11uzvdDBBPXHBrzv/HSxYpC7/upQPs80uW51lP+iYFCvXcVTox9pHGVsaj4UsE0/5DFxRc8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0XDcwS4h_1793085971;
-Received: from 30.74.144.191(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDcwS4h_1793085971 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 15:26:12 +0800
-Message-ID: <e1aa3fb6-a557-420d-88b5-9864ddfcec2f@linux.alibaba.com>
-Date: Tue, 27 Oct 2026 15:26:10 +0800
+	t=1793086522;
+	b=zyk+mi7hMm7unRBSf9mPbunYLHUedRF72wDVJ5bKeNWOk4EMnqiuaxjZZrLsJo4v3OqN19
+	4R+AfLPdCYa6h5SCv9IZ/Tpl6NMJ5tooehNgucCCWDBBePIj39jo29xvqSJp4iztset2EH
+	13+MnopP2WPC1GsF9veOZq4aSnmID2g=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3ae0852df46so530151a91.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:35:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1793086521; x=1793691321; darn=kvack.org;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/YRCUcykH2kxr7zY9j/CVMJiW+kRaXQLZ0+Ryrw32iA=;
+        b=rxmtt7fQFMCbA/VIlcEhwuSubDTPVDx/I20libMnnbNqXVFmjQA6PNhE+ub9wQzzYd
+         bkP+s5U63CkWO6g4E/5XZsxCxj3db/OaeSXAVgmnLEY+jp5JsxzUIZEl3d5ns5VHm+k7
+         asB+IZ6wpDRwoLbujTdpP5w+WrhJa+0OpCn6o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793086521; x=1793691321;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/YRCUcykH2kxr7zY9j/CVMJiW+kRaXQLZ0+Ryrw32iA=;
+        b=T0Iz7jDxa+LmxylB+1OmxKdILuS3pg1p9BbltqgxDoyfveSlSkYfBLA5Zs/0l/SjlD
+         uqFAoBiRKq543uwim9FVZ5QCfGUrc4mD+2qcFzx/HUsM3cgCh8rPgmjXHFw8J0ghaxRj
+         Jvz/o0DohUEKYgJK7+R4m/Z+6KWrsyDQcG7XOdpsQenMIhbPp2k5wKcTEG8RWtKPSqaM
+         Iz8wy8be5d4miVuoGJaFsJPAWF64SOHnLffz02q6iVc/3UB+L0VfBuHzruNUj4/xEirg
+         A6kOzzBD7YdNOxCz/W4wJJnRss4qUUX7wdFLQWIVvYddPvBTng2uyvV0S74OkJbehlYz
+         FKfg==
+X-Forwarded-Encrypted: i=1; AKwUvBw0wrdS/MYD+CjDQsTlZ1q37QEhF6oxlssQT7418e3uK08EQtuduA/vCOlX8p59xtU6Sz6e2eF2mw==@kvack.org
+X-Gm-Message-State: AFq9FYLmpH3KPHD20/mPvIgMG0U+ohc7XJsjK7ePhm6XPMG1ZS/y4gY6
+	0Khb2wdTb0tSMW1W2wRpeVMHUlCEQAqFnP7vQPanIlA4VVMooHg5P81CYGcgKLjqYQY=
+X-Gm-Gg: AYBFou3icDuoO0WiM41NfwZdRPLK5C3vviNGfgJJzDp5sVSbqSVGwHH4CV94/RiPh9j
+	Z0TYgBENfRKCpLJyruUgdVHLr+KepcYzE6enhCenRYZ20yjxPb555Y4F8gZVXB8N3Z9RGsv/KOP
+	AiGSiOskJ47neKWJmUpOi5S6NDaL2y/e8tk0O1FrPhkLRm2osahZtU2+FxtzRDJJWiG/K7ONVzU
+	16Z489M7eQa7lVVV9hUEB41CwH+O89DeMo1VWPHffYbs+GnM/cBVwTk4AxxKuA2FwrsTzBk4cud
+	h8vZw9RNub4FLfMKc1PbzdZzwW3pJ4g3yrkyfMOSmMUvi6EfZjibrkymNeyTE4IYL7XfTqzq+ZE
+	Vjp5QpLG5C/8laOfk2XoNWWXw3N+HBwxc3Pqf9MPVIebYwj4LmT7ewJ9uQrWiAXY7wHv/t3Nr7s
+	cgrwwCZavlN1NjzEdrCKz6yQ7kDVeduK+m9s0NT+gjVeyNa06wldy1jh+UI+o/YJSn27UN6z3AE
+	Oj9Hp1FWACPQHLjF2jQA8mbFaR1+47+ay5dlEfZIrguJmipI7fdKi93a1VRUHjmbDvj/ohk1I4G
+	F7vAHYQBD6ebZdVqzOmFCiove0/lY5U2+zoUoPZvgsWoXLNmyaKLnyU8R/OVBO6DyUkIMQ8OoxM
+	29qfrrCbqtCw2vCoqtIIGgGRJlx5qYilRdV0geh+pvldXAQ==
+X-Received: by 2002:a17:90b:35c4:b0:3ad:7f4d:2839 with SMTP id 98e67ed59e1d1-3ae402840cbmr752308a91.14.1793086521251;
+        Tue, 27 Oct 2026 00:35:21 -0700 (PDT)
+Received: from localhost ([116.86.153.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae404429a8sm2527473a91.8.2026.10.27.00.35.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 00:35:20 -0700 (PDT)
+Date: Tue, 27 Oct 2026 15:35:16 +0800
+From: Chris Down <chris@chrisdown.name>
+To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
+	GONG Ruiqi <gongruiqi@huaweicloud.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: [PATCH 0/8] mm/slab: Support selecting slab hardening features at
+ boot
+Message-ID: <cover.1793086056.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/16] mm/shmem: discard whole new large folios on
- fallocate rollback
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Gregory Price
- <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Lukas Czerner <lczerner@redhat.com>,
- Carlos Maiolino <cmaiolino@redhat.com>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Stevens <stevensd@chromium.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- William Kucharski <william.kucharski@oracle.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-10-703206d5fa0c@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261026-fixes_shmem-v1-10-703206d5fa0c@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9819AC0002
-X-Stat-Signature: 3q816fn66jywzouodqihgjb6mebz53b7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
+X-Rspamd-Queue-Id: 565101A0006
+X-Stat-Signature: f3ymmq9oe3xxjkr5d54sh1aix8w1kdtw
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793085977-922327
-X-HE-Meta: U2FsdGVkX1/adXhZsdIf2auaag3s+e1BouxPj3vbgnYuz8Rg7Wb623GDoSaCwxQDdLn9fv3+3uBLwV9J0oA/lbmKi/0oPWaeWJlK1G5i1tFAmnXqRKlqD81YPbD8tg2Cei7yVX3S4XQYZ3A8lbvBTPx+CsVkVzSYH0oSziGpg2IFEEcW/hqn+HEzgPL4Dcl3LBoY5EVSzCAyZW/T6apbl/Tnb9Fx/OHFrbvVesjW/xN9BsM00D72GSTfZPQcurur9KIO/9QWunQAocGa+maIvkVWqhmUW/rzqi/Bbd6jpLgYotgwQdjtz01t4OBM14PAhcGo7MwBt0odfAxl/lT/wpJQU3zgi7I/Njnil74ZpmZ2O/83nGrSRj8bLV6HCpDv7NnlfeGRX0Mi2nKUL6XsdFf0KNXWJxWxhDYNgyYJMCSQF/spwcT+1cO4Ct81vSsxHT3XFKf41948caLB/n+DIXIavDvQsqSqRTdxV52KS5wUb3yvtw9woHCi5NRAa1ZQ7B57SRC4HM8Jy1qsB0gSvaU1FxCULsphiiPzxxExtCE+prGqTDgPT3IZrpaZxofWma154howbPIzDtFI+3PJtYXrsBv8p2QKFX+8/rKVkL3CEJrcfP+U/ewUhEOlteb5qf/QfEkeCX2BT5O3J357lJQ8shF/yeVhRcuYt8aKdyy6X7PUmWTyt4RMUMNHFdV5qtsXXnrUE0WMCTteajCbYNqn5lxTE5WgGZs3A3Mjpkn1G8j7pkxLlT2LwqfNi27XNMdiJemwBGRDprCa4cZS2xVIsax6ePpAGrRFxJbUzBeMgjBc/GQgqYQfeeox3nPvPbVfTYYbHp7ClDjR7A0/Hy4uQTPQH4hl1865vUXBONAaUzliDkqv/J4OAQWnlioUv5GFAGV2cep8GjLmOCYJFpMNA60thZ5Z+9R/ieV3G+0q7sx0X67tOGQK2f0tAg2sdym5pKffrW3mJwAL5G4
- c0Ar4hmi
- fuYhKFDQKXBcUUTSlySRCg2Ifdjdb+5fdylwUBLC3qqI6O4VkNDVUe0n8emKvRC+r6rc2VVLpvwJh/R4Xwp8qRin6/sZSb+uOe1ynGnL9TCT+BuO9j3VTBcCDFEMNm4RuJ8DhDBovdjdRwptjBxPIfX/EqtXcTfC03bcHf4r+v3ROAZaHK2if2uRsQKjd7aJhUvqVBKy5nwApZ4JpFUsa7EA5UK5tryFiTYCKUCg3RpodvJ9cpARtOj46AKuRmZbcMVEaYZH+4JTAg15fyEFuo5vFnOVhvn6Va9KbzhHN6kxXPZmhtRLp+kWGZFN+xMJA2KXXbZAaun/0oe+WZZmcdphEGTV7cqagYv9HhebHRAxsGrOD4rdperYx6/7I0czVwpVuiBfK6ehZMk3GFNvWpptaLboFHN71ObePhtE4jyjrNAI=
+X-HE-Tag: 1793086522-818186
+X-HE-Meta: U2FsdGVkX1+VBDH1CyfU+7BRdsaqIa1wgsj0nDOinpvJ/1Bnaxs4W3CKmMScg98iAktXC/vSDCB8HvqwW+G/IfUsfd8Dd/yb633f3PafFMF4qPH/t4q9h32vZ8Glxq6ZCj4tL8vDEx39L3TDYjG7uCcDu8GJjhY+NJCEQFZof2KRb5EsD+7V2YmJLw05qotKSA5JbjBPjEEBjrxegaN0hGqnXvW9YuINqrlNSaAxf3j//bmROX9dIWvVZRxMN7ykEDOGEo5PoG16MV1+ORM2qaHGTSC9x+pj+yAP8sVrBVgnsnCXeST1O+m7hsK8nqU2F8k01c8AjCNMkyGnGP9iF5Lt8awzju9ZgHJZvwlUkpNwq0jkOjyioqjp2BsngZ8yLKbtkuR8Tl93db19NawkdaxDtrJX3iiKCdrL6JQhIgK/pcbRlXqLOcDeeMKM12gEEPkJr9k2iUhQ/uw0ukt7k4rD8PVHaW49AY1c4NdMx5ptsCxXXhFvapGFx0I4S68oxuCmJEESzWMscJXOHA4w0jgivJc9sLyERGOiSS8mYSiAvzI9n2oCknh24bfOk2bNI6W890QZnHj8v4L2YZype2uYSAFt31QZZVjs5oGnTtrDtQR3UjC3vhMxcsf8/FsNJHOqgkFpW8gc6Ml67kq6VEMmhaDveh4I/OLfodFWSnFgvJrhPDhtLGTVGjNXdNlzFCbE9GZs9NmQ7uZQlcn8wb5hueGDXz6hXwq4myPH0A5N1cHxNPjjbI83PNTxokFdz1gvGVN4OEjqu4e4/x64mLAjEFYtwCK4iFpD2Oha5LasvWRD6zSgqaOI/Sxb/aZ0NLHIf64odHJ1UH+xPLsbBePoCLO5bXzFVtv/JjFwRKPMcooErTwwu0Eaa5EsgvO1kIF+vRxeqVFtJChflSzOQJQfm11x7UuGgmEMp4MdGcGLbRCGho3cPagpImWJ8lxlSwOp4vUuB8D/v6NTjb0
+ 2Exu2wVH
+ Mc3uSqRgjf0JkJ15iea2/OaAap52jzSDFweOEozIWV13OqjvaDc1/kze2I0doYw8IgvMMhDm20eBsTQat8jxxwW2VgT8qExkRa2YP0trMhSAFFHTJl627f79mb7TgdfgOn2D96D2zNiUhP2rTXozx4vt6QlxB/+mepi4Z8EQYfrrZt4VlVOe3rmwfCn6B/qTZDsd2ks+CCbOINuQkfn8P7Faz4lq8eLWL6BV72hujJ5wi/zCSLwIslAPRm8o7U+sxkFbDJeEOveSUctUHp9wlX0BADqYvHnN55q+rGb5yw+7+rxMA/8EWQkHYr8Qk3X+ua8S8VODcZ7q98cOMsNZg8k/s+Nno8Bg2lx18pwqYBriSHNYM4E6WYo2Hwq0YtSlptn6snhN07ICSsSzUkY3pXvqC5UOG5My2oj8QPN+cGWu7JaqNWSQXlkq+QGG3u8svPTEMhic1RDGvbhLXkYvtNUxfjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,27 +128,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Slab hardening settings are currently all build time choices. This means
+that, unfortunately, hosts with different requirements end up needing
+separate kernel images. Let's allow those hosts to use one image and
+select each policy at boot instead.
+
+This series adds four new boot parameters that default to their values
+from CONFIG_*:
+
+  slab_freelist_hardened=
+  slab_freelist_random=
+  slab_buckets=
+  kmalloc_partition=
+
+These mostly act at cache initialisation time. For free list hardening we
+use a static key settled before the first free pointer is written.
+
+Chris Down (8):
+  mm/slub: Support disabling freelist hardening at boot
+  slub_kunit: Add a test for slab_freelist_hardened=
+  mm/slub: Support disabling freelist randomisation at boot
+  slub_kunit: Add a test for slab_freelist_random=
+  mm/slab: Support disabling SLAB_BUCKETS at boot
+  slub_kunit: Add a test for the slab_buckets boot parameter
+  mm/slab: Support disabling KMALLOC_PARTITION_CACHES at boot
+  slub_kunit: Add a test for the kmalloc_partition boot parameter
+
+ .../admin-guide/kernel-parameters.txt         |  29 +++
+ lib/tests/slub_kunit.c                        | 186 ++++++++++++++++++
+ mm/Kconfig                                    |  15 ++
+ mm/slab.h                                     |  24 +++
+ mm/slab_common.c                              |  48 ++++-
+ mm/slub.c                                     |  68 ++++++-
+ scripts/gdb/linux/slab.py                     |   8 +-
+ 7 files changed, 361 insertions(+), 17 deletions(-)
 
 
-On 10/26/26 5:40 PM, David Hildenbrand (Arm) wrote:
-> When undoing a failed fallocate(), shmem_undo_range() must discard each
-> newly allocated folio. Its second scan instead passes large
-> folios to truncate_inode_partial_folio(), which does not necessarily
-> discard the entire large folio, but instead tries splitting it to
-> discard only the requested range.
-> 
-> For example, with huge=always, a failed allocation starting at offset
-> 4 KiB can leave page 0 allocated in an otherwise empty file.
-> 
-> Discard the whole folio when unfalloc is set. Note that we enter this
-> path only for folios that are not uptodate, and can consequently be
-> dropped without losing any data.
-> 
-> Fixes: 55ac8bbe358b ("mm/shmem: fix race in shmem_undo_range w/THP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+base-commit: d15d7703166daf7bd62c844a3cb1b3a6279adb4c
+-- 
+2.54.0
 
-Good catch. LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
