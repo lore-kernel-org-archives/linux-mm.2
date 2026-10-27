@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3549D606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241DC607351F
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vGEoEdY1
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MWpWNuuj
 Received: by kanga.kvack.org (Postfix)
-	id 380786B07ED; Tue, 27 Oct 2026 11:47:22 -0400 (EDT)
+	id D949F6B07F0; Tue, 27 Oct 2026 11:47:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30A776B07EE; Tue, 27 Oct 2026 11:47:22 -0400 (EDT)
+	id D43786B07F3; Tue, 27 Oct 2026 11:47:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15E4A6B07F0; Tue, 27 Oct 2026 11:47:22 -0400 (EDT)
+	id BBD4B6B07F4; Tue, 27 Oct 2026 11:47:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D07266B07ED
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:47:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3CFEE1C4460
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:47:21 +0000 (UTC)
-X-FDA: 85368835482.07.B09AFCA
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 57AB84000A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:47:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=vGEoEdY1;
-	spf=pass (imf04.hostedemail.com: domain of griffoul@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793116039;
-	b=1pcyxA8GFos1tjtYSIXX8yzIJWuOCSLR6DhmPqAgbcgyJfg/CryjVbAHSZH+oa3jvkd5gn
-	sA7TC44SEC+UdvBUKZ+nx4v0f/yNzGT6fn96330Vz3Ichivgd4nqKujBPx7G2A7UQ4gSTy
-	oobsRq1zMjkwmcJ14xWwLIq21NURawg=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=vGEoEdY1;
-	spf=pass (imf04.hostedemail.com: domain of griffoul@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8997B6B07F0
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:47:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1D24C80A46
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:47:26 +0000 (UTC)
+X-FDA: 85368835692.20.1545220
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2EB0FC0006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:47:23 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=MWpWNuuj;
+	spf=pass (imf22.hostedemail.com: domain of griffoul@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793116039;
+	s=arc-20220608; t=1793116044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4B5d9m5IGzIPEeB3GJQ3GiQrHdJ7xnPhjgrZIgnZaI8=;
-	b=bt630mWZGMS4hu2DEGFV2Bbxs07EYiUJ82faE61BuQcJTm/Ylv4PZ18JxF2Xw09RHFGAU0
-	DwKK+ZkE/xGEY3KblU5ilxxyXL2IUnx0N24A6Arh21R2ygtjkJ2BrHfOSMoFtfya18zHup
-	yHnLyX/1AdXf/w8D63NdIt3g50J6msM=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48afcd7ba9bso2651771f8f.3
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:47:19 -0700 (PDT)
+	bh=0HiXSaw8ZLiMKT3XuSDklH+uJG7cgDM9jgjpZ0euyso=;
+	b=u9L09Y6InGOnWrKmeb1qhNb5IC6ab28cAioWgA2eEd9ogHgTU3b3jX6SJRWWYkf7RgfrpR
+	Tw+ZBVyau6YwQ1R1q7Eg4Ak+t9kCQIM45VWuRNEVPep65WbRnDTc7pkmyn1v1+yXC2Va3t
+	aNCBCuhGYUL+et8JBWPEg2fTzoqhkK0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=MWpWNuuj;
+	spf=pass (imf22.hostedemail.com: domain of griffoul@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=griffoul@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793116044;
+	b=f7C8Hoe4FI2TLxQR3ZP2fw3LETkfAt9FfNlXOpGGfncKtTXuoTPxLtRg7HNSDkVTEwr1vS
+	FL28jokknHdTC14lOtxQW+NOLezdHPC05Rxmsg3O5p11JJfJnDsTPh9P+IgdNPV+UsStUN
+	ZthokqZkLlK6OIZnm0ybORNcAtZLZ3o=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48441a2ba1bso2828605f8f.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:47:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793116038; x=1793720838; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793116043; x=1793720843; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4B5d9m5IGzIPEeB3GJQ3GiQrHdJ7xnPhjgrZIgnZaI8=;
-        b=vGEoEdY1JDn2fBwb9NlAHUyoeN/RG16TZ37CddqXZ563kIgpHrTQsw5WfMDg62b6m6
-         Z7H+JsxLiN04N5NcNrll1fyjeimSveMSgCqLIyPLi26d5qL36AaKnMDT63O88fWXDLrp
-         hgd4Eq8jrINJAuJG8LDmyaMw7WBGSOarG7ZE7nbHFUQzwkkHyj3U81+0GdAtB0ZfgGyY
-         g7KyaJEyRAOH4IY78E/T4ncgSDItS2tm7+o9ezF7UsvHpFH2RGqiA//Xflpf7boS6S+9
-         wCdGB9B51E6sSVpSkOMDgDVKShc9x6jKFBpJ15kuTC17M1IWMbKiIQGpeKxrDMEhDVxl
-         1/ZA==
+        bh=0HiXSaw8ZLiMKT3XuSDklH+uJG7cgDM9jgjpZ0euyso=;
+        b=MWpWNuuj2E2b+/7/3mq3rpTMqF/hp56CdDKoTmtdXAGJZuHA/0LH8AxBwBUY2NWTEN
+         EZSTpYjmagOLw/BL4sZmau231irAWT1p/KRNm/DlARXx93QUkSuqB5r1MiWbdgVU4LC/
+         v8/CPztrkI+j8w1Ayxd3d5JPvJ8AGy1o+KVn1FYzbJTKBcnEBe2XL/rvXiHyWuQ1Tjn8
+         jNebRmhQ4OkwZzM+JB/B0zcbFW4eIBEmbV+QPbB5aLpmihRH1mosstpKycm53307WEvW
+         ZUyycfopslzCKCQSSEGUR1dyRsPLGmxlUa0fCJ0HlBtyR+jFBMO67EDBlokElqeGVP6U
+         hHvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793116038; x=1793720838;
+        d=1e100.net; s=20260707; t=1793116043; x=1793720843;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4B5d9m5IGzIPEeB3GJQ3GiQrHdJ7xnPhjgrZIgnZaI8=;
-        b=kHutEde9w0v5GzV6Lv1GV5D1T1zHF6L11drPhPoXgE2JMt2hxoDHzfIZDMv8esPWuD
-         I+bg67rMtEwmjDiEujWz7BqNmnZRTZhvaPbWHAaVincammcvVvf02QfbcsOQdtsPj9w5
-         KkT506++ZDRc4K1mORwdNJwJb155K2aKwXoRGGsonA3b9p9YAu3TU6HegT4Tw0hHSM35
-         HIUSXivVxscjVlWlgU8n8BJK2IVlFMy22mCwmdn+/o4u/YG0TZDJ2n1SLIMkoJztAnhf
-         wxzPzDp36Z73RVj13ixDYfXHtqK+QS+l7Qu4SvvubSmZb1fYgmZmcu8BZGq7m1cF6yRu
-         sZZg==
-X-Forwarded-Encrypted: i=1; AKwUvBybVraYtzHQOl1qPx3bnKNg+Gew5kciRXgKH02mWXjoIE6tqQIlN0QGkFmdDCjNxarmcaapUHWR+A==@kvack.org
-X-Gm-Message-State: AFq9FYLRCVArsftBHWYCbMLmQT4dnpRLgU3CfdNk1wMIEMAoFCXN1ojH
-	SCvpi3FACpvM0n+OQGTYDiTwSZAC03RtJmh+KNKIDCbGRKR3mYouPgwh
-X-Gm-Gg: AYBFou2MaqFjY4ebVB+qHT00NJwo4n1hjMtgnspG6nlHrA5v/Mp6Jzvo27YH++Moxk9
-	CcA8MsP2+cH5+6ah7Z/YLPeQit9hrANyCtg5p7eDaiefxCcQtRw7rQM/39olu/Q/B5j6J3NYqev
-	ukJv/FFNrlzkzYJ4hH07W2T90iCQejkkVxIRmhjH7EmJgeIfDq8KKR1yJWaq1HNymq5W2/JPQ0i
-	ppyPRwi/PT600Izp09z1+YSPRg8jbYKPown3hHBQwkyv+qXQ5TxDaNkiPqFcRtN0q8UCbW5Sv5b
-	yoyb3G5qxQ7WNR8Jc/KqXAvDJbZLGOuIVrutmBJ9HeaQqnsCdaY3PFnlU8LpYv7MAPZUMPZ2YqK
-	HWpC47VKq4zXmchGfohwPVIcz12DN5pXmqtwGYUXIr5KTrMQG26Hjiu7TVQC5jisBxfGf01lUop
-	2uORlhYBTFqVWyMa1nGWsn6C0g0DmN1CzH3toEvEoZgM2Jkhcil2h5Z2HmjV7QVQTW+U/Dr/vwE
-	OaNneZGGATO++jlTMAqNs3GnDzoMcKYfxO9RoG92Y9SMOcCR3uF8xh+GLQcht8JA/1Tarvii42t
-	0qvWAz62Ioj7lbHRBamw68rjClvx/wk8UJuZ73pi8njXD+nPlyny8yLzHlEg1/YOC6F9FcxOOQP
-	fpW7uMqwz8mmCvHKU
-X-Received: by 2002:a05:6000:2312:b0:48d:ee59:3a30 with SMTP id ffacd0b85a97d-48e3eb8b4c5mr20222645f8f.22.1793116037586;
-        Tue, 27 Oct 2026 08:47:17 -0700 (PDT)
+        bh=0HiXSaw8ZLiMKT3XuSDklH+uJG7cgDM9jgjpZ0euyso=;
+        b=YJHl+yBWt3Wqk2GG2OLYdCcQcYYp/42lC81qp58OKTIwNMF1etB0UiGKNcbWzjnUo7
+         XhbWzKV346dFWp53tsx5zTCTEqqNRRy1KXg0gOBST9ggIi21+ACxz5jHZZ8zDeS1cHEF
+         u4Y7HgsKnykTaQmmWxhvS27xUQ0U0aLfMhgmzlWqi65+eRGUn+FZ7Jv2SHQUC8SMfjgH
+         GPO2nJcHrEDUnAGx9E8XyMqT0vSePVBWjk6XO9q5MRSJogb8BG2otwLn2j4VUokJ+SsX
+         wwCjJDH1tX8vvj7FqUujV5od1peNVD+uvONe7JlN9veDIyvWguft+x2hnr+jnhEV3HSo
+         FxlA==
+X-Forwarded-Encrypted: i=1; AKwUvBxnou4gcWOLroDZD9zmRHnoRZ91FARIKXZWgj9vdcZ0AHaPtoy488wzIcLH9KesRALTDZgAV8uvIA==@kvack.org
+X-Gm-Message-State: AFq9FYJeJoKNg2lL4HqbeBQTYZ5jZak5qVpPGly+3HAg73Q93qVFLgQQ
+	bEpT+0O4hQ+EjVY7M6XabtwnYjIi+uWuC9Qz4Um+PJ8pnIzyDDpYy2wJ
+X-Gm-Gg: AYBFou2l1bi5itjGIASdcWxwGvaflUoaobRQIRAu5P27zdsKuTy9n7BOo7zEjoeVSzx
+	0LGeehkLLKvehPVIP7xA1G0ZKKo3iB3LB8fy4p976JFybemdPVUyCBgDynYNC7x+uHJ1xi6hAZ5
+	F82q7NBnY8weGDTBiqkjEAj8GaUokw/2qn5tDYsDXyqswaFtaulF4bZXSIN0WLcdMp3ocHAnP4R
+	L0uVPyPuxU8xzFe7KUlPupKU2JqhBmzahVrtnimiP66tsQO0HX0a1bUDxCb4WQria78SwyjlhO6
+	bvtt/v9rvhj+O7QjnvsqlZ79YfIZEhFOo0wQqOaVfim1w+0zicWg/nocAhp14d69zR8euh/KdnU
+	qIO1B4X+g5DmSMy6y64o0FvBzi6IYJ26TLaiWdmbi+hRrCT9Y1Xyd8RFxm2AYp+FSbM7LwWkD5K
+	fYK0azbG95X21ruHr3RXDnqJzCqu7KXCDUUxxYWhAYhPPQjnS6KltLBXLMeLkUppdxkaJepc9a1
+	bXXwie94O/v4RqOWwGpCsuW76IiBYLCdJMGWdS2j8JEV/PiPGhny/aXDS3LRz7sAQfREUQf1utH
+	xdkHkfalC1dRKtuLNSaeJ/ZtD8AuSJAy4RlcWhl5M0/CzsluMM/VGJvRvzt07lBFQFsoawWy4FY
+	1jZqGQbhV+iF2ZO+U
+X-Received: by 2002:adf:e00e:0:10b0:487:40d:af29 with SMTP id ffacd0b85a97d-48e3eb975c0mr15293194f8f.36.1793116042581;
+        Tue, 27 Oct 2026 08:47:22 -0700 (PDT)
 Received: from dev-dsk-fgriffo-1c-93421965.eu-west-1.amazon.com (54-240-197-234.amazon.com. [54.240.197.234])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebcb958sm23845574f8f.21.2026.10.27.08.47.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebcb958sm23845574f8f.21.2026.10.27.08.47.20
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Oct 2026 08:47:17 -0700 (PDT)
+        Tue, 27 Oct 2026 08:47:22 -0700 (PDT)
 From: Fred Griffoul <griffoul@gmail.com>
 To: Ackerley Tng <ackerleytng@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -168,9 +168,9 @@ Cc: Alex Williamson <alex@shazbot.org>,
 	linux-mm@kvack.org,
 	llvm@lists.linux.dev,
 	iommu@lists.linux.dev
-Subject: [RFC PATCH 10/14] iommufd/selftest: Add mock-domain IOVA queries
-Date: Tue, 27 Oct 2026 15:46:45 +0000
-Message-ID: <20261027154649.91571-11-griffoul@gmail.com>
+Subject: [RFC PATCH 12/14] samples/kvm: Add read-only pages and large blocks to the sample provider
+Date: Tue, 27 Oct 2026 15:46:47 +0000
+Message-ID: <20261027154649.91571-13-griffoul@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261027154649.91571-1-griffoul@gmail.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
@@ -179,18 +179,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 57AB84000A
-X-Stat-Signature: 8cjb3hgibi9hchqab5k9sacdc69dypoh
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793116039-20657
-X-HE-Meta: U2FsdGVkX1+k+XvYb/X+PTgkqCvyJnn6aexcK+9GafDWPSCBA2fwtQbRCZnF1z0BiQ8OKHNn4UdeSqu4Yt+jwrU5/DzpfT/M2Lxm+YcgHkyiCtrUHd92xCkoXc2PGvn/gJ9K7KbWS5L2tvEdk89YoQA/mm4YFRoO6sYrcyVwHChW+O9gglUQbquO1eLlr6FjFjfKAJmwH2c99+AySsG5jVtVCDcE78OpCQbdJkKQ0VorYCJKfyPu4VBJ1u/3dejZTlLVxguP7HRrYGehSgGqPRYy+M3jV20uPvO5QVEEAmEDE0jGPG5WQ6EZUP9SC2qLkLmxHtLixxl8P45dWvs7AMA+EOHv3nBT5I64Llip46targ5BPRm+m7DsxpqauLFn6/EO1xpY4GAMq5PVkRfcgB3Ya7PRmJG8ffF03wq21/XjZM0WtWTv9r/v9WkgbKAvXO+A6KcFXwvGXOUAqPokf25ZBJrf+JeCRWOBCocuPJZrz14s27H9adDzyTstZuXgPLSxOUvHWqPSqxL7ZoRKF59xvlzvWA+zjdG9mC+ReAjiZwXeKtgtlk90XqrG2sRCqeZufgX+6hEMevIvCNziTjRc2yysftl7Bq/RYRBtxq6hXImH79f4ukmRE72boPzGigkxqGkOuiQazqwDFSulFUN9EOm6HOKsPD/3WrsCFh01LL8jimckCF2dAkP+pctWH6Urqmp7HqYH8kYw68OV/ktnsoFJjxPflohw9JbmDzU5b3RZM66r7ksF1UHNxG+iLpB8P/MHG5BEdKI7fKYUBPGQnH9vzKkdwi9IRQU4unlrZBVNa1DCi2qq8sKBtSWZI/TN/jirqUzY63v8lp3tWns5UdOYfwZgnC4fkOcoqDbnt+FtA4thuI6w41v6uFyEu+4yta8l/6rKw2XhTEbpkpBAeuKHIFnsTD3aDedEOx0vMNwW2Kcuyf93Axr/tPIV5xVx7GvHtrL39I7Mxsy
- Bo6KV4hO
- DIVJlqtXzMn8bP6uGbYlU6HR9b9SJmxorSmebSQF8U8PhdkKH9O8yD73x2k+5vlicHWesdk1pbggcD2mV5IpD1kCDwvEnK7lcqsVM7s2vJqvXfJU82QCIAxJrryKi3e1CwTLpJ/28hWEX1Ph7GOSSAS9KmAkzeEoi3PkNHxz01QITnxi7LQOVK7LwCnEo2HOEDiEmLMifLgKmDiIjihts9kp8UYo/0zZc8v0L8PCBiBkgFGzLND37qzfP8jNdDELtD0lUAnDGmvUOcvIG6W7UsWpC54zSs5Y7k7WXZIUdB6DMHGlwG9i1dPkpB3CQ2yYNw7S6Y5K8Z4sxsAyhn+QyirXysFAy/SR/k5jrvyeMlYWAYMdgqSeupohGewjKY0DA455FskQAkd76FVzGPlElgBsdHenpe5AMpBtQNJscoeV3uI4AbcvSlXVIMEWiXGsm7HOW2JzZ1KmBpBBw60fU6r/XTrhfqiYCXk0tj+i4p7cHJ8cf1i+ZmXa7vu/pVrIadMZIj8bIM9b8W4sICmPl9j06BBZb6V0UE8PWTmnWl+vbQ+C9q8LfRpPLs2Cuk2051Yy/5LyQtix+4o0=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2EB0FC0006
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: eniqmy4skwax75ckfh953mcdpom9wn6z
+X-HE-Tag: 1793116043-60342
+X-HE-Meta: U2FsdGVkX18xWLwnDF71BOga5IkXkv/8h5b7mprL51udacxuGEJKVub0o0Zvzkd62wvgOY7q0LYEBrWvd0ae/25bjOo6IYv0VcyuaXT5TDciulLr213uzCeS1jWwPVJoCb0D4pSP/WphHiNFrUvtRRLSxMf8L77bSTJkL2AA/ZBo38g7A1wI5Y5genLM0QO91uqw7UPS/Mb9/DIgXicu+TNwC7tC0e6HsFoauaUSGWElJMaxII76coha/gPYNh7Wp5Vu4ChWomVTAvwaPXclSvmBVlljXwqtHkcE5NJ1opJXMIHumjS5kqrolFf/YMuerqDAbYZa6N9ev2BRZo2MNw6YXldFjiYzlSQMD5z0X2usSXe6HHuyDJHlyTHrHeyglma0H8g6DXblKjtm5j6mH/m1wcYBFPXZxkyAxvgPkJoDtjO8vrDZp7pQLR3eJI6KpPI0UPZTICyDuU+08qjz1jaCT9t8RpJ1MtQC265jhzYCzt3ePvKrxWsqksn0mCVzIQMqHIAh7HSWr3CkYNcxRr33PfPVbKpRAsQdef+1cvCHf5tSW1c7P6b/ILKreoGzKpt083nICjD8H4CDs8CcW/+JcOexx/SOJEjqPjcxL7I4Sjs4aILb/phgmYQuV+w73tx7M95ZxEovXclehTKhet1sg37kjigpyTlKtVAvGR5uHPPCui8eMNdB8PSryahneQ1+bg0HEAG8KVwtcYHv9LdROLngh1b4oGaVWurSdLX638yEU2oThc3YuwC2xiDNZWhb2P3g/ajvWhjZKnMAKeQVLnuawVV1JmZD+O4+L9Z91IrYZMAybMDfYaoVWx3TOH29b9XLuDuTBzqXu2XaC2PVjCjJXFekRMPgW7shEnhio2apWud15S3lYAVM0WnmFfxpzmx6H+YaA8C6ONmpZBpA6lX6IgbAQhObuXjUytJmB9Idc5ExdK7O/OXFvDz0hq1Gxu90ddJF0cCvz/A
+ J8UTagg0
+ KE1EwAUatjuGtAVbvcNPgW2JDT3ftT6SAUMPMep46E/4EOTq0hndvsAuuyATeG/9jN16WKPiTPNDJIzqQHcL6C68CLyJ4nk+F1bvoUyxakDaRVvkESMfPngScpcjiLE7/nrD1F/hieyirMkHKzTg8b3LDn7FLtnM45vTYOTwIe1gOcq3UNsSQbBELXwz9ioMUvXxPoHp1Tfi6eAkMIcjA6Sp9NZb8RJ6+8JbOYPCIEK81WwCmyXKu42xEyjHjZDKsHtWG8NFKUm9hFRecCN8ZxNlLesQC5FIpvNwXI8sXgUo9cVW3BBzGzoJUTRSDkZNpCa+e6nDZb6B2hIAjuVhTh0K0cD8uiQF+CmX3H9CWkqicQ22KWFmeiS30DRgY61dJO7Z3cOO+6ySTYuu9F8e2Q9XmGPnkUREYOQfSKOOsNt5qG15PdWEjLGatm4NMeXo3/3W/ailIl7hwsYvaKQfsjj3k+1WDm6fyvv9y7RzJNZpndpDNEfdl7M4qEyZ4tLirS/5yuLfg+FU86C0UmtiIp8mg8W30TL++9SdrFGaJfp6HBops2TzvGa95Sp1OyDur5UNKWK2FNrFC4MQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -201,204 +201,222 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-Tests of guest_memfd mappings cannot know in advance which frame an
-IOVA reaches, since a revoke can unmap or replace it, and
-IOMMU_TEST_OP_MD_CHECK_MAP only compares a range against a user buffer.
+The sample provider reports every page as writable and of order 0, and
+does nothing when a page comes back, so tests cannot exercise read-only
+frames, large mappings, or a device mapping that follows a page made
+present again.
 
-Add IOMMU_TEST_OP_MD_CHECK_MAPPED, which checks that a range of a mock
-domain is all mapped or all unmapped, and IOMMU_TEST_OP_MD_IOVA_TO_PHYS,
-which returns the physical address behind an IOVA. They hold
-domains_rwsem for writing, so that a userspace unmap cannot free a
-page-table level during the walk; they are not safe against a
-concurrent guest_memfd update or dma-buf revoke, which the selftests do
-not do.
+Add MPS_SET_READONLY, report the largest aligned block of pages in the
+same state, and call kvm_gmem_restore() when pages become present or
+writable again; making pages read only revokes them.
 
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
 ---
- drivers/iommu/iommufd/iommufd_test.h |  18 ++++
- drivers/iommu/iommufd/selftest.c     | 125 +++++++++++++++++++++++++++
- 2 files changed, 143 insertions(+)
+ samples/kvm/mem_provider_sample.c | 89 +++++++++++++++++++++++++++----
+ samples/kvm/mem_provider_sample.h |  9 ++++
+ 2 files changed, 87 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/iommufd_test.h b/drivers/iommu/iommufd/iommufd_test.h
-index 52b78cbcc920..3fffcb2b20d7 100644
---- a/drivers/iommu/iommufd/iommufd_test.h
-+++ b/drivers/iommu/iommufd/iommufd_test.h
-@@ -31,6 +31,8 @@ enum {
- 	IOMMU_TEST_OP_PASID_CHECK_HWPT,
- 	IOMMU_TEST_OP_DMABUF_GET,
- 	IOMMU_TEST_OP_DMABUF_REVOKE,
-+	IOMMU_TEST_OP_MD_CHECK_MAPPED,
-+	IOMMU_TEST_OP_MD_IOVA_TO_PHYS,
- };
+diff --git a/samples/kvm/mem_provider_sample.c b/samples/kvm/mem_provider_sample.c
+index f30654a60dd8..670e36207e59 100644
+--- a/samples/kvm/mem_provider_sample.c
++++ b/samples/kvm/mem_provider_sample.c
+@@ -6,7 +6,8 @@
+  *
+  * The control device /dev/mem_provider_sample creates provider files.
+  * Each file allocates its own contiguous memory from alloc_contig_pages().
+- * Pages can be dynamically marked present or absent.
++ * Pages can be dynamically marked present or absent, and read only (for
++ * tests).
+  * See mem_provider_sample.h.
+  *
+  * Confidential VMs are not supported.
+@@ -39,6 +40,7 @@ struct mps_info {
+ 	struct page *cma_pages;		/* from alloc_contig_pages() */
  
- enum {
-@@ -193,6 +195,22 @@ struct iommu_test_cmd {
- 			__s32 dmabuf_fd;
- 			__u32 revoked;
- 		} dmabuf_revoke;
-+		struct {
-+			/*
-+			 * 1: every page in [iova, iova+length) must be mapped;
-+			 * 0: none of them may be. Any page in the other state
-+			 * fails with -ENOENT. Any other value, or a non-zero
-+			 * __reserved, is -EINVAL.
-+			 */
-+			__u32 mapped;
-+			__u32 __reserved;
-+			__aligned_u64 iova;
-+			__aligned_u64 length;
-+		} check_mapped;
-+		struct {
-+			__aligned_u64 iova;
-+			__aligned_u64 out_phys;	/* 0 if unmapped */
-+		} iova_to_phys;
- 	};
- 	__u32 last;
+ 	unsigned long *absent;		/* taken away by MPS_SET_PRESENT */
++	unsigned long *readonly;	/* set by MPS_SET_READONLY */
+ 
+ 	struct inode *gmem_inode;
  };
-diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/selftest.c
-index ee706f18f7e9..378d7c46327e 100644
---- a/drivers/iommu/iommufd/selftest.c
-+++ b/drivers/iommu/iommufd/selftest.c
-@@ -2068,6 +2068,122 @@ static int iommufd_test_dmabuf_get(struct iommufd_ucmd *ucmd,
- 	return rc;
+@@ -83,6 +85,9 @@ static void mps_set_present(struct mps_info *info, unsigned long start,
+ 	mutex_lock(&info->lock);
+ 	if (present) {
+ 		bitmap_clear(info->absent, start, end - start);
++		/* Tell the users of guest_memfd that cannot fault. */
++		if (info->gmem_inode)
++			kvm_gmem_restore(info->gmem_inode, start, end - start);
+ 	} else {
+ 		bitmap_set(info->absent, start, end - start);
+ 		if (info->gmem_inode) {
+@@ -95,6 +100,31 @@ static void mps_set_present(struct mps_info *info, unsigned long start,
+ 	mutex_unlock(&info->lock);
  }
  
 +/*
-+ * True if [iova, iova + length) lies inside the domain's aperture.  An IOVA
-+ * that the domain cannot map would read as unmapped, so the queries refuse
-+ * it rather than report it as such.
++ * Change what get_pfn() reports for [start, end).  Making it read only takes
++ * write access away, so revoke it: the users of the guest_memfd map it again
++ * read only.  Making it writable takes nothing away, so only tell the users
++ * that cannot fault.  The pages keep their contents.
 + */
-+static bool mock_domain_covers(struct mock_iommu_domain *mock,
-+			       unsigned long iova, size_t length)
++static void mps_set_readonly(struct mps_info *info, unsigned long start,
++			     unsigned long end, bool value)
 +{
-+	struct iommu_domain_geometry *geo = &mock->domain.geometry;
-+	unsigned long last;
++	unsigned long pfn = info->base_pfn + start;
 +
-+	if (check_add_overflow(iova, length - 1, &last))
-+		return false;
-+	return iova >= geo->aperture_start && last <= geo->aperture_end;
-+}
-+
-+/*
-+ * iova_to_phys() walks the page table, so it must not run while an unmap
-+ * frees a level of it.  A userspace unmap holds the IOAS domains_rwsem for
-+ * reading while it unmaps the domains, so holding it for writing keeps such
-+ * unmaps away.  A guest_memfd update, e.g. on a conversion or a punch hole,
-+ * and a dma-buf revoke unmap under their pages mutex only, so tests must not
-+ * run these queries while one is in progress.  A range can cross several
-+ * areas and holes, so the queries take one IOAS-wide lock rather than the
-+ * pages mutex of each area.
-+ */
-+static struct rw_semaphore *
-+mock_domain_unmap_lock(struct iommufd_hw_pagetable *hwpt)
-+{
-+	return &to_hwpt_paging(hwpt)->ioas->iopt.domains_rwsem;
-+}
-+
-+/*
-+ * Report the physical address the mock domain resolves @iova to, or 0 if
-+ * it is unmapped.  Lets a test check that two IOVAs share one frame, or that
-+ * an IOVA moved to another frame, without knowing the frames in advance.
-+ * Not safe against a concurrent guest_memfd update or dma-buf revoke; see
-+ * mock_domain_unmap_lock().
-+ */
-+static int iommufd_test_md_iova_to_phys(struct iommufd_ucmd *ucmd,
-+					unsigned int mockpt_id,
-+					unsigned long iova)
-+{
-+	struct iommu_test_cmd *cmd = ucmd->cmd;
-+	struct iommufd_hw_pagetable *hwpt;
-+	struct mock_iommu_domain *mock;
-+	unsigned int page_size;
-+	int rc;
-+
-+	hwpt = get_md_pagetable(ucmd, mockpt_id, &mock);
-+	if (IS_ERR(hwpt))
-+		return PTR_ERR(hwpt);
-+
-+	page_size = 1 << __ffs(mock->domain.pgsize_bitmap);
-+	if (iova % page_size || !mock_domain_covers(mock, iova, page_size)) {
-+		rc = -EINVAL;
-+		goto out_put;
++	mutex_lock(&info->lock);
++	if (value) {
++		bitmap_set(info->readonly, start, end - start);
++		if (info->gmem_inode)
++			kvm_gmem_revoke(info->gmem_inode, start, end - start,
++					&pfn);
++	} else {
++		bitmap_clear(info->readonly, start, end - start);
++		if (info->gmem_inode)
++			kvm_gmem_restore(info->gmem_inode, start, end - start);
 +	}
-+	down_write(mock_domain_unmap_lock(hwpt));
-+	cmd->iova_to_phys.out_phys =
-+		mock->domain.ops->iova_to_phys(&mock->domain, iova);
-+	up_write(mock_domain_unmap_lock(hwpt));
-+	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-+out_put:
-+	iommufd_put_object(ucmd->ictx, &hwpt->obj);
-+	return rc;
++	mutex_unlock(&info->lock);
 +}
 +
-+/*
-+ * Check that [@iova, @iova + @length) is fully mapped or fully unmapped.  Not
-+ * safe against a concurrent guest_memfd update or dma-buf revoke; see
-+ * mock_domain_unmap_lock().
-+ */
-+static int iommufd_test_md_check_mapped(struct iommufd_ucmd *ucmd,
-+					unsigned int mockpt_id,
-+					unsigned long iova, size_t length,
-+					u32 mapped, u32 reserved)
-+{
-+	struct iommufd_hw_pagetable *hwpt;
-+	struct mock_iommu_domain *mock;
-+	unsigned int page_size;
-+	int rc = 0;
-+
-+	if (mapped > 1 || reserved)
-+		return -EINVAL;
-+
-+	hwpt = get_md_pagetable(ucmd, mockpt_id, &mock);
-+	if (IS_ERR(hwpt))
-+		return PTR_ERR(hwpt);
-+
-+	page_size = 1 << __ffs(mock->domain.pgsize_bitmap);
-+	if (iova % page_size || length % page_size || !length ||
-+	    !mock_domain_covers(mock, iova, length)) {
-+		rc = -EINVAL;
-+		goto out_put;
-+	}
-+
-+	down_write(mock_domain_unmap_lock(hwpt));
-+	for (; length; length -= page_size, iova += page_size) {
-+		bool is_mapped =
-+			mock->domain.ops->iova_to_phys(&mock->domain, iova) != 0;
-+
-+		if (is_mapped != mapped) {
-+			rc = -ENOENT;
-+			break;
-+		}
-+		/* A huge-page mock domain spans 2^38 bytes. */
-+		cond_resched();
-+	}
-+	up_write(mock_domain_unmap_lock(hwpt));
-+
-+out_put:
-+	iommufd_put_object(ucmd->ictx, &hwpt->obj);
-+	return rc;
-+}
-+
- static int iommufd_test_dmabuf_revoke(struct iommufd_ucmd *ucmd, int fd,
- 				      bool revoked)
+ static long mps_get_stats(struct mps_info *info, void __user *uarg)
  {
-@@ -2180,6 +2296,15 @@ int iommufd_test(struct iommufd_ucmd *ucmd)
- 		return iommufd_test_dmabuf_revoke(ucmd,
- 						  cmd->dmabuf_revoke.dmabuf_fd,
- 						  cmd->dmabuf_revoke.revoked);
-+	case IOMMU_TEST_OP_MD_CHECK_MAPPED:
-+		return iommufd_test_md_check_mapped(ucmd, cmd->id,
-+						    cmd->check_mapped.iova,
-+						    cmd->check_mapped.length,
-+						    cmd->check_mapped.mapped,
-+						    cmd->check_mapped.__reserved);
-+	case IOMMU_TEST_OP_MD_IOVA_TO_PHYS:
-+		return iommufd_test_md_iova_to_phys(ucmd, cmd->id,
-+						    cmd->iova_to_phys.iova);
+ 	struct mps_stats st = {};
+@@ -114,11 +144,13 @@ static int mps_file_release(struct inode *inode, struct file *file)
+ 	if (info->cma_pages)
+ 		free_contig_range(info->base_pfn, info->npages);
+ 	bitmap_free(info->absent);
++	bitmap_free(info->readonly);
+ 	kfree(info);
+ 	return 0;
+ }
+ 
+-static long mps_file_set_present(struct mps_info *info, void __user *uarg)
++static long mps_file_set_range(struct mps_info *info, void __user *uarg,
++			       unsigned int cmd)
+ {
+ 	struct mps_set_present sp;
+ 	unsigned long start, end;
+@@ -129,9 +161,13 @@ static long mps_file_set_present(struct mps_info *info, void __user *uarg)
+ 	if (sp.value > 1 || sp.pad)
+ 		return -EINVAL;
+ 	ret = mps_range(info, sp.offset, sp.len, &start, &end);
+-	if (!ret)
++	if (ret)
++		return ret;
++	if (cmd == MPS_SET_PRESENT)
+ 		mps_set_present(info, start, end, sp.value);
+-	return ret;
++	else
++		mps_set_readonly(info, start, end, sp.value);
++	return 0;
+ }
+ 
+ static long mps_file_ioctl(struct file *file, unsigned int cmd,
+@@ -144,7 +180,8 @@ static long mps_file_ioctl(struct file *file, unsigned int cmd,
+ 	case MPS_GET_STATS:
+ 		return mps_get_stats(info, uarg);
+ 	case MPS_SET_PRESENT:
+-		return mps_file_set_present(info, uarg);
++	case MPS_SET_READONLY:
++		return mps_file_set_range(info, uarg, cmd);
  	default:
- 		return -EOPNOTSUPP;
+ 		return -ENOTTY;
  	}
+@@ -178,11 +215,28 @@ static void mps_gmem_release(void *provider)
+ 	fput(resource_file);
+ }
+ 
++/* Is every bit of @bitmap in [first, first + n) equal to @value? */
++static bool mps_bits_are(unsigned long *bitmap, unsigned long first,
++			 unsigned long n, bool value)
++{
++	unsigned long end = first + n;
++
++	return (value ? find_next_zero_bit(bitmap, end, first) :
++			find_next_bit(bitmap, end, first)) >= end;
++}
++
++/*
++ * The frame behind @index, and the largest aligned block around it that is
++ * present and has the same attributes: the file's frames are contiguous.
++ * Lockless: a change is followed by kvm_gmem_revoke() or kvm_gmem_restore().
++ */
+ static int mps_gmem_get_pfn(void *provider, pgoff_t index, unsigned long *pfn,
+ 			    int *max_order, u32 *attrs)
+ {
+ 	struct file *resource_file = provider;
+ 	struct mps_info *info = resource_file->private_data;
++	bool ro;
++	int order;
+ 
+ 	if (index >= info->npages)
+ 		return -EINVAL;
+@@ -190,10 +244,22 @@ static int mps_gmem_get_pfn(void *provider, pgoff_t index, unsigned long *pfn,
+ 	if (test_bit(index, info->absent))
+ 		return -EFAULT;
+ 
++	ro = test_bit(index, info->readonly);
+ 	*pfn = info->base_pfn + index;
+-	if (max_order)
+-		*max_order = 0;
+-
++	*attrs = ro ? GUEST_MEMFD_PFN_READONLY : 0;
++
++	if (!max_order)
++		return 0;
++	for (order = PUD_ORDER; order; order--) {
++		unsigned long first = ALIGN_DOWN(index, 1UL << order);
++		unsigned long n = 1UL << order;
++
++		if (first + n <= info->npages &&
++		    mps_bits_are(info->absent, first, n, false) &&
++		    mps_bits_are(info->readonly, first, n, ro))
++			break;
++	}
++	*max_order = order;
+ 	return 0;
+ }
+ 
+@@ -255,9 +321,10 @@ static long mps_ctl_new_file(void __user *uarg)
+ 		return -ENOMEM;
+ 
+ 	info->absent = bitmap_zalloc(npages, GFP_KERNEL);
+-	if (!info->absent) {
++	info->readonly = bitmap_zalloc(npages, GFP_KERNEL);
++	if (!info->absent || !info->readonly) {
+ 		ret = -ENOMEM;
+-		goto err_free_info;
++		goto err_free_absent;
+ 	}
+ 
+ 	pages = alloc_contig_pages(npages, GFP_KERNEL | __GFP_ZERO,
+@@ -293,7 +360,7 @@ static long mps_ctl_new_file(void __user *uarg)
+ 	free_contig_range(page_to_pfn(pages), npages);
+ err_free_absent:
+ 	bitmap_free(info->absent);
+-err_free_info:
++	bitmap_free(info->readonly);
+ 	kfree(info);
+ 	return ret;
+ }
+diff --git a/samples/kvm/mem_provider_sample.h b/samples/kvm/mem_provider_sample.h
+index b9f10286cb30..57f494dc46fa 100644
+--- a/samples/kvm/mem_provider_sample.h
++++ b/samples/kvm/mem_provider_sample.h
+@@ -51,4 +51,13 @@ struct mps_set_present {
+ #define MPS_SET_PRESENT \
+ 	_IOW(MPS_IOCTL_BASE, 12, struct mps_set_present)
+ 
++/*
++ * ioctl on a provider fd, with the same argument as MPS_SET_PRESENT: report
++ * [@offset, @offset + @len) as read only (GUEST_MEMFD_PFN_READONLY, @value 1)
++ * or writable again (@value 0).  Every mapping follows.  For tests: the
++ * sample does not really share the pages.
++ */
++#define MPS_SET_READONLY \
++	_IOW(MPS_IOCTL_BASE, 13, struct mps_set_present)
++
+ #endif /* _SAMPLES_KVM_MEM_PROVIDER_SAMPLE_H */
 -- 
 2.47.3
 
