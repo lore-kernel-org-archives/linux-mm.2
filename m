@@ -1,80 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F1E606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51E4606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mHRKmN4W
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J2KOffh9
 Received: by kanga.kvack.org (Postfix)
-	id 8C4586B08BC; Tue, 27 Oct 2026 15:25:41 -0400 (EDT)
+	id CA0766B08BE; Tue, 27 Oct 2026 15:32:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89CCE6B08C0; Tue, 27 Oct 2026 15:25:41 -0400 (EDT)
+	id C518D6B08BF; Tue, 27 Oct 2026 15:32:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A1456B08BF; Tue, 27 Oct 2026 15:25:41 -0400 (EDT)
+	id B195C6B08C0; Tue, 27 Oct 2026 15:32:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 322946B08BC
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:25:41 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEC78C0AAE
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:25:40 +0000 (UTC)
-X-FDA: 85369385640.04.DB0F3AC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E6D0D1C000E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:25:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mHRKmN4W;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 85CEB6B08BE
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:32:11 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1CEA1140AD7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:32:11 +0000 (UTC)
+X-FDA: 85369402062.28.C5F0B45
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 47CD6A0009
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:32:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J2KOffh9;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793129138;
+	s=arc-20220608; t=1793129529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9KEB8qgzoIeFNOGcSLHLXb2uottvsKzkUwf/j7rEZPA=;
-	b=wA1wYTavUMAWQEyV7rr1ciF6OdtGSTnmFMpdwmS4uAwrsoFxXsEWDSOn4oTl00edvzufQK
-	9DFv8fdIX9/dd6ItO7pJ4KJ7yG1ho8Q2++sIEo69XLQwDc6/8Ilyw2R52Y7JO/1daJjFtO
-	JCK44yvYEnZ/hsNLrya4Ot5DpkZGILI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mHRKmN4W;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=pdMKQRVfPao2Y0l/0sEvsr0YaDZON+7McqaGQOdPdzM=;
+	b=cSSR2VqEYkFHcZYkdMp4mvzZ/voqdc1bOXSyk2FkP0jfY15sFKWxZWspHnxq2QX0zjVQco
+	FrdRgsCLK/bY1OA/p7Jm4rKqrIdoMwy/sQUUUW4ZFHq/J7ddutfDj/ZYR4qcTtLxC2mlCx
+	ZgK7qKGEjXoX5rWbzgRfyhc6X2+GwXc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793129138;
-	b=W6/wp4Z4jW1b/qoolrfX9rQhX0ZVp7j0TFlOznTzcE1iusvmBC5LzIJhXCTlB2xh0WHl9u
-	yK0Hpd935ie6RSsWh2bwFNBfXj+o8nJE6/fucuQ2pFV3LE69A9Tsn/9rjqb2inxgI4xIg7
-	amRtJMBGrocWKpPyfmNPmcsW8eDFA+k=
+	t=1793129529;
+	b=1URPFa5s2jAhdDBexr3WQUoR7M/ZaZOhcAdweCx3OhBsBrAXHNB9xEusbQ2ssK5vJ2gGnL
+	igY/Md6JQHo0ADRy2KIlS++P+YMwgPvTPXETRO8F38VClb3gz1pf15dKeEw7duYDT9ATJo
+	i3xL/K/GOQxgOSBvphMPytXhKy3yKUg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J2KOffh9;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4F209601FA;
-	Tue, 27 Oct 2026 19:25:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7550B1F01825;
-	Tue, 27 Oct 2026 19:25:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 75A134019F;
+	Tue, 27 Oct 2026 19:32:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256D31F01825;
+	Tue, 27 Oct 2026 19:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793129138;
-	bh=9KEB8qgzoIeFNOGcSLHLXb2uottvsKzkUwf/j7rEZPA=;
+	s=k20260515; t=1793129528;
+	bh=pdMKQRVfPao2Y0l/0sEvsr0YaDZON+7McqaGQOdPdzM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mHRKmN4WFGzQCMXXXAobAssayAt6MJNEX4XFML8kScSLR0RWj5iHQU4HOkyVdbrZ1
-	 FAfkNQPNnukyYwievxpTrmJxM+E+k2Z82hK7ve6KZYqVtg7FqawBBiMhHOxJxjEa2p
-	 bYzJkytrLPqqJ7CYJwvxS2bJELBhxTcauV4K9skmwI9vhz22V6zo1hQGN2pFq2jDUl
-	 M7zoVMj2QRdGuUHWMrC7ZKykJhi9OVby5oo7z14LhbLEi2LRbLMRkqAZMODrWoiBbH
-	 30E/CpCuG78KvyVtCKRteVs6ztPzOyHgprRt7kzAGfAfwY3zw6sGBJP1Q4vQ9OAjhg
-	 ELl7I7hL0bT0w==
-Message-ID: <2f436ecf-70fa-42f7-a0e2-8a27d179d1b2@kernel.org>
-Date: Tue, 27 Oct 2026 20:25:19 +0100
+	b=J2KOffh9t5THz/aVV9AXm+zRNrOFDoRwtp977EUo1PAOBknoI8V3BnNjjtRLAE4Ru
+	 GY5GDPTQ+/81Ar3+hzwrjA0JeTMSAd3xgLXkkWNIOh4w5qNGRaWbYHgigxK1BSB0q7
+	 ly8wspHWyvxYXk9F43GT7SewL7fEGQ0Hpa7OJz1VbSrP8w/Wv8rLA0NKXANgiBfMrD
+	 TTqIJu5xLE1Ab2vB6aGL8JXJt7kYBWgxH7cJ5Z/fmQvZq4f73ADggruc/guEar+TGR
+	 HrC4fv0DA8YODO90lZnMcUoWInit/GOljN2R28H+dA2gPH4zQmKtMA4c2HYGyd/lsp
+	 d3rkBUoXQHNBg==
+Message-ID: <e894d61c-9b99-4fdd-bf88-c4efd77a75ff@kernel.org>
+Date: Tue, 27 Oct 2026 20:31:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 26/46] mm/mmu_gather: fix flushing ranges with 4 GiB or
- larger
-To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH 25/46] mm/userfaultfd: wake waiters when registration
+ modes are removed
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Gregory Price <gourry@gourry.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
@@ -87,25 +88,25 @@ To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
  Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
  Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
  Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
  Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
  Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
  Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, stable@vger.kernel.org
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
- <21091d4e-0afb-4b5b-84ac-b36bac58e40f@arm.com>
+ <20261027-fixes_core-v1-25-6f74bec9a5bb@kernel.org>
+ <179307782442.2301705.17273288326330283268.b4-reply@b4>
+ <auBcES74Q5M3MWCW@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,21 +153,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <21091d4e-0afb-4b5b-84ac-b36bac58e40f@arm.com>
+In-Reply-To: <auBcES74Q5M3MWCW@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E6D0D1C000E
-X-Stat-Signature: jbd1t4cr61xsyyx8j66g43g9zafwmyzy
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 47CD6A0009
+X-Stat-Signature: 1d4bku8or9y11inmufx4o7ua5derrf5y
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793129138-995089
-X-HE-Meta: U2FsdGVkX1/657ZPaqS0ABR+TY81HOV89Xc2nnX9kWhY0IVQbFtxLSTO1O0FmjuXnTVmIun4uHDpJabTK7IKTHSN2eecJD1vPsyCdFuYogHj0Fi5rJlJvM51YiOM7pC2mJuWYoSLERsxJCpRb/aQCbFSQ1kGfDQ1Qz+MWIfRwewZaNjFuCbs52nvMsT9ukf/jHe1XSo1Np2XoK+8sfzttmhSVyNtG3OFpoOvdgdrxGOgW6KR/mwX5pV0MsYlKpNCMKXy1dAsmyIsvpDOrRwZLlK/Pcj/WM4l9JS/gp+OLpwp80CVByxCyyB05NPlOrqhtYKe/EQsFv2HpaRsa9EweAOf8zGeoeAOxhYScnhAK5Ea2NSWD17vJsr8tUXRpQM2dHuGg8ZimKJdOMqyT7kIMBLn8ca5ed5fo3BKtcVDJx7WnjaRK1cHpc+iE/QywQiVPz3ZhTTH7x81dgwq6cuEcjC7zRbRDYaWmLcU0BXDV26nIJY0ws8NhUhLx7x6eAoP8ojUVGz3q6ySNdWIK/JQN8p9UYUQzF6gFVvlRp7XqO5LhU6PIVirL8govRLFgN5sP99lMGz2hPSjOweYGsBkUh0o5HGkF3RIhhlRcDy+nfM5G//GXUz6ZWGoJfyk4KLk8fvobSIA6NyuLR2TDD9BZyrqnptLp2xJfdiwZtVkc2UAcxpfy1I83K9W/AJ9wy2ObHetOGQGh+jAw/qkMRncFYH7Ga40rtyMJ+700NMe9LP4ya2PwTxPYCJW7Utco2+rS+n1EAoVY4aa0GMgCd6bWBj8l5ZdJsPrgSpeDkDFJpW76RijWjYjDYOPAdLY20KU9YadsMnIqmHVzDGcMtSSRz9UaNj60nkUDRKwNiXfTucnt81xM1WloI/0FHAt0LwhnhturFNL6O/XJ66Ti9gfsrUn9QqZkIrB42V7aAkAVp9Wa0WhEsySzQjNZZBVOsXJ4aT73SQe9TxhcIRWu+s
- uYf3ttsh
- /6oFHg6Wa67+EgoqV6nMHOrmeEdSajTXsyyRg+yM7pFwfxps2GyCBq9kmtO70a6YaVH3KLbFguqYcMdY1P5sI+v8uoX4O0lXDzK6xAW6+/swEnyqORd1Qo4/Pbi/CcZUHke6Cqci6Q9u+VQi8g54xm6Eu0To8kt6PsnNeDX8+IbYp+/AszZ/sn8BtYkVLVWormiWz0JyQKjgZVwaDH/Qrwj7rOSL/1pfsCMLrHZU3tTSnc704UBArodWwxkjhaRQHm5l1d5s0Ip2s/oOADL2FB3gHQrJDvAWDNLVN0Ak5orAgrcdJmb/tzBUpE7rbUpUpneVUU5mS4iYyDEnY4OklBdym6suYKG1s85pS/cwlMweq6zmm0Ar1PBSyx1Uxg68cUF3frTJic22Ev2pGX/SAYudskgTW204iHm2xQIE9zpkx51LANgTJ3R7deg==
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793129529-644551
+X-HE-Meta: U2FsdGVkX1/wlnI1nb2EGHddpnDC1MMnLE90Ul0hZBCf9AVEZt20cPyG7y1OOldmPIqyjzIjB+9W9ssupsXtYEnFmGyt0mBZC9F0SfW7GBLdNAsW031mBA8iK3SreojHTXxnNZoLQTInj8h5IUrSdF0IyA8EDfboyawpSaYhqHm24BH54z2+LF0TL2VAUJptPpMptNQAaKx9A1iD+Jlf9om3FwKSvoNgSRBAaL0tbcGCuVmLdzFO4oyKCDaJwpmqB6TYxh3dsYe2w4xe6d0WXrCxmJJ4Zu70tRfHE93OGPq3v6bf3MsCl3xVQnc9KJfO/B/7TWw7EabgkxwuUSu9fAvfBauVme7IYrcA/93g7caRB34yd8S/28jo0HueYWh1ZNqZlkBNrSkuItKFicjy9F0h5vYftEywOobXkAmuFO7WWhZJlxwFpUw1/FWjb7Ys682Jz/Tzu/9nMKgMjYtJ6D4BXUys7pppUgv5v2pk8FIF5RkSKw7cmusKHtjCEj8oKIGgOd0OOX/iqhpIp2gx4v9SZ/hU2pRdzL+F221BHmwMmWLS4C/sPcYTGNhlfFduVr7rTQ6WrU2m2x08/GtlHvVQFYKUDDkUI9bNZgj/Y6jfXK5k9hxqFCu/MytYUw10VaZjpxc9xj0q/asgIDCDPHuIeY8tEzjuc6ncNxBBxBatRjFsO/hxhxhfJ3ngsJUVsoYLJ1mKuoyEwdwLYFH+HJYKTGslaRlJxchHcRJli1WL2I3etEEyuCjOXFFeg/diD19eoKQcnBW6Q0o0FMNpkHaxp8e6Gn1M2fcAWIZ4k92VJxyIKfohcXt8dF1gCXBtiH+I+UIw++WrwGDQJ6pqtKTDogI/SRvdEXRD8HG0dA23OFNIpAMunBRTNANh+2LxMA9boN3+PgrajFXFpPH3RlE/3c1ymmiXQyhoKc4VvLH2uoeA9H/P1RuqpuT3kuJawT/QC586sJy+k2HqEfq
+ rBUAcrWR
+ IL2yNxROVQ5SA7XRjApXsO8zLb+/CueLVpxhHTPfymbYB4bs4uLrZzc3KNqRG5t817h7WNH7C0uU2fj1ywIYIqIGJpbrhX0lgJJSq9LgR3d/r6/3hgHtAllN4smHaSJW16lUZX4iW/1dC93mmv+J19g7qlIQejNgvMWm8FrvMhhsM2iVa/rTQSvZEVkiGzwbkPbcrwRcRulk4BGNW9Eogqf6PwDkUQsmzJOqGlxnmuqUaosdgdygN01JIs+vbPrumRFC+U6eiQUayX2mOgwyKC/ufcGqTBAaNUClT3rljhGn/H1n86Pg1e82qHWXZXmTAGM+IrehzolzePPePB6wki68BPLqi6niNeUTjLx0YpGjQtUXZG8ki/wY2V1jZ/I2GTyru/1WCYbXnLq+ZejRL7DH5sihjm750kxomVfCqJQBx+rX0q3QE237QAsZGt8DFqbH/Qp0TvYnOdjSRLrnM6nilEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,32 +177,127 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 08:35, Dev Jain wrote:
-> 
-> 
-> On 27/10/26 4:47 am, David Hildenbrand (Arm) wrote:
->> From: Josef Bacik <josef@toxicpanda.com>
+On 10/27/26 09:24, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Oct 26, 2026 at 10:10:24PM -0700, Gregory Price wrote:
+>> From: Gregory Price <gourry@gourry.net>
+>> Subject: [PATCH] mm/userfaultfd: compare exact registration modes before skipping
 >>
->> __tlb_adjust_range() takes the size of the range which has to be flushed
->> as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
->> and pass an unsigned long. Consequently, a range that is 4 GiB or larger
->> gets truncated, possibly to 0.
+>> Changing registration from MISSING|WP to WP returns success but leaves
+>> MISSING enabled. The no-op check sees that WP is already set and skips
+>> the update, so later accesses to missing pages still wait for userspace.
 >>
->> On arm64 with hugetlb, a 64k kernel can flush 16 GiB hugetlb PMDs, and a
-> 
-> Nit: this wasn't obvious to me. Better expressed as:
-> "a 64K kernel can have 16 GiB hugepage mapped contiguously at the PMD level"
-> 
-> 
->> 16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
->> at least these two scenarios are affected.
+>> Skip the update only when the current and requested UFFD modes match
+>> exactly.
 >>
->> Fix it by flushing the proper range instead of the truncated one.
+>> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+>> ---
+>>  mm/userfaultfd.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+>> index 669f71d485d02..0a28130cebc99 100644
+>> --- a/mm/userfaultfd.c
+>> +++ b/mm/userfaultfd.c
+>> @@ -2299,7 +2299,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>>  		 * userfaultfd and with the right tracking mode too.
+>>  		 */
+>>  		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
+>> -		    vma_test_all_mask(vma, vma_flags))
+>> +		    (vma->vm_flags & __VM_UFFD_FLAGS) == vm_flags)
 > 
-> Nit: after reading this I thought you are passing some other parameter now.
-> But that is just a type change.
+> Would be better not to regress to the legacy API. I realise we don't use it for
+> backported fixes in general, but this patch obviously won't apply to older
+> versions anyway, so we should use the correct API now, and this for older
+> versions.
+> 
+> I'll add a better predicate probably to do this in one go, but for the fix,
+> I put the correct patch below.
+> 
+> 
+>>  			goto skip;
+>>
+>>  		/*
+>>
+>> --
+>> Gregory Price <gourry@gourry.net>
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 777bf122d32a..c71cb9179913 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2288,6 +2288,9 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>  		prev = vma;
+> 
+>  	for_each_vma_range(vmi, vma, end) {
+> +		const vma_flags_t curr_vma_flags =
+> +			vma_flags_and_mask(&vma->flags, __VMA_UFFD_FLAGS);
+> +
+>  		cond_resched();
+> 
+>  		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
+> @@ -2300,7 +2303,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>  		 * userfaultfd and with the right tracking mode too.
+>  		 */
+>  		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
+> -		    vma_test_all_mask(vma, vma_flags))
+> +		    vma_flags_same_pair(&curr_vma_flags, &vma_flags))
+>  			goto skip;
+> 
+>  		/*
+> 
+> --
+> Cheers, Lorenzo
 
-I fixed both up, thanks!
+I now have:
+
+From e2cb5867bd46dd6c601dfa5f0415bf7c8e12600a Mon Sep 17 00:00:00 2001
+From: Gregory Price <gourry@gourry.net>
+Date: Tue, 27 Oct 2026 20:27:52 +0100
+Subject: [PATCH] mm/userfaultfd: compare exact registration modes before
+ skipping
+
+Changing registration from MISSING|WP to WP returns success but leaves
+MISSING enabled. The no-op check sees that WP is already set and skips
+the update, so later accesses to missing pages still wait for userspace.
+
+Skip the update only when the current and requested UFFD modes match
+exactly.
+
+Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+[ david: apply fixup from Lorenzo ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/userfaultfd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 710e913c73bf..24b7a2612469 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2291,6 +2291,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+ 
+ 	for_each_vma_range(vmi, vma, end) {
+ 		const bool any_mode_removed = vma->vm_flags & __VM_UFFD_FLAGS & ~vm_flags;
++		const vma_flags_t curr_vma_flags = vma_flags_and_mask(&vma->flags, __VMA_UFFD_FLAGS);
+ 
+ 		cond_resched();
+ 
+@@ -2304,7 +2305,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+ 		 * userfaultfd and with the right tracking mode too.
+ 		 */
+ 		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
+-		    vma_test_all_mask(vma, vma_flags))
++		    vma_flags_same_pair(&curr_vma_flags, &vma_flags))
+ 			goto skip;
+ 
+ 		/*
+-- 
+2.43.0
+
 
 -- 
 Cheers,
