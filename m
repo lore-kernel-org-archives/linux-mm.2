@@ -1,143 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73BC606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 22:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aKj1KIBK
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85ECD606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 23:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9118E6B0913; Tue, 27 Oct 2026 18:58:00 -0400 (EDT)
+	id 88C606B0915; Tue, 27 Oct 2026 19:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C1D36B0915; Tue, 27 Oct 2026 18:58:00 -0400 (EDT)
+	id 83D016B0916; Tue, 27 Oct 2026 19:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78F2D6B0916; Tue, 27 Oct 2026 18:58:00 -0400 (EDT)
+	id 7081A6B0917; Tue, 27 Oct 2026 19:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DFC46B0913
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:58:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A147080B3B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:57:59 +0000 (UTC)
-X-FDA: 85369920678.07.2B56814
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B41E88000C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:57:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=aKj1KIBK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793141877;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 353A76B0915
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:10:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1E1CC0B69
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 23:10:24 +0000 (UTC)
+X-FDA: 85369951968.12.40A8E85
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 075C940005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 23:10:22 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf01.hostedemail.com: domain of 3Xi_hagkbAJ8RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3Xi_hagkbAJ8RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793142623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=72+WHJwwpogSBR2Mae06gxZf+v4TqJlIK48WM/9xNMc=;
-	b=gS+AMbVC1cTMQlhBRV4NazLzIsVz7rpU2UdiMZ5empl/a4TtpwolgWE5ZilcPzmOHXNXtQ
-	amgH6QmGIb87we27nnPzkQIiLbyy6eAwLI10qewEzXg9jL/XmnVFpdyPWjmej2iD+O1OBD
-	rw5fFC7yjNbXZhnODVliuPsT+wC9G+E=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=aKj1KIBK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793141877;
-	b=ISuqJN4rJ+eo0s5+DIi/ph4esTS2/VEtyBq19tUsRqUjw6na7BcNNqGTm+XQIfEnlhEefF
-	LuliPx0toeub5UkpgiWxSatgOLOoWRxfmpMz2E75myUBJ+CjF4l1y5u3A4LO0p7lOFiLzZ
-	sZDibKIKQ2ZfZkqWAbuYjlOlPrnIjEY=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48dfdd0678dso242656f8f.0
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:57:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793141876; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mLTpCJRTlob223qX4sJcnylBkQF3Ozce8BtFp4GQUBSA6AdYCHa2NiO0H2CUDa7zTU
-         pqTqbXh9M+G96BDrWSecJsJZITfHAPQpVuzdVLVQMJBL7SvbeK1n3uT0k82c96eRZ690
-         tELPnJYWTbTqomwyGCGrW71yv/TGmoHt3xOmiiMj+9NEGRxNgunxED6pQxL29tUS1fT8
-         JAZ3eNduPSIvm4DWSUWeeS9/SS2ZlR3U9makkCEG7N9Xm1JHczaewBmRHWBPNXNqLXeA
-         L7sNOdKJtT7T46CzZfy2p5DZ+qaoczWCrcHy3Ez9NZIYhinW6uymdEpFYx7emaKh80sS
-         zbrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=72+WHJwwpogSBR2Mae06gxZf+v4TqJlIK48WM/9xNMc=;
-        fh=OCzXJUWurm15rwhFV/vOI3OH0r0bbl10CBwyU+2Jjg0=;
-        b=kML3uG4BinYX2Ael8jiihtwEwGwj0VVctpPTxtyj8hVSdoaOytFnpC7UJYVkxtiOqg
-         6kRkiHSvuf8lQWwhfMu+dEsvOfaD5atMD6X2JxX3nH+QX4ze5X6TlNF7ujLOMlzPwKIX
-         UDZ3OCLdE7pN6q/+Y43BGk4vuav38ve/kJnpkS1wUfvA2IXUz1J+9K/Rf4+2mk1gN+C2
-         GrIHfA6bgObYct23XfFzsjswV04fBpC2ym/Cvz+lhghC14bKEhZS0gbdj5t2Ufhmr8s1
-         JyGV9eqW6UT+r9VEdYvyGSbn6ySSPmkqaIbyi8qoxs/Lt43qLbET+i1ZwAHXuNvr76nP
-         IgFg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793141876; x=1793746676; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=72+WHJwwpogSBR2Mae06gxZf+v4TqJlIK48WM/9xNMc=;
-        b=aKj1KIBKPBPKHpejdk2xnf37gbf5Qrpvu0G5X06PbWdyLrclpxFyp6xqxm9IkeJuDe
-         kQJAwJNh8au+10AuAbJXdgtEqTDX+OQKnYy0XZDnU3iLyFyNrL//Jtt+8LvZhA6eeYMc
-         rE/qA4AQufdXooLp5E/aE38PNNyUAmigg+6NCCE/8L8DW+JGW9npjW5BOLYsnQSQiw8C
-         8WKpGyzG0ED0kubbf260s/KoFOdP1olAkt/iFk3LhTkU3uZaKafZtK6CyP1Eyc1Bjdnq
-         VE0pmMgYvNtHZGNjLsXBA7+V8MvT9vzFdq57MDVRq+9SKxpPnNW1vDl+6Su80LXg+hLZ
-         /XiQ==
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=odh1FEY3gfv9Oaa4XSlvByT1MReTjq4xb466aItSTqw=;
+	b=Xuaiqu+6vXvKzXeFf6bU2xwPJEtOcugFa8jiS+C0iHn3XWKOTlAXAf1gzn1+jc2bgnuyyD
+	h5tCwkkmfGwK3E5mC+u0gVs23aOQdNinKdYfDGeYpTMh5Uudv//xF1K+ls7Jx7iQzYKHsA
+	3hFbuFrYd6Vzy4oEAMzne4XygCVgzKw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf01.hostedemail.com: domain of 3Xi_hagkbAJ8RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3Xi_hagkbAJ8RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793142623;
+	b=T8w+OPq2rErHFIDyUH2H1RH3Ha2HKqy6c2hJLo/87aLLGg52yyHoCVCoHn3y36T3JGI0tO
+	GQtlst/43mtH8C3Niu4FAd0CiG11/N+9V54t95DsRi8BVbo8CnGIJHTt+/+pW0JP2yzxin
+	Kw2XdY4sP82J6nXnKo5Xu+08p82qAWA=
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4f2040e10d8so406298b6e.3
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:10:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793141876; x=1793746676;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=72+WHJwwpogSBR2Mae06gxZf+v4TqJlIK48WM/9xNMc=;
-        b=K341vzlGhyxy0aFkPV0VnshFhnOpAV9KSHlpYz1GFtaxxh1LIwKoP2dX62vRGFPLNJ
-         fJGpJdKgEqOePKHkTVkCJIEeebVEScN8Q7p8FMFyHEykhjnUI0lQzFl7DG2PBO1PI5cE
-         j/sJzz+RLACG0PlY/szcy8nZJcK4EtAeLlNIQUVaJll19WOzhBBueIcXeGc4jTQMIWvX
-         uxe0Meu1bZPU3cTONRWXImckcJqIczPaOuRmSK0iT0me2yh2Sw4U+LKXJCOsQW3VImdS
-         OE6PIdb5stmTzWPs5gTEzeXuVM3KkFv2PpAxmNzfOw9F8zcjO3dehJTDc6Nyxd/vGTXc
-         eAGg==
-X-Forwarded-Encrypted: i=1; AKwUvBwjievnovk2VkwHavQGE9xoXGwF5TW/g+Y1rgXm5Wp2JdchcoiOQ5Ts6UQ/OWW4wqqyAxKY3zd4Fg==@kvack.org
-X-Gm-Message-State: AFq9FYKDwYoZc8IJy9Fo770aFK9WBZMtIUH30x5oGgg+Vi4sIC4j7aLE
-	wj+7IMunwBtCqaX/reLPyHvqFZ7gcu2nOGttU4txiZWwNLGS4/Lmyj6oY6qA9Sdu9skfJwMjPL5
-	QEz4uMK9yyXvx2LXy3JbrTPA+7Xcg0Ew=
-X-Gm-Gg: AYBFou3qlbb+H1C3Xy7CPbu148wLRWX2LNXJQ7O+kWgVJJ+FZmywte5u6jcNaaMc9e7
-	JjSWQPDm9sYVZhKuXarddkqHLnDeuSNwRDJ1/osVuB89RnFn9ywKbdn13hvgx3mM+yHGMDWiC+v
-	QqWSvI1KBR6XKefQ39zgOI1+JJvY5mCazNrKm8anL7P0X7SBUSyFUIGzVrnq5GtY5ATlZl5mJri
-	zICkTBra9VL6Bqq+JK8eqHV8M9osM5fAKRG9/y2zcf2lbH0961m4D2TL7ZZJP7+U/L+0ztZYIry
-	KdvUPEmkOjfmbNQ0piVQy2GVRtNX82w5WbG0AUaVVOSkGywASdIfesFSyBfU34L/7gpLoGbho58
-	ZwuwnXNG4RRozvF4tvadn++rX0yqUk85s1JFBUUPOilWpUQDRzzJBcQA+FY2Ayll1pfL/WtPLdU
-	5WN09+RMSOcN64dTvNoe3k6b5ni3zs4bRLPPbflPk=
-X-Received: by 2002:a05:6000:15d0:b0:48e:1d87:f179 with SMTP id
- ffacd0b85a97d-48e5d2ee6c4mr1432863f8f.25.1793141876177; Tue, 27 Oct 2026
- 15:57:56 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793142622; x=1793747422;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=odh1FEY3gfv9Oaa4XSlvByT1MReTjq4xb466aItSTqw=;
+        b=yyj0MRIucP9/GsTuQl6DbUEaR/mPM3mugrU/sE5pKYrxGfUZk++5IjCNXo5dxsYYVo
+         OQyixL9C2+cAgyYV0QwAibtjde02en75D4UGsgnZsSAddEB7CtHzHntqGrjYrt2A4zja
+         BJvlQj8tpPhl8tpqzFrTgjclHMcnlhT95gq7fBjKHzgcBVcfpF/sdk0klWp2zFz7GoRW
+         gc29HVYszcONb599jYv//jk1Rm1kA1lOFVrX9uVwTEo9VM9ztWUXiQrw/oQf+6PB/6Wh
+         9TUVZJTMM24uE1bCBpSRetkxBtR8qZu/6L4FAcWCvOzH+erHRkYXdYbQtYmRClZQb0ft
+         XUiA==
+X-Forwarded-Encrypted: i=1; AKwUvBxv2n+6V35p/E9gGfppllDKrHGcNOWHhHdg84O1PRVneyITjC/8aCEkK2TdupQtwVoYJ3icv+n8Kw==@kvack.org
+X-Gm-Message-State: AFq9FYKFYBe4roi2A3oHFThSqBiQhcn2aa4YKz95hfaCbSoJmsgmXsef
+	qUrCzoBUNS3QrUEJhzPn6ckcuExoPO57AUphl3GUuRQCw9HsJG1kfumj4VDJDPl1a3cy4b9F8GL
+	0dRU+wWSAh26USMb0YbiNXuTQlB72czeiXm6pbsqGNn0H/DdJECrn2I/IKKQ=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261023195417.1391216-1-joannelkoong@gmail.com> <20261023155407.0b519a3da7313137a0276119@linux-foundation.org>
-In-Reply-To: <20261023155407.0b519a3da7313137a0276119@linux-foundation.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 27 Oct 2026 15:57:43 -0700
-X-Gm-Features: AclHuK_5vNE3lHaWIxr_pi4E7Lc0-zQAS_H7nZdBiLEpaJxcfp23GnfYndfnZ-E
-Message-ID: <CAJnrk1Z-zzKL9Jebk4XMpfOBtyArppGPTv3__GTbCZXGiEJjOQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] memcg: reduce cacheline contention from lruvec stat
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
+X-Received: by 2002:a05:6808:f12:b0:4b3:7b31:8df0 with SMTP id
+ 5614622812f47-56382c83592mr462249b6e.10.1793142622081; Tue, 27 Oct 2026
+ 16:10:22 -0700 (PDT)
+Date: Tue, 27 Oct 2026 16:10:22 -0700
+In-Reply-To: <20261027113813.1332096-1-trintaeoitogc@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae12f5e.985912ea.1e5798.00c8.GAE@google.com>
+Subject: [syzbot ci] Re: mm: clear pmd in pmdp_invalidate()
+From: syzbot ci <syzbot+ci4a2df3f964e29c5c@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	mhocko@suse.com, rppt@kernel.org, surenb@google.com, trintaeoitogc@gmail.com, 
+	vbabka@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B41E88000C
-X-Stat-Signature: dqjgwbrfguqx96qncdyfjqdm7crmnt5f
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 075C940005
+X-Stat-Signature: b56xwf853w7xu7q97ow7zcxwj8fg7nxq
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793141877-710394
-X-HE-Meta: U2FsdGVkX1+xWl4WXZtX4UNYz63MOwGMzkuZ/jRggjbEIIMqDtO01YptThFQP3AUveOlIp4rZ/ngpuE/DoiRfn5uu0W6rQI1S82jlT+MHMApqSQjT0zO0IzUG/tCA91kV6TNWpKEdwO+u2hnYPbwrXJlYA+1W2cFEPxa5aoZklpfMcbU5cxMiHnK+XbFe7K2z2l/5Pn1mZHxv4goexaCiG1xKbK4Irt3BA5o9146t/suZGQcqYyOujX6wHhi22DLHIJLXNCUv6vrmsT6lDBepeFgbLVBVrud//0S1N4404gewbzcAM30DsMmsi9ntcEbDDMyExVK27KWPUcifvXGclCKXAYWT6QCFajBQm+6GbcxxdNtA3KhdFvAWvAA41uJiZ/8DXLZpDFd8vJK8oIZszkBq0tsuJPdEI1K/50ZslBNNwo7X1rwoGDZiGAmz4TOFCHUFgIhqlMm5fKpKh8cMP5S4mr/MCUVG5jUR6AX4cH6yGijR8pmUeTVs8rSkOoJbc3teQYR9PmbgjDyESymdTCMReqwNj8vqL0fRjp5YS/TjhI76K1JAvcWQPyhYCSSVv++mKZImkCIwwjrB4oZ4bSr2pezb6fG5CYJc1ExAcYSu6DYQpkJYlsZZOPjdgNwoFdKu77o3c4hqOlx4iGGg7tCVV1HV0uRZ33mFpjUuitn8t75l3lfwtczsk1xdjOw1eahRmcw2Bk7QYAqjjpwJ0InXqsuPgrqq3y7X/uKgddAAJ4N7DJIn3qgNRYNTI+5eMSgs4aYVq17lvwgpBLM8nXZd0u56u94p0oyg0IJo/W/DzfuUnfQZdSkim/FSgJXFx/5JwIvgX2VTtpZe+xws7O6+tl7m/WpVeXt+6nveppj91iGU0UxhlcTjbivX8iQfozzmLz2kX4mTOV45fNPodzsm2X+yl9OfwFpmTmEML+HBzj1G3MtNAYkR/o/ybWuNHuBbPCSyxziqHYXIWh
- y2p3uftm
- CZL/Mix3fZRv2RnCdVp9j1fOD/hl8ssrnUK1lGdO/6fKokNPm04f/WBiWWuc+gdyx/N3efMtpwnYSoDTLuQI6blS/zTNrfjqShhW3vJCU8oqTK7BxlfhN9X4wzWJ67AGqOIvuF2l0b5qrjRAdfgBcK+mVBVFFROWXaSEwiPWMmzX71JGrDhs3BfY0825kwbzSDgZgVkAQUX4Kquf6LovlFD9Xbljj23m/2gP9xHSQeHHxOSwvNxhj0RXT4qoXurmDVlGvExTX0dTmkKXmqQJqS+hh2wWPPNhn82tH62lDEVhXPHg3Pq1ufl8kOcn7okiYz0y5nsiKaBr2E+TY3+S7GCJjAcvm9PXWW4tUSDY26MBMXrykVXSYrHlvAIP1KNYQRmAt+GzRALuJARSG9rrBoYBY6E/FGI4tevEwb5rQIL2hF2UFTNblSquIut9K2R88oW1vp1Sbdy9h6qO32UZRKg00U8JZswRF/r9Y2YOARcj7zYE=
+X-HE-Tag: 1793142622-456154
+X-HE-Meta: U2FsdGVkX180ouL3G9qxXLvyfFbWyXknQI+dLuY3ga3Qv0w73awlpwJTSPiDl3TcXr+J+/b9kOrI4egMarpsZttW9QAChwqjcrL+vR4+OXHSelIqcjNQeztbgMOmOdYKelqWs2D0x5DIAKUrcdEz1nWQROsC7aRNJoSs7eWZyKJPYeK1T/VR/LqQOPOgydz0kLjNFLI10WrWNzkFkaoMzFeoshVSyrpDZNlCtfnSOui+5JAbNFB+LY903KsDvQ6vnHDWJOyX7DKo0pdn2br+cBCWqXKVx/h4trGCrdjvamfh73sGl6kYWtLSv+WmlajmvKXhEJfWaLI934kR5PrbkhP+3TZR0kNO2c+ueR+1JeEMkd4SSXfRARvg857s3eKBdzZPOKe944eP6xEsW0yrEKxBSByZlNA9jVElMd4AsGQx3ZkD88Y8JbE/PTpxpQW0rvftq+lZoSQaw4TtkHdRu4ZD7BG77dtBpQTsQQdBESTHx0DTZYxwYP7ossTYNKLjcFnTWoDfHinTRxt5Uf7rW/samILzbCXBv5cXAgtTAj/qdi0ApUDwg8ydv3nQWohx6cVIgX30+8zM47LY0FnULeTcXJRvWcSo+++qC984TEI/jQZrF153nZ7l3xyAKNLY1LOvDtWkv2GdNt3vRmNz94ForqNjjEt8G2/M3AksycHmBUOtCSNWobCYTYcaTnvSa5nlWAfbDLqYLQe57JWnHYzcQgec/ulal64n+kfO8Q3Oe3wLhx1aQRsM6rJIL84w2QiBl47jQOvH03VY2NE3F84wxkQAIaTOd68oSVbyi6/vhw7Gx0j0cWtxwVnesYKjeC6heCh5vozq6oko6gKJmyyCn+GkyaLz38krbZwnemvVJ7tLHk17YFkaNEAtR6JPObWIUKak9jATVqmD7OQwDkIVW7F8Pucyvw/G8jxEDkdwirx3zV5OfxmHo7Riscatuh5DoowNcI/b7np/XXQ
+ JxPTL7x2
+ tl2X4tKp2+I3On2Kefy8XknA/oeqMmc+a2rak9llKTB8SJyHuapogDQ/DWc58qdtO+fNgQhyF9uakrccc2T/ZCIYH8LLZfvKd4pI3DGBE+9zgkOy7+9vYyr7D4nbXEdiPBE94nZ1i9cKpF+CssLuk2tZJ62vzNyz1qRJ9GqGy5tjzQInBZVL9Qdn7xEscSqe80BafPFBppT++TjqWblKFttONZR9Rj7LfopUCNc/XBOGx5lxlD2mptrImmIYxz1WcdKwm1qQ5dYnaFI8S9eMOApXbn3PK/tjsDNfgPs2Jg6uYO/I0RSuCes3o/bONrz6kgHYsJemHjJVN0MVH0rDvMM+cm9wG84VHG/GksGFJABkacuNdj3OgbsG+JeR71VQjqaFw/R1oS0LSDIq7CvLZES3LBI2kucJtft/rgoxlzDP4qqDUwS8F+OR5RPSodIP39E6pq3twzS2IANLSo64oQRWCJu3IZWM5VqimgO3zs6ysaqVHJuUO5C5FTqXYsa6Z3KKQYawz0UlCojP3B02W+kuZC2cxa9Pt2eQPpChUhwaZq8TPwqsz8BgL8QayUcwr5w/T0pVXt1EosjTa1morLN8xpw6lL9rzj3KIVKKBlvYN0T3OO78eON3ojwy8R4XlK8xyw9shnoKC7VnP6ASfe7lAGO3phr+JpfkSnkak/8oLW5BCtd/z6OCrP4E9qeb50pmCfs0xYNvtti/TW253oYFT6dpiTyJV6tQmDbm4FUrxLb3u86o9oeDr+mio3eXNob0Z1BX9ulrXs5PSJHDvdaFqsz5WZJssz/3vP7Gvnmyjxp+t80lBKquLvmzRmzCPQh7oyQK6pQlDI/zqM4efPwSOpgLSrHVdFULtqFfICO1yVi5vyvlYdd0p+6EbP567hEVjf38B3FeeZzcpn7wmsPPY+HE/d6bBVpMGseGsaHyzhvCy/CuDei6h5OxVUYOZC3uFIL3TQWNrmucNsZn4uHRKNjUZ
+ 61x2BK9x
+ UxSIgMVCPdo5CuqcdQcoUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,81 +100,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 3:54=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Fri, 23 Oct 2026 12:54:15 -0700 Joanne Koong <joannelkoong@gmail.com> =
-wrote:
->
-> > Memcg lruvec stat updates read fields of struct mem_cgroup_per_node and=
- struct
-> > lruvec that can share a 128-byte cacheline pair with lines the lru_lock=
- holder
-> > writes constantly (the LRU list heads, lru_lock or lru_zone_size[]), de=
-pending
-> > on where struct mem_cgroup_per_node lands in its slab. On CPUs that do =
-spatial
-> > prefetching (eg Intel CPUs), this makes the stat updates contend with t=
-he
-> > lru_lock holder.
-> >
-> > Patch 1 rearranges struct mem_cgroup_per_node so that its read-mostly l=
-ine is
-> > paired with a cold line, and patch 2 makes the folio and kmem stat upda=
-tes use
-> > the memcg and node they already know instead of going through the lruve=
-c,
-> > whose pgdat field shares a cacheline pair with lru_lock or lru_zone_siz=
-e[].
-> >
-> > Results on a 2-socket Skylake (80 CPUs), average pages per second for
-> > threads faulting in and freeing memory in a single memcg:
-> >
-> >          base     patch 1   patch 1+2
-> > shmem, 20 threads  4.74M    5.59M     5.77M
-> > shmem, 80 threads  7.94M    8.66M     8.82M
-> > anon,  20 threads  3.04M    3.08M     3.10M
->
-> Thanks.  A local AI review pointed out a thing:
->
->   One limitation worth mentioning in the [1/2] changelog: the slab
->   uses SLAB_HWCACHE_ALIGN, which need not align each object to a
->   128-byte boundary.  If an object starts 64 bytes into such a pair,
->   its first line can still be paired with the end of the preceding
->   object rather than its own cold line.  This isn't a correctness
->   issue, and the measured Skylake improvement may well be real, but the
->   layout doesn't guarantee that every read-mostly line pairs with a
->   cold line.
+syzbot ci has tested the following series
 
-Hi Andrew,
+[v1] mm: clear pmd in pmdp_invalidate()
+https://lore.kernel.org/all/20261027113813.1332096-1-trintaeoitogc@gmail.com
+* [PATCH] mm: clear pmd in pmdp_invalidate()
 
-Thanks for taking a look at this series!
+and found the following issue:
+kernel BUG in page_table_check_clear
 
-The AI review's commentary is correct but it doesn't seem to matter in
-practice. In the cases where the read-mostly line isn't paired with
-the cold line, it's paired with the line that holds the end of
-lru_zone_size[] and the reclaim iterator, which are also rarely
-written outside of reclaim so it doesn't see much contention. In my
-benchmarking runs, the memcgs are freshly created and contain a mix of
-both alignments. Before the changes in this series, the per-memcg
-throughput was bimodal depending on the alignment, but afterwards, the
-throughput is uniform across memcgs.
+Full report is available here:
+https://ci.syzbot.org/series/ea6c690b-0dbf-4e3e-8367-2b5092d2878d
 
-Here's an updated version of the "Fix this by moving the memcg_pn_cold
-group..." paragraph in patch 1 that mentions this:
+***
 
-Fix this by moving the memcg_pn_cold group, which is only touched when
-the memcg is reparented or freed, right after memcg_pn_read_mostly.
-SLAB_HWCACHE_ALIGN only aligns objects to a cacheline, and the struct
-is 576 bytes, so depending on where an object lands, its read-mostly
-cacheline is now paired either with its cold cacheline or with the last
-cacheline of the preceding object, which holds the end of
-lru_zone_size[] and the reclaim iterator. Both are rarely written
-outside of reclaim, so either way the read-mostly cacheline is no
-longer paired with the LRU list heads.
+kernel BUG in page_table_check_clear
 
-Would you be able to swap it in or would you prefer that I send a v4?
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      01146870c415f6ff70a469fb7ceb962a3f2c8c52
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/b4be77d2-e026-48a2-b906-ba8967ba2d37/config
+syz repro: https://ci.syzbot.org/findings/8fa94c36-acda-4fe5-a760-1dea60977f77/syz_repro
 
-Thanks,
-Joanne
+------------[ cut here ]------------
+kernel BUG at mm/page_table_check.c:83!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 5817 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:page_table_check_clear+0x4ec/0x500 mm/page_table_check.c:83
+Code: 89 e7 e8 f7 1a f4 ff e9 bd fb ff ff e8 4d 37 83 ff 90 0f 0b e8 45 37 83 ff 90 0f 0b e8 3d 37 83 ff 90 0f 0b e8 35 37 83 ff 90 <0f> 0b e8 2d 37 83 ff 90 0f 0b 66 2e 0f 1f 84 00 00 00 00 00 90 90
+RSP: 0018:ffffc900035eed50 EFLAGS: 00010293
+RAX: ffffffff8244dd9b RBX: 0000000000000200 RCX: ffff88810d88bc00
+RDX: 0000000000000000 RSI: 00000000ffffffff RDI: 0000000000000000
+RBP: ffff888104dea000 R08: ffff888104dea04b R09: 1ffff110209bd409
+R10: dffffc0000000000 R11: ffffed10209bd40a R12: 00000000ffffffff
+R13: 0000000000000001 R14: ffff888104dea048 R15: 0000000000116200
+FS:  00007f8b11ee36c0(0000) GS:ffff88818c4c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000140 CR3: 0000000112c36000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ page_table_check_pmd_clear include/linux/page_table_check.h:64 [inline]
+ pmdp_invalidate+0x2fc/0x310 mm/pgtable-generic.c:206
+ __split_huge_pmd_locked mm/huge_memory.c:3323 [inline]
+ split_huge_pmd_locked+0x100a/0x2e50 mm/huge_memory.c:3476
+ __split_huge_pmd+0x202/0x2e0 mm/huge_memory.c:3490
+ zap_pmd_range mm/memory.c:2136 [inline]
+ zap_pud_range mm/memory.c:2179 [inline]
+ zap_p4d_range mm/memory.c:2200 [inline]
+ __zap_vma_range+0xb85/0x4f80 mm/memory.c:2240
+ zap_vma_range_batched+0x3e0/0x5b0 mm/memory.c:2351
+ madvise_dontneed_single_vma mm/madvise.c:868 [inline]
+ madvise_dontneed_free mm/madvise.c:959 [inline]
+ madvise_vma_behavior+0x252b/0x41d0 mm/madvise.c:1370
+ madvise_walk_vmas+0x924/0xb00 mm/madvise.c:1687
+ madvise_do_behavior+0x385/0x540 mm/madvise.c:1916
+ do_madvise+0x327/0x3a0 mm/madvise.c:2014
+ __do_sys_madvise mm/madvise.c:2023 [inline]
+ __se_sys_madvise mm/madvise.c:2021 [inline]
+ __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2021
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f8b10f9f559
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f8b11ee3028 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
+RAX: ffffffffffffffda RBX: 00007f8b11225fa0 RCX: 00007f8b10f9f559
+RDX: 0000000000000004 RSI: 0000000000003000 RDI: 000020000015e000
+RBP: 00007f8b11036b20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f8b11226038 R14: 00007f8b11225fa0 R15: 00007fff02a6aba8
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:page_table_check_clear+0x4ec/0x500 mm/page_table_check.c:83
+Code: 89 e7 e8 f7 1a f4 ff e9 bd fb ff ff e8 4d 37 83 ff 90 0f 0b e8 45 37 83 ff 90 0f 0b e8 3d 37 83 ff 90 0f 0b e8 35 37 83 ff 90 <0f> 0b e8 2d 37 83 ff 90 0f 0b 66 2e 0f 1f 84 00 00 00 00 00 90 90
+RSP: 0018:ffffc900035eed50 EFLAGS: 00010293
+RAX: ffffffff8244dd9b RBX: 0000000000000200 RCX: ffff88810d88bc00
+RDX: 0000000000000000 RSI: 00000000ffffffff RDI: 0000000000000000
+RBP: ffff888104dea000 R08: ffff888104dea04b R09: 1ffff110209bd409
+R10: dffffc0000000000 R11: ffffed10209bd40a R12: 00000000ffffffff
+R13: 0000000000000001 R14: ffff888104dea048 R15: 0000000000116200
+FS:  00007f8b11ee36c0(0000) GS:ffff88818c4c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000140 CR3: 0000000112c36000 CR4: 00000000000006f0
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
+
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
 
