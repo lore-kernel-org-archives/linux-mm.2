@@ -1,117 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6D0606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4621606A31F
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cUUj8rbd
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXG7Q3Zw
 Received: by kanga.kvack.org (Postfix)
-	id 9DDFA6B076D; Tue, 27 Oct 2026 16:32:33 -0400 (EDT)
+	id A0BF46B08C8; Tue, 27 Oct 2026 16:33:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6366B0776; Tue, 27 Oct 2026 16:32:33 -0400 (EDT)
+	id 9B7406B08D9; Tue, 27 Oct 2026 16:33:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CCB56B0778; Tue, 27 Oct 2026 16:32:33 -0400 (EDT)
+	id 85A476B0760; Tue, 27 Oct 2026 16:33:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D2A76B076D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:32:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B8CC91A0ADB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:32:32 +0000 (UTC)
-X-FDA: 85369554144.19.A807655
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0ECC5C0009
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:32:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cUUj8rbd;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 569556B08D8
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:33:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D8894140AF2
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:33:35 +0000 (UTC)
+X-FDA: 85369556790.09.06490A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D4C1418000E
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:33:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BXG7Q3Zw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793133151;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	spf=pass (imf24.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793133213;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=86fhQATGDo+8MDnZqTEUILQavbmG5W/eLVJguZT8p6Y=;
-	b=f0PPQmKyaQXgFApNvoc6ak0nKCcqqla0z76nU+szlkISECS5iWKPD/wBys/Uppo2ddFu5K
-	h2xDl0j0gE5yioZrMexd2ydhDjEIaLmoYJe76H90TtTa4Scx7RouvvjZJ2YhHPH4++xlEq
-	vLYli6JBA7YpZR+W3FNm+TCUW9opXfQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cUUj8rbd;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=RUsmSn5TTXp1D9mIJ0obASDtKKRFcgaXruKo733un9o=;
+	b=lRHMvaA7XZHA6wCzqRqXBoKWfc6RNOAVcb7z49HXZELeaz9DSdgd/KcWDGbitSwCo9xRZb
+	OfuAU+KWLJpIl3fJwLogDzMVP6jLh9gzmYei9VggtY8clPd3eIpW30edNruCzpeN+tfpMv
+	K8ogavb0rcaI8i+OrkMsKQwb8WDg4jk=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BXG7Q3Zw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793133151;
-	b=z56Ooyu/2h2/FFZs000eqzkjw4QyrcLLSatKmfzAVh4OX+oDv4R4DAV2VHmbeH694hEFRx
-	2b89/1jevjk9VeaD7ANKbu79llPC45EBqkrLyDQKWqOo6YQktqob9yBx8Ym6D2iAKTUYVW
-	8DoN2x07ZTHOMOiW3Td/ytHOR96MA+c=
+	spf=pass (imf24.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793133213;
+	b=NbnYHO4anhQ7B2eRMF2vSGCEuYHzaRJOFDXRpZ/TVw9gpNqRLXAsMf7UBCPCQc83dYB/P3
+	AVfYRxgM/XCYDJEk3Exlc7jCu6FPvrQXkzRgpRE3Klqu8xmMuEP1L78msLMf7vgxS7eJDQ
+	K/TEytjyangid54sH2XHTuF2NieggZk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20C2043075;
-	Tue, 27 Oct 2026 20:32:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5A11F01825;
-	Tue, 27 Oct 2026 20:32:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 59F356022F;
+	Tue, 27 Oct 2026 20:33:33 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793133213;
+	b=jJZy6axos4EmObl9spOrPMEro1hDlSAMETbdsIgRO+p6bxwptEMafgFRDqgYeYmf6VAG
+	 cszb5a8lNTp8BSJfH/mpJ7mbZb7Y9f1ITIUxxaHJavsIbAXkfvha16TWS6uuJ8eBbsXQd
+	 8H7lyGLzen/Wr7TN9Oz46Hr6AtCgMm9eKSwp3He6HzBRPVsZS6YYMdTZzVkjhM++D25TX
+	 SWsswwbITxc8GmxkK240f36BQy5uhJWv4FHHQmkRi5kqNiwxGjdPDHrrVXS0hOInBOTeS
+	 nGR+/ugZ2Ra6O6doXaRTkVaZReHPFQBhNyB2iSMMnfDQei7+2yaxC6oyr9nTzXt5Rzg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793133213;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=RUsmSn5TTXp1D9mIJ0obASDtKKRFcgaXruKo733un9o=;
+	b=wr+DjOaaECUlchssCVu6rDPeQRrl9MH85zwGNmnm46uUQihuHSC/YMNH95JTcdPrFh54
+	 388HHTfflHCljq5CnFpLbqbs3HPWFDhOIXtiCsjF/F3jnSCSJupy2LK8W3S4t3fYMmJoh
+	 ZGfUfYLZa8hzyAEC/+ng6FTG5obFGy9e7V8I6THEgzcuzF3bZMzt6Zc0oSG7Zb6Qfhqbw
+	 g6BGzrveckbY129ZG9FDc05S4MGdfP58VxbX/ZF/IoRp8ujMN9WJFycJ0/rXhVwsg5IeX
+	 frNZFR4N9kl1LPdIkeUSvf3P0kHfp2qFvYxzHg/yOZ4pfeCPQXLanUtbH6s1t9BtrQQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 81D7C1F01825;
+	Tue, 27 Oct 2026 20:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793133150;
-	bh=86fhQATGDo+8MDnZqTEUILQavbmG5W/eLVJguZT8p6Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cUUj8rbdB8sxeJkMuDL4RCOdrYbrRplzvevKwnxFuwaEcH7HP+ENffudf2T0mpEpv
-	 5IgYZPx4U8OILjqSgrQVM2ZVtEuU+s+iUCRqr37O0SlFEfCwYP6WH8sUr54mzsCt1s
-	 iMf6J0wk9xYuuAD3vV+C40mhUS8iHT1njIORZz73KfNOXA2HaiIMPxjzwaUpjzGq0a
-	 +HDzAe6Y83Ik9oMrM+EDzTEENc7lTwdaNWApON+amLO666KTk6vgqAwdt/I26Z5K2e
-	 tnFRDkmrRt4vDlqitIfQMOzf4AtEOnF0EKCtlUHfO8gpTP2ZD2//SXJTbcFDzwJNgN
-	 ttZ0nsquNOB0g==
-Date: Tue, 27 Oct 2026 20:32:28 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
-	Rik van Riel <riel@surriel.com>, Alistair Popple <apopple@nvidia.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
-	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
-	Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH 43/46] mm/vma: don't leak the charge for stack growth
-Message-ID: <auEJGq46amG5oPVQ@thinkstation>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
+	s=k20260515; t=1793133213;
+	bh=RUsmSn5TTXp1D9mIJ0obASDtKKRFcgaXruKo733un9o=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=BXG7Q3ZwHaXPb724Gr8w05DFzyLn8lvJXSOvLU2S147jYv6oSrNTwhqcANecrFqYw
+	 ev3zLbkLzxKyz06JNQhgHYJhz/HZe+adzyVqqmiCwhr60xMTSp/9aY3SZtrneSOzSj
+	 PqbzLYv+x+oopTyrNrv8/INVrJPtIBKDG6pOwB9uTTkQ6EGIL9ANxe4YyzsuptkXKo
+	 lOcDnRH21JPJV2T6NxWmzQlsy6x+E0B6FiByNgUIdbzcW1SF/Vp07cjR3ihXWRjxWb
+	 lUOpICDAr4Rz12rDhK2Y9IM6Gv8a1OqVM97Q85rRGwbrH7HpYEJQJU0XLre9zXovXZ
+	 I0Ix6ksxW4i6w==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id D5F5C451F1;
+	Tue, 27 Oct 2026 20:33:31 +0000 (UTC)
+From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
+Date: Tue, 27 Oct 2026 16:33:32 -0400
+Subject: [PATCH] mm/shmem: fix swapin livelock on a mismatched large swap
+ cache folio
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
-X-Rspamd-Queue-Id: 0ECC5C0009
-X-Stat-Signature: cqtjoxipyj433kyuzxmbjcptk66w1h14
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBCF4avIrDvQBFToVYqLMY7NFJJKxqoQv
+ LtRF2/xLd6fQTkJK7yqDIkXUfnFAvOowHmKH0YZisE+bWPKUH3ggLrSJBGDaKDZeRyHloi4NbX
+ toXynxKNsV/fd3dZ//2U3nzHY9wOS/mNzeQAAAA==
+X-Change-ID: 20261026-shmem-swapin-mismatch-fd7aaae7152b
+To: Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu, 
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+ David Hildenbrand <david@kernel.org>, stable@vger.kernel.org, 
+ Mani Tofigh <mt4022@columbia.edu>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793133211; l=4725;
+ i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
+ bh=Vdl4OKyE80c+N/UAG+bYXzpu0HL0y5evYFJyEcYjtvw=;
+ b=7uEcFzFrWSSemDyMXBbHWaNW+OuNxmh1qJi8M4WhwJ60XkoJkAc5+eqGMXNjzw5vbCxDuDjY9
+ HBoa2eD2w2CDUcUk64WjB98n/hFWwztLwUaIG5XzUTnR44iklMkG7ET
+X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
+ pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
+X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
+ auth_id=1322
+X-Original-From: Mani Tofigh <mt4022@columbia.edu>
+Reply-To: mt4022@columbia.edu
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D4C1418000E
+X-Stat-Signature: waenf819fus85r8d14e8xswhye7foxqf
 X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-24.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793133150-748236
-X-HE-Meta: U2FsdGVkX1++eU57QE6AwLph9IlrL8tsUTLq4tIki/pTKrLMcluiCFRqFDVPA4GU57tdhAU+XJL++y44w39TSL7aLoNFBACclsuM47ltYJX+FIngh/MfCGgNKEO6BlQcubw8hdl3jGpEol7CDG9JyrUqGDbAONgWDmakHVZxmZeZIJjjsIiKFs7oplxZRhqBX/xDbr6bgjaamGS4oAcflDo4lO79mr8Ut8Y4r3VzuKFwx410Nk5dmfD4zDzW62gtiBaXnpWcDAqljK6aaMPkG80qy3194NOoFpuPjGGQmOXcD3650v+tnunksMK2GcZuYIMEM9OkKvzp02fV63+6k3scOfhoMXkn5QhBtIXDhXEA8r3g3lZ6Lcew9A7aWI5bVlrab2rVVsVGf2bRrXChTXwDIdz7LIqrxeGFg2+RaBAiY4tWOxZdYjjbxBZT+W3akZuN79oqX2xRl7O1C//VFySNB9jIqmUkbq9rgA73uhmJ2cCErd7htUlfbf0fW2Yv42Ob2R244t8q9OEX5bHX7v3BhFtZ/9YFIa+qeePXwUgihUf7WiTkfAMUTgnYvygNOtTLMT2SGwJhNDhWhMRa3aAXntpVFR20RTvV9eqsSQP8GEY2e93+PMifZZqMBfzy3pc630Bh+OxznPT8R111l0TQGalw3hyk1+DJ3hqnFNzajq54nsheq5Ii0CtlYI35OdyuviDNuXbVwZ/I+xibvRB9bc0LPBrWmcdls2aWXkARdZgfc92ZtILSaRQk8vEbgV07r375tdX87muPxf5Y39VBASqPbNMiBHqgNUFFsU4wzgGu4JLpoAwyO61aSSHSSG5xm+982Zu8FhVrMvVSo1Cn+Vw789xq8VGIEW8Fk80UZ832W4WaruuFqT61CLoj1ZCThPsu5D74PtdKL0xAXJazvNEQBC/DiWagx1ml+9XPBX8rTfTvJZqCbmQLK9D1yqVG5IGrU08pWbbIc8S
- fUXs+17e
- P89igjh+b1ujDSFwVIDyhrncl5/Ln807EzFHN/ZJL52aWzNbZcjXejHEbEhzoeXwh9EEWMacjNq6h/sR34K4W/vuL5VSeP3/8LZRBATMu3QpsjH2k/EZeCiYhNo/dRIOqxg9FODr4OBb8yMMsCWMRxBck+NDXn1nWWZ+wmqdoVBCsorwoeKyX/QcybO1RIxl6Tv0+ukTPP50IaHNWqOOmRACYUTww8Lc/qDuOauMRQh/Uca084Guv54dDMk/lfeIF1unEeHnxBe9/dkrsqbPSBPMb+3ycevkOwo50zdL0qVMkJ/18o2XXPDOtSPnmLStZQVE3f5EVk6nahH6CPg24cQFkFmZ+6ooDdzx8nDe1f21cFhhdu5HM9g/OgQltO3aaFfF8F0HQyGcKSqmHl5vXQjJQQaT3EQfrNPNX
+X-HE-Tag: 1793133213-532152
+X-HE-Meta: U2FsdGVkX1/DSfaSy90lR+O/kk3eIlyb4mrXkdl4DxeLNczq5kpLM8Zne73EXwjhap2xvZgF7z2YmUq4foyYYhBKaOUAX5UyXCp+mv9fL8UXL+DjhutUn6s5Yexj9eN56h8AZwwtCKxdBuyIdcr3HfW7WQ/jYPAFk73rPUCWHUhlx+AJ+Iwrm7Ax88Vp08Lbw47sdC5FXMBcNugDZ0C5r8PdzsqIVC+O7uGKusNqr8DAfbpWJKZEraP064F9f1GKonq8dv2caEPAxIATqrb9Z/9o7VKB3VJEq7zeq7k63qubBxaw7wsCnCognS7NPRdGVacvBydj5KQx7Yuk8Z12YJD6hQocHMKwEqkOSkJPhOPecVKum2oYqFkpRE6l2K6sePBtgsb3WRuv+cFlLScQsL42VRfOu8wqdJx9g+Kly2QC8pJARjzWHJdPoJ6VXVSHWqjxAhoKeX1NUE110FBh1oXMod1H1vNc0fxj68G66Y3NsViw7ug7N/H9NZ8gri1vz9yh6nHViLPBBLETqsnN6+k4loME5Iipz7FkWNau6/zfMWR+93jCq8YkaecwcgbWhsclTDpxbztjYt0ym3RIKBymDfGyULAtVhmG0gKsL1a30ZLGiT9pDwvddaCvyquFNQMrJQqv0zqPwloRj2rR4PG8ud/BNEy2bsnK4Z+HV2ey2Tta1VgZP9SzsiyEGomd0REf66gmIZSjZDvTqJ3eR5RqJbDmGnl6ofX6YzQMeoVII43ZXIYm6vTxZwypvmqQKYc5SNMlpLAjN3vkfCYgGJXSRfuUx1M4mM1MNSgI6p0GRirqaTm/qZB3ZObU9QjQzyLyUKY7T5Z5wn18hS1sugvPAdqrs1HqykIIeBhASa6fKRdoy7mDFNmvh5lCb+eYmX4ToE9N44hM+979PmMUL33FiQgPaJhPjn94Qj+MR+9uBO1BPaBT3jfbWkqKij4cIbdF99b76vOW+1xxPer
+ Wf4EAdGw
+ yWnf9OqMEZIoiSgxBheaZWTQ1FZIe+ZdDRu2o59Er/MOg5+V6d90jMG73S3M+tphB8dGB57K+jU16cFL+9/FD2sy/+0YIbQqOTJVYxSRD2Bs/zUV0xodw6dZYtOzdEnMtX/1fL9yAkEwWsi1ldNQi0+Huhiil8GDDXs7fYpOQrLRmRO0ixoKwv4cD8W2ZHF2BDvrIoMpQEcPcjeMJWTSflwm8Zdh3hXeYyNFdRO43uHi4nH8T+XIvADPSW2WKd9RdZ0+LNw+Cuo+riXpjuRGbxyPCRt78xu5BrqZ0nF1SGBcOs+nglf4VgCtnMOEvaDgvSOFyGfhB1L8DPQ4X0Fbj4a17Ro94f1zAgGN68HnRyFEgdAfWk/zBlytPQuDeQ5WBns78moB3beHzE7UfFXfUgA4DeA4kzH/cmqVCwtyhAv8Kvl7qzKRQtgHs1+phdDo2kSnKoXFyVpBC6busBHj4Vxmpm52qZg/wIoBy2mDf5eIWwfU2RzLCRP9RpoOa1nxlB9HJNBWCyay8d1Aisp64vDGx0LjZsakGsHJANso6HMzpvJBAk62WSoYP4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,30 +145,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:18:03AM +0100, David Hildenbrand (Arm) wrote:
-> acct_stack_growth() charges stack expansion even without VM_ACCOUNT.
-> This can happen for read-only or MAP_NORESERVE mappings created with
-> MAP_GROWSDOWN. Unmapping these VMAs does not release the charge, leaking
-> Committed_AS.
-> 
-> Only check and charge growth for VM_ACCOUNT VMAs, matching mremap().
-> Unaccounted growth skips the overcommit check while remaining subject
-> to the other stack-growth limits.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+From: Mani Tofigh <mt4022@columbia.edu>
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+On a SWP_SYNCHRONOUS_IO swap device, a large shmem folio can be left in
+the swap cache over swap slots that another file now uses.  Reading
+that other file then loops forever in shmem_get_folio_gfp():
+shmem_swapin_folio() finds the large folio, rounds the index and the
+swap entry down to the folio's size, finds no matching entry in the
+file and returns -EEXIST, and the retry finds the same folio again.
+Since the task keeps the mapping locked, a munmap() of the same mapping
+waits forever.
 
-Maybe worth having a warning when it's accounting w/o VMA_ACCOUNT_BIT
-or let those helpers skip when there's no VMA_ACCOUNT_BIT set... 
+The folio is left behind when the slots are freed and reused while the
+swapin is still allocating it:
 
--- 
-Cheers,
-Harry / Hyeonggon
+  Task A (reads X)                      Task B
+  ----------------                      ------
+  shmem_swapin_folio()
+    allocate a large folio
+    for X's slots
+                                        punch a hole in X
+                                        /* X's slots freed */
+                                        swap out file Y
+                                        /* Y reuses those slots */
+    add the folio to the swap
+    cache over those slots
+    shmem_confirm_swap() fails
+    /* -EEXIST, the folio stays
+       in the swap cache */
+
+  Task C (reads Y)
+  ----------------
+  shmem_swapin_folio()
+    finds the large folio
+    rounds down to its start,
+    where Y has no entry
+    /* -EEXIST, retried forever */
+
+Before commit c246d236b18b ("mm/shmem: never bypass the swap cache for
+SWP_SYNCHRONOUS_IO"), a direct swapin that failed this way freed its
+folio instead of leaving it in the swap cache.
+
+do_swap_page() already drops a large swap cache folio that does not
+fit for anonymous memory.  Do the same in shmem_swapin_folio() and on
+a -EEXIST, remove a large folio that is not
+anonymous/dirty/under-writeback from the swap cache so that the retry
+swaps in a folio that fits.
+
+The reproducer below fills a small brd swap device so that a 64K shmem
+folio and the 4K pages of another file land in the same slots, and races
+a read of the first file with a hole punch and a swapout of the second.
+This bug was identified and confirmed with the help of a deterministic
+hypervisor currently under development, but the non-deterministic C
+reproducer can typically trigger it in the 2-4s time range.  With the
+fix, nothing is triggered after 600 seconds.
+
+Fixes: c246d236b18b ("mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+---
+Two patches in David Hildenbrand's v2 shmem fixes series are related
+to this one.  "mm/shmem: fix truncate hang in large swap entry" [1]
+makes truncation retry -EEXIST directly, so it can also loop on such a
+folio.  "mm/shmem: preserve allocation errors when swapping in large
+entries" [2] fixes a different -EEXIST loop, where a failed allocation
+is reported as -EEXIST.
+
+[1] https://lore.kernel.org/all/20261027-fixes_shmem-v2-10-86a00952acb9@kernel.org/
+[2] https://lore.kernel.org/all/20261027-fixes_shmem-v2-11-86a00952acb9@kernel.org/
+
+Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/shmemloop.c
+---
+ mm/shmem.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 13e0786436cd..f1da8432d55c 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2568,11 +2568,14 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ 	 * and swap cache folios are never partially freed.
+ 	 */
+ 	folio_lock(folio);
+-	if (!folio_matches_swap_entry(folio, swap) ||
+-	    shmem_confirm_swap(mapping, index, swap) < 0) {
++	if (!folio_matches_swap_entry(folio, swap)) {
+ 		error = -EEXIST;
+ 		goto unlock;
+ 	}
++	if (shmem_confirm_swap(mapping, index, swap) < 0) {
++		error = -EEXIST;
++		goto failed;
++	}
+ 	if (!folio_test_uptodate(folio)) {
+ 		error = -EIO;
+ 		goto failed;
+@@ -2613,6 +2616,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ 		error = -EEXIST;
+ 	if (error == -EIO)
+ 		shmem_set_folio_swapin_error(inode, index, folio, swap);
++	/*
++	 * A large folio that does not fit the mapping, e.g. because its swap
++	 * entries were freed and reused, would be found again on every retry.
++	 * Drop it from the swap cache so the retry can swap in a fitting one.
++	 */
++	if (error == -EEXIST && folio && folio_test_large(folio) &&
++	    !folio_test_anon(folio) && !folio_test_dirty(folio) &&
++	    !folio_test_writeback(folio))
++		swap_cache_del_folio(folio);
+ unlock:
+ 	if (folio)
+ 		folio_unlock(folio);
+
+---
+base-commit: bae9a042b03b27924c6fd5bdc00a20d6a44d6041
+change-id: 20261026-shmem-swapin-mismatch-fd7aaae7152b
+
+Best regards,
+--  
+Mani Tofigh <mt4022@columbia.edu>
+
+
 
