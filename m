@@ -1,130 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3F960A2619
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4073606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jkUpZ2aC
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=1EphzHDe
 Received: by kanga.kvack.org (Postfix)
-	id 5678D6B066F; Tue, 27 Oct 2026 05:46:07 -0400 (EDT)
+	id 7B26F6B0671; Tue, 27 Oct 2026 05:46:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 518016B0671; Tue, 27 Oct 2026 05:46:07 -0400 (EDT)
+	id 73C226B0672; Tue, 27 Oct 2026 05:46:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 407BA6B0672; Tue, 27 Oct 2026 05:46:07 -0400 (EDT)
+	id 604C96B0673; Tue, 27 Oct 2026 05:46:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CE0D6B066F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:46:07 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D578EA09E0
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:46:05 +0000 (UTC)
-X-FDA: 85367925090.29.8298587
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C89081C0004
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:46:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jkUpZ2aC;
-	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C15A6B0671
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:46:20 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8CEFE1A0930
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:46:19 +0000 (UTC)
+X-FDA: 85367925678.28.7A9655F
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8401140005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:46:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1EphzHDe;
+	spf=pass (imf11.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793094364;
+	s=arc-20220608; t=1793094377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+T9dXJtHkajTuMxj33xJNknQApvv9iNPJoMhnaDiDss=;
-	b=hkl6zyMG+cmXlUj6cBSLt4eqOMjBGAGfF3j9vYxboKGHy+8xIvjg5bpeWujE2RXO6PJXMu
-	9wxUNkqb3ez0QDbMeQNfXYAU4LD9sWzEwJdnmJWARGebLCVQxFC7bUeVRvpbHbMv1wYNKY
-	Z3gVCuv4kzKLakmPlNpSOAcG3Qe7d5k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793094364;
-	b=wts0g9gq5wveCCsc0sZeaShy4oB5erzSvM+HO9RI0lMbUPxcxDrSR+FKLxg5Sqknmj01re
-	3BmOHqqjl1MAC7NhkbAGhw1/Vbacj+ILfRzlXLB87RPjYDfRuD4/IUw2mzmTxqCTmSzyLw
-	o72tY8w7PBtsVmiYWfIEY0osclaxmIw=
+	bh=8rFiTxZOwo2VZms6MC4in4aJ0OzlRUdtTuBeNfB6VJY=;
+	b=JuQO4KUtXxYJdzCThkz6oVwWOn9Ckm0Gdq86V0hD66HKiqzicFRUxY6iZApAGj3A5c8WCe
+	az5ESA7SCZBVPraRuqfI9Mor+rHXi2CdxjJuJmoa0ZJIT85aHmft7RFNvtT+8aL8/AMsxk
+	Bx29/tsRGDSFc9tHsdeEgCDM+ay6ORA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jkUpZ2aC;
-	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1151A444E9
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:46:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCB61F031F1
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:46:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793094363;
-	bh=+T9dXJtHkajTuMxj33xJNknQApvv9iNPJoMhnaDiDss=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=jkUpZ2aCKBAeL1KLPaxmtw83wNwTccBRSeBIhfZc6M4YBj74AnSCzGu/Vj7kKPZMJ
-	 xB2+0PDyXJXQVB1EOn1ayaYzAx2mrJaWD8WmhUUZNmpwRSsDxZjX9mgfrYsVSBHWd0
-	 VseBgRTYSAXzURjIAt+wjLxG3BCNO4grdGuYE16SirgMNVffR5YFZcQVUOPmL2cUlx
-	 JGQcAvHByekurCovG0OYBu6ebbnIlf5DPz9bP5GyDI5tAMKRdsvP6VsqDAdMHElQkR
-	 7Ie+U1N8faxW6AVJ4aydtmjH1gM3ZCXqRxH7V6Fb/x36iXpasqD76VEf0+2FHLR0Yr
-	 244BIDm1VbR8Q==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93ead211f14so79154685a.1
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:46:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwVpbcWZi5GsewFM2I9UbxBtm6dmFQmb7ThBLAVQqya4De1oF/Q5b7ZFKfWg0jHrAsCK0pPD0vlCg==@kvack.org
-X-Gm-Message-State: AFq9FYLaOR4oemoLJu1zbvBgLrPesiw8pCxZWw7rIVYSd5/DmpV+9kCf
-	kuiiTkFHC0X1ldK1wDCgPYUbboN7NttucNPf059MLnt3nXqM9MJNB4lIPMY9I9NaRO4JOEYtndl
-	0ZgAsDVXZHpkiPLkQO5NhTp1bAD3PK60=
-X-Received: by 2002:a05:620a:1793:b0:93f:1fa0:9f27 with SMTP id
- af79cd13be357-943f4ad5cb9mr379876485a.29.1793094361679; Tue, 27 Oct 2026
- 02:46:01 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1EphzHDe;
+	spf=pass (imf11.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793094377;
+	b=vC0FJH4DGWGiGwZY/CtsdyA+6EgHsPo+I1vfr/i0jEYA/0g8XP36wmYEpmZfZj/vLl1S1X
+	csPeCDdZj0D6s/Hde1vDe/3bRpwb6+Hl0UwAUdjCqBIHQvWknx/7dnsOmB2DfXk9Ys3TT9
+	wuMJZRj3As9sq2DYEftinKXhmGujHX0=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8rFiTxZOwo2VZms6MC4in4aJ0OzlRUdtTuBeNfB6VJY=;
+	b=1EphzHDeF8ps+FmTf91CAJlnqWNZeQB2cVJXv7phC/3EJX0PW9FKl2gAJj7pIQPi7hHXCOAyV
+	uTKXDXw4ESSfViCv2NMmRVxFxxd4vcsvB6d629RjnQPxW9hiuWjib28DkDH+gruklD5rXLtOcgI
+	inLVTEZl4FGJLWN+9hV+PYA=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4jDQbx2w9gz1prky;
+	Tue, 27 Oct 2026 17:46:05 +0800 (CST)
+Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id E9E2E4058F;
+	Tue, 27 Oct 2026 17:46:12 +0800 (CST)
+Received: from [10.67.110.68] (10.67.110.68) by kwepemk200008.china.huawei.com
+ (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 27 Oct
+ 2026 17:46:12 +0800
+Message-ID: <6e381f14-f00b-4c0d-8499-f5a5f37b2572@huawei.com>
+Date: Tue, 27 Oct 2026 17:46:11 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org> <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
-In-Reply-To: <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 27 Oct 2026 17:45:49 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xh2BXe_e+8oJS3ZbzoLi=7r7-+90SHPy1+OwcPNdGUxQ@mail.gmail.com>
-X-Gm-Features: AclHuK_Q0tGAJYZBBe8Ofc91w4jrj3Ei9mVOmmElYzvOyxGV38djS-jM8bZnzBM
-Message-ID: <CAGsJ_4xh2BXe_e+8oJS3ZbzoLi=7r7-+90SHPy1+OwcPNdGUxQ@mail.gmail.com>
-Subject: Re: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
-	Josef Bacik <josef@toxicpanda.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm/damon/reclaim: allow disabling watermarks to force
+ reclaim of cold pages
+To: SJ Park <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<damon@lists.linux.dev>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20261020135822.85334-1-sj@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <20261020135822.85334-1-sj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C89081C0004
-X-Stat-Signature: asoht1kkap45tfmb8mu6iq6td5fdhinm
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemk200008.china.huawei.com (7.202.194.74)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8401140005
+X-Stat-Signature: enmdoxpycede89ew6thyw8qcwcbbes8x
 X-Rspam-User: 
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793094363-761128
-X-HE-Meta: U2FsdGVkX18gtbS3ynHIg8m5jAODjzmhre3cRDqnD56AE7o4oAfA7jbYszeMobgPQ2rcFqMA3xmHnsNrjhfr9w++/xivQRzu3IV2Q4v+qB6HLd+7eHfSFDgczRBfr2faD6D4GfzysbN46TT7GHXuNVrPX0TOKNVUY0pz5g0kVUw8YpEz9Xfi5D53josxQvZXDwUWvzTfGmxjFvhPSLq+acjYIeDFiJgq14f6RUGln8qi8DjEVuTJMm60HoXeXd9bYbOyph686IEiOBO/1fw/dAl6xgatGZPxQWAb0QuNaREWqNcQ5vWuDBmoybc6US9AQIJuK2cPB31tPSHtWDEmp1uG8nueNweDcdEh/EE2gNzAoaBR5WW9jtdw9eTr1zzZovf3LjPi8nQLR8hzrXZkT530O8buBzrRScgALSLA09I4PXpBIaSKuJ1GjIXH7rt23cs3rdylQwb7o+o3dJVg2u1LvHv8xhtxsULoFbIGUChqQFoqMHEeNiD/camnmWnttsmdOZtpLOx79n3VK/80AsD9SJNKaM8tvAC7BVF8OvK3DlBzdxTOzrf0fSceqHX5ItNcM01CRYpn1WvJjtQS6DLCVRO76UY/zK9c4wlk+cl+Kjb/xrNGrDm8B1SQs0MP1Ui5ysnXFEHI1pSCfwzpbZnoVR0RizsOn9bbLdeQ5A0jwwEr29ZItiwOjktWkOUBeitTnljoqKG/u9Cxkz0mrw5drFey36xsLuuFw4cq7VixxafbM43u33MkfZgffuV3bg2P/AU8cZs7UXCo2eypnq0jTnGBBtbxhq86r3wF8pDD1Dsjj7d3f/OfaCrM6YoYatwnNvNr1/gRXTNAleabKE8GsAb7bpS/5IAiAjdvqMuZZqA5+vH+y7RJvbOnLIJyHYHds75wccnlNZpGLgksgCIFSQcqleqhXti/IqkLhC2A8TCFhVvLWbqk4J8igCf1ioViI3rPd3i8rVwEl4F
- 3OnX2tFa
- H5LIyxAQ2IQ05AAIViqd23ZbqyvVprlIaO1S936RWmfgtLlYCUWyUeUiDIZKWsHKtHn9zjjePtIc6VufD8aqcZiU53d+p5O/7Gv3PrJTHlD0QvO62QqD5x4J0ucUtSInxPQJWwWS98dsh+cyP9zY4RkOyb2dbKN7QR9/qvpYkDBS+0KkLyltCWlBNbdba4bC4N4oE1M23p+vZ50Vr9nIbemzmaQWBIvnnORhVQ9pXAcWaHpPrLzoKuvtYlMDT1SR3X2d/U8n/aGygEbQ5mSoy2ZHtBZRLvo4WvHgmNGRHD1RJGQjXQs/xwlfbIhisFpq5n+LqYkIN/z6uLSAlAV6LdyolIxEvetnlFnfQSWpaWV5wV60YUsf1zoieXGtCAv1QpTbLW0NVr1/rt39znlqoJoT7nb6cUCNHC8ZJTtEdDgAEVTGVc6gV6Kd3y5wtZGCF1RzsPtGrrM8WdEpPRyHXaKv7UoUeYsz9WmTbnSKOXLCNocg=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793094376-780941
+X-HE-Meta: U2FsdGVkX18xRyCbD75tXul3PFjPXgFc0lkkq+w8OoGrJkMI0jpLFfKlecxToMxLiQjD6HnxvcotNN6zdAEUG/9qFnsin95vQmS32rRRufRQtbKjrOeP4kg+08XFy3v0gTbRkM1E6KPgA2k4n4hDVWJ3fzvUevZBI2FnJZ5/xQOSrR0XVXlOkdfGFiUTLWKJq46ne5nDafimTRXE2RSlHAwNxb0Q24wpDtQID2lVFiQ0JE33rU1esCzlLYizlCuF1w1L0EUnkcDBlCG/yOE7CXBAG8uxRAis+3/qMVqbUrsIImVaOIz7zBzbJ1kfMMvcojtYmAU8eB/YsxEppuaUhWzV6BGR63Bp5u9y/bCtppq4o29sWHzslYsvPfQ2rE9Iud+fR0JUZV+hgaCYUOFtJnjcTQ6Yey4cEVgFw8nRluwPBWzJihpL0k/3SAkGdg9qzt5q7UP1FTZyO+qUurpiPmpnqEqrtRwXUQFO2pAkHSwM3asGZfJDa0PlZbCUAVJ4pNBd0EnZNDUdeDOVvRQwJLvOn83nfveoqNO4//8g9DrSZ3UGBp9/7UAGQ6j5CNeXmodid0O/bg8UM6csExA0NPLBxIh+lMVhxw2ANh8hT7AzHVHlicaHiB4hV16jjHPuJpcM0Y5wiVLYfDAZ4Nj94LikgyECesaTvmC1Zlattls+dxOneE2sx41pU5qmQHJ+O8NaKgA12+CheMXBK8C4rz7djmrAXBl7qytF9j67HdKGHAJXZjd0FVqH8PR8p8DqQOz0TqPg9M5ivq4U8I7S0xjUnSiSdFV1OHDRSEOuOXJBGKnSUha3PFztaimyFTt+gfvCJQ33fdhKu5c29agU6dz+Gty4h7QoN+RIXd/gzG32tLvMqPPv6BWSEqCTW9+Jd26FglVH7eF9FhhlZRgw39Shp6MCNThGK11JCfSSyB40QzXW4TdQwAJuQ8yElFGGt5cR6I2cfB9lK6nayps
+ 2BuFKd0I
+ DUuZV/k1w50psfDYikMvCRyeH6ZGoA1lMWUNBAxcQc5NYzhhP+ptuI3ABAqbpb8t01XY/zsNnapTvcyERCIIJfRO4b5lXC6G9O3TndjjbM+YvmoAlR3ztPutofSee7s3J18ze0ZffLE8Ez7JsD20Y8vOFC4HyTDZJ3cPJS8P7E432jutc8Hv2f3i6BMQQkg6UvIt+lIq9/Kt46HvfWwbo0zPpjS8zjpXUqHYHl/ji6/4qf1O/jwy+fKqbyrTxVLP9tgo0g+Hg59kVXiPo8ZUpeedlAthGWKKfAS5WuIARHXI5HAqFdfYj/qRryiXzQ4RRfJc92OQ1WvwrFuBBvh37WDuZtPHdLeOcAMmaBW2/Ey0Hjd48fHyjBTjwUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,35 +104,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 7:18=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> dup_mm() copies the parent's mm_struct before dup_mmap() takes the
-> mmap_lock. A concurrent brk() can leave the child with a stale mm->brk
-> and newer heap mappings, causing later brk() requests to fail.
->
-> Other operations (e.g., PR_SET_MM) on the parent's mm_struct can similarl=
-y
-> cause inconsistencies.
->
-> As a simple and robust fix, grab the parent's mmap_lock earlier. This
-> way we don't need to update individual mm fields in dup_mmap() and
-> keep missing ones. Stop updating the 4 existing members (total_vm, data_v=
-m,
-> exec_vm, stack_vm), as that is now no longer required.
->
-> Keep releasing the parent's mmap_lock in dup_mmap(), before
-> userfaultfd completion, to avoid moving the userfaultfd handling into the
-> caller. This should get cleaned up later.
->
-> Move uprobe_start_dup_mmap() to preserve the lock ordering.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+
+在 2026/10/20 21:58, SJ Park 写道:
+> Hello Jinjie,
+> 
+> On Tue, 20 Oct 2026 21:32:33 +0800 Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+> 
+>> DAMON_RECLAIM runs its scheme only while the free memory rate is in
+>> [wmarks_low, wmarks_mid].  Reclaiming cold pages raises the rate, so the
+>> scheme self-stops as soon as memory looks plentiful again, which is wrong
+>> for a VMM parking an idle sandbox that wants cold anonymous pages
+>> reclaimed immediately.
+>>
+>> So add an ignore_wmarks module parameter. When set, the scheme uses
+>> DAMOS_WMARK_NONE, so damos_wmark_wait_us() always returns zero and the
+>> scheme stays active, bounded only by min_age and the quota.
+> 
+> I agree there could be use cases that doesn't want the watermarks at all.  I'd
+> like to avoid adding new DAMON_RECLAIM parameters if possible, though.  That's
+> becasuse DAMON_RECLAIM is introduced to let people use it without complicated
+> setups.  We will of course add new parameters if really needed, but I want to
+> see if there is a good alternative.
+> 
+> Have you considered some other alternatives?  For example, could respectively
+> setting wmarks_high, wmarks_mid and wmarks_low to 100%, 100% and 0% effectively
+> disable watermarks?  Have you tried that?  If that works, how about updating
+
+Hi SJ,
+
+Yes, it does for my use case.
+
+> document to clearly explain the usage?  Also, have you considered using DAMON
+
+Thank you! I will send a patch to update the doc later.
+
+> sysfs interface instead of DAMON_RECLAIM?
+
+DAMON sysfs can also do this with "none" watermarks. But I want the
+simple DAMON_RECLAIM for only proactive reclam.
+
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+
+-- 
+Best regards,
+Jinjie
+
 
