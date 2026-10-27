@@ -1,106 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7485606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132B6606A325
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=FfiDc6lQ
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vQcZ+K7u
 Received: by kanga.kvack.org (Postfix)
-	id D6CD86B05BD; Tue, 27 Oct 2026 03:12:24 -0400 (EDT)
+	id 20A9E6B05E6; Tue, 27 Oct 2026 03:20:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1DA56B05E4; Tue, 27 Oct 2026 03:12:24 -0400 (EDT)
+	id 1955F6B05E7; Tue, 27 Oct 2026 03:20:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32E76B05E5; Tue, 27 Oct 2026 03:12:24 -0400 (EDT)
+	id 05C896B05E8; Tue, 27 Oct 2026 03:20:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B16E6B05BD
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:12:24 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 26B0412092F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:12:24 +0000 (UTC)
-X-FDA: 85367537808.05.53BA819
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D00266B05E6
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:20:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 632DF80915
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:20:46 +0000 (UTC)
+X-FDA: 85367558892.22.91E427F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F051B140006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:12:21 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=FfiDc6lQ;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf14.hostedemail.com (Postfix) with ESMTP id 317FC100003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:20:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vQcZ+K7u;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793085142;
+	s=arc-20220608; t=1793085644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gtdNnLom4qpn3DvgmzGMm6xPHdf4ojR1KNUGjX1eUNk=;
-	b=AnkRFePFv0jO69Uw7Qesi3bkOt6ogezjAwqQl8BlH/gSLeUCqvo56IZ98QAMxfvajvkUCd
-	H9FnHBVSwOhNS5bYvT9q9V62OvBNTOBSbbg89LavOu1JsSYchS8MF74MEU1cAX19H7RZ9u
-	zBqudBFzUotjjqs4fY8VmouwF79+qUA=
+	bh=JxvqEmSKUPHSp/dylabMtz9NDYhSF/aiHTeMfx5p0gg=;
+	b=BaVGzVxMe6F/dUtIA1t8mBwlar5gpFyFG52IcsXS17xbMbyO6m+f7rHQGGaOQf0WPIIS9Y
+	A/GS6+Ec6mcCbvfKP8LTfe7Dtxh9yua4j8PQEnQy4R/PjVw1IMoR/67FHjK7q0cimYTGle
+	MSESA8Knjavo0XtfkYAHtH0TUPuI0P8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=FfiDc6lQ;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vQcZ+K7u;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793085142;
-	b=AXIiHABJiulp2v5veAmXzPlocDl2xUWTpQBJu3laFLvFpR2VfdFmr05KwM4SF0c8yLNNM6
-	NRNszBCKXUH6Y2Yij7gUJHxkSP9AZZnSM4zNdojjSo/LbWTIjqn8MkNKMn0sYEm4Jpp7Mj
-	0YgB/hM7+3B7LuVAl3uyIg3vlTxnyaA=
+	t=1793085644;
+	b=JXyMo0ffLikj4MRZqn6bD35TF0JTJX7/gSwcbC4M1mip6uIGFMkWbW5xgSpawziueibPm8
+	G2tm57zt4SKbs4y8y4SNojv8x/eL3Ev+Ih/owf0j6l4Q7oIgwkQ2we73f50OlaL1KVNYeA
+	HEKYQB/tiBf68vwafh9ewIpyfcNau18=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8CBAC1655;
-	Tue, 27 Oct 2026 00:12:17 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF373165C;
+	Tue, 27 Oct 2026 00:20:39 -0700 (PDT)
 Received: from [10.163.152.160] (unknown [10.163.152.160])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F06B3F673;
-	Tue, 27 Oct 2026 00:12:15 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA8A93F673;
+	Tue, 27 Oct 2026 00:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793085140; bh=a8GTRJb/qeXzyezkSqk5mOqJzNR0LEKUkQ+3k+5mvZA=;
+	t=1793085643; bh=9hjydCMJHH07W+S/5zQJiskTD8rJHnoHE7cyvgQKAu4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FfiDc6lQo1cXuVWAHm7sZJKVPvB1uBSZcBxPlRTRTKZB9P2/HqL0iAsLKLf/ssxMF
-	 ewNuKCyCho5VuZn4COMZ36FF9jRRuUEgT7JmcRN66+bZPL6d1ZNnonW1F5rlGHUUuO
-	 xoTW+Fk8ljZo+MhZo0XWRWOqXNpvgAySN6D+/GdQ=
-Message-ID: <0757f1b0-9af6-417c-a4cb-eff0b05ba277@arm.com>
-Date: Tue, 27 Oct 2026 12:42:12 +0530
+	b=vQcZ+K7utjnoFyY/avj8WNV9xYKitfP2P//3Id71b4DAsIKJDegS4COAwYGEiNKT2
+	 PrXdAjX60UJjVEs2tZHA6I59AtFq0w29SQQ4rAvE+M4N2PjAlsPToayaOUnEVUpCVa
+	 /LBIke5i9dpMnl6JO3d6gq7y1YASHSTdsmqI17a4=
+Message-ID: <12633ce2-dc65-4908-930f-b128f525cc8a@arm.com>
+Date: Tue, 27 Oct 2026 12:50:19 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
+Subject: Re: [PATCH 01/46] mm/mglru: don't use stack pointers when walking PUD
+ and PMD tables
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kernel-team@meta.com
-References: <20261012192834.6934ef85444dee4a60d6d876@linux-foundation.org>
- <as5q14OsbK2CmOrh@thinkstation> <20261014202936.GC371161@cmpxchg.org>
- <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
- <atDMN5MoGrwJNpAj@thinkstation>
- <4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com>
- <atiCG2iPrHwDznSZ@thinkstation>
- <d2b8edf0-39ab-4a44-bd0d-58230dee2fad@arm.com>
- <ats7oFM-fsYdUS8y@thinkstation> <attOFXch_TchIfEv@thinkstation>
- <atty0n4UzTfI46eN@thinkstation>
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <atty0n4UzTfI46eN@thinkstation>
+In-Reply-To: <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F051B140006
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 317FC100003
+X-Stat-Signature: xcp3xs98di6en8sohtpeaxzxuhg49twf
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: pzy4nj8hzdjnuc8qnd1uqgbsqa7oocae
-X-HE-Tag: 1793085141-755941
-X-HE-Meta: U2FsdGVkX19rul1b89b4HMBhXVQLpzLIPbOKuoTksc7hMXO17DyOWfnHXTbk5zNAHtCv2aKJ1wcFZBfDmZ9EjQzGe0aP0Z4233sM4l9dmO9nyEpMXhxX4Uzhg/8Kjxf34D26KX0b5ZRNDX7l4Bdsrr/h9rS6mifNwRhC+v7vXL/QeWH0u/nZdiruKxzjaWwgDdjV83yUxSBMUEWVqtEwKSQG2p6+do5qvDV/QUg+s80EcPCAVbfnTWcAAP310waKCYqnAHhJ4Sz87yPIiMn6fSMvwwbb91OYPf5A6bDn+ymJzx1oSr+09sKY3ZAUjcSheQB6U+kbRZ/I+cKGZG5IxKPL+oP7f044Bf9k7Kbo7elnoYIPrYS4BwNJw1kGJ9qMDvkjbvE0rbgYk1Tk9AoSCUtHkrBiWN4NkVWX/GEVbQbQx6aBiiH8+E/SwI5876AMi/ECtJwKn8CaDomgOl9uqV9v4GikFrXCkCU0ip69kKxg05jvGBMuOF+2lVpJYHL5uG2bvgXEIdL3d08qNv1jfw+TWikUAotB2aonTCJk+EZRcxcDijgtpMc65GTm/stfw8JlcIjELx4EWvoIvutRoxBvCP8srMEXuYZ7E8cI3xY6bxV2HWTSPUUJp7vvHVf0xyCMQ+wUfVMYJZPKmluj/z82/zerRMe1/AxHeRvxZOt8Q1Is+TO5L4HgKMB297WZAmhT+9XTzSjuUz3mrU2pkL4x1vBcN5AVLexAWeRta8vsZ1aZbz330XvuCldegybqaPxs6mih4GyTe2iXzkG+2JbHDgOYHlaBQhDpE0FoG8dBCBDajS/plHbqOaM0FBLOuAJ2C8iPzE6UAjb3HLKb0fVJzgSt/gil2hVktObgj1snwRaRZQgjaSDXG/hmxhbxZAfbgiFkNLhcuVOfetxvKwclnqGH2R4yGIBw79vjAAa24Y3tpIup8gj4a6sYNVCrpc8RUVYB+f/LRBSPre4
- BqLfFe6g
- izFy5Qv1Mss/YfbDw0Y/4XHCU9DBZeXvCV7hmX7X9arbV8njFOvSJ1hQ4EKZ0zhpCxnBTSeP3EmHqz5KE1FoDc43zj1es2deIb8ANybD/eiUAw8xpTpRKpJuDagsHXCLZrEMRhT9uyNj3IcIA+qMQJlUBFWLsOIyAOsyYduZv2UiHsaWmtyOgN7g8bl7DZ99Kij2U0ziV5FLUuLUf3MyQlxJug7c7OI3PjsdOpFtfoxDoCzcFSnn9czZXOIPmFGhu/ofB6BNV3xQjBsdXNlk1AxTAQyEoXcwJS3X+lxnk1UmWfrPiIhI2YXsuaw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793085644-74520
+X-HE-Meta: U2FsdGVkX1+zzW1DqqInRs3qfTrsXww/8To38sRfvexY9cW+rUGhgYpqBl72rjipjad5GH0a0oa7C7jbRGbO/zrIcfK0jpS7mWvtQEDnpxhsCSVXP8EWexQVw3/bkzv2nuKPg7ZWtFfmTvzcqUFk5uMcEfiS75vZTxxroHytWLvl8frLORzOZJzDfUkkuQmHbF0Lsgoqo390RzHPJzqsi1zVVBQfAwn0nI63p+mwtnGUSzrOpAHFVsi3q2OpdQFRGqxTmkNSVMwELZnyXWpdTsmiWURf2gdJecRilifxRVJ2C7TPvjE+1JmSjU/ybhGdJG3FGYhooQpY0FZ0LG4FaLrJ98i9zvajMlnWV88F7C1mXh3RSjjhxrRIWY0/QrjSJ/DjDG2McM79YH1eI4VYbQdvxcdW8C0FRwBYUXfV+GAuhg3LT6DXfnmvVOszuLy216W5uqSXizc5RzShN1fwayNZeNyXJhUvFlqIA0J21jmbB17DAI/nOk0lVbsZmXlwBYX027mE7wEynP4k2BpZ93sjrtebv4U43ONyzC2TyKs5xM5KzEATBbnAEw+FDmNNC/oszJGR1TOvzydP2IwVxNX3H2fUqkPTwcIo6sQuPMWWPKoTY+a61gAaQCDx7RFKfvZe9DVzheDsDbKp6NHtTxXflX5m/Zudpqa5vsy92nKpIdG8Z3QQSt5gAgFCw29rDTkcxNRUqbWO6NGTFVuGbEi1387EJ6yx4nGzolA0yp8Xxh03hsbcV9QDzE/QD5xMTNG103nEO+2SdM+EhkIgiTSD44tye7iM7OKdtpmls/S76ul907y5FhFHurwCNpdTRifbVpdLniQscxttcY54tpIGgwxuNy/pkzzCO8e8wtfVNsFGZKotMxKRgP5JcmYaRvES+Ie0SJ/eMzfUMevM1HzPNEG8lCnSWtRle+/MJEOkQhqGYK27F2wumkNwLkKR5sPKLEI9M6Swx8IzylY
+ 7rFPKwvX
+ iOgVTshhzdXAZEkvbZXK4c/JEzZRYGhoikskXgelk9LIEa5cH6bKKm6U9JJxlYa+U26UQaFcMQq6SY+AQHmEurTs84Y8qRm7c9tpuqB5kR/+dsSfAAgEwkqSrYGai8QLgZ6aiQzwv4Lw7CDQuRtXVW1xbOcO6OeSnVTyjXOKCFygb/DjQzOTurOmXOgIZfPkIJEOHJqQ8psOc3BLa4JEFyiVLqdmL7pxwv1UxAETha1oAhXi07eSxv8ZiyIw2FbrBYMnSngqC/ZPUuMHyQ6b/GUhCQpdGLbBpEa+h1bhZD1evfP13zXz/AX2itO+iSBNIPDYnKTfmUEE5QkTNePFO96MNH2kYSgcT5jSDghIWqdTT+x4uaW27MNvwYWZlxblykIyBDchAu0BHYLKXf2X4eKF4EBGxTd2T9IfIUewhfLRQ8zAyb0N27JmUgNIe3E0s4rnK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,21 +131,65 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 23/10/26 8:16 pm, Kiryl Shutsemau wrote:
-> On Fri, Oct 23, 2026 at 01:12:02PM +0100, Kiryl Shutsemau wrote:
->> The diff below replaces the previous one. It needs cleanup and splitting
->> before it goes upstream.
+On 27/10/26 4:47 am, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
 > 
-> Proper patchset:
+> MGLRU passes stack copies of page-table entries in walk_pud_range() and
+> walk_pmd_range() when walking to the next level. These copies can become
+> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
+> table concurrently.
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git page_alloc/nofrag-watermark-v1
+> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
+> support page table walks"). Likely, earlier locking masked the latent
+> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
+> retract_page_tables() without mmap or vma lock") allowed concurrent
+> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
+> for MGLRU") dropped the walker's outer RCU protection.
 > 
+> The fix is simple, so just fix the original commit so we don't have to
+> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
+> RCU-protected lookup and validation against the live PMD. Note that the PUD
+> handling is required as well to handle folded page tables correctly in all
+> cases.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: handle walk_pud_range() as well, clarify+simplify description,
+>          adjust Fixes: ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
 
-Thanks! I applied the 3 commits on top and the results improved a lot. Your patches
-make sense to me.
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-But still, I see more compact_stalls and a worse compaction success:fail ratio. The
-limitation must be by definition I believe: we still won't be able to use 64K blocks
-from non-movable pageblocks.
+
+>  mm/vmscan.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 9959ca158ce83..6a1af9b92349f 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3911,7 +3911,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+>  
+>  		walk->mm_stats[MM_NONLEAF_FOUND]++;
+>  
+> -		if (!walk_pte_range(&val, addr, next, args))
+> +		if (!walk_pte_range(pmd + i, addr, next, args))
+>  			continue;
+>  
+>  		walk->mm_stats[MM_NONLEAF_ADDED]++;
+> @@ -3947,7 +3947,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+>  		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
+>  			continue;
+>  
+> -		walk_pmd_range(&val, addr, next, args);
+> +		walk_pmd_range(pud + i, addr, next, args);
+>  
+>  		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
+>  			end = (addr | ~PUD_MASK) + 1;
+> 
 
 
