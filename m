@@ -1,128 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA60606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AE2606A31F
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mLH/Tvkc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UMvT3fcu
 Received: by kanga.kvack.org (Postfix)
-	id 164D66B0779; Tue, 27 Oct 2026 10:08:31 -0400 (EDT)
+	id D00166B077B; Tue, 27 Oct 2026 10:08:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 115DB6B077B; Tue, 27 Oct 2026 10:08:31 -0400 (EDT)
+	id CD59B6B077D; Tue, 27 Oct 2026 10:08:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02B996B077C; Tue, 27 Oct 2026 10:08:30 -0400 (EDT)
+	id BEFC26B077E; Tue, 27 Oct 2026 10:08:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CEB5C6B0779
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:08:30 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FC33A09C6
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:08:30 +0000 (UTC)
-X-FDA: 85368586380.24.93B7444
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1BA2A4001A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:08:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mLH/Tvkc";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 98F2B6B077B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:08:53 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED69B160A58
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:08:52 +0000 (UTC)
+X-FDA: 85368587304.08.ABB3C88
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 175B5140007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:08:50 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMvT3fcu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793110108;
+	s=arc-20220608; t=1793110131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CbvGWJmf9YwWN00g1u/NHLatne7a6bJt0jiNry4VqD8=;
-	b=HmN/QHikdlkBDxnUtCE2Wghi69TLMkP7jqYvYe+2uSru6FGljEPFTgoWoExlnN9eq1ujg0
-	x/y9kYLIUu09/5fZmgDbDRCC5wpuytVi0zTP+miXpgBOVi88Udo489SAxdOd8uf2xgngiW
-	yekYF7zPHgaXkaMy1f0EkmkH3A9RZg4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bHLY+JVLBLI6/sbAMJPPkKcoTxvXtY408uYK2DIs4mw=;
+	b=SGOBXjv6UvkwreZUdF7MDrR07pyY6a6ZLkGCCM8HPPsTbbBX8XzYzhLmuuR+BQXonjD+/1
+	UiFF+q9XQ3gt9i7vX6fCi+WfRYoCSGPB+moa1CDhym1UZ3dw7pnr4IbqXEyKGxNTtxX1Pt
+	msbAflru/ZAvzg8YMvzZ/M2nI1OdE0I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mLH/Tvkc";
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMvT3fcu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793110108;
-	b=TaMbltrVk8oR5VshYOcjqCttpQVWbN8J9omle0dwdPcQHk3iBVnvd2iS56/n7pc40+i4CV
-	qVjbJAe52oDViOF7C7l4b1olcZ2Hr2f0teYjO00gHgZV+tE7Yxz2IcsnalJY0B3TlTfPEW
-	vZt6Fiyi1bu8yWtAzy9jOf6xF82p6DU=
+	t=1793110131;
+	b=nif3kKmKTCaPODa4Z/+U7qhrGWxjbJUwxILJZwjJtBwC3wCN/mnovsP40lFqbqswSOFoPT
+	jXcInvMgth0b8FuVHI3zm7ffbWgABLt9dTZncht1ryo9sYCDgoQIdFeSxrzGHn1tSMLjhK
+	aJCqkfC0p21Ljgd4wifdKx5kDYcMZ0s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8526A60218;
-	Tue, 27 Oct 2026 14:08:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4301F031E0;
-	Tue, 27 Oct 2026 14:08:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 44EC74065F;
+	Tue, 27 Oct 2026 14:08:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC781F031E1;
+	Tue, 27 Oct 2026 14:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793110107;
-	bh=CbvGWJmf9YwWN00g1u/NHLatne7a6bJt0jiNry4VqD8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mLH/TvkcbPJ5pX+EjBJOwjRTX74u6eNmAvjU9QfleDiVHjaVjQW/UQou30MulrOxj
-	 jToXXyijxOB6MGesqEn7wu9ky5T8zw86VlRcsgKAnpYqYNkDKNrV6WE/Z8nbpCvEfZ
-	 lO19Saq3/9HbIkvTIRHU901td+3nILEzJ/Gr/WAPBSpbxNJbFujf3z9Br1/D4YByki
-	 3RRrOcQ4fNSbdoc4nJ2hs6Lf7+NnSiUPF3Tb2rYJ6ge5fQSMQ80AyBQhDFy+VhWIJu
-	 8TL/npIiy1WUyq4OObCMLtpqBEnh8iql8u0bu3P4zLEUlretOIC4LadBPf4u1zanll
-	 OH7d9xyxmpb/w==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 263961980047;
-	Tue, 27 Oct 2026 10:08:20 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 27 Oct 2026 10:08:24 -0400
-X-ME-Sender: <xms:U7DgavnxdSNtUxqaNd3ZPHA-GgqWp0ak_-5ObLq_rxP4hAiTlHOoKg>
-    <xme:U7DgahvkmRPPsHyleWajOnL83T8ou18ct43iD-MVEmfDhiGNYWj7adNpuXMgzcSvL
-    h-Aib8Gkk3fFuJtkkdHHLlzGDYFt5FEMK9Xn7XjtbUpLHkRz6o9QzU>
-X-ME-Received: <xmr:U7DgamDt0DMoMRD9ALRRPZ69IGo-7jn5OsY2yyrJLpMhj7CGSymFsXIejhg>
-X-ME-Proxy-Cause: dmFkZTEaZA2PaW1k67BxuO7K43FLH0AXzaKFjjKJfwu/KpGOFsmjjz9GSuR+5Cg+oI7dZA
-    8BXp96hrgxr8G83eICbVIuq3GGRRXyrwDLmbW5B80ASp3E45NdoC/6iVPRbMkGsI5q7/3F
-    T/g200QQfYlzbcx2nKjkpGdEmX7ucWHHKtmchRf9OkWPEt+EEpay6nygL4fJYyKb7W+qAI
-    nnRokAmwK7V8GxQtulk6RfB7RjPcJAnuFWyVrb3qEDbKJeUsNsxtS0j+Q49GQ8esgGy3V4
-    ZmsVBdUTtK1knjxzJbTbkJX1GHETc68pBeGN/x1WbGSyB4OKk1yN7DYa2iMaIpVnzTIslT
-    7aA4dhG3GVMCk4eZnUELWNFF4UCcuoeVpQmaHUKgefcK9w4C4Fz6Xfyz1MXvkM+/i/gpv/
-    wBnbicRBljlVlfuS5RDXoX/VTYAjKsd0JUJl0skwrZ0+MYdjfRy9CTdoATnXysrrO8qD48
-    ApJmhXkDd/lBtfES8tOCo1i9zCfzVj450Dq23/37fF1tv1GUAZLrsktJHSdjL7zr28Z1ac
-    S4BhWxDe++Qv8LvAK0GnXF9RoJFURWADYIzEd52HXcM6KX9aBC7rpJZnJZNEdRNln4q3+U
-    PMKz0qtlHCAmXs1bZFdjhJBbn8eFOnfdZUQFqf5iyvcczuw2MU6juU0LijUg
-X-ME-Proxy: <xmx:U7Dgasla_gR8q-sI-JNR1LqZkQT_nTfLQl1cHRv6T4W4Ake79iTPUg>
-    <xmx:U7Dgavj3xzu4vBZbB51HVdp4cr7W5e3S-oo_c-kw6mfh46R1sa5L_A>
-    <xmx:U7Dgalty37v8Eg1mkg7bNhiCDj1BSRmb1trVWEo2bwPQFkPmtlNaOg>
-    <xmx:U7DgamBSPtDBwLyo5fZ2kF7cR9JCXEkjyH8DP8ww1lZzUQy3zWuzTA>
-    <xmx:U7DgagVwQ30ZdR7dUwwj3cSK-abW5nEmNfwTYvWuLxrxaHMCSBiyglPP>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 10:08:18 -0400 (EDT)
-Date: Tue, 27 Oct 2026 14:08:17 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>, 
-	kvm@vger.kernel.org, =?utf-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v4 2/4] mm/huge_memory: copy file THPs at fork like
- copy_present_ptes() does
-Message-ID: <auCwHD83jRCtt8Xo@thinkstation>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
+	s=k20260515; t=1793110130;
+	bh=bHLY+JVLBLI6/sbAMJPPkKcoTxvXtY408uYK2DIs4mw=;
+	h=From:Date:Subject:To:Cc;
+	b=UMvT3fcudQyZWnu/X8gt1lNPuuWdi/CZqStupv+uHetutR/ebau0z41E4qrIIwU+w
+	 E11MmFGS9k6G/ISAEOMZRMlzC5aN4pLpG7yaEo5/rLylWzlFJfGI4F3X/H9NIWahe4
+	 dBuR29fyeXfPDHCEKlZ4L12qBjgvhIkIVLGOP+Ixl6G6n0ndu5fliVWJagJdt4rOAz
+	 bPC0yxC59k8jl0YQS6uPjxA1fWBPElmN990Q/ly4L+AoGG+I7lGN4LfyHO4pRbMOQL
+	 S1fE+2mQberzh5ufoDs25teeqCh9R3Zpk3+oFfPr3rNrG485JyxKMqK9uEeJswXsF6
+	 rHUjezlAYirkg==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Tue, 27 Oct 2026 14:08:26 +0000
+Subject: [PATCH v2] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-2-66f00b7a564c@virtuozzo.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261027-fix-proc-pid-maps-missing-vmas-v2-1-2791cc9fc95f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/zWNQQ6CMBBFr2K6dgytIODKexhCahlhorTNjGk0h
+ LtbSVy+n/z3FiXIhKLOu0UxJhIKPoPZ75SbrB8RaMisTGFOujA13OkNkYODSAPMNgrMJEJ+hDR
+ bAdfUxaBL1M62KksiY35sgWuXeSJ5Bf5svaR/619dQUTus6TfrEmDBlciurK6tcemvjyQPT4Pg
+ UfVrev6BdDcmEK7AAAA
+X-Change-ID: 20261027-fix-proc-pid-maps-missing-vmas-c870d14e1ca9
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, SJ Park <sj@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, ljs@kernel.org, stable@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12409; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=TJGHfA1a5exDR5ZzJu2Pc0i7YDzL8DX0C/1gx1QVqRc=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIebMhbx+D7d+/S7sOsRqw7Hi8tubbi99ZlST99bVr1V
+ Er38Ql97ChlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBE5j9l+J/xbUYJm4G//Cpe
+ 9beW52Zk3J6Ym73I9fbDvZnhm/72f/jE8Fc2MHdBynueE1Vvf5or/2X8PuHoA+G5Ck/0lv+au+V
+ 0x242AA==
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1BA2A4001A
-X-Stat-Signature: smksntz3equc1qxrxxmbjcznjz4m1ssp
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 175B5140007
+X-Stat-Signature: kww64x4mgp9wubewkkxhyitukp9ympkn
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793110107-966803
-X-HE-Meta: U2FsdGVkX1/a7VhMbMkNaXC7+3J7zoAuPmU/QR7IXO7at+f2bhUe0c9wG5BPBhCTJtPx+3aLBr27hgZqm24/GcqhNiiT5ERgsc96oIMJRlcKZOqfKscoHER3HKNbZuccsaByrzSz/pKoDGYBkbkN3fJIkiuEHoW159eQ4KwPlNFI7SIXme3yLKozSIRTiEzWwevUZvuaWKqIvOOWDoBwVfi5C7LlCs4Ek2ujtgN0kQt8cyHNWU5V+qRalW2RaSmZPL1B0n3uZIknVEYfHSS3TSB+TrC/LEAkIiGWvNrYHj1Diil/PweLw+aD1IgRkC5v1stgvSRbJO3570bTZPlBepGmp81V6yJvtmJRw7B4KBSEQ8wMCSjT6ECjF/GNRoiKbOqqXgkULdufSe+H8kg2y0KRyV98m5nBUExBEZWGD5K6k7YprUX1Phni6rBllDXWfw0De1qW2Kosi5IULzJGUiMN4eB27obI/Q+vvDl6+J8wzVZl9XlPStt7bRKbFqR2PBo/uTJpTTrgYELwMOGTd/DtbKtkTWmKZXgsm4yl/H0D6f12fDtpi6JffEFiWPCstpO16r8uZt6J5v9k2A+UML/yEQ5rXtxGUEzcDUTPl6iyiqoeN5CLV0CcBdyJrUkR0zQHaDWR9IXA0bxlCXcJsKvpqnBicXBEiGF7eypDt3Veqhc/+qUQUYQKGD1/Nq0bjPsFRdSe8KybO+ujZslRc0UokS1Jil2QsOuPsEers38xLZ6A/oDObitM1so9rS9YOf5kRcYmEJza5Nc4Xdu1CV0g72Jn2H2+gfNplXzw3HkzBo8oeZSfREVYGbGqyS1IjYfqHZWbsjKQvt06KzvIS/7BniEdYZSGJmg6W7U08znduxJPwsbPo3L3UbD0lugopkAWSAipD/Uj9/S46603NN5rBDDe8uCxJQUmjnwUjhluEkNVSDQxP3m/15Ymz+3tjikMZlBFECtqpK3qGHb
- m7al9uPj
- bhSdpGLifLzdJWzIbi+mg8oN23xG2rSMOSJokUenEMIyfFeHiusuuxNewTGgaCwwnRXJNif131YTcmmaxNHom9uzFvJrmTvPa8lolelOBHX4mIHZ5psTEHu4nNTHsUhXg43NMWL/qG75BIWb7r+n0gevZC+nyEIzgv7NiEKbvShsxNacocA/ae1UXGQQg6FQp9SWwGQ8TFJGeONy9D6X9GGykwiE73jfK1t3+Cdhm3FVEeLr8gXeKqjvxM74K3Lzg+5rajKQIpM5FamdgR362PPqWR14lEvuGga0zvX4wC14I36oWF4nIFl+a6ogsCEKYOzmZ+NzK9NdXQi5qGxqsWWDGfM9u5TjjSu25ZZ1VE66cbOGSz1Mv0ZUwoalFubSqk9ey/yGgDRfdKCsB0tZovjKNZiqx9Hbb81/6omkz2Eyi4Ln7V0GkCfQXg5XDHhDbOClAap/Z5FjWmc5t1tY0W2Y6Mn8DNxZf3c5SG1bDoALjz9M=
+X-HE-Tag: 1793110130-735361
+X-HE-Meta: U2FsdGVkX19KIbX7s8f/5y0KPS31KlHJTOSQj3YQ7FQ4Cj9oRKKfH1jYkXLa0q+bhcnWZWNEZumns9wYpDlEyHhDBiDndYKbz5BIRwM4VhiDr9/IoSqyWrk8jsv/d8P8LO/lLUcDrXdj6aWMchFY4BemXroa8X4fNjlGlNjuC6aJR8NN3KtlpDy7soaowhp19qPiv0tjp13G6cGCd1K7TBQDoplJ+OBoU0AeNX1gnbI0PHsg6+ReaK5ti/GAhPuWKu4TPB0ARN0P2/5tSSdcpkNfyhRl/4hAsK3AkljKXMWpbIddHdNS1uYRIlLX8VXA4WNfDK2+fXzZxi0qteRn5O7GeXhvbStBiXsMAcowQ7OEtf7GdH4WCZEa1OgLCwVPxkcdbEERijfYGNtEunKfbXk7bRe8oveBRQucgvSakVn3J9qNKfLYFrvsu0/yYqfaUQrY9+qeQNAnFNj4gnItYaJym3Gd7/rw/e1FkDMbgTXUEJGsi2MgpdA38Huqhh8pP/VkCHXiawDG9ihx1kBuckKln+s6wNCruLWKkkC96rHRNLB9i3RImf4DEdgkZ6HRsY8S55hfoSorD/YJVTS41T3VdzfPTd2a85RK1JLWQj+tO+gvrRvaMJZXwUA9NvtJjLDaOiolcv+ytgK5Wy5B1kRdjmnc4ra3UdRD+T0+Bdxo+eNpIVF7LvLtNc26A3TiL6YcLjzf5offiIlqxIm7FboYidrnzZj1Tut5RyBUvM24sN6vYnrJxr3BVkeNBLwt567QPzV9g37KjwAgaVSb9uA8hDdesf81eJoAbyTahr10c5Xcfgvdc0e4zmeiynXX1BplYWRkEIqKoTWFTi6BM5ur64xBBEfiSqtO5LBsR49rwxHBlcbtPnqX73dr7XEq3G0nRSC6zbkrIRpe74OT/uDxGjVM1YiSZjkqGa8KppLSlXPFoWC7LXkYEBw7rRtJlrIIw3qsRmto17otDNE
+ XdLvcjuo
+ O+ereqPQ6DahoB6jNzLHHrwlTFi8NwEyq8Xowc3Hm96PG3Ijs5xaIZuQqifuDQd5YpBp0gOoiYPhuzric1zFLsjbrtomYsDXuhNgPFNK1iDHuiIyPogvAristMo7Pmv2qGJm3RxDQL2n9m+T9xrI7OpHQtubdKE6L/+lZGr2K4tm8nne5wSLx6BaZ1gkV3SNw8HHvC0725DAzbc7OHFWYleuHPMxEbvClGpsYtTLXbYZkCj15SQxZY0oxKrB+VJgycgmhNO4sjJ7yK6UjL6e/77Wyr0hazAtAt/4dgScegvoDBdM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,45 +111,314 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 10:36:01PM +0200, Konstantin Khorenko wrote:
-> This fixes no bug: it makes fork copy a PMD the way copy_present_ptes()
-> copies a PTE. Until now copy_huge_pmd() skipped every folio PMD of a
-> non-anonymous VMA and left the child to fault them in again, while the
-> PTEs of the same VMA are copied.
-> 
-> Treat file folios as the PTE path does: take a reference, duplicate the
-> rmap and account them. fork then pays a reference and an rmap update
-> per PMD, and saves the child a fault per PMD it touches. The next patch
-> sends PFN mappings through the same tail.
-> 
-> That covers the VMAs vma_needs_copy() sends here:
-> 
-> - private file mappings with an anon_vma;
-> - VM_COPY_ON_FORK ones: uffd-wp and uffd-rwp, VM_MIXEDMAP (fuse DAX),
->   and VM_MAYBE_GUARD, which shared shmem, file and DAX mappings get
->   from a guard region.
-> 
-> The DAX huge zero PMD is copied too, with a reference taken by
-> mm_get_huge_zero_folio() as for anonymous VMAs. A migration entry of a
-> file folio is copied and accounted like copy_nonpresent_pte() does, and
-> made read-only in both processes only in a CoW mapping.
-> 
-> The copy then gets the same tail as __copy_present_ptes(): write
-> protect both sides in a CoW mapping, mark the child's copy clean in a
-> shared one, and drop the uffd-wp bit where the child is not armed. An
-> anonymous THP is now write protected only when its PMD is writable, as
-> a PTE is.
-> 
-> A page table is deposited under the copy where the fault paths deposit
-> one: in anonymous VMAs, and wherever the architecture needs one.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Reading /proc/PID/maps under per-VMA locks can skip continuously mapped
+address ranges during concurrent VMA splits or merges. This violates the
+guarantee in Documentation/filesystems/proc.rst:
 
-Okay, I see benefit of aligning it to copy_present_ptes().
+"If there is something at a given vaddr during the entirety of the
+life of the smaps/maps walk, there will be some output for it."
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+lock_next_vma() reuses a tree iterator across calls under RCU. The iterator
+remembers the range of its last entry. When its node is replaced,
+mas_next_slot() walks the tree again at the last index of that range, then
+advances past the entry containing that index. If VMA boundaries changed,
+this can skip a range that has not been reported:
 
+- A lookup finds [A, C), then mprotect() splits it into [A, B) and [B, C)
+  before vma_start_read() locks the first VMA. The reader reports [A, B),
+  but the iterator still covers [A, C). The next call starts from B yet
+  advances past C, omitting [B, C).
+
+- The reader reports [A, B) and unlocks it. A concurrent mprotect() then
+  merges it with [B, C). On the next call, the iterator resumes at B - 1,
+  which now belongs to [A, C), and advances past C. Again, [B, C) is lost.
+
+Checking the mmap_lock sequence only within the next call misses writers
+that completed before that call began. Also, a NULL result is currently
+accepted without validation, so a race can terminate the walk early.
+
+Even a fresh lookup can skip a mapping. Suppose it finds a gap before
+[B, C). A writer inserts an adjacent VMA at the end of that gap, then
+merges it into [B, C), replacing the node. The lookup resumes at the old
+gap's last index, now inside the merged VMA, and steps past it. The
+original [B, C) remains mapped throughout. Repeating the forward lookup
+is insufficient: another merge can make it skip the same mapping again,
+returning the same later VMA or NULL.
+
+The fresh-lookup race also affects /proc/PID/smaps, numa_maps and
+smaps_rollup. Resetting the iterator after gathering each VMA's statistics
+does not prevent a merge during the next lookup. Fixing lock_next_vma()
+also prevents omitted entries and incomplete rollup statistics.
+
+Tie VMA iterator state with the current mm and the write generation at the
+point of last mm speculation in vma_rcu_iter, whose values we call 'rvmi'.
+
+This allows us to neatly abstract the existing priv->iter logic alongside
+query_vma_find_by_addr() which uses its own VMA iterator.
+
+Then, provide helpers that act on the rvmi - vma_rcu_iter_[maybe_changed,
+may_have_skipped]() to determine whether any VMAs may have
+been altered since last mm speculation.
+
+Additionally introduce vma_range_is_empty(), used by
+vma_rcu_iter_may_have_skipped(), to determine conclusively whether VMAs
+exist in a set range, needing to be traversed.
+
+Original fix generated by an LLM and sent by Josef Bacik in private, then
+amended by David Hildenbrand, and Lorenzo Stoakes added additional
+abstraction.
+
+Fixes: 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under per-vma lock")
+Fixes: ea3085dd7a4e ("fs/proc/task_mmu: read proc/pid/{smaps|numa_maps} under per-vma lock")
+Fixes: 0e985559d72a ("proc/task_mmu: read proc/pid/smaps_rollup under per-vma lock")
+Fixes: d9d1c2d81797 ("fs/proc/task_mmu: execute PROCMAP_QUERY ioctl under per-vma locks")
+Cc: stable@vger.kernel.org
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Note that I decided it's best to defer any VMA iterator stuff to a
+follow-up - with the abstractions added it's clear what's going on and
+easier for backporting.
+---
+v2:
+* Took over the patch to make David's life easier :)
+* Introduced vma_rcu_iter tying the VMA iterator, mm and sampled mm seqnum
+  together, and update lock_next_vma() + callers to use it.
+* Moved the sequence out of proc_maps_locking_ctx and the "must initially
+  be odd" requirement out of the header into vma_rcu_iter_init().
+* Added vma_rcu_iter_maybe_changed() and vma_rcu_iter_may_have_skipped()
+  to replace the open-coded speculation checks.
+* Converted vma_range_is_empty() to use a VMA iterator to be consistent.
+* Added Fixes: tag for d9d1c2d81797 (PROCMAP_QUERY), as per Jose.
+
+v1:
+https://lore.kernel.org/r/20261025-per_vma_maps-v1-1-c4eec45b9387@kernel.org
+---
+ fs/proc/internal.h        |  1 +
+ fs/proc/task_mmu.c        | 13 +++++-----
+ include/linux/mmap_lock.h | 22 ++++++++++++++---
+ mm/mmap_lock.c            | 61 ++++++++++++++++++++++++++++++++++-------------
+ 4 files changed, 72 insertions(+), 25 deletions(-)
+
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index 623bb43ede55..1d95ff577a06 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -393,6 +393,7 @@ struct proc_maps_private {
+ 	struct inode *inode;
+ 	struct task_struct *task;
+ 	struct vma_iterator iter;
++	struct vma_rcu_iter rvmi;
+ 	loff_t last_pos;
+ 	struct proc_maps_locking_ctx lock_ctx;
+ #ifdef CONFIG_NUMA
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 74ffa5c99b8e..22361607020d 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -165,7 +165,7 @@ static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
+ 		return vma_next(&priv->iter);
+ 
+ 	unlock_ctx_vma(lock_ctx);
+-	vma = lock_next_vma(lock_ctx->mm, &priv->iter, last_pos);
++	vma = lock_next_vma(&priv->rvmi, last_pos);
+ 	if (!IS_ERR_OR_NULL(vma))
+ 		lock_ctx->locked_vma = vma;
+ 
+@@ -270,7 +270,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+ 	 */
+ 	if (last_addr && !addr_is_sentinel(last_addr))
+ 		*ppos = last_addr = priv->last_pos;
+-	vma_iter_init(&priv->iter, mm, (unsigned long)last_addr);
++	vma_rcu_iter_init(&priv->rvmi, mm, &priv->iter, (unsigned long)last_addr);
+ 	hold_task_mempolicy(priv);
+ 	/*
+ 	 * If seq_file had to flush its collected data right after m_next() set
+@@ -520,6 +520,7 @@ static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_locking_ct
+ 	struct mm_struct *mm = lock_ctx->mm;
+ 	struct vm_area_struct *vma;
+ 	struct vma_iterator vmi;
++	struct vma_rcu_iter rvmi;
+ 
+ 	if (lock_ctx->mmap_locked)
+ 		return find_vma(mm, addr);
+@@ -527,8 +528,8 @@ static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_locking_ct
+ 	/* Unlock previously locked VMA and find the next one under RCU */
+ 	unlock_ctx_vma(lock_ctx);
+ 	rcu_read_lock();
+-	vma_iter_init(&vmi, mm, addr);
+-	vma = lock_next_vma(mm, &vmi, addr);
++	vma_rcu_iter_init(&rvmi, mm, &vmi, addr);
++	vma = lock_next_vma(&rvmi, addr);
+ 	rcu_read_unlock();
+ 
+ 	if (!vma)
+@@ -1421,7 +1422,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+ 	rcu_read_lock();
+ 	reset_lock_ctx(lock_ctx);
+ 
+-	vma_iter_init(&priv->iter, mm, 0);
++	vma_rcu_iter_init(&priv->rvmi, mm, &priv->iter, 0);
+ 	vma = proc_get_vma(m, &pos);
+ 	if (unlikely(!vma))
+ 		goto empty_set;
+@@ -1470,7 +1471,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+ 			reset_lock_ctx(lock_ctx);
+ 			/* Resume from the last position. */
+ 			pos = last_vma_end;
+-			vma_iter_init(&priv->iter, mm, pos);
++			vma_rcu_iter_init(&priv->rvmi, mm, &priv->iter, pos);
+ 		}
+ 		vma = proc_get_vma(m, &pos);
+ 	}
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 11b3ffef3966..9ccbbcbd7aca 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -17,6 +17,13 @@ extern int rcuwait_wake_up(struct rcuwait *w);
+ #define MMAP_LOCK_INITIALIZER(name) \
+ 	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
+ 
++/* Tie a VMA iterator to mm write lock state at iterator initialisation. */
++struct vma_rcu_iter {
++	struct mm_struct *mm;
++	struct vma_iterator *vmi;
++	unsigned int mm_wr_seq;
++};
++
+ DECLARE_TRACEPOINT(mmap_lock_start_locking);
+ DECLARE_TRACEPOINT(mmap_lock_acquire_returned);
+ DECLARE_TRACEPOINT(mmap_lock_released);
+@@ -509,6 +516,16 @@ static inline void vma_mark_detached(struct vm_area_struct *vma)
+ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+ 					  unsigned long address);
+ 
++static inline void vma_rcu_iter_init(struct vma_rcu_iter *rvmi,
++		struct mm_struct *mm, struct vma_iterator *vmi,
++		unsigned long addr)
++{
++	vma_iter_init(vmi, mm, addr);
++	rvmi->mm = mm;
++	rvmi->vmi = vmi;
++	rvmi->mm_wr_seq = UINT_MAX; /* Start odd so changed by default. */
++}
++
+ /*
+  * Locks next vma pointed by the iterator. Confirms the locked vma has not
+  * been modified and will retry under mmap_lock protection if modification
+@@ -516,9 +533,8 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+  * Returns either a valid locked VMA, NULL if no more VMAs or -EINTR if the
+  * process was interrupted.
+  */
+-struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+-				     struct vma_iterator *iter,
+-				     unsigned long address);
++struct vm_area_struct *lock_next_vma(struct vma_rcu_iter *rvmi,
++				     unsigned long from_addr);
+ 
+ static inline void vma_assert_can_modify(struct vm_area_struct *vma)
+ {
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index 83b7d3ded0dc..834bbf86e004 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -13,6 +13,8 @@
+ #include <linux/trace_events.h>
+ #include <linux/local_lock.h>
+ 
++#include "internal.h"
++
+ EXPORT_TRACEPOINT_SYMBOL(mmap_lock_start_locking);
+ EXPORT_TRACEPOINT_SYMBOL(mmap_lock_acquire_returned);
+ EXPORT_TRACEPOINT_SYMBOL(mmap_lock_released);
+@@ -428,21 +430,53 @@ static struct vm_area_struct *lock_next_vma_under_mmap_lock(struct mm_struct *mm
+ 	return vma;
+ }
+ 
+-struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+-				     struct vma_iterator *vmi,
++/* Is there no VMA in [start, last]? */
++static bool vma_range_is_empty(struct mm_struct *mm, unsigned long start,
++		unsigned long last)
++{
++	VMA_ITERATOR(vmi, mm, start);
++
++	return !vma_iter_load(&vmi) && vma_iter_end(&vmi) - 1 >= last;
++}
++
++/* Might the VMA tree have been modified since last mm speculation? */
++static bool vma_rcu_iter_maybe_changed(const struct vma_rcu_iter *rvmi)
++{
++	return (rvmi->mm_wr_seq & 1) || /* Odd implies write-lock. */
++	       mmap_lock_speculate_retry(rvmi->mm, rvmi->mm_wr_seq);
++}
++
++/* Could the VMA iterator have skipped a VMA due to the tree changing? */
++static bool vma_rcu_iter_may_have_skipped(const struct vma_rcu_iter *rvmi,
++		unsigned long from, unsigned long to)
++{
++	return vma_rcu_iter_maybe_changed(rvmi) &&
++	       !vma_range_is_empty(rvmi->mm, from, to);
++}
++
++struct vm_area_struct *lock_next_vma(struct vma_rcu_iter *rvmi,
+ 				     unsigned long from_addr)
+ {
++	struct mm_struct *mm = rvmi->mm;
++	struct vma_iterator *vmi = rvmi->vmi;
+ 	struct vm_area_struct *vma;
+-	unsigned int mm_wr_seq;
+-	bool mmap_unlocked;
+ 
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held(), "no rcu read lock held");
+ retry:
+-	/* Start mmap_lock speculation in case we need to verify the vma later */
+-	mmap_unlocked = mmap_lock_speculate_try_begin(mm, &mm_wr_seq);
++	/* Only trust the iterator's position if the tree cannot have changed. */
++	if (vma_rcu_iter_maybe_changed(rvmi)) {
++		vma_iter_set(vmi, from_addr);
++		mmap_lock_speculate_try_begin(mm, &rvmi->mm_wr_seq);
++	}
+ 	vma = vma_next(vmi);
+-	if (!vma)
+-		return NULL;
++	if (!vma) {
++		/* No reason to fallback if nothing left in range. */
++		if (!vma_rcu_iter_may_have_skipped(rvmi, from_addr, ULONG_MAX))
++			return NULL;
++
++		rcu_read_unlock();
++		goto fallback;
++	}
+ 
+ 	vma = vma_start_read(mm, vma);
+ 	if (IS_ERR_OR_NULL(vma)) {
+@@ -471,14 +505,9 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+ 	 * installed ahead of it. Otherwise we might observe a gap that should
+ 	 * not be there.
+ 	 */
+-	if (from_addr < vma->vm_start) {
+-		/* Verify only if the address space might have changed since vma lookup. */
+-		if (!mmap_unlocked || mmap_lock_speculate_retry(mm, mm_wr_seq)) {
+-			vma_iter_set(vmi, from_addr);
+-			if (vma != vma_next(vmi))
+-				goto fallback_unlock;
+-		}
+-	}
++	if (from_addr < vma->vm_start &&
++	    vma_rcu_iter_may_have_skipped(rvmi, from_addr, vma->vm_start - 1))
++		goto fallback_unlock;
+ 
+ 	return vma;
+ 
+
+---
+base-commit: 33dbd62d6ff310b8cce8c70101639a6eddbb1b52
+change-id: 20261027-fix-proc-pid-maps-missing-vmas-c870d14e1ca9
+
+Cheers,
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
