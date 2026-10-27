@@ -1,143 +1,162 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A12D606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5FD606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=P79H4vu8
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eFFZQxZD;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5x/Mf13W;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eFFZQxZD;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5x/Mf13W
 Received: by kanga.kvack.org (Postfix)
-	id 6CFBB6B082B; Tue, 27 Oct 2026 12:21:17 -0400 (EDT)
+	id 7E9FF6B0708; Tue, 27 Oct 2026 12:25:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A73E6B082D; Tue, 27 Oct 2026 12:21:17 -0400 (EDT)
+	id 7C0D96B070A; Tue, 27 Oct 2026 12:25:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BCFD6B082E; Tue, 27 Oct 2026 12:21:17 -0400 (EDT)
+	id 6894B6B0713; Tue, 27 Oct 2026 12:25:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 24D426B082B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:21:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 695B480A6D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:21:16 +0000 (UTC)
-X-FDA: 85368920952.02.93EDAC7
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7BCA718000C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:21:14 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=P79H4vu8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3380A6B0708
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:25:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A3E4740A89
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:25:43 +0000 (UTC)
+X-FDA: 85368932166.03.D700C02
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 773B680004
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:25:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eFFZQxZD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="5x/Mf13W";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eFFZQxZD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="5x/Mf13W";
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793118074;
+	s=arc-20220608; t=1793118341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PxRb990Xj/uwND6b4fXh9A/3T5i+xI2zB08D/68nqZA=;
-	b=F1O31WI+wmlrWAN8FLLS5+mpFprZgTU+dkoxRB85zEnZkzsNBO8FwpELJ/tWtjWWy+yaD6
-	rr3G8Zy5W1YUakc8Ft2S6LmoLKKzFHfzG+KbvZ/TmTB+PAGQbLmQIEqQD4sOsWbl21iWis
-	kecIVcvkEXNlUepWuvt+Z36+WmBji9A=
+	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
+	b=Il0CzrxtiZ8h278sE9OdLrh9hWubTmIpFRYcSA8qrcBGXRgMW8U3iA1rHcwUUHN8mFar9l
+	ys5JIc6cEboiuX8JFf3qW8uA0JvyBr8/ur8P3Y+xcvuxJpd/GP18/Tdp5yeJcLH4jQWId3
+	BdQwqy+RMlRVP873+6SyflHoiNLoDzs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=P79H4vu8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eFFZQxZD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="5x/Mf13W";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eFFZQxZD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="5x/Mf13W";
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793118074;
-	b=654FjEyb98+ZQF8B1ccGlfFZUtBKiZeWeTsTzuHX0e1tqQ4v0HB4EG6EwFW3O0FtKRrR8z
-	A3CaBLBQ0u+KXfzXm0y7bMqzqTpkvWl57mURTrQ5qIfURrinMp+K7wDVeeazqKdlTS0Eak
-	or3BVKNVKkJ/AtZ0ILj+P99A6MRvsUA=
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5eac3b6b2ceso25014e0c.2
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:21:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793118073; x=1793722873; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PxRb990Xj/uwND6b4fXh9A/3T5i+xI2zB08D/68nqZA=;
-        b=P79H4vu81pcnMd2NFXPwBT7kVogzDKy0Pqlakj468L/wSxxRX755g+Jz/TW9hjRog4
-         FAdazWsGZ/R7xfP9CiaB6t/z0iczYHvobIU0l9XB2E8OEjkxfuwVjnEy1Di+HwdVD5RH
-         DBu0UFK9efCWEBlhu4zav4cXqK/swbHkI3W+WUE5/srKFAYHBK6yvNudn2Nip2Zj51YA
-         vPHNdYlx23IuNlQdwknLSvEU2/t2OW3ImGqJnv7WUEBd9sDr6YXEHaNes+YXiySxloqn
-         T4e/iRzY9Gh49wOsxc7EVfcqmjlQu3OoXDSQ/cIOxEGVquK24VCMjINYa0vonDteVsjt
-         WP1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793118073; x=1793722873;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PxRb990Xj/uwND6b4fXh9A/3T5i+xI2zB08D/68nqZA=;
-        b=qi3qUl2/S04gaNhAQ+8Zpi6xslkMhwt16QprKcDTgdLJpioHWBUKDhHiUy1/qYxEFK
-         3VoDj6GFXRGKdKlS5DrJcMqKTrQ+S7BkWMH2pjMQlzQip6pvDREyyvfRi73Re6U4TrF1
-         nXahZPXYHyK66myPSMrc6uBr4a/12N7YKE0jCVbNhevk++lz4A0zqUBNEJRuOB66yCRK
-         zu9EJpoZpK58XIrthh15zcrpFsyutNjv24Ih5vJP3K9sxmSrlrhgeH4KH8XDbPLySUit
-         MrXEao3SNr+M8EM8HWdzlT3JzouQMq12F6CVI/OYo21+3dxdavnZ56lTBt8ALiDrQ4b/
-         Fo3Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxhw5Kpz5Pmovshxdv6gRI3i0VqHMX2Dfy3mU4ed4G0g3qPXyQZCmrVapBoKbzGLagDlJbc/J/rTA==@kvack.org
-X-Gm-Message-State: AFq9FYLaZfo0IE1BqCEgaP10XCPeaHJBiMTTr0ah/fAd4OsbVK87FvC0
-	KPwJiJi5LZOzLFKzTTGDQuRL2Yd93Jjx0OgD2nZyNA8nEap5q1LngnIKJnBbzKjF95M=
-X-Gm-Gg: AYBFou0LdoY9HmU+rM3YnuYoALoIfP6oVKi5woeFQMMKJVBmQ0LRVein79ZrFh3tXBG
-	6SYYsQHbGQ8qdsoeCbUgWd7ilwDGp3y/z/LFht9j8/VLm6G4YZ4zPumwcXfvSAHeEjaWbLM9opJ
-	n116/+fykRzJOe3cCtzSmBydoMetBf7voB8XR7GsdkRWPWlPPyZnoNoc9lNhSw+z7O0I/FetKNE
-	BpucFBfIv/o14ifqtyZuFCOOt3KAWVOYt8G1mA22IXQuNuNKbJuOi+oe7jc8Vb2nMNeip9DxG3s
-	A0SSgadbBy04RyxjMlJYAVrAL5ZWzuq87VlIiGiIaDOE2lPJFIOjqxL8zLUFde7A50pekM8mzrH
-	RhoHWWGuRm0IzZjTI/KM0Z21kKImFAfwvWsXkG2UhHzD6X843N/gFpb7WL10yxeC4ZeFIQPD4ZQ
-	UnA0c+x7KT+Kqq95ZiZ5MunIr38x5/i2QVqvwhEfe4xvxFETGnaM6h1cKoD7MpO0huBs2r/dkXg
-	SOES2Ypbw655TG+hrGk2tBSrhhe6E4JHcyT/l89Bo37tVz/mbISMt28ZSwtxU67x01je2ug6A26
-	gNpTE7v/FBCcMJWV4UMjRDaItmennGUaGVaXYmFinU/PyqZ0z0rv6Lf7yBiQQ8/Fpfwsw8deqxd
-	A+5wMA9S40wiqG7UBa2VQy2jgGXIb8g==
-X-Received: by 2002:a05:6122:1352:b0:5c9:c60e:3a40 with SMTP id 71dfb90a1353d-5ec232e48ecmr4515149e0c.18.1793118073126;
-        Tue, 27 Oct 2026 09:21:13 -0700 (PDT)
-Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec4a5f26c7sm304662e0c.9.2026.10.27.09.21.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 09:21:12 -0700 (PDT)
-Date: Tue, 27 Oct 2026 12:21:11 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, tarunsahu@google.com,
-	Andrew Morton <akpm@linux-foundation.org>, joro@8bytes.org,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>, maz@kernel.org, arnd@arndb.de,
-	jgg@nvidia.com, robin.murphy@arm.com, loganodell@google.com,
-	oupton@kernel.org, kevin.tian@intel.com, alex@shazbot.org,
-	dwmw2@infradead.org, pbonzini@redhat.com, seanjc@google.com,
-	will@kernel.org, Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	sagis@google.com, linux-mm@kvack.org, kvmarm@lists.linux.dev,
-	iommu@lists.linux.dev, linux-pci@vger.kernel.org,
-	kexec@lists.infradead.org, skhawaja@google.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] liveupdate: Replace compatibility string with
- a 2-bit pair feature header
-Message-ID: <auDPd6tjzACQVszf@google.com>
-References: <CA+CK2bABt4OZO31TenVF2+uBUWVwViWbvfE00=0xbAw=f7K9SA@mail.gmail.com>
- <atl7peoVHdP5hz7z@google.com>
- <CA+CK2bBFXnJA1kddbLKGq0DAHDgjYhsTSQQay-xeX7jJC1V_UQ@mail.gmail.com>
- <CALzav=e=ho2gVrn+7KpZ3ZyasvH2u15-pC-RSRSS7KcMfKqUJQ@mail.gmail.com>
- <CA+CK2bAJo8dnTOyKMgnnMnk-SCXbTsv+JCLEOWkjyj-wqtEkHg@mail.gmail.com>
- <atpNFEFIlqAoYIwH@google.com>
- <CA+CK2bB2C3Am5ssRuzYpfiU7_vB81vxMGc19HQLq7N=_7YrbTg@mail.gmail.com>
- <attmFVIFU_mS0Y7p@google.com>
- <CA+CK2bDXDWbww_d3sD6OZqpo37V1a3t76_ubbrXLQS=9DB3dWA@mail.gmail.com>
- <at-8vkVpN2SF3XgB@google.com>
+	t=1793118341;
+	b=zhltsGKTq5sZdzvGK7DkGJA/CjsdDBt547IAFcrs3o5LIXQFFjv8s5F/691CU1ZSdvn2tT
+	6z/aVJMNyQkNP8mb+QibCb2CRXeUmCKHJmzBOcQnQfuSvSWmM1g6wjbTPD3SdfiYqekwdg
+	bsKqhiijvioo8X7uODZghoo7LOczrBk=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1DCE41F7E7;
+	Tue, 27 Oct 2026 16:25:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793118340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
+	b=eFFZQxZDIQ0XrUtbljDTopdSUHtnS0Rchu0y4oeuC91OH0xbso4nUCMJPC34AbN4hBfBGy
+	gVVXJW0TvNuBuFLHR2SWccB3J6TtMhQRIb+Uq8YEVeMpXiOk9utAv8dF2HpuAi/kQnNgw/
+	sZqIEBwxsvNrsaS39QkIwr7J+s3KLFg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793118340;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
+	b=5x/Mf13W5kSNx1/2U3SlnBvv3FbGAYSwz6f//rUBqN3oio1LhRuqqfX6BL9HxJvUrQvD/Y
+	7UbLtiL/2VeEfpCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793118340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
+	b=eFFZQxZDIQ0XrUtbljDTopdSUHtnS0Rchu0y4oeuC91OH0xbso4nUCMJPC34AbN4hBfBGy
+	gVVXJW0TvNuBuFLHR2SWccB3J6TtMhQRIb+Uq8YEVeMpXiOk9utAv8dF2HpuAi/kQnNgw/
+	sZqIEBwxsvNrsaS39QkIwr7J+s3KLFg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793118340;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
+	b=5x/Mf13W5kSNx1/2U3SlnBvv3FbGAYSwz6f//rUBqN3oio1LhRuqqfX6BL9HxJvUrQvD/Y
+	7UbLtiL/2VeEfpCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EB2FF1321C;
+	Tue, 27 Oct 2026 16:25:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uT6LLX/Q4GoWBQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 16:25:35 +0000
+Date: Tue, 27 Oct 2026 16:25:34 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>
+Subject: Re: [PATCH 43/46] mm/vma: don't leak the charge for stack growth
+Message-ID: <auDQb49VabNhUPqm@pedro-suse.lan>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <at-8vkVpN2SF3XgB@google.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7BCA718000C
-X-Stat-Signature: 33t43mr3ywgax5sr6m4i9pi9uuauwsiw
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+In-Reply-To: <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 773B680004
+X-Stat-Signature: jwi48cqimg8my3p56my3n8cq7gjmny63
 X-Rspam-User: 
-X-HE-Tag: 1793118074-255973
-X-HE-Meta: U2FsdGVkX185vnJ7BpDd/dljeLE3fsip2/ijHG/rUMIqwpXjR6yW2SfmjSDp/ki2Gux/e3fNXEurx3IDdZbO26DRdHKr64bFRvQqa/3TnJnOdlfr4u35gl326ywztAW0IE0n3Tl3Kzt4Bn72tZcrQqMUPG34JUTBkVLUQhyYbWr6FWgbzHu0DMEA4tqeaaDkWmbaZ2aJBD9BKdHIiZdvZ1ZVA0rS32wVAOtz5x5hqb+vXB2vay0IArk/BkH20NVQSg/wlvAZ60zUedeC0M2WHE93ZwUkPra2yUYjcHKCWR60OG5c+sRvSwBCaMuteaut1hr97JmLWxDF+Hetpbu3A7KavUuydkmf/v4Tb4BZwh4LFeL/vt6yZo4TD1b3rd0+wwc9PEyH0RxiizjYCJfRf5jWSw5VOa/fLR4utS6OmZdg//zyZyrro6wyyUvf/g9PPUpwPtRblsjpAHXqcJ+YLKO2SEfjW+Pyam3101gaSeZQOHmcO0sMYVPTxWKorjQATawWzrRZ2az7llS4+u02rGB3/+SKLgKA+75fdju9mY5KP1i8EjbPA7RR/jbLlIW6GrY+01SIbYYn3MsQvpIqIpaw85QWStQvaP63ok7o1ZyJvTmVac/MadX5LgAPwBSqA2j/a3oL16uFs+3an/P7JjqbAWWXCUT1veHtjSysBFRnKTIyvOsIFTxyG1Ak0KgEBXk5/gw49Px8LLjgk8tEMTTCrKW47ZiPvPnFXeQ43mrYHgJIUkTFrNReccw9TuW7GvjCkJ9hPHi0oY9UCJ1VdOMJc57VIDCAivM6p6w/2ksX2V3+A8Yq8Vuize0fIMEUsiNUGYbvkFEIFHPrOZoUaMCHfZ52SLJzPlIXLjqPlwasQSF2uTkEOPflLYKyfmZzJTpkLlcq8ew1wLzllAxy1H8falxSOx14dtoworj1fj5tWcaZiJf6OvTrcw/ZzzUULWdFJ6M+YGjjGw3gXbx
- aTTNvXYe
- zg6U3ocTIWgdeRskfEss8LDy/5u34WK3586eN59HRp/9cKa/p5VVvdnnYAtSReVEgUEStJIj2KA1auw/kddgftfmaynAZ/voaLp30p4wJNPhtPbuYvTNIEhfSiSIA2TFQaNUz7KqtN0FR0XwavQmiol80ibZReV5zP3PifhrgmPXkh6Ccr6MHZbIDiQMnOLxNyIHxpc2z0AYMdDlbr29ozvuJJmKDeBX+VcCxTq8r+RfnCUUsCmm+0uja04uj5kSgwaX9PHnhr2jfTqjBFLbxuRbgHaNWRguRzF10gGLq1FD3+vx/sUqx83yQF67H2KB35ngA/mk2EKws7izkPGYPSp0QQybpZXJHe5A2nfPXIHa61gm3IWQlWVxqpCVXZ1uh2J/0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793118341-151168
+X-HE-Meta: U2FsdGVkX1/frORbx/NWfarIumUzExvuBonAUW2WhvnK2RUWTEWeVwj1uS1NOnwbILHhHaaqAGOI4apKWIJ4bP1kpFT2RRTpGy7251bk9f+WL892QQ6ssf0Ug3uJ2z3lCkAadqXh4+Xnuywo1Gi306FkO4XkNitTMC08cqhNJTPfb+im1NqhHzXU73HPsX+wsEYKxMSlRLnvS4HSZ0mAhs2e+oO4Ozkrmo60u3vcuDf27cdwLAxbI7NZaFBrQkg0FU3YM1IGj87tqfI4wlzzmqaqVLCypBphyf3KdxRrEldvQZFf+u/eA+hVAJVUzmChY8KdcbocEg/jm3NxjCv715L+bnle1YXRJaU9y0m7TAh3xX9uHzeK9SnzUb3a0fpreTozzrOQl+K6B3Xro88BWe/LxoJQcrkqNYdSXyeZ7VkojXo0wPHMrL3CL7Tr+tmFz2n9AkUOpw4woSPgQ0gun7+D6HsjC/99DiL+8mgqnYnuaEi7pgYy86YF1+dAbA9Bz3J5c0i/b7/zh9y0k+f8CqEg/SxH7VlzoXh9BYiuchphgwKGYia/xUBMzI+coyYp+zhxJoTZAFX7leFfk/mnWqVhrWuubsyEnUnqRysEn/Jw0DAvVGRndssma6S1+L5bZqv8r7xDekYSeEIBAFiZjKbqnpWhZPT2U3n+X1m6dd10VqaF/FBlrzFclni3Q+5mJM8Nk3xAGud6v9joIwMH+u+RXoY3pG8QZkHgbpp7n7Xl6ob5SFLg3LCImPM+SeWklxUrzK5JobYSIecHD2/PioWHJethn3RDBeHHgMcW+jzb7RD3LHndmeL6Q6yUqnFw+vtSlWD7NuuCvRdGJJG8K6AOvwOKwRfZqwAQq4SHqiJlCWDzfV43rVBZt2gd7LGRcSmuIclhJ5SlBHOoE0OO3aWsR5P4QLW48ZcF/Hkl5WoWgCZ6yRBQEcqcL8ki30VImR490nfjUeLW8PdAbHi
+ mE0RvRc9
+ thjOajocJ6rxlNoHsZLQ5CPLAMAUvpGYtcAR8jVD2jNeBYDsLrsvREsMY6eWhdVVGm4lb3UakwQ/rbIQufmEeVDrr1OOZ8WEauoAFOEDt7iUYIZdiXWqUUlOpKPxK0GK4ZQSLlW0LihrNsjWuiMFVT9+9GvzUSOj9XcOh8Xnf4+ah0NH4gfEFxEwA9XwViyLwBbz9J5KhVLfJzZMx1JE6SX24s9vR6O8U+1TrhoU6op4WA0Fen7Xdc647FH8782fK1F5dEXIXTqVYqZIRsPRg1B5IMr2vqQaQ7s9YSQauY0ZNJf5G735A9tbCMWNg8p+roF5lZFsjI7JCpw3AoEaNYgaG5d9t+cb2jxjvun2c37wshgpiaJSALNoS83jPC1air7AH4iCZEzKK/kUruR/ZdTakXf9CXylpJ3rSDTe832uACnw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,71 +165,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10-26 20:49, David Matlack wrote:
-> I still think it's not advisable to define name##_wrap since anyone
-> could accidentally start using it on the incoming path and we wouldn't
-> notice at first (especially since same kernel Live Update tests would
-> keep working totally fine). I also don't think asserting the combined
-> size buys us anything. The header size is just a function of the
-> number of features, and what we are trying to protect against is
-> structs embedded in the payload changing size.
-
-Fair point.
-
+On Tue, Oct 27, 2026 at 12:18:03AM +0100, David Hildenbrand (Arm) wrote:
+> acct_stack_growth() charges stack expansion even without VM_ACCOUNT.
+> This can happen for read-only or MAP_NORESERVE mappings created with
+> MAP_GROWSDOWN. Unmapping these VMAs does not release the charge, leaking
+> Committed_AS.
 > 
-> So I would just do:
+> Only check and charge growth for VM_ACCOUNT VMAs, matching mremap().
+> Unaccounted growth skips the overcommit check while remaining subject
+> to the other stack-growth limits.
 > 
->   /* Marks struct name as a KHO serialized payload with a kho_ser_hdr. */
->   #define DECLARE_KHO_SER(name, payload_size) \
->           static_assert(sizeof(struct name) == (payload_size))
-> 
->   DECLARE_KHO_SER(luo_memfd_ser, 16);
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-My main requirement is that DECLARE_KHO_SER() in include/linux/kho/abi/ 
-must be enforced by the compiler rather than being just a bare 
-static_assert() that someone could forget to add. Since kho/abi/ headers 
-contain both versioned structs and unversioned sub-structs, it must be 
-mandatory to declare versioned structs in kho/abi/ with their 
-static_assert size check before the kho_ser_*() helpers can be used on 
-them.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
 
-So, how about adding enum names like this, that are going to be required 
-in accessor functions later:
-
-#define DECLARE_KHO_SER(name, payload_size, nr_feats)             \
-    static_assert(sizeof(struct name) == (payload_size),          \
-                  "struct " #name " size mismatch");              \
-    enum {                                                        \
-        __KHO_SER_SIZE_##name = (payload_size),                   \
-        __KHO_SER_NR_FEATS_##name = (nr_feats),                   \
-    }
-
-> Plus helpers that allocate and initialize the header and return the
-> payload as a typed pointer. Both the outgoing and incoming paths find
-> the payload the same way, by computing its offset from the header,
-> rather than through a struct with a fixed payload offset:
-> 
->   /* outgoing */
->   hdr = kho_ser_alloc(luo_memfd_ser, LUO_MEMFD_NR_FEATS);
->   ser = kho_ser_payload(hdr, luo_memfd_ser);
-> 
->   /* incoming */
->   hdr = phys_to_virt(args->serialized_data);
->   ser = kho_ser_payload(hdr, luo_memfd_ser);
-
-These would become, where without enum, the init would fail:
-
-#define kho_ser_init(buf, name)                                     \
-      __kho_ser_init(buf, __KHO_SER_SIZE_##name,                    \
-                          __KHO_SER_NR_FEATS_##name)
-
-And payload can also check the existance of DECLARE_KHO_SER, using 
-(expr1, expr2):
-
-#define kho_ser_payload(hdr, name)                                  \
-      ((void)__KHO_SER_SIZE_##name,                                 \
-       (struct name *)__kho_ser_payload(hdr))
-
-We can also add an optional kho_ser_alloc(name) to allocate, init, and 
-preserve.
+-- 
+Pedro
 
