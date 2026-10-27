@@ -1,102 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2A5606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 17:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB98D606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 17:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PGQzzcz9
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LX9oQFb3
 Received: by kanga.kvack.org (Postfix)
-	id C25E66B05E1; Tue, 27 Oct 2026 13:02:41 -0400 (EDT)
+	id CA1A16B0856; Tue, 27 Oct 2026 13:06:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFD6E6B0853; Tue, 27 Oct 2026 13:02:41 -0400 (EDT)
+	id C796A6B0857; Tue, 27 Oct 2026 13:06:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3A476B0855; Tue, 27 Oct 2026 13:02:41 -0400 (EDT)
+	id BB5F76B0858; Tue, 27 Oct 2026 13:06:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D4446B05E1
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:02:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2F020160ACF
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:02:41 +0000 (UTC)
-X-FDA: 85369025322.27.82C20DB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 92B94120008
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:02:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PGQzzcz9;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A13C6B0856
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:06:19 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A10A1207AB
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:06:19 +0000 (UTC)
+X-FDA: 85369034478.21.B349C4D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3B7FF40004
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:06:17 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LX9oQFb3;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793120559;
+	s=arc-20220608; t=1793120777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lz4BcpRRjlIy52XX1xait5NxJ+nHBcl/ZG0w9aFAbtA=;
-	b=xMrNBWOB1GCD2LQyfBLxGor3qiUQ63S78vCJa7fejGebbbae7bsYe92OO0WJCJ7vmFgDxn
-	UebRWYfCHSlQn1TjJfQA0ysNvBU779VE52xoOS1KGbj/DWQlNu8wElgmnGF5V7iZMck4M+
-	X+s1Ot7d09xSE8DoAxVxqeI763mVLRk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793120559;
-	b=ki7zQ49L8kOPybJmpSzwX9xINIaukeFvj6Svf3cKeYZanRH6YAu1bu14GnJUTw8tHwOrWV
-	5zyKrryBGFI6rKtOEHUFYXF37GIG2oR9eOFuQ5mZpXwW2/zoUFCBKNo4CqjmEttUen6HrW
-	8cOcmG8uylCLwirzjYzu1SuMelkZ4GI=
+	bh=CIRKIW6FyjGByuy1vcj3Kaosm6T+AEo/GoygfORs3IQ=;
+	b=aJq1OCtPnu9fdB2dVTbLwkNAqKE/WkeWhyOl2S8sxtzIkn7jnq4iCxH6fCVk3h5Hq3vCeq
+	RMhZNg/XOFpzyuEGiFr1sqv8f/kLs7P9L6eVAW4vI+Z8U6WY8DVBECc6vciCGuP9nXv+ih
+	c0CButBk/21wdl1IoQJaWMnaqiTZW2k=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PGQzzcz9;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D07026021A;
-	Tue, 27 Oct 2026 17:02:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF001F01825;
-	Tue, 27 Oct 2026 17:02:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793120558;
-	bh=lz4BcpRRjlIy52XX1xait5NxJ+nHBcl/ZG0w9aFAbtA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PGQzzcz92VDG+hGERDEbtM42qWOa9VrK7DIf7K9SCeXW97YY4peyXBI4up7EhqbXV
-	 KlgVEcArAOm4kGLsInP9NvklxuAfceyRq5oQ1nBRDes94GCP3QSHQKr+CjJzGcMSHW
-	 SVItdcq1fM/b2Ra8/GmVrZCZjv7GX4YCDO+jQEhPoSokm5mDTkB7E9ltcngSia2SJC
-	 p08W7pDUUh7QmG+fpmj4HS8x6+eRK9bZflBASVCHTzd+vBLC4YlOF5zbsqw4EaOcZU
-	 n5oybu2SHoVCoiFiyZkCC8EZNGimLCVLxu5dTyqE6NH0erZiY7jMd7IM1bFkAWdYqq
-	 oTOelA4zT3wtg==
-Date: Tue, 27 Oct 2026 17:02:30 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Chris Down <chris@chrisdown.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>, Jeff Xu <jeffxu@chromium.org>, 
-	Andrey Vagin <avagin@gmail.com>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 3/3] selftests/mseal_system_mappings: Test vdso unmap and
- remap
-Message-ID: <auDY6bpeuPZ-jc-_@gremlin>
-References: <cover.1793094611.git.chris@chrisdown.name>
- <621847973ba2ec49d0a58e0261da35a9f3a97eda.1793094611.git.chris@chrisdown.name>
- <auC7_5XYr31fimvL@gremlin>
- <auDUAN9xAQRQhnCo@chrisdown.name>
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LX9oQFb3;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793120777;
+	b=XvIW3Z1TNc4A1XoeNL/2rY2J60qTOsjxuvcWBKXPJjThSa+a+f92ALgRaGbC6OjoJV334m
+	MM5MATpiZ4ppFLra/KxOwotM8zxMwZEiaXyD7hSiivAYkAQK9yjgDS7xGDkcJpHCkJojcy
+	aMfbM4M28dlmY3ZT/07KJuhNieldWMw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D61871650;
+	Tue, 27 Oct 2026 10:06:12 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8FEFF3F7B4;
+	Tue, 27 Oct 2026 10:06:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793120776; bh=YfBOcf/1p0yKe28rQCyfQziZDw3iZcDMCiJAcTFH3s0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LX9oQFb3JCU/nRh3HOHfyGm75yvY2AqOJkXgl4H1OUrL+YV/yfv5t2j4NyOmkDQk9
+	 wJjiz2smZNW3BasgYXW2q2tqg9DtW18Hjbi6WScVSvfUxSgq2xS9N/BwOrfVKoiH+i
+	 KRo062zN72Uh7zYRswDgomQDOFjW4Mykh8WDYZzM=
+Date: Tue, 27 Oct 2026 17:06:11 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dave Hansen <dave.hansen@intel.com>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
+Subject: Re: [PATCH v3 4/4] arm64/mm: fix destructor for unconstructed
+ hotplug page tables
+Message-ID: <auDaAw5IR-ZFvqJ5@arm.com>
+References: <20261023063428.3658761-1-songmuchun@bytedance.com>
+ <20261023063428.3658761-5-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auDUAN9xAQRQhnCo@chrisdown.name>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 92B94120008
-X-Stat-Signature: ipgqfgm31xwkczs5cks3wg3ydkxq63b5
+In-Reply-To: <20261023063428.3658761-5-songmuchun@bytedance.com>
+X-Rspamd-Queue-Id: 3B7FF40004
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793120559-794221
-X-HE-Meta: U2FsdGVkX19Lj9RuKFNODFqaNz7yK966wCvPW8xOIv6EHYn8+SuM7VpTh4CPCzqqpOm58dG9nHsqzCyQF7IRoAr5RBNHteWadvWBVFAyLcMD/THn4JdmHBJVUOuhERM1tq2zvaNZnXoTItgCvyCuJ77ZjXlVr64EBqZR0drlUhSxg1pUbNh4DuehsqLPIBQEjMKAGXgP0VjUa1jTNsfXVcvfqhjlpWHQhm6ArP1eYfCwkUlXdoWTOJq9b2wsJAkaJ4y7678ZSa38AizVkwQRnfU3dtnJc0/JSpEtZtnMkznzcxGl/BiguyDxwcoo4HalTi2y41SrL5kIHPd3+rv42raOK73qJVYFqD6VrbXi2aBoUKP409TDm6icuzN6BZHN3avLyPfvwEA5uYlzAzc5WzBUaqS82vjVwpaH5aAxK+PE5VK4fUsD+gP0yN2q57qa6x7Q6YnvJIqwjgZexdpRqaAKaTWkMNI6GmbgVp4cOAYCfwo3c4wFlCP+rD6N7DqhihSq9of3/zZ5/M+iPl9tA7Ds8cLZ+33K8Yk3E65NEn59DhLiJix2hUivC3pDZI6FKvJVZMJyO8SVGa2ZqZEngZ5VKNsER4oM1T6zyk9D+7xwm8SBrlRW3yCTb36GWWfQuyFG4VHvoxIuf3aWvH2zY9TUdIMy3aReE3cLF762Z128d0odgYLcAd1KzokG2KJ0Q4VuzufWisFGJj1GyE8I3wz0ranGCT+Uizl8sWcsvrkRNlIWlQaPP6mAkJCs5B1q/IhNLW9USVXfcW4PvLlZuzktwLnqwiiWPvSt2MJPpt5h/hUBGUK435tCACcE4/Uu9bMNAjEk51ayTuHRHI7useZkHugm3PqSkjwPRsx6UXrxbc9p7mPfKVJ2O0YaO5Ktihmfd2HKYOZBU3kVbQ/ZgMKSR4OTkWnKNQmRIxSZih94t2q7qNfh27fE2IEfBfAvF5bEIFnPFTORNnOrKkd
- a2xUK6CF
- weU7FzoTmeQMwIBQpX5Lvp6sgRpQ0MtR4V+HjHFqoC/HWfXlWUkbnBcXFXkulM1Z1/lftgI9CRcQOqPEnE+3m5kEvxdJA0osd/2Xe+O9ukpSuueA5BzYteyk1Vn54vh7RE20rxItA1dMdil/XRvV3SQYHqwQiKOq3V8056dxdIJi6Xv+SRKcROcj9kyLpVxEZJbT/UmTrsYSAxGIoQViGTrE+hg0uX2WFa5GQ4hIICea94SWJNLczQ3J2ApX/pONjFtlJFS/VB88JICMYGMqVmHAdwxyfpG8K5U3BNSv0fFwqyhA=
+X-Stat-Signature: 8xqgkuq5hiath7qf5gmi9jp6iufbzxk9
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793120777-305641
+X-HE-Meta: U2FsdGVkX1+hqkxkicntevrjdROBaCxYaSR0zfWXjkr8C9LlTEzzwEX97/nhf2gVOgzwTpcNztURnyGWLGveFnYvntv/rpQ2/Pozi2T3xvSo+r4xr+Xu4FGzDRpSyReo0FVhZjgnI0ymeXO+Gs04BLnHamWqRbp4qRKORg/X/7SGGZtT38Qk213u+ChzdffKKjqvlhgI0vQTr5uPRxAn5ZRO8RVxpWlxNIZHMfr9VkmrN543aS++JdaoAVjF0yude1FpgI0OmfxbYrqUPuPRVW+w1DZuVEw+vUzAmjpgfybjeClubN+z6eDP/slQbInqP0qM3n9VxTHK03WiNCtZ1pUTpFQYUotjIs2aiVgCJ6g5pdxj1epyTmilk77/vZIsGCQu5mig4dcfmueIUUi6Dm1oD/6Pk5U/z4/mwOWSHPIycMnZp2Z1Q0TGA2ko10I6w6eU524XN8tAH2rGffZlQcNU+N5Ey++F3FDDvs79sgi4b3iIcJuqZrj74M3DDTA4i7ikKbVwLhmRA9xH3qUwRYMGHhJUPcjYndp4CAD3NQzwB4jIifqUTuP2Vu8AQqy55qbM4qN2/pMGaVqJkLTWoFqG8mc/1IJvtEdPkEZA9a4bzfnmwtIc3olqnhHV9lx1b348dZ8dMAuyzMZRULnmucXxDao+7ybUNn0GqkkmQL892evM195KiUdO6zdfBKvLcvUmbXsUg5xMtPYD+LtsfqgbaOvJaMSM8PKH5an7bbO32q/bzu7ABQBBBjdYat/ObxcatZuJnDhAVB1b96X9K7bq+L5jEBL9NqepXOzjFT/AdGL2r/ZTBMbso1vrfOfTaTb9yT+lMoJJs2j1F3Eyjxt5O7FbtANHqf7+Ggro5aOc62a4tS8wM8Isex55T2Po0L17NyLQTZtRlC9rNbwlUWK6pCc/nwgd0QYJH9ODPn/sGkPuSG83J5lCavprrJ9oofgfqFq4Rso6W0u4Nl8
+ AWGJDMos
+ AnGqfuGQitaKljxm4e+DySSh1luHzTqq8NapuKjOFGpkG6i6fWKZWpjAEOn9rnUqzJEty3FkpdG5WcQehhze4ycT0ffXDDKTWUAFkEU7P1clsrmtAJwn0qCvYv9AN19dPyqU6fgVSlvyytIrwPNpdZGbEyq+tIg/oGPWCJxjWuEmSaFkscD9FUyGnjCnS1cJPl3Q48tnBZ18RcSODpr3DbA5r8mK5YH+L64WhQigjK9M9d/YuE3k4TOLHTO9OcyoFIJO9qHwiplBaIdAQVoHeQaasHr1YX6B0jyuPQbHNpLGpPL4U+A0vyliE1ET4srEdIXmFAMSE8yQ/3zkNZ8H/7WpTkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,112 +104,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 12:40:32AM +0800, Chris Down wrote:
-> Lorenzo Stoakes (ARM) writes:
-> > Sorry, in mm we require commit messages. Even for tests :)
->
-> Sure thing, I'll add one.
->
-> > On Tue, Oct 27, 2026 at 07:43:25PM +0800, Chris Down wrote:
-> > > Signed-off-by: Chris Down <chris@chrisdown.name>
-> > > ---
-> > >  .../mseal_system_mappings/sysmap_is_sealed.c  | 92 +++++++++++++++++++
-> > >  1 file changed, 92 insertions(+)
-> > >
-> > > diff --git a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c b/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-> > > index ea75ad537620..83b4fadfbfe7 100644
-> > > --- a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-> > > +++ b/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-> >
-> > Why on earth does 'mseal_system_mappings' have its own directory...??
-> >
-> > Ugh I don't know how I let this stuff go on the original series :/
-> >
-> > Please, for the love of all that's sacred, move these tests over to
-> > tools/selftests/mm/. This is an mm feature, for our sins...
-> >
-> > You can do the move as a prerequisite patch in the series.
->
-> Will do, I'll make the move the first patch.
->
-> > (And, again, I really do insist on your change doing some cleanup here as
-> > well rather than extending this stuff.)
->
-> Yep, see my reply to 1/3.
->
-> > > @@ -10,6 +10,7 @@
-> > >  #include <unistd.h>
-> > >  #include <string.h>
-> > >  #include <stdbool.h>
-> > > +#include <sys/mman.h>
-> > >  #include <sys/utsname.h>
-> > >  #include <zlib.h>
-> > >
-> > > @@ -232,4 +233,95 @@ TEST_F(basic, check_sealed)
-> > >  	EXPECT_EQ(expected, sealed);
-> > >  };
-> > >
-> > > +static bool find_vdso(unsigned long *start, unsigned long *end)
-> > > +{
-> > > +	char line[MAX_LINE_LEN];
-> > > +	bool found = false;
-> > > +	FILE *maps;
-> > > +
-> > > +	maps = fopen("/proc/self/maps", "r");
-> > > +	if (!maps)
-> > > +		return false;
-> > > +
-> > > +	while (fgets(line, sizeof(line), maps)) {
-> > > +		if (strstr(line, "[vdso]") &&
-> > > +		    sscanf(line, "%lx-%lx", start, end) == 2) {
-> > > +			found = true;
-> > > +			break;
-> > > +		}
-> > > +	}
-> > > +
-> > > +	fclose(maps);
-> > > +	return found;
-> > > +}
-> >
-> > There's shared code for this kind of thing, please don't duplicate a
-> > /proc/self/maps thing if unnecessary. Also there's a nicer ioctl interface for
-> > all this.
-> >
-> > See vm_utils.[ch].
->
-> Oh thank you! I will use that.
->
-> > I mean arguably this is an mremap test that belongs with mremap? I guess
-> > debatable...
->
-> Hmm, I'd lean towards keeping it with the sysmap test, since it's really
-> testing that the seal is enforced on these mappings rather than anything
-> about mremap() itself, but I don't feel strongly if you insist, just let me
-> know.
+On Fri, Oct 23, 2026 at 02:34:28PM +0800, Muchun Song wrote:
+> Commit c594b83457cc ("arm64: mm: call pagetable dtor when freeing
+> hot-removed page tables") made free_hotplug_pgtable_page()
+> unconditionally run the page-table destructor. This matches page tables
+> allocated by the arm64 mapping code, which runs the corresponding
+> constructors.
+> 
+> However, arm64 also uses the generic sparse-vmemmap population code.
+> Runtime intermediate page tables allocated by that code do not run a
+> page-table constructor. Freeing one during memory hot-remove therefore
+> runs a destructor without a matching constructor and corrupts
+> NR_PAGETABLE accounting.
+> 
+> Free intermediate page-table pages through pagetable_free(). It runs the
+> destructor only for constructor-backed pages and then releases the page
+> through the page-table freeing path.
+> 
+> Fixes: c594b83457cc ("arm64: mm: call pagetable dtor when freeing hot-removed page tables")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Actually let's keep them together :) It's always a bit blurry...
-
->
-> > This all just seems like work that should have been done in the past when this
-> > feature was proposed, and doesn't depend on your changes at all AFAICT? Maybe I
-> > missed it though.
-> >
-> > Valuable in itself, but probably worth sending separately as a result? Otherwise
-> > it's a little disconnected from the actual change you're making.
->
-> Yeah, it doesn't depend on it. I can send it separately on top of the move
-> if you like, I just don't like touching things without tests where possible.
-
-Well that's a good instinct for sure :)
-
-I mean alternatively you could send as patch 1 and explicitly say you're
-providing a tested foundation for the other changes.
-
->
-> Thanks for the review!
-
-No worries!
-
---
-Cheers, Lorenzo
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
