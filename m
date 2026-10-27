@@ -1,94 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61F060A3838
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DF5606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMqKHFdb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jIhYLNBN
 Received: by kanga.kvack.org (Postfix)
-	id 011DA6B0757; Tue, 27 Oct 2026 09:54:06 -0400 (EDT)
+	id 607A36B0759; Tue, 27 Oct 2026 09:56:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2AA76B0759; Tue, 27 Oct 2026 09:54:05 -0400 (EDT)
+	id 5DFBE6B075B; Tue, 27 Oct 2026 09:56:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E41976B075A; Tue, 27 Oct 2026 09:54:05 -0400 (EDT)
+	id 51C956B075C; Tue, 27 Oct 2026 09:56:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C95F36B0757
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:54:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65072A8760
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:54:05 +0000 (UTC)
-X-FDA: 85368550050.23.D00C677
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C6C2380006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:54:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMqKHFdb;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 309DC6B0759
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:56:07 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9B90A0935
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:56:06 +0000 (UTC)
+X-FDA: 85368555132.27.42AEFF3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3936B40007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:56:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jIhYLNBN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793109243;
+	s=arc-20220608; t=1793109365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O0HlFL9/QqurHonrWKlExnX7Q+xujC/2o87bXkVMAlo=;
-	b=4+nphcSPCCWejh42J/Og5e73hx6T0ODaIwG8PcUnwGHcA9V8hDkPZ3oKL2afX1NEvInZFs
-	qTrZm8+ZBiQuOOdYDsp5aqbwXV2pvkCXYEFNKdDVz0TUYRaVdiyRo+OoLtx0/JNW3U8ydJ
-	Yt9BFisgoenjAcKZoVc9rpxm9STob1w=
+	bh=Zr1jTThDFAddOSK457sc66293xmVyHCCi9iGlWUeddU=;
+	b=eBvEbKof9RAWRv7T77xDc5jF9UR2U5Y7DbY7v5hstc4vkQXliBP+5V35WDJFSHiO0J02h9
+	EXrVLiiRPZFj4fGYueqy2YQt/sHU1H9mhJVoACaM3iXiq4ysxHaS0cWFdRw4Q2ps8m4AI0
+	M7Wjlvw6YrMche4l1h+HSs5AgFs0iiE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMqKHFdb;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jIhYLNBN;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793109243;
-	b=EYvPuvaL0y4+vB3RgYNeeH2URIGRiZYr8RNZERocmBTuo4VFjts4hP9/tX7e0112PgmoNE
-	lqNC4duD1+C0aruleRJDrWT18hfr6vCCyYQnGMEss3PtEHzUbs5aDIWe/fF5yT38nMZYug
-	kIjuz2ERqAO3hpUV9A/RdUD5ua+X1nQ=
+	t=1793109365;
+	b=qtpKih127KwkmyF+8nz1iK/g9bmNC3/QEMgIBJYlWAoPCW1lmnbd3M5Hb5QLDx9KhYWQ5U
+	skZY+qzIDXGu5BtbOOYX6pbqEqcM8QenujfpGxfCMkqPSuUCzwZRouzWju6gi+zG0Un48Y
+	A1qPChxTEsDHWkKahz9UtHbWhktFNeo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37F2642E09;
-	Tue, 27 Oct 2026 13:54:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D962F1F031ED;
-	Tue, 27 Oct 2026 13:54:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 94C686020A;
+	Tue, 27 Oct 2026 13:56:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17E81F01825;
+	Tue, 27 Oct 2026 13:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793109242;
-	bh=O0HlFL9/QqurHonrWKlExnX7Q+xujC/2o87bXkVMAlo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AMqKHFdbqByiISt7gdsCumYhawhuE9fwriGzjlE0yAjkYNrIZC6K2R0bMvHm3GizW
-	 sAr5XUXUJNX8HBY/ybbp/jOIg5RlwlZKFKKpi5901ZDK5p+2Byo8TRKA4yC3LKS2AC
-	 NMmzxJr3YefLqAEhLts6DW3A9bvzrJ0UHWcmRm61qYPXoYzyiql1+PgeDYnUE5I3Zi
-	 04R5if/6KKbW7kzm4nr3AFj4kE5m+Zt+IJqrCIfYFnWdPEwTGOm4X+SxA9NtAXRumJ
-	 6x6AyjgE9ddCd5dqS73hvfvQXHxdXlryLFx1ySNZZO8tgDnkT29Z9RyK9zzdD/muFf
-	 3G2B2xqGCKexw==
-From: SJ Park <sj@kernel.org>
-To: Daemyung Kang <charsyam@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	bijantabatab@micron.com,
-	ravis.opensrc@micron.com
-Subject: Re: [PATCH] mm/damon/vaddr: preserve migration weights above UINT_MAX
-Date: Tue, 27 Oct 2026 06:53:54 -0700
-Message-ID: <20261027135354.149948-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261027035431.1007584-1-charsyam@gmail.com>
-References: 
+	s=k20260515; t=1793109364;
+	bh=Zr1jTThDFAddOSK457sc66293xmVyHCCi9iGlWUeddU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jIhYLNBNpp0NexZNmMUHOUCY+eEy16NfWjuSuwLJqmFHwNWPY9BdmcaHZW+1fGIg9
+	 fiBkl7KehfwTpd4R+QE8pIbz2ex/lWNl//inoU+svKsu/oI0sqh9JGs4nayk/63cZa
+	 PuQtRNz2s2eqW5o62hUTfQo+difIHb2bfTQI3wmFE48eH1hqvasX2J061wIVJ/8XLp
+	 B8iwzzJIHvVnrgkO1CLMhM/dtnxK1pMp932wcPpTyDMf/mtjlI6T7bM2e0ImgLpb5G
+	 itjSlM0i78ybkEbvAJ0jTU2GNXWaOjkHSgMcq3b5iw8EB94IUavJ0yBcssBsMi8xzh
+	 0HHSAVhaSG0Nw==
+Date: Tue, 27 Oct 2026 13:56:02 +0000
+From: Harry Yoo <harry@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Alistair Popple <apopple@nvidia.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>
+Subject: Re: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
+Message-ID: <auCtP8SCiHFcSGci@thinkstation>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C6C2380006
-X-Stat-Signature: m6b7b9ithdp416bpdideu34dhkx31fuh
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 3936B40007
+X-Stat-Signature: jsaf9esokjiw8oiognwpp34wg5bhouk5
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793109243-302360
-X-HE-Meta: U2FsdGVkX19dsgcxIo9jXMarz1jA2mnTuVkySIrsVM2lQpEOPCt8hsnY9JOSH0gDiDdeR37TajIgN+1AMuavOHik/3drZCrFrMD8Lr9gfD2m904uP+w1zP660i8kP7x72XmBrrLCm8U2GrUlf9QdqMaAlim8UzoRHFm8WsKUYISFkGwo32HvdfMV3oBUkZuPynsAIRkFfc6cc1VjYu6FnnFyJpIoNeTYPRVqTc4gqptcITfgEBrb3wmsRu92fJrbvYuMrwR1U5GJdcEC2dEpniwKbLnauP6TBy0Ceav4b5IJrhKl3khRYdFUewABaJiZ7j3kZagVz966lJgiXPI2zFjxTpWSzrCbMSmbJnIAdcHSzqcp/5myuiz1ZzSljCkgupZCpUe/IePURskkBTu5ElLqlUsNjO+gDAnjV6NdmT/dWN43T5RErwgtmkE5VMT/DQfk3eF5itWHhgHuujFzm0cjv0IE4Og7d/HqWa6VeL4s18wwVxd/dkDUXoWxvBJ63bjAZIr4AuKQKbO+QHQff90BqwcE4XHkh26EDwAl9IL9Tb5/Dmi6j1Cz2Zu81wbwFSIQxzhL5GbcwNKOXsQOlMs6lYh7VX5GHOiz9EJb3XUv89h48GndEg0EvJT1Ge+Tupcfmo0L/cWgVbbwQvsiqoGML+gc8Cvmt8cXjpW/bHf+00R9f6QvwzhUEvOZ63J+m4TOv7DK1ncUqCCtTjh5EMt0aj1EzKAEGhooSfap20L2AbPRY7aFJenUJ5+Rfa4wmEAVhi9NFhsUP/WXek9O2ZBBLBfVQttlNNtPuSaW8fyQm41WL1sMR1Rn3nioAUDsJwHrsYPVPJ5t4ff3W1IFNVTBs1Z5rp7jmBmoPrQRRkrw9BZ5DViKS2n/2SJhlFlp2FrQbR9ufn7achfXEX6vcDY732t2eKX9mYCuOz/dWAsE4A+dabJXK7ztStYxOkpq9WCQEn2UqBD32Rhxytc
- aXPXwkuu
- 3fqyzE1D7yxkx0XHqaok6/eJw8HzlixqG4AserP34kbq+zloCRsaTp1lFyPcEJpvSL98f/04xZCZqmOch1xvY7jVH58x52Atm7190tmoHFADM7rx5OZtQ4Po9ZK8dHnw0uHjAZspMER4e0zrIvzQd+fSXkzpdYo9xa7oybhS8ZtvfrO2Q//z8fvgvUPrEFYZYoMOpDy3dBl0UauPaeSXRRjCVXEZ2nhFBGRAF8gPEV9qJE7/JA4JuPqLN8QC+iKS0ubUSgHztMpy9FWiHZp9xX8yg5g==
+X-HE-Tag: 1793109365-479024
+X-HE-Meta: U2FsdGVkX1/oIkH8anSu0nZtmRW9HuwPH8HbHrsHW4MQsDAjiEhI1V3/4K4694AT9RmGvURbhdPZK5/VPD431mThIAHA80tc+mCQXIgwvCLO6eEc4CZ1fx3IfVu1c0MMAPqDFokMXpkPAyhi/O0jn+/Laer16C7StZKmB5wdCsW2NUPxcwdynzw65LbGl9bUmMxklkL6sdHaqTcO+89YIMqsY/JNKVH5DK5SHGlFZbv9SeBxAgPMookH80f+HTTLjuOenFtTUOOK2I5FSpnAdaK9mDncCA7tOmyw+OObZtq/u0OsFxS7w4xW4ZC6nFByKMXcRVXQKKmZjcAy4eB3RNEDXicpM0EFIRrCz7wyra9iohrDL70ayczU2qZLLpGt4AEjMXXHf/y8+9zT+dyuHIApchkTOqLReGKYaxj502jewQwq4S1KJqRwUQbVHwH1NriHF1dzyVfU6LxyUPeLWX3CNXL5Uw4XdcXY52rKhQuUUUeqI1tIowKnvQb6An+rB+6CnbLeKoZvOWLjTPm5dwF794vLRVDg3zW50g5hhCpXh6FoCra/VxKxWphIjJHMgYPjRSYvJ5yivguVLOo9oD5mDF/0wHrDin0N7wGsF2iUrAY9djJ20VZYxMcW7Dmiatmc1lhH9WCwHJWgAFmPBPBJkMhFoULzz4LTAmRMWgyXg5wUtPQkEt259jN8Twh89vbp5IqjNH3hvvkP2qNGfq62Njwkf2GoZZFX1q+t4DmITEjwShgGV2PXKgwNbpNY7kZqaMX0N/EfGYl3X5+7iDtXvtFc3mofUj+3IqFaz5/VwrDzgz7dX0QAL8gxKlb/TDUlNxtLznCA7oSADPQUZ8pTDqgbkN86rMWnf1dyQijXgf4848y21DT0vn4Clr2o9GTN0oqAnlWiZqZLGpejO8l8diYZ0nI4QbVOjmOtBCvVmHu6ktqSlCJ9dwrhby1TgdXzWzPIGrv/11ucaHX
+ ayR9wdf3
+ AnNiURJyje/0aDGBTiKFu+IrQ1zIZpdsV4N6E3eEUlVr6KPadku1h5oMxSVtasBUsnEisGrdQ3ZVGs9eynrj1fNq3iZ1KmCVFeR7aFrcQQvpXZCp5dkR5jxLK9KiXEkYRX4s9x1E97lu0jfqH/paAX//GAJO0jOAMJnHUyLDY6+B/sTPXjXbQsG1MPBYQ5ux0gqIL/4+coIopr3dCBazSuxD/QhrxqnkCf6OcxWhE39Irh33tb3i9UcWZg0i2u/TKMaHDvhSnQWyHJdv2tBsPmTE39wGTfyCAJrGw4ttpcUVByd6h5Xr1gignBbukyLbZg9cEHau4YTwOceCJY2pIvIrS2wfcajEkrXE5igDfGs2zEVBiIo87WJtnFdJlMyRCnVTBV4GyjPic6HrhwXoq8oL8xs3R5N5WsIWRotl1Bsx4r0PrZmejZp/tlsG891NXi6Kt1alWCMBO/y0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,40 +120,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello Daemyung,
-
-On Tue, 27 Oct 2026 12:54:31 +0900 Daemyung Kang <charsyam@gmail.com> wrote:
-
-> DAMOS migration accepts an unsigned int weight for each destination,
-> but sums the weights into an unsigned int.  If the total wraps to zero,
-> no folio is migrated.  Other wrapped totals select the wrong node.
-
-Thank you for finding the issue.
-
-But, is it realistic to have the weight_total overflow?  Have you found the
-issue on real usage?  Or, theoretical?
-
+On Tue, Oct 27, 2026 at 12:17:22AM +0100, David Hildenbrand (Arm) wrote:
+> dup_mm() copies the parent's mm_struct before dup_mmap() takes the
+> mmap_lock. A concurrent brk() can leave the child with a stale mm->brk
+> and newer heap mappings, causing later brk() requests to fail.
 > 
-> Sum weights into a u64 once per migration walk.  Keep the existing
-> 32-bit divisor path for totals up to UINT_MAX and use a 64-bit remainder
-> for larger totals.  Add KUnit coverage for the actual summing path and
-> for destination selection at the overflow boundary.
-
-Do we really need to support that user inputs?  Unless we have a very real use
-case that require such huge weight values, I'd prefer not.
-
-How about just clearly notify users those are invalid parameters?  We could do
-so by adding weight_total overflow check to the central parameters validation
-path: damos_commit_dests().
-
+> Other operations (e.g., PR_SET_MM) on the parent's mm_struct can similarly
+> cause inconsistencies.
 > 
-> Fixes: 19c1dc15c859 ("mm/damon/vaddr: use damos->migrate_dests in migrate_{hot,cold}")
+> As a simple and robust fix, grab the parent's mmap_lock earlier. This
+> way we don't need to update individual mm fields in dup_mmap() and
+> keep missing ones. Stop updating the 4 existing members (total_vm, data_vm,
+> exec_vm, stack_vm), as that is now no longer required.
+> 
+> Keep releasing the parent's mmap_lock in dup_mmap(), before
+> userfaultfd completion, to avoid moving the userfaultfd handling into the
+> caller. This should get cleaned up later.
+> 
+> Move uprobe_start_dup_mmap() to preserve the lock ordering.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
 
-Should we Cc: stable?
+Looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 
-
-Thanks,
-SJ
-
-[...]
+-- 
+Cheers,
+Harry / Hyeonggon
 
