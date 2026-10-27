@@ -1,80 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080CF606A31F
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E84606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ExPbIF3/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RWHqK3S3
 Received: by kanga.kvack.org (Postfix)
-	id 178C16B0679; Tue, 27 Oct 2026 05:51:10 -0400 (EDT)
+	id 267BD6B065E; Tue, 27 Oct 2026 05:53:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 150926B067B; Tue, 27 Oct 2026 05:51:10 -0400 (EDT)
+	id 23F876B065F; Tue, 27 Oct 2026 05:53:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 018106B067C; Tue, 27 Oct 2026 05:51:09 -0400 (EDT)
+	id 156036B0664; Tue, 27 Oct 2026 05:53:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CF0306B0679
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:51:09 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5828FC096C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:51:09 +0000 (UTC)
-X-FDA: 85367937858.19.B548639
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7DD7D20009
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:51:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ExPbIF3/";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E13266B065E
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:53:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70FF18090D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:53:20 +0000 (UTC)
+X-FDA: 85367943360.09.6B8C2C0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B965F40006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:53:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RWHqK3S3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793094667;
+	s=arc-20220608; t=1793094798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8zDkY5o07vRgj7ONjSOhjy/y9De5lk+M63GI9HGYSpM=;
-	b=rHlaITXgoLv6WlOvln9+WBQoobKqm0Xtf8OpN1QdSMpm4ahIiGBkiBOCWee7L8QfCXwY+M
-	izAcnDzJiCHh2AsNOsa0gj55WO0KyjE+nbw/JP1w4DfSDKaQiyGijuuG4oO1xlA8dGdG3t
-	C9sAgl//7RcNy9U+itq7celxRJjMlq8=
+	bh=Qb/Av3iFxq2T/XinHqpaMyorZTBvtSl0sjYD9zEFaGA=;
+	b=vhXyHeSozIqSyDCK8OcmioLd7oA+pZuGl0hj1Eobaw0oL9DffsHPRB6bGWPOmGeQzu57Tt
+	fTdZc1dj+onXiDpRjuvRyFPv6eE7CRpfJG0kRd/oBZ8yZZ/m/ERBfEzwtQeE2LGEhC3v4x
+	13v1YzX+kjB1AIevwOnM4qzOUA2326E=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ExPbIF3/";
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RWHqK3S3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793094667;
-	b=QN4X04vuriYzm3LpHeQHNwxcE5OY0Nwgj8vhcvJfiboVsxHJRIye6ZJ7O2BdOK0sRQTkde
-	r/qXUun8mYEPY3rcfU3DWYbDaD4vSJlx3hWQ58SBKufRld2vsoVbFdLtpqRz4dl4s8c8B1
-	aJ+Ez/N5vv39nGnS0jd/j+Yc8pPmTFA=
+	t=1793094798;
+	b=qAay+B2//d2kjESODLDzRQKuKo1FACqGThMjP6t8JNzl+xWs/WmREnWZ2vPjYRuT6bT8kO
+	yD+5/51e+l8Y6ggSzTLLVUSrw+ybD7FX8aFVcLhkhiJlQGw4U19ZZV13YHUc6eWkGpOmXt
+	D61VdvihWirL1QpS6UYwGz+ytXboLaA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B117043EC9;
-	Tue, 27 Oct 2026 09:51:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5241F031EF;
-	Tue, 27 Oct 2026 09:51:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 477C06020A;
+	Tue, 27 Oct 2026 09:53:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739161F031E3;
+	Tue, 27 Oct 2026 09:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793094666;
-	bh=8zDkY5o07vRgj7ONjSOhjy/y9De5lk+M63GI9HGYSpM=;
+	s=k20260515; t=1793094798;
+	bh=Qb/Av3iFxq2T/XinHqpaMyorZTBvtSl0sjYD9zEFaGA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ExPbIF3/QgmyOpemsHOD0lOeZ/59J7ewh8pOXutB20lBVYY4W4lZSAcoQyIPY1bGx
-	 dUimDUTDPPtt83v1afbJycwVDKQGww5cP3aofRd/IwXMjzr/3fIVJq9U27IKgXsCfg
-	 Lz2nKWbFWvA9+KxdBDOIyi0pnPCtNE4d0lDXRJTAHHrZ9QjvKr/cQvexpJxrHyS5AN
-	 916tZERFYOz9bgRP9rJ+/+uNo7m3xRtAKnLoJTROm951I7O3NRbGrlhdyVOAJohUmh
-	 upYM6MSGwKABZVMBA1CmXczakiVqMvKnMqeCyvLRTbZasGW5VwFlUd7uP8nXfFbVlF
-	 T2rIZVCs/OM4A==
-Message-ID: <81ee2c92-f342-4f7f-aacd-d9558e67a980@kernel.org>
-Date: Tue, 27 Oct 2026 10:33:22 +0100
+	b=RWHqK3S3qatsdfVyfkwJd+wmD6PBE+gLSXhLcog0Et/IwzOgkm8aYa6gQI9jitp49
+	 bYl3JbBm7vyk3NIM1Vati07UdXPc8CkCM/lMNiC3R26e2tV3ZiMiWfrZL+lO6C3MAw
+	 9iddEyT16tjnC6r//StpgqZQfQicqQq2qaSHsxv36YsbsEshJsOl+gIHVdn7aF+yTe
+	 27DLMb7VBJSNSG0PTk5Qcs2g0LwY3qTQaeJZQeYRZXSggYTtOiPSqrVdSi6p4jtoBQ
+	 eITXrRXA7giOLSBJsd3XqFqQeV2aJjDEO4Df9sjqXgi+zFxpQecINrhcroxQQdES+c
+	 N2bjhIrEcEGSg==
+Message-ID: <ed59aa45-0ce8-4e5b-8a19-b5323fbe7864@kernel.org>
+Date: Tue, 27 Oct 2026 10:51:00 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm: memory: fix truncation removing mapped folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <d7f009c90b11ded86654885b5ebcb8c9308fa31a.1793067441.git.baolin.wang@linux.alibaba.com>
- <2ba579e8-06fb-41f5-9eb2-f02b2aabe29b@kernel.org>
- <87e32afd-75de-4407-8f0c-fb70b40d5eca@linux.alibaba.com>
+Subject: Re: [PATCH 05/16] hugetlbfs: enforce F_SEAL_EXEC in setattr
+To: sashiko-reviews@lists.linux.dev, Andrew Morton
+ <akpm@linux-foundation.org>, Gregory Price <gourry@gourry.net>,
+ Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Lukas Czerner <lczerner@redhat.com>,
+ Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-5-703206d5fa0c@kernel.org>
+ <sashiko-outbox-186003@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,22 +135,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <87e32afd-75de-4407-8f0c-fb70b40d5eca@linux.alibaba.com>
+In-Reply-To: <sashiko-outbox-186003@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7DD7D20009
-X-Stat-Signature: woeo1fqytyq9riptaoit4gjzgmn76k4a
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B965F40006
+X-Stat-Signature: peiumr4zcfnse9438n6xsw9te7fcbdra
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793094667-599192
-X-HE-Meta: U2FsdGVkX18EFw8o8AnVkdX6rh9aFFhT2/h9qOPnz7ZPqdpX2iZPYnJnXokhksKQzjvLWqV34ncpJZFmIPyOvWRPgWSfaspbS4Q3Zi07iJkNsxvi1RY2RM/YpP4xSegNcsQ1dZOXcWdmc0D5yxNIRKAaol6qpzj7wXysfEZvHgxd2d2JnRf+L7BhRwQM0lD6SWIHJu2NFCmJKbcxtJBeaAYPZkKXZ9zD9nwyIk8eBnpevoY7K8Iz/HbyI+sV5CiCCVbgoz3JkPqECTCFx2fRME9R50SWEsk4kE5pXedqkpaocHlRb29BZi+SZaznwd0LEFU9TBKnoeH3v1DemUO/fJB2+6V57m7n4uTS6nt2vdjIhQogyn6/1HHAePSVAxHoeQwfSqbZHXgisyIIEmm+RxYFRY7a0WPa6MumtOWwdrPl332DcnE6tBC9bzjbDbpS3Zv7DnBdLdxBDCJaU/XD4QZ/MtoXHoi9enE0gRigbShId2McKshxrRFgIZUK+LkPfhx/UfMCPxfkTjPbtPtgoVlu4Qci7n16XLlyyFT9MOxnTlSS3m92QE9DIIu5JS+Co8zoGxy+yGMAKM3+Mm0wXXMpygaeilL6wQ8lWII6XRwQMQvgpzYH/x5ol5xmU09kjvZ1KmrGFWByItjzni0qD0RASzq2EQtI3zVO2mYP6I5IGN3DmPFVbSzdviSG4pGdF7CE0o4H0VU9rq+N6ludrZ/FUy+tRAo4wZiPez2uvIWzUeWzPAcutLdf5suanCN4vv7uyLWjKrg81JDhfuFup8pUrQPBQMUB6H+sJ5uoDvY85JJmpTU8CpxHy01yTJhzGT3jwtw52x2BskTM4KrbbPoOW0LEH+lkx7qqqZ7U2ngK3q+Q3A85bHSHu+QSDzw9d/mSFXCgjmJVX2+wbKng/qZ2KTfZwY9/fQJwLygzAv3TJAN4z6L5eWVUCvb6eNxoGMmWJ/s5dOcNdo7KnN9
- lfN6GZZm
- HRz5lfM8bT4mjMGxFOyy33s6QdWHwE2eIMkvou0Gj2eTFhQML4s11cH/P537iejKE5tdj4cyExuGMMMYsuG0haFgpCD4W/m7QzoPeV5JiYvNcCyKSTOl+JN/Vv+k7GIgey1m39hIyEpDkwvw9GUbGUZinEp5kYZVGTM1hnR5Owyb/0edfbs2/3gy8jtgoBdvuFY7L4ySjdxhAlt7MP2/chzpqvR8j5pJBmfHQgaRSSJaY3+n2Shd7eyAQRhMiaWqZ/IHHWBRbtHM3xLwr03T3CS3O+LUZQSxkX6qzb62PW1ycIwxICMzutgOWs32/b6Tl13Dg5QFLO78s30Pik0qliS1i1e0xEhIADlXi7JPTBc+iIYx62Y9eOHIixyPP1XMfx7w4wREcsE+5OSI=
+X-HE-Tag: 1793094798-29835
+X-HE-Meta: U2FsdGVkX1/8SeCljOkT78kiIMU/D91JDVBQM0ex3KVny5BxFdPne4mhmcl3TkfWvmpUY/o4+f2Du+v9OxKRAhrRGK4iJhn/vgB929uAmmUJrIId28rOE8JEhjSk1aBOkD5jxAzNm5jULUaQ6pLey+b9CQ9lOIRAe2K5+o9Ju/gGj3vqsYp6U1KjVc4IExh+2y778RyIXHZ5uTLw8TQq6w5Txsd+xDPwxsmmx6ih7AB9thGPQ+zPCu4nxLO/E/KvjpMXmGZl4837SwWs3yk9rWVr8ezSgyhVkDOA23BcdOjR/H9F4r03aG8lPa/rbuZmop5vXPzbJSwzuyw0/Jj/NcqsRHimW7VdpUiNNe90hdYPBP3N3lEEqw2GyMR6vgJDeEDNPOFOrYnl0gkSvejChecKo9oMAnieKqTyFHEzPGMtmpVSVHjTeLjg4WUX42QdgvLIKfD8XI4YfQkGJo70K7OLOiqRsxIVtbyObEqp17n4KgFUjkBg4FR0g/75bUivKuaGW16nSs6IJO/8OkyTQ6A1yCnNLh1WDTwuf/bMWw4ik2Vl5eIHp9MNLoqDWcKgKt0ixPA5rTqnAu3HKYQF3Py2BoGyU/sbzhI0Z1PQqLYTD+y+8eQIVzO5yMvuSzsYJe/bH3c437F0TuK3tNyaxE3aqV0aRSU5LbrNbf4YhiIZVCAnruG84TU2lyIYKk6UmqQUmarBlj8VeND3Jt3LTEL67iqHje155wDioJN1mAFqN/jqx1ElLRu5iCUQOM+SPMEDqYcmji1mzY+eMkqXg8v0Ts4QQTVQT3pMes+DtH+wj3ounOilqGbtZfxKOmKhHUOl2udL8NInBS6F+oQiWcVl//OAVpQHvLQIJGT2elXq1/jLG26XWlgH6qP9s30RMHdKEdgiPjewrWT57YriG7EK8ylwZ7r+SbSdTp5au+7TgZIj3bv5BlonkQedSwMZwzGrOUc1NsBPJPkZ0sb
+ NHcdpURG
+ 3/DnbNaUJBcpZ/4xD1jkIWcY45M4knrRSnBhU/+lJ2J8w3WbCY6R21BVcGxONDfz29CFhEsDeXX1UoeQgr3lmkYFtj/Y19mb76ctpCz84YfGO+o9KFNgblgVyqUKZy0Y5dt9s8+vxG65yhyjSg3U/VoW7wbLH0zTNQ5WQeXKIqDEsS+E6ikjJ/HerBMVedYQ/RdwrZL/QRCaPsO/t9XUF8XdocHlI2DA14cls8QqLReLlb6936OT+0TyMsElvuDKXwy+bkm02L5/zvnhLZWL+P2AC5qAPVyajkCsgjwUcH/sLtgP9vC6RRVzwETIoQIji+djw627iJuoLKeIP0q1ExdndX1mDFqhNG/Vi8hNzhhdfwUPFOQMKazsVirQEqH7gekuR8ilt5C/NyvT7ckn1hKbxTm0pYXS3nd8mxOZ4HzLevMexJpaRn82l5aq4dftSf6QUjJ9HVeS9/YjVVMBcvjIWBQMzmUUOPwQnIqdCJPZvpLxLrUOf58AmtAlJlxfYlkcxsfxQhL4nkyfpMJvSYEUBEucreP2/Alu5f6TSOYB9qVU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,243 +158,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 10:03, Baolin Wang wrote:
+On 10/27/26 03:22, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] hugetlbfs: uninitialized info->seals read in hugetlbfs_setattr() on root dir
+> --
 > 
+> commit dfab7a0d71278312f805e82ce52518a8ea2f538d
+> Author: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
 > 
-> On 10/27/26 5:00 PM, David Hildenbrand (Arm) wrote:
->> On 10/27/26 03:19, Baolin Wang wrote:
->>> Ayush reported an issue that shmem/tmpfs folios are still mapped when
->>> truncating them on production:
->>> "
->>> BUG: Bad page cache in process ...  pfn:...
->>> page dumped because: still mapped when deleted
->>> "
->>>
->>> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
->>> branch, and I got the following crash info. From the dump message, we can
->>> see that truncate_inode_folio() is really trying to remove mapped folios,
->>> which is incorrect.
->>>
->>> "
->>> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
->>> index:0x3880 pfn:0x191647
->>> [  189.171995] memcg:ffff0000cc073d40
->>> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
->>> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
->>> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
->>> .......
->>> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
->>> [  189.172026] ------------[ cut here ]------------
->>> [  189.172027] kernel BUG at mm/filemap.c:155!
->>> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->>> .......
->>> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
->>> 7.3.0-rc4+ #277 PREEMPT(lazy)
->>> .......
->>> [  189.183986] Call trace:
->>> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
->>> [  189.184391]  __filemap_remove_folio+0x34/0x160
->>> [  189.184633]  filemap_remove_folio+0x4c/0xb0
->>> [  189.184859]  truncate_inode_folio+0x34/0x58
->>> [  189.185087]  shmem_undo_range+0x220/0x658
->>> [  189.185308]  shmem_fallocate+0x2f0/0x470
->>> [  189.185527]  vfs_fallocate+0x128/0x328
->>> ......
->>> [  189.187078]  el0t_64_sync+0x184/0x188
->>> "
->>>
->>> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
->>> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
->>> MADV_DONTNEED synchronously releases the pagetable page before calling
->>> tlb_flush_rmaps(), this could cause another thread's truncation to skip
->>> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
->>> as non-zero. A possible race scenario is as follows:
->>>
->>> CPU 0                           CPU 1
->>> shmem_fallocate                 madvise_dontneed_single_vma
->>>    unmap_mapping_range            .......
->>>    ......
->>>    (filemap_map_pages() remap folios)
->>>                   zap_pte_range
->>>    truncate_inode_folio            zap_empty_pte_table(pmd clear)
->>>      unmap_mapping_folio
->>>      ......
->>>        zap_pmd_range (saw pmd none, skip)
->>>
->>>    filemap_remove_folio
->>>      BUG_ON(folio_mapped)
->>>                                      tlb_flush_rmaps(remove rmaps)
->>>
->>> To fix this issue, we should move the pmd clear operation (via
->>> zap_empty_pte_table())
->>> to after tlb_flush_rmaps() and use sync_with_folio_pmd_zap() to sync with
->>> concurrent zapping, so that when we find a pmd_none() while unmapping a folio
->>> without holding the PTL, the folio's mappings are guaranteed to have been
->>> removed via tlb_flush_rmaps().
->>>
->>> [1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
->>> Reported-by: Ayush Ranjan <ayushr@modal.com>
->>> Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
->>> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in
->>> madvise(MADV_DONTNEED)")
->>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
->>> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->>> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> ---
->>> Changes from v4:
->>>   - Put the pmd_none() check in the 'else if' branch (per David).
->>> Changes from v3:
->>>   - Collect review tags from Qi, Pedro and Lorenzo. Thanks.
->>>   - Update the related comments per Lorenzo.
->>> Changes from v2:
->>>   - Use use sync_with_folio_pmd_zap() to sync with concurrent zapping (Per
->>> David).
->>> Changes from v1:
->>>   - Add an smp_rmb() to pair with the smp_wmb() (Per Lorenzo and Pedro).
->>> ---
->>>   mm/internal.h | 10 ++++++----
->>>   mm/memory.c   | 30 +++++++++++++++---------------
->>>   2 files changed, 21 insertions(+), 19 deletions(-)
->>>
->>> diff --git a/mm/internal.h b/mm/internal.h
->>> index b1b0f29d2216..ffb8eaec90e3 100644
->>> --- a/mm/internal.h
->>> +++ b/mm/internal.h
->>> @@ -584,14 +584,16 @@ void free_pgtables(struct mmu_gather *tlb, struct
->>> unmap_desc *desc);
->>>   void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
->>>     /**
->>> - * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
->>> + * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
->>>    * @mm: The mm_struct.
->>>    * @pmdp: Pointer to the pmd that was found to be pmd_none().
->>>    *
->>>    * When we find a pmd_none() while unmapping a folio without holding the PTL,
->>> - * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
->>> - * indicate that it's unmapped. Skipping the PMD without synchronization could
->>> - * make folio unmapping code assume that unmapping failed.
->>> + * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
->>> + * mapcount, and zap_empty_pte_table() clears the PMD only after the rmaps
->>> + * for the table have been removed, but nothing orders the pmd_none() read
->>> + * against later mapcount reads. Skipping the PMD without synchronization
->>> + * could make folio unmapping code assume that unmapping failed.
->>>    *
->>>    * Wait for concurrent zapping to complete by grabbing the PTL.
->>>    */
->>> diff --git a/mm/memory.c b/mm/memory.c
->>> index e911e63ba1ed..d9c54549b85b 100644
->>> --- a/mm/memory.c
->>> +++ b/mm/memory.c
->>> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather
->>> *tlb,
->>>           }
->>>       } while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
->>>   +    add_mm_rss_vec(mm, rss);
->>> +    lazy_mmu_mode_disable();
->>> +
->>> +    /* Do the actual TLB flush before dropping ptl */
->>> +    if (force_flush) {
->>> +        tlb_flush_mmu_tlbonly(tlb);
->>> +        tlb_flush_rmaps(tlb, vma);
->>> +    }
->>> +
->>>       /*
->>>        * Fast path: try to hold the pmd lock and unmap the PTE page.
->>>        *
->>> @@ -2043,18 +2052,12 @@ static unsigned long zap_pte_range(struct mmu_gather
->>> *tlb,
->>>        * to hold the pmd lock failed, then we need to recheck all pte entries
->>>        * to ensure they are still none, thereby preventing the pte entries
->>>        * from being repopulated by another thread.
->>> +     *
->>> +     * Clear the PMD after the rmaps for the table have been removed, in case
->>> +     * an incorrect mapcount is observed after unmapping the folio.
->>>        */
->>>       if (can_reclaim_pt && direct_reclaim && addr == end)
->>>           direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
->>> -
->>> -    add_mm_rss_vec(mm, rss);
->>> -    lazy_mmu_mode_disable();
->>> -
->>> -    /* Do the actual TLB flush before dropping ptl */
->>> -    if (force_flush) {
->>> -        tlb_flush_mmu_tlbonly(tlb);
->>> -        tlb_flush_rmaps(tlb, vma);
->>> -    }
->>>       pte_unmap_unlock(start_pte, ptl);
->>>         /*
->>> @@ -2102,12 +2105,9 @@ static inline unsigned long zap_pmd_range(struct
->>> mmu_gather *tlb,
->>>                   continue;
->>>               }
->>>               /* fall through */
->>> -        } else if (details && details->single_folio &&
->>> -               folio_test_pmd_mappable(details->single_folio) &&
->>> -               next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
->>> -            sync_with_folio_pmd_zap(tlb->mm, pmd);
->>> -        }
->>> -        if (pmd_none(*pmd)) {
->>> +        } else if (pmd_none(*pmd)) {
->>> +            if (details && details->single_folio)
->>> +                sync_with_folio_pmd_zap(tlb->mm, pmd);
->>>               addr = next;
->>>               continue;
->>>           }
->>
->>
->>
->> } else if (pmd_none(*pmd) && details && details->single_folio)) {
->>     sync_with_folio_pmd_zap(tlb->mm, pmd);
->> }
->>
->> if (pmd_none(*pmd) {
->>     addr = next;
->>     continue;
->> }
->>
->>
->> Minimal change required, no?
+> hugetlbfs: enforce F_SEAL_EXEC in setattr
 > 
-> No, keeping two pmd_none() checks cannot fix the race, as I replied before. [1]
+> This patch updates hugetlbfs_setattr() to call memfd_check_seals_mode() when
+> ATTR_MODE is set so that fchmod() cannot modify execute bits on a hugetlbfs
+> memfd sealed with F_SEAL_EXEC.
 > 
+> Link: https://patch.msgid.link/20260629180247.2343229-1-eva.kurchatova@virtuozzo.com
+> 
+>> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+>> index 6656807ce4377..7f5c3962b5d56 100644
+>> --- a/fs/hugetlbfs/inode.c
+>> +++ b/fs/hugetlbfs/inode.c
+> 
+> [ ... ]
+> 
+>> @@ -841,6 +842,13 @@ static int hugetlbfs_setattr(const struct mnt_idmap *idmap,
+>>  	if (error)
+>>  		return error;
+>>  
+>> +	if (ia_valid & ATTR_MODE) {
+>> +		error = memfd_check_seals_mode(info->seals, inode->i_mode,
+>> +					       attr->ia_mode);
+>> +		if (error)
+>> +			return error;
+>> +	}
+> 
+> [Severity: Medium]
+> Can this read uninitialized or stale slab memory from info->seals when
+> chmod() is called on a hugetlbfs root directory?
+> 
+> hugetlbfs_dir_inode_operations wires .setattr to hugetlbfs_setattr(). Unlike
+> hugetlbfs_get_inode(), which sets info->seals = F_SEAL_SEAL,
+> hugetlbfs_get_root() allocates the root directory inode via new_inode() ->
+> hugetlbfs_alloc_inode() without initializing HUGETLBFS_I(inode)->seals:
+> 
+> fs/hugetlbfs/inode.c:hugetlbfs_get_root() {
+> 	inode = new_inode(sb);
+> 	if (inode) {
+> 		...
+> 		inode->i_op = &hugetlbfs_dir_inode_operations;
+> 		inode->i_fop = &simple_dir_operations;
+> 		HUGETLBFS_I(inode)->resv_map = NULL;
+> 		/* directory inodes start off with i_nlink == 2 (for "." entry) */
+> 		inc_nlink(inode);
+> 		lockdep_annotate_inode_mutex_key(inode);
+> 	}
+> 	return inode;
+> }
+> 
+> Because hugetlbfs_inode_cachep uses the init_once() slab constructor, which
+> only calls inode_init_once(&ei->vfs_inode), newly allocated or recycled
+> hugetlbfs_inode_info objects are not zeroed on allocation.
+> 
+> Previously, hugetlbfs_setattr() only checked info->seals under ATTR_SIZE,
+> which is not reachable on directories. With the new ATTR_MODE check, changing
+> any execute/search bit on the mountpoint root directory reads info->seals
+> and can fail with -EPERM if the F_SEAL_EXEC bit is set in uninitialized
+> memory or left over from a previously freed sealed hugetlb memfd.
+> 
+> Should hugetlbfs_get_root() also initialize HUGETLBFS_I(inode)->seals =
+> F_SEAL_SEAL?
 
-Best to wait to submit new versions if there are open discussions? Because now
-we have the same discussion in two places.
+Shouldn't we just skip the check for directories?
 
-I think you're right about the race, the issue is that we check for
-pmd_is_huge(), not pmd_present() which confused me.
 
-Clearest to me would be to not drop the second pmd_none() check but move it
-where it belongs: if splitting zapped the PMD.
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 7f5c3962b5d56..293c7965f4894 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -842,7 +842,7 @@ static int hugetlbfs_setattr(const struct mnt_idmap *idmap,
+        if (error)
+                return error;
 
-@@ -2101,13 +2104,15 @@ static inline unsigned long zap_pmd_range(struct
-mmu_gather *tlb,
-                                addr = next;
-                                continue;
-                        }
-+                       /* We already synchronized with concurrent zapping. */
-+                       if (pmd_none(*pmd)) {
-+                               addr = next;
-+                               continue;
-+                       }
-                        /* fall through */
--               } else if (details && details->single_folio &&
--                          folio_test_pmd_mappable(details->single_folio) &&
--                          next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
--                       sync_with_folio_pmd_zap(tlb->mm, pmd);
--               }
--               if (pmd_none(*pmd)) {
-+               } else if (pmd_none(*pmd)) {
-+                       if (details && details->single_folio)
-+                               sync_with_folio_pmd_zap(tlb->mm, pmd);
-                        addr = next;
-                        continue;
-                }
+-       if (ia_valid & ATTR_MODE) {
++       if (S_ISREG(inode->i_mode) && (ia_valid & ATTR_MODE)) {
+                error = memfd_check_seals_mode(info->seals, inode->i_mode,
+                                               attr->ia_mode);
+                if (error)
 
-Removing the "if (pmd_none(*pmd)) {" in your variant is what confused me,
-because it looks like we no longer happen the case where we zapped the PMD
-ourselves.
+Because sealing of directories does not apply.
+
+Thoughts?
 
 -- 
 Cheers,
