@@ -1,59 +1,59 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EA8606A322
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0786D606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=S8Js5VW7
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=feoAmarh
 Received: by kanga.kvack.org (Postfix)
-	id 06BC16B05F4; Tue, 27 Oct 2026 03:49:27 -0400 (EDT)
+	id 880BA6B05F6; Tue, 27 Oct 2026 03:49:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 041F96B05F6; Tue, 27 Oct 2026 03:49:26 -0400 (EDT)
+	id 82E556B05F8; Tue, 27 Oct 2026 03:49:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC1E06B05F8; Tue, 27 Oct 2026 03:49:26 -0400 (EDT)
+	id 71ED46B05FA; Tue, 27 Oct 2026 03:49:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C23296B05F4
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:49:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4728DC048D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 431616B05F6
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:49:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 738E91A068C
 	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:49:26 +0000 (UTC)
-X-FDA: 85367631132.13.5F4EAE7
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 87711160003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:49:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S8Js5VW7;
-	spf=pass (imf08.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+X-FDA: 85367631132.20.30D2D7E
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D4FFBC0004
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:49:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=feoAmarh;
+	spf=pass (imf10.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793087364;
+	b=RYBL0rF9ZhEbIXyWE8DuRkaIK3EIRWSNHzISsBdjqrhW4JHyJJ59ToX3LQ6Vk9qmRynKxh
+	nJ/AlVERLxt9PL0ViKohjBgOfFom5hEY/sjrio/kPC1QPYoLX2qxUHAEFi3GGGEZi4eOhk
+	qReUlQsi4SulTVNgyae52/y0Mbz1c3g=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=feoAmarh;
+	spf=pass (imf10.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793087364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=fDLnPYVqGviQl47QdfOTHMYdbQswzEwGmP8xbiVLODo=;
-	b=cFFat4QoVbU5+UZq6jQLTVcUrx6W/IpuiVgfwdbH8kR9gYfdJqxCuMeciNoX9Tn+IiyMYH
-	mszsj7ItB3KgDvOsxoRh6HNt0KiCbBLZSDOS1At3rg/tMfQ98QtpPoVUaQUiafkbCE+tcx
-	Yc0HizvdUZos+jWlAi0/U2GiZnvsE2I=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S8Js5VW7;
-	spf=pass (imf08.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793087364;
-	b=EmOcT3weD/84MJCtPTkkwxsPQzhTCbH/NL+aB3JAvLcAV5kNQK8m70w7J6BBmhOdL37N13
-	ia6M9guLoU1Hj5S5YaQxxno0t0miW+T++JhDEz7SvKkGMC80406EHi0r+HhRLYTSWtbeTk
-	dwd7sAhcg+dqTX4pP/xyE4fNGSychkI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BXvgM0ct2zh3WME+RiKVmHD2v16ccD4fuepbOGcZJl8=;
+	b=t+r+soS9Db0s1freydIqhdVYOIjSUe/DyRKfjwUZVtIZsTcYWaXhM2sufTqHF32Om4vuaj
+	oOdyUySTmfiwHiEiC+I4nqzhLe37ByDH1eBMHR1q3hxED04HnB0CrDgw+e1an/O4eMX3k2
+	MNG9cbTpFwmNq+kxuyJHzjnl1gyvBjI=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
 	t=1793087359; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=fDLnPYVqGviQl47QdfOTHMYdbQswzEwGmP8xbiVLODo=;
-	b=S8Js5VW7OwJ/Ll0kPgr3druyAqqbKBmFBy3QUTqOHmR4l96C9rKIQJ+B6HMstZZX6vtN6RLxtngbQieQtm0p55lMI9TdnyjQRRLqYiFsDizekaSmTLfBex36dKXBoEZ04atkd84Yroty/jRF9dNiy5qZsh5R2/KabvwYkTN6Lwg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XDd8d20_1793087349;
-Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XDd8d20_1793087349 cluster:ay36)
+	bh=BXvgM0ct2zh3WME+RiKVmHD2v16ccD4fuepbOGcZJl8=;
+	b=feoAmarhOPv1XFa4+GR0GcXISwsTFdInNaACgajSG8stEUfbfu7ftXX57yOnOgl/viPGu+RqkDTCW2KPp6s7P3Pp3pFgawTmArQSgRRr10PP0NfSOqmyhyhNvQeHQyXjp2rl9xdnsJEFy2SSV5GSKPfRgjN67OuqD5b6jwCz7oQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R741e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XDd8d4h_1793087358;
+Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XDd8d4h_1793087358 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 15:49:18 +0800
+          Tue, 27 Oct 2026 15:49:19 +0800
 From: Weilin Tong <tongweilin@linux.alibaba.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Ryan Roberts <ryan.roberts@arm.com>
@@ -61,26 +61,28 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] tools/mm/thpmaps: fix THP statistics and mapping names
-Date: Tue, 27 Oct 2026 15:49:01 +0800
-Message-ID: <20261027074904.3328878-1-tongweilin@linux.alibaba.com>
+Subject: [PATCH 1/3] tools/mm/thpmaps: fix partial THP anon/file accounting
+Date: Tue, 27 Oct 2026 15:49:02 +0800
+Message-ID: <20261027074904.3328878-2-tongweilin@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261027074904.3328878-1-tongweilin@linux.alibaba.com>
+References: <20261027074904.3328878-1-tongweilin@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 87711160003
-X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: u8fe7hgqdhzaxpkzdi8bjgxnd53ugwja
-X-HE-Tag: 1793087363-600708
-X-HE-Meta: U2FsdGVkX18KVcxTKMfhRSwGiPdzczpSujlxQSIlo3ICz2U7j1VD3kuu6gKpxw+beQYvjtMc07VOreveNLv72F7I4cSkBpt1mERZH/MtGPTxYS/9nzfHNZFl79VD4c7JRcniiGKmDUy9rCdgCcbrIJqiRO7ks7cOk4tW9U/+AklvBjcvnKcCh+2lzRn/gQnkB4DuMdTt8IGBfD98kZ+Vvkqs+ULyeZ0K6r5XEZqY5YjT/sOTBhWrfEL9vsQlvd8zlVajF1VqvVLWXRv1T6RKJBzfDBBEyEO+h45Zxd+yxWXOFWbDWZ/kVPXTT6+hoi3dF/tdP+76NR3rAwNEPGQPvRZ58xyYLLK9QoNTj4fzYO/HIB1w08v0SEx5YtAJE2awPa7xdGTd0sT0VDC80/TTfZc6UtPjcuZVElkXEYkKkWyGbfVmxLDpURLpyXbR/1jRNZvXNAcHembf4syOikPiZvxpQIjlzfjqRz6BpAnAJGSUYkHq/imFAi/Ue4lvwnOsYuwnBYtVfrbTqqdd6Gk+SuGdSUvqHPTm1/GrVYPwZXVDiyVP06Nq6txGQELaavFTtpxlxRW45BEKTTaLq1Pc/B0FOGbLDIqoDuxAyrH1YX7GYo/tY8yWjxv9EgOQeg+B8ozcm+sdXgvnTpdcYQNZ8PVsuPmaf0novWlQxk6TfC9RGLwCrHzRbfrAz/enKm31bOlfjXt9L5ldIX9Eavf1OB4IsiDdq611mmQdjoXLoLxGAdeeaAf9+l2wz+ZGsBBKkvGXL9iRRpIyFeqAfBYxEh7pL+DKeSUecEKyrS+HCOzMPNi8n6nfI6zPyYWmg2grfbmffgxqBPkeSTeZq0HGbbubBf4pdPhcmOmG6ohlzveAlZ08S2l+/9x73EvYvyJmxbzLDfhBXkGHMfSn5R5pDpC+AiA1RqSA0nd80KrOkb8IvGoblJg6+OAhKGkJUTC6U8S1C6CY/EwFd/KYea4
- mj9VjYO2
- jKgMGcXfEvC9U2RxToNsBe7Jpz43LTRU0R9Hvjhz8gvjQRCtbPBLWRqFtvXTVhis+uTuz3qxuFgiIrQokM3Nw+QMdeaYm2LbwzR+gaouamtUVkzfz9YlLm96Xsz4tdmwNhzpPUD8zYWHpsr8Ygb7xmfoAWE/qmmho8XT7Y+A8sXWl+obDOn+AxaG+FNJsVLQ9zgkfIH5nkdFcdobYtXbSxx+hYzXKsfuDvHv66wzzOcQBWuoLzpgaUNix8Wr+LBqMfQej
+X-Rspamd-Queue-Id: D4FFBC0004
+X-Stat-Signature: k1g1x1786sdxds4998kcanhx3jrjq95z
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793087362-613972
+X-HE-Meta: U2FsdGVkX1+B64LJ5PEKAySJ+acuqILuC6//QEbv6KzcP0H1PQAfCAm3XDnAV7s6BstjxmeMvyWXVTG+lzA17e4tUiFq4zkAboKctajBWrZqtHHQB/4ZCq5dTMs3z1W6rND6Ic7gtNJHwGrhyJimln5d/pLRB27OllbNmF4661QS+nAUV1sxrQcFKMATrIUz+U5gXXkXBBXuxWItHNK82mRfY8RO35ISN+9lIOifXgOLvm2QvdBlfT7jFa6gImroD38IdQ5UpMgw3RvBPzjz5anVLY7cx6lRHnWRXfyHClTiKVhgW4+GMUiUjYJGLYwvueAYK88Pi5nIP+MjIH5P/hjpDwwW0jXAr52jxbiBOqsbNmSmD4M8BC/UMh4pLoEjW5WdO6CnA7KG9wSyeg17JlluUSlCFkmjYoOjCBZGHHgbRWoX+9Nj9GFh/0gVE2WlvCDXbOni6FEP+bJPE8CpRTPF8MjZToCU5QBR5EODJmggMZKN8BxeuL0rTPmpwlta8YMepslzW1tMiYtNOviBpR+m7Vt00tPTUQVpRyKRrpJzejLIas06b6Ui8znhe1jIgoJPOBCS7y8o+2naLHs6H7u2Br7IgbLr2HmtA+HkQVNlJxZdztG3pKr9uTJWW6PkcANF3U3+IyN/CA73fCjSCbVNq6Bcw3qjl5B6azwSDg/7G7Ul1diSJdL5zW3flSJ+qgvhHMeEG15OOcrCGcerQ5jrsoegYPHCmb9diOVpV95rg1524uClUsixmWMv38exQ3pTxjOzdXLdUvCFGqWSzaGYDrJzDKSVIcnHYRwNPFWx9zQ4dNR+60UCSTey7wMAlAzUIo9ygzvhGzXhcsxABWDJlpY0tEw8V2+CsckQ6eGbbWsKQA7Es4rxt6o7+VVvTFtvMf1ROoDOGyJS21kfNueNBx5zXKis8C5LekNNH4LwQJtNd/1O1b71rAC1/bKSOKUlFcSLG6dUvxlO/ip
+ sqqawjAB
+ 75RaNkT+1NaKbQHO8BvgSrrpxyeREVm/B+3G1IjFyLNG2vLLkwIO6MxZodT7j6eEH4UhC8J+NNh4Rz5G8uHAguQi4xwRLmwfHdftI8ZenzdobZNzbTus+GlZEu4Io1flz8KfFe1yJGNVhPIy5aqbhnTq9CXSBz1EN2cvqJX3qCXCqzJ7NkrG4BaGYL5uBlZMz7XJxmreqGPfZpC6s1sOFOhp8n3YWfbFcNtypUH14JwY0Lcuw2Q7AseThYw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,25 +91,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series fixes three issues in thpmaps.
+thp_parse() reduces index_end before looking up the type of the
+trailing partially mapped THP. The lookup then uses the preceding
+page, or anons[-1] if the THP starts at index zero, so its pages can
+be charged to the wrong anon/file counter.
 
-Patch 1 corrects anon/file accounting for trailing partial THPs.
-Patch 2 includes order-1 file THPs in the per-size statistics.
-Patch 3 preserves mapping names containing whitespace, including
-paths with a (deleted) suffix.
+Account the partial THP before reducing index_end.
 
-The three fixes are independent.
+Fixes: 2444172cfde4 ("tools/mm: add thpmaps script to dump THP usage info")
+Assisted-by: LLM
+Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
+---
+ tools/mm/thpmaps | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Weilin Tong (3):
-  tools/mm/thpmaps: fix partial THP anon/file accounting
-  tools/mm/thpmaps: fix missing order-1 file THP statistics
-  tools/mm/thpmaps: fix missing mapping names
-
- tools/mm/thpmaps | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-
-base-commit: 39274b454e9993cea319f4ac342a8082a9ee1730
+diff --git a/tools/mm/thpmaps b/tools/mm/thpmaps
+index 803e0318f2fe..d92aace005c1 100644
+--- a/tools/mm/thpmaps
++++ b/tools/mm/thpmaps
+@@ -263,8 +263,8 @@ def thp_parse(vma, kpageflags, ranges, indexes, vfns, pfns, anons, heads):
+             if flags & KPF_COMPOUND_TAIL:
+                 nr = index_end - int(folios[-1])
+                 folios = folios[:-1]
+-                index_end -= nr
+                 stats['anon' if anons[index_end - 1] else 'file']['partial'] += nr
++                index_end -= nr
+ 
+         # Account fully mapped THPs in the middle of the range.
+         if len(folios):
 -- 
 2.43.7
 
