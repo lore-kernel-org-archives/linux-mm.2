@@ -1,162 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1887D606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1842606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Te/hFcTC;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hg+twqpr;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Te/hFcTC;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hg+twqpr
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bbsz9qDk
 Received: by kanga.kvack.org (Postfix)
-	id 10F766B0833; Tue, 27 Oct 2026 12:27:50 -0400 (EDT)
+	id B9AF76B0835; Tue, 27 Oct 2026 12:29:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C0636B0835; Tue, 27 Oct 2026 12:27:50 -0400 (EDT)
+	id B230D6B0837; Tue, 27 Oct 2026 12:29:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA30F6B0836; Tue, 27 Oct 2026 12:27:49 -0400 (EDT)
+	id A12E96B0838; Tue, 27 Oct 2026 12:29:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BBE896B0833
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:27:49 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 118D8C0A7D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:27:49 +0000 (UTC)
-X-FDA: 85368937458.29.E8025A7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D590E140005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:27:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Te/hFcTC";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Hg+twqpr;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Te/hFcTC";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Hg+twqpr;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 759516B0835
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:29:37 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDC721203AD
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:29:36 +0000 (UTC)
+X-FDA: 85368941952.09.EAA3D1F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2C2B2C0009
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:29:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bbsz9qDk;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793118467;
+	s=arc-20220608; t=1793118575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/itwoJPNV/PYjgH1tW8TC7VQ2qoANM6I5XSJVpUiq8M=;
-	b=gXfwTn3EW95WU6q1gM8Gw1sLjy9/iipRRaKwUHnvWC7NvjviNPePXAUdf1/iedMySPPmgU
-	ch5euQ6hOprZjZRtkUGOSSkXdOxf+DCvDfU9z4445YQWOeM8WtgW9VtC2uPHFn2LTnMCgg
-	uMjjDDJm7d0krRWO+58P/oTx9MGAWGk=
+	bh=kAcnFFHoGCaLIkdfu6vQlgxivqnlgRGe6B2VS1ojrEM=;
+	b=BHwh788zCPASXVwiqK6LVLOBjgKnu+DzNkwn4xMxd2qUJ4BE/Lv3GmAVQmengmCThZmvCe
+	0jg7OGa8aUl/JhTIyjmwE/tf9f2ICfdNG8Nkd/4iuN1mcomRHXCBlE8+z8ea6v5duBXjA/
+	2m00TVHMkBSCl12+BDhBtkL1gXQQVaw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Te/hFcTC";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Hg+twqpr;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Te/hFcTC";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Hg+twqpr;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bbsz9qDk;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793118467;
-	b=SR0jRz8imWxvIw38ds58z00i1R3zB24QLlIEit/pUUJUHZKuvgesGQYoNKDJfT7s0K//y1
-	qxkmlAnJl75cUDRTHA4Z6l6VszSToF+q2gTTPrNDImoY2fw83/sDMOFCgwy/vs06+zEn3y
-	muTGVXepz6IdBEZ10Sdxux/C4GvOoMk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B26F21F7E9;
-	Tue, 27 Oct 2026 16:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793118465; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/itwoJPNV/PYjgH1tW8TC7VQ2qoANM6I5XSJVpUiq8M=;
-	b=Te/hFcTCOKkoMgRX5zaqYIVBggY9Fpr20ezr2tFqxNsXOnKsbQwUmmdTdAciG+uCQTDjth
-	dVktrGDfybLq8FuT/n1SiYOTAsUYVXG9Sing0oS69R2+Iytv0Z/Y7lJYjwwMTzhsktO6j4
-	fMoJAX/MIJCIH+SrJ4jkjDxdxSCgPWE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793118465;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/itwoJPNV/PYjgH1tW8TC7VQ2qoANM6I5XSJVpUiq8M=;
-	b=Hg+twqprF0ocwkjIQM9VGipaZPJ1m+OpmAD+rhXe3by6Gq2PHVtPT9ufjbMIV82PfR4N4K
-	l27dUCgkPKJmAnBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793118465; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/itwoJPNV/PYjgH1tW8TC7VQ2qoANM6I5XSJVpUiq8M=;
-	b=Te/hFcTCOKkoMgRX5zaqYIVBggY9Fpr20ezr2tFqxNsXOnKsbQwUmmdTdAciG+uCQTDjth
-	dVktrGDfybLq8FuT/n1SiYOTAsUYVXG9Sing0oS69R2+Iytv0Z/Y7lJYjwwMTzhsktO6j4
-	fMoJAX/MIJCIH+SrJ4jkjDxdxSCgPWE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793118465;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/itwoJPNV/PYjgH1tW8TC7VQ2qoANM6I5XSJVpUiq8M=;
-	b=Hg+twqprF0ocwkjIQM9VGipaZPJ1m+OpmAD+rhXe3by6Gq2PHVtPT9ufjbMIV82PfR4N4K
-	l27dUCgkPKJmAnBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A1EA61321C;
-	Tue, 27 Oct 2026 16:27:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BayYG/3Q4GpDBwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 16:27:41 +0000
-Date: Tue, 27 Oct 2026 16:27:39 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 35/46] mm: fix unmap_mapping_range() beyond 4 GiB on
- 32-bit
-Message-ID: <auDQ66Ux9eKN-Ha4@pedro-suse.lan>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-35-6f74bec9a5bb@kernel.org>
+	t=1793118575;
+	b=QjjoPUaf5KZwC4SG1sgF9NOTq1ohgeqJL8ps5hP2/K6ajPYn28c6t5ZXMEJEsJOyLInf9f
+	5bCTJQTNcWPYVhbbXwl4FS2SPP8yHS2HjgNd8cHoGKHWTslguZz/OF3+sPWmCh9k9fFVsH
+	Hmt9hNAwLcJKui6zMpcV1OP/oNQE9W8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E6824183F;
+	Tue, 27 Oct 2026 16:29:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F061F01828;
+	Tue, 27 Oct 2026 16:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793118573;
+	bh=kAcnFFHoGCaLIkdfu6vQlgxivqnlgRGe6B2VS1ojrEM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Bbsz9qDkyDs8H77dSEWFVVoSrMeEk+WXm5r3OPWiNyeYoBpxmsOCn5CmGtRqVetHo
+	 mcFkRLPNplY4m3ig1H1ERqm+PaSGY5Qy91L8YocM14s/zdxHBU39CJJs+LR0NjqRUy
+	 HYaZ+qVnsrkUB90AOxXitaTHRIDzbW2nZQKAt2axcvSGr90/Ecy4aiZxxfFFZPczPN
+	 a6bkSOpR33GdMYXlejOZDAznosukKn1HJsw8fzq1fezE3Gnm3ptrKyXX0qKJZIsYvz
+	 +AJX6Eljxg3TrZYEEkkyIT2+mZGLlRxnvv9SjcB2Q0e4+EvEqvROnMfyR4IutR6Tvb
+	 hVXHbkO+pwc3A==
+Date: Tue, 27 Oct 2026 16:29:21 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Barry Song <baohua@kernel.org>, Hongru Zhang <zhanghongru06@gmail.com>, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	surenb@google.com, david@kernel.org, liam@infradead.org, mhocko@suse.com, 
+	rppt@kernel.org, shakeel.butt@linux.dev, vbabka@kernel.org, zhaonanzhe@xiaomi.com, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
+	linux-arm-kernel@lists.infradead.org, chenhuacai@kernel.org, kernel@xen0n.name, 
+	loongarch@lists.linux.dev, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	linux-riscv@lists.infradead.org, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com, 
+	svens@linux.ibm.com, linux-s390@vger.kernel.org, dave.hansen@linux.intel.com, 
+	luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com, 
+	bp@alien8.de, x86@kernel.org, hpa@zytor.com, 
+	Hongru Zhang <zhanghongru@xiaomi.com>
+Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
+Message-ID: <auDRAEofBdqZy36y@gremlin>
+References: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
+ <arFYRAa-i7CIwmHL@gremlin>
+ <arF-E3Nsw9ZliH0t@casper.infradead.org>
+ <arI_w2wTfA00Mgy9@gremlin>
+ <armexcXDiG8ryZd6@casper.infradead.org>
+ <CAGsJ_4xuFi7K+crAcFQ998SxXS0xPM6QeA34JV+6+Sy005rXLg@mail.gmail.com>
+ <ar7MsOb6IJLt4eLo@casper.infradead.org>
+ <ar-o1TrOMGrrcxLX@gremlin>
+ <ataDTEZIKOYtwhUF@casper.infradead.org>
+ <auDGPs8jzC-90-_y@gremlin>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-35-6f74bec9a5bb@kernel.org>
-X-Spam-Score: -11.80
-X-Spam-Level: 
-X-Rspamd-Queue-Id: D590E140005
-X-Stat-Signature: shoh7cniofizdcjfoat85yhee6qxgqfz
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
+In-Reply-To: <auDGPs8jzC-90-_y@gremlin>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2C2B2C0009
+X-Stat-Signature: 69foj8qarzirh4qdepiriopifdd45kye
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793118466-132134
-X-HE-Meta: U2FsdGVkX19CGMDJ0SETBfq3kDf5nxtSBovsjOifO2KhT0wsRwXKfZ06g3KzUfR7OqJO0Mwr/xoHRuBLdSZ3r240NwJJBcOhGX0WcULBoAqXdLSuspBuNVOawLGpj0FEkI/QLrdhtElqjmrPneW0qrKtE7KXVi1dGFxntScUSYRbIBWZudSX9ih6uMxOlqrPOKstWaSnZYNlHYu0kDK5mPyfXU03ABKJxcYfoCHdMfqeenEPEfvt5qaphvvDQR8k+o+/C3EAAVDMAQ6/E9RuNqPqzVNDxJjYshALp3dUBt0b3gFwTZSvKljggtBVtseSOb4ocZ+HUzxseJBDsg9+m4d+LH5pzVEFtQP8rD9lDikGPDMK6ooz8qld2xx0lgAn48B6PPhs7lsc+G9wRQa3weQuNXtLLVtRzXjnyOGR8N8r5pUvrU8XNVutVkBFecIBoyDWkD2Q1RDE/FENNbLsUk9Mu97HWZurwJqR/SkFj66MGGvTrfmIoI39Gc61WThNcYx+qtTaZkP5ZuvQN5zaJ9Fe75Ir4rLaG4m64GPqbJVffSXMa7sr2zGXYMSQPyi7YSiQZXBZ24gvlmTbvU7mIdhUbgQE3OqwSaGd3aqs9SkbHXbctEVPn1JpnREEDhX+x6tTaA3U+i+qbOuoHXNeHnN62GhNn1UowA/Y4U1sfBw4oaPVCfkSDbLHjJvszuJ371cXlNIO4MxoQFFzjYIqvGfJRmPvcRzlRk61X69exGeN5IKcQFQEbkBrr+KgmnQD3XsL5y1DNg/+3dCh+bUxJeO9EZN7fq2tuOuRGsnBbZtGfoI/crdhycnm+BdAJhwK1Q6IkVLPNUoLnOq9WcO8URFcw/H7BhVHIdIbS/7OsNTs+8DttLOy9Glkb+NEPoAYQDDI778WSSJxfdJ69OyMEdLaHJeVbboOucwIPhP5lWILorVv11pZyE/9Di6LkfNWU82eczs8xl708kKjAxw
- 42HEnH6j
- ww4CSifTe8R2wTeTFqjXlxYsBuQykR4bU8l6vwuNJOfsjukUkNLfPLoWNfS7TnwcOpHC9AKxeqgl3YwGn344zzBuPz5ovTcXyZJpqW69A4nQXqH1osSEdsTFnNg3a9VvA1lz4OXF1VrTOddo9JsL0GwxuI8MGgwKHNAdUk3YC7rM7YsptYUjO2wmhX8NdOQ/dPP9iwqgrvGjTOj+Ct40lwg+Q33Z8SH9XPOVeBYw9he0ftrLWbbp/6oxTiMC3FbMvqk5BcruR18sSK19pbSMC1+bc0LPojsoByDqLXrEws1v9tDt0BdBWJkZsX7T8i3IQsMclkqeA5U0zdgFMRkqkl/fBYoC/sJtQpkHCB3JxQNeUHsD3W6+SvhYBDE+rengz36odlFv161H0m+GN54yV1CXPtn88BmwM6bWE1cemAZnu/W4w4EOMc1++vIFkBA7RzQSCX1QfdqG21RSjS4Rb4u6qSA==
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793118575-105643
+X-HE-Meta: U2FsdGVkX1/SvkbnmBejWLrYQvKTsLmOgkulR2cpQ6MCJihP2J6UPqtStz5vzsFkhAkiqVV3IReIv3HawqC7+XuBB+DoKco4yE08TZz+m1iNWFUQKGMNBAMcFTiA+PJgc39oaSkfrPXWNaaj28wNs3TwZj8El9RAz2Tq922s2sa/C8wlV8GskDkHQDKJ+TwqQnMjez45pNzqF7hZm2qVLbnyZIX17jsrtOIMdFCaICyfn1myIam2zk33D7mLCc7xR0P8gCSu32qawUlyoE3H2cIFSDwGURFD2DXb8Bqpgq/pTsKXNPwnTcnJNN+/QU9InpegrzNnCbyF4w+mcpKPb8YEUaesvDU+r4V3nyCV7SMuY47cdKCTStmKafMLzeSSOn8e2rzTrKcPI78fGkfM41Llhzgp9GkiLqZgkqgx0t0B2/r6S+q6BMhjN0R4BhuTayWZCbezVmR1/UkCIW3Wle8PwglycnYroIVhxyW6eg+fvfiFd/xe3clMxAytN/pGn+aT6P6ukUYivL3YpfKr/oHv4kX6opeDF3BEskCxnWuFAJUrFTKQGAd2g95doHm8Q1uj19lTyI5iq3bNTZTk7eYDzRlHJ7uFRPTfntaRe3Hvw9CPxQ4ROR52w856c3Dt/44WOlLXlq0sKGYpd8br9Yd2DGz1CEdSGobbsat7yooXg1JUZxlFP8ba9kuEfXhQcFc26ye+tBThq5cAhQ1/MDgZS1aCV8CBCN4/AcE7Dhal5ERRAJPoQfjv5ve21Cy6xvqQ06V0pUjBNHrlDcHkRhLeVfOkAO2CY6d3cguJvCmLXoGzZzggStZoJsFy1IrpcXq/ddpdtVNliNn95zwBdL5KfNJdPDEry8Izq4zV1RZFuciLP9XB0eF8nQd5cv4Evi0klGy0FqXDApWi2RJSVrWFo1Aaub6O3mofByVSRwVqI7Fts3QiSdW75srYaCu9YwFNg9WjkD71/wVGV8L
+ uKiIWPR2
+ zC6VSlgCuVnQ2L01NSILW0AAUBNSAMs73H0+1lstqberdl1K4V2GATBfCp+Br+LyPVz9OetonwjdoCsSPmO8BkEWyw1txBOseMXHDR+eRYSkZb84fQv9d/jgWNZLd4xLVwJwF65uCL9sdDARPH0aEQ+kjzovvnCSm/HJZm9pK4pSFDzuFrLaWoR3c0cAwr6TBsi1JKFccaYaLWcJDnmMEtBKltsj3dwFcPyHXSglNITPGWniN/fymaJ3fEaWViHwVqEer
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,40 +115,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:17:55AM +0100, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
-> 
-> Commit 9eab0421fa94 ("mm: fix unmap_mapping_range high bits shift bug")
-> made holebegin and holelen unsigned before they are shifted, by casting
-> them to pgoff_t. That is an unsigned long: on a 32-bit kernel the cast
-> cuts off the upper half of the two loff_t values, so a hole which begins
-> at 4 GiB or beyond is taken for one in the first 4 GiB of the file.
-> 
-> truncate_pagecache() passes the new size of the file and asks for private
-> COWed pages to be unmapped as well. If a file of 6 GiB is truncated to
-> 5 GiB, everything from 1 GiB on is unmapped, and what a process has
-> written to a private mapping of the range between 1 GiB and 5 GiB is
-> lost: it reads the contents of the file again.
-> 
-> Where the range has an end, the wrong range is unmapped instead of the
-> right one. The page cache copes with that, as it unmaps every folio that
-> it removes. The callers which only have unmap_mapping_range() to get
-> rid of user mappings do not, for example drm_vma_node_unmap(), whose fake
-> offsets reach beyond 4 GiB on 32-bit, and revoke_iomem() with physical
-> addresses of more than 32 bits.
-> 
-> Cast to u64 instead. Nothing changes for 64-bit kernels.
-> 
-> Fix generated by an LLM and sent by Josef Bacik in private.
-> 
-> Fixes: 9eab0421fa94 ("mm: fix unmap_mapping_range high bits shift bug")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Tue, Oct 27, 2026 at 04:26:39PM +0000, Lorenzo Stoakes (ARM) wrote:
+>
+> Thread A (Parent)          | Thread B (Parent)       | Thread C (Parent)
+> ---------------------------|-------------------------|----------------------
+> < Fork >                   |                         | < has TLB entry >
+> copy_present_ptes()        | < no TLB entry >        |
+>   wrprotect parent page X  |                         |
+>   -> 2 mappings, refs      | *ptr = x                |
+>                            | < Page fault >          |
+>                            | do_wp_page()            |
+>                            |   < shared, so CoW >    |
+>                            |   wp_page_copy()        |
+>                            |     copy X -> new pg N  |
+>                            |                         | *ptr = x;
+>                            |                         | [ OOPS! stale TLB,
+>                            |                         |   lands in X not N ]
+>                            |     ptep_clear_flush()  |
+>                            |       < TLB flush >     |
+>                            |     parent PTE -> N     |
+>                            |     [ X now child-only ]|
+>                            |                         | ASSERT(*ptr == x);
+> flush_tlb_mm(oldmm)        |                         | // fails! N lacks x
+>   < far too late >         |                         |
+>
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Sigh, I drew this entirely manually, then had the LLM overlords 'correct' it,
+but it also made it less clear :).
 
--- 
-Pedro
+Thread C ends up writing to what-becomes-the-child-page X, whereas the parent
+ends up with page N after CoW.
+
+So a thread in the parent writes to a page of ordinary memory and then it
+disappears under them, and the child ends up with corruption in their page.
+
+--
+Cheers, Lorenzo
 
