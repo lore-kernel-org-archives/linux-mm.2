@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D54606B5CD
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6D0606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mc83FUFA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cUUj8rbd
 Received: by kanga.kvack.org (Postfix)
-	id 5B2A36B08D4; Tue, 27 Oct 2026 16:25:29 -0400 (EDT)
+	id 9DDFA6B076D; Tue, 27 Oct 2026 16:32:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 563166B08D5; Tue, 27 Oct 2026 16:25:29 -0400 (EDT)
+	id 9B6366B0776; Tue, 27 Oct 2026 16:32:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4529C6B08D6; Tue, 27 Oct 2026 16:25:29 -0400 (EDT)
+	id 8CCB56B0778; Tue, 27 Oct 2026 16:32:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 226456B08D4
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:25:29 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A102F1A0AB6
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:25:28 +0000 (UTC)
-X-FDA: 85369536336.14.C19AB86
+	by kanga.kvack.org (Postfix) with ESMTP id 6D2A76B076D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:32:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B8CC91A0ADB
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:32:32 +0000 (UTC)
+X-FDA: 85369554144.19.A807655
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E5330180005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:25:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mc83FUFA;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0ECC5C0009
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:32:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cUUj8rbd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793132727;
+	s=arc-20220608; t=1793133151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FHMTsBnJMpXJNOaP415fipWiMQQwfvRW5x3lZ/lRcHU=;
-	b=HzWu1hHqatK2fj1BliwagYXTO1K2nOZeppv11bElMOnzl44Ba/mdfailbK7GNFQJDjZ5sb
-	WWcvl7FA9BCG3NWfdSiAAjjBwqYoV7JocWkgxdJ5AJb7jAjfuKnYm2F1BMnLSdz9cUwc03
-	72CLZiynqcu+PIXyKrO6QPb6t81pNJU=
+	bh=86fhQATGDo+8MDnZqTEUILQavbmG5W/eLVJguZT8p6Y=;
+	b=f0PPQmKyaQXgFApNvoc6ak0nKCcqqla0z76nU+szlkISECS5iWKPD/wBys/Uppo2ddFu5K
+	h2xDl0j0gE5yioZrMexd2ydhDjEIaLmoYJe76H90TtTa4Scx7RouvvjZJ2YhHPH4++xlEq
+	vLYli6JBA7YpZR+W3FNm+TCUW9opXfQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mc83FUFA;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cUUj8rbd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793132727;
-	b=X6rXMEt8A8VeO1OiCBHuj/5ydaPxTTdgXGOJV/XCmD2R1EsNVhe84j2L3+509cTzQRz4PF
-	RrpDa4AtU6RYioBeVmnB8g5dsYI7YAMlI1RRVeRE3VNapkFC0P+KUGl5cBCxdkg1x8uyEx
-	82+jHRSbfoUUtfjuDjjA4yJOOraziTU=
+	t=1793133151;
+	b=z56Ooyu/2h2/FFZs000eqzkjw4QyrcLLSatKmfzAVh4OX+oDv4R4DAV2VHmbeH694hEFRx
+	2b89/1jevjk9VeaD7ANKbu79llPC45EBqkrLyDQKWqOo6YQktqob9yBx8Ym6D2iAKTUYVW
+	8DoN2x07ZTHOMOiW3Td/ytHOR96MA+c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2DDF043370;
-	Tue, 27 Oct 2026 20:25:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758541F01340;
-	Tue, 27 Oct 2026 20:25:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 20C2043075;
+	Tue, 27 Oct 2026 20:32:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5A11F01825;
+	Tue, 27 Oct 2026 20:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793132726;
-	bh=FHMTsBnJMpXJNOaP415fipWiMQQwfvRW5x3lZ/lRcHU=;
+	s=k20260515; t=1793133150;
+	bh=86fhQATGDo+8MDnZqTEUILQavbmG5W/eLVJguZT8p6Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mc83FUFATMQPouVzjUJeRj3mhiIcUvrA+Erhg5Hh0lTW3qwPysmiXYCN/sY2USdpd
-	 VQEeiyXwH3fAYJ+vI5Uk4lbY0OCURgOg/lZzGCGvnESQZo62rEREpGK+Ywua1pC7/p
-	 qLtQrl57LVvD3FOguw5Ccq1ddGp/nxRV2WelM6luaRwZ2gItpGPc55R3kKd/uEtYE3
-	 F962dZ5NVZdLD83zdZJ57akrnRFkaxt1wSO3UiU8UVhqMNQKVzwdHfbh6D07tWcFW0
-	 uvnXMmSet+gq+ZP42latzKtvPeBblPMlc6bL70NhuTjijHHpcfEiVBaUcHP26dtgTY
-	 lDs1oWuY01RLQ==
-Date: Tue, 27 Oct 2026 20:25:24 +0000
+	b=cUUj8rbdB8sxeJkMuDL4RCOdrYbrRplzvevKwnxFuwaEcH7HP+ENffudf2T0mpEpv
+	 5IgYZPx4U8OILjqSgrQVM2ZVtEuU+s+iUCRqr37O0SlFEfCwYP6WH8sUr54mzsCt1s
+	 iMf6J0wk9xYuuAD3vV+C40mhUS8iHT1njIORZz73KfNOXA2HaiIMPxjzwaUpjzGq0a
+	 +HDzAe6Y83Ik9oMrM+EDzTEENc7lTwdaNWApON+amLO666KTk6vgqAwdt/I26Z5K2e
+	 tnFRDkmrRt4vDlqitIfQMOzf4AtEOnF0EKCtlUHfO8gpTP2ZD2//SXJTbcFDzwJNgN
+	 ttZ0nsquNOB0g==
+Date: Tue, 27 Oct 2026 20:32:28 +0000
 From: Harry Yoo <harry@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -91,28 +91,27 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
 	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
 	Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH 09/46] mm/rmap: handle device-exclusive entries in
- folio_referenced_one()
-Message-ID: <auEHPgT8JdqT222B@thinkstation>
+Subject: Re: [PATCH 43/46] mm/vma: don't leak the charge for stack growth
+Message-ID: <auEJGq46amG5oPVQ@thinkstation>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-9-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-9-6f74bec9a5bb@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E5330180005
-X-Stat-Signature: t16ikof6khrg88mz4yqs4n3a9qke48s4
+In-Reply-To: <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
+X-Rspamd-Queue-Id: 0ECC5C0009
+X-Stat-Signature: cqtjoxipyj433kyuzxmbjcptk66w1h14
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793132726-445078
-X-HE-Meta: U2FsdGVkX19HSehEZDi86+MFP4+U41byAcRFUsuS5D7cJq9QacAJSkIIqLlEuO0un1QiKipzg0xDKMKVEap6+8trE1oGd0hWoif/AsgviG4fvMYe4vbFcJLTaojHeJ/BIydjJopthOzxgvgpft1K9N0v3rKL5GCHZ1bqdu9D/1tgoGjjvp0f+XJswAbDp/cl9tHBGh+/KdweZueDzwyMh1IV4ngCkwE6pC89NiNkqT7VTbbChy6qGPTHk2nSaJgBn+SihDZ3sdQIWkj4qwcZRhSvjWJHYcxhNyyJutcRf14+i31i5lfyR92YgUxRuJg+CimTUmpz3fsmk1sPfKgULeUCA/2rnc3LrJxYKxLVlOfxcdyTB1UqSFVj8IzsqENRtKOCYSUSOx5grf8Hf6Q4zFORDpOxpOzTw6dnbQeDmKaElCF4HROj5dzZmcyrPneXHPGrNvjfQ3yymdLRP4B6eyX4L8OGZgxD6ahOtn5o5CTb9sn9ThGydAHuRBzhSX65dEM0pi3HO8bZb531w03L3I1asRHA5vc6Q93NnBxNhDyx1PVf91y+9PsXX+IBAKd/cyks+TGJwDaXUm3fB7XlqPSHgpV6sRqO66d6+V2jOSH2DW+NbknQh/c7FIgDK911hkSuAWWXjYpWptdyLt/cIDiYgFi7hSuyyrTw0yY4HS7cUlwQoCVxlmHyHMLEHHKaFcSLPIluxKF8abavTV2xVs+3yHEqB8atTVPrh1kiGHsKJI7F36cIGsQagamsgK0qPBd+ZNxmwbnvedFagNYechbu9RzPhoFtDQ6qr6rvlvfSW19y6SzBLM35GjgRGqtkbF36NG7lWtghsuyxQf/Do3h8sDhOeaBUWNMbW3ZGKrZeiKVn67enbGn8oqY2rhP9QOK8EIlc8PfJHlI0xrClk7X7ZYSKlHBdGwrdzZVERUIaEv7zKEtF/kk3UDbvFGo+5eVpqfaBUpbgqc47ai6
- hpkFhxq7
- 15fA35Ew2XpW/TRyPnWbQXvbkJDu9SG43B63TFdCvLmDNI4a5hcOda7ykFVFF+0OHHKT+oL+klq4eE74F52vQTzhltHia5DoiL5gP6MayCk+242zri3yqZeD49d72CKe46drsr+xtjdoNP0En5OIE5NxGK1aJn06CQMXD0borDDa3nhaB4e5a1gjBLzMaO+3fRir1NhFknlIgITk9sSuavyHTg1ptFu1TFxQGulNAutSe9zaR4Y4ySVJ/9G9rIqyZetkAmDPbpVgG7jwbQtmoMy99ECArn/jC1/IsxfXv2hDa+8Pv2l1/+5jIfUyUeiL5tLCopgcdAhaPnMpT/mqN5nFcxtkdEM/rT8Vft55CDiB1nWmatomglvp9xhd41GQTJCDVebG2UM287/4wIKXA9mCk3Lc9axH8SqyrIHQAJKNQOIwg3T0U/cVVii2exCH6zh2AYFk7chrilzk=
+X-HE-Tag: 1793133150-748236
+X-HE-Meta: U2FsdGVkX1++eU57QE6AwLph9IlrL8tsUTLq4tIki/pTKrLMcluiCFRqFDVPA4GU57tdhAU+XJL++y44w39TSL7aLoNFBACclsuM47ltYJX+FIngh/MfCGgNKEO6BlQcubw8hdl3jGpEol7CDG9JyrUqGDbAONgWDmakHVZxmZeZIJjjsIiKFs7oplxZRhqBX/xDbr6bgjaamGS4oAcflDo4lO79mr8Ut8Y4r3VzuKFwx410Nk5dmfD4zDzW62gtiBaXnpWcDAqljK6aaMPkG80qy3194NOoFpuPjGGQmOXcD3650v+tnunksMK2GcZuYIMEM9OkKvzp02fV63+6k3scOfhoMXkn5QhBtIXDhXEA8r3g3lZ6Lcew9A7aWI5bVlrab2rVVsVGf2bRrXChTXwDIdz7LIqrxeGFg2+RaBAiY4tWOxZdYjjbxBZT+W3akZuN79oqX2xRl7O1C//VFySNB9jIqmUkbq9rgA73uhmJ2cCErd7htUlfbf0fW2Yv42Ob2R244t8q9OEX5bHX7v3BhFtZ/9YFIa+qeePXwUgihUf7WiTkfAMUTgnYvygNOtTLMT2SGwJhNDhWhMRa3aAXntpVFR20RTvV9eqsSQP8GEY2e93+PMifZZqMBfzy3pc630Bh+OxznPT8R111l0TQGalw3hyk1+DJ3hqnFNzajq54nsheq5Ii0CtlYI35OdyuviDNuXbVwZ/I+xibvRB9bc0LPBrWmcdls2aWXkARdZgfc92ZtILSaRQk8vEbgV07r375tdX87muPxf5Y39VBASqPbNMiBHqgNUFFsU4wzgGu4JLpoAwyO61aSSHSSG5xm+982Zu8FhVrMvVSo1Cn+Vw789xq8VGIEW8Fk80UZ832W4WaruuFqT61CLoj1ZCThPsu5D74PtdKL0xAXJazvNEQBC/DiWagx1ml+9XPBX8rTfTvJZqCbmQLK9D1yqVG5IGrU08pWbbIc8S
+ fUXs+17e
+ P89igjh+b1ujDSFwVIDyhrncl5/Ln807EzFHN/ZJL52aWzNbZcjXejHEbEhzoeXwh9EEWMacjNq6h/sR34K4W/vuL5VSeP3/8LZRBATMu3QpsjH2k/EZeCiYhNo/dRIOqxg9FODr4OBb8yMMsCWMRxBck+NDXn1nWWZ+wmqdoVBCsorwoeKyX/QcybO1RIxl6Tv0+ukTPP50IaHNWqOOmRACYUTww8Lc/qDuOauMRQh/Uca084Guv54dDMk/lfeIF1unEeHnxBe9/dkrsqbPSBPMb+3ycevkOwo50zdL0qVMkJ/18o2XXPDOtSPnmLStZQVE3f5EVk6nahH6CPg24cQFkFmZ+6ooDdzx8nDe1f21cFhhdu5HM9g/OgQltO3aaFfF8F0HQyGcKSqmHl5vXQjJQQaT3EQfrNPNX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,35 +120,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:17:29AM +0100, David Hildenbrand (Arm) wrote:
-> page_vma_mapped_walk() can return non-present device-exclusive entries,
-> but folio_referenced_one() passes them to PTE young-bit accessors that
-> require present PTEs.
+On Tue, Oct 27, 2026 at 12:18:03AM +0100, David Hildenbrand (Arm) wrote:
+> acct_stack_growth() charges stack expansion even without VM_ACCOUNT.
+> This can happen for read-only or MAP_NORESERVE mappings created with
+> MAP_GROWSDOWN. Unmapping these VMAs does not release the charge, leaking
+> Committed_AS.
 > 
-> We must neither call clear_flush_young_ptes_notify() nor
-> folio_pte_batch() with non-present entries. For example, clearing the
-> young bit on non-present PTEs can corrupt the entry: on arm64
-> PTE_AF overlaps the swap type, so clearing it turns a device-exclusive
-> entry into an ordinary swap entry.
+> Only check and charge growth for VM_ACCOUNT VMAs, matching mremap().
+> Unaccounted growth skips the overcommit check while remaining subject
+> to the other stack-growth limits.
 > 
-> folio_pte_batch() will VM_WARN_ON_FOLIO.
-> 
-> Apply the same approach as the previous fixes to e.g., damon_ptep_mkold():
-> treat these entries as old from the CPU's perspective and obtain their
-> young state through the MMU notifier.
-> 
-> Skip PTE batching and MGLRU look-around for non-present entries, and
-> don't modify non-present PTEs.
-> 
-> Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 > Cc: stable@vger.kernel.org
 > Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
 
 Looks good to me,
 Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+
+Maybe worth having a warning when it's accounting w/o VMA_ACCOUNT_BIT
+or let those helpers skip when there's no VMA_ACCOUNT_BIT set... 
 
 -- 
 Cheers,
