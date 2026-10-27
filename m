@@ -1,125 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A631560A260A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F26B606A324
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VDdjpUOt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n3PnWGSE
 Received: by kanga.kvack.org (Postfix)
-	id 986D66B07C1; Tue, 27 Oct 2026 11:37:10 -0400 (EDT)
+	id F2EC76B07C3; Tue, 27 Oct 2026 11:38:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95EE46B07C3; Tue, 27 Oct 2026 11:37:10 -0400 (EDT)
+	id EDF5E6B07C5; Tue, 27 Oct 2026 11:38:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 874D06B07C4; Tue, 27 Oct 2026 11:37:10 -0400 (EDT)
+	id E1CD76B07C6; Tue, 27 Oct 2026 11:38:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B37B6B07C1
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:37:10 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B8DFB6B07C3
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:38:32 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E0DD81A0A1E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:37:09 +0000 (UTC)
-X-FDA: 85368809778.18.C0B9E2A
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 54E761409C7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:38:32 +0000 (UTC)
+X-FDA: 85368813264.18.F1A50C9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BA64714000C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:37:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VDdjpUOt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of cel@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cel@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 94FE1120004
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:38:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n3PnWGSE;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793115510;
+	b=sJZsaKv5SLshWYNCV5RNfxeKjnGP70JTMhuADyyIw34QwqqF/ThHA3ghRKvKTiRjkKy4Lw
+	ZVDLOaQsrflT7FWZkBfUsbOBhUysZtAMB4k4reSM1zLU2RuZIn9Tbx5PjBpBSeKT2UFWZa
+	CmDB2cKZbHT4UgeB8kbUE8L1sEbwV8A=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n3PnWGSE;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793115427;
+	s=arc-20220608; t=1793115510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=92Q/t3i/yf5QKlLrQvvhU5XIPi5Hv5PZF11rRsSNhc8=;
-	b=OXBcWUY6p+zOo1NKeVEA12tfzkr4EDVGIJhv/4wR9oFlX4UozE3tRdaTa6Cm/Wjk9ybrxa
-	YMfdPXNofQ7rgL2jbeZcZpLEmShHdfYCQDmag9WIqfjYA/XTiXzfuoeDLUk1c2fo3RZgtP
-	9mXQLv2jYhiDxOp8g+mFt9WJ9XtGzRo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VDdjpUOt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of cel@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cel@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793115427;
-	b=SxwAc6emGthAiI7TPHGgyhzjEiSV6NkSp1TK3K8xdjQVBK7kgbLAOXAA62XSrxdncgZ/Xp
-	utFQFjp2YB4pqxJ1OhT6j9L/yLNb8E1yxj8mwHFAF3zjF8+WLCk4ssw0KxaMmiIx56YvSO
-	GWoHfgM0DzEvnG0boQXFAg36wvgA1/8=
+	bh=P4QDwDejSsPjI6QsC7K2e4l+YE6idf6liU1KvYAti6A=;
+	b=zzeTAfmNHXJHFggdlRjypTIjSpgxqFazh74o0wfuuRFmu/vPr0fqoohjY1cH0sIqu2vkUy
+	WTsmYF0Gpk9D7AQEHgkIIbGHC5x3KONyaTZBYYC753Ut3UMPRAbnVANqbOULFnKaCJeD3w
+	2zKeK5qLfkNGtMwys3CMiCasbiHWTUA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1E7F4401B;
-	Tue, 27 Oct 2026 15:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFC81F01417;
-	Tue, 27 Oct 2026 15:37:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C3B5F408D6;
+	Tue, 27 Oct 2026 15:38:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E4A1F01825;
+	Tue, 27 Oct 2026 15:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793115426;
-	bh=92Q/t3i/yf5QKlLrQvvhU5XIPi5Hv5PZF11rRsSNhc8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=VDdjpUOttVw+UDMKsX6SfZvW+4AeEAuz79UHRmb2D0Tr6A98yFSMdw010PGIbmMDD
-	 nkdkgftqln5ZqLXxsvSlBhq6wYoUBQ1xNVjiJSHbWGW9CmegVgzPlAU2xQTO0lh5p4
-	 TDVhZ9fTowvkecTr8r0vH048cj4V5TMptzCk6FEniXnIvrGpNLWRZUzGUB9y7rD1wx
-	 eiIs7IG95UKZoHCmujYswgro+KdWke9w8v0TlJPygb9ReNPGWyY3zsGrQ2txcsuSM7
-	 V3Cow8mOrEap48I7nOaVizOz99qCcG8Zh2C6jPekE3wrE5N4E7tep8Crbo3nC6h6ss
-	 50YAS3MgjBenQ==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6F6F0F4006A;
-	Tue, 27 Oct 2026 11:37:05 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 27 Oct 2026 11:37:05 -0400
-X-ME-Sender: <xms:IcXgamKZ7Cwo0cO4yPJzsbKeJH0q8h6Deza_HEEdHBORkCMRxlXpiA>
-    <xme:IcXgao8ucvBAKYvgEmr07A5uNDvo0uhOyGcK--XCtRdADVZnOU5eq57D6doUA83WH
-    Hv-C16x4Ss9WrXjVpKdPUkbmMaWB-HwV0H-By_u_SZ4etaBgJYo5Lo2>
-X-ME-Proxy-Cause: dmFkZTEiN13F17KZNcYQn0KpaQrc0EhDk+XKiDQJgU+uJboiU/uuWPy7dUNQDQwAIQwjRn
-    mgQANYsin+L0bTP5DRE1L5OMNHtiZgR/kusJ027yBtcJwj54sU9asDJb++xhf0RuWXWYYC
-    LfV7kqMcFmPvzSzSHxBUQRcAGr5P1lcJfPGnxFFEi2E4gIxbNzNOlw9Z7tnJLkrw/rc4Mk
-    ZGaw+jvnzy7MVhiIhGOgImNdEnfMvo3DkSiIB+t8MGzGtbHifzUxdDTPiD/eW4Nva9/oDQ
-    7rnnwOllVB4TkxM8pihg4YNHqwojCvYRJvA/LXnS71lSzFP1YFJNqIaZl9VwLZZvEE+sIQ
-    EBehBdjSFYPFS3bYQWwacKHiw7x0Ks4anHmueo9r7o+TCLAdcicr1wFli+ed7ZkXzP3EHc
-    5uNOsYDv2dfYKbGnaVSFNZtlX+fOWxfOy4fa8SN4BNaoxOqSOghLmb6v3S/mXy6LDXqBke
-    IEWQyfR+tznpCJ4VpoN8CIVDKW14axG0ZV0O/ZngpV1HD7RSoCPL/Vf2QijxBMRjhWJBy3
-    n7mam6dt/AR+TlWpOiV8VTpJPAITHNiFkwXEsqvLqCBnoh0/D4BdTbM4jhPP/DV2KhpdtG
-    qhKSI4YWJqOOx3Hf+xh3Lwd+UGAGMJcW6kwihl1578/7bQq373gqIhU2NZ4w
-X-ME-Proxy: <xmx:IcXgalay_xjdWFFFlOK68gTkUC_95JtL6x9SYKSOVoVYjZ0bNcyIFA>
-    <xmx:IcXgap4VTtTuo_6kpw4aYBMdoFjKF4lzMft4_tMcuUpXumuNaWL4vw>
-    <xmx:IcXgaqkbGRz2a8mSCI7mw79t1y_UxUU2C7sdpEKpyY-JSIulPrnvBQ>
-    <xmx:IcXgapHqzVrn6Jd-1MNX1vTDwKYrx62B2ngJuOouo2dRS51kRinhbA>
-    <xmx:IcXgajhtl9ZdWCVcDvj8Kygnp6SMTr9sj_r-Y7sLESoMBx_TOO_Fc7Lf>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id C4568782738; Tue, 27 Oct 2026 11:37:04 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1793115509;
+	bh=P4QDwDejSsPjI6QsC7K2e4l+YE6idf6liU1KvYAti6A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n3PnWGSEy63TkshTbN+NH8Lz7qKC2SA8BzUpk+tmV1MeonlnzUWDIuBkzYaozxT3Z
+	 TJuesb05R2Pm5JRavby+Id3CDOR+kOvkFdCodgze+hSIFOYNb0H3jPFqCe8pAWDr+h
+	 QV0ABQe5oaV3oQvreewvONhUys5vgEHtAqlstJ/rjTPZYP0XClTFKPjezt4pZtzYPy
+	 F1cnDPPZQYxciQ7wC+9ibZoYSUUWqMclFS2Ymoq0Ma232n5JNGXX3/RYFcSWnSS7Ai
+	 ppF8o8avIYgpka5fUBCD16Z1rhQ9NYdLIYFPlOzOV36IyZnqZg4rOn9rcyDk8FbuTn
+	 WeSaUXLtumYBA==
+Date: Tue, 27 Oct 2026 15:38:20 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	eddyz87@gmail.com, memxor@gmail.com, oleg@redhat.com, peterz@infradead.org, 
+	mhiramat@kernel.org, jolsa@kernel.org, akpm@linux-foundation.org, liam@infradead.org, 
+	surenb@google.com, david@kernel.org, vbabka@kernel.org, jannh@google.com, 
+	hughd@google.com, kees@kernel.org, mingo@redhat.com, tglx@kernel.org, 
+	x86@kernel.org, linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next 6/9] uprobes: Don't sleep on mmap_lock with
+ dup_mmap_sem held in dup_mmap()
+Message-ID: <auDApO7ECoVLs-Jp@gremlin>
+References: <20261022015712.1297331-1-alexei.starovoitov@gmail.com>
+ <20261022015712.1297331-7-alexei.starovoitov@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AzmA6W_5FSQB
-Date: Tue, 27 Oct 2026 11:36:44 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Jeff Layton" <jlayton@kernel.org>, "Mike Snitzer" <snitzer@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-Cc: linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, "Christoph Hellwig" <hch@lst.de>,
- "Jens Axboe" <axboe@kernel.dk>, "Jonathan Corbet" <corbet@lwn.net>
-Message-Id: <70ef3172-9631-4e19-9b8e-4722427a5a83@app.fastmail.com>
-In-Reply-To: <fc2ea8d6f2cd9ae83d38941f90386aac6638a497.camel@kernel.org>
-References: <20261024221152.6965-1-snitzer@kernel.org>
- <fc2ea8d6f2cd9ae83d38941f90386aac6638a497.camel@kernel.org>
-Subject: Re: [PATCH v9 0/6] mm, iomap, NFSD: stop uncached writes reading back shared
- pages
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BA64714000C
-X-Stat-Signature: c7msdhmpqurxjmt3eip75rdmbb9nhxx4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022015712.1297331-7-alexei.starovoitov@gmail.com>
+X-Stat-Signature: zg9wrbupw7hehbykihox6bkee1bj9361
 X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 94FE1120004
 X-Rspam-User: 
-X-HE-Tag: 1793115427-864868
-X-HE-Meta: U2FsdGVkX1970yytfKWOUdDhXtHqrmXoI8vOLIrJgNbxoXHCos8iA8zD8Ycn/73QwbsC7iMgloLdvu8iXy0+VKcuALNj/BwZ+o9PILvPU3aDhPytfu8FEYwo9RCbYn3XNYPI3cFCSswVovumg1cujj7AlyHwwfK3HosqYF5yzN+MPvkzeGQ8KQi50OiNj72RrOPGjQb9ElPP1FY+e/ERhTN1pMVf0wrd6FVlWkq08ZloZBFu2iFVkcKMlbSLib/wwbGjU0ngX1hSiGdnnk878sEwr+4s7RTk025165rPhN5ldt1zQX+Sah9Oc3dOiht0AO9geDyBhXnm0VgDcmu/HmyILN88a/WFHS30B2w+GDQYDUO6MrBXPO05+l7q4E4AQAaA58Dw4BIAcRl43kHv7Lhw9uNIbw+WfKCk22t2vRoGXZFMaLVaeGGra0V9YOVkGHLqLKIKFXoLIjvlct4mN7XSaOj8oGQkw1CuKFhu8jwRHWEZiSOgPPwyDoDAbc6mNPaHstMkA6RjQNx+4AgUfQw2PhzDXeZxGFz9NECffHH7d2VGagpeKWaDC6R9UM96Zs+0kOWaFyi24kEHq9Co8HZAgM52TnbPvtXgDzQrFeUCNl8kqSOvhSQ5qvVHLU45K112oOF9LKPqWwDXMnWbO8XVl6vbcpYZTF7QVGGXc96Je9owXxJYkq2JU32TXhfzkzWPT51bn0CcEFGHDnBUScpWL8yUQ6HHFofQVInjQT+1aM2eWAhR7bBrSTJCL5AUC797kXAxqNAaJZ/UZoIxdcma3ZWxupQnjjJ8KxDqIWeO3SghMjLnOJrYj5YlOkPRKRA64EjJ+B6hIUwfV+nKikcAtdzmI5z+mGynTT2PsfI+R/gSkXNNGkJuS/PGPsXl5ET1pLH7m1cEcktcjzOJvxgf0YTNVwqB4DjQf56fVLOBRssoVVKZtusFojVwwhDttWfSUhNKOulnFNV/Gdb
- Jo3uAF2+
- 41NCqq0rCFd2dmbkKJ4+IXh01CpLSiziTDoFCvbZg3+jnZxubc0JOfrnjSuUnT/0tG0T5RWGKs1EagUjAlWDn4lSnjL3+nHbRwM2hK5eiD6cqykCIx0kcs571BPUAzxLmpxwjhphjylRKSEYWNiA+ca2iWBTDclvk30/MH2i2DexOjdo4kr6m2mqhn49zoLfSTp4JQeiIUutwX94wM8z1z7IcqERxuqP0ryTXatby8DwduXvId2weWjJSLd4fBhzDS9dQXwN40F3SwzXb+xtyi5rBmcWk3ndq4NrvoUkel8LLKg6fP/czjiiuois9IbHQgpv8UEn3j3XA4nsKQLpaIe5n9zf1C3LVcNQW
+X-HE-Tag: 1793115510-388003
+X-HE-Meta: U2FsdGVkX1/jVjRwce7NmHokJvFlKeNRx3PI5K1Psb/0fPTpGNvC8IokT7IairBVJ5Ffzhe3sL14XUfriWakDCpiY0k17wadmn82HtI+bTEfzy9IGcFQ/W/DeF8InLIuJqEcsL1ubPlQdJ21e6XoD3x8RUJjFKEp/loYFCzDZbbdfVCusPuJdtyRL+AaEeYeDPD5PTIc3yITMJR1t1heYXwBbxi6s4UgUkr0NJROibwlnlLSaLDYIiSG4ZW6Px7c9jjcxhq/rmk9K30mo4IObCPQCnTaLb5b0+rHdBWuWpoWWxuDeqJ+70SuLIqjA1sfoWL+lcEvkgvBv50xvCJ5sOyyuGK5yTNRREVipWn/1qqRWoow9bw3Lf/xBrIIlNg3d/1lB0C9wmH91w+6w9qJzqA+cm+pO4t7twyxo2PoP6gI6FAFhDZ65JNRNg50OUFdE/sIdHhwoyLCQf5iNrXvrv0gzKHbo0WtLfjPHpwXx+/UUCNlE3EbHeREO36RqgQzrf/6Uf024j9WL9+HSa8Y3z69CY+Ba+BVBbes+43J2CqhZQZTCL+azPaPjQGlwK6sL4f+RiIVOsEqbVJCZdoLfyKyslbkdtQ2D9jYf1D9JX5z017AFoLd2omIb4Mp5Ra9iS3GQAHjmOWkVMUE3msYnqN+igeiRyzaYxZzmYj8G7ozsZ5JyCO+vBC9UbUAb+29gaPHl5nFKaJmvf6lmzuvJP2koKigVHySlCAzBTO+8FsFxKxiuiXSCt2hY3aibFxldC+Hfif9PBoar5pQsGzvDc/4HGkJ8bn4iufuxtBC4oByrdE1mimdC5xpFAVliZHY0N2gzGBubsZGaFy6SQnkPQmNsupoZI+rSGU/I7WmdXcuv04tJmcT/3BcbsljfukzXA03I3BEQ/N+6GPkRnWBGXSZO2lVD2tSgOw73aFMEOofzapz3KJ5of4ekv9lhVqBUkOpjnT9crfjyNUF0YH
+ 1KxiJ82T
+ 1sMMz/3KIfwDnJ4GD6ht/LAxZ2tKaTXr11tTGH53nWaN2ECPJhMEKvYe8unrRgbYtKrW55qf3i9nEmDaSOYTnJo7Iql4DqflF37JLvzw/P1G8amqIeV0PKY4yODlxqrqJQWT5woSyxvpKtKuTF55nyhsddWCX+iknhA85UalRyqEqZ0E5FxLkT3Zny+W1wqsLN4R4FwMT7BW3wZEvzQp4ljDmU9w9VSw8x+dBI8yFS2h5VHC4XzG9eOVH6BdBrQcgKPQvqfWfgfsjHJ/sxzAtuY6FGFBFPi53uX7cuDpGvY5QgvwmkVTjN7HHr6UfBf/xofQOYg6VDSH3XTyukeonRUsdpdL9kyF/Ba/lAhFsogydUEn2vhdMnEU+FgRIwip0a3KHoPtTvUE/4FLD1yBDfmZFlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,171 +100,189 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On Tue, Oct 27, 2026, at 10:31 AM, Jeff Layton wrote:
-> On Sat, 2026-10-24 at 18:11 -0400, Mike Snitzer wrote:
->> Hi,
->> 
->> Please consider this v9 for the v7.5 development cycle, so that it can
->> go upstream in the v7.5 merge window.
->> 
->> An uncached (RWF_DONTCACHE) buffered write drops each page it writes
->> once that page is written back.  A page the write covers only partly is
->> shared with the neighbouring write.  Once the first of the two is
->> written back, the second reads the page back from disk before it writes
->> its part.  32 threads wrote interleaved records to one file on
->> XFS (emulated 4Kn NVMe, 4 KiB pages).  Before and after 4/6:
->> 
->>   record  pwritev2() flags          4 KiB device       MiB/s
->>   bytes                             reads per write
->>                                     before   after     before  after
->>   47008   RWF_DONTCACHE             0.97     0.0005    831     2281
->>   47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.0005    601     1227
->>   6000    RWF_DONTCACHE             0.97     0.0001    121      488
->>   6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.0002     90      206
->> 
->> What is left after is metadata.  49152-byte records cover only whole
->> pages, and they read 0.0005 per write either way.  The test program and
->> script that produced this table, and how to run them, are in:
->> https://lore.kernel.org/linux-nfs/atqJBS8MlYfeUU-t@kernel.org/
->> 
->> 4/6 has the page cache keep such a page for the write that completes
->> it.  5/6 lets a writer that syncs its own write complete those pages
->> itself once the sync is done.  NFSD does that for a stable WRITE.  6/6
->> is the NFSD change that uses it.  2/6 reports the DONTCACHE dirty count
->> in the bdi debugfs stats.  3/6 adds folio_mark_dropbehind(), which 4/6
->> and 5/6 use.
->> 
->> 1/6 fixes 88d6f128d06d ("mm: track DONTCACHE dirty pages per
->> bdi_writeback"), in v7.3.  A cached lookup that clears the dropbehind
->> flag could uncount a folio that was never counted.  It could also leave
->> a folio counted with nothing to uncount it.  The patch applies to v7.3
->> as it is, if the mm side would rather take it alone.
->> 
->> v8 1/7 is not in this series.  As Chuck asked, I post it on its own.  It
->> is a revised version of 80728157d1bd ("NFSD: cut a misaligned
->> direct-mode WRITE at page boundaries") in cel/nfsd-testing.  This series
->> applies on cel/nfsd-testing at 6d13b7f74eec ("NFSD: Map every
->> NFS_ACLv2 reply status into aclstat2"), with or without that revision.
->> Each patch builds with W=1 with no warnings.
->> 
->> 1/6 to 5/6 are mm, with small iomap changes in 4/6 and 5/6.  They are
->> Cc'd to linux-mm and linux-fsdevel.  If the mm and iomap maintainers
->> are agreeable, their acks would let Chuck take the series through the
->> nfsd tree.  But whatever approach the maintainers prefer for this kind
->> of cross-subsystem merge is obviously fine.
->> 
->> Changes since v8, from two independent sashiko reviews of v8: the one
->> Jeff Layton relayed, and the one that sashiko-bot posted to linux-mm.
->> Some findings were in both.
->> - 1/6 and 3/6 (both reviews): a folio is counted in WB_DONTCACHE_DIRTY
->>   only when both PG_dirty and its dirty tag are set.  v8 tested the tag
->>   alone.  __folio_cancel_dirty() clears PG_dirty but leaves the tag, and
->>   so does writeback that stops at EOF after folio_clear_dirty_for_io().
->>   A folio that stays cached then keeps a stale tag.  1/6 uncounted such
->>   a folio twice, and 3/6 counted it and never uncounted it.
->> - 4/6, 5/6 and 6/6 (second review): with blocks smaller than the folio,
->>   iomap tracks uptodate per block.  The edge that a write completes is
->>   then not uptodate when the write finds it, so it was never marked and
->>   stayed cached until reclaim.  This happens with 4 KiB blocks on 16 or
->>   64 KiB pages.  The new folio_dontcache_edge_written() also accepts a
->>   folio whose blocks outside this write are uptodate.
->>   filemap_dontcache_edge_completes() takes the range that the write
->>   covers, and 6/6 passes it.
->> - 5/6 (second review): filemap_dontcache_edge_complete() now waits for
->>   writeback in flight, which could not drop the folio.  It also kicks
->>   DONTCACHE writeback when it marks a dirty folio.  The earlier kick
->>   came before the mark.  It drops a clean folio that is not mapped
->>   without a mark.  A mark that filemap_end_dropbehind() then cleared
->>   outside the i_pages lock could leave WB_DONTCACHE_DIRTY counted.
->> - 6/6 (both reviews): NFSD finds the edges that a buffered segment
->>   shares by the mapping's smallest folio, as iomap does, not by page.
->>   On 16 KiB blocks, a WRITE written as one buffered segment can have
->>   page-aligned ends inside a block.  Nothing completed those edges.
->>   NFSD also completes a segment's first edge only when the write
->>   reached the end of the segment's bytes in that unit (first review).
->> - 4/6 (first review): a paragraph on a limit.  4/6 marks the folio
->>   before iomap validates the iomap.  A stale iomap stopped by a fatal
->>   signal then leaves a mark on a folio that this write did not complete.
->>   This costs one read-back and no data.
->> - 2/6: unchanged.
->> 
->> Patches 1, 3, 4, 5 and 6 carry notes below the --- line.  The notes
->> give each question from the v8 reviews, and the code, lock or check
->> that answers it.  This includes the limits that the series keeps on
->> purpose.
->> 
->> Before posting, I ran a third review of v9 locally, with Sashiko's
->> review stages and the review prompts it uses.  It found no new
->> problems.
->> 
->> Measured for 6/6 on 16 KiB-block XFS over the loop device.  Its
->> dma_alignment is 511, so every TCP payload is memory-misaligned and
->> NFSD writes each WRITE as one buffered segment.  32 writers of 12288-byte
->> records, 1 GiB: v8 left all 32,736 pages of a 128 MiB file resident.
->> v9 leaves 948 of 262,080 pages (0.4%) and reads 0.0003 blocks per
->> record.  The v8 results hold.  In every run BdiDontcacheDirty was 0
->> after the final sync.  That includes runs that mix uncached writes,
->> cached writes and mmap stores on one file.  Every record verified.
->> 
->> I measured all of v9 again on 4 KiB pages, with XFS blocks of 1 KiB
->> and 2 KiB over the loop device.  These blocks are smaller than the page.
->> 32 writers wrote 47008-byte records, 1 GiB.  Uncached application writes
->> left 0 of 261,850 pages resident.  NFSD left 497 (1 KiB blocks) and 349
->> (2 KiB blocks).  LOCALIO left 854 and 949.  Every path read 0.0001
->> blocks per record.  A kernel without these fixes, on a 128 MiB run with
->> 1 KiB blocks, left about one page for every two records.  Uncached
->> writes through NFSD, cached writes and mmap stores ran together on one
->> file, with 4 KiB and 1 KiB blocks.  BdiDontcacheDirty was 0 after every
->> round, and every record verified.  I did not test kernels with 16 KiB
->> or 64 KiB pages.
->> 
->> v8: https://lore.kernel.org/linux-nfs/20261023024548.71123-1-snitzer@kernel.org/
->> v7: https://lore.kernel.org/linux-nfs/20261020220346.28020-1-snitzer@kernel.org/
->> v6: https://lore.kernel.org/linux-nfs/atbfEbgMU6UGkn2X@kernel.org/
->> v5: https://lore.kernel.org/linux-nfs/20261019150725.1507-1-snitzer@kernel.org/
->> v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
->> v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
->> v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
->> v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
->> 
->> Thanks,
->> Mike
->> 
->> Mike Snitzer (6):
->>   mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
->>   mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
->>   mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
->>   mm, iomap: keep a partly covered page until an uncached write completes it
->>   mm, iomap: let an uncached writer complete its shared pages itself
->>   NFSD: drop a shared boundary page only once both WRITEs have written it
->> 
->> 
->>  .../filesystems/nfs/nfsd-io-modes.rst         |  17 ++
->>  fs/iomap/buffered-io.c                        |  36 ++-
->>  fs/iomap/trace.h                              |   3 +-
->>  fs/nfsd/vfs.c                                 | 116 +++++++-
->>  include/linux/fs.h                            |   8 +-
->>  include/linux/iomap.h                         |   1 +
->>  include/linux/pagemap.h                       |  14 +
->>  mm/backing-dev.c                              |   6 +
->>  mm/filemap.c                                  | 265 +++++++++++++++++-
->>  9 files changed, 435 insertions(+), 31 deletions(-)
->> 
->> 
->> base-commit: 6d13b7f74eec16e08d5e7f772ee119432a14ef2c
+On Thu, Oct 22, 2026 at 01:57:09AM +0000, Alexei Starovoitov wrote:
+> From: Alexei Starovoitov <ast@kernel.org>
 >
-> This all looks good to me at this point. This is a mixed mm and nfsd
-> set though. How do you envision this being merged?
+> dup_mm() takes dup_mmap_sem for reading and then dup_mmap() sleeps on
+> mmap_lock of the parent. When another thread keeps that mmap_lock busy
+> register_for_each_vma() waits for the reader, and every other fork() in
+> the system waits for the writer. The parent doesn't have to map the file:
 >
-> Reviewed-by: Jeff Layton <jlayton@kernel.org>
+>   A thread 1:  mmap(MAP_POPULATE) -> mmap_read_lock(A)
+>   A thread 2:  fork() -> percpu_down_read(&dup_mmap_sem),
+>                mmap_write_lock_killable(A) sleeps
+>   tracer:      percpu_down_write(&dup_mmap_sem) sleeps
+>   others:      fork() -> percpu_down_read(&dup_mmap_sem) sleeps
+>
+> dup_mmap() needs both locks. Don't sleep on one of them while holding
+> the other. Sleep on mmap_lock and trylock dup_mmap_sem. If that fails sleep
+> on dup_mmap_sem and trylock mmap_lock, and so on. Taking mmap_lock and then
+> sleeping on dup_mmap_sem is simpler, but then all threads of the parent
+> wait for mmap_lock as long as the writer holds dup_mmap_sem.
+>
+> Both are taken in dup_mmap() now, so release dup_mmap_sem there too.
+> Commit 8ac662f5da19 ("fork: avoid inappropriate uprobe access to invalid
+> mm") moved that to dup_mm() to hide the child from uprobes until mmput()
+> when dup_mmap() fails. Since commit 43873af772f8 ("mm: change dup_mmap()
+> recovery") dup_mmap() removes all vmas of such child before it drops
+> mmap_lock.
+>
+> dup_mmap_sem is released before dup_userfaultfd_complete(), so the monitor
+> that doesn't read UFFD_EVENT_FORK no longer blocks every fork(). During
+> that wait register_for_each_vma() can find the child, while no task points
+> to its mm. The next patch deals with that.
+>
+> Thread 1 of process A loops over mmap(4G, MAP_POPULATE) and munmap().
+> Thread 2 calls fork() in a loop. Nobody maps the file. Process B calls
+> fork() in a loop. 32 cpu VM. Median (max) of 15-25 runs, msec:
+>
+>                          the longest fork() in B    attach
+>                          before      after          before  after
+>  uprobe_multi, 1 uprobe  206 (219)   0.10 (0.30)       220   11.7
+>  uprobe_multi, 4 uprobes 208 (428)   0.08 (0.32)       219   13.5
+>  perf_event, 4 uprobes   419 (424)   0.10 (0.44)       632   11.4
+>
+> During detach: 265-293 -> 0.19-0.37.
+>
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> ---
+>  include/linux/uprobes.h |  5 +++++
+>  kernel/events/uprobes.c |  5 +++++
+>  kernel/fork.c           |  4 ----
+>  mm/mmap.c               | 19 +++++++++++++++++--
+>  4 files changed, 27 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+> index d34dbc0fbbfe..6d74efa80d04 100644
+> --- a/include/linux/uprobes.h
+> +++ b/include/linux/uprobes.h
+> @@ -211,6 +211,7 @@ extern void uprobe_unregister_sync(void);
+>  extern int uprobe_mmap(struct vm_area_struct *vma);
+>  extern void uprobe_munmap(struct vm_area_struct *vma, unsigned long start, unsigned long end);
+>  extern void uprobe_start_dup_mmap(void);
+> +extern bool uprobe_try_start_dup_mmap(void);
+>  extern void uprobe_end_dup_mmap(void);
+>  extern void uprobe_dup_mmap(struct mm_struct *oldmm, struct mm_struct *newmm);
+>  extern void uprobe_free_utask(struct task_struct *t);
+> @@ -277,6 +278,10 @@ uprobe_munmap(struct vm_area_struct *vma, unsigned long start, unsigned long end
+>  static inline void uprobe_start_dup_mmap(void)
+>  {
+>  }
+> +static inline bool uprobe_try_start_dup_mmap(void)
+> +{
+> +	return true;
+> +}
+>  static inline void uprobe_end_dup_mmap(void)
+>  {
+>  }
+> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+> index a9274016c55d..92ccb730278f 100644
+> --- a/kernel/events/uprobes.c
+> +++ b/kernel/events/uprobes.c
+> @@ -1927,6 +1927,11 @@ void uprobe_start_dup_mmap(void)
+>  	percpu_down_read(&dup_mmap_sem);
+>  }
+>
+> +bool uprobe_try_start_dup_mmap(void)
+> +{
+> +	return percpu_down_read_trylock(&dup_mmap_sem);
+> +}
+> +
+>  void uprobe_end_dup_mmap(void)
+>  {
+>  	percpu_up_read(&dup_mmap_sem);
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 10f2d05d816a..8fd6be932afe 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1539,11 +1539,9 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
+>  	if (!mm_init(mm, tsk))
+>  		goto fail_nomem;
+>
+> -	uprobe_start_dup_mmap();
+>  	err = dup_mmap(mm, oldmm);
+>  	if (err)
+>  		goto free_pt;
+> -	uprobe_end_dup_mmap();
+>
+>  	mm->hiwater_rss = get_mm_rss(mm);
+>  	mm->hiwater_vm = mm->total_vm;
+> @@ -1558,8 +1556,6 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
+>  	mm->binfmt = NULL;
+>  	mm_init_owner(mm, NULL);
+>  	mmput(mm);
+> -	if (err)
+> -		uprobe_end_dup_mmap();
+>
+>  fail_nomem:
+>  	return NULL;
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 4bf26b0f1e6e..6ce654e33e3b 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1713,8 +1713,22 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+>  	LIST_HEAD(uf);
+>  	VMA_ITERATOR(vmi, mm, 0);
+>
+> -	if (mmap_write_lock_killable(oldmm))
+> -		return -EINTR;
+> +	/*
+> +	 * Take mmap_lock of oldmm and dup_mmap_sem of uprobes.
+> +	 * Don't sleep on one of them while holding the other.
+> +	 */
+> +	for (;;) {
+> +		if (mmap_write_lock_killable(oldmm))
+> +			return -EINTR;
+> +		if (uprobe_try_start_dup_mmap())
+> +			break;
+> +		mmap_write_unlock(oldmm);
+> +
+> +		uprobe_start_dup_mmap();
+> +		if (mmap_write_trylock(oldmm))
+> +			break;
+> +		uprobe_end_dup_mmap();
+> +	}
 
-My recommendation was take all of this through the MM tree, since
-the NFSD patch looks like the first consumer of the work, and it
-depends on how the MM API is changed during review.
+This isn't beautiful :)
 
+As David says, we have an incoming fix that moves things around, i.e. this will
+no longer actually live in dup_mmap() but rather dup_mm() [which, by the by, I
+do want to move into mm], but that'd just move this there i guess?
 
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+I'm concerned by what Jann says re: a livelock here though. I'm not sure this
+should be unbounded, and fork is a super-sensitive time for mm.
+
+I would feel more comfortable with it if it were bounded, and really it'd be
+nice if this was abstracted into its own function too rather than something
+open-coded.
+
+Do you have numbers on how many loops you are usually observing? Could you get
+most of the way there by just doing a trylock on uprobe before trying to take
+the mmap write lock?
+
+I mean if 99% of the time you only need 1 iteration, for example, then the fix
+looks a lot more sensible.
+
+All in all it feels a bit egregious for core mm to be held hostage to uprobe
+like this, isn't a better fix possible? Does uprobe actually need to exclude
+fork, or could it just eat the cost of checking to see if something forked
+since?
+
+>  	flush_cache_dup_mm(oldmm);
+>  	uprobe_dup_mmap(oldmm, mm);
+>  	/*
+> @@ -1883,6 +1897,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+>  	mmap_write_unlock(mm);
+>  	flush_tlb_mm(oldmm);
+>  	mmap_write_unlock(oldmm);
+> +	uprobe_end_dup_mmap();
+>  	if (!retval)
+>  		dup_userfaultfd_complete(&uf);
+>  	else
+> --
+> 2.55.0
+>
+
+--
+Cheers, Lorenzo
 
