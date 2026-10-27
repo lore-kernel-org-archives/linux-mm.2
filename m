@@ -1,130 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D030A606A329
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 21:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53CB606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 21:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EGI8e3OM
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jbvjWfW8
 Received: by kanga.kvack.org (Postfix)
-	id CBCA16B08FB; Tue, 27 Oct 2026 17:32:10 -0400 (EDT)
+	id B58DC6B08FE; Tue, 27 Oct 2026 17:51:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C94126B08FD; Tue, 27 Oct 2026 17:32:10 -0400 (EDT)
+	id B08F96B08FF; Tue, 27 Oct 2026 17:51:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA99F6B08FE; Tue, 27 Oct 2026 17:32:10 -0400 (EDT)
+	id 9F7376B0900; Tue, 27 Oct 2026 17:51:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A2FB6B08FB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:32:10 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F1D1140B10
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:32:08 +0000 (UTC)
-X-FDA: 85369704336.09.9AD4A83
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A5995A0007
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:32:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EGI8e3OM;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 77A826B08FE
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:51:34 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6304A120B66
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:51:32 +0000 (UTC)
+X-FDA: 85369753224.30.1159314
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9634C40003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:51:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=jbvjWfW8;
+	spf=pass (imf17.hostedemail.com: domain of 34RzhagYKCPwoyrm2yksskpi.gsqpmry1-qqozego.svk@flex--kuniyu.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=34RzhagYKCPwoyrm2yksskpi.gsqpmry1-qqozego.svk@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793137890;
+	b=RoJMs/N+l98nqucm0g/zz+DiTGod4juCnnvWRkoxsLhAf3DcIlNQVJlO7bk3aLub6dayC+
+	3rBuwtKE6SbewiC3YBNP4O3Bcx6ZFdT8s0W6F9gATFMA93fdeVEYoCLMJv829dUC1g/9wS
+	Yr6xqFsO9dVHr0uZj3L1P2Q4cCepph4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=jbvjWfW8;
+	spf=pass (imf17.hostedemail.com: domain of 34RzhagYKCPwoyrm2yksskpi.gsqpmry1-qqozego.svk@flex--kuniyu.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=34RzhagYKCPwoyrm2yksskpi.gsqpmry1-qqozego.svk@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793136726;
+	s=arc-20220608; t=1793137890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S908WbS6sl8a+ccaT1hu8oFrTY/8mXQRTyc6SNjkEfE=;
-	b=KmxF5pza7riN6AGfaG3w473QM/pZuncMlBx3SD+Fv42A8u50qoamC8x5lWKRiLeYhhV8tC
-	5HY8wnkalzY+yR1Zhmui+FFcG+Mxwd4n+BH5fEckwYk6v/+yRykig1ViidJKxLpFLSOC2x
-	GxsM7YXUEkCggL6fDaiebXf57+SGf7c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793136726;
-	b=u4f7c6JBu0C1Gok4XqDLV1NIQNCALSloz2miT5UYkulqGW9P4zNaelLkToXZeL+3Qh2hjJ
-	rxiIwou5dtaYq6wUYozjAYCnG7dNro5458kzeHQkc5yuRltTLcfHznwAH7Y3utgDmt4LfN
-	H3B1xeSHMswDTuz1Ty6ZXp5vDDaF1Zc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EGI8e3OM;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D125043E7D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41841F031E9
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793136725;
-	bh=S908WbS6sl8a+ccaT1hu8oFrTY/8mXQRTyc6SNjkEfE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EGI8e3OMSj8oudPsWvxnIieFF6gTtab2PYp1pWyo2hMoHwm9k9vSCCBUrRG6xC8MH
-	 0KGkcd0cCIQIKtaEwW9h9u/ChT04cEjChqjY1CDO6ZnF5ZAGMZXsI/3+Hd+Q5LXBkS
-	 tstKAH5wHNK3/OGFItDDgQcCGMMsJehCZKVi5x688GOJAnc5FMB9Yl2vm4YMrbJS8z
-	 GH6396g8Z26BXcomQK7YLP1JeyvPWoPTLaXD4wMHyikZsuZfVkFw4ACyB8DThiSEpJ
-	 8mEUpcgXD7tk/pPGlMJZHaXf0LVXktt2gvyJsjPwxg15Yv9qrjFy1MJTjCjDoHGfaX
-	 kdeNE1WPuUlqw==
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-9440304604aso36884585a.0
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:32:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzJHZNxSaarf9B4DunG/gF14MbivYUkBCuvtxhKf0JyryipucWAmyIfewReNt93SQ1wrKg16Y3lBg==@kvack.org
-X-Gm-Message-State: AFq9FYIl67l52fr+3Z1v1o4fzIHdk7q3IvpWK+X9sQ+bRTbmLPq0XWoj
-	0njyzJhY2jqTQTmsWmSFGILigylKCK0IGV5z8R0kJE1Uh22+E5bvnEesWdlErPILaBqGhQIB9DR
-	+uiNzY7Ih5zB49KjYPH//0KOm+ie15uM=
-X-Received: by 2002:a05:620a:6013:b0:93e:7156:f814 with SMTP id
- af79cd13be357-94408a65be4mr32182585a.11.1793136724949; Tue, 27 Oct 2026
- 14:32:04 -0700 (PDT)
+	bh=pQ1LM8ogBkRpQQvgUr178MX4xpVMn2H7cOKcQ5l+MrA=;
+	b=zyoWc81asvKL1Xeu/CPhIc08JvAM/FvJXEzz5J8B5bZYyDUGtwGRnp0ezvHFBrktD4HSxg
+	GZhiar94+8AadV097L1B1ARJ1VG7LkApjFFSk8ORv7FwNKgTbOxxmsME+4R62iPLRewoGP
+	qzV7K92+gTtKxDPB3FAzN8dQ+S1O09g=
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2e8ad8c5f80so3554335ad.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:51:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793137889; x=1793742689; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=pQ1LM8ogBkRpQQvgUr178MX4xpVMn2H7cOKcQ5l+MrA=;
+        b=jbvjWfW8ZPTAcGZ3B3+tjBIV2WEiA8C2aNKr47CaYv3UxJdG62wNdDulh80+NX6ry0
+         u1iiX0BaGUEhZHVStudnJv8oieUcg1QxsM1jZ/JLDz55Ih3PxpXqo8Vko49vcJv6bs4V
+         /nzI1ea2V3op1HxU2MTbHBtAZdSNJnU/WMvrMsBpApS6WqguYN9vlmL/H9fFCTYEZE97
+         lSPwI2zupskp5Ei8pUBCE+Z+BMiCPAC44JU+dt3gt6z7mTuMRslDLyHN3yqEgqTqT6SM
+         yszO2oIo8HMmUfQ0gT9P/6V97xvQR+6ZSa5oFvleyA/vycT162VWvaBKwOrBB1+f7Ihs
+         Kz7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793137889; x=1793742689;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pQ1LM8ogBkRpQQvgUr178MX4xpVMn2H7cOKcQ5l+MrA=;
+        b=zdvPVuf/QxqANWs0/+VCaakBsAaDLQZtqfVSnp5uSVtYLjIJD8y9/ljkQASjM5I4Gx
+         daIfVK/v5qm/4pFG9335UuRjsyls7cpU/rSr0ipRdcqgNollfq2UC43TaixByH06jpXM
+         gZd++Osgp9iS87CVics6plP1DGBRFaJF4hebqcgzUpQuKljDn33mKzznm6SNaSWrsxWp
+         bYAjrjLkJx9MfZNLycdVfJRXhKh4SxPDj0wDhEGEBA87Z8empGEVdJEK1DtrQrop+ah3
+         i/v8VbtsKN77XepV2rgwsKtY9tkWkrtcAFQsS925me1zsy2DAjQiUtOUdBeK6p5Eoqnc
+         AYDw==
+X-Forwarded-Encrypted: i=1; AKwUvBxJHVNHv4+khr0HZogH/IGcyCFdy9ZRA4mFOy6scwolMy5RZ6No/+mDJFT69gum3Fridj/Ct9f+2Q==@kvack.org
+X-Gm-Message-State: AFq9FYLkgeTO4v35VLdh1sYB3g3A6dnSjWlcuESCQyOeH6dknVut1lYD
+	Ek/KMz6jqFEUIwOTOxo1j7qCsJN5s1FGYeH35ldAUoh2qehWCLH/fvItXr5X9JMJFd3K4Fce8R9
+	6cy2h9w==
+X-Received: from plld11.prod.google.com ([2002:a17:902:728b:b0:2e9:5b68:4b7d])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:94d:b0:2e9:4b9f:b81f
+ with SMTP id d9443c01a7336-2eb003cdd41mr6036045ad.31.1793137889165; Tue, 27
+ Oct 2026 14:51:29 -0700 (PDT)
+Date: Tue, 27 Oct 2026 21:51:28 +0000
+In-Reply-To: <CAG_fn=U=Rf8y49JGYjJ4qT96=MwD5v6SLwVqeiOhR+Z7R2ZKRw@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org> <20261027-fixes_core-v1-22-6f74bec9a5bb@kernel.org>
-In-Reply-To: <20261027-fixes_core-v1-22-6f74bec9a5bb@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 28 Oct 2026 05:31:53 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wPwBz8OB5opbuKsVh-ceKqyqi4d1aB8Emx4ChqDe4qzQ@mail.gmail.com>
-X-Gm-Features: AclHuK_Qzkd3NBrrAvAlcTVmJZ8ovWd4rfeoh503KU3yWFCYVC_zuTNZmwxW4A4
-Message-ID: <CAGsJ_4wPwBz8OB5opbuKsVh-ceKqyqi4d1aB8Emx4ChqDe4qzQ@mail.gmail.com>
-Subject: Re: [PATCH 22/46] mm/gup: check for overflow when converting nr_pages
- to bytes in GUP-fast
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20261009214639.2878857-1-kuniyu@google.com> <20261009214639.2878857-2-kuniyu@google.com>
+ <CAG_fn=U=Rf8y49JGYjJ4qT96=MwD5v6SLwVqeiOhR+Z7R2ZKRw@mail.gmail.com>
+Message-ID: <auEcseqdxGGelMM3@google.com>
+Subject: Re: [PATCH 1/2] mm/kasan: Detect double-free involving kfree_rcu_sheaf().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, kasan-dev@googlegroups.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A5995A0007
-X-Stat-Signature: ruyt51g39mdtoctr33bmdkg7s5fm7ab8
 X-Rspam-User: 
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 9634C40003
+X-Stat-Signature: zjjsnwbqwuj8spokjkys7f7s59xmpw9r
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793136726-691428
-X-HE-Meta: U2FsdGVkX18o9QGMyiyHKlzGgTnv+b6SvekXMLX5VytAp3lJifVrsVKSFNRZeuMZCqVcLUftIQ0iEX+2q9uRlc/xq08sMH8tkqEjuvoiu6wvibfk5xho3783aMlclJGhKxuRxLZj3ONfOD+Qzgxt6IQJKxVdyxXj4XgDqdu/mGKipeDxHkmW7OIJKCEJCudpPcvduX5KqNbvhjSiCLapv3GsiYxaZm2vlPdwxZ3tTm6RtPa26F3zSswjdqA+AaAVZGZl2mhplMgoOhoN91jbyN53nS42xjAGe5TjsNf6cTjZOasNfhg+i5IL7eD40ZpOY7OO5/3NxaJtlsbkKz10SzGcZEwpwC0Vc5eSq27cpu8Q7pV/yUGrE85lgxkq1UTXW17vbHl796mXuZOy6+H9TAmX8kmnPOwB+u2coM5HHcOOIvldsCiKOG/N0P1wPzAr6joHn7O501bynkt3pjdF4TO+VTENdmxQpe2wcjZh+ymMvUiihpHKGX+dfoEjXMs1i7fNv30irQOXdYmoAXQtC0pkG4+TS9QjV/yjZAzO1Is+1n0MTFbTnaXj4h2+Qdwc1SSjpUlYKN7jXXw7ftPWxGE855JFzpWQ8JHdbK6carZC3GkKrPlSx0ItphA1gmIL3jG8pRyYu95mAsyhIt01nNkPnm8Q8ZyMWZ9PszdVB8yW6oNs4iIxA1ARgx3xc/Mv/Lr2no+Rlk85sLtvtHq61AmK+d5kFhuKymZEOPq3xl6CJI8W29wYhXNhvFMCM+fwkg7UamGnQNvpFq0PhWXnhMLuFNWB3FbzLUb8h4HMTgNuY2VPD1AOQ3APfFxvmrqNL9WxscxFh8EPXTmY6zCpNLNSkDqMfSUK1ktQnhlJK11K812LfAz4C+WZrKFfJBw79Ki1utXLT+hX2G5fwUHcZcvgz4oran/bETiOOJWXj/05Nv/PV3hUSmpPpKzzMMuHskSG712SpG+o8Kblb6D
- zw9TIJD7
- 5Vcjh6vRbr+np6hecvFPbTXiophgNhoUdYXMlO209HD3l0lAw4+XiSmDHRHRWbx6gWDVj+SF8rKJGG4JnTtR6a3oSrONHt5OQuO/Jlkdh3b8qnJ2ryFHxQDKbmHmFBJacoAdqFcuROg6tMkBBTQQUqQDgLCNr2YKXewuYj0pLdsPNPHZfkD/YneOBmZ+IA4a34o/o+lUE3FSmER1JnM60gJpj3F/lX4JxeWua29cLYz6J3pmgZ+5UIO+9Yu7BiT5mEsQCMBIbJpGsEGwhs7kgUnDmZJSlNT8J8uphqxBmi9RfPSRB0IcJRa8uqLLFmww3kZ+3yUyCX0BO1+JDlcLjiwjMipi8hjJwXEAgJcKKF4MxyoneRCEe2dbYIK8ie2z6VoPrvh8P5XAo0bbrr6uKWuEvUmMAv59bXnOuLyMEtF3GXhc=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793137890-410655
+X-HE-Meta: U2FsdGVkX19CXYgzvOR3GdJQ6PwOdIqI/ksB1JmCDC5aJqFm36Xqrk2EYa9V3ITNfSbka6F666xvQ9Tv1N71ameeiwq2r3f4gbbZppXevUfAJn5LeyB5GzLEBxp/iKPpSgPBTSGMs0wF0XixSHOj11NmQA+KFngVYsLs1CwowEJq3OFgv6tswwfnKFKW7k5QZaam4U0WZ7ciEgK6jM1e4hyehY/hVAblu6D0xydn8T7PE99wg2ytKWWyQKjcd8KbEJ/mvELlMkygY8KvZhCQ+ayTLi/d9+6LPsAbtl1D7HHq6R56K4LwBU7xGTC/CANoERxASaHhhYWmWsVlv6qlZRySXoC4xrqQpdF1z+jMh78/o1zD2cK+IPxMxLY7UdjkUBfYHUgxAQdfWwmds3bzznr8gzwZ0ySjsLnb8TaUF/vg4czeb5HOoeab0YlTIrGB3xJfI49dTKelB+bFRBgtj3gwzZ7kfhSRuFOxlFxsj2RVFRn3Vy6lrv8XzDbM+4EZhIVg9f8J8QRJqks88Uw716aUMmtbYK85ugNntEXN9WB0Y5E5gFwBkGs9RFREbDw4G9k6owakDWZKVirIkkyrFMhvknFK+s7ktR6Y1tc6RaPuY6gz6Yfw99yPglQxo2wn7Quh5RU+uwh6xhmVfkOk8MHoVro0LwuYDwesgAmXvIe3A+rcZM0HUwPzY1VgB+V8xhm46fyaKGrilTsbyjh5a6XpVvCEhVCEi69XwELs+PpGzA+8Dmioj4BkakP/JiRnX4Hmd655IdDY1PiE07Fft9u7fpppCxVQU8UwKS7Biz9jcgM1ngjVh+azDYnaJYnQ5WyVfH+53+22DlDyjPXeWCtDtUztqKWGHJ7fdEfFU3458gPb0RV474ZRjIfGoLe1kkGKTPufwwvfWyCbXq7TltifAfaLNd10Z7j0y+hej2Fdoksb7KxgtXLWaR1GsJr1DX4eQvMecaA/isPhIO8
+ uHgKry8Q
+ jxWjpuPLrskUxI7GYJl/LWCNp+qapkrLNgFFC7wwOJwwId/6dmyHGcJSs3MjGuj9Egkb+I9xgNO2DNdCLHr7+XyBIw9/NmAuPsO3nLNcioPCWfjHg3jolcXCO6sbsdc5QfuM3Q0jabXPZKn1w9FHWCCn/yXDRre8511Z/LLvaBpvGQ2IeDXt0Kn2qwhATACWRqs6HL+o/JqTIZSDyKHDJBWnyJx8OE07sE5NzfSSlbnxvr0WMuVDOC2J44N1kWv/LWmWSxhgShEh3FlbvBrHfc9HNZVy3hnP2vrFb9ukMcUA/JYU5FhKyzc6xYTwKHcCVBPPGvaI4HJZIakSf1Fr1GVnNzGqUEXqBO9GhrtFsWhHJROrjsGVFM5yuZ/8XULvYmy4i1yyvR8lIWz948yNYzKTCWpbNgJS9OSwQlOSW2hB+SqqRzgaH92Fl6O6SNCQxce5IKgHdrhr/iKSAn/G6ESLK6w7lrYdqYLOYKTmQ3NZzPomDOXwBmGbG42m71JgxNv3EnMnmRzp1Zo5OGaogsbBWlATH/Vs4f6IrnsjjPYlUQ75JG14V2hXeps9UTpCntClVsj2V1SLDyk2T4wY/jxixp2Har1hj4ABBpW8wzqnBCvwf7lZAZvOb9b70fEciNDWa/hCdfMcWGaYh3Y9k7jgy80kbg3QUTCSu2HlNMDHZl/JU8Cbl/NuKfVxKXDLWXq1fGpneIr95rzt37MQXDS0BLLl9ZbfoM9oN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,23 +120,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 7:24=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> The overflow check in gup_fast_fallback() only covers the addition to
-> start. The preceding nr_pages << PAGE_SHIFT can already have truncated
-> the length on 32bit.
->
-> Users such as RapidIO's rio_dma_transfer() can derive such page counts
-> from a 64-bit userspace length.
->
-> Let's just check_shl_overflow() to reject any such overflow with
-> -EOVERFLOW early.
->
-> Fixes: c28b1fc70390 ("mm/gup: reorganize internal_get_user_pages_fast()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+On Tue, 27 Oct 2026 13:48:03 +0100, Alexander Potapenko wrote:
+> On Fri, Oct 9, 2026 at 11:46=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.=
+com> wrote:
+>=20
+> > The bit is marked along with recording the stack trace when
+> > deferring slab frees in kfree_rcu_sheaf() and checked in
+> > check_slab_allocation() so that any double-free pattern above
+> > can be detected immediately.
+> >
+> > Link: https://lore.kernel.org/all/6ac959ee.70ed5d86.2ac85.007d.GAE@goog=
+le.com/ #[0]
+> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Tested-by: Alexander Potapenko <glider@google.com>
+>=20
+> Do we need a Fixes: tag?
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Will add
+
+Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() oper=
+ations")
+
+>=20
+>=20
+>=20
+>=20
+> >   */
+> >  static __always_inline bool kasan_slab_pre_free(struct kmem_cache *s,
+> > -                                               void *object)
+> > +                                               void *object,
+> > +                                               bool after_rcu_delay)
+>=20
+> Please update the doc comment as well.
+
+Will do.
+
+
+>=20
+>=20
+> >         poison_slab_object(slab->slab_cache, ptr, false);
+> > diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+> > index 2b8e73f5f6a7..07636ffe1626 100644
+> > --- a/mm/kasan/generic.c
+> > +++ b/mm/kasan/generic.c
+> > @@ -536,7 +536,7 @@ size_t kasan_metadata_size(struct kmem_cache *cache=
+, bool in_object)
+> >   * This function avoids dynamic memory allocations and thus can be cal=
+led from
+> >   * contexts that do not allow allocating memory.
+> >   */
+>=20
+> Please update the comment for this function.
+
+Will do.
+
+
+>=20
+>=20
+> > +void kasan_record_aux_stack(void *addr)
+> > +{
+> > +       __kasan_record_aux_stack(addr, false);
+> > +}
+> > +
+>=20
+> I think there's an important distinction between
+> kasan_record_aux_stack() and kasan_record_aux_stack_rcu(): namely, it
+> affects how this object is handled later.
+> Let's somehow reflect this in a comment ("records the aux stack and
+> arms the check") and perhaps rename it to something like
+> kasan_mark_rcu_free_pending()?
+
+Sure, will rename to it and add comments.
+
+
+>=20
+> Otherwise the series looks good, I'll be happy to stamp it once you
+> fix the comments.
+>=20
+
+Thank you !
 
