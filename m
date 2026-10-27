@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3424F606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 08:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8A7606A33A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 08:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MIHfOMOJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cLX5cty9
 Received: by kanga.kvack.org (Postfix)
-	id 127216B0633; Tue, 27 Oct 2026 04:46:24 -0400 (EDT)
+	id 48C0C6B0635; Tue, 27 Oct 2026 04:51:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B0DE6B0635; Tue, 27 Oct 2026 04:46:24 -0400 (EDT)
+	id 463576B0637; Tue, 27 Oct 2026 04:51:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6C326B0636; Tue, 27 Oct 2026 04:46:23 -0400 (EDT)
+	id 352D36B0638; Tue, 27 Oct 2026 04:51:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5C656B0633
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:46:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4258E80719
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:46:23 +0000 (UTC)
-X-FDA: 85367774646.12.DEC32DC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A2696B0635
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:51:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E7D61609A3
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:51:06 +0000 (UTC)
+X-FDA: 85367786532.23.7FEF119
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A2847120004
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:46:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIHfOMOJ;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793090781;
-	b=ML+fFAFlh2LJcyXRBYdRI/j91u5MLLLH1YrMsSGp4JS+iWzHyoMAmE2icuUITEVTeMYIuJ
-	zZ7Giwawxwef3a91UVICt5Gb4QFSWM19dUPLt+j0gd8VH59L6xzGghnPkvs5sFKF6nLljl
-	75I0NfvCrB/R3MpO5ZIn5vz3U5Nb7vg=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIHfOMOJ;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id DFCAD20005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:51:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cLX5cty9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793090781;
+	s=arc-20220608; t=1793091064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x/YAccCPR+QDBod9TtDEo8/GkjTX2DKJZMvCayiMInU=;
-	b=zg43jNma7meZz3i3emzbhSizzusyl7WEBZU0f+5NwEqrRZyWe7kKpLyll5icMeWH6bjNkD
-	U+Asakxutw3A+hH34jYKOjVmxtSfACuCPnuzFBduZ5JQqlBc0x+pjEBfYZhFXoAkjJ1J6j
-	R14gExD+7K0wdyftjn6uailTS9xymyU=
+	bh=lc0U5Ze+hBCT9T6cAf8QTcqfqTu5UwDLhLRH+Lp9NjM=;
+	b=kEJ9wk6usjd0U0GfAx5LT1sI7X7L1xv9aj0IMxQig7ZFn9rQBOn7XUSqLlYfwDwCkcUrdK
+	bkrX0hGZDzjqCnbH+qTE+SiwbQog05f3cVTbAXuIXw9KsmbPAa6HXrTiqzpUU7Si76/9vP
+	egnjxJL5r8nWF0CNe+2wnZFSz8n3Av8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cLX5cty9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793091064;
+	b=xuxJUkiGtQfJ4pL6DMpYd2iIp7CJWhQWYRk0vXxnqDhN8p0KgAW03kKbSnj2LhM3KGe5E0
+	IlwInJTOAsa8ASzJU7rvdd6IoVv1weVeNVcuNWbPP5z1RqU+SNko/E096CdXurLYdXIPj2
+	iq5ecTtPvcrf9OO6bpfDwtRUCL1/Vas=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3EF5A60210;
-	Tue, 27 Oct 2026 08:46:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3898B1F01825;
-	Tue, 27 Oct 2026 08:46:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 54517601F9;
+	Tue, 27 Oct 2026 08:51:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370ED1F01825;
+	Tue, 27 Oct 2026 08:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793090780;
-	bh=x/YAccCPR+QDBod9TtDEo8/GkjTX2DKJZMvCayiMInU=;
+	s=k20260515; t=1793091064;
+	bh=lc0U5Ze+hBCT9T6cAf8QTcqfqTu5UwDLhLRH+Lp9NjM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MIHfOMOJNGtvK/bOljqxWLAHcLixYnsRYXCAHtUQcunjVDLnNyeo97KX3xAMoJr0Z
-	 5SfJAbFdkjKREw+q9Mtl0ffuKASWKcn7N0F0BmgFbcVUy46FHcanqfHr21qQWcr5jW
-	 pN5brAKAoAMh9KQ2wKajox7TxwfMs/QXMXRrm6/pCm731qJU0brAVO4+ppYe1VSs4W
-	 QVZYWrlfndxZlKOun9t4YN97qlLu70ioNm4z4BQTX+PWQAgemaKean1qRUpkEbbfK2
-	 Ylrgvy+1T3A3hOJGk4nx9jTZUzT20nRhHgy1MV+6HzvLQExySYnOpZQXYHoPDsoTcO
-	 4j7djgWhTTvDQ==
-Date: Tue, 27 Oct 2026 08:46:04 +0000
+	b=cLX5cty9Fes4nyGOhdTXTwUi4CjHh2d6Exjv+rOUNmJ1hOpq301ah/59VYJa3KAfa
+	 0JAFnIYv5q6uCZJiWZ7/JnzC3pOPhPL5VdEq05fzYEQAfU8x5PjoaLGCbo4oJkSshy
+	 aEyuswfa3kOJCEFW345rfcWjsyhvaijqqaHgik6uB7QOrxdB7sJV1oJ6I3Q0c1V+Ry
+	 Cf3Ekq4j3MW2BWPpctWVOXD4r4MRy4tI0wpG7A71nGLVk4q5d74j9EcT8h6eyujZ5T
+	 xnvfCFG95f/Qz4H2P0ATu2ppTZylFpdC3r3f636dunxIG7AvtZ7dC6rCzDfglAN4g9
+	 pK7u8ZerdMAkQ==
+Date: Tue, 27 Oct 2026 08:50:46 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -89,29 +89,29 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Chris Mason <mason@kernel.org>, 
 	stable@vger.kernel.org
-Subject: Re: [PATCH 04/46] mm/memfd: make f_pos accesses atomic
-Message-ID: <auBkxrOz882zhhZ5@gremlin>
+Subject: Re: [PATCH 28/46] mm/mmu_notifier: set ->mm only after mmgrab()
+Message-ID: <auBl3iJyp0RQ-tEA@gremlin>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-28-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
-X-Rspam-User: 
-X-Rspamd-Queue-Id: A2847120004
-X-Stat-Signature: ohqh798t3otqgwdr4gq4pai1j8sjmft6
-X-Rspamd-Server: rspam01
+In-Reply-To: <20261027-fixes_core-v1-28-6f74bec9a5bb@kernel.org>
+X-Rspamd-Queue-Id: DFCAD20005
+X-Stat-Signature: 5617u7t5f6d7r7984oenjbt5k5urmjxb
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793090781-220741
-X-HE-Meta: U2FsdGVkX1/bp22t07H3RrRNdreJBzhwhygv+XaQcMqhXjCzAHLp/Hq39A1Vmp7d7Y0vOk7LoR87I2eYCGw7oNXajg2dwN3sEqTT/1i0swQsxHUHq/H/O7myadK5x445kypn2YYcqkQNc83Ewz5FoLhU8nX6VL2P+OM8sXsN4cfYQ8DkAfj6IUUJA6TA+0GuZtb7tzLer1zoVXugLmb34RAL9SG9aykffYPom9PNodcLZSgBgpEseoKX2N2yZysMRXpZEaj7aQAT/O/Z/+/qI9EwuO6GepvyylFcAEGUXeiVILj3ArnQOqYta1m3o89iHMlVXGRDq8OiOaehIkCDxz2Y5N0vSqb3z2CIJRwZwtV/VvA6Nc0rlGJhFamDX2fZ8UYsUsTJobyBW/0/wO3tEBoy3557i8zt4D19kJTugra48xqJdAsOaZMLr/7ES7pb3S+GZ5xBlQ/dUD60b454FYz5AItt1WWgTxqszkZkWHxPv0sqVXhbmSputbJsFJWGMWEWm/hjKggsesXFa1yS7gz5C1LtJ5CJIv/mWm4h80WiAQL1Vw2TL7SxWPiCK1l8f4XeQlILhWoy3x711jPoBFMPhQyu74kJRciNAODovot/5xhGC8Q+DCpBYonboBM2CAmifK0E5OrcvON3JJHlPjVqhiF5rxbu4LW9gohpjlnUXvKLI942Gmia8vy+XeejG6CmydaeI834xutlRaueZGnvBM6dlF9hlEKXZZ+hWzCiAwPbezDfTUzDg7ox+pxCZZZP1fslqY8yWD3dBth9wfwtLD+/7mARUaIhtBsHK04l9u/V+zx5QSIqgfSX/R3daxsZAj2342p3EimpLc2gucnIQzeoh4khDWLdl6r6YCgiJLTQO0/7uqscQocpCwn/NYOIufNYXq4DUMgpFD50en1yu6+DAQz/aH2tMokXTKebMKCeTFaV+YDONspnqY80mQCGGRl1qt7GWrs1x4o
- FDijYuWE
- n+Wq+YcemZks4sVipGQpwRWr5dloAz/VqgD77n7gQF5hPUXN7UbGJdYoU1fvOYwcTe/hJQEdYt6yn2OuR3L/Ttch8qQ22us2T51VSthdbxKlw2V48JKTEDwUvK45FyTrWCpzlq7UFKjCzuOA7me1LtE6dlDjCYXTDvSsE7hdmoRkqtndjA+DSFIB1X0KszlbJtIiLfbSr08gmoyOlCLFHY8mc6jlOgwrH60Ubz685mxiKm/JL7QSmexEM/MnBKPgyf//X3fQYTICx2dnu2KYnfXZr4chuPojaNoMeRNbouq7r8y50wjEBrbGyJlNWwKOh5LIk1hm4nYVITMKmnwfHEFQSREF3Qd1X+Ms3NDV5T7qUicqBT741Kx7cS0Psn+mvfzc2wki1a/rE4eiLSYTgSbLEu2AeMf6jJXU3HyziufB7EFyKWI1DPG0doA1KHkFRbvRtEFnmPGUPxUc=
+X-Rspam-User: 
+X-HE-Tag: 1793091064-280901
+X-HE-Meta: U2FsdGVkX18jCUrtPMeqrA8jeayj+3+LzDQ+sYBTUnkeNv2bdEZEIJMZLDuf5n1K6YTQULSfP7o0q/HyauKSlF5sFlCwKOTaz41ClfyJXaH7Bt5sqzr52O4bzMerlf68tKToL+QTzYVlxgrvWBof6+qbk5COU+e0TzuYzUgjNIPsyjqVOOErUan0dWVFhQs4sn6qCl6HabbM/5dosRMlVZ3XYQoSH/pHh2alqgaIbrS4hydPEUydZtJPJMfZ2IQ9r2vPl2I3P/omtbVyk5u4l34cuhrt1rSJYJCxe0LnDg1N3CP/8aHrA9ej2o77DoWr7OmAWzTc/ElxQUl8IN2bjZ7qDoImNoOBFcdF8wDgWYD4ZO9EFdWnKRLpO/zJwDF6wJgfW64FuP6TNk26v5OaxhhTYS4Gf4cI3F6P90xc/6jV5e3tQElpZzUo2ZMIfqc8LCBW6wprtov9Rxd1YHusyJ+Xa0KciaAETZwDhd+1yRQHOXRUBq708rTkeEdpyYX1Dh4jwlcdXn9ZiBK/yBUV3pNMwQApC2ez1rd9ZhEDhqbBtYhlSgtcdNA8usAEZ3TSHfHc4ETZtH0oBEnYs8YAwdkbMDKyyXXAWX+kkXyvufP5dXl9JpnUBoO6Zvxo+7N0wDIQ3bkv6Of6M9GHn0A6CUEZdUq8PVmjbPiWymS2EKWdVUakHdYflTErGysKdBBnHwtoPIE9pSu2FgssI2qz3S3y+wDagGxYDklxxHkVIidkb7ZEnziVUqh39miDH+AQ2FA/G/DhC5LkcsuqHvKRMQWEM28Lb5f8r/g5ZatsJBbXQw8Hq/h8twr+LL5/ONmIbIAWZDbDW/yi4cCjS5Bub+rWXbN9TXuW4AD/j+I9dY7iNFQG9hrp2OktuVqABCEB7lAxucBPWHpcsqYF65oMmIfVMTI5cIUIANWp/H6nXMwJp1D3UNoqi/EWm/TgOJ9DaM3OeLbxOnowbelb8SE
+ TZBNkNLV
+ C9kwn/lVPnTVXRpSfQGd3Zg94jDARv8ed7JRmJVMRlkqU10BmG0oSDbrUEU0726jiigA2DXEni+3p/PYUO93Qwu4kirxnjkSRGTxP8Q5QwqAE5nEUDNPk67wIyFuoV1CphDmfhoilR2EziKUyohyJa1Em1qBXRw2Dzz39wGAQziFlJjjdSYYHo9T2T2KxlfuTiCceFP9muuSMrVdjyNBraRRmvymhTrQeTzAl6NeVjfD+vjLHk01bL8JhXxwY826b00bZF2adFvzM9tWtx6H70WpCpINQrSP/1S4DY5rU9ypntLG6ArT2Gg0JhfulDJV0+ERqMJrHRUc+0yb/9jrSABJtOprmFG3jrFyq3AFDNexU+nqSe5Dccejp3kI7cQQu+UXwIewbXSjJ6eM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,63 +120,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:17:24AM +0100, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
+On Tue, Oct 27, 2026 at 12:17:48AM +0100, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
 >
-> Commit 9c225f2655e3 ("vfs: atomic f_pos accesses as per POSIX") made
-> read(), write() and lseek() on a shared open file description of a regular
-> file serialize on ->f_pos_lock.  The flag that asks for it,
-> FMODE_ATOMIC_POS, is set in do_dentry_open().  A memfd is a regular file
-> too, but its struct file comes from alloc_file_pseudo() and never passes
-> through do_dentry_open(), so it does not get the flag:
+> Radeon uses a non-NULL notifier->mm to decide whether to call
+> mmu_interval_notifier_remove() when freeing a buffer object.
+> __mmu_interval_notifier_insert() sets ->mm before validating the range,
+> so a wrapping userptr range can leave ->mm set after insertion fails.
+> Cleanup then tries to remove an unregistered notifier for which no mm
+> reference was acquired.
 >
->   CPU0                                CPU1
->   write(memfd, "a", 1)                write(memfd, "b", 1)
->     pos = file->f_pos  (= 0)
->                                         pos = file->f_pos  (= 0)
->     vfs_write(..., &pos)
->                                         vfs_write(..., &pos)
->     file->f_pos = pos  (= 1)
->                                         file->f_pos = pos  (= 1)
+> Set ->mm only after mmgrab(), once insertion can no longer fail. While
+> we could fix radeon's code instead, setting ->mm on success only makes
+> the code more robust.
 >
-> One of the two bytes is overwritten.  Two threads writing 100000 bytes
-> each, one at a time, to a memfd end up with a file that is far shorter than
-> 200000 bytes, while the same program on a tmpfs file never loses a byte.
+> Fix generated by an LLM and sent by Chris Mason in private.
 >
-> Set the flag when the memfd is created.  As for any other regular file the
-> lock is only taken if the file is reachable in more than one way, and
-> nothing a memfd does in read or write waits for another operation on the
-> same file.  This cannot be done for all alloc_file_pseudo() files: anon
-> inode files such as eventfd are S_IFREG as well, and a blocked read holding
-> ->f_pos_lock would lock out the write that is supposed to wake it.
->
-> Fix generated by an LLM and sent by Josef Bacik in private.
->
-> Fixes: 9183df25fe7b ("shm: add memfd_create() syscall")
+> Fixes: 3506ff69c3ec ("drm/radeon: use mmu_interval_notifier_insert")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ david: minor description tweaks ]
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: simplify description ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  mm/memfd.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  mm/mmu_notifier.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 >
-> diff --git a/mm/memfd.c b/mm/memfd.c
-> index 7d2da23157003..6f5fbce74f21e 100644
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -484,6 +484,8 @@ struct file *memfd_alloc_file(const char *name, unsigned int flags)
->  	}
+> diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+> index 2e20f88e162d7..a7bae5de5fedc 100644
+> --- a/mm/mmu_notifier.c
+> +++ b/mm/mmu_notifier.c
+> @@ -947,7 +947,6 @@ static int __mmu_interval_notifier_insert(
+>  	struct mmu_notifier_subscriptions *subscriptions, unsigned long start,
+>  	unsigned long length, const struct mmu_interval_notifier_ops *ops)
+>  {
+> -	interval_sub->mm = mm;
+>  	interval_sub->ops = ops;
+>  	RB_CLEAR_NODE(&interval_sub->interval_tree.rb);
+>  	interval_sub->interval_tree.start = start;
+> @@ -964,8 +963,12 @@ static int __mmu_interval_notifier_insert(
+>  	if (WARN_ON(atomic_read(&mm->mm_users) <= 0))
+>  		return -EINVAL;
 >
->  	file->f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
-> +	/* a regular file like any other: POSIX.1-2008/SUSv4 Section XSI 2.9.7 */
-> +	file->f_mode |= FMODE_ATOMIC_POS;
->  	file->f_flags |= O_LARGEFILE;
+> -	/* pairs with mmdrop in mmu_interval_notifier_remove() */
+> +	/*
+> +	 * Pairs with mmdrop in mmu_interval_notifier_remove(). Drivers take a
+> +	 * non-NULL ->mm for "registered", so set it only with the reference.
+> +	 */
+>  	mmgrab(mm);
+> +	interval_sub->mm = mm;
 >
->  	if (flags & MFD_NOEXEC_SEAL) {
+>  	/*
+>  	 * If some invalidate_range_start/end region is going on in parallel
 >
 > --
 > 2.43.0
