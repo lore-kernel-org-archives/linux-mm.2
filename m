@@ -1,114 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BE7606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFAD606A332
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=NmV3J9Ir
 Received: by kanga.kvack.org (Postfix)
-	id 86B356B0665; Tue, 27 Oct 2026 05:40:50 -0400 (EDT)
+	id 510986B0667; Tue, 27 Oct 2026 05:41:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8424E6B0667; Tue, 27 Oct 2026 05:40:50 -0400 (EDT)
+	id 4E7C16B0669; Tue, 27 Oct 2026 05:41:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7316F6B0668; Tue, 27 Oct 2026 05:40:50 -0400 (EDT)
+	id 3FDE76B066A; Tue, 27 Oct 2026 05:41:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DA646B0665
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:40:50 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6FA6C0963
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:40:49 +0000 (UTC)
-X-FDA: 85367911818.13.9598C8F
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F32F11C0004
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:40:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21D676B0667
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:41:03 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A6C858095D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:41:02 +0000 (UTC)
+X-FDA: 85367912364.16.3AE4C1D
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7A4F7160002
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:41:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=NmV3J9Ir;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf08.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793094047;
+	s=arc-20220608; t=1793094060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4KnuBOFznA/VDWJ5if53/N0G1tiho15zBcRHO3JDxRY=;
-	b=S2lr+QzghY01IGiHlPh4OwGIgq36dCQd+Ooiu6YOPtMO0QeUKp7IZ8sf5f4u8HTsziS3j5
-	YcLDVf4A4KzPY9e0DXnT2kFXrUsLkt0Qu0+siYg82pEm3vkpuW6s2TrQMxVG30kQsX53L0
-	iR4hudk04A8+K83bWUalSEotLOARTG0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JVBSyNaPKEtFoMBnmXCIBXxl7RDB3mGMHMJZz01NkVk=;
+	b=U6wRYwYbQTMl4hDfpZ7iqP5REdnj7aYELtCic6P5TtHJpcwpjo1xPY/AKTkOjEvhfiDQhg
+	OS3tFg05g+yTcrU9+5BaeBCR/J6oz4mULYznXqxqvPVM9gEae7/eO7iaI+TUYWjKsj+lY0
+	8s9WiAcxiGKIy09Z30mF9cDilRAI2s8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=NmV3J9Ir;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf08.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793094047;
-	b=LMi9xfBayRyfqve7NaBvBgKB5u6G7d9BprP/Rm6vvlKos1n3Sdl7zhFppJgMutBYv/jR19
-	KAVgn5bjhqfMF7kDaW4Edj5N0Rv8+gVlwQyDY4nWX8/05+7ioIPM3ioPfbBaC9AUs4WjCp
-	ymuCW/nUuo+atB02QjI2WkVCCu2K9y0=
-X-UUID: 7622c894d1ea11f19a56ed5b684f684d-20261027
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR
-	SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS
-	DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:b8b19f8b-e63f-405e-8854-954816a2d84b,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:b8b19f8b-e63f-405e-8854-954816a2d84b,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:d63e7cb1ef2d14fbaf4f4c2e2408e69d,BulkI
-	D:261027174039JO0S0EI1,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|136|
-	850|865|898,TC:nil,Content:0|15|50|99|100|102|155,EDM:-3|-100,IP:-2,URL:0,
-	File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:N
-	O,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 7622c894d1ea11f19a56ed5b684f684d-20261027
-X-User: wangxuewen@kylinos.cn
-Received: from localhost.localdomain [(223.104.42.231)] by mailgw.kylinos.cn
-	(envelope-from <wangxuewen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 265772172; Tue, 27 Oct 2026 17:40:35 +0800
-From: Xuewen Wang <wangxuewen@kylinos.cn>
-To: hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH 2/2] mm/shmem: trace folio allocation failures and fallbacks
-Date: Tue, 27 Oct 2026 17:40:14 +0800
-Message-Id: <20261027094014.2432692-3-wangxuewen@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261027094014.2432692-1-wangxuewen@kylinos.cn>
-References: <20261027094014.2432692-1-wangxuewen@kylinos.cn>
+	t=1793094060;
+	b=65aKJZCU98nLFRiuK5A8Kvkf1ysvc25l54E6NwkkoU9+xUl55SDlyx495y2gNnnS5650lb
+	ckPadc5guXozbBf/kmCuDninC06pow3VtNs6ZpN2eP/X+dpThHhtQvJD9NXoRggdJcQoqz
+	WOCXemzy+l0fk80x5BHC1xox8qtKCVg=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e20ed3b9dso3545727f8f.2
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:41:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1793094059; x=1793698859; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JVBSyNaPKEtFoMBnmXCIBXxl7RDB3mGMHMJZz01NkVk=;
+        b=NmV3J9IrAJ2AQu5FLYy/7uaGCv+sogpMV90asd2wxIFjR0SGjIGffMe3IB+TPOV/nR
+         VN3D2cJ5d8sHxDNdYWPxKzA1bnS4y0iYPUTLyGN/jabKgaZ/NB/t7PvhtbXvka7yX+kv
+         3TsR0hIoUO7Hc/Suo7RWBzjqK0mgWxfPpx/rmsSCkDVit5HEl5ZUSHrPV9oMoczlajeK
+         rZ1qLQdO/6T8y6pnv9Iv8XnG/WpAF7yyCc2bJyT1aiTB556HXagmOaDks68NhvLiOUKw
+         0YEhDfb7M0iy2NJ8yyHruIsJArxA3zktiIaWtt7ctEf++hLhPQVaL1GPRhpkrwg2Nco1
+         tLKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793094059; x=1793698859;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=JVBSyNaPKEtFoMBnmXCIBXxl7RDB3mGMHMJZz01NkVk=;
+        b=QLSkn+8RnLaq0rvAz26CmOaRhfvpbWCWGdh+ZgAorNGx9pRNt5sfYCc2Z+yrojL7vC
+         yjsADESIFiOh/9959lWrTNDN593D07oFaq/gdrcHp9/7MtbamG5EAn3XXhQY/2STIH4L
+         RzFPkku9+Xo7MMaLZD9qGxUlZzciyZRpMKphU3yDPPrlu21wb/ivRUuXZzZQ3JMpKUkW
+         tssHyi6mSno33UlfrbpZuemwv1bIZwV/kNRwqENIdP3A4cioX4ykZXOXE4NQbUWrdQOe
+         W4ANM6l6/28xpUFRrpX82unJhy50z2NE9ljjGNIWKOmv7xz8MQe5DuD0xP3dD6Bv3RHU
+         N4iw==
+X-Forwarded-Encrypted: i=1; AKwUvBx+UAHsovZow5JRtyiBiXY0erzryU+G0X2GKH4kXy+9kDnQPVcwZu14/STKQyGHyc8wuRrOwrbXTg==@kvack.org
+X-Gm-Message-State: AFq9FYJO49qdJxj+/HIsA1ejZtO77UDMVYk1uKDmAGlx3OyfJpBSWTf4
+	1SAwRQvBhxOuSQq4EtHDcQMDuiyx+AyYzWrRlP0lYfJDEB71cFm2CE9xgokApn58JJo=
+X-Gm-Gg: AYBFou3yMWRNLTpYBxY1h3Td/G3NOtOAfJcQMPP0B13Yluu0icBBAFzIeKvC3nJT2wY
+	cdtbY3vkMa7ClndjpkHHJOExjIgWW2Sq+N/Bw1dChgaaNEtmdxcLncIK8mG4IWMRyAjn4GnrjgE
+	C7JhSZ3/Rjdq9Qnv2No2+SDiayXqCugOTzwrFBHvWmjVyMjr32S7ZE19kgwQvamVy7nfprFqKZ1
+	H0eliqq10zPVhgz7NwSOkA9pvcSh8ieLImHcakDlQ1y0fw/4qPYvZLfoE8Cj+m7EeWOfUbp5SbQ
+	/AgmsvW1FXz3U3cmc+uW1/fPj7tvvANop8iL+EnF+GNEw8dQuFwmcBd4rqBCJML2aK+m78AStLE
+	5WgXlouChwC9UW8Zt3tWZgB9u14Iox0fg7jjKCoCGMbgWqwoi3qVlJS5nh+YcjEuTUuhC6OVJGT
+	16T4Sjkq+UfH6nF+Z2NqHNiZAvEO3SiZhnPoiK8FoY8joMK7uZIDz707pOhzAugtRwJteWzAk82
+	nNlKRUxL40L25Hw7zENTvDoB6rlVggcarsL9z1w5JKlK8iFOckA+wkfHwEX9ul28r8nmQ==
+X-Received: by 2002:a05:6000:2989:10b0:48d:fbdd:4132 with SMTP id ffacd0b85a97d-48e3eb78141mr13538157f8f.18.1793094058994;
+        Tue, 27 Oct 2026 02:40:58 -0700 (PDT)
+Received: from localhost (109-81-20-177.rct.o2.cz. [109.81.20.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebd4bc5sm21909641f8f.34.2026.10.27.02.40.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 02:40:58 -0700 (PDT)
+Date: Tue, 27 Oct 2026 10:40:57 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: "T.J. Mercier" <tjmercier@google.com>
+Cc: hannes@cmpxchg.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, zhengqi.arch@bytedance.com,
+	akpm@linux-foundation.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm: memcontrol: fix NULL pointer deref in
+ high_work_func() on dying memcg
+Message-ID: <auBxqU34FQYauoQr@tiehlicka>
+References: <20261023222313.3979455-1-tjmercier@google.com>
+ <at9U2HvyUP-iYOCt@tiehlicka>
+ <CABdmKX1mLKEJNiecW+meJ=LB_Kb8-ieeWdZDd4T6rNR9gKuq_A@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F32F11C0004
+In-Reply-To: <CABdmKX1mLKEJNiecW+meJ=LB_Kb8-ieeWdZDd4T6rNR9gKuq_A@mail.gmail.com>
+X-Rspamd-Queue-Id: 7A4F7160002
 X-Rspam-User: 
-X-Stat-Signature: 1jtfpk6ns74whs79qs6zwj3cm5ior3ss
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: t9a9shgaf9e93aii14p6iskgk8a43d1x
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1793094045-376654
-X-HE-Meta: U2FsdGVkX19b70mYoG2YmTfscQRChPbmVb21mvjKEyb0lyuXNoWRLqxcGJnTdwEfZ1EBjLmNOBj41Fpq8wjcLyKqMt7u3mqop/YEbaQwq8W+9utj5w9OJX6OZYalOST3VKkl72Gtz53r/o3A7l1ApVcDBMWRxbiOnPqDTEM47TMyq+9PjaMDwoBTey3SJfbzRcp2o8IuP6k33aSpX4WEPNFwgRu3CDnns1RwpltQ7zchWM12V5tYe3zQfvPZutIoOH2RrvQQD0+e/xLC2UiIRgONxwY4gOCU7PEnOu4tdbu2Ov/H1+lIXE4Q2gNWnP0rynfZXFkcLuqvsvY5p16N4Wescyax1glLdAZ0mVg0CAmsaXzSjiHmcOP5IQRQYnW+z5yEyarCrZOaHM9qcwGJ8qRvEuNwqwvrO5lwqjdtBVvux2kLe6LaSZPwdWLJLLmfrugWeccXaU4PExMSkHXiPg00suXFzC80/KctQ8HfaX6CrkgVMSOgFQEw+/6/CYyV2fslv5LHj8VP2BKPAw6xw0Z8XTZV3gRZHLcqIgnRkXNYIb/0ici/lQAgfuJgUyL3/ANsOQWy1LMv2ASGsGX8i9CCjSQW0q+AYDi8YnoL/ZN/XmlpiXGlFvrTextoj2J9p8RjqamI0maQi5pnP9ExdzoWqOoEAYMbD3A9F0ajkeovMcHfYc5nnMmK9qZP9AMyTQH9nIm+SsMQU99pbF3q4bJuiHLRWslqwxyY8x3DNmL9+5kb9a2Ajn7OK7Bwz+q658ZXcIyfE7hEt5pYPG5afEmsaYTVLTvy81e/CKWp73XBFYxkz470DnovkZFt26oLSrBN+3+FG/ywQvk+amJtooz+XaXbli4nPC4T1dwFIIB5+v1gDAqazKyGN7VppxhMJti42y+y+ZbyrDNih8fhMj7DGhWTwYrANuDlakdUzYSVP//YfVPt39P/KzWyyVCqYNr2SguoIfReedLhgsL
- tXLPgXva
- KOjqm
+X-HE-Tag: 1793094060-545087
+X-HE-Meta: U2FsdGVkX1+v6C0je683RhYBd6unIXZrBCyxLU1pQioVzEiKv2wj99SrhE5mItOizIO6BP3gwOqcD4jAnipPxU1YbhtRxplKBPfqIr4CVtmM55dvNYLevDqhWct4sSlEc0yfzfcGPivjiR5R43/ZXEZxcq5ceSYjfwvCffHp7Lg/V54wclyscSGHpnUEdX/ELuJ7C0p1qn/E7IYsLLZMrvnmlZde3lFtnjl58gussUUOwWKMKmipMy50LLA8RfxAdKJLz/QntdNNt1BWYGyDOrPlvyXM0a9BlEme/9Ue/UBf3y/b9JdP0Gi45apBKsY57sKzeB+f4NCiXT7MJDJ0GgdxQzn9aouyIbWB5fc5uWuQl0SCsDH12aN8G05Teecu9i82UEzRwARfnQCKXyC8jcTFVrn0x1pxIy7sWH92uITxDGqeGT9ySG3zqgTy1AlrpqxVDeOFN8AMECCJTDNUCy89qpMz9fj4Qz+CkPYcQoRX04oRO9vgjWY3rlh2u7Z88RU09jn53qxDMWgfpudxl60xT0Ql12ATRry3y5nOgIPG7PmJwb6UVpo2gRX5CDkShSyLKZMr4MYpamc4yKXtIpvfaSA0SXa5XVT6Zx/lUumAO3m9uX5M9d7jR2wGG0YXHcadIONBFQrTRm4JPUyVd9eqP7w1rI08JKa5HalZgCyS+nwWEbJPd2Wwsm9DYhyiK1GFGfZ3fAqOAvQRwaqERysLKz8axKLci34Cnt/C6oryx/jENHjA5yMQ3w69EXdsGP7XPM6BbmuXm8SNC6qpTwKla/iIqmoTSXQtkx7ui7BFTagSw8vsnu22upXTlE8XGGwBW8s/PNs3ULK+y5KxKXAX0UQWpdMSrWeUrZ63ttY1uTj/MKaMROb5O+pNrPfDmkPyRDbSup4gKoPAcXtuF9lnlVQSt9NmJRMbiERd5zeO7E7Z3+5l1W2zow+H/XJ8yYm68GOCEPWd1yip5RV
+ 2yLLG0EG
+ QxC5AZQXLhPYI9M24YTe9SN+WFtiABg5CeyKmI8C1WWrPKSVcKzbf+HeWZb8Fze3bIxj7tdq20KlO9Q2Vq4KjluZZjbtWbju+sWhlwaeRn6y289i13pM0hnJs5INgx5dnwtVpC8uIx1582NarB9neHqNe0PAdYIiNkNERV+phYfW6C0dG8+huW8Q1FnJjLfrM4NYdnAMnCS7uGqRxrdbQcgMDYBetNtPC76afEYyH5YjKUCF74rhMlWx+rgz06v/FyuNpDRTB2S+R3w24qxfoRT4Pwptt01jPqx6LVBnBXsLBjQLMA6gUZRQhYvnUmwFKxCOVsKn4s8pdFuO+ABynPByMPltHgrqcx1YazMXKunLSpWtrRO2/JDIiSqnE+D5aY1cXPra7r5LaWlUEu1wNP2nbda2lnXugS107mJySGho5Mfs2luZrfhPvBMHbfImQL329G42haCLiL21TX1NPuF+rH+nhP8HruH0Pr67jDvX+9yPcM5h3Qcjm6mr74Y1uiKib
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,254 +130,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The shmem allocation counters cannot identify which tmpfs file is
-affected by allocation fallback. They also do not describe order
-filtering caused by VMA constraints or existing page-cache entries.
+On Mon 26-10-26 11:01:51, T.J. Mercier wrote:
+> On Mon, Oct 26, 2026 at 6:25 AM Michal Hocko <mhocko@suse.com> wrote:
+> >
+> > On Fri 23-10-26 15:23:13, T.J. Mercier wrote:
+> > [...]
+> > > ---
+> > >  mm/memcontrol.c | 5 +++++
+> > >  1 file changed, 5 insertions(+)
+> > >
+> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > index a05d9a8baa1b..84f4a8fd4d16 100644
+> > > --- a/mm/memcontrol.c
+> > > +++ b/mm/memcontrol.c
+> > > @@ -2457,7 +2457,10 @@ static void high_work_func(struct work_struct *work)
+> > >       struct mem_cgroup *memcg;
+> > >
+> > >       memcg = container_of(work, struct mem_cgroup, high_work);
+> > > +     if (!css_tryget_online(&memcg->css))
+> > > +             return;
+> > >       reclaim_high(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL);
+> > > +     css_put(&memcg->css);
+> > >  }
+> >
+> > OK.
+> >
+> > >  static void high_irq_work_func(struct irq_work *work)
+> > > @@ -4463,6 +4466,8 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+> > >
+> > >       page_counter_set_min(&memcg->memory, 0);
+> > >       page_counter_set_low(&memcg->memory, 0);
+> > > +     page_counter_set_high(&memcg->memory, PAGE_COUNTER_MAX);
+> > > +     page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
+> > >
+> > >       zswap_memcg_offline_cleanup(memcg);
+> >
+> > Should we simply disable_work_sync when the memcg is going to be
+> > released instead (mem_cgroup_css_released)? That should both prevent
+> > the run reclaim_high during the memcg shut down and and also avoid
+> > plaing with limits to work around.
+> 
+> Hi Michal,
+> 
+> Unfortunately that won't work for shrink_many() ->
+> !mem_cgroup_tryget() -> lru_gen_release_memcg() which can occur before
+> mem_cgroup_css_released() runs. (mem_cgroup_css_released() happens
+> through the cgroup_release_wq.)
 
-Trace failed calls to shmem_alloc_and_add_folio() and successful calls
-that allocate below the highest order permitted by the supplied mask.
-Record the original index and the highest permitted, highest suitable
-and allocated orders to distinguish filtering from allocator fallback.
-A suitable order of -1 identifies an empty filtered mask, where no folio
-allocation is attempted; such records use a separate filter stage and keep
-the stage error at zero while preserving the helper return value. Omit
-successes at the requested order, including ordinary base-page allocations.
+I do not follow. Could you explain why please?
 
-Identify failures by stage: allocation, memcg charging, cache insertion
-or filesystem accounting. Preserve both the stage's errno and the
-returned errno. In particular, a charge failure remains visible even
-when a page-cache conflict makes the function return -EEXIST instead.
-Stage and errno distinguish this case from a direct insertion race.
+> The high limit reset is also needed for targeting live ancestors above
+> the offlined child in try_charge_memcg(). Without the resets,
+> high_work is never attempted on them since it gets dropped when
+> attempted on the offlined child due to the first hunk, and
+> try_charge_memcg() breaks out of the loop.
 
-Document that each event describes one call to the helper, which may try
-multiple candidate orders. The caller may subsequently retry at order 0
-or restart a lookup, so an error in this event is not necessarily a failed
-user operation. A successful order-0 retry is omitted as a success at that
-call's requested order.
+I must be missing something really obvious here because I really do not
+follow you here too. So we are offlining a memcg. We need to coordinate
+memory reclaim with the memcg tear down, right? For the high reclaim we
+can achieve this synchronization through disable_work_sync in
+mem_cgroup_css_offline. For a synchronous high memory reclaim we do not
+have such means but we are keeping a memcg reference which makes the
+lifetime well defined. If you reset counter you might help to bail out
+early(ier) but that shouldn't be necessary from a correctness POV as it
+doesn't provide any explicit synchronization.
 
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
----
- Documentation/trace/events-shmem.rst | 45 +++++++++++++++++++++++
- include/trace/events/shmem.h         | 55 ++++++++++++++++++++++++++++
- mm/shmem.c                           | 34 ++++++++++++++++-
- 3 files changed, 133 insertions(+), 1 deletion(-)
+> Shakeel's remote charging patch
+> (https://lore.kernel.org/all/20261010210957.1350874-4-shakeel.butt@linux.dev/)
+> sends remote charges through high_work too, so without the resets
+> those would lose ancestor reclaim the same way. Before that patch not
+> performing the resets means reclaim_high() runs unnecesarily against
+> current's memcg (not the remote memcg above memory.high).
 
-diff --git a/Documentation/trace/events-shmem.rst b/Documentation/trace/events-shmem.rst
-index 45da82761360..4a0e50bdbdf3 100644
---- a/Documentation/trace/events-shmem.rst
-+++ b/Documentation/trace/events-shmem.rst
-@@ -71,3 +71,48 @@ Filter or aggregate by both ``dev`` and ``ino``; inode numbers alone are
- not unique across mounts. Trace filters use the numeric values shown by
- the event's ``format`` file. Check ``per_cpu/cpu*/stats`` for dropped events
- before interpreting counts.
-+
-+Allocation attempts
-+-------------------
-+
-+``shmem_alloc_folio_finish`` records failed calls to
-+``shmem_alloc_and_add_folio()`` and successful calls that allocate below
-+their requested order. Successes at the requested order are omitted,
-+including ordinary order-0 allocations.
-+
-+This is an attempt result, not the final result of a read, write or fault.
-+After a higher-order failure the caller may retry at order 0, or restart
-+its lookup on ``-EEXIST``. A successful order-0 retry is not recorded.
-+Do not count all nonzero returns as failed user operations.
-+
-+``requested_order`` is the highest order allowed by this call's order mask,
-+or 0 for a base-page request. ``suitable_order`` is the highest remaining
-+order after VMA and page-cache filtering, or -1 if none remains.
-+``actual_order`` is the allocated folio's order, or -1 if allocation did
-+not produce a folio. Orders refer to base pages, not bytes.
-+
-+``stage`` identifies where the attempt ended:
-+
-+* ``filter``: filtering removed every candidate order, so no folio
-+  allocation was attempted. ``suitable_order=-1`` identifies this case.
-+* ``alloc``: a suitable order existed, but every allocation failed.
-+* ``charge``: memcg charging failed.
-+* ``cache``: page-cache insertion failed.
-+* ``account``: filesystem block accounting failed after its retry.
-+* ``done``: allocation succeeded at a smaller order.
-+
-+``error`` is the error at that stage; ``ret`` is the error returned to the
-+caller. ``stage=filter`` has ``error=0`` because no allocator call occurred,
-+while ``ret=-ENOMEM`` preserves the helper's return value. Both are zero for
-+``done``. For a charge failure followed by a page-cache conflict, ``error``
-+retains the charge error (such as ``-ENOMEM``), while ``ret=-EEXIST``
-+requests a lookup retry. A direct insertion race instead has
-+``stage=cache error=-EEXIST ret=-EEXIST``. Accounting errors retain
-+``-ENOSPC`` or ``-EDQUOT`` as appropriate.
-+
-+Enable ``events/shmem/shmem_alloc_folio_finish/enable`` in the trace
-+instance to collect these records. On successful fallbacks,
-+``suitable_order < requested_order`` shows filtering, and
-+``actual_order < suitable_order`` shows allocator fallback. Both may
-+occur in one attempt. The existing shmem allocation and fallback
-+counters remain useful for aggregate statistics.
-diff --git a/include/trace/events/shmem.h b/include/trace/events/shmem.h
-index 7a0050a1686f..72b20d6b3caf 100644
---- a/include/trace/events/shmem.h
-+++ b/include/trace/events/shmem.h
-@@ -80,6 +80,61 @@ TRACE_EVENT(shmem_swapin_folio,
- 		  __entry->fallback_error, __entry->error)
- );
- 
-+#define SHMEM_ALLOC_ALLOC	0
-+#define SHMEM_ALLOC_CHARGE	1
-+#define SHMEM_ALLOC_CACHE		2
-+#define SHMEM_ALLOC_ACCOUNT	3
-+#define SHMEM_ALLOC_DONE		4
-+#define SHMEM_ALLOC_FILTER	5
-+
-+TRACE_EVENT(shmem_alloc_folio_finish,
-+
-+	TP_PROTO(struct inode *inode, pgoff_t index,
-+		 int requested_order, int suitable_order, int actual_order,
-+		 unsigned int stage, int error, int ret),
-+
-+	TP_ARGS(inode, index, requested_order, suitable_order, actual_order,
-+		stage, error, ret),
-+
-+	TP_STRUCT__entry(
-+		__field(dev_t, dev)
-+		__field(unsigned long, ino)
-+		__field(unsigned long, index)
-+		__field(int, requested_order)
-+		__field(int, suitable_order)
-+		__field(int, actual_order)
-+		__field(unsigned int, stage)
-+		__field(int, error)
-+		__field(int, ret)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->dev = inode->i_sb->s_dev;
-+		__entry->ino = inode->i_ino;
-+		__entry->index = index;
-+		__entry->requested_order = requested_order;
-+		__entry->suitable_order = suitable_order;
-+		__entry->actual_order = actual_order;
-+		__entry->stage = stage;
-+		__entry->error = error;
-+		__entry->ret = ret;
-+	),
-+
-+	TP_printk("dev=%d:%d ino=%lu index=%lu requested_order=%d suitable_order=%d actual_order=%d stage=%s error=%d ret=%d",
-+		  MAJOR(__entry->dev), MINOR(__entry->dev),
-+		  __entry->ino, __entry->index,
-+		  __entry->requested_order, __entry->suitable_order,
-+		  __entry->actual_order,
-+		  __print_symbolic(__entry->stage,
-+				   { SHMEM_ALLOC_ALLOC, "alloc" },
-+				   { SHMEM_ALLOC_CHARGE, "charge" },
-+				   { SHMEM_ALLOC_CACHE, "cache" },
-+				   { SHMEM_ALLOC_ACCOUNT, "account" },
-+				   { SHMEM_ALLOC_DONE, "done" },
-+				   { SHMEM_ALLOC_FILTER, "filter" }),
-+		  __entry->error, __entry->ret)
-+);
-+
- #endif /* _TRACE_SHMEM_H */
- 
- /* This part must be outside protection */
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 3b910aec5bcf..68321d61dfdb 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2155,17 +2155,23 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 	unsigned long suitable_orders = 0;
- 	struct folio *folio = NULL;
- 	pgoff_t aligned_index;
-+	pgoff_t orig_index = index;
- 	long pages;
- 	int error, order;
-+	int requested_order, suitable_order;
-+	int charge_error = 0;
-+	unsigned int stage;
- 
- 	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
- 		orders = 0;
- 
-+	requested_order = orders ? highest_order(orders) : 0;
- 	if (orders > 0) {
- 		suitable_orders = shmem_suitable_orders(inode, vmf,
- 							mapping, index, orders);
- 
- 		order = highest_order(suitable_orders);
-+		suitable_order = order;
- 		while (suitable_orders) {
- 			pages = 1UL << order;
- 			aligned_index = round_down(index, pages);
-@@ -2181,19 +2187,35 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 			order = next_order(&suitable_orders, order);
- 		}
- 	} else {
-+		suitable_order = 0;
- 		pages = 1;
- 		folio = shmem_alloc_folio(gfp, 0, info, index);
- 	}
--	if (!folio)
-+	if (!folio) {
-+		if (suitable_order < 0)
-+			trace_shmem_alloc_folio_finish(inode, orig_index,
-+						       requested_order,
-+						       suitable_order, -1,
-+						       SHMEM_ALLOC_FILTER, 0,
-+						       -ENOMEM);
-+		else
-+			trace_shmem_alloc_folio_finish(inode, orig_index,
-+						       requested_order,
-+						       suitable_order, -1,
-+						       SHMEM_ALLOC_ALLOC, -ENOMEM,
-+						       -ENOMEM);
- 		return ERR_PTR(-ENOMEM);
-+	}
- 
- allocated:
- 	__folio_set_locked(folio);
- 	__folio_set_swapbacked(folio);
- 
- 	gfp &= GFP_RECLAIM_MASK;
-+	stage = SHMEM_ALLOC_CHARGE;
- 	error = mem_cgroup_charge(folio, fault_mm, gfp);
- 	if (error) {
-+		charge_error = error;
- 		if (xa_find(&mapping->i_pages, &index,
- 				index + pages - 1, XA_PRESENT)) {
- 			error = -EEXIST;
-@@ -2208,10 +2230,12 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 		goto unlock;
- 	}
- 
-+	stage = SHMEM_ALLOC_CACHE;
- 	error = shmem_add_to_page_cache(folio, mapping, index, NULL, gfp);
- 	if (error)
- 		goto unlock;
- 
-+	stage = SHMEM_ALLOC_ACCOUNT;
- 	error = shmem_inode_acct_blocks(inode, pages);
- 	if (error) {
- 		struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
-@@ -2242,9 +2266,17 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 
- 	shmem_recalc_inode(inode, pages, 0);
- 	folio_add_lru(folio);
-+	if (folio_order(folio) < requested_order)
-+		trace_shmem_alloc_folio_finish(inode, orig_index,
-+					       requested_order, suitable_order,
-+					       folio_order(folio),
-+					       SHMEM_ALLOC_DONE, 0, 0);
- 	return folio;
- 
- unlock:
-+	trace_shmem_alloc_folio_finish(inode, orig_index, requested_order,
-+				       suitable_order, folio_order(folio), stage,
-+				       charge_error ?: error, error);
- 	folio_unlock(folio);
- 	folio_put(folio);
- 	return ERR_PTR(error);
 -- 
-2.25.1
-
+Michal Hocko
+SUSE Labs
 
