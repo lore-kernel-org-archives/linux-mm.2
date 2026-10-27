@@ -1,90 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB24D606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08636606A330
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ad0FHs9a
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QBJMvrfX
 Received: by kanga.kvack.org (Postfix)
-	id A2F986B05CF; Mon, 26 Oct 2026 22:57:47 -0400 (EDT)
+	id 12F456B05D2; Mon, 26 Oct 2026 22:57:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A07656B05D0; Mon, 26 Oct 2026 22:57:47 -0400 (EDT)
+	id 1074D6B05D3; Mon, 26 Oct 2026 22:57:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 944106B05D1; Mon, 26 Oct 2026 22:57:47 -0400 (EDT)
+	id 01CA96B05D4; Mon, 26 Oct 2026 22:57:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E0476B05CF
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:57:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE5221A08E3
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:57:46 +0000 (UTC)
-X-FDA: 85366896132.04.E9C00FB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 40AD240002
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:57:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ad0FHs9a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793069865;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CA1546B05D2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:57:58 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61499C08A8
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:57:58 +0000 (UTC)
+X-FDA: 85366896636.13.CF83D49
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 707C21C0005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:57:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QBJMvrfX;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793069876;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9QLq/0Ywl9pK28bgKTQB2XoDfd9pUDB5TCp5lP/azKI=;
-	b=Qc8EzdeOl3I0M+l75BYA/RCN/a+pNiyjhUlIpyQLNn7rf6iP8or6MuVqvp7NXO0JFDabNU
-	Pk/ToIma2XbCb9lviZSYquuTCp4ecYjjEuiegePfaE5OzdlIvzoE5NwzWrNVnD/RwNxqvS
-	9HvK4CeIybjy86xaaemOzhBbUfVYcL0=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ad0FHs9a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793069865;
-	b=OZw5i3IGPD6O36u0oAFi1yqZt6VHQ9eGFgepYAaZdUuC0p8WIT6HVdbrLjmOmtEyxi8fnH
-	Fc/JwBIO4dNzmRPYm75HoeQ8jL05FWSycPN6K5lGFjJOxZitS2t29IX9dRLnvQ4mx+JYux
-	h4+Um5h3ezmXWrRGZmnQW66XSvyX9fo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 64D71438F3;
-	Tue, 27 Oct 2026 02:57:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4F21F01825;
-	Tue, 27 Oct 2026 02:57:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793069864;
-	bh=9QLq/0Ywl9pK28bgKTQB2XoDfd9pUDB5TCp5lP/azKI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ad0FHs9a7MG/b1Am11vly5ptqrs7PhBVadgxVTeFfMH+lDchF/sfAh9GwKgno687W
-	 Pe6x/lX77RhdFrNSjYidsACwb+woLEIzwtVVirBNtDyQNrxmzy/PIo3tRqO2tXpaJ8
-	 9RYXXQmhma5iXphzOeQoIGSUBVl+NJdm8J520p3TI9mx1M6uZq1dRq07DnXRl7upoT
-	 6FGKZthg83zMr71kcgQO5eWQpVdu0C3zrANQ7KtxfEvju+VPonDMHC4MSy2JOfhn3p
-	 DYfV46YqlfumgHEguxIHdxw+Nj/Y+C/IchoVSsWI501rXo1I4GB5S6amx3eQ0lMIpf
-	 Szab3ftddcrRg==
-Message-ID: <sashiko-outbox-186037@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/highmem: refuse to copy hwpoisoned folios in the
- !copy_mc fallbacks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yuanhe Shu" <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org, david@kernel.org
-Cc: =?utf-8?b?SHVhbmcsIFlpbmc=?= <ying.huang@linux.alibaba.com>, "Kaitao
- Cheng" <kaitao.cheng@linux.dev>, vbabka@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com, tujinjiang@huawei.com, mgorman@techsingularity.net, chengkaitao@kylinos.cn, muchun.song@linux.dev, linux-mm@kvack.org
-In-Reply-To: <20261026025724.1430747-1-xiangzao@linux.alibaba.com>
-References: <20261026025724.1430747-1-xiangzao@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
+	bh=veWNjOyx0q2aoHvEbX2sAz0cuq6dhXLamwz9eTavWpQ=;
+	b=nkot0vgym/mUOatWFIMbW69sSKxkekph5QNtntNgPk8f4PBTiIYkK7hFUgb/L0py0zCY4i
+	84CpHtbjhwPWSKrijYWbsp99xr5Ef+iEtRbZ6xbD66qT79vDEbpJFhMaJQWR40ey714HnT
+	sR2sn34+HwsmujmASeLxopKXewq/7wk=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QBJMvrfX;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793069876;
+	b=ywn9ChcGcrDRaPkZnaf1B8RVJl7ZJRF4P10/PdMWaVxGSW3PUOrC+SlraevT1Pl/2QMt2J
+	4PK/g8ZopeG0g0AbL5BILPnGYUAUwtGjZW4mb2MRt/n3MviwFnuh2IcB6xCPQSO+1wCCtq
+	aNDZhLduY6flWaM8WbX6AFwluIXdOAs=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-535f598d126so86191cf.1
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:57:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793069875; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ava2MDHWRpIpNJi4CmWSsYTZf/fM2AxvCHQVWKxbqWRKBzSDaGACJu3HgeGQDrmTaj
+         hv5JL6nyWtUuM5an7D6DBfFV3NXgPua/dgRPvK+QbPYgENtukXgSoEF7c/EAxHST/u7j
+         qyRZ1Y6YHJzhF+AvWaeE/CzP5EQvuUOi5h7Pqk88vzQ4U1DsW42O6klEMFgksL4o/yfF
+         1jPn72nm7aWnkbOaj9g6SbtEJA2yeF1yDWf4Sub7DOX4ZhrsG4bGl1GS5Lt1NXZQCEbS
+         mljHGV5NUtJBZ+xlUJ+8BlbD8Z1rtIEoY4SA2wvY+5GPmCPqXR7g8O6FUtCU9Ll0VfVf
+         a+SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=veWNjOyx0q2aoHvEbX2sAz0cuq6dhXLamwz9eTavWpQ=;
+        fh=bALwfFwhvIt5hPCINTeo2WjesW5mpNVfBh7JryxdWXI=;
+        b=RkpM0eZxt4TPz9eUMBkPDM4AYvUhhKRHcgqAOJo/QgewaEGcsnpwhg1g3gCGm4gSxV
+         VELGHD3kANdcfsPK2//8UsULjMMmk6+q+xlW5x5pPLOMam3Dsjw6XXmjFn4w0gEU3VZy
+         2/eqbCGF5tOm7gSpV0+/ZjLrjiPWKWhSSSMbEIinHopgHmkkicxC28wxK1XrsiI+IzI1
+         xE66yKg5z4On0RSk4xqfc2xspHsjgfC9BOWnV91u5Nt8lCsKp1U/tRk9a6dezTbxPAXH
+         sV0FC1WYlEQ6IE/pa7Sl4/RhhoHdQJgledFR3bYc9r8mJtmgiFc6kd3yDVDcQlPn2H+X
+         ptqA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793069875; x=1793674675; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=veWNjOyx0q2aoHvEbX2sAz0cuq6dhXLamwz9eTavWpQ=;
+        b=QBJMvrfXl6J7LDs9NzlypdhbPbfEWLYCJHbg5wnl/hGx7QIoZ8VAJrDugg8gPl+FZ7
+         T9haLWUcgOMl5RIBvaTUlXLpB5ZvYwgh2EIMVbR3d6JAzUHD5pY2KJfMLSMMNCkVdOef
+         TNnI04eEJKVdpM4Rqjko78XNATVInrLuDlUgu3iW4wer5b4C5lDFEb8C9FYCZ80ZBBzp
+         zx/P3/IEYtfpePSkrI8ywjcYqLAUmanh3pBxTLwOC72RzTWgLpuJQLGOxMDXtO+lQtel
+         tsK07c/Hx1d/MhEMP/5sU3s98Ae0t3CBKzv4e4N++BmexhGnfm9Xaqi+xHHhYLWLydj9
+         8O1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793069875; x=1793674675;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=veWNjOyx0q2aoHvEbX2sAz0cuq6dhXLamwz9eTavWpQ=;
+        b=bH+I2DuC2GRv7630JZBCui1to3AVlO+7EUkWB4m7IZCnQ8fwixsHqZe8hlRBPo1xIl
+         8LFja6p+LGxUk9AT2N3hUKmlRAe5z0YcDqEE0cvdYuVpqkpKQuZGoXFYkVdAdFuUgyV6
+         Bs93jbVaVIbvpP6Yfq6rB0weVpowsb0jPueo6HWdtXigNJ3cxWNy8HR8yk1JkpK5rcFb
+         TieYGcjD43dbuBazLEeV2WdQSqWx07mAV0GHKSP+FZLgeiR9uC/6lbEtR0tdPtYAkp/5
+         xRxOcuz0KB/gEJSjSz+L1RnN3odc8m2/kYoZW0YMaSuhP6MkOQ3q2XnQi9jOcNlk0t/p
+         3Hkg==
+X-Forwarded-Encrypted: i=1; AKwUvByCy5ETTYGwaMRoY3cAXH/gPIoohHWgput0/ow/EKE8bIBk3T6cwm/vu+7Wf71RdLA4JZmHw6R3CQ==@kvack.org
+X-Gm-Message-State: AFq9FYLDFe9FxMqrv1tupdv++leN8UNurV/jHtwjfQ7n5Bj8Q8Affzt4
+	npzMO08ZFsZopqLZEMDTEsWJqZmD0/7+e4ZNmu2n3vXNkLqycyuJP+OIgfLCiYrOVO8YoTNFANV
+	2IZMWouSB+zYNmv+OSDyLj8QK94odzowPPp2j2K9s
+X-Gm-Gg: AYBFou046fJ534rnd94etrZLgsx2x4xaChR/YbmLZ0vEKIsD7pV8r0PX/ZVGTiIIWkm
+	LCL+SjzYp9IglaCfvX3Jrn6tkEO7IhYVvQT439gKMPGoyG9TBYmSyEem/Qz34hNSVdY6boyyQEP
+	5RPlWNyDDCH4uS+2CIBfNiMohRbnec9GBjBgfnRgfYamoZbDPCKq629HV5qLZ7HN/g/V+C95RXw
+	ExD0pIYSaNOCAL6EGloLI21eNaEgZtKgY+1i5c9ul1OFBL5GXT98UKO4+cakTPHAubyxcEZZVWs
+	dNR8Pgm4yshu32oXVmvyCdfM3Dr+PbCu91i+g2rncchwaRb1E/9ToMDSh3k4Gd+ovs1H5odj8JM
+	XRNZasg2LH2u2dTstabAWfsaIgnEjnZszlTu2
+X-Received: by 2002:ac8:5cd0:0:b0:534:b7b2:634f with SMTP id
+ d75a77b69052e-53e74f18ea0mr8347351cf.8.1793069874720; Mon, 26 Oct 2026
+ 19:57:54 -0700 (PDT)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+References: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
+ <arFYRAa-i7CIwmHL@gremlin> <arF-E3Nsw9ZliH0t@casper.infradead.org>
+ <arI_w2wTfA00Mgy9@gremlin> <armexcXDiG8ryZd6@casper.infradead.org>
+ <CAGsJ_4xuFi7K+crAcFQ998SxXS0xPM6QeA34JV+6+Sy005rXLg@mail.gmail.com>
+ <ar7MsOb6IJLt4eLo@casper.infradead.org> <ar-o1TrOMGrrcxLX@gremlin>
+ <ataDTEZIKOYtwhUF@casper.infradead.org> <CAJuCfpH88HGXyLzBr6YGxzTrOq18HaPcRvhN9RwEBxG_ptv7KQ@mail.gmail.com>
+In-Reply-To: <CAJuCfpH88HGXyLzBr6YGxzTrOq18HaPcRvhN9RwEBxG_ptv7KQ@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 26 Oct 2026 19:57:43 -0700
+X-Gm-Features: AclHuK_KCyZzsUIRPigLpRqw3YeQAHnl6JHTenlWoPcunSyUcxCZShOICs2gDrI
+Message-ID: <CAJuCfpH6o1NAN_4W6VY6o3unxr9V+YCNFiLS8oCg7giWRLz8_g@mail.gmail.com>
+Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
+To: Matthew Wilcox <willy@infradead.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@kernel.org, liam@infradead.org, 
+	mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, vbabka@kernel.org, 
+	zhaonanzhe@xiaomi.com, linux@armlinux.org.uk, catalin.marinas@arm.com, 
+	will@kernel.org, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, 
+	chenhuacai@kernel.org, kernel@xen0n.name, loongarch@lists.linux.dev, 
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	linux-riscv@lists.infradead.org, agordeev@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org, 
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
+	hpa@zytor.com, Hongru Zhang <zhanghongru@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 27 Oct 2026 02:57:43 +0000
-X-Rspamd-Queue-Id: 40AD240002
-X-Stat-Signature: rmwcwn3hcuwjqbwtgujcjymp7b8fbs49
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 707C21C0005
+X-Stat-Signature: 17x9m7tnrdr61d1crzd5ursrdapucayb
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793069865-847134
-X-HE-Meta: U2FsdGVkX19P75PiWTG5kwUH8GNhvOWw2bp+aW89AYocDmlLB2JtLRNlLSS3Pg4vIpUOb6NLFpCBJ0UPNadY1Pf8OA/Znz9CUfguhrRG2tQ/NsAtG19V2N8VPh2bwcJXygKnQb/8Xj7rqhjdw09753wB8ijCAae7geX7VG+do4kSfcPUochd2ahEOFGqfhojBtSK7BoD43M49XUex+OBZ1OtyoWGznRSKXjLtVJcK1GimzY1tldxAGIucEGnbIq7RtW3O2qCO9B1aYfYH9SI+Jgom0/0s5pwSyZUehsZc8c7hHLt6oG/SkhOiMBNalwMLgH/CI9V6n4GLDt/y6GSdqX0GetigoSlkhxLBHiuvTVBYVAmLvmHBir/izkXMmwj16oZlgIv3XDaY8kNzZkpWviKTZbdkNV6B5Y5ae3fz/2WKK7fYVLG1cmFUNi+bh0DYKWHSqKPXZHVekrDIIi3UPn6h0l6jDNALUTD+V+56DdLX+O/vzjBT1kvm24TohFlOY8qPNDR2D1cL3028cNf7iXw1BEgO/k6CqZDskoDamkDf/sYW2IpztC/YSp1jh1sBwpbXGNcsrEGg/GsjCDMZR50XXOlkzHx4euYxNni9deNDKJ6ozDZ/YVvnPXyujg+sBY9XKSc2ouns1a5Fas+pSpolQnKGrfC9kIKyZhZR/YiEJJhsCbC1WBL39upRv0uOnZPf7IHk8qW8qv/abQnz7hExIEmYN47V9Ll4GJdklXFSLFQHwUgKcnirVMT1N//7/AbyKRofRIzo8h7QN6QE+kd0wcqwJWfvqCGNKGl8/chgLpooSf8hdjH7avGpGtADbO4wUaWmj0E7tzor58fhvPnmYZCRXJNFNC4ls00ZdxfJAvu6unlQUfmdh4Yx0poZ70Oz4ltJexuWUqeCm6Pm8P+0MPegdZockbfFRvn61pE3K1Jo7wHHuNGyWmGmREHaiXIeUvnEH/CKO2aeBU
- Dw24MB3W
- tasAaqh2d4EZO28lJUBIq0h44/D1qLAEocMwmzmHQOo7I6mHOaKCk8xu4qhOE77uuiBjowul7EKyG416SoKzFSB+TSCiRmGzsLgYDTBjGnvPBbIw8GP6pqFB51WKD/rGpL1QLk5l0m/sg/Z8yKd13sj+VzOxqW/OQIv2c+FCT+7o2xUbyertmmrD4YcgIFZFyVLycvBVU0TDMcDefBeRuQ+3jXam+SAtjEh9+TISX8UDuFiOBkbAAXJxrKCVSeKNjuhzakakabz+CCKvxf3Gt/Ya8EpXMvN+Yw7ulHweLc2nip1vUQpEOixxR2rK2nJIWAQGTWdNcm1As63ZBP1nafjjN3XOuLPbyLN5Lno6iMwqtpsXRU+8bUfnFFEhsEL1g9eWT3Mfo9tJ2YsML6yd6hRpOqF0C5Gd2TFfCV9hIId0wrugJI0RFlF0+NxYw0/2CIeJ7jk6m9SiqaLgMRPNe2yXujsxQXw8kAad5RFHxGpPQPr2gc5hEF/9CW8Pt0DLSJtAAC/LkafiPZxbAkUbvmDwc3vRBgrqUcXqL0iTJRaDYZKDyEIGGQXcvcCHgAGMlfpVnMK9TK9khp9r8rPICeixbUycW9UX3ZAmPYqduylVTk6jFqQaKl0KYsuKspkPrjV9KG449AbsiLh6Ywg1trZe7zU2BFlQ7UO4Oj8KU19tFH+A3CXUuW23nOFuPJxQdsvnN18UdudsQRsxSghuNBSXhg29LgWNvTZo6eY4mRplH3JjIRt7cOuU+rwChcrtnZZDQ2x7TfImx+uQ/AH7PY1aHMgycRdcjl5eBj+Sb1IXlLxjHchQXszMd7g==
+X-HE-Tag: 1793069876-84639
+X-HE-Meta: U2FsdGVkX18b4Ijkm9PU/GlOHZdo4fV7ALjpvagIdRKTyPOXJa/WD85ExZOWzeNb6C1mTPMNhhFc/TxXyCZVdC1F5hnmhxtzSxZRwvHOHqbwYiBGnHt3dtxB18A3W1e8F3XOWJtjL3kNHqMxYOD6hPAgejGe3YBiatwmC07Ci1TbnhgsXWWVNws76n3XjM8nPsGixVhxk3jTjDUaYCy5P3EM4XnGKqzPRysFTFCq0+u94/OO4Vk/bsWPQ++SpU3v0HAW3JxlwQTzg8CKCejQvxD8wmV+3mRx/BnIOTBnwF4Xk6kpkirF/OhKC0/GhYFy00U+npnrKbn07OHC1wm7nAAOg6upcBe70ix+9MWBNrGhhQxh2fH/JtJvZUm+m0wxjs++GOPy6N+BrG/QQSM1/PsSjz9Ob30B9oze/Ol6mqY8KgNXbvKjfSXThlXIcLrkwX5N9OmT7LH5OtSAkETLlS8IfUBtSFl/rNtQ6nAHSWS2dieCdXq2gSFWQ5I49bNE61T+h+LQ/fIzDdtwDPDxaecDRu/hLSpmMcO92QNjLas8GZRzZMWRxgzjWEnPtDUMQWrGsPXSOjBcq8UiA03UZr3khePl1hm0MudFWYX3W2VYYlfwPeRnRCgqgUl2TDcMlned1InZwwB3G7355ZvTSCGAHzONxgP4TJImmi/sMfVzKinsIqQ64cSIV2tb/x+54xjakqAs09IfHg5afcYU4DGHZpf6D1V0BN7LBXC1GWixvAxUHJDipJVL/6M9eYrnPBg58Jrj8vshMIhzPSztO+kbX0dVe88x9F5IVs1YeqJTyI29KJqxKkbFkzzYWiF2gA8chDeuuLJKGYEmYtVTFUt+uvbMiJoSuHKNXx9gDGP0uTnEIwkIiIhKJrzjNvMd3G7wvDSdvNAR9jj2pHu0MrqCbn3XRNlJl6bKvdCoXw78nS1bvmORbJZZdf2pD7D5OYR5XzxPvEGEfIfHzTI
+ a6R7M5kA
+ iuP5wwzB4JnESj7UVQcklWeVbVyG1d/6P0nYtFryRZg4Cy0l3rj+STa555ZcE6Atw6GVHhfeYpy6JDYwMAM9GWNGYhe6Janet5H+17nxn5iOnrqmZJMwem+zEENatPLWYC1t7t6+xSErVHldIvy5g5HwvI9m4xjcDZx7JteOzF4lVLvRJRLdJ8qWnNtIgM9SUwxp6gC3i4nDNWnMqRi2uxFEuKTsDhOULAFycPZqWGQzIs2Zw2chTgANxnvgsx5PskBWWoBiM9XvaOQtm1QVBHSqB19OOvf0hbPWm7oAL+Oxvma0R3MCXdxYdV8nsZVInJkAqjpApfD+asXd7WyGastksFXj7jfxp77yqoCfTBEATC0UBrlhVHzRgoMGXofMBECjBOKYsVCvbZ9u3r1d92O94Yg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,156 +161,334 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] mm/highmem: wrong hwpoison granularity in copy_mc_*_highpage()=
- fallbacks
-- [High] mm/highmem: copy_mc_*_highpage() reads poisoned page before flag c=
-heck
---
+On Mon, Oct 26, 2026 at 7:39=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Mon, Oct 19, 2026 at 1:53=E2=80=AFPM Matthew Wilcox <willy@infradead.o=
+rg> wrote:
+> >
+> > On Fri, Oct 02, 2026 at 02:12:35PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > On Thu, Oct 01, 2026 at 10:12:16PM +0100, Matthew Wilcox wrote:
+> > > > So what I didn't realise is that fork() waits for page faults to fi=
+nish.
+> > > > I don't think that's necessary, so we can just stop doing that (whi=
+tespace
+> > > > damaged):
+> > > > I think this is safe.  I've booted a kernel with this change, and
+> > >
+> > > I'm afraid it's not safe :)
+> > >
+> > > We already actually did this (by mistake I think?) before. See commit
+> > > fb49c455323f ("fork: lock VMAs of the parent process when forking") -=
+ we shipped
+> > > that in 6.4.0 -> 6.4.2 and it corrupted memory all over the place.
+> > >
+> > > Reports + a consistent reproducer:
+> > >
+> > > https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+> > > https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kern=
+el.org/
+> > > https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@appl=
+ied-asynchrony.com/
+> >
+> > I wonder if we still need this.  The commit message says:
+> >
+> >     A concurrent page fault on a page newly marked read-only by the pag=
+e
+> >     copy might trigger wp_page_copy() and a anon_vma_prepare(vma) on th=
+e
+> >     source vma, defeating the anon_vma_clone() that wasn't done because=
+ the
+> >     parent vma originally didn't have an anon_vma, but we now might end=
+ up
+> >     copying a pte entry for a page that has one.
+> >
+> > But we're holding the mmap_lock for write here, and we need to hold the
+> > mmap_lock for read in order to change a vma->anon_vma (asserted in
+> > __anon_vma_prepare() with mmap_assert_locked()).
+> >
+> > At the time of this commit, lock_vma_under_rcu() contained:
+> >
+> >         /* find_mergeable_anon_vma uses adjacent vmas which are not loc=
+ked */
+> >         if (!vma->anon_vma && !vma_is_tcp(vma))
+> >                 goto inval;
+> >
+> > so we really did have to wait for read holders to finish the fault.
+> > But commit a373baed5a9d deferred the check for a NULL anon VMA until we
+> > actually needed it, so I think commit fb49c455323f's logic was invalida=
+ted
+> > by a373baed5a9d.
+> >
+> > Maybe I'm wrong.  This is all a bit out of my normal area.
+> >
+> > > Also we have asserts for this lock in copy_page_range() and
+> > > copy_hugetlb_page_range() which will now fail (and possibly more furt=
+her down
+> > > the stack?)
+> >
+> > Possibly we have to adjust some assertions to check that either we have
+> > the VMA locked or we have the MM write locked.  That doesn't seem
+> > unreasonable.
+> >
+> > > > My argument for why it's safe is that a thread which takes a page
+> > > > fault during fork() might have taken the page fault either before o=
+r
+> > > > after fork().  The faults will definitely happen in the parent proc=
+ess.
+> > > > They may or may not have happened in the child process, which can't
+> > > > possibly care whether or not they've happened.
+> > >
+> > > The problem isn't the child it's the parent - copy_page_range() _modi=
+fies_ the
+> > > _parent_'s page tables in-place, on assumption that nothing else can =
+access
+> > > them (for CoW).
+> >
+> > I was perhaps unclear.  What I mean is that the child may or may not
+> > observe them as having happened.
+> >
+> > > And actually nowadays things are _even_ worse, you could also have co=
+ncurrent
+> > > page faults, MADV_DONTNEED, MADV_FREE, MADV_GUARD_INSTALL/REMOVE, UFF=
+DIO_COPY +
+> > > UFFDIO_MOVE (yikes) all of which might introduce new issues + would h=
+ave to be
+> > > audited too.
+> >
+> > Yup.
+> >
+> > > So - it turns out a lot of stuff implicitly assumes VMA write lock no=
+w:
+> > >
+> > > 1. CoW - deferred TLB flush race
+> > >
+> > > (The issue above)
+> > >
+> > > https://lore.kernel.org/all/20230705171213.2843068-2-surenb@google.co=
+m/
+> > >
+> > > This happens because __copy_present_ptes() does wrprotect_ptes() on t=
+he parent
+> > > without a TLB flush (that's deferred until the end of the fork).
+> > >
+> > > But unfortunately without a VMA write lock something can then replace=
+ the page
+> > > table entry in the meantime and you can end up with data loss as a re=
+sult.
+> >
+> > Is it that fb49c455323f commit message is insufficient and we need to
+> > prevent simultaneous fork/page fault for other reasons, then?
+>
+> Yes, I think so. It refers to one of the reasons VMA lock is needed
+> during fork, but as Lorenzo points out, there are a number of other
+> reasons that require fork to protect VMAs. Note that some of those
+> reasons, like MADV_GUARD_INSTALL and UFFDIO_MOVE did not exist at the
+> time fb49c455323f was written.
 
-commit e960425b93cf423ea993320abfce6ba212a1b8fe
-Author: Yuanhe Shu <xiangzao@linux.alibaba.com>
+I also have to agree with Lorenzo that allowing fork to run
+concurrently with page faults might only shift the mmap_lock
+contention from fork to some other operation (mmap/mprotect/etc.), so
+even if we fix all these cases we might end up with contention
+somewhere else.
 
-mm/highmem: refuse to copy hwpoisoned folios in the !copy_mc fallbacks
-
-This commit updates the !copy_mc_to_kernel fallbacks for
-copy_mc_user_highpage() and copy_mc_highpage() to check
-folio_contain_hwpoisoned_page(page_folio(from)) after copying the page
-and return PAGE_SIZE if set.
-
-Link: https://lore.kernel.org/r/877bjowf9i.fsf@DESKTOP-5N7EMDA/
-
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index d7aac9de1c8a4..f90f0c6204a4e 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -474,12 +474,21 @@ static inline int copy_mc_user_highpage(struct page=
- *to, struct page *from,
->  					unsigned long vaddr, struct vm_area_struct *vma)
->  {
->  	copy_user_highpage(to, from, vaddr, vma);
-> +	/*
-> +	 * The flag can be set while the copy runs, so check after it;
-> +	 * a flag landing later can no longer have corrupted this copy.
-> +	 */
-
-[Severity: High]
-What happens in copy_mc_user_highpage() and copy_mc_highpage() if the
-source page already has PG_hwpoison set from a real hardware memory error
-before the copy starts (for example, reported earlier via ACPI APEI GHES, a
-patrol scrubber, or a prior user-mode fault where memory_failure() set
-PG_hwpoison before locking or unmapping the folio)?
-
-On architectures without copy_mc_to_kernel (such as arm64, riscv, and
-loongarch), copy_user_highpage() and copy_highpage() map the page with
-kmap_local_page(from) and perform a plain kernel memory read via
-copy_user_page() or copy_page() without exception-table recovery for
-hardware memory errors.
-
-Callers such as folio_mc_copy(), wp_page_copy() -> __wp_page_copy_user(),
-copy_present_page(), collapse_file(), and __collapse_huge_page_copy() rely
-on copy_mc_user_highpage() and copy_mc_highpage() to refuse poisoned pages.
-If the check only runs after the copy, won't reading an already-poisoned
-physical page in kernel mode trigger an unrecoverable kernel-mode fault
-(such as an EL1 synchronous external abort on arm64) and panic the kernel
-before reaching the post-copy check?
-
-Should both functions check whether the source page is hwpoisoned before
-the copy in addition to after the copy?
-
-> +	if (folio_contain_hwpoisoned_page(page_folio(from)))
-> +		return PAGE_SIZE;
->  	return 0;
->  }
-> =20
->  static inline int copy_mc_highpage(struct page *to, struct page *from)
->  {
->  	copy_highpage(to, from);
-> +	/* Same reasoning as in copy_mc_user_highpage(). */
-> +	if (folio_contain_hwpoisoned_page(page_folio(from)))
-> +		return PAGE_SIZE;
-
-[Severity: Critical]
-Is folio_contain_hwpoisoned_page(page_folio(from)) the right granularity
-for single-page copy helpers like copy_mc_user_highpage() and
-copy_mc_highpage()?
-
-In include/linux/page-flags.h:
-
-static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
-{
-	return folio_test_hwpoison(folio) ||
-	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
-}
-
-Because FOLIO_PF_ANY is 0, folio_test_hwpoison(folio) only tests
-PG_hwpoison on the head page (&folio->page[0]), not on a tail page passed
-as from. For any tail page of a large folio,
-folio_contain_hwpoisoned_page(page_folio(from)) relies purely on the
-folio-wide PG_has_hwpoisoned flag. Doesn't this cause both false negatives
-and false positives?
-
-First, for tail pages with PG_hwpoison set where PG_has_hwpoisoned is not
-set, folio_contain_hwpoisoned_page(page_folio(from)) returns false and the
-poisoned tail page is silently copied:
-
-1. In mm/memory-failure.c:memory_failure(), TestSetPageHWPoison(p) sets
-   PG_hwpoison on the target tail page before get_hwpoison_page() and
-   folio_lock(folio), while folio_set_has_hwpoisoned(folio) is only called
-   after acquiring and releasing folio_lock(folio):
-
-   memory_failure()
-       if (TestSetPageHWPoison(p))
-           ...
-       res =3D get_hwpoison_page(p, flags);
-       ...
-       folio_lock(folio);
-       ...
-       folio_unlock(folio);
-       if (folio_test_large(folio)) {
-           ...
-           folio_set_has_hwpoisoned(folio);
-
-   Callers holding folio_lock on the source folio during the copy -- such
-   as migrate_folio() / filemap_migrate_folio() / __migrate_folio() ->
-   folio_mc_copy(), do_cow_fault(), collapse_file(), and
-   __collapse_huge_page_copy() -- block a concurrent memory_failure() at
-   folio_lock(folio) after PageHWPoison(from) is already set on the tail
-   page, before folio_set_has_hwpoisoned(folio) can run.
-
-2. If memory_failure() (e.g., via debugfs corrupt-pfn without
-   MF_COUNT_INCREASED) hits a tail page while a large folio is isolated
-   from the LRU for migration or khugepaged, TestSetPageHWPoison(p) sets
-   PG_hwpoison on the tail page, get_hwpoison_page() fails because
-   HWPoisonHandlable() returns false for !PageLRU, and memory_failure()
-   aborts without ever setting PG_has_hwpoisoned.
-
-3. When CONFIG_TRANSPARENT_HUGEPAGE=3Dn and CONFIG_MEMORY_FAILURE=3Dy,
-   folio_test_has_hwpoisoned() is compiled as FOLIO_FLAG_FALSE (always
-   false), so poisoned tail pages of large page-cache folios are never
-   detected, and mf_dax_kill_procs() sets PageHWPoison(page) on FS-DAX
-   subpages without setting PG_has_hwpoisoned.
-
-Second, for a non-hugetlb large folio that has PG_has_hwpoisoned set
-because one subpage is poisoned (and could not be split to order 0, e.g.
-due to extra references or min_order_for_split(folio) > 0 on a large block
-size filesystem), unpoisoned subpages remain PTE-mappable and accessible.
-When a single-page copy runs on a healthy subpage of that folio via
-do_cow_fault(), wp_page_copy() -> __wp_page_copy_user(), or
-copy_present_page() during fork(),
-folio_contain_hwpoisoned_page(page_folio(from)) returns true and fails the
-operation with VM_FAULT_HWPOISON (SIGBUS) or -EHWPOISON even though the
-copied subpage from is not poisoned.
-
-Would using is_page_hwpoison(from) in include/linux/page-flags.h instead of
-folio_contain_hwpoisoned_page(page_folio(from)) avoid both problems by
-checking PageHWPoison(from) on the specific subpage being copied while
-still checking the head page for hugetlb folios?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026025724.1430=
-747-1-xiangzao@linux.alibaba.com?part=3D1
+>
+> Below is the list that AI pointed out, and I think Lorenzo covered
+> most if not all of them:
+>
+> Without vma_start_write_killable(mpnt):
+>       1. In-flight VMA readers that locked mpnt before
+> mmap_write_lock_killable(oldmm) continue running concurrently with
+> dup_mmap().
+>       2. New VMA readers (page faults via lock_vma_under_rcu(),
+> madvise under MADVISE_VMA_READ_LOCK, userfaultfd via uffd_lock_vma() /
+> uffd_move_lock(), vma_start_read_unlocked(), etc.) continue to succeed
+> on mpnt while dup_mmap() duplicates its VMA metadata and page tables.
+>
+>   (Note: When this lock was originally added in fb49c455323f, one
+> prominent trigger was a concurrent fault calling anon_vma_prepare() on
+> a VMA with mpnt->anon_vma =3D=3D NULL while anon_vma_fork() /
+> vma_needs_copy() ran. Although __vmf_anon_prepare() now requires
+> mmap_read_trylock()
+>   when !vma->anon_vma, removing vma_start_write_killable(mpnt) today
+> still breaks several critical invariants.)
+>   =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80
+>   ### What would happen if we removed it
+>
+>   1. **Destruction of live 2MB THP mappings ("bad pmd" -> pmd_clear())
+> in copy_pmd_range()**
+>   As noted in the comment in copy_pte_range(), copy_pmd_range()
+> assumes no concurrent THP transitions on src_pmd:
+>     if (pmd_is_huge(*src_pmd)) { ... }
+>     if (pmd_none_or_clear_bad(src_pmd))
+>         continue;
+>   On an anonymous VMA that already has mpnt->anon_vma !=3D NULL, a
+> concurrent per-VMA-locked THP fault (do_huge_pmd_anonymous_page()) or
+> UFFDIO_MOVE can install a transparent huge PMD into *src_pmd right
+> after pmd_is_huge(*src_pmd) observed pmd_none.
+> pmd_none_or_clear_bad(src_pmd)
+>   then sees pmd_bad(*src_pmd) =3D=3D true (a THP leaf PMD satisfies
+> pmd_bad()), prints "bad pmd ...", and calls pmd_clear_bad(src_pmd) =E2=80=
+=94
+> wiping out the parent's live 2MB PMD without PTL, TLB flush, or
+> rmap/refcount/deposited-pgtable/RSS cleanup (corrupting parent memory
+> and
+>   triggering Bad rss-counter / nr_ptes bugs on exit).
+>       =E2=80=A2 The same race exists for huge PUDs in copy_pud_range()
+> (pud_none_or_clear_bad(src_pud)).
+>       =E2=80=A2 Similarly, copy_huge_pmd() reads special huge PMDs
+> (VM_PFNMAP/VM_MIXEDMAP) locklessly and skips rechecking *src_pmd under
+> src_ptl assuming it cannot change, so a concurrent MADV_DONTNEED under
+> MADVISE_VMA_READ_LOCK could leave the child mapping a stale/zapped PFN
+> PMD.
+>   2. **Silent CoW data corruption / lost parent writes due to deferred
+> flush_tlb_mm(oldmm)**
+>   __copy_present_ptes(), copy_huge_pmd(), and
+> copy_hugetlb_page_range() write-protect parent PTEs/PMDs without
+> flushing TLBs; dup_mmap() defers the flush to flush_tlb_mm(oldmm)
+> after all VMAs are copied. Normally, because each copied VMA remains
+> VMA-write-locked until
+>   mmap_write_unlock(oldmm), no parent thread can handle a CoW write
+> fault before flush_tlb_mm(oldmm) finishes.
+>   Without the VMA write lock, while CPU 0 is still in dup_mmap()
+> copying later VMAs:
+>       =E2=80=A2 CPU 1 (parent thread A) still holds a stale writable TLB =
+entry
+> to old_folio (now CoW-shared with the child).
+>       =E2=80=A2 CPU 2 (parent thread B, no cached TLB entry) writes to th=
+e
+> same page, faults on the R/O PTE under per-VMA read lock, enters
+> wp_page_copy(), and copies old_folio into new_folio
+> (__wp_page_copy_user()) before taking PTL and calling
+> ptep_clear_flush().
+>       =E2=80=A2 Any store by CPU 1 through its stale writable TLB entry a=
+fter
+> __wp_page_copy_user() and before ptep_clear_flush() lands directly in
+> old_folio while pte_same() still succeeds =E2=80=94 losing thread A's wri=
+te in
+> the parent (new_folio) and leaking it into the child (old_folio).
+>   3. Broken guard-page (MADV_GUARD_INSTALL) state and KCSAN race on vm_fl=
+ags
+>   madvise(MADV_GUARD_INSTALL) runs under MADVISE_VMA_READ_LOCK and
+> atomically sets VMA_MAYBE_GUARD_BIT on mpnt via vma_set_atomic_flag()
+> before installing PTE_MARKER_GUARD entries:
+>       =E2=80=A2 vm_area_dup(mpnt) asserts
+> ASSERT_EXCLUSIVE_WRITER(orig->vm_flags), which would trip under KCSAN.
+>       =E2=80=A2 If vm_area_dup(mpnt) copies mpnt->vm_flags just before
+> MADV_GUARD_INSTALL sets VMA_MAYBE_GUARD_BIT and installs
+> PTE_MARKER_GUARD PTEs:
+>           =E2=80=A2 On a file-backed VMA without anon_vma, tmp misses
+> VM_MAYBE_GUARD (part of VM_COPY_ON_FORK), so vma_needs_copy() returns
+> false and drops the guard regions in the child.
+>           =E2=80=A2 On a VMA with anon_vma !=3D NULL, copy_page_range() c=
+opies
+> the PTE_MARKER_GUARD entries into tmp, leaving the child VMA with
+> guard PTE markers without VM_MAYBE_GUARD set (breaking collapse checks
+> such as file_backed_vma_is_retractable() and future merges/forks).
+>
+>   4. Inconsistent address-space snapshots against UFFDIO_MOVE and
+> tcp_zerocopy_receive()
+>       =E2=80=A2 When UFFD_FEATURE_EVENT_FORK is not enabled, dup_userfaul=
+tfd()
+> never increments octx->mmap_changing. Because move_pages()
+> (UFFDIO_MOVE) only takes per-VMA read locks (uffd_move_lock()), it
+> could move an exclusive folio from a not-yet-copied src address/VMA
+> into an
+>       already-copied dst address/VMA (losing the page at both
+> addresses in the child), or move a zero page from an already-copied
+> src to a not-yet-copied dst (duplicating it at both). Even with
+> UFFD_FEATURE_EVENT_FORK, octx->mmap_changing is only incremented once
+> dup_mmap()
+>       reaches the first VMA using octx, so earlier non-uffd VMAs rely
+> on VMA write-locking to prevent cross-VMA moves.
+>       =E2=80=A2 tcp_mmap() sets VM_MIXEDMAP (in VM_COPY_ON_FORK, without
+> VM_DONTCOPY), so copy_page_range() would race with
+> tcp_zerocopy_receive() zapping and inserting pages under
+> vma_start_read_unlocked().
+>   5. Immediate debug assertions (CONFIG_DEBUG_VM)
+>   Both copy_page_range() and copy_hugetlb_page_range() call
+> vma_assert_write_locked(src_vma) on every CoW VMA, which immediately
+> fires VM_WARN_ON_ONCE_VMA(!__is_vma_write_locked(vma), vma) because
+> oldmm->mm_lock_seq was bumped by mmap_write_lock_killable(oldmm) while
+> mpnt-
+>   =EF=BF=BA>vm_lock_seq was never updated.
+>
+> >
+> > > Same issue exists with hugetlb wp too. And god only knows with uffd w=
+p :)
+> > >
+> > > 2. THP - can destroy parent THP mappings
+> > >
+> > > copy_pmd_range() does:
+> > >
+> > >       if (pmd_is_huge(*src_pmd)) { copy_huge_pmd(); ... }
+> > >       if (pmd_none_or_clear_bad(src_pmd))
+> > >               continue;
+> > >
+> > > Without the write lock, a concurrent fault can install a huge PMD via
+> > > do_huge_pmd_anonymous_page() or filemap_map_pmd()/do_set_pmd().
+> > >
+> > > The issue is that pmd_bad() fires for leaf PMD (ugh) on at least x86 =
+and arm64,
+> > > meaning that'll clear the page table entry.
+> > >
+> > > I think Hugh left a comment alluding to this before:
+> > >
+> > >        * copy_pmd_range()'s prior pmd_none_or_clear_bad(src_pmd), and=
+ the
+> > >        * error handling here, assume that exclusive mmap_lock on dst =
+and src
+> > >        * protects anon from unexpected THP transitions; ...
+> > >
+> > > It's like the mess around pmd_trans_unstable() :(
+> >
+> > ... could we fix this by taking the ptlock during the copy operation?
+> >
+> > > 3. copy_pte_range() skips the required pmd_same() recheck assuming wr=
+ite lock
+> > >
+> > > It uses pte_offset_map_rw_nolock() with a dummy pmdval and:
+> > >
+> > >        * We already hold the exclusive mmap_lock, the copy_pte_range(=
+) and
+> > >        * retract_page_tables() are using vma->anon_vma to be exclusiv=
+e, so
+> > >        * the PTE page is stable, and there is no need to get pmdval a=
+nd do
+> > >        * pmd_same() check.
+> > >
+> > > (Probably needs updating for VMA write lock...)
+> > >
+> > > 4. The asserts
+> > >
+> > > Mentioned above!
+> > >
+> > > I suspect there's more as well.
+> > >
+> > > Some of it could be changed, but it'd all be at the cost of behaving =
+very
+> > > strangely (no VMA lock but mmap write lock) while manipulating things=
+.
+> > >
+> > > And I am not really happy with changing page table entries in the par=
+ent VMA
+> > > (for CoW) without a VMA write lock held.
+> > >
+> > > I also wonder whether it would achieve all that much really - the iss=
+ue is with
+> > > holding the VMA lock across I/O, anything else that tries to grab a w=
+rite lock
+> > > is going to end up being the new thing that's blocked (mprotect, munm=
+ap, mremap,
+> > > mlock etc.)
+> > >
+> > > I think doing something like this would need a very significant redes=
+ign and I'm
+> > > not convinced it's one that really achieves what we want given all th=
+e other
+> > > cases that'd get blocked by the VMA lock being held still.
+> > >
+> > > --
+> > > Cheers, Lorenzo
 
