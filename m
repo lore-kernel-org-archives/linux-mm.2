@@ -1,96 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6803606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7437606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=X6TQOCuX
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fYcJ4KMW
 Received: by kanga.kvack.org (Postfix)
-	id A86A66B08DD; Tue, 27 Oct 2026 16:39:41 -0400 (EDT)
+	id 7B73B6B08E0; Tue, 27 Oct 2026 16:51:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A38E46B08DF; Tue, 27 Oct 2026 16:39:41 -0400 (EDT)
+	id 769986B08E1; Tue, 27 Oct 2026 16:51:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 926F46B08E0; Tue, 27 Oct 2026 16:39:41 -0400 (EDT)
+	id 657D66B08E2; Tue, 27 Oct 2026 16:51:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 611F16B08DD
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:39:41 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D485440B32
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:39:40 +0000 (UTC)
-X-FDA: 85369572120.26.AFBEEAF
-Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 06679160006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:39:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793133579;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3706D6B08E0
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:51:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B96CA0AC1
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:51:34 +0000 (UTC)
+X-FDA: 85369602108.16.453A04C
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C130C40003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:51:32 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=fYcJ4KMW;
+	spf=pass (imf07.hostedemail.com: domain of salehmammadof@gmail.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=salehmammadof@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793134292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PU/57JgArN8vZg/+OmfFVNbEDBtbhMB2t+hfWrt0DCk=;
-	b=nlbQ9Xo2qRWpa0mdSQAJnBdQwm8x9+AwDvtyIwN58C+3wcW5pZ6Hcwwbx4SOi6Z2lq/B4f
-	zQMlG2ym/9d/Lw+/7JevUAzpap1KQDpyrzDE1ddkmPMBtUt60oTpd/Q57kiLgnIHmAi1b+
-	viSitWQe7vgrsapP8815TsN9QU7REjY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793133579;
-	b=gFEfvCkc5ikh35dhdouVUKMLj+/0oJF1oFznqnhI5+uogHJONLIEIgiAJ/dqtYaIevFlZu
-	Ecc10JCMETvlyMUEUh0fbHXsLD0/iLD85PUrw2Co1uBxETIa4SmJcrcujU3NJCVaF0+Wcg
-	jCmbR2+/dtyuX3L4HOsT7ddA/7T4z+Q=
-Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC9B1C0AD2;
-	Tue, 27 Oct 2026 20:39:36 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id E53A032;
-	Tue, 27 Oct 2026 20:39:32 +0000 (UTC)
-Date: Tue, 27 Oct 2026 16:39:29 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Hillf Danton
- <hdanton@sina.com>, Boqun Feng <boqun@kernel.org>, syzbot
- <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Tetsuo Handa
- <penguin-kernel@i-love.sakura.ne.jp>, syzkaller-bugs@googlegroups.com,
- Vlastimil Babka <vbabka@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, linux-mm@kvack.org, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>,
- linux-rt-devel@lists.linux.dev
-Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
-Message-ID: <20261027163929.2bb28d5b@gandalf.local.home>
-In-Reply-To: <auDvUyfzg6nLtVox@thinkstation>
-References: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com>
-	<20261026224305.1254-1-hdanton@sina.com>
-	<auCucDdZb8mig7UZ@google.com>
-	<auDvUyfzg6nLtVox@thinkstation>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=wm+ZgGyt/5jKdn64UMl9fdg17TUAOdprcX045FIa67g=;
+	b=TYfmZh9DzS5Jzqy0mH/YkTW2uIdqsaEFFpR4Htzgjl8o1uB0aUeY82C6SL+ubT4qoXWxrc
+	3ZYHm+T9OcvFs8P/fQfnhyM/DNHrzZo+SoCEmDc5p7tBE5XkKEagc+zEdw5HOsjLv9p9vw
+	PqM7ZnT2pI3W2NaYal/0coXxoBg2LP8=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793134292;
+	b=dU3RrDSUc1Or8xfCElw0OGhhnA/SoBASRIGO3feNAem0dYA7JKlUvjBHE4qb5f60GK7orl
+	/dgChuFRxWs3NTR5sNQSb4jWeiacBrMAhQN1A7CNLBR/tu96DsoQ8ACDKWAIlxHQmH5/FA
+	Y0Siw39QNCWRRM6lGq/SwwU3Jpj/COo=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=fYcJ4KMW;
+	spf=pass (imf07.hostedemail.com: domain of salehmammadof@gmail.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=salehmammadof@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-156cbe59524so265073c88.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:51:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793134291; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aNYwKjNqu4K3rVV92Va7PUFMwkkmIctJFcVCxN32JcQKmVZKbwGREZayh2abmRP/Y8
+         kaKojZcun/KvF82ww5zWWUZbfDRqw61lyN+m+ClOFQ/cMmOYTiw1rjPKMkJYf3UquK5E
+         Dh+MyOIuWOD0EjACl3bGmR+72Kz99zdy6cjMVN95RM0JF5UekUfyIBk80+yL6cYX+Q8a
+         eb/8YtRbZVRE/1/Zs5C31oJBloDVS3hltKD7+2+1/4HHlsUAYPUUQX7ZllS9gxIWXclG
+         zSEzXqKcKab+JkuQDfcySzl+8YNvvkku0vuxLGVWjUY3idC0Cu4umcC80wLpFqT2oPDM
+         V0Fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=wm+ZgGyt/5jKdn64UMl9fdg17TUAOdprcX045FIa67g=;
+        fh=2TSRbIYuQ1Lhz/nSQM8m78ve/MJyzCCa7Ye5M0I+Hqg=;
+        b=CsY2+3YGvJ1XIGiG+KFp12U1sgHlhMp7StzubRlwymMtlTS6SZO/0IpGEkVlxjZAJ6
+         aDLErmzz6RK7RYCrvbAGTW2pVU7ph7+YUx4eLeC3gighsTB1/yvCVlr97afJUfvhpNXP
+         UI+Af/iFW9VY2ekz4P8dV0zsA/Lc4VTk6HEsSdkAAgPyK7KXtUBooAPb4OZ+rNgI54UL
+         R723/nsZYO3/X10l7FT08JNmclUiGztIPzSy/gPjWan0hQmtDaW04qvbOp+LMQqD61h0
+         onqhSRrAqKllu4jfw5ipYJioDwW9nObeq6vDbsdFYL3SFEEXaQiTM7e9bTRHV6amB4yj
+         WeFA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793134291; x=1793739091; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wm+ZgGyt/5jKdn64UMl9fdg17TUAOdprcX045FIa67g=;
+        b=fYcJ4KMWfHl1daOblrEudaLnYUn7UqxBClEpLrhAXKBbIL2nJJs/NGZq59tmVbzPFz
+         HG7M6YheHIYjPSJJq2JpDzB4fqjfyUi89Ol9/1b30/bLdEiyEYibgmMPtNJCjDl2D4j1
+         zfBQGHffdMkhUqhKWZ0/NBA1e6ddBP3DQi3Uicfun5n+GoWJijdKloAff5Nc4UXWTG9q
+         bjPEmK9yOR0N4QBGwVaRYZpUEMQV69C5+CVpiUp9Rz91Aiy6jMdwr1id/QC5yX0R/YEd
+         DJ6mAWeTccR/NFAPvkC9y6H35ozc8n1tLLDBdR7+p6C/D3GNg5iHLfpuoKIEud46wmdB
+         SU7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793134291; x=1793739091;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wm+ZgGyt/5jKdn64UMl9fdg17TUAOdprcX045FIa67g=;
+        b=ny2DPybtJobWANrEw9JehbnLgxaHWbhFGR3zqylQAPvTjqS4YRsg2LVGhkeR5J638M
+         ksvDloOIEO15k4SaS9vkiJBiwzuRRlz/xQdbWZJyTWphXLblyjdIfbKL84FKga3QsAiQ
+         +9zlREhCcnigpCe0bGRk/jPVYLPwng/mJPsC+KpdEWtU7JPpfV5XhTEA/zRzrQp1q7/9
+         ph1NJdAC8ofGrl/iXH6UpupOsebdD9tjfwpv3HlbbO9iVF9dqwLZdFLTVS58wColJRiD
+         KN2NHZI7T7Hkjf08ESeKdu56exPruAn0p+1BhiWWvd8hM6R3lLzvQC/8nYXsNFZkxA4E
+         DbwA==
+X-Gm-Message-State: AFq9FYJi5Uxp3mfL0ZVzVbNQMkIryOGLhw5aGLKCaXlDr/EEwBDkVHQ7
+	DlYVX8CT4zqfJdfyNINjuGB/9yCTCa4qsleQZeVQSb+fMccYWFOs8TaKwqRiCpSoi9Vo5FbQ+nk
+	ZdemiFTUq1+ziDwu0RQ+13TKCRN+bwfU=
+X-Gm-Gg: AYBFou08qk9515KE0jUyDmoIcfHmYkn/ldQ6l+NPvtrVcbhZEMOO4VAOuZ+XWquQ07w
+	UpMDNXXXmYBZpHd3CisF5EgyPpkgYEU3s4CZg5mmI8o0hEGIw1n94Jx7uZ9kLnywrWnlrfHyKjo
+	/OqYJpWfg7vFUA2Edb2LmuHnWNSfe5sc6bx1kkGuuEtT0b8ii5gI4vTD4rngJflBgkPN6KtQADw
+	Zk2olx3pNBBYeUlVKStxveUDshsDsTpwmeeUlaHwGzi0CYsDVachO+SLx8fl4EMs9dIMIHl74xO
+	mig5P+4rfywKOa8L+xxhrS9eDiJAuWT/9ZGt4xc3TTGxq25zPDaV9lY8nl0ahN2xGd3fOSgsgZm
+	mnL1lDeUbFgiIOl15vEVxlQjro2CqzJXYpF9cTET3Pxv9/E2xz8lv76p8S1Oj3yUwhgCH
+X-Received: by 2002:a05:7022:7f0e:b0:147:a685:9125 with SMTP id
+ a92af1059eb24-1a6c8105315mr436328c88.2.1793134291281; Tue, 27 Oct 2026
+ 13:51:31 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19Ldja3aL00IVo0m19FVtsYl3nWaEoYns4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=PU/57JgArN8vZg/+OmfFVNbEDBtbhMB2t+hfWrt0DCk=; b=X6TQOCuX6HY8UuLPJKhZELCrhP44xJqMxzfzL2+ztGf3IByei8fpiiT1ZEws9aWOLnW8kSkpa0UjfCPFcyWg9jpmR3F40c11qrutkSjoEcbAqlr8jfKEayHwf/xdt8rWDLtuS1DAwSqBSUG2rZm0ZfNag49zetLEpH83o+XiZgg=
-X-HE-Meta: U2FsdGVkX1871MrZb0tFG/W2SlYb1SjhIrGoSAvboTl6u8SaPNgiz5BOiVch1cvc0Qbf4ADrK5lONedBMZm25LrUJz8QavUN1j5JXBAE7n+VSxahxbdOqagmMhZqQrsP6uPSodnDGcVrfOKIomnCaeotGRJOjK8HNkD25W+2YwtKH1wPqFVI8B1wfX4bhVjz71mVKzXoE+cfnAQHjgUba4+o3mDe/0lRn7D6pdJ+Jte1wwdlNCMhxaCNzrE8SofbaYxvrsl/8k+hbAQZ8+7QJGZI5XlRMfLp2izbfp6vMhqBGfhKtSQUUPw3Qp0gKV+cxeLwP+ilCnZKrgYqG3iqTSuxSYBL0JB5yJrR47ClhmGqs6SA4ZLrbnzFjhd/50EKOHuJ1sGvdMF747dl2CjBIRkE1SP49IsLg/5I/TnsbnHpK2wFU3qr7YFO+ueri1TgRNADnIF/OuBMS04xTdprp6HkOIt0fDmam8S09544yNE=
-X-Rspamd-Queue-Id: 06679160006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3f57e8x951dh1yau1ujtzp5h68dfia1m
-X-HE-Tag-Orig: 1793133572-819488
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_2 autolearn=ham autolearn_force=no
-	version=4.0.1
+References: <CAKu0nJUGwnmuuT6fBz0phH=1Nyi6BguH2PHvs9+hDnrc_X0zWw@mail.gmail.com>
+ <o5sj6bswd6arkusrxj5w5ww3jwk5hz7ktzxvdik72h7c4uen5i@fnwkmk6hvuf5>
+In-Reply-To: <o5sj6bswd6arkusrxj5w5ww3jwk5hz7ktzxvdik72h7c4uen5i@fnwkmk6hvuf5>
+From: Saleh Mammadof <salehmammadof@gmail.com>
+Date: Wed, 28 Oct 2026 00:51:19 +0400
+X-Gm-Features: AclHuK8hGtJaJPTcfCesVb61NvbIvOen2Sly9Wxle1O3ush_tttklXAdXvqervs
+Message-ID: <CAKu0nJWyt8OGYkYBdnUnWo3rT-FwKEwoTmsCe71vC4cfUcbE0Q@mail.gmail.com>
+Subject: Re: filemap_invalidate_inode() - losing -EBUSY from invalidate_inode_pages2_range?
+To: Jan Kara <jack@suse.cz>
+Cc: linux-mm@kvack.org, hch@lst.de, dhowells@redhat.com, 
+	linux-btrfs@vger.kernel.org, David Sterba <dsterba@suse.com>
+Content-Type: multipart/alternative; boundary="000000000000776d5c065ed89cf8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C130C40003
+X-Stat-Signature: 31ohemu1bd85q51giaf9zna36gqicsgw
 X-Rspam-User: 
-X-HE-Tag: 1793133578-298060
-X-HE-Meta: U2FsdGVkX1+xJ3TG7c1oShh9twPMTfvALMFjbmUGF4Sq60Ky9Io8e4VqzE9Luo0bte3+lMfmCWFGsYXqsgJzXbIkcVm79oc/wzcjIw7hOn9TTt0g6UvovF9Vwx6W8yW9l6ODbYeFYFyL358Cl8u+8O8UGq87v4a2CdbdsYFn3PMkn6tcBi8XMuPfDSRTQ3oGABvQKJfuO1pMt4x3ErWe5wjr7teOrVMtydWTEtFClQGpzsrFbGOtdnCFmGg7pthNlGSBoC78E91f5mAdGYma97jPQZNVoyM+Sf6n8t3Gb7CHBPkztVhUf0KrotJRG2vcEl7VGM2ChtZjbpxSmCo7wjarCCtY5tINHYaPHsscHrFGrBwnUEd0uRQ47dMNWnig2hVlxWqYdyatSJXTDBSiZ0ReHPX0zEfZkLQ77qww+VCpfxCFCY4cUmhCE9pMU3dNp9wtJiQy5OnLJRDLayMJmeb6yKAKf+hs7QydEfm/anqHqK9RO9rSIMAWMwjYG5YlDNLmA9Cw4nrawjrSVp0j+XLZrRozi+E+Jzuc5Y55OQA6sKILHSL/aUO1afNqEJHiHsW9duaee2aKAXOt7ecnGSWjivO/n+NSuTTuVQS5bVB4wsQMqqvJKbP2mRS7KxQsyzYJQyT4SRs/fJgd2rpQw+Fy5pnOY+zGfHQG/3YaPXqYjeNNphmB9bh2VJi4hBUCuFhPLkTC740evqb83XzjZrnbwBO/BADXRHKk+zScwXsCQoeG5h1s7tKgi1Rpa+GQuc++JcKykfh76Nz37ooTvv0n7xAfaABGyP29pnyoVUu5bkyz72Hz+zg93jw05bSkmN8Sk1otg5f7BRxxC10YirUOPR8BSFLq7l+Ipx9FDpoixjOJ4q2zVOOx1zhTeD20d0HvTASt1tCBa9jQaSXPLRvBiUkT3tKWowHnDZ/Unx5Bflj48R+OiBhxkg2mqKvD4w8GRtD5ttfoJ/USiXW
- dtn98Y0m
- 5vu0fbLkI+KpU6Y4Lc6xGvZEmFC+r30IVFpuimtS5/c727T4jLojzq401XBpqLsquPDXE5lSHm5mCLhNdnhgZ4KJHa44rsNIVioGNNoBHWbeSZaJgk2/mzpgJA1EnWfxq+uJxeL3qy8WIrIaYNghEZnG5cKghijmpEnSJyRfFxb5ywwD8aDd1zc9AU5RfI+71El4l73mEcauaT0bO1wiFmccU4VKWwmI8kF6DZPgapbSLCc7LO5m6YlvvN3fTkfKPGLG9x1aLIsui9h8nUQPKNK0TpIoDiLERLAT+8NfuhQSxYY6xnydTCifLkpkbtwledv3Us9bwHB0Ff00zQ8068Fqfxx3CDAipPIzg0mCOzGIqc29l1Y6xawC/cUwfViyCYQ2RelbGHmdfFVidDrkMYSlUfdmFFuG8H6N/j8Qo5y/d8ULj6sCmVGPcjYiCcRrST2K2rI72b3sLysMyzHnDcCyS6JcpCKvGn/ddImm0XYN8G9HCbEgsgRZXBdEZ9PoIJh0ruV2zTM+7eC8cfTIkrlTFxItZl3pSjlpA2baWFOjklf0YcoXZDgPAdw==
+X-Spam-Status: No, score=0.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793134292-590664
+X-HE-Meta: U2FsdGVkX1+AH2Lqvkl+OQUpFy3qsOEZoBHK3uEbWLPBNBkv3yyEBISjKIqmRCTdYx9N44y4qQmlgpW8YYAsMPKwUTXGOtQA3+b+MdvE/WIwVN5bwzTOh9rkuJwbcvMCLNwMwQJHIAze/igYK6HYd+V+cCfdcBgj/2cKTCrH6hKuqfJFhkiwIe/isrm8Gh6CEHerVbUmpv/Lx3DnmoH1UqI9M0Tl77FmY8efgUmuHk7oDDatPHg7Hf5NcvR5WnVcBWgzc+NivbKtwIehlYGwjzpGypxsLLxVyb/PGqUJ2rgNyK+zkgOegnZEItc9PSW2TbXg4mmxV84gfl2iIyELZ+GuYdEDmt7EFetIX6C3ML0e8ROOA/hJQwHDex+4TJzmIZBVCF6vROriPleYBMjNz0ctuskKymCQCKb2QTYZmz/6VptWgCWvonUTBHeelUpl319+Apfy184zyDp96AFpGD806sWkN8d4TgnK3LFhWhrSSeq7VRddOgHiBzB4vqh3nlivSXFq5GBKq3pkyGTA6bBIbLYOSz8pn5rCWJvuaJVZA5l/RC1x65eADV4zhavUo+pI730Ox4M6KBbc0FTAq2KY0OzEBkLI01qnJneFLGIHZeq2UYUv16dZzYg66a3Fwh3RJtXhEnw8+dJMJURMd6PIvB3RaPQ5bwvd9XesraT+6iMcN/JToD652BrG2KUXop6gEmLylUwdnwNqgXvV9ZKggyDwLV6axPfWtWIw27iW72lJtNzw3DluXE84JWrIKUuZNzUGXtewaHo4yNxvpBOqQBEz5zssansdLuQ/1M0zsnvwx/qT0IVZbruUYma6Z0CNZa24ikMP6dRy6kk1y1xf2KRLnd0ow4A8H0l50hmJ4IoUtmKHqR7UkBsFzc6XH7eOc4kHrRUjKzs8f/2tyNo0LYUVvC/TmejDBa1zwf2aWdK6ZB82HaFUJuvdRtcxiwJqK8D957pYGuaUhm6
+ xKTf9HzO
+ MrpNyFZQuz4Sy2SjT4u2k6FoU86JmPnv3uPH12rZSG+I/7CucleXPf2FOSfcuDG3i/6AeQv4WdZFZ6m46qwp7tZZNS4b/s86qFp4N/xGtlQEz29dsEUoSpgiQUDcUqvA9+Dp4XhzYiaBWuKnTtJ5AADHd+GhL1WoPdmhzFvCAd135cF1NKiiyk51XO7bIcWg48neB0oc3m5sh+KVGfEiWgcGUBWJQheUo2/gUrEtVAJfkXP2TMg67sCgkKmpOgldUj/t44NaAGVDcOFpo5M9aVPQKjqqOSED9zdnxe0z41f9REVIzczCaG2XiS511bnA9XprR2R42x8jg8l/ZFmtvvRWIwSpDo37rlTjApjnY3OErQZ+DZ2L7GGG9BcN0B4lOFkqGj7fEUM0WBhis7ucbqUL9TTLCYdI14EyfpahapNY0p+eYpDyMkZ6gKmzA2a1ouuJRWQ9CnC5gUElrPTnr67uyb+eQCU+sDhuSuF8a7EeAeI81GJz7vdnh8zGz02LmgIm+z/Q7mdbX6p1G/VmtYkm8oe4apUgfvJXk7JNsFz4ayVDcB6N1dFa7i7CctUj8+pNf3SAwRblJIDX8eLq4BEyy8DKHEax9dWWYtipvrmGskhpbH6tKK1B+47H7/+/VjEvnp5k9Hk1ls00AOJBI+08hNg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,192 +140,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 27 Oct 2026 18:48:28 +0000
-Harry Yoo <harry@kernel.org> wrote:
+--000000000000776d5c065ed89cf8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> [+Cc RT folks]
-> 
-> On Tue, Oct 27, 2026 at 07:00:16AM -0700, Sean Christopherson wrote:
-> > +slub folks
-> > 
-> > On Tue, Oct 27, 2026, Hillf Danton wrote:  
-> > > Ask the locking people to shed light on the warning.  
-> > 
-> > get_partial_node_bulk() is waiting on a non-raw spinlock while in hard IRQ context,
-> > and it looks like __refill_objects_node() would do the same later on.  On PREEMPT_RT,
-> > those spinlocks become sleepable locks, which is what triggers the splat.
-> > 
-> > The alloction coming from KVM-as-a-guest code is GFP_ATOMIC, so I think that wonky
-> > code is fine.  
-> 
-> But memory allocation w/ GFP_ATOMIC is fine only on non-RT?
+Thanks Jan, makes sense. I'll wait to hear what the btrfs folks think the
+expected behavior should be.
 
-Correct. GFP_ATOMIC is meaningless on RT. It still cannot be called with
-preemption disabled. Most places that disable preemption in the non-RT case
-do not disable it in the RT case. For example, spin_lock() disables
-preemption on non-RT but does not in RT. Same for interrupt handlers, as in
-RT interrupt handlers are run in task context.
+On Mon, Oct 26, 2026 at 5:34=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
 
-That is, in RT only "special" places disable preemption for real.
+> Hi!
+>
+> On Sun 25-10-26 02:27:13, Saleh Mammadof wrote:
+> > Been going through mm/filemap.c lately and something caught my eye in
+> > filemap_invalidate_inode(). It calls filemap_fdatawrite_range() (or
+> > the wbc variant) and then invalidate_inode_pages2_range(), but doesn't
+> > seem to check either return value directly - just falls through to
+> > filemap_check_errors() at the end.
+> >
+> > The thing is, invalidate_inode_pages2_range() can return -EBUSY if a
+> > folio won't evict (release_folio failing, launder_folio erroring out,
+> > folio going dirty again mid-invalidation, etc), and
+> filemap_check_errors()
+> > only looks at AS_ENOSPC/AS_EIO on the mapping. So that -EBUSY just...
+> > disappears?
+>
+> Yes. Whether it matters or not depends on the caller I guess so you shoul=
+d
+> discuss with the users of filemap_invalidate_inode() what they'd like the
+> function to do. Adding btrfs people into the loop.
+>
+>                                                                 Honza
+>
+> > If I'm reading this right it could matter for callers that actually
+> > branch on the return value - btrfs reflink bails out on a negative
+> > return when clearing the destination cache, cifs sets
+> > CIFS_INO_INVALID_MAPPING again on failure, that kind of thing. If they
+> > get back 0 when a folio was actually left behind, they'd think the
+> > invalidation fully succeeded.
+> >
+> > Could be I'm missing some other path that catches this, genuinely not
+> > sure. Haven't tried to reproduce it, just going off reading the code.
+> > Let me know if I'm off base here.
+> >
+> > Saleh
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
+>
 
-> 
-> >From the documentation:  
-> https://docs.kernel.org/core-api/real-time/differences.html#memory-allocation
-> > The memory allocation APIs, such as kmalloc() and alloc_pages(),
-> > require a gfp_t flag to indicate the allocation context.
-> > On non-PREEMPT_RT kernels, it is necessary to use GFP_ATOMIC when
-> > allocating memory from interrupt context or from sections where
-> > preemption is disabled. This is because the allocator must not
-> > sleep in these contexts waiting for memory to become available.  
-> 
-> Here it mentions GFP_ATOMIC allocations in preemption disabled
-> contexts on non-RT, and...
-> 
-> > However, this approach does not work on PREEMPT_RT kernels.
-> > The memory allocator in PREEMPT_RT uses sleeping locks internally,
-> > which cannot be acquired when preemption is disabled.  
-> 
-> it says we shoud not allocate memory in such a context on RT?
-> 
-> > Fortunately,
-> > this is generally not a problem, because PREEMPT_RT moves most contexts
-> > that would traditionally run with preemption or interrupts disabled
-> > into threaded context, where sleeping is allowed.  
-> 
-> Not sure if this applies here as I don't understand what's
-> going in in KVM world.
-> 
-> > > > Date: Mon, 26 Oct 2026 03:19:37 -0700	[thread overview]
-> > > > Hello,
-> > > > 
-> > > > syzbot found the following issue on:
-> > > > 
-> > > > HEAD commit:    c03c1a14507d Linux 7.3
-> > > > git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> > > > console output: https://syzkaller.appspot.com/x/log.txt?x=128d8ca5580000
-> > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=129d675874dbf896
-> > > > dashboard link: https://syzkaller.appspot.com/bug?extid=f11512d1e5878ba5e60e
-> > > > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> > > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=168d8ca5580000
-> > > > 
-> > > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> > > > Reported-by: syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com
-> > > > 
-> > > > =============================
-> > > > [ BUG: Invalid wait context ]
-> > > > syzkaller #0 Tainted: G S                 
-> > > > -----------------------------
-> > > > syz-executor177/6041 is trying to lock:
-> > > > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: get_partial_node_bulk mm/slub.c:3831 [inline]
-> > > > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: __refill_objects_node+0x104/0xab0 mm/slub.c:7279
-> > > > other info that might help us debug this:
-> > > > context-{2:2}
-> > > > locks held by syz-executor177/6041: 1, last CPU#1:
-> > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
-> > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
-> > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_read_lock security/tomoyo/common.h:1112 [inline]
-> > > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_check_open_permission+0x169/0x3c0 security/tomoyo/file.c:772
-> > > > stack backtrace:
-> > > > CPU: 1 UID: 0 PID: 6041 Comm: syz-executor177 Tainted: G S                  syzkaller #0 PREEMPT(full) 
-> > > > Tainted: [S]=CPU_OUT_OF_SPEC
-> > > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> > > > Call Trace:
-> > > >  <IRQ>
-> > > >  __dump_stack lib/dump_stack.c:94 [inline]
-> > > >  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
-> > > >  print_lock_invalid_wait_context kernel/locking/lockdep.c:4874 [inline]
-> > > >  check_wait_context kernel/locking/lockdep.c:4946 [inline]
-> > > >  __lock_acquire+0xfcc/0x1f40 kernel/locking/lockdep.c:5238
-> > > >  lock_acquire kernel/locking/lockdep.c:5942 [inline]
-> > > >  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
-> > > >  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:155 [inline]
-> > > >  _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:181
-> > > >  get_partial_node_bulk mm/slub.c:3831 [inline]
-> > > >  __refill_objects_node+0x104/0xab0 mm/slub.c:7279
-> > > >  refill_objects+0x58/0x410 mm/slub.c:7405
-> > > >  refill_sheaf mm/slub.c:2885 [inline]
-> > > >  __pcs_replace_empty_main+0x35e/0x650 mm/slub.c:4774
-> > > >  alloc_from_pcs mm/slub.c:4850 [inline]
-> > > >  slab_alloc_node mm/slub.c:4984 [inline]
-> > > >  __kmalloc_cache_noprof+0x4f4/0x6d0 mm/slub.c:5559
-> > > >  _kmalloc_noprof include/linux/slab.h:991 [inline]
-> > > >  _kzalloc_noprof include/linux/slab.h:1312 [inline]
-> > > >  kvm_async_pf_task_wake arch/x86/kernel/kvm.c:224 [inline]
+--000000000000776d5c065ed89cf8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hmm, this part is OK:
+<div dir=3D"ltr">Thanks Jan, makes sense. I&#39;ll wait to hear what the bt=
+rfs folks think the expected behavior should be.</div><br><div class=3D"gma=
+il_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mo=
+n, Oct 26, 2026 at 5:34=E2=80=AFPM Jan Kara &lt;<a href=3D"mailto:jack@suse=
+.cz">jack@suse.cz</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote"=
+ style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
+adding-left:1ex">Hi!<br>
+<br>
+On Sun 25-10-26 02:27:13, Saleh Mammadof wrote:<br>
+&gt; Been going through mm/filemap.c lately and something caught my eye in<=
+br>
+&gt; filemap_invalidate_inode(). It calls filemap_fdatawrite_range() (or<br=
+>
+&gt; the wbc variant) and then invalidate_inode_pages2_range(), but doesn&#=
+39;t<br>
+&gt; seem to check either return value directly - just falls through to<br>
+&gt; filemap_check_errors() at the end.<br>
+&gt; <br>
+&gt; The thing is, invalidate_inode_pages2_range() can return -EBUSY if a<b=
+r>
+&gt; folio won&#39;t evict (release_folio failing, launder_folio erroring o=
+ut,<br>
+&gt; folio going dirty again mid-invalidation, etc), and filemap_check_erro=
+rs()<br>
+&gt; only looks at AS_ENOSPC/AS_EIO on the mapping. So that -EBUSY just...<=
+br>
+&gt; disappears?<br>
+<br>
+Yes. Whether it matters or not depends on the caller I guess so you should<=
+br>
+discuss with the users of filemap_invalidate_inode() what they&#39;d like t=
+he<br>
+function to do. Adding btrfs people into the loop.<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 Honza<br>
+<br>
+&gt; If I&#39;m reading this right it could matter for callers that actuall=
+y<br>
+&gt; branch on the return value - btrfs reflink bails out on a negative<br>
+&gt; return when clearing the destination cache, cifs sets<br>
+&gt; CIFS_INO_INVALID_MAPPING again on failure, that kind of thing. If they=
+<br>
+&gt; get back 0 when a folio was actually left behind, they&#39;d think the=
+<br>
+&gt; invalidation fully succeeded.<br>
+&gt; <br>
+&gt; Could be I&#39;m missing some other path that catches this, genuinely =
+not<br>
+&gt; sure. Haven&#39;t tried to reproduce it, just going off reading the co=
+de.<br>
+&gt; Let me know if I&#39;m off base here.<br>
+&gt; <br>
+&gt; Saleh<br>
+-- <br>
+Jan Kara &lt;<a href=3D"mailto:jack@suse.com" target=3D"_blank">jack@suse.c=
+om</a>&gt;<br>
+SUSE Labs, CR<br>
+</blockquote></div>
 
-                if (!dummy) {
-                        raw_spin_unlock(&b->lock);
-                        dummy = kzalloc_obj(*dummy, GFP_ATOMIC);
-
-As it releases the raw_spin_lock() before calling kzalloc_obj().
-
-So something else must have disabled preemption/interrupts.
-
-> > > >  __sysvec_kvm_asyncpf_interrupt+0x334/0x610 arch/x86/kernel/kvm.c:338
-
-DEFINE_IDTENTRY_SYSVEC(sysvec_kvm_asyncpf_interrupt)
-{       
-        struct pt_regs *old_regs = set_irq_regs(regs);
-        u32 token;
-                
-        apic_eoi();
-
-        inc_irq_stat(HYPERVISOR_CALLBACK);
-
-        if (__this_cpu_read(async_pf_enabled)) {
-                token = __this_cpu_read(apf_reason.token);
-                kvm_async_pf_task_wake(token);
-                __this_cpu_write(apf_reason.token, 0);
-                wrmsrq(MSR_KVM_ASYNC_PF_ACK, 1);
-        }
-
-        set_irq_regs(old_regs);
-}
-
-
-Is that run in hard interrupt context? If so, we need to make that a thread
-for RT kernels if you want to call kzalloc_obj().
-
--- Steve
-
-
-> > > >  instr_sysvec_kvm_asyncpf_interrupt arch/x86/kernel/kvm.c:327 [inline]
-> > > >  sysvec_kvm_asyncpf_interrupt+0x9e/0xc0 arch/x86/kernel/kvm.c:327
-> > > >  </IRQ>
-> > > >  <TASK>
-> > > >  asm_sysvec_kvm_asyncpf_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:753
-> > > > RIP: 0010:memcmp+0x156/0x1d0 lib/string.c:665
-> > > > Code: 0f 86 fb fe ff ff 48 89 d8 48 89 de 48 c1 e8 03 83 e6 07 42 0f b6 14 28 48 8d 43 07 48 89 c1 48 c1 e9 03 40 38 f2 40 0f 9e c6 <84> d2 42 0f b6 0c 29 0f 95 c2 40 84 d6 0f 84 45 ff ff ff be 08 00
-> > > > RSP: 0018:ffffc90003ab7538 EFLAGS: 00000297
-> > > > RAX: ffff8880220be413 RBX: ffff8880220be40c RCX: 1ffff11004417c82
-> > > > RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8880220be40c
-> > > > RBP: ffffffff8c58a940 R08: 0000000000000001 R09: 0000000000000066
-> > > > R10: 0000000000000066 R11: 0000000000000001 R12: 0000000000000012
-> > > > R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
-> > > >  strstr+0x109/0x170 lib/string.c:743
-> > > >  tomoyo_add_entry security/tomoyo/common.c:2157 [inline]
-> > > >  tomoyo_supervisor+0xf47/0x1340 security/tomoyo/common.c:2238
-> > > >  tomoyo_audit_path_log security/tomoyo/file.c:169 [inline]
-> > > >  tomoyo_path_permission security/tomoyo/file.c:592 [inline]
-> > > >  tomoyo_path_permission+0x270/0x3b0 security/tomoyo/file.c:577
-> > > >  tomoyo_check_open_permission+0x37f/0x3c0 security/tomoyo/file.c:782
-> > > >  tomoyo_file_open+0x6b/0x90 security/tomoyo/tomoyo.c:334
-> > > >  security_file_open+0xb5/0x1e0 security/security.c:2739
-> > > >  do_dentry_open+0x588/0x14d0 fs/open.c:973
-> > > >  vfs_open+0x82/0x3f0 fs/open.c:1101
-> > > >  do_open fs/namei.c:4836 [inline]
-> > > >  path_openat+0x1a23/0x2450 fs/namei.c:4999
-> > > >  do_file_open+0x20e/0x430 fs/namei.c:5028
-> > > >  do_sys_openat2+0x10f/0x1e0 fs/open.c:1417
-> > > >  do_sys_open fs/open.c:1423 [inline]
-> > > >  __do_sys_openat fs/open.c:1439 [inline]
-> > > >  __se_sys_openat fs/open.c:1434 [inline]
-> > > >  __x64_sys_openat+0x12d/0x210 fs/open.c:1434
-> > > >  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-> > > >  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
-> > > >  entry_SYSCALL_64_after_hwframe+0x77/0x7f  
-> > >   
-> 
-
+--000000000000776d5c065ed89cf8--
 
