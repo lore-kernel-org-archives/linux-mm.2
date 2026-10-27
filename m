@@ -1,142 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4621606A31F
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61C4606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXG7Q3Zw
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Wf44q9vo
 Received: by kanga.kvack.org (Postfix)
-	id A0BF46B08C8; Tue, 27 Oct 2026 16:33:36 -0400 (EDT)
+	id B3FF76B08D9; Tue, 27 Oct 2026 16:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B7406B08D9; Tue, 27 Oct 2026 16:33:36 -0400 (EDT)
+	id B178D6B08DB; Tue, 27 Oct 2026 16:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85A476B0760; Tue, 27 Oct 2026 16:33:36 -0400 (EDT)
+	id A2E296B08DC; Tue, 27 Oct 2026 16:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 569556B08D8
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:33:36 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 783AF6B08D9
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:33:43 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D8894140AF2
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:33:35 +0000 (UTC)
-X-FDA: 85369556790.09.06490A2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D4C1418000E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:33:33 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BXG7Q3Zw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 048381C4449
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:33:42 +0000 (UTC)
+X-FDA: 85369557126.09.3DFDD6F
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0DE8920003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:33:40 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Wf44q9vo;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793133213;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793133221;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=RUsmSn5TTXp1D9mIJ0obASDtKKRFcgaXruKo733un9o=;
-	b=lRHMvaA7XZHA6wCzqRqXBoKWfc6RNOAVcb7z49HXZELeaz9DSdgd/KcWDGbitSwCo9xRZb
-	OfuAU+KWLJpIl3fJwLogDzMVP6jLh9gzmYei9VggtY8clPd3eIpW30edNruCzpeN+tfpMv
-	K8ogavb0rcaI8i+OrkMsKQwb8WDg4jk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nGVzZSBgakxWmcqzfl+9A2MiYwXiZAI9axGmW3aBX1Q=;
+	b=qyC3gVsn2A8RXKl3jPQaxpzzZbjpLCQDB5RTmP0wm0HH6fTY+ziqw6T/IXVWzC+kIMriNf
+	D7R1diyDLM8xQXGYRu2oqSs+4C9JBnEH/ByP17O5vKrzgzbOGKqD173U0LiWLFhJ2jdMVd
+	WC2MGbwp/jHBPhZu7adWjbu55mgoZLw=
 ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BXG7Q3Zw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=Wf44q9vo;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793133213;
-	b=NbnYHO4anhQ7B2eRMF2vSGCEuYHzaRJOFDXRpZ/TVw9gpNqRLXAsMf7UBCPCQc83dYB/P3
-	AVfYRxgM/XCYDJEk3Exlc7jCu6FPvrQXkzRgpRE3Klqu8xmMuEP1L78msLMf7vgxS7eJDQ
-	K/TEytjyangid54sH2XHTuF2NieggZk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59F356022F;
-	Tue, 27 Oct 2026 20:33:33 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793133213;
-	b=jJZy6axos4EmObl9spOrPMEro1hDlSAMETbdsIgRO+p6bxwptEMafgFRDqgYeYmf6VAG
-	 cszb5a8lNTp8BSJfH/mpJ7mbZb7Y9f1ITIUxxaHJavsIbAXkfvha16TWS6uuJ8eBbsXQd
-	 8H7lyGLzen/Wr7TN9Oz46Hr6AtCgMm9eKSwp3He6HzBRPVsZS6YYMdTZzVkjhM++D25TX
-	 SWsswwbITxc8GmxkK240f36BQy5uhJWv4FHHQmkRi5kqNiwxGjdPDHrrVXS0hOInBOTeS
-	 nGR+/ugZ2Ra6O6doXaRTkVaZReHPFQBhNyB2iSMMnfDQei7+2yaxC6oyr9nTzXt5Rzg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793133213;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=RUsmSn5TTXp1D9mIJ0obASDtKKRFcgaXruKo733un9o=;
-	b=wr+DjOaaECUlchssCVu6rDPeQRrl9MH85zwGNmnm46uUQihuHSC/YMNH95JTcdPrFh54
-	 388HHTfflHCljq5CnFpLbqbs3HPWFDhOIXtiCsjF/F3jnSCSJupy2LK8W3S4t3fYMmJoh
-	 ZGfUfYLZa8hzyAEC/+ng6FTG5obFGy9e7V8I6THEgzcuzF3bZMzt6Zc0oSG7Zb6Qfhqbw
-	 g6BGzrveckbY129ZG9FDc05S4MGdfP58VxbX/ZF/IoRp8ujMN9WJFycJ0/rXhVwsg5IeX
-	 frNZFR4N9kl1LPdIkeUSvf3P0kHfp2qFvYxzHg/yOZ4pfeCPQXLanUtbH6s1t9BtrQQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 81D7C1F01825;
-	Tue, 27 Oct 2026 20:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793133213;
-	bh=RUsmSn5TTXp1D9mIJ0obASDtKKRFcgaXruKo733un9o=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=BXG7Q3ZwHaXPb724Gr8w05DFzyLn8lvJXSOvLU2S147jYv6oSrNTwhqcANecrFqYw
-	 ev3zLbkLzxKyz06JNQhgHYJhz/HZe+adzyVqqmiCwhr60xMTSp/9aY3SZtrneSOzSj
-	 PqbzLYv+x+oopTyrNrv8/INVrJPtIBKDG6pOwB9uTTkQ6EGIL9ANxe4YyzsuptkXKo
-	 lOcDnRH21JPJV2T6NxWmzQlsy6x+E0B6FiByNgUIdbzcW1SF/Vp07cjR3ihXWRjxWb
-	 lUOpICDAr4Rz12rDhK2Y9IM6Gv8a1OqVM97Q85rRGwbrH7HpYEJQJU0XLre9zXovXZ
-	 I0Ix6ksxW4i6w==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D5F5C451F1;
-	Tue, 27 Oct 2026 20:33:31 +0000 (UTC)
-From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
-Date: Tue, 27 Oct 2026 16:33:32 -0400
-Subject: [PATCH] mm/shmem: fix swapin livelock on a mismatched large swap
- cache folio
+	t=1793133221;
+	b=PtSLePn00rKdl3Kjldr9VTJPk7G92J1y95XeGRgJU8G1Qj1BNw3Wp0L7xaM91QxbNZNmSZ
+	Q/E+e3vDC79vpEoMi8LK6QwLS0+Zd60U7vn6ooBgKW/PGwn50qQCBa9nLuVk8NoN1IEoz5
+	6Fncs6DXT7UN4SLtV+Fo6/c3kxhkjns=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-535f598d126so17241cf.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:33:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793133220; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ru+6ovlsMeUpEb3/t1r3w6TsPblh2Xx5WqTE1MP6YaHtczLiKfDzBebFyWdQnO1A/5
+         vRRHQBqpzSvgVn9b5ggnZgCUzk1esWtAj7jNcJU91hqbTAjHirMhh73RHjdMC+yhC6Zz
+         ss70SZM7SOHod4yG2C9Pn472o/yAfU8usanVrKJRG9wyMRCVZg+qSxI/8+mM5X1qpaZ/
+         FmnqqZNg87lJwwILNCUJDV3ZPanYevxeQ3yOCICPczM0FJgvjK0xh5NwACttDxizIfYS
+         n5Ndg2mD/q3d9ZUfZJlpDf0nQnBdPuUgjyErZ0CdZd8cVAL5k8eDCRFYVY4MP0tPsNRM
+         JXjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nGVzZSBgakxWmcqzfl+9A2MiYwXiZAI9axGmW3aBX1Q=;
+        fh=6+dQsFtWk596BNFA2BaePOfWChzbx4d7uX89L7iubdA=;
+        b=HkA4NcD9Qim2pbZTkauCRg2aavbmF7zb8FUvNP5qwmq9cRzDjPt6GHYBBnEpFCG0R8
+         9wMPdmKr3Gb5RypJcr9DIGzTKmOVCZH7rlSRTkvq66zFdLgmnGkLLhp5lLRLoKifLXhL
+         ay4LuV5SAvuVvlAcO7BVeDqCBG+ADqxNhASGdCyldrowr66+PvBcrIwfFvjFpfz3ZRsO
+         wuB7e4L16TCdzZBEDOHJTPBLl3scns5xFlfVimrLXhpJV5vnj756IQuC02US9WbnoHcG
+         NKOZ8SBP+tat7w25/iea642ffP3crWouKfMK/mEQRpW/LJqxYv9um2qrmpD/eOF95SkZ
+         /nkg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793133220; x=1793738020; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nGVzZSBgakxWmcqzfl+9A2MiYwXiZAI9axGmW3aBX1Q=;
+        b=Wf44q9voyzlmwXSL+968jY49btDCAXVPDv0WQNTBv5day/Z/AIChFuVexEXfkA3bUk
+         ZR3jpOC9Injpaw3BtCJsL7Bz9h/t08RJZ/Z05193hqFKM0rFGxoXFVPURwNgCsIgHbUh
+         9vO9ScdG78yabdl0f39JAj4JU23CDdqBzlYe11nD2zfdphK5QmKyPE8Hx8fsimdIhyy+
+         3uk1YeXmJbYWxvalVJJoGL56w2KxrP2z7wP+hH/3yq/QaCpWvg/JKeJcMYH1D4eRPWKL
+         c4H1SVQuoT8cAPg5f5FLAoRaXQuWHADUzVK65hIZWk8fppWb68cl4aXokFrxuYDmKPZO
+         a0uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793133220; x=1793738020;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nGVzZSBgakxWmcqzfl+9A2MiYwXiZAI9axGmW3aBX1Q=;
+        b=JS9GGHkMx/b4Sj6zdyLdUl5+bRbxEDH6wZlDcFXRRFI3p33Qr2dT41wgE7UUz36B25
+         sm2DQayOtc3/ePxeAQ+4r4popfqnRhQuI+9Zid/cj4uYzyajR2mdXjDe5qMfHeX4mzj1
+         1Dts4JZM7uv6mwPIXlxW96deNhv+ZKeH2ZM4YkKmlWntiiMLx3Z5pv1+GTNhWpcUxV2g
+         qKlFmDDcoqEwrPRU5Yw1lYGnZBj7Wdtrj3itga3GJe5fcFijBOrG2pJjBylQHoQbLBNH
+         AYyyTFHhHTgPMky9Wk2Fl16/xxyMiM4+ur25zqJj7WA4dGvgBFBDkiRhqSCLRSPujj6X
+         +o3g==
+X-Forwarded-Encrypted: i=1; AKwUvByiaRvV4mGp8PodJnLJ132A+f1hnVUalG7MTgkoRRseNBpVtcKiw+Tx1n3i/uXhNDLkvZPhEYucqg==@kvack.org
+X-Gm-Message-State: AFq9FYIS1yJtSXMbKpzifUH+vnJ0Kc03RyaCA23csDcv29jO/VkN/JPU
+	H/8Q76bicF2iMHfzEHahKRtFRmWuKZDNdlX1K96v3fJLUR7n+LrH06dA6f0yonPMJYpD5DxXixv
+	yTzfarWSoOWMRah/PQrOlcVi0A3f4cqz16xCtdXPGoJsb7oLA6Y27l/WAlaE=
+X-Gm-Gg: AYBFou0BiVCRzPkrSOk+/02cizMrPSprQVzsL9yzBQH+gMummTh/QItbV3bdQamWUCj
+	faz+fMFnu3ctuq4/jJDQ1i6YXEhwqbeRch8kP5Z+ywnEtxfjgeR7SXY499PT4fKKAUw/rMkg4Ln
+	n1Yhjb7m8ocL67iyHwu8zo1fAfi/dGcJPxpbrGwrD5TK8uXUMECbxofew4JzVtBV0np+dVel8lY
+	F6KLRdKtP0+t+jIBO9v3LWB708h1Gioky6LRxOaWGcj/wPRmOFtP04FhEMC2IDsnSi/XSHputdx
+	DWYXFkBVM2bid4l1OCwj6e4DXtlnsdloBlOw2NrGwXoZzyrXxJJRzPfQawTHI6r0wErgcHQeVyt
+	cj4JwhGfemRXs18AkIK4W5Tnyd1fzSalOl3x0TAGxVLjUcVxh86JIOgPilr+Jg1qruQA=
+X-Received: by 2002:a05:622a:2488:b0:534:b7b2:634f with SMTP id
+ d75a77b69052e-53fe2554767mr1314101cf.8.1793133219456; Tue, 27 Oct 2026
+ 13:33:39 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261027-shmem-swapin-mismatch-v1-1-84e30aa3b9e5@columbia.edu>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBCF4avIrDvQBFToVYqLMY7NFJJKxqoQv
- LtRF2/xLd6fQTkJK7yqDIkXUfnFAvOowHmKH0YZisE+bWPKUH3ggLrSJBGDaKDZeRyHloi4NbX
- toXynxKNsV/fd3dZ//2U3nzHY9wOS/mNzeQAAAA==
-X-Change-ID: 20261026-shmem-swapin-mismatch-fd7aaae7152b
-To: Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu, 
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
- David Hildenbrand <david@kernel.org>, stable@vger.kernel.org, 
- Mani Tofigh <mt4022@columbia.edu>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793133211; l=4725;
- i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
- bh=Vdl4OKyE80c+N/UAG+bYXzpu0HL0y5evYFJyEcYjtvw=;
- b=7uEcFzFrWSSemDyMXBbHWaNW+OuNxmh1qJi8M4WhwJ60XkoJkAc5+eqGMXNjzw5vbCxDuDjY9
- HBoa2eD2w2CDUcUk64WjB98n/hFWwztLwUaIG5XzUTnR44iklMkG7ET
-X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
- pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
-X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
- auth_id=1322
-X-Original-From: Mani Tofigh <mt4022@columbia.edu>
-Reply-To: mt4022@columbia.edu
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D4C1418000E
-X-Stat-Signature: waenf819fus85r8d14e8xswhye7foxqf
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-24.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
+References: <20261027-fix-proc-pid-maps-missing-vmas-v2-1-2791cc9fc95f@kernel.org>
+ <CAJuCfpELhxhyVQANspX14OBLbghiAqndYcfv1hnmh4Nvo=1vAQ@mail.gmail.com> <auDEn8GmB0H7zj99@gremlin>
+In-Reply-To: <auDEn8GmB0H7zj99@gremlin>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 27 Oct 2026 13:33:28 -0700
+X-Gm-Features: AclHuK9xIitY88h9-xQmFSg95vDMG0XSmM9H59NNZztoY7Pi5T1zymOIAg7NNiM
+Message-ID: <CAJuCfpFqYcbw4rOhd+Q4PGryXjzTxYXpwmS7Ag_cbtPOYBW0Aw@mail.gmail.com>
+Subject: Re: [PATCH v2] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, SJ Park <sj@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1793133213-532152
-X-HE-Meta: U2FsdGVkX1/DSfaSy90lR+O/kk3eIlyb4mrXkdl4DxeLNczq5kpLM8Zne73EXwjhap2xvZgF7z2YmUq4foyYYhBKaOUAX5UyXCp+mv9fL8UXL+DjhutUn6s5Yexj9eN56h8AZwwtCKxdBuyIdcr3HfW7WQ/jYPAFk73rPUCWHUhlx+AJ+Iwrm7Ax88Vp08Lbw47sdC5FXMBcNugDZ0C5r8PdzsqIVC+O7uGKusNqr8DAfbpWJKZEraP064F9f1GKonq8dv2caEPAxIATqrb9Z/9o7VKB3VJEq7zeq7k63qubBxaw7wsCnCognS7NPRdGVacvBydj5KQx7Yuk8Z12YJD6hQocHMKwEqkOSkJPhOPecVKum2oYqFkpRE6l2K6sePBtgsb3WRuv+cFlLScQsL42VRfOu8wqdJx9g+Kly2QC8pJARjzWHJdPoJ6VXVSHWqjxAhoKeX1NUE110FBh1oXMod1H1vNc0fxj68G66Y3NsViw7ug7N/H9NZ8gri1vz9yh6nHViLPBBLETqsnN6+k4loME5Iipz7FkWNau6/zfMWR+93jCq8YkaecwcgbWhsclTDpxbztjYt0ym3RIKBymDfGyULAtVhmG0gKsL1a30ZLGiT9pDwvddaCvyquFNQMrJQqv0zqPwloRj2rR4PG8ud/BNEy2bsnK4Z+HV2ey2Tta1VgZP9SzsiyEGomd0REf66gmIZSjZDvTqJ3eR5RqJbDmGnl6ofX6YzQMeoVII43ZXIYm6vTxZwypvmqQKYc5SNMlpLAjN3vkfCYgGJXSRfuUx1M4mM1MNSgI6p0GRirqaTm/qZB3ZObU9QjQzyLyUKY7T5Z5wn18hS1sugvPAdqrs1HqykIIeBhASa6fKRdoy7mDFNmvh5lCb+eYmX4ToE9N44hM+979PmMUL33FiQgPaJhPjn94Qj+MR+9uBO1BPaBT3jfbWkqKij4cIbdF99b76vOW+1xxPer
- Wf4EAdGw
- yWnf9OqMEZIoiSgxBheaZWTQ1FZIe+ZdDRu2o59Er/MOg5+V6d90jMG73S3M+tphB8dGB57K+jU16cFL+9/FD2sy/+0YIbQqOTJVYxSRD2Bs/zUV0xodw6dZYtOzdEnMtX/1fL9yAkEwWsi1ldNQi0+Huhiil8GDDXs7fYpOQrLRmRO0ixoKwv4cD8W2ZHF2BDvrIoMpQEcPcjeMJWTSflwm8Zdh3hXeYyNFdRO43uHi4nH8T+XIvADPSW2WKd9RdZ0+LNw+Cuo+riXpjuRGbxyPCRt78xu5BrqZ0nF1SGBcOs+nglf4VgCtnMOEvaDgvSOFyGfhB1L8DPQ4X0Fbj4a17Ro94f1zAgGN68HnRyFEgdAfWk/zBlytPQuDeQ5WBns78moB3beHzE7UfFXfUgA4DeA4kzH/cmqVCwtyhAv8Kvl7qzKRQtgHs1+phdDo2kSnKoXFyVpBC6busBHj4Vxmpm52qZg/wIoBy2mDf5eIWwfU2RzLCRP9RpoOa1nxlB9HJNBWCyay8d1Aisp64vDGx0LjZsakGsHJANso6HMzpvJBAk62WSoYP4Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0DE8920003
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: okcrsz9jr96jqp7qfbpiiumtbcbpxg6y
+X-HE-Tag: 1793133220-236846
+X-HE-Meta: U2FsdGVkX1/U6c/B7tmwPqQHtixVSL8NpUH3vemQEND4bZqY0T0oNFn3gJvWlf8NCJpID/+2S4njIyUG6LkUvDWxC3CFRACkakHOSMHUAy5i8hW4rOEzjYpUgs8WUV9afqNekEfm3A+1eJAaAzIKKCKDrlsYbbr5+XSPNyCT8VOas9E86z65rNR3MG0mQGwgUEYPFqXKbi76IfiYnoo+ojgW+aCTMKehMDYFuGCLlrUACqxVS9UYm3TiQ86cV9enIqclHP/iktrJiqflAGTRt4TtT+lX41Q26xAWFco2R0WzB/9/axooJu3jiMA2BYKZQ6WkcZruNyLvtOy6MSwJKv+7ZA7ECPN5QaaPDvSrWNOl3aTw84n/9fqsqWuhzdIXdXeBfTy6WTQ9sWVXDV4k16Pub/5whOW6HizOMVoho9wtvbruBcgSnWJZtPYHU1Cm+KjvzRsWq6GyIOidkBBddx1tQsikoUkua3BlXSPfutlx5Y+imLw09smIej+8b+2GAXQ8xKEd5BEZ98gtVtBF4//AgqjRCjxAx+cUsneOAXOEUB8RwJz3abhqhrvUFdihRCBUxQWaR1htqm31Yv8bujlt+fbpUw9idL5mKGgxvUz6KOtUvT3FujIY+SoAqa8yV4LKEZaC17QE57+ElPagc296oJSM+q40D0cHDlvYCYq5LPAnoutp8N/PWzBY3dGsV/bsYB/qyy/0olLBX0yNDR5ve6W7Bj390UBeb48n0SoBrhWdcsdrAEAbBtdlAJ9HlZjRt4fL1ZLSW1HHNacgZISrqDSeOva2KaoLCnmOW+n7poclDrcoD49iQbSDIpz6AGWrdESWP4JeQgiyXLvQPc2T3iVqtqx/9Nld7vauofcNvM390J/7kaUHZZyEGYlJtN69ko6vUxktKj8bcUkEi8cExCD+1glFm91/3sxrTVKQMOTToSydjK98MAcCB6nKo7iHVkA7k3anta5w0BI
+ oRMgROze
+ MzG9jl542frE+gfAICZWAYEiLr8UMrqWpGmn96kX85tm+R3YiQ84djD434wtKVUntjkz9KdjMr3pFESHABzZvF/VJAq0Ej1bciTLCp1avE11/EnkZGjjTs/B4PFHoP3tABJ+SQq48lmo9Avs9TTif/nsOA7W8IqAMi3BpX19P0CHBWsSLh9MfRpPVAFA/zhowarR6j7eVhI6nBiwW9g4dVo8r5YFEAsJ5GMSkm0IIm6BnP4/vxS9+vC+p//y7vKb1/rhc7qRdzp6miIHEBv5pX4f82jYK0atULdIJbY2Iw+nKwYj4aIeV6jbSkGwVW2y8P1aWAZWxZD0BSU0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,125 +149,246 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mani Tofigh <mt4022@columbia.edu>
+On Tue, Oct 27, 2026 at 10:49=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.=
+org> wrote:
+>
+> On Tue, Oct 27, 2026 at 08:34:10AM -0700, Suren Baghdasaryan wrote:
+> > Overall the code looks correct bit I have a couple of questions below.
+>
+> Thanks!
 
-On a SWP_SYNCHRONOUS_IO swap device, a large shmem folio can be left in
-the swap cache over swap slots that another file now uses.  Reading
-that other file then loops forever in shmem_get_folio_gfp():
-shmem_swapin_folio() finds the large folio, rounds the index and the
-swap entry down to the folio's size, finds no matching entry in the
-file and returns -EEXIST, and the retry finds the same folio again.
-Since the task keeps the mapping locked, a munmap() of the same mapping
-waits forever.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-The folio is left behind when the slots are freed and reused while the
-swapin is still allocating it:
+>
+> >
+> > > ---
+> > > Note that I decided it's best to defer any VMA iterator stuff to a
+> > > follow-up - with the abstractions added it's clear what's going on an=
+d
+> > > easier for backporting.
+> >
+> > Ok. But once we get VMA iterator validation routine implemented, we
+> > won't need vma_rcu_iter and its helpers, I think. Are you ok with the
+> > fact that most of this change will have to be removed later?
+>
+> No, I don't think this is correct.
+>
+> The iterator can't validate itself - the failure case is invisible to it,
+> something changed in the tree and it has no way of knowing, it has to be
+> prompted to re-init etc.
+>
+> I tried a version of the code with vma_iter_next_before() and it really d=
+idn't
+> provide much delta.
+>
+> So I think any version of this has to have the rvmi stuff.
 
-  Task A (reads X)                      Task B
-  ----------------                      ------
-  shmem_swapin_folio()
-    allocate a large folio
-    for X's slots
-                                        punch a hole in X
-                                        /* X's slots freed */
-                                        swap out file Y
-                                        /* Y reuses those slots */
-    add the folio to the swap
-    cache over those slots
-    shmem_confirm_swap() fails
-    /* -EEXIST, the folio stays
-       in the swap cache */
+Hmm. I though the fact that we store from_addr and can compare it with
+mas->last could help us detect VMA skips but I'll have to think some
+more about this.
 
-  Task C (reads Y)
-  ----------------
-  shmem_swapin_folio()
-    finds the large folio
-    rounds down to its start,
-    where Y has no entry
-    /* -EEXIST, retried forever */
+>
+> In any case, I am happy to replace all this with whatever makes most sens=
+e
+> going forwards.
+>
+> Key here is to fix the bug + get it backported :) [ before moving on to t=
+he
+> N other AI-reported bugs ;) ]
 
-Before commit c246d236b18b ("mm/shmem: never bypass the swap cache for
-SWP_SYNCHRONOUS_IO"), a direct swapin that failed this way freed its
-folio instead of leaving it in the swap cache.
+Understood. Yeah, I'm not going to nitpick here as you have your hands
+full. If we find a better way we can improve it later.
 
-do_swap_page() already drops a large swap cache folio that does not
-fit for anonymous memory.  Do the same in shmem_swapin_folio() and on
-a -EEXIST, remove a large folio that is not
-anonymous/dirty/under-writeback from the swap cache so that the retry
-swaps in a folio that fits.
+>
+> > > +static inline void vma_rcu_iter_init(struct vma_rcu_iter *rvmi,
+> > > +               struct mm_struct *mm, struct vma_iterator *vmi,
+> > > +               unsigned long addr)
+> > > +{
+> > > +       vma_iter_init(vmi, mm, addr);
+> > > +       rvmi->mm =3D mm;
+> > > +       rvmi->vmi =3D vmi;
+> > > +       rvmi->mm_wr_seq =3D UINT_MAX; /* Start odd so changed by defa=
+ult. */
+> >
+> > Why not initialize mm_wr_seq correctly using
+> > mmap_lock_speculate_try_begin(mm, &rvmi->mm_wr_seq)? That way on the
+> > first call to lock_next_vma() you won't be resetting vmi
+> > unnecessarily.
+>
+> It doesn't really save anything, the init already sets you up in start st=
+ate
+> where you need to do a traversal anyway, and vma_next() will trigger a wa=
+lk
+> either way.
 
-The reproducer below fills a small brd swap device so that a 64K shmem
-folio and the 4K pages of another file land in the same slots, and races
-a read of the first file with a hole punch and a swapout of the second.
-This bug was identified and confirmed with the help of a deterministic
-hypervisor currently under development, but the non-deterministic C
-reproducer can typically trigger it in the 2-4s time range.  With the
-fix, nothing is triggered after 600 seconds.
+You might end up with an extra vma_iter_set() call but it's not critical at=
+ all.
 
-Fixes: c246d236b18b ("mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
----
-Two patches in David Hildenbrand's v2 shmem fixes series are related
-to this one.  "mm/shmem: fix truncate hang in large swap entry" [1]
-makes truncation retry -EEXIST directly, so it can also loop on such a
-folio.  "mm/shmem: preserve allocation errors when swapping in large
-entries" [2] fixes a different -EEXIST loop, where a failed allocation
-is reported as -EEXIST.
+>
+> What's useful about it is it makes it such that only lock_next_vma() does=
+ the
+> speculation (and thus sampling of mm_wr_seq).
 
-[1] https://lore.kernel.org/all/20261027-fixes_shmem-v2-10-86a00952acb9@kernel.org/
-[2] https://lore.kernel.org/all/20261027-fixes_shmem-v2-11-86a00952acb9@kernel.org/
+OTOH you won't be exposing these odd/even seqcount details. Anyway,
+I'm fine with what you have.
 
-Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/shmemloop.c
----
- mm/shmem.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+>
+> > > @@ -471,14 +505,9 @@ struct vm_area_struct *lock_next_vma(struct mm_s=
+truct *mm,
+> > >          * installed ahead of it. Otherwise we might observe a gap th=
+at should
+> > >          * not be there.
+> > >          */
+> > > -       if (from_addr < vma->vm_start) {
+> > > -               /* Verify only if the address space might have change=
+d since vma lookup. */
+> > > -               if (!mmap_unlocked || mmap_lock_speculate_retry(mm, m=
+m_wr_seq)) {
+> > > -                       vma_iter_set(vmi, from_addr);
+> > > -                       if (vma !=3D vma_next(vmi))
+> > > -                               goto fallback_unlock;
+> > > -               }
+> > > -       }
+> > > +       if (from_addr < vma->vm_start &&
+> > > +           vma_rcu_iter_may_have_skipped(rvmi, from_addr, vma->vm_st=
+art - 1))
+> > > +               goto fallback_unlock;
+> >
+> > Before this change we fell back only if the new search yielded a
+> > different VMA (the vma !=3D vma_next(vmi) condition) while now we
+> > fallback unconditionally. Note that the VMA that we are rechecking is
+> > already locked, so it can't change. Was the previous logic invalid?
+>
+> It's not unconditional - it requires that we have progressed and we may h=
+ave
+> skipped a VMA change.
+>
+> The 'we have progressed' bit was there before (from_addr < vma->vm_start)=
+, and
+> vma_rcu_iter_may_have_skipped() wraps the previous check plus actually wa=
+lks to
+> check if something is there to traverse,
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 13e0786436cd..f1da8432d55c 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2568,11 +2568,14 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	 * and swap cache folios are never partially freed.
- 	 */
- 	folio_lock(folio);
--	if (!folio_matches_swap_entry(folio, swap) ||
--	    shmem_confirm_swap(mapping, index, swap) < 0) {
-+	if (!folio_matches_swap_entry(folio, swap)) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
-+	if (shmem_confirm_swap(mapping, index, swap) < 0) {
-+		error = -EEXIST;
-+		goto failed;
-+	}
- 	if (!folio_test_uptodate(folio)) {
- 		error = -EIO;
- 		goto failed;
-@@ -2613,6 +2616,15 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 		error = -EEXIST;
- 	if (error == -EIO)
- 		shmem_set_folio_swapin_error(inode, index, folio, swap);
-+	/*
-+	 * A large folio that does not fit the mapping, e.g. because its swap
-+	 * entries were freed and reused, would be found again on every retry.
-+	 * Drop it from the swap cache so the retry can swap in a fitting one.
-+	 */
-+	if (error == -EEXIST && folio && folio_test_large(folio) &&
-+	    !folio_test_anon(folio) && !folio_test_dirty(folio) &&
-+	    !folio_test_writeback(folio))
-+		swap_cache_del_folio(folio);
- unlock:
- 	if (folio)
- 		folio_unlock(folio);
+Ok, I see. vma_rcu_iter_may_have_skipped() effectively replaces (vma
+!=3D vma_next(vmi)).
 
----
-base-commit: bae9a042b03b27924c6fd5bdc00a20d6a44d6041
-change-id: 20261026-shmem-swapin-mismatch-fd7aaae7152b
+>
+> So this is strictly an improvement.
+>
+> And yes the previous logic was invalid - the issue is with an unlocked VM=
+A
+> in the range [from_addr, vma->vm_start - 1].
+>
+> It's really the gap that's the problem AND a race against node replacemen=
+t,
+> which means that 'X' is skipped by vma_next().
+>
+> vma_next() is a walk to from_addr, then runs mas_next_slot() which advanc=
+es
+> to the next entry. If a gap, then the walk assigns mas->last to the end o=
+f
+> the gap, and if a node is killed before that happens, due to a VMA
+> expanding _backwards_ like:
+>
+> vma_iter_set(vmi, from_addr), then mas_walk() from mas_find():
+>
+>         from_addr
+>            |
+>            v
+>  |---------|      |-----|   |---------|
+>  |    A    |      |  X  |   |    B    |
+>  |---------|      |-----|   |---------|
+>            ^     ^
+>            |     |
+>      mas->index  mas->last
+>
+> The walk lands in the gap. mas_next_slot() saves mas->last as its
+> rewalk point.
+>
+> X expands backwards, the node containing the gap is replaced:
+>
+>         from_addr
+>            |
+>            v
+>  |---------|  |---------|   |---------|
+>  |    A    |  |    X    |   |    B    |
+>  |---------|  |---------|   |---------|
+>                  ^
+>                  |
+>              mas->last
+>
+> mas_next_slot() finds the node dead and calls mas_rewalk(mas->last),
+> which now lands inside X:
+>
+>         from_addr
+>            |
+>            v
+>  |---------|  |---------|   |---------|
+>  |    A    |  |    X    |   |    B    |
+>  |---------|  |---------|   |---------|
+>                ^        ^
+>                |        |
+>          mas->index  mas->last
+>
+> mas_next_slot() then advances past the entry it is on, which is X:
+>
+>         from_addr           vmi
+>            |                |
+>            v                v
+>  |---------|  |---------|   |---------|
+>  |    A    |  |    X    |   |    B    |
+>  |---------|  |---------|   |---------|
+>
+> So vma_next() returns B, having stepped over X. We lock B:
+>
+>         from_addr           vmi
+>            |                |
+>            v                v
+>  |---------|  |---------|   |---------|
+>  |    A    |  |    X    |   |    B    |
+>  |---------|  |---------|   |---------|
+>                               locked
 
-Best regards,
---  
-Mani Tofigh <mt4022@columbia.edu>
+Ok, so here we hit this "if (from_addr < vma->vm_start)" condition and
+have to verify that we did not skip a VMA.
 
+>
+> Then if you get (really) unlucky, the same race happens again for the
+> existing code:
+>
+> vma_iter_set(vmi, from_addr);
+> if (vma !=3D vma_next(vmi))
+>     goto fallback_unlock;
+>
+> The walk lands in the gap before X, something else is merged into X from
+> below, the rewalk lands inside X and the advance steps over it again:
+>
+>         from_addr           vmi
+>            |                |
+>            v                v
+>  |---------| |----------|   |---------|
+>  |    A    | |     X    |   |    B    |
+>  |---------| |----------|   |---------|
+>                               locked
+>
+> And suddenly vma =3D=3D vma_next(vmi), no fallback, and X is never report=
+ed.
 
+Got it. The same skip must happen the first time and then during our
+verification. Thanks for the detailed explanation.
+
+>
+> With the new approach you simply can't miss it, as
+> vma_rcu_iter_maybe_changed() will see a change could have happened, and
+> vma_range_is_empty() tells you explicitly, with a brand new separate walk=
+,
+> whether e.g. X is there.
+
+Yep, that function name is indeed very clear.
+
+>
+> It's finnicky, finnicky stuff, which is probably why AI found it :))
+>
+> --
+> Cheers, Lorenzo
 
