@@ -1,83 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7351F606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8B4606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VASw8a7/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O/cT7rN4
 Received: by kanga.kvack.org (Postfix)
-	id F36A86B074B; Tue, 27 Oct 2026 09:39:02 -0400 (EDT)
+	id D695B6B074D; Tue, 27 Oct 2026 09:43:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE7236B074D; Tue, 27 Oct 2026 09:39:02 -0400 (EDT)
+	id D41C66B074F; Tue, 27 Oct 2026 09:43:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD6726B074E; Tue, 27 Oct 2026 09:39:02 -0400 (EDT)
+	id C0A096B0750; Tue, 27 Oct 2026 09:43:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B14696B074B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:39:02 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 456561A09BB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:39:02 +0000 (UTC)
-X-FDA: 85368512124.21.54ED0F3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 882FB80005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:39:00 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VASw8a7/";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F9896B074D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:43:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 278EA809C8
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:43:01 +0000 (UTC)
+X-FDA: 85368522162.14.25D6F41
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 43EB614000D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:42:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/cT7rN4";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793108340;
+	s=arc-20220608; t=1793108579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eP/VlP5fifIOIsGnDSJCoqWaClRY4R6jN0i/F3KlPYo=;
-	b=ojUlHd0OhiA3XIgpEIEtWxZjHnhcSLKI/i3YVjlI/1YxNqTmCi9KaT4r3iy5b/u+Qyu+cu
-	+yKilWxIpy94ZOaP0gZOm03b75szcGtsqLqH/inHRTFZDK1ktGlVRsOatusP4XC0AYBFh0
-	zEKeozwuJOx6rBwM+0kEE1DjyskM7S4=
+	bh=0+f6IJooHiQbF9wAyC4ax/+y1Gmk+/E4quNL5EJAkoQ=;
+	b=UBfnmlDdRAyd/VHAIWuqYmb2dZjuCRghh6n0uXXwnWq1kbxDIqElsxEcwnM5rWNYcldzne
+	VkWY1NGQkrDORa5VVgPRK0YxRRJDIJVQNTwIffRCwcVmMuKDvO546nWuoIIViy/yxTE7gD
+	xCu9uFCxYzR+iAt36X5vdfTfIShk75Y=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VASw8a7/";
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/cT7rN4";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793108340;
-	b=gIgMB/mUU4lukEaIePf35n6rBoqH9GicQ2VI3Ofp/72bMDwB5Gp6ZdIw2wo9e6VwXMfujy
-	7Um8wbtW6EQrBHoT/xtTBstLFqGgHpvudk7YamTeoaXEI7vQgX/855Uk3bv0Nt2VE0XF7U
-	4bXRW40W27Ek7HzpHfHpQ8HTI6I37sg=
+	t=1793108579;
+	b=v0JC3B7rZKyLfGRFNxfJnv0aNCp20PRTtMSo2WNIfp72Ymfbyip/PjoSrQX+IzdnK4fUfs
+	SkhGgN9K3FfeGptNe6y5bTIpGBZjViq2B5Dnbj5HXjCRIWCh82N3Mx9fBtPfFboCJR6jdb
+	vAnquZ6b06jOB1CTj06Sx8ZYO1NufRU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C49A660211;
-	Tue, 27 Oct 2026 13:38:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489891F01829;
-	Tue, 27 Oct 2026 13:38:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5545643510;
+	Tue, 27 Oct 2026 13:42:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234691F01825;
+	Tue, 27 Oct 2026 13:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793108339;
-	bh=eP/VlP5fifIOIsGnDSJCoqWaClRY4R6jN0i/F3KlPYo=;
+	s=k20260515; t=1793108578;
+	bh=0+f6IJooHiQbF9wAyC4ax/+y1Gmk+/E4quNL5EJAkoQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VASw8a7/5jcGyFhoJScT9XjbHReklX5yiUSfTG4A2q4yod4g6QT9/IUaeEs7b5JS2
-	 lgFRQ0HhNb1tSz1cBuWVp9r92zhDA+IMGXGaljVYz1J4gmODMiI/WOp/Azxo7F584B
-	 qU93QNYU4SfItBznQ2/Hvf2Top2U0zb/ea1S3Q/4hJesAcm+5NDslrgUh4rhQanbhx
-	 2pMKsbR+x1oWldIOxLGxZQI5JeVxDgZkZlsaIRF1jNjwoGlJ8B0MCIIe88vHIqb82g
-	 ZNyYTy4oBoxw82vv3tGkS8+x7Tld+Gf4XBps3FkzwZv/XBp4T0ifteuiC1qct41yBr
-	 ZMK7s0iMp/vEA==
-Message-ID: <f4fa7ecb-f4aa-4412-bf1e-049c5761407c@kernel.org>
-Date: Tue, 27 Oct 2026 14:38:50 +0100
+	b=O/cT7rN4J4QJA9+qKjooI/EO5er0turCIeVkTDeBg9nmgtchbI+fpxO9S6+r+oBWY
+	 LwmatZaw1QbMHP8ScOJ6R+l2fGSrhmt7f6UUvC43uiHkIJGDGGCW0OQjZcEIUQEPa2
+	 w142oOqbY6kYvnslUnzMN4PB88SswCTWpes66yGol6fQLmBbkQaxbQK69GdBHy5hRV
+	 glBMz2eRymovbjCzKL0DCgcuiVWEYF4wIngi0eCG9PplngO81D5jwjFqaadaqIhz3C
+	 3l+I0Do+I4H43SEQfhyQdeFO3NHr7grqnLgvsjGY/hUxovAgKOJx9ptbOi6w43lJzE
+	 qaE/Jiu8PIH2w==
+Message-ID: <38491041-d167-4ea1-8813-e75bd11cd10f@kernel.org>
+Date: Tue, 27 Oct 2026 14:42:38 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] mm/compaction: wait for pfn walkers before poisoning
- offlined memmap
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- kernel-team@meta.com, akpm@linux-foundation.org, vbabka@kernel.org,
- surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
- hannes@cmpxchg.org, ziy@nvidia.com, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, ljs@kernel.org, liam@infradead.org,
- rppt@kernel.org, osalvador@suse.de, muchun.song@linux.dev,
- iamjoonsoo.kim@lge.com, anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20261027042204.3741307-1-gourry@gourry.net>
- <20261027042204.3741307-2-gourry@gourry.net>
+Subject: Re: [PATCH 03/46] mm/memfd: check for real shmem inodes before
+ accessing shmem state
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, stable@vger.kernel.org,
+ Chris Mason <mason@kernel.org>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
+ <auBdPOKXJpE-lX8d@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +153,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261027042204.3741307-2-gourry@gourry.net>
+In-Reply-To: <auBdPOKXJpE-lX8d@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 882FB80005
-X-Stat-Signature: sqhyfpo3hja8sq4yi3qqdwpwnifhtq59
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 43EB614000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793108340-66542
-X-HE-Meta: U2FsdGVkX18Url3vFFuepTJgEuTea5GfyGOtDljcBHqhY3keXk1thYYlVtl2s2GMnsDH02Z9Co1/9Xsp/QPLstyJZs+GzzjpzAoMvOjZ4uZ3GNmiec+A35IvIE3tXW6S53Ol7ISgSh+RhVpC5lm1hwm0XG0+aK7OiHVQcXSsNZot3ufucpuikh6ZN/gKoQg1EqqXuFINabU+CC5CQ9yY/F3HunpZNkmEryj+l5yll/lNqwaQ/6slQZNMZrtzJnDKEi1rL7BlkW9s+I8Apu5GHSitSxCGNQSqdfrue7/By+9rJ4le/3NR0uYSufsYLXLJH2UQBy+j4cMRV6yqN9zNP/MVoyYoRxvY5uitM239LiWBi89f7X+V3t1o4KFnE1FeKAB1yh9QFzgK+kbFezIi3qekTGDwdDvdGucQpFqGe7Nrv6MYPdEB4i1ypfyLSJlM7Y8KdQvw/I5KG3sy+CrJWA1po62WOolswuEA+4lEnItr/mmFhINtBE1QiMrl/MUaBsRu0V+x3gie44uJhUi6ppYFjfS3Pyg+YHF8lQSUA9uPbwo7MaFn+RDeeS0ZjfKPxFU4FVLDXmKLaCSV2Mlc1Z/jz2z0+WeguARodpQdkr4DPkBILK7u7ckWdRmBMe7hSV+353mP8uwynzHw7Qwgo/vXqK3qslzUKcOxuxwv0lOLJ27rgdJKBnb7Iiy0VNk6Qhnnr9PktTfZ7FWXRKFi3eidkuxKrCYAmlCEkCueHiZAhdfSKEddtWL8mQSXK+Wja4xzLiHYRQtZoQcDWuu8+gx0Ti09d9gEvpc/jj0CqPw8DgdGwKfoWDWlV9tVdUCNkHxdFqYaFuK+OmYL0GQyz2vTXhB27ZKjgDq9xHDm/XofxXDL7N75aXwZ2jO6g+XrnQ41sG2wHvJFqsNzM0ksf9Ms1GwXgvhp3xh7fEw8m+RxC3PFUQXm0RHxzz60byg+1TISjfEi1A8NmDFSH5w
- 6OefyeN/
- uENEpaNHqAXSqb37L1nSlDMWLv0Z0z2Ulo5JReUKcjuY8LcrAruJ6pMI2x7mUZG1/WVZvh/jdYWmup9Y7FCCBGiQyIaO3ZNDGnjcdXOdKs5hoYyE061O74l/G28UKG53RmBNKVWoTb7LtnkEloEblXDoxEMyWeiuE5QAvZA1uxvtu9OZmX1xXjFiaGWO+49/aL09/yqsIOYLLN5pYhkvt73KPiTIAl4IagzztHPJVmPp+cL/WQLKNf9Ly8dpfxc3b5dLvAqh3ogs7U/nAnklKHisvtTZwCzfPozmLMQncOkrJbrpHjETyfmAP0en/UvyvWNKJ14k3rJDJVTFIzo3eEH1D8KhnWdeNqRvAyt/HDAlA2NxjZzTL6i5VGlSGxkMwKeWD+4yjLmP5uZbhLf3ALDG2ougn/RycjW+t
+X-Stat-Signature: ummpckmus8ajqm1i6q86efr5n134xkb3
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793108579-310834
+X-HE-Meta: U2FsdGVkX18MSF4zKOa1Pr3H+QMb0FlvLgc0C5qQgVKagdfANCL4Ti9OmcqOj8R6HGaUo5sWht2HfBw3aUg8Ha6xzBvB4cg/pKx/YGNrqeSkRnIRnA6lgqTpNENvCn/ZZX2QfYfYpsEYHrP9AJtTRqN5Wbt3oF4AySf4VM6QmpODMr+Rcsa+x2GXuQ7jh0JC8M5WsrSNllEcPRHMKqHGHaFScWx7RCu1ejQ4qmh21QOB8aI3+9Fy5gclNs6KdcCIlUnaHJYOIT8sFCrFUQagM21kBfOBDiO3l4KWgZb9fTQ7VJyH+5YoPGzigJH+OZ8a+gTKi2bTZ8tPFt+ZXf5mhWRUNFOvpoBkjQ0o2cFIXzZmu9h1q7l8SIwp6ZuRf7HJWBEKH1IKFiFEKDjQzWoCcFYb9rw0MJuWRKZwL0D2qmQt1TZb5ZD/V68H5oTRcT3PN0VtBBHRc+bXcX5wji9H4Hovr6Spx2y667mmEY88Zg2aVigyn/d4+z6a67CtnxrV17EB72lEFhdGHy3j8fnWg8XCv0fQfSNDXv9Iwz0AJOhbNu7f53WaZw13cgaXwafXiCukFFC3Ns1VrKU+ck/aif+4qSIHiY2Aplfn7I9pgWF7jRNxbCl4s4JkRUuKiOtyyGvXCWSZXDsI97sNvYHAGq1t8IOnL7S1qTxKjpnspawVKJOwRlbv1iKlsdOFEoTtMEHG3PGIaZ/KWzVE7Zuv/ElRDbLTVBnYD59+zwuKZL4FiCi6AkAstPsg6YtKtFrMbICtH6h8o0PLVCN6RMscI9zEMWIKPv0LhQsa17BJQYDSzXg5ahfVSJzx6i5QQqotyDtqJj9DWpJT7uoQU3AUsCFLA2wrZzwrsv98giB1CggcZxCTSHbV1DsEviSO49rHahtjX1yX0CiH6ur81YSZXIlvoaI/kG7gn5QNPrCQJRHGFGwWwE9CE40lW0u8s2R9xxsVA5oMt467c2kpTCH
+ X2JTyT59
+ B17Ee/NKiYqc2SbmiJuCuAGxlsARmfUPrTrTxzR9lRBui72GEFlikzMx/xnhPSf1lLEhHN/lSnq1szpZdJ95KrX7WkkEB2rclsQITaYTMo3KROjBK2YlWYmjZXbjXP/VBM8mLtPk81MOGQ3G6ugI8t7S5WecfsxkTENTUl0YLFnzmua2Sd3BWt59VRnTCE/3sXSqtxIbu1dDyRBLL4vfl9xPOJnHe/PPpPFm4EzP4hABSnaoQyG6vhC0S9y+Yjn6iEIVx/apWiP4Pgj6TPYFzrRS1PeTZfSUcj8dp9gu/TbZM73k0zhN7XeAYwJ6JQXM91hzLQAqoFbibygpUlbG4u6jKxerswEWl0zJ2UE+bh3D9O2I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,63 +177,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 05:21, Gregory Price (Meta) wrote:
-> Compaction checks that a pageblock is online, then uses its pages across
-> lock drops and sleeps.  If offline poisons the memmap meanwhile, a
-> DEBUG_VM kernel faults:
+On 10/27/26 09:13, Mike Rapoport wrote:
+> On Tue, Oct 27, 2026 at 12:17:23AM +0100, David Hildenbrand (Arm) wrote:
+>> shmem_file() only checks a file's backing mapping. That mapping can belong
+>> to another file, as with a Coda file backed by a tmpfs container after
+>> mmap(). It does not establish that file_inode(file) is a shmem inode.
+>>
+>> Seal handling and memfd preservation use this check before accessing
+>> shmem inode state, so they can access an inode of the wrong type.
+>>
+>> Add file_inode_is_shmem() to check the inode's file operations in both
+>> paths. This identifies regular shmem inodes, including those used by
+>> memfds and ordinary tmpfs files, independently of wrapper file operations.
+>>
+>> Fixes: c49fcfcda8b5 ("mm/shmem: update file sealing comments and file checking")
+>> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Chris Mason <mason@kernel.org>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
->   CPU 1 (compaction)                  CPU 2 (offline_pages)
->   pageblock_pfn_to_page()
->     block is online
->   isolate_migratepages_block()
->     cond_resched()
->                                       offline_mem_sections()
->                                       remove_pfn_range_from_zone()
->                                         page_init_poison()
->     set_pageblock_skip(valid_page)
->       reads the zone of a poisoned page
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
->   Oops: general protection fault, probably for non-canonical address 0xdffffc00000006a2
->   RIP: 0010:set_pfnblock_bit+0xa6/0x2b0
->    isolate_migratepages_block+0x2456/0x3c80
->    compact_zone+0x1638/0x3900
->    compact_node+0x12a/0x1f0
->    sysctl_compaction_handler+0xec/0x160
+> With a small nit below
 > 
-> The free scanner faults the same way.  A contiguous zone skips the
-> online check, since offline clears zone->contiguous only after
-> poisoning.
+>> ---
+>>  include/linux/shmem_fs.h | 6 ++++++
+>>  mm/memfd.c               | 8 +++++---
+>>  mm/memfd_luo.c           | 2 +-
+>>  mm/shmem.c               | 5 +++++
+>>  4 files changed, 17 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+>> index a7c7a96a7cbf9..2ceca7993e4f5 100644
+>> --- a/include/linux/shmem_fs.h
+>> +++ b/include/linux/shmem_fs.h
+>> @@ -117,8 +117,14 @@ extern unsigned long shmem_get_unmapped_area(struct file *, unsigned long addr,
+>>  		unsigned long len, unsigned long pgoff, unsigned long flags);
+>>  extern int shmem_lock(struct file *file, int lock, struct ucounts *ucounts);
+>>  #ifdef CONFIG_SHMEM
+>> +bool file_inode_is_shmem(const struct inode *inode);
 > 
-> Hold an SRCU-fast read section (pfn_walk) from the block check to the
-> last use of its pages, and make remove_pfn_range_from_zone() clear
-> zone->contiguous and wait for it before poisoning.  Offline pays one
-> grace period per range.
-> 
-> Scanner positions outlive the section, and offline can shrink the zone
-> meanwhile, so take the contiguous fast path only inside the current
-> span, publish zone->contiguous with release, and keep the migrate
-> scanner inside the zone.
-> 
-> With a kprobe parking the migrate scanner across the offline, base
-> faults in 3 of 3 runs and this patch in none.  Unforced offline/online
-> cycling under compaction faults in 8 of 24 runs on base and 0 of 12 with
-> this patch.
-> 
-> Fixes: d33695b16a9f ("mm/memory_hotplug: poison memmap in remove_pfn_range_from_zone()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
+> Do we really need the file_ prefix in this name?
 
-BTW, the order of these patches is all wrong.
+Good point, I intuitively added it. Can drop.
 
-There are much more important fixes hiding in this series. And this change here
-would certainly not be the first thing we'd backport.
-
-Please create a proper series that only addresses the pfn_to_online_page()
-situation, without different, more urgent fixes.
-
-Because there is no way we will fast track anything like this here into stable
-kernels.
+Thanks!
 
 -- 
 Cheers,
