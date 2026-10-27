@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E731606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C902260A2610
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=B8xZ54cB
+	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=Jpe+3fgk
 Received: by kanga.kvack.org (Postfix)
-	id 7CC1C6B05F7; Tue, 27 Oct 2026 03:36:08 -0400 (EDT)
+	id BC3226B05F9; Tue, 27 Oct 2026 03:36:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A3906B05F9; Tue, 27 Oct 2026 03:36:08 -0400 (EDT)
+	id B73F66B05FB; Tue, 27 Oct 2026 03:36:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DFBB6B05FA; Tue, 27 Oct 2026 03:36:08 -0400 (EDT)
+	id A8A456B05FC; Tue, 27 Oct 2026 03:36:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 44D186B05F7
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:36:08 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3737120972
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:36:07 +0000 (UTC)
-X-FDA: 85367597574.02.B088719
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DFFFA140005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:36:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=B8xZ54cB;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf23.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.169 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 87CCF6B05F9
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:36:13 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 156631A08FF
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:36:13 +0000 (UTC)
+X-FDA: 85367597826.06.A09AE1C
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3DF29C0006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:36:11 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=Jpe+3fgk;
+	spf=pass (imf10.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.176 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793086565;
+	s=arc-20220608; t=1793086571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TeuNf51TxMDPa7xvpxS6POY5MbCscFG1kBCUI4jUNC8=;
-	b=I4q7VU3OBTnsC/A0e3JbrDI+Zwowk3Bd3+iYZEUItwdP0wBV1AdmHwXeSs8WwoAVhFTd1f
-	IzhmZ2QFz8pRBWomKMYDOwE46kRjBTmv3ZyqFsSNq2OTgpc6JVAEDJ4D60jCr+3ht7BkuA
-	LxpD3FEfZ5wbfSJ9cPP3y9E3UpSAphc=
+	bh=NjMmv6pm0tIRvcDaHQJ8L51He0Pq3qbg9jRbmDfBhFY=;
+	b=r5gIU+dDQLywDaiG/lKVSBmmPZIAEpuOCoEj92x0llXCMsny8qPZRJCMylcPBLhPWvJHzr
+	ReF5pciYov6mAZLzphmbD9LGtLy7Nm9ig5lIQpdXAcYGTgg2+KvH26ygZO3jaszZxl7D0c
+	8YL3hw+7B27cdRLhbuDgA2l19uRqQfQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=B8xZ54cB;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf23.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.169 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+	imf10.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=Jpe+3fgk;
+	spf=pass (imf10.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.176 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793086565;
-	b=ILVGmhNdnNmhwSqiZoIXxvfRYb3xBKpMbavqHFstx2MJQs+KIzDwBFR/9/7Hp/FSCRpPTf
-	9eK+7RLI3hGmJ/O2Q7cUtcO+1byDOkH5zDj0vatg4hyw41Uftt4HHWzCkZipohHe3T0kc5
-	diBc/5lJSff+tctBFtIqHsPdwwNb/4A=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e9e53d011eso26473435ad.1
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:36:05 -0700 (PDT)
+	t=1793086571;
+	b=tSrfg6+mnXkC8pBPhbult+AqrU6xaI+KvGXhJ3XtpJjN2fNoUhFQu1oL5eX3ohAtXdahIY
+	nk2o9afr40nukpq0w4XqsEJy1gi72OBO7HGlVyIFrLUjlKuONxGvVt9wT3WzhTuw5wgMje
+	Gngzdvs3rMfKdff65PyEPiGOCsNAc+g=
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ccca948203aso1188369a12.3
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:36:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793086565; x=1793691365; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1793086570; x=1793691370; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=TeuNf51TxMDPa7xvpxS6POY5MbCscFG1kBCUI4jUNC8=;
-        b=B8xZ54cBQX/IfBY8tHaogP1PDk7FNtr6SAr15AAl3CKnqy2fU3eQNDf0r/s71ILppv
-         B/CifMcEtAICPBxXyxpmf82NuNJ6PSVQ9Jg82qjUv/Rm6zODySBmI3Uvvio5JHF3U0kE
-         +JtCb1WwwMpb8/YJWIwV1WSTOOG+yTv24Sd8A=
+        bh=NjMmv6pm0tIRvcDaHQJ8L51He0Pq3qbg9jRbmDfBhFY=;
+        b=Jpe+3fgklmB3H6EkAXAqENB/p1VhX3j+AbUV3Gxt62n1Hu/gi+ugBCQ96mWK0JWwsF
+         KhvaNtVDBU5T1A/mNPxagQjdwRLrJScsnLUBKp9OgiFa5vd3/5BZhGcueAJqSdLYagMt
+         oRRoFi2oCZJVXq/pL15gayd2CzFx3ZCtPYn1c=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793086565; x=1793691365;
+        d=1e100.net; s=20260707; t=1793086570; x=1793691370;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TeuNf51TxMDPa7xvpxS6POY5MbCscFG1kBCUI4jUNC8=;
-        b=WedGTi1iYuSuzP18I9SMRLlfg4OQfHoVUvKoeef8M2/ylTZLNB8YtF4uJPcZq4fA36
-         TUCN+aKYANjqGXRgPapw7zIsQmtCRNtOj301e8xPTS+SmALtjYU6rpnk0VEeih7HjSwZ
-         p8OuOQMs3v7klZ6zofv1pmVFTxd/N2qWQjsnnQ6GnfRhh/zemB0jdCzRwY6QjNAtXJIh
-         PhD9LGKx8O0okQu8r20gTJhSBF7OziqEbDPoRKbD9WukCewdTEOw9HBx80R7gw9Lf+m8
-         2ukB1/TGSHmOGeASqDRT2K4aNXSxwY2cQpXojx2eeHvPmgoGtP1T4nhJGOY5ThwqpNJ2
-         4a/g==
-X-Forwarded-Encrypted: i=1; AKwUvBwO/oLbss4PaUdciSCWpBvksTKCEUJn2uZEYwHBBUWuFcM1GKWPmg6tFVaXiN1yw/oa1zWZfohIew==@kvack.org
-X-Gm-Message-State: AFq9FYJ2Cg20QNXYlYbAHlBWRLHXk53C9yLoOb/CScNtC6PVtl6h6UnT
-	3/NesIX7SpEkh5z3Jk1HQ6paeBIevi4TWt0uqalMOiDEoklPHBtADxM0N5tJJKg0kGk=
-X-Gm-Gg: AYBFou1wKjqZt7rsxFiIdFeGcBGWOH1loGDUwSQsxK/cyDGnvK+rRYon27Gb3NYAKT5
-	lTxEF8PYtxHIPbx38tB2wPssIWZTdquOL6Kf8k0PdvqLrdl2v7kG6l1FiexhYmmH0Ld9Tv6SMSO
-	JBdvOefCdl32KOJ93q55efp0vweDya+/Fm6PTXB93q936ODwOUorDG7sEWdtIq95LvWxAVr7bPD
-	/lwMBDYExpV4Lc+/njRKCjeDaDxGdeo+FdxNpO9rx3vs8yLa2WDUiANnxTF4O8SGSw6mCZssvCy
-	ZbBuFQrw1xVO/YAByFRkxBXa/IAo5hDaAlvj019Gh9QS98Z8TA1XJu3Xhn50Y1KQQg+W+av2S6b
-	11GM/AMFK1PHgA0H1IoV6hAJZmHVr4Q0R5t8pMc0BNdwJrTDHAqo10MhivLk6o882CWHZJINW6j
-	zEOBNxC43yexqPGjaHyK7glD+7pPnME98/OvkggNvarEpTttqEe7Aj+mpd3iAFk3XDOtnLh9w0y
-	GXdctOHWfqZacq7a2N1zFxEZXlsqzGIfWWZaDyO5zue9mxa39Z2BSxHbdBy/tvIFvloVlrLd3yl
-	8xZJ9g/HTZB/AvS0HD7ooJosn+YiCACenJMlpdZ7htHX8n2be3Jl69ywycscbRgn+YH78ryrtH4
-	s6HjYTO3hf5wkRzwg84jUIW8=
-X-Received: by 2002:a17:902:cccf:b0:2e3:598:75b8 with SMTP id d9443c01a7336-2ea9c67507bmr74148095ad.27.1793086564825;
-        Tue, 27 Oct 2026 00:36:04 -0700 (PDT)
+        bh=NjMmv6pm0tIRvcDaHQJ8L51He0Pq3qbg9jRbmDfBhFY=;
+        b=Nnkipr0zGtE10trNFeACE9k/9lpMmfH9rLtPSRmFoqu7DS1WspTcoXM/zaBE9DzynF
+         LnZLLdBBae4/Bx46Wof+t1oaqdZ4WDXvc3rGkpFHm9B93ucu65aZqJKXZ+bw4oFYot7e
+         gq+lIbnLKeSSHzIq80CNuFZ/Xf4FZM7anvrEj5c7jZSmbMEd8DCH7L0gMQyjosKVV9c+
+         /BgX0QFhnc5kbfzRjOnDCY/FpTm55bLF00FDpNR+I+Yy34XjCT5nAnnIByqKHMwmZllB
+         l+CBuUzZJh8TrwmMLLfWKAXe1zyvxNvlci8lckLt1wM70/5WN1aG3qzJjLueE7tNEOWQ
+         Ra+Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxWlSqbDJxHhGTZDHsyyUi3fMymkB5xk9Aa77ooDzOjaJZyH+QnGuTSywGzcvSgFdM4jYEA81+1bw==@kvack.org
+X-Gm-Message-State: AFq9FYKxigqN078D0MnQmuQW8MfiSBMy2E9aRQ6nqas/gvjFaiPpYxfr
+	6NZRDKk0nrrNj96QM+ZVI66U57gEek0wS9YswgEpr9N+foQtrW57MpS5mO1vTgKINDI=
+X-Gm-Gg: AYBFou1JEUyZmJX6YIcsh/JOX8qfLG2a8xLpflennklf9V6To3hw7/3nnELQ5yy2Qcy
+	fKjTBuoaGZ1uQEt6IW9VE+ka4SnVB7qJDboLaDQB8L98FD/sP3bDo3Sp6fHZOQkRGajCKNxWJDE
+	UmLOH+/v1Zw0UQVTXSfaAjGE2W9GvhBeYnpNM4+4cYyxb8asUeku7LJMP3LclpeU0SzvqUS7r20
+	Sf+g6NMVngIJVNv3oeaesgUpj5Tyy47qrjSbkYa4rCIPSA31iuU23/cP92z8JTH4rMwnzSFq9nj
+	pi8X3SccK0UQ+G6vXIBYzSamn+PZL7CsTWyc7FGs00Nl/iZ9MRXmcS0IE0yPCl/FsXaMBxBSEAP
+	VisnZEUA2nzBopS+IJe1cn8NWo0pyPD+lzcA5QXVzXyx64WSN026xMGWp4/6gCWfRzHkixozoQe
+	fIOcIPEx8pLv4kHDLNxRDH8/LTa8mNJM9ye34MkEvaWz9xfzE77SmDEn5Lio47Q5J/MaFHhdiCu
+	Fi9opv78/aHi1kDCfOMi4BjQByJ3W1SL32mPkssIubNLoKInVh0mCL2N1LQa7pWEDAzv5gqRsdL
+	RvYB/cbRT5HE8kkiALooGFY6i9PZq03niyn++7W1WYYAZACQFJfrLNff4rWhZ3CCFYH1e8+Gwoz
+	whkxnclItGhpnxW6LX9L+4Xo=
+X-Received: by 2002:a17:90b:4c92:b0:3a6:fc30:ce16 with SMTP id 98e67ed59e1d1-3adeafc7dd4mr7341488a91.51.1793086570089;
+        Tue, 27 Oct 2026 00:36:10 -0700 (PDT)
 Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6ce5912sm5015185ad.71.2026.10.27.00.36.03
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3adf8f3f22csm6639832a91.3.2026.10.27.00.36.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 00:36:04 -0700 (PDT)
-Date: Tue, 27 Oct 2026 15:35:59 +0800
+        Tue, 27 Oct 2026 00:36:09 -0700 (PDT)
+Date: Tue, 27 Oct 2026 15:36:05 +0800
 From: Chris Down <chris@chrisdown.name>
 To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -102,8 +102,9 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
 	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
 	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: [PATCH 5/8] mm/slab: Support disabling SLAB_BUCKETS at boot
-Message-ID: <11c73e97a9a8a2a532b3637c290657f99dd6a69f.1793086056.git.chris@chrisdown.name>
+Subject: [PATCH 6/8] slub_kunit: Add a test for the slab_buckets boot
+ parameter
+Message-ID: <92d3b7ad95c9b7cdc76eb8f361cc2b374c018edb.1793086056.git.chris@chrisdown.name>
 References: <cover.1793086056.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -111,19 +112,19 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1793086056.git.chris@chrisdown.name>
 User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Rspamd-Queue-Id: DFFFA140005
-X-Stat-Signature: 8tsxa65rapewah4o5mgazsk5pfjop9yp
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3DF29C0006
+X-Stat-Signature: k1ggezgy9491p8i9c976ywqqh563ym7o
+X-Rspam-User: 
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793086565-306656
-X-HE-Meta: U2FsdGVkX19Ro+V6iHCTymg/sG1BE7hjknaIGRdnWgiNMqalNNJcFiL1MR3tIXYRjzOWcV4SEjM8NJHQX0NVAnU27h347kQcSPrNJdU/56RK4JMN9y+i6M7wCc0B8h9o+roZX866RJcYeMx96iqnKv/qpIlRv8ZUlP3EDNgfYTgaMC2QqzDvKrDQJsTGkjUONjuI+9z9NVFA5bh5XtJFHgDYacmSQunJ8e2QXmDAbC4OhXUYfOSLPem06jvv5JPnJ0Veb2ROhHRhPF3j4CXWGW2vZHQPoJJNomcK/Ox5mhMoL9UhLaMSXfnDvm1tDtt71SPMekZwUdX/cEHm3oKvQ6SZ5gRs6qVEOdYGxQl1km5d2GhsROfRvvm9k5CkbA4c0ZRGNUWWCdVs/IgaglpLf+htCnDaJneY6ISM9LiovkNnt0Srn+xrbaHJxISby2YmNTORdYI91TBC2AQjs7GtE8N03d99zhB9chI/+KdlxMciZXNvseFnNeLfvDDaE7zJ5nv7UsD17UeKSTlKyDLQYb3gG4hfpb4vI/m5g1JeX+uSfWCZUiAnF9xMPV5k14R2C6HcjEgQZgAvnXvC/VP7rdHqRcIqfN6JbMVlFlga0cau3iMa/UFQ8wo1ZmsWTw33nrcZNUuAGhGQVUmMLimNYa1at01XxwNQIw+fHUpppyy8F6awJ+/rq2Xz4dWA7SlwzDy1Eab94TFtvxfWhUpVhuqVUzvTbf6+AwAM0hS5L5aHA6YZ8tWAEC8RS1pxQq0dup7acZ/Nt5jNjwCoJT1ioDx+1gspq0QEG3LFezuaHC1aSiALWYDBWGI7FjXpjJC6buESEuQY1rZM/gBTW7w7f55wSuUHKrCL2kZJCgiDhj9kSNyKnL+J9Q12YVzYYDcU028fiNtZdN8lOOkZtraBkIYhy4Quc8iMzkANOxMwUeW7QCBpPUo3CMDy7ve/tKPdZhU3YA3h8ZYn+jy1iMZ
- KcuQSuJ9
- jKnR810bzxnSw+FYybhr1YUDivvFvwX3vKrxybNuV3K3/wpxvotHtAy/MYJrDD6BfKfbpgJXeEb0IT8bcKtWeLW41JOArMLa0TtUo6pTVldI+w+6673pvdIH8UmX4/guuk1txtLciqyhA55tf6EWlGA3r5FYYuWnsQO8bGX+m/TVVKzabet5NqiqOO7GMRjc02l7KqRWZenKKg+/ERrsRI98BXStZHgqkSOYigM2bxCeWW8rLRt36Vw1ky/7ekfjM6UGQig6Z9XSjLR//LS1nGDRTgIHnQq1mzejBtWvdLCroinl6V0paxfQncALzti3AelJVllLioq7PS65tdXgq9Mb/8mrB1uV2xRjxmYUoEnETfruAPB6TGtsyXqSL6cRWCD1iOuG3dbNFzFWEO5RGmKiEXkxeccC+YaBhm9vAHT+MurKX6oQFjiIQ8pygM5tO+9ATj0d4xUd17YestVBlVknadA81ORnuR24h34Zv+8Q5RygRTrCv2uT92EKfDfjT9jxZoiqOVw/cgPI=
+X-HE-Tag: 1793086570-722521
+X-HE-Meta: U2FsdGVkX1/7w5bwX+O3qMrtS2p0Du6H7oJtGDIri6f/z+5CrnI5sj0RKmt9XDOQj5JQzdpWjWf+F2Oca3Cy7aparX8seEE0N+O2XjY8qz6rL6h6yO9HTv7wY3yPkPzd6nn1bNdowor7ZalsZPcn4WmczomSWE0yUCpLvae2oxcpv7ODXze+LPL6ICgPMfskFrR7GvC2RZOyWGMP8jEImlmSfvZ2o/Lx5a3TFNJGL+1jjhKimigAWG4uTGyPdQFlVDxlTdaeBlwQJqmzpUty3Ov8KSpwk5SurIX2ClexJfgPdZdZYhw1EVfp1aSgKZuwt4Phnrru2+pdMS6kYMHvwZL4hErV3qPTClD4mmQ3hYUn9T0oKJ24gdcU21lUSS6xvvUnWQwr2WjT78t7yOyQ8AJEaWNjxh5JytkCCX1GssDafYqDoapPsjMrVLuMtSQZI6wXwINZ6CPM96qHSxXoYKieajjzB2aAE5/ZhbD0oEVbXW8d8Bxf+YsiMD1+ch7lgNwVFXi8qRPhvWs4zRSRiT1L7xUOt90zd6HRwLzdRLk6Gg3W0Hp4lOjBlzuB/LSFYDRdAJxVUAUKKO4+h7SN8m3h2a31rCIpFawSVzHTnYNDQCSiHGtgnKrGKBWK0nko1K+h1l9Uvs/9qa1jjVG2OAaMT+plovdyfO03csqh8LRueq0qpJd4PiQ8iEV0syAdBoyC/CfCoD2AxQRsytf51bx2LhsKfLfzZFwa3BeHNOx41dPuLIwzNdOj4+bu2GVz8Dxx6YY8z/F3Q4bzsetkknZo46PJPpt9sJXdHHnvL5MsU466YMU5AjnUuKwTxkY7Ih98mdKyphoJHLzbaRiKSHtUQq4qX7oa25YM2Fmcu/xFPpdmRJBalaDQIdCMWB5nNVwyNlb/n5hS8UCypbRkKjoC9yDHaL6Hkufda+NSsyOmS2Bx1L3ZNQOTQxvXkcFUU30D6FAmdLRFy0Meeqq
+ iaobqgCO
+ baSNeVA/Js6v1SHfKR3CZa3Va5afqd36YkEthwM6VP87zyyOulvgKwrgOmeYc8Mah3R9OuqjqOMV9n/6yMUUCzaMY08i61PBnkwjSp6p66TT04X2Z2q2+MGD5wCEMmxwtuultOuJ55MzS4/BIE9OYpceSMktCvf5yBXg+D2/+cza8E1/SYNOCQmLECAr/0hzsyOj0W8bceUBK1zWUi2LGZ2dZ0hPK5x++gQPvfpE3zHhhPvvHnQCGI+snenJq3zeu/kYdz1V2AZZvg9cTylh3280tNEadJpvkl8fFa4TqCXWY6HJjC0oY/kzWXxQidFj9F9U7H43W+eMKhte1iEhLAUShkhgVjqzjqFHCl7Vr5j6tYrp1mWnX69oEoMaunm7vEFV5hV5Kq3Dqw7w0ezxQtH1/1+t7mZyL0Ua8yuOdo2SYzJISpXu+8ATwecYg8d1vfcCZpt2iGP2nOX4AtaEsvRSCJo6pgRNy4XjXsV7TWjNeVT9OeWHPTDViNVFGEvOyIkMY9+ikeFueTw8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,108 +133,112 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add a slab_buckets= early parameter, enabled by default on kernels built
-with CONFIG_SLAB_BUCKETS=y.
-
 Signed-off-by: Chris Down <chris@chrisdown.name>
 ---
- .../admin-guide/kernel-parameters.txt         |  8 ++++++
- mm/Kconfig                                    |  4 +++
- mm/slab_common.c                              | 26 +++++++++++++++----
- 3 files changed, 33 insertions(+), 5 deletions(-)
+ lib/tests/slub_kunit.c | 37 +++++++++++++++++++++++++++++++++++++
+ mm/slab.h              |  4 ++++
+ mm/slab_common.c       |  4 +++-
+ 3 files changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 5c4d784e7786..20710d6ccd1f 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7001,6 +7001,14 @@ Kernel parameters
- 			apic=verbose is specified.
- 			Example: apic=debug show_lapic=all
+diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+index 49b9942bc564..646596663b33 100644
+--- a/lib/tests/slub_kunit.c
++++ b/lib/tests/slub_kunit.c
+@@ -11,6 +11,8 @@
+ #include <linux/kprobes.h>
+ #include <linux/string_choices.h>
+ #include <linux/swab.h>
++#include <linux/mman.h>
++#include <linux/string.h>
+ #include "../mm/slab.h"
  
-+	slab_buckets= [MM,EARLY]
-+			Format: <bool>
-+			Enable or disable separate kmalloc buckets on kernels
-+			built with CONFIG_SLAB_BUCKETS=y. When disabled,
-+			allocations use regular kmalloc caches. Ignored
-+			without that option.
-+			Default: on.
+ static struct kunit_resource resource;
+@@ -396,6 +398,38 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
+ 	kmem_cache_destroy(s);
+ }
+ 
++#ifdef CONFIG_SLAB_BUCKETS
++static void test_slab_buckets(struct kunit *test)
++{
++	unsigned long user_addr;
++	const char *name;
++	void *p;
 +
- 	slab_debug[=options[,slabs][;[options[,slabs]]...]]	[MM]
- 			Enabling slab_debug allows one to determine the
- 			culprit if slab objects become corrupted. Enabling
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 56c422684b44..ebdf14a87c71 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -235,6 +235,10 @@ config SLAB_BUCKETS
- 	  of extra pages since the bulk of user-controlled allocations
- 	  are relatively long-lived.
- 
-+	  The separate buckets can be disabled at boot with the
-+	  "slab_buckets=0" kernel parameter, in which case these
-+	  allocations use the regular kmalloc caches.
++	if (!slab_buckets_enabled)
++		KUNIT_EXPECT_NULL(test, kmem_buckets_create("TestSlub_buckets",
++							    0, 0, INT_MAX, NULL));
 +
- 	  If unsure, say Y.
++	user_addr = kunit_vm_mmap(test, NULL, 0, PAGE_SIZE,
++				  PROT_READ | PROT_WRITE,
++				  MAP_ANONYMOUS | MAP_PRIVATE, 0);
++	KUNIT_ASSERT_NE_MSG(test, user_addr, 0, "Could not create userspace mm");
++	KUNIT_ASSERT_LT_MSG(test, user_addr, (unsigned long)TASK_SIZE,
++			    "Failed to allocate user memory");
++
++	p = memdup_user((void __user *)user_addr, 64);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, p);
++
++	name = virt_to_slab(p)->slab_cache->name;
++	if (slab_buckets_enabled)
++		KUNIT_EXPECT_TRUE_MSG(test, strstarts(name, "memdup_user-"),
++				      "allocated from %s", name);
++	else
++		KUNIT_EXPECT_TRUE_MSG(test, strstarts(name, "kmalloc-"),
++				      "allocated from %s", name);
++	kfree(p);
++}
++#endif
++
+ #if defined(CONFIG_PERF_EVENTS) || (defined(CONFIG_KPROBES) && defined(CONFIG_SMP))
+ #define NR_ITERATIONS 1000
+ #define NR_OBJECTS 1000
+@@ -591,6 +625,9 @@ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_kfree_rcu_wq_destroy),
+ 	KUNIT_CASE(test_leak_destroy),
+ 	KUNIT_CASE(test_krealloc_redzone_zeroing),
++#ifdef CONFIG_SLAB_BUCKETS
++	KUNIT_CASE(test_slab_buckets),
++#endif
+ #ifdef CONFIG_PERF_EVENTS
+ 	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_perf),
+ #endif
+diff --git a/mm/slab.h b/mm/slab.h
+index b648b33f25c3..185df5e68419 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -390,6 +390,10 @@ extern struct list_head slab_caches;
+ /* The slab cache that manages slab cache information */
+ extern struct kmem_cache *kmem_cache;
  
- config SLUB_STATS
++#if IS_ENABLED(CONFIG_KUNIT)
++extern bool slab_buckets_enabled;
++#endif
++
+ /* A table of kmalloc cache names and sizes */
+ extern const struct kmalloc_info_struct {
+ 	const char *name[NR_KMALLOC_TYPES];
 diff --git a/mm/slab_common.c b/mm/slab_common.c
-index e66c0778ee98..b7a46c368ab1 100644
+index b7a46c368ab1..9fe48da12010 100644
 --- a/mm/slab_common.c
 +++ b/mm/slab_common.c
-@@ -410,6 +410,16 @@ EXPORT_SYMBOL(__kmem_cache_create_args);
+@@ -29,6 +29,7 @@
+ #include <linux/memcontrol.h>
+ #include <linux/stackdepot.h>
+ #include <trace/events/rcu.h>
++#include <kunit/visibility.h>
+ 
+ #include "../kernel/rcu/rcu.h"
+ #include "internal.h"
+@@ -410,7 +411,8 @@ EXPORT_SYMBOL(__kmem_cache_create_args);
  
  static struct kmem_cache *kmem_buckets_cache __ro_after_init;
  
-+static bool slab_buckets_enabled __ro_after_init = IS_ENABLED(CONFIG_SLAB_BUCKETS);
-+
-+#ifdef CONFIG_SLAB_BUCKETS
-+static int __init setup_slab_buckets(char *str)
-+{
-+	return kstrtobool(str, &slab_buckets_enabled);
-+}
-+early_param("slab_buckets", setup_slab_buckets);
-+#endif
-+
- /**
-  * kmem_buckets_create - Create a set of caches that handle dynamic sized
-  *			 allocations via kmem_buckets_alloc()
-@@ -424,10 +434,12 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
-  *
-  * Context: Cannot be called within an interrupt, but can be interrupted.
-  *
-- * Return: a pointer to the cache on success, NULL on failure. When
-- * CONFIG_SLAB_BUCKETS is not enabled, ZERO_SIZE_PTR is returned, and
-- * subsequent calls to kmem_buckets_alloc() will fall back to kmalloc().
-- * (i.e. callers only need to check for NULL on failure.)
-+ * Return: a pointer to the cache on success, NULL on failure or when the
-+ * separate buckets were disabled with the "slab_buckets=0" boot parameter.
-+ * When CONFIG_SLAB_BUCKETS is not enabled, ZERO_SIZE_PTR is returned. In all
-+ * of these cases subsequent calls to kmem_buckets_alloc() with the returned
-+ * value fall back to kmalloc(), so callers that can live without separate
-+ * buckets do not need to check the return value.
-  */
- kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
- 				  unsigned int useroffset,
-@@ -448,6 +460,10 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
- 	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
- 		return ZERO_SIZE_PTR;
+-static bool slab_buckets_enabled __ro_after_init = IS_ENABLED(CONFIG_SLAB_BUCKETS);
++VISIBLE_IF_KUNIT bool slab_buckets_enabled __ro_after_init = IS_ENABLED(CONFIG_SLAB_BUCKETS);
++EXPORT_SYMBOL_IF_KUNIT(slab_buckets_enabled);
  
-+	/* NULL makes kmalloc_slab() use the regular kmalloc caches. */
-+	if (!slab_buckets_enabled)
-+		return NULL;
-+
- 	if (WARN_ON(!kmem_buckets_cache))
- 		return NULL;
- 
-@@ -1059,7 +1075,7 @@ void __init create_kmalloc_caches(void)
- 	/* Kmalloc array is now usable */
- 	slab_state = UP;
- 
--	if (IS_ENABLED(CONFIG_SLAB_BUCKETS))
-+	if (IS_ENABLED(CONFIG_SLAB_BUCKETS) && slab_buckets_enabled)
- 		kmem_buckets_cache = kmem_cache_create("kmalloc_buckets",
- 						       sizeof(kmem_buckets),
- 						       0, SLAB_NO_MERGE, NULL);
+ #ifdef CONFIG_SLAB_BUCKETS
+ static int __init setup_slab_buckets(char *str)
 -- 
 2.54.0
 
