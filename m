@@ -1,80 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7157606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBD1606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=es2eEKk+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JLRsA5zy
 Received: by kanga.kvack.org (Postfix)
-	id D62A46B05F0; Tue, 27 Oct 2026 15:10:01 -0400 (EDT)
+	id 797C56B08B0; Tue, 27 Oct 2026 15:10:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3A706B08AD; Tue, 27 Oct 2026 15:10:01 -0400 (EDT)
+	id 76F746B08B1; Tue, 27 Oct 2026 15:10:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2A676B08AF; Tue, 27 Oct 2026 15:10:01 -0400 (EDT)
+	id 685146B08B2; Tue, 27 Oct 2026 15:10:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3A426B05F0
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:10:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3FF3E140AC3
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:10:01 +0000 (UTC)
-X-FDA: 85369346202.05.27C8DB8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4656F6B08B0
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:10:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D21A3409BA
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:10:50 +0000 (UTC)
+X-FDA: 85369348260.18.009C9A1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7FE5D180007
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:09:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=es2eEKk+;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793128199;
-	b=YlIo/4g7Py7rFN1DgtTzuZFaiPtFzGLE2nPUQik1BRPDYo1nHyzzKoXnCm0TIfXKxn6uir
-	nPSz4/cF87W3xYHyYDDSYrZa16RRN+G5dkVozk/+SuCG+3u9rZtMzYXc48rgJ3qL0vPwc7
-	srZe3fZEVSBgadandh0WEg2QvjnTU6I=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=es2eEKk+;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 156541C000C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:10:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JLRsA5zy;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793128199;
+	s=arc-20220608; t=1793128249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kkvfEtwgKNH/KsYhrOsWJWMTyAP67vGHRSRe8u51NyU=;
-	b=tOcScndTePmYhZrzXK1yeYxXrFfNNXNIITpbyZEr2KXiXlbWD+4nS9BGDj9eB/XjBJg/WK
-	y8glAth8MI1UQ7F3UyinCs9Nj3FDySUFuNJn1Hrm63Ro1caFZUUcZUwyzQ8EUr0F7R+NcK
-	GYSXXrRW7ApQx+pCoFlLWfq29Ugbf0E=
+	bh=gxw22+dUBVHsNmkwZBBvZhpzn7DjpEcijhpCagz+H44=;
+	b=PyvE9YepHJnBFVhxGnqtC2ESxr74WuIfnWCuqBvVRNj6C023B62tLRasUAyMFeCT6nLgkn
+	A3agIhLLDHPa7X21g0jZqf1fkh3Zjg455eHqTju2UT2IIOSQDjdMF1sSzw2afVIyv9GVb8
+	yNb3O54ZE2uXoKqh48R2aTWBqh7Taco=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793128249;
+	b=EsWCXSCmAOtM7L6KboFCuGwEmInU94/eWBlBL7fhCIGp72H6pwlOCuV+HAfp0BygOvQ93F
+	DOsSF4qvWc38OdWQSYdehTuIZC6bKtUMtRBADGxpWseD/2Y1eg6xPP13AAz20m3KEKUlOF
+	+fklC2nuS945JLMWEADqZdVlwhe++n8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JLRsA5zy;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB35A60142;
-	Tue, 27 Oct 2026 19:09:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197B11F01825;
-	Tue, 27 Oct 2026 19:09:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A5BE46021D;
+	Tue, 27 Oct 2026 19:10:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF241F01829;
+	Tue, 27 Oct 2026 19:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793128198;
-	bh=kkvfEtwgKNH/KsYhrOsWJWMTyAP67vGHRSRe8u51NyU=;
+	s=k20260515; t=1793128248;
+	bh=gxw22+dUBVHsNmkwZBBvZhpzn7DjpEcijhpCagz+H44=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=es2eEKk+bUcpnare1MMH51MzJ56RMYhJHCJ4BbctEiBx+OTKwVt98ZYvFRoK2s802
-	 7zEK/2ivxgL2Z2lGDn9QxlCzi4S3oV1kfpOid34xAz5jxDFltH8xfEeJp9M+7/Ptz3
-	 ZE8XAUsU66F9fKYfgRjOUGIK8VrdX7t9QDm8O3gjYy/vNY6XRXPLq1oT35R7IfhNm6
-	 vfwa47AhjF15KgJ4OPPZLClvSNtHPclXBuu0DOKz/kQ3wVHCLyxglh19i1lO5umlq1
-	 7M+LKT4FNl3GB5zrB/ijPxIInk/P+8QS2D4Fk1N0Zv8kpezBwrOu3C7LY5oNXwaWnb
-	 JBUMmaM0Rvp7A==
-Message-ID: <c4be5787-c519-4fc5-8e58-743b30bb6692@kernel.org>
-Date: Tue, 27 Oct 2026 20:09:36 +0100
+	b=JLRsA5zy6lBMaJmnj1OuZDWK7USr/fw9H52uehWRrOa/1j8WudtcfkokPA36DPpQP
+	 S0rcY4Q/4pP+YF+byKiwleEgDfpZwaUDVDm4L7dPRJIfN292VDlcwOc90kWkBxY6b1
+	 Mi8DZt6gPGhhyfK5+ZRUlwvd29AYr89em87D8L5KbOI1ZjOc3pnjoO99WUhQdMSkwB
+	 Kd8v2WIYlELKJVpxwWEEssNQoRGjucCE81+gjs5//M4+n2M/ral1GW4g4bdGx/h0lV
+	 9ntzmhQGFkbsCzUTDYBHkrEOBWleeXSGrd95OomWvfwcKf7/2yVImSsxRlxqZR1HRK
+	 AiDKFUxA3cIPA==
+Message-ID: <3d5e6a17-3ca5-4e87-baab-f349073ab8e4@kernel.org>
+Date: Tue, 27 Oct 2026 20:10:27 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/46] mm/memfd: make f_pos accesses atomic
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
+Subject: Re: [PATCH 06/46] mm/filemap: read mapping->a_ops->free_folio under
+ i_lock
+To: Rik van Riel <riel@surriel.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
@@ -85,27 +85,27 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Harry Yoo <harry@kernel.org>, Alistair Popple <apopple@nvidia.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
  Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
  Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
  Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
  Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
- <179307206859.1171062.6841971971647864368.b4-reply@b4>
+ <20261027-fixes_core-v1-6-6f74bec9a5bb@kernel.org>
+ <f12ffd4cf8933452ef13adae55d6d238a3069235.camel@surriel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,22 +152,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <179307206859.1171062.6841971971647864368.b4-reply@b4>
+In-Reply-To: <f12ffd4cf8933452ef13adae55d6d238a3069235.camel@surriel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7psuknp7r4h6e1jci3kt43ek5zpbmji6
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7FE5D180007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 156541C000C
+X-Stat-Signature: gycgjr9p3wtt5xfrjnn5n6ji4ufmi7gr
 X-Rspam-User: 
-X-HE-Tag: 1793128199-677075
-X-HE-Meta: U2FsdGVkX197WYoyS3d+V9GmehAhh2jqjGb03uCvfXpADSJA5OdOMrkUrazs6Nh6QqiYsjzhoquYMsZCn948uVg53FxisHbGY99YkvJmoYLOBrBeosqM73uudaCwARf0J0bsAojeRBfEEfU5zsZg0C7EntLstwHXq9iECWztJHZ96nZwdSQX3gscLUA+6EYjVSAASSAW9fFCGy7V7ighaAhV7ZkVbXMg53ZTSIqLDODX78yIiE4100ol3v4U/9SumTDHZMKt805SG0MVQFbvEXDD2GWDuiQqhRLeUhZ61v5cSGv5izqMnKrs7B088uco4LB4mborkx4njEXmRZrx33tkrU2pD3pjklgtxynRRDZ5BPK9lVNEz+s6oDmsfw+SoxvhrtHTTO8LUac/1mQttDsAgrHur4QUr/a5x/EsAmdr2P8Z3w8xfEIkEzFvAQVesW6G5zAfR+I6NxMOta5TddiYmUJ6Q/rdqhJrUAFMvWHIlb8i8Za9wwBF2cyRJuSZZzizMfdPaAPijNMPCflzpCohWd3RpNDtBGmwfeJMMTE6x/Ij/hTRwc7RwxNcduf6uSrR0e3pUyMit7eUZazg57zXkRT4eZyl4HKrEdcN4X9KopT+pvdmEZh45caKsVfY0XS1uz1e4u3X/gd9udXLdGlTvJYQZWatTRtSaISf2ERmo/b/XYVTMNLHWGGn8nSYvT3o9mR7bUpd9ETswtKeV9Rft9TA+EWWeJ+4zLgnodL6fzlMFyYcK8i+5J3ePE8oG8EngkxEhAZW+VJB8YFKUp9utmktSFW99tPB9lllAKCiaf4wLN2vxhJkMEVmD5XZj8yoLMUAgdqmmPW32B5GPdaynlFxVuuCn4MfZXmXRpWUbksu2eYQWBFm3H010FsIOL1fp9iPEMLBsz//sBcL8rtVW6/3DklpxWFTOe2TtilJsjEYplHZV89mUBmfOyVFnH4X8R1YfFdNtbf0TxP
- hKVcdWcP
- gmDdBq18Xr/udfc/6ISuXoWR49AZKKa20irvBj7FPEe0seHBFN84I3noHANTkLDyP+mfIOOAqHH2y5QnXYF+OZnKzwXSKRec8q4NoCz9cS2hGNUebpWxvgzhcDVHiNJmF3Ehk2f1F1r7qklwGsnP/B/FnqmD8iDXgTcGpwVtmjNLc5AGq3B5xzTtvy7bcvk4NyLoBNegiof0+pG4eftfb42NRzIAq5/VQremoLiwbQPGiGBWHjp/XxxnCVzSgBBfUhQcPHfwamXhnowr5zh1DM0cQ61z/WPTp6T11NeFxSnYpXNkDVSTaY8jKLGkLtm/kfyiA3yBJT/XM8n0xcX+PpsS0rLU+mR7SlmZ9vT9BUQV3fn/dNK5dqJk6u79v5xBsKYAAvEWHOIASmlQTqHwlG7BlBWs66EHr2WPTqK0cbzpwxD2dqyD5QCt4a8/2gP7p2NJys7YfptBuQO2U8Fum1LULvp3PonjAl71XGeete7x1If8UuCz52qf8ik+aQfv7M4cAr30pm3DA9EY=
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793128248-215658
+X-HE-Meta: U2FsdGVkX19Yq4qdiB4cK18oXn6duArylJYO6cKn8RmL+NAD6B1wIQTb210F2NLJN4EoGSc4EqK8Z5LlikODosGtjfZU+60zxV0VZcFMiaIg2yC4o0jTJuYiirUrr1WvZPcOb9wcEA2HgxQyITgcckcFxJzcHu9BjdH1M8ZW/bBYpRvRizFOg/xaAUCwVoIqXXev/p6ZBEz1IqGAoTmFRR2PGnFgy1SqYGVaozwWZY1iuPUKQkYK4FjqBRHxYeFVJDc5kqWptyYB57Pck8PDqyWV1iGleWx7d9d407asHRoL1p53wbXfsZdS026tT3YG0n7bb+fWFanHOJnG/gN3amnpy+goxFy/Y2F7GYG/uzIelYV/7Q2ALcHa/oNOon9cMS5OQUmJ+5VhyvPQOaUTi7hzw6//EUcu+zbzZyhJotMR+b3FavqRFw77fb+ydUnRdbA07EhYuLhM1HKFseUm3FHSdDO4c2K9IJkJOQaafIGev2Xnz2PbaLXGYeq84KQ9bNCLTr7Ya2QWji5OCqBfQf+nznbfIJDGnLWLdkwWM4yGsgkHAO9FcvzOdHCAmg6nz8v6SrhvsefNfBACQLRSABrQzCCTahUCHCZARxisNU3rvoMzCjzhv1oNcO+lmK2FZq1BGgvUW43Qpf9rfYOJxk2qRw/kxTGloy7LekNIGt7HktBvthKOfjy5JAJdt5kZVdOf+4c/DHgVUjDwDHz/bupuZQKx1SzqxkQ5dNACrZzMTGwXWYaNOO2jN31ZVbZMHUjNmqXKcyHNEWsghS6NbigGooAFGFSfAr4moaADqVU5ulqulm2q2hexQUSe2ZgXJBO13onadQKqyi0h8GL/NHLU5wp9MsPto0iJa24LDZbSItD6iKMJeA777WM8EHGuW/UFRDsGZcOE63bIwrcWMSBLX1dwqcED32Siru0JwBcQ+uqklmJJQtcA1OoTFAA2vF6bZI0dyoP4f4+RwP9
+ I0QaN4EA
+ aVnomz3MtPjJLkqA7HP4VshrX2W0zpdIThx3rW+8pDPVLiMnGX7KyOENCza4+mO9ysukTHTdPHKje5CDnLyuMCLIh4Wsaj+G1mdjkdYy7TVSdracYLQe6iehJnr3xzTE8vlQTPAdkQ299L6YN3hloK4xJ78Fhv4jBoveh0RxZlr+521/dTi4v1kOouY1GXfP1zI7Ezj1LUV5l2D8LxjlEM8SpFkKPi0mA6wfwB3FcXsdw23HgKIItHWNmc/YCf3pJvT8S2dNwzUFJLp5Y2nA+9A4PI2uoOXU//4mh+ckanjtjUXgQHeD2sXbSAUg76xnNwIegepKKgCSpf1c9muSFHNDNyEdDngDPKVcC/NWL4ss8o1bNfh8xnvVZ8bk8VAS2TS4sDpNls/Zsktt8IdBlZgQtw/PaBYrS+qu+q8DSHCTLc9v/OgBAkJfhbo32NGKwmlKM2osP/6Imk/3vfk1HJV6nUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,34 +175,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 04:34, Gregory Price wrote:
-> On 2026-10-27 00:17 +0100, David Hildenbrand (Arm) wrote:
+On 10/27/26 03:43, Rik van Riel wrote:
+> On Tue, 2026-10-27 at 00:17 +0100, David Hildenbrand (Arm) wrote:
 >> From: Josef Bacik <josef@toxicpanda.com>
 >>
->> Commit 9c225f2655e3 ("vfs: atomic f_pos accesses as per POSIX") made
->> read(), write() and lseek() on a shared open file description of a regular
->> file serialize on ->f_pos_lock.  The flag that asks for it,
->> FMODE_ATOMIC_POS, is set in do_dentry_open().  A memfd is a regular file
->> too, but its struct file comes from alloc_file_pseudo() and never passes
->> through do_dentry_open(), so it does not get the flag:
+>> The bug was found by code inspection and has not been reproduced.
 >>
-> ... snip ...
->>
->> Fixes: 9183df25fe7b ("shm: add memfd_create() syscall")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->> [ david: minor description tweaks ]
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> I can't say I'm surprised ;)
 > 
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> I see clues that a most bunch of these issues
+> occasionally happen in our (rather large) fleet, 
+> but not this one.
 
-Thanks!
-
-> 
-> This one arguably should have at least a trivial selftest.
-
-Yes, best to bundle some of these and send them out after the fixes landed. Thanks!
+IIRC it's mostly memory_failure() only that can trigger this today ... so not
+surprised :)
 
 -- 
 Cheers,
