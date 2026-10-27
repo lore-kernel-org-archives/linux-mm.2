@@ -1,141 +1,175 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69F860A260B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C329B606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wERo8I2l;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8HWqkJop;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wERo8I2l;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8HWqkJop
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=g0poesKL;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=wMaGvRgN
 Received: by kanga.kvack.org (Postfix)
-	id B0F516B0690; Tue, 27 Oct 2026 06:30:46 -0400 (EDT)
+	id CC6506B0691; Tue, 27 Oct 2026 06:35:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A98FB6B0691; Tue, 27 Oct 2026 06:30:46 -0400 (EDT)
+	id C76866B0693; Tue, 27 Oct 2026 06:35:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 987E46B0692; Tue, 27 Oct 2026 06:30:46 -0400 (EDT)
+	id B3F3F6B0694; Tue, 27 Oct 2026 06:35:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EBE76B0690
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:30:46 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 057AC1C437F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:30:46 +0000 (UTC)
-X-FDA: 85368037692.23.7BA8122
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D1D651C0004
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:30:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wERo8I2l;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8HWqkJop;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wERo8I2l;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8HWqkJop;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 7EDD16B0691
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:35:45 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C8C21C40CA
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:35:45 +0000 (UTC)
+X-FDA: 85368050250.28.A499791
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D22CC1C000B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:35:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=g0poesKL;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="w MaGvRg";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf21.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.141 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793097044;
+	s=arc-20220608; t=1793097342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CfsimHztCruO2Wg5kbGqSZxP4HQYNhZ0++xp8V5kraE=;
-	b=iyLKwJjeshl16SWI5vQPTrG0TOBqhOX9mvKdFkORSBpgltDuYkKLLS96InQWYor7jmRlo2
-	GW4rygSMB8y05+Ls+8iNW8B0HPe14I6W7i6rmnayU0Fum9ZtrXLsPjNJ1gCst2zFD46kmz
-	BGJNGe9lzE8wWUY05Y616Vv++VkS+k4=
+	bh=cD96WCdctpe4xqBu48fVzWQv2mdj+Q39Vw8+UuE9NOY=;
+	b=YmLMHa1PvM9pSMlXbxfuWv48LmN6xItkMMI6oISw1pGdCSsaYOM5TXTDB3cM2jiTcQDM/N
+	dnpMH7coMEIOLAUouJVuUjP3zYJ8GxFjlcZ65X0wWD4lEx7iGQUcP6wJweMxnfi7B2tKQX
+	D0zgD5/bsJZ9yEqdw25b5eBx6F+UjWc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wERo8I2l;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8HWqkJop;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wERo8I2l;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8HWqkJop;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf21.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=g0poesKL;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="w MaGvRg";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf21.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.141 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793097044;
-	b=xpOIMQv3C0QVTmgEhozCXFs06LoDs14FTHcmTbMOOzx0PwOnrslQ1L/qzyncQ0hbjzP+6Q
-	px4H7lINuy6v76GAzsphL3eDiSmiHlSAUJa5B1pM6aecrTXwlywNr1HzbTIfPbEMBZGGPX
-	2TcfYfoV+Igzp864uII200e+RZmRh5M=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 371831F7E9;
-	Tue, 27 Oct 2026 10:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793097042; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CfsimHztCruO2Wg5kbGqSZxP4HQYNhZ0++xp8V5kraE=;
-	b=wERo8I2l80Tbc7zJzgDVpUtP8F4hNH5xHai1+6lKUZPKwS4vDftwCXE/JroFhBufP60rJ0
-	B/oCs7boHDjA0SGhsKWWb1V9o5NDenKsZHKq1syJC63/jbUrF6n4/ZPg19Hl/dxyjMZeqJ
-	xNmRFjrv1LVl1hvgYjA99EMcOdJD7+Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793097042;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CfsimHztCruO2Wg5kbGqSZxP4HQYNhZ0++xp8V5kraE=;
-	b=8HWqkJopKnjpTl2rDCb/W7qDTjgk+JL8glEff3Y7OL45XtiNrvHKtDVQBZvE1sSYQ2NkeN
-	PF5hAv8OYKoavEDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793097042; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CfsimHztCruO2Wg5kbGqSZxP4HQYNhZ0++xp8V5kraE=;
-	b=wERo8I2l80Tbc7zJzgDVpUtP8F4hNH5xHai1+6lKUZPKwS4vDftwCXE/JroFhBufP60rJ0
-	B/oCs7boHDjA0SGhsKWWb1V9o5NDenKsZHKq1syJC63/jbUrF6n4/ZPg19Hl/dxyjMZeqJ
-	xNmRFjrv1LVl1hvgYjA99EMcOdJD7+Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793097042;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CfsimHztCruO2Wg5kbGqSZxP4HQYNhZ0++xp8V5kraE=;
-	b=8HWqkJopKnjpTl2rDCb/W7qDTjgk+JL8glEff3Y7OL45XtiNrvHKtDVQBZvE1sSYQ2NkeN
-	PF5hAv8OYKoavEDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 507801321C;
-	Tue, 27 Oct 2026 10:30:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /jBeBlB94GqiEQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 10:30:40 +0000
-Date: Tue, 27 Oct 2026 10:30:34 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, 
-	jack@suse.cz, djwong@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, hch@lst.de, ngocthang2710.1999@gmail.com, 
-	syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v4] khugepaged: fix readahead lock inversion in
- collapse_file()
-Message-ID: <auB9CHQh0acOxXpZ@pedro-suse.tail5790ac.ts.net>
-References: <at9_1mf2kLqMX8-W@pedro-suse.tail5790ac.ts.net>
- <20261027025507.59451-1-lance.yang@linux.dev>
+	t=1793097342;
+	b=YFQZHNpRD9/NfVC8qUp92EGINF3EBoHBXrh22Awb+a5HVqcAnY9l9KgXP/SZvdsrrAR9rw
+	rjjxY4RXxAhixJPdUwLiumva+yvNSap7aH4L+vDq9/WvX8xkwq2T6Y9xHF0aS4pg5eI/af
+	g3yJ4HD92018MiiyilIPhT8J4mxKRHw=
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.stl.internal (Postfix) with ESMTP id C4FE71302A94
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:35:41 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 27 Oct 2026 06:35:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793097324;
+	 x=1793104524; bh=cD96WCdctpe4xqBu48fVzWQv2mdj+Q39Vw8+UuE9NOY=; b=
+	g0poesKLuQGMaU7v25wYb164Iof879cLQ+jrS7Vw6CuhEsyJqwn7PFMO9TEgL555
+	salmD3V/ClUhsKzYPi0e1twlBEQsUQgTWR1AZ4ucxcvSWh0tFF+QsAmR7kyrExiD
+	rs8QFLT2d4K3gWpb7cbvYPqhV9WNtc7sDvVFrq/AeZGLbrsDceBV0QVq1catnKNP
+	0vZraw8GdX+eRczyZn9JW2/ZNbjBM4QFUKd6YGV2yTzJi2ns5fiipJSmFKiJF3sN
+	GoBWeR4K6FMeN3rQg7Q7I4UT9hD0E+qvVgrEVdMfqW0b8abtf0o6SMw5UbAH+FLg
+	hVWbTZEFzS2/5wF4AlN9FA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793097324; x=
+	1793104524; bh=cD96WCdctpe4xqBu48fVzWQv2mdj+Q39Vw8+UuE9NOY=; b=w
+	MaGvRgN74SqlQokg0yGoa0qHrxHvnpo1EgRYl+NAZ2HGjyf2DoHqc5uAKC9rWw6/
+	vV5njRj3VAjVsozr2QciajWKilgp9EVdkzTxKpA/MsGbxExu52PceTGPRcPZsISB
+	KpYKodw2SCDSr9uGfucfgcGE2SA0UG7iid20bXHmKysdvynyqnnRbJjpSNwQ33N1
+	0pa9wUuAxjPIT/YsNOqCEmHDj7Qibp8Oyln4Wr2lT6g2YFOhW7GTB1NdlTnD6Y/N
+	mqImDReIq39YA7WkoOuwESu2xsiCrgirovD+YpK1k72+skpa4xR6mPYjJvlLn92L
+	+KFpP5vjxlM5S0xUcBdYw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793097324; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:GB0JNTa15lGPo2dlINR6e2IXMga6P2duXf5eZ41H+6XGjPo
+	iZEawvqcwGYhN0i5Wb5MF5saSWrbzb7+9hVzh6IphGyg0dl4zOX3DvSA6VAV33BX
+	4HfKamBAqRtqtGm09gwEuv1MhNd9jIdGWZmyYTDbpu9VLak6JVv++JqsWv7R1TX6
+	jZrIa8WH+72lTZ2AlL2pJ0aUhcH4xFOaFj3fOa4KsjRiy+634yRTIkAqOI2gFuGW
+	saiQdqZ49Ryql3sMvmry+t+HSpZmGhUHcnQX0rHxemQ4YKzLhwNG+6mzKCgVe+ZX
+	7Uo/kkku2scaGLkENUZIC8lpAIB2vFHoryF0F6A==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:cKjetnoeFjJorNH+mroEPI71xZFnj0iEAx7opE2N30E=:+7cbM9Ly9xGwj1eAsvoI2B7rTf1bDojBouGfp8ZZDqA=;
+X-ME-Sender: <xms:Yn7gauJPeu1PinbCI2gYx0_jlj2PnQL9uVqEmxziDToBSgj9D_xRbA>
+    <xme:Yn7gag_jv3yDvc0KG6xNU0a3i3tsXlBRwgQXJ5nMfcMcUHLemzagppJ4LiVff77wd
+    kWfJ0mG4Cc1YdeleyjjRgNmR8bhi_EzFH5DKuKtc6zsMLGUhHUiVHY>
+X-ME-Proxy-Cause: dmFkZTFn5p5gNfTa2ln7Ur1M8HLGH3FByI3bMffV+IVuNBxFNqZT4qibdV0911N+HRUSXj
+    K07q1nctC5A6CcFfeLY7jBaLOsZKNIqYeTCeDTItiSfcD8KPMq3RagWnzHGWxZYBxWAiCm
+    A3VT2o0IozuPu/s7pvPmuxDhNCPVlHQtdJeKAQbZtM/B41WPfEm0WHEt7Z4VBmU7Awz3r2
+    CW1Ic84f68hqkyPgXyGKcQw2wWDeenYkz/P7wEtiFmdUVM0amFmkVyW6og0RqG5tm89hZw
+    aKjqOAwHgBmvujhKmrOmxUKnEU58c+GvStpS1gjFmbH3Cw9L2zocbcI2nShgNxT4DZbAQR
+    wgaSkDdcdMc/d9G+mxaz1POpKC9kteRE12RXj5cBt5pww+0ny7yXHoqz13E7ttwMLwV2Zx
+    irGvBcy8nzFHGZLzVSm2bc8v02AbCF8YXzUkvfzziFLvAHlSLPGQdoNZ9j8Z+n4FuXVzNX
+    YX6+5h5244zwOTl9aQiqLa2ox4HvDWrM9qIOP1ddj/Qc6TrOohBTM5knyFzE2y92EKQkba
+    jTOi3P5IOCM4Xz9GLVwUPx/34MQnZ46TWseR6J3W3XI63DkzQUPhI7lmU3qjmL7/C1LwgY
+    Sem/AhqkedQIukr61kUqtibtpdY8TqVUBtJQynB3XFjVXPk3rqiMNJFlIJrQ
+X-ME-Proxy: <xmx:Z37gapHvcVHvMaM3ipgnYUZzm2Ryqqq0XCp7NdxFgDjKT2zqjSy1vg>
+    <xmx:Z37gapt5WD8JfcDqZC3gZOEaTUAl0efsI8damzFuxdzMc9AsHa6DBA>
+    <xmx:Z37gao4LOQoh_k9Rjo00qqoo4baOxCcq29WjL83ZgQ6XABea2d3MPA>
+    <xmx:Z37galm2wjPgXkNjyPJ3HOpQNs8U8c25nqH_wkaWl6-1QurrUIflow>
+    <xmx:bH7gapzWCUwwKYEsxCX9776XutFUkBaJpOGzr7ZN12X60l-MCDK0DRme>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id A3C9932A0093; Tue, 27 Oct 2026 06:35:14 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027025507.59451-1-lance.yang@linux.dev>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -12.01
-X-Rspamd-Queue-Id: D1D651C0004
-X-Stat-Signature: fam5baxzwxc1gtfik5fbsuq36zx1sgrh
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-ThreadId: AUJ1OXWu3nCJ
+Date: Tue, 27 Oct 2026 11:33:08 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "James Houghton" <jthoughton@google.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>
+Cc: "Thomas Gleixner" <tglx@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Kees Cook" <kees@kernel.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Sean Christopherson" <seanjc@google.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Jim Mattson" <jmattson@google.com>,
+ "Jens Axboe" <axboe@kernel.dk>, "Pavel Begunkov" <asml.silence@gmail.com>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, "David Sterba" <dsterba@suse.com>,
+ "Chris Mason" <mason@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>,
+ "John Fastabend" <john.fastabend@gmail.com>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+ "Ingo Molnar" <mingo@redhat.com>,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Namhyung Kim" <namhyung@kernel.org>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <3c125ff6-5426-4f19-8e34-fb564d4b6387@app.fastmail.com>
+In-Reply-To: <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
+References: <20261026215226.3713941-1-jthoughton@google.com>
+ <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
+Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
+ current->mm is NULL
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D22CC1C000B
 X-Rspam-User: 
-X-HE-Tag: 1793097043-335525
-X-HE-Meta: U2FsdGVkX18M657zCPF+ZTO6tv4y2te+rj2Rbet/ZNkmSx3/BMV8HYX4US7sgLwupcPbai4LMUD4E4D8UYdGBab3BIbZ5rDLgbCL1UEd9dREIprY71M1/NYbxF0xx9P8WjFJI7WsI3IiiKwGbQ1WMPYXSW4cI8hj2u2TqIaYawA+aLIXJoafpHFJSTpGW8xCKMAFwuYKxuqMoxxp4Wp5PWv7JiBKhXRXfNQbf1F1npXRaW5oNqUzASkvh/R/d00uVFzDgiJsTw0iWX+cKxfzwQPGpSOSgJEIb7vu3sJtwsvSQQ3rnbWSTbaRoGEI/6L1xrroyWLTrvbwotgSsN7XmajnYUd3hCcyG6ZeLt2ewls9OY0iCflfYs0ZJfNCxPaIoG/0dNOFMtsYoiSqwmZt5HppzYDDb9dXjlwJAsTY3aJ8B1ZJGpjgz685+SuGC6uD+yTXxPw9xsPiJ8uttR1F0pU2fm5w7sXyXt9WzohbsPnCMpd0gb6FTy0FeZzElqaz43RrTZIbsZpnxHNjQp+LfGobiIfkGvmP0vxVxdkQ2xWVYkqKQfDVt86hxCx56J1DZV9ZoiobuV1f8g0zn6T3aPsoUBC8xYY/Yr7NizAjckwERi4lOpIRM6V5yGL5YuM98sZ/YTzOWwGllbKR6oZV0ETcTOqoIWziClBUcDDQoepYeWXO0aA8RT5OgJpWP5HzhHSFdhshqaYWmfJtC96uVbWxSaCAlo/Ly1cPnfNkeWWUvjyqAfvuYkvbCsBh6T1Oh8CP3LxVOnd3ebFt5AHrh1EjMFuVlyvMUtt19KFryzag7zRUFHRxHS6bfUpt58jrTDPJVgejRSsZYXVKkYZpfZAuJrsWKFZe8ykpWtPW5+5qA0uDvcbP4xWLk9iAtQUqbUaCzvPRePKAoZErN9dsrk+o9SrOZ3GtqlpopmmWwS7J3N+Ww7LQjOFjcnY7cc02zzhe2hGVK3KvTPr6AZl
- uzpv0H54
- xNoJgtFT5mBmS8yAIHAO0eI2TqpLbdOY1BrbvjaShkg/ovnMGeCR2b0Doy0pufuK8vxxu7o2cqYzQSJdFhJUF82XmkGo7FU2O8JUTc1ygjFH0037w4xHLgJBDV/fSqjxzxu82AJdE4/q47oz6hc5NxvlhvxZYreI0a9kSzd8uf/KVE23ajvyQ3HF8gFGgXEGK+6bpdR0qyr5aW8+bGS6F+H28bSLCRnV6KABUWUG01jjrQ0FgWhJ50vD2zbOxbhncgENWCyoKCNZA5yrZW9m91lbrQv7aVzj5VnduI0xFqu9flj8XPcXHGew1KXCZ4Bq3HDhn9pDH3Tm4RnltKQrRmZMr5jRa1SHUuGJufcm+YkzNZUAndW19VWX8NiR7ipWaNor+BH0exRsEakuAeYmL9/DBqQil7cE+A5+tOSqyqpjnwKHvumycITLukjAxBpRbJ4voXDdZvrlU++TcdzCpEFrIr+D45RnnJPtd9vW4behYGmjnnLjeapbAKPLx+KrmWAjhGprhU/+hpu4VzYHhBBX1YYBq+bIacRzWHhyYJ99aovi58MSfM9iWG7G/3eaHPTlWXjqUmxc2a3M=
+X-Stat-Signature: 5nepmikapjq5demszyh7mwerbk3tfspm
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793097342-268748
+X-HE-Meta: U2FsdGVkX19hortWVFDLEo4U4V0FXB4Q08jHnXI3I+MUPxkSZ5YMLLhtCW6uM/vnHsBu9qxT9IYvJf8nEsVA4lK68tjW8vp7SYGsOWNEs2dhvKD6c6AaYAvaCughjfP5ib0X1hagd7hR132YEvmXzPtt/NgXOloLRaoa1VilpkSyyL2vabIVNDkqCjdRWscJ9+l8OqRSoU1QPmwLYuXxF4Wwojw0LwMhFFo+sVXdKqhPO/dYe/p4BOlMostr4XWnGFqaYPIZe7T5HiNgbTq2TxrDOOYJULgOknpoI63qgDnXS61ciFQqZzUcQRCuskNWXALEUddD+yV4I4PIULTR/jE23Xsev7qJNhgESO5li3T0t0cWGlGcC0LJBvLG3mnjKbCe7zQXWlOzJM5YH7aiqgjI/VQlv08sQ6PLIcM6pVkynxCgG3z9G8ZSNsEggB6VliJQOeGLKteUpu8DyG7fWODRbdVhqjkP0UFtV9RspI4WS2Hu4kcRpTq7l+95JEAMaW8Uf8f4eTf1lOACI8VrZ3RuqCUzrwkuBNF/ui09gGKbVMjWUDLRfvJn/uTor50CzDcozxfuy7EVX8PZrkWEAV8VCgi0QwCVoSfUn4BEMuKA8AEqtkl0EfGAyvdL93Ke958XRPlMC7FVH97XTr0dgktaBodcHk8UZq6u5iwtgPDq/9OaJH6TMyL/qf8Lk1f/0PEP/qeyP8VopRtrkKdMz+NrQJGjpScxgKd6pQCup3Dyp/vWUC8EJ8gDOMI5YKIfs9brF/TjuVY4d9HkvyUKnFZYmYfblxoiRDCPEB5Kpox9svr0SMbQOtsZ2G10jJFgiWxsi6/TVpGYxmjPqjCc285u+XfrhTph5JbCRXPTZJH/t4TxcoR4rfCn+PffKjFEtZo7PVNcxZ7y8VEk7TD3gx9I2gS0pK1bYuW6DjLI6VnYSraOL8OrAoZASJcZC61EK20Ku2y8UbF2K4o/Nat
+ 5ienLHRU
+ 88wbDUtrGcONph16PZ7jxJPlywdROKhq0rubzGdiHgnuKa5oW03rKFRXOItCTtllHiiG6ogmUe4WZA0aoVazUe7/JRzqZnbglH4fKVhqvWSm1YbxaWsz/As8YPeY041XGxTsXgbQw4RaT9YTBWdfjQsrYXGRkmpbBe4BC2OyUwTbrfFpsYp3fArG4xCeR7oZrBCaltL89yQxk8IlGPSiAxiRE+EurHtF8RVeiAjuzaClbHGUuV55utKXPchuDANIB4fHTsCNExKrOLyjK6VAAWR6YlPNmr94K6VGdKqVmSM6Vomo6i3MHqeupfBKSaQTl6zUg+bhaasUvBPsY9O1JIEKpkLwA6+ySzKcyVcwb6fxbO3UCvxxoBhwxx23hQ/XIc1lyxPYyBanxSE8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,125 +178,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 10:55:07AM +0800, Lance Yang wrote:
-> 
-> On Mon, Oct 26, 2026 at 04:33:08PM +0000, Pedro Falcato wrote:
-> >On Mon, Oct 26, 2026 at 11:20:13PM +0800, Lance Yang wrote:
-> >> collapse_file() can call page_cache_sync_readahead() while still holding
-> >> source folios locked. If truncate holds mapping->invalidate_lock
-> >> exclusively and waits for one of those folios, readahead waits for
-> >> invalidate_lock and neither side can make progress.
-> >> 
-> >> We need to release those folio locks before starting readahead. On a page
-> >> cache miss, roll back first, populate the collapse range, and retry once.
-> >> Doing readahead after rollback avoids an extra pass when all folios are
-> >> already present. If another miss occurs on retry, give up rather than keep
-> >> retrying while truncate or reclaim removes folios.
-> >> 
-> >> Keep page_cache_sync_readahead() and wait for read I/O with
-> >> filemap_lock_folio(), releasing each folio before moving to the next. The
-> >> existing uptodate check during collapse still handles read errors.
-> >> 
-> >> Shmem uses shmem_get_folio() for swapin and fallocated folios without
-> >> taking mapping->invalidate_lock, so it is unaffected.
-> >> 
-> >> Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
-> >> Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
-> >> Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> >
-> >Thanks for the patch! This looks almost perfect!
-> 
-> Thanks Pedro!
-> 
-> >
-> >> ---
-> >> v3 -> v4:
-> >>  - Move readahead after rollback and retry collapse once (per Pedro).
-> >>  - Drop the preparation pass and its redundant uptodate check (per
-> >>    Baolin and Pedro). Thanks!
-> >>  - https://lore.kernel.org/all/20261016065920.4153-1-lance.yang@linux.dev/
-> >> 
-> >>  mm/khugepaged.c | 44 +++++++++++++++++++++++++++++++++-----------
-> >>  1 file changed, 33 insertions(+), 11 deletions(-)
-> >> 
-> >> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> >> index da91762f6358..0d3bd9e23613 100644
-> >> --- a/mm/khugepaged.c
-> >> +++ b/mm/khugepaged.c
-> >> @@ -2239,6 +2239,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> >>  	enum scan_result result = SCAN_SUCCEED;
-> >>  	int nr_none = 0;
-> >>  	bool is_shmem = shmem_file(file);
-> >> +	bool do_readahead = false;
-> >> +	bool readahead_done = false;
-> >>  
-> >>  	/*
-> >>  	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
-> >> @@ -2256,6 +2258,10 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> >>  
-> >>  	mapping_set_update(&xas, mapping);
-> >>  
-> >> +retry:
-> >> +	result = SCAN_SUCCEED;
-> >> +	do_readahead = false;
-> >> +	xas_set_order(&xas, start, HPAGE_PMD_ORDER);
-> >>  	__folio_set_locked(new_folio);
-> >>  	if (is_shmem)
-> >>  		__folio_set_swapbacked(new_folio);
-> >> @@ -2320,17 +2326,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> >>  			}
-> >>  		} else {	/* !is_shmem */
-> >>  			if (!folio || xa_is_value(folio)) {
-> >> -				xas_unlock_irq(&xas);
-> >> -				page_cache_sync_readahead(mapping, &file->f_ra,
-> >> -							  file, index,
-> >> -							  end - index);
-> >> -				/* drain lru cache to help folio_isolate_lru() */
-> >> -				lru_add_drain();
-> >> -				folio = filemap_lock_folio(mapping, index);
-> >> -				if (IS_ERR(folio)) {
-> >> -					result = SCAN_FAIL;
-> >> -					goto xa_unlocked;
-> >> -				}
-> >> +				do_readahead = !readahead_done;
-> >> +				result = SCAN_FAIL;
-> >> +				goto xa_locked;
-> >>  			} else if (folio_test_dirty(folio)) {
-> >>  				/*
-> >>  				 * This page is dirty because it hasn't
-> >> @@ -2657,6 +2655,30 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> >>  	new_folio->mapping = NULL;
-> >>  
-> >>  	folio_unlock(new_folio);
-> >> +
-> >> +	/* Readahead may take invalidate_lock; source folios are unlocked. */
-> >> +	if (do_readahead) {
-> >> +		for (index = start; index < end;) {
-> >> +			folio = filemap_lock_folio(mapping, index);
-> >
-> >I'm not sure if there's a point in locking the folio. If we are retrying,
-> >then the logic above will lock it anyway and check uptodate. So I don't
-> >think there's much of a point doing it here. Right?
-> >
-> >So I think we could get away with a filemap_get_folio() here, and no
-> >filemap_lock_folio() after RA. Unless you're intent on waiting for RA
-> >right before failing, but I don't see a point in that.
-> 
-> Right, waiting for RA is what I intended here. Without that wait, the
-> retry can hit folio_trylock() while the read is still in flight and bail
-> out with SCAN_PAGE_LOCK, before it even gets to the uptodate check.
-> 
-> If the read completes successfully, we can continue with collapse.
-> That's why I kept the wait before retrying. Do you think waiting isn't
-> worth it here, and we'd be better off leaving collapse to a later
-> attempt?
+On Tue, Oct 27, 2026, at 01:12, Arnd Bergmann wrote:
+>
+> E.g. on arm64 with CONFIG_ARM64_SW_TTBR0_PAN, the page table base for
+> the current process is only set in user_access_begin() and would
+> not point to any task here. Without ttbr0_pan, it should be
+> covered by cpu_set_reserved_ttbr0() turning off all user space access
+> for kernel threads.
 
-Hmm, yes, thanks for the explanation. I had a fresh look at the code and your
-patch preserves that bit of behavior. Isolating folios is simply trylocking,
-and only does a hard folio_lock after RA. So, LGTM!
+correction: for non-sw_ttbr0_pan, enter_lazy_tlb() does nothing
+on arm64, so it is the same as x86 and the others.
 
--- 
-Pedro
+     Arnd
 
