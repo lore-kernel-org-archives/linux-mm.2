@@ -1,120 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EF4606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF2960A263B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lg7AV3Jy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yb3i7jEn
 Received: by kanga.kvack.org (Postfix)
-	id 5801A6B072B; Tue, 27 Oct 2026 09:04:54 -0400 (EDT)
+	id 7A30F6B072D; Tue, 27 Oct 2026 09:04:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 557636B072D; Tue, 27 Oct 2026 09:04:54 -0400 (EDT)
+	id 77A426B072F; Tue, 27 Oct 2026 09:04:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46D686B072E; Tue, 27 Oct 2026 09:04:54 -0400 (EDT)
+	id 669F86B0730; Tue, 27 Oct 2026 09:04:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A6BE6B072B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:04:54 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB77CA0A45
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:53 +0000 (UTC)
-X-FDA: 85368426066.22.B187540
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EF6E7180003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 340E66B072D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:04:58 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2FD08067D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:57 +0000 (UTC)
+X-FDA: 85368426234.10.96D030D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D47CA18000C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:55 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lg7AV3Jy;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yb3i7jEn;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793106291;
+	s=arc-20220608; t=1793106295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C9CW95GOpUZS+JdbNzdoy8x8Ek3CYVhYSlyIeljBRJw=;
-	b=oJnT26KrK+lOaBBCyLbD4W6mvieR1BJFG+RX9037iSoW5gRIBZBBiPdx3U/CSky/AE9sy7
-	9U4G9f+OYjNLah/vlWoxgMeVQghg7qb6ESeEVE2bwI0O8RzPpjMreb0AYlgx/dVIPQ2MuE
-	O53j7Yst0N7FTg66zQxzw0+yfeVII+0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793106291;
-	b=i1V0DN5dgNYhraqYm8RQ07th2fflYSPO1Q/cIGzrnDBrDeKMkfDQOqKRba6Q1FYAa4r67g
-	sKzlu3++O/vjl1yxT93wQq69JQvdIi33WaoiBg7zgjyn1Pi9vLyjVxGYA8b0ZUQ3A74Y0q
-	MIVw4gJpN1rfze3euIaRjN/e+bgixEY=
+	bh=Of4H9m4bb+oakg+uaiUFhL/+GkDlyL+JKLZHKgUUKW0=;
+	b=xNvJTxma/2Rvz+NOJRd4t/QxAhfC8bEYuQX8kiq09fuiiKBGYwYIG5A3cV27WC1iHYSALX
+	mtMHir2Je742eJ7fGqXb9P4UBLSH2keTnHLm2Q7urt1D+DMWB9FcwmgqVoN8PX7oK29ulj
+	X6BZJI3b8QDJLAA/dy501uN/GpRVFk8=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lg7AV3Jy;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yb3i7jEn;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793106296;
+	b=eMK2dOf9sjSvUXHnO0xgWoJh28jkKoXqSbu0n3HYknvykyJsK3oxm1OiJgg7Mqm+Jx1TKO
+	7Ns3yTtoBXkvED8A+riB1a+IlbwfNuBNd4dEweex3SanqtFM5hhR4ve6eH7mJcmA24M0iv
+	/+9AMxkqGtbCOxFhvwcRAxNBwS7uRho=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B15A6022B;
-	Tue, 27 Oct 2026 13:04:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446AA1F01829;
-	Tue, 27 Oct 2026 13:04:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2E04743AA3;
+	Tue, 27 Oct 2026 13:04:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CBC1F031E6;
+	Tue, 27 Oct 2026 13:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793106291;
-	bh=C9CW95GOpUZS+JdbNzdoy8x8Ek3CYVhYSlyIeljBRJw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Lg7AV3JyrpqCFTdtN8/Irbsn7pw4xNIm8fnXR3opnpD7q8JY2TuW2TwvubuRQce28
-	 NCYj2M1SN5DdsCXQy1aSscJ9FgDFhTpDT3Gi29M3VRD5uPNxumZCcd9T3sRCDGE4Xi
-	 30TVlxdQjL/cnGRjNPLdzXB4yY7lPCuRkXmrHNzB5nTLcI1OWS4cfCqfB/DsVhJGoS
-	 9lJSxiFMmVCkVZFi22QfjZZFOyVHMjQmob0uy3IrkN41vMx9gNUAeZCXRVIafu+gXX
-	 bRnp1ebGBgEYaRN1Dz+r/BtbOFf85lTXepz+jkS4EPHLzBK7i2t7eOh8LhUMTMdInY
-	 kkuD0yPuzSuAw==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 14:03:16 +0100
-Subject: [PATCH v2 11/14] mm/shmem: preserve allocation errors when
- swapping in large entries
+	s=k20260515; t=1793106295;
+	bh=Of4H9m4bb+oakg+uaiUFhL/+GkDlyL+JKLZHKgUUKW0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Yb3i7jEn4N15nyx7Kxt0QjPtrqbkEwaoV8ivyObe1Gmy7WOcD5YND9weJBaOfNiOj
+	 Kcev7VDm2ubmChGfN1Y4IagPj1iUXxKU9OnC27cs+zZmy/HcSKj9w/ELMvDNQIDiv6
+	 N+BZzUMa1RfhieTctY0KISwmTtzkYkuEVmTQrv2G6kyPsZhQVZSqiESa9p6bqtXpXF
+	 fQ0wYtOGGxRpEoSoyeM+klEvp6C3/dkobi826qkB3pBeCHE9vVYeZxoUJdD1di3xfs
+	 FfNJFfLp81uOtKkfDt/FzAYY6J6xM+mCAPJ01hSFoSUQwvx1fmiVNLZaU+quPu+imV
+	 YUkkEoCPpf4Ew==
+Message-ID: <13a3b600-8a87-478e-adcc-2425c75f98c6@kernel.org>
+Date: Tue, 27 Oct 2026 14:04:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mempolicy: recompute automatic interleave weights on
+ memory hotplug
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, honggyu.kim@sk.com,
+ stable@vger.kernel.org
+References: <20261024170415.4121901-1-gourry@gourry.net>
+ <e3a1ae72-9370-4c3c-8935-6a410a74377b@kernel.org>
+ <at91WFlW96PH-a8A@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <at91WFlW96PH-a8A@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_shmem-v2-11-86a00952acb9@kernel.org>
-References: <20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org>
-In-Reply-To: <20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, 
- Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>, 
- Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- David Stevens <stevensd@chromium.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- William Kucharski <william.kucharski@oracle.com>, 
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, 
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1549; i=david@kernel.org;
- h=from:subject:message-id; bh=VFsqS5vseIV2DxJFz3mK6fhGor3WImrNW4kFky6FZTk=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeLBScy2N1p9Nrfctd3iZLSV9jz3efdHc6/7l4KftAS
- tdbDob7HaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEykS4/hf96XOGkGlqBl4T9s
- VjXd8cn1O8xx3uSEmMhNlqOnWtXa6xgZVh+bMJtlzoKNv9Y9EmX4H35Kc7ag3QL7zUXLDtlKP+y
- I4gEA
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EF6E7180003
-X-Stat-Signature: kq4mfnszwmdo1id5axhrktqtm5866cz6
 X-Rspam-User: 
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D47CA18000C
+X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793106291-880578
-X-HE-Meta: U2FsdGVkX1+me3xL3txiQcsXd0omAXTVjnow/8sC0JrHApOayua7y7oKRaBH8wS/DJp/iFX/8OxNDf2sUCn5ac9OvDvHd6re/T8E3gntBEraWSlTlTmknVhFdzP+H9ol2T8ZtkvBxK+o1ngzYIRQAoezW3gWw0Y3y2qPBZF8DWdftRcJrMLgY7t/bpdWK2B15/WK35NuVNL9L9vUryBiTOc5C3mAbVr+3gx5eeOA26SG/pP/35Eq8vgZsebxvIudW4DEaZegF8nZfPM2q31A0P+sDct5KnUaFyifrX/Y05p+J1scnocJV3sOyQWzU0vLoSnzPRZD8l6YJK97LvczDbdyOSEGvTgD6ClglGj7jTWH9XluvKlckbfiA6nfZ/OcW/jp265vhSxewsuqlIoa9Gvmlp8bdTrAQnXojnboDxYZBwmJNd9STM8FGW2CFFjCG9CO9B2qJ22x3t3iW/1ox4MUwpNKdYt6vtOH6Xv4Yld2XKtVlaWqNDy+e4QSLbDFLxzHmFpA61Lx7TYSZva640Hv0jugZw1mdEOH3zkWKMYxGih33+bUszmSwH3odeshh8Mj8q/zyvQHP9AtHTZYbubCkKupABSj4j5mGR4y5Q87T1zKxaFmCjz/ZRO8PHdOZrVESIb6cHdOK/oiGgOKkIK3Mi0JcroMbvi/+FwG8eje9TAIiTVF5+ln3SByTA9kY54zrbcOHEZ1R5qDeE5bC5IMvZHQ1hSJsEPQT3G6IlTtKmok2EmzR8hbkvRW27ZOlLlpwFNaxeqKg47mW2fHqxyOoNurUonJnFrVli2TyIYpmijHcUHWit+cXrntG0ql5apGKw26OOmPOHRasQsS6C2Tj0i2DiEgQKA9LJ8pzms5AgG0t13f5SWBd8Hq419D4IYQP51BeT4c9xF+F96r9J5edbZee8dR4PUDbuh2qvekM90EJUh766qoglu13GJRnod63GKJJefGidMOTXE
- WjJ9/NTs
- 9xoW+NLKjjInBasR3Mp54RdNN0YYnZP4Cby0DzJJ1o/xegGpjSiG2Wexz828UTa7DpMxAtNRUt6FnvA62m9v9TnuvX414KxZqguuRgXSgMiA3v8FxDaJZVH3LybvZFCC5uTHudciAcUQo3xz5+5j7O3lvTjlWCjLoX+oLt3+e0Mi0D36g/KRYBCeCc1vCOKJRBnjN7dWvD7WYymlwm7OEkKBa2iTXK3CxRUKcc9xWR1ij3CKcB86nDA3NkxH8k408uUbM6WmW0lWgyKkHJKYRGCCKsog80OyqSOJS2l8JOTky0mlKlriVRvmeeZgd3803PcwzDrjrAI6MgdMY/q+LCZkpLihfQGIs5UjW2Ze3ACDpqpZxdZF2dV53Wv6QBee8IOBsOvL1Xfx4WHHT+lwdWxOKJRhOwCQ2nLknI114UtrMnntpOJW5ZqOMJUxWBAb84HPIZUIj4amZiFY=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: qybo1m6qy5bpad138aeq9ztis8zb148f
+X-HE-Tag: 1793106295-308859
+X-HE-Meta: U2FsdGVkX182yqWYQFcFz+wXOgDvlKOI8pyhNsSBrSdre4TszpRrqPFwNzTu/qUpGP0taf02Lon7nrdbQkncBapLpgS1+sA8P9rnmmDjvlzWmgSLoqX8aABB0MIbvuI3h1rb8KwExtr7cbiW7OSjoCmUPjT5+qQyKDsvZR++NcPO4VzcCOoF3wspFX6eLw5sK0Nj7LNR+x7b4tvb6BjArrZH5rDnlr9/d1FCtRPzhduU8POgLqNAWFgioclnTKrrbTieFA/M8F4OACg/LIYjMVxlD/yT2uZ2v6Flb8AsFfKbjv02L3Bj5lMu4kzbppNxIY4JZkEZ53UA57J6hnTlVgMbhwTqSZS88SOhNdQYhVXdcKI9EZQFllpLSCmWJ4KOOsM0Y9WLjuOZglKMBvVBdpKBclrWliznW9Q+c5q2uwfYeVSa2yopUCjW8zbmu6/PW+MVwXqRrZrqOinA3cxEP3/q8UUHQ0kPNOHa55L4A7xYCWS9d6aLUpBkeNcYEs5y1OSoVfq+AD3iR1bv1Zjha6hsVJUkyH0imp+GE37JTxgFJfkWjIREhleGZ9iaFo2BwU+7/mrcu18xdXGnML8cUCtErQ12w5WJi+3/VJnsxFwbN33mpTStYMPj4yPMkYvC950Wi9ETFJdq0YUK1xeKFDnfeZjd388VKJVT1uJb98L4gbNpSAeovFr1d52VZvpsG3EmS2LHtNU8T9GGxtyxQyu+MzfdBQDaLoxNtQ2MelW75gY8nyFbZ5R9vNy8yijN252Hn+jLTBlvQWoSNNROkjfQQON/P0rMftV7DKShPDcDj4wxa9lbYMB0NRneNKy4EBkvmTkVwUwKvOgYljtegIZFtbtOPesuYNHvV1Gmf4MkLA6ndsB5+VmKTGAAhxCIwMNhbg3/Dcwv+ydARRv53Tz4jYxzFQV/WWBaHh05dbLM8Sl5NnBsrTNvCAhb2rnAp/FN6rJD0HHqGu3I8Ue
+ NxLR7vig
+ 8fSTxq9G4/etx1LWb3RjYS4M7I6oEXUJE4u9SGoXbWOnQHM/d5fAza4Zj+xL9Uspxa1jW5ziFeN3z2hDOxOiWf3YjALlqGiXeMcqkBjuwBmoaFl7YV4WZBXVXAK8XkEyBBO01mEt80k04Uvx9JtzBuZMkeeMMNCj3Xdm/g8PhgAMQIafm9Zms4J8/bWuzxACundz+zV9yg6+yoaGcentEi9PrFSJBAm7U6gN6yYAlI0vs135P3jguJrUyqKJUeDxO6xnryEZeZK/hvmAfSf4e+1wOYZr1mqRAPhxK5n0MyX9w8FH2UMh1I5jcqQ8ZYxw1cdDulVRhhkDiTRw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,47 +145,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-shmem_swapin_folio() adjusts swap to the requested slot within a large
-swap entry before allocating a folio. If allocation or charging fails,
-the error path compares this adjusted value with the original entry
-still stored in the XArray in shmem_confirm_swap().
+On 10/26/26 16:47, Gregory Price wrote:
+> On Mon, Oct 26, 2026 at 12:19:21PM +0100, David Hildenbrand (Arm) wrote:
+>>> +/* Recompute the weights from node_bw_table, unless they were set manually */
+>>> +static int wi_state_refresh(void)
+>>> +{
+>>> +	struct weighted_interleave_state *new_wi_state, *old_wi_state;
+>>> +	int i;
+>>> +
+>>> +	new_wi_state = kmalloc_flex(*new_wi_state, iw_table, nr_node_ids);
+>>> +	if (!new_wi_state)
+>>> +		return -ENOMEM;
+>>> +	new_wi_state->mode_auto = true;
+>>> +	for (i = 0; i < nr_node_ids; i++)
+>>> +		new_wi_state->iw_table[i] = 1;
+>>> +
+>>> +	mutex_lock(&wi_state_lock);
+>>> +	old_wi_state = rcu_dereference_protected(wi_state,
+>>> +					lockdep_is_held(&wi_state_lock));
+>>> +	/* NULL wi_state assumes auto=true */
+>>> +	if (!node_bw_table || (old_wi_state && !old_wi_state->mode_auto)) {
+>>
+>>
+>> I was confused about the node_bw_table check at first. Maybe
+>>
+>> /*
+>>  * We can get hotplug events before any BW data was recorded.
+>>  * ...
+>>  */
+>>
+> 
+> I went back and forth on whether to do the mutex in or outside this
+> function, but ultimately decided inside is just better structurally.
+> 
+> But yes, this comment seems warranted in this case.
+> 
+>>> +	/*
+>>> +	 * HMAT and CXL report a node's bandwidth only when it first gains
+>>> +	 * memory, so recompute the weights whenever N_MEMORY changes.
+>>> +	 */
+>>> +	wi_state_refresh();
+>>
+>> If the function fails, should we at least pr_warn_once() ?
+>>
+> 
+> The only failure state is -ENOMEM, wasn't sure that was worth warning
+> on.  I actually debated whether to just make this a void function.
+> 
+> I don't have a strong feeling here, but happy to add a warn if you
+> prefer it.
 
-Unless the index is at the start of the entry, this turns -ENOMEM into
--EEXIST even though nothing changed.
+I'd assume we'd at least want to tell the world somehow that something is now
+imprecise?
 
-The caller retries -EEXIST, so persistent allocation failures can leave
-the task spinning instead of returning the error.
-
-Restore swap to index_entry on allocation failure so the existing error
-path checks the original entry. This preserves the allocation error if
-the entry is unchanged and still retries if it changed concurrently.
-
-Fixes: 91ab656ece13 ("mm/shmem, swap: tidy up swap entry splitting")
-Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/shmem.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index a538b37fe739b..9a11de010ed7b 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2528,6 +2528,8 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 			else
- 				error = -ENOMEM;
- 			folio = NULL;
-+			/* Make sure to validate the original value. */
-+			swap = index_entry;
- 			goto failed;
- 		}
- 		if (fault_type) {
+Or is not updating that harmless?
 
 -- 
-2.43.0
+Cheers,
 
+David
 
