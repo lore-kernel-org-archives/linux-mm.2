@@ -1,126 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8873D606A330
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4FD60A2613
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ShPz/LB/
+	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=HpIiIPwp
 Received: by kanga.kvack.org (Postfix)
-	id A3C256B05F1; Tue, 27 Oct 2026 03:35:55 -0400 (EDT)
+	id AFFB36B05F3; Tue, 27 Oct 2026 03:35:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A145E6B05F3; Tue, 27 Oct 2026 03:35:55 -0400 (EDT)
+	id AB04D6B05F5; Tue, 27 Oct 2026 03:35:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 929D76B05F4; Tue, 27 Oct 2026 03:35:55 -0400 (EDT)
+	id 9EEA66B05F6; Tue, 27 Oct 2026 03:35:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FB476B05F1
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:35:55 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 017C3C0927
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6ED9F6B05F3
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:35:56 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 096DB140928
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:56 +0000 (UTC)
+X-FDA: 85367597112.05.CB753E7
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 309A8180004
 	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:54 +0000 (UTC)
-X-FDA: 85367597070.27.4D5670B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0816540003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:35:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="ShPz/LB/";
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793086553;
-	b=os1pz6Do9vhGu6F97jcXJx4EqPJ3ExM1vUxQxwCLTRTUfC3x775Xt/0yCmn/Ut2MvlsVOi
-	JU4n+ILnZoV+OXW+7O6/Z32XAJ3vOxaAQS+c4GowqWGkViMRoU4ETcJ8LGtkk5RUyCx38Z
-	dfzLGzGy1xK/no8Ojqn05SmINNKv88c=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="ShPz/LB/";
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=HpIiIPwp;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf24.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.179 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793086553;
+	s=arc-20220608; t=1793086554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5jc2ZtnsslhTBje2qQpVD7MrTZfTUlL74O4i/llDB/M=;
-	b=CHZFbe1WSbpt+HpYNmngjq/bVT76qyx/zyAhTN6eo4M1nhvmTTKTt6uTM8oxrhu9gP3jeq
-	2SUxl3kfnNO8y5Chqkt65E8ElpxdWfFusCh02gXsoxSdxToPLMxSI+dLll9xzHrWmio2ZJ
-	rz7l/SXmqayBcTR1dycLWu3U0TImGRE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB8F81477;
-	Tue, 27 Oct 2026 00:35:48 -0700 (PDT)
-Received: from [10.163.152.160] (unknown [10.163.152.160])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 316693F673;
-	Tue, 27 Oct 2026 00:35:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793086551; bh=n2WrtA8FsjLacOwP70K0qkcnkliELHh0b55ywQMgrm4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ShPz/LB/JTXMSaXWoN89wpg1R0MFhTQ3+OYAWgQenVr07qFiwcr+BtH2v6xKKQfRM
-	 QrYTx4Q3mPU1qcZAPdg41yN63hG8hPH4qkEAk45cxkJ8LLmOSK716gyfQv1IvIJqjZ
-	 R/89T7N51QEEo+TuFrpiXNQLA0t0iBWtwxXvK0jA=
-Message-ID: <21091d4e-0afb-4b5b-84ac-b36bac58e40f@arm.com>
-Date: Tue, 27 Oct 2026 13:05:27 +0530
+	bh=aAleu3PFDaaloUL3fp9TR8UUZq+CL8OXKyhY9njoszw=;
+	b=mytJ5hLsXD3RfJT1/EulCwErpq4V5fl350HC20lX7TgwoUeX//9Kf9Y68SMZI8hnIZ2y6l
+	AVL5vvHBABT1sQYdD49kWwwyisHVgeiXVB1twQYMhOrAWe1YHV3yFllhsuE4622ECqvnVe
+	IAaBv1H/MHImMU0U2dWWE7+T2Gad8XA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=HpIiIPwp;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf24.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.179 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793086554;
+	b=I9jkqPQOcZlPir7Ivm6Es9O0aJdJlgkzSfsYlle4tLbbREHh2UPGv+GbQLj8bMODyHS7hd
+	epF6ETGYoG+kVZBr4kwY6MzCroLuz6ituNKm504LvnucTdY5BPW2mgX0N8WaUWLHnu1AvI
+	6H+puTw6djwRDkVwtKYwPQ4KY2iiloM=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc4c02ddd62so2528867a12.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:35:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1793086553; x=1793691353; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=aAleu3PFDaaloUL3fp9TR8UUZq+CL8OXKyhY9njoszw=;
+        b=HpIiIPwpWDVvm0Bx7t/liMROfT8DuYAO3yn4xVHY1axh1RW/poEHO7V7RkBf1ACrp+
+         jrTuhC0uIuf5wTQLPRIIxr9wlAlAE97t4c9xOTL701KAzDg74f4sIZM7qLB5ppvAmGOl
+         cZcCLqw0t1Ol+sSeepvQ+RwWDfc6otGygrtBM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793086553; x=1793691353;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aAleu3PFDaaloUL3fp9TR8UUZq+CL8OXKyhY9njoszw=;
+        b=iKwEgQVNlc65KoDBIR6v6sgxHSCMLhAaXlfb0mmoTr8Qf+ZrS8T5EUpHyCS65B1NHt
+         Y5zcu4VYlymPqjpceJeY2Z89fF2eUawyXFTlIQvQ6VZHx+5rCugCxYlWd+N4jfgM3LvB
+         evtGnrGwnqEN8KNniuI6tBeMRpLib9qnjPdgrWeRA5HR1eFGzd/LMBg3X8cnY7eGze9f
+         vE3ldtz2k1e6H1kp0xdrsMowzKRh9uIm9zz5JhsA+6f2tyiNQeRmtfczJKUGj3gPEV3A
+         /zRVEgf8NmlsunGcVV8V5Q65CqXxbccBaFL8rav1amh655WuYgh77lpag3wMx/r3KJ/2
+         xHrQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwtSewNiuKlIYUOXqcZJi4Ab/aJK3+1Rc4uV/WiZI+4y+SNE24P8V4XW9D6CZoq05E/RmEy2SkVRA==@kvack.org
+X-Gm-Message-State: AFq9FYJoCoWZ96a9vbgYaDAjOj8OuGpx9XShJ/StPvIOtumbHi3ORGCd
+	2InxcqVB/2BT4VCuU371YbGoG4U8qphCgEXQ0Jq19NcwTqXnYAafCQvVInyoYgII3W8=
+X-Gm-Gg: AYBFou3pUhGIJ2gIWU7EMwVwoZWXV7GpcMXPV9KDUwMe/Ns5aMFcewAXvnqfVvy80DH
+	gu9lc/gXR7KAwnrFEEsZfBWZkWb3IGaxP1q+0yEods3xmez93EtOCIxe5ovuiX14RTpaY81wMaG
+	cxrF8iwng2+41sxcI2crLB68pM6O9Q5fPgYUjVKtINx/YJ3Fsv2z0JePY8pTbzXrBxOdSM4JqGz
+	N53d2tDbliOCNgl4xw0DiLib5Yg1Pkr3LLVP0qrvz7pv+itZpGRxjNYx6Jy3SALcxubhJmGkEnL
+	iwjdqb4fnR/u0dsjuvYfpugsljndG3mvYZB2vnGU8HDXzWoEgflsh/kkMscYmDrEm1u7NEhowUW
+	BGZlD7AIyg7ReSlda+Bip+FRLsjG2N5a/Fw12G2czKhXX6xnpTJNeKJVN336Fyg7dTU3xnNnkTp
+	X2oiqkwQfGOHrX4f6BTMR3VCcry+elmepHcI0BxEz6UJk3Rb/OmYKqWBi1FcWtakJr5RBRzFTGK
+	r2lWs2ME5u1GBBmdNSQszSlOMtUZnE6TQNfnS9k7aCYZZSTj69bO/NFKnEdf1FAdId5v9TWfMYH
+	/I1Qk+5k4a4m3N82LiV0XlJgXy/NUMxha1NJmjd31Uzccnhdo22WEOfsaiV/zZ6n9sQr6uk1rZw
+	n8N3aWHdrlzN5t/COgMxlmjo=
+X-Received: by 2002:a17:90b:1652:b0:3a7:82ef:bcdd with SMTP id 98e67ed59e1d1-3adead4f65fmr8276505a91.41.1793086553098;
+        Tue, 27 Oct 2026 00:35:53 -0700 (PDT)
+Received: from localhost ([116.86.153.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae406506c2sm2520384a91.14.2026.10.27.00.35.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 00:35:52 -0700 (PDT)
+Date: Tue, 27 Oct 2026 15:35:49 +0800
+From: Chris Down <chris@chrisdown.name>
+To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
+	GONG Ruiqi <gongruiqi@huaweicloud.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: [PATCH 3/8] mm/slub: Support disabling freelist randomisation at boot
+Message-ID: <58f32032f0f5f3828322780aca1847f1cd80cef0.1793086056.git.chris@chrisdown.name>
+References: <cover.1793086056.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 26/46] mm/mmu_gather: fix flushing ranges with 4 GiB or
- larger
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 0816540003
-X-Stat-Signature: e3c8qnus9hp7dbzhzq7gf6o1aeyetju1
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1793086056.git.chris@chrisdown.name>
+User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
+X-Rspamd-Queue-Id: 309A8180004
+X-Stat-Signature: nkdc4xwkuhh54s8hrnm93obdxozjpkzo
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793086552-743909
-X-HE-Meta: U2FsdGVkX1+wgrNmJgG3x6ZBN/xSK6JUlezju9ZalC7jCqkpex1klGmuXAbp6Hpiad1r401dTy/uHUrCmRITeEhaloTMvzUAIS6niqVRX5urPDN3KiunIQ7ugUNA/bN3EILhWluoclRLN/DLzTYBSJPk1sU/6SWwlToRuX5qLqn46ijegDvoS8vsMJ1KkW3Dc3ZZwQgK02xyLG4ATfk7ms75t2+3WSXLFXiy1RyTxTd++6WYr+rRWG7Z6qqp0YOVVZ1/5V02yt977hNQh0zHX0/p2lZz28AI50VCaVmfscHwIHdNuS9ZUdvswAIi0Dp1cWL5hXjhYJV0/Tv/d9Cti4sb6V/rgsGM+8Al8paWkiSyyRt7itaQDrV5T4uD9zZXCo4JCNWXPPgGbBjLPwcjBTaTUmBIxyOzCEQLjBbG9e5UnBvqCVz4s0CRKZp+zNTWvrGPHiVtF+Vf0HnQrIh53RI+8g2BL4ZoIYdhMuU5VJ3D4ZzimcTZRrTS2E3lmYlW+/PGZgCCWo45Fex7d3a/ICHl+4ssHc975P7+qFWIobvt6WAgdJ4R+Y3zlzQLj/HklFHS7tRzNuSho6ZOo6m/bmEm9Pay7FdKjd7EOluBVgcY7QkK8Hxl2d6RktL/CeFuPF5FlT7RA18BxqxC7rLdIgFp1EtbA+bGnK3bZ5V+qzXkoDWoaYGErI/sUc2jGlE0Hh2oOiuLoM0anXT1PtoXjiA1UB64sMaNTcH79MdTcQ/Aqu1Ot8j2JRAAuvhiv4ZiYDoLh2xMycuZPwIS/jg2DBxsIKYzlbV2k05vIuFCB0jtUd2mI4+BsCVwpCCaMT1yUFP4LWi6k9rtv15uQlRXSlvTjfthzsSj7gCvZQkFDCkeUZbOWjhjDIYveI9Vu8AbIC3FURudoso1nkjYCM0nyhUDEOdbZB6W9SAIXZbjHC7kvg+Cwj38OhFG/sMZFZ4H4d4j+nrp0qQFI9C/UAE
- GGCB+MV8
- W3xLfdeu/ciUvyoEb3b/YiXY6z4PBSk/0GKaJO+oe4sk56Zno82WcJXClml4N+iNMrTlhPMuG6EFDqNXv1Hmlo9qVafRUUFlvf9CjxXpIvf43WetDEJqggSyCpIJ+dYr6Qkxdq7bRMAN4jG8EuEu/mPdzNGhWiQ+tQtQkWAiH7hiorkxNObghvHS3zy6ncnHGtdKMdqgBQs5VDGFI2JGCzY9D0wj+V3+5f4dGx0o71haJ0LFBs0x4NNfudkLIF61HgSa+cbZpL53BTvvcJmRgtRjhXXmNsnM07dgbcaj/9T0oa44SVsp5u+ncxlGgoDV3xtLT2OB7EZu+LWQ+nDtD+Bovj/39G3YvH78VKCr9DjpbPRVQy78z7OVf0j0Q84iCllBvpnY3PnucK13bdx5mtez+XqnVtnc1+L9y4sDvhVKUXRkg4IYRvKd63v6HzpOFWvQ2wSNIt8K9zZNT47dbEdevpMhY7fHyVkl6Hbb1euCqIzi8oUwVLY/yfw==
+X-Rspam-User: 
+X-HE-Tag: 1793086554-525573
+X-HE-Meta: U2FsdGVkX19kZ/qBKTXLwvFLehJPDOka8oHvgFahFDxMTJOnIkFzgq7qYzGpBkWQdynWUgC2eDX01QCISdHCbsfZq/q1UZa2gRjW9VpooO5Mf2mftcMy1ur+f9/CdqExijd+32c/5JGoa7sgRrWmHnwBnBSWRPqccwIlRrEOOnOecX85nyCOVitzi0d0g92FTu6TrM47SczBr58KJK8tfcri143SG1QmX8RTrkoq09o6l2cx8pJw4sqlP5USmKOIql+Zreik3bYZfOyOhupHlDe5JYSyZt+z6xCXwvu3WTo299Rs0K13QekSL4Y5S4wZjyKkXKjTLD77/TuHYe8/KiPr77O1HpGBJimYfc5jUGAQteahPYQm3A2PGV3G4fcjA4SpzQ4IhtwxoJNukkOywCPCbUJuji1qw+iCxnItlzV9FiGNEbe3uYFj54TZAyIP2gHehZ6U68YzuDjDVsscVLgpk7a73DNFgxVnU4TIvr9L4HXetb/8Rv3SaXNUH6L0jvYyC+IfrDlk7iqihED9QglJNweSwn/stvSu0hEnhs9s8pX7yJSsA9beTDSF7qNbTO1vjmlau9crPBJLm2SKQAFuR77l3aE55dZZQkOW8a6JYqiFX4rC5cFA3oDGYxIVC/8AOUe4cPmm/XMeR+qmKVds1OmDrf8XJyu8LlLzHXlzdLv+lECw6mn7ql8ixCkFaG1ZCiAvv12RDJtwKangz1DNovYMWjRxt761MG0TnupopsZWqEjdWisgZxPY8c4R4j4fYC7aZlfycXiX5l+0LhRyuzhYBMptfHRQB9eo8McnoatcCpBNU9moFadrLDRGydql67bDamsgCGtCCyx+YzexXTeZ47kvFeSz1KtFSqgowHU0m/vVmW9kl2Jc1qh7TZURt6jjhRBW6oe27MBz6IGLrwzpE8X7MQ4jm3fgoEhONWTS2/a/69rAATFlwxPgfpmCRbE8VMs0jbWUcVP
+ bqh2gLjH
+ TVrMlrVLdEC/TaAcgu3NCn2Oi5mQTf0qUw8ALB+B+rn401betSBau4BqZCQ2j84Jity90bF4Ern34mpYGPqqIyMYZ7CwEwRs+iG6X4ffbbslPmtOiDd22vtg87+JgVVAajMit0a8sM6QEHZRAnrkJPi53nzpUyDnaTtH9m/0TcfeWEC40R5bt/hb0odkEAintdYgVeTsW9r36/ddZsHG4Qq8+ccc74jJz3BInDpaKJ0SwIC4o7I3Z13DQ6gUC8ZyZfvQQMGXwHZFlM1XMbXZAbUbPKb6rAK85Oyrf0rVaCr85P/UdiUh8aVHmj7dy0n/2QY8bY16pHssR/HIpIOSzciFRyoQ+twpwSGoNLCULOJ345YSZ4bQN6J+O2O1juiJnTsRBqKNx6bDwn3mB2F4ut+ebMr4Wayx7AT0Vuh6LPyepkxUAUDZXxAt46ugP9Pq406G4TxIl4DQ/kB/T62ARJ961ug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,63 +132,89 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Add a slab_freelist_random= early parameter, enabled by default on
+kernels built with CONFIG_SLAB_FREELIST_RANDOM=y.
 
+Signed-off-by: Chris Down <chris@chrisdown.name>
+---
+ Documentation/admin-guide/kernel-parameters.txt |  7 +++++++
+ mm/Kconfig                                      |  3 +++
+ mm/slub.c                                       | 16 ++++++++++++++++
+ 3 files changed, 26 insertions(+)
 
-On 27/10/26 4:47 am, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
-> 
-> __tlb_adjust_range() takes the size of the range which has to be flushed
-> as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
-> and pass an unsigned long. Consequently, a range that is 4 GiB or larger
-> gets truncated, possibly to 0.
-> 
-> On arm64 with hugetlb, a 64k kernel can flush 16 GiB hugetlb PMDs, and a
-
-Nit: this wasn't obvious to me. Better expressed as:
-"a 64K kernel can have 16 GiB hugepage mapped contiguously at the PMD level"
-
-
-> 16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
-> at least these two scenarios are affected.
-> 
-> Fix it by flushing the proper range instead of the truncated one.
-
-Nit: after reading this I thought you are passing some other parameter now.
-But that is just a type change.
-
-
-> 
-> Fix generated by an LLM and sent by Josef Bacik in private.
-> 
-> Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
-> Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> [ david: use two-tab indent, simplify description ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
->  include/asm-generic/tlb.h | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-> index fbe1114e9a443..3f4a180b48f3c 100644
-> --- a/include/asm-generic/tlb.h
-> +++ b/include/asm-generic/tlb.h
-> @@ -350,8 +350,7 @@ struct mmu_gather {
->  void tlb_flush_mmu(struct mmu_gather *tlb);
->  
->  static inline void __tlb_adjust_range(struct mmu_gather *tlb,
-> -				      unsigned long address,
-> -				      unsigned int range_size)
-> +		unsigned long address, unsigned long range_size)
->  {
->  	tlb->start = min(tlb->start, address);
->  	tlb->end = max(tlb->end, address + range_size);
-> 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index ddf2f6fd60be..5c4d784e7786 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7021,6 +7021,13 @@ Kernel parameters
+ 			without that option.
+ 			Default: on.
+ 
++	slab_freelist_random= [MM,EARLY]
++			Format: <bool>
++			Enable or disable slab freelist randomisation on
++			kernels built with CONFIG_SLAB_FREELIST_RANDOM=y.
++			Ignored without that option.
++			Default: on.
++
+ 	slab_max_order= [MM]
+ 			Determines the maximum allowed order for slabs.
+ 			A high setting may cause OOMs due to memory
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 3ae97fec9946..56c422684b44 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -205,6 +205,9 @@ config SLAB_FREELIST_RANDOM
+ 	  security feature reduces the predictability of the kernel slab
+ 	  allocator against heap overflows.
+ 
++	  The randomisation is enabled by default and can be disabled at
++	  boot with "slab_freelist_random=0".
++
+ config SLAB_FREELIST_HARDENED
+ 	bool "Harden slab freelist metadata"
+ 	depends on !SLUB_TINY
+diff --git a/mm/slub.c b/mm/slub.c
+index de4937fcb293..7e9dadda3d10 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3424,12 +3424,23 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
+ }
+ 
+ #ifdef CONFIG_SLAB_FREELIST_RANDOM
++static bool slab_freelist_random __ro_after_init = true;
++
++static int __init setup_slab_freelist_random(char *str)
++{
++	return kstrtobool(str, &slab_freelist_random);
++}
++early_param("slab_freelist_random", setup_slab_freelist_random);
++
+ /* Pre-initialize the random sequence cache */
+ static int init_cache_random_seq(struct kmem_cache *s)
+ {
+ 	unsigned int count = oo_objects(s->oo);
+ 	int err;
+ 
++	if (!slab_freelist_random)
++		return 0;
++
+ 	/* Bailout if already initialised */
+ 	if (s->random_seq)
+ 		return 0;
+@@ -3456,6 +3467,11 @@ static void __init init_freelist_randomization(void)
+ {
+ 	struct kmem_cache *s;
+ 
++	if (!slab_freelist_random) {
++		pr_info("SLUB: freelist randomisation disabled\n");
++		return;
++	}
++
+ 	mutex_lock(&slab_mutex);
+ 
+ 	list_for_each_entry(s, &slab_caches, list)
+-- 
+2.54.0
 
 
