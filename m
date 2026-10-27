@@ -1,84 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E5F606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B66F606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bMwTvmpl
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aFWzAiNO
 Received: by kanga.kvack.org (Postfix)
-	id 194726B0643; Tue, 27 Oct 2026 05:02:00 -0400 (EDT)
+	id 394436B05CC; Tue, 27 Oct 2026 05:03:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16C106B0645; Tue, 27 Oct 2026 05:02:00 -0400 (EDT)
+	id 31D7E6B05CD; Tue, 27 Oct 2026 05:03:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05BC26B0646; Tue, 27 Oct 2026 05:02:00 -0400 (EDT)
+	id 1E5206B05CE; Tue, 27 Oct 2026 05:03:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CEEDA6B0643
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:01:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5DA4412097B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:01:59 +0000 (UTC)
-X-FDA: 85367813958.12.369C747
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 89631180008
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:01:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bMwTvmpl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8A3B6B05CC
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:03:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77F06140942
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:03:47 +0000 (UTC)
+X-FDA: 85367818494.16.9156648
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7198720002
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:03:46 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aFWzAiNO;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793091717;
+	s=arc-20220608; t=1793091825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5HfAJvmr7Py4uAnd/ZvUO5cNS3CA+7rdNBTcaC+zq2g=;
-	b=nc1W9p4YlycOr7e1rr9+uV7L6oCzQKtLir26yg0SIOnfgLf+EStZAo6UZAHc/YDcTj10Gg
-	x2Ws+oQPzVsSYrmbKlTTy5DjRcjZA87cVsxurrEiEMOPpYMJsmZrXxEq3sQdcuwwUrr4Fm
-	Nsg2kJBLaWpXjLzISGi9BaLIwguI4os=
+	bh=Ou2bzquBC/XKiNlDijnd5jSZ8RDQt8o6x/7yZtJfCcI=;
+	b=6KzVZHIbDNUOBP7feSY8EcaHunu+WnX8MuEk8BAQnfs0Bp0h2Qtjb0g4Eu3fKjzQZzaMPo
+	TFnV1U2VIg0iImlhZhKUQFsyPWy7M2qA6BhSoNcLjsxJcmQBCh08x4e8Tq+lv5Iy5upQP2
+	eyTRkhY1RSv8eNXrhDBFN7K0NR6eHko=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bMwTvmpl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aFWzAiNO;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793091717;
-	b=wehmzrlgZiEL3kJ/I4jfc46Las9xWE7cMkSHiTxajuDCXLoVVGPhFVuslay4EV9rq1ky9Y
-	zzDnG8pmxgBR5O0X0E1VvrZRjlYbRd6bkkX82+azZFw1Naq7b5ksPEHjZ/JGuSBCCZbWLM
-	6TUrq8oBV3w6NCLmyuvRB13Y3MIK+78=
+	t=1793091825;
+	b=snt2RGekNJfJQZPgI1X34GTMh+lFqirY79raysTVoA7C3jOou78G6LJs/dDr7McEwUokT4
+	Yq7CTMVPq+thwL5basuzGRt1v0R/pMdRXfBWXn9lgva/s4tEVAqP6Q2O3hCSnH24NICOPp
+	JHczjXtHTXQzN6RQxwzpzFnD++QNTKM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF50B408AD;
-	Tue, 27 Oct 2026 09:01:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A377C1F01825;
-	Tue, 27 Oct 2026 09:01:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A9BA60136;
+	Tue, 27 Oct 2026 09:03:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998501F01825;
+	Tue, 27 Oct 2026 09:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793091716;
-	bh=5HfAJvmr7Py4uAnd/ZvUO5cNS3CA+7rdNBTcaC+zq2g=;
+	s=k20260515; t=1793091825;
+	bh=Ou2bzquBC/XKiNlDijnd5jSZ8RDQt8o6x/7yZtJfCcI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bMwTvmpl2a3J4HHYmrBE9mt3NWyKTeD3ORLh0ZRiqAeyZcmXKA+47y3CsPp6CRHWt
-	 PLhRq3adt2ViR2khWGG5GIfhhxRV3klG739jeG1pjp4CvJNkNV6nChy7vbMnbPQHmP
-	 Wogu01k5BoiDB8pqVuvlk3z/Bh2vvuaBDxhWUqR6kY1wpATWson4KGCa2TkiHipc3F
-	 zq77uK2T6se4xzGUbtXdL12Z0v7H5+cIAwBv9PFCl/+H+lNBBLf9ZqzjT0/dqRbc7W
-	 rraJ7QK+GTgr+FEN2MllkZW0jw0Vr+JlmOahRfiuXhRTJcetNYdOfKEf6L/WpizemW
-	 URqTxJVflOI6w==
-Message-ID: <9620707e-59f3-4b91-87af-2b8e12fed260@kernel.org>
-Date: Tue, 27 Oct 2026 10:01:48 +0100
+	b=aFWzAiNOHMFBC1Hqm6iDEon6vBAC9RDDXyubdTTqZNLXHwbtQM7QEdi0H5J1GC8XB
+	 J/vnQgayLzmTRRsiSNGcjtzHJZxq8iIGsO/UWZFXRJ5+AxiEFdkizoaCAnYjdVChj8
+	 3Vdw6XB0ercN9TQJMVEMrof7GNQbDFVVvECOY7Zz6M1kS92GTc+1au6YMtu2XiWv3h
+	 DKxlQRvpi0qW97ZuVlUqSlN8si3FhXuyfZrRFJyJ0NSgwW8DSV2hJrHi13NenV0kTl
+	 1TSRdB5Aouz6M/rlIzg+FmaxLlaWLPxdBWmIIwyPW3FgXclkHd91Kl2dLWqHmNPgYE
+	 QLvdekKEE1fFg==
+Message-ID: <d2738c37-7801-4804-bc86-2beb81256171@kernel.org>
+Date: Tue, 27 Oct 2026 10:03:40 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix deferred split list corruption on
- partial unmap
-To: mt4022@columbia.edu, Andrew Morton <akpm@linux-foundation.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, tz2294@columbia.edu, stable@vger.kernel.org
-References: <20261026-thpsplit-careful-v1-1-d357d70fd6f4@columbia.edu>
+Subject: Re: [PATCH] mm/hugetlb: use account_new_hugetlb_folio() in
+ add_hugetlb_folio()
+To: Enze Li <lienze@kylinos.cn>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org
+Cc: linux-mm@kvack.org
+References: <20261027060446.289404-1-lienze@kylinos.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,21 +118,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261026-thpsplit-careful-v1-1-d357d70fd6f4@columbia.edu>
+In-Reply-To: <20261027060446.289404-1-lienze@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 89631180008
-X-Stat-Signature: kyd4mn7tub6egunf7931pumqf51ang4z
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793091717-642497
-X-HE-Meta: U2FsdGVkX1+8QEiAYySsmnivlRvNX9wmdT0hDCebr7hNtQjEw9aO/u3hytyZe2DiQ7KOBqvUfTpmrP1BrnpXVG1H3JhL09oIOVH1/D+wFoi9eTP8MvXSpw25jz072vucOzpQh1ijTJHHlPXvtsx7nGmGt3MBXOT02Lw5xmFbghlz/PiWQ22QSXrU8xN+bLiRUTziQ75dpRb0VY0RRx8wAaHmFbSa9XhMESyaeCPmxFd48L6PGRYnv6qx/fxf5Eer+jl/lSHwZOBGzCU8tpd983SUK9zOvoaeuzqScvU24NU2gBkyTDee/uwgVpGbCd1yDSYa1PUkNjWpqyH0QerDQOtwqOARhZjBwsIF6176eZWDgDo2T1CvFrNd5jpDh/sjfZ59Bo7ob4oFbuDDXUzMU7fpKZEqngJCDvVGZH88AWk63AmfB87/ZzLRlWbDK0P9iN8NlF9SP5Bh7Vza4fWQJGp+ai/mPxF9fz8MGOnJzMOO/IEXhVXLUqDcbPIcdsocIhb8dCMYOrFEOKyATu3XuNr9sv5MoxxOnnX/8UNpaL79hkhaniFWVfq0uxOzNCF2AsR7Iu5DRjkZxia9Gjl6mkxDxAKupTNEzUeavnZXIwpgObP4vJ+bIbvUmd4myTLCGKUDKqxGrQlo8QmffAC/j6Zd8M9tK2QqOxPrPmbDcCRMT4BIS7i1k5jvvTBaBaImU3TMkAxMXiLp4OMxQtHS1avQzYaY6RuWTwZe937zWX87d5GUU5FfkL1UWPDVYPMs4Z3+gyGkyYFxXCl02+4JehEM3XW6FMAsjPJzkjS1Get2YKr9YTyxtdGHxj2HKIxMggr/rCAkphKBLpGTK5cHhpNk0qxeV/H+p/kUH4v8FA6kuWdY/KTz+nr368kqHhyCOW6JjHjZVEyDb1C0EDalan9A1Dw93lEddFVF4/2hfabn0Hn4yq4a0WGCiHQKN0gxtx4QvcFNhzmvB40/xPT
- KohVxcwX
- xgxyU8zX+kv8yVWWLZS4Jx5m3jfg+E8DEtoDYk6o4AoqaVzTZbRkgahHUrL34s36Aj32aWdAN+r5HsXm5Hxno0k+NcMQWM+OdfS78KWWBPPCsM7pQGAtnKMtg78xFMjB5W8OP3AYTz3M80Tq86Atm09gx2ZLD+rme01mGFTwNcKzFmezg4m7y+FAj6eVu6b/cmFBmykmNBtY/YoyI3Xw48dbi00XxfRMZTS1K/0B69bT4Up0v0t2UnAYRsRhrFYKUO6CVCsrsBV53dsVBFu19VU1qzfjx0sDLsuaJZ04O+idQzLMBZSdov4PWn0qjT+a7kWwBFTiFTjVTX5M=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7198720002
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: n5k9gnzi1djroqd1ueo8d3pos8fi5de6
+X-HE-Tag: 1793091826-178764
+X-HE-Meta: U2FsdGVkX18eg+o5MH2Z0aACdA6/452rgH34t0ba+ly0/pznv1zKgYlqmmPAA/8q4MIgBs3qLqAghRn+MyFjK9sFZhPnXakKG2Bwe02BMj4fIvtNCVR1K04WHsvngWMsc+dlgBYpojIuaTFuyZEQT2azrLS0toS+my6WH3X6va/WankHJkUd+Xf4rPnVsq2fxWeENGKUrxtwZfT3l7tUNtSpZxn5KqBX3EIiq2q2fE8xQRFQ9OXNn6RETwFbjayBWUC5snn7hKam3lPoOBPnVsvBui9tb+USaMKYOqnxmtMCfd4QazVPeyuqqJZ+1A18kN6fSTUvJlJIAXXKjf7T00h7uJnSvHgck/p03aYg1pmqp6BmjzjpY7pUH6jOvUh5kkN/q0sc7A4QKo1Rv5/T/kN0wCjp5cG5x02TPeupH+IITxA0COHAtc/3UAzkx6rul6DwRzXQV5RJThKPhQ4QFwK4swKG2sUP1VzvVeyYZadeix9si6a989nTEnMra4ejy1UucaTKcyf/mo98vN7ef190iNEBXR7LHw+ru1KTj4vbMggenj/6eDLK6j/7TxMoMBr9ntz+AOHsVAdnoUV3YtSIg6MDEAud9592I2WPG2uLN+TFMpbcecC3xVPYWJf9LhrXkahhTsk/xKvwhQb/6t93FkXcJ0HZ/MerSDU2PZyOQP44CGARGhZCtn2ks/DxaurttcDGCMEATDj5J3iFMmVO4x52aB3gxOHmdnmA5V5eYauMFl60rUvoJeUGpEXT0+g3ApXJL7f/EfltT0Aatv3xGYYZjKkLlUJ0zB80wibSkbUY/3HXZc9YIanX7CFsFTzU8k9qyvrPPMhi1OaFLACw3gOCwag0mHOIKkv6EfF+ix2WUEv3fWf3CYx/eUTCe8fBm1WqShHbRotCj/axJgVG16lP20PLYfalW31w3t95QS6GA6gsX6kYrVfKQDRIz9Sci4CbT+JmHH4as/J
+ pdZUT7I+
+ oN7cibAiQMV7+r4dfLpXK9ssoJogZmtGeikpn1AoinhV4pBZwLzI0uk5s18ZqPkYShRYyFBbwT7t8LEHs630u2uB2/KbaQgyNYwP6rJfLKD/t1xPfjpoa+FJ8uPTxIT7TQx57ThSuhuph0cobosK31pHVuBUDoJkB3QY4PMyU7UnEtjLI60qUtQul2Y/q0tpVsXEeR0VWkqoAVtS+GAXgLvKzkVAZzexPNPkn2h1yhO72m9nR0vxzPHHycb5ZeomRB67jOSmQ7ABxlu6L+q+1b2QpwqppZtvDIHYI042VUyogVyg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,68 +142,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 01:22, Mani Tofigh via B4 Relay wrote:
-> From: Mani Tofigh <mt4022@columbia.edu>
+On 10/27/26 07:04, Enze Li wrote:
+> Every other place that accounts a new huge page already calls
+> account_new_hugetlb_folio(), and add_hugetlb_folio() was the odd one
+> out, still open-coding the same two increments.  Swap it over.
 > 
-> When a THP is partially unmapped while the deferred split shrinker is
-> scanning it, the deferred split list can end up corrupted.  With
-> CONFIG_DEBUG_LIST, freeing the folio later reports:
+> The helper is defined further down the file, so add a forward
+> declaration for it.
 > 
->   [  523.871401] list_del corruption. prev->next should be ffd40000005e0090, but was ffd4000000500090. (prev=ffd40000005e0090)
->   [  523.871412] WARNING: lib/list_debug.c:62 at __list_del_entry_valid_or_report+0x177/0x220, CPU#0: thpsplit/63
->   ...
->   [  523.900715] Call Trace:
->   [  523.901753]  __list_lru_del+0x5f/0x220
->   [  523.902588]  __folio_unqueue_deferred_split+0x238/0x520
->   ...
+> No functional change intended.
 > 
-> Without CONFIG_DEBUG_LIST, the list is left pointing at the folio
-> after it has been freed.
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+> ---
+>  mm/hugetlb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Since commit fafaeceb89a5 ("mm: switch deferred split shrinker to
-> list_lru"), deferred_split_scan() moves the folios it scans onto a
-> private list under the list_lru lock, drops the lock, and then removes
-> each folio from that list with list_del_init(), which sets
-> entry->next = entry and then entry->prev = entry.  Another task may
-> in the meantime partially unmap the same folio and call
-> deferred_split_folio(), which queues it only if list_empty() reports
-> it as not queued, and list_empty() reads only entry->next.  If that
-> happens between the two stores, the folio is queued again, and the
-> store to entry->prev that follows breaks the new link:
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4a008afaedf9..a8d162449daa 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -142,6 +142,7 @@ static void hugetlb_unmap_range(struct mmu_gather *tlb,
+>  				unsigned long end, struct folio *folio,
+>  				zap_flags_t zap_flags);
+>  static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+> +static void account_new_hugetlb_folio(struct hstate *h, struct folio *folio);
+>  
+>  static inline bool subpool_is_free(struct hugepage_subpool *spool)
+>  {
+> @@ -1444,8 +1445,7 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+>  	lockdep_assert_held(&hugetlb_lock);
+>  
+>  	INIT_LIST_HEAD(&folio->lru);
+> -	h->nr_huge_pages++;
+> -	h->nr_huge_pages_node[nid]++;
+> +	account_new_hugetlb_folio(h, folio);
+>  
+>  	if (adjust_surplus) {
+>  		h->surplus_huge_pages++;
 > 
->   Task A (shrinker)                     Task B (partial unmap)
->   -----------------                     ----------------------
->   list_del_init(entry)
->     entry->next = entry
->                                         deferred_split_folio()
->                                           list_empty(entry) is true
->                                           list_add_tail(entry)
->     entry->prev = entry
->     /* overwrites the prev link that
->        list_add_tail() just set */
-> 
-> Use list_del_init_careful() instead.  It sets entry->prev first and
-> then entry->next with smp_store_release(), so once list_empty() sees
-> the entry as empty, the shrinker has finished writing to it.
-> 
-> The reproducer repeatedly faults in THPs and partially unmaps them
-> while the deferred split shrinker, run through
-> /proc/sys/vm/drop_caches on the same CPU, is scanning them.  This bug
-> was found and replayed using a deterministic hypervisor currently
-> under development, but the non-deterministic C reproducer can
-> typically trigger it in the 10-500s time range.  With the fix, nothing
-> is triggered after 1800 seconds.
-> 
-> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+> base-commit: bae9a042b03b27924c6fd5bdc00a20d6a44d6041
 
+I have a fix in that area planned. So let's revisit that in a couple of weeks.
 
-Are we now sending alterantive fixes for anything already posted? :)
-
-https://lore.kernel.org/r/20261027-fixes_core-v1-10-6f74bec9a5bb@kernel.org
-
-If there is a better way to handle it reply to fixes already posted.
 
 -- 
 Cheers,
