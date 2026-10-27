@@ -1,119 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F56606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 03:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF27B606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 04:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=FwXJc2bw
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=FJ53MHc7
 Received: by kanga.kvack.org (Postfix)
-	id 940266B05B2; Mon, 26 Oct 2026 23:54:41 -0400 (EDT)
+	id 860596B05B1; Tue, 27 Oct 2026 00:22:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 917636B05B3; Mon, 26 Oct 2026 23:54:41 -0400 (EDT)
+	id 8114F6B05B3; Tue, 27 Oct 2026 00:22:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 809106B05B4; Mon, 26 Oct 2026 23:54:41 -0400 (EDT)
+	id 700376B05B4; Tue, 27 Oct 2026 00:22:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D7F06B05B2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:54:41 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 46A6C6B05B1
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:22:15 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C77A3A851C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:54:40 +0000 (UTC)
-X-FDA: 85367039520.15.5298242
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 206C61C0002
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:54:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FwXJc2bw;
-	spf=pass (imf18.hostedemail.com: domain of charsyam@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=charsyam@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C62B5A059F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:22:14 +0000 (UTC)
+X-FDA: 85367108988.15.5C0C9CB
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 29C11180007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:22:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=FJ53MHc7;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793073279;
+	s=arc-20220608; t=1793074933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=2AEMzOaulMq/RsoCrjXdy/D9LsLssAz3PfPw5l67yFs=;
-	b=AILq3Fja6kPCDPRvVtwzXdHlYsblX9YqMed5XJwFQK2tItwQM3MCTGKtxtwgsI1oGdxVkT
-	UXnoUq9i5fBe1J14Vr81qtaX6C2V/KmOKJM/SK756he4mzd+LpFqk5qn32qKBC4iNnko29
-	eaCXHuB27a0YB7a2LO9EIRn++Inz0ZA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793073279;
-	b=AGLX+oZ01gjWGdWsLM2NQjxgn5CWukCiBS4ZJRYHSMXBMqjTNa50fyBIccegiJpX4KPPy2
-	yyKOaIFa+JvqqznW4YszxWv3M+yWfOK7PO7WBG7BweaxGVdj5unNm1Xw7jP9m/nRNaHTt5
-	bxXuF4N4xSis2lj1jnKBGo1KVxy2CGM=
+	bh=fubOaxOgmofN/3iFYwSrZzfn2/O9nYxlfixW+9HNaRE=;
+	b=sOcRuq6ASCTsvRKYpuF0FFOtb+V7xv9VOSkuc8+ps5wUzdMpdFB+YJ3wBy6wMMHHDgKpcO
+	jBr7UFThWGeA2vcAHry5LEznV/+OixWLjTWW0OqbKO4CM7W9++eWBcHPu+IL0Ocxmtr6yW
+	UZ6Ydkt1ZKzLhLW7FSRl3GSqnRRGFkM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FwXJc2bw;
-	spf=pass (imf18.hostedemail.com: domain of charsyam@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=charsyam@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ac7a053626so436817a91.0
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:54:38 -0700 (PDT)
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=FJ53MHc7;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793074933;
+	b=gXpI7OuwLROOpYruQbMYctDK9R9yiPChpuaPUwChYrregvly4wAsisExvkef98i7Q4THj7
+	9wGurfJkk2VQ9DlL3g1FVvOqcM9bUJ2+aCS8szxCLJcyYpx9asvWWio3E7hu3rEfhx17uE
+	Y2MOqxJzVCveDXtFfXXoFJs/cF6n0kg=
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91befbcad6dso63770616d6.3
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:22:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793073278; x=1793678078; darn=kvack.org;
+        d=gourry.net; s=google; t=1793074932; x=1793679732; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2AEMzOaulMq/RsoCrjXdy/D9LsLssAz3PfPw5l67yFs=;
-        b=FwXJc2bwZUVRuWuCt21oKmLjUM7XBY16FUbz4fE7RbnXGMXcauVlWy45Sl5xeta3Lw
-         O+1cFsVUUuVCbTF1PzKhzT4peaReCFkw3uxKmFhfTuNj7r+7f+Pi2Mio2o2XjBKP8XHt
-         FDPshfBGN0w3bMN+nE+swHH1DUR/+DjMKXFLjd9EPdWzzj2+ZSJpecHlQRo9PEcfBAc3
-         JWcLll49Rzqw7TzWN9QYK0+XAiyOCDDCYSSxMCtrHTuppBfvmyONEY+d3/jZEA9vdmHM
-         dp98KRgEerSPtf/GseAsecs8kVRASp/9aD+R9qEFejJneW0QzJcyPVzl94bi1jFKdQ76
-         3zGA==
+        bh=fubOaxOgmofN/3iFYwSrZzfn2/O9nYxlfixW+9HNaRE=;
+        b=FJ53MHc71B8Wick3JGLMRkiA10LINxXn6IzgBspbfpEXEwL2qwnRthcXqHjLjzGATO
+         /EdJo2Tl81xgd2vS/aAJEkTyC6VTKVjdYPvZs/rfQeYbv4DAKsY50H38cgmNc7xTgn84
+         MgEYQo1UpkGQVxKuGDr8Zri8ResHIqJGgGjSGBjBtrQ0EENYPB6IrppP1YZ73EpkSeXC
+         NhZtJEVLNcqq7VrtM6dhnTtMnER/3TNp4P9BTQdMQqWkZSpesJumkndgbYEaTeclcgBr
+         RE6PTmEapoO2P1bUFRMiwgKYbNXe/UbcDyLczn7cUX/DZpKLN+mVaTODDXM8ie5sDGNa
+         0sWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793073278; x=1793678078;
+        d=1e100.net; s=20260707; t=1793074932; x=1793679732;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2AEMzOaulMq/RsoCrjXdy/D9LsLssAz3PfPw5l67yFs=;
-        b=SfaVbDXmmy9DuS3E3AMfZ793kHDihr3pjRoFFZaVP3IRNBUdU5XrXeX3TBbIkEoEB1
-         qUk0Qdy3wsyJVg4Yb0UTN/fzrSzTGs370tlrRQ0zu+55pz+F9BGZO2Ysb8P6zlPPWPHR
-         DcYS8xhrK/u1evltFSZ3HsY5NY6iGzpSNfMakssIXjQEjzZ0pITkDPq77MRL/aWtrYEs
-         QyoF8TDl50CP4/kh0NlE1ovvUSpboqPhGFiHlxA2ULim4nyW8YmojZnkKTabzy05e127
-         gGxouYoWCQmvdvyctSVy6qWcoblhPc2PB4oHt5yLQ+U9zNPbmtDmwC8NHcdZhbvppzqR
-         mJsA==
-X-Gm-Message-State: AFq9FYL71TL8S0+2VBlqgl7DC8JqUg/sb9KksS/gZof6G4ARVTFNAU+b
-	1GfDm6pJONN57QgWN3iPgAwEdOvrjhjh5KBt6k8Hze6wLr4uzCPFgxnIQ2JAbv6f68o=
-X-Gm-Gg: AYBFou0+6fFjO/6BR95jdgDWaSJlpf8kQzJJvSpA6hUKg65opq+6V3xjp4wgvoT8Ed4
-	0vBzKFGnwUK6dXqMCT3R5vh1F2BqxCg/RvBqxJG1LI9vOo4HdA2wWm3WdMaRaqNHFpgaO3V53Cv
-	Vu2/ZSGw1OZwdX4X5zvXY/MoPbrZwb2HDoIGTOKd7ZFaIVqiJERs7Ce5f7mBaDSbJJ0q+Xi4v59
-	BRbRYtdYQq2jpOExgA8Ebm8OvAsdzZ/fDOS1glQ+7fXcszuP0qfDxmGziFAEpYydTw6e6yj16og
-	N+ANiltXJNQxDTbbFHFzLrorzyPjkDLOqHQBMH9vGOzntgWN5yJJ268CNklms2p+U8RWEQEenqC
-	UtCZkql1qWlTUOGpbcjvpBnTCyuQLeb2+u7d+KVf617zseeBFmC3p9Fubl8WQ+L8RAYwOjvmMjQ
-	DSpn3uwE62lZBb9LElzs1lcv7emECPsCrv+HUKbAklXuwojPx9+7NJ23Ma2gC3jomzPR1Ib2i0L
-	fBSO+JQUF1rYltemNPIpqGhDbKk6Pe7Sqeref/g+tjhd3um
-X-Received: by 2002:a17:90b:2d84:b0:3a8:736e:c19b with SMTP id 98e67ed59e1d1-3adeaf9ce48mr12810128a91.4.1793073277737;
-        Mon, 26 Oct 2026 20:54:37 -0700 (PDT)
-Received: from ser8.. ([221.156.231.192])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae406153fesm1657632a91.5.2026.10.26.20.54.35
+        bh=fubOaxOgmofN/3iFYwSrZzfn2/O9nYxlfixW+9HNaRE=;
+        b=TVLG0GaSJ8RApKiZFpoqEmluLNz5KVSuvwjgdBWd7d/4jnomIlmEBBCpVdZAJsGkzS
+         6Gwu0ZCD97fq+vlNm/20mSSMurExyE9A+7JZrlDG6RNrkN97Sj97waqujUtLWnbjFM69
+         M/CaFzu2UfofhHg/XY7ESJVfZwiZAAgUN/EPGzNbqGSvdcLjw4C8MrfgzVOFkeWJSAfS
+         8T43iN7iE/OPUrtrR4dzeqQkbSwMZyZ8Bi/GW8K7eHYqudfUf4fqeoseqnVSQfF5wLyt
+         WrrnjBdgGdijpbakUzhdIhsFo7vZhSxRXHqCqQs50szQWtQMRHQnQ+8yVoM/c6SaG8R8
+         bw2w==
+X-Gm-Message-State: AFq9FYK+tbV996HVmWWtxVdRH8L82yfQIk7ICryN/alY4HUHLMcaMGuJ
+	GdufuO2PKa19qKyCr8GJ1pPgTROW4vLxYuEoinOI4MhMSzmZ3qualYyqqVEvOvgBl/6x2DvKZxn
+	O3qgQbtU=
+X-Gm-Gg: AYBFou06kSSO9tjwhcHqP+cM51/jA7ItSjxIyIQI96BrONNF01qPv/HDjGAtSmr117r
+	A/Z4SjquAg6yWW6jbVBCoRNknfiBQIhB5RpQ5irTbl3/2a3cyf3XZPCWzswGbWiQ+6UI9d/SJlb
+	okpNcrqBcjGNF74vfIUjhk6Med5rj1vB9hyI7NBIN//hz/N1O/j8jHf8DYcOwbZLpUHXeZMMydz
+	LaOVL17nHn578IuCWE12ur6QnfKW0VtbbTo+nNxwKl5FlQokJuSResZW1rEMPxCAGCkssb4VZiQ
+	wrHhxNa+1wVmOTwvzfwJfgxPvHhrQFMIUwiN32iYdosN+zuhOJpxhIKBLjsUz1x97b7sTf2HIN9
+	VgbkLaS9eyEvVj711krgLnl3HEsH/LjoU03qm6xpHp3sePGTPpQoEpvEAO6C2zWJcs84GWWnxhC
+	BHA4Ew05I4grcAHL7PnxpyjWDzf/qqrRGkJRnpTHtF2bFGjyAKW0LZRyphnk+lFWTYKREN8IYrQ
+	BIYYWuEU0Qx4eFDatY2YEU8iEORsehcEXXPVuGPL6qjVOqFhqT4P0fcA5t3buVFsL93tDvF7Azz
+	rE3AJhKmBHIEH1z7nIMfAwd+PoNeFu1HEVncpgaXfA==
+X-Received: by 2002:a05:6214:29ed:b0:91c:65d0:1d78 with SMTP id 6a1803df08f44-91c65d0312dmr64203956d6.50.1793074932283;
+        Mon, 26 Oct 2026 21:22:12 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47bd01cdsm91139676d6.7.2026.10.26.21.22.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 20:54:37 -0700 (PDT)
-From: Daemyung Kang <charsyam@gmail.com>
-To: sj@kernel.org,
-	damon@lists.linux.dev
-Cc: linux-mm@kvack.org,
+        Mon, 26 Oct 2026 21:22:11 -0700 (PDT)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	kernel-team@meta.com,
 	akpm@linux-foundation.org,
-	bijantabatab@micron.com,
-	ravis.opensrc@micron.com,
-	Daemyung Kang <charsyam@gmail.com>
-Subject: [PATCH] mm/damon/vaddr: preserve migration weights above UINT_MAX
-Date: Tue, 27 Oct 2026 12:54:31 +0900
-Message-ID: <20261027035431.1007584-1-charsyam@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	osalvador@suse.de,
+	muchun.song@linux.dev,
+	iamjoonsoo.kim@lge.com,
+	anshuman.khandual@arm.com
+Subject: [PATCH 0/6] mm: fix pfn walker races with memory offline
+Date: Tue, 27 Oct 2026 00:21:58 -0400
+Message-ID: <20261027042204.3741307-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 206C61C0002
-X-Stat-Signature: cbu9nh7xi4bfnrkd7jzyehwcfzf4se35
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+X-Rspamd-Queue-Id: 29C11180007
+X-Stat-Signature: snccdhdxyztg5d96fp5fauhp5j9tue6p
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793073278-276224
-X-HE-Meta: U2FsdGVkX1/lMh5Ki3hBMorbBYynGVlBrt9i/toZ6WMQl7U8lT6MaHGBCXVBPfxfT7oFBraJhmj/zln2Wx/tkkxsITPj3YJRFbKIKCtRohX7X1LRIn2Znk3aOzbClblH+qTuTv5Kol3Ew7Ul0kdfTrDXf+lMk3Ry/LSEv6el12njNZl/8GCLX8gjJ/JWQmlrO/IYos4opCs050mmpPm1tW5w1wfb1G0OZRsuH/xwHTkVjOPsBZa5q5PzdeRJKdePvVls86JG/kMjNC7skl7EsT/HDgj11XC42SBdMnMxx1pQtffbELCgcUYUlDDZlnr1ABMeeFSKvRYt0CuJExYWax81cWpLizn3ADtXMycXEHqVF0JBFk8cW3XRIMBiJmOxRwjIZlA7/zbTNFB8hAU/ZtugZZv+Zt4ySooSn+Z/Du7UOLS49D74Nv37ucka1oNbQ2dSO+MNLMmJDUVrxE8vCibl93mbl689N19M+pW8fgqJJ7XBkZivjROUczuZCRfhaHuxBSMTXo9CGpNolp2asPFbfg4uZqAH8YcD1MRx0sCqSD8Hk9bKg/v8Ysdglhxz4RHz3r2/qf2LfEmQP70uE7P9V6sIpVZ05n2lMQWR3GDXvWvCSOxuRiHK6nLr1sLtl6syBrdu0Lr3JnjzmYdaUt/G6cUDZ1qjhyXgTLzlND1LB1iHb1Cy5KNY+dw0qZQIcwD1KpOHDokk38+ycJJIsQRDtZx41QTMe02GFzvZsghiawMN6JjQnM/2CjFizXBmn2m3NUlLRE54e4o9c5PK6cq1ceG895LXpf9DDgthObwnwU5FkYHklCVjmH15WqquTjBcmhuDM/1uwDqJfmTGgyxDsQrviYb1FG2M3AMRWRTo7plj1VJBUM95OLbG9X+R8yk74icjaNjRDmDCa91rnBpqwofQ/Sa2oyi3x8Ra7ESg6RUOLq60jLo0WPn9iaCz47tAfhlWoQOPVFarXyE
- YphnWuen
- kizS4jbBESH1Xqktgr2pJLUnf+lIMef8aGhk8ipmRNMV9ywccw8KRvaeze8KTrT00GwPr0WoJY20QYWkGsz01q0BNw1vPbjNIaXd6QYFbWvb7Hn0tCJ6MM6dJVISidEH4fNFPRhnMiwqmp2p0bt/cWwmFXYCWbauXpGjANFYOtEASrBcRpRmKlEj003RB91ym9k5EFv+XI50+zrj4aS8eFQ9YAXh9aMukdn1wBmZ3gef1vMjCHiUzhR5tjT35E07b+5KS4g7cV4E954nQZuC/ugqx0KWnpazPNxGzfprNfxjfpBfGKJzvbHqqrMztjwur5Qyunuy5JVtRos5/qeRRYAWLmu8ONnzTNx/RX9xi5cUxUqf8eEwPwOGcwV+FDdfVOslcSpqoYZwcY+pKHr0cBWo/9PnygO1An8rZalVLAaazzy6ahKPvOClESZ5ZRMAIvvHNc11CDg2xHd4=
+X-Rspam-User: 
+X-HE-Tag: 1793074933-119907
+X-HE-Meta: U2FsdGVkX1/F3/T+/1igCWwKRHqCdP1cRVoI5zQtCdXUqK5pvT7tjE05VogNiBifkIdoHN55R4ko78YkyWhCb3PT7iTAsRhBzNg5Rev1uX/PEPiWX7mU0NXeS+eq5hxEEqCoMVp62etxXc+A2NRiq2triKdC09mpbIlKRXMUerBSO9tuy4oWRI2FUJelkW27Uy56/dH9jzdLTn9lD9h54xE14PEnlTs+5zoclWYHO7f0k/iMsJx4Ba2ZXtrXZZ+AGpV3wCBd73uIRjBNdvrXI4fGGDAaC38758M/9PYpP+nYLpXJA5UHqCnHW7aphCLjjqMwPa2qVwXnN7K0eLFgOPtbMybTV0UUimWNWPLDAN08UPsn+tXZdfIPm1nliIAb+rxlD7ESsueo3eUyM8APb7KdIMYNEfoC+foo/UonJPMkrbT66p/zNOd1xbprfr26RooehdojcK/mCEhdDmi7hurx0JmXStWEp3qffsCl8gJJklCmcV3OwxGCJNlxjr2neMIJmsxUd2FPLx3bQ6pHhn2CuxsWlkI1nAW/xYLiISuktNiqPKsV1bF/7DqCKHRKrcro+Tr8arG/YJXdXGiLg3BTuRFl85IKNiG3E5uyKvOrD/9rx4m2sdamTzVwa0BLiF3IxE32kIIDPRkclhjdjRXDPkdOPhMilp2tqCq7JwmCQMSzHacwC9J26sNHUSQkOiyIOrR3raqX/EPs4ah/Gia2zIQbkMLcSAfMLV6nCSyhuP27OTQTLldUK/00Yr4bMwK8DUlZwE9L3snHV8mJ3WNiFh89kPLqxz88s0VjP7X4H7Ijy7LlxNAagw7qBgi1WaOQlW+m50q66xOGDLx9IKzhpEDzD+rfvuKzFjqGqhJgO6lkkEGCexKbry61q/f7gySmWCvQetIQvHFWvZDaf46lYJOP7W/BAHP+Cs9nsZ+oStQOOFGybOnRWM+pQ1yUp0l00bf8XiYJFw5iMuQ
+ wnuY1OfN
+ Wp2SjGXeYxZ+QQZhQSA/GbT8cp55L6IbR5w7bvpJ58rZ7bo87F8x/ZkeqCBMEeOx4M1UYwmb0R+FxDrHzRjvbNARa0OeKc3yROzqjyDnSYR3bbmnxYe0k2T31jAGk08SiSq++tz5vGSOy+nL/xe+y65WH+vakdzSZjP4RpjTTTLpVo/qMxin3Xw2YqYro7H2AWlkHwWKMn/jMjzIhDtdPF03n/uTRRVxB4C/KOG1GfWmtbNz9dijQtf/dTwtkx/m0XeNBPqku8SSFQ5R9oJdNwOAuCJ3DXJoc7+8wztfubZgVOxEiOf2gALCFOoOfWcl0H3XV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,214 +137,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-DAMOS migration accepts an unsigned int weight for each destination,
-but sums the weights into an unsigned int.  If the total wraps to zero,
-no folio is migrated.  Other wrapped totals select the wrong node.
+Several pfn walkers check that a struct page is online, then use it
+after memory offline has poisoned it (CONFIG_DEBUG_VM) or removal has
+freed the vmemmap.  Five of the races crash the kernel; the sixth leaves
+an offline spinning with the device hotplug lock held.
 
-Sum weights into a u64 once per migration walk.  Keep the existing
-32-bit divisor path for totals up to UINT_MAX and use a 64-bit remainder
-for larger totals.  Add KUnit coverage for the actual summing path and
-for destination selection at the overflow boundary.
+Patch 1 adds pfn_walk, an SRCU-fast read section that offline waits for
+before poisoning the memmap.  Patches 2 and 5 use it; patches 3 and 6
+hold get_online_mems() instead.
 
-Fixes: 19c1dc15c859 ("mm/damon/vaddr: use damos->migrate_dests in migrate_{hot,cold}")
-Signed-off-by: Daemyung Kang <charsyam@gmail.com>
----
- mm/damon/tests/vaddr-kunit.h | 35 +++++++++++++++++++
- mm/damon/vaddr.c             | 65 +++++++++++++++++++++++-------------
- 2 files changed, 77 insertions(+), 23 deletions(-)
+  1. compaction scanners
+  2. page_owner reads
+  3. memory_failure(), soft_offline_page(), unpoison_memory()
+  4. alloc_contig_range() undoing another caller's isolation
+  5. alloc_contig_pages() isolating a range that went offline
+  6. the hwpoison-inject filter
 
-diff --git a/mm/damon/tests/vaddr-kunit.h b/mm/damon/tests/vaddr-kunit.h
-index d61b503..f67f1a0 100644
---- a/mm/damon/tests/vaddr-kunit.h
-+++ b/mm/damon/tests/vaddr-kunit.h
-@@ -266,12 +266,47 @@ static void damon_test_apply_three_regions4(struct kunit *test)
- 			new_three_regions, expected, ARRAY_SIZE(expected));
- }
- 
-+static void damon_test_migrate_dests_idx(struct kunit *test)
-+{
-+	unsigned int weights[] = { UINT_MAX, 1 };
-+	struct damos_migrate_dests dests = {
-+		.weight_arr = weights,
-+		.nr_dests = ARRAY_SIZE(weights),
-+	};
-+	u64 total = damos_va_migrate_weight_total(&dests);
-+
-+	KUNIT_EXPECT_EQ(test, total, (u64)UINT_MAX + 1);
-+	KUNIT_EXPECT_EQ(test, damos_va_migrate_dests_idx(&dests, 0, total), 0);
-+	KUNIT_EXPECT_EQ(test, damos_va_migrate_dests_idx(&dests,
-+			UINT_MAX, total), 1);
-+
-+	weights[1] = 2;
-+	total = damos_va_migrate_weight_total(&dests);
-+	KUNIT_EXPECT_EQ(test, total, (u64)UINT_MAX + 2);
-+	KUNIT_EXPECT_EQ(test, damos_va_migrate_dests_idx(&dests,
-+			UINT_MAX, total), 1);
-+
-+	weights[0] = 0;
-+	weights[1] = 0;
-+	total = damos_va_migrate_weight_total(&dests);
-+	KUNIT_EXPECT_EQ(test, total, 0ULL);
-+	KUNIT_EXPECT_EQ(test, damos_va_migrate_dests_idx(&dests, 0, total), -1);
-+
-+	weights[0] = 1;
-+	weights[1] = 3;
-+	total = damos_va_migrate_weight_total(&dests);
-+	KUNIT_EXPECT_EQ(test, total, 4ULL);
-+	KUNIT_EXPECT_EQ(test, damos_va_migrate_dests_idx(&dests, 1, total), 1);
-+	KUNIT_EXPECT_EQ(test, damos_va_migrate_dests_idx(&dests, 4, total), 0);
-+}
-+
- static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_three_regions_in_vmas),
- 	KUNIT_CASE(damon_test_apply_three_regions1),
- 	KUNIT_CASE(damon_test_apply_three_regions2),
- 	KUNIT_CASE(damon_test_apply_three_regions3),
- 	KUNIT_CASE(damon_test_apply_three_regions4),
-+	KUNIT_CASE(damon_test_migrate_dests_idx),
- 	{},
- };
- 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index d5dde97..279dbc6 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/highmem.h>
- #include <linux/hugetlb.h>
-+#include <linux/math64.h>
- #include <linux/mman.h>
- #include <linux/mmu_notifier.h>
- #include <linux/page_idle.h>
-@@ -774,8 +775,41 @@ static bool damos_va_filter_out(struct damos *scheme, struct folio *folio,
- struct damos_va_migrate_private {
- 	struct list_head *migration_lists;
- 	struct damos *scheme;
-+	u64 weight_total;
- };
- 
-+static u64 damos_va_migrate_weight_total(struct damos_migrate_dests *dests)
-+{
-+	u64 total = 0;
-+	size_t i;
-+
-+	for (i = 0; i < dests->nr_dests; i++)
-+		total += dests->weight_arr[i];
-+	return total;
-+}
-+
-+static int damos_va_migrate_dests_idx(struct damos_migrate_dests *dests,
-+		pgoff_t ilx, u64 weight_total)
-+{
-+	u64 target;
-+	int i;
-+
-+	if (!weight_total)
-+		return -1;
-+
-+	if (weight_total <= UINT_MAX)
-+		target = ilx % (unsigned int)weight_total;
-+	else
-+		div64_u64_rem(ilx, weight_total, &target);
-+
-+	for (i = 0; i < dests->nr_dests; i++) {
-+		if (target < dests->weight_arr[i])
-+			return i;
-+		target -= dests->weight_arr[i];
-+	}
-+	return -1;
-+}
-+
- /*
-  * Place the given folio in the migration_list corresponding to where the folio
-  * should be migrated.
-@@ -784,13 +818,11 @@ struct damos_va_migrate_private {
-  */
- static void damos_va_migrate_dests_add(struct folio *folio,
- 		struct vm_area_struct *vma, unsigned long addr,
--		struct damos_migrate_dests *dests,
--		struct list_head *migration_lists)
-+		struct damos_va_migrate_private *priv)
- {
-+	struct damos_migrate_dests *dests = &priv->scheme->migrate_dests;
- 	pgoff_t ilx;
- 	int order;
--	unsigned int target;
--	unsigned int weight_total = 0;
- 	int i;
- 
- 	/*
-@@ -806,20 +838,10 @@ static void damos_va_migrate_dests_add(struct folio *folio,
- 	ilx = vma_start_pgoff(vma) >> order;
- 	ilx += linear_page_delta(vma, addr) >> order;
- 
--	for (i = 0; i < dests->nr_dests; i++)
--		weight_total += dests->weight_arr[i];
--
--	/* If the total weights are somehow 0, don't migrate at all */
--	if (!weight_total)
-+	i = damos_va_migrate_dests_idx(dests, ilx, priv->weight_total);
-+	if (i < 0)
- 		return;
- 
--	target = ilx % weight_total;
--	for (i = 0; i < dests->nr_dests; i++) {
--		if (target < dests->weight_arr[i])
--			break;
--		target -= dests->weight_arr[i];
--	}
--
- 	/* If the folio is already in the right node, don't do anything */
- 	if (folio_nid(folio) == dests->node_id_arr[i])
- 		return;
-@@ -829,16 +851,14 @@ static void damos_va_migrate_dests_add(struct folio *folio,
- 		return;
- 	node_stat_add_folio(folio, NR_ISOLATED_ANON +
- 			folio_is_file_lru(folio));
--	list_add(&folio->lru, &migration_lists[i]);
-+	list_add(&folio->lru, &priv->migration_lists[i]);
- }
- 
- static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		unsigned long next, struct mm_walk *walk)
- {
- 	struct damos_va_migrate_private *priv = walk->private;
--	struct list_head *migration_lists = priv->migration_lists;
- 	struct damos *s = priv->scheme;
--	struct damos_migrate_dests *dests = &s->migrate_dests;
- 	struct folio *folio;
- 	spinlock_t *ptl;
- 	pte_t *start_pte, *pte, ptent;
-@@ -856,8 +876,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
- 			goto huge_out;
- 		if (damos_va_filter_out(s, folio, walk->vma, addr, NULL, pmd))
- 			goto huge_out;
--		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
--				migration_lists);
-+		damos_va_migrate_dests_add(folio, walk->vma, addr, priv);
- huge_out:
- 		spin_unlock(ptl);
- 		return 0;
-@@ -881,8 +900,7 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
- 			continue;
- 		if (damos_va_filter_out(s, folio, walk->vma, addr, pte, NULL))
- 			continue;
--		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
--				migration_lists);
-+		damos_va_migrate_dests_add(folio, walk->vma, addr, priv);
- 		page_idx = folio_page_idx(folio, pte_page(ptent));
- 		nr = folio_nr_pages(folio) - page_idx;
- 	}
-@@ -958,6 +976,7 @@ static unsigned long damos_va_migrate(struct damon_target *target,
- 	use_target_nid = dests->nr_dests == 0;
- 	nr_dests = use_target_nid ? 1 : dests->nr_dests;
- 	priv.scheme = s;
-+	priv.weight_total = damos_va_migrate_weight_total(dests);
- 	priv.migration_lists = kmalloc_objs(*priv.migration_lists, nr_dests);
- 	if (!priv.migration_lists)
- 		return 0;
+All six are for stable.
+  Patches 2 and 5 need patch 1
+  patch 5 builds on patch 4
+  patch 6 builds on patch 3
+
+Testing
+=======
+
+Each race was reproduced on unmodified source in a QEMU guest with three
+NUMA nodes and a pc-dimm left offline at boot (DEBUG_VM, KASAN,
+lockdep).  A test module holds one task inside the window while the
+offline or eject runs, then releases it.
+
+         base                           this series
+  patch  outcome                 runs   outcome                 runs
+  -----  ----------------------  -----  ----------------------  -----
+  1      GPF                     3/3    offline waits, clean    3/3
+  2      GPF or #PF              6/6    offline waits, clean    6/6
+  3      GPF, or unpoison of a   9/9    blocks, -EIO/-ENXIO     9/9
+         poisoned page
+  4      offline still looping   4/4    offline completes       3/3
+         after 30s
+  5      GPF                     3/3    offline waits, clean    6/6
+  6      #PF                     3/3    eject waits, -ENXIO     3/3
+
+Without forcing the window, offline/online cycling under compaction
+faulted in 8 of 24 runs on base and 0 of 12 with patch 1.
+
+Cost
+====
+I was unable to measure a discernable cost beyond noise, stddev of
+walkers and scanners runtimes on real hardware was wildly inconsistent.
+Leads me to believe this change is largely imperceivable.
+
+Gregory Price (Meta) (6):
+  mm/compaction: wait for pfn walkers before poisoning offlined memmap
+  mm/page_owner: hold off memory offline while a page is read
+  mm/memory-failure: keep the page online while handling it
+  mm/page_alloc: don't undo another isolation in alloc_contig_range
+  mm/page_alloc: keep the range online while alloc_contig isolates it
+  mm/hwpoison-inject: keep the page online while filtering it
+
+ mm/compaction.c      |  8 +++++++
+ mm/hwpoison-inject.c | 55 +++++++++++++++++++++++++++++---------------
+ mm/internal.h        | 41 +++++++++++++++++++++++++++++++++
+ mm/memory-failure.c  | 31 +++++++++++++++++--------
+ mm/memory_hotplug.c  | 16 +++++++++++--
+ mm/mm_init.c         |  4 ++--
+ mm/page_alloc.c      | 35 +++++++++++++++++++++++++---
+ mm/page_alloc.h      |  7 +++++-
+ mm/page_owner.c      | 45 +++++++++++++++++++-----------------
+ 9 files changed, 186 insertions(+), 56 deletions(-)
+
 -- 
-2.43.0
+2.53.0-Meta
 
 
