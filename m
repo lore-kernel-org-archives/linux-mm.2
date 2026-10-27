@@ -1,134 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFCD606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 08:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAAF606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 08:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XcnbEhAI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oMCJcnkQ
 Received: by kanga.kvack.org (Postfix)
-	id 080CB6B061A; Tue, 27 Oct 2026 04:22:20 -0400 (EDT)
+	id 912366B061C; Tue, 27 Oct 2026 04:25:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00B1B6B061B; Tue, 27 Oct 2026 04:22:19 -0400 (EDT)
+	id 8C39D6B061D; Tue, 27 Oct 2026 04:25:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E14A36B061C; Tue, 27 Oct 2026 04:22:19 -0400 (EDT)
+	id 78AF66B061E; Tue, 27 Oct 2026 04:25:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB32B6B061A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:22:19 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3F9AB40902
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:22:19 +0000 (UTC)
-X-FDA: 85367713998.30.0599BE8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 49F496B061C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:25:07 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D0D6516096B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:25:06 +0000 (UTC)
+X-FDA: 85367721012.04.5736F75
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A6F7020009
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:22:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XcnbEhAI;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 36BB340006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:25:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oMCJcnkQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793089337;
+	s=arc-20220608; t=1793089505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F88x0w6RcEa+c5taIt0Fmt+oPbV+qXUJjPjIECkCifM=;
-	b=3xr9/2kdXRaqFvTP/8vMq3lQQ/3n1y1RQO/v7oKWxDlblj1Obe5D6tYTSDuPF5u3Lo7sbK
-	LpIBLQ7rkA0V+3lC8WZssEiL8TFX8N3OuaAgRAzxCb9GUkim48hM7a1IBR92SLE8CidHpp
-	Cmjf/f9ZKx3EB1dexwWd2y4Gd2I39+8=
+	bh=2R51g1GKhJVpEHSsNmeCyBNO0baPm+a+p1RPH1MDDNw=;
+	b=yBZXpp4cqe0b+S0J4k65UoElyZzoJEa3OYpTm+9BUkwobAqq84om8cyM5SvUhThsKzIRU5
+	lM56lhjH8fS073lPD/VFq7NlWsM/lovwpdRua9oQS4bVj1HCqzDVNNP6s26zYc/HXW3HTw
+	9NeseEEi22qYvetFq5q9d+ALPPE9yYc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XcnbEhAI;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oMCJcnkQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793089337;
-	b=gb0IyIRI7KbJlNeFBSwiUHGw2T2mDhSmShJT/AO+ZDdKAGgrdnG+4c11EwKnNckw9ItZWg
-	kkJQXQ1Zixm096QqHmeyZJ1YT8ygt+71hxHmNo0+IIX9W7c2t5T3X+3B9DqSQpXZUzjwMC
-	gPc+zGl7wK9BYFu5jxUQp76fXBv2lts=
+	t=1793089505;
+	b=Y3D8o9YUXI2Q+JCb6CeeVgLochbIymjG1oRFLdCgKfM3eia1fVHxIvsa0D9Qml7rVhZogt
+	+Ci2aJ2PH2H6qY7QVGMkF6qsk4N3Bl1QMrf4zonyPGI1g+tnRIvnLQsPKG1UeB4CRLYaPg
+	dRrrpHzB+okwSIxhtD2MIWzF+C1wa3Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2FB0860052;
-	Tue, 27 Oct 2026 08:22:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132EB1F01825;
-	Tue, 27 Oct 2026 08:21:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A94E2601F9;
+	Tue, 27 Oct 2026 08:25:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4511F01825;
+	Tue, 27 Oct 2026 08:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793089336;
-	bh=F88x0w6RcEa+c5taIt0Fmt+oPbV+qXUJjPjIECkCifM=;
+	s=k20260515; t=1793089504;
+	bh=2R51g1GKhJVpEHSsNmeCyBNO0baPm+a+p1RPH1MDDNw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XcnbEhAIT53D3Hun+lr/E6g8U6iRmEJKDft/fCMNmTrAnwk0hAOsyjOokbVPvXEp4
-	 /DPpT5Su9B/w3gWyP9HIp6tCbM8SpfFZQEHmk9xZRAFv8vtovKBHP6oMqM2laor/ar
-	 P09hpU7MLdF9KtuqzyyOT3LFejOV+LPLAbIgOliERfOsJ89eZuESqQurxPzGdarj2T
-	 8EyrmmZ5UZbvTI7dzlnWbVesHv53x07RfUr1UgzVZx1w/Da9SXe+VMmXlfYIiXPrGF
-	 gCrBiBDheLyK5D4iKWh7VKsJm6UWGTipezUjwklfkuNFfwKK/QHJ4IhVCDB+Sy/wHO
-	 TpCkfYmmCp5fQ==
-Date: Tue, 27 Oct 2026 10:21:54 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>, Alistair Popple <apopple@nvidia.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
-	Minchan Kim <minchan@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Gregory Price <gourry@gourry.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+	b=oMCJcnkQ2ugmQRTH47VuoA3lVoRzsl34BDT2jKNZ7RUkFZzWRMbYSzo8WR8dK47mW
+	 pqOc0eK72lDgDWD3QdHT/pBPnXi7ryj0yWTtmxBWUn+p5DRaD+1S+/Zz1qFJPw0jDt
+	 lyPXK9okKJapfC2UEO49ON8OIAwvxBsXfw7kAXbJ0jwSXdgh4Nb8U2On849jV//cVT
+	 XlO3MbW2lEPG9jGdLQoIYuXn+vfpx2LaaFHDs6IoRpEheK1ZpsFb3+BVmLglbhci3D
+	 +YInIICeV3inpT7BSAzD/puAVkPVByrS2yMaytLjeB9oAMCCDWzd0u2d/tbYp4aR5g
+	 N0rWUbD2viZ0Q==
+Date: Tue, 27 Oct 2026 08:24:47 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
 	linux-cxl@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH 25/46] mm/userfaultfd: wake waiters when registration
  modes are removed
-Message-ID: <auBfIuDnoICBXoGj@kernel.org>
+Message-ID: <auBcES74Q5M3MWCW@gremlin>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
  <20261027-fixes_core-v1-25-6f74bec9a5bb@kernel.org>
+ <179307782442.2301705.17273288326330283268.b4-reply@b4>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-25-6f74bec9a5bb@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A6F7020009
-X-Stat-Signature: fmbcmzncm7r5eu55pn8c7ku5kdayycp1
-X-Rspam-User: 
+In-Reply-To: <179307782442.2301705.17273288326330283268.b4-reply@b4>
+X-Rspamd-Queue-Id: 36BB340006
+X-Stat-Signature: ikzw8sgtft68wycehknmr71zf43ff47p
 X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793089337-265433
-X-HE-Meta: U2FsdGVkX1/8qXM8gmmd3e0HE6yzQ3JYQ5tSbKKAwiMn4GkAD/0T+J19LGQAY02UZoeuUIJrScOft4sLVGkhNDocvDsnuLI3LAa1nl3I90EjBbgurH6Mnm9j8lDyS4qyR8YONcCZD9ylKRAF5Wyxp2g/SMzzSnmX3YcpdC1sZfRjoOpjQmlzer9w4xYaZrJyYwQe0CZP3WzaITXe+XFPcfp6leImnn5NdVXSG/LFuz3a0rwuonM12o9Hy1Cz6//eSHWGcQDsYvuA98YL0KdzqQBYAAKCftlX1tHOeJqeSPGqS+TeEqjZwSLsGeH0WysAlf+XTMl2OJf+ISGrr2MQ7m3GKIkEz8Wc2n/A+W+pmVIRFhPUuRl58YI3jG7voE8jd3Y4XvdKbBBfhZlSyBMXjx23cNGW/V5z2OuKwKPJPTAFvvZ1hFfcU5zDXmJ7II8CeEXc0VSxx0F1LZjUCPylhetwyuN0tlGP5fjghp5FuesH+xKyogvla2Nm0n5mmdLMLI0xWRyy0UJO8ILTCqNRKHX02oQYdTJSp75usVZhPWvK5ZOkVw10Q7Juysugexld/uT5JQ1v4ly6QmBU/4/jz9hoBkBNJBdrIRhXqTIXo8Qi6vJstDFv0DUQj7RkCylXsbF4jnNfU9wsL2PTq1dvOrKwhGeZkdm0j+qdAqLVWIJmcd/ngBtY4SjYMOcvpm9bLfg0bZIdwgD3rgg48tzuznyjgqzVlJ73rYWlujeelZkg8iRFxyfsGOPsegky47RZ4YfIYcdZIrwOOk2JXPwH2AczkISBKgYkOZ+GUdS4VKOnrR/cB5wFAXEPTTnft1TLoo0h2VYOhZTpDJMz+arflbOoPcgK/13HQoAPG1ihvLqx5iKHX3lbGIuqiV1bqHukSYDaxO3x7m/8FqObrwC0YPkLhPLW5td0FijtG6Ot0KXFnxlMNEJWtSff0REF9MjEExYTPj4GaEVS13NjAX4
- nR2kitH/
- XzPytAPFZco9tY6+LhltCzgd1TmV0nHG9yhfvSkK5sMAXoXCIc9ixuEoKVc/zMXufC0S6e+tQgkiJcFw2mo9se5P73wfafWkaOOt8aWU+y2bCZaivxY4s2Kr0Sap28obiUJ81OtGFbe6WXPdK6L7nPdaz1gpMmi7gaoVqo9ae8kzlk7UacWXBmL2QbKb1zPLRy9eHv7bmoMqZhsbBIZg1n9qbjmQBcXClsTlIr0QjSZXnnsiY/KoIGAeaUlZ67PhUzl7Ea+jmTNnnyhm+kklJmdIMFZ2CV6rSv73KDADrr5H+l9tF/uEFIkrwIyO8KPMwCftbTyYh5XdB2TkMMW6oFYfNmvaQRMoHeUVv
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793089505-457472
+X-HE-Meta: U2FsdGVkX1+a5+ngOhG+dDTsOZLFYcON+/1K3fSCHe0W6/eMQHOb2WH0hLK9X/uzBQLuYIEbRO4SF65DsY++U93WXGGW1r4bhDz6unM+jLerRZybRYbcwfaNCRDxgkTi37y1zmXeIJSYdUfoCQFiqGza8DKWG9DdfA28SnCv6qEPQhC/j7t+PP8XqCFF6Cj/jx241QWDFyWAabSoFHNV7vTSPA9v7ap6g03tl5DfazlBsrmxXLDx2oeS4eOZtGdAJvQg4Ev9opE85IF4JUK0CkY35u2WafbuFrNYEu3teomndOFKy10M4IUxUB8IxTiFIKursZI/r1fbmuHCin5qweYtntqX8D/vTnNZvUpEOzcDijlz5ybrY3Nb1W1qzD8CzZUb0u38u7JdPUxX3Bh/VcPj/nzsgOINq2EU/q8XyfyChB2hw6ufIaKI08S+FYUREhQxr4HXiLwF5PL6iPIY0MJ/okACdzqA9ydUAj2OuT/COC3p5vpBPp2LdW416j46W2S17jxIN55jyw8/w+8958VlKd4Ot+RbHYPWpe+J1Uxsr+tNmvi8zynEykOLmRoHjr0LENUKS+Hs+AtPZIfBt+bmyZ3bqfLO2nFypeuuu8CE8Z84IxMsAIYhHqZ0lMo4N+CeyCraqgnhIjc9th+qCVdto/CiExmMYGQGFgXJcYSmZEjrU/kKNsC1yd6+lLP8TSdRax2hiiaP4XHAG3RExpzByPn+U60g3xa7mmioidFjGQGeTOSUw7jejnBWpdUQg5+YGdmRMz0ondNTUuN+7JD1GicAhZCbL1eNxOlg1ZS/xgLAcXWqHFGCg+G4FUqcVcNONTQ/xraqhNU6DsgyANgZh63FD07q0OFcPa3tRWjOwKcOHfSXFshnkiECQo0yKLPeJWcyfckYx6HrGitpBKlxVzeCQOnDy18LQA8Trj+RU8RG12/nQZ8y23X+YjdiwOm978jqvU/ln7/f3KH
+ gI9XJvY2
+ xCNGuLXoPCiI5Ar6VjZdpWJRLPekm3WS8wp7wQLdSh5EJNopv2gUXDUmt9VQ5G/+1kWX5disKrvOL0KjsLyV4RfV+vSWpyhSR74yk4c0aD3I3/n9AMu18iKdMFLy3OpxKZERbG+ecwLfI74MTaqt5Jt+HYOENMLb1yl4udK/9R6q5/CUqbMewcfxV1sAfWzcdEZt9IBKgJ2b5jnQu5OykT4HeHF6sgGKnQUraPyAAmYwT1qLepxCS/3Hs/DxgaRRUBCc9F/yMSYegLaAqGvwVJu3NiH98aT1Peukw9UY+NuYCewIpdcqK1YR+Cnks5pe8w348HLWPOgibygrAYKSljgDRRlPCNC3l3vWexXcTGvpUi6n0bsfa5hJdNM/wRRycenbkgE71+/9fmJt162Y43GLUzN7AoTc/4DXnuVtgXSyIstJzPpSPEAdGfKbK/CLSgIIVPIbc518pyRo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,32 +122,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:17:45AM +0100, David Hildenbrand (Arm) wrote:
-> UFFDIO_REGISTER can replace MISSING or MINOR tracking without waking
-> faults that are already queued. For example, switching an anonymous
-> range from MISSING to WP leaves a missing-fault waiter asleep until
-> userspace explicitly wakes it.
-> 
-> When a registration change removes a UFFD mode, wake waiters in the
-> affected interval after updating the VMA. The VMA is write-locked at
-> this point, so no new faults can queue under the old modes and woken
-> threads cannot retry until mmap_write_unlock(). Waiters for retained
-> modes in the same interval may also wake and refault.
-> 
-> The hang reproduces for MISSING-to-WP and MINOR-to-MISSING transitions,
-> with both read and unread fault events.
-> 
+On Mon, Oct 26, 2026 at 10:10:24PM -0700, Gregory Price wrote:
+> From: Gregory Price <gourry@gourry.net>
+> Subject: [PATCH] mm/userfaultfd: compare exact registration modes before skipping
+>
+> Changing registration from MISSING|WP to WP returns success but leaves
+> MISSING enabled. The no-op check sees that WP is already set and skips
+> the update, so later accesses to missing pages still wait for userspace.
+>
+> Skip the update only when the current and requested UFFD modes match
+> exactly.
+>
 > Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
->  mm/userfaultfd.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+>  mm/userfaultfd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 669f71d485d02..0a28130cebc99 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2299,7 +2299,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>  		 * userfaultfd and with the right tracking mode too.
+>  		 */
+>  		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
+> -		    vma_test_all_mask(vma, vma_flags))
+> +		    (vma->vm_flags & __VM_UFFD_FLAGS) == vm_flags)
 
--- 
-Sincerely yours,
-Mike.
+Would be better not to regress to the legacy API. I realise we don't use it for
+backported fixes in general, but this patch obviously won't apply to older
+versions anyway, so we should use the correct API now, and this for older
+versions.
+
+I'll add a better predicate probably to do this in one go, but for the fix,
+I put the correct patch below.
+
+
+>  			goto skip;
+>
+>  		/*
+>
+> --
+> Gregory Price <gourry@gourry.net>
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 777bf122d32a..c71cb9179913 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2288,6 +2288,9 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+ 		prev = vma;
+
+ 	for_each_vma_range(vmi, vma, end) {
++		const vma_flags_t curr_vma_flags =
++			vma_flags_and_mask(&vma->flags, __VMA_UFFD_FLAGS);
++
+ 		cond_resched();
+
+ 		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
+@@ -2300,7 +2303,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+ 		 * userfaultfd and with the right tracking mode too.
+ 		 */
+ 		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
+-		    vma_test_all_mask(vma, vma_flags))
++		    vma_flags_same_pair(&curr_vma_flags, &vma_flags))
+ 			goto skip;
+
+ 		/*
+
+--
+Cheers, Lorenzo
 
