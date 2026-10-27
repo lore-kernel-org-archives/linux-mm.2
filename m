@@ -1,99 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BA9606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4EE606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YFmecJJZ
 Received: by kanga.kvack.org (Postfix)
-	id AB3BF6B067F; Tue, 27 Oct 2026 06:01:51 -0400 (EDT)
+	id 5BACA6B0682; Tue, 27 Oct 2026 06:11:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A64746B0681; Tue, 27 Oct 2026 06:01:51 -0400 (EDT)
+	id 56C3B6B0683; Tue, 27 Oct 2026 06:11:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 953846B0682; Tue, 27 Oct 2026 06:01:51 -0400 (EDT)
+	id 45A0D6B0684; Tue, 27 Oct 2026 06:11:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B55D6B067F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:01:51 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0AB361209EA
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:01:51 +0000 (UTC)
-X-FDA: 85367964822.09.E4532DE
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0FD70160006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:01:47 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793095309;
-	b=nOU65qHGU1mXsd08uEwx/RK5U5N9H2Q+Kifeiqaa2xDLsl8t2YAycvQ0FZPIhs/fVtB1jW
-	50EHt0VEyiY+86oAI7Z5LRH4Cd6HNMoSma4IxUd7S07zUlXa96RiWKKsSNk6qZKnk2KpkO
-	czE3vu4/Lk8BQzKLkF3kFqWwn+muOJY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CD486B0682
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:11:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9088414096A
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:11:00 +0000 (UTC)
+X-FDA: 85367987880.24.271A917
+Received: from mta0.migadu.com (out-221.mta0.migadu.com [91.218.175.221])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 773234000A
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:10:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YFmecJJZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793095308;
+	s=arc-20220608; t=1793095858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/jOd+AgYfw6nxbi4UGnEo0jvwbuD+ph9VhPS13MAFhc=;
-	b=lElS3pd4jCvXsegLzw+q2ukK/avlH5JCWJutNE3kYUXHZ9ZfJORkCNf88LfaFOlAH2P0wE
-	VFfphVyXLc28BQm8Pnxd/ZNadiiCRg9ypjrOt9uS9xaKuQMO93SGT/xdSfsUW60urto1Jo
-	7rgMzr4ESIyPxlK2fUiJshLJ7ndgmDc=
-X-UUID: 67921674d1ed11f19a56ed5b684f684d-20261027
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:bee8eac9-b92d-45bf-9ea9-54c8557f6ea3,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:bee8eac9-b92d-45bf-9ea9-54c8557f6ea3,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:3171a5526d3680502bcd63212733496b,BulkI
-	D:261027142655OV85Z989,BulkQuantity:4,SF:17|19|64|66|78|80|81|82|83|102|12
-	7|136|841|865|898,TC:nil,Content:0|15|50|99|100|101|112|11211,EDM:-3|-100,
-	IP:-2,URL:0,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
-	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 67921674d1ed11f19a56ed5b684f684d-20261027
-X-User: lienze@kylinos.cn
-Received: from [192.168.111.179] [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 485128601; Tue, 27 Oct 2026 18:01:40 +0800
-Message-ID: <33a5582e-3d27-4f34-abb4-eebbc7c34ca4@kylinos.cn>
-Date: Tue, 27 Oct 2026 18:01:35 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=D1lqTZozMscar2SRArydDD07wjY6fFTz+QkMJLLtggA=;
+	b=yBi1DF6eceDBXGszaFWnUkvZtU41Mwlqo0cXNpbcBH05/PwMfCh63uK+fqIdnWtqMSum7C
+	FwpKDinGi1ik9YWQ8iFggPCNctP4lcb0vkPbtg7sS73nYSyU4F9ifKI44wPS6Hn2IbXKlu
+	qNJB04PjOodverP6HHHbXWUsoT3lsEk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YFmecJJZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793095858;
+	b=2cOU96ycSdwfJLnGkpxqrnKt0htGlAuQSwzjwYlhVU69lUhCYI1MNOsNQCql53i9vE+sX4
+	abgN/+TAUJgkAVA2Dr3EiejeHhNcNqV1jg2HI2hEGceoccHAx7Mxy5RpfU6P3oX2RJ18jK
+	eJrZ4eBNT395ZzAtKXlQvJEOVJwcQrU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7mCns8oF/JGvEa3tDBNQgrUGs+q1oTADhXwFuSXq1t8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793095857; v=1; x=1793700657;
+ b=YFmecJJZKeHA01c886mlqLR/nZN8iGpB+vgeMniwilAo867sOLNn89XRo7kCb5lUC1Q7dafY
+ fE/HqpW3Hyvy3QlLbemmwW0Gx7jcBURRR5mpsgCY9K6ZtNBp8GISyKMBiw8yaHC3dXMRazOf+qE
+ zkm8+zqaOMKPq5gUXv1cB0Ek=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id ffb86d557cbfa937;
+	Tue, 27 Oct 2026 10:10:56 +0000
+X-Mizu-Trace-ID: ffb86d557cbfa937
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: use account_new_hugetlb_folio() in
- add_hugetlb_folio()
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 05/16] hugetlbfs: enforce F_SEAL_EXEC in setattr
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <ed59aa45-0ce8-4e5b-8a19-b5323fbe7864@kernel.org>
+Date: Tue, 27 Oct 2026 18:10:34 +0800
+Cc: sashiko-reviews@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Gregory Price <gourry@gourry.net>,
+ Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Lukas Czerner <lczerner@redhat.com>,
+ Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>,
+ Jeff Xu <jeffxu@google.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ linux-mm@kvack.org,
+ Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C1C8137C-D05D-440C-B143-4B5371624598@linux.dev>
+References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
+ <20261026-fixes_shmem-v1-5-703206d5fa0c@kernel.org>
+ <sashiko-outbox-186003@kernel.org>
+ <ed59aa45-0ce8-4e5b-8a19-b5323fbe7864@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org
-References: <20261027060446.289404-1-lienze@kylinos.cn>
- <d2738c37-7801-4804-bc86-2beb81256171@kernel.org>
-Content-Language: en-US
-From: Enze Li <lienze@kylinos.cn>
-In-Reply-To: <d2738c37-7801-4804-bc86-2beb81256171@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 773234000A
+X-Stat-Signature: e517mg7a49hkosqab6zabpktr8sxxwpf
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0FD70160006
-X-Stat-Signature: u4s9oxz1xfwhcctxf35gmkmj3xqdtcyk
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793095307-535254
-X-HE-Meta: U2FsdGVkX1/2uS89PoDCk+Zm6uZxZ62p/qJXbnDqL8E4dltaivOBKaDWbgTl2kJ4piPFl6wm+6xlZfPezWlZckkFmU5Xu3v3gHB0bfnm0mI9M+AbDtlJ5b6IUvYBlfiDyyIW9UpkL9ln8YdNeOEJ+JGLCns3Bl45Nam9ejZmKgesktJej8IOJGYwoqkWul9thacVBJ0vuHSkcxrSl3dD9dH8NFeUJ/p4VC4M262BW9OfiDacZWvjDIq2uUyfPywKJFlI44b9LcTVQmuUt0QuGVCIsHPu5jDpKeb9dWs9LZI1QJHIuUr2y8WymJfA3vzyAyBrw8kPkIRq7bcL4njLY+bGoEGNARPQtkUMcMTIXMhj5jOTVU0z65loap6XXvx4uKbyHcCrtEQjIfv4ELtkA8/1/eqsEiAy3xJ46kSFPqpdIKCZXg+GKjPH0sldE3HS+Nk4CxctNqi0moywFDnQw05tyt6cDlMFfvcauatZtzMyuL4LEcpIp5EYFvfBEUCiJ0zpKXykhVcHor81/QXwoBenILxOas+K/NpgtKYWE+zCa2KSHV/BYcksPS0TnFUx2w6SuM0UKfUCEZL+KgUMZfLt1+P1/0abKRtVN4JoCiEd6t3Rk7co/TCOYiyaUAN/75CvGSDO/Hd/8NMeBr99umaX5kZ+cftBb5gRR7tjRr9zw4MQ+Wgs/qR4gLT20EFKvrIhHAD8E8qshhcmjQd2W1H4skEg4lz0+rWxeJRClAPvdmxcc73zX62Un0udJrbxVVpwHEWxy6Ro3hqCLFBwzkt0ta8wL/bhvJR/fYeB64yjXPN6REudoxuMXdVNJgpgKhoJjpm07mbH0y394xP6ZXzYD3o/47/1l32zIfiQGw0MI/2IV6c0qzT406jYsusCgKZpi8ikPOvEzufpb+AjCzZr5JC8/CXUgMqznfS/DOx4xaNHCm492kFTW4SvEv/CJTRTTZZUhDppXESOw3c
- B4kAJYtE
- IHjhIw9Pkgmc7xxPxvHuwz080AaniOa3xTRGpj/EcJ3ZMo7FgW7ij1591925PAkjEoG8S5ZYC68g++Igv0DBFHIkuPki1Vhwcw+sW
+X-HE-Tag: 1793095858-992981
+X-HE-Meta: U2FsdGVkX1+x2h7b0hUIKkKYuS/M00zNumIIh0x+nr4dW7/YMfCC/thDkbwa01ch3Q2tdRXWeJSvGIoivmjz9maIRetFoqNOsWvSm+cF2N5wH9/qlwXv86RLEmuK0UdDmYfZozxyvLbpfK+ebh/nOIabSSHO36UQn08FwcNumobRMSxHGMvCzgs7fm0ofVvRjjDWOv96mpMzoNpo7Ai+rzfxPEoorywWsmHPYzjxWlcksVRRZA3OFH9UH3BQV3JLohg7/1gnTL1yAyDQEKlbnUq37uY07EY+J9kTGSIBDVqTWKZU6+MKfgi69yWIi+Q1S24mfkhzMD/tGogFr68Y4VfR1KS663wcJjlD/2WHavsTI+J2LcJNeY0/2Qem1Wxha54fpY65P93QqwZDscLuAPOLR75PPo+qwU7Qokk3wd8wjPt/Kzf2Vais/Y6R2/LHm7dQ1BX0Oz2XEPGg9pvBkinfytXuQR23k8dc2Ji1CWIaPkHc4rUy29K+rikEKMQtae+em1E8iwRy0jnj7UkmOTNDtuDdGnEQLCHV7QYhRTjQaAo/v23yvEU9hMcN1FDQJY4OJQTLLMxBzhCgTBQ52LxCWHPLrfcippt4k5iNq13OI1nA9N0zNcXLpZMAJ5+1y9xHpE/+2wg37XQcbcUZZNPNNLjGG5hDNVv8T+kSMa+iF8C08FeYPMCG1q8oFmAULTdDsJYyyDoaGrfLdqCulrLrhp3hMNchpylyrRIuweWkUjeOeoGMv3+f2LRXO+tcIVdQVikEspl/97VgTexoYglGKeNR4WoCufmIn70xtj+VK+T+XuE40uvP/uaB/AzRC8tXU1RBVPLpv3drGJyw9wEcMceSCjfoPnEv1Z5t9Ng/Uvp7CdpD6R0sHtIUcrGQtGHjrVlDxB/RNHZ7JYeIOCTV16VNSOi6NbU0KLguqU/2UG4OryGAYXIL1vAK3spIM3cLeoOvC7bX+8gUoHn
+ 0pj579Zx
+ AnQ7TsjQaPRaVL7gMO1TQ3QHvo+BPvD9+7WmAJWThGPJM0JuW58HAvj6lZGXiB915yRY9yvoAZjgyFvDtXXMMlDAvnsAHUm5mFtZBg2J//83aR+efRfrz5y5XKrWZ74OXdKeyzccvdqlRMd9FZq9GR94lJD6wo1dMFkwVlDuAo+JHzPGM5u/j4pn01qNC0Dy9XEPmVOhYrq8nFLL8yNR4YgHbb9vQvPVAQiicWFggf00O7lyouOCj1j+MCYfbX7J5w5L6juduOitV5iBUq7lHIBUOCECKIecyw56L53DP1UARWrFhBpZar/fhRkhrPZ5dABcG1usDSpSM6RP0UZVKtlkdiR8Jom2uIyqJsEsSI6UST4XhwdLxxWtCxpIrVTSiPo6h3XB6gmaaOhOfNNd3M+lkKu9u2yyqkOPusCIFI7BAX0S0Ex/HlRb1rhlIiTKjHwen6MMOqx20hip351i24foFkEANKoaW1cpurlfvN7KwBwVLq3q/xCVLnCyow2ciHxj77m/8QbRtGTGuGAge+r68SKKmo9NrGFGq3+qrz7NiFes=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,54 +126,130 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 10/27/26 5:03 PM, David Hildenbrand (Arm) wrote:
-> On 10/27/26 07:04, Enze Li wrote:
->> Every other place that accounts a new huge page already calls
->> account_new_hugetlb_folio(), and add_hugetlb_folio() was the odd one
->> out, still open-coding the same two increments.  Swap it over.
->>
->> The helper is defined further down the file, so add a forward
->> declaration for it.
->>
->> No functional change intended.
->>
->> Signed-off-by: Enze Li <lienze@kylinos.cn>
->> ---
->>  mm/hugetlb.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 4a008afaedf9..a8d162449daa 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -142,6 +142,7 @@ static void hugetlb_unmap_range(struct mmu_gather *tlb,
->>  				unsigned long end, struct folio *folio,
->>  				zap_flags_t zap_flags);
->>  static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
->> +static void account_new_hugetlb_folio(struct hstate *h, struct folio *folio);
->>  
->>  static inline bool subpool_is_free(struct hugepage_subpool *spool)
->>  {
->> @@ -1444,8 +1445,7 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
->>  	lockdep_assert_held(&hugetlb_lock);
->>  
->>  	INIT_LIST_HEAD(&folio->lru);
->> -	h->nr_huge_pages++;
->> -	h->nr_huge_pages_node[nid]++;
->> +	account_new_hugetlb_folio(h, folio);
->>  
->>  	if (adjust_surplus) {
->>  		h->surplus_huge_pages++;
->>
->> base-commit: bae9a042b03b27924c6fd5bdc00a20d6a44d6041
-> 
-> I have a fix in that area planned. So let's revisit that in a couple of weeks.
-> 
+> On Oct 27, 2026, at 17:51, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 10/27/26 03:22, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential =
+issue(s) to consider:
+>> - [Medium] hugetlbfs: uninitialized info->seals read in =
+hugetlbfs_setattr() on root dir
+>> --
+>>=20
+>> commit dfab7a0d71278312f805e82ce52518a8ea2f538d
+>> Author: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+>>=20
+>> hugetlbfs: enforce F_SEAL_EXEC in setattr
+>>=20
+>> This patch updates hugetlbfs_setattr() to call =
+memfd_check_seals_mode() when
+>> ATTR_MODE is set so that fchmod() cannot modify execute bits on a =
+hugetlbfs
+>> memfd sealed with F_SEAL_EXEC.
+>>=20
+>> Link: =
+https://patch.msgid.link/20260629180247.2343229-1-eva.kurchatova@virtuozzo=
+.com
+>>=20
+>>> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+>>> index 6656807ce4377..7f5c3962b5d56 100644
+>>> --- a/fs/hugetlbfs/inode.c
+>>> +++ b/fs/hugetlbfs/inode.c
+>>=20
+>> [ ... ]
+>>=20
+>>> @@ -841,6 +842,13 @@ static int hugetlbfs_setattr(const struct =
+mnt_idmap *idmap,
+>>> if (error)
+>>> return error;
+>>>=20
+>>> + if (ia_valid & ATTR_MODE) {
+>>> + error =3D memfd_check_seals_mode(info->seals, inode->i_mode,
+>>> +       attr->ia_mode);
+>>> + if (error)
+>>> + return error;
+>>> + }
+>>=20
+>> [Severity: Medium]
+>> Can this read uninitialized or stale slab memory from info->seals =
+when
+>> chmod() is called on a hugetlbfs root directory?
+>>=20
+>> hugetlbfs_dir_inode_operations wires .setattr to hugetlbfs_setattr(). =
+Unlike
+>> hugetlbfs_get_inode(), which sets info->seals =3D F_SEAL_SEAL,
+>> hugetlbfs_get_root() allocates the root directory inode via =
+new_inode() ->
+>> hugetlbfs_alloc_inode() without initializing =
+HUGETLBFS_I(inode)->seals:
+>>=20
+>> fs/hugetlbfs/inode.c:hugetlbfs_get_root() {
+>> 	inode =3D new_inode(sb);
+>> 	if (inode) {
+>> ...
+>> 		inode->i_op =3D &hugetlbfs_dir_inode_operations;
+>> 		inode->i_fop =3D &simple_dir_operations;
+>> 		HUGETLBFS_I(inode)->resv_map =3D NULL;
+>> 		/* directory inodes start off with i_nlink =3D=3D 2 (for =
+"." entry) */
+>> 		inc_nlink(inode);
+>> 		lockdep_annotate_inode_mutex_key(inode);
+>> 	}
+>> 	return inode;
+>> }
+>>=20
+>> Because hugetlbfs_inode_cachep uses the init_once() slab constructor, =
+which
+>> only calls inode_init_once(&ei->vfs_inode), newly allocated or =
+recycled
+>> hugetlbfs_inode_info objects are not zeroed on allocation.
+>>=20
+>> Previously, hugetlbfs_setattr() only checked info->seals under =
+ATTR_SIZE,
+>> which is not reachable on directories. With the new ATTR_MODE check, =
+changing
+>> any execute/search bit on the mountpoint root directory reads =
+info->seals
+>> and can fail with -EPERM if the F_SEAL_EXEC bit is set in =
+uninitialized
+>> memory or left over from a previously freed sealed hugetlb memfd.
+>>=20
+>> Should hugetlbfs_get_root() also initialize HUGETLBFS_I(inode)->seals =
+=3D
+>> F_SEAL_SEAL?
+>=20
+> Shouldn't we just skip the check for directories?
+>=20
+>=20
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 7f5c3962b5d56..293c7965f4894 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -842,7 +842,7 @@ static int hugetlbfs_setattr(const struct =
+mnt_idmap *idmap,
+>        if (error)
+>                return error;
+>=20
+> -       if (ia_valid & ATTR_MODE) {
+> +       if (S_ISREG(inode->i_mode) && (ia_valid & ATTR_MODE)) {
+>                error =3D memfd_check_seals_mode(info->seals, =
+inode->i_mode,
+>                                               attr->ia_mode);
+>                if (error)
+>=20
+> Because sealing of directories does not apply.
+>=20
+> Thoughts?
 
-Thanks for the heads-up.  I'll hold off on this one and resend in a
-couple of weeks once your changes land, if it's still needed.
+Make sense to me.
 
-Best regards,
-Enze
+Thanks,
+Muchun
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
 
 
