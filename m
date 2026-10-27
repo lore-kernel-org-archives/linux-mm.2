@@ -1,128 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642B060A2603
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61F060A3838
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mF8zRUbq
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMqKHFdb
 Received: by kanga.kvack.org (Postfix)
-	id 603386B0756; Tue, 27 Oct 2026 09:53:22 -0400 (EDT)
+	id 011DA6B0757; Tue, 27 Oct 2026 09:54:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DAB06B0757; Tue, 27 Oct 2026 09:53:22 -0400 (EDT)
+	id F2AA76B0759; Tue, 27 Oct 2026 09:54:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F5C66B0758; Tue, 27 Oct 2026 09:53:22 -0400 (EDT)
+	id E41976B075A; Tue, 27 Oct 2026 09:54:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C79D6B0756
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:53:22 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47809C092C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:53:21 +0000 (UTC)
-X-FDA: 85368548202.30.2C7F11F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4F173C0009
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:53:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mF8zRUbq;
-	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793109199;
-	b=Y4K9JnpnJs61TeXfKDUSfFrqvi2vsQUxmXx4XWeSxrlD0exGRMNg1zpr9LIb/pSIOwZSk2
-	IwKda6zl9nlIwBYnImIx2ao4xPNHrUeCFRiwnoDjQ3iSg6Scm3GtD0Tw4BWpqecdStgBkI
-	PPebPLU6PICV68VvSvMdkFMJtQgUmro=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mF8zRUbq;
-	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C95F36B0757
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:54:05 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65072A8760
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:54:05 +0000 (UTC)
+X-FDA: 85368550050.23.D00C677
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C6C2380006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:54:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMqKHFdb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793109199;
+	s=arc-20220608; t=1793109243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGwT1JNbkqmcP8fUAnZimf+aufAiCIdNGNB+5b8MPdA=;
-	b=CNIkyHTniO8Z2vTWsEph47tLv89+e6ZgrApYbiPqtrkvEc3prTbOrhgixvZy/WRcGYTDyi
-	7AKrP9HXVs5q0y4IzsCHv5x9/0CtQ5t51e8BszdXwNBAxaxnqRMt4HV3D/tjk+TjrtspmS
-	uo5Z5paqJeqWjvt4v7J2VQWYKE0HNgk=
+	bh=O0HlFL9/QqurHonrWKlExnX7Q+xujC/2o87bXkVMAlo=;
+	b=4+nphcSPCCWejh42J/Og5e73hx6T0ODaIwG8PcUnwGHcA9V8hDkPZ3oKL2afX1NEvInZFs
+	qTrZm8+ZBiQuOOdYDsp5aqbwXV2pvkCXYEFNKdDVz0TUYRaVdiyRo+OoLtx0/JNW3U8ydJ
+	Yt9BFisgoenjAcKZoVc9rpxm9STob1w=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMqKHFdb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793109243;
+	b=EYvPuvaL0y4+vB3RgYNeeH2URIGRiZYr8RNZERocmBTuo4VFjts4hP9/tX7e0112PgmoNE
+	lqNC4duD1+C0aruleRJDrWT18hfr6vCCyYQnGMEss3PtEHzUbs5aDIWe/fF5yT38nMZYug
+	kIjuz2ERqAO3hpUV9A/RdUD5ua+X1nQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C518E6021C;
-	Tue, 27 Oct 2026 13:53:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A56A1F01828;
-	Tue, 27 Oct 2026 13:53:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 37F2642E09;
+	Tue, 27 Oct 2026 13:54:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D962F1F031ED;
+	Tue, 27 Oct 2026 13:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793109198;
-	bh=wGwT1JNbkqmcP8fUAnZimf+aufAiCIdNGNB+5b8MPdA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mF8zRUbq653nfj1B5K+Z45VMISn5YnE0sHMQhzG2zkRwMerN1u0TrRYVWk97hvTNM
-	 uZ0lbteq6tg7KdZ6atcsSTAtfYTmzLqgtX1K28V52vEd6MnMqTJRJtXXcFmIky/8m4
-	 WR+SVC3nI3mJmtmiGZw0lBVh9c3YytpGhMYIKmLAbMuSK8tZKjeP376mr2B1DsolpT
-	 npnhhnwphjkK431NhDvezTuq5Ni+Vq5zhl/CRuPB0GylScV7NWGxBzcj26Q0m9qpXO
-	 ybIZxQd/9nNRMeX/DedkmjK8u6shpdQBEcP8ZqLjIeFW1ucPz08OQzMa15z+dB6HJS
-	 6/qy3HLH+nbKA==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 85CC7198004A;
-	Tue, 27 Oct 2026 09:53:11 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 27 Oct 2026 09:53:15 -0400
-X-ME-Sender: <xms:xqzgal-vr3ZeqbXQYJBliutUwh-BPoCNU76xbXs7mx_Ps-IdSmK23A>
-    <xme:xqzgaoksYXGkYGnJF43sYID0Tus98V08BBjG64swDvpdheaZW5VbBJyVOc7DQ6Frl
-    aoZ3R23YOrTA4h2thSa7n_eENBiVLh_oK4jdwW4aOnapsUIANjaAKZd>
-X-ME-Received: <xmr:xqzgajaYJVYfdqtgodH29574WA_vexf-pM5sNeV3dSMQBjrPqxVqpVsiMiw>
-X-ME-Proxy-Cause: dmFkZTEZ/rZ8QL4tKdVH13M4isFoJoqE6mmyk1+ybcvlxgqSp6W0ayLRKd0L7SfTmxuGb5
-    U6+Pfm114T++Wp3SC2FV78EqIZ6zQGqKV5XyNS0Q8g8zeea3kGWywXyvNgIRW79CajYQHr
-    2jF/D3zyUpa8mENlQ2k9kDlrLHG9vuqIwsGPeExjecTgPLyR3BG4mU+4iFcKzGjlB8O7dl
-    rHahXQtAt7H4ct4Hi0ph4caUm45qDhARWvo+NXS6RvFk5in2esxS1VkNF3/wtGoX2gxkDU
-    HYhd+ifyLHB/lQg4TvDcO1vty+4TgdFGCdUfD6xIrm+RnS//HTrIeeMZCfQmeBD5mTfrrt
-    28F2SJuazbG4sdilPjnUK5Xk2C/b77Urnpd+yJpFkxf0srCyBWlhL6vR0USCQldwnnbiLW
-    9q+grn+3rpVTZTV5aFHrdKvOYqBL1I68cy6Ts9EvEo2mG6eqSnlWVGArQuLZTDmYpXGIvS
-    wXLvRFTOpi4viZ4HzYk4qCerKNTdy3232MaWMRw4+fGiHl1k0822eLObmoSxbGhZG/SB+U
-    RY6eT6x1Fr7R33DiHsTIEPGR6+Uf+O9CEjZE+sUhhEJff/MTsubZ9LmOVI85mrAWUqqbJx
-    XWv9aGmJ+yJbAfbRPaNRNIocYryGvdsYvD8pPJi4F3KUYMPNesYsAvQV4dWg
-X-ME-Proxy: <xmx:xqzgaudbz8X2mj1TmcVhbSB5pj192_SKV8vP7t-J3qUs-AsDGR5erQ>
-    <xmx:x6zgar5lbie9c9vsEIGyR4WR5HHpSCBz3DCSwhV-Wl76bl2cm_9stA>
-    <xmx:x6zgaqkT5H7khckA_fD9bSj4bobce4cCO515thNp8GAx2LHLg5LD3g>
-    <xmx:x6zgapYUC1r3US7DHJV2QXJyRoI41UHODbj8ZuE46i0U3Qjz7C1IHw>
-    <xmx:x6zgagOltv2MpGmQj-wyDgIG_3JLhCWmQzbtOVj1MoCubVlHQLT8Bbj6>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 09:53:10 -0400 (EDT)
-Date: Tue, 27 Oct 2026 13:53:09 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>, 
-	kvm@vger.kernel.org, =?utf-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v4 1/4] mm/rmap: duplicate a PMD mapping as one in
- folio_dup_file_rmap_pmd()
-Message-ID: <auCsphluu2gwzEPo@thinkstation>
-References: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-0-66f00b7a564c@virtuozzo.com>
- <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
+	s=k20260515; t=1793109242;
+	bh=O0HlFL9/QqurHonrWKlExnX7Q+xujC/2o87bXkVMAlo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AMqKHFdbqByiISt7gdsCumYhawhuE9fwriGzjlE0yAjkYNrIZC6K2R0bMvHm3GizW
+	 sAr5XUXUJNX8HBY/ybbp/jOIg5RlwlZKFKKpi5901ZDK5p+2Byo8TRKA4yC3LKS2AC
+	 NMmzxJr3YefLqAEhLts6DW3A9bvzrJ0UHWcmRm61qYPXoYzyiql1+PgeDYnUE5I3Zi
+	 04R5if/6KKbW7kzm4nr3AFj4kE5m+Zt+IJqrCIfYFnWdPEwTGOm4X+SxA9NtAXRumJ
+	 6x6AyjgE9ddCd5dqS73hvfvQXHxdXlryLFx1ySNZZO8tgDnkT29Z9RyK9zzdD/muFf
+	 3G2B2xqGCKexw==
+From: SJ Park <sj@kernel.org>
+To: Daemyung Kang <charsyam@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	bijantabatab@micron.com,
+	ravis.opensrc@micron.com
+Subject: Re: [PATCH] mm/damon/vaddr: preserve migration weights above UINT_MAX
+Date: Tue, 27 Oct 2026 06:53:54 -0700
+Message-ID: <20261027135354.149948-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261027035431.1007584-1-charsyam@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v4-1-66f00b7a564c@virtuozzo.com>
-X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F173C0009
-X-Stat-Signature: e8ygjr9kntwaoiuxg3baxc55541khpc6
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C6C2380006
+X-Stat-Signature: m6b7b9ithdp416bpdideu34dhkx31fuh
+X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793109199-315507
-X-HE-Meta: U2FsdGVkX187dOylyif/mev66wR+51I1RCS9ZNAkAfvCRXctyZrhPdd1hXLOxiPxnB+Aj1ZB4LmKcnDDqUseqtxAkW4B9sqk6CHXHsybiJupZWnPnLmGzKu8cPaYwF9sO3xUN0d44CWHDGMBAa/g9v0zDQBqnPDjHGYrYs/LZwhd66f1D74IZrajd8o1rLMVxZBG56Wfhtmc0IpfVsvOJdsU/R7pyMqwAgGkJxe3ErQ77GrlebGfXPiZdzJXQz+KZSIa7sP5/9m2lUxe2cWQLkzPbBTHV5ffZhwiLpU+SPuGvvRtDr5XQKAQZDct6DXrcs66B661OoKGES3b5a5MO8KnRBPtxOxOr5IhdH7QAkz+LVLBjd4mgOn+adJ2l/T3iLkYJtma6eKqC6axcZYtV/tmL8q84M/5496ZO8RlBovCsswTOVGYThDCLxRtyJHa5Z0qnpHqNmQGD+y3Oz+81DgTUZD5RQhnVDuGLuzqYzcDqf+5olzvAo3aF9B5KM+T3OdSlEvRPBtplczb4fTh3vXFtTVRdsyCzRlw2Eg+vd//go9c91PkMBPrwKITi0jYl6P6xmedSAJeWwb+x5qTIgU6m4T0YFeWtk0Qszxe3wWTLxp3eoLUU1J0XtIV0k8HunHuDex6ij6mm4FDZPw/IduiF4jw/m2tR8TBUPG3SGyB2Q0HmVcDNeP4p7U4TcBxRAensPF9o6hhGpoToi4oClVKLLhXDd2p3Fc6JjHgPrMth8nnDS69GApr9xbeF5VddZT1GExeNz+Pja9zd9frv3qfPZanFHBp82AZTvp0YRDXdm488JeEb7CNrxPOAaQjDKqR7ntk9zMbj2NfwL64iVCq2TIuAbbqe0fLG66/VyZIC0yGuU8z1/+BHBS9aEfbfiOTJsfhoEH02De3ZqMJX2GsbJYMk3bVHdpUBdqyEp8TbYkD4CbP5boHhn3CABpJE/2slN9y1FeeWj1OybI
- C90kIRqJ
- na306yaOTrjbuRgFkv1/QUECNj9cCuvWNq1355O86b6mUp+B16vs2LNvyI9KTSPWawwJ6l+/oRPM+IKhdES72c9tZlh094VbVBJWxxtEJlpp6U2QHqk+PyfkAnahu1lgMiLkGx+PTNScdWKcPUdRccljtij5mcxFznOmHfxApnSk7N6YaWkfof3X+3WkpHppro00+EMSixGeUnBMBe/e6hTd+T+/Xj24hE6d9lUhyngohrzdn+VQkcA4qORDOgs11zvl/Vtgb5G9feIW1ZLCL5ZEHRCsv+q84+SkWYcE8EMWZzSXs+0QYuEydREhbuaB3uPGoyy3Bzr+ALO4/F993BLpy+yW+N0Dkb8To0u8ovToWNZimaDqKyIFSPfovTiO5aYmGTNbQekgR6GDJCTWYHH9sxEEUZd7eoIAPEQFl2VmuNwmYYuqIwKtr4GG95yNUnLnZyYsjp1vpzWpb06g0dtBMdLujzvG50md7jGQnN3BTPvg=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793109243-302360
+X-HE-Meta: U2FsdGVkX19dsgcxIo9jXMarz1jA2mnTuVkySIrsVM2lQpEOPCt8hsnY9JOSH0gDiDdeR37TajIgN+1AMuavOHik/3drZCrFrMD8Lr9gfD2m904uP+w1zP660i8kP7x72XmBrrLCm8U2GrUlf9QdqMaAlim8UzoRHFm8WsKUYISFkGwo32HvdfMV3oBUkZuPynsAIRkFfc6cc1VjYu6FnnFyJpIoNeTYPRVqTc4gqptcITfgEBrb3wmsRu92fJrbvYuMrwR1U5GJdcEC2dEpniwKbLnauP6TBy0Ceav4b5IJrhKl3khRYdFUewABaJiZ7j3kZagVz966lJgiXPI2zFjxTpWSzrCbMSmbJnIAdcHSzqcp/5myuiz1ZzSljCkgupZCpUe/IePURskkBTu5ElLqlUsNjO+gDAnjV6NdmT/dWN43T5RErwgtmkE5VMT/DQfk3eF5itWHhgHuujFzm0cjv0IE4Og7d/HqWa6VeL4s18wwVxd/dkDUXoWxvBJ63bjAZIr4AuKQKbO+QHQff90BqwcE4XHkh26EDwAl9IL9Tb5/Dmi6j1Cz2Zu81wbwFSIQxzhL5GbcwNKOXsQOlMs6lYh7VX5GHOiz9EJb3XUv89h48GndEg0EvJT1Ge+Tupcfmo0L/cWgVbbwQvsiqoGML+gc8Cvmt8cXjpW/bHf+00R9f6QvwzhUEvOZ63J+m4TOv7DK1ncUqCCtTjh5EMt0aj1EzKAEGhooSfap20L2AbPRY7aFJenUJ5+Rfa4wmEAVhi9NFhsUP/WXek9O2ZBBLBfVQttlNNtPuSaW8fyQm41WL1sMR1Rn3nioAUDsJwHrsYPVPJ5t4ff3W1IFNVTBs1Z5rp7jmBmoPrQRRkrw9BZ5DViKS2n/2SJhlFlp2FrQbR9ufn7achfXEX6vcDY732t2eKX9mYCuOz/dWAsE4A+dabJXK7ztStYxOkpq9WCQEn2UqBD32Rhxytc
+ aXPXwkuu
+ 3fqyzE1D7yxkx0XHqaok6/eJw8HzlixqG4AserP34kbq+zloCRsaTp1lFyPcEJpvSL98f/04xZCZqmOch1xvY7jVH58x52Atm7190tmoHFADM7rx5OZtQ4Po9ZK8dHnw0uHjAZspMER4e0zrIvzQd+fSXkzpdYo9xa7oybhS8ZtvfrO2Q//z8fvgvUPrEFYZYoMOpDy3dBl0UauPaeSXRRjCVXEZ2nhFBGRAF8gPEV9qJE7/JA4JuPqLN8QC+iKS0ubUSgHztMpy9FWiHZp9xX8yg5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,28 +97,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 21, 2026 at 10:36:00PM +0200, Konstantin Khorenko wrote:
-> folio_dup_file_rmap_pmd() passes PGTABLE_LEVEL_PTE to
-> __folio_dup_file_rmap() for HPAGE_PMD_NR pages, so it adds HPAGE_PMD_NR
-> PTE mappings to the folio instead of one PMD mapping. Each unmap of the
-> PMD removes one PMD mapping:
-> 
-> - the folio's mapcount never returns to zero, and removing the folio
->   from the page cache reports "Bad page cache", or hits a VM_BUG_ON
->   with CONFIG_DEBUG_VM;
-> - the first unmap already counts as the last one and drops the
->   PMD-mapped statistics while the other mm still maps the folio;
-> - the second one drives the entire mapcount below zero and drops them
->   again.
-> 
-> The helper has no caller yet, the next patch adds the first one. Pass
-> PGTABLE_LEVEL_PMD, as folio_try_dup_anon_rmap_pmd() does.
-> 
-> Fixes: d8ef5e311d7b ("mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()")
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Hello Daemyung,
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+On Tue, 27 Oct 2026 12:54:31 +0900 Daemyung Kang <charsyam@gmail.com> wrote:
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> DAMOS migration accepts an unsigned int weight for each destination,
+> but sums the weights into an unsigned int.  If the total wraps to zero,
+> no folio is migrated.  Other wrapped totals select the wrong node.
+
+Thank you for finding the issue.
+
+But, is it realistic to have the weight_total overflow?  Have you found the
+issue on real usage?  Or, theoretical?
+
+> 
+> Sum weights into a u64 once per migration walk.  Keep the existing
+> 32-bit divisor path for totals up to UINT_MAX and use a 64-bit remainder
+> for larger totals.  Add KUnit coverage for the actual summing path and
+> for destination selection at the overflow boundary.
+
+Do we really need to support that user inputs?  Unless we have a very real use
+case that require such huge weight values, I'd prefer not.
+
+How about just clearly notify users those are invalid parameters?  We could do
+so by adding weight_total overflow check to the central parameters validation
+path: damos_commit_dests().
+
+> 
+> Fixes: 19c1dc15c859 ("mm/damon/vaddr: use damos->migrate_dests in migrate_{hot,cold}")
+
+Should we Cc: stable?
+
+
+Thanks,
+SJ
+
+[...]
 
