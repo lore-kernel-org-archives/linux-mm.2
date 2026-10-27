@@ -1,156 +1,170 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E7760A2611
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F893606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=e9no14pv
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=HMDNv+hX
 Received: by kanga.kvack.org (Postfix)
-	id 48E396B05EA; Tue, 27 Oct 2026 14:51:34 -0400 (EDT)
+	id A109F6B089C; Tue, 27 Oct 2026 14:53:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 466006B06F8; Tue, 27 Oct 2026 14:51:34 -0400 (EDT)
+	id 99AB16B089D; Tue, 27 Oct 2026 14:53:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37CA86B0720; Tue, 27 Oct 2026 14:51:34 -0400 (EDT)
+	id 83B656B089E; Tue, 27 Oct 2026 14:53:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E5C36B05EA
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:51:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 81A8DA879D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:51:33 +0000 (UTC)
-X-FDA: 85369299666.21.54E2269
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 91E511C0006
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:51:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=e9no14pv;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id 57A966B089C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:53:41 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC694140ABD
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:53:40 +0000 (UTC)
+X-FDA: 85369305000.03.CB8C156
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013022.outbound.protection.outlook.com [40.107.201.22])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EE15F140009
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:53:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HMDNv+hX;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793127091;
+	s=arc-20220608; t=1793127218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UJlLnl+V5fVkcEdrgjKFPN24Q/fJ++IZ4ZhlDmWxnT0=;
-	b=79NOjnUiDnxnKy2/1yuR/BjCAQeLeycd2O5meLmRVFTeViGXKxHd4gcc0D9cXXWb23twVa
-	zJ4w7UhjYFeIdbkVeVUKqSdgaGNwsr3f+O9HsVhIxZ0ml1SWsEo+TRYlODKgkmiUqPILwk
-	UPozA0Hfle18Ls6jLfHQABQ4M2mLkqY=
+	bh=hDlERQp3ezIZQqhJZEUQq8L4M6aQksTGqf2og7oCFPE=;
+	b=zTUc/KOnZXR6b4D43rgsUQnAgdoB68zxbLozvQaVR+SY3VPJVyvd3rZf7Ph2hobYAyV3XX
+	Mhs+NMyqPmGWy9pGGnMjr1GAQogAKh0NKOyijN8xFCNXvQiPjK8HqgLnBBSH/BmYonocv1
+	uuq7t/Rd6156DhgrVvYmvkpKYy1heGQ=
 ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=e9no14pv;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HMDNv+hX;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793127091;
-	b=1Ch5eGnJ2qEFgHjyn2FSxAOn+WGkiP6sG5ZJhiroog5ecph1JOJyR+bD55z41ADe2xBPdL
-	Y+GadQCsCKxX8lxG8pQ+WrTLFwdNr/dIqT7he4DT7N5crIUBsQdHsQDIWyWrN6qt4XNT/F
-	j6ks1KshtYijLSkVI5PwMnbs/x+zQRQ=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c3fd91337baso21459666b.3
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:51:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793127090; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BhplwE54lJnL7E6NXanEAjE+GEbGUwmA4IJ0JXvAVZgbhQqHEsl+4HrwPi3+LqW1V9
-         5dJkYdS5bCub8vJiXKqlkVQtdGOmc5vcHwdranegRO0oatVSSyehPXssJS9tB36+HypD
-         mfFshcI5nGd9zIHjKMZr8HhqQBGMAnMogHFvetVhNsZJC0NZ4KwaRz91yQhHpONO0P0i
-         dFy/ApEdDK2PsztvSn5Yz8TEIpcR9Y37y0ImfaaOqu9tyB+GzNAaRzwc94vnjiQthWFW
-         spWH1Qm1CJtMB2z+IMPFX4QyQgHGBikF6S9PzEHp7d+7pfI3XqsR3Z7HSFeDVQR16TLq
-         alCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UJlLnl+V5fVkcEdrgjKFPN24Q/fJ++IZ4ZhlDmWxnT0=;
-        fh=JXaGyO4fI5POBC68YBpqm6N/PL7zcfY3Lc1PiM+a3Hg=;
-        b=NvV3r7PNUoxxe4/6eL0eI1BturqF1Jikyw0MxY+n1inrDBpcxgwnbUNmKaeLk1Vg/a
-         sCMioUJB6RUpbb1OSqIEJ66Rop9+oyZtt/dYU+zwSwvpB0tXDuOnjBXwPTPyIT6aZsi4
-         68Avn/Ioug6HbumQ2jMgKvhkmkQ/ut/NqbZF6VY8XMh8zFXWjwmsqSqxLpPYkJSaKJMI
-         f5ZAMZ4wjcjprPH4EA+72ZIFAjWimVMyTh7ls3eGgpVTMYFIYoea2qGeQ2C3SAB7hBWr
-         rPRNMFWsyyF/2j3DGPpH2slHIgWtNDJNQeLLXZvsLB/fCByb9UK5TKtqtM0Q2DMPwdG0
-         3FsA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793127090; x=1793731890; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UJlLnl+V5fVkcEdrgjKFPN24Q/fJ++IZ4ZhlDmWxnT0=;
-        b=e9no14pvf1BQFszbG6oHQ8xM7eWtCKUt6VZ4HFStxe42y1cwhfLDyPbnt89Vgq2jjb
-         wwZs5n2xRBQa9GFB1lzKarHBJyjoj1d0j2joYAQVPdDpqqAqLbPDuv3JvckisVpp/v48
-         NogLspZ1CrLgpYQ/vrfDsqgtkKUWl9WmxwrNTLxXZ9tDK/C9iK0BZtdp3qzZYBB3Zpdf
-         ZoORd7CU4FtiSm2wUKMzztSTvbGclBj6qZGRCV0l8RQ4BCoR3irgH5QDeXlh7xXRcIsI
-         BHnRLrlXzF4Xy++g6lQFNcM/6n1zEm+gAc7OMv7/QzLuMNJeYOGjgG87DpFtU3Dybx6S
-         GaYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793127090; x=1793731890;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UJlLnl+V5fVkcEdrgjKFPN24Q/fJ++IZ4ZhlDmWxnT0=;
-        b=yoWaEtglS5VrHAFofBP4XAJYL8BPmWbILewI81jIcw1q1qrzV8rY43tzbPClYkop5n
-         jjCEUjrh9jjXAEoK2Yg/EWahGrxkxN8ike8jwlQfmHOeaGg284JKcVZKV/7s/H1hW8e7
-         uSXKH4QAnaDrKxBSBQ4eIEoKVqSzelfdTJEQyUx3zeMcactg6JzTEwgUJSVnTD6GOSdJ
-         Tk4mmTepUPkQozV8uRuLXnNZWWIrkh1b5JD8KY/qIOAgR0SMFE+ZkV8RNtdoFJMMl+Om
-         XVi3Kd28zn7ev34qXsEu+Kcw5B0ypdQqixHgtN0xHZx3q1qgZSc3mgVnH0Z+EIrvk38n
-         M6PQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxC5MpJewtPeRkPyxQMwS2/FlgFYDFeZcxtfswdAZ1YTS242+W3fj+l2/89VzYb14xYwMguY6K0Bg==@kvack.org
-X-Gm-Message-State: AFq9FYJufiyZkADXBZUJgqiI3Et6iqzrSSugWHp36DvZ9CVbvj6iGCAV
-	X7rcXc/MpxoGIvczytwkHyAYz77TAKGt4cXBD/2RmzvfXby1zE8BqsZ+TF+BrZwZwOfA6E2OQBf
-	lF3zaKYVty/278wUx3seIh62WNUx3h9RcB3W5LL1T
-X-Gm-Gg: AYBFou2YM7h+tDLhTw2SeN+KYzZ5xqeEhu+5ti5eiMpWJ91dCz95SQIukBM7+nF1ozt
-	FEusar6WNyiOk10e/cjVg/Krn5gml9DrZ0sS6ZaXsMxEsAHqSojaeyNb5ynhuWJ6/fQMAK+0nGE
-	J8FQjjleXPW7+RTpVOt3Fz/YAabP0Nx3Xdez1rMgHfRq+lXSv7zeLpK1ecMMxqBi1wHNx4yW+j7
-	/fhWHpIO4J4/7ZHE4KhmNLTxI6aqEXsYG+aJ+/2qq3Dt4Ve6YY361ynBTuJLqp8M2p9ZJB08EzE
-	1SWwqXX60ZSEN64wVYcdi3sU26lDk+dLhHmf0kYyfTtW2YSJ0WlrAqgOFUiSaecohvI0AKJfr/w
-	hiMfoEJgZyKQ/p6lxTw7D1qj70y3GRPhE5kFVLRyzxTmbxQJ4KRvqFUDvBHVwpTxvs1K0N+LC9j
-	GpAFZGgTooL9pdvrxAcOJ4Ynqn2fww+zXR+sANqZfnNxrdPVXnOWM0xC42fhNrilKRvv9ka8tSE
-	R+2NF+qSZ8ydMUTY+G3/KgWLrSxbWRY9w==
-X-Received: by 2002:a17:907:a08a:b0:c41:8e21:4d5a with SMTP id
- a640c23a62f3a-c49bdb68d78mr15531766b.5.1793127089381; Tue, 27 Oct 2026
- 11:51:29 -0700 (PDT)
+	t=1793127218;
+	b=SCCEVRAcGDZDGyu8n/gJ3INcRYwFLni2zuZzrcstWz9xf0ZAQ/FAv5Q+QTxlaxBWeaspq0
+	Qa0B+xFqAV5q7UVdugGRRsvLqFGQ5hkUx5QIKGqhZY9UwpSnaaBYMFtU94P4RJDCIvb5Xp
+	LOjXVqP1vccRx042Fmpdt5bfBzRzcoI=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pStT7TGWHdqssNPhq/v2oyyWhJxUHT4HH1bgmPe0EwkTym/1diK9ZnuGxxApsdvjRdFbixP/WnqQwIg8L/GXIkf1vkkKcfrAx2pllhF9JNBaPdpiLTI547JuM6pHCdw6ctm7LTtJ1GUWKGJBpXi9b99HSilf5DgafF6NobwTbJfvnGETR6qwF1Jut9Zt7krLIWHT8Xdr4a05zze7A4n81bQ6JTFu6mjuH0zAWZ5MmF2FW7ZnisCEcVeiTc57WzuqDOOHH48qriiuL/vtf5+XmJVvJ7z8beDarqPtqqSy2NArlpio1Ouc1DOM4sYtjnYBfAG+3HJEAU225wbg2jmsZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hDlERQp3ezIZQqhJZEUQq8L4M6aQksTGqf2og7oCFPE=;
+ b=LSn9WnX5TOq+x32eTQvwGt41nv+WVHPjyyE0sr0AwsZ4ZJbqHTpBOJISaJTLvuDTjsTeF7cGah57ZriE3gkeawEvxkgFY3igvZHfu6G9lVVOmthwFvoUAU+YnM6jopqY1FBmn2kdsNePZnM9rRWLC6PAznroGUkeiEaZiDmDmdG37wZcX5B5Blu/UTtayC27l8BEK/4cYKM4Mc148pBQU1t004SZucikRUTMbW8052lKuOpkdswcvlQbHFghk+t+xV2G7XXkdtDbNDJQ0zh3KOfc6q6jJ/BhnxTBvzGOAKSKiCduU9ysz/GTt/H8hZSxezNbO8P9wLCvZnxks9vqNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hDlERQp3ezIZQqhJZEUQq8L4M6aQksTGqf2og7oCFPE=;
+ b=HMDNv+hXgEdR9Uo1aaVCmhbLpeiDA7gdMi5bJmP90MQB9ZPKLzj8V4QKHy03nmqbQ/ifoeaZ8ZRPjQjypbHdgDXJ6c0HhwmWXRlMfHeQ3h2LNYsunACPSaPkFqyOVBC+MLhzTHobs6RsRsvKCOvBSut1tL+LRpt/3CH+oveuk5tIGo8p9sE5MA4lamTkd4iFGEX2DNXJ4zKMsVYbAegBn+khlfK9t84kB0MHaQmTDovtu+tSHluQvDF/A/1H03KRzqv6Ot5YJRshayYARf5Ufu/JeH1luJiGAgpoYE+zYw7XXvdd+pHF2XCscyQHxPhsG92RgC3omIRXJiij72OcoA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CY5PR12MB6623.namprd12.prod.outlook.com (2603:10b6:930:41::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
+ 2026 18:53:32 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
+ 18:53:31 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+ kernel-team@meta.com, akpm@linux-foundation.org, vbabka@kernel.org,
+ surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
+ hannes@cmpxchg.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+ ljs@kernel.org, liam@infradead.org, rppt@kernel.org, osalvador@suse.de,
+ muchun.song@linux.dev, iamjoonsoo.kim@lge.com, anshuman.khandual@arm.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 4/6] mm/page_alloc: don't undo another isolation in
+ alloc_contig_range
+Date: Tue, 27 Oct 2026 14:53:27 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <A4D82AB8-F33A-465C-AE69-933B746E4885@nvidia.com>
+In-Reply-To: <6f5aaf2b-894c-4306-a0b2-e56f815d0a89@kernel.org>
+References: <20261027042204.3741307-1-gourry@gourry.net>
+ <20261027042204.3741307-5-gourry@gourry.net>
+ <a4fc92b5-7d99-49f4-94ac-89fdee699042@kernel.org>
+ <179310997463.2232644.3260379218896917308.b4-reply@b4>
+ <6f5aaf2b-894c-4306-a0b2-e56f815d0a89@kernel.org>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: CH2PR18CA0052.namprd18.prod.outlook.com
+ (2603:10b6:610:55::32) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261026215226.3713941-4-jthoughton@google.com> <10ab2f3b005f0df2c0a88e93e6917826d928bb1f82c6a645f942c099e48f8b6e@mail.kernel.org>
-In-Reply-To: <10ab2f3b005f0df2c0a88e93e6917826d928bb1f82c6a645f942c099e48f8b6e@mail.kernel.org>
-From: James Houghton <jthoughton@google.com>
-Date: Tue, 27 Oct 2026 11:50:52 -0700
-X-Gm-Features: AclHuK8M0uftDAMQJptfiH_zotg0NLNK0vqcV1a8EUqq1l3N0gBPNm3WO8H3TD0
-Message-ID: <CADrL8HVHCVoh3AToNzFCe7KP=yC8byCGCzGYzzBEGYtYNC4fJw@mail.gmail.com>
-Subject: Re: [RFC PATCH 03/10] bpf: Fail sleepable user copy helpers when
- current->mm is NULL
-To: bot+bpf-ci@kernel.org
-Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, tglx@kernel.org, 
-	peterz@infradead.org, kees@kernel.org, arnd@arndb.de, david@kernel.org, 
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, seanjc@google.com, pbonzini@redhat.com, 
-	jmattson@google.com, axboe@kernel.dk, asml.silence@gmail.com, 
-	James.Bottomley@hansenpartnership.com, mkp@kernel.org, dsterba@suse.com, 
-	mason@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
-	john.fastabend@gmail.com, jpoimboe@kernel.org, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, mingo@redhat.com, 
-	acme@kernel.org, namhyung@kernel.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, andrii@kernel.org, martin.lau@kernel.org, 
-	eddyz87@gmail.com, yonghong.song@linux.dev, ihor.solodrai@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 91E511C0006
-X-Stat-Signature: en5qdaxngkasctbq4g3gyxiekoh3xanh
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY5PR12MB6623:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec8ecf41-0a1d-4ec8-447a-08df345b9856
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|261026121527099003|4143699003|11063799006|56012099006|261022075727099003|261022105027099003|261021123027099003|10067099003|18002099003|22082099003|261026140227099003;
+X-Microsoft-Antispam-Message-Info:
+	HzprCB56KfCEDkpIEy+H1D/wgvK2jDR0Ebr2UVaO08fdGJ1hDwelMicFAnSuD9BuYjkO0qPO2qfzY9OpVxCjEhGFobVf+L4ePYbPufEbPuR9Mzvu3bH5abj38jvaZjINicTUcvQ7EdlHLKueyGgT2fNDEHG1prtkocCj9UnbISITdkgzjXaLzupIbpE51KpmbecLqtftLiQkaiNnViN4RlXKwrgLXgQ8aQVgxBbEfA7EZLjX9fz/hKUPNv5Lg17iJN92sLP3fPb8paHdc9hXIpgsiFvSzdJhUWsmtBp01guzaSVAys8CrdEybI7/KykONWtdBWvy4ivswxtFZZtF9vmfSNNpr5wUZv0GwhXpeDriH8cIEsfFXF+4sOejSlSZl/FIKAIgZO3Lko+ZbweX4GpG/WoSFWZBcZ++jUNfAfJlz1GgLXXYVT6gPFjW5aa6TOAZCFKia91Kv/PokxAfn05DeFacLs3puyc4ltqpti+PrriSJo4YWTIWN+bwkv07rEra6IwI0tYgt/tS0+RCxbZ0Yz6AcWflJO7jfTOX2JKDOXokNpnmWGzRrmT2a2QumqqXl99xXGFwpYiruJOPbJPA7bquzIaDEzKdmhwwvr6mZU1FsRlA7hFa6A7HNOJUNVgW2o1EK61Iq8B9T8UMuXBl/d1K3E4pS80WH1SZ1F4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(261026121527099003)(4143699003)(11063799006)(56012099006)(261022075727099003)(261022105027099003)(261021123027099003)(10067099003)(18002099003)(22082099003)(261026140227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4/fT7ZU96vwzO61undPANerpi5VOn2qMG1scJ/zoBy6dC+Koq5LLRMykDJJd?=
+ =?us-ascii?Q?Pre/Fm3Bv9rBsX3/DZcyWQzjM2O4tl6MfF8vK9LdiO41WEPbCWAy+MZLf39P?=
+ =?us-ascii?Q?DB8970HyTviBvsXGAXcxIAKQrOGxd194vtqvrMBSZcpVb5Mk8XSHXU+fuTkw?=
+ =?us-ascii?Q?3RxsG/eBMMhpnX8tFwVwnhCNYJ+cXJ0xlnVwEA513IuhWb0bOOG1ZhO097Vc?=
+ =?us-ascii?Q?QDXDo4b7yTePMXX7lk46DVHw3DWnGtwodrowdmdF3BoznjzROZvOp0PI9k2W?=
+ =?us-ascii?Q?aQZflMV9BXzKAoe08EqfP5vDgAOEI4pDdryfxs27o+vgYTQosbOkAX3FGOtK?=
+ =?us-ascii?Q?TAAtw3xoG7U3f4CQi3XlyEy82SYA44d099HaHE0dcOplPJWNWFGQs3xTRX4H?=
+ =?us-ascii?Q?/iGq3EMSmRJ3PaGDye6rshpOa4T1PhVxtV5XYXWXtpe7M8tLoYt21m6MOXmZ?=
+ =?us-ascii?Q?I3T2AJMvGIB0gLQIsPNp+vwEYWaaikIOo7/kqhIvo5iY1YoV+DcAbSet0ORw?=
+ =?us-ascii?Q?IpqqX6jFWoIFQrAbwQsSi5kCQ/v5A8/ywEObZKu0hqw5SB4ZVkJyoIkrVJCh?=
+ =?us-ascii?Q?4WGg9AA8HbPPIWhEb8mZt+riOOCVIiAcGFRcoeh2UAeuyDdDzLe4wh5nY45e?=
+ =?us-ascii?Q?XTDE6tzTM/MOfmhUqUN6Sjy8jrRcN/wjkyJ/avB8UpPC0rYNt7tWv+YRQBIn?=
+ =?us-ascii?Q?BWPgrXIH2OQ4QJXAgZXRsPbMcJ7wXfwLuOE8duKdf4E/4SK6celrK9D8evXi?=
+ =?us-ascii?Q?s9EJ2MDzw5A5Nrl96Deu454f/arUoV1LMZx8+iRii/7UJDfyELSCso0X8vG7?=
+ =?us-ascii?Q?I4QdKeYqbWfukKFK4F0cs78Frd+nk9oUs3zk/soKHPw3OxrAt7LUkvVIk9PA?=
+ =?us-ascii?Q?VNDjnRdAdm9urKQZ/emag4PfgsZgDrZPHPFXG6LabJMTrcUHTvl7bOK7hoXe?=
+ =?us-ascii?Q?0VE3Ho6MbmsnzR5Foy3MZZiqnCEbhQAx46dYxaqsdGPLjhu/u2R3/K+yu3ZG?=
+ =?us-ascii?Q?FG1+wZSCqavm455uDjMKSBsteMQ4hf6Wsesq244+tMH+Ui0ln3gp8Enw5DM4?=
+ =?us-ascii?Q?YZc20Xwplb3odBgLkWMfoVJp+klYstACqMKYsobMsB44O7J+4CFLJAMaOfK7?=
+ =?us-ascii?Q?qUYXCURvBGZYME/s/lrYQmKuN180BG/1X/XWCUcmWEeZ9SWsEJY5kH/Kf0Kx?=
+ =?us-ascii?Q?+KRHbvaC7dO4MyGNZkqcnc1OCGFfegn4Da+MJMtbWFxzhW78OBh1HMPnu9Xu?=
+ =?us-ascii?Q?4KoDpjvQxuCL1KjdcUAr7Qt9cJ7ycRgg6R5010ROzcC6fonheSMXHq3lOlb1?=
+ =?us-ascii?Q?UTdqK0Vn+52BUXt/gnfOBA0JfzTBa+lD9OBrzgkTqidFvLGhuV4EPn1NnFjd?=
+ =?us-ascii?Q?pyTYKBBFdGoTsTpjTseqof3V8taQjkMZu2ZQFLhyIa3WlswJ1aaow5vyVCZx?=
+ =?us-ascii?Q?qregNKWI+qYD6pQqCUTa4d7/si303MgBk05t5g1+dWtonCjVW8VYCSfBd2aS?=
+ =?us-ascii?Q?Qsm3FWWNM8IlGFxSRhxAzlTRdI6tY8SjQwj8i4vHrGo6VKubFfwTNGZyrq+a?=
+ =?us-ascii?Q?ArcVzGgpsODeDfFoDFNKnzCUD+2MDakHf01Om1GEIkyv6+jbTno7c9wYuXap?=
+ =?us-ascii?Q?h9Sfblwi3aFqR3LEF1OgF9GHHxrbRRGPahgfBMi4tWic/F0wJfuy6NlVohyX?=
+ =?us-ascii?Q?lA+j+Hg4sPiAbOjxDLD2vFs/zlfBJ93hHxoEuSZ3CrumjD7T4AsWAJh/x3VA?=
+ =?us-ascii?Q?65cFWnZ/xQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec8ecf41-0a1d-4ec8-447a-08df345b9856
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 18:53:31.3230
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wvaAbfmOsN/miY3wB9l9nY1Hlk45ILlcMgvkg3czQDDroCUCefZH0q2iA60cU4py
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6623
+X-Rspamd-Queue-Id: EE15F140009
+X-Stat-Signature: sfkw4biuxabksat3mhgxztfqzgn9q7st
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793127091-43432
-X-HE-Meta: U2FsdGVkX1/bt9C7Gw4LHZlfB15KdW9ZnqbS6e12Km7ndgEyZG3HV8N9YoIjLQXFRboBIk0qzFu1x/tWSOpTQGA/9WGABqnJbBuXQ7JhroAsfahLBgxRBRI7r3taX77i/r+DZlgmsFsPoQTPjdRoolZsqeJ9YQD203lQgh50DcDPWfmU6jAgaO3OAukxnSd/4SsH3ejZUdHZlRtdC9KgwjNHwJ3QuBUvLAqGLZVt0966cnLm+vS+Yq7CVRFUziu75tfdXwwxketpEvQSZQTdPKggZIulNAqZG78ayxeQOuciqgoH46oL+PfjX0VFiw5SVWm8a2kkRAKHkT/Dq8SQYXRzwA/b9AmDNxelV3sybesivtyte/o+iVobQ/wUg7R1/Abc7GWtIE97u/4699vihwgJBdsIg3K4ReXcW/7PofU1xjWkt/1nqmYW/HHZMa2ZGn1Zz8JjMKZbPET7IIJ7paJfqyN5jKpDTiOZ/RAi+4VejVjDTZbeBEVUE9jXwjc9WK55EFtjr9W9k/a52T10MQfrf5oQcNgvrLawXB7lCz3vzijRfznuBvy7fN43tAHmFZesHNVnAaScRZrfmXnZ1QNXXwKnAbrS0nAT9xp1goSQ1lbLBC+OHEisDFvy9J7KdIn916QYpvZUwmuyzOQcgeCb8YzRJwMLPZBm9YArgkuSrHCX7sDMhSEe17AdhSWJUw2wvqpztwNdGDhaSCjn+qq/H9btkAA35A3dsWqb7HCThFAlOu/uA2itxWLTNuObiNv9vUgv7+ODpzgcg/CGnqesgNjQvjEZ9cX9+1yKF9fSr9SzGlM4uSsFw6WFvlHOtRdX6CuV/I6u8JjMm/2bbeWWiympt+7OeFNsoyeCyj4BPJNDtCOF2qYr1awilSJJtrifsJzoa2QOMyUJx305xwU9Oj1vnzDDxReJ8CmtrxwF+9+8GeQekgu72436Rffm8EhiPmgX9c3lO4LzcHN
- uLihxRmA
- KusSFZ0EwRzJEaz8nWjCKXBUs0yx6CA6vNVoG7SounozkxbCjgIdOhld+XPIDf5TCYfvzYXvlEMVxFy5+u/xYu86V4MUPq98LCuuiZ0Xlk15we40u9CWyvmnFgF4Kuc/Gn2CAnS9hQjyN9JwyM3D7v1URaE6UlVEX2f0f3Kbmni2c0VDA8qk3AwAYps520kwaVCsqQIWZ+k9HorQQe4xmC8MJbK4ouf6Z0gIUKhEy7AGIxxBa2f3c1BNKjOC0kMz30Byf9PvtpG47/zRKMDPgH9w7H9bOTJ5uP9SutefgbHJz6NJkrKNE1CPiJ6ORVbjL+RXsCs4sebTL07rZ1+F4jzeFW+r5EKnH+1Qa2Ii+CwBmdxQysPii+xiZlgxSZceOxEbgyBxD5OGUq4kD8SOsHc2ftg==
+X-HE-Tag: 1793127217-944309
+X-HE-Meta: U2FsdGVkX18OWDNW9eQLhW+LhuDdFz/bfkGt0Of/tbtgnQG/hzSN6ofrYEURgM13O9rWQtWsX3mmIADr891JJNwsQkE+3ZVc2y5cdByERkI1axqffRCRKwhGmsClHvY7t4mTrYxrS9VpMTXYUMNDXiyFJUzF/3kRa8xigGz8y5TgSS5hIFBt9Ru3I/fCMhutEDfJQpCw9uv56c08gsf75VKbR4NcCtMAnyyTYtMqCJh5UCdmqXjpaYfkCCZojMRHmVoXJkXnHcXupMIzJDJk6W+SsKNUoe//CFXhUz4Q69j1JN5rL5JkNEaKOIfEjylIv2Jr4kTBmCM+/+gFRtxv0NEzoWwaUHCrGorvuMAglU5hdn+/Z7SpftN9UrgKlBQ7bO8gZTQBG9iDcBeHX4cMY1d8r4X6x6M5rbuHoOPbV7XtP1hdFy8256L4xMmSYQ94nYLnVFO0tok101AaIDkR7EN0X/WFJR1HFu3wQCj4QhulI2kBfA+dKU4FbywlwLNSlNoV7qXud+LXyMjcgPUFV40dxz+5RYxSM0Hj459TJldLA9grFcGHRlp89QaRv9rUObOMxRNqtF4cB4yTPcrqFZxlMQINpFN4GhbmSNtMGKqwM2Svp2f/LexX0JTqH3pUSJYE/JS1qVq+LcBpSzV4bjLItP64/H5silMcBu9E+uyWBv7szoXN73FNrYOBCmDUIktosk1JgMVyBYQNWvITHyLI3oipNtf3K0rsEN2Y1BJCvqwI3+Mt6O6ZujsaNxV/3fQ9whYfTO9S+Ij//J03ihnodReDYFrmqNo2z/EiMFowUsn86iCtPYs2hXe1or/rF+mn0ZVa9dYQiB5eYjSApyoVw5XgnQTV4ewwwfhcmuJgJcH0ymN9bgQPmIh6x45O9q4JfrmAa5QFUIdvFSgR98nHCo7f3/60eLi5ctnsZLvqv5E8ou48Bj3ePdfQPRJ9BizVtTJR8nJHa8SXXBO
+ /GlgkJvn
+ 3O6ZNfmdCS7LYrjwHui9Zo0tsV2j+vs24lxcHySLwcgU6yw6AyhFoZaw6NfIo5nxbM8/6eLQi1awStirdhl69k/3Iw3o+gOVLxju7Pkzj0T0PzHcSr2HX9QW/UcCRqB7T63rjiloxlI7NVztIpdfZ30BhMztLeyu3ke5YuRazS3tc3bPl1xpeu/Jla+gW9wLVIZeCU1JiiHJr3kIQBfCuwbUe5J5YNrWQdDAftfQagtrPK8eOv6hCIoV7UN67OsTa2Dk69VOEky94vJRLWgDfps8XUPfdaBum5ayG9yt7b6bOmO2Zp/+QmOb8zXfSFdBmspeMR9GxSW+LilHN6Xj4Fjb3g61PgwWJsj/+1GVyeaxptTXxwWJzI9C5CY2P3NBx5yD2We2D81cM2g7VZLgPZ0ZzEZreAUu+E3HLZhidCmcNjy4oYlRwu6Nd5U1PrpocPcYRmNY3xd6DzubulyMMUuZ2rerM3shnJ/bPy+d8WB5Hk+A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,112 +173,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 3:30=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
->
-> > bpf: Fail sleepable user copy helpers when current->mm is NULL
->
-> TL;DR: Commit message only: the security_file_release() example of a slee=
-pable
-> program running from a kworker looks inaccurate, since such a program app=
-ears
-> not to be attachable there. The fix itself looks justified.
->
-> > bpf: Fail sleepable user copy helpers when current->mm is NULL
-> >
-> > Sleepable BPF programs can run on behalf of a kernel thread, or of a
-> > task that has already gone through exit_mm(). For example, bpf_wq
-> > callbacks always run from a kworker, bpf_task_work callbacks queued
-> > late enough run from exit_task_work(), and lsm.s or fentry.s programs
-> > may be attached to functions called during exit_files(),
-> > exit_task_work() or from kernel threads (e.g. security_file_release()
-> > from a kworker running delayed_fput()).
-> > In such contexts, bpf_copy_from_user(), bpf_copy_from_user_str() and
-> > bpf_copy_from_user{,_str}_dynptr() (when reading from the current task)
-> > call copy_from_user() or strncpy_from_user() without an mm. That access
-> > does not reliably fail: the user half of the address space belongs to
-> > whatever mm happens to be lazily loaded, if any, so the program may rea=
-d
-> > another task's memory.
-> > As there is no user memory to read from in this case, fail with -EFAULT
-> > without attempting the access.
-> > Fixes: 07be4c4a3e7a ("bpf: Add bpf_copy_from_user() helper.")
-> > Fixes: 65ab5ac4df01 ("bpf: Add bpf_copy_from_user_str kfunc")
-> > Fixes: a498ee7576de ("bpf: Implement dynptr copy kfuncs")
-> > Signed-off-by: James Houghton <jthoughton@google.com>
->
-> The commit message gives security_file_release() as an example of a place
-> where an lsm.s or fentry.s program can run from a kworker:
->
-> > (e.g. security_file_release() from a kworker running delayed_fput())
->
-> Is this example accurate for the tree being patched?
->
-> bpf_lsm_file_release is not in the sleepable_lsm_hooks set in
-> kernel/bpf/bpf_lsm.c, so btf_id_allow_sleepable() rejects a sleepable
-> BPF_PROG_TYPE_LSM program there.  bpf_lsm_file_free_security, the other h=
-ook
-> reached from __fput() through file_free(), is in untrusted_lsm_hooks rath=
-er
-> than the sleepable set.
->
-> For a BPF_PROG_TYPE_TRACING program, check_attach_sleepable() requires
-> within_error_injection_list(addr) (or a syscall prefix when
-> CONFIG_FUNCTION_ERROR_INJECTION is off), or an fmodret set with
-> KF_SLEEPABLE.  Neither security_file_release() nor bpf_lsm_file_release()
-> has ALLOW_ERROR_INJECTION, and the only fmodret sets are in
-> net/bpf/test_run.c, net/mptcp/bpf.c and bpf_testmod.
->
-> That suggests a program attached to security_file_release() is never
-> sleepable and cannot call bpf_copy_from_user() or the KF_SLEEPABLE copy
-> kfuncs.
+On 27 Oct 2026, at 10:13, David Hildenbrand (Arm) wrote:
 
-Great catch. Yeah, the examples aren't right (but the fix is still correct)=
-.
-
-> The fix itself still looks justified, since bpf_wq callbacks run from a
-> kworker and is_async_cb_sleepable() is true for them.  Only the example
-> appears to be off.
+> On 10/27/26 15:06, Gregory Price (Meta) wrote:
+>> On 2026-10-27 14:37 +0100, David Hildenbrand (Arm) wrote:
+>>> On 10/27/26 05:22, Gregory Price (Meta) wrote:
+>>>
+>>> We have an existing AI fix for that as well already handled by Vlasta.
+>>>
+>>> I think we'll have to establish some model of "ask David first before posting"
+>>> because otherwise we just create duplicate work for everyone.
+>>>
+>>
+>> Yeah, this is going to happen more.
+>>
+>> I've been sitting in these patches for over a month while they soaked on
+>> hardware getting performance tests.
 >
-> Would an example that is actually reachable keep the changelog accurate?
-> For instance, bpf_lsm_task_alloc() when kthreadd forks a kernel thread
-> (current is kthreadd), or bpf_lsm_kernel_read_file() and bpf_lsm_file_ope=
-n()
-> when a kworker loads firmware with kernel_read_file().  All three hooks a=
-re
-> in sleepable_lsm_hooks.
+> I mean this fix here is really just independent and shouldn't wait that long :)
+>
+>>
+>> Maybe worth a private tree we can rebase on regularly for these kinds of
+>> un-vetted/posted fixes to see what's coming?
+>
+> Maybe. But if it's just us core people we can just talk on IRC etc (like Zi did
+> two days ago when he was about to post something that I already had on my queue).
 
-I've adjusted the first paragraph of the changelog to:
+One idea is that maybe Sashiko is able to identify patches fixing
+the same issue and does some grouping or tagging on the website.
+Or send an email about it with a lore link.
 
-  Sleepable BPF programs can run on behalf of a kernel thread, or of a
-  task that has already gone through exit_mm(). For example, bpf_wq
-  callbacks always run from a kworker, bpf_task_work callbacks queued late
-  enough run from exit_task_work(), lsm.s programs may be attached to
-  hooks reached from kernel threads or from exit_task_work() (e.g.
-  bpf_lsm_inode_free_security() when the final __fput() of an unlinked
-  file runs from delayed_fput() or from exit_task_work(), or
-  bpf_lsm_bprm_check_security() during a usermode helper's
-  kernel_execve()), and fentry.s programs may be attached to
-  error-injectable functions called from kernel threads (e.g.
-  btrfs_should_cancel_balance() from the btrfs-balance kthread).
-
-I think all the Fixes are still accurate. The first Fixes isn't very
-obvious; re-checking it with Claude provided a pretty clear
-explanation for why it's accurate:
-
-    This is the subtle one. In 07be4c4a3e7a (v5.10) the sleepable LSM
-    set was just bpf_lsm_file_mprotect and bpf_lsm_bprm_committed_creds,
-    and both always run with an mm. The LSM examples above only became
-    sleepable later, in 423f16108c9d ("bpf: Augment the set of sleepable
-    LSM hooks", v5.11), and bpf_wq only arrived in 81f1d7a583fa ("bpf:
-    wq: add bpf_wq_set_callback_impl", v6.10).
-
-    However, fentry.s was already allowed on any ALLOW_ERROR_INJECTION
-    function other than __add_to_page_cache_locked, should_fail_alloc_page
-    and should_failslab, and that list already included
-    btrfs_should_cancel_balance() (called from the btrfs-balance kthread
-    via balance_kthread() -> btrfs_balance() -> __btrfs_balance()), as
-    well as btrfs_check_node() and btrfs_check_leaf_full() (called from
-    the btrfs end-io workers). So bpf_copy_from_user() could be called
-    without an mm from the moment it existed, and 07be4c4a3e7a is the
-    right commit to blame rather than 423f16108c9d.
+Best Regards,
+Yan, Zi
 
