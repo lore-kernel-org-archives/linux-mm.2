@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D055B606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7351F606A31B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BNoPTNH2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VASw8a7/
 Received: by kanga.kvack.org (Postfix)
-	id DAC616B0749; Tue, 27 Oct 2026 09:37:13 -0400 (EDT)
+	id F36A86B074B; Tue, 27 Oct 2026 09:39:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5D476B074B; Tue, 27 Oct 2026 09:37:13 -0400 (EDT)
+	id EE7236B074D; Tue, 27 Oct 2026 09:39:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C28316B074C; Tue, 27 Oct 2026 09:37:13 -0400 (EDT)
+	id DD6726B074E; Tue, 27 Oct 2026 09:39:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 99B266B0749
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:37:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A2531C43F2
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:37:13 +0000 (UTC)
-X-FDA: 85368507546.18.8108720
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B14696B074B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:39:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 456561A09BB
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:39:02 +0000 (UTC)
+X-FDA: 85368512124.21.54ED0F3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6EFDC100007
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:37:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNoPTNH2;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 882FB80005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:39:00 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VASw8a7/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793108231;
+	s=arc-20220608; t=1793108340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xeh0h8/al9334KMAYnmna8mlBpnyruhKQ6eKh9bOxag=;
-	b=y05KZB1iUDsckZ92PmG1nOLcUMvVbZ7mgZ1xADoMd2oZl/qZm8qefdmNT241OplrlI3CoR
-	UtPYfX5kCTgey1Xm6Qa2aVluYYChYRUMwaUnblekYmMSb/oMJkE0U/GLIyuYWmwTpTr24K
-	g8NXDPChvQJLTfD/WuCEtr+XDbrZtsA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793108231;
-	b=tLxkra8OOnE1Ilcd7lwE8b2DLTzvAimGF2rGDvUdCrITKef1IRjHakzClwLzJHTeiJNWjR
-	Yrabc0Wyhl8tgRLIrsDltYtaY2TYiPf9CY81q7SPPCkZrIk+emRX8GKQaSiADYRoZNgp3W
-	RFmWUob197lXcQfgtco5efTuLLbkYTE=
+	bh=eP/VlP5fifIOIsGnDSJCoqWaClRY4R6jN0i/F3KlPYo=;
+	b=ojUlHd0OhiA3XIgpEIEtWxZjHnhcSLKI/i3YVjlI/1YxNqTmCi9KaT4r3iy5b/u+Qyu+cu
+	+yKilWxIpy94ZOaP0gZOm03b75szcGtsqLqH/inHRTFZDK1ktGlVRsOatusP4XC0AYBFh0
+	zEKeozwuJOx6rBwM+0kEE1DjyskM7S4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNoPTNH2;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VASw8a7/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793108340;
+	b=gIgMB/mUU4lukEaIePf35n6rBoqH9GicQ2VI3Ofp/72bMDwB5Gp6ZdIw2wo9e6VwXMfujy
+	7Um8wbtW6EQrBHoT/xtTBstLFqGgHpvudk7YamTeoaXEI7vQgX/855Uk3bv0Nt2VE0XF7U
+	4bXRW40W27Ek7HzpHfHpQ8HTI6I37sg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CEC84601FE;
-	Tue, 27 Oct 2026 13:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAB21F01825;
-	Tue, 27 Oct 2026 13:37:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C49A660211;
+	Tue, 27 Oct 2026 13:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489891F01829;
+	Tue, 27 Oct 2026 13:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793108230;
-	bh=xeh0h8/al9334KMAYnmna8mlBpnyruhKQ6eKh9bOxag=;
+	s=k20260515; t=1793108339;
+	bh=eP/VlP5fifIOIsGnDSJCoqWaClRY4R6jN0i/F3KlPYo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BNoPTNH2mY6hAGlBSJMX1nCiPi/BoGcEcnnfFq6+h+wDjw1G0y3hs+ebQAtAiOELD
-	 yJgwrrd+Ds0GpFEn8jauqMs8Ehpf+VQDtoj4/b6jGVizI7Ad9DgH0pv2uuAGGif266
-	 OEHVIx4AvTC1axwF8GssWq1nVxDxxYHCzUnB9V7JIgH/pNrP9bqVUhtnJW/Ac4lRbX
-	 fIDxYERC1b21qEqhiEx+KpoEDgSx9BuagIKuqrxTN4GJvtB90vSRNFLEQgrldSHxxm
-	 LsT5zfRiRhFmJ0HPZLYF4fdDqnqwgIEqAH7zIVU2uyHIUGvEyYpQ3IINiIuWcUgelT
-	 o6ASz9eiq/Z3w==
-Message-ID: <a4fc92b5-7d99-49f4-94ac-89fdee699042@kernel.org>
-Date: Tue, 27 Oct 2026 14:37:01 +0100
+	b=VASw8a7/5jcGyFhoJScT9XjbHReklX5yiUSfTG4A2q4yod4g6QT9/IUaeEs7b5JS2
+	 lgFRQ0HhNb1tSz1cBuWVp9r92zhDA+IMGXGaljVYz1J4gmODMiI/WOp/Azxo7F584B
+	 qU93QNYU4SfItBznQ2/Hvf2Top2U0zb/ea1S3Q/4hJesAcm+5NDslrgUh4rhQanbhx
+	 2pMKsbR+x1oWldIOxLGxZQI5JeVxDgZkZlsaIRF1jNjwoGlJ8B0MCIIe88vHIqb82g
+	 ZNyYTy4oBoxw82vv3tGkS8+x7Tld+Gf4XBps3FkzwZv/XBp4T0ifteuiC1qct41yBr
+	 ZMK7s0iMp/vEA==
+Message-ID: <f4fa7ecb-f4aa-4412-bf1e-049c5761407c@kernel.org>
+Date: Tue, 27 Oct 2026 14:38:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] mm/page_alloc: don't undo another isolation in
- alloc_contig_range
+Subject: Re: [PATCH 1/6] mm/compaction: wait for pfn walkers before poisoning
+ offlined memmap
 To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
  kernel-team@meta.com, akpm@linux-foundation.org, vbabka@kernel.org,
@@ -77,7 +77,7 @@ Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
  rppt@kernel.org, osalvador@suse.de, muchun.song@linux.dev,
  iamjoonsoo.kim@lge.com, anshuman.khandual@arm.com, stable@vger.kernel.org
 References: <20261027042204.3741307-1-gourry@gourry.net>
- <20261027042204.3741307-5-gourry@gourry.net>
+ <20261027042204.3741307-2-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261027042204.3741307-5-gourry@gourry.net>
+In-Reply-To: <20261027042204.3741307-2-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6EFDC100007
-X-Stat-Signature: pdotffsqzqexbbpuw18oxpn6f8thjxwd
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 882FB80005
+X-Stat-Signature: sqhyfpo3hja8sq4yi3qqdwpwnifhtq59
 X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793108231-537711
-X-HE-Meta: U2FsdGVkX1/bm5q5Baj4YaPPSUbzlyzniqEW7oN32GHyHRGlCMMzIq4bZ81C7bIiDsIP3krRodeS+9QP7i3+OVWqdgrhsZrQLwkVYSjbcTHBoeyRicFEHxbibXoQ7AcIwkwuKBkEnR+yIlzQaDja87dmn6sus57FqMvC3uxHRj7eBiJcIdQPyKIX2ZQyeja8og47j/RJ2PAI8U7Z5HlmLArWUs7YSvyS3vp9JyHHVlJuNw7wRNyjWG+ll0tH3wYXOXIuFpWqFhLmAazh3GXRvHshn4N8QuCqpvGqbc9e/cy4eCADn+5EinyG49t7aPX1sxlmlXN9XyXeRyoanGpNxoGm772L6h30TH4AbcfN3mNPWRyF5n+1qoiWQQTdRf6IHM3ikDsWZbWORm25r2IQNzAFwwrAox6OVKRMY18Re+J9eTONOzJ29k2Z2Ay+ACt87mqhyU5T+FyuOCQv2cIpWXamc7Ppl/q8kAwKa9R+fcquytnm+PZJmpJSPORK5P9mETGSjeAMSiB6rWe5TZ6Y1o42a2cnUDS0kK09i8Og2EjFUFonwSwxHhzxMEzC9wwbh2n8SxfI4zz+vTBLO7JeyFzOkLbAKsZg628E9O6DySPrCRjKVyCMA67pi5FVR3v0eTf4VLEKXoDm+Mdg9DPEg1JsHCELIcECHKZnAjb+9sx2+cNtDsIG7eyZu2IFqDJb8GpHmL9aznhRwbqEUhTCedceRDxmWctG9mYuxDeelHUTYT/Mlk+uvkQnPa/Z+1rA44xu/k66GLZhzo3NAyL1ZaSdsMfwPGhRpeMnoe5QEuBxljUXV4q6Kt6JF7emGxAVYhS4bTCMAwBw1cf2RgP3mHex86t4IGoHhVU7Mab9oTXVNKwcKUOgIETZFZo19Wcu8ho6SfcYdQq3NOvaglFGSWdYl5ZIOnkvXzJL+AAsig0tKRQJfRvfxzDzekdUY9BHkmNoNpmy7XsX5t89Y8t
- Xuk5bcwk
- kqz0RdwYY3C9epcbr+o1wsRTRBS+YYC6J2UjeWXK6Djy39s9E/2g2gwcNJxb44FfCtcIKu5r6qnfH5LbRQDCEUA7SuJ4bNlEl9c1ZKMxlF/VfME7LbEIsg6SNNYR+5fQkuQFnp45dUZz/ZObjj+RME1LznvJrNNF8WgGfpKO3zXDV5iMaee0p6EqSGVe/dVQ8oud5oxCHcgBQcL55lgTIVVE/ZxNhVUgAy8pvt2BYYhwYkkZ1YW+In0cqVexJrr/iVccoQXRSYykUClt5OrYtnJ00dnIsCx4Fp5vnFhf/boKohXhkE+tO81X7TTwbwm96v04v0ePfnN9l5UvkFXVgouUhOCVegvEigHjMq4sjPTMQgoM81EEAEDxoECqBnHthyGVLOpveyu/gw0t3C/KlKPEzPbyBEcc7r+9/lj9EE2K9gidofxx71YjFLeQie0bkLL/NOUeS4I8Fyi4jcpfbr7620w==
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793108340-66542
+X-HE-Meta: U2FsdGVkX18Url3vFFuepTJgEuTea5GfyGOtDljcBHqhY3keXk1thYYlVtl2s2GMnsDH02Z9Co1/9Xsp/QPLstyJZs+GzzjpzAoMvOjZ4uZ3GNmiec+A35IvIE3tXW6S53Ol7ISgSh+RhVpC5lm1hwm0XG0+aK7OiHVQcXSsNZot3ufucpuikh6ZN/gKoQg1EqqXuFINabU+CC5CQ9yY/F3HunpZNkmEryj+l5yll/lNqwaQ/6slQZNMZrtzJnDKEi1rL7BlkW9s+I8Apu5GHSitSxCGNQSqdfrue7/By+9rJ4le/3NR0uYSufsYLXLJH2UQBy+j4cMRV6yqN9zNP/MVoyYoRxvY5uitM239LiWBi89f7X+V3t1o4KFnE1FeKAB1yh9QFzgK+kbFezIi3qekTGDwdDvdGucQpFqGe7Nrv6MYPdEB4i1ypfyLSJlM7Y8KdQvw/I5KG3sy+CrJWA1po62WOolswuEA+4lEnItr/mmFhINtBE1QiMrl/MUaBsRu0V+x3gie44uJhUi6ppYFjfS3Pyg+YHF8lQSUA9uPbwo7MaFn+RDeeS0ZjfKPxFU4FVLDXmKLaCSV2Mlc1Z/jz2z0+WeguARodpQdkr4DPkBILK7u7ckWdRmBMe7hSV+353mP8uwynzHw7Qwgo/vXqK3qslzUKcOxuxwv0lOLJ27rgdJKBnb7Iiy0VNk6Qhnnr9PktTfZ7FWXRKFi3eidkuxKrCYAmlCEkCueHiZAhdfSKEddtWL8mQSXK+Wja4xzLiHYRQtZoQcDWuu8+gx0Ti09d9gEvpc/jj0CqPw8DgdGwKfoWDWlV9tVdUCNkHxdFqYaFuK+OmYL0GQyz2vTXhB27ZKjgDq9xHDm/XofxXDL7N75aXwZ2jO6g+XrnQ41sG2wHvJFqsNzM0ksf9Ms1GwXgvhp3xh7fEw8m+RxC3PFUQXm0RHxzz60byg+1TISjfEi1A8NmDFSH5w
+ 6OefyeN/
+ uENEpaNHqAXSqb37L1nSlDMWLv0Z0z2Ulo5JReUKcjuY8LcrAruJ6pMI2x7mUZG1/WVZvh/jdYWmup9Y7FCCBGiQyIaO3ZNDGnjcdXOdKs5hoYyE061O74l/G28UKG53RmBNKVWoTb7LtnkEloEblXDoxEMyWeiuE5QAvZA1uxvtu9OZmX1xXjFiaGWO+49/aL09/yqsIOYLLN5pYhkvt73KPiTIAl4IagzztHPJVmPp+cL/WQLKNf9Ly8dpfxc3b5dLvAqh3ogs7U/nAnklKHisvtTZwCzfPozmLMQncOkrJbrpHjETyfmAP0en/UvyvWNKJ14k3rJDJVTFIzo3eEH1D8KhnWdeNqRvAyt/HDAlA2NxjZzTL6i5VGlSGxkMwKeWD+4yjLmP5uZbhLf3ALDG2ougn/RycjW+t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,47 +147,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 05:22, Gregory Price (Meta) wrote:
-> An alloc_contig_range() that overlaps a block going offline can leave
-> the offline spinning until it gets a signal, holding the device hotplug
-> lock.  When isolation fails, alloc_contig_frozen_range() undoes it over
-> the whole range, clearing the offline's MIGRATE_ISOLATE too:
+On 10/27/26 05:21, Gregory Price (Meta) wrote:
+> Compaction checks that a pageblock is online, then uses its pages across
+> lock drops and sleeps.  If offline poisons the memmap meanwhile, a
+> DEBUG_VM kernel faults:
 > 
->   CPU 1 (offline_pages)               CPU 2 (alloc_contig_range)
->   start_isolate_page_range()
->     blocks are MIGRATE_ISOLATE
->                                       start_isolate_page_range()
->                                         -EBUSY on CPU 1's blocks
->                                       undo_isolate_page_range()
->                                         blocks are MIGRATE_MOVABLE
->   test_pages_isolated()
->     never succeeds again
+>   CPU 1 (compaction)                  CPU 2 (offline_pages)
+>   pageblock_pfn_to_page()
+>     block is online
+>   isolate_migratepages_block()
+>     cond_resched()
+>                                       offline_mem_sections()
+>                                       remove_pfn_range_from_zone()
+>                                         page_init_poison()
+>     set_pageblock_skip(valid_page)
+>       reads the zone of a poisoned page
 > 
-> start_isolate_page_range() fails only on a block someone else isolated,
-> after undoing its own, so this undo only ever clears another caller's.
-> Return directly, as before alloc_contig_range() went pageblock granular.
+>   Oops: general protection fault, probably for non-canonical address 0xdffffc00000006a2
+>   RIP: 0010:set_pfnblock_bit+0xa6/0x2b0
+>    isolate_migratepages_block+0x2456/0x3c80
+>    compact_zone+0x1638/0x3900
+>    compact_node+0x12a/0x1f0
+>    sysctl_compaction_handler+0xec/0x160
 > 
-> With offline_pages() parked after isolating a DIMM block and a 1G
-> hugetlb allocation made over it, the offline on base still loops 30s
-> later in 4 of 4 runs:
+> The free scanner faults the same way.  A contiguous zone skips the
+> online check, since offline clears zone->contiguous only after
+> poisoning.
 > 
->   offline_pages+0x5b2/0x1570
->   memory_subsys_offline+0x17e/0x470
->   device_offline+0x250/0x340
->   state_store+0x88/0x110
+> Hold an SRCU-fast read section (pfn_walk) from the block check to the
+> last use of its pages, and make remove_pfn_range_from_zone() clear
+> zone->contiguous and wait for it before poisoning.  Offline pays one
+> grace period per range.
 > 
-> With this patch the allocation still fails, and the offline completes in
-> 3 of 3 runs.
+> Scanner positions outlive the section, and offline can shrink the zone
+> meanwhile, so take the contiguous fast path only inside the current
+> span, publish zone->contiguous with release, and keep the migrate
+> scanner inside the zone.
 > 
-> Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
+> With a kprobe parking the migrate scanner across the offline, base
+> faults in 3 of 3 runs and this patch in none.  Unforced offline/online
+> cycling under compaction faults in 8 of 24 runs on base and 0 of 12 with
+> this patch.
+> 
+> Fixes: d33695b16a9f ("mm/memory_hotplug: poison memmap in remove_pfn_range_from_zone()")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
 
-We have an existing AI fix for that as well already handled by Vlasta.
+BTW, the order of these patches is all wrong.
 
-I think we'll have to establish some model of "ask David first before posting"
-because otherwise we just create duplicate work for everyone.
+There are much more important fixes hiding in this series. And this change here
+would certainly not be the first thing we'd backport.
+
+Please create a proper series that only addresses the pfn_to_online_page()
+situation, without different, more urgent fixes.
+
+Because there is no way we will fast track anything like this here into stable
+kernels.
 
 -- 
 Cheers,
