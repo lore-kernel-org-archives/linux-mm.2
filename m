@@ -1,150 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F889606A31F
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 22:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F343606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 22:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=djmhDBOu
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zssZl2lz
 Received: by kanga.kvack.org (Postfix)
-	id 9728E6B0902; Tue, 27 Oct 2026 18:04:03 -0400 (EDT)
+	id 9F2EE6B0903; Tue, 27 Oct 2026 18:10:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FD296B0903; Tue, 27 Oct 2026 18:04:03 -0400 (EDT)
+	id 9A4426B0905; Tue, 27 Oct 2026 18:10:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79D476B0904; Tue, 27 Oct 2026 18:04:03 -0400 (EDT)
+	id 8B9486B0906; Tue, 27 Oct 2026 18:10:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D2FA6B0902
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:04:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C00FC1C446B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:04:02 +0000 (UTC)
-X-FDA: 85369784724.11.CB389AA
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E820080005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:03:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="djmhDB O";
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 683FD6B0903
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:10:11 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CCD7140B19
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:10:10 +0000 (UTC)
+X-FDA: 85369800180.04.EAA645B
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5FD9080012
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:10:08 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zssZl2lz;
+	spf=pass (imf30.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793139008;
+	b=FRmW5jpqGsER0G+ZOPMjqrKSqV9Ke6mcPExly6Dt0a3i3BNyKWKHxLnP8DET84LfRan9dI
+	Anh3mAdtlk7Ah72MDHeL7GqUA7mjmgAKW0XSPFMkMCUv7GK5GNujJ6eDrQHUrgs3cZOVLU
+	iyfrzfz74a+0Llh9M5HXRFtT0/cgSZA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zssZl2lz;
+	spf=pass (imf30.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793138641;
+	s=arc-20220608; t=1793139008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ra19lD8Crx8QohBcrsGmDVBKOcqDjMmSrSzcQ18M9zg=;
-	b=l9d67wp610XG1dAFt7rMPtKQcASIpKDJa9nPFMsyQDS8PM3wZ78c2sRaLKehqy/swL1pHb
-	/UWe7a3WsplbN4a55oBSLavxReUk1AysgQR8ozISap7bcze/3o82OJ+OsQn8PvYFGf4N0N
-	YcXXaLjMFkhM5ESe0M1BhHprchgMJZE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="djmhDB O";
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793138641;
-	b=wjkgu3Iwz0MUv6EASv/20K53TNWxAZqgVQ65L7MEZ+sXEaMtGlr6q+i/gpOvd4bOsdXuZC
-	NfwWtIUuUGzV11XC3t0WzwaYCdihEgIL2PGCJpV1sdVVVABqsfBvHUWKM3LLKxEj6NTINz
-	LOvWl4wpCf9XNQ5RPmXoFP0H76QOmxQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=Ra19lD8Crx8QohBcrsGmDVBKOcqDjMmSrSzcQ18M9zg=; b=djmhDB
-	OubPpTf9NhqXyoYINRrSPKiGvPUJ4NX+Hk8yVeI2HGGWmUlWyeHrj6vg4Y7v33xaIi+4+aZoIHNus
-	B5oUcCzCkFPc8N75CXJuNLV2ZeZvoMRWNlVLb1DVwfC7EqGYeYZjZaEYORE7EFoXy8jhyyNxaXuE0
-	dK6YKElLoKxfXNY7Rr3S8e01wCPNO30tunYNiVc9JNgy9uS6vf15q5Lpbh654jnbBz+pziF9n3lV5
-	RZJlwgzoO5f8pMWJDeUnJEXZNkAxXRkAxsnJ0FK8Q+WfHVWuH0NvM0bQ7h0qOqgG+Z9KwHNwDSCxv
-	uCk6byi3jwKieKYfnOkXolBr5qSQ==;
-Received: from [2601:18c:8100:a0e0:2541:b86e:2586:d219]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xLpFA-0000000010l-1L8i;
-	Tue, 27 Oct 2026 22:02:08 +0000
-Message-ID: <8131011db0b4753a1e3b02ac70abe1b1cded6faa.camel@surriel.com>
-Subject: Re: [PATCH 07/46] mm/filemap: don't lose a folio lock wakeup to a
- signal
-From: Rik van Riel <riel@surriel.com>
-To: Pedro Falcato <pfalcato@suse.de>, "David Hildenbrand (Arm)"
-	 <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner	
- <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng	
- <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo
- Stoakes	 <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song
- <baohua@kernel.org>,  Axel Rasmussen <axelrasmussen@google.com>, Yuanchu
- Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,  Baoquan He
- <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam
- R. Howlett"	 <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko	 <mhocko@suse.com>, Kees Cook <kees@kernel.org>, Peter
- Zijlstra	 <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh
- Dickins	 <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav	 <pratyush@kernel.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Lance Yang <lance.yang@linux.dev>, Harry Yoo	 <harry@kernel.org>, Alistair
- Popple <apopple@nvidia.com>, Nico Pache	 <nico.pache@linux.dev>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain	 <dev.jain@arm.com>, Usama Arif
- <usama.arif@linux.dev>, Kiryl Shutsemau	 <kas@kernel.org>, Matthew Brost
- <matthew.brost@intel.com>, John Hubbard	 <jhubbard@nvidia.com>, Peter Xu
- <peterx@redhat.com>, Will Deacon <will@kernel.org>,  "Aneesh Kumar K.V"
- <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Oscar Salvador
- <osalvador@suse.de>,  Minchan Kim <minchan@kernel.org>, Muchun Song
- <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>,  Chengming Zhou
- <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, Kemeng Shi
- <shikemeng@huaweicloud.com>,  Nhat Pham <nphamcs@gmail.com>, Youngjun Park
- <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>,  Joshua Hahn
- <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Ying Huang	
- <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, 	linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, 	linux-cxl@vger.kernel.org, Josef Bacik
- <josef@toxicpanda.com>, 	stable@vger.kernel.org
-Date: Tue, 27 Oct 2026 18:02:08 -0400
-In-Reply-To: <auDM5mvsb5ilIdsg@pedro-suse.lan>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
-	 <20261027-fixes_core-v1-7-6f74bec9a5bb@kernel.org>
-	 <auDM5mvsb5ilIdsg@pedro-suse.lan>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	bh=fT+qwxtE+A6GcMts/RFwLqPXWbldRP/ojd/gLikqx/o=;
+	b=8Vcz63ES2VAlD9TiQ80nmOGcATNFEl7bvmG4M59dzX7NGbvVU9BQ4VONxypSQ1yMq2vo/G
+	SOTBEuRaA3GT5jHDT8qQar0DfHbA0pYffFM9izarxJxSTbg93A7BBdqkMMj+wQhXfTkNtV
+	dG+9vU6v+8R9sOjXNYpX3R7tSnyRlRQ=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48e04773687so133774f8f.2
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:10:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793139007; x=1793743807; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fT+qwxtE+A6GcMts/RFwLqPXWbldRP/ojd/gLikqx/o=;
+        b=zssZl2lzLQjqCLzxGosARz4+hsia6rSo9QFsDbti82uRTWAZ7fEEz/aRS0+vnXz9Ko
+         kTPO35kKpJEZ5GikTIU7fGANz+nOUkfgLviiq/p8mxEe72ePb1SxusVk67FYJiSIbxGy
+         3NRBMSJlOsqOAztZbzXgY0R6U2n8t/blhrFCiHRE8OYsWElN9D2sdDVz1D+Dpat4C/n+
+         h7X1RTQIOhJe7rdH6EQqU0VRVe7x7HOsWUciasKi5geuB7uUuB5xPWQs3t2FM2lZrF3U
+         N8mLfKw9vs2/mj2HKuiOB2Fh6GBmE5jOCkeNrnf2pZKtECmvBpx166JL26DPG5YfQ1lG
+         kJPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793139007; x=1793743807;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fT+qwxtE+A6GcMts/RFwLqPXWbldRP/ojd/gLikqx/o=;
+        b=ALQSik0sPMNLHQ3a9OGBDmfy4BCoigkEIs5kyDDbog5+Z1jOP0ih3KvLbqNp7RRz8x
+         AdRYdd2vruFRWzS8yzzEmFNoJlX5LvjmOjULBt6teXUwQtAbzWJd4+zxhyaq6vpynpk6
+         RBAgSkTS1g2WjNYP0ItLv0SInh29qthLFYGthisa9WOxQrkT3Oh58WAFzakNlX/PMTNY
+         ryPd643VyLEKT+6d0FRbdTTfA/gB9/Cl/FQzPIdbCsbXcP2ugH+t4qFGrcRcBXIFT1GJ
+         vlTg5IWxodKMQN+pENnJbF7qwnItEBeg6GhdSlNtt8VEW3dm+2yKTtTfNnsOck4+B7N6
+         kXWQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzTjXnLEFtBw3NJMeNfJEJKodlcycghCXpNZ8mwYYTp3Tt0fcjDYqKtbb3ZKSCO1Qxuz3xw99LtoA==@kvack.org
+X-Gm-Message-State: AFq9FYJw0yQ7f4CUbqHC7Y4p055yHQr+U1wvNxpzM1rGKB8Kcy1KZTgh
+	wVMDujTdXFSEbmu0rJ+dAa8AssZd+7aa13Kf9nJQOY5F3x4ol9/xfAU2
+X-Gm-Gg: AYBFou2RKrt8wm86mlwSjVNyHjZITDwZmJ2rBXl7wodYAF0k+T5hMVGG90Z9I9fakcX
+	xQry0e0MM6U8sagxaFYH69E2DM+6ps4epoF4VdcNFx2NCKRfp/exWKsU99tLZ3QuNXLx8t1N7cJ
+	CM2NF6OFizhdUqWdfNAutw1R9r57+tyi+rCztha6/KxwueLfse17JKlzWLhW773A6lqwQ5TOdnQ
+	w5k0QRgSAUiddjGNlzJNCpSfqn+kEyerKfWaEAVwCQ6YuE/RCFp4FYTZHre3LpPYWJl95wArm7Y
+	h7DzjzlMlZT0jH2Vw7BUkNJWAnSRxnsTp4YCNvXALujjnlds0tRlRmvZOoLDbOUH/Y2PjsEG8hR
+	2lexm2lZij2+kou96kt/hu7Hy4RcKm1P4p9BaCwqJaVEcLuymFhXaV9C3OX259VKT/a/bHPbor/
+	0cwN49h8gT8dzrMvfIUv0EzufuONha4sF740UMipqzeo7UHmwJRk/N3N2npTHbnYuN0j2o4CEHd
+	lWn9MJmAFY2v7INFPVemS01Cnz8ZKwu/5slfThguhcFbNjhAzjo
+X-Received: by 2002:a05:600c:8b05:b0:4a3:5a55:f454 with SMTP id 5b1f17b1804b1-4a967202925mr5734215e9.19.1793139006789;
+        Tue, 27 Oct 2026 15:10:06 -0700 (PDT)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd3555sm24526363f8f.42.2026.10.27.15.10.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Oct 2026 15:10:05 -0700 (PDT)
+Message-ID: <968e7fce-a027-4c4e-8a3f-79ddf0b2ba9d@gmail.com>
+Date: Tue, 27 Oct 2026 23:10:04 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] fs/proc/task_mmu: fix missed VMAs when reading
+ /proc/PID/maps and friends
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, SJ Park <sj@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+References: <20261027-fix-proc-pid-maps-missing-vmas-v2-1-2791cc9fc95f@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261027-fix-proc-pid-maps-missing-vmas-v2-1-2791cc9fc95f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E820080005
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: ewrpyw6p1313kccf67988ekopyo3hmkq
-X-HE-Tag: 1793138639-101442
-X-HE-Meta: U2FsdGVkX18W9InShwoZLn/qXoqGMWOGgCt6UNS9qIWH0GYumt4jnSlq1zZ9IYKKB7o1vBk394gpRQLwmlTJVA0JsiDPQUl38DLzcclX467gc/rwnX+6z2+ng2SUNUnw8xmJz93vdRPXKoHG9RtPcY92XWTw4m9fXDM5MuZuqXcI7swIUaMCIyZPG9w1B0Jyl/QPU+ZYwx0PcJddzHS73h+siumnxOSix8kvL+wbH7Bm4TEdKOJjcYOPpCOQYMzu6otWEYPdf5DTPgXTRuoULuOV6atI5JFuV7QDII1/LnffOAtJAUG8BUTmgsscOy04RkiW36qWgVPPeUC+1HvGZYlmKmsR582mle68dZXABdhnozjwa0ExQwxhGbYwHaNK7ePW87NUW30a0S/a3+fCNghcf/z6XOcizqG115NZc7a2kv93ljyE4YGg15OjASMGzeatJYSopJW/MQEluiDvqJ1pZjLf9cpJG/XYacisSFnmLRQ69ZBQ48dVEJwsiYtpU/QEd4USid+x+x+cjasqNBUjDh8Wq9Kf9b0G/Afv3qwZhpayA83HUCG3S9gvEwU/tTeviKY4AQH/sm2ago5gsk7IpBgTBEYaZbMNMjipASuuo3Lgna1S65OqHMZ8RZkcoW/sdcFqkzG+bZYOdrPhgCEypPTfcGoU1LaKcRissAwfQhC2igGDw2E5Kzc42vXcLx9Yqxxkg54eFD+YKO+fc3suWCtI4NVMULILF3SP9uqEYl2wRGmjtmFjrtDOGz+GyycK7BWg2yfdsrcFO/QiPm2VWxUffthcCSNZa3KIaeB+4/PT7Hh6U30bhXTrPhh7/zOj9cGXFhigAYLcS87HWzoNsKsrMJMkqeGDo+m9SXIGPiCx+EENdBvCy+mC0WOvuQSYOW+bNLGr5zGRTptmed2+zshlmsMrXhzSOFX9SDdG14Pf1U0KhH93bJiHFMJBBjv4od1UhOqlKcC4o0X
- ycN03TR5
- 29L06bQdIRo6LcjPLz9k/ak+4+5go8X53jE27cfsstmIXPlJL8YVKHh39GY+XZgE4M+f7UHk3RmvJg5Xt/6iuRX6FkfiLCqH3qm7k20pto+NJwPu1JvddDqeO5nUxfy/X7Ws5Xkg236Ipiw3balSUKyu5D3mVMqCvpdm4KsvIQq2tplLS0uaOd+9e20WYIYJ7mj56pqz9r0cV8wGgTBllqsFZazNUGAQ8auze+qA3s0N2AuSmFtFzseHHlzBtfpzNcTUtQLpjP8f61Y9lSnmxyZpfPVh3m3wdXVwHS/LJZAKaEpzUafMpVeixV+UY3K/ogHqzn+IzphHPg+3xw78pGQi7eZ+qfdFCS+QrrC8Yux/M8bO7TbSLcn4Xi/p2VGblB6pVM3RQjFxdmKz2f4OPYqOTv2ff0GjR0CZW
+X-Rspamd-Queue-Id: 5FD9080012
+X-Stat-Signature: 1xzwjdf5ti8cndry9gf4hcyfb9dwbc11
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793139008-320794
+X-HE-Meta: U2FsdGVkX19qoaPrasNCGRx0AB8imHQHx9y3GmJQCW9moKwb9VGl/A5cSYvmRM0IR5ak3QqvIy3s5osyrEl636jsa88dPj20VzPtpP5qIyzHwc8a7goozkQQo4sWL+KFuRrM9zNnPq/IvgyxnZ3VRhcJAhaSmvXK6FpFbpEdtTKnIG+42m5j5a/MRxSejnc4XLOHqcT21FOjIpYRx0jF7mPggbnmKM2IqquFS+NRl5IjR8JSKRjBOJl6mBroGs0AenJF4nsH/FgcfSH7E15oUzRKq4ERd1SzBJvZ33aFp33kmLW5hBHTIXx0dWHjXPY2aCS1rb4+PZCPGIOigi3ey6neYtniSqMQSVoD+TMf02eCkjR/T9OskyoKTFfSrdOUJFRaePj8TylI2bzgvIvoaYNFZ14/l5QPzXifeS7zIlzwl5Q5KyqyCf0/U0rxvHvZ993btXrHBBO2hcSP5vcmakRrLdNanxtipizviOBfvjSiOL0UgaqoYVqaHBH4QqzRnpgwDgZmv5GjkREywQRXsfprNySmOrK0SA+xlj+zjdWtzI1J5ID7ypjE84cn3xMC+syenc8iJLhB53Up4H90jXp0HY0So3ZCHUEWH4O3q4u/aAgQjTzvQDDC+gi2oBo4W/Xkp2ujretwoa1iDe+cQfvcvreQdpM3H/xkmyw6hAqhDPC8E5rhqxYwp/vELISO0H2LgPcN/5HOGA8HUHGRBuJUupXDj92I6dP041iYJ0WakDZXgb6RzPH49UnOgp3bGXDg1X5uX9ec3CVJhGtnfM7A4FxYp2VkiVEAaTWICrEjSlyj63/FYi1oqOKuWGkCjlmNTH8fAZdXrFVZ5EH7FSXpNL1EzaJuEojMJHyYg7FrzP5JA3QWpnn/uXyBryOhdv0aAzcL9dvFgOz+4YDvJd8tR+D2FGbHdhR7VffDzG4G/utpGfgRHuaZP8KHIqB1cMJO80TchKJqsPSSbyh
+ 80kBl6Ub
+ wI6tmIGrM9YyUJgajjVZoQfacNvxREMY+5UDhQl+PY+br6ykhWLvrSVb9Hlf0iqLTZNhJRRDyy7EW2iE1j/D9vvNFSwu3Kg2pGIJ6GCHc8ozyDFZV5gdpXma2IWGmZr6iR0wGfhe7nHYq4CJh7f/fDDrsb66egSlAc7qj58iBidWDGA+Q5N5iP32iD9Lt4RH+Sbn4JzUa5KVIqovpavh2X9Q30PhKXUsz0vsjTrtf4W8DCgLn4DeDqXfP00XqFnGE2EfEc+7PGiZ8qip8wwHooeeKbBh2fRw8CLBjlbJ4UC0hzhqmKCarXNgYK12Az281cTx1YBdt4PE8jUAy7dbLbDMBn00OBmDju+3Ob8xn6aY3JsdYyy0ihN/9qCHa/hDUAobBh5P/OJOGWOtOdgzn5EPEp9VXfN95/rN8UiOihXPl11AUpq21smQdVgP0BNWinaCZMIIhfvXIBRr7A5UEC39ejHCqzFSAsaqUT9Eefkf5/UGGP6vrbI/xJksqSGiHWsGu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,44 +134,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 2026-10-27 at 16:10 +0000, Pedro Falcato wrote:
-> On Tue, Oct 27, 2026 at 12:17:27AM +0100, David Hildenbrand (Arm)
-> wrote:
-> > From: Josef Bacik <josef@toxicpanda.com>
-> >=20
-> > An exclusive waiter in folio_wait_bit_common() can leave the wait
-> > loop
-> > because of a fatal signal, then be woken by folio_unlock() before
-> > finish_wait(). If the waker did not hand over the lock, the waiter
-> > returns
-> > -EINTR without trying to acquire it.
-> >=20
-> > folio_wake_bit() stops after waking the first exclusive waiter, so
-> > this
-> > loses the wakeup and can leave other waiters asleep indefinitely on
-> > an
-> > unlocked folio.
-> >=20
-> > After finish_wait(), let a waiter woken without a lock handoff try
-> > once
-> > more to acquire the lock. If successful, return success so the
-> > caller's
-> > eventual unlock wakes the next waiter. Otherwise, the current lock
-> > owner
-> > will do so.
->=20
-> Has this been reproduced? I feel like this would've been found out by
-> now?
->=20
-I have seen stuck waiters, on a fleet of millions
-of systems, but I have never tracked one down when
-the root cause was transitory, and no longer
-visible after things got stuck.
+On 10/27/26 3:08 PM, Lorenzo Stoakes (ARM) wrote:
 
-There's no way to tell whether or not this was
-the root cause, though the symptoms match.
+[snip]
 
+> +	if (from_addr < vma->vm_start &&
+> +	    vma_rcu_iter_may_have_skipped(rvmi, from_addr, vma->vm_start - 1))
+> +		goto fallback_unlock;
 
---=20
-All Rights Reversed.
+the helpers make this a lot easier to follow than v1 :)
+
+I re-tested v2 on x86_64 in qemu with KASAN, as in v1. So, this LGTM:
+
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Tested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+
+-- 
+cheers,
+jose a. p-a
 
