@@ -1,132 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2F960A2600
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 11:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE500606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 11:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MXi70ByI
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=j/gP54Cg
 Received: by kanga.kvack.org (Postfix)
-	id 4DEDF6B05CF; Tue, 27 Oct 2026 07:00:56 -0400 (EDT)
+	id E7CB56B05D4; Tue, 27 Oct 2026 07:01:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4900A6B06A7; Tue, 27 Oct 2026 07:00:56 -0400 (EDT)
+	id E541B6B05D5; Tue, 27 Oct 2026 07:01:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37FB06B06A9; Tue, 27 Oct 2026 07:00:56 -0400 (EDT)
+	id D43776B05D8; Tue, 27 Oct 2026 07:01:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 18E156B05CF
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:00:56 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D74C80766
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:00:55 +0000 (UTC)
-X-FDA: 85368113670.04.C0D2F8D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7E5E940003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:00:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXi70ByI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A34A16B05D4
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:01:04 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 445BC409CA
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:00:37 +0000 (UTC)
+X-FDA: 85368112914.24.6F50ACC
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AA297100012
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:00:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="j/gP54Cg";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf05.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793098853;
+	s=arc-20220608; t=1793098835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iYbvF08NWfCm8zT3/Z6YZVWDxLXQALtM59UBUKduNM8=;
-	b=3eqf2mDL9J6bt3HTLxG3JSNcb7eTbQIsj4Zlmbhp5JsBCkfPlgAVUBylAS4G7sS0xiK6BP
-	8iTiUFFODpqkV6aJaeXPbvrz+5yCWRgThmGturr/6o+bLyGC02g3ltjWWDC/MM9AIX2uVw
-	14HWpMIl5Qx7EYu7Eai8GLywKDuHPFY=
+	bh=PY8D/fV9b7AqgT0EI/4JhIhUH5cTst9C5yyqz6dyWcI=;
+	b=HQmKp8ZKxafTFpYrkq4m21XNh0OGwQKqoEMV2zicf+OOTt9jcahfFRRTFWR8+xBLerJB3Q
+	xFfoAMH7JNq4tywEh1oZz4aF8zE7bbhYUEMzeRttxSFx+fnKeowBCT1yKkjHMV9B4EHqCW
+	NVFpwSsQVJWhj+ucACqAegBdZsCUHQo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXi70ByI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="j/gP54Cg";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf05.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793098853;
-	b=U0gFHhMb+nwb7qp+iAZ7JJgMPR62n7JOg16zUBqg8BMr2REhdXiw/DS+UkWEfhd0LHM5yc
-	Q5sFBc+cxxifdXimtcQP2/oYVdHCl5i309cERfGraOWmWpqFjRX/She2fCkWKdPyPaopa1
-	f36DQx+PZDBETDunLpBDflCr9HFFCUY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A951343483;
-	Tue, 27 Oct 2026 11:00:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A967D1F031E3;
-	Tue, 27 Oct 2026 11:00:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793098852;
-	bh=iYbvF08NWfCm8zT3/Z6YZVWDxLXQALtM59UBUKduNM8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MXi70ByIYNx77IpBcMisOiA+9HTw5hMBbP5PnuL7cKbARfcX2YXFB3C0Nb8UcfqNa
-	 W7Py7K5dxU+H/LWwf90HvhPlYti70w25ed3Bp0XXEM8yFJBsr4Jae0JcwB/LPddQBj
-	 wbowNiyNG+uQUPwXlzw25efd1WcYa5K8q9TIwEwEjBufCI3hm8x35zsP5yMFHCjTNw
-	 Fr+cX9g11qAge5j4vG2+CaxU+wLE5q0RxEbrRC3L0X1UUh32Yz8DPU0bfxHKZXbr42
-	 cKcoCYG4Q+EvbNRoEihL7XrPdCrZ1C4s5HXW6eSRescu4f3xtYyjY8jB9a1Ud29OET
-	 K3vcGXk5udPLA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id A87A5198003A;
-	Tue, 27 Oct 2026 07:00:47 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 27 Oct 2026 07:00:50 -0400
-X-ME-Sender: <xms:X4Tgak2R7XlAMxcuTmHRzIr7ez5GNzfvlc70VSppEbBPNEMAWKFcOg>
-    <xme:X4TgavBMDxN8HAJYhYhfI8m4xF2uNV9ZSAzubmbB7aMp-_f92eJf20VVeRqptRDxU
-    Cpa1N0lq_PxcAeagHDkZn-OkAixEYe-lWIifrOcDWbMx7lWKGKNDBQ>
-X-ME-Received: <xmr:X4TgaoeA5PmS20bEiK9t_Jq2sJ-hY3OIDNV6rg_RAdKVzRC1nvYEofvM2TA>
-X-ME-Proxy-Cause: dmFkZTEH5HcaTFB4/RSeaBPIM8m/gt3cZoCwfpNH3mXXlPR7GLTQw5jDkbvPewCqEOsVW5
-    cFwyaWOhWKFVYwv12P22aj+aNYkue0yC9RBewdQlwm3Lh3/GIwjOvZCoQCwESE22iMt+rh
-    K9T29xYowPMV6PoNNSwNRKOg9HnvGZjwlpo4yoYgKeM1P/BKABmzBZ2MncxxCS+Kn+QHVD
-    dBW5I7Wpc5cjpsBHe18buzhlkBhbz+2tFZ1iv8sxotsh1H/xAtJfGKxmlZfoe23OAa8Bts
-    +IUtsL4HURjwW3AnXk/HWNPAfrdT63zSAgtUeGNTW/U4jjGTdLpDA0lfnnJ6EyT9m//LeO
-    F8OOJyjMwigGTLKPuE7tOzr4pBjRYCkn+ZhJJVjYQsYV47lnK3smN4lP1ypn0oDOxLSTnK
-    dPobhxLCH5U+tXuBHS6r5KDsKTNQ9vOglz8aLeDlDh+ixB+GcC+6nYH7w50tei2rn9NTNP
-    Um/BNOVL0QXu4E7SuGkf7ITb+dUbtQu3iJGcyFePnaTVSEFCMidZ1SSdQ8j4rfcf30IVjk
-    cP93VEA6C2iukCpvePyZh7cMyIaxgTcJE+S0LkMyoAaHh16JtGDqUNiygiYlF3PYfSzH6C
-    fyz/477qLwuIohL8Qp5Laa6y1CXUQBE0IPhVmjljA5bwOUsAMyfu2nqb0nFw
-X-ME-Proxy: <xmx:X4TgaixYAJ0pnTaK9IF77X7UAhfUDhUA_P2PfnAlXTSilca0kERg9g>
-    <xmx:X4Tgagm35jXAkw7DgzpwTcMJnAvzrFpPkF5Lsc7HdPrVpJphW6zocA>
-    <xmx:X4TgajBizeJZjVL1GncyI3tnBYYKXr8HvhpRPyMqcMzn57rmeMFKog>
-    <xmx:X4TgalcEF7WkatxqDIh4WEP5_y-l9lknxMulooU9hr75sog7f05sHw>
-    <xmx:X4TgahogeNgFVcLmxeBz7YDbAUm6oVdAwlYmbmuIFIUe4VLDYP2oguiy>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 07:00:46 -0400 (EDT)
-Date: Tue, 27 Oct 2026 11:00:45 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
-Message-ID: <auCDnqJc7fsBpUW2@thinkstation>
-References: <20261014202936.GC371161@cmpxchg.org>
- <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
- <atDMN5MoGrwJNpAj@thinkstation>
- <4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com>
- <atiCG2iPrHwDznSZ@thinkstation>
- <d2b8edf0-39ab-4a44-bd0d-58230dee2fad@arm.com>
- <ats7oFM-fsYdUS8y@thinkstation>
- <attOFXch_TchIfEv@thinkstation>
- <atty0n4UzTfI46eN@thinkstation>
- <0757f1b0-9af6-417c-a4cb-eff0b05ba277@arm.com>
+	t=1793098835;
+	b=rxzWzlq5WJzV6pHxbznIdIKCf8uck2mabPOUaJieOpw4oX1JfE/BfHn9gBZdrQQpn6KNCv
+	MpyJV6PzaznvOYtznY4lKpTaoCJ/BFBKei2MMkSFi/eCUjfTs+EaD2xOZew29J17rrPau8
+	8O1m8Vmo9J5SP3Ll+SN43zZu7fPXnXU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=PY8D/fV9b7AqgT0EI/4JhIhUH5cTst9C5yyqz6dyWcI=; b=j/gP54CgEygcRs8TL7TFvQfxWQ
+	QB9ho1aAa6pbib22ag4zbg5BRriOpt2zZs83XAJwUPSgNaowMPL5MrMYLZE17R2FRrOuUU67wGvyn
+	frXJXGOkpFQtpqntmkojch5r3MxT/xenCCROmA0AXajsGCHv+ALUG6EIcXGPrlesZEMPJIeqKnbfE
+	rKvXYdKMNv+x5Z6BYaPELqdU7BzYZRkZ5deQd1qdsznL11vi4AygDS+oQFBwhi/A3ahPkOr9uwb+p
+	9G6x0t3n2GNcA77LGfOfaYX6DwJAayTuO2uLN1Qgb3Y8jBl55D+3Hvmoe8AGLAqDoX/sDmwhAQv6E
+	+Vb690fg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xLeuq-0000000D62N-2Dy5;
+	Tue, 27 Oct 2026 11:00:28 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 1CBB6300DB9; Tue, 27 Oct 2026 12:00:28 +0100 (CET)
+Date: Tue, 27 Oct 2026 12:00:28 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Matthew Wilcox <willy@infradead.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Frank van der Linden <fvdl@google.com>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	kernel-team@meta.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
+Message-ID: <20261027110028.GH2668564@noisy.programming.kicks-ass.net>
+References: <20260227194302.274384-1-kas@kernel.org>
+ <20260227194302.274384-14-kas@kernel.org>
+ <ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org>
+ <at_f43oDv73y-t7O@thinkstation>
+ <f97a8d33-50b2-4a86-8381-ee840cdfa2f9@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0757f1b0-9af6-417c-a4cb-eff0b05ba277@arm.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7E5E940003
-X-Stat-Signature: 65hp6u8hiusgnd6rguhoc958ndoqe1yh
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+In-Reply-To: <f97a8d33-50b2-4a86-8381-ee840cdfa2f9@kernel.org>
+X-Rspamd-Queue-Id: AA297100012
+X-Stat-Signature: y6jq46ay1wa59qw4msjbfb3p46ecfu47
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793098853-273112
-X-HE-Meta: U2FsdGVkX1/XuRXxXcP9V5QfGiMX5dcxbV55Xpk03jBaDDPbtT3ePSvn/ky9peSGTIAwz6i4AsDoxn/rsXii8huZCvBsJz/nWRV3klA0ARpd+H1v3xNn5EkpfKa1DF0ZB9mPGzfxJaM5FExuNP2oYxf+PCJjL4ekyBYSZ1IBMqehvHju9fgXRGZ6vGbbRcL2hKXzS5Pav3Im+oln22ak6Ep9gdhw7O5EvoQNRRCpjaiZc5B9t4cjF5yvkj/s/WdTP3Md/0tmB9f0AXpZC11hysCIHDSp4+VEaAbvaRZP8mvykNo5Nc9mDj32hAwyXN5UIaod12fesl+yqm0UesgsGbrv93SIZIOtAWzEzZSoWLeZHf6EGeTdiVwBBKzlbFTGSLToUCf2BPL/xWOJ1aV/SPO1LzbV/hUHzCIUYn3HcWIlWXQxdb7dhpG1gGtODPhFUKFVTvfOFTfnXBYuGzPM/Iohn6jq3LEH25EiWw/iDzNF25/cY3bjok26Fiwmds+BZ090SdiM3mZ4OkT24AqGUytLYh4eGibAXWmQD2LeC2kX18hk7Mczrf/Nju3gaCU4SMQ0/26d8cmN8bWzudKvu4Okwc+mYwTakCxftZewwAPVTQ1xbkf3MMpRPz8K1H4Z42F6MPgKxPEyuNHvLijB75p1kg6Qf0eCeUI3aOfbc3q42d/sCumyQ0tGdVAcYUDWtsL2zkXSJVSDZlz/VXjK4FBVxOX6QZozbkCzbWUQS+/YPeKE4Ja1cAVNt4CLF9Df42pZImM+yEkxziSNBEO67BSXa0OejZUH1mvAHc5DnuoE0+0rTrycSTsL0y26HMmFNp1I2h79yLneX4TD4qZ7GWP5XoKFbf6iVhzWYfPalqj6vz2U4tuErQpiDp/dWPrVrSatWTNTC/lzDpkfl5mTlrdLojBVQ0AmJQeZLzXdUwtimX4gvFb6jtj7JUalKkeX/ggnBWbJ5ETM2TKrfIp
- Xbin4Att
- Tu3Cm51yrX8dUKglKTeXOlPYlhy0FEMyM8ZTvH3mGcJij/bbgcbHAFDgwjBMYP7BUKTUKeBpGJIju/aYJbc8HRBDq5BQgJy/4srdx2Zjb7Mj0C4PqCW4KuaYrcoUY6VGAz5IeZGW1uDCLIwFfKSqX1kd06RYCvrp9r9RpaAzGTwstOR7fcAaeZZbLYYi7eVvfCD/lDKNH0g9J1+Ckp3Ip5wyQ3Jm7Gw47SxSIM5MHL0xiqybaCt3PSGY0wM8nxxPKlUDJ2TYk7kw/jg1RqLUrts096mKq7kcFKna+Qkdprs5ioJarbAimCpuxIdK9O5/qKXBpMZ80AKtgDn5Mpm1IuaVPT7bCAAJgC+30
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793098834-441502
+X-HE-Meta: U2FsdGVkX18e32YZYXkr0/lw7fRG47tDLmSI4JfAgEPZD0mmNnpxQTTE5l76/cSbwwRf9Y8VuOuGu+MOqmPWif4X2Bw6ap938xN9V6hb3/jX5k1qO8nmjhqtdQRzs9RtCygR5+chpmWTAoQmVXbD7YXxjjsn6w0w1VtKuEF6ciEnxdJ0dyWIvK7a5xl7ger+mlEuLf5VX396udrkvquE/gAM3QD0a7+fA8MZbDujHSp5bvCvq1dvivRecN7pNcP4xuqkAsc10WLd8Jiia4w/H1ccAkIh5brI9OsWOFfkTxYhX25JtJX/jrxsrK1Cm/b2HCE5M7El5EuCg1GweE2LBPniFn7fLNZYJAY3YkkZ/iKMRkkcIRXaIawuMd8S4j/VGarC3QzY1JDGgxGNe/S2y5iqrhpdQF/HlEVVYWzGy6IeuYwyHw6v8bbYfyh5cdcCs7YVGOcPfE3mJ474xkgZKzmNHAGnD1ngz3D916FPCt/oZv/4xXNyRtucKTz+sQJDgcAlVCOVqT7JDTybnATs5Q48SWKiN3tK+nWDYCTpJzMXVXOBwJuL/nuoLKplvHuyLNjDmVtyxBlM9G9+ItdzonPCuoUV7o1Aa3opvNsegZYywXK84ANEdMjuLcmchUzFel+8w2J02B7aitC5nRa3eS+Q5xxAaM13go5cT3O14hyVSpW+PysK8VqH1M8fhYjW8EpO5MtQ5q9xZGS+dnvkMdChANw6J1hUmznp6RBPXz3e1SfRGy3qYDEc2wXxkT9pQOZWQF88QgXMwSIfC0IIZ6Ob1vlpeq7XctrMsbrbxNkyRjQWjjKJY5tr+ujw+B8YFLtk8iAbkkQC4kaYoyEPOGkMYJcFCljo+BSjJeZ6Cxw3Umrwv5L8dtUn711XmOlld/SJf6q64OPoRNKZzhr4UsmUYqu31DpjESV7Qjy8sV0wserelvd6YZLmerLVSgWOyJYgYOG/pRUwYAf0Wg0
+ MLELTJS1
+ WLMvwb89sIifQNjnIdyGSrOoI1EgSHgJKHARntthnSLodq6cX55YIsUPF2ZCJ20s2BKf69GyUt3zgl51T2H0moQrSo6iqgeBPaIQZHX1K//H5dCrmqslI13QaZRhMg0xF/UMoELS5wJv5n2hzWFa7p4tt87GnhLVIdylFTmE/WdYwPQFq+9j7ExKh2qXSVm9Q4hbRf1TWNqi3XCqyWkpuWdiWBv+LGqeYzo1kdaHNwuL1CJf6bs9SjixqJSHovnrlxc7S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,48 +119,191 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:42:12PM +0530, Dev Jain wrote:
+On Tue, Oct 27, 2026 at 12:37:13AM +0100, David Hildenbrand (Arm) wrote:
+> On 10/27/26 00:25, Kiryl Shutsemau wrote:
+> > On Mon, Oct 26, 2026 at 06:45:48PM +0100, David Hildenbrand (Arm) wrote:
+> >> On 2/27/26 20:42, Kiryl Shutsemau (Meta) wrote:
+> >>> From: Kiryl Shutsemau <kas@kernel.org>
+> >>>
+> >>> With fake head pages eliminated in the previous commit, remove the
+> >>> supporting infrastructure:
+> >>>
+> >>>   - page_fixed_fake_head(): no longer needed to detect fake heads;
+> >>>   - page_is_fake_head(): no longer needed;
+> >>>   - page_count_writable(): no longer needed for RCU protection;
+> >>>   - RCU read_lock in page_ref_add_unless(): no longer needed;
+> >>
+> >> I have an AI report that removing RCU read-lock was wrong.
+> > 
+> > Ughh. Yes, it is a real bug.
+> > 
+> > My reasoning in the commit message was wrong. Nothing stops a
+> > speculative get from writing to one after the remap. On x86 even a
+> > failing cmpxchg faults there.
+> > 
+> > The fix I have in mind is to let the atomic fault.
+> > 
+> > If the update faults, the struct page is a read-only HVO tail with a
+> > zero refcount, so the get just fails. An exception table entry on the
+> > cmpxchg handles it. No RCU on either side, and the fast path stays the
+> > same lock cmpxchg loop.
+> > 
+> > Only x86, riscv and loongarch have HVO. Below is x86 only, to show the
+> > idea; riscv and loongarch need the same primitive in their LL/SC
+> > fetch_add_unless().
+> > 
+> > Lightly tested on x86 by hitting a real HVO tail page.
+> > 
+> > Does it look sane?
+> 
+> I'm sure x86 folks will have an opinion :) . Let me CC them whether something
+> like that would be acceptable.
+
+This looks quite terrible, doubly so because I have no idea what its
+trying to fix. Please try and justify this insanity.
+
+> > 
+> > I can prepare a proper patchset if looks reasonable.
+> > 
+> > diff --git a/arch/x86/include/asm/atomic.h b/arch/x86/include/asm/atomic.h
+> > index 75743f1dfd4e..5252b1382ed0 100644
+> > --- a/arch/x86/include/asm/atomic.h
+> > +++ b/arch/x86/include/asm/atomic.h
+> > @@ -108,6 +108,25 @@ static __always_inline bool arch_atomic_try_cmpxchg(atomic_t *v, int *old, int n
+> >  }
+> >  #define arch_atomic_try_cmpxchg arch_atomic_try_cmpxchg
+> >  
+> > +/*
+> > + * arch_atomic_fetch_add_unless_nofault() is arch_atomic_fetch_add_unless(),
+> > + * except that a fault on the access jumps to @label instead of oopsing.  It
+> > + * works in any context, including with IRQs disabled.
+> > + */
+> > +#define arch_atomic_fetch_add_unless_nofault(_v, _a, _u, label)	\
+> > +({									\
+> > +	atomic_t *__v = (_v);						\
+> > +	int __a = (_a), __u = (_u);					\
+> > +	int __c = arch_atomic_read(__v);				\
+> > +									\
+> > +	do {								\
+> > +		if (unlikely(__c == __u))				\
+> > +			break;						\
+> > +	} while (!__try_cmpxchg_nofault(&__v->counter, &__c,		\
+> > +					__c + __a, label));		\
+> > +	__c;								\
+> > +})
+> > +
+> >  static __always_inline int arch_atomic_xchg(atomic_t *v, int new)
+> >  {
+> >  	return arch_xchg(&v->counter, new);
+> > diff --git a/arch/x86/include/asm/cmpxchg.h b/arch/x86/include/asm/cmpxchg.h
+> > index a88b06f1c35e..685aab3edd3f 100644
+> > --- a/arch/x86/include/asm/cmpxchg.h
+> > +++ b/arch/x86/include/asm/cmpxchg.h
+> > @@ -232,6 +232,63 @@ extern void __add_wrong_size(void)
+> >  #define arch_try_cmpxchg_local(ptr, pold, new)				\
+> >  	__try_cmpxchg_local((ptr), (pold), (new), sizeof(*(ptr)))
+> >  
+> > +/*
+> > + * __try_cmpxchg_nofault() is arch_try_cmpxchg() on a 4-byte kernel variable,
+> > + * except that a fault on the access jumps to @label instead of oopsing.
+> > + */
+> > +#ifdef CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
+> > +#define __try_cmpxchg_nofault(_ptr, _pold, _new, label)		\
+> > +({									\
+> > +	bool success;							\
+> > +	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
+> > +	__typeof__(*(_ptr)) __old = *_old;				\
+> > +	__typeof__(*(_ptr)) __new = (_new);				\
+> > +									\
+> > +	if (sizeof(*(_ptr)) != 4)					\
+> > +		__cmpxchg_wrong_size();					\
+> > +	asm_goto_output("\n"						\
+> > +			"1: " LOCK_PREFIX "cmpxchgl %[new], %[ptr]\n"	\
+> > +			_ASM_EXTABLE(1b, %l[label])			\
+> > +			: "=@ccz" (success),				\
+> > +			  [ptr] "+m" (*(_ptr)),				\
+> > +			  [old] "+a" (__old)				\
+> > +			: [new] "r" (__new)				\
+> > +			: "memory"					\
+> > +			: label);					\
+> > +	if (unlikely(!success))						\
+> > +		*_old = __old;						\
+> > +	likely(success);						\
+> > +})
+> > +#else
+> > +#define __try_cmpxchg_nofault(_ptr, _pold, _new, label)		\
+> > +({									\
+> > +	int __err = 0;							\
+> > +	bool success;							\
+> > +	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
+> > +	__typeof__(*(_ptr)) __old = *_old;				\
+> > +	__typeof__(*(_ptr)) __new = (_new);				\
+> > +									\
+> > +	if (sizeof(*(_ptr)) != 4)					\
+> > +		__cmpxchg_wrong_size();					\
+> > +	asm volatile("\n"						\
+> > +		     "1: " LOCK_PREFIX "cmpxchgl %[new], %[ptr]\n"	\
+> > +		     "2:\n"						\
+> > +		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
+> > +					   %[errout])			\
+> > +		     : "=@ccz" (success),				\
+> > +		       [errout] "+r" (__err),				\
+> > +		       [ptr] "+m" (*(_ptr)),				\
+> > +		       [old] "+a" (__old)				\
+> > +		     : [new] "r" (__new)				\
+> > +		     : "memory");					\
+> > +	if (unlikely(__err))						\
+> > +		goto label;						\
+> > +	if (unlikely(!success))						\
+> > +		*_old = __old;						\
+> > +	likely(success);						\
+> > +})
+> > +#endif
+> > +
+> >  /*
+> >   * xadd() adds "inc" to "*ptr" and atomically returns the previous
+> >   * value of "*ptr".
+> > diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
+> > index 9f5c75d06f76..82a2fc445ce6 100644
+> > --- a/include/linux/page_ref.h
+> > +++ b/include/linux/page_ref.h
+> > @@ -246,9 +246,31 @@ static inline int folio_ref_dec_return(struct folio *folio)
+> >  	return page_ref_dec_return(&folio->page);
+> >  }
+> >  
+> > +#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> > +/*
+> > + * HVO maps the tail struct pages of a hugetlb folio read-only.  A speculative
+> > + * caller can read a non-zero refcount, then the page gets freed, becomes a
+> > + * tail page of a hugetlb folio and is remapped before the update.  The
+> > + * atomic then faults.  A read-only struct page is a hugetlb tail page with a
+> > + * zero refcount, so the fault means no reference can be taken.
+> > + */
+> > +static __always_inline bool __page_ref_add_unless_zero(atomic_t *v, int nr)
+> > +{
+> > +	instrument_atomic_read_write(v, sizeof(*v));
+> > +	return arch_atomic_fetch_add_unless_nofault(v, nr, 0, fault) != 0;
+> > +fault:
+> > +	return false;
+> > +}
+> > +#else
+> > +static __always_inline bool __page_ref_add_unless_zero(atomic_t *v, int nr)
+> > +{
+> > +	return atomic_add_unless(v, nr, 0);
+> > +}
+> > +#endif
+> > +
+> >  static inline bool page_ref_add_unless_zero(struct page *page, int nr)
+> >  {
+> > -	bool ret = atomic_add_unless(&page->_refcount, nr, 0);
+> > +	bool ret = __page_ref_add_unless_zero(&page->_refcount, nr);
+> >  
+> >  	if (page_ref_tracepoint_active(page_ref_mod_unless))
+> >  		__page_ref_mod_unless(page, nr, ret);
 > 
 > 
-> On 23/10/26 8:16 pm, Kiryl Shutsemau wrote:
-> > On Fri, Oct 23, 2026 at 01:12:02PM +0100, Kiryl Shutsemau wrote:
-> >> The diff below replaces the previous one. It needs cleanup and splitting
-> >> before it goes upstream.
-> > 
-> > Proper patchset:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git page_alloc/nofrag-watermark-v1
-> > 
+> -- 
+> Cheers,
 > 
-> Thanks! I applied the 3 commits on top and the results improved a lot. Your patches
-> make sense to me.
-
-Thanks for testing.
-
-Can I use your Tested-by?
-
-> But still, I see more compact_stalls and a worse compaction success:fail ratio. The
-> limitation must be by definition I believe: we still won't be able to use 64K blocks
-> from non-movable pageblocks.
-
-Right, that is by design.
-
-defrag_mode keeps the free space in unmovable and reclaimable blocks for
-those allocations, so they don't spill into movable blocks. Your 64K
-faults never take it.
-
-The price is that defrag_mode needs more free memory for the same
-workload. In return, the system does not fragment over time: huge page
-availability stays steady instead of decaying under load.
-
-The benchmark runs right at the edge: it fills 99% of MemAvailable and
-then faults another 20% in 64K. defrag_mode=0 takes the 64K chunks it
-finds in non-movable blocks without compacting. defrag_mode=1 has to
-build them inside movable blocks, and with memory full there is little
-free space there. So more compaction, and more of it fails.
-
-The 64K fault count ends up close anyway: 20.1k vs 20.7k in my runs.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> David
 
