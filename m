@@ -1,130 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4DE606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D54606B5CD
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FzDseVK9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mc83FUFA
 Received: by kanga.kvack.org (Postfix)
-	id 16C2B6B05FE; Tue, 27 Oct 2026 16:24:42 -0400 (EDT)
+	id 5B2A36B08D4; Tue, 27 Oct 2026 16:25:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11CA66B0600; Tue, 27 Oct 2026 16:24:42 -0400 (EDT)
+	id 563166B08D5; Tue, 27 Oct 2026 16:25:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 032426B0601; Tue, 27 Oct 2026 16:24:41 -0400 (EDT)
+	id 4529C6B08D6; Tue, 27 Oct 2026 16:25:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4FE26B05FE
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:24:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3929E40B23
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:24:41 +0000 (UTC)
-X-FDA: 85369534362.08.45BC70B
+	by kanga.kvack.org (Postfix) with ESMTP id 226456B08D4
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:25:29 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A102F1A0AB6
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:25:28 +0000 (UTC)
+X-FDA: 85369536336.14.C19AB86
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 46F9F180003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:24:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FzDseVK9;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id E5330180005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:25:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mc83FUFA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793132679;
+	s=arc-20220608; t=1793132727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pDrzL4ldTnZQIT/GAoRY8qgOJKT6dHcsc7F2wuy5Kmk=;
-	b=JxTpxkgbue9d/B69J5Mki3V6IcwxUjCt7j2ZMOSp+XXSVyuz8fYHkRat7s1rQAYRmEK6rR
-	pnQTbWvFHXN0oyxslv3KbRWLP7ufiu0R3CzamKSBheOUc/jt05f+v/lpdwwC2LGYCFo1jt
-	JauyY6saYpcESQ0ooDjEm0j1QqJfj5Y=
+	bh=FHMTsBnJMpXJNOaP415fipWiMQQwfvRW5x3lZ/lRcHU=;
+	b=HzWu1hHqatK2fj1BliwagYXTO1K2nOZeppv11bElMOnzl44Ba/mdfailbK7GNFQJDjZ5sb
+	WWcvl7FA9BCG3NWfdSiAAjjBwqYoV7JocWkgxdJ5AJb7jAjfuKnYm2F1BMnLSdz9cUwc03
+	72CLZiynqcu+PIXyKrO6QPb6t81pNJU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FzDseVK9;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mc83FUFA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793132679;
-	b=oAOfFeihS3nwCjjS4KRo6A4Y5dvW94GGs8tk6TLuKFxCBwNJshr+Llub68NTAVH0Ednny+
-	5fvzD4CifQz31moOYIOGmr1cbt6xJX6GiZoeO7sW1Wqk0wkOq+MbRwCIthZ+UfRhS5hiKO
-	O95GZ9Z1hKTsTux4L45FUyVdyVrI3jI=
+	t=1793132727;
+	b=X6rXMEt8A8VeO1OiCBHuj/5ydaPxTTdgXGOJV/XCmD2R1EsNVhe84j2L3+509cTzQRz4PF
+	RrpDa4AtU6RYioBeVmnB8g5dsYI7YAMlI1RRVeRE3VNapkFC0P+KUGl5cBCxdkg1x8uyEx
+	82+jHRSbfoUUtfjuDjjA4yJOOraziTU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7AC6D44084
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:24:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC031F0135A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:24:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2DDF043370;
+	Tue, 27 Oct 2026 20:25:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758541F01340;
+	Tue, 27 Oct 2026 20:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793132678;
-	bh=pDrzL4ldTnZQIT/GAoRY8qgOJKT6dHcsc7F2wuy5Kmk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FzDseVK9Ysko91Rkuq+QlEaFb2aAO095E8N7yIyvvONeohFAvEsNuXL/t50nDF4QA
-	 dB5RS0qSQDyYKaQaQWzOLKiy8bN7OzmckzsSTJ0jnH1Qw/2x2YaVSN6GxSjIbbxDx8
-	 6YPifMscpbIXjfoVMUUATqDBadzckblpHh5eoBXFbwrjvTULXKrPFYypotdKpK58DR
-	 T3W5/x+BLgYO/uqSgOwbx0psff5ZkS+yXOS1sCDyFfPieQMn9gqqd1jDYw169JcsjM
-	 H4Tthi6yhRiV7WxwtKCJQJaKm6v8skUAG5+0ZkEJfKUFputM9fxnc7vdLjTMxWwDOl
-	 m4R1HwtIFSlZg==
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93f269e335eso18238385a.3
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:24:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwID64CJjSTwKJCaf2TmW79UYtXU3A5/Lyil8h4T3TGGqkist6O7X5+PO1bhJkohzLIqKKSRK5MwA==@kvack.org
-X-Gm-Message-State: AFq9FYKtonZm7gaE5/cxcqSXWpftGTQAZ77TqMIWJIq0hWhkJWYjMo5O
-	RkJ0DK9d42kJYGRdMeaq6M7L0fmyPtyukpsYwOt7EOj5r+8mE0ud36pUx4m5Kx37h5tDLggHSK4
-	bsfGcWyGPE2mOx3h1FbVRV+lceZqGrEY=
-X-Received: by 2002:a05:620a:2a03:b0:93f:611d:a18e with SMTP id
- af79cd13be357-94408cfc2b6mr7042985a.55.1793132677465; Tue, 27 Oct 2026
- 13:24:37 -0700 (PDT)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org> <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
-In-Reply-To: <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 28 Oct 2026 04:24:25 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4ytMqpLJ7wQe_gUz6Fo+BBK6ym-T6kjwgrHi7HNM0LiZQ@mail.gmail.com>
-X-Gm-Features: AclHuK-1Qeuu3Mu9aA1DkXbl4G55KJdsUzpEs7vpxIgxIJbJWhUve_AqW65AwOY
-Message-ID: <CAGsJ_4ytMqpLJ7wQe_gUz6Fo+BBK6ym-T6kjwgrHi7HNM0LiZQ@mail.gmail.com>
-Subject: Re: [PATCH 01/46] mm/mglru: don't use stack pointers when walking PUD
- and PMD tables
+	s=k20260515; t=1793132726;
+	bh=FHMTsBnJMpXJNOaP415fipWiMQQwfvRW5x3lZ/lRcHU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Mc83FUFATMQPouVzjUJeRj3mhiIcUvrA+Erhg5Hh0lTW3qwPysmiXYCN/sY2USdpd
+	 VQEeiyXwH3fAYJ+vI5Uk4lbY0OCURgOg/lZzGCGvnESQZo62rEREpGK+Ywua1pC7/p
+	 qLtQrl57LVvD3FOguw5Ccq1ddGp/nxRV2WelM6luaRwZ2gItpGPc55R3kKd/uEtYE3
+	 F962dZ5NVZdLD83zdZJ57akrnRFkaxt1wSO3UiU8UVhqMNQKVzwdHfbh6D07tWcFW0
+	 uvnXMmSet+gq+ZP42latzKtvPeBblPMlc6bL70NhuTjijHHpcfEiVBaUcHP26dtgTY
+	 lDs1oWuY01RLQ==
+Date: Tue, 27 Oct 2026 20:25:24 +0000
+From: Harry Yoo <harry@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
 	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Alistair Popple <apopple@nvidia.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
 	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
 	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
 	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
 	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 46F9F180003
-X-Stat-Signature: gzqm38rkrfgxw37t94djmd5fphridmst
-X-Rspam-User: 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>
+Subject: Re: [PATCH 09/46] mm/rmap: handle device-exclusive entries in
+ folio_referenced_one()
+Message-ID: <auEHPgT8JdqT222B@thinkstation>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-9-6f74bec9a5bb@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-9-6f74bec9a5bb@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E5330180005
+X-Stat-Signature: t16ikof6khrg88mz4yqs4n3a9qke48s4
 X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793132679-378529
-X-HE-Meta: U2FsdGVkX18mhdyvi8jz6Q+7iO27PDwtwcYHV2LiweIw7pnie/FDWHKfCWO6MqrxP+ILP4tch6V/nVwV/hYDBFheMOJocZSB9NT+Z5w0i8P5cXgabKBDApR+va9xcqN5uZHGumF38kzyUUbabP2wmihJdrpSCCGVLGjL/MO5nsTnBBQoinznv9muBbxpeMCgc1ADbRBsDnGtwuYGZK8zZbN+7igHEMATDyJzkqR23TK+wqMsD9eAyb047Q5uweCr39Lfk10Gmkjby+AGoiZJzx0nvWrUd4TZWHIhB36udlz58XoEXvvaM7luPpYBIFbjioPRdaQEescnJEVisC/+He0yU5pbmMwiH8C3QkeiCx58dJDwlITt82qfchnv93ryFimyYQKMKu5NaIq1xX4ZOqfxVSEpCkPPgeOvwiirFfNbEH4wsYPwR6O1FvnevD9gKI7CQwq6ciZVnuPlRT7qVZ0O2QB3qup93n3a9qTYwW5hlcbN9tQ5i7lieBxkcMWNZoUvnTHuEaA3knJxQvzNt5d4E/nq/82T4tsyoq8lpkInOYrS/KxcNsPdNKEoZgWVyFuiCiRhEkvPMFGd6ZY5JXwNl4I0hRFLJr/mxuCs+jr8zJZB8f99xZIXmLb2GxpTv4krwrzcerlmzzF3u/l1wShREIAmUBDv9zAE18HY8isHAqKtrXaYCrxzr9FUD+qiZZXe82EQmt5hw+YvujF5raWcfjIY+wNrPIwuJ4EIlzIz29A/IOp5ndFablNh9uhQfpZgfSXh9ejjbWmMO/ftyDB+hGP18nImvcGZbBNG9dq24SZaqYAwJkhq9pSgiHNexJCFnLW1s6FKMtFXkCIBF7IFjVB74tllNT/Nsp1I7UyWLqeCVC14dA1uNwaBJqx2Vd/0THvR9/P3HvbwPTN7NQ/lGuui7FYVR2gKalK5+trz0+NbCISsob4hBhCz7XvaBkQaF1CTHsYctA4ceii
- lOsgmR50
- oYlD42azbp41Nsd5StYS7RobHj4EANJU5U13qtM2tre8JmndsVJ5fD88Aews6Z6ko4JbLwU27Er7isk1MYYG4K28axWKdv1OtuXL2pSnchpLBDAYh/Gnssqo0MaFekZnHaBeFlmGhjvPT92ozdmPx9ZYuvCd8BcTozrpm4s3q4gRUXxWssBJ/rKcGa+IBwkExEyAut0cy+LEtTjRH46GlQptSpectCHd/45LVlLkHKTGEwMHpIkMc4h+ACydX8tZpwFxo6ocfYMnyfcrIZ7lBKff0YLkGS4ZiwKlpa+5ddyhbgsedowljAxNA80HsMquWyfgCEoctgEVdVo9Lq3eBA36Y41gRS8TUrtBZqY6k2ZX0sCosPiefdwPKF3CLRoSIhMcNZ1kPYB86ver0EBQ/WcPRk+iPLe8qS0HLnXj+335vUHz9F7WE9zc5VaxDtaB4LTbQ
+X-Rspam-User: 
+X-HE-Tag: 1793132726-445078
+X-HE-Meta: U2FsdGVkX19HSehEZDi86+MFP4+U41byAcRFUsuS5D7cJq9QacAJSkIIqLlEuO0un1QiKipzg0xDKMKVEap6+8trE1oGd0hWoif/AsgviG4fvMYe4vbFcJLTaojHeJ/BIydjJopthOzxgvgpft1K9N0v3rKL5GCHZ1bqdu9D/1tgoGjjvp0f+XJswAbDp/cl9tHBGh+/KdweZueDzwyMh1IV4ngCkwE6pC89NiNkqT7VTbbChy6qGPTHk2nSaJgBn+SihDZ3sdQIWkj4qwcZRhSvjWJHYcxhNyyJutcRf14+i31i5lfyR92YgUxRuJg+CimTUmpz3fsmk1sPfKgULeUCA/2rnc3LrJxYKxLVlOfxcdyTB1UqSFVj8IzsqENRtKOCYSUSOx5grf8Hf6Q4zFORDpOxpOzTw6dnbQeDmKaElCF4HROj5dzZmcyrPneXHPGrNvjfQ3yymdLRP4B6eyX4L8OGZgxD6ahOtn5o5CTb9sn9ThGydAHuRBzhSX65dEM0pi3HO8bZb531w03L3I1asRHA5vc6Q93NnBxNhDyx1PVf91y+9PsXX+IBAKd/cyks+TGJwDaXUm3fB7XlqPSHgpV6sRqO66d6+V2jOSH2DW+NbknQh/c7FIgDK911hkSuAWWXjYpWptdyLt/cIDiYgFi7hSuyyrTw0yY4HS7cUlwQoCVxlmHyHMLEHHKaFcSLPIluxKF8abavTV2xVs+3yHEqB8atTVPrh1kiGHsKJI7F36cIGsQagamsgK0qPBd+ZNxmwbnvedFagNYechbu9RzPhoFtDQ6qr6rvlvfSW19y6SzBLM35GjgRGqtkbF36NG7lWtghsuyxQf/Do3h8sDhOeaBUWNMbW3ZGKrZeiKVn67enbGn8oqY2rhP9QOK8EIlc8PfJHlI0xrClk7X7ZYSKlHBdGwrdzZVERUIaEv7zKEtF/kk3UDbvFGo+5eVpqfaBUpbgqc47ai6
+ hpkFhxq7
+ 15fA35Ew2XpW/TRyPnWbQXvbkJDu9SG43B63TFdCvLmDNI4a5hcOda7ykFVFF+0OHHKT+oL+klq4eE74F52vQTzhltHia5DoiL5gP6MayCk+242zri3yqZeD49d72CKe46drsr+xtjdoNP0En5OIE5NxGK1aJn06CQMXD0borDDa3nhaB4e5a1gjBLzMaO+3fRir1NhFknlIgITk9sSuavyHTg1ptFu1TFxQGulNAutSe9zaR4Y4ySVJ/9G9rIqyZetkAmDPbpVgG7jwbQtmoMy99ECArn/jC1/IsxfXv2hDa+8Pv2l1/+5jIfUyUeiL5tLCopgcdAhaPnMpT/mqN5nFcxtkdEM/rT8Vft55CDiB1nWmatomglvp9xhd41GQTJCDVebG2UM287/4wIKXA9mCk3Lc9axH8SqyrIHQAJKNQOIwg3T0U/cVVii2exCH6zh2AYFk7chrilzk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,40 +121,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 7:18=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> From: Josef Bacik <josef@toxicpanda.com>
->
-> MGLRU passes stack copies of page-table entries in walk_pud_range() and
-> walk_pmd_range() when walking to the next level. These copies can become
-> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
-> table concurrently.
->
-> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
-> support page table walks"). Likely, earlier locking masked the latent
-> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
-> retract_page_tables() without mmap or vma lock") allowed concurrent
-> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
-> for MGLRU") dropped the walker's outer RCU protection.
->
-> The fix is simple, so just fix the original commit so we don't have to
-> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
-> RCU-protected lookup and validation against the live PMD. Note that the P=
-UD
-> handling is required as well to handle folded page tables correctly in al=
-l
-> cases.
->
-> Fix generated by an LLM and sent by Josef Bacik in private.
->
-> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+On Tue, Oct 27, 2026 at 12:17:29AM +0100, David Hildenbrand (Arm) wrote:
+> page_vma_mapped_walk() can return non-present device-exclusive entries,
+> but folio_referenced_one() passes them to PTE young-bit accessors that
+> require present PTEs.
+> 
+> We must neither call clear_flush_young_ptes_notify() nor
+> folio_pte_batch() with non-present entries. For example, clearing the
+> young bit on non-present PTEs can corrupt the entry: on arm64
+> PTE_AF overlaps the swap type, so clearing it turns a device-exclusive
+> entry into an ordinary swap entry.
+> 
+> folio_pte_batch() will VM_WARN_ON_FOLIO.
+> 
+> Apply the same approach as the previous fixes to e.g., damon_ptep_mkold():
+> treat these entries as old from the CPU's perspective and obtain their
+> young state through the MMU notifier.
+> 
+> Skip PTE batching and MGLRU look-around for non-present entries, and
+> don't modify non-present PTEs.
+> 
+> Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ david: handle walk_pud_range() as well, clarify+simplify description,
->          adjust Fixes: ]
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
