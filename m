@@ -1,131 +1,177 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D84606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6417C606A323
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=B5QpgQGV
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nhRbbv7L;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=dqBTENOQ
 Received: by kanga.kvack.org (Postfix)
-	id AF9C06B088B; Tue, 27 Oct 2026 14:32:02 -0400 (EDT)
+	id 5F27E6B0716; Tue, 27 Oct 2026 14:32:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD16F6B088D; Tue, 27 Oct 2026 14:32:02 -0400 (EDT)
+	id 5AB3A6B088F; Tue, 27 Oct 2026 14:32:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0E6E6B088E; Tue, 27 Oct 2026 14:32:02 -0400 (EDT)
+	id 474A06B0716; Tue, 27 Oct 2026 14:32:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B20E6B088B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:32:02 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 02B8640AD8
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:32:01 +0000 (UTC)
-X-FDA: 85369250484.22.287DA24
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1CC751C0010
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:31:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=B5QpgQGV;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.217.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FCCB6B0716
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:32:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81FFB1C4487
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:32:54 +0000 (UTC)
+X-FDA: 85369252668.11.2DA781C
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 41ABE40007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:32:52 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=nhRbbv7L;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="d qBTENO";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.142 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793125920;
+	s=arc-20220608; t=1793125972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LVq6pbjr7FsFX3prA+jfg0dfmRTCJpqiA9RsFP438sw=;
-	b=z23OyEhd9cjkUIsVzsF5l9S59+RnWXtzRQgfwxCfVq5juPXoroxJRbM8/gbXuZfSbxflzX
-	xJ8qW/tFbklcqluiLH5yeLGd//e2fJFwo3rYT9mD4IIXon3jg1TX4lBpISeUmLNNM3iNoy
-	6vTHhkgHKkWy0JXvLMnaaQxSbMn4gp0=
+	bh=pW0YX5uTyvs0iTQboMCcpjVYnLuET6JVZiidtK9lRiU=;
+	b=SC2igQ2T9zZSTweCiyuiSMIFuTAye7hpv6uU7qMXBzcn6gyUzYnCqLB2lgcM9B0G9HE9no
+	R6OIe0xvJ0f6ShvkiEz073X4I1uRO6Jimiw+ryvlyLQ3lj3jvnOv0yFikRRDjpy7ieWv9x
+	Khhyh/MzlZkyY5OhBNbkFqvVPi212Mw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=B5QpgQGV;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.217.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf27.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=nhRbbv7L;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="d qBTENO";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.142 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793125920;
-	b=hE3sKxBikaXkF/EKIt62XcmCG3ph5CfcCXzqq9wZFZ4MHvHAeGt+phYEFwA2C5uP7CF1HX
-	Lw3KdukHABaQIlhhD4juCqjMTUzl4toiiLOZgxHedQk67nC5Cf86+S3RTmNNlC1Ib0u578
-	QATt13XzrMMFp1ysp+jRIT8MSDUuwek=
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-7cc603a168fso36557137.3
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:31:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1793125919; x=1793730719; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LVq6pbjr7FsFX3prA+jfg0dfmRTCJpqiA9RsFP438sw=;
-        b=B5QpgQGVJDax9gmzVlso3EfG5aIuzfNjaEDsXWR8Wi4PzTJDFAxmknNFO82xL92ZB2
-         hlGpCcp/JjvcIRnEppuXSpvKLsf0wMucG3nn3Jn1m8Zvq+JAcDdv2NB/PwBAp4FdIW/n
-         GBAoe3xnqjIMCXdWHuRWsg1aiK/Nun18KyUDwNdqnrjxvCQTJ4LWm1scfqNxHkhJ1rxu
-         odIKhVt/2kJl6jEYWvhcJ8tt+9pUvHAgIge3MMagoBiRdJf0nKf3W+rdQWIAiEQ50Omn
-         ZWn0eF91dV3IbBqSB4ITcD3Xyz40tK2WN5kdJqJHn7Gm1zIFf/JDAxLMIEV/yg4+PjYn
-         ynBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793125919; x=1793730719;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LVq6pbjr7FsFX3prA+jfg0dfmRTCJpqiA9RsFP438sw=;
-        b=yhGMcyivGHY5TAMQfd6YuPcrK+ODnAN6nSA8059kOF6Gci2+fc/5F5UG49EtBM2VE2
-         Bh7v6/JGihVJsheGYVSciyzZhjHtflBfuKlqh0OghZqEgzce/p52w/LhkCxhvDcSN/n+
-         /9O4FTj44OVchqi1pHNSYtIi9/Ffio0P2ZV7pa4m2+yzAuVMV7hg1NoeCqeADjOA/jnB
-         oSwOwH0fBXzaQ8DNUKNsgos8nCHgw+8VoCOlHxpYvgXsNHWLip/yVp8qByXyTUHLg7t5
-         s6KH8hF+rw2/Io6uLTZzdGVDY1KqRFLmHPm7eY2+5a4mmMCiQQJxZDCu6NvYy2Pspgj+
-         Ms7g==
-X-Forwarded-Encrypted: i=1; AKwUvBxJ7IvhL/9nMptRinUmXntOPeLOYgVnQY0Oi75qM25J3xQiKgsIH+LxNe68KFfW4YQXOAEdsJ8qiA==@kvack.org
-X-Gm-Message-State: AFq9FYI8sqUzErHnH48QkFxnVZMTlxm+Svk4gJf6ySgKtrnH6qjNTmWt
-	ESBR5ejKrT1vA39iIhKs6U0GohPt2s9qI5vciB/el6EA9Ko3ffuSUzEMY8Hx6aC+zuw=
-X-Gm-Gg: AYBFou07eocuLJeJZpDWICLDXJrEpA9xEr7WqKglRhQru4HfYcOw6vYivTFvsNhhBET
-	JcbMfFTauEDoLBj1YfAImvZYPwQWU+0uLh4EXi90v4oA0khPltNmikTTQgfR450WK48KWNadgxj
-	0o6kVBOpwdhuIBJNeBdlf3iSl4SNpi02F50EKunPpVLKGEAEtb/ORMxFiHzNN0LrEQGn0YXRHC7
-	icRPYzUrceMaxU6wVO7bxgEI8gM8aJkyllwgzjRrm2hsD1KKZ3doGwKgSIrfUfm8NLak/F7fJxX
-	iZvSG+kdV4bF/ezg0j/FTmT5qwgrIKzQmZc6HjgyMowgkGxxFkOyWIChCJgETngTp4Nw3ctg/OP
-	YnzqZO/+9TjiJeT/kGYlC/s6bMHnkXBAFMDtJqoVjQl40llb4g+IwnxH81LyOf7XRMkGQVJguR3
-	5WCk/aFvT10/MZOt9a+RFD9T/udLfTEyC671FvSSMzMVuSbLpuFqR56clFDRcLVgwzjFSOc3uWh
-	nNdaOjR1gEMXAzhumdeSL7UqgNVDQktqGQJQB1GfvGe6KCDn7ga5qPVmw329VZ3Jnf28IEa/BeB
-	bhg5JYxukERnDrW2YYkpiUSPBdI=
-X-Received: by 2002:a05:6102:1481:b0:7a2:7ccd:280d with SMTP id ada2fe7eead31-7d03a509f02mr71066137.8.1793125919047;
-        Tue, 27 Oct 2026 11:31:59 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47a6bff7sm109225116d6.5.2026.10.27.11.31.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 11:31:58 -0700 (PDT)
+	t=1793125972;
+	b=fsDVQIuZddAdHRBM3j/Op79ejiKRMvZcAhX3TvoT+KAnzG+EBoqK3MRJCv96XAwz0zEuiY
+	kKV0nlGXDPB/uGLk5B7ooIfCjEynvZQ9ssA2drm2JI8iecrVC+/UZpfuoRbXDv8/A6S4HI
+	SIwB2gx2NvaWOuHOY7CQvycxnNdj7wQ=
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.phl.internal (Postfix) with ESMTP id 5FE8B13801D1
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:32:51 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 27 Oct 2026 14:32:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793125958;
+	 x=1793133158; bh=pW0YX5uTyvs0iTQboMCcpjVYnLuET6JVZiidtK9lRiU=; b=
+	nhRbbv7LCz1ZQpaeWyensFpQo4X/3syWjrNRhf0TPa3WpxX/X2VdpFqv537v9O9I
+	PGhjORRx1kESGQSaPHfa+QRKJpjpqdcACu5FAN3p52dFUSynF/VeBDjNcw+LEo95
+	UNVVfCF+1iy7jr1xBQICX7G6IzE+zAW2IpvIGzT+P30DaFT615CXM7aNuU+rahRd
+	1GUKsYa+gXVhGk/EI4Ywqj2q+VbAxE5UYf7OFubEdoAAzfhu0f2ST004eaCG4GLQ
+	F1D1Q2WkugYqzgcxYwKxVL7pm03H7LMx0dT/XGKTKPQS0mI+iEZcMTRkca0vag3/
+	RDWKomvJBzIYN06yZe7uWA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793125958; x=
+	1793133158; bh=pW0YX5uTyvs0iTQboMCcpjVYnLuET6JVZiidtK9lRiU=; b=d
+	qBTENOQ45NO1fMBSlIFoaed4KzgJDaJVEDwxaWy0AU1ee6zNudEy0DlCDndCnLS6
+	2Mky/tZzM0tAjCf7N4u7bi/4+2ykMhG2ESY1Sf7giCpL6gbAEOpbD5EIxKBbICPt
+	usmzcw6mAAaTgxfbDhYZYxO2tvSv+8uUtfRzlCLEIP3lG32cfLfeY50SbL6O6Io4
+	SgQw2YBRCXwq56w+6p7UjBanfKMGDYqL3wt7dbLsVl8wtknfLVIzXXPvDsCBbGKW
+	AtxiHzQeIKi/D6MVVDwZTvVos2hYu3DWzHZsBX4JLmmgFKlBmi78/sjOEDPTgAML
+	sjhtTrMnUgKadM/vzmJrA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793125958; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:YVDE8oPwHqFgHaYV3j+wJE28FEtv600mVqbqTBpWnTyYazm
+	pKu7Z1socw0b+6Tu2iJF/k6uDiHG9aLdvLUA2tD+RtOKgAJrZ4ZQaFPBFwDzo4PD
+	AUXtLLP5pHRUkUHeU6OjXmTh+bsM0L1FWIynHFFg+CdVjOLWPMNYtBshBju8F3ch
+	tdQN1u9UT4zhnBQrewocrlYKZnzH7uMSTJe/+zqSM2qCn7cfxbF5ak2sraZ+Xkss
+	l7qHRflwgk9Dk/jx5yqqsPTrdVMP+H65hejXkSDxrdKgbxtMInEFvB4B1EZfFKvW
+	NchmlLR+yC8zh5xOsUjYGtCGMwgNdWOpVlU3ORA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:C7HxDmq442sA516hPg1WVqijzSVzVZyCGy6pQZqDYDY=:4/DSvQfZqcYprX4ziRRYVwk6oH+PWA9EoraJfbgloO0=;
+X-ME-Sender: <xms:PO7garY621kKyqojOqTb7yy-_Jxdn-Kzm4gl1mIkpb01V8TjHgldxg>
+    <xme:PO7galNXbgg3oxvhvN_4CaBu9hMm0jyCxqhA6a-T7eDOTCaJJJZAFol5ERGDjsLqK
+    2259_D1ZXy5t5UtRcS7lekN3e5e2Iz3wvWTc8ZMKjdCe5rWsux30H3E>
+X-ME-Proxy-Cause: dmFkZTFBrGBMzD/7DKUk8DMjlpJSCDxpPKrzK68BEfeXOQ/MXmVsz3qalb7yQm7DbWy68D
+    mdR7SERoL7p1SipE/Hgrz7O8Jk/YUwS5P3bCp2T9rw+yUUT025kCXndTxgJzUfF2A/LmwU
+    OoshLwBoL+gLtWMZ1eOjSZC00MjyyUjQsfwaX27BJBN1pGwR2iGIXqOSxLJd8LAZ7Ies03
+    pHbxu2/tinn1z/on12HNzhMOuElx6kqVt1d934g47Fvev3+j+hQdPBK+wKrHQuA/MqaMQm
+    +YwFlvGVG7S2iiDu84WQfMEEhxn2uOBT5zg/mL0ozhSd1uzGOGScjRvF7ClHEfMSlJfxcq
+    YnPF1zz+aUEeQFHBKYIkKYLrgp1kUHAokLo109tnO0NExqhQz8UwJIbWoTRGGabU2W726Z
+    Dhb2CJzkcYCahSEgI2QZnhI9rp+Sax2lb2xVGCjVpBRvKLDXz5qYKxyqd2QqtR2ElCh9YH
+    sk3iHLFKWwH3F6St/x0/gv09bz+pznkee8K/sd27QfN9Gwd3fo2BUAJ25G4dopbDOQnb4A
+    P/8JBDeUxH7I8cBQFkugJH97mQ3vUVptVMshXk/wrMwfeGdw1Y1ScOXkp/5PrPH7+diEiQ
+    JTFMCYOkqnX2m+s2VfejdOjHHP+4aWKR319KAAcE5zQTI+rTtC/ZyD4VTbUg
+X-ME-Proxy: <xmx:Qe7gaoJUmon3FH4sGaBdEIKD5fHQ0oH3bMQFHqz81k9r0kK1FDN-iw>
+    <xmx:Qe7gahWdNxTBRCJjJwTwB9P5rA_fL9OS-9G-iMSBpvVqcHmxmO9j9w>
+    <xmx:Qe7gas_yFzXCxWyV59ZvbLz29NvVSPTASADzMdDMlPDM-V9XYgRHIA>
+    <xmx:Qe7garJelIc0ZjXXdljbcuMtjXIos4JgOEY9ZOwRs4BJzuv-Dex5fA>
+    <xmx:Ru7gaoAQZNTTFpuQBw_xTScK29TJcstSl3feioQOcb1p07_GUyAqFEK0>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 94CBA32A0097; Tue, 27 Oct 2026 14:32:28 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/9] mm/page_alloc: don't undo a racing
- start_isolate_page_range()
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <brendan.jackman@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
- stable@vger.kernel.org
-In-Reply-To: <20261027-pgalloc-ai-hotfixes-v1-1-9c7d1aca801e@kernel.org>
-References: <20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org>
- <20261027-pgalloc-ai-hotfixes-v1-1-9c7d1aca801e@kernel.org>
-Date: Tue, 27 Oct 2026 14:31:57 -0400
-Message-Id: <179312591750.3837667.585125681248029246.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 1CC751C0010
-X-Stat-Signature: r5q4rj4x5wx9yq7exw5k7sa7fxrmafcn
+X-ThreadId: AUJ1OXWu3nCJ
+Date: Tue, 27 Oct 2026 19:32:08 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "James Houghton" <jthoughton@google.com>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Kees Cook" <kees@kernel.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Sean Christopherson" <seanjc@google.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Jim Mattson" <jmattson@google.com>,
+ "Jens Axboe" <axboe@kernel.dk>, "Pavel Begunkov" <asml.silence@gmail.com>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, "David Sterba" <dsterba@suse.com>,
+ "Chris Mason" <mason@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>,
+ "John Fastabend" <john.fastabend@gmail.com>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+ "Ingo Molnar" <mingo@redhat.com>,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Namhyung Kim" <namhyung@kernel.org>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-btrfs@vger.kernel.org, bpf@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <ac22215d-3e58-4aab-851e-47c30836e058@app.fastmail.com>
+In-Reply-To: 
+ <CADrL8HXQdzcroeGN-ACjyy-jSAdBNHiT1_BCVVe0P+Y8ZueiyA@mail.gmail.com>
+References: <20261026215226.3713941-1-jthoughton@google.com>
+ <14f5f919-55bd-47c6-a1c8-6f1445cce733@app.fastmail.com>
+ <CADrL8HXQdzcroeGN-ACjyy-jSAdBNHiT1_BCVVe0P+Y8ZueiyA@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
+ current->mm is NULL
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 41ABE40007
+X-Stat-Signature: gg77mw863sbi97d5jpqszwsg76w46ggb
 X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793125919-560202
-X-HE-Meta: U2FsdGVkX1+aDZ3LFuWkV08iLNIZcRsJLQ5jZ7u8/jvqzTTOTddgT35lYrJWfo6b9qgAk4IzKueR2LNOqq5jbRCCx0BeuSe0ITMu5gDxp1IuUCfKu2Mw8Sa2B58m+05O8qcdp1x4xAjd4ERGNSoAO8Hk6oQupExLhbD+ononfpnMiULwmrXx+rzoE1xoaDJQb4v4mZDaHrcBTZtgW1owAtVztPb/LHu4DHj5ThLO4KCTkx1XniLPg+T9oxK9HwXJ2hl3Yh4wZ9rt29E2rZkptTGIgIeX3Wx13URW+jA86DU3H+pEvG2vFEYlQLqeKBrb91GN8GWkGdAmRJ49Ns80I/AA19ReVL4NCRXM4hD554oMLIxek6QnJp8bBVO/YMTM5ZFPg9W7EeXjTURafawvJ5oGYWePZ1GJIU3xuKbqzEnpM70NN/OeDECj51YEYPlQV2QTbsUcXcVKgQtWB8V/elc+RIOCEzQRZTQcTmiFFfLFE8YYyhciSZFAkQvUYWUMm9NeqdPHG1aJnM8Kt9Gz44n8beYEam/s+tTJOqR1GqNXnYSfS7ZU4fCULphlkdYhwZq8LinRhntDubQC2l6mMMysBvyf4cncE6tgBX8jZxnc3lSsaBcxRLDBZZsWAvfVoEgYif0cqGjIH/dkq5A4axxx6qCC7IY6IIMD+WtSdxKba0CFO5JhB6oJqk2KeeJPamd8IdgFxELAj0u9R3s+kw1GAmwSdAfQ9/SN02qSqfvbonCsfvgJvv4YMTDy9vwaqrxSAnpohTtWD/GwcfXaafr3X9EJHQD52CmNXWiBW4yxe2HhSgUO3HznRGE/7PnDe9YIuBZ1yStuHkXTmixsd9syHifLSmU8J5PBevuuiZFWS+J+/co/XxRMO8NtE/CAli8GA2LHiJ/T8Hx1SAxYTNVvejT0aoT3UI7ihdp3rkJH6UeXe/PUcsAun9/G/IGvRV6Zlt6y47M3Kvg1f3y
- OpOHuKZz
- vtbH/xF/WpMlQH+pXeHFGn2aGGBnrtFTN+HnyNyh+F6G7LcoBKErvHh5KzOEzjEEmZoqHcO4drUdoMUx5MpftqWbm49q/sCUB5/tfAP2mEI/lHe+lMaOoA6XTu1yFhBjsfXc1CWjhPePBfZpdnT238hDtt5LsBLhTkNRqKwvAQPYe2Aa5WlIrn7pVjMprbg5didW9jc8ZkAPQ0O/NW6kJ3y2DhP34UPfu07eoZ6pVsvrLeQ6RongFp7hrjoqO1wyju/aWAg2z8ZlKzNJ4Jhlpaz3FHxe9EfQcZvT8JpVHURcGi4ppUdrEv7M9P0plDDEceVk7jBxpf/3wsJmXcgDN5OhHX/ibFJA2dq4KGyJo15lH3M8QHd14UMLqhKAJ8x6qsqXhvYCcHYbICSeFIbvl2oOH2y4aAc6QPXGoXvb3HCWGJsV7JmvS9CRE5I1ujL1DcHA+
+X-HE-Tag: 1793125972-953929
+X-HE-Meta: U2FsdGVkX18M++7RrCnbx97RiVuHReYIiaEliR7EsheqEzbO8rYrYQqYXjUWoerFw0IfiVahiOlBsP57Zdj1U+YbtgZmgoJhVOh17Akc6btI6BZcZQBzxC6ye6Uy+2Kc8sApaMAiPiJVTwdnJrbhEUEvmaCBIoEE6VL0n441WvLRV36xQV3lMwz/usLLs+E1L/iohXgvWl/GaSxrm1PFSIvRP9UFfLgnTRYSDg8iwkBx59T0bHrmuOmxPMpPb22wsywT0HvLn6h6caMn3fh8DTyO/RWoewKJBMKEQThhJZfwlehrztofQhZ6Vud1ZGaHp+eL5VRCATAi+WuV8LxsRIhUHuAYW3E6qT1iZJQpc6c6lEazl55NXh1iXo+O06xMIyXzAgcNdDn55G9IvgvW+j6kXpLsYjjpkEJA19REFGeDwAqBo8r5AAYwAKOMuN+cYAOnXNGp3FgQ+8m+aultMqKS3XhyX4ap3ZE+IhOpsAo3vJam0DWvRQ6//QQHh8ExIa5JPw3ycH1MU+ffROpSvOHEQSOcvT2M7LukAD2NAf/PrMUtTIwv7mp8I1fE8+1Fs0Rv5nvnXuszKvgNeHm2PeS+1ZUPcfGzS3cDEyckplnSdzfmROt/ExeKFSRyn+sBiV6TjiFOAerAbbwJhpGNys4jjZPdNdyX6jTccANtpbOlzbWJkqMPySv1Z7iZTAKu7bE0FW2JofgReiqpuywj/RVmvD89ac2JeRntrkVNI86wQvQNo+CK90z9RAiFb8ovESX75glNadfmWSyqCVTeLmPiATPIhX2DT76EBqFJ0vryaLKYbSt5UgO5PsYxIkqnJ0mYXTS8VVijAQpUlh0odeoMj1L0IkERcr3GbDR0cfzpW1j9GTFOSnejnlqU6g1cZVNLv/wM8ijPi3CkervpzecmzuWjSo9QY+IHFnWfUyW9Lfbf//DPvEwzAugvqIzpaV9hqyrtLQ4riw4xCo6
+ 2dZvC0hy
+ kwbUxDpzBi3fC/G9Ce4X/VjqvgWD0xWPKFvyTmPSm4e7h2TcRlqxpMUoHVMTPYBhYoMmtoVBpkGlf74fd62LKdfBnYtCiH5F7/lqowEyNA5j2H1JJj3Fk9DBFCeJNQlYTCMOdcT5OQCsEETouBRpPfJtfkXikMi+E04mjynvKL07759UkEjzJBD6+yScHko+PSYi0Sy9UF8MbNrp0oXKnfN3A/09OkR2owM4q57kCjejcqTjHWhJHyfR6X9e14DEwkCCngWwPou85zuIFRM/0MB0JByOyi+l5c69fKkQe4MhkTHRBJxWnRvbEGJE+sinnCdbl71ixK91UO84S298aLLJGAgub+P/m9dZfOe2zVu8Hq8WtkJHzuj1IZhLLE34Vht3m5GTc2iIar4SFoVn3fg2ziiT6p79oSEyNceVvVtBc5jVT7Z4M766M7yGnrNg7FKiwDfzCPZoHW6c52l6bzdtllUfVc4FFKXob
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,62 +180,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-27 16:46 +0100, Vlastimil Babka (SUSE) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
-> 
-> start_isolate_page_range() fails with -EBUSY if one of the pageblocks is
-> already isolated, i.e. if somebody else is working on it. It restores
-> the pageblocks which it has isolated itself before it returns, as its
-> kernel-doc says:
-> 
->   We then clean up by restoring the migration type on pageblocks we may
->   have modified and return -EBUSY to caller. This prevents two threads
->   from simultaneously working on overlapping ranges.
-> 
-> alloc_contig_frozen_range() nevertheless calls undo_isolate_page_range()
-> for the whole range in this case, which clears every isolated pageblock
-> it finds. The only ones left at this point belong to the other user of
-> the range:
-> 
->   CPU0 offline_pages()                CPU1 alloc_contig_frozen_range()
->   start_isolate_page_range(A)
->     pageblock X: isolated
->   migrate ...
->                                       start_isolate_page_range(B)
->                                         X is isolated: -EBUSY
->                                         (own pageblocks restored)
->                                       undo_isolate_page_range(B)
->                                         X: not isolated any more
->   test_pages_isolated(A): -EBUSY
->   (again and again)
-> 
-> offline_pages() repeats the migration and test_pages_isolated() until the
-> latter succeeds, which is now impossible and the task spins until it gets
-> a signal, while the free pages of X are handed out by the allocator again.
-> 
-> If X is released after the last test_pages_isolated(),
-> __offline_isolated_pages() takes pages which are accounted as free off
-> the free lists as MIGRATE_ISOLATE. Thus NR_FREE_PAGES stays too high, or
-> hits BUG_ON(!PageBuddy(page)) if one of them has been allocated.
-> 
-> For another alloc_contig_frozen_range() or cma_alloc() the result is a
-> spurious -EBUSY.
-> 
-> Return the error, like the function did until it was reworked.
-> 
-> Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
-> Cc: <stable@vger.kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+On Tue, Oct 27, 2026, at 18:29, James Houghton wrote:
+> On Mon, Oct 26, 2026 at 5:13=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
+wrote:
+>>
+>> E.g. on arm64 with CONFIG_ARM64_SW_TTBR0_PAN, the page table base for
+>> the current process is only set in user_access_begin() and would
+>> not point to any task here. Without ttbr0_pan, it should be
+>> covered by cpu_set_reserved_ttbr0() turning off all user space access
+>> for kernel threads.
+>>
+>> Should this perhaps be addressed in architecture specific code
+>> instead of in a common place?
+>
+> You're right that whether corruption can actually occur depends on the
+> architecture and config. I'll write a note about this in the v2 cover
+> letter.
+>
+> That being said, I still think the right thing to do is to have the
+> new check(s) in common code. Instances of improper uaccesses are still
+> bugs, even if no corruption occurs.
 
-Given i separately found this exact patch and tested it
+I agree we have to do something to prevent the problem for most
+configurations and find any newly introduced bugs.  The questions
+that need to be properly decided are
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+ - does there need to be any compile-time configuration to skip
+   the extra checks and/or the warnings?
 
--- 
-~Gregory
+ - are there any cheaper ways to make it safe than to add a
+   condition on each user access?
+   E.g. the original lazy mm switch was intended to avoid
+   expensive TLB flushes when switching to a kernel thread and
+   back to the original task on 32-bit x86. On modern CPUs,
+   the MMU can deal with multiple ASIDs cheaply, so turning
+   off user access in a kernel thread may be cheaper than
+   adding code to uaccess depending on the architecture.
 
+>> I would think that user_access_begin() is a more natural place
+>> for the added checks, as this should be called exactly once for
+>> any function that accesses user space and also stays out of the
+>> way of the copy_from_kernel_nofault() etc.
+>
+> user_access_begin() isn't used in a lot of places that I want to
+> catch, including the KVM case. Roughly:
+>
+>   kvm_write_guest_cached() --> __copy_to_user() --> raw_copy_to_user()
+>
+> There's no user_access_begin() in there. :/
+
+Good point, yes. After the changes described in
+https://lwn.net/Articles/1102061/, I had assumed that all
+__copy_{from,to}_user() are going from common code, but it looks
+like the series so far only touches __{get,put}_user().
+
+There are of course few enough of these left that I think
+we can consider doing the same thing here and turn them all
+into the checking version:
+
+$ git grep -wl __copy_'\(from\|to\)'_user  drivers mm virt
+drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+drivers/gpu/drm/i915/i915_gem.c
+drivers/gpu/drm/i915/i915_query.c
+drivers/usb/gadget/udc/atmel_usba_udc.c
+drivers/vhost/scsi.c
+drivers/vhost/vhost.c
+mm/kasan/kasan_test_c.c
+virt/kvm/kvm_main.c
+
+> I do think user_access_begin() should have the new check though, so
+> I've added it in the v2.
+
+I had the details confused here. Seing that user_access_begin()
+and the other accessors always call access_ok() at some
+point, maybe that would be enough?:
+
+--- a/include/asm-generic/access_ok.h
++++ b/include/asm-generic/access_ok.h
+@@ -33,6 +33,9 @@ static inline int __access_ok(const void __user *ptr, =
+unsigned long size)
+        unsigned long limit =3D TASK_SIZE_MAX;
+        unsigned long addr =3D (unsigned long)ptr;
+=20
++       if (WARN_ONCE(!current->mm))
++               return false;
++
+        if (IS_ENABLED(CONFIG_ALTERNATE_USER_ADDRESS_SPACE) ||
+            !IS_ENABLED(CONFIG_MMU))
+                return true;
+
+(plus the few extra copies of access_ok()/__access_ok())
+
+As a quick fix I would probably start with just the 'if (!mm) return fal=
+se'
+bit here to get something merged while we still discuss the other
+details.
+
+      Arnd
 
