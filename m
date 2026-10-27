@@ -1,174 +1,160 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8B4606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC2C606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O/cT7rN4
+	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=rQbXiCep;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=BkFc/OuK
 Received: by kanga.kvack.org (Postfix)
-	id D695B6B074D; Tue, 27 Oct 2026 09:43:01 -0400 (EDT)
+	id 2981E6B074F; Tue, 27 Oct 2026 09:45:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D41C66B074F; Tue, 27 Oct 2026 09:43:01 -0400 (EDT)
+	id 26FE06B0751; Tue, 27 Oct 2026 09:45:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0A096B0750; Tue, 27 Oct 2026 09:43:01 -0400 (EDT)
+	id 15EFA6B0752; Tue, 27 Oct 2026 09:45:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F9896B074D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:43:01 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 278EA809C8
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:43:01 +0000 (UTC)
-X-FDA: 85368522162.14.25D6F41
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 43EB614000D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:42:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/cT7rN4";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E4BE96B074F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:45:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 828CF1409B7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:45:13 +0000 (UTC)
+X-FDA: 85368527706.26.C58470F
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1692A140012
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:45:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="r QbXiCe";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="BkFc/OuK";
+	spf=pass (imf26.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793108711;
+	b=hFdkS434BjcoUitW5QZ8NJp/pKfLDmuUwpDXp1psjSEMPFya466vDTVdE9SvWTacXtCWcy
+	IvbVgx4KwHfX/UrWLxeRA5JDTDlsZd6RlzTTc9iXU2jaOViRVn+31WAUxMF9SWVMTrZXMF
+	aEgT7F5sNfrKf1hSxbGTajFemFj1KRU=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="r QbXiCe";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="BkFc/OuK";
+	spf=pass (imf26.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793108579;
+	s=arc-20220608; t=1793108711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0+f6IJooHiQbF9wAyC4ax/+y1Gmk+/E4quNL5EJAkoQ=;
-	b=UBfnmlDdRAyd/VHAIWuqYmb2dZjuCRghh6n0uXXwnWq1kbxDIqElsxEcwnM5rWNYcldzne
-	VkWY1NGQkrDORa5VVgPRK0YxRRJDIJVQNTwIffRCwcVmMuKDvO546nWuoIIViy/yxTE7gD
-	xCu9uFCxYzR+iAt36X5vdfTfIShk75Y=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/cT7rN4";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793108579;
-	b=v0JC3B7rZKyLfGRFNxfJnv0aNCp20PRTtMSo2WNIfp72Ymfbyip/PjoSrQX+IzdnK4fUfs
-	SkhGgN9K3FfeGptNe6y5bTIpGBZjViq2B5Dnbj5HXjCRIWCh82N3Mx9fBtPfFboCJR6jdb
-	vAnquZ6b06jOB1CTj06Sx8ZYO1NufRU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5545643510;
-	Tue, 27 Oct 2026 13:42:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234691F01825;
-	Tue, 27 Oct 2026 13:42:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793108578;
-	bh=0+f6IJooHiQbF9wAyC4ax/+y1Gmk+/E4quNL5EJAkoQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O/cT7rN4J4QJA9+qKjooI/EO5er0turCIeVkTDeBg9nmgtchbI+fpxO9S6+r+oBWY
-	 LwmatZaw1QbMHP8ScOJ6R+l2fGSrhmt7f6UUvC43uiHkIJGDGGCW0OQjZcEIUQEPa2
-	 w142oOqbY6kYvnslUnzMN4PB88SswCTWpes66yGol6fQLmBbkQaxbQK69GdBHy5hRV
-	 glBMz2eRymovbjCzKL0DCgcuiVWEYF4wIngi0eCG9PplngO81D5jwjFqaadaqIhz3C
-	 3l+I0Do+I4H43SEQfhyQdeFO3NHr7grqnLgvsjGY/hUxovAgKOJx9ptbOi6w43lJzE
-	 qaE/Jiu8PIH2w==
-Message-ID: <38491041-d167-4ea1-8813-e75bd11cd10f@kernel.org>
-Date: Tue, 27 Oct 2026 14:42:38 +0100
+	bh=8TAIza2maHFoLukZ9iYbRq1qc6+ujGeVY4cIhriAjjI=;
+	b=GVkSgJzKfVjgBaCZkZLKJGKaakHAon6DAz2fOlM4CYaK+MgOgb/hDF2cem2wKMHBQS9Srh
+	nf8HSxN+ex61g0gujw3vvSlIJdnijywi7FvHMjjX9sT/n47tAd9UmEu1qDsd1iu9zn06v3
+	AFOkYUNkJWahzne/7TgjZD5MgU9Q5DQ=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 3129D1302987
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:45:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 27 Oct 2026 09:45:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1793108709; x=
+	1793115909; bh=8TAIza2maHFoLukZ9iYbRq1qc6+ujGeVY4cIhriAjjI=; b=r
+	QbXiCepoMvMX78v2pXgxAc3L4YBN1LsHDtFluN8UK4w3oM2o+85HbDzIVIv4dXfn
+	38sJseJaFFbHwZjZjzsMhJ8O95gQlp/Lk0Cmi4tuzI64arSFOqjnZYzUL57W9845
+	w5hiLemPDctUhfWBO3cv0ZFm4SYHK3hKx4P9yIQmHSIjTAPBv7Gzl7aFCORgZrKX
+	2xWFOIlDi9j5aYaXgxIvMTfYW6TIQWN34QbusR5bNMOjbL5+wsru9ykM7SRlbY8T
+	3iuH237OqrxSrt8iEJGFHUduXngz6dZGR/X9J1J3PGR3EB51XMqFCSvfI0JO7Ody
+	MYtLuF2aYVmDyu3luLzVA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1793108709; x=1793115909; bh=8TAIza2maHFoLukZ9iYbRq1qc6+ujGeVY4c
+	IhriAjjI=; b=BkFc/OuK6ZU1iDEjgXsHUFdtgBRLUTJUUEKgfa9w+h0ksmiXSTR
+	QOPFjYZ7WU+pI3YTlUOEZMOZp/a4Kz3TQqmOKLWoKLOXR/Oo7Oq6gHv6AmufAuNU
+	6AU1sv5sXZSVWxvGF3K9imo+rSAS5+Y3NSFfSvUcKTG/+nqRmGSHadxQfrKqJTQs
+	m2qdEx4jTmfGKOz/R4CM8ry5bR5VodN7YTg+1zCy+mBk+A8LLHOk6wGLdqLi8oH+
+	B+JQ3J+le9+nVf+HJSVHurb/NHyqTD0an3GZ2db3zEnpVATYfEWZPJFYvrJR1oSx
+	5AEw3lxrq24hjW6fPsqnmo9EiwXC7H9jUCQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793108709; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:xp2MvSDj/R51rJmrMIZ04vEtjrNTINQpLSnquTAiWC2vvgh
+	0JcpmBzoeVltfVE7k/ZA6MVV/ViHFsBJxEQxLaGJ7yHe6bW31eUdZ3M+oD/dIBqv
+	Z1D7nuT6Fy9AVWkXvG8I8mdjd4coItb4+SoVCQGQAdI1pgzamIbb0uTbEmMKuGBb
+	lZogikewUKejSap0EkVxYxRND+k6u2KOANwb+7xjp7v9zLhkkqOyEkQY94E5ZwtV
+	eXQys7NTJXB2w20JAR8mlcS3MQX9VruYN9AzPOccR9gZANTgyVwMAusTpHdZ+MPn
+	OYEe9mykMZXVRSYHZk6wV9SeiZFvXJEgYlvah0g==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:seaL8eoUk9zz7RKlbs/WO4VFngl+PPR6zsD+uJ3Mc/M=:Enih+tl6eKbc4ggwNBptcy2mvOiomnW/6tHkarBfMLI=;
+X-ME-Sender: <xms:46rgasQk3ATXoQlHGjlYmuUDjSQehUiJuO75_MfqTS3uwPRLu_wIsA>
+    <xme:46rgan11uqiyYSdgHiJXmG5QnS1EDBnVXq6mGeSsgsrEOCR3a6_g2S7o2cyvomTzm
+    ZZa_QNqot9iI9Roj0DWugZ96g4SKX62q18Q9B6J3Hs3sbKRGB_Xapw>
+X-ME-Received: <xmr:46rgap1PkLRQUwyTCxzr0telQ1P9i-4_Phsd-V1cyR4QwVZE_DZCiDPDoP0>
+X-ME-Proxy-Cause: dmFkZTGblqe+wfRiQe8bcmkWYEKf3fZ/EiWo5l7bp+xDj5MkloEPRlh17pptfO3Q5h+fqJ
+    tnwEFFeraUcTpHK/tCx+CFZKuwAI9oAZ0CLgKu5WtNsHXbF250PIeIsdaPnp5LB4TK8mhU
+    3nns4LfB4Zb+Gp3SuArkJViR94h5KQbl5QTycoy4R1g6lI2N0HZjNGIm1/REnmCSE4sSeb
+    iO9NqRbEJ6d4mXWOaptabctmr11CwGRSteBTFl0vIbKml7k332veFp+P4Y64yWzaWlHibG
+    Ewcvn2Ke2kyuD/kc9DgTOu4B6JFDMG09zfFLBSRnyziPPuYJSbTWmODezy3iyx4WZFFmYg
+    AKcGkfvKZ3Jn5tMBUDtbg8/qv8CjlroBAxGH8XbxFUcHUfdWZYLaJrKeU/3ZpR3iLu4k/4
+    tdze24ILcsucOqdyrCjtnaa6N9ElZnbYkKcFhdU4rFr6+ipli12b2fbq5vGvVNLQE0Bm+j
+    4Z58gp6/30oTfcWjMyZEG454nT+YEoqoN8YOoCfC46f8hOw6scje4vy3HXntvGyFjtI07Q
+    YuLghAS6wlzOoQg48qg9z2d9JNOhFzuKm5IfqBJ9OTB/mAc21zfw0KhF6XU7tU6512y5Nh
+    gc8xPuKLL2Kj6fvREKwSuTfhh9PbqCiVuj0nX9AA3UioLAXC56WYyiFhjoEA
+X-ME-Proxy: <xmx:46rganCSTWOYxoqEvQYDO11fv7rB5mKBaWaqdJW2oHHAYT9oO5qgOw>
+    <xmx:46rgaldfQE5UbEhMGsBcWVrD_KfEwjuoJgQpGnsMuo64AT4Firlkhw>
+    <xmx:46rgao4Jnzqcv1bFo7EPmNvUWPeBDlcV6FZpWbMo4bPp6vB_TDa8Kw>
+    <xmx:46rgaiRCQE_k7-iCJwGDsDXClD4aAZpjPLZRtSBsCpBMJIustJdVgQ>
+    <xmx:5argat7gTGe6XnTgOpEjZVHu_v9aliKhzaSspQIOg9cv6OQc_EWgFnAo>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 27 Oct 2026 09:45:05 -0400 (EDT)
+Date: Tue, 27 Oct 2026 13:45:04 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Salvatore Dipietro <dipiets@amazon.it>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, ryan.roberts@arm.com, abuehaze@amazon.com, alisaidi@amazon.com, 
+	blakgeof@amazon.com, dipietro.salvatore@gmail.com, rvvandan@amazon.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, linkinjeon@kernel.org, 
+	sj1557.seo@samsung.com, yuezhang.mo@sony.com, miklos@szeredi.hu, agruenba@redhat.com, 
+	djwong@kernel.org, hyc.lee@gmail.com, almaz.alexandrovich@paragon-software.com, 
+	cem@kernel.org, dlemoal@kernel.org, naohiro.aota@wdc.com, jth@kernel.org, 
+	willy@infradead.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	ritesh.list@gmail.com, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	exfat@lists.linux.dev, fuse-devel@lists.linux.dev, gfs2@lists.linux.dev, 
+	linux-xfs@vger.kernel.org, ntfs@lists.linux.dev, ntfs3@lists.linux.dev
+Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for
+ per-block dirty folios
+Message-ID: <auCqlqe97AMeqKHY@thinkstation>
+References: <20261027112702.3747009-1-dipiets@amazon.it>
+ <668c53f7-20b4-4400-b442-71749db88d03@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/46] mm/memfd: check for real shmem inodes before
- accessing shmem state
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, stable@vger.kernel.org,
- Chris Mason <mason@kernel.org>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
- <auBdPOKXJpE-lX8d@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <auBdPOKXJpE-lX8d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 43EB614000D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <668c53f7-20b4-4400-b442-71749db88d03@kernel.org>
+X-Stat-Signature: paesr83nr6hs93uyri7im6ypqks57bwb
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1692A140012
 X-Rspam-User: 
-X-Stat-Signature: ummpckmus8ajqm1i6q86efr5n134xkb3
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793108579-310834
-X-HE-Meta: U2FsdGVkX18MSF4zKOa1Pr3H+QMb0FlvLgc0C5qQgVKagdfANCL4Ti9OmcqOj8R6HGaUo5sWht2HfBw3aUg8Ha6xzBvB4cg/pKx/YGNrqeSkRnIRnA6lgqTpNENvCn/ZZX2QfYfYpsEYHrP9AJtTRqN5Wbt3oF4AySf4VM6QmpODMr+Rcsa+x2GXuQ7jh0JC8M5WsrSNllEcPRHMKqHGHaFScWx7RCu1ejQ4qmh21QOB8aI3+9Fy5gclNs6KdcCIlUnaHJYOIT8sFCrFUQagM21kBfOBDiO3l4KWgZb9fTQ7VJyH+5YoPGzigJH+OZ8a+gTKi2bTZ8tPFt+ZXf5mhWRUNFOvpoBkjQ0o2cFIXzZmu9h1q7l8SIwp6ZuRf7HJWBEKH1IKFiFEKDjQzWoCcFYb9rw0MJuWRKZwL0D2qmQt1TZb5ZD/V68H5oTRcT3PN0VtBBHRc+bXcX5wji9H4Hovr6Spx2y667mmEY88Zg2aVigyn/d4+z6a67CtnxrV17EB72lEFhdGHy3j8fnWg8XCv0fQfSNDXv9Iwz0AJOhbNu7f53WaZw13cgaXwafXiCukFFC3Ns1VrKU+ck/aif+4qSIHiY2Aplfn7I9pgWF7jRNxbCl4s4JkRUuKiOtyyGvXCWSZXDsI97sNvYHAGq1t8IOnL7S1qTxKjpnspawVKJOwRlbv1iKlsdOFEoTtMEHG3PGIaZ/KWzVE7Zuv/ElRDbLTVBnYD59+zwuKZL4FiCi6AkAstPsg6YtKtFrMbICtH6h8o0PLVCN6RMscI9zEMWIKPv0LhQsa17BJQYDSzXg5ahfVSJzx6i5QQqotyDtqJj9DWpJT7uoQU3AUsCFLA2wrZzwrsv98giB1CggcZxCTSHbV1DsEviSO49rHahtjX1yX0CiH6ur81YSZXIlvoaI/kG7gn5QNPrCQJRHGFGwWwE9CE40lW0u8s2R9xxsVA5oMt467c2kpTCH
- X2JTyT59
- B17Ee/NKiYqc2SbmiJuCuAGxlsARmfUPrTrTxzR9lRBui72GEFlikzMx/xnhPSf1lLEhHN/lSnq1szpZdJ95KrX7WkkEB2rclsQITaYTMo3KROjBK2YlWYmjZXbjXP/VBM8mLtPk81MOGQ3G6ugI8t7S5WecfsxkTENTUl0YLFnzmua2Sd3BWt59VRnTCE/3sXSqtxIbu1dDyRBLL4vfl9xPOJnHe/PPpPFm4EzP4hABSnaoQyG6vhC0S9y+Yjn6iEIVx/apWiP4Pgj6TPYFzrRS1PeTZfSUcj8dp9gu/TbZM73k0zhN7XeAYwJ6JQXM91hzLQAqoFbibygpUlbG4u6jKxerswEWl0zJ2UE+bh3D9O2I=
+X-HE-Tag: 1793108710-304676
+X-HE-Meta: U2FsdGVkX1+Y53ZoulNQ5ibZvI08a9bCUDSXKjsD46fp+BeirYG2DxXDK+zWgtxGEcWCPc9+8FEPewImkNG3F8/Q6Nikp0yBPt2ztqFvoWQKX7qRKhnpSkOoSFOMuvmaAoqgIhPxmSrOHpVtHoB//6TdHeQi+rUawChFBIzdoqyE2nk6E6Q0WKHHtaT1vj6b7Sx+U6Zksb4JsftGoaQKu8GJCjXW3UmD4rpbdOIC8T7grXdFLYskFPNx0uJjCK6A2Qw9RLRf318YkIEIK0vzXRdZGs3M8/PrIFrbFKVkLf2M26j5riQMCrcbbqgZoViS2tx0gNRW6U1+Lg5lX61WNRyptvZjwzKrvLB1bg9+kTdiYai9KVdYmDyR0BE/qZwYQEkNJUbJZEWjErH9fJTDW8uUHkmRwDTxp2ymtic5HLga06JajjgagZfWBUyMBRZ0OWPGx7mUjnnUkXt4YGmdWwp9RRd43wdo60Y42s7qXYCyKUFZCrfulvQIyFO0CDAOhiV/FtbXq55KrGh+KGBJNTjRP9ZQwizJfjTqQfhS6KZUwUolb1Thc9wTfvgtIm71DDHsa0WHOdhZ/GcV7rQ9WTrlKVHBmxsZdNZzEII6+Y33MhPsf/2kQ9UWLLht39PAiFWBR8n8hGtINwDjdXEzUvrxGVMbk9Ox7f1e82B4eJLnFbr2dAu9KvJ8mVreZJjz9YDsXd8bI9mOBIASSA+lOhxHV4ustGks4vKVxmFzV6f5rfTEL6zZBgh21aVjnchT565XtmEuztZi34rFTsnBxb7RNOwaSFzDiYi3oSp9e+2PvGgOE/G4Fr6RQxF6p57Wfsa1R/UMFw1ToIskIg69+3cepKcjbS2a1xJJUZpwWFADLp+ZW6f3I4gA9KmbeePXFE79VOVd9wJ+dYpyx8pJ7cevOz9GyiyYzOljWLrHz1FEmCASM7LMDyt0oFy4mcX4E5tX9w2b3CBn00gRI7X
+ DCxa5lar
+ 902zIp+71+ICTI8bgTGpTlHGy+lDTJjNHdz2XxaU15cYH8x5kolobZDDIaOVVatcuNn9qjPEXSZnhjlEqHdxklQOgGyRbyIXBCyC9s2QfrOQsZt9y3P/X3ivpQRsDuOyron9YvR46juqJfLr03d/yiukhDiEgiY0CUxpvi5wObKCzwDDpMOhIHrIgoDOqc9bUTz6wJ+IyDarziBf4ADRxUwXWkL8cX9QYCmnSem+d96PSocIx1VH7H8zQQy9acVJhtKKfYZMzfzdJtQP5ngHsUHfxOet9t20GGTToIn7djVVhy3/jaDwBDuK6ZPWJfuZrSTqzOuckQQzvYgP7dBgAzCV7W2WxA+Svc3xOlBQeB48XqclhaUNTH4xvIP6KtHPj2+h1M84FK+0hM0MtUaCKICFnXza6Pm2550NRnooYtE2IAnm0ixFGjEkq4ZBFPfqA+s0Brc4vNJjeIZ9oZ9+bSBLg3Bavifg/wTsf7hj4iI0TseDG9kd+ZoMNgVXyXlyRW10uCjdKE8hzGa9m24iHY4ns4uRgNjokGtUXOFh8wqaSzbiDafhxb1a68WBEyOFptkhTQ+qaYkMG8zw0Qls7ZUa9OOZgVvGQBADwPOrztgWOsVE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,54 +163,89 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 09:13, Mike Rapoport wrote:
-> On Tue, Oct 27, 2026 at 12:17:23AM +0100, David Hildenbrand (Arm) wrote:
->> shmem_file() only checks a file's backing mapping. That mapping can belong
->> to another file, as with a Coda file backed by a tmpfs container after
->> mmap(). It does not establish that file_inode(file) is a shmem inode.
->>
->> Seal handling and memfd preservation use this check before accessing
->> shmem inode state, so they can access an inode of the wrong type.
->>
->> Add file_inode_is_shmem() to check the inode's file operations in both
->> paths. This identifies regular shmem inodes, including those used by
->> memfds and ordinary tmpfs files, independently of wrapper file operations.
->>
->> Fixes: c49fcfcda8b5 ("mm/shmem: update file sealing comments and file checking")
->> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
->> Cc: stable@vger.kernel.org
->> Reported-by: Chris Mason <mason@kernel.org>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Tue, Oct 27, 2026 at 01:22:22PM +0100, David Hildenbrand (Arm) wrote:
+> On 10/27/26 12:27, Salvatore Dipietro wrote:
+> > Since iomap gained per-block dirty tracking, a large folio can be
+> > partially dirty: struct iomap_folio_state records exactly which
+> > blocks are dirty, and writeback only writes those ranges.  The mm
+> > dirty accounting, however, still charges the whole folio even if a
+> > single block is dirty (up to 512x over-accounting for a 2 MB folio
+> > over 4 KB blocks).
+> > 
+> > balance_dirty_pages() then throttles writers against a number that
+> > is unrelated to how much data actually needs writing back.  On
+> > workloads that repeatedly dirty small ranges of large folios --
+> > e.g. PostgreSQL, which writes mostly 8/16 KB pages -- dirty_thresh
+> > is crossed and writers are throttled long before the real dirty data
+> > justifies it.  On the benchmark below, run on v7.3-rc7, the
+> > unpatched kernel charges ~159 TB of dirtied pages while writing
+> > ~6 TB to the array, a factor of 27; with this series the dirtied
+> > pages charged match the data actually written.
+> > 
+> > This series makes iomap charge and discharge the mm dirty counters
+> > per dirty page for folios that carry per-block dirty state, so a
+> > partially dirty large folio is accounted for the dirty part only:
+> > 
+> >   - Patch 1 adds the mm infrastructure: an AS_DIRTY_PER_BLOCK
+> >     mapping flag, an @accounted argument to __folio_mark_dirty()
+> >     and __filemap_dirty_folio() to skip the generic per-folio
+> >     charge, and an address_space_operations::accounted_dirty_pages()
+> >     callback used by the discharge and migration paths instead of
+> >     folio_nr_pages().  No filesystem opts in, so it is a no-op on
+> >     its own.
+> > 
+> >   - Patch 2 makes iomap charge per dirty page from the per-block
+> >     dirty bitmap and wires iomap_accounted_dirty_pages() into every
+> >     iomap-based filesystem.
+> > 
+> > This was benchmarked with PostgreSQL using the pgbench simple-update
+> > workload on v7.3-rc7.  Average throughput rises 46.8% (139.8k ->
+> > 205.2k tps) and run-to-run variability drops from a 23.60% to a
+> > 3.98% coefficient of variation: the worst iteration improves from
+> > 97.9k to 191.5k tps, while the best gains 8%, 199.4k -> 215.9k.
+> > 
+> > Ten iterations per kernel, same database and workload (tps):
+> > 
+> >   Kernel                     Avg     Min     Max      CV   iters   iters
+> >                                                              1-5    6-10
+> >   ______________________  ______  ______  ______  ______  ______  ______
+> >   v7.3-rc7                139.8k   97.9k  199.4k  23.60%  164.4k  115.2k
+> >   v7.3-rc7 + this series  205.2k  191.5k  215.9k   3.98%  200.1k  210.2k
+> > 
+> > On unpatched v7.3-rc7 the worst iteration lands ~51% below the best,
+> > and throughput decays as the run progresses: iterations 6-10 average
+> > 30% below iterations 1-5.  With this series the decay is gone -- the
+> > second half is similar to the first -- and the coefficient of
+> > variation stays at 3.98%.
+> > 
+> > The over-accounting has existed since commit 4ce02c679722 ("iomap: Add
+> > per-block dirty state tracking to improve performance"), merged in
+> > v6.6, where the ifs bitmap started recording partial dirty state while
+> > the mm counters kept charging whole folios.
+> > 
+> > The throughput collapse bisects to the v6.17 readahead series, first
+> > bad commit c4602f9fa77f ("mm/readahead: store folio order in struct
+> > file_ra_state"), which lets readahead stay at the largest folio order
+> > once it has ramped up, so a single dirty block charges far more than
+> > is written.  Patch 2 therefore carries:
 > 
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> With a small nit below
+> How does this relate to
 > 
->> ---
->>  include/linux/shmem_fs.h | 6 ++++++
->>  mm/memfd.c               | 8 +++++---
->>  mm/memfd_luo.c           | 2 +-
->>  mm/shmem.c               | 5 +++++
->>  4 files changed, 17 insertions(+), 4 deletions(-)
->>
->> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
->> index a7c7a96a7cbf9..2ceca7993e4f5 100644
->> --- a/include/linux/shmem_fs.h
->> +++ b/include/linux/shmem_fs.h
->> @@ -117,8 +117,14 @@ extern unsigned long shmem_get_unmapped_area(struct file *, unsigned long addr,
->>  		unsigned long len, unsigned long pgoff, unsigned long flags);
->>  extern int shmem_lock(struct file *file, int lock, struct ucounts *ucounts);
->>  #ifdef CONFIG_SHMEM
->> +bool file_inode_is_shmem(const struct inode *inode);
+> [RFC PATCH 0/5] mm: sub-folio dirty tracking for PTE-mapped mmap writes
 > 
-> Do we really need the file_ prefix in this name?
+> https://lore.kernel.org/all/20260903182943.662461-1-kirill@shutemov.name/
+> 
+> ?
+> 
+> I assume they try to solve different problems, but would more fine-grained folio
+> dirtying also make your solution benefit?
 
-Good point, I intuitively added it. Can drop.
+Yeah, it solves different problem.
 
-Thanks!
+And I abandoned my patchset. The right way to do this is to make
+page_mkwrite() per-page, not folio.
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
