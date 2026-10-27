@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F9E606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10EE606A31E
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 02:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=NYaBPN6D
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=jDJ0PvQj
 Received: by kanga.kvack.org (Postfix)
-	id 4FE7F6B05C2; Mon, 26 Oct 2026 22:57:02 -0400 (EDT)
+	id 0679E6B05C3; Mon, 26 Oct 2026 22:57:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D5A16B05C3; Mon, 26 Oct 2026 22:57:02 -0400 (EDT)
+	id F36DD6B05C4; Mon, 26 Oct 2026 22:57:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C6076B05C4; Mon, 26 Oct 2026 22:57:02 -0400 (EDT)
+	id E260E6B05C5; Mon, 26 Oct 2026 22:57:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 101496B05C2
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:57:02 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74CA7C08E9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BB1546B05C3
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 22:57:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1757AA0964
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:57:03 +0000 (UTC)
+X-FDA: 85366894326.09.11DCC44
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6A47220005
 	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:57:01 +0000 (UTC)
-X-FDA: 85366894242.20.167989E
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BB825180004
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:56:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NYaBPN6D;
-	spf=pass (imf24.hostedemail.com: domain of 3-hLgag0KCP0pj0nsqtzlmqnslttlqj.htrqnsz2-rrp0fhp.twl@flex--kevinloughlin.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3-hLgag0KCP0pj0nsqtzlmqnslttlqj.htrqnsz2-rrp0fhp.twl@flex--kevinloughlin.bounces.google.com;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jDJ0PvQj;
+	spf=pass (imf13.hostedemail.com: domain of 3_BLgag0KCAElfwjompvhimjohpphmf.dpnmjovy-nnlwbdl.psh@flex--kevinloughlin.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3_BLgag0KCAElfwjompvhimjohpphmf.dpnmjovy-nnlwbdl.psh@flex--kevinloughlin.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793069819;
+	s=arc-20220608; t=1793069821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j+w6uCJntt3i4Wr5zbmAS2QfetxR0x7f970do0XgFlo=;
-	b=T7v2Uh5VLurJsM9Bpiv2ZLChHN8L/mf7EcxkHB+aMOaR5/iUjvLJByBSmpQFYchNh/XUPJ
-	L4d44xdNMb0m+G8CbcqXuBafCnWwuO8ybm2u8uRIIq3evbPktI6Uu0Wc63xCJ2V4P8fTXu
-	BwJyTXj8+FWiNWz/3JAWh98E92wPupc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NYaBPN6D;
-	spf=pass (imf24.hostedemail.com: domain of 3-hLgag0KCP0pj0nsqtzlmqnslttlqj.htrqnsz2-rrp0fhp.twl@flex--kevinloughlin.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3-hLgag0KCP0pj0nsqtzlmqnslttlqj.htrqnsz2-rrp0fhp.twl@flex--kevinloughlin.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=CMgB+FzrQPZBtoyno0UE3jQCmYhoPeFOpiZUNmu3S6w=;
+	b=k6RWYft+0P0HF4WRwEH21drE9zVqdLKdyjaEPygPiVzy4ZHcAxvYFOCHfHfu/lELF5ktaP
+	wVXxRSSKPkOqgsFAgPCv6c6/fs+O2qFDMWB8XZFqXrmIZe+XBVTqIo6xiN9abLMgM7T+xi
+	8Rgm2AMkrNtvpyeNXC97uCj3arxQp1U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793069819;
-	b=Z7Vc348hUaBD7JC0jqgBdoQznd1JCDxcScG+/Xyy+Lqi41qIs1++zJwWilhij+WSHrt9KP
-	LWmOQ2desDiuYMHWpuqkVVZBMIPPEWhIfepCIEAdIIPSSfPNE5RxoXKsy7+Qjglrmd1zKp
-	O7/KUHrFr/zMjFq8tvqoUlMbmRSCH04=
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4c734afb8deso5325518b6e.1
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:56:59 -0700 (PDT)
+	t=1793069821;
+	b=3gNn9/ACfMuxuDGtm36CpUm49rSH8yxfKuPVCMkRPAF8qKdTY3xYOGM8OHLrJSqUGK8FLw
+	xDqMOU+lSNuAvi8YrikLCqteOugFSKiwyyz14HcfdUAvROOXl0OIZrtVITniWUvBiccAvq
+	EE6p2T6ADNHnD78mJkjqFnT+6L5kenQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jDJ0PvQj;
+	spf=pass (imf13.hostedemail.com: domain of 3_BLgag0KCAElfwjompvhimjohpphmf.dpnmjovy-nnlwbdl.psh@flex--kevinloughlin.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3_BLgag0KCAElfwjompvhimjohpphmf.dpnmjovy-nnlwbdl.psh@flex--kevinloughlin.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4db3db8687fso6207065b6e.0
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 19:57:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1793069819; x=1793674619; darn=kvack.org;
+        d=google.com; s=20251104; t=1793069820; x=1793674620; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=j+w6uCJntt3i4Wr5zbmAS2QfetxR0x7f970do0XgFlo=;
-        b=NYaBPN6DYisJcqKgcr13478Dd9ftAP1/+OQeZwI3+Mtii674PUc0iDwZwo2Y4rdcJE
-         9Gml8Sy1+1cCx/iMZRwT1vAoOnkBb0CG3YcuUX89PPAtFYyuhAfgmwgAHnv1QfB2La6L
-         C+RjhP9b+8ahvoK4eejvqE+apurksrZ8Vc7T5S//KMT5kNDXv2phtmKhqucz8y5gJD4C
-         qdmPdiCTk9wDSrBwi8TgKFzs9arOaNrrgdRaE/M4blUW9FeFgKrY8IPfEh6D9uxqzEka
-         VzzjtOkQo6lL9JVQj6sWAlmJ/a5jP1xVqbYbzpic2Xua5wvUI6aVBPxNLCN51c/l8M7g
-         IQZQ==
+        bh=CMgB+FzrQPZBtoyno0UE3jQCmYhoPeFOpiZUNmu3S6w=;
+        b=jDJ0PvQjbb8B8qX9+zG6keFO7H9zKfWjStvDJCdUpVGGfM2yuxrWHlSF5zIAytn6oS
+         1dbTalxbAl4uAGeKFVHGHzMmYiUNsCMROYr0/rzezCBcBWkajRo4e5yOul9Dv84w8KtT
+         M6J9+rbWtWzJynTvmb0ZgMN8QkxshqxJ4qN1xuZ9U4UIl9sNm2YKvHiu2cG5W2OABsPt
+         KuiDV28sq4+JyvTQiz9FJMeJnMLDoxiT2VFBGGrYx+VT4O0OvaxQ92oUrWj/eqmBzkZP
+         RR78saCBFAIPZqf0JZK9GWM5rALkW90wB9Su4E+BgseLKv8wVD1aPQLVu8qNlc++lM33
+         +OWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793069819; x=1793674619;
+        d=1e100.net; s=20260707; t=1793069820; x=1793674620;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=j+w6uCJntt3i4Wr5zbmAS2QfetxR0x7f970do0XgFlo=;
-        b=MCd4OiFqpcVBzt3cUM+DgO0K6kqJmCuE9MQQl3Qzsd7TV0ewXLW38u40H4An+bT/qI
-         WFK8mQ8lu+NbUapaslEE9QBAA+Hjz3UYMqX4RTEO0UgkDAWsVsZSUsXXjsffB9O5ehqn
-         yQ2cXkG/iRMZSvD/RvYkRjvPgPynalG8rB7n825Jk/kaqujLx0IpyxSFXKMawe7VOO1b
-         Xy66WautuqHikSisIzGnF7wPNIqXRHRW5t1oKN0VENl/i2HgrdGSfUwQ+0IahSJK06h9
-         U9oM2nJTW3H7srsHQvRwRlOntlC7cE8zO66xYL3TPZvkj1vYrDAfcHRK9HfTIEbLruCS
-         xxGg==
-X-Forwarded-Encrypted: i=1; AKwUvBweDtb1FEZIxhcAJwchmeRjef3Xe2gxDXWQ2sGEzUkmcLbAKqT1ms7mMP77BbaeGMZdlMJQ86AGyg==@kvack.org
-X-Gm-Message-State: AFq9FYKXaif6m9dya/ax22AvE8dBZu/J8lS3AOZtznbjfgGaRRIaZstp
-	GtPscZwMRiuXtKEFVKCTmAkrSAQyqwrVOcC/qKOQxnTK3k3pF1KQrCdOLWjmkrm6z5xeGu4rexa
-	WFGbGSHXZnCYCH8IWDo6wQPaDjsh3pCdYmA==
-X-Received: from ioo6-n2.prod.google.com ([2002:a05:6602:8646:20b0:9c7:5a22:a4be])
+        bh=CMgB+FzrQPZBtoyno0UE3jQCmYhoPeFOpiZUNmu3S6w=;
+        b=oA1LI+bmLlKqnqDbAFBpkOqRyJwd65L64yhUs1/kvCpwvVE+a9CWvTDmDLqsfx5/f2
+         Aviv8LaMqLYsau+hRhuMrkAeHJN49n/wa68d0Qc41kdP0/u+iP+DNqlc2/g4BFvPBuub
+         wxvY0KW62dDeaPivY/hl0gK81oxN2Z69jD37iw57AI3r59CDwy1ZIpFWdAZfYDorOM6z
+         Iz49uVVrF72iZBDHYWP4Zjc+ZoAE7E+Q/EG13fVsBhDpKCxx1ksUjZUascbXPlTJTaAS
+         0BDpiECBiRRoQtns+w4u0yoU+dz7X4mNF1vja5xCkjeHTW6csmWgGgiOFh6FOS10WcqO
+         Hx1A==
+X-Forwarded-Encrypted: i=1; AKwUvBws+/piLfXSD+W+pfTdwUEjF27j6XfolCGMQyhBj7w/3OH9BwWA/cCU5I+ZBVtAqRpaDSWTXGBvWg==@kvack.org
+X-Gm-Message-State: AFq9FYJCk9g7yt7/im7qv5xsB0Bn8YFc5QG8FL6JtYXTHw9fHQT/9oim
+	uGR7DzURPl2+6J41DHbZJijfX+x/2k9TAbspZ0tbgEcTYinpYs0pGpsHXGyuU+dLOolub2Ho6rJ
+	ERvXV/jJ1oxhFeJQURtZv8Y5MrkoYU6XYYA==
+X-Received: from iovf14.prod.google.com ([2002:a05:6602:38e:b0:9c8:5014:752e])
  (user=kevinloughlin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:1b2b:b0:4f4:73a9:f853 with SMTP id 5614622812f47-55bfff91bbdmr5294378b6e.1.1793069818445;
- Mon, 26 Oct 2026 19:56:58 -0700 (PDT)
-Date: Tue, 27 Oct 2026 02:56:14 +0000
+ 2002:a05:6808:50a3:b0:549:e9e3:9490 with SMTP id 5614622812f47-55c0023237emr5583862b6e.23.1793069820114;
+ Mon, 26 Oct 2026 19:57:00 -0700 (PDT)
+Date: Tue, 27 Oct 2026 02:56:15 +0000
 In-Reply-To: <20261027025616.1632690-1-kevinloughlin@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261027025616.1632690-1-kevinloughlin@google.com>
 X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261027025616.1632690-12-kevinloughlin@google.com>
-Subject: [PATCH 11/13] virtio_balloon: unaccept free reporting ranges
+Message-ID: <20261027025616.1632690-13-kevinloughlin@google.com>
+Subject: [PATCH 12/13] virtio_balloon: unaccept inflated balloon pages
 From: Kevin Loughlin <kevinloughlin@google.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>, 
 	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
@@ -107,19 +107,19 @@ Cc: virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
 	Jacky Li <jackyli@google.com>, Steve Rutherford <srutherford@google.com>, 
 	David Skidmore <davidskidmore@google.com>, Kevin Loughlin <kevinloughlin@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6A47220005
+X-Stat-Signature: ozjbx8w9f7m1debqn3y146jsc1t7r5wc
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BB825180004
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: abqfdtmhne8h9gxymn64y9u6jhkcn8bc
-X-HE-Tag: 1793069819-514835
-X-HE-Meta: U2FsdGVkX1/W56gGCzskDlQHavTrI/vytz9cx1HO6U/tRmuK0zepIOQIYyoZy4PhwRqv7nQwd0Yqd/uAgfFW/e7D2LlzdEoYj30IRNc1BZ4scs1XZo7BpMrhiHs+ifNYzAgupVlSXXgk3H9m9VuGDNsAQWwkFyU+UhZpXrzxer6YatWHarENrIcKoJoPYqttt3lHHEHQGSU1s5O9EIHEBcSAnL+0IV8tNxp8dX2wgB5or4LKInqDeACdAzpVIpcZGtnpc+/COihnNSk7n4N90OAmphX4ys9bmbw2V4U2gtt3TGqVKoTK4T4HlmzvlPCPRTYM7pb1F7vRALQq6XAotkU8HpnI4p9qDMPAd45tFmX7GNAUcAKsvwXmKubFHsizY0lBc0ATjEyta0PEN6F7P5d+nc7GmiA4s6J2gi6nWa+gRwnfiPSf42k1lLB7Zr32zYY1WhECkYdOZjxfDFxL06w8oFOClWKVnJ15+WjJAZDFGU9Pr9ICcSKD1rnnoLtxdN2fMt8Owf2Koh7NUJcPv+wkc8NxEdAIPA4MKr82/R25Ci5pUSWV6aDkM0EeGSTOwlLHnBzR4PzawHsw7saDI1FSyYNJCrLDdeAa4tSxyaJzHujpvkZUcvxYm9Z2kWlNS6a2GDDsapdfqK0wZi+ZfzjfG39XiKXVK1bp7Pr/oPGkWrr1r8PNleCZ1Nnq+uaDHCVspMEQk0/zCV3GOlBK7sN/l49yiQgg6fXqLLYplIgJpBaUAtU2i1nq0loRmrvije/tslKAIu+03xQ6PPwSKZkp2+Gxgr3xeMfSzjKx+EaewSwJVka/fefbPJcjKHkp2cWiUTfYfsXUlswNEGF0Cy6jTR5UhJ4T9ICDLGC90prNzrIgdrZsoLhHGNpuEMSx6mOJq2vZjrt6c+zDM9nzZRkjh5et76Vctre+5PrvvadpbX9BBe1KRQpjOa+Epmbkza2ZxlJ9rlJ50TeueFD
- EA61bkC+
- 2aB7biQ3MZVGvq51OZMXO0aabtIQ/fQ3h+tciv7ZskjApdlHFqms+XQKCOwBq/xrDBPQoByff2v5hzcMNs7u6IKcwTE24F247ZGoqLAc1tQbEkKPWwKeUXVMDIGm/JEcLx2k2sWxY0zGXcGZ5Qy9ugQBJRq2gngPgCsnVrhmvJ3Vw/x+Uim0t/OMu1MyOtm3pyoClfLNbkutbSJO0SiCL+bgeP45nw+2VlyUdrpaT/MuB3box2MoyEpTvPH7Oe0E2WQ4EbmSBBnbdjG5N9PN26+MSYMcGPiXZwPDL79Dls4Fh7BOVYoZ89eGu+K7qtIS/D/L063DySZg6U0AnIR8n1Z/zGmcbxEdEL23OBbwUfaHnisk/s9pWCituRMP44/VHiDymy6ODM8HQgy2frlqmPUwT7HEQ9lPb/STMvGHddUwHyQIZBAxBSN0QxJcRDULAqBWCtgUVJsm8TL50DxZfert5P8GYJfDkk0yB1CqSIs7N7+Eapu6zBGbFdM4Bn8cW1QlchatF5WsXPZ/WQ2FAvuaMjivdw8mw0RArtypQ1XyZoljIh1bI3j/q5cRPz2mUItOrjS0943q1XVv4OiIFm9LfIWV5z1eeiqSRXaTHCx41VqXUd+2gJVRCiNl9DAaGhoZ1vH95y/WUkQ+j0fciTIUqppi2k8hJJhMNDJlDyvbOJCG8HhVqXDobSg==
+X-HE-Tag: 1793069821-798816
+X-HE-Meta: U2FsdGVkX1+f1GVvosoBneN14LBs7qNgq0ltNGeUGac75ZcSv/NiOcKq2+RXrCmiAi8lrJEyJVBCLa5R4oKQUgZQWuTVmOcKYX6vkZBOklrDGO4XMUpYpAQzR0tKxPXUw9n2aX4guIAQGHIZ74EpUkEZfcH+ngE5U55/hWJ863o7Gw4/OjH+jjJPHsOIVLLM6MTQrbBVXiU/EaUSIHc8/6urYshfCgh/+D63MdCkxDwNDpxudTNiYIZ87lbjwZdHWx4aK5B8ZCBJKoY3wvD/PJq3V8Fn4QHso60Rd/ibdpUjFT4HV5jJ9UN6TEIwZexm+YPCjr8CX0u+lkpitT4+Bq+5L204tEP0t+YHwhWxJIIAUf37tJKmQvJVNdH0PD6tFWhM0ramhOovqru07hBCjSOeSPtun6wfTgV2m3UBGCx2C4WqgQCtf0zZbJKHvtD/040o4VLw58kI+AMNItU2Th4kceUgyNFDHh04jcO7KmfsXltzodYspK106iES99JLHDww9IIap57/MqNUt+LyIXIasMPmopRW+sMZwBuFTuCkBJspA/kDVma37rrxcQrfoRvlvQeA/mWAaDEKWdazEhWVdliKQwRHcefrf+oi7L7K4/1CQggMPnTb0Loi+aWcy7uP2+UehPHZ74fZuqr9bn35PZO03APuKVif1r3JCilqz9ETVg/Ky2TDL48r05wUEkVh+ODA6C2gDvJ7pIhOQQXyegTEOY8+bnOC00g2qfLDAW9g2P+7p3PRAEn9hUz9bMiK5CoLtJ1NWvHurjMVGKyBnFqq8hDXOVE5ZAOd8KrhlEid05jSLnusqu1U0talyPh2dIcJ8Uwrr9eS5cAJQUY45RWvLS+tVLiYlGgAAAXQf8pdsbGue+c6chEf5s8Z1UTel5CvWEwh2KN6wbM7j8n7439qtlk4QWWuelRMo7O/SlbLaj1DAZZAfsPyFAIo103Mx6Kwl4Gk/lvNY3n
+ NnoQsUsG
+ vVTQPrrVoBrhkRT1tpChrqdQRkJRmnWpOvb4qJ8V1gzGm+fDP6pgM/+wOgrEJ9OBsAx85vnSBJcfalqiSn3IPtcWcVQ2aD18N8oPTut1XFp2XpwUnmfCe3qnODGBzQ9GHv6Y1dXkMMlQ2ltabCLXP6EoaZGKBKlO9WVSKJex59SPdAvnkmjYzuR/8n99b+54dqd7xRsx9HgecK2o2zGDK7f/ADRQVt6huLQRDYikP3ifrSMfrvVapQc9zV627GHHx3a2dUAP/pCkj9oFKR+CJansoAO5triRpnMGcXcd+/+NpOSZkrJR5iStEL9ITyEYf7RL6+DZaMNpArtmNVFn8zz5YfEc1LhMYItvlNSDyzluKg3C1GTDVVxVZY1H0glHTUMRB8fruSrE6jAJSPsGZvyf5y4ZF+OrHsJQhHQqPXsLqIlMn7txR8Waf77HaR7KE19bgs57ujK2zEUe4Q7wdMfuwVZJOukbkL/dcvsv9rWCHrRl7NSo7H2e8oi9CU3f/NkEBIAfYRAd0cYzHSh133dE02lOOjK4IMX8PiaYjfeF9jmx1EyzmqoiNN3vqIH7ergifFfTZ9F5Sp9q0haDFA/eUrYwxyQj65/TjG60uuVihi1rLrOiekg9Z7EQqK5JLo02Jak5rPBQEeyPSIKVcEOim5uH9TCdTkKSMarvklKPNkl3MOebioYEOSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,69 +128,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In confidential computing guests with dynamic unaccepted memory
-transitions, configure the free page reporting order to
-unaccepted_memory_order(). Invoke mark_memory_unaccepted() on each
-scatterlist range in virtballoon_free_page_report() before adding the
-scatterlist to reporting_vq and kicking the host.
-
-Unaccepting the pages prior to virtqueue_add_inbuf() and virtqueue_kick()
-guarantees that the guest finishes PVALIDATE(validate=false) before the
-host VMM can observe the reporting request in the virtqueue ring and
-punch a hole in guest_memfd, eliminating any race where the guest
-re-allocates and re-accepts a page before a deferred host hole-punch
-executes.
+When pages are allocated for balloon inflation in confidential
+computing guests requiring page state transitions, mark the allocated
+pages as unaccepted via mark_memory_unaccepted() before notifying the
+host VMM. When those pages are later deflated and released via
+put_page(), the page allocator routes them to zone->unaccepted_pages
+for lazy re-acceptance on demand.
 
 Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
 ---
- drivers/virtio/virtio_balloon.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/virtio/virtio_balloon.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index d162c162b496..e10bd792ef7c 100644
+index e10bd792ef7c..217431e75751 100644
 --- a/drivers/virtio/virtio_balloon.c
 +++ b/drivers/virtio/virtio_balloon.c
-@@ -213,7 +213,26 @@ static int virtballoon_free_page_report(struct page_reporting_dev_info *pr_dev_i
- 	struct virtio_balloon *vb =
- 		container_of(pr_dev_info, struct virtio_balloon, pr_dev_info);
- 	struct virtqueue *vq = vb->reporting_vq;
--	unsigned int unused, err;
-+	unsigned int unused;
-+	int err;
-+
-+	if (virtballoon_cc_needs_state_transition()) {
-+		unsigned long unit_size = PAGE_SIZE << unaccepted_memory_order();
-+		struct scatterlist *sgl;
-+		unsigned int i;
-+
-+		for_each_sg(sg, sgl, nents, i) {
-+			if (WARN_ON_ONCE(!IS_ALIGNED(sg_phys(sgl), unit_size) ||
-+					 !IS_ALIGNED(sgl->length, unit_size)))
-+				return -EINVAL;
-+		}
-+		for_each_sg(sg, sgl, nents, i) {
-+			err = mark_memory_unaccepted(sg_phys(sgl), sgl->length);
-+			if (err)
-+				return err;
-+			cond_resched();
-+		}
-+	}
+@@ -329,6 +329,15 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+ 		unsigned int pfns = (1 << page_order) * VIRTIO_BALLOON_PAGES_PER_PAGE;
  
- 	/* We should always be able to add these buffers to an empty queue. */
- 	err = virtqueue_add_inbuf(vq, sg, nents, vb, GFP_NOWAIT);
-@@ -1142,8 +1161,11 @@ static int virtballoon_probe(struct virtio_device *vdev)
- 		 * host's base page size. However, it needs more work to report
- 		 * that value. The hard-coded order would be fine currently.
- 		 */
-+		if (virtballoon_cc_needs_state_transition())
-+			vb->pr_dev_info.order = unaccepted_memory_order();
- #if defined(CONFIG_ARM64) && defined(CONFIG_ARM64_64K_PAGES)
--		vb->pr_dev_info.order = 5;
-+		else
-+			vb->pr_dev_info.order = 5;
- #endif
+ 		list_del(&page->lru);
++		if (virtballoon_cc_needs_state_transition()) {
++			unsigned long page_size = (1UL << page_order) * PAGE_SIZE;
++			phys_addr_t paddr = page_to_phys(page);
++
++			if (mark_memory_unaccepted(paddr, page_size)) {
++				put_page(page);
++				continue;
++			}
++		}
+ 		balloon_page_enqueue(&vb->vb_dev_info, page);
  
- 		vb->pr_dev_info.capacity = capacity;
+ 		vb->num_pages += pfns;
 -- 
 2.56.0.307.g5fe7bd680c-goog
 
