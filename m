@@ -1,95 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9C2606A322
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 22:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F37606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 22:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NBlHJW5e
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pztf3cph
 Received: by kanga.kvack.org (Postfix)
-	id 5AAF56B090F; Tue, 27 Oct 2026 18:31:07 -0400 (EDT)
+	id A453E6B0912; Tue, 27 Oct 2026 18:55:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 582596B0911; Tue, 27 Oct 2026 18:31:07 -0400 (EDT)
+	id 9F5FD6B0913; Tue, 27 Oct 2026 18:55:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FCB16B0912; Tue, 27 Oct 2026 18:31:07 -0400 (EDT)
+	id 8E5B56B0914; Tue, 27 Oct 2026 18:55:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AAB66B090F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:31:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3D028160B4F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:31:05 +0000 (UTC)
-X-FDA: 85369852890.29.412D7D9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 61A411A0013
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:31:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NBlHJW5e;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793140263;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=C91okvUL0Y06ewCeQiKP8nerc+m3RbY290lx+tzKN94=;
-	b=5wee+VpSnzBa0bk50ELLhEKnE7eMOMfCy1cTRaW3Danlp31tciP3RnQ/i8Lcf4PRzASNvS
-	u7n0eGdOBP8GU2XzA85aM+l+Qg4cDxmif4YBzq5sA8wOy8sWfkAZeTbuKBpN4qMINgVwho
-	KQZ4hghHk8WDNbiMdhi3CV9o+SQxt0s=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NBlHJW5e;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 45A326B0912
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:55:28 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AAB4E80B12
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:55:27 +0000 (UTC)
+X-FDA: 85369914294.21.BCCFA2E
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D50071C0005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:55:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=pztf3cph;
+	spf=pass (imf21.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793140263;
-	b=MLPUOVTymMzWarPJU4Rx4obu90FbkUaV6uZVnNSY4zTLHVdx/PsCm4624h19Pdul0XBWv/
-	hf+YtBdfnxE/omaajJonzQCW25TqLW3f9XeueHkBsnBlnVJ3ajlXA+qrkRrKFB+50BP/oS
-	o/jsPJkr/S6mPo7g4FwIS45JF5wuhBM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A78D240104;
-	Tue, 27 Oct 2026 22:31:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7411F01828;
-	Tue, 27 Oct 2026 22:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793140262;
-	bh=C91okvUL0Y06ewCeQiKP8nerc+m3RbY290lx+tzKN94=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=NBlHJW5elIhSS+OhmSVFuesAqDMhnRwcfbeccaaZ76VeYGKFAYlwaHD+IdcU1Vzrp
-	 c1B3o3w8cBXRjcCRZ1iy2jTau3PCMATXurhVgq57pKFm3jxKa2ahv7dh9d0ROWjHjM
-	 eHgROE52H2NpPOiAvikLp2wsDSZNAJiNpISpsNZ83pP46tT9HRXoyJTLvGWoH2IvgK
-	 o5Xa9pSCPddkB182ho8BcW1JlM8tqsrY27H9N3IncHs6ISr16SjRLczSuijunf5d3m
-	 apdk1qTpPYnYjHrI+e05PKKgNNoilQWSU8g4JizxsdUJ+S12SMfo22ok0MopOwrhHh
-	 6wxeHtP9cXiFA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8140C3AA940B;
-	Tue, 27 Oct 2026 22:31:02 +0000 (UTC)
-Subject: Re: [GIT PULL] Additional MM updates for 7.4-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20261026152120.c6ed2222b64943914563232f@linux-foundation.org>
-References: <20261026152120.c6ed2222b64943914563232f@linux-foundation.org>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <20261026152120.c6ed2222b64943914563232f@linux-foundation.org>
-X-PR-Tracked-Remote: https://lore.kernel.org/akzo2N-H1mm4U7kw@sirena.org.uk mm/hugetlb.c
-X-PR-Tracked-Commit-Id: 183895979c441e52dbd651b388553b09eaa35cfa
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 8a36f53fd5ec3eff01f1b637d42cbdc3821d0493
-Message-Id: <179314026135.360848.9768940194637210306.pr-tracker-bot@kernel.org>
-Date: Tue, 27 Oct 2026 22:31:01 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Rspamd-Queue-Id: 61A411A0013
+	t=1793141725;
+	b=HBsb1inQJE2tNVAVbhkMpC8cmjA0PBdXE4mu68rEjWcVYSe76sSGb+J8gxkTKaAox6k+d5
+	cs5oE/Z/E9qo3O7ue9bPlbWxfdrjcJQKyWDi3MEcMutD0ZxB4xa6a5xq6KmH+uPHU20NVZ
+	N4hhvBfs+0YpxPeSmYbo48NWLz0O2Qo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=pztf3cph;
+	spf=pass (imf21.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793141725;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KTV8eg2on2B99kAeZJ8uQmhlFR662/OZM2R8QtayN34=;
+	b=gNTjxXMVwd02AABxJy3NjxVaRtM5Ctjl6L/vP5UT0+khJWEXoSCJi7xIKzB7hZINjLEFha
+	12FtYA5yRsEUq8pf01aQymZTfl1ulsbK10OMmvAMFYopZ9O1Gzqvws6LUIMNZp7a7VBc84
+	QbR42nd5yHX8wuiRja0GD4oMQpGLRI8=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so13425ad.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793141725; x=1793746525; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KTV8eg2on2B99kAeZJ8uQmhlFR662/OZM2R8QtayN34=;
+        b=pztf3cphSuqkkQoN1qnK3DkVumZEP0El6ngs72LcXqX+J/mQ+ZZWyiFO50CHGDhK7S
+         sFDUDHzxqyDRJUVvRsDk0xUy9OJkCQVpOekSUsLDRNIiHOwNFMqJZYrwHc7Ajdw2LPEg
+         PlEgwayfR4EScRDxVA5zyIhwaWhj18mrDm/ZKKo5RSqD1csgFCq31oNG/1xyWYdPEKSF
+         83Vju8yK3/XJz3ErOhFWo5YCzRAVVEXr+6Cp+x2eadC0VXMMz3NKDCnBMEds/nAUXfa/
+         jcMpZmc4f7VUmTEw+Nut5hk44kvCOUQnnkLCilHxcI7cy+64p9HyqIxdKjl5lor+Gk6b
+         QaoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793141725; x=1793746525;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KTV8eg2on2B99kAeZJ8uQmhlFR662/OZM2R8QtayN34=;
+        b=a7K0XCIEGgtvMMiNN4eFG2FA8E3DPrEcFv/6u383m5A3DisrX9T9seGR1osUAHdBhV
+         RIAO9mZYJwlLuJQv1klnQgVSgafTtmDqWF3eyjL7ZhhFFILEnJWrNk9ZUgP/mcFUR5eU
+         QzwF4vZyjNtPjusB98U0RL6RMny++pO8N19u8Fv1ceBm/irxaWXwKjSSdpQdkcNJC6Ce
+         U7ZWgT4gUgDm+sQu16KqpinstNWbYgnjbrysgil/4T4KwKVLueUghDTlLOcBGs9TOeI+
+         Sk83UBN+ofjrcvNRsvRhwZv31QCbiB6KNx88YhJZJQcxOif2ysFLBKCSjvDB8tylRlUR
+         oB9Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxWaMf9XshZW7C9UlHW+zICFMBPMHLF5uS5lM45IkB2nHUHc/ncYjsYuO+xhuTDZWrNoC+sydCFQA==@kvack.org
+X-Gm-Message-State: AFq9FYKHuD8nc6fJMIR05PK+FdaEVdy1BPXwwvyIUJvKTwLF19yKLXzv
+	7/wXk31iBWEqDnSAJqnFzxH9+xTv59agOwzPVV0F/SVMGVd8kypyxcWCfQmkZcmSow==
+X-Gm-Gg: AYBFou31JwIR0S3Y8r3+Rj/WMssEW1u3pEokiEJ2vBnqUG9t9YEjnpVToetEO9FVK3M
+	Xte3t7hJDx1BqlkgYJe9Duk6R8lf9TqBbUPzVuf9d8mBlYxK8ccHDSYXbwfUYLWsabkbfUSELuQ
+	itPl47dFK4hGicseD2ZAiG3mFkrpRUdsGR9rhT3XW9bdk/ij0koX4ZXnlCivfuzh4tMZMzd8zjQ
+	y3Ea676GLP3JXyp15hWE0PXU/KlAvCGgtHcxCVmcUq21VF+GBsoyKzNKXs5N96xAIDpn5sxa97W
+	UdU6LTVyRqmSieHPuKRGbu7CnNyiy5KjEAUA2pOoFm6E72CTxPcwKoeg4H99ruSU5TAx/HiybJ0
+	Tl7jTMoYZlGnya3wdzi5W7kOgxMwjTB9iygnNk6rL9N+IR8BKySLYgAjD9PnzTzNESIRUJpEtru
+	sz+JZcq4GGyesXYDl3t0m+921W2B80wqPE5oytOFgw9cVcv2ie3PF2/f3Sta6BSEojKjJtyNr6E
+	hNyVnK9ZxKhGGSy6HKYuWQpd/t0tJ37LxCj43uw+na0c6gQvReTAaBUP4kU5gP13TG2oBbQjKSu
+	ALZoSksD1iE3RXHXKLd8QJK03sZ3Zy7A71EtKQfrvFyl2nt7QGymUcK5PZikQ6tAICGqcZUFHKi
+	3bgmWNIrBfdmIFAOljSJLsg==
+X-Received: by 2002:a17:903:11c6:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2eb0029f8a1mr1832445ad.2.1793141724187;
+        Tue, 27 Oct 2026 15:55:24 -0700 (PDT)
+Received: from google.com (163.1.145.34.bc.googleusercontent.com. [34.145.1.163])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a6a662e1fcsm516911b3a.30.2026.10.27.15.55.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 15:55:22 -0700 (PDT)
+Date: Tue, 27 Oct 2026 22:55:18 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	Jeff Xu <jeffxu@google.com>, David Matlack <dmatlack@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-api@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
+Message-ID: <auEksxfAi9lHFXmT@google.com>
+References: <20261026220546.3114241-1-skhawaja@google.com>
+ <CALCETrXNEWQNPjtuHnTfVFOafeJ7APXq288Cq16Q5adDNYx9+A@mail.gmail.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALCETrXNEWQNPjtuHnTfVFOafeJ7APXq288Cq16Q5adDNYx9+A@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: ne4n8on3jmsxfwzuz37zwi1ghu675yf7
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: D50071C0005
+X-Stat-Signature: sh673wefxnzyfbx9hyuqt8b5b9gbak7h
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793140263-804993
-X-HE-Meta: U2FsdGVkX1806pexmpS4pCWMk7HxYmoRyHC14Yfx2GD+bq0psipdnkjOWFrPdBfNdz8tqfO2QV7IR2CXPIGeZq1MHIq3TMfWbZmQB7XAGZguNM44GCFxulJOrC+pZK80qI44L1i10PyA4LjRC2V5JMwmvWSAxGoFyxLmwyKEnRFS2LYaC2GO2LNUCCatp+D4wLPM2OnX+1vhkzwEa2C7hwJqA2g0t3shqmtU14LEnQ8IVg8tKr9XzTaUczuKTTKsYJekpeZ4kySc7pMkxlnToVunc1nFjyGfWAqgurZsVQscHW7Wx86DBQ580wDAg3VtCqysRVTGpRwV3XyB4l/kLbNjWJM1mWp7KpASVjBkLA+jkiP5bQvF9DlF3EdbDhX5I4oFuNPR94vNjGk2xVapm9ERTzN/rA+4ZB50jxu/SuEESiJLJZJL41gFd9a2Fl1eXud/6W5fmHp+3VD1qTysd+2TnY6gR8bd9rY3wVCzrGHmH40h7Zihu57p7I+FVGk/6Y4iOaC4OziG4d3Utk8Aq6fZgbw4VoN2J7VrXmx+gKNo6phwnQtr6/1/rfztNMR4FSYfO0Pv9Nhfw0CkhLCqlMzUJu/TcKrNXNJrergzpr7CWrG+Llz/m5rxuLZZK0PjldONzgLmJsu1gJKFLAZp5CNlPZz9/rtrj9TdY05D+D9shdiFsxemHiK3G1+1Wvd8mYnQt1j7sua+5myO14l0uX3JMP4F7myDFyUIibInpBH59Mt3Qk5Oe1xCgO+ovGOCs0hHRfB9520KbM0OOOm1xuRwyrJfLg2V1mKapeKe4OC31bCBt3ASPcpoMmruxGyTh4NhEEQqxm1A6eWZ5I89sgcvk5Fi6MtaO57xQe7D+nW+yDqFm5O+C/thSps/cs43trXucKf8dxgMap6dApauFei8xy4m2C3r2KnDdLkdnPLt7oeOtE4ZGt6YF+f1WBFORiElCNgTth+TRWlmqZQ
- g1NxD5wF
- hqyDH+/mZbvZ9On/zK47XtY+Mz/DeiwECl1FWaneeXRFSqDPt7FJxIT20ttikGZBXo5bNkEQFpoVmY+AyhjyDLIaowM/RXKcr49jeEXXwUr34Bx8+MNBlnrfQXPz7s9/B3G80PGr93lehX1hYQQp2jC3mOlsGYNW53lTs9La42sFkc8FR6qQAd0vvHll9uMxxgKOtAr/uF2+ej8oHR3c9oOmU0u7ungCOt2I/F/1Q77yB1JVQfaQzXsVRcUtBKY+sYGiebNYFcfXsZ38m6Tr9h9V0rCX5p396NUzhdqQTIG7saWLoPU2jq9yUEMf1GjZpz/joQBLmQvl87iFjolmzx5nvCWNG17m4qMgEJ4i/v4vgdm/+aeNO1IWOYsILPlwjEuRjB/jccrlxGXaWdJK8nwSM5hl7TgIS8Ft5Jmh1pbLpTKkWL9/AVB7Gg0Bue+xsW6F0PHzVw+/U2hSYj+jRNwuJZmE5rPtcPgKIfdxgm7rw+Gg=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793141725-107325
+X-HE-Meta: U2FsdGVkX18dU1lxV6mHhfl4SZF3qcHljC3OZHSfn9NGolOvNL3f8O9wsS43hFBera2m/JCfnwVZSd4fRmrNS3OzDU5Vs3xYffQfww94O/RgGx+p9cbYfWKK1u6kVr8T7QYUXGqQpuoa282Sdet+2jPn7xxutSwvGA0gZYAeh3THcV+l6IEp8Peh+3IXNuXmvTD9OvZMN1J6qp1VrQ7E8fEfdpfQj1UWftqGqYYwxureS0sV4BsYxXRMtlpcesSMu9vgZ4MRP0CwKm+qM6IFJF65t1wss2cGh8zAfZb9MdMs21lEMYTr2kHMrcSHnDVFSQF4Jzlw1o526DW0Dg/f1d6AMkv8q5AmglNH8YIA0jW63VE7zRAZoBY15YrusrE9eegpTkECH2i7vTczVUyr80HL8XaeybxriN6glfEcYbELQLft8HtoDPCHvflC2vdWqgfaVzK8Y/UDaVGBr2Hc17Q2MZzCZ9GvDke+NAKfT8D9FmwF0XRBSA7y6dK6tVtd4DlplnrxAsNGwag1bkmr7KiuOIdrNuioWp/qvUA2wS6v5vlGbEIJzFsL62+UQpSKjp+DLKw5fSYw65DIXHUNT4AhQrXn2GxmrlqoLCuBeZjW6vqFWzmhpAdnrYaTDlvb8F/PuNHC22dhSy74LeGfQZUpGJdX0t7W0nZR0ElF7G8EyaHvE2+nBAab27g52HMiWxqt6M45LDiZipusBPi6VEWuz7Oar3sXyzQCEfs4F2zMn/WknxIScOYus697P/6JfJrl3Atq/9vZWCDJqop7qZxCE/HZGiLVYl0tX5qfRtgXuyo+eXmKUbeR2jQJ55tcanwrn+igpeSzEYY1WDl0uwZCwaGj8Qlk3OtthXfIXqSUUhgl5u7IsFRuNJxJoBexHG/xOcUQtMhrM7t+5aJ7zho7PfokBGnvm5Z02nU+g/Qr+fEa/V69wGUYRiGaCKxNzzClS+xi7U9a8x3SIbB
+ zNStM0d1
+ +O8KTDeAFAtBAG9jHmyOkAJdR9p8O6kObo1FoK8YmNLOs8RaV1klBkx3IoiabOelhad0fdxSWN86ST9A4jLhtPcHdKZgEyifhjEudjstWakb1obpKC/PaoejcZsvHeAaW+b8cIgCtSny0oU+Q5jHyuqQ0e22ptNtqgVhHdwPmKx+A3BfC21OyKZcZxpeBFJcBDLPNus6AX4y2kSeVmUsI5NSISyGwX8qPDHKOWWmfj53RqCAsH49ZcC32FJxJV3MkBoH2kE5VPbgOInmeZlkH8njoZW8rZzEpvXrgTfwUB+cbGGbGVgqYXl6POI3DFO+ZJHjD07o5AOMUVPEnXdc83WNnW+E4WQc5NQGK36iS9Aym1m7YmqZlnRsBpSyBMrf6O/75EuWXB1ffef8sWsPAe5vMZzC4N/Gye3EXX9ZBjt4QK918hEmAuCIJ7YT9LVhDvASNkA8XI0WwPf9DkQSBYaj+IFNqrBrgO3dPbNR43jDoIecguZznpbgwRLDv13nVZzFqJ1F7xlNUT00=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,18 +133,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-The pull request you sent on Mon, 26 Oct 2026 15:21:20 -0700:
+On Mon, Oct 26, 2026 at 03:46:34PM -0700, Andy Lutomirski wrote:
+>On Mon, Oct 26, 2026 at 3:06 PM Samiullah Khawaja <skhawaja@google.com> wrote:
+>>
+>> This series introduces F_SEAL_PUNCH_HOLE, a new memfd seal that prevents
+>> holes from being punched into a shmem or hugetlbfs memfd while leaving
+>> the file fully writable.
+>>
+>> Background
+>> ==========
+>>
+>> Drivers such as udmabuf and iommufd (via IOMMU_IOAS_MAP_FILE) use
+>> memfd_pin_folios() to pin the folios backing a memfd and hand them to a
+>> device for DMA. Pinning keeps those folios allocated, but it does not
+>> keep them in the file. If userspace later calls
+>> fallocate(FALLOC_FL_PUNCH_HOLE) or madvise(MADV_REMOVE) on the range,
+>> the folios are dropped from the page cache while the device continues
+>> to use them. The pin holder is never notified, and from that point on
+>> the device and the file silently diverge.
+>>
+>> The existing seals only partially address this. F_SEAL_SHRINK prevents
+>> pages from being dropped by truncation, which is why udmabuf requires
+>> it. Hole punching, however, is only blocked by F_SEAL_WRITE and
+>> F_SEAL_FUTURE_WRITE, and both of those also forbid writes. That makes
+>> them unusable for memory that must stay writable, such as guest RAM or
+>> DMA buffers, and udmabuf explicitly rejects memfds that carry them.
+>>
+>> Proposal
+>> ========
+>>
+>> F_SEAL_PUNCH_HOLE fills this gap. Once it is set,
+>> fallocate(FALLOC_FL_PUNCH_HOLE) and madvise(MADV_REMOVE) fail with
+>> -EPERM, while reads, writes and resizing are unaffected. Combined with
+>> F_SEAL_SHRINK, it guarantees that userspace cannot remove pages from
+>> the memfd while the memfd remains writable.
+>
+>How does this solve the problem?  F_SEAL is about a userspace
+>contract, and if there are existing users of the APIs in question, it
+>makes very little sense to start making those users fail because they
+>haven't taken the appropriate seal.
 
-> https://lore.kernel.org/akzo2N-H1mm4U7kw@sirena.org.uk mm/hugetlb.c
+It doesn't change any existing behaviour, nothing starts failing for
+users that don't set the seal, and drivers wouldn't require it. It's
+opt-in. Userspace that wants the guarantee seals the memfd, and a kernel
+user that pins it can check for the seal and rely on the pages staying
+in the file. For example, the iommufd live update path could skip
+verifying the pinned pages at preserve time when the seal is present,
+and do the full check otherwise.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/8a36f53fd5ec3eff01f1b637d42cbdc3821d0493
+https://lore.kernel.org/all/arVYa_90j0oN1hnu@google.com/
+>
+>Would it make more sense for the drivers in question to set some flag
+>(refcount?) on the file to block hole punching?  Or perhaps to have
+>the hole punch code notice that it's trying to punch out a folio that
+>is pinned or otherwise referenced and to refuse to do it?
 
-Thank you!
+The pins already keep the memory alive while it's used for DMA; the
+problem is only that the page silently stops being part of the file.
+Refusing to punch pinned folios on every file would change behaviour for
+existing users: fallocate() would start failing whenever a page is
+pinned, even briefly by O_DIRECT. A flag set on the file by long-term
+pinners would avoid the short-term case, but it would still make punches
+start failing for existing users of those drivers, which is why I went
+for an opt-in seal.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Another option, closer to what you mentioned, but opt-in, is instead of
+sealing the whole file against hole punching, a seal that only protects
+pinned pages. Punching, shrinking and truncating keep working on a
+sealed memfd, except where they would remove a page that is currently
+pinned; those would fail with -EBUSY. Files without the seal behave
+exactly as today, so existing users are unaffected, and pinned memory is
+guaranteed to stay part of the file.
+>
+>To some extent, the issue you're describing is maybe broader than just
+>the APIs you're contemplating.  If I open a file and then do something
+>in thread A that GUP's the file and punch a hole in the file in thread
+>B, I'm doing something weird, and I can imagine plenty of ways it
+>could go wrong.  (Especially if it's GUP for write.  I hope we already
+>get that case right.)
+>
+>-- 
+>Andy Lutomirski
+>AMA Capital Management, LLC
+
+Thanks,
+Sami
 
