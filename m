@@ -1,95 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2245606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 17:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670B6606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 17:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=HWK8m1XM
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=negMaryd
 Received: by kanga.kvack.org (Postfix)
-	id E08256B0857; Tue, 27 Oct 2026 13:10:13 -0400 (EDT)
+	id 69CE76B0859; Tue, 27 Oct 2026 13:18:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D91E56B0859; Tue, 27 Oct 2026 13:10:13 -0400 (EDT)
+	id 64E096B085B; Tue, 27 Oct 2026 13:18:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C59526B085A; Tue, 27 Oct 2026 13:10:13 -0400 (EDT)
+	id 53CED6B085C; Tue, 27 Oct 2026 13:18:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F52E6B0857
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:10:13 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 35352120ADE
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:10:13 +0000 (UTC)
-X-FDA: 85369044306.14.2B2F797
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5F647100008
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:10:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HWK8m1XM;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 337296B0859
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:18:09 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BCD321C44C5
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:18:08 +0000 (UTC)
+X-FDA: 85369064256.17.8F38E5D
+Received: from mail-dy2-f7.google.com (mail-dy2-f7.google.com [74.125.229.7])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1316A80004
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 17:18:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=negMaryd;
+	spf=pass (imf02.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.7 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793121011;
+	s=arc-20220608; t=1793121487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6z1Q2FnRPqUpv8sUMbKaLkx2bL6vjkoG2SyuClqSAmw=;
-	b=zz9NmAfGPE9YR+UYMKjllAVIQmvEWwxHprdKlW1a6RC4fXdiVoGrOyHAgsPojazBtQTkaV
-	2mDpmWEJU+7dVxEFPIy0gDBTHRB17hJDcLYusBttXCguBgmyw+46ISPsmAuL3DL02Y2+M4
-	0s3cmL91VX71MdaQIcCWallHfJC2a5k=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DSKe54xygzfIMrfbOu4GT1R3mhAh4FYjH40dbhhZJR4=;
+	b=Y0Ec72TZEPIcWWXXUzIZkse4EUsmzGhEHOT3EZ7ZLe52VUoC7fpxuRjKnR9S2D7eRcSBZ5
+	t+rJp90mD9BajJcVltJ4lZbCY8US0s/e0tl5f1+57EWhko2+89kK2nCa18eSamIdpctK4F
+	CEHiqNjCpnTX4VoQ6aHaIPLA7ShGRZQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HWK8m1XM;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=negMaryd;
+	spf=pass (imf02.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.7 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793121011;
-	b=iPwFVuLU3rEMuK5qp5vbDLf/qcuJyVSf+nSauAWVEB+YkWYmSGHaSQeDJD/PZzsRoQbkG1
-	7A6w6BFaOfja7aP1Lq5RsTsjomsJ7JxDDR1KjOeaJCAMn9HjFr889QY8pUwt8h97fey8+k
-	pvUr2cYjEYlb9Cr9+lHkdkFSY5vEeIY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 981A7601FA;
-	Tue, 27 Oct 2026 17:10:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89321F01829;
-	Tue, 27 Oct 2026 17:10:09 +0000 (UTC)
+	t=1793121487;
+	b=icv4yzfaH3IW0jlS3+2VSXhYBz6ZUR5rYAr8nCJtBigpY00TNX+OPWCaTgz0OtzSzWnBw+
+	TUi/OOHtffQMBMaouLdvZ21Poj6bbW7KSQs0WqSaYFJJtgSBSNd4RF7M/VJgwGMa7cGaRv
+	Ly0W0ysjaAinTLEbZck55Sb6frncM20=
+Received: by mail-dy2-f7.google.com with SMTP id 5a478bee46e88-36888ae05e7so16689eec.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:18:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793121010;
-	bh=6z1Q2FnRPqUpv8sUMbKaLkx2bL6vjkoG2SyuClqSAmw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HWK8m1XM89Z1t2ZqEzF0wRXMZCN9YZF/stXxZmx4P5l48J3KslfwBTpVL1ZkY5d3L
-	 cFvF95td4+ABHcQ5gNSdxOOvGC2DaMLIdn9qCisjLWSWqYS2Hu0bLOOfjFyE4JONkm
-	 3yjLt1FT3xNx6nJCxFHXlGgb9Rl8NYHV9oLjIDEg=
-Date: Tue, 27 Oct 2026 10:10:09 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com>
-Cc: cl@gentwo.org, hao.li@linux.dev, harry@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-usb@vger.kernel.org, rientjes@google.com, roman.gushchin@linux.dev,
- syzkaller-bugs@googlegroups.com, vbabka@kernel.org, mchehab@kernel.org,
- rohithmatham@gmail.com, hverkuil@kernel.org, duoming@zju.edu.cn,
- linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [syzbot] [mm?] [usb?] WARNING in corrupted (4)
-Message-Id: <20261027101009.18e9136537144533915008e4@linux-foundation.org>
-In-Reply-To: <6ae09458.f0fe5aea.79aa1.008e.GAE@google.com>
-References: <6ae09458.f0fe5aea.79aa1.008e.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20260707; t=1793121486; x=1793726286; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DSKe54xygzfIMrfbOu4GT1R3mhAh4FYjH40dbhhZJR4=;
+        b=negMaryd3MZ263o6NIRGZYeMr43bK/77Z/mjnoytrQVjN1xWcP100ZkGrzoszuCa0a
+         ezzNmFXoaG2aLygzvg0SpFYbLlqWXc0Dvehnk/0mgWcDCfRcgwS+o2qcdTY4atbQzcka
+         ZIxjYJS8/tftDVq0brh9z5vJchq3kJaBBCpaCNhirbzbay0saTBieLYLVO/BFFJsOs+z
+         oNcV48WmfGuLEt+YRWDkXiX1lNIuMCaF8NC7+64DkAu54ovxev0CCGTAQEqVq9Ik2J2K
+         b6rPzP0yoUx0BOXy+l5IqAKY8xCERm7qO0wjt9cmmXtNU1uYarmmg2/0+c/aatXo56l5
+         ClEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793121486; x=1793726286;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DSKe54xygzfIMrfbOu4GT1R3mhAh4FYjH40dbhhZJR4=;
+        b=Pz7y8UV+iHd1R58abRL+xanSliZVCZFQNX4pHHkIZp68QqNTqksxGVaM5u3GivH4xR
+         PL4T621b5avlK0Ml9mMM4Jl8z+MQEnF1ADKDQqVh90/VuJnFW/0njU0zhzPPHTRDPAiW
+         QBbP5VTgKbPUJARlw/QNvrOZiRXrQIVytlk5BL1MgIiOugb/dKlVC9748qsZ54zkntd+
+         hKlr5bD4vuB2N8sUgeIUZzRCFCyHguPBWNEUiL5oxHC4MfWTBnyQk0D16CduPuFCuOAr
+         JFekJoP3w0lgu7/Xl3/jLAe74EhTZXqgLMN88+h5e9R+fsOpIDe09yGUgFia+UiEapuU
+         k3yw==
+X-Forwarded-Encrypted: i=1; AKwUvByJaEhxhncX18zJfo79n57IQw0CxN5x+TA8rSurrS1wGbCG5EUvQWgrA6biKXJQj3+54Lk3CaGGAg==@kvack.org
+X-Gm-Message-State: AFq9FYLNmAt3gRhzl/OpJB1BIRjup94RDHMmSShue+u0/J2gpPjYgoFW
+	XyenZqsuvDDIIplP++Icj6vpo0LhKuZc9/V+DqssHsdQVNBLqfsWLxQJ
+X-Gm-Gg: AYBFou1VPDlbYlBTiltgsLmBkwjIXjSN8QK97hSZwXR5refHdiMfgqzAJy3jiWBm98P
+	/N+AXR6+cpoVroAZJwd66ddqZ6Sx12c1n9b0DYzD3iZOUsBeRDbpIN4KwLymp3gh1g6Vu+QfKrK
+	eeuDW4OVPGxROALdX+1ypdrgWs7PeU0wkwqvBwCkgE6ngG/xeImyNtBCJZv8nVViUEktvAHwOZO
+	LENrasLhgZblmZttXJ4EbrC78SGLa8EzAYQm9blDkDp8/ZpohADoyhWTKrDvYT/KlU+a4QecuPA
+	Ef30X0lZUYc5s3qluMLpDosbLFQVdEWScO3KZIkRp5k2H9xUf0SHJGhIVFIcXXErpQtGR3Zws6r
+	B1TxFzLnqNe7wmjc9z1ywaKInKl0CfhzO2Y15ogl3JSDOvC/2pVDXaTYuWg3cbZEMVmDqrD5tsY
+	w+CeJPQytukX4bjq+QJH9KJ+tmNompUdDaWhgl2SlXCge0EiFCk0yIvCWo10RbimxnqBrLTrJY0
+	bspB6S+VoCoUTXUx8Tqfu7OBkD7hs4unNsbqM0g6zE6sHFR8al0GEKN8MZlTDRGVbplRAmaEYbF
+	D6AKSAY=
+X-Received: by 2002:a05:7301:5401:b0:36a:1c46:2766 with SMTP id 5a478bee46e88-36a1ff47835mr206467eec.3.1793121485643;
+        Tue, 27 Oct 2026 10:18:05 -0700 (PDT)
+Received: from localhost.localdomain ([98.148.34.5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-369f4164886sm29167152eec.7.2026.10.27.10.18.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 10:18:05 -0700 (PDT)
+From: Hungyu Lin <dennylin0707@gmail.com>
+To: hughd@google.com
+Cc: baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	dennylin0707@gmail.com
+Subject: [PATCH] shmem: skip empty unmap ranges when punching holes
+Date: Tue, 27 Oct 2026 17:17:53 +0000
+Message-ID: <20261027171753.1485-1-dennylin0707@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5F647100008
-X-Stat-Signature: 1uqyjbayp99xpt8dq3tkffzppn3ccodi
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1316A80004
+X-Stat-Signature: ukritn6kh8xhzrnjnjhfqbjugan7feh3
 X-Rspam-User: 
-X-HE-Tag: 1793121011-444313
-X-HE-Meta: U2FsdGVkX18o4/zbXN0IdqYL5zpxvV61afmDKfxRi37pe9FytIWzL+jxdCNhrprNAmZ0iZ6CWEyjlLK/4TlSDI5Q/DScY88hor3UtMmsr9uzjXwUY3suvp+FeVJxULRFA6Se4vTJnffksBpjm49YWFO3pywrLekk/pCDPrLzT4ApPRfDXKqJPvyvX7Dccs4ob/Bj95X3DI1QYnbBWYFie/v3pV4nHUICfO2wns03gO9eps1P2IMt1n0r801w5RYBwwPv8XtFKjeSNvjagtDe8cYhSz8X5s0kmn3z0DKnA7bOZKUmmviD30oXS0LTeclaf0XUn2Z0z6kFrZuzEGmqiQga65h6qPmcyr0u/b2Booge7oLiC5k2zf5Bd42owFMCmv9GfHqcfsnbHvt1Ot9BBGomS07ORPAJmVTqft3EgB9R30wW15Nvd56W8BiquMs3DmdVwMg/fnBq2uJmIxOtpq7mkFPENXL/x14tr94JzzUBpaiC+Al8Nwv5UkseekNew4OoxM/cf2XEQQfN6oppHDVZkHSwsGpYyco8SAuwHcFZM4tIjg0j5wt/4hcBlvGFKZJMxm9RPG4MNd4+TOEQt2Qq/RlYIzOxJFuFtvSN/Ry9crzhdP1JzDqQa8sa99zF5JtcvUzFLmYg6BoiivWmLUJ5UkbaaudLUo8/lLPtG42nO6B5N/RvcEt2RGdPKuEUhfCdh2Cj6GQUe1oj6mnrA7aH/veLeVm/+m8BALk+b9ih+Qmg1kE4bf8vh0uCd9JnAkYyzQWjHIvV4CzCxmpQ4nxb6LXUVeqTVZr2lmCAhBR1LOZvD/BIHBeidzuBw6de9D5WGHAKpV9A9xQkhgmYNX2vIj7r0nZv/6JUZ0tlrvyOJHjpAbC4bubPngfyqC0DKmZdyZWuajHX6faZ5Kw1S9aec0YKt8F2s9clYKkl/de8wgh1CpIrisXBU03S3SZ86thA4LpGGJdqRAHYqCx
- 8nNkjlYp
- 0xlYQy8ZPV3bQUGggIooVfm9fPDh57C2kBFI8FjAoI56EGPve2/PoX4BH9OhrnE2VkHK31GkZQkvFTEc0wpZWX7yDsXaxGOix/dsU/szldB75QyxzkHjAOZupIGcMlz03OrlcGm1hit5HXUCi49UVw3/xwyp3HajuYpTsRbeuOa1fTi1w6ltMn14NSZYxxFiNEpBzlOhNeYU3S7yBDbIBXQ5HMhsYoVdcHdrwgbKQgyRf/nDFyhrBIdnflf4sN81kVsFbunDMqIhhfAUHG2xXUrU1nlNDI+ORK3xuL52sg/DKc9h6xQxBsW9/aI7gKRqzzyVBq8zOa0kh4CJMPJ7et+g1cj7UdBYU0l0f//bR8KIMv7tFA1Zk0X4/tK1bvsRRwGftjlIaB73bMDqYn1REC0deoFHXnHBjs8RkfFJpySuCcEP1y5a1xIpBw5o7tPj7axvoWVqLfNmYzpgpEP4yN5AqCCJF/KseHnZ9dB4Oo0zTQwjm4eaZ9/fdiTDyE4NmDDsDYI4Zh7wVJVUgd/sy0AIQ+BN0txoLGoL4+w3a6SyPuzDjwN2vY6HdtTAZ8NpXYOWgDGI5cbP7Hr2mmghX4p84G4eGxvHr+h8I/dtei0fatDz0EtkeYPzkGJSuQRDQK70HzHdwcucZBc2L7qb77eXBBi7ApfY5oBNIPBZYRiSjwuMZ8SeddzfsPXHhK7+Uw1mf0D9E0C2SWEwKG9lvIHeawepBAcx2bMuZ8ArXx558GgFJGO9HDbOqcU0pejFaydBMqYfUvcMBDHhvFY9MEhPUll9pD2z889mQKcaKZ8buAdgl4bL6H6lAR0gRQnSVX4jnKS//khsEByFgBw9AkIitqbE+i413xFPLPzlHX4GWg4Cg1wp72py8jH0I1eRl062kYTbd8/4NNOZDSYqeLfa58gdpkeRXz9b+Lj5rMm0V1a9ZEI/98JcerjdX25C+zgh0QREhVkqNsvvGDPIFoYjbdESC
- EnPdwes3
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793121486-683922
+X-HE-Meta: U2FsdGVkX1+yG5xKchtRC4MpgNquzS6B0r8XIDMWWRgLQ0QSnhH75JsGIMyQUyxwr1etpxaOSXRX4jNXF2LM0/S77JYLRlF5L8qswfGS4MGBPiEv9nvdXS2zQc1uAg3eI6ODZ9CbVWvNpcmd36uO4OGMcr6hmsl+eDrwXOPvFVjO3sB0HtzSn27xHVVawaxyp3t8P/twYmNLpkkVp6u/tNHOKnxk7RjcTtPghzFH+L4FSaSa9KboPMoraduNWsO/jG8F8l+x/6wMvR0X5lLCfmDrgtGPzcSY4EcZz/jAE3r3ZVKU4gmqaJ0XHQ5QOuT4fADpujW98LTcMZZNH/WN6bfrKvV2okawf6sbAbH3tsiBVL/plTvASB+EjVf6u588LuNjQNgPmtAY09JBcwYUvCKf9Cmv7nZAaTJapE9X4qg3Hqen8L/4DuAcwYSLerj04eKMwqr3D5o1zt7vPO+woWIgXoQwDbx2RWbHv84uAjrmtvP/P6l6knkxUnihd6xONVCSTO/DYywxbIZCoMC4upoIyZDlrAlvV85VlmuMUCrqd9gBpgnybHlBDJi4vkVXRHryLooLAkxzfqpQlN6KJRQv+Rue8erJRiBl9+c/Kmlwa3YBXCLWr6244iGGj6E4tUKhOJ4W+LVYOV8c0YKmTKmbdJVQIUsYlC8IvJVRgxNHOMfMgqI9uAdl7DnFrfYj08w3SclUw9pUvZ4DtGTrRaImmZ3fGcrAkp2zdHgSGVmAmkXIkzWrWaQcPjCHtjfhT/hItyeKKtLaGRB6+scxsujtZXEII4SGr1UKWwik9hONcyrc0h5QuAwHBEyaqHSioZiNY9lUZcd75YKwWJBGN0MzrIeiNmIpG9l9pgtn2P4jLNkvPY7hZ6AwE5dyGTe+29225IOBEQVcCfcZ7XBODIRZGhSyYDxXlY8wldJVLLWaut0IMvOyGmqCIZV1XDfcNmmheJPb3K/it71EgoA
+ RfDZZ3vV
+ YzPWkBkZ0a0o9ZTC+IeRauaOH9AwVyXxwuAVfd2OXvD5pF7gBJ5y5oy8ICfCnQqWiIXS8JuPVKsVf70rBtZ3O03l/VaMGHGYXXMA/MS9c4UKgVsHpEUQx3hMpifaLZ7BR1HpWPDhry0UTqG4XFA8JCJbHbBsg9TqnZc1A5z9bu3NgZmXqRam2VPA1yT3aFUXHgDcBhGv7GquSB0UWRGATZre9yHOQDdTMjA8tfXqotUlpBne+dW5+wiappRwe3ZtcZNQBmBMh029AaXsUuKu7sMDSIq2xSNs+PjJofkD2FyjB5gSh7uouQuXgIuWh2L5VpQDljSp3I3IjDoZ/fnebNFVuXs2cioaysLntI/MARuwl0NgObUR1t/DLBIC1LJD3oiG9ulQhYIjA1tVHyJyn359hfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,56 +123,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 27 Oct 2026 05:08:56 -0700 syzbot <syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com> wrote:
+When a hole ends within the first page, shmem_fallocate() calculates
+unmap_end as -1. Casting it to u64 makes the range check succeed even
+though the hole contains no complete pages.
 
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    5b0764a53235 Merge tag 'drm-next-2026-10-21' of https://gi..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=13739fc9580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=fd1433abd362f255
-> dashboard link: https://syzkaller.appspot.com/bug?extid=9fe09db3795456e0b442
-> compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-> userspace arch: i386
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11cb9b0d580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/05ac8658d211/disk-5b0764a5.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/9cfb73243216/vmlinux-5b0764a5.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/fc45c7faf785/bzImage-5b0764a5.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com
-> 
-> ------------[ cut here ]------------
-> !PageLargeKmalloc(page)
-> WARNING: mm/slub.c:6855 at free_large_kmalloc+0x97/0x110 mm/slub.c:6855, CPU#0: kworker/0:1/10
-> 
+For example, punching one byte at offset zero calls unmap_mapping_range()
+with a zero length, which means unmap to the end of the file. The file
+contents are preserved outside the hole, but unrelated mappings are
+removed and must fault back in. This can be reproduced with fallocate -p
+-o 0 -l 1 on a mapped tmpfs file.
 
-Thanks.
+Compare the exclusive rounded end against the rounded start to skip
+empty ranges. Keep the unsigned comparison so rounding the start near
+the maximum file offset continues to be handled correctly.
 
-> This report is generated by a bot.
+Fixes: 83e4fa9c16e4 ("tmpfs: support fallocate FALLOC_FL_PUNCH_HOLE")
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+---
+ mm/shmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So is this report ;)
+diff --git a/mm/shmem.c b/mm/shmem.c
+index d97fc32e7c94..08d5336c27a0 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3864,7 +3864,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 		WRITE_ONCE(inode->i_private, &shmem_falloc);
+ 		spin_unlock(&inode->i_lock);
+ 
+-		if ((u64)unmap_end > (u64)unmap_start)
++		if ((u64)(unmap_end + 1) > (u64)unmap_start)
+ 			unmap_mapping_range(mapping, unmap_start,
+ 					    1 + unmap_end - unmap_start, 0);
+ 		shmem_truncate_range(inode, offset, offset + len - 1);
+-- 
+2.43.0
 
-This looks like a double free in the Siano USB media driver, rather
-than an MM bug.
-
-The failure occurs during USB probe error recovery. The allocation
-comes from smscore_register_device(), and the page-owner records show
-that smscore_unregister_device() has already freed it. The USB core
-can then attempt to free the same memory because smsusb_submit_urb()
-sets URB_FREE_BUFFER on a buffer owned by the Siano core.
-
-Rohith Matam posted a patch in June which removes URB_FREE_BUFFER
-and fixes several related URB teardown races:
-
-https://lore.kernel.org/r/20260601201639.63171-1-rohithmatham@gmail.com
-
-I don't know why that patch hasn't resolved this problem, but it
-would be worth revisiting before developing another fix.
-
-This doesn't appear to need any MM changes.
 
