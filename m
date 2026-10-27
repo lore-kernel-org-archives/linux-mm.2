@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1419606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68B1606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 13:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=drswFaK1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MAJUnKJp
 Received: by kanga.kvack.org (Postfix)
-	id EF3A56B071D; Tue, 27 Oct 2026 09:04:06 -0400 (EDT)
+	id D47A66B071F; Tue, 27 Oct 2026 09:04:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECC396B071F; Tue, 27 Oct 2026 09:04:06 -0400 (EDT)
+	id D1F126B0721; Tue, 27 Oct 2026 09:04:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE1A16B0720; Tue, 27 Oct 2026 09:04:06 -0400 (EDT)
+	id C34DA6B0722; Tue, 27 Oct 2026 09:04:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BA7946B071D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:04:06 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E5C31A09AC
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:06 +0000 (UTC)
-X-FDA: 85368424092.19.635942B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D8D66B071F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:04:14 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2CF87160A3B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:14 +0000 (UTC)
+X-FDA: 85368424428.08.B7DD5FE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 86375C000B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drswFaK1;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 57EEB14000F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 13:04:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MAJUnKJp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793106244;
+	s=arc-20220608; t=1793106252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/wwGXqxRc5YvwerZOSnrubg9QNwrCXY3rCABuj1vruU=;
-	b=JZXptlqVZIwCzHsmlmDSHLRnouadOV9hjHdLm9JLS+i5chQ52GTQ6SnTz8lDj6nI7iuXK/
-	jnCVqEpMSm5F2s3APuGHgWWSylJptv/RzTfaGBCJixoYMzFs7tOY9VrQeX712ECbg3XDHc
-	eRV07zbw+5zE33xxZ5dBoh7nNDvt6ro=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793106244;
-	b=SDqT0i7DG8cQm8eDifMV/j/PmdTfXxI9Pa0UoF9zOeNPyup5XZan7S03fGoZATCON9YNoD
-	tLTZQL2far654yf8uITopJYb9P6QanEazOCrJByLI+nH7mD3QnJJ8gp89muZSPfQ6qzPYm
-	O2TZQhfv0w7F4D/gbPa32aWfKmidzdg=
+	bh=HhxjLl01JE8HuMTeAuZe7yEExHhcmywGMiR+Ut1EZeI=;
+	b=FSSGr99y+KjWnt4CczTm7DKWIgyC6Na7rXPIOeEe0qa2veNQx9OrqVz5v2WObMpDcfW24L
+	3ddl+zpTv2G3YVmfpF8+vYVgY3R8dS4/KpKGHmPiLsQLl0Tu5Op3AriF4y8r58pc1tYZ0X
+	uvx/mcx3EmK8LSdxbobZJcUjWvQK1HM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drswFaK1;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MAJUnKJp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793106252;
+	b=O+s/tTLXDl4tVe0yLoooBF5xdYQ4bAqrkJ0rxTA61XiTEJXYxYN24HuLFxKlYefV05y1Rv
+	oI7iSku4gM63bsD5lnGNOQV/CFSNV+E9NDIBqUPx8TNIjVIuCM9jxebOvcrdu+kiTxdcSF
+	1K+ifVyF/yJw/HQLHzxFnfoJLsikG8k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D1D0D412A5;
-	Tue, 27 Oct 2026 13:04:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209301F01825;
-	Tue, 27 Oct 2026 13:03:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 84F9440F89;
+	Tue, 27 Oct 2026 13:04:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383461F031E1;
+	Tue, 27 Oct 2026 13:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793106243;
-	bh=/wwGXqxRc5YvwerZOSnrubg9QNwrCXY3rCABuj1vruU=;
+	s=k20260515; t=1793106251;
+	bh=HhxjLl01JE8HuMTeAuZe7yEExHhcmywGMiR+Ut1EZeI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=drswFaK1ZVzCJ1irJvFYIsaU4ismpcQekcE0Z8MKJh1B4DRmMJDs39Pa0nAYrFC7G
-	 UMBRfFrGSO1JDe32pi+uAm6MHftdlYcnFZ2WCCR77sIBS17hJUb4M+hQRdgYg2Akv2
-	 sfs06vlX7NTuaZCxZ1RJiBzloKNdxNeRX8inZcYW9GnQiZYEsgyKjbt49kb0uUkcjP
-	 jmtdYPbwAxatCFIMWJBz/WHjoiRhBRkzhvLnEOmkvH7D28q3RnM0Qi77sDkHullbom
-	 PUiqTu72Zjws1z4jPr5Lg+DMz0F/fukgG03TKQ9wC6b2sxraGeGf86bS9d7E8hXl/m
-	 8DdSEQwH8Hnsw==
+	b=MAJUnKJpssMeeloEVpIfvQ1vuVL6RVQCj8iscz0RR7jWPKYwoYelvRV2efgyDGJPS
+	 i6IXr2sM4vUIqO3py3xMMXOUqfLQdfbZu6iGKnCLK1GZNkuY9nTQv6GBwcfLx2Pds7
+	 wedoPfGuYfPik3pVvcW8lTOVewcH3UReqL8V1wIF63pbHYqmjpP5W9k5yaZ2aDF4Fj
+	 UB36IK9XwB8C71NcVT4u1CwKci1ilb3z4cu0dWm0Ykcw7iCO3shJCGQjewI+d+2cCx
+	 PbFGvbeNSOtvF/FVp+a1AT9mJuodT9Z9RpTnUbOr1bHC41FDEj4eVqqX+FjqjbMYjp
+	 96eD9lTCKseqQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 27 Oct 2026 14:03:10 +0100
-Subject: [PATCH v2 05/14] hugetlbfs: enforce F_SEAL_EXEC in setattr
+Date: Tue, 27 Oct 2026 14:03:11 +0100
+Subject: [PATCH v2 06/14] mm/shmem: stop retrying folios that cannot be
+ split
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-fixes_shmem-v2-5-86a00952acb9@kernel.org>
+Message-Id: <20261027-fixes_shmem-v2-6-86a00952acb9@kernel.org>
 References: <20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org>
 In-Reply-To: <20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -91,29 +92,28 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>, 
- Eva Kurchatova <eva.kurchatova@virtuozzo.com>, stable@vger.kernel.org, 
- Pedro Falcato <pfalcato@suse.de>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1810; i=david@kernel.org;
- h=from:subject:message-id; bh=kN0V+ffVNdzTEb4f73Jhvx435CzQjTpPxsBtdWyTB48=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeLBQ8yHgyKLi9WZ9/7ZFvJ8TePtXK+CCaxb46eMKLb
- yqLd3+u6ShlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAiO3UYGWacUdZ5rrbJwuGG
- xP7OBfNuKU4qZQx6Ha1fHeGykOnmXHlGhtZTJ+Ujs58mPU60ifwdZZa4+t71dWXSU5awHy7d/8z
- fjxkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1755; i=david@kernel.org;
+ h=from:subject:message-id; bh=xU6NxeFuouXddfE5ExETEgUGwjovPx64LRkyocig7Ck=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeLBSsPj3973PG+Y92+ax+ZcYkd62Y55LXvdXTmNSbT
+ dZWT2i81lHKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBEGp8xMryYtkFw1UzvUE37
+ +p/TV2ZoZnha3Dq18VbXxzLj6r8CW/oY/vDdqMv74VEmlz+3ft3iLB7hfVdtuTJzNvT3TPn54U3
+ 1NX4A
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 86375C000B
-X-Stat-Signature: kmgnz4do7hh8g5eg47po3udydeoqji4g
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 57EEB14000F
+X-Stat-Signature: iu7rukgexoep7dod57j7x4gt3qcrda7q
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793106244-185464
-X-HE-Meta: U2FsdGVkX19nT6ooB+RZewlNsWy5AbkP+fOIOuK1UvAV8soQuXswEoHrmZkZCBLb2+pcZ5pD6uz38j4F3slvkF2sZc7EFbf+IyCBonTUDVzRKH0+r3yJfbYJPkjVzfoIR+Jw6Y8WB+9xks0S+LiFNrw8Or8n8todEiwx7gWZ2CyUdl0U2aAQEb2Ecy2qrk4MyRR1Ivf5sbQ8r04Q60NE22NsDNIEXrr/0NhHS5S4xFG45rxf+M6DdMHzgTCYwhJGEu1edA5ZJ7YDc+8s9kcx3zcj8QUDWRLIOVJ7XnkWdVnFm+bZ7B0peimqtKrQkBZh5MgQieoTAn9UYPZsPD/PSVghmXZy5SySg15gzlEyK71qRELH7Syxh65Gh2g3BOwH7An9P7aDwF61K+kQc00oahrOdIeUEnluQRq2+qHiAnDoc+micF+asx4nx8ds5/EnDeJ6LoBtCTB5z10rn3Cufs+xW/Tl3muLxoyeoeq7nwOUEcEeO4YTePGx/WkQKGuTfe5H3Hc9bZ2XLmgpuFGE3qsBqmqi+FsBKhDOkDS5+6czwBp5PlB8nF+qWoTth5nRHWYJSBxI60GOZbyJ/GOPwiD0VLDRPIiCcXKTfal6neGqOc1YS/52ZOn/LXASOzQNYLrP2hpF11Fpr4WGONuYTXa9GL44q4QZ5gauZVJoNITEgoQQWG01zRSaiVvEO6yJMDx2bii7GuGLiySWNQiS8DyT3GgJOeASAnIw06qg76sHsErx9NdXhBVor6/Jkrn8o8bbz1tcAT3ewPALlRlaU2+JX7wCBEymYMc9KG/vrpSzTKRtzSyFocZyH2rcBcHMN+DqMgyWRLmZpwdugNi8PP/XvRTs9OKMxmLLBVoABOrfawufyf8xHpyqPSHpRdyasuA5cO73cnwD3duGOH8g7n2byh9v5AYbS405dxLixS+Zw1WSOjhWRgBiNNzix8Zr2R614Jc/JB7IS3uCjlB
- wshJdIaf
- Zyils6+uL1MfQNqASov/ED1e+dm95WNkNLFbiZ2BtLWm7PQLNWFVsrXt2hePMrc2QsWsZJBOM4FKnTMWnRnaugvcm9g9A1l+yxBOLxSVLEPs3Qp7hi6kVZa3d/2J7V5k26tHwa1ps23SDmHhmm3XUQsvVe9Oj/GoMle+WETwesnA894Y4LSgl406Bcsa9nB0fOGj+7xnkJ0+drEbTHGNMCMc9Q53EVxXAVQgl26Yo9iI8XQeGLaT5iHVEkXz4LrBEVDb//qw2s2uj0MDoZ+i5gG2nAzKhM5BdwQAdUwYoWt954nYoVeTI0qn6PfMiDdsfZkYCcRqrNvFMKZfeUGvqNAUEYTdvXut1Pv36ecEsCuN3mImScEfbgfwYUHBQAqxJgkFEh63hKRg/TN+Fzzo5cJpS6sAFBzr7DmSqgViagSTeU9BZ6+f8Ki2VQS0aAxfeIYpdBPiS7Dxss7sLpypydGZRvn2X0JJEKtYOOIvCAE0TP2LKvARVm63PCQFfPkZjN4omOjFp5zMa7+AuafeH70NjY+BNjPYljPBXwtXl3hiKNz21tFAtja/AUKsDtnwomfHkgmWnMcTugVX4FyZqArcDfQ==
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793106252-109002
+X-HE-Meta: U2FsdGVkX1+GiAnWBQoXz6f5PO2Q2iP0o6t8Hf1kIGipZbxLqaLBhQHCuxd9H3qy8H1NnyyBI84EyF4/oD6/P3OZJYpMaFg+J/rF8rP1810Ee7BGPzKlwdD0bHYymQubAyjmLzV4mKof2cBC2hTcMZO4L57TKzZYrTcFgaLD/VYz6EuX6kqe+R+VA9txkxjFb/eaIksSIK4tHEd8P8MkNU1n5jeEz9x12ubuxWUnydf8uLnH7EipS/HU3LYkMmiYI6RxcLFg/P9K29Ted/LDy5RAheUBVrIY8rwF1wezTTwzd8TTglTnyuNLdD/MJVgZ/yamTJEJRh84qIZKPJagpRkOaNM4UtmDbub3Zh1pxnr1W38bqJn7xH1LslybsOS6cKbr9fXlQMc1wfNSTWi9qWMmgX/DMzQvbfd7rkNqZRSaC/MLoGjOz4Dja5Qmb/UPZW/37LrfwCoEpAgAAQhtObqEmMr7I0bl120wENXNg4WRrAXzymCOrFBQzOJNcoF7l1ikUToGSOJASIvDaMzopo2PXUZW9trk1MqQa4qnxLe3dIhoypOolHsYM03x9y7jOq6n7MIr0Ci2oyoPiTIYH7XaFc8+K1m1Uu8mcU4jnSJlK6oyhM5H7PSbrPGVBHDCRoNWTzr5rf7etuOJ9Ihy8H5TfNOxMswVw9hIW4RvKwUEyetQLUANl0Gk8cQNVpjDhUa55B3U8B2UpX+sdk4s/GxXQYSYEFhicQxeb6X5uUKYpyt0cfmSM1pGWellSQEk6SQNveLcwa+9RqMCsiHXyuVvsG7rDQFSKGQmYUZUqBkO11BFNWumBL3Oo0PNpELHzajY6uNddVTHcDl/SGXMqXXktkx1aRh/Vi/N6kmHZNIQPjhABMKAmxZbG2Fpnn9Jk/jptxtLGLgCPqvpEKc/mqiDPfUEQjy5+S5xHUv62Vf3E97fKzJlgSNSSQcYqMB1MdM0B6KXFdW74XHMLG7
+ rZ91qVu7
+ o0K+SDbdOBm0deQzO+zJhEwJVJzAGNOZy0cEbSY8BiKnOySpNkpXQjleNax+1HIchX0WoO6KZjV7Xb10NtnYRysGZY4hLs+Pt6RN4v56UrrPwbhvdbB1V2ZQIaH+7xpbnfbjzYbfSUDvXQdantNigyM7hvruCk0oEIMcO84UNBCEh9M7R79fynIehNfqQiw1gaPWmaPfkFSjDOZ/0vXxnoSLduzhXkLdXT/Qvf8j0jQpkE6GAjXKG7r4WhiL0t1Rltl5sBJLQMUseS0oPSGbj64SWue23h0Td/FJ15WryLK79Cekw6ztBdS1QwDLQiaj6bGNaqGnvuCBo9YRwiaeLm5wlnbJPBOdTnbTs2/7sgytnAAKKB/cByI5us5bCxPKZKU1U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,58 +122,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+From: Chris Mason <mason@kernel.org>
 
-F_SEAL_EXEC is enforced by shmem_setattr(), but hugetlbfs_setattr() does
-not check it. As a result, fchmod() can change the execute bits of a
-sealed hugetlbfs memfd.
+A fault or collapse can insert a large folio crossing EOF after
+shmem_undo_range() has handled the boundary folios. If splitting that
+folio fails, truncate_inode_partial_folio() retains it when it is dirty.
+The final scan then repeatedly finds it because it restarts from an
+unchanged start.
 
-Use memfd_check_seals_mode() in hugetlbfs_setattr() to reject changes
-to execute bits when F_SEAL_EXEC is set.
+Truncation keeps the inode lock and ignores fatal signals while looping.
+A concurrent unlink() can then block other directory operations while
+holding the directory lock and waiting for the file's lock.
 
-This also fixes the memfd_test hugetlbfs SEAL-EXEC subtest, where
-fchmod() incorrectly succeeded after applying F_SEAL_EXEC.
+Advance start past the retained folio, whose truncated part has already
+been zeroed. Do not move start backwards if the failed split has shrunk
+the folio.
 
-Fixes: 6fd7353829ca ("mm/memfd: add F_SEAL_EXEC")
+Fix generated by an LLM and sent by Chris Mason in private.
+
+Fixes: 55ac8bbe358b ("mm/shmem: fix race in shmem_undo_range w/THP")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-Link: https://patch.msgid.link/20260629180247.2343229-1-eva.kurchatova@virtuozzo.com
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Chris Mason <mason@kernel.org>
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-[ david: use common helper; fixup Fixes:; check only regular files ]
+[ david: split fixes, simplify descriptions, adjust comments ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- fs/hugetlbfs/inode.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/shmem.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index ab1e4dec3f77b..1fa05b4d26531 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -28,6 +28,7 @@
- #include <linux/folio_batch.h>
- #include <linux/fs_parser.h>
- #include <linux/mman.h>
-+#include <linux/memfd.h>
- #include <linux/slab.h>
- #include <linux/dnotify.h>
- #include <linux/statfs.h>
-@@ -840,6 +841,13 @@ static int hugetlbfs_setattr(struct mnt_idmap *idmap,
- 	if (error)
- 		return error;
- 
-+	if (S_ISREG(inode->i_mode) && (ia_valid & ATTR_MODE)) {
-+		error = memfd_check_seals_mode(info->seals, inode->i_mode,
-+					       attr->ia_mode);
-+		if (error)
-+			return error;
-+	}
-+
- 	trace_hugetlbfs_setattr(inode, dentry, attr);
- 
- 	if (ia_valid & ATTR_SIZE) {
+diff --git a/mm/shmem.c b/mm/shmem.c
+index ad644a268c0d2..5d21cdf5fb0a5 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1481,6 +1481,15 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 						index = start;
+ 						break;
+ 					}
++				} else if (folio->mapping) {
++					/*
++					 * Splitting failed, but the part in the
++					 * range is already zeroed. The folio
++					 * was not dropped, so skip it when
++					 * restarting the scan to avoid retrying
++					 * it forever.
++					 */
++					start = max(start, folio_next_index(folio));
+ 				}
+ 			}
+ 			folio_unlock(folio);
 
 -- 
 2.43.0
