@@ -1,168 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54729606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566A1606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TkUA3ouZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m+FWkWEB
 Received: by kanga.kvack.org (Postfix)
-	id 5669A6B0894; Tue, 27 Oct 2026 14:41:32 -0400 (EDT)
+	id 5E7E06B0895; Tue, 27 Oct 2026 14:48:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53E2F6B0895; Tue, 27 Oct 2026 14:41:32 -0400 (EDT)
+	id 5BF9D6B0897; Tue, 27 Oct 2026 14:48:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42CD86B0896; Tue, 27 Oct 2026 14:41:32 -0400 (EDT)
+	id 4D6B46B0898; Tue, 27 Oct 2026 14:48:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 13FB36B0894
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:41:32 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 58E3AC0A2E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:41:31 +0000 (UTC)
-X-FDA: 85369274382.14.F5B607C
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011009.outbound.protection.outlook.com [40.107.208.9])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 35CFF20009
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:41:29 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TkUA3ouZ;
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793126488;
-	b=xKOrjgPAfDmWc1sBMnJ4RuIsK/l6P3Gn7Ie7KRL7aW5Vym/A4w0in1Z3aTbdyoCcsQUFZ4
-	xMe3gwbVdUzTeiei7dLe6QwCtN/AYuThv+TnQzUKuHsLvEk7z/m5Ty/DPD1qpv7hi5fANc
-	liXBVkJ+kCYnrPEalv9xD0Kmdf7c3p4=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TkUA3ouZ;
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793126488;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2090B6B0895
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:48:35 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE9BE80AAB
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:48:33 +0000 (UTC)
+X-FDA: 85369292106.19.2935076
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id F2F2610000B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:48:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+FWkWEB;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793126912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J5QWZ8JpMkCYwVzLyl6FHdwstib8XNLk8KEvlpPPclM=;
-	b=l5acTMl2pZVwbfVDUiZ71UplujoEj2KYNAKyr/gOUu5CeOMu6vdK9P2h6M1aqY0Dgz4TTs
-	xJ/3OOp7VTVvvCX2/CAQ3UHj7eUgmvoO6RAA7UEr7+DNkIC4mmLNLCF40I9J+1OIrgb0Be
-	2TNttCoXdOj+C4yVjLN93X4wlJiFf2o=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UMZZNT4JJqLvPfLWYREJQSYKCp4EhHBCgEWFychVZOJCVfEhX1wFdgiF/5K4BPeNas5FzSG1UMCLqmmEDX+hhRFDza1cCTKPEnFtAgwGatlGOlDgv0m5+cDNMYnblJwqXX+5LkedFjNohH8AgIHuSobAsbg54idp6/VoVV/D6KUbtDa+eaBdv6KRikIVlS9f9cNRJuDYmzRSHOAbzrC97pigU+PD7SSnc5QIkGMOgi2heVmUDciuB8VmNB/Xt6/qdxdSx5lwRTRjChvzy6MXnaxIfBhgLkRprijR98XQAevZzUic0glizTnkRaJr3LFERrFKwwdYsYxRwLoZwBpH6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J5QWZ8JpMkCYwVzLyl6FHdwstib8XNLk8KEvlpPPclM=;
- b=hNqUW6C+GILuuqEXYdapPoVvuF9rN3vZMRjx9SRPPwJKqB7foa2LspQ9UqgysuSK7R/aTEVHQTno3ySgXBXQINf1hjdIwuAhxpb/QDYaDUmfZNjxdlXs6LYvf8MWdmQwoJfa8Y/FHHgjxYJ6m7IvmA+c65N8rJf7JQ3ejLinYYN553PA5jG+W+VaEC1IoHLamRHX9IXVy+kjhjCxesGE5W3D9Y0Z4GoioUYcwNNwaU3jgxUsENgMHOoSa4Rm0zw4YsoZaUJG728yE74xgsFez1Gnm/Nxm17Gf+nVDmt05r46OFASvccaMEjteE34zStdS4Y0Dw9GpsZtyrDhgsp7Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J5QWZ8JpMkCYwVzLyl6FHdwstib8XNLk8KEvlpPPclM=;
- b=TkUA3ouZWiqj6wbIWTtmO7qSOzuHoO/xQKEKYs0e6tpS3DBtr22Zyb4epMnwhqqenGaqSTSF+SwElFSZOLZg3oV6MYbAnJb5TMtQEK2oeDuQJOtqR+hf8FfmOOGVg4AkyHL0rohSkFUOtoF/snLdf3OXiQ7pOVOw4I6HJXLhWXu32psf9OecYuvL4goZAcFwLkqWCG/sfzfAEO/lu+JnsKUCQUm7ExvUGP1vhSPjBVhPOdJHbZpaccEBb4opt5qDWKtIIMEim/QAvMjCB/PtSQhFL5RCWrSCHzjuty7Y6RNwQgQdpFKOqjIM/KxspUpiX54dKPz4ghhDOwv3/3IBlA==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CY1PR12MB9559.namprd12.prod.outlook.com (2603:10b6:930:fd::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 18:39:49 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
- 18:39:49 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH 5/9] mm, page_alloc: pass zone pointer to
- trace_reclaim_retry_zone
-Date: Tue, 27 Oct 2026 14:39:46 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <491924AB-6BCF-4F4B-AEBC-502B92AF528A@nvidia.com>
-In-Reply-To: <20261027-pgalloc-ai-hotfixes-v1-5-9c7d1aca801e@kernel.org>
-References: <20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org>
- <20261027-pgalloc-ai-hotfixes-v1-5-9c7d1aca801e@kernel.org>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: MN2PR08CA0008.namprd08.prod.outlook.com
- (2603:10b6:208:239::13) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=MSzB1XWASGH+F7ssMzwnZlz8Zn+bsl00gQcZ/N0JfEg=;
+	b=zs/pz+1A21sqk3D3Y9TeG5a7dhvAQsqIOVlswzKq/EAusZCvNfJM/HXCbJ1vJ/dt1C2kfd
+	Mxc6eOVg7a05Sw39Cng8gM3eC8GoDLf63KJAXIfokaCdincQERzkxibh3GG5nZZ8HCM8E7
+	NOac21pNTfvz6sdFDz0hXTr4/89MrRc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+FWkWEB;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793126912;
+	b=hvwsIwmzQ8QgSx/85IV7e8bv09Lo7IM46zzHGnZIzt0y/AcdGtINi3xwmwug8GQINkYPWw
+	2xaxU/9/piocNwitC1U9w1GNgQ9rivHBn0p60GkZx2zhP5EbtPVgbjlkeKEbykrKZInsci
+	hT1tUbAoxXXcC5MoRRnFUXncLcujIi4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FC3943E61;
+	Tue, 27 Oct 2026 18:48:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0263E1F01828;
+	Tue, 27 Oct 2026 18:48:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793126910;
+	bh=MSzB1XWASGH+F7ssMzwnZlz8Zn+bsl00gQcZ/N0JfEg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=m+FWkWEB/usHjPgd/HeHjF823K6Da1+GalSCzv3haIPJi5KfmpeQJB0ZZL9Bw4yFC
+	 GCYznMARAi2DJUTxSqGHOk1FCUCfbAluSRAD+TqgTIQFx9G+JlOAVN32JloPdigHLk
+	 PIPOa7QskktQpkB3A7SC3OJthyWaq8LG0k/4YKNoqkQcVO8rJeaS8/USENaAr2ZXRB
+	 sUDcRWopH82ZACGF75E9XXpgxKEkzvI97x9s9iser5Jnp/xuyd92sc6BiU/y5WwkNU
+	 O/LUPQBHCsY5rp6UXBRpZn5yQw+hO3HoeP6cErD2I84I1gSLeHDo9gariXwMrVxSQh
+	 IpGPUzlHwsSEg==
+Date: Tue, 27 Oct 2026 18:48:28 +0000
+From: Harry Yoo <harry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Hillf Danton <hdanton@sina.com>, Boqun Feng <boqun@kernel.org>, 
+	syzbot <syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, syzkaller-bugs@googlegroups.com, 
+	Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, linux-rt-devel@lists.linux.dev
+Subject: Re: [syzbot] [kvm?] WARNING: locking bug in __refill_objects_node
+Message-ID: <auDvUyfzg6nLtVox@thinkstation>
+References: <6adf2939.67317f00.38c4bc.00ae.GAE@google.com>
+ <20261026224305.1254-1-hdanton@sina.com>
+ <auCucDdZb8mig7UZ@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY1PR12MB9559:EE_
-X-MS-Office365-Filtering-Correlation-Id: e22e1549-63ca-442f-03d6-08df3459ae37
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|261021123027099003|261009223027099003|261022105027099003|261021121427099003|10067099003|56012099006|22082099003|18002099003|4143699003|11063799006|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	bx82Cw61sbBgcMQsS32pfEU3pnBf0RkDac3lT5Caz+UxqPBzTaZaaxkX2ivmdqEt+S0qweOkYYCCbLFozPLrPqNvDCACemDZqAR2YEKWkAcJlkUYNLfdQOd96lrywRNfhzApUmvneeeOvlgXmoN+lXsstIILD8pXom4hOS44Gba7DaOWq6/5BuEiHxdimxtjCaVB6hp2ZZRsGNnf1GNyztJAfgNBno+hqjWm+l+g6M//itaHdGEuxKBjm/5IT66H+FMAn/nszcRxKH/1G5W21QB0BR4zrGzUq/aP8v7YZtYQdZK+LfNvP5h8D+4+tn/lP1IQnKEoFU3MQIJyIOFY4gbNo6jhJXwRw+f7uyEJ4FH/nx17xIEuhfaLGqTMI4HchqT+yiJf5yH/07DLo+lgrlwk0SR+pqUpFIisnsS/MyXKm3IWX+a4t5WAxAZPgDEHCLOUGOoQjNZp7X+jNRFjwB/QZJl4Z18/qO09y4BC0//CVmt1X9mRMOTleWIjdOq/knJT59vA4VPLXmdV2c2jc7mYMr/o1jfdDz/3GMw+L+UWNcA65f4JOWxn949FOocBO2wyN2+O2jhT6sy9PDmLhQlBZKMT12zEIlDYJ7y5eiHf87RxP7FfroBIRIV6C3UGe72JFxeTPiFuvDs6Yw34l21xoyafp/bY+cSzkz7NLQI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(261021123027099003)(261009223027099003)(261022105027099003)(261021121427099003)(10067099003)(56012099006)(22082099003)(18002099003)(4143699003)(11063799006)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eDKGhNLNJ+FftO5ROtyouyMUsz/fL3930zG60tgJjuD3pyDJHCneXBHuMZeU?=
- =?us-ascii?Q?209Nie7+UiWdFiAZtUMWNFkHu0symfAoBkXMM0P4woa0gjOP9K1DJUV6Wcp7?=
- =?us-ascii?Q?EVPhYR1fs2GlzoY+JkJcIzZ+OS9o6CMdApCRXmSnuWG7609FtxzIqdsRsXX+?=
- =?us-ascii?Q?+XTwDnr/I7gj3AqCHHaNwpY3Byh/86YmaBMpaP2uZbqYl4gNGGymjGrJl4St?=
- =?us-ascii?Q?MMXgfdKVKnoQT+mG1WghO78XPz8f2h8jGVJU2rB70AF1jQmRdjEtw6Fuz4kD?=
- =?us-ascii?Q?GzqWdvKudC095REuPatwXOi/KNmtfn0iRtnvTIfIC/gfAU8XFbhwDGKzFdHz?=
- =?us-ascii?Q?7nAHCn7ligS/nFTSh+p9OKFJE9sjWZ1BCoJ6/SgKueopYQdQ40dRZgeKlYhx?=
- =?us-ascii?Q?Z+0pJNSqyskOO7JlhamrDccHM9SVx99i9McSOGw1ynQzdjdN+Jt/Bv4kRT3o?=
- =?us-ascii?Q?fwc9gocijc+Wlkku46Lpm5Uaqm6ehm7mXiL8sr5dTW+f4l8HSUHhNLNa9qHQ?=
- =?us-ascii?Q?eoF0xyRniFNXz7/tp4TXlIHTGzfifENKSoGZtHAAmCca7E/v5Q/FG7vKHBg9?=
- =?us-ascii?Q?VmVrX0vdZQy19JNYxH+PXrWqlKx8ztUmgIfOMqYhZmL62lgdBCHf18kl5r3I?=
- =?us-ascii?Q?S0GER4yXirlyqf5h0PUyp+SIixFT1vBCqpJOU1SUMwJhVqkKZeNCLYhb0lxh?=
- =?us-ascii?Q?lEphg6y292ztSLJncSZY9I6bfTjBKWpRPMge872rL0Q+33FWKhUgmCID4Ncj?=
- =?us-ascii?Q?BcdmwJAL7rv8GdxUi1UjGyk2MdIZJJ2+vgu5DlamNSvsnCcOVDZ/x1i6DgDV?=
- =?us-ascii?Q?MP2tzeZOPolLtG2HNG1bc7RmKdbdL1F2WxAdXxvFEeZtt9W3VKGwAAUWJzGI?=
- =?us-ascii?Q?nSLiMCdpa6IEcRRsgINLRRjfUK4PvOr0KfiArxyvZIiid/ssrbkUMY80UqQ3?=
- =?us-ascii?Q?GuCKmZ5cdoheHVWhwnPTelzLRj6YrVmrCwM3XcLwXNkrPTzOXfTy45yJSwRO?=
- =?us-ascii?Q?rWf0gTmiV77wCNmwsPYMR4ipizIPXP9xRFHDGOHnbnDg+IxVQvsmBMkC0Kak?=
- =?us-ascii?Q?ifteIZ/eddz8CGUL3S2XptTlLK5H91XeYVO3pUGhGUyXbd+NLLFwhs3qZhf2?=
- =?us-ascii?Q?urxcUuPsKhZp2em55rBXnvof8w1xKS86pfPfi4VB9TdTejmFVNaAdchOdgNx?=
- =?us-ascii?Q?/NvrmcPaC4Vhko0hOVMblqBD+0Yy/Phtpp3Tq2J6jWr5W+SAuclDIgBuQ+lB?=
- =?us-ascii?Q?lIkF69s42lhJW4nM+ODB9ZTDi+K2yanKnGYyxsPS5Qht1wJzCmaiVDxbNxLm?=
- =?us-ascii?Q?35tlml8TOoWEwXsYB501jm7EnoRAEbSrKzbEJ5xsf8ShCMFSLrkk7ayzPLKW?=
- =?us-ascii?Q?HzGmnwhjW0JPtC6eHykL8OoEXSjkcKa8Y61u+jgfL44pvuSzHUF3LHaoMLJ8?=
- =?us-ascii?Q?iXdKoJKNvJ6/xPN7MawWDU5DGULVIIJy29id8fd5szBCAcml6Lc97nAfXfqf?=
- =?us-ascii?Q?gRTAie2c0BXxruaUoaREr5qDl94hujesjQvsnDeaghlLlbHiXDcaHb9aNDeW?=
- =?us-ascii?Q?+aJIMZ4l+VCWxkgAzj7Cb+XuK3c3qk0gugzM0yo0ZAdv1HCcYk3VLH0mqOwb?=
- =?us-ascii?Q?GAeIO0vUvYwgyc6eMbXCEmUPk8B7jyZXMKQJGBhaV4zCD0hknVtlunTTlz5E?=
- =?us-ascii?Q?mEf/C6jm5hjh5BJqwuHVhtnqaKi6ZgTsC3RHfeX7UXmNHV787RYwnGYzq5s0?=
- =?us-ascii?Q?ZA8NasW08w=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e22e1549-63ca-442f-03d6-08df3459ae37
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 18:39:49.0881
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wdzuy9tjsHO17AcER+j+0okhEHNWNAkSWrM0g60dIVDacq6u/LJaEPM86J35iC8y
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9559
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auCucDdZb8mig7UZ@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F2F2610000B
+X-Stat-Signature: b5u18w9ekmry7hznbonexkj46ymrnkwt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 35CFF20009
-X-Stat-Signature: yz8jxqt1cmkk7wo4a3wh8835jg1czjig
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793126489-820551
-X-HE-Meta: U2FsdGVkX1+nJbvAPhiWdsQPk/CzT6cYM8SXcVNliyqn66FqkXHqVV4b4HD5LWqIlf4bEEm6TGUk3QeVrhhapMzXLN8ZGtRBnZH0RqAKZoiPPjaBhLMhsLetQHMqdbw8d0j7VnvDeuVQHoZzOGjoPzKjhDI8hDY0v0oaEpuVofdIwaBXW25tevOKdqCQXnNcvveZ5+71ZPLT5c0DhomlIfs5vk1iyhLJQTpS1VTrmHqOihxW9EvwyFFVK34EkJS8dOZXNtLeTe/l7GmceZgz4CJza8z1eHxbkwcjngJ/tvBg9TALP7Cg3mdbP2yKXkc+cJi2NcuTFi4DC0dkc1I1ZEmwDspVOOweaB3LgaLdkNEyBcs6Is1MrPkiGhGosY1006dV/A2kX/MMX6X3oB5ajqM2eFhJl+PfDqGbuGsqCkEuhhcPyu5IFJGRWi4g1mMpfVDBFCQBUyJJvLk30r4w5DJYvbPPQs9eSmfC6NFohZ50IDylpyiy9Jm7KioFpDEXdVijIftvhakI4mvD7bmks9firQoUhoS5HJlipmKo4vgbDpbG5KgXqGaJTdJxFoku23pR3BV1EL+Gw6kHMqwkAMb3rqRtTrGtPgyQbAD8vNYpaL9N++41yk1nhfGdKvV3y20DlAjMzlzM8b0q0Tiwxvl8Qt5vJibwL1jzjU32sCcn0QCNAlk2o5ZqkksnsiO5owxP4u62huCnATIspBaefs0MCtW2hCwkjot+Z1dXEtCB7ALzxrzXxyzRX4RN1qdHvusU1w32jY2sucuIhDQWWHeNN9qnKXc7jp4ddbMUEfwaY1TWYx/asIwxx/g6PLNl7UN1n9Td3Hsh5hBy9Ac3mheOpBMtOBE1AyZ45k01Q/xy6NlgPDn9dk9m5v9z2jEr39H1fJI+viFM8yp6oMLic7W3BWBP9tLPPQzESyz500C8ismoQ2BRT8yNjboFm4Z4UyYLPbZ1inKosFZhA0f
- qle1haCS
- z5JVlf0KjlWrfpy7yG7gEPMgnBWqYchAc1rsKacZaCsrBKJOJ0dPUInbO2jOHbpogQ00u8YKXR2cMFMs8xjpTD+1EfFVZyRVCtfGYIIzcIYeSHMrQ4HE7/nnUkLnqKg/Nxj6pFF2XQDyhYZf/GpCt1kvAAIUbjGamaaubU/S/aW5iNZlshzeFXG6bqPvx2t37tXrt8hnlwLVjJtNFphPvmnWf/+qtmdeKQya7tflgmTLkR8bCZwGQaEQXrwynjSqGEEHkHBHnwvUYoLedsKY6Dx2thV4qhfhOvNQuubUNNQK1VP5q/6YLjKT+9MTFuXMZWiL+D4JbLPHb7RL/mbqhAWU4Tle45L4F5I7xKiC77WSROIukXE65C8XKW1TgnHzZbxNpxNeFsndImfIaEKD5arqiolQ24nWMVGdp0t7Ew/kTiKlPqxcfMDS8YKBykygA9PMUuOIG2FpfK3+8FtFJccDDw68aGpD5a+Nro0+V6K7Mp+M+Vzn7iV0mk5PBW2mas0WOVUdlJGQ/WVs=
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793126911-451726
+X-HE-Meta: U2FsdGVkX1+llFvb/Gw+rmhvms4YAXyvC9eY+wJoTQKBh/jyOnWaT+SXFZHsNLKTOvn4YWTnDtHVsOWjkr4Fh55MsMZVn6VH+WqMfDhcyhYs29zQleWTiyexXyxKi3yg7oeOucf+optqNhjLOjAyzxb+nLLdNSFtb7IUaJBxNOi+qB5QYGOdgdiobYq62eNdG9VJTx6+8ylxYXV2lQ54zsu93BtF1WXfseJfT5emW/IC3IgvUEbUeq3u9KSOREqISpb82alkYlTqoNDYLltfzPs1FKLliTpj2Dd75zUwdrzF8NDTWLM5cPfVRpUGP9pXg133jptBZbnaechzEuzWQ5eNlnCIMZckwDRdrBBHiyCS82mg+fcu5WNLUnywDenggwLnSZNLNGZ72FtV51lwHn+cUVWAyObi89ojczjU1UxNipNvVN2wDksx0JbBUTJtmlcrmnzEHuvo1ToxDynUWRINtdNxZNQ73G2io5hLZcFBWaR71KUnATM8UdZEhITMTwBuOWtVAzyBbgdAg0EQcVxODLtJTOQf8+QE7hzhrU9SKcNiG5L8/oJk660kFdRN4YkYFV3IB7sYoaHAJ5XwbCVSJgTaQS5iUrjWW88Zff5+DDumZMWRstLJD9Ov9LMLZMKghyBFHOMXJA87VMkbGN3meaeLkWr0vVVB8NYOiSXYMossy4ntuT3pZ3Fh1nt+Tn8e2wOKxCjk7rBN59a07CDyCkrVlgl95gFOffpqrQlKBRXzoNdQxmiLa7LdcdTnlGYPQ5LW6npvYfGHfP3jnHfvRwn3rtUXpW2P5V78zluV/9LiBr+EYR92cKa8rRN+H3NVW8nUr//LxbhUmjrWNtIJ6VuxNmrcczZSQtwhppS0VLY5rSWO2u8vgT8Hzh4zkOs6n5IhE3qDMk1yuMqxN3kK2tipnc8KMZZcePUFh+EaMZsk5YxvnXFRjPcppnPRJ7rhy0IT2z5gjQ7SE4z
+ 8gXwq/pa
+ HUHD2NDB5jOQOtPDTU1n2Nv1zyAAVEvOMzcfVKfQY5j5InudkFeYthXh6hMirxSoF749cCY2iFTqgW5W/ScmNYKJHSS17owUMHZxTe2fDjYet5FVY4jVBq2/fQg6tKq/tcvI7StY+tQ1Vf6cDKDoBulta+bUumcVRvvyB6a5jYQLNpjqLeviIGSaN3bsGZRdRQrof51HWWGVoawMskx4zEDkGVubdh1vS/5AZjeYNk5w+GYYGJHQL/U6Huqg+ms+qwY+FrMX3fsXKbJbJW+KHHeHgzictLaloIwR9wv2gOCw0XOaO186T2MuvjGwP6ba1G7xiQtQBncY5dSsCMiJ3hsUAuBdpTJhEcnofIugxeXJhtpgzAQO08fixNzk6X/YGCCoFqNEoYoOFA1mMVsmZF313K+EfcG0yiOsg19qbk7gSP29oSufsa79UVZsdazTleQTAMoF/5hviX9npBARPBxqV51oyx9nlLIFmkhOmE6olYu5nFrNxKast4+7GPkGKP0keWGtT9jgLuKf32G0r2yP0lBiUxysjC1b3fIpNG1nj25zaTGrJIDH79JUgrAG1UvB2RLhnhxpSWeOzmRbv3fCgresc+e7tqHrpumUFu0NIZC5fl6JCLEYggoLKdxgxZL3+dgJtP8CW3HLp+U49kH4NzHr07kGBwXB2aVz1T4J4eN5B9G6Xkf1VAumjuihtbONerqQYMlMROq03nP7JEqNKv2WrHOUbThTxufz+aS2c/k6ODrCwGhdmt7khPhGXqDIF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,38 +101,144 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 27 Oct 2026, at 11:46, Vlastimil Babka (SUSE) wrote:
+[+Cc RT folks]
 
-> From: Josef Bacik <josef@toxicpanda.com>
->
-> should_reclaim_retry() walks a zonelist and passes the zoneref pointer
-> to the reclaim_retry_zone tracepoint, which loads the zone from the
-> entry again to find the node.
->
-> Memory hotplug rebuilds the zonelists in place while allocations are
-> under way. When a zone in front of the zoneref entry has become empty,
-> the entries move up, and this one can be the end marker by the time the
-> tracepoint looks at it. zonelist_node_idx() then dereferences a NULL
-> zone. Short of that, the event can name another zone than the one its
-> numbers belong to.
->
-> Pass the zone pointer instead of the zoneref pointer.
->
-> Fixes: d379f01de095 ("oom, trace: add oom detection tracepoints")
-> Cc: <stable@vger.kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  include/trace/events/oom.h | 8 ++++----
->  mm/page_alloc.c            | 2 +-
->  2 files changed, 5 insertions(+), 5 deletions(-)
->
-Makes sense to me.
+On Tue, Oct 27, 2026 at 07:00:16AM -0700, Sean Christopherson wrote:
+> +slub folks
+> 
+> On Tue, Oct 27, 2026, Hillf Danton wrote:
+> > Ask the locking people to shed light on the warning.
+> 
+> get_partial_node_bulk() is waiting on a non-raw spinlock while in hard IRQ context,
+> and it looks like __refill_objects_node() would do the same later on.  On PREEMPT_RT,
+> those spinlocks become sleepable locks, which is what triggers the splat.
+> 
+> The alloction coming from KVM-as-a-guest code is GFP_ATOMIC, so I think that wonky
+> code is fine.
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+But memory allocation w/ GFP_ATOMIC is fine only on non-RT?
 
-Best Regards,
-Yan, Zi
+From the documentation:
+https://docs.kernel.org/core-api/real-time/differences.html#memory-allocation
+> The memory allocation APIs, such as kmalloc() and alloc_pages(),
+> require a gfp_t flag to indicate the allocation context.
+> On non-PREEMPT_RT kernels, it is necessary to use GFP_ATOMIC when
+> allocating memory from interrupt context or from sections where
+> preemption is disabled. This is because the allocator must not
+> sleep in these contexts waiting for memory to become available.
+
+Here it mentions GFP_ATOMIC allocations in preemption disabled
+contexts on non-RT, and...
+
+> However, this approach does not work on PREEMPT_RT kernels.
+> The memory allocator in PREEMPT_RT uses sleeping locks internally,
+> which cannot be acquired when preemption is disabled.
+
+it says we shoud not allocate memory in such a context on RT?
+
+> Fortunately,
+> this is generally not a problem, because PREEMPT_RT moves most contexts
+> that would traditionally run with preemption or interrupts disabled
+> into threaded context, where sleeping is allowed.
+
+Not sure if this applies here as I don't understand what's
+going in in KVM world.
+
+> > > Date: Mon, 26 Oct 2026 03:19:37 -0700	[thread overview]
+> > > Hello,
+> > > 
+> > > syzbot found the following issue on:
+> > > 
+> > > HEAD commit:    c03c1a14507d Linux 7.3
+> > > git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+> > > console output: https://syzkaller.appspot.com/x/log.txt?x=128d8ca5580000
+> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=129d675874dbf896
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=f11512d1e5878ba5e60e
+> > > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=168d8ca5580000
+> > > 
+> > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > > Reported-by: syzbot+f11512d1e5878ba5e60e@syzkaller.appspotmail.com
+> > > 
+> > > =============================
+> > > [ BUG: Invalid wait context ]
+> > > syzkaller #0 Tainted: G S                 
+> > > -----------------------------
+> > > syz-executor177/6041 is trying to lock:
+> > > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: get_partial_node_bulk mm/slub.c:3831 [inline]
+> > > ffff88801d040618 (&n->list_lock){-.-.}-{3:3}, at: __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> > > other info that might help us debug this:
+> > > context-{2:2}
+> > > locks held by syz-executor177/6041: 1, last CPU#1:
+> > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
+> > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
+> > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_read_lock security/tomoyo/common.h:1112 [inline]
+> > >  #0: ffffffff9090b438 (tomoyo_ss){.+.+}-{0:0}, at: tomoyo_check_open_permission+0x169/0x3c0 security/tomoyo/file.c:772
+> > > stack backtrace:
+> > > CPU: 1 UID: 0 PID: 6041 Comm: syz-executor177 Tainted: G S                  syzkaller #0 PREEMPT(full) 
+> > > Tainted: [S]=CPU_OUT_OF_SPEC
+> > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> > > Call Trace:
+> > >  <IRQ>
+> > >  __dump_stack lib/dump_stack.c:94 [inline]
+> > >  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+> > >  print_lock_invalid_wait_context kernel/locking/lockdep.c:4874 [inline]
+> > >  check_wait_context kernel/locking/lockdep.c:4946 [inline]
+> > >  __lock_acquire+0xfcc/0x1f40 kernel/locking/lockdep.c:5238
+> > >  lock_acquire kernel/locking/lockdep.c:5942 [inline]
+> > >  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+> > >  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:155 [inline]
+> > >  _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:181
+> > >  get_partial_node_bulk mm/slub.c:3831 [inline]
+> > >  __refill_objects_node+0x104/0xab0 mm/slub.c:7279
+> > >  refill_objects+0x58/0x410 mm/slub.c:7405
+> > >  refill_sheaf mm/slub.c:2885 [inline]
+> > >  __pcs_replace_empty_main+0x35e/0x650 mm/slub.c:4774
+> > >  alloc_from_pcs mm/slub.c:4850 [inline]
+> > >  slab_alloc_node mm/slub.c:4984 [inline]
+> > >  __kmalloc_cache_noprof+0x4f4/0x6d0 mm/slub.c:5559
+> > >  _kmalloc_noprof include/linux/slab.h:991 [inline]
+> > >  _kzalloc_noprof include/linux/slab.h:1312 [inline]
+> > >  kvm_async_pf_task_wake arch/x86/kernel/kvm.c:224 [inline]
+> > >  __sysvec_kvm_asyncpf_interrupt+0x334/0x610 arch/x86/kernel/kvm.c:338
+> > >  instr_sysvec_kvm_asyncpf_interrupt arch/x86/kernel/kvm.c:327 [inline]
+> > >  sysvec_kvm_asyncpf_interrupt+0x9e/0xc0 arch/x86/kernel/kvm.c:327
+> > >  </IRQ>
+> > >  <TASK>
+> > >  asm_sysvec_kvm_asyncpf_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:753
+> > > RIP: 0010:memcmp+0x156/0x1d0 lib/string.c:665
+> > > Code: 0f 86 fb fe ff ff 48 89 d8 48 89 de 48 c1 e8 03 83 e6 07 42 0f b6 14 28 48 8d 43 07 48 89 c1 48 c1 e9 03 40 38 f2 40 0f 9e c6 <84> d2 42 0f b6 0c 29 0f 95 c2 40 84 d6 0f 84 45 ff ff ff be 08 00
+> > > RSP: 0018:ffffc90003ab7538 EFLAGS: 00000297
+> > > RAX: ffff8880220be413 RBX: ffff8880220be40c RCX: 1ffff11004417c82
+> > > RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8880220be40c
+> > > RBP: ffffffff8c58a940 R08: 0000000000000001 R09: 0000000000000066
+> > > R10: 0000000000000066 R11: 0000000000000001 R12: 0000000000000012
+> > > R13: dffffc0000000000 R14: dffffc0000000000 R15: 0000000000000000
+> > >  strstr+0x109/0x170 lib/string.c:743
+> > >  tomoyo_add_entry security/tomoyo/common.c:2157 [inline]
+> > >  tomoyo_supervisor+0xf47/0x1340 security/tomoyo/common.c:2238
+> > >  tomoyo_audit_path_log security/tomoyo/file.c:169 [inline]
+> > >  tomoyo_path_permission security/tomoyo/file.c:592 [inline]
+> > >  tomoyo_path_permission+0x270/0x3b0 security/tomoyo/file.c:577
+> > >  tomoyo_check_open_permission+0x37f/0x3c0 security/tomoyo/file.c:782
+> > >  tomoyo_file_open+0x6b/0x90 security/tomoyo/tomoyo.c:334
+> > >  security_file_open+0xb5/0x1e0 security/security.c:2739
+> > >  do_dentry_open+0x588/0x14d0 fs/open.c:973
+> > >  vfs_open+0x82/0x3f0 fs/open.c:1101
+> > >  do_open fs/namei.c:4836 [inline]
+> > >  path_openat+0x1a23/0x2450 fs/namei.c:4999
+> > >  do_file_open+0x20e/0x430 fs/namei.c:5028
+> > >  do_sys_openat2+0x10f/0x1e0 fs/open.c:1417
+> > >  do_sys_open fs/open.c:1423 [inline]
+> > >  __do_sys_openat fs/open.c:1439 [inline]
+> > >  __se_sys_openat fs/open.c:1434 [inline]
+> > >  __x64_sys_openat+0x12d/0x210 fs/open.c:1434
+> > >  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+> > >  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+> > >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > 
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
