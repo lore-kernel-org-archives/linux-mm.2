@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492CA606A7D9
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 11:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C5F606A7F5
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 11:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=Rfn8m69s
+	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=q3sJfVzJ
 Received: by kanga.kvack.org (Postfix)
-	id 4BCDE6B06C9; Tue, 27 Oct 2026 07:43:11 -0400 (EDT)
+	id 5A6ED6B06CB; Tue, 27 Oct 2026 07:43:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4937B6B06CB; Tue, 27 Oct 2026 07:43:11 -0400 (EDT)
+	id 57F046B06CD; Tue, 27 Oct 2026 07:43:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 382216B06CC; Tue, 27 Oct 2026 07:43:11 -0400 (EDT)
+	id 495816B06CE; Tue, 27 Oct 2026 07:43:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 141836B06C9
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:43:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 991BD409B7
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:43:10 +0000 (UTC)
-X-FDA: 85368220140.30.F2EA4A2
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A3462100008
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:43:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=Rfn8m69s;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 227366B06CB
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:43:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A18171C43A8
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:43:23 +0000 (UTC)
+X-FDA: 85368220686.05.E855FF5
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C324780003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:43:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=q3sJfVzJ;
 	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf14.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.52 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+	spf=pass (imf30.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.180 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793101388;
+	s=arc-20220608; t=1793101401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ihSaCVGXoXgLVj2uB+0zOcIYk1LHOIcOLN85o/KJU9U=;
-	b=cv86HpfXF2QX9I/AD4kS2K0WhvNPw5ELj9GoGr/fL7j0SVND64QCBp172lk1Gt7h7PYZSg
-	hyeti33CW/g7yFXML6v5kI7J+CiUqqUvEKR5ppC8DBnZXh0gbZHnvBKzvlOjOjd62IgdKX
-	GunTdlabFrAMc0kMsBliGJi3+a4hafE=
+	bh=zZcYX7S/IRLmRwsATrT9hZb6l/1JqthXKat4XzKms4c=;
+	b=QbcqjzUUxQVvnjSMzW+dJzNC+xJP0WXA4v6ti3JLFsrrvC8NQ4NkDl6DtYMFSCp7cQ/cdf
+	khRd1ehzrxY1Nb4Joe9b4NYg0qaDuhClq/HwMeoxVYg+VQjYaV85HumJnBybJMVZgeWQxo
+	DGx+ORbk0NmM1P8m82cokzcyCpu7nV4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=Rfn8m69s;
+	imf30.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=q3sJfVzJ;
 	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf14.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.52 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+	spf=pass (imf30.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.180 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793101388;
-	b=nGNIL1zUOd3OuRhjDlYFiisIwuTPBcjwvp/PH8otoWvVVVRF8zLQOWxUFm7Z/FFPYA1iCS
-	6EnnEf8+Ka/hi+w5r1tLmTdfCHh4xe8pYTyUftn6vJ0htzdybwG6h7ww9d9nPt+VkkCvHb
-	B5V80S6hmWQg88NdP+yj9smYIfUx4pk=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3adac5c10e3so2092701a91.0
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:43:08 -0700 (PDT)
+	t=1793101401;
+	b=2gEEc6lrUrS+db8kQznhtkzQ1Gd4YDd8CTJpMwYveMDXAMGVwN/0+ae5tytqPzcfkk6kKv
+	DPJSLpDqB1RV37QkihZ0AZ2IxWcgpOLuqDwJKResbfS5K+I3jlkWsVIkSyOAZm3DTvcxy1
+	gf6rq/0UpFfoC5seXQPSxMwGgwsQqRo=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8a594d313a3so1138314b3a.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:43:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793101387; x=1793706187; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1793101401; x=1793706201; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=ihSaCVGXoXgLVj2uB+0zOcIYk1LHOIcOLN85o/KJU9U=;
-        b=Rfn8m69sO0CLOncu6VEjJg2aGWCxZDTOjEpJj8/fqTX81crhabMPG1QD0zIGeo+HfL
-         FJU0t8gqCjGf6cZ+yR2zjGQctucSjac0wlypDz23NEjTqRcAsyK5ER9NIntndelhc7vk
-         CQG5JZeBlUriDpXN/QaU8zVVaUL2EmDKDjxts=
+        bh=zZcYX7S/IRLmRwsATrT9hZb6l/1JqthXKat4XzKms4c=;
+        b=q3sJfVzJ7G1yhrVjQ/ZqHQjeObeFyNbI6V7owuRy/9Y7MAOb8DfPAWEj+aF18Wy9cv
+         1FTe4rhKUxfhZIr05aCyse4wB/pNR4OQS8yTsO13d0CvJ7tQwpnhqmLytHsV5cf6D+RS
+         x00/VTM34P6y+Sx08KEMsR/aVGC+LkjvMxxMM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793101387; x=1793706187;
+        d=1e100.net; s=20260707; t=1793101401; x=1793706201;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ihSaCVGXoXgLVj2uB+0zOcIYk1LHOIcOLN85o/KJU9U=;
-        b=vkp12X0JK49TbOMCesAgnMXR8vEemMxPD1UMTJE7zMoVjKTRvRDI8wcjXJJrvSco5f
-         mK8Y5qcz0oQtBk83d+7ur5yw0II0IyGJ99RNxl0vh4FxkrWXNBPgb2Kvwd7IHWppNdet
-         HqZzfRvFWgpVk5HIEeGf8dlfotLtw/FMOYZ0i+2GxvQ0RLvDUfbd4I95syNiA/24w8WQ
-         KGJp1C/I1ow4YnJync0pqZ9ZcQJ14PYAuFNRA3SC9sq8iHg7ns9t8wq7v7sg2oBvjKkg
-         Q710DjRoJSKhRJYBvPCRP6RnPtvxc3eUiWn1a4oVmVbQymOLhPTfRuCuJTwSmwmj7HE7
-         RxIQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxzEOiO2ELUooSL38z5h7qew+xNUQicojixyy6qBzq9tOQbyFC0e4WIdz0siJw86ieAbAQFUsjmuQ==@kvack.org
-X-Gm-Message-State: AFq9FYJKBURHu2jdE/jyoC+QOALtUG5Zrdb86Z9vEEG6icaILY68ZMy/
-	rX2tRPZZOvi5QiBOrWliYkv+yp0eqhqIlEO0attX6G+PkbdFctd8wNI/h1E4+UsJMl0=
-X-Gm-Gg: AYBFou3rBVJKj2Cy6r5AYVee5KI6hm/L1/oGmYttDKNsKKOPdz9qr6ScBx2G4Tqu00q
-	7RqGYlF4YPCBX6zp95p7oUka0uOrMd21CHbMhKqbUgpdhY49LeXyNvezKwLaXZLUdXkeKhjs2uL
-	3wa+IQEnlGWHPiaJ8IUkGoaI0NUDIyyN7xF7lh0SfoZhHWkQOtVUwZGNKW2zFC4OkWUnNzlOLZC
-	86JHj3kQP1OxXMS79MJWbmSTPsZpKqS6gMS/p3l6ZWUE36Gh5BBlq6D33ZKHouDXZuFI3Edgzgu
-	hpmo3yiFAh4tVF89pdawE/ifweQOnSgfazBNV1j3AEjfTKbE69IqHnmCVOE2p2jevnijDfSVHHW
-	rkoI14QrFaRnj7jyKn/vM7hDsgUuhxup1jD8+2XAx9INhNIrbfxDi8jW1hp1nm7Kd+HNj4qXhrK
-	wp9kKjVbrTZbbzVpZc7kG+uOcGIngm/c0ALH0dUDbFmRloktBFbubc1cCRUy52UTDedu/laiZvO
-	QviNxmAOKh4uf89YA4D0pwfXKIkPmPkwjqLDM5a+lBnnOPI+dyzuYtkVMsGY3DHTydovHmKBnLE
-	RKIyJiMXMX0nVHloUUYQ1MXWv37rc6EbvZZnyQoZIiVdfuzorZpMjprcmdPX6/pA2jsr8LsHrU0
-	yCAIMxWE1cLO+Qllm7j8/3Co=
-X-Received: by 2002:a17:90b:3e4d:b0:3ac:adce:60b2 with SMTP id 98e67ed59e1d1-3ade9b2ce76mr8135222a91.2.1793101387414;
-        Tue, 27 Oct 2026 04:43:07 -0700 (PDT)
+        bh=zZcYX7S/IRLmRwsATrT9hZb6l/1JqthXKat4XzKms4c=;
+        b=GOJfmSHE86tArL2uHDJV2Plg+YV4c1AiOWqLD6//S5gxs5qCvxZesGX6AXKmabp24Z
+         Q9V/fLvb8frq0hOBVcgzIIzIN7378ZwxzSWrxKQsoCTp9Pv1a4DUzN7yhCSvr+AutIXY
+         1A8ySbpwcfQsxppTd5ghKUcqjN1GmuReLoiA+PjNIHJnch+/AGvJMHeJ5b66ugNUBAw1
+         02/bpqsy0KDu6FYVliibN6fGZdiKsvv9rIcs+qmmZhj/+knUpQWrhgeqBmkJq5ZBHBQe
+         tQ56q0AiboxNMJm1CQmPeLOSGK+cqldtxPoe+fVNVkvzCz1XF3RFhk3Uu7/EZYa+QGgE
+         eCoA==
+X-Forwarded-Encrypted: i=1; AKwUvBwRV7fRgQrNfkw1FRGbAmzjICknEl6+lVVBPqb927+E3uhuhS5Mom4CHgLs6N6Em1ABnHeXFHDU2Q==@kvack.org
+X-Gm-Message-State: AFq9FYKvdaDXBN7/50kYhpnpkE2btQhH15xQ1rDZCqFsjjR13bv+wA+k
+	frEor2NWPDGZMdHdIVisH5GHEXhaWTsjtW3GRAEj3FlTvvIvmkMq253wPl46wpVw6xs=
+X-Gm-Gg: AYBFou338g//ZxuDaKILSJgo4FpIRdIqCLn5/P+Hv0ipa95FMXoRPkwzRgCekjS8J/a
+	vbe62aqEaxY9p5Tf1T5RUbN2bBDrTkhbINH/Vakcpemxeut2/7Jb7oB6E71EG5ubrQ9Idkszjco
+	Fwd84oQds3IkFQr3JOLuBOG6YoAYMNNwnYSiZr7oYxGML79U5W9OR6ghqZF34zXrqvLT+46eLIE
+	JrJcmkl5Oo2KwsIPHWkZ+DsP8CtWoQ8fT/VPlos+G/tiLZJnLEb1RisgGUBcNViK9s9TD0GEB7W
+	m/FhotUS8MjInyoWqyva9BKsNmEGeD5yMFmWNtJ0TMXgLNd3AIpyi+4L9CrpfYtjuqy12vEWVms
+	uj1txDxE1aklQ+PlxjWzzOZ1ZZKVCtuciC4wCq9mqVzBePu1StRNEmRlMImbBYE4u5RLn4tOP1h
+	Zem5ytxPoVSsyP5DXfXC0xcNqMVHfcsBpYR+5l54f9azmzUwP9d/Tkn2993yDvw8YngIEOlZjyD
+	K+Z+rR4OJ3YijWLqp9yT5ap8A4j8nyOPoW3/41x5/m1IO8aeFkES/CoDy+jOXZb7wM1n9h39usE
+	mMh2YBga+KO0jsqYpDjK1pG5RSHMWSLCiHbuiFbPIoWi9Yt7OGx+Sgj5YTamge2LeX/Hlrmhghj
+	yQQ3ypW4c1Hu7RNh2uDSmnOY=
+X-Received: by 2002:a05:6a20:db95:b0:3de:7dd6:ff8f with SMTP id adf61e73a8af0-3e7bfc0fce4mr7504911637.50.1793101400652;
+        Tue, 27 Oct 2026 04:43:20 -0700 (PDT)
 Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae40469a44sm3591664a91.14.2026.10.27.04.43.06
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd8ccc21274sm2604064a12.8.2026.10.27.04.43.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 04:43:06 -0700 (PDT)
-Date: Tue, 27 Oct 2026 19:43:04 +0800
+        Tue, 27 Oct 2026 04:43:19 -0700 (PDT)
+Date: Tue, 27 Oct 2026 19:43:17 +0800
 From: Chris Down <chris@chrisdown.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
@@ -105,8 +105,8 @@ Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
 	linux-security-module@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: [PATCH 1/3] mseal sysmap: Add mseal_system_mappings= boot parameter
-Message-ID: <5bd3c89d733ad22224f296dfa8900769de937de0.1793094611.git.chris@chrisdown.name>
+Subject: [PATCH 2/3] mseal sysmap: Allow with CHECKPOINT_RESTORE, default off
+Message-ID: <7ff59c2ab6c234ca4d799f862eb7c3f22d671f99.1793094611.git.chris@chrisdown.name>
 References: <cover.1793094611.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -115,18 +115,18 @@ Content-Disposition: inline
 In-Reply-To: <cover.1793094611.git.chris@chrisdown.name>
 User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A3462100008
-X-Stat-Signature: amcjzp4kfngoycpmmpm1znuq5j3tgx3p
+X-Rspamd-Queue-Id: C324780003
+X-Stat-Signature: nckrudwk3os5sgxyukn5chtrhertnimd
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793101388-417214
-X-HE-Meta: U2FsdGVkX18qpNmYSfdwA8fCjO8QpjbYEINhMsy8Qmiai3093dXx5FUhcLp/WPTIU/4tCxXlF3bhVEF153q81s1jywIZXudk6s9B4Buk5EkfIOCeTv41IQ//d9As8cWWLBl7zzHuwa3vEXjiLs6f+I50dydkB24hcgBQzo2fmTDzBwASb0JabOqkqZ1uT2CX5O09E9rcJF6t5Td9CRwdloyXm3fqJnnbq5aqVcxDqXYoGhHqyBLFZmtVDlssqlf/xfAbdXRon8DiHZxp70nbwPyv8wYlGL+s4O+lKAfcd7VY0zWEZR+eKVSjlci/bpyvO+OFtNijnzG3e2cjmRyWKOJ2i2qZpVafJTN/BEnZxyIBZmIEERfUYLrq+lJwn2TJq5tXOIGMTm/1gxm4ZtRYEd5XxRclUdyl+OTlwQhWdiq59GenOKkzj9Jz5Nsbs5QrpWzipchXikZmHIyWv4HVEtiM16RRCrDAq8kqk00KOh6DIIqfr9EGGSNsNrrBuEVCXxvNRovN2bH8FJJjBEfa8qLpI6zWieCFgCIrwuRFrhyKYjDNqEWswYOPXNzz0kfkR/ThCrlR9HeKFADsqHl5hh5m2f5S1mxlfnoNiT9xdMwzsHaVYT40Rlr70q5kR12CT4HWARKVUEmIC2GwENhgL0BdLP82yRYsOVh7hYwozycPNMu8QGy/g7zXPCWM5aQhIvierl8V24QMtaLVwqWCyQvDlQ3L5mpEUggpelzXDUMo6ohqb7aPXl7SW2maB6BJfrRzSR8LQcxpl2QXPpYA1yWeN/V/PvB9AAHQ8joZFFL8zIMEpdd1Hz46nzlcvHrotcoxGtTmWG4fjJjYFiAUWHt2bmbnB6Bh3fG9zolcwNQDVrFlNK4cwxiDxf3KarTRPdYG9L4dyDFp728XqcCE2Evpbi8g8v34aN22vCGa89F1RWgm+4NE1Lzxi/fmv4ePTRUOVjyNEtcGJgu2M+y
- WGkPVslm
- DPL2S6iV+IqBmias0VrzPhy7Hai/p/lweprwqpBnuFQL0gMMMqWi6DWKXLr6vXdtjOJHLNEnXqTrWMw/LmGb7/3dbej0y6MtqUP99h5mvFSyyEhprZ7WXYXUXK/3iiS5SKn/OT0VMCb1TA0OJkcui9+GL+KoVHTfPJ+2CYAi3RRqAOYk0XS8p2w8S0ozk9PfYLkI5YMwUEjdnZ/Fkx5tp0OjsTPGEeF43AU2XcEHhvyDzQZnlKXJp2DAWeqsNRrCvsRCMI6WDrWQ9LiUJ0v9K63/yWJZbd3rD2tEf2iWwwtntWBIVYmc2lEuvFwoDce2WPx0hWn9ES4sEsNAezqB/+nn7NzV4VhWJmC+/y9w2e9aofve4WX47A3JFCb3asam2ZMTb4oUROlSkW/e857mneWCOLuc4tiqLZ1y+F4+xVjuBNQz/1EPLoKFEPfS/iCk+5BRnWjovw3qi3Z/DXq4lsFYumQxErXtGbigYlTN2ZmdvdvAmlf5z7Tct/j3YI/fsopkaDW4X2Vsv7sGLHwFv6W4qQ7528aPgiNcv
+X-HE-Tag: 1793101401-113899
+X-HE-Meta: U2FsdGVkX1/TmDl4zQLZBteQY2l8AJzy3YsREj1cqlmyy8gBaXviav77uia3L8o9oCJeBKvfr9AeCGB+CMBXsqsOPxAdJzN3J7qHWducqKbl9tAYw19AQjKJO7NiiYKAJcGzmub9BwdEvnSxBv8oBISiJSV2JAn8c7DTwZXw8Tk2yy8eaZfQ4f08/wuML6LjN9xFJs97lkmncQIpJTVHuJzEHbUjq7yElQoKtVRqW5PQqj884tm9S9fefpCHyCL+qYM+8l+9YBVXXGQKL21Gr5vCbaZfM3hiHA2tF8pXd65PA4jmjrE3FAz3X2hSq7rGZcmoAfc1gqqP2uMBKKna8y3At0LOS4l3yuZhdMMklqW8PC4IJO9Yo1wbEo/ZLnNAV8gyFk67qcRwD5LRfhU1qe1bKrfVo+IkYCrMN5eVxDMPJL6Auc1q3Ium3IdUlSPo3xXjMBFQpiEwSNDM6JeWS3yLJuXNrlLiuFRVesdbUp3+9sKVbp8ZQh0TmFhXxZshkO4nRNGA1K+Z2D+yZHZUNfaBXZWJ1PPD0cvn4pjemVxKAJmum3bso7KoKU/8m5if2LiShHXTKtDZdMHWFnKDk+7H+quQj6H+rAIEemRYz7CJaifAwrMZFvz7q1UvnDGvqVBhWgUlNajM0U4x5YPmQT26bb1YXDcB3MFsmCy60EZVeMBfw/2LNMH0mn8tu09c8ARfjkhe4jZhM7c+9W5/+GdG/UNnnZEyfqOD0kO0LPcP4QWuDTjvwRWFzoJV4SiuZ41yuD6CBfjo+VSuI5Pg3MIh4Qx7A7uCyJ7O9UgeU0AW+2dVtqCTrzRapLH8oJjkc70TO+5m+6EhaFVyz8df/6iTxGYytPMknG34b219mbaK9tSgG0M2Zg/Px00KB788gmDw7nO3pLsuWvUyXbP/gA7Op/QL4aqecOB2CKJegsXShABaErUnsjXu/JErmUYNbECSNl9dfSfbZ9Q3nMV
+ yBl/XfjH
+ q1B9E9SowSKK91RemXfYeFTK8hciJcs+mMOgeFFqxAfFC+qmxgJcl6OWjftFuxiedFQjWTcsiJzDPHBsp6sZfYkrD8pR9VOihu0lmsPkwxN9W7+pQCAuEFDa5u6mDSvrK1aJv1hC8yHZDF6OC8lHnzJ6nmkQki9Feiv+0FobLWSSGZJ+xo6sgjIxk9rppVuuCdWT6kH3F57oN/ugBxA7U+pUm2gkikPQRlYSBU2gOdeMUQyvm5lwmb7JNm4bfmNdf6KNTYjE8UzgfA1c/Ttw74QeStQVrz5LB/cKempUu55cJ/k5WBF+DTSxV6prCX9RJC4utcAlKQYPOJiRW9q+61P+8VwoUpfJWrCYJbLC4468xqDX6K5OLZFX7D5xBbJweHLCjDsSGH3TkIlWPxWqCkev5H2P4T0Q19UzpgCk+wgD624hx5b7rGEqY9wkSNT+So6hkkjhdcbEPKjcM25S/X1JSxIrHR4DQe1/JsVV+CgJA1U/h+ySAwEf58686wLNZiQk7lWjjhnwB/uY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,299 +135,201 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-CONFIG_MSEAL_SYSTEM_MAPPINGS seals each process' system mappings when
-they are created. As it is today this can only be toggled at build time,
-so hosts that need sealing and hosts running software which moves or
-unmaps these mappings end up with separate kernels. This is not ideal
-since it adds more complexity of deployment, it would be great to be
-able to have one kernel which can configurably do both.
+MSEAL_SYSTEM_MAPPINGS depends on !CHECKPOINT_RESTORE because CRIU moves
+system mappings when restoring a process. Now that sealing can be chosen
+at boot we should instead use this to determine defaults.
 
-So, to improve this, let's add mseal_system_mappings= so that this can
-be chosen at boot.
+Let's add MSEAL_SYSTEM_MAPPINGS_DEFAULT_ON and move the dependency
+there. Existing configurations retain their behaviour. Kernels built
+with CHECKPOINT_RESTORE can build sealing in, but will only seal
+mappings when explicitly requested with mseal_system_mappings=1.
+
+Hosts can also share a kernel built with MSEAL_SYSTEM_MAPPINGS=y and
+MSEAL_SYSTEM_MAPPINGS_DEFAULT_ON=n, enabling sealing only where needed.
+This lets hosts which need sealing share the kernel image with hosts
+which need their system mappings to remain movable, which simplifies
+deployment.
 
 Signed-off-by: Chris Down <chris@chrisdown.name>
 ---
- .../admin-guide/kernel-parameters.txt         |   7 ++
- Documentation/userspace-api/mseal.rst         |   3 +-
- include/linux/mm.h                            |   3 +-
- mm/mseal.c                                    |  12 ++
- security/Kconfig                              |   2 +
- .../mseal_system_mappings/sysmap_is_sealed.c  | 104 +++++++++++++++---
- 6 files changed, 115 insertions(+), 16 deletions(-)
+ .../admin-guide/kernel-parameters.txt         |  2 +-
+ Documentation/userspace-api/mseal.rst         |  4 +-
+ mm/mseal.c                                    |  3 +-
+ security/Kconfig                              | 17 +++++++-
+ .../selftests/mseal_system_mappings/Makefile  |  2 +
+ .../selftests/mseal_system_mappings/config    |  2 +
+ .../mseal_system_mappings/sysmap_is_sealed.c  | 42 ++++++++++++++++++-
+ 7 files changed, 66 insertions(+), 6 deletions(-)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index e75344f4e0cd..b1ec9a8a979e 100644
+index b1ec9a8a979e..628f4cccd38e 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4270,6 +4270,13 @@ Kernel parameters
- 	MTD_Region=	[MTD] Format:
- 			<name>,<region-number>[,<base>,<size>,<buswidth>,<altbuswidth>]
+@@ -4275,7 +4275,7 @@ Kernel parameters
+ 			whether system mappings are sealed for this boot.
+ 			See Documentation/userspace-api/mseal.rst.
+ 			Format: <bool>
+-			Default: 1 (enabled).
++			Default set by CONFIG_MSEAL_SYSTEM_MAPPINGS_DEFAULT_ON.
  
-+	mseal_system_mappings=
-+			[KNL,EARLY] Under CONFIG_MSEAL_SYSTEM_MAPPINGS,
-+			whether system mappings are sealed for this boot.
-+			See Documentation/userspace-api/mseal.rst.
-+			Format: <bool>
-+			Default: 1 (enabled).
-+
  	mtdparts=	[MTD]
  			See drivers/mtd/parsers/cmdlinepart.c
- 
 diff --git a/Documentation/userspace-api/mseal.rst b/Documentation/userspace-api/mseal.rst
-index c039d782f9f5..4e50215e4762 100644
+index 4e50215e4762..c1d6dbb006dc 100644
 --- a/Documentation/userspace-api/mseal.rst
 +++ b/Documentation/userspace-api/mseal.rst
-@@ -142,7 +142,8 @@ Use cases
- 
+@@ -143,7 +143,9 @@ Use cases
    If supported by an architecture (CONFIG_ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS),
    the CONFIG_MSEAL_SYSTEM_MAPPINGS seals all system mappings of this
--  architecture.
-+  architecture. The kernel command line parameter
-+  ``mseal_system_mappings=0`` turns this off at boot.
+   architecture. The kernel command line parameter
+-  ``mseal_system_mappings=0`` turns this off at boot.
++  ``mseal_system_mappings=0|1`` turns this off or on at boot. The default is
++  set by CONFIG_MSEAL_SYSTEM_MAPPINGS_DEFAULT_ON, which is off with
++  CONFIG_CHECKPOINT_RESTORE.
  
    WARNING: This feature breaks programs which rely on relocating
    or unmapping system mappings. Known broken software at the time
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 5f82be0fcde5..2329d81b7d46 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -568,7 +568,8 @@ enum {
- #define VM_STACK_FLAGS vma_flags_to_legacy(VMA_STACK_FLAGS)
- 
- #ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
--#define VM_SEALED_SYSMAP	VM_SEALED
-+extern bool mseal_sysmap_enabled;
-+#define VM_SEALED_SYSMAP	(mseal_sysmap_enabled ? VM_SEALED : VM_NONE)
- #else
- #define VM_SEALED_SYSMAP	VM_NONE
- #endif
 diff --git a/mm/mseal.c b/mm/mseal.c
-index 7a8ac66dc215..e0563796cfa3 100644
+index e0563796cfa3..8f2f2a149915 100644
 --- a/mm/mseal.c
 +++ b/mm/mseal.c
-@@ -7,6 +7,8 @@
-  *  Author: Jeff Xu <jeffxu@chromium.org>
-  */
- 
-+#include <linux/init.h>
-+#include <linux/kstrtox.h>
- #include <linux/mempolicy.h>
- #include <linux/minmax.h>
- #include <linux/mman.h>
-@@ -16,6 +18,16 @@
- #include <linux/sched.h>
+@@ -19,7 +19,8 @@
  #include "internal.h"
  
-+#ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
-+bool mseal_sysmap_enabled __ro_after_init = true;
-+
-+static int __init early_mseal_sysmap(char *buf)
-+{
-+	return kstrtobool(buf, &mseal_sysmap_enabled);
-+}
-+early_param("mseal_system_mappings", early_mseal_sysmap);
-+#endif
-+
- static bool range_contains_unmapped(unsigned long start, unsigned long end)
+ #ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
+-bool mseal_sysmap_enabled __ro_after_init = true;
++bool mseal_sysmap_enabled __ro_after_init =
++	IS_ENABLED(CONFIG_MSEAL_SYSTEM_MAPPINGS_DEFAULT_ON);
+ 
+ static int __init early_mseal_sysmap(char *buf)
  {
- 	VMA_ITERATOR(vmi, current->mm, start);
 diff --git a/security/Kconfig b/security/Kconfig
-index f7bf6cdc6229..d5e83af1bfc6 100644
+index d5e83af1bfc6..6a6323e0897d 100644
 --- a/security/Kconfig
 +++ b/security/Kconfig
-@@ -67,6 +67,8 @@ config MSEAL_SYSTEM_MAPPINGS
+@@ -53,7 +53,6 @@ config MSEAL_SYSTEM_MAPPINGS
+ 	bool "mseal system mappings"
+ 	depends on 64BIT
+ 	depends on ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+-	depends on !CHECKPOINT_RESTORE
+ 	help
+ 	  Apply mseal on system mappings.
+ 	  The system mappings includes vdso, vvar, vvar_vclock,
+@@ -67,11 +66,25 @@ config MSEAL_SYSTEM_MAPPINGS
  	  of writing includes CHECKPOINT_RESTORE, UML, gVisor, rr. Therefore
  	  this config can't be enabled universally.
  
-+	  Sealing can be turned off at boot with "mseal_system_mappings=0".
-+
+-	  Sealing can be turned off at boot with "mseal_system_mappings=0".
++	  The "mseal_system_mappings=" kernel command line parameter can
++	  be used to enable or disable sealing at boot. The default is set
++	  by MSEAL_SYSTEM_MAPPINGS_DEFAULT_ON.
+ 
  	  For complete descriptions of memory sealing, please see
  	  Documentation/userspace-api/mseal.rst
  
++config MSEAL_SYSTEM_MAPPINGS_DEFAULT_ON
++	bool "Seal system mappings by default"
++	depends on MSEAL_SYSTEM_MAPPINGS
++	depends on !CHECKPOINT_RESTORE
++	default y
++	help
++	  Sets the default for the "mseal_system_mappings=" boot parameter.
++
++	  With CHECKPOINT_RESTORE=y, system mappings are only sealed when
++	  "mseal_system_mappings=1" is given, since CRIU needs to move them
++	  when restoring a process.
++
+ config SECURITY
+ 	bool "Enable different security models"
+ 	depends on SYSFS
+diff --git a/tools/testing/selftests/mseal_system_mappings/Makefile b/tools/testing/selftests/mseal_system_mappings/Makefile
+index 2b4504e2f52f..d3b88af06c94 100644
+--- a/tools/testing/selftests/mseal_system_mappings/Makefile
++++ b/tools/testing/selftests/mseal_system_mappings/Makefile
+@@ -1,6 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ CFLAGS += -std=c99 -pthread -Wall $(KHDR_INCLUDES)
+ 
++LDLIBS += -lz
++
+ TEST_GEN_PROGS := sysmap_is_sealed
+ 
+ include ../lib.mk
+diff --git a/tools/testing/selftests/mseal_system_mappings/config b/tools/testing/selftests/mseal_system_mappings/config
+index 675cb9f37b86..493bbf834a84 100644
+--- a/tools/testing/selftests/mseal_system_mappings/config
++++ b/tools/testing/selftests/mseal_system_mappings/config
+@@ -1 +1,3 @@
+ CONFIG_MSEAL_SYSTEM_MAPPINGS=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
 diff --git a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c b/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-index cb0ca6ed7ebe..97348c2a0689 100644
+index 97348c2a0689..ea75ad537620 100644
 --- a/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
 +++ b/tools/testing/selftests/mseal_system_mappings/sysmap_is_sealed.c
-@@ -1,12 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * test system mappings are sealed when
-- * KCONFIG_MSEAL_SYSTEM_MAPPINGS=y
-+ * Test system mapping sealing and the mseal_system_mappings= boot parameter.
-  */
- 
- #define _GNU_SOURCE
- #include <stdio.h>
- #include <errno.h>
-+#include <ctype.h>
+@@ -10,6 +10,8 @@
  #include <unistd.h>
  #include <string.h>
  #include <stdbool.h>
-@@ -17,6 +17,73 @@
- #define VMFLAGS "VmFlags:"
- #define MSEAL_FLAGS "sl"
- #define MAX_LINE_LEN 512
-+#define SYSMAP_PARAM "mseal_system_mappings="
-+
-+static int parse_bool(const char *s, bool *res)
-+{
-+	if (!s)
-+		return -EINVAL;
-+
-+	switch (tolower((unsigned char)s[0])) {
-+	case 'e':
-+	case 'y':
-+	case 't':
-+	case '1':
-+		*res = true;
-+		return 0;
-+	case 'd':
-+	case 'n':
-+	case 'f':
-+	case '0':
-+		*res = false;
-+		return 0;
-+	case 'o':
-+		switch (tolower((unsigned char)s[1])) {
-+		case 'n':
-+			*res = true;
-+			return 0;
-+		case 'f':
-+			*res = false;
-+			return 0;
-+		}
-+		break;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int sysmap_sealed_expected(void)
-+{
-+	char cmdline[4096], *tok, *save;
-+	int sealed = 1;
-+	bool value;
-+	size_t len;
-+	FILE *f;
-+
-+	f = fopen("/proc/cmdline", "r");
-+	if (!f)
-+		return -1;
-+	len = fread(cmdline, 1, sizeof(cmdline) - 1, f);
-+	if (ferror(f) || !feof(f)) {
-+		fclose(f);
-+		return -1;
-+	}
-+	fclose(f);
-+	cmdline[len] = '\0';
-+
-+	for (tok = strtok_r(cmdline, " \t\n", &save); tok;
-+	     tok = strtok_r(NULL, " \t\n", &save)) {
-+		if (!strcmp(tok, "--"))
-+			break;
-+		if (strncmp(tok, SYSMAP_PARAM, strlen(SYSMAP_PARAM)))
-+			continue;
-+
-+		if (!parse_bool(tok + strlen(SYSMAP_PARAM), &value))
-+			sealed = value;
-+	}
-+
-+	return sealed;
-+}
++#include <sys/utsname.h>
++#include <zlib.h>
  
- bool has_mapping(char *name, FILE *maps)
- {
-@@ -30,7 +97,7 @@ bool has_mapping(char *name, FILE *maps)
- 	return false;
+ #include "kselftest.h"
+ #include "kselftest_harness.h"
+@@ -52,14 +54,52 @@ static int parse_bool(const char *s, bool *res)
+ 	return -EINVAL;
  }
  
--bool mapping_is_sealed(char *name, FILE *maps)
-+int mapping_is_sealed(FILE *maps)
- {
- 	char line[MAX_LINE_LEN];
- 
-@@ -43,7 +110,7 @@ bool mapping_is_sealed(char *name, FILE *maps)
- 		}
- 	}
- 
--	return false;
-+	return -1;
- }
- 
- FIXTURE(basic) {
-@@ -67,53 +134,62 @@ FIXTURE_TEARDOWN(basic)
- FIXTURE_VARIANT(basic)
- {
- 	char *name;
--	bool sealed;
-+	bool sysmap;
- };
- 
- FIXTURE_VARIANT_ADD(basic, vdso) {
- 	.name = "[vdso]",
--	.sealed = true,
-+	.sysmap = true,
- };
- 
- FIXTURE_VARIANT_ADD(basic, vvar) {
- 	.name = "[vvar]",
--	.sealed = true,
-+	.sysmap = true,
- };
- 
- FIXTURE_VARIANT_ADD(basic, vvar_vclock) {
- 	.name = "[vvar_vclock]",
--	.sealed = true,
-+	.sysmap = true,
- };
- 
- FIXTURE_VARIANT_ADD(basic, sigpage) {
- 	.name = "[sigpage]",
--	.sealed = true,
-+	.sysmap = true,
- };
- 
- FIXTURE_VARIANT_ADD(basic, vectors) {
- 	.name = "[vectors]",
--	.sealed = true,
-+	.sysmap = true,
- };
- 
- FIXTURE_VARIANT_ADD(basic, uprobes) {
- 	.name = "[uprobes]",
--	.sealed = true,
-+	.sysmap = true,
- };
- 
- FIXTURE_VARIANT_ADD(basic, stack) {
- 	.name = "[stack]",
--	.sealed = false,
-+	.sysmap = false,
- };
- 
- TEST_F(basic, check_sealed)
- {
-+	int expected = 0, sealed;
++static int sysmap_config_expected(int *enabled)
++{
++	struct utsname uts;
++	char line[MAX_LINE_LEN];
++	bool default_on = false;
++	gzFile config;
++	int expected;
 +
- 	if (!has_mapping(variant->name, self->maps)) {
- 		SKIP(return, "could not find the mapping, %s",
- 			variant->name);
- 	}
- 
--	EXPECT_EQ(variant->sealed,
--		mapping_is_sealed(variant->name, self->maps));
-+	sealed = mapping_is_sealed(self->maps);
-+	if (sealed < 0)
-+		SKIP(return, "could not read the mapping's sealing state");
-+	if (variant->sysmap) {
-+		expected = sysmap_sealed_expected();
-+		if (expected < 0)
-+			SKIP(return, "could not determine the expected sealing state");
++	*enabled = -1;
++	config = gzopen("/proc/config.gz", "rb");
++	if (!config && !uname(&uts)) {
++		snprintf(line, sizeof(line), "/boot/config-%s", uts.release);
++		config = gzopen(line, "rb");
 +	}
-+	EXPECT_EQ(expected, sealed);
- };
++	if (!config)
++		return -1;
++
++	while (gzgets(config, line, sizeof(line))) {
++		if (!strcmp(line, "CONFIG_MSEAL_SYSTEM_MAPPINGS=y\n"))
++			*enabled = 1;
++		else if (!strcmp(line,
++				 "# CONFIG_MSEAL_SYSTEM_MAPPINGS is not set\n"))
++			*enabled = 0;
++		else if (!strcmp(line,
++				 "CONFIG_MSEAL_SYSTEM_MAPPINGS_DEFAULT_ON=y\n"))
++			default_on = true;
++	}
++	if (!gzeof(config))
++		*enabled = -1;
++	expected = *enabled < 0 ? -1 : *enabled && default_on;
++	gzclose(config);
++	return expected;
++}
++
+ static int sysmap_sealed_expected(void)
+ {
+ 	char cmdline[4096], *tok, *save;
+-	int sealed = 1;
++	int enabled, sealed;
+ 	bool value;
+ 	size_t len;
+ 	FILE *f;
  
- TEST_HARNESS_MAIN
++	sealed = sysmap_config_expected(&enabled);
++	if (!enabled)
++		return 0;
++
+ 	f = fopen("/proc/cmdline", "r");
+ 	if (!f)
+ 		return -1;
 -- 
 2.54.0
 
