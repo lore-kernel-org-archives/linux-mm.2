@@ -1,80 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E3B606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34B3606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mbBcKjaD
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ftRU37dy
 Received: by kanga.kvack.org (Postfix)
-	id A1F276B08B5; Tue, 27 Oct 2026 15:22:59 -0400 (EDT)
+	id A977F6B08B7; Tue, 27 Oct 2026 15:23:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F7AB6B08B7; Tue, 27 Oct 2026 15:22:59 -0400 (EDT)
+	id A6EC86B08B9; Tue, 27 Oct 2026 15:23:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E6746B08B8; Tue, 27 Oct 2026 15:22:59 -0400 (EDT)
+	id 934CE6B08BA; Tue, 27 Oct 2026 15:23:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 651686B08B5
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:22:59 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D05DE80AC5
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:22:56 +0000 (UTC)
-X-FDA: 85369378752.03.4AD480A
+	by kanga.kvack.org (Postfix) with ESMTP id 62EA36B08B7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:23:12 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A487A8859
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:23:12 +0000 (UTC)
+X-FDA: 85369379424.10.C2AC020
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1B1AB40008
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:22:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mbBcKjaD;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793128975;
-	b=aFSp9ib+BLlUDvCTMrx1zbxdSLaD8gY0budXo+rYkmJ0PcxjMORMfKxKLSmamz8Und4Y/E
-	xjPPU1orpZExT6gd2ptWa0yBx0FWuGOhTYlHAIlynTlfor4bU9HNOBY9Zp4LkeyXs+M7uJ
-	BmdLPf+LAQmJdrjfZ/GFA425P87E/5g=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mbBcKjaD;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 51308C0003
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:23:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ftRU37dy;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793128975;
+	s=arc-20220608; t=1793128990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CmHIg5Am5Rl4OyiVljbueHpe0qSwosHitoSBvm1s4Dg=;
-	b=hwKXgYViNY3USdbap03JQSFzI+aJNKM54nJaru6lQZbanE+XAjOSizc21TOcL6g5FNqhPM
-	4PzX6SxGfxF/xOzYJIruhTI024tWWDKqEC74p4EmF7/vdwNbMkF74KNYoolQKll11q0ab5
-	bFcWR++/9GQmsd/I0udjT6RKS8RUrCg=
+	bh=HoOcwxnYW5BPsnbBpyOUUjSJrZpAEuBUDQ6Rytj43SI=;
+	b=dbwI+R4Y+uyQ4QNlgaAdSurYQlPE9T34DMicurrLcP9RhWKlpyH15oj8eFK4MVJ9B+SNiu
+	1PQzMX9+8LSUDdnipWJGEkpqY9/38dTNKehzU1S01NBSqAAFRsTjjRz8Lf58akhSVz0yKq
+	zgGFgqA5g6d3B78WS6X4tEf3K0YsIuQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ftRU37dy;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793128990;
+	b=eRCyTTktaCifUjo2HPJbCY62qYXjB2qxA/OYpb41i94Q6lAGNs2Has3znvY6rSC/1dQBX+
+	PW9QcWQ/8CRYSknENti+txig3gEO6rncfSDm4iqKHHzOmAOAMgDLsgF0ndqSefWoEGuYK+
+	Zsw56X1SpXv21W0EP7vlbIoUYutAIBU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 748D960534;
+	by tor.source.kernel.org (Postfix) with ESMTP id CD91E6022E;
+	Tue, 27 Oct 2026 19:23:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331471F031E6;
 	Tue, 27 Oct 2026 19:22:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C501F01825;
-	Tue, 27 Oct 2026 19:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793128974;
-	bh=CmHIg5Am5Rl4OyiVljbueHpe0qSwosHitoSBvm1s4Dg=;
+	s=k20260515; t=1793128989;
+	bh=HoOcwxnYW5BPsnbBpyOUUjSJrZpAEuBUDQ6Rytj43SI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mbBcKjaDUzUToQwzCV+6Pgw0tzlFD93S9m1+KWfG1NxVpkyCRRNCeTQwiMNIOfzvn
-	 Sepy4cP6buD5heeyq6OynLNzNTGdO00RkWDd0HqkGKmTptI8bihK23QBxhd/Wqlonf
-	 HbWh4RvfN3us9Hc0aASVdF6DtQcbxkvLXWp3rkhuItiwQf8kK98x9/vIo3CCT3q+Ag
-	 ZeBaYiMvwQBc7P/f1/3KXVozk+l9bV0Uk87EM9uSlMEaK/HEsSJ27Yr2GFx6cacDE/
-	 C46o3eLzcUWhsQoYCuflTeg/cKr6z05wLtUyE8LSSSA1LnR+P/p7FBp/xOTeU8yg0W
-	 8nFzhp8mMriYg==
-Message-ID: <5875ffa2-6d8d-4b30-9998-ffbe290a44b2@kernel.org>
-Date: Tue, 27 Oct 2026 20:19:33 +0100
+	b=ftRU37dyB4p0fpCveWi8u9OzVVMH+c9jVXZBnjJEcbX+3eUtHh0Bpvj0EPoUXVaPi
+	 0QIZG6aMCRRp9b8cz1jyaC4I/RPv5oyxP0gLO6UnDAB0wFu8xZJKIBLAV8TY4tp2Zs
+	 V90tZ5gdhOHNZIuy4O8LU/EauDhEGQ1e41/XKUoUv+VeND2ArLOaAradJIZSY1HXf1
+	 4HUN70NN0Glr6awt8YHNGO19R2ozNFjPj7mGG/v7TegGd0qz55IDN87LZJ/bb9e51c
+	 XNnTusUt2bSy/KdE3hQfe6e0wG0LfmdjZ9rOOnLn6PNHQxl3T0uu0eA167PkncXzMF
+	 vWwdNA1FTwpXg==
+Message-ID: <ec55c760-f099-48e1-900b-9f8e2e5315da@kernel.org>
+Date: Tue, 27 Oct 2026 20:20:43 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/46] mm/huge_memory: fix list corruption when
- deferred_split_scan() races with deferred_split_folio()
-To: Mani Tofigh <mt4022@columbia.edu>, Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH 20/46] mm/gup: fix clearing folios in memfd_pin_folios()
+To: Pratyush Yadav <pratyush@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
@@ -82,7 +82,6 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
  Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
  Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
  Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
@@ -102,13 +101,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
  linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, stable@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>
+ linux-cxl@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-10-6f74bec9a5bb@kernel.org>
- <auCw2-_yjh1_RjiO@cmpxchg.org>
- <5d431bf7-8813-4e2c-a40d-b45d4ff39a5b@kernel.org>
- <208738b1-35df-458c-9955-e2e5318fd2c7@columbia.edu>
+ <20261027-fixes_core-v1-20-6f74bec9a5bb@kernel.org>
+ <2vxzbj8fp4sn.fsf@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -155,21 +152,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <208738b1-35df-458c-9955-e2e5318fd2c7@columbia.edu>
+In-Reply-To: <2vxzbj8fp4sn.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 51308C0003
+X-Stat-Signature: skpa3k8zgwety3u37cggmtru7f5fjxqt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1B1AB40008
-X-Stat-Signature: sfuspjxdrja9hpxnkk15ukj161q1853c
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793128974-292410
-X-HE-Meta: U2FsdGVkX19sOeyxWHy9iSLcm+oSw7snEdJ5Xk86SwP76k6LhMxCwXf7VJtW1GzARjhF3YosInFa7TlHplmyzQ8Nbz4IX3BbeLupRNHWtSzdpPGDtLZBmN+Am4TB+e9R8s+hL7o4oAUKOS/SVF0IiW2BQqLrc9DBSWCEHgYyIEHPVE+tKDD54lJNo0b+iUQMVry8RP3keRR5k8g+blRXyYf+QWeC/4YdXBXSWy5Nqj2EaZmDHuDSHlkh4xyujGAcrB4plMmdtg5PGR1KPBo33YENUP+7COnptGNgbQdja8XxOGwU0lfGKBz6DiuKfsrw+G5qZi7kFj+9UHQ8xQsYLzB/hSoiPYw7lnr2XpvCSAfyPxE1zVg88Wj4fTJOFflZ/7tnnlyzvAqWwoYlNscvIOOWyg6dqFFrr74tuJZaAUoNcplJHfQQD5ZfpE5AOMRaZjrWf2uL1CRZHAVHMwwQuQFVsBlwjBu5cszIx/MSGgklxTvIKHWPtQ/o0gj0E77jmnN1J1i2XhQi91x1jQM2+s9rXCSeVE5xmxGu+3oKW4jotnC9Lxtd3e/kIHilL/f9tk+awJ6kTXHA04FUcyebzL6EyblAH05V/haBkjNfRujFB4vT4wMqrjCtDmllD6rDLMxoLQ/jv8lKWH3LphKnaPYfslYXvzqlc0ZrNbF+NWo8XNsQhWyztFgzUnrZlIFqCErlHGuWpoA3hQo0nPgPgWdleAquifDBuDDxvmO5NXw1c402g+buR0BndqCqw0nUThNcKyf5ZhWmFdjf4ITklcVwSqWbenUZx4kWw3Bp4IeS4RhBLy4MF9TOqz2/ykn9Gs3jhwqiM8EMK9DiYRFI50qAcnRD1R3Fe5OXZMHDheCV8SmVKg+CJSTulHZBdyfx6ouez8Hjd+7auJ7PALCIBl4kXEpMWpST2jOl5yedBWqCy7/52VwxNkgVx9D0gmuEsD37h1TCiE+nrJsR0fr
- vxlequiG
- Hc+9pP/38l8Cbyz1idGrtyB8g5PeZFdl+T6uzjQErlaUpVftk9B14z84r8vTGvNP9gCoqkvaMpP5oM+JN99PCwzjdtSu6067Sy5bfpke3tbArGJyuH+TQxMnlSkyamQ4pYlpKhQYoARuYVCyHONhOZGF22OxYjW/s9qgJssgZOpTsW9lGKrDLtw7xbsH7/4H3km8HH+0/Pv4FQ/5cby3zRAhPSZsn4l41OC+5Zd1QQTZQjW8ayMU8cHJLOx4HhFojy/bpjRIGCT/ZOoWVf2gegoL7BylxiZ2lSuxPPc5RK+KeXsx2Vz8A6y885fqzNfJTcwpsK52B4DChTRvUrPQt4Jd/TA8vrDckQjHzSXyHKQ2V3sT6A/TQD67BCDc6cA3wVM6uPJJMUL6U49Dmwbh1Dm9lHYMD8QYvrSxIaEMz6G/q9xqnLCGPYc7lU7YWvNidAeUxRt5S90D3ZDbR3fBLbygBFw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793128990-228129
+X-HE-Meta: U2FsdGVkX1/1lSGas3LpSsCUnspOlbsbKcfhl60kPfkCGlzRMJevzy3lb6i0wpXs4hGW1vLG7bEnbyTJGMnQsISChjJGyo4RllgiH+o6qcjrs/pgCAv0N0//bBNlOqBvur4cHdg6JG6JOHK+O0L9xSVYd1MnNyy+zRsqqAVH9wLTDnDG+E2veqVmwgoRl5s8ReWR2sEWo146l33BWKbQuqX+PItcQaSGWa/RyTPWWwOga3foqwZM0AtftVlI/U50gOUYF3Z8SqbUrfagwGGJ2cPGKorAahq/nwxdRudigKoVbwBTgmuMnlxNV1ZIzRA2QgiJpRmQJW8SppoUKUCkiHW2lobugvgjBvuqpCxSDqMLy6c8WFgz92JQTUgJnbY5LnPr5C3KZOsPQZsYIAU/rAOomzFph26GQ6E16cjfeu7EEuTH0vjYDQyMNKvHqRtIHWnCs7cuRbtspysvKTw/aQvWJAea4/1uey3DSiobJWZj29kV1M6/CK0XRltbtX8Zj4kIv2gZ62BhbEZcQPaU00q9t1H0IhV3lLdRcX1vbdPVGy2FCy/eoY2WgCtnLCMermfv/fBHAx0LTx0wQ39HPspjHM/pwpLMcwNAIvyhcFmRb9yIAhQ/klWiieOqsdPTGIEztE/VjHlfYPy7CF8ky8hVlUcNpASKnYfVIv7lF+FofjTYXfZm8s0JSqVLg5HH2gen0b7Ws2SNegypXJSPGHJk0yrFjavWiRHPjCtC986yvucmk7Prwxt2W3dzgCylX0nTg5ewFVQ+e6qNjwHbXL5MNE0W/XN7707soVMkoqtM2osiwFewLuuGueNvHvU0M45cda7AuwGk8Inc9/9dZpxpbAEAjRf2loMqfDRxBOyM1BIECtggZGD5gamoTcyMeJJsAqxiCeH2V+DkjHR0zmqdmEe5WN7lM2CqmAYd8oQbjK6FkAFwEHbZatAIlJQMuwrRxwmwM967/SnZqQ6
+ T9ynBcaz
+ RiTvYG923+jCS5z8BZCsYKx5BIA4GrK33kaxceQUytdZnyK5JvxWJoY5h4NzumhVDm4lTOYIPrUY8yylbaZgDJvDHf9wxS+E4sa95RWq0R5fpZMg/51OLQeEd3LsSjUJv4Pheig+2qUlKbmrFMzLg+BptZETgB6sMKcsFIz9/eC3hOGlV/9rdK6JuR57XovQ+AnWdwPdQmnm0Kzw9ckZPvVS+QwkHZCDmM2fbrPjMhTScYRPCWEsTlMwnGwDoEHhTHuBekc971uzocsGkXnVGx0DrF+u5Vc7EF1u4fYkfpxBIV6J1kmhJYD8e6TW9nYkL5X7lDh2XPASyTvFf89c0OHxKMMJQzWnohCHeD2zGANUav3lBC++MOf923QYy5nUupdnSdBMoIXKx2MC4/FXgfq/VRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,34 +176,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 19:03, Mani Tofigh wrote:
+On 10/27/26 16:00, Pratyush Yadav wrote:
+> On Tue, Oct 27 2026, David Hildenbrand (Arm) wrote:
 > 
+>> From: Chris Mason <mason@kernel.org>
+>>
+>> memfd_pin_folios() pins folios obtained directly from the page cache
+>> without checking whether they are uptodate. However, shmem fallocate()
+>> can leave newly allocated folios uncleared and not uptodate. Callers
+>> such as udmabuf can then expose uninitialized memory to userspace.
+>>
+>> Clear non-uptodate folios and mark them uptodate under the folio lock
+>> before returning them to the caller.
+>>
+>> Fix generated by an LLM and sent by Chris Mason in private.
+>>
+>> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Chris Mason <mason@kernel.org>
+>> [ david: simplify description and comment ]
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>>  mm/gup.c | 14 ++++++++++++++
+>>  1 file changed, 14 insertions(+)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index efc9aa2654625..47e7ae152cdf1 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -3516,6 +3516,20 @@ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
+>>  					goto err;
+>>  				}
+>>  
+>> +				/*
+>> +				 * fallocate() can leave folios in the
+>> +				 * page cache that were never cleared.
+>> +				 */
+>> +				if (!folio_test_uptodate(folio)) {
+>> +					folio_lock(folio);
+>> +					if (!folio_test_uptodate(folio)) {
+>> +						folio_zero_range(folio, 0, folio_size(folio));
+>> +						flush_dcache_folio(folio);
+>> +						folio_mark_uptodate(folio);
+>> +					}
+>> +					folio_unlock(folio);
+>> +				}
+>> +
 > 
-> On 10/27/26 11:15 AM, David Hildenbrand (Arm) wrote:
->> While I have your attention: This variant works, a different proposal used
->>
->> list_del_init_careful()
->>
->> instead. However, that is documented to require list_empty_careful().
->>
->> Do you think it's worth looking into?
->>
->>
->> https://lore.kernel.org/all/20261026-thpsplit-careful-v1-1-
->> d357d70fd6f4@columbia.edu/
+> Nit: this logic is repeated in a couple places in shmem.c and in
+> memfd_luo.c. Perhaps it deserves a helper?
 > 
-> In this case the careful variant is fine without
-> list_empty_careful() since it writes ->prev first
-> and then ->next with smp_store_release(), and
-> __list_lru_add() only writes to the entry after it
-> sees -> next == entry so it can't race with the ->prev
-> write anymore.
-> 
-> But your version also covers the PG_partially_mapped
-> race your comment mentions, which mine doesn't, so
-> it's the more complete fix anyway.
+> Anyway, sounds like an important fix so don't make my nitpick stop you
+> from landing this if you don't want to bother.
 
-Thanks for checking!
+Thanks! yeah, I had the same thought when trying to improve this. We should have
+an easier way to just not hand out unzeroed folios outside of shmem core
+functions in the first place ...
 
 -- 
 Cheers,
