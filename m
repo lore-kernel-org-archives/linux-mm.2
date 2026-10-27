@@ -1,131 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F37606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 22:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73BC606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 22:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pztf3cph
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aKj1KIBK
 Received: by kanga.kvack.org (Postfix)
-	id A453E6B0912; Tue, 27 Oct 2026 18:55:28 -0400 (EDT)
+	id 9118E6B0913; Tue, 27 Oct 2026 18:58:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F5FD6B0913; Tue, 27 Oct 2026 18:55:28 -0400 (EDT)
+	id 8C1D36B0915; Tue, 27 Oct 2026 18:58:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E5B56B0914; Tue, 27 Oct 2026 18:55:28 -0400 (EDT)
+	id 78F2D6B0916; Tue, 27 Oct 2026 18:58:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 45A326B0912
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:55:28 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AAB4E80B12
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:55:27 +0000 (UTC)
-X-FDA: 85369914294.21.BCCFA2E
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D50071C0005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:55:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=pztf3cph;
-	spf=pass (imf21.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793141725;
-	b=HBsb1inQJE2tNVAVbhkMpC8cmjA0PBdXE4mu68rEjWcVYSe76sSGb+J8gxkTKaAox6k+d5
-	cs5oE/Z/E9qo3O7ue9bPlbWxfdrjcJQKyWDi3MEcMutD0ZxB4xa6a5xq6KmH+uPHU20NVZ
-	N4hhvBfs+0YpxPeSmYbo48NWLz0O2Qo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=pztf3cph;
-	spf=pass (imf21.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793141725;
+	by kanga.kvack.org (Postfix) with ESMTP id 4DFC46B0913
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:58:00 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A147080B3B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:57:59 +0000 (UTC)
+X-FDA: 85369920678.07.2B56814
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B41E88000C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:57:57 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=aKj1KIBK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf30.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793141877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KTV8eg2on2B99kAeZJ8uQmhlFR662/OZM2R8QtayN34=;
-	b=gNTjxXMVwd02AABxJy3NjxVaRtM5Ctjl6L/vP5UT0+khJWEXoSCJi7xIKzB7hZINjLEFha
-	12FtYA5yRsEUq8pf01aQymZTfl1ulsbK10OMmvAMFYopZ9O1Gzqvws6LUIMNZp7a7VBc84
-	QbR42nd5yHX8wuiRja0GD4oMQpGLRI8=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so13425ad.1
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:55:25 -0700 (PDT)
+	bh=72+WHJwwpogSBR2Mae06gxZf+v4TqJlIK48WM/9xNMc=;
+	b=gS+AMbVC1cTMQlhBRV4NazLzIsVz7rpU2UdiMZ5empl/a4TtpwolgWE5ZilcPzmOHXNXtQ
+	amgH6QmGIb87we27nnPzkQIiLbyy6eAwLI10qewEzXg9jL/XmnVFpdyPWjmej2iD+O1OBD
+	rw5fFC7yjNbXZhnODVliuPsT+wC9G+E=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=aKj1KIBK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf30.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793141877;
+	b=ISuqJN4rJ+eo0s5+DIi/ph4esTS2/VEtyBq19tUsRqUjw6na7BcNNqGTm+XQIfEnlhEefF
+	LuliPx0toeub5UkpgiWxSatgOLOoWRxfmpMz2E75myUBJ+CjF4l1y5u3A4LO0p7lOFiLzZ
+	sZDibKIKQ2ZfZkqWAbuYjlOlPrnIjEY=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48dfdd0678dso242656f8f.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:57:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793141876; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mLTpCJRTlob223qX4sJcnylBkQF3Ozce8BtFp4GQUBSA6AdYCHa2NiO0H2CUDa7zTU
+         pqTqbXh9M+G96BDrWSecJsJZITfHAPQpVuzdVLVQMJBL7SvbeK1n3uT0k82c96eRZ690
+         tELPnJYWTbTqomwyGCGrW71yv/TGmoHt3xOmiiMj+9NEGRxNgunxED6pQxL29tUS1fT8
+         JAZ3eNduPSIvm4DWSUWeeS9/SS2ZlR3U9makkCEG7N9Xm1JHczaewBmRHWBPNXNqLXeA
+         L7sNOdKJtT7T46CzZfy2p5DZ+qaoczWCrcHy3Ez9NZIYhinW6uymdEpFYx7emaKh80sS
+         zbrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=72+WHJwwpogSBR2Mae06gxZf+v4TqJlIK48WM/9xNMc=;
+        fh=OCzXJUWurm15rwhFV/vOI3OH0r0bbl10CBwyU+2Jjg0=;
+        b=kML3uG4BinYX2Ael8jiihtwEwGwj0VVctpPTxtyj8hVSdoaOytFnpC7UJYVkxtiOqg
+         6kRkiHSvuf8lQWwhfMu+dEsvOfaD5atMD6X2JxX3nH+QX4ze5X6TlNF7ujLOMlzPwKIX
+         UDZ3OCLdE7pN6q/+Y43BGk4vuav38ve/kJnpkS1wUfvA2IXUz1J+9K/Rf4+2mk1gN+C2
+         GrIHfA6bgObYct23XfFzsjswV04fBpC2ym/Cvz+lhghC14bKEhZS0gbdj5t2Ufhmr8s1
+         JyGV9eqW6UT+r9VEdYvyGSbn6ySSPmkqaIbyi8qoxs/Lt43qLbET+i1ZwAHXuNvr76nP
+         IgFg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793141725; x=1793746525; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KTV8eg2on2B99kAeZJ8uQmhlFR662/OZM2R8QtayN34=;
-        b=pztf3cphSuqkkQoN1qnK3DkVumZEP0El6ngs72LcXqX+J/mQ+ZZWyiFO50CHGDhK7S
-         sFDUDHzxqyDRJUVvRsDk0xUy9OJkCQVpOekSUsLDRNIiHOwNFMqJZYrwHc7Ajdw2LPEg
-         PlEgwayfR4EScRDxVA5zyIhwaWhj18mrDm/ZKKo5RSqD1csgFCq31oNG/1xyWYdPEKSF
-         83Vju8yK3/XJz3ErOhFWo5YCzRAVVEXr+6Cp+x2eadC0VXMMz3NKDCnBMEds/nAUXfa/
-         jcMpZmc4f7VUmTEw+Nut5hk44kvCOUQnnkLCilHxcI7cy+64p9HyqIxdKjl5lor+Gk6b
-         QaoQ==
+        d=gmail.com; s=20260707; t=1793141876; x=1793746676; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=72+WHJwwpogSBR2Mae06gxZf+v4TqJlIK48WM/9xNMc=;
+        b=aKj1KIBKPBPKHpejdk2xnf37gbf5Qrpvu0G5X06PbWdyLrclpxFyp6xqxm9IkeJuDe
+         kQJAwJNh8au+10AuAbJXdgtEqTDX+OQKnYy0XZDnU3iLyFyNrL//Jtt+8LvZhA6eeYMc
+         rE/qA4AQufdXooLp5E/aE38PNNyUAmigg+6NCCE/8L8DW+JGW9npjW5BOLYsnQSQiw8C
+         8WKpGyzG0ED0kubbf260s/KoFOdP1olAkt/iFk3LhTkU3uZaKafZtK6CyP1Eyc1Bjdnq
+         VE0pmMgYvNtHZGNjLsXBA7+V8MvT9vzFdq57MDVRq+9SKxpPnNW1vDl+6Su80LXg+hLZ
+         /XiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793141725; x=1793746525;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=KTV8eg2on2B99kAeZJ8uQmhlFR662/OZM2R8QtayN34=;
-        b=a7K0XCIEGgtvMMiNN4eFG2FA8E3DPrEcFv/6u383m5A3DisrX9T9seGR1osUAHdBhV
-         RIAO9mZYJwlLuJQv1klnQgVSgafTtmDqWF3eyjL7ZhhFFILEnJWrNk9ZUgP/mcFUR5eU
-         QzwF4vZyjNtPjusB98U0RL6RMny++pO8N19u8Fv1ceBm/irxaWXwKjSSdpQdkcNJC6Ce
-         U7ZWgT4gUgDm+sQu16KqpinstNWbYgnjbrysgil/4T4KwKVLueUghDTlLOcBGs9TOeI+
-         Sk83UBN+ofjrcvNRsvRhwZv31QCbiB6KNx88YhJZJQcxOif2ysFLBKCSjvDB8tylRlUR
-         oB9Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxWaMf9XshZW7C9UlHW+zICFMBPMHLF5uS5lM45IkB2nHUHc/ncYjsYuO+xhuTDZWrNoC+sydCFQA==@kvack.org
-X-Gm-Message-State: AFq9FYKHuD8nc6fJMIR05PK+FdaEVdy1BPXwwvyIUJvKTwLF19yKLXzv
-	7/wXk31iBWEqDnSAJqnFzxH9+xTv59agOwzPVV0F/SVMGVd8kypyxcWCfQmkZcmSow==
-X-Gm-Gg: AYBFou31JwIR0S3Y8r3+Rj/WMssEW1u3pEokiEJ2vBnqUG9t9YEjnpVToetEO9FVK3M
-	Xte3t7hJDx1BqlkgYJe9Duk6R8lf9TqBbUPzVuf9d8mBlYxK8ccHDSYXbwfUYLWsabkbfUSELuQ
-	itPl47dFK4hGicseD2ZAiG3mFkrpRUdsGR9rhT3XW9bdk/ij0koX4ZXnlCivfuzh4tMZMzd8zjQ
-	y3Ea676GLP3JXyp15hWE0PXU/KlAvCGgtHcxCVmcUq21VF+GBsoyKzNKXs5N96xAIDpn5sxa97W
-	UdU6LTVyRqmSieHPuKRGbu7CnNyiy5KjEAUA2pOoFm6E72CTxPcwKoeg4H99ruSU5TAx/HiybJ0
-	Tl7jTMoYZlGnya3wdzi5W7kOgxMwjTB9iygnNk6rL9N+IR8BKySLYgAjD9PnzTzNESIRUJpEtru
-	sz+JZcq4GGyesXYDl3t0m+921W2B80wqPE5oytOFgw9cVcv2ie3PF2/f3Sta6BSEojKjJtyNr6E
-	hNyVnK9ZxKhGGSy6HKYuWQpd/t0tJ37LxCj43uw+na0c6gQvReTAaBUP4kU5gP13TG2oBbQjKSu
-	ALZoSksD1iE3RXHXKLd8QJK03sZ3Zy7A71EtKQfrvFyl2nt7QGymUcK5PZikQ6tAICGqcZUFHKi
-	3bgmWNIrBfdmIFAOljSJLsg==
-X-Received: by 2002:a17:903:11c6:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2eb0029f8a1mr1832445ad.2.1793141724187;
-        Tue, 27 Oct 2026 15:55:24 -0700 (PDT)
-Received: from google.com (163.1.145.34.bc.googleusercontent.com. [34.145.1.163])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a6a662e1fcsm516911b3a.30.2026.10.27.15.55.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 15:55:22 -0700 (PDT)
-Date: Tue, 27 Oct 2026 22:55:18 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
-	Jeff Xu <jeffxu@google.com>, David Matlack <dmatlack@google.com>, 
-	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-api@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
-Message-ID: <auEksxfAi9lHFXmT@google.com>
-References: <20261026220546.3114241-1-skhawaja@google.com>
- <CALCETrXNEWQNPjtuHnTfVFOafeJ7APXq288Cq16Q5adDNYx9+A@mail.gmail.com>
+        d=1e100.net; s=20260707; t=1793141876; x=1793746676;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=72+WHJwwpogSBR2Mae06gxZf+v4TqJlIK48WM/9xNMc=;
+        b=K341vzlGhyxy0aFkPV0VnshFhnOpAV9KSHlpYz1GFtaxxh1LIwKoP2dX62vRGFPLNJ
+         fJGpJdKgEqOePKHkTVkCJIEeebVEScN8Q7p8FMFyHEykhjnUI0lQzFl7DG2PBO1PI5cE
+         j/sJzz+RLACG0PlY/szcy8nZJcK4EtAeLlNIQUVaJll19WOzhBBueIcXeGc4jTQMIWvX
+         uxe0Meu1bZPU3cTONRWXImckcJqIczPaOuRmSK0iT0me2yh2Sw4U+LKXJCOsQW3VImdS
+         OE6PIdb5stmTzWPs5gTEzeXuVM3KkFv2PpAxmNzfOw9F8zcjO3dehJTDc6Nyxd/vGTXc
+         eAGg==
+X-Forwarded-Encrypted: i=1; AKwUvBwjievnovk2VkwHavQGE9xoXGwF5TW/g+Y1rgXm5Wp2JdchcoiOQ5Ts6UQ/OWW4wqqyAxKY3zd4Fg==@kvack.org
+X-Gm-Message-State: AFq9FYKDwYoZc8IJy9Fo770aFK9WBZMtIUH30x5oGgg+Vi4sIC4j7aLE
+	wj+7IMunwBtCqaX/reLPyHvqFZ7gcu2nOGttU4txiZWwNLGS4/Lmyj6oY6qA9Sdu9skfJwMjPL5
+	QEz4uMK9yyXvx2LXy3JbrTPA+7Xcg0Ew=
+X-Gm-Gg: AYBFou3qlbb+H1C3Xy7CPbu148wLRWX2LNXJQ7O+kWgVJJ+FZmywte5u6jcNaaMc9e7
+	JjSWQPDm9sYVZhKuXarddkqHLnDeuSNwRDJ1/osVuB89RnFn9ywKbdn13hvgx3mM+yHGMDWiC+v
+	QqWSvI1KBR6XKefQ39zgOI1+JJvY5mCazNrKm8anL7P0X7SBUSyFUIGzVrnq5GtY5ATlZl5mJri
+	zICkTBra9VL6Bqq+JK8eqHV8M9osM5fAKRG9/y2zcf2lbH0961m4D2TL7ZZJP7+U/L+0ztZYIry
+	KdvUPEmkOjfmbNQ0piVQy2GVRtNX82w5WbG0AUaVVOSkGywASdIfesFSyBfU34L/7gpLoGbho58
+	ZwuwnXNG4RRozvF4tvadn++rX0yqUk85s1JFBUUPOilWpUQDRzzJBcQA+FY2Ayll1pfL/WtPLdU
+	5WN09+RMSOcN64dTvNoe3k6b5ni3zs4bRLPPbflPk=
+X-Received: by 2002:a05:6000:15d0:b0:48e:1d87:f179 with SMTP id
+ ffacd0b85a97d-48e5d2ee6c4mr1432863f8f.25.1793141876177; Tue, 27 Oct 2026
+ 15:57:56 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALCETrXNEWQNPjtuHnTfVFOafeJ7APXq288Cq16Q5adDNYx9+A@mail.gmail.com>
+References: <20261023195417.1391216-1-joannelkoong@gmail.com> <20261023155407.0b519a3da7313137a0276119@linux-foundation.org>
+In-Reply-To: <20261023155407.0b519a3da7313137a0276119@linux-foundation.org>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 27 Oct 2026 15:57:43 -0700
+X-Gm-Features: AclHuK_5vNE3lHaWIxr_pi4E7Lc0-zQAS_H7nZdBiLEpaJxcfp23GnfYndfnZ-E
+Message-ID: <CAJnrk1Z-zzKL9Jebk4XMpfOBtyArppGPTv3__GTbCZXGiEJjOQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] memcg: reduce cacheline contention from lruvec stat
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B41E88000C
+X-Stat-Signature: dqjgwbrfguqx96qncdyfjqdm7crmnt5f
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D50071C0005
-X-Stat-Signature: sh673wefxnzyfbx9hyuqt8b5b9gbak7h
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793141725-107325
-X-HE-Meta: U2FsdGVkX18dU1lxV6mHhfl4SZF3qcHljC3OZHSfn9NGolOvNL3f8O9wsS43hFBera2m/JCfnwVZSd4fRmrNS3OzDU5Vs3xYffQfww94O/RgGx+p9cbYfWKK1u6kVr8T7QYUXGqQpuoa282Sdet+2jPn7xxutSwvGA0gZYAeh3THcV+l6IEp8Peh+3IXNuXmvTD9OvZMN1J6qp1VrQ7E8fEfdpfQj1UWftqGqYYwxureS0sV4BsYxXRMtlpcesSMu9vgZ4MRP0CwKm+qM6IFJF65t1wss2cGh8zAfZb9MdMs21lEMYTr2kHMrcSHnDVFSQF4Jzlw1o526DW0Dg/f1d6AMkv8q5AmglNH8YIA0jW63VE7zRAZoBY15YrusrE9eegpTkECH2i7vTczVUyr80HL8XaeybxriN6glfEcYbELQLft8HtoDPCHvflC2vdWqgfaVzK8Y/UDaVGBr2Hc17Q2MZzCZ9GvDke+NAKfT8D9FmwF0XRBSA7y6dK6tVtd4DlplnrxAsNGwag1bkmr7KiuOIdrNuioWp/qvUA2wS6v5vlGbEIJzFsL62+UQpSKjp+DLKw5fSYw65DIXHUNT4AhQrXn2GxmrlqoLCuBeZjW6vqFWzmhpAdnrYaTDlvb8F/PuNHC22dhSy74LeGfQZUpGJdX0t7W0nZR0ElF7G8EyaHvE2+nBAab27g52HMiWxqt6M45LDiZipusBPi6VEWuz7Oar3sXyzQCEfs4F2zMn/WknxIScOYus697P/6JfJrl3Atq/9vZWCDJqop7qZxCE/HZGiLVYl0tX5qfRtgXuyo+eXmKUbeR2jQJ55tcanwrn+igpeSzEYY1WDl0uwZCwaGj8Qlk3OtthXfIXqSUUhgl5u7IsFRuNJxJoBexHG/xOcUQtMhrM7t+5aJ7zho7PfokBGnvm5Z02nU+g/Qr+fEa/V69wGUYRiGaCKxNzzClS+xi7U9a8x3SIbB
- zNStM0d1
- +O8KTDeAFAtBAG9jHmyOkAJdR9p8O6kObo1FoK8YmNLOs8RaV1klBkx3IoiabOelhad0fdxSWN86ST9A4jLhtPcHdKZgEyifhjEudjstWakb1obpKC/PaoejcZsvHeAaW+b8cIgCtSny0oU+Q5jHyuqQ0e22ptNtqgVhHdwPmKx+A3BfC21OyKZcZxpeBFJcBDLPNus6AX4y2kSeVmUsI5NSISyGwX8qPDHKOWWmfj53RqCAsH49ZcC32FJxJV3MkBoH2kE5VPbgOInmeZlkH8njoZW8rZzEpvXrgTfwUB+cbGGbGVgqYXl6POI3DFO+ZJHjD07o5AOMUVPEnXdc83WNnW+E4WQc5NQGK36iS9Aym1m7YmqZlnRsBpSyBMrf6O/75EuWXB1ffef8sWsPAe5vMZzC4N/Gye3EXX9ZBjt4QK918hEmAuCIJ7YT9LVhDvASNkA8XI0WwPf9DkQSBYaj+IFNqrBrgO3dPbNR43jDoIecguZznpbgwRLDv13nVZzFqJ1F7xlNUT00=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793141877-710394
+X-HE-Meta: U2FsdGVkX1+xWl4WXZtX4UNYz63MOwGMzkuZ/jRggjbEIIMqDtO01YptThFQP3AUveOlIp4rZ/ngpuE/DoiRfn5uu0W6rQI1S82jlT+MHMApqSQjT0zO0IzUG/tCA91kV6TNWpKEdwO+u2hnYPbwrXJlYA+1W2cFEPxa5aoZklpfMcbU5cxMiHnK+XbFe7K2z2l/5Pn1mZHxv4goexaCiG1xKbK4Irt3BA5o9146t/suZGQcqYyOujX6wHhi22DLHIJLXNCUv6vrmsT6lDBepeFgbLVBVrud//0S1N4404gewbzcAM30DsMmsi9ntcEbDDMyExVK27KWPUcifvXGclCKXAYWT6QCFajBQm+6GbcxxdNtA3KhdFvAWvAA41uJiZ/8DXLZpDFd8vJK8oIZszkBq0tsuJPdEI1K/50ZslBNNwo7X1rwoGDZiGAmz4TOFCHUFgIhqlMm5fKpKh8cMP5S4mr/MCUVG5jUR6AX4cH6yGijR8pmUeTVs8rSkOoJbc3teQYR9PmbgjDyESymdTCMReqwNj8vqL0fRjp5YS/TjhI76K1JAvcWQPyhYCSSVv++mKZImkCIwwjrB4oZ4bSr2pezb6fG5CYJc1ExAcYSu6DYQpkJYlsZZOPjdgNwoFdKu77o3c4hqOlx4iGGg7tCVV1HV0uRZ33mFpjUuitn8t75l3lfwtczsk1xdjOw1eahRmcw2Bk7QYAqjjpwJ0InXqsuPgrqq3y7X/uKgddAAJ4N7DJIn3qgNRYNTI+5eMSgs4aYVq17lvwgpBLM8nXZd0u56u94p0oyg0IJo/W/DzfuUnfQZdSkim/FSgJXFx/5JwIvgX2VTtpZe+xws7O6+tl7m/WpVeXt+6nveppj91iGU0UxhlcTjbivX8iQfozzmLz2kX4mTOV45fNPodzsm2X+yl9OfwFpmTmEML+HBzj1G3MtNAYkR/o/ybWuNHuBbPCSyxziqHYXIWh
+ y2p3uftm
+ CZL/Mix3fZRv2RnCdVp9j1fOD/hl8ssrnUK1lGdO/6fKokNPm04f/WBiWWuc+gdyx/N3efMtpwnYSoDTLuQI6blS/zTNrfjqShhW3vJCU8oqTK7BxlfhN9X4wzWJ67AGqOIvuF2l0b5qrjRAdfgBcK+mVBVFFROWXaSEwiPWMmzX71JGrDhs3BfY0825kwbzSDgZgVkAQUX4Kquf6LovlFD9Xbljj23m/2gP9xHSQeHHxOSwvNxhj0RXT4qoXurmDVlGvExTX0dTmkKXmqQJqS+hh2wWPPNhn82tH62lDEVhXPHg3Pq1ufl8kOcn7okiYz0y5nsiKaBr2E+TY3+S7GCJjAcvm9PXWW4tUSDY26MBMXrykVXSYrHlvAIP1KNYQRmAt+GzRALuJARSG9rrBoYBY6E/FGI4tevEwb5rQIL2hF2UFTNblSquIut9K2R88oW1vp1Sbdy9h6qO32UZRKg00U8JZswRF/r9Y2YOARcj7zYE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,89 +146,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 03:46:34PM -0700, Andy Lutomirski wrote:
->On Mon, Oct 26, 2026 at 3:06 PM Samiullah Khawaja <skhawaja@google.com> wrote:
->>
->> This series introduces F_SEAL_PUNCH_HOLE, a new memfd seal that prevents
->> holes from being punched into a shmem or hugetlbfs memfd while leaving
->> the file fully writable.
->>
->> Background
->> ==========
->>
->> Drivers such as udmabuf and iommufd (via IOMMU_IOAS_MAP_FILE) use
->> memfd_pin_folios() to pin the folios backing a memfd and hand them to a
->> device for DMA. Pinning keeps those folios allocated, but it does not
->> keep them in the file. If userspace later calls
->> fallocate(FALLOC_FL_PUNCH_HOLE) or madvise(MADV_REMOVE) on the range,
->> the folios are dropped from the page cache while the device continues
->> to use them. The pin holder is never notified, and from that point on
->> the device and the file silently diverge.
->>
->> The existing seals only partially address this. F_SEAL_SHRINK prevents
->> pages from being dropped by truncation, which is why udmabuf requires
->> it. Hole punching, however, is only blocked by F_SEAL_WRITE and
->> F_SEAL_FUTURE_WRITE, and both of those also forbid writes. That makes
->> them unusable for memory that must stay writable, such as guest RAM or
->> DMA buffers, and udmabuf explicitly rejects memfds that carry them.
->>
->> Proposal
->> ========
->>
->> F_SEAL_PUNCH_HOLE fills this gap. Once it is set,
->> fallocate(FALLOC_FL_PUNCH_HOLE) and madvise(MADV_REMOVE) fail with
->> -EPERM, while reads, writes and resizing are unaffected. Combined with
->> F_SEAL_SHRINK, it guarantees that userspace cannot remove pages from
->> the memfd while the memfd remains writable.
+On Fri, Oct 23, 2026 at 3:54=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
 >
->How does this solve the problem?  F_SEAL is about a userspace
->contract, and if there are existing users of the APIs in question, it
->makes very little sense to start making those users fail because they
->haven't taken the appropriate seal.
-
-It doesn't change any existing behaviour, nothing starts failing for
-users that don't set the seal, and drivers wouldn't require it. It's
-opt-in. Userspace that wants the guarantee seals the memfd, and a kernel
-user that pins it can check for the seal and rely on the pages staying
-in the file. For example, the iommufd live update path could skip
-verifying the pinned pages at preserve time when the seal is present,
-and do the full check otherwise.
-
-https://lore.kernel.org/all/arVYa_90j0oN1hnu@google.com/
+> On Fri, 23 Oct 2026 12:54:15 -0700 Joanne Koong <joannelkoong@gmail.com> =
+wrote:
 >
->Would it make more sense for the drivers in question to set some flag
->(refcount?) on the file to block hole punching?  Or perhaps to have
->the hole punch code notice that it's trying to punch out a folio that
->is pinned or otherwise referenced and to refuse to do it?
-
-The pins already keep the memory alive while it's used for DMA; the
-problem is only that the page silently stops being part of the file.
-Refusing to punch pinned folios on every file would change behaviour for
-existing users: fallocate() would start failing whenever a page is
-pinned, even briefly by O_DIRECT. A flag set on the file by long-term
-pinners would avoid the short-term case, but it would still make punches
-start failing for existing users of those drivers, which is why I went
-for an opt-in seal.
-
-Another option, closer to what you mentioned, but opt-in, is instead of
-sealing the whole file against hole punching, a seal that only protects
-pinned pages. Punching, shrinking and truncating keep working on a
-sealed memfd, except where they would remove a page that is currently
-pinned; those would fail with -EBUSY. Files without the seal behave
-exactly as today, so existing users are unaffected, and pinned memory is
-guaranteed to stay part of the file.
+> > Memcg lruvec stat updates read fields of struct mem_cgroup_per_node and=
+ struct
+> > lruvec that can share a 128-byte cacheline pair with lines the lru_lock=
+ holder
+> > writes constantly (the LRU list heads, lru_lock or lru_zone_size[]), de=
+pending
+> > on where struct mem_cgroup_per_node lands in its slab. On CPUs that do =
+spatial
+> > prefetching (eg Intel CPUs), this makes the stat updates contend with t=
+he
+> > lru_lock holder.
+> >
+> > Patch 1 rearranges struct mem_cgroup_per_node so that its read-mostly l=
+ine is
+> > paired with a cold line, and patch 2 makes the folio and kmem stat upda=
+tes use
+> > the memcg and node they already know instead of going through the lruve=
+c,
+> > whose pgdat field shares a cacheline pair with lru_lock or lru_zone_siz=
+e[].
+> >
+> > Results on a 2-socket Skylake (80 CPUs), average pages per second for
+> > threads faulting in and freeing memory in a single memcg:
+> >
+> >          base     patch 1   patch 1+2
+> > shmem, 20 threads  4.74M    5.59M     5.77M
+> > shmem, 80 threads  7.94M    8.66M     8.82M
+> > anon,  20 threads  3.04M    3.08M     3.10M
 >
->To some extent, the issue you're describing is maybe broader than just
->the APIs you're contemplating.  If I open a file and then do something
->in thread A that GUP's the file and punch a hole in the file in thread
->B, I'm doing something weird, and I can imagine plenty of ways it
->could go wrong.  (Especially if it's GUP for write.  I hope we already
->get that case right.)
+> Thanks.  A local AI review pointed out a thing:
 >
->-- 
->Andy Lutomirski
->AMA Capital Management, LLC
+>   One limitation worth mentioning in the [1/2] changelog: the slab
+>   uses SLAB_HWCACHE_ALIGN, which need not align each object to a
+>   128-byte boundary.  If an object starts 64 bytes into such a pair,
+>   its first line can still be paired with the end of the preceding
+>   object rather than its own cold line.  This isn't a correctness
+>   issue, and the measured Skylake improvement may well be real, but the
+>   layout doesn't guarantee that every read-mostly line pairs with a
+>   cold line.
+
+Hi Andrew,
+
+Thanks for taking a look at this series!
+
+The AI review's commentary is correct but it doesn't seem to matter in
+practice. In the cases where the read-mostly line isn't paired with
+the cold line, it's paired with the line that holds the end of
+lru_zone_size[] and the reclaim iterator, which are also rarely
+written outside of reclaim so it doesn't see much contention. In my
+benchmarking runs, the memcgs are freshly created and contain a mix of
+both alignments. Before the changes in this series, the per-memcg
+throughput was bimodal depending on the alignment, but afterwards, the
+throughput is uniform across memcgs.
+
+Here's an updated version of the "Fix this by moving the memcg_pn_cold
+group..." paragraph in patch 1 that mentions this:
+
+Fix this by moving the memcg_pn_cold group, which is only touched when
+the memcg is reparented or freed, right after memcg_pn_read_mostly.
+SLAB_HWCACHE_ALIGN only aligns objects to a cacheline, and the struct
+is 576 bytes, so depending on where an object lands, its read-mostly
+cacheline is now paired either with its cold cacheline or with the last
+cacheline of the preceding object, which holds the end of
+lru_zone_size[] and the reclaim iterator. Both are rarely written
+outside of reclaim, so either way the read-mostly cacheline is no
+longer paired with the LRU list heads.
+
+Would you be able to swap it in or would you prefer that I send a v4?
 
 Thanks,
-Sami
+Joanne
 
