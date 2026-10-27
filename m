@@ -1,168 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17047606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454AD606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NRDO7eU1
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=hMCWU+rW
 Received: by kanga.kvack.org (Postfix)
-	id 074836B07FB; Tue, 27 Oct 2026 11:48:12 -0400 (EDT)
+	id 4E5266B07FD; Tue, 27 Oct 2026 11:49:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04C1B6B07FD; Tue, 27 Oct 2026 11:48:11 -0400 (EDT)
+	id 4BDB36B07FF; Tue, 27 Oct 2026 11:49:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0D966B07FE; Tue, 27 Oct 2026 11:48:11 -0400 (EDT)
+	id 3D2EB6B0800; Tue, 27 Oct 2026 11:49:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AAB996B07FB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:48:11 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2FB8180A3E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:48:11 +0000 (UTC)
-X-FDA: 85368837582.29.20A45D9
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010032.outbound.protection.outlook.com [52.101.201.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 258831A000A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:48:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NRDO7eU1;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793116088;
-	b=eXpqV9h4hUhsqjaHhmEPAuEor2uC4kEfpfliCtX0Nva09Hit8qb/ifBlO7Ji+jValTFeIK
-	MgU/HL6XAoOrNleEkI/GZMXIw13GKx5SmubUVfio1QlLZS8/thmn8WjP/PWRWD9aD83r+S
-	1XpbzMe083BiYgr40y5/U6A9G83pk58=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NRDO7eU1;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793116088;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 113796B07FD
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:49:39 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 988DE1A0A26
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:49:38 +0000 (UTC)
+X-FDA: 85368841236.24.2008B08
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AD4EC40008
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:49:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hMCWU+rW;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793116176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hb93qjo6wpu47506SADV8RRsHr8SM/hDtM5e7MvptGQ=;
-	b=oKntmqILbWAMaptse51xb5KXwOJ3l/CaCFJr6GtpSLq6MvV9Bp8mDxjNnsXxug06YZ/KSP
-	7d6/cvMd8hEv9TYBnE+JPgNdvYw7BeZDjt6SH2X6meYb+i6a4pW6oxZkX75EhJuShd/GQH
-	bjetwSIigZG5XJag4KmdCt4/24MipzI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VkRfsbCOTG/BMdNXHfMqel6HXcYxjgl2KPBBhPRu3sgnif10q0294uUOPcYc/mMXL3pZQmpDx4kmS2tzU0/1HYHK8A3GbuCGZtpSTjBtWILHqMXKeFvISws7LS6Cqkezq0IADZ6jDj6U3Na+/B4ihD/waJyjs3cN8QHq+Pb4jueCXRqSObqVy4ER5GVQBFeGLNLzbSlQg1er6liEusLfSQJDc1dtncXJ8e5iB52XHx54YFWOsSVAgX52khsn0m/lDJG9Ad3mzajvU3wGJEOjoliEX1PF71Z8OPF54g66nBgMmV7iC2qNwEJoMdKi/F0PTCWkcfM4q62MGRHvc2BBHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hb93qjo6wpu47506SADV8RRsHr8SM/hDtM5e7MvptGQ=;
- b=bdVw2H3yjr2jkIJl4JWmaklkWQqgPd9iJwLJB4hT/QxWX+Q1qac0XAHKhBUG1vpAUie3xedy1KIpSJlbonm7yN9sth5TZB25OnK1QFvm+Zlo6xXSdUwZ34qOewJypj8MqhszPUCD03a9pqW/klCoTCI+aRgeJE4jjBKsfR6NaQBiLscQPKjXPevUGjucdH8enF/hyArp5++LQss/R5x6ODcqayQlqlPCYd3F+X+hPto0ncN9jYUPJ+j3M1L4yKaKci4b9NOtW6ovRqJlX6opoZ7Hzz9PNe3x2WrSjAU5DES+GE5PtK6NhWikV4puXfOhxvMtw3hWzt01jvOcdbkf5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hb93qjo6wpu47506SADV8RRsHr8SM/hDtM5e7MvptGQ=;
- b=NRDO7eU1pLDKnn9T2SpQ+NkkmkBHBL/0cQWHhsLy0orhs1QMnG2DNjCDvIgBLMyZrIX8l8vQOoUKOF8wGInGr0TpG9/PCicJttqV/oRHmV0BRbFN6YzkBW7O5AmRT3/Y7lqY36HvpPO9gfWM6sAbju+6+SxQ/HJ5zfSClDMMoxs7bdViaX6z5cGwM9AvlfWBepP+kYJtWRE9T84nJQPyxyDnZjtk7BE1OSNLvWXQgOJvnAAOWzsPGM20bopFaHqKAkGlR1YVu5nROnrkNPgWx4Sbx73zaLdDfPnwuFNULHpPup58bIJkG/zXsZMjlVQWghPhTE3UaXGW74O+8YHyhg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by MN2PR12MB4406.namprd12.prod.outlook.com (2603:10b6:208:268::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Tue, 27 Oct
- 2026 15:48:03 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
- 15:48:03 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH 1/9] mm/page_alloc: don't undo a racing
- start_isolate_page_range()
-Date: Tue, 27 Oct 2026 11:48:02 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <04A50328-AA1B-4DDA-A929-3D77B09E3B78@nvidia.com>
-In-Reply-To: <20261027-pgalloc-ai-hotfixes-v1-1-9c7d1aca801e@kernel.org>
-References: <20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org>
- <20261027-pgalloc-ai-hotfixes-v1-1-9c7d1aca801e@kernel.org>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BLAPR03CA0158.namprd03.prod.outlook.com
- (2603:10b6:208:32f::24) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=1KBHB8+qa4NlnLyGzz+b6HJfV/xmDramajBB5F7wR4s=;
+	b=5dHUJPAEyPsFl5hs8LGi/JwaxI+XchaB1RvflYbEHnMSeVeyPX349xyiwdynlGo/T0ROAY
+	7X2pC4YVIx+yeFsKVjQiwG1drXqTX+RLlujiytPgHewHgRQNWjP3Hf9pRXNHCNErnJvfFV
+	lD/inLxFR1aKMvjQ92tvr5kIjy1xyV0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hMCWU+rW;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793116176;
+	b=PDUm0wBMBx0yI6zlIDuf8gN03caCFS4sLkko9p2VRuTZsE1fezpD1bS7t76yEgSpfq70Ns
+	bvx2xkeg8tB5Z2Ro/9HRhMu1C+4ZCazQjdvX5TJEoH6QaLtBsB7WskSfrPFUiLy6e/ZWl6
+	xv+pa8HNEF1wpc/RjuB6wzVbUKki+H0=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-53665358476so816691cf.2
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:49:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1793116176; x=1793720976; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1KBHB8+qa4NlnLyGzz+b6HJfV/xmDramajBB5F7wR4s=;
+        b=hMCWU+rW1HCppOMQY9+XD3lkczQC5TBcl7b7zLKbvWDdCRnhqGRxWoOOa9DqST+EH2
+         3cOeQDwjNHtLud4cxdnI58x0u9R6U3ij4XTH5CJ60H1+mOrRN6j74RT6R1h9Uxz0elS5
+         beiawBLi/dT4CmrQ2BYvWEEYZDwOO08A5rEK66QwB7l/rPF2GsG8AoVIQyVS+WBM6IQN
+         CvXGDgXqjY8bxdOX27rA5S7Rk+aGtG6HVS6rasBBkkWur0/L+XrkmJyQ42SdMtP6fOyz
+         hu/+kFnyI2LG4zjjwh9RyyR4G8q3SJWPyp0f+Ux0cLH6ZKT+IWt5qyV3Vqb/lpwCOMFC
+         u7Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793116176; x=1793720976;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1KBHB8+qa4NlnLyGzz+b6HJfV/xmDramajBB5F7wR4s=;
+        b=wGktOGuv4b9fXquGS6q0mrMSOH3zRl3ye2N7A9BuzlLVD0DEAMvAGXailH1gkwU+W+
+         z/zXrPb0hXUO9g1VyhH5gxKufRkD7VqR49KggC7M9pALGo7SjbrzfCtqYr6X89BnBVV7
+         UQ6hPkHhD7oCnXKImTJ+Smi/FXs9OHjXw/pzry9GoVvqIIKh/Ppp4OnA0He8YQw7QjqI
+         fnB8C4wcicAAjymaA2QMuxgAX0XeWykqZfOYJckYCfgZisW5piuCepQ610Vu/tMQ50mC
+         d0uP2NDT+ipjE0sbxWO+5wy9YsPhg9Jm2UB58wVaCpgFCrbJRsAhShMG2fFnqXsL/Iio
+         hPQg==
+X-Forwarded-Encrypted: i=1; AKwUvBw1DOt/n+Xgrl+cDQJH3/K7ODY3ppwA4G0qiG+1G+O/p+/HVG2j/j9bQayuixzXYZ4D3lxRf848qw==@kvack.org
+X-Gm-Message-State: AFq9FYKhqd73l+iuZjYYKz5oz0WaQ9C2/QOmqcgnU4JyVj0g6wIdiyMc
+	fuzLuAabVQLosG/4+vsNEng4BkD29Ka56yx9Pha6ygTdBOhiqORig+7EEXSd+jXNvcW1DDIyQ+g
+	1caFV45I=
+X-Gm-Gg: AYBFou1GcyabLP7ThXSYfxS7IruNfoKKzbL6D9ojgkx+xjDkb3IIIYvRtLWeYGVO2I3
+	Nh2egGdbbL7nWUEC+LMNNNDX7cmfrLVrovGGlYaKrgRivpaUvC48jSa4lXdqWgPOfMHy1o1TnJF
+	sRzwh2ZsTd5OdlFO6pJtg9FeEGHyM99vOv5x858yVuBCWqrrWemDvjRv6HCJSGGWpOqxkMoI+xt
+	YLo6doqTmDDpN2BWa5/6hwvW8kTaxArAItYVwjqQdxAxyqxAtLcljcn/RufJYk2kliJluKKhX81
+	XEdHLpf09MaBBbBqyfO7NrTxTdr7E3EDGEIitbi1/jU/ZM5sC/jSH3urik+7/jzcMVSIJo174wr
+	URBBdyP1VEo+djbfu73c/g1LV9jlu2T1PmankqNuTW2tmqkbW8TVUyQHCQvSe1xZsXywJA5bzzT
+	rYlfXIKXCmVc7+BnDuc0bDw9B94SqHfPM5u4hO7/98SCGO9c9CsZC2AdpTrUGejLuEYBvHGm6Z6
+	6wzUCUk8uFMHG+Dn0AVG7XRA2w1eRGDCO3mtojBtZX7joV0GmuNyqTLWR0LDezR478R5ZaTgHLB
+	gvTmY/pUiK3v2oW66TY9Sx7oV0c=
+X-Received: by 2002:ac8:5709:0:b0:535:1368:4582 with SMTP id d75a77b69052e-5383b572fa6mr173122891cf.46.1793116175615;
+        Tue, 27 Oct 2026 08:49:35 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47ce49d9sm106169096d6.45.2026.10.27.08.49.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 08:49:34 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MN2PR12MB4406:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2d3c8de-ca8e-4c8a-b701-08df3441afd8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|366016|1800799024|4143699003|261022105027099003|261026121527099003|261009223027099003|56012099006|11063799006|261021123027099003|261021121427099003|10067099003|22082099003|18002099003|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	RIzu4Qy1j0SwzIUB8kE1oAInUxai+4dk5i52Gjutw0MHkxAqGdA0tLArUz175uL0fH6T5Vd7+j5A8y2p1cxsk9dLdXzc8WU7LDse+vHUvp/h4Viw6e+NNsn513EqvoazF5F3nYmmGEXjA1W0XHu4pseZ59dSLIw9MumAl73F8PX8u5/JnkSMDJi8nK1R5oB9iZ4/psV2MITjvQzDGF4ZDw4R7YcFFWaJIfjDkYwfjvpyZLPiVgFw43cyx34QOONmNcqFMgS6Qk4t75/oXF/85WlZ3PLp2t5eBx2w/sj04rvR8yFBbiMPaKIqyWKwZuQWHz4TMaMrwdXhJSzWp6IXO7xNM/H//t2VDGgrhUXitugIz3LSoiJiCJprIPcp+rCzh/1Y0gesW27Sqa3E2PdJ7BRMgy8zHMpSNbNu1+Si2AAzM7LbR1yjwq4MLuWAVY7vqJud571dptf6ZvQkGpiGbKCtls8S/aHsrHR0gt/xXZt54TC/6mI9LMuGPC2TY/WjWgwI/b+KtE43i1eKHH7kejSQ7C3FZ8opkQsK35bwbYi0NgGgBjBBaTe52C2R/SjK3D96YR8lyFXTcvbIyM2K9TE/81ZF8fr+EystzWYYcdwVOghusg3Yz6jQm7zl4IhTjMif+TINedQDPiIyH1GV/xo2XqvW1psuy2E/Mj0sWIs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(366016)(1800799024)(4143699003)(261022105027099003)(261026121527099003)(261009223027099003)(56012099006)(11063799006)(261021123027099003)(261021121427099003)(10067099003)(22082099003)(18002099003)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mXa479eOwmUuGzkvRXWoMqq7zzIMWgpcGY2jaO0T42AL0lXNXqrGS2ltCUDg?=
- =?us-ascii?Q?Auy4n+8g5mBagwjAehoNyFKlq9PgqPpujYiIl9EopFcduZR2cLCby2NE/mtd?=
- =?us-ascii?Q?IEIuu0DIb8yLeXuRSLBVaAW/jjXTWWP0F12r0lvj/acjOS5CAkhh+mhhINuI?=
- =?us-ascii?Q?CeV5nQpQCdWu8wdYuAyrJzJ4yEbhQOi/HvgETuKidSyeWGWPY7fk2IYKWLy1?=
- =?us-ascii?Q?ZFpQF7eT10RwEsznb0Q1QjTmUf6S0vB2IzyY1HWnvqIm9Q6sRe/usNJ9HuBI?=
- =?us-ascii?Q?5SCA01pm6M17waaSbEEMhPaVAwpMPefH8mESfn6G9K98BHvYczjBIbqlVmkx?=
- =?us-ascii?Q?e8wi+mEVGZ/YT8+7zgKS8kWrywGRv7Esz14xhNw/x6/jgcLYBHwlU0DxOtIw?=
- =?us-ascii?Q?6NWFiahKFWcal5c2I8Wa5MHOE6b1y4PpmZVKg7wLQXz3/g2Fnpfr6+VOKdau?=
- =?us-ascii?Q?U4dXwrbsSzWuCdSS65JKakqkz7sID+ZTMTrxiDI3hrHzNx0bSl4lY1auA3lW?=
- =?us-ascii?Q?1c+Oo4qHTFntib60tFW08ttkiXAwLd9PRgvKJriCiEP2uk8bC4NGRVycPAI4?=
- =?us-ascii?Q?1nleR0gDtxuhgHLYLo37tkTDVaMvqHZBHDL5Piom9Zcu+381vU+bWmOywkFk?=
- =?us-ascii?Q?fxFlGfSvLOSs1wBPaBUNVwRSJ1ddiJoq33bD24h0IuJUedLg/2ZY1H40b1pX?=
- =?us-ascii?Q?xnihLCj/T9RmU24UbMGgJMhRZLUUlEOFEJS/eyNw28gUpITP5cCiMyqxV9k+?=
- =?us-ascii?Q?YjIMMH6VHosFCfgjxkVmrui5VKLBKgnklmKY3bXd9unBNfR4/FlrbLB+aYBM?=
- =?us-ascii?Q?dhuGWufv3KbgksCSdIPmR9gIHvVORuBdDgZUuwks2otwJJTQPpfB1vF21rvZ?=
- =?us-ascii?Q?nXxe7Q2pL1bo1RfjnHJkj32aXGjo0LUF9DpLOACAq9HgiIq+8dy5z3h//Gsu?=
- =?us-ascii?Q?Xdc1IXwhQxb45OlvfIHf/OWPcQ/WCUrYYQdc9wTLf3a5DwmnvUVgs5PekeSD?=
- =?us-ascii?Q?Iyzh5Mb+RmOp/TzERQr3vVbYzxDbUaXMo7iSXObwTyePbJD7tEH/VahrqL1D?=
- =?us-ascii?Q?fwpnQjRxi4pY3S4erHQn9Q9iAgu+fmI2nCka9pIjbPEksQWGBLqdYCWrnp3u?=
- =?us-ascii?Q?TTUcIzdm+mg1n7FROrrpQA8O98Pc/FyoMlmejSkc2m60ERVM3GDBjnO7k7rc?=
- =?us-ascii?Q?WYYAnzt5AYGIKG2nVVoR4Masv+j/sTcw/IzBK4/vAUyZvEUmCSpjs6DWN5xb?=
- =?us-ascii?Q?yVhynCCBvSnR2XTSamw7udZbcuDwVIAIhgM5dlUncu+wbUbcJptwFxp24Jpu?=
- =?us-ascii?Q?TrKmmt/XBj3tYGegakiAJUbf1nOz0wOS7lcQIUdXfxeJM7OlDn0SCPiMjZks?=
- =?us-ascii?Q?kXxVsXuvo2Y0ler0lCV3Ho0ANQBYRD09LQzb3sng/ORCdnSFTulfyRplCedG?=
- =?us-ascii?Q?xhFiXwN5vahGCng5RyLKgcnlaBat5OuBhPDq3pCo7T7S+pEnUYJYL2iukf5n?=
- =?us-ascii?Q?SxKL3f6CIsHnsWSaquRObF+g17pNUkfMvSZF8yXXo8TpRzoNabbS2ezRG9vB?=
- =?us-ascii?Q?M7zAgZ354bB2RvpGLB28CRSPFMEkZq159hHvvTtOHSc8BO/3iEF+gooyLKG8?=
- =?us-ascii?Q?Qkk1/j7hy7BFjRpN9SHdkqE21IgSnE7Ar0VBsq555FRMiAJ7HQF9GnYI2tus?=
- =?us-ascii?Q?rDEVfqGYCOtLC1RgX8mwlxdBqiLqz0XKmwohTwIo4ymtsX3zf73DaJp7GsER?=
- =?us-ascii?Q?Ar2oH3Ig+Q=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2d3c8de-ca8e-4c8a-b701-08df3441afd8
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 15:48:03.8682
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MSDXHXIGJSP/S0tKsJ/E1RNt5Qwqcamt86JNgpSLxhoP2E/FihIvjJPvI3m+wsbf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4406
-X-Stat-Signature: y7bepxxg1jhfepptg11mazsnf3dshco5
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 258831A000A
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 0/6] mm: fix pfn walker races with memory offline
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, 
+ kernel-team@meta.com, akpm@linux-foundation.org, vbabka@kernel.org, 
+ surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, 
+ hannes@cmpxchg.org, ziy@nvidia.com, linmiaohe@huawei.com, 
+ nao.horiguchi@gmail.com, ljs@kernel.org, liam@infradead.org, 
+ rppt@kernel.org, osalvador@suse.de, muchun.song@linux.dev, 
+ iamjoonsoo.kim@lge.com, anshuman.khandual@arm.com
+In-Reply-To: <1c61eeb7-5fad-46e5-9643-e99050b9042d@kernel.org>
+References: <20261027042204.3741307-1-gourry@gourry.net>
+ <01d7d54d-0047-4eb6-a1d2-5b3f113f26cf@kernel.org>
+ <179310071902.664110.12994053710961856591.b4-reply@b4>
+ <9051ac3d-60b9-4ed2-b781-b7191898bc83@kernel.org>
+ <179310895201.1491991.14362391061932133491.b4-reply@b4>
+ <1c61eeb7-5fad-46e5-9643-e99050b9042d@kernel.org>
+Date: Tue, 27 Oct 2026 11:49:33 -0400
+Message-Id: <179311617372.2530325.90240880272181996.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AD4EC40008
+X-Stat-Signature: euy931zdtq3ig5nniaio87y9s8b5bhhy
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793116088-586941
-X-HE-Meta: U2FsdGVkX1+O/2ZdyHKg/a/49bQTfeqRZ98sBLKqtbfVXQQo/K4ppgj+tp8JP722AfDLDnxqMlYAxb9Ah3CK/pKW7hht76a/5+ZnMkQpEACZtyYUJ2teRmTpovDfmFi4TlFZpeXsiM1YtlR02uZY5hPf+A8N0ZHMUyopNZm02gAydaGZLV/vzMK6q0xLxbwSyp7/VKhmPzgMpXvil/IYLO+G3YsyD6Li+kKsrTyYWyDT9nVG0VQClIPENwYmHK1tJTAgCiDrcJO/4geRvTB+IFrE8Crmwq1RcQ89nSwOUmVJnL8RelsWpYjwO+pUHGapYMZaxj4W2M51D36Yn68jtBpI+pFC1McTZ9m0jaGfX2hbqruCxuiSTry0h43nIBUwR+BV27r+9zpZ3yAvq1KIX3CEkEN6crtYJzy72ZHuwq2KzO01B3aIvANa8tHOKcjCNp2Z0w46AtOR1OtHap/vMI4oPKM54dzp0zRsf04Vte3WnzLgqD8E2K8n7wEoLWtMpzzaGmd7ZhTmHqC16piUZ3pQsXW/voVh21v/ZlLcpyHlZseQsGs8eUVUYVcVeoeL65QFsDZLX7bGvYn4N39ANZLWXNWOgYE+6sVIHWewnLbcihE1ORwmT6WOp+LaWsAUS403QtdXF4UgGf4FjDF/GpyGYA8aE9ro7+Md24tvr4Gqj5qAQxZcul8AFbdMxvwaYnzCJ/w+jkM++6UhdRDL5PZX9Mw28F+rIDqnitymW0e+G1wXm2zMPjX6YYe/FVi7pSp6MuDPbI6fVS/QcOSXszPRld7mZ4E6sgWN4kFEvujgPdzFlvoxd1vq1/ldkD3GFsuCnky0lZLY1+poa88ZmmXbeE8Ffw7zpGknLbbMMrbvwHz0JCA6tHgP91rjo2UO8VHkjQ45KlcY7opQF4CDXyT5IVob4eliGgEiyh5l30ZP6MOflVnEOWHahqIDjZtpssR+fydp4BMIhIfSUer
- 2CM121PA
- zV+Yg3ZdqRSMJUCYHn8xxeWDexZHq2tW8HCdJkLEVftKEogQppCGxu/QfE07RztKbtBZt2rKpvcuk61wln45iNg9f5xOs7RT6eIA5t72Dvx4bNVFHXHSz/sAhBQhecUNCqyCaUSQQME7y0aUAlTojKC8V/xLMi8zD9XKaw5sp3kUTkZBE51CLbYDVX84NUcS3NIag8BbH30dtCZs8iijdu5r2B7ROhLhZRva8KTtfhjeQ2rSFtswlV2mkTVCx/pTeFspeWFl4yKra7pjEE1G4wtxEmbg9edrKOZmVW2udRMx5lQGSgcC3pC16imaJO+4jUSVlZJTwWVFvWIpotRRhIticGi7U66jF+jiApEk11DE1PUtqp6NUY30H3wF98fUPPIXDYlyKaJfb+lhpY7aodQ3hp1ImNA5HkxzjCTfh0jlF1Wx/IvBuIOpfFjAfY+4WkgsLkAwAEX4La6705pAbGLsou7r2zHWiVedGFkOfo8y1fNphLYAhAlA9Y11ezJD5WAekWOgAaQIKbF8=
+X-HE-Tag: 1793116176-26737
+X-HE-Meta: U2FsdGVkX19tRgJpKoNIimmnQ9ksfmikTnqruhqK1xlNxBiGggXrKPdi92OslYlG37m56yFRsPjVNIBrkRpYA2Phx9KHdPeAq03VHBpNy3BBOuCKhSlNgKF8Lg6Bu1SVO5cZRU4BpdUsO1arnRQL0tx02RlzhCQUtSYwJaHwYa5hJ9YFoJpVs66tU2m19pYjc477EI2bMxh1yUL6Whe1zii1iZL62kzRtbgz/k21LQpG8DTa0oBRivLjUyHobIFj43SSq7P9sxrlwtyeNVhEsVnZbFkgrigP6aCPQHn5VvCgcY1kJS9ADWA7L2tPSi9WXldR3dqq80zpYTtJlx4TYR0wgqAu6Susfe3qWZf6PeS+6YGaTZDn4G4xjQRcQ71fkiHtw0gNTIMTo6WUKgHTnNGKz1oaZlM4dyJgaH7UwIJJNoUQTpgXWHO/iOZKjeCaJT3qUabbySgtc9ZS3rpCW8YPzG+IYvUM0AyhdKIdmrhMCvqR9Iv8+pihSIMqXCh9dAv+2EYZqU+u4cgJ1LeK3WjcsfAbnejOsqJLs1jDxdKZSoNOx5hNuY6sBSVbLv84s2Dh9x+if9saUvib4pOJrb43T2WJq4YB/l0kY/oNamRfavD11ibaRhUQ/G+A8OKI80RfeYFERYuY7mfWqNQ3AZg2YFApREApzfYlzRN87gcIO89naCkpoy3Dro2xCNZH/Fk1W7j1ozq+MOsN78z1ghGEg3Rcx4rl+Z89oI2xfEORdWty2XVl6Dl5K++x6b01J4Mo1DvWPNwc/63woXTFDvnZJo2T+j+Zwm+F5HtzyvmsnsP35qtZ+WdAx+ltxV1NNA2jDIEV2tmeINga6VimSoRiOfz0pwwrAHpxes0GnM1vHLP6ZxrQ48vOLiw4AdLYHI5a0gP9Z6VKsZUOwzMDLtpx8PoWr0kwUy1/m02VmDxSxfbZQEOylzpasje/6ziCiDsD+0GhLvNL4Ui8Bb+
+ K1efoWrP
+ b1m5+v2IG2tZ4MjKlVAB6VQ9ip5BZ/IoFyq0xxsfOSGBJdiTsIZwVl6WQl6wU1iDfflTT/UbMHMJ+nEsTZZXjx3nAYzrt9euYbUkLDMAgWbHO3/BU7gUWfxb7qFH+n2WxspvMgcUHSiO0x4Bayio5iiYuHQF0LmvHIehrCsYKE9DhrqJcAp8IjakQ1r9bSalLnDKH0GPllFWNd2B1cL0XbQb3pqxCAUG71/p27JC8GCFTyTWKT7BTH135XCkJI8PHPb55Hm3SrMjQ4CRdwSY6P9OVkajkyZMH+47JGq8MLQYRO+JPwn9Iy/gXrI89mDKcgeGvgmP5V3V4K+o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,63 +137,163 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 27 Oct 2026, at 11:46, Vlastimil Babka (SUSE) wrote:
-
-> From: Josef Bacik <josef@toxicpanda.com>
->
-> start_isolate_page_range() fails with -EBUSY if one of the pageblocks is
-> already isolated, i.e. if somebody else is working on it. It restores
-> the pageblocks which it has isolated itself before it returns, as its
-> kernel-doc says:
->
->   We then clean up by restoring the migration type on pageblocks we may
->   have modified and return -EBUSY to caller. This prevents two threads
->   from simultaneously working on overlapping ranges.
->
-> alloc_contig_frozen_range() nevertheless calls undo_isolate_page_range()
-> for the whole range in this case, which clears every isolated pageblock
-> it finds. The only ones left at this point belong to the other user of
-> the range:
->
->   CPU0 offline_pages()                CPU1 alloc_contig_frozen_range()
->   start_isolate_page_range(A)
->     pageblock X: isolated
->   migrate ...
->                                       start_isolate_page_range(B)
->                                         X is isolated: -EBUSY
->                                         (own pageblocks restored)
->                                       undo_isolate_page_range(B)
->                                         X: not isolated any more
->   test_pages_isolated(A): -EBUSY
->   (again and again)
->
-> offline_pages() repeats the migration and test_pages_isolated() until the
-> latter succeeds, which is now impossible and the task spins until it gets
-> a signal, while the free pages of X are handed out by the allocator again.
->
-> If X is released after the last test_pages_isolated(),
-> __offline_isolated_pages() takes pages which are accounted as free off
-> the free lists as MIGRATE_ISOLATE. Thus NR_FREE_PAGES stays too high, or
-> hits BUG_ON(!PageBuddy(page)) if one of them has been allocated.
->
-> For another alloc_contig_frozen_range() or cma_alloc() the result is a
-> spurious -EBUSY.
->
-> Return the error, like the function did until it was reworked.
->
-> Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
-> Cc: <stable@vger.kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  mm/page_alloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On 2026-10-27 15:25 +0100, David Hildenbrand (Arm) wrote:
+> On 10/27/26 14:49, Gregory Price (Meta) wrote:
+> > 
+> > while these are ai-generated, I'm not posting untested, unreviewed
+> > schlopp for the sake of getting patches upstream.
+> 
+> Appreciated.
+> 
+> For this long-standing considered low-priority thing in particular it is
+> reasonable to go back in time, see how often it was raised (quite often by me)
+> and how often it was actually reported (I found one case).
+> 
+> Then discuss the high level design in more than a single sentence :)
+> 
+> Discuss why we are not using it for other pfn_to_online_page() users, how it
+> interacts with zone->contig etc etc.
+> 
+> There really isn't a lot on the design in the cover letter.
 >
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Fair, there's a mix of design vs firefighting tension going on here.
 
-Best Regards,
-Yan, Zi
+I'm trying to get out ahead of a rapidly evolving scaling issue before
+it becomes big.  But I will admit it's sometimes hard to even figure
+out what questions to ask without posting the wrong patches first.
+
+(Cunningham's law :P)
+
+> > Some of these don't show up as crashes but instead as hung offline
+> > attempts (GFP_KERNEL landing on movable).  That shows up as our
+> > hypervisor just failing to overcommit / guests hanging.
+> > 
+> > The compaction/alloc_contig bug is one I've seen in production.
+> 
+> Right, but I suspect that's "[PATCH 4/6] mm/page_alloc: don't undo another
+> isolation in alloc_contig_range" which is *not at all* related to "mm: fix pfn
+> walker races with memory offline".
+>
+
+Ehhh... i'd argue it's the same shape.  But i'll concede some of these
+could be pulled out ahead as you've said elsewhere.
+
+> > skippable side note on virtio-balloon/mem:
+> > 
+> > I have some improvements to virtio-balloon and virtio-mem that allow for
+> > handoff from balloon directly to mem for hot-unplug without having to
+> > drop the balloon, but I haven't posted those (and we don't run those in
+> > production, so this is not the nexus of crashes).
+> 
+> Do you mean free-page reporting or actual balloon inflation/deflation paired
+> with virtio-mem. I hope not the latter, because that is just disgusting.
+> 
+
+Actual balloon inflation/deflation.  It is disgusting, but it's
+effective.  Right now we use hotplug at boot to minimize the size of
+cold machines to avoid thundering herd issues, and then add it when
+they actually get allocated for work.
+
+At runtime we use ballooning to reduce a VM to its actual RSS based
+on PSI feedback (see: that virtio stats extension i sent you some while
+ago), but would like to use hotplug to give the host a defense against
+a storm of deflate_on_oom scenarios across a large number of guests.
+
+Basically using PSI stats we can make guests do somewhat aggressive
+proactive reclaim on without having to build any new tooling, and
+while being able to back-off aggressively.
+
+Free-page reporting is also on by default, but this only helps you if
+your guests are being extra nice about things.
+
+(spoiler: they're not! they're greedly little imps! :D)
+
+My experiments made balloon prefer to try to reclaim movable regions
+in contiguous blocks, and then just hand that contiguous block off to
+virtio-mem for offline without having to drop the balloon.
+
+tl;dr: This seems effective and works quite well.
+
+I've become a little confused as to why virtio balloon and mem are
+separate entities when they could work together this way.
+
+Haven't had the time to read up on the development history.
+
+> > 
+> > Agreed.  Although I fear the structural fix for this will have uglier
+> > performance issue than we think.  Then again, maybe it doesn't matter
+> > (if you're doing a PFN walk, then you're likely already doing something
+> > stupidly expensive).
+> 
+> Which areas are you mostly concerned about and from which piece do you expect
+> the overhead?
+> 
+
+largely the zonelist iteration - which looking back through history 
+has already been "optimized" multiple times, only for those things
+to introduce more bugs :\.
+
+The zonelist races seem more ammenable to RCU solutions than the pfn
+walks.  I'm not sure how to safely quiesce every possible PFN walker
+without atomics in their fast path.
+
+> For "broader" things that are not just a simple pfn_to_online_page() user, we
+> could also have memory online/offline sync in more efficient ways using the
+> memory notifier.
+> 
+> It's also tricky, but maybe for zone->contig + compaction the better solution?
+> 
+
+This seems reasonable, I was trying not to schlopp you with a half-baked
+architectural fix and instead use the available tools.
+
+But maybe we should chat (after the window).
+
+I'll try to be on IRC more often.
+
+> > On performance:
+> > 
+> > I've been hammering this with will-it-scale and a bunch of workload
+> > tests on a variety of hosts and have not seen any obvious regressions
+> > outside of powerpc (which i can't test directly, but SRCU-fast requires
+> > atomics for powerpc from what i can tell - so it will eat overhead
+> > without a fallback... if there is actually any hotplug ppc hardware out
+> > there to care about?)
+> 
+> So the big problem is the overhead on the read side for srcu?
+>
+
+Yes - but specifically this affects PowerPC because it:
+ - has NMI
+ - does NOT have NMI-safe per-CPU operations
+ - supports memory hotplug
+ - uses atomics for SRCU-fast
+
+So using SRCU fast in these contexts is not cheap.
+
+For what I could measure in QEMU, the atomics on PPC seem like they
+could be significant (15-20% overhead) in microbenchmarks.
+
+Hard to say what that turns into on real hardware.
+
+I implemented a fallback solution for those architectures to just not
+free the zonelists in this case.  They have to iterate the dead zones,
+but it's a much less overhead comparatively (<1%, but measurable).
+
+For everyone else SRCU-fast is imperceptible overhead.
+
+> If we can find something else to suspend compaction, we could maybe switch to
+> rcu for the remaining cases.
+> 
+
+Is long-term compaction suspension even safe? I had to make COMPACTION a
+requirement for N_MEMORY_USER_NUMA in order to not generate spurious
+failures due to fragmentation.
+
+~Gregory
+
+-- 
+~Gregory
+
 
