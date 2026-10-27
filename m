@@ -1,138 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E9F606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 04:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08DE606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 04:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=Nz8aei22
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YgSp1vpe
 Received: by kanga.kvack.org (Postfix)
-	id 703C36B05B7; Tue, 27 Oct 2026 00:22:32 -0400 (EDT)
+	id 454766B05C0; Tue, 27 Oct 2026 00:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 664876B05B8; Tue, 27 Oct 2026 00:22:32 -0400 (EDT)
+	id 4056D6B05C1; Tue, 27 Oct 2026 00:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 553486B05B9; Tue, 27 Oct 2026 00:22:32 -0400 (EDT)
+	id 2A89F6B05C2; Tue, 27 Oct 2026 00:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BD2A6B05B7
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:22:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A870340928
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:22:31 +0000 (UTC)
-X-FDA: 85367109702.13.9DE9207
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E119D40003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:22:29 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Nz8aei22;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE5726B05C0
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:32:35 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 353AEA85A3
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:32:35 +0000 (UTC)
+X-FDA: 85367135070.12.F501DED
+Received: from mta1.migadu.com (out-130.mta1.migadu.com [95.215.58.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1B6B5A0005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:32:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YgSp1vpe;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.130 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793074949;
+	s=arc-20220608; t=1793075553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+qp0OXlPFpX5xiEJlY0VrKPIDA5cshKQIUi1chin/AM=;
-	b=uEpz6eUmy397kVG3ASWkeLKUMdL/GB1xsrQr/VdCb9I9N7yURZ+sKsXzJngtudJ23Ql6r5
-	FlfBzHfhKeCcxJO9a+VIxHO8dJbOiIwSDgeI3JVY3RHyuxExHFVuuEYkq3xAdzEFjaHJrN
-	yfW3Ru0e93Afe8JgnCHjnjVDnFLuUtQ=
+	 in-reply-to:references:dkim-signature;
+	bh=2ND1QfRhZdF2pJbYoRVTOMDw2ymU46dc6kpoYJ7tzKI=;
+	b=BUL/1Kyn+FxwT2TZax1ysQKfWYoRyO4XsHIXmgY6YLLRJNOUBqOOlps6BEYcV4CP4JnY3F
+	s/lj4vNPLa8qRBOn00g7YgPkL0bTCRXALcGEBbo1XdsEj08oKbyGj8Q74CmbKyxQnMWt1H
+	k+gAayZYbH6LAw7mW3vBiV44r/CcImk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Nz8aei22;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YgSp1vpe;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.130 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793074949;
-	b=yKwauW8Urvu67f1DKgHxaSlvyCIoTIRbF3fJFRRW0/mPz+XJLHxebZFxIkwmCw88BTg15E
-	oYAVIwfBy8GUZUXdI4fe9MoTq/b47qMAquXNyEfSiF1cRojsspdUTZWWsUI6h1i0jUOs1g
-	b7BYBv7WgetJsToaCvGEPeAj8cx9KgU=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-530e75d1ba1so31969921cf.2
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 21:22:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1793074949; x=1793679749; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+qp0OXlPFpX5xiEJlY0VrKPIDA5cshKQIUi1chin/AM=;
-        b=Nz8aei22auaUVkuWtljA3UkBdEPRv9dbuwySABkVdSJTQWKk93lUfErA/D5mdmSKLh
-         rzbJb5IsXGQ/PbiS34/knV57rl6wuBxSkXKk7vtekHN3nhGRs20a0W+iV5hEDQDdQl0y
-         ipTZGryhdDBnGp6cb+eN8aI1TbblHSjoJPfLToTio6lev8FWxNbmbMnzHbvFNoKCQMqb
-         ZJRPKcJlbdY/kA1U1BYabpr8C/6tBe3+jxMcDbJM421068Ii5EIHHXT8+CVoJxNF9Oip
-         0wqt5AMXikxEWxZ4K0y7L6g8vhpn2kdl2+iIbTr28PxQsUnw3dYcD/UNocydyyGGA1tO
-         HiTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793074949; x=1793679749;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+qp0OXlPFpX5xiEJlY0VrKPIDA5cshKQIUi1chin/AM=;
-        b=Y/mmyR+TbBWmMHsonPNDAm7G9616HBRRdf0MWIAO5Sl7h4isjLS5z5lE2yRRREdTG1
-         G9vS6eaGP+2bMCEJt4bRHMo6HKUbkXbRbiVAcM41xmR61wLcQYpH1IXx+jiZyE9c7PAS
-         rN7Q2a3h5eKDAvUUwk3FIZ96VU4ZF8ncLTY3zlpYgodNR38lGDElUpNhS09+USNVUpxi
-         JonE6QKAvFv6kdtMdRfao4J+D8M8M4Zms3wroa41+jBED8Enghagiy0ajXVelNHNq6GX
-         0zTEK19Ix28zqdlqgtmUk1BcnfeBPEB9dWfwDVmEYxfx09lutliEX+CaUw1b3YIEU9S/
-         jaJw==
-X-Gm-Message-State: AFq9FYLnKBc25Ji4ucKcPqBA4M9Zjil5TOKCfOhpYZzHZHk6a/WYurwq
-	KaJpwWoalVuK1QfOrVneUZH7JM0/ZQTbpFpe4cwibY5fV7DeY0twx5CnjQULuPmQJq/FFqCpqgA
-	nStKa1OE=
-X-Gm-Gg: AYBFou2klKlET/HWZ5J5LWqfnoSiSQ1uV4TmTOOlEx4pqj+vim3pZv8X/rq0Pl+s7gc
-	rpunCL3sQjPgOrvCp1t1HGZXPNb2GWUF0W1hflvUSB46hn2+FMuzWSH6sd22Wsm+zhENcXI/QEZ
-	LeckQ4jsdRgItRh759/tCfg4/boHj7E5f9TbAXH7QHJXFDqMu2LCc1zHOdThNQoavQmWPxO3f78
-	T2y3p1ESyK/JLICJJQJ6L41Lj6tYvP05pxtzZGn2ehzPj64qa7AgNFRJHj/UHgY4OJjKhc1Qrfy
-	9p5exc8GGXcGRonOvseDReFhQq47UxMGV4iFvso3s6UOovekJFOrcIKPF9sI1GNZg+mqRxdTfcw
-	9nRCJ16Gv6Y+uBakLv/KH0LRI/Wc3zolHk06UkK19ySRStlMdf/UlGE89IlBn/eN5nUgUENXPG9
-	3l3VJj6ujiLksj1kZCtBzB/OtsTSDJkzF8y7XnBiADtmY5sZOmt9lA3Un9MXXoocdY/tcEvb9NW
-	pB4w5ghmfvCIlB7zvh36TrmDj+BRHj54VsqgNXP63dNyd9UpOf5zuuS8UTGP4Q2V8h7+cSmS73D
-	LceXDa3ruhKjLDi15Go9MsGKcPDc95NZxXRandfAuQ==
-X-Received: by 2002:a05:622a:a6cb:b0:536:66ec:1b06 with SMTP id d75a77b69052e-53ae5466c89mr89523631cf.50.1793074949087;
-        Mon, 26 Oct 2026 21:22:29 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47bd01cdsm91139676d6.7.2026.10.26.21.22.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 21:22:27 -0700 (PDT)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	osalvador@suse.de,
-	muchun.song@linux.dev,
-	iamjoonsoo.kim@lge.com,
-	anshuman.khandual@arm.com,
-	stable@vger.kernel.org
-Subject: [PATCH 6/6] mm/hwpoison-inject: keep the page online while filtering it
-Date: Tue, 27 Oct 2026 00:22:04 -0400
-Message-ID: <20261027042204.3741307-7-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261027042204.3741307-1-gourry@gourry.net>
-References: <20261027042204.3741307-1-gourry@gourry.net>
+	t=1793075553;
+	b=Ilx5SSrtZ0ACOM4+NijI5FcapgQG6ojXk/oEGKYkLMIv7AIY1qzIXaVVGk/71cRGXgaHmq
+	2cwdst7k6t5yMxWectjSWy+n94v0EGDrQ0LhhyuBkFlyT88kpd4JjQlahV3HtS8AEOor6L
+	1lFFCS9eGpwBghYxsAWWQXv0rp610a8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=wNnZLpM737A1LQh3vzOkr5Ug8cYkUYuQ4aBQwWDDyhI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793075551; v=1; x=1793680351;
+ b=YgSp1vpeZSpbihhKZuDfRAd0siFBwwfzMHG4036HqsfxcmaXXMANdlZvaSFIPGbVdjFjLq0y
+ YDQuWLLWDSENb5//B8qCJ8aYtml7A2zrmRoSbU4rwVUe9zjmSW4Hz8qHYes4YGXww+VN9qPrza/
+ T8hVoojbMllFBBHZD7JiREDI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f40ffff1fc2cc39b;
+	Tue, 27 Oct 2026 04:32:31 +0000
+X-Mizu-Trace-ID: f40ffff1fc2cc39b
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Boris Burkov <boris@bur.io>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Shivank Garg <shivankg@amd.com>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH mm-new] mm/migrate: move NR_KERNEL_FILE_PAGES on cross-node migration
+Date: Tue, 27 Oct 2026 12:32:14 +0800
+Message-Id: <20261027043214.2248986-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E119D40003
-X-Stat-Signature: epc6ughd89x5u4ui946ogoxqshxode5f
-X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1B6B5A0005
+X-Stat-Signature: 1wm3wyhksnr51mp17qfdc7zqjt3biids
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793074949-130936
-X-HE-Meta: U2FsdGVkX19ytsq+/HCjgGNek7pjjaAySd8PcbjhAdjm2iH8/EIXRe/MaUzCkSWMiSmGJe/xxB/Zb2bKOJB3zoW0Pflpmh5PUPwRxj7pwWxWvu9bTcLmXhV0WmFhgyYgcI1Ne3IqQ2Ja0tUMojZM+bp/SMvPf/BbUfTHFuOCRFcvmPZclpUJaWXur9u91oMlyR2f/CSiCSNz6rPrTZpPF4VG+HMDpwmFKx8P3yRRvFDzzZkCLoN7fwgnmw2uEEQ7Bg+H7zpqmMJemF58eRs/1n0fP8fDJF1P88tpoUkKAW7o9J6r2sUQNrNFpoeHYml8N2yLZOpG1OMWh0vOoiQ2Vz+RaD8YioRKF4hSyDgu/SoovdrnL8yvtKPfwxspnxfYifoYYtDAKxAwhFbTu2np6ftsPN51zYR7tYeNibmhrMk5u/lFZgVyUnhuyiwJK52AV7TvU52uEdJ6iI9t47qOFLot3SA10lhmziD02qcahLN7rhyRZaQZnJnDD6v5sY7vs7C8P+XGtaTJGnufwXQDYg11tdzrE2Vs5bH2azapmeAr109nb2yZFOC60rz9eTsrvumco9sAqQAXZ9z4GqAv0FZs/jjPWLVw7j5RTDpwK58PT1i3SLm7eyO1Y/f1cfTVy2rHZyeSsOLub3nP8a3eko85khGfZxqKS96yHk4vmrtM1+ioZ41ZsEFpkPQSJi7kqwA2E+QRKv/+MYH+917TZFNcX+p/iKrcwxK6VDUdLLsZK94Wu0deIoPPYGEwZlIls1g14EQ1SUH/35JxyUgNstfckR7JBkLZUUnXo9hQF8Tk5r44RpVpCeNxlCHs+BjsHqCLo5r+zfQRM6qan7PrVtA8xvoJUjYsE0fgR6gYRj77/bNGACmORVM/ZVsTaNJysLaovJwVc/n/fPVbFHodc8sn6VgvQD/FiRZ5CLQCEgEYL787etf16huoHa0VVgX74z+8m3cw66IORKOndc0
- SkrvGIsr
- oMKh2C3AsE89oTAZc3vOmurUzrYNOVcaz/LG68vyq2nQL2QhsbrvXW1mltcsP3cef6SbVznN0/5Rjp5v7//RmuUiTcUw2yUeasycZ3tydJWZSEf1P46fKlRNuN5Jz1gtX5A3FO5oSsxtKatI5z+QPZUJZOXFkxjyqgcyT7s/U1EIH/LhDboxooS0DUCZQ9QowHdaUsa1NYPtMD2gs0zU+B42NjFoADs3J2dfi/YFEIHNTRAgV75yEZzTctKOM2KP4o29vQF86SuNAwbKr7LIm6RYpZuiRkFpAk/mc/zlqEhAz0kSM8i6fo8tpwX1SglRaq+rR9ERWpdfgzAGeA/Kp2LIpHdUI5axQucR7DxcOTl2Wa84OIofknqj2dQhcp6sM+o2mADIeUChCYMOAeo4lEaHPxQ==
+X-Rspam-User: 
+X-HE-Tag: 1793075552-813763
+X-HE-Meta: U2FsdGVkX18ccXRlOR9TxNrCwfeJRx3ioZ/c4alshA84noBGD7QpsZN+AqLp5pBg199Bj/BxmFyiOcrsNjLCzNoe9j4VXsH511DqI5XFUPsf2DWP6rF+3ud4IufkfeAmovNABjMbFf9+aMOaRC+k8Kq/vaaNJEevdE9xxgU+uMlLxhf/2CBKYU3m8VI9WetAKwkzqKLVDDqpkFIvcchkq9fcRqopj64snyzZLK/xl8E/kS69ng1sSae8SxtM2ZrHekHoB2DpHf8veIZ56fY7N5ZGconq1MV6VRo1lNcffPzW6OiXZIp9nFJAowlTsCsRPhc1Pi18JT3GxhLuKoKskOs82JG5F9x8HIY7tD4q0N+oc3b3MBAP6sPrqSpoKW/Hx1tkrm8cRrxCzf58tLDsr79ONL8PMWa17pdcATOCQaNp4qxs3Ky8xdH2vWY8E6tiKz2f1LCv5UFH0gWfa+yhJINGYwy0p7S4BtUn3j8DMsCdRfjoNkRCoboMVBgYyvkUDO0x/ROjnVXgkYw5VsDUXZxDy4bp1ggRjhP3gMtBncYs84v4QJD7QdfBfPKwVFVxIGWAdSDn6oVI5yE2yQBon3rHw1/uUoESpSqOLwwDjp8O3UyH6rsO+D9llVmsHDFnQ5K7GPfTBV/vewZXrE1tnNgE6IHA3tZqHpocU5xR5Rx66ayUE+XnNoqE6qkL2T29dqxRuvkJAgQMfbTbkDZ8TLG1qMtZfaLhgA3kUsY8B723fUopM/Gj8avwlSLlRWjN3N3TW9FvekDKS837KZA1GVbuycPjyHIQlS8UxWrLbjYedG3BRoHTyv7pol/Odo/3ydiF/+zns7BMz8SyqemACMwq75nwTPV7RyySLO9TTzgD+vgGM0x+smrCpJt5xXLg/pGGGgrLhs2jVVJxRAA+esYoXD/GYMVnne1603InLxRY8YXFroi7z8gnayUfwG73INIkswJX8ZwSPkJulTU
+ hAt6vNi2
+ Ll6xBeHnnU4e9NfDkzdo8b7CWUZqjLWjX9sTvpf6wtT9/Rx1ieeY7Rtp6mS0sSfhjwWKyasJqxzp4jNn/sQAIXS2sVabAD7E03SMChOZnG6NaCa8XNBiv/QscVpziNMoL5rDojk1Gt+F9PGISxrmglV5VAiZfkp89RnJMyekWtVSDHnPaVuL6u1QOjgYMNqXRQ+Y40SozL4j7j0Mk6c0CST+fdoD3zoNADsi1zztCQhym3uNjv+H1z8iubpKOX1Os92KSVFCxjssj2uZlqzfTCNU8nxY35i25SEojmQMW/KBZzKCdC57pf6XULoihnB9S+3Eq60ND7pOKt/31O2gK2uvLOo2qecgIfk8WCfdsM6dvWVRm9LZPovnaTLY4kXZz//t8jUA2fdwI6Ro=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,159 +102,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Injecting a memory error with the filter enabled while the memory is
-hot-removed can crash.  hwpoison_inject() checks the pfn with
-pfn_valid(), then runs shake_folio() and the filter on its page, which
-can sleep in lru_add_drain_all():
+From: Ridong Chen <chenridong@xiaomi.com>
 
-  CPU 1 (hwpoison_inject)             CPU 2 (ACPI eject)
-  pfn_valid()
-  folio = page_folio(pfn_to_page())
-                                      offline_pages()
-                                      arch_remove_memory()
-                                        vmemmap freed
-  shake_folio(folio)
-    reads folio->flags
+NR_KERNEL_FILE_PAGES counts page cache folios of mappings flagged
+AS_KERNEL_FILE (currently the btrfs btree inode).  It is a per-node
+counter: filemap_add_folio() adds to folio_pgdat() of the new folio and
+filemap_unaccount_folio() subtracts from folio_pgdat() of the folio
+being removed.
 
-  BUG: unable to handle page fault for address: ffd4000006040033
-  #PF: error_code(0x0000) - not-present page
-  RIP: 0010:shake_folio+0x2a/0x50
-   hwpoison_inject+0x232/0x4b0 [hwpoison_inject]
-   simple_attr_write_xsigned.constprop.0.isra.0+0x179/0x220
-   debugfs_attr_write+0x63/0x90
+__folio_migrate_mapping() does not move it when such a folio is
+migrated to another node, so the source node keeps the count forever
+and the destination node underflows once the folio is freed.  btree
+folios are migratable through btree_migrate_folio(), so demotion,
+DAMON-based migration (DAMOS_MIGRATE_{HOT,COLD}) or memory offlining
+all hit this.
 
-Until the filter stopped pinning the page, that reference held off
-offline.
+Reproducer, on a QEMU guest with two memory tiers (node0 is DRAM with
+all CPUs, node1 is a CPU-less slower node described via HMAT) and
+/sys/kernel/mm/numa/demotion_enabled set:
 
-Hold get_online_mems() around the filter, check the pfn with
-pfn_to_online_page() under it, and drop the hold before
-memory_failure(), which takes it again.  Offline and ZONE_DEVICE pages
-never passed the filter anyway.  Export get/put_online_mems() to the
-module.
+  1. mount a btrfs and create 20000 empty files, so that btree folios
+     are cached on node0;
+  2. echo 2G > /sys/devices/system/node/node0/reclaim, which demotes
+     them to node1;
+  3. umount and drop caches.
 
-With the injector held at shake_folio() on a free DIMM page across an
-eject, base faults in 3 of 3 runs.  With this patch the eject waits, and
-the injection then fails with -ENXIO, in 3 of 3.
+nr_kernel_file_pages in /sys/devices/system/node/nodeN/vmstat after
+each step:
 
-Fixes: fd476720c9ba ("mm,hwpoison-inject: don't pin for hwpoison_filter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+                  without this patch     with this patch
+                   node0     node1       node0     node1
+  1. cached         1868         0        1868         0
+  2. demoted        1868         0          36      1832
+  3. dropped        1832         0 (*)       0         0
+
+  (*) the counter has underflowed to -1832; negative values read as 0.
+
+The global value in /proc/vmstat is 0 after step 3 in both cases.
+
+Move it together with the other node-keyed page cache counters.  It is
+a node-only counter, so use the node accessor, matching how it is
+accounted elsewhere.  Interrupts are disabled here, as for the zone
+counters below.
+
+This was pointed out by Shivank while reviewing the NR_FILE_THPS fix
+for the same function.
+
+Fixes: e3a9ac4e866e ("mm: add vmstat for kernel_file pages")
+Suggested-by: Shivank Garg <shivankg@amd.com>
+Assisted-by: LLM
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- mm/hwpoison-inject.c | 55 +++++++++++++++++++++++++++++---------------
- mm/memory_hotplug.c  |  2 ++
- 2 files changed, 39 insertions(+), 18 deletions(-)
+ mm/migrate.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/mm/hwpoison-inject.c b/mm/hwpoison-inject.c
-index a11222572f978..f6cc967b3a468 100644
---- a/mm/hwpoison-inject.c
-+++ b/mm/hwpoison-inject.c
-@@ -9,6 +9,7 @@
- #include <linux/hugetlb.h>
- #include <linux/page-flags.h>
- #include <linux/memcontrol.h>
-+#include <linux/memory_hotplug.h>
- #include "internal.h"
- 
- static u32 hwpoison_filter_enable;
-@@ -99,43 +100,61 @@ static int hwpoison_filter(struct page *p)
- 
- static struct dentry *hwpoison_dir;
- 
--static int hwpoison_inject(void *data, u64 val)
-+/* Returns true if the filter rejects the page at @pfn */
-+static bool hwpoison_inject_filtered(unsigned long pfn)
- {
--	unsigned long pfn = val;
- 	struct page *p;
- 	struct folio *folio;
--	int err;
--
--	if (!capable(CAP_SYS_ADMIN))
--		return -EPERM;
--
--	if (!pfn_valid(pfn))
--		return -ENXIO;
- 
--	p = pfn_to_page(pfn);
-+	/*
-+	 * Offline and ZONE_DEVICE pages are not LRU, hugetlb or free buddy
-+	 * pages, so the checks below never let them through.
-+	 */
-+	p = pfn_to_online_page(pfn);
-+	if (!p)
-+		return true;
- 	folio = page_folio(p);
- 
--	if (!hwpoison_filter_enable)
--		goto inject;
--
- 	shake_folio(folio);
- 	/*
- 	 * This implies unable to support non-LRU pages except free page.
- 	 */
- 	if (!folio_test_lru(folio) && !folio_test_hugetlb(folio) &&
- 	    !is_free_buddy_page(p))
--		return 0;
-+		return true;
- 
- 	/*
- 	 * do a racy check to make sure PG_hwpoison will only be set for
- 	 * the targeted owner (or on a free page).
- 	 * memory_failure() will redo the check reliably inside page lock.
- 	 */
--	err = hwpoison_filter(&folio->page);
--	if (err)
--		return 0;
-+	return hwpoison_filter(&folio->page);
-+}
-+
-+static int hwpoison_inject(void *data, u64 val)
-+{
-+	unsigned long pfn = val;
-+	bool filtered;
-+	int err;
-+
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	if (!pfn_valid(pfn))
-+		return -ENXIO;
-+
-+	if (hwpoison_filter_enable) {
-+		/*
-+		 * Keep the page online while the filter looks at it.
-+		 * memory_failure() takes this again, so drop it first.
-+		 */
-+		get_online_mems();
-+		filtered = hwpoison_inject_filtered(pfn);
-+		put_online_mems();
-+		if (filtered)
-+			return 0;
-+	}
- 
--inject:
- 	pr_info("Injecting memory failure at pfn %#lx\n", pfn);
- 	err = memory_failure(pfn, MF_SW_SIMULATED);
- 	return (err == -EOPNOTSUPP) ? 0 : err;
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index b5d9e367b893d..fe2ed0894d49d 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -215,11 +215,13 @@ void get_online_mems(void)
- {
- 	percpu_down_read(&mem_hotplug_lock);
- }
-+EXPORT_SYMBOL_FOR_MODULES(get_online_mems, "hwpoison-inject");
- 
- void put_online_mems(void)
- {
- 	percpu_up_read(&mem_hotplug_lock);
- }
-+EXPORT_SYMBOL_FOR_MODULES(put_online_mems, "hwpoison-inject");
- 
- bool movable_node_enabled = false;
- 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 99e3026e3126..f829c5017c96 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -705,6 +705,12 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 			mod_lruvec_state(old_lruvec, NR_FILE_THPS, -nr);
+ 			mod_lruvec_state(new_lruvec, NR_FILE_THPS, nr);
+ 		}
++		if (test_bit(AS_KERNEL_FILE, &mapping->flags)) {
++			__mod_node_page_state(oldzone->zone_pgdat,
++					      NR_KERNEL_FILE_PAGES, -nr);
++			__mod_node_page_state(newzone->zone_pgdat,
++					      NR_KERNEL_FILE_PAGES, nr);
++		}
+ #ifdef CONFIG_SWAP
+ 		if (folio_test_swapcache(folio)) {
+ 			mod_lruvec_state(old_lruvec, NR_SWAPCACHE, -nr);
 -- 
-2.53.0-Meta
+2.34.1
 
 
