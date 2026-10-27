@@ -1,90 +1,161 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AA9606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 00:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A9A606A339
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 00:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DCQ/L2bM
+	dkim=pass (2048-bit key, unprotected) header.d=themaw.net header.i=@themaw.net header.a=rsa-sha256 header.s=fm1 header.b=UxTW6mCE;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=xZR0i/gU
 Received: by kanga.kvack.org (Postfix)
-	id A921B6B05B0; Mon, 26 Oct 2026 20:44:53 -0400 (EDT)
+	id 64CC86B05B2; Mon, 26 Oct 2026 20:46:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A40B76B05B1; Mon, 26 Oct 2026 20:44:53 -0400 (EDT)
+	id 5FD076B05B3; Mon, 26 Oct 2026 20:46:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 959586B05B2; Mon, 26 Oct 2026 20:44:53 -0400 (EDT)
+	id 514506B05B4; Mon, 26 Oct 2026 20:46:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51B356B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:44:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 996621C425A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:44:52 +0000 (UTC)
-X-FDA: 85366561224.30.DC4491D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C502E100005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:44:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DCQ/L2bM";
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A42E6B05B2
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:46:31 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 65A101A081F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:46:30 +0000 (UTC)
+X-FDA: 85366565340.02.439B767
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1E6C520006
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:46:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=themaw.net header.s=fm1 header.b=UxTW6mCE;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="x ZR0i/g";
+	dmarc=pass (policy=none) header.from=themaw.net;
+	spf=pass (imf03.hostedemail.com: domain of raven@themaw.net designates 103.168.172.157 as permitted sender) smtp.mailfrom=raven@themaw.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793061890;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793061988;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JxrlTFF5NKiqGXulyA5fyoXEffuwPVdQDm0tPRVW1I0=;
-	b=pr4Sdgvw1VRr3/zkWj0i/MwHLBFWbXlKf6nl3eArthwNydAnHdFaAiJo/CUbHjkUhtFGaU
-	ODUzTlMaBdnah3d82m2EWMOhrjhGX9MYvXylSS8O0q49iYB1A3Uqlb7gnh5BrLYg+U9euu
-	LwO21TIr8GuAxUKluiz4gmo++8GNFZs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793061890;
-	b=wDS15ShJzfU9jvtTduIYNYypf9YGxwN/aCQL3i2gL3bcD80DRmkGbQUW+MzEDcuf7x2K1b
-	xG6Cy+4z0t+Q0iCntUaaThjq0U+gDcs3AXJ/qKkNvUtJf811+d0upSCY8jCA2smrFlW3eR
-	NrcAShOgoSevvgNlJ6Mop52pmYefNQU=
+	bh=TP9+b3dz2+4Q7H6ld5iqHqm8/GcbXcvCr+9OqxIm31Y=;
+	b=WEqQXVSiPhe52TqEWdnsdaLh1J5ppw5JkBiP8krtnH7e7o37akjYHSkwRghakDGk9DTXUW
+	4C9jrTxsHdW6vs01q4iPtvlohHLkujwpoYFdkhtiCwZ4fnd7vW3WOPSQxZ8EQDseskle7x
+	lb+3o4arzkKC8CDtWDtu7v4voCcXNWk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DCQ/L2bM";
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E9E7243F0F;
-	Tue, 27 Oct 2026 00:44:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B61E1F01825;
-	Tue, 27 Oct 2026 00:44:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793061889;
-	bh=JxrlTFF5NKiqGXulyA5fyoXEffuwPVdQDm0tPRVW1I0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DCQ/L2bMnhllG4DH6VfKqL+IXI5XrzYmev1zVmcUIsSe2qqbm6dUGN17cwgj9tmgV
-	 toFjmQs/5927eHbGpH6w0l4Tg0xJAFiPOM77qgNt0b7FKf+WYPmJuA+to6U+WGvYXo
-	 bpBt24dp21KGmr7pY8/LHPhVrWWLj/Pvq0rWe6PRi0GxEkn5F2LkaK4bqr/MLIhZ7e
-	 OaIIhrZZtQtS/36HKzgOgHjL0UEjs8aQUGTQ7Zr8GDPnxT0CMOO5xxWgoyvfSiueIu
-	 F+Km72zdFthWusyhnsvduY7clWkpX3QGYnyGkWYNwt2Y/RKGKsjDJmxnRZHaVpxb90
-	 8pbbIAxkxfdfQ==
-Message-ID: <sashiko-outbox-185967@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] tools/mm: rewrite show_page_info.py with modular
- design and new features
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ye Liu" <ye.liu@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "SeongJae Park" <sj@kernel.org>, "Stephen Brennan" <stephen.s.brennan@oracle.com>, linux-mm@kvack.org, "Ye
- Liu" <liuye@kylinos.cn>
-In-Reply-To: <20261026-show_page_info_refactor-v3-1-cc74947cbb8b@linux.dev>
-References: <20261026-show_page_info_refactor-v3-1-cc74947cbb8b@linux.dev>
-Content-Type: text/plain; charset=utf-8
+	imf03.hostedemail.com;
+	dkim=pass header.d=themaw.net header.s=fm1 header.b=UxTW6mCE;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="x ZR0i/g";
+	dmarc=pass (policy=none) header.from=themaw.net;
+	spf=pass (imf03.hostedemail.com: domain of raven@themaw.net designates 103.168.172.157 as permitted sender) smtp.mailfrom=raven@themaw.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793061988;
+	b=M1s0Yy1wBeJW0wiNeql/eolAWr4rRrPlQesyfCMe1B/kqhBx3qQ/J+sANOxv2CraV+LWqb
+	DTXKYlSzKqPpXG3bHK7NeDBKA00JAvRcESHExqIVCLhZHcJNOnfm2DAptdJqafiNZ2vf4m
+	yshETcYvfqwV2K+EZPo8IHJ6/L0DHBM=
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 9352D1400984
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:46:27 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Mon, 26 Oct 2026 20:46:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1793061987;
+	 x=1793148387; bh=TP9+b3dz2+4Q7H6ld5iqHqm8/GcbXcvCr+9OqxIm31Y=; b=
+	UxTW6mCEmOrL9tmWKiTyP9zg4PXGlSKIcS3rjPV02pATPJi2m9tg6qzD7TRGbSjQ
+	XNBj2yuiDuJUVhLnGIWg0N9kd5i2RgUCU5JzadFcjoNQUmQAF+IRe1fUvdb2PDK5
+	vM0CROg4r9CiQLG5qCO3jIgDQ2rb6MsAktL6Y2p9huuiuge5juI/UwjFEKNw/yI0
+	l+uVTvdfSlDtwrCTc60f/FTTnPlpoK/bDUKzAZDxuxzL18WhxKE6LoObkhr7K4kE
+	Z9aFyrusk8Mj0oTqMkaHLwg7zqItTNrn9TjjgoJ25iX56cYt8cSkC9J1eYDfY2Ky
+	sEFVYf88kJjbND/igq40FA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793061987; x=
+	1793148387; bh=TP9+b3dz2+4Q7H6ld5iqHqm8/GcbXcvCr+9OqxIm31Y=; b=x
+	ZR0i/gUvbAqxRyUSV9Kgn8QJrqRByiGP5Gi0ERFiVMZUrgsd+2USmaFGTulU9uP2
+	OpjqLI/DsYLlOEPpuAUgI2imoY0m6aTbkSDuftJCs2bMHN3zn7Nae4GrIDtbnlHT
+	EkhGZWc2oroRCKB0dviKPn8BkPHh3JhVjtwehVl18kJZmif7l9pm4xh41IUoOE6r
+	NRpCGtLVUV/hnzZ45WU1tjZgtbLQcMv95xEMqkX0df9EVD2SqVUOeHH23wiw7Ebp
+	eUwBMk67W2tRgCwZrNWwCypMU2Q0VMXBggvg2NL+x7SvIL/VZmamU9CE95JTGQPO
+	br1OMyhbMR3SBwpM8ixCA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=themaw.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793061987; d=themaw.net;
+	mf=PHJhdmVuQHRoZW1hdy5uZXQ+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:Ub4XhHfmZ5YgwCSzTeEQHroBs/EEd4x7tWAezwqCVJMPRJk
+	k18yVPjZMkAFYfKCfgNYQeRl5STMzbGNFi2n6PaEhO7BWacE9oX6H32oDnjgGfEa
+	S4uAUPaLSDWXyiadhIs0gNdKGoRmukp2ltUziFjdYoLdMOGcETHTfLZzzHJho629
+	PcOcd6Cld93tLBhpvlPBvtqZQ79c/6aUJSzih+hZnQ6rlYgmiMO6p2Eulfbm6N8c
+	ajBllIs11TKtYeUuykdA4O1O0VElx/z9eQtSjypN+ZN6XkmomdQKeH2MxPEaGJya
+	wWWIZLIv6wfE2th/JT6aJ95O5SXn9OHMQcz+wzw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to,
+	user-agent;
+Message-Instance: m=1; h=sha256:4qMMu4/ztaxOQhducCNzbeW0mL5tE72ku/wze25LTrk=:TP9+b3dz2+4Q7H6ld5iqHqm8/GcbXcvCr+9OqxIm31Y=;
+X-ME-Sender: <xms:YvTfamEz77wskH6eHohuFKKJM2t9lP6I8JCeOLkIJFTD5CDTgm8Wtw>
+    <xme:YvTfauRjUeoE-i3N4Ef6HBWkI7L7F4jdiChUHApslgFGkNgDEb05lmMsRShFoc-Y1
+    NPU_7Xsu1rGFyW3CujYLLaBbzbKH_ugp5RoDJqfRYxqaqbLGQ>
+X-ME-Received: <xmr:YvTfalOyhWTbiPkS-wG79y8dAljjvtNHp9hl2Xy_MoGRUELhr40dmdWxaM-KRetOTc16wIbybrwFyjyFhoGDnNSKweUSypc9LPzcQ7Aeeyph_5RLTy0Yt6_BO2M>
+X-ME-Proxy-Cause: dmFkZTEJ5GJouwgJsfwUbfVQZ7sManMuXNYQq/oXjCFQW4jHTYsjQ4ZXBNT4Qak25Ao3Pn
+    CU4aWQsUwYQNoxLqftSX7fjbq4IulVn9BPbz2AXZAF5bavY/EpL3IfiE1OwS31FQ5x+HjD
+    fABqNfIkYIiP90sWSbpLjCiwih4Tu16AgHqokWCOGaxB21hUXOQWhzyp0vmOFbmLX/ojWQ
+    hkLkExoeSl8f5icBMLuE1/F/W0QfEFO26C1SCQO8vLGt7TB69pA4km3uoZtnLjTv39hXK+
+    QFORjWMaYV+mrD8g4+v7drAOWFGdWqEo/5is1Ck5pbO0sty7+PPHvbPtN6bFvQzDQ6+OPM
+    9oRzX3XaQfyo3dtGVQSbzT+yoe5fyXONM33TUR9ZN4k/uU2gYyTLRxuO44mAbXwQi4ybWM
+    02fMBrMVewYyAM7zYnsldkh1h0s/iXDISdZDApbs5f2ne5VY4Lp5XMklLIoOlauZngwSo9
+    AxSd4L71/CwN0D+GxaSJSTsC4Vvr8dZHBdpTFlQJdk/dNjXeN4MAPGOPX7zMY5F3bwuSsJ
+    Ca/KrUjwzRaK6XTf1jJVKr+HVV0ylTSAE79y4+TweSE7n6IDaE0+yP4gJ62faF7nbjD9+i
+    ihuXrhUe1EM1f9KejIJ3N2l2DNJvDy4qNiBAes+TnK+r6IXn14auOJ/NOb9g
+X-ME-Proxy: <xmx:YvTfanO3XW4oXN69GKg3lRp6pFv3YZHjb7GjxRIqjA29ar9feIAUGw>
+    <xmx:YvTfanFiGyN7RfNvX_5o6tHS5xZ0QyJ3-cLF9hapL1Em0ORi0T9-cA>
+    <xmx:YvTfapNHGMg3OOkvaBtlk-pMPDNuRju8ZKQFHwhTqtwpgKRzozQ3xg>
+    <xmx:YvTfahvUdKvJIYQ_9ADPwao-mC-zIMxwBE-90YEHJ7tF2lv8_b7QvQ>
+    <xmx:Y_Tfatdzx2UYjyTL5LgVqt1RBPRO3mW6oUw82z4c4SFFG2jJ8UMvT4FL>
+Feedback-ID: i31e841b0:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 20:46:20 -0400 (EDT)
+Message-ID: <5f659257d9842544d6830f9041e5ede63416d214.camel@themaw.net>
+Subject: Re: [PATCH 0/2] kernfs, autofs: fix pipe lock cycles through sysfs
+ stores
+From: Ian Kent <raven@themaw.net>
+To: Krystian Kaniewski <krystianmkaniewski@gmail.com>, Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>
+Cc: Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+ Danilo Krummrich	 <dakr@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner	 <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>,  Peter Zijlstra
+ <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Jens
+ Axboe <axboe@kernel.dk>, 	driver-core@lists.linux.dev,
+ autofs@vger.kernel.org, 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, 
+	syzbot+002fb7b2d0bc53bf7e75@syzkaller.appspotmail.com
+Date: Tue, 27 Oct 2026 08:46:17 +0800
+In-Reply-To: <4f56c93a9fc5fee152364974773df0a319c84af9.camel@themaw.net>
+References: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
+			 <cover.1792577179.git.krystianmkaniewski@gmail.com>
+		 <dc65c28e408d6b64d4b13b7ad30e5fe70ddaa441.camel@themaw.net>
+	 <4f56c93a9fc5fee152364974773df0a319c84af9.camel@themaw.net>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 27 Oct 2026 00:44:49 +0000
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C502E100005
-X-Stat-Signature: k9hcngibbo1b8nzhu7potjcguy1yekut
-X-Rspam-User: 
-X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44app2) 
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 1E6C520006
+X-Stat-Signature: xrmajeydsnqqw943o5q6wepdc8taz38b
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793061890-52011
-X-HE-Meta: U2FsdGVkX18HCVsiKqJ6nyktN92YFkLNcRiXgXj+5SzUadEgRqkQdjOGo9U5Jyc0QopdFmpRX1CkpKc45VKXEIMDsGi7HM6X4j8SiEtMHaFSqATH/hjaz6genj1PxVpTU4MNhQqcu1HmnShqHcY6xWsvy9AdzsgrcAhMskRcIFN1mdWU5NLCBS1ByXzjo5mclKhUSF1WJKHWOXh7LxLGuPx8L17eQ9EbntScZjrVQHKMzw+ynXA0AdW4vKtLTDoV+wcAjh+owNaKDmY6ZMbANBaTvMC46ggeAhI7LHUVU8zKByB41+JNbxfl/tk+pHFcVGXoMqf9rW7MM9UtNKg+lo7SJA5+fx7u827jIhnjUfsXA8dXKyiv/a9IGNNNNNtHCAW6NmucWLU8gr0rcaT6jhXLtrhOTaFB2dUeDyUpqResXyc0ZHa60+NQ6rNPhg7nXG3dGDrkXHq9ouA4Sa0G0RoTkepu1WQ55N7rNz2MnkhQk5Iu/JAOeEeGVoaSvUFPsA8JfT+Xr2N6rJfybgHkhkH9V1Q+oa0L3lhJLdYZezfU97/Ndrb8vj+1uVkqFM/ii2UpkAFGFC7MFBSeL6//LyUuNv8K0jaE238KULi/d7Ot9GqKqjJZoobSCWP8NAT/vlw66m9rVULOmHwPsy8BHZIFu0UclSl5SdvYa3V9Smonjake/3l8lxIb1rz4atSfjXYLUWV68ftVcIB4j19r60fRk86Gxb156n0zh/s7KBhj7bsEw9pmfmRAwbXu1c9NVzKNxZhchGeY/wIi52cYpVTk8y2VvhqXZzk0XeLSwWKb5R2lfE20+fo/ENtNRZw5n8DkQ7x7M0KjxpvngWO2Bs1NPPuOCC8tp44l7G32uz9bR97Q6GXijf2F/F5+OVCrfJOK0Xbjs8iX1eDzqLytjG4iHE3wc6tZ3z+GTLt03bxziiO3qOP3V3hgHQf+5mUZQpX7r5cwPOJkTS7PVhs
- zJeugWE6
- eEnHl+4RU51L0vCWJuIuIzscCJ8pH/n6WrYkpcT/ijNYNjoPvN7ljJ5eFCT0QiJ3sZdDgLpIRuo3UT5a8BY+EVlozw7n/XRt/mzWiyx98s6mgtoIVV7RML5h89bmLajZnly4R7DM5c1vwIslU5scDP/+TNaktrsYkdrI12yAlCuoNTD8/CS+ylJwOiXkOhCjWUPmoRf8IrxcxwrdIamdThrBQwzQIf8Of4LzdDgs9r2fZ8TzJVYPvzjxRUdZVnkoOR6HXIhb144nJ+5V7DRyCiGJXR6j7IOxgSIXP0DLPlCRZPDvb8QfsOs+MdQquNbn4vLE0pZWqfAsdygGG9bA2lnQpeWVIwmX7ZegyxEdE6kE2Wg+zgKIsMaX76icT72GXxdftIldBZHtmt++tK6CfX4Z2vD7U0D38pT3rSWZLnqgslgFmuUtXGdsAZLckZdVdDPtDzLJr90Gg3KiSunqEiw12s8Y2L3uWLLdY5sI9Ofp6SNcW+sgxDk1TXixrA+0zmfOwTSVZVneGK9GpVUIFAVlKrDEr1DL5127T4rkmSaJjvFbKl7mhNTyj/bUCLs3lvhvN8MLHsqNYyP5LUYothCerpbhd5aAn3/VSggyI+fQQxK0=
+X-Rspam-User: 
+X-HE-Tag: 1793061987-866511
+X-HE-Meta: U2FsdGVkX1/9zHuiQYLU8DCeX3llGle6JI/ATNGXv6966B0d1ENhnK31n0XKrTbmi9utk/fRnEyCSjPyzCNQIu9DUrTWZRgxIcIWedVlElZI1Lpf4du4+c88ZGCf+6wI9ukOIdq7vyp9zeje/K9Z1qxWwZ6i1RZFbUPFy6XTQGv9RAq/IEhFWsfd1eTeQPf1BB+XD71jv5U5ow9fJnL7Bdeqp+5oNThh06LfaKpsUq1IBgLgSIJ7lbWbNU2/uwAn/1bs07o2ZppaBPtcclVVN8Bc849ubP8eanyUgBfR51jw60F4gi6WGyHZTfDooaiBt5WNLg3xlW3IbuNL3tlYca/n94OUDlyRFFuM1F2xBvkWigJNN3Bhr7dTlomcqAhQRx2NdAZIy4tAQJtOO6v2dFPXOgO0pfId9zWJcZI7gSnnAlgyqzzGu9CUhgkTjPrYjOYRVAnlhDqYD89PvCQSoGovOzN1fMBptDKwzuWZEytwoXT0lavCylK2ae8Vv2MCTkX6Ip98Lu1nokW/uRPFHckcrQr0c/sWRMlZPWRFfxLW0T6DL58xWM3z6+yhP/eLUVaDjCIy2aaQi3LvYM2dl7dwfFea0tWh8mO4V0ruPu663a6z9Ee/zpEg5ggLXGfThJvpxWd5rLODHHVIH0BvCiawY4zDko670mnjSso+V2eWOYrcJIV0XZtiNhMWnHrAi3gEKEI8Dx2J/UZYOumwGTlnukIKpxwZ5G6N4WVoyWTdagrw2/6B5yJCbfhXyAbl7K+XOkwaXOeDHhGNphz7vqrRCgt8iSj+J3t1dF4NDsedvX+HNx91WhQ+NHZjaJwQTGltXHbjYo5wfm7g89p5nq2FWqx9hBm+yOH7uPy96COjxcAMjhCsMZhBDp5PRIl5EL2Ddl/i9cpU6ak7Td8K037kOK3ecC8EdIGTTioI0lXu9O1EZ9rOOLqnwnBpFYI6sHPj4uyAiiOI4bJYqkR
+ 5V83H4GS
+ Gbg1Ju+1lTrwuu6bXV4MkoekMUGkhHmcXc6MwC9bSXsI3kG6IULU86tLEl4zhp9lOEbhMbiWdS037YkpRBSLPWCmwXr5f37z2DrRuKp3yfLtBAJ61xJ60rM4xMzdHD8AShToF6vRre/I+FeJtiw3dSTJm4jPN3ZyXsgq2i7KULWpJxbt9eti3J7ZXNzpqmwhjqzz7DAZtT8WdxllgUv2WACYc+MaHKgXjUqwraSu6hiS5x+l8yaO+Eeqk2HJcCY5haU7Wiw7eBs9MUObe56tVsotc2IXTqls3R4OVVEMY+lFnUbPKdsuHCyvdYNcqCp5xclnHodD3aZkvCfCz1msEUFwwsnwXViBJ0rqTvllQy3vngVKLcqBJbvkvW0p3eurPtRrkvkI1mk+Yr3WS459CDExkppBiPF4+Sp5GuBiiX1J7XxS2Mffkeg3YCVEKhCs8UM3jO8aDp0ERGPIqXT7/135j+kARiMRhY3W9YPP0l+9cfmzf969ruwO45TTYV18I+DpfmF7MNAFgfJG0Xxh1m1w0GA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,173 +163,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] tools/mm: _page_node_zone() aborts NUMA loop on NULL node_data e=
-ntry
-- [Medium] tools/mm: _vma_anon_pgoff() skips __vm_anon_pgoff_lo on 32-bit k=
-ernels
-- [Medium] tools/mm: _page_fields() reads overlaid _mapcount on typed pages
---
+On Tue, 2026-10-27 at 07:11 +0800, Ian Kent wrote:
+> On Tue, 2026-10-27 at 06:07 +0800, Ian Kent wrote:
+> > On Wed, 2026-10-21 at 14:51 +0200, Krystian Kaniewski wrote:
+> > > syzbot reports a lockdep cycle &pipe->mutex --> &of->mutex -->
+> > > &sbi->pipe_mutex. splice holds a pipe mutex while it calls the
+> > > write
+> > > or
+> > > read handler of a kernfs file, kernfs takes of->mutex there, and
+> > > a
+> > > write
+> > > to /sys/power/resume looks up a path that can make autofs write a
+> > > request
+> > > into its daemon pipe and wait for the daemon.
+> > >=20
+> > > Patch 1 stops holding of->mutex around the ->store() callback of
+> > > regular
+> > > sysfs attributes, which do not get the open file and already run
+> > > concurrently for separate opens.
+> > >=20
+> > > Patch 2 handles the case that patch 1 leaves. A store called from
+> > > splice
+> > > still runs with the pipe locked. autofs no longer sends or waits
+> > > for
+> > > a
+> > > request in that context and returns -EAGAIN instead. A new mount
+> > > is
+> > > refused before it is marked pending, so no other lookup sends the
+> > > request
+> > > in its place. This also removes a deadlock in which the spliced
+> > > pipe
+> > > is
+> > > the autofs daemon pipe itself.
+> > >=20
+> > > Patch 2 changes behavior for one narrow case. A lookup from a
+> > > splice
+> > > callback that needs an automount fails with -EAGAIN instead of
+> > > waiting.
+> > >=20
+> > > The series was tested in QEMU with lockdep using the original C
+> > > and
+> > > syz
+> > > reproducers and focused splice and autofs cases. The target
+> > > reports
+> > > were
+> > > not reproduced with the series applied, and the paired functional
+> > > cases
+> > > matched the unpatched baseline.
+> > I can't seem to find a reproducer that reproduces the bug or maybe
+> > I don't know what to expect from running the syzbot reproducer I
+> > did locate.
+>=20
+> I think I have found the appropriate reproducer, certainly looks
+> like it.
+>=20
+> Commit 1e8c813b083c ("PM: hibernate: don't use early_lookup_bdev
+> in resume_store") looks like it's been around for a while so I
+> assume the reproducer should work on 7.2.12?
+>=20
+> What should I expect, a hang, it doesn't.
+>=20
+> Also it looks to me like the reproducer is trying exploit an
+> invalid request similar to what I described earlier but I can't
+> test to see if my simple autofs resolution fixes it if I don't
+> know what to expect from the reproducer.
 
-commit ec6f474f80e4b1d78e13f090397c77cad2bd92c4
-Author: Ye Liu <liuye@kylinos.cn>
+Further investigation shows that the reproducer is initiating path
+walks within the autofs mount it has mounted which is valid in the
+sense the autofs file system will attempt to send a request over
+it's pipe. These are not seen as invalid so I can't prevent them
+in the way I thought I might be able to.
 
-tools/mm: rewrite show_page_info.py with modular design and new features
+I can't confirm there is a deadlock, how do I do this?
 
-This commit rewrites tools/mm/show_page_info.py into a modular field-collec=
-tor
-architecture, adds --pfn, --page, --user, and --selftest modes, fixes slab,
-memcg, and compound page handling, and adds reverse mapping, PTE walk, and
-zone/node lookups.
+A little more validation and I'll be in a position to review and
+probably ack the autofs changes.
 
-> diff --git a/tools/mm/show_page_info.py b/tools/mm/show_page_info.py
-> index c46d8ea283d7d..4334094739035 100644
-> --- a/tools/mm/show_page_info.py
-> +++ b/tools/mm/show_page_info.py
-> @@ -4,166 +4,902 @@
-
-[ ... ]
-
-> +# ----------------------------------------------------------------------=
------
-> +# Reverse mapping (rmap)
-> +# ----------------------------------------------------------------------=
------
-> +
-> +def _vma_anon_pgoff(vma):
-> +    """Get anon pgoff for a VMA (vma_start_anon_pgoff)."""
->      try:
-> -        print(f'PID: {pid} Comm: {task.comm.string_().decode()} mm: {hex=
-(mm)}')
-> +        hi =3D vma.__vm_anon_pgoff_hi.value_()
-> +        lo =3D vma.__vm_anon_pgoff_lo.value_()
-> +        return (hi << 32) | lo
-> +    except AttributeError:
-> +        return vma.vm_pgoff.value_()
-
-[Severity: Medium]
-On 32-bit kernels (!CONFIG_64BIT), will _vma_anon_pgoff() skip reading
-__vm_anon_pgoff_lo and fall back to vma.vm_pgoff instead?
-
-In include/linux/mm.h:vma_start_anon_pgoff(), __vm_anon_pgoff_lo is always
-present in struct vm_area_struct while __vm_anon_pgoff_hi is only defined
-under CONFIG_64BIT:
-
-    static inline pgoff_t vma_start_anon_pgoff(const struct vm_area_struct =
-*vma)
-    {
-        pgoff_t pgoff =3D 0;
-
-    #ifdef CONFIG_64BIT
-        pgoff +=3D vma->__vm_anon_pgoff_hi;
-        pgoff <<=3D 32;
-    #endif
-        pgoff +=3D vma->__vm_anon_pgoff_lo;
-        return pgoff;
-    }
-
-When show_page_state() -> _rmap_fields() -> get_rmap_info() calls
-_vma_anon_pgoff() on a 32-bit kernel, accessing vma.__vm_anon_pgoff_hi rais=
-es
-AttributeError before vma.__vm_anon_pgoff_lo is read. For MAP_PRIVATE
-file-backed VMAs with COW anonymous pages, returning vma.vm_pgoff uses the
-file offset rather than the anonymous page offset, causing get_rmap_info() =
-and
-_vma_owner() to miss the VMA in the range check or compute the wrong virtual
-address.
-
-[ ... ]
-
-> +def _page_node_zone(page):
-> +    """Find node ID and zone name via PFN range lookup.
-> +
-> +    Uses prog["node_data"] which is x86-specific. Falls back to
-> +    contig_page_data for UMA (single-node) systems. May return
-> +    (-1, "Unknown") on architectures where neither symbol exists.
-> +    """
-> +    pfn =3D page_to_pfn(page).value_()
-> +    max_zones =3D prog.constant("__MAX_NR_ZONES").value_()
-> +    try:
-> +        nr_nodes =3D prog["nr_node_ids"].value_()
-> +        node_data =3D prog["node_data"]
-> +        for nid in range(nr_nodes):
-> +            try:
-> +                pgdat =3D node_data[nid].read_()
-> +            except (IndexError, FaultError):
-> +                continue
-> +            for zid in range(max_zones):
-> +                zone =3D pgdat.node_zones[zid]
-> +                start =3D zone.zone_start_pfn.value_()
-> +                spanned =3D zone.spanned_pages.value_()
-> +                if spanned and start <=3D pfn < start + spanned:
-> +                    return nid, zone.name.string_().decode()
-> +    except (KeyError, FaultError):
-> +        pass
-
-[Severity: Medium]
-What happens in _page_node_zone() on a NUMA system when an earlier slot in
-node_data[nid] is NULL (for example, an offline or unpopulated node)?
-
-node_data[nid].read_() reads the pointer element from the node_data array a=
-nd
-returns a valid drgn pointer Object with value 0x0 without raising FaultErr=
-or.
-When the inner loop then evaluates zone.zone_start_pfn.value_(), dereferenc=
-ing
-the NULL pgdat raises FaultError outside the inner try block.
-
-That FaultError is caught by the outer try/except block, which aborts
-iteration over all remaining NUMA nodes and causes _page_node_zone() to ret=
-urn
-(-1, "Unknown") for pages on higher-numbered nodes. Should this check if
-not pgdat: continue after reading node_data[nid]?
-
-[ ... ]
-
-> +def _page_fields(head, fields):
-> +    """Collect non-slab page fields (refcount, mapping, anon/file, etc.)=
-."""
-> +    mapping =3D head.mapping.value_()
-> +    fields["Page Mapping"] =3D hex(mapping)
-> +
-> +    if mapping =3D=3D 0:
-> +        fields["Page Anon/File"] =3D "Unmapped"
-> +        refcount =3D head._refcount.counter.value_()
-> +        if refcount > 0:
-> +            fields["Page Refcount"] =3D refcount
-> +            fields["Page Mapcount"] =3D head._mapcount.counter.value_()
-> +        lru =3D _lru_type(head)
-> +        if lru:
-> +            fields["LRU"] =3D lru
-> +        swap =3D _swapcache_info(head)
-> +        if swap:
-> +            fields["Swap Entry"] =3D swap
-> +        return
-> +
-> +    fields["Page Refcount"] =3D head._refcount.counter.value_()
-> +    fields["Page Mapcount"] =3D head._mapcount.counter.value_()
-
-[Severity: Medium]
-In _page_fields(), can reading head._mapcount.counter.value_() report bogus
-negative values for non-slab typed pages?
-
-In struct page, page_type and _mapcount share a union. When show_page_state=
-()
-inspects a non-slab page that has a page_type (where _page_type(head) is not
-None, such as PGTY_table, PGTY_hugetlb, PGTY_zsmalloc, or PGTY_large_kmallo=
-c),
-_page_fields() still reads head._mapcount.counter.value_() and prints the r=
-aw
-PGTY_* bit pattern as a large negative integer (for example, -218103809 for
-0xf2ffffff on PGTY_table).
-
-Should _page_fields() skip "Page Mapcount" when _page_type(head) is not Non=
-e?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026-show_page_=
-info_refactor-v3-1-cc74947cbb8b@linux.dev?part=3D1
+Ian
+>=20
+> Ian
+> >=20
+> > Can anyone help please.
+> >=20
+> > Ian
+> > >=20
+> > > Krystian Kaniewski (2):
+> > > =C2=A0 kernfs: do not hold of->mutex across sysfs ->store()
+> > > =C2=A0 autofs: do not wait for the daemon while splice holds a pipe
+> > >=20
+> > > =C2=A0fs/autofs/expire.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 6 +++++
+> > > =C2=A0fs/autofs/root.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 28 +++++=
+++++++++++++++++--
+> > > =C2=A0fs/kernfs/file.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 52 +++++=
+++++++++++++++++++++++---------
+> > > --
+> > > --
+> > > --
+> > > =C2=A0fs/splice.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 13 ++++++++++-
+> > > =C2=A0fs/sysfs/file.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 18 =
+++++++++++++++-
+> > > =C2=A0include/linux/kernfs.h | 11 +++++++++
+> > > =C2=A0include/linux/sched.h=C2=A0 |=C2=A0 2 ++
+> > > =C2=A0kernel/fork.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 1 +
+> > > =C2=A08 files changed, 109 insertions(+), 22 deletions(-)
+> > >=20
+> > >=20
+> > > base-commit: 93f51579e7df248780214094418f205253383cc5
 
