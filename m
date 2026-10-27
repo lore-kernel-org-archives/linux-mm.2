@@ -1,87 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6627606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75523606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cje2C2JW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jf1fDspo
 Received: by kanga.kvack.org (Postfix)
-	id 8A15A6B08A7; Tue, 27 Oct 2026 15:06:34 -0400 (EDT)
+	id 56F7E6B05ED; Tue, 27 Oct 2026 15:07:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 879E66B08A9; Tue, 27 Oct 2026 15:06:34 -0400 (EDT)
+	id 549076B0761; Tue, 27 Oct 2026 15:07:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78FC86B08AA; Tue, 27 Oct 2026 15:06:34 -0400 (EDT)
+	id 435A56B0763; Tue, 27 Oct 2026 15:07:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 416DA6B08A7
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:06:34 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9AD021A0AC2
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:06:33 +0000 (UTC)
-X-FDA: 85369337466.02.D0FE5F1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 10E986B0761
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:07:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 881F9140AD0
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:07:28 +0000 (UTC)
+X-FDA: 85369339776.07.D5F25CE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E923940007
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:06:31 +0000 (UTC)
+	by imf07.hostedemail.com (Postfix) with ESMTP id BF5554000B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:07:26 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cje2C2JW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jf1fDspo;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793127991;
+	s=arc-20220608; t=1793128046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lf2Hoc/RWmB0/QlKnoJRvWNvn+6TzYwCnLWNzrsTcSk=;
-	b=225uTSYATyXeDOWU4VNtfrNe7cI1+XRd3N6Hp2wODerJcUP7RfSDDS/wXXWFJsTNV4NFvc
-	FOyQx+jMQxKHZHDGB4iKWxHeeCocVKnoSckkJ6LsU5eiHYl+DDIIPv1bK4OLEXM/V4GePf
-	zkoRM8FbIMiU3pl4Km6Y0XS6GRrRF58=
+	bh=4JNAgIKFjPRpfv1PgOMbYf97LYfRcFa+6eIVMdPRyjw=;
+	b=k1M2vAnv/VPw/8oJsv6rrmTw358Yi5xSzmWbz38tf9HGlbvPiUj0aRVNeexk1VEf64qIRX
+	OnFkFi+vN1b8NMIl0+hULf5GfwjiLKNXqKWStCQ1o4Y1yRR47ThIAylhbn62y7udh4Zrxv
+	Vq1MqZ5dCCiAYs8kixy74eED/Dvuavo=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cje2C2JW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jf1fDspo;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793127991;
-	b=KhsK3KPSb8lMV0m8pPj85I880Ax+plaX27Rs8Rowan4DAD0SvKEgrOJA9HlU0mhw1goBjx
-	8oXXIVGYdaSjt64BXrbESz3wAfFpE4XGkATyiges/qSLU6rTsT1h6wGgeX+Y5XqksKcdsg
-	83HDFU28szuhFXhsbPclRGBHLMLJhBw=
+	t=1793128046;
+	b=R17tJ8f564p6uuanK6X4EAujDjY90rkiSOUclqoEpqznIzXn0QIYO6c0VahlViTcquaDZD
+	H4CKgvG6aH2MMXfrLOJ5RrNTSh5i1AJbXOwnehICM/OgHHZKSsoFmCbjzQiZsoBvch0qpK
+	Bm4l7PwIVTTjp/lowMTxqKdhRqoa0q0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D6DD601FE;
-	Tue, 27 Oct 2026 19:06:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4261F01825;
-	Tue, 27 Oct 2026 19:06:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5779E60136;
+	Tue, 27 Oct 2026 19:07:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729AC1F01825;
+	Tue, 27 Oct 2026 19:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793127991;
-	bh=lf2Hoc/RWmB0/QlKnoJRvWNvn+6TzYwCnLWNzrsTcSk=;
+	s=k20260515; t=1793128046;
+	bh=4JNAgIKFjPRpfv1PgOMbYf97LYfRcFa+6eIVMdPRyjw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cje2C2JW/W5/9ZEii8/tlACEPvMOnEjtWQcEG9HwUfuEGalcwYmRITtkhIzXgtM0F
-	 zVZPSg6MqWG1EXqB5aEm/UM1ZGW6AUvIBMETQt4ATO4Biy4ylKhaNWcc3aETkNrUX0
-	 +Rs2xhiojhULts3grC2OreKYDtZWNa7jmYsfkJOEIajVofwPjCJtjn26J2BasBa3/1
-	 FBvLrtI8WsnLL8X/8SZDyxn+URbO+XTS1C7Oaenryfso2BZULJrKXufHYlcMtbRIRU
-	 EO59ufQ81gNQ6SJ2yjHXTkjfgMYx5Sqa+hoHZTfCdWqAvmQc93hgNF4B+H7JFr5lqG
-	 E8VnnHkkgYw3w==
-Message-ID: <e5766fe2-6cbb-45bc-bc57-87314c130de8@kernel.org>
-Date: Tue, 27 Oct 2026 20:06:09 +0100
+	b=jf1fDspo2NgWYuI74LdGEBcYt8altR6P9yRUKqtzDSTFSAnWIf4GPYCpU6SCH2cR4
+	 kLKqYwz07l5Zxzm/sG06VNfh8M3YEXLg0g/xDRdxPgQdpFPjuVEjR01moMhjRlhF+T
+	 pjPpXSza1JiJ6vbP0VDvf6JnPlSg5bHKRMHCf8gjvuKNvnjEbklK28yyR7bqqPh8uC
+	 LRmuSQyxUKj9WGQhuRHWgrbDg7s+hLnc2B2yj63yqn4Wai5qpm3fBCxoqPXWBL+olg
+	 28HWBF3L63ZWkWwiog+dmsXfZtM+0ZeN1bDPXJhSyQqkRos7H6AArQhBQMI6vYISQY
+	 8xVSAIg2hJR+Q==
+Message-ID: <22b819a2-631d-468e-b724-770caf9f94e4@kernel.org>
+Date: Tue, 27 Oct 2026 20:07:06 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/46] mm/mglru: don't use stack pointers when walking PUD
- and PMD tables
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: Re: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
+To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
  Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
@@ -102,10 +101,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
  linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org
+ linux-cxl@vger.kernel.org, stable@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org> <auBbKP8UNI9talDL@gremlin>
+ <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
+ <auB-3BQn_rR6IfY8@pedro-suse.tail5790ac.ts.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,22 +152,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <auBbKP8UNI9talDL@gremlin>
+In-Reply-To: <auB-3BQn_rR6IfY8@pedro-suse.tail5790ac.ts.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E923940007
-X-Stat-Signature: wccwug961r6jjkyj9d1kittcpr8i3d9j
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BF5554000B
+X-Stat-Signature: eji8gx5dee7gnzcmgikfcgp5ben4k4b5
+X-Rspam-User: 
 X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793127991-31302
-X-HE-Meta: U2FsdGVkX1/sZLB5G5r09dYybIUVoPyHwdQa3G4FAyqWZnrDR18WCQ05ZRdb3PJbZOMzYWunZ7aLI1XFcSOlmsC7+vxyn1cYT8aD6Hi85jbJ3HiiJrnNutIGjL6VA9fzF9Y7fjPCc1AVvbyNquOW0WFUMOQwkfdUZP/JmruUlKtLYARlyv4zqSk1W7Jqt4HUeYGndnuSJFYSRfbMhTNO2Ag3Ey5cpY9i3kXx5nmVZ0CB0j9YUG7p71ar7XEmI6kVzM9gJI5ThehjxHkYIZfLWqZNAawWsKEzFDebWJhCT5cNuvi62D9iEuqP66OQMtd0T+Wq0Q5RNoRGXGdXwTtz1k06+EHGQn3JEuAsrdl93AgKl16hnz+qfRuik6IcTKIO7sxwdRij3v2axXPJvAQ3vxpmi0qpR88/0RIf1m3EEk84pKP/UIoyf72KuFfEmeTYjAtEZ7NNPoZsLwlNuwc+PW+GDjvRRWoHSGRoo2VjSzunQSKyuesXaQ9FAHZUvS1J7nKT9UbvZwfUVxlqjRh7l7y8XUl1Vt8uF9UdqLUGPrJ0sBuXSX9Ynem1M+HmxfcqrPZHCXDkLk1WUfHDgyQt+5IsRXi/htSq5a15AZ2hiqmvnLbCEVIlTjBkwfSB5kBkbJilRYGanti5HxU/BbO3D8VIawbjNdl8P+U52GdGuNMU+lmln+RdFFmDDJQEiRerf95/9AzfvQtGHAlAKjpkA3ONPJBhq22Qoak2qsIpYIpi4BJMjhtC40b4DR+pWoaKPWL2lPMGvFBNMA+ZhpFX+vqUC6XX18xL9/6rjg4Ny5JLY9OgWaftIfQt7kj/u2Bj5zib/ca6q1NruDjRg5AsSIL1xQMnVI0Bzzy3t3SQK8JWGnctOreFCaQTzzWzd355d3WFtxgRO7QlG5zFQbi9IwkCde79qnNAhNyd36DZKQ25Vf0U3lbGESEagEh6c7loZJ5sqAzowr6D7xx2Obc
- DMvi4gOY
- pihrYF5zbUgsBWzH6hYrkDXcheIDnyOC1sJpgyLM8dersysH+MAXzFH8mLcZLn2zK3Knf9fYYNle0voYLVsGfFQyQ+xw5Cg/w5PFh65j2uLWGnS2FAoOkTRATBNZqYz0OIOWmZxHheoNwUIpobC7FupAdxT8F1FsWX/c5Yu4h6n43OV3PKPLVek06brDkFM868F/DllH3a4/i1K3I6cPI6T9BKhZvavYJyYMq+Hh2nbSxTURxo86FPY/ikltPjnshhAMVCDt/bkVBU9hXgc6wP8zhg8BoHQ4ONYxIVdfWnY2PW7gxLbdOgdjN8bFhsThts7kuqVy0b4mLna6cTFFPT/jYtJ52F0bRRJh7B6jMkvWCnchx628G4GJUMrSNJ5Ke3Q0bNbt1ql8NQLg26umL1DIpVV6oywVw8lDJ
+X-HE-Tag: 1793128046-863864
+X-HE-Meta: U2FsdGVkX18jcCnHYDTQig3F+c+3qFZ2yhEJhAJNmgwG4yUhDBJdiJKV/s+3pjwB+wxKI/k+Jt6MZRFrAjry8rIFg81jUxmCWpX2/+inIrQIUaM2+95lcKeXaTB/1v8IZhKA0NIPM4j+0Moh20kr5FJnLssmL5LnJT26ukpbwuQ0hEaLXDn3Gc94g8olLmfSH23+gfUrmBCdCS/6FKXMCG2jDV9qH2tKW9pro7SfnllOxCaIDsR+lXzd74nv+7LAyft9m6230qo/2Irdp2I2Txox1PjF6jERrLyQJYrXXsEie2bA49ID5PI+We+OsbsBE9LoGPjCMtM0XJPiJV7Uv5tQuZDuiTlCe3ysCnHJG4p8Knm9PP9uFQ6dOFyOWkVZF2PgGZjSBAXg358TtPCJRKvjbh3TPZE63tRJHemqt+HRfkJiJkfx9cJZgMJvneilHXE5rtqmzUQGDltIYnLp/H4QpIfvRMce8fw/tTMeeF71QZfmd+MzE4bwyx4DXTOwj6DRczeQRj6fc2CLMGziAho8Xo50PESzOg8/3rEDMCt3N/0f9Sf6QNQgP5Wd6ItG6YPiTmNoPiMU2gdcnj9EeeLsgv4az5C876zVKAeC+FWEUGaoF3LiCEVHcRjvwi0kK4PWfL/hfb9cpg66FOgS8qH+1zzPKenn8sVOVltKJl6Sjt6FsZqY02E6H2RpMoUI/ZtIj+TXM4/dCaoITWS44IEgp7egZWbxuh+c7H6lFQv/11CV59gvFjeX+IOL96N2dOsoUcmi5DMkhgIDPC1+G+0xv8x1ysOtAhpuEE4RSyD3HHdH4YrEye1STzW8CUmBYnYkYcri9mHeTXOp8gcblE5taKyEMd8b33mmk9Kb8TLhtAtq/HushmjoT0spUhnwJEiP26XWK9rJQpR3e6+mQPK/h7UTpT5zT7j1Xe6KF5ezUuH34LgJLjx8KTneSXEU9kQoWYSl1+o6TKHD86x
+ 0itbu7gP
+ GdvQwi4j1QfHoKc366jlVljoSyVan6XqtvZeOFPF8baLQBhI9gQk0lM2bQ+VfXfdZmunak/dOnq+QK83O+FaD411c7iUp09Wx4VmRrRhAwXV3iUFaXdn29FuN6ZStyhMgFuhc94diyHucsSzuGPZfI41IxxCed0BFEya6Ccpuv1MRri83oUDk6c8KruZv4ThJSCziHNBzwY/KSA2jgNUGjfXw4/Bhc3TkdlIy75tMgQ3Vy8Qtt2rrgAJGjg//kqWUs7Y8Apb8ec6S4myUvWiIXC6ttQWY0wfK0F0JrCgQIlyi9XKV/IB/rAXz/xcDjF8+QZl3ogE4LmGplf9wGETHRAZnXIk1Rdt9CK7BLo7PUyFFAZA4UP8jobxEgN2yjkcDlaGCTiNg0mcB5O2JZTIWOLrdYd0qNAUkv/qbAObXBbhg3rNwrLvfu6lysf2fng/zPswJ1p1J3vH5hdPYGVwipFU1sQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,43 +176,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 09:06, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Oct 27, 2026 at 12:17:21AM +0100, David Hildenbrand (Arm) wrote:
->> From: Josef Bacik <josef@toxicpanda.com>
+On 10/27/26 11:38, Pedro Falcato wrote:
+> On Tue, Oct 27, 2026 at 12:17:22AM +0100, David Hildenbrand (Arm) wrote:
+>> dup_mm() copies the parent's mm_struct before dup_mmap() takes the
+>> mmap_lock. A concurrent brk() can leave the child with a stale mm->brk
+>> and newer heap mappings, causing later brk() requests to fail.
 >>
->> MGLRU passes stack copies of page-table entries in walk_pud_range() and
->> walk_pmd_range() when walking to the next level. These copies can become
->> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
->> table concurrently.
+>> Other operations (e.g., PR_SET_MM) on the parent's mm_struct can similarly
+>> cause inconsistencies.
 >>
->> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
->> support page table walks"). Likely, earlier locking masked the latent
->> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
->> retract_page_tables() without mmap or vma lock") allowed concurrent
->> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
->> for MGLRU") dropped the walker's outer RCU protection.
+>> As a simple and robust fix, grab the parent's mmap_lock earlier. This
+>> way we don't need to update individual mm fields in dup_mmap() and
+>> keep missing ones. Stop updating the 4 existing members (total_vm, data_vm,
+>> exec_vm, stack_vm), as that is now no longer required.
 >>
->> The fix is simple, so just fix the original commit so we don't have to
->> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
->> RCU-protected lookup and validation against the live PMD. Note that the PUD
->> handling is required as well to handle folded page tables correctly in all
->> cases.
+>> Keep releasing the parent's mmap_lock in dup_mmap(), before
+>> userfaultfd completion, to avoid moving the userfaultfd handling into the
+>> caller. This should get cleaned up later.
 >>
->> Fix generated by an LLM and sent by Josef Bacik in private.
+>> Move uprobe_start_dup_mmap() to preserve the lock ordering.
 >>
->> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 >> Cc: stable@vger.kernel.org
->> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->> [ david: handle walk_pud_range() as well, clarify+simplify description,
->>          adjust Fixes: ]
+>> Reported-by: Josef Bacik <josef@toxicpanda.com>
+>> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
 > 
-> God, terrible. And why does MGLRU feel it needs its own independent page
-> walking mechanism?...
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> 
+> FWIW, strictly speaking malloc() isn't usable in a forked
+> (multi-threaded) child, but glibc/musl provide this in a best-effort way.
 
-It's all a big mess. I think at LSF/MM there was some talk of using that also
-for traditional LRU, but I guess it might take a while ...
+Yeah, I'm more concerned about other things that can race ... :)
 
 -- 
 Cheers,
