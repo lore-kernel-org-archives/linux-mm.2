@@ -1,84 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE3D60A3806
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A0060A3820
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 15:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X8tLHo1m
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YBHtGSru
 Received: by kanga.kvack.org (Postfix)
-	id 180BF6B07B3; Tue, 27 Oct 2026 11:04:07 -0400 (EDT)
+	id E03E96B07B5; Tue, 27 Oct 2026 11:04:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131F96B07B5; Tue, 27 Oct 2026 11:04:07 -0400 (EDT)
+	id DB4356B07B7; Tue, 27 Oct 2026 11:04:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3B286B07B6; Tue, 27 Oct 2026 11:04:06 -0400 (EDT)
+	id CA58D6B07B8; Tue, 27 Oct 2026 11:04:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C7FE36B07B3
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:04:06 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 343D780A34
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:04:06 +0000 (UTC)
-X-FDA: 85368726492.19.820BE6C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DEAEB4001A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:04:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X8tLHo1m;
-	spf=pass (imf27.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A51F6B07B5
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 11:04:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ABC68A0A7C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:04:19 +0000 (UTC)
+X-FDA: 85368727038.05.BDFF575
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A6EBB180002
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 15:04:17 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YBHtGSru;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf24.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793113444;
+	s=arc-20220608; t=1793113457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=clnQKjfEFK8X0M8lNuv/8A2TRN2gQT1W2JIxTZ4DDyg=;
-	b=MNprYpNcuRem4DoBGS8NpmYECvC+kV16yau9au+yX4ybA2pkQjkoSZPpqKHgTx3LkOxVDw
-	ZtoU6MCO8dtG49aXzuhB3AHSZHVxC7NBJDkMj3qAHxm3L0hqr/wP9kDVWGubxg8DTKXXMR
-	om8GdlJMXqIj5NhPAZP6Qw6SY1VKe5w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793113444;
-	b=CG0qLyqcFK/XD2PEeBIAzcq3sRfE35BRBbIYrbAorEGr1BH0s6rJO7VI9ehLOfW2p/7w/f
-	DSx+iqMsZUa8QklSZuck4EUHuLz+LJA4G43iMuO8C0bjNp4jmqKwcb50IEG6UAePNENEl+
-	ftIF5SoJ1yD/9hu9zlRNgp11f3D/XEw=
+	bh=ELwETE9puCDkWaMizckqbNhj0IuGl0YqFp+CU1fqLCk=;
+	b=W1RBGJsAGzlNbW2HwrOmHABAB8ixJhTANIMjqGqQT/NzMk2zOBsnS4uabetfGUo+/5B4Hv
+	PHQCJC3+Z9sVPBox4yT/P7XJKbW0Uxzy1XAEy6PNN/JYhgZQ3/HOXa1mAY8V6oM//xw8rG
+	Ei89eXZpdeQxoSWm4Xlju4bpik0lcGI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X8tLHo1m;
-	spf=pass (imf27.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YBHtGSru;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf24.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793113457;
+	b=bn/sSDYeu3w9taYbmO19Gq2gVnKX62V8EsgMx5qDUvwWrz6Z/r01gzhtzT5c9bebcD0qrS
+	/Wf2+9/HhIqrvj9E6IlPjaNSqFs0tHYFB6pvSfoIwMPXJ04tpLi9lcl/bQ4KA8Pcu14eag
+	sYF/Iw/Lmt4VJ5XjAleF1oNroGZwrlU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793113443;
+	s=mimecast20190719; t=1793113457;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=clnQKjfEFK8X0M8lNuv/8A2TRN2gQT1W2JIxTZ4DDyg=;
-	b=X8tLHo1mEwaUKoNKkr05ogO6mcxTis2GcYAuH+9LeJTcGQLKJXVMTYBnz5bx4gl1kKC2Zv
-	nARcigZaXmaunmBBT8bdK7bwew1BQOJSOkJmi2z3P3Stm1d8WeGLCwm7lM9y6tAXofYGsL
-	UeeVwswq0Oee8ZhvUvDMRJS5AimDQIM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=ELwETE9puCDkWaMizckqbNhj0IuGl0YqFp+CU1fqLCk=;
+	b=YBHtGSruxrREQBa7WVAHxIIC/CfusuUMQFsXMp8fe4AYrTQFXF2w8e6RrhPlnrxiIUHphL
+	g5H0VjRkytY2cgc+Gw+X7cDESefQTSW0xbWmXU/WIXnjUKTYlGDDjUyuNhJJRvuRRktRGM
+	UBE0bAxNLO6lPk9T/wzOHuIjQnjlP5o=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-q4zdyQBDPLCJagLwazmDeg-1; Tue,
- 27 Oct 2026 11:03:51 -0400
-X-MC-Unique: q4zdyQBDPLCJagLwazmDeg-1
-X-Mimecast-MFC-AGG-ID: q4zdyQBDPLCJagLwazmDeg_1793113425
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-396-5IXUjqf5Mh2LG2GcL9QwLw-1; Tue,
+ 27 Oct 2026 11:04:07 -0400
+X-MC-Unique: 5IXUjqf5Mh2LG2GcL9QwLw-1
+X-Mimecast-MFC-AGG-ID: 5IXUjqf5Mh2LG2GcL9QwLw_1793113441
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C67861955EBC;
-	Tue, 27 Oct 2026 15:03:44 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 82C2218011F7;
+	Tue, 27 Oct 2026 15:04:01 +0000 (UTC)
 Received: from aesteve-thinkpadp1gen8.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B8BD18005AD;
-	Tue, 27 Oct 2026 15:03:36 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D4D9318005B2;
+	Tue, 27 Oct 2026 15:03:53 +0000 (UTC)
 From: Albert Esteve <aesteve@redhat.com>
-Date: Tue, 27 Oct 2026 16:02:47 +0100
-Subject: [PATCH v3 4/8] security: dma-buf: Add dma_buf_charge_cgroup LSM
- hook
+Date: Tue, 27 Oct 2026 16:02:49 +0100
+Subject: [PATCH v3 6/8] selinux: Restrict dma-buf direct cgroup charging
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <20261027-v2_20230123_tjmercier_google_com-v3-4-78d2c4cb8647@redhat.com>
+Message-Id: <20261027-v2_20230123_tjmercier_google_com-v3-6-78d2c4cb8647@redhat.com>
 References: <20261027-v2_20230123_tjmercier_google_com-v3-0-78d2c4cb8647@redhat.com>
 In-Reply-To: <20261027-v2_20230123_tjmercier_google_com-v3-0-78d2c4cb8647@redhat.com>
 To: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
@@ -106,30 +105,30 @@ Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
  selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  op-tee@lists.trustedfirmware.org, Albert Esteve <aesteve@redhat.com>, 
  echanude@redhat.com, mripard@kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793113379; l=4320;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793113379; l=3440;
  i=aesteve@redhat.com; s=20260827; h=from:subject:message-id;
- bh=MCo2RbL8I0M5WB6IU93EJrB52id6wvFQktm0k3kDL+w=;
- b=EHWKF191VROUEjPP42Zho1fkTWoo+RLPsb16zXQjVBFCxoXVX+z86+vi+FzaYzl4KsL+td9Wn
- jtLAuMBbHUvCQTuyoEtMD8r6HoyOJ4NEp8mQh8CPzx8QtQmjriveSDf
+ bh=wN5MetiOIXBEZQC/HDlRJrMQSnkYl46Q+UcUWMTZ3cg=;
+ b=Q4GmTIe9NYB/opKZPIGgb1l9Vz3CAgDxTYSN9JTAtPCTrV3mdRnv1TsODGNuYpi5pugIrMVT9
+ NyXpu/8zRMPCV9OKiHBHRsHuA6x7vW3nPZla8t2Jv2SPWc6vcnBt60L
 X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
  pk=zI2RBeZgocwYm3AkJW4CtjoJnKoDZrfBl1xe5Ed6h+U=
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: vQvOHMUtExX86Q15F5fveNSDC0JZ7PRgk_B1-OLdT1U_1793113425
+X-Mimecast-MFC-PROC-ID: g40LIDgjr75IaykAc4D9M2Vlu2UKduXj2GkSK3LxoMs_1793113441
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DEAEB4001A
-X-Stat-Signature: ofimrki1rbhzooeuzsdqmbdgctdnycnz
+X-Rspamd-Queue-Id: A6EBB180002
 X-Rspam-User: 
+X-Stat-Signature: fig8mntj5shd7wfib3ssee9h9rp9gz6m
 X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793113443-311264
-X-HE-Meta: U2FsdGVkX1+Byj4bnRZzG0z3asKDIIr5eXDn6jngX7sdBubVkec8TfjC5fkmkfj648qDx1nLq/FJFVcNpTRoQ8fbl+EDb4VBTOB5NrRh1yX4N/j3jzoKd846fFVF6Nf5HNSg/C3JRDMUqjRgtbJongrWnU1c2dk8sv38vcddu0Y0eGJycPTEiDyKX+LqSLI0GdmQS17tiI14We8QgFidgwH2NdJgxcUgz79xJjelfgtCiyv+sokm7PAdwfOO5zOgRhE/R2wZJnrvQnSk6syUMKOHCyCRqtyvJmwGNwiYLkj+hhGeqryU7SAMP81BB81f6V0zdU6uGb9lMnZtgo65k4NaQuL8tN62zBJoqC00f/R9czhgS2m3lwCl2c4VHQyGtAA9iMdj+sEZeHUgTEalyrljd4bXmgzeg59Ga5gDw41c5rwS+YI8v2/vIMcz32xYHFPA4uDHFWB99qtoZD+y1gUULc3SedI+MdK6+5hBsjZLq45aX8EReVe5B0hIJSKfTX2PQ61Ly7VvsBMaw6RCMY6OgbvIyZgZ4Mbr9hJWfK4m6p9UgyiCzcaKXFrEQaTU2rxJSBrA9qy1v2zHnPr7OjB2aU/Ei3gvJvAG+KrXRGsLdfPkFZ+FiILleKg/niqk32lbdSHwYuHm5oJBVvd5LxlTdbx8sD9ihsHwltTA1ScOO9UxVTlR6OhdDZbbwYsSBGdDl73S9p0uIqpxRicX7DXFXgMjcjaihzeum6S6SFaaOl/uNBCSxndJhEaHA3A55e0kaJnlUetIXJtj4uBSXuLAqOc5XPkDeMUMTaQidvw/krtEEZz+BrsF544NUAoDJyUTUMesGzAKVNgnAITEoDGINZfLmKAMEMDp9dJWO4P9DcQlJTPQPTbi4CcBKPRpFdttoNE41/N0pPalpjphrjcV44AAHfCuTijXO1L/ryOq4YTpduZtuf+EV9yIsWcOHy5FLyzkOnRoXUoHI8B
- 5nvXpoSg
- 7E2T3lknbYLF0lZ15P0z+d9NoFphOKjZSkYBi/aflhGFjapKfHEuEDNksxrqMhrgv1fU93mfW2jjK/sCAXsmCfzzf2z7yeNteJmpRy00BYsxQD4M32q9sU9if/XpAJwabQBxkUzxcijOfQiYxFuu5tRjiLlitGgcJeSLOyJE+Tm2hsn0+SG6JWH4tiP08qcRM1kBTzn2uWBXPSc8h844JrRH7bb1ocKo57+7NZWY065fwqqfRwU/CGKuPsHGzUonvWm27M3zmB61qQdiERKuUueM3mWVue3clWQewuDJ3HNubEMJEtIJidhIQj17jO5tWQHiIdzJk5oPuBC1YcVKngCxJ1mEEo5uijc/YVbOIu3Z+rdKPBnDCMNMhOW87fL5WYaOpbJiJMUMB5SvWhOlbfZ6XNAKDvJMWiUBrYzrapDimyUEKdVVoNNSvoeaLLA1Kmyuv7tnXxfn1oG+A+DHMgizshg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793113457-780074
+X-HE-Meta: U2FsdGVkX19KGHH1EgyMQToZgVd37jlL9t4hIAZU+ZtrwR/lZabIF4XxD8a13ZFmSmHCBbCyrTZK3Il3VZlaA1qjr1AikR5gIwjWFtetccliTvnQnGi+1I/OkWCgFlc3u1Yh/mX/n5uXRG+YRkL07HCfHk2Rn04+dW4mme4BJzgjfEvXrYCS1NLumum6qsbJ+jmXoO3+pvINMFZ1admes+Dn+WYDa0EfVog7kMSBLqDMG6eji9xP+M7ZNrIZvlBDmqqvp2cuBYg3STUtR/Ed6ZO16lo+O66bRTJmx849D8NOOGeVgJim36fYJdCWQHH0TGCaY8/48SY8nJr/QD931xvE7UfTa9/wZ98bE21muqgeNBpncCteFUg2Lrf1aVMc5Tw2urhqzfyXCW1WtRSl2PFZ8La1bqU7S0ETeI7X0P9ufdLpAbGVVLAdlE+8qSjbe6iGnu6egkxow/9bqfRUWaDd4BLYu7fmFu4EUDuxZjDssdvhkSQrFNnfkfeP/zTQZnnakI7NKiaQblqXNVZSnQ/CUzrfFteaSPshUy1uLl0ykelOX1agx+EoKvOKZxEel3WCw+dtUYBl6hJJRs+qjUlw5m9/gT5E5JFd+/6YpLNrIEsnjkmMMiU7xppEauqSFqMFipCoblRzf7yfHwqdCOUGxnoxwuRrIi4YzXJ6BaIdByoHqUb9pWQfqeXxqi3ujMsya5ctGzGj5hZI8U+23RTMJ2njznmNZ6DkThSoQcZoHK1LCMsew1LRDauwB3CzVyRbARUTptKtvuPD2OgbJgERkhxDos3YSkeTyPv4GSQJK9k4+hY2dNFyLeSjjRvorUG/3eDmNs3PhEQpLYP8uK+Tg7GlqovgWM6Z7no70HKfLIpXkvSYBgj7Ou3+Fys0tBqkHtPyHYpilAHpikGPQMJiTVoJ+qzfN4Nbg4Z9YaDgaUyqLqkcK/PwD5Y42bxFyD/7h8gRi2yfDhwlJcc
+ raqggnGg
+ 3MTOXNhUS1WdnMDeK6EtkpN8mWhbDLsDrt1rn9exUBXHTkdvqKkPnlmj8QHvtSPgCcJgLtb6SJ/Jq6/NrxGEquGxFx/EFPORtDEEKrmSCRRmayRkaCU+bIMeWqjGPyxrjwy17vmtoTmtQpoFdUcaOAZtcUDf7osoC7jLFD1PbAO/e/JzekRyiLEMPa5htgchieE4Xg3p3YKPt/q24NM1yf4tSN8lMFl0n8AOdpuoQCSqlIlLOV1zNKxMygPcp5sHssyt8euWRkvP/woHUmigbxOYCqKAPlX0NLTUpdqphRyU194ZFFArhoTu69QN6SGX8c9ibCEXbEmOz++0kHXPSb14+dP37SHWVyoVI+WQ9Pp4foGGf1gMqwSAWY3zESA+cVo5gkvpkpbudAI+LdBDfmgcr4lQeCOlp0t9H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,119 +137,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Similar to how security_dma_buf_charge_task adds an
-access-control point for pidfd for the charge_fd of a
-DMA_HEAP_IOCTL_ALLOC ioctl, we need a new access-control
-point for the case where charge_fd represents a cgroupfd.
+The security_dma_buf_charge_cgroup() hook allows security modules
+to control which processes may charge dma-buf to an arbitrary
+cgroup via cgroupfd passed in charge_fd. Without a policy
+implementation, the hook is a no-op and any process that can open a
+cgroup directory (effectively any process) can charge memory to it.
 
-Add security_dma_buf_charge_cgroup(), called in
-mem_cgroup_get_from_fd() when charge_fd refers to a cgroup.
-The hook receives the credentials of the requesting process (cred)
-and the target cgroup to charge (cgrp), giving security modules
-a controlled enforcement point for cross-cgroup dma-buf attribution
-policy.
+Implement selinux_dma_buf_charge_cgroup() using avc_has_perm() with
+the dma_buf object class and a charge_cgroup permission. The target
+SID is derived from the SELinux label on the cgroup's kernfs
+directory, so access control follows the cgroup filesystem labeling.
+Policy authors can then grant cross-cgroup charging selectively,
+for example:
 
-When CONFIG_SECURITY is not set the hook compiles to an inline
-returning 0, adding no overhead to the fast path.
+  allow allocator_app_t cgroup_t:dma_buf charge_cgroup;
+
+The hook matches the fail-open semantics of
+selinux_kernfs_init_security(). This means unlabeled cgroups are
+unrestricted by default.
 
 Signed-off-by: Albert Esteve <aesteve@redhat.com>
 ---
- include/linux/lsm_hook_defs.h |  3 +++
- include/linux/security.h      | 11 +++++++++++
- mm/memcontrol.c               |  6 ++++++
- security/security.c           | 18 ++++++++++++++++++
- 4 files changed, 38 insertions(+)
+ security/selinux/hooks.c            | 37 +++++++++++++++++++++++++++++++++++++
+ security/selinux/include/classmap.h |  2 +-
+ 2 files changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index 0f1138e16dbe..fbf7f17127db 100644
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -44,6 +44,9 @@ LSM_HOOK(int, 0, capset, struct cred *new, const struct cred *old,
- LSM_HOOK(int, 0, capable, const struct cred *cred, struct user_namespace *ns,
- 	 int cap, unsigned int opts)
- LSM_HOOK(int, 0, dma_buf_charge_task, const struct cred *from, const struct cred *to)
-+#ifdef CONFIG_CGROUPS
-+LSM_HOOK(int, 0, dma_buf_charge_cgroup, const struct cred *cred, struct cgroup *cgrp)
-+#endif
- LSM_HOOK(int, 0, quotactl, int cmds, int type, int id, const struct super_block *sb)
- LSM_HOOK(int, 0, quota_on, struct dentry *dentry)
- LSM_HOOK(int, 0, syslog, int type)
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 89a35eb07b8c..8fb1539156b5 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -351,6 +351,9 @@ int security_capable(const struct cred *cred,
- 		       int cap,
- 		       unsigned int opts);
- int security_dma_buf_charge_task(const struct cred *from, const struct cred *to);
-+#ifdef CONFIG_CGROUPS
-+int security_dma_buf_charge_cgroup(const struct cred *cred, struct cgroup *cgrp);
-+#endif
- int security_quotactl(int cmds, int type, int id, const struct super_block *sb);
- int security_quota_on(struct dentry *dentry);
- int security_syslog(int type);
-@@ -708,6 +711,14 @@ static inline int security_dma_buf_charge_task(const struct cred *from,
- 	return 0;
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 8f39d91eabc9..2f99eaa910af 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -2210,6 +2210,40 @@ static int selinux_dma_buf_charge_task(const struct cred *from, const struct cre
+ 			    SECCLASS_DMA_BUF, DMA_BUF__CHARGE_TASK, NULL);
  }
  
 +#ifdef CONFIG_CGROUPS
-+static inline int security_dma_buf_charge_cgroup(const struct cred *cred,
-+						 struct cgroup *cgrp)
++static int selinux_dma_buf_charge_cgroup(const struct cred *cred, struct cgroup *cgrp)
 +{
-+	return 0;
++	u32 cgrp_sid, clen;
++	int rc;
++	char *context;
++
++	rc = kernfs_xattr_get(cgrp->kn, XATTR_NAME_SELINUX, NULL, 0);
++	if (rc == -ENODATA)
++		return 0;
++	else if (rc < 0)
++		return rc;
++
++	clen = (u32)rc;
++	context = kmalloc(clen, GFP_KERNEL);
++	if (!context)
++		return -ENOMEM;
++
++	rc = kernfs_xattr_get(cgrp->kn, XATTR_NAME_SELINUX, context, clen);
++	if (rc < 0) {
++		kfree(context);
++		return rc;
++	}
++
++	rc = security_context_to_sid(context, rc, &cgrp_sid, GFP_KERNEL);
++	kfree(context);
++	if (rc)
++		return rc;
++
++	return avc_has_perm(cred_sid(cred), cgrp_sid,
++			    SECCLASS_DMA_BUF, DMA_BUF__CHARGE_CGROUP, NULL);
 +}
 +#endif
 +
- static inline int security_quotactl(int cmds, int type, int id,
- 				     const struct super_block *sb)
+ static int selinux_quotactl(int cmds, int type, int id, const struct super_block *sb)
  {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index ad195cfd1b5f..7b841b905759 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5693,7 +5693,13 @@ struct mem_cgroup *mem_cgroup_get_from_fd(int fd)
- 
- 		memcg = mem_cgroup_from_css(css);
- 		rcu_read_unlock();
-+
-+		ret = security_dma_buf_charge_cgroup(current_cred(), cgrp);
- 		cgroup_put(cgrp);
-+		if (ret) {
-+			mem_cgroup_put(memcg);
-+			return ERR_PTR(ret);
-+		}
- 		return memcg;
- 	}
- 
-diff --git a/security/security.c b/security/security.c
-index 4a16e4076aab..a5dcf9dc4963 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -676,6 +676,24 @@ int security_dma_buf_charge_task(const struct cred *from, const struct cred *to)
- 	return call_int_hook(dma_buf_charge_task, from, to);
- }
- 
+ 	const struct cred *cred = current_cred();
+@@ -7681,6 +7715,9 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(capset, selinux_capset),
+ 	LSM_HOOK_INIT(capable, selinux_capable),
+ 	LSM_HOOK_INIT(dma_buf_charge_task, selinux_dma_buf_charge_task),
 +#ifdef CONFIG_CGROUPS
-+/**
-+ * security_dma_buf_charge_cgroup() - Check if charging dma-buf memory to a cgroup is allowed
-+ * @cred: credentials of the process requesting the charge
-+ * @cgrp: target cgroup to charge
-+ *
-+ * Check whether the process with credentials @cred is allowed to charge
-+ * dma-buf memory to @cgrp. Called when userspace passes a cgroupfd to
-+ * identify the charge target instead of a pidfd.
-+ *
-+ * Return: Returns 0 if permission is granted.
-+ */
-+int security_dma_buf_charge_cgroup(const struct cred *cred, struct cgroup *cgrp)
-+{
-+	return call_int_hook(dma_buf_charge_cgroup, cred, cgrp);
-+}
++	LSM_HOOK_INIT(dma_buf_charge_cgroup, selinux_dma_buf_charge_cgroup),
 +#endif
-+
- /**
-  * security_quotactl() - Check if a quotactl() syscall is allowed for this fs
-  * @cmds: commands
+ 	LSM_HOOK_INIT(quotactl, selinux_quotactl),
+ 	LSM_HOOK_INIT(quota_on, selinux_quota_on),
+ 	LSM_HOOK_INIT(syslog, selinux_syslog),
+diff --git a/security/selinux/include/classmap.h b/security/selinux/include/classmap.h
+index b4ebedc6e424..90d1e04c3d27 100644
+--- a/security/selinux/include/classmap.h
++++ b/security/selinux/include/classmap.h
+@@ -181,7 +181,7 @@ const struct security_class_mapping secclass_map[] = {
+ 	{ "user_namespace", { "create", NULL } },
+ 	{ "memfd_file",
+ 	  { COMMON_FILE_PERMS, "execute_no_trans", "entrypoint", NULL } },
+-	{ "dma_buf", { "charge_task", NULL } },
++	{ "dma_buf", { "charge_task", "charge_cgroup", NULL } },
+ 	/* last one */ { NULL, {} }
+ };
+ 
 
 -- 
 2.55.0
