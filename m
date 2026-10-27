@@ -1,162 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5FD606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0269D606A322
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 16:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eFFZQxZD;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5x/Mf13W;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eFFZQxZD;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5x/Mf13W
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AYF6Nujr
 Received: by kanga.kvack.org (Postfix)
-	id 7E9FF6B0708; Tue, 27 Oct 2026 12:25:44 -0400 (EDT)
+	id C31816B0830; Tue, 27 Oct 2026 12:26:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C0D96B070A; Tue, 27 Oct 2026 12:25:44 -0400 (EDT)
+	id BE2366B0831; Tue, 27 Oct 2026 12:26:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6894B6B0713; Tue, 27 Oct 2026 12:25:44 -0400 (EDT)
+	id AD0D46B0832; Tue, 27 Oct 2026 12:26:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3380A6B0708
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:25:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A3E4740A89
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:25:43 +0000 (UTC)
-X-FDA: 85368932166.03.D700C02
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 773B680004
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:25:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eFFZQxZD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="5x/Mf13W";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eFFZQxZD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="5x/Mf13W";
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 7FEB76B0830
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:26:56 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 21CEC1A0A50
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:26:56 +0000 (UTC)
+X-FDA: 85368935232.17.1FF4946
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 87E00C000B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:26:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYF6Nujr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793118341;
+	s=arc-20220608; t=1793118414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
-	b=Il0CzrxtiZ8h278sE9OdLrh9hWubTmIpFRYcSA8qrcBGXRgMW8U3iA1rHcwUUHN8mFar9l
-	ys5JIc6cEboiuX8JFf3qW8uA0JvyBr8/ur8P3Y+xcvuxJpd/GP18/Tdp5yeJcLH4jQWId3
-	BdQwqy+RMlRVP873+6SyflHoiNLoDzs=
+	bh=PVztOefSr6RGv9a+LEvxXW9LNnBlncUZ/0ear6QgNKQ=;
+	b=cH7PWFIs4QkIlZSBRlfyZfAg5viL6M4YdshouYal8N0S6u2Ba0ZoOk/MCNGlLixq6fy6bc
+	eIiv5jXhboGtvUYCpi/VNiv1z19Dlaadi+c8gwkjMWQA6qv82CxbPIz+j2q7+NUO1gq7AR
+	/al7m/JhxeEonayEzGknnu5A5HT+lG8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eFFZQxZD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="5x/Mf13W";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eFFZQxZD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="5x/Mf13W";
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYF6Nujr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793118341;
-	b=zhltsGKTq5sZdzvGK7DkGJA/CjsdDBt547IAFcrs3o5LIXQFFjv8s5F/691CU1ZSdvn2tT
-	6z/aVJMNyQkNP8mb+QibCb2CRXeUmCKHJmzBOcQnQfuSvSWmM1g6wjbTPD3SdfiYqekwdg
-	bsKqhiijvioo8X7uODZghoo7LOczrBk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1DCE41F7E7;
-	Tue, 27 Oct 2026 16:25:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793118340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
-	b=eFFZQxZDIQ0XrUtbljDTopdSUHtnS0Rchu0y4oeuC91OH0xbso4nUCMJPC34AbN4hBfBGy
-	gVVXJW0TvNuBuFLHR2SWccB3J6TtMhQRIb+Uq8YEVeMpXiOk9utAv8dF2HpuAi/kQnNgw/
-	sZqIEBwxsvNrsaS39QkIwr7J+s3KLFg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793118340;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
-	b=5x/Mf13W5kSNx1/2U3SlnBvv3FbGAYSwz6f//rUBqN3oio1LhRuqqfX6BL9HxJvUrQvD/Y
-	7UbLtiL/2VeEfpCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793118340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
-	b=eFFZQxZDIQ0XrUtbljDTopdSUHtnS0Rchu0y4oeuC91OH0xbso4nUCMJPC34AbN4hBfBGy
-	gVVXJW0TvNuBuFLHR2SWccB3J6TtMhQRIb+Uq8YEVeMpXiOk9utAv8dF2HpuAi/kQnNgw/
-	sZqIEBwxsvNrsaS39QkIwr7J+s3KLFg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793118340;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zM4ewrWqw2f6SmBtbr/tDGa+C9RG4lXc1mOVbn72TpU=;
-	b=5x/Mf13W5kSNx1/2U3SlnBvv3FbGAYSwz6f//rUBqN3oio1LhRuqqfX6BL9HxJvUrQvD/Y
-	7UbLtiL/2VeEfpCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EB2FF1321C;
-	Tue, 27 Oct 2026 16:25:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uT6LLX/Q4GoWBQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 16:25:35 +0000
-Date: Tue, 27 Oct 2026 16:25:34 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
-	Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH 43/46] mm/vma: don't leak the charge for stack growth
-Message-ID: <auDQb49VabNhUPqm@pedro-suse.lan>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
+	t=1793118414;
+	b=R2cy9wD/juyGa7ioXjOO8uWegjmThjzrZH/Nf4aW0DBauZSvtOcUNO501iDtaRlojCRX8W
+	Qb0hvzdTgOSOyTAa8ytUkZdWtsZC0X3g4TaHc+TxI1z0ggQrp7YafVOUyQjSfsg2rhxW7i
+	USiCMW+a9ZidwRYRkooMtzeOF+t3PuY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EE8216022E;
+	Tue, 27 Oct 2026 16:26:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D75B1F01825;
+	Tue, 27 Oct 2026 16:26:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793118413;
+	bh=PVztOefSr6RGv9a+LEvxXW9LNnBlncUZ/0ear6QgNKQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AYF6Nujr9m//y5ikHA4j466AfvrCQx4vNn/XB/n7NEExqqcW6ZpNIEMDq3FFbZmBL
+	 o1Hur8PsCuovf3g9AxXHBJrE3r/kKSk4vTe1xjoUHFg4yAzCRq+xer6ywBG0Nd1vSD
+	 82Y9oCIPZQbhC3ypd1xjTPpPBsmljLlMoBgoJZnHErRqYEgAGT6XmSjYEOOttGbY6P
+	 ULahHSJEshFYy/gm0WSYHeg9Y6lx1PkcRYz+HE8gX+awXWIPCV1JNMaeFr8Jpt6yPs
+	 4K8gbzfPgF94BwtUft4WlXRuoSoaIrz5W7sZHkvwN8lZUnsIhvAoZExUL7TtjY1ASP
+	 u52r8Xsn29uPA==
+Date: Tue, 27 Oct 2026 16:26:39 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Barry Song <baohua@kernel.org>, Hongru Zhang <zhanghongru06@gmail.com>, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	surenb@google.com, david@kernel.org, liam@infradead.org, mhocko@suse.com, 
+	rppt@kernel.org, shakeel.butt@linux.dev, vbabka@kernel.org, zhaonanzhe@xiaomi.com, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
+	linux-arm-kernel@lists.infradead.org, chenhuacai@kernel.org, kernel@xen0n.name, 
+	loongarch@lists.linux.dev, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	linux-riscv@lists.infradead.org, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com, 
+	svens@linux.ibm.com, linux-s390@vger.kernel.org, dave.hansen@linux.intel.com, 
+	luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com, 
+	bp@alien8.de, x86@kernel.org, hpa@zytor.com, 
+	Hongru Zhang <zhanghongru@xiaomi.com>
+Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
+Message-ID: <auDGPs8jzC-90-_y@gremlin>
+References: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
+ <arFYRAa-i7CIwmHL@gremlin>
+ <arF-E3Nsw9ZliH0t@casper.infradead.org>
+ <arI_w2wTfA00Mgy9@gremlin>
+ <armexcXDiG8ryZd6@casper.infradead.org>
+ <CAGsJ_4xuFi7K+crAcFQ998SxXS0xPM6QeA34JV+6+Sy005rXLg@mail.gmail.com>
+ <ar7MsOb6IJLt4eLo@casper.infradead.org>
+ <ar-o1TrOMGrrcxLX@gremlin>
+ <ataDTEZIKOYtwhUF@casper.infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -12.01
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 773B680004
-X-Stat-Signature: jwi48cqimg8my3p56my3n8cq7gjmny63
+In-Reply-To: <ataDTEZIKOYtwhUF@casper.infradead.org>
+X-Rspamd-Queue-Id: 87E00C000B
+X-Stat-Signature: d3sexe4zcgtggrh9jqng8j841i9ruyjk
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793118341-151168
-X-HE-Meta: U2FsdGVkX1/frORbx/NWfarIumUzExvuBonAUW2WhvnK2RUWTEWeVwj1uS1NOnwbILHhHaaqAGOI4apKWIJ4bP1kpFT2RRTpGy7251bk9f+WL892QQ6ssf0Ug3uJ2z3lCkAadqXh4+Xnuywo1Gi306FkO4XkNitTMC08cqhNJTPfb+im1NqhHzXU73HPsX+wsEYKxMSlRLnvS4HSZ0mAhs2e+oO4Ozkrmo60u3vcuDf27cdwLAxbI7NZaFBrQkg0FU3YM1IGj87tqfI4wlzzmqaqVLCypBphyf3KdxRrEldvQZFf+u/eA+hVAJVUzmChY8KdcbocEg/jm3NxjCv715L+bnle1YXRJaU9y0m7TAh3xX9uHzeK9SnzUb3a0fpreTozzrOQl+K6B3Xro88BWe/LxoJQcrkqNYdSXyeZ7VkojXo0wPHMrL3CL7Tr+tmFz2n9AkUOpw4woSPgQ0gun7+D6HsjC/99DiL+8mgqnYnuaEi7pgYy86YF1+dAbA9Bz3J5c0i/b7/zh9y0k+f8CqEg/SxH7VlzoXh9BYiuchphgwKGYia/xUBMzI+coyYp+zhxJoTZAFX7leFfk/mnWqVhrWuubsyEnUnqRysEn/Jw0DAvVGRndssma6S1+L5bZqv8r7xDekYSeEIBAFiZjKbqnpWhZPT2U3n+X1m6dd10VqaF/FBlrzFclni3Q+5mJM8Nk3xAGud6v9joIwMH+u+RXoY3pG8QZkHgbpp7n7Xl6ob5SFLg3LCImPM+SeWklxUrzK5JobYSIecHD2/PioWHJethn3RDBeHHgMcW+jzb7RD3LHndmeL6Q6yUqnFw+vtSlWD7NuuCvRdGJJG8K6AOvwOKwRfZqwAQq4SHqiJlCWDzfV43rVBZt2gd7LGRcSmuIclhJ5SlBHOoE0OO3aWsR5P4QLW48ZcF/Hkl5WoWgCZ6yRBQEcqcL8ki30VImR490nfjUeLW8PdAbHi
- mE0RvRc9
- thjOajocJ6rxlNoHsZLQ5CPLAMAUvpGYtcAR8jVD2jNeBYDsLrsvREsMY6eWhdVVGm4lb3UakwQ/rbIQufmEeVDrr1OOZ8WEauoAFOEDt7iUYIZdiXWqUUlOpKPxK0GK4ZQSLlW0LihrNsjWuiMFVT9+9GvzUSOj9XcOh8Xnf4+ah0NH4gfEFxEwA9XwViyLwBbz9J5KhVLfJzZMx1JE6SX24s9vR6O8U+1TrhoU6op4WA0Fen7Xdc647FH8782fK1F5dEXIXTqVYqZIRsPRg1B5IMr2vqQaQ7s9YSQauY0ZNJf5G735A9tbCMWNg8p+roF5lZFsjI7JCpw3AoEaNYgaG5d9t+cb2jxjvun2c37wshgpiaJSALNoS83jPC1air7AH4iCZEzKK/kUruR/ZdTakXf9CXylpJ3rSDTe832uACnw=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793118414-601656
+X-HE-Meta: U2FsdGVkX1+E39MZT31SAapVWnPwvR0Gx2SpAsB4Gxi7hKkHvCKLPTDUrAuW+ckCCWvhP69fXOF7PbKTRaFc5ZoxrvKaZFVStNeMWWZ9DpXwNCfPd5TCNxkJ6ICXuVwzSNuS+jC0t/NKjOFLlSoazMIdrP90B04SGNVb1FLYBS3PaYg4Q6G3/u6V3bXFq8J2QbPcXEyfI5BPf+Pl8+0WsAm/rLZPXswRSsq/Mjy7LbBgGlZmxNfP20TNbKDrA8ANMA74Jy3EfQvH6/x+Nj2rL30xSDoWQK7FdCKIU4zWtDg/rhDKWq5UxfLFLweogeSofuVu4u4O88asj9E6QZb1B3vOND25RXglpV3LofbeFc5BWxgZyn+j3WL+lAz5HUIsu6CGjkdXPnhygBFWbxuAfRD/JKBk76n8OePW3v3LfoRCTIBhAPZsw/8FsnCpcU2lpDiAMKQA2mqVzEQxk7JolgvFBH0y/dRX4HDBbH7lwVkPQGAW20hTpwgVEn1pQ/vT1r3QP8+V2NhuKKG0boMWFg+LnezWxGqAM2t+NjNyMiG/yQtrMS6qtypQiVXO22/Hid3HBkPnpxUnIFtdmdeW0l408X2Dgp8wBGJdnjzSetuED9O8ePdunxoIaMgRAs0fBVodRGPr/RgcDOVQitg/CIDJoQ9hzlilKiMWDQ+X1GyGgEMMG5si62YRuehYNGVXbAnjJTk3vrcFKlIs2AFSokcEqvX/fCKw3itkY2eRzam9na/MSPGfUXwGATI2FWJ1U1SptQdp5gwIQtWWx5ScXg/smAKe8JYV1/NqXXpWvDmdLPR/B1yY7PiR+XV4Gq3x6/mL35JMVodeoaPAGRUYs/5llA9aDVPtPrUGPCB4LdS/+BnpDxNQkq/f/Rmg7h46Q5K8qKUUHFab2cUs4/j7qKSgcAjgU1ePO6AxjPKT4KCVy8m/Vwhs6D5zOAwM/70gr83muvjejqgnb8JXwvL
+ Q58ftKKo
+ d9T081K/IjOzbI2HrxZTztQVyNe9dxMsKZnrtnWkx9FuHZzUbyFALZdyatP1h9G/txtRDD4Ebj+dqbNpBDZXNMR+hGfzX+rgJeNgnDOsxCTgrpmSIG+Ws6EptaSDzSUsSucNcdthBB3Q6a/Ou766CzeFQvJsshaPafZulmzf1ybnZ/TF6ukEemKSn/+SrNmxqNGFJS0/NU3JP0WFM1hc7BmPoaOQkeJ3s8lp/yu3rGpqZGqyCbjuTkyeYg3ZoAD32ddAQz+vcVo+yT4wT2ob+EAdZWlY/tLllX0vpO3w8RUvq0UACaasjpYdHuxt6FqXS9tphMf2BuWmhZxQ96i+HugXh5+WCJ9KR+OVV+7fCOumgV2nSeK7Tf9kS41QM9xxuJRkJ8WvjyhDVzZOVkUWnzMU4CDMPQjH6c+jtJlp14TeAm3cQS1CUwOMPyZ7JNCmh3NsM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,24 +114,221 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:18:03AM +0100, David Hildenbrand (Arm) wrote:
-> acct_stack_growth() charges stack expansion even without VM_ACCOUNT.
-> This can happen for read-only or MAP_NORESERVE mappings created with
-> MAP_GROWSDOWN. Unmapping these VMAs does not release the charge, leaking
-> Committed_AS.
-> 
-> Only check and charge growth for VM_ACCOUNT VMAs, matching mremap().
-> Unaccounted growth skips the overcommit check while remaining subject
-> to the other stack-growth limits.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+(Thanks to Suren for his reply also, Replying to this mail to make it
+easier for me to quote :)
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
+On Mon, Oct 19, 2026 at 09:53:32PM +0100, Matthew Wilcox wrote:
+> On Fri, Oct 02, 2026 at 02:12:35PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Thu, Oct 01, 2026 at 10:12:16PM +0100, Matthew Wilcox wrote:
+> > > So what I didn't realise is that fork() waits for page faults to finish.
+> > > I don't think that's necessary, so we can just stop doing that (whitespace
+> > > damaged):
+> > > I think this is safe.  I've booted a kernel with this change, and
+> >
+> > I'm afraid it's not safe :)
+> >
+> > We already actually did this (by mistake I think?) before. See commit
+> > fb49c455323f ("fork: lock VMAs of the parent process when forking") - we shipped
+> > that in 6.4.0 -> 6.4.2 and it corrupted memory all over the place.
+> >
+> > Reports + a consistent reproducer:
+> >
+> > https://bugzilla.kernel.org/show_bug.cgi?id=217624
+> > https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
+> > https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@applied-asynchrony.com/
+>
+> I wonder if we still need this.  The commit message says:
+>
+>     A concurrent page fault on a page newly marked read-only by the page
+>     copy might trigger wp_page_copy() and a anon_vma_prepare(vma) on the
+>     source vma, defeating the anon_vma_clone() that wasn't done because the
+>     parent vma originally didn't have an anon_vma, but we now might end up
+>     copying a pte entry for a page that has one.
+>
+> But we're holding the mmap_lock for write here, and we need to hold the
+> mmap_lock for read in order to change a vma->anon_vma (asserted in
+> __anon_vma_prepare() with mmap_assert_locked()).
 
--- 
-Pedro
+I don't think that changed anything. Actually that paragraph is probably
+just a bad example, since previous to a373baed5a9d lock_vma_under_rcu()
+did:
+
+	/*
+	 * find_mergeable_anon_vma uses adjacent vmas which are not locked.
+	 * This check must happen after vma_start_read(); otherwise, a
+	 * concurrent mremap() with MREMAP_DONTUNMAP could dissociate the VMA
+	 * from its anon_vma.
+	 */
+	if (unlikely(vma_is_anonymous(vma) && !vma->anon_vma))
+		goto inval_end_read;
+
+So the example cited couldn't happen then either.
+
+I think fundamentally the biggest issue is that, for CoW, we update the
+_parent_ as well as the child to do wrprotect.
+
+So you can end up with a stale TLB entry, which can result in data loss:
+
+Thread A (Parent)          | Thread B (Parent)       | Thread C (Parent)
+---------------------------|-------------------------|----------------------
+< Fork >                   |                         | < has TLB entry >
+copy_present_ptes()        | < no TLB entry >        |
+  wrprotect parent page X  |                         |
+  -> 2 mappings, refs      | *ptr = x                |
+                           | < Page fault >          |
+                           | do_wp_page()            |
+                           |   < shared, so CoW >    |
+                           |   wp_page_copy()        |
+                           |     copy X -> new pg N  |
+                           |                         | *ptr = x;
+                           |                         | [ OOPS! stale TLB,
+                           |                         |   lands in X not N ]
+                           |     ptep_clear_flush()  |
+                           |       < TLB flush >     |
+                           |     parent PTE -> N     |
+                           |     [ X now child-only ]|
+                           |                         | ASSERT(*ptr == x);
+flush_tlb_mm(oldmm)        |                         | // fails! N lacks x
+  < far too late >         |                         |
+
+
+David raised this at:
+https://lore.kernel.org/all/7e3f35cc-59b9-bf12-b8b1-4ed78223844a@redhat.com/
+
+So the real hazard here is doing the copying with concurrent faults.
+
+I don't really think there's a sensible way around that, unfortunately.
+
+The above is also likely what the bugzilla observed.
+
+>
+> At the time of this commit, lock_vma_under_rcu() contained:
+>
+>         /* find_mergeable_anon_vma uses adjacent vmas which are not locked */
+>         if (!vma->anon_vma && !vma_is_tcp(vma))
+>                 goto inval;
+>
+> so we really did have to wait for read holders to finish the fault.
+> But commit a373baed5a9d deferred the check for a NULL anon VMA until we
+> actually needed it, so I think commit fb49c455323f's logic was invalidated
+> by a373baed5a9d.
+>
+> Maybe I'm wrong.  This is all a bit out of my normal area.
+>
+> > Also we have asserts for this lock in copy_page_range() and
+> > copy_hugetlb_page_range() which will now fail (and possibly more further down
+> > the stack?)
+>
+> Possibly we have to adjust some assertions to check that either we have
+> the VMA locked or we have the MM write locked.  That doesn't seem
+> unreasonable.
+
+Well, no, because the VMA locks are designed such that an mmap write lock
+doesn't exclude them, so that would be undermining their intent.
+
+The thing is that we allow VMA read locks without an mmap read lock lock, so if
+I hold an mmap write lock, I can have parallel reads of any VMA that is
+not explicitly VMA write locked.
+
+>
+> > > My argument for why it's safe is that a thread which takes a page
+> > > fault during fork() might have taken the page fault either before or
+> > > after fork().  The faults will definitely happen in the parent process.
+> > > They may or may not have happened in the child process, which can't
+> > > possibly care whether or not they've happened.
+> >
+> > The problem isn't the child it's the parent - copy_page_range() _modifies_ the
+> > _parent_'s page tables in-place, on assumption that nothing else can access
+> > them (for CoW).
+>
+> I was perhaps unclear.  What I mean is that the child may or may not
+> observe them as having happened.
+
+Sure, but the issue is in the parent. CoW really scuppers things here :)
+
+>
+> > And actually nowadays things are _even_ worse, you could also have concurrent
+> > page faults, MADV_DONTNEED, MADV_FREE, MADV_GUARD_INSTALL/REMOVE, UFFDIO_COPY +
+> > UFFDIO_MOVE (yikes) all of which might introduce new issues + would have to be
+> > audited too.
+>
+> Yup.
+>
+> > So - it turns out a lot of stuff implicitly assumes VMA write lock now:
+> >
+> > 1. CoW - deferred TLB flush race
+> >
+> > (The issue above)
+> >
+> > https://lore.kernel.org/all/20230705171213.2843068-2-surenb@google.com/
+> >
+> > This happens because __copy_present_ptes() does wrprotect_ptes() on the parent
+> > without a TLB flush (that's deferred until the end of the fork).
+> >
+> > But unfortunately without a VMA write lock something can then replace the page
+> > table entry in the meantime and you can end up with data loss as a result.
+>
+> Is it that fb49c455323f commit message is insufficient and we need to
+> prevent simultaneous fork/page fault for other reasons, then?
+
+Yeah, as above, the example given isn't great.
+
+>
+> > Same issue exists with hugetlb wp too. And god only knows with uffd wp :)
+> >
+> > 2. THP - can destroy parent THP mappings
+> >
+> > copy_pmd_range() does:
+> >
+> > 	if (pmd_is_huge(*src_pmd)) { copy_huge_pmd(); ... }
+> > 	if (pmd_none_or_clear_bad(src_pmd))
+> > 		continue;
+> >
+> > Without the write lock, a concurrent fault can install a huge PMD via
+> > do_huge_pmd_anonymous_page() or filemap_map_pmd()/do_set_pmd().
+> >
+> > The issue is that pmd_bad() fires for leaf PMD (ugh) on at least x86 and arm64,
+> > meaning that'll clear the page table entry.
+> >
+> > I think Hugh left a comment alluding to this before:
+> >
+> > 	 * copy_pmd_range()'s prior pmd_none_or_clear_bad(src_pmd), and the
+> > 	 * error handling here, assume that exclusive mmap_lock on dst and src
+> > 	 * protects anon from unexpected THP transitions; ...
+> >
+> > It's like the mess around pmd_trans_unstable() :(
+>
+> ... could we fix this by taking the ptlock during the copy operation?
+
+Well, that's a long time to hold that lock, and while it might address the
+pmd_none_or_clear_bad() thing, the CoW issue remains the same, since really
+the issue there is TLB invalidation.
+
+And the only way to address that is to just now allow faults to happen
+during fork.
+
+(I also fear there are other subtle bugs that might emerge from all this,
+we do like to make _implicit_ assumptions about things).
+
+Actually there's a pleasing thing you came up with at the time:
+
+	Calling fork() from a multi-threaded program is fraught with
+	danger.  It's a rare thing to do, and we don't need to optimise for
+	it.  It does, of course, need to not crash.  But we can slow it
+	down as much as we want to.  Slowing down single-threaded programs
+	calling fork is much less acceptable.
+
+https://lore.kernel.org/all/ZKQZnAfLRPVqnxiO@casper.infradead.org/
+
+:))
+
+It does feel a bit like we're bending over backwards for a broken use-case.
+
+And anyway, even if we did somehow find a way to make all this work, I fear
+we'd just move the contention somewhere else.
+
+Perhaps the 'genius' hack of mine isn't so bad after all? :P
+
+--
+Cheers, Lorenzo
 
