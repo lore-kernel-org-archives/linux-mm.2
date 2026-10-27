@@ -1,141 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D5A606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 06:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8412B606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 07:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=OiNBrtpG
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oPQBx6sc
 Received: by kanga.kvack.org (Postfix)
-	id DECAD6B05BB; Tue, 27 Oct 2026 02:57:57 -0400 (EDT)
+	id 966796B05D7; Tue, 27 Oct 2026 03:04:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D76276B05BD; Tue, 27 Oct 2026 02:57:57 -0400 (EDT)
+	id 916E86B05E2; Tue, 27 Oct 2026 03:04:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C17C86B05BE; Tue, 27 Oct 2026 02:57:57 -0400 (EDT)
+	id 805DD6B05E3; Tue, 27 Oct 2026 03:04:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 967AC6B05BB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:57:57 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04E2040967
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:57:56 +0000 (UTC)
-X-FDA: 85367501394.28.A90C906
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3427740002
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:57:55 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OiNBrtpG;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CF1E6B05D7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:04:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E762A12092F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:04:47 +0000 (UTC)
+X-FDA: 85367518614.04.F5E949C
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 23187C0005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 07:04:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oPQBx6sc;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of trilith.zheng@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=trilith.zheng@gmail.com
+	spf=pass (imf22.hostedemail.com: domain of jm5905938@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793084275;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793084686;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rFHNeMzU6lF6SlEzmc33S/YQH+LNSV+pccbe3Fm4Sbo=;
-	b=MKb6nQKzHvp1blI8tOZyheMdMLHUbtbrvmZaZ4uxImnr/OJuT0wtv4VGeGJkkEUxZ8zFPg
-	VFbCSITpe2FTd4Iyjhuau0ebbd0jNcr98vPtg85yK445GxLeRefBj4skLOvTtGhJzdTJdi
-	vpvuPa4UAaler4RhaNoMAFF6QsVPpaw=
+	bh=5Fl5cl1odyHR+Q+dHl3S9B8sfH7/8NbuHWc+9QJ6hEU=;
+	b=xQOGG037WX5Fh6ogEVgp7BEfL+rYH4AJSqaGyuJ0pIDxxH3LKvGNq2xecBUd908k3iezRQ
+	dPVz4vjTf0Syyb/eUUYVNbkjpDUTm+3LXO8eW0sOkfUFKmx8ovWEctdaOk9ThB9dH4R/Bu
+	QU9J9tqkrOeym4nRax15R5Tni+7t07o=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OiNBrtpG;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oPQBx6sc;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of trilith.zheng@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=trilith.zheng@gmail.com
+	spf=pass (imf22.hostedemail.com: domain of jm5905938@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793084275;
-	b=TpBDQnmWBws7MXEqdt+JllrIQVNKgu0KOws1Bn2dgU+Uad3i/+lpKkflA2rC1ZlMje8w3E
-	p3u2MWHOFCzNEiCtwgrf6k+M8eHu1J0OnDczEi210G0SLdBs6CAD8YOAoPuA1ALehsD+ye
-	d8LFArrtSCP1t42PFL0T7z6cjRdVtfM=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a06b27bf9bso1992198b3a.2
-        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:57:54 -0700 (PDT)
+	t=1793084686;
+	b=Ul1BjggrlD0hbsqw7Rh2QXduhaUC+VcTj1C8zAusA0ydLj+62fTl46d5bl7hkHk8/P+JH3
+	j/fT4XRjbiNDMFQah8gX6tV+sVWk9t/NIpvB5+Asy3nKykrQtWeHxQO5sG/wx3m/neYGdQ
+	gmWINWhsw9twik8/k5VKy0XQ6spKGMM=
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2e7e742a2c7so4832655ad.0
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 00:04:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793084274; x=1793689074; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rFHNeMzU6lF6SlEzmc33S/YQH+LNSV+pccbe3Fm4Sbo=;
-        b=OiNBrtpGTvgCMuvUJ2xeN1UdDdTL6No3sLUdsg4UcxG5A2TKGFHQA5/Zl77olFrUuW
-         LGmB2h3NiwiKDQ96Qcd6X1zYC1tarM+RgKhD+K4qk7jFJs2lkR3+W6aYScPeV1E/f16X
-         dJty5IXtlell0CdorSKLRYe36kHMunx7J5EgfrRC2ceWr9Zv/p6/7HGqbOBsaalfeP0F
-         QsjNNtqzSHrVsew26yP2us+H9n5y+49BO+A4HiesU3/hnBIn30+fBUPY+jo4SnTVM940
-         qSy2YdfhE1G9YRAhhVQ+YITYSSwm5qkOpzspqZdG6KYitfGWy7zRP2EMHo/RRAxRzG0l
-         SgFA==
+        d=gmail.com; s=20251104; t=1793084685; x=1793689485; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5Fl5cl1odyHR+Q+dHl3S9B8sfH7/8NbuHWc+9QJ6hEU=;
+        b=oPQBx6scWOD5ZV/7p46/gNRZ42/tlJNtsrt5cOAT/jqlK4hv6j8xVwAJLquwDiF8eM
+         l4+rrhrURLTd2/9YGDXypjvLcMGmGBR74RT/TS8tfzqR+1lO0cRysijq6H7euq/v3eK7
+         dq2KhOSaHKbW/42J3htaaQ+4erklEwu5od1vUEVVvHukw+rPpyepds4B8ATEoKy11AUB
+         LgnKWRIsu+wEir+wL6xPr+6U8upp2q5SvgZlcUNLEzcuyl7Dxd6gtS8cRptQUMHBDglf
+         Ho06kf51CzaEHgKVySh0y22TYiZOY75WCBpMf1d1JvHF/ZWSertHLvtmEy3o0rPcgGcr
+         AV6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793084274; x=1793689074;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+        d=1e100.net; s=20260707; t=1793084685; x=1793689485;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rFHNeMzU6lF6SlEzmc33S/YQH+LNSV+pccbe3Fm4Sbo=;
-        b=NRDcRxjVqcGskJQGN+BEoCiCVd+GMZFfiQExeaULz4TN1LKrZSuBvPCnZ5oCm8YWH1
-         z+0FaGoEi3YInY6hGD7mCl/0MXFpWHX6naq54QCiQ30yBTeO3U568wnugH3NVsBkV3JK
-         AsauoAVVi84IOX1cpytfgOWDp5LkulXoCw17g46JmAtPBVWzz2T6heYExhoaEg9pM2sF
-         PHUUnYpxX7CNfB9CUE6zwGJl4SkV+h+lbEmyNj3KRPimFIuCITdmHiDBifZFUAYZnHx1
-         mV1XHIIeeUPAkCf85q8nGFLZ+ktdgrt/E/SPjFGIpigcPROTg9foyUvjuy22lOhT4wOu
-         fZcw==
-X-Forwarded-Encrypted: i=1; AKwUvByQn+oZNp/zUwe97A2Pg4A51/KrHeS6fejwdC+VZTRv7mGZsnjXJ0wjfzg+IM8bfQSocgeSIjxl+g==@kvack.org
-X-Gm-Message-State: AFq9FYIti8OhxPbcc38y+e0j+/pCcOpGqerwBRVIw0mOQxi5Rwvcz9kd
-	XNXbAM9vBZj2iBqrTB0+O51PxVxKlTv7xaTZWW34Fk7lShnneBQCxAOP
-X-Gm-Gg: AYBFou27ncPOXGIC7TREze6XXLWYXEIOUpJsBgzD4tZOXRrvQ2dQ8ruwr7tdjJ/yUQB
-	4brNMQoY6WudWgZAUiS6YfrseOKREKT7DZjEMDQDPImvnY0e9rFqTkUC1jZgVvKxfm7UlHEMh2a
-	86E/LmTwjsgANOayWCWi8cf3wCxxDFYXV7YSGPdDlHyRO3mpx5dmcjC9FG+Uho4250jcxAciWyo
-	Zz1bXnQ6iDvY/9DiSVtlHVolV+Of5YZHbflBA4liJ/Z2vwmAocfteeqoSLA7Iz0vFz1fqVa/kaj
-	CAHnWRGrgR5DOmYAtKuUjfw1PkBR4t3AfiAbEfs8W53eUVSRTs+BloAEqI1JZLPVnvGqbjorQLb
-	FUfyJ1OPPXMHk3tKyVcc1PvuSHrYlE+KrmNKon/njAO8hcJMXJshQrJVlfzeV/vsXvGHy7+VGtV
-	m6553Dw2ogP/z4aTyNchKMqcUq1FVru2Zl1w44TqQ5DsZC0QIUH+6FNoFPmhAAHpj6nuLt79KRG
-	6mfQ1iASZNgMXW34ldl2YzLMUb+TqZzP7RlZ747l6tsA1L1Umer2ful+M1FSGEkEcPvsSR29cSe
-	2itP
-X-Received: by 2002:a05:6a20:a110:b0:3de:53c1:b627 with SMTP id adf61e73a8af0-3e7bfa975admr5738301637.43.1793084273864;
-        Mon, 26 Oct 2026 23:57:53 -0700 (PDT)
-Received: from localhost.localdomain ([101.44.96.6])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdac68402a1sm1398700a12.1.2026.10.26.23.57.48
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 26 Oct 2026 23:57:53 -0700 (PDT)
-From: Yilei Zheng <trilith.zheng@gmail.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dan Williams <djbw@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	linux-mm@kvack.org,
-	nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Ira Weiny <iweiny@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH 3/4] mm: add shared read-only vmemmap support for FS-DAX
-Date: Tue, 27 Oct 2026 14:57:23 +0800
-Message-Id: <20261027065723.66564-1-trilith.zheng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260903122128.12264-4-songmuchun@bytedance.com>
-References: <20260903122128.12264-1-songmuchun@bytedance.com> <20260903122128.12264-4-songmuchun@bytedance.com>
+        bh=5Fl5cl1odyHR+Q+dHl3S9B8sfH7/8NbuHWc+9QJ6hEU=;
+        b=ShfQkgzFZHVYIIgygRAHSgqdFVXaQboQBHzL/a44RXQAePk0qFFHAkLD0+XWfbv/bM
+         nsG7oNZSuiih313bQssAOftvnpVA4yd9JZe3lOQ5Av3qgKl/hikZ1Sw0Ed1G8TLYIkYa
+         j9NPVRPd8Yh66xE5hlwemQalzIeFQSuUU0Qy98lNEFk7g/NV44N9FsoemVMI+0LGZ86Q
+         gVKlNd6jDg9Jgdx6K5qXZ4YFRBkOp/6/AWbkk6kGLmlYOxB5WArleZHuLWUUQSmHN+uT
+         kAGOQO5KlZVXgrZzmpVUALuGMPPglYegvPvyeGccUwRUc0cUNyACf+UXns8WkyQMlDvo
+         /nRQ==
+X-Forwarded-Encrypted: i=1; AKwUvByuXGEMZ6Rl49Ltm8e8n/fiiV7JgorFtDRmnzz0LwDQab1YOxoFZKjT1RoCcjUXupExfE1Te/BVSw==@kvack.org
+X-Gm-Message-State: AFq9FYKdeqG3ZriU+ON0i4baUKyU7me4Oyc64PJ1RD/weOPVfBQ+z9Mu
+	P1xMhPBjC/ByY9gF1oE1FCD2GkvYjGI7oL6LzdFZmOdxiJPWKNNUmCpy
+X-Gm-Gg: AYBFou2B07W9xZ2tbHuBIvsyflgeRO6KPk1toI2tg0p9MpiKXADj2oONJUV86smkh3k
+	cBh2u3Iut0c6WTXjRcpmp66BUtS0mHGECuBRaoEbyPT3mg2R+Yg8rKb+u+QDX5B00k67mM1v0gP
+	pvrJ2KImxrTINoj50m49KUwmtUBMoKt+tcdiqCmCxxPSlinbZsse3L6XjvzL1MLKHmafcNS+iI5
+	UaJjvmd2Sh7CbHcVVaN8yewjZ12myFFzZJ8rua2zixX6KjO/2OXTCMKWG2hMXIBxydyeJL36akB
+	7wuAa5CU7BriI5Uf1vbx/xvBsrCztWAi2fcRxi7jCBBRHO1Qg4ct4qZGO0Cr3zVkoYbUdkwDmZY
+	/YmEpVm+qhv9//ecUDZuzlr8kgnQIKEWrz3d8DH/O+hVQxi44MYo9Hn2AdTlW1YMABPuhO7q0EJ
+	cORJlizq4KWAF6eNviw9De+olTl8FxtUlbTfOL1ytw6GmV81Vgoa0TXxxxHuMe1IjRLFkN7ftpQ
+	woIItOifvU2yZc1CE13OOQBkUm82k4ogPkxT/uMxJzfMZabqmC+9mFNPYyllmILDi0hLqBoDBuP
+	qP0Pv/nrajADLNwyQViGEOOVkFmSp3xGDYe2B4JGRRN9e9N6on6V
+X-Received: by 2002:a17:902:f541:b0:2df:34c0:72fe with SMTP id d9443c01a7336-2eae402cc5emr11077445ad.35.1793084684710;
+        Tue, 27 Oct 2026 00:04:44 -0700 (PDT)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6b7a69csm4484635ad.13.2026.10.27.00.04.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 00:04:44 -0700 (PDT)
+From: Aveline Noir <jm5905938@gmail.com>
+To: Daemyung Kang <charsyam@gmail.com>
+Cc: sj@kernel.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ akpm@linux-foundation.org, bijantabatab@micron.com, ravis.opensrc@micron.com,
+ sashiko-reviews@lists.linux.dev
+Subject: Re: [PATCH] mm/damon/vaddr: preserve migration weights above UINT_MAX
+Date: Tue, 27 Oct 2026 17:45:52 +1100
+Message-ID: <179308355214.2.6632342460755510671.damon-migrate-weights-review-draft@gmail.com>
+In-Reply-To: <20261027035431.1007584-1-charsyam@gmail.com>
+References: <20261027035431.1007584-1-charsyam@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3427740002
-X-Stat-Signature: 94kc5359sx3hmd88cfemqjk4n7q8kg48
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_INVALID,DKIM_SIGNED,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 23187C0005
 X-Rspam-User: 
-X-HE-Tag: 1793084275-723132
-X-HE-Meta: U2FsdGVkX19p10CHAiqZBgG7t300iUIqLvJZa/FK/gNidA/nTP1rFeq3uMDbQhznY/mKZPfYd2Dw5xMKcIrX8sCcLyBWwZ+Zlf+WR8FEaLraIim7Z5XlLA9O/OwHDTdqbDWf17NdUL9FHuWVFJEqJ9soaLthG/PlQqiwiXegNtjuVU887FPzkMYE/UwDhKTPQF91mUJ8naQA9oeToBP5ABoF4J9itnEosKEvTtRpeqHu8of530DYA6ApQZthoY49an279a0PbgYDEalc6nJdU0L7xkXqAAJWsXwtUrOjfYKYo6riAamZcGx5Uy/wPrwY//bLDXQ7el7Egx+V8j5ixD9TvLEWGba4vgHX6htHA6Cd2VQQYjP2Z4ushaqjJPGv1hl3LrWi+hznMECjeDmMNwH7DJmnPMYjFHFayJj8t0g4RgeBfdcVApmluwSKc9Z7uljWE4+4rMUF/yERG52+DBx7ShzmB4hOXgJEeYfNPTa1cUgEdCZPQ67IKA/NsXcnvscWowYyvT/21dSusdpDx5Si1ANAmNZUghPbx5bcbjDhPpqruiabi/+5uTghjjorgbiz7zT2JVWPctG9MEZhx5agCoI51KL/pe55Bym/ZsFNWXOwNhMr0QQxKPVoczZz6Tenh5mok8BXX0fNULNQBUbJ2FgAFay29HZALPDBDfH1abRjSLJs/KmPDWjzZ/RBjzb2xzVphvbJH0Ky6UQNc39Va5cb7aO0AHrBA/GzuTYB4no3BL+ytW2RRw6VEqLq7R2EPCA7Feo2umT0HLIYjUWqwQ2rAgzrytt5Imq/tTTO0b+dyJCoohMauyrmJXP76gDX45VmZMr6RdbyPT51+gtGWS8ylSMSnRq0evW7sc/tTLNyHx19RB1FB0l+J30R+2i7UuxEKVs+pPjIHGb8TZDVUg+ABGR5TgtKj6AF2aGBdeU8lYMhfZl5VM/LIQarVYfSr4sNk2XfhBfieS/
- V/3hZqLF
- ElwL/QvN/eq21fdhMD9KMwBNyAB+K9zf6QAFAZiRZoqBQKywrmf9htasj0GBcJbkoPxFMfbpjsI8v5wIdzNtz7ZcUzOD2uA7LmGTQeG+gemTKKz2Gw/rOAZMT3fTRDdNdINcVLH2zjiaLEUiGnbji/sGsk+x5a8+z72P+MdCD7Ep5Q6DT4emwXuVv4cS3jXHiqVNaplDkdBmAoi4k7rT/cVyvRGjO27w8xAXporyhebrjng0SDG6kaRK5DXCEX38XffE5OeFaUCX74h+VJJk78j0DkurTBAebfMir65sOVULOopDl8439fZWKWFEt+WVMyZXjkKzNbSEUmgUmPriKTAFLO87L+8Pywe3ZRdCLmIQV43gnkFB7s1yOqJsOBJcZsQ9wf8gufKIvMVuHtDXb/+UF3Lc7OozLaicgrzNSxNAy5LNck5VjkyzsIvWN0onUb3J5WlSO2KjReLU=
+X-Stat-Signature: fp4oeimfy5a7bbiccou7jhq8f44q7eob
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793084685-358551
+X-HE-Meta: U2FsdGVkX19xRSzJszqfxxlRWj4bL36cE9dz3avP+j6G5qIwHWi1jUYOpzNN0g7kB8w9zjoNExBlecxbjUXaUMdK65DJGyyOIRj63uLQhNKJ2xoAaFT1Cmo2dstHQM9/qxzXN53fpfG2RsiJGkChEceDeMBwPxt9f/sutUAG9rxuVozsYpfOwKBQwl+lL3aad/VRzKhsDgn5s6f0H+5IzEYxszKXnNaFnH43eMKl3e5hwultvCyiDe3EA10Y6BGhZUzUpktOYu4VQkhPjNAHQklnAvQHwwhpxDsk/lOqj3IIAX1eWy5N3OZq4afRaoCJpV1Kl5LlNxAORsbFmPidOSIQJw0T/tEW84uYCWsREnELJNXZ7H6s5uGCFjyx6VqoWNFkl6NrsAsgpjqmKpQcBTa1LxmJZsbhbTMJgblNi0D30eeJZu0ftg1YB4/zJucLuOLb2LaGHqI542FFHx5SFw/t0on6treHlBLsiaAW6y31JTwf0CJdIKHOa4veiE17m4I+h5MT/tDSZDCu5O/yPvUth7l9vvzHb86I4v3GGXHEidjn8MbVjkRLtjFoi0Plnwi9IK5z587VgiVQ22fAjsa4KG+K6YVKGI6GPHctCFzkGwh+Ci5qc6nZC2aG4pDqlyxza/P/BI26K4KXa+FVO5wQS7ST6n1jqRqgFDZ4TZlmNAMmF0zV+SunNn2o8QyK73Gzn7aNVV1J3ArQ33jfbqAVqXDCn2NksQAYitMAnqB6Xas0P1N+voWIp05hjegelL6jgX3htK0voLcMDI//W61lMt5Ous8ip5MUkN0DEFx4lQGLO6m7l3k0qHNUpCB3J0LScP2D+6wEiYe0ORyScL1/DO0MQM2H4iqS7LT0+eLewCwWhGIJDwpZKKBkBHol2lJwvRRX2CirDWKMPQB7gt99JVUAJdjA2ojlzfRQAeS9Sv2j3dFe2U7Ehr+W9l9Q37I2CKntZwANaqBG7gg
+ F6haSFS1
+ z2q/UTpBW4WwhgRyUmugVWdqfrceFfTC+NpmDvDaSAmwk8FO2olkkMm7EMZws+WDzFDp7EAzQVM6H9nDQigrBXZTJpVPlzcPV0mYo5klaKzHz8DEBiCRTPwdGR1OUzSHmeinIK6/xmudthArNqtEUsyxH7CC4PkXMX1dOJtfyPcuWzaRvkbuJjyQoDjhij+djw9NEsYpLUIypPIZmoV+BYLXj7oHZjPofhp2j5fE2ul+3bBpKrbcTrlkY29HeHk5E1uhf3W4MAVbCtmkr+0F2wzYge+MFJp+Pqinq+fqixv8nD6PgeLb49sp1AqTyyNuYB3pAtgekuEPA8KW9EUximchhLjbOgpN+qqlfSWVY+C4llwICZADdpwBFXQXTGVFjG/1lQ509Pv30jbNVmcCQ9BNQlBW5apOXSYGSN1znJi9t/1/hN4M5V5+RV2h4v/k4jUlVfl4tSuL7tsAC01jsrsIeFY1+uVnEUoegLr4+sYoP7hG8Xws3aFemhbF9ng2SRI/EfTP4RTGQ4S2jsPBUTmL9LWyJaHzST7kgtQKPA/eJHXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,195 +125,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Muchun,
+Hi Daemyung,
 
-I have been testing this series for microVMs that mount a read-only
-rootfs over virtio-pmem with FS-DAX. In this setup, most file data is
-accessed through read/write rather than mmap, so most PFNs never need
-private writable metadata. This optimization is very useful for
-reducing guest memory overhead and running more VMs on a host.
+On Tue, 27 Oct 2026 12:54:31 +0900 Daemyung Kang wrote:
 
-While testing, I ran into two issues, both in patch 3, including a
-crash when initializing the shared template page during probe, and the
-128 MiB alignment check preventing our 2 MiB-aligned rootfs images from
-using the optimization, even though the check can be relaxed without
-changing the registration or teardown paths. I have included a patch
-for both at the end of this email.
+> Sum weights into a u64 once per migration walk.  Keep the existing
+> 32-bit divisor path for totals up to UINT_MAX and use a 64-bit remainder
+> for larger totals.
 
+Tested locally. Looks good to me :)
 
-First, regarding the shared template initialization in
-memmap_init_zone_device():
+Tested in an x86_64 QEMU guest; both the buggy and corrected behavior
+were verified.
 
-> @@ -1133,6 +1134,15 @@ void __ref memmap_init_zone_device(struct zone *zone,
->  	if (!nr_pages)
->  		return;
->  
-> +	if (pgmap_vmemmap_optimizable(pgmap)) {
-> +		struct page *page = page_address(pgmap->vmemmap_shared_page);
-> +
-> +		for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
-> +			__init_zone_device_page(page + i, start_pfn + i,
-> +						ZONE_DEVICE, nid, pgmap);
-> +		goto pageblock_init;
-> +	}
+Reviewed-by: Aveline Noir <jm5905938@gmail.com>
+Tested-by: Aveline Noir <jm5905938@gmail.com>
 
-pgmap->vmemmap_shared_page is allocated from normal kernel memory
-(direct map). It is just a template buffer, not a real struct page
-inside the vmemmap space, so passing it to __init_zone_device_page()
-causes page_to_pfn(page) to compute an invalid, out-of-bounds PFN.
-
-I first hit this when backporting the series to a 6.6.117 guest kernel,
-where set_pageblock_migratetype() uses that invalid PFN and crashes
-during device probe.
-
-On your base commit (next-20260902), a normal boot does not crash
-because pageblock init was moved to the end of the function. However,
-set_page_count() still calls page_to_pfn(page) inside the page_ref_set
-tracepoint. Booting with CONFIG_DEBUG_PAGE_REF=y and
-trace_event=page_ref:page_ref_set triggers the same NULL pointer
-dereference during probe:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000008
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  Call Trace:
-   trace_event_raw_event_page_ref_set+0x4e/0xa0
-   __init_zone_device_page+0x98/0xd0
-   memmap_init_zone_device+0x1c3/0x2e0
-
-To fix this, I added init_fsdax_page_template() to initialize the
-template fields (ZONE_DEVICE links, Reserved flag, pgmap, and refcount/
-mapcount via atomic_set()) directly without calling page_to_pfn(). It
-also preserves the WANT_PAGE_VIRTUAL handling from __init_single_page(),
-since patch 1 enables this optimization on LoongArch where KFENCE
-selects WANT_PAGE_VIRTUAL. I only have x86-64 to test on, so please let
-me know if that part looks right to you.
-
-
-Second, regarding the alignment check in
-pgmap_vmemmap_shared_page_alloc():
-
-> The initial implementation is deliberately limited to a single
-> memory-block-aligned range. That is not a fundamental requirement, but keeps
-> the registration and teardown paths simple; support for multiple ranges or
-> less strict alignment can be added later.
-...
-> +	if (pgmap->nr_range != 1 ||
-> +	    !IS_ALIGNED(range->start | range_len(range), MIN_MEMORY_BLOCK_SIZE))
-> +		return 0;
-
-After fixing the crash above, the optimization still did not take
-effect for my 130 MiB test rootfs image. Because MIN_MEMORY_BLOCK_SIZE
-is 128 MiB on x86-64, the 130 MiB device failed this check and fell
-back to allocating all 520 vmemmap pages.
-
-In our microVM setup, rootfs images are sized to fit the filesystem and
-aligned to 2 MiB rather than 128 MiB. In fact, 2 MiB (SUBSECTION_SIZE)
-is already the native alignment for FS-DAX (via memremap_compat_align())
-and for ZONE_DEVICE vmemmap population and teardown. To keep those paths
-simple, we only need to make sure a shared vmemmap page never crosses a
-pgmap boundary, which 2 MiB alignment already guarantees on 4K-page
-kernels.
-
-So I relaxed the check from MIN_MEMORY_BLOCK_SIZE to SUBSECTION_SIZE.
-I also added an alignment check on (PAGE_SIZE / sizeof(struct page))
-PFNs, so the same boundary guarantee holds on large page kernels,
-where one vmemmap page covers more than 2 MiB of device memory (such
-as 16K/64K pages on LoongArch).
-
-
-With both changes applied on next-20260902 (QEMU x86-64), probing with
-CONFIG_DEBUG_PAGE_REF=y and trace_event=page_ref:page_ref_set works
-cleanly. The 130 MiB test device now uses one shared vmemmap backing
-page instead of 520 private pages, and DAX faults materialize private
-metadata on demand as expected. Mounting two 2 MiB-aligned virtio-pmem
-devices side by side also works properly, and unbinding/rebinding either
-device does not affect the other.
-
-If these changes look good to you, could you fold them into patch 3 for
-v2? (Note that the patch is against v1 and still uses the
-PGMAP_VMEMMAP_OPTIMIZATION flag.)
-
-I also noticed that next-20261023 has refactored
-memmap_init_zone_device() to use zone_device_page_init_from_template().
-The mm/mm_init.c change will need to be adapted when rebasing the
-series, while the mm/memremap.c change should remain applicable. I am
-happy to help retest v2.
-
-Signed-off-by: Yilei Zheng <trilith.zheng@gmail.com>
----
- mm/memremap.c |   10 +++++++++-
- mm/mm_init.c  |   29 +++++++++++++++++++++++++++--
- 2 files changed, 36 insertions(+), 3 deletions(-)
-
-diff --git a/mm/memremap.c b/mm/memremap.c
-index a53d09b..34d8d89 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -93,8 +93,16 @@ static int pgmap_vmemmap_shared_page_alloc(struct dev_pagemap *pgmap, int nid)
- 	    !(pgmap->flags & PGMAP_VMEMMAP_OPTIMIZATION))
- 		return 0;
- 
-+	/*
-+	 * Subsections can be populated and removed independently, but a
-+	 * shared vmemmap page must never span across different pgmaps
-+	 * (which can exceed a subsection on large-page kernels). Check
-+	 * both boundaries instead of requiring a full memory block.
-+	 */
- 	if (pgmap->nr_range != 1 ||
--	    !IS_ALIGNED(range->start | range_len(range), MIN_MEMORY_BLOCK_SIZE))
-+	    !IS_ALIGNED(range->start | range_len(range), SUBSECTION_SIZE) ||
-+	    !IS_ALIGNED(PHYS_PFN(range->start | range_len(range)),
-+			PAGE_SIZE / sizeof(struct page)))
- 		return 0;
- 
- 	pgmap->vmemmap_shared_page = alloc_pages_node(nid, GFP_KERNEL, 0);
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 7dd03b8..1c3e269 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1030,6 +1030,31 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
- 	}
- }
- 
-+/*
-+ * Initialize struct page slots in the shared backing page. Because this
-+ * page is a direct-map template buffer rather than a real vmemmap entry,
-+ * set_page_count() must not be used here as its tracepoint calls
-+ * page_to_pfn(). Keep the initialized state in sync with
-+ * __init_single_page() and __init_zone_device_page().
-+ */
-+static void __ref init_fsdax_page_template(struct page *page,
-+					   unsigned long pfn, int nid,
-+					   struct dev_pagemap *pgmap)
-+{
-+	mm_zero_struct_page(page);
-+	set_page_links(page, ZONE_DEVICE, nid, pfn);
-+#ifdef WANT_PAGE_VIRTUAL
-+	if (!is_highmem_idx(ZONE_DEVICE))
-+		set_page_address(page, __va(pfn << PAGE_SHIFT));
-+#endif
-+	atomic_set(&page->_refcount, 0);
-+	atomic_set(&page->_mapcount, -1);
-+	page_cpupid_reset_last(page);
-+	page_kasan_tag_reset(page);
-+	__SetPageReserved(page);
-+	page_folio(page)->pgmap = pgmap;
-+}
-+
- static void zone_device_page_init_from_template(struct page *page,
- 		unsigned long pfn, struct page *template)
- {
-@@ -1138,7 +1163,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 		struct page *page = page_address(pgmap->vmemmap_shared_page);
- 
- 		for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
--			__init_zone_device_page(page + i, start_pfn + i,
--						ZONE_DEVICE, nid, pgmap);
-+			init_fsdax_page_template(page + i, start_pfn + i,
-+						 nid, pgmap);
- 		goto pageblock_init;
- 	}
--- 
-2.39.5
+Thanks,
+Aveline Noir
 
