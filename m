@@ -1,101 +1,157 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836DB606A31E
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 03:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E94606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 03:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AFKYEaz0
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=cbLZoEP1
 Received: by kanga.kvack.org (Postfix)
-	id DDD1B6B05B0; Mon, 26 Oct 2026 23:40:04 -0400 (EDT)
+	id 357706B05B1; Mon, 26 Oct 2026 23:40:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8D596B05B1; Mon, 26 Oct 2026 23:40:04 -0400 (EDT)
+	id 32EDC6B05B2; Mon, 26 Oct 2026 23:40:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA2E26B05B2; Mon, 26 Oct 2026 23:40:04 -0400 (EDT)
+	id 21E096B05B3; Mon, 26 Oct 2026 23:40:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99F2E6B05B0
-	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:40:04 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1B526A851F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:40:04 +0000 (UTC)
-X-FDA: 85367002728.03.07FF54A
-Received: from mta0.migadu.com (out-159.mta0.migadu.com [91.218.175.159])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D1DD3100005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:40:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AFKYEaz0;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.159 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EE8AC6B05B1
+	for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:40:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DACC1208FA
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:40:35 +0000 (UTC)
+X-FDA: 85367004030.20.96DBB97
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 66C80A0005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 03:40:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cbLZoEP1;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.218.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793072402;
-	b=OZ64iEKOI7nRC9uzUiXR/tj6HaPRQ0eZBF33QAABaPdsP43R8lEAagA/nXVtTzZCtIVA9x
-	iWhjWL7ffedGpzLauQtGR55F6NrBRhOvfEjJKf0s0myZRncbSzyjn7TjT8lB6aXWSqjGL4
-	z0qVhm5LJfDbwjRzHQUO1ifxPE9KgL8=
+	t=1793072433;
+	b=8oiyKydlV+6lIGunBUelGfbc29gA/HnPWbNWfiwNmUCLEWuKgig9rEpokuCY9M4mPWmk13
+	bzSYdSFO1B9eYIPGUopbRh7jT+ADzQADRrG3nO892HFXSt5YbYlwVEgtyyAcxZOXS41kXh
+	lreC432v0Wl8QlFRvLz46as8SgBNtbU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AFKYEaz0;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.159 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cbLZoEP1;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.218.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793072402;
+	s=arc-20220608; t=1793072433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oEi5yv/OaTlB+//ZKfqhrPpGN262I+SDBjf+a0Db1PI=;
-	b=W8CjsLNOoCclE+4/IrVGgaCRoUDR73JpD1OEl/cwEwi8XrZhM8lA6JbsOiUuwYAD7TeDj1
-	QGKnoEC3/7YGwwO2oHeblUWSQtYyc6FFC8xu6oU1ipWx0uthklIQp6EJhYCpf9bvneVfeR
-	bHX781n6X+/Z72whTZh+zBHqSrWgsEE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4hMaGBX4YiC1c0Vq4PKRA8fH7YfB6cD9vZ6lrLQREzM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793072400; v=1; x=1793677200;
- b=AFKYEaz0+SZhZfexOjEH3jV6iz08BG28K6F6imYpOcoyfGsUIxnWJmwVYDR7fKu+WrTb0YyD
- KDTDxZSKpy5OOj4RCgcIlqkUmG2y4i7tTyjCii4FAVtOaC8HiBsT93GoNoqbvrLniVJk2FWD3vd
- sssammMEarM54Ue7N4lAJwKU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id c26ab69f7955a4aa;
-	Tue, 27 Oct 2026 03:40:00 +0000
-X-Mizu-Trace-ID: c26ab69f7955a4aa
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	bh=cRzqF3pZC9T9+mgqazzI3wB0gyIKv4okDYmmTH+ci9I=;
+	b=1n/fQO5H5Ub2yp5GpXYq3d3wJgEOLOYg/f25FyhOEhvq4elHAU9R8Roc0dMLNCJBFzp++l
+	c4XvImqTVZnqKxueVzIKw9Xt1Sk81+S6ViFkAL9jEm4YoHvUJPfn1+w787EynxvrjBuQJZ
+	4oj/gfg8/my+2jloxjktYx3klgB4qTE=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c46822eefb6so480736566b.2
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 20:40:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1793072432; x=1793677232; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=cRzqF3pZC9T9+mgqazzI3wB0gyIKv4okDYmmTH+ci9I=;
+        b=cbLZoEP1xBdNXG/ZrrT6aVUwwARKMvqp0zbFQ1Ov2kVNPEaYkgfKY5tFUP3efraQsj
+         HSf6NFzHOkyrB0YayfUe34u3NcW6fAaMhhNjl/JGHyXewK/h4wYKprsBRpZO4b2o5Q9K
+         W5zHUieKo9A9CRahY53P/nWT2tA10HOsXj10O6FemQiBeJ4hGQS0t80uvCI5BPCvdOtn
+         MZOsujU9908OTp6sT0mega5VqlHUaijv3mqvd7M59VT47sz47QP7Phx5XdyMg3JgB2Yu
+         O5IFRoK5XsYz3kqUwAq7oDNUCYpKyl2VknN2xmoMtocr6XSK8Q/hTr20NcAB3YoDR+N/
+         SO3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793072432; x=1793677232;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cRzqF3pZC9T9+mgqazzI3wB0gyIKv4okDYmmTH+ci9I=;
+        b=A3BR///kigUkH4w7FyoLSP6I5ewK/wxRAK/wNMkRF7kESnZTjgVjkF5zUCgwOYLznJ
+         19qSP9r+Fp+rGz4g707RsMfw9ENrPMlUwroXz773x6cVBs7M+M+3M7Ib7iMHe93bwFhF
+         Pr7/xCE8GJqTKxk94u7kdMFtvxL5y6AOP6VdLQEbecFs83TatXRsDJ5VUNc5UC8rpceR
+         SlciWFAZXjcAuiZvNu75CfsW8Y79FWmKB6C8ZC+8fOo/WM+wHZ0XNZk+Misi7IdsnBhp
+         JyHXMT2Q3s+7OGGU21bWhTFiydfDArvuQf5SQZmGMFYpSVd62vcfJBfjIypMtGvePBHh
+         N6LQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzbtDq3GOX2v597n37SRlio416RJVxcaOV7Qmj3P7U/4pMtaqfljCEgwD1HYj7TuEvJjqa5Wl9Z5g==@kvack.org
+X-Gm-Message-State: AFq9FYLbIvUPYYnkHJWn3OUmyoGlvjRy6ydLkILFGKzqp8I/4bvuLYZx
+	+4NPl9VBoIQ91ISLC229cyOugjQuTiaeYAjG6ljIe+anudP7CsCs0lDYs7o/VKHusHE=
+X-Gm-Gg: AYBFou3guRv+ZPJweqHhGyP9zszjEu8EJArKFOEfvL0JzQGMXwxUYtR7yTOBnEpUN2G
+	ifTu5+EVVkuwG0wtGv+RswtFMEdWIdidR7SQTh2qdAfGoA4DTo33Ve5DzpKD+lfS35J4RMUOo8L
+	HQT9MWLY1aYhMxxTqNmAOU17+UTVzdX/2S29LHCelvmAJhJ0R7xZIHMuizKwyzYdu1/8TdE288V
+	Fstrl9EHVnyduM3sWfRC5Fu0AG4r80Bus6uZaP2Gk8lA71UUFskw6QbmnVaQiLj589AF9YEeyrn
+	UJNHVYYL/oOFbyjW4vkHLpFjtgnM2uZitFEoVOkHet1MHJyZUuPFG/pCfblq0zieWVXnTVU82H2
+	89fpAsRI5p5dnzD0gwAQDEwIQUHKmNFMQzGle8GoT3GxfcKOCZdJLd2J3zlGY16+rEOP8Dq885c
+	ixmNnFHAYJ2rcMnCq3WvsJCUpxkQzCLI/dLEzz8whEdg4vo4WXDDUyRchWfH/kzXN4qhThHtISY
+	ITutTKm30zLm1xUsOAtPt+9A2xwgRWFP/ozjkuJaCVTDg==
+X-Received: by 2002:a17:907:971e:b0:c46:723d:600 with SMTP id a640c23a62f3a-c46bde9f783mr916491966b.41.1793072431944;
+        Mon, 26 Oct 2026 20:40:31 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:3::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd4e784esm379153566b.19.2026.10.26.20.40.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Oct 2026 20:40:29 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 1/2] powerpc/64s/radix: don't dedup vmemmap covered by an
- existing PMD leaf
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com>
-Date: Tue, 27 Oct 2026 11:39:45 +0800
-Cc: linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <chleroy@kernel.org>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- David Hildenbrand <david@kernel.org>,
- Pavithra <pavrampu@linux.ibm.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2C88EF3C-1E7D-4395-99C5-711FFB01469A@linux.dev>
-References: <97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Stat-Signature: boczon6y4bjah9ks8n4isii5ow797gwu
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 26/46] mm/mmu_gather: fix flushing ranges with 4 GiB or
+ larger
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-26-6f74bec9a5bb@kernel.org>
+Date: Mon, 26 Oct 2026 20:40:28 -0700
+Message-Id: <179307242835.1171062.11616590599815003560.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: gorqmokmcto1yzz5tzu3tqq7x7i9ds5f
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D1DD3100005
+X-Rspamd-Queue-Id: 66C80A0005
 X-Rspam-User: 
-X-HE-Tag: 1793072401-523524
-X-HE-Meta: U2FsdGVkX1+qzzQsvn47mQ3uOiWMuvAIPHY5CJUffy04+UZ4yXOEdVIDpZXNIxBYd9jVS5HVG2zrjx8bfp17G0SORT8h2KB4AvjF8XnMW7y7Rjyk51gpktEzo1oUgwUBONYXqPt8eXMclIZmcGe0FEJV4yyDdProqUpgpfWaAsVDB8L0cxB6avH75fOP26IL4cilQVd7z+CZcRMA0cS8BznbVl3y46QjxjB/S5ZmKtuCVORF3Z20HMC5wGhQO4TP2iFfnp5A3kinxsrEPglMqzUpSdDutQtHKahjJY2pKRR3DvMd8GTEDP8jtmL8DQnT5JL8C3CxRWsh5UnMILBw30bdbWFlsU6pKHQnZCuo2o1v0NCBVnHUzoEvtyf5a6Sk16AsL0zgO9hEvuhv3mvs1U8vJgIbbPb6WybXefxzCnRyvm6gZ+qDjcl+CaOeFEuqp9AgNE1D6T3yRAGBkbW6/gIWmF3H/k7yvLmvB3MXd67rnA3ANOadJ47NrYP2dQN4L3+HrfrKUc9p0eA4UdlItYbTpjFLPIpi0tMve3l5E91hGCMTek9sOQcHrtv0yPJdd7n222skPCwNDuJOsFxmzuztow30EgThVnffNFWplsr6/1m+DpfM189Dp08F04dZsBdKJ6EV+poNSoZMVysjUuriR69THejNQD3tbzOTMfGZ4oSB5F17xmsiPMqFmft1x0+2rf6lvKMMxo7H2RaF3CYRYq5s0zEjMiyKDi2SOrjsO8pAnznjbyXGExaVgfLu//PEaUfaXnKyEX60Lzm/M/hHa3FP3MeeU1FdHKIiTZmaUNxfSbn0cjtXv/a/tRaPZ327B5Yv0zAs+kYBaI+PLgYUP2PLiG5wAhmtdNEPsBlcWzJwcPd7AgqpAZUCy8fgnPY4YH2eIlq8zm3VMRMT4upjnurnd81xifoXuabXDVZ/7Vhzwnku6ua41G3R7svygUvYpRswevQOpE7MWKo
- xtft8grc
- KhqMC/d+9smIOKh2mMDKRRboAhYHzb33csOSGOrNgBpF0OmJJ23h1tTTUQSDiEpXwjUULJsaL9EFmTRPeF4TIbKo/q2GZqrlKPu1EoSy9QGvtkYtEizAY815mwThf43uuSwoLtY8Z5u+uL9KmZWjLJ9hkN7lUGrW2HvR8Mhv5H4u3axs+HGojJam3ElUq+DMCyxml3kCJLc2VNfgSf05rHplbgIkj64ThwsH3ZwBYKj1f1OiHfmRcx9kvetkD5zDyyWQTbxxPYHt6SYelhEPKY3s1pEkPI+bF79d5NvLHTXCviRm1IjzHn05cN3s1QoCyozlDMIRLviBFVRhOgm7j3+ncXOom38m2p3fdoKTlLclDAbs13ipGgnK9VjgECpoNwqKn2gTGLTY6bF52XZT2f3lCbiEuyJZUBESO
+X-HE-Tag: 1793072433-367145
+X-HE-Meta: U2FsdGVkX19QHhQ2MXJ/kGx6jIftUC9vL0DwhKXqlnMUhBKjkOyzXIYPYOTATCQiuScMtDeoOuSvh/6yva3hVGttNvhFPOwPt+EUQCZS/E3dXtcZD4A/w6LlJHtNZNZdXOxcjPIDWZmbDbfZnZdfPXeqZCLpGulJJMQ0c5A4rSSfTMoZo7fhxo6wGvq9oktVuM2Rm5TjbNRhK2M+pG42xcRlUNpoaIIFoNZ8T5Y0XmPktHsP58Ownpuo7LEuD1WeYSK/4gu60Xb0tuA06vBDDitGP20IjEwVPBU/+GFu/1mlo2e6denM4VFJny4tYZEm6oNSYoaBqBOb3dJRQtw67amVwlnrv/r6g6QhCmr1MTgZ5NLHWwHPCQwpSlGldpzHRGX8VDsr0dJm3jo2zkeuUlbh1PuDsdg8U1lR5y3O9A5Snkbc9ZoL6wOCEAJAVNuNLwYEe42zYeK5xIbHXId/wMiNc9PM2V2S2iCi0Zw5nhQYOivSagUzPYuGEVKGsbjJmhhStXqm5zQbdZml/Tm5wQRDGTMlNH9PLxWhGrNNIw2oNlxqy96wJTCzE8lp6dVBmqT33y5pIWSGDqur6gbNQXoZ3nUFF6EfA/+YMatOz+IlzFxOKEYRSSZFWJwNtnsIn0n8tE6f470YSsJiLJkGk54rIZ33IBFtjV3SCv9Q58uSk2Fd0Lj1VbQ3pvJ1DSYXykobk+pis0Y+rsVE4lNj6MoK0pUBWTc2D8keUaLmlE8qx+NqoPHZwi8VR8lc25nw5O+srw500F0ssevQUeOm0mstg7aeFgS/TdNhiefubu1nsO1cWkhy4FWch4MpCw01V6BstA7hZpGe3LtV1ClQAxS6fZAvT+v1LYd86du17NNg2bZZcxImJtbtTYld4jIoPmkd3sWcqUqsX8OmejhVwIsEeflsNTC06uefx9qUpckifOoXTrgRRmCcc6GgvjrmlzsWN7K2MX8zfgBi5tm
+ wbnIvfXR
+ H4A477oNP8DK5y9LqkJ7AjBILKnTjhmL+8qFfSpnxrwOFYsimSf7gglUcNr/1RdZOTbmLWAkSrwR3Njqzv1e4kRwo9zfjWAJ24UeALpAuwKUditNvVMBUfokaWyb7Mou6V/M5gVeoOTr3VYH2B/xTGgvE2e3p5uA6fZ8ZOB0m9jTl81x/Irs3eg6S1P2fPqEHmlOpIy+ddKxwhD8jM6hMFaEQbom8GSaHX1abAs9O+fk7AQSuqYMyaTU1aNU8Y3t1jspRA3XsHS2ug4rBSVJQSuEG/2ERR2xTVx3Bpbe5GEPQEV4nTU0qcBbEV+SGcQqiOc5a4OAC8BjLQfi6iLo8UNkKLgERS699Hkt3XwpZDr9+Ob+BwaYmWMoHQYUq1bS/Gbs9V28d3n0VLyjckEXmSNmp466/6CVKIjnxZw7CjkzJvbwh5+hgFhpYKHZj3q6ypjUaiDZALLQp4/EFcdBP34fjYvq/rd5nICjl4nwzzVPJqQJY6TzVtaMSmUY41CJhOoncVY56KbqLotmgqMHrek5Y3Wyi2kNHQ+bP8xDQl6890k7CVvjzAWPOn86J3S/VI/YY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,187 +160,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ritesh,
+On 2026-10-27 00:17 +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> __tlb_adjust_range() takes the size of the range which has to be flushed
+> as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
+> and pass an unsigned long. Consequently, a range that is 4 GiB or larger
+> gets truncated, possibly to 0.
+> 
+> On arm64 with hugetlb, a 64k kernel can flush 16 GiB hugetlb PMDs, and a
+> 16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
+> at least these two scenarios are affected.
+> 
+> Fix it by flushing the proper range instead of the truncated one.
+> 
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
+> Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> [ david: use two-tab indent, simplify description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> On Oct 27, 2026, at 11:22, Ritesh Harjani (IBM) =
-<ritesh.list@gmail.com> wrote:
->=20
-> radix__vmemmap_populate() is asked for one 16MB section, which is 16KB =
-of
-> struct pages. With no altmap it rounds the request down to a PMD leaf.
-> That leaf describes 2GB of PFNs with 64KB pages (128MB with 4KB =
-pages),
-> so it also covers sections that are not present yet. It cannot be =
-freed
-> while any of those sections are still in use.
->=20
-> A devdax namespace that lands in the same window is marked for vmemmap =
-dedup.
-> vmemmap_populate_compound_pages() treated the leaf as an existing huge =
-mapping
-> and skipped it. The core then initializes only the head vmemmap page =
-and assumes
-> the rest is the shared tail. Those remaining tail slots are real =
-struct pages
-> still holding the page_init_poison() pattern and are not the shared =
-tail pages.
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Right.
-
-> __init_single_page() warns on the zone mismatch and the following =
-pageblock init
-> faults in __set_pfnblock_flags_mask().
-
-Yeah, the new adding warning is useful.
-
->=20
-> If the section's vmemmap is already a PMD leaf, clear its compound =
-order
-
-I think it's enough to fix this issue.
-
-> and reuse the leaf, so every struct page in the section is =
-initialized.
-> The shared-tail layout needs base-page PTEs, so it cannot be built on =
-top of
-> this leaf and dropping the leaf is not an option while the =
-neighbouring range
-> is still using it. So, fail the compound populate if a leaf is still =
-seen there.
->=20
-> <Call Trace>
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [    3.467060][    T1] WARNING: mm/mm_init.c:600 at =
-__init_single_page+0xd0/0xf4, CPU#0: swapper/0/1
-> <...>
-> [    3.477419][    T1] NIP [c000000000576b30] =
-__init_single_page+0xd0/0xf4
-> [    3.477827][    T1] LR [c0000000005778b0] =
-__init_zone_device_page+0x30/0xb8
-> [    3.478444][    T1] Call Trace:
-> [    3.478764][    T1]  0x10000 (unreliable)
-> [    3.479874][    T1]  memmap_init_zone_device+0x164/0x430
-> [    3.480392][    T1]  memremap_pages+0x43c/0x93c
-> [    3.480836][    T1]  devm_memremap_pages+0x3c/0xa4
-> [    3.481328][    T1]  dev_dax_probe+0x264/0x3d0
-> [    3.481817][    T1]  dax_bus_probe+0x140/0x1c8
-> [    3.482237][    T1]  really_probe+0x108/0x580
-> [    3.482681][    T1]  __driver_probe_device+0xcc/0x284
-> [    3.483186][    T1]  driver_probe_device+0x5c/0x108
-> [    3.483656][    T1]  __device_attach_driver+0x10c/0x1e8
-> [    3.484134][    T1]  bus_for_each_drv+0xc0/0x13c
-> <...>
-> [    3.499972][    T1] BUG: Kernel NULL pointer dereference on read at =
-0x00001400
-> [    3.500417][    T1] Faulting instruction address: =
-0xc0000000005f4ecc
-> [    3.500417][    T1] Faulting instruction address: =
-0xc0000000005f4ecc
-> cpu 0x0: Vector: 300 (Data Access) at [c000000006756b50]
->    pc: c0000000005f4ecc: =
-__set_pfnblock_flags_mask.constprop.0+0x34/0x160
->    lr: c000000000577f38: memmap_init_zone_device+0x358/0x430
->    pid   =3D 1, comm =3D swapper/0
-> enter ? for help
->  memmap_init_zone_device+0x358/0x430
->  memmap_init_zone_device+0x220/0x430 (unreliable)
->  memremap_pages+0x43c/0x93c
->  devm_memremap_pages+0x3c/0xa4
->  dev_dax_probe+0x264/0x3d0
->  dax_bus_probe+0x140/0x1c8
->  really_probe+0x108/0x580
-> <...>
->=20
-> Fixes: bd0862382adb ("mm/sparse-vmemmap: drop Device DAX-specific =
-population path")
-
-Actually, the right Fixes is:
-
-Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap =
-optimization for radix")
-
-On older kernels, these errors are silent. They trigger a kernel panic =
-when the user
-actually uses Device DAX, rather than during the initialization phase.=20=
-
-
-So, for older kernels, we should guide them to backport the patch.
-
-> Reported-by: Pavithra <pavrampu@linux.ibm.com>
-> Assisted-by: LLM
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> ---
-> Fixes tag here is added since the fix is dependent upon the change =
-mentioned in
-> "Fixes" tag. The Fixes commit-id is from mm-new branch. Although this =
-could be
-> an older pre-existing issue, but got exposed after this patch series.
-
-I knew this issue, so I have a local commit to fix it as well. I'd like =
-to share
-it with you, because it looks a little simple, does it work for you?
-
-powerpc/mm: fix uninitialized ZONE_DEVICE struct pages with PMDs
-
-PowerPC radix vmemmap population can reuse an existing PMD mapping while
-populating a device DAX range whose section is marked as HVO-enabled. =
-The
-reused mapping is an ordinary vmemmap mapping: the redundant tail struct
-pages are not remapped to the shared tail page.
-
-Leaving the section marked as HVO-enabled makes later ZONE_DEVICE
-initialization treat the range as optimized and initialize only the =
-struct
-pages that would be backed by a real HVO mapping. The remaining tail =
-struct
-pages can then be left uninitialized even though they are still used as
-metadata for the device DAX compound page.
-
-The Fixes target predates the section-based vmemmap optimization
-infrastructure, so older kernels do not have section state that can be
-marked non-HVO. Backports to such kernels need to handle the PMD-reuse
-case in powerpc radix code directly, for example by initializing the =
-tail
-struct pages that core ZONE_DEVICE initialization would otherwise skip.
-
-Mark the section as non-HVO when reusing an existing PMD mapping, so the
-section's HVO state matches the actual vmemmap layout and all required
-struct pages are initialized.
-
-Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap =
-optimization for radix")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c =
-b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 72793ace1fb6..fc3a2d4b422d 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1200,7 +1200,16 @@ static int __meminit =
-vmemmap_populate_compound_pages(unsigned long start_pfn,
- 			return -ENOMEM;
-
- 		if (pmd_leaf(READ_ONCE(*pmd))) {
--			/* existing huge mapping. Skip the range */
-+			unsigned long addr_pfn =3D page_to_pfn((struct =
-page *)addr);
-+			struct mem_section *ms =3D =
-__pfn_to_section(addr_pfn);
-+
-+			/*
-+			 * Existing PMD mappings can cover the edges of =
-a valid
-+			 * HVO populate range.  They are ordinary =
-vmemmap mappings,
-+			 * so the current section must not be treated as =
-HVO-backed
-+			 * when its struct pages are initialized later.
-+			 */
-+			section_set_order(ms, 0);
- 			next =3D pmd_addr_end(addr, end);
- 			continue;
- 		}=
+-- 
+Gregory Price <gourry@gourry.net>
 
