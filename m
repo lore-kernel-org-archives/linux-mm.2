@@ -1,116 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AEA606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142AA606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 20:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OzCpyyCq
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ecakqe2i
 Received: by kanga.kvack.org (Postfix)
-	id B14276B08CB; Tue, 27 Oct 2026 16:09:06 -0400 (EDT)
+	id E48376B08CD; Tue, 27 Oct 2026 16:09:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEB0F6B08CD; Tue, 27 Oct 2026 16:09:06 -0400 (EDT)
+	id E1F2E6B08CF; Tue, 27 Oct 2026 16:09:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DC1B6B08CE; Tue, 27 Oct 2026 16:09:06 -0400 (EDT)
+	id D37E76B08D0; Tue, 27 Oct 2026 16:09:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 730596B08CB
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:09:06 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9A94C0AE7
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:09:05 +0000 (UTC)
-X-FDA: 85369495050.24.23F2933
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA98D6B08CD
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:09:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 265111602A3
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:09:27 +0000 (UTC)
+X-FDA: 85369495974.16.BF3C465
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BA61B40003
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:09:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzCpyyCq;
+	by imf20.hostedemail.com (Postfix) with ESMTP id C79921C000D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:09:24 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ecakqe2i;
+	spf=pass (imf20.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf07.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793131743;
+	s=arc-20220608; t=1793131765;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VeEh0rShVYt/Qe12CelPAOWD3oT/iB75neohsnBaq7s=;
-	b=cLTM0ExkJ1rvubwpeC4gNn9MNIvi7RzdwwCyFHdYL6kzIKqAOHJ08CTtTdf5t+t7sqRarR
-	YwozpxtjdGdDFtWzloHhW4LjmHoc7rsr2mrpIwGfzA3sj04JvM2CSfE5/Q35WdpBZGG8mJ
-	purYoBvZ9A6c3zAPhTg1rJiM8MS4aTU=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzCpyyCq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf07.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org
+	 references:dkim-signature; bh=qCB2VNIuJaytvnyi8XURzmlcjZmcQYR874A5wGXc/C0=;
+	b=QGq7K7J01YRPPwGZIhBpZkIDkWnZD/UAxa5EtGessPi9rYJGU7SW1YzzqMsvyFQlYC0nkp
+	S/EKrIcNmekLLpBEFateNc+3C7Xd9ogC0QhJQo4C5bxVlBNUFnojgvRlHWPmgZ035Wyd+I
+	oEUBRXjmR6gF1Xgy45MmsuLMQ2szUiw=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793131743;
-	b=iS2Ms7Ziy8eNJdqqOj0vOmr8d+XjZaeRb0NdE16LodKaKQ5mWuHiEb41kYd3ca5L4liSJa
-	hTqrvaWk9DInC7/r8w7mx415ok5XLLxDnh62bDf8Ne1WZCkmcTdxyGbMNdeadidCMspxIE
-	b4h42r34sWeREcenGcSht4TDWUL3ZuY=
+	t=1793131765;
+	b=t2zRpu2VUF0QZjQWbd0Bdkgh2+c56IS4BGpQ0CeNCyXQ0GsH5tvtJZQ8IWdWJB24MdQU73
+	TIgOT5+wBtjz9N4kcCuSK2M3QjEer7gzOYzOBc5vHPnSfVe2HggD2PppECMQV4Hzvl90Zs
+	00JwbncaXTyREqIctsf7M8JJdKJLPmo=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ecakqe2i;
+	spf=pass (imf20.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8C2A143B91;
-	Tue, 27 Oct 2026 20:09:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C2D741FC1;
+	Tue, 27 Oct 2026 20:09:24 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793131742;
-	b=IC5yHianAWAZ9MGWEEhNM9xP1tRw7BStTU9jsR3w2hH3xkWw+gblW0DXLgH5XeRuEHH2
-	 LTTQt+s6HX4lVOz3+JNJLFtJXfJdnHpZ9cT9Z85piqobSqqAOSYDX0GEmvP9dfkLGlsNc
-	 PGsjO/ecJOCQke1192SE011XY0r9idRwGa5VcD1PtDFw9z4U4AfAKI1h82aAmz19RiT+y
-	 /jszid0Xl4ySw67NPS7ahypEHS2U5/jTJGI/aVBgLv4Sviw6AzV7/P3KUoCRo3dkBkAPH
-	 gS1sthkYeSB1g+qfmHgYBv1StsxsB/b2MEI25NsHmzkSDuzltXVYjaYqDLVms+dWAnw==
+	t=1793131764;
+	b=cXbW7ExwM6MIMWp9yxGA+QUuxdViCRoIl9gUtoPh2fb1GJ6+MRvNMkW7V/NIavoXhQH8
+	 HIsuWYpyenz/uxOU1t5jD/0fRpHH8oVYQ1iu7VI5V4DtxP90W0URGSWSbMWdYh+dWhQi4
+	 Q35dM3f/bV31qaEOotcWVWQBA9k5SBu92/2cc8bacbroCakqUyhxHzPlS/UjWf8Khs9a0
+	 +8qTXtuAh1nallAumYuai37Xp7cQxNplwDLeKE6XJJFyUAIxGrRjkfSPiDB62YH9Ujj89
+	 CZgi7pri42ZNP4ldG3OI7YoK/4qH/BqREekGvSSGI4M+AdaBBZDC35M14lxG3N6wI1w==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793131742;
+	c=relaxed/relaxed; t=1793131764;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=VeEh0rShVYt/Qe12CelPAOWD3oT/iB75neohsnBaq7s=;
-	b=Y0+e768HBov75oGpO7EEdWwp7eL4t0a4/kPM67gNNWeFvFP+Ji5VQSUvAhNzl0ZkJnJY
-	 GrbRvhR/m4BFVJ3FWlicelYncy9yYzcvQdoyxAW8Vv1LCo1TJxxQYEBXnSQFSCJTOdK42
-	 fJRqf8cYma6SzpiEXxIrJLExScRbeXszbbZKpnfKnwimynjLEP1YeH9C1tScTYyFmT18q
-	 8rNpn2RBPwu40l19z1l25XBGB6p0BpIx9gfNTcUtpzzVCj3UFIE800rNrKqRyfrw+ZEhO
-	 1jivXrfECaOUSCYZPicPeMIYtmrFGiI5HVnrMpwi6IQWgQuAglGqpi+rljgoayHu5Wg==
+	bh=qCB2VNIuJaytvnyi8XURzmlcjZmcQYR874A5wGXc/C0=;
+	b=e3CjuIW7lvA0XhbjTpqRRG7eGwGF9uQex4V/Pe75veT5nCKSZ32Lscva1cVwyzNDi0yU
+	 F46AkM5muu0i9k2W9FMNZ58k5jAK7q3WbxHt/WlhDC4gU1H1rDGLQwCMTVU0KVTSyMIch
+	 YWj+NJJB854uk5S4N+FwPGPJ8dtF8VdtFCb+0nYumlXdF8cmutjUw5EDSp2Ym2TU9eS0/
+	 eOR+VwC5r1Rrj27f7G3oFBVTAoFab0/ud4tF24CUS7hACLawRSZYylseXaht5/sRz7on/
+	 kcgFaPFq136IgaRmdcYCAuUx7ARYTMkAeZ/Rwiav3Bkf+6izpycpRJvMEmUtPlfvsMg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 095DE1F01825;
-	Tue, 27 Oct 2026 20:09:02 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 89A211F01825;
+	Tue, 27 Oct 2026 20:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793131742;
-	bh=VeEh0rShVYt/Qe12CelPAOWD3oT/iB75neohsnBaq7s=;
+	s=k20260515; t=1793131763;
+	bh=qCB2VNIuJaytvnyi8XURzmlcjZmcQYR874A5wGXc/C0=;
 	h=From:Date:Subject:To:Cc:Reply-To;
-	b=OzCpyyCq+cGaRUmp3UUPoXn333kGLmmkp/w8rhfiLT8F2+s+FMDMzIUauf/5MK8in
-	 ctWPWjxIRlTOBwsm8yKx31KdSs2RMrJH703ESHd5A3CnurdYUiWJUZfnUS/aiXRkdM
-	 YD68/6La9O1GZ4iqg9JE44wzoIe+Tu2MrAW9+sCMVE1maJ3GCEXzNP+VjEEmd6s8Hr
-	 tgV9/z+gIeZN1wiHJiR7J6GZX1n6XoPt7CffvktAeBxpxqpip6/8UR4Va7xt8ln9Pv
-	 YZhp9Dcj8Fd8mBZ52a/cbSj+55BRNP/nOE/RrwUmhW0oxWJOFfZ9h13uqlbBYsaTqN
-	 QDYEdW33YJVhg==
+	b=ecakqe2ijzu+zd4Vn1EhzS4EAsMhu1JCHwRExSlEPvkq2DXhaPoswpJrvqCNLsp6R
+	 ZiE5EsVL3fHbQRskZFaWuFSU8odxwX11JMuAN89RbF2oBYEWLDaZg9IuUP4Wzf9DfF
+	 8Dqqm7zy39/9VMZNG24iSHu/lx0HqDTSUUc/wYjGDI+nQD24nu0fseHtbOWV6/DVRY
+	 cFyNFcApGOsLPZYp6TbwKXiDOrnluMjw7Ylwaa5hb7AMEXCBQavUhHc+zOTZQtWUMn
+	 lcefn5MBF/hLJ9PoPdjV5pzzbfT7oadmatZQAokZgxQO3uO9+APLfWja7auPdIT2lU
+	 LRV0v5Hn+o9JA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8AFEC451B4;
-	Tue, 27 Oct 2026 20:09:01 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 1AE8F451B4;
+	Tue, 27 Oct 2026 20:09:23 +0000 (UTC)
 From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
-Date: Tue, 27 Oct 2026 16:09:01 -0400
-Subject: [PATCH] mm: annotate lockless accesses to vm_committed_as_batch
+Date: Tue, 27 Oct 2026 16:09:23 -0400
+Subject: [PATCH] exit: use READ_ONCE() to read mm->owner
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261027-kcsan-mm-v1-1-66757485b917@columbia.edu>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDAyNz3ezk4sQ83dxc3WQDQ3NLE1NTS1NLSyWg8oKi1LTMCrBR0bEQfnF
- pUlZqcglIv1JtLQCK5KvgbAAAAA==
-X-Change-ID: 20261027-kcsan-mm-c01794559599
-To: Mike Rapoport <rppt@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, tz2294@columbia.edu, 
+Message-Id: <20261027-kcsan-exit-v1-1-7c0429a29bc0@columbia.edu>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQqAIBBA4avErBNU6Pcq0aJ0qimwcCyC6O5ZL
+ b/FexcwekKGOrnA40FMq4tQaQJm6tyIgmw0aKlzJXUhFsOdE3hSEEpW1mCuM1sqiMHmcaDzmzX
+ tb977GU14D3DfD5lpoW9uAAAA
+X-Change-ID: 20261027-kcsan-exit-109dce625d81
+To: Oleg Nesterov <oleg@redhat.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Christian Brauner <brauner@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu, 
  Mani Tofigh <mt4022@columbia.edu>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793131741; l=2109;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793131763; l=1574;
  i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
- bh=j7Mc9C4QlmCwhmnKNi4h7TqTqfjBLIBQjYqiZTNCEhg=;
- b=0Hqd2fa5iviDcBvKgRDs91aLAznIPOLYpILVxsb/Gu5CvLIwOieETU/yf+NKTPQfPHczGDeQK
- J9UjE21rqSfBHoTSVWFwm69tJ00PEmDUjslAk2LRNLpDoBJ9Upa1Mc5
+ bh=WXjCMdCN2l86r1jkTnC4XOf4kZ6T9fA2oOWN9xZ8maQ=;
+ b=P4fzFN8wMHtZOrSvTz2cGZqT83oLhWqh1Yl+Q6idpSUy4YBkJ/VD293cGAp/MVmQ0NcTSTKL6
+ UTAzDy6KdpKAIEtlMq8vulmMt2Se0lha0gFkV8W1YvL068x2hwvXryx
 X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
  pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
 X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
@@ -118,18 +119,18 @@ X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
 X-Original-From: Mani Tofigh <mt4022@columbia.edu>
 Reply-To: mt4022@columbia.edu
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BA61B40003
-X-Stat-Signature: gyymgpcxm8ykkpxyk78kh6ryp7xrwhi6
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C79921C000D
+X-Stat-Signature: dumdhfrg3espbj5gguefnnxpyrffqdik
+X-Rspam-User: 
 X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793131743-922385
-X-HE-Meta: U2FsdGVkX19J/O1wbwkvtAStO6nGwgDfiscs9Ga7gw5uq+Kch+ludQU5qu4AkW2m8UimmWxZSdJtL3UkIligOxFD/nLuR20Vw0Fs/J6vHsktZtZodF48/lGpxLo5yKdrtIMrNZfJ5s34WcqOu+9Rgy1bpjzFkS4Fqu0jtxSEPIzVtHKJZcgAQ4FatfaCEBFkJiWo+eCsEeg2VkvY3YTtAJBuSUDGyjmAcqgds9gdsSQYHQafFWvE7mZtAv81jpqB4uKLhYpm/3cVF/VtUQde5rungnK4oYy/JVHsNJn5SAyZVmHGYpaBjrS2hdSQgyUFoX5moB3F2HxWOVgUcIbiSh/vSEKv+ktmqK26FReaHA3X8X+L+Wh1H7Vhhx5oa/t6W1CP9gc9hwJYxFk6V4/6sMtkEpdcDejXj223ZcQz7SobKzCJqIEuNW0IIKOhUnqBQu4OASQ6RtmutP+1cclGRZRhfsbDODEoSi4JY+WRG/xmJqZbgd8ZdPqiYYspLJUuc9v2v605EXuCGP8KwHxEYaQOzh9wifYtBSN+GxNmwba6iof6HsrwkeS945oDqCnG+OsK39uOLKcPjIJo0bYG1lAKgp9oISPMZqGsM+Af9D1vhKVLn8erQPF/JTqZsZxwSaxVFRfRf5vKrvbtUnRNcYwZWUbIt45/w/IW/Fdv/WVCw3zINtj9YQXCzKubCnajgLBeYrX5PhohhXPF0qs2po3Lq5OFSbhR1Vqtdzm4b66/Apvnje4dbYHyM19owY+37tXkAazZ+wbP4py4g5PU1cZofYM6sO8j/m1eHmVoJDiqopHzERK0ZordJEiozkiIv2Qup9IEo5sH4i5nfy0Cg683oTZ2HU442Lm6D3zclIv9PuLEk8fX4wbo5FioHnf99DpdRx+r+79/kFAcl9DBU8FoyFF1b3rav4IOxGSO9VHNWHq2VcxctVmiMIXyKcI3JNtpUWD85Hjs+l2i8r7
- WrwlXXkb
- i5rmOKx0nPADto7LIleG7cbv43X8eA87KntaVmtfIaMBIdOWMEGTPJV5hyXoyRSYRDAYDbjS7ZaZv+ROYbFNIZ1mIoXAvatXsb15Ka+OGoUV7sd4zmbcll8wX1Mry1ZJrOtHXUw071aFXdLgevZPIELgpk58YkeWm0vC/G2OBBD/d7zDCWSnqOWHJxQdDGergaNURPAAq5xtYvRWXNTpd1a3zIebDrs+xTESTH26MhbC3eF3O3p6Li7fxw8qoL5W5SAkaw7r+R2lXzHy9jN0BOYz5vEcHqncq5KzAGYIbDe/tadCNH0kAqTPzWmlUmHCI/gXVVGbeIp150Tpi7ASmLbyRFE87c2Sgwl9sFnQBzbCESCAQ8w/ZvRzsaZRj+LMUi/dacKRBI+ogoIptPJLp2Xk30YG+vnnBPctEiEjxkZDT/4r7q84/AHkkoFnaiuhQEqiT10EWzyvt2x0Wx3WL292nbpUaFIzpL3aP6Id3VJzcYObbD05OuOde3jav/sb3fbGElC/KRPW1CKE=
+X-HE-Tag: 1793131764-210901
+X-HE-Meta: U2FsdGVkX1+LpTH+tjJAZvlqNSt3hCaR9ZL70GCY4FfJmDWy0LX8Pm2q8c1liyzKXdqQsJLKIKFM29lC2XA0kCHpi8breCR1pJiaRbO86QKLBvuC0o1D52s8oX7oq/ZwT8i0rb9yfrzwbSHXV0OSrwYeJbkIe50Sbu//gkuNyS/l0yxTYGNb9tXmaTbYOVgnBvot9D4m6vy2r/gRrLgQ+VGF0rDc1V77pOlsdi/nke6XFal02GTdwUFHRQ4WRZPt5vQtBznHd7bJBLrDM692tgzqJALWh2++Rce5nWfZccFPcoVZ1erH/a7WIZiEi8BorE9n8xAzOxjsEKbBvmd3xjus6CmlMebEMJOKq5jV1wVFMq+1ECkWcE2b3ZWGuyWnw7ytWCTTosBJzwtQktU98WVJq8WmxtCF7rlh16rEgl6JMPuZQnwNTcodg0xE7gxIOZGOIsUpegTb7hwWhQRLjZO/Hb8AAJI8F2Qw56wINwa50hyzGaD8K2Zt7eMlsvvNBl3lPa+Hc6BJ8kQ99rVVoCm+Y+LODBT2wvo3ZZVgOzS/yagCv1P9/tLaSQeF8T886VSggE51KweCn6a1McPQ1squYYoRR+LSNYDVCIryFvpOCx2np/p7VkV6EBXE/I1V7mDuZZdcTXloEibR/GVkScqcE+1jlIYk3r5zRp4rBTG1U0fE4Udw1W5rgRbIz249XsnOXrKzJuGM7hAxfMv0PKJom+/5t5l5ZHjv+4RIRdRFM411P572DzkzelPSLExjEAt1+nk1THuvqQkU49hUP5pTSrILC4RhfpzScw543k03tugXW5nDdekGR6ScSgD4pPTXuB+3Xdp+9r/xchfQUpCFB2HzhXlM+PI39WZucBLN4pB0YeNoi0Mk562zwrsp5/wfY0mChfaZf/AhEFE0C8y7ZRIJLZ1V5ZZJgouIMp9M3X9LURpIpAKEN92q52XG+uDz5ZhbPsttYEWvz6z
+ hf+8s2sU
+ BUCotIFdtzJHc+a2Sq1+Mc5hjsRtRA9mbf/o1mufBmiJf0yALayGvuZg0mGDUQlScH2dSo7/OG5Jz4zErZUNEtgeylFFCszf7f/Mbht9UL0VkSQY0RT/747UGYa0ucodLYaCE75LH5P1y3EjrQYB6Gf5oX1OGkwi0CAPXV62XcfOXoinmL5W1mbkQU5SXUCSsI+twFRO+onFg+uw6wTDCaNvI04QaZbxePpuBcQA4d1EDr8aNSMbR011Wbp0fk4SNH1J+5Z0zUPfBQOtGIU0pFR5fEQt2OvNHWr5yCE+VamjD4VegphSiqR60Jk+fIJqR3mwrSGUEngjicZQ4Y+tsiTTZd7kLKMx3tImP0lIJY5mB/SnnuZJ5ZG6xbnBCDUoDzRig9sDfrjFwIOEwZDFVoPQPL8EgPTA6n52nIH9+uirjrODprsGhOgoVNm7nipU3ETp1HKXQpBh++ILCcif3c+l3IGEWgF/e0OA2YaLOTPXlOgWKVjx/olAuNT44wqjOVpUru+8RV9/mz+M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,64 +141,49 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Mani Tofigh <mt4022@columbia.edu>
 
-vm_committed_as_batch is read without a lock, and it's only a hint for
-how often the per-CPU counts get folded, so racing with an update is
-harmless.  Annotate the accesses.
+mm->owner is written with WRITE_ONCE() when ownership moves to another
+task, but mm_update_next_owner() reads it with a plain load.  The race
+is expected, so read it with READ_ONCE() to match the writer.
 
-  [    0.953509] BUG: KCSAN: data-race in __vm_enough_memory / mm_compute_batch
+  [   14.915975] BUG: KCSAN: data-race in mm_update_next_owner / try_to_set_owner
 
-  [    0.953645] write to 0xffffffff825165d8 of 4 bytes by task 1 on cpu 0:
-  [    0.953692]  mm_compute_batch+0xc2/0x120
-  [    0.953781]  mm_compute_batch_init+0x1c/0x20
+  [   14.916154] write (marked) to 0xff11000004471b80 of 8 bytes by task 71 on cpu 0:
+  [   14.916204]  try_to_set_owner+0x100/0x140
+  [   14.916302]  mm_update_next_owner+0x177/0x300
   ...
 
-  [    0.954325] read to 0xffffffff825165d8 of 4 bytes by task 41 on cpu 1:
-  [    0.954373]  __vm_enough_memory+0x24/0x2b0
-  [    0.954444]  shmem_inode_acct_blocks+0x1b3/0x230
+  [   14.917246] read to 0xff11000004471b80 of 8 bytes by task 75 on cpu 1:
+  [   14.917293]  mm_update_next_owner+0x2a/0x300
+  [   14.917396]  do_exit+0x575/0x18b0
   ...
 
-  [    0.955288] value changed: 0x00000020 -> 0x00005003
+  [   14.923906] value changed: 0xff1100002ec04180 -> 0xff1100002ed3a0c0
 
 Found with KCSAN while fuzzing under a deterministic hypervisor that's
 currently under development.
 
 Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
 ---
- include/linux/mman.h | 3 ++-
- mm/mm_init.c         | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ kernel/exit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/mman.h b/include/linux/mman.h
-index 389521594c69..66e6c9c335b5 100644
---- a/include/linux/mman.h
-+++ b/include/linux/mman.h
-@@ -75,7 +75,8 @@ unsigned long vm_memory_committed(void);
- 
- static inline void vm_acct_memory(long pages)
- {
--	percpu_counter_add_batch(&vm_committed_as, pages, vm_committed_as_batch);
-+	percpu_counter_add_batch(&vm_committed_as, pages,
-+				 data_race(vm_committed_as_batch));
- }
- 
- static inline void vm_unacct_memory(long pages)
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 41a27860d2f6..81f360db0787 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -211,7 +211,7 @@ void mm_compute_batch(int overcommit_policy)
- 	else
- 		memsized_batch = min_t(u64, ram_pages/nr/4, INT_MAX);
- 
--	vm_committed_as_batch = max_t(s32, memsized_batch, batch);
-+	WRITE_ONCE(vm_committed_as_batch, max_t(s32, memsized_batch, batch));
- }
- 
- static int __meminit mm_compute_batch_notifier(struct notifier_block *self,
+diff --git a/kernel/exit.c b/kernel/exit.c
+index d5e7bc2af804..cc78596db74d 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -494,7 +494,7 @@ void mm_update_next_owner(struct mm_struct *mm)
+ 	 * If the exiting or execing task is not the owner, it's
+ 	 * someone else's problem.
+ 	 */
+-	if (mm->owner != p)
++	if (READ_ONCE(mm->owner) != p)
+ 		return;
+ 	/*
+ 	 * The current owner is exiting/execing and there are no other
 
 ---
 base-commit: d135ab453a7400a34930bdda1ef4bdc8acfac80e
-change-id: 20261027-kcsan-mm-c01794559599
+change-id: 20261027-kcsan-exit-109dce625d81
 
 Best regards,
 --  
