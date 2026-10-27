@@ -1,92 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5076606A31D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C12606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 14:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SYEBO1zL
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o3eDX4T0
 Received: by kanga.kvack.org (Postfix)
-	id DDECC6B076E; Tue, 27 Oct 2026 10:03:36 -0400 (EDT)
+	id 309296B076F; Tue, 27 Oct 2026 10:03:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB8196B076F; Tue, 27 Oct 2026 10:03:36 -0400 (EDT)
+	id 2B99E6B0771; Tue, 27 Oct 2026 10:03:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF40B6B0770; Tue, 27 Oct 2026 10:03:36 -0400 (EDT)
+	id 1336E6B0772; Tue, 27 Oct 2026 10:03:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A7CC06B076E
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:03:36 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B08F1A09EC
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:03:36 +0000 (UTC)
-X-FDA: 85368574032.24.CD0AC00
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D7F766B076F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:03:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 471CFA09DD
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:03:38 +0000 (UTC)
+X-FDA: 85368574116.08.A384963
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 98F9C140012
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:03:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SYEBO1zL;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 65350C0002
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:03:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o3eDX4T0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793109814;
+	s=arc-20220608; t=1793109816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/a5Q8lUWBEd/9wSdAV9zhg3EG5K6dH/Wqad5vDppMa8=;
-	b=acb81Ny7CNqWKU/7O57w4VaqTZY/QE3gFZHYMAeh43CLsY2AUlMOKUXk60+BpGKBHZxbId
-	YJNGRgmaqzD/yhlHL1nV3i2jfyuIGsCDvsJPQRiGOxtsmQdfBUx6UZrwaiLcjfA6i2Ua+a
-	aM/AQCVZvG02A4zRP4uNaClRvRCd02k=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=H7+62nSvr3logypM0kC8CKxhrNR+3HtbHXcVAr7jUl8=;
+	b=5m8mBjSNg8E6GplH4OqatRV3ZyjzF6qZQ3jkg2KIqdfkDxue15d3frMRFjsdrBZj+dVeIW
+	+XQSCV6LEFkezjMmXB74LcC2Ek9MgM2GG3k+2ktFvFZUrNEcpAHZVTUydl6jp8zOV42rb6
+	VCYU0qaGjiblj/cotxngQawMwDrJMq0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SYEBO1zL;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o3eDX4T0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793109814;
-	b=h0kp1b7VEBM7yioJobMGpnl3DlYWiXhBdOR6axfef5TmomsmFk1Onzc+g8pVndvTpSFwul
-	dJn37QNQBqUp8PuBwA8L2A8efp13NYfObBPWys/tTrzmdfHHDGFQT1ySixQisUiv3aX9Du
-	8Mwmx5iVepjZz9cRX35zO0uiQ1h8AJE=
+	t=1793109816;
+	b=cj30unPZZyvalvyIpPvns4ElGLwklTfWYpA+M7gYhrwj3pLQoZ9OaeHGcDk0ueBsk/geu5
+	+Jj8Co/YUPVhd76dEUfGdIkJnuVqja3+tu/IpI2F34WUIaRppd1uEAWDGTRl9j2iwMQUPg
+	HbFEWQr12IUk4jUI8askdyvwKTRHGoI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CD8DB40263;
-	Tue, 27 Oct 2026 14:03:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8232B1F01828;
+	by sea.source.kernel.org (Postfix) with ESMTP id B19E9414CB;
+	Tue, 27 Oct 2026 14:03:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778201F01825;
 	Tue, 27 Oct 2026 14:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793109813;
-	bh=/a5Q8lUWBEd/9wSdAV9zhg3EG5K6dH/Wqad5vDppMa8=;
-	h=From:To:Cc:Subject:Date;
-	b=SYEBO1zL5ZF15BWDdDdN9iXWFFoy1Sphreo+ZkNHF0l425741/n5Gb2MeJn3i375B
-	 fO92W96b28BGlLA984Qh8udrJLq1+m5PiZ8qwelstttw8SYWUTVmKug7i8WOeQuEVZ
-	 PZdkc/bN+b8Umaf7FTY+DKuebUcMl0/OzMDVAZDnHYKSqOAcNjtmUdsW6lw0UXFGM9
-	 oJT82COi1DLQ6YPvPVcS9XFrKDKvJB4GDCABA/sqbhviFXMv9gFlwOtK7jJtVBWLxt
-	 KM5jDL+YEgGIJ9vb23zF+XFFZdrCdetFSh9zcAvPd2u30z8QTUveaPkPOnATvO+hXQ
-	 m6zZyyIsOG0eQ==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: [RFC PATCH 6.12.y v3] mm/damon/core: error damos_commit_quota_goal() for zero target_value
-Date: Tue, 27 Oct 2026 07:03:25 -0700
-Message-ID: <20261027140326.153338-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20260515; t=1793109815;
+	bh=H7+62nSvr3logypM0kC8CKxhrNR+3HtbHXcVAr7jUl8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=o3eDX4T0rpxCCMFsMX5Uwkd50yBNb9chbe0AZx1MED/SRMSafPsJIkc8Zm8hPSFnn
+	 OcVKFE0h/qu7zcraWe2Fc2dBEWYSGeL9fH1q0VpuW7MEWuu9qzkqOin0xdLQv0yO66
+	 j9gOtm5KoTZuNqOorCM1af4Bc8bIXRviypIpGKZKgzQcdcnVvG6lFksAYi1TAJZcr5
+	 4T+rrW7kaMs+gPGXWVetjVPmrcXdDiuPdtyZdB+ShAy5Ng5dQqpuwBFTVRcOFwX8H9
+	 MwP/Tp0iarGtbGhGBZCDFOlN7fIo5a8iQDnSW9lWitM4M4CrEHoezzZ54YSbpUTyhk
+	 TXGGHrXO6DGDQ==
+Message-ID: <752bd947-78ae-463f-8d3a-ec4ed35cd9e8@kernel.org>
+Date: Tue, 27 Oct 2026 15:03:30 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/proc/task_mmu: pin the mm during PAGEMAP_SCAN
+To: Kyle Zeng <kylebot@openai.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, stable@vger.kernel.org
+References: <20261024035646.68348-1-kylebot@openai.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261024035646.68348-1-kylebot@openai.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 98F9C140012
-X-Stat-Signature: n6xsuxmx7atfdcp3ecqmms7rmswacs9o
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 65350C0002
+X-Stat-Signature: 6kz6kdcim755d5g8oojsujeet61nmu8q
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793109814-57226
-X-HE-Meta: U2FsdGVkX1+941OstqSv6Ckyz5qU+Wy9yI2LzZBAq/Sppr8R4esykRch+Uy76hcJd3mW0Qw2QJoVkv3UfuDrpbJEznwCFsY00dRhYiqAV3oAlRloqvL3NA5gcPSOBhmwDB4nh0VoX6O/N7UVGZp9YVkROElXSQMF/x8FxwE2hJQziK50vctZ6/FGGGtsJ2c/HMiGRXFVCRl2iyqR0balJiCGA/1cfoXUj2gT5dpZZ51yjoXfTrKlbimTAWSiBT2SaRlcwgAeWfr4rWuuSTHnJsbP+F3DZkRDkOX0yE9c+KOgzrM7Hw+Vy9TC4bDTRaf6FTig76smwqWhVeKvPVsdgXZYrqmZC2SbatxokcwEK+RT6TnvEiw3rIiUGsOQ4A4MbrIs2zC6O5UYd4S0oBiCjkolHBMAw1GaNm3D2h71+CVCQqH15jWtukPbMqTLsSzjOm5YG99TI8rPYGEyf7AyaOJ0+EXDq5ws0T+WEE3TKCBuYqBOy53ovTmkNtdi2OLqfqif55Gfo444n55p6CBE3cSnRZRau6I7Q48gAY25x8o9LxAvdMtQO4X/4k/sztqHoE4IbnBb9cvFTgkG84JLRuGfQqaqBXbPelJW4a6oTTf+hExDJbq5aXjnjyBYJogM+8mCaVFPmevAg9zZZSHvnxqQpCR17Q7aMWdC6E4/XBW2CWIlHgBdgoXgHBjb671lSzMgE/Q9CH3UCyhr10OCp198HpMlT90g69eQl3iSHAWzHkzouEwUzJIL9D4pdNQUaC+LGMdInlyWRFHJpSxWF2wMc/iecLr+UZVXO56Hz/6UZGfTk516ftaiKm3JBHJDc0WnJSEZX+rIrgT8k8tEv0JIbc9i37wmXK2yndLMpu5UBpgp7yS7j2tVc6FNPn0UajoiSfQiCJfEr555+VzWMivHD3m/pCsNeqRttmYTurTVjYpK2ww8KvfHZhUF6m3gHKWjn6UCWeSugJ+VydI
- BtFx8+6K
- zhEwk1iVOOI/nZjbsju7DNBr4z0VhbYAdYMXCHkqSWwJ+BExh9YsXf7tKfofIr7WU/VphtTwo3PyT0s6ZAfESrivrA55f3BnXZWFJa9uYJdVuzKeJJ7Wj84gcj5ehTZtuG/rSUhy4oJsxSCwfb21mRjwpM+QcqHfy8AMx+SCck46fz/vva2/OB5GI3JZsvXvsC69ZrCzmwY8QzvT4HBnOtk8wuZXVHprsep5f/jVw5rXENoU0F3u94orX1y5C3Rd0J0YTlWYa2YwsXszIcDP5lPvvKq1EeqoSQYblrdYnKD6+srftLGAtWJdXpD123B02P4rFJyMPOKdaYDRRQED8jdhbcB7n9NIjrk6IFJnwgjfvrpR67M5KtGug3aCNL7Rfl+ongNaqN7Fchd0=
+X-HE-Tag: 1793109816-638088
+X-HE-Meta: U2FsdGVkX18ImFqE5tuHoD9JOg7jBKZXL6FXdP7qw8x95eyM+F/eEx2S+CZmQogpT86yYHReZ5bwbXx/W9wepviGThzwPHEGHsvecsykU+8CPvjDqCCuutqpU5xCgoJ4gkWFp/VPX/NeAM9ZYHGAgnwMC65gfhMZUS6ladvsdzAOlqrkijBMkE0IXu106f7PrAbZVZ2aKrFLodQ8M+tQ1iW4hosNEE8uxYfpxYG08yWeMTkXJeYoCHwKwyyw+B/4ig39uqyWFcorb59KApQ3flk1A3VI2WbzRumFiiFTfrAW7piIWsvkJISWHX+iIohjUAq4lJ3WHOq9PfDfzSYJtedFDWf5u3C0pSyqV46PjQuY2TTfZljf/o6bv8uehydPojUDcDbr6r9/1xvN2oUXzs6xXUBe9WpbMbmSYF0jvbxt2oXfT0PTfV42ETmdNbMS1hQ7mJQbN8RkG4vMaEzwQlWD3fG+6qlmjo8VMAs+s0enTAynWdOUEdJQuPn4KEWOt5drJZo9zS+N2ke+iEgyiIzdJSxe2TjQH8gOxOXXu2873d56IarHW3K7Y02xjxZPsdIbv/VXSA3bn/KQJ+IuihELOBpyTNDuPks7MlKlhkGf58Tnf3whhDvtJnJ5Ngrvj7zc5kt+4yEl9rRpSggO2Z3ZyELSLsUZeaLyVjg80J4wPccgtv6NqmcOpRCr+xn5OqC3wPmL70WeGcAvvSr8kZZ2DMBJhsUn2UWQYlQkl4uuN5Pgs09P4Cp2nKOuCCAc5HhYY+e08Xa9+w/ahH3ADvPBfippHTwZagBXC0YDXyz1LO6LyixHtVh4+1rN7ijMF4nwJlw2QCO3pZuaykTN2nwR4rUaZD7OFTldShN3FuErJEUhZmuOS5H551Af6I8ki+WfbmRRKSHRE7k4QvXre0fUJIVpXKkQafSerYnaU6q/HEnWAwFJZTjyvdaVSLJwvhDqFHG9+fD2ge8nReQ
+ cy3RfQc9
+ 0gU0Yyt9g7b9MbVDamDsI+AB0jB4kVT8d9Y2ByOH0K3D1bZABe2m7mzhOdq/NAQdIqo3pARF+K6k4QHFqSMBT8D7CxanvkUO9iZs2F8V5ZAC2cNutRmwgbdq/WneMgOuNlismdC06g+k/7CVDQF5fbaEIXllXsb/isVJhxOAgyNZWKmNHkhu6EB0I/dCGWFjGI6vrsTF2WXIoTVrA6V0BbP834yfcl/Kys+03xqyhHrU7wEomR5RvFpRVvhiXLNEWEIJsE8rSy9+s6c7nUTnw/4e6BSlH3DxaOa6DV8eqWvmuDGd/LZzTCVmWuS85lARQFXuRXr96He6rjoOHsNizyIHQU7yE1bKVIaoIsJugCndF+F7jfRNzj7mS7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,167 +143,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Patch series "mm/damon: move zero damos quota target_value handling to the
-core layer".
+On 10/24/26 05:56, Kyle Zeng wrote:
+> A pagemap file holds an mm_count reference, not an mm_users reference.
+> Unlike pagemap_read(), do_pagemap_scan() does not acquire a live-MM
+> reference before walking the page tables. Its mmap read lock does not
+> exclude the first phase of exit_mmap(), which also unmaps VMAs under the
+> read lock.
+> 
+> A process retaining a pagemap descriptor can therefore race the final
+> mmput() and access resources that have already been released. In
+> particular, a concurrent last userfaultfd close can free a context still
+> reachable through a dying MM's VMAs, and unmap_vmas() can free a shared
+> HugeTLB VMA's lock while the page walker is entering down_read(). KASAN
+> reports both a userfaultfd context read-after-free and a HugeTLB rwsem
+> write-after-free with unprivileged, read-only PAGEMAP_SCAN requests.
+> 
+> Acquire mmget_not_zero() after validating the ioctl arguments and keep
+> the reference for the entire scan, including across mmap lock drops and
+> MMU-notifier operations. Return -ESRCH if the MM is already dead, as
+> PROCMAP_QUERY does. Balance the reference on the bounce-buffer allocation
+> failure path and at the common exit. The pagemap file continues to hold
+> only its existing mm_count reference between operations.
+> 
+> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> ---
+> I have a reproducer for this issue.
+> 
+>  fs/proc/task_mmu.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 5c54aebe2118..d2cee8dcba58 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -3235,11 +3235,14 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+>  	if (ret)
+>  		return ret;
+>  
+> +	if (!mmget_not_zero(mm))
+> +		return -ESRCH;
+> +
+>  	p.masks_of_interest = p.arg.category_mask | p.arg.category_anyof_mask |
+>  			      p.arg.return_mask;
+>  	ret = pagemap_scan_init_bounce_buffer(&p);
+>  	if (ret)
+> -		return ret;
+> +		goto out_mm;
+>  
+>  	for (walk_start = p.arg.start; walk_start < p.arg.end;
+>  			walk_start = p.arg.walk_end) {
+> @@ -3294,6 +3297,8 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+>  		ret = -EFAULT;
+>  
+>  	kfree(p.vec_buf);
+> +out_mm:
+> +	mmput(mm);
+>  	return ret;
+>  }
+>  
+> 
 
-Having zero DAMOS quota target value can cause division by zero.  DAMON
-API callers are checking the target value parameters to avoid that.  It is
-easy to make mistakes in some of the multiple API callers.  Move that to
-the core layer.
+Please take a look at the list before posting.
 
-Patch 1 adds the corner case handling into the core layer DAMON parameters
-validation logic.  Patches 2 and 3 remove no more needed DAMON API callers
-side handling of the corner case in DAMON_LRU_SORT and DMON_SAMPLIE_MTIER,
-respectively.
+https://lore.kernel.org/r/20261014095540.3261469-1-ngocquy0700@gmail.com
 
-This patch (of 3):
-
-If a DAMOS scheme has a damos_quota_goal of zero target_value,
-damos_quota_goal() could trigger division-by-zero error.  Hence each DAMON
-API callers should do the zero target_value validation.  It is easy to
-make mistakes.  Actually such bugs in DAMON_LRU_SORT and
-DAMON_SAMPLE_MTIER were found and fixed [1].
-
-It is better to handle the corner case only once in the core layer,
-instead of multiple places in all DAMON API callers.  One straightforward
-option is using an alternative denominator for the corner case in the
-damos_quota_goal().  However, the zero target_value is meaningless.  In
-this case, the quota goal is always evaluated as achieved or
-over-achieved.  The quota will only keep being reduced.
-
-Simply avoid using zero target_value by adding a check in the core layer
-DAMOS quota goal parameters validation/commit path,
-damos_commit_quota_goal().  Update it to return an error in the case.
-Also update its caller to propagate the error.
-
-Notes for stable kernel porting.  The upstream commit doesn't have
-Fixes: and therefore not ported to stable kernels.  It turned out it
-fixes commit 8b549a4fd3c5 ("mm/damon/sysfs-schemes: commit damos quota
-goals user input to DAMOS") which was merged into v6.8.  The user impact
-is a race condition that can result in divide-by-zero.  Hence backport.
-Reproducing the issue requires sysfs write permission, certain DAMON ABI
-usages that are supposed to be uncommon, and a rare race timing, though.
-The issue was discovered [2] by Sashiko as a part [3] of its bug report.
-
-Also, the upstream commit on this stable kernel can fix the issue for
-parameters commit paths but DAMON start path.  That's because DAMON
-start path does not invoke damon_commit_quota_goals().  To fix the path
-with minimum change, add a new small validation of quota goal target
-value before damon_start() call.
-
-[2] https://sashiko.dev/#/bug/linux-7f814c9a-986f-4103-a55a-ef9537dcf62b
-[3] https://lore.kernel.org/20261021005234.94107-1-sj@kernel.org
-
-Link: https://lore.kernel.org/20260903010722.94244-1-sj@kernel.org
-Link: https://lore.kernel.org/20260903010722.94244-2-sj@kernel.org
-Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org [1]
-Signed-off-by: SJ Park <sj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 610c4438fb66e06d9e693c0ad3b2c1be54c0d61f)
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from RFC v2
-- RFC v2: https://lore.kernel.org/20261026135555.149244-1-sj@kernel.org
-- Put target pid reference count in damon_start() path -EINVAL case.
-Changes from RFC
-- RFC: https://lore.kernel.org/20261025182326.178326-1-sj@kernel.org
-- Fix a typo and macro expansion build error for quota goal iteration.
-- Destroy ctx in the before-damon_start() error path.
-
- mm/damon/core.c  | 18 +++++++++++++-----
- mm/damon/sysfs.c | 19 +++++++++++++++++++
- 2 files changed, 32 insertions(+), 5 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 81d44e41de210..ed32855c16ed8 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -698,14 +698,17 @@ static struct damos_quota_goal *damos_nth_quota_goal(
- 	return NULL;
- }
- 
--static void damos_commit_quota_goal(
-+static int damos_commit_quota_goal(
- 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
- {
-+	if (!src->target_value)
-+		return  -EINVAL;
- 	dst->metric = src->metric;
- 	dst->target_value = src->target_value;
- 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
- 		dst->current_value = src->current_value;
- 	/* keep last_psi_total as is, since it will be updated in next cycle */
-+	return 0;
- }
- 
- /**
-@@ -723,18 +726,23 @@ static void damos_commit_quota_goal(
- int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
- {
- 	struct damos_quota_goal *dst_goal, *next, *src_goal, *new_goal;
--	int i = 0, j = 0;
-+	int i = 0, j = 0, err;
- 
- 	damos_for_each_quota_goal_safe(dst_goal, next, dst) {
- 		src_goal = damos_nth_quota_goal(i++, src);
--		if (src_goal)
--			damos_commit_quota_goal(dst_goal, src_goal);
--		else
-+		if (src_goal) {
-+			err = damos_commit_quota_goal(dst_goal, src_goal);
-+			if (err)
-+				return err;
-+		} else {
- 			damos_destroy_quota_goal(dst_goal);
-+		}
- 	}
- 	damos_for_each_quota_goal_safe(src_goal, next, src) {
- 		if (j++ < i)
- 			continue;
-+		if (!src_goal->target_value)
-+			return -EINVAL;
- 		new_goal = damos_new_quota_goal(
- 				src_goal->metric, src_goal->target_value);
- 		if (!new_goal)
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 5aa23c6545cb8..ad9fa8a86c9ef 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1497,6 +1497,20 @@ static struct damon_ctx *damon_sysfs_build_ctx(
- 	return ctx;
- }
- 
-+static bool damon_sysfs_valid_start_ctx(struct damon_ctx *ctx)
-+{
-+	struct damos *s;
-+	struct damos_quota_goal *g;
-+
-+	damon_for_each_scheme(s, ctx) {
-+		damos_for_each_quota_goal(g, (&s->quota)) {
-+			if (!g->target_value)
-+				return false;
-+		}
-+	}
-+	return true;
-+}
-+
- static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
- {
- 	struct damon_ctx *ctx;
-@@ -1517,6 +1531,11 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
- 	ctx = damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
- 	if (IS_ERR(ctx))
- 		return PTR_ERR(ctx);
-+	if (!damon_sysfs_valid_start_ctx(ctx)) {
-+		damon_sysfs_destroy_targets(ctx);
-+		damon_destroy_ctx(ctx);
-+		return -EINVAL;
-+	}
- 	err = damon_start(&ctx, 1, false);
- 	if (err) {
- 		damon_destroy_ctx(ctx);
-
-base-commit: 85d82e0d7c2dfd3e75d34f35b7ebbf41f45c9c4e
 -- 
-2.47.3
+Cheers,
+
+David
 
