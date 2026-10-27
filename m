@@ -1,88 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FDBF606A33D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 18:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D4F606A31D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 19:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LtjgAtYo
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GBUKEafI
 Received: by kanga.kvack.org (Postfix)
-	id 3FEB36B089D; Tue, 27 Oct 2026 14:58:31 -0400 (EDT)
+	id 90A176B089F; Tue, 27 Oct 2026 14:59:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D6A46B089F; Tue, 27 Oct 2026 14:58:31 -0400 (EDT)
+	id 8E1B86B08A1; Tue, 27 Oct 2026 14:59:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EC8A6B08A0; Tue, 27 Oct 2026 14:58:31 -0400 (EDT)
+	id 7F8586B08A2; Tue, 27 Oct 2026 14:59:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F15DA6B089D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:58:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BA3AD120B02
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:58:26 +0000 (UTC)
-X-FDA: 85369317012.19.8FBE898
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E12134000B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:58:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LtjgAtYo;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 581EA6B089F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 14:59:59 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37186A0B27
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:59:54 +0000 (UTC)
+X-FDA: 85369320708.20.561EEEE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6017A40009
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:59:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GBUKEafI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793127504;
+	s=arc-20220608; t=1793127592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u2yMh+u2ETflUov7pejt9JZNgRsva0yVABsIFHQ38bs=;
-	b=I9pYZiywnk0OXXtH/9wuIR0eA3Dz1qe0PP5mven2D1nvDhYwezo9QZulav8iFlLAKdnfAv
-	jfDHaSq+rtMOe/i1Zz0Rv8BIQ6VM5NRq9jp1gaI/2C21UEj1oJ0pEg5A/xMKG/Z5+YgZcV
-	qyHt2sSj7XfrDuSwinPgK8Q12zgCIT4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793127504;
-	b=GtaxpyZ3JWeSDlPyGFrOy4qa9rRAgheU86uvbYB00/NkFxe5a4m2gRCEEfbzC5n0Bxc4gO
-	Xqi0Ab/gzGDqiquYjvloz3+z0n4q2M++8wyu8HoG9xz24I39GtlXkp6mjuME7TIpgCzn2Q
-	BGYDerwAAuWoC+B3jM/9I0rdEYmRiV8=
+	bh=JGUNZ2N4izt2BrjI89y42KzCgR2U1rTdgd6e4ryL5is=;
+	b=A8TaL08LcxBh258bVXiCfFLJwMS4sqXhPBPK5I2dw89Wa2wsKTO9C/zVRzxUDGmyL7+9HC
+	R3mAWb4w0PD47G9iXTQJZfN+BAvDR/8BwhwLJXC41Yh8l4hjE1Y3FVFS52wq3dvQL/iJo5
+	GFh0F6wNw/b9jahGS3jmcrEhK+tQEoA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LtjgAtYo;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GBUKEafI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793127592;
+	b=BpXjaK9YprJACQKY+vZ5V8GIH9YS061p6CFFnUEwI3Nf95wYs0PBqCzvXXWtk28BuB02sD
+	KzYRlnWfocgy07rgh12HA57S03rw7D0DACf/Vc7gbY2ZTs9xynqioTHt2Ac6FvQBwBgyhT
+	mR2JABh/dxJNwjX0zM/yiFwK8hMCj6I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0AA4C601FA;
-	Tue, 27 Oct 2026 18:58:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A591F01825;
-	Tue, 27 Oct 2026 18:58:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8E991416C8;
+	Tue, 27 Oct 2026 18:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0381F01829;
+	Tue, 27 Oct 2026 18:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793127503;
-	bh=u2yMh+u2ETflUov7pejt9JZNgRsva0yVABsIFHQ38bs=;
+	s=k20260515; t=1793127591;
+	bh=JGUNZ2N4izt2BrjI89y42KzCgR2U1rTdgd6e4ryL5is=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LtjgAtYoaRtsTjIRQpRSFAn3vOq6pDx2vhcZTQqOtPf5cITj/2/gIAVsm1hXQICOd
-	 mFgPQvsdJEZMRJs2CfxOLBRkUaQvZ7//pJZjXloL/kKBORvouD5SBH6+gonP0BFlkL
-	 61LAyBEB9ezEm4aGl2Jgnzyvo8hdwi73QG+tS4quWoNQNnf0zdC2jgieufGGCbzLuW
-	 wwWn7SyV0Uc/5dN9qNkBaFczItU6JLXWBVY41nPUT6+K9oEQJIYxi3UTc2DoFH981p
-	 asg/5U6ggQZjnZGzt7HXEYdvU9EVg8y4GlCcG3cE1u4mbLHDruUPxRn/n5k7i24ruo
-	 dGUYjq7RsK9QQ==
-Message-ID: <8a841fb1-8e71-40c6-91d4-3252a0a1a368@kernel.org>
-Date: Tue, 27 Oct 2026 19:58:14 +0100
+	b=GBUKEafIXma8eeUkgoEONyZfmNLHZnhPQGFQVsuGfRdY9VxaySeTjrdbFW7ptRbVA
+	 hUEQkqET62H91eVZkZHyk53nOcf57mTBeILoQULyVkmZdRFQE8p7MRFMwmd+fPmc9J
+	 ghDxtYg6zcgW2VQrPPTm9KAWwlBvZE60LX3I0qdY9gv6WNhMqeEXyjo1hnMJB/82OI
+	 sSPJxhjQSWHFk+C5WoYca/OBl84+pWIDaJqrLB5vwBtxFAH6uVOWKdffQL2T3lEUaB
+	 i9dIVYjiU8JXt/LM47PVuhVicGWXoiNSosxfwgnxShpV8V3Fk269UOgTPIvsaNyBUs
+	 tdAPnvoh++tOg==
+Message-ID: <94116d0a-3b79-42c9-bb31-0ebdbd00effa@kernel.org>
+Date: Tue, 27 Oct 2026 19:59:37 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] mm/page_alloc: don't undo another isolation in
- alloc_contig_range
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- kernel-team@meta.com, akpm@linux-foundation.org, vbabka@kernel.org,
- surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
- hannes@cmpxchg.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
- ljs@kernel.org, liam@infradead.org, rppt@kernel.org, osalvador@suse.de,
- muchun.song@linux.dev, iamjoonsoo.kim@lge.com, anshuman.khandual@arm.com,
- stable@vger.kernel.org
-References: <20261027042204.3741307-1-gourry@gourry.net>
- <20261027042204.3741307-5-gourry@gourry.net>
- <a4fc92b5-7d99-49f4-94ac-89fdee699042@kernel.org>
- <179310997463.2232644.3260379218896917308.b4-reply@b4>
- <6f5aaf2b-894c-4306-a0b2-e56f815d0a89@kernel.org>
- <A4D82AB8-F33A-465C-AE69-933B746E4885@nvidia.com>
+Subject: Re: [PATCH 0/3] mm: allow freezing mappings
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org
+References: <20261027173031.763213-1-pratyush@kernel.org>
+ <fcb7b786-53e5-49bb-8505-63eb8bb4e836@kernel.org>
+ <2vxz33troxg3.fsf@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,21 +139,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <A4D82AB8-F33A-465C-AE69-933B746E4885@nvidia.com>
+In-Reply-To: <2vxz33troxg3.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E12134000B
-X-Stat-Signature: zu1f73qbnqxcboigopgi9auq8dw6gyin
-X-Rspam-User: 
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6017A40009
+X-Stat-Signature: asifdn73iffm1xijjqparsutz3ed9cpd
 X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793127504-615884
-X-HE-Meta: U2FsdGVkX1+XMObr2fKcGWBrVv1KF/y3JizRSTxb7pilnZF6RSknpeFDqnQEZJb+VSnDG7CfUZwZ//kFi54nWYc/nLTEsEWFo/6iaq9rRfclSVlakigASL4C6mJd0q1XqP3X6YDZ/kUOg5w93vlEulNPuETr1cqUxwJQSG3jskZSFqkAuPQR6Z7sydkK96cxdtKgvLURUBiQN+hG4A+DeUDC8tkNWVi0cSm3AfZNKzvWlJV8pXq8+jHwbst9LPH3VlbsTZFlv5BYRxXHrz7544zQ07TYzfWefaq2IRPfPvbFOExLK31VSTk80aISyY+QF78wBTv9hU41NwPIrkjrW4sF7OLWg8oJBWmkCBraDuWfY2eZ+wv6hxMu8iug1ORBBG3tVoAT1E/jWOdId/4tg9XYRMVNN1mM64uNICc0XlDaCU64LNns9220GpCyYZs+xqzv92yMk8ci61qBp9+qNHajXhefOOgGSWuyBE9ieTZdH3Vu6t0TU5NH+sO0cOFdQt7MiPF8SHTzgvEvEPVsfyS7+KK7QEjHmELP6BZvTRMqkdSX+/bg0bB+CrX6/9S4oToCgndqreUHE0Vf14ErHaHkZMivjXKzbDyWX8noewwkfO7OV0gejSWo9y4vEqwtN7EmwdneqyTGHipuIcD+asyuerkr1+VylQidtg3tK8vNDFOruHghRkRpCTEa8Btq5ESnN++OMpapkY+h9vhnf3YFRDjLV0USPk6EIAfenH9xZuwYj6LKCBythuIuuu1OW2x9JWD56ROfTiyC4rN4vWvcxBEVykj9KVS0cXhjBqrs8H6ZYacgUv/rIY04CDlYNWiKiexygisPSxIpEphOrA1gGtSCCTOoZ9Ieo5KLyOtZYDz3OWKOfpfsFJM314VoRyV4zAga7zTXhz2ayGBxMRLyX3xvauGoOJHWkdQor/On2TnbH6Kuksb4VmWzXi97QwBjDNW3759vac428Jo
- fmC+gdSR
- lXA5ojxE2jSrbUnxDN2Quvis6pXvAULwj75x28TL1bRUHElaT5wgLmZSBksIypY1srVbJzwRCBBPPVm0tOjqL28gxv4a8jWu2rtHWtyB0eVYziU3G2bpu0ssGQLRr/Jxbh2VxlKKTJbiQHXRZQubcE8v1D15cH9KOzjPMc5ZWLCtr46+EWRwz3gIpg9WH4dxtsIUU1CX906Hxrwck3jgfrrwyKZW7DXKCA5zuTpvfRH/cnypJ7inqBN5NQZGiwrfHCxesYdqytUn8jwlEC5kwHJbN7Q8fG+V2+unVj1WwGoGGAdwiEobgzjzygPrkknFYpnr3lOqyFToyTe2BPKA7X4rl3IwHnmAoXDangErrUNKTwxXzCRMi5yz+pmdr+3zxoWyC
+X-Rspam-User: 
+X-HE-Tag: 1793127592-319932
+X-HE-Meta: U2FsdGVkX1+Y6X5AU7kujEKW+9Pc5i9Xygsc1U2FmTfGGJFpYzgqPQ/wJuW4bGNyQUomOdwuL066lq0q79k0R9rIWz2OezqzfA4Jt5dbtgNgsHG8HLPyaPvFmFr3+1fH2r2qgzueQm2gkXKGH5xB/0w1zdftkiuUfH5nSvjjojLaCuDfX/6vTHDBwL6+BFO++kMMA9/bNu1O5MdAGFbfyd1lMbFOWbYTmhB4BZwNAV5v/nZjkRIvPa/KBx0xenf8q+AJRAwYCk21qW8rcJRCLipdbvYVTm1zkG8ITLr6UEPxatUEEKgzJfJC4e4OjmTbVKTbyap1+2FHMZr58L040Vts25K9wVUt6g3s8EjsU4d3SGJ8ehHYFIQAJ9hGgGOHimEFuB07it5kv7GNwv/92A/GLqbKOVFlkzCASP9oOpVFuiUdD7VfFS5Un21qvx9FwBwFw6AwWSa/FC9rCtP1mozgE2h99xnkxLIG7SAeiH8aLnjziz/1uFgmww9DeygpPybrsfqIRhswN+MoqYNd3+fIYEtJE/ldTpuAx4motO+nbWap4RNBr8ceGiiUNQy7/uq+5sAZp6syBfaD9HseYqEWymcF5H6d8eqkPLDRZUiLzj0vb9LJghYvrq6m8ziKRi2qfnR+LM/ZdI5tuQeFq4aCtFCdPLtSp0+QvPg64uBcaoLn5w+2eOD0aq+lMh7NLKBYrAGjbgy1FiezPU0IVr8ckoCQQp9rBXGQgxayAebHnn/iB55RYlIEwP8Mo2E/uK+wnuHTuDW1ejqVj4TcVOqkfRSD9SrusoRtIiA48Ihxi5Wc2508oaIhQjD75pNC8nDrq99bPVQFfoKG7/HQI8XawOu8gfR63CZkHaXMkNdvmV1Kv1Wa11sZNOU6+biQzrDcvdc9jml8afnKl92pd3h926uYqcYsi535m84PATkRHARw5IWBmgcdb54HOrFcy//DnBUcEM88uDq1Mqh
+ E7XlmZg9
+ cEtgpCni9y2y4CPrcuxyt1b3zaYiN8gpk/WOXBryIs8x0/XTRGoeI51cFpq5m4ZI3asH4PH846PnNWMfMM3rumqxVL2qWUo81EL1BRX1X13IXo2BUangFCBC8D5ACDbsGrS0m9PVkHJVzWL/UiWIipNCWhiV4HcBdVEzFgNy+QyGUWhwcGf2F/3Z5qfv1LHOp7LwEBrm8YzoGyqFXrtrnx5CMFdmQSNexdk0DO+VbkbxRHSab5Y74d0wWJ9dtcTG58Mq+3GZoljp6zSpNw2+CrcqJjhn6so6nLHQgEE36VTZMbzEe1OUHNaYfiYO1C4U67RS55BzWuh0f87INUP/AOKe4ouly1Fwwc3kAcMY6R89yM/8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,31 +162,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 19:53, Zi Yan wrote:
-> On 27 Oct 2026, at 10:13, David Hildenbrand (Arm) wrote:
+On 10/27/26 18:38, Pratyush Yadav wrote:
+> On Tue, Oct 27 2026, David Hildenbrand (Arm) wrote:
 > 
->> On 10/27/26 15:06, Gregory Price (Meta) wrote:
+>> On 10/27/26 18:30, Pratyush Yadav wrote:
+>>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 >>>
->>> Yeah, this is going to happen more.
->>>
->>> I've been sitting in these patches for over a month while they soaked on
->>> hardware getting performance tests.
+>>> Hi,
 >>
->> I mean this fix here is really just independent and shouldn't wait that long :)
+>> Hi,
 >>
->>>
->>> Maybe worth a private tree we can rebase on regularly for these kinds of
->>> un-vetted/posted fixes to see what's coming?
->>
->> Maybe. But if it's just us core people we can just talk on IRC etc (like Zi did
->> two days ago when he was about to post something that I already had on my queue).
+>> we're in the merge windows and focused on fixing things (apparently all of the
+>> kernel). This is not the right time to discuss new changes.
 > 
-> One idea is that maybe Sashiko is able to identify patches fixing
-> the same issue and does some grouping or tagging on the website.
-> Or send an email about it with a lore link.
+> Sorry. I thought the MM tree was open to changes in the merge window.
 
-I think that's too late. For us core devs we just need to sync on "has someone
-already a fix for that or is it worth cleaning the AI shite up and sending it out".
+We usually prefer to get stuff outside the merge window, but right now we have
+our hands full with fixes.
+
+So I just wanted to set the expectation that this will likely be ignored and
+might need a ping or a resend after the merge window.
+
+(I'm afraid the fix party will not end before the merge window ends)
 
 -- 
 Cheers,
