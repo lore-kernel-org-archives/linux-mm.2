@@ -1,127 +1,152 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E096E606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB585606A333
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oSiNfkNt
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iCJeniYz
 Received: by kanga.kvack.org (Postfix)
-	id DCD0A6B06DF; Tue, 27 Oct 2026 08:12:11 -0400 (EDT)
+	id 914BC6B06E1; Tue, 27 Oct 2026 08:13:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7DF36B06E1; Tue, 27 Oct 2026 08:12:11 -0400 (EDT)
+	id 89E646B06E3; Tue, 27 Oct 2026 08:13:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6C9E6B06E2; Tue, 27 Oct 2026 08:12:11 -0400 (EDT)
+	id 71BB66B06E4; Tue, 27 Oct 2026 08:13:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A45286B06DF
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:12:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2F43BA09D8
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:12:11 +0000 (UTC)
-X-FDA: 85368293262.06.4403BD3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4109C18000D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:12:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oSiNfkNt;
-	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DFED6B06E1
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:13:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 745051A0962
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:13:21 +0000 (UTC)
+X-FDA: 85368296202.16.93EFB2A
+Received: from mta0.migadu.com (out-120.mta0.migadu.com [91.218.175.120])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0DFD11C000F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:13:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iCJeniYz;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793103129;
+	s=arc-20220608; t=1793103199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=myKKudY9AElKYbxGQePv2vddrjcLrdPLn2/PF00unVI=;
-	b=jI68bErQ8yIf877gQPjYv8pIlAiZxHwxvXpkiam6Hzsk5obOWbaUdDPYbi302osm4OaUlq
-	FxzsoYa8KxD8E2bUMdGPRuszJvdDWZfuoNKPQlGvfl5q7D1QsDXBJ9wIwwCMnCoX+r6pkE
-	LSsShduXdMi5E5kzWw+kMBZZ1e5q2GU=
+	bh=31R7IkymhbZDSeMb1sPHaT1Pw064ctHxU7ykW6z0bv8=;
+	b=s6ieaaYbzeQAVGfMzej0wKaRA3sUnTl5oVLZIgdQW5cCPWR4gRfSl2a2YxdF24dwsUnOaO
+	o38eZHi2LegSMPTUubFTYw0S3Sw1bOK1ySSLb0f0scPnHP/GkwTD37hGFN3Rj3GEhf9X9L
+	QT1UdGHgIyaAWD5ciRLGUdFfz8+odpk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oSiNfkNt;
-	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iCJeniYz;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793103129;
-	b=3CELWLtL4JtGL/oUMzqKSD/KrQP/0DuP0lsHUMr5J6LBLOBzgQ2HXsSKDu669m1Cg+j2Uf
-	nDrqrD4jdZZMBNdfFWY5JuwbKxoC/95jeh4/NX/0AMMiiq1ybQuWnI4O16EzRVc0zV6X55
-	wTlzWyQp3Fib/FoMnRYqlZRpuh61S7w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D688260052;
-	Tue, 27 Oct 2026 12:12:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCD91F01828;
-	Tue, 27 Oct 2026 12:12:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793103128;
-	bh=myKKudY9AElKYbxGQePv2vddrjcLrdPLn2/PF00unVI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oSiNfkNto50HpECdbPp4NGFleAT0D4SKsshX0uko2eZJB6zT8GrhvZwDORPPoZO1O
-	 xoMmi1MpobaU3S1/V3e1SmWrZ0sIdU9VZAY254h7KadNFc2qru+jwsxPh8U9Mz/RrZ
-	 Wxg/DC7xiRSwJzmvunn4aTQ0QSZUbzym4BgCXVM5LuzT05n8iPNoLmbR0Q4U1upEmP
-	 UwzgCRwi4tXRk2uHvnq8umLXgXztSStFIN8ua3QCCmb9yOc6Uoci2uANmdgPQBkNJG
-	 zLvBMYa8SsQH2rWgRIY6DJ6IaXFHB+5HQZg+2LjMmMrrnkvcydWyIe5d2rOxPC+92N
-	 gCafwxHFsOckQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id B3BBC198004A;
-	Tue, 27 Oct 2026 08:11:58 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 27 Oct 2026 08:12:04 -0400
-X-ME-Sender: <xms:DpXgapG0meWIN0OM66ofji3vvc4hNVtH0drLydv1KcNIs3ErsZpJ8g>
-    <xme:DpXgassn_lZcNXJFSd8gXX8QhsKHGrp27KDHGK01N2lkLJsMN-kA-SA6sBTv8Mneb
-    CuMRL_aJzmPFEkIodcySUV_VxtN9HCoV6CjJbVJGzh5hDgWtimhgNeM>
-X-ME-Received: <xmr:DpXgatl5ve32KSZ52FWmLf7pa8yRPvWx_n5HehD8GDPXoMiFRmAlNElLDRM>
-X-ME-Proxy-Cause: dmFkZTGe5tge3hMEKwWY8gQags5EmqESoYDA0+zWY7IvA1d+/F6MsE3Cn1soB2gZC+4C8m
-    AmdeqR6xBlYdjHkIi1+xb2TKsxTiKKv5qUEaP5dpCSOsLFN98khIIpouApYCUZ9iaewTN0
-    hT1CmGkfdX9omvnjCFWDGuofhrU50LyeRF23rClfUeUbjui0PU0B5qFKnfogAY0cVw9+6O
-    4l2HB0vw+6RGJXa4SsnIhqMXtV9Neg0umvLPylEUbt52l2DRcdcEZf56++DvuebVy5KRjg
-    xa8UyxviWzWUZZykb0Fnka1ej9fCGRTSjDsN4tbCgsE4rWbtQ4MqGo2ev5BggJ27hNHiEV
-    L8ibXBG14E1YD9USjV1AJkkSV08UoWz2qtU7PPRmtKgS3ApkHJBirZCYH0ppodUqAdwlIL
-    69W31hE/Gs9Y/AZ5W/Z5yKU8cWSN6msM6P2mpNzDLiMPFopbpJ7fKurotK6JPMvwtTzs+x
-    CceVUI8VFllI706r169j/JZsf045pQEb/pwr7oaouDKNI3rsdfX0ZepQ2zVHs4CQOk6zY/
-    VugIsLjXQosrDDGEfECKAx0oj4ODRX5noTPyeL3FIjBHTxHUsQjH8ohCl1+RbkTNnO/dqR
-    jw1e2R++h7DvurnnFSeIGznQ/jdZjSoxnKgmRQCZrUCh5beAl3uD4bGaZQuQ
-X-ME-Proxy: <xmx:DpXgasQ1EyxtRBs4tFiKL8tb9Hn_Y9_cB9p6DEQ5SXWv7itXQGBAwQ>
-    <xmx:DpXgav7Y_iwdhRD6lPwDAiYjYRymzwiWwL5vNpdSwH-mETNsjZ8Y6Q>
-    <xmx:DpXgamlH7FICF6lnNILH3u5xidPa-NkHHRAF8lynadF3sQqtQ870lg>
-    <xmx:DpXgal5jGenzwm1UO_iCp-fS1b4AlC1TALorVMgfcXv_uVLHSAwGbg>
-    <xmx:DpXgapx4HHMRpaZzmToEh90JxUkL7hrk0zETU6mAek0gaMBujEKHWGps>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 08:11:57 -0400 (EDT)
-Date: Tue, 27 Oct 2026 12:11:56 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin@linux.dev, 
-	chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, jglisse@redhat.com, 
-	aarcange@redhat.com, peterx@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bobbypowers@gmail.com, bgeffon@google.com, 
-	dplotnikov@virtuozzo.com, dgilbert@redhat.com, hughd@google.com, hannes@cmpxchg.org, 
-	cracauer@cons.org, mcfadden8@llnl.gov, gokhale2@llnl.gov, mgorman@suse.de, 
-	mike.kravetz@oracle.com, rppt@linux.vnet.ibm.com, xemul@openvz.org, riel@redhat.com, 
-	shli@fb.com, jthoughton@google.com, corbet@lwn.net, pbonzini@redhat.com, 
-	seanjc@google.com, sj@kernel.org, ziy@nvidia.com, stable@vger.kernel.org, 
-	samarth.colleges@gmail.com, med08elkadiri@gmail.com
-Subject: Re: [PATCH] mm/ksm: fix userfaultfd protection during merge and
- unmerge
-Message-ID: <auCTv9O6F1JPyOAu@thinkstation>
-References: <20261026130054.91461-1-lance.yang@linux.dev>
+	t=1793103199;
+	b=UsYqwC7zwcFL+7wCrfI7e4dkvSDyE3+F6cMs1Vbl4lhhg4gFUU4A2L8Nd8Jq8FvbSuiOi/
+	LiYQzlda365TEnGLWLRiVk39+QdCOmCw598T4T7VTWuQOBnNWnsklBsd7mxm88GrYhawum
+	83KJgezacPmAGy/8SO0cvFSKeMgk4wo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=HldebiX4v8c7RjwCxJgdnN1Xxuzre2SESHSjUs+s7LU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793103197; v=1; x=1793707997;
+ b=iCJeniYzOeQbcAQXI5BCvajlY+VMzjI76dvLPSVfX2sneLffZcubV1o9wLRVYrcjxnZws7cN
+ FEK1oO5Pmqg6ZAJRDivxs0RExlDmP+L+juUuH1Ht7QFL6BSk1ePWhJPiBiK/aV4HigQKrbvy3iw
+ 5t9ksfvI0x6DDXWi2CE/eTlY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 05d4f9fd0d387be9;
+	Tue, 27 Oct 2026 12:13:17 +0000
+X-Mizu-Trace-ID: 05d4f9fd0d387be9
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kees@kernel.org,
+	peterz@infradead.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	hughd@google.com,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	lance.yang@linux.dev,
+	riel@surriel.com,
+	harry@kernel.org,
+	apopple@nvidia.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	minchan@kernel.org,
+	muchun.song@linux.dev,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	youngjun.park@lge.com,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	jgg@ziepe.ca,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	josef@toxicpanda.com
+Subject: Re: [PATCH 32/46] mm/memory_hotplug: avoid races in pfn_to_online_page() with dying pgmap
+Date: Tue, 27 Oct 2026 20:13:07 +0800
+Message-ID: <20261027121307.40431-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261027-fixes_core-v1-32-6f74bec9a5bb@kernel.org>
+References: <20261027-fixes_core-v1-32-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261026130054.91461-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0DFD11C000F
+X-Stat-Signature: 9z5d7cyqmc3363q88mb7outxjh86rdnz
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4109C18000D
-X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 65pjua7oekn3zpdcb9gmidqs8xiuyqmz
-X-HE-Tag: 1793103129-587159
-X-HE-Meta: U2FsdGVkX19gKOSdsyXzI+QLV0J/iHpkREgqoLHhHN7FER3uOYVnjJDq2E8ZYrzZ/mqNYAiisnuJAmzx+BcdRi9/e2rLIIawPC9PMr/ToCQfivzRZbsSdR4VoMBvJ/vZeIvB1jZEtgb4rJcpB6CKh94ZpmpLBYWjcwubzdJ6UvV2j1nG37u83iCSlVyBg1IGR9kgKPjtCrt8KDdAGW3h9NXk0CzBDwm4FX7mbp1OftLGWdAUj7JhlhAF1xHuealmi9KRpG+apwnedkNUVSzE0ORGnSlrun9ZG83FdICgBVck7p6WTGdGPjUSRRD4MUACqHPOxG+JiV0yXTJskt/WYm6BnWchmDUtHFA6I43HWV2YMp/UHbMj4VsvG6zkArlLiqitHllF2ELwlCx/LxliiM0nqYV5+Qw3iMwmchSfdjU7dRlnurqsJWPF1Lt22zYGKKrMiRhOIIR8KvXHjjze5GEZQokVNgt6IoQMVsI2TZDrzZmp52lFBds2HxgziDveLByQwFrzveSVPPHdGQBx42Zxjhb3J9Dic+mYL0QPbICF6CnUOB6dVdOTWmSQwPgdHPri8i8LljT/t8CmCK836pJb4ScPHqIx3azkW7QzS+V67/hlsMjF0wzT1iWVnTOwhYS38fu0DEFeqQMVKqCwelz1hivLS8iyuQ8lhMHJpY8SoffVt8DS+IY1gdygK2AMpKSf7iS9uNOjrn+emnxJr9u4PfAvq6AKyI/0UIzTiEEM055nDfE4WrpYgk5+v93VkKVHGTJdG9xYvmTqoWAMBtQDDsoLiJKQxz90KEPjBycRXd78eE7IVpwKJ0xWm0HQDgf0H+0MBwaxfBUmv1ZdEbLLmL6bdt6+5WBa57qu7xxJIOv7FqWssJPKP6mfZ4XDT9W9oKGyCmiEsXD3wIBondUgve12KSih22c4i8Z6wibVdWvHri4yFNBejMlLvsXxdCyL5GVZlC0VL0eeb8I
- S5eiuO1+
- /OC2Vjx26Un6dC6UOSOJ67d8eQTgab/RwSYgpihMTlXlM6sJqommiAxe1ibMwrW06cBMY+W27ROwG36d89zxpztrriTbauSf2A/Ntq8tiXA/Gbr3ZIpfibHhsj9p6utSoAJRyz94rjlhFYNy7gMcb1U+ScjGDFpeOkvqbd6apHFsFPhPF5Kx28rTkn0CksvU4fGcG3mYvTKyeuObSRIzeznHmhB1GzVmGXxpMScYZruRSSPxtRrIPDeDlF6yY9upQIABZJJUBUKpV4LgonFVnU4gbi1geNHgzU4R1CKjmb+8uF89Sntodr2/j9l71IjODRD8kKJA/3WN0+AhG3BXYZamCbIFf/59GIEAJfuqU3N8z5PW8KtiBIhfxLwwknaYvUuX/EAzBmLpIoxA6/TtnkeOvIA==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793103198-464705
+X-HE-Meta: U2FsdGVkX1+gLt1lyk96FnbOtctyvc23aDkPUcLiAiq4t9PTzZF+qHZrs8PSvNCNlk6lw3EkgipXTskEbF+spkO+aFJ54kOnXCuYJC42Oe4UbOX1neNAEgNurSQjglMcL3eqV9u4TQmI/k9Xf66RiRSsH2aatUAFbuUhVG4CmXeYLcjY8IAsMrAo6SVQ7EmT1hJoU3th+MkmDzZlGJyFief5bILm2ynS5FC/cROqkomIjO/ZJAlEf0Rxlfu4WUNFuIs59wicJ7KJk8Vk7zWawclPUdUD/lJYaAAZVgKVxUGu7RKYCPG7JNb7omJQK68ACtcZjAVuZUy7C/MJcs3J4pvGj5EKaAaHUWhMt+fQgOC4T/lDmGW8qxl8Vkylm7tgM3O5oiV3odZ2u/o+6puZ/pU0RY1qPUjGWOJc64nPty2icuOAwv/AcoUAiRwp2WbmUiqmkOnM30XhvQxE3LfpTEwh6kpVNP5m92VGEq3IzG3+QeoNjnQj9B0Nc0JXMvD5hnr5yYRYtdQwyQ9tiD4zyPh01uoK3hTAtrXWotzcZHm9Bby9Hv26lYoJr2UehMt8CyLZd88o7adHJys1cw3JnN5Zwz8JEv00AIduP699kiavOIvmscIHLrRFl9z/+2qIiznQw6LisH+5Dk7DJL0kMMObqHUQQjO2rQX14cpc/+KHw/dlvfpnkvwyzweBDFjF08hQXH+Cp1Hh+gi3PtryVeMB0Tnu/bmYFOrL66k9K7EeRLctDJwyYQ53LUz84xRcMTb/9RHkCErl+v01AKMaB4SOMXN7o6bxZVOatXCxMofmr9DyToK1rNaTHhlRt2rwUvLoDG0gDCHYscm699oqkSpjCEPBlmXvVksmcRyP/9sqIubQHKBp4fmBmVLg6pUVUug3+7Vwx8I94VYYfEWL/OEeT5TSDyDQHhc6q4PctR9zSlA8GyQ1gtCKeQpBMsjBJ9G1hK9Qe7nAch/aVYL
+ 3CjmQCf0
+ fsQnaIdztyGWFo56Z+zOXaxRZPyDIOWEk5+4+7PTPjew8BWO2A0vzW7zQ3iteNFEMAxcoVgumlmK9H6QGtWlbzl8/N7v5xDnjS/4bYpJGq2slCS33Z/8SmoDD4bVQzgKl6PYqfXBXaNfifWG4bRl5w4FLh7vxj0ohPEDW33x9eL31kcLAktP0PVga64xDWA2PUPZR2pg6pxYMcS7+o3Ppc+a8J9T++KN4p2H6wUg1tdee4OfCwEKYDKJt/IJA+/ZoXVeN/SwzfnDiVoGLBoRL0w6YePbvU2Gp/+L8XMYVFdi8EIWAOM7MWd1ktc+ZQAzWbWSZ+qnj94WTJ9rubcKCElQRQTW9Jn/FEYZtI0XTG7/pN/Wo7V5w3UOp56gcA7U0oc2oS3haor07Say4frjTIj5CygO6zCj+jRvzJS6vuQz/H2Iw/LF45gxMOPROWJLOKQB2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,68 +155,141 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 09:00:54PM +0800, Lance Yang wrote:
-> KSM loses userfaultfd protection when replace_page() builds a new PTE
-> from vma->vm_page_prot. Dropping its uffd bit lets a subsequent write go
-> through ordinary COW instead of userfaultfd write protection handling. For
-> RWP, a merged page also becomes readable without faulting.
+
+On Tue, Oct 27, 2026 at 12:17:52AM +0100, David Hildenbrand (Arm) wrote:
+>From: Josef Bacik <josef@toxicpanda.com>
+>
+>If ZONE_DEVICE memory shares a memory section with ordinary memory, the
+>section is online and the pfns of the device are valid.
+>pfn_to_online_page() tells them apart by asking get_dev_pagemap() whether
+>the pfn belongs to a dev_pagemap.
+>
+>get_dev_pagemap() only returns a dev_pagemap whose reference is alive.
+>memunmap_pages() kills the reference first, waits until all pages are
+>idle, and then removes the memmap. During all that time the function
+>finds nothing, and pfn_to_online_page() hands out the struct pages of the
+>device as if they were online memory. A pfn walker reads them while they
+>are poisoned and freed.
+>
+>The entry in pgmap_array is only deleted after the pages have been
+>removed. Look at that instead of trying to get a reference.
+>
+>This is probably not worth CCing stable.
+>
+>Fix generated by an LLM and sent by Josef Bacik in private.
+>
+>Fixes: 1f90a3477df3 ("mm: teach pfn_to_online_page() about ZONE_DEVICE section collisions")
+>Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+> include/linux/memremap.h |  6 ++++++
+> mm/memory_hotplug.c      | 13 +++++--------
+> mm/memremap.c            | 13 +++++++++++++
+> 3 files changed, 24 insertions(+), 8 deletions(-)
+>
+>diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+>index e3c2ccf872a8a..b5e5e626c7a59 100644
+>--- a/include/linux/memremap.h
+>+++ b/include/linux/memremap.h
+>@@ -231,6 +231,7 @@ void memunmap_pages(struct dev_pagemap *pgmap);
+> void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
+> void devm_memunmap_pages(struct device *dev, struct dev_pagemap *pgmap);
+> struct dev_pagemap *get_dev_pagemap(unsigned long pfn);
+>+bool pfn_has_dev_pagemap(unsigned long pfn);
+> bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
 > 
-> Keeping the uffd bit and restoring PAGE_NONE fixes merging, but we also
-> have to handle unmerging. An existing KSM page can be protected with RWP
-> before MADV_UNMERGEABLE, so unmerging already needs fixing independently
-> of preserving RWP during merging.
+> unsigned long memremap_compat_align(void);
+>@@ -284,6 +285,11 @@ static inline struct dev_pagemap *get_dev_pagemap(unsigned long pfn)
+> 	return NULL;
+> }
 > 
-> Unsharing replaces a shared page with a private one and should leave
-> userfaultfd protection in place, as do_wp_page() already does for write
-> protection. Currently, an unshare fault reaches do_uffd_rwp() before it
-> can proceed to do_wp_page().
+>+static inline bool pfn_has_dev_pagemap(unsigned long pfn)
+>+{
+>+	return false;
+>+}
+>+
+> static inline bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn)
+> {
+> 	return false;
+>diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>index 796af1028ee23..5a972d7a9e478 100644
+>--- a/mm/memory_hotplug.c
+>+++ b/mm/memory_hotplug.c
+>@@ -342,7 +342,6 @@ static int check_pfn_span(unsigned long pfn, unsigned long nr_pages)
+> struct page *pfn_to_online_page(unsigned long pfn)
+> {
+> 	unsigned long nr = pfn_to_section_nr(pfn);
+>-	struct dev_pagemap *pgmap;
+> 	struct mem_section *ms;
 > 
-> - With synchronous RWP, handle_userfault() returns VM_FAULT_SIGBUS.
->   break_ksm() then reports success with a KSM page still merged.
+> 	BUILD_BUG_ON(IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID));
+>@@ -363,14 +362,12 @@ struct page *pfn_to_online_page(unsigned long pfn)
+> 	/*
+> 	 * Slowpath: when ZONE_DEVICE collides with
+> 	 * ZONE_{NORMAL,MOVABLE} within the same section some pfns in
+>-	 * the section may be 'offline' but 'valid'. Only
+>-	 * get_dev_pagemap() can determine sub-section online status.
+>+	 * the section may be 'offline' but 'valid'. Only the presence of a
+>+	 * pgmap can determine sub-section online status: it indicates a
+>+	 * ZONE_DEVICE offline pfn. That includes a pgmap whose reference has
+>+	 * been killed, its memmap is about to go away.
+> 	 */
+>-	pgmap = get_dev_pagemap(pfn);
+>-	put_dev_pagemap(pgmap);
+>-
+>-	/* The presence of a pgmap indicates ZONE_DEVICE offline pfn */
+>-	if (pgmap)
+>+	if (pfn_has_dev_pagemap(pfn))
+> 		return NULL;
 > 
-> - With asynchronous RWP, protection is cleared before unsharing.
-> 
-> Preserve the uffd bit when merging, and restore PAGE_NONE for RWP. Let
-> FAULT_FLAG_UNSHARE skip RWP fault handling and keep PAGE_NONE on each
-> private copy as well. Unsharing can then complete with RWP still armed
-> for a subsequent access.
-> 
-> Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
-> Fixes: 2d427bb01639 ("mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP")
-> Link: https://lore.kernel.org/all/20261019010934.697895-1-samarth.colleges@gmail.com/
-> Link: https://lore.kernel.org/all/20261020055518.36087-1-lance.yang@linux.dev/
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Samarth Narang <samarth.colleges@gmail.com>
-> Signed-off-by: Samarth Narang <samarth.colleges@gmail.com>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> 	return pfn_to_page(pfn);
 
-Thanks for fixing this:
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+LLM stumbled upon a possible race in kpage_read() ... 
 
-> @@ -1463,9 +1464,14 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
->  		dec_mm_counter(mm, MM_ANONPAGES);
->  	}
->  
-> -	/* Preserve soft-dirty when replacing the page. */
-> +	/* Preserve soft-dirty and uffd protection when replacing the page. */
+Say the reader passes pfn_section_valid() for a device PFN in a section
+shared with online RAM, gets preempted, and resumes after
+pgmap_array_delete(). We'd then find no pgmap and return pfn_to_page(pfn),
+even though the subsection is no longer valid ...
 
-Small nit: the period at the end of a single-line comment looks odd to
-me. Am I the only one?
+Could we take the memory hotplug read lock in kpage_read(), covering both
+the lookup and the metadata reads? We can drop it before put_user(), once
+we're done with the page.
 
-If you are going to respin the patch for some reason, maybe drop it?
+Maybe along these lines?
 
->  	if (pte_soft_dirty(orig_pte))
->  		newpte = pte_mksoft_dirty(newpte);
-> +	if (pte_uffd(orig_pte)) {
-> +		newpte = pte_mkuffd(newpte);
-> +		if (userfaultfd_rwp(vma))
-> +			newpte = pte_modify(newpte, PAGE_NONE);
-> +	}
->  
->  	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
->  	/*
+---8<---
+diff --git a/fs/proc/page.c b/fs/proc/page.c
+index 6aa99e42ec22..12bed36d76dc 100644
+--- a/fs/proc/page.c
++++ b/fs/proc/page.c
+@@ -12,6 +12,7 @@
+ #include <linux/hugetlb.h>
+ #include <linux/memremap.h>
+ #include <linux/memcontrol.h>
++#include <linux/memory_hotplug.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/page_idle.h>
+ #include <linux/kernel-page-flags.h>
+@@ -77,6 +78,8 @@ static ssize_t kpage_read(struct file *file, char __user *buf,
+ 	count = min_t(unsigned long, count, (max_dump_pfn * KPMSIZE) - src);
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+ 	while (count > 0) {
++		/* Prevent memory removal while inspecting the memmap. */
++		get_online_mems();
+ 		/*
+ 		 * TODO: ZONE_DEVICE support requires to identify
+ 		 * memmaps that were actually initialized.
+@@ -101,6 +104,8 @@ static ssize_t kpage_read(struct file *file, char __user *buf,
+ 		} else
+ 			info = 0;
+
++		put_online_mems();
++
+ 		if (put_user(info, out)) {
+ 			ret = -EFAULT;
+ 			break;
+--
+
+Cheers, Lance
 
