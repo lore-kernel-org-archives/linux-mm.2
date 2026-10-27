@@ -1,108 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9D2606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A11606A32C
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=BpGgmKPY;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JWtkTaQe;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=BpGgmKPY;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JWtkTaQe
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=jMAe2coB;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ThWU3S/l;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=jMAe2coB;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ThWU3S/l
 Received: by kanga.kvack.org (Postfix)
-	id 9978E6B068C; Tue, 27 Oct 2026 06:38:32 -0400 (EDT)
+	id 0BFF96B0698; Tue, 27 Oct 2026 06:39:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96F5C6B0696; Tue, 27 Oct 2026 06:38:32 -0400 (EDT)
+	id 098376B0699; Tue, 27 Oct 2026 06:39:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 884DB6B0697; Tue, 27 Oct 2026 06:38:32 -0400 (EDT)
+	id EEFE36B069A; Tue, 27 Oct 2026 06:39:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D6536B068C
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:38:32 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BBDC76B0698
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:39:36 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45AF21C3C1A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:38:31 +0000 (UTC)
-X-FDA: 85368057222.28.C3F3165
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2EFDE40005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:38:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BpGgmKPY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JWtkTaQe;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BpGgmKPY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JWtkTaQe;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5880A409B7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:39:36 +0000 (UTC)
+X-FDA: 85368059952.28.2C35064
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 45DB1C000B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:39:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jMAe2coB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ThWU3S/l";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jMAe2coB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ThWU3S/l";
 	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793097509;
+	s=arc-20220608; t=1793097574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=thOdz49DJmOvWZo66WX+p09a9NHT1DFOX3BcLmDx8JY=;
-	b=rAP9Cb7YfHHSFxUv6VRxNURCabgs+dGRSBrTsN2kRoouPCm+aHEynTe/h+/v3bTw6UBAFL
-	f9ISweP5xQUhB44He5EsWtm4xGBRuYapxO61AQB3rA0inQOtse6VL1Du137WM8eJgupRHy
-	Eub8BuYe7TSmo8aLMHY6nHrcn7FTnYY=
+	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
+	b=UjtxVVvBWtQbYEFR/ZuJM2HMFK9WUXezE0N3+/BSvIHHcUIm/pifQ1YUuDO6AIMKgUN4+K
+	GZJmCnsrbig9auIV3o0jORYZ1vYZTu54L/z0XHnWkdkLYLooMl+qE17Fjv+5Mc0DsuW2qK
+	Hf+wTDIQU3int2WwK3/WjLGvHGV8ai8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BpGgmKPY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JWtkTaQe;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BpGgmKPY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JWtkTaQe;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jMAe2coB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ThWU3S/l";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jMAe2coB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="ThWU3S/l";
 	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793097509;
-	b=YGLZJatOIJC5U/JkcZRTh/EyaChBP/1HyNcVY9SB0uJMSFidzSu8jENhjXWd2EgJbFfrqz
-	PbWOfVB+2G/lIf2CsppQF2yfrLOjzcZhrdpV07Dg/mtwYKldaal9Ilqxr4RoeDXEGV7xI/
-	jtH502MSpNGILncDJRrNmrCQf3GEDPg=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	t=1793097574;
+	b=afO5nBMKZp17LYNpSIqZCNLNc0tboj3x5MjwTuC2Ya2hbvDsszD0BVw3kL3G+6uaImBg1J
+	wG6Df5jPPMDvmMZR3W+ycx7YmGGUNSV4+8FIQJgYsla83Kt6JTUgaxFAYZIgD/JPvD3Qrk
+	qWIGW65P21KYOz4KAdXDkKRUAI8vUYg=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CB00E21E9F;
-	Tue, 27 Oct 2026 10:38:27 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0C4381F7D5;
+	Tue, 27 Oct 2026 10:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793097507; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1793097573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=thOdz49DJmOvWZo66WX+p09a9NHT1DFOX3BcLmDx8JY=;
-	b=BpGgmKPYTeSncqrm7zxPBRHnG/u5ryzZ9r1jVo6ID6wD1bxwm2J4KpOavjan4G7kyDB/4e
-	O1lrASYiwPI0/JJMTkmqjkkX6Er6miQd/Gew8mKhMIAa5YJNkLFiGwnnc4zAPLYnDbkQQg
-	88Z4X0NIdKihF27ZPrcLU67e93uVpEM=
+	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
+	b=jMAe2coBUlccty3WHc8e5eFbxGa/FQ2n05z85wuM0uaTiaKhJdl7ZM93Izvk+dMu+SIVP7
+	SuAVTUjb87RyCHK0ewstc6yfcUCkiry0A71eE1ZaAONOd+4FRscZSDEBSmxEttk4iK9uBP
+	BFGgiIC9hZRc75BpwrdNUNGp5cR5iSE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793097507;
+	s=susede2_ed25519; t=1793097573;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=thOdz49DJmOvWZo66WX+p09a9NHT1DFOX3BcLmDx8JY=;
-	b=JWtkTaQe8pEI5uGyjL0X8b2nwfsW21hp7IHkL0SvfCfpVJnRH0y9gc9gMfbD5rgrLKCnhs
-	5PvGRnQ/ESJixYDw==
+	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
+	b=ThWU3S/ly60GNL1To5OVEGzTl7xGFF0ft9/lW1WdUqqvby+qiJh4XfliFTrN0TZPcLVbcA
+	00sIFGt5kj9La7Cw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793097507; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1793097573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=thOdz49DJmOvWZo66WX+p09a9NHT1DFOX3BcLmDx8JY=;
-	b=BpGgmKPYTeSncqrm7zxPBRHnG/u5ryzZ9r1jVo6ID6wD1bxwm2J4KpOavjan4G7kyDB/4e
-	O1lrASYiwPI0/JJMTkmqjkkX6Er6miQd/Gew8mKhMIAa5YJNkLFiGwnnc4zAPLYnDbkQQg
-	88Z4X0NIdKihF27ZPrcLU67e93uVpEM=
+	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
+	b=jMAe2coBUlccty3WHc8e5eFbxGa/FQ2n05z85wuM0uaTiaKhJdl7ZM93Izvk+dMu+SIVP7
+	SuAVTUjb87RyCHK0ewstc6yfcUCkiry0A71eE1ZaAONOd+4FRscZSDEBSmxEttk4iK9uBP
+	BFGgiIC9hZRc75BpwrdNUNGp5cR5iSE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793097507;
+	s=susede2_ed25519; t=1793097573;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=thOdz49DJmOvWZo66WX+p09a9NHT1DFOX3BcLmDx8JY=;
-	b=JWtkTaQe8pEI5uGyjL0X8b2nwfsW21hp7IHkL0SvfCfpVJnRH0y9gc9gMfbD5rgrLKCnhs
-	5PvGRnQ/ESJixYDw==
+	bh=GHXfa6R9kyvi48QCk+MS91fHFKbn6ETqPD7CVuiGV4E=;
+	b=ThWU3S/ly60GNL1To5OVEGzTl7xGFF0ft9/lW1WdUqqvby+qiJh4XfliFTrN0TZPcLVbcA
+	00sIFGt5kj9La7Cw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB7171321C;
-	Tue, 27 Oct 2026 10:38:22 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 588A81321C;
+	Tue, 27 Oct 2026 10:39:27 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qws4HB5/4Gp7GQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 10:38:22 +0000
-Date: Tue, 27 Oct 2026 10:38:20 +0000
+	id wIn6B19/4GprGgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 27 Oct 2026 10:39:27 +0000
+Date: Tue, 27 Oct 2026 10:39:25 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -131,31 +131,32 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
-	Josef Bacik <josef@toxicpanda.com>
-Subject: Re: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
-Message-ID: <auB-3BQn_rR6IfY8@pedro-suse.tail5790ac.ts.net>
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 04/46] mm/memfd: make f_pos accesses atomic
+Message-ID: <auB_QkUwsP6sRfYS@pedro-suse.tail5790ac.ts.net>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
+In-Reply-To: <20261027-fixes_core-v1-4-6f74bec9a5bb@kernel.org>
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
 X-Spam-Level: 
-X-Spam-Score: -11.80
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2EFDE40005
-X-Stat-Signature: zbd9njepxbwf5zk3fkns9ughwgffmp7k
+X-Rspamd-Queue-Id: 45DB1C000B
+X-Rspam-User: 
+X-Stat-Signature: 1eyhesm1dc3i6uumctnxpqpyhenb6ksx
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793097509-689996
-X-HE-Meta: U2FsdGVkX1+McSWZuEII1VMIN8Wvw6UQpsx3jeHEKZVdm9fP4txWm/3OpyPBs4Qgnp99Xut91HtWrft/+7337l7282fCVKbqMUgFZnwwAwUXPaTFq7o2X9+YK1+mFbKZq44APDOKs1oz/wYP3k31soZtyjX5KLIiJ9g0dkiyb2hP4uC/md1WPHhv4w5bB9KAhwKygwDYQdPcYrUtxRgM7RSjbcsouZkMt4Qxi1ZwLfgrkSBc4LiBoVkKZEISfbe8XMPrJJ3Wi3BdKKHfmtDgVjVgMLpPnrANPLmUbJjNN2bKwB+88HdbNJ4pi0zkv1paK7srxzn3mKuovAC3165i3MNBlOwwcFoAjkeyuNcyxbQ0mlPsS/z2GduhmQKL3I2jOSHWvibtWVzhbaCoXNsfjLDIiGASAxJzzb6bT9t1XLb3BbB2IqFwSjZ5FSttQ90jkowpAz4UbtMndIbOaUumj6LmPbIAusgKU3BHX0ZtrIFH4b5HiD1Y6cK+rL8V+72rw2HcF96wgZbqma+o0RQIT/oSp1W/hu3oF+4WSZcbDNs7jX9sC6qMB0ysMVWsjfZXkn3/AVi9T6zB5a1gsXgf29xxIf3RmuCJSLniMxca/UCXWr/nZIHAWxLzrKdghwsMoN32foUeGYVtd04WDvX6uqFJJBtiFsye7uhvs6kJ/xq1nljwJ6/LX6/Pi+tTUlZ04VcYgTt7DuwGcFhHBnVm/dfzdRy3nWnaDUL718LlzF1eo+yubxgoKWynoL75FPwOks22YiC7kKcC/iLryLJx71nUiqq31Vn1/5lXjZbb0FrrxTGKyHsP8jIMjQh34BYIjR5Wd8bd45bhOrY4SLdawf+gz382tAyJ5hMCQZHkqXLrOy+mynMz2IJwEiY+gvvj2BwUq+eAXfTGTg2TtotPPCbkKw8mkhqJ93O/ctmi3Mtmyx1Qk6Gl5HtJSZ2xnB/Xm84y2p8UinR+aW8Afch
- b4bbIOhv
- cvkQpcPgWcMcnP1yQppJu5srPKrJ3J4lHTUCpTFI3nBMagIUGPoheNQbKaLXVItjZpU2LddwSBBwhsKA/Ile4wgTk2O7UerxpXcPwzcTTBGZlmuiuh56Mh6bainVe63Fg0ijoq9PyUsNZuqwH9HWByJvBjtZpHlqziUOQB4ANGNnSR2vfa+cDdT0efcNj4wBlp9BaLDFVl6Mu1KD3cZdjFHjEiWJtYz3bWM9V6DMYaSDOlBCfv3GnoCe1oUg/K5jUnfGaQhkvU8PI7jNTA1/gV1m5M1K2FAv/Kyh1dsmcbhkmJDtgcHp3IYqHLSdDc0o8v0cjiOxSZAhI+dvyKJtZqNoJ6vAJm23T2lo0l3QXnG6lSbzCdBE/NfIY3qV/3i2ERIiMBurCv6vfhhjpCAeFz5xErPHmbVFwHs3+NeW0kWNO3hPLkH9U2+Y5k184K9WILTLWu+6bxD80DmrYLDyeR5ZHNw==
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793097574-439437
+X-HE-Meta: U2FsdGVkX1/0C9iZ/zjUw8d+kwWj2ztY6ARutSm5o/Kq0kGl3+G+3VD4Bvy3y7cIuscTEaMFwIgV56kykYssrrnOvoiEdLFWq+d3LuuAPGU88UydtphMYRtogK+hSusxdHPHHXJd5n5JnRaU4SBwMz12ErAH3mR3Fo4CSn1sBRaW4dJYQQmjnZhTfl3TKY0JRhol800TjkLswsoDjBSi133bue28R+GOdCIDNirGTWupnYuWnoGYQuZoRgaFUmvRKL5c8ZtOi/BCGbL9FmYRUYzX8MsjjvSe6MwdywPy/P0K9lQHlFLWO9pTcXzu1OMVodtp/bm397WnQpZqbRY28g3ni6rD49QexKs8auCSJOwgkCfw2+98jJVfYBUKt24KAq435rUlnWCpxOOMHZcPgRIigEDOSyEXmSJl+2tnmY07IWjuq5oeGzy1A6aPqG8m3gQFPOglKC59rFu77hjraa69BeMekEBPIgiqK3JfK5cRakS/WmW+5Y3a1m6wrvuiL8eucaukStdb0y60fKWdX+60r4mzUco6+xJ96f0iU9BEW5MSvF+p8UmYpcv35+6Pm2J+13gRXhH+Ay952vTbYYYFAHQarPc18ijMPDD8nUFpEyy+5Y3+b83sVnsHc+IJ230yxpBwgLJ1rs0w4tW4efCxrS++OQSMk1sHeB0LUwGnE6/Kjwqh+MOy5+o9EWdYJ/ap+6byCIeAYSpY9btGtj3kGDFNw3QoSPyPqpNEYdQk2tkKSLGxKZ+jWzPNNAZFkGtyEu1LaqaTwweRuyxw4mPWStQVcoejTZGuFESgyIoNCiCJUzfPHqWdsgG4ndDxEUuM8NZMaNKs/iPKUF9VFh/7Q0ilscdwwIiiTh+kpUmuYrp1/B4d08q4S98JCF2mSyf8kNl1R5ieQEQeZZShStLq1f3eIxnUSQey0TySErBFssYoES6xVq7Xf7DEsKbGbPIAlPsx8sdJLx9BvXj
+ Bpt/PO5D
+ VLOa+pxE28O3eHWFN33NbGKlbBL68mzAL2tHSYg+91Z+coRFHpSkYxanLTL8q1yUbuqWD/G9ChoJomSETUWt2qOJwk3fMmBQON86fmmvtneIFLEeOpRAh6BjsCe5gl599lVNK7X5meaA6/rUcu0oYR7f7liESp6U9g3CjyW7Y1qL1OkVL/yqJTlRH7KGTbHUDtnF4vs6zHnUoYslIt7dusSXEhZih8q6opeU8ukFe9bHD4g/ujvno+zIwKFHsQdaV7Xoxp0UjZtNZgWv5rmi8s7uG/q35QaQ8yU4fs6yRXWk64cRokgFK6E99i1rAopBfZDGBJQtvCkmw6BkSBVAeA5HaHtk80ohuj9YgSd61C8UJxx1kmz4ofIa4v+TXaWYUPYu3GvuJic9vZEEuW2XffBVcrhbfYvWrROUq1DSUTPIzVHvxje9GvUw+Vfgb/CPqMf6PuhdX7X7R2n9Kqi1wmi8wIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,35 +165,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:17:22AM +0100, David Hildenbrand (Arm) wrote:
-> dup_mm() copies the parent's mm_struct before dup_mmap() takes the
-> mmap_lock. A concurrent brk() can leave the child with a stale mm->brk
-> and newer heap mappings, causing later brk() requests to fail.
+On Tue, Oct 27, 2026 at 12:17:24AM +0100, David Hildenbrand (Arm) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
 > 
-> Other operations (e.g., PR_SET_MM) on the parent's mm_struct can similarly
-> cause inconsistencies.
+> Commit 9c225f2655e3 ("vfs: atomic f_pos accesses as per POSIX") made
+> read(), write() and lseek() on a shared open file description of a regular
+> file serialize on ->f_pos_lock.  The flag that asks for it,
+> FMODE_ATOMIC_POS, is set in do_dentry_open().  A memfd is a regular file
+> too, but its struct file comes from alloc_file_pseudo() and never passes
+> through do_dentry_open(), so it does not get the flag:
 > 
-> As a simple and robust fix, grab the parent's mmap_lock earlier. This
-> way we don't need to update individual mm fields in dup_mmap() and
-> keep missing ones. Stop updating the 4 existing members (total_vm, data_vm,
-> exec_vm, stack_vm), as that is now no longer required.
+>   CPU0                                CPU1
+>   write(memfd, "a", 1)                write(memfd, "b", 1)
+>     pos = file->f_pos  (= 0)
+>                                         pos = file->f_pos  (= 0)
+>     vfs_write(..., &pos)
+>                                         vfs_write(..., &pos)
+>     file->f_pos = pos  (= 1)
+>                                         file->f_pos = pos  (= 1)
 > 
-> Keep releasing the parent's mmap_lock in dup_mmap(), before
-> userfaultfd completion, to avoid moving the userfaultfd handling into the
-> caller. This should get cleaned up later.
+> One of the two bytes is overwritten.  Two threads writing 100000 bytes
+> each, one at a time, to a memfd end up with a file that is far shorter than
+> 200000 bytes, while the same program on a tmpfs file never loses a byte.
 > 
-> Move uprobe_start_dup_mmap() to preserve the lock ordering.
+> Set the flag when the memfd is created.  As for any other regular file the
+> lock is only taken if the file is reachable in more than one way, and
+> nothing a memfd does in read or write waits for another operation on the
+> same file.  This cannot be done for all alloc_file_pseudo() files: anon
+> inode files such as eventfd are S_IFREG as well, and a blocked read holding
+> ->f_pos_lock would lock out the write that is supposed to wake it.
 > 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Fix generated by an LLM and sent by Josef Bacik in private.
+> 
+> Fixes: 9183df25fe7b ("shm: add memfd_create() syscall")
 > Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ david: minor description tweaks ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-
-FWIW, strictly speaking malloc() isn't usable in a forked
-(multi-threaded) child, but glibc/musl provide this in a best-effort way.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
 
 -- 
 Pedro
