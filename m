@@ -1,103 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9FD60A3826
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CA560A260B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=HDCPap0x
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=RBTg/FKM
 Received: by kanga.kvack.org (Postfix)
-	id 3E5C66B06E4; Tue, 27 Oct 2026 08:13:33 -0400 (EDT)
+	id AEAB46B06D4; Tue, 27 Oct 2026 08:13:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 395C26B06E5; Tue, 27 Oct 2026 08:13:33 -0400 (EDT)
+	id A9B0F6B06E5; Tue, 27 Oct 2026 08:13:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25E6E6B06E6; Tue, 27 Oct 2026 08:13:33 -0400 (EDT)
+	id 962ED6B06E6; Tue, 27 Oct 2026 08:13:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F09446B06E4
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:13:32 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BE661609F6
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:13:32 +0000 (UTC)
-X-FDA: 85368296664.11.F383DAC
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 720AA12000A
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:13:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HDCPap0x;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf29.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 70CB36B06D4
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:13:36 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2155409D7
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:13:35 +0000 (UTC)
+X-FDA: 85368296790.26.573967D
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C5607100005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:13:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="RBTg/FKM";
+	spf=pass (imf14.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793103214;
+	b=jeAvx8+hhTWzzV7GTJ4ZF2k44NnuAobQnj8pWY/lQRnfH0/JLiYGvHkrSSygcrVII+22kJ
+	Blu0QBuJkHBgKl2vOr0n5/edLMMPUGNzDDMyzcvPdsD1GCYVdxo0JCpbaLW4q60jcJfdU+
+	RU5YgWvpYrnlPxi30R3+qDYW0EDE38I=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="RBTg/FKM";
+	spf=pass (imf14.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793103210;
+	s=arc-20220608; t=1793103214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mlGykhvYvV4AMDSttZyw/gEEK1mkWyFBP60xF4DLDos=;
-	b=eRIigxUCppVbwcdtOTb8BVylLsyK7aN+70Q9x7P+MRHD7P4986OUnRTTlBNy/lCHBjqPmx
-	yzjkMQIXluWtJbDVwvA8wfdEPtk5MJxy/SA3kp4+gCLvI4Z8e3Aw1dwVi9T8Mnbi3XIXJY
-	McHP74wrRUq22B+FZu9Gj8xWhMU8xic=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HDCPap0x;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf29.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793103210;
-	b=4xMLTr5qGdVB9D/ZEtPzI02nPdMmSdaCRcBzc8WW+i98Ogt0v0Ilythu9WsTUl3ezdKxzK
-	EL05bFwCb9m8W5/WJcystUgp3ZDQCmaVZ4dDgZ1fOX6eqw+tfwMAmwr/R0JzhDivwMAUPb
-	e3zwV09n82mzWwyecTqWmIRhUwCnSKA=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793103205; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=mlGykhvYvV4AMDSttZyw/gEEK1mkWyFBP60xF4DLDos=;
-	b=HDCPap0xZff7wPxyv0SWtkW2M+WmWll8sXEFQZe2gSWVhcxXkzzE+weMux5OROYlc+dVbvlvmD4ItyqTypmZIAUPSJfCoh6nb35ytgbHe6H1g7mzYRyxjvj3pxGQwybD7yiGCOpQbYttqzBuG/C5WcI/dyh4hyPNVkC/Fs87FmE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R831e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XDdofvE_1793103195;
-Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XDdofvE_1793103195 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 20:13:24 +0800
-From: Yuanhe Shu <xiangzao@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
-	"Kaitao Cheng" <kaitao.cheng@linux.dev>,
-	vbabka@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	ziy@nvidia.com,
-	wangkefeng.wang@huawei.com,
-	tujinjiang@huawei.com,
-	mgorman@techsingularity.net,
-	chengkaitao@kylinos.cn,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	xiangzao@linux.alibaba.com
-Subject: Re: [PATCH] mm/highmem: refuse to copy hwpoisoned folios in the !copy_mc fallbacks
-Date: Tue, 27 Oct 2026 20:13:14 +0800
-Message-ID: <20261027121314.1221539-1-xiangzao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <f28b2414-ff07-427c-8e18-e950b492b351@kernel.org>
-References: <20261026025724.1430747-1-xiangzao@linux.alibaba.com> <f28b2414-ff07-427c-8e18-e950b492b351@kernel.org>
+	bh=UqgubOSrlWvHKhI1cqoT/fdRktbJuQr2VeGa7H2doB0=;
+	b=x6/uIbeDGHCiNLUR5iYXdnxWlPW/GQTQWhHwD6+UiM0hjyq+LewDfMDRsq5NyWtIDYZ3Bs
+	sJ7Q2FQjQ4ZaHoD9aB1iaZlZCThe1Rk1OA+w8d1EnmRSKS4KMPXf1eAeNKSVPoavJ06YzL
+	ivgGxu3TCUB86E/QHnZ9o6UdkJFW41I=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UqgubOSrlWvHKhI1cqoT/fdRktbJuQr2VeGa7H2doB0=; b=RBTg/FKMjiMJhvBeWjtZ6CZIY9
+	rvPo1ckUCe6w+h0QiGzd+6cZ2SX9h4XjdR9cge27tpZKPnYIX66xu0ynCGVEVN17tU71OKLzHYeUd
+	YqLq2zAJnig/4jV33IsJ4SPBSdrisjLfFdiJlsjpW5dPMWCs+MvV7MeJYcTUbpvu4bgIGirMrhNRT
+	rfQtF87hxPbl4GLZG512PZKdcraOJ9bUOs97wFlIO/vsRNJjr0Xeic51ZjNa4hLcU1g1mU3TtvmU/
+	TMvXw7zT4HnYQe+O4c+SJwwIKJjffebWKGrSbkUjU7VknhliRZuEvq3AGqvm5+9EA7IZvX/8NaQPB
+	FB/pcf5A==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xLg3R-0000000EufN-04F8;
+	Tue, 27 Oct 2026 12:13:25 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9C1633014C0; Tue, 27 Oct 2026 13:13:23 +0100 (CET)
+Date: Tue, 27 Oct 2026 13:13:23 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Matthew Wilcox <willy@infradead.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Frank van der Linden <fvdl@google.com>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	kernel-team@meta.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
+Message-ID: <20261027121323.GO2668564@noisy.programming.kicks-ass.net>
+References: <20260227194302.274384-1-kas@kernel.org>
+ <20260227194302.274384-14-kas@kernel.org>
+ <ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org>
+ <at_f43oDv73y-t7O@thinkstation>
+ <f97a8d33-50b2-4a86-8381-ee840cdfa2f9@kernel.org>
+ <20261027110028.GH2668564@noisy.programming.kicks-ass.net>
+ <auCKv_omLGRc6wv2@thinkstation>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 720AA12000A
-X-Stat-Signature: bd4uaotehgcz634ct77mopamnoae61ey
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auCKv_omLGRc6wv2@thinkstation>
+X-Stat-Signature: ko1wz7kajdge58xabaue3j5a6oh3m7j1
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C5607100005
 X-Rspam-User: 
-X-HE-Tag: 1793103209-26181
-X-HE-Meta: U2FsdGVkX1+HPTsdPy3unyeuV+yXBnP6RW9BbdwyCLEvQLAj1ZSKNA6RWF3Bc/2XoGg2UVvR+wKCk83X89px1XNboYr39AEuKRBY+dbsfq6EaBALjiRYdyiwi7NLDAFnOlvPEEKZE8v0R2hodA3DnVfu2r1SHLaxoBAO5rQ1vGR6NZxH5rvyMoEpdXIfjUbmEKqAuxDHXHc3/J9ikmlaXd5J+zZojrfjoCOKQqOQ8O67oUePeP+DOK/KFz2SlC/RBSZPApOj0/L0bUpTTRzeJXtFyAR0I4CTqS3DeZ4G1AnvJ2t2CqjDQCdshazdkaDsNuz255NzfYQzj3TD/DUFXtbeVHS02dQFWn3gAKOcWpYO7cZmFLwbKyowzw0y/VEL4XBXhsgnue7L9N3Ix+lUz9QjBNfcELzFAGjc045OmxZi/rrgaHEEG1Gda8kMVzQ3D+oooHZa1cnKW4miH6BPwhtyAShqBMv2pMkRWgtWavFYX+O7mG8dbfTznhZH1dwvMX2Z58Iin8+vD19VWCbXAAmUFnWXbaV1AVjBeqzwkONes4lgsqm4gCp10LXGf4dI25NJ1CIKDR2R6jXjSQU8la2KpIciOPmm1Xe3VZG7L/HO4Qs8Dj6IShNuEGCpsx3mg84wP2W+xbcVZ1ieSU9UgJIOtCQ/6sLNe1zVM7Grp9DzpNRIplPciBOr1E11O79ZA3xpyHOfja6w2KGGhx8GSFcQPqfTyb/4/YNKEWtohdLol6oxXBUbseIYcmglIREJGqYHhQ+f7zlzuY+HcbpnQtJUrTWyJWALjQcp5oXmJWXNWqE2Oq/oZfbMxxDxaxDX2X2938mz+yZeApK5PC5ksk6cXBR892uDVjSv+zZmtK6GHUAx3QtG2c220T7DI2Agzm5AAjmGyR9QR/HIUSsDACS3j2sOAZqnxQoyV5MzlTl77wYqmJvCH+mngMf+x1JLzTAnXOsg+l12lBg318Z
- pFZIoYAL
- Ak4oVzsM7MmDNuDKvXFQm4pF/TY5TZjO2jVJFHBjbLMar8iKYMt4dcF9QC1KiR7tnj689JRq70HEwc8A+2B0AqmG/xAC6d3RZBFFlfuanVwWDa45LomktKHp1Xcwdrp1WQE38sy56RF9WPVyBzZuaK9wAvFrNKnjy6ys+5MM+ghskyBgsRffH2eAtYq1sQMFBCq2NsRadms5lBEwA2LvlIeaSAEOuUb5Ek73iMDks7jfDzcw4dXnM1ZUHan/opZr5kXly1PcdrUgBs+4dd85GE6xxAdg74AmR4XZLuR6OTCN3ZmZ6ZuTEm8OKfTCALpxGp95rn8CRp+2c4/ip+M5dDtSzDMEvrDNC96D9Fqx6TDD7QMv9NigWowl1auSsXzN4yKqM5MKTjiIG+GexSzJLeNwgkBEJzVLmvF2BfYhmkBglLOE=
+X-HE-Tag: 1793103213-210022
+X-HE-Meta: U2FsdGVkX1+4+lviDqhxAg9+JbCT5JU9uNKkgQakmY2nkjT9yuv1QqqykDr5LuKUTrtWQuGF23r80yRu2FXUft5ITA64RctzUeNmD0+BIxx5X/TIRQcmIfgrKN0OAbxLDAYlD6dongh42VyHjtLTRIUhoQvUfKj6eqLCSsuu9JxOlPTPGyDeR7rTfYY/y9vclTpqzPIfHJ90pEjJak7VM3EStKbu45dOPlJgv78OHtDfjdS8sQIu4fk1WUyr6/ay5COzR2ejrdsKgCmkLSP2Xh1OpGB/Xpz0U6orp1G1Muw3nD1JJGh5RMiZFV411Z5hsy2j0gc/VUa9j585Txq229+rjGCM6+CcYw1AtBfCKpkvnwxJYLzbd7FCwbGZ8zgTN0wplrYl5yES9tfgCcNiwAjuZoEGLDvVh4p9KqIvrFodWLx0J5FkBlL3nefgxqvUuvdnHl7Yim1pLolwz2b/JsmH0sDuYahD/IWdmJAVyxfDGvhSGJ1WYSi5LiFHDRHBBp5FuH5gKM3EXVojiCFqKJsQS9ET2bwPZzFD3+YbzdVP0mH6y70e8V5Zao2qypq8E/Au0at4Z51tUp7VIfTIAlj32vbzZyC7bwhgZkbueeiwMxZBoD/11Tor0/4y34v2tYEvRA0wHtAi/hO9neOXJzZ/1Y9n07uJrVCF+joDNqWcEs3EfLgBaGAnN41Qso+w4ba8WolwZNw3QsrfnipC/6B11JJw1aHMZgPBUBUtBjgi44ab56YKsb/VTz/DbaRy+Y1KtDt/a9OYqe3K/9IRifiz4Zq4PzJCOujyGdNiMNTwtPvtpwYMlyjoXW6lyssOZxgPeskSrIigti6I0B0JKRWus6MvIAYBWRQYh3f6//x/i3gv6NqFJPjAul0wkDTG3kLJQZq55ftvUXxJxAEmumTOvoFC3/LG5On+AAe5EGUSG4ThlCsDeOcmMVqFPsbQ70Cq2f2Y3vSyLHJXaiJ
+ E+zfJi+c
+ XyX03Dm2JqfDkEUo2ky3W6gdxQyehYyg6cZZv2/w/sgyNY3sklh3GEQhUcf3FLTSqCP3THmjg8FEa4RjgAGRYdBIvLr24x+lJP4NWUYSsAHI0xugjlrFhl3xrOtuarHHjOw6ylTJXQMffzk6wiPpEzU6h0etqdUQG53Lek9oERAYhNahIeJbThIFzyM0rKfQKrKDLhH15bXK6xjk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,26 +120,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 09:55, David Hildenbrand wrote:
-> As I said in the other thread, how is copying data that was already
-> poisoned (and might trigger another MCE) reasonable?
->
-> (although I do wonder about memory barriers ... hmmm)
+On Tue, Oct 27, 2026 at 12:00:47PM +0000, Kiryl Shutsemau wrote:
 
-Agreed, the next version will shorten it.
+> Fair enough. Here's some context.
+> 
+> HVO (HugeTLB Vmemmap Optimization) frees most of the memmap of a hugetlb
+> folio by remapping the struct pages after the first vmemmap page to a
+> shared page, mapped read-only.
+> 
+> Every lockless get of a page reference (e.g. page cache lookup, PFN
+> scanners) relies on page_ref_add_unless_zero(), which is
+> atomic_add_unless(&page->_refcount, nr, 0).
+> 
+> The page can be freed and reused between finding it and the get; the
+> zero refcount is what makes the get fail. The race:
+> 
+>   lockless get                        other CPU
+>   c = atomic_read(&page->_refcount)
+>   c != 0
+>                                       page freed
+>                                       page allocated as a hugetlb tail
+>                                       HVO remaps it read-only
+>   try_cmpxchg(&page->_refcount, &c, c + nr)
+>     -> write fault on read-only vmemmap
 
-On the copy itself: you are right, it is not reasonable.  Huang Ying
-suggests the same in his reply - the next version checks before the
-copy as well, so data the flag already condemns is not read at all.
-The check after the copy stays for the flag that lands while the copy
-runs: the data has been read already, the destination folio carries
-no marker, and the callers discard it on refusal.
+I missed a little something here; page->_refcount is in the page-frame;
+how does the page itself being RO affect this?
 
-On the memory barriers: PG_hwpoison is set atomically and not
-cleared while the page is alive.  An unsynchronized check can only
-miss a concurrently set flag.  That is the residual window.  And a
-check that sees the flag set is never wrong.
-
--- 
-Yuanhe
 
