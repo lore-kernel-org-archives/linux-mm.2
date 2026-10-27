@@ -1,108 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F61606A31F
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 06:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D5A606A31A
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 06:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=rGzDxTun
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=OiNBrtpG
 Received: by kanga.kvack.org (Postfix)
-	id 7A9786B05DC; Tue, 27 Oct 2026 02:35:35 -0400 (EDT)
+	id DECAD6B05BB; Tue, 27 Oct 2026 02:57:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7324B6B05DD; Tue, 27 Oct 2026 02:35:35 -0400 (EDT)
+	id D76276B05BD; Tue, 27 Oct 2026 02:57:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FACB6B05DE; Tue, 27 Oct 2026 02:35:35 -0400 (EDT)
+	id C17C86B05BE; Tue, 27 Oct 2026 02:57:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 33D356B05DC
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:35:35 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A57B6A0983
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:35:34 +0000 (UTC)
-X-FDA: 85367444988.22.45A8E16
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A120CC0002
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:35:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rGzDxTun;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 967AC6B05BB
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 02:57:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04E2040967
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:57:56 +0000 (UTC)
+X-FDA: 85367501394.28.A90C906
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3427740002
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:57:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OiNBrtpG;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of trilith.zheng@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=trilith.zheng@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793082933;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793084275;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nvhgt93DuTR0pQyjU1IKAJtbPg/dnqsaG4i1gtQPJHg=;
-	b=EqXwgdYW8gX9C/ckPLuJaVE2mGQ4uu3Mf4aUfx9EGVNuVGXJaJcHdO23+XEWk+USvsAXaH
-	WIrJ6mzPA9lR1kUziwsi2mZTl8Mq1EOe9czoamGdbBtM17t6kHdmBlU/IBDj35EGpkPFG4
-	Gqs61We1rAA12//hbPL+L4FLkobB9P4=
+	bh=rFHNeMzU6lF6SlEzmc33S/YQH+LNSV+pccbe3Fm4Sbo=;
+	b=MKb6nQKzHvp1blI8tOZyheMdMLHUbtbrvmZaZ4uxImnr/OJuT0wtv4VGeGJkkEUxZ8zFPg
+	VFbCSITpe2FTd4Iyjhuau0ebbd0jNcr98vPtg85yK445GxLeRefBj4skLOvTtGhJzdTJdi
+	vpvuPa4UAaler4RhaNoMAFF6QsVPpaw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rGzDxTun;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OiNBrtpG;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of trilith.zheng@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=trilith.zheng@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793082933;
-	b=pSew9DSIDRba/KpHYbxj6qS8pSbLXFt5t3vNDYyBORaug/ItozKYP55GDv54TL6QUcdM4o
-	7fFivBGl6ykne08ceQIV9TAg75lG0VplJ0MEj/JRbVEtzl9xDo9BwMoPDFH3p/TDXuLonI
-	UzLPr0NKMpEaxRLcjPejG8W0MJanWC8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793082926; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Nvhgt93DuTR0pQyjU1IKAJtbPg/dnqsaG4i1gtQPJHg=;
-	b=rGzDxTunTXcSAMILCqJ4WIlDsEJUMjYaztyg0jnPg131oxoOtdc+g9Mz9lV7UWjPp8SjoRuJNrCJFkwuhzOfOx90imDMP/2ha+aDyZ7q9Gg3r59ZedXJiWqEjPwAtXO0QOy4+TFqqlRqwv0Q/euLFyT02c1nbszRRHyDmVqdLdI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=32;SR=0;TI=SMTPD_---0XDcvoox_1793082923;
-Received: from 30.74.144.191(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDcvoox_1793082923 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 14:35:24 +0800
-Message-ID: <d1b55973-306c-4a94-88a4-642581bdfdf3@linux.alibaba.com>
-Date: Tue, 27 Oct 2026 14:35:22 +0800
+	t=1793084275;
+	b=TpBDQnmWBws7MXEqdt+JllrIQVNKgu0KOws1Bn2dgU+Uad3i/+lpKkflA2rC1ZlMje8w3E
+	p3u2MWHOFCzNEiCtwgrf6k+M8eHu1J0OnDczEi210G0SLdBs6CAD8YOAoPuA1ALehsD+ye
+	d8LFArrtSCP1t42PFL0T7z6cjRdVtfM=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a06b27bf9bso1992198b3a.2
+        for <linux-mm@kvack.org>; Mon, 26 Oct 2026 23:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793084274; x=1793689074; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rFHNeMzU6lF6SlEzmc33S/YQH+LNSV+pccbe3Fm4Sbo=;
+        b=OiNBrtpGTvgCMuvUJ2xeN1UdDdTL6No3sLUdsg4UcxG5A2TKGFHQA5/Zl77olFrUuW
+         LGmB2h3NiwiKDQ96Qcd6X1zYC1tarM+RgKhD+K4qk7jFJs2lkR3+W6aYScPeV1E/f16X
+         dJty5IXtlell0CdorSKLRYe36kHMunx7J5EgfrRC2ceWr9Zv/p6/7HGqbOBsaalfeP0F
+         QsjNNtqzSHrVsew26yP2us+H9n5y+49BO+A4HiesU3/hnBIn30+fBUPY+jo4SnTVM940
+         qSy2YdfhE1G9YRAhhVQ+YITYSSwm5qkOpzspqZdG6KYitfGWy7zRP2EMHo/RRAxRzG0l
+         SgFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793084274; x=1793689074;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rFHNeMzU6lF6SlEzmc33S/YQH+LNSV+pccbe3Fm4Sbo=;
+        b=NRDcRxjVqcGskJQGN+BEoCiCVd+GMZFfiQExeaULz4TN1LKrZSuBvPCnZ5oCm8YWH1
+         z+0FaGoEi3YInY6hGD7mCl/0MXFpWHX6naq54QCiQ30yBTeO3U568wnugH3NVsBkV3JK
+         AsauoAVVi84IOX1cpytfgOWDp5LkulXoCw17g46JmAtPBVWzz2T6heYExhoaEg9pM2sF
+         PHUUnYpxX7CNfB9CUE6zwGJl4SkV+h+lbEmyNj3KRPimFIuCITdmHiDBifZFUAYZnHx1
+         mV1XHIIeeUPAkCf85q8nGFLZ+ktdgrt/E/SPjFGIpigcPROTg9foyUvjuy22lOhT4wOu
+         fZcw==
+X-Forwarded-Encrypted: i=1; AKwUvByQn+oZNp/zUwe97A2Pg4A51/KrHeS6fejwdC+VZTRv7mGZsnjXJ0wjfzg+IM8bfQSocgeSIjxl+g==@kvack.org
+X-Gm-Message-State: AFq9FYIti8OhxPbcc38y+e0j+/pCcOpGqerwBRVIw0mOQxi5Rwvcz9kd
+	XNXbAM9vBZj2iBqrTB0+O51PxVxKlTv7xaTZWW34Fk7lShnneBQCxAOP
+X-Gm-Gg: AYBFou27ncPOXGIC7TREze6XXLWYXEIOUpJsBgzD4tZOXRrvQ2dQ8ruwr7tdjJ/yUQB
+	4brNMQoY6WudWgZAUiS6YfrseOKREKT7DZjEMDQDPImvnY0e9rFqTkUC1jZgVvKxfm7UlHEMh2a
+	86E/LmTwjsgANOayWCWi8cf3wCxxDFYXV7YSGPdDlHyRO3mpx5dmcjC9FG+Uho4250jcxAciWyo
+	Zz1bXnQ6iDvY/9DiSVtlHVolV+Of5YZHbflBA4liJ/Z2vwmAocfteeqoSLA7Iz0vFz1fqVa/kaj
+	CAHnWRGrgR5DOmYAtKuUjfw1PkBR4t3AfiAbEfs8W53eUVSRTs+BloAEqI1JZLPVnvGqbjorQLb
+	FUfyJ1OPPXMHk3tKyVcc1PvuSHrYlE+KrmNKon/njAO8hcJMXJshQrJVlfzeV/vsXvGHy7+VGtV
+	m6553Dw2ogP/z4aTyNchKMqcUq1FVru2Zl1w44TqQ5DsZC0QIUH+6FNoFPmhAAHpj6nuLt79KRG
+	6mfQ1iASZNgMXW34ldl2YzLMUb+TqZzP7RlZ747l6tsA1L1Umer2ful+M1FSGEkEcPvsSR29cSe
+	2itP
+X-Received: by 2002:a05:6a20:a110:b0:3de:53c1:b627 with SMTP id adf61e73a8af0-3e7bfa975admr5738301637.43.1793084273864;
+        Mon, 26 Oct 2026 23:57:53 -0700 (PDT)
+Received: from localhost.localdomain ([101.44.96.6])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdac68402a1sm1398700a12.1.2026.10.26.23.57.48
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 26 Oct 2026 23:57:53 -0700 (PDT)
+From: Yilei Zheng <trilith.zheng@gmail.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dan Williams <djbw@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	linux-mm@kvack.org,
+	nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Ira Weiny <iweiny@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Matthew Wilcox <willy@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH 3/4] mm: add shared read-only vmemmap support for FS-DAX
+Date: Tue, 27 Oct 2026 14:57:23 +0800
+Message-Id: <20261027065723.66564-1-trilith.zheng@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260903122128.12264-4-songmuchun@bytedance.com>
+References: <20260903122128.12264-1-songmuchun@bytedance.com> <20260903122128.12264-4-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/16] mm/shmem: preserve data in clean folios when
- splitting fails
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Lukas Czerner <lczerner@redhat.com>,
- Carlos Maiolino <cmaiolino@redhat.com>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Stevens <stevensd@chromium.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- William Kucharski <william.kucharski@oracle.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
- stable@vger.kernel.org
-References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-9-703206d5fa0c@kernel.org>
- <at-GrQNgF3V_tL3w@thinkstation>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <at-GrQNgF3V_tL3w@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A120CC0002
-X-Stat-Signature: rnfq49jqujw76jc9hbmyq5df15qgygud
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 3427740002
+X-Stat-Signature: 94kc5359sx3hmd88cfemqjk4n7q8kg48
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_INVALID,DKIM_SIGNED,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793082928-476800
-X-HE-Meta: U2FsdGVkX18JCDppiuU7A/Aw5mMCts70BIqTJ+VsdKgZ9KvT5Ei6k0OqiyoQ01CxwxgKVnzCs8sA0t1LYCOGBYWQEihOucZyV/LpvqYVPUN9sni5DCPNVKYlmRYOg/6GxriC2nvT9HHFHGTgk7zvC+ZTBvGGSMiFE60D3xtiPX+SWhbDKlblQdE0kDhA+ygRAxDir48c8nhxgiTsF2QHL2iLe6a9GUucbKMuRHsw8+D8zqBujMcgJmdurWdqPz6sLFoc628GrVXOcg2lXwN3VB1EOT4i/kgPyjWuhwph5FDUUqRQBp7QokMjAL2UMCyVPAUTN9uWbTL1TxfVzF/As19GdrvOKAZ6nLlssa60qpfQSihG/9WcCNeFjpwfejQ++NygzN2TXzirvhJDK+eZtIrbSAqYjtgFuqYjuuk6FeX32k257cR8qKNxd6Ugs/69LE0FUq8claun3LlOADjA4ZywvIihwyqRiRqRtOL6qgQ7vKSfcXh8PzDt+sBsiCH6iPl9rYXKrviia5Agz6dOOv7uNEf35z12NWOUPQP6eB0eV6qmE3960HNIytmH0z8BJIbBuj9toHawwwZbYAPS45KbelwGcHVBwQOIxr7LYriWrylSY9C8E+OQvFI0UpiIRYxb1alxO1EnIaKg63PBBszDrMq++fukOsCRZXqRk5pymp6g04xT8t3LGfUqNS4qeC+2tSjhfUegcq2fNF/Ox9OA5gcdW0IMWeXadSrYpPOyXyw1xrrW1/ZPy0BealuZ60QTgbAwKag7WNRUyxt1MlTC8+rWo9ZFri7vAZ1gq4lGFFAglHe6VHPtqODjd8ioz0I1AP0nVSs7CD6y8ViLvgV9zGtY31Wr3hWPPvT5qSRHxkxBYXMQ93qfqJUWAAEdF0d+szWBmDyxAf/TYwXdCoCrzGgwzVeFcR+m6fLXogLyG5BL6ooIvbOqLLtinY7xpFsAEN3L3tY6KCBeUKO
- csqnbYOA
- gf0ugaDGj5Y3n2Exu683Coqgz+NmRcjnuCIAyieyL56aIIa2bXXgr1lD6rT6T1seT3vZxAA10ibWYMk8nX4zkjwpK/m+rJWcotdKE1l2Ki1CELshTcUeROq6WFLRXhEqSFNNSnJGjqtjgno4ooHlttCoL/gioOATG4NU755fvnJ3lw6l429FuStL+CBA9ySXeUguFFS8paHmAWMeY4E6fRgPUifxGC5ueNJo/5ZaGqhBTdhCF5DpsqBbEamWTDgRj+RZvu0ktlbE4BBMRGm5PwUjsxcC84kWnQEv21d0L+pFmV84B/QJ8ui8SR0yHTk1DpyeejrZ0yqWCc1WEZtdEVthd3EBpbOLLEkuhXYOJirEJxTz4VRjl1BWmoYaNEwK4dx5XooKOR4BCDXE6Br6t1r6L3jaMLqZcG1pEHTYaOFG2mMQ=
+X-HE-Tag: 1793084275-723132
+X-HE-Meta: U2FsdGVkX19p10CHAiqZBgG7t300iUIqLvJZa/FK/gNidA/nTP1rFeq3uMDbQhznY/mKZPfYd2Dw5xMKcIrX8sCcLyBWwZ+Zlf+WR8FEaLraIim7Z5XlLA9O/OwHDTdqbDWf17NdUL9FHuWVFJEqJ9soaLthG/PlQqiwiXegNtjuVU887FPzkMYE/UwDhKTPQF91mUJ8naQA9oeToBP5ABoF4J9itnEosKEvTtRpeqHu8of530DYA6ApQZthoY49an279a0PbgYDEalc6nJdU0L7xkXqAAJWsXwtUrOjfYKYo6riAamZcGx5Uy/wPrwY//bLDXQ7el7Egx+V8j5ixD9TvLEWGba4vgHX6htHA6Cd2VQQYjP2Z4ushaqjJPGv1hl3LrWi+hznMECjeDmMNwH7DJmnPMYjFHFayJj8t0g4RgeBfdcVApmluwSKc9Z7uljWE4+4rMUF/yERG52+DBx7ShzmB4hOXgJEeYfNPTa1cUgEdCZPQ67IKA/NsXcnvscWowYyvT/21dSusdpDx5Si1ANAmNZUghPbx5bcbjDhPpqruiabi/+5uTghjjorgbiz7zT2JVWPctG9MEZhx5agCoI51KL/pe55Bym/ZsFNWXOwNhMr0QQxKPVoczZz6Tenh5mok8BXX0fNULNQBUbJ2FgAFay29HZALPDBDfH1abRjSLJs/KmPDWjzZ/RBjzb2xzVphvbJH0Ky6UQNc39Va5cb7aO0AHrBA/GzuTYB4no3BL+ytW2RRw6VEqLq7R2EPCA7Feo2umT0HLIYjUWqwQ2rAgzrytt5Imq/tTTO0b+dyJCoohMauyrmJXP76gDX45VmZMr6RdbyPT51+gtGWS8ylSMSnRq0evW7sc/tTLNyHx19RB1FB0l+J30R+2i7UuxEKVs+pPjIHGb8TZDVUg+ABGR5TgtKj6AF2aGBdeU8lYMhfZl5VM/LIQarVYfSr4sNk2XfhBfieS/
+ V/3hZqLF
+ ElwL/QvN/eq21fdhMD9KMwBNyAB+K9zf6QAFAZiRZoqBQKywrmf9htasj0GBcJbkoPxFMfbpjsI8v5wIdzNtz7ZcUzOD2uA7LmGTQeG+gemTKKz2Gw/rOAZMT3fTRDdNdINcVLH2zjiaLEUiGnbji/sGsk+x5a8+z72P+MdCD7Ep5Q6DT4emwXuVv4cS3jXHiqVNaplDkdBmAoi4k7rT/cVyvRGjO27w8xAXporyhebrjng0SDG6kaRK5DXCEX38XffE5OeFaUCX74h+VJJk78j0DkurTBAebfMir65sOVULOopDl8439fZWKWFEt+WVMyZXjkKzNbSEUmgUmPriKTAFLO87L+8Pywe3ZRdCLmIQV43gnkFB7s1yOqJsOBJcZsQ9wf8gufKIvMVuHtDXb/+UF3Lc7OozLaicgrzNSxNAy5LNck5VjkyzsIvWN0onUb3J5WlSO2KjReLU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,75 +144,195 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Muchun,
+
+I have been testing this series for microVMs that mount a read-only
+rootfs over virtio-pmem with FS-DAX. In this setup, most file data is
+accessed through read/write rather than mmap, so most PFNs never need
+private writable metadata. This optimization is very useful for
+reducing guest memory overhead and running more VMs on a host.
+
+While testing, I ran into two issues, both in patch 3, including a
+crash when initializing the shared template page during probe, and the
+128 MiB alignment check preventing our 2 MiB-aligned rootfs images from
+using the optimization, even though the check can be relaxed without
+changing the registration or teardown paths. I have included a patch
+for both at the end of this email.
 
 
-On 10/27/26 1:12 AM, Kiryl Shutsemau wrote:
-> On Mon, Oct 26, 2026 at 10:40:42AM +0100, David Hildenbrand (Arm) wrote:
->> From: Chris Mason <mason@kernel.org>
->>
->> A shared writable mapping can have dirty PTEs while its shmem folio is
->> still clean. A read fault can install a writable PTE, and a later store
->> sets the PTE's dirty bit without marking the folio dirty.
->>
->> After shmem_undo_range() has handled the boundary folios, a concurrent
->> read fault into a hole below the new EOF can allocate a large folio.
->> For example, on a tmpfs mount with huge=always, the fault's offset must
->> be within the file, but the allocated folio can extend beyond i_size.
->> The final scan then finds this folio and calls
->> truncate_inode_partial_folio() without marking it dirty.
-> 
-> This is hard to follow. I asked LLM for a diagram. I think it would be
-> helpful for the commit message:
-> 
-> CPU0: ftruncate(fd, 3M)                CPU1: MAP_SHARED, tmpfs huge=always
-> ─────────────────────────────────────  ──────────────────────────────────
-> i_size = 3M
-> shmem_undo_range(3M, -1)
->    first pass: hole, nothing to do
->    boundary folio at 3M: hole, none
->                                         read fault at 2M+x (below EOF)
->                                           PMD folio [2M,4M), crosses EOF
->                                           writable PTE, folio clean
->                                         store to 2M+x
->                                           PTE dirty, folio still clean
->                                         vmsplice(2M+x)
->                                           extra folio reference
->    whole_folios: finds [2M,4M) folio
->    truncate_inode_partial_folio()
->      zero [3M,4M)
->      folio_split()
->        unmap_folio(): extra ref
->          → -EAGAIN, PTE dirty bit
->            never reaches the folio
->      folio clean
->        → truncate_inode_folio(whole)
->          [2M,3M) dropped
->                                         read 2M+x → refault → zeroes
+First, regarding the shared template initialization in
+memmap_init_zone_device():
 
-Thanks. The diagram is really helpful.
+> @@ -1133,6 +1134,15 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  	if (!nr_pages)
+>  		return;
+>  
+> +	if (pgmap_vmemmap_optimizable(pgmap)) {
+> +		struct page *page = page_address(pgmap->vmemmap_shared_page);
+> +
+> +		for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
+> +			__init_zone_device_page(page + i, start_pfn + i,
+> +						ZONE_DEVICE, nid, pgmap);
+> +		goto pageblock_init;
+> +	}
 
->> Splitting normally collects the PTE dirty bits when unmapping the
->> folio. An extra reference, for example from vmsplice(), can make it
->> fail before that step. The fallback unmapping on split failure excludes
->> shmem, so the helper still sees a clean folio and drops it, losing data
->> outside the range.
->>
->> Mark large folios dirty before partial truncation in the final scan,
->> as the boundary handling already does. Exclude failed-fallocate
->> rollback, which must discard the folios it added.
->>
->> Fix generated by an LLM and sent by Chris Mason in private.
->>
->> Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Chris Mason <mason@kernel.org>
->> [ david: simplify descriptions, adjust comments ]
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> The fix itself looks reasonable:
-> 
-> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+pgmap->vmemmap_shared_page is allocated from normal kernel memory
+(direct map). It is just a template buffer, not a real struct page
+inside the vmemmap space, so passing it to __init_zone_device_page()
+causes page_to_pfn(page) to compute an invalid, out-of-bounds PFN.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+I first hit this when backporting the series to a 6.6.117 guest kernel,
+where set_pageblock_migratetype() uses that invalid PFN and crashes
+during device probe.
+
+On your base commit (next-20260902), a normal boot does not crash
+because pageblock init was moved to the end of the function. However,
+set_page_count() still calls page_to_pfn(page) inside the page_ref_set
+tracepoint. Booting with CONFIG_DEBUG_PAGE_REF=y and
+trace_event=page_ref:page_ref_set triggers the same NULL pointer
+dereference during probe:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  Call Trace:
+   trace_event_raw_event_page_ref_set+0x4e/0xa0
+   __init_zone_device_page+0x98/0xd0
+   memmap_init_zone_device+0x1c3/0x2e0
+
+To fix this, I added init_fsdax_page_template() to initialize the
+template fields (ZONE_DEVICE links, Reserved flag, pgmap, and refcount/
+mapcount via atomic_set()) directly without calling page_to_pfn(). It
+also preserves the WANT_PAGE_VIRTUAL handling from __init_single_page(),
+since patch 1 enables this optimization on LoongArch where KFENCE
+selects WANT_PAGE_VIRTUAL. I only have x86-64 to test on, so please let
+me know if that part looks right to you.
+
+
+Second, regarding the alignment check in
+pgmap_vmemmap_shared_page_alloc():
+
+> The initial implementation is deliberately limited to a single
+> memory-block-aligned range. That is not a fundamental requirement, but keeps
+> the registration and teardown paths simple; support for multiple ranges or
+> less strict alignment can be added later.
+...
+> +	if (pgmap->nr_range != 1 ||
+> +	    !IS_ALIGNED(range->start | range_len(range), MIN_MEMORY_BLOCK_SIZE))
+> +		return 0;
+
+After fixing the crash above, the optimization still did not take
+effect for my 130 MiB test rootfs image. Because MIN_MEMORY_BLOCK_SIZE
+is 128 MiB on x86-64, the 130 MiB device failed this check and fell
+back to allocating all 520 vmemmap pages.
+
+In our microVM setup, rootfs images are sized to fit the filesystem and
+aligned to 2 MiB rather than 128 MiB. In fact, 2 MiB (SUBSECTION_SIZE)
+is already the native alignment for FS-DAX (via memremap_compat_align())
+and for ZONE_DEVICE vmemmap population and teardown. To keep those paths
+simple, we only need to make sure a shared vmemmap page never crosses a
+pgmap boundary, which 2 MiB alignment already guarantees on 4K-page
+kernels.
+
+So I relaxed the check from MIN_MEMORY_BLOCK_SIZE to SUBSECTION_SIZE.
+I also added an alignment check on (PAGE_SIZE / sizeof(struct page))
+PFNs, so the same boundary guarantee holds on large page kernels,
+where one vmemmap page covers more than 2 MiB of device memory (such
+as 16K/64K pages on LoongArch).
+
+
+With both changes applied on next-20260902 (QEMU x86-64), probing with
+CONFIG_DEBUG_PAGE_REF=y and trace_event=page_ref:page_ref_set works
+cleanly. The 130 MiB test device now uses one shared vmemmap backing
+page instead of 520 private pages, and DAX faults materialize private
+metadata on demand as expected. Mounting two 2 MiB-aligned virtio-pmem
+devices side by side also works properly, and unbinding/rebinding either
+device does not affect the other.
+
+If these changes look good to you, could you fold them into patch 3 for
+v2? (Note that the patch is against v1 and still uses the
+PGMAP_VMEMMAP_OPTIMIZATION flag.)
+
+I also noticed that next-20261023 has refactored
+memmap_init_zone_device() to use zone_device_page_init_from_template().
+The mm/mm_init.c change will need to be adapted when rebasing the
+series, while the mm/memremap.c change should remain applicable. I am
+happy to help retest v2.
+
+Signed-off-by: Yilei Zheng <trilith.zheng@gmail.com>
+---
+ mm/memremap.c |   10 +++++++++-
+ mm/mm_init.c  |   29 +++++++++++++++++++++++++++--
+ 2 files changed, 36 insertions(+), 3 deletions(-)
+
+diff --git a/mm/memremap.c b/mm/memremap.c
+index a53d09b..34d8d89 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -93,8 +93,16 @@ static int pgmap_vmemmap_shared_page_alloc(struct dev_pagemap *pgmap, int nid)
+ 	    !(pgmap->flags & PGMAP_VMEMMAP_OPTIMIZATION))
+ 		return 0;
+ 
++	/*
++	 * Subsections can be populated and removed independently, but a
++	 * shared vmemmap page must never span across different pgmaps
++	 * (which can exceed a subsection on large-page kernels). Check
++	 * both boundaries instead of requiring a full memory block.
++	 */
+ 	if (pgmap->nr_range != 1 ||
+-	    !IS_ALIGNED(range->start | range_len(range), MIN_MEMORY_BLOCK_SIZE))
++	    !IS_ALIGNED(range->start | range_len(range), SUBSECTION_SIZE) ||
++	    !IS_ALIGNED(PHYS_PFN(range->start | range_len(range)),
++			PAGE_SIZE / sizeof(struct page)))
+ 		return 0;
+ 
+ 	pgmap->vmemmap_shared_page = alloc_pages_node(nid, GFP_KERNEL, 0);
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 7dd03b8..1c3e269 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1030,6 +1030,31 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+ 	}
+ }
+ 
++/*
++ * Initialize struct page slots in the shared backing page. Because this
++ * page is a direct-map template buffer rather than a real vmemmap entry,
++ * set_page_count() must not be used here as its tracepoint calls
++ * page_to_pfn(). Keep the initialized state in sync with
++ * __init_single_page() and __init_zone_device_page().
++ */
++static void __ref init_fsdax_page_template(struct page *page,
++					   unsigned long pfn, int nid,
++					   struct dev_pagemap *pgmap)
++{
++	mm_zero_struct_page(page);
++	set_page_links(page, ZONE_DEVICE, nid, pfn);
++#ifdef WANT_PAGE_VIRTUAL
++	if (!is_highmem_idx(ZONE_DEVICE))
++		set_page_address(page, __va(pfn << PAGE_SHIFT));
++#endif
++	atomic_set(&page->_refcount, 0);
++	atomic_set(&page->_mapcount, -1);
++	page_cpupid_reset_last(page);
++	page_kasan_tag_reset(page);
++	__SetPageReserved(page);
++	page_folio(page)->pgmap = pgmap;
++}
++
+ static void zone_device_page_init_from_template(struct page *page,
+ 		unsigned long pfn, struct page *template)
+ {
+@@ -1138,7 +1163,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+ 		struct page *page = page_address(pgmap->vmemmap_shared_page);
+ 
+ 		for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
+-			__init_zone_device_page(page + i, start_pfn + i,
+-						ZONE_DEVICE, nid, pgmap);
++			init_fsdax_page_template(page + i, start_pfn + i,
++						 nid, pgmap);
+ 		goto pageblock_init;
+ 	}
+-- 
+2.39.5
 
