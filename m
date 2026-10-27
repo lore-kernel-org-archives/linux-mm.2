@@ -1,148 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBEE1606A327
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 08:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8706606A330
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 08:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tFL7sbJy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EBNUrHgp
 Received: by kanga.kvack.org (Postfix)
-	id E7DC16B0638; Tue, 27 Oct 2026 04:51:44 -0400 (EDT)
+	id D48B96B05C5; Tue, 27 Oct 2026 04:56:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E50336B0639; Tue, 27 Oct 2026 04:51:44 -0400 (EDT)
+	id CF8EF6B05C6; Tue, 27 Oct 2026 04:56:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D66EC6B063A; Tue, 27 Oct 2026 04:51:44 -0400 (EDT)
+	id C0F816B05C7; Tue, 27 Oct 2026 04:56:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B525F6B0638
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:51:44 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4434680927
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:51:44 +0000 (UTC)
-X-FDA: 85367788128.22.57A4BD3
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 476ECA0008
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:51:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tFL7sbJy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793091102;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 91B496B05C5
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 04:56:18 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 213DE40933
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:56:18 +0000 (UTC)
+X-FDA: 85367799636.11.6FBC5B3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7772A1C0005
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:56:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBNUrHgp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793091376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r58oMkE78kPQyjCod0p5GrWGFsnrgrLSQzJIPre6p7E=;
-	b=sVL6ktNss01bby6O7LJKmV0V/bZLCfPJXQNsZu6VoaZZUfZxYvFrYDtx8oAR+NEaD7x8cN
-	heujwIjWqo4JHajuigWmC0S+2Zxs5RzdKZKn0ywAx3mrqwAfioeu+Q+jiC95BJ/TIVijwF
-	vbNmphIO+i7k9rn83d0YGIu0bE0joSE=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tFL7sbJy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793091102;
-	b=dgcwa6CoBrw8VdfApV/EVk81bPjiJvHn+aI+1IVx9eK1+gNF4RxRdBAnoiHmbLKaYOj53U
-	SlKjJeKYlwxX0aLDP/tHjTu4vexLaxBGMeX3PxmtJsAcLU2O3he1EQBfSG0HDThoEEWZxm
-	lyq3ewdNqVZEdWaZQfiR9j8s05D649c=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a2072b9832so4046765e9.1
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 01:51:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793091101; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oax07g9oDBev5tqFPOrQe24IjMi4odXvIoqFqA9uUEeIKf+41JbVOI6MDG1FjN9W5g
-         6CatJ4dKhChNdEhM7GuTg6NdZ82xLN4J4TcP1PbZvwH5TOwmyxgR8ymUxii901flbx8G
-         R4YZ1EplJmK/KzDitcnn9y/y4IZuIFPuMsujSHYXzz7Bj5Y582reU/FYkK9L8LZ85iuF
-         y75YB8EQeJN0UyO12zxT5W//Y55BEqccmJzhUVb2H8gh3gC7wPos6+0dzAIYMPUJm8PG
-         GSbl5PLGnnFnhY/fEF8v1imSRyJtG683lsH5tj0gV6uLVVYT4r3BS6o7xFUcwkzxI/zN
-         QuMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=r58oMkE78kPQyjCod0p5GrWGFsnrgrLSQzJIPre6p7E=;
-        fh=VZJ5y9QjX91QTEo8VdkhSp8m8dpnJZ9PJSgixuS2zUc=;
-        b=cnb6Zq8Gkgx4UjyXJqiAeJh6gF0pH7wClab8O0FPJWLWnAPtmsGZ7BPjX/L8oj49A1
-         fflcDntD73JvhaG+YPmar2jyKlp7098zI9Ui3RsBvS26yYOvnTFHP5QJDPlNSJrCz12s
-         YTkkh+U+1ECoDNJIepTzYfKf8AFahnTE5Zn43G58HK+AcZ3zeTS1tSB9k0n0Hwd+CsF3
-         8KufV7VPvgqlF0Mu9fGnhIGX6vwrz+syVdBKMbLaxZ6ztxd4sJYVpWeIIJxUsF607lnn
-         Ux/izEokAgPeTxIQ/+HUPRkPLjWsOi/RY5eJqyjxCRFCFpDh312Q17pQUkI6JOf6q5Ui
-         SP0g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793091101; x=1793695901; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=r58oMkE78kPQyjCod0p5GrWGFsnrgrLSQzJIPre6p7E=;
-        b=tFL7sbJynzFeLrZJ/Olfy3y3MA8L9tiD3mN3AqHQqC0Kx/k2CuM++M8zt4Fkt+3ObN
-         lh+WWGnFnijeOfp20yw6tu+tM6jcr9pk+my2upFMK2ZTMAsr6Ag696zsulvM756KEdZT
-         idW63sb44dM7fvD9c2pxjgoTRqylj1z2/hrdOZGqRd1785we5gLksYD6DIY1jqFU86Sc
-         a+Esv2nw/DbuQPDGAQ3Je6xQVoaYNiVyp1xWSzAOPb0LoFBecFIpjvybnl1SnByF73Xz
-         3e1xJfdGvKHeZ7n6HX4aCy7fXfZBkV97ZAG1OKUpC9IMC3sp6AnObdSm6WmMLb+Xa0nj
-         5cNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793091101; x=1793695901;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=r58oMkE78kPQyjCod0p5GrWGFsnrgrLSQzJIPre6p7E=;
-        b=oF5KARTU5Hq6GpyD155ubZry8EQ7GaSXaZt8u0Y1KlORa3wukAckhyXf4rDBiacCyY
-         FzwbUadOctM5JS2MEyyp2/UDR4mm/3VguC58Qs8buzmWKaX4+voT0i9syFi+X8NJlDbB
-         Z3vtm8Rkz876zNPpMMvAcTUZvsiPTxnPz1vWuKw3GGcGtAmCYK1/18fhhNA+6bXglP8V
-         8O8iPZ3BWQuMt+xjnm/8B9hyaULIFqDX7holFhtrYfTXvec4N6Jx8PozXUR1P8Zd55aE
-         SN1ApLN3tg5rm/n02Tq59RUJymUX43fr9CHCdueoA5Wwpd6zmsW2NcH3fy/f59dfYCrN
-         cZxQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxOxbbBkvjHEddvjxpycnHbbV7vYnj6E8S9GmSK7bj9eEr0VauG3sri5t5AVfLsHs/RdSgXg15Izw==@kvack.org
-X-Gm-Message-State: AFq9FYL3g6LmPtdyk+1+nQ9KTb/0Nv1sVazyzT4wn7O42LTQALhXKr54
-	eSKHTuXMlgACJDgDWfyf9Ak4gTxq192gT8UknWq6Ztznso9kvrC2O4sxLoqRNTDIHRf0qoi038K
-	fWmD9On87xhYGkIYZLzo5Yf43pjCLXjw=
-X-Gm-Gg: AYBFou3XQsFhbdIBFjRdTYXY+N8xj+WrdIP9KH14grh/hjMzlO+dm/Tc+hkrPxlmu1P
-	TISM1BsBLnCsFlv2uE6RHhUUil/vFukCC1nlZSTFS1INU8ucItTCN2vxmQp9XlNJaOys9NDx5/3
-	RdbQzcmfuFsgtB4ilb4lnbc3YGBw8VRlY7B8s1I14VCrhQ3ueXg2mnFfq4KDOVkZs4A22zYOXHY
-	FbrSkR+aFr/XhznK3HZZGcQSwJANDyYCpjuoeOSoq5b2c3DGVDEHp5kf25SejUNRO1zJHwF5w2m
-	aoYcSqonOP6EMNnd4fjXIUdxCyYyfznefTDexXMv3GgMp/CIrUjzeIy+2YHLa7D2BEN1MwT14QG
-	pvigrBkJFON7amYNQz28xGqmJNotlsoBE3FzcvnWdwQTjq+5ycXqVro0lvyJ2VMOK8Oo0CjM=
-X-Received: by 2002:a05:600c:4e01:b0:4a1:efbe:529c with SMTP id
- 5b1f17b1804b1-4a7c16c4554mr41674425e9.12.1793091100366; Tue, 27 Oct 2026
- 01:51:40 -0700 (PDT)
+	bh=LLjeyafLWq906e/KlV7udPCtdijPfLEIi8SSit6QWfU=;
+	b=rDImWxpuwo+IdYJzKD3mnxizlKytiJjQtrBaBLLdvU20c5Jl3rUnbPxgdSvtJDxJ7wSFSm
+	7UykiKJf5inW7PY6hgYj5f5BPLZsThqLpt3dNhVVyvKZK7uVoR7l/Iud4WYcjPHtBiTxvt
+	dIskIztJl0kcCjjYftghJoEIuRSK3tQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBNUrHgp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793091376;
+	b=WCblGNLEi1c9s2L3GsSRBDnPrWbzbmB1MeZ+vByoovjCy9Q88qq8+m4zqu6c2nz5ckajzZ
+	I0pcgtKoEWogA8Vomxvsy54XDRvnU3WER44dpefpYpaKqHQJssZboGqUgWIbmlAr6ZBVRp
+	1YrOnqnMfGwaCMhbBgRKJMOVH+eFj4U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 54FED405EF;
+	Tue, 27 Oct 2026 08:56:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEAE1F01828;
+	Tue, 27 Oct 2026 08:56:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793091375;
+	bh=LLjeyafLWq906e/KlV7udPCtdijPfLEIi8SSit6QWfU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EBNUrHgpyjuV+uDWfTfjiZjrVUSiaANjjrfsc3nkFZWTw82J+OqHpWvLIciRV9TNx
+	 2ZYRqlKawGk39ZaulprNCM2tNwh2zki3TsMiowIH13vcslKJA7833dN8riI4s3kDAM
+	 Q3qfXOkNFX5VxnUmiQtmg5QWQCqFP+dYzLxz19uSTgl5bash6cqoBqqOskiaRk2/C6
+	 RL8HDc2rNHtv0XIn1ejrOpB1M3CI9bhEBJhZRP1bllfI+FRzWtybU61jzIzwI0z0Od
+	 /meOw5AGq2fgtE0iXpBuP7zSuxszxjxhbNpF90J6AdO/j7okIvx+jpqUI1F2fZM2tZ
+	 5wOIAvJFgckew==
+Date: Tue, 27 Oct 2026 08:55:58 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 44/46] mm/cma: don't release CMA pages still in use
+Message-ID: <auBmRQDzFPea5FeS@gremlin>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-44-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261022220203.91911-1-baohua@kernel.org> <20261022220203.91911-2-baohua@kernel.org>
-In-Reply-To: <20261022220203.91911-2-baohua@kernel.org>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Tue, 27 Oct 2026 16:51:28 +0800
-X-Gm-Features: AclHuK_XGFItBjUoPfKvzZXGlr4oYRBiB3ixEErCXGNTkn-Nl7xjhLO4lyP7yXY
-Message-ID: <CAN_Opa-C=i047acYe6eMau_97-5GEaa5qii_fioLeWQYpsRRyA@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 01/14] mm/mglru: report evictable sizes per type
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, hui.zhu@linux.dev, 
-	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, david@kernel.org, 
-	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@kernel.org, qi.zheng@linux.dev, ryncsn@gmail.com, 
-	shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com, 
-	zhuhui@kylinos.cn, baoquan.he@linux.dev, liuxiang.277@bytedance.com, 
-	wangzicheng@honor.com, lianux.mm@gmail.com, kasong@tencent.com, 
-	liam@infradead.org, surenb@google.com, mhocko@suse.com, rppt@kernel.org, 
-	zhangbo56@xiaomi.com, lyugaofei@xiaomi.com, ridong.chen@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 476ECA0008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-44-6f74bec9a5bb@kernel.org>
+X-Rspamd-Queue-Id: 7772A1C0005
+X-Stat-Signature: ic4kudrybfdeaikw11fkb4qrcyy84ca6
+X-Spam-Status: No, score=-16.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: yuicukk83jq95ej6783sjjgzp4kd8gr6
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793091102-79593
-X-HE-Meta: U2FsdGVkX180zruDZXlFXLTMWglUnud43VzyrtesLn6E2qwu4gvwAHCzjBNw0uhQWDqBdoHo3J76lH+zNm+kZG5XFKaW6UfCtMgJ11OuhXauuH0UeJ8TaCLCbvFpWXCg0wNHiBF+KSVpSdaKnwBuVfoCAKE0WJEa5EPr7H+B4cdq0SU4l9F/2Fi4Df8PSwUBtaROOgrbnowt1Vin/fyFVO4nmEGzj8SfV5Eah/x67lnsixd1LU3DyKXsQHb7+DuhtoGweeR1eijU8tqyS5vnm/7zwOqJyg8vF3U57gLEascJ0l0a18fkN45v3wFyTm/wEQQ9PGl9eXcuHO/MCdt34+Nr8+6ggN5uL78lRCy6FjFE+YYOaaCThBjVxax4wcjSyoxxewGczCqCbHj/zFi82mLIXx68qgZwsKaPxHdDPoXQfXUUzJG9sw2yHFhm0791ZtCEwr5vmYGCezFRbRx/IJlenx6BaedaLestYmLdBGpkfPhtt+0NFqI/pO6XujBOU/Nlo8AS6m2GoWGZOJjK8pP/OQtr7cfe9p+/48oLHY0Qn8vYC7wJttjDSyCBZJSb9BV+FloHBE+71QVnMuv6gtscbe1cCpKrjRhXqaX3Xc6Psujq97Or81ZyeJwi8IdMvmJRqmnM+l7YKMwWVMVtfa9noiS9heBeycsHSzstyjH4RSscyZ4w0szzPgCfEGeWLWGTmwyqARfrdAP+BD8RksLfa1hvM7+suSO1+bBHvzL2cqDrmCI6wwgutsx8mqlPcxwrfqU7LTneBNQm5nhkX3wL8TxstEunPD93NFzvyvob0VP/X2yEL41C0Xoxzr1Inpqy9gzUlfcdJwtyqcoQv1yZlrQ91yDAkdysdmZDLjs5LJV6Yv+zP5t2MIn4zF+g61tdZ3/jn5C0uY+U0uWD36gYUNK+dgwPwh5OST/1DrWGQmecEzwBgEa8Z6V1ONilc6RrvKj3kCKGyhTJS0T
- 6EMXBgLr
- THfoEwtewcVw06Ffu8stOvA/8BYu1CbLDiotRIBnnwWVuyiLWLjHh0L1GUMXCV8TfSFD66qw6NGRnHnUAFc0poGGg+HBYfxHzbJhkyDXUXJ2y2N9l6c+Oc5H/Ti4poYielFIpl5kAOQYEQUfEKJY+0k1cZVr4VcGTOKWVC3Kb97QIzILB7oUJujQ43S8f/vDwDZ20hYxHJR25INWmc6gUhtMnFAy4nFFPiy2MhxxWrPBp/+1203S/GPNqAYU2Swzy/aCeC4C/9Vkccqr75upHIWdPX83tLq0wV1YK1QzcBqBNRJTAz0cbjSFzOwnFhp6ogSs4ECDKR8igABKCdNNUAv+JvQi1Rfa4xqEvcPtKX0S/0BCwLwZMhrAYnH8w4n7I+oadhVGT6KQmF+K693QbLXFyEQM+1Ve+LVyV2MIiYUIpPHGFTWIc3If+Gxa41gPmSy/tXMddbMCKzymERPt0DoEOYehE3pAQ73rxT9Vo/E1swIV6YyVLk1XkMUR0YYWubIzTIloLqWxL+xdCOij9Qk88G3N1l00Yvi0E7AcZriRq3A8=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793091376-376421
+X-HE-Meta: U2FsdGVkX1+5obdfnCKvbhI5Ln7jurXu01sHPjP1Xrf7yBI1N+TCMquSY7fBmT0DcTyrDzcKD+1DNOmnLw+GVAlBdG81hEpmv6wdcjdIJFT1wpbBd5VXjQM78FUt4MxUas9I2aqjyY4o0gTf4QW1HYaEzWC64rO8yp1Or5uRFgjoEXJc/UDwmAmCrQMqikroy4qxg4cKFKdz0UN1QOzG4ONVkhvfVOEeQP4S1PnQ2STjKHZmulCMIBeLcMH7+x+ncQQvVwvKHXwen2nUhiOurNguIHtGOVMjEYBotfnhGDBoOwXOV4UrRlVCyRRYZvUCpHoo5XNMZZnu0UhQxUops16gpO3AfnVB7NwRvjhjU1UJlNzevzx9tAI2oY223vmkdfU6JguNtVXzquWXHd1kYx5Jk+028ElVPtVIsL8stF8AmXUSxZyrF8Y1S+Nq1oQbO4V+YQ0t04ekPSt0rxaWqrIGk078RGPEEFB5KZbM4NNRUb4S8Gj0Xnl06v3pHeLIStYUOO4IkrRywiVzb3UQ0e9a77uXUVg+zm2bijs3UrgOkCAYDFB2+jc8c4wiHoE2fZJjBhdNG7+PsRwWrDBS8j/0EvGSVI4h7MIhTtOtjdPLWC1lO5re1e7cuvoibHmZfOKbqXQ+knA5FncEaHbuvlv4elqaYvZxJyIhbiThWsnZH51bT1V+2FLCT7m5LOd9D6C/l37XFS9xVMdpOBtEV9uwW9pQwTWd6bWv+9EaUC8qNVVp9eg1CVtM9su0JUjkwv1T+Zq2O86GgsU5nFjp86I1IQn07CtbRMyMUVvr1tmkW+E7hjfpajuufA6BSzGMngYYLGhPhitlgcSNPfPLm+eTSH5AUWhjSxVrWpnBCLZTEc85Ma4G6l3Ex/CrWbt1KHr1vufh6OmHckFTTmINzeC4SLsTytFmP1Y+Ks01LrPy464oa05GauJbXutocX0kOzhjP8lo73pVcCbq3ma
+ EcuE6YBQ
+ 9B9IlGEqzp+cQSjvfZvYbRtVEJBbdRILaq07mrsZObMU7kBkZKN8bLqFRAS9fBFn3yWg1PUhdlJw9Uh3aozBrXFqUNY0POPhxOja3LQqePGuRbtkhAEUp9PUd1imP0tSC9sZFLb6M4si8CF+prvvTDuGl9CcDL7P7UmfANws+V22eaVMVCwF9jGTNOqZlKd14vziRNOX14+0fdIW5z4K3zg8iS5nMjg3J2AIfw/DVJExAjGA/hq6HEi8LvMJU+QJ0syg4V57hLuzkBTWrHuf7b/WovywugtGuqf3tdRMecI4I+8xE3FBDTk6zxRN7EmEDTrzgEdZaSIhmJrUvG9knqDps+9E7YFXxv/RZT5Q/BAaChCZ3Ub/tmp4/cGXaZmoe5ueJWfW5gskS/uu1I8KOgHNaKndyR7Clqiwk0LTcF0AS4m5ooH1H67t3QPu/u5Wcld70pt6yhM6YhQR5817M1gRVlm73NB+tKylTwfwf7HX42R1MKaNryXvF3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,108 +119,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 23, 2026 at 6:02=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
-org> wrote:
+On Tue, Oct 27, 2026 at 12:18:04AM +0100, David Hildenbrand (Arm) wrote:
+> From: Rik van Riel <riel@surriel.com>
 >
-> From: Kairui Song <kasong@tencent.com>
+> When a driver calls dma_free_contiguous() before quiescing DMA, the
+> page might still have a reference from the device.
+> put_page_testzero() there returns false, WARN fires, but the code proceeds
+> to free_contig_frozen_range() putting a live page onto buddy and clearing
+> the bitmap. A subsequent allocation can hand the same PFN to a new
+> owner while the original holder still references it.
 >
-> Change lruvec_evictable_size() to return the number of evictable
-> anonymous and file pages separately instead of a single total, so
-> that callers can weigh the two types independently.
+> A concurrent put_page() that drops the last reference between the
+> testzero loop and free_contig_frozen_range() can double-queue the page
+> via page->lru, corrupting buddy lists.
 >
-> Update lruvec_is_sizable() and get_nr_to_scan() accordingly; the
-> summed totals are unchanged, so there is no functional change.
+> Avoid the corruption by not freeing a CMA region if any of the
+> pages inside are still in use.
 >
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Make it explicit in the warning that the driver allowed a leak.
+>
+> While at it, use page_ref_freeze() to make the semantics clearer and
+> switch to pr_warn_ratelimited().
+>
+> Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rik van Riel <riel@surriel.com>
+> Link: https://patch.msgid.link/20260811132045.5f114772@fangorn
+> [ david: use page_ref_freeze() + pr_warn_ratelimited() ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
->  mm/vmscan.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
+>  mm/cma.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 >
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index fc823fe3bd1f..3be0d6c04a82 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4332,32 +4332,35 @@ static void set_initial_priority(struct pglist_da=
-ta *pgdat, struct scan_control
->         sc->priority =3D clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
->  }
->
-> -static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int sw=
-appiness)
-> +static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
-> +                                 unsigned long nr[])
+> diff --git a/mm/cma.c b/mm/cma.c
+> index a10ea37a261da..871f95c9ae9f0 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -1020,7 +1020,7 @@ bool cma_release(struct cma *cma, const struct page *pages,
+>  		 unsigned long count)
 >  {
->         int gen, type, zone;
-> -       unsigned long seq, total =3D 0;
-> +       unsigned long seq;
->         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
->         DEFINE_MAX_SEQ(lruvec);
->         DEFINE_MIN_SEQ(lruvec);
+>  	struct cma_memrange *cmr;
+> -	unsigned long ret = 0;
+> +	unsigned long leaked = 0;
+>  	unsigned long i, pfn;
 >
-> +       nr[LRU_GEN_ANON] =3D 0;
-> +       nr[LRU_GEN_FILE] =3D 0;
-> +
->         for_each_evictable_type(type, swappiness) {
->                 for (seq =3D min_seq[type]; seq <=3D max_seq; seq++) {
->                         gen =3D lru_gen_from_seq(seq);
->                         for (zone =3D 0; zone < MAX_NR_ZONES; zone++)
-> -                               total +=3D max(READ_ONCE(lrugen->nr_pages=
-[gen][type][zone]), 0L);
-> +                               nr[type] +=3D max(READ_ONCE(lrugen->nr_pa=
-ges[gen][type][zone]), 0L);
->                 }
->         }
-> -
-> -       return total;
->  }
+>  	cmr = find_cma_memrange(cma, pages, count);
+> @@ -1029,9 +1029,13 @@ bool cma_release(struct cma *cma, const struct page *pages,
 >
->  static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control=
- *sc)
->  {
-> -       unsigned long total;
-> +       unsigned long total, sizes[ANON_AND_FILE];
->         int swappiness =3D get_swappiness(lruvec, sc);
->         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+>  	pfn = page_to_pfn(pages);
+>  	for (i = 0; i < count; i++, pfn++)
+> -		ret += !put_page_testzero(pfn_to_page(pfn));
+> +		leaked += !page_ref_freeze(pfn_to_page(pfn), 1);
 >
-> -       total =3D lruvec_evictable_size(lruvec, swappiness);
-> +       lruvec_evictable_size(lruvec, swappiness, sizes);
-> +       total =3D sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
+> -	WARN(ret, "%lu pages are still in use!\n", ret);
+> +	if (leaked) {
+> +		pr_warn_ratelimited("%lu pages are still in use, not freeing CMA region!\n",
+> +				   leaked);
+> +		return true;
+> +	}
 >
->         /* whether the size is big enough to be helpful */
->         return mem_cgroup_online(memcg) ? (total >> sc->priority) : total=
-;
-> @@ -5181,7 +5184,7 @@ static bool should_run_aging(struct lruvec *lruvec,=
- unsigned long max_seq,
->  static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *s=
-c,
->                            struct mem_cgroup *memcg, int swappiness)
->  {
-> -       unsigned long nr_to_scan, evictable;
-> +       unsigned long nr_to_scan, evictable, sizes[ANON_AND_FILE];
->         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
+>  	__cma_release_frozen(cma, cmr, pages, count);
 >
->         /*
-> @@ -5197,7 +5200,8 @@ static long get_nr_to_scan(struct lruvec *lruvec, s=
-truct scan_control *sc,
->                         return 0;
->         }
 >
-> -       evictable =3D lruvec_evictable_size(lruvec, swappiness);
-> +       lruvec_evictable_size(lruvec, swappiness, sizes);
-> +       evictable =3D sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
->
->         /* try to scrape all its memory if this memcg was deleted */
->         if (!mem_cgroup_online(memcg))
 > --
-> 2.34.1
+> 2.43.0
 >
 
-Both call sites preserve the previous total by summing the
-anon and file sizes.
-
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-
-Thanks,
-Kunwu
+--
+Cheers, Lorenzo
 
