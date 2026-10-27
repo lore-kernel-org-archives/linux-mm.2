@@ -1,134 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6861C60A3801
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF4660A380D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 12:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jE63xTYV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=McZtdrTo
 Received: by kanga.kvack.org (Postfix)
-	id 2E3676B06D2; Tue, 27 Oct 2026 08:01:03 -0400 (EDT)
+	id E7FA56B05D5; Tue, 27 Oct 2026 08:03:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BA006B06D3; Tue, 27 Oct 2026 08:01:03 -0400 (EDT)
+	id E57246B05D8; Tue, 27 Oct 2026 08:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A9DB6B06D4; Tue, 27 Oct 2026 08:01:03 -0400 (EDT)
+	id D93FD6B05D9; Tue, 27 Oct 2026 08:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E24536B06D2
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:01:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6904F1409BC
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:01:02 +0000 (UTC)
-X-FDA: 85368265164.11.41DE705
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4E934140009
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:01:00 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jE63xTYV;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B00646B05D5
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 08:03:08 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4626BC09A8
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:03:08 +0000 (UTC)
+X-FDA: 85368270456.15.0AE2B2C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9D6BB40007
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 12:03:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=McZtdrTo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793102460;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1793102586;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dDx8AqQR7Bt04x47N4Mn7I+5GyazYzKkWgOX6VGjETw=;
-	b=tKD2GWdYCoUe1x0KmvyXc7L10b87FHpJiAA1aZv6joeOyp2q5FkIY/oI/hvzWvhA9TeETN
-	RrA8HwS1da8AFxN7MRPz6tXv3S5aQMg/1Lxq9lLUbOGQEiuuldE1G0HjLrvo8iksXspAiv
-	NFtPPNXCMKtyeCGAKxM4NMxdqupnshA=
+	bh=Gsm8FCTfYMjJ9X/qLkjkV5oaQ/Rkh0bb8SRkihyvQKE=;
+	b=a99w+1WVCrusY/zF93VFnVO/aYVFwi+C1BdWHnylq8cmO2Y+IWSoSyy++cOt6OEISRUj7B
+	zVJyEOlaNT2WU3rnAsSMUFvyhRXiJBQrI9o9+quJmQ/iJ/CqhNTR6LjCQxZbjGurcnMTW7
+	lIFwamXwWGQvMQ1EuV9FpqEj4NFHlWY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jE63xTYV;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=McZtdrTo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793102460;
-	b=UuHZpHLGTbvUBRnNiTorz4NmjUkF658TPrLI+d/PHACpYIAPoIdGdM9CJG28F5ebWllG/J
-	HZsP4DZPt1yxPDalHSpYKYcaOEdOSXLWFwXmY94Iamf8rpOLvhwymTd5m/Pg0FSKynxVhA
-	88wQIJMUBjfrupNuSNnqO0qkrtxlo7o=
+	t=1793102586;
+	b=ZEUs7sWu8wulcpK5jLHbEa4Bo1KMMax5AVE5EVBO7miGrczFa6lc1xGsdfSlPkKg0jlpkF
+	oNAH13ZgfJ4jdpezIxu5LerTR5IiSmmnRRHrt5FMPKeQN2AyCbwXHGBQ3F8bpaJF/h4bVT
+	yshcmC4dMCbQlVZ+UURnTzZvxRD6iJk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3739A43D72;
-	Tue, 27 Oct 2026 12:00:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCC71F031E2;
-	Tue, 27 Oct 2026 12:00:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 159166021D;
+	Tue, 27 Oct 2026 12:03:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB9D1F01825;
+	Tue, 27 Oct 2026 12:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793102459;
-	bh=dDx8AqQR7Bt04x47N4Mn7I+5GyazYzKkWgOX6VGjETw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jE63xTYVQ0bibITRR3idWdLNB/lPlEiAJf2NmaLSuVI/gJQQ7RO3OaHmOhMV6Ojr9
-	 sk8vTmAIHS4gaGSFXAxR37yAk4nzk0JEu+2xnTi/HIq70PLfKWGKpNDldKREmEhRvl
-	 1ZSpXqOV5Hb4InOQA8omnK75bsNKJWDlGhlwP2t2OTWWZzx681syLUz2Lfcl/aZS1n
-	 fhjBHMJ7ELsOHVqCBge7nsM70rbeBgt341a9KIjObMyPz4g6SAcQ03VaiJcrcPiQy6
-	 8MrfVO+qbUvtdtGKgEIF5Rgcw5d0i6a94lmNt3WuWxkuFVyBL6j4H8RpBHRm4WwFtp
-	 mti1GaNrDEpJw==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 8FE7B198004A;
-	Tue, 27 Oct 2026 08:00:51 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 27 Oct 2026 08:00:56 -0400
-X-ME-Sender: <xms:c5Lgaq4ZQ8PwRI6i8KZZ_1a6MgmY4_VesoUflYDHSL2klFgmKl_XCQ>
-    <xme:c5LgamPZbqnQcO4ydCIVaMh5FlnCPCvs4Nls_1hUAQsz_hXgDP0mUHpd4gMun1l23
-    aoqEGdpHPflsvBWWkmRFVvFZ46y-dJJbw_0Kv-2xFMTptN0dANIn10Mew>
-X-ME-Received: <xmr:c5LgaoOocCkfxbkL7h0hX7WHNWFKHnO7qeuY6KqD6MnKFqfV-K3nEGTnJCk>
-X-ME-Proxy-Cause: dmFkZTGHFpKX1jiTMwU/zLbcEjLtIgjP4no/7v6bzBUeW+iOChjTDC5KyxGRFFAGyYBVcq
-    qDgTGrfkugTguLv1RZoJPJRr9TFt84gWeCibTTWFwj5ZCc1ZWzs9CxSp62O2K2EwuxAUbo
-    t1k0grfABMn2r699FuJ54BYDMKqUIzytxfVuu3Pv+ozDzSzCSbs5qNndCkNU8ysF6dywu0
-    7ir0xiOJauMuW0PI3TTom1GP5lzHCkiVdVm/wbI7Mh2bsHmfdZ9qiz7UnzJbshS7dD3SAj
-    FJF6UHO5XlbXu5vOXahQzNWbxOY0K/r58pyyCQ3L4G2o9SOXGGn43GlSykDAch+nsvX3Jt
-    kwyErHX2W4JyRwVIzJrBweuq3ibwyyf2rh1I+q3aOExNytzviQrhW9tHhAHTjgEs2FOURH
-    rBIVgNuQydHIqHVoC79wNa139/ZhZTxS6pcjs+hIpekPuC9KsYpMHb/cFYYQuk5K21Qwy8
-    3YhELuibEcG+sx0aoxBsRrokS/KwVE6xjGZogYNnN+xMSSCGdpZDTR9Cuf4eyPO37dhHq8
-    OV5xIrviy1SDa5VuIRXn3oO5irYRxiD2Xv2saxgkM+CAuuMc4HOZC/3S6lBOA90KJVMONR
-    zYaeVC0vzVxJIy4ALo/WOBQtU9hUDJA4knUKijzmUApI95YbTeE1XV2EUwXg
-X-ME-Proxy: <xmx:c5LgahXesNhO5LwQW3G7qm95Acm7DvWrFEvwCsldGMnrrnzg_a7VAg>
-    <xmx:c5LgaguovOSbfLSwNhnV63uBaNcmTlSppEy4UeEzkU4qaWdWxRGC4Q>
-    <xmx:c5LgaiaB71F57mviESnuAAsfdKVaXCoeB32JzcLcKb4i2u1NqwWZKw>
-    <xmx:c5Lgaj40Dq6YSJHHAAbcrvdPML-1M5LVAPFoVg5PjhrMRqLJ0OFesg>
-    <xmx:c5Lgajpo3RXifYMNLmrNAeFLHwirY6SjVQCuJnsbZNyiU49MdBxhHSSP>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 08:00:49 -0400 (EDT)
-Date: Tue, 27 Oct 2026 12:00:47 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
-	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
-Message-ID: <auCKv_omLGRc6wv2@thinkstation>
-References: <20260227194302.274384-1-kas@kernel.org>
- <20260227194302.274384-14-kas@kernel.org>
- <ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org>
- <at_f43oDv73y-t7O@thinkstation>
- <f97a8d33-50b2-4a86-8381-ee840cdfa2f9@kernel.org>
- <20261027110028.GH2668564@noisy.programming.kicks-ass.net>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027110028.GH2668564@noisy.programming.kicks-ass.net>
-X-Rspamd-Queue-Id: 4E934140009
-X-Stat-Signature: ohegcsxpft8a57qb4bi59mqqt1e5xo9d
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793102585;
+	bh=Gsm8FCTfYMjJ9X/qLkjkV5oaQ/Rkh0bb8SRkihyvQKE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=McZtdrToE8CDK2o9wG4UlcFC4ijx8Vo4p8T2oQyeTtP3EpgIyosiRVwaL+ENbj3q8
+	 1CZIjXolREOa3uTRxJJhBZgl6TQuM5qdOeZceeL6k0UkiLwrQUfPN54zDMmfjt+Gel
+	 5WuYf/QpwYpTBuGXhAYUjF1qrg5w61SYNE2hGZRJ5kBvog+Pn/HYNMwLT0moOwEhAP
+	 0Wcg+7FX8rPqloHYXtuS2T+LUFjy0ATuXrvvvy7ZgJQwej8CwpiMfGSnVnKc3iQSgP
+	 X21CwczMBVXHhpr2METiXzJqU4usmHRR096+/JX7ACulVEudiOboyo/UKPKm54PblM
+	 rfXuAYv42txYw==
+Message-ID: <sashiko-outbox-186496@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm: memcontrol: don't miss processes whose leader has
+ exited in OOM scans
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhan Xusheng" <zhanxusheng1024@gmail.com>, akpm@linux-foundation.org
+Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, penguin-kernel@I-love.SAKURA.ne.jp, tj@kernel.org, mkoutny@suse.com, linux-mm@kvack.org, zhanxusheng@xiaomi.com
+In-Reply-To: <20261026120248.2188024-1-zhanxusheng1024@gmail.com>
+References: <20261026120248.2188024-1-zhanxusheng1024@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 27 Oct 2026 12:03:04 +0000
+X-Rspamd-Queue-Id: 9D6BB40007
+X-Stat-Signature: oeqboaweu91hs7ewqydaxifwukm9ax76
+X-Spam-Status: No, score=-11.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793102460-585343
-X-HE-Meta: U2FsdGVkX1/Jj2lG/dsSkcZPEG9rW5oBmWEALbk7fTK6byzA4ZR0WYCj7ZgMwGUbJsE+zwBsSdV7SfmqxOTqrthlzyiRxMcNLTmr5JgW3QVjeyz2W4zG9LjvqIsbK/79v5hC+COlM29q8QpX/+TRkp43tic/otN/cG2alMur5hcZNVyBv+lddpgHSfXSOKaZ6X6sQA6hvqAe9/JJr3VPyGeOKaK9BIB9Wx2D3rkYZbTFp69CwFmS8qLPNUoVdHLUtgw7eAvBLRlJG3s4WZ3ZE8/BARiT1DRXKUhFcOsrxcJVsYRYHkww4aJsrpe8BEmvLJ+gcBgqTfxE3TKWi2kw+U6AuSYT/of+3MKUIDYnQHXVfaXIozZ/Aae0c11tJIe8KyaaOXfWCjX0Y7bmqUdBDDx+vxwWq0MSKV1mdpCkP1j7EdZKHSvych8f8TlSvn/VjitNvboqCc5lN++50ksRfAPxBsatNxrRIx0uqKu6G+YoGtR3s2EsoSxbP4Pyxz+ykIt5fG2MlZrvDxIaZpcymoh3drz/3210GfdLw6fOSfJRevz2Ch0eMXxaBlYUz7Nr2i9PWvVMr8dswgoDr41JcoOqouWZGdURnYXpY3pIFjplcQN1A+0c/x2VgmO9I48s3/HYVEcHZynA7IWxo38VFiLakWdDo43r2aKM2mLr2GtRx8uXWwD+L/bbEbqihuNrFo7/uLxAhIg2+oEbozWdQ2iomdzS4Yut30SuNuUCBLxCBrV+I+pC/ZYlxLpwbHiRuMQ+qB34SVw7peEWk8s0ekChp+QDuOcoBgwF86pqBNfRgsO3WdyfR5t3W8/0q9xd1izDsQU5Wy5U4NdFnn+Mi0EemVsTm57jBdjtbEW/69FNXYkkc0LTwAhHkene2DTY8kPLs2bsMxLMd96g1X3jzM8zchctqTiTSmAqGc8diFVJB8lBzYazS3QvWuAIp1aQiTZUqeI1EhxtO8JjS2F
- x0LwbKLW
- qq/0TkaCj4cVvU9lhDuV2kvuxr1WLMt5+2zszIP+FXfi8ETTPVFlRmPuOpRqEUMVxHSbhtII360hwA4Yf/uIg3Mq6xOV2bsbP+wmbKHEM5ueAloJJUjZujAidMU5WTHxo1FM7qwCzn9YViqY3BR6lLuz0znKlMsYf76X34tCXGSSuCmm/LSHf4hSNq+OreBxnj1Gm5I7TNYsh+Hy6cFBqFCx4ORxBkAO63cZWs73ePeWP9xtu87YhubaBg8X1X5eMdNQthMQF1m1T7VifBto10dbqRwjAfrHvKXf5CTeTEf4py8g=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793102586-642924
+X-HE-Meta: U2FsdGVkX18x47izE/6WWxAPLX+OWlMrT/wEM+xVm69xusvJRVOcHPdoXyXVv6j8rTedkzp4WmI+6WCkNY4HIKUm0tuZoYgg5ynW7B2yofDKUyES8r55hzzgyj+6QNUbNJPCkYk0v0ntoW+bfi0yD6Jy5689CXdvuxBBoUxWDySRexi4tUH4cOPuPqMV4jpwnKTWlbJUQFY4VYbwxJNt395588OlBCsuO0TN2PJ5+vy/OzBfUEVUBaiPZaHGmTcyElWjNbYrLDGOK1Jw+PjP5tsundwWTDDdUYu+sdQnWGZCt0OZZ6dGJLStY5Ne9+h4wvB0jUeIqVLUPVm7upz8k1vtP0HeLf2aDNlZIw9POrpBP419pyWnS22mH54FTF5sBlYqJvzdv6ayq1/TdiMBWSxjKZuSyESOqWuaaZX0kh1De3LVEAXI8MVXbQQcKZTyBCamBAcQkFUOuN/fqBFfC4ktD00/qnwE8aJHzyMvJIsn80niL+3/Is6TA5WIx6v+QATTRE7EjEEylDuLXr1BuYSZZVkvqMp99cGUJO3vMeEBk7OfVzVDmmR60wvNnx5UTD+HhIODxQrjfDx2g/1Na4adgH6bQsEnonEd2GaKUp4NRdMxrJMbonIT/DLbN9if+RBtZ1sd9sB/RuApkYKSzTFmN5XPFwh0rlgrZULoEiCZuWS+Qf2PlVGNwdlwDf6xBXfE1PSZ/Jgp60VOMjeRPb/vja/lL8C/wbQqhQOT2RC64FjGp8Yi9/jlxLpCCI/Nn+l6lShIwm/2E1xWxAin9U7cNUlRNfBhNdW98dhdZOehYP/fR+EEuL2clUb3GmNE/t48f9wESI2P3P2P9ochYEZpn86dYQCNClntzpBiE9QPoKVz3zxzCu1r+KEbL+3STc0C6dtUUrP/jBtGsDo39KpIi9+3s3uIQaYHlXazBpN+5IhJDZGqAgFnRlDrMp40pEEotoPaIhTNvcsrj/A
+ bZf8kIZA
+ OLCS8IbzaSM19R3z1/tRNGcAkDQNtFKECSIpahAfe9nc4WU0uusNQ//wwMrTLKUgtumyw3Em01GoGiPqnGLnbveLb4cES9NciEqFYsVQDEohCQdJDi59zAezS77NNpNxfCgXrlLQSOwSCDCmg1xZkr7Lh1QJt1q+SHoBBrGEBVo77wI/XsqD6vCCWNEFExwzTjNPC9BAKJn637UCvUw//suMCrlxSn8TK+U8lvFEBzivqcdQqJvGk3SnbbV2vN3gnA9ODckD7cc1VzsBhj+H5fRYdeIFKrBAA9lbCNkHdmr+ufyDlD/DQyscTwuHo03cazcUW4rMJEIDjdyUsEYH9gXZestXhYZdbR30tuSWsBnM1P56TJpO0RaW3+HAhzTQN2uRSSXqjFhhw8tHdq3ny14RqkO06wBg85443nbqYCsf0u+Mv5+2TYGkrJzXvRA9esRX90NXQN+E2YJSENnmjcnTR+8VidNWprP3TZXkVpG0XevwKyff+0xbCBjtHZdwor3FZzd6dfUO54rUjTf0+gHfVU38LAsul19a/zzSiA63YltIMCTKUp0M5XHei5R4RaOKiQb29OecUPhYkDee5LEw+xwcE/XQqw/8vWwZZqdrKt1V19rvW7x208N6RwjmziCSMbiadCwvruX5xA2TQ3etNz5/Z2jjhN2WXg4b6N7imINyoz3nvTi1EJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,119 +91,255 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue, Oct 27, 2026 at 12:00:28PM +0100, Peter Zijlstra wrote:
-> On Tue, Oct 27, 2026 at 12:37:13AM +0100, David Hildenbrand (Arm) wrote:
-> > On 10/27/26 00:25, Kiryl Shutsemau wrote:
-> > > On Mon, Oct 26, 2026 at 06:45:48PM +0100, David Hildenbrand (Arm) wrote:
-> > >> On 2/27/26 20:42, Kiryl Shutsemau (Meta) wrote:
-> > >>> From: Kiryl Shutsemau <kas@kernel.org>
-> > >>>
-> > >>> With fake head pages eliminated in the previous commit, remove the
-> > >>> supporting infrastructure:
-> > >>>
-> > >>>   - page_fixed_fake_head(): no longer needed to detect fake heads;
-> > >>>   - page_is_fake_head(): no longer needed;
-> > >>>   - page_count_writable(): no longer needed for RCU protection;
-> > >>>   - RCU read_lock in page_ref_add_unless(): no longer needed;
-> > >>
-> > >> I have an AI report that removing RCU read-lock was wrong.
-> > > 
-> > > Ughh. Yes, it is a real bug.
-> > > 
-> > > My reasoning in the commit message was wrong. Nothing stops a
-> > > speculative get from writing to one after the remap. On x86 even a
-> > > failing cmpxchg faults there.
-> > > 
-> > > The fix I have in mind is to let the atomic fault.
-> > > 
-> > > If the update faults, the struct page is a read-only HVO tail with a
-> > > zero refcount, so the get just fails. An exception table entry on the
-> > > cmpxchg handles it. No RCU on either side, and the fast path stays the
-> > > same lock cmpxchg loop.
-> > > 
-> > > Only x86, riscv and loongarch have HVO. Below is x86 only, to show the
-> > > idea; riscv and loongarch need the same primitive in their LL/SC
-> > > fetch_add_unless().
-> > > 
-> > > Lightly tested on x86 by hitting a real HVO tail page.
-> > > 
-> > > Does it look sane?
-> > 
-> > I'm sure x86 folks will have an opinion :) . Let me CC them whether something
-> > like that would be acceptable.
-> 
-> This looks quite terrible, doubly so because I have no idea what its
-> trying to fix. Please try and justify this insanity.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] mm: memcontrol: use-after-free on group_leader in mem_cgroup_s=
+can_skip()
+- [High] mm: memcontrol: duplicate or missed process scan in mem_cgroup_sca=
+n_skip()
+- [High] mm: memcontrol: mem_cgroup_scan_skip() skips exiting OOM victims
+--
 
-Fair enough. Here's some context.
+commit dc2989b6546fee5aa393d439ca588a7e5bf50831
+Author: Zhan Xusheng <zhanxusheng@xiaomi.com>
 
-HVO (HugeTLB Vmemmap Optimization) frees most of the memmap of a hugetlb
-folio by remapping the struct pages after the first vmemmap page to a
-shared page, mapped read-only.
+mm: memcontrol: don't miss processes whose leader has exited in OOM scans
 
-Every lockless get of a page reference (e.g. page cache lookup, PFN
-scanners) relies on page_ref_add_unless_zero(), which is
-atomic_add_unless(&page->_refcount, nr, 0).
+This commit changes mem_cgroup_scan_tasks() to iterate over all tasks in a
+memory cgroup without CSS_TASK_ITER_PROCS and adds mem_cgroup_scan_skip() to
+pick either the thread group leader or the first non-exiting thread when the
+leader is exiting.
 
-The page can be freed and reused between finding it and the get; the
-zero refcount is what makes the get fail. The race:
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 4d00748c8a5b8..8823c549b6af6 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -1427,6 +1427,36 @@ static void invalidate_reclaim_iterators(struct me=
+m_cgroup *dead_memcg)
+>  						dead_memcg);
+>  }
+> =20
+> +/*
+> + * Take one task per thread group: the leader, or the first live thread =
+once
+> + * the leader is exiting, since migrating the group leaves an exiting le=
+ader
+> + * behind.  Exiting threads are skipped, as one left behind may belong t=
+o a
+> + * group that has moved out.
+> + */
+> +static bool mem_cgroup_scan_skip(struct task_struct *task)
+> +{
+> +	struct task_struct *leader =3D task->group_leader;
+> +	struct task_struct *t;
+> +	bool skip =3D true;
+> +
+> +	if (READ_ONCE(task->flags) & PF_EXITING)
+> +		return true;
 
-  lockless get                        other CPU
-  c = atomic_read(&page->_refcount)
-  c != 0
-                                      page freed
-                                      page allocated as a hugetlb tail
-                                      HVO remaps it read-only
-  try_cmpxchg(&page->_refcount, &c, c + nr)
-    -> write fault on read-only vmemmap
+[Severity: High]
+Won't unconditionally skipping every task with PF_EXITING set hide in-flight
+OOM victims from concurrent OOM scans before they finish releasing their
+memory?
 
-The refcount is zero by then and the compare fails, but LOCK CMPXCHG
-writes anyway.
+When a process is killed by the OOM killer via __oom_kill_process(),
+mark_oom_victim() sets task->signal->oom_mm. In do_exit(), each dying thread
+sets PF_EXITING in exit_signals() and decrements signal->live before reachi=
+ng
+exit_mm() -> mmput() -> __mmput() -> exit_mmap(), where the address space is
+unmapped and MMF_OOM_SKIP is finally set:
 
-Before v7.1, HVO mapped the tail vmemmap pages to the head vmemmap page
-of the same folio. The first struct page in each of them read as the
-head, with PG_head and the head's refcount: a fake head. A get on a fake
-head of a folio in use always tried the write, not only in a race, so
-page_ref_add_unless() checked for fake heads before the atomic.
+kernel/exit.c:do_exit() {
+	exit_signals(tsk);  /* sets PF_EXITING */
 
-Back then, the race above was closed by bd225530a4c7: rcu_read_lock()
-around the read and the cmpxchg, and synchronize_rcu() in HVO before the
-remap. The refcounts are already zero by then, so the get either
-finishes its cmpxchg before the remap or reads zero and bails.
+	seccomp_filter_release(tsk);
 
-Since v7.1, tails encode the head as a mask instead of a pointer, so
-tails of the same order are identical and HVO maps them to one page of
-real tails, shared by the zone. Fake heads are gone, and every read-only
-struct page is a tail with a zero refcount. The race is not gone, but
-32c440d67e6c and 01b1d0ffb6f7 dropped the RCU on both sides anyway, on
-the wrong belief that it was only there for fake heads. That is what
-David reported.
+	acct_update_integrals(tsk);
+	group_dead =3D atomic_dec_and_test(&tsk->signal->live);
+	...
+	exit_mm();
+}
 
-One fix is to put the RCU back. It works, but it means rcu_read_lock()
-around every get that goes through page_ref_add_unless_zero(), GUP-fast
-included, and synchronize_rcu() on hugetlb allocation and freeing,
-including surplus allocation at fault time. So I am exploring other
-options.
+In mm/oom_kill.c, oom_evaluate_task() relies on mem_cgroup_scan_tasks()
+visiting an OOM victim until MMF_OOM_SKIP is set so that concurrent OOM sca=
+ns
+abort rather than killing another process:
 
-The fixup is one of them. With the new layout, a fault on that CMPXCHG
-can only be a write to an HVO tail, so the refcount is zero and the get
-fails, and the fault only happens in the window above. With GCC the loop
-compiles to the same code as before; clang adds a SETE/TEST per call
-site.
+mm/oom_kill.c:oom_evaluate_task() {
+	if (!is_sysrq_oom(oc) && tsk_is_oom_victim(task)) {
+		if (mm_flags_test(MMF_OOM_SKIP, task->signal->oom_mm))
+			goto next;
+		goto abort;
+	}
+}
 
-Writing this, I just realized that we have another option -- map the
-shared tail page writable. A failing LOCK CMPXCHG writes back the value
-it read, and the get never changes a zero refcount, so the race becomes
-harmless. The cost is the protection: the page is shared by every
-hugetlb folio of that order in the zone, so a stray write to any tail
-silently corrupts all of them instead of oopsing.
+Once all threads of an OOM victim have passed exit_signals() and set
+PF_EXITING (and with css_task_iter_start() called without
+CSS_TASK_ITER_WITH_DEAD once signal->live reaches zero),
+mem_cgroup_scan_skip() skips every thread of the victim before exit_mmap()
+sets MMF_OOM_SKIP. Could this cause select_bad_process() in a concurrent me=
+mcg
+OOM scan to miss the exiting victim and kill additional processes
+unnecessarily?
 
+> +	if (task =3D=3D leader)
+> +		return false;
+> +	if (!(READ_ONCE(leader->flags) & PF_EXITING))
+> +		return true;
+> +
+> +	rcu_read_lock();
+> +	for_each_thread(leader, t) {
 
-And yes, I know, HVO is an ugly hack, like most of hugetlb. But it
-works, and it gives back about 16MB of memmap for every 1GB hugetlb
-page.
+[Severity: Critical]
+Can this trigger a use-after-free on leader when dereferencing leader->flags
+and leader->signal?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+In mem_cgroup_scan_tasks(), css_task_iter_next() acquires a reference only =
+on
+task via tryget_task_struct() and drops css_set_lock before returning task =
+in
+preemptible context. Holding a reference on a non-leader thread pins task a=
+nd
+task->signal, but does not pin task->group_leader.
+
+Here, mem_cgroup_scan_skip() reads leader =3D task->group_leader without
+rcu_read_lock() or READ_ONCE(), dereferences READ_ONCE(leader->flags) outsi=
+de
+rcu_read_lock(), and then passes that earlier leader pointer to
+for_each_thread(leader, t), which expands to __for_each_thread(leader->sign=
+al,
+t).
+
+Two races can free leader after task->group_leader is read and before
+rcu_read_lock() is acquired:
+
+1. If the non-leader thread task calls execve(), task does not set PF_EXITI=
+NG,
+and de_thread() replaces group_leader and releases the old leader:
+
+fs/exec.c:de_thread() {
+		tsk->group_leader =3D tsk;
+		leader->group_leader =3D tsk;
+		...
+		write_unlock_irq(&tasklist_lock);
+		cgroup_threadgroup_change_end(tsk);
+
+		release_task(leader);
+}
+
+2. If leader is already in EXIT_ZOMBIE and task exits after passing the
+PF_EXITING check in mem_cgroup_scan_skip(), release_task(task) unhashes task
+from the thread group and reaps leader via put_task_struct_rcu_user(leader)
+even while css_task_iter still holds a usage reference on task:
+
+kernel/exit.c:release_task() {
+	leader =3D p->group_leader;
+	if (leader !=3D p && thread_group_empty(leader)
+			&& leader->exit_state =3D=3D EXIT_ZOMBIE) {
+		...
+		zap_leader =3D do_notify_parent(leader, leader->exit_signal);
+		if (zap_leader)
+			leader->exit_state =3D EXIT_DEAD;
+	}
+	...
+	put_task_struct_rcu_user(p);
+
+	p =3D leader;
+	if (unlikely(zap_leader))
+		goto repeat;
+}
+
+If mem_cgroup_scan_skip() is preempted before rcu_read_lock() and an RCU gr=
+ace
+period elapses, leader is freed before leader->flags and leader->signal are
+dereferenced. Should rcu_read_lock() cover the READ_ONCE(task->group_leader)
+load and all dereferences of leader?
+
+> +		if (!(READ_ONCE(t->flags) & PF_EXITING)) {
+> +			skip =3D t !=3D task;
+> +			break;
+> +		}
+> +	}
+> +	rcu_read_unlock();
+> +	return skip;
+> +}
+> +
+>  /**
+>   * mem_cgroup_scan_tasks - iterate over tasks of a memory cgroup hierarc=
+hy
+>   * @memcg: hierarchy root
+> @@ -1452,9 +1482,10 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memc=
+g,
+>  		struct css_task_iter it;
+>  		struct task_struct *task;
+> =20
+> -		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
+> +		css_task_iter_start(&iter->css, 0, &it);
+>  		while (!ret && (task =3D css_task_iter_next(&it))) {
+> -			ret =3D fn(task, arg);
+> +			if (!mem_cgroup_scan_skip(task))
+> +				ret =3D fn(task, arg);
+>  			/* Avoid potential softlockup warning */
+>  			cond_resched();
+>  		}
+
+[Severity: High]
+Because mem_cgroup_scan_skip() recomputes which thread represents the proce=
+ss
+as each thread is visited across cond_resched(), can a multi-threaded proce=
+ss
+be evaluated multiple times or missed entirely during a single scan?
+
+1. Duplicate evaluation and repeated OOM kills: Suppose a process has threa=
+ds
+[leader, T1, T2] and css_task_iter visits leader first. mem_cgroup_scan_ski=
+p()
+returns false and invokes fn(leader, arg). When fn is oom_kill_memcg_member=
+()
+(for memory.oom.group), it calls __oom_kill_process() and returns 0 to
+continue scanning:
+
+mm/oom_kill.c:oom_kill_memcg_member() {
+	if (task->signal->oom_score_adj !=3D OOM_SCORE_ADJ_MIN &&
+	    !is_global_init(task)) {
+		get_task_struct(task);
+		__oom_kill_process(task, message);
+	}
+	return 0;
+}
+
+If leader enters do_exit() and sets PF_EXITING before T1 sets PF_EXITING (or
+if the first visited thread exits concurrently during oom_evaluate_task() or
+dump_task()), css_task_iter_next() next visits T1. At that point
+mem_cgroup_scan_skip(T1) sees leader has PF_EXITING set, finds T1 as the fi=
+rst
+non-PF_EXITING thread in for_each_thread(leader, t), and returns false again
+for the same process, causing oom_kill_memcg_member() to call
+__oom_kill_process() repeatedly on sibling threads.
+
+2. Missed process when iteration order differs from signal->thread_head:
+css_task_iter walks css_sets and cset->tasks in cgroup attachment order, wh=
+ich
+can differ from signal->thread_head order (for example, when threads are
+distributed across threaded child cgroups under the same memory domain or
+created with CLONE_INTO_CGROUP). If css_task_iter visits T2 before T1 while=
+ T1
+is earlier in signal->thread_head, mem_cgroup_scan_skip(T2) skips T2 because
+T1 is still alive; if T1 then sets PF_EXITING before css_task_iter reaches =
+T1,
+T1 is also skipped and the process is missed completely.
+
+3. Missed process when threads are split across memcgs in cgroup v1: If the
+leader or first non-PF_EXITING thread in signal->thread_head resides in
+another memcg while sibling threads reside in the memcg being scanned,
+mem_cgroup_scan_skip() will return true for every thread in this memcg beca=
+use
+the first non-PF_EXITING thread in signal->thread_head is never one of the
+tasks in this memcg.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261026120248.2188=
+024-1-zhanxusheng1024@gmail.com?part=3D1
 
