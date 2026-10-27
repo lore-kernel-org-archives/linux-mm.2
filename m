@@ -1,78 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B879606A31B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DA9606A328
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 10:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BotLVmlz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mLh2i4Pn
 Received: by kanga.kvack.org (Postfix)
-	id 18A626B069B; Tue, 27 Oct 2026 06:43:49 -0400 (EDT)
+	id 533AC6B069D; Tue, 27 Oct 2026 06:43:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 162446B069D; Tue, 27 Oct 2026 06:43:49 -0400 (EDT)
+	id 4E4F76B069F; Tue, 27 Oct 2026 06:43:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0783E6B069E; Tue, 27 Oct 2026 06:43:49 -0400 (EDT)
+	id 3D3C16B06A0; Tue, 27 Oct 2026 06:43:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CEB8F6B069B
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:43:48 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB31E8096D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:43:46 +0000 (UTC)
-X-FDA: 85368070452.24.915F10D
+	by kanga.kvack.org (Postfix) with ESMTP id 0E53B6B069D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 06:43:54 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98833140994
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:43:53 +0000 (UTC)
+X-FDA: 85368070746.10.3A86493
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3904940002
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:43:45 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BotLVmlz;
+	by imf22.hostedemail.com (Postfix) with ESMTP id C0DD7C000D
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 10:43:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mLh2i4Pn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793097825;
+	s=arc-20220608; t=1793097831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y0bWJxnleuC7KHlyjPlcNd7hTqiMUB+V6Nbmxy2tkww=;
-	b=f1L6r0m4YHZ03O0mi11TjYWdIxC+lUBH8TxHSZLSGTg/FdfkAwcZ+30dFU4rTG7gDnuFbT
-	MiHLuZ/ZR7gfYq8Hwhx5tJMcQetpLoo758+y5fOMZVNaRRITxCoHg/WNFsOg+rzXb1oLGx
-	Kpm1t+pjKIXzbFJQwTQjUAkr8ski/LQ=
+	bh=PmR+vZLuWo/MOqGjjBOdrO5nYefFznZmjJsKNuauJZY=;
+	b=67cu8AswHxLw9UODcSl7aURDklwsHz8lerK0YnVeqGt2PVa83KLXuhbf3g2jJsZ7jH/t8V
+	RQwFcGZSIgLDhebj00pfixLC4UXw697i/7Re8LPr+ZMxLJ5nwqPCJf2VGcgjvwQlYnWdBO
+	eEWInypieNzQ/k5EbvR8/aDh5C/DIL4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BotLVmlz;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mLh2i4Pn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793097825;
-	b=bCrkliohg2SlNTFRgtrgkmAzUS0Fdj2pLwTumu5b/uWuOac9JjOfq98cSUHC7eZwJwfqIz
-	WiDUVoSQgSitZ+6+OlCP1q31gzyDNC5qwsk9Z5Hi3He2bB/CUiGcRInisCWfu38y8QmMJ8
-	bgtE7B496FL5B9cUY01NLFpQAbXPJtw=
+	t=1793097831;
+	b=mCucxnk9IPzNNoqz6j58K9w4dJkcGo5g56n/r3FXhQp0LtlOlmYAZN3YXmNrHSco1JzdXD
+	mgIKhReVJOimCn6kUpEaZEAfGfngKU89ouVoC2U4fSyFXu2pG/L3YGSCrGYdn8NWxU20BE
+	uITqbNKDmr01vj2lyws1/qhSP1kUwR0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9E4D60236;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4CB8F6022B;
+	Tue, 27 Oct 2026 10:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087C01F01829;
 	Tue, 27 Oct 2026 10:43:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082211F031E1;
-	Tue, 27 Oct 2026 10:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793097824;
-	bh=y0bWJxnleuC7KHlyjPlcNd7hTqiMUB+V6Nbmxy2tkww=;
+	s=k20260515; t=1793097831;
+	bh=PmR+vZLuWo/MOqGjjBOdrO5nYefFznZmjJsKNuauJZY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BotLVmlzy4TZljtLczP71diLAjatbqzAQEkLZp7bs9LTerIp5Qui3KjuhQeeT4l8y
-	 g6gDADj0uuPyyBR3/gn45tABr4F+L9DEc7hoSpkBt8FAsqG65DNR+ExxaJwzfI+27O
-	 6A6t9+eSkEklG4w4NGD9aGjIUv8fmEET9xQq5AACqjr30EQsKl8n6M6dSFYBD8/gME
-	 SAFhyJNtMsoOl29zYLOYHf4fLZY3ulEkDQAUjD+pvQI17pWO/bTChoQvsRdHyRja5K
-	 OWIzo84jQYEScEB5hF+VocHW1TccpKKgvO2N+vIpntsTF00g/UjzLbZPiJyVQkkesr
-	 PQdk+5cMK7eSw==
-Message-ID: <699d2ada-6407-4758-82ad-927426ee049e@kernel.org>
-Date: Tue, 27 Oct 2026 11:07:48 +0100
+	b=mLh2i4Pn549MOAtBAwtTl7y/1OVtrnhp4rO0PbVy/V6UmYdAI3NtxKLMphuOG7fLo
+	 wblUgc4S0AB7lxV1rH43/mDzSHF3W6Fynm7taDJXc1bX2QL4Nti6g4BSRnPmyk/DiO
+	 lNS7FaWQur6QkV/w+mv7H8Wm50v3XNiFOVIguHWqQ6oSLNB4R5+4WSZOHQkxrSuugc
+	 CMuIVKXwgrjt2zoc+cfKUOK3c473SQp01RiT5Df8tKOgu8lhdEcdUXMMrkXXCKHppD
+	 D83cximXZrxDk6WmbRv4v12unJ6ypdppHtcvqEWZQjSiy2ajbp1AztlNYQOhLWSW7u
+	 fD317OsWCcakQ==
+Message-ID: <b30a1c50-2db6-4376-bcfa-3088ce5d68d5@kernel.org>
+Date: Tue, 27 Oct 2026 11:12:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/16] mm/shmem: preserve data in clean folios when
- splitting fails
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
+Subject: Re: [PATCH 11/16] mm/shmem: rescan after nonuniform folio splitting
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
  Johannes Weiner <hannes@cmpxchg.org>,
  Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
  Hugh Dickins <hughd@google.com>, Baolin Wang
@@ -86,12 +83,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  William Kucharski <william.kucharski@oracle.com>,
  Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
  Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
- stable@vger.kernel.org
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org>
- <20261026-fixes_shmem-v1-9-703206d5fa0c@kernel.org>
- <at-GrQNgF3V_tL3w@thinkstation>
+ <20261026-fixes_shmem-v1-11-703206d5fa0c@kernel.org>
+ <DMF9OO106FGX.3P7TZUBGHUFII@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,21 +134,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <at-GrQNgF3V_tL3w@thinkstation>
+In-Reply-To: <DMF9OO106FGX.3P7TZUBGHUFII@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3904940002
-X-Stat-Signature: iwnnst4qqf3dx9cdgb5xaaaf6wmpxbxk
-X-Spam-Status: No, score=-7.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C0DD7C000D
+X-Stat-Signature: w11aso99z8qqzejjzhdgd1733eob6fwf
+X-Spam-Status: No, score=-22.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793097825-427438
-X-HE-Meta: U2FsdGVkX1/1x46BJksdINZLkSfEp90YBT+/1L+j4aRy0kxut0h6c/bl1Ut+kjhI3Vk8goxSz2teW1wpj0svNbs+SJGmfC+8mTq6Re95+R6jod4maEzngb9ssOP8JnFm1JISJsVP0+o66L0iHTlFTYewV4/wTARfnhYHhE293KXbhcfm004Ep3xNPr++WKgVsrJ808OiXD91xm1xf2d7T5w4e1uly/GKjH89sBBZBKQYQGE29qmVNo3uyydR6aAfY8VL9TlVXZzKudAbg29YPNwvAU/Nw/5qHj+hSQ1n7fKgrTLv6bmgap3pfEJVxy+vGBmJc7nZhOJlgutuDj471G3g5ngqjr+QV6+w0zt8L8UCvI42NyypGKetUbm+q0VJmGmBl7TxHCongtopj+/aI9wz/SdlV8Pzg4RT+949PUFi1oK7BEqArYB9bJQKRGZ4K1/Gvgk8/rf4W/y1r/+CeNvObyMwvoeRynzvperDMK7C2gGHaReCkDbe1BmqSugxKAn98yJ63JymOcOOFwOQJ5cLgPQWQwkKLSRovvRDQ+dcGq1hgR2MEL2VrjdqXf34k6AZLMr9Kd9K5mQr3X/p0VIxCBKNG5ijkTdAW/KTVmYdtoAbScRjvLVhDP7O0/GWPz7rKYo2GrbF1yYePqwJc2oJ5cvCLkkYnOrQubKkaZxQm8wgoQFVP8F83EpA0hhjFjFO3bee9eF+h9+OVqWt5XhqRKzTWhSPnWprrCEMyxvsGfCu22WmvquzPR2VZVvTNaWUPSWJQXR8QQiid9O2V5oID5Yu4bH9pYBaTWPCCN97AvltEkPLO1PSI9lGStH+6IoakorR6y8bJZq1/+lrgxyHx3WSGXw+xWb/faPqpxp7EfwehAqTEy6F+pGIQujRgUeffmc6gk4brP3jFq22+/kze1NAols85IZc4YDm2zITU3X0zUXddtOGqOIJDScgrOXCVyE2lvDMWzPdoyX
- pRMsrqYI
- ta3Nyv8fc6EK+TkPk4lkaWDm3s/kbyEHgPHZyDVuOiL+CKk5++pGc6sJn3+QJxR4RTXL2ZUILtFvOELmaWa/uJqmRK15FGdPTNsgvklGesYYehSBtLSavgGZA6VIQBVaPg3lauzsA8kbwkzyC62RNQ+i6jralZwjQ3DWqz/6Cp2LwDZ48XjJUfNi4ctI9UbfgUs0e3oRwIHLx+cN9dmpfNS9cOPINgBFOe7BLoMiKtDyspsgRGqdUdgr4tP2uk4HT6yWbjRBVjZBieD1nUoIKzPn5xXiqVZv8SoHcO8RfZILHt5juvI5PQgRh8N11qhygDkyVyc8RX+i9vsEnu6AXOJ485/d52j3WAGEynqTUGniD+yliR9RfeNFKYWhjobhGsL7g
+X-HE-Tag: 1793097831-872307
+X-HE-Meta: U2FsdGVkX1/WcM9gAqxqmmw9DF4VwWQJl8np2ZZtEOyLlEDonXMdQWt3IJ8NKfBTqhhGJRwyNNloJjYUiQVBtnJBpUPdtshZg+EsNnTPzoZeIY3z4DftPKdEFp6xxay+OnuQYf05KkiT9anp7SqJ4Y2PgJJ94kDIeq5Kzgct7SiC7t+4Nv1viX+HZ8ae3/Ml7Sd8/hlx+wrqAiCi83z3a8rtQO+jDiQBo6Fukq+wmreDCciD4fbH0yFV//PCDlOxBfccLMgDghzK8ch/ik2/7WEAVzTgTgxt8F51hMUCEl1pkZV0h36/EW6TK0IPGTQooA4ACEgwQR7s6t7jPnK5TPlDELCV6rrPRqQQ6o9m8d+PrDuqTvfNryJDmCafFnWGro/C5KaQYiHzpFH0NO600hODAU7lA3/qjdM/hJTSGWeaASUmmXmeJypinCcn2hu8YpvNHvXTyTPzwv2DrXRivGI/WIBQQtqJSVrW2/vFjfOythtmOO1BuNSGcHilvXTRhZ31Tt5a6OPIErsDGiL9vidqTenVgywpdl5xn1w4DSRZ9J1v1ejKuAlMX8GLtnYG90/PBXFE8hPry7UmIlh2e7J/uPOxEuiQdQWeo0TosOUkog+zF9N2wP08REBLttKe4zgP1dvwH5OXQrkcQZaqGZL/UqZ5UMMRp8RNYeWUoUTFtthm3uc5p7BjQ0Ho+nCmwuk+XzKDVTxCsE4SGIXpxNgFoi20Ir2KQaEbWCKQq/SOvjODS/38O9Mpzqr7v+Peo22oeXJh8dd30HzG6fVc8AycFAPOr1XJWJ4lQ6CieKg+SiIKqj/FuRrhAPItgh5n3ezT0FZ/Ron2dc/VfdIBHT4liwUYXaRmRyeq9uqkJog3FVbmP1gXwXYnzg+LM2fteXz9HMcqTNtwMP72pkJXZ5UGLzFynab4JAbQcGSi96xr09ZjbZviDLXepcNieSmuJoI1s7OzDtgSK+OoJDY
+ zrcFEHBo
+ gMKWOnvFCQIQoqR/Ec2msDkgz0ORCV4Wx1J1yipPNk7G8vnR3iv2S+EsWbe3sVoF0j6b4PeDSk9RyxO2V3hBiz3tZmhzSAU8wL27I4vx+LSDoLgqJC0BLTWYWfHZYcIQsjkzJ6GoCbp3jXnW4MCj3Sf2/gzZSOPmzLG8WwMBRyIZCcFpSWftnlY00ckWZb9/QzheFEaPtFrzWfWc8XZYAa3JdZQHdiZUrdYDiupdWzR0Eopu73ayTBlhDc8QtaRlxoFpDuigmADWcI9CqlVDASkR/GjbNPZVRjIthuPd/0ZlJ1uBXW7l4X/TWJ+uK0t0uckpqI9DK4a6t8bWkZa4vNqdB8RCqB6ExSTY643omdkEcBzE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,51 +158,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 18:12, Kiryl Shutsemau wrote:
-> On Mon, Oct 26, 2026 at 10:40:42AM +0100, David Hildenbrand (Arm) wrote:
->> From: Chris Mason <mason@kernel.org>
+On 10/27/26 03:32, Zi Yan wrote:
+> On Mon Oct 26, 2026 at 5:40 AM EDT, David Hildenbrand (Arm) wrote:
+>> The final scan in shmem_undo_range() restarts after a successful split
+>> only if the original folio is no longer large. A nonuniform split can
+>> leave that folio large, so the scan skips the newly created folios.
+>> Hole punching then leaves pages within the hole allocated even though
+>> they could be discarded.
 >>
->> A shared writable mapping can have dirty PTEs while its shmem folio is
->> still clean. A read fault can install a writable PTE, and a later store
->> sets the PTE's dirty bit without marking the folio dirty.
+>> For example, a fault below the hole can allocate a 2 MiB folio after
+>> boundary handling. Punching a 1 MiB hole at offset 64 KiB splits the
+>> folio successfully but leaves the original folio at order 4. The scan
+>> continues past all 512 pages, leaving 2 MiB allocated instead of 1 MiB.
+>> The hole reads as zero, but the pages and their block charges remain.
 >>
->> After shmem_undo_range() has handled the boundary folios, a concurrent
->> read fault into a hole below the new EOF can allocate a large folio.
->> For example, on a tmpfs mount with huge=always, the fault's offset must
->> be within the file, but the allocated folio can extend beyond i_size.
->> The final scan then finds this folio and calls
->> truncate_inode_partial_folio() without marking it dirty.
 > 
-> This is hard to follow. I asked LLM for a diagram. I think it would be
-> helpful for the commit message:
 > 
-> CPU0: ftruncate(fd, 3M)                CPU1: MAP_SHARED, tmpfs huge=always
-> ─────────────────────────────────────  ──────────────────────────────────
-> i_size = 3M
-> shmem_undo_range(3M, -1)
->   first pass: hole, nothing to do
->   boundary folio at 3M: hole, none
->                                        read fault at 2M+x (below EOF)
->                                          PMD folio [2M,4M), crosses EOF
->                                          writable PTE, folio clean
->                                        store to 2M+x
->                                          PTE dirty, folio still clean
->                                        vmsplice(2M+x)
->                                          extra folio reference
->   whole_folios: finds [2M,4M) folio
->   truncate_inode_partial_folio()
->     zero [3M,4M)
->     folio_split()
->       unmap_folio(): extra ref
->         → -EAGAIN, PTE dirty bit
->           never reaches the folio
->     folio clean
->       → truncate_inode_folio(whole)
->         [2M,3M) dropped
->                                        read 2M+x → refault → zeroes
+>> Restart when the original folio is still in the mapping after partial
+>> truncation, identified by checking folio->mapping. If the helper
+>> removed the whole folio, no rescan is needed.
+> 
+> This paragraph is no longer needed after Zhang Yi's truncate fix, since
+> truncate_inode_partial_folio() returns true only if the folio is split.
+> The function returns false when the whole folio is truncated[1].
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/tree/mm/truncate.c?h=mm-stable#n282
+> 
+>>
+>> Fixes: 7460b470a131f ("mm/truncate: use folio_split() in truncate operation")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>>  mm/shmem.c | 11 ++++-------
+>>  1 file changed, 4 insertions(+), 7 deletions(-)
+>>
+> 
+> folio->mapping check is dropped and the comment is adjusted after the
+> patch is rebased on top of mm-stable because of the aforementioned
+> reason:
+> 
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 7cf5a4d9d1ace..ddea31f44fb32 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1477,18 +1477,12 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>  				} else if (truncate_inode_partial_folio(folio,
+>  						lstart, lend, NULL, NULL)) {
+>  					/*
+> -					 * If we split a page, reset the loop so
+> -					 * that we pick up the new sub pages.
+> -					 * Otherwise the THP was entirely
+> -					 * dropped or the target range was
+> -					 * zeroed, so just continue the loop as
+> -					 * is.
+> +					 * The folio was split. Retry the scan
+> +					 * to find the split folios.
+>  					 */
+> -					if (!folio_test_large(folio)) {
+> -						folio_unlock(folio);
+> -						index = start;
+> -						break;
+> -					}
+> +					folio_unlock(folio);
+> +					index = start;
+> +					break;
+>  				} else {
+>  					/*
+>  					 * Splitting failed, but the part in the
 > 
 
-I'll add it, thanks!
+Yeah, that's straight forward. For this one I will keep Kiryl's ACK.
+
+Thanks all.
 
 -- 
 Cheers,
