@@ -1,90 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A42606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=V9G2ZsSo
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62416606A31F
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 09:12:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D8FD6B05CD; Tue, 27 Oct 2026 05:03:54 -0400 (EDT)
+	id 63D0C6B064A; Tue, 27 Oct 2026 05:12:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7633A6B05CE; Tue, 27 Oct 2026 05:03:54 -0400 (EDT)
+	id 6147A6B064B; Tue, 27 Oct 2026 05:12:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62AC66B05CF; Tue, 27 Oct 2026 05:03:54 -0400 (EDT)
+	id 529F66B064C; Tue, 27 Oct 2026 05:12:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 33D8F6B05CD
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:03:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE9AA1C41F4
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:03:53 +0000 (UTC)
-X-FDA: 85367818746.20.7E2B278
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A7191120007
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:03:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=V9G2ZsSo;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 239AD6B064A
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 05:12:33 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 214BE14093F
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:12:32 +0000 (UTC)
+X-FDA: 85367840544.06.7C02601
+Received: from mta1.migadu.com (out-53.mta1.migadu.com [95.215.58.53])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D29B340008
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 09:12:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="bA2/gm+I";
+	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.53 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793092350;
+	b=gMGfn1B9W8/IZROjnn7HaOoWChDbB9KP/gdN+WE2BydW5VTZxWd1YxkX/Z9QMZD5CeTYHI
+	lIltkEWBjDFQ7fJZXMjhkRRih5mvRAuo3yg/bXmZ3+TvVXTT2KlfXVObIkefQo9K4KstWk
+	YsNaFJUfxonOWpdaEnGWIP14kUUBHkU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="bA2/gm+I";
+	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.53 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793091831;
+	s=arc-20220608; t=1793092350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TNG24tQY55R3gZy9VxOdBRDeZa6e92m1sqs1xmlBkCI=;
-	b=6WU9gaKTDQSsAr+I2AtVFPJAh2xNW73FvX38a+7HRoFDA0Fb4qvc4qUNmKAsqaCEsoPfzP
-	gU3muvtFG+XqfAjH5iktuvp2alvQT29AzLZep0MR/ca0GBipTzsMQORr7n1asW9Eu0Ns9T
-	S9wxKh+XZurB/Kjr1MmexPnaQRETVZs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793091831;
-	b=kJZ/f3C8/QLlBMbXuh02hOKwTdTeDsfeMpv8OCQc5BTomje6mRV+mISh9ae5kOZXsih7ae
-	M2zTC9/wUdAMNNHDGCUWuY0Yrdll9Okcz/YMsCLitNKLB54jWRMZPIDwrFjYu/Ys5j4JGk
-	JzHHLsoMEvFQ/szJh/3lF5qw9suH0Lo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=V9G2ZsSo;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793091828; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=TNG24tQY55R3gZy9VxOdBRDeZa6e92m1sqs1xmlBkCI=;
-	b=V9G2ZsSoC/mP00KApo0Ul17Ds8M0dFfV1yr/ZxpnANEeTu53sHRHZbkpijlJr0C8OyrtML01Sk44ncDjibGmeF0QrmYMMUbgVGj4WH2+MzHKpozOmMo0YEXHH0Tddqi8Gv3Dbo28KIfDehHoZ+gzHW96mjOE4RHJP+f0RAeUdWQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XDdD3Pp_1793091826;
-Received: from 30.74.144.191(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDdD3Pp_1793091826 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 17:03:47 +0800
-Message-ID: <87e32afd-75de-4407-8f0c-fb70b40d5eca@linux.alibaba.com>
-Date: Tue, 27 Oct 2026 17:03:46 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Ndi2448wVUZuF68kqWF0v2z9NaMIBNKc9nVCJQzYI1k=;
+	b=MmIEVVhD6ThjnIZlwLK8eYbywEygrArubfuGNgjbfsHwxBBYj9dmpyg3YSSSRV0exCRR99
+	UuJuNS0CTI1FDi2kbQ+4Qzcn6npKLLsFX/wbgJ5A4t0pTpj//8a79Sb+CI8RZygx4Lt9vP
+	2K/tR4Pqra9vtQhPoCxXjk8NFy7FCtM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Iy2EZRXCQMOBxljPF+GT6qR9TSW/M2vcb/khwUxJInc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793092348; v=1; x=1793697148;
+ b=bA2/gm+InVPxrA8/cUeuKfkv9tlw8WkJfCJkOBEDJtQCHB0HWSave9Iz76npyrcxJMqpPc1t
+ uCc6jbvmBvAjzUUwt9MB4DHn/lLKKxWsS6jwJ3eh4ZlxhovExca29l8pVbWHLXsWABOthurUun7
+ yDoOp3aXMoQ0FUfbTaxkhPds=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id e68cbb451e1e33a5;
+	Tue, 27 Oct 2026 09:12:27 +0000
+X-Mizu-Trace-ID: e68cbb451e1e33a5
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	JP Kobryn <jp.kobryn@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	davem@davemloft.net,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	KP Singh <kpsingh@kernel.org>,
+	Tao Chen <chen.dylane@linux.dev>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Tobias Klauser <tklauser@distanz.ch>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Rong Tao <rongtao@cestc.cn>,
+	Hao Luo <haoluo@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	mkoutny@suse.com,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [RFC PATCH 0/2] memcg_ext: dynamic memory.low and memory.min protection
+Date: Tue, 27 Oct 2026 17:11:58 +0800
+Message-ID: <cover.1793086858.git.zhuhui@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm: memory: fix truncation removing mapped folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
- pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <d7f009c90b11ded86654885b5ebcb8c9308fa31a.1793067441.git.baolin.wang@linux.alibaba.com>
- <2ba579e8-06fb-41f5-9eb2-f02b2aabe29b@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <2ba579e8-06fb-41f5-9eb2-f02b2aabe29b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A7191120007
-X-Stat-Signature: he1jdr7ffja59swxzxzeinyyhfjauu4e
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793091830-102044
-X-HE-Meta: U2FsdGVkX18P/V5RKUu58dXSYv/yc89rOuVzcURj5agpSEbV4OW+7mRi8XB1CNEi388VN0ZuQJ3wuEAqQej6JllSQpsVZ3AilbkxbPgrt/UmTd/DNouVv6IF6KxfHRDS2dczn3G3jbe9Q0NfDuQjPbvX9OIbJ2xR+wbgKFN+X85Qpqy9y8fh5hXALrKNpnMmky9gQbnm8aOF7X92rcxI9G8XOB5xVqh9I4WFuuShNY4SbBuWXSWLyizUUD0gPOAjjwgS5Nxry2hjKbGtbnF0efSOEbB6qIbP9Hm9ZbzA1z+ZX8kbo6QyDaQAOkxM4EqL7FR/FRPlkkvP52vrVlMWZgGfhXvbJ1yGrmqGl/hLzUDDnpoBols7igmljstcumwB0uT8wztbkhzCtxrIP936wQz4slcZ7IDZfOXOWb9Nh4kD/zPN4nnQaSfbbaCD6g9Vfpfz9V6iRL2n3D5Xr4w15Ro3KCM2CSO2p7isMpqgc88kb2B+knnNZmU0+0Wmd05/jSn43nREqzcK3v85XeN3Oslh8M0PE8QjBCH1/YhI13cMQIxHxAEdvPrROfOqB7QNziFk0R73O4dRPgv+AoSmOFFbKx6ycBQ6LtNr9h+YNaLCP+aa04dsIeNdYOF+91ny5DGTskl5vpq4yoWh78pCa1iU0aH/XoxAmaHaB9Bdj7rtqAelVaayuQzFpJTsH7N/3wJQ1L9NcYYTUEsTYvEvquL+LP6yYoUgMJDhPpISrmLaEz3lr9XVfIjDPujB3iENhCG//PKagz3Q1MTjAMeUERgKNJ/JmBk1V9hybZjJjuIMJ0e1+Gjtv4YhNzKPl5Z/dPCQy6Yii9vuwlEvoriSuNug4LpSYPEF49wnjgOvmeAaVAtYfOBlkAwf/Kh0tzQDvLVQMEUZEz2WyuNpMia7gJWzOKr9zb+81yfT0zooY3HuRvAtdxWoz8zWoRl/6rRWUAc0Yw57VR3h1o8NFCY
- r527yKFK
- Nky96XYD5AjEzT1H2QbCah3/GL7cH/hquXt1KFL9I6XdkpP0MCIICAH/p1VZHLxx8U7NZn4zZ7paC0ZtIfxDLcbwv009tMt0SLp7IHBbkqfVK+Vs+I4ahKyHKf7MYq699c+qKzro3hJO9p9pKAUD/jpp4vGfD5JSXnCBd1JIy9g+7YW8IFHj+0fp3mCWNDRh4f5jvyXOwMRpU0rPkElxDhxrnHseNGvdGLnBCRcHRvR7zLc9HXYgqFagwirA2kHtkQmyOrRMpPdd6SazJ2r5LHi5FDwiBCpz9e/loU3vei7U4Hbh/ZND3UvEjRdC9vzvkn4i6kTusR8ZH+imx9vpQUG1Hwvrsyk6WWrhECW3pfXCOPP0D/M7d3UFB9qlaUIhn9ldc
+X-Rspamd-Queue-Id: D29B340008
+X-Stat-Signature: fsfcruoi88fe3dnzjofazwwnrmymtaqs
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793092349-847195
+X-HE-Meta: U2FsdGVkX1+1xMJLtDBS2iMK4y9ExpEzo2lXqnUpmziWx4rLqdAq5hcW4EWpPNK8Eyvizkt5z1yhEZVv3E16VUQjNdgVhqAfOm+myqWxth+Vm7j60suXqFXLI3QjxtxS76ETSthJPFXtNctPZmgwe94uYfhuiDFJxNY7UssXnFqCrk+Y57keRfuIAqJDt9ZB8R9i9w2V0EV8NqMHeC4XZG3PYlbNXckWWz8do1kf+T9K5DIExERvyl1nHAwZXAgQjGhm/E2HZqt281xN32P0P1lpSaoUzi41TrQwJWLEmUEQdqkBXW50eJhwZ19PmijNMppp/YZm6QBN6gvmrf5C5AwlvBBbSbkZddlHmRxnl+oX8yebS4HDJE1vghrP/N6ba6WFSWSKLedw5EiXC6ur8XQ8KXpfkhRpAXUA0MKemb3txrwjfnQRd8TUn+7/i1chdXBAuhdCyt1VQC5DP3pBvKHW2u04+xT34OmVquwmn30BCZE7EKVk/vb/U/UWVFjrGksxG1Csz9Xtcr6xbbSkl5pa0R7p1aVE+D7W3OLd+Tuky0+3XiABCJ/9RUbnJSlxyCZ5QiOqS2ADui67hNAVH8l5klNAE0mvBHKmEd/OE6LrDEklda8vuOnaB9NLTOwEpz6yaZ6ew2FgaI49Kr+DkAPZ30JGyTmTlIWTUtmBTFJdiBqBgV7ZGBpjNLXJYiwdJ1zyh+PBBvzlWf/LgzmoNFiE0sLqBTaL9h6pfI7AN9OFq2cItQfJ13QYRJlaEVtw/JvlStbZp+6JpzE6T4p1a3aoZkDw9iof1UnLoiiV3dHvZ7rlueiBAc5eRIypMfyxvMOgWRe7woCAqKuPCoEZGocY0mL7UlKnpjJP/wX4E8uncd00twjr66jgUbFkZsaz+RxIdUaFE7XFs1WhQC7BcpFezgSRJlwIKFRmqys3UNY7VYHU9u+nkyxxEfdu3xm15is+9nHwQxsNO9CIXSq
+ jCV6tx3t
+ jmwemUZrioQGlP/9UwelbRaJcT2j829wkdztlNLJRN9/K5/ArEd4vZzKhPVvN93pMMscWWi1DjxmrQeqw1nZgIynykNTBQxWOssvWPLlsnOqnBB63sq+L4I4gChAMd7gj3TGEQVUUmrVi2puUZmFobfCf9olEI7aI+3Akod1lvJueeloa1++mz54+SkGMInw8QRtiaqGxM+WsWMPDFRJw5pX0mIjoS49XDO/NarVsh581QMBs1mZ74UCCoKi27RhFsq/vHhencWdBZ8mps+Ulm0aotRkfM/QtSFAgDjYGANlxtz1ISrY98Hox3UdIiWYT+efZBlgnET9bCz5Ih8y9isbKROsf1jBoCkGZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,202 +144,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+From: Hui Zhu <zhuhui@kylinos.cn>
 
+This follows the memcg_ext RFC [1], which adds bpf_memcg_ops - a
+struct_ops type attaching memory controller policy to a cgroup - and
+one member, high_policy().  Its cover letter names dynamic protection
+as future work; these two patches are that.
 
-On 10/27/26 5:00 PM, David Hildenbrand (Arm) wrote:
-> On 10/27/26 03:19, Baolin Wang wrote:
->> Ayush reported an issue that shmem/tmpfs folios are still mapped when
->> truncating them on production:
->> "
->> BUG: Bad page cache in process ...  pfn:...
->> page dumped because: still mapped when deleted
->> "
->>
->> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
->> branch, and I got the following crash info. From the dump message, we can
->> see that truncate_inode_folio() is really trying to remove mapped folios,
->> which is incorrect.
->>
->> "
->> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
->> index:0x3880 pfn:0x191647
->> [  189.171995] memcg:ffff0000cc073d40
->> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
->> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
->> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
->> .......
->> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
->> [  189.172026] ------------[ cut here ]------------
->> [  189.172027] kernel BUG at mm/filemap.c:155!
->> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->> .......
->> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
->> 7.3.0-rc4+ #277 PREEMPT(lazy)
->> .......
->> [  189.183986] Call trace:
->> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
->> [  189.184391]  __filemap_remove_folio+0x34/0x160
->> [  189.184633]  filemap_remove_folio+0x4c/0xb0
->> [  189.184859]  truncate_inode_folio+0x34/0x58
->> [  189.185087]  shmem_undo_range+0x220/0x658
->> [  189.185308]  shmem_fallocate+0x2f0/0x470
->> [  189.185527]  vfs_fallocate+0x128/0x328
->> ......
->> [  189.187078]  el0t_64_sync+0x184/0x188
->> "
->>
->> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
->> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
->> MADV_DONTNEED synchronously releases the pagetable page before calling
->> tlb_flush_rmaps(), this could cause another thread's truncation to skip
->> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
->> as non-zero. A possible race scenario is as follows:
->>
->> CPU 0                           CPU 1
->> shmem_fallocate                 madvise_dontneed_single_vma
->>    unmap_mapping_range            .......
->>    ......
->>    (filemap_map_pages() remap folios)
->> 				  zap_pte_range
->>    truncate_inode_folio		    zap_empty_pte_table(pmd clear)
->>      unmap_mapping_folio
->>      ......
->>        zap_pmd_range (saw pmd none, skip)
->>
->>    filemap_remove_folio
->>      BUG_ON(folio_mapped)
->>                                      tlb_flush_rmaps(remove rmaps)
->>
->> To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
->> to after tlb_flush_rmaps() and use sync_with_folio_pmd_zap() to sync with
->> concurrent zapping, so that when we find a pmd_none() while unmapping a folio
->> without holding the PTL, the folio's mappings are guaranteed to have been
->> removed via tlb_flush_rmaps().
->>
->> [1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
->> Reported-by: Ayush Ranjan <ayushr@modal.com>
->> Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
->> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
->> Acked-by: Qi Zheng <qi.zheng@linux.dev>
->> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->> Changes from v4:
->>   - Put the pmd_none() check in the 'else if' branch (per David).
->> Changes from v3:
->>   - Collect review tags from Qi, Pedro and Lorenzo. Thanks.
->>   - Update the related comments per Lorenzo.
->> Changes from v2:
->>   - Use use sync_with_folio_pmd_zap() to sync with concurrent zapping (Per David).
->> Changes from v1:
->>   - Add an smp_rmb() to pair with the smp_wmb() (Per Lorenzo and Pedro).
->> ---
->>   mm/internal.h | 10 ++++++----
->>   mm/memory.c   | 30 +++++++++++++++---------------
->>   2 files changed, 21 insertions(+), 19 deletions(-)
->>
->> diff --git a/mm/internal.h b/mm/internal.h
->> index b1b0f29d2216..ffb8eaec90e3 100644
->> --- a/mm/internal.h
->> +++ b/mm/internal.h
->> @@ -584,14 +584,16 @@ void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
->>   void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
->>   
->>   /**
->> - * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
->> + * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
->>    * @mm: The mm_struct.
->>    * @pmdp: Pointer to the pmd that was found to be pmd_none().
->>    *
->>    * When we find a pmd_none() while unmapping a folio without holding the PTL,
->> - * zap_huge_pmd() may have cleared the PMD but not yet modified the folio to
->> - * indicate that it's unmapped. Skipping the PMD without synchronization could
->> - * make folio unmapping code assume that unmapping failed.
->> + * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
->> + * mapcount, and zap_empty_pte_table() clears the PMD only after the rmaps
->> + * for the table have been removed, but nothing orders the pmd_none() read
->> + * against later mapcount reads. Skipping the PMD without synchronization
->> + * could make folio unmapping code assume that unmapping failed.
->>    *
->>    * Wait for concurrent zapping to complete by grabbing the PTL.
->>    */
->> diff --git a/mm/memory.c b/mm/memory.c
->> index e911e63ba1ed..d9c54549b85b 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -2036,6 +2036,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->>   		}
->>   	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
->>   
->> +	add_mm_rss_vec(mm, rss);
->> +	lazy_mmu_mode_disable();
->> +
->> +	/* Do the actual TLB flush before dropping ptl */
->> +	if (force_flush) {
->> +		tlb_flush_mmu_tlbonly(tlb);
->> +		tlb_flush_rmaps(tlb, vma);
->> +	}
->> +
->>   	/*
->>   	 * Fast path: try to hold the pmd lock and unmap the PTE page.
->>   	 *
->> @@ -2043,18 +2052,12 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->>   	 * to hold the pmd lock failed, then we need to recheck all pte entries
->>   	 * to ensure they are still none, thereby preventing the pte entries
->>   	 * from being repopulated by another thread.
->> +	 *
->> +	 * Clear the PMD after the rmaps for the table have been removed, in case
->> +	 * an incorrect mapcount is observed after unmapping the folio.
->>   	 */
->>   	if (can_reclaim_pt && direct_reclaim && addr == end)
->>   		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
->> -
->> -	add_mm_rss_vec(mm, rss);
->> -	lazy_mmu_mode_disable();
->> -
->> -	/* Do the actual TLB flush before dropping ptl */
->> -	if (force_flush) {
->> -		tlb_flush_mmu_tlbonly(tlb);
->> -		tlb_flush_rmaps(tlb, vma);
->> -	}
->>   	pte_unmap_unlock(start_pte, ptl);
->>   
->>   	/*
->> @@ -2102,12 +2105,9 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
->>   				continue;
->>   			}
->>   			/* fall through */
->> -		} else if (details && details->single_folio &&
->> -			   folio_test_pmd_mappable(details->single_folio) &&
->> -			   next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
->> -			sync_with_folio_pmd_zap(tlb->mm, pmd);
->> -		}
->> -		if (pmd_none(*pmd)) {
->> +		} else if (pmd_none(*pmd)) {
->> +			if (details && details->single_folio)
->> +				sync_with_folio_pmd_zap(tlb->mm, pmd);
->>   			addr = next;
->>   			continue;
->>   		}
-> 
-> 
-> 
-> } else if (pmd_none(*pmd) && details && details->single_folio)) {
-> 	sync_with_folio_pmd_zap(tlb->mm, pmd);
-> }
-> 
-> if (pmd_none(*pmd) {
-> 	addr = next;
-> 	continue;
-> }
-> 
-> 
-> Minimal change required, no?
+Why it matters: memory.low and memory.min protect a cgroup by a fixed
+threshold and have no idea whether it is using the memory.  A
+high-priority cgroup that holds a large working set and then goes idle
+keeps suppressing reclaim on its siblings, and that memory is wasted.
+A policy program sees the real activity - page faults, charges - and
+can grant or withdraw protection as it changes.
 
-No, keeping two pmd_none() checks cannot fix the race, as I replied 
-before. [1]
+The hooks are not new: [2] proposed the same below-low and below-min
+decision on its own memcg_bpf_ops type.  Only the carrier changes
+here.  bpf_memcg_ops already supplies attach, the ancestor walk,
+result combination and the re-entry guard, so protection costs two
+members and one walk helper shared with high_policy().
 
-[1] 
-https://lore.kernel.org/all/179c26ed-1764-4e5b-a7ee-047ddabbfea1@linux.alibaba.com/
+Patch 1 adds low_policy() and min_policy().  A program gets a
+read-only snapshot of the check the kernel is making - the memcg, the
+reclaim target, the threshold and the usage - and returns a request;
+BPF_MEMCG_PROT_BELOW, the only one so far, treats the cgroup as below
+its threshold, so reclaim skips it and counts it in memory.events.
+The kernel compares elow/emin first and asks BPF only when it found
+the cgroup unprotected, and ORs the answers of the cgroup and every
+ancestor, so a policy can only add protection, never take it away.
+
+Patch 2 is the prog_tests runner: attach both policies to a child,
+fault 8M of anonymous memory into it, reclaim from its parent, and
+check that both hooks were consulted and that the ctx described the
+check faithfully.  Both answer NO_OPINION, so nothing about reclaim's
+outcome is asserted.  A working example that does answer BELOW, so
+reclaim skips one cgroup and takes the memory from a sibling instead,
+is maintained out of tree at [3], released under GPLv2.
+
+[1] https://lore.kernel.org/all/20260921192559.2619635-1-shakeel.butt@linux.dev/
+[2] https://lore.kernel.org/all/cover.1779760876.git.zhuhui@kylinos.cn/
+[3] https://github.com/teawater/memcg-async-reclaim/tree/memcg_ext_plus
+
+Hui Zhu (2):
+  memcg_ext: add memory.low and memory.min protection policies
+  selftests/bpf: Add bpf_memcg_ops protection test
+
+ include/linux/bpf_memcontrol.h                | 104 ++++++++++-
+ include/linux/memcontrol.h                    |  23 ++-
+ mm/bpf_memcontrol.c                           | 162 ++++++++++++++----
+ .../bpf/prog_tests/memcg_ops_protection.c     | 151 ++++++++++++++++
+ .../bpf/progs/memcg_ops_protection.c          |  72 ++++++++
+ 5 files changed, 470 insertions(+), 42 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_ops_protection.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_ops_protection.c
+
+-- 
+2.43.0
+
 
