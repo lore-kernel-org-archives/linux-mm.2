@@ -1,99 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E10C606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 16:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E58F606A33F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 16:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=c4YI6jiN
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=S/O6Vth8
 Received: by kanga.kvack.org (Postfix)
-	id 5D70D6B05B2; Wed, 28 Oct 2026 12:52:25 -0400 (EDT)
+	id 9D1A56B05B4; Wed, 28 Oct 2026 12:54:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B02D6B05B3; Wed, 28 Oct 2026 12:52:25 -0400 (EDT)
+	id 9A8AA6B05B5; Wed, 28 Oct 2026 12:54:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EAE96B05B4; Wed, 28 Oct 2026 12:52:25 -0400 (EDT)
+	id 897D06B05B6; Wed, 28 Oct 2026 12:54:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F5F96B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:52:25 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9165D14019A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:52:24 +0000 (UTC)
-X-FDA: 85372628208.16.5AA7DC9
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CA74E140002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:52:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=c4YI6jiN;
-	spf=pass (imf23.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 63F2C6B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:54:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21461160183
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:53:59 +0000 (UTC)
+X-FDA: 85372632198.09.A759CD1
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 35F514000B
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:53:57 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="S/O6Vth8";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793206342;
+	s=arc-20220608; t=1793206437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kSZ/p9sni9dlI5eyNVwd3UwnEXwjdQ5OzLQCHA5zC4s=;
-	b=FZBJ1Sd1+1mhXriQz7ttUtv9mlh9zYf/vDy8q386xAo1gEAvElY+aL3MSR4iISR4B2oeBv
-	2Ie0lZsDexhD52/1sBBeQmlVjOq7ZJ3Quav9G2wrUtJ0VlcJCmG1QULWiEA+r3Nh2TLqdV
-	w89Rq8r0tpzVG3aZvC8hpqf7KpLBJI8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793206342;
-	b=crY87JuK9jtIMDvyZU3GEnvXf+Unl9kJDbeKP402xIH6Cswm2tn2b1tfthAn4pfeM6DNmx
-	QCA/z8aK0FdEBRlswYcnPdbaa372OlaDQvYinypfrlpsVCznCUJ/abK3sfvi1y3AuCGfQ7
-	Juphu1HZySj1luWRF3E29dkqC3zTxWg=
+	bh=jQ5eyf1zl1dztY8G8GNDjIbe5i6XtlGMZ8AEehh0sP8=;
+	b=yxDsQ/MCvYx8LGplY6g/NmSWjLF11F1SoKfYIi37I8M0R0BYuaRY0TpX0iclXOHha1gCS1
+	0cfS0ykpBaMGaPg+1oHO4dcDs8NC0v41PsJcw0mJjVmO39yATVyeRZO1MYKXF+0wt5FAEw
+	hvAcHuW2EvhryydaOBTI9RGU0uJJ5vw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=c4YI6jiN;
-	spf=pass (imf23.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
-	dmarc=pass (policy=reject) header.from=mailbox.org
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4jFD1H4MqVzMldZ;
-	Wed, 28 Oct 2026 17:52:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1793206339;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kSZ/p9sni9dlI5eyNVwd3UwnEXwjdQ5OzLQCHA5zC4s=;
-	b=c4YI6jiNA9MhxQQZCQBsb1ni2h0Iue1tzEE22yE0Ik1gue0bcVU2bldk3IDx7Vv2mSoopf
-	7NhVbX6I9F2iD/hW//I6u8UR2J46NfEjcn3f/sq4dbTvQ0VficRtoEJPk12aUDPSJy8TTM
-	Ja4L0iwGdZ/fDEDYTb8aJz/LISm/uTOgzhoP9mMSdpQq42aRl9RK+vDA3IWTe+OHM7PHca
-	RNgdTW/o5XZ/OO9mIHuOlUiq/Q8sPDUs63yd3OQ3bA6lKtEqBL1b/GoYH13nJE53nv9v0R
-	qhEz+uV9YB86IsLe5Md2vBurF8mELDpO/RTi2+iyPzXK/+b2+c1jpFXUCZRYRw==
-Message-ID: <e68efe96e67c8b72047f2ab01c874026cecb025b.camel@mailbox.org>
-Subject: Re: [PATCH v2 2/2] Docs/admin-guide/mm/damon/reclaim: rewrite
- complex parts
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: SJ Park <sj@kernel.org>
-Cc: corbet@lwn.net, damon@lists.linux.dev, jm5905938@gmail.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, 	rdunlap@infradead.org, skhan@linuxfoundation.org
-Date: Wed, 28 Oct 2026 17:52:17 +0100
-In-Reply-To: <20261028001916.157488-1-sj@kernel.org>
-References: <20261028001916.157488-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="S/O6Vth8";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793206437;
+	b=vEdYlwUQ2hq8+ZWvBSBhDZfjLb5nLxH6+PDtdoTQL+mxQffJrx0iAvojHbqRIUTJeMUKK8
+	/MGe1ZfcRrUnMA4eCJTt2mxbTKS682R56Y663RPlsLcteC/1/UfjyVrx6VKJMpGHBJO8QY
+	I5lnBEFc69vqRACbjCoEPBAhsmzUpOM=
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-7cbbb7b90efso359490137.2
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:53:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1793206436; x=1793811236; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jQ5eyf1zl1dztY8G8GNDjIbe5i6XtlGMZ8AEehh0sP8=;
+        b=S/O6Vth802Y7hFCdGfY0B2OTHh7EBmvxHTvvW1yp/imv1PQ7Mq09yEy1daqPGKnQQR
+         BVght5AAS/G4bQgiP2pXERzVXSjwTsVKqfGAUtRotp7orXwZc6HLBM0YQHvMMhNTyHGc
+         QDfaEcGWRHJPuWZzxMsENNvEGviERgiLvn7Rafhb0l020nHYQWS+nYL6zaALI+v3x7FS
+         Ej/hsgj6vcLexq3XK50dWWTLfMLWiuGCC3J1HVjPCn0mjEHx1OXCxJOZCYBjUfuCX/2t
+         0U5qcG8dK8wDQNWL5Ag7IZYcKDiYIY3qJ2OxDam32RMQ+Y0xAZLDlEczq0X5z9Z3wnbt
+         ht8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793206436; x=1793811236;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jQ5eyf1zl1dztY8G8GNDjIbe5i6XtlGMZ8AEehh0sP8=;
+        b=lAIwUqYC8Famz9RE/6CUNsqb/smU6jfLLkym1TvRZZ3ICMxCg16nzuCCFbV2IFk5kz
+         7AXqMXBh7EgbRAXB4qJuuQb3SduPC1/ee6nn0xbuByX4+rErvJFy84SzkfIKk1YSAuU0
+         Rv67JakxQxqICshuc9pVXC7ZiWD+Xmz10s/h+w6kjz6OLCEs5HN+J22AEmck7Q3rMusi
+         3gZw+hR1QqN6aW6yfOTKAYsymcATweXjGM5zimYr6lG0BJ33VxTSMHQgfjlrmtcRLvhJ
+         VAoDsAyTbPP0i+jdwB2ZqSG1jT12PaHclCOT2quHXOUK9kH/7Y/1T5tVFmpScPgzAWUJ
+         t9zQ==
+X-Forwarded-Encrypted: i=1; AKwUvByKSgdHW/DINKIv/pfsgzb3VEuSBhNW71QB8VhkeBmlF/c5vupWQM0k8cwyusw4iRAqc/+QHAkhpA==@kvack.org
+X-Gm-Message-State: AFq9FYI46IZhzAZCoJH85FR2S49ymJ8sGP1+M5jNl+igHkpwFTnb8f+W
+	vHw9q5DcO6eKYEXngz2RaUPxOSGwUuzXD0BdXhwZKDYlNBSwBK45iXWK7DhvOuUTBLM=
+X-Gm-Gg: AYBFou0SGJtzyXjmoDMH1jj5qT8KEvHQ21nqt42SnBAPrm1Ukx0m3siC0YRT3OSPJ4K
+	qGEBl4ivUOCPFPGIj1vs1ciApbHMgdF2aic3RFUASB9DeLPYUpG/rHhWWLaR+mOnB8h/n0mzPSN
+	S4cpSK0obR0lT1EBG+/RhCyI/R+MzRCXz1wcGveOzoIyKJawJZ/U0VfUF/1ChswHz2UONLbxVll
+	mVS+sE5ncw37UsdXBsKv7suKuGNEfPt8r0uH0+wJNgXrkDWaYfA7/v97jkQn2ftyaBH5gj82F70
+	xBJQeGbw3qWEVM/BglWU1K9DRBOe1GLBG+HPOxmJpXoifwkvi9R4P23JSAQtyTPz/Isbl0bf62s
+	LqHfaY4IOH8Qz4zWI89moJmsCP9dIDQbgS9Qcgqsi/CglzpcM5L8kZT/mS2zTQA316Qi/pNueBa
+	wUCl6iLc/1xxIk1D7z7rCqTPpdVGOEReNjDhwaHZDBHec59BlPg9yJot04QDDWbYmCgycL6IX7U
+	xlFY86yol08ScRiv1VgMCggd4fZxUBEGHt8J3wwTPBkDVi4Jx+YVlPHoPeIwC72sQltO6Bl23iI
+	tQkt24h80dXqSAtFynnIWKSHVdvlmsyQadiprMxX+cmHoEtMhwzC8p1AzKoPmdqYXk6MooTrZsh
+	E9Kz0vBFyWJQTiXll1h+ZCcNpPDd7oQ==
+X-Received: by 2002:a05:6102:3e8d:b0:7cb:bb33:8412 with SMTP id ada2fe7eead31-7d03a5063b4mr1453208137.10.1793206435862;
+        Wed, 28 Oct 2026 09:53:55 -0700 (PDT)
+Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-991259db2d3sm6495987241.6.2026.10.28.09.53.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 09:53:54 -0700 (PDT)
+Date: Wed, 28 Oct 2026 12:53:47 -0400
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
+	Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH 03/46] mm/memfd: check for real shmem inodes before
+ accessing shmem state
+Message-ID: <auIoDgHmzpGH6cOl@google.com>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: 7ta55qyrcan3bsd387ztgpp8hdim5cs8
-X-MBO-RS-ID: 36aca95019600dc8a51
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CA74E140002
-X-Stat-Signature: ywidn1z3166bfd6z69s4yc4bi16hogxd
-X-Rspam-User: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-3-6f74bec9a5bb@kernel.org>
+X-Rspamd-Queue-Id: 35F514000B
+X-Stat-Signature: 9wuojdpbgwwzijs3qp6k831w69ixqs5k
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793206342-327629
-X-HE-Meta: U2FsdGVkX1+sMDeHZtAw556yUi10NNvHJmqRBP8zuNhpoU3UkCA4K2+Eth1TmuUANCfvc1IxzAnMnK1lI0chiQLfm+rDFno3G5z+81OobIQDD+f+/MjD5uuwTZsmsWGe/MPG/PD3M/tnFLx8jV0Nkm8uI3tK09uGl3ArhI5ZksLF4h3Blx3G5h8UfOIy79mrUK57WX3cQ5JhCFwK0tIQ9geM+/gaTkdY89wyrdd5FlpmyDpGeX7cH0nBPMl79WEZN8o13C2UOPGv2gj0DBOhUzV5e+cIB05jtKwBw/9zEiTIswJeoLuh0hTD7gBX9ekYdpgQmYt3Iv+a89LhgUB+QNX6is/9TCHxpMk+vzFJ843xlZMSgMIl4xZrzmK50QneZOkR5KYq4voQDQHzrXEknD48yFVlnPw2C9ntTK29+Eimznixk+PzyjwfEo5e/9JiHStUwUOOT7N6QsiEqSaWLglovZuNggXaypqcv53iAUYahDdQYpQV+9FA3bJO4ecVKjcP/A/sxlw97Y0jF0WYc0ET8eWp6CGgUoWjcxoDDqf/DASmTEUSMvSXtbUjreae6PbJu6KisXUtc5yVzXsqeZo2o9o5wPU9DIFuxzxYWUqAE1DydC0HhaW35IMqlVtYkao15MhLTlg47sUqM8QsHv6uat1X5DsgrauWqiibRuSxELUoS+CVbIjctNq3rePr5cnfxbL60jHhU9R5iwNCGo8MO6eQjtP4wPgeBaWMhxfMc43wXTjXHuM92PW0xPFiQIFqa1lEIaA0egjruZptwUz1dWw0eX8izCI8d4SfL4eKDCXmaurjqWPk5dn767nVXPkhHkB1iV4AjScNwEEALeoCB7nLgHzzclGMnxjMqbD1QKkX7tNxQ0HV+fWWtoZs8LmfVak6wKZjzaxvvXKpembUYYO9hejM/NEjHP6V4HQ4f2LDL1nHFaUcwlCFtqJE0Z5iepW5niOsbTpARuJ
- IcdZ1yfH
- cYMik9GOVH5+3M0vZSmaDNeM+W2JfHsQR4LS43AqVYVRiBP5/U/L/pKrH847KGyZEvxEtvyeV0EvxAvRjwuUj7XGuQ1DgTr7ySlY/9NWIh0+vaDERxtB/PVUMC+JL95evVjR7X81u7dqb2l8RpgNPs8vHWvp+IHRCz1MGi49A2BgFlAdOC1OgfjOx+chRxcn4SoX0r+cHEqmZQbI8Hyz/5a+beltP+FXXDraBha3nXA0tQWgBpaycvO4WTS3cB8BPGdSpA780+SpvLzdyQewavI9MiObFeV4El6zBP74N5/5MfRoDD11JrCqch4/F3Biz1MxEQJM9Ru+8d/zg4ALWiIqoBsIcqPjqDMLaIkOx1LUAjOJ00rbaP38tNKML0kQsb+BucltWa78voRBpX2oYwlHnGzAD6nfK1H0L6QDFHWkzNd52+20QcccY31ftVB39MljeJ6OQF6uWWhLOorA94mfIIg==
+X-Rspam-User: 
+X-HE-Tag: 1793206437-711822
+X-HE-Meta: U2FsdGVkX1/OaVzd9kq7dI2WRssf1X2c7uoMOSVWEarcCClrh/eru2UZ7Pf8BXi9t4RFdWgbE8sEv0sKcte16mi4SxnBMUWeBZRAqTw4wWHAJJwCBZiqHSTW735ePspPueQe+rqWuR1SNThovdWTRp9G1Ev17QxbqctYUq26flJPc31OCEBnwEOQlyvgAYsRteEHfjisu79Rql96HPiWtdvuszynFBbAo770foR7UU6goORutnA65jICVLsoFK2r36YpSg8kt/kasA1oZkmDQFMCw0rMu/ZE6pbnidL+JEV+M3+w9mANAepc0xxhN3tReisvyj/6GtgVby9EwzR0OCukCS+8Q5+ZzuJTL4/vHLu/1wNki1DEaoX1/kRku7+FyDQ8sy/rmSv7jYx5X65gfDFNw52ax+RyZEK9fwqb90w1jQ581QSWvMih06kRjVzatPdvNR9c75pJIFj9pFFNfemuGjHKLrDa1IsyyEDaLUKywVE5BG5T9HShQFqAYyKP7X5pZnf5WTuWTpDbkQOXOymcfGzEHY7rcXPIKoGihI4cCUrcyFGuvF7N58Ummqm2akeNZnAzx2yHAEmyCc5TcUBHGU7hMKpG8QaBd4DrVTVEyZ+0Jbop15SwvHFoLx8PhZnEnWqM4jTyXeoSRryPzvL856MBfUaNNE7DNIYR108L9ir8imWccp6S3oUt5QFaX9duLI/wcOzg5qFB3DnG+d55SfTtdurL1IbXgSTNixZjeef9YFq9GOp0MBeLPCbeSJDWAvCsT1EOlP5omU70ytbph0vLKYKYnuYSw2y6d+Z3r0mn4wUeB+shjfaI3FNI4gr5AxjkXaqXO6WBPWOTOCZoKpxV8Ki1Pwo7fR1rlMEvXVhT8ZGfGXiszgoLwb/xRC93l3IOvctWqZ3+iNAhKZclWfRqJIV+Fhw4Zf7iHa3FtBF0dm8Scqa+pX0iQqcKM7vrWiUhNTz3HGWV5el
+ EPnWXsO9
+ 55xmhX4bzvCJx+RcDKcgkznK2fVPl5YhiRsAm0yES5ShnXiOjQqSaPSlW4Wb25olg0cK4serXhvszICLI6J5pWJrfxfVIBuAyCaq2XDqZgYvXNOAMR3fBB/njBDfUX50sxmW6r7uffAwJnZT41hVYYCsrsU6IgZaPqMShT8Nx0H8xyVHUgoV3RvNvsLgFNXgT1+QWQ3tpZy4HoMeb7r0uMqIxySm/RoA66lREyps0oI6NvI2n7QQY6IMDuYO3ZgivBFdl3Xg4pdw8P61TzXcTpcL5v1Ja8FP5ZsK3eK803QTIoNy/nceyoouZDhlX+NfWXJgDBaKTSemniJ8u0E+ex7xeWQquwoAZoxm2+aOkIN7Y9unCvGLQapFEXg7sPgocShvrz2aleHeAtZGebKdOUjlMTpmm8L3HI7AJpk+zg8EbiCmcsb+a1Z32oNOfhqZ0XHQGol15inyj5OqWv3E5TTKaKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,136 +153,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+On 10-27 00:17, David Hildenbrand (Arm) wrote:
+> shmem_file() only checks a file's backing mapping. That mapping can belong
+> to another file, as with a Coda file backed by a tmpfs container after
+> mmap(). It does not establish that file_inode(file) is a shmem inode.
+> 
+> Seal handling and memfd preservation use this check before accessing
+> shmem inode state, so they can access an inode of the wrong type.
+> 
+> Add file_inode_is_shmem() to check the inode's file operations in both
+> paths. This identifies regular shmem inodes, including those used by
+> memfds and ordinary tmpfs files, independently of wrapper file operations.
+> 
+> Fixes: c49fcfcda8b5 ("mm/shmem: update file sealing comments and file checking")
+> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+> Cc: stable@vger.kernel.org
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  include/linux/shmem_fs.h | 6 ++++++
+>  mm/memfd.c               | 8 +++++---
+>  mm/memfd_luo.c           | 2 +-
+>  mm/shmem.c               | 5 +++++
+>  4 files changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+> index a7c7a96a7cbf9..2ceca7993e4f5 100644
+> --- a/include/linux/shmem_fs.h
+> +++ b/include/linux/shmem_fs.h
+> @@ -117,8 +117,14 @@ extern unsigned long shmem_get_unmapped_area(struct file *, unsigned long addr,
+>  		unsigned long len, unsigned long pgoff, unsigned long flags);
+>  extern int shmem_lock(struct file *file, int lock, struct ucounts *ucounts);
+>  #ifdef CONFIG_SHMEM
+> +bool file_inode_is_shmem(const struct inode *inode);
+>  bool shmem_mapping(const struct address_space *mapping);
+>  #else
+> +static inline bool file_inode_is_shmem(const struct inode *inode)
+> +{
+> +	return false;
+> +}
+> +
+>  static inline bool shmem_mapping(const struct address_space *mapping)
+>  {
+>  	return false;
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index 0f6fff004f5e4..7d2da23157003 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -211,12 +211,14 @@ static int memfd_wait_for_pins(struct address_space *mapping)
+>  
+>  static unsigned int *memfd_file_seals_ptr(struct file *file)
+>  {
+> -	if (shmem_file(file))
+> -		return &SHMEM_I(file_inode(file))->seals;
+> +	struct inode *inode = file_inode(file);
+> +
+> +	if (file_inode_is_shmem(inode))
+> +		return &SHMEM_I(inode)->seals;
+>  
+>  #ifdef CONFIG_HUGETLBFS
+>  	if (is_file_hugepages(file))
+> -		return &HUGETLBFS_I(file_inode(file))->seals;
+> +		return &HUGETLBFS_I(inode)->seals;
+>  #endif
+>  
+>  	return NULL;
+> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> index 59de210bee5f9..c0811407ce397 100644
+> --- a/mm/memfd_luo.c
+> +++ b/mm/memfd_luo.c
+> @@ -582,7 +582,7 @@ static bool memfd_luo_can_preserve(struct liveupdate_file_handler *handler,
+>  {
+>  	struct inode *inode = file_inode(file);
+>  
+> -	return shmem_file(file) && !inode->i_nlink;
+> +	return file_inode_is_shmem(inode) && !inode->i_nlink;
+>  }
 
-On Tue, 2026-10-27 at 17:19 -0700, SJ Park wrote:
-> Hello Manuel,
->=20
->=20
-> On Tue, 27 Oct 2026 22:23:46 +0100 Manuel Ebner <manuelebnerli@mailbox.or=
-g> wrote:
->=20
-> > Rewrite complex sentences.
->=20
-> Any special reason to keep this as a separated one?=C2=A0 I think it is o=
-k to merge
-> this into the first patch.
+Yeah, file_ is not needed, otherwise:
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
 
-In this mail ( https://lore.kernel.org/all/20261016142921.126622-1-sj@kerne=
-l.org/ )
-> Let's do such rewriting with another patch.
-
-I understood this as 'make it two patches'.
-
-> > Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
-> > Suggested-by: Aveline Noir <jm5905938@gmail.com>
-> > ---
-> > Two more minor changes
-> > @ 31
-> > /s/attempts to pages out those/attempts to page out those/
-> > @ 126
-> > + 'is' to fix grammar
-> >=20
-> > =C2=A0.../admin-guide/mm/damon/reclaim.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 19 ++++++++++---------
-> > =C2=A01 file changed, 10 insertions(+), 9 deletions(-)
-> >=20
-> > diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documenta=
-tion/admin-guide/mm/damon/reclaim.rst
-> > index 0bab2299ea..033686f410 100644
-> > --- a/Documentation/admin-guide/mm/damon/reclaim.rst
-> > +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-> > @@ -30,12 +30,13 @@ guests could mitigate this problem.
-> > =C2=A0How It Works?
-> > =C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =C2=A0
-> > -DAMON_RECLAIM finds memory regions that weren't accessed for specific =
-time
-> > -duration and page out.=C2=A0 To avoid it consuming too much CPU for th=
-e paging out
-> > -operation, a speed limit can be configured.=C2=A0 Under the speed limi=
-t, it pages
-> > -out memory regions that weren't accessed longer time first.=C2=A0 Syst=
-em
-> > -administrators can also configure under what situation this scheme sho=
-uld
-> > -automatically be activated and deactivated with three memory pressure =
-watermarks.
-> > +DAMON_RECLAIM identifies memory regions that have not been accessed fo=
-r a
-> > +specified period and attempts to page out those.=C2=A0 To avoid it con=
-suming
-> > +too much CPU for the paging out operation, a speed limit can be config=
-ured.
-> > +Within the configured speed limit, it prioritizes regions that have be=
-en
-> > +idle longer for reclamation.=C2=A0 System administrators can also conf=
-igure under
-> > +what situation this scheme should automatically be activated and deact=
-ivated
-> > +with three memory pressure watermarks.
-> > =C2=A0
-> > =C2=A0Interface: Module Parameters
-> > =C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-> > @@ -125,8 +126,8 @@ quota_reset_interval_ms
-> > =C2=A0
-> > =C2=A0The time/size quota charge reset interval in milliseconds.
-> > =C2=A0
-> > -The charge reset interval for the quota of time (quota_ms) and size
-> > -(quota_sz).=C2=A0 That is, DAMON_RECLAIM does not try reclamation for =
-more than
-> > +The charge reset interval for the quota of time is quota_ms and for th=
-e quota of
-> > +size is quota_sz.=C2=A0 That is, DAMON_RECLAIM does not try reclamatio=
-n for more than
-> > =C2=A0quota_ms milliseconds or quota_sz bytes within quota_reset_interv=
-al_ms
-> > =C2=A0milliseconds.
->=20
-> I think the original sentence was not that confusing.=C2=A0 Also, this ch=
-anges the
-> nuance of the sentence?=C2=A0 What the sentence is saying is
-> "quota_reset_interval_ms is the charge reset interval for ...".=C2=A0 If =
-this was
-> really confusing, maybe we can add "quota_reset_interval_ms is " part.
->=20
-> But, I start feeling we might trying too much polishing...?
-
-I think the verb is missing or can you tell which the verb is? If you can
-no fix is required.
-
->=20
-> > =C2=A0
-> > @@ -137,7 +138,7 @@ quota_mem_pressure_us
-> > =C2=A0
-> > =C2=A0Desired level of memory pressure-stall time in microseconds.
-> > =C2=A0
-> > -While keeping the caps that are set by other quotas, DAMON_RECLAIM aut=
-omatically
-> > +While respecting the limits imposed by other quotas, DAMON_RECLAIM aut=
-omatically
-> > =C2=A0increases and decreases the effective level of the quota aiming t=
-his level of
-> > =C2=A0memory pressure is incurred.=C2=A0 System-wide ``some`` memory PS=
-I in microseconds
-> > =C2=A0per quota reset interval (``quota_reset_interval_ms``) is collect=
-ed and
->=20
-> I'm not sure if the original sentence was really difficult to understand.
->=20
-> I'd prefer dropping this change.
-
-That's ok.
-
-Will you handle the final edit or should I send a [v3]?
-
-Thanks
- Manuel
->=20
->=20
-> Thanks,
-> SJ
->=20
-> [...]
+>  
+>  static unsigned long memfd_luo_get_id(struct file *file)
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index fadf23f9e21ed..0d41aac125df9 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -275,6 +275,11 @@ static const struct vm_operations_struct shmem_vm_ops;
+>  static const struct vm_operations_struct shmem_anon_vm_ops;
+>  static struct file_system_type shmem_fs_type;
+>  
+> +bool file_inode_is_shmem(const struct inode *inode)
+> +{
+> +	return inode->i_fop == &shmem_file_operations;
+> +}
+> +
+>  bool shmem_mapping(const struct address_space *mapping)
+>  {
+>  	return mapping->a_ops == &shmem_aops;
+> 
+> -- 
+> 2.43.0
+> 
 
