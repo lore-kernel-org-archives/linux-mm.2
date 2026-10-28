@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FC9606A74C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D228606A747
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fGj+M7N+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ogsZoNea
 Received: by kanga.kvack.org (Postfix)
-	id 539556B05CF; Wed, 28 Oct 2026 11:48:54 -0400 (EDT)
+	id 009AE6B05D1; Wed, 28 Oct 2026 11:48:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511DE6B05D0; Wed, 28 Oct 2026 11:48:54 -0400 (EDT)
+	id F229B6B05D2; Wed, 28 Oct 2026 11:48:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42A2D6B05D1; Wed, 28 Oct 2026 11:48:54 -0400 (EDT)
+	id E12246B05D3; Wed, 28 Oct 2026 11:48:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 130C96B05CF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:48:54 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A612F16013A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:53 +0000 (UTC)
-X-FDA: 85372468146.13.4194040
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F1C604000D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fGj+M7N+;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BC44B6B05D1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:48:57 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55C31A016C
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:57 +0000 (UTC)
+X-FDA: 85372468314.24.509BA34
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 92421180008
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ogsZoNea;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793202532;
+	s=arc-20220608; t=1793202535;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NmmD4yO6695dLKaZcbJ6IgK3b4ZwhEaIV1ijeiKAe5Q=;
-	b=27GsupELvLsrCvEyVzHjC1oXAKZHLklYXHjXN2yy6yoxBTQXoTo/WF/XE1iT1uAfnfzGHY
-	3+h44sWJRBgKwqgjs/O2YDCD2OR5fiFdj+E5gf97BF5xzDWAunqY4NEEzN8SkwvPf1bACJ
-	sOdMNiLqPPRkWZHjWgfRMIUib8cp2l8=
+	bh=K1JDBLPFOu6JXnIWw8Oy0ZhhClazUCLSQIjUwYJcSrM=;
+	b=g0Mq4sPs3wb82r8Zhd/770FuBiioyfZtLgRw9Fz+S9dCaqQufczYsn+3M637rkfpNcMrNJ
+	luHTDrclR7IwbqLi+Rwmzt9uRpJq7feLATnQtNv+Nq8LCAEIv+FFwfOVSRFdYt6yy3svoF
+	yU4aTIY6v+2EWSLEgnSGaIoM2kb+94M=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fGj+M7N+;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ogsZoNea;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793202532;
-	b=rMMILhbhd7jwoH3SBhyuboLn5HfqASN9CRNih5Q2CbXKFtpKr9BKVcHL2oXxcDiv1WgnH4
-	vKcG7Wx/2d5yKSmGtc1qjFbn2RfAj8DN3ugQk48nGbe8/7YqaQ6uhjJmRxobh66Rlse44N
-	jbRPTQ9Uq5fYoDUSICcufaaJen78gso=
+	t=1793202535;
+	b=P1xc7TrY1ou5XS2Gs9N2dxR6Y5cYbuvRL+sdV6Scb8s45bK8dU1zqPTQ60aeL+GhuKjF/d
+	0TXOBBcXTZcmzM5MT1cYmVH9b+gTxqVABAcHC7tBjAUhymy963WWOv1ZRw2Ex+dRuK0DDO
+	QosgMqit4z+AHOkAovx0JAWSgXdG6V0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D2F860210;
+	by sea.source.kernel.org (Postfix) with ESMTP id DBEE040F1C;
+	Wed, 28 Oct 2026 15:48:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ADC1F01828;
 	Wed, 28 Oct 2026 15:48:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CE31F031E3;
-	Wed, 28 Oct 2026 15:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793202531;
-	bh=NmmD4yO6695dLKaZcbJ6IgK3b4ZwhEaIV1ijeiKAe5Q=;
+	s=k20260515; t=1793202534;
+	bh=K1JDBLPFOu6JXnIWw8Oy0ZhhClazUCLSQIjUwYJcSrM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fGj+M7N+Mld43wuC92F96RpQkeLJn+L+JZ9bHpfMSf3K6FODlEm93QiYzXkUaILJu
-	 LzkCOBB8OEarUGzeMQC/Fb4HgLUzZ0kb7l1mfzgzhvrfqoZ23eK85/9tDnP3yUJ89Q
-	 f2xxaJL5zq4UHyWnbRUvhTAmRJ6b0xFatMkdY3bex2301uZVjFXEZEEAdCjtY12Soc
-	 HwQHPsAsYbVa57sva9YPdXnw7ktvn5dmGy6bgMVhl1Mc8RqdTme8J8QNj3qY2ddPR4
-	 X2w9Dk+skhviVEBCajjeFxiK65jpjapgyzjZpxrzNShy6XUkUt62GVNtryPPUny7jg
-	 cdW1T0zAjfKWw==
-Message-ID: <sashiko-outbox-188095@kernel.org>
+	b=ogsZoNeaTQNfOirbMVKSK6feq27pIMRM4V0VWtg4Db+xUyoFKNllWKv6Jr9cdTqFD
+	 Xq4HPwuvGIxEi3dHAguImSCmj0CA+m7xfLj5LD0aE8ogB9pn83aVidkbxuXYCsOAUG
+	 S2t9blyXTKBgSGx4zaJpDYVQ7ijBHlrlIvAFiDyb+JfJuS2qMGRUVgNp7AKO8MqtBX
+	 oRZp9iPOwk8n/CRuY2YOe6knYA2scnjcyTDLi62ohDMemIcqhj146bkQfds9Pn6Zkc
+	 kip5mr2qmpKADJLd1Bnavr210B8cSCKoc3BpG79rZl2OJf3UMo93vh5Bb8I6vpkdJr
+	 pA5asqO6hJUAA==
+Message-ID: <sashiko-outbox-188096@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 13/14] samples/kvm: Back absent pages on demand in
- the sample provider
+Subject: Re: [RFC PATCH 14/14] KVM: selftests: Test guest_memfd mapped by
+ iommufd
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Fred Griffoul" <griffoul@gmail.com>, "Ackerley Tng" <ackerleytng@google.com>, "Paolo
  Bonzini" <pbonzini@redhat.com>, "Sean Christopherson" <seanjc@google.com>, "Jason
@@ -98,25 +98,25 @@ Cc: "Alex Williamson" <alex@shazbot.org>, "Alexander Graf" <graf@amazon.de>, "Al
  Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Yan
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>, kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261027154649.91571-14-griffoul@gmail.com>
+In-Reply-To: <20261027154649.91571-15-griffoul@gmail.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
  <20261027154649.91571-1-griffoul@gmail.com>
- <20261027154649.91571-14-griffoul@gmail.com>
+ <20261027154649.91571-15-griffoul@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 15:48:47 +0000
-X-Rspamd-Queue-Id: F1C604000D
-X-Stat-Signature: krkiamghch74izmmpo9hsnn8pcazuw95
-X-Rspamd-Server: rspam04
+Date: Wed, 28 Oct 2026 15:48:51 +0000
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 92421180008
+X-Stat-Signature: scmhrhpgr8berb3p646a9cdzo3sdqt4g
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793202531-655152
-X-HE-Meta: U2FsdGVkX1/DaG+UaFmDXA5VEmgpD8mPUXImwS5rKhovSu0atckcn8RONHmjerE8wyLA6jy8UsXSlCU/smq1LN9fPtRLB7rdTZo8OZddon1oQy4gvHLmWucNU+426sw51NHtNKZVvbeaTBTiArYFf7o3U77Ui/BpTH29D3rth6G3u/EwEObj8jx52McWLXOSagbOtf7EVtn2KDbfX1kpTDjBDWRPgIkWguwIpLOQ8UEs/V8oFRwDCuhuoR+JuFgx4l6Ch0A/IQz6nqwzf4bXW4hD/UDyqjLgJ0yuCc0W7H0p9fmqnWdhW/JNToDxRnLIH9y39YBeM5mKEpA8baHyUiAFNjF2CBVDUUbhWsC88BM4jvbm+FiX6dIZTsBJNHKMHaOe1wovxk8BbQoPhzNc02rN293L9HAiXsPkr+B2CdLEU2KcPa00AmH7vdQ6w532QJ9qj6r4LydespMez3NGYTQx6beVyVYqrY/vi9kNXnMWAJonSmnt3JEiWJp58pIJC7jb+G58JPUCPaC5/jfrLX3NGd5X3zvzyUoOwcC/ESd6IVk/sUjxqzPth+FbVUdxgOBLJTZMyrVPJUlgaPDb4cJRJ8j+u9bsxoj7L8m7Allc8qR7OKvgNK9PptcTExeX84XP3JOFx6DSjQKl9RkTutavTFemLjTwNihqLxiMZrl77RoavvRt7PfJ8g4xX7rrlsgd1DsXP/iVym3VGZ4fagXb3S1uTykEaS5I83fOHw4M99zGNn43Ackm5WUchSudyXriOK3SrQvP/HDDJSl/An+zowgi6F1RYVOMVEs9gjxEUyQDms7i0nUZ/SfBMWeYzFOyMMVL6MFd61Dc4z/Hlt/rrGuSmmUWbAh/Mj7tnUVIkuZuJ5qr6pH2BZtxD5kSfArYdzk3GkWC50ZXYq8nNvC6OFzqvWJKB2sdm0KSIHFGIRboVPvCQfJVpH5Iq4taD09VQQ0bKHn22NmH/I/
- lPNa6wT4
- +ZuxivlGA9TY1wrzn37Stul3mTVCrUeV+aQCI/CtCfq0BgN9cIXG+5RLgfVDH2KzTYLuE/1O4xqT4IkaKG4iyNU1BAJQhUY+WGEwcK61v3InRj7hL+AbPgPoWySJVpP/AFYotPDICFpE11qe7N/gM2JkYrtLgK3DTEkdzaJU9kPm/5rF+31n0JLtmFYTv2b7rhn59Xxi51UdV7Q8MioVvP4grQBEzN1RkpglB9/KJfVutaNdTqk1tV84rePlAxCFz9Jia5wDaN8VE3Dl6XQPk1QbMsntDsFLa3GHgfNSLLP1SPWwVsvenia/WpwjcPUEgGcdOPwMT42Gn3in7dsW0FXLP8EE+HkpwVxCtTQstb6hFkBiyXmghEQJcMwh1h8xm+3Zna0RRoIMY9JqcWAptrRkm7hCjeVS+X3AkA3etwijauM/XkpneBqiplGRmHMKj2SGqvTciC/qNTTh9wfAxf+nK9qnX5IwsvFMqeSC0ZfvFfECp2QclrdcRbcytCnZjDibapzvBfdqpX3WcIy6xb664VdYUUJpL/OA0cdpJdHg26hKoRUjEQYP2Ah4oOvTlK9mJEoO8oT1FBNUU2/uUiY7vYXVaj3NwAqO1lSIRsxv6mSqEdXs+XHH/0ZEGVG5TmifETrmuPhNb84VOUx7h3/E0VtSHYmZ1lXnUGZEn0IDCS2DF42W8NaicWQ==
+X-HE-Tag: 1793202535-494151
+X-HE-Meta: U2FsdGVkX1/alE49Ztz/CBMG/oASVp7Hd2SORsDSquIXhuxkz8flxqzX9MV6+fN+Z3lfg3grZGTtoh4KIOhMdxJ42YtYjpMcZ130SzLdZFLnoWgbwIeVoSKDOArfps/U+1ipKtOsFuuqzpE7aBLutQPA1OJ5qATmT4kUwvGihNMoNs0FpuRR+2xewlYX9yVqVf5voD9N0FzquUoyzpZbbQNwdUMvVp1cOS4sbbSeugPlEZ8QprtISZM2dE69LTbz2+LGKE6EQUTZkcKLc4XyYfa3eZMV9bHxMy24b/ycO8pdnaGizfrXgy0QQL0BJNLz1Fcg9glxBJa9bc+/OuV+AJ9Y2F5w/C3Zt9Gl7rbcVXr7u8Pf9CzYIWyVSJnIjNRDd+ahom9NJtpTDwUrCsQEevzl1SAnYxxuWz78JdJcgx513fU+Yl4Wp3UGoVk8JwSQ7GjYNUBxI7c8ooz0aXJ+WCTqYWBoRLXCQGbzcP20VZtEzEfT0kUU1zu1IzqUONwZQr522s+fZHt5v4xfMPOUkmLrgq7OqOPrvnASi/arx/ml9fvKl1U9BnQVFrOa6oS3Aob+f5CWcdHwO3cP6JoaxhOWysmpePcDUNz32/bU5Iya5gYnFj76rQG3janJ7W7JQe7o21bVa5T0d7bR5BUiHxWtAYaeBk6Srbu7FqwvQczHieryQx9NMPcx6rn0VyrXGhSJLTa/PvSG0lsUxK8neszRUhk6dLaaDRcVQfiJekuvjObrYb3nzFg/FF+hx+r9Wm+wNDp9MajOenp4LaYD62orvP5YiuHaRScT4a+7ElxPYyjryQ85OAdQF4aaHj4EC1O5fp9PFHvhwJCiPXeJLtrrDjnRS95I6AyTFt9GvByzdHMlflFYI7GmAFM+4XyjNhSSbX/jZjD4nG8EBNUbAcQAh89D90TvcoC3i58JOzlH7oX9P65Aj+2KF9d2mfc9+l+6W2NMpvAghGVDlkE
+ /aEgeHpt
+ 5qcR9SGJd5rQ0nM6Hhl5vrWc+Qxbjdiz2pkAUuW94OXq1CihMrhCG3bY7Ilmw1e5WrUH7a5iwt19sVvDg/A/S00gBn6pJDiNnJbvFnbEsXqt/3mKRKolrJj52s6nw1P+bt2T5UhPdzSRCnK5rxkCXbTPMTg1EhQlP/qW8478gM7g0tofEmNcW5nb63yE5V6qp/DO/JIGPKmEoiuDbjBarGk7aDfp3i4iuBnskt1aUnaYmNuxuJ2MA1VCKL65A5CYYnwpb7CqtK5qhj4NJpC7fOYJTEV6cCyvUyqaB6BwemBRRT0CULRERir7wSNFi+CVkO/Sz9co3hkNDnt7Hgh9gxYhDIrrv/Fft6RB1s4lTOtyTkBM6zac2ykxL5kZtgX5mGynBS/uqhpQ3nCJS10XEKCUizUfsx93i8YIn9SZKctP4kRE6kupU0pJqHyXjfExwegt8iDwb/zUMY7nhh9BKylBJnWbnRfu8AqD2DO7svZEyYM/1zI+r52GxjAtP147QacaZKtmLU0qqom4KlTyx3+kLDmOBMolthUnNiaFrgFMr3I/rBwfPlLfB9P/idpo4Hvo/e7LNT4eX0N3ypEHZ1+jSvviHQlY6gR895W8clFDxVr3zwf6PkMXZMbbESKEIXyaUPAUvp4A46X3OVznkv7j0/oo2jHwUPA2HjL+u3OcxDJLjrgWJ+L/96VR1BLdiIDJ7pTjNS2fUNUGRZjX8TJxO01SiDqKDXtsRPshWz1IUdU0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,181 +126,119 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] samples/kvm: lockless absent bitmap updates race in get_pfn() and =
-put_pfn()
-- [Medium] samples/kvm: mps_gmem_get_pfn() fills 2 MiB when reporting small=
-er max_order
+- [Low] KVM: selftests: host_access() reimplements TEST_EXPECT_SIGBUS() poo=
+rly
 --
 
-commit 2aa66dad428fa6322f520c9983287b30bb49a21a
+commit 039c70671ebb1232a61b8053400cfbcf04938b2b
 Author: Fred Griffoul <fgriffo@amazon.co.uk>
 
-samples/kvm: Back absent pages on demand in the sample provider
+KVM: selftests: Test guest_memfd mapped by iommufd
 
-This commit adds the MPS_NEW_FILE_FILL flag to the KVM sample memory
-provider so that get_pfn() backs an absent page along with the surrounding
-2 MiB block on demand, and put_pfn_range() marks released pages as absent
-again.
+This commit adds gmem_conversion_iommufd_test to verify that iommufd mock
+domain device mappings of a guest_memfd stay synchronized across conversion=
+s,
+allocations, hole punching, memory failure, and PFN provider operations.
 
-> diff --git a/samples/kvm/mem_provider_sample.c b/samples/kvm/mem_provider=
-_sample.c
-> index 670e36207e596..41e0ce5b6bc6a 100644
-> --- a/samples/kvm/mem_provider_sample.c
-> +++ b/samples/kvm/mem_provider_sample.c
-> @@ -41,6 +41,7 @@ struct mps_info {
-> =20
->  	unsigned long *absent;		/* taken away by MPS_SET_PRESENT */
->  	unsigned long *readonly;	/* set by MPS_SET_READONLY */
-> +	bool fill;			/* MPS_NEW_FILE_FILL */
-> =20
->  	struct inode *gmem_inode;
->  };
-> @@ -62,8 +63,15 @@ static void mps_gmem_put_pfn_range(void *provider, pgo=
-ff_t index,
->  				   size_t nr_pages)
->  {
->  	struct file *resource_file =3D provider;
-> +	struct mps_info *info =3D resource_file->private_data;
-> +	size_t i;
-> =20
-> -	mps_zero_range(resource_file->private_data, index, nr_pages);
-> +	mps_zero_range(info, index, nr_pages);
-> +	if (!info->fill || index >=3D info->npages)
-> +		return;
-> +	/* Lockless, like get_pfn(): guest_memfd holds its invalidate lock. */
-> +	for (i =3D index; i < min_t(size_t, index + nr_pages, info->npages); i+=
-+)
-> +		set_bit(i, info->absent);
->  }
-
-[Severity: High]
-Can updating info->absent without info->lock in mps_gmem_put_pfn_range() and
-mps_gmem_get_pfn() race with mps_set_present() and concurrent faults?
-
-In samples/kvm/mem_provider_sample.c, mps_set_present() modifies
-info->absent under info->lock using non-atomic bitmap_clear() and
-bitmap_set() without holding guest_memfd's filemap_invalidate_lock:
-
-samples/kvm/mem_provider_sample.c:mps_set_present() {
-	mutex_lock(&info->lock);
-	if (present) {
-		bitmap_clear(info->absent, start, end - start);
-		if (info->gmem_inode)
-			kvm_gmem_restore(info->gmem_inode, start, end - start);
-	} else {
-		bitmap_set(info->absent, start, end - start);
-		if (info->gmem_inode) {
-			unsigned long pfn =3D info->base_pfn + start;
-
-			kvm_gmem_revoke(info->gmem_inode, start, end - start, &pfn);
-			mps_zero_range(info, start, end - start);
-		}
-	}
-	mutex_unlock(&info->lock);
-}
-
-First, if mps_set_present() runs concurrently with mps_gmem_put_pfn_range()
-or mps_gmem_get_pfn() on indices within the same unsigned long word of
-info->absent, the non-atomic read-modify-write in bitmap_set() or
-bitmap_clear() can overwrite concurrent set_bit() or clear_bit() updates.
-
-Second, during revocation in mps_set_present(..., false), bitmap_set() runs
-before kvm_gmem_revoke() takes filemap_invalidate_lock, and mps_zero_range()
-runs after kvm_gmem_revoke() releases filemap_invalidate_lock. If
-mps_gmem_get_pfn() runs in either window, it observes test_bit(index,
-info->absent) as true and clears info->absent for the 2 MiB block, which
-can either cause kvm_gmem_revoke() to see the pages as present and skip
-revoking exports, or allow a fault to map the page before or during
-mps_zero_range().
-
-Third, callers of kvm_gmem_pfn_get() (such as kvm_gmem_get_pfn(),
-kvm_gmem_fault_user_mapping(), and kvm_gmem_allocate()) hold
-filemap_invalidate_lock_shared(). While one thread is clearing the 512 bits
-of info->absent in mps_gmem_get_pfn(), a second thread faulting in the same
-2 MiB block can observe test_bit(index, info->absent) already cleared for
-its index while higher bits in the 2 MiB block are still set, causing it to
-compute a smaller *max_order and return before the first thread finishes
-clearing the block or updating exports.
+> diff --git a/tools/testing/selftests/kvm/x86/gmem_conversion_iommufd_test=
+.c b/tools/testing/selftests/kvm/x86/gmem_conversion_iommufd_test.c
+> new file mode 100644
+> index 0000000000000..5d17b0e2dd438
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/gmem_conversion_iommufd_test.c
+> @@ -0,0 +1,956 @@
 
 [ ... ]
 
-> @@ -241,8 +251,16 @@ static int mps_gmem_get_pfn(void *provider, pgoff_t =
-index, unsigned long *pfn,
->  	if (index >=3D info->npages)
->  		return -EINVAL;
-> =20
-> -	if (test_bit(index, info->absent))
-> -		return -EFAULT;
-> +	if (test_bit(index, info->absent)) {
-> +		unsigned long first =3D ALIGN_DOWN(index, PTRS_PER_PMD);
-> +		unsigned long i;
+> +/*
+> + * Read @addr, or write @val to it, through a host mapping.  Return the
+> + * signal that the access raised, or 0.
+> + */
+> +static int host_access(volatile uint64_t *addr, bool write, uint64_t val)
+> +{
+> +	struct sigaction sa =3D { .sa_handler =3D host_sig }, old_bus, old_segv;
+> +	int sig;
 > +
-> +		if (!info->fill)
-> +			return -EFAULT;
-> +		/* Absent pages are zeroed already. */
-> +		for (i =3D first; i < min(first + PTRS_PER_PMD, info->npages); i++)
-> +			clear_bit(i, info->absent);
+> +	sigaction(SIGBUS, &sa, &old_bus);
+> +	sigaction(SIGSEGV, &sa, &old_segv);
+> +	sig =3D sigsetjmp(host_jmp, 1);
+> +	if (!sig) {
+> +		if (write)
+> +			*addr =3D val;
+> +		else
+> +			(void)*addr;
 > +	}
+> +	sigaction(SIGBUS, &old_bus, NULL);
+> +	sigaction(SIGSEGV, &old_segv, NULL);
+> +	return sig;
+> +}
 
-[Severity: Medium]
-What happens to guest_memfd export notifications when mps_gmem_get_pfn()
-clears info->absent for the full 2 MiB range, but returns a *max_order
-smaller than PMD_ORDER (or when max_order is NULL in
-kvm_gmem_pfn_mkwrite())?
+[ ... ]
 
-In samples/kvm/mem_provider_sample.c, mps_gmem_get_pfn() computes *max_order
-after clearing info->absent:
+> +#define host_read_faults(p)	(host_access(p, false, 0) =3D=3D SIGBUS)
+> +#define host_write_faults(p, v)	(host_access(p, true, v) =3D=3D SIGBUS)
 
-	if (!max_order)
-		return 0;
-	for (order =3D PUD_ORDER; order; order--) {
-		unsigned long first =3D ALIGN_DOWN(index, 1UL << order);
-		unsigned long n =3D 1UL << order;
+[ ... ]
 
-		if (first + n <=3D info->npages &&
-		    mps_bits_are(info->absent, first, n, false) &&
-		    mps_bits_are(info->readonly, first, n, ro))
-			break;
-	}
-	*max_order =3D order;
+> +static void scenario_readonly(void)
+> +{
+> +	struct vmm v =3D { .name =3D "pfn" };
+> +	volatile uint64_t *page;
+> +
+> +	pr_info("   read-only frames on a PFN mode provider\n");
+> +	vmm_setup(&v, BACKING_PFN);
+> +	page =3D (volatile uint64_t *)(v.hva + RO_OFF);
+> +
+> +	*page =3D MAGIC;
+> +	vmm_run(&v, 0, 0, RO_GPA);
+> +	TEST_ASSERT(expect_sync_then_done(&v) =3D=3D MAGIC,
+> +		    "guest does not read the host's write");
+> +
+> +	mps_set(v.child, MPS_SET_READONLY, RO_OFF, PAGE, true);
+> +	TEST_ASSERT(vmm_iova_mapped(&v, IOVA + RO_OFF, PAGE, true),
+> +		    "read-only page not mapped for the device");
+> +	vmm_run(&v, 0, 0, RO_GPA);
+> +	TEST_ASSERT(expect_sync_then_done(&v) =3D=3D MAGIC,
+> +		    "guest cannot read a read-only page");
+> +	vmm_run(&v, RO_GPA, ~MAGIC, 0);
+> +	expect_memory_fault(&v, RO_GPA);
+> +	TEST_ASSERT(host_write_faults(page, ~MAGIC),
+> +		    "host write to a read-only page did not fault");
+> +	TEST_ASSERT(*page =3D=3D MAGIC, "write to a read-only page landed");
+> +
+> +	/* Writable again: the guest retries the same write. */
+> +	mps_set(v.child, MPS_SET_READONLY, RO_OFF, PAGE, false);
+> +	vmm_resume(&v);
+> +	expect_done(&v);
+> +	TEST_ASSERT(*page =3D=3D ~MAGIC, "write after clearing read only lost");
+> +	TEST_ASSERT(!host_write_faults(page, MAGIC),
+> +		    "host write after clearing read only faulted");
 
-And in virt/kvm/guest_memfd.c, kvm_gmem_pfn_get() updates exports only for
-the (1UL << order) block reported by get_pfn():
+[Severity: Low]
+Could this test use TEST_EXPECT_SIGBUS() from test_util.h instead of
+reimplementing signal-catching accesses in host_access()?
 
-virt/kvm/guest_memfd.c:kvm_gmem_pfn_get() {
-	if (!list_empty(&gi->exports))
-		hole =3D gi->provider_ops->lookup_pfn_range(gi->provider, index,
-							  &raw, &nr) =3D=3D -ENOENT;
+In host_access(), both SIGBUS and SIGSEGV are caught, while
+host_write_faults() only checks whether the return value equals SIGBUS.  In
+scenario_readonly(), if the write in !host_write_faults(page, MAGIC) raises
+SIGSEGV instead of succeeding, host_access() catches it and returns SIGSEGV,
+causing !host_write_faults() to evaluate to true without checking that
+*page =3D=3D MAGIC afterward.
 
-	r =3D gmem_provider_get_pfn(gi, index, pfn, &order, attrs);
-	if (r)
-		return r;
-
-	if (hole) {
-		first =3D round_down(index, 1UL << order);
-		kvm_gmem_update_exports(inode, first,
-					min(first + (1UL << order), npages));
-	}
-}
-
-If any page in the 2 MiB range has a different readonly setting in
-info->readonly (via MPS_SET_READONLY), or if the remaining pages at the end
-of the file (info->npages - first) are fewer than PTRS_PER_PMD and not
-covered by a single power-of-two block around index, *max_order will be
-smaller than PMD_ORDER.
-
-Because info->absent was already cleared across the entire 2 MiB range,
-kvm_gmem_pfn_get() only calls kvm_gmem_update_exports() for the smaller
-(1UL << order) sub-block, and subsequent calls to kvm_gmem_pfn_get() on the
-other pages in that 2 MiB block will see lookup_pfn_range() return 0
-(hole =3D=3D false) and never notify exports for them either.
-
-Should the loop clearing info->absent only clear the range corresponding to
-the order that mps_gmem_get_pfn() can actually report back to guest_memfd?
+Also, in scenario_readonly(), mps_set(..., MPS_SET_READONLY, ..., true)
+revokes the host mapping before host_write_faults(page, ~MAGIC) runs.
+Because the write happens before *page =3D=3D MAGIC faults in a present rea=
+d-only
+PTE, it only exercises kvm_gmem_pfn_fault() on an unmapped PTE and leaves
+kvm_gmem_pfn_mkwrite() on a present read-only PTE untested.  Should the host
+read happen before the write attempt (or should another write attempt follow
+the read), and should a direct store *page =3D MAGIC be used once the page =
+is
+writable again?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027154649.9157=
-1-1-griffoul@gmail.com?part=3D13
+1-1-griffoul@gmail.com?part=3D14
 
