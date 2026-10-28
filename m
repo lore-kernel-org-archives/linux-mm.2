@@ -1,95 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245CF606A31D
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 04:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1B2606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 04:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=KwdzROd7
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IgwUdmAm
 Received: by kanga.kvack.org (Postfix)
-	id 1A5BF6B060B; Wed, 28 Oct 2026 00:14:23 -0400 (EDT)
+	id 7E9F46B097C; Wed, 28 Oct 2026 00:14:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17D856B0611; Wed, 28 Oct 2026 00:14:23 -0400 (EDT)
+	id 7BFDA6B097D; Wed, 28 Oct 2026 00:14:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 093336B0612; Wed, 28 Oct 2026 00:14:23 -0400 (EDT)
+	id 6D69E6B097E; Wed, 28 Oct 2026 00:14:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D8A916B060B
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:14:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69466120B39
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:14:22 +0000 (UTC)
-X-FDA: 85370717964.20.4ED37EF
-Received: from va-2-113.ptr.blmpb.com (va-2-113.ptr.blmpb.com [209.127.231.113])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 78D4B140006
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:14:19 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=KwdzROd7;
-	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793160860;
-	b=PnwBCPiXAJkgobWKuHxc1H5QVhwi+WIiftoVJvTEYJlAhY5sPb+BtmE11np/alfan4/baY
-	iUIrKxe/r3e65oOIYqVUp7Dhc7nEF1TC4eYQHB6D28z8wA1H68xN7kbQ1EQgbtenJM0Uw9
-	R4aYXTE8ecAE8HjC8p3Jfcz1m0Xj7yg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=KwdzROd7;
-	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793160860;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 42D0D6B097C
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:14:46 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 603CBA0532
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:14:45 +0000 (UTC)
+X-FDA: 85370718930.05.700094B
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 74B2440007
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:14:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=IgwUdmAm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf01.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793160883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kv8Uf76D8g9HHwpLA0JXrynTIbbQnsLJupQzb81VbQk=;
-	b=cpiVJwdrA8k64YL6CJH1yHcEjHwWe2ZUZJMZNs22yBqnU9WbRWPfLHrcmMioj2QsstkUCy
-	cCZu9cGSVm/yj8KOQHdeMDuVjXT/+f7PYMgAauJNUO33LjGrzBDzCDO/gKCsUr/0ncO6oS
-	pdCMfkXIVdHd1LC5/3eOCvawuJiwpEo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1793160853; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=Kv8Uf76D8g9HHwpLA0JXrynTIbbQnsLJupQzb81VbQk=;
- b=KwdzROd73dvrapoCQxe/K5JjQnGqsV1jX61fAbvNYfxMpoybEctfIusmvR8pbyFCLzJrcz
- 4ZE8C20VHAj+Ow3nZi8W7vqc5y0DePDk9TpQxmwR70mFYkRGDKWMW2O+PpJpzZdV1fzH1K
- 4b663MjktnnSkjocwwS6muWD42X1buEdt5rkz4Ry2oiGCuTxOXg9kBt9X+poN5l/87PxT2
- GMzgngDymLDMceMc/EkRIPXHHYav06ZPxINLYkhxZ/BgdJsSRJltASfjs60m6u4bIdkXo+
- xA7OgrNL+qwBv1vJQdFaRd+2Y4QEyljvs+kBFkPRbxJl1uoP/oHiX1RRrBhB6A==
-Message-Id: <20261028041253.74839-2-lizhe.67@bytedance.com>
-References: <20261028041253.74839-1-lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
-Subject: [PATCH v2 1/3] sched/numa: make free-space tiering promotion bypass configurable
-Date: Wed, 28 Oct 2026 12:12:51 +0800
+	bh=Xy0VWwyzp+vpTOIBzIkzfVFw9LGMzZjvLAPkrrf1Zcs=;
+	b=T22yLMDPAC4t17MfXq9F4Fo5BnqlS1s1/IgyJZLI/dkDFCrGGHNDuIZz3ApE2r7A4SUp/T
+	45AP1acC4V6BNC4ViKZ6ZuaZ+FKTtRX4BoO6iTyafQ/nvjqhKDhzs1p9V4fTnVMs/XX5pK
+	xmdTa+vJFvfr1UzuZzJ28tUMJ/umYwE=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=IgwUdmAm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf01.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793160883;
+	b=Gs2HYeZ+6bJf0Ahhc5lMymIraDd8RFFngHLnOjgirLKMFU1hyymUrZ1V2TreyW/8YVp2B+
+	Vuwrd2eBR/gZ8qgarr+86Qs+kWQal6J6bCAKLdJ72cjn0KUlstp7Jji8Oq+UfFEmRgoUvP
+	YbxjGnMkoMwAY/4XfNpnSofcrflyC4U=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso4129485e9.1
+        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:14:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793160882; cv=none;
+        d=google.com; s=arc-20260327;
+        b=U+cJY0DLzt11QqFOkvQoMRUIjresoXSWDjjx77+U2ujbxcgtvejmGpwWcgZtWdxGk3
+         II+GMczljiCpBk0GDwpGoUtOtcCmspba1yRqobejMPFZ0RJbe+YRvow8FTGJYuDi0DmI
+         CWRznZfSdlCipanviFpn/7zGfKG9ThPbrYZ675TrcfoIqle+yfjFc5XQT+KlugG0WNEn
+         hQBv1/ZnENIdMt886oOgao+TESZT+oPaIsTycN8s80VsjfEGxq5O5OVxXa/egYBzq9PP
+         qzezu4Bp5ktno8HoZIFQuwlH4SZPI8BYvbOXULsM0FRdOR7n+sOHLY9sWVPIUzbWIUcW
+         ZVdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Xy0VWwyzp+vpTOIBzIkzfVFw9LGMzZjvLAPkrrf1Zcs=;
+        fh=yzRNKvaaq+82Xu/PFvLwAsgZSs7bqL0H1/T8Bglacuk=;
+        b=aDcLJljFGlzHsP1kN9dXFt0AolD9EeLTPc3l4YaRqV0eo1ImUPe+fh39cyv/vq469t
+         Q437Ziqx2PLfE71wXObe1doqj93n+3myyudc+VleMS8xoYbFnJVl24H5/ESvXv++RYDl
+         FNaoQATQf13r8QjWMxWE7N7S8ZiqjrEbnQjD2hXLHzfh29QL8ymc8Y7sP3qOzPrtWU70
+         JzKcrM3w+bYR3p3ndfz+Tr4XsAG1HxmOWwEnqRIq+ucsNS9oferIUTMj2jx8HTqk1K7i
+         zlBOFr3zRdmvtGqY214mLe3wxlYquZ4LMNLGmjOdolLqkUjhvcGy295f/u32EjPZbPUP
+         8mAQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793160882; x=1793765682; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Xy0VWwyzp+vpTOIBzIkzfVFw9LGMzZjvLAPkrrf1Zcs=;
+        b=IgwUdmAm/QkVysnlXTlYPkg6Ol1bzmGoK8ojzb4nevVor1rEjf39IKiHQNvpxh8Qsk
+         dfr1gkzPgpwGZVSJePGaHuiWR8UWcHDgO1o/akFIzs4KXLfl5scuCsz4vgDdKo1SpCDP
+         ssMJC4CisUANqQZFIcgYfpqYNkSFWghypVugo52P8f5cEuQKZ2nRldttMimMKHM9LRED
+         aIY6h6oHGdUsEqHgOJSHTFJGSvP2zKnxzsJ2jDdYkn4U7o5VVu7y5dMhyL0e5dMTd9Yx
+         N7U1spaInjvhFWhH5hHAE1chVSwhgnAn3NaVPfkG9RMHD0LG6xHcfLcZxB8QKtvaLMaT
+         kcxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793160882; x=1793765682;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Xy0VWwyzp+vpTOIBzIkzfVFw9LGMzZjvLAPkrrf1Zcs=;
+        b=muSFi+RM9OWIvdOmu0LKMZsuI8XIA3zBMrmSu/9QOPx7sIwp3fDbVj3VZKoxalY5Cg
+         1Ju4aUExreLemNtqUN8N0RAuB5opMHZpbGomlrbPvRPyYPNXNYb8uQHV+RE3yn+OxcXo
+         jbbmM0aHn3XihKbRWovDfHbpH2k6lrVzETXsUxo2yRAmoJyJSovKACThJkhISnVRRi+C
+         N/gK1yLZi/5/XijWFc0d4p58LezQ8UJfAYg+k95ANxfcgeBUnkdokUssduSJX0u+rg0X
+         AfZlYtYJO1G1/CuE0fcxkrCj9pxAZqdxFSmOrVlg8r2ODWDvGpyZyA58E5bByWiWuqN2
+         fYaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwYdtf9LFTLOgvG/zITnVfhKT4YpIbNqgBxYsmkIalMHmMLms4RhUVBMCpgUJaBCYt8wQ53+crGFQ==@kvack.org
+X-Gm-Message-State: AFq9FYK3fLF9T3IPP5JEHSGCklij5AD8GpucwTKkB/kwulmpvoF0Y6x/
+	R9JV09at0oyYscLrhkyLy5aiN9Kuafcw0IR2SK62fOvDZNlVrWLYDBi09VBgYChDFnHgsCOvnfj
+	QlatodeeaMzxj/HNrI3GGkKfJIhbdZSk=
+X-Gm-Gg: AYBFou3I6dKYB25ZDX9bT+t4BfIkBOHFBjEi5x7uC7tWTo//HATLpHb5ewjhZDfMZh/
+	l8U20wCZzVBZy+gn7hOed66SMVHKog4Xg0suGnq75bmE8IaQov4nVByHwkeX4YjncdubQlEJmSP
+	xspOzK+mJaHSHYXtNmuwUf/Fp0QRZaT7X56wXzPbeE8MrXAe4tCisg1u+gWXrUc/lYGV+L6U/T0
+	ijhQZzbCAhtECOH6E2H+zuJmUp/x476Nd0HDZgx17trSxw8yBUhrr5eD8C0SydSo+8tbSsbWyne
+	FmoqSR5+MQ9drlJdTl4h5XN60o+JUo5JGWkkypRUKHU5+6+7lCVTob82SKlKYuVxUbLksWlDpdi
+	km+dR/yK3re7k47YOAmMgSkWmszPzApSQx/oqY/3RGi3Et0Hj596uZk5+Iio3VEY+WYJW
+X-Received: by 2002:a05:600c:811b:b0:4a1:f625:2108 with SMTP id
+ 5b1f17b1804b1-4a967e8c045mr18383165e9.33.1793160881597; Tue, 27 Oct 2026
+ 21:14:41 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-In-Reply-To: <20261028041253.74839-1-lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26ae17693+8c7c5e+kvack.org+lizhe.67@bytedance.com>
-Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, "Li Zhe" <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-To: <akpm@linux-foundation.org>, <bsegall@google.com>, <david@kernel.org>, 
-	<dietmar.eggemann@arm.com>, <gourry@gourry.net>, 
-	<joshua.hahnjy@gmail.com>, <juri.lelli@redhat.com>, 
-	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>, 
-	<mingo@redhat.com>, <peterz@infradead.org>, <riel@redhat.com>, 
-	<rostedt@goodmis.org>, <vincent.guittot@linaro.org>, 
-	<vschneid@redhat.com>, <ziy@nvidia.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Stat-Signature: f8t8j51h9mp87t9xjmszprmc1pe7bwnw
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 78D4B140006
+MIME-Version: 1.0
+References: <20261022220203.91911-1-baohua@kernel.org> <20261022220203.91911-5-baohua@kernel.org>
+In-Reply-To: <20261022220203.91911-5-baohua@kernel.org>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Wed, 28 Oct 2026 12:14:28 +0800
+X-Gm-Features: AclHuK_O568tS_hpoQdHxuabg70CVmUWc9FvgfE5clXj_iASH0laiWXtqK5hoVU
+Message-ID: <CAN_Opa-5jikDWQs_adgZ6UHLv-FVNKwpKpOZJU5F7zhWQ-FeXw@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 04/14] mm/mglru: lift the forced protection of reclaimer
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, hui.zhu@linux.dev, 
+	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, david@kernel.org, 
+	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+	mhocko@kernel.org, qi.zheng@linux.dev, ryncsn@gmail.com, 
+	shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com, 
+	zhuhui@kylinos.cn, baoquan.he@linux.dev, liuxiang.277@bytedance.com, 
+	wangzicheng@honor.com, lianux.mm@gmail.com, kasong@tencent.com, 
+	liam@infradead.org, surenb@google.com, mhocko@suse.com, rppt@kernel.org, 
+	zhangbo56@xiaomi.com, lyugaofei@xiaomi.com, ridong.chen@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 74B2440007
 X-Rspam-User: 
-X-HE-Tag: 1793160859-548241
-X-HE-Meta: U2FsdGVkX19luILXvVbW2uysax8cfe+9lXwB9r0DYhFGl69fyz67FXnuUoZGOqUFV+s6v2LBJUZUpV57qZ31anRiMq7AO/Hf5ZuIhnbUUWz3DjY7GafOgO+Hnlq76xgcvkaOKJCY+bcqsT2ToloO5xAgjWbDxYonJso+LttksyD8XpO6Ls2rb4Z2FrM7Ew9am7qRK2QUwcFzCo6/6nn6SmldxY23JSnLv2W8/yvY29lbBaL6cWCab9d4Aarsjc/6zCFHRCLRF7GpZtjvIbj2Xx4V/1tspjbxEmGznOukVsuAJtNK8bDTCabJdhiEdTopcbxB9i6jztIfPr3/xxBi4pGV5Xf6EcpsMukcDzjzhLvp5pWnlat39ATg6CLHN2dTr6mTPZiOgK0FV3RRYo39sRPbvuxUqtXasf3sJ+rHrUjGoNeg6SUdSQE6APCSFnPRTPnWlZ5VXP17BYFEqCc4iil6i6gt32bLNlVeA+wXZ1nv5FTKypipudxVPbnZawNWOwd7OzaEekY1loem/ztUjl4bqij5a4vCKVccYQswhfgDPSVeMpXbTjoy0uQ6+jlSh4vis1O0rOCmkUHplCTLFGmGsBonU88jS2lMGvCzgL4krMkR2W1UCHEICYUq8wpk2Y4Bwx73J3Lh0ZC8F/oUSA9zOVe6DC33BLq2eykqdcvgXOVTe8hslgL522inwsvUebTcJ0Y2Y3TKkgtsQIBtWmihqm829n7AM4hMpjMTHReZTwYlwCPzggWcK8wv8jnfpJRcC/pxuyoDBaDVScTGcGHDm1YSV1gc8tP6Rcw3anq//qiNUOpHQ4kCye9ty+497p0yEKcRsf3PmMHNzoYw9AGyVt57HuBTgOa57SdW/zQ0syUqOBSkguPqS4bUeCli9SH4CNxC2Tx4Hc6IhSfKinGixHm50o12ajicRkGFbS+6GTTDB7h8canHKVs3ZRYWXwQseXbFhEvsFrajsit
- z6uFtDl9
- 852tRujsBIw5spnmmTzO2woos120BEuIgTNJeiLK8yJilgMVQRJLwb66tcnlgmlLiKh+6rzpdhFjgbUZNnOGXNXwcEyKPsJxoCzpZ5ZevddzP7A/KM2t0M0Slcv+i9J9oLho5KxEQt6dmarDmU0rCqhJlcMkxbQO2W/Cd2J5G4dDZeXiIuNnS1+UI0P++0FU/elfcGeDX7jbfIw01TnpJa0SXURojSb01Jrtt6TbyPBfzGg7QGeFu5AAONE1zy0aHJpKjV30QKHKSTNpUP1L2VKP0BMQov9U7c5tZEY+okYzqB1K/8q7goisdY3YzBCipBEDisiJvZiIV3Ec=
+X-Stat-Signature: 1j6nydges7zyznt1nkdjrt1nf5dpcbtu
+X-Spam-Status: No, score=-17.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793160883-971597
+X-HE-Meta: U2FsdGVkX18ubE9ftGx3AJghte1rPvfy3DlLzHrWcdw06QSde78vQls2B6LJpQXpO5UyNAV4McW1Ubp5eUviC+i0MS0l36rE/E81oup5wGAle66TdevY0FlH5ZdRR6CTsQ/3V/rF7mXeSZQitYqQijxCeBBFgbvHq+YUwfDCzUihuzBsWmSqYgzXP2RT40q9jCZwXSEQwTTYGjlbpYZSF6uCUwPpelyDYU2G2XG3ZlOGDXpECyHXAceU62rPf7vQOXMRBULSBwQxugtcPKJRIKl8aYOEGouFijhRdGdul/faakNWk0t7p6654Jf/js3CilqnLA/1zUseprI5wfg+ssXp+/iw8YGsGOlpjZ5+4dSRQe6hYroTKAcdZQfm3V+GAAAE0f1dV5dbmy6erHiYiSTtoUBjsd7SImZchM47nMvkd2exxx/O2/5ux6K751beU/CykzZbntc3DSz/v/bttmU5bVYo45qBwzlUDaf/8IB2t7Qc3l1vHEjWorxgf0Q0LAtDAvu2JDKHu04/fpH1T30oQWfAtaCm2svi8E5Tr0Su8oRwDNLSiyb3HzP1GMVb+ZdQRQLJTFGPY0z5G0ItcJ2tI5WI9vyb8KVaL3yyO1ID8NIZszqjvirlsuAjbvleI1gr5gc8vqH0qBzN2yOtjb5BEKfy50dVLt9NMUBVSFMtPXwZSuh+FKhsU8j8gqf3AQhCAmvyfX65igxiAPN68aVaXkBXflNWLZaoHJRj+HoGn2vle3M/MrEAKJSMVqL3l9xC6rk9bqbE46+tlPzrTP1+yKvcphYxYSCcGD4FybMTjKSOjjZpszLU8I1MK4u3AYzOWysWfa2VkVPad4FKS/o7osevllwRB6huhBsOP46+3h2fVzKySuUZqwkP7jLHn0U/Vao3Vbu8LUlQKOSqrcxPj1RGYenb/02E3PMaDojjRbGbnD/c3E1VURJKx0rOzXopIfRDtz9E32rYZxP
+ bLFgNaJ6
+ ZqXAUQf/OTIa6d7frC3LG4g/HXujiW2h17CTczRNaoQdLDClCMiIDAAPr50Tzfs7WfljBU3xDh9SpZz+AICCscgyadhhEZmsuveg0hn8+Ngc7sQ2VexpTY9TxiyvADzM4ZnKm2S8hAzXlOTBKoCJ5EewFTQI2P2aAe9wxXHpVcQa+0ugH9pFT7eUViZ671nD9C33tKncvSz8GBdY24P3/TW8Ctdj8uTxrXGe3NJFVynuIudZ2v1lpG1Q7rntfEYGQij0hvvsZt1tDeun3r24xZ5hg5Er87msaJkIGF3EFs8clB6Qsu7Swsw/3zLmNapQnsJHDc22TyGbpEEWQtw1luqzsvdKwrcmHfsARtotXkalJojPqP0B8c3MSUz5COww0S4kRobFMvDNg7aZ1m3GOlkDe0AQSN42pgVX4ENt3stZSRHW4P10NZnuDsYNG3G/KkUp7hC8HOeGSlOewgWKSgTrBDzPnGri1McaFBoVg72jouxxaw+CQlFHscy/qm9sNvdEDdhp5ko844CEHTilTHyLBVhsiu0LRyQLV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,136 +151,162 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Memory tiering normally promotes any recently accessed slow-tier page if
-the target fast-tier node has enough free space. This preserves the
-existing policy of filling available fast memory before relying on
-hotness and rate-limit control.
+On Fri, Oct 23, 2026 at 6:02=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
+org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> When a type is drained down to MIN_NR_GENS gens, the reclaimer will
+> fail to make any progress on that type without aging.
+>
+> However aging comes with a cost, and it will take time to finish. Even
+> if we do aging more proactively, when under great pressure, gens will
+> still be drained very fast so the new gens produced by aging can't catch
+> up with the consumption. With MIN_NR_GENS setting blocking the reclaim,
+> we will run into OOM. This OOM can be reproduced by the previous test
+> program [1] used for fixing another aging problem [2]. When running in
+> great pressure, certain workloads will keep seeing premature OOM with
+> MGLRU, and never see any OOM with classical LRU.
+>
+> This might get worse if we implement async aging, or avoid hotness
+> inversion in aging, as they will slow down the aging process even more.
+>
+> To fix this, let's first drop the get_nr_gens() =3D=3D MIN_NR_GENS early
+> return and let the raised-priority scan bound cover max_seq itself.
+>
+> Mapped folios will still survive as the rmap PTE check will keep them.
+> Unmapped cache folios may thrashing more when under great pressure,
+> which is really a problem that should be fixed with refault distance
+> and frequecy aware promotoin instead [3].
+>
+> Link: https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mi=
+x-pressure [1]
+> Link: https://lore.kernel.org/linux-mm/20260428-mglru-reclaim-v7-0-02fabb=
+92dc43@tencent.com/ [2]
+> Link: https://lore.kernel.org/linux-mm/20260502-mglru-fg-v1-0-913619b014d=
+9@tencent.com/ [3]
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
+>  mm/vmscan.c | 34 +++++++++++++++++++++++++---------
+>  1 file changed, 25 insertions(+), 9 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index d7eb15533de1..2cccaa5dd4e7 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4834,7 +4834,7 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memc=
+g, struct mem_cgroup *parent,
+>   ***********************************************************************=
+*******/
+>
+>  static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struc=
+t scan_control *sc,
+> -                      int min_gen, int tier_idx)
+> +                      int min_gen, int max_gen, int tier_idx)
+>  {
+>         int gen =3D folio_lru_gen(folio);
+>         int type =3D folio_is_file_lru(folio);
+> @@ -4851,12 +4851,22 @@ static bool sort_folio(struct lruvec *lruvec, str=
+uct folio *folio, struct scan_c
+>         if (!folio_evictable(folio))
+>                 return false;
+>
+> -       /* promoted */
+> +       /* promoted, or moved due to reparenting. */
+>         if (gen !=3D min_gen) {
+>                 list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+>                 return true;
+>         }
+>
+> +       /*
+> +        * We are reclaiming the last gen left. Folios in this gen can no
+> +        * longer be promoted or protected, so just isolate them. The one
+> +        * exception is lru_gen_reparent_memcg(), which is handled above.
+> +        */
+> +       if (min_gen =3D=3D max_gen) {
+> +               VM_WARN_ON_ONCE(zone > sc->reclaim_idx);
+> +               return false;
+> +       }
+> +
+>         /* protected */
+>         if (tier > tier_idx || refs + workingset =3D=3D BIT(LRU_REFS_WIDT=
+H) + 1) {
+>                 gen =3D folio_inc_gen(lruvec, folio, min_gen);
+> @@ -4911,15 +4921,16 @@ static int scan_folios(unsigned long nr_to_scan, =
+struct lruvec *lruvec,
+>                        struct list_head *list, int *isolatedp)
+>  {
+>         int i;
+> -       int gen;
+>         enum node_stat_item item;
+>         int sorted =3D 0;
+>         int scanned =3D 0;
+>         int isolated =3D 0;
+>         int skipped =3D 0;
+> +       int gen, max_gen;
+>         unsigned long min_seq;
+>         unsigned long remaining =3D nr_to_scan;
+>         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> +       DEFINE_MAX_SEQ(lruvec);
+>
+>         VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+>         VM_WARN_ON_ONCE(!list_empty(list));
+> @@ -4932,18 +4943,24 @@ static int scan_folios(unsigned long nr_to_scan, =
+struct lruvec *lruvec,
+>         if (sc->priority =3D=3D DEF_PRIORITY)
+>                 min_seq =3D lrugen->min_seq[type];
+>         else
+> -               min_seq =3D lruvec_populated_min_seq(lruvec, type, lrugen=
+->max_seq - MIN_NR_GENS + 1);
+> -
+> -       if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS)
+> -               return 0;
+> +               min_seq =3D lruvec_populated_min_seq(lruvec, type, lrugen=
+->max_seq);
+>
+>         gen =3D lru_gen_from_seq(min_seq);
+> +       max_gen =3D lru_gen_from_seq(max_seq);
+> +
+>         for (i =3D MAX_NR_ZONES; i > 0; i--) {
+>                 LIST_HEAD(moved);
+>                 int skipped_zone =3D 0;
+>                 int zone =3D (sc->reclaim_idx + i) % MAX_NR_ZONES;
+>                 struct list_head *head =3D &lrugen->folios[gen][type][zon=
+e];
+>
+> +               /*
+> +                * If there is only one gen left, rotating the unreclaima=
+ble
+> +                * zone become meaningless, just skip them.
+> +                */
+> +               if (gen =3D=3D max_gen && zone > sc->reclaim_idx)
+> +                       continue;
+> +
+>                 while (!list_empty(head)) {
+>                         struct folio *folio =3D lru_to_folio(head);
+>                         int delta =3D folio_nr_pages(folio);
+> @@ -4954,8 +4971,7 @@ static int scan_folios(unsigned long nr_to_scan, st=
+ruct lruvec *lruvec,
+>                         VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) !=3D z=
+one, folio);
+>
+>                         scanned +=3D delta;
+> -
+> -                       if (sort_folio(lruvec, folio, sc, gen, tier))
+> +                       if (sort_folio(lruvec, folio, sc, gen, max_gen, t=
+ier))
+>                                 sorted +=3D delta;
+>                         else if (isolate_folio(lruvec, folio, sc)) {
+>                                 list_add(&folio->lru, list);
+> --
+> 2.34.1
+>
 
-That is not always the desired policy. Some deployments may intentionally
-keep part of a workload's memory on CXL-attached memory, for example to
-preserve a desired DRAM/CXL capacity split or bandwidth distribution. With
-the free-space bypass, short cold accesses and bursts of hot accesses can
-refill the fast tier and pull the workload away from that distribution
-whenever DRAM has free space.
+Removing the MIN_NR_GENS early return allows reclaim to make progress
+when only one generation remains. Bypassing promotion and protection
+in that case lets reclaim attempt to isolate those folios, while
+scan_folios() skips zones outside reclaim_idx.
 
-Redis testing exercises this policy issue. On a CXL system with node0 as
-DRAM and node3 as slow-tier memory, a Redis test was run with
-memory-tiering-only mode enabled. The test used a Redis dataset with 12
-million 4KB values. It reclaimed memory until about 85% of Redis
-anonymous memory was on node3, used a Redis benchmark configuration with
-a 10% hot-key working set, and then issued a short 256MB access burst to
-cold keys outside that working set. The cold-key burst mainly touches
-memory outside the hot working set, which is expected to remain mostly on
-the slow tier.
-
-The upstream default promoted the cold-key burst through the free-space
-bypass. The patched default preserved that behavior, while disabling the
-bypass kept the same promotions behind the hotness and rate-limit checks:
-
-                              upstream     patched default    bypass disabled
-  cold-key burst ops/s          117250         115481             142505
-  cold-key burst P99.9 ms        0.854          0.859              0.686
-  pgpromote_candidate              0              0               1488328
-
-Compared to upstream default, disabling the bypass improved cold-key burst
-throughput by 21.5% and P99.9 latency by 19.7%.
-
-Add a sched debugfs knob:
-
-  /sys/kernel/debug/sched/numa_balancing/promote_free_space_bypass
-
-It defaults to enabled, preserving the existing behavior. When disabled,
-enough free space in the target fast-tier node no longer bypasses the
-normal hotness and rate-limit controls.
-
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
- include/linux/mmzone.h |  5 ++---
- kernel/sched/debug.c   |  2 ++
- kernel/sched/fair.c    | 14 ++++++++------
- kernel/sched/sched.h   |  1 +
- 4 files changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index ecd1ebd49756..bf2d604c04b3 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -278,9 +278,8 @@ enum node_stat_item {
- 	 */
- 	PGPROMOTE_CANDIDATE,
- 	/**
--	 * Not rate-limited (NRL) candidate pages for those can be promoted
--	 * without considering hot threshold because of enough free pages in
--	 * fast-tier node.  These promotions bypass the regular hotness checks
-+	 * Not rate-limited (NRL) candidate pages selected for promotion through
-+	 * the free-space bypass. These candidates bypass the regular hotness checks
- 	 * and do NOT influence the promotion rate-limiter or
- 	 * threshold-adjustment logic.
- 	 * This is for statistics/monitoring purposes.
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index e6a3b516c703..a28f0f09c91e 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -736,6 +736,8 @@ static __init int sched_init_debug(void)
- 	debugfs_create_u32("scan_period_max_ms", 0644, numa, &sysctl_numa_balancing_scan_period_max);
- 	debugfs_create_u32("scan_size_mb", 0644, numa, &sysctl_numa_balancing_scan_size);
- 	debugfs_create_u32("hot_threshold_ms", 0644, numa, &sysctl_numa_balancing_hot_threshold);
-+	debugfs_create_bool("promote_free_space_bypass", 0644, numa,
-+			    &numa_balancing_promote_free_space_bypass);
- #endif /* CONFIG_NUMA_BALANCING */
- 
- #ifdef CONFIG_SCHED_CACHE
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index cfc982205b98..46a11f5ddafb 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -134,6 +134,8 @@ static unsigned int sysctl_sched_cfs_bandwidth_slice		= 5000UL;
- #ifdef CONFIG_NUMA_BALANCING
- /* Restrict the NUMA promotion throughput (MB/s) for each target node. */
- static unsigned int sysctl_numa_balancing_promote_rate_limit = 65536;
-+/* Preserve the existing default of using free fast-tier space eagerly. */
-+bool numa_balancing_promote_free_space_bypass = true;
- #endif
- 
- #ifdef CONFIG_SYSCTL
-@@ -2759,11 +2761,10 @@ static inline bool cpupid_valid(int cpupid)
- }
- 
- /*
-- * For memory tiering mode, if there are enough free pages (more than
-- * enough watermark defined here) in fast memory node, to take full
-- * advantage of fast memory capacity, all recently accessed slow
-- * memory pages will be migrated to fast memory node without
-- * considering hot threshold.
-+ * For memory tiering mode, if the target fast memory node has enough free
-+ * pages, recently accessed slow memory pages can bypass the normal hotness
-+ * check and rate limit so the fast tier can be filled. The bypass can be
-+ * disabled by numa_balancing_promote_free_space_bypass.
-  */
- static bool pgdat_free_space_enough(struct pglist_data *pgdat)
- {
-@@ -2884,7 +2885,8 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
- 		long nr = folio_nr_pages(folio);
- 
- 		pgdat = NODE_DATA(dst_nid);
--		if (pgdat_free_space_enough(pgdat)) {
-+		if (numa_balancing_promote_free_space_bypass &&
-+		    pgdat_free_space_enough(pgdat)) {
- 			/* workload changed, reset hot threshold */
- 			pgdat->nbp_threshold = 0;
- 			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NRL, nr);
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 87c5335add37..662b11bd401e 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -3218,6 +3218,7 @@ extern unsigned int sysctl_numa_balancing_scan_period_min;
- extern unsigned int sysctl_numa_balancing_scan_period_max;
- extern unsigned int sysctl_numa_balancing_scan_size;
- extern unsigned int sysctl_numa_balancing_hot_threshold;
-+extern bool numa_balancing_promote_free_space_bypass;
- 
- #ifdef CONFIG_SCHED_HRTICK
- 
--- 
-2.20.1
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 
