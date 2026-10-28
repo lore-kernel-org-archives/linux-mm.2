@@ -1,92 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E05606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 22:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CDA606A336
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 22:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=cxIIgRrn
 Received: by kanga.kvack.org (Postfix)
-	id AEBB96B00EF; Wed, 28 Oct 2026 18:52:26 -0400 (EDT)
+	id EBEB86B05B1; Wed, 28 Oct 2026 18:54:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9C876B05B1; Wed, 28 Oct 2026 18:52:26 -0400 (EDT)
+	id E6FC46B05B2; Wed, 28 Oct 2026 18:54:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B2596B05B2; Wed, 28 Oct 2026 18:52:26 -0400 (EDT)
+	id D3B7D6B05B3; Wed, 28 Oct 2026 18:54:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CAC66B00EF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 18:52:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF9EC1A026E
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:52:25 +0000 (UTC)
-X-FDA: 85373535450.24.A5D4338
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4196C1C0004
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:52:24 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of 3p3ziagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3p3ziagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AB2B6B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 18:54:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECE9F8016A
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:54:16 +0000 (UTC)
+X-FDA: 85373540112.09.7024633
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1A978140002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:54:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cxIIgRrn;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.208.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793227944;
+	s=arc-20220608; t=1793228055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=xPA3khvwP2kQRrXhz1fOmmCIHEg7u7/AhyEuOBJrjVQ=;
-	b=G+tEvY/ii6LJ2HR+PbYiQQyQkHWMPXGjf4lmT48YIGOg6olTTJfEVrWI6tWxRXR2LPTSYQ
-	+fYVqhENCEKNoGnkyNpBN14ZA88+VZaThVTJb6SfLNVZzj+lRaTrggEcXbrwlDSS6zxXCy
-	rGT4HoJROhO5fnHueuYnedEWldYMR7A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793227944;
-	b=dyxp5YACViWGcnUKFSJPaH7uIRnxpJeQcHM79M4pp+eZtatRCsdwJ4GdtLkK7F+PCHkOKW
-	2EpvB8WjJ1//2OVvOv2OcPDQQdHozaMCGgXyCSgLpKsd/u9XAgi6DNOjRcbQnLGHLOw2RG
-	sO4/NA5n2iw8ZYJsVpymuxJheABTKU8=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1nzL/A4OIGWxPEaAp0V3O0CBZ7XOASlD1R5vK61L67g=;
+	b=H0iEiX2qUJMEwUsNGvBqD/4ZVBQ8s7CktjTRVOMQih8UoBrxyduFF6TGrX3SDnrEFJpTg0
+	TfjORxeHCCCPSkMqEl9D1LTAt9uhTmP5lXu0h2w6i3NVjEAkIcrWjKxyDb0S2HRs5+SI1x
+	M8W0oPY4PVGmL8wptMgSB521/vr0jvQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of 3p3ziagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3p3ziagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4e778acdbc6so2166289b6e.3
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:52:24 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cxIIgRrn;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.208.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793228055;
+	b=kmpuHuNmLJRrFWlZr7T/g/4vYd5JvVLPOCIqG2nuFBKjxOqelS3nr1D0WxXHoyrm2PKeJM
+	mHjG3yf61qHY+DVYF6P5Ou1g0EX1mELq4BXIjhv3QLNPGnueUV+NrCmPAqBAq/wmyTrPjZ
+	XjJnkp8c2eAo7u8GpmwDeLyoTXkaGIg=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so2253304a12.1
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:54:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1793228053; x=1793832853; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1nzL/A4OIGWxPEaAp0V3O0CBZ7XOASlD1R5vK61L67g=;
+        b=cxIIgRrnJ0JTeOwhuC9e75S565Hj9q24/Iaiq5E3JNs9H/Xb7fX0l+eWGqvicGU4ca
+         pvHgT3khMhzdWBxsHDenmYzz6lbhPjlBD1u3n1jrbvvPgFujXae9k01KID9Rm0W5Ppdz
+         n806Kac0Ad741+963VG6nWri8TBPlRXaiZmbgYYSDsG9z6Q+/KYenJRRoY8ujQdpLG1D
+         rrmWLmQmVvLPipfV5bQ5L/lwFaJ7fqLrD8x658khUQYQ/A3tMWLqloSnY7xGreSMV0Vh
+         eUaxypF8K8amsc8eqPsAxKO8LN0cT2igXqNfcidG7fu8LOxTs9VUnKJIQ6bWMkV1XAYG
+         zwqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793227943; x=1793832743;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20260707; t=1793228053; x=1793832853;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xPA3khvwP2kQRrXhz1fOmmCIHEg7u7/AhyEuOBJrjVQ=;
-        b=KPHQpEPQOvzcfIsbYT8PgemNnk3fObytUXMGR0QPhJ0jWElnOmRE3Ohuo6NE2ZzZ0J
-         SBTdI0Owk/QCrdNeaeECqksHBByoOLhME8S5ANfzcCyZP0STjtUZMaN9eYUdnPV49MJQ
-         ufjdgC2au5WkW5bpQCykIumXGtRp0K49XkEwv5/y27m2oxl2XmtImc401RdFHuBgL/Wr
-         1rbQsHi9j19iUNneag5J/sza14SeXTpkvGyrzGuXh4feUNfqRJtqQBRNe6NNL5I/t30u
-         qIKndHy6xLnRvCmvcNbU5Mm1ZYcgu0jeZeCtHMduNBcVYcBKFvTBu+qNw+4679hk7CuM
-         BHMw==
-X-Forwarded-Encrypted: i=1; AKwUvByqRT5GKk+QGS0reH82sPz6w21KRjy69394iW6CxYCVQsmt5RaojfRoA779TQEFHD0PUtIW4wUKpA==@kvack.org
-X-Gm-Message-State: AFq9FYLsT+RrYTJqjteEEF0waLZta/KzmmnmdswYf0npFXsFGEf1v0Zh
-	aMLalnOPOtWrSbAodvvcCpmWLfW1RhkUUvDUg3dWVZOhDjQSnBnOp3yJC7XoGLH/nwO/M8AqSvU
-	sdLr0g1Dqb+DnanjVBSsohsuqQd2s20bIB2RoIcWhEFh9j1Xzlb/pvT6I02g=
+        bh=1nzL/A4OIGWxPEaAp0V3O0CBZ7XOASlD1R5vK61L67g=;
+        b=DFnGJVdSq7ARtzdJkFjHFxSiQI0dZTgohxW+LFedZT6WO2W8R48wqMux9MHyUCET/2
+         dBTrIoZRwo1RzbOs5I4JxFrhv8S+I92Oxju3fzdwM/EuZeVHJbTixTy8FuO2VZ0yhUc3
+         SvtxcN3+oaU7HY27F8Uy9ZRmrqVcNRCT7qdYpm652Sahg7rU4w0TejW9qocN0MS1gQLN
+         pyVScX+CrG1G4ZyUQ+B/TTL12fZfN742qRqYRWf/fVTNCDti68BvtmBh0emLsebWwm2q
+         zxqda4WIUPXUBCUxY1dIfSTUdX0EqpqPaU3tH+bmHOP9OH3EbqIp/djheLL+IaTbhFRX
+         kfGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwK81AcdMAi1FEpPFYoZK9uMnZnqoo3PyrF9o/fTQha4EKe+STBYLegxCs/6YPJAHKBs4I6dSHJ2A==@kvack.org
+X-Gm-Message-State: AFq9FYKfgkr1sCqx+yRlozHwm/sz8Ozb1e8UKfxwbw443AbdeoOioQ9B
+	xzQe5omFv2mUZ1do6Mc3b3DBaIdL9SksmEGY1sPpFH0MTcGgK3OLfmEgYzfaKs/ksqc=
+X-Gm-Gg: AYBFou3l8mY2uQP+v78sI57idhnPLz7GcIrdR4dfFByTf7UWIMapGfbK3+ZIX9pS3YK
+	nYsot6V4CtWrjX3kcoeMI//o3IBbR9R6tMdJbWrvVcr9d3kkMX8gq9PDAOc8Nli0QPryxJTIS7A
+	/ogA1+YKxh/KMJcXi+K3e8ec5S7K7avuZpl86Pgrz3CVzzPnFbq82G2XhnLJU+1nEseq8E7Jfrd
+	mkWrspxrwLaeiHYGnjrJ6dSNdMOp/rdmzCV/OfGQc8tA484B0e2pqrUofLrsl/EqgFwtYAYGW0m
+	iLUDp3wPL9DYb+1/2KUD+8vXXFoXj5RdR4Gr3wXogIJ9d1CqvMax+vHBJ42NVj8+Uc9Mh1LGqMZ
+	O5392wLrBOpIzTkKclLs3akFRjjFmUkJdsIy9qurcTZ96qVDn1sIkznR6H4S1I5IFUbnyjjnQWQ
+	qdlvPKHiSfRLTLgHRznAq12BjysWHw/f+97WpIYowYqVnRmjyZAOR0NM5zStX6u9OcQwQ9V17lI
+	AOPeK91mbT/0wRBwsC1BVy2832kfzI3IzvhMbgMk6hIKPmVqAOd5B24HnDTyQP0iNrqkhoeXIVR
+	Veb951aVScGteTqjoJ9Tp2Ca/Mb7VER7wYE+aAer15k=
+X-Received: by 2002:aa7:d0d3:0:b0:6b4:78c3:b8bf with SMTP id 4fb4d7f45d1cf-6b49cbfe65cmr2043596a12.26.1793228053385;
+        Wed, 28 Oct 2026 15:54:13 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:49::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b4964601f2sm1991741a12.37.2026.10.28.15.54.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 15:54:12 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:e84:b0:54c:7bef:90d6 with SMTP id
- 5614622812f47-5639fa6d1abmr2277627b6e.4.1793227943403; Wed, 28 Oct 2026
- 15:52:23 -0700 (PDT)
-Date: Wed, 28 Oct 2026 15:52:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ae27ca7.5451848c.f7707.0002.GAE@google.com>
-Subject: [syzbot] [mm?] BUG: Bad page state in hugetlb_no_page
-From: syzbot <syzbot+d06e9fe6d6a7b537fe49@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4196C1C0004
-X-Stat-Signature: wx4n5qwk3gucqq4onyrp18oqjfrfr9tt
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 45/46] mm/memory-tiers: unregister empty tiers outside
+ memory_tier_lock
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-cxl@vger.kernel.org, stable@vger.kernel.org, 
+ Josef Bacik <josef@toxicpanda.com>
+In-Reply-To: <20261027-fixes_core-v1-45-6f74bec9a5bb@kernel.org>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-45-6f74bec9a5bb@kernel.org>
+Date: Wed, 28 Oct 2026 15:54:10 -0700
+Message-Id: <179322805093.453251.8441529644965692562.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 1A978140002
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793227944-469992
-X-HE-Meta: U2FsdGVkX1/8iqU0T0lL5Zzeg20evoHzTRxYSzTCQ/MdeI6lXEA4vxXWMoepmyxjS/mt/srl/jfVbu3B3vbbMbF+ezHrrKRdWFx/DIc7KUkycFB5gpzRVvCN36ICUswMAeCJnPoJGhMF7Zh30TcyijbwNfSBMDvBr+aXad4BY2d37lHyjIU6cC608bQPBtA5EIOl8qlPAgI0zVUlgHRKnuQRCtph23p2fXtAa4QdTM8lCNvulcUR+DVNY/xjABs4CXZrKW6I8NxDlWdEB8Dg2NFf7PvFH0lm5LmL7Hko+cFbF8OLwwscOzlwLpIR3ZCcl52U9aOl1npF+qtmgOnf6Rkrm6ZZC3xMw6iPGRakwuG1CZGGYvcYp1urnE3/S4VKQQBkp8WQ16tIq73KzgUaJX9vxN/q9wan5UPGwybvUpz3Ft1txlTUk0b6ksEj9MEMQKIn7MSf06sbN2f0i7oBdAqRoTSCvzYa/0PLdceMxbeVz3gt6juD1tfWRXwg2lXDMlSrzzaJb//hJE6ADayj0HjRCx3u9QIVey4jZtKr7SfnXmGenOXLBHzzf+3mffgQWrsw+U8psJRfJp4WFP/wB8WtjNQIi7D+tu48jUrUwy0WeR0GVAP5kIuuIKB/PXntH+kGKpo29aYI5PA/AMG7d03AM63LX1kllgqOfSpIKLmYhUkx3nBQok4Xy+1clWKOTF9ULfytuK5cxWd4ikOXXC6dDpUoBOJN7nQkFgIFqiQT7Tx2nwhKthBV3ChT24XNB0yiLvMpgSyg7xxylQ13di6llwDgr0ck5/f5UUjg15K+VHQYUfjaNBGC0Djx1kdmdSVAT7GkHdpmF8tu7dEqNATr0W6WTwnumc3K08cTLlDYnm2Vyv8oM1t36MgVqkay4B6tTqyILAj4dlwqPmCLwOFjDXo8iUS62S4Ul0roS/pHYwFHHf1CFEdP06dUtgXqORCL+YmCbu1BwQFaQhR
- VR/pPczd
- 4GJn7YcmsYtE2wT4CrEj5HfCZLJd12sX9QqKAWzv3y7B6fAvwn3D7AsCEG+vRYUN5M7Xrl8fMktWxQ4YhGnKh2dZ3YJrGmgrsqxDdX195J9VkVwl3YdWkaqhodQW7/y2gDESNsYvVGPgyV/QGP/GyLOxtrQYoYwD54oaJ8b8d07cIlEj04roAcvAOOcVccJ5Q99ZCp6g3axgokMif2COaRFwql3d42QWZEOt4N/sgrghbM5ADN7ySDs7ArO9ey3SkY6AvSdaFXkW9vpom6hCMOFe01HnvnTknONMEVsBfi/jW9vhc1mTIXbChziHLMOUkPKmLBT3GCpjQsf+R0ajyeupsXTiQKOHhUtoMsEi7dRzBjiCFBnye9yHZh5l/nJlvZPTRgK4bfYgkYVU/B5HKLGC/jdaJEav7Jil5psnRIcxVeqegwMv+pCDpPU12lSDvUGVWi7BXnsrMGJBzYEQXQsfIvnbwH7itiza4HDLUsovDX74t5Elmx3HJ1NPgNdg5kGKwrgp8EUKcO9bvg08sxpd/dk4CdYyAENpptW2DzV7qPTBSF260IIJIrdzvxEYSGB+PtPxsJgD3HA98/QLBmYqAr8Gj6LBWMPf1iIqQhCCKfDVyZtNUpfgLstiL3njD51HOIvECXT96+p6HfFAuCpujWo0j2W4Cqmt2hSe5wpvvyr3yWZW2Lm2AioYpyx4MjkfcyfRzMe/H67UJXG8ccTu5M+feKrUqGxn3Si5t7aILBQhXprsS/yR2VZ/iftHmj20z/z1LnEkvwQHIfgsERs1MJ44j6EMMgX9tkKFiDJ1+XISYmXh09k8n/eqGGvTzBKOvLLbr7tHEZH5Hu+AbfyzIvQnDS0j9UW9yZei5E4Pd0vHF6R2moJDHRwW92wtVUe+tstY2zReI+6++jf4njHJe2bikXHpF4v2AbQVmE0ysqpz5Elf70H7awRqx7G5bSzlkcAxzhVnDpQbAnIJyf1njBG5H
- IjIOx3Ah
- hW1q9YpYezW5UksCXGth1CVOZEcoXeHGRkw2KiR4XuMTp017K1JH3wpQU0Ufe7mM5fnmeLo6LGykU/VT9ugLUW0kwhsBosc/ESilq3LO88dwGpm84pMU7vwmxh+QsO29z1g7Xp4lF94568/lNEqcDz2XYT7bozIoeUkYB42zhFwGNaT+M6X+8hXhuBI7w0mAW8ovxF6y6uw=
+X-Stat-Signature: h59fazem5hwo8xtp4y96jwhgysdfmy7s
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793228054-835184
+X-HE-Meta: U2FsdGVkX1/7NC02ZjsW6g/U7ZAiOwj2M4YvCGT4qOqOqDAaLvBSEFGuC82rVxyrjBzZfrGq6dBQW1Xz94fWVI7aB07awkgJjcFPTzwb8Df86p2Swl7pcSjYIV7WF/D+xhXOQ/sGEJ7jLV1AWYI9gzmScAeaX6/tksrcF2Fik5xX9Lepjt2IBuy2QEHlLCus6Sc46nkZFQnYLoSRPTLWxxjtlE+zkEODmLm2tqQ3JpZahgY7ax4ohHlvS/y0QR42x5qJd9YS+2kye3JmAOfasaN0Q0xlROQqmFl+zy+LfOy6O3vKOo8YdqhAGtJdL3pRsA1sitU5TOiQK1Hb0EMNRqubzwjdSCYar6nu0zwuEqosAGRthYxEFcAigYUGSe36Dn2KyW3rAAD1Rrq9Oi3+egSmeUDRk/cxPy1QwZv+1t9euzN/GTJxXIe0fVGxzfr+ZJFH5jo1IRL93jZ9Qq859ECKuhKs2CQhYdRukNnqkTEfoHFPdncKh3PtGnzlYy0g8OyXY+VGpA4eyM4C428mD7zQmnHVlXiNc/4qFFcBw0iYyRmDB9DYJ5qc8topaSg4FDpwyWihne1bafBw9Q4oqLdCNXHjDa0cQp9DoWxfAgImIVFenWTLcTE81SljMOuEF4SRivutAZH1OYTx2p81LikRejzLIKSjkTJrb/3IfQi7uKHgWmVzJ5chAMps0kym5RrBnThrLU+VDCd/qr5VlfvB2eixRPLaw3+zPTXxQmKAUJ8Y6aryP6SfW9ouekiYhry2+x2fwNSSKvZrIobenvveyPC7e2DgrHiP+RiACn92b51uiLC88S/oF9zlYFU/jOp2L573vAV8CBsyrgycKZCNKkGcpnM5djchQT+vWPVLf3Wj9l9tNabLj9oA3eMizOlfb7O9no+uO2B5nmIhaa+yO8xxeKECg05JHt+kRwqkzbk+mX1e+UaJLiw0nuQyK9Re9hqJZZTk/GFk6Gr
+ a30VfisH
+ CG2Kj5Yv/JZxqDibOjkjljELaCi6YoBm0tkUBfCiw24LHISqkxbXcsEfeM2wON0kNq3hfhzaR54KKCsLL+UiMhSWpIK1v4Nk5O7NyOmk/GdpRDyj5lG7nG4vbd5XR7pO1W/+UqHagM17hTJCst8Z4aRdiHHxlEQXSFsvLEKdjmIKrBKzILS1k9XGGM8j5knJpQy0ujAwo7eL4mUk2reaC0yZ854SJicGJW7qqjiw2AsBcrwetMOmDgYCFPBmVBKtP/nJ1170lHUj3k4Ag1cJNP5nrgRa7MsFytNlkh8T3RUZnwIXZ7LRAwxeEriFmAGA2LOWb1HG5Y1mWl4WtO4NYLcQy6KMddCH3T+8QVYcI5J7jiRUOhliO/Evf+DFHwqmGM+nQH52+Y9m+Gvs1oAhl3dquJ8+wZmFPWPAY7OsH0GV8DOj5x87D6mrJVhzXxPADlkwW6xzKbU9NK7QDrgmVK5PDPUQSK2CkgZwzROjwyKUXkzTNz6IIofiybwb+noR+2lZipbqSCwdPLBayFJAHkJe7OSo9gnm3qMmgp0NhcTg5MUHge8bE8XIswhv2uhpa8iEC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,142 +161,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello,
+On 2026-10-27 00:18 +0100, David Hildenbrand (Arm) wrote:
+> When offlining a node's last memory empties its tier,
+> clear_node_memory_tier() calls device_unregister() while holding
+> memory_tier_lock. A concurrent sysfs read can hold a kernfs active
+> reference and block in nodelist_show() on that mutex. device_unregister()
+> then waits in kernfs_drain() for the read to finish and release its active
+> reference, while the reader waits for the offlining task to release the
+> mutex.
+> 
+> Return the node's former tier from clear_node_memory_tier(), making the
+> helper more similar to set_node_memory_tier(), which also returns a
+> memory_tier pointer. Let the caller unlink an empty tier under
+> memory_tier_lock before rebuilding demotion targets, then unregister its
+> device after dropping the lock.
+> 
+> Fixes: 9832fb87834e ("mm/demotion: expose memory tier details via sysfs")
+> Cc: stable@vger.kernel.org
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-syzbot found the following issue on:
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
-HEAD commit:    d135ab453a74 Merge tag 'backlight-next-7.4' of git://git.k..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=13ecd97f980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c87c97847f0654ee
-dashboard link: https://syzkaller.appspot.com/bug?extid=d06e9fe6d6a7b537fe49
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1544ad31580000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d06e9fe6d6a7b537fe49@syzkaller.appspotmail.com
-
-BUG: Bad page state in process syz-executor125  pfn:60600
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x200000a00 pfn:0x60600
-head: order:0 mapcount:0 entire_mapcount:1 nr_pages_mapped:0 pincount:0
-flags: 0xfff00000000058(uptodate|dirty|head|node=0|zone=1|lastcpupid=0x7ff)
-raw: 00fff00000000058 dead000000000100 dead000000000122 0000000000000000
-raw: 0000000200000a00 0000000000000002 00000000ffffffff 0000000000000000
-head: 00fff00000000058 dead000000000100 dead000000000122 0000000000000000
-head: 0000000200000a00 0000000000000002 00000000ffffffff 0000000000000000
-head: 00fff00000000000 0000000000000000 00000000ffffffff 0000000000000000
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-page_owner tracks the page as allocated
-page last allocated via order 9, migratetype Movable, gfp_mask 0x146cca(GFP_HIGHUSER_MOVABLE|__GFP_NOWARN|__GFP_RETRY_MAYFAIL|__GFP_COMP), pid 5964, tgid 5962 (syz-executor125), ts 99736440450
- set_page_owner include/linux/page_owner.h:33 [inline]
- post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1854
- prep_new_page mm/page_alloc.c:1862 [inline]
- get_page_from_freelist+0x220f/0x2280 mm/page_alloc.c:3933
- __alloc_frozen_pages_noprof+0x1fc/0x400 mm/page_alloc.c:5429
- alloc_buddy_frozen_folio mm/hugetlb.c:1811 [inline]
- only_alloc_fresh_hugetlb_folio+0x135/0x450 mm/hugetlb.c:1852
- alloc_fresh_hugetlb_folio mm/hugetlb.c:1871 [inline]
- alloc_surplus_hugetlb_folio+0xb9/0x350 mm/hugetlb.c:2103
- alloc_buddy_hugetlb_folio mm/hugetlb.c:2183 [inline]
- hugetlb_alloc_folio+0x568/0xb00 mm/hugetlb.c:2899
- alloc_hugetlb_folio+0x57c/0x900 mm/hugetlb.c:3067
- hugetlb_no_page+0xea5/0x16f0 mm/hugetlb.c:5875
- hugetlb_fault+0x776/0x1440 mm/hugetlb.c:-1
- handle_mm_fault+0x24fc/0x3750 mm/memory.c:6844
- do_user_addr_fault+0xb35/0x1480 arch/x86/mm/fault.c:1343
- handle_page_fault arch/x86/mm/fault.c:1483 [inline]
- exc_page_fault+0x6a/0xc0 arch/x86/mm/fault.c:1536
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
-page last free pid 5968 tgid 5962 ts 99714065632 stack trace:
- reset_page_owner include/linux/page_owner.h:26 [inline]
- __free_pages_prepare mm/page_alloc.c:1401 [inline]
- __free_frozen_pages+0xc97/0xd90 mm/page_alloc.c:2952
- update_and_free_hugetlb_folio+0x17c/0x280 mm/hugetlb.c:1568
- folios_put_refs+0x73d/0xb30 mm/folio.c:1020
- free_pages_and_swap_cache+0x41e/0x490 mm/swap_state.c:647
- __tlb_batch_free_encoded_pages mm/mmu_gather.c:138 [inline]
- tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
- tlb_flush_mmu_free mm/mmu_gather.c:397 [inline]
- tlb_flush_mmu+0x6d3/0xa30 mm/mmu_gather.c:404
- tlb_finish_mmu+0xf4/0x220 mm/mmu_gather.c:529
- zap_vma_range_batched+0x4b0/0x5a0 mm/memory.c:2321
- madvise_dontneed_single_vma mm/madvise.c:873 [inline]
- madvise_dontneed_free mm/madvise.c:964 [inline]
- madvise_vma_behavior+0x2361/0x43b0 mm/madvise.c:1375
- madvise_walk_vmas+0x924/0xb00 mm/madvise.c:1692
- madvise_do_behavior+0x385/0x540 mm/madvise.c:1921
- do_madvise+0x327/0x3a0 mm/madvise.c:2019
- __do_sys_madvise mm/madvise.c:2028 [inline]
- __se_sys_madvise mm/madvise.c:2026 [inline]
- __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2026
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-Modules linked in:
-CPU: 1 UID: 0 PID: 5970 Comm: syz-executor125 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- bad_page+0xdc/0x120 mm/page_alloc.c:630
- free_page_is_bad mm/page_alloc.c:1065 [inline]
- __free_pages_prepare mm/page_alloc.c:1392 [inline]
- __free_frozen_pages+0xd3b/0xd90 mm/page_alloc.c:2952
- update_and_free_hugetlb_folio+0x17c/0x280 mm/hugetlb.c:1568
- folios_put_refs+0x73d/0xb30 mm/folio.c:1020
- free_pages_and_swap_cache+0x41e/0x490 mm/swap_state.c:647
- __tlb_batch_free_encoded_pages mm/mmu_gather.c:138 [inline]
- tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
- tlb_flush_mmu_free mm/mmu_gather.c:397 [inline]
- tlb_flush_mmu+0x6d3/0xa30 mm/mmu_gather.c:404
- tlb_finish_mmu+0xf4/0x220 mm/mmu_gather.c:529
- zap_vma_range_batched+0x4b0/0x5a0 mm/memory.c:2321
- madvise_dontneed_single_vma mm/madvise.c:873 [inline]
- madvise_dontneed_free mm/madvise.c:964 [inline]
- madvise_vma_behavior+0x2361/0x43b0 mm/madvise.c:1375
- madvise_walk_vmas+0x924/0xb00 mm/madvise.c:1692
- madvise_do_behavior+0x385/0x540 mm/madvise.c:1921
- do_madvise+0x327/0x3a0 mm/madvise.c:2019
- __do_sys_madvise mm/madvise.c:2028 [inline]
- __se_sys_madvise mm/madvise.c:2026 [inline]
- __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2026
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f6a83c0bd37
-Code: 8b 54 24 78 64 48 2b 14 25 28 00 00 00 75 0a 48 81 c4 88 00 00 00 5b 5d c3 e8 05 0d 00 00 0f 1f 44 00 00 b8 1c 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f6a803d0178 EFLAGS: 00000202 ORIG_RAX: 000000000000001c
-RAX: ffffffffffffffda RBX: 0000200000000000 RCX: 00007f6a83c0bd37
-RDX: 0000000000000004 RSI: 0000000000c00000 RDI: 0000200000000000
-RBP: 0000000000000003 R08: 1999999999999999 R09: 0000000000000000
-R10: 00007f6a83c85220 R11: 0000000000000202 R12: ffffffffffffffd0
-R13: 0000000000000000 R14: 00007ffe29fa7790 R15: 00007ffe29fa7878
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+-- 
+Gregory Price (Meta) <gourry@gourry.net>
 
