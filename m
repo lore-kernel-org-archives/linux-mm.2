@@ -1,92 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22055606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB604606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AQEJ1Oz9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZRDfQyGg
 Received: by kanga.kvack.org (Postfix)
-	id 119266B05B4; Wed, 28 Oct 2026 07:36:34 -0400 (EDT)
+	id B7CDF6B05B2; Wed, 28 Oct 2026 07:38:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CA016B05BC; Wed, 28 Oct 2026 07:36:34 -0400 (EDT)
+	id B2D846B05B5; Wed, 28 Oct 2026 07:38:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFA166B05BD; Wed, 28 Oct 2026 07:36:33 -0400 (EDT)
+	id A6A5E6B05B6; Wed, 28 Oct 2026 07:38:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6F9A6B05B4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:36:33 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ABB2D160BFA
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:36:32 +0000 (UTC)
-X-FDA: 85371832224.12.78C4D4B
-Received: from mta0.migadu.com (out-90.mta0.migadu.com [91.218.175.90])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B7ED2C0005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:36:30 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AQEJ1Oz9;
-	spf=pass (imf22.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.90 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 85FC36B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:38:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0ADEF140C1A
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:38:39 +0000 (UTC)
+X-FDA: 85371837558.30.323E831
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6ABF6100003
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:38:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZRDfQyGg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793187391;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KJQ5MFQyAoYK4/IEHk3nRAEzowJdeSnGgVSxIBuPHzk=;
-	b=A0rgEUkruVgPuMVTie6tupQYcOH60p4NoEexa5ctfxhxmYcv9+W6HqkhVpaAO01nmZH//g
-	Lr8gdgfIzQOM4mv4YjXc13UeEMMF8L6Y1WR871pGMBT3fRSfHQ15z6gh0zPav8gJIwluz8
-	7b9IH9p7Mpgyy45xrp386FVovFeEtp8=
+	s=arc-20220608; t=1793187517;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ywWl7XcLzr2gYC9cMN39pI9Pkm7GstMpNH/8mWgoT6A=;
+	b=JHfOIAzkSJ8el5IK/ZOnTDFJKpaYQerPVGTmqLC991z7tr7ETKFDSCYjZaPca6zNG1iKBx
+	tIyhfNaTCJD588FgACX4U99JAAy5TAKCMXs8kYOiD6/vDYMQEzYMRelLATM9n7oJBaEte5
+	NDjM6x5R8jv40THv+YiTd+v/BHwJqe0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AQEJ1Oz9;
-	spf=pass (imf22.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.90 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZRDfQyGg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793187391;
-	b=zttEMaR3VUFWNXm+fPVVpqcGRGpSeV8j0JfCTIeU7Gz8hLN/OC0wWtFIs/dCyqPh6+/ZRJ
-	L1RTiv7W8KuQMA1umc0+JeTGfNHM949NpJFfgSZHaBIkCDpN++fWZ5v8LZvdKb3BUzWs6i
-	9go0ar7BhXID4qi+ErW5CpVbzaLEaZA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kMCNGJJYpGz5x7c10ToMLdnciTX84LaiipX1h2aokB0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793187389; v=1; x=1793792189;
- b=AQEJ1Oz9qonlO9wnD+shAr0CZf+DRW2FBdnkeZQ/L6EDrrClmEze0FZ/gxAIb9L8FmrWN6mL
- +0fF1JPkhKLSYWtq2Nbpmjw+mP+wG3RQ1obOsne+2356nFX6wJTXaNF59siH1W1JuCKzjzkFUwn
- qle2y5Ay+dE2nlebMb82tqu0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0fbe3d682f9be5a6;
-	Wed, 28 Oct 2026 11:36:29 +0000
-X-Mizu-Trace-ID: 0fbe3d682f9be5a6
-X-Migadu-Flow: FLOW_OUT
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH] mm/zswap: fix double decrement of the LRU node count on writeback
-Date: Wed, 28 Oct 2026 19:36:19 +0800
-Message-ID: <20261028113619.38752-1-kaitao.cheng@linux.dev>
-X-Mailer: git-send-email 2.54.0
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	t=1793187517;
+	b=4ZS/bcfwGGjgTIJRuEF6fgRN+N7IXz3OZJpJcy4rMBg8UgbwPU1IdWUpvuOzB/F75MvgMT
+	hi4LIXD87kTZcnHONydM/4pYmtWTpW4txZZpr6rJASu3k4KtlJMqyqC3mR87NFVg0Mmqdg
+	3YJqkoTr+AIYJLouMYNf83U/K7mlk54=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 88894601FE;
+	Wed, 28 Oct 2026 11:38:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C6D1F031E1;
+	Wed, 28 Oct 2026 11:38:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793187516;
+	bh=ywWl7XcLzr2gYC9cMN39pI9Pkm7GstMpNH/8mWgoT6A=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZRDfQyGg0JZJ06lb7swngyFiH3oCkUY52mMcko6dlv7CwCjdNrAvzKn2D4Xrzv0aZ
+	 C7gwJy0hhT6+UVkx+cnhbddYsh2kRCVf0no8/8GEsCmy57Bs/5LQIwQysbHJm0/tQx
+	 +8xYf6+sM99r0fx/JTkfIcDNrppHau6nPiC1MMtv/7in4ICQbrXQjYC/G9bmxi+stT
+	 OkGFtUsBEKftdnSyuPbHjSvTqCgf6EKOv2EYeQ4qeQGpyl3MpNAlMdutS19cbKiSnQ
+	 h6F3fcHOMAiyrr0KhZH4xU1KsbwRe7QqLkSlXj2eBoelA0yGgR1DO0Q4/IL6Nzrz5T
+	 DPXMzK1qN1oQQ==
+Message-ID: <sashiko-outbox-187827@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm: clear pmd in pmdp_invalidate()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Cc: linux-mm@kvack.org
+In-Reply-To: <20261027113813.1332096-1-trintaeoitogc@gmail.com>
+References: <20261027113813.1332096-1-trintaeoitogc@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 28 Oct 2026 11:38:35 +0000
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6ABF6100003
+X-Stat-Signature: zzfrjyqh3xrauk3sjq1h8hztgyozqzw3
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B7ED2C0005
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: qhexsdyn499f7ghgq6stdmf7cd9y9r7t
-X-HE-Tag: 1793187390-675929
-X-HE-Meta: U2FsdGVkX19lsOVbLPIBtbfjS4t+ENUiMhkR42HQdWeA6snPMlx9xaOM3qqqV9y9RZystQVGyRmk3JVcMm8KFrTxiybuJLF1XDD5EvCjEJOCjZN4YdKSSXBStvAVJJHcn1zqJRtAexCcOLXW2VW097BLGWXtU+vNyRtaoudVlvlBSRbB0hRGA/2LOIOXBby7nu4HdUvPWIQeuLAbzwuGAkAZXv+GWgfindbG075F159WEY/QuE06/rZ26lupXyPtLgMisSH6Km4SIfzqVT/10Seia39OoA1Dp1DBumS+fXPmAcIuwQke43GGazkNJlNfR9Jc8S3DcGOFqo9WVP+JAxJkc6RP4hPqvS/oRVHDmnejSa6lsLpe3ssIhg4BbuioEyNIUlgD+Mx5utbc3+tEPjLMQz+q/sWm4tb1g/laXqg9Lct+qGWUNlRR9X9pQt+0OuyOIJQ0SLJejzOTG8X9tYacULbnhTEFMX8G/o6+V10pjKPQ4VTsyCY1mJfMuRG6Qsiw4nMv3TUyK+uR5DDRoZ8woEyIIjQuwbTniv8fTjkqEHWYZuDxmFgANxkv4qjr0RMMtHRhrbdn1YmHMLHo/bnp41XzMOb3YXNqREifc5rsmk5tgEpzJ/s+Fo6UeVEhQJlE45ifYPxOyODSfBvNGzna/0NDIRbrn2tS7LT6gkbTu1n8YsgmzEOS27nZvAIe9iwWOlVh/MsFrqNawkEFazKtcEQv++3vMlelJoZ6JaL4WXCC7LlwPtiix7prMNr0aCfCX12urwGsFBEpkTZ2YMRxclSptn8gOz8SPu7HCTIkYDk4EGUS57vPWk57Wc8QE8snEH7SspshbAJIsTdqkfJtvJqAgZ6P//cm3un4NCRMSGBv8pYbo/jToASWkneX9OBOZZyD+nuVzGs2UEoFz+e9Z9MxKgXmGFXLJbgyH6njDmyS+YeQ8y+9vUhcPHknr9y3/fDSKt8D4Xl8HSj
- pSqbQBXx
- ykS2Dn6Tflk4mQaoYA4lPLrMIseGLghlp2P0PDryNEHo63RHaCCTl7DahfFTGIgFvEtCFdLSIAMJCTx5i8jq66a7VLHNZhmjnJEntR+q+Y+s3ymJOYmueFgeiElTkdLEiCxFZhfPRMv9QyRBvEea5UToLfg+x7a29DdQ3dodjjGANEUVsTE2VHT+zmXcxZdhKFVznwPc2VprLw24m0K3wGRptfKRRtUfy2SSGV71d/fsADY3OZ5D6/Ehch5UxbF1RFFzsvhOsJEhC1bpgj56kbNN7iii4U6vFTkG4
+X-HE-Tag: 1793187517-934686
+X-HE-Meta: U2FsdGVkX1+W1KS4IbZq2lGKclqRuRdThtwho/yaP2M5ribJW4gW7igrxpD9UY+n+/w0uJt3P40x7unJ+l+qLo8y4ylc8eJ/tVgMwogkGbNoCBeosDUCf/bMbggcZFNhxfI4e7Y4anfde646Nd7YA/0xvmGqnnPvdpCBjTe2JF7WVeihHpoSs1BssjfwhkVr9js74+8ThbZ2uMbg7OZQWdkWurtD4v5Jy/c6+L9xQBOzUlRTEZbccKKAKTGLfjYcK90OiKv3t+XywOwU78L6SkzXObaY8u4cwdl0S8rXUKwJRJKp8yFKv6z8dZXcYnmrRx2pyVhil+2Km+97CwNgqOz+JQ3RutAXwcpKrGc5jSxyrwCXAFpHg5p6NQiMXjhvlSr+a6n1oMLR8lsUo72R5ZjLkUTT8NoxqUocrWC4z0qIPXISTS1WTHrhO9dNoYXEOGK16dLWxbFMrzWWn2LgDMfJHIIQIBgETMIeAlGIPILbY1ZS48HyHAQ9ek/zvX0Q6vKTkUQuFi3JlEHxRHeaCoClhGHnR87gTrpOQzEi9R31gj/mzleGp6MdR8sljHwJ7tYJYOSkrW4wrJvrBIYIrUxyMPyOnSSrOdHMqzOkbPd+XcP7gqRwzvQ9Yv7Gst1/NiB6OTBU74yR4p+ABd+olPxPJoJOqXfkWy1W0FcoxVwFA/OcuqE+t5rxAf/8uxUyArvuF40yL87GJ2qt0x47qRHGPs6o3KTsdKUYzNsm9pBGTjmkF3jF0mmm5p8rukTbaDe1HMjUhorIe37euCqNhjeYzjSA6S2qjBohUCs3kYD1w4CZE2UDmtdV5J4si1RLkQXuZ8BYE8SFESs1whbpAejqNKIKIvkW0njyucPS1ry+wv9/JSESfj0+Iozzcg8SdkDtl1ZMTG+MSQRcuQEM28pUhWC2rR6B1LJKfPsy9Ytuvj3GZ9pNFj1nXRIFROc8NjRq3CzUtOysNq4BR78
+ rLQKOfTD
+ It2ek0qRA+VbQZiky0j0GrqIMQTAKenjdp2GJKSNk1wxx62aKkKfi5+MCgYGLcYZllE8CzY9y4NCJsAcsuWbiZ7atgOlDdUtw8dtTQbDPRcW3q1TgSgaDAd8/mRa1KSft6Bp+jlkMNaQkZ9wtpeHZ1V548Uxuo1KpqteZdZgFURy67YrOoatxXMXrUKTrpyUtrpQZQjQOMAMGK1m6zGKUzh4L+b0SQCTPK/c/jE53NCiOxQsMUKyJpSVyV3NA8958QHVI/xmy1yOZjpTfF2R920VVmZCir8Z+528TrpzICfZFYazXoph8vqlVXeTPPeLxVpz6aEFledwy2WYhuhYkpeHCf2qCl8ZZ1yixYa7G4zwItxPdNkEDJhj+m0/zwgusvZVfgD8QItDPPzD3mSUJuaMVG4IqgZ4cG2hN1tRQytz18R6jSSzTPnSOahU6BTHE6z7tE5BoIGzbNR+yOQbh8T86ZVAQigdig1rpgB6YVroyl3KD55+/I6GLZBEuw/p1IjDWqxO8nt+OzGVq5JwYa9H7/3NR9CzL0594JqRjZwU1XbmYX7zYjwO43ms/RPZdkEyxo1j20nO3vhny26cKGAM7lGBKR8TjNrdJSt5ouHdKQeDk2jywYcajuV+PTR/hKZ/V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,103 +90,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm: double decrement in pmdp_invalidate() via page_table_check_pmd=
+_clear()
+--
 
-Successful writeback calls zswap_entry_free(), which removes the entry
-from the LRU and decrements both the sublist and node item counts.
-shrink_memcg_cb() then returns LRU_REMOVED_RETRY, causing the LRU walker
-to decrement the node count again.
+commit df830550fc83c05eb08f00e78d36d32212821daf
+Author: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 
-The affected call path before this change is:
+mm: clear pmd in pmdp_invalidate()
 
-  __list_lru_walk_one()
-    shrink_memcg_cb()
-      zswap_writeback_entry()
-        zswap_entry_free()
-          zswap_lru_del()
-            list_lru_del()
-              __list_lru_del()
-                atomic_long_dec()  /* first node count decrement */
-      return LRU_REMOVED_RETRY
-    atomic_long_dec()              /* second node count decrement */
+This commit adds a call to page_table_check_pmd_clear() inside generic
+pmdp_invalidate() after calling pmdp_establish() with pmd_mkinvalid(*pmdp).
 
-Add zswap_lru_del_nocnt() to remove the entry and update only the sublist
-count, leaving node accounting to the walker. Split data cleanup into
-__zswap_entry_free() so writeback can free the entry without performing
-another LRU deletion. Other free paths retain their existing accounting.
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index 6e83ce3801b8a..bbf74c73a1471 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -215,6 +215,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, uns=
+igned long address,
+>  {
+>  	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+>  	pmd_t old =3D pmdp_establish(vma, address, pmdp, pmd_mkinvalid(*pmdp));
+> +	page_table_check_pmd_clear(vma->vm_mm, address, old);
 
-Fixes: 5878303c5353 ("mm/zswap: fix race between lru writeback and swapoff")
-Link: https://sashiko.dev/#/bug/linux-68d2ca49-23be-4504-9a75-b8526ec92388
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
----
- mm/zswap.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+[Severity: High]
+Does calling page_table_check_pmd_clear() here cause a double decrement of
+ptc->anon_map_count or ptc->file_map_count when CONFIG_PAGE_TABLE_CHECK is
+enabled, triggering a BUG_ON() in page_table_check_clear()?
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index ad01c691a263..d0c98daddf2e 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -719,6 +719,22 @@ static void zswap_lru_del(struct zswap_entry *entry)
- 	rcu_read_unlock();
- }
- 
-+/* Like zswap_lru_del(), but does not decrement the node item count. */
-+static void zswap_lru_del_nocnt(struct zswap_entry *entry)
-+{
-+	int nid = entry_to_nid(entry);
-+	struct mem_cgroup *memcg;
-+	struct list_lru_one *l;
-+
-+	rcu_read_lock();
-+	memcg = obj_cgroup_memcg(entry->objcg);
-+	l = list_lru_lock(&zswap_list_lru, nid, &memcg);
-+	if (!list_empty(&entry->lru))
-+		list_lru_isolate(l, &entry->lru);
-+	list_lru_unlock(l);
-+	rcu_read_unlock();
-+}
-+
- void zswap_lruvec_state_init(struct lruvec *lruvec)
- {
- 	atomic_long_set(&lruvec->zswap_lruvec_state.nr_disk_swapins, 0);
-@@ -781,11 +797,10 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
-  * Carries out the common pattern of freeing an entry's zsmalloc allocation,
-  * freeing the entry itself, and decrementing the number of stored pages.
-  */
--static void zswap_entry_free(struct zswap_entry *entry)
-+static void __zswap_entry_free(struct zswap_entry *entry)
- {
- 	struct zswap_pool *pool = zswap_entry_pool(entry);
- 
--	zswap_lru_del(entry);
- 	if (!WARN_ON_ONCE(!pool)) {
- 		zs_free(pool->zs_pool, entry->handle);
- 		zswap_pool_put(pool);
-@@ -800,6 +815,12 @@ static void zswap_entry_free(struct zswap_entry *entry)
- 	atomic_long_dec(&zswap_stored_pages);
- }
- 
-+static void zswap_entry_free(struct zswap_entry *entry)
-+{
-+	zswap_lru_del(entry);
-+	__zswap_entry_free(entry);
-+}
-+
- /*********************************
- * compressed storage functions
- **********************************/
-@@ -1119,7 +1140,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	if (entry->objcg)
- 		count_objcg_events(entry->objcg, ZSWPWB, 1);
- 
--	zswap_entry_free(entry);
-+	zswap_lru_del_nocnt(entry);
-+	__zswap_entry_free(entry);
- 
- 	/* folio is up to date */
- 	folio_mark_uptodate(folio);
--- 
-2.53.0
+On architectures that support CONFIG_PAGE_TABLE_CHECK and use the generic
+pmdp_invalidate() implementation (x86, arm64, and riscv), pmdp_establish()
+already invokes page_table_check_pmd_set() before replacing *pmdp. For
+example, in arch/x86/include/asm/pgtable.h:pmdp_establish():
 
+	page_table_check_pmd_set(vma->vm_mm, address, pmdp, pmd);
+	if (IS_ENABLED(CONFIG_SMP)) {
+		return xchg(pmdp, pmd);
+
+And similarly in arch/arm64/include/asm/pgtable.h:pmdp_establish() and
+arch/riscv/include/asm/pgtable.h:pmdp_establish() (as well as
+generic_pmdp_establish() via set_pmd_at()).
+
+Inside mm/page_table_check.c:__page_table_check_pmds_set(), the existing
+present PMD (*pmdp, which has the same value later returned as old) is
+cleared first, and the new invalidated PMD is only accounted if
+pmd_user_accessible_page() is true:
+
+	for (i =3D 0; i < nr; i++)
+		__page_table_check_pmd_clear(mm, addr + PMD_SIZE * i, *(pmdp + i));
+	if (pmd_user_accessible_page(mm, addr, pmd) &&
+	    !page_table_check_huge_zero_pmd(pmd))
+		page_table_check_set(pmd_pfn(pmd), stride * nr, pmd_write(pmd));
+
+Because pmd_mkinvalid() clears the present/valid bits (including on riscv
+since commit bdda2887cbf3 ("riscv: mm: Fixup compat arch_want_old_prefaulte=
+d_pte()
+and page_table_check")), pmd_user_accessible_page() returns false for the n=
+ew
+invalidated PMD and page_table_check_set() is not called.
+
+When pmdp_invalidate() then calls page_table_check_pmd_clear() on old a
+second time, mm/page_table_check.c:page_table_check_clear() decrements the
+counter again:
+
+		if (anon) {
+			BUG_ON(atomic_read(&ptc->file_map_count));
+			BUG_ON(atomic_dec_return(&ptc->anon_map_count) < 0);
+		} else {
+			BUG_ON(atomic_read(&ptc->anon_map_count));
+			BUG_ON(atomic_dec_return(&ptc->file_map_count) < 0);
+		}
+
+Wouldn't any call to pmdp_invalidate() on a present user-accessible PMD (su=
+ch
+as during THP splitting, madvise(), mprotect(), or mremap()) underflow
+anon_map_count or file_map_count below zero and hit this BUG_ON()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027113813.1332=
+096-1-trintaeoitogc@gmail.com?part=3D1
 
