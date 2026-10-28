@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E4F60A2602
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9760D606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZcpNV/Cy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CeifOdun
 Received: by kanga.kvack.org (Postfix)
-	id 83EC26B05BC; Wed, 28 Oct 2026 09:59:26 -0400 (EDT)
+	id A3D786B05BE; Wed, 28 Oct 2026 10:00:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EFB46B05BD; Wed, 28 Oct 2026 09:59:26 -0400 (EDT)
+	id A15426B05BF; Wed, 28 Oct 2026 10:00:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 705926B05BE; Wed, 28 Oct 2026 09:59:26 -0400 (EDT)
+	id 905AC6B05C0; Wed, 28 Oct 2026 10:00:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 408396B05BC
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:59:26 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4D84FA08B9
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:59:25 +0000 (UTC)
-X-FDA: 85372192290.15.3702B52
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 638266B05BE
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:00:35 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E7A341C46EC
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:00:29 +0000 (UTC)
+X-FDA: 85372194978.21.8389312
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 80CA38000E
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:59:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZcpNV/Cy";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 289702000F
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:00:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CeifOdun;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793195963;
+	s=arc-20220608; t=1793196028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lmwsrkba+SRG/AXiVVkwXIp5wUOzmuBRAc0XQagcnRk=;
-	b=kY42mWs7Zto3G8PCabO19HRCXx38VyHOkMcMBxc3prR9bFzgf39w2vnCFadvr7Wl1m7fXT
-	d96ct5+LyTdFHGekzHf6EdyVzxZjsN2uofnSTjy28NPFDmefqcLsTZ+ve/xkPnN/zb5Xum
-	nJBFBaKuZFiRPu0iSdyWMyZ6dLKuQM8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZcpNV/Cy";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=DfRxL+0TUQIipSiCQwkog2weAefiwhTq3bgpHDJnrgg=;
+	b=SLHTyCFtJ1FJmuTMP9KAmfBPCNmuUVRvpD3puCFycdksb1IP49jkfyoyyNv0pwmy39QmcF
+	ThII3ghO1zIm7LX0lBQACoZb92FN8Q79omq1VS3Kpj+mC194bSrBB9bxIK1y9ZR4Hx0M54
+	nuKBynR60pni1eOVUAhcq9jdki5HIRs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793195963;
-	b=o/smzJSyyomVy9qM7ZcUNTdH9Y24EuQMjhc4HUO04TMPQuCi9uoQK2Y6w/GpRfZ0Yn5Cnp
-	NH+F75Q9l9L2QrcJvbxJRmp461V+z/lAgAoTClVJW3hQYKauv72C/bsYJCkKddA/lbl94h
-	f8JkTmcDhlhf2w/z0XKWLNlMTCz/tvs=
+	t=1793196028;
+	b=KikWshox4WNYlTxNznHrxR+LkKbxXzIjMKMBMymu2oAuDbUOqZ0kv0EuemEUs6kQvMTa5t
+	vL8nq8MqSWV67SJ5wxPF4ko9F34PskQptr8QdxD5FCbwy/WcJ8xGjUuE+CW57jIe0YklY8
+	rYh+Y6QT5FoX3f7Z2LnOdWX3Q7kisuw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CeifOdun;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B8D7A6021D;
-	Wed, 28 Oct 2026 13:59:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E981F01825;
-	Wed, 28 Oct 2026 13:59:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7FFCA600DA;
+	Wed, 28 Oct 2026 14:00:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616E41F01825;
+	Wed, 28 Oct 2026 14:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793195962;
-	bh=lmwsrkba+SRG/AXiVVkwXIp5wUOzmuBRAc0XQagcnRk=;
+	s=k20260515; t=1793196027;
+	bh=DfRxL+0TUQIipSiCQwkog2weAefiwhTq3bgpHDJnrgg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZcpNV/CyxgZlHYTgc9hz+BHGNvVQTNr2Km24y1NtEAipKrQpWq/PnNnomtVHFa60H
-	 fq/dnQtzBNA1YFxuQWUpMKjxRjHD9TL76A4VWNOOD17bBj39UbNmg9IoGsdC8TNibD
-	 PzZRXmfWpzc0v4S8HCUxioxzz0nUTL723I738EfkJ/pwmVnZL6fJthMXe+IdRUM8sY
-	 0VSypMLm4xLMThodRtiJupZVx4RrEYAMgTVMyOcxVO6P2TKUWAK91DXgn4+kT3k8kH
-	 SlTXh7e9aDUOI5e2xO+fmTOBmGkauVtXIU1nu/qAI16DPgVIp2HS6yRGNMGl8gcDRJ
-	 7uIMThOzuVRBA==
-Message-ID: <cc5c7066-b5cd-45df-b338-37944320da2f@kernel.org>
-Date: Wed, 28 Oct 2026 14:59:11 +0100
+	b=CeifOdunBxMvBPkFlwwoFIB+iVH33NFCwB3NcYCocHQJsLLQ+zMo87mlc7cD131ur
+	 i+khN/m0m4rdATVgt1GnI/a23VK1zaKL/q7p89wzNZwOJZ8F/u/UYDtrVRcJ5G062n
+	 8FGH1tFbXpiYBjf78WvcdOTzQs5v1ak9Q5lDXlZN5A38XkaNVCQ3MQ7MpLyhVMBbbi
+	 TsZHVWOj0mtpOjRsfDG/jg99mSMdMWxEI/Wt6X4B58zrdshOGmNZ5YlcgV8C2C0XnU
+	 ick+PGq35J55adW9948Z5ABgHM1Wew34VEysP507bOil1XEvc5mx/s4HZRrezoQWN6
+	 B812A4pNIxdzA==
+Message-ID: <b0a2e3b1-9d36-4ab7-af22-359b9ec6e57a@kernel.org>
+Date: Wed, 28 Oct 2026 15:00:18 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
-To: Andreas Larsson <andreas@gaisler.com>, Imre Kaloz <kaloz@kernel.org>
+To: Imre Kaloz <kaloz@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  "Mike Rapoport (IBM)" <rppt@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -86,7 +87,6 @@ References: <cover.1792609488.git.kaloz@kernel.org>
  <20261028091631.8072-1-kaloz@kernel.org>
  <25f5cbed-9126-4870-a81e-65099155bc9d@kernel.org>
  <20261028101719.11918-1-kaloz@kernel.org>
- <4fba060e-c4f4-4d73-8efe-dbed0b5a7bc3@gaisler.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,21 +133,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <4fba060e-c4f4-4d73-8efe-dbed0b5a7bc3@gaisler.com>
+In-Reply-To: <20261028101719.11918-1-kaloz@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 80CA38000E
-X-Stat-Signature: ou7ow5gahu3szsmtmdg1gcz9i3gj4zu8
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 289702000F
+X-Stat-Signature: khpnm1joh8bwd1we6bansmijypiozec8
+X-Rspam-User: 
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793195963-657178
-X-HE-Meta: U2FsdGVkX19wKdwEdNXZLVwmTssnF2lcM7iyho1zNyfKkw4g/FCCBXIiX1tcFzOmxrIeokbd75GhgiVOFuvw23jxIWZ2Os5rPx5LAdCeiRVZ5Yd7CskixYXzxbB4yqsFzNtSgNZ1YoA4/HpV6hteoZkfUivXShaJTTTgjg6NZxTu7NhfglofZKLad5O3eV7i0YhTnQcSZkuPLSqBlhTKocBilI8qqXenOJ9815c/Ie3SILCL714HApc4nFcMAIdpKCres9Z9xqfwlvRl0+51uoCwW30javKPEzibHDA5GHEexqPwImTbLVh8DPQz761rzhQmQw0P6CnN92W1OiH7/RTqxqWJAuyiXkw/DWTXkaXQoogA+griNbu+ePcLhjZ4k70PwKKucDPHDMWoXUGFYi6y/kLkSJ4mZGEZImyUnHU+V9BfW4UI7b3UC9U2mi84i7nFco9kH8XKLzcUvM2p9VnzthOgm2MOcHL5KZ7AFk9o4bZRm6MhzT7KQ35EC+bSIGMIjFWXxjYDuk+qUpeSWtvIVO+hmqf+HhVZhfI0bFwXZ3Fe2i291F3JcDbFkgLARRGfXDxjPpM0NR3B9QoDpy4NMehTnl30pCC/zNHwxAfaCPoeoaDdBYz5VivVIi1rH0INWn1nPEUblkN6zNCVoragbyeWircw1gOWQU4T7iI/2e0UnatQImX/eO0bmIeFm9+wADu44e/ZPHgDgr/iKv3Pic0Jh6KCPFNn6Kjq7gn6mrWbUZ+EJ/UWcnHTP4hMogk8AcR8awuWPrhYUbK2/8rAhDKtqIw1/KS60LYO8BtwZryoFb/dygapxHuViXwDx2J+HuuD3+kpEvq0IbRzK0xDDrd9PWnS3f5hbiBmkjZYGRmSQYkYgjOn0XiNA+fsV87+V8fuetv7ty2cE5LeiEWL1m2n9W3HpmpJSKiwG9Jkk2uAsZTL22TQiTYzpWypnsu7kBvp2oSNxcPB+L1
- T/QwVd4S
- 01Pof2S6pF4WFOcAcfsCaZzgCyTln+0G8DGa5N7xEBflIUe0UKtFmzq2pqd43ALG8p4KI7iYrxt0W6XEWUfOCVVNcfduAaytGltKcd76lCdbEbXQfLM2268lfHKZ08D0gYaC2QlYVpVh6V8IcfbQHvRjhR93bSrCsY+AjJ7xSa0QglKyV3lHfa48QkhHWOwBFpA5OOh0ayMSx733lUBknuiga/bcedOFNoYXj2fQ1XLTpBR/JUwUdNDagCKuFPqRJljNYqf8Iu5/kFF5NXy7gYFrfw6VJS3nLWyAkH5nt8r4WZuP8lP/2pRTzhA==
+X-HE-Tag: 1793196027-503577
+X-HE-Meta: U2FsdGVkX18ulRmlZuadX9A4ds349vpy9XLf8wgbrXmLIlhzg2biQB6rrUaUAxf59FROqZObybxzu/pukWSWNU0LLc51op8gfPfa8jkdEYlIiOTdtCLs9B5XeNXXZHXLzENnaKW2Ovr/UMfrngdC4Mpe6R0LwftQZ8YYb7O5DVZ8sMpes2C1+L4MbLQ96WxMUB+QSUYHVok8vaB2xqd/fnDYGpkdaSpJCTgb0GSoTLXVhUsBMVBdP9pwLbEG4YPhN49HPIItquyM+c1Li4kUUKjnYvSXweQ4nsmC+cRj9Or+FtEXcfjjZO030d0dSKZw09nChXRmmoWI4ZPG7uS7w6X66G4qj7uTC6UNi5Zm5K/CwiudUIXGCZnmpUmEWo0iIWNqn0g/TwZKhC4G6MY29yD0EaohOrSBncd1LqqgfjzVtUNnqoKA6tqZCs7SdFbU/ymd5HH6Mr8AWfC3sEZeKm0+gjDdo0rEEtUwX6pA6djKSWOWjBcgANjSAQ3DA3DdvjhuedZutFytfxdRD8GnH6qcTDRpcEThC8bQQKwHdv/zObSPapioSal3RBqFiQXy9Fkct7EqNzTu6zzFNIyTmGv/0dAyhvYEM3xVma0zkOsJ84n57rAa/x7JTkvAuPcVkmgVfZS+UFONjEYWYLYqCZpsdsqXIyd28RkH2deA/09vHslzpyJXVg5xiNTHKNbICFFn1oWitoKd3KvZU+Ny9V3i4mxz5G/mY8OBiKV5AMrI8m0HpNnPwpW5/RRlb0OXLxQyWoB3ugTihnrpKD7LH6hXWs5Dzl5o4bL58MUOH8owp4qvGRJazHHbbKajnwDj7eJk2Lvl7PA95Jah28VLj1IoDguEziGKvYgfWchS1wasNOhTJlSrY6agj+p0+8nHEpEkIg1EKwudpLv6O3805RL4lXWt1YphYRdMRJB0viI4CGRz21BZB8Q6nfeg9tqP5JeAsgJP2Q3SVCp3/Aj
+ wgnaFDqd
+ +IFudiXXolfzcKGzARifHxz+jGTXenyuuJDPzFIDEyZNoXVaCagwB3Cv3ahZCzMbkBycfR1wU5ANKuxDFOt2eUqarSQ9IxY6O6fESTi803KW8CCbTR72aekNW039zSHsZFSAKqPdtn/sn+pHOa/Jp39y7nK8QlEXESwhw/Kss+ovpebsxFyKgjPAAkr9R5flQrhw5jNt0b7agVpeC4FRxB/Bj685vcCTCgQAeet6SpPYzUqsaxwZy+AWdfQ1/6B9CH1vhPkvb73Y2C3brxGCF/hihdzNZr1mf0APwdTX2aYYF0VlcKIT/Z8s1/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,27 +156,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 14:57, Andreas Larsson wrote:
-> On 2026-10-28 11:17, Imre Kaloz wrote:
->>> The biggest problem all of us with supporting old hardware is the maintanance
->>> cost. Not just core-mm, but also things like ad-hoc page table walkers you are
->>> adding we (from core-mm) might have to touch at some point.
->>>
->>> If there is no good reason for the complexity, out it goes.
->>>
->>> Because otherwise people will push more and more for removing legacy support
->>> completely, and that's not what you want, right?
->>
->> Definitely not. Fair point, I was only looking at it from the sparc
->> side, and keeping these platforms cheap to carry matters more than a
->> few percent on reclaim. B it is, then; it's below the scissors, on top
->> of 1/4-3/4. Thanks for taking the time to go through this!
->>
->> Andreas, if David is happy with it, would you take it in place of 4/4?
-> I'm open to a solution like that, but it'll have to wait for the next
-> round as we are far too far into the merge window. 
 
-Fully agreed.
+>>
+>> Because otherwise people will push more and more for removing legacy support
+>> completely, and that's not what you want, right?
+> 
+> Definitely not. Fair point, I was only looking at it from the sparc
+> side, and keeping these platforms cheap to carry matters more than a
+> few percent on reclaim. B it is, then; it's below the scissors, on top
+> of 1/4-3/4. Thanks for taking the time to go through this!
+> 
+> Andreas, if David is happy with it, would you take it in place of 4/4?
+
+Thanks, appreciated!
 
 -- 
 Cheers,
