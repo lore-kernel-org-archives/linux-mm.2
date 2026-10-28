@@ -1,140 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23B0606A31A
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Oct 2026 23:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D75606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 00:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=foOOITXi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aw5uQyVc
 Received: by kanga.kvack.org (Postfix)
-	id E5CC86B0924; Tue, 27 Oct 2026 19:57:21 -0400 (EDT)
+	id F31386B0604; Tue, 27 Oct 2026 20:06:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0E256B0925; Tue, 27 Oct 2026 19:57:21 -0400 (EDT)
+	id EE20B6B0607; Tue, 27 Oct 2026 20:06:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFF1C6B0926; Tue, 27 Oct 2026 19:57:21 -0400 (EDT)
+	id DD0A96B0608; Tue, 27 Oct 2026 20:06:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A5BC96B0924
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 19:57:21 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D7C51A0B0D
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 23:57:21 +0000 (UTC)
-X-FDA: 85370070282.27.8D94CB2
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 55726100005
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 23:57:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=foOOITXi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of charsyam@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=charsyam@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793145439;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B45686B0604
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 20:06:48 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BDDA80B1D
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:06:48 +0000 (UTC)
+X-FDA: 85370094096.10.AA8B6B6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7BDD7120009
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:06:46 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aw5uQyVc;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793146006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tyLuWatZQwuD0wqN6huARvqhfVRglzi7qhQ3+et65cs=;
-	b=W+DImqF6CZbJR1TZLQjA3d4pJMPkvGUwoSp+HUBqEAVeiZ44WhUH0K64MGeJun802HZ5K0
-	m+GK1sEFWGBb6lEV+sYF02d1CHpOVMBkvIT4KaN6GGzu09Qsf5YC3wdFFnTjnMEFbFbHbH
-	aHQX9WYst3Rjk0lmp9TUMjcq3ZGw77Y=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=foOOITXi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of charsyam@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=charsyam@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793145439;
-	b=oVdza/zJ57FAFqpsahqUlt1zJNR0LuW555Po+rEym0z5im+7ZHLQhi7rEK4alTXVXXYOrN
-	VBDvUVXwrF0SAe5MB8kx1p8elywFucjA3wsLegmng0YwfShOE8BrgwjO/a5PkGpMDnhPYc
-	GBJazaqRMj6ycUh+KT2NkRiVZtuW7a0=
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8a376759900so642477b3.3
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 16:57:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793145438; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ne+a1D4uhCYMixb46dHjxKn6LiinsQ3TSrZN5gT9Ck/ea3gzqeyngCbBkqJhK7d9rv
-         K3mON0f2v9X9qizJYoCFpRBOuvBY1SrKDoNz7cmoD+g+nkJqANB5gwMa7miz5/iMeHLy
-         dQ7hgNmOo8FFbxXZz5HsoRn0yr89oOouyIr9Apll1xAtPN1l9mLszTK3HUV+X/MlNce6
-         rtSqkerxPVlS4uCloAXjA7QovU5jC3C/ovR6H1IWeEKSxMdob99SquJyXDKkdZVSGP4n
-         JcNvekpUxmeBNmlsouvgTyo5N1jw381zYpnibT8vxuSv6+Jc2DAsUvMwvqBMqrZWLl8H
-         9zhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tyLuWatZQwuD0wqN6huARvqhfVRglzi7qhQ3+et65cs=;
-        fh=yJ/vPN4bkbQHe+A87xjs5LI9+jNkvoyYEDgf1WoYXr8=;
-        b=aKtFilTKDhZY5JJMBsiUUSs2wG8g4RU9pqwXYPSgIO4P7xK09VdniJCWCwVrEHLHFd
-         uNHDF/vFhLsxgWO5v71dOqHQdHmQh+TKJVNNva3dWLRTbFIGWBfen4IP7NigNPUdzf9s
-         r/jyUUYosEOeazb4Nj9xNXqYS6Q3DzkqleinL7M4tRp4EXMtIjwq/hweyFyeklbHp8+I
-         ZKNo7sw/GZeS/Tb/JGhxrGVg64WSNkwaLX6pMon/Cyb5wF3XxGSKigLHSfGc0B351oEn
-         FkFv/NbISK8BtEa0bVWrIDdzeYwJw/6hmnBFCpwqjTsd1u9eteV9cVntqWF3PenbUo9I
-         NVDw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793145438; x=1793750238; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tyLuWatZQwuD0wqN6huARvqhfVRglzi7qhQ3+et65cs=;
-        b=foOOITXiHfbOkryBKPnwlMqWShiW9UoaJ75svOy3XVYu5caMTYb6MsLLBrLCnDMM2H
-         ofqYY5Nt3lKU/kb42FCe0yq9PcofTnm5J0RrVJG6kOHatCIHrCftBEej99LY9M8u2ujC
-         uwQkMgl+6BkxCsQuiBYrPA3GusIrvVq29xvBX+VhZLZ17d6BSvrH7NyaC/XqAE2GiSt4
-         0MBBqB2W5EvPY1CZzsUhgygttuNhxUxIg4UN0IymDfU2cSPDRa1NUxSCZDip43AQyCkW
-         2PX0bg8XWV+Qzrxj0kW+eVsaP4kx1kmegaY+gKVvaCjbRjjkV0rO7rL3rcQCVJV+IM47
-         wImQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793145438; x=1793750238;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tyLuWatZQwuD0wqN6huARvqhfVRglzi7qhQ3+et65cs=;
-        b=iarl50eHeOonTGgd68VhQidC7ANDtzg6Gthj14Lf2dtLdOtkuP09g4Denzw330/jTv
-         LgDdOqFYhN/BOTthsOGsj80CLlX88cf+klD0xHp10NepApKY6zm63tzCoY/vZB1Vg4z0
-         NL94byKbabpCbm1Xa+yoLecwqQsU/U7E8KivgNb9+G4IOimA2W87EBq22TpVxcFaGBuE
-         GdetBq20jhaKAsp8uJBR4fnRU9/vC26/lvZlqpcEwv2pExFeE8Bfc5nlCIfUvbyFKegE
-         bEHmnxA3q+QhXHlZT9OuG2T/OZ7J/sVHcBx72dUIGt629plYXETxtZu4aMUH3P4RBtly
-         1YSQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy21vTCNPfBcEfEWWux2hdKBLyX4Tu6IbQISfd2xgfKHsGxugkqXDzQYnJcD16goGD12vRhmU8mIQ==@kvack.org
-X-Gm-Message-State: AFq9FYJVvysHL5W/YsEOlfUXrQiqLIQniZYJlaWIC2/4clVUXaliCp9e
-	Ij8g8OCcAN2kDxElaBqG3mSArPJMU/yZR5iJz0J3Mqtbd+WbPNPRkDb6a1wi/b7cC890LJQU4Go
-	JTWN0krjzymAkwCGFkyWOAvtBgPiYwbeYyduo
-X-Gm-Gg: AYBFou0WWt8+varK/RQ0qxYpyKlL19oAm9c4/HRKVtg1q9UucAiBgGeSmS9IkRjfcjV
-	FTxyFzRX0pTh1PfUDnDNbrN41ucIHxgW1DROVrTFwxpcgin1xyRXEa/xKzb44IkSxSERgWdMoyq
-	HWqzlQVcqfO4w6nwwOhvnOLkfXJPicevLqQDI6+BeLY+hhkNsepOSmrCMSiSjfibVEzHb+dMBq2
-	oyvFNUc6VcGHBjJeaqNNYJVQ6C0Mef4U6cqGm2mRj1LQbaqWO0Q9UuDSBzpPlwr4i9soMNpMHxM
-	wnUREOFo3rs76D+f+StHyySs1bVpJ+8tNOAeTdOI9V1cc2WJzVFD0Fj2jaN6SeyB+dROBADJDjV
-	DP59qUiFsfIn6UbW4YT0b8NOvMhqzzqMsBF3k/yk=
-X-Received: by 2002:a05:690c:a1c2:b0:8ab:3696:d86e with SMTP id
- 00721157ae682-8b1b5d32b5fmr5371157b3.4.1793145438420; Tue, 27 Oct 2026
- 16:57:18 -0700 (PDT)
+	bh=skEiRkHWE+hnvc3/6Bu0ehaCi2IzacU7F2ubFvDKDvI=;
+	b=J07EKzl5n/GbouiVLGtEsxSFcbOuBVE5H9tYptNrhUAIgZZZsxt2iPEjm/s1sZqfAcGE3Q
+	B7TKuMA38JHAvnT1CWQWfcwCioG+uv12/ftGmREg5rBJr85/8O2quAY+8laJUuh0SrY29G
+	Xbe4UQHWMhkLAMr1756lYtlpGRGnmRk=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aw5uQyVc;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793146006;
+	b=xlmjUbq8K2aZJyiwb6NCwX2qg2fz66zo33yZ/dbSMQb2oklkQGuaa6Bmy/pgWhscU32Emd
+	PKbu0Gvany4SsS9Sj7jQ0qRlBHhaQezW1PmcZ67gmGNht5jMNW9F4+n7EAdLMFlmrxBZag
+	gUtO3BDSI41GWMszWLEBKh18UNK7TbQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 05567601F6;
+	Wed, 28 Oct 2026 00:06:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B71B1F01825;
+	Wed, 28 Oct 2026 00:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793146004;
+	bh=skEiRkHWE+hnvc3/6Bu0ehaCi2IzacU7F2ubFvDKDvI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aw5uQyVcvUVcveSh7K0iQyIeOrp93TXa37xDmxv8jtEjFdd+gd12i98k4oFF+dLH7
+	 Oc4j52g38SdjU3js+RwKx6LxGjjebgJAKoEDrJCIYpEBTKEpNo6QM8zB+4IRhiH3xU
+	 wXNcyQ6m36F8wiWEPFEpfd32LGh6R/MRBDZWfuPWyhZOWymY2uzK/KTRwKpN+NWLlv
+	 2rOZWzSSRgNaHglsAcvMsafcZCaqlqV2RQ3Cx5ITiIeCeakq+Np6KEh4aOkhbywjWG
+	 DfU3ELOPRgKOPswvZAAQGZqpb3/yc/0Zb5gnbwqeuPrgwVGgF6r0RLinVG8tYXMxbd
+	 Y7RNSFD+Y4Ddw==
+From: SJ Park <sj@kernel.org>
+To: Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: SJ Park <sj@kernel.org>,
+	corbet@lwn.net,
+	damon@lists.linux.dev,
+	jm5905938@gmail.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rdunlap@infradead.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v2 1/2] Docs/admin-guide/mm/damon/reclaim: improve grammar and style
+Date: Tue, 27 Oct 2026 17:06:36 -0700
+Message-ID: <20261028000637.157110-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261027190503.2526945-2-manuelebnerli@mailbox.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261027035431.1007584-1-charsyam@gmail.com> <20261027135354.149948-1-sj@kernel.org>
-In-Reply-To: <20261027135354.149948-1-sj@kernel.org>
-From: CharSyam <charsyam@gmail.com>
-Date: Wed, 28 Oct 2026 08:57:06 +0900
-X-Gm-Features: AclHuK95AvTLehgLpYDxlvAp4vsS4yVkPrgwzegsV_wexP6gryXmq4iIKOugNPQ
-Message-ID: <CAMrLSE6ySuzsJJX-KXoeG49pS4ZVbNWZve1dwj1v1avAhHeEdQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon/vaddr: preserve migration weights above UINT_MAX
-To: SJ Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	bijantabatab@micron.com, ravis.opensrc@micron.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 55726100005
-X-Stat-Signature: zrn36aj5naou7s841duums3t18pm3nmi
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7BDD7120009
+X-Stat-Signature: dcitj981775hrd4oizmiu4ofizp5pupt
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793145439-747812
-X-HE-Meta: U2FsdGVkX1/a9kQtaPd7I6TCXl1taknC8vnqdNqzKpYu0RsTr/0EkMPF+vXiI8GSE3MhJ1Leh006+7NrRTkonrAKBAWFsfu7Yq+eOGtjQTp13IauY/uRs2A/gMf2mO+gkm3437aaXu/lz86he0Z6jg862TNrQiyhQLgTMqt7BJDdigmC81RFXFdBxWrhytT93twqWRo/ZhBO1pMXHC36W85AqMNgMEGEa164pgoSXA8y0EXGD0oGINlIqmNKrHrMvkLs+YZWJcB60FvXWDR4Bq5A5uibA3rEndSTcpKJiOWIbe44BYU7jfNvTtk5FJjkEm4u1VOV5VabxNmjRwArGce67qs/bf8IwXzfyt1QMftBSAIASkaB4qoK+BPLHs36SmALIA0jyMORCuZbCpbjpTLEcErgv9oq5whw+Vbum4M2xJXQOVHLvBDiithE2s6LwNYiCo4jDJs5D6N942gabcL/vT9fqu+1vo243nT1OeaEqWD5nUJJsXDyW8IFX5ZPcYBEtb8uv2eus4w6D8T+n1tPIbN/gdbvterrUUAVFa2R9TAkumDaiwu8neqpcGRyQ1NPY4kWxmrVhMvkqWuRUVGN/zZlbiYpmUEyCXIJNTqjrsa16DTvWj6t+us6I39d0kYrPpHUohoYhlqHsTAHXgCBnLYqt0Ozdw4YdrFrE73OxJoEgQZVfOVuYdOp0s0eWNq5PCKC/3HL1bI7UHkIC7m6zQT2MjN0VKf7vJ37G27zet3xMYk+1fPq0v0rIkwD7dS2iksY64yNx7drm0vp7FHsHyPiGIN4GvMlAGhEPbHvDVTxRSZ9JqBwyHz9/GrLe2L7eUtaqZ4pTgF0nYyJKUT5KhunrscD4YW88C+Res6NbL1cu/93NUQ6Mq0TRZBNQmGMjj5AZg20x/jh0Tmy6LhQqrbn/M3ghEiSlwCmiYmHUe8UUfvrrQ+fknzfnCj6DvjWy2pVN2zb6JPvDrg
- 6uzeIFBf
- KZErMcXE1k+LiRY1tiBnBexg7BNejzm0lLcerhdxqZNjNACcgXHkN2z5K+NnApKxXE6feFL66UUEZPRvOA65/sg5apghcy55iT2s7esfop6TR8PpmKrR9by8CLJzkzZVhft5+Pr4uOiaHXMKOlnrxp9a4hj7qLkhV9uLqHbw5Y+tDGpVWOsbgc2JvgHfMvwwbcbhRHd91QD6qEwYDwUr0N07B/pWLjaFSW/Fu1Xa9DmtgFlgMfNQcwn8UQ0PjG5dnxwMw9fYJ60yU51mBJCmfqA9w+HwCDneKeKeg3DN1woGHorgTarFgPVLYhA4+HztQzgMaiKuurORatcCSCxz20+L2Mj7hUD4JTYKSafpsD6Ic8jcRFcRegt5OUFFWcN6MtAS4yEFMyeFEbflyCWbmXKEWuDoBZS+lMkfqdLy1UOZRQwgZVw79nbNcShZwrcJeES/+b9c5D/kq3GnlG+/s6onI1x9lWJwNGJvc/xwsozl2RddJCzsb5l4sSQ==
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793146006-491514
+X-HE-Meta: U2FsdGVkX19dUqbS0Xsgt31hPWiZUyBXeeV/qH0JrzQh9NHJMDbW7V8roqSuEmcyn4nW8Q20rTG6GoJIBqYmS81FFglV6GxwkAJ804vw7Eo91uSdvePHC/h0a7gNdlMvyYF13M+eFCqfe02wTFlw6GzggLCBk2v69RT5BxVM5DYiHTuHPI6EtuUSM+Sq0vlOh+MrSgNPctiskYHcSYy4mTEObUCRGL2R4sA0UFdqxWqli3qcgzfeD8ZEIe+43FfECrOaKj80InWScevbRexjl8fyRZs3iR7CNAyz9STovZMEXErJrSfaR0aIJYgpwjlv8m9t3ISE3f/s3IhXbL3ALKU5smu6qYkyihzyoF9t6DVzIgZaXw15pPBoKHcXlfAHEcGRAT7PWzPCGzd/jMOiqoAlYUF7yrq2ccYE/6fQbCV3TRMedMOOd9SH5r893roF6z9jiGQOUi5uQEILn1BK18jkdvUI6IVqv49Neu/b09Nf5rW7o4QuhheLcuqStgmr7M8b+ohI+F71ak18dPxefg4YHLcLedi5hrLbgvmNKmh76ViQfggkEvXN+YDv/3ypZANNJqjGX7jeh3qkjrREL4bjITILwEQfQci1oJv6vvHQ9J0Ie0AR9A2MTyPpKMTkUUTuw0wM7UWOUGE1W3gL5PQIz29mqx9AXM1V3230Qg46IGKZBn2Q5yrBr2DECM9bYBqn/HDYRgHVRvdjDM8qLgZ9NtZmyERcLC9mhWo1CJw1MvIUqOBjGD6LDaS2NmkDK1Kgi3wiNRXQSwlZafQOFkBKkvdhcKHI6K4vt4ti6EjkWQbtLPrgd0ghLzYGrSPHrY15Qx9ZF4DC1rmryS5B5EBL6Y6V4NoaQU/aDSfRFQX21lkRPaP95hYdM6/3VVGrLjzXwKqXhVVWct9aVBD6FHjpPvxerStiaPSmFWD16orTlAWcw1Kz/vrGsOpAIyuvbNma+VeqNI/5So+iMPZ
+ eqaN2bj9
+ 4w6j4abXvJ3WFIpNTRJDZOw3cZ9gQbRJN54zCY9AqSTNyE+c0DVgxWcYlrN5NW0WOJ7WT59fPUb/4wnG43+mog2OXjShkhY+a+cZnoTzzZSOIR6iPSiWVq4ZvFOM8+snsouEvFUGRAB6kOnA8Cl9IqvzWJlmziVOsltdb07osTot/1+6Ze8z8FdQ6iw7NHSiLcFvsRPUqjU3XmpbMXgPnVjDy35IaNcPjvFmaUEMh2/Nn4jw0hqxBAOylKxe/zVwqncDPb11aB1lVCxZvWn6O7NGwj1/RIpo0a1NL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,64 +100,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi, SJ.
+On Tue, 27 Oct 2026 20:05:04 +0100 Manuel Ebner <manuelebnerli@mailbox.org> wrote:
 
-Thanks for your reply.
+> Fix upper case. Fix tenses. Replace 'set as' with 'set to'. Add space after
+> sentence to make it double space.
+> 
+> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> CC: Aveline Noir <jm5905938@gmail.com>
+> ---
+> @ -113,8 +113,8
+> Choose as you wish.
+> 
+> @ 20
+> should be:
+> -Free Pages Reporting [3]_ based
+> +Free pages reporting [3]_ based
+> or
+> +'*Free Pages Reporting'* [3]_ based
+> * the right kind of quoting/ kernel-doc highlighting.
+> Choose as you wish.
+> ---
+>  .../admin-guide/mm/damon/reclaim.rst          | 36 +++++++++----------
+>  1 file changed, 18 insertions(+), 18 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+> index e4e2ffa52e..0bab2299ea 100644
+> --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+> +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+[...]
+> @@ -30,12 +30,12 @@ guests could mitigate this problem.
+>  How It Works?
+>  =============
+>  
+> -DAMON_RECLAIM finds memory regions that didn't accessed for specific time
+> +DAMON_RECLAIM finds memory regions that weren't accessed for specific time
+>  duration and page out.  To avoid it consuming too much CPU for the paging out
+>  operation, a speed limit can be configured.  Under the speed limit, it pages
+> -out memory regions that didn't accessed longer time first.  System
+> +out memory regions that weren't accessed longer time first.  System
+>  administrators can also configure under what situation this scheme should
+> -automatically activated and deactivated with three memory pressure watermarks.
+> +automatically be activated and deactivated with three memory pressure watermarks.
 
-1. I found this by code inspection, not from a real-world bug report.
-I consider it a correctness issue for valid inputs.
-2. I would prefer a u64 total over rejecting those inputs, since the
-interface does not document a limit on the sum of weights.
-3. Given the lack of a reported real-world impact, I do not think Cc:
-stable is needed.
+Let's keep 80 columns limit.  Same for below.
 
-Thanks.
-Daemyung
+[...]
+> @@ -113,10 +113,10 @@ quota_sz
+>  
+>  Limit of size of memory for the reclamation in bytes.
+>  
+> -DAMON_RECLAIM charges amount of memory which it tried to reclaim within a time
+> -window (quota_reset_interval_ms) and makes no more than this limit is tried.
+> -This can be used for limiting consumption of CPU and IO.  If this value is
+> -zero, the limit is disabled.
+> +DAMON_RECLAIM records the amount of memory which it tried to reclaim within a time
 
-2026=EB=85=84 10=EC=9B=94 27=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 10:54,=
- SJ Park <sj@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> Hello Daemyung,
->
-> On Tue, 27 Oct 2026 12:54:31 +0900 Daemyung Kang <charsyam@gmail.com> wro=
-te:
->
-> > DAMOS migration accepts an unsigned int weight for each destination,
-> > but sums the weights into an unsigned int.  If the total wraps to zero,
-> > no folio is migrated.  Other wrapped totals select the wrong node.
->
-> Thank you for finding the issue.
->
-> But, is it realistic to have the weight_total overflow?  Have you found t=
-he
-> issue on real usage?  Or, theoretical?
->
-> >
-> > Sum weights into a u64 once per migration walk.  Keep the existing
-> > 32-bit divisor path for totals up to UINT_MAX and use a 64-bit remainde=
-r
-> > for larger totals.  Add KUnit coverage for the actual summing path and
-> > for destination selection at the overflow boundary.
->
-> Do we really need to support that user inputs?  Unless we have a very rea=
-l use
-> case that require such huge weight values, I'd prefer not.
->
-> How about just clearly notify users those are invalid parameters?  We cou=
-ld do
-> so by adding weight_total overflow check to the central parameters valida=
-tion
-> path: damos_commit_dests().
->
-> >
-> > Fixes: 19c1dc15c859 ("mm/damon/vaddr: use damos->migrate_dests in migra=
-te_{hot,cold}")
->
-> Should we Cc: stable?
->
->
-> Thanks,
-> SJ
->
-> [...]
+Didn't we agree to keep use "charge" ?
+
+Other than the above two things, looks good to me.
+
+
+Thanks,
+SJ
+
+[...]
 
