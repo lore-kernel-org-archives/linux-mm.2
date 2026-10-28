@@ -1,108 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D34C606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 10:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF2F606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 10:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BHmRvToR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YuBqUzh1
 Received: by kanga.kvack.org (Postfix)
-	id 110876B05B4; Wed, 28 Oct 2026 06:10:53 -0400 (EDT)
+	id 77CA96B05B1; Wed, 28 Oct 2026 06:12:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E8986B05BB; Wed, 28 Oct 2026 06:10:53 -0400 (EDT)
+	id 7558D6B05B2; Wed, 28 Oct 2026 06:12:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 025786B05BF; Wed, 28 Oct 2026 06:10:52 -0400 (EDT)
+	id 691006B05B3; Wed, 28 Oct 2026 06:12:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D33D06B05B4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:10:52 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F36F1C44CC
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:10:51 +0000 (UTC)
-X-FDA: 85371616302.22.8E06AB4
-Received: from mta1.migadu.com (out-38.mta1.migadu.com [95.215.58.38])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C05D7140006
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:10:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BHmRvToR;
-	spf=pass (imf26.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.38 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793182249;
-	b=eFeGlTYn2JZKAkwvd9+btcdg6t3FaPoq4JP0op5KcIwtlBhOEG9w7LLAiANb6gaJ41u+h9
-	ZIVje1PMPKUI0P5iCLy73Bhk9Ocd2gMjney2ktHmJyW7qEOaT0X7CgHLR8xD/SedoVwsbA
-	rnfftOAOQ8zF4Kkk24LucqB5J0gu5EI=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BHmRvToR;
-	spf=pass (imf26.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.38 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 45ED96B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:12:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E21C160C57
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:12:35 +0000 (UTC)
+X-FDA: 85371620670.13.5F8E143
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 875352000B
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:12:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YuBqUzh1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793182249;
+	s=arc-20220608; t=1793182353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=19TPKFjxLxxJXmQTxvpO9mlfiQegSPOYzBZe/idkCsk=;
-	b=fxBEi7Z7U9FM6XSPkRyninPSHYx4kJhj3g61k2eKknFJynY1fz8tmqZXSzzCAQsOB7ZnQh
-	AbcpuD3u9sJoMgzUDPHMfhMEJ1Cy0Z7qg94V4mYx+KXfteV64MV02UAO+GSqRQHA34jB7U
-	IuSG/rYSICtzrjD5q0dwaUdHaHKhyHY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=JldTN/ya2t8xpYirdSsWzyVdXdbqZ8hQSNVyw7aaEbs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793182246; v=1; x=1793787046;
- b=BHmRvToRiraYLLfIjEp+euCvNL6V6Bc0ohukmhoFXIjfLezWLNKk4EeGgsHC0PLRAE0FXBpX
- O1zJVcngOxzevw49JVL9VDXhe+mg+4F/hem39W9YyV/UThU4cHH7dj0bNAmQKJ6xHaRwrPdeQpG
- L5v4C/M6GuKvdcDMrWZHl8+w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3eac00e914e20d2a;
-	Wed, 28 Oct 2026 10:10:19 +0000
-X-Mizu-Trace-ID: 3eac00e914e20d2a
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <76f1df75-09cb-45ad-bb08-e34acf93518e@linux.dev>
-Date: Wed, 28 Oct 2026 18:10:03 +0800
+	bh=CLByMb/sD+ZAvsSTekY9MbsiY0HI8hmQnYsiCGgVbF8=;
+	b=7Ph44NABDI7PJHy9BSlzn2AfBpEnwkmiM3L5Bpjjq3KLu1a9OxApKVGhHiaXjnKIOH466g
+	drryJkwuCRPqENiioS3TvKRIwfOJ1gpHaIDeDQahpxH0YdFSs7biXzXWbC/h6k5rnIMsMY
+	3V/Br9z4EwToQzIdc+oUah3ZQfRlgB0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YuBqUzh1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793182353;
+	b=LluCcZBcr16SBDELo+1bz2SZ7OlxUDLgOqAOFOfeDFCi/UdZWJM6dP7aTQVXux2QaVucwh
+	oi8OvbcDXDibnVObWViJYIsJ8z6QFb1nfaaHwKrfAQChjeHhj83JJOQa0w5lwnofvaOtTB
+	xiFuSwmhQ+LJ9h56XjwDIbPun+yUa0k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DDC5643589;
+	Wed, 28 Oct 2026 10:12:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD541F01825;
+	Wed, 28 Oct 2026 10:12:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793182351;
+	bh=CLByMb/sD+ZAvsSTekY9MbsiY0HI8hmQnYsiCGgVbF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YuBqUzh1l2HE0YDAwpzIJkTNkJHZvsBgVQoXuvebJcvMlK2CX3Qlpb2XrbN9DeQDo
+	 JpplHxGpqlnKavhwLga6sy6Q1KnNbnmZ62d51braPNx3KY7zIwhPOMiYz3yJWygjqd
+	 jpZz2BEZFPytQxTVeVNOXTowXrcgLAo0Dn6W8LG5SvQtSeTRmemfNSruWtZohfT+x2
+	 wgpjsApsEfTr9+2mJ4A5L5Osk6aBEUd1Ku2RFMscCQy7DiT9aLenhF3ZmgzPajDVfD
+	 sfxUf1lOGJA4omOJGn+9LZ3kA7suK2pDT1BRy1FyaW77ilM1apyS6jR2LtUoF4GdSv
+	 g2wIDe/oD+4ZA==
+Date: Wed, 28 Oct 2026 10:12:25 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Imre Kaloz <kaloz@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	"Mike Rapoport (IBM)" <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Magnus Lindholm <linmag7@gmail.com>
+Subject: Re: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
+Message-ID: <auHI2vYFjpKk_0wJ@gremlin>
+References: <cover.1792609488.git.kaloz@kernel.org>
+ <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
+ <409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org>
+ <20261027212610.6798-1-kaloz@kernel.org>
+ <dfe06aef-540a-4450-88ba-300a460007b7@kernel.org>
+ <20261028091631.8072-1-kaloz@kernel.org>
+ <25f5cbed-9126-4870-a81e-65099155bc9d@kernel.org>
+ <8d4993cb2f2e5c3300514f1e2616e4a101488883.camel@physik.fu-berlin.de>
+ <5dac5fd3-c2a6-4e1a-98fa-0fe1936b269d@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 02/19] selftests/mm: skip collapse_compound_extreme()
- where the PMD is too large
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Muhammad Usama Anjum <usama.anjum@arm.com>, Usama Arif
- <usama.arif@linux.dev>, "Nico Pache (Red Hat)" <nico.pache@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
- Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Michal Hocko <mhocko@suse.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, kernel-team@meta.com
-References: <20260919002451.496763-1-kirill@shutemov.name>
- <20260919002451.496763-3-kirill@shutemov.name>
- <5862cddb-a78f-419f-a5a1-15e16a422bf5@linux.dev>
- <atiQmWnz8zx2AKI7@thinkstation>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <atiQmWnz8zx2AKI7@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: m95m6boyzhxp79fr3cjuyie5b5qabsxu
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C05D7140006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5dac5fd3-c2a6-4e1a-98fa-0fe1936b269d@kernel.org>
+X-Rspamd-Queue-Id: 875352000B
 X-Rspam-User: 
-X-HE-Tag: 1793182248-263220
-X-HE-Meta: U2FsdGVkX18aLcy1eMi5Er92l0u3TGkMu6wMS0DBXLtK5DB3qBftmX0pnaTjq16wvEtxC0xNS78sCD962Ui2/3+L43N6MZT9Qp4Iq9/ww9CGN995vUl+raYy8Yb6TxlwILis8XdkCel4WPxOYnGw3PhooGcouykSZhGUM/B0sGJ6NAm+fky9KIiiJOTryknObtzFIL0qwcIL0iep9tF8inYDTZJWJ+wSXXgGioFJLasGtFQ1aVEB/v/1RJJuXUETA0tQyPsJ5QPjyIOZIQDuZD0QL5ipuZkC7u1XN3q/tE2c9MP02Qg7H3YKwzw9GoZ9hMQ6vtp51OYQBfyxOfnXmXtC7JV4FhWgLfMteu4radHlwX0K9AOMUEKWUckNMoHB8nseDPJnOMAdtGtOuIL03u2Q8ID9rc3bbIQpUSgOwGGA6vYobiHI/YOOaCEwzbv7Gs9cPaDwb5QXfG2ambfBr9CZb38yEcAkTjYGtiMHTM/q7Jf0GsC/6tZFVy505UaVoykTwjMdyaBzCdehpuiiNkqWBqJ9kciffT6kFNFzxk41AwD+HukGPWYPp1Et6U7IhOs+M5ozfQ417VvqAI5akK7YhgKxX8ZYYzoOJ6VeD10314PI35nFJfuwT9pmxXegvCEXSvFO7KhOQYnKRGEY5GogRUrNaVV7SpPXYw9Pbko/75129heu12GgVbrSvDYPO4QSZ02FA7DuwsuHRDWoYgNEvdw6lJ3eOsXsvHJdk2639KqbYHcvfkEt/95SGqLS3T4TBUsXk3KLM7DqIpnA35sSSMqdbBU2SyvQ1OTVsyqIVTBPIUI1nC3Bs86EjxPi5FZLgFY4txuU7EAZdpkW6+bE1BhpxNZDMjnnTeJXws/Y45Ivp4EHrSqD9LyGm8C8SLBX1HUVK69qvf8+d5FZHDTk9vNuyOy39yO9lgwhza2v8JEcbIYxeXnrDGfLfw70FVVJHPWS0hHM9yeRaJR
- VUdlltmM
- 4HnexJH0Hzj25K+QrDZKuEiApCm3xNwwbKkPaKWRBnxvEJ6ciR7hJL0918tmE7SrSbfzZt2Vb8CLKhYJ50kW7FikwSMuamtvawCoFkwCFbvDuf2ccrWbSvV2COqS2oQ8ReCPhgmmBg/bWyDFUOwKDhhd2jFGM62IFJQMMPcCHG5zYnrRn8MzYCGhGXqTpQmoItxYFE9MMudLcK6DOMQ4Kl8StoelIStcOSgMcZFbEMMRgA0ATsiObtzj8Ew8VfATcmeGNXXnSKH6oy1hNe/5Zerdvxpbr2+y4Z09MrUe3LfoLKIytWA3kUyYhzRjE/Uy1ozKGfoTE4FqplvS/IjWPPD1ckA==
+X-Stat-Signature: pt7h39pw448rhdf857kujfry6nrk7x8z
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793182353-283546
+X-HE-Meta: U2FsdGVkX19uY+kZ1xM5lpYqZGJma0AY0YBQlYCcmNluaROAKVjQ4VbUKT13A2hZU/2VGEQmF9RLjbp2+ofA7pK1UWIJDJGOXtgB78RkIfKAG3y/OCZVIuzBAMwxGKVEBBJolK07N7FVXN9CCpq5+WHW1GjnRbul25tDqa0vZ8sfRfS7qjqNZ8AzvVN/2WE5JmmhK5oxLyoUVkq/ShanzN5bkY4igSwgzbLOTjb/2rk4piC777eN2CGbO+pQT3EjQ5whjHB1rj05l7069O3CGJECZW7vvklPXcGzIHfVCNrTPn3ccqgz8S7sGfHs4NKBzTf49K/ll72bmma1jI5bZFAeJyCBpuVLeTeD33w1pvxPeEn44nNmKk+aBkHJt4FybzyUG24O5wXXIBqZPbWYex/msn/YzFVTnxTXWCSrN9sfR+8jlpIP+croYEO7Vx4V2HDT5SvsuEakdYUleiHDBKhPh6huLDQJKxReKmBUIr0IhxtOBS48UDW6akXKwpcKn0uN5d5KMWZRrY/BTd/RoD+M4bQavLpdhuPeXqytT7jCW1StOodJuEBuiJgPLdeNqLGejQWQPu/JZu/Bwf3Bwj50LuYkPebCSSkKHZzTDDnSAeQrDIQbYh6MRBI3VIYw1zWYyLyw5pWLc4cRW4TMHtZj+QwcwE/j2XqqMA9n91gr3i8JS+0kyNM35/H/iDb9sRDl1ZIEIDr7VursgeL1iOgMafhx73YDSY7tdktOf0Kg8teCK+pAwf6heMCtHA4lFSIAB+RB33JPz7OwurOCDM5Jmc00o10X2W+z20QxD/IWuSvCWHHkyVTjAx9hZIa57XonsCQxFhrlEsliJnbOI/wE+SDaMrmsYCAQXlsQ6VJxPapl5+DZlimtOa+ZJDMUjS2TFj5TMI+3diu+Q7ABU4I2LFig9f14sOLiUmLYDdeL7pa3icJW4TK2Zx9Tebm7ZjeaReXcpNZtAUEVWT+
+ 4Nf6SzzR
+ Q3ih8zPK3aauBsA/itrlgJSPA23zGQL1kdxDAB3yd5S4LmhBqNfYpRE+Plk0xRGyJ+IQMoLb27ap6vdig9u6n3sphj+cVe9hUsF/PirFT97hweApX46Ud7179rTLe06qo8VaQfr/nmY8DbP5weCDe9zVH2Or9He4DTHcxSCliQUkk/i/+DUN04KFcUtrCaqxCRQAmFn9Hq747OcE/DedWqdWgVasnHIPlhORk0qb9Ti32nRUf3wKGEv/cumvv8tsBxE49E8AacySzVO5iuSj8lC9cE3zt0rNWfiXjv5zZgZhMZz4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,56 +107,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Kiryl,
+On Wed, Oct 28, 2026 at 11:02:17AM +0100, David Hildenbrand (Arm) wrote:
+> On 10/28/26 10:58, John Paul Adrian Glaubitz wrote:
+> > I don't think it's fair to make the kernel exclusive to very recent hardware only.
 
-On 10/21/26 6:32 PM, Kiryl Shutsemau wrote:
-> On Thu, Oct 08, 2026 at 07:52:18PM +0800, Zenghui Yu wrote:
-> > Hi Kiryl,
-> >
-> > On 9/19/26 8:24 AM, Kiryl Shutsemau wrote:
-> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > >
-> > > collapse_compound_extreme() builds a PTE table full of distinct PTE-mapped
-> > > compound pages by cycling hpage_pmd_nr fault-time THPs through mremap.  It
-> > > therefore needs hpage_pmd_nr PMD-order allocations in a row.  That is fine
-> > > at a 2M PMD (4K base pages) or a 32M one (16K).  A 512M PMD -- arm64 with
-> > > 64K base pages -- makes each of those an order-13 allocation, which the
-> > > allocator cannot reliably hand out even once, let alone 8192 times.
-> > >
-> > > The failure is not a quiet one: the case calls ksft_exit_fail_msg(), so the
-> > > whole binary stops and every case after it is lost.
-> > >
-> > > Skip the case where the PMD is larger than 32M.  The MADV_COLLAPSE cases
-> > > still cover PMD-order collapse on those configurations, and 4K and 16K
-> > > PMDs are unaffected.
-> >
-> > collapse_compound_extreme() failed on an arm64 virtual machines with 16k
-> > pages.  The VM has 8GB of memory.  Not sure if this is the same issue that
-> > this patch attempts to address.
-> 
-> It is the same issue.
-> 
-> Memory usage for the test case, assuming 64-bit page table entries:
-> 
->          4K pages:  512 x   2M =  1G
->         16K pages: 2048 x  32M = 64G
->         64K pages: 8192 x 512M =  4T
-> 
-> 64G is a lot, but I don't think we want to give up on this test case
-> on 16k machines completely.
+Nobody's making the kernel 'exclusive' to 'recent' hardware.
 
-Agreed. This test case passed on other arm64 servers with sufficient
-memory.
+It's about overburdened maintainers having to deal with museum-piece hardware at
+the cost of literally _everybody else_ who uses linux.
 
-> Maybe we should treat a failure to allocate a huge page here as a skip,
-> not a fail? And remove the PMD-size gating.
-> 
-> Zenghui, do you want to experiment with this?
+Use an older or downstream kernel - problem solved ;)
 
-I've just sent a patch for that. Thanks for your suggestion.
+>
+> "Very recent" find the mistake.
 
-https://lore.kernel.org/20261028100119.11340-1-zenghui.yu@linux.dev
+Exactly...
 
-Thanks,
-Zenghui
+>
+> (sorry, I'm unusually grumpy today)
+
+Justifiable ;)
+
+--
+Cheers, Lorenzo
 
