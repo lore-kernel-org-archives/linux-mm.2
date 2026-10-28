@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BDA606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D87606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MgpNEw+L
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YQMV6Jkj
 Received: by kanga.kvack.org (Postfix)
-	id 59B856B05B4; Wed, 28 Oct 2026 07:27:57 -0400 (EDT)
+	id 2DD016B05B5; Wed, 28 Oct 2026 07:28:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525906B05B5; Wed, 28 Oct 2026 07:27:57 -0400 (EDT)
+	id 28CC06B05B6; Wed, 28 Oct 2026 07:28:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ECF86B05B6; Wed, 28 Oct 2026 07:27:57 -0400 (EDT)
+	id 12E296B05B7; Wed, 28 Oct 2026 07:28:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 10D896B05B4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:27:56 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9113F160C6C
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:27:56 +0000 (UTC)
-X-FDA: 85371810552.03.FCF17DC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DFC66100005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:27:54 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgpNEw+L;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D89916B05B5
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:28:00 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC6F8140C27
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:27:59 +0000 (UTC)
+X-FDA: 85371810678.19.1068387
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 307F3180002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:27:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YQMV6Jkj;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793186875;
+	s=arc-20220608; t=1793186878;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=viM9Zb/fX4A20Vuh283Rxz7rykdX3d7xQ+XuQ+qveVc=;
-	b=ZYCtZaj/AMNX3GJ+j/StHthuAdtBHWNRC3fzbDSsERhZKL+ZpHcPq+t3GZ4PpupcLKFId0
-	C/qFkMKpzr8D60IqfaFV+OegtnByLN2Vw7xtvWthhGdk9LChM/1m5LexXMNkfXPyVliDN4
-	Yi+6EiZklfU29hAEgB9EKxnuVpN+2Ug=
+	bh=VRtIuarwO46AIwC3Iu8qUA7V/xU1q4sbFqmUaW+gm0o=;
+	b=2XupCF8EmHA2qw2l0fIU/dyb3pUXhYIi+r6l2ceAeMXoWWMf31079+ae5hmBWT6U0hjr6H
+	rSYybDYIJ00zW4YLLZDdT7pIDr6kKHNNGISW6MyGjYLf1FqU7aoF49hgZHJaSdDCrPnZCJ
+	VHkQgUjsnxQTNpIiQSdX92snbO4MQE8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgpNEw+L;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YQMV6Jkj;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793186875;
-	b=lvvTAbqg7yjuokc/BIO4qkU1v4hJlyepQUp/+ju/B1umaTFLUnHvkdP9jqPuSmYPcUUBw4
-	dG4/TqqwzHv46mUFd8e+hpb6dtVhzqAmjfldej2KzxE+xnckbR3KCYFjdDmvu3jGkhLTqj
-	Y+UbdUEcX0B03qjF6fSx146DoZEndGM=
+	t=1793186878;
+	b=pmDzqpTJer5KZzqmzlHxzEc81aZ85po4ZoyvY8wfwnp1BFBMFOlTYjpI+NytsddMhvBmyX
+	XSIASVUHVXKyVuet5HSEeOWFY+Axwf3fCtbLiel0ezMIKApdWi9QsvwhpmophBoSj2zTAh
+	qM3JIphto0yWWe1n/vEwdrUcRwUMbpM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0CEFE43D9E;
+	by tor.source.kernel.org (Postfix) with ESMTP id B60A1601FA;
+	Wed, 28 Oct 2026 11:27:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F421F01828;
 	Wed, 28 Oct 2026 11:27:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296F61F01828;
-	Wed, 28 Oct 2026 11:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793186873;
-	bh=viM9Zb/fX4A20Vuh283Rxz7rykdX3d7xQ+XuQ+qveVc=;
+	s=k20260515; t=1793186876;
+	bh=VRtIuarwO46AIwC3Iu8qUA7V/xU1q4sbFqmUaW+gm0o=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MgpNEw+LScattRx7JeJNriPk8pCe/85fv+6T5WFeK0Ywfq6jgmLBjZJp6kJJ76Ufm
-	 2D8QVXoZ9wP1rleXk/gxeTw6+08kWrL30U0EWm31T4KSrQMcF7paEs1/4ku0T5roY6
-	 qOm2bLoOmZYe6Tb3neLIiFzHWdHfYkYsooCiOJfDOjD9nRfyP/yeMgWlig1KH1iSQ0
-	 MUEUte1bbFNpGhN+nKT/G/pBPjptRqv7kVffUgwwSFBmysN+AmFSCEsNMpcwIs3QWo
-	 69R5taqydgG4+g22x+p2zvtRiUL3ZQ/KGBGdjp5+GliKcGgGtrwsNBHpYO5Pdf4ekh
-	 6YWDd2XAXd9+Q==
-Message-ID: <sashiko-outbox-187813@kernel.org>
+	b=YQMV6Jkjvjel2ClUswoPX6jUEHFZD0nzn2k+5k7/Qk0bGmX71iWbwR/QJOyeByLUJ
+	 zFnF8O7DW3HHE7agPFDlghMtv6sgGuxUaVxh+SmnSnswTVhIOZJoRtJZr775tldVPI
+	 4PSpmsD2GlcuPJ/JrduNvurbxXd3/vBY78Q9GBP/MZeyDXySH79vZlh6O4wfThwCBn
+	 fFPjPJp8fGldHEvhfiurBgWdxmOtnuaVf9+thdDFV9mBIJLIWphXVlofyVd/iGViiq
+	 6zxOvIfaOuV55tM8z9qSZwwrjZuiGhx05ab9cwomO6o0wePUDSA0nVqKxrB+7gAr6d
+	 p7b9//VEfr/DA==
+Message-ID: <sashiko-outbox-187814@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] mm: add infrastructure for per-dirty-page
- accounting
+Subject: Re: [PATCH 2/2] mm, iomap: account dirty at page granularity for
+ per-block dirty folios
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Salvatore Dipietro" <dipiets@amazon.it>, akpm@linux-foundation.org, linux-mm@kvack.org
 Cc: ryan.roberts@arm.com, abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com, dipietro.salvatore@gmail.com, rvvandan@amazon.com, viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com, miklos@szeredi.hu, agruenba@redhat.com, djwong@kernel.org, hyc.lee@gmail.com, almaz.alexandrovich@paragon-software.com, cem@kernel.org, dlemoal@kernel.org, naohiro.aota@wdc.com, jth@kernel.org, willy@infradead.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, ritesh.list@gmail.com
-In-Reply-To: <20261027112702.3747009-2-dipiets@amazon.it>
+In-Reply-To: <20261027112702.3747009-3-dipiets@amazon.it>
 References: <20261027112702.3747009-1-dipiets@amazon.it>
- <20261027112702.3747009-2-dipiets@amazon.it>
+ <20261027112702.3747009-3-dipiets@amazon.it>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 11:27:51 +0000
+Date: Wed, 28 Oct 2026 11:27:54 +0000
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DFC66100005
-X-Stat-Signature: uo9qp8wjjfhdkyeb6n4aasjs846rnf1z
+X-Rspamd-Queue-Id: 307F3180002
+X-Stat-Signature: 91odsqan41hx1m8c3t3tobk3un1wy6ut
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793186874-262398
-X-HE-Meta: U2FsdGVkX18sEX6hkDbN2Ecg5wMx4pS88RLUtaR7lKv4PvYu+cZHlmlbL/+aYCmn3tthJrin8wsdcXIMOJ2zGADtIpJAtIchAkxj1VbawY323rWLx7mtI9+nT/fsxeeOt0URIB8v0ptSPY/t7laFfgDMeNZDhouJ7IuC7OfYZ6TlWjiOCjQRt4XYhnkpkEzO9dtlR8yWO6RFMB1ej2oqhregAX2ffWihjFNRNqSAZwiXEle6pSLUAk+VrsvgYENwufPHh3JwmdD9Z8PAlgVwo5okX3EBtsfXq6yeo1RkIxEYYA8z738l4Wd0r2zBMfte/6VWcVFyveBxhDsGxBcKPlxDVyNjdX06kkKlriN/nbcvw0JArP/mICAzvCXKapPy66Yb5rKHwN0cSR3+wbJGBnQ00Slw7tsmkxouxS3XhQAM53QLcvzoNxVMSkiRPg26MWQqsdE4cn3Yi8omyYPZ8Ob1rPX9dN+Z6T4YvYkZgHDtC48x1KQB3ySZD9sMCsKGjqW2XIwTDnhISbFSnsIY9eVZWxbRrarx54ajeCEYFXCgIxjlILo52kNMZZ0TscKrMLi5i2AUs4daoW5jsHmiB4yKmNS5GDQh5AWLfU5VlcxjDw2IohrtuZ6ez2t/cT2MWU8Lboc+dxSLcQ5ddLbbXyVTv+g5ba2Kdw9PzpZDQFe6Z3tSC+uQoZPGnBd4JlHCoaQGDJt8jas3FwQPAEbYxtllANpmzCM1+OyITuB3/aWXlqU29FjvDiO1Wr/NY2GCuPXk7Vdk/1d2La0m2b05DW3Bba3Dwwv74Nr0cHRRClZpeDUPsE0WLG/JuHZs9CV5uGXe5jldhsj9V+auoTIaDNJO0AkGjrbGRlYnoxSBUdQMupoMToYvnwT4mBSMKHLk2ESEaVaf/s70E2zDN6pwBj6oUCPmkTIGQIARP1fRkulxy/be1Ioj7ymlo6il2pxVM9cWKRhkTcsIWhC7LJD
- Q8RIcNSA
- f+dcBBPDfPjqDKvxvrZbg9D75vrN6+c7/FGRLa6sASNZ+zXv2KK+/ch+mhR7mOxWHTZgUHyDclNb77OZrJRqSazFLsPMVU8oZNt4AiMEDaJ+QzZaWyaIhaR8o/84WclBdWk2SkPtYJYM33Def2DVqfP92sx3knev1NpvbOWXTogHTuUfzl+/wXl+8zSdp7HQhlZwFYegLsEOwhYZMlZomOkeggW1N0wXV+dqIor+rtKyuJR7mz0aT7kgPFVg4TDCCwo0rTWZwvXp4vJn2KIxBRuMhV5lxJndItcuTbr5gum9/9H/SmSGQPTx82v86MOITQf1x7exUDlDLBPC+Hz0zjCvrfweGI+hbXdNf9pPpfS680fIkKAzY4CVM/SI3+j4Bpd13+5j4jHt25ltYyYV2EHt+fmA8n2GX25tvwXqedun6ODPZNAVZB2hUJykrdmCpofnEu2cjAojSUPKbhHL/vyVTBhENVDC8ciRSi8OXSIMZwpH7pswlCuHmZ9oJUvTFhHFWRoxiavHW4UOa3vVb3yy2ED4k8ljVWAqEKLp6f6UE4CZs/7DouD8AHJbJMqm8Mm3DJ3RGD31A4Rt2vWtwnlQtqhfpRRoBHuc6xkYytW5MGKeJyQyyU8Bn0HsCIjhP+dtqGAbaWaZyFLI=
+X-HE-Tag: 1793186878-744258
+X-HE-Meta: U2FsdGVkX1/YO4tRnS+Nwu+bD/XZAtjZOQtbdkMjreT9+ZugD6JLs1wybbbTnDaQm3KWv/tHsOwk1PA1eyscczX8QexTgDEo51QJtt0y53I/wXqtzyvbbLALx5iDwr2c2iBSncf+vm2rvcVGLua8PlujN6o78LSA0kBD18K7z4jW6mYEh0KxvkaL0KK7YafjfBsCrE3c+q67CPB1R9KSaiDezEbKtEf1XK9Zif1V+5CfOICdLDKiCYsYPu7IQRxNVCCmbpkuqEjGCmGT2vbRLbZTn5g1RdCXgaWYw0mQ3VZslmTAeJpPfc+zLKT60jh6LpzU9L7LXXXbDo7ZCJzuku5mCC3gRn5NlO0YpgaKMwi7WHbWzFzK9mMyHM2qLlJNTQTQz/RivwxVgt8CRb6QpMSQQj4X8GinqojzecOXGk8VO8TA1EiNIHpX70FMHtfohsMacoBSm8yC+pEnUP1+mXLU81/rncW9mXWiYPaJv7MaMfE0hiok5lksCwwdXka3/Zi17ssHijJO27B8bk84xlCZMITj0ugc130hCQuOPgewQP7PfOD0gCR1OgX3FM/lxcJxT6xRs/Af0c66BFonFru+oKTiyq149nGmndHYl1c0XLQ73s7HS/LL0CcJdkkALktEVd+kqi5ef4RRFRJGD/84bjTf3gJ0n2DE7wOObetkyuQEAePlyrMFI9RxjZK+JdCwXIr0c2bVJS0LxT1TTjL2iHMOEw11CJgyjXGoWW/507HLIZcTiFALrZGHrk0gIQpPgYfKHZCFTMZ2inOqiIVQQK0f0svgTJ2c6fAm0UljhgYnMdXnHIR8+GCRBVsihWO/3PffYx5oNg4B7wrmrXbx1gUxfHNEP/8FPTbClHS/CQnkV67nVyGYd3FvFGI8MLOykrMSm/RfVnaNJtpb6QKhDBc2qgG37LoszuDgYhF73ouUy9SzQ5THDxYaumOAZ9N21JBjYFJuolDvcQk
+ zYhkJyQD
+ 323BMxXvTbjuCYZDd3AuK0OLA5PGNgtWzBIpKjvuFbwn2x9LL+WQVzzDgcDKTZh1o2U/mkajpZa0hYSucSZmvz9vEa0DN/hl0aJHqNUNG+jvOljo0pdhpvoFTrxu5AbUXjb7zEOO7CHSj7BqnRjhAmeURyjUAJzaLlJtFXWMSMBM3/nAe4qzbGCxT6WUrrJT79yrGPLVOWqAOe/bJryofwA94ZRTcEGtDsGr7rQx37XFMP6d5NdxRiKscscx7MPqzr6Ol6h+v7VYZsTizejXfWMDa5sJWANxgn3A16mJhK5UxWa1KQ5sk4cJHcvBQLUzwaV5jc2htasYazi7HkHntNecOENPNviPf71QESGZq3/tzHUpNtc+dtt2F5d3JMyK74K5Z5CjmCloBfqqy6IAbLbICz6jNwow3k7mP9fx5xx5RiVRMPD1/6puDoPWXO/AQOInmh8ragRp+rkBiG9HjkIM99rc8NnGEPwx3zq4gkESmP4yBvWZdfLgVRQlT6K9752wxXo6sakoo5NCcSvawZ6wk4o5fGsvnbDgj+W2wUvlNGFNJWpZ+VyYlgl81YLJvuFBfujxUegJCgxDQodc00V/XCCaiz2CrihBoUOsuVM5kyU3e1OZ5Nl2Z1w0kZkqKse6J6qkhJ1pI8Ck=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,237 +96,153 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [Critical] mm: out-of-bounds read in folio_accounted_dirty_pages() on swa=
-pcache folios
-- [High] mm: per-folio nr_dirtied in folio_account_dirtied() breaks dirty t=
-hrottling
-- [Medium] mm: writeback wb switch accounting drift for AS_DIRTY_PER_BLOCK =
-mappings
-- [Medium] mm: per-folio WB_DONTCACHE_DIRTY discharge in __filemap_get_foli=
-o_mpol()
-- [Medium] mm: dirty counter leak and double charge after folio_clear_dirty=
-_for_io()
+- [High] iomap: dirty counter leak on early EOF return in iomap_writeback_f=
+olio()
+- [High] ntfs, ntfs3: dirty counter leak in ntfs_mft_writepages() and ntfs_=
+writepages()
+- [High] block: missing iomap per-block dirty callbacks in def_blk_aops
+- [Medium] mm: wrong wb stats in inode_do_switch_wbs() and __filemap_get_fo=
+lio_mpol()
+- [Medium] gfs2: stale AS_DIRTY_PER_BLOCK flag after switching to gfs2_jdat=
+a_aops
 --
 
-commit 1721442268f1f31932ef0e4f11e5d239eea01bb6
+commit ec03cb36d468351e028d982f93868e296ff14cfc
 Author: Salvatore Dipietro <dipiets@amazon.it>
 
-mm: add infrastructure for per-dirty-page accounting
+mm, iomap: account dirty at page granularity for per-block dirty folios
 
-This commit adds memory management infrastructure to allow filesystems to
-account dirty pages at sub-folio granularity via the AS_DIRTY_PER_BLOCK flag
-and the accounted_dirty_pages address_space_operations callback. It updates
-folio dirtying, cleaning, writeback preparation, and migration paths to
-support per-page dirty accounting.
+This commit updates iomap to account mm and writeback dirty page counters at
+page granularity rather than full folio granularity when folios carry
+per-block dirty state in struct iomap_folio_state, and wires up
+.accounted_dirty_pages =3D iomap_accounted_dirty_pages across iomap-based
+filesystems.
 
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index eeab25d6ce364..6b4a8b6ad34c0 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -2601,7 +2601,7 @@ EXPORT_SYMBOL(noop_dirty_folio);
->   * NOTE: This relies on being atomic wrt interrupts.
->   */
->  static void folio_account_dirtied(struct folio *folio,
-> -		struct address_space *mapping)
-> +		struct address_space *mapping, bool accounted)
->  {
->  	struct inode *inode =3D mapping->host;
-> =20
-> @@ -2614,14 +2614,21 @@ static void folio_account_dirtied(struct folio *f=
-olio,
->  		inode_attach_wb(inode, folio);
->  		wb =3D inode_to_wb(inode);
-> =20
-> -		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
-> -		if (folio_test_dropbehind(folio))
-> -			wb_stat_mod(wb, WB_DONTCACHE_DIRTY, nr);
-> -		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
-> -		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
-> -		wb_stat_mod(wb, WB_RECLAIMABLE, nr);
-> -		wb_stat_mod(wb, WB_DIRTIED, nr);
-> -		task_io_account_write(nr * PAGE_SIZE);
-> +		/*
-> +		 * @accounted means the filesystem charged these per dirty page
-> +		 * already; the rate limiters below stay per-folio.  Keep in sync
-> +		 * with folio_account_cleaned() and folio_clear_dirty_for_io().
-> +		 */
-> +		if (!accounted) {
-> +			lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
-> +			if (folio_test_dropbehind(folio))
-> +				wb_stat_mod(wb, WB_DONTCACHE_DIRTY, nr);
-> +			__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
-> +			wb_stat_mod(wb, WB_RECLAIMABLE, nr);
-> +			__node_stat_mod_folio(folio, NR_DIRTIED, nr);
-> +			wb_stat_mod(wb, WB_DIRTIED, nr);
-> +			task_io_account_write(nr * PAGE_SIZE);
-> +		}
->  		current->nr_dirtied +=3D nr;
->  		__this_cpu_add(bdp_ratelimits, nr);
+> diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
+> index 0a7b8076af3a5..ea77af00b111e 100644
+> --- a/fs/gfs2/aops.c
+> +++ b/fs/gfs2/aops.c
+> @@ -713,6 +713,7 @@ static const struct address_space_operations gfs2_aop=
+s =3D {
+>  	.read_folio =3D gfs2_read_folio,
+>  	.readahead =3D gfs2_readahead,
+>  	.dirty_folio =3D iomap_dirty_folio,
+> +	.accounted_dirty_pages =3D iomap_accounted_dirty_pages,
 
-[Severity: High]
-When accounted is true, keeping current->nr_dirtied and bdp_ratelimits
-per-folio in folio_account_dirtied() appears to break dirty throttling in t=
-wo
-ways.
+[Severity: Medium]
+What happens if a GFS2 file using gfs2_aops with blocksize < folio_size()
+allocates struct iomap_folio_state via ifs_alloc() (which sets
+AS_DIRTY_PER_BLOCK on inode->i_mapping), and later has GFS2_DIF_JDATA
+enabled via gfs2_fileattr_set() -> do_gfs2_set_flags() -> gfs2_set_aops()?
 
-First, __filemap_dirty_folio() only calls __folio_mark_dirty() ->
-folio_account_dirtied() when PG_dirty transitions from 0 to 1:
-
-mm/page-writeback.c:__filemap_dirty_folio() {
-	if (folio_test_set_dirty(folio))
-		return false;
-
-	__folio_mark_dirty(folio, mapping, !folio_test_private(folio), accounted);
-	...
+fs/gfs2/aops.c:gfs2_set_aops() {
+	if (gfs2_is_jdata(GFS2_I(inode)))
+		inode->i_mapping->a_ops =3D &gfs2_jdata_aops;
+	else
+		inode->i_mapping->a_ops =3D &gfs2_aops;
 }
 
-If a writer dirties a single block of several large folios while below the
-freerun ceiling, only 1 page per folio is charged to NR_FILE_DIRTY and
-WB_RECLAIMABLE, and balance_dirty_pages() takes the freerun path and resets
-current->nr_dirtied to 0. When subsequent buffered writes dirty the remaini=
-ng
-clean blocks of those already-dirty large folios, the filesystem charges the
-newly dirtied pages to NR_FILE_DIRTY, NR_ZONE_WRITE_PENDING, and
-WB_RECLAIMABLE, but __filemap_dirty_folio() returns early because PG_dirty =
-is
-already set. Since current->nr_dirtied and bdp_ratelimits are never
-incremented for those subsequent writes, won't
-balance_dirty_pages_ratelimited_flags() fail to call balance_dirty_pages() =
-to
-wake background writeback or throttle the task as NR_FILE_DIRTY and
-WB_RECLAIMABLE grow past bg_thresh and dirty_thresh?
+Switching inode->i_mapping->a_ops to gfs2_jdata_aops leaves
+AS_DIRTY_PER_BLOCK set on inode->i_mapping. Subsequent writes in jdata mode
+attach struct buffer_head rings to folio->private and charge
+folio_nr_pages(folio) via gfs2_jdata_dirty_folio() -> block_dirty_folio().
 
-Second, when dirty throttling is active and a writer dirties 1 page of each
-new large folio, the filesystem increments WB_DIRTIED by 1 page per folio
-while folio_account_dirtied() increments current->nr_dirtied by
-folio_nr_pages(folio). In wb_update_dirty_ratelimit(), dirty_rate is comput=
-ed
-from WB_DIRTIED and balanced_dirty_ratelimit is clamped to write_bw:
+When gfs2_jdata_writepages() later runs folio_clear_dirty_for_io():
 
-mm/page-writeback.c:wb_update_dirty_ratelimit() {
-	...
-	balanced_dirty_ratelimit =3D div_u64((u64)task_ratelimit * write_bw,
-					   dirty_rate | 1);
-	if (unlikely(balanced_dirty_ratelimit > write_bw))
-		balanced_dirty_ratelimit =3D write_bw;
+mm/page-writeback.c:folio_clear_dirty_for_io() {
+    ...
+		if (folio_test_clear_dirty(folio)) {
+			if (!mapping_dirty_per_block(mapping) || !folio->private) {
+				long nr =3D folio_nr_pages(folio);
+    ...
 }
 
-Because balance_dirty_pages() computes the pause duration from
-current->nr_dirtied divided by task_ratelimit, doesn't mixing per-page
-WB_DIRTIED with per-folio current->nr_dirtied cause severe over-throttling
-when partially dirtying large folios?
+Because mapping_dirty_per_block(mapping) is still true and folio->private is
+non-NULL (pointing to buffer_heads), won't folio_clear_dirty_for_io() skip
+discharging NR_FILE_DIRTY, WB_DONTCACHE_DIRTY, NR_ZONE_WRITE_PENDING, and
+WB_RECLAIMABLE on every writeback?
 
-> =20
-> @@ -2629,13 +2636,41 @@ static void folio_account_dirtied(struct folio *f=
-olio,
->  	}
->  }
-> =20
-> +/**
-> + * folio_accounted_dirty_pages - pages of @folio charged to the dirty co=
-unters
-> + * @folio: folio to query
-> + *
-> + * Use this rather than folio_nr_pages() when moving or discharging a fo=
-lio's dirty
-> + * accounting, as a folio is not necessarily charged for all of its page=
-s.  Walks
-> + * per-block state that truncation frees, so the caller must hold the fo=
-lio lock.
-> + *
-> + * Return: the whole folio for the usual per-folio accounting, otherwise=
- only the
-> + * pages holding a dirty block, and zero once those have been discharged.
-> + */
-> +long folio_accounted_dirty_pages(struct folio *folio)
-> +{
-> +	struct address_space *mapping =3D folio->mapping;
-> +
-> +	if (mapping && mapping_dirty_per_block(mapping) && folio->private &&
-> +	    mapping->a_ops->accounted_dirty_pages)
-> +		return mapping->a_ops->accounted_dirty_pages(folio);
-> +	return folio_nr_pages(folio);
-> +}
-
-[Severity: Critical]
-Can this cause an out-of-bounds read and invalid function pointer dereferen=
-ce
-when migrating dirty anonymous or KSM folios that are in the swap cache?
-
-During migration, move_to_new_folio() obtains mapping via
-folio_mapping(src), which returns swap_address_space(folio->swap) for swap
-cache folios:
-
-mm/util.c:folio_mapping() {
-	...
-	if (unlikely(folio_test_swapcache(folio)))
-		return swap_address_space(folio->swap);
-
-	mapping =3D folio->mapping;
-	if ((unsigned long)mapping & FOLIO_MAPPING_FLAGS)
-		return NULL;
-	...
-}
-
-Because mapping is non-NULL, swap_aops.migrate_folio (migrate_folio()) calls
-__migrate_folio() -> __folio_migrate_mapping(), which invokes
-folio_accounted_dirty_pages(folio) when folio_test_dirty(folio) is true:
-
-mm/migrate.c:__folio_migrate_mapping() {
-	...
-	if (folio_test_dirty(folio))
-		nr_dirty =3D folio_accounted_dirty_pages(folio);
-}
-
-However, folio_accounted_dirty_pages() reads raw folio->mapping instead of
-folio_mapping(folio). For an anonymous or KSM folio in the swap cache,
-folio->mapping is a tagged pointer to struct anon_vma (FOLIO_MAPPING_ANON) =
-or
-struct ksm_stable_node (FOLIO_MAPPING_KSM), and folio->private (union with
-folio->swap) is non-zero.
-
-Calling mapping_dirty_per_block(mapping) then performs test_bit() on
-&mapping->flags at an unaligned offset past the end of struct anon_vma or
-struct ksm_stable_node, and if the bit happens to be set in adjacent slab
-memory, dereferences mapping->a_ops->accounted_dirty_pages(folio) out of
-bounds. Should folio_accounted_dirty_pages() use folio_mapping(folio) inste=
-ad
-of folio->mapping?
+> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> index 0a5ebfda90f12..75671b29f7cce 100644
+> --- a/fs/iomap/buffered-io.c
+> +++ b/fs/iomap/buffered-io.c
 
 [ ... ]
 
-> @@ -2912,12 +2954,21 @@ bool folio_clear_dirty_for_io(struct folio *folio)
->  		 */
->  		wb =3D unlocked_inode_to_wb_begin(inode, &cookie);
->  		if (folio_test_clear_dirty(folio)) {
-> -			long nr =3D folio_nr_pages(folio);
-> -			lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
-> -			if (folio_test_dropbehind(folio))
-> -				wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
-> -			zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
-> -			wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
-> +			/*
-> +			 * Per-block folios keep their dirty bits, and the charge,
-> +			 * until the fs writes them back.  Folios of such a mapping
-> +			 * that never got per-block state were charged whole, so
-> +			 * they discharge here as usual.
-> +			 */
-> +			if (!mapping_dirty_per_block(mapping) || !folio->private) {
-> +				long nr =3D folio_nr_pages(folio);
+> @@ -180,6 +189,89 @@ static unsigned iomap_find_dirty_range(struct folio =
+*folio, u64 *range_start,
+
+[ ... ]
+
+> +static void iomap_account_dirty_pages(struct folio *folio, long nr_pages,
+> +		bool new_dirty)
+> +{
+> +	struct address_space *mapping =3D folio->mapping;
+> +	struct inode *inode =3D mapping->host;
+> +	struct wb_lock_cookie cookie =3D {};
+> +	struct bdi_writeback *wb;
+> +	bool dirtied =3D nr_pages > 0 && new_dirty;
 > +
-> +				lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
-> +				if (folio_test_dropbehind(folio))
-> +					wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
+> +	if (!nr_pages || !mapping_can_writeback(mapping))
+> +		return;
+> +
+> +	lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr_pages);
+> +	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr_pages);
+> +	if (dirtied)
+> +		node_stat_mod_folio(folio, NR_DIRTIED, nr_pages);
+> +
+> +	/* Pin the wb against a concurrent inode_do_switch_wbs(). */
+> +	inode_attach_wb(inode, folio);
+> +	wb =3D unlocked_inode_to_wb_begin(inode, &cookie);
+> +	wb_stat_mod(wb, WB_RECLAIMABLE, nr_pages);
+> +	if (folio_test_dropbehind(folio))
+> +		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, nr_pages);
+> +	if (dirtied)
+> +		wb_stat_mod(wb, WB_DIRTIED, nr_pages);
+> +	unlocked_inode_to_wb_end(inode, &cookie);
 
 [Severity: Medium]
-Does WB_DONTCACHE_DIRTY accounting stay balanced when PG_dropbehind is
-cleared on a lookup in __filemap_get_folio_mpol()?
+Can charging WB_RECLAIMABLE and WB_DONTCACHE_DIRTY by nr_pages here corrupt
+per-wb counters when inode_do_switch_wbs() or __filemap_get_folio_mpol()
+runs on a partially dirty large folio?
 
-In mm/filemap.c, __filemap_get_folio_mpol() clears PG_dropbehind on normal
-cached lookups and decrements WB_DONTCACHE_DIRTY by folio_nr_pages(folio):
+In fs/fs-writeback.c, inode_do_switch_wbs() still transfers
+folio_nr_pages(folio) instead of folio_accounted_dirty_pages(folio):
+
+fs/fs-writeback.c:inode_do_switch_wbs() {
+    ...
+	xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+		if (folio_test_dirty(folio)) {
+			long nr =3D folio_nr_pages(folio);
+			wb_stat_mod(old_wb, WB_RECLAIMABLE, -nr);
+			wb_stat_mod(new_wb, WB_RECLAIMABLE, nr);
+			if (folio_test_dropbehind(folio)) {
+				wb_stat_mod(old_wb, WB_DONTCACHE_DIRTY, -nr);
+				wb_stat_mod(new_wb, WB_DONTCACHE_DIRTY, nr);
+			}
+		}
+	}
+    ...
+}
+
+When new_wb later writes back or invalidates the folio,
+iomap_clear_range_dirty() only subtracts ifs->dirty_pages from new_wb,
+leaving old_wb underflowed and new_wb inflated by
+folio_nr_pages(folio) - ifs->dirty_pages.
+
+Also, because iomap_account_dirty_pages() updates WB_RECLAIMABLE and
+WB_DONTCACHE_DIRTY outside mapping->i_pages.xa_lock before
+__filemap_dirty_folio() sets PG_dirty, and because
+folio_clear_dirty_for_io() clears PG_dirty while keeping WB_RECLAIMABLE and
+WB_DONTCACHE_DIRTY charged until iomap_clear_range_dirty(), can a concurrent
+inode_do_switch_wbs() miss or misaccount a folio whose PG_dirty state does
+not match its active wb charge?
+
+Similarly, in mm/filemap.c, __filemap_get_folio_mpol() decrements
+WB_DONTCACHE_DIRTY by folio_nr_pages(folio) when clearing PG_dropbehind:
 
 mm/filemap.c:__filemap_get_folio_mpol() {
-	...
+    ...
 	if (!(fgp_flags & FGP_DONTCACHE) && folio_test_clear_dropbehind(folio)) {
 		if (folio_test_dirty(folio) &&
 		    mapping_can_writeback(mapping)) {
@@ -340,107 +256,217 @@ mm/filemap.c:__filemap_get_folio_mpol() {
 			unlocked_inode_to_wb_end(inode, &cookie);
 		}
 	}
+    ...
 }
 
-If a large folio on an AS_DIRTY_PER_BLOCK mapping has PG_dropbehind set and
-only a subset of its pages are dirtied, subtracting folio_nr_pages(folio)
-instead of the accounted dirty pages will underflow WB_DONTCACHE_DIRTY.
+Won't that underflow WB_DONTCACHE_DIRTY when a partially dirty folio was
+only charged ifs->dirty_pages, or leak WB_DONTCACHE_DIRTY if PG_dropbehind
+is cleared after folio_clear_dirty_for_io() cleared PG_dirty but before
+iomap_clear_range_dirty() runs?
 
-Additionally, if an unlocked lookup such as filemap_fault() ->
-filemap_get_folio() calls __filemap_get_folio_mpol() after
-folio_clear_dirty_for_io() has cleared PG_dirty, but before the filesystem
-has discharged the per-block dirty pages during writeback,
-__filemap_get_folio_mpol() clears PG_dropbehind without decrementing
-WB_DONTCACHE_DIRTY because folio_test_dirty(folio) is already false, and the
-filesystem will later skip decrementing WB_DONTCACHE_DIRTY because
-folio_test_dropbehind(folio) is now false. Doesn't this leak the
-WB_DONTCACHE_DIRTY charge?
+[ ... ]
 
-> +				zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
-> +				wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
+> @@ -276,9 +396,13 @@ static struct iomap_folio_state *ifs_alloc(struct in=
+ode *inode,
+>  	spin_lock_init(&ifs->state_lock);
+>  	if (folio_test_uptodate(folio))
+>  		bitmap_set(ifs->state, 0, nr_blocks);
+> -	if (folio_test_dirty(folio))
+> +	if (folio_test_dirty(folio)) {
+>  		bitmap_set(ifs->state, nr_blocks, nr_blocks);
+> +		ifs->dirty_pages =3D folio_nr_pages(folio);
+> +	}
+>  	folio_attach_private(folio, ifs);
+> +	/* The mm dirty counters are now charged per dirty page for this file. =
+*/
+> +	mapping_set_dirty_per_block(inode->i_mapping);
 
-[Severity: Medium]
-How does cgroup writeback switching in inode_do_switch_wbs() interact with
-AS_DIRTY_PER_BLOCK mappings?
+[Severity: High]
+What happens on block devices when !CONFIG_BUFFER_HEAD is enabled?
 
-In fs/fs-writeback.c, inode_do_switch_wbs() transfers WB_RECLAIMABLE and
-WB_DONTCACHE_DIRTY between old_wb and new_wb using folio_nr_pages(folio):
+In block/fops.c, def_blk_aops uses iomap for buffered I/O, writepages,
+release_folio, and invalidate_folio when !CONFIG_BUFFER_HEAD:
 
-fs/fs-writeback.c:inode_do_switch_wbs() {
-	...
-	xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
-		if (folio_test_dirty(folio)) {
-			long nr =3D folio_nr_pages(folio);
-			wb_stat_mod(old_wb, WB_RECLAIMABLE, -nr);
-			wb_stat_mod(new_wb, WB_RECLAIMABLE, nr);
-			if (folio_test_dropbehind(folio)) {
-				wb_stat_mod(old_wb, WB_DONTCACHE_DIRTY, -nr);
-				wb_stat_mod(new_wb, WB_DONTCACHE_DIRTY, nr);
-			}
-		}
-	}
+block/fops.c:
+const struct address_space_operations def_blk_aops =3D {
+	.dirty_folio	=3D filemap_dirty_folio,
+	.release_folio		=3D iomap_release_folio,
+	.invalidate_folio	=3D iomap_invalidate_folio,
+	.read_folio		=3D blkdev_read_folio,
+	.readahead		=3D blkdev_readahead,
+	.writepages		=3D blkdev_writepages,
+	.is_partially_uptodate  =3D iomap_is_partially_uptodate,
+	.error_remove_folio	=3D generic_error_remove_folio,
+	.migrate_folio		=3D filemap_migrate_folio,
+};
+
+When ifs_alloc() attaches ifs to a block device folio with
+i_blocks_per_folio(inode, folio) > 1, it sets AS_DIRTY_PER_BLOCK on the
+block device mapping, but def_blk_aops does not set
+.accounted_dirty_pages =3D iomap_accounted_dirty_pages or
+.dirty_folio =3D iomap_dirty_folio.
+
+When iomap_invalidate_folio(folio, 0, folio_size(folio)) later runs on a
+dirty block device folio, it first calls iomap_clear_range_dirty() (which
+discharges ifs->dirty_pages and sets ifs->dirty_pages =3D 0) and then calls
+folio_cancel_dirty() -> folio_account_cleaned() ->
+folio_accounted_dirty_pages(). Because mapping->a_ops->accounted_dirty_pages
+is NULL, folio_accounted_dirty_pages() returns folio_nr_pages(folio) instead
+of 0, discharging the counters a second time.
+
+Also, if a block device folio that already has ifs attached from a read is
+dirtied via mmap (filemap_dirty_folio()), the dirty bits in ifs->state are
+not set, so writeback via folio_clear_dirty_for_io() and
+iomap_writeback_folio() neither writes the blocks nor discharges the dirty
+counters. Should def_blk_aops also use iomap_dirty_folio and
+iomap_accounted_dirty_pages when !CONFIG_BUFFER_HEAD?
+
+[ ... ]
+
+> @@ -2001,8 +2151,13 @@ int iomap_writeback_folio(struct iomap_writepage_c=
+tx *wpc, struct folio *folio)
+> =20
+>  	if (i_blocks_per_folio(inode, folio) > 1) {
+>  		if (!ifs) {
+> +			/*
+> +			 * Dirtied before it had per-block state, so charged
+> +			 * per-folio.  Re-mark the blocks for the walk below,
+> +			 * paired with the clear at the end of this function.
+> +			 */
+>  			ifs =3D ifs_alloc(inode, folio, 0);
+> -			iomap_set_range_dirty(folio, 0, end_pos - pos);
+> +			iomap_redirty_range(folio, 0, end_pos - pos);
+>  		}
+> =20
+>  		iomap_writeback_init(inode, folio);
+
+[Severity: High]
+Can iomap_writeback_folio() leak the dirty page counters when a folio with
+per-block state is at or beyond EOF?
+
+Before calling iomap_writeback_folio() (via writeback_iter() ->
+folio_prepare_writeback() or fuse_launder_folio()), the caller invokes
+folio_clear_dirty_for_io(folio), which clears PG_dirty without discharging
+NR_FILE_DIRTY, WB_DONTCACHE_DIRTY, NR_ZONE_WRITE_PENDING, or WB_RECLAIMABLE
+when mapping_dirty_per_block(mapping) && folio->private is true.
+
+However, at the start of iomap_writeback_folio():
+
+fs/iomap/buffered-io.c:iomap_writeback_folio() {
+    ...
+	if (!iomap_writeback_handle_eof(folio, wpc, &end_pos))
+		return 0;
+    ...
 }
 
-If a large folio only has a sub-folio range charged to old_wb, won't
-transferring folio_nr_pages(folio) underflow old_wb and over-charge new_wb?
+If iomap_writeback_handle_eof() returns false (for instance, when writeback
+races with truncate_setsize() after i_size_write() lowers i_size but before
+truncate_pagecache() locks the folio, or in folio_unmap_invalidate() ->
+fuse_launder_folio()), iomap_writeback_folio() returns 0 without calling
+iomap_clear_range_dirty(folio, 0, folio_size(folio)).
 
-Furthermore, unlocked_inode_to_wb_begin() and unlocked_inode_to_wb_end()
-serialize against inode_do_switch_wbs() under the assumption that PG_dirty
-indicates whether the folio's charge is still held on inode->i_wb. When
-folio_clear_dirty_for_io() clears PG_dirty without discharging WB_RECLAIMAB=
-LE
-and WB_DONTCACHE_DIRTY, if inode_do_switch_wbs() runs before the filesystem
-discharges the per-block dirty state during writeback, inode_do_switch_wbs()
-will see !folio_test_dirty(folio) and skip the folio, causing the filesystem
-to later discharge the pages from new_wb while leaving them stranded on
-old_wb.
+That leaves the folio clean (PG_dirty =3D=3D false, PG_writeback =3D=3D fal=
+se) while
+ifs->dirty_pages remains charged. If filemap_release_folio() ->
+iomap_release_folio() then runs (immediately in folio_unmap_invalidate(), or
+via reclaim, splitting, or eviction before truncate_cleanup_folio() locks
+the folio):
 
-> +			}
+fs/iomap/buffered-io.c:iomap_release_folio() {
+    ...
+	if (folio_test_dirty(folio))
+		return false;
+	ifs_free(folio);
+	return true;
+}
 
-[Severity: Medium]
-When folio_clear_dirty_for_io() clears PG_dirty while leaving NR_FILE_DIRTY,
-WB_DONTCACHE_DIRTY, NR_ZONE_WRITE_PENDING, and WB_RECLAIMABLE charged for
-per-block folios, can those charges be leaked, double-charged, or left on t=
-he
-wrong zone if writeback does not immediately clear the per-block dirty bits?
+Won't iomap_release_folio() see folio_test_dirty(folio) =3D=3D false and fr=
+ee
+ifs without ever discharging ifs->dirty_pages?
 
-Several paths in mm and filesystems rely on folio_test_dirty(folio) to know
-whether dirty accounting is active:
+> diff --git a/fs/ntfs/aops.c b/fs/ntfs/aops.c
+> index 517d9a1563e7d..d26ddd5ae1185 100644
+> --- a/fs/ntfs/aops.c
+> +++ b/fs/ntfs/aops.c
+> @@ -308,6 +308,7 @@ const struct address_space_operations ntfs_aops =3D {
+>  	.readahead		=3D ntfs_readahead,
+>  	.writepages		=3D ntfs_writepages,
+>  	.dirty_folio		=3D iomap_dirty_folio,
+> +	.accounted_dirty_pages	=3D iomap_accounted_dirty_pages,
+>  	.bmap			=3D ntfs_bmap,
+>  	.migrate_folio		=3D filemap_migrate_folio,
+>  	.is_partially_uptodate	=3D iomap_is_partially_uptodate,
+> @@ -322,6 +323,7 @@ const struct address_space_operations ntfs_mft_aops =
+=3D {
+>  	.readahead		=3D ntfs_readahead,
+>  	.writepages		=3D ntfs_mft_writepages,
+>  	.dirty_folio		=3D iomap_dirty_folio,
+> +	.accounted_dirty_pages	=3D iomap_accounted_dirty_pages,
+>  	.bmap			=3D ntfs_bmap,
+>  	.migrate_folio		=3D filemap_migrate_folio,
+>  	.is_partially_uptodate	=3D iomap_is_partially_uptodate,
+> diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+> index 4ac26c80bd34f..509570091e483 100644
+> --- a/fs/ntfs3/inode.c
+> +++ b/fs/ntfs3/inode.c
+> @@ -2301,6 +2301,7 @@ const struct address_space_operations ntfs_aops =3D=
+ {
+>  	.writepages	=3D ntfs_writepages,
+>  	.bmap		=3D ntfs_bmap,
+>  	.dirty_folio	=3D iomap_dirty_folio,
+> +	.accounted_dirty_pages =3D iomap_accounted_dirty_pages,
 
-1. If ->writepages bails out after folio_clear_dirty_for_io() without writi=
-ng
-   or clearing the per-block dirty state (for example, in the following iom=
-ap
-   patch when iomap_writeback_folio() returns early via
-   iomap_writeback_handle_eof() because the folio is beyond i_size after a
-   racing truncate, or in ntfs3 where ntfs_writepages() and
-   ntfs_mft_writepages() use iomap_dirty_folio() without
-   iomap_clear_range_dirty()), the folio is unlocked with PG_dirty cleared
-   while per-block dirty pages remain charged.
+[Severity: High]
+Does enabling per-block dirty accounting on ntfs_mft_aops (in fs/ntfs) and
+resident files using ntfs_aops (in fs/ntfs3) leak dirty page counters during
+writeback?
 
-2. Once PG_dirty and PG_writeback are both false, reclaim, eviction, or fol=
-io
-   splitting can invoke ->release_folio() (such as iomap_release_folio(),
-   which only checks folio_test_dirty(folio)) and free folio->private, or
-   truncation can call folio_cancel_dirty(), which only calls
-   folio_account_cleaned() when folio_test_dirty(folio) is true, permanently
-   leaking NR_FILE_DIRTY, NR_ZONE_WRITE_PENDING, WB_RECLAIMABLE, and
-   WB_DONTCACHE_DIRTY.
+In fs/ntfs, ntfs_mft_aops uses ntfs_mft_writepages(), which iterates with
+writeback_iter() and calls ntfs_write_mft_block(folio, wbc) rather than
+iomap_writeback_folio():
 
-3. In __folio_migrate_mapping(), both folio_accounted_dirty_pages(folio) and
-   the cross-zone NR_FILE_DIRTY / NR_ZONE_WRITE_PENDING transfer are gated =
-on
-   folio_test_dirty(folio), so migrating a folio in this state leaves the
-   dirty counters on oldzone and old_lruvec while the subsequent discharge
-   subtracts them from newzone and new_lruvec.
+fs/ntfs/mft.c:ntfs_mft_writepages() {
+    ...
+	while ((folio =3D writeback_iter(mapping, wbc, folio, &error)))
+		error =3D ntfs_write_mft_block(folio, wbc);
+    ...
+}
 
-4. If folio_redirty_for_writepage() is called after
-   folio_clear_dirty_for_io(), it calls filemap_dirty_folio() with
-   accounted =3D false, charging the entire folio_nr_pages(folio) on top of=
- the
-   still-charged per-block dirty pages.
+Similarly, in fs/ntfs3, ntfs_writepages() handles resident files via
+writeback_iter() and attr_data_write_resident(ni, folio) without calling
+iomap_writepages():
+
+fs/ntfs3/inode.c:ntfs_writepages() {
+    ...
+	if (is_resident(ni)) {
+		struct folio *folio =3D NULL;
+		err =3D 0;
+
+		while ((folio =3D writeback_iter(mapping, wbc, folio, &err))) {
+			int err2;
+
+			ni_lock(ni);
+			err2 =3D attr_data_write_resident(ni, folio);
+			ni_unlock(ni);
+    ...
+}
+
+When these folios are dirtied via iomap_dirty_folio() (such as
+ntfs_mft_mark_dirty() on $MFT or mmap writes on a resident file),
+ifs_alloc() attaches ifs and sets AS_DIRTY_PER_BLOCK, and
+iomap_set_range_dirty() charges ifs->dirty_pages. During writeback,
+writeback_iter() calls folio_clear_dirty_for_io(), which skips discharging
+the dirty counters because mapping_dirty_per_block(mapping) &&
+folio->private is true, and neither ntfs_write_mft_block() nor
+attr_data_write_resident() clears ifs dirty state or discharges
+ifs->dirty_pages.
+
+Won't this permanently leak NR_FILE_DIRTY, NR_ZONE_WRITE_PENDING,
+WB_RECLAIMABLE, and WB_DONTCACHE_DIRTY on writeback, and prevent subsequent
+calls to iomap_dirty_folio() on the same folio from charging the counters
+because all dirty bits in ifs->state remain set?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027112702.3747=
-009-1-dipiets@amazon.it?part=3D1
+009-1-dipiets@amazon.it?part=3D2
 
