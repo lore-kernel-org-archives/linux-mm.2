@@ -1,153 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFBD606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E064606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 16:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bIPJgOc3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VVZwcwyV
 Received: by kanga.kvack.org (Postfix)
-	id 014076B05B0; Wed, 28 Oct 2026 11:54:24 -0400 (EDT)
+	id 510DA6B05B0; Wed, 28 Oct 2026 12:08:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F06506B05B1; Wed, 28 Oct 2026 11:54:23 -0400 (EDT)
+	id 4C1C06B05B1; Wed, 28 Oct 2026 12:08:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCE986B05B2; Wed, 28 Oct 2026 11:54:23 -0400 (EDT)
+	id 3D7706B05B2; Wed, 28 Oct 2026 12:08:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BAB3C6B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:54:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 373F1C0151
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:54:23 +0000 (UTC)
-X-FDA: 85372482006.08.DF781DD
-Received: from mta1.migadu.com (out-57.mta1.migadu.com [95.215.58.57])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F092CA0003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:54:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bIPJgOc3;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.57 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16F786B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:08:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5FC1B80154
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:08:56 +0000 (UTC)
+X-FDA: 85372518672.30.81B9BC3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9F9044000A
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:08:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VVZwcwyV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793202861;
+	s=arc-20220608; t=1793203734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tTZpPE9gJn7s96098K7j6uvB27YaMf32yiUhWF9ATX4=;
-	b=VZunTNCvkH20QtpXnO8HovITH3tdIBJfMmRqsyqBRRa+KQU/WSk4L02tLnRuU+JPQbTxAh
-	Z+jL2LZyriW/foG5Ojgob0Nalig9lJIUK64z7JUY924EK4Va99v4yLhXZjOps4b9qmV8QX
-	MgUN10onKPY/+Lr3UewkSOYuIxtQCdw=
+	bh=8vo1r+wQbOzLzCV+CAr1Yh9jJ1GiuCBkoMlOOYp8Wt4=;
+	b=Yi4fBLJdsEuHyVYg1XGaVqZWJulivq+rhQ9F8yJCMf6SgyrpPbOZ22lLtwxRel5uIcghod
+	jHZJHwruBAxXj3XmrMCVlyt9dPfSOZ1HSZZCv4lImsAq2Iz5wtCnCYSaeowUAPQwLvqxO8
+	H+dWBi4TLEZaTkpkcbyf63K9y/1N9KQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bIPJgOc3;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.57 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VVZwcwyV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793202861;
-	b=Wf/J8JeqQUzX7a2qc4NbSHcuWPIRRe48XQ8tUTmT3okkBBK2ovl1gKU2vfRZ+2xmVGUrPO
-	tg3MO+O9181vEMmSxxZ+LVLErF0u+J22lE/h12QhmjsfRKAIehR7H/AnbTh7ZALn5rQ6EK
-	hxDB4vIAFY6fa2QUq55ftlPbrP4MVqw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=tTZpPE9gJn7s96098K7j6uvB27YaMf32yiUhWF9ATX4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793202859; v=1; x=1793807659;
- b=bIPJgOc3iPcKTa1DXojN+YH2KEJcCalwAlquT1K3q2vP78rezERhjcEiyPnYf3XJJi+zm40e
- VZ8Y7h0Sg0LHwZ3RIB6hSZlxVJqtHyTLtmTMwa/Q5NiV5ZlDRHprLtwNr+zvun7UOnbjrZLyZOI
- 1EXHQla+Wo0nAnoYaUtKJ62U=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f81f3d53b1ebb019;
-	Wed, 28 Oct 2026 15:54:18 +0000
-X-Mizu-Trace-ID: f81f3d53b1ebb019
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kees@kernel.org,
-	peterz@infradead.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	hughd@google.com,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	willy@infradead.org,
-	jack@suse.cz,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	riel@surriel.com,
-	harry@kernel.org,
-	apopple@nvidia.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	matthew.brost@intel.com,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	youngjun.park@lge.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	jgg@ziepe.ca,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	mason@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 13/46] mm/huge_memory: fix truncate racing with PMD zapping
-Date: Wed, 28 Oct 2026 23:54:11 +0800
-Message-ID: <20261028155411.50458-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261027-fixes_core-v1-13-6f74bec9a5bb@kernel.org>
-References: <20261027-fixes_core-v1-13-6f74bec9a5bb@kernel.org>
+	t=1793203734;
+	b=Y2iUPuiTNT2DQ4wpeu4rK0DRAkdjnXsy0Ovt49G1zYId5JP1o9rcxvNiFcCD/WT1ksodpb
+	y8Zv/NQW9HD08V1/ZCg5LF2Hk6iDdMGg4z0MgCFevlTVFlTiimoyhJVhQ+K+Oj/iOqpyJ8
+	wy6JmldLgL2L619P+vDexeQdgTN2C+8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CD70443BDF;
+	Wed, 28 Oct 2026 16:08:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8711F01301;
+	Wed, 28 Oct 2026 16:08:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793203733;
+	bh=8vo1r+wQbOzLzCV+CAr1Yh9jJ1GiuCBkoMlOOYp8Wt4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VVZwcwyVvSGy32C+lIKbS30eALeGvBJZe+g4bcBdMztrsf6jMbOXEq8QfsnHf6XsN
+	 ZaYNXTWdnRcvpsl5OoIe1oIb8MyPAhJPCGdcR5u73Cy76hqzvj9H76jSUKwkbxpEV/
+	 agYoy6aZXGkzxcOo4xEF5c47SnvYEXeM1bD1gRrlzKC3kIGzqwwxIgNrAuPA6TY8Jo
+	 /vm80F2+VKdZkXF+LTNezNOC0eRYYCXwxq1On7B4ooG8w/c3qHo7K8vYWYrealIc6E
+	 WkxCdcMc84FLf9C029GNywxwIMZ6vhKpxVMIUYXbILBccEptSNycsEZG+z0U8K1Dvk
+	 kdO5rYESs50hg==
+Date: Wed, 28 Oct 2026 18:08:46 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH] mm/sparse: simplify the vmemmap alignment check
+Message-ID: <auIeDjoOQej4AT9b@kernel.org>
+References: <20261028121129.39916-1-kaitao.cheng@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F092CA0003
-X-Stat-Signature: 9jyt3nc37cqpcgty8mmd948hta673mad
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028121129.39916-1-kaitao.cheng@linux.dev>
+X-Rspamd-Queue-Id: 9F9044000A
 X-Rspam-User: 
-X-HE-Tag: 1793202860-257190
-X-HE-Meta: U2FsdGVkX19e7+Feuk9dANYfZmQUIPRobThI3YykyKXSieRFC/Ta30HD0WGBLIYHKNqY48Kwm4wgWxCxyJymBseNbqgSO4EMD6GLeMYVhlQhPMsINIyQLgWGT4aj+ooaxyY/IHAUgV2R2IUNJE1E3TZAQvZ0VLW9qH4pPTl6/wK+WYM+pzGn0CABlQI/isbq2xC0eb4VZq3Z/MjhH2r2HG4dZJKrBDBJ2kGQ4tLWuRi22JpSdijaNZvC1O5Yq3uYBoKedp0SpiKNeWciznCydPLFm9cyy+yd0Vg349cRxx6hFPrJ7lgNwoSKopZw1aHXOSGMu4WBm3mCcd8unXMEJoGL+pNE/yCLuSfcHdLTAonX4pIcitsQMayfvB5NanOmL/Pd+YAgviabslf2VOGiTzGd7L4y2WzahcmBEdLu2zbVCsJldyOXtWdH7t2Uz+Qxz6l7Nqkzbgdb+GwDR07FCiUfxgfHqhW52exvPTFfMbs2kBwQuzBt3/EBDIg/TtjjvYSpIFTCeyHUY3f1RaSyuIVlrsYqMAI9Ormlv4aBUFv6w0HqTLW//X6q0kNiPXYNZcU5uamNURC+HJDkB2KbLYkkEzpqSgDLrvbGFqyVnKkskxEo6+S8irSmSXsc8Vdvn1Dtq5FJDJF9M1QMviZhCIBQNTxiZk4EWTDFboMRLD5f6bJFY5A5aF064/VBFD2MEB4p1Z6/TAEGnGfow2vs/vdRhHDSCI/16els5M7ArR+eB/I3MCWc5jRfenNzVS9pJvptQSkKvGu+c8xl1OZodyW8/TcHq6aRtYaDLaZsqV1pfFn/v9XVDrwjb1SdpkPWzTq+Np+qBUTWJ03CqldTuAY85wOm1T3ZchGRIkXxABTuB8Ph6s8wPrHCAQdNFeCnkfOU/JsZW/TTFoM0Y/u7G0yry0EIY6dIaFzcmLGKUh35M4B6Ww2nSW1AmdF6hXvsrznLB8JhSpWjgi8eWXw
- vekwg3r+
- HB4tLaU26TcGCr5mETVyYywm66hLWpLCySswHHyNSZ1xwGPxDtLMZAyT6thmPltqB2ibsjG3YhZEcZOwdShNwOHSnodEYByHlT83aprUtJuD0pEFNf+fR802UPGDbcYGK3eWh6nc83y/OS3NFB37NoC3mJkvyXeGxiRH0Mun6m6QICi95CpMZVBWtjphxSfcj9MSMmgSL5hzjlvO6mXpERD2i+Pz6JZX0bTbsjFtLvaZvErwNMOTchp3Zla4Uymt9VmzUSLF2bKogF8+JRy+2yokV/Li0u5zH8TeG+eWaHcYYUrur6DTDczl+wo78I1YNJBJPjxTFwBeZIozPp/pQeRVfbOM1vjt6Ji5M2/ajvXnpAnoL9ktnIZyJCGkzIuejMjO9btvzpTJgaigWmw46ARrjBtdnAnWHT8Nw
+X-Stat-Signature: cwewqjusjfj9guec4nc9e6xijseqg633
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793203734-675240
+X-HE-Meta: U2FsdGVkX1/1qw3IXUO4BKbFWwpv57PZTCEetST5hOo8dzSVwQDqtvDgxpmj1n06zDcMINZTCYyVc173QqkJWfd46Lols4lQQGJquYK1QFDUJNIMAXFbrmceNMo2emDpImWhDVE9+I4M+xR60D4mx7gnrTUDY/QrmTzCoBVBc7WUBsKSox8YyS47lWmrx9msj8j0sxKxtKemIpljwktxLF+IUUz816h3DnC3xjh/GtbJH80DQKkZbvTUE871FTgqRnMs4RUL0D61201pdqPUvSVF7YBpfIP8rjNjR2LWWZth1CdR//3wNI0Yrtalk0h0rIEwqAylxS3mwAdlnBWS1VMFBUHFChURdqMONMNdrx7u8ALxeXa5dfTLVwjmHTm8W14WRWn34GfzyJ2clg0OILRynbQdvsDoe9I7nQvvGwwaXyM8hYGpSn5Q/8XOBLh/NQcDbrseD400f05eRG9If87DKw/rG1ycBDDNJM9i1l0bDXamzYwrrgjlfFH/lLXlvP6MOio6kjZfWb1dxbh7k1NuYX/vbcywsXtDjwyv3XVGG3E7dOEzF/3bLcWNwCny1vGSnECw2utrOj2BGugdd7mMjq9zEyF32mk/5lwpTzjNGuWvkG0+XTaAbaECMp19FSSlxNgfKh2bhddzpK17eW7ZFDl0l3CwOpYqm0vWDtmbzkAB6fvvv7zw4jEkv3KgtE9e9fHE4sco0haszEzwNyKrV7Ot4PYTQ5Ln4JFx6CYrlQ294dHNPylJhMkqeucFe2TwlXEapobVWKTP0UF5vPS1PWW6ngYz2Vj/tL2eFDZRfD8cyJNt71gLADTzNSLr+/50TrF8Z8ZnKCDK3CBufW8Mn9VijESuglQGEGFSHioVUNIApOpKJlZSaiDU+HuFI/nbCOWH8Szd8BPDZoF0FgYuulsoLzT2nLaLVztxSXf3bt3X02FVsv8MypNrsyGtRMR3ZpMaBTLjRehEvNI
+ Q6oXIEvn
+ Dw9YgR0oP5aTjkJqHngwLHMswNvZ+XR0pwzlWpJI58pSP6zlZ0uwdXlvwuaukvyXC6lK86mTE1EiHVQowm/4oXvbA/a/RAIM+3/fC1OvkwwsasXbEUD+nBKP3gPPIi4MXiaC92qxQ1w4NOMBwvFySKjjC36LD+MtwxYVvtBRjQ8voWjLRDUXmIkeJV9TZ3Chm79rnbyGWIbm1FpjjTJpYeHpUVka0On2LXipsVko4AQfVktQNcRisTAjSVR+J/g8ZHlGq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,32 +100,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi,
 
-On Tue, Oct 27, 2026 at 12:17:33AM +0100, David Hildenbrand (Arm) wrote:
->From: Chris Mason <mason@kernel.org>
->
->zap_huge_pmd_folio() removes the rmap before calling folio_mark_dirty().
->If this was the last mapping, truncation can skip unmapping the folio
->and proceed without waiting for the PMD lock, racing with dirtying.
->
->ifs_set_range_dirty() can oops if MADV_DONTNEED races with
->ftruncate() on XFS, when we get the folio set dirty after it was found
->to not be mapped anymore.
->
->Move folio_mark_dirty() and folio_mark_accessed() before rmap removal,
->matching the PTE zap path. This keeps the folio mapped while updating
->its state, so truncation must wait for the page table lock.
->
->Fix generated by an LLM and sent by Chris Mason in private.
->
->Fixes: fe6cf984939d ("mm/huge_memory: transfer the pmd dirty bit to the folio on zap")
->Cc: stable@vger.kernel.org
->Signed-off-by: Chris Mason <mason@kernel.org>
->[ david: simplify comment and description ]
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
+On Wed, Oct 28, 2026 at 08:11:29PM +0800, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> 
+> sparse_init() is called only once during boot, and the vmemmap alignment
+> check is outside any loop, so VM_WARN_ON_ONCE() provides no benefit over
+> VM_WARN_ON() here.
+> 
+> Use VM_WARN_ON() and fold compound_info_has_mask() into its condition,
+> preserving short-circuit evaluation.
 
-Good catch!
+Do you think it's worth the churn?
+ 
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> ---
+>  mm/sparse.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index 6acb628c8a73..248bee2d39b9 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -277,10 +277,8 @@ static void __init sparse_metadata_init(void)
+>   */
+>  void __init sparse_init(void)
+>  {
+> -	if (compound_info_has_mask()) {
+> -		VM_WARN_ON_ONCE(!IS_ALIGNED((unsigned long) pfn_to_page(0),
+> -				    MAX_FOLIO_VMEMMAP_ALIGN));
+> -	}
+> +	VM_WARN_ON(compound_info_has_mask() && !IS_ALIGNED(
+> +		   (unsigned long)pfn_to_page(0), MAX_FOLIO_VMEMMAP_ALIGN));
+>  
+>  	sparse_metadata_init();
+>  	sparse_init_subsection_map();
+> -- 
+> 2.53.0
+> 
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+-- 
+Sincerely yours,
+Mike.
 
