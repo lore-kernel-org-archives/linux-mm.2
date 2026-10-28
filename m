@@ -1,94 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38896606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 17:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A52606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 17:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=khWkVIOI
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LM2Iui4k
 Received: by kanga.kvack.org (Postfix)
-	id 3B4486B05B0; Wed, 28 Oct 2026 13:54:56 -0400 (EDT)
+	id 4543A6B05B1; Wed, 28 Oct 2026 13:57:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38B756B05B1; Wed, 28 Oct 2026 13:54:56 -0400 (EDT)
+	id 405736B05B2; Wed, 28 Oct 2026 13:57:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A20F6B05B2; Wed, 28 Oct 2026 13:54:56 -0400 (EDT)
+	id 31AC26B05B6; Wed, 28 Oct 2026 13:57:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 032686B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:54:55 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 90CC1120196
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:54:55 +0000 (UTC)
-X-FDA: 85372785750.26.81C1013
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E5218100009
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:54:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=khWkVIOI;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D0DA6B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:57:16 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CA5EA72E4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:57:15 +0000 (UTC)
+X-FDA: 85372791630.12.EC40C6D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E6B6BC0009
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:57:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LM2Iui4k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793210094;
+	s=arc-20220608; t=1793210234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v6lgge4WdsOVmOEXha6YU4EWcAVpqL0HGPQBV5WSBkY=;
-	b=Tm0e9tBrrMHOGuB7PT/kvsc+HTmh6aON4EWMeO7tmPulNRxQaQRycBfzT+s0KWHfFJskWr
-	60tb/4X2e3D5SuwUUB06yIZ2NxuUMw/2MwLPgwoEF7Bt9mpLhcP9laAzMymMC/rw6kZ2ov
-	hJrTLxCWbKsWTN+m8cde3Js5N6jboZE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793210094;
-	b=7I6cSbE0hCEt2LrD+CRJdKRQ53miZwZdIqFZ5wxspOZLxXm9Nvy7kqeH/ULt5LlaBMwJmr
-	tKg7jf45TE8bAqJE4D60ZY3QSYvJ0dbGWjqex452jPuzU3Ubyb7PeI6EAYB6NfIdLftxnS
-	FJ5AXYmiIHGxaQZWaCnp6/VLHn/LkpM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=he9R0+zwy1kJdSQ+18m+O8g+ZftkvP66i5BPO2efjII=;
+	b=h+6KftaNIGN8+56W1sau+FjdF7ZR/hiaMD4HWq8jlQtH8RHj4YeWttB/vJxd8pLDSDJpYp
+	hQ4Spb8LRc2dl8Njoo37K64PApjZ8RHv/RltFRA+LUz0GGLApk8xOX80sELG0qvvCKuTbR
+	EtNMMAgeU9KgT4lis10RJ8zHrRDekXI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=khWkVIOI;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LM2Iui4k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793210234;
+	b=uQ5n/ULOc45NrugmViXvamWYdjv9fFotWwAhKh5lmEnp2LH5sPLROdJdyee6H4ATQqeAco
+	9sysl+GBc1ruBTzUyVAMdTeJEsUlkEagR2Ft7P6cgEkXuP1GzLRKEhjFjuuuBqITd+qE9x
+	39ekdHXUpwgl9A92YkueXJ8zD/XR5Vg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F37ED601F8;
-	Wed, 28 Oct 2026 17:54:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8A01F01828;
-	Wed, 28 Oct 2026 17:54:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 36764435F5;
+	Wed, 28 Oct 2026 17:57:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C241F01825;
+	Wed, 28 Oct 2026 17:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793210092;
-	bh=v6lgge4WdsOVmOEXha6YU4EWcAVpqL0HGPQBV5WSBkY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=khWkVIOIxNRfDHMWRxAQtKPepjJau1mWH1tfNKVk66Ch1Lv9J7cPoDH51yRVQkwQe
-	 lm9acNXE11ARvqj46A/Jyhi7EbsCe7jxWNp+QA+oIQecZm/cowX6xbtuw2ZcnMLeZW
-	 F66i8Mn634THVYeZ8kW0a7P38yefWynfUloLYRA+QdcLjo8wWma67XNK0XQZydnh42
-	 /vDm0n3McPffCVHg9YW7z8haJZkTA8RlJPH1/umGHKF2jPmhag50YsXMCtLexT4VbV
-	 Ii/RzfMxlGoN8SWgNRUNR0nsu7SeT0M1r10FoZv6ArCr77yMxsJQbPadK4R3ESzy4a
-	 4ho1RTRTgtRxw==
-Date: Wed, 28 Oct 2026 17:54:47 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Liam R. Howlett (Google)" <liam@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Thomas Graf <tgraf@suug.ch>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	maple-tree@lists.infradead.org, Chris Mason <mason@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 3/4] maple_tree: Update internal warning and bug_on code
-Message-ID: <auImniguGIVq6c_L@gremlin>
-References: <20261028154218.1668182-1-liam@infradead.org>
- <20261028154218.1668182-4-liam@infradead.org>
+	s=k20260515; t=1793210233;
+	bh=he9R0+zwy1kJdSQ+18m+O8g+ZftkvP66i5BPO2efjII=;
+	h=From:To:Cc:Subject:Date;
+	b=LM2Iui4k0AA2176MJZKQkqYDXSz4cQ+1ELOn8IzuiESt+qqYyIxOLnwy7lm16gL3i
+	 uK5kzRiCQnwso6Dj6dlLtSLCq7qG5crpJ0fyNbPy0+/ZZxsVEhPoXW65xg5kHE9pRx
+	 VigvUKU/z5C8FdA0da020kXOYLzyFotu2o8ZyPhgZQJUOQHyVznhsdRIvsVAiH/j7L
+	 Zlv6N0ygZKNH+SV21OOWEapClHpTUGpGa4nWAMX4OttERmpuPH7pPH74x6x6k/lZeN
+	 gnNUbdnJTQgU18iVNsjpFOCekM8s1iQHKqfdxVf1JdUUlbR3TBYtR/h5sxXIKCgnGi
+	 W4Yb1vhy1PhKQ==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-mm@kvack.org
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Luca Boccassi <bluca@debian.org>,
+	=?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@stgraber.org>
+Subject: FOSDEM 2027: Kernel Devroom CfP
+Date: Wed, 28 Oct 2026 19:57:03 +0200
+Message-ID: <20261028175707.905913-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028154218.1668182-4-liam@infradead.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E5218100009
-X-Stat-Signature: ujtu3bhcg65kstr3bcm9eiker7g5dj5r
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E6B6BC0009
+X-Stat-Signature: sjpeqk8kgmsrmzpq7mrsn78qe1fix8sr
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793210093-980491
-X-HE-Meta: U2FsdGVkX19Bo+UnYCrcy4GFgDzXgtMHloATYrpcO1LgqquTD1TONFtro7ErH0YNAGBYEbOyclgNReRkEd6/nCl3rpcQp4blj7X6ohByDosmxUzIA0Tt10j0Q+yLmLrY07ad2Bkbia8RJjDmvtejkUTCCvtmS6o+clrkDbhaehii16Q/kFfX7DM7tPMdEFScSHiTaMDMDGUqujBPC14cN4TGofjHil/69hbzv3YvQ5Ym+aue0ZeXhAuelX0SU3A+PksgnqdD/yim9f9iRGiGpM3GuPfPS1zdue7JvV8droCwllZ1aDw5+mFbV0sqgNUw/upFnlSLvXOLsXmeuMiXwx1IYF83bCulwU2xzItNDRJ+5oy4yRD4CI34GsTtDrnJ5M9FkV61mACMie/rynGo395k0gkUP4OUnbBOBwaVmym73dc3nO19qMuhVObddpGOcYyIy5VZX8Zg9temv4wzitiKTxHo2gATq3qE1/h56y+5Ao46MFwQfXqt6w+kQv39MxNTvQ5QZBPzJQgjjbgdzaTJkp+YPYB35F3VHaqmhkVKI80ia8Mej/1nSQTb0S3EqEoWr3Ud0FcVVilv91Gv5hq5nZr1WxepHXmrjpNx0xoTy7gPDzAJxAc6bRvTU0QaHdcpjUhmQ/W3LOeT1hNQI5XQO5PoNUMQIqDnooVK6FvRDYr8029ruQDacXfoRXk/1zLryscJSv4CJcg4GhD4tdqYhUcDK6PJkN3N2HmGM1bYzScVqxAfkITZJ7E82UnI27loIPfTkhJ2/6g0cHAl4TEsSJ/hEYltUlJhnT92YHq+5tV16IyhrxvzYBiATL4ZAsB/ksNHqrG8BI2FjBivqAJZvXSheJ1RXIpsVYg4XRmAi3YvO4H5/M+72FbYlokcSgiE3zBlZaD8DdTGtp34nWzWUABQH2SPMt/ojFhxFDKAZiCxxo7ba3HOU5LruawQXv8MNWPYerR7Z2eWehp
- lQgZ+a1/
- O8Ha/BBRkjcpc5GaXQpZp0MtECBrZaFA7ft7KubL3QvefLlGezk+dxsi3EUInIUnysKn5mKllNjD0iUn+adtAZwVMPT94cKF2hzmXH+zw/LWD4PumKThfF8WiDGekfVXTr8VFruiZ+yTvSQtrC9cWEm3Ijy90wRtoYmqYNie6O5qEOIj5lOxNDH1G/rJAZA+xgNjpehK26trOmd4Bsx/+M8pMVR+h3x9jKQj5Goch0iXxWCDQHTiPB3BthLcwPXwc3wpxAdyBCQlAAkDHRr5eJ4Uz1ZKBbRBwvUNWIUsoYD0NChWY7JdtfpB60yw5RmhbSOKdB90sJLaPqFZ5dadfVWvoDud+/NAcqG1qzpUIupaOz5+EcfoAsCjHB+ewXWRuLTPJ
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793210233-34017
+X-HE-Meta: U2FsdGVkX1+/JzbtAOTmKMRbT99LWIK7Hex295KnRft83pSglribC7LYFuNAMeDZGYXGQ3bdhiz3hBL3zF67XsWthK6qFOIyMDS1xRO936U6fRrTC+I3vs2IzMf+WY5QeOIfKhb5qmWbUlGVxuNZts3x61h7nNGayf1BGVplxC42NyjweBvmo0A2d4jbGGQb82YihN4zhaMBQZ1dM9ByzmKxS8BTc6PzTl040EkJiZtJJHAB1OgGgT2+g3+Lu9W2sBnPTwjWyzRjos2TH2QZvVHiQErPRJxukeHCCFMLI1xppRiWRdeCp821RRPVv9h6qFgZCEeGwGPfcqREtj/gqRJlMAWqflmILsWYesyxJmx1k1yN6Bar1AjKAWaN4wqQ4RoY/MFM1xzxAhUB9fYYcu1BlfTz1y2zf8Z0+lf8nV8FShoe9HN1QM+zQxJrSJEiRA/JSUSoXUuIf8JbldukpcLcPu0oB5QIJiJ3moIvyB/RW5nppGLdIw2TQQVt5qgBiVCDmFBMCk+bBLgQh5Q2TZp8bG4U7RBjfydcabCm8grOacy/qCHq9D7Qd+QymKK7bQRpaDDFMrYi4kW6/iah8lRo1+si9IX5Qw3CXzPJxPoz50fLqRBYY4vSvwm838MDPre5BvkRtHZDxymXHbSbPzrb6QK5ojN1ZhqMWxci/48VHduNEYqpqDupQDNv0BMNEplnz+TwPQi/sMZEaGztNX3Pq54hyNotpqr7SV2npF9bI2VaYwUgRRhoRZsu1FQYl0I303dGgAoldp9NpQszFOPfAwei0dXMmUxcKIeybTjPCeFdjuLavsLAdVxV46KOCXzrXt5kk8XvNWJF/SsyT7eHja+o3bnUDv7T6Hkxc51Jstd2Kolooj0Y13sqZhh5W/0BLBtG2VS+pjGTvt8teRF2kDJgeGsFRvNCdsiZpbnFz4bl8j79E6dr1N5g+ZJKGAOdqIQtAYOQD4oGIM9
+ VuO2mt2c
+ WOai4D+xvrdZJKS8tTPT4XkJksgD/FbpSCc656iMJsdJFbHya0SyLp7E5GmX++J1Ti0ySsXUKaBL7Y+o8XuAuVY5lR7ILLi2os8K5qD5hffJmatrk690hUdBa1Rrn20/XXtmLpvfhrTaOpQ1SINzyadK+jkTaqxGTGDITDVeAXU+yiz0rDhKYoBhboX6A+PiFEjyg7p2sAHZM74d8Wqlhnf0IK5Xlu5ri7Kafdbftp6yVXtce8fLHRxokVoLUTCrq6nXl31ePxkvYBG+Q+MP9akVWlmQSZS1da6yfqqlwQNfY6KUFJH7H1nc8/JM+9R15wzANkKzLCRD50WHnsKK/Lli0Ru+Yqhi4Z+xTt+Q8hHQpc/Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,206 +94,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-ma
- On Wed, Oct 28, 2026 at 11:42:17AM -0400, Liam R. Howlett (Google) wrote:
-> When CONFIG_DEBUG_MAPLE_TREE is set, call the WARN_ON_ONCE() after the
-> custom information is dumped about the tree.  Without using the kernel's
-> WARN_ON calls, syzbot will not catch issues detected by this code.
+Hi all,
 
-Mega nit but commit message doesn't mention the BUG_ON() bits :)
+We are pleased to announce the Call for Participation (CfP) for the FOSDEM
+2027 Kernel Devroom.
 
->
-> Update the non-debug code to call WARN_ON_ONCE() as well.
->
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Lorenzo Stoakes <ljs@kernel.org>
-> Fixes: bf857ddd21d0b ("maple_tree: move debug check to __mas_set_range()")
+FOSDEM 2027 will be over the weekend of the 30th and 31st of January in
+Brussels, Belgium. FOSDEM is a free and non-commercial event organised by
+the community for the community. The goal is to provide free and open
+source software developers and communities a place to meet to:
 
-LLM overlord says bf857ddd21d0b only moved it, and f0a1f866aba1 actually
-implemented it.
+- get in touch with other developers and projects;
+- be informed about the latest developments in the free software world;
+- be informed about the latest developments in the open source world;
+- attend interesting talks and presentations on various topics by project
+  leaders and committers;
+- to promote the development and benefits of free software and open source
+  solutions.
+- Participation and attendance is totally free, though the organisers
+  gratefully accept donations and sponsorship.
 
-> Signed-off-by: Liam R. Howlett (Google) <liam@infradead.org>
+Format
+------
 
-Looks sensible to me from kernel perspective, but LLM overlord tells me this
-changes the userland tests from asserting on dump_stack() to just printing
-something out on WARN_ON().
+The Kernel Devroom will be running a whole day; the exact day and time
+will be clarified in the near future.
 
-(BUG_ON() is OK, it asserts already).
+We're looking for talk or demo proposals in one of the following 4 sizes:
 
-However we really do need this for the kernel so CONFIG_DEBUG_MAPLE_TREE
-triggers syzbot and such, so maybe the userland bit can be a follow-up?
+- 10 minutes (e.g., a short demo)
+- 20 minutes (e.g., a project update)
+- 30 minutes (e.g., introduction to a new technology or a deep dive on a
+  complex feature)
+- 40 minutes (e.g., a deep dive on a complex feature)
 
-On that basis:
+In all cases, please allow for at least 5 minutes of questions (10min
+preferred for the 30min slots). In general, shorter content will be more
+likely to get approved as we want to cover a wide range of topics.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Proposals
+---------
 
-Or... maybe just respin with something actually, can fix it by updating the
-shared maple tree testing header to make warn do something like this
-(schlopped, apologies):
+Proposals should be sent through the FOSDEM scheduling system at:
+https://pretalx.fosdem.org/fosdem-2027/cfp
 
-diff --git a/tools/testing/shared/maple-shared.h b/tools/testing/shared/maple-shared.h
-index 2a1e9a8594a2..112052e7201f 100644
---- a/tools/testing/shared/maple-shared.h
-+++ b/tools/testing/shared/maple-shared.h
-@@ -10,6 +10,30 @@
- #include <time.h>
- #include "linux/init.h"
+Please select "Kernel" as the track and ensure you include the following
+information when submitting a proposal:
 
-+/*
-+ * The tools/include/asm/bug.h WARN*() family only prints a message and
-+ * carries on.  Nothing in the maple tree or VMA tests expects a warning, so
-+ * treat one as a failure and abort at the site.
-+ */
-+#undef WARN
-+#undef WARN_ON
-+#undef WARN_ON_ONCE
-+#undef WARN_ONCE
-+
-+#define WARN(condition, format...) ({					\
-+	int __ret_warn_on = !!(condition);				\
-+	if (unlikely(__ret_warn_on)) {					\
-+		fprintf(stderr, "WARN at %s:%d: ", __FILE__, __LINE__);	\
-+		fprintf(stderr, format);				\
-+		abort();						\
-+	}								\
-+	unlikely(__ret_warn_on);					\
-+})
-+
-+#define WARN_ON(condition)	WARN(condition, "%s\n", #condition)
-+#define WARN_ON_ONCE(condition)	WARN_ON(condition)
-+#define WARN_ONCE(condition, format...)	WARN(condition, format)
+- Name(s): Your first, last and public names.
+- Speaker bio: A short bio.
+- Photo: Please provide a photo.
+- Event title: This is the title of your talk - please be descriptive to
+  encourage attendance.
+- Abstract: Short abstract of one or two paragraphs.
+- Duration: Please indicate the length of your talk; 10 min, 20 min,
+  30 min, or 40 min.
 
-> ---
->  include/linux/maple_tree.h | 54 +++++++++++++++++++++-----------------
->  1 file changed, 30 insertions(+), 24 deletions(-)
->
-> diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
-> index e30e57f5f3df9..0f96f1f19eb95 100644
-> --- a/include/linux/maple_tree.h
-> +++ b/include/linux/maple_tree.h
-> @@ -680,7 +680,7 @@ void mt_cache_shrink(void);
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> +		BUG_ON(1);						\
->  	} else {							\
->  		atomic_inc(&maple_tree_tests_passed);			\
->  	}								\
-> @@ -696,7 +696,7 @@ void mt_cache_shrink(void);
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> +		BUG_ON(1);						\
->  	} else {							\
->  		atomic_inc(&maple_tree_tests_passed);			\
->  	}								\
-> @@ -713,62 +713,68 @@ void mt_cache_shrink(void);
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> +		BUG_ON(1);						\
->  	} else {							\
->  		atomic_inc(&maple_tree_tests_passed);			\
->  	}								\
->  } while (0)
->
->  #define MT_WARN_ON(__tree, __x)  ({					\
-> +	static bool __warned;						\
->  	int ret = !!(__x);						\
->  	atomic_inc(&maple_tree_tests_run);				\
-> -	if (ret) {							\
-> -		pr_info("WARN at %s:%d (%u)\n",				\
-> -		__func__, __LINE__, __x);				\
-> +	if (!ret) {							\
-> +		atomic_inc(&maple_tree_tests_passed);			\
-> +	} else if (!__warned) {						\
-> +		__warned = true;					\
-> +		pr_info("WARN at %s:%d\n",				\
-> +		__func__, __LINE__);					\
->  		mt_dump(__tree, mt_dump_hex);				\
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> -	} else {							\
-> -		atomic_inc(&maple_tree_tests_passed);			\
-> +		WARN_ON(1);						\
->  	}								\
->  	unlikely(ret);							\
->  })
->
->  #define MAS_WARN_ON(__mas, __x) ({					\
-> +	static bool __warned;						\
->  	int ret = !!(__x);						\
->  	atomic_inc(&maple_tree_tests_run);				\
-> -	if (ret) {							\
-> -		pr_info("WARN at %s:%d (%u)\n",				\
-> -		__func__, __LINE__, __x);				\
-> +	if (!ret) {							\
-> +		atomic_inc(&maple_tree_tests_passed);			\
-> +	} else if (!__warned) {						\
-> +		__warned = true;					\
-> +		pr_info("WARN at %s:%d\n",				\
-> +		__func__, __LINE__);					\
->  		mas_dump(__mas);					\
->  		mt_dump((__mas)->tree, mt_dump_hex);			\
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> -	} else {							\
-> -		atomic_inc(&maple_tree_tests_passed);			\
-> +		WARN_ON(1);						\
->  	}								\
->  	unlikely(ret);							\
->  })
->
->  #define MAS_WR_WARN_ON(__wrmas, __x) ({					\
-> +	static bool __warned;						\
->  	int ret = !!(__x);						\
->  	atomic_inc(&maple_tree_tests_run);				\
-> -	if (ret) {							\
-> -		pr_info("WARN at %s:%d (%u)\n",				\
-> -		__func__, __LINE__, __x);				\
-> +	if (!ret) {							\
-> +		atomic_inc(&maple_tree_tests_passed);			\
-> +	} else if (!__warned) {						\
-> +		__warned = true;					\
-> +		pr_info("WARN at %s:%d\n",				\
-> +		__func__, __LINE__);					\
->  		mas_wr_dump(__wrmas);					\
->  		mas_dump((__wrmas)->mas);				\
->  		mt_dump((__wrmas)->mas->tree, mt_dump_hex);		\
->  		pr_info("Pass: %u Run:%u\n",				\
->  			atomic_read(&maple_tree_tests_passed),		\
->  			atomic_read(&maple_tree_tests_run));		\
-> -		dump_stack();						\
-> -	} else {							\
-> -		atomic_inc(&maple_tree_tests_passed);			\
-> +		WARN_ON(1);						\
->  	}								\
->  	unlikely(ret);							\
->  })
-> @@ -776,9 +782,9 @@ void mt_cache_shrink(void);
->  #define MT_BUG_ON(__tree, __x)		BUG_ON(__x)
->  #define MAS_BUG_ON(__mas, __x)		BUG_ON(__x)
->  #define MAS_WR_BUG_ON(__mas, __x)	BUG_ON(__x)
-> -#define MT_WARN_ON(__tree, __x)		WARN_ON(__x)
-> -#define MAS_WARN_ON(__mas, __x)		WARN_ON(__x)
-> -#define MAS_WR_WARN_ON(__mas, __x)	WARN_ON(__x)
-> +#define MT_WARN_ON(__tree, __x)		WARN_ON_ONCE(__x)
-> +#define MAS_WARN_ON(__mas, __x)		WARN_ON_ONCE(__x)
-> +#define MAS_WR_WARN_ON(__mas, __x)	WARN_ON_ONCE(__x)
->  #endif /* CONFIG_DEBUG_MAPLE_TREE */
->
->  /**
-> --
-> 2.47.3
->
+The CfP deadline is Saturday, 5 December 2026.
 
---
-Cheers, Lorenzo
+Topics
+------
+
+The Kernel Devroom aims to cover a wide range of different topics so don't
+be shy. The following list should just serve as an inspiration:
+
+- Filesystems and Storage
+- io_uring
+- Tracing
+- eBPF
+- Fuzzing
+- System Boot
+- Security
+- Virtualization
+- Memory management
+- Rust in the Linux Kernel
+
+Code of Conduct
+---------------
+
+We'd like to remind all speakers and attendees that all of the
+presentations and discussions in our devroom are held under the guidelines
+set in the FOSDEM Code of Conduct:
+https://fosdem.org/2027/practical/conduct/
+
+We expect attendees, speakers, and volunteers to follow the CoC at all
+times.
+
+If you submit a proposal and it is accepted, you will be required to
+confirm that you accept the FOSDEM CoC. If you have any questions about the
+CoC or wish to have one of the devroom organizers review your presentation
+slides or any other content for CoC compliance, please email us and we will
+do our best to assist you.
+
+An up to date version of the CfP can always be found at:
+https://uapi-group.org/docs/conferences/2027-01-30_fosdem-kernel-devroom/
+
+Thanks!
+
+Christian Brauner
+Luca Boccassi
+Mike Rapoport 
+Stéphane Graber
+
 
