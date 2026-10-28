@@ -1,158 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA48606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 21:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF483606A33E
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 21:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=G/n0RLZ9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a3RA0sBt
 Received: by kanga.kvack.org (Postfix)
-	id 4954C6B00EF; Wed, 28 Oct 2026 17:59:40 -0400 (EDT)
+	id 928F46B05B1; Wed, 28 Oct 2026 17:59:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41F486B05B1; Wed, 28 Oct 2026 17:59:40 -0400 (EDT)
+	id 8D9F46B05B2; Wed, 28 Oct 2026 17:59:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BF716B05B2; Wed, 28 Oct 2026 17:59:40 -0400 (EDT)
+	id 7C8916B05B3; Wed, 28 Oct 2026 17:59:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0233C6B00EF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:59:39 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E84861A01F9
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:59:37 +0000 (UTC)
-X-FDA: 85373402394.13.2B142B4
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0D736140003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:59:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="G/n0RLZ9";
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 450E56B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:59:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0C39A01F6
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:59:39 +0000 (UTC)
+X-FDA: 85373402478.17.6E97B70
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 39A4E120006
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:59:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a3RA0sBt;
+	spf=pass (imf29.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793224778;
+	b=sfHh/qLPPjH1iw+F9SdSHGk6DLDm8++93Qy8ANEloO0/wd0IgVm/Ve6cN+4kH2jpeNxFYy
+	XmnVfbivRjhJjnhbINOWBCc/QuittjVfipUjN7mR5erk5dC+/u9JGZsZEy25jFVtD9Vw5g
+	+zLl5Cna7wXTtn4YpDy/UU0FkFLquSo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a3RA0sBt;
+	spf=pass (imf29.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793224776;
+	s=arc-20220608; t=1793224778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OhxlTVYV9TLcZ/UBe1xcuRZQWn43bPmhsFTY2WYTAiQ=;
-	b=NwHv3WF/bMQla4axjr3fn4GVlNMEmNte2b5Sh8sJ9QCAWtDII1YP5INZwQVlx89qtu27Qv
-	l7f0711uhDJW2tTugsp8u2DeKRsVwbXvUdIN223p+d6TykA3Ce0wv2vEVTRBzCDttFT3tn
-	bw5joJfW3Jzszh5HUtb6R67SsW9+UUw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="G/n0RLZ9";
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793224776;
-	b=58liYh+ttavkTX9oDkJ1tFeb6ZGMX9OFn3W0LWFjCVVmMx7qos9he0dBQm/zxae10Ld82W
-	QTOVN8FmKUgTUsylJP6XGB8T0wAEVOIOZ3o8VVxaFIb/sUCilZ5e9Hpb+u9Ftkk/f6Wyqj
-	nYtARhJ0n3zYr1EMNGtbEs7RTO0oRus=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93e7ad9f78dso161457785a.1
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:59:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1793224775; x=1793829575; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OhxlTVYV9TLcZ/UBe1xcuRZQWn43bPmhsFTY2WYTAiQ=;
-        b=G/n0RLZ9qN3kBBAZAq77bNg5fgsU9GnCzpfywzz8cWm6cQ7w7sjTHpriizAtJEyDp3
-         vEt/77aYWb93UkAMeXPgCBNQLxPxVEX5w+qFJE0mORfO/QUfs9HVfaPoWuzoQiNoWR/4
-         mTjpnssni9X9T7sFffD1xfEk5QEP4o+AGKqX16DW/8YWXZ15+nFZHRSUXU/AZQJk4kWx
-         qF1xjStG5K8+GbFBEBRDESfzctvYVBJ39G2KcXbZOWhWY1/orXvIXXHzusancBmnGIIg
-         VRwAyZfsF8sBHghBXeaE5yzW+QCkUt1ChF1N2KpFC+HfDBQ6WwzKa2DwGcxXK2DSHLQm
-         yPRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793224775; x=1793829575;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OhxlTVYV9TLcZ/UBe1xcuRZQWn43bPmhsFTY2WYTAiQ=;
-        b=etpZWh5MWWSxYBH+ZsrCuoHCu8cqUx5mUue9xwqo5un1t5j15Ij/9C0dlSrZ0CI2of
-         h0GOLG0YlMfmi8mK5YuiWCbCBn/p6tIhmSgztHTntEO53jYjHDF30itfQUUPO3gK7ZYf
-         v20eolJIUGQYXvGmYELWDnFAaCoW5Qt6/TBXDpGUHn6QEPmkt15+yfgLbE0J4FKXiH1m
-         1NE57bZR8vt0pRZkloj98R1A+q5xIdnzennM2CnnPzYaLT95VGm8G+gVQfDdZp+hqdTI
-         kDQ3M7QL0qWVptCoUUP2gxudZ6Troja3TTgYvYLmUBxAglP6JRjR1dTRZnbICBGKf3hC
-         gU0A==
-X-Forwarded-Encrypted: i=1; AKwUvBx+HJtVWqMVP3fqOmSqfmWEjZypXdpjUqXj8IwuGVloRfML/VVvrbYrjnC1zjG7ULsvcHToT95uOQ==@kvack.org
-X-Gm-Message-State: AFq9FYKa03G2XAEQvcQTjX0ZQJUaXiea1hz2RyipkXIp9BOzniA8RGtU
-	4kR56UN6B+QzIS6ab0wesBqqFndrdBWd1w3NsxUC8AyLkG52Jwwqh5ImHJMllw4uC/Q=
-X-Gm-Gg: AYBFou2p6CTVZUcdR79fdx/+bWh2XJDSMRcDBNgo3ekbs3H2MojwsPwtKiZy8DQ2JAJ
-	1rvC/47UwIs2Y/haw7GqRI2JIsuxfdjS5xfRPnRbS6aSnrVcjl6vZfYUuvjcovNRo7bz9iDwflA
-	GpASKelsx782hy5KqJIZPv3EPdS4YTtriVM2mzJlqHw24L2EFMqpgEm0ILGtbB+Yngs/GOtWo1k
-	zjapqa4Gav0JxtcMI8WuDYonbU2wTDka1IO8meqTu5f2fk/MCnBK+bVZYj3WbH9+H+bdpr0mo8f
-	CEJIFbnLCOSrTidUENbxCw81lbXeFbuwHrq/UhCJhirq57hkgnh2vWuubGxxzUfMaYlzZ7abV9R
-	Ql1PreXIYKqRRuSnuTwNPpalPT7b25lCqLPkUuWlhY8XGvxaMA9ShHf6/IiNLdfDt+FMCo23wtY
-	6VkTI6A2R5qaVAPRVLij8xEBHERRcMf7X2cxeALSGeyG+fEMPJZlKJ06l0DuMU0TPm2xs5anxyW
-	5vhtDKPuzjtmkF5NguUkX6Oikpd0N4h5J7kbdv8xDgZ/rciFlg1CSKhdMZvEGaWKJLrn3xhwbcL
-	A/spuFuQDxBQY6KJSE8CAfDu2v6rjs94jUp3bQXKJxktxOdG8PlmywC9cip1Ag8/WViL05E8Yvu
-	B
-X-Received: by 2002:a05:620a:460f:b0:93e:ce12:aadd with SMTP id af79cd13be357-94408db358bmr587757585a.58.1793224775119;
-        Wed, 28 Oct 2026 14:59:35 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-940f078ba99sm1374978985a.32.2026.10.28.14.59.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 14:59:34 -0700 (PDT)
+	bh=KN0FgIJMajTdk9Ymv64LA7EQejo37NTwYsXl8rzrDcw=;
+	b=yHqEsYCS3GX6iRiAx8vpRKX90khg/CKT0Q91uW3q9EbJsGAWZmPKxuV0l6wYB1HCHFeKNz
+	/gRlJArZ+/kjz5KhphlWRTH1z8BxdNCpbiv5r/bc0jWKfXIvJRplIqFKGnv8IH719scIrF
+	LFHFv1IntJhAnPF0R3bzjuvXJcJQBVM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 69A69435E8;
+	Wed, 28 Oct 2026 21:59:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735ED1F01825;
+	Wed, 28 Oct 2026 21:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793224777;
+	bh=KN0FgIJMajTdk9Ymv64LA7EQejo37NTwYsXl8rzrDcw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=a3RA0sBt4j+5IOAxEQxpVDoeAzK+P2lBLhl6gq2sX+rpplyk7XL+xEh8DUFIe7llV
+	 7Xwjeho+6cJzY+Al3GxT+KpIrqYT4GruKZzBB1gefgy9Gm6mRgcxx4CtoAIwqa9gCk
+	 ZOb2MydTxzI70JvhNAi/zd7B3b/0uyaMJCy5gjs666f5X12czMgE5UGdw6HEM9/HmT
+	 roFeNjsFe73Sd1FC9UdXdQNt04xT8PcR2DZKB6YITl5USRXo3YWmrLpEotk9nHElM9
+	 23qPe0bvRd63mi3/Y0Yk+bs/cjlLa1pNzQg1YCqRV+kfADzUNXig3J22jjQPaJ76zt
+	 b5A4bYdaO7/sw==
+Date: Thu, 29 Oct 2026 08:59:20 +1100
+From: Dave Chinner <dgc@kernel.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, ryan.roberts@arm.com,
+	abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
+	dipietro.salvatore@gmail.com, rvvandan@amazon.com,
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+	linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com,
+	miklos@szeredi.hu, agruenba@redhat.com, djwong@kernel.org,
+	hyc.lee@gmail.com, almaz.alexandrovich@paragon-software.com,
+	cem@kernel.org, dlemoal@kernel.org, naohiro.aota@wdc.com,
+	jth@kernel.org, willy@infradead.org, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, ritesh.list@gmail.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	exfat@lists.linux.dev, fuse-devel@lists.linux.dev,
+	gfs2@lists.linux.dev, linux-xfs@vger.kernel.org,
+	ntfs@lists.linux.dev, ntfs3@lists.linux.dev
+Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for
+ per-block dirty folios
+Message-ID: <auJwOJ-dQCHLAvMq@dread>
+References: <20261027112702.3747009-1-dipiets@amazon.it>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 32/46] mm/memory_hotplug: avoid races in
- pfn_to_online_page() with dying pgmap
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>
-In-Reply-To: <20261027-fixes_core-v1-32-6f74bec9a5bb@kernel.org>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-32-6f74bec9a5bb@kernel.org>
-Date: Wed, 28 Oct 2026 17:59:33 -0400
-Message-Id: <179322477323.1935969.10540673116963281867.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 0D736140003
-X-Stat-Signature: 8woc45g8wh4oqzxpmk441xerasd7mdru
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027112702.3747009-1-dipiets@amazon.it>
+X-Stat-Signature: 4anh33psqao9r4edgi7y8kwkswdiggyg
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 39A4E120006
 X-Rspam-User: 
-X-HE-Tag: 1793224775-539880
-X-HE-Meta: U2FsdGVkX18zZI5S3EPUaSBLiE6n6MrkSbj3i+qRnwaeRIEvdCSx6S3XhQ2gD9pKiXol+KUL3kWtBVdKt9uSE++jpbCogsh9KWTF0ie5zDRjDj9/HIPKDA88sKQfanHseK/wnW4D6R35P/7INEtZIvyCIWggt0rSgTkrFYlYoq1NhNlAoUettG3AZvJSOyiM8HHADQ5BpaAWhPUNU13e09VkKZ1/iPnntKoki8GaLCxTRQfZkhBCArs7LZBXAGfmE6sYldQRzuI9x1A96xA+kd27grRqucJWPor5DdXQvCXfBCgixEVX6VA5BCXOnqkn3lFAV1hgvmFUkHNfjJV3EmuRel6lXDrnB7il4YWhCKKxwZOzTOJgcxif5lm+7X/5PowvP0MV/V3Y2/aTiyug+mx3jCJSk+nc/iF90c14D0KSBsQmJoU2wjjOCprfo5gPCJ8WyceZQoORAxSXBVGyZh8awya/QwN1ga5vfp8sJHvsvvcftItKFDcz+LOIHMvh4OFdEAbOi5LXRxPTSHvQjjF4rDzQ1C3sCqJDf6pwi6H3EbhK4FobtXIlrlJ3bSMSlKNkJTNTBe4QGDkOf8zGeY1wlTc42U+3naG03PRMHDVHQ+/IO6JhQCEEn1TkTaFbnHEtYQFJ3SjhaUdkc1Cdxbtu22C3v15yfO5ltpGsLc92LKwEbjDd8JAESaRNL1s0BkjAybr1S9j6MTHNDnYfyvXI8B34xV8G4tYxrTt41TI67gmHQp2dyQ5IxEDy2rVmo8kDRB7Ip62v8Wm7G38/jtpthXeLiTrZ82NIeXQQE7s7QilbpsvW+jwhP1YY2PUOPZWFL2vxvAuXu+m2SI0louxhKnMgUOsiD8Vpm5+vYM0kR9stge2Vn246iKuZ3CCqChS7ZvSmBsgtTOiOHLDlw0yfBm1tHlKSTw0Uk+275QNG5GHPylLYY+4ej3914K4b/LjDz5VIpXC9C5JYL4H
- GfvXyRGW
- utAEWa+3eMv7XfQj9CLKonXdC+xouRmO5FNdB8zmkposzNqp8aZiG6G3p3f+cpEfqUd9x8msqqPGRSkdtqzhDvW19g7cDvh18aO1Ji89CAZmPnnuKTzHGLJxaiWo+IBjv8dWjafEmazLVytPNAyICv7GfNG5ldPDnAwQ767kYMy14SoL6WFYikkPpNnp3XUaBKW7oLOea7bzM55o+YGpTDfDsYsM4wXRfRcwUnZDrj0YN3s+abxGo2mL26YowOVDnomgxydheV/2hgnEKYj4zIulkS9cUZzbpk5xgLi9HGq/hCwIWcPdo/KrlZeOBfHrTGmYXPOZZhU1pN4PUGk7f5QWv+fZC4Ao715V7a8rz4WPtTvKHP5MpwJFdIinzQgkAspVR9kwGUdX92KmZakaHy3K6cRejXlVUwOroe0hXoUI2xkYhBGgG/6BwxQw+3ceDyDgrWWFmJeCQ3kvhmnv8oUa6YD3ytPh7SjdrbyaiaiteV12FIsHHIELXzbw/OXIn1TpNuQfpDkJGPB4=
+X-HE-Tag: 1793224778-628108
+X-HE-Meta: U2FsdGVkX19K2nFejl+I8quBNfSPdLWSa46XdwXFQeXsEQCOGuSuqcO6p+abqfaq4U6AoYvC8kjVMKlR4FhTOSZplLWLbbN/s7kRB4wDx3Xacf6f3LEZfPKFqU6mQ2KBzpOfDMHUKKykGwtzOG1jYYr1LY6VbQoMnoVqZeEbsmz+dt/EYEtSvpzJlmVwXEDIJMIq2ASIfqYtLb0lUHEJOFY4FzGWxQzDP7rzsBYFKvaC1NReWjL5Wqy8AvHkHA/qhawU9IjB3elV0kKqPaq4jBEcVAuRXfrNf7T3KWMrx9gpCOU9JdIA1C8AgMlBjps7xCNbWRqlo3GQ+vs+lM0KkCEi5SL5FpVLMPKBH8XDSG/cYLrec5uzMZWSPZNh2L1WQR24Zor8C5c1I8uKD560fkehwMpGkPawcJ/aoRq9U0oDrTcbCdMD3B9JFKviQjGL8lySLJwMCmaYigN26ib/PAyta2JLmMMM80JtfV71FWoWKLUOgMa28sR2NylurZSvH8V640UVY0uG1qtTIXKQ3SpCyLb/khX9DfBS3j8PDkpJYX2/BTpntOolu8tZEMLSCGalytmPaQS6BXf687ASa7Wz7oPQQ1xCkdN96e6pF2XVE/wrVXMsEP8zxbP00tlAZWmGraz/wx28Cx8XWvXBlObYmE2cG7ii9KcbGtlQCfh51qStMe+SfcDeUTI0m9p/+slzY5QNYg572rqCwXwZve7A+eAfoKsmI+cZoY3J7zJ/ThjKriYkUZWXLxC/qPoWvWrffJqgeUsYfpTKyth66fMNrrrxEUGWMPDpLZclefPAtNYgC9lP7WelXVIqIMnFw0s9EeLT45tHFJWjMrXaKxSeusOS/o8jVgq/z908q/uTCKof39XPomB7QsU+CAvnhalLXx4JBdrVi/by8gBEmBA5caqbrm2gltLBXLqJeRfDLg5+TvMO9xAUQ4JdMrbRNyoTX6jEzKtqWT2WPNl
+ O+wR5IGt
+ no9JWGfAogWNds2gwfCTI7sQ+jfxmYUF67AazoiquMvUUL8E6eS4ekz9YR1Vr239IjPcGGapSOszEBqtwCxdDQcEq0oKZlX/QFfctt3nI1yAAC5aAvfKanoaa9QEfXyam1BpIf2OfVeqxAfVOaaq8yR4KzdEkxcKS5C1qlN8Yca+hQDGafaJFOKKH7h8iB+b4kyMdAtvS2hQvNYJYF2g2L8b4OBDBo1sgNPHMR9NuzYGUVikKQNJYdyq2besg43EtcJj9vIWUjtsIMUudxCZm3px46wQfrpiKMALaJx08YJNMPKsKbRv71dafm/MB6rsyAb9QQjtHl7XdySX03rIBs48b+OIxXRdE7Kbj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,37 +110,141 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-27 00:17 +0100, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
+On Tue, Oct 27, 2026 at 11:27:00AM +0000, Salvatore Dipietro wrote:
+> Since iomap gained per-block dirty tracking, a large folio can be
+> partially dirty: struct iomap_folio_state records exactly which
+> blocks are dirty, and writeback only writes those ranges.  The mm
+> dirty accounting, however, still charges the whole folio even if a
+> single block is dirty (up to 512x over-accounting for a 2 MB folio
+> over 4 KB blocks).
 > 
-> If ZONE_DEVICE memory shares a memory section with ordinary memory, the
-> section is online and the pfns of the device are valid.
-> pfn_to_online_page() tells them apart by asking get_dev_pagemap() whether
-> the pfn belongs to a dev_pagemap.
+> balance_dirty_pages() then throttles writers against a number that
+> is unrelated to how much data actually needs writing back.  On
+> workloads that repeatedly dirty small ranges of large folios --
+> e.g. PostgreSQL, which writes mostly 8/16 KB pages -- dirty_thresh
+> is crossed and writers are throttled long before the real dirty data
+> justifies it.  On the benchmark below, run on v7.3-rc7, the
+> unpatched kernel charges ~159 TB of dirtied pages while writing
+> ~6 TB to the array, a factor of 27; with this series the dirtied
+> pages charged match the data actually written.
 > 
-> get_dev_pagemap() only returns a dev_pagemap whose reference is alive.
-> memunmap_pages() kills the reference first, waits until all pages are
-> idle, and then removes the memmap. During all that time the function
-> finds nothing, and pfn_to_online_page() hands out the struct pages of the
-> device as if they were online memory. A pfn walker reads them while they
-> are poisoned and freed.
+> This series makes iomap charge and discharge the mm dirty counters
+> per dirty page for folios that carry per-block dirty state, so a
+> partially dirty large folio is accounted for the dirty part only:
 > 
-> The entry in pgmap_array is only deleted after the pages have been
-> removed. Look at that instead of trying to get a reference.
+>   - Patch 1 adds the mm infrastructure: an AS_DIRTY_PER_BLOCK
+>     mapping flag, an @accounted argument to __folio_mark_dirty()
+>     and __filemap_dirty_folio() to skip the generic per-folio
+>     charge, and an address_space_operations::accounted_dirty_pages()
+>     callback used by the discharge and migration paths instead of
+>     folio_nr_pages().  No filesystem opts in, so it is a no-op on
+>     its own.
 > 
-> This is probably not worth CCing stable.
-> 
-> Fix generated by an LLM and sent by Josef Bacik in private.
-> 
-> Fixes: 1f90a3477df3 ("mm: teach pfn_to_online_page() about ZONE_DEVICE section collisions")
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>   - Patch 2 makes iomap charge per dirty page from the per-block
+>     dirty bitmap and wires iomap_accounted_dirty_pages() into every
+>     iomap-based filesystem.
 
-More zone device pfn-walk brittleness :\
+This feels to me like a pretty gross layering violation.
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+iomap is tracking dirty filesystem block state, for the purposes of
+efficiently writing back dirty blocks.
 
+iomap was designed to keep filesystem state entirely separate from
+the page cache, including the tracking of sub-page dirty filesystem
+state.  One of the underlying design principles of iomap (all those
+years ago) was to avoid needing the page cache to know anything
+about filesystem block sizes at all. having the page cache track
+anything at filesystem block granularity was inefficient, wasteful
+in terms of memory needed to track each block, had coherency
+problems with filesystem state vs cached mm/pagecache state, etc.
+
+iomap tracks block dirty state per folio for writeback efficiency,
+not for pagecache drity tracking optimisation. Large folios are a
+pagecache optimisation, and they were really only made possible by
+the isolation iomap provides between filesystem state and page cache
+state.
+
+Pushing the mm dirty folio accounting implementations directly into
+iomap breaks that isolation - it once again tightly couples the
+filesystem dirty block tracking to mm pagecache accounting and
+accounting. Hence I think this approach is a non-starter - nothing
+should bleed across the filemap interfaces in either direction....
+
+> This was benchmarked with PostgreSQL using the pgbench simple-update
+> workload on v7.3-rc7.  Average throughput rises 46.8% (139.8k ->
+> 205.2k tps) and run-to-run variability drops from a 23.60% to a
+> 3.98% coefficient of variation: the worst iteration improves from
+> 97.9k to 191.5k tps, while the best gains 8%, 199.4k -> 215.9k.
+
+If postgresql is only doing 8/16kb writes, then how is it getting
+the page cache populated with large folios? That's the underlying
+fundamental problem here, yes?
+
+I ask, because iomap caps the folio size to the write() IO length,
+so for 8/16kB writes it will only be asking for 8-16kB folios and so
+there won't be huge 2MB folios in the page cache to cause
+issues. Hence there must be something else populating the cache
+first....
+
+> Ten iterations per kernel, same database and workload (tps):
+> 
+>   Kernel                     Avg     Min     Max      CV   iters   iters
+>                                                              1-5    6-10
+>   ______________________  ______  ______  ______  ______  ______  ______
+>   v7.3-rc7                139.8k   97.9k  199.4k  23.60%  164.4k  115.2k
+>   v7.3-rc7 + this series  205.2k  191.5k  215.9k   3.98%  200.1k  210.2k
+> 
+> On unpatched v7.3-rc7 the worst iteration lands ~51% below the best,
+> and throughput decays as the run progresses: iterations 6-10 average
+> 30% below iterations 1-5.  With this series the decay is gone -- the
+> second half is similar to the first -- and the coefficient of
+> variation stays at 3.98%.
+> 
+> The over-accounting has existed since commit 4ce02c679722 ("iomap: Add
+> per-block dirty state tracking to improve performance"), merged in
+> v6.6, where the ifs bitmap started recording partial dirty state while
+> the mm counters kept charging whole folios.
+> 
+> The throughput collapse bisects to the v6.17 readahead series, first
+> bad commit c4602f9fa77f ("mm/readahead: store folio order in struct
+> file_ra_state"), which lets readahead stay at the largest folio order
+> once it has ramped up, so a single dirty block charges far more than
+> is written.
+
+.... and that implies there is a sequential read portion of the
+benchmark that is first populating the page cache with large folios.
+
+Do you get the same sort of improvement if you make postgres use
+POSIX_FADV_RANDOM on these files? This will cap the size of folios
+in the cache to whatever the postgresql read() IO size is. Yes, it
+will slow down whatever the sequential read portion of the benchmark
+is, but I don't care about that right now.
+
+What I want to know is if the application preventing readahead from
+populating large folios gets you back all the write performance
+without needing to modify any kernel code at all.  i.e. if we make a
+different choice for initial folio sizes in readahead, then does the
+write performance improve?
+
+Alternatively, if there is distinct sequential read vs random write
+phases to postgres behaviour, then does issuing POSIX_FADV_DONTNEED
+between them restore the random write performance?
+
+If choosing smaller folios for readhaead makes the problem go away,
+then the answer may be to add FADV_RANDOM_WRITE which allows full
+readahead but caps page cache folio size to, say, 64kB.  That would
+allow sequential buffered reads to run at full speed, prevent the
+worst of the issues with PAGE_SIZE folios in the page cache, but
+also not perform terribly for random 8-16kB writes....
+
+Indeed, we could use the fadvise64(count) parameter for something
+like FADV_RANDOM_WRITE to provide an IO size hint that would be used
+to derive the folio size we use for that file during readahead....
+
+Cheers,
+
+Dave.
 -- 
-~Gregory
-
+Dave Chinner
+dgc@kernel.org
 
