@@ -1,88 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E81606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF53606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U2H+Y332
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n9uz2qBx
 Received: by kanga.kvack.org (Postfix)
-	id 1621A6B05B2; Wed, 28 Oct 2026 04:49:12 -0400 (EDT)
+	id E6F1B6B05B1; Wed, 28 Oct 2026 04:59:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 113A96B05B4; Wed, 28 Oct 2026 04:49:12 -0400 (EDT)
+	id E1EB26B05B3; Wed, 28 Oct 2026 04:59:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0013C6B05B6; Wed, 28 Oct 2026 04:49:11 -0400 (EDT)
+	id CE5C56B05B4; Wed, 28 Oct 2026 04:59:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C56916B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:49:11 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3A50A89B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:49:09 +0000 (UTC)
-X-FDA: 85371410418.04.82C0875
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 47FA140004
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:49:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U2H+Y332;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A16926B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:59:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF49AA0C58
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:59:12 +0000 (UTC)
+X-FDA: 85371435744.16.F7EC198
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2618680003
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:59:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n9uz2qBx;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793177348;
+	s=arc-20220608; t=1793177951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VnV+4QS26pSX7EnMfpDaRxIt7mL09p6ZtWCC/XSNX4A=;
-	b=WSkloQcT2YbXraxj0keFLRyioPX9Lg3GO40XmMmJ6fyqmsjahbVwQJf2+mbqi9KMZKgg/2
-	aZjUUEN9+NcOZczGJ2giuZFOrTii2XgRpUQmQ43x5sTTemVIuyNt8L+d4Jl46FTBTdZSrO
-	RCUEuFYcy3UK4Mt4hUP86JfOUEBbiMo=
+	bh=i9qOtY7a0khzZp+2JUyiQcNdwBewsSehqHZrdYTNXPA=;
+	b=1mnaBtBQDzibHfnfiuv5viKSv3IuIzDrB8y5Q2lM9aPBwZx5Kq98iuqX4MaFRSvhmhChv9
+	LOMNWwarM52g4goHlx0CfUZb1mD4pQQI7x7w9V8q7Nwqfwbj+Yt70mdlYsx6YKHhBWaC+P
+	jebQ3HUh+0xbMuGBKoRK+GTLwhYBKus=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U2H+Y332;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n9uz2qBx;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793177348;
-	b=jpC3t8tA4zyQXrP2lJ9tKS9p8NOx+pmNREqmoawSdVvP0VEVnb6JmJK4diO0+WSu1mb5Qf
-	xxvNRmvfsccZyLnWBp2mOisnzoEZkuSX7F2cxIMgGCHQEr9I0G3mn+M8+tCjaI88A51trU
-	9t+IHU75bqi+ZfOzLnBaNasRmZbv648=
+	t=1793177951;
+	b=AdorhchrQsu/ITQePCWb1b9L7yX0/TPWEFm+sU4UDWyY3PeNIXZ0Wn7uSUNZVlO/D+ldRo
+	K5xnKUCZ65RQAonTNAGx45XaeAPvVciQpO8zJ/fpMU9p0vhesbR+nAJACMIuKwGWFOR6kN
+	x5gn/5LRSEvV/1zFlrr8j7Oq9IpeBMo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C5A9E600DA;
-	Wed, 28 Oct 2026 08:49:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E7D1F01825;
-	Wed, 28 Oct 2026 08:49:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E01443AD0;
+	Wed, 28 Oct 2026 08:59:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DD01F01825;
+	Wed, 28 Oct 2026 08:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793177347;
-	bh=VnV+4QS26pSX7EnMfpDaRxIt7mL09p6ZtWCC/XSNX4A=;
+	s=k20260515; t=1793177950;
+	bh=i9qOtY7a0khzZp+2JUyiQcNdwBewsSehqHZrdYTNXPA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=U2H+Y332KrydKkbp+oolyWdoKHr2biLx8ESo49FzvwiLvtUntLGfGSEUAiz9HDVxO
-	 95NcCz1jm9zz5AhK/BlsZ4vP3FjzZd5hTb6muzfFjy304AHG8cjf+/A8sBMit+bKZA
-	 PBUj8F7W1EUjiR6KV5V9CuCT+vtCyuwd5aS2hYLIBQn7n3+hYRu/wfeq9ftms5rebO
-	 YtuAhjIXHrV9cwYzkXrSaeGMcX/UntIhpBS4qo4xMMsRjCRL9/Ul0GXBn82JF8iG4w
-	 Xqpbki7lLEKSz8s/u2zOVumGSCMOjhJtnwqY9/HtSHhqA54Rx/65462ez2QMvwH8+V
-	 0ZGrW8R33FqqQ==
-Message-ID: <dfe06aef-540a-4450-88ba-300a460007b7@kernel.org>
-Date: Wed, 28 Oct 2026 09:49:00 +0100
+	b=n9uz2qBxwkdOt+BBYDqcRYBsL0H4V2Ug9Ow5tu7fLk3/xzx2mxzf+HMTVGUiIJnbu
+	 UHfvtxmIjhY+xQ766vsmgwePsLiGx8kAmPZPlD4WCnC+4rJaxzKpjDf8l/PxSRuS7U
+	 ixLAvMeOxeiUvefXEFI/jfC9xp7ljf7OTppVYZjzY1dNcHcmh1NZWDF2vGHdc49hWv
+	 uTT0NSrtYNOYOcDppWH6dHgfZpTd171QUNIp7WpPs8lDGkcfpOKXPATlxU3qiH1ANx
+	 V+qfMdLsle8HqlqWD8gAGSfEwjudq/PMbS1R0zs9PPUAGsrYy40er4yK4lQU4aDgLA
+	 HllBmwshL59LQ==
+Message-ID: <2976bc2d-2642-4448-9c1f-ec13e67e45d5@kernel.org>
+Date: Wed, 28 Oct 2026 09:58:59 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
-To: Imre Kaloz <kaloz@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
+Subject: Re: [PATCH 10/13] virtio_balloon: add higher-order page inflation
+To: Kevin Loughlin <kevinloughlin@google.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Kiryl Shutsemau <kas@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Magnus Lindholm <linmag7@gmail.com>
-References: <cover.1792609488.git.kaloz@kernel.org>
- <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
- <409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org>
- <20261027212610.6798-1-kaloz@kernel.org>
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Alexander Duyck <alexanderduyck@fb.com>
+Cc: virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
+ linux-efi@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Sidharth Telang <sidtelang@google.com>, Punit Salian <psalian@google.com>,
+ Peter Gonda <pgonda@google.com>, Ackerley Tng <ackerleytng@google.com>,
+ Jacky Li <jackyli@google.com>, Steve Rutherford <srutherford@google.com>,
+ David Skidmore <davidskidmore@google.com>
+References: <20261027025616.1632690-1-kevinloughlin@google.com>
+ <20261027025616.1632690-11-kevinloughlin@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,21 +137,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261027212610.6798-1-kaloz@kernel.org>
+In-Reply-To: <20261027025616.1632690-11-kevinloughlin@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 47FA140004
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2618680003
+X-Stat-Signature: 3bu5dr5qgdskqog5kaycgpo4arrkn93y
 X-Rspam-User: 
-X-Stat-Signature: drr39auq4zt49qxai6epgqzhu1gyt9zb
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793177348-370557
-X-HE-Meta: U2FsdGVkX19+hQQJAHpqKoUNPbEcbAHAal7R1kEDfT0FGjC0SZGhle6QcVhtSfdDMSy2DDxQsDc0E9WnoeuNnf0G57he8/V0XvPskfIEjXPBwJmzaPqG4mKXsVBcjxUlPMlfkgSNr4C3QetQExSQ57ubmY2zSwHwjzqXQxlAkCHJnDJN7jjBsM7ZzXN4iqRJqa9oHr9r5J7+BsJIaiDmblNM41Vyh98yESoUSwFJNIL2BD8IvYmQ2HI7iA0La0X9k8frMm4UYc81Ls2/Bzy4XgVpLFic7Vi3/eOMMcbbVxH68Oxv3QVNikhPmWiShoM7wJFd0/VCYcjinh+Tp6Q3+NzCca2gIoTYgbQKy4/I08Dqzzz9VGx00feAr6rWsZbC0AxzjNCB4Ni+ZAxbDesWY0jmBWEj2Gon8RzcYdptM4sqSaSgpavkpSosKDHZeW4OglADRg2TRpbJ2HDCT3VEXK7zWUoP28n4+/D5Zvo5F9AYQwUdcngw3kwwgj5QCBlkIwuicaaVUf2ph0BkropAn19dmtnzgZpLkYihj33MTHkniCB5a2lJgzWrCSrFeCUzRiLIIXCahfN29gp/nwfX2dpDjQRIsxhoXE+jTkMjtb8AlLqnmJU9c2LxNFgHROwCj9EZt1EFy5vjWwlFEBtkqvOv7mGOEvXNr2FnNuevpYGQ2c3qUqlz5J87OqFw3XBJcM1fJR7lwvRc5q1Q7YMO4x4WVBcb3mtsVsgVuqDctQr6kgbyP1GoZcx9YF9k5hQKdcd+iOs4+hl2C2ce5VcW9Tpoaj0rNQIwk7bMCOIRGVJaHKbuUfxdLTMsTIBU1Vvyf8ST8quYMxGSWix1FL/9vZ7NAdMgY6L6tfycfJbM7/1w3ovRGyl9GD6Eul9oRyAmzIbZAK+m2ibR4DQ098RVsGJCVZVxWqUtBk3id4KSJ9vwxEgZyQXUrCupXp6lvtF+nCS+EwLRYkdVqCeIghQ
- dmOE2lAA
- QXcusTPIDjUFvCrKVX4Y6O52kQGRMfXb75n65p/ag3ZZAzgN1Ww5R944Y+vHUtnIjmr6QitmClpKfkgWOyUwh4d/qrJrHnZLSjj24ya/NlxOvcC4Jmf6DF3TREQrEdmZ/Tz6jC3RfSI/p1rkvthkXpdPPKvHn1FheSMjtjrAZqxJSOu+MFHTHvg/kfPjcJ6kxEvs6jrfak+5BY9rkiCJAsTrH0C7jhEH1YfHwz5oSqkm7YioQPjAgVK8gqZu4voexDMq5OEaHyncs7Lpaba3GJYak1XAwmD2Uh51Yp6DIS4cvIkuSC8Yc0rWMyw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793177950-428094
+X-HE-Meta: U2FsdGVkX18t4JyPoY++oa1JErkoGL5HIXpXkOP6lN2GVZ1lq9ueROTh8TD3NFOTwumRDrodEyJ83LA63CjcWvrUFl2i6cqgGrp/NVYIZOyDHBsUSvQK0S4BGjBEXvUALhLvRvp1uBjzJ/UshVQxBrwdkFmhLrSp/wdVozGQvO7/w7kpmjvbRCpES2bN4RKLsNg3TsV82voT3DpPpaNb4m3ebz/hvHqFGSIDxnXbwssj0VcVTWmq/qRsdyIVUIXkNZ3xrMYuz6R3OFgZTvR5p0xz2qEeawBkcsR6JgBNjwkSN3c+4tW5pqFHKwtQvXW9Aaf10Jou3YnFpG/rOXag2urZ5Oi8mV3IKznwxM/nq/qEIve+XG2JNttFQRgOJz0b27SDcGROeeTkw0PlsfQUh8Jb9CPS5jwJuMx12Fm2mktZjKnZz3/E0fTMEORWTxe3RNfo2VvrzSTVoCHXoz8xkZzwghvupKA57UjIyP6beN2oV7194dvdZivI03x391ALcqJSFP2fuGecmU9kDBAdV6aiUde8+ztaCQodwiIhiynyopSQ+HOq9cZe8NQHM6lwmMPGY+e8RFTtE79tYHV5rMhitPUCbghMchsnt29L9wbNnswn0THQ66r1zWwLy9kiU/tGa14DAHcSQuofddlMPSEsIxEC3Wmaw9DEDBH6niZSOM3J6A/pseWg0A2ha66DMU3jFXJtA2GDItDPa9aVAuWYZZ1zhi7sFZ+oxCCj/ttaGo/2Pmq2RN7Oxg1UVhtB24lhUR1qJu2buXVID6EKa+YL2EGn0oJDbR3DHEiKpuDdS9zIDZitjQSUCGmbmg3rYaGOfwaJrXfxztmc8IWJAMBiFxxNwY1Rs5p1geK33wpuSyuMUzXuSlC/jXgHvmqL+qov/fPDFvjOeHwsUDh5fAQfRmU/fZP0Dq83K4OeeUPKGApJWDWeGMtZ2KN8hEOMDztvMhHnuphN0KGA6hV
+ qlZHwPZW
+ 5Q1DsAbisNMtCz3WIHANsA/cG6hiOSjX1lFgA2anE2NSt4Awm81p8nttqHwEBy03heG5Ls7CgQGlBxDMShPJJODFB6nUA66Uu6h+tq9utM0JppRbjCrnl0LFLW/1Nm6M8M8UxThXj6rj+4duZXKUT+lD+wUQTtW0xzrwa0qucT+KbzFbn1/PUDinhUs06kkp5yXDr1Uiv4onS5mLxscWt1oG/U0t6emfxQ0AUt6FSNW2XMOyGfSZXk5k187x9ySNpux4UVX9MGyghqxYOVlMvQX+phHFpF8rGjgbK+61OjfiM6G7xQMlHYN2W+3Dd8kt0f7S0kZT6pR0SlF8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,64 +160,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 22:26, Imre Kaloz wrote:
-> Hi David,
+On 10/27/26 03:56, Kevin Loughlin wrote:
+> In confidential computing guests requiring page state transitions,
+> unaccepted memory tracking operates at the EFI unaccepted memory unit
+> granularity (typically 2MB / order 9 on x86). Inflating the balloon
+> with 4KB pages would prevent unaccepting the backing 2MB unit.
 > 
-> On 10/23/26 22:53, David Hildenbrand (Arm) wrote:
->> Is there some way we can avoid this
->> helper-that-shouldn't-exist-but-someone-hacked-it-in entirely?
->> If it makes sparc64 slightly slower #dontcare.
+> Inflate balloon pages at unaccepted_memory_order() when
+> virtballoon_cc_needs_state_transition() is true, while retaining
+> order-0 allocations for non-CoCo guests and CoCo guests that do not
+> use unaccepted memory transitions. When a higher-order balloon page
+> spans more 4KB balloon PFNs than VIRTIO_BALLOON_ARRAY_PFNS_MAX (256),
+> transmit its PFNs to the host in VIRTIO_BALLOON_ARRAY_PFNS_MAX chunks.
 > 
-> I tried three ways of doing that on an Ultra 45 (UltraSPARC IIIi, two
-> CPUs), all with move_pte() removed entirely:
-> 
->  A) sparc64's flush_cache_range() flushes every present page in the
->     range from the D-cache;
->  B) sparc64's flush_cache_range() flushes the whole D-cache;
->  C) A for ranges of up to 10 pages, B above that.
-> 
-> All three pass a test that moves pages between cache colors with
-> mremap() and checks for stale data. With no flush at all the same test
-> finds about 15 million stale words per run, so it does catch the
-> problem.
-> 
-> Medians of 20 runs over two boots per kernel, against this series'
-> move_pte() as the baseline:
-> 
->                             move_pte()        A          B          C
->   apt-cache gencaches           6.63 s     +0.2%      +0.3%      +0.1%
->   fork+exec                                +0.7%      +3.1%      -0.6%
->   mremap 8K, same color          14 us      20 us      43 us      20 us
->   mremap 8K, other color         21 us      20 us      43 us      20 us
->   mremap 1M, same color          30 us     524 us      60 us      59 us
->   mremap 8M, same color         209 us    4152 us     229 us     227 us
->   mremap 8M, other color       4176 us    4166 us     236 us     233 us
->   mremap 8M THP, same color      14 us    3933 us      43 us      42 us
-> 
-> flush_cache_range() has more callers than mremap(), mostly in rmap,
-> so I also timed reclaim, migration and writeback (medians of 5):
-> 
->                                   A          B          C
->   MADV_PAGEOUT to swap          +0.4%     +12.9%      -1.3%
->   reclaim under memory.max      +1.9%     +17.7%      +2.0%
->   msync of shared file mappings -4.4%      -3.4%      -0.4%
->   compaction, move_pages()      within 3% for all three
-> 
-> So A pays on large moves, B on reclaim, and C on neither: it costs
-> the same as A on small ranges and the same as B on large ones. I'd go
-> with C. It would only flush on Spitfire and Cheetah, which have the
-> aliasing D-cache, so sun4v and the SPARC64 VII in Magnus's M3000
-> series skip it.
-> 
-> If that works for you, I'd suggest dropping 4/4 and using C as its
-> replacement; it's below the scissors, on top of 1/4-3/4.
-But that's too complicated, requiring page table walks ....
+> Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
 
-People running museum piece hardware and complaining about performance of mremap
-or memory reclaim should reconsider life choices.
+Sorry, not happening. There is no migration support for these (large) things,
+and there likely won't be any time soon.
 
-So I'd say, make it as slow as you want while reducing core-MM complexity and
-not adding more arch complexity.
+NAK
 
 -- 
 Cheers,
