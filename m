@@ -1,124 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3525606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 22:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DE2606A333
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 22:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=Tf7mqOrk
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BX8B97Hi
 Received: by kanga.kvack.org (Postfix)
-	id 5ED616B00EF; Wed, 28 Oct 2026 18:12:54 -0400 (EDT)
+	id 645BC6B05B2; Wed, 28 Oct 2026 18:18:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 597766B05B1; Wed, 28 Oct 2026 18:12:54 -0400 (EDT)
+	id 5EEBF6B05B3; Wed, 28 Oct 2026 18:18:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 486666B05B2; Wed, 28 Oct 2026 18:12:54 -0400 (EDT)
+	id 504936B05B4; Wed, 28 Oct 2026 18:18:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 234CB6B00EF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 18:12:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96E0C801CB
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:12:53 +0000 (UTC)
-X-FDA: 85373435826.07.D91DB10
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6B00F40004
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:12:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Tf7mqOrk;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 29BDD6B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 18:18:00 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4E1A401FF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:17:59 +0000 (UTC)
+X-FDA: 85373448678.22.A92A8B0
+Received: from mta1.migadu.com (out-15.mta1.migadu.com [95.215.58.15])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 617BF20006
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:17:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BX8B97Hi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.15 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793225571;
+	s=arc-20220608; t=1793225877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E156o5IaTei0VRN5zZ4yWq6/WZqYeNZwAw/ChZTmR7E=;
-	b=aYJ+cF8K+Q2FjxBk58JighR+o4JFdEcNVlXrhYbwtqcjNcmElc5SDMeIKywYWERFEsfBQ/
-	JGblC8fDyjc9vhKymYUn3WXiwtksJ2J0NxpPYvgTUuGmzZEnhBw2ggCdDv298RwpT8TRwe
-	BzptihS+ezOji+66lnduHJX7U2VUXmU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793225571;
-	b=zwPDZUmTEmImrLLyBDCNgqYtWFiAz6gTlAu8wCDQypZDgGZOlryCEo/E4SLgK5X4wqZFHv
-	IVNl7CSY7qphwbxloJWDgu4u2VZ8pspl3rgkVduGlEaJ5bKfHVIgS9tFQ4LZpMP5YCqxzI
-	HnEBQ10nor8HNQsMD8SIANs+x+QNvDE=
+	bh=dpSWS7Ui06hAkpcNHbyDS5vZBaaQrLDiEklt5UkbYFg=;
+	b=MmiydJnEDpazU0i5iO+SKeGLEf35yjx1JtlAHXAOzM0cdtqbFm37jkJMDSbGT4srsZmig0
+	VUzrAJf1FBzj8zlBU2vSwbKjjc8FZmu5t4CqhyWo/giKa3YggI92m6COy0X2OB5MuFeWQ6
+	Bw+AXkmZ5yXPx2uv4w4NEcE/Mm1ngxY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Tf7mqOrk;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8b0d63f60bcso13692327b3.3
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:12:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1793225570; x=1793830370; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=E156o5IaTei0VRN5zZ4yWq6/WZqYeNZwAw/ChZTmR7E=;
-        b=Tf7mqOrkwAxSIzRWIMzUXQ8QpJU2mkh2IZLRgM652ztz9DKZNWOvuqwXhXrGaj7bOJ
-         AyIZ976r2587RBYmhrd6UrEohW9KtZ8g5/H5jT5kvn7oLtl+IOG9K0um3ieOCxgHoN4J
-         d7O5YZ7n0u4lw45ueQK3khkll3wm9cPKnCsiT03mYw2du2YIvB29t+BH2iDl8x02m96d
-         7vX+BdcNNbVPqrwK7cEXTgNBd/T53jRzLjWvYFzOUoTQ10rzikIWhFZ8lJfIiO3D9Lz1
-         4o43OU1AmPZBeTupbj1e2aVex7+jzd+rJIU4kbRwR2emXT0cx2/fjH1sBrH8C1hFQ8yo
-         HHPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793225570; x=1793830370;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E156o5IaTei0VRN5zZ4yWq6/WZqYeNZwAw/ChZTmR7E=;
-        b=2v4JgJeIxBTe+lvjMQNVohdVh3yd8iVoaXM5hU2lLsYMGQvj4JuPc2Tkfyi3F6SCWP
-         rEmEgZvWIGOlcdaz37QN/3IriGs5PDodPuqVGkRDJZ51kw8zN7qeZYrpFkk/qrChhpEN
-         kBw5HjYiR0x6wxS8SPjZnzbfKPPGK//iTmcyHVT2aHVnon4OPGSQ5d7NzbvgYHm6BSWd
-         tucRMOgoDGn/A/opu9NK/DO3/qxLgvAEN/0Cd4cIv6wqI6H/plfLKuSM04DvASKLlR+O
-         4MHUno25jpyUduj4ZPzB0Xq2pXUZnTGfLjwOaMSfP9HTTgxjLNp6t7x1T1zT38hSEgya
-         /0Bg==
-X-Forwarded-Encrypted: i=1; AKwUvBxZwg9VsPUo5w1P+iK9j8u203NC+9NBsQ6V/7or2huxAVIFpWNZ9vbOjXSqiBcZft/fQrUkIurPfw==@kvack.org
-X-Gm-Message-State: AFq9FYImrDGab0F4rPTd4RV3EbqHTikRGA6HpSOrqAAoqzTnMmC4GF2g
-	ak3LOXxoWjQPTUX68yF8aDe+Dp6VfGMbiRwM9ZCkJrEzLcaqS1+5Yapb16YLiJSAMP4=
-X-Gm-Gg: AYBFou3G/PTTJoCQFX1cmZDQrxWSZ8PSE9Lncnt/CxKV0nc9cHfRvuapU0o4hRNjqcW
-	kUvUjPsevoObLQjJ7UiFIPFYYed5LwZSiSgwuzqt65tBynuD5nZ4C3G2Yod5bPcA3nxmiQzDWJY
-	WkDlERx7uvDPILTKc6z1FoVrGUIkH7gdQeSxpJNLd2g8Rdgc4Jl0CVaTEIrsS6To0UgTyPtJig+
-	pJDVwwE541rDKM4mCTnO+ugVaJTBB5ft2a6x+e0a3E36+r8e7go8h01HiHx6lZxR/XJ8CPosVKF
-	zigTZr0iavCEYq3v+XXyHLXasOSwYMFrvQZ/Y4R0631z+PNahVge8yRMjsDL3lwvDADtM+8aF9n
-	PcZ0eCBjHbqUXFSRaozTKluhtbMDIMFneDjuItPkP+tjFasgabZ0HuiptGDuMgvdc0LHJKunkBg
-	/wtE4nOkYfRUXriw5KRDoRb1quG09h0ZlsZvInoDp9ZA5jNcDlhxMHjIarpnvsXHBBJQ1qxRR6e
-	GGMl+Zsm81PSyrrE3h5t1g/lgIuGD17wUgx4PCjY+wPxYi4Z8Yyad3OqfWTyxU5UkjkrN3YOP6H
-	lqBu6wSBLycbvqzKMuzV9J5D2hum
-X-Received: by 2002:a05:690c:9e:b0:891:faab:ff1e with SMTP id 00721157ae682-8b1b595b1fdmr25465837b3.4.1793225570125;
-        Wed, 28 Oct 2026 15:12:50 -0700 (PDT)
-Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b19e5b40e0sm36335447b3.26.2026.10.28.15.12.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 15:12:49 -0700 (PDT)
-Date: Wed, 28 Oct 2026 18:12:45 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BX8B97Hi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.15 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793225877;
+	b=B13l0NdfuaUhV7MVl55R8l52vibRwPln2W9yuwhmjOy3xBwfPCyFV/EGQ8DXehJxMZ/V4Z
+	Q5X5pOcWvHO5oVJvcscvTtI8aO6jDAwTVdmsWxzhU4cOfQOy8NZNpFHV//XVsx2Zk9RXXH
+	+UYRNhPNgf8/4R9mLFt/soPtCljIxO4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=VbaNcvUi+j2V6eONn/0BAQOhapdmIMHXd3ZJF4C31UQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793225876; v=1; x=1793830676;
+ b=BX8B97Hi7wNu7DjxSnBywnPU+HKyUFgEUY6o0EcB6QN632dfmrfbTfsR9rILE36huILNYGUj
+ ZKEuC520hgLHtN1EbPAA0oexgnAxZDbjINlsxeHbvZlxa0oV3q0vPIP9b7JTua4a5d1iHbsFyJB
+ Lox1/rz76dT4ZyGXvx5zFT60=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id c3003cbc5a0837a4;
+	Wed, 28 Oct 2026 22:17:55 +0000
+X-Mizu-Trace-ID: c3003cbc5a0837a4
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 28 Oct 2026 15:17:50 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
 To: "T.J. Mercier" <tjmercier@google.com>
-Cc: mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, zhengqi.arch@bytedance.com,
-	akpm@linux-foundation.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, zhengqi.arch@bytedance.com, akpm@linux-foundation.org, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Subject: Re: [PATCH v2] mm: memcontrol: fix NULL pointer deref from
  high_work_func() on dying memcg
-Message-ID: <auJzXV3nnPZA5GSr@cmpxchg.org>
+Message-ID: <auJyok6AZtRqNtt4@linux.dev>
 References: <20261028183537.605854-1-tjmercier@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20261028183537.605854-1-tjmercier@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6B00F40004
-X-Stat-Signature: 3qtdu9jjngns8b49ascp9ks1d1hcdgbj
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 617BF20006
+X-Stat-Signature: ca9ps44bmn4dswymp9j4jjcn7ji7kgj9
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793225571-888501
-X-HE-Meta: U2FsdGVkX19i76smkC0Sc0WDjqBRpedUntL6/VEHkX9wDcmSVlhDYV5ZFguemLEogc0ZDWyekqeiiS9CtMbCGZW3Xcvg6cbwKWCUaNI1WGkSHPr8UKdJqzN8MAueNkB3H/K4efI2tm3/s9ah3hny0fKSoEdtRVZU5crCXxGiPc6Ggiv8Hw3EvBzD9z+mxBS38gVFu5pyUM1SnHoOO8J6WHGNktQM9Ddykz1/6MldV4/rRmyER7itB0dkRcGAHHkl7iy6A3LTfVMOrLXHxa6B7KIg6wUy+EghGeoYASF70G2llet4ZAr/33i/ABPNt47inRwU5oFuN/XtrpptywiZsnM2HsYdy7cm7/3aXrwovU4VaExGW47ME/7kKoJbd6Pk0LWr+CAWaMMgHuYRNLcSSS2p3uqQEBhxzj0RlehbDKHZ57yeXulabYULEuz5kH1x4tbGGde37ld0rG8M07ndJ/OIujyuVNoYLkWAvIHT5x/0gP76VEoIG1PPlT0fksZ8rJR+6Brk4qbawp3yFY4SdOABvmUyLgA3Bnh+Bmjf59RljHUx8iJZUiKBpFWtk4zt0cwMZo7zR3EjBFdhdjCbTk/lR7txTsLcdNkglH/ybpjmxx1OgbIRsiZ6uT3/DX1h+lF9KahnbwjFJgqlcjuFvfCqOnOmwpFw3keii+v3iSAgBH8rmPBoO5JktLFC+MN/7LPeXq/Guf/9++f1csuLEAvHCHg7iQucE0kkLFjRfQP0eCpZMQr+BAG8gTWGcgsfbGn35npGoafHl2bB2DdcZzl1zMMVKuFsD/7EJMG5eazafr72YXVzKa3teJ/QOTCtoDzyubkji62pOdwBXamUv8ZcpBusC3x6fBP8sxoa24LTsAzMVYguhd1MfZRN+C+LpWCWTye7itCA70cKsrK3FNCxLc6iMg3x99t93+URfLoBz9MdCciEma82ZWNdzxrDTPTSuNBp2sTc5zQ59EW
- vg9fzbID
- RoD9toUQrWkJCvk8Plx1gZ1+M9Ec6OysdyC/TvOb7pUv9+YZWq0sKxCjLDRwhP42z5HEj7Pn3EOZ9O3WfCkHeLzzAmq2JM9ojTbMa1DBfC8fOx9o6KfzA6h6c7VR/YhVCgR3XP3fyJyuonAFeojpuvmf6hpSXuE9Gjvbw+sZyGIYcUmclq7GZ+Y5oGaoIxikc5Z5bbcS+APuM47l0+yn5fFDFtNDrZsjI4qBc6Hq2GqVLQGpsjC4TCN5ykkuNBqBW++X88Zt/5eON9mvh/1wS5r2id2ycZZJKb149SCwnvkptuRtlD5m74ltj6MNHsN6PbEN4s+5CEbKKZsgyQhn9z81boeceBB4bjA/2J+txGEIsUHCFeBmJtBdvo7TnRyO8d9+0l51fzs1aNOUAabeMURQGFhjw/+ILlrQ9xoKOAYlV+cPBr6X6Tu9SCl6kIHf9+d3jwywbgn2mwbxzHsFNGP2NNMmrl/SdEnmeeI3IIvMtTq5Kkp2S0lzFb7EmZ6X34nqK6rQNcwjR/DYlav2oUZk6Pw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793225877-475211
+X-HE-Meta: U2FsdGVkX18zf2mPkVGTKSRAMSI8xpR5wj7f8Nowh4Ya/yE6yGj6RsdRU4j0iL0DGDeU+uCsZh6W+pR6cJebJ7utmWnle/BUVEuhChoAwK2cVv7yrvhVzL9ZGSnPeTPrel8XGQC9SXQ8yNdmISzaE9O0tfGkhd6qYwn0h0gvxQ5zrmYqeZdVMQYm32itsHmkZjmA9hQdkd42fYTUrSb2ngyLmjq45wLVkoVR4YHu5LZaZKDr0TuszYHbaRvgj7CdtkLsjhMLzi5kdW5IBw9t5M+UvkDBdHJB2wsB9A3vV8AkybY3vxHQOwEZRyc0ymR28a//fMQgjYfnCy81Ck1DOczXxQVlK6qTb4+tSeR/dzgwPF19vARK8q/gdU5hNbOx9SM/yC/VveRAT422k2mPHlDkMn2u1w2YmL7vCZKV0v+5ghnG927JVGAv5TYZveM2fTJz3bD4urClo5GCZiLjM+nxVriFx6juo7rQm0fAGI1OlcHO9qEYpoP4F4MgbQF0/eLI4Afnl9MEAzdiCAqHiK6Grb5lyrAgmZd+1OnJDoVPAzAFMktT0HHoOwNHMl0H5/6DJ/WB3xypOX05FjyHHW3pzZ6de65lt5oP2OTxeujbrR+FkZF3WKuM3TCfC0O+mpY2F85lajLmALGan92DEJZ33WEWoG8ph2VwexiUI1tw+Ah9uzjhEe3/p0GRs6FOHzqKTOxpUhjEM8XjyFr1vPkeoIWJn2VPdUokHJf5DVmhAa1WTENLK/jzNDS9D+lI8AxmMWW1zeChD3VxFRHxW7oJxTWO56lXYIYh/nbGKmECdsggi+QXMbEHjUrFyPlydr5cxYHxtnjhZj6Uqc2UMY29QjYQM0qN+UzHGFEb0Il3HHWaCqlkLybaQVfeE33mZxK8DOequARJBpnfXdqPYSm0RMqIlZLNYvvqwZ2iYrnEAJx2vzwvDjQGKTATdiMfAYT5gegT5ryVIhDY+7V
+ ShM1r/oH
+ hPvvKuRqi670FXMrT3jgm5/+PsrJU16IwdEWccMhNAn+qIOC2TBwhGvc5BntR9PcdWS+6tqz3wOKgSuf+1IPWn018Msob0XLlQDoXgawBtQsGlEuaCjOYMr13lj7xGHKcx3TenOvzpb81MwGWOaMLEqv/ELxArHC3T3Unyg/0Y789kgiYlhiSLI+fxRT2Fo8TzmlWgnqSmG6IvolDCUrDnEToGNlgkXzE1LGHNhnOLX46nSNfb5eWdti/F1o+vXqyQxuNNoLxxJzA9mfv9ntdHcVQVDp6qzn/PGjsQJQWmd67Aicunsb/5phmXOrJo8B91SX32dDd23r2cE1g8TTtK8v6/Ui27Wien4Upn5C9yDcFlAdv6LgVIWb5rw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -222,22 +189,40 @@ On Wed, Oct 28, 2026 at 11:35:37AM -0700, T.J. Mercier wrote:
 > Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: T.J. Mercier <tjmercier@google.com>
+> ---
+> Changes since V1 (https://lore.kernel.org/all/20261023222313.3979455-1-tjmercier@google.com/)
+> - Switch to Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+>   from Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios")
+>   per Muchun Song.
+> - Reorder and update commit message content to describe reparenting
+>   separately from the commits that exposed and then widened the problem.
+> - Trim the backtrace a bit.
+> 
+>  mm/memcontrol.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index a05d9a8baa1b..84f4a8fd4d16 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2457,7 +2457,10 @@ static void high_work_func(struct work_struct *work)
+>  	struct mem_cgroup *memcg;
+>  
+>  	memcg = container_of(work, struct mem_cgroup, high_work);
+> +	if (!css_tryget_online(&memcg->css))
+> +		return;
+>  	reclaim_high(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL);
 
-Hrm, yes I suppose the work itself keeps the memcg allocated, but not
-from going deep into the destruction sequence. I was briefly wondering
-whether mglru shouldn't move its callback from css_released into
-css_free, but I think your fix is more robust after all: don't send a
-barely allocated memcg down the reclaim stack.
+The patch is correct but I think there are two very specific subtleties which
+the commit message is not very explicit about.
 
-The _online variant of the tryget seems somewhat unnecessary. There is
-no real harm in reclaiming an offline group - and it was the standard
-way, before reparenting, to garbage collect an offline group with
-lingering pages. With the updated Fixes, this would look odd in
-backports to kernels without reparenting. The PAGE_COUNTER_MAX reset
-would also cause reclaim_high to bail.
+First, I was wondering shouldn't we take reference before schedule_work() and
+why this is safe. This is safe due to cancel_work_sync() in the
+mem_cgroup_css_free() which will not free memcg until this there is no high
+worker.
 
-So I wonder if css_tryget() would be simpler and just as correct. But
-no strong feelings either way:
+Second, cgroup core calls css_free() after percpu_ref_exit(). So, is it safe to
+call css_tryget_online() on such css->refcnt. Yes css_tryget_online() is safe
+but css_tryget() is not safe.
 
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
