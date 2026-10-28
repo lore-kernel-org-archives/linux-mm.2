@@ -1,95 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415E960A2633
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 12:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B57606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 12:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HGFXhUzd
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=YUmINJPV
 Received: by kanga.kvack.org (Postfix)
-	id 68E126B05B0; Wed, 28 Oct 2026 08:11:45 -0400 (EDT)
+	id 9A09F6B05B1; Wed, 28 Oct 2026 08:14:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63F716B05B1; Wed, 28 Oct 2026 08:11:45 -0400 (EDT)
+	id 9784D6B05B2; Wed, 28 Oct 2026 08:14:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 556616B05B2; Wed, 28 Oct 2026 08:11:45 -0400 (EDT)
+	id 819826B05B4; Wed, 28 Oct 2026 08:14:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3923D6B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:11:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE3CEA80D8
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:11:44 +0000 (UTC)
-X-FDA: 85371920928.27.03DBDB2
-Received: from mta0.migadu.com (out-109.mta0.migadu.com [91.218.175.109])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CD8584000A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:11:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HGFXhUzd;
-	spf=pass (imf17.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.109 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F7F16B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:14:21 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E9C27160C55
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:14:20 +0000 (UTC)
+X-FDA: 85371927480.08.9C18116
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5ECFA2000C
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:14:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=YUmINJPV;
+	spf=pass (imf03.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793189503;
+	s=arc-20220608; t=1793189659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1n8Nl6PcS9qe7BAYox6Jdh47tIB1fu4WdM8a6GV3D+Y=;
-	b=5QJRZvoAaAa5/jnUKehXadccALpBiQXa3ZZNpGZdaX6fLVCyCJ1dX1z77XCPg6jRPZKOb4
-	/nktUHpQfiRnIsCn6rR558vRVljmxq/C9qgICG+QgykLtubWb64wnf1s9GTY2+hLzC9PIq
-	MvHhLPqrYGNDzSLY6WVQiH9dnVx1M9w=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HGFXhUzd;
-	spf=pass (imf17.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.109 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=kWtcaKJ6IQ4bNn/v2x4kVI23f6xFQA7cEBIWxn7bv2E=;
+	b=N//WOlmtybMWc3GbjBN8rKq8m4IQlaFctiPj/JkzNcvlzqoBd2s5t2cIVVjWoY/HVEK4wn
+	zG/9gePYSILqRT+AwH81eddeznMQyomTIBibCt03Mz8Isqmf0Xm6CYxqrPjH1TLveqg3gW
+	KeW4keDAuvl3uHjfz+uMw40EoAl+rGE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793189503;
-	b=H67cMMYGscVz1SjXoc+jRPSmpgDzfr2ivHqb3P8RMFPyR6oXhhQy1/3TDK2NwjVoKv6HJJ
-	WbD+qZdTRdVvaW2uTJmO7uLqsU4AHshpdWsrfhNkEcRpmM0hVvcdc11KGfz5rufPYO9e0y
-	li5SRnxNDqsjHgFQUI/fBiyjdGH4kec=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VBww6JyZdZNMzXtg5bsJzwRztMR9lQ4fQNuST7CnsK4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793189501; v=1; x=1793794301;
- b=HGFXhUzdmdQulfBCY2M2K+fSCl7Wnx+XIZdGsFytpCZX3JvXb9tx4nd0BlqEmMAjS6Lttajl
- 81P0zB7AiHR0GCpkrhnuNhEE+SSi/UQymzub62sZG/ALEWD1tv2/wFNbInbQaOGc+xAYq8blECC
- sj7VwGd3k7QYnVkaeK5QiQuE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e40994bb9d03e662;
-	Wed, 28 Oct 2026 12:11:41 +0000
-X-Mizu-Trace-ID: e40994bb9d03e662
-X-Migadu-Flow: FLOW_OUT
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH] mm/sparse: simplify the vmemmap alignment check
-Date: Wed, 28 Oct 2026 20:11:29 +0800
-Message-ID: <20261028121129.39916-1-kaitao.cheng@linux.dev>
-X-Mailer: git-send-email 2.54.0
+	t=1793189659;
+	b=e3BAOtTKcK0RTORm0Y61/2jZt6O0RvsM+mM4aDAqJjPFqYemiy39GWvEFGJhCmP9a00wd3
+	QnHOce1JgARIBVUN3XmyV0ZqaGlJ+8/JKLBJUK8wk9ZPivx5kV1Ce5FSNzbLq6Xrnl+Mkv
+	EPp6Y2Axwqq2n+9hDPqSA/1S76MRt8I=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=YUmINJPV;
+	spf=pass (imf03.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=kWtcaKJ6IQ4bNn/v2x4kVI23f6xFQA7cEBIWxn7bv2E=;
+	b=YUmINJPV+Q3oJwe5jmGuMlVsZ/ZuNKiMnC9t0XtvD097CkYW79EqI75EBOltG/oPpfkRUKLcR
+	Ba184Ivdw+AhlrZ5LP230OzitIs6YI7PkgK0pVvu3qnuwje5Nuu+fC2Y5qXazNbNA1z+xJYFKDX
+	B4aL0SVTQvFJVxMvNbpeFno=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4jF5r55Wpfz1K9CK;
+	Wed, 28 Oct 2026 20:13:57 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 34D9F4058A;
+	Wed, 28 Oct 2026 20:14:06 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 28 Oct
+ 2026 20:14:04 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
+	<ryan.roberts@arm.com>, <peterx@redhat.com>, <dave.jiang@intel.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH RESEND 0/3] arm64: Add PUD THP support for DAX and pfnmap
+Date: Wed, 28 Oct 2026 20:14:01 +0800
+Message-ID: <20261028121404.853944-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CD8584000A
-X-Stat-Signature: hubpyw9dfmsemz1hsx3bmhzeizrxa7zu
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5ECFA2000C
+X-Stat-Signature: t7wamyaedjroxgqh5uppi45mg79jbt5z
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793189502-906964
-X-HE-Meta: U2FsdGVkX19yX/w0EvCU1YUqM3NmIFsxFq1+YBk6oau7BVnkkyuf1Qzix+GzQw4RE6ARB4EhkUde8cSUXbztfQiAOSgzlb3O2xzAQpsxpAU7GeAQK84NCBJFCOu+A1QuGIfTWFP0k9QOg/VVHVlffw2QjHJsxMJx1QimF6fHZZVq17YMTHPslzG3M2/kvdJ910Jyid63lSNprHrWnLFU6mWI4MUy4UJjqAWOciiA1dva+iNFR4Ipw+V5i+Q70M0i8LFwYL5rhLDERBQaCGG2GEC4ZZVTqSrNtbIiRhVThO06jEeL1LXQ2Zq6MDie+LmYqM+g3sjNEIsjHNgY0+y1SneRXTqv6ny/3WGy6Oq9fTc1zJadsx2Se2nrP52wFwAMoaAZQJM6wKcqBrcHcf06vPfU68jjbE2lQVqV+nIm9cct0RgyAZGzQcXzlzY3prvFAK7bVR8wgoDX5ReDZc6R4sJl3YoT0//f0kkNjTnjmPMpPVbBMWaiTMdDjbPKzd9LHfoqWBgCZlSCPuZxHG7OXO0xcnI9y4eN/B/lmhH7YJgflGpNJySeBzjEDQy2sHT7txaGw5A8FlCTpfLg/fA6AMz9MMXpQMEE6stDa5vZefEGXmTyYAMoTESpRNAnQm8CnF41/TC2M0g+k5FpNdsG9tTTD2QPXiD+91d21kQLlK1IlJ0SFU7U8XBVNC3GQM/qHCo4Ur3Qm0Uv4tInYhXKSMo/GjOcKGrLSpz2KarDLr+0lNU8xq3nB+mi0RqwE4/TST8vfkqbqqPd1H0dVlQoVJwESI5ZiCK3FTHw0B4f+lztynIVuUhYSamV0X5nE9Svvy9RBYRlTJocvK/zJFAqjhcGNxB8h1Bf/ylmu8fhnFYNh/nFI4ehr3laIOvdUpQz24tYARlT2NvrQB4nitkFk2yS0Y0QZeMx1wKPDptaui9xWZf10wHKLo8RnhHSFE8k4zzxWwe94BLl8WzK3IT
- Ku1lbWrr
- anlLaOBUt67zsR8+OYIOPx3GyOAvPwpMVEm6zzdRIQx9lV/waQ4rwwtYdl+IczfmVHwnqY8zvWUB3vOYiskxxpulUiRxrppg+y29VN43fAf5s01n2eib72/mF/WoDoIhDAjmXOfoHE5yqylyvJbiDI2M/MPQR3QucGzbPerbhTLUmPmOwrnXEXTx8wMMxF3lq95pYDOiPz/KNKaQFK1Ch6LbRom0Sgd4Wj2HS
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793189658-856889
+X-HE-Meta: U2FsdGVkX1+FA8NTBquCzF1+23ab0FqQPCnPMtHNKc+zc5THFfObYU16ZIkGM2nv9pn2wAjSUqpadDyxc95DIpajz7uba1+RbiWYXFtuQnbKdyD0C7cnuK7lIm5s9GSA5zoA3w8bsonm2bgmYyT1d5LQMFcBENcG23T4/q2k2uYdvhCponxdiyCzxthfBdz9ryBBrbjL0DbdyukfZo+u+9r5bq73VOp6i245axmfxVKugGNyGEjbhkXINcCY0mACHcR7nTRJBNMRflz37RP9P5K4Bm7UqWKi2p+td/f6VSdpg+3R/zE1HG2XxpA0wf+E/ZMNcmNJxzhlQEMTn0rM/d2k7bMZWMJRGJGRmJEfTEamTRsgtCOid8FgTSbJ/ggFYkzFH0pbIluDNVOf9j2IEFEhjQthgYalD3Px8OKC0NZMSOhTTGguwfGGSvj27JHmlp2c/XldkU7psMYjkpknvUveQ2687Z74pCNhy9ECXd2zWMMVozxpgCo1Lo0jHRlFrWYw+iDyR0fxrBpC2oNuw3PjFIii+RnXtLcW2JFYVtlOv46KHnoG6mPvq9cplXUv83iPNuzttR69Dd45OeEnDh9SRTZBM9COqmOZ3bfEnS+fpk2WV/60jAXwhakD49cYv4bvjIrHsjzLQd/MlAsljtAeY4WtXJvi66wyYpyfHeBSHYv4Hg7th9JjYiGqS0rOCnnnV1BdzjkKHwGdzOdhsrOB35PJkcVZolo5VD5VLKLNfeQ/Jj9SvxEsUDVnzG0XXPfE4iaE5xV6tMdqssBSNXNCbxNSWuPofPkC1MNS7pPhF7Dgque9MaGLgqINirVVG0uxGznLioEgNfsUh8sMzW7ezwtEPqTfkm1OW2qfzZkr42nLzBhlzhHKJ0q28+ViMFKokfqKWEw46wrFMmXNLYbitLcTuP+d5bl1jzb2b20svExyQho849g6nhbeSpzdx6nurafOMhdq1BizOjK
+ U2Tl5vib
+ rgz3xw+l2NZZEiPmVGV/ieg2tDro3sWz5iXTNeydADdKMCTyiB4Vl6lKZRtK+6D/8arxNDylVfiW/6M5TOKs5YVZURL9ppPTqFdWn/AI8SflQEYIvW41JwROW2va2nUDjyoaomiqJ/YOFl6a95dCkCfy+QX4MfcBsoP5S8XGMTYtAbjQnZcHcJdS82F40AUwMiqzVfa/55IPqR5118J+oKL4XwCC47fmVep7VfdrRFTWjQbByWSeAHhyKvqVylwP/0qJVMjKvkUtiRRE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,38 +99,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
+This series adds PUD THP support for arm64, enabling PUD THP for DAX
+and pfnmap.
 
-sparse_init() is called only once during boot, and the vmemmap alignment
-check is outside any loop, so VM_WARN_ON_ONCE() provides no benefit over
-VM_WARN_ON() here.
+Patch 1 moves the identical pudp_invalidate() implementations from x86
+and riscv to a generic location so arm64 can reuse it.
 
-Use VM_WARN_ON() and fold compound_info_has_mask() into its condition,
-preserving short-circuit evaluation.
+Patch 2 is a minor cleanup that simplifies pmd_special/pmd_mkspecial.
 
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
----
- mm/sparse.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Patch 3 adds the necessary PUD page table helpers and selects
+HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
 
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 6acb628c8a73..248bee2d39b9 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -277,10 +277,8 @@ static void __init sparse_metadata_init(void)
-  */
- void __init sparse_init(void)
- {
--	if (compound_info_has_mask()) {
--		VM_WARN_ON_ONCE(!IS_ALIGNED((unsigned long) pfn_to_page(0),
--				    MAX_FOLIO_VMEMMAP_ALIGN));
--	}
-+	VM_WARN_ON(compound_info_has_mask() && !IS_ALIGNED(
-+		   (unsigned long)pfn_to_page(0), MAX_FOLIO_VMEMMAP_ALIGN));
- 
- 	sparse_metadata_init();
- 	sparse_init_subsection_map();
+Jinjiang Tu (3):
+  mm: define generic pudp_invalidate() implementation
+  arm64: simplify pmd_special and pmd_mkspecial
+  arm64: Add PUD THP support for DAX and pfnmap
+
+ arch/arm64/Kconfig                           |  1 +
+ arch/arm64/include/asm/pgtable.h             | 71 +++++++++++++++-----
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
+ arch/riscv/include/asm/pgtable.h             |  3 -
+ arch/riscv/mm/pgtable.c                      |  9 ---
+ arch/x86/include/asm/pgtable.h               |  3 -
+ arch/x86/mm/pgtable.c                        | 12 ----
+ include/linux/pgtable.h                      |  7 ++
+ mm/pgtable-generic.c                         | 14 ++++
+ 9 files changed, 77 insertions(+), 44 deletions(-)
+
 -- 
-2.53.0
+2.43.0
 
 
