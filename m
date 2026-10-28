@@ -1,104 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB0E606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B28606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fO5uMrtc
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=uHAG3HqB
 Received: by kanga.kvack.org (Postfix)
-	id F05C36B05B1; Wed, 28 Oct 2026 05:17:51 -0400 (EDT)
+	id 56DC76B05B6; Wed, 28 Oct 2026 05:20:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDCE16B05B3; Wed, 28 Oct 2026 05:17:51 -0400 (EDT)
+	id 51E3D6B05B7; Wed, 28 Oct 2026 05:20:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF8506B05B6; Wed, 28 Oct 2026 05:17:51 -0400 (EDT)
+	id 4339F6B05B9; Wed, 28 Oct 2026 05:20:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C592E6B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:17:51 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E326140C33
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:17:49 +0000 (UTC)
-X-FDA: 85371482658.06.95308DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4C61E100002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:17:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fO5uMrtc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F4136B05B6
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:20:15 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12074160AC4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:20:14 +0000 (UTC)
+X-FDA: 85371488748.15.6C2B74E
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DE9CEA0009
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:20:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uHAG3HqB;
+	spf=pass (imf15.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793179068;
+	s=arc-20220608; t=1793179212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qJ1TYXbCKeNxi9hHVyccJEj3JOzfrMe3j2ahHPKeTPk=;
-	b=iKVrL2aUnQwMIkCJ7pFSmdAv6Hy1c0v+2p+FC00Ja4KqAWLe2B1WfQWcH6jYiHuQ5tkkxn
-	+72m9HBA92ytGoDUHmzGbY6H4ha7BccpJQs0hRwMxlWIv51oHlLaF2ijkVz7+KucM+GRkC
-	X6UCGOE/yQy7JOp/+vWQZAza+Y/WZRI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fO5uMrtc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+	bh=4ZFHM4+DLjyn47zDsovu4y4A00dH/kf24XvJgX5dD+w=;
+	b=EYxQLncPWx0I9LD3+AsqIAV3BUVgMIXw878dqwngnMN3PnuAyO6ziQrkpBeW+ktJlkg2hG
+	NMksXlt2aKb3b7OxMscSMAAWDZoOietpYNJonKPD0IdMeFh13Jn53dcYWG4YlPECBaRaFD
+	emwCBQZRzrHcTQV0i2SjvraGY4IhGlM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793179068;
-	b=59nIWb/p+bYE5WlN0/iA7RZCBpkYV6HGh97EtGCZzhHATn+9B2CBCfurd65X6XkIxW33G7
-	uPyfyI8C+7A98nzNK4W1I/fDRDVDlSlwG1U3JTBw2rqyBOChHS6aEVXo6c4Mv5C4ykHnBx
-	39/3TeflGpYua1svc99Kv7Xph85A6tA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6789940D56;
-	Wed, 28 Oct 2026 09:17:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FF21F01825;
-	Wed, 28 Oct 2026 09:17:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793179067;
-	bh=qJ1TYXbCKeNxi9hHVyccJEj3JOzfrMe3j2ahHPKeTPk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fO5uMrtcIj11vj8Q7CN5JjGyl81WdLw89ZqifB+ey7GTJIaybnJK6Jtk5f5yPBg2G
-	 PEXN0HY9CepPiXflll1WDK1nFxakKm+83x15zeJGIsiQT6iPKvZBYFbb0st8qqaHbx
-	 tuUv4fupzJLUhk8azNAxFe9X6uFWZtc/lyWkR7S0wl+Kv/tvi73USzhGlmaxzML0Gp
-	 mR4LkTqnUzhBOluy7VYLsiLyOLb5bXAd1nBwGIeFKpNZ47xMG/gUiUig46JsqIrDMb
-	 AQ0kSmOO45bX0HKcS6V7C9e2bRA2iCParDCxl3s3QcfgEIuc0z0IPPKNOQZrZ++Mji
-	 09h88neWQkXFg==
-From: Imre Kaloz <kaloz@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Magnus Lindholm <linmag7@gmail.com>
-Subject: Re: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
-Date: Wed, 28 Oct 2026 10:16:29 +0100
-Message-ID: <20261028091631.8072-1-kaloz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <dfe06aef-540a-4450-88ba-300a460007b7@kernel.org>
-References: <cover.1792609488.git.kaloz@kernel.org> <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org> <409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org> <20261027212610.6798-1-kaloz@kernel.org> <dfe06aef-540a-4450-88ba-300a460007b7@kernel.org>
+	t=1793179212;
+	b=ROwSDHHeY7VaFGGW6NEuD0uWQkrVuk+8xL/PDXOt3gl6cxicNO998OxkIVN+tYgPwCiHTN
+	9kx3kgZlcw5uHZDDJ4VcUv66hZKHsTKIzWMO0tVTGTet0jVpYmZEZOoMyDa228Ti/1dRgw
+	btXs9P3jxLyd6UEDpIsAZ2Ip19xuwxI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uHAG3HqB;
+	spf=pass (imf15.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=4ZFHM4+DLjyn47zDsovu4y4A00dH/kf24XvJgX5dD+w=; b=uHAG3HqBdy5czMRd0B0gFKODf7
+	xEiO9EmxmA8jDbYlz6b9/g8ePrlc4NeMgIo0P7k07/aHHx5/5hcJFVfbJRREuWZXG28yVn7eBFeNx
+	1DN/Egp1H12OBO+Otyc/u2RrO9OSF1v2pjl1fluCLs885s0+Ua8hhOjyexusDFeiPPyskzUdnWPiK
+	gSOs/YtbHExKIHNwb7OfIUwnEYeaZKeHB4H/ViBtKLcR1/LX0VL92nagvmTRTmQXZHjHY+kDdZKpW
+	luQUeshAZcwlNW5Kc/VZ4xOqFtScOOXV7yXKj8uS+PAwN+b+wjUjHIT2VsH8gXk4BppopbuxL+a1u
+	G0h+TG5A==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xLzpF-00000002RUY-45tI;
+	Wed, 28 Oct 2026 09:20:06 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D1BE830120E; Wed, 28 Oct 2026 10:20:04 +0100 (CET)
+Date: Wed, 28 Oct 2026 10:20:04 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Li Zhe <lizhe.67@bytedance.com>, bharata@amd.com
+Cc: akpm@linux-foundation.org, bsegall@google.com, david@kernel.org,
+	dietmar.eggemann@arm.com, gourry@gourry.net,
+	joshua.hahnjy@gmail.com, juri.lelli@redhat.com,
+	kprateek.nayak@amd.com, ljs@kernel.org, mgorman@suse.de,
+	mingo@redhat.com, riel@redhat.com, rostedt@goodmis.org,
+	vincent.guittot@linaro.org, vschneid@redhat.com, ziy@nvidia.com,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 0/3] sched/numa: refine memory tiering promotion
+ heuristics
+Message-ID: <20261028092004.GG2668804@noisy.programming.kicks-ass.net>
+References: <20261028041253.74839-1-lizhe.67@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4C61E100002
-X-Stat-Signature: wcjnw13hggrrb35a8atp3b3iwquudbcm
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028041253.74839-1-lizhe.67@bytedance.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DE9CEA0009
+X-Stat-Signature: 8ew6cx7d6rio9uyocz16kjq6ujjkpqyq
 X-Rspam-User: 
-X-HE-Tag: 1793179068-670908
-X-HE-Meta: U2FsdGVkX19Kd4m1Wh/M2+0tgewRmWsLp7jqQDFo1UsvaVYgohR4KNbdgJ2Tm0iEwXn8uNsWwhhpqJ3S5QCj4cb7QoYViEvwaJT4jpS/Ljiw5C9gPddDkDaydSRJdSu3JcyJllMA3ihyPTHg5h59HcUcQ9fOVb+7QAoEdfLKaVIu1SM9SZWvLeU2TIQIQatJxtvEZP+Ck3VxEyDHZCY6RZahaio3lEzPF6yJ2juyWO9GzEwfG8PlbmVkwHCU1wZf/3AnLPgKZPfTxC/BQTTPCcUPEQhIfQznlNXOhj9HOk4o5myezjsgCKX5KjPykTY+R8sHfyUmDc3sVM32Qhmi/ylqipwjpd9dWP/SlxTfzuz26vplhvR3zFKsiZsKq8AaCfskdFuG9X3Js5TxMd+vjp3ggFN2pH/t8yMawwra908rqop9t7jqovA1W6tDRrfSMc7GYjBfRwqlusPuix3sdojsefTJM5InDPZrq5488sPAVeYaDgjoadVYEvlFlXT1igjbvs/0yd8ZVO15t2nKqd4gZqH1ge5Bq0UZ/VFlbgIk5MDEmNvmtGtxOzMpRSw+aAy6oqa6xg6ERJS1VGwdH0+ON8FcBw8Zz3AEt4CGyPf7voFkrtmGMDj5T16/PnWfwUI+QypUIM/KgFjgmKCK9Y2uYkhs9bLmoVEWDmlrPGkO+HpPzx+2U1gmkC36IWI68HbWW4DkGDD7ZgenHVGUDU8eEjSOWREgw79MWQ6FdQ+BVkQMMiCd1ZQrkPW2vG3NCaoDE4DSSIOQPPL2ARbwJHtfyDgqddu4h+iLJV05vzIq8G5wyys2ovI7PH2c70jl0fBnzYAQEu/brK5WYOGJoPqgauZDCVtJNapMnlNXRvhIpAG22wVxeKpGuKThw3ZnPvxxTDO+A8NPFIwGYzFwxN3umHhFT1ZcbTDsP90fkBorI1M2krNItmCzy0pbIoTT9xtjCg8YOunflAbk4dj
- NGAUvpoC
- ImuLmBS6oIFpdHI5310XJ7FgkLjGLcFGg8eJ5gxP28rftpns6Dv4j6IRkTi4FnQFGYqbXJT0lRgcGkQEo75cjDLgbehKt+C4AJBI1WFu6VUtjqKTsX6HN6BRGIVd8f2h71RSen7pEzhfRwOf4c3FzTPSg0+uXpLE1WleeWSP3dlP5lnDgtX5prLFlw8/9EK/5dFTK2lrKzmxL/Zztex24WbNCx1IbOcCMCYfe4cGiQQbpCUHcJSCJU/QYf48lSIjvDlWY
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793179211-280780
+X-HE-Meta: U2FsdGVkX1+Nhn3W5TQlFg9v3IeH5RCRbdX8m5Gz4rE8DyUMRjANpvq9Mz6ypS0V62146hTlepl/M05OqQonQHmkLP8RvTrSIcHmN16FGikRC/7JwdC0aNc1kyeDCfsMHmnTsWKhthGSdANtJTRkvttdFbWC6NEOAr2+Mk9GfrdDv8xkdLb6U/d5WppsNSOBlYtKagTUrsX4IjXMp4l/EpCfxqeOEzmIWwqptawtpRvzkTxiH9CqD6BlYhM9MHwO8AOfeV5gQUUQ6AiKr+XLSLaZXIwMIbdy4aNW0d4n9o2Dtu4k9hNMMuVvaChAd/200rk1rtGp2TL0uLCWn5Ow3XQ1fg2ktaoxDxmQ/Awuxdx68oXLWy7yXx4iRKh5pOcXQeMUD/nMuZtkSxUAHZZhqIHIbpMR1Tdif1vqxU0HWRdA10bpnkR0RLRXptMHObB5gZjj2wJv7SVTYl/2d0DJN4j/PUZuQtkptHYtQiA0FttIeeTjfFcv/t4HP16ympwGEKOtSs2TREOIbdyRlgkWoHRpmu+c8cPHEs5dRQDtX+PkBrdu6BAytLhD1j2qayRRFi2e1RCP5XUQtikqVDtd2+5YYQuZVVWVwvOWE/bCFIGao4CrURpMgYViOO/IFpEdgsJBxYtOfXiqySGQo3DM7jWbHWGpbkEzvW+4gI085ncPjIo3DTZ1ZmiesDSYALapcueWvgHCYcD1Mp6isZYZICeDmTUM6kgLzku0Rm79RVdNez3H1gYVYBJRPaX3lV9GLj+b2Cb3FtTNtOfYDJis1HCZeVlD6PqdxmKOAnb/1HIpOTe4WAyF0okS6PIh1axdv4MU8d3VD+T4MzuRtoh4ylaXgfQ0su98l3pzUV1P6LkbFdmUP/wxgvy++LFOasZGZ6gMjG3Ej5xVEyt2jpYG4eR37UYKUug2kwDx17I1ctfnhylleDVZr8QwaJmLAsLRdi+5hVFK47EwMR7SjY4
+ SbIjO+aH
+ iLYU4lTx73B/0CSkAPLMhps5+Pk5ZDVfTx7eBnoO0wCn7kxIiH2L8ARChTNkq+98TvsI14/CgixuJ0WXxkS682P7n0W4CDCtpTU1O9zMgnb98y9gDqUzgwnAuiaPkZbK/uRAdkVCDLQiZbGxHMtMtMVe1SBvvE3mSylGL2+MYu486AR9SJA84wUT4RykJNAmEmD8NnOM1vEVEfE0IZd3cMJvCXDxxKvoqZYUbOijPUEH46bhRf1+TzFqz0Wzi3gOdf8B8GmC+4cBA//oYsfK5QoPNsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,35 +100,12 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi David,
+On Wed, Oct 28, 2026 at 12:12:50PM +0800, Li Zhe wrote:
+> This version narrows the series to memory tiering.  The generic normal
+> NUMA balancing cleanups and heuristic changes from v1 are not included.
 
-On 10/28/26 09:49, David Hildenbrand (Arm) wrote:
-> But that's too complicated, requiring page table walks ....
-> People running museum piece hardware and complaining about performance of mremap
-> or memory reclaim should reconsider life choices.
+Should we not look at Bharata's pghot stuff first and untangle this numa
+balancing vs tiering nonsense, before making an even bigger mess of
+things?
 
-I'm one of the museum folks myself, though more the kind who loves
-running a modern kernel on old hardware than the kind who complains
-about it :) A lot of these machines are still doing real work, and
-these days not everyone can, or wants to, just buy a new computer.
-
-Some of us spend our time keeping these platforms working, and I'm
-not asking anyone else to carry that, which is why I tried to keep
-all of it in sparc.
-
-> So I'd say, make it as slow as you want while reducing core-MM complexity and
-> not adding more arch complexity.
-
-With C, move_pte() and __HAVE_ARCH_MOVE_PTE go away from
-include/linux/pgtable.h and mm/mremap.c just like with A and B. The
-walk lives in sparc's own flush_cache_range() and only runs on the
-CPUs that need it.
-
-B would be less sparc code, but every UltraSPARC I-IV machine would
-pay 13-18% on reclaim for it, so I'd still lean towards C. If you feel
-strongly about B, though, I'm happy to send that instead.
-
-
-Best,
-Imre
 
