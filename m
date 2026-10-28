@@ -1,145 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F2D606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 16:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iPJdSz9m
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E0E606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 16:11:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F4276B05B2; Wed, 28 Oct 2026 12:10:09 -0400 (EDT)
+	id 7FC2F6B05B4; Wed, 28 Oct 2026 12:11:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CBDD6B05B3; Wed, 28 Oct 2026 12:10:09 -0400 (EDT)
+	id 7D4476B05B5; Wed, 28 Oct 2026 12:11:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFCF86B05B4; Wed, 28 Oct 2026 12:10:08 -0400 (EDT)
+	id 7110F6B05B6; Wed, 28 Oct 2026 12:11:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CE7636B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:10:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5BCFD12015D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:10:08 +0000 (UTC)
-X-FDA: 85372521696.28.4E71983
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 42C24A000C
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:10:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iPJdSz9m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 535226B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:11:43 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DDA2480167
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:11:42 +0000 (UTC)
+X-FDA: 85372525644.22.D2DFA77
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2CE3AC0005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:11:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793203806;
+	s=arc-20220608; t=1793203901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qIVvq/ZWrS8OHZoPkom4erM5knN+bWWJnYjFer9m7xM=;
-	b=u2gorYPUtCEGt/0eRVnBy3J/VKlD+fu+Cf1U8v7GzPDBmjE9l1t5/uS/D7rwoTMz92tjZ1
-	pQGhac7rYyfkseIinZhxM76XQK7UeXEIJXsW6sk1FKTLfY1ZtBD3ovk+F+HETZJDQiY7MG
-	5S1TUUXRIDfV+mymE/ZGwrnitb6tRuo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uxSAUdDO3MwPK+26JuHSTsq458DkeZfKh4h7kUJVnPI=;
+	b=dr9f4eIQkZMRppPZpvlxS9FN4z0riZpSiGIZDF9Oi77AmNAEv9Gt0We4D46OS3GJNselEO
+	EgtzrjhHpFHclNsAEvVxD63bzeozCQJDtmdKbcxP1jL7/6TRhm/eP7Leptg6tbCFLZX7BZ
+	vczHU3JmspAZ1HNW0mxDFyDD5sjhZ70=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iPJdSz9m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf28.hostedemail.com;
+	none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793203806;
-	b=3iLrGRSP0S5WnvCVPAXBwAhT7IN5GRH0M/FMBnDr8ss5IaQvxR7gwHB1QeAFMJ6GyrOTK7
-	7/+2WRA5tkGjv5RRxgdN1zaUCHhenKZIBzaol6M+D22C08jqZZe6Q3HneSSK00xfHptk4z
-	s9jUnDT1Bd9knicmb3acYV2LyLT7ik4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71C784341D;
-	Wed, 28 Oct 2026 16:10:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3D01F01304;
-	Wed, 28 Oct 2026 16:09:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793203805;
-	bh=qIVvq/ZWrS8OHZoPkom4erM5knN+bWWJnYjFer9m7xM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iPJdSz9mscO0Y+jBQbJ5oP0QUm70aTGZAWcrT+jTuD6vdx/Qb8OPponNgTk8n4Y1d
-	 p2sWMWzZgnUx1CpEIa36nSJs0ptmUy3v1PSY+5U7QZtaYyvgVFGdwrmV/idWeBz2b+
-	 uL276y2gUD7+U0y4tGXaStraINA9ds/Tah7Ka3O7rBLgTknFhZ45biPDDkgr0fdjL3
-	 tM225xap4ZjlZwwZKe2XhPo8eQzbkt6mh8HuOjdwnqp6ps34iSavqm/xazqa+GhB4Q
-	 hkoX+iNqgpYCR0M88XiGHAOdpv6aKD7FRWwo6sDOs7dBia+zC8DeAuPlGgXZ6H/MrI
-	 glPcSBR0Ss7hw==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 4AEF11980052;
-	Wed, 28 Oct 2026 12:09:48 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Wed, 28 Oct 2026 12:09:58 -0400
-X-ME-Sender: <xms:Sx7iajNQ8kCiIPHs7NsgbcOc-5GiijoyiZmqOQUNtt7qSaz8hw8epw>
-    <xme:Sx7iajQj06axGz4Ktgks11H8n88buOjM8aZ3zpB5v_ZfdEc4sVQ8AzJl67hPm-gns
-    rWcqzWSZaeimaD5r-DzK1Sl0rKMap85IaUB2ZrgrrZgVX3oSkwPqok>
-X-ME-Received: <xmr:Sx7iatb8i1YgECvk_z69s4iSEkm98SVsLZx9jjSlGoLxwvQ1w1B8SKwfc-M>
-X-ME-Proxy-Cause: dmFkZTEFX6z6UhyyvpX4H7cx49/QxxO3VmgzZkIh+c3mPnpdkklpGc5/WJE8+p9mDInHA/
-    ihdwrhdFqJNZFJ63o8zJrwjlQlbph6GhpkbE+h0iQImiKrOuOoavDT6SUFRbm6Mz5dy4o+
-    QO4P7rlUx4zU3AvumYf0B3hS1zqghSAZUBPb0mJwudmM4AtaC71AWoiTCGmSQNrgxa58Z6
-    ggIUGdqMsg661eTPKd+HvC3dPYGJs/18pFl173/9BPzIvg7fwpisCMG6shG9NwATmBzvpP
-    VfX7QEfwcLulxxCkIwX8hPq6yYSpdGzDAUQTeX0RJ3ruyCzuMqbXKbul+VTqFGT0iPMVCR
-    +mNoUlYXMEW3h0bSMeWJS0eleYwoFLQzWJ4kHpgQeEHi0bh83wm9mO6zcNmdeaLsGephK3
-    qRARM3QyDwaOc1WL4nHInnn/Y0lmu6mZKJrx0FKFYzL/kkAdhj2lsfoNo+lm9P6Rmg7xud
-    Cl1ZVleoAeTpFCEQgN70RGrVnMYJ55p1ehkHbVk6zxr7vKxKEJfr9VFRPYnyzGQr7lgHc5
-    VXu8+5qh5ZVSAap/uBFq+HKj6xUlHktHs6pGcWvq9m2wtKX4kiE4SSYO46iWTztTwQi4q5
-    EdIvNy5BU82W0yUTBIRfBuAKOsraR8UYCNRUPEARViWGEqZ358CyALQRUgEA
-X-ME-Proxy: <xmx:Sx7iasynGZhI3aEsFrGOMXHaEHEdfniPQtim08Zgb8uk099CRJRelw>
-    <xmx:Sx7iaoe14NnSZmoQ7v9cfQOv8a5sG0K8N3GSI6ZxlBl3PPjVKGVYcA>
-    <xmx:Sx7iagQep8ZOnjKGyIamoFTDxPgul0UuEWeQlmcV9eMv-UmWdRkCKQ>
-    <xmx:Sx7iauRlr5DTK8qcMUH6ozbcFvGt_bEb6Ai3yQipjH50fmr3RJMLUw>
-    <xmx:Sx7iavUxCWu-ziRuNNw9fhDlb7okjuCuNvmZG3wzZl5CWXYuqLUF2IIg>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Oct 2026 12:09:45 -0400 (EDT)
-Date: Wed, 28 Oct 2026 16:09:44 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
-	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
-	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 01/46] mm/mglru: don't use stack pointers when walking
- PUD and PMD tables
-Message-ID: <auIdjO7IV5UREfK_@thinkstation>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
+	t=1793203901;
+	b=LiTT9XSvgQlhBtz8aKRt8pjW60T8sIrpshO/VV5WYwbM4ROKMdaFjfYdvkleIWkj63bOeY
+	MwH+GkpoI3a/Y8BIQfZa9HnDiwk9W91O2nejldi7iEbx6TtQ8mDJdFABbec90x5kl0rmVK
+	NU2Xle6R53LROPULqbMOG2ck98gDZVc=
+Received: from omf08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D9BA980162;
+	Wed, 28 Oct 2026 16:11:36 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf08.hostedemail.com (Postfix) with ESMTPA id A762B20029;
+	Wed, 28 Oct 2026 16:11:26 +0000 (UTC)
+Message-ID: <aacb76ee8a23f956eb2e778da7b125d86d164b25.camel@perches.com>
+Subject: Re: [PATCH 10/10] checkpatch: suggest nonnull attribute conversion
+From: Joe Perches <joe@perches.com>
+To: Dmitry Ilvokhin <d@ilvokhin.com>, Alex Deucher
+ <alexander.deucher@amd.com>,  Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+	 <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, Joonas
+ Lahtinen	 <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>,  Tvrtko Ursulin <tursulin@ursulin.net>, Lee Jones
+ <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Joel Stanley	
+ <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen	
+ <ryan_chen@aspeedtech.com>, Billy Tsai <billy_tsai@aspeedtech.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann	 <tzimmermann@suse.de>, Kees Cook
+ <kees@kernel.org>, Andy Shevchenko	 <andy@kernel.org>, Matthew Wilcox
+ <willy@infradead.org>, Andrew Morton	 <akpm@linux-foundation.org>, Andy
+ Whitcroft <apw@canonical.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Randy Dunlap	 <rdunlap@infradead.org>
+Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-hardening@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org,  Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 28 Oct 2026 09:11:25 -0700
+In-Reply-To: <bc2cd702455e58feb777cdb230e3ba4f7e1db60f.1793027261.git.d@ilvokhin.com>
+References: <cover.1793027261.git.d@ilvokhin.com>
+	 <bc2cd702455e58feb777cdb230e3ba4f7e1db60f.1793027261.git.d@ilvokhin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX18kHAE4RjXJ/BeJ9lSamcdiJOrG4xRY5jU=
+X-HE-Meta: U2FsdGVkX1+vO3ZouaggYmakzKiEViVwEjIkayqsOUxRh4Y+D03W9OsYvhntgdSUdjdTBgNAGM07O+W/OBkN7qiawu9kPLoFiAUred/Z/Bvw2Ynv8IG7qnAPxQ8uaps63yUCxrPyn7HCEVo07x5i6NYNvKDhGCJh54qqNDafUAiSXShW2FGTVwwUUFc93x1OQO9f/LKoTfr2/KbcvJm3wJYFIWxls5MSV6vUbxfQ1CWIN5fZL2IoMApFvaTjDQjqQiBboJBwZoq4pSCGSqpTDJvfdjT4vabv8HAYbaFYZefsnth8dvgSgzQtAJujUJ5T/R386onDul4BmhyfIQ2SbKwU1ePW8+59QlMTPdteTFyX32nsSOnI504//g+rZB3j
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 42C24A000C
-X-Stat-Signature: ond57syp3do155wg4a4q1iwxez6cc4mt
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 2CE3AC0005
+X-HE-Tag-Orig: 1793203886-334294
+X-Stat-Signature: 5m56y4bjcqjn15doddn3439d63u3xrtz
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793203806-703465
-X-HE-Meta: U2FsdGVkX1+8wHTww5OYQ5ZaXAAeUJwj4o/f7n5ky5cLRsOjhQ7+wLTW7Ce18mNaV1ROYx+V5G3tWRVHLKF/JPuFbEU746gChstof07ERipMq+6gO2x+KMX7I0PDtFWHvYOOBYBJbbpk59/OUBlyqKHnEqTvlwO+JCy+hwnV922WfHnwxpX5T0rjlvhJMn5lCrM8opbuYk4T0JMN7/NveTyE7jKIHz++f75n3nHp6lZ5upRTLMXP89IpePjga6xbZrZlluW3DKQtotd9sEIDJN3QUAw1eLpPD9EXM2SATxEjyTALfZBUrMJ2blkEabAnHcAmXoHYSONcMVp4bP0pKzjpgZU6+41Cbl2VxWPHlepIPhixlo4+cjlTcn8rYMQPUsThT3LReBVra67Uq5MSq7w+3HV8dmefG6AY7zupvGmncwn//WcddTGO4dmtYsZukNOYwyZhEhFxqh/HSq9VPVW4GXT48UCaQECI4aQHpffzIOpV0pXpIlCIj/s7Q1pgjfYJl8pNJg8xg581elZocewZb6Plx+uTcCSZR2yX4RiaHEZR3/zRgqycYKbDKjwg/8ommM5/Gz4BWIVWgP3MwQTI+gtm3YbzkfmsJj1RnQsYIMWNuKhyIndrcbSWl4HvG5cJIIENb7CkwO8aLG05elV2wSV7XqDUykG2Jis/15LSOufKzmjKHBFixnGi4xs/QsSEyMJS38L8P1do2N+/Q3LkcNf51i0T7nx5fAUZLvaIkODlokyPFEEiXQwpiJ9YpaQboJzrQBBWnrglHrpExDFykoUOlst1CSGwap+2SZMop0Lwz4QByJ0q85pW/DBKyE070v8EfDme4Iw17ZIFAlLVbc0rLvLqD8xFkDZQZYVxeB0k/kGZ1rdtyKBb7bU5/ngonjiR9TztyV7eppbzTCZtp618J8lP4Z9llQSBjyQ8k7MwH4DKQRHg0O82wj/K/mWp9Jjlz87s6coXViK
- BmbaLl5N
- pBk8JvxNeuodW6aDcioFWaR65dyukmj6C/ousyU1ZfQIwKntFiVVOC5tbEZuu04+8bpPP2e8VkgNz0Ds+1mKHJ2frNKlmV0FBmnKheeFvdBgRYKwb8jfImlHRIt1wbUFe6pNFtyEmKkwcYGr5NZAFcNKxfgQAJ28I2o+Kjnpius6ZYumpBU5/tQGERT15BqlSQIAGoJ7sT/5qRbyWXjdOr9yze6919Cic50Lq1B35IRTaiph/fvs58nA1SnAX8GTKr1TEsQp/eL252LQZX00V/uLgXfo3+i4bC4y43W7CZOJ6H4shFJOTUFV38GNd3gwAQQ91Ta+NvzQFNY36nw/oE4htRsRoCuB/WzsGXkYhRf0bEjKCYcZvFYQUxLo493oLEL0y5IeSXshZ+ww+IdqqUs2BoTF50MgXar4Xe83kNn+LWBmltUNd0+Z/FA==
+X-HE-Tag: 1793203900-406251
+X-HE-Meta: U2FsdGVkX1+oPk3CRx3udf/wuCn5N4kNNf3Krg2QDFMKzgbpTKKJ459wHSY1GdBAEpPWrl+vm7g//V5uOpp3N+W7lqHV250wGH8s9eunVnXRVY3Hr/3ZTBEdDf0a2EqkrQF0VMa9TQRaWAxKtUau8/zu8A3EOvbY5dhZUUtT8gMzEf+OLQRN09IoDG613oaHmj2S4M5RnceYNsa27dNbMe9GA7ec6qkid5/szBo2iDh0/RzKGIgXU0DQogxwgq9CBAdmR7SLXfsHEIEAt1Ta8lW9sD5/srztUU1YgsCbXchqmNeTiFWy9oyY5z/ld/r/yVgG0BW2kQBxSAqG+zozt4eJ/sWL+gZv2FqwWWj0vbU0KgPqzoymf7ejUCY5ijEl8ZR9Rrqf4Gh2jm3SoWml0/3CNt6oYC/Jmif5UKiusdi1uJrj/Ou8Bqtb+dXVk30MvuEcqRRn6yR90CSl4QnIUF8H7I82sTRH59BSzLGCIw9lgpn8aFPD5dMR8efMZKC/vd2CXyxrLAdKxZVh3M1ZxgLnwGKoBjyiIYl9/GXfKgi0zoLgz8tAM8Sso7pKVY6K4o+b4Rgkq6BrGLT2nkHo/KId7VoNB+QwEKU2Hq1C+6q4+duiTt86ww13KWkNYXM7MHz8VNkPLJ/WfUcd2YoQI+OwejuITVNfT984NqVr3L3rl8M3o9ekTspPb9Xz2RO9nMSPSiqLIwTwafLsvWGJ/P4MpKqbxdZjkpGNEVySRicVkG5JcT6bOf66VbjpACLqepVmT4Mnuz7YxVYf6rdw/1h/LVpWapd5y+yWNFkQ+4VkD0nOs86QyjyHPiI8y3pzRpyBgvUcmIXSYoO787srqdJ/gBhwfBYYNjPMq4RNL7RkmXuVOYLaoPjHdTfYTWfjC8dRY1ShKudFjI+xGfkwm007JfOp7jb8qlH2BvsvFX/qspYVAtJ6hRDBf1GbYaHmn3HpCB5emi7DK1ASMEN
+ hIdWCLiJ
+ QG7Rx+WejFCPx0R6WuFa3N5Fs6YCBr6QjHO4h8kS01KbFHTqMG0OB5YKBpW59Lv6WEBPVCilBx8Mejhp0xfLA9SlA1VYks/qTL47xn0YAv1SCDkUlxm7cFZ9YW5YHmlgvgJh2wiBQ53k1BUjQAH4YMffAZ5gkhshE3ModNWADh/gC/rLxNInIpDSqg0snL0AF9e+iTGhrpXI7RzU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,38 +102,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 12:17:21AM +0100, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
-> 
-> MGLRU passes stack copies of page-table entries in walk_pud_range() and
-> walk_pmd_range() when walking to the next level. These copies can become
-> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
-> table concurrently.
-> 
-> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
-> support page table walks"). Likely, earlier locking masked the latent
-> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
-> retract_page_tables() without mmap or vma lock") allowed concurrent
-> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
-> for MGLRU") dropped the walker's outer RCU protection.
-> 
-> The fix is simple, so just fix the original commit so we don't have to
-> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
-> RCU-protected lookup and validation against the live PMD. Note that the PUD
-> handling is required as well to handle folded page tables correctly in all
-> cases.
-> 
-> Fix generated by an LLM and sent by Josef Bacik in private.
-> 
-> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ david: handle walk_pud_range() as well, clarify+simplify description,
->          adjust Fixes: ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Wed, 2026-10-28 at 08:19 +0000, Dmitry Ilvokhin wrote:
+> The kernel provides the __nonnull_args() macro as the preferred form for
+> marking pointer arguments as non-NULL. Add a check suggesting the macro
+> over the raw __attribute__((nonnull)) spelling, consistent with the
+> existing attribute conversion suggestions.
+>=20
+> Examples:
+>=20
+>   WARNING: Prefer __nonnull_args(1, 2) over __attribute__((nonnull(1, 2))=
+)
+>   #11: FILE: drivers/soc/aspeed/aspeed-lpc-snoop.c:230:
+>   +__attribute__((nonnull(1, 2)))
+>=20
+>   WARNING: Prefer __nonnull_args() over __attribute__((nonnull))
+>   #11: FILE: drivers/soc/aspeed/aspeed-lpc-snoop.c:283:
+>   +__attribute__((nonnull))
+>=20
+> Signed-off-by: Dmitry Ilvokhin <[d@ilvokhin.com](mailto:d@ilvokhin.com)>
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Seems sensible, thanks.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+[]
+> @@ -6856,6 +6856,7 @@ sub process {
+>  				"no_caller_saved_registers"	=3D> "__no_caller_saved_registers",
+>  				"noclone"			=3D> "__noclone",
+>  				"noinline"			=3D> "noinline",
+> +				"nonnull"			=3D> "__nonnull_args",
+>  				"nonstring"			=3D> "__nonstring",
+>  				"noreturn"			=3D> "__noreturn",
+>  				"packed"			=3D> "__packed",
+> @@ -6876,6 +6877,8 @@ sub process {
+>  					if ($curr_attr eq "format" && $params) {
+>  						$params =3D~ /^\s*\(\s*(\w+)\s*,\s*(.*)/;
+>  						$new =3D "__$1\($2";
+> +					} elsif ($curr_attr eq "nonnull" && $params eq "") {
+> +						$new =3D "$new()";
+>  					} else {
+>  						$new =3D "$new$params";
+>  					}
+>=20
 
