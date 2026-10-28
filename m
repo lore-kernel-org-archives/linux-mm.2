@@ -1,120 +1,162 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39537606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 01:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBE5606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 01:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HPs7Gvmu
+	dkim=pass (2048-bit key, unprotected) header.d=themaw.net header.i=@themaw.net header.a=rsa-sha256 header.s=fm1 header.b=IuANCG5d;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=ASgV40z7
 Received: by kanga.kvack.org (Postfix)
-	id 5BB386B0937; Tue, 27 Oct 2026 21:06:24 -0400 (EDT)
+	id 677A36B0609; Tue, 27 Oct 2026 21:22:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56CD56B0938; Tue, 27 Oct 2026 21:06:24 -0400 (EDT)
+	id 64D436B060A; Tue, 27 Oct 2026 21:22:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45ACF6B0939; Tue, 27 Oct 2026 21:06:24 -0400 (EDT)
+	id 563236B060B; Tue, 27 Oct 2026 21:22:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 138BA6B0937
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:06:24 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6CD514085F
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:06:22 +0000 (UTC)
-X-FDA: 85370244204.28.3058494
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F3EFA40005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:06:20 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=HPs7Gvmu;
-	spf=pass (imf11.hostedemail.com: domain of 3i0rhagkKCAQxnqivgmivksskpi.gsqpmry1-qqozego.svk@flex--tjmercier.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3i0rhagkKCAQxnqivgmivksskpi.gsqpmry1-qqozego.svk@flex--tjmercier.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C5A96B0609
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:22:04 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC850A0C0A
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:22:01 +0000 (UTC)
+X-FDA: 85370283642.24.ABCB5BB
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A654E40002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:21:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=themaw.net header.s=fm1 header.b=IuANCG5d;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="A SgV40z";
+	spf=pass (imf01.hostedemail.com: domain of raven@themaw.net designates 103.168.172.147 as permitted sender) smtp.mailfrom=raven@themaw.net;
+	dmarc=pass (policy=none) header.from=themaw.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793149581;
-	b=71PheLCrxDL5w4I0FVEQh29+0XM5Rr9oM1w25Fs6WGVEdIEePcZq2H5hDSWx1AGT5AlSYT
-	73FSW+/wJHWLwXdfGKfSgcalv9TitnUqY0qR9k2InNtpuIOE3yCnVGpDUpNMSKbvEbA+F0
-	UYMFTHIG9FXufiJwXhMsKiTlQY4SPkI=
+	t=1793150519;
+	b=CZZp3jmAGda0ejdBMINEn0swKqdp/Hkp0BLUP6/MPfz1dd/92HFkzNU4z7xY6TztrsYcgq
+	55qwnmydT+JfbXanmfcxoRbhGiwHJ1nqMVhjpxSrrdtiS4d7aT8HmzBFuCn4HvA2uf0d3O
+	0GzXiPwx8Rl64jeVdPq2GR2pyZHMTFA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=HPs7Gvmu;
-	spf=pass (imf11.hostedemail.com: domain of 3i0rhagkKCAQxnqivgmivksskpi.gsqpmry1-qqozego.svk@flex--tjmercier.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3i0rhagkKCAQxnqivgmivksskpi.gsqpmry1-qqozego.svk@flex--tjmercier.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=themaw.net header.s=fm1 header.b=IuANCG5d;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="A SgV40z";
+	spf=pass (imf01.hostedemail.com: domain of raven@themaw.net designates 103.168.172.147 as permitted sender) smtp.mailfrom=raven@themaw.net;
+	dmarc=pass (policy=none) header.from=themaw.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793149581;
+	s=arc-20220608; t=1793150519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3zcW+5YXwpWgAlstk9X4uWBFChO4Av++o92U1iDImK4=;
-	b=xpuqirS/z+LUIaG1m7D4xMVnCxAr7c7aAmUpBPGNB+tZJ+xkmDn5r6tbqStZuFgCp43ckX
-	8feio8xX2eKKD3Rv04XS69aAftZk1d6iTz0iuDWRTIgUzSwaM2e0fxpKLsXMPSt1x3FCp6
-	5YKcTkSM7Pt/UuKUfKvO0fkfi+VJ7+4=
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cd8b299b0abso340337a12.1
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 18:06:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793149580; x=1793754380; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3zcW+5YXwpWgAlstk9X4uWBFChO4Av++o92U1iDImK4=;
-        b=HPs7GvmuzcwerHzOBKxN2cLg6EHF8sdXm8xk5I2gHZ6WFwpDJcFSHmDn8IJOz8DElf
-         L1Shz+3W5eo7cQIatorEOCB3syflmyM7c0mFJ9Lv6jZUFx0WRhhTuWEF4t+cuBcXmnZS
-         NlO7vAayR8+HXwTdYc3r8RcXmiL9zUs/WzMVcIZbMsRbA8qCrEpbM4FrfzwsRYHGuSTr
-         L/bYyTo+OO919JJO3LuEFyQyAzl04iY5pu/SkNKIKZ+Tvg0pLXlUPCz30kB4bHNLl1wO
-         oEctzHT7X98NsEKqe9IMXMH2C22MFuWe5gqAfVB6CIXWGZFRPm16lEFLGIa2wZSfZ94n
-         wFlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793149580; x=1793754380;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3zcW+5YXwpWgAlstk9X4uWBFChO4Av++o92U1iDImK4=;
-        b=VPT76Toijw1aAXLVo7+vPEJsPESPmgmti3zuPrGjdJk9bk6Jmqq9XfHmblDoRaasft
-         ClrJkuJVNIK8MZwI5FLaeAkbgs9uPPUUgcZzLeu8VJmmexSUz7qOH3yfWsSQIeAi2czt
-         CpJs7DdiPkOftghiYmNiq+CNuhIA65P95bzzqhZZGbMUEHCHg3Bn5NJiOwngi9JnijpE
-         j4v9qbbUmqo2rvyOg8pA4Fc3Jir9uk7V68J1ZHU7VkAOqA62PeojkueM7qc77vb5vsZM
-         UtBb3Xa7m96JiUIm2WfaT12AVohRUx7/CWwVsiPCkpcA4FQTbIwPhBOehnFFAcQ22xy+
-         nngg==
-X-Forwarded-Encrypted: i=1; AKwUvBwhkQXD1NeidqqnZ6rjE1xbbZ5nS5wRoDByqxjfjzTxfAgP9m7A2jQcZMP6oMDC6BRR7lT4MiEk1w==@kvack.org
-X-Gm-Message-State: AFq9FYLfOiFzyGxsWaDRoOoYSsHamTEbs+DfyK+3SU2UkMc55NJc53oL
-	bQitLz6Zg70P+L4lrAnTaArJKh3QecDIolV1RimdY4uW7sztZDhVE4xgLQWSKWx+ks9fnU3yZUw
-	2hIQRQKSRzmXkPqcvUw==
-X-Received: from pgbcl22.prod.google.com ([2002:a05:6a02:996:b0:cc7:aab6:f8a6])
- (user=tjmercier job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:5482:b0:3e2:7225:d14b with SMTP id adf61e73a8af0-3e9023f5055mr675991637.72.1793149579547;
- Tue, 27 Oct 2026 18:06:19 -0700 (PDT)
-Date: Tue, 27 Oct 2026 18:06:06 -0700
-In-Reply-To: <20261028010611.3929937-1-tjmercier@google.com>
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261028010611.3929937-1-tjmercier@google.com>
-X-Mailer: git-send-email 2.56.0.307.g5fe7bd680c-goog
-Message-ID: <20261028010611.3929937-3-tjmercier@google.com>
-Subject: [PATCH 2/2] mm/mglru: stop rotating offlined memcgs to the old generation
-From: "T.J. Mercier" <tjmercier@google.com>
-To: roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: cgroups@vger.kernel.org, "T.J. Mercier" <tjmercier@google.com>, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+	bh=4cR+Jnw2vZTLedug2NT9bT/PNYuUzdhU9pnjK8Gk3b4=;
+	b=t6ywREpPzJcRkxxsS2q+ar5lL1h1TZLpmPhWyehNAZZS6O5hZGElyrYcrkyLiQP+y6e0DA
+	CTwZyT/Zmi/xd6Nkq6oCoF1BrfkkQjluThufLe/rKkLbKvlmTo4Vvx/Gvk970BFNG4jzEK
+	6/D5PCDaEwwWBQDMdE95JtBqxyHEDz8=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 0F52EEC01C3
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:21:59 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 27 Oct 2026 21:21:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1793150518;
+	 x=1793236918; bh=4cR+Jnw2vZTLedug2NT9bT/PNYuUzdhU9pnjK8Gk3b4=; b=
+	IuANCG5dx2AuLSzGWT1IlW0LpNdHwVHudaxvydOEnc3KSoJ/qoMeuRTBcuHevylW
+	xUbQw+3IqU+mSDopyXhKpLMSyZdaIQYBWsp91BtQLJ6ivce7R1cuF7LYQVlluKOM
+	55TmLfhzJ/XgFzpWKbku9XBEEHXvbqRJ5vOSHONPiAFeVL8JucBr1JOA/VFwvjKS
+	w11r6SsVd0monzWXTSSRu9aCd1MnbVsYTMZQxq4e7JYEQg0XE3VlNJOsuLd4+Ahu
+	M2i0unzEJI77CglJFd3yELGpyxcNPO6lBajkV1sZOKnC3Pk/qgxAH53X7FyqVsbo
+	jkTWgUXOP8IFrAx0YIZ2Zg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793150518; x=
+	1793236918; bh=4cR+Jnw2vZTLedug2NT9bT/PNYuUzdhU9pnjK8Gk3b4=; b=A
+	SgV40z7r6xfOgnty139gvV4mch5EP3LpzWKZnR0DqUM4+khkf+60HFQqKimBZ41O
+	GpWenOjpJF06vWXJx6ne53P/sdpYna3Yh9kYveLMWrgn873gdVS2BPYroWQPhcxQ
+	j8FQ/TYUcJyq1VEohzGMzcv/D5F9bKLVFzIGeGnwytFhspGcAad8f7oc6bXYjpg3
+	1KZoPk5Y3HhjR0aN8sdnG6UAFbI98LFbZxfR31UoaDOWQ8AvKGLa+kRa/mXHpIUp
+	RiAUDg4gSiO+zFjhCN9FDe+hrXJ9Cgl3iBmIcbzWpOWfT+LuuadMSvQcN3RGDqus
+	BADMJIzTu3vtT/xhem48w==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=themaw.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793150518; d=themaw.net;
+	mf=PHJhdmVuQHRoZW1hdy5uZXQ+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:IvpZyJ5Po7sxwu8D/UcpMwjHh5W1x3LTfbmGnFtWO8MqzIo
+	W2NUdFU7z9LhKSI02Sas5IolMpxcCjlU3gTPb7aPmiVc8ZJpL4lgefwhwYCRdvy5
+	xyMxvqbHFoKSPzGeTtIgeaS8f5if9MTcUNafYUk0BifL8HA9sSXD22kCIa5bkyGf
+	rV/6OEVffl22gmV1lVehBouITsI6Sx0i4rVVOlIxGVr7nnqvehmFio8EmsUp8UCR
+	zj0VmNRv6gpkBo8QCiFhJiX048qDwNaMWDkWI3+gaZpfrE7nVWZgyR/+x5WkHoAE
+	Bs7OexZ1+i4q/ZxbTgCWy5S7SF6Ey1eGRaHvytg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to,
+	user-agent;
+Message-Instance: m=1; h=sha256:bLZaW/+c77h1LhtpnAtMkoSIjWiZ2pBNMO0v3iO12fE=:4cR+Jnw2vZTLedug2NT9bT/PNYuUzdhU9pnjK8Gk3b4=;
+X-ME-Sender: <xms:NU7havTQm7CONmk_vTIxyQr2bggizao4KrnCTHOZ-DkioGzPn_0_Cg>
+    <xme:NU7hanuN5n0amtHDXTfCLVNahO5-mo9vXcMLvteA_LdixJ2JqjfE2OXpSqZAoRDw9
+    9zB2o5kCwdI5nC3rzACzyLVfBUMdUUkzLm9ZMp9wz4XqggaUQ>
+X-ME-Received: <xmr:NU7hap4Rmoc1y1NiVdhky5AhS2soreP5Mn4L00ThsQUenIhtq7rJNcu1pb49HmmEVaVYZMSVJiGWZtrqfBzV2zNcfOaCUTc66JS2LcokcUPuk2veGHDtkWAnPBE>
+X-ME-Proxy-Cause: dmFkZTExjEu5Z4ShUEEPbIUBi9jvlntQl3xywqhol0VilT1H3riwx+R5F5xJP13Eevy37Q
+    0i2tM3JNLjjIE4RnafdrKckgTZgF7WVXIi2BOm3qqKixBS/Irug73Tiau0YR/vN5tre4hn
+    maQ7bdbQdERoqsBHTuky/6kPN1uRRdMEQp7qfaGblPSG+4EBzlUBu4KVifRQGZl+JiSvgw
+    9mSbn8dIqXi2WXNiWFaTJHHZ4Jih2f4J8Zf8XQJs9Or+djBfP7qo+n/CcBwnndgEEsWDvn
+    dde2XKLK1ANi3gu15BOxuI5tGRXcf4I/n59a/Jk8KMuRhC+UWXSiv/46euNQ6JSTIIAimv
+    7jcAW/tdVBGXJXklC1RRPUglHq4hH5Bc64PIl28tFEzC6NIzPjSltWekhutJo/tT2majGT
+    sswf9kF/mQ7bfD6GGD2BLOWWsUXcYZgnu4j4D7tHPb/zynsKGK6m+AhMOPYjmUzMOzh5dT
+    b4rWxbMHiL5nnjAdO5ldN4zD++TlD1rdyXqAHwBHPTOIS8FN/SKiiEb38SpBdbZorRtZ3g
+    6HKFrjuDJITZTWSsi/aiCUAXSktyenMIc8kN6yeNsZHz8HdWRAJlXYnV78lUl5wNp4dJzJ
+    K2wtUluCHNuU9Ak5O20DPSdgweZAMliMgfRfP/R4THeQWT2Cq5n/XeaklCLw
+X-ME-Proxy: <xmx:NU7hamKsy46mFaILnzutP5LNXCeEcEkH7ASldNGwyMSr1vsmEA_XLQ>
+    <xmx:NU7hajRmT8qLJPv58aR7XoaIN4e0ZQloPg1Re3nCph4Fgy5gL4tmng>
+    <xmx:NU7hapoTY0a-MqM5sQVzrhTvHncNfTKm3VeNlXgeqpDve-iSMPWQrg>
+    <xmx:NU7hahb9D81m8XEdG4qqwPK-ysKtigp5k8VzEshrenjpsUJ67MPPlQ>
+    <xmx:Nk7hairIFIEEI4qphXaATaK3ls9tH3EoMbCthRQcYtN9uyTpEesD-K0G>
+Feedback-ID: i31e841b0:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 27 Oct 2026 21:21:52 -0400 (EDT)
+Message-ID: <5de6de037706e45ba88939e8f36e7dae48005e6c.camel@themaw.net>
+Subject: Re: [PATCH 0/2] kernfs, autofs: fix pipe lock cycles through sysfs
+ stores
+From: Ian Kent <raven@themaw.net>
+To: Krystian Kaniewski <krystianmkaniewski@gmail.com>, Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>
+Cc: Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+ Danilo Krummrich	 <dakr@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner	 <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>,  Peter Zijlstra
+ <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Jens
+ Axboe <axboe@kernel.dk>, 	driver-core@lists.linux.dev,
+ autofs@vger.kernel.org, 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, 
+	syzbot+002fb7b2d0bc53bf7e75@syzkaller.appspotmail.com
+Date: Wed, 28 Oct 2026 09:21:48 +0800
+In-Reply-To: <083c2bb0-85b6-480e-afcb-bd2f386f2ddd@gmail.com>
+References: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
+	 <cover.1792577179.git.krystianmkaniewski@gmail.com>
+	 <dc65c28e408d6b64d4b13b7ad30e5fe70ddaa441.camel@themaw.net>
+	 <4f56c93a9fc5fee152364974773df0a319c84af9.camel@themaw.net>
+	 <083c2bb0-85b6-480e-afcb-bd2f386f2ddd@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspam-User: 
-X-Rspamd-Queue-Id: F3EFA40005
-X-Stat-Signature: hdbafqusbka9jecx1e679ktsdog3nwbe
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44app2) 
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-Stat-Signature: uzhjrr83kfbyoa1spnymgmmbdhjt7bif
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793149580-519382
-X-HE-Meta: U2FsdGVkX19DFRP1FjyhctrXyVsFzdslrE2G/18kPM6q/H5GsR9PNdM+u9OPvnQLtmet5ZDLnsZTO8XOhNNK0X+9H+rhniwUruAPpnTBeJObUpMpmwUElQ7GanLhEMVq0c6XgOOeVpmKZ5dHVgAW6ihYjbkWL0gaCXAMWNWRZusDlEmfDsTSiRR2nHvTZQMD0SKYFMEkPJSTvi99472hMs9sCuGcBkcnx/rGgxNJAquYuWSUbOt47YVDD4aHWrHWKmZcAeYLYvklNs4hzTE0nYiQB3y1tq5nVYxw4e4jYw9LwWnlcai0L6gX96SoQ10RUI1aSrgmzuO3Zc7s/JrQbyidBXiabGUAZz5Fa6uCjqu2VY0dOMAejmd4qty5ocTwAo48hoTGafTDqdvMAjBhuUp5J1EEBmbIpNaNzuI5pQIpoVfiU8jgSn3/AKfJMkH6p1zryhMOeAGoUaWpxgw00DlGiUZ8tNnhRuNT+EAUQRfzHm1jlt2KTbTfDQSJwkB1n5QUPdFFULDTeoHFAE/MxPEOo/TX3p4nUC9jP977bBSjhjvEOE/WkLfPdgxUMuPe63yrPF0wTt9OtASEXWb1L1POpvdMuqXRb0ehDt+L0KALXjUYv7UDNNJ8S8MQMqeSCP97sJWKYwqzwzx3PwDB8XajXCgJwfxL4L2l64rVbg8HdH6UM6yEBtFW+3hIIut6KcJYoTiqvEd7Z1k5dJIQLpJX4PSEfdkWLPFb2L9OWaSVvv0PlS5ontYvSbmJgl6alYw6vgKKhunbTBq+PqYQS89tWpgL/IyxadeLfd/8yUld1llsX3Rian6CxmiyyIBBoyVvW1B0P49eVv9wyN7jq5Prlvs0HhujOov0eledpAS4I7EqmUy4BnEHcfpgDkXXLQnBE5wY7lmHEjKyDabDepECURCIHRl81YwLuxAOVwCYq/MWuINqg+Ik3ItSItzUy4gwiPXDZZD5l0NfIGI
- O3b5Y3Y2
- Qar0vAuhsq0ccCzlJGSwkXGOWWbBwtxv7mYaqfu0ly2jayDFQkPBcjUGRzS6tJ4OEtk6se+aqC21ZQIcHOVCGYPHaSwN8vQT42o1ZG+ZLtB0sL7AA/LCZVgxF/VCRLsFq41920fzGUfVtNWc7XkjavEzGlgcHgss3hzewKJGKVHu1K19zv+BTDPyqGlgswiXF7QphXRSb2NVtM2MHzS3YlGhlWBoDZDMYJpj59rTZ9FkpvjR+ojrpYf0ThP4LLK+pdOuiWgwqjO/XaWpCi8OajY8CMkStxAJ9qCGvsJuuUrb2n7g6afOO3epo7mgO1A/fRTrBjgB7WN5RufsP2uW/kqGcLpjxsj3HMNLvHlGO4oJlDX43IO1k9AP47B2BAh/owqneYR55gVgJR/Jo9/e9tynqG79sEoPAwRqJtTGKBHrEzhah3l7R2liDYp8QumwwZ7lGbbA1t4SQSC34L3CT6wbvw9iJtNf22S1o8w5/mTXywJ/eTNxmh8TRySU5ajhfzxMrwaMkUImS+Bl9OBfaFJj6IXb2IS6A7nCkrDJZnca4tWSVI13BW5M+Cg/DAoJ4ucpvNIIOKF3jN9QLNSC38Kc/m6xrshAB0IRW
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A654E40002
+X-Rspam-User: 
+X-HE-Tag: 1793150519-571022
+X-HE-Meta: U2FsdGVkX198NHWHYWwcCSY6UIhdYLb6rSG/ZJq/tpSPvHsPXy3WKQtjyL/QFEh3DFqgdkiDn/M8DSgtESy7Rh1uIwbbO/f9rbgNNMMnEq8gFie04KauMW6/iJ/ejD3n4ca7BfoiJQz0a5uMrKGldYZTAEw68rL9i91RnJ+4z7NEmdqMfxqeyIgh9jCs5t0r8TJlYZSIvjaT2PFjgxxxm+VwdPBFbBOFmQy6/ZsUpuxQQUXViQQJxoPfHFDd+f/HEi/+S09av8apxzomRt2xudpiFXcCV1E047pcw/5dGkyfaXacr8bUaUpn3Wm8tdOesgOnUqVUERsc9fnNYl+OcRx0PXYoQ3LIpVP9joBsH8yMMpD5NVHB6PBJ8Ri5Z6K6p6iJeE08LKRZWAepmDVIS/Q99+qih6NnctlZRYwdJtCDQLvY/yczl0hI5oCc3+5Y8IcgR09CLL+FX/rWNWIjyikOXlnDmktP/frXl/GvgPPfFVc7hbsEd2B+YEHUXz1bD74uiA2VaM8/SWJ1cQEEbe8RAq1U0chwanAwL5pJGG9Zbu6iK1+dKjsgT/RP5Tp5zFpJIpo4EwFA3vHb9TMsZWYjEAu4kl4bukFsP5L46LYYRDix2DBp0FvbHkWDynSsIYIBHaR2Uvmn+NyAYt66NHzwkiNV9X5mKe9q3oY/CKG0nolihXJ2cw/sWTavYnbke8idSgKOQa+vHVACWCJgNWKuP+G68TLLi3G+m7KmW1OisHH4JoVvMxRR55+0uLx8uN70SJfdwMhn7Y/xb85V75alubg51QOOig11/7fDH8QDb3LU96Ml+tMIybySk0gq8N7soFJ1a33IFuowQKJx3M/LJp4iUXK0fu2hhREkLl92wSUMrsVocZdUMMFp+0Hb9cebsCKdgUc4iF2qbVefcqeE1cw7jf7cLtfmEH553JZZeOOZTJbD+9lVT8B6gcWW8BLEKGJJfZtysUq8Nv0
+ LyZuJXca
+ 4ZdavLXzD8OjOZS8jxEPLHpeVogNzmX2Ivv+C97Gg3g3ELha5NIWHDBXqzM7cuowFRf8guJmHTLfCIDBuHvjk7C6Vv/8nRzCwKcdPJbrzLV82XUsdra9kHyBrTLZQ4M8w9cFO76urwhTJJkmK+xIFbMg9HCcFHElgM3TpdB3yBY098gEg2v+TNDAwcCFH8QRD0zENp1eS+PWDK/Pxdbc8A3auvlaMqrR3jyNQPQ244saSOb4ZMhJa68qrMQ7H16wpD5e5kf3Hxi77YWWbXYMfmvbPwxXtZ/DwQf9z1+29p21bAFXH9TWaSSLWanVOBJhRVaNORl9DNXGpV2/b0gZEWD5tq6YCeogPmFPi6LimnaK5zbs4+HmUtev1F5VD5s/r/o5ZPHfO91pXYRwp3tZQiZEOYnGomsZdqXkW/IFNLq/9E0BP3ZULDsmicECtPu2jUpORNDusntN+GFDWo+EK/2ywB3RFTo1EvR2AW+/q97hvfiTgaxlZvC4FVvz8Aqj6VQdgVwd39t8VJJ/YQylieN7sT6y9rW0Qd4O5QXXffmKkxcYz11T81P0JwEiLmIQ7PutmVlUBttikRjE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,159 +165,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-lru_gen_offline_memcg() moves an offlining memcg to the head of the old
-generation of the memcg LRU (MEMCG_LRU_OLD), so that global reclaim
-visits it first and evicts the folios it left behind.
+On Tue, 2026-10-27 at 01:57 +0100, Krystian Kaniewski wrote:
+> Hi Ian,
+>=20
+Thanks for replying, ;)
 
-Since commit f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of
-dying memory cgroup for LRU folios"), those folios are reparented to the
-parent before lru_gen_offline_memcg() runs, and nothing can be added
-back to the offlined memcg's lruvec afterwards. Putting an empty
-offlined memcg at the head of the old generation no longer serves any
-purpose and only delays reclaim from the memcgs that still have memory
-due to additional shrink_many() iteration.
+> On Tue, 2026-10-27 at 07:11 +0800, Ian Kent wrote:
+> > Commit 1e8c813b083c ("PM: hibernate: don't use early_lookup_bdev
+> > in resume_store") looks like it's been around for a while so I
+> > assume the reproducer should work on 7.2.12?
+>=20
+> Yes. That commit entered v6.5-rc1, so 7.2.12 contains the relevant
+> code.
+>=20
+> I used the unmodified C reproducer linked from the syzbot report:
+>=20
+> https://syzkaller.appspot.com/text?tag=3DReproC&x=3D11c0f4c9580000
+>=20
+> I also used the configuration provided with the report:
+>=20
+> https://syzkaller.appspot.com/text?tag=3DKernelConfig&x=3D7d012d9c67977ee=
+4
+>=20
+> > What should I expect, a hang, it doesn't.
+>=20
+> A permanent hang is not expected. The result to look for is this
+> lockdep warning in dmesg:
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 WARNING: possible circular loc=
+king dependency detected
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ...
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &pipe->mutex --> &of->mutex --=
+> &sbi->pipe_mutex
+>=20
+> The reproducer records the first dependency by splicing into the
+> cgroup v1 devices.deny file. It records the opposite dependencies
+> through a normal write to /sys/power/resume. These operations use
+> different lock instances, so the exact reproducer reports a possible
+> cycle rather than deadlocking.
+>=20
+> The write waits for an autofs daemon that never replies, but the C
+> wrapper kills the blocked child after five seconds and starts another
+> iteration. In my test the warning appeared in the first iteration.
+>=20
+> The test needs lockdep and CONFIG_PROVE_LOCKING, the cgroup v1
+> devices
+> controller, autofs, and working hibernation support. It must also run
+> as root. Without lockdep, the program can appear to do nothing
+> useful.
 
-Remove lru_gen_offline_memcg(), so that an offlined memcg is rotated
-like any other memcg below the reclaimable size threshold until
-lru_gen_release_memcg() takes it off the memcg LRU. MEMCG_LRU_OLD has no
-other user, so remove the op and update the memcg LRU comment as well.
+Ok, I'll check on those, not sure about hibernation support in my
+VM ...
 
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
----
- Documentation/mm/multigen_lru.rst |  4 +---
- include/linux/mmzone.h            | 14 +++-----------
- mm/memcontrol.c                   |  1 -
- mm/vmscan.c                       | 20 +-------------------
- 4 files changed, 5 insertions(+), 34 deletions(-)
+>=20
+> > Also it looks to me like the reproducer is trying exploit an
+> > invalid request similar to what I described earlier
+>=20
+> Whether the string identifies a usable resume device is separate from
+> the autofs request. resume_store() first passes it to lookup_bdev(),
+> which performs a pathname lookup before the numeric fallback.
+>=20
+> The reproducer changes its current directory to the root of a
+> detached
+> indirect autofs mount. It then opens /sys/power/resume using an
+> absolute path and writes the relative name
+> "0x0000000004000921".
+>=20
+> The resulting lookup is therefore:
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 <autofs root>/0x00000000040009=
+21
+>=20
+> For autofs, this is an ordinary lookup of a new immediate child of
+> the
+> indirect mount root, so it is a normal mount trigger. There is no
+> autofs mount under /sys/power.
 
-diff --git a/Documentation/mm/multigen_lru.rst b/Documentation/mm/multigen_lru.rst
-index 52ed5092022f..b532ce961371 100644
---- a/Documentation/mm/multigen_lru.rst
-+++ b/Documentation/mm/multigen_lru.rst
-@@ -234,9 +234,7 @@ the active/inactive LRU (of folios):
- 1. It has the young and the old (generations), i.e., the counterparts
-    to the active and the inactive;
- 2. The increment of ``max_seq`` triggers promotion, i.e., the
--   counterpart to activation;
--3. Other events trigger similar operations, e.g., offlining an memcg
--   triggers demotion, i.e., the counterpart to deactivation.
-+   counterpart to activation.
- 
- In terms of global reclaim, it has two distinct features:
- 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 7f078ff0dd76..542e465ee7a1 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -626,12 +626,10 @@ struct lru_gen_mm_walk {
-  * per-node memcg generation counter, whose reminder (mod MEMCG_NR_GENS) indexes
-  * the old generation, is incremented when all its bins become empty.
-  *
-- * There are three operations:
-+ * There are two operations:
-  * 1. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
-  *    current generation (old or young) and updates its "seg" to "tail";
-- * 2. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
-- *    generation, updates its "gen" to "old" and resets its "seg" to "default";
-- * 3. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
-+ * 2. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
-  *    young generation, updates its "gen" to "young" and resets its "seg" to
-  *    "default".
-  *
-@@ -643,8 +641,7 @@ struct lru_gen_mm_walk {
-  * 3. The second attempt to reclaim a memcg below reclaimable size threshold,
-  *    which triggers MEMCG_LRU_YOUNG;
-  * 4. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
-- * 5. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
-- * 6. Offlining a memcg, which triggers MEMCG_LRU_OLD.
-+ * 5. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG.
-  *
-  * Notes:
-  * 1. Memcg LRU only applies to global reclaim, and the round-robin incrementing
-@@ -675,7 +672,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr);
- void lru_gen_init_memcg(struct mem_cgroup *memcg);
- void lru_gen_exit_memcg(struct mem_cgroup *memcg);
- void lru_gen_online_memcg(struct mem_cgroup *memcg);
--void lru_gen_offline_memcg(struct mem_cgroup *memcg);
- void lru_gen_release_memcg(struct mem_cgroup *memcg);
- void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid);
- bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid);
-@@ -709,10 +705,6 @@ static inline void lru_gen_online_memcg(struct mem_cgroup *memcg)
- {
- }
- 
--static inline void lru_gen_offline_memcg(struct mem_cgroup *memcg)
--{
--}
--
- static inline void lru_gen_release_memcg(struct mem_cgroup *memcg)
- {
- }
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a05d9a8baa1b..e2ddf0680e62 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4475,7 +4475,6 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
- 	memcg_reparent_objcgs(memcg);
- 	reparent_shrinker_deferred(memcg);
- 	wb_memcg_offline(memcg);
--	lru_gen_offline_memcg(memcg);
- 
- 	drain_all_stock(memcg);
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 636152d8c94d..45a2c1021f4f 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4538,7 +4538,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- enum {
- 	MEMCG_LRU_NOP,
- 	MEMCG_LRU_TAIL,
--	MEMCG_LRU_OLD,
- 	MEMCG_LRU_YOUNG,
- };
- 
-@@ -4560,8 +4559,6 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
- 	/* see the comment on MEMCG_NR_GENS */
- 	if (op == MEMCG_LRU_TAIL)
- 		seg = MEMCG_LRU_TAIL;
--	else if (op == MEMCG_LRU_OLD)
--		new = get_memcg_gen(pgdat->memcg_lru.seq);
- 	else if (op == MEMCG_LRU_YOUNG)
- 		new = get_memcg_gen(pgdat->memcg_lru.seq + 1);
- 	else
-@@ -4571,11 +4568,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
- 	WRITE_ONCE(lruvec->lrugen.gen, new);
- 
- 	hlist_nulls_del_rcu(&lruvec->lrugen.list);
--
--	if (op == MEMCG_LRU_OLD)
--		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
--	else
--		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
-+	hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
- 
- 	pgdat->memcg_lru.nr_memcgs[old]--;
- 	pgdat->memcg_lru.nr_memcgs[new]++;
-@@ -4613,17 +4606,6 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg)
- 	}
- }
- 
--void lru_gen_offline_memcg(struct mem_cgroup *memcg)
--{
--	int nid;
--
--	for_each_node(nid) {
--		struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_OLD);
--	}
--}
--
- void lru_gen_release_memcg(struct mem_cgroup *memcg)
- {
- 	int gen;
--- 
-2.56.0.307.g5fe7bd680c-goog
+Right, enabling the autofs pr-debug logging and looking at the
+reproducer verified the exection flow for me. I didn't see a
+lockdep splat but my environment is probably not quite right.
+I'll check what I can and see if I can reproduce.
 
+>=20
+> In parallel, I am preparing a revised patch following Tejun's
+> suggestion. It disables splice for writable opens of
+> /sys/power/resume and gives its of->mutex a separate lockdep class.
+>=20
+> If you send your autofs change, I can run the same reproducer against
+> it and check both the request and the lockdep warning.
+>=20
+> Thanks,
+> Krystian
 
