@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E79606A33B
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2889606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ftx4v6cB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ggbZR6Ok
 Received: by kanga.kvack.org (Postfix)
-	id 01A836B05B9; Wed, 28 Oct 2026 10:12:01 -0400 (EDT)
+	id 1C6A66B05B2; Wed, 28 Oct 2026 10:12:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0C686B05B7; Wed, 28 Oct 2026 10:12:00 -0400 (EDT)
+	id 19EE26B05B7; Wed, 28 Oct 2026 10:12:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E21D76B05B8; Wed, 28 Oct 2026 10:12:00 -0400 (EDT)
+	id 017306B05B2; Wed, 28 Oct 2026 10:12:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C72136B05B2
+	by kanga.kvack.org (Postfix) with ESMTP id D2E1E6B05B5
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:12:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B2C0140415
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58B87140410
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:12:00 +0000 (UTC)
-X-FDA: 85372224000.29.790A807
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8299420003
+X-FDA: 85372224000.13.E6C735F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A35781C0004
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:11:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ftx4v6cB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ggbZR6Ok;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793196718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DBAwupr574cqsrPW8LZMhh/I92Jfido+74PsyFCXFnU=;
-	b=Z/7nYSYflliSfzoPun3fWe12HOyeOeOllv5n+Li3X5ezQT1PgiSP32rsDwoneauhEkzXy4
-	DDMqKSuNGPQOYW/L6aD1tDoafyf/7pzQfLOYQgQ13DoRdavGyhbAjk63AnVbPQD/TLJ6NK
-	Pu/QDJpR2gwDK8kYzO1FIFn+u0WIetc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ftx4v6cB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Aj6NKlEI/katth2wIESymczEJETsapNVp1gfTJSIOI4=;
+	b=PbwpAYXI6wviEf1xKRRPfdqRmWIrcakRoA6yGIKgEF/nq2exIrWDEjhpcjYlZzpsSXYTh9
+	QDJgeqdi3QdG+tHnjFClegr5IrLX/0qH0VAL4YuaqFT+d1G3gXhnM2Y6R2cW0iH7M4HpgD
+	ThHMBCkqQ+WXdYe32diYAVOQNpd68jg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793196718;
-	b=qI8pJVl3mrx5m5YHo2BXuDr+If8y8RSU8lEyrUwG95hEksvhx4FIBqB942mceDUoWc1v6l
-	pis5t8631LY9N8YzXjiVh3hWyQCXyS/nEcDgdp6PjzQSrXQPAn9RSyH5Knf4YqDXgp02n8
-	IGvBInVkxqR99nOL26BzyZArYsDO7V4=
+	b=jgRZ6M9POHMVYeHscD1FTsc0gTae5N/dJixq9r3bpCL3/Ze0WHLiOEaj8KNzRJcbfPf1aM
+	yUVJbuxz7on4t63MjnuEykupWozAzQLEnX/HS7v7OWalG4x7sK34WoltCUF8xUJNU46Srz
+	STQXTz1Qr6tRWzjl/rMQF0nhhJapbP4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ggbZR6Ok;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A01BC4049D;
-	Wed, 28 Oct 2026 14:11:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569361F031E8;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2CEA26022F;
+	Wed, 28 Oct 2026 14:11:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2371F01829;
 	Wed, 28 Oct 2026 14:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793196717;
-	bh=DBAwupr574cqsrPW8LZMhh/I92Jfido+74PsyFCXFnU=;
-	h=From:To:Cc:Subject:Date;
-	b=ftx4v6cBTQ46AqtV5OsXjBLzK2VZEfSGpWSzh7CkWjresyhm7DwBOHHRqgUhqClrt
-	 cpoP1kXSBgT9E2TVC/mm9xrJQ0JCIxsQeHrHRohqt+ZgK5Or5CBCR9tBmZViDEEBN7
-	 dzaWEbFQt0wGylL0iQI8tJzABrTGD8pOtUq3SlSpE7i0ED6wYN6Y36krgehar4eY2b
-	 X2PTMBtxH3RhpGtV2s5u2HMmSWCNZ3Mk684Gq2dH8zuCitzzKYXfbxQLiRIrYC+VgZ
-	 HuZ+2FgJZpQuYo0lPJKW4GcUXdHAMBMaeGF01PT0nKY9CtRkgITpdHJWimRzHVj5Pk
-	 ToRQwPwkClIwA==
+	bh=Aj6NKlEI/katth2wIESymczEJETsapNVp1gfTJSIOI4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ggbZR6Ok/naZyBXDs/7zovL9VXOUbN2ItXbN3g+z++nLTPY4u2+ZTFAsyfMKR7amD
+	 vSZk620hsvA2AVSmX5WnHEo9iF0bReERm8m3chFlU5YJhnSPuoiMsnZeVkO6nm/pqx
+	 IRgzNKHGWbDrqiNPg9TlENI1G2Pmi+8ZKHZ930hLdiTtBze4VYDp2p8HVHz0nREz4A
+	 mvoJLBlUkdanhnG63CXapTPmfhpkbY1dTtTmnF7TC5c9bA2m/qHZpR39jOh9k6w/IK
+	 h8/SHHEiYMtoe/a+wRbcpDxANKc+mo3zg//FjvrhF4oquLROvBZ2MxS3RCq8tnQnif
+	 I2TdLbCQdxJgA==
 From: SJ Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: SJ Park <sj@kernel.org>,
@@ -67,25 +67,27 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6.12.y 0/2] mm/damon/sysfs: fix pid leaks from wrong error handlings
-Date: Wed, 28 Oct 2026 07:11:47 -0700
-Message-ID: <20261028141150.160711-1-sj@kernel.org>
+Subject: [PATCH 6.12.y 1/2] mm/damon/sysfs: put target pids for damon_start() failure
+Date: Wed, 28 Oct 2026 07:11:48 -0700
+Message-ID: <20261028141150.160711-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261028141150.160711-1-sj@kernel.org>
+References: <20261028141150.160711-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8299420003
-X-Stat-Signature: rid8mbp1os651wu5zpdrzsd4hpxa3uza
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A35781C0004
+X-Stat-Signature: a6zj3n1ur1chdjmy6ts7qafpwsubuo7o
 X-Rspam-User: 
-X-HE-Tag: 1793196718-912760
-X-HE-Meta: U2FsdGVkX18dwHw5xVPiAw4T3ukS4w13bK9OB8aFTrFjadlqU8tDX1Hyh2cLaarG2bEI4fEHTcg5tiKANmqWr2VHeDcRdQ71fA16vFIFE5aQKtuAYpcm5CNtx4Sx4BJXtdqSJDGeLQzC4HoiAK6u1YbWvA9kxvw5OOREsWEbytuYQKaKbx3QqwCqjJTeb6f+eTnEV4+N2WBcU8Yo28+VA6yRR+VG23pk+JDAdw9afPMv+/XtZNZHyYqeHwuIZU4bB1tx/Sn00ylmj57Rxe+jmTUrVPnHqGDKntPvpNrcWRTzvQjZZT5ykW30xEh/VHQGXHVaLMHnnVt0agwjacgLWBgGBPuleLCC6AA4kvNyjBVWKgi+1H/TXZbo3yHhwRhy6HN3Y5SzdyMAoibahEgYZvEjUdh/TV5ug1QvQTXRi2f4ThxqqRS9TGxFgsY8Reeze97BnB031WUM6ygYtNQiYuxVOkKtMzbcJ3v4TxlzfjoMm15K7BQjwqvvJVP1PCdTc5/4EqfvNv90Ap7Wdj7M1GCiFsiWQdRU6DEcKtunwM5smYcFJWoopnBnVT3F6dyc4S/lnTJmC9FFPpmsE0EHQwAA9FxeKPi3C07UCl9UHoThXBsFnXXhfil+zq5PrhPf2EzoDtixI0VIpACAB9Kp8b4XBKBnzbFju/vRlG+Q4iMlx0qu3xyNXiuIao2G9qJK5CW5OAFdh7Jyw1r7a3N+XnAf/G2R+y/Gts7IIDB8hU4DW4x+D0U2fw6XZ0Ho8mLjfKQ9IKXf/h3O33ifxlsKC+erCCR9uZLRczb6fLZkmtxNwszUipPDVCaD+0173kYeRLx5Z2pZG53zd0/9p/oU8irZ9jDkzBcjNQ0dP/YA3B3relOKZc86f4ZcCyxV10KRpAP5n5VPNjlIpOY6+f1SgCO9VUrG218A/aEoSLNshCcEorYUmA8C5gdF3Jh9CGU9IXJe9ZSlB6T3N+/fQqs
- dFQ4N1xn
- o86Gld03h8n2SOqYEcJc/+IZpa4jWHpYSN8qVzB9yz19hAllJK+GUA2Bg3eSG545R9GKmP+o35t2WD+noZA8P6ci3R5oxwG5M18cM+Po1ovQTQL5wEvRbG2l3qAGfSJA/XwUS0mRom0CFWO1EoitILwCwRCm9fhHQPT7u5ssL7Wn8GUzKPmnCpsOCTwcFAogg/0Z9LYjS/lyrIqtgBzkomfoWxKubDkB3a+UfZaBbBAzInR0=
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793196718-205967
+X-HE-Meta: U2FsdGVkX1/dO6LxZRDFO+UiMOE7qZI0nra0PWxy1Q86HsKglqdl9U+arpz04nxH0k8Z+JGAnPW39KpLq0dyDL00CjqBdlKd4iybDcGSijUjCVjA9cJR33zh7XVIZ/MsGy3vpPzg7DwvFPDxw5/F80v7yDbtzE7R194HFJeYjVw5MXjbu5HKm425B7ZiN6esieZorX5+0EbEJqE5ZF1GIVGsW6HtD3JCX7xvu/3JPmqaN80Oxsx63KdDZ0Xy+erfLGEPvxyj8qGloLdJRS18ETSlmxyaxUXvdCATKYUIe+HLuDjbCUy/JycnVD/6Y4dED6BJbndCIHS29hDOCk7c90n8mqjsyTcUweGNddS952hUMKob7GH491dTIlcs9CyAESZsMREjDfLQtgulC/x6HUCVJSnGb1xhpiMJZ2cZW9Kxf3R1qOPTOFfR4X/E7QGOtbLNX9vVWtT8A9gF7nuXa7yPgSoKu3EqvAJ4E9b7Tb4IKboZ1jw2GHXQ83Ui6gbIdngKc2xEgvSMCc3fiOFk/G1Q30c1FfA9S7tPHvCKzNhKdOi4ZpWFELlJBTflKghGL9uacdEl1WjWMo1hzZ0PwybmxZCqKbEfY5v+ypEdNAQfXeXkCRDKtr/BXCA2ycf6q5CK0NQqyDg92Uh3gzu3hdSzX4+EcfR7GgFl/oRnevJDzGEHoI2K55k2IJxmmFf4ydowz63F95YizPMNwDYKxuUgRm/+jQ2LVdQVvTFT9q8tzp8gSWPnMuDFnDWwsfsJXBXnMmzkiVRdErCsAMCnpeGBrsgEMp5Cj6LA7X6RC5b5RNabU8NZcjS930z980RRrMXruIsLw5BDpgLAx1HgPCV1vZQOYLhl3FQb+LHi+9kmdqeaoxr96o7xFG7ccujHyY8B22NNON5yMm6vPe1PMbS2fbDnIlzWF6vry0P0sneVHR2pCofh87AmaX0lnsByhd1wIQad8z+mvS5xfg0
+ mYfBJp1o
+ 6O9W2GvT2/Tsy16B0d/3QY/s0dr/t+mHV6XCKJx0OR0fMk8lNSy46hBDY6gLFKoFBCmRAb9JEd7CkVf7tkaX2+VFw0+zHPapSIGZBuhr5M6V1By4aj0XPa2QHwc67F+ZBOWVvfF8p4Wgng7lEOmtXl6SFWJJ7aeyX/Qhlwk+roXejEpL0XnZlaSRMTBRatFsK7bOuGnj1TY86Q8SgKMN5C6lBAeQHg3oybv4qZakCxld1DhSXWUMe9yUbixR4zG/5nZMvp7IuG5uBmxIpFHwOcFzX6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,26 +96,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-DAMON sysfs interface can leak pids due to wrong error handlings.  The
-issue in the mainline has been fixed with code refactoring.  The
-refactoring is done with commits including 7114bc5e01cf ("mm/damon/core:
-add cleanup_target() ops callback").   Porting all the refactoring
-changes to old stable kernels will be challenging.  Hence submitting
-this non-mainline hotfix series.
+damon_sysfs_turn_damon_on() allocates and sets up damon_ctx to start.
+If it is for virtual address space monitoring, the setup increases the
+reference counts of the target pids.  After the setup, the function
+invokes damon_start().  If damon_start() fails, it deallocates the
+damon_ctx object without decreasing the reference counts of target pids.
+As a result, pids can be leaked.
 
-Changes from RFC
-- RFC: https://lore.kernel.org/20261028042617.165657-1-sj@kernel.org
-- Drop RFC tag.
+Fix the leak by putting pids using damon_sysfs_destroy_targets() before
+deallocating the damon_ctx object.
 
-SJ Park (2):
-  mm/damon/sysfs: put target pids for damon_start() failure
-  mm/damon/sysfs: put target pids for apply_inputs() failure
+Fixes: a61ea561c871 ("mm/damon/sysfs: link DAMON for virtual address spaces monitoring")
+Cc: <stable@vger.kernel.org> # 5.18.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- mm/damon/sysfs.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-
-base-commit: 355214ae5d8da08854c5749cc79b688e4ff265f7
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 5aa23c6545cb8..107a28557afe2 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1519,6 +1519,7 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
+ 		return PTR_ERR(ctx);
+ 	err = damon_start(&ctx, 1, false);
+ 	if (err) {
++		damon_sysfs_destroy_targets(ctx);
+ 		damon_destroy_ctx(ctx);
+ 		return err;
+ 	}
 -- 
 2.47.3
 
