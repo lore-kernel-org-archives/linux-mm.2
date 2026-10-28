@@ -1,113 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C3A606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF99606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 10:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=omwUzGSy
 Received: by kanga.kvack.org (Postfix)
-	id ABE716B05D6; Wed, 28 Oct 2026 05:59:06 -0400 (EDT)
+	id 127216B05B4; Wed, 28 Oct 2026 06:01:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A95936B05D7; Wed, 28 Oct 2026 05:59:06 -0400 (EDT)
+	id 0B0566B05BB; Wed, 28 Oct 2026 06:01:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D2266B05D8; Wed, 28 Oct 2026 05:59:06 -0400 (EDT)
+	id E92D46B05D8; Wed, 28 Oct 2026 06:01:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 765FE6B05D6
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:59:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DAE39C0BCA
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:59:05 +0000 (UTC)
-X-FDA: 85371586650.03.507B913
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B9AA2180003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:59:03 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=EKCDzW0U;
-	dmarc=pass (policy=none) header.from=fu-berlin.de;
-	spf=pass (imf06.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C7B786B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:01:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B86741A0BDD
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:01:50 +0000 (UTC)
+X-FDA: 85371593580.04.E7C593D
+Received: from mta1.migadu.com (out-246.mta1.migadu.com [95.215.58.246])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8801F100008
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:01:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=omwUzGSy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793181544;
+	s=arc-20220608; t=1793181709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W4v1koaYCedVk/4Qr3RSyIVEy9SCXdn2NBPrmVyCL58=;
-	b=cqZ2VwGiPViLPTTJJgFphiNH+u0Sbpt+xDFtdEFNWlwzCebYtld/gx/e/NJ/l/xTUoeK4+
-	a7Xhl1a+c1A7HSVfI4ixgatuOfBB0BSw6eJwGr0K7Rmk8j0s+oxOlzlnhbCInMa7gCnhg2
-	Wva7rhIj+qBXq6O4O+Xs6pBp2Wuo1q0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SN+4KpKU4pO0w+hnkVBnVZtVPIWPahdjf4GIcjr94dc=;
+	b=LQQRTDUqfQ/Jzs2ytSDeD+hEiSHGYMIX+U/w9Q6KOisxmlrgZyB6uUeXADTLAmBbqTl2FV
+	XnSd/NJP/hYmWDF8BvmKEc47oAY7bR/GOO5LYOULmTP7hSPtCH/d/7rzTF5L1ekU6sQqXi
+	WZG05KZUzaY86g7iWs+9Wij+lVxDdD8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=EKCDzW0U;
-	dmarc=pass (policy=none) header.from=fu-berlin.de;
-	spf=pass (imf06.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=omwUzGSy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793181544;
-	b=qdNAOdTzwUCZZOYzboXGRtU0wsOiaV/lB/8ozFNJRUTvzLIPCCwXuDfdYDQ+uyVOdQtRZR
-	0WTCc5D8frsx+WiHa8N23yekBUhcJbnS0RsjrM1hweq1Wun7XfDIHrvAWs1EGn//5lbPpZ
-	vXebm17RzHR0woXomu2NtAu0rrzd920=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=W4v1koaYCedVk/4Qr3RSyIVEy9SCXdn2NBPrmVyCL58=; t=1793181543;
-	x=1793786343; b=EKCDzW0U1BrPPdioZBhNfzRDVpdfsatHFrJsJ/wWCZeeReQj7RAeUG0ych3Xz
-	um78B/d4FAr6WCkjsCiWgsj21BxEGYp8ixRpMOkrDvRS/rk8kPM6zmS1PzqFDu+KmI+yuppyg3V30
-	buplhjnntthVh+Zq9/yhXPcXuZmagXPSey1QQBd9yqM01mWoUMEmbsAKMKY/I1HREs1YjR0j+Dw6F
-	ENmCr/gH51j0XRlVbGKXPZEYrlDBDSfN9hL4DHHgD27IxKeMRgcLAi6WbGHepyuB2xfXknCwVxKJM
-	3rF1woaR1YRhOqv5wElDcnzUM9hc32R6niOi+gPh51Oylpy3wQ==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.100)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1xM0Qr-00000001bPL-1ezN; Wed, 28 Oct 2026 10:58:57 +0100
-Received: from dynamic-077-183-189-206.77.183.pool.telefonica.de ([77.183.189.206] helo=[192.168.178.50])
-          by inpost2.zedat.fu-berlin.de (Exim 4.100)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1xM0Qr-000000029hA-0ZlA; Wed, 28 Oct 2026 10:58:57 +0100
-Message-ID: <8d4993cb2f2e5c3300514f1e2616e4a101488883.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Imre Kaloz
- <kaloz@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Andreas Larsson	
- <andreas@gaisler.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- "Mike Rapoport (IBM)"	 <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, "Liam R. Howlett"	 <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka	 <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato	 <pfalcato@suse.de>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>,
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Magnus Lindholm <linmag7@gmail.com>
-Date: Wed, 28 Oct 2026 10:58:56 +0100
-In-Reply-To: <25f5cbed-9126-4870-a81e-65099155bc9d@kernel.org>
-References: <cover.1792609488.git.kaloz@kernel.org>
-	 <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
-	 <409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org>
-	 <20261027212610.6798-1-kaloz@kernel.org>
-	 <dfe06aef-540a-4450-88ba-300a460007b7@kernel.org>
-	 <20261028091631.8072-1-kaloz@kernel.org>
-	 <25f5cbed-9126-4870-a81e-65099155bc9d@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 
+	t=1793181709;
+	b=M+r3EqkbQ8PWeAmOl6j2nYD4drQsJ2oX+v1CkL92FqYZkbwGiQHxdJEccbxtRIl8VkMn/Q
+	CJRggrriIHtwzEHxEYc9isqKa3gCYtLwP8YpP7ubYikMMaVN8QxRMch712c5VWIQ86xzfQ
+	ES0vrSltXVVUDwK8dfeDY8IZJ4b2djg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/dUQ3gxRWfPKKEHri1OjskVqUHdSvq6M0Wda3oynvuk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793181707; v=1; x=1793786507;
+ b=omwUzGSy9w6/mFbekyH2CeZjT7h+OgL1CqRyiwElJhUiifK7sFD9Fy4p0XR/w8PVj/OQNs/8
+ D2/uCPyIFpoEwsGGqQSpOqpk9vwh1XrEr8xLpGaTJn7tNlFiG/TPHs0iMGF9dJuyMPKD4+zOTuJ
+ vHSHfcYcDcsNtcI4Ka7+Ui8U=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id c473c188e45cfd80;
+	Wed, 28 Oct 2026 10:01:47 +0000
+X-Mizu-Trace-ID: c473c188e45cfd80
+X-Migadu-Flow: FLOW_OUT
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>,
+	Kiryl Shutsemau <kirill@shutemov.name>
+Subject: [PATCH] selftests/mm: skip collapse_compound_extreme() on THP allocation failure
+Date: Wed, 28 Oct 2026 18:01:19 +0800
+Message-ID: <20261028100119.11340-1-zenghui.yu@linux.dev>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
-X-Rspamd-Queue-Id: B9AA2180003
-X-Stat-Signature: bn36s1ogpdi63kihss5ksue1xhsk4iaz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8801F100008
+X-Stat-Signature: z43o1jse7a3yh1wm18zuoiwop8bzqtrd
 X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793181543-442000
-X-HE-Meta: U2FsdGVkX1/GecgQu3vLqY6jHA6zH2WGkHWUQOiFAgQhXKk4lVXsbX8/MsXzavrzdD3k6IdjvFv/FhshedUDQaBhcCJ2w9rmWB2myq2+WTknbYaG4hJ49TzSSKMWb4IJk3z1782vgki46Lv9E6zPe/j190IWuiCx1I/3qXCcqpCxj1n+akXTAhabWh13UpRzSJ18uDd+4eZtBIs6vduCa0uW0/i5H9WC3XVhDzkhN0PXhdv0tWwsiXiGwdOUCPIfDa8KQPaEFePve/qaz+vTVswHL9uNcmB6avSBk3gnV5fM6yWznE6XlEQfnmxVVMQ71Ftjt1M+1O1BYJi4nI9s5XneIG9qP/541v8nxd3B8JjoIHItlQ33ye5+lE3jkXyU3iN/c4IW1TYV56LXt5J0wbRnpZzBBmecTpXl4as9y/d41NHzxGIBck/63O2dTwsrbwizKgak0AOMAvkPJQWPAN833NHPb268ZoV3ccIpNDZUpv6q/gh85xoNXlsCQZZlFHypW3PERBSEBeJIj16V1OMckT24gKPsuy9jRPJGSJTeaXXOGpHAhix5YJN1hJ/K9ab75vJJLEcxHQw2b+F3R3CdJYRAQPVlj7Y4EY3HOHvshyxTOQ4CBKl3ygYp3VSg/4rEy9bsRFBzVUMV8FAceWnDAUMpE9LKrw5zrGM02rByS4Ji0Bhg0i0JN32gexjQxNZsWHV2o9n8i/dYeqsWj0iFJTx33sUY2As6ouHoqOESEvWDT0x25e6lg7s9gW4ovwl0PFbPm1r4Jeb2cfsSow48d6mc9rMIrt4vDkVCXLNZy0PmILXFQ8kVFLdxrogQGf29mnDN/aDuQoso9lNxPEGacCJZwyaJSxGZE2YLrXlPWz4QwdewZeYimgfZvU4kN8N59DWnUXJLsC0QShzmaDy/N5+j287MVQ2KKN0CQmP27boVxvUI9bd19LTwvqkFNcT+zhqyRzEK4SVkaed
- zaTOq0rs
- oHIQiTQdYb7wCbk/1CkZ6/r4miL3I/2vfYtZ8O5Oy0tw7LcehZig8haL6z5RzqVkwzh6fMsARzd2NuQOMtl81pxPGl3CgM+ZGiP0gAca10LgkkreOOiVPe4jvFk53/Cn+q0cBmpDHJSWcGalQJGumbrRWsMIt/v6g8eJ3Mm61uJNoEx0X8e1kzKH9aXBmABE5jMVOeTbQQvh8BIioV3rwsqjncD854RdBgJ0LKrF9aiq6EcZYdtgYvZ3PrfIOyS8LiBlJZd4Jirkql2EnqBK3rbes9j/0WStHZRt0skDRgR0RG3cN1Wghg+gcXeymONySdoiU+OWhbaOlfkydFQzZdxwI5bk+y5EjJ/D77XTwqWV41aqf74EvKE1qO3EXr9vlVx+kYthVtQDOLKbrIVDZzcLxIW6wVEWAY34R/a5pGy3noZfMnOf6nvyFrpqTZERQmYVs3enB+EpMeAgaeUQ7mROi+ZqrVp0oAvJTsDntcmipkREoa2P2tgPJ5ZUCC5cSr5vPvtcG/LmWny/5A59AmvLdpFt8lfny6pDhaB5+BPeV62U=
+X-HE-Tag: 1793181708-610252
+X-HE-Meta: U2FsdGVkX19qQy+Z9k0KPtIDEl5YsviwVyWszsfJRkpYRnON6cHfzudHztJkhSQbdwef0VEVwcXh7FBtvMjSmlqC7M//EPruQ0/wpz9bagJ1CD44nIBdJg1Rbz2wu1uJW6D2ct/k1TL5nWdUexIx5SK7iu+ct+EPtyoFHiil8V7JkkaFHf+VtnhWrAUCcNp9eVy9oSWXgmspgS5chEVtke68B/tVoh97x6CM7BeAMktwjVJvBmXY6yIMX78teDraydiVIGDO+M3TpaZmBl9C5W1vozaJqeZPnjPJi580uCzqvlDJJvR+bLrhw4sT4n4CSn5AG8MIxuf17/+a8wmvVTKCBF+WXnLq9g0nSkrioyBkenEhAAJ8SkxL3WWcExA12TbeEvi6nW7bYmS91e+vQNEzcPz88Wixo2lN9rOj6cLEGfGJ2NuRplAoR/bVzcjHPLB2WhGB8FcJCcNoJ6uN+O//RkqhOFn7Qg4aqJ5LaYQzFJDITGxBckzrScU6K1KXzTnFwXz5oc+1xlTWwKEcYP3jQQ1TCho7NTCeYZJYgT/KNL+C8RdwGfwi1U+bpvYggc80ZwVca69TAhMZRDz/duPLDntDfvWS9JvF8wWL+vf84PYkbyYBAhHFlgNwf+SDmY+s5p5KQvCszJl6MhsjQm8NPW5orM03iJavS1tuaM3TduEmDNfjVqT+cYjlh6789it1KhmPWACI/Veb1ucsDIEKwr5zvegSvsZmwbCDXPe2K20Alt9z+o6o/5jHYhHHXbeWVt/JnkEKOgyJg2Q+0rosw+Yvn2gt0bsYTNrpkCX3fqhNIkMsHjLNoDVI7eO2nSlft/YDw99TYNHavZw1+Oej2rN42KLGhWYJWQUHdQkjL/hd378InYNlLS3e0Q3wcdoFAtoKicPt+36sxxJ7v+ZcTu3hbALGcHEBlWE8UYOXHN8nsd5gjhmKhNiHvmlYJWXCbucMDnorAFLgUH8
+ qHpUyxi7
+ k0erR/uyXTXORfz2ENlekBMgwROU85AkSwz6qHNT0jBWOt+UxsiDiYgbvQrAIYQd4HpyyKolxqCaG9tos/AXqmpfTYH1dK6LPVqxJzBxsS9dhbwsJoLD4UYFVZnyiJRlURlgVGEKswwBxrhNiumP7DvB/mUUIk5EgjX2OQEm66AUntvAlcZO1ruZ48ZXo0H4nCi1SS6R+JDrZ1yFh0qnXsqTda+qiqAbPPU2pZV9rzW6ixeXJ44+OtRK2oBBHfcWxvbpmAtzYVFO66EVwggN/TODsNyod2vBavKy+KqdW6aIKwwM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,75 +108,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi David,
+From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 
-On Wed, 2026-10-28 at 10:22 +0100, David Hildenbrand (Arm) wrote:
-> On 10/28/26 10:16, Imre Kaloz wrote:
-> > Hi David,
-> >=20
-> > On 10/28/26 09:49, David Hildenbrand (Arm) wrote:
-> > > But that's too complicated, requiring page table walks ....
-> > > People running museum piece hardware and complaining about performanc=
-e of mremap
-> > > or memory reclaim should reconsider life choices.
-> >=20
-> > I'm one of the museum folks myself, though more the kind who loves
-> > running a modern kernel on old hardware than the kind who complains
-> > about it :) A lot of these machines are still doing real work, and
-> > these days not everyone can, or wants to, just buy a new computer.
-> >=20
-> > Some of us spend our time keeping these platforms working, and I'm
-> > not asking anyone else to carry that, which is why I tried to keep
-> > all of it in sparc.
->=20
-> Okay, so mremap() and reclaim memory performance concerns make you sleep =
-bad at
-> night? :)
->=20
-> Don't get me wrong, I know that running new kernels on old HW is fun.
->=20
-> Last week a got upstream Linux running on a 32bit x86 notebook from 2007 =
-with
-> the snap of a finger. Everything just works (using Alpine).
+collapse_compound_extreme() needs hpage_pmd_nr PMD-order allocations in a
+row, and it kills the whole test binary via ksft_exit_fail_msg() as soon as
+one of them fails.
 
-That's cool!
+Gating the case by PMD size (commit b36bec6a01b1) -- the current workaround
+for arm64 with 64K base pages, where a 512M PMD makes every construction
+step an order-13 allocation -- is not enough: the case still dies below the
+cutoff, e.g. on an arm64 VM with 16K base pages and 8G of RAM, where the
+construction would need ~64G worth of PMD-order allocations.
 
-> I couldn't care less about performance. Nobody should.
+Remove the PMD-size gating and treat a failure to allocate a huge page
+during the construction as a skip: whether the allocator can hand out
+that many PMD-order folios in a row depends on the memory available on
+the machine, not on the kernel.
 
-Well, try to put it into some perspective: For some people, old hardware
-is all what they have and given the current high prices, I assume many
-people will be stuck with old hardware for a while now. Think of developing
-countries as well.
+Suggested-by: Kiryl Shutsemau <kirill@shutemov.name>
+Link: https://lore.kernel.org/all/atiQmWnz8zx2AKI7@thinkstation
+Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+---
+ tools/testing/selftests/mm/khugepaged.c | 26 +++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-> The biggest problem all of us with supporting old hardware is the maintan=
-ance
-> cost. Not just core-mm, but also things like ad-hoc page table walkers yo=
-u are
-> adding we (from core-mm) might have to touch at some point.
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 1bc7acc66a46..e6151732b17c 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -953,23 +953,25 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
+ 	void *p;
+ 	int i;
+ 
+-	/*
+-	 * This needs hpage_pmd_nr PMD-order allocations in a row, which the
+-	 * allocator will not supply if the PMD is very large.
+-	 */
+-	if (hpage_pmd_size > (32UL << 20)) {
+-		ksft_test_result_skip("%s: PMD too large for fault-time THP construction\n",
+-				      __func__);
+-		return;
+-	}
+-
+ 	p = ops->setup_area(1);
+ 	ksft_print_msg("Construct PTE page table full of different PTE-mapped compound pages\n");
+ 	for (i = 0; i < hpage_pmd_nr; i++) {
+ 		madvise(BASE_ADDR, hpage_pmd_size, MADV_HUGEPAGE);
+ 		ops->fault(BASE_ADDR, 0, hpage_pmd_size);
+-		if (!ops->check_huge(BASE_ADDR, hpage_pmd_size, 1, hpage_pmd_size))
+-			ksft_exit_fail_msg("Failed to allocate huge page\n");
++		if (!ops->check_huge(BASE_ADDR, hpage_pmd_size, 1, hpage_pmd_size)) {
++			/*
++			 * Constructing the PTE table requires hpage_pmd_nr
++			 * PMD-order allocations in a row.  Whether the
++			 * allocator can supply them depends on the memory
++			 * available on the machine, not on the kernel: skip
++			 * instead of failing the test run.
++			 */
++			ops->cleanup_area(BASE_ADDR - i * page_size,
++					  i * page_size + hpage_pmd_size);
++			ksft_test_result_skip("%s: Failed to allocate huge page\n",
++					      __func__);
++			return;
++		}
+ 		madvise(BASE_ADDR, hpage_pmd_size, MADV_NOHUGEPAGE);
+ 
+ 		p = mremap(BASE_ADDR - i * page_size,
+-- 
+2.56.0
 
-Well, but if people are using it in the end, I think it's justified to supp=
-ort it.
-
-> If there is no good reason for the complexity, out it goes.
-
-The patch doesn't really look that complex though. It adds an additional pa=
-rameter
-to move_pte() which adds a few more lines of code. Not really overly comple=
-x, I think.
-
-> Because otherwise people will push more and more for removing legacy supp=
-ort
-> completely, and that's not what you want, right?
-
-I don't think it's fair to make the kernel exclusive to very recent hardwar=
-e only.
-
-Adrian
->=20
-
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
