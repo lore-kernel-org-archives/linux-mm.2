@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B87606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 05:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BEE606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 05:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kj0smSbf
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PM7+JxHl
 Received: by kanga.kvack.org (Postfix)
-	id 370CE6B061E; Wed, 28 Oct 2026 01:11:17 -0400 (EDT)
+	id 656F86B0620; Wed, 28 Oct 2026 01:11:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 321246B0620; Wed, 28 Oct 2026 01:11:17 -0400 (EDT)
+	id 5E08A6B0622; Wed, 28 Oct 2026 01:11:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 237046B0622; Wed, 28 Oct 2026 01:11:17 -0400 (EDT)
+	id 4F77E6B0623; Wed, 28 Oct 2026 01:11:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00A9D6B061E
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:11:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77248C025E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 24B026B0620
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:11:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5AF4980258
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:11:16 +0000 (UTC)
-X-FDA: 85370861352.30.75B3C42
+X-FDA: 85370861352.25.5853B99
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D5149C0004
+	by imf23.hostedemail.com (Postfix) with ESMTP id D89CA140002
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:11:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kj0smSbf;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PM7+JxHl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793164274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DUbseAYEE+G1IqK7aQUzVK/2OJ86R8Gy/7HvczyR3XM=;
-	b=WDd2dGrirHegvf1RNULTeYckgTB9xJifmCWdvC/RVXV7HbSKzytn9SArC+NOdOTraxKBIH
-	ISoqy8i4iIJYYeOvb/1szRZ6Rv58SMq6tdFkqciIl4oejtC6w1nxMTMYoajKaFoXxqhdPF
-	VCFrrJ6+BtxySyN+AlBxPqpFSIgLd1I=
+	 in-reply-to:references:dkim-signature;
+	bh=3pS9CAQrAJLVnQcJS9FSWP6kxBvqhToAiMsGHORpn34=;
+	b=LmSzHm7OP+L/0Jx7TlWIJarl6r98U5uoSOpsY8AnaN5oBYJ4zH+JUDSn41FjL5HcMhYamN
+	TOjRazU1z9nmvzhJmU/s5JlIH4WH+5lzrxSTld34lYA4JB0OggyfOe+6f2s8gQt8UVESxN
+	ysIMYNAd2/Vhy2mJL7jpC44L+tGwrXI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PM7+JxHl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793164274;
-	b=QIhzXlmg3AKlnaSC53FHUm8BF+3M4C+z07TMvnwh9mpSA5ae/6twwtcc4HSkk3ExPMtelJ
-	AAM3eSHDprywsC10zeu4H5bfjI0O7+pNS2nF05lysWeIZb1YUT7yXADftahDycCUwwRjw/
-	/O1Np2dYFaxWJZKzm2zlDvuSv818t7c=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kj0smSbf;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=ta3blz2ZxAYrwVMYBGHuzbNJe2ZAQp6ZeMoHJjBzaeRKAWrUXZftxCuR/pWwQHi9vNKl3r
+	6LS5t81KW9ww3Nz3LRyriT4eE+OIb70kPhv5/Gd1lI4vrfTnG2Jd1n2iISPU7jJdArSamm
+	zYs6R+eIE8R6/Ai72pd970sGJ8F+DM0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5E5C43D5D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 41A2C43BBB;
 	Wed, 28 Oct 2026 05:11:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E22E1F031E1;
-	Wed, 28 Oct 2026 05:11:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0B71F01828;
+	Wed, 28 Oct 2026 05:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793164273;
-	bh=DUbseAYEE+G1IqK7aQUzVK/2OJ86R8Gy/7HvczyR3XM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kj0smSbfq765ieYkOtcDNKd21m74Hmrgr9h4jcU744iWhuoJ1yOnbBrSOso1/1DPR
-	 Ra5iRzvNxojssI+OjwgF0qYzn/xHQLvquuKVW7yUskugHLlEw0wh8ny/eqLSfGBLTF
-	 nbvjfhwZp+4GdHwGUjydfITMVQNO/CJrovr2mQkjfe2r4ZqOcD93WNGxYBwJUff8LH
-	 uPW+lAI2IqkPN0CfwOy4P6Sz6W0O2FiLBITI7r6RzPoqQ+5Bfl66eqGDDUgKhMlyiU
-	 CHfPcVEM4RyMzEJpxRoomp4o7IGm5NOoyZSUyi1vOpPawVWceFme2fyWe3ZvcUAlNy
-	 qZoaaWZEGJ+IQ==
+	bh=3pS9CAQrAJLVnQcJS9FSWP6kxBvqhToAiMsGHORpn34=;
+	h=From:To:Cc:Subject:Date;
+	b=PM7+JxHlWTwo2Ik9zg/BlT5FVYX/ie60vqdCZjcrhWFWWzCyH6ykp93wUbG+o75oY
+	 Gw4ehDJsaYvSWssTO51ia3ZeKLh5GLLECO+RywpdBtah8+lTKRGi1sPTl831Oh5lYI
+	 s9xLvllWJrbMj41XwUYMZM8HA01P/b4u8j402n6/HSWn+IxVMJz6pzrxV62U0gGEd2
+	 v2w7WQEu+DIORlwX/JNamAzGpntaT1sfC2kt7UlYqHnt03DJwms9HUGsa9TQoMABxM
+	 SxfsPp3KrIXD86L5mFA2JA0QIFA4RQeRIZDHfP8wFqy5D8ivgigHHXgmzDOwPW+2RN
+	 3/zasmou6Hcdg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -68,27 +68,25 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 6.1.y 2/2] mm/damon/sysfs: put target pids for apply_inputs() failure
-Date: Tue, 27 Oct 2026 22:11:03 -0700
-Message-ID: <20261028051104.154232-3-sj@kernel.org>
+Subject: [RFC PATCH 6.1.y 0/2] mm/damon/sysfs: fix pid leaks from wrong error handlings
+Date: Tue, 27 Oct 2026 22:11:01 -0700
+Message-ID: <20261028051104.154232-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261028051104.154232-1-sj@kernel.org>
-References: <20261028051104.154232-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D5149C0004
-X-Stat-Signature: zzmhpdgiycd196w7ho9tfcnb4u95wczh
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D89CA140002
+X-Stat-Signature: rkde5a5abxwuq49b5rnmws4gctuatw9q
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793164274-933824
-X-HE-Meta: U2FsdGVkX1/5aot3+RTM1njXvCfLEhIUtNkYrgfRYJRR3yrKqhk0v2I7Bubumy2LUTtXsNwqUxiPwKxQZ9SQWVFePhPUI34xcvDNK3/KkT8rOpt1YDTPQSElF+gbOZ/w7Fz2yeyWDS5G8vgy8ZpB7RsgOHvKaZSYADbT7KRMwu5ZAPEpLoA9TjVlbtAYGks/EAQLdw83N03y8sshT5yzIAAN8YlAJiGoLRghYXQ8AHZAZsgOOjA+/oylWVVeVTQP11vMTqYxjGV4J1WFYkulGwk8RLm0He4lfrqiFW4PZtkaBbW/vLpCft5e6nK3lj1iDNEIJedjUDNR8XcYliGqC75W1NBCydM7+MZ5+nh2SJ1/b5opPzGhP/eo97LEDpcGejtXMFKHO3u+IDr9qgBkb0hEQDsQRYcTaN7VWDGynoLTjarsuv/eV9ALV+ybTdQyPkiRC/4oRwCcNWtfDFXAjaVzAPh0QPMjczyTBN8/o8Ecld9pkGy5NJ1u73cV+C9kK+eWx4J+xecsoi3+5bEW9wyKqWqJHVn+vJ7xiAfk47YLZhJ5jQwYDnyyUuuIpXUnwM9O+6k7z5+mxvf5c8KLCMIdOog7MdBnrny26LKY8RG419UPnbyBHh9wu+faNB1s8Zaeee8tYpE8nHH230wVu3mcTw1Rby2gcOt7K00YZgaayPJatfSRCCy90R7/xoeBq2nBgQRP9qR0fsEQU6fSVa5ZGNKAV/zuQPqNzRS4oHQOVHgwRvi7oWppqGa3TnQxsVqoJMbJzBTq70HGKk+avxYCoqmyx+zLjYdYZEoJKXiM1++BVG7dAvUlPmdmAVM4pFgcD5vq7YKYAbUxX/WwL8tgV2BW4O2wO3kXnQ4YFFUyBuHuBxaPrdAVE54jWSPs+l3s1NG/ZLm83nti6g4xOBXgzesUAC3PKlF5TFosf3CkWKTkqHlVAecwuStAYZvSoXHjtqK8AkdCKtjOxd9
- K6mJTP2M
- NT1nzvtBwILAIqIpg8BYdcf6hrYZ8LPlY5Eep8wD96uc955PfvA5og6PyFYGs/b0ItcAiTcP+uDvymrGPJTXmhvUTvPgZhVkrXoz4Xo32khQamhwmG/j4PwCY4vOt9oh2zVvqz+RIAAEPIp3MW7LYTxm0fdNVKq37LmfEsrfa9sdhH73GVaWjADVGqfyj83qE3Tzqjm8YzB/i+hhbfglj6fufIpWjkXl5zDBkwzTHqbXCd7pQ3pYoLLR1MqpxEAQavoVR7/C6UaSOaMx4nv8WQrg5kw==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793164274-180350
+X-HE-Meta: U2FsdGVkX19dzj0e9YZoiC29bZsPBttb4u7g/9j2buL8i4+SAAV3Nghos5ESzZ/hGB9YhIR9OvwzXkXe3BFIHk061lsFjVglT3h6C529alSqRgUUY/PXYm0HYCGoN+18Aygcs0YChomcz6mOn3oTQMZuD6LsZol43nrLsdno70OlKq4On2hZ6tT68BEOARSpt3DScImO9sCOSlKjEhH8q0lpPqixfzCtnlrGTEVB9y5q34OofMZLtpiUcDEYK7T/Q+bg0Acrvmu+dg/eyjhNw69mfBUcJkndkRaW6A+54bVQCz9slm3ykadE+znWH7kWNvsOqpy4BZ9gV7mXQfXX253Q14hMJp7O9bdmXQzRUa5MlRuf22+PwpJbTqDI/ekT2cDo0HUJDAAX0Y/333etTcCUy4AF3bxUSRmv1SiK1Z3TGjEsQZZeXGyh8w2wh+V8Em1+8Tz8yf67MXAF4CDpzM2SGewOVfSLmRcIZYbA29myU7K6OMH4fZ2RiLxPsPuT1Z5RK/CJQ4nKuQ1t3RWhnNzez+uS5WSgTOyOlgkLNXY3LeZ1ZBjMPttKLo6vJEr9IYah35329DY8fyq/IKn01kcO3m0a09JBDEXAM5pWwj5lewOPVbEcItclhXInqN63cyQSIGIWWyIjvcnwLATrOWPPZq9+FsjGaHzijGg1Hj2XStOAnB5lKYsooII5pNe31DVZ4+Xb49Bc6Epq+fsnLLoahC/9roKuGDYmt65i6YwDPvLBvrxMpUKSRiZuY1Gd03aV0B+7N7RQ0rkGUumktE2xJgmfYpZn6U3OSGMcndFXTHgY7wf6HcdaKyv2M5amNtT4HgANNkkSPd7WEnMAMJI5NtRW1M8ZYLN2QAyb77/GWYuzolN8uZX0hakbGmzYtvhG8MHettkbRU3G9J59cThXRwGChKyo2ONO4ho0y5mN6CdkO9rLj0erzNRLi5RZ+rJXy2KxIilREAAMDbT
+ A+7ox4MA
+ ktEjsbA8TINrOPgOeKGaZrTeKiCyKNEMDbZ+tRJeX7++eDYp9OEXHp570mum8ZVDxAbpTW+CHmvi5vXhhlVmsztJQmLggCr8JziVkWmmjspazyBdAFmzOvIjDTbUcojaX7lwHM/DySdSTVAsiw3tc/rpnwm5SdjbKcdxe7HEyJBX6RNCW9wsMIFW5eyDxAryTEtEDm9tfaMG4Mok=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,40 +95,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-damon_sysfs_build_ctx() invokes damon_sysfs_apply_inputs() for setting
-damon_ctx object with user inputs.  If it is configured for virtual
-address spaces monitoring, the setup also increases reference counts of
-monitoring target pids.  If the setup is failed, damon_sysfs_build_ctx()
-deallocates the damon_ctx object without decreasing the reference counts
-of the pids.  If the failure happened after increasing reference counts
-of pids, the pids can be leaked.
+DAMON sysfs interface can leak pids due to wrong error handlings.  The
+issue in the mainline has been fixed with code refactoring.  The
+refactoring is done with commits including 7114bc5e01cf ("mm/damon/core:
+add cleanup_target() ops callback").   Porting all the refactoring
+changes to old stable kernels will be challenging.  Hence submitting
+this non-mainline hotfix series.
 
-Fix the leaks by decreasing the pid reference counts before deallocating
-the damon_ctx object.
+SJ Park (2):
+  mm/damon/sysfs: put target pids for damon_start() failure
+  mm/damon/sysfs: put target pids for apply_inputs() failure
 
-The issue was discovered [1] by Sashiko.
+ mm/damon/sysfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-[1] https://lore.kernel.org/20260730040740.140836-1-sj@kernel.org
 
-Fixes: 74bd8b7d2f8e ("mm/damon/sysfs: move targets setup code to a separated function")
-Cc: <stable@vger.kernel.org> # 5.19.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 4b28bb9ba0a24..b9b80d58e5bd6 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2515,6 +2515,7 @@ static struct damon_ctx *damon_sysfs_build_ctx(
- 
- 	err = damon_sysfs_apply_inputs(ctx, sys_ctx);
- 	if (err) {
-+		damon_sysfs_destroy_targets(ctx);
- 		damon_destroy_ctx(ctx);
- 		return ERR_PTR(err);
- 	}
+base-commit: 969f73b24b91eb0b5042d4d7b26b4bece1f27d18
 -- 
 2.47.3
 
