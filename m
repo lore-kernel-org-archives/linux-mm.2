@@ -1,97 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46B3606A324
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC727606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=izn1ZkeJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SNqNQyvg
 Received: by kanga.kvack.org (Postfix)
-	id F33466B05B0; Wed, 28 Oct 2026 04:18:35 -0400 (EDT)
+	id A2F776B05B4; Wed, 28 Oct 2026 04:20:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4236B05B3; Wed, 28 Oct 2026 04:18:35 -0400 (EDT)
+	id 9DF416B05B5; Wed, 28 Oct 2026 04:20:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DACA76B05B4; Wed, 28 Oct 2026 04:18:35 -0400 (EDT)
+	id 87FC96B05B6; Wed, 28 Oct 2026 04:20:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B5F196B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:18:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB1A0A0C54
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:18:34 +0000 (UTC)
-X-FDA: 85371333348.14.1EBA2CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 060FEA0009
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:18:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=izn1ZkeJ;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 404846B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:20:34 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3236C0BE1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:33 +0000 (UTC)
+X-FDA: 85371338346.10.C86B857
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EAF3B180005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:31 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNqNQyvg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793175513;
+	s=arc-20220608; t=1793175632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rfg1cZlJEwCYeHTThqQx/kzAjyEawogFMalQMObgNNs=;
-	b=heJo5vTXGMmyO7oWg6tzjUkzQU0Pugev/ate1Wbm904S763WQQHKThY402lXwVfAmUjIDp
-	R6dMw/r91vOkcX+PaEk7NXLMR3QSBDgmVnq7Zqa8XmFIu9vrARbNqFKfIMeQDaB1OvLkZV
-	6e1vOKsIVDtrDmpwIxgJoQVO2vy9rAY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793175513;
-	b=iQt6kyV4K51Y8JPk6AFPIhONPue9Sh6NOzKIuS8WPN9vAsgoQGKZxz+Ogzc2PXg/L6qqwy
-	hCg5qq2qF26KLjogZ8h/KBbQRBJIGHq6cY05HOBgwdyBnm92YmeZG8rUWmfV5K2T+GOhx0
-	kyVnj+EUgjX0EI3Jr1KoHGVl08JLkIw=
+	bh=FU6Km7ChT8wB3iaSth+F3/69ecBIaf5N/Fzbc/bbo+s=;
+	b=Wkj24gX419h2RsD/E0gbxJeECJ80mEoFlbMWTZYfzZC1f9dA494okjwHfJyOg7s2WV0SPH
+	cOxjHV1y5FpL+zF7mh+Vskrq0qwo2t3upm6sD8QJSlm2sLFc9H+PdObUjeZzQk64FZxn3e
+	3ZOPippOtMhgJWT3XvwXHm9NeIreIgw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=izn1ZkeJ;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNqNQyvg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793175632;
+	b=uenfLAPjltQn0TYhxw/XVLjzzSiBi+Vcg7YeO28aMUl1+zpJuriy0KXWc64cRUQl2s5STe
+	EPZcoN9XgbuOaipyXif4qmQL2qGbDrzs8P2sc7aduyTMOwrOg+q2afGvpLkI/VUL8sBTNh
+	WTETJsgkp8BR5UxmMF5F7skYrwWHRx8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E80E600CB;
-	Wed, 28 Oct 2026 08:18:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE98A1F01825;
-	Wed, 28 Oct 2026 08:18:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F2D341790;
+	Wed, 28 Oct 2026 08:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646B11F01825;
+	Wed, 28 Oct 2026 08:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793175512;
-	bh=rfg1cZlJEwCYeHTThqQx/kzAjyEawogFMalQMObgNNs=;
+	s=k20260515; t=1793175631;
+	bh=FU6Km7ChT8wB3iaSth+F3/69ecBIaf5N/Fzbc/bbo+s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=izn1ZkeJiAVyrZlZw/L12WrwvmU9O9TkhkIMYNeFuVV3QwF+dw6E6BnNte8AiawuX
-	 V4xa+DjVJZXhwb5An4LGNvsgrUubDnomzrscpG6wexo/M14K7qD7WbjYWr1SfVEaTd
-	 AMkXsm0mtFAhikKH3fvL5DsiOpBnOYXnOslQmQLqvPGzEO+Fzs5Jel7RNmnq/bYJFW
-	 wzwgIjUhuSDrcUKqPEirYiuau8fXKzIffDyoMU2KiJUhvgXXCjqI2ADqU4XbpQD0Tn
-	 pYDUfJZhkBy630Bqk8DYa2RyUOuVUbSxoXiHNg6m5Poej1wzj+GJCLIhuEFesgWzl1
-	 NnCJrrGyNgccw==
-Message-ID: <7193e4ee-c5c7-456d-91f8-ef6f465f9803@kernel.org>
-Date: Wed, 28 Oct 2026 09:18:14 +0100
+	b=SNqNQyvgTJLYYki1VSd8Hcl0rY46o6Ox7LSXYq2rHJNhZE9s/g3SgZzKk9TbyXUej
+	 QsuLPUFbAhBZHeHF9UWjLtam007zqSERpnh+0tGF74wfWrl+sLxVERrxh0sBw/OOlK
+	 peUvcnC/7tdlAtykO+TZoTPoFFw+PB3f3piMINdC5IaYi/RN6nqY0rSmn8TNYUXbmN
+	 gR3tsZvNx9LO6bnBOLFwK5LVL9+iXZdynSfHTGPwCtgL75QSBCLou55YFOuqsxmPFR
+	 f88pw2cwS9M9t1RMNZr3D4E94Ab0LPajqMQgHoQgM1wtehcupx1k15Uja9JjYn2IIV
+	 l8lmiV4u8XSkQ==
+Message-ID: <6633e2c9-d4c1-49f0-a4a9-433fcd8b3337@kernel.org>
+Date: Wed, 28 Oct 2026 09:20:12 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 43/46] mm/vma: don't leak the charge for stack growth
-To: Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
+To: Barry Song <baohua@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
  Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Alistair Popple <apopple@nvidia.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
  Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
  Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
  Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
@@ -104,8 +104,10 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-cxl@vger.kernel.org, stable@vger.kernel.org,
  Josef Bacik <josef@toxicpanda.com>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
- <auEJGq46amG5oPVQ@thinkstation>
+ <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
+ <auB-3BQn_rR6IfY8@pedro-suse.tail5790ac.ts.net>
+ <22b819a2-631d-468e-b724-770caf9f94e4@kernel.org>
+ <CAGsJ_4z3qgCPBpCDitVTq+xiGsS=-yEhKSbEO4Lbdn9MVAHK0g@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,22 +154,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <auEJGq46amG5oPVQ@thinkstation>
+In-Reply-To: <CAGsJ_4z3qgCPBpCDitVTq+xiGsS=-yEhKSbEO4Lbdn9MVAHK0g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 060FEA0009
-X-Stat-Signature: spfga6bnpcpdz98i13jub18fsym4gh73
-X-Rspam-User: 
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EAF3B180005
+X-Stat-Signature: d5ef1u4bt59wo9967n1hd6xb6bbhq54c
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793175512-591614
-X-HE-Meta: U2FsdGVkX1+QomXstUNtYhatC8WYPGWCI0QqAhZCdIARX7iR234doe0Lrg4wsHIIypk1AzSfeumE7Mu/idlf/viMAHBTRsEK1uABEXd/NqwcqX7wcDPQL0M9stR1723nkVloKdxvWQKleuOEXn5k7xom532NoXeiuUIXOV+GsBW6ALL9xRqq3BLlbEHcvh01LG/vNpsOfaJ9l2bHS4T8PoCDArVFuPIRcIvNfy2RKewVp5SZMba/RZ6MZkt0kE1JtZ3kONQE9vw9vy9p6qM0Q4u1eGanJSr41zxpuYuZz+R/Bej2MjCB+H0IYvjjDN/zDN25qKmVz6C6wkOcQqwiMBxv1UHG+G9rWRH+E95XCtYhIzujy/648UqUvudO6pCSvdu01MlxfAstzGS5Svq8Wqj0glclxNTMVi0sq0OggrTZi+jhG2MB64NQLN9rrlinrYBH8B+PDKbEr4BWAM+D361102cYXEx/Xk9R8/b4pEPhKwd3PMz8RSXaT1GPZB62z4an7IRVIwGFvat12WCgN/tpR9YoE09ZczHLbivbVJduem05apvOGhLZhtT1GNDZUSK9niHxIiYLMlYhTrjoD/ezlFvAIthkJfEK1fmGVUiCd/XzW2jRFGIFE+rNdZ6kQSo17+Ptg4AVD++WXLF6003Ujsb5sN1Jfkeskm2l2pnKldY5C2lKePm7pL0JC5W3zy/OY4QIu7EcW2KY3E+GIRPShSnXFUIbKxbioEiOAt6E36vZq2yMIpxYDbyYBhk8dgjDaYMPjrfCUBXBF1GOzQmhPyGnLL2l3dyYYciw5TJLMnJcVzUKM9nKa7pRFE409AKtf/iRwl09hT7Pkjx4EQrYp8OnfLkqN5lflvhZlbNAQdCkIuYPKaeGqWBZP1uCTOvd33ajbcqpb/2Rdl9l91bmtYwYdejEzFtb7XmHZMBqHgSUpaKNBwktgF/BWFAcurwyc2oUi6FlkdGDCUZ
- gd0I/cOI
- 6CEnlEWZUyRDcIXV31vTatvjMSl66kzWurtLcJv7VEZ6J7Wcm1Bo0enztV2T1hunSqIkbmaXyACzwm1OHuYJhQR+56H37KJRT9Ir8b2cF8UponQSWhnmFekUxS4hRkzGAM9OjpNQ+BKluMGXvcl70MfHVUb6uYQkpC3RK09f+NziQ1CBOrAu4YbaOxuIZopN1iWmWPcLR8RWlTBeAmH7czGePiOL1KeIDuEKgI3U6oVUcZskiPcgwV/DROoO2mehOvAw5bC1dRBYSWQE023wSyu4KsTCeUE3JLP5/m4L8SG2LQYbgg2n62BNNXAOcgqNoT22eTDh8O9w3BGckbyhZzHMN8I+cK6m6Go6KMXP/0Znfn7gXSQ3yTfcIItoIjoC5hTEzX2N6SEMImOwiySiEVRSFfXhGB1hEOJHT
+X-Rspam-User: 
+X-HE-Tag: 1793175631-200232
+X-HE-Meta: U2FsdGVkX1+/HBRGCR931aJZQTl6biTU49WW5TZ5dn3oenPf/n5ihIWKsVxNDKodPLAsSyO+c8JmjrFb2aFrtrGh+XDu4Ji4NLHjIh20IpBp+aBhekDm4fO2o4+9agT2ygidgn6dBtSvhfrGXESsNn1OSn7Onq5H/XKZxOppAFt6/HS7wBXCriTeKe4cD/p9pq99/oyB5Xapwksj+09rhviaUP/Uf0eOl5Oi4HF/SlqsgUi7Tcx3aCNnCvdsP3FYH182UDsZcBOwXgF0X58+RrC0nLg6swndS9hwBDYn5xdos3mL+cKJ9edKCxjX7Ik+w+B67OeDrxucwGsRO+1I5XjT2ULhqkGx3Yw9VBIdcLKcppk9t/oPMIuOqwaPStmKiAYf22O0UfqJoQLf7wkYV1l4+UCnN7Bi9f/KnNyWI/Fx/GCtB58MxcV/yo4WVSQHYIQ4uRxCwdfKwmTg2qyitsXy9t20ktMRdlbLjqS3jrJUUM09hkbghQ6qZo03c886f0RmKNthst7WD2Moed+e60iazhnqfSKc/0FBFxFMlYPF97DtBRZYNvUmN3hwF110Awc1Z0wGouhINnSLQ7U/HgsoYRiBrPPNqGWSfozYX+K78s9nq2yzGxQA7NBR6b95hLhzw9x4biX8RMSy/FrlV8bgLUfOShfOAEpbkvw/8uA0hL8un3N85gvTz6A8iG9fBWaU1xZRCmmbzLy/eOwb575xRhuj9dEBVtuuFqXZCz7TAtzcF+OyGeAIbZWo1Q5xrc6Gk8O4OlM/ykFCrk952OMulXRyFaz6FH6SbqOnlxQGe2oyTkDAgnv8S3m58EIOrtzdOfuidF3PjUrhQK2cqqO9JN/7lmtUy/SlREnrT0e5y4+0TIFYGA7KVq424fEy+7blYyf8CVokkLvqPScFA6Y1NfnLbLo5fZ3Ow6w/2sZtz7ZeqWnuFtAyHE3vdDHVQT+2HYkc9+OOM0mK6Te
+ JcwlN3fv
+ NfPS1s0sIQiebj19HEZ1VEnXAGSJjEZtMbmkPaBVht3erxI7YTyfG7kI6yAeDNbr/sIniHm4Y5A2m58Mvflaun7FQ3CPQJogyQorvqKR+ZziHQSIOegXhHokb08+O2KkmKUMUN8ipMoSruteJbf+oeS9H44J/q4UKbl2NFxC7xsdVQ6A3fx2HqvG29mgCIPwSGpv5hbs4Udy/xdEACeDeVek/NbgWcPc5GeuwJTiaidCtefsmvTkCWuEajgbjrzzmsYLPaLhhJWXMw8+EN+0dnSY/hj8qou2yQPw+wYaDHjd/aK95Ku8fBL3bekUZsXviB1UBDuB28NNyjr8u7OJSqUdPA9FJNODFVti6fZCo8UhIVPHHQ25y5vvEZz/DOYAaEwaDyODA+Prnq0J/iyAuHAv2wdY80++abQfmxFFr07/G0IwOGUMvpLLtTBPtrg4WVW6PxrZxCEPr4tQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,31 +178,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 21:32, Harry Yoo wrote:
-> On Tue, Oct 27, 2026 at 12:18:03AM +0100, David Hildenbrand (Arm) wrote:
->> acct_stack_growth() charges stack expansion even without VM_ACCOUNT.
->> This can happen for read-only or MAP_NORESERVE mappings created with
->> MAP_GROWSDOWN. Unmapping these VMAs does not release the charge, leaking
->> Committed_AS.
+On 10/27/26 20:48, Barry Song wrote:
+> On Wed, Oct 28, 2026 at 3:07 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
 >>
->> Only check and charge growth for VM_ACCOUNT VMAs, matching mremap().
->> Unaccounted growth skips the overcommit check while remaining subject
->> to the other stack-growth limits.
+>> On 10/27/26 11:38, Pedro Falcato wrote:
+>>>
+>>> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+>>>
+>>> FWIW, strictly speaking malloc() isn't usable in a forked
+>>> (multi-threaded) child, but glibc/musl provide this in a best-effort way.
 >>
->> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->> Cc: stable@vger.kernel.org
->> Reported-by: Josef Bacik <josef@toxicpanda.com>
->> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
+>> Yeah, I'm more concerned about other things that can race ... :)
 > 
-> Looks good to me,
-> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> Regarding the race with memcpy(mm, oldmm, sizeof(*mm)), we
+> still have one [1] even after this patch.
 > 
-> Maybe worth having a warning when it's accounting w/o VMA_ACCOUNT_BIT
-> or let those helpers skip when there's no VMA_ACCOUNT_BIT set... 
+> That is, copying mm_struct can happen concurrently with
+> lru_gen_del_mm(). However, this race doesn't seem harmful.
+> I might be missing something here though.
 
-You mean passing the VMA instead of the MM?
+Do you have time to look into the issue, to see if it's actually still
+reproducible afterwards?
+
+Likely we want a separate fix for that on top. (or mark access as valid racy)
 
 -- 
 Cheers,
