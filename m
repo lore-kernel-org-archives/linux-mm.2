@@ -1,97 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6971C606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D8C606A322
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nEpzLNv3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zcdh2eIB
 Received: by kanga.kvack.org (Postfix)
-	id 8FD1D6B05B8; Wed, 28 Oct 2026 10:16:59 -0400 (EDT)
+	id 6D93C6B05C3; Wed, 28 Oct 2026 10:17:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AC786B05BC; Wed, 28 Oct 2026 10:16:59 -0400 (EDT)
+	id 689DE6B05C5; Wed, 28 Oct 2026 10:17:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C2806B05C3; Wed, 28 Oct 2026 10:16:59 -0400 (EDT)
+	id 578A96B05C6; Wed, 28 Oct 2026 10:17:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 596FB6B05B8
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:16:59 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E18C580CAE
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:16:58 +0000 (UTC)
-X-FDA: 85372236516.22.9CB4ED0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1B2582000D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:16:57 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nEpzLNv3;
-	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 274B36B05C3
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:17:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B3FAB80CA2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:17:11 +0000 (UTC)
+X-FDA: 85372237062.09.1DCE5C7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A5233C0014
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:17:09 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zcdh2eIB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793197017;
+	s=arc-20220608; t=1793197029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=emSS8rGhFSAVh+HSifwB6oqPZ30JVlQSlhM7wMUoNhg=;
-	b=ZDLQoUrMQz87cUN+V5QcKx8Vypf2RwlYWrl1lJzLWAATr7SA0lHIWuMfFrlY7mRtJmq1el
-	eBFVV/d7JWYCKAeaedE1NO14Vjc08y+dmfkFP1NohyiZilkke14ISlkFKNYSAJbV/v05dN
-	RpCYA1dgaQirOxo0KIcprC/MYiHTo3o=
+	bh=KjE+Uii9HdIaARV62zaMQ61CIuncPf7bH8UJ3pdaQYA=;
+	b=eEHXHweRUadisjI3DWOC29ohIG7Ln0S3xTIe72IvUx9Urxglu1py4kGvs9X6wotgqxXB2a
+	3i3sr8BGYVXO/jdB6KLfzCabQZgcoMkb6tIZpqSjMoaJdllrMUmgQFgkWbF0rADBQyqC3u
+	8gU1J/R6a9IW8QTzZhMweSv8LnQBWRM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nEpzLNv3;
-	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zcdh2eIB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793197017;
-	b=073Ctafw6tEFrmovdq3+x0LYnb+8/lsom4t7ibVu4RYdgzepy0Yq3c44W8ZedRLeqzP9kw
-	DZFO0wkwWfksf8NpSvKgDOK26cyOCQ8qKgWi2YRSmwyMQ+S6IB+qqrvyV/3HWE/TVo1T2L
-	9oDVJlmjAh+84tx0i5kMeIbzYqqGbSo=
+	t=1793197029;
+	b=haz55IC7vZejNvyAtmx3AjhSba0EKiAneMRmcelZB8mWl1yNziLcO2tIhn0yT+IRFppPVl
+	2VSprDdXA46D0IACEyFLLpnTQY0TBNnFRkECCsnqVZnwAWfMsT2JDGe5/sZ9v23/OG1hdW
+	jJZeZ81+MOWsSRMLYQPoXuc6vKoJNMs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D4015600C8;
-	Wed, 28 Oct 2026 14:16:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D581F01828;
-	Wed, 28 Oct 2026 14:16:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D10F342DCB;
+	Wed, 28 Oct 2026 14:17:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A281F01828;
+	Wed, 28 Oct 2026 14:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793197016;
-	bh=emSS8rGhFSAVh+HSifwB6oqPZ30JVlQSlhM7wMUoNhg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=nEpzLNv3PknOMyHQDCqjJNXNxk/Uc/Xh6hGOvqmAGnYRM75hq1XI6GjwGRVh3QDUU
-	 WPyMbIJ96JuiX9TIfrkO7CHN68+xWENn8oz9SnBTMQTtDod7Jw+YJSqjqKB0z6ueQY
-	 J+YjJc/Tp5PBrDEN9hIQo6SKn5oz3hKTGYGOCTydvTr5e4+QLq14Y2E28qKbTLrpO2
-	 2DthOftJEg8ZxPlmZOeZrR6Bu+RaBacV3FP84D0QE51AGmBqfDN7DZMzEAwYRcikXa
-	 cu5ouLFHOwwZcrz5yM3YVxIOLEklM3lPuD/O0NMM/rfTy5E/nfNz73pg2CuQsm7rv6
-	 wHzuZ3koXF/xA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,  <ljs@kernel.org>,
-  <liam@infradead.org>,  <vbabka@kernel.org>,  <rppt@kernel.org>,
-  <surenb@google.com>,  <mhocko@suse.com>,  <baoquan.he@linux.dev>,
-  <pasha.tatashin@soleen.com>,  <pratyush@kernel.org>,  <graf@amazon.com>,
-  <linux-mm@kvack.org>,  <linux-kernel@vger.kernel.org>,
-  <kexec@lists.infradead.org>
-Subject: Re: [RFC PATCH 2/2] mm/cma: reject CMA areas that overlap the
- kernel image
-In-Reply-To: <20261014145731.3431527-3-radhey.shyam.pandey@amd.com> (Radhey
-	Shyam Pandey's message of "Wed, 14 Oct 2026 20:27:31 +0530")
-References: <20261014145731.3431527-1-radhey.shyam.pandey@amd.com>
-	<20261014145731.3431527-3-radhey.shyam.pandey@amd.com>
-Date: Wed, 28 Oct 2026 15:16:52 +0100
-Message-ID: <2vxzcxstoqp7.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1793197028;
+	bh=KjE+Uii9HdIaARV62zaMQ61CIuncPf7bH8UJ3pdaQYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Zcdh2eIBUKC4hwGul8m2X99COtLyRxU9I1tM3K8HNMrbYYnTTWhdHlgLZ8oc9hQ0E
+	 hkij64PMlw2B35u30Io3tH3HsD0bNhhXsgX59QJdkIQoqrmwecSDeQzG4blmv9KCKs
+	 zpbyI7gIirKXkwF2M7UlINaw/GRVFmWIbS7pSH3TIHgpDG7aJwpWbBcAaNwEJGxUg/
+	 UUvr1CGfqhw8l0QXJXNBe42SvHDAw91meYdE2y4qqF/osXsIl4NB3bv5lDIrCwlYfD
+	 WJwEisb3g4Fv+JB51XtPrQYsW8TA6hHI6AdqdFh3MOkHtw1CHYKUBb2HdzBgS8AyGI
+	 CnOSlmOc8ymzQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id D36591980047;
+	Wed, 28 Oct 2026 10:17:00 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Wed, 28 Oct 2026 10:17:05 -0400
+X-ME-Sender: <xms:3APiarzKAOrcCYp85okUrZ2ipEC1s0_1ePxXIfY-lxyVQMiegoW3RA>
+    <xme:3APialnQLfKLFrYVeEEVADA0jAmf6HH1ltvAfNtwvNPkBuO2C5Cpsma4S1o5FTtj9
+    VyCwbXtl-zUXNXPceKZODaNKjyKNXXbQUbQBhiWJHMUBUfJzNv-7Mn_>
+X-ME-Received: <xmr:3APiakHTaLOPvpay-J_NhtjKgcQ_ww__mVDZ3LIB3wD_2Z2fanEzh75cX_w>
+X-ME-Proxy-Cause: dmFkZTFBUCDrd/5ordvcAtkU6JjR9vrPimb+UYxK8G9IVcsl+hsz6Ui5my93/MGWrjS87u
+    fXqSgPXckr17WjUL+tJxx9X6tIeCr9bfJMhwSdRRpKBvQHhzUHHeuF90VW3GvmiAwMBcQx
+    Rf2Yec/qkpxdmRN0gn81nfMEtgtzr9xle+Sqvm4msx4Gu47eXQusCRI+UTCHDaQLpM88Zw
+    rA2KSpwrrNtwy3hNsymytz/3zQf5zrQhLIfZgGCnRsgT13HdYXLGRb5Hfufh9/xN00Sw7j
+    VoUYeEMtfP62ZRJRgpiIZ1sb8H4pSmNadcRIVzTJpNxYLEIHjCh6+OIkfWTl5h6WIw54gA
+    KE6JNmsl7DeQ0Kg8mW/mO/uEfAd5ourm2uLsVrQyqhxYxZW46VXJE/JyALAdTsn4tHLHQR
+    9J3XB/OTW36iz9yadG/flUPik6iZcWFmEGKzsegO1g5puDzneN2xiaetmpoWF0UM5wnKqK
+    MFQ06f2mDmplk9n8JKhi5ClQ5Fqm71Y2Jgt/24wpthhs2MF+1PFVTNqTJDk2AJWHnLl5y8
+    ++hBW9M77S9dYUxy+BMYF15QXjLxOsg3nNoK+b02p8kN9M/KDQpW6b5xHKMmV9hna2Qdc4
+    F2kZ6V+Uw0HniFG7WD/kBET6ZxUz0YZm4Xr7zmI/BK6THBFe4X3S7pitIvXA
+X-ME-Proxy: <xmx:3APiavvE6bgdYAFNatLpfiwUmYDHEf2Vhcf47WwzCbXrTusVjOa3qQ>
+    <xmx:3APiavmbcczH63JKhRwHD1r6QjyCYmIrLFH_oanCxvKE4F4WEB5DrA>
+    <xmx:3APianwxi9Dw8YGSVfLzE8GTkVg27tEhM9sqm9dz5SzZi_IXUNaZCA>
+    <xmx:3APiatyMDZq22FQv9KsG6a4USfJlj0dx88WiiH47AEK5QjqspxFgHA>
+    <xmx:3APiaoAX3LCP0OQaKpTMG_-mBpGkeN7sa6qxLJajKmYN5axko5dE0bEh>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 28 Oct 2026 10:16:59 -0400 (EDT)
+Date: Wed, 28 Oct 2026 14:16:58 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
+Message-ID: <auIDteFAFYTihu4_@thinkstation>
+References: <f3f3aca9-bdb7-4aec-9099-9fb63a60e61d@kernel.org>
+ <auCZFckDfBMrlfxV@thinkstation>
+ <070DDE5C-2183-4A8B-AC2D-891CAE15E581@linux.dev>
+ <d7a634b6-8668-4753-8bfc-e9334dde705e@kernel.org>
+ <4A32F5E6-977D-4720-8723-B19AFBC08FCF@linux.dev>
+ <auDkbDlgSZxqlk2G@thinkstation>
+ <7cb3dd91-f518-49b6-b311-9ec807b3c63b@linux.dev>
+ <20261028080635.GD2668804@noisy.programming.kicks-ass.net>
+ <auHxIORufMbldrBr@thinkstation>
+ <20261028133439.GK2668804@noisy.programming.kicks-ass.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1B2582000D
-X-Stat-Signature: p7gphoib1ebxaabekh6ypuxwefnuijxr
-X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028133439.GK2668804@noisy.programming.kicks-ass.net>
+X-Rspamd-Queue-Id: A5233C0014
+X-Stat-Signature: uzb1nqoj6qn8mt9g8fn8wytpkmctbe16
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793197017-599073
-X-HE-Meta: U2FsdGVkX1/26DEn0QyVmykp98PsKl3BvRij/367e+Ku84rtQIOJlHbN0hMkr+XFRkR9m6Nyz8tDhrG5WnJtoZO3jA+DApoHk0GsdAvitZx1c9Nleu5fdmglJQRFnaXYFtCf81R0A7nC4/oF3eCr0pe1gc0Un+SmQU/zr4KU5uNUwGVHjpPic9OW3yUoMajp/JpbWyot0VrVNHAdboFbhiUrUq+o0hNLLdyxd1QBxHPKJbx9GfqY2jsA4/dV+ZAfVOhkmqKskoGw0JlR4rI7xwOL5Bd30XdklpjxalVXMiXsAOvmK42LGCvux6WySGjiTlxRnHsrJ7VdDFMQhncYaxoDPNAf/LJRWC7HklUq1V0HTlCMpB2aw9NvtVuX6CeaUVdGjxCbxelS+sxH3AjiVMeIzzP65V4QWO6fb7KBAtGwqwmQuUtPHPdcjh6o9rBSyQVv3vd1jF64qTWf6FpDTyRVRRf+edlzDCPI0CCVmgWgm0qAlxYCmCgK0eTa3EofS+/kJBANtew+0zc+FpJeAsUcpR/SUcqfLLb/oAkNondTvnfODb0iA2N9ijpI72jUSVMvgmA7BiQjVIXzgNg9I6zhsLg27c6EgqfpgPb1KCLUFpZ2Enm5T07BqOzXQDs18CP91p2R9NI/w/Zz/urDtQpW9v+DnHCxPHjVUsFaNC/9f40LxPS1Q1eTwcqMc07pbzc+gRf5dlJy519bY7BY0IYwk0nwQkzF2KkSOgYXxMw1bxNVw/SfiV42+75v1XgJEUKDwNxP5WiCtpXIYhBh0Hw1g/b0ljCDuwJM3NWx00lz9WOZvdXXTGorENp6O5TrtgVY7fW0Apt14ULapy7wZGVO2nH8r0xWcY/2+dK9K9Oqv3umOqgJZJhWb30TjCKlvvMIW+203SDvtUe5mQDch5+9m68Ea/U7qT7VtBWYkQhgFakGujizXHErmoLn+fAB0wJxvdg5iVoYhj3jP4e
- dmNAINEx
- 8TwpVi2haYtK89sI1jA6+UCuSaq65KjlEoziG/wzF4zVQVEF1EAxvFfpQOwwNZtp1mICVRYqJWfb3HOWl0uvlQFq+bKeMQ7JhPDxqKr9Wtj+Um4Bt1P6vUxM9UExKdH1s/E++RXNJjkK2Ac/ZG/xbOboMKI0hlbXmGwLEX+mpb9uGTRTGbCa9GmlNB6RQufm8HX6riRqTOubGN5CYHqq4mKJZh69K5IpsdJib6kgu28hIQ6Q=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793197029-92117
+X-HE-Meta: U2FsdGVkX18EbwBdnqUBBV4TCp52fhELwunqmGAHWjjEGCQtY+f0oPY/CIc+yJOwSyxSPI37pUdpW0fsxzogHzEF9mQGw8lwLlNVOzStffm2K7CdFJJsyK86ZWhCAOH19MJlD/MA0tpu1b9WysqYrRa/4JHl39Ih6oykjpKQrdqzAo6IZkykohl8o1rH9Ju4VoOlbt//tKEW2+7gK6pdEEVjmVoPiTCGOl9Zj+Tk72pEiAAlzwCRzSztlDxb7d31HaDJNuod1Wiun8jONH2FYhk7ZCBvH36lfvgfNTljwaU6x6WDDJ/K+72FnTZLluvQxNjxmJH5thdszvqfDzH33gGmC3CrXhggSQGbC5a2wyNFfRf+5rRtzblt2aegK42NOS8GZ2mJSzU6t0EJAl/lEekR7L5BXCNSmH5v9jJCYowxXOkq/rv6MuP05fsPCxYVkxZFFztwRB3V5Gu6mvUiAEwwFBoPOm5QfYqApslNAdJUHKFtAlhsvdMAR0LiPc9xhpc4t8fFSqGkPIOVsKbBQVD6GIqYhowBKAQdX/3gt3vTDckHra2HH/hZ64JxkTp8KAME5KfNLL+EskmShtO/6jx0GWHzyK1319SUyru+Bg50ysk1ot6500r+EIji3wHSVAJspSWHASw7YppcxVKJHBM3GHr3/tGGHyfwBtfJ5cQwDP1zVUwPlZsQj6iUx5LHdu5vI7XlXBZTGak1WDMStUtuOpKmtzxNHVX6XXYxvjPxg2LdvG+oXGHkdYL6bJl69m5+sZH8LkSqrabdgRgbLOK6oigZYBqQ/S511N46Bwa8O8Lk5KeZB7AkjToukdpYfG2+cpVvHVSP4L6oNV7RwvBW0/O26K5GdjL5467bS6B+OyrsVYTSHA0EjQ00otvXY7kil3TdTWPPNduVxzrnzyRNE4YY0hadfFFy8Zs3KEhGqNwYeOeMKp7m0lPCOw5uc93XHA1QKe0RZ5lii+N
+ FUass5/h
+ npmlhJjVMmNXCtp2U9LRC/uCg9kfTGHgd+U452dCUQaCLXRQx/K0agsm0aqtpTxmORbveYwD4kx3kk4uRulOP5wI3HvfL3t5YUGXmdiWf1Otx0GcPqQSH/jVSXi5cp6GStodYZlgd+keRBI45eazxFesCYFscPU2o3K8FFZbliz1JVcIWsyhjA5Q6lUj+gsw4SBTTMk7va6DFvtf7J4yk/w7baFvWK/36+68wbgkVneRQ2rgV8yOLFCadfR36XBcrHbGzw4p6eqCRarYxQZj5h/CwUer9OCEPC4+4qSkT542aXHLducQuDeBnQ8RxsUinP8WSbhHuNJAjhu0Xddn26OlAPoCF7IyMwTkh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,55 +141,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 14 2026, Radhey Shyam Pandey wrote:
+On Wed, Oct 28, 2026 at 02:34:39PM +0100, Peter Zijlstra wrote:
+> > Only architectures with HVO matter here: x86-64, riscv and loongarch.
+> > arm64 has had it disabled since 060a2c92d1b6.
+> 
+> Per that commit, could it be re-enabled now that its no longer marked RO?
 
-> cma_init_reserved_mem() takes a base address chosen by its caller and
-> requires that the range already be reserved. That makes an overlap with
-> the kernel image indistinguishable from the normal case by looking at
-> memblock alone, yet such an area is fatal: cma_activate_area() hands it
-> to init_cma_reserved_pageblock(), which unconditionally clears
-> PageReserved on every page and frees them into MIGRATE_CMA, overriding
-> the memblock_reserve() of [_text, _end) that the architecture installed.
-> Those pages satisfy ordinary movable allocations from that point on, so
-> userspace is handed live kernel text.
->
-> The preceding patch closes the way this is reachable today, where a
-> kexec'd kernel runs from inside the default CMA area and then declares
-> the range it is executing from as a shared-dma-pool. On a VEK385 that
-> reproduced within ~300ms of /sbin/init starting, as a copy-on-write
-> fault writing to the read-only linear alias of .text:
->
->   Unable to handle kernel write to read-only memory at virtual address ffff00084030c000
->   Call trace:
->    copy_page+0x48/0xc4 (P)
->    copy_user_highpage+0x14/0x30
->    __handle_mm_fault+0x318/0x1340
->
-> Dynamically placed areas cannot hit this: __cma_declare_contiguous_nid()
-> either rejects a fixed base that is already reserved, or picks an address
-> itself and so avoids the kernel image. Only a caller that passes a base
-> chosen elsewhere can, so check for the overlap explicitly rather than
-> leave the next such caller to corrupt the kernel silently.
->
-> Note that failing here is not by itself sufficient for a device-tree
-> pool. fdt_init_reserved_mem_node() responds to an error from a non-nomap
-> region by calling memblock_phys_free() on the whole range, which drops
-> the kernel image's own reservation along with it, so the pages are still
-> released - as plain free memory rather than MIGRATE_CMA. Callers that
-> keep their reservation on failure, such as powerpc's fadump_cma_init(),
-> are fully protected. For the device-tree path this is a diagnostic and a
-> second line of defence behind the preceding patch.
+No. The problem there is the PFN change on a live vmemmap PTE, which
+needs break-before-make on arm64. Dropping RO only removes the
+permission change.
 
-Why leave the dangerous code around? Why not update
-fdt_init_reserved_mem_node() to expect -EBUSY and skip freeing on it?
+James Houghton is working on it with an Access Flag trick:
 
-Other than this,
+https://lore.kernel.org/r/20261003002123.505555-1-jthoughton@google.com
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-
-[...]
+arm64 will need the writable tail too: its atomic_fetch_add_unless() is
+a CAS loop.
 
 -- 
-Regards,
-Pratyush Yadav
+  Kiryl Shutsemau / Kirill A. Shutemov
 
