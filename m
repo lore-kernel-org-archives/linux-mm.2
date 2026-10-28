@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB61A606A31D
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 02:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D104606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 02:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P+WdPRe7
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=t7Zex76s
 Received: by kanga.kvack.org (Postfix)
-	id 0CBE56B0948; Tue, 27 Oct 2026 22:21:23 -0400 (EDT)
+	id 47BCE6B0949; Tue, 27 Oct 2026 22:24:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07D976B0949; Tue, 27 Oct 2026 22:21:23 -0400 (EDT)
+	id 42C176B094B; Tue, 27 Oct 2026 22:24:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED5166B094A; Tue, 27 Oct 2026 22:21:22 -0400 (EDT)
+	id 3429D6B094C; Tue, 27 Oct 2026 22:24:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CE9A56B0948
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:21:22 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 69BBC1C435C
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:21:22 +0000 (UTC)
-X-FDA: 85370433204.09.961B7D8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 151716B0949
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:24:19 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8835780B9D
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:24:18 +0000 (UTC)
+X-FDA: 85370440596.14.2524788
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B85731C0006
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:21:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P+WdPRe7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id CE676140006
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:24:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t7Zex76s;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793154080;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793154257;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3d7IuWyLJEgj1UrdUlaZ2L9R7FsoPWLaaJOXVBI47ak=;
-	b=QVU/bxmcljKjAhz/jRHmy0pbsQXoTh8KEiNaCktxeK5zTArQfLLTDko41RxvC8qOTcbpkH
-	0/bDrXbLgZ7RSGfrZRTPnpVLay/+8CkjAqckrZNOhBGOWZoVtBXw4xtIwRYlpx7Upm7yEL
-	0TwdztZm/wMzMtVwC8dqfaZ9MiAkg2Y=
+	bh=kW6mzNv9d6yhsfaYr7C1SS1O9TnPTANE1C6w87x8UOI=;
+	b=eIOHufTm7SOZQnGPNDMfyWq+OlpqAEPYbuz/qOFzNnVn3UJgEDQE2ZNL5ppZg/Ozoj9D9P
+	lYEFcA5hS3H1sruTI28m9E1xay9HrqW3VKpx/ovrnHelhdzsjPIrShvCssTKRe4ESRaKDi
+	iviS+OZLsV9NDwe/YkHHWWK+Zq96Ehg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P+WdPRe7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t7Zex76s;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793154080;
-	b=UZO1jeQZTYNwSpYg6/9+jvvIsbqUPnIXIO9fakzRe7mqlsoyB86C0KsJ00g7UPz/ohQXvP
-	RE7vdVfzjdbb/Ql+oc8AY69GjFSKSSE/ngd3iONTS0V+US/ogyzTncvwdqTsYzzXF85rK/
-	esBRb4KZD77URw5MpOxuSMLV1d/euhk=
+	t=1793154257;
+	b=AgTXkeAFTQooScsPmN606vlYllYdxEp5BF88hna/H78n0dB/xUnu18YgSSyPetKKauUw/s
+	jk1+SDWN4wZVxZGxd+ra/vS7k5oKXD69txaaIYsdcrLlQTPWv1qLEtQnvswNlE6vueyFaR
+	Q7vazbcJk3SsQ6WmsgblTWgqNKIE4VM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 927C642A4A;
-	Wed, 28 Oct 2026 02:21:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AA41F01825;
-	Wed, 28 Oct 2026 02:21:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793154079;
-	bh=3d7IuWyLJEgj1UrdUlaZ2L9R7FsoPWLaaJOXVBI47ak=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=P+WdPRe7u/2yoMG7IPPpkBYAqQ4OXV+0tHz0SNymBLOld6L6rkiEZb1GN2RaaJesV
-	 p7XzrLmoNt5/J4gB1MC081YBEiarPNmBbAmLE3X0haUWVJPdUa/oChiqQHgkH3VjbN
-	 coM6gqWNyucCUWtu94iUfBxBnew+PpJ4OvbsJl0XlSoJJ5YXBwX4cDS+yCHBKMVdR+
-	 738pP3Io2lqwx05nCbT/m+BQ/8fUJv7unU4vRSBcywNXVKFdeRYicI4MIL/1W9XYJn
-	 BYshzUsIwSIoTNfB9QXAnEQ4xnqNH1+RTQC5+jld+/yEjQ2m3Cj726vputvxNJuYTw
-	 mzqizmSX/IlUQ==
-Message-ID: <sashiko-outbox-187340@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/mglru: skip oom killing for high order allocs in
- kswapd
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bingfang Guo" <bingfangguo@tencent.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Kairui
- Song" <kasong@tencent.com>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Barry
- Song" <baohua@kernel.org>, "Axel Rasmussen" <axelrasmussen@google.com>, "Yuanchu
- Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "David
- Hildenbrand" <david@kernel.org>, "Michal Hocko" <mhocko@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Yu Zhao" <yuzhao@google.com>
-Cc: linux-mm@kvack.org
-In-Reply-To: <20261027-fix-mglru-kswapd-age-v1-1-b1ffdec4ae52@tencent.com>
-References: <20261027-fix-mglru-kswapd-age-v1-1-b1ffdec4ae52@tencent.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 02:21:18 +0000
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B85731C0006
-X-Stat-Signature: njmxcx1os91cp8n9iq53kb3woaz4wszc
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	by sea.source.kernel.org (Postfix) with ESMTP id DFA8F43CAB;
+	Wed, 28 Oct 2026 02:24:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1F51F01825;
+	Wed, 28 Oct 2026 02:24:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793154255;
+	bh=kW6mzNv9d6yhsfaYr7C1SS1O9TnPTANE1C6w87x8UOI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=t7Zex76sZygL34C3bGAE/bdKfCXA/NQNhzNyXl5a34bLDu8qnEAUmyJW3fxNhw08C
+	 tbzAmjUEM+gttOp+naQ4mxx1OuMWy2NNsfLeeotgwWGP1gKVbMKuceyohlZcWvq/Bc
+	 fthpJqRPvByozPwnLn76K5SqpPFTRbAOt0lo2jro=
+Date: Tue, 27 Oct 2026 19:24:14 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song
+ <muchun.song@linux.dev>, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/2] memcg: reduce cacheline contention from lruvec
+ stat
+Message-Id: <20261027192414.cb3318abc07232ec5f1bc937@linux-foundation.org>
+In-Reply-To: <CAJnrk1Z-zzKL9Jebk4XMpfOBtyArppGPTv3__GTbCZXGiEJjOQ@mail.gmail.com>
+References: <20261023195417.1391216-1-joannelkoong@gmail.com>
+	<20261023155407.0b519a3da7313137a0276119@linux-foundation.org>
+	<CAJnrk1Z-zzKL9Jebk4XMpfOBtyArppGPTv3__GTbCZXGiEJjOQ@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CE676140006
+X-Stat-Signature: 5ib6atmoqkrntmexzaiib4reu4678wdc
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793154080-265837
-X-HE-Meta: U2FsdGVkX188Obe7nmcDeHMX+eCwOY42Bl8RsooAUfz3XC1A+x8YBBmlVaxhTWuqsu+CNWrEFsryhNM0ESMZB7Dx9NbM3A4sUP8zlkEAxzg0BccM9sqeRJQhljN5tU1Hf/sbadYOlhOW+Hw6lp2oAcCtt6QoAi6/9mFhCoPaQ0mbArOsaDRxT4qcRNNWrXYREQ4h3TilJd4r5LTT0rSynDD8zIwfMNySVhPos8Ujtrqz+5Qqpu1491ek78sVv4rfVmiTgA6Fv1z1NoGKwodjJyopJIy6eXwCxtR/BvG3cVQWUtC6e5cDzRkOkCPtDhQ0oX0iWKxkDjyg9w/mom08coosO19NGMM5+cFBnzA3sQS5yCNub+WnYZUiNMjazucCBsGLDhYJKpA+wdSjbqSpPqZKAYVZg3IX/KQCBal8wKa9B3F+i+4tT1TT4hw1tCts6P3U2Rvw5UIvjNZrigGiRyczPHNWphZZc4k1K4pVhk71yw0ZkIEq4J1bVNV+3H/s1AIQgv+D5MllE7XwLCIwt1eA/0qjB6GKm77Gz8g5MQNWftvzPwGWbqV268b6oIHKP7j+AhjVissvdtbdapGND0ItgnmHdjUc64aQ20i+aK0saZxbL+4BbXL0Bp873xm37y6GaDOLx9g9y4j6k/2Mul1PBbH9vdHujISrGgAUlnSDABW33qcYzjY61dQMP/kulaHazpqmTh/zq8yZ3wONn7An+7lGObmTHUXztOzeW2ynH6ZsK7ViLGtnrd88nq5dCqW4CGVGImS0Y5j/dZL4+oEKDpuOa8ROQyRyraWc5RxIY/vcnGRu/PGMu7LvD4JGnkT7hH9/CeEEy7LXghJDkNrS8WsNpa69Nd2GtxNLI8M1/39eUn6tRp6oy9MhzK7wJm5bNJsGjk1pamPEdbTNf8ym1EmKHbrOIOJZXMornsoykF84ymBkJV1mFMx3mIK6M8h/3VqO/sMNhqOUKGQ
- /Txot14O
- FIVisndRZadvliR2TNQRSB4iW0XL0Fkigo6XYdvj9gVvVQEzfh0a+G2C1eb2Bnkvu9PcC/dlPPVO/vrisZdRmKMbe6S8Z1WFfME7ernLPqr9ynu87AlR8PbsU/0Z4b7+IdIv7uUubY6FDclz5OVKLHG5gSfqYoWYaoIVgIQAfeHUtGRWA8EnkhJU7ierw17QJpV5td/mrmIs8t6kwyWzgwcYtNa9Bdaw7NepK0U9ag8/2PRo2OV67ZWCSXHUnS8Fx3/9LfAX2b+zevKvtDWIAvpo2TSEzqI4iXobW6CiqmWqQlMpOIgJLOSBKTYlh8rcLs/q+xKsFS6rTaTgry0rhEC+ikrtnR70h7Vy4bGSxnEf8yO+wu9iZZ0goXy6/BPvKaW6wGMoSFJriOgH+C0jFv5too1v91U2yDcRtXtxeTqZD5XwPDTEtL8GrB7c/G0MxEG6RSB0YXuxaNfzFoTd9QW5cLEjUR42fkZWffL+y+oq0MgusItrvCMbwpwn14zltVMFptMoJqftr2nCRDRwv0Fz+Pl1xOBMrh98XFPXSBzpGWE/OBx2J26lquOZ4x5eBisCMBJKOOe7lqsJySmwv0PwjHw==
+X-HE-Tag: 1793154256-864900
+X-HE-Meta: U2FsdGVkX19TgnNmJ4nOunw7o/EyKsPdlep+SEsgkkHo+owLs2oZ5szal/Z2bGm9kddaGtg8uT2RQjg/2HmhuMzQdq9hWLieC5uS/c4GIZfF1UB+VNV76loj+NmtDr1tg7yiKKp/D0Y6rDj4wy5tEjxnoh6+NQvEzm8T5v+q+b/cTNIj6WNFY+7ktLEx6tgW+qDaebREkMddFG9CoRT0deYqqvtMs5JPnXdj1NLFgLWneEzORAKCKhRu8ybhpvcMj3faMrch9F5BPhAHG4aVKanqUQqKYQgSZc0BRQruQ2rc6OcNlXRPih+PSeVvRf3/so2wy7K2Qj+pWgaiVitvzqCU5KYQl9lGE5Yhq9y1Q45/xu02l5BUAvzScNReu1acviVowkrvppKqQvEi6AIN+fxxFRFhSZqrwkRZZx0Flk8ATMQroO5cPyBvo5qmYMmuu+QNpWoF1OXX0XJUtxi1AwUOlrIj/Bu2EtF1kiJrBkBqmocVqaGKiPnRg/IAjZbk02jHrw6a/RNFeZ0RwT290D2Ljj9kZLt2x/BtXiRV+iq0WtCczKRIKXwfDQPnuE/vd5S7cSXalgj4DkcV0db12MUCJS4vcZkzkYUKuo5TD3Xw12V+bCKEvNrC36JWShq1dHnAy2P1E82DGQNRyWjXA3aH2pBV6K0aypkIH4membcxkMejHqg9onRkL6PrJJE1WiGIfdDZxlhyucdBYX3/MUGTiQi3MGlR2kkkyuAAR/8IlDhnsvdmzm14OTQBFm2MjyDzcyPDVrFN7uwQ4VMNw2m6F9JQmh+NRvtymdoqcAflR7XbGrr1qCrmcjTJZsuBuaNhDRBRF6MRaD/OqC/QXaJyOFfYepxpAHg9fOOeQDqJ6IRG+fHswYojUYAtBvDkkci3bJmNwEm+j6s8GHd4vtXOq5l2UrZ2Na115L5DV5b7NpB/ZCwIkj9LxaTng/3Xx3UfxYEEZo1sqYmMVAz
+ EPzKgAgr
+ 2pW724n9lzF+0U2xwfLEYs75PKXQDgfdCdyGMN6hmVAMNbewN38ozcCwgf0J3S7LmpdXn6F7BiSd4DbHHM8oK5eAO6GVJwJMNwTf7coL1KJO3rwvzyY516GjeEUIgSTT3gEEao0nt8KmL5feV9flRZc3Zz7iu0GSgt5NMq9Co9GHVFJyC68E7OtnCV5zgzGjbqoIKxE2f9IeBpwYV/KUR33Q6mGgTQ4FwDUPsCy1r44I6fSsIPJaAJdN28tueez8ZXqITaZut/v0xdDFyTmtyAoxO5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,101 +96,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] mm/mglru: lru_gen_age_node() still OOM-kills for order 1..3 reclaim
---
+On Tue, 27 Oct 2026 15:57:43 -0700 Joanne Koong <joannelkoong@gmail.com> wrote:
 
-commit cb44e931601f0546134f19e7185758d84dbc23fb
-Author: Bingfang Guo <bingfangguo@tencent.com>
+> Here's an updated version of the "Fix this by moving the memcg_pn_cold
+> group..." paragraph in patch 1 that mentions this:
+> 
+> Fix this by moving the memcg_pn_cold group, which is only touched when
+> the memcg is reparented or freed, right after memcg_pn_read_mostly.
+> SLAB_HWCACHE_ALIGN only aligns objects to a cacheline, and the struct
+> is 576 bytes, so depending on where an object lands, its read-mostly
+> cacheline is now paired either with its cold cacheline or with the last
+> cacheline of the preceding object, which holds the end of
+> lru_zone_size[] and the reclaim iterator. Both are rarely written
+> outside of reclaim, so either way the read-mostly cacheline is no
+> longer paired with the LRU list heads.
+> 
+> Would you be able to swap it in or would you prefer that I send a v4?
 
-mm/mglru: skip oom killing for high order allocs in kswapd
-
-This patch skips invoking the OOM killer in lru_gen_age_node() when
-sc->order > PAGE_ALLOC_COSTLY_ORDER so that high-order allocations in
-fragmented systems with MGLRU min_ttl_ms enabled do not repeatedly trigger =
-OOM
-kills from kswapd.
-
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 9959ca158ce83..b32777468ead8 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4407,6 +4407,12 @@ static void lru_gen_age_node(struct pglist_data *p=
-gdat, struct scan_control *sc)
->  			reclaimable =3D lruvec_is_reclaimable(lruvec, sc, min_ttl);
->  	} while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)));
-> =20
-> +	/*
-> +	 * OOM killing won't help high order allocations. Skip and let them fai=
-l.
-> +	 */
-> +	if (sc->order > PAGE_ALLOC_COSTLY_ORDER)
-> +		return;
-
-[Severity: High]
-Can kswapd still prematurely OOM-kill user processes during compaction-indu=
-ced
-reclaim for orders 1 through PAGE_ALLOC_COSTLY_ORDER?
-
-Prior to commit 30d77b7eef019 ("mm/mglru: fix ineffective protection
-calculation"), lru_gen_age_node() skipped OOM kills for any non-zero
-sc->order, matching should_abort_scan():
-
-mm/vmscan.c:lru_gen_age_node() {
-	/* check the order to exclude compaction-induced reclaim */
-	if (!min_ttl || sc->order || sc->priority =3D=3D DEF_PRIORITY)
-		return;
-}
-
-mm/vmscan.c:should_abort_scan() {
-	/* check the order to exclude compaction-induced reclaim */
-	if (!current_is_kswapd() || sc->order)
-		return false;
-}
-
-In __alloc_pages_slowpath(), any order 1..3 allocation with
-__GFP_KSWAPD_RECLAIM calls wake_all_kswapds(), even when the caller specifi=
-es
-GFP_NOWAIT, __GFP_NORETRY, or __GFP_RETRY_MAYFAIL (for example, multi-page
-slab allocations in allocate_slab(), network fragment refills in
-skb_page_frag_refill(), or large-folio readahead).
-
-When kswapd runs balance_pgdat(), it sets sc.gfp_mask to GFP_KERNEL (losing
-the original caller's GFP flags) and does not run compaction inside the
-reclaim loop. In kswapd_shrink_node(), sc->order is only reset to 0 after
-reclaiming compact_gap(sc->order) pages:
-
-mm/vmscan.c:kswapd_shrink_node() {
-	if (sc->order && sc->nr_reclaimed >=3D compact_gap(sc->order))
-		sc->order =3D 0;
-}
-
-If physical memory is fragmented for orders 1..3 while order-0 watermarks a=
-re
-healthy, and aging pushes all memcg generations younger than min_ttl_ms bef=
-ore
-compact_gap(sc->order) pages are reclaimed, sc->order remains in 1..3 and
-lru_gen_age_node() will still invoke out_of_memory() on each priority step
-until all processes are killed.
-
-Additionally, checking sc->order after the mem_cgroup_iter() loop means
-lruvec_is_reclaimable() is evaluated across every memcg even when sc->order
-causes an early return.
-
-Would initializing reclaimable as:
-
-	bool reclaimable =3D !min_ttl || sc->order;
-
-at the top of lru_gen_age_node() restore the original exclusion for all
-compaction-induced non-zero orders and avoid the unnecessary
-lruvec_is_reclaimable() checks (while still allowing OOM kills if kswapd fa=
-lls
-back to order-0 reclaim in kswapd() when order-0 watermarks are unbalanced)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027-fix-mglru-=
-kswapd-age-v1-1-b1ffdec4ae52@tencent.com?part=3D1
+Thanks.  I'll take care of this when I process the patchset.  Which
+will be quite soon now we're all merged up.
 
