@@ -1,81 +1,78 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D57606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DFE606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e0FGFPFZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ka7GAHpt
 Received: by kanga.kvack.org (Postfix)
-	id CCA046B05B7; Wed, 28 Oct 2026 04:43:58 -0400 (EDT)
+	id 3F5916B05B9; Wed, 28 Oct 2026 04:44:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7B676B05B8; Wed, 28 Oct 2026 04:43:58 -0400 (EDT)
+	id 3CA6C6B05BA; Wed, 28 Oct 2026 04:44:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6A256B05B9; Wed, 28 Oct 2026 04:43:58 -0400 (EDT)
+	id 2E2E76B05BB; Wed, 28 Oct 2026 04:44:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 861296B05B7
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:43:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C2511201BB
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:43:58 +0000 (UTC)
-X-FDA: 85371397356.04.71E0C7B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 34F64180004
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:43:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e0FGFPFZ;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C7036B05B9
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:44:59 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15637A0C33
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:44:58 +0000 (UTC)
+X-FDA: 85371399876.07.F32CB81
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 53E9740006
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:44:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ka7GAHpt;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793177036;
+	s=arc-20220608; t=1793177096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LMwbpJ5FecMxJ5P7RbpHp11xGjgqCgb5rSN6ahzVqzY=;
-	b=wRAI4OFzf/N6MhqpMMI2dkVcYw2fF0+SrvIJd8+UXtniK3BstpJqI01Y3AoBHIaZBaI4P0
-	ThbBWXRLU9qem25x52261m951wR73JK4s+Zzys/61Ki+cCI/3uc692P0dQ2adZnkBPthTH
-	zTc6KTDZ49chvxnx/zakdqH58EuSh3o=
+	bh=f+44Zt08Ec+FbsUxCi2UdL40Z7OhmxVeqHmo7xhynXM=;
+	b=aPWdTSWV7ZQGt5zZsxP9hHOT/CNuQU0XudBQuMhkpA9MJ/mOtZkTh0JRj+w/nPyFPtlzq0
+	ZMwEgGuHiiy0Mz8WB2xV7UInn35J6OXi8uqJYsPJ3k3B7i/X8U+/Y28b8Fz6+TEBG5gajS
+	D1wtiEwNwosqaxz0JHmMRcMIMLG0ujk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e0FGFPFZ;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ka7GAHpt;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793177036;
-	b=4cJ1EMPwnTTMru5JcoPPjulcM49J6niLpYQFHF9FXpIpKDXpu66zZ2+fZ4tby7fjlXPhei
-	QZ+Opfus4GXVvDHcrcjpbJCiC5aCk/EQZKV8nHkUGWK2v+nok8q6e2rHB+EzDouw2SNLuq
-	NobHDsRa9JI0dcYKXXkgR4KaGQL1GBo=
+	t=1793177096;
+	b=pzREVdx0DaBx32c4gamGjq57n77Nr8CE9wnXjLuxdW+wgQghq8UB+ZDRGOAXI4GhbTd+qv
+	y11G0+K8wbfnL/2Q3sb48kT1OY+Bxr3PT/nqZ1dgjBudY96+CKUgplvk6PCRhtnhH56nxz
+	7FUmtRvuKTiS0f+ZN6lIDjDtcw6y20A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 61563434F5;
-	Wed, 28 Oct 2026 08:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514F81F01825;
-	Wed, 28 Oct 2026 08:43:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D449960136;
+	Wed, 28 Oct 2026 08:44:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813221F01825;
+	Wed, 28 Oct 2026 08:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793177035;
-	bh=LMwbpJ5FecMxJ5P7RbpHp11xGjgqCgb5rSN6ahzVqzY=;
+	s=k20260515; t=1793177095;
+	bh=f+44Zt08Ec+FbsUxCi2UdL40Z7OhmxVeqHmo7xhynXM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=e0FGFPFZV0eKLLl32jk8I59lTEHQZEc8BJazgceNrvGoPpcwCu+4WvrvaSKgCd9WX
-	 IzOyxh5oVJv8Nwhf5GAZZMKstLdzYZ32czuXW9YbIlsF03Nm3316wrUZvZlxWKb6du
-	 1PI+nawkxeyHD3BszZ03n5XTcheeQMbGpQFJ5Fs1Kcei/oeJBiMO3407pEVCoFxfRp
-	 w+UqDHQWXzrYlTaICvdhu1UyuH0FoWiPJyYnP7SA8hO6sA+LJGZky0dPGRW4/HJK6q
-	 FsTNGORi3mzq4nTdwM7L+t0toa2Kn+9DsarvP71ZTDicaw2OfwnPj1BKd7c89OkoOU
-	 Zl4DnismZRDgA==
-Message-ID: <829c448d-e6e2-4874-a166-7624e87489ef@kernel.org>
-Date: Wed, 28 Oct 2026 09:43:49 +0100
+	b=Ka7GAHptCX96Cpin6rN5Z+/BZuap2WQhtZisJyOT39uWcrkTSIbLyZSR4rlLQws7x
+	 3Vi0sv2RQDBgdnEQOVD8q+UagGE7udWRxGX4IyNm1bgyK4pP3Wjsnn7nlyqhfdodiO
+	 mSVhnlg6HVWKg6M51eoLIQuCNqFAz9kTxhE2OUf93dl4Ejl2HZRzLXY5BgeIs9CXxT
+	 I4jjSOggK7qCzQGSwNtBvbB43FQ0SOaRIs8z3eOX1mrAr7qk3MCd/qxjG+wHyDPuhh
+	 GyHlIkilY8hvL3RXlzVllsvjSudkQ/a55la4UG6gP5ctAGG+B86KzDpsHtzCPiqFmd
+	 dsECo8easr2VA==
+Message-ID: <81862da7-21c7-4060-87f5-09650582ea24@kernel.org>
+Date: Wed, 28 Oct 2026 09:44:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] RDMA/uverbs: Don't return the shared zero page from
- rdma_umap_fault()
-To: Zi Yan <ziy@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>
-Cc: linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261025-fix-rdma_umap_fault-zero-page-v1-1-186255624f1f@nvidia.com>
- <78802ed9-9cc6-41c4-b131-7c7d38f7ff39@kernel.org>
- <DMEVZ5MU1YA9.2X3HCCHNQOIA7@nvidia.com>
+Subject: Re: [PATCH v6] mm: memory: fix truncation removing mapped folios
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev, jack@suse.cz,
+ pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <14ebbd556cc4941f0ebc43da59fa6a2fdca25dc8.1793148609.git.baolin.wang@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,21 +119,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <DMEVZ5MU1YA9.2X3HCCHNQOIA7@nvidia.com>
+In-Reply-To: <14ebbd556cc4941f0ebc43da59fa6a2fdca25dc8.1793148609.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 34F64180004
-X-Stat-Signature: 716ej89phskctmakudq6iwpqpy5jjioc
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 53E9740006
+X-Stat-Signature: quj7k46ygzw5offsfwkcriykgqfdne1a
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793177036-377604
-X-HE-Meta: U2FsdGVkX1+Ef720S1iGsqsf7FlNi3ZQU8QYh+feVVq0u8B7T/hv5wOBN7aDB+2WOg2rmDRGZ6jFXe6aE/UNYQrveWsF1L6tmQ80DRWOKlqxe+krPB22LNU0X00e6WAOQs7cOud1w2rRr5fFfZObwmUyYHhVWh0IWAscM8Ls9Vh/VUkizchHvdjvpMM9Uz3UPkWpCljTNPQsbP6r7rUxcK005fbcYGQ8qfUcujy7vdNxq+CHcvfxYRtnEjj/FK7jPa/qVuxKVcHgWmy6s7Cjej2OdQu6OvRvUEPACHFxqWuwF5BxWvSuZ4z0mvy7UFg6UOHExRu+kuLpjdfu0PIb7AMGXaWeL5zh/r5tZjmGxopwwfqRm63zDvde6SdOj006Bzt1ERwzsA1cRmy6NVK81veIlTAZKu7UoOm8xex56HEY+rHDIiU3uD9ztdFPYJP9OYYA/jme4oCBfX6R2veuArbgFohGAhCP02MQX6/lb+8mtk06/sA+TTEyJES4Ea2bUXnXQ7GdSo63838xSpH6y3H/xATNiK8b0+4SkLem/nxPjPkemTXHuPOos5txfE2tE2GGslxxc6ruThiTmXlBGr5OHCxK1kusGAuZp4/0g/wOiYLi87Owi0HNO7cIE00zsQifFjab2WMvFVds+Whl18zOSAAygwiAwOD0AyNyMhHeqzkX4rcfa7kCS7DUBf1OEEk9tj1JKJN5c3bWdnM0J/U0WnK1ksHn9US6W2HGaPwHlT7o7xja7pIX6YMtggVHNl7VI6KFI8gtOWPiquP6XYQb81/w4XMr92LY1g9g3PQ616oce/S0UjR4ARcbf04AbZrRDEKeq2ILiEVc5a8k7v53r1ZLenis0Fam4OltoaE5NrC223KSCaRqyw/l5T6mWRJIJqehdQVXp9K1hkF0JG+1N/rrfVrmmf8OEhelJ1KTYs3iHK0AYd5n/VQrWLZ5paSJU8vWEtJQV2vA+we
- BbVg1I85
- Ui7NkceBOJtmumQt9vfe4D+Dz8274v4uqfAFShmQ1wBGbF1L7vCPGo407e4E+ERKDO+4CvadFIHGtKPfluhVVHK1e7AQ85/eNc2QzYf4RwdTpskOkmMFIap8RSU51LfxUBEaz0p2WG9IUNWfVY7rsjRfNzLeadOv73YdKFqK0gOhj2twr8/djulC8F8aOC4hfksBucRfGiIDcnBk0TS5J0aodc5WOXeET/0Pn+PCHkmlIyRF6ALW1CgkZjlOP58gyrY3rukY9BuT3U0cezW1tDgDD5oGZPwlWPmBTEuYtT7cmnxK59aWjoZCqfw==
+X-HE-Tag: 1793177096-714742
+X-HE-Meta: U2FsdGVkX18Q3jMCYXRQmRvqGaDs3RAIWvQZKZvJhm/kUe9ECpbZrttom5r5nasQYqOSQaK3iJCcsLa6bgDwkhKdYGyqRr+SaTWEvCGaicJe/YcS44R8JFpARH/Y+rtzRlXM0LIn50GWFFgqm7WBP/1s8bNu6E43iY7WsVczM0+PgfHZeKn21XFHD8vAlOOPAoK8asTlJnHW8r52Lyo70QT5UMKRbUsLXKMqkK9IInUfNr5dJQP6mnTKGnxpU/r+CGltR9r1cwhSem2usO05b1FsRxhJGO4XjJMfmX1IYkw8vc8SCdgs5jMCkVsNa7nyg7rzjidUJJVypahFU4FPMdoQVUE6pZsTZ13aXFeWLaTC0mA3SSnhxDl0rhvkt7BCzer5GYsr2z3Y3gEjz6txg21fXYD92ZaLs4x8RN05NQEUAnIetY9q2i8dp6avDYdM0rAxLI9U0EQPHalAj1TM7IJ6sH3p+QAudAaALXxadgZnF+FBGuXO9qN8hR0ndTg5gdV8XUUmr5uEejpNgelt3C1BD+ReQi1hYb6Tr5cwkOxzPpDZWunnbxTF6SD8Ev0GjriRCB1qGVs56qLj8U5gO3N7dlOLO7hfvETDKt0s6A4TQsy3r+w/pTqjO5snUbMk8jdDg7dlxvDtc0oxLZPPbB42rPlj/a3Re2EV48LAKN8cPrJnHkM1zqQI2/JuM8oO7XVTtyeJt56q5Iu1BsLN4G/frKFBqUIH1L+3sU0zCC182Vb+Iskjy85NJRp0nSwBqIOZm4uwpNpxW6Gs+3AotziHAc0R/IzQkd1v1vC78dFYRg05h71s+A2JJ6IWriP5JICD2EOWyzSxksAawjbW61oQwVWzmzIvI+BAWT0OHZMvg7Pa7zUpQ1nPAELHVPvAM+b5ZVqiVPQHxuvfT9D17zy8XM841aCdrE3K6+VU6aKyn/13dwEY0UaeFoZIarkWmsFZM16+BraZ+HovsKA
+ uOHDF3LI
+ yqVkc4L9iPJTrVHMU2TkPnB5yTvXOkUpB+sLT4xJ9u8bk754pZfYGTvVtnwZ5yxIFPzDBbL6WGrwJtfNkfo8PypH8Tdp5h4bU30BdTMgspXciHNnejHnYibo59FMZ1pn5rWsWW2HgDf6hyvg5FL17vBM/idLxNmW9GMYYpwkOH5QyukmiYRhMallaShAXpgSy/QV/LGQuSck2AVkam1XbYol6JcYWWC89Bxamss2y3DP229M5vMgy52/WipWk091PbS6f3xsiE8vneD2Xb2vQOw2bKOdkgj2q04Kc9+jEs75LfngKwTD9G0KUPTy3LcAAByreh+P17pHNuzmU+K9Urh26S0qiUR7fycnUTP9IMiKO6kVTDX0wdpOzPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,56 +142,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
->>> +	/*
->>> +	 * VMAs that cannot become writable map the page as a raw pfn, like
->>> +	 * the device memory it replaces. The page lives as long as the file.
->>> +	 */
->>> +	if (!(vmf->vma->vm_flags & (VM_WRITE | VM_MAYWRITE))) {
->>> +		ret = vmf_insert_pfn(vmf->vma, vmf->address, page_to_pfn(page));
->>> +		goto out;
->>> +	}
->>> +
->>> +	/*
->>> +	 * This VMA is forced to always be shared so this doesn't have
->>> +	 * to worry about COW.
->>> +	 */
->>> +	vmf->page = page;
->>> +	get_page(page);
->>
->>
->> This split handling is pretty horrible TBH.
->>
->> In once case we take a reference in the other not?
->>
->> Why not perform a PFN mapping in any case?
+On 10/28/26 01:52, Baolin Wang wrote:
+> Ayush reported an issue that shmem/tmpfs folios are still mapped when
+> truncating them on production:
+> "
+> BUG: Bad page cache in process ...  pfn:...
+> page dumped because: still mapped when deleted
+> "
 > 
-> For writable path, a new vmf_insert_pfn_mkwrite() is needed, so it was
-> not fixed. I can fix that part as well.
-
-We should do that; returning kernel allocations from this function in ->fault is
-bad.
-
-How urgent is this fix here? (can it actually be triggered?Specific hardware?)
-
+> I reproduced the issue with Ayush's reproducer [1] with the latest mm-unstable
+> branch, and I got the following crash info. From the dump message, we can
+> see that truncate_inode_folio() is really trying to remove mapped folios,
+> which is incorrect.
 > 
-> The read-only zero page part might need more attention, since
-> we just prevented vmf_insert_pfn_prot() from using zero_page. Do we want
-> to add the support for rdma_umap_fault()?
-
-We just have to make sure that we cannot install it writable etc. But that's not
-a concern.
-
-Just have to be careful :)
-
+> "
+> [  189.171977] page: refcount:3 mapcount:1 mapping:00000000fe168ee1
+> index:0x3880 pfn:0x191647
+> [  189.171995] memcg:ffff0000cc073d40
+> [  189.171997] aops:shmem_aops ino:3c01 dentry name(?):"memfd:runsc-memory"
+> [  189.172006] flags: 0x17fffef0002022d(locked|referenced|uptodate|lru|
+> workingset|swapbacked|node=0|zone=2|lastcpupid=0x3ffff)
+> .......
+> [  189.172017] page dumped because: VM_BUG_ON_FOLIO(folio_mapped(folio))
+> [  189.172026] ------------[ cut here ]------------
+> [  189.172027] kernel BUG at mm/filemap.c:155!
+> [  189.172057] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+> .......
+> [  189.177721] CPU: 3 UID: 0 PID: 5521 Comm: repro Kdump: loaded Tainted:
+> 7.3.0-rc4+ #277 PREEMPT(lazy)
+> .......
+> [  189.183986] Call trace:
+> [  189.184124]  filemap_unaccount_folio+0xf0/0x1e8 (P)
+> [  189.184391]  __filemap_remove_folio+0x34/0x160
+> [  189.184633]  filemap_remove_folio+0x4c/0xb0
+> [  189.184859]  truncate_inode_folio+0x34/0x58
+> [  189.185087]  shmem_undo_range+0x220/0x658
+> [  189.185308]  shmem_fallocate+0x2f0/0x470
+> [  189.185527]  vfs_fallocate+0x128/0x328
+> ......
+> [  189.187078]  el0t_64_sync+0x184/0x188
+> "
 > 
->>
->> (Does GUP have to work on these things?)
+> After analysis, I believe the race exists between truncation and MADV_DONTNEED,
+> and shmem's ->map_pages() merely makes the issue easier to reproduce. Since
+> MADV_DONTNEED synchronously releases the pagetable page before calling
+> tlb_flush_rmaps(), this could cause another thread's truncation to skip
+> zap_pte_range() (due to pmd is none) but still observe the folio's mapcount
+> as non-zero. A possible race scenario is as follows:
 > 
-> These are VM_PFNMAP mappings, I guess not. But I am not a GUP expert.
+> CPU 0                           CPU 1
+> shmem_fallocate                 madvise_dontneed_single_vma
+>   unmap_mapping_range            .......
+>   ......
+>   (filemap_map_pages() remap folios)
+> 				  zap_pte_range
+>   truncate_inode_folio		    zap_empty_pte_table(pmd clear)
+>     unmap_mapping_folio
+>     ......
+>       zap_pmd_range (saw pmd none, skip)
+> 
+>   filemap_remove_folio
+>     BUG_ON(folio_mapped)
+>                                     tlb_flush_rmaps(remove rmaps)
+> 
+> To fix this issue, we should move the pmd clear operation (via zap_empty_pte_table())
+> to after tlb_flush_rmaps() and use sync_with_folio_pmd_zap() to sync with
+> concurrent zapping, so that when we find a pmd_none() while unmapping a folio
+> without holding the PTL, the folio's mappings are guaranteed to have been
+> removed via tlb_flush_rmaps().
+> 
+> Meanwhile move the second pmd_none() check to where it belongs: if splitting
+> zapped the PMD.
+> 
+> [1] https://lore.kernel.org/all/20260925065013.3682431-1-ayushr@modal.com/
+> Reported-by: Ayush Ranjan <ayushr@modal.com>
+> Closes: https://lore.kernel.org/all/20260924061708.1645968-1-ayushr@modal.com/
+> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+> Cc: stable@vger.kernel.org
+> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+> Andrew, sorry for the trouble caused by the several iterations:).
 
-So we installed folios with ->fault in VM_PFNMAP!?!?!?!
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-That doesn't sound right :)
+Let's see what the fallout from this one will be (performance wise :) )
 
 -- 
 Cheers,
