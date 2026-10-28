@@ -1,132 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44799606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ED4606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=ZQZL0HWt
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rsMV34VR
 Received: by kanga.kvack.org (Postfix)
-	id 5616E6B05B0; Wed, 28 Oct 2026 11:27:49 -0400 (EDT)
+	id F09EA6B05B1; Wed, 28 Oct 2026 11:34:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511E46B05B3; Wed, 28 Oct 2026 11:27:49 -0400 (EDT)
+	id EBAB86B05B2; Wed, 28 Oct 2026 11:34:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 400916B05B4; Wed, 28 Oct 2026 11:27:49 -0400 (EDT)
+	id DA9A16B05B4; Wed, 28 Oct 2026 11:34:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 193576B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:27:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA7A48013D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:27:45 +0000 (UTC)
-X-FDA: 85372414890.10.0E03B1D
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D0D2E140004
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:27:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=ZQZL0HWt;
-	spf=pass (imf23.hostedemail.com: domain of chris@chrisdown.name designates 209.85.161.54 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793201263;
-	b=jK5E9mZ5GiQpLx4DltPe5hddDjGxyJPKfceAcrOV0XIhzoKD0wCVGklYxmRkYEWjzPxWDZ
-	Vv5e2P8lH3tYULDx936Vv1AlCXbwso8W440cYMb/czY5/f1VAf5g5LHvEqNC115DdCogA8
-	yld19a0hVlYRbSbFvj2JJDuC1oO6XYQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=ZQZL0HWt;
-	spf=pass (imf23.hostedemail.com: domain of chris@chrisdown.name designates 209.85.161.54 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793201263;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B12206B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:34:49 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 249711C1556
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:34:49 +0000 (UTC)
+X-FDA: 85372432698.03.6243CD2
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 314FE160011
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:34:47 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=rsMV34VR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of avagin@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=avagin@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793201687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RvKduUdpqvn57pENoGLB6F2PlOffkxBgVZHDYg1GsYI=;
-	b=Db10wMSuDShcxOKr0nwomreCzhDNlMyxdlH7/G0jTjf3xXai3EvolZ0zGn03AP3fcCt5wP
-	99MZ+JRx9JS8Q/4q4rGUJJEP0VhZoxQQnEdU96VG/S+0eRn6PTFSTUnZQPUoed1HDNfV47
-	S2ICUZvw0BhuOwKesAo8Ki7SP7bUSQ0=
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6d290b10a35so560733eaf.2
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:27:43 -0700 (PDT)
+	bh=JNFgtKDp87voFFR8yXktG0LWODrSokHg8hARj7IkQYg=;
+	b=nMrH/ATHhgOrOuYzRfBpFLqtT6vJIm0Uy9YGLDwwuoO9H0mzKrHQWn+TQv9CgQSEU9rhPn
+	isTHsOSfnZ4qlu4b7gos/sOo6G+zF5g3TxMxwIS7qd2L3VMXF99ze2QIntoMO2iEha15XZ
+	RBhsacpY6sXA949RVEAVNpae/YVyNSw=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=rsMV34VR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of avagin@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=avagin@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793201687;
+	b=2NYqogayqym3yNLzHPF4aDDeXfr32Csp36Y2T5rnqC6xj3DJ6kLv6bz+GAC10U/IT/zs2J
+	p4Uu/bhEUVq3yo06ZD0YBU6ERm81XlwAz7k9ErOb8MxEEEE8yPOggfqP4NrpB/m+43Nwd/
+	h5QPekd6KSyxozZRb8G0WbV1rnLUfNo=
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-8439fe796ebso805923a34.3
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:34:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793201686; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZjGjuJ6lw3sGO2ZiCztGb5vIgHOQuOSWQ6OyW884qxHuQ+xbbZmVt8RIlszUSYFqcM
+         tH8gELU5pjRE3B8qT9ZRri/qc1Wb3lCOUejPlSY7HQizuYrFGrIwSDK0LwsUxTa0stCx
+         2cfdBj1UFasGgWzbJT9K4WIkDP4hrJQ6ij6nb/mUMpb8Ef628kkTyH77n1Fl24KyENIr
+         LXSiqnF54VJLUMkUEMUlVGeIOBJ0qgdJbhDI4E6zHRny2i/GJXVlPrIjbhgMys0bU/Ui
+         M81cKMBUhqpzTSXgGquej0G6XhlavF6lFBaQ+VADoYlJARkemkQi8QplSOKOfxLhHp2B
+         w1jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JNFgtKDp87voFFR8yXktG0LWODrSokHg8hARj7IkQYg=;
+        fh=ULWujQpProCKXRGFt4bJf+wc1dUnqb+ABOjQSgk5yU8=;
+        b=DN6sapXvMbooHicjAy8AhSYnc3FkOePbuQVMtSSnApOG2kqLcVhE7xYFCGvZNrtwc6
+         LR3mBQce5HvVi7wSUIfMewGZjs5ik/4Wjn+BqraJ6ErLgKuxZmAO7npxbthZMsAum/Ua
+         ln4YfVXx6d5osd2jEnN45iSADeJ/9myYsREotpCg/nD1AoJVK1GsHkZKfCWxxkYwQOJC
+         4buHYi8ecDDvH5RgyYRcq6fvexFWpuU4q83asu4XHJdUlEwzkaPOy6VKj5jpVqhd6rV1
+         RPXIIAkM8BeNOERB25T9Kg8t9YU/k3c+Ttch57ebtEPhTYePtSFMOmBh3IBPmeI4m4si
+         8JiA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1793201263; x=1793806063; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=RvKduUdpqvn57pENoGLB6F2PlOffkxBgVZHDYg1GsYI=;
-        b=ZQZL0HWtooaGrrROzWTjK+vKCa5B2l7bgOW2Bg3ilBrSXejuTdbdBv1Dl9ncE3BCBv
-         Lz+jiLTq9PuFncgSzxqxTHUwZDXP+jOqsSXA5vRBr/IFzWy8c53+1y6y3stGZoZo+UNu
-         StO4RravJX0rBI1WFcOoXXVcXQjXuJKUx2L90=
+        d=gmail.com; s=20260707; t=1793201686; x=1793806486; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JNFgtKDp87voFFR8yXktG0LWODrSokHg8hARj7IkQYg=;
+        b=rsMV34VRl4SzI3Gv1rTzBuwE43yBEGKn16+loiIADt7/ys+nsJEhjayG29+MdDZKP3
+         2MiaHQLFCgTxH3s5iiKlVb4K0dsSX0+655eh/l92qx9QdgDx1EvGgNQJ5YHx3fL7H+/g
+         o1ZaaSqPyiL63UILsqA8c9nHB6vq6dFZwdLNNZi6qwlHrH0xPzGKquKujiZ2POToMxmM
+         xuxp2G4GtccSg/Bkp6cs0xE/LNVwW/Ptw0nH/LPFrJW3jIC1AdSVC0oCeTE6Ylp/5WJi
+         zK3lep8U48w72qsQsjJH1OmE+dIHxi0L1AJXCjSE1teVIMJrbHjvlGjSP91GkAaWQtJw
+         vlRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793201263; x=1793806063;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793201686; x=1793806486;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RvKduUdpqvn57pENoGLB6F2PlOffkxBgVZHDYg1GsYI=;
-        b=kUTsUFkaYPh3v1kaYI8Os+/0gwWWi25e3i3BF6OpKh2R+QPTW3javjVszTibs+janF
-         JovekUfPUNjuhg5MGvBnty+2iQaTep83y01w4t1SxoHJcNzJaRCkB8kZnSIjXUr4BCMu
-         cL2qLhxXuOPQRcSds6Uv/zeDjPMReK8BcfYOpnoRJgU3YzP9brwArP2nVwvJjBa3+pUj
-         9tCKlNO1x2dREw+8cGgiXCgLjL7PhxKzNFMi78apB4PT3pskUpue6aahCLPKq+uTaJOC
-         B4V0NdSCsAhC+jtm65T0Lt2D0L06bmPFOgQ3TAjk+NHx50UwEbAkCErqc64gtPtYa8lI
-         6U/A==
-X-Forwarded-Encrypted: i=1; AKwUvBxP9VwKO7SdvCCRfjhtbcplyduq0+vnb9p60TVgxdIdvkqKLTO4qNJs+YNYQhW7XWhqLjU20cKobQ==@kvack.org
-X-Gm-Message-State: AFq9FYLb2S3d25cNiZ9awA6tB3xB0fgkykezp/EyVTI7bGpBQKRHVd/v
-	z4LVeosWhhUF+DZXfZ8D2bUWR2SsGZ+awOpDYjlh2IlCPEfVCuqzWoSV7GgDtEbPo14=
-X-Gm-Gg: AYBFou3iueN6m2UHM5no6dbMquI3U6KNAg0KaJ0+T4C29kdwCKQ1fyHngTebg8xLkoe
-	2qpKiU20U5ioPiKvEdMtqiubWxZAba44WRZ5+puSr2+r8bsGPUz22Ex5MY4iUHzEEnFfeZ5XpUK
-	WMX0DoMzqX0CXgxyqqeGxNMDxHph7glFSf6iUiBFc3v9cdNyj87tKRxCIW2/HQTqwvs1F46nwRP
-	DHepGX1wgi2KCsR3kkZxkvXg1rD1FJrqJ4ADYotUqMWiSMrM0GWWekGa/ohw4TVUV7+/Y/C7n7P
-	NcMW+Xmp8RICtRFHz5sfM2V0cw8tKv10JuybCpN0vJf3GfSy0VK+krjMt786OqXpasfDfEqYEg3
-	k2cz4CHI3NtOWlZEkCEuqZW0D/cDCJaHxCvZ7h0w5XvMilLQDGIXOgXEwIlgXy1EnecfSrhvE8s
-	anItreorMpV2dvByPdsNimam3YjjhCpOTGUfCCSYxMQBIFJf8sbWl+gK5b6YNbYfW5JkHOubP76
-	iwDoTEjDpjlsgAWMwY6ot6LRpK6/achvd37ZLmpOJjvu3HQ1wqzhXT7yhP31rQXUbuTyKKAVpTs
-	jI+pSNbLi3GXkOH+ozjwoqVvlmUR/z8z9aUhp2N3X71iY9i/XiHsZZvYGZ/J5/bSFPwKXNbzolF
-	bB47Q1dAMACxQI/HPRo2cL6NmTIUVHhxsuU4w2w0aSM59Z03UmxjkUm+MjiWoFn3bejQK8PmVai
-	rOj2bu8ogDraZ5tVvUaQ==
-X-Received: by 2002:a05:6820:5718:20b0:6f4:d9d4:3948 with SMTP id 006d021491bc7-713ee7665afmr996593eaf.45.1793201262701;
-        Wed, 28 Oct 2026 08:27:42 -0700 (PDT)
-Received: from localhost ([116.86.153.182])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-71429e7b7basm1517856eaf.1.2026.10.28.08.27.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 08:27:41 -0700 (PDT)
-Date: Wed, 28 Oct 2026 23:27:37 +0800
-From: Chris Down <chris@chrisdown.name>
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
-	GONG Ruiqi <gongruiqi@huaweicloud.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 0/8] mm/slab: Support selecting slab hardening features
- at boot
-Message-ID: <auIUaT6LyEI2cXpj@chrisdown.name>
-References: <cover.1793086056.git.chris@chrisdown.name>
- <auIN44CnAyzvR_Ll@thinkstation>
+        bh=JNFgtKDp87voFFR8yXktG0LWODrSokHg8hARj7IkQYg=;
+        b=P3x1wnPP6I6yQmEOR7LcoQYwN6FbULKa023ccMQ3Ubg32EVSgTmX6fI/mqqaptPpOb
+         RLuJ3TNWHK4/Iv1pgpkmTifRsPLroP+1DlJqcX5IQ0iYxYUE/8+HeNdabJbCe3oe6bxN
+         zqX0RA/ycKBUbCJqFvqO6ANrK185KABX+mJEIPqneuCurHCG7JayX1yow/prMSqEMZHC
+         c+NCgikE756TKQ2kUZfLr4XMDSPKF4p/y/enR+1FdFmb7Nd+j79z7F7+wcZdouYswTL6
+         OkD0UbrhHTGpAgjyLmM0bQbNJ9wsexvwgZNMatnJhV1PNr3SK4wBXZ0xfIRuOKOek17v
+         qvOw==
+X-Forwarded-Encrypted: i=1; AKwUvBzifhUW1Wx1z96etYy5leiRiHv3XUhIszW+U18zsj+jPhvS7H5x6Vs8BwDP+HpPvgd7qrhqFKMXVw==@kvack.org
+X-Gm-Message-State: AFq9FYLw9TGZw4/lZIsRxtphv3uqmK0OQWGYWdTzqpZpS4Rq0cRl7dYO
+	7q/rdg56WuIeCnsa3Bs3Xfc8koQWSY+jVrXkoVk1YZAxmWI7oyYZhJnB9e/khc0D9L1cv2VPGNH
+	b6adscqmdnEPXW0jLcRgDzeA1psUbBn8=
+X-Gm-Gg: AYBFou05YM+Yahb1mPrGWKOPKI0E5j1ERGh2P7ZWxz4dOoh/ZkWy+x8/++ICQjbBWpi
+	npkM5Jj08gvhJhBb/9X6RZrPbd/razPIxBYiO65d9p1H3lWJ6oCH4s1k5ZWoruZzkRXhjpWvFZu
+	hiIdDu9cbOP7ks2HURlDbiF9Tlaa0KLbzyHYxIKu/a9KlkR5JZqZ1IiOMZ1QbaeDcvhr/etx4S/
+	ACIMLCOxt2/nTEi9wj7ftgWYg3kovWQ5zW3ak7Dl0/cCSxRXZb/Q923JbouNq2wiCf7UIKaC7QW
+	IVA/pl/J/MuWpZJ5Ff/HhWgKMTXiKu6ATDQvkWHkOKNXhUOAbcTZ6ef0Zn7QDGWI3L0dcNM+ob/
+	1Z1DksCmvdYXfZ1s7JK3vd60UUq53LvYgvZc=
+X-Received: by 2002:a05:6830:2304:b0:846:e5a3:c8bb with SMTP id
+ 46e09a7af769-85ac012e9bamr2225801a34.15.1793201686073; Wed, 28 Oct 2026
+ 08:34:46 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <auIN44CnAyzvR_Ll@thinkstation>
-User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Stat-Signature: swd3ks8ggco9boip349qs9xczkxgndpi
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D0D2E140004
+References: <cover.1793094611.git.chris@chrisdown.name>
+In-Reply-To: <cover.1793094611.git.chris@chrisdown.name>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Wed, 28 Oct 2026 08:34:34 -0700
+X-Gm-Features: AclHuK81v527zBLgjPgT7UgeAn0ZRsnw4w8kJ2Fr9s5y5HrZvwNULUli5C61ZOA
+Message-ID: <CANaxB-zEaaDaaR2Fszx0D4TAcKAapOfcxQ2MzZbFVAhR2n3SOA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mseal sysmap: Choose system mapping sealing at boot
+To: Chris Down <chris@chrisdown.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Jeff Xu <jeffxu@chromium.org>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 314FE160011
+X-Stat-Signature: fo9pe6t1tuumanbn3xgi38yj49iagpez
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793201263-755684
-X-HE-Meta: U2FsdGVkX1/HhJ8r13/J45YE8h2QZxRXJRX0E4q8tl+CHaNxorSo1224SMmJL0/ILHusu5Ha8PL5vjPSfwziz7xBFwgOlpnTveDjr521yuLQ29D6QxFF0HwiCp6fmsSP2QQlxHmlPAEe3MzJsiE7ByOmm3q+Qlwfk1GYzldgIGQ1cC2ur++A61KWYo5LHqa6J2rFdY/1nfxUWvj7HsdZMcIW5mqJkUTJAki/PlNatn9gaF6JTwew/6xhuYKwvHE5dWHuyComcjxA/WYWG0aA4RDS26dwVCpZ98wCcCt01uMwxMDQMGRaOf3FlYYxSeJz0UJFmTZhQn+XMrXY1Y7T19jZ47UIU2U/wDRLA82KSApyfLEgf/EQTwbzG90J/ocBg4ZyLMUmlBXXW/Ln31UHFRXjPhuFxxmLFVGrirABKQOKy+eqORFifXq66NWXU5efqFWqqrr28XfYUjhSaxFtAqMRwUj+iCw6R1ew/7L3tVSI0A0C1VV+VG2D0zN+zAeoIf/FmTar7ay22KEX1OMATPkhlU0WjzRqcXMrn2zwLxoWZDIHLW+Hs/5U60MjwVmUZW/xASuaSnIakuBgKBlb7LXl64DcTYb8x4IFYul0rrnmOrBmGLWo0MSFoK36WkKjtiBCCObZz1KnGNKCJi6bvB++i/OXQduf2nIRiN/XxPPNnhQKM6FVUE4YXle/CPXn1jgei6mVG1NQ1UwZJkPh0BqE0xEH4sqqJUqM65DgirG25p1BQafZnuR+uAw06le+sxKvqvwPHTZuBIuzu1lP3H+m6aGbK0PXc0Ot47HG7E8iILvg82PZXhJc133t67q6MAwkUTiI9/aa0qOc1xTCm/FLFHs60/TvZUkZAKtvEUAg4YLfcfmb8VlLHXu7w/hVn1hQwbNBnIPcWaMsncNuxRoNEoKdEWka/rWoMWcAXprgKFsQjPaumPEvtlHyGx9DHpH5yn6E286G14V0jKe
- d1I3IP8h
- 2QCUaLDin0ptYqIx7nqQlrujtzt/rvflcARrv2jssC3b1dMAHzkmapgEGf9uNVkrh0TJtqOwXY5nmYjoSJrV4uh4x4qel4y9Qd5tJ69mQhssOaUGyBHSwITAdKkgY4lCJOeLOcB60KxEwD7GzxV2gRBhSBT4u0S3AqoJ2ZluyW4O54bSIE+EE+drcUSDyMQB5F7UsAI1dKzv2RMDgxyYBQt87kb4uk6dOAQQWbUqRWG63Xu1RvXG+2ND5hTJE2W6dOWZ4t8Oit3SjTKH4XZKS7sfBkqj1UXRjjs6w5LD4JtELIqjIt2LGVAcwJTVPZLcEJC3qNSMa3SnbnQ5+Zo3FgZnnnuBI0+9x/YId9IVBg2aSuk3wJhqSznMjm8wsQy4lo2Vna6ygZKpeeuPes0q7tODIZitVHn3AEVrDLCFOouLCngPM/in2mCQTtIHyIqc/4bqrOjEYYq2cjd9CBluhKsr+IC1jyYYwVCkurIDa0G9ggZnhgKKS0jzEuw==
+X-HE-Tag: 1793201687-538297
+X-HE-Meta: U2FsdGVkX1/fDq1ER7GnarMJAwf6cjq7xOn10BzPPv5/oy/3blMO0wpswAsBlAKOc7rldb3S5gB/woFm93zu/8stAlrTmsMcmc9KLessvfpGl9NrkuxwUAR8C2FJ5P2APcddpCltEOhvNk0sAO8+1tNGfAes0KaWFvMUdbycSWRh8DI/k07WvFCKwJQJetJoyPb+4GKPy8rJkGlG7N3lfkR/AymDpNpOHKjqVpQUMITuUr5oCAJKA1x/9xrJn8KuYmajMzha5nX6nNRl9O1h4rXAdjr3A/YQIx9JvD1TPqszUUB3ZH0coTH/YkL9ez/fo8wKAwmaSrK0Jk1FX8bx8BuSVlyP1VBvc1UX+wu9NUcny8dyxmZQVGdwy9liUQWNgh/FE7rZQciTXtSpLdC8lbFxONttwZrElyeW/4GBgJf8Zx0jB9pUHR0aTp0jevPeTlWgkRH5IaStQXCAePhSehVNlspQOE1XwDjJzwR2iw7WRHDaZkV0r+5xV9RZh+LLICOfm1FIi8Qz93xzspY9kN1Oo357kj7305gaY8iHJVmLEoc9O5wYQ5U8qt9getn3vLQMXvvidg4g5Gpq58lFR4sLfaZIU7ygdDVDuiPyMmP/3vCOe8e68po+o+4aUsa2SdBuyM5G2FIkQQWomk4SreyXdKQx9W/t/NxBA5qKw1EwW/1u8ZzJyJTRstSVTo8QI34LpVGUdnqJYFgdgGdSx5wIicL796lsKg0qN7QNZ2I34be8Pvba48GstJF+646iQtXwlKSI0k2+oSN1IzEwf9C7qMGrQ6xElWC6GFwLQAbXmq7PeK1UgcP0isUqNug0pNTGDdbfY3QjMOyB9WrtPcvcBtVNtzz3gcG9HmVCRnd+Jh1cGEdLbb10YOoQVHz9VaIsooPDBNQ9dBgq/XlWMXEgfSqlPbHKo41twbt1QnarBINgZo0D9/IYxqK6ERTKmFMrCw8SoPWq46xYkeS
+ 0JI1gyFX
+ 6mvNipLxRkMEmW/rw33n/P8BX0BQhNlzReL/f1+NTdVx6nRayy5zMa1hbceM7fv3Uubx5um1SZLT80UoQk2HpwY46jID28hZv0dy9XTVjWvzMq4yIzH9o/eX9iYBFpjDsqn0yJMDjZ5CItpnhL1KfuJ1iVT5hEwk+LtyU3oHr1mwr3X0ORbk+ogqALgYoa2j0e7TamybgmoiPxDRiGqUhQL5gYYx3wZzLaBjQ85sQwnJpQqCGxQoSuLaVXWPV9stQgGyvuWifjwUhWr7fvAmG4AEu4j6JcTLwEGcK5D0SfKC37I5Q7AZ4yuGHcCaxfd6JmZF2LCijrjarSrHHQazjP0ZESdZa0QJwulno75tam2C9JjRd6Qr9iEcaeTNFFZK0CrlDGUHInXXzUwYNYnLLbFBzeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,27 +150,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Harry,
+On Tue, Oct 27, 2026 at 4:42=E2=80=AFAM Chris Down <chris@chrisdown.name> w=
+rote:
+>
+> System mapping sealing is currently a build time choice. Hosts which
+> want it and hosts which need to move or unmap these mappings therefore
+> need separate kernels, which is not ideal. Let's allow the administrator
+> to choose at boot time.
+>
+> Chris Down (3):
+>   mseal sysmap: Add mseal_system_mappings=3D boot parameter
+>   mseal sysmap: Allow with CHECKPOINT_RESTORE, default off
 
-Harry Yoo writes:
->If we end up supporting boot-time parameters for hardening,
->I think it should be all enabled (or disabled) by:
->
->  slab_hardening=none|light|full
->  # please feel free to suggest bertter names
->
->none: "Turn of all of them to maximize performance"
->
->light: "I'm willying to sacrifice _some_ memory and CPU for security"
->
->full: "I'm willying to sacrifice more overhead for security
->
->IMHO more fine-grained knob for each feature doesn't make much sense.
+This isn't just about CRIU. For example, gVisor does not depend on
+CHECKPOINT_RESTORE, but it still needs to unmap the vDSO. Other
+sandboxing solutions likely need to manipulate vDSO mappings as well. I
+think this toggle should be off by default, regardless of
+CHECKPOINT_RESTORE.
 
-I think if we did the 4 knobs that is a good idea. Given now it's two, I think 
-it seems reasonable to keep it as two separate knobs unless you object?  
-Otherwise I think given it will only cover the latter two, it should be 
-something like kmalloc_isolation= instead. Let me know what you think.
-
-Thanks!
+Thanks,
+Andrei
 
