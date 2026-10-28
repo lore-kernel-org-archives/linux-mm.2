@@ -1,162 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBE5606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 01:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80942606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 01:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=themaw.net header.i=@themaw.net header.a=rsa-sha256 header.s=fm1 header.b=IuANCG5d;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=ASgV40z7
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=SiPiuBw/
 Received: by kanga.kvack.org (Postfix)
-	id 677A36B0609; Tue, 27 Oct 2026 21:22:04 -0400 (EDT)
+	id 85BB56B093C; Tue, 27 Oct 2026 21:31:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64D436B060A; Tue, 27 Oct 2026 21:22:04 -0400 (EDT)
+	id 833A06B093D; Tue, 27 Oct 2026 21:31:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 563236B060B; Tue, 27 Oct 2026 21:22:04 -0400 (EDT)
+	id 770E36B093E; Tue, 27 Oct 2026 21:31:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C5A96B0609
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:22:04 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC850A0C0A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:22:01 +0000 (UTC)
-X-FDA: 85370283642.24.ABCB5BB
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A654E40002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:21:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=themaw.net header.s=fm1 header.b=IuANCG5d;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="A SgV40z";
-	spf=pass (imf01.hostedemail.com: domain of raven@themaw.net designates 103.168.172.147 as permitted sender) smtp.mailfrom=raven@themaw.net;
-	dmarc=pass (policy=none) header.from=themaw.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793150519;
-	b=CZZp3jmAGda0ejdBMINEn0swKqdp/Hkp0BLUP6/MPfz1dd/92HFkzNU4z7xY6TztrsYcgq
-	55qwnmydT+JfbXanmfcxoRbhGiwHJ1nqMVhjpxSrrdtiS4d7aT8HmzBFuCn4HvA2uf0d3O
-	0GzXiPwx8Rl64jeVdPq2GR2pyZHMTFA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=themaw.net header.s=fm1 header.b=IuANCG5d;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="A SgV40z";
-	spf=pass (imf01.hostedemail.com: domain of raven@themaw.net designates 103.168.172.147 as permitted sender) smtp.mailfrom=raven@themaw.net;
-	dmarc=pass (policy=none) header.from=themaw.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 54E7A6B093C
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:31:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8EE980B8B
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:31:08 +0000 (UTC)
+X-FDA: 85370306616.14.4B1230C
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A8B17A0007
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 01:31:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="SiPiuBw/";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793150519;
+	s=arc-20220608; t=1793151067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4cR+Jnw2vZTLedug2NT9bT/PNYuUzdhU9pnjK8Gk3b4=;
-	b=t6ywREpPzJcRkxxsS2q+ar5lL1h1TZLpmPhWyehNAZZS6O5hZGElyrYcrkyLiQP+y6e0DA
-	CTwZyT/Zmi/xd6Nkq6oCoF1BrfkkQjluThufLe/rKkLbKvlmTo4Vvx/Gvk970BFNG4jzEK
-	6/D5PCDaEwwWBQDMdE95JtBqxyHEDz8=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 0F52EEC01C3
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:21:59 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 27 Oct 2026 21:21:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1793150518;
-	 x=1793236918; bh=4cR+Jnw2vZTLedug2NT9bT/PNYuUzdhU9pnjK8Gk3b4=; b=
-	IuANCG5dx2AuLSzGWT1IlW0LpNdHwVHudaxvydOEnc3KSoJ/qoMeuRTBcuHevylW
-	xUbQw+3IqU+mSDopyXhKpLMSyZdaIQYBWsp91BtQLJ6ivce7R1cuF7LYQVlluKOM
-	55TmLfhzJ/XgFzpWKbku9XBEEHXvbqRJ5vOSHONPiAFeVL8JucBr1JOA/VFwvjKS
-	w11r6SsVd0monzWXTSSRu9aCd1MnbVsYTMZQxq4e7JYEQg0XE3VlNJOsuLd4+Ahu
-	M2i0unzEJI77CglJFd3yELGpyxcNPO6lBajkV1sZOKnC3Pk/qgxAH53X7FyqVsbo
-	jkTWgUXOP8IFrAx0YIZ2Zg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793150518; x=
-	1793236918; bh=4cR+Jnw2vZTLedug2NT9bT/PNYuUzdhU9pnjK8Gk3b4=; b=A
-	SgV40z7r6xfOgnty139gvV4mch5EP3LpzWKZnR0DqUM4+khkf+60HFQqKimBZ41O
-	GpWenOjpJF06vWXJx6ne53P/sdpYna3Yh9kYveLMWrgn873gdVS2BPYroWQPhcxQ
-	j8FQ/TYUcJyq1VEohzGMzcv/D5F9bKLVFzIGeGnwytFhspGcAad8f7oc6bXYjpg3
-	1KZoPk5Y3HhjR0aN8sdnG6UAFbI98LFbZxfR31UoaDOWQ8AvKGLa+kRa/mXHpIUp
-	RiAUDg4gSiO+zFjhCN9FDe+hrXJ9Cgl3iBmIcbzWpOWfT+LuuadMSvQcN3RGDqus
-	BADMJIzTu3vtT/xhem48w==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=themaw.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793150518; d=themaw.net;
-	mf=PHJhdmVuQHRoZW1hdy5uZXQ+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:IvpZyJ5Po7sxwu8D/UcpMwjHh5W1x3LTfbmGnFtWO8MqzIo
-	W2NUdFU7z9LhKSI02Sas5IolMpxcCjlU3gTPb7aPmiVc8ZJpL4lgefwhwYCRdvy5
-	xyMxvqbHFoKSPzGeTtIgeaS8f5if9MTcUNafYUk0BifL8HA9sSXD22kCIa5bkyGf
-	rV/6OEVffl22gmV1lVehBouITsI6Sx0i4rVVOlIxGVr7nnqvehmFio8EmsUp8UCR
-	zj0VmNRv6gpkBo8QCiFhJiX048qDwNaMWDkWI3+gaZpfrE7nVWZgyR/+x5WkHoAE
-	Bs7OexZ1+i4q/ZxbTgCWy5S7SF6Ey1eGRaHvytg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to,
-	user-agent;
-Message-Instance: m=1; h=sha256:bLZaW/+c77h1LhtpnAtMkoSIjWiZ2pBNMO0v3iO12fE=:4cR+Jnw2vZTLedug2NT9bT/PNYuUzdhU9pnjK8Gk3b4=;
-X-ME-Sender: <xms:NU7havTQm7CONmk_vTIxyQr2bggizao4KrnCTHOZ-DkioGzPn_0_Cg>
-    <xme:NU7hanuN5n0amtHDXTfCLVNahO5-mo9vXcMLvteA_LdixJ2JqjfE2OXpSqZAoRDw9
-    9zB2o5kCwdI5nC3rzACzyLVfBUMdUUkzLm9ZMp9wz4XqggaUQ>
-X-ME-Received: <xmr:NU7hap4Rmoc1y1NiVdhky5AhS2soreP5Mn4L00ThsQUenIhtq7rJNcu1pb49HmmEVaVYZMSVJiGWZtrqfBzV2zNcfOaCUTc66JS2LcokcUPuk2veGHDtkWAnPBE>
-X-ME-Proxy-Cause: dmFkZTExjEu5Z4ShUEEPbIUBi9jvlntQl3xywqhol0VilT1H3riwx+R5F5xJP13Eevy37Q
-    0i2tM3JNLjjIE4RnafdrKckgTZgF7WVXIi2BOm3qqKixBS/Irug73Tiau0YR/vN5tre4hn
-    maQ7bdbQdERoqsBHTuky/6kPN1uRRdMEQp7qfaGblPSG+4EBzlUBu4KVifRQGZl+JiSvgw
-    9mSbn8dIqXi2WXNiWFaTJHHZ4Jih2f4J8Zf8XQJs9Or+djBfP7qo+n/CcBwnndgEEsWDvn
-    dde2XKLK1ANi3gu15BOxuI5tGRXcf4I/n59a/Jk8KMuRhC+UWXSiv/46euNQ6JSTIIAimv
-    7jcAW/tdVBGXJXklC1RRPUglHq4hH5Bc64PIl28tFEzC6NIzPjSltWekhutJo/tT2majGT
-    sswf9kF/mQ7bfD6GGD2BLOWWsUXcYZgnu4j4D7tHPb/zynsKGK6m+AhMOPYjmUzMOzh5dT
-    b4rWxbMHiL5nnjAdO5ldN4zD++TlD1rdyXqAHwBHPTOIS8FN/SKiiEb38SpBdbZorRtZ3g
-    6HKFrjuDJITZTWSsi/aiCUAXSktyenMIc8kN6yeNsZHz8HdWRAJlXYnV78lUl5wNp4dJzJ
-    K2wtUluCHNuU9Ak5O20DPSdgweZAMliMgfRfP/R4THeQWT2Cq5n/XeaklCLw
-X-ME-Proxy: <xmx:NU7hamKsy46mFaILnzutP5LNXCeEcEkH7ASldNGwyMSr1vsmEA_XLQ>
-    <xmx:NU7hajRmT8qLJPv58aR7XoaIN4e0ZQloPg1Re3nCph4Fgy5gL4tmng>
-    <xmx:NU7hapoTY0a-MqM5sQVzrhTvHncNfTKm3VeNlXgeqpDve-iSMPWQrg>
-    <xmx:NU7hahb9D81m8XEdG4qqwPK-ysKtigp5k8VzEshrenjpsUJ67MPPlQ>
-    <xmx:Nk7hairIFIEEI4qphXaATaK3ls9tH3EoMbCthRQcYtN9uyTpEesD-K0G>
-Feedback-ID: i31e841b0:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Oct 2026 21:21:52 -0400 (EDT)
-Message-ID: <5de6de037706e45ba88939e8f36e7dae48005e6c.camel@themaw.net>
-Subject: Re: [PATCH 0/2] kernfs, autofs: fix pipe lock cycles through sysfs
- stores
-From: Ian Kent <raven@themaw.net>
-To: Krystian Kaniewski <krystianmkaniewski@gmail.com>, Greg Kroah-Hartman
-	 <gregkh@linuxfoundation.org>
-Cc: Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
- Danilo Krummrich	 <dakr@kernel.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner	 <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>,  Peter Zijlstra
- <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Jens
- Axboe <axboe@kernel.dk>, 	driver-core@lists.linux.dev,
- autofs@vger.kernel.org, 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, 
-	syzbot+002fb7b2d0bc53bf7e75@syzkaller.appspotmail.com
-Date: Wed, 28 Oct 2026 09:21:48 +0800
-In-Reply-To: <083c2bb0-85b6-480e-afcb-bd2f386f2ddd@gmail.com>
-References: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
-	 <cover.1792577179.git.krystianmkaniewski@gmail.com>
-	 <dc65c28e408d6b64d4b13b7ad30e5fe70ddaa441.camel@themaw.net>
-	 <4f56c93a9fc5fee152364974773df0a319c84af9.camel@themaw.net>
-	 <083c2bb0-85b6-480e-afcb-bd2f386f2ddd@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44app2) 
+	bh=+s8dDKZ4dMb+kRwqacBsw98RYGi6uf2pwBAWjpaxZWo=;
+	b=M+H3SSqHvhs8ZjGfzxsDPik1arkQ/pJ+e91OQ12uNdEjlF3jGFgH7YMAl3mntIiqWgLd8I
+	dkIbPoAooX9dvgV/5cwTTsy39l8aaxkuTpAMgON1UioFR2rxCLZ2IOta7YuIa9SLO8OQKN
+	Kv6m3sRIYLZA4ieE/pLy0aiiufkQrps=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="SiPiuBw/";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793151067;
+	b=HWgUE7f3Li+CGd1udT46hHrV5uZHO34VMb9Tksp0slmHlAUkl0vD8skcWyi902H/qyiX1A
+	SwLsAIuauDLIPlI4e02h27HtZm+rlmCn9ivRPt44PCgZANghLaw27tr+g76fKWfaMxkx7Q
+	55bkazuEPO6y+Yasff4mzhmVCyZ88b4=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793151062; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=+s8dDKZ4dMb+kRwqacBsw98RYGi6uf2pwBAWjpaxZWo=;
+	b=SiPiuBw/2qIU8k5giiQNgYR62e+bBw8qP6kvHWnu7ynoCtoIvfJlAHbIqKH17tf6YjBhxQ+4M6HV6NLAmsPilpI9ncUEy4FCUc/EpZ4MrCeVGC2NfNSn9DSg2PAO/oODN+Yo4rOQc1lc+BUXVAC2+h5JhXKUM75gzplYfdwiGH0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R951e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=31;SR=0;TI=SMTPD_---0XDfHy5f_1793151060;
+Received: from 30.74.144.137(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDfHy5f_1793151060 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 28 Oct 2026 09:31:01 +0800
+Message-ID: <2d111275-e7a8-4ac5-8618-f068e87145f2@linux.alibaba.com>
+Date: Wed, 28 Oct 2026 09:30:59 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Stat-Signature: uzhjrr83kfbyoa1spnymgmmbdhjt7bif
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 12/14] mm/shmem: fix truncate loop after boundary
+ swapin failure
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Gregory Price
+ <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Lukas Czerner <lczerner@redhat.com>,
+ Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org>
+ <20261027-fixes_shmem-v2-12-86a00952acb9@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261027-fixes_shmem-v2-12-86a00952acb9@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A8B17A0007
+X-Stat-Signature: whmi3d3k4zryxzr8d61jwqyrhbdfc4in
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A654E40002
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793150519-571022
-X-HE-Meta: U2FsdGVkX198NHWHYWwcCSY6UIhdYLb6rSG/ZJq/tpSPvHsPXy3WKQtjyL/QFEh3DFqgdkiDn/M8DSgtESy7Rh1uIwbbO/f9rbgNNMMnEq8gFie04KauMW6/iJ/ejD3n4ca7BfoiJQz0a5uMrKGldYZTAEw68rL9i91RnJ+4z7NEmdqMfxqeyIgh9jCs5t0r8TJlYZSIvjaT2PFjgxxxm+VwdPBFbBOFmQy6/ZsUpuxQQUXViQQJxoPfHFDd+f/HEi/+S09av8apxzomRt2xudpiFXcCV1E047pcw/5dGkyfaXacr8bUaUpn3Wm8tdOesgOnUqVUERsc9fnNYl+OcRx0PXYoQ3LIpVP9joBsH8yMMpD5NVHB6PBJ8Ri5Z6K6p6iJeE08LKRZWAepmDVIS/Q99+qih6NnctlZRYwdJtCDQLvY/yczl0hI5oCc3+5Y8IcgR09CLL+FX/rWNWIjyikOXlnDmktP/frXl/GvgPPfFVc7hbsEd2B+YEHUXz1bD74uiA2VaM8/SWJ1cQEEbe8RAq1U0chwanAwL5pJGG9Zbu6iK1+dKjsgT/RP5Tp5zFpJIpo4EwFA3vHb9TMsZWYjEAu4kl4bukFsP5L46LYYRDix2DBp0FvbHkWDynSsIYIBHaR2Uvmn+NyAYt66NHzwkiNV9X5mKe9q3oY/CKG0nolihXJ2cw/sWTavYnbke8idSgKOQa+vHVACWCJgNWKuP+G68TLLi3G+m7KmW1OisHH4JoVvMxRR55+0uLx8uN70SJfdwMhn7Y/xb85V75alubg51QOOig11/7fDH8QDb3LU96Ml+tMIybySk0gq8N7soFJ1a33IFuowQKJx3M/LJp4iUXK0fu2hhREkLl92wSUMrsVocZdUMMFp+0Hb9cebsCKdgUc4iF2qbVefcqeE1cw7jf7cLtfmEH553JZZeOOZTJbD+9lVT8B6gcWW8BLEKGJJfZtysUq8Nv0
- LyZuJXca
- 4ZdavLXzD8OjOZS8jxEPLHpeVogNzmX2Ivv+C97Gg3g3ELha5NIWHDBXqzM7cuowFRf8guJmHTLfCIDBuHvjk7C6Vv/8nRzCwKcdPJbrzLV82XUsdra9kHyBrTLZQ4M8w9cFO76urwhTJJkmK+xIFbMg9HCcFHElgM3TpdB3yBY098gEg2v+TNDAwcCFH8QRD0zENp1eS+PWDK/Pxdbc8A3auvlaMqrR3jyNQPQ244saSOb4ZMhJa68qrMQ7H16wpD5e5kf3Hxi77YWWbXYMfmvbPwxXtZ/DwQf9z1+29p21bAFXH9TWaSSLWanVOBJhRVaNORl9DNXGpV2/b0gZEWD5tq6YCeogPmFPi6LimnaK5zbs4+HmUtev1F5VD5s/r/o5ZPHfO91pXYRwp3tZQiZEOYnGomsZdqXkW/IFNLq/9E0BP3ZULDsmicECtPu2jUpORNDusntN+GFDWo+EK/2ywB3RFTo1EvR2AW+/q97hvfiTgaxlZvC4FVvz8Aqj6VQdgVwd39t8VJJ/YQylieN7sT6y9rW0Qd4O5QXXffmKkxcYz11T81P0JwEiLmIQ7PutmVlUBttikRjE=
+X-HE-Tag: 1793151065-733525
+X-HE-Meta: U2FsdGVkX1+p7jV8+qlyPwbkPZ+K9yemzTaHvFj3vQFStSfeDcE3+yYsy8CIYy5LI1wosnoVztPq4wS/+Saa00u576dj5JBbvuvGJQSm0TP2KdR0mzu7Zj1TP4VtNZLsGv0yUFeQqwxrdYJWHqVzVLzQIf3a6no33nMMge2jKf/MnZ/4C0VD4W1PrGPlnVkf9TjtGeIlTm2cxdsVfJQ4h7BIBpZdpSLB37kwepLzOrWd0odwTU2KylUuDLO/RTV0J/lDcw5cczX5ZxKTXf63Iyqt43E2Re1eHaxCthWUO6rzCO1PmrtB8bDuPK/n/4yH1H87f7I574Pw+LV5F/wAxzTOtPqWT6GFyarMeuxCiVkoXZ2ZlR9n/pgzeqIRKhbTm6Vg7vX6VNuCrA7kMTnUbi/tm4KUFfyPxSCDVEWhXGvgvl3aOCwSkmlDvqJ44LYZBQdMOkSOzmeyFYE4R1b+gfcrHd0TPd+ZsKZyrolgn29/HXdF9bpLpytYhkCnYdRhoTy6SbWxM5t10hVYqDhQiS7x6rmg0hTwSoMqfJT6NJeGpzShz0Nm+osLkwdLCR3ITtF7941ZgKz3KNMQgc4t/gQnDOS+l5NsP6I6JSVfTqkucIHp0gr9wue3OtSZOybir43S9nfM7lqUjTWT1fNoc3+wFwo+CzcGAb7Zvfjl50/aO7ZOfa3XkZU5LKdetGrXiO9fh+DoeGGdFX98Zzp6Hg6R8E0XUYU0PiQBNlxfqb/i8veJlzzKqvSDjYMq4+E4o9ebl0l3axPS5YtJDMJ7OE/y6CyD/6Ie0f2bgL6klGq0W4XAucOQcfOXpTzstCoy+b14Wlnms52oGSwdjjk2hzs9SUo1XA0kDqux82JWMjMwRaCG4KTB23T/T67SMWjndnC9KsF8qbpf00t8FiBMwBQCE1KMn+sJtNdmtAHWsNIc+MJNlbhPMfJ4xciHowpK8w0MZMUEYBkvpYbw8pU
+ acoBu8p+
+ SR8mHQ70B0Px24R2V6AvEJtURGjm9oqDLKb4oqoMNy1T82SB6NELo1pW2/xNpnBSflKUeVAh+XP4WZ7S/zILMuLY0xUW1ha++5Znait8nuRwnSnPF5X1rD3tItNb6Xh3O17EhnDDtuN/9Rz1G1+rpPJMCqYERwjbpW8Ohr3CDX4nVQUtyNqv5JmWeffjXUSMp/YsgeeZ1iYXqi4evBeK1cIjSryLzDPgdKw7rYP4lqweD0MREcXF5xshHdsrtEYKglJ4TNW4RU3iDqLf0IfMRAWmsUnZa8Few8JMjQjKzC2xn/xH7o1rJvT9Ja/jmEEBGqrXAi9UJxJomAYxQK5NKFpDwuvaBDc5eOe0YYZz36tXj2qFGA1JSx40eN2YUHOVY4IJfAoczb11koBrxdFNB0klTiw7HV+YbPSMgVEH9qOvt/rE0KYKYI4nO7aG262VBzGdUY43NBtJk9bO0fHI7qBd+hXPU2Or8f+X8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,95 +109,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 2026-10-27 at 01:57 +0100, Krystian Kaniewski wrote:
-> Hi Ian,
->=20
-Thanks for replying, ;)
 
-> On Tue, 2026-10-27 at 07:11 +0800, Ian Kent wrote:
-> > Commit 1e8c813b083c ("PM: hibernate: don't use early_lookup_bdev
-> > in resume_store") looks like it's been around for a while so I
-> > assume the reproducer should work on 7.2.12?
->=20
-> Yes. That commit entered v6.5-rc1, so 7.2.12 contains the relevant
-> code.
->=20
-> I used the unmodified C reproducer linked from the syzbot report:
->=20
-> https://syzkaller.appspot.com/text?tag=3DReproC&x=3D11c0f4c9580000
->=20
-> I also used the configuration provided with the report:
->=20
-> https://syzkaller.appspot.com/text?tag=3DKernelConfig&x=3D7d012d9c67977ee=
-4
->=20
-> > What should I expect, a hang, it doesn't.
->=20
-> A permanent hang is not expected. The result to look for is this
-> lockdep warning in dmesg:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 WARNING: possible circular loc=
-king dependency detected
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ...
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &pipe->mutex --> &of->mutex --=
-> &sbi->pipe_mutex
->=20
-> The reproducer records the first dependency by splicing into the
-> cgroup v1 devices.deny file. It records the opposite dependencies
-> through a normal write to /sys/power/resume. These operations use
-> different lock instances, so the exact reproducer reports a possible
-> cycle rather than deadlocking.
->=20
-> The write waits for an autofs daemon that never replies, but the C
-> wrapper kills the blocked child after five seconds and starts another
-> iteration. In my test the warning appeared in the first iteration.
->=20
-> The test needs lockdep and CONFIG_PROVE_LOCKING, the cgroup v1
-> devices
-> controller, autofs, and working hibernation support. It must also run
-> as root. Without lockdep, the program can appear to do nothing
-> useful.
 
-Ok, I'll check on those, not sure about hibernation support in my
-VM ...
+On 10/27/26 9:03 PM, David Hildenbrand (Arm) wrote:
+> If swapping in a large entry at the new EOF fails, shmem_undo_range()
+> leaves the entry in place. Its final scan skips the entry, then restarts
+> from the same start index and finds it again. Truncation can loop forever
+> while holding i_rwsem.
 
->=20
-> > Also it looks to me like the reproducer is trying exploit an
-> > invalid request similar to what I described earlier
->=20
-> Whether the string identifies a usable resume device is separate from
-> the autofs request. resume_store() first passes it to lookup_bdev(),
-> which performs a pathname lookup before the numeric fallback.
->=20
-> The reproducer changes its current directory to the root of a
-> detached
-> indirect autofs mount. It then opens /sys/power/resume using an
-> absolute path and writes the relative name
-> "0x0000000004000921".
->=20
-> The resulting lookup is therefore:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 <autofs root>/0x00000000040009=
-21
->=20
-> For autofs, this is an ordinary lookup of a new immediate child of
-> the
-> indirect mount root, so it is a normal mount trigger. There is no
-> autofs mount under /sys/power.
+Right. But ...
 
-Right, enabling the autofs pr-debug logging and looking at the
-reproducer verified the exection flow for me. I didn't see a
-lockdep splat but my environment is probably not quite right.
-I'll check what I can and see if I can reproduce.
+> Advance start past the skipped entry so that a restarted scan can finish,
+> as we already do for folios that cannot be split.
 
->=20
-> In parallel, I am preparing a revised patch following Tejun's
-> suggestion. It disables splice for writable opens of
-> /sys/power/resume and gives its of->mutex a separate lockdep class.
->=20
-> If you send your autofs change, I can run the same reproducer against
-> it and check both the request and the lockdep warning.
->=20
-> Thanks,
-> Krystian
+IIRC, we originally avoided advancing start because a concurrent swapin 
+fault could split the boundary large swap entry via 
+shmem_split_large_entry(), leaving small swap entries below the new start.
+
+Sigh.
+
+There doesn't seem to be a simple fix. We may need to swap in the large 
+entry as shmem_get_partial_folio() does, and then split the large folio. 
+I'll work on this as a follow-up.
+
+> Note that this does not fix the missing zeroing when boundary swapin fails,
+> it merely prevents the endless loop.
+> 
+> Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
+> Cc: stable@vger.kernel.org
+> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>   mm/shmem.c | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 9a11de010ed7b..4ece296a1ccf1 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1434,14 +1434,16 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>   					order = shmem_confirm_swap(mapping, indices[i],
+>   								   radix_to_swp_entry(folio));
+>   					/*
+> -					 * If found a large swap entry cross the end or start
+> -					 * border, skip it as the truncate_inode_partial_folio
+> -					 * above should have at least zerod its content once.
+> +					 * Skip boundary entries when restarting
+> +					 * the scan to avoid endless loops after
+> +					 * swapin failure.
+>   					 */
+>   					if (order > 0) {
+>   						base = round_down(base, 1 << order);
+> -						if (base < start || base + (1 << order) > end)
+> +						if (base < start || base + (1 << order) > end) {
+> +							start = max(start, base + (1 << order));
+>   							continue;
+> +						}
+>   					}
+>   					/* Swap was replaced by page or extended, retry */
+>   					index = base;
+> 
+
 
