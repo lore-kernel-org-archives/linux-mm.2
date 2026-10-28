@@ -1,61 +1,61 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C81660A2610
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE50E60A261B
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=fRqV9usC
+	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=DeIiv9WX
 Received: by kanga.kvack.org (Postfix)
-	id 12EF26B05BA; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
+	id 3504C6B05B6; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DDF76B05BE; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
+	id 2DB126B05BE; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC09D6B05BF; Wed, 28 Oct 2026 04:20:38 -0400 (EDT)
+	id 12BDE6B05B7; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C0C276B05B6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D0E076B05B7
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:20:38 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48258A0C4C
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3D7EA12034C
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:38 +0000 (UTC)
-X-FDA: 85371338556.30.55F70ED
+X-FDA: 85371338556.27.47A86C5
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A9085140009
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9C8A840002
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=fRqV9usC;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=DeIiv9WX;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf26.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793175636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AdVY/3WZr/KgFPIGBWq+6cOVqwnT9WYPit6o2kFUWLI=;
-	b=zjib/WhY0/GBjNLD8QhsgMTgSxOOr6D1W4gRIP7JS2ghUL3kCqRlwylqtvmD35nwvu1PJP
-	hizuR+Pzx2a+rmZR/z9xdzLiVoL85YoRz1I1Ny/+9dAURYV1yPYZ//zuM4pic8LrtFTuTX
-	US/wMy7Dm0uAWAwPJ1esc/R6nGAM1ts=
+	bh=dWJJn/15+ghgzzIGKgM3IMULkpSh/eugDFHemmlBRb4=;
+	b=Ti6QbTUhnJSFsUYvTyFYM+urtAqMHOIsif3L2B46tdteUh9DyCH+r+1QQW7GJdZrQ6mHN3
+	gsXGd689ed6IXKuSHZCqzkaMXUjTZlH+446nsDGPBkBWE9Vo885FLD4yy0zL4G79Em7peq
+	H8qvMmmqnoeY4NVq/1pDTQVMhsoZ4jM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=fRqV9usC;
+	imf17.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=DeIiv9WX;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf26.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793175636;
-	b=ueVlKiiFrQZsO46heC40QV2/p86DXH/C6i8FO+6gZR0ht7wJMd1YM3doDJqw4EftuYNbmF
-	5QCUHXAyHhOaDBLRnoEiifSdn6rVDv4sHUMSa1Wp/PONpjxS5gUzqGe/QQQUbfs09e7Bss
-	rqLpKghJoAqDMvStKIOcWN5jjXgkSwQ=
+	b=t43RrvWuEnTVvAhHKTVUA18Qq1MY+QwKPikWuqfbXcQ3KGO0YaeK3s9Ym6xfHSlPXADyqN
+	k/IuJvE1yjSJ5dhCJOxCdo66sCTxjeAqnyvdilUsCB1dpvJ0W19Gy/pobsL2Fwdp3KWPdQ
+	Ock6JerLD3ZlvmY+jmI4k9CAO9e1iaA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
 	s=mail; t=1793175634;
-	bh=AdVY/3WZr/KgFPIGBWq+6cOVqwnT9WYPit6o2kFUWLI=;
+	bh=dWJJn/15+ghgzzIGKgM3IMULkpSh/eugDFHemmlBRb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fRqV9usCJkdMBWrlhWbddwDwn+QiWrVuXXhlmM06WA8hyjUwJjBOQD3oUvn7U51hA
-	 cz9ypprvSW6rwhpGQQm90dgUka6nWyEZzu4lfjwdDuK2/cx66TCGAU3CwyclW84k6b
-	 EOioxvCx2Rj0sgA/zgEBxG2IHQAcr5/J9BnKuTEI=
+	b=DeIiv9WXQV3gD55AucY67CXV5GytqfXEJkOIlH/p1vvpmEBa02wb0CiZ7FetKO8kp
+	 vKMP3WYwznobDJIR52jidVzMPZfhGDf6UWW8grvqXfGJ9aPtokciLL67F0nlp74wpP
+	 VCbSuHZCHz4d69J6NRvoiFKB6uqBPcC0poA2OXFs=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 65391FBCED;
-	Wed, 28 Oct 2026 08:20:34 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id DF86BFBCE8;
+	Wed, 28 Oct 2026 08:20:33 +0000 (UTC)
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Alex Deucher <alexander.deucher@amd.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
@@ -96,27 +96,27 @@ Cc: amd-gfx@lists.freedesktop.org,
 	linux-doc@vger.kernel.org,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH 03/10] lib/list_sort: Switch to __nonnull_args() macro
-Date: Wed, 28 Oct 2026 08:19:42 +0000
-Message-ID: <580fdfbe2eb6694438cbd8f5337bd2f1edac564b.1793027261.git.d@ilvokhin.com>
+Subject: [PATCH 02/10] string: Switch to __nonnull_args() macro
+Date: Wed, 28 Oct 2026 08:19:41 +0000
+Message-ID: <f0d7b2f0dce916f4cde3dd466a5b51a4b88fbdd8.1793027261.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <cover.1793027261.git.d@ilvokhin.com>
 References: <cover.1793027261.git.d@ilvokhin.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A9085140009
-X-Stat-Signature: oeakdte5fzg1yefj37kdd54x9z9xnmjs
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9C8A840002
+X-Stat-Signature: 3sptk6abdejajt7anjoekjy6dt96tci8
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793175636-478825
-X-HE-Meta: U2FsdGVkX18H06wngjGyrfawnyCDRKl8Uhg9CYNxOZVG/qrbqwTNmJD+LT9Tbeq35YlBfs7u8qAQFWX9KsNHpC8fAJHaFkaw5FcS1fIGPQyW7YGGSRvb2LJHhNNgoJWUgvxlnyM3I2c8bK4aAqMTHG5eaxLRZ40KX25BdEFsEPKETPGaPpLg2bNzjx3hfp3cM12CVWDtvFDgd0AMFGRB/f3wAnzB/2SFtakeANX93Mo4zFHwwnNjPcpKFfAgPS6t/ItjQ14BWJuktOte3QeanRKc+UNU+cpHd6ZsNF6zJwvf+x3/XoxoJeGwwHeIk3L05HujC2KovNyBE1XFh/wNi6IwRIXd1caqO3Smpr65L3jXXO2jiv5fbuP5yXK7URDW/RYNosDKl0NDpyMXiNFFEUmQTQGLCUcyT7RU7GVcAQoOOIZkbKf2bJO9wSM00emlm2Q5ZW/kX25AXQXFfSBpoChmQ+1tUKBIf8z7VIMkLF6nVRdkzAOoJxuxlAwaajQZF4rKhrtdI8bzZgE4Si67xkiCCWLSMWa1wyRLTgb9GXGCKQ9mLIKlTg0Cs0OUH7+I0+wezt2N/QRKYZylvzYonJnQQwmeDzh1PFvl0zGvx8sHfkSnvzeMQVjWAIXnGHcZc79EyKhG43vU1EHKJvGHkr2utfUl5RrH7rf7GN1RemEiYi6lG+iEl1vb/qBY3up3kkQvi1oYyKDQW0xwg4pCRp2fgnk9l2Po4CtjJ3nXFAWYH21fjJWczFuLpqmYLGZKliqjvGrFxbvgf/ON7tPr0cBXIBD0TZrll44CN9J/qRguYPXjh074XovBNvmtI21nJDJCTOORjj1dgUXfVaTPY7tw5yzkakBbkyQe9MjXY8MNgVUQFo9aj0PASbYwcTKYJxHbfbQAdtg1KtC9QkoW/GqHOto1oYmcA8ECPAMtJx3PB4Uw0K0fN31mgcI3ifpzE+Kvqrqof17s6LDwGXj
- WjiwY/jN
- 2l24CUQSkZxwKh51edrq5L0AnHzVMDQh4Pt1L00oaXqUpA4MJ/UwxnfKQ7RmBtxHqWACK/ddzauTHNiVUi12cAdQEM1jUHlIk3CDdJYUaTPDis/a5VdDFDExorSFdaZ9nj3zdAoxnxrMPsWps8f+P73+CM5hQ9radRlbMo4uSjbj2pyb/asKAbuG4G8ez8OjdWhygJd+x+q9HG7G06v7mJx2mfMUOTdqJcqM3QVFS/8jZyhyf/JRFtzENsFVl0oVxT/z95YWgEHD7ATMQbEATj3b8eb8amfFTkKCvhSE7y6Pwz4zjJWer0Y5C8B3u2ILUdL9fvzidH/pGpYiDLmZDgc8bOf0EQR1a3j6qTwqhT1r5JKEb4A0mpHSCqvbJmtK3gw4cxLhu4zxM0+8=
+X-HE-Tag: 1793175636-968178
+X-HE-Meta: U2FsdGVkX1/PO2fky0T+GGADd9sN9qTGjfNIAeAZnQ9J2Xqz/QTqF0NXES2EtaV2lodDI1cH1d5CkgHGsptajSQksgskFIqTm0l2OOjOWvNQGemacK8Afi73KqG9bWENWhk8cV76ILGXUa14Y2PU4PQFZbGSTLY1Tlw0ONizScDlkdgTay+hT+ZydGjGzQ+Tm3Cosws3qeYnUoZZzUdCPj3HIcJufvMnIL25W8T2+cWK5YZD9u8lRF/F3YC76GeYOb4A/+8ntfukNIjbL1u1P9EjugpipKt7pOFqPWdCbiYXjcYmYRJz0B+NcRgqx4FaVV5K/Bk3HK1m7T7+gmMy/nn+wrpM0I35uOUHb5bzCbkO/48Laz5XDndNTf/wcR7IyWgLNmiRmOA9d0ByWyEqFv1MlxL/VLX90CBovRxxcWK320dQ3GmZh2SWhK4TPiOUhXrOEBn3QVuO+aCC0oXVvCI51J5nxNFuqxb10/8acMWX1zBGvuup6mxVOIPCUj6YYcI3ai8IvS4vNbuZ11Nw+1FJodiW2WoXRfBj+r7p8BZ4LADPNM1Jb1G0WKHVIdSY2pEN5QjbCIp/l7CWI60nh3+9HTzdwQudovl+duU5+TH5gnyE5n1pXy6dJYW1D01AnhxjSfx0INnxrF6vFmYO4tAoUMbWir2HPY2s2e8sPgJYQKttjkNCq3SLteVzABZuMaY2J6XtnMxzZQmyLj8NdofH/SbwmpiSVUxFMCxi9UZuue0az/Zsz04DPcsTOu50ZIYkQkNcidQv/fqhRxPg82d7i0Kiw94TuMcj7pPuh43wfkzD7xE+SftHqj2N69GXr/TgugATICQ6o20Xg0SqXVtTHn25KlfVlZRwBw00Y5oDJX+EAe4KTnaKp8YZWQBfwdSKcPePo6HjcY6WpCI4uQ2w7SaoIPvtPSBIspW4vzXGWb1s26zP5tqS5YQvm7Z4Sur+MNLnB18gtrEDxZz
+ 2xTn5yFP
+ r5jcBQDdKeaF3tHYyoXnBYQBPS20GYq3RbyD2l6ROxxZl+09VZDlWgI3Lnax8rVJXj1YG0xdaVhnXf+izsinj270E+4G7JJXIp4NAB89ekBhJ5STgWuOIPCZunczxKWLr5RulAzHapqWC5wigkHolHf0icaj3VrymiWdsH+gfRKkvgRT63/S7VueuciCIt6dgnFB7Nfsoxw9UE2WdufReX5unYwtP62iXwQN/yTTMd15NOcioioxU+x4/bU40qWgRZedpihwxoFTJ3GyyDbWEenBYzRQjILcPnezldWvcMNICNspC5U3tlplz0NEg63StQoWHPWjtbxKPre9q3qQi3QmLRv4F5iaDr5QmKgnV3lKMJBzNyDUUwsO+7CfbOCNIdQDfH9efBTay17w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,63 +134,25 @@ standardize nonnull attribute usage across the tree and keep the
 attribute's quirks in one place rather than open-coded at every call
 site.
 
-Add spaces after the commas in the __nonnull_args() argument list to
-follow the usual coding style (according to checkpatch).
-
 Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
- include/linux/list_sort.h | 4 ++--
- lib/list_sort.c           | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ include/linux/string.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/list_sort.h b/include/linux/list_sort.h
-index 453105f74e05..48a91ef0d751 100644
---- a/include/linux/list_sort.h
-+++ b/include/linux/list_sort.h
-@@ -6,9 +6,9 @@
- 
- struct list_head;
- 
--typedef int __attribute__((nonnull(2,3))) (*list_cmp_func_t)(void *,
-+typedef int __nonnull_args(2, 3) (*list_cmp_func_t)(void *,
- 		const struct list_head *, const struct list_head *);
- 
--__attribute__((nonnull(2,3)))
-+__nonnull_args(2, 3)
- void list_sort(void *priv, struct list_head *head, list_cmp_func_t cmp);
- #endif
-diff --git a/lib/list_sort.c b/lib/list_sort.c
-index ff99203f208f..da34c46cf5d8 100644
---- a/lib/list_sort.c
-+++ b/lib/list_sort.c
-@@ -9,7 +9,7 @@
-  * to chaining of merge() calls: null-terminated, no reserved or
-  * sentinel head node, "prev" links not maintained.
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 6cb5cdd01158..1f1cb73514e1 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -587,7 +587,7 @@ static inline bool strstarts(const char *str, const char *prefix)
+  * Returns:
+  * True if @str ends with @suffix. False in all other cases.
   */
--__attribute__((nonnull(2,3,4)))
-+__nonnull_args(2, 3, 4)
- static struct list_head *merge(void *priv, list_cmp_func_t cmp,
- 				struct list_head *a, struct list_head *b)
+-static inline bool __attribute__((nonnull(1, 2)))
++static inline bool __nonnull_args(1, 2)
+ strends(const char *str, const char *suffix)
  {
-@@ -45,7 +45,7 @@ static struct list_head *merge(void *priv, list_cmp_func_t cmp,
-  * prev-link restoration pass, or maintaining the prev links
-  * throughout.
-  */
--__attribute__((nonnull(2,3,4,5)))
-+__nonnull_args(2, 3, 4, 5)
- static void merge_final(void *priv, list_cmp_func_t cmp, struct list_head *head,
- 			struct list_head *a, struct list_head *b)
- {
-@@ -175,7 +175,7 @@ static void merge_final(void *priv, list_cmp_func_t cmp, struct list_head *head,
-  * of size 2^k varies from 2^(k-1) (cases 3 and 5 when x == 0) to
-  * 2^(k+1) - 1 (second merge of case 5 when x == 2^(k-1) - 1).
-  */
--__attribute__((nonnull(2,3)))
-+__nonnull_args(2, 3)
- void list_sort(void *priv, struct list_head *head, list_cmp_func_t cmp)
- {
- 	struct list_head *list = head->next, *pending = NULL;
+ 	unsigned int str_len = strlen(str), suffix_len = strlen(suffix);
 -- 
 2.53.0-Meta
 
