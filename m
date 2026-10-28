@@ -1,114 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C477A606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 23:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778E9606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 23:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KNqOZbIU
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=O0Ipu14r
 Received: by kanga.kvack.org (Postfix)
-	id C60E76B05B2; Wed, 28 Oct 2026 19:04:16 -0400 (EDT)
+	id F280E6B00EF; Wed, 28 Oct 2026 19:09:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEA2A6B05B3; Wed, 28 Oct 2026 19:04:16 -0400 (EDT)
+	id ED99F6B05B1; Wed, 28 Oct 2026 19:09:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB1F46B05B4; Wed, 28 Oct 2026 19:04:16 -0400 (EDT)
+	id DC9DE6B05B3; Wed, 28 Oct 2026 19:09:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78C496B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:04:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 338648023D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:04:14 +0000 (UTC)
-X-FDA: 85373565228.20.D743F43
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 746DD40012
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:04:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KNqOZbIU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 772E46B00EF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:09:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA2D48024D
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:09:19 +0000 (UTC)
+X-FDA: 85373578038.02.6FBD6A8
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0D7414000D
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:09:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=O0Ipu14r;
+	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793228652;
+	s=arc-20220608; t=1793228958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yWahGggqBAzZZ1F2MkgON1x5Ts+WaoFBXhlIZHQR+vo=;
-	b=770Oj2Da+eAI7K4vBgIBschq6gULEkA4zY+i/3XcCkbCtantYqb8+f7zqtZIDNcvnW5Q82
-	8A+OwZXxdRQAaw1XHtTi5nCJhbFet5zDOke6ab4U94yCyiEPS/N5nA46WbXDoESwoLmwuI
-	dAQfmwkbN6SO966NRdrKUR0m2+L2sLM=
+	bh=Q5xA2wRJBQ07Qo768sQziuchQxKB2Cjd+x4z5GHdG10=;
+	b=6T6Pzl/evWDEBGhzvLDamlvdgmSyhcMa5vUO6sT5QpKZ8Fd41PoENbAXRh/Dbhg/4IXwM3
+	FfrjM7OSd2oixtz5ZifEmC1IbYZ/0AzkDi/syMPbcwkmlF/q2Pv+9J3eEUCVncXfKixqkV
+	TX3sa+6gSFmKCRq0Dj62McFG6Gcp/IY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KNqOZbIU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=O0Ipu14r;
+	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793228652;
-	b=h3unteNAnfw9WFjTeI8avkXydTXJ9qX+bHykLtixSejgTsV3vg3RWbAs7RWK4vFcHCUohh
-	xLFtw96vRS4x8goH3BziYLMUAr0A/H7y1y+MUUosJvT82E9wsTftRCbVWA83CQ2VDnSgd3
-	hKvzSaz9xHFM+QV+UklBWoje18ZXp4M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E245A409C8;
-	Wed, 28 Oct 2026 23:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C601F01825;
-	Wed, 28 Oct 2026 23:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793228650;
-	bh=yWahGggqBAzZZ1F2MkgON1x5Ts+WaoFBXhlIZHQR+vo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=KNqOZbIURlmWF8VcvD8mRkm1HnRRbtmWbwKy9abPnYENuciE+fk/k3MTfo8pGyvte
-	 LaYii0YidCo1CDVUe0bSDPr2vH04VR7ZmXl7uZx2kSW2QqRZkoVhbfeXgPXdhLv1xq
-	 w2NCKn2T0TwUdIT4NGGIbJsCXvAZE84LeeL5q9GmqESxWLvFq3bUx+7M7wMjX67c5k
-	 d+/lSbFJGE6+yBAemzswM6MQIdkH40nSa2pHPYGfvOoJNA4FEyebvRTs9fm/U3tZCM
-	 Sj2+s9T/YkNbmY9izzYzRDl54rzQiuF8p++cz6VnsHux8HFu+jOFJEfQA+vhy2bhRi
-	 xVBiqrGRlIHBA==
-From: Pratyush Yadav <pratyush@kernel.org>
+	t=1793228958;
+	b=m3CI0D4TveD0B+4nsE82kkdafMrS6KgU+aZACFF236RhasAFkXQttxa7i++xk7C9ES9ViB
+	ID+2/ZhKX5Ggvg6VamWyGpvzvOLP/MWxN04ZaWrw1IlWPs/4ojmbBs9cTupcUtZSAKfDHA
+	JrxerpSuS4DY9sf6SWpmHyk2hd4QR2s=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3ae2b7e1e17so921409a91.3
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:09:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793228957; x=1793833757; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Q5xA2wRJBQ07Qo768sQziuchQxKB2Cjd+x4z5GHdG10=;
+        b=O0Ipu14r7VXGbbA39CEd8nv/jkarXNTu3vg4sNeqCl21CJ2Ou8Gs3MtUY1sB/gI56x
+         4FIoUjAyIyBnesBa69pXmLlNZpVO301bkINMR5lTNMl1O6qV9DeyQv6KmR3WqsLFhBJY
+         QEMHJiC0u6a1ecIkHzwithkDj0UjpGDoqg9ibOaKUu+hSbMggSOKGSXrp18FNvfGLCjM
+         bXP4crpxPNuLqXyyCr6y0pzRj08o2nhaARwHPxl51Zb2Npg+/4eLWEh0QQGro8ht0cHc
+         v2fzYYE+P7S7F/WM7IPgw4pQgTQDWNie6p6xpT6ScB1P99xU6fU8WggWdDItFyIUxNLp
+         BVEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793228957; x=1793833757;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Q5xA2wRJBQ07Qo768sQziuchQxKB2Cjd+x4z5GHdG10=;
+        b=keqAK99KkHmppOB56qZTvCaN4BZHrQp05TGr45lixdk1Rn+b3trUBzTuLlU+GhaIbt
+         TVBmnw7Pav1waotNp9SKvuFDmIYGj1VG2f3FEbUKqRsZxtDDlpymBjOqp/YFu7kuds6n
+         FVp9vCfJhpgSrf2aER3+NgYXeR4mvLBw3gEk3vqDNbmurA1WnBbQr/eMgCDx9oIoIKaD
+         8mIHcqbkutOVUzmNAkB1UhYcWjJwDWiMQlfJZHdnj5sBeMT5rRCZ9fU9qo0WEbK9U6j0
+         LVbm4vM6OJYEKmwCcp403uSxaJwyn9Lg3CUXJfJEZD8D5pW0BG8B2BADLIppLZBhFa4s
+         OC5w==
+X-Forwarded-Encrypted: i=1; AKwUvBxfo2PFNM42cpbbsLYm+tlxknCgfWMWFdwLhC4bxLpGY9iPhqtz3U8SXMRKb16ZarwGtY7j97s9Zw==@kvack.org
+X-Gm-Message-State: AFq9FYLjJTDiZCLpTH+4yPDbb/TCZpVmMp40jSuCa1B1hGABafnToaU0
+	yP/iCkXtQxpuL+lFH8W1+OguQoKDcom2BwGOQNDl00fSfYjHy+1TqPg3i42j+NwqWg==
+X-Gm-Gg: AYBFou3rUkMKOHUwX9EKQdhv2i35HfOcJKdzEftO4iYLCGStTMXt/m6mCXyRh39C+6F
+	GivnETjRGenQvZMz07RY2RhseFeM2aFcWuCn/L5upyjgGQTcKwNMQACApj4lFio7x16rFuFH4P5
+	2sHu1W13OkVwoGf9vZuqiufwe+KrBSQU08sWNUos/fsXHDT94z591F6icsD9hPp/6sa69q5hejV
+	vGP39Ue33Z5B95dfXL+q7IH4sLR5Z+G9SDPInbw1jv7qXcfylJwms7hXNLPsDeQ1zEhIog8XTGQ
+	M65V+qzhb8HlQ3CZSVnJnecrgRUZTINUh7autHMaq5wFELGBLo8kCIodnkvgP8Xa2T5r1t7x5zD
+	pewaGTws2KlVgbGvdhhzF9xpU8SFUkMftXmmVxANpX9KurSwm6y+id09bJwigQwTnJqAlDxJIh2
+	LsmUJFmvHE5LzVI6mrQUWZ/kIqHt9UpH2oa4uMg5hsNYxPbB49VtWYYPQ7WzpbHSPA51WlhDET0
+	zaE8vXkh8PPswmglCymZ56Sbv4BX0EbDZPQySUNh2C2by0KfP1LQeoaj0Rsa94g8unIVwgmgKWD
+	iqpxVs158HtfVOi3Lj590FLYz6VoIeCa7cDhYmlnVu9Lqs0sfSrGj4wISdDHtqT2Gg==
+X-Received: by 2002:a17:90a:ec8e:b0:3ac:8897:7b92 with SMTP id 98e67ed59e1d1-3ae58319f5amr2770048a91.57.1793228956133;
+        Wed, 28 Oct 2026 16:09:16 -0700 (PDT)
+Received: from google.com (64.75.127.34.bc.googleusercontent.com. [34.127.75.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e973ac6sm1327770a91.11.2026.10.28.16.09.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 16:09:13 -0700 (PDT)
+Date: Wed, 28 Oct 2026 23:09:09 +0000
+From: David Matlack <dmatlack@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Viro
- <viro@zeniv.linux.org.uk>,  Christian Brauner <brauner@kernel.org>,  Jan
- Kara <jack@suse.cz>,  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-  Hugh Dickins <hughd@google.com>,  Baolin Wang
- <baolin.wang@linux.alibaba.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,  Zi
- Yan <ziy@nvidia.com>,  "Liam R. Howlett" <liam@infradead.org>,  Nico Pache
- <nico.pache@linux.dev>,  Ryan Roberts <ryan.roberts@arm.com>,  Dev Jain
- <dev.jain@arm.com>,  Barry Song <baohua@kernel.org>,  Lance Yang
- <lance.yang@linux.dev>,  Usama Arif <usama.arif@linux.dev>,  Kiryl
- Shutsemau <kas@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Matthew
- Brost <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,
-  Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
-  Ying Huang <ying.huang@linux.alibaba.com>,  Alistair Popple
- <apopple@nvidia.com>,  Kairui Song <kasong@tencent.com>,  Qi Zheng
- <qi.zheng@linux.dev>,  Shakeel Butt <shakeel.butt@linux.dev>,  Axel
- Rasmussen <axelrasmussen@google.com>,  Yuanchu Xie <yuanchu@google.com>,
-  Wei Xu <weixugc@google.com>,  Baoquan He <baoquan.he@linux.dev>,
-  Johannes Weiner <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,
-  Lorenzo Stoakes <ljs@kernel.org>,  linux-fsdevel@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  kexec@lists.infradead.org
-Subject: Re: [PATCH 1/3] mm/memfd_luo: don't use memfd_pin_folios()
-In-Reply-To: <179321872100.1775665.6881420026761127422.b4-review@b4> (Pasha
-	Tatashin's message of "Wed, 28 Oct 2026 16:18:41 -0400")
-References: <20261027173031.763213-1-pratyush@kernel.org>
-	<20261027173031.763213-2-pratyush@kernel.org>
-	<179321872100.1775665.6881420026761127422.b4-review@b4>
-Date: Thu, 29 Oct 2026 00:04:03 +0100
-Message-ID: <2vxz4ie5o2ak.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>, Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v2 07/10] mm/shmem_luo: Retrieve tmpfs files onto a tmpfs
+ mount chosen by userspace
+Message-ID: <auKAlcPN0Lt6Y3Wm@google.com>
+References: <20261022225035.377445-1-dmatlack@google.com>
+ <20261022225035.377445-8-dmatlack@google.com>
+ <179322496574.1894369.544573858973645958.b4-review@b4>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 746DD40012
-X-Stat-Signature: ynsrgsrhn36f357pokcfuo3hnp6fep1t
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179322496574.1894369.544573858973645958.b4-review@b4>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0D7414000D
+X-Stat-Signature: ffahzefhhzsgrkcs5zi89o6zr7rtgr65
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793228652-279308
-X-HE-Meta: U2FsdGVkX1/7mc2lchCm5SJpEkHSriGsrNdYGvPN0qsQrU9oU8WQ8xMl0HTvZ9Kvk0XDKUCUavUPUUmK79XhkWw5rahv1okTVT5c3Th9cw72aE+XE8AhpIpZUegpHCDEt/93U77DhOf6YnIB2dkPmSNXaHwItdSjLquXtW7M0+cOQ/U+Td1Dc585UriJI0jmN5Yf9l8Rnk9NcOxXpEZr1cbUkX5KsAYL5s8DqlSG29/vsK5MWZcWRnR9l+3BW7HGyQcPDbllHr5lMqCJR/0Nt6ox16FFDXqwZSu4QRoge1uGZRRyLkMOSD/ZncKzLnU+qKmV9jFg+VuLPQpGn084MRjYd9lVC54ABaDPYumHrgoyBcuSg2nAGdi0TDQzTXh73fExuQQ+uK+eZdplHkcGyC3SllWctkCB5IVI7f+tanTH9sEhrbiTlBNx7OiQK2sm1EstBqDLyq/6vAP/P6ao7EOgvKLsptlkyUOqDL0p1Dwl6kJHpcOiE4UEdbQ39g2OGyUioLMPlt4J5JNTDyDOw8r+55eASny61FHJidgAUik7RiY16sSsmktbTA6eNiOMV9wD9ki42MVXiBBj5J51OIkBquMB7iQ0qAlQgjI5Guwr4lXJAl5zonJkij4HjAsMYmvJXg/53RE2inxFc9XCGiv7hcSmfaK8/ODBr5XPaHMhcX3cVJcyMkA+0QX4Td0wtKwxS4vWGT4j5i2Tktb11GbT7uTE7k76R61lHT8+tueVO2rE8/fKhVgGpEBAm3BBStg8MZUmVcAUTqGL5unjduAmVkyEvpgG8eZh8T/dAUMD21crNvfvwuoAMjxGgZXlWbuRbukp77b+tJr0I3+nPVClOlC6N3fKAWPf/jrHB/JfsDrqkYMJIlIPY8DBVUHYdbkBni94uIDDLWUqz5QiXKIn9jsLV32MM/3u0OStEPHT5Ss5uzhWDrQ6Hvs7NF/iV1+75TIBRRqgC2lxde9
- Ai5ShjqP
- rX5jxrFtg6gEYq39LkqmfiswxvvqzqqzfS+PB0fflmLEA77iChNb/HSDjWfVTj1KIExvdv6ryxMYP3e4eXtLOOK7Jws1ZGQzFXsDtK5JxdjxEY6Gc1gjpqE5mzY9xzffT1+zkdcz4HDaOHojtEmyYxVvrOpOOpGItaDHmQ+R/r/W5TUe6Yf0vGBv1vyIXbeHvBgoSgalU5eSvg7/zhWNR+dnKbDTJeCHDta/uCy3aHPptca1prhGY+HfTbtPvBC5mftKa/JSUry8FvRIWUPEy0nwle4eWJrydzCMMlckrNupsIirYowwymcoOC3GWccmeqMN24alg5OaZ9WNXPvKxuNxe0Nu3N9FQtQd9IEaKiGcAOkNOUql9aPv9PwG2We47juVRC94+hYnjpbc=
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793228957-915862
+X-HE-Meta: U2FsdGVkX1/yXsRG5IX7hY89+b6NOk9UJjMCQbMMaUrdS+hbH05hlTE8BtP0T+MdCgGr+wOX7MS7kUBOmfggJhkjW5Y5kRcL61gYP4/HMB71f+5jsnjrH5dFSRJP8vIkI5WCCYVOCSuwyvc4zh8scVIwDt2AdJgc49Ojj1Xly09fNmH/F6cg/B0bNn3d4zNtdSlMDK9NQxcyr2WO4vQfjV8RMbGl9M41O6BBBKcfNkFYRL2hivgBA2TBhZK/k8VBqh+O+cbyMR5gz4v1Bfoi4KRJu89OJZ+wOUpIOUtEd7emqE59+wKtaWHVZuddBKUi4FKPhaVeyr7r09SR3yFXdYpVY133oqqzR1nC1eGatG+QWX7xnEZNksTcUfuLsJJhCZGiD2Fx0eflxrMt1PQknIv4PQLZyLgCR2tVspVVr97WKi5d1lyiDXZGGi9WKyRDAQybgpgatyHMMOrB9L49wxO/g1l2pnGIm7g8VxRfrVLzQ+K4o5WtDAYWxCy+LhWayCZRptZt/3qayWPk5J3c291zEbqBiwgvpMnzyhyFgOxLKllu4TtDURgj0C8S2i+EJIMBjgtkX0N6vqEyYIYUY6QP2E2KykurxiGVYtUpQIuMwGinzfkbGyO3rt9oqa4ou4ZTt1EEqnhmAokHdppbHifyF5FTyWHwSJNX7ciq8EdisZCLRzgbXSnwpGUwzN159CkAFgTL409MIwOKxpJawc3eF6AvcvXDvfEN+WPY7O/4RD5iWRZO9Rf7F9TkoskYN0E9DGLzrOstPLd12gzBG2TF6Rj+7rekHSx6ussLSuZuTEqkg1lI+LH/EmevN7emVcipN9/hqgjLMD9YEMfnjXd1y5+We8O8HuWWYeWJ++fhEa4JUPHH72IZ+bttTdAZ5gbiGw4Dyfxg4tTlUmHYhbOytPjJ69mIodQpFvUDopvxUKr2M27HlzeHTfvknp+niZmUYL36yHdrZFkmVTD
+ eC40KKls
+ ZLMu7enlStpapN0UncRxSDcZqIjqH5hdtcM3qwxfvpLeadp1AMkUoUbQ3e9BI7w8yWPVkCYxnV40GnSOkgsPL/guTSJEC2/DeAOe4DIBVkQ6ixv0X2C4Q/eYtWmmkE4c7focHbzyTWcejS8/l9HPwzw9Id8P+BCahSUo5y9pIBvmgSWLsvNs75m0+V2vGOVzsxj3dtaMNNqmGtCRm1GW3iweMEq6QLFUw1jrVDYqtZ4USwZtekcwmlhNbNjLyiQYLL79wqH8ClL8jPQVo1Xd9rw/EITLZaIhTQ2rpEN31umQcoYLzkTzAo+K/Gv7TBBKscD8b31Wm6TzBMAMwF7lsd76gafpw/PuSeiFNocZTvKlk8j+j3o0MxAR/K2raRw4RJsB6b/g4Zg/Z79dmEXOLYO5ImDp6G1q0Empv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,150 +141,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28 2026, Pasha Tatashin wrote:
+On 2026-10-28 06:02 PM, Pasha Tatashin wrote:
 
->> memfd_luo takes a snapshot of the folios in the file's mapping. To make
->> sure the snapshot does not go out of sync, it pins the folios in the
->> file via memfd_pin_folios(). The pinning also migrates the folios out of
->> MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
->> region.
->> 
->> memfd_pin_folios() does not lock the folios. So it can race with
->> shmem_writeout(). A folio returned by memfd_pin_folios() might already
->> be in swap cache. This happens to work but is fragile. memfd_luo looks
->> at folio flags and index on a folio that isn't in the memfd's page
->> cache.
->> 
->> In addition, memfd_pin_folios() needs the caller to allocate an array of
->> folios. memfd_luo does not really need that since it will vmalloc
->> folios_ser and store the information there anyway. The folios array is
->> unnecessary overhead.
->> 
->> Finally, memfd_pin_folios() fills in holes in the memfd. This makes
->> preserving sparse memfds very expensive in both compute and memory.
->> While this patch doesn't yet stop filling in the holes, it sets up the
->> infrastructure to make it simpler.
+> > +/*
+> > + * Whether @inode is on the internal shmem mount, which is used by
+> > + * shmem_file_setup() and thus by memfd_create().
+> > + */
+> > +bool shmem_inode_on_internal_mount(const struct inode *inode)
+> > +{
+> > +	return inode->i_sb == shm_mnt->mnt_sb;
+> > +}
+> 
+> Please fix the warning reported by kernel test robot.
+
+Will do.
+
+The prototype for shmem_inode_on_internal_mount() is in mm/internal.h,
+which mm/shmem.c only includes if CONFIG_SHMEM=y, but the robot was
+building without CONFIG_SHMEM. I've moved the definition of this
+function into CONFIG_SHMEM in v3 to fix this.
+
+> Looking at this together with Pratyush's mapping-freeze series ([PATCH
+> 0/3] mm: allow freezing mappings), I think we should extend the mapping
+> freeze lifecycle from preserve() -> retrieve() to preserve() ->
+> finish().
 >
-> +1, this is problematic and should be resolved. In some setups, VMMs 
-> leave holes for PCI/IO space; with the current approach, single memfd 
-> preservation does not work for such use cases.
-
-Yep, agreed. There are a couple parts to this. First is this patch. Next
-is KHO xarray. The patchset is ready, I'll send it after -rc1.
-
-I think I will move this patch to that series and then make the series
-also support holes.
-
+> When retrieve() returns an fd, its mapping should still come out frozen
+> and only become fully user-owned/mutable once a successful session
+> finish() happens. That keeps the index -> folio mapping invariant across
+> the entire live update until every fd in the session (e.g. vmfd,
+> iommufd, vfiofd that depend on the memfd) has been retrieved, passed
+> can_finish(), and been finalized together in finish().
 >
->> Fix all this by walking the page cache directly using shmem_get_folio()
->> with SGP_CACHE. This returns a locked folio with an elevated refcount.
->> memfd_luo holds that reference until the memfd is unpreserved. This
->> blocks compaction, migration, etc.
->> 
->> There is still a need to migrate folios out of MIGRATE_MOVABLE page
->> blocks. This is because those might be CMA or KHO scratch. memfd_luo
->> will hold a longterm reference to the folios so it will block migration
->> in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
->> 
->> Also factor out folio unpreservation logic into memfd_luo_put_folios()
->> and use it from memfd_luo_unpreserve_folios() and from error paths in
->> memfd_luo_preserve_folios().
->> 
->> Since shmem_get_folio() always returns uptodate folios, drop the folio
->> zeroing logic.
->> 
->> This change also improves preservation performance, shown in the table
->> below.
->> 
->> |------------------+----------+------------+-------|
->> | memfd            | baseline | this patch | delta |
->> |------------------+----------+------------+-------|
->> | 4K pages, 32 GiB | 748 ms   | 600 ms     |  -20% |
->> | THP, 4 GiB       | 0.59 ms  | 0.59 ms    |    0% |
->> | THP, 16 GiB      | 2.99 ms  | 2.61 ms    |  -13% |
->> | THP, 32 GiB      | 4.83 ms  | 5.21 ms    |   +8% |
->> | sparse, 32 GiB   | 8695 ms  | 7269 ms    |  -16% |
->> |------------------+----------+------------+-------|
->
-> For THP 16 GiB / 32 GiB, the -13% / +8% swings look like high run-to-run 
-> variance. However, maybe not: is it because vmalloc_array() is 
-> overallocating memory for folios_ser?
+> (Doesn't have to block this series, we can do it on top or as part of
+> Pratyush's AS_FROZEN series.), but I think we must fix it either here or
+> there.)
 
-Could be, I only did a handful of runs. But I also reckon this is
-vmalloc_array() over-allocating. It over-allocated before this patch
-too, for the folios array, but that allocation was half as big since
-folios_ser is 16 bytes each.
+Ok that sounds reasonable. Should we do that as part of Pratyush's
+series then?
 
->
-> Also, could you clarify what "sparse, 32 GiB" means in this benchmark? 
-> Was the memfd completely unfaulted before preserve (so preserve faults 
-> in all 4K pages), or partially populated?
+Pratyuh's series replaces shmem_freeze() with mapping_set_frozen(), so
+retrieve() would freeze the new file and finish() would unfreeze it.
+That should work the same for memfds and tmpfs files..
 
-It was completely unfaulted. Size was set via ftruncate() and then
-preserved. So it is the worse case of "sparse".
-
-[...]
->> @@ -113,99 +213,77 @@ static int memfd_luo_preserve_folios(struct file *file,
->>  	 * Guess the number of folios based on inode size. Real number might end
->>  	 * up being smaller if there are higher order folios.
->>  	 */
->> -	max_folios = PAGE_ALIGN(size) / PAGE_SIZE;
->> -	folios = kvmalloc_objs(*folios, max_folios);
->> -	if (!folios)
->> +	end = DIV_ROUND_UP_ULL(size, PAGE_SIZE);
->> +	max_folios = end;
->> +	folios_ser = vmalloc_array(max_folios, sizeof(*folios_ser));
->> +	if (!folios_ser)
->>  		return -ENOMEM;
->
-> I bet in practice memfds almost always contain folios of the same size, 
-> so why not estimate the folios_ser size based on the first folio's 
-> order, and only if that ends up being too small, vrealloc() to match the 
-> maximum possible remaining size?
-
-That's a good idea! But I think the switch to KHO Xarray will remove the
-need for this.
-
->
-> It would be a different change though.
->
-[...]
->> +
->> +		if (unlikely(!folio_is_longterm_pinnable(folio))) {
->> +			folio_unlock(folio);
->> +			err = memfd_luo_migrate_folio(folio);
->> +			/* Someone else might have it isolated, retry a bit. */
->> +			if (err == -EBUSY && ++busy_retries < MEMFD_LUO_MIGRATE_RETRIES)
->> +				continue;
->> +			if (err)
->> +				goto err_restore;
->> +			continue;
->>  		}
->
-> Nit:
->
-> I would suggest adding another helper, memfd_luo_get_folio(inode, index, 
-> &folio), that wraps:
->
-> - shmem_get_folio()
-> - The !folio_is_longterm_pinnable() migration retry loop logic
->
-> I think this would make the final code a bit more manageable.
-
-Sounds good, will do.
-
->
-> Other than that the patch looks alright, feel free to add
-> Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Once the nit is addressed.
-
-Thanks!
-
-I think the MM side might take some time to gather reviews so I will
-send this out as part of a liveupdate-only series. This patch is useful
-on its own anyway.
-
--- 
-Regards,
-Pratyush Yadav
+BTW, this tmpfs series does a lot of renames and code motion so it
+conflicts with Pratyush's series. How should we order these?
 
