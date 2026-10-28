@@ -1,91 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCACA606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACFA606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WEUhYuHY
 Received: by kanga.kvack.org (Postfix)
-	id 02E5D6B05B7; Wed, 28 Oct 2026 04:08:55 -0400 (EDT)
+	id 3172B6B05B8; Wed, 28 Oct 2026 04:10:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 005056B05B8; Wed, 28 Oct 2026 04:08:54 -0400 (EDT)
+	id 2EE9E6B05B9; Wed, 28 Oct 2026 04:10:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E85C66B05B9; Wed, 28 Oct 2026 04:08:54 -0400 (EDT)
+	id 2048E6B05BA; Wed, 28 Oct 2026 04:10:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA69A6B05B7
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:08:54 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 24193C0BDA
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:08:53 +0000 (UTC)
-X-FDA: 85371308946.12.1B3FA45
-Received: from mailsc.amlogic.com (unknown [64.106.246.77])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 600EB180009
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:08:51 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of yao.zhang1@amlogic.com designates 64.106.246.77 as permitted sender) smtp.mailfrom=yao.zhang1@amlogic.com;
-	dmarc=pass (policy=quarantine) header.from=amlogic.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F40F16B05B8
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:10:23 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E843C40C0A
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:10:19 +0000 (UTC)
+X-FDA: 85371312558.28.0DA316D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3807D100005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:10:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WEUhYuHY;
+	spf=pass (imf05.hostedemail.com: domain of mchehab+huawei@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mchehab+huawei@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793174931;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793175018;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KOge3QbpemeNjgjVFlRXW6zSTDOId9PsJBtVEBvQu0c=;
-	b=oHFNQ0ktXBUt/50yrrVsIQ5Crzgqi76JmNiA45nxM6GXqkfzfte3GwOFURDZc+HbumEXO8
-	oWBFcIBHpS+3TKkEiEZI+PWcMkoEgx7vTRous8EGABxPwMPTdhtH0OZQShk6zZnZk+2lO3
-	2EexpvsfeeHKAxvGIt5K/vJs95V0PkE=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=G8E1MJWzV3M4DJYjKtp16uZzM5Zd7LJCU2Q5AuhHszs=;
+	b=kgCywe04ub6CSpm4HVDqDeCfNfp6mkH3Pkj4tcRdfbVFXh5J9qJAG/biyYv/af8q7pxbVM
+	t2xVIrgWq0UEmur/Al7F3Di28NnVd++PqUoiqCp0CcWWYot2XnlzTAFGoe5Wx9SBvzhpkE
+	0iYZ6utSsg+yxdqgvv2YV7T4jRvNSyc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793174931;
-	b=w1xZoT17kRX3HmjjnUL4cSs/z9TI8Sh9+wH3t0fDEDBulMPxXGVCF4AnjvrPLAc+X5BfqT
-	qid9BgXKrB5xz6pPWHxwnfMexxAYf86ws/slQj42+MMbsdQheUOYUIS5gXbFtCHqxA98Gc
-	eyc/XWESYK2W1OWu+7Iyq6XmDIR3ogo=
+	t=1793175018;
+	b=GrZ7DIl+ggxK2MdOtP8LTWf78XPYxB64y9Q4rkZoR/dsdK2Zm0D1VSzncNkgljBnhPBam4
+	TDSS3kLYydvO7UtVmiRNiQghSNYG/y5yzzFlphDlrXF3oZ73x9ZVHysLDA7PSDZMqsIngs
+	metoZDMJ8fXj8elkhw8ozP14gWOA3SI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of yao.zhang1@amlogic.com designates 64.106.246.77 as permitted sender) smtp.mailfrom=yao.zhang1@amlogic.com;
-	dmarc=pass (policy=quarantine) header.from=amlogic.com
-Received: from XA202100-0024.amlogic.com (10.88.19.246) by mailsc.amlogic.com
- (10.8.11.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Wed, 28 Oct
- 2026 01:08:46 -0700
-From: yao zhang1 <yao.zhang1@amlogic.com>
-To: <stable@vger.kernel.org>
-CC: <gregkh@linuxfoundation.org>, <linux-mm@kvack.org>,
-	<roberto.sassu@huawei.com>, <kirill.shutemov@linux.intel.com>,
-	<jannh@google.com>, <paul@paul-moore.com>, <yao.zhang1@amlogic.com>,
-	<syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Dmitry Kasatkin
-	<dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, "James
- Morris" <jmorris@namei.org>, Mimi Zohar <zohar@linux.ibm.com>, "Serge E.
- Hallyn" <serge@hallyn.com>, Shu Han <ebpqwerty472123@gmail.com>, "Vlastimil
- Babka" <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15.y] mm: split critical region in remap_file_pages() and invoke LSMs in between
-Date: Wed, 28 Oct 2026 16:08:35 +0800
-Message-ID: <20261028080835.1852-1-yao.zhang1@amlogic.com>
-X-Mailer: git-send-email 2.56.0.windows.2
-In-Reply-To: <20261028080719.1821-1-yao.zhang1@amlogic.com>
-References: <20261028080719.1821-1-yao.zhang1@amlogic.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WEUhYuHY;
+	spf=pass (imf05.hostedemail.com: domain of mchehab+huawei@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mchehab+huawei@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7516143EBE;
+	Wed, 28 Oct 2026 08:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5846C1F01825;
+	Wed, 28 Oct 2026 08:10:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793175017;
+	bh=G8E1MJWzV3M4DJYjKtp16uZzM5Zd7LJCU2Q5AuhHszs=;
+	h=From:To:Cc:Subject:Date;
+	b=WEUhYuHYvzgNxhMcu+LW59a6z0bIUFlxI/4MB+VuPikwaZjJfz7gteMZ8GzeKP3nr
+	 imioDUKwKv8DQLkaZy95QnIDB2gr87JipucfqSR1u6huvnmIJS0AOKUtdkM/9HNYPe
+	 N+OtU1Kamcdww9t1EdJxVTHpppbNxNdia/1y2XtVFGC8YclRjYfG2LRYqoXj9mVyam
+	 d+zKh+Ehph5wDeBNqkctaX9677G66BMlYsV0tFMao3u4PMoWNhscCy3r6THm4lq0aq
+	 r6C47zleLXT2O+zFkjyiQ93R0zvHQn2XP6F2K53g4z+k9DH+xEWbZ4dJqaGXK8Dwf9
+	 SC2o2PcvbWprg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.100.1)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1xLyjf-0000000ASmT-1TDu;
+	Wed, 28 Oct 2026 09:10:15 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Mauro Carvalho Chehab <m.chehab@huawei.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	zhenwei pi <pizhenwei@bytedance.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH] mm: memory-failure: update statistics before emitting the trace event
+Date: Wed, 28 Oct 2026 09:09:57 +0100
+Message-ID: <d472a9a3ccfa8c0359d7d7acabed92c8927d8e47.1793174996.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mailsh.amlogic.com (10.18.11.5) To mailsc.amlogic.com
- (10.8.11.35)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 600EB180009
-X-Stat-Signature: 19bjsx8rqc3ffr8oz83fbyspywirnfim
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3807D100005
+X-Stat-Signature: r5wufhkjimp81duigcaqcycm5wug4pu3
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793174931-305196
-X-HE-Meta: U2FsdGVkX1/Ajov8Wbzts6rj1s8W+j74Sx21YbQNwD0f1R4IQJ/ad/rzK/XUywWMNSjhgyLclu0S3dQB19+SP9PLAAXM7iapUx3dsF9d7oY+KGVgdOu4uJ2qRHJSSCITwOpjTPTFr3QbBtnJmJlBGBGMXLgXmbmgh/nksLeaBYWVh8d8LoKPoEtdG3nZpV1ADIcGu2XoQBAnhazUU05VrnqN+1cibgt/CFdJA/8CJz9lp9rsuCYzoZamQC1cfnCer/P2POUFf83SuFHucRRwKJ5By3Q06bqgFLUmy9D7eA/EtYhIKbItn7d9zTev7VN/oqZl2zvHIQ0MECa34+u/IPt11qfVTLN7zM6jdwG362Ptmp3jw5ckizs94gL6CduHVVLX265aFflIT10hY9Weiw2Q491+fRIEMkk+dHvw1+dfkVQFgO+L/ixaxgyEavz1EI/pdpMN/5VR2VFa6dWNkbQf+t9TezXI15TjDHpsUQ9712/fPR3jD5A+MfRr5ib1u2SrKopNUFGDYj/FTju7gMKCQ81JJFbr4GY/XcfNdPvtNxEvQ+7y2+5qxukYSatn0o2FNRdpqZY7radhCsCNLETSvHMNCoBaemzQmb3SXrvC5wTNegRlzqPsk6k/lnw6iBtlCMeAjPsK8j6ktxQm7UKm3LD2xWxDAFEOJ409cTtmCYhZtJ03jxXKmXUo0P5c9DBmS8nllbrzV1X/QhVIYtfqTWohZHjv/jK8qi2qqReWCMX5CyiaAIezY9Ij2qMF1uGL/2dQ6zFEe9EPkLRJdIfzudJcg36nv/Zd+vivmmsrZznLoxMF0dctEirrNbF5iQSOCsb5xAVGRdobPEW4LeWfncYghFv1B9OzwxgKZeNXqLoL7iI1V6q6/7iANbW/S0cr0/l3CZBc1INb7k43XeCpufczsaWAUeIF4aM5paMINPJ1bpXJWTe5qI+oDmO1zTvbW4Ki+nn6laW9nYk
- cS2QcDcr
- GcBZBwdSM00eMofa1kYHwqqB5lCKmMRwDCXU28lBTQQVQykhO/yZtWNUCb8vc73b/lJxt3W5vl5rz+S3uxYiBOvPAiGnS1uLpOd23bZ7PlLXEjSbjC1Ni1c4BbJwD+rcy7Q0m5ixaO/q4IWDcwJ9v7OKd3EwH2H0naBbBk75qfi3KdpEgp22vh8o6dCYbHv9h9Ty1s+MvINcpyaxbEYy1K/81MkKKCJcb+u6Df9P9v//24+/+iwCEkbL87Fvt1wg7g4vLItBrUq7WYpGMBAoa+sd1Mf6bYE7NvE27UGOUkLiiBHy0jqMgQ8wqbC2JR3maEoQ19a81RvWYg0MUohKGA4OiMhptN4e6yIwvaO+9BmI9C2MRivGDc3M3wNHc7nowM8PoUDH3m10rwJ/Ohwa+ccPwxtEm0EeelvxqdtbrG6N3NCUkFhBY31C83JG/PAM5d2e+MkDsQHcEpVUZ1OTrvJL3Sp0Zm74/RxJWSUKGjognbmfqPPHlj6Hh51BzzOBG1g7v/96wmtbPYmAXM9zJA0m5grlJMYJq21tNj2PoCEEtCV2wDiMukh+prfE5oG9w3E07VfWJUR2iHJWmNlYUyiXJgRcNviDjkv4tF7KtDyoVyecfxiHM2MYWevJ3P0+FomstYOvWEfHjyt8Or0U1HCTEHQUImufJacaAzEWUP502jKovEjhkhvjWmltNl1AbUf5Ykhn5+mjkdTL83+l4OxDMFKF1wqVNgTjbaCmG5LIAM/4KGRYeYrFrbqm7r1huvbP6SUWCzqzUPCSv+I4c4wdsWdNAm50s5tpzLpmxlaAdonj+CoY+fHX9b3pDSEdEWb7rISSTPwkKRrHmNxEGx0iXIXXl+60t+DOLEH8raNFtKf+cjjaJjHgeTJbUmhJN/HIr8l/gm5eXp7GoAYd8FauX3w5yo4682jUYsuVrUN+VGl554R/rF7yYgM0fWyTlL82kTlRRqpuPH7+hckRc15ESXHZL
- YN0nEK0n
- ubLyAANpmGcK/qryYaAkm/PwHRlg3+AOqUAXXpGSboW4gDVjJyLsSw==
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793175018-225768
+X-HE-Meta: U2FsdGVkX1/JAAWgmfRH1VgroK7HPdHwsG6+Bov803UtGjYwKRg2vNDFGOM0Nq+wOXka1es5o1An5+xoev6KZBAzTRjI5WVdjtxkfOIMP3EPbkVqdIfXd9UBLQA5lPXob6EnPA+WwP9rJbJPS3sroNg6I485VQjWFWGldseudMwy3VHUUZNYfegtT5bixFMoZ+4soxNqMaEAn7jGE272FTGxjMVBzON5PQdVEpKBnkEDuiDmX3Q5Xutf6G0pfaDt/TNrRKna5vpH8NPUYPHMRP9IE7HDsUAvfRTFSBJmcUtRSdf1yzRPy3qVeYYlChIJanI1xPYz8+GDPOOCvD5mDEQx5V9uRi1l76K0yd9cIneoFZ0Nj3vEE/TyV5X6ofo6so7aZHfCrB739rJl3EMCfFNeHoivMr1KCtAgv3Gtc9ptdp1/G/9SwLGabnrXb82L0fV1mpwa1KZA8b+JFyOe3VKWjoor9rVx3sY6WHX1gDZ8vDLfydLONGzLIpFcXbRnxCHthx6jU8jZZfMl5QbZhadbno1Sp6g3CWYi8SXjHKsjZfVWdOaQLk9DOva7kL3k0nu+Twlss/SCoXKUzIgj2q5TWV2tDbhkEGKvcHniPNuWfkfbznpfQsreluTqjFEfIKgWBTZsDg8yyLcw78kofF8nlO4e3XVko+WzRvMF/ICfWF43SB5WJdUypwnez8Lc7QtgASwUuZ1xFZ/wO2tGbj+5bTvl2uGWQALvuMJOo0kIWGpbNCurfQ+HzEjuPepA1jIuRkM3TLJG0PSzc4GPEhaZGoCosBb9+FIZIyi3yl5kzu4ziliRN+SVAzaf5QQsfgbOq2vwmyMhMhL8G64q5wE5V+YH7XVO1Y1J6HeoE42Vc4OvDHs5zpEjWWNhKqJ8n6Bb3JqmqwYYJczvWH0A6ZSldo5jMwZl9X+aVIthYBJ04dY1ZPHWER/1BR4kBhAt76QSvbFIZAVy5oRcGPD
+ qtICXAFm
+ 1+deHzX8IIYYaty8IicjO6SNPzQ4exOqxrBpq8c5Qsa2pRAc+lpxd5XCq26yHuauQ+JtGzr0jw/3T9bEOYOG3hF07jMW2cikhKdjKwJD3DASmqRdwO4VLhLVCehl42Hxceo9EuG0abzprC+ygbjR9T3HrIDUcUU931jrKk4Yjw2eI8usiUI09R16XXpeVa6OBJCpEbV/TDBZSnJuoT3FFDDkgZeWWG96iU670jpi99M0CHXU1FcQh2NSRyfdivYxEnZUOTXRkYAfuKXtt0LYuyZsLV5pElmnTKJ6iXJTy7KPuOIQLa+jsaEIEqmuZWVh+v4usS6Go1Za3XX6E4gXvZihzjBgByw89PFN/0M0XIhho7r+8roKzZjKC+QQvP3lJar/6ijCJOcdYVCLM2Q3AC1VA4kuWSZDjuslzfAOb53jM8bc57tn5ANJtJ0a94c7hBj/nW5oRIGFYHNpoxChLFkVppLRw6eyuY0HbK3JXzIUPuqPnOL1b+/a2MiZ5Ureoyb7RuQASzBJBPJVhnyU+bQ7ZXXmAFLW/oXJgfdE9eKB+Efbieqn+N8bGPw8YPd05Q8rq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,166 +102,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+From: Mauro Carvalho Chehab <m.chehab@huawei.com>
 
-commit 58a039e679fe72bd0efa8b2abe669a7914bb4429 upstream.
+Today's rasdaemon-ci run showed a race condition at the page poison
+logic affecting userspace (rasdaemon): action_result() emits a
+memory_failure_event before incrementing num_poisoned_pages and
+updating the per-node memory failure statistics.
 
-Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
-remap_file_pages()") fixed a security issue, it added an LSM check when
-trying to remap file pages, so that LSMs have the opportunity to evaluate
-such action like for other memory operations such as mmap() and
-mprotect().
+That causes userspace to read /proc/meminfo to detect HardwareCorrupted
+trace events to warn if the value exceeds POISON_STAT_THRESHOLD.
+This works most of the cases, but there is a chance that the value
+not being updated in time before libtraceevent notification is handled.
 
-However, that commit called security_mmap_file() inside the mmap_lock
-lock, while the other calls do it before taking the lock, after commit
-8b3ec6814c83 ("take security_mmap_file() outside of ->mmap_sem").
+Root cause is commit e240ac52f7da ("mm/memory-failure.c: simplify num_poisoned_pages_inc/dec")
+which changed the order of updates.
 
-This caused lock inversion issue with IMA which was taking the mmap_lock
-and i_mutex lock in the opposite way when the remap_file_pages() system
-call was called.
+Rasdaemod-ci run up to Oct 27 worked properly, but on today's run, it
+failed to get the HardwareCorrupted data from /proc/meminfo because
+it was updated only after trigging the hardware error event:
+	https://mchehab.github.io/rasdaemon-ci/failures/20261028T035110Z-40629018388/daily/aarch64/consumer-poison-page-stat.html
 
-Solve the issue by splitting the critical region in remap_file_pages() in
-two regions: the first takes a read lock of mmap_lock, retrieves the VMA
-and the file descriptor associated, and calculates the 'prot' and 'flags'
-variables; the second takes a write lock on mmap_lock, checks that the VMA
-flags and the VMA file descriptor are the same as the ones obtained in the
-first critical region (otherwise the system call fails), and calls
-do_mmap().
+E.g. it failed to log this:
+	rasdaemon: Poison page statistics exceeded threshold: 4 kB (threshold: 0 kB)
 
-In between, after releasing the read lock and before taking the write
-lock, call security_mmap_file(), and solve the lock inversion issue.
+This is important for rasdaemon, as the consumer's action monitors a failed
+threshold before poisoning pages. So, if the counter doesn't update properly,
+it will end not poisoning pages at the expected threshold.
 
-Link: https://lkml.kernel.org/r/20241018161415.3845146-1-roberto.sassu@huaweicloud.com
-Fixes: ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in remap_file_pages()")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reported-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-security-module/66f7b10e.050a0220.46d20.0036.GAE@google.com/
-Tested-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Tested-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>
-Cc: James Morris <jmorris@namei.org>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>
-Cc: Shu Han <ebpqwerty472123@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 58a039e679fe72bd0efa8b2abe669a7914bb4429)
-Signed-off-by: yao zhang1 <yao.zhang1@amlogic.com>
+Fixes: e240ac52f7da ("mm/memory-failure.c: simplify num_poisoned_pages_inc/dec")
+Closes: https://github.com/mchehab/rasdaemon-ci/actions/runs/40629018388
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- mm/mmap.c | 69 +++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 52 insertions(+), 17 deletions(-)
+ mm/memory-failure.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 7f357de8f4d6..90a5358da10f 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -2991,6 +2991,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	unsigned long populate = 0;
- 	unsigned long ret = -EINVAL;
- 	struct file *file;
-+	vm_flags_t vm_flags;
- 
- 	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. See Documentation/vm/remap_file_pages.rst.\n",
- 		     current->comm, current->pid);
-@@ -3007,12 +3008,60 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	if (pgoff + (size >> PAGE_SHIFT) < pgoff)
- 		return ret;
- 
--	if (mmap_write_lock_killable(mm))
-+	if (mmap_read_lock_killable(mm))
-+		return -EINTR;
-+
-+	/*
-+	 * Look up VMA under read lock first so we can perform the security
-+	 * without holding locks (which can be problematic). We reacquire a
-+	 * write lock later and check nothing changed underneath us.
-+	 */
-+	vma = vma_lookup(mm, start);
-+
-+	if (!vma || !(vma->vm_flags & VM_SHARED)) {
-+		mmap_read_unlock(mm);
-+		return -EINVAL;
-+	}
-+
-+	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
-+	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
-+	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
-+
-+	flags &= MAP_NONBLOCK;
-+	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
-+	if (vma->vm_flags & VM_LOCKED)
-+		flags |= MAP_LOCKED;
-+
-+	/* Save vm_flags used to calculate prot and flags, and recheck later. */
-+	vm_flags = vma->vm_flags;
-+	file = get_file(vma->vm_file);
-+
-+	mmap_read_unlock(mm);
-+
-+	/* Call outside mmap_lock to be consistent with other callers. */
-+	ret = security_mmap_file(file, prot, flags);
-+	if (ret) {
-+		fput(file);
-+		return ret;
-+	}
-+
-+	ret = -EINVAL;
-+
-+	/* OK security check passed, take write lock + let it rip. */
-+	if (mmap_write_lock_killable(mm)) {
-+		fput(file);
- 		return -EINTR;
-+	}
- 
- 	vma = vma_lookup(mm, start);
- 
--	if (!vma || !(vma->vm_flags & VM_SHARED))
-+	if (!vma)
-+		goto out;
-+
-+	/* Make sure things didn't change under us. */
-+	if (vma->vm_flags != vm_flags)
-+		goto out;
-+	if (vma->vm_file != file)
- 		goto out;
- 
- 	if (start + size > vma->vm_end) {
-@@ -3037,25 +3086,11 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 			goto out;
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index a8b03e2920ba..eba6fe1dfdea 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1281,13 +1281,13 @@ static bool panic_on_unrecoverable_mf(enum mf_action_page_type type,
+ static int action_result(unsigned long pfn, enum mf_action_page_type type,
+ 			 enum mf_result result)
+ {
+-	trace_memory_failure_event(pfn, type, result);
+-
+ 	if (type != MF_MSG_ALREADY_POISONED && type != MF_MSG_PFN_MAP) {
+ 		num_poisoned_pages_inc(pfn);
+ 		update_per_node_mf_stats(pfn, result);
  	}
  
--	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
--	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
--	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
--
--	flags &= MAP_NONBLOCK;
--	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
--	if (vma->vm_flags & VM_LOCKED)
--		flags |= MAP_LOCKED;
--
--	file = get_file(vma->vm_file);
--	ret = security_mmap_file(vma->vm_file, prot, flags);
--	if (ret)
--		goto out_fput;
- 	ret = do_mmap(vma->vm_file, start, size,
- 			prot, flags, pgoff, &populate, NULL);
--out_fput:
--	fput(file);
- out:
- 	mmap_write_unlock(mm);
-+	fput(file);
- 	if (populate)
- 		mm_populate(ret, populate);
- 	if (!IS_ERR_VALUE(ret))
++	trace_memory_failure_event(pfn, type, result);
++
+ 	pr_err("%#lx: recovery action for %s: %s\n",
+ 		pfn, action_page_types[type], action_name[result]);
+ 
 -- 
-2.46.0
+2.56.0
 
 
