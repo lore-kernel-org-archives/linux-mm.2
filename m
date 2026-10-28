@@ -1,99 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736D7606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7376606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bl2ixjO1
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IVVNMxQQ
 Received: by kanga.kvack.org (Postfix)
-	id 1D5F86B05B9; Wed, 28 Oct 2026 07:33:50 -0400 (EDT)
+	id 113D46B05BB; Wed, 28 Oct 2026 07:33:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15FB76B05BA; Wed, 28 Oct 2026 07:33:50 -0400 (EDT)
+	id 0C4206B05BC; Wed, 28 Oct 2026 07:33:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 075D26B05BB; Wed, 28 Oct 2026 07:33:50 -0400 (EDT)
+	id ECE436B05BD; Wed, 28 Oct 2026 07:33:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D84756B05B9
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:33:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67209A890D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C5CD46B05BB
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:33:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7EBAE40C60
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:52 +0000 (UTC)
+X-FDA: 85371825504.13.8653AEB
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9E66B80015
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:49 +0000 (UTC)
-X-FDA: 85371825378.14.C33AF46
-Received: from mta1.migadu.com (out-218.mta1.migadu.com [95.215.58.218])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8330240008
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bl2ixjO1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.218 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IVVNMxQQ;
+	spf=pass (imf30.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793187227;
+	s=arc-20220608; t=1793187230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dDUOitKwAW+3VTNHIPufF1Hg0ej/fAOtjzL/v/aRs4g=;
-	b=OP9uilfajR42KcYZ4nZTYfM3GOZSq8UP3mToqLtHQwviX0pokW4w6xm53kRMsKdZtyty1S
-	faY/yOHkwrGDMY1dYJGXS81Sjfe772iUOQnLRvaxNs2SpRvQjHScmTfIZOvvXRcdB0VnIh
-	3R8sb4PvUwkmb8DUXG5VxlRjcfjowp0=
+	bh=jLuXcsrhYze/uot6RAritgtezmvs46B7suAi1iRl0v0=;
+	b=rSJQp1xgIDykbCcmEG6h2YKr1NAwnekMTTLUygY73KPeRwQJOwqxT7e/E5N8D+POlJqZRO
+	R9nQ0dB9pTqbG1wSD3kI3bnIhuxa4S8SJNmEkSm0c3qLulfavjROFR2QRMFESYL/fEQmwY
+	RQ2xtV/psU5DuXUYLkf4/2/+8JHbPBE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bl2ixjO1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.218 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IVVNMxQQ;
+	spf=pass (imf30.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793187227;
-	b=jkQk/nhtxkyWZHobyGGpMGeo3HY9szFvYFoqdEPTyhv69pwGiyxo+dFyvoiHjxkPqtIEid
-	jdF9PFDTc+z9s8xBsfngA3DtPJnbYlxajVxhRd7Zqy2ZFYbXs7b95XEL+mFdGOkHOch1ya
-	DWzd19wLEh63IbhdX5ETv4m0lmSUI/M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=p43Uh4QBygC4J7FaMvkYnDy+vZa3XCqhD7uuuVVkH9Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793187226; v=1; x=1793792026;
- b=bl2ixjO1thuQ87whdtgDcso+QayHJmPNY/bHCc//DGltM+tFHbY0ABNJ1/u+IsyzLohxX5ZS
- TjnDvIzBMkcIqVidBfr/lOwIhaAZS7R06O2Jr+PcWc/UQ3xm0lYe/nE7PPcJQa4trGSk4mNQCFF
- awWlFKyefFjPa79sG5WzbBjo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ece0e52f5c4e19b0;
-	Wed, 28 Oct 2026 11:33:45 +0000
-X-Mizu-Trace-ID: ece0e52f5c4e19b0
-X-Migadu-Flow: FLOW_OUT
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Chris Down <chris@chrisdown.name>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH 3/3] mm/hugetlb: fix NR_HUGETLB accounting for unused surplus folios
-Date: Wed, 28 Oct 2026 19:33:19 +0800
-Message-ID: <20261028113319.38544-4-kaitao.cheng@linux.dev>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261028113319.38544-1-kaitao.cheng@linux.dev>
-References: <20261028113319.38544-1-kaitao.cheng@linux.dev>
+	t=1793187230;
+	b=eQtfcHE9+XdgGS8ji7RIwbDldqynLOfhQsHlS8lOmnw4/OnHwhc5+iHL9+JXA5ZcVeIcg/
+	OV4FR2ik1DhhYWB8j9jh8kIUE8RncPl21r5thcRQIaq16RTvFKTDxHfZ2UUYnNx0oLkmoH
+	z9vXlPcsz1mPF9GX8FLe3sBDNeuAphY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793187230; x=1824723230;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=z8y8XV24bROqh0zonAMNAjIZyMJbY12xpb+/fK8m0AI=;
+  b=IVVNMxQQqo6fRprueP3x9UMTEHumVFKzrdmky/mkExXlJb7w2SFFjxXX
+   /NLDT53XEpbeLXEeS/gGxzM7FjFxrnIsyThFGtVRgg5w1IiSpIqBYJLXM
+   05oc8sMSZ2hRsO2aGSU66QdPpdw8ixblIu9JJUkg/wIGAFglPYUveovro
+   CpTBuglbqDYb33zKzhmIGGmzRl9pvxoxVIdf64LtQLXjLyXuBKXc9ZBQI
+   GBtOBLobOqGn/J5w3CcFT0HT+41kso6oS+1Bq4jLRaitFsmxOFStIc15A
+   naApAlA57SGHoy0w5Uzi1njxha9Ixm+AsZ6SFuMMmv5PSjrOcxFj6Lyzn
+   Q==;
+X-CSE-ConnectionGUID: ZOZZA3ahT0a6JrDxBpFdUA==
+X-CSE-MsgGUID: RvnG3qynQR+CDDEn3haVdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1813638"
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="1813638"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 04:33:48 -0700
+X-CSE-ConnectionGUID: F9mrBK1+QXS8jOjCv8P8bQ==
+X-CSE-MsgGUID: KJ1QgI6jS6ey2L/RLS17LQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
+   d="scan'208";a="6633584"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.146])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 04:33:40 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Dmitry Ilvokhin <d@ilvokhin.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Joonas
+ Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, Lee Jones
+ <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Joel Stanley
+ <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen
+ <ryan_chen@aspeedtech.com>, Billy Tsai <billy_tsai@aspeedtech.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Kees Cook
+ <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, Matthew Wilcox
+ <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Andy
+ Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Jonathan
+ Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy
+ Dunlap <rdunlap@infradead.org>
+Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-aspeed@lists.ozlabs.org, linux-hardening@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Dmitry Ilvokhin <d@ilvokhin.com>
+Subject: Re: [PATCH 05/10] drm/i915: switch to __nonnull_args() macro
+In-Reply-To: <33ec8080594f9f4ef1d50e36497339c9a6897393.1793027261.git.d@ilvokhin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1793027261.git.d@ilvokhin.com>
+ <33ec8080594f9f4ef1d50e36497339c9a6897393.1793027261.git.d@ilvokhin.com>
+Date: Wed, 28 Oct 2026 13:33:37 +0200
+Message-ID: <3b839373c03f6b8aeafa8e4801a486ece68b0815@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8330240008
-X-Stat-Signature: db3nhhbem4b9f6ns911bb6r5czqh7z5k
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793187227-756747
-X-HE-Meta: U2FsdGVkX18PIGiyZvwIdBBuOuEtfkFQfOezJ3Lm4US7HNQxntmvObE9C44Ed2CoDUb26lOfOEFAG6IomforABX4OP+eA+HQVlOg3LqwNqXTWQiMCaxZti0Z1W4WygctpFvlsaommHny4bcQyAKFV8t+TjRbRPl2xpmLqfpUreO/4ncHrwP/RB8vgIkKBCYqvbchRbbuAyiUwpFTUFf9aCpcp1J8bOxiM4sg0jjT5YgBUEAKNq3I2cDh7bIK/RpeaPM2sE9TKv91sQCyyGghMkKtBh6qgdb2pO7SVhV3w3fsLQIf6182ZKDZnnKOgsItob4A2R8QqhzkIe/xTNps+If3sT/Jtb7b9d0/CuXWzzoP0KlILld0XI2liNw03YX981iCLMTzfC3SnyHS4i6rSWn3ZXtSvkNvGRWpkkF7J3Gvwh0EQQkvEqe/NkPBwFEZZxEQC69WMrLoEVWlmssouEBc57lGIVsMQOCX3nzSEUqJDbm5lzBVMxrbCowQ5G1H1VhCJ73YhAVf4dVsaPYBjccdnLxYkU4TAljfk1VcWbSPebA4q6BXRdV9CUzV7F05j8jiri9+skFSzD9B/B2QSZz5zmDITJghbt0yH7DK4UPGt58PT1kip1+GH/foyUsh0hhyJgcVzKFTFwAclqAJovh1XtFib7eJTjBzgOM15RpTRFrDUgEV73OY6+MY/X7562QLSsS9tpA2UWA6Tcvrch/h6IMDg6Jy1+SPBWyx0TmRdEy7I+4Ru/Ffbb4zl8I4tvaAtZqvaIkMHpWlpZcvUTG1WFtGWhDVP2jv824bNxhBX20+5PmldDUENa48Nd8YSlap9f8gchG0oqxhG2vhbZV+3rdG7Vo+a33c7kDelFWUBKSiGH4NUbxjrV+UZZRv916i/FKDNDhj70cFkHAOZQ458HEioHUFOCflaZRbWXZ72ypLppZdnAOAmhBaKn5jsjycgQ/BbkLHQpvaPl7
- bB7ypTNo
- Eqyz2+S4RSC7NynbqqWHAu23uMTiHLAxs2VurqgkwiA1VeCoPbQxOPzG9giAtRUkxdns3jHOmyug18qLwt3bj6P6cCrpj8nxD38AvJO7fEy9c9LheuI5+wMFS4T/yXtv4Xs7qqGuNMmU0bi/LADsXASxHLZ/nNgt6f2+Q1rr8d3Z5RY5L5zKLa6ufIh7IlNJqcUQfbv+YZAZoPWyDecFYYZ4ckBOeZVrmYwRAmvNVNCuauTjlZyJj+LU0G1YRExIKRkbfWMeQtY0cZ/Pk5xKxaGSxP7ZKjDjOAqhbF8IdRvXH3VtUOPg8Xs6L+mVPByzykjw1IbfF3Uh7FUWqycDG/MIrDUUxkBOga77zJFGZSHdoRE2heq78B8spnzk3TvSI5WvyiqN6vcK9eWYPOfeoAo+IWoNz6co7/uMd
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9E66B80015
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: kswf77kbc4euwgqji3abjds5jh1o7nss
+X-HE-Tag: 1793187229-462307
+X-HE-Meta: U2FsdGVkX18wTDxrhauFSvOhc0iIZIuQDYehmeHQSNQXpLsNVIJnqIHi88/vCIjqYrh/ekOKP7ERVYHUMYkgViJONaZyMa3B+mjV6Ta3AdLAPcrAEDlwMbStdtLCiQlI/2p7kCjDfV+KQCDUKpLocRbdL4WKSBhZU7tFWZe0DzQjjuz8FVZfEqWqnz1uZuJxdnhUbX1WAUrAQXIigpq7RQ+OISsmx0CPGBelEzTZacyTEPyoOSjGHEXqhL5/l022abZG3pJ5vsnULatYZUgxr3cwEU4GGsVvYGbRtCeLH1OQsrLwatv/Q2tiWq2bBMjQ/iDvF3GtbPEMq657puyXyJXHlzshENxVn+GDQeIDKNBV9WjHUn1kF3rWObWIBobb+yTQwAADNojDBWkH38+7qq8PN0uNbSW2zQAdHfy+glvbpOHTst89wvfE0R7RElECOk+RLMTYMckHqXlhui+XDX2Z5O1zlxclJbYsIONKEp86TVE2Fw5f2bO3Co8iwnyKM1PDFJCXlBKK5bYxjFH17rVX11duVie+zNWJdZQITeYMG9yCY+NwH4URaH1PuEU89s3XsuQIsbEaf3EEzrxL2XebxNa+4w0yZc68T8uuC7KFz0PxwoZUPftxhxlSakUyLKd+SFE3PkEz55HD5ZgozsL5L8eGBfkffGQsK/TfzxybFD1zubZNs18FTiFrzhrMBmJbKZqjW6G1bdMk+7+16CJypVIE6L4a+NCOTC3247iNXSZo3lNk3mt3tC4jG03H7VnJK9FL4INZUO3sphURoo4t3B5xZImZ5LiyERkEiUUTfCVpgTV4pjdHK4p/BivmE68TAB543AqOSfWEtNikG3whqHCv6ZbxRtBz5sLEJH8Hj0UBi5Y/J12VJQ17XJpw3H76dzBZpNxyJz9ZhJfLd6Jj/aYHhrWjHlftbbpHe4uA1P3hwyk2rCq67uhSXO/BpbsRVjGws9Ze0Xd5AJE
+ v/VoGkwI
+ bqCc2pmJDRuIt+Z3pEFGhj3aLgQ8XzXR2ipURhZASjM1R2dHt3DV7QfhrWP3NBSombHbJCJY9coIYYbkXwcYLHXtnBZdEhrPCN6dZyIMO6x1Mfe7QhSRFbJI8InKplwvJkwSd32LMy0xAQwj4jt+QWPiYFZpVYdD9nhjjIN0bfY1zOiASutaFMD0uq+Gp/qYLbCngpEvyytjH/AFlj+Z8jTkamAo4ynCzrkfohojoAexaW85WwxmVWBtKUZbRYGmpge9aKppdQ49WfKdSvtFwkjijczeb3Lv4Tro8ofzz22kCM70LD06No26+MhTxpOrZKgvkyx2/FRjuIXtp+PUvTkZOF7ujEYefbF0/djR4yuZZYEcD8kxWyg37a+tnqLXAPyf34eUjGLRolwTZDPXisVfrRQMOXI4JIioS8qSb+wTj4wqObP2nHvuG6qL60qCbb/5iGR4Q3hnkwUABPxZnHPwWLz4FQbZJ/LEM6xZjtt19oXlmd94c2OREsL7Ak/3NTuTY2sV5NW0WxH3wJOfss71aElfB1ObqAexai+M1tN/O2KKI1rl7a2XJG2M4wlY7avLDgVNguoYKAtDwAychnFmtd5ujvF/fiDDknLmKKsbGUVjEKE9Kz50E8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,60 +127,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
+On Wed, 28 Oct 2026, Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> Commit 22302af28d3f ("cleanup: Annotate guard constructors with
+> nonnull") added the macro __nonnull_args() to wrap raw compiler
+> attribute.
+>
+> Replace __attribute__((nonnull)) with __nonnull_args() to standardize
+> nonnull attribute usage across the tree and keep the attribute's quirks
+> in one place rather than open-coded at every call site.
+>
+> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 
-free_huge_folio() unconditionally decrements NR_HUGETLB, but freshly
-allocated surplus folios can be freed before the counter has been
-incremented.
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 
-This happens when alloc_surplus_hugetlb_folio() rejects a fresh folio
-after its second surplus limit check. It also happens when
-gather_surplus_pages() frees folios because a reservation cannot be
-satisfied, or because concurrent pool changes leave excess folios
-after the reservation succeeds.
+> ---
+>  drivers/gpu/drm/i915/gem/i915_gem_object.h | 4 ++--
+>  drivers/gpu/drm/i915/i915_request.h        | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object.h b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+> index a2f4b6758a65..648d0b4139cf 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+> @@ -127,7 +127,7 @@ __deprecated
+>  struct drm_gem_object *
+>  drm_gem_object_lookup(struct drm_file *file, u32 handle);
+>  
+> -__attribute__((nonnull))
+> +__nonnull_args()
+>  static inline struct drm_i915_gem_object *
+>  i915_gem_object_get(struct drm_i915_gem_object *obj)
+>  {
+> @@ -135,7 +135,7 @@ i915_gem_object_get(struct drm_i915_gem_object *obj)
+>  	return obj;
+>  }
+>  
+> -__attribute__((nonnull))
+> +__nonnull_args()
+>  static inline void
+>  i915_gem_object_put(struct drm_i915_gem_object *obj)
+>  {
+> diff --git a/drivers/gpu/drm/i915/i915_request.h b/drivers/gpu/drm/i915/i915_request.h
+> index b09135301f39..f559203c332d 100644
+> --- a/drivers/gpu/drm/i915/i915_request.h
+> +++ b/drivers/gpu/drm/i915/i915_request.h
+> @@ -437,12 +437,12 @@ void i915_request_cancel(struct i915_request *rq, int error);
+>  long i915_request_wait_timeout(struct i915_request *rq,
+>  			       unsigned int flags,
+>  			       long timeout)
+> -	__attribute__((nonnull(1)));
+> +	__nonnull_args(1);
+>  
+>  long i915_request_wait(struct i915_request *rq,
+>  		       unsigned int flags,
+>  		       long timeout)
+> -	__attribute__((nonnull(1)));
+> +	__nonnull_args(1);
+>  #define I915_WAIT_INTERRUPTIBLE	BIT(0)
+>  #define I915_WAIT_PRIORITY	BIT(1) /* small priority bump for the request */
+>  #define I915_WAIT_ALL		BIT(2) /* used by i915_gem_object_wait() */
 
-These paths leave unmatched decrements, causing HugeTLB usage to be
-underreported and potentially underflowing the counter.
-
-Increment NR_HUGETLB before calling free_huge_folio() in both paths
-to balance its unconditional decrement.
-
-Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
-Closes: https://sashiko.dev/#/bug/linux-860a3b8f-0b07-4cd5-a122-aa2288463bee
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
----
- mm/hugetlb.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 8da4bab676c9..d564e6935e61 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2132,6 +2132,8 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
- 	if (h->surplus_huge_pages >= h->nr_overcommit_huge_pages) {
- 		folio_set_hugetlb_temporary(folio);
- 		spin_unlock_irq(&hugetlb_lock);
-+		/* Balance the NR_HUGETLB decrement in free_huge_folio(). */
-+		lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
- 		free_huge_folio(folio);
- 		return NULL;
- 	}
-@@ -2376,9 +2378,13 @@ static int gather_surplus_pages(struct hstate *h, long delta)
- 	/*
- 	 * Free unnecessary surplus pages to the buddy allocator.
- 	 * Pages have no ref count, call free_huge_folio directly.
-+	 * These pages were not accounted in NR_HUGETLB, so balance the
-+	 * decrement in free_huge_folio().
- 	 */
--	list_for_each_entry_safe(folio, tmp, &surplus_list, lru)
-+	list_for_each_entry_safe(folio, tmp, &surplus_list, lru) {
-+		lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
- 		free_huge_folio(folio);
-+	}
- 	spin_lock_irq(&hugetlb_lock);
- 
- 	return ret;
 -- 
-2.53.0
-
+Jani Nikula, Intel
 
