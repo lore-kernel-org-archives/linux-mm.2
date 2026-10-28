@@ -1,94 +1,176 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D104606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 02:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497B8606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 02:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=t7Zex76s
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=SUWw6oyi
 Received: by kanga.kvack.org (Postfix)
-	id 47BCE6B0949; Tue, 27 Oct 2026 22:24:19 -0400 (EDT)
+	id 4D81A6B094B; Tue, 27 Oct 2026 22:32:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42C176B094B; Tue, 27 Oct 2026 22:24:19 -0400 (EDT)
+	id 489586B094D; Tue, 27 Oct 2026 22:32:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3429D6B094C; Tue, 27 Oct 2026 22:24:19 -0400 (EDT)
+	id 379276B094E; Tue, 27 Oct 2026 22:32:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 151716B0949
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:24:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8835780B9D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:24:18 +0000 (UTC)
-X-FDA: 85370440596.14.2524788
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CE676140006
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:24:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t7Zex76s;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793154257;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 06DDA6B094B
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:32:28 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0953B1A0B8C
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:32:27 +0000 (UTC)
+X-FDA: 85370461134.28.40AB293
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013057.outbound.protection.outlook.com [40.93.201.57])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 18011C0005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:32:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SUWw6oyi;
+	spf=pass (imf10.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.201.57 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793154744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kW6mzNv9d6yhsfaYr7C1SS1O9TnPTANE1C6w87x8UOI=;
-	b=eIOHufTm7SOZQnGPNDMfyWq+OlpqAEPYbuz/qOFzNnVn3UJgEDQE2ZNL5ppZg/Ozoj9D9P
-	lYEFcA5hS3H1sruTI28m9E1xay9HrqW3VKpx/ovrnHelhdzsjPIrShvCssTKRe4ESRaKDi
-	iviS+OZLsV9NDwe/YkHHWWK+Zq96Ehg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t7Zex76s;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793154257;
-	b=AgTXkeAFTQooScsPmN606vlYllYdxEp5BF88hna/H78n0dB/xUnu18YgSSyPetKKauUw/s
-	jk1+SDWN4wZVxZGxd+ra/vS7k5oKXD69txaaIYsdcrLlQTPWv1qLEtQnvswNlE6vueyFaR
-	Q7vazbcJk3SsQ6WmsgblTWgqNKIE4VM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DFA8F43CAB;
-	Wed, 28 Oct 2026 02:24:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1F51F01825;
-	Wed, 28 Oct 2026 02:24:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793154255;
-	bh=kW6mzNv9d6yhsfaYr7C1SS1O9TnPTANE1C6w87x8UOI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=t7Zex76sZygL34C3bGAE/bdKfCXA/NQNhzNyXl5a34bLDu8qnEAUmyJW3fxNhw08C
-	 tbzAmjUEM+gttOp+naQ4mxx1OuMWy2NNsfLeeotgwWGP1gKVbMKuceyohlZcWvq/Bc
-	 fthpJqRPvByozPwnLn76K5SqpPFTRbAOt0lo2jro=
-Date: Tue, 27 Oct 2026 19:24:14 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song
- <muchun.song@linux.dev>, cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/2] memcg: reduce cacheline contention from lruvec
- stat
-Message-Id: <20261027192414.cb3318abc07232ec5f1bc937@linux-foundation.org>
-In-Reply-To: <CAJnrk1Z-zzKL9Jebk4XMpfOBtyArppGPTv3__GTbCZXGiEJjOQ@mail.gmail.com>
-References: <20261023195417.1391216-1-joannelkoong@gmail.com>
-	<20261023155407.0b519a3da7313137a0276119@linux-foundation.org>
-	<CAJnrk1Z-zzKL9Jebk4XMpfOBtyArppGPTv3__GTbCZXGiEJjOQ@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=LCZc55SguUaUW/Qc9mttlPQidAeltmeG/JhdLNIZoHs=;
+	b=g00ypWhNVCWfaLkmWbXmzc4d+9Mj99bMPESIBp3+gTwyNNHGDYRxdc+N+1A7BXaDbKL13C
+	wYCwd5inwWPMv7wP7BAEadtj8nB+JSOwP+qbrOhyIgKZK6HGJM33wJfGV1AOjYUju4M2ji
+	/2QnOkbAZV+Pml1LVsv/owpRvb0C4xw=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793154744;
+	b=ieVchiPxfYOPNuWDlgTRPP0w5qV9DjKfwUgnhrCV7U6Ue/Khy59Pr8OLGDw3/empkg6hTD
+	sGp/0IGuvHnCrlUAe9tkXdg3i/0BHBryrTY4l6eufp15e3IZ8TDjSGw+ymhKXVkiHOKegF
+	Ra8gtnPA+3a0l/j5p4usgj1eBVUM9Qw=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SUWw6oyi;
+	spf=pass (imf10.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.201.57 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iWG7cVHhjDwUtacFag2q3t38dOB6LdV9/mTjySYTfSaQay88HHZSmz8dD+5f0reXRuDN2Kum9i98jmn8O7vrijlABmnCZmR8eO6Fqa3RhLOtjzrF0Mq1S2QqG1L+26Y4SiQa2UNGzPHDgWEuL6pDZ5/mTQaLsElBuOA9fRqS9hYmjwPlB+Gr+vqP6TvZ7viIOJOSi+nnHU8/2AvOJpdwUW2NgcyzCZivw2QlNukCyvLrtNSs5w/6UgijWYBF6HzYGlaJwSqlNvOFmeO4b9lE/v4SEUZzfkfNrxYLVAG9Jxyr8EuUDRWr2GUVEO4DU+8ohyyngHQLn8UzTGryUlef6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LCZc55SguUaUW/Qc9mttlPQidAeltmeG/JhdLNIZoHs=;
+ b=Bxs+kzkGQWVE5MFrOQvbFkJVcEX0163rIfW1KffzOsZDwiwp1rU5tp0148OUfbsPQKPamJsQN8h78qdxn0DXTKMDyDxL8Z1FiylDLYt3EF/NJwxJIz5FivpYYcsm1J4Y4H4862iQbULU3cwKYkAr8cUzBV1cF0ICoWvqsek92HH0Okm6dauxWkoSzo89uGw8ocUY6JHgmI3ib6/OvmpN9tN1ruvGKVNixrcgGgjRY3LSHVZxAQE2IQw68tJcT0q/qW5lZ+C55k8o8/EA4jUFOS50hV7BMcbT+dBuk/WzEnKeS0C0FdyqTrb8mB27lwAGqAvxyOXctrLcqt9xyB4DUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LCZc55SguUaUW/Qc9mttlPQidAeltmeG/JhdLNIZoHs=;
+ b=SUWw6oyiPpbC0McCCnEJpDiVIjQvlM2bLdhAYLuz862kYhUIvWz5w5PmSoDFAhuIvsX0R7WCksjkIgb3oFuCxOHlCU3pT4h6aCR97YohOg6r7crGFSrDGDk7axd1HIOotqG49SLmo0YL4vfM+D4StA8cMHLFthUtgRy9y4cdN7AvtB0/aCaym6PBuCl2K0UgM7SMKPsTl3v7vBJW54G2Rc36yez9ZmTvYdX77ctYu9cKjB2bFvLMDN/ruE0ZZLvDBYgdNQw2xIofqlm31VyrN2f5R/GwQPcB4hMlTln95yAirw6QMbR4M3Mwef8ANgysb+GsGPkk8IEhwcF2qc+u6w==
+Received: from CH3PR12MB9730.namprd12.prod.outlook.com (2603:10b6:610:253::9)
+ by LV9PR12MB9783.namprd12.prod.outlook.com (2603:10b6:408:2e8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Wed, 28 Oct
+ 2026 02:32:20 +0000
+Received: from CH3PR12MB9730.namprd12.prod.outlook.com
+ ([fe80::843d:c1f0:b2ed:4128]) by CH3PR12MB9730.namprd12.prod.outlook.com
+ ([fe80::843d:c1f0:b2ed:4128%4]) with mapi id 15.21.0546.021; Wed, 28 Oct 2026
+ 02:32:20 +0000
+Date: Wed, 28 Oct 2026 13:32:14 +1100
+From: Balbir Singh <balbirs@nvidia.com>
+To: "T.J. Mercier" <tjmercier@google.com>
+Cc: roman.gushchin@linux.dev, muchun.song@linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/vmscan: remove redundant !mem_cgroup_online()
+ checks
+Message-ID: <auFerm6kHxeuPFpR@parvat>
+References: <20261028010611.3929937-1-tjmercier@google.com>
+ <20261028010611.3929937-2-tjmercier@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028010611.3929937-2-tjmercier@google.com>
+X-ClientProxiedBy: ME0P300CA0013.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:220:20f::11) To CH3PR12MB9730.namprd12.prod.outlook.com
+ (2603:10b6:610:253::9)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CE676140006
-X-Stat-Signature: 5ib6atmoqkrntmexzaiib4reu4678wdc
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9730:EE_|LV9PR12MB9783:EE_
+X-MS-Office365-Filtering-Correlation-Id: 312bd075-e986-4a2b-42d8-08df349bb0a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|261026140227099003|4143699003|261021123027099003|56012099006|10067099003|261021121427099003|261009223027099003|5023799004|261022105027099003|261022075727099003|11063799006|22082099003|261026121527099003|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	yc3J0loBpKnz60GZRVOcKcHuuM4jmSKTiZZJGkKT4vMqYq51gs4WiN2MaPY6L9naU6nKrVLPUU9wi00IRlcNnp1+FBMTnPi0WUab994u8ktQwwKLhX0ViyyX1plPK9Vw8Rhjjgo8LBNEN/w43S7+wD8m3pIj1DBU7IEwY8NJ2m4c20J2MGxlkuzClbnsW2PGRTmH6HFbYrTThARJqtFcVM/WFwnSYOITLiJOHvxyDJ7P4ROY65U+Y8H9g3LNKyg/U1JC+z8n79q9uc+TiUJBRdpDP3R1q3Ps6SMRvf6RHQGK8PlyGqcQz4TxPIsMvtD2NmCUwBrw1gjAZaEDempp+YTewXMncqSMwjFuzmFbMBkfpNOhKAor9ryATt0Mctl3oHMRVbvlPAboGIXb1Pwo2LTukLV889/R/bL2nXW2mkwR7uKuLiNPmMT31rsvYF7dI3SQdBH+VJzp4Lp5Z69WNPI/DJVoxWN9IzU8pGgAQBXk0OsOr43TtxwOUFrm252c4IKKKQeKd0PoBG8pSapwGDTR75DUIM1TTNG9d1lYLT8njuRIuBrR5rzMykGuD88nwykutLewV4WEVBF6+vuUaSZhouDWsK/zFj/gsWaXE+hv8Mb/w0W7PBzS4aul7CdXxBkHgfTW64X0qr4VJWwBEgynYufd+rUMLe6HTRxWsgc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9730.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(261026140227099003)(4143699003)(261021123027099003)(56012099006)(10067099003)(261021121427099003)(261009223027099003)(5023799004)(261022105027099003)(261022075727099003)(11063799006)(22082099003)(261026121527099003)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?J8iYXGtzg6flsA7DkCusBD9kMvLGCDYWSdtGP/FLKDcL7HedLGQ8C1/LzikG?=
+ =?us-ascii?Q?PbhsDkI4/In+O6lugcFi2FA11XqaiuSDP0aKtiVofCuTQ+G8rl9XnTGoGUOk?=
+ =?us-ascii?Q?rc+ok4NfyzVvGsQtXpQm2VSg20zw/O7N758V9ulMCyf13OXdEjQI82dduKPn?=
+ =?us-ascii?Q?FJ4i9XtvHWCBQOVFjB44dY8G1RPei8K3rEUJIIniwWK/SvuA0Mbk6Az7HdcO?=
+ =?us-ascii?Q?X0sbiL7550XVykoKp6A1Kjh/FyzNgtCT46A1ZUB1SaAMSrWe5uwUNGj9eGUz?=
+ =?us-ascii?Q?wEsqltJG3nhylPGlNJPAiOYz7o9quFCrHBZBcmLaUTIQh7EwDgj+7JFoVGPs?=
+ =?us-ascii?Q?G7MrXCty0LwNKxzrK9FN+Ha9/Fj2p9eKpsURbUEOZUONPVrFYF/D+NLEMLMC?=
+ =?us-ascii?Q?R21jr4iEP5yhMNLQKobe4Wram6pPL1ctdIdHfSlciY8cL5NhWbXDVLbZZg88?=
+ =?us-ascii?Q?0FcLfRuBYen0rY0Z8RqHXWEhuVkvk9uwXJYH05cV1Nc8sRy8CTDNFUoe5Lrq?=
+ =?us-ascii?Q?yyB7SHy5vKIWePQOY91bdHEI9rtmD4nXWVex+04Dct9HkFy0xB9ipWPaCHDc?=
+ =?us-ascii?Q?3alcoUHl8CUendNswdR7K+cwZKvGGWFmfv9awRE4noIyvuVDH9RyyeeHjyk6?=
+ =?us-ascii?Q?UY05ozBEKhz1BrNzsAWjoG44ybYzncQE/tdzsikBrW6qjPX7Gc/fzmcbAUsq?=
+ =?us-ascii?Q?D3WAEPVj/5Bdg+17L/yADfSAGfTip8i8c7iTnI2vHyzpImWTi9G8+vdU1Rst?=
+ =?us-ascii?Q?fVMpdcVKlhG+qVE8Cm1K1hFqIwNQgw31yu9f4F3isPSfeRYn4B54IgHNmvgY?=
+ =?us-ascii?Q?FTF6tLYBu1CmbTWyJ6GrKYD7vD/DMykFGtwy3d/mzJ1xvR+WbG1hf7xtswhB?=
+ =?us-ascii?Q?rBapoI14it33LEyBK++dyfsqM7A8HXrZ9UnjvZnR3Tj7SRPzAC/0jfUmoHKN?=
+ =?us-ascii?Q?1Cufe9oWs3o/bLtU1ajZSzBJUBktpCzgA6KjyANyh32XrqoEoTgQ5S1goSiK?=
+ =?us-ascii?Q?3UTyQQv9d8yB/6sPat2paTvCwR23TTR8E7JKxS4nnq8utllc4Bx/SRw3cthr?=
+ =?us-ascii?Q?tQ0FnzYwT2jYb8s8FZDQjnqXlgkWXxGCio1aac9e99pUzee8/G8RFn0Ys5nV?=
+ =?us-ascii?Q?3+RafaN1dx3hjyTpxkjfdYqZ65acXgMweYyvOq6OpIirl/cXwZcXWhVJ88r2?=
+ =?us-ascii?Q?rEb/fvguB+lZfy4jsTogvlOBbxs1/MuWDC7m6e5jTeZBQzn7iRppI42mB1LM?=
+ =?us-ascii?Q?K1j7K6SwZPfRztFKGL7CJX7dNwzAMa9UihfakIFVQBExO3F7gEh9wTHGZJI9?=
+ =?us-ascii?Q?+mGFo+6juteXakn2O91zhKBB6otw+PBTDq5KEIvLNgYfzvBopEQVkTylXWjY?=
+ =?us-ascii?Q?Excb1A1t0RgKC72JgdOlqRw8X01k3O+LOgmMRKpZLs69HuLdCVwL9qHh+yh5?=
+ =?us-ascii?Q?1Q1Xa7Z8jmTfTx+O1cGDDhRgqQcxgYKMH5E2/WlMno6A0D4OWoJRJiyJz6zB?=
+ =?us-ascii?Q?kpjH5PJ5Ei1uScB83xMGNrQcszrjAIR5u5vw8n6bLw95jZGcV2PhGZZmTFnb?=
+ =?us-ascii?Q?NnZ5de4Xjd0TqsUVi8fEH5AN0MNYK3wOGab0uN4In7NaWpHgZjf+pdQF5MSS?=
+ =?us-ascii?Q?/MlHk2K3Ta0gHlcTr/aZSBJS+THUF6WLebaQPV5Lb2avn5v7xVICD/HWZ65Q?=
+ =?us-ascii?Q?FUJiVvj6uXwtO05HaEGZz/fHZ3Mz3UxxDLoH/AeLVJdBOMk8G4r2B1PXDcSY?=
+ =?us-ascii?Q?2vbMn5Mrkg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 312bd075-e986-4a2b-42d8-08df349bb0a8
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9730.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 02:32:19.9121
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +Qcn4vW8pZZw8Tz9JtCEsc3HKlrYGrXnH3mtpNzXT5edgGOeLVTU5g02QMqQcvZYM5tqZpCcA2tKlkWAB3cnQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR12MB9783
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 18011C0005
+X-Stat-Signature: 8f4ngm1uece57ypqr8fy6mxgkdqmdoax
 X-Rspam-User: 
-X-HE-Tag: 1793154256-864900
-X-HE-Meta: U2FsdGVkX19TgnNmJ4nOunw7o/EyKsPdlep+SEsgkkHo+owLs2oZ5szal/Z2bGm9kddaGtg8uT2RQjg/2HmhuMzQdq9hWLieC5uS/c4GIZfF1UB+VNV76loj+NmtDr1tg7yiKKp/D0Y6rDj4wy5tEjxnoh6+NQvEzm8T5v+q+b/cTNIj6WNFY+7ktLEx6tgW+qDaebREkMddFG9CoRT0deYqqvtMs5JPnXdj1NLFgLWneEzORAKCKhRu8ybhpvcMj3faMrch9F5BPhAHG4aVKanqUQqKYQgSZc0BRQruQ2rc6OcNlXRPih+PSeVvRf3/so2wy7K2Qj+pWgaiVitvzqCU5KYQl9lGE5Yhq9y1Q45/xu02l5BUAvzScNReu1acviVowkrvppKqQvEi6AIN+fxxFRFhSZqrwkRZZx0Flk8ATMQroO5cPyBvo5qmYMmuu+QNpWoF1OXX0XJUtxi1AwUOlrIj/Bu2EtF1kiJrBkBqmocVqaGKiPnRg/IAjZbk02jHrw6a/RNFeZ0RwT290D2Ljj9kZLt2x/BtXiRV+iq0WtCczKRIKXwfDQPnuE/vd5S7cSXalgj4DkcV0db12MUCJS4vcZkzkYUKuo5TD3Xw12V+bCKEvNrC36JWShq1dHnAy2P1E82DGQNRyWjXA3aH2pBV6K0aypkIH4membcxkMejHqg9onRkL6PrJJE1WiGIfdDZxlhyucdBYX3/MUGTiQi3MGlR2kkkyuAAR/8IlDhnsvdmzm14OTQBFm2MjyDzcyPDVrFN7uwQ4VMNw2m6F9JQmh+NRvtymdoqcAflR7XbGrr1qCrmcjTJZsuBuaNhDRBRF6MRaD/OqC/QXaJyOFfYepxpAHg9fOOeQDqJ6IRG+fHswYojUYAtBvDkkci3bJmNwEm+j6s8GHd4vtXOq5l2UrZ2Na115L5DV5b7NpB/ZCwIkj9LxaTng/3Xx3UfxYEEZo1sqYmMVAz
- EPzKgAgr
- 2pW724n9lzF+0U2xwfLEYs75PKXQDgfdCdyGMN6hmVAMNbewN38ozcCwgf0J3S7LmpdXn6F7BiSd4DbHHM8oK5eAO6GVJwJMNwTf7coL1KJO3rwvzyY516GjeEUIgSTT3gEEao0nt8KmL5feV9flRZc3Zz7iu0GSgt5NMq9Co9GHVFJyC68E7OtnCV5zgzGjbqoIKxE2f9IeBpwYV/KUR33Q6mGgTQ4FwDUPsCy1r44I6fSsIPJaAJdN28tueez8ZXqITaZut/v0xdDFyTmtyAoxO5g==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793154743-396596
+X-HE-Meta: U2FsdGVkX1/ITdz0RCgGKDxylPtInnzUTB7LnRtumOaifVEd2GStQ4KDXDE/cPMsD7NnPJW8EI0a4iPrEOo30zvlNLDFkWlwjxrnoU58z+z/RpDOHhcuKKGtnz75VE8WyjdQDNAzq2R5dXD9Ny05hRvrvgTgGUl93W1W1+iWBCA5E7dy87/CjM6dyueZeVhFaVpIbBkReTq+zUpj5WnhIBt4F22yJW8Mal8PKOR51zyuIvnForvrsFDXc5MQVzV3s8px3iCwFdCb57JJrGLh50T9tgRGVpp4YnIyI2LD6P2/uwUakFeqE125hnsk9B53PoiToRjJYuGw2M993qjOLGTCIIBTJxTnpe5mbpGFjmEB+6cE3qLSR1zyH6Ce0hsnU7uJc3TgGO/I6JEqGExnTRX9AMrbTpAw/xWS6XNXIw+X9q4B3a8J6MgmB2nOZm926ZxHGx77Yodm0aUiEDNW2XuAlw/o5ODtpuvLg607ABSxiJfmr8wydj4KHIXgmHyrIo/cyyRtHiwWxsZ7yoQ/GnKLF31iyl4Hg+B4EpQD5QKy8FHsgib7ytNqrPRz67BzrVoFRy9OB0dD29fFdIV+BKSr/opGS4rgOzq2aZrhYv1fLQ/t7hTgPcEDf0Wv+sKeF+6QQZf/D9kOYtOLY22c5FX3sr0fz3wrhA0CzAW+ClYZdDOmFlFgRxj/Hm74OT3aGWkPWAJRvXUwGjB4H8HZfy5inTc5WMtDenKj9HBqOs94RPJaZyaJ/2lHQKOxXVnESATC/BqO3L06I99T0hOTOlUz+DzSDJRuAQwjSViJH2WwfgQKprHHfo8HJ485v+mk0rpRo0rV05/h++VBUlF4qSqBBLZybwYVaKxznSpxhmfqoMwsx0QAuSpoqJoFb2dPG71lKmz630nn3YGk1rPwJ3FAz7eLyzPQZ4s9UG3uJBdvRzXqWKQlTPBMwW6ezAH9D6vh3LLSFJeq3TU8oq3
+ IwAROSEG
+ N475N7thfokamoP9zmkLMdVsAffcuWwgyWB3Oj7FemG8juipjR7IwvEz6R3hz11LcEnv8rCOk7NTxe5wkkUxQH9TNn7O+M4ebk/xJ68svW4/DzGfM8pvBN8MnzhBuMMmgCWp8QsLrTWYnN3UDtqzu1MdOWmQKatxZR+2fshuY60BESfJjjJxXGM1I0avU6LVVrANf9vv/xw3GbbWxfz65vuOvNMwb5lqeJdw+cjRmful6LELFLfWpQHoP3I1FUkFNEHXZBzt50uq2isAipKd0RGGOCKicpc07M/B8wejJptFBkXcT67NZwz9klLKp0GB1HTj+4vUswxEWwBnE3CtNdAYCK/LDQ2Ph5RLKPGrvqwQb4EFG/JJpHc98JM/MGXRZvXcp3X/JyHElVW/7yLFVD0Y+Seg1v9Sz8f5p+edEXmrL4BSCWMMvIACMA3xux87IJIpbVj/uB1w+ZQCoq7fk4ckCArcM0LuNv1o7xz4lUUZizTpthm7KYY8+3WCIIXHnXj7Bj2/b9Pq2y/XjtrYZAZV57VlSyZpWep1M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,23 +179,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 27 Oct 2026 15:57:43 -0700 Joanne Koong <joannelkoong@gmail.com> wrote:
-
-> Here's an updated version of the "Fix this by moving the memcg_pn_cold
-> group..." paragraph in patch 1 that mentions this:
+On Tue, Oct 27, 2026 at 06:06:05PM -0700, T.J. Mercier wrote:
+> Since commit f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of
+> dying memory cgroup for LRU folios") and commit 0e0ac326c511 ("memcg:
+> move LRU size accounting on reparenting instead of copying it"),
+> mem_cgroup_css_offline() reparents all LRU folios to the parent memcg
+> and zeroes the child's lrugen->nr_pages and lru_zone_size before the
+> memcg is offlined. Nothing can repopulate the offlined memcg's lruvec
+> afterwards. A folio that is off the LRU during reparenting looks up its
+> lruvec through its objcg, which now points to the parent so it is put
+> back on the parent's LRU.
 > 
-> Fix this by moving the memcg_pn_cold group, which is only touched when
-> the memcg is reparented or freed, right after memcg_pn_read_mostly.
-> SLAB_HWCACHE_ALIGN only aligns objects to a cacheline, and the struct
-> is 576 bytes, so depending on where an object lands, its read-mostly
-> cacheline is now paired either with its cold cacheline or with the last
-> cacheline of the preceding object, which holds the end of
-> lru_zone_size[] and the reclaim iterator. Both are rarely written
-> outside of reclaim, so either way the read-mostly cacheline is no
-> longer paired with the LRU list heads.
+> As a result, lruvec_lru_size() and lruvec_evictable_size() are always 0
+> when !mem_cgroup_online(memcg) is true, making the offlined memcg special
+> cases in get_scan_count(), lruvec_is_sizable(), and shrink_one() dead
+> code. Remove them.
 > 
-> Would you be able to swap it in or would you prefer that I send a v4?
+> With the get_nr_to_scan() special case removed, an offlined memcg that
+> still has stale effective protection now has
+> apply_proportional_protection() applied like get_scan_count() does, so
+> the MGLRU and traditional LRU behavior is now the same.
+> 
+> Signed-off-by: T.J. Mercier <tjmercier@google.com>
+> ---
+>  include/linux/mmzone.h |  8 ++++----
+>  mm/vmscan.c            | 28 +++++-----------------------
+>  2 files changed, 9 insertions(+), 27 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 3b96d6c7123b..7f078ff0dd76 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -638,10 +638,10 @@ struct lru_gen_mm_walk {
+>   * The events that trigger the above operations are:
+>   * 1. The first attempt to reclaim a memcg below low, which triggers
+>   *    MEMCG_LRU_TAIL;
+> - * 2. The first attempt to reclaim a memcg offlined or below reclaimable size
+> - *    threshold, which triggers MEMCG_LRU_TAIL;
+> - * 3. The second attempt to reclaim a memcg offlined or below reclaimable size
+> - *    threshold, which triggers MEMCG_LRU_YOUNG;
+> + * 2. The first attempt to reclaim a memcg below reclaimable size threshold,
+> + *    which triggers MEMCG_LRU_TAIL;
+> + * 3. The second attempt to reclaim a memcg below reclaimable size threshold,
+> + *    which triggers MEMCG_LRU_YOUNG;
+>   * 4. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
+>   * 5. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
+>   * 6. Offlining a memcg, which triggers MEMCG_LRU_OLD.
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 9959ca158ce8..636152d8c94d 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -2754,13 +2754,6 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+>  		scan = apply_proportional_protection(memcg, sc, lruvec_size);
+>  		scan >>= sc->priority;
+>  
+> -		/*
+> -		 * If the cgroup's already been deleted, make sure to
+> -		 * scrape out the remaining cache.
+> -		 */
+> -		if (!scan && !mem_cgroup_online(memcg))
+> -			scan = min(lruvec_size, SWAP_CLUSTER_MAX);
+> -
+>  		switch (scan_balance) {
+>  		case SCAN_EQUAL:
+>  			/* Scan lists relative to size */
+> @@ -2769,14 +2762,8 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+>  			/*
+>  			 * Scan types proportional to swappiness and
+>  			 * their relative recent reclaim efficiency.
+> -			 * Make sure we don't miss the last page on
+> -			 * the offlined memory cgroups because of a
+> -			 * round-off error.
+>  			 */
+> -			scan = mem_cgroup_online(memcg) ?
+> -			       div64_u64(scan * fraction[file], denominator) :
+> -			       DIV64_U64_ROUND_UP(scan * fraction[file],
+> -						  denominator);
+> +			scan = div64_u64(scan * fraction[file], denominator);
+>  			break;
+>  		case SCAN_FILE:
+>  		case SCAN_ANON:
+> @@ -4355,12 +4342,11 @@ static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
+>  {
+>  	unsigned long total;
+>  	int swappiness = get_swappiness(lruvec, sc);
+> -	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>  
+>  	total = lruvec_evictable_size(lruvec, swappiness);
+>  
+>  	/* whether the size is big enough to be helpful */
+> -	return mem_cgroup_online(memcg) ? (total >> sc->priority) : total;
+> +	return total >> sc->priority;
+>  }
+>  
+>  static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc,
+> @@ -5199,10 +5185,6 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
+>  
+>  	evictable = lruvec_evictable_size(lruvec, swappiness);
+>  
+> -	/* try to scrape all its memory if this memcg was deleted */
+> -	if (!mem_cgroup_online(memcg))
+> -		return evictable;
+> -
+>  	nr_to_scan = apply_proportional_protection(memcg, sc, evictable);
+>  	nr_to_scan >>= sc->priority;
+>  
+> @@ -5325,13 +5307,13 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>  
+>  	flush_reclaim_state(sc);
+>  
+> -	if (need_rotate && mem_cgroup_online(memcg))
+> +	if (need_rotate)
+>  		return MEMCG_LRU_YOUNG;
+>  
+> -	if (!need_rotate && lruvec_is_sizable(lruvec, sc))
+> +	if (lruvec_is_sizable(lruvec, sc))
+>  		return 0;
+>  
+> -	/* one retry if offlined or too small */
+> +	/* one retry if too small */
+>  	return READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL ?
+>  	       MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
+>  }
+> -- 
 
-Thanks.  I'll take care of this when I process the patchset.  Which
-will be quite soon now we're all merged up.
+In some of the places do you want to consider adding a VM_WARN_ON_ONCE
+for memcg_online not being true?
+
+Acked-by: Balbir Singh <balbirs@nvidia.com>
 
