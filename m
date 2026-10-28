@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A04606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 20:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B00606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 20:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PXDJAgPT
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aBOiiwUW
 Received: by kanga.kvack.org (Postfix)
-	id 8DB8F6B05CC; Wed, 28 Oct 2026 16:16:15 -0400 (EDT)
+	id 0EA876B05CE; Wed, 28 Oct 2026 16:16:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88A086B05CD; Wed, 28 Oct 2026 16:16:15 -0400 (EDT)
+	id 09AE36B05CF; Wed, 28 Oct 2026 16:16:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72CF36B05CE; Wed, 28 Oct 2026 16:16:15 -0400 (EDT)
+	id ECCA46B05D0; Wed, 28 Oct 2026 16:16:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 370DC6B05CC
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:16:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E2E5A0275
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:16:14 +0000 (UTC)
-X-FDA: 85373141868.29.F051730
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B127E6B05CE
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:16:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35EF640177
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:16:24 +0000 (UTC)
+X-FDA: 85373142288.15.E462DE1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B1A6DC0005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:16:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PXDJAgPT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 59DA61C000E
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:16:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBOiiwUW;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793218572;
+	s=arc-20220608; t=1793218582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YYFSf//7LtffTEdaInzbKHoueC9GaQed5S2F6XZ2m8Q=;
-	b=5mP6Qgunt9wjWv8QYA54a/5kowx9gUAOPsn3ofaT3NipnyR+kNwk68buwYoTJrjvJ8T1B6
-	4hgicAlKFBhFFCJ+6hb3pfTnOMFO5VWvBGDerU9W6Gqi/lX78V1QCwxw/OcZtAwR/dFM2C
-	ht2W0tAlsgL/SUePRtMCAZObkZiu5Ds=
+	bh=zVNhQTz4P8YErSCLT2d+RLkWNh4QNHlHkejr3ylktPI=;
+	b=2PYmHH8vsMFT0bmHUlQwjns8413RUZg6XoaZD4tEmpq7ZoaWypHCMnZ72xFNVVuj1A3Lv+
+	djzcMIRdeqAZ4DDs3csxk64haGF8fBUIo/Ef7StDYyOtetR/dWNCF911GOfSklvFEE2EK3
+	ZZ10hqaPMj7GeHVgthj/rYdfva5ypg8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PXDJAgPT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBOiiwUW;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793218572;
-	b=mWzWawskr1KeUrmVM4AY+MhRR4WBHp4FDh9fBp20k+n6CSTpr3ggkJydp4bpOh+iSCAHZy
-	uoNzCJUvwWba9W9kMl1BS18lv6IJjxNjqGNtcZwN84zXuMo3qBfpXaBb3VRiXE7ikapfwV
-	ySncmkg76T4VlVnH4PsoqJWn/DbJZ1M=
+	t=1793218582;
+	b=ASa59LaRtedC8wsRNZ3LabbfvnFon+fkyHu4roUX5ju6TC0cmwA18BBWosgVIZeRF6cGvK
+	QcNpI8tURh/o7oMAwN1KCnJCcuLp2tqhzh67AFxJSLIlHOZL2oFQumlQN8aG7vyD6NNICj
+	6mgMK0UpjKlIK2MSDeE7o87P5a1oBxo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 06DA243047;
+	by sea.source.kernel.org (Postfix) with ESMTP id A05C1404AC;
+	Wed, 28 Oct 2026 20:16:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7093F1F031E1;
 	Wed, 28 Oct 2026 20:16:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993821F031E3;
-	Wed, 28 Oct 2026 20:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793218571;
-	bh=YYFSf//7LtffTEdaInzbKHoueC9GaQed5S2F6XZ2m8Q=;
+	s=k20260515; t=1793218581;
+	bh=zVNhQTz4P8YErSCLT2d+RLkWNh4QNHlHkejr3ylktPI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PXDJAgPThItJ1aq5M+pH6y01S76Edy6t/jgE9JP0iQsIF9nXJwPANyzgeHXcnCzWF
-	 9WbU2KYGlA/tTolQyfpz20oxrC5B2r//RUN+yNwmW9Wrqafi4X8fIDUDQ1synTJy3/
-	 IetUwhBWDYLfW7m65Xnxg3Ye1uWdNnj+3VPqcyWCGVb3pabDO9YhheA+EQpxBPtydQ
-	 hpknUPoxwEvCPWikqi8AYruhvwd50gD9PjWLudMPCCN/HDdSlH41lFNNBngZUQtOBJ
-	 yAF7CwsvjPbdRP34AY9K/fOGK+s/gKBeDChuUf6HSH/Gu5rOV95F8wd/fcjkp3e23U
-	 s9nN+44+zXtHg==
+	b=aBOiiwUW+1oShy4wpMapm/OmigTyXlwV71WiJYy0joVOtsxscBOIh4CrTbWU1y26E
+	 Qh3SXfmyynsjDqDUS6VO6r1Zl30nflHLTpUKvNpO/qRhf2L8YmTPAiO9JbqvWqfIIt
+	 +DEk91d75sdTgp90FOhuSDercjGUai18sC4+wzlPGJ3JX76YdAsk5rbRUZoLnYnsIr
+	 oUfB7DdLNNmG7sl+ro6ef45/wlEP0aibZihxpe8RR5fU/Ub1zfHen4T8csLBShjybg
+	 I8HWXXX9nNakee72T/ztM4cVghmeWufhV6OmujHWMoeP0+28u2AsMibCrw5JZ96zKQ
+	 oFZRrmQ2gOozQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 28 Oct 2026 21:13:42 +0100
-Subject: [PATCH 14/15] RFC: mm/hugetlb: account restored reservations
- before freeing folios
+Date: Wed, 28 Oct 2026 21:13:43 +0100
+Subject: [PATCH 15/15] RFC: mm/hugetlb: delay anon folio rmap removal until
+ after the TLB flush
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-fixes_hugetlb-v1-14-a0a033db180f@kernel.org>
+Message-Id: <20261028-fixes_hugetlb-v1-15-a0a033db180f@kernel.org>
 References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
 In-Reply-To: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -96,29 +96,29 @@ To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>
+ "David Hildenbrand (Arm)" <david@kernel.org>, 
+ Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9868; i=david@kernel.org;
- h=from:subject:message-id; bh=d5+zn1Hn3o3pWcjYFV3JXLw3TGIm0oEZelvRVfl19MA=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIehZcpaTl+82X3LJQ/n8zA23Qs4OK75d4RK3M4H2Q7v
- ntwIMino5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgIl0BTD8U5Bcw/npDYNsFktN
- aNSUU7uPFB5ccnL9pbUF72Y9v+G4UY2RYYfriTulSxP83qYvtar3ebdPs9+rl7fTV32qsuyXfTU
- 8fAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9027; i=david@kernel.org;
+ h=from:subject:message-id; bh=/QKVObd/U9vskx+gsp/U8jaY46gGzOnFlcmK4jcuyIA=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIehZcda+TP28LS9rxom+I+lpQZ+1Lv6eTwHtRuZjo/9
+ cahH0xKHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExE5BQjw8F1rYf0c+2X8tYl
+ Vs75/fEDM7/IzIOS55yzm6JEFz57WM3IML1RYF2DX9DUsjen9mY+1tWXeHpR6Wny0xcHavb6tXt
+ I8QEA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: B1A6DC0005
-X-Stat-Signature: e4d53zcdrcrcp9a8k87fqiaz4z84im8y
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 59DA61C000E
+X-Stat-Signature: p4xgac115tnbm3y57ihooji9pbkaknmb
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793218572-613540
-X-HE-Meta: U2FsdGVkX18oTpxQyjzKkpGMU5VEO47X2SnTgjtI++vMOIpBexmR1+i74MYOJtahJH9czvCslss9Ixbi6Sagt9XM2G1D8Civ+SRi4cqaKFDjMIhNp3sn0xQqfeS4biX9tq1j2DcCyuJs5+LuB6nPAR/HGJ+p6PuQj4PioHvd0MkbduEkPBKFxvCNajQa67tMo4HCsjKbMqQyu0PaticihdxfxDFlbjNuhRNhRxIk8M3vf0U61wObGkBRAlXQvpkaWUaOjBdhx/Nw3psdbCAfulGUKGJcxxUw3xK7EOihcHcfNpoM49nbGA/SgAuyqf1Ok+BilOP4s1yOvM4Xtx+QUMCElOi8brHH64QMaAZpr5GK0mBdIccfNrV+rbqBI+i1kOZidOlBKQITDjchy0iOgt1+bAEwFOiVuWVZZ9Mnf4gl6NZoupbyorM1AFnE9GILQGbkYZ9DH2Ke2k2WuGWi6QPPmaMGAjF1JW+WRpkQplzxcOmPmvuaD601jaA7jCGZwaz2HXBDY5MvnL7kNSzTnpNlca6KSr+d3jgJV1QlHOEcqjL/rOWZzAjswTgy4poKmBA4wsa0EL8hH3zu3NqT5BtoDQDDohh8lhko1xorB6sot8OqbBCxlUR6D/lX4Y/EpFcJjUReHU3P52FxIF37dipQQNor+ub7HlmNVSD1hkvDKDSbyZn0lE1taVMMDjrcLhF1pr4xiyVkQQvDbfhwSpwzDl+1kcxp7CA3cwK7XoEy6N1B5FPguzDtM13TGi6MH76Xf7I/GeVIP0QfcOTGNyZpYmDFXbnOO7NhM0ycHAzBKUfFI3tvfiRfSm3JTNyWMM6gNaEkVLsL57sGaTGNiGM5OjXAHVHWk6mSwN3m2Vu1vg8R3HVlBu1B8Xe8DAhZa4KyW00rFcx34D26LJCemXiDKQCfUvM0lu/LkGcLmIiV1nwuEEFuImlpQZf+7dFga6nUFnuCOhchulZEO65
- BXeu7xsW
- gbzV3iVFxOyP32lsgK/Krsq9bruCtu1+bovTfWq8B9gJ6eV4tgCEsVwWkVWiFmvFtdQPqppB/Zqqy1R/4Q4+QcIfSuocQqDvcwiGok7mQ6thOtcFkapf38BKm6av9OGgAMSOZoea7GCPSg4zvjypMhSQnbZ2++QGq87u4tIhHJ1cMBzzi6PA3uI6UQuv1XkR777Gr2fWgH4WrIAxp4Rw2AwSXWCbPbOqlCuMJx27tdKJHSzzTRM4XqwCaL3pS5xvmLx2yZrQIehVXtgdDO3cM9w+T6EcUb/+K/He2Ogo4F+WaiMG/vI1krFtOaW0jp1Ax34GVyfB3UM6a69foF9mHWVby3ukbse4WmM8FmhxJdQpEyFIahAOh63X45iHiI/8UaE2E
+X-HE-Tag: 1793218582-290509
+X-HE-Meta: U2FsdGVkX1/17PAF3QNU5HYUch5BU/9WAtJ72x0Cd8wjb5Bh1WItqQ+/gr8mLo/JEAMiBaRNttUdfwF7/KzcI1hl4JEt8ttLjIw813uLoPcvyAaBVy1zxRuCOVCGz3OmBh+bAi5QymJ1uPWpa8qFkpKZhYpcINSW749l7e7cm63GF+vLXtBwlftuQvkE/gHEM2POkiPhP2PDGJRU26ctrkkTRD6dZY+s4K7B6/rTfbLnQ7SyHiYnfcPHpVoOua/IIhBTb1ziiQm7gI++dyrlpcw708XOyarb3iLSACtqeIPW9Q+OWm1h2akKRN+g9r1x6Wtsf0reUFy1rF/tytZ0VBjAmzTcTPYylWUsSgHAxof6uWomDWV+aR59wgq1V1oKZPrfFY7VVTNWJe9/GYmtU6jQruoMsoNqHbRAHhh760iC1SrGF3owYPPojOwWuWMrasAU+A2PhAXUPglMxI3v/mWvJpDaTcfxuT9TanQXj1ayKWH03yPn2SH/sFBiYGecSCGA+VVYA/QopR2ptzgDxD7JshE8p3/VI59yC3wrbODaqqNCvTpkBnIgCELEzdx3bSSxPoG4Wji3MNg6HkcPMya8ESXr/Gc9tiW7hMDSQW+qJhAK/yJLKwZW9N2xDXFaM3Ne4T2PFJtdW3kHs/C2G0xKbd7pGvmdXVr4LugA1QAYypBFZS3SL7gmzCx/9WKhfaf+wuke/8ZyYtMwnfIrU8BRMN2Xn9/4Q540jT5UZ2n/8Jufs6qwD1ShveQu9nFYGri4IgTcCeJm7FK2iz/tnKQ9jI/8Guml8THSLooKKb9ef5nPV1YrMOF5TZ4XHBsUVnaZsRG1ylYDbr6IU0KlG/0cHm/oQf/52/CCZpC5DC3abXdY+Ef2NMZEu2JxR/Pp0+o/jlT5ztydUH5sgHdKSwE8EfIywWBUaEE2pdvhQOn43aYDAJvvUl1wcQKyjlNZoqg6ql0/gxGgwvVcUsq
+ VJIIM0ZI
+ ADKiTa3JTQdcyGIURr9FlatvFEVMn2BijxpGynuGflhJXFzi3SyCeJHAgcZeeDEPrsuQUYtn1+/NxIoWW0wQVP2jUOUGH6BWwV4ouk7Ufvb3+tLPhumuZrudGeza9verVIX7h7OguNFCj6ZYRGO+qiwktwES5CUJG2rp7ro+ATaapz6KA+Fpb9zEpjFNQvg+GsMDeQ2EGYoiBQDGhgYXOC8dbZhYYilmcw9VcmH4VwOJteU3bYsd2qj/WJELXBFCgWHf3ebLidTAdqgnPn+yzLQgQrmOs+s5lRQ1PSr0tCCcosRQsGTukuboprTuTGmFSlzfY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,250 +127,240 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Unmapping an anonymous folio restores its private VMA reservation
-immediately, but the global reservation count is only restored when the
-folio is freed.
+After fork(), parent and child map anonymous folios read-only shared
+by CoW. On a write fault, hugetlb_wp() reuses an anonymous page instead of
+copying it if its mapcount is 1. As documented, switching to the safer
+refcount would cause more harm than help with these scarce resources.
 
-If any folio reference delays freeing, closing the VMA or refaulting can
-decrement resv_huge_pages before it was incremented. This can underflow
-the counter or hide another mapping's reservation, allowing an unreserved
-allocation to consume its backing.
+munmap() and MADV_DONTNEED unmap such folios and decrement the mapcount
+before the TLB is flushed. Until then, another thread of the process can
+still read the page through a stale TLB entry:
 
-Increment resv_huge_pages when restoring the reserve map instead. Detach
-the folio from its subpool, since the restored reservation now owns that
-charge. Leave the restore-reserve flag clear so freeing the folio does not
-repeat the accounting. The folio only becomes free after its last reference
-is dropped.
+    child: reader        child: munmap()       parent: writer
+    =============        ===============       ==============
+    reads the page
+                         clears the entry
+                         mapcount drops to 1
+                                               store to the page
+                                                 hugetlb_wp() reuses it
+    reads the store
+      /* leak */
+                         flushes the TLB
 
-Reservations can now temporarily outnumber free folios. Clamp available
-pages to zero in that case, including for demotion, and limit surplus
-releases to available pages so they cannot remove backing for remaining
-reservations.
+Similar observations are also known and possible with things like
+vmsplice().
 
-Restore reservations even when surplus pages exist. free_huge_folio()
-already retains pages needed to back them. It is unclear why that was
-really added. The comment about i_mmap_lock_write can go as well, that
-doesn't really help for anonymous folios.
+Extend the mmu_gather delayed-rmap machinery to handle hugetlb folios.
+Defer anonymous hugetlb rmap removal until after the batched TLB flush.
 
-Two existing problems remain:
+Flush the TLB and remove pending rmaps when the batch fills and before
+leaving the VMA, then drain the batch so later rmap flushes cannot process
+the same entries again. This is very similar to how zap_present_ptes()
+operates.
 
-1) Anonymous hugetlb migration temporarily drops the mapcount. A concurrent
-   unmap can observe zero and restore a reservation even though migration
-   will reinstall a mapping. i_mmap_lock_write() does not protect anonymous
-   folio mapcounts, so it does not prevent this race. This change fixes the
-   resulting counter underflow, but leaves premature restoration possible,
-   leading to (2). Maybe that anon_vma lock can help?
+Skip deferral at exit. On UP, flush before removing the rmap. With
+MMU_GATHER_NO_GATHER, clearing the entry already flushes the TLB.
 
-2) A fault can allocate a replacement folio using the restored
-   reservation before the old folio is freed. Repeated vmsplice(),
-   MADV_DONTNEED and refaults can retain multiple folios for one
-   reservation and consume pages backing other reservations. This was
-   already possible; counter accounting is now fixed, but early reuse
-   remains. Removing the surplus check also allows it after unmaps that
-   previously skipped restoration.
+Restore reservations after the actual rmap removal, preserving the existing
+mapcount check.
 
-Deferring reservation-map restoration until the final put is tricky:
-free_huge_folio() has no VMA context to update the private reserve map, and
-that VMA may already have been destroyed.
+This is very likely not stable-worthy, as hugetlb is commonly not used
+for applications with different parent vs. child trust boundaries.
 
-Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
-Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
+Fixes: 24669e58477e ("hugetlb: use mmu_gather instead of a temporary linked list for accumulating pages")
+Reported-by: Chris Mason <mason@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- Documentation/mm/hugetlbfs_reserv.rst |  5 +-
- mm/hugetlb.c                          | 90 ++++++++++++++++-------------------
- mm/hugetlb_internal.h                 | 11 +++++
- mm/hugetlb_sysfs.c                    |  2 +-
- 4 files changed, 57 insertions(+), 51 deletions(-)
+ arch/s390/include/asm/tlb.h |  5 +++--
+ include/asm-generic/tlb.h   |  5 +++--
+ include/linux/hugetlb.h     |  7 +++++++
+ mm/hugetlb.c                | 38 +++++++++++++++++++++++++++++++++-----
+ mm/mmu_gather.c             | 14 ++++++++++----
+ 5 files changed, 56 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
-index fbca6625ca50..4711029bd067 100644
---- a/Documentation/mm/hugetlbfs_reserv.rst
-+++ b/Documentation/mm/hugetlbfs_reserv.rst
-@@ -34,7 +34,8 @@ resv_huge_pages
- 	This is a global (per-hstate) count of reserved huge pages.  Reserved
- 	huge pages are only available to the task which reserved them.
- 	Therefore, the number of huge pages generally available is computed
--	as (``free_huge_pages - resv_huge_pages``).
-+	as (``free_huge_pages - resv_huge_pages``), clamped to zero when
-+	reservations outnumber free huge pages.
- Reserve Map
- 	A reserve map is described by the structure::
+diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
+index 619fd41e710e..3408ee400d23 100644
+--- a/arch/s390/include/asm/tlb.h
++++ b/arch/s390/include/asm/tlb.h
+@@ -24,7 +24,7 @@
  
-@@ -155,7 +156,7 @@ are enough free huge pages to accommodate the reservation.  If there are,
- the global reservation count resv_huge_pages is adjusted something like the
- following::
+ static inline void tlb_flush(struct mmu_gather *tlb);
+ static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
+-		struct page *page, int page_size);
++		struct page *page, int page_size, bool delay_rmap);
+ static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
+ 		struct page *page, unsigned int nr_pages, bool delay_rmap);
  
--	if (resv_needed <= (free_huge_pages - resv_huge_pages)
-+	if (resv_needed <= available_huge_pages(h))
- 		resv_huge_pages += resv_needed;
- 
- Note that the global lock hugetlb_lock is held when checking and adjusting
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 69a5d2c73ee1..06ef8ba41df7 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1347,11 +1347,6 @@ static struct folio *dequeue_hugetlb_folio_nodemask(struct hstate *h, gfp_t gfp_
- 	return NULL;
- }
- 
--static unsigned long available_huge_pages(struct hstate *h)
--{
--	return h->free_huge_pages - h->resv_huge_pages;
--}
--
- static unsigned long persistent_huge_pages(struct hstate *h)
+@@ -45,8 +45,9 @@ static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
+  * s390 doesn't delay rmap removal.
+  */
+ static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
+-		struct page *page, int page_size)
++		struct page *page, int page_size, bool delay_rmap)
  {
- 	return h->nr_huge_pages - h->surplus_huge_pages - h->temporary_huge_pages;
-@@ -2449,7 +2444,8 @@ static void return_unused_surplus_pages(struct hstate *h,
- 	 * Part (or even all) of the reservation could have been backed
- 	 * by pre-allocated pages. Only free surplus pages.
- 	 */
--	nr_pages = min(unused_resv_pages, h->surplus_huge_pages);
-+	nr_pages = min3(unused_resv_pages, h->surplus_huge_pages,
-+			available_huge_pages(h));
++	VM_WARN_ON_ONCE(delay_rmap);
+ 	free_folio_and_swap_cache(page_folio(page));
+ 	return false;
+ }
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index fbe1114e9a44..0fd51970a87e 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -245,7 +245,8 @@ struct mmu_gather_batch {
+  */
+ #define MAX_GATHER_BATCH_COUNT	(10000UL/MAX_GATHER_BATCH)
  
- 	/*
- 	 * We want to release as many surplus pages as possible, spread
-@@ -5313,6 +5309,45 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
- 	return len + old_addr - old_end;
+-extern bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, int page_size);
++bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
++		int page_size, bool delay_rmap);
+ bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
+ 		unsigned int nr_pages, bool delay_rmap);
+ 
+@@ -465,7 +466,7 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
+ static inline void tlb_remove_page_size(struct mmu_gather *tlb,
+ 					struct page *page, int page_size)
+ {
+-	if (__tlb_remove_page_size(tlb, page, page_size))
++	if (__tlb_remove_page_size(tlb, page, page_size, false))
+ 		tlb_flush_mmu(tlb);
  }
  
-+/* Must be called after rmap removal. */
-+static void hugetlb_folio_restore_rsv_on_unmap(struct vm_area_struct *vma,
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index badb8790653e..96a83fe0b7d6 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -275,6 +275,8 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+ 		unsigned long cp_flags);
+ void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
+ void fixup_hugetlb_reservations(struct vm_area_struct *vma);
++void hugetlb_folio_restore_rsv_on_unmap(struct vm_area_struct *vma,
++		struct folio *folio);
+ void hugetlb_split(struct vm_area_struct *vma, unsigned long addr);
+ 
+ unsigned int arch_hugetlb_cma_order(void);
+@@ -460,6 +462,11 @@ static inline void fixup_hugetlb_reservations(struct vm_area_struct *vma)
+ {
+ }
+ 
++static inline void hugetlb_folio_restore_rsv_on_unmap(struct vm_area_struct *vma,
 +		struct folio *folio)
 +{
-+	struct hstate *h = hstate_vma(vma);
-+	unsigned long address;
-+	long rc;
-+
-+	/*
-+	 * Restore only on the last unmap, otherwise the owner could reuse
-+	 * the reservation while the folio is still mapped by a child.
-+	 *
-+	 * TODO: Handle migration temporarily dropping the mapcount to zero.
-+	 * TODO: Prevent reservation reuse before the folio is freed.
-+	 */
-+	if (!folio_test_anon(folio) || !__vma_private_lock(vma) ||
-+	    folio_mapped(folio))
-+		return;
-+
-+	address = vma_anon_address(vma, folio->index, 1);
-+	rc = vma_needs_reservation(h, vma, address);
-+	if (!rc)
-+		vma_end_reservation(h, vma, address);
-+	if (rc <= 0)
-+		return;
-+
-+	rc = vma_add_reservation(h, vma, address);
-+	if (rc < 0)
-+		return;
-+
-+	/* The restored reservation owns the subpool charge. */
-+	hugetlb_set_folio_subpool(folio, NULL);
-+
-+	/* Account before the VMA can close or fault again. */
-+	spin_lock_irq(&hugetlb_lock);
-+	h->resv_huge_pages++;
-+	spin_unlock_irq(&hugetlb_lock);
 +}
 +
- void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 			    unsigned long start, unsigned long end,
- 			    struct folio *folio, zap_flags_t zap_flags)
-@@ -5325,7 +5360,6 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	spinlock_t *ptl;
- 	struct hstate *h = hstate_vma(vma);
- 	unsigned long sz = huge_page_size(h);
--	bool adjust_reservation;
- 	unsigned long last_addr_mask;
+ static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr) {}
  
- 	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-@@ -5418,47 +5452,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		hugetlb_remove_rmap(folio);
+ #endif /* !CONFIG_HUGETLB_PAGE */
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 06ef8ba41df7..c8e3b8a6421a 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5310,7 +5310,7 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+ }
+ 
+ /* Must be called after rmap removal. */
+-static void hugetlb_folio_restore_rsv_on_unmap(struct vm_area_struct *vma,
++void hugetlb_folio_restore_rsv_on_unmap(struct vm_area_struct *vma,
+ 		struct folio *folio)
+ {
+ 	struct hstate *h = hstate_vma(vma);
+@@ -5377,6 +5377,8 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	last_addr_mask = hugetlb_mask_last_page(h);
+ 	address = start;
+ 	for (; address < end; address += sz) {
++		bool delay_rmap = false;
++
+ 		ptep = hugetlb_walk(vma, address, sz);
+ 		if (!ptep) {
+ 			address |= last_addr_mask;
+@@ -5449,19 +5451,45 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 					make_pte_marker(PTE_MARKER_UFFD_WP),
+ 					sz);
+ 		hugetlb_count_sub(pages_per_huge_page(h), mm);
+-		hugetlb_remove_rmap(folio);
++		/*
++		 * hugetlb_wp() uses mapcount to decide whether an anonymous
++		 * folio can be reused. Delay rmap removal until stale TLB
++		 * entries are gone, unless the mm has no users left.
++		 */
++		if (folio_test_anon(folio) && !tlb->fullmm) {
++			delay_rmap = tlb_delay_rmap(tlb);
++			/*
++			 * Without delay-rmap support, just flush before
++			 * dropping the PTL. Except with MMU_GATHER_NO_GATHER
++			 * where clearing already flushed the TLB.
++			 */
++			if (!delay_rmap && !IS_ENABLED(CONFIG_MMU_GATHER_NO_GATHER))
++				flush_hugetlb_tlb_range(vma, address, address + sz);
++		}
++		if (!delay_rmap)
++			hugetlb_remove_rmap(folio);
  		spin_unlock(ptl);
  
--		/*
--		 * Restore the reservation for anonymous page, otherwise the
--		 * backing page could be stolen by someone. Restore only on the
--		 * last unmap, otherwise the owner could empty its resv map
--		 * while the folio is still mapped by a child. Note that holding
--		 * i_mmap_lock_write is needed to check the number of mappings.
--		 * If there we are freeing a surplus, do not set the restore
--		 * reservation bit.
--		 */
--		adjust_reservation = false;
--
--		spin_lock_irq(&hugetlb_lock);
--		if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
--		    !folio_mapped(folio) && folio_test_anon(folio)) {
--			folio_set_hugetlb_restore_reserve(folio);
--			/* Reservation to be adjusted after the spin lock */
--			adjust_reservation = true;
--		}
--		spin_unlock_irq(&hugetlb_lock);
--
--		/*
--		 * Adjust the reservation for the region that will have the
--		 * reserve restored. Keep in mind that vma_needs_reservation() changes
--		 * resv->adds_in_progress if it succeeds. If this is not done,
--		 * do_exit() will not see it, and will keep the reservation
--		 * forever.
--		 */
--		if (adjust_reservation) {
--			int rc = vma_needs_reservation(h, vma, address);
--
--			if (rc < 0)
--				/* Presumably allocate_file_region_entries failed
--				 * to allocate a file_region struct. Clear
--				 * hugetlb_restore_reserve so that global reserve
--				 * count will not be incremented by free_huge_folio.
--				 * Act as if we consumed the reservation.
--				 */
--				folio_clear_hugetlb_restore_reserve(folio);
--			else if (rc)
--				vma_add_reservation(h, vma, address);
--		}
-+		hugetlb_folio_restore_rsv_on_unmap(vma, folio);
+-		hugetlb_folio_restore_rsv_on_unmap(vma, folio);
++		if (!delay_rmap)
++			hugetlb_folio_restore_rsv_on_unmap(vma, folio);
  
- 		tlb_remove_page_size(tlb, folio_page(folio, 0),
- 				     folio_size(folio));
-diff --git a/mm/hugetlb_internal.h b/mm/hugetlb_internal.h
-index 1d2f870deccf..d307d472137c 100644
---- a/mm/hugetlb_internal.h
-+++ b/mm/hugetlb_internal.h
-@@ -10,6 +10,17 @@
- #include <linux/hugetlb.h>
- #include <linux/hugetlb_cgroup.h>
- 
-+static inline unsigned long available_huge_pages(struct hstate *h)
-+{
-+	/*
-+	 * Restored reservations may outnumber free folios until the folios
-+	 * return to the pool.
-+	 */
-+	if (h->resv_huge_pages > h->free_huge_pages)
-+		return 0;
-+	return h->free_huge_pages - h->resv_huge_pages;
-+}
-+
- /*
-  * Check if the hstate represents gigantic pages but gigantic page
-  * runtime support is not available. This is a common condition used to
-diff --git a/mm/hugetlb_sysfs.c b/mm/hugetlb_sysfs.c
-index c89e4c847575..9e0c5d3d0fcb 100644
---- a/mm/hugetlb_sysfs.c
-+++ b/mm/hugetlb_sysfs.c
-@@ -211,7 +211,7 @@ static ssize_t demote_store(struct kobject *kobj,
- 		 * Check for available pages to demote each time thorough the
- 		 * loop as demote_pool_huge_page will drop hugetlb_lock.
+-		tlb_remove_page_size(tlb, folio_page(folio, 0),
+-				     folio_size(folio));
++		if (__tlb_remove_page_size(tlb, folio_page(folio, 0), sz,
++					   delay_rmap)) {
++			tlb_flush_mmu_tlbonly(tlb);
++			tlb_flush_rmaps(tlb, vma);
++			tlb_flush_mmu(tlb);
++		}
+ 		/*
+ 		 * If we were instructed to unmap a specific folio, we're done.
  		 */
--		nr_available = h->free_huge_pages - h->resv_huge_pages;
-+		nr_available = available_huge_pages(h);
- 		if (nid != NUMA_NO_NODE)
- 			nr_available = min(nr_available,
- 					   h->free_huge_pages_node[nid]);
+ 		if (folio_provided)
+ 			break;
+ 	}
++	if (tlb->delayed_rmap) {
++		tlb_flush_mmu_tlbonly(tlb);
++		tlb_flush_rmaps(tlb, vma);
++		tlb_flush_mmu(tlb);
++	}
+ 	tlb_end_vma(tlb, vma);
+ 
+ 	huge_pmd_unshare_flush(tlb, vma);
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 9f353f0e2ef4..b1f9f935e3b1 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -59,14 +59,19 @@ static void tlb_flush_rmap_batch(struct mmu_gather_batch *batch, struct vm_area_
+ 
+ 		if (encoded_page_flags(enc) & ENCODED_PAGE_BIT_DELAY_RMAP) {
+ 			struct page *page = encoded_page_ptr(enc);
++			struct folio *folio = page_folio(page);
+ 			unsigned int nr_pages = 1;
+ 
+ 			if (unlikely(encoded_page_flags(enc) &
+ 				     ENCODED_PAGE_BIT_NR_PAGES_NEXT))
+ 				nr_pages = encoded_nr_pages(pages[++i]);
+ 
+-			folio_remove_rmap_ptes(page_folio(page), page, nr_pages,
+-					       vma);
++			if (folio_test_hugetlb(folio)) {
++				hugetlb_remove_rmap(folio);
++				hugetlb_folio_restore_rsv_on_unmap(vma, folio);
++			} else {
++				folio_remove_rmap_ptes(folio, page, nr_pages, vma);
++			}
+ 		}
+ 	}
+ }
+@@ -211,9 +216,10 @@ bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
+ 					     PAGE_SIZE);
+ }
+ 
+-bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, int page_size)
++bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
++		int page_size, bool delay_rmap)
+ {
+-	return __tlb_remove_folio_pages_size(tlb, page, 1, false, page_size);
++	return __tlb_remove_folio_pages_size(tlb, page, 1, delay_rmap, page_size);
+ }
+ 
+ #endif /* MMU_GATHER_NO_GATHER */
 
 -- 
 2.43.0
