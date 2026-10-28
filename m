@@ -1,89 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF982606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 07:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB353606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 07:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qAO7tgcE
 Received: by kanga.kvack.org (Postfix)
-	id B03166B05B6; Wed, 28 Oct 2026 03:45:59 -0400 (EDT)
+	id F03F06B05B0; Wed, 28 Oct 2026 03:52:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADA4E6B05B7; Wed, 28 Oct 2026 03:45:59 -0400 (EDT)
+	id EB4F76B05B1; Wed, 28 Oct 2026 03:52:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EFF86B05B8; Wed, 28 Oct 2026 03:45:59 -0400 (EDT)
+	id DCAA56B05B2; Wed, 28 Oct 2026 03:52:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 729086B05B6
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 03:45:59 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DEBB5120C1E
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:45:58 +0000 (UTC)
-X-FDA: 85371251196.19.E459672
-Received: from mailsc.amlogic.com (unknown [64.106.246.77])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0FE97C0003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:45:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=amlogic.com;
-	spf=pass (imf22.hostedemail.com: domain of yao.zhang1@amlogic.com designates 64.106.246.77 as permitted sender) smtp.mailfrom=yao.zhang1@amlogic.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B9D026B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 03:52:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B9E5A8A04
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:52:22 +0000 (UTC)
+X-FDA: 85371267324.02.013E5CF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 23750160005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:52:20 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=qAO7tgcE;
+	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793173557;
+	s=arc-20220608; t=1793173940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jKu2cq7RaKZ/bfx14b0vxiisTRPYsAwPIdF2ERn4E/0=;
-	b=q65UAhrQJfWFwUNUxrM4cQFe5VZEBsBWSse/7T8ZTou0mskvjc5jgWJfBgY9ydTTyATIxa
-	iePBCStXAIcxkBjb9EVCooAWu5LwL9E0O6nTNF2PFdRUprk3z+pZhx4PnGm19lg+KFuh/U
-	rfiXT6GRGZEmAhKfCKEv3EMv/BPLFOs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=C2MebSDm+AGzraIelTihisR4wHMyVkbMMbZmgrZJ7WY=;
+	b=fSUfMUseTbCl4IL3f+R6gryZIMfmS2RRisHLztytf1H7PPt+mKLAhu+UgoFEmlBk3oAfzD
+	rKljMygXKW9dSvkht6fvM5SD3b5DswIPJfo3gq1ild2jX4yd4C5wbZrUH9lj5vV88oBEIZ
+	JTOvxJ2OvdVKE4I2fQWpvuflDzz6JCs=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=amlogic.com;
-	spf=pass (imf22.hostedemail.com: domain of yao.zhang1@amlogic.com designates 64.106.246.77 as permitted sender) smtp.mailfrom=yao.zhang1@amlogic.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=qAO7tgcE;
+	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793173557;
-	b=XIi1X98+dS5iqnTkW4zbk4wn5xQjbkR7+yvduesV1f0Qyz2AjdPhAUgq+q/ZaK0e9BJXH9
-	j5ayG54ym5Zmfb0/xSa8N0K+Xmz1raDZ2JhUcZvX+76SgZANyqSrogexNKRAVUufwgECyA
-	R/WNSKewwj+xCrkYpStcq6xyHsf8b1I=
-Received: from XA202100-0024.amlogic.com (10.88.19.246) by mailsc.amlogic.com
- (10.8.11.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Wed, 28 Oct
- 2026 00:45:51 -0700
-From: yao zhang1 <yao.zhang1@amlogic.com>
-To: <stable@vger.kernel.org>
-CC: <gregkh@linuxfoundation.org>, <linux-mm@kvack.org>,
-	<roberto.sassu@huawei.com>, <kirill.shutemov@linux.intel.com>,
-	<jannh@google.com>, <paul@paul-moore.com>, <yao.zhang1@amlogic.com>,
-	<syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Dmitry Kasatkin
-	<dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, "James
- Morris" <jmorris@namei.org>, Mimi Zohar <zohar@linux.ibm.com>, "Serge E.
- Hallyn" <serge@hallyn.com>, Shu Han <ebpqwerty472123@gmail.com>, "Vlastimil
- Babka" <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15.y] mm: split critical region in remap_file_pages() and invoke LSMs in between
-Date: Wed, 28 Oct 2026 15:45:27 +0800
-Message-ID: <20261028074528.1720-1-yao.zhang1@amlogic.com>
-X-Mailer: git-send-email 2.56.0.windows.2
-In-Reply-To: <20261028074251.1695-1-yao.zhang1@amlogic.com>
-References: <20261028074251.1695-1-yao.zhang1@amlogic.com>
+	t=1793173940;
+	b=7NwRMt1aDHBpMuDBgJyHSWWqK/Oj2XuhzRtLAA2dsU9n6WSvBxs8j55HEdaurpUIqf+Rtv
+	vYKhidPm5acSfjAJc1B5a4o70VACVcsMSjgA8q3lGGEBfXWXIrweRdaSPeAE0dSUOGLljJ
+	q9LiOO6ULZz4+IKbzy+JsgN9utY84Kc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 091D81756;
+	Wed, 28 Oct 2026 00:52:16 -0700 (PDT)
+Received: from [10.163.164.200] (unknown [10.163.164.200])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 046D23F673;
+	Wed, 28 Oct 2026 00:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793173939; bh=wGe8fo0LsEeNmyXuE7t5RJoQX1lGKJltqCDxnR+anGM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qAO7tgcEvyo0Q3H3HaTM1nwzy8/QBeW1tnF4JOXa8qF71VXcIH8niSLEX8yBfM9DY
+	 y3XuPsTISI5OiWjvg0v6LudaMoMHfe0T+fQRVNRKQDaWP3kjmosTINe/S2/q5eMvvF
+	 XylgVFbGPVK2/y+rwaLieJ3EjGQdsqqHDKUNnM9o=
+Message-ID: <e32a19c4-76c4-40ba-83a4-781333af7b0a@arm.com>
+Date: Wed, 28 Oct 2026 13:21:55 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/46] mm/rmap: handle device-exclusive entries in
+ folio_referenced_one()
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
+ stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-9-6f74bec9a5bb@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261027-fixes_core-v1-9-6f74bec9a5bb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mailsh.amlogic.com (10.18.11.5) To mailsc.amlogic.com
- (10.8.11.35)
-X-Rspamd-Queue-Id: 0FE97C0003
-X-Stat-Signature: kkoja6oj3oi8gfr5tosnajf5rt5wb4ij
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793173556-904908
-X-HE-Meta: U2FsdGVkX1/kzQfb1TMaomICBBcVcrYV6/fVy2JLfbDQjgxKHk7oxIwiOmKzhXuAexjw7YH0yv8RbY6sW4VFcW6ISgQKFSUauRBvgd47KIV9SgQjtyIKipZh9hddbazN2vvKhVht6kqScUI9OVgUX7GCzyhlOWa4wsRbmECDArNCTPD17HF7PSHqVs940P0NyZHIC8SgA49JGT7PTnYOu5T9+XrO0sGoubiPouBaImFs59XN+ADjvuYLMSnSlgzMz44rnLQLUmUl+6pcHy6N0kRLF3CzOOJ1mj/pEDFIMUb3biqYwNg/bBNkM483hXz9kcpMYNfsQd35rq45yelcrle+/EUi9LxrQKanBr9vbgb2aVH4y4eWMUOgyYzPNhhOyr3L0WFpWJP4QhAyjzJY1k7yXRLMBKoBZBCyddBvopXfhZCIdkj/swtmvTLmU3AyL1az/J45W3p6Q6Y5r7MQWxNnLyQHFiUM06w+I9JwuMGWvnZGs/khqdZpRH9UBGA91xk73MYrVBPOI+Zjdr29HgI5kO6BDJuKQaueASSIHfXukJrq8JTEUcZfaRmfP4eGt8GQ5CXdDJh1FvzErXW2c52gFEfD4n7+hea+9gKtI4lgZIX8sMi4ti3qpk8BZGVj+zNWQFcLFJmW0vOqLcatv920nq0r/7CG2QsU0DcbrCypklm+U3ef6v19KuvLHJIF36mf9k/gztLO7fVW3Ko0Dm0RCPm3iS76rhTLdtKGiLTkG5H5IgdwGwBoc04Up5FY2Ag3YBBCBANenL7zkdg+FQI0vDw0/g3iU2dFMzBjk5RwV/gLSODvM4iTECXsKB7/ASYdzftUw/436rWMy5hPgfctLz13ihwfflUbdk4yN3Fw6ZdnX7BvpWOwYUW4lfkNgHa3PpBsFmaNmIoMXSS4YAoyHzU++1mu34u20J2g4EC2N0PgL4PQZ+yYKglwOG8EIB6pDnEajy8etnGxxdH
- AK68WhaE
- nGj48PHGGoqIFPPjjJESpANst4Y4rUZjkHe0BK1z5gOlJmJ9xT5i7qxg6O+1t3WYQuZARx1/D+h+EwYY+OQrXxdPUULUvSpFJqwCGuf8gy+/ZAJEwwyDyeWrKQyaGKfq9vT7XvAtn7aKb6RId+YicQY6L6GKbJhRfh4ixLbRD+wFSuehMcZbhGtcDyeR85JpKn44jG/Ez9sCRHdu5Of+mjBppQaBrhGeUBkNUNORZ2hkXPI2LVJRfZaXQrr7dMcjoY6KWJO30Qj6sUdO52dDxpK4seI34MaKcR+VxWeC6Q8bV9259M2KUL9hCR1fAKGPpqdhJTMOhh+Dgsh2cvDCTECj7SAmXX4UZ+l8hdGk0PexUUVyWsnvokcmZluLb/GTFp3AtBDmGCoGgjIfD/23HaVsHEq7p9xxYLZzmF85XdtHocWUtQO+Ugv5aP9xnLuT7mXBrGSrf/GJghQqO/Zpf1QDHmeElLkwK3MUOiK84xdiksC6l6lSh9Za5gHsyaHNGPBBVt5C1NF3otq5Efvacx+lV6cQpYHi6t8B75NRg9ykqbKHkeLI05RBeAKqj0b14CURoHfPQLmQ/i+EhkVmncPBLSW5Xeg142PaZKodfn9DQ5MzJPdXPJAInVfoLrYXuco3fLO3JUYd6BI7b/rPtgN4yv88JiOA6lZoUtjmKy4F+falLkP9DsI3PRIWIwvz4FUPjrsbGvWbz8vhtbj/Utosfh5tOvxpuizM+xnh8m4wSqPDyaWmJY5mDahPaGIjA5pPS+hA39QixbL8gOHcKEfRGnTM6a6vZRJ+QhoF+ada5SIFoS4cG6lVRUSCnOx0steibohwM10Ex3PEL4fUDsKMAdzKAJc6IgbXikZxM5IfEe/9u6tpcjSsfxLfluIprWnADOtf1OvM8JH9z118ITZ/KvA3jvtxq0OkfxER8fxxzJL2FcSWxZJGrQJlQtIWVusu7
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 23750160005
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: y19u5u5u9mqee6gz8z6omaxdahk9czp4
+X-HE-Tag: 1793173940-344676
+X-HE-Meta: U2FsdGVkX19VO4zQqWfkazpXv2IUaETpSpl/fH2hrH0scNmkFih90m+tQ+I4eXNb8Mu1v5dwXv6Gwxiyy6tK7Us08EoyA1JaiMPErh3z8PYeohcqaDEBTZ3Gzn6L1UA9zoyH8iBAZOCsLBuUQQU+7TcbTDbuLeGhO+LzNzaqKlIo6yKZU4fMLoMk1MQhL5NJR+FJyIJHl89qGqMG4Cj7fRI5QvG0JX29ZRZAmLF1BUmFqFzi0XEuhFlheIcfikzUdFlK7I3mrgGDkPNZJeuAgmJ+hnm20BPl5en69T/WLGdM6DOGjYUSCc8k2Fg/FWEpFZKHigvLO0mFqTn4Z3tdQ6PPYcLLgoXFRAiWCvM4pQWHUGfVBcqKeyPp1fjw4pvHIHIQcvShfQsi8SQTaaIKj7CPrL3fok7ORC1Sv99WjJGG9ktEllxSfkWlqd/beWjAMcCu4W5uU+ZVuIH3CmGseMEOnPofVtCh8S5tmB6bV7tdF/qFh4CppOWqURZnN0QZJ7B/TUhcN5ZcppAAN3khBCerTevAhGEn1Gc15DC8EIIcYSCPJVo3cOsuOZMhNF8xTUNorPGf9a+ZVIyVNNWj1sy8wsQcZoXfgOpkNXhjqAAy2EJXbt+8xgO4FrRmEPsBOyC5fUUsuSVE9VkcbN238gQquQiPfsJcolFX/3oK975D+g4eBWX1ekdGlSvQYxiTi+wMfyKRCxJKjN8g8hpftlx7h1O4jxobkRYCxH7CloWPWpcGWQbl63L+1Wg8PNWgeNSRXA13kInk8JA2z5hqG5YQHYMn9WYJoIrgjAesXB23JweP9E8LiKB41X+Gvuyms47DlEeGd8xs6oDzs+w763dy/FeoIcj/tJsgG1C7695oscGtYHXvwBnoijuzULOsNj+0Qi6cmCeduYnMNNzmuSyEZymn4wbYPr4cowvfO2/awDTPCikyQFocOKOfEkRCY9z0LDmz/4flz4dY8Lm
+ TxRyqQm+
+ O6dONPOdPeGfuCoTtHJ/XXd1y5NykQiU30OqiNPqlg2sOlOtMsn+pALgCfgksAD18XrcRNsLkJ6//rbFygt4+G6PQzcdFtDv1MmcjC/064Hdt3Bfu9H+GAYm+wZDYT6Bq3xJxr2jHMGsjLq3IHXx+wgjulKWq8YvOLP7w5YFWW7/oy9xXMomSyB+PxOMUoeQTJKmaOROry+80V0fcQszBub08658mslJYvxVEg5ViQia5O3AGQB6MbxBik2b3MexKdY2Gr8IXFXks7o68ub+tIWYX4plqDVerSFoA+H/E4iY2hOC45C3XDlKcZyYNuU8kE0gh2ruQPlHumS2vXBKuTMFjm8ELVQUogm4epPwwsQ14rTi7oECaXtZ1lOwM6zvB9LhQAvzGhaSTrxV3frXNsJAYX7GyK+xvdK05yQzJdvdMenCVfP9CzEQsPc/Er+11OLTIyA/S5HDHgyKPKh36wKFkghomme59UCYeFMy5oIvyPhbUaGCy5vG8CnUxbo8+WDxDfQwLB6XAvCUGLzVbtJewTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,164 +129,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
-remap_file_pages()") fixed a security issue, it added an LSM check when
-trying to remap file pages, so that LSMs have the opportunity to evaluate
-such action like for other memory operations such as mmap() and
-mprotect().
 
-However, that commit called security_mmap_file() inside the mmap_lock
-lock, while the other calls do it before taking the lock, after commit
-8b3ec6814c83 ("take security_mmap_file() outside of ->mmap_sem").
+On 27/10/26 4:47 am, David Hildenbrand (Arm) wrote:
+> page_vma_mapped_walk() can return non-present device-exclusive entries,
+> but folio_referenced_one() passes them to PTE young-bit accessors that
+> require present PTEs.
+> 
+> We must neither call clear_flush_young_ptes_notify() nor
+> folio_pte_batch() with non-present entries. For example, clearing the
+> young bit on non-present PTEs can corrupt the entry: on arm64
+> PTE_AF overlaps the swap type, so clearing it turns a device-exclusive
+> entry into an ordinary swap entry.
+> 
+> folio_pte_batch() will VM_WARN_ON_FOLIO.
+> 
+> Apply the same approach as the previous fixes to e.g., damon_ptep_mkold():
+> treat these entries as old from the CPU's perspective and obtain their
+> young state through the MMU notifier.
+> 
+> Skip PTE batching and MGLRU look-around for non-present entries, and
+> don't modify non-present PTEs.
+> 
+> Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Cc: stable@vger.kernel.org
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
 
-This caused lock inversion issue with IMA which was taking the mmap_lock
-and i_mutex lock in the opposite way when the remap_file_pages() system
-call was called.
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-Solve the issue by splitting the critical region in remap_file_pages() in
-two regions: the first takes a read lock of mmap_lock, retrieves the VMA
-and the file descriptor associated, and calculates the 'prot' and 'flags'
-variables; the second takes a write lock on mmap_lock, checks that the VMA
-flags and the VMA file descriptor are the same as the ones obtained in the
-first critical region (otherwise the system call fails), and calls
-do_mmap().
+But nit below.
 
-In between, after releasing the read lock and before taking the write
-lock, call security_mmap_file(), and solve the lock inversion issue.
 
-Link: https://lkml.kernel.org/r/20241018161415.3845146-1-roberto.sassu@huaweicloud.com
-Fixes: ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in remap_file_pages()")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reported-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-security-module/66f7b10e.050a0220.46d20.0036.GAE@google.com/
-Tested-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Tested-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>
-Cc: James Morris <jmorris@namei.org>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>
-Cc: Shu Han <ebpqwerty472123@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 58a039e679fe72bd0efa8b2abe669a7914bb4429)
-Signed-off-by: yao zhang1 <yao.zhang1@amlogic.com>
----
- mm/mmap.c | 69 +++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 52 insertions(+), 17 deletions(-)
+>  mm/rmap.c | 23 +++++++++++++++++++----
+>  1 file changed, 19 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 1131b76bbbc28..0faef46806e5c 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -924,6 +924,7 @@ static bool folio_referenced_one(struct folio *folio,
+>  	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+>  	int ptes = 0, referenced = 0;
+>  	unsigned int nr;
+> +	pte_t pteval;
+>  
+>  	while (page_vma_mapped_walk(&pvmw)) {
+>  		address = pvmw.address;
+> @@ -968,10 +969,12 @@ static bool folio_referenced_one(struct folio *folio,
+>  			return false;
+>  		}
+>  
+> -		if (pvmw.pte && folio_test_large(folio)) {
+> +		if (pvmw.pte)
+> +			pteval = ptep_get(pvmw.pte);
+> +
+> +		if (pvmw.pte && pte_present(pteval) && folio_test_large(folio)) {
+>  			const unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
+>  			const unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
+> -			pte_t pteval = ptep_get(pvmw.pte);
+>  
+>  			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
+>  		}
+> @@ -981,11 +984,23 @@ static bool folio_referenced_one(struct folio *folio,
+>  		 * are. —they could be on active/inactive lists or on MGLRU. So the
+>  		 * simplest approach is to disable this look-around optimization.
+>  		 */
+> -		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte) {
+> +		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte &&
+> +		    pte_present(pteval)) {
+>  			if (lru_gen_look_around(&pvmw, nr))
+>  				referenced++;
+>  		} else if (pvmw.pte) {
+> -			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
+> +			bool young = false;
+> +
+> +			/*
+> +			 * PFN swap PTEs, such as device-exclusive ones, that
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 7f357de8f4d6..90a5358da10f 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -2991,6 +2991,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	unsigned long populate = 0;
- 	unsigned long ret = -EINVAL;
- 	struct file *file;
-+	vm_flags_t vm_flags;
- 
- 	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. See Documentation/vm/remap_file_pages.rst.\n",
- 		     current->comm, current->pid);
-@@ -3007,12 +3008,60 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	if (pgoff + (size >> PAGE_SHIFT) < pgoff)
- 		return ret;
- 
--	if (mmap_write_lock_killable(mm))
-+	if (mmap_read_lock_killable(mm))
-+		return -EINTR;
-+
-+	/*
-+	 * Look up VMA under read lock first so we can perform the security
-+	 * without holding locks (which can be problematic). We reacquire a
-+	 * write lock later and check nothing changed underneath us.
-+	 */
-+	vma = vma_lookup(mm, start);
-+
-+	if (!vma || !(vma->vm_flags & VM_SHARED)) {
-+		mmap_read_unlock(mm);
-+		return -EINVAL;
-+	}
-+
-+	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
-+	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
-+	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
-+
-+	flags &= MAP_NONBLOCK;
-+	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
-+	if (vma->vm_flags & VM_LOCKED)
-+		flags |= MAP_LOCKED;
-+
-+	/* Save vm_flags used to calculate prot and flags, and recheck later. */
-+	vm_flags = vma->vm_flags;
-+	file = get_file(vma->vm_file);
-+
-+	mmap_read_unlock(mm);
-+
-+	/* Call outside mmap_lock to be consistent with other callers. */
-+	ret = security_mmap_file(file, prot, flags);
-+	if (ret) {
-+		fput(file);
-+		return ret;
-+	}
-+
-+	ret = -EINVAL;
-+
-+	/* OK security check passed, take write lock + let it rip. */
-+	if (mmap_write_lock_killable(mm)) {
-+		fput(file);
- 		return -EINTR;
-+	}
- 
- 	vma = vma_lookup(mm, start);
- 
--	if (!vma || !(vma->vm_flags & VM_SHARED))
-+	if (!vma)
-+		goto out;
-+
-+	/* Make sure things didn't change under us. */
-+	if (vma->vm_flags != vm_flags)
-+		goto out;
-+	if (vma->vm_file != file)
- 		goto out;
- 
- 	if (start + size > vma->vm_end) {
-@@ -3037,25 +3086,11 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 			goto out;
- 	}
- 
--	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
--	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
--	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
--
--	flags &= MAP_NONBLOCK;
--	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
--	if (vma->vm_flags & VM_LOCKED)
--		flags |= MAP_LOCKED;
--
--	file = get_file(vma->vm_file);
--	ret = security_mmap_file(vma->vm_file, prot, flags);
--	if (ret)
--		goto out_fput;
- 	ret = do_mmap(vma->vm_file, start, size,
- 			prot, flags, pgoff, &populate, NULL);
--out_fput:
--	fput(file);
- out:
- 	mmap_write_unlock(mm);
-+	fput(file);
- 	if (populate)
- 		mm_populate(ret, populate);
- 	if (!IS_ERR_VALUE(ret))
--- 
-2.46.0
+You mean "PFN softleaf PTEs"? Better expressed as "softleaf PTEs embedding a PFN" ...
+
+
+> +			 * actually map pages are "old" from a CPU perspective.
+> +			 * The MMU notifier takes care of any device aspects.
+> +			 */
+> +			if (pte_present(pteval))
+> +				young = clear_flush_young_ptes(vma, address, pvmw.pte, nr);
+> +			young |= mmu_notifier_clear_flush_young(vma->vm_mm, address,
+> +								address + nr * PAGE_SIZE);
+> +			if (young)
+>  				referenced++;
+>  		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+>  			if (pmdp_clear_flush_young_notify(vma, address,
+> 
 
 
