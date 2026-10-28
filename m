@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D651C606A31E
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA1D606A31D
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dAohb4eg
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EcxSRQ+S
 Received: by kanga.kvack.org (Postfix)
-	id 030346B05BE; Wed, 28 Oct 2026 05:55:36 -0400 (EDT)
+	id 0A5016B05C0; Wed, 28 Oct 2026 05:55:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F22F26B05BF; Wed, 28 Oct 2026 05:55:35 -0400 (EDT)
+	id 07D056B05C1; Wed, 28 Oct 2026 05:55:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E605D6B05C0; Wed, 28 Oct 2026 05:55:35 -0400 (EDT)
+	id EFD586B05C2; Wed, 28 Oct 2026 05:55:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C43166B05BE
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:55:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 955D6C0BB0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:55:34 +0000 (UTC)
-X-FDA: 85371577788.03.3313D02
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D2A096B05C0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:55:42 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C3BDC40C04
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:55:41 +0000 (UTC)
+X-FDA: 85371578082.13.57804EA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E17B61C000B
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:55:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dAohb4eg;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1BBA6C0003
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:55:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EcxSRQ+S;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793181332;
+	s=arc-20220608; t=1793181340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F8pPM/bRUTziIOodg42WNv0yxbRY0HbfS2ntsfLX70E=;
-	b=PAFxb5AQ10HiKcaAWQrNIvZASVCDcUo3Sk4B8ZA8OrnUXgBhvpxzRZO7UrA3MbfYFBxs2g
-	wZyD6aWFjvMA+sWOWnzE62qUJk3hXCal34yVmOZ6riCEoTU8EeI6XYp4Loq75Q9KwGI3wb
-	Fa8hnrkxK/YiKVp3G4YdEskADn0ZxF4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793181332;
-	b=u7qf7y4j7PqfXrLTBrwOPKcbM8+u3/8frYyx4CHDcb1ostHriqnqGbTRSWyf1zf/cmV3o2
-	RsxvxKMbxPPGyl3eH+CESmErHFz+elPR5J2ezE1Ynb6i+z5BTGv/ORMGq7ktpaMCYSBtFA
-	d5g+Fol6DCX+Nv0kjtQ2/nZi0A17rYE=
+	bh=iFruHrmEhVBLTXCl3oLRpr9O0/5ImLksM0FEP8VsCEw=;
+	b=sjb0EUO/zXNaJ0OcuyNVaVBIhu1B5z038WLLQa6jiX29AEtawvjhJOzjYCGWgMe12aEppb
+	lcpHqwQb7noXSXrs8TlfUSfqOpYpkI+MOF6qTBliNv2oKgUOGrAVY+PE+I4OTjRpgkOqo3
+	Q0skjr0/mRK/ordnA6nnqAwvWu6YJpk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dAohb4eg;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EcxSRQ+S;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793181340;
+	b=jA4f1MuvIjODEDQqqWQuBZU8nIuS7kOLKg4BE3kAAe4WQLBb46x4kGtjgnzM3slDLYRQNa
+	PUTgfUUy/0PFW6q3H9+PU+aeWOFlakzFcaeTGBiN6LN6jFjPGf0czZQ9QdCK0l1AaDuvUk
+	xEHaQYLYqCZ+1lNQokkSq0M8lVplt3E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2AEE16020A;
+	by tor.source.kernel.org (Postfix) with ESMTP id AA71B600DA;
+	Wed, 28 Oct 2026 09:55:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB7F1F031E6;
 	Wed, 28 Oct 2026 09:55:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A703C1F01828;
-	Wed, 28 Oct 2026 09:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793181331;
-	bh=F8pPM/bRUTziIOodg42WNv0yxbRY0HbfS2ntsfLX70E=;
+	s=k20260515; t=1793181339;
+	bh=iFruHrmEhVBLTXCl3oLRpr9O0/5ImLksM0FEP8VsCEw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=dAohb4egrc9euupGLmqj2Zinirntj2xoQNsartLNbJPRvK8bxD5jn20KboSV6G4UD
-	 kjBCDJicWJUe3+lR1pn9RbpG2X6cPOTDCM4lW7cOHGmkoGscInpmcQRWnaj7fGrZTM
-	 eJqL8ZfQCl+QdJFER8Wl0opx6v5Jz0BFzkLgK1WJ6xi87CQ2X0wvSDBBXegC9qZGHY
-	 GSLxWxFkMwspJL33RpJIyO4ReBvyVjdfVHuWOPJ+YCZwEPf/6CpH80BP3p2+VIBWvt
-	 zrv7Ywxn8NFEBdFyyeAodSm2Tgzm72mssDrmczMckeNwV+MeSnM6UVfIiL9CK80I5M
-	 3L1BMHU8CWOcg==
+	b=EcxSRQ+S4EvQkFspKgsUF+px6uVgYDy3gHZ/JCJEHNrQKXxzPgUaTV8HMkFYRbC6X
+	 rTS3cM0AU7fDNL4FRPn0EQx3KWZcmDtbOrgSKrl8f9X+Tf0cvm0CbusuSL4gcU9ukq
+	 /NySs5jiBxVb67AqI4wLbGv2b31t+5unCb9qdRwrT1R0kC6Sb9qqqVAyXTB/IlkiDN
+	 kHD5dYJQFZBYIhYwPSD0PySHZLljQCwPSnTc7VQVDM96sMfxycOrYcJFLCVvELk+Fk
+	 zGx6NuWTi8B5+YGYledzPvPoZMZYv8+B8R7GeyjIJt/UVoxXS3anSqhrNsIPhDfr+h
+	 Hbx6vjtkQcYdA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 28 Oct 2026 10:54:59 +0100
-Subject: [PATCH v3 01/15] mm/mempolicy: charge shared policy nodes
+Date: Wed, 28 Oct 2026 10:55:00 +0100
+Subject: [PATCH v3 02/15] tmpfs: keep the quota soft limits of an unused id
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-fixes_shmem-v3-1-4ce3baf2db4b@kernel.org>
+Message-Id: <20261028-fixes_shmem-v3-2-4ce3baf2db4b@kernel.org>
 References: <20261028-fixes_shmem-v3-0-4ce3baf2db4b@kernel.org>
 In-Reply-To: <20261028-fixes_shmem-v3-0-4ce3baf2db4b@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -91,29 +91,28 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
- Pedro Falcato <pfalcato@suse.de>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2681; i=david@kernel.org;
- h=from:subject:message-id; bh=8g2Q09MddcGiWaBBqP4q1RNteEaljuHdjt5+KbfoFWM=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeHms8eqlr1cuWXaKtM6/v2H5yg/HvY7c3zrU9ss1NM
- z9r0eOUqI5SFgYxDgZZMUWWoOD7Bi9frqutduNjhpnDygQyhIGLUwAmsm8Cw1+hgMMvFITffrb0
- fXJv+947Vq6xpReuCSxLcatZvOsm780Ihv91h1yeBBvUVdo+trpZELJH3CdR8ePbN4Hm+ZyrmWS
- iOnkB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1679; i=david@kernel.org;
+ h=from:subject:message-id; bh=wp8CLVQ6JeR410CRw2MdFOBtKKDTEioNL4JmHUhVmWE=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeHmssMAri1PNmkeNgXfU5P6E2d5V6Fe/8nTEWQrVhu
+ UIdNtwdpSwMYhwMsmKKLEHB9w1evlxXW+3Gxwwzh5UJZAgDF6cATERzOiPDYb/ImTc3/W0/sL+x
+ qjtju9k7wWsVHxh/vVix/uj6oC0aVQz/LBqP3O3xYn0+p/K3/bLzassYP7zY/3Abv3DxC7UekZ2
+ /WQA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E17B61C000B
-X-Stat-Signature: 99zinfb5rrokmsqbw3qb964tw73ggich
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1BBA6C0003
+X-Stat-Signature: 15skd1sbpp8idwrbcydg7u6ibj8zrhte
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793181332-314642
-X-HE-Meta: U2FsdGVkX1+RZhzlBb8RYzRoKP3EasWTSn6FSLIAkVRw2npjyxEZ2HSQURkJU31C6Z67gvnOScjSVs0EfQzP4+AMzQNWZ3u8C+5h5eMRJ9LHUMINl6zOIt5AEyG+4y1M7cU5/4Z76B9rNhOBgo3prhXrjZ/PWlYyWWDREXC0EtaC275oZLQoOQoNx7d4qHfsfr3PbPPVMyZuK45jBq3RGkyK2Z71IOXH9uBRWNNoza1xqgdI1eb4R345Q/QSLgz6MfQ1oRBsJh3S5fy2cazMGtjdSrAi46nfIjxsXllOVfnh7VZUoO/68D59pLv+ff2eglzc/2KvYDrk2rdd8ejrp57OdGTh5/EOZdoMgzDQBhO8CVRWXYpOg3vUmclbWS/OOLjXTs/FsGmYbeAaQ6ZPYk1YZBXvc1qZL1Gd7yisIhl/C2uj8/eTee8ineKS/ohxEZOvwzXNhVFH5TLVuQeV2ajHYhvo3ihGSXJvc+nDR+g5qnWG+0uD34jNRL8oHKFBziH1NSfnyi9o7VdA7aO1aONO3VNiI2VX1usNZK9/jG39A/7SkFURN0UueNNMkIYwx6cPSqKTHwccfktwoSCVndX0vp9W3qgUsPdoaXGAGOxzWoy7T3JaTCSIUq5rsLiK+Icw4bC1Lt3xJad2EtQY+so/tjq3f7MyJrYL2qsAmCVe71xBhTeG5RJvujSiHAUTGtae5hs8Dd6Z1nvaP4AFr6bACOjfXlnhIuhPh9yNI2Xmj//eQdVivw5LGfPaodxWy0Hg72yd7J3gOYnEf7L/CmgAp3yQKZUVe47lVQnNvkIPhgqP1LfF+Eg0yX/vLKHmoEZNvgeFcLOKI+AVDw26RkJPcSfYCPfxmNSiRSEt6Dxi25f3RbtzFdUV7O87LQrQp9S8wzkb/gsyB1Uo4Ihs32NCE2i+sydlpYGbvv2tiuGD76iE1XiaU6XKLjImBTG8qUDPDXUMOoFVKwihInt
- t87ZFuWo
- JjsZwa9dg6xptog6FAgz6o2qEir6AKrx7nApypEAYrT3GgRZNp1lVFH/7rwC+Sljn043098tweMcZ36VqF5vUstEFXPZcnvDDsRxyjXNIe/YOoRvJVfSV7+h8+DpRvyNvKVs/ykWZvwf5pWSkvI6rsctTFqpvZtLo+8yEMWYwkoLEMMG2DsKN13ockaRpCSatUSpLEX3vmh7N7ZGv4A7I0j4yNXMDxp6pgBrW3Fs98DUgYidLWhqdLS/3Y/jQxD8NV/nMryxns1733ayRgr0wyFEx/OamCUHoz+HAjfecmeLzsUmhnbh9fL2I6dbgeC+TuZkXPEFhK0WnsUsmGPDtJ/nOieATQ2l1E5w/61eGocLldLMzlpavx8CZGMQRPH0XlOGNbzYqjzFy017FarlfZlPY5isawa+FilsjI1SLlmwf7mc=
+X-HE-Tag: 1793181339-27153
+X-HE-Meta: U2FsdGVkX195RpqoWxz0ez+KFiacJ3OwbjIzNjuq9Uzqi/QdxXuk+EVh4A2nsWPqy++TssLRvdg8SD/6byu4QnM0rpuRxdVHEGb/mSy+mCftfVH9+yhnwS1F2OCUNcYNpIOZT87Qoxv4Yh/WFMv0W16wrGXu4sOoZr9sVpxQ/is1I1foCFtVzXxJMUvYjodiM/P9iNcjZxW+kf5RFkofOboLWkV9SQudZtUX4dVKwCAUL8iQbipmnsu2HYoB4ipOTgdPuA2H341EiuJk2cdeQDJWlEurJVg/RXeMsSiuT9YqQwQNTa8IIyQ9SM8MQjo1SvPzYeKSsJsi7zFtu6lINBdLmwk5S7yu39FlKSTfMm/OgrMUqiKqNGN6bopmkM9KhiH0y/59ni0MuxKHx8K0AHQBXeo/1vc16NwrkJQZzCCuz1jnrF/K0Rf/aIlNmlDOmxQZg99btjDj3b51i/obcu0TfMrE6GPUN+AZ70LEohXrvshJirfMsyvWd+c6JER0Q2dHSgpgKJsXlyiEmDTvvZ0u5FUG/7Oi/SaZvCVmf3WD00P3fj0e24GIWeIbpFqKnDQaE8vK4PVEujG9Ioq4mgr6uI8wOZzADj2ndLxtojciEmZxVPDVfMkvIS/Z4/nKMlL1cnYgEG0mDuU5tIj8aisKw6BkuQaXO3gPCpJLEFQEnFwLP+5K5O/kbRz54/q1B50xo2kj+OLJCiPaba2mtJyDnuHgR2YOpPc/FneVn4OtYNUYRCgSj4PCRCkkVE9xuN5OpdSe33qAyZ9YlcP3IKLXNJfWvUYpBySGqucGHzkebOtveqFMYhRDi471ktwvCJjtovhzwAB9R9gl+jzo85DXXZkVJ2Q4H38r9dWFTx8TYTmGUObmXpZLe/m9pK4ueS5mmwrhblZ6O3s8n3w2w2f4C0H37azBVnEyt78NwG2nlAZEKrqz4h3VRl6o3pAYDgLb2BH+k2ppE1pSJsc
+ 13vQtIeu
+ VZiQ75AOa6+/fsYvIEEs3YiGZxCVxyGjZjwxRykEFi1G9omx47bh2JJnyJ3oh3Lf0zcUDFzwzIr4GU0y3PCfEvJmTyDE6CklsgiXhJT6z+9BkUDhiMqV/9IviWYdsBFtE/00Hir3WUFiCuIXK5Ulqt/QZQr992XpphuzuzeUcL4V070lR31PjMaKdK6MQdJ1vaCB+ERW04v/ZpyG5Agn/cELkcA0hFZ8UhRA3VbmrxLiLUM+bmylt/OeHz9DrJxqSUVOuzYY7BQi6Og4Lvhit6oQzE6rpSVmlBYlLTBnU1L/odQFxJvXL0drtDlBQYtaeM4OilVPh26U6Jxb+h4V51nLqPeHdMMeOfXReoR6JTpgVMJVKseKZavQ3o4annPX52Q5/k/iSWpGCIQzyhX9y9S5CVcO/AVXuZc9Gnp/pjRcJuLsrqX23Jo5v9bHUm4GqBF6xtjzCYIjC2Hrg8oPUefS6RA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,71 +121,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Chris Mason <mason@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-Any local user can bypass memory.max with mbind() on a tmpfs file, and
-allocate unbounded kernel memory.
+When the last reference to a dquot goes away, shmem_release_dquot()
+stores its limits in the rb tree of the mount, unless
+shmem_is_empty_dquot() says that there is nothing worth storing. That
+function looks at the usage and at the two hard limits only.
 
-mbind() sets a NUMA memory policy for a range of a mapping. If the
-mapping is of a shmem and friends, the kernel also stores the policy on
-the inode, in a tree with one entry per range of the file.
+So if the administrator sets nothing but soft limits for an id that owns
+no file yet, the entry is thrown away as soon as the dquot that
+Q_SETQUOTA used is released, and the id never gets to see a limit.
 
-Each mbind() on a single page of a mapping can add one shared policy node
-(struct sp_node) and one struct mempolicy to that tree. They outlive the
-mapping and stay around until the inode is destroyed. The tree is not
-bounded by the file size, so the file can be empty.
+To fix it, compare the soft limits as well: an entry can be empty only if
+both soft limits are zero as well, which is exactly what
+shmem_acquire_dquot() sets for a new entry.
 
-Memory that user space can allocate must be charged to a memory cgroup. A
-slab cache does that for all of its objects if it is created with
-SLAB_ACCOUNT. numa_policy_init() creates the slab caches for both
-structs without SLAB_ACCOUNT, so they are not charged to any cgroup.
+Fix generated by an LLM and sent by Josef Bacik in private.
 
-Reproduced with mbind() on single pages of an empty tmpfs file, from a
-cgroup with memory.max=8M: the global OOM killer killed tasks owned by
-root, and the machine panicked.
-
-Fix this by creating both caches with SLAB_ACCOUNT. This change implies
-that mbind() can now fail when running into memcg limits. Further,
-the policy_cache also serves task and VMA policies, so they are
-similarly accounted now.
-
-Note that per-file limits are not really helpful, as the user could
-simply use many files; having limits per user is tricky as well.
-
-Fix generated by an LLM and submitted by Chris Mason in private.
-
-Fixes: 5d097056c9a0 ("kmemcg: account certain kmem allocations to memcg")
+Fixes: de4c0e7ca8b5 ("shmem: Add default quota limit mount options")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chris Mason <mason@kernel.org>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-[ david: smaller description tweaks ]
+[ david: slightly adjusted description ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/mempolicy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/shmem_quota.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 0884c629670d..4da1cb8777f6 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -3372,11 +3372,11 @@ void __init numa_policy_init(void)
- 
- 	policy_cache = kmem_cache_create("numa_policy",
- 					 sizeof(struct mempolicy),
--					 0, SLAB_PANIC, NULL);
-+					 0, SLAB_PANIC | SLAB_ACCOUNT, NULL);
- 
- 	sn_cache = kmem_cache_create("shared_policy_node",
- 				     sizeof(struct sp_node),
--				     0, SLAB_PANIC, NULL);
-+				     0, SLAB_PANIC | SLAB_ACCOUNT, NULL);
- 
- 	for_each_node(nid) {
- 		preferred_node_policy[nid] = (struct mempolicy) {
+diff --git a/mm/shmem_quota.c b/mm/shmem_quota.c
+index a3fa4bd93e75..43d3b4fd6cb1 100644
+--- a/mm/shmem_quota.c
++++ b/mm/shmem_quota.c
+@@ -256,6 +256,8 @@ static bool shmem_is_empty_dquot(struct dquot *dquot)
+ 	if (test_bit(DQ_FAKE_B, &dquot->dq_flags) ||
+ 		(dquot->dq_dqb.dqb_curspace == 0 &&
+ 		 dquot->dq_dqb.dqb_curinodes == 0 &&
++		 dquot->dq_dqb.dqb_bsoftlimit == 0 &&
++		 dquot->dq_dqb.dqb_isoftlimit == 0 &&
+ 		 dquot->dq_dqb.dqb_bhardlimit == bhardlimit &&
+ 		 dquot->dq_dqb.dqb_ihardlimit == ihardlimit))
+ 		return true;
 
 -- 
 2.43.0
