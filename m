@@ -1,121 +1,155 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351C6606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 17:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD40606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 17:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BZ6enJrj
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xiXoJimB
 Received: by kanga.kvack.org (Postfix)
-	id 450F06B05B1; Wed, 28 Oct 2026 13:13:26 -0400 (EDT)
+	id 9857D6B05B0; Wed, 28 Oct 2026 13:14:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 401BD6B05B3; Wed, 28 Oct 2026 13:13:26 -0400 (EDT)
+	id 95C526B05B2; Wed, 28 Oct 2026 13:14:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CA0E6B05B4; Wed, 28 Oct 2026 13:13:26 -0400 (EDT)
+	id 871DD6B05B4; Wed, 28 Oct 2026 13:14:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B4C16B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:13:26 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7CA291A0195
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:13:25 +0000 (UTC)
-X-FDA: 85372681170.28.50FA258
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C89B7100003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:13:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BZ6enJrj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793207603;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F7F96B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:14:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A2B2A6FA2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:14:48 +0000 (UTC)
+X-FDA: 85372684656.15.86CE6E3
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 06B7A4000D
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:14:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=xiXoJimB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793207686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vktowsTsOQhJmqiWYNIb0aPqBLNSbNahOroQ81vALNQ=;
-	b=KNSJZ5fWd3HsnuepdBJTO1szK/VDgxBtSxa7J08wgL5bZjIqd7BJq8RBsEQATJQEH4BCtO
-	k2KvuV/qp17wq/Jhc+gJF1TWvAd4f04cV1B6OmB+CU+cXUwM8vIrn2W80DguNx4ukJt20i
-	btZ1ztcX+npMC+hSld/F9maUK1w0yrQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BZ6enJrj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793207603;
-	b=wm5WY4fe06v2IFUEF6ktGcns085xWQ2CADhsdlHGopi5KKavbw73b0MWrYRWVID85vI3HU
-	hZuaEjyGc3D836F5B9FfVpMCo3p7GfbDUH993O04+/kT7EvTxv2CiKrr55MIVS/nayIkEb
-	JJ4ILN4W0tQIt+xeHoEvnSTFZZJX2Gs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A6F242CBD;
-	Wed, 28 Oct 2026 17:13:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E631F031E0;
-	Wed, 28 Oct 2026 17:13:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793207602;
-	bh=vktowsTsOQhJmqiWYNIb0aPqBLNSbNahOroQ81vALNQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BZ6enJrj2fR+WiaobREMK06Ol4IBWooQRDlbbDCkO1gNP7+G2R9/lsOOs2AhduaH8
-	 IcGiH6/qAIxcfuSrwBdneQYRZt+W8ihxfi/bu8MIRkDPSGPjLv1CElqLHZjheiMzWZ
-	 DH0T5HoxcIR4+yigsaET5t4ctAredW023hZHdikTpcSGKdBksnJ3GuslAURAOE73r0
-	 OFDzAYx+euSlpwhkJz6vzjSi4qGr9oAaq/5t/Y26Gl7SwP46yh6RZXFHOGQCNEJN9I
-	 lo7RodJkVz/gLSXqyhniNMQsfTsQPbnnv/5roVKerewBTdFEwzrN4Aepm6Xp3XPTM4
-	 cnbju0zmHk6eA==
-Date: Wed, 28 Oct 2026 19:13:06 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	kas@kernel.org, kexec@lists.infradead.org,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, rmikey@meta.com,
-	riel@surriel.com, harry@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v6 4/7] mm/memblock: add a reserved-region flag for
- poisoned frames
-Message-ID: <auItIsZRsh_Pwrti@kernel.org>
-References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
- <20261016-hwpoison-kho-v6-4-f304255147da@debian.org>
- <ato62palTbNjLwN7@kernel.org>
- <524ee7d9-790d-48b6-8613-841da042c32a@kernel.org>
- <auH6WT5zR1RM1lpA@gmail.com>
+	bh=bpvH8Kp7pKhcNKeWguQojqXnpg5TBg/XvZmMs15zNuc=;
+	b=DuCvy6plAjh6WFgS/CxCuFA4N/xe45wOBLcaIGxpAoE5s+zPK1YSZrzRRZWq97YAASPdzQ
+	KeAkmCfs4h8ibvY2DjsqnOCuD+ouALimg4XJsbdmoees4xcWSV55sURKWLR1E3408MrLOn
+	KlWdqUlvHYBxOSsNruloOHQNwwKCWS4=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=xiXoJimB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793207686;
+	b=bQIz4Hk7itNgvavZN7rbD30GVoaso2H0e/BVkJT8+Rss97AyCotavENTkfCf5w++MgHcHs
+	va9nowDpgRB5IE93jnjuoju26ed/1jcyHh9LZ01+6k+5Ojx7l6FXs8NOnSwf+n/t9qRzbx
+	m96WKbe1j/N+IjQD8Jz/VsWK0G2jyyE=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a3517554f7so11214085e9.2
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:14:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793207684; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oZrKAqszX5/S0nPakuuaONPTEePEIGT+FaeAYvqaiodTTJxpFam68Gmy8JIe+0iAG4
+         dzfaYE5r38MbzlqZfp+QY/e9XwEk3IEfLTNZMI3BTSB/5w+peGiBs7c4X+wb03M+9vXE
+         iSj/dyyWEby2VJtPPo5lNHjuDthRl6ujD1czn1lr6DwBOhYRDVikqv759KMyP0Ygk6vw
+         ODOpCiwrDd8siFUNs5BdpSPuKNTdjJ4HDdHSq+kJ0RHHWcYnUqHZ96bUrk6C5WcYGNj7
+         33BQuMNTobOI1+U7exbjK6bJl1emXRwICc5cdUAiiW90LA9g/57pVjuUhxvbN9Vl8dO7
+         FRwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bpvH8Kp7pKhcNKeWguQojqXnpg5TBg/XvZmMs15zNuc=;
+        fh=uRisIIFRNIQIOBmLpQqQGQC0+UhIDzdZsUoZB538BtA=;
+        b=GF+6NIykANaGAmVV4jssZZGRljXxCzMSYHHNv109BVx3yQX0d/v/b7dr/T+HBYmO9C
+         XgitnSRfGlcWM31eobH9jvTjWnRBqordeFdZjUdq95ofZdUOT3EEXDcEmvrsea5fA5jN
+         EjP8O6SofJaKX7GhgJ3WjqfGL3gSqYy/VrpcONoKNgoX5iZYYtNOZ0g21Fkib5tgwiS3
+         F+THq2WJDXy8wLJ3hFC9b0ZgOGpCdz4bEc1xNGi/LwWXkVilgZFwO/GW8OWbOaR2kXAF
+         f0AAz19jM8ZIol83F+W6qM91Zvq9F7RStbybcvHAF7Wh0IRgHwmx0n71xlJyECjirmC6
+         wVow==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793207684; x=1793812484; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bpvH8Kp7pKhcNKeWguQojqXnpg5TBg/XvZmMs15zNuc=;
+        b=xiXoJimBsbyx3HQxbCF2jOu29KYdqzpVOm9KNQXiTS0hkiiJ6RmJgZigcGNTpBrSSi
+         ycMbcnEgEZHferIoTG2AanL7hP4XNcEcp6p3rFGx6n8LLtH/Un7GthdhE0kI14WV2/s5
+         BtdgevIhyDW244Oz8LZCZg6LMmag8BP54m+pLmk8FyTAqt493uWLLVPoboaKUqam0/9J
+         0fUFACsrhR4bTUixwmyrIAnxNVOyxHX5J6jrR0ii9XSEher67tAs4qc5le3fJToWqgVV
+         7PMcuQq70be0FUJsMtyHdWkGJvmDY70qLr7L6BN9H9/fil7Nso1MHn3Lq+Nte4hx3nMk
+         DCNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793207684; x=1793812484;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bpvH8Kp7pKhcNKeWguQojqXnpg5TBg/XvZmMs15zNuc=;
+        b=1FoCScdn3XbVrfA0JG4hdIWZ+42KRbgQwE+J/b3iewzRessZqSl/zkq3pyTrRyDmSR
+         GQ09vLRjqO1KU0PpkhmJXO4vDS3gDJ/oYBSm7fhZCuI38lsuVAx9eHYaiOxAJtvLBwC6
+         Dcv74jw43oN0rhIodaoJT5J86y7ZXt/h40AucfZDoueKUAuAW/gEbYitNq8WFfd3jUOb
+         vAjS2veCFtCA3Mwi986wacV1J0F7Luszq8MDSOaQVecEuAopXyCa30kWs1NjlSjZqtX2
+         dV+8g3x6gopbQfYO8pEn8gHDdzVlXbtFGYUm7DxK4im7S4vQoMHwVcMkbJf247GtMJSK
+         uwbg==
+X-Forwarded-Encrypted: i=1; AKwUvByX1EwjIA6RezAStRtUKgmbXGOZrd5qRykxVG4igpmS3Ogh0NHzsnnFElPfUj5XWDJ1P98DmChbrw==@kvack.org
+X-Gm-Message-State: AFq9FYJybgfD4aYFlZDf54oSaBAr+Cy8I3ib26v7FPfk6A5sEOOk1Nri
+	pSXInOsE9QThj44rVJ5s0cnDrnyo8whju/Ore4f6pr3shDKCCIXA8ADgVv0g1jY7XoqMbygb5tQ
+	yd3S1C16ateo76eRo0n/PRAR5/pDL7bw=
+X-Gm-Gg: AYBFou1z9JNo7/TO12THuC+U5sE5QVEsNaQORJSyuAE+YVPzTWYGDEx89nQm21L4tDY
+	n4qT3bn96aYGleHLsFMRhyMEFqH+ah3m5jV75t5tecRo9jKjvflz2fRiaVhgDVGc62dTTmHY0vE
+	p5H2qGqgQWfGxD7euutsCryC0zZjQvJCDA7Yrs9/NPAH3jf89orvwYYfuQCiqoHhsFiW0Np5zSz
+	bE+W7TqfrIbALH7upxVjx/2qWz8OHMJKqoVyaJldR0LXzJFHY368+iO8mBKIrWlGdNCX36VeBtd
+	4LaD3wVp2FDtnDm5Aga/4EwNYUsCcKlVKuTwx+I67+8wo6cmG3/zhB5xrxmsYRtMXmEIRc5RHo2
+	ZZZNVXFMmqlzYihJpvBssSmOhY0j8UcAcgSYSMEwLp/tmn16WCP1ga5Z46vysIm2lwC3W96Rahe
+	9IuA0ZRUnIJMgeOISSupdihvmbLAvotEDDPaSn8wzK9qRSHCOgsBm9rWBYphjQ8uuYpDImJYwGb
+	Q==
+X-Received: by 2002:a05:6000:1842:b0:48d:f02e:f7cc with SMTP id
+ ffacd0b85a97d-48e5d599647mr7878806f8f.24.1793207684168; Wed, 28 Oct 2026
+ 10:14:44 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auH6WT5zR1RM1lpA@gmail.com>
-X-Rspamd-Queue-Id: C89B7100003
-X-Stat-Signature: 8bxeqyu9twjozwxk8i6hxz4rxy1ggyt3
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+References: <20261028-fixes_shmem-v3-0-4ce3baf2db4b@kernel.org> <20261028-fixes_shmem-v3-13-4ce3baf2db4b@kernel.org>
+In-Reply-To: <20261028-fixes_shmem-v3-13-4ce3baf2db4b@kernel.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 28 Oct 2026 10:14:32 -0700
+X-Gm-Features: AclHuK8uGLMeF-yLDH-Azm2VUTE0jqvp7VNoB49he4XaLFESCOLaEk0KKrGGynE
+Message-ID: <CAKEwX=OPADynOVEwpn3cui4U2GsP5T9phZQMaJo5xF==Nq_Tow@mail.gmail.com>
+Subject: Re: [PATCH v3 13/15] mm/shmem: fix truncate loop after boundary
+ swapin failure
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Gregory Price <gourry@gourry.net>, 
+	Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Stevens <stevensd@chromium.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	William Kucharski <william.kucharski@oracle.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 06B7A4000D
+X-Stat-Signature: fraj8okksgixze8sh914xq9pqi74dmze
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793207603-481954
-X-HE-Meta: U2FsdGVkX1+EmeL/jZG2Sw0Qvn69KmwP76mAOZKZZ9jul2Cn5l6gT8/p6ALrS/Rk6Xo9SYoaTL5QxH9BiKdPDHEI+wIJzC9Cfck/nYAKCoCEY08Dd9e28TFtOcLf3m64hM2+K2UfOLJeMYS6N+8Id93ZVYDNLRlBEj4yxNs8QCB9Zbqlf4P1TahCcjhJPiWHz2W3CiHhjw3ylClvrkVr0rP0+ihOy0/5UyEZfMG3/8IaTJT2oUAcdiXh4x4ZsVWWIzzXH+0HDDxKidhkcS87/36Uh469kmKoO4Qhf+lNgQzfEfUsgl2+I3Wb6VOunm2IwW9QrgXxR1rdL706W83UMf7MlziU8Xs9pVZknjcOrmp+SE31wyygzQuCRnoD9bdxoeZliV4Gup86MdMiBVtTiWJS+W62KiM1VjXP4HQ+qkhu4mm8Hne1BPf4gfLfQcUvaUegKvF+fKe22uW/WRZjfUpTq03cl8E2nKi64tWkfcvxevSCWpo/apJUAboi72GnErfQZ92SPW4OYcSk1K1bAe3+7rEiP+rp4347QK4YjReidKcrAKtuPLVZhIHV87V1JkcNQB7vR1zpsXrgc9lCTE8fN/CX67QABFHdcIpCM8XpjCSKGDZRZEox5adveMtrigAWJcS9nHyV/jVwdvrjUQfMDmeqIhmfFG2/sO7zY/qEym7N1aU2+SVhOZCgQMSYcxvErX4MEiH+9Ie7L8ljNFqJRwYnQd+EBhTBEmwO/lQpsWH7Ie7hGH1hh52Zgruz4+Z8W179Jf+wf2vur4OFjhZNRxLtzIJ6YW3feEkrP6dwkvWYzh2XJN2LCiVUtHDJVwcClXe3opw2z+ynwkcZf/tLrZ3itH1XGgUzARw4feBA/YLQjwE2bGyCdvMUR1T3V8BLyq/5hDl5qA0tpC0DACH/b4LTYHD2eri0bSU+B166il5iNPpAn9dF49T94QqPSw98TWBknAiZ1EoCRbg
- iZYQchlh
- I9SUJLBYyMfKbEXhHhMqOavfYM/TmxQM3/w5R/ERxRV7OU6ic/+O07CW8H9zTqj3m/fc09IREs2BeJ3atoiEIVB160ag27D2jYVMvhhlw6XrlSJS6rppgG5M8aJTOs1OCIcNl+Wf1Nj4BWHN6qo+JFVq+exbcGqPskoeUI1YgvMsX7miA/QNgMConFggeZ5n6OlW16OTSDJBlC1z3xmDyF6+oT3851FGEN6dmShPv9VbJgKNXFpONQp85s1Uxw75YaJOqhEmKJK1SC0M+mvAzd/kOWDfbbgYav619f4Qo0Z321LQ1SAV6G10q8v/JZ89k9Y5VeEcFEVadvls=
+X-HE-Tag: 1793207685-635169
+X-HE-Meta: U2FsdGVkX1+Kf04wDmhwKGFaeQ+NMFchCu+vLppsPYLN5TYFBAgbnFoevDAPspUGaIhYBJUBGUbV3mEj5ZjInGuxJZb5nedopAlJYctflG8Uuqhgg3owJnTvjvfQ1CHmh6FlRFf0LmbLzvyg1vnqSQts7WrasLd6XVqdR+gAK7p9GdWFW3jkx7ZwiF/U/3L3UHMTk+Oz9tMGsPvYSrXHWRs/gEsL8gA8GHnNqiCpDthLU6FiT9JOjQx+fnty8XN7+5+ZKx4wa9O7cjlvICzMH9UrymYfxijO8IqcE12Zq5TexEPndkUL/tGDakBq0VQYeksPikKxwmAl1pNA48vBgElJcrTpa6gTGTXaBPWJUanSXodcv0vmErtveNBeF1qLIGd1kpJaNZFJco3oW5kQX24gNwoGiRAyV7G4acH7UObZnRJm/IpoH9NR7ddH0aAqmSNP+HaK3/rXOwpoA1IGhyIGOQdCx1nltb/eTKYDq4fxuYmgjmS5Z4j6I/CZ6spJb2kgCrWZil0OnVaK0UcVbY5yH78D2kLGRrsz6SOLNMBSvdRDrA+AhODKMcdGx9sJDW5mNnW4+ju+vIwyfowqPdi4QTdgUb7JbBNGwDTAEKJqUMUA0fA5swtl8KMPJPyQ4uc76nnUbakBSVM6FnKgiKJru13MXmyj/aPsQP69t6d4/C7bvmAJRN5J2qOMMHeXBkRcLPUjq54YZA6m6c/MoO7hGFCMFXsv1M1f9cvbjU2E9W1Nrr6Ld5IWWyVM79k6Q+enrOc+gEwFD72gtpz2JsbmkPv5NY7yS+vhJs3b2oOLVulrtQFOmy20H08yhHEb7ErgaPKcIaL8PKabctRd/cJdWnWM6K3LKcojwxohjDKtGaJNnEEoXFL6VebQrcexsguuzPohzw/4goYUUKDonCvVaBggK5pspCEb1N9LBSz+KdG6G0gqRl7zIcM1mBpTisNrHLLbICkVGTItXz4
+ JRmJ5BOF
+ J99KlWmcvqy/HJcLnCXF7TYF2BCxNuOWRlnHn/a2JVPhhr4zsK2zK6O268Tw3NIN10wk6nsgQSptzJvRlNlJ3JnBBWbDkXUHgZsbMsVYjs45zJf4zIPT7cjLtAvvxc1sJHMaLu5yLOKu7kZodZ3T4x5bIzYmPEd2/z0hoAnIlSAEsxNECXG+/Ah1RmgwP8BHSp7B/JmMIDOZupmrFy7pWq92megMO8IdZ6HzDHdKECuOAojA/ZRvwf/O1OvepAYoI1PRxwzkDlc1rvhUQGtvMEp3LY2TotbuxI3ZUCquZRjN2DDh5zCtjPHyx986c1A57HhmB0LGjo/rNniIK9vm9TZiLkFvrVlAQqkH7jK3kJ+qiHu/EHlmWUk8AEHbDDXAgraxY82LzyEFOx1WwLdT7mgXkK+1dVgCYtVSLDUsJ+n3cKLtOLBueHJydwkv1fFg/y1fEyWBm7XFYwrDnRicUhM4U78jCUYElRsS1cSxt7ArXl2eNHWGQL9NW4uD2VRDsmF5hkX9b7KzbxzK5Yv3W66Jo0x3xpabxDRpckDELJ1K0Ker73D3ncF/FRMfhbFyxiZ7MakvUmZNRLi6Xe8Iec6Dr+2iMFAhCf3PU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,55 +158,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 06:49:18AM -0700, Breno Leitao wrote:
-> On Wed, Oct 28, 2026 at 09:39:42AM +0100, David Hildenbrand (Arm) wrote:
-> > On 10/22/26 18:33, Mike Rapoport wrote:
-> > > Hi Breno,
-> > > 
-> > > On Fri, Oct 16, 2026 at 05:15:44AM -0700, Breno Leitao wrote:
-> > >> memblock allocates from and frees to buddy whatever is not reserved, and
-> > >> knows nothing about frames an earlier kernel found hardware-poisoned.
-> > >> Such a frame can back the memmap, a page table or a percpu area before
-> > >> any hwpoison code runs, and otherwise reaches the buddy allocator like
-> > >> any other free frame.
-> > >>
-> > >> Add MEMBLOCK_RSRV_HWPOISON for a reserved range holding those frames.
-> > > 
-> > > How much this would fragment memblock.reserved?
-> > > 
-> > > memblock is not very scalable, to say the least, and each new flag
-> > > increases the size of memblock arrays which obviously hurts performance.
-> > 
-> > I assume that if you have too many regions there, you have different problems
-> > than scalability problems.
+On Wed, Oct 28, 2026 at 2:57=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> If swapping in a large entry at the new EOF fails, shmem_undo_range()
+> leaves the entry in place. Its final scan skips the entry, then restarts
+> from the same start index and finds it again. Truncation can loop forever
+> while holding i_rwsem.
+>
+> Advance start past the skipped entry so that a restarted scan can finish,
+> as we already do for folios that cannot be split.
+>
+> Note that this does not fix the missing zeroing when boundary swapin fail=
+s,
+> it merely prevents the endless loop.
+>
+> Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry=
+ split")
+> Cc: stable@vger.kernel.org
+> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Not different, the problems are additive :)
-
-> > We should cut out larger chunks, and if they are all over your address space you
-> > should scrap that machine.
-> 
-> Ack, that is what the 2M unit does. A DRAM row fault shows up as many 4K
-> pages but lands in one or two units, and adjacent units share one
-> memblock.reserved region.
-> 
-> Mike, on the statistics you asked for: across the Meta hosts that logged
-> a hard memory failure in the last 28 days, these are the
-> memblock.reserved regions each host would need:
-> 
->              p50   p90   p99
->      x86      1     4    41
->      arm64    1     5    27
-
-Thanks!
-A new flag is fine by me.
-
-I'm still trying to parse what your LLM wrote in the commit messages before
-sending the tags ;-)
- 
-> Thanks,
-> --breno
-
--- 
-Sincerely yours,
-Mike.
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
