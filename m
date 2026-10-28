@@ -1,60 +1,60 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F1C606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE56606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=gY3XUXUz
+	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=csUWtQzw
 Received: by kanga.kvack.org (Postfix)
-	id 8F6346B05B9; Wed, 28 Oct 2026 04:20:41 -0400 (EDT)
+	id 043FB6B05C2; Wed, 28 Oct 2026 04:20:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CD336B05C3; Wed, 28 Oct 2026 04:20:41 -0400 (EDT)
+	id F14C26B05C3; Wed, 28 Oct 2026 04:20:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BBBA6B05C2; Wed, 28 Oct 2026 04:20:41 -0400 (EDT)
+	id DD5E66B05C4; Wed, 28 Oct 2026 04:20:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46BE66B05C3
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A347E6B05C2
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:20:41 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CEBA140BEC
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:40 +0000 (UTC)
-X-FDA: 85371338640.17.523307A
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1BBBF1C4644
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:41 +0000 (UTC)
+X-FDA: 85371338682.26.A006205
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B9D29C0005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=gY3XUXUz;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf10.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 86F5B180004
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:39 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=csUWtQzw;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793175638;
+	s=arc-20220608; t=1793175639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f3wDiNCwMmjyXbWSfqLqTJmF38wOioqFlsZp1JBWY8g=;
-	b=6Dl86VO8O74scGNHQk3oLCjZsF0gW5csCdR4foirZtop3fSovIWGWeTVbfY14YoOEKCA6v
-	U68tdiEa4tinDHM/rohQJuwmeCaAtF2KOPf38ybSlt/Yie/lxDBtW5OO9ffyw9pMBatBIl
-	D1yLmJpjechkyZ+jrGo81sE3fpj9/mo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=gY3XUXUz;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf10.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	bh=7iGwC/zgOWLrxX4ANiv2xF58zogBn71EZM14tRgOJbE=;
+	b=QpPLEwZHQ9v5fb3CjyIBQZs5154Ws+mq/ysBPZ4DZXMLve2HXz+I8ODtBHVtr6lKtB8tBS
+	JMK5ZfMs3zCKapjKb8gWFspluBtKftWthsiUfNmdmrxcCS+XBR/BE16eICqIajpLN8vPFw
+	xlwZzSgwUQ/Rku3BnBGbhEk6MoCTm4w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793175638;
-	b=gtLKCmhMQKze7QOPtJcobVNxATn4Kg+ZG87WnXljnPyXRWrwB1XSpwHGkC7VTslpWcMmju
-	o0AXg8Wy/KPEqmW+cbgJ7YD45xXnTOYFK7wUL9jNEHmDVD/QV0XRu7hkr1QmpdjDx8CnkT
-	/upw4tIMjMS4vUU1z2fXh+6Ge3yTqQQ=
+	t=1793175639;
+	b=eho5CxDQoXKG7wzCSvIYuTNsJJiY/hiI3nfjHiRteU+ERogqE4zFrCfraOb16olzK+ubwj
+	D4QT5I215Bw+DHh+HWSfeWLhDTnv6L1+EMI5nm1fr+zQ7Of+v/U1RHXe+RZ+j18XoO82GY
+	c8bhO3xi8QeiGvS5CvG7A42CWSTd4Hs=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=csUWtQzw;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1793175637;
-	bh=f3wDiNCwMmjyXbWSfqLqTJmF38wOioqFlsZp1JBWY8g=;
+	s=mail; t=1793175638;
+	bh=7iGwC/zgOWLrxX4ANiv2xF58zogBn71EZM14tRgOJbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gY3XUXUzE59WwCVC4Qxuo4c1OjSPVasCM7D1wASmJouVr1JmoDvCR1fpvkN/NRule
-	 x920S0FQBtza5BGKQpbvfVCzTkgENiiK4WcKdNZUluCqTy6kzWj7Aq537yU0sAAPsA
-	 q2wy/d0fqfUd08AA2eVS24Chvy9WL59hmC+ynavA=
+	b=csUWtQzwD2E/XlWZClH8qe1DSNmkf/BxgxVrI21nciRCwiVBnNkgR/QmWPWiXgOFf
+	 r7hvwbXh1TI+dwN3mfeJxPnh+wv9MNKw/OzT9SWuYLztFyR/10iP2qfxQuy6XpjkYc
+	 swD9LFS71C2gJ4LZM8Rqw6CkTpFxgtqHX1iTdRcg=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 0D880FBD0B;
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 91086FBD11;
 	Wed, 28 Oct 2026 08:20:37 +0000 (UTC)
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Alex Deucher <alexander.deucher@amd.com>,
@@ -96,28 +96,28 @@ Cc: amd-gfx@lists.freedesktop.org,
 	linux-doc@vger.kernel.org,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH 08/10] leds: pwm: Switch to __nonnull_args() macro
-Date: Wed, 28 Oct 2026 08:19:47 +0000
-Message-ID: <ed2b0b67c306bb458ba389f16dc92904203a104b.1793027261.git.d@ilvokhin.com>
+Subject: [PATCH 09/10] soc: aspeed: lpc-snoop: Switch to __nonnull_args() macro
+Date: Wed, 28 Oct 2026 08:19:48 +0000
+Message-ID: <6b82201d601c23bf8545f8d581fd6632c36cd208.1793027261.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <cover.1793027261.git.d@ilvokhin.com>
 References: <cover.1793027261.git.d@ilvokhin.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B9D29C0005
-X-Stat-Signature: x3mok9yaiockkqxfsm4fiemrrzinews4
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 86F5B180004
+X-Stat-Signature: tg18bsi6uofxnmpbkzya41ttdcut8gq1
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793175638-798752
-X-HE-Meta: U2FsdGVkX1/uXmUhjPef//Ks5N0WLabsehgO9nGrtKVb6F4Ooh8enSRvh302qHGLYYQ+Z+D9b793t4/tWr4o4lAjbwKZyUcxDo3Exd7h0kd7w0q299dskODwWQK0rsDY8RbdeRBm4w2w+3CYeszfBl5/As6bO8w0cZkX4rDq/hBlLOZT0VNMh32j5A0pZgErTLLxbTS09002lSnrKBa3nvbl+L/mo389ulAK85tAk+vFEmF2hhNNsggNhRA5eNJwMBIxwveXJbMi58kyizByc2NTz7A6SwPYbOO+oQCvjqIoDsAPROfp1jY9C+9Ia8ZQFxKZP7rzZl3L8tTvhiZpwN/OF8nxOz9F9A/IX832/0YPNehswZU8yPXML8XhCbQ6EGbUKvLrinPXH6QV1N4tumheOCCraia9/dWN/Mlq75A6HvmRru88pw5I6OmqC1JiZ3rcv1ya7ZAihzcmNDbAmy5CO55xhZPggiykKfiuBR8WwfW0eIb5yyshlQywOe6hqd7SuK567lBEpJZaYn38FeyY465X6IzSx06gs/SeufyLY3JAoi198+G/UDl5Qh0P0zN9A+pINCbnWEyOBM0AIQCcGh07kudaJ23CS4J5DlDbhZRJzimid2pHHhQx5E2MwjeTU5s6nCZX+KFkrIAYlpXkHD1JQFz2X9LyVqpKkQeumDkz8SsWmaIlQvHuhB7GT17XjeSAmuLENi4/D69eriBm/bgVR5LXc5geWMJ5C19bkQJRDJK2lO8dLVRZKyCkjOjwBd05h6hm7iNrA0v0tKKotrO9H8+Q7wCVOO6KUVCSJGvnxRwfxLTPIaKQwliRsXKiQlySRUgDYKLJ2I4pnFYzua5N6+fm2nRiyQLtsGbFOjkdvf8fOZxJpFBn/O8p8appTEeMcCfBB9JX+1si2+aagvno2Vr1dPaMgBtauWxOqBT8BHob8SAnL3VCLWM26pjaIuqSw2y44sYHzNq
- yR8ph4jL
- BFNBrRH3pyknDF+3OVEn0my9sSbRLWaCXu7rx/uKGZ6Op26bwut2V0gX/D1zWpI74ft3PGZFUj+1rn62PjziP2iE/np97A3H01nYUTYt+3ZDt40a5AGJa5TgxkwL07gn1lWkErXUG5uscPZUyhgMbFDlr6WXD6/pj43N/CpPz/GCTgotPAtqnOwqEm/IjOaEwoZv0QhVtVezqBwlwtFZ93wP+KJr6elVQcyDugR21Lh0NFscPZNALss/Fhi857XsRpa6QawH/z09jD96QxFDHuquyd0UkQBoMtpE3DBJfqhxk6s6zbi0bkDXFTsRyf67gNug2aUNIx5nY9Mhn6xvAcHMMhZtalWS7S33PD0CKMoQ5Y7ZefFv0CZV6M9ZhxSAiXi7D68iD7s59soM=
+X-HE-Tag: 1793175639-60593
+X-HE-Meta: U2FsdGVkX1/rhPrvnMHO28WSVx02pxfX6sWoHgh8RbUJjA82L+l/zHyubYWFyiBURjqYAVOOmNM2O619YNw8f8C/7cvcUplpmQY4j3L3/pX+t1+dKFjk12b484LWzZrOxywehhU9FhRKMXY3YXdlV4dKNpOJgbbIH0Vv++rHOx6/faC+x/v/6a3kC2lJ4+w4OUl3KTCBQpcEfSQgUMxG6gtW5HC+2R4sZYDQlwtu8sz6JX3PqHZoF37nm//9Jd3RIP1wVdQPeLSNxw6NjNIxs8TBwAadkmmbHXMwPVKg7/d/5BPKWJ0GDx4kEuZqUs1Vzm/dceRf2pbGiGJpMlX2XEtclV7qt9gskS2UHP1A6wchR6Ci0Sx04jAcWJXTAMz3v7ALV2LM2/h+2GsQMly+9ly9VBnNLIohflQwENqc2XNTATIZ2oohIJKAW9yIxTXtha4B6Y2ngoYINQKPRvGDvQ5dRLDzA0DP73g5oT6D0AxwqfmLkUTvZNFvHotC0sli0BqSaD3bBOjIVUdRd62jUkJszcHH+vbtmn+9TLEOHGnwsJyx9MXj01wH7IVNS1WKeruXGGQAoUx1U4z3P3E5bfSOb6Z2D3Sqqyn75G66xSkJAT1yKXuIostek2a8bNTSbc/CqWvyB5J2nVMYTkeR2fXy2V/EEYi8IFE/oaE3vtfVada6HOQXZ6AamA+6YEMusEbE3qPB8O3Fg6AKN3Zs3D3fJDkpnPX4P3JJsJ3LLag+Gda9N/bpLrvbQhci9XqqoEbCjlBO6VwzRdZl2FWgNx+7Y7jPlN4OHc/BMVkOPcB6HTYJDt300d7bxyPqn7Ne2sOIS52Ocgjgr50IGKeyHfKJ3esp2R5UAPeEgMxtlM/ZI55oxv1mQn246IZ7hlSEg61oFGuyFiU10bZTCM/hKJSyzR5BhkDx6ms6VfDbztg/U8O9Hr2gAoa0U1yiKHnSzcH5/nSinl3ZmSGtmmw
+ 8YZqffy1
+ +Q5r+ZxKx3D7ArLRTo2+z8C5RKtREfNVkpyZVpkt3Y3y6swxvdHzaQAGK03delIl7GAJzB/6MDm6o6PMYrmeUpC5PDsRvV/WmP0Oti/cj88mo2exUhQjVB+UZO5L/uDG+IJHwb8utThsul9vMGArB+FkqUjg5KZbkm9jw8ghqz9o83gs34UxpicZDLTR469ehF64xJ9Oc8rLC9fFqi8qVHwaVYG2MJE7Mh1PMkxwpE2DNpNHURcDzxdkx4B9dDkd6wKxPQ7iv/sujkamp6TqZy9MxYRZjTWsKxhSlDJ9sqOyAtiDaU9utRaRee2jlL5jzr5Pz1bWZh91PudZWFF3VcI5KChbATQLlfEFChkD76RNplf1zyzREq90omjTjpgOISJeRn3vUUAhXVi0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,21 +137,30 @@ in one place rather than open-coded at every call site.
 Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
- drivers/leds/leds-pwm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
-index 6c1f2f50ff85..0363d370828b 100644
---- a/drivers/leds/leds-pwm.c
-+++ b/drivers/leds/leds-pwm.c
-@@ -80,7 +80,7 @@ static int led_pwm_default_brightness_get(struct fwnode_handle *fwnode,
- 	return default_brightness;
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index b09dca34099f..ee84a06a035e 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -226,7 +226,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
+ 	return 0;
  }
  
 -__attribute__((nonnull))
 +__nonnull_args()
- static int led_pwm_add(struct device *dev, struct led_pwm_priv *priv,
- 		       struct led_pwm *led, struct fwnode_handle *fwnode)
+ static int aspeed_lpc_enable_snoop(struct device *dev,
+ 				    struct aspeed_lpc_snoop *lpc_snoop,
+ 				    struct aspeed_lpc_snoop_channel *channel,
+@@ -279,7 +279,7 @@ static int aspeed_lpc_enable_snoop(struct device *dev,
+ 	return rc;
+ }
+ 
+-__attribute__((nonnull))
++__nonnull_args()
+ static void aspeed_lpc_disable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 				     struct aspeed_lpc_snoop_channel *channel)
  {
 -- 
 2.53.0-Meta
