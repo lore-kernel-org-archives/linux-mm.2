@@ -1,70 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDC6606A33B
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793D2606A325
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HpmChy7/
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=P2hok/IQ
 Received: by kanga.kvack.org (Postfix)
-	id 34A316B05B2; Wed, 28 Oct 2026 07:24:23 -0400 (EDT)
+	id 87CE56B05B3; Wed, 28 Oct 2026 07:25:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FAD56B05B3; Wed, 28 Oct 2026 07:24:23 -0400 (EDT)
+	id 806326B05B4; Wed, 28 Oct 2026 07:25:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 238336B05B4; Wed, 28 Oct 2026 07:24:23 -0400 (EDT)
+	id 71CCB6B05B5; Wed, 28 Oct 2026 07:25:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B5AC6B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:24:23 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 50C326B05B3
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:25:34 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97AFE40C4C
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:24:22 +0000 (UTC)
-X-FDA: 85371801564.07.6497799
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D2969160C6F
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:25:33 +0000 (UTC)
+X-FDA: 85371804546.07.72352B1
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C356B1C0002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:24:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="HpmChy7/";
-	spf=pass (imf18.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 12ED8A0005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:25:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="P2hok/IQ";
+	spf=pass (imf25.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793186660;
+	s=arc-20220608; t=1793186732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2xCXHplURiniQc9ck7TyMRt3ZbXb6hxVB8xWH2R2PZE=;
-	b=3C3Hp303YqhVMZ78y7s7fYiccmBZILnmW0m2eDdJBoqxey60FSqALrcnTbsi90YXJlqSkT
-	o528KuT7wGVDSDiGrUHnhu+TzHomH0UPH3lKttaHrMGFRM6m7zFK1q/5Fyp1+jb41QtVbT
-	bti0KirCQxX1RxahrS3igs5aGNq9JWk=
+	bh=9mJ43myQfb09ZHFd92pajyUabxECeLaGrPpQgoogl/M=;
+	b=ag2zyZd6NtgUsWY/00m1lHG8FIDWBsEMqUqesRuhXR+SVoAJzCJ6FWtRVt85uN8xQR9joy
+	NtrVy0NCuw526gG5jPPAOIjtMby1A/11T21auMnNWCKuHyFKvqEoZSkp6gi6G1BxJK5hTP
+	1t89IkQoz2k0D3/Gts54fQ7cFkmEtW8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793186660;
-	b=AQ+CSpkFOcFmIY05uQ2UiHR0WXwtiAFt4XIJUEhWD0y0qjJs4xPctvXoEL+sEQwypwV1j0
-	MngzirvTn3H2Ee1rHGbS9cSqNP/PQ09qPLYKAgLQGC0wOPa7qRt7f077rYAwel/EdPi2cM
-	PRiInTF8kVE/sal3Y+Y0IAKaDGQDG9Y=
+	t=1793186732;
+	b=rd4je8SgD2kZbig+JC+dLPDTXSG3vdAJtFWz4KDdqKziPWcsUqzxzdjvEtTzFMhA0Fhc4o
+	CuCKom/PKMNPK77ahzaQLJMtkXR8kyjzjeeN6+rTCg00l+Y1VBq/Br3xYyJ7SH53Vh78VG
+	OTUj3IgoFn6L3Qba9ZyVf25wpUG555E=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="HpmChy7/";
-	spf=pass (imf18.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="P2hok/IQ";
+	spf=pass (imf25.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF51D16A3;
-	Wed, 28 Oct 2026 04:24:16 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3329416A3;
+	Wed, 28 Oct 2026 04:25:28 -0700 (PDT)
 Received: from [192.168.29.156] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6063E3F673;
-	Wed, 28 Oct 2026 04:24:15 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B958B3F673;
+	Wed, 28 Oct 2026 04:25:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793186660; bh=kBcc9gOJeHW/ZyKtIy3EZx6TqVCzCIfBXbymtxm/ptk=;
+	t=1793186731; bh=YKaulhQLxUfKWnBASX1S/dUGhwJrFBUH8NuOouts5+I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HpmChy7/wSzaK6QVHmfmbok1yQSifFR0m5JhkcZEoFkXWaUFHAsqOwKt5m4nqEwRJ
-	 0ek8YjtXV7O1W/lo18XYEHgLN9flJKw7/bzmiGS6/Bvvl6yTZCyMfvaLmRu8elSs+y
-	 tOjU3FxS7E3iHLXEr2MVSr1Lcyz8I3VfMl38JNiU=
-Message-ID: <f3e0403f-07cf-49be-acb9-671a1467d1cd@arm.com>
-Date: Wed, 28 Oct 2026 16:54:12 +0530
+	b=P2hok/IQmwm8cB2bnDnrDcPeAaV73twbAWps9caSEi5dY2Jcd844rTaNBr92pszip
+	 d/LDigAE/b9OTh414eXiZq1JnhVYqaRVz2PyIEus6hbpQG3OwnnX2NsX+NjmIMCxx+
+	 FVgww7zQ2JJU5HdwtOCk7+2L5pU8iAEcRnD9k6Qc=
+Message-ID: <abf93d06-e330-45f1-86b2-945d21d26f2f@arm.com>
+Date: Wed, 28 Oct 2026 16:55:23 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/7] selftests/mm: check that MADV_COLD and
- MADV_PAGEOUT preserve shared memory
+Subject: Re: [PATCH v3 6/7] selftests/mm: check MADV_PAGEOUT file permissions
 To: "Gregory Price (Meta)" <gourry@gourry.net>,
  linux-kselftest@vger.kernel.org
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
@@ -72,24 +71,24 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
  liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, shuah@kernel.org
 References: <20261019171206.3331374-1-gourry@gourry.net>
- <20261019171206.3331374-5-gourry@gourry.net>
+ <20261019171206.3331374-7-gourry@gourry.net>
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 Content-Language: en-US
-In-Reply-To: <20261019171206.3331374-5-gourry@gourry.net>
+In-Reply-To: <20261019171206.3331374-7-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C356B1C0002
-X-Stat-Signature: ye4cxpacf6auxn1k7q97bzi7yudy1o4u
+X-Rspamd-Queue-Id: 12ED8A0005
+X-Stat-Signature: tigehs3dm1x7eun5fn9yfuuy9azsy38d
 X-Rspam-User: 
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793186660-527417
-X-HE-Meta: U2FsdGVkX1/xfBlFcakIHs0Bu6dKWyx/lw8atFUDWx2fhpJ8coXSayc2LQPjh5dlchYdUCrZpqgdiPWGycZNxyLzzQAwA938xsV9m5QXzbkKUB43LgnnJaNqc7VmDNO658QzzFqCNhcwwXu8mX8Dv6P38nxs/fXARgLzMGGfGhGfmWXMoTnrOFoIPrHZrxF63y6SjCYaEoD+aZOXO/aKjV2xosKxLR0wj+IZlX/uNxhC1VQOfp0ZgD2tdYZ9Tgrk1I9Zs73IXWzsOLae78vksDadk6Z/tGUcTGMrl8ntkwekXAJdC7nR03Ur64Pz35PsFAR5e6ukTUAI4EIzphYZN/uvNn1HAvvRvZeFjIYlBosIZItv+NcA4hlwTP0wkwklvWcjqAS9Wvt14z7LZbOoMs8h3ORi2UwINseRL8JNWxIgkIU087HQWUhsrmo+zmcONYldZ8JTRhL29WCi4s+gHk56rTixyvdrEvViVcEoYVUCVEnVKl6YZw+YJTLZ8nehL0tdSzvkX+bsHb2Od9n5Sdw17oovJ/g4J/CCvGtiRPz52Kamk2Lw2Lc6S7tvi9+alRlfFOcCAJ06SkoQCwci+XI/1SpbVOJVqnMvanKgxF/mIqNmCNe3Afw9560qnWyvCsqeMgQAq/N31ivi7rTWNFOBmoHkcMRmsOEyXpoV5NsZvDrU5GAmlsruAiBxfZVH34bWVfM/CuU6lBkeJYl1Skw+fDuGGN3NJ+wNq4yYbYoCsdIuF09nSuV0WTE61Ge6Y/+JKQE4H1l5rtxqN4xhBog5TbGvzRSRFLCRXkpFYzrh2EPRrhNFnKpgO1vf/KeJ3xtSub+VOewI6s10j3GwjZjBk1X0zJ1mgkFl1gXnJdvnLdFreFEHublVs67BwZNvNwC/j4+sy5a6QlLqav8tq+cAyOS3rHIWQMsFXUyR5nzc4F+jY4YhqnGMgnKJ7Di6ykqqYyMSxehJL0St7Ry
- DepOjDWL
- TdZXCu8DpZIWZ0FMNCdr7+0n7b0DGpFMN9DgNcbR5iDr2JCrtOEM26WHRzOn53a2AYMq5C9uOtwy3UPsk8xlN1oLIVFjP44sw46m6jaz5JFl+llEXi7CcVQ6No02OvQJHZORI1PIcDLj39Gk/gFP61vtp6qYa6dNgwwhwrryPX0ug4jzsuafdSTFIA7nh19qpuubO0ConKlt0bbH5d3Os2kmNRo9RaxsMrCgW6VuOO+iuDMuagy80GZ06fFVuYnuyZywK3aRooOAsoqb06scJpQLIizkIo5GndgQb/T2BeW26K8m/Us2L2FhSvoZK/SQuNXLQgzbBVsHiZkn0y2ejI7DB4qnNlUe6xEEsJt7RXaxKv6uBlmDidbF2lcNoqzCX1/Zzy8iai/qiFD1wYai+U2C2GA==
+X-HE-Tag: 1793186731-576734
+X-HE-Meta: U2FsdGVkX1/r58xAt0h2BC1HdrwPpdq159tPMUsnWIpJgK0dBlcGCAQ1tnZJo4mR4f92fcOMVmNfFShIl74E+G8IAk2blSTMyVJLCrTTzDf5+o9ne/Mui0/LYyISBa4vNm5WArvI6/jSO0L3OooNHHzefNdek+2YpY+ojLJrwcpmdnevVZ3Cz63juiwymR2E21lxFfIMYeZfGcLpvrC+3XOIt4h9o3JM/KxmxKU91iQeLEkXncotZ8fAR2v9Q6dm1jg3bcOI8YkR+u79kuc6htl8X3LtAAATiwO5C9ANxhEwwrRP+nfgZK9CD/mhhdNeUUpmbyX0mTXZvDfkgrwpbmvlH3zW+R7oC4WYzsW4j+D2Anxq0ngXQCxmaErdtlMwJrDsIdxQioSTALAaLedMZoMupNuyzLo2cRnnbjjVn1xH2LxR8leyV5+06W9k9GRxN0BNrdZXywX4D4SjF15Pm+IoDvawutT1WMLZjAzZrl9k5/5s2rC/inG0poppujpSw9U82cifBNsR10noBA4nVg9JOtMgNiPA/WPzDJipxd8KiU52rLBDlTPHDLtfIurIFCaKlSQH5F/vFL5FazFVPfsjxq7Aj7k64VFQdz7lnbWxWr2qE92PLel57502FC6vKgw+plTA+bIdQfPT3LPm6MlEgxrBTcCHM3ubNLjpRvh53a97BBbJ2pi47O6nE2wpKbBQQ1e1WpTMgSVQYUdjEpk9Hf3wnQo4MqddoAkaRK0T5wsDN4o9UG1aiFrZ+M+aCiRiHMMQpEJmI0PDJf46/d1IdNutCv4zcfsnBIyHWPlPLKIJhLgpBaiwdEYRZjkRBfrX2SJE2q+a4/nBvUmEpX2CFvcPtP3NBjmYRXQW+SxkNaCISznIwjchdmSaj/X+TtpRlYQb8NIRYwhYfGQrnqceEwkgg5saQKZHF60wDE7luer9T6UIG3PCEU5jjnBWUjOGQ3vv5OfMjQTkJUP
+ oN7WG+7v
+ 4E6qLA1m/4AI82NfGYYEdqhVUNDjex/7Su8M3kTmBLjkcFei62orsPk7wpw7iUT/Q6ZDlRz9mpHO7aTAFaceomqXgUbjvWn8VSYxwGBHCXlt1tABTJXNMa0DKHDEyKBWODcjAtb+LBAxMBnG4ay6pzQnofu87XMeGIVAYPm5wdiA7Btt6UzaYq3zNXW4+XsvjwiEfP7N6L8FJpGCDYzkFMp7i2qn1hdds2z1MaxGIs/TlpkROTPHAnFuJQ///nrvXB9l2UQ2iRM9BjcL6cmEXvIV1UroQqZ6HnDEReH1LIpnkXPo1FIk7rVB2LwDUw3nh6gEd7DoYQcBgEkcpMiQPXNkWHK3kDv+hiChPAUqQklU/O6pJRH+CR1JGL58pHaKPEnhe2F/8HQ3gAcQlvMuSLT8M0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,27 +100,28 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 10/19/26 10:42 PM, Gregory Price (Meta) wrote:
-> Both hints are non-destructive, but the tests so far only check that for
-> private anonymous memory. Shared memory reaches reclaim differently:
+> MADV_PAGEOUT only pages out file pages for a caller that owns the file or
+> could open it for writing, per can_do_file_pageout(). Any other caller
+> gets nothing from a shared file mapping, and only the anonymous COW pages
+> from a private one.
 > 
-> Test the following:
->  - a dirty shared file page must be written back or left resident,
->  - shared anonymous memory is paged out through shmem
->  - a SHM_LOCK'd segment is unevictable without its VMA being VM_LOCKED.
+> main() now also checks once whether MADV_PAGEOUT can unmap a clean page
+> of a file in /tmp, where the tests make their files. The tests below skip
+> if it cannot, since none of them would show anything.
 > 
-> MADV_PAGEOUT unmaps a shmem page before it tries to swap it out
-> so none of these needs swap.
+> Check that the owner of a read-only file can page out a clean page of
+> it. When started as root, the test hands the file to nobody and drops
+> privileges, so that capabilities cannot stand in for ownership and
+> nobody need not be able to write to /tmp.
 > 
-> The SHM_LOCK test confirms the page is unevictable and skips otherwise.
+> Also check that an unauthorized caller leaves a shared file page mapped,
+> and that it pages out the COW page of a private mapping but not the file
+> page next to it. These need root to change credentials, and skip if that
+> fails. The private mapping check also skips if MADV_PAGEOUT cannot swap.
 > 
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
-> v3: Dropped Sarthak's Reviewed-by from v2 5/8: added the fixture check
->     for hidden PFNs and create_temp_file(), and the shared anonymous
->     test now fails rather than skips when the page is not unmapped.
-
-
-LGTM, so:
+Thanks for the changes. It looks good to me.
 
 Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
