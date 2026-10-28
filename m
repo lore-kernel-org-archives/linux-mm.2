@@ -1,64 +1,64 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D713E606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5621A606A33A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=lPiAT+ME
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=E/BHRL6D
 Received: by kanga.kvack.org (Postfix)
-	id 30ADB6B05BB; Wed, 28 Oct 2026 11:42:48 -0400 (EDT)
+	id B97A86B05BC; Wed, 28 Oct 2026 11:42:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BBAB6B05BC; Wed, 28 Oct 2026 11:42:48 -0400 (EDT)
+	id B202F6B05BE; Wed, 28 Oct 2026 11:42:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D20A6B05BD; Wed, 28 Oct 2026 11:42:48 -0400 (EDT)
+	id 9721E6B05BF; Wed, 28 Oct 2026 11:42:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6B36B05BB
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:42:47 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60DAEC0149
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:42:47 +0000 (UTC)
-X-FDA: 85372452774.05.DA8001D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 60AFC6B05BC
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:42:50 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB3D61A0153
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:42:49 +0000 (UTC)
+X-FDA: 85372452858.27.A7A0D98
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A718140007
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:42:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lPiAT+ME;
-	spf=pass (imf17.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793202165;
-	b=em2dvRA3HBrsZVSG6XaMCH1jCZreMd0zE/pTN3gWlIV2cJ1bmnHDgv6D/cA0Q1nR43djgh
-	5rrMb5FuGk0Wr70vs0XF6O7+TwDgD0jdRStvLVfC8Q/ZX4Zlnq8OpVoXBDKAUjzsGi++Qj
-	2BdNQ1UNcbtmEuKoDm4kniLI7nYF5ag=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lPiAT+ME;
-	spf=pass (imf17.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id BD069140009
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:42:47 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="E/BHRL6D";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf26.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793202165;
+	s=arc-20220608; t=1793202168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+FxMyc8VBoBJuWtxhwMaxRzj9HBkqwJBoUXFm0B+Fg=;
-	b=rwLKS1VuRtWiFmbmJ7vQ44cOw6M3zHzxJX38E1DW+jvwUqfXpuz7BYS7ktKnAjCaz4/P0y
-	HoNg3Yln+pno61FCg1aAUMlI1Y8Jsy321AreyADbGU9Q3FT4p4hC3UlCiSHwzIaQtJhhPm
-	HTShVCUYEQOxi8xidlR6b2LCP6cqrSw=
+	bh=aLcHh9wVCNj0wy7JzbpEj3+SL2vMXcdXR22pTGdylzU=;
+	b=oYYkryuYZZ+KOY3N/llZ/FIMFZURU3puNoOpkNdMixz/VNtws5RcbwYC9XFA9GHVvC3TMF
+	AvH3ek9Pcv/7CkCixnH8SXqSdI+MovaAxsGZiELfnDXcBtUdFPbxxg3fpoUd8492dlv9ER
+	jm1Q5NyLltplXuTSH/aQXWPnKXmYVBg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="E/BHRL6D";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf26.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793202168;
+	b=PuQ2RvDzzzTIBR4Wf0MCr5Iw0XXc0JaX6UGnyFSetthZ5SjUq2KA97dBGCmtBPnPOXI2XI
+	2YaRN0r3ZSq8Sq97TRR7+o8MOHfiGku7KeNCbcS7dnFGjk+J+Bi8rWwFAz04kBIWsfEp4h
+	khupH0X4ABj/qQX9c0qWoO6bgREjfCA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=x+FxMyc8VBoBJuWtxhwMaxRzj9HBkqwJBoUXFm0B+Fg=; b=lPiAT+MERRmJ05OI4LtM24SW5H
-	q6vq8GOmZSheoS0D7L+ZVVQ388CuaC4IF0zid0zVq9dejkrGnXkXVnZyx42Oynvo4RI2R6RaR6XXE
-	oC+QZ+u8lDtuEHpLD540KGfgXT2G415p7z1I20po/MBk5xbNEKC+p1rJrbCURX13+k5SgjmLUZ+VX
-	eZADsxJxTtS9wW2LgbvkYCumTlVj0UH55qhvWVWqjtylCODJokKwkG4iu3A0KJ7R6kfZbfR+vwhAq
-	n28uQ2nZKG34/uNjd4iLhXdd34Nq1I2CF55FBLwqA4GVGcSMxiBjfVa4EWxqBG/55LqNL0tDWfnkA
-	7zZv9kKA==;
+	bh=aLcHh9wVCNj0wy7JzbpEj3+SL2vMXcdXR22pTGdylzU=; b=E/BHRL6Du+Fdr3+amsCWlylmKW
+	+LQLxA7qkn4homkLKhl2qvDpFOgYBU1NZrVb6YWxzpe3IsRfZGMLDmLg9wRqqtOIfuN8yG0ccapFO
+	Kxpvxtm6WXotTb46LS2rzAP9ya+rhkKEad1O8UWfRJ3aCmQ/0pWShBjH3VWzNmVGLPEV/7jCLLGLx
+	IM6PQCtzKzhw2eErmBZwP4E3M+yhlSkZ/v6Pbnlf1mFBuxvefTl/8m1PQ31cXq2Y8hmBrOilEKwra
+	9jnQ31VU+3ScBnnxNTxILEesGeROmYACWLMCIdsj87pzzZXl/sF78i6hy6X+ooibEmECOuOECERXK
+	JBMtSBCw==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xM5nY-00000007QoX-22zr;
-	Wed, 28 Oct 2026 15:42:44 +0000
+	id 1xM5na-00000007Qpt-2enj;
+	Wed, 28 Oct 2026 15:42:46 +0000
 From: "Liam R. Howlett (Google)" <liam@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Thomas Graf <tgraf@suug.ch>,
@@ -70,28 +70,29 @@ Cc: linux-mm@kvack.org,
 	Chris Mason <mason@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Andrew Ballance <andrewjballance@gmail.com>,
-	"Liam R. Howlett (Google)" <liam@infradead.org>
-Subject: [PATCH 2/4] maple_tree: Test emptying tree while RCU reading
-Date: Wed, 28 Oct 2026 11:42:16 -0400
-Message-ID: <20261028154218.1668182-3-liam@infradead.org>
+	"Liam R. Howlett (Google)" <liam@infradead.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 3/4] maple_tree: Update internal warning and bug_on code
+Date: Wed, 28 Oct 2026 11:42:17 -0400
+Message-ID: <20261028154218.1668182-4-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261028154218.1668182-1-liam@infradead.org>
 References: <20261028154218.1668182-1-liam@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9joip8sy4mc58hfr1unoxp6sptcopiqw
+X-Rspamd-Queue-Id: BD069140009
+X-Stat-Signature: aji9jubpcyocj8847cczn5z7qkwffirp
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A718140007
 X-Rspam-User: 
-X-HE-Tag: 1793202165-671701
-X-HE-Meta: U2FsdGVkX186YtSELwxelAdubtrlNPT+ebgXglDN875VNlBtdx5qyoWEnafeTddIKQd1TvoCssUyvSHDln/kVMJL8b/mmkhGDWVrtfXARFF5Jw6TMr7V9KnJ0byzwCJjemfxO+gw2Q16BhhOGWAEIDRHH5HcRQ1jsM9qGCzQeDImkg9iIni98a5ddeMaDpUjoJUlW5+WrWx0xgv7ouzgi7XR5Yb2GQt/qphx1UWGRzfXdo1eZiDWQ/OUmYJPnNv+zwdld3R4hHvPQ7foaFzfVa1XNZQTf8VtKUy4s6qKF0v5aHsv4nCFl5Uje26gyEKhHJy5rA9aum6iFv9Trx8wAEtewUHOrLxQ7KXedQ1fnK5ReWsGNdDLoke5+iVgSpwMgUQZQrOgUDKKDgol/p0DZels9SXYDq6EH7fnputWscNRu4hXG7dHB8eKpknuhBWtfp6ZC+4OOwCUkKNYGzTt+RJwHt7zYIooJQj8IW2kg7hP4gado2MW7mVxGigQi+w/lzBNtbX6E2qcy80yyYpowhBAUN5O12mwOkrIwxv4ugqQBTtBgU+m7EAOByaooN90BG6kL7abOj0x7XF4h8q/KnCzkrhca7IF6PebZa/OBmoRwD/PBRNqT6v0ZcNarGv8Qpsb8ErZvGI1Y6AKIp5H0QFHeEMxU9acV/3bpsrLBIK1AIiIq+T8CwIrQML1PAGzwMjBdvOcmLRsqOXCUgvC6zXv2O+EnMeb/k3u4/PLw57Z50dRZYBAAVqJ1Kzozl29Oc0B3kfG7bMMN29C87p4FFtoXatdkONK9gtm29GqmhJOCX3M9NwxkNAoOm8qMxvq2Xmq0r4s4YOEOtjWEXC83mnC7mxjzLhs8FecvDXpnmDeGz1I+lT6nPHKGutOhJSJNMwYQs8yJcIwy3DefXVUlBVlmMNJpbnU90q3kN+AAnyZYxrH99VHj/xQdqqtbo5Y+pOzKre4OmKbObeqfxB
- 1qX9GoHt
- zGD87NkEuefMBgKVk/BBHcCS1/5FWGNMtUcKTEFu02TvGBJS3RX3aVRQe8xm31cs+Xj5k5H2a4kH7xxGqrhmHyKyZ5cHyOYOVRC9FR+b2MUJqrgLCrBEJrS9qKPV9rmTJL4Lj83ZstRc2gf9a4abKCTgjdu7394lKE+ECf0s4lqjEv3Lcx/3jEWNfZ1Fw5g0yWb1U2q6RpHYmiBu4WCd5lMJ5SnECMXmq4Ub/Xr3kd2YbnxJr9xqXNLYjz3R4Q8EascEn7ghYzPpdFqy/BGcxro9dg30iYkUzCAD3Ut4Z5VAhAtjUXTaEIGA6KfExBbGQvId9kmQFO9TYJ+PEvwox6vXh1Q==
+X-HE-Tag: 1793202167-218589
+X-HE-Meta: U2FsdGVkX19U2vBYGWueFiekPaw98IEUlzhDlGaneNuqguUNjR64R22gXPuXGR971YLuyva5X7wVuS+Zzk7x83oHtkyg4y4YKO19KFSGA6UJIulzXMytNztE3/pEJ2nuEXOvVdLkNoLL1gdeflahZ+QGQ0UKc1JLlD8XU66Bm1rICm/t8GGVhgKv1k9CM2yCBlzn4k8I2KE/Pgp64Xw66FDBiVlGo569X1nTq3Z9ulI1IJptn5NclJe5pqnEgyr4WOaOgoSgCur9DomxlDeJZNwqwf3JFY0ivuMW0v8wyHU5N2hjn1x4rLCvgdFnAS/8b2YAAE9BhAtb/9kKbg2GtrCEyEHlbmn6MuZ9hIHRs3qHLfL3Nuqg1qdUNxUIivzUfUNA0KCq0yGEcx6FIiY+dPaXwA4Vs9TXRAAFrtyqwE5zw+KpS7asiDsH/eMT9H23gvqsC3sUyhOLSK2mNki24OH0f1SL7IERLKtp8na7yOZ7SYJOE7vukwmUdso8oqtg59GuukX+0sVJB4/HlVjg5txUnSZIIvOAffH5546ahLPRmoOrvQVLGEBDks7nihnQhieTTmTUQ5e82rH+xjpxA+82vNv5yHQzdqUzgfLUv+1r8RpyU88RDEoZrvmUsatOwcZ6vM/9nm062A9IoQ/wCCbs7kRSFwNK3FYMG1k0WtMkN9OWJkPD4JtMJJIKTjL1slx0YSLzoUQGCX8/jxDuPMjDa2Z7564Ys7M9PHPqR8W6YIjL5gV8jdL8liiX0VRGQGBDzmNOrgkszaQ81t4OtImNLpITnIc/ekKTDtTxju0R4meL7GRahbPSwKuM+Bv4X7Qu+PQfGkdFuO7qZk7b3sSg+A5SXnnxUumZHT4DHcQck0tgqbLG3293XnHiT8/tVmV+yL93yddHTR/fV7MuD3K2X986N8iAk8UJP+KrY4mk/K7119l7ZB8feh664t4KH3Iv/0EdLVb3L4lX9Pd
+ JSqIzDvC
+ fys34K/O/ZSDp2o31xeLnJF/ClEAUM03OxODM2oSGlehidOWxBXWTyYzJwF+9H/o+z20H12y1/ncl36rHOGv2YSlwhhLs1R1B/W5WZVNC3mLOUGIbi81GpHnOAgxpY605pNbw1dzb7r85hT+zvvrZaNsqXfk0yYyv2phW2pQTFEuQIg1RqcxEBRm/pKZF5ti/zPiFZbmU2tSPfw4lVFfOOZ2Ky3KvW0QP4C1gGGxYQgyX2uP1BjepGRVBUj4sTq0pq0Gt/1LWsDmCK1+ef2op37g+c8Tfk4gsAkrvPpV+53UYeN+LMsm88G1QJNoha5lKqoEwqfz26dIIRB8ZwEi0MZh4zzvt+gUXhbxshalrIAqP4I86grph8XY5tQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,160 +101,143 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add a test case for the rcu reader being restarted by emptying the tree.
+When CONFIG_DEBUG_MAPLE_TREE is set, call the WARN_ON_ONCE() after the
+custom information is dumped about the tree.  Without using the kernel's
+WARN_ON calls, syzbot will not catch issues detected by this code.
 
+Update the non-debug code to call WARN_ON_ONCE() as well.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: Lorenzo Stoakes <ljs@kernel.org>
+Fixes: bf857ddd21d0b ("maple_tree: move debug check to __mas_set_range()")
 Signed-off-by: Liam R. Howlett (Google) <liam@infradead.org>
 ---
- lib/test_maple_tree.c | 129 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 129 insertions(+)
+ include/linux/maple_tree.h | 54 +++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 24 deletions(-)
 
-diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
-index fb40e193a3cb7..894f5893e1be2 100644
---- a/lib/test_maple_tree.c
-+++ b/lib/test_maple_tree.c
-@@ -3740,6 +3740,134 @@ static noinline void __init check_range64_in_rcu(struct maple_tree *mt)
- 	rcu_barrier();
- }
+diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
+index e30e57f5f3df9..0f96f1f19eb95 100644
+--- a/include/linux/maple_tree.h
++++ b/include/linux/maple_tree.h
+@@ -680,7 +680,7 @@ void mt_cache_shrink(void);
+ 		pr_info("Pass: %u Run:%u\n",				\
+ 			atomic_read(&maple_tree_tests_passed),		\
+ 			atomic_read(&maple_tree_tests_run));		\
+-		dump_stack();						\
++		BUG_ON(1);						\
+ 	} else {							\
+ 		atomic_inc(&maple_tree_tests_passed);			\
+ 	}								\
+@@ -696,7 +696,7 @@ void mt_cache_shrink(void);
+ 		pr_info("Pass: %u Run:%u\n",				\
+ 			atomic_read(&maple_tree_tests_passed),		\
+ 			atomic_read(&maple_tree_tests_run));		\
+-		dump_stack();						\
++		BUG_ON(1);						\
+ 	} else {							\
+ 		atomic_inc(&maple_tree_tests_passed);			\
+ 	}								\
+@@ -713,62 +713,68 @@ void mt_cache_shrink(void);
+ 		pr_info("Pass: %u Run:%u\n",				\
+ 			atomic_read(&maple_tree_tests_passed),		\
+ 			atomic_read(&maple_tree_tests_run));		\
+-		dump_stack();						\
++		BUG_ON(1);						\
+ 	} else {							\
+ 		atomic_inc(&maple_tree_tests_passed);			\
+ 	}								\
+ } while (0)
  
-+/*
-+ * A reader that restarts after its leaf died may find a tree without nodes:
-+ * emptied, or emptied and then given a single entry at 0.  Each case starts
-+ * from a tree with nodes, built by check_seq().  The stores run while the
-+ * reader holds rcu_read_lock, so they use GFP_ATOMIC.
-+ */
-+static noinline void __init check_restart_no_node(struct maple_tree *mt)
-+{
-+	void *ptr = xa_mk_value(1234);
-+	void *entry;
-+	MA_STATE(mas, mt, 0, 0);
-+
-+	MT_BUG_ON(mt, !mtree_empty(mt));
-+	mt_set_non_kernel(99999);
-+
-+	/* find: the tree is emptied */
-+	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+	check_seq(mt, 100, false);
-+	rcu_read_lock();
-+	mas_set(&mas, 0);
-+	entry = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != xa_mk_value(0));
-+	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
-+	entry = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.status != ma_none);
-+	MT_BUG_ON(mt, mas.index != 0);
-+	MT_BUG_ON(mt, mas.last != ULONG_MAX);
-+	entry = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.status != ma_none);
-+	rcu_read_unlock();
-+	mtree_destroy(mt);
-+	rcu_barrier();
-+
-+	/* next: the tree is emptied */
-+	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+	check_seq(mt, 100, false);
-+	rcu_read_lock();
-+	mas_set(&mas, 0);
-+	entry = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != xa_mk_value(0));
-+	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
-+	entry = mas_next(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.status != ma_none);
-+	MT_BUG_ON(mt, mas.index != 0);
-+	MT_BUG_ON(mt, mas.last != ULONG_MAX);
-+	rcu_read_unlock();
-+	mtree_destroy(mt);
-+	rcu_barrier();
-+
-+	/* find: the tree is emptied, then holds one entry at 0 */
-+	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+	check_seq(mt, 100, false);
-+	rcu_read_lock();
-+	mas_set(&mas, 0);
-+	entry = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != xa_mk_value(0));
-+	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
-+	MT_BUG_ON(mt, mtree_store(mt, 0, ptr, GFP_ATOMIC));
-+	entry = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.status != ma_none);
-+	MT_BUG_ON(mt, mas.index != 1);
-+	MT_BUG_ON(mt, mas.last != ULONG_MAX);
-+	rcu_read_unlock();
-+	mtree_destroy(mt);
-+	rcu_barrier();
-+
-+	/* find_rev: the tree is emptied */
-+	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+	check_seq(mt, 100, false);
-+	rcu_read_lock();
-+	mas_set(&mas, ULONG_MAX);
-+	entry = mas_find_rev(&mas, 0);
-+	MT_BUG_ON(mt, entry != xa_mk_value(100));
-+	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
-+	entry = mas_find_rev(&mas, 0);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.status != ma_none);
-+	MT_BUG_ON(mt, mas.index != 0);
-+	MT_BUG_ON(mt, mas.last != ULONG_MAX);
-+	entry = mas_find_rev(&mas, 0);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.status != ma_none);
-+	rcu_read_unlock();
-+	mtree_destroy(mt);
-+	rcu_barrier();
-+
-+	/* prev: the tree is emptied, then holds one entry at 0 */
-+	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+	check_seq(mt, 100, false);
-+	rcu_read_lock();
-+	mas_set(&mas, ULONG_MAX);
-+	entry = mas_find_rev(&mas, 0);
-+	MT_BUG_ON(mt, entry != xa_mk_value(100));
-+	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
-+	MT_BUG_ON(mt, mtree_store(mt, 0, ptr, GFP_ATOMIC));
-+	entry = mas_prev(&mas, 0);
-+	MT_BUG_ON(mt, entry != ptr);
-+	MT_BUG_ON(mt, mas.status != ma_root);
-+	MT_BUG_ON(mt, mas.index != 0);
-+	MT_BUG_ON(mt, mas.last != 0);
-+	rcu_read_unlock();
-+	mtree_destroy(mt);
-+	rcu_barrier();
-+
-+	/* find_rev: the entry at 0 is below the minimum */
-+	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-+	check_seq(mt, 100, false);
-+	rcu_read_lock();
-+	mas_set(&mas, ULONG_MAX);
-+	entry = mas_find_rev(&mas, 1);
-+	MT_BUG_ON(mt, entry != xa_mk_value(100));
-+	MT_BUG_ON(mt, mtree_store_range(mt, 0, ULONG_MAX, NULL, GFP_ATOMIC));
-+	MT_BUG_ON(mt, mtree_store(mt, 0, ptr, GFP_ATOMIC));
-+	entry = mas_find_rev(&mas, 1);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.status != ma_root);
-+	MT_BUG_ON(mt, mas.index != 0);
-+	MT_BUG_ON(mt, mas.last != 0);
-+	rcu_read_unlock();
-+	mtree_destroy(mt);
-+	rcu_barrier();
-+	mt_set_non_kernel(0);
-+}
-+
- static DEFINE_MTREE(tree);
- static int __init maple_tree_seed(void)
- {
-@@ -4031,6 +4159,7 @@ static int __init maple_tree_seed(void)
+ #define MT_WARN_ON(__tree, __x)  ({					\
++	static bool __warned;						\
+ 	int ret = !!(__x);						\
+ 	atomic_inc(&maple_tree_tests_run);				\
+-	if (ret) {							\
+-		pr_info("WARN at %s:%d (%u)\n",				\
+-		__func__, __LINE__, __x);				\
++	if (!ret) {							\
++		atomic_inc(&maple_tree_tests_passed);			\
++	} else if (!__warned) {						\
++		__warned = true;					\
++		pr_info("WARN at %s:%d\n",				\
++		__func__, __LINE__);					\
+ 		mt_dump(__tree, mt_dump_hex);				\
+ 		pr_info("Pass: %u Run:%u\n",				\
+ 			atomic_read(&maple_tree_tests_passed),		\
+ 			atomic_read(&maple_tree_tests_run));		\
+-		dump_stack();						\
+-	} else {							\
+-		atomic_inc(&maple_tree_tests_passed);			\
++		WARN_ON(1);						\
+ 	}								\
+ 	unlikely(ret);							\
+ })
  
- 	check_range64_in_rcu(&tree);
+ #define MAS_WARN_ON(__mas, __x) ({					\
++	static bool __warned;						\
+ 	int ret = !!(__x);						\
+ 	atomic_inc(&maple_tree_tests_run);				\
+-	if (ret) {							\
+-		pr_info("WARN at %s:%d (%u)\n",				\
+-		__func__, __LINE__, __x);				\
++	if (!ret) {							\
++		atomic_inc(&maple_tree_tests_passed);			\
++	} else if (!__warned) {						\
++		__warned = true;					\
++		pr_info("WARN at %s:%d\n",				\
++		__func__, __LINE__);					\
+ 		mas_dump(__mas);					\
+ 		mt_dump((__mas)->tree, mt_dump_hex);			\
+ 		pr_info("Pass: %u Run:%u\n",				\
+ 			atomic_read(&maple_tree_tests_passed),		\
+ 			atomic_read(&maple_tree_tests_run));		\
+-		dump_stack();						\
+-	} else {							\
+-		atomic_inc(&maple_tree_tests_passed);			\
++		WARN_ON(1);						\
+ 	}								\
+ 	unlikely(ret);							\
+ })
  
-+	check_restart_no_node(&tree);
+ #define MAS_WR_WARN_ON(__wrmas, __x) ({					\
++	static bool __warned;						\
+ 	int ret = !!(__x);						\
+ 	atomic_inc(&maple_tree_tests_run);				\
+-	if (ret) {							\
+-		pr_info("WARN at %s:%d (%u)\n",				\
+-		__func__, __LINE__, __x);				\
++	if (!ret) {							\
++		atomic_inc(&maple_tree_tests_passed);			\
++	} else if (!__warned) {						\
++		__warned = true;					\
++		pr_info("WARN at %s:%d\n",				\
++		__func__, __LINE__);					\
+ 		mas_wr_dump(__wrmas);					\
+ 		mas_dump((__wrmas)->mas);				\
+ 		mt_dump((__wrmas)->mas->tree, mt_dump_hex);		\
+ 		pr_info("Pass: %u Run:%u\n",				\
+ 			atomic_read(&maple_tree_tests_passed),		\
+ 			atomic_read(&maple_tree_tests_run));		\
+-		dump_stack();						\
+-	} else {							\
+-		atomic_inc(&maple_tree_tests_passed);			\
++		WARN_ON(1);						\
+ 	}								\
+ 	unlikely(ret);							\
+ })
+@@ -776,9 +782,9 @@ void mt_cache_shrink(void);
+ #define MT_BUG_ON(__tree, __x)		BUG_ON(__x)
+ #define MAS_BUG_ON(__mas, __x)		BUG_ON(__x)
+ #define MAS_WR_BUG_ON(__mas, __x)	BUG_ON(__x)
+-#define MT_WARN_ON(__tree, __x)		WARN_ON(__x)
+-#define MAS_WARN_ON(__mas, __x)		WARN_ON(__x)
+-#define MAS_WR_WARN_ON(__mas, __x)	WARN_ON(__x)
++#define MT_WARN_ON(__tree, __x)		WARN_ON_ONCE(__x)
++#define MAS_WARN_ON(__mas, __x)		WARN_ON_ONCE(__x)
++#define MAS_WR_WARN_ON(__mas, __x)	WARN_ON_ONCE(__x)
+ #endif /* CONFIG_DEBUG_MAPLE_TREE */
  
- #if defined(BENCH)
- skip:
+ /**
 -- 
 2.47.3
 
