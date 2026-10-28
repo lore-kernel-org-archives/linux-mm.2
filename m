@@ -1,145 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CC0606A329
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 12:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72103606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 12:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gXfA/Dfp;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ihTRBDUo;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=z8DqKq/+;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HgutpAPI
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=JILlLiKn
 Received: by kanga.kvack.org (Postfix)
-	id 2A3B66B05B0; Wed, 28 Oct 2026 08:18:53 -0400 (EDT)
+	id 89E8C6B05B1; Wed, 28 Oct 2026 08:22:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2548F6B05B6; Wed, 28 Oct 2026 08:18:53 -0400 (EDT)
+	id 875D26B05B7; Wed, 28 Oct 2026 08:22:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 143756B05B7; Wed, 28 Oct 2026 08:18:53 -0400 (EDT)
+	id 7B2B76B05B8; Wed, 28 Oct 2026 08:22:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E46646B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:18:52 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7BD29A8AED
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:18:52 +0000 (UTC)
-X-FDA: 85371938904.23.835C21B
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3CE58140008
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:18:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="gXfA/Dfp";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ihTRBDUo;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="z8DqKq/+";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HgutpAPI;
-	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BCD86B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:22:30 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D568AC0C3B
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:22:29 +0000 (UTC)
+X-FDA: 85371948018.18.18E1ADD
+Received: from out199-16.us.a.mail.aliyun.com (out199-16.us.a.mail.aliyun.com [47.90.199.16])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 435A640009
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:22:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JILlLiKn;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf27.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 47.90.199.16 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793189930;
+	s=arc-20220608; t=1793190148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OskEvaxrgfNfL/Gq5v8g3VeZhJ7zUOHQB1CES574JS0=;
-	b=uFjB5f1oUhvjdJ7FOAB+RpsuaklZGQkIb7ppT5QPzTwr25m4aYfWdPJd6TEk+oNa7laGcz
-	tz+mVehZv7TDsgi113DmTRwLiruPwLswKTJlIgC5QZlqBDi3VRSAhs7JAJtadMswjdyMmL
-	3qKcX02LTX83U9oQ6OOzutujZlwpf3c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793189930;
-	b=trpTsu8pCEKogACh4MueblsHb4aRSho6YaDFwjIxBo7i+Jayd0w+SfwvpZR/znqRdh3EDy
-	TOFe2hWYY/1ZuEOmNPGJbRxHC0vIywf/HhTkDIvX7Sm9oq3mR8eyM31CiKAAbAB2EmbFBK
-	koZ4P8Kcb7Anegicb7ZhjDgv83BWVqs=
+	bh=W8G8RmtjEXPIN0vCT7dpFz9ADq2mZ2AcFkZ2Qb2//wo=;
+	b=8J2TzA6w7jfR3aju/Tofb6TAAdU+FtCJaYfpoefKXNZCYcbg5i2VF4U/TBi/JMR+kEv6Hz
+	3grkc71itGAtxePQNZRjN333T5NuDmgQ7vl6StE3y1zzPMuBsD14uUxcLKyhmFEhluHRjI
+	Kz1GEHKx18h/X0bkrNP+3bILtLThjq4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="gXfA/Dfp";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ihTRBDUo;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="z8DqKq/+";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HgutpAPI;
-	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DB2AB2212C;
-	Wed, 28 Oct 2026 12:18:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793189927; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OskEvaxrgfNfL/Gq5v8g3VeZhJ7zUOHQB1CES574JS0=;
-	b=gXfA/DfpF6w+jyZaWtiR86xpjyK4cUM01VKUq3ddfeV01r2x5BlhIoEm39ldSPFMxwckRQ
-	/Fy4Ng+MwGEDmhprV1iwEcx53S2e1sfnTLx8rptIWu4ZkVfpJ/dOaVgJHrCrKQZaHAExFC
-	lesktXcN/bRaF6rQoWKMbvwZakHJ8DE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793189927;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OskEvaxrgfNfL/Gq5v8g3VeZhJ7zUOHQB1CES574JS0=;
-	b=ihTRBDUoHkkC1CO9Vi7stz2y/cMF7dsbcqqppFqULwrhtZd80WfubWLOKDDczOMOfPN7UP
-	tMqLffewEcxRxUAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793189926; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OskEvaxrgfNfL/Gq5v8g3VeZhJ7zUOHQB1CES574JS0=;
-	b=z8DqKq/+TGAIJwmTF4U0sQ7FfYKJ77L7dKL/trqLyzIl/Sgl9Ekctzsh1xn4HTwg+/cd4o
-	R0xm4n8RpjQrRepUKjnrNa/qi2quvDzjKwWyo8+erMWnL1P2DO5b4tyYhdhl+EHyi1fk2X
-	55OxWOhPLgi8dZ8SLybC4j9oDNf4bMk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793189926;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OskEvaxrgfNfL/Gq5v8g3VeZhJ7zUOHQB1CES574JS0=;
-	b=HgutpAPIGu/bYSfZI0OSy/iDcOHIXFbgI+oIOVqCmUwY1MYJLVJuYZ33vVQG/DQK6vAmu9
-	ASr5yKE/0sTjYkBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 399C71321C;
-	Wed, 28 Oct 2026 12:18:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3uAeNSTo4WqLbwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 28 Oct 2026 12:18:45 +0000
-Date: Wed, 28 Oct 2026 12:18:43 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Chris Down <chris@chrisdown.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
-	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>, Jeff Xu <jeffxu@chromium.org>, 
-	Andrey Vagin <avagin@gmail.com>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/3] mseal sysmap: Add mseal_system_mappings= boot
- parameter
-Message-ID: <auHkLMb_Xo-7Z7mx@pedro-suse.tail5790ac.ts.net>
-References: <cover.1793094611.git.chris@chrisdown.name>
- <5bd3c89d733ad22224f296dfa8900769de937de0.1793094611.git.chris@chrisdown.name>
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JILlLiKn;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf27.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 47.90.199.16 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793190148;
+	b=dlN0jpqpu8e6AWURyGxXPGcR3XnwwdtwS5jfNkMpjq+luRUQjadFoHHcPYerRfm6h7ef/t
+	nm1A/LpX8uMu6N/18RhmfvmwIcmFWlq/rFktUIodLQpsp8pfNtkPmZ8tPh6iGLtB+WMGaA
+	xVobXBDY4qLXpfNo+H46q7tSV2mXikM=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793190133; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=W8G8RmtjEXPIN0vCT7dpFz9ADq2mZ2AcFkZ2Qb2//wo=;
+	b=JILlLiKnPOXsXnsiot4czkjiyExG+P0ZfOYu9WAFqfnXdRz4Pq4IYVQD1H4oGhLYsQWsorBIA05ygHUzJo5UMtDSK9+DexURITlSzW9NAGF4pIywhpZYyOObi9nxx5DN2t6ldkrdcfhCNzpuzHMaG0r3I7Lq/TtQr3K6dU++RXM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R391e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XDgoACg_1793190125;
+Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XDgoACg_1793190125 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 28 Oct 2026 20:22:12 +0800
+From: Yuanhe Shu <xiangzao@linux.alibaba.com>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	"Kaitao Cheng" <kaitao.cheng@linux.dev>,
+	vbabka@kernel.org,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	ziy@nvidia.com,
+	wangkefeng.wang@huawei.com,
+	tujinjiang@huawei.com,
+	mgorman@techsingularity.net,
+	chengkaitao@kylinos.cn,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	xiangzao@linux.alibaba.com
+Subject: Re: [PATCH v2 0/2] mm: don't migrate folios containing hwpoisoned pages
+Date: Wed, 28 Oct 2026 20:22:05 +0800
+Message-ID: <20261028122205.3914169-1-xiangzao@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <c8468755-4f75-4502-8d41-5cb9245a356a@kernel.org>
+References: <20261026025552.1427901-1-xiangzao@linux.alibaba.com> <18602383-2326-4e54-8dec-bb695ae8878e@kernel.org> <20261027120854.1213156-1-xiangzao@linux.alibaba.com> <c8468755-4f75-4502-8d41-5cb9245a356a@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5bd3c89d733ad22224f296dfa8900769de937de0.1793094611.git.chris@chrisdown.name>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -13.51
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3CE58140008
-X-Stat-Signature: g6raoycebsfd1xmm79xzb3j4h3eduogy
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 435A640009
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Stat-Signature: u1g1nzyr4y8isnrgxgnfb8osnxnki9on
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793189930-29609
-X-HE-Meta: U2FsdGVkX1/SWI1PhACCsS+eM9AWc0oSYVfS1OKkgHFVkqRb62NdekKLsRfWxS3xRkdsdtXkaqB4pGGJ5uAiQKsmcAHLEaXEkP9XkfkJup1noB8HoKQH2GFKJfRlZqssXlbDA75Gk/jgZhME+0aySi/a3albFBJu9718+wIPEKCayvhxUoDtO/9ApXV/8iS94l9ep0Ll54xVXxgLvUldT2d0IW02P5YFcAjn8CMGA5FTxxlPpuJ19rrQR7ojjJ7Of+7FUFYHzegu74cd2o8R80gQyw9hwxhB3e4wZY2vLzEo6kLf/B1QIcCpvro+4wQJ2ZJlBWqRD7AMVOEtcL16IR16dBikuPGbz5k41BQSJQXbpO9AvGBlUU7Yow98FuPRDc9Lg5r3BQP6iRBsMxpzGaLnxxg50EloqpWQ6OIcJuMkDByXYaAZT5/Njr5KIkN/Lz3x0Y1BcKXUlQBDLOn7UnaUGyWudDaIkITnBblXiskf+jzT5LOBdANkJ6Sbp8EbdGkfORYXDKJoIF1NVEWSY+vv05p6IlW2v2wTHhwQxlK14NBSZuh8LN3gYp6knADSkdMMyMofx3Ljgx1nS26p8qr/mrDWFyx79lHNQM9waqk/BHjtR4yM3tSp67xd3fdocA1+8Lvsx9VQGXEckcIYPbTgboHUDtd7AuwgJn5eiDTbKBGV+9ZV0qEaJIIMaIAteOaPW4zdsPwnpTLwdZHSbA9um6WpqhloyTbjjSRqs/hFmra+dPX8zJ6u9qDNgnwiarLdeyKaT0NwsD67E4XaH2NNK8Cfr+UzhNilDNkI5k72hbeU+B6r5dHFcXJOo745dgy3RQgGrumGNRq8ws5pDuNE+4s/pYovqe7uxnktCMIb4yrW4AhZ+JGy/H/YKUOyZozxrQZRDJVi5MynfQoMSSwkPIsqTFX19TA4l+zwArKnKXajUzI3rV8NtPiAUotvVR7ChbK3P7RFXP6hJ1O
- 0qv7HgxA
- dyjNgQ3vvFLojMdk4IdUshSOH1/W+Ulq+JdH2EF8bRWdmYoB9wdctQSFeCT2jLs4ytwFKKi0jq74ihNE0tAX13DsPhqzSdJe38f/+a2fAMgOECY5/Ske7UnGxVcIUhv9NjgCGlDmNdCnstKz8n/8hQgMdxVsyY2z31kr7KSNhxLNa2gcR2+62WyjO7//M+F+ut3u3bLqDaA3eUpg+3pu7D9EaqqJMj8DEfxEfxdByr4QnX2AU4TZ9h+4jjWD+p3QbjmiDhCmqKwafjVaMsC7yFbQEqOQJ4oBfguHk6Z6/fBNGlhV5omnbFG50yg==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793190145-260543
+X-HE-Meta: U2FsdGVkX198hN1uPjI0FZqsIi3m3Fp9OCp/vQ9LELEAtnftJB/LupHYR6/oW7zPD0Th5v2KjDsHborJn9TldPPLiGyBrVGi7MeqjVdfREjPz8s81WVQoJgyR8ZCSYM5oeTNjSkLyn1FlDHmo13QgmsNxdoNyaXZg+MVyWR9EaMT+ARPP2/F1W0YqAJAd6G27cef0AWO7W9QH640xQucsx40nk02dCXsLg6MY+Wd01HtaI/VHjRClxi3ScHSMZQ6Y3wQl0GKpPEa8eEN775Ak4ubEtIWhJq2WoEGw0UMTjIAHM7kCOA/gGb5g5nyv6M8PGjKzkW3IQpBqFfVuE6IOg5gADlZ0ZqNFgOoet2AyrI6sL6JhS77v+9KE2kbc1WLmdBiMNvcEyYyUBa89chwnDMhDB1uFqzirWa8MZd1GwajLnLAJVTW7ZNl/4Klx64tyNR1m16o39E05mSUuhgls+B9pZfz3UmHMdW/NaPvUSRefzY3Os1hq44HWxxy3HJcCz4RqKsgebUk/2NWkYDkj5Cd9PrB4//ijmGQBzIueiuD4LVOLzjaye9UkQoR50wc5oaVGiS3zS1vo/hJGA4T2+jtLVjROuvVgStOYjPcbNQjdTGJlS+C00sewCkMkkjITUYs+0vjrLEo1ibRrptArDL4vRGNbdMYLKIOpnPDbxHMkIiCcbFtFlEhvieAEaNt5bDs5r3Rvzvl24Beb5YhckKaWioz/toqf2cEh+f4P3DGzwW0c1nyGuepwoj/u7nomW09yWX0DKPmCEzoppGV+HwkGkgDrlbBe2nR6KpldUBYi8kGlgkDEe3eulLcYhO1mfDVo4eEa7riO2VT8RkCEet69UJOuxDscsyzWk61GGm4eQK1QQHuiW9cwYNc0XLFtOC6U3x4ShmQmPDwJgBn+i9CKvWfxb9rQ9bTHqV6CrUfwkPWc5xR3WfoZrokpZUyvLZkqBincaukSsJJcDR
+ hmdhEvfN
+ 7ueDVPZJ8p8nFeITF1D2q87o1vecS1Nv4omHInh6bPX1Kxq+C9RXxBNvzK9Jpqu0h/0qzJNLtR4jsHqP67AJEomwPPlgLcQNo8krFIlqaM+SNROMlZ7oXos8Av83cpFft2X9xCyOnS9QAc4EwV1KrFHlf3YZ6/t8yVSk6kEYVerqTZv0UOk3dvvfrNWqkEbuXZoZW6YU8Tu7ooRuYMi79d5l+WwgoZ84n4d2LAw5zOcFu24tkvfk4/O/5sjZjwnLfzE5BlLPuMTgEKh/sR3pV+zw9RSVrdH1aiK4+zZTF95LbjDGi5fuK+1pAzMDFAZ4UXtLBh0rW2KJRaXTyBzKuXdmdEGyiUwJ6Y8IgebxGpv03fe1CVcIQsqrPWAVbW+vepKumQ1f41IsDL/2UuWoJqiy5p2L2XEiz3UpTg+YgI8ihqHo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,19 +101,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 07:43:04PM +0800, Chris Down wrote:
-> CONFIG_MSEAL_SYSTEM_MAPPINGS seals each process' system mappings when
-> they are created. As it is today this can only be toggled at build time,
-> so hosts that need sealing and hosts running software which moves or
-> unmaps these mappings end up with separate kernels. This is not ideal
-> since it adds more complexity of deployment, it would be great to be
-> able to have one kernel which can configurably do both.
-> 
-> So, to improve this, let's add mseal_system_mappings= so that this can
-> be chosen at boot.
+On 10/28/26 09:02, David Hildenbrand wrote:
+> Why is that a problem?
+>
+> Why do you care?
 
-I'm very curious, do you actually have a usecase for this?
+The flagged state is not debug-only.  A real error on an isolated
+folio leaves PG_hwpoison set.  The data is still readable.  A THP
+that cannot split is left on the LRU flagged, by design.  A copy
+then propagates the poison silently: no marker, no hwpoison PTE,
+no SIGBUS.
+
+Thinking about it again, the copy layer is indeed the better
+place.  So how about this: drop patch 2, and put the flag check in
+the copy implementations instead.  The fallback patch already checks
+is_page_hwpoison() before and after the copy on the !copy_mc archs.
+The same checks in the copy_mc implementations would cover x86_64
+and PPC64.  folio_mc_copy() then propagates the refusal to the
+migration core.  Patch 1, the compaction skip, stands alone.  Does
+that work for you?
 
 -- 
-Pedro
+Yuanhe
 
