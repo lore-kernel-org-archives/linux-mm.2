@@ -1,97 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B28606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB82606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=uHAG3HqB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cAXWT2+g
 Received: by kanga.kvack.org (Postfix)
-	id 56DC76B05B6; Wed, 28 Oct 2026 05:20:15 -0400 (EDT)
+	id 9DF2C6B05B3; Wed, 28 Oct 2026 05:23:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51E3D6B05B7; Wed, 28 Oct 2026 05:20:15 -0400 (EDT)
+	id 9B67A6B05B9; Wed, 28 Oct 2026 05:23:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4339F6B05B9; Wed, 28 Oct 2026 05:20:15 -0400 (EDT)
+	id 8CD6F6B05BA; Wed, 28 Oct 2026 05:23:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F4136B05B6
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:20:15 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12074160AC4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:20:14 +0000 (UTC)
-X-FDA: 85371488748.15.6C2B74E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DE9CEA0009
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:20:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uHAG3HqB;
-	spf=pass (imf15.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 64BEA6B05B3
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:23:10 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 501E21C4605
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:23:08 +0000 (UTC)
+X-FDA: 85371496056.26.4316355
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 892888000A
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:23:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cAXWT2+g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793179212;
+	s=arc-20220608; t=1793179386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ZFHM4+DLjyn47zDsovu4y4A00dH/kf24XvJgX5dD+w=;
-	b=EYxQLncPWx0I9LD3+AsqIAV3BUVgMIXw878dqwngnMN3PnuAyO6ziQrkpBeW+ktJlkg2hG
-	NMksXlt2aKb3b7OxMscSMAAWDZoOietpYNJonKPD0IdMeFh13Jn53dcYWG4YlPECBaRaFD
-	emwCBQZRzrHcTQV0i2SjvraGY4IhGlM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793179212;
-	b=ROwSDHHeY7VaFGGW6NEuD0uWQkrVuk+8xL/PDXOt3gl6cxicNO998OxkIVN+tYgPwCiHTN
-	9kx3kgZlcw5uHZDDJ4VcUv66hZKHsTKIzWMO0tVTGTet0jVpYmZEZOoMyDa228Ti/1dRgw
-	btXs9P3jxLyd6UEDpIsAZ2Ip19xuwxI=
+	bh=9UoZu4LOCR+P05LgNRjZiBqAG2n8MlC20pukDWQyPU0=;
+	b=rXUEC3THX7LAU3J8kuWuu1oBrnKaqTjTz3m5oC7XNhEuYzzXmmi5x0FvQ1EywkqY34Awn+
+	VwfyGkztCcFlZJMlbHVIRP+qFfy1OqpGV03jiuf/UaGtfGMhceVliiO2Zde+axB7dB1yo+
+	sKGoQstJ/T7PjJrcSmrofUPCaD/C5S8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uHAG3HqB;
-	spf=pass (imf15.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4ZFHM4+DLjyn47zDsovu4y4A00dH/kf24XvJgX5dD+w=; b=uHAG3HqBdy5czMRd0B0gFKODf7
-	xEiO9EmxmA8jDbYlz6b9/g8ePrlc4NeMgIo0P7k07/aHHx5/5hcJFVfbJRREuWZXG28yVn7eBFeNx
-	1DN/Egp1H12OBO+Otyc/u2RrO9OSF1v2pjl1fluCLs885s0+Ua8hhOjyexusDFeiPPyskzUdnWPiK
-	gSOs/YtbHExKIHNwb7OfIUwnEYeaZKeHB4H/ViBtKLcR1/LX0VL92nagvmTRTmQXZHjHY+kDdZKpW
-	luQUeshAZcwlNW5Kc/VZ4xOqFtScOOXV7yXKj8uS+PAwN+b+wjUjHIT2VsH8gXk4BppopbuxL+a1u
-	G0h+TG5A==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLzpF-00000002RUY-45tI;
-	Wed, 28 Oct 2026 09:20:06 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id D1BE830120E; Wed, 28 Oct 2026 10:20:04 +0100 (CET)
-Date: Wed, 28 Oct 2026 10:20:04 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Li Zhe <lizhe.67@bytedance.com>, bharata@amd.com
-Cc: akpm@linux-foundation.org, bsegall@google.com, david@kernel.org,
-	dietmar.eggemann@arm.com, gourry@gourry.net,
-	joshua.hahnjy@gmail.com, juri.lelli@redhat.com,
-	kprateek.nayak@amd.com, ljs@kernel.org, mgorman@suse.de,
-	mingo@redhat.com, riel@redhat.com, rostedt@goodmis.org,
-	vincent.guittot@linaro.org, vschneid@redhat.com, ziy@nvidia.com,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/3] sched/numa: refine memory tiering promotion
- heuristics
-Message-ID: <20261028092004.GG2668804@noisy.programming.kicks-ass.net>
-References: <20261028041253.74839-1-lizhe.67@bytedance.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cAXWT2+g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793179386;
+	b=iZQNabZUa5uR4So56/jvHaxcX6z/+sUg6TlXKE3TEN9+LN1q+mA+GWYT09r1wFyWPFXsQ1
+	eiCxUwbwC7nAnSpa2X42f8iPerFEu/nnN9O6Ucie+kFRpnNWZvpI49CKj9DPNMq7ei70fV
+	Yh6biN+bAL2c2axSlDeoYZluUsmxS9M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B075F43AC6;
+	Wed, 28 Oct 2026 09:23:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91C71F01825;
+	Wed, 28 Oct 2026 09:23:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793179385;
+	bh=9UoZu4LOCR+P05LgNRjZiBqAG2n8MlC20pukDWQyPU0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cAXWT2+gQZ82YrnQOeJbjSRGKbLs4lfRW7FFfRDFxaAIOAcI4PS6NZOiYSiQh2wc9
+	 ITBa/gneOaJViW5esoOnJCwEcBKOfo1xiqPXthg+nrjWIGQK76SW6iRT2OED/Ur+Hr
+	 YO1v0tBq4zVTyMrYanGNSo9ygjAxbsg8ys+lkbNQJ0sMWk/2B1cd/TxH9kJXmuYczB
+	 fHeT+XC3xNAsG9jOxXmBISGFZ8/MI/c1HSnRE6QaXrU0mkggDtJZOjhA45fS2YuYCW
+	 /GaiUfORHM8nA7PDRof6B1mGieA1UXqwMLFNKtwKia2QqGujtPi5qqFZ/09HjIz+So
+	 4+3VTWZH2D/1g==
+Message-ID: <25f5cbed-9126-4870-a81e-65099155bc9d@kernel.org>
+Date: Wed, 28 Oct 2026 10:22:58 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028041253.74839-1-lizhe.67@bytedance.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DE9CEA0009
-X-Stat-Signature: 8ew6cx7d6rio9uyocz16kjq6ujjkpqyq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] mm: pass the number of PTEs to move_pte()
+To: Imre Kaloz <kaloz@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Magnus Lindholm <linmag7@gmail.com>
+References: <cover.1792609488.git.kaloz@kernel.org>
+ <2bc50d2a6829b49ee909e5bb943244859661a40b.1792609488.git.kaloz@kernel.org>
+ <409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org>
+ <20261027212610.6798-1-kaloz@kernel.org>
+ <dfe06aef-540a-4450-88ba-300a460007b7@kernel.org>
+ <20261028091631.8072-1-kaloz@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20261028091631.8072-1-kaloz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 892888000A
+X-Stat-Signature: jzn35bj9r34rqqusknxkex8w417sw6kn
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793179211-280780
-X-HE-Meta: U2FsdGVkX1+Nhn3W5TQlFg9v3IeH5RCRbdX8m5Gz4rE8DyUMRjANpvq9Mz6ypS0V62146hTlepl/M05OqQonQHmkLP8RvTrSIcHmN16FGikRC/7JwdC0aNc1kyeDCfsMHmnTsWKhthGSdANtJTRkvttdFbWC6NEOAr2+Mk9GfrdDv8xkdLb6U/d5WppsNSOBlYtKagTUrsX4IjXMp4l/EpCfxqeOEzmIWwqptawtpRvzkTxiH9CqD6BlYhM9MHwO8AOfeV5gQUUQ6AiKr+XLSLaZXIwMIbdy4aNW0d4n9o2Dtu4k9hNMMuVvaChAd/200rk1rtGp2TL0uLCWn5Ow3XQ1fg2ktaoxDxmQ/Awuxdx68oXLWy7yXx4iRKh5pOcXQeMUD/nMuZtkSxUAHZZhqIHIbpMR1Tdif1vqxU0HWRdA10bpnkR0RLRXptMHObB5gZjj2wJv7SVTYl/2d0DJN4j/PUZuQtkptHYtQiA0FttIeeTjfFcv/t4HP16ympwGEKOtSs2TREOIbdyRlgkWoHRpmu+c8cPHEs5dRQDtX+PkBrdu6BAytLhD1j2qayRRFi2e1RCP5XUQtikqVDtd2+5YYQuZVVWVwvOWE/bCFIGao4CrURpMgYViOO/IFpEdgsJBxYtOfXiqySGQo3DM7jWbHWGpbkEzvW+4gI085ncPjIo3DTZ1ZmiesDSYALapcueWvgHCYcD1Mp6isZYZICeDmTUM6kgLzku0Rm79RVdNez3H1gYVYBJRPaX3lV9GLj+b2Cb3FtTNtOfYDJis1HCZeVlD6PqdxmKOAnb/1HIpOTe4WAyF0okS6PIh1axdv4MU8d3VD+T4MzuRtoh4ylaXgfQ0su98l3pzUV1P6LkbFdmUP/wxgvy++LFOasZGZ6gMjG3Ej5xVEyt2jpYG4eR37UYKUug2kwDx17I1ctfnhylleDVZr8QwaJmLAsLRdi+5hVFK47EwMR7SjY4
- SbIjO+aH
- iLYU4lTx73B/0CSkAPLMhps5+Pk5ZDVfTx7eBnoO0wCn7kxIiH2L8ARChTNkq+98TvsI14/CgixuJ0WXxkS682P7n0W4CDCtpTU1O9zMgnb98y9gDqUzgwnAuiaPkZbK/uRAdkVCDLQiZbGxHMtMtMVe1SBvvE3mSylGL2+MYu486AR9SJA84wUT4RykJNAmEmD8NnOM1vEVEfE0IZd3cMJvCXDxxKvoqZYUbOijPUEH46bhRf1+TzFqz0Wzi3gOdf8B8GmC+4cBA//oYsfK5QoPNsg==
+X-HE-Tag: 1793179386-683014
+X-HE-Meta: U2FsdGVkX18vcknC5wPkAqCmNv6QOy1xl5DB8HfUNPF3vRnj1ZCjChOp3Gd21TOfdqP10aIqmgrMmbmHXdmkzB+3qDfJOhFxWhNE2AEwxiMn5QvS/zP9zJgjd0z3fYJKdYcMaFCq3xLFsgM2F20cuvF5P4+e94/gTZWfq/kRG+/fMZTYgWv8+GG0JRuBuw5lCUghdovMYYKLvli8zpRh1wZUEz2y+p+lyloZQf8NlmT1s/1urskT81cRPxB+GiEyEoUXDCvf8hrkYR+5TaI+HzWOi282hOq77pDrMkHt7UPUkb4rYNj41+45YEbC17rE25Ut9SihQN8frEH34Yuvfa96p6DJ1SrzyY1Skig0BDRUNQaPQETWVmLTZwan1lXLHRlR5vfqm/gEBxS/lyRoHqhRS0VxfzixgyvyUUK9TQgU5wt1Ct/zBq7IORHZW0Cu8sKumZaq0CaL5AJWnKBF0AxudQpfAwthY+HhGRux8bUHkraxJkMawgZWFI/VLvyiu4xB586u/PMnF4vh1Cr+ykXN96gGyiDs9TB2mOFAcHMiTk8Ap8gfPqr6mLD768iTXocrEC3mPmrgrzqLLFUBTCmLqgBTfODcU94EZgX1h0QM0dJd1tsDbvCFK8bddop6k0NnSnqAiibO6CDwvEZlk+ff11RXQSCUh7eORUllMQ5QT7D9Dc+LOA24NwLV0pZcF/PJt+A8GqFhFqa8v9DNpO/lZ1MT6e50p9VlqXmkqdBh/42t1Us5jUI0aDTGLMowtv38ToUSbB6kaBlgss8D/9WNqnrs4rCozJfJiJw7WifsybghG50N8r6oVEQluE25mgP96U1wxRb20RGzBgEv4Osha3p1a5qYfIGj/F2WYsWILR2l8EogKlUIDZymtAPelbRA+mVO/gEspX1Wx6NJ/PKvXnJzLjA2l1zh5tQUJvhVjtqrSSrhK7bKWYHXw7mIWaSLQAZvcKJOr/8TUkQ
+ MO0aDLHD
+ POE1HHu0vkygyfUj/AOXcpEPWczKrIeYCi76vluWn3YIguIt+nov5desP2f1upJVUJvnJ8nuP95pLvM3EN6vr1GfGy2mGbTBr5ELKH5DwFwueR06U1B9TeAG0Cavk+TdLjsVFOTNsU7iYQZhOseajRsIpvWVsj/lcGMBfAU2baY+ggE9bLy7jzd/HwMH3mQPSEi+GLYx+1Pz6X4iYxEIum2rtEWONidrl+vp+5zk4ULQ1eSSWYR17FSG/a69xYm4gqzAGzBmogu3HE4GQmTZU8jm3w5axKWAOm9q/a6MRNu5001VeRf7HTBxVsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,12 +154,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 12:12:50PM +0800, Li Zhe wrote:
-> This version narrows the series to memory tiering.  The generic normal
-> NUMA balancing cleanups and heuristic changes from v1 are not included.
+On 10/28/26 10:16, Imre Kaloz wrote:
+> Hi David,
+> 
+> On 10/28/26 09:49, David Hildenbrand (Arm) wrote:
+>> But that's too complicated, requiring page table walks ....
+>> People running museum piece hardware and complaining about performance of mremap
+>> or memory reclaim should reconsider life choices.
+> 
+> I'm one of the museum folks myself, though more the kind who loves
+> running a modern kernel on old hardware than the kind who complains
+> about it :) A lot of these machines are still doing real work, and
+> these days not everyone can, or wants to, just buy a new computer.
+> 
+> Some of us spend our time keeping these platforms working, and I'm
+> not asking anyone else to carry that, which is why I tried to keep
+> all of it in sparc.
 
-Should we not look at Bharata's pghot stuff first and untangle this numa
-balancing vs tiering nonsense, before making an even bigger mess of
-things?
+Okay, so mremap() and reclaim memory performance concerns make you sleep bad at
+night? :)
 
+Don't get me wrong, I know that running new kernels on old HW is fun.
+
+Last week a got upstream Linux running on a 32bit x86 notebook from 2007 with
+the snap of a finger. Everything just works (using Alpine).
+
+I couldn't care less about performance. Nobody should.
+
+The biggest problem all of us with supporting old hardware is the maintanance
+cost. Not just core-mm, but also things like ad-hoc page table walkers you are
+adding we (from core-mm) might have to touch at some point.
+
+If there is no good reason for the complexity, out it goes.
+
+Because otherwise people will push more and more for removing legacy support
+completely, and that's not what you want, right?
+
+> 
+>> So I'd say, make it as slow as you want while reducing core-MM complexity and
+>> not adding more arch complexity.
+> 
+> With C, move_pte() and __HAVE_ARCH_MOVE_PTE go away from
+> include/linux/pgtable.h and mm/mremap.c just like with A and B. The
+> walk lives in sparc's own flush_cache_range() and only runs on the
+> CPUs that need it.
+> 
+> B would be less sparc code, but every UltraSPARC I-IV machine would
+> pay 13-18% on reclaim for it, so I'd still lean towards C. If you feel
+> strongly about B, though, I'm happy to send that instead.
+
+You know my answer :)
+
+-- 
+Cheers,
+
+David
 
