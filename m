@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE15606A32C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58361606A33C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YXF/YS7f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GdZMwfO4
 Received: by kanga.kvack.org (Postfix)
-	id DEB646B05C9; Wed, 28 Oct 2026 11:48:35 -0400 (EDT)
+	id 7D0776B05CA; Wed, 28 Oct 2026 11:48:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2BD6B05CA; Wed, 28 Oct 2026 11:48:35 -0400 (EDT)
+	id 7A8446B05CB; Wed, 28 Oct 2026 11:48:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD8CC6B05CB; Wed, 28 Oct 2026 11:48:35 -0400 (EDT)
+	id 696C46B05CC; Wed, 28 Oct 2026 11:48:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A3C126B05C9
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:48:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 32DA5120162
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:35 +0000 (UTC)
-X-FDA: 85372467390.16.AB74E83
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 461F26B05CA
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:48:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D205A40167
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:38 +0000 (UTC)
+X-FDA: 85372467516.02.49D82F1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 938B1180003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:33 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YXF/YS7f";
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793202513;
-	b=GB72iGzR3joH2a77GKVq0Kw7/m5UU100UnVZjeBKk2VWdYrLGAoVsSrPzjF0r9vjTX/f/+
-	YYV88sRoj96KKzurBXPNdnBdavOh1duoq7/N+4rXm2W5rkNZeOBk2Kbky12VPI3/ueRQVH
-	6qPp1ojnceg57XnSAn0YYNu3TH1Yk8g=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YXF/YS7f";
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 437DBC0008
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:37 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GdZMwfO4;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793202513;
+	s=arc-20220608; t=1793202517;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r9FswEhsqUAoLXxb6XOa2/ngLfV3IiEobglb2Mjl9Jk=;
-	b=CmkBXKBjMBXIMuRaQvmTSK1kHqsZ1oZMaGIoFFhbeVZxjk2Yx+kWfiiGHj7tm1ONVuck4r
-	5D+EaFsmvyl4NDhL5S80frf4iOg3oFxiDxE9iT1E0hKanpJ7kFUEtQ0PXqYnzO2GzA5nCx
-	yt2aepmfhPhKA8hWa0vogI7jumDhmik=
+	bh=9BUU598ImlXJDkWhuDOvV3KESqhRPdPqqGol2Qfllgs=;
+	b=iGrFL2u4B4qv+9/GvHNfkBgT/CoCRYWKegkrlY0NOCWqXABsFUXnnhtCCF9Ilm2xs9qJxJ
+	P3j1XVW9DRVX7K7UMPo4jK4v+WnvtOnmd2BF+GpQLuu1BNpZtswKXDXj5g0rfU++PUpLpS
+	ii/h23+q2HVRKAe8/vvmq3FC+km5XSk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793202517;
+	b=UB7HF5roQB8Mfvob9sCEyzuWpItBUJMabwKWQ5YTmY6kePgdyut/8XTKRrzSrVhOuvYEsL
+	8YdoCkr3tkE8Bhlg5xSm12nwDSxBgiI82xt+2wC2yXfmFY1S8CljKz4qH0in+1Sti5Afdg
+	E0h+IDNeai5KuOCxaqLScOMMbxIQeis=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GdZMwfO4;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 33BD360120;
+	by tor.source.kernel.org (Postfix) with ESMTP id B724A6020A;
+	Wed, 28 Oct 2026 15:48:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0EC1F01828;
 	Wed, 28 Oct 2026 15:48:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B892D1F01825;
-	Wed, 28 Oct 2026 15:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793202512;
-	bh=r9FswEhsqUAoLXxb6XOa2/ngLfV3IiEobglb2Mjl9Jk=;
+	s=k20260515; t=1793202516;
+	bh=9BUU598ImlXJDkWhuDOvV3KESqhRPdPqqGol2Qfllgs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YXF/YS7fng8zjqrLjdH5iyQ3VtTk694E54InSg6ZCq2Po2lu6Tl3KPfgTskghyOHw
-	 +tc5CQszyYHPABEu5Ly/SoIX4Hv5TTtzZ9ohtRnQgvjTuHIM8MovQwhqfIrGMdQTBU
-	 AR/gNbSU7BuctmXhLyLvLfUT3tJdh0NGQLxefh9WV49CMjIv6F4ki3QiDlqIQRwhnS
-	 u2BVaodJveIi7n7VdS0Aqof5m1QS+dixs5N+fD5PmvvJWhN+KTCz76JuFTspKhpgCE
-	 v/hm5KUX4xGEYR6odAjuPlfluIz8hjBrNuq8+9z6hDxyhXtudTYKB9xfApLX4Fl9M0
-	 OiZjatYBTurDQ==
-Message-ID: <sashiko-outbox-188083@kernel.org>
+	b=GdZMwfO4YGAsK7nN1ZB5YZtC6dVxTk6v7fU4GYMfVkPAE8D2tUjwQSaCjcLyGvyNu
+	 WEHtIL9O8MxSYphaPZCmv5mUpp3lwVa9j+n54qlu/tbkFbdOGb5kG4rBAUuCxk5FK3
+	 fYP7Wd6EOqMI58TcbK5dwzcjEaIHZouRCY76R/7gLJL/lTDfgHxt+X59RKT2fQqvmD
+	 iauiORfV8TW4MkbUkO2I7bNpI4QAcVh2ywrHLtlFwPeIj6RjyhjPGhshnqBefrIK+8
+	 hC5Ck//EFEqyG4gXh9I2mxEUTnicnoFxaHg6d8l8SuhFEKRkaXqcj09/Etxtu+yrd5
+	 l7wchGBjxUGDA==
+Message-ID: <sashiko-outbox-188084@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 01/14] KVM: guest_memfd: Clamp the order of PFN mode
- blocks to what KVM can map
+Subject: Re: [RFC PATCH 02/14] KVM: guest_memfd: Support read-only frames
+ from PFN mode providers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Fred Griffoul" <griffoul@gmail.com>, "Ackerley Tng" <ackerleytng@google.com>, "Paolo
  Bonzini" <pbonzini@redhat.com>, "Sean Christopherson" <seanjc@google.com>, "Jason
@@ -98,25 +98,25 @@ Cc: "Alex Williamson" <alex@shazbot.org>, "Alexander Graf" <graf@amazon.de>, "Al
  Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Yan
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>, kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261027154649.91571-2-griffoul@gmail.com>
+In-Reply-To: <20261027154649.91571-3-griffoul@gmail.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
  <20261027154649.91571-1-griffoul@gmail.com>
- <20261027154649.91571-2-griffoul@gmail.com>
+ <20261027154649.91571-3-griffoul@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 15:48:29 +0000
+Date: Wed, 28 Oct 2026 15:48:33 +0000
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 437DBC0008
+X-Stat-Signature: q9af9dmsctyhc8664yrzty6kbcgettfj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 938B1180003
-X-Stat-Signature: 1xwtz6osqujcp5pp3tgy7deq3qpdda8n
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793202513-658222
-X-HE-Meta: U2FsdGVkX1+ha47MZI9P+/ntNqY4qM8+Xw12XQ5EOKP4avLp6pH+2NDqh/kMi9Bi8CoRngCLk645L8PJ86G0ZTXB4qQ3AIhwET1DfnC+YIwLZWjLIEYptUXRIXaIrWPqFw6RSkmQ87rv+LT9Gwwx/v8v97AI4DxXK4tPdJTemhE7Hh6OUVC28CrMNRlaGUgoLjya7mOc+83zzu3NDHuSGTtqlv7g68cFVAz8gE8k16+eIRhAmL6f/27Ig1sST/X6iOqG0wkJLd6MELqwMN8FcZQuG0bIgO0fXoAV4QBPr2ylmFKeUp3Oz3IYP0xVjEidtadd1e5ar7zuh6Bg4iITCSnZWJQN/XOAtAyxxUiOLZzEhuxuRNsXslTrc9r9reHJxXhAWHnh4Qz1y8BZnxoKB6bsGRrHtgafF2IcR3xC1BOLeIw5iXj+q71SoWluItYBZk4IZQ1V1txzUUWafsGOtvqwklth2PX8HL1Ztj8XNR7loAfSd0XHSx5o1B+e1fl1m+Qbr//VuCR/albwQvaETQcx3UI2269aM2gALSHgHAUL0/cehLtZeilaYkN3ick9ZbRKSE4TtSwFSMVaR/Ap4Ab3eso0PSAOJxY1spoUbQ+Z1HG06H0nYXxAcF6IajeFmanQb/bf50ezqtKypnZPW1nvI86gqtterHGBIYYPItP7qHSMZad5QP/llw/ONNWzyvsUXe61WkGHq5X67ZS/84ctkAnvwZ7BZLdaHSdNy9n7v1PDJjzihUu4/6MddHw26TfK+DMDEvIc0ZwT1oZgeOBoiPMhspe0zBJGwWH3iIZNPlqpS3C/yKcE7p70pVYYrGYbUWEBsPRuCLVrq1qfzDFPsCN+He3eS+NQ0Nm/U3R3Oey7P2GsNJHWS0Qddfmx0Hf5F1kCy7GZucVwiGadFf2kN8fhN3lLTosyhZiA1Deodved5t9JPuWJ5EB+scjws1DgpCVEA+LcNk+jfOV
- O61nCu//
- /F71JibqwrZsAE4B8uxf2YH6h0p2Va9n/HYbR8hobdYTEAGmg16H/ikiDZFMOVGHGHFZK5x2yKurVxqVv0AAG7gw8KBU9XalfIYKJXffEl635tuzh+MieaFufTvHHGo2yXOVPgQWB8nxtWVGBiBDx5K4WPS0RhB8kUW6ASIOoG1PBkMB7v0gq4k6QZGoN4aNSwksDqYFZ1o0H8Vq9nCxVc2XXXBGnzqT+jQantRdbzhAv2h7NPmCzf6kd+itKB3HekoDUn0h6DefTVLBZ5P5obZXaiGlrTdGhAYcPl+wxITWjIjAMeca9qR+ZQzcDlDJLhd7lkrsB4OjhvmLY1GxaSpOLG0TWsv9GF3OkFJOoGlLzji/gCSMJN+uMsGsXTs4kKGlVn6WH6neKRkMLk9sevwHpbtfgzHSckC+ryBimDR7D/pf6hprYxMUBrl4TZTMZVUsmPuVFmyzptIvXn5ZtQkNOrURLOBFkkR/nzWD42sBWyA+RhJqFHTS+4kcnLBmiBObxI92nwd2bwmU2KctiSejo0dCMO49pEVrpxhM9CaF/O3WBY1MLgFhHt09gc2Y5gPhtqZgz56Jd0+FmQcROGCx+LZr8iySQAZS8QTeYqUC/GJEaoYhuyncXVtoh7s9cAvVJqiuUCwYxKdhGuFieRfmAj4ef/ikbIFc2D+ypRooOW4eIpXLMgZRDS5U7BvcXiV9JYEWSVM4FQ5BaqqajMMGCyOQ+fi0rBAqORrMBoiEyPBI=
+X-HE-Tag: 1793202517-525911
+X-HE-Meta: U2FsdGVkX1+TEMbpqfYklARnZsH1v9qAUt/yq7NSQnpVFaxOa2gjCH5XLdXBTxC093m+UBpfuIA/JwZBlK7KIfqghHBGVrsa4ARE4ZFu6jyOCA8QKZfEsUBaXFVwRXwZz6pAr79KxnkhAwfn/yWpkgNh4zATM9wagR8v9DomGGhVmEz2sMnN2deX+G1MRMLPSO7wdkOWhGogqAXy5yrV1hJX/mfw1Jum8830CMXTo/v+RvRWicLcXVnR/ksgihyknJ6QkqOtcAu+aR+D5alsI56nY49Mr0GjyMzSjk09SvaqOKyiGdT9Vs52kvxv0z/ZSZYolrd7+kwzMofdrtB0wW35vyQjYRNIc7nJy+Up2gdGHiKhuguzZEkt6OlthlSve5AwIWTSUo2d+VoII070T75j2sW1SYaIyZVFLHNOLXZJJnRRp7Nh6vN5nCotc6uP0kz6gXI90n5hCgDkINZhN7HIau1rV/EEmA5qIqb5jSPFh8mAbqxNJ7XaQ7cC1XYX+CrSVCfR0KWSmmAFsvoHiAqb9bt4bwpVFnYg+UcFrzENoSiRpjiFSPoidbTWdryVmS1cl+G9CSrPh0tnuW8QjYShc20UTpZ+g7jML9H0vWP6m7us0xOt4Ip0L5nZVwiTzv0sR9+FdaC+8A6MZSV/yt32DqyOZpxIh2ifPSQ9N5hUSo/e7BdNUiW7TBGUhm9FVmd+imqB2E+5gJE7ef7j98V2U/f/SMqBWBtFf8IvcJvflME4rqcBEcGRGpBHEIVxUW8rwbSbUva8ZRpL17iuNLjlqD2mtMQvKRxx9Id7PjHaxRHshhM5ONiQYswcirOveGNZDd6rH94PjN7iZX60n7Qh+4OZvsd0XbTlPmItzU8sMKm/7PFSPpmNaQXci/jOZlHpYMnTYHDEGlc4FJrwEGzYFHcovdzveNXPIsgtzzhgK3iFMEhU2iugzdZJUs26iyDGSnuiN16HgmaVb81
+ 7CxHnRSk
+ JwDzeMklRwkQzQjm2+Wzt43GF0rFwzypnWrFBrF/7fWiZXf8VngbcDiJHhYc8dVsUmJFWfX62th24NhLIPP6AQWd2Q4s8kXSuucHdhR655b4rlUfhzOTEIUwYWgFD/r4R91t+C7+tOMx2rYZAU2qBxEwxFokTF215v7uPt+HISEEiyzCDf6HvlDP4PXfsNrje4ey0FD94W2U06ZRQyoj5zQ32ITH5QPBIKgBw7ocGOBBYnRJHlABaXY15L7O4pG+85++Om3xRTP1SX3SqMRwCoFO0kiLkgwww9jFYq157zD3KTwri6jbXFzXnZdmJ5Y9bKmfXleLGaseZ82Dz0RVxDgRRA7TNyM5obTLMp7O9WjIc/0ZhX6YyUaWFD5JyNKvpthBe/8kDCjN9fxZp91qCzNk8r3O9Tl2taYUwWr7pR2BEkLbmJHvJ4Wz8sRR1LG6Z2zT7IYaC+IcGubsP8bZMmOWFxQLe4mlkYShwiEibLWVmF/oOzZ7rforsmMQ+cYsDYDsqNZzEaOiX5wsUil4HPj1Rze2nK9VmiTc1G1Iqkc52UXk3XOpigTMM8EGCe2Z+tkr6eNywIdbfB+R4TnDRFw4XKiAq6R/pSlM9Tpl0fYtMdrd3PQP5n1582HUg1+jcTCaOxpE5LZPl8jK3ndEN0kGmBktyGsRg+Q+DINnSUR5e6tx3f/mm5cTMyTktgqWbV1zntLwGEJlgoEV/CsMrIyaoN2/HTGeNjtq9tYqE0YA0oX1scd/Ar/O8TmgK/eu1uUji1eifsDEceEI6QdCCNnqEM9QZuntxgLJ3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,201 +126,325 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Critical] kvm: guest_memfd: race in __kvm_gmem_invalidate_start() due to=
- late range expansion
-- [High] kvm: guest_memfd: infinite loop in kvm_gmem_pfn_map_order() when P=
-UD_ORDER =3D=3D PMD_ORDER
-- [High] KVM: guest_memfd: non-zero order passed to kvm_arch_gmem_make_priv=
-ate()
+- [High] KVM: guest_memfd: triggerable WARN_ON_ONCE(!writable) in kvm_gmem_=
+get_pfn()
+- [High] KVM: arm64: kvm_translate_vncr() rejects read-only frames on guest=
+ reads
+- [High] KVM: guest_memfd: premature unlock in kvm_gmem_pfn_mkwrite() allow=
+s RO bypass
+- [High] KVM: guest_memfd: Add block range before kvm_mmu_unmap_gfn_range()
 --
 
-commit ec431028c58523e8ac8bc3e4a0b8d9a1a1868bb2
+commit 421ea1b76fdc664724f686d68f71491b37e2d2b4
 Author: Fred Griffoul <fgriffo@amazon.co.uk>
 
-KVM: guest_memfd: Clamp the order of PFN mode blocks to what KVM can map
+KVM: guest_memfd: Support read-only frames from PFN mode providers
 
-This commit clamps the mapping order returned for PFN-mode guest_memfd
-files to block sizes supported by KVM where the gfn, file index, and pfn
-share the same alignment and memory attributes. It also expands invalidation
-ranges in PFN mode to 1G-aligned blocks so concurrent faults on the same
-block retry.
+This commit adds an attributes output parameter to the PFN-mode provider
+get_pfn() callback and defines GUEST_MEMFD_PFN_READONLY so providers can
+lend read-only frames to guest_memfd. KVM maps such frames read-only in
+guest and host page tables, exits to userspace on guest writes, raises
+SIGBUS on host writes, and disallows using them to back private or
+populated pages.
+
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index f1c414f1c3faf..ec3bcdc230cf9 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -1615,12 +1615,19 @@ static int kvm_translate_vncr(struct kvm_vcpu *vc=
+pu, bool *is_gmem)
+>  			return -EFAULT;
+>  		}
+>  	} else {
+> -		ret =3D kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, NULL);
+> +		ret =3D kvm_gmem_get_pfn(vcpu->kvm, memslot, gfn, &pfn, NULL,
+> +				       &writable);
+>  		if (ret) {
+>  			kvm_prepare_memory_fault_exit(vcpu, vt->wr.pa, PAGE_SIZE,
+>  					      write_fault, false, false);
+>  			return ret;
+>  		}
+> +		/* The CPU writes the VNCR page: a read-only frame cannot back it. */
+> +		if (!writable) {
+> +			kvm_prepare_memory_fault_exit(vcpu, vt->wr.pa, PAGE_SIZE,
+> +					      true, false, false);
+> +			return -EFAULT;
+> +		}
+> =20
+>  		writable =3D !(memslot->flags & KVM_MEM_READONLY);
+>  	}
+
+[Severity: High]
+Does kvm_translate_vncr() need to reject read-only frames even when the
+guest is only reading from the VNCR page?
+
+Under FEAT_NV2, the CPU reads from the VNCR_EL2 page when the guest
+executes an MRS of a redirected EL1 system register (write_fault is false)
+and writes to it when the guest executes an MSR (write_fault is true).
+The rest of the VNCR handling in kvm_handle_vncr_abort() and
+kvm_map_l1_vncr() already supports read-only backing frames (such as a
+KVM_MEM_READONLY memslot) by recording vt->hpa_writable =3D writable and
+mapping the fixmap as PAGE_KERNEL_RO when vt->hpa_writable is false:
+
+arch/arm64/kvm/nested.c:kvm_handle_vncr_abort() {
+	...
+	case 0:
+		perm =3D kvm_is_write_fault(vcpu) ? vt->wr.pw && vt->hpa_writable : vt->w=
+r.pr;
+		if (!perm)
+			handle_vncr_perm(vcpu);
+		break;
+}
+
+arch/arm64/kvm/nested.c:kvm_map_l1_vncr() {
+	...
+	if (vt->hpa_writable && vt->wr.pw && vt->wr.pr)
+		prot =3D PAGE_KERNEL;
+	else if (vt->wr.pr)
+		prot =3D PAGE_KERNEL_RO;
+	else
+		prot =3D PAGE_NONE;
+}
+
+By checking !writable unconditionally in kvm_translate_vncr() and
+exiting to userspace with write_fault hardcoded to true, a guest MRS read
+of a VNCR-redirected register backed by a GUEST_MEMFD_PFN_READONLY frame
+fails with KVM_EXIT_MEMORY_FAULT instead of mapping the VNCR page
+read-only. In addition, if the guest's own EL2 Stage-1 translation lacks
+permission (!vt->wr.pr or !vt->wr.pw), exiting here bypasses
+handle_vncr_perm() and exits to host userspace instead of injecting a
+Stage-1 permission fault into the guest.
+
+Should kvm_translate_vncr() instead fold writable into
+writable =3D writable && !(memslot->flags & KVM_MEM_READONLY), or only exit
+when write_fault && !writable after verifying guest Stage-1 permissions?
+
+[ ... ]
 
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 3c4bedceccfc2..be26bd16d4207 100644
+> index be26bd16d4207..1554a17906da8 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
 
 [ ... ]
 
-> @@ -355,6 +360,16 @@ static void __kvm_gmem_invalidate_start(struct gmem_=
-file *f, pgoff_t start,
-> =20
->  		flush |=3D kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
-> =20
-> +		/*
-> +		 * In PFN mode, a fault may map a block of up to PUD_ORDER
-> +		 * pages, sized before this invalidation (see
-> +		 * kvm_gmem_pfn_map_order()): make faults anywhere in the
-> +		 * blocks around the range retry.
-> +		 */
-> +		kvm_mmu_invalidate_range_add(kvm,
-> +					     round_down(gfn_range.start, blk),
-> +					     round_up(gfn_range.end, blk));
-
-[Severity: Critical]
-Does expanding the invalidation range after kvm_mmu_unmap_gfn_range() leave=
- a
-window where a concurrent fault can install a stale huge mapping?
-
-In __kvm_gmem_invalidate_start(), gfn_range.may_block is true. When
-kvm_mmu_unmap_gfn_range() runs, it registers only the unexpanded
-[gfn_range.start, gfn_range.end) in kvm->mmu_invalidate_range_start and
-kvm->mmu_invalidate_range_end before calling kvm_unmap_gfn_range():
-
-virt/kvm/kvm_main.c:kvm_mmu_unmap_gfn_range() {
-	kvm_mmu_invalidate_range_add(kvm, range->start, range->end);
-	return kvm_unmap_gfn_range(kvm, range);
-}
-
-Because may_block is true, kvm_unmap_gfn_range() can yield kvm->mmu_lock
-(for example via tdp_mmu_iter_cond_resched() in tdp_mmu_zap_leafs() or
-cond_resched_rwlock_write() in __walk_slot_rmaps()). Meanwhile,
-kvm->mmu_invalidate_seq is not incremented until kvm_mmu_invalidate_end().
-
-If a vCPU fault on another gfn in the same 2M or 1G block already completed
-kvm_gmem_get_pfn() with a large *max_order before the invalidation began, it
-can acquire kvm->mmu_lock while kvm_unmap_gfn_range() has yielded the lock.
-At that point mmu_invalidate_retry_gfn() checks only the unexpanded
-range->start..range->end and sees the old mmu_invalidate_seq, so the fault
-will not retry and can install a huge SPTE covering the range being revoked
-or converted.
-
-Should kvm_mmu_invalidate_range_add() with the blk-aligned range be called
-before kvm_mmu_unmap_gfn_range()?
+> @@ -721,13 +728,71 @@ static bool kvm_gmem_supports_mmap(struct inode *in=
+ode)
 
 [ ... ]
 
-> @@ -1535,6 +1550,44 @@ static struct folio *__kvm_gmem_get_pfn(struct fil=
-e *file,
->  	return folio;
+> +/*
+> + * A write to a read-only PTE, e.g. after mprotect(): allow it unless th=
+e frame
+> + * is read only.  The core upgrades the PTE under its lock only if it di=
+d not
+> + * change, and a provider that makes the frame read only revokes it firs=
+t.
+> + */
+> +static vm_fault_t kvm_gmem_pfn_mkwrite(struct vm_fault *vmf)
+> +{
+> +	struct inode *inode =3D file_inode(vmf->vma->vm_file);
+> +	vm_fault_t ret =3D 0;
+> +	kvm_pfn_t pfn;
+> +	u32 attrs;
+> +	int r;
+> +
+> +	filemap_invalidate_lock_shared(inode->i_mapping);
+> +	r =3D gmem_provider_get_pfn(GMEM_I(inode), vmf->pgoff, &pfn, NULL, &att=
+rs);
+> +	if (r)
+> +		ret =3D vmf_error(r);
+> +	else if (attrs & GUEST_MEMFD_PFN_READONLY)
+> +		ret =3D VM_FAULT_SIGBUS;
+> +	filemap_invalidate_unlock_shared(inode->i_mapping);
+> +	return ret;
+> +}
+
+[Severity: High]
+Can releasing filemap_invalidate_lock_shared() before returning from
+kvm_gmem_pfn_mkwrite() allow a read-only frame to be upgraded to a
+writable PTE after kvm_gmem_revoke()?
+
+In mm/memory.c, wp_pfn_shared() drops the page table lock before calling
+vma->vm_ops->pfn_mkwrite(vmf), and then calls finish_mkwrite_fault(),
+which re-locks the PTE and upgrades it to writable if
+pte_same(ptep_get(vmf->pte), vmf->orig_pte) holds:
+
+mm/memory.c:wp_pfn_shared() {
+	if (vma->vm_ops && vma->vm_ops->pfn_mkwrite) {
+		...
+		pte_unmap_unlock(vmf->pte, vmf->ptl);
+		...
+		ret =3D vma->vm_ops->pfn_mkwrite(vmf);
+		if (ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE))
+			return ret;
+		return finish_mkwrite_fault(vmf, NULL);
+	}
+}
+
+If a VMA with VM_WRITE | VM_SHARED has a present read-only special PTE
+mapping PFN P (for example after mprotect(PROT_READ) followed by
+mprotect(PROT_READ | PROT_WRITE), or faulted in while P was read-only and
+later made writable), consider what happens when thread A writes to that
+address:
+
+1. Thread A enters wp_pfn_shared() -> kvm_gmem_pfn_mkwrite(), acquires
+   filemap_invalidate_lock_shared(), sees attrs =3D=3D 0 for PFN P, and dro=
+ps
+   filemap_invalidate_lock_shared().
+2. Before thread A reaches finish_mkwrite_fault(), the provider marks PFN P
+   as GUEST_MEMFD_PFN_READONLY and calls kvm_gmem_revoke(), which takes
+   filemap_invalidate_lock() exclusively, zaps the PTE via
+   unmap_mapping_range(), and drops filemap_invalidate_lock().
+3. Thread B triggers a read fault on the same address.
+   kvm_gmem_fault_user_mapping() -> kvm_gmem_pfn_fault() sees
+   GUEST_MEMFD_PFN_READONLY and calls vmf_insert_pfn_prot() with
+   kvm_gmem_pfn_prot(vma, GUEST_MEMFD_PFN_READONLY), installing a
+   read-only special PTE for PFN P that is bit-for-bit identical to
+   thread A's vmf->orig_pte.
+4. Thread A enters finish_mkwrite_fault(), sees
+   pte_same(ptep_get(vmf->pte), vmf->orig_pte) is true, and calls
+   wp_page_reuse(), making the PTE writable even though PFN P is now
+   GUEST_MEMFD_PFN_READONLY and revocation already completed.
+
+Also, kvm_gmem_pfn_mkwrite() does not check kvm_gmem_is_shared_mem() the
+way kvm_gmem_fault_user_mapping() does.
+
+[ ... ]
+
+> @@ -1588,14 +1660,22 @@ static int kvm_gmem_pfn_map_order(struct inode *i=
+node, pgoff_t index,
+>  	return order;
 >  }
 > =20
 > +/*
-> + * The order a PFN mode block can be mapped at: the provider's order, no
-> + * larger than the alignment of @gfn and @pfn to @index allows, rounded =
-down to
-> + * a page-table size, and never over pages that are not all shared or all
-> + * private, since KVM maps a block with a single attribute.  Called with=
- the
-> + * invalidate lock held; an invalidation of any page of the block makes =
-the
-> + * fault retry (see __kvm_gmem_invalidate_start()).
+> + * @writable, if not NULL, is set to whether the guest may write the pag=
+e.  It
+> + * may be NULL only for private pages, which are always writable.
 > + */
-> +static int kvm_gmem_pfn_map_order(struct inode *inode, pgoff_t index,
-> +				  gfn_t gfn, kvm_pfn_t pfn, int order)
-> +{
-> +	u64 misalign =3D (gfn ^ index) | (pfn ^ index);
-> +	u64 attrs;
-> +
-> +	if (WARN_ON_ONCE(order < 0))
-> +		return 0;
-> +
-> +	order =3D min(order, PUD_ORDER);
-> +	if (misalign)
-> +		order =3D min_t(int, order, __ffs64(misalign));
-> +
-> +	if (order >=3D PUD_ORDER)
-> +		order =3D PUD_ORDER;
-> +	else if (order >=3D PMD_ORDER)
-> +		order =3D PMD_ORDER;
-> +	else
-> +		return 0;
-> +
-> +	attrs =3D kvm_gmem_get_attributes(inode,
-> +					mtree_load(&GMEM_I(inode)->attributes, index));
-> +	while (order &&
-> +	       !kvm_gmem_range_has_attributes(inode,
-> +					      ALIGN_DOWN(index, 1UL << order),
-> +					      1UL << order, attrs))
-> +		order =3D order =3D=3D PUD_ORDER ? PMD_ORDER : 0;
-
-[Severity: High]
-Can this while loop hang when PUD_ORDER equals PMD_ORDER?
-
-On arm64 with 2-level page tables (CONFIG_PGTABLE_LEVELS =3D=3D 2, such as =
-64K
-pages with 42-bit VA or 16K pages with 36-bit VA),
-arch/arm64/include/asm/pgtable-types.h includes
-include/asm-generic/pgtable-nopmd.h, which defines PMD_SHIFT as PUD_SHIFT.
-This makes PUD_ORDER equal to PMD_ORDER.
-
-If a PFN-mode block of order >=3D PUD_ORDER has mixed shared/private
-attributes, kvm_gmem_range_has_attributes() returns false and the loop
-evaluates:
-
-	order =3D order =3D=3D PUD_ORDER ? PMD_ORDER : 0;
-
-Since order =3D=3D PUD_ORDER is true and PMD_ORDER =3D=3D PUD_ORDER, order =
-remains
-non-zero and unchanged, spinning forever while holding the shared
-filemap_invalidate_lock and kvm->srcu.
-
-Would checking order > PMD_ORDER instead of order =3D=3D PUD_ORDER avoid th=
-is?
-
-> +	return order;
-> +}
-> +
 >  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->  		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
+> -		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
+> +		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order,
+> +		     bool *writable)
 >  {
-> @@ -1556,6 +1609,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_m=
-emory_slot *slot,
+>  	pgoff_t index =3D kvm_gmem_get_index(slot, gfn);
+>  	struct folio *folio;
+>  	int r =3D 0, __order;
+> +	u32 attrs =3D 0;
+> =20
+>  	max_order =3D max_order ?: &__order;
+> +	if (writable)
+> +		*writable =3D true;
+> =20
+>  	CLASS(gmem_get_file, file)(slot);
+>  	if (!file)
+> @@ -1603,15 +1683,28 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_=
+memory_slot *slot,
+> =20
+>  	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
+> =20
+> -	folio =3D __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+> +	folio =3D __kvm_gmem_get_pfn(file, slot, index, pfn, max_order, &attrs);
+>  	if (IS_ERR(folio)) {
+>  		r =3D PTR_ERR(folio);
 >  		goto out;
 >  	}
 > =20
-> +	if (kvm_gmem_is_pfn_mode(GMEM_I(file_inode(file))))
-> +		*max_order =3D kvm_gmem_pfn_map_order(file_inode(file), index, gfn,
-> +						    *pfn, *max_order);
-> +
->  	if (kvm_arch_has_gmem_convert() &&
->  	    kvm_gmem_is_private_mem(file_inode(file), index))
->  		r =3D kvm_arch_gmem_make_private(kvm, gfn, *pfn,
+> -	if (kvm_gmem_is_pfn_mode(GMEM_I(file_inode(file))))
+> +	if (kvm_gmem_is_pfn_mode(GMEM_I(file_inode(file)))) {
+> +		/*
+> +		 * A read-only frame is not the guest's alone, so it never
+> +		 * backs a private page: a private fault on it is a hole.
+> +		 */
+> +		if (attrs & GUEST_MEMFD_PFN_READONLY) {
+> +			if (kvm_gmem_is_private_mem(file_inode(file), index) ||
+> +			    WARN_ON_ONCE(!writable)) {
+> +				r =3D -EFAULT;
+> +				goto out;
+> +			}
+> +			*writable =3D false;
+> +		}
 
 [Severity: High]
-What happens on SEV-SNP when kvm_gmem_pfn_map_order() returns a non-zero
-order for a private range?
+Can a guest or host userspace trigger this WARN_ON_ONCE(!writable)?
 
-In kvm_gmem_get_pfn(), *max_order is now preserved up to PMD_ORDER or
-PUD_ORDER in PFN mode (even when the caller passes max_order =3D=3D NULL, s=
-ince
-max_order is redirected to &__order), and then passed to
-kvm_arch_gmem_make_private() as:
+In arch/x86/kvm/svm/sev.c, both __sev_snp_reload_vmsa() and
+sev_handle_rmp_fault() pass writable =3D NULL to kvm_gmem_get_pfn():
 
-	r =3D kvm_arch_gmem_make_private(kvm, gfn, *pfn,
-				       (kvm_pfn_t)1 << *max_order);
-
-However, the x86 implementation in arch/x86/kvm/svm/sev.c only supports
-single-page conversions:
-
-arch/x86/kvm/svm/sev.c:sev_gmem_make_private() {
-	if (!sev_snp_guest(kvm))
-		return 0;
-
-	if (WARN_ON_ONCE(nr_pages !=3D 1))
-		return -EIO;
+arch/x86/kvm/svm/sev.c:__sev_snp_reload_vmsa() {
 	...
+	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL, NULL))
+		return;
 }
 
-In addition, gfn and *pfn are the faulting subpage's frame numbers rather
-than the base of the aligned 2^(*max_order) block. Won't a PFN-mode provider
-returning order >=3D PMD_ORDER for an SEV-SNP guest trigger WARN_ON_ONCE() =
-and
-fail with -EIO?
+arch/x86/kvm/svm/sev.c:sev_handle_rmp_fault() {
+	...
+	if (!kvm_is_private_gfn(kvm, gfn)) {
+		...
+		return;
+	}
+	...
+	ret =3D kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &order, NULL);
+}
+
+In __sev_snp_reload_vmsa(), there is no check that the GFN is marked
+private before calling kvm_gmem_get_pfn(). An SEV-SNP guest can supply an
+arbitrary GPA via SVM_VMGEXIT_AP_CREATE or SVM_VMGEXIT_AP_CREATE_ON_INIT
+in sev_snp_ap_creation(), or host userspace can convert an existing VMSA
+GPA from private to shared via KVM_SET_MEMORY_ATTRIBUTES2 (which triggers
+sev_gmem_invalidate_range() and requests KVM_REQ_VMSA_PAGE_RELOAD). Similar=
+ly,
+in sev_handle_rmp_fault(), kvm_is_private_gfn() is checked before
+filemap_invalidate_lock_shared() is acquired in kvm_gmem_get_pfn(), so a
+concurrent private-to-shared attribute conversion can complete in between.
+
+If the GFN is shared (so kvm_gmem_is_private_mem() returns false) and is
+backed by a GUEST_MEMFD_PFN_READONLY frame, kvm_gmem_get_pfn() will
+evaluate WARN_ON_ONCE(!writable) and warn in the host kernel.
+
+>  		*max_order =3D kvm_gmem_pfn_map_order(file_inode(file), index, gfn,
+>  						    *pfn, *max_order);
+> +	}
+
+[Severity: High]
+When a provider changes GUEST_MEMFD_PFN_READONLY on a sub-range of a huge
+PFN-mode block and calls kvm_gmem_revoke(), is the invalidation order in
+__kvm_gmem_invalidate_start() sufficient to prevent a concurrent fault on
+another GFN in the same block from installing a stale writable 2M/1G page?
+
+In __kvm_gmem_invalidate_start(), kvm_mmu_unmap_gfn_range() is called
+before kvm_mmu_invalidate_range_add() widens the invalidation range to the
+PUD_ORDER-aligned block:
+
+virt/kvm/guest_memfd.c:__kvm_gmem_invalidate_start() {
+	...
+		flush |=3D kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
+
+		kvm_mmu_invalidate_range_add(kvm,
+					     round_down(gfn_range.start, blk),
+					     round_up(gfn_range.end, blk));
+}
+
+Inside kvm_mmu_unmap_gfn_range(), only the unaligned [gfn_range.start,
+gfn_range.end) sub-range is passed to kvm_mmu_invalidate_range_add() before
+kvm_unmap_gfn_range() runs. Because gfn_range.may_block is true,
+kvm_unmap_gfn_range() can yield kvm->mmu_lock while walking rmaps or roots
+before __kvm_gmem_invalidate_start() adds the rounded-out block range.
+
+If a vCPU faults on GFN B in the same 2M/1G block, finishes
+kvm_gmem_get_pfn() (observing writable =3D true and *max_order >=3D PMD_ORD=
+ER)
+just before kvm_gmem_revoke() takes filemap_invalidate_lock(), and then
+acquires kvm->mmu_lock while kvm_unmap_gfn_range() has yielded it on GFN A,
+mmu_invalidate_retry_gfn() will not see GFN B in
+[mmu_invalidate_range_start, mmu_invalidate_range_end) and
+mmu_invalidate_seq has not yet been incremented. Couldn't that vCPU install
+a writable 2M/1G mapping covering GFN A after kvm_unmap_gfn_range()
+already zapped it?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027154649.9157=
-1-1-griffoul@gmail.com?part=3D1
+1-1-griffoul@gmail.com?part=3D2
 
