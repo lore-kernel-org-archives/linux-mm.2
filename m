@@ -1,97 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC75606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCD0606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mie8jh39
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RoKXrxRL
 Received: by kanga.kvack.org (Postfix)
-	id 4378C6B05B0; Wed, 28 Oct 2026 04:39:59 -0400 (EDT)
+	id AEF3E6B05B6; Wed, 28 Oct 2026 04:41:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E8196B05B5; Wed, 28 Oct 2026 04:39:59 -0400 (EDT)
+	id AC7966B05B7; Wed, 28 Oct 2026 04:41:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B00F6B05B6; Wed, 28 Oct 2026 04:39:59 -0400 (EDT)
+	id 9DD6F6B05B8; Wed, 28 Oct 2026 04:41:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E60BF6B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:39:58 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 390B9120B5B
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:39:57 +0000 (UTC)
-X-FDA: 85371387234.06.00E2675
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 76CDB6B05B6
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:41:00 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 03A8EA0C57
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:40:59 +0000 (UTC)
+X-FDA: 85371389880.22.FC39914
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 86AF180003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:39:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mie8jh39;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793176795;
-	b=tpgigC/GFoMvVht9CeGaJ49/u2V7paip6QavTCJGEva4QvOtYWj8QJjXGr9LFBjPCIflHH
-	7PbsWVb85DY57VMOXLeuxtNjTAeTOKb6Vl/s2exTA66/u3q2w3iT1Rhoz4Y7gFqMPRzr3a
-	bVpCKjligJIGjK0Y8WDXLVqpp6BbLpA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mie8jh39;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 428341C0007
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:40:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoKXrxRL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793176795;
+	s=arc-20220608; t=1793176858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EuSPBpfPiwDzYLE9j3bMQIok2xPGQVDesPuFSULAs28=;
-	b=BSjNIVEGJYKoRhvN87fW8DESJ4EeNeCX87s0WrDf4jXcf7pMsAYt1/056hZdXUvnzAtjdL
-	5ujJp3DUm4weMQlGsNBJLdUye7hOdRCQI61kI6X+vpOcP+cHFoKPD65og3/L0ohr0tEYkt
-	fCmarWaDVI0sjA0z2UXnfJpZ9O36bSA=
+	bh=NScCcV9wFc6Sd1YtAGPOEgK4jDQ30KRAuuBIko3e0tY=;
+	b=ObKafwliCy5JW+hmNOXTL+VwvCKv5Nbs+JSWBnwhPEG/tQ9EHwB5FnV2nKKlf/woBZCwJM
+	ehcrD+Qq0KV/htYKxOUD60sVeR2oAj0EIj0vLH243ENbZkSIOkn+ca5eUhSI9F97ZxzHSC
+	2I/PUJ/3W6FCXwpntSTHQNm9v25J3C0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoKXrxRL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793176858;
+	b=320HhFBu6k8okcB/gZLp8XIghSDXWW8ywpTzMVqtRHKOrTrxBAd30HxWKa783OsAQKOVgK
+	cgsyKflxgziFoSIsrt+FPB8mHl3q5w/1Sja2okFvtvEjVZdfbNdJQbGl3yGfeSF2Qq2iK2
+	B/ZTelBeNLm+8RYYYu8wpsb0dMXKtfQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A46060120;
-	Wed, 28 Oct 2026 08:39:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C5C1F01825;
-	Wed, 28 Oct 2026 08:39:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 91D1D60136;
+	Wed, 28 Oct 2026 08:40:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0EF1F031E2;
+	Wed, 28 Oct 2026 08:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793176794;
-	bh=EuSPBpfPiwDzYLE9j3bMQIok2xPGQVDesPuFSULAs28=;
+	s=k20260515; t=1793176857;
+	bh=NScCcV9wFc6Sd1YtAGPOEgK4jDQ30KRAuuBIko3e0tY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mie8jh39y/BQE69uPA+3u6b6UyI8Nt1ralfAIWhFNNTRSMdv0XI1QmX/FC3Ny7Qhc
-	 ZhQ9zZCJWtKIugv7K14H8T+1uM1GyTD2K+4besn4VLQgQkW0azexi8qFk91TF3cfTh
-	 W9sNM5Dbkm4U6TAmERY2uj+6WxDmECEAcWSNnpza1ypv+e+bAHytezpfAPK4IflUL5
-	 jgnR5HSXmZ7J/8+Y6XMGRBhEhR4u8Ie9eq1TsMurpfZOGG3BEhRgQYQuQy05WH3QLU
-	 lsPjzcgAhHRLG8M9IZ0wwLs9qt3S+cNesJUmdjM1eCXsrG6MUKIAfMCaOzb4Q9OrCD
-	 yVBzjZZdFzzVg==
-Message-ID: <524ee7d9-790d-48b6-8613-841da042c32a@kernel.org>
-Date: Wed, 28 Oct 2026 09:39:42 +0100
+	b=RoKXrxRLPSgf26a6jGNaysWfRNoZuVhq6LhyElLzyxCGgnlYSmwc6jQjMIvjn2CfW
+	 grOFoNwwPNL1zB0oH2t4PElnk9fwgVTYa4/Tp1721aiXkzkSSCUsUvngV+bfzy+vnn
+	 ybZnFU4aTm/JO6kcIP9tS7sVgF/4asdtiIbTdGtMnf3E+Umijm95tGIBqnQGC0xq3E
+	 z0xio0fi+QIsk94xhcj0Cu0q+D7cur4M0vlceYqW337VsgA5A/W6acgwGAN8Fzjyjo
+	 958jVF4UeDgw0Q1j5ps31XySmZ3JYWG3bW+6BgG6k9GWU5Lx+BmRfn7NCaELLadrF3
+	 eB84dhGt+8GHQ==
+Message-ID: <a212c5c7-04a8-452f-ad2e-68d61d281e83@kernel.org>
+Date: Wed, 28 Oct 2026 09:40:52 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/7] mm/memblock: add a reserved-region flag for
- poisoned frames
-To: Mike Rapoport <rppt@kernel.org>, Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, kas@kernel.org,
- kexec@lists.infradead.org, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- rmikey@meta.com, riel@surriel.com, harry@kernel.org, kernel-team@meta.com
-References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
- <20261016-hwpoison-kho-v6-4-f304255147da@debian.org>
- <ato62palTbNjLwN7@kernel.org>
+Subject: Re: [PATCH v2] mm/migrate: snapshot the source nid before the
+ misplaced migration
+To: Yafang Shao <laoar.shao@gmail.com>, akpm@linux-foundation.org,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com
+Cc: linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>
+References: <20261027021721.95781-1-laoar.shao@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,21 +120,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ato62palTbNjLwN7@kernel.org>
+In-Reply-To: <20261027021721.95781-1-laoar.shao@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wkxhn1fr81k4z36qo5iyeja4pst3pycw
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 428341C0007
+X-Stat-Signature: cno8co4umcfa8uozpe9xrxbsot4x3ac7
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 86AF180003
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793176795-232131
-X-HE-Meta: U2FsdGVkX18lrhLVFhQOpEnyYkrY5PQ4hoe7OZPk0sEJo8m2DhTwBxv7bsuo38kilydhy+JjY8esE1Ye1wRI6l/E775Y/kZCNyEUh7Lu1ntiG6R1AVUozgWfYkHqyGKBKRKbO76p8sc4EXNRvlUHiXBp39OOcYgG6BdUDZXQzgVtZ4X4uwoYR/MRowGFn1pMOyrrFYywF1z6PnfUuPLcxfsHru+ZrqNHy+KJsCdpA1G65VwANOhWOIXaBa/H+stITV6GuB10RCVIZzl5Dx5vX2TU3KFuXSdX7p7CGRTWZQsBIAge3FBSf3yillh8TKqmIRPjLK2shQL5l2vOkHSOFfBhOB07nS0RH3owx9BaEjtyjTJIvDA7ebmNLyyjUMFZepNY0VARWSGS7fdZrOAx4EG3enB2SQ/C/sPGpeLP355DKWKht+QNN+PgKQNi9o1SY4dY9I7Diu37yYzx1msINYJnSoS4RCiPa4l8gjsu1eKr01mA79PEX6j8+FRY46opxVjPvy2iK6oGPW9XN9GrrWW15h+ijMBdRit+4yZrFY1CRy+kccODiWRDd36VimytpSEZCdNIudUFwK8eISJ0NofRcoMic2up5kJejsxW5Q4eNNCoR3UluPNNJzAlvUIHCrSEWvidnLbXlxPKj0qNIZ7hz2+bhueNJt7OfYcZG2VItDN1NNS3bjdNz6hqNlCWkA1Ri/s10D07nyaCpkdLlmg56jVBbC86x8/BFhaF8yNoSmp5Oclgh7RoobGinMKUawCIZJ+tX8Vkchx2FC94BySHerTN9cI234QxQJd/2MGbi1VRJI1ZQQ2/AG9juF3VjJeoyGkajKYWXqU+JZ9xrdFBtFGOnX1jwqE6Yo4VPC7uAQxZnAfo/CGKWcZ9R46jNOClQJ6TGHGVTaS4wcyvHrfbgJpglfXxclQYI7xeO8mbv7W+aamLVcLbFH0VdzAZXIR6aAZbEq+iSLdQuEQ
- 7RFvYKoX
- WNS99KwNlIF159hT1yNxvzkPY99Ok58FbBI2AEFbiLFiIDpl+puQIhYc3CulPt+oruJAvtaQfCbIYmqhzEtCliJ9gUy4Qriy8sjthOC2/EB1yQDEVS1fBGCxnIa6prY+XZUDFQkwBFK0upwanLRhuhuNxsDZ0HtDSIJEYp3BAJnjzuvmS0VsbQT/KvNrLreOh3hjM4Ruul2cNScwLaxo+8odRB6UqjUaper6lsKV5CdcojtrhR6aFzrOuu5IicBcSkPp/uxxbZKmyihli7j9McdWh62owG4sTkw53+rQm6+lf/pmJjIE7vTuT4EkIxpnY5tZ+Jgrxl/H8F14=
+X-HE-Tag: 1793176858-984341
+X-HE-Meta: U2FsdGVkX1+6Gw0wH/3y0tKHe1XCnjkJkXXJZM5PSnG3ET6rjU0U8+XDTS6BlCrijI63IHc7AZ7TM1XF/KVgbee7k6Zg/y0xHsqumKPj9Yj/PV0fKZ3tzWp31kZEBfEsoBT6Bl9CWp3ek6EUw+dc0y7iJ2qGVh5ibjABTWLsZQy7w67lOC/DyLAiJE0asxkDEjxV29HGawK2jYIOW6EhERN735ZCerdC2MJybY2nhNoX46e3p6aMo2Zcr82oWUVfHja9XjK/21lsCNQ6NyhHKU60Zt05St7Yu1rs4aoLgoQhOMZH7rnNxVD8JAVqQHC4Jmz2RefQDFKo0BZ81r6eVGBmPBBfFB9Nr2EXn7OWq2703du2yLNdxXQyHHw+kLKh8oyRFUD8zVVtM9JDokdQ9tJan2qcSWZVt82amCCSGM18Z8xSmoPkSBEFDq3wlYgDb96UFjs6HPxjXD5xBrvG+wd4mJpnmpmX5M/rqcRyM8P38N/taGsRJ0/QXe40wGQuQZCjRIlsGtVUbcfc69uWS1nRloGmEP4E5i4XqBxYYp1qswB+2ZIZ9uau/Z235c2lvKoXsXYpWM94l2LiO1AvlHBn0VN9+DC+TNE70b3V1zBGVQYDtnTxjerZFgh7SN27HjfQc41oRbMIzAP+ocwPbZymRVla0DGZL02f6VWfBN19U9ii4ZGqVeJyCp1JErl9U58DjA4qqBiXPlAa5w14jrdFfFYOO+LZnQXCkTjhFw+Gf1xpR9UNeR3z5TJCjdF2TevoGi29m5WSuQ2Fb+aIKpiTQac6ORqjJfL+ijVZhhPcRZMs56ls7cGPIP8TW8YIlkQ/8a1LOp7DRvRbqQ7R43LUQUSKmGahUvhXSABq2H0dEayQdcv2OEig76b2cP8UsHsjieQdstqVnh8J62foj913yh7QeYkS0kwvzZNPXCNSIdcTV+Y2d5+oXDp7B1nWoJzgMzliXEvnfIt/fkq
+ K6akMnHc
+ WgM6Z90sOpHRPa6VbTIJhUq46LXbsAaxxOq9HeBhjx2taPwDvqKSTJxaxinzTz70pA8p+pLkxfGc7B+rCqQqYYeCN8lWhfn0gUy40Z8BWCGnZqg6XD1092VFbUbdN1DDQw6Duy1fZtUz8HwzQbxH/OWC8VWSbALL3/lFOYc3YLVGbxpHo8U5ta2xQxiWa5YUk49DzxMNn4QTlvLR6xkibJkBwb7+vNb6DbPNXz1DKxkOPpeGFB+cCJYJ1ERYgdsTfqpTwd56xs3HMIMuJL5/lupnPZYO/LHKr0p3htX8srA0vcTcKtL/1iW4VWrO/fpOqOKZubsZaIxoRiyRgwLnSeb+NB1/ENeHsU/wMv+ww7ixDULyCsp+OVh90xQT4/CRF4xjFWxY43RNHcLLJGzg3s9FtLhAoRZQNPtAitzf+SLryTzhEMJA6/t5VErqFdRd/HiSOIgrf4ChyRUgQ8VrHtm+owoJV5vhGK9N0ATkkl2sQjYJcBhRxIpAXm2n4U+NpUa1h5jp8ErpVvrWpE4F5FCnv8coVxMTuqSIKg/YFfTAxGWZTNQcffsSrdRiHho1SUzHD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,28 +144,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/22/26 18:33, Mike Rapoport wrote:
-> Hi Breno,
+On 10/27/26 03:17, Yafang Shao wrote:
+> A successful migration frees the source folio before the promotion
+> counter update, so the folio_nid() read there operates on a freed
+> folio — which may already have been reallocated. It happens to work
+> today, as Zi explained:
 > 
-> On Fri, Oct 16, 2026 at 05:15:44AM -0700, Breno Leitao wrote:
->> memblock allocates from and frees to buddy whatever is not reserved, and
->> knows nothing about frames an earlier kernel found hardware-poisoned.
->> Such a frame can back the memmap, a page table or a percpu area before
->> any hwpoison code runs, and otherwise reaches the buddy allocator like
->> any other free frame.
->>
->> Add MEMBLOCK_RSRV_HWPOISON for a reserved range holding those frames.
+>   : Strictly speaking, it can be seen as a benign UAF. It works, because
+>   : 1. folio->flags happens to be the same as page->flags,
+>   : 2. folio/page nid is stored in the ->flags and never changed.
+>   :
+>   : In memdesc world, after a folio is freed, I assume folio->flags would be
+>   : zeroed since struct folio is freed and calling folio_nid() on a freed
+>   : folio would give a bogus result (yeah, it can be mitigated by not
+>   : zeroing node field and each node has its own struct folio pool, but that
+>   : makes folio_nid() implementation dependent).
 > 
-> How much this would fragment memblock.reserved?
+> and Matthew explained further:
 > 
-> memblock is not very scalable, to say the least, and each new flag
-> increases the size of memblock arrays which obviously hurts performance.
+>   : once struct folio is separately allocated, it's a UAF.  It could be
+>   : recycled to a different NID or maybe the slab containing the folio could
+>   : be freed (assuming we're not holding the RCU read lock at this point in
+>   : migration, and I don't see why we would be).
+> 
+> A separate concern is memory hot-removal.  With memory-tiering mode
+> enabled, successful migration can release the source before the
+> promotion-accounting folio_nid() read.  If the task is preempted there,
+> an otherwise-free source block can be offlined and removed first.  On
+> the x86 path, removal can unmap the source's vmemmap, so the later read
+> can fault.  The snapshot avoids that read.
+> 
+> Fixes: e39bb6be9f2b ("NUMA Balancing: add page promotion counter")
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> ---
+>  mm/migrate.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> ---
+> 
+> v1->v2: improve the commit log, thanks to Zi, Matthew and Andrew.
+> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 15b45832bcfa..91ba064e1bf4 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -2757,6 +2757,7 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+>  	pg_data_t *pgdat = NODE_DATA(node);
+>  	int nr_remaining;
+>  	unsigned int nr_succeeded;
+> +	int src_node = folio_nid(folio);
 
-I assume that if you have too many regions there, you have different problems
-than scalability problems.
+can be const.
 
-We should cut out larger chunks, and if they are all over your address space you
-should scrap that machine.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
