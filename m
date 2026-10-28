@@ -1,170 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE975606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3994606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nmK2sIs9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hL/RI1Rv
 Received: by kanga.kvack.org (Postfix)
-	id E0E4A6B05B6; Wed, 28 Oct 2026 10:00:44 -0400 (EDT)
+	id BC9586B05B7; Wed, 28 Oct 2026 10:03:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE5976B05B7; Wed, 28 Oct 2026 10:00:44 -0400 (EDT)
+	id BA1076B05BB; Wed, 28 Oct 2026 10:03:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAD946B05BF; Wed, 28 Oct 2026 10:00:44 -0400 (EDT)
+	id AB7136B05BF; Wed, 28 Oct 2026 10:03:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A82EB6B05B6
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:00:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 141F2A8B65
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:00:39 +0000 (UTC)
-X-FDA: 85372195398.12.3D18724
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012046.outbound.protection.outlook.com [52.101.43.46])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C05C418001D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:00:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nmK2sIs9;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793196035;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8929B6B05B7
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:03:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0F2DC160CCE
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:03:23 +0000 (UTC)
+X-FDA: 85372202286.22.84D492B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 53F8240007
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:03:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hL/RI1Rv";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793196201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8y9xn6Yu1oRWAftqzyoraLKXUmvic9ds88bl1dOwKR0=;
-	b=iAHL0J2kYRoOkz4Z0u0/rtWRIa8ZcIu2tbJbpTJ3dU9wJ69mr1SBYQIHArX77BAMa4BP1R
-	NxcF8mMO7o76u9toF08NavL8KFfqWhwf9NOjxm+nFcrdyFRn3QKQy/0pon4d9TtzaFf4Dq
-	O1iI0aH/MgF7tWIZpj1kHVUiCNPtC/E=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nmK2sIs9;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793196035;
-	b=eQJeOJqVmrT/i3ipe+M0cpEz0Qz3PYByJ7czjKYMeaN4hWhjs2RNAP4nfOb7/UqAqkQgZt
-	M9ed6PdhEVwrpaR7aXhuWS8a/D0fcBCnAmWG0AMoJSZ7/aCZ7/Rk/RUggjVu9/PFfqO/X1
-	lUoQ7WMIh4rbK3Nrj/2TeO/JAK3x9kQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Or2Uj4khw6mAx7NcMFQCG++j5pn+UjQ1uPsTxVbtIB5lgfZYGyUHULWduUvE+ZmzlnNqUnrohfDHRtad7B5MM+PgIkruZ8xcwNa5armM6etRAV/Ny2adTdFyNu6deHrsAp+zbHr4n5f9KO7DLGWUeqb3fnllWkpW1BeoWwLxFMbGBHkFQhufjaR3z9svAZkJQ7blt6+WIwReN51lwJpPRD33laR1Lz2SJQBc3W0oQxPad0Pcdn+JwcE3iDf4tur8ZsJFed8sUsoUXAWCZt8vEGSP8Mjur4lI/752ukCx2V7T5Nm06nUk8yGXBdevsi4SyH+6kBgz/O7pjF4Cx0cGMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8y9xn6Yu1oRWAftqzyoraLKXUmvic9ds88bl1dOwKR0=;
- b=dmhXGdPA5yQhN0AYQO2ztMrhCledxAdfRILgqH8kLcULidISAO/kS25osLJhgD9sG/crJprXuxDJdCZej675W/M1RYZzXX4LZIB3fz5xAnF56rJ2WJslfS05ZwTmPd5YxHM3dPqk58IPsAEDYoNQ0GFpaQg8mUE/9/LHdNjq9y9vwxf4J/FixLQVQQuPFFtkTht0cA3W19+FL/0+zbpHEC1ytVHOhLzGqq0PzqozjnKG39QD17bB8m26QdDarXPXLq6brgfPEtBmcvlvUJQbo2mdvTSbF3eT2bVWLLGmZlEdyd1kT0W4XBoMk5NpXgWjHfLRonM/kNh0NwNUrpzJrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8y9xn6Yu1oRWAftqzyoraLKXUmvic9ds88bl1dOwKR0=;
- b=nmK2sIs9dANX1kIQQe8eRVlEzVe9neJQlylHh93yF0DuZkRvvkIC7CBQUGhxRLAq/04cyZozgVqtyqZc09aCW17Fsvf1d+NPMoV+3WHX/fse+3gw1B+jRYa9G8IGAetdwdx7OkLQR0SrpAwFzk7mK/o3GVds5/efI3th0O3AbRuKYWYNkj36P33MsSD0Nt+hgPYCrskqWQe1e6JUF4cKbL0mnpKuHfJVHhfcXKfCYZq6Oh7W0NLuxS+oVT0iByUc5E95CGdiV4oFgpjqP9ybLmk3Hc8hUDmcCYKHIxhoL06hNhY86yQGJVUk88DVvZOU/qWmlNQxV+ixNliy0e36qA==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by LV1PR12MB392019.namprd12.prod.outlook.com (2603:10b6:408:514::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Wed, 28 Oct
- 2026 14:00:29 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0569.007; Wed, 28 Oct 2026
- 14:00:29 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Muchun Song <muchun.song@linux.dev>, Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- Frank van der Linden <fvdl@google.com>, Michal Hocko <mhocko@suse.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Chris Down <chris@chrisdown.name>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH 2/3] mm/hugetlb: preserve CMA flag when returning folios
- to the pool
-Date: Wed, 28 Oct 2026 10:00:26 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <379883F4-4F55-4206-98DD-CB10D5DAF0FA@nvidia.com>
-In-Reply-To: <0005A5C9-47ED-45EF-BEA8-2693DAA7C46E@linux.dev>
-References: <20261028113319.38544-1-kaitao.cheng@linux.dev>
- <20261028113319.38544-3-kaitao.cheng@linux.dev>
- <0005A5C9-47ED-45EF-BEA8-2693DAA7C46E@linux.dev>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-MS-Reactions: disallow
-X-ClientProxiedBy: MN2PR08CA0007.namprd08.prod.outlook.com
- (2603:10b6:208:239::12) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=IMQLUPm/67qUcr0JLF2vtMs9Hk5VtkMsbxTot7/xi9Q=;
+	b=Hg1I/nBoCoX6fdA+ZdJebhZJoaaTl74lVrU9uSShWBD1K0DzyZkF/V5QpwE8W8Ay6UtqLZ
+	cTyv53oTnY3B7o4zg/kyzwkSLmgqB+6go9FMKA3q6UlyLOyNoeGUQqxFSztek1XaCVDmjC
+	tgn4VVT80+2CcsUndRnXQXI+CQT1i6w=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hL/RI1Rv";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793196201;
+	b=6Glt6+gVSRsd01pWfDjY4J0m48HJyY5zeajJraR6YEx4KamtZfvEytYnNnpsjsV+wZ5RZP
+	hJ3UVkJiMQ3a3e61cMZS2cHIYCSZCs96CLJ7HWZ97y8eYiTMKevRIDGTqI1JieoUFifeoH
+	NRdsVUy7zE+7Dp7Y9J/f2Vrz/KnUti0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B539860120;
+	Wed, 28 Oct 2026 14:03:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53601F01825;
+	Wed, 28 Oct 2026 14:03:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793196200;
+	bh=IMQLUPm/67qUcr0JLF2vtMs9Hk5VtkMsbxTot7/xi9Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=hL/RI1RvRG8d7lA0UDIveNAv1zkuZqXJNVB8amjJb/jpad9fkMhvPK3gdmGxt6p0s
+	 jpHSUDbxDVVMABGR7O34IDXeDnf0zchzM7T/AiyZx3BRtvVBjunyRrNVBhzd4WvRjr
+	 4FNBLU7GFbWLSrXG19FFFTsDNLCtAoUxRsIM3Pg0oAYox/OyI528kRnOpd4KWYGi7e
+	 Mae0FOnR+jP0IYktREnfGvCJiwjmeAnFAsIPgn3pCJqkmSgE6U2q1Fj44HazvtTkVO
+	 fwrhanAniFFdYTIa5UO/Q91pJuoFzm3ck+WoNob3zkYnMOfzhOeoWNFK8REMSKTXwa
+	 7yYFxyCzJTZ3g==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,  <ljs@kernel.org>,
+  <liam@infradead.org>,  <vbabka@kernel.org>,  <rppt@kernel.org>,
+  <surenb@google.com>,  <mhocko@suse.com>,  <baoquan.he@linux.dev>,
+  <pasha.tatashin@soleen.com>,  <pratyush@kernel.org>,  <graf@amazon.com>,
+  <linux-mm@kvack.org>,  <linux-kernel@vger.kernel.org>,
+  <kexec@lists.infradead.org>
+Subject: Re: [RFC PATCH 1/2] kexec: do not place the next kernel in a
+ fixed-address CMA area
+In-Reply-To: <20261014145731.3431527-2-radhey.shyam.pandey@amd.com> (Radhey
+	Shyam Pandey's message of "Wed, 14 Oct 2026 20:27:30 +0530")
+References: <20261014145731.3431527-1-radhey.shyam.pandey@amd.com>
+	<20261014145731.3431527-2-radhey.shyam.pandey@amd.com>
+Date: Wed, 28 Oct 2026 15:03:16 +0100
+Message-ID: <2vxzh5i5orbv.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LV1PR12MB392019:EE_
-X-MS-Office365-Filtering-Correlation-Id: 00893eed-180c-49e0-5202-08df34fbd2cf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|7416014|366016|261026140227099003|4143699003|261021121427099003|11063799006|56012099006|261009223027099003|261022105027099003|261021123027099003|22082099003|18002099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	3cDSln/TE4Xtb7iuTek8vSpu2tm6ET36f5WlQe1daY3zXL7Lwhfs7TwWrvBz+bT9AVwRz6vqCZfuY0rx7bCZqCnLOHaFz7IbYRodrs/mJ2/f10VXJfYdLoPX/WhnDrZXGMKVVRAszapsReouJ/EhDQrFKsihHkvdoDTzx7joIsLMp6/J/HJ3N66tcryM45Hmruh1/cbzVoNxc1j5HWww3KlacgLN0pDQmd26DGvWnHrEFtv4h/UcOkVneSTt8Rumqro0o+EGguoZObJv6yPIlv7xGFjcFaPALzo/y3TeSmNfH840PlM2uN5A5pFrYyTf1HisVbFNy7Jc0eV/WjVCmwHUb8vJz7dGGimYmi1BaL36KWKdnOrMySsCbC2ShW2Mm0mjxS0EpPDPSDBpQ1iUOIadEKzaO36Fclolr6vfnLGfsbpcyBCDW50t8yDvuUg5lOtMWyOFU5RX52asCOSE2Cnif3sEhALwee6sPOoNXLwA9JTNevcvjJEOF2l19vdlIItfi02ZsU3N1tUO4lBEaBfTSTQlHRiak4tjJDdC8qADpCDZSROv1/2IOLSGYv6SRoJepcKQQOmei37T0ctRd4Qi7ktb7iC8P4lhZFx7UG4P0aqqe02pMYpHEuIknVkcWaev+4L9OOprRgYMPikaRhAPFTEjDzQhkTweryfkT+I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(7416014)(366016)(261026140227099003)(4143699003)(261021121427099003)(11063799006)(56012099006)(261009223027099003)(261022105027099003)(261021123027099003)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zXEFne5c7hFViezA+/eisHTEC79Ya6gzmyNx6s9WoCn5/4QveTAljwSK9ux8?=
- =?us-ascii?Q?4TfVAe8uSF0GRDvhr2TuIIyt9EtXKE8oOOQdOKj3+f3nKgCsQFINJs3cbHti?=
- =?us-ascii?Q?Lro6jwDUhHyb3N8cdepahNTfNqxKkaxSPFfnX/qR0VjneB8X5TFn2EB5ljma?=
- =?us-ascii?Q?SrFUl4iyYwHHBY6Hc03/ei6wNwpCyXtfwwug4T+crrelnp3uy1NYyT96+JEt?=
- =?us-ascii?Q?K/ME20nA0oXTU7dmD7kYRBGDicGmMvfnGQSXMg3a4GWxEFrO6qS8r2IIqb9r?=
- =?us-ascii?Q?WDfzH7PiLqdEnEzp/f1dUIjIz1NDQhMs4M/QvpRRSgv5QIJbvkiUDlSD8ZO7?=
- =?us-ascii?Q?BgBwRLaZE+OQY8KDxiyj3zmlXEN1mwt0nSvtdqJd9DPtKp0SEGignXLz1Rjc?=
- =?us-ascii?Q?bSNdhdRGjRAhK1sDFAKRiYIxIVHodQgpxkChxjTbmz3sv6cMAcL6/GQCCfZx?=
- =?us-ascii?Q?S+BR96tY6DXbkIVBmiFlTabhuCgkI0tJtmMw0+dWQKY6fx45FLy6YzWeg21x?=
- =?us-ascii?Q?IyQBTW0mSK6s9oMAW7S22nVQq4Clih+IaBFZC55COFr1N6fphI533+pXyTHA?=
- =?us-ascii?Q?I3LXHXjINfUFZlPakKG0HnWMLzDPwB6CMkYxajjfJxRSm6ze0MW6ei2dzwsw?=
- =?us-ascii?Q?br6cC0FGXcOciLtJeklsdgrAzJcxspPQmx5j9yg+8rdG1HJQPZfa150GZHT0?=
- =?us-ascii?Q?7UzODhwimjLerE/0dl2Q4da6YKCIiQlsQY0NIL+88YrfFB3d/e/N8oZY+vG9?=
- =?us-ascii?Q?incAyyej2ZvGaUppqlkXVp+HivTjvs9NVnwedc+IY6MirJdZa5uUdl2vL4eR?=
- =?us-ascii?Q?t6VFhLGdpl6MWDNBYWvx9VV6GhRvcjHeOApSOR5Y+4BwYuor7RMTO4V0C4bD?=
- =?us-ascii?Q?5KtNHarC41Mp59cf7ReJ1seQkGXCqsBRfKQxUaadabpalKbLLrr9fcvUPRNU?=
- =?us-ascii?Q?dYx4VUKDs6nxGKm9V1/bHSn9+OW8jqpgCT82Srzi4ByYFgDBuo2IoA2t1boq?=
- =?us-ascii?Q?TO1dD7ScyRrM+hp7+OV1wZqGjhgKtzMJ6jbxyBMcHthurNmhgqs5LQq7UlsB?=
- =?us-ascii?Q?Ek9GzLcO0F145Vc0ItcVNZXearxTZnmuSRm+w69rjKeagXH6U9qHgQFjfyKS?=
- =?us-ascii?Q?705U9o6GsU3Uf+ISRnksGATkFeOxGjh+ifABk+Uj5493rMk+Oz0utEVf4WfJ?=
- =?us-ascii?Q?ZLa/OBk9wl2xMX1bXOo/IMPxmdWkQyFDe5k8L0SdcUkAwWzZgeSR1qWpGqZ9?=
- =?us-ascii?Q?qPbWP0UMZ7IV8Pt0OTNFPpz3DFfBJfHkCxV/rxumhceDLeVPsZ5XXS/DWsRz?=
- =?us-ascii?Q?K/RdMxnEKNpyXACJ4bt0cOh5EaGF0a+RIv7DDs8cKZW/HwBDLv6jf3/ziL8z?=
- =?us-ascii?Q?sBu2WMHGlf7kiFK3HrGsWEx1teAFh/kR6AW1ihmPH8EOs843gYm1xnzLFaOd?=
- =?us-ascii?Q?8QDAOzJ1R3pzPS8V9TZcm5yUupYIA9LbsvoByIqIexA5oD2AHdcM619A2tCG?=
- =?us-ascii?Q?5um0/mv2ZPsfYCEazJOFQpZRVILo2/B9XaDzgEeG+of9AFxq+ydsuMdvmDBg?=
- =?us-ascii?Q?VyfbLELRfNIldCLVytOV3nCBHr/pC0mf5rscnxxhNKBitlZJ3k6x9/cNIWTd?=
- =?us-ascii?Q?XeyCG9TvgbOhNq5xiCEPT6owgmff5NLNYVrRUdusdD7i/xZ9fIy1FG48feuR?=
- =?us-ascii?Q?iS1GmWrz5yGbrnJIGteEOWAmKZ59cywMk3YRJcRqeDZgRJZqnF9nY6JBOgQM?=
- =?us-ascii?Q?MDsJ5aUYWQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00893eed-180c-49e0-5202-08df34fbd2cf
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 14:00:28.9968
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8wasY80EsDgZuZNXw/uLEFoszTSkrVUsqvCLEhI7sVKXtIL0Wgis2vE5jR5G0g2x
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR12MB392019
-X-Rspamd-Queue-Id: C05C418001D
-X-Stat-Signature: ihspz1rxzpbyz5k41f5msdatzokz9t7j
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 53F8240007
+X-Stat-Signature: uhg5n3dwgdgy5d5gitkt949c9jef6mxo
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793196035-609467
-X-HE-Meta: U2FsdGVkX185tWoVuh5DV5ZeVdBr/rglaJxPdjqdmUHvT/NCl6etpiVZnCfRqC8rI/MLjVsrVxKBERJxVRn+5oq7DRFjYHfx9tVFy4Iv1nxfRS+zTAklsfK4FEOw/iAxwYiNlRsufbbr4lfjdq2LCbG35/bnzhwr3VwF7gyh24XCjlVMhKrk1hKYuyql3/xLb4bWg/wsmZKyscFcoul/0K1CmOxQSEWC0BziNXXGwxU20MdEW2KDz/aOAIE23DTc1q6MLhzGWhnTJwJRf2RLIQKVbFcAs5zuH+uEc5gHWeBpkuGPocUwPnZOLfll7CqJ7GuY99TtLKVgF4oRuqnMHxevgSBN9MrsE+Prr41DSwAh6NE8poc8HfQkbLME6kFfo32VShb0jPPXzdT05nOqFnGZcSYWIZSnc5JOddYjWMqO3vhzrqw+dv5F3FAp/osq1dZ/d5IKmpaSM5G3mTf5O0A2tSnsY8UG6SW1Y+foFqW+nbIDgNX1oSfVPWZ0Y7+dKz4MsJZpg/O8WkoYfgMTA+LZxiuB39kCeULQHbDSPN9c7P4PrsedGAAVbooYyaRJ339cwd7XZVeuuulFx0tQbcqLvZjgJRSkvMfHyCMThrBrLOZQ27GHnnH0yF8Fnc9Kjyo62Jtzpd5lAVRGj84vZ2T3wLtQ9Z/BxaYPTIlGn1+PRBBE5gFPZ9Esm73gp0mzMwcOklNfSZbUJifp84e8UW5ZhSV7vCS/nWN59rK2w6z/jEHwFOIioQNlZpAolGCOWLv2uWOqIU0/VjZ+6fk9sqJ7XhmTr70wxFTBV0ZCVqcSavxapYFlRCm2DDWKg3evkwBVpGN8xF7SxDzeD84idoQ7kWi6lrEVSnGCw8pdHZQY5VFRJuQ7AKTi4oYzXpwzEDytpW1Muw8m0kopsbwf99SvPh+EXlhvV7PFo6N27uLF4G4retonq/2UVZ6nsJqwGDCPzr75PsZhjXo87VK
- WNHL44oF
- VP0YB9rwoXgdsnl8Xa+ZREV6Y2GR/mzhn+aH5oAzd9p6IeZ/ilujVPm6q0q7rtWmbYmInpuztTfngigS7Zhl07IggffWLRAeEqnkLqGdj8lJIo/19ICGRtQ+Wt7GufAjitaCYMAzXIhGloQdXE21vcRCXEnvNzXaEUNROWj5t3vyOYSOO77jlH48Q4+9InmudtT6kqBgtviYknboyYu9a6cfK7pFtBUTsxu89QcqiAcZ+gHBa1CgXPyys2pH1fTmP33h/z+aEUzEUTxOy+1uu+FUn36AeMJkv+yet8tbRKi/tHFMDWYRiZrDAEYLjkFETAHGjVtpLUg2987FaO8JLGyVt6+v76Awa6npZ0iKfFN7hqvPDn/APpQSpcMGX+0JLg0sVPbjQaZ7UbYVe1CTDFR12S71qmT7EgOBLiXNkw5Q9WhPp9nUCgAfDoH4lV+WcGTdqjM5JR00Q7ptI7Fe2Qhq/kXlvJyHePjtPz0S+m3uES62kdndq4V7Vzdr/7E4lr1ZdVntu1sF2ypRqBSxmgIWRT1is2vg6c+KowhhbwF6B+rU=
+X-HE-Tag: 1793196201-231028
+X-HE-Meta: U2FsdGVkX186JgTkpL4LIzUAWuPiCNzOWLcFAbt1DqxHdJHpz9s2dm0nWZmvMybWJX5YkRKMV4LwwnNOMCYg0T9JQ4MMQBNjECZEIbjtVAgtjSDOlf4Y/N4XOcdNlksAyiEtjwqVdjNIwOkoz2ExcLGICfBOSfBQ5C1rIfjLPiBu6peLNwGuJVipT2jYcw1v0LPpqxHIERWKuZ7zonvzP9JGOmi+ixkFwIFRXAGvDp2s7DQPTazO3IsLKS3u3F+xoKQ8JBP45yrkArcrGvzF2/dMBP2GDQG4kZHlGBse4LIS9RBhNS2n3eT+L5nB4u68YjbeERuqfWDHupRmiplzeUnADIbrf8AMdKrQJ8+0z/O8tHstzKNyDoij7ejBvHlmaUYpDONxRf56CMTZDGhcgCscCGhcYwt/4PjmFQJR+rYmV26I5CUVYXDrRk4Emdj5Z/OCMEKubnVMYwJNiwnYRam2peNSgINv7pXCTn7DyFojtHPR0s1H03LHH+yoNcBQFZizit+4SuRQ21K44JaUmYJwpwtxq68zn3u9d5adp+Vdo4PT7UmKw1dVSuLExAf5EO/ZipYCy1fvJxde1KkqDvf/4ZouO7BfD0iG6LreJ2cphyq48/Dm/DUINzgV4Zvt95YgGFFLPMp4vTiLi1Y17++UPQcYn/6SIXXs1JfHMnF1XjjAnpONC8IpdPPBnj5FdWjthuolswd/w9iEqDy+ds5xeTmJFAf2nnM/BfLV2IKeKE97lwWhebSnDdqqLUJKjCmv6l7bEblw2vOoHPbmfIjvP8UX6Xt2qmd5ikKULY6UmifhFw3s6WIaYkZDIXvL3gA6IusFHsKGNxLcomP4iV37PefN91bqxzKWW6BVVpzIBzOqtRy72l4w5CJRyUDcb/KRtjmmNdHc8wJh4gWYwOFu5QQX4hJ3jgHh/8XFVt4yQQr8eLovyvHqyEo9P/nXXLTzsh6pGWRnaL80D77
+ wlfAqOGc
+ rpgwdw7gfX8BE5oLz+irQi1WKjRpMSWzKRt22bmEzWc+Ys6NMONAbWXD4TS8uGPYJRPqDuNP7VqvoSJWMLROFQISHJCVwKPUeIFketWZEfbaJVpVAw3OAzg7cknzi9/Im84G4IZC/ZuKcDdZ7lPBDn2KUv5j6zTFHQeChqx6SDF6j3Xf9V6vm1Wh1Iiis5NUQNo4fOS5biCf94mIS8gcv/w/Y8vyCKr6IC7FE1+Htlzn4Koc17S6erOjhZMy0ElEBC0rPpppYZ9poFQJnDTt3swae7LXpz15+zT/b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,92 +101,174 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 28 Oct 2026, at 9:56, Muchun Song wrote:
+On Wed, Oct 14 2026, Radhey Shyam Pandey wrote:
 
->> On Oct 28, 2026, at 19:33, Kaitao Cheng <kaitao.cheng@linux.dev> wrote=
-:
->>
->> From: Kaitao Cheng <chengkaitao@kylinos.cn>
->>
->> When vmemmap restoration fails, add_hugetlb_folio() returns the folio
->> to the hugetlb pool. It clears folio->private and restores only
->> HPG_vmemmap_optimized, losing HPG_cma on CMA-allocated folios.
->>
->> A later successful free then bypasses hugetlb_cma_free_frozen_folio()
->> and returns the pages through free_frozen_pages(). The CMA allocation
->> bitmap remains set, so the range is unavailable for future CMA
->> allocations.
->>
->> Save the CMA flag before resetting folio->private and restore it along=
-
->> with the vmemmap optimization flag.
+> kexec_alloc_contig() picks the destination of the next kernel out of the
+> default CMA area, and the next kernel then runs from there in place
+> instead of being copied out. That is only safe if the area will not exist
+> at the same address in the kernel being loaded.
 >
-> We already knew this issue. Cc Zi Yan. Seems he hasn't sent a fix.
-
-Thanks. No, I have not formed a proper patch yet.
-
+> For an area whose base came from the device tree, it will. The loaded
+> kernel parses the same description, declares the range it is executing
+> from as a shared-dma-pool, and cma_activate_area() releases the pages
+> holding its own image to the page allocator.
 >
-> But we want a different solution. See:
+> Distinguish the two cases. An area placed by cma_declare_contiguous_nid()
+> without a fixed base lands wherever this kernel found room, and the next
+> kernel repeats that search against its own memblock state, so it cannot
+> collide. Record the difference as CMA_FIXED_BASE and refuse to use such
+> an area for the payload, which leaves kexec_locate_mem_hole() to fall
+> back to the memblock hole search as it did before CMA placement existed.
 >
-> https://lore.kernel.org/linux-mm/A1A14368-7A43-40ED-B2AB-C2EC2C5FFB1D@l=
-inux.dev/
-
-Feel free to grab my version from the link and add
-VM_WARN_ON_ONCE_FOLIO()s Muchun suggested. You can add
-Suggested-by: Zi Yan <ziy@nvidia.com> in your patch.
-
-Thanks.
-
+> This is what makes the KEXEC_FILE_NO_CMA flag unnecessary on platforms
+> that describe their CMA pools in the device tree.
 >
-> Thanks,
-> Muchun
+> Tested on a AMD Versal AI Edge Series Gen 2 VEK385 Evaluation Kit whose
+> device tree declares three CMA pools, the first of which is
+> linux,cma-default:
 >
->>
->> Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA a=
-reas")
->> Closes: https://sashiko.dev/#/bug/linux-5363eb09-9c3c-4f8b-9f3c-a998a8=
-c4b258
->> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
->> ---
->> mm/hugetlb.c | 5 ++++-
->> 1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 4a008afaedf9..8da4bab676c9 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -1437,6 +1437,7 @@ void remove_hugetlb_folio(struct hstate *h, stru=
-ct folio *folio,
->> void add_hugetlb_folio(struct hstate *h, struct folio *folio,
->> 		       bool adjust_surplus)
->> {
->> +	bool cma =3D folio_test_hugetlb_cma(folio);
->> 	int nid =3D folio_nid(folio);
->>
->> 	VM_BUG_ON_FOLIO(!folio_test_hugetlb_vmemmap_optimized(folio), folio);=
+>   cma_reserved@800000000     4 GiB at 0x800000000    (default)
+>   cma_reserved@50000000000   6 GiB at 0x50000000000
+>   cma_reserved@60000000000   4 GiB at 0x60000000000
+>
+> All three have a fixed base, so kexec_alloc_contig() declines the default
+> area and kexec_locate_mem_hole() falls through to the memblock search,
+> which places the Image segment at 0x9c00000 size 0x1de0000. The kernel
+> that boots from it reports its image as [0x09c00000-0x0b9e0000] and
+> 14680064K cma-reserved, i.e. all three pools still present and none of
+> them overlapping the running kernel.
+>
+> Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+> ---
+>  include/linux/cma.h | 10 ++++++++++
+>  kernel/kexec_file.c | 12 ++++++++++++
+>  mm/cma.c            | 16 ++++++++++++++++
+>  mm/cma.h            |  2 ++
+>  4 files changed, 40 insertions(+)
+>
+> diff --git a/include/linux/cma.h b/include/linux/cma.h
+> index 8555d38a97b1..2fe66377e5d3 100644
+> --- a/include/linux/cma.h
+> +++ b/include/linux/cma.h
+> @@ -61,4 +61,14 @@ extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
+>  extern bool cma_intersects(struct cma *cma, unsigned long start, unsigned long end);
+>  
+>  extern void cma_reserve_pages_on_error(struct cma *cma);
+> +
+> +#ifdef CONFIG_CMA
+> +bool cma_has_fixed_base(const struct cma *cma);
+> +#else
+> +static inline bool cma_has_fixed_base(const struct cma *cma)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>  #endif
+> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+> index b668ce8d68ee..10e770bcee0b 100644
+> --- a/kernel/kexec_file.c
+> +++ b/kernel/kexec_file.c
+> @@ -28,6 +28,7 @@
+>  #include <linux/vmalloc.h>
+>  #include <linux/dma-map-ops.h>
+>  #include <linux/kexec_handover.h>
+> +#include <linux/cma.h>
+>  #include "kexec_internal.h"
+>  
+>  #ifdef CONFIG_KEXEC_SIG
+> @@ -691,6 +692,7 @@ static int kexec_walk_resources(struct kexec_buf *kbuf,
+>  static int kexec_alloc_contig(struct kexec_buf *kbuf)
+>  {
+>  	size_t nr_pages = kbuf->memsz >> PAGE_SHIFT;
+> +	struct cma *cma;
+>  	unsigned long mem;
+>  	struct page *p;
+>  
+> @@ -702,6 +704,16 @@ static int kexec_alloc_contig(struct kexec_buf *kbuf)
+>  	if (kbuf->image->type == KEXEC_TYPE_CRASH)
+>  		return -EPERM;
+>  
+> +	/*
+> +	 * The next kernel runs from here rather than being copied out, so it
+> +	 * would declare this area again from the same description and release
+> +	 * the pages holding its own image to the page allocator. Only an area
+> +	 * this kernel placed itself is safe to use.
+> +	 */
+> +	cma = dev_get_cma_area(NULL);
+> +	if (!cma || cma_has_fixed_base(cma))
+> +		return -EOPNOTSUPP;
+> +
+>  	p = dma_alloc_from_contiguous(NULL, nr_pages, get_order(kbuf->buf_align), true);
+>  	if (!p)
+>  		return -ENOMEM;
+> diff --git a/mm/cma.c b/mm/cma.c
+> index a10ea37a261d..1f4d3d48a3bb 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -55,6 +55,19 @@ const char *cma_get_name(const struct cma *cma)
+>  }
+>  EXPORT_SYMBOL_GPL(cma_get_name);
+>  
+> +/**
+> + * cma_has_fixed_base() - was the area placed at an address it did not choose?
+> + * @cma: Contiguous memory region
+> + *
+> + * Such an area is described outside the kernel, typically by a device tree
+> + * reserved-memory node, and so lands at the same address in every kernel
+> + * booted with that description.
+> + */
+> +bool cma_has_fixed_base(const struct cma *cma)
+> +{
+> +	return test_bit(CMA_FIXED_BASE, &cma->flags);
+> +}
+> +
+>  static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
+>  					     unsigned int align_order)
+>  {
+> @@ -304,6 +317,7 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+>  	cma->ranges[0].count = cma->count;
+>  	cma->nranges = 1;
+>  	cma->nid = NUMA_NO_NODE;
+> +	set_bit(CMA_FIXED_BASE, &cma->flags);
+>  
+>  	*res_cma = cma;
+>  
+> @@ -517,6 +531,8 @@ static int __init __cma_declare_contiguous_nid(phys_addr_t *basep,
+>  	}
+>  
+>  	(*res_cma)->nid = nid;
+> +	if (!fixed)
+> +		clear_bit(CMA_FIXED_BASE, &(*res_cma)->flags);
 
->> @@ -1453,9 +1454,11 @@ void add_hugetlb_folio(struct hstate *h, struct=
- folio *folio,
->> 	}
->>
->> 	__folio_set_hugetlb(folio);
->> -	/* Clear all folio->private flags except hugetlb_vmemmap_optimized. =
-*/
->> +	/* Preserve the vmemmap optimization state and CMA allocation origin=
-=2E */
->> 	folio->private =3D NULL;
->> 	folio_set_hugetlb_vmemmap_optimized(folio);
->> +	if (cma)
->> +		folio_set_hugetlb_cma(folio);
->>
->> 	arch_clear_hugetlb_flags(folio);
->> 	enqueue_hugetlb_folio(h, folio);
->> -- =
+Nit: This reads a bit odd. cma_init_reserved_mem() sets the fixed base
+and then you clear it later. Wouldn't it be better to just pass the
+fixed boolean to cma_init_reserved_mem()?
 
->> 2.53.0
->>
+With that fixed,
 
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-Best Regards,
-Yan, Zi
+>  	*basep = base;
+>  
+>  	return 0;
+> diff --git a/mm/cma.h b/mm/cma.h
+> index 68e574b0f951..1bab24033284 100644
+> --- a/mm/cma.h
+> +++ b/mm/cma.h
+> @@ -80,6 +80,8 @@ enum cma_flags {
+>  	CMA_ZONES_VALID,
+>  	CMA_ZONES_INVALID,
+>  	CMA_ACTIVATED,
+> +	/* Base address was dictated by the caller, not picked by CMA. */
+> +	CMA_FIXED_BASE,
+>  };
+>  
+>  extern struct cma cma_areas[MAX_CMA_AREAS];
+
+-- 
+Regards,
+Pratyush Yadav
 
