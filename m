@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235F2606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46B3606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jCDyC8ok
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=izn1ZkeJ
 Received: by kanga.kvack.org (Postfix)
-	id 34BC46B05B8; Wed, 28 Oct 2026 04:16:55 -0400 (EDT)
+	id F33466B05B0; Wed, 28 Oct 2026 04:18:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D2EC6B05BB; Wed, 28 Oct 2026 04:16:55 -0400 (EDT)
+	id EE4236B05B3; Wed, 28 Oct 2026 04:18:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 176916B05BE; Wed, 28 Oct 2026 04:16:55 -0400 (EDT)
+	id DACA76B05B4; Wed, 28 Oct 2026 04:18:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE55B6B05B8
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:16:54 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C701140BEE
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:16:53 +0000 (UTC)
-X-FDA: 85371329106.06.C5929A4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9C4E61C0005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:16:51 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jCDyC8ok;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B5F196B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:18:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB1A0A0C54
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:18:34 +0000 (UTC)
+X-FDA: 85371333348.14.1EBA2CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 060FEA0009
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:18:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=izn1ZkeJ;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793175411;
+	s=arc-20220608; t=1793175513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2SbShK97MZ85y0KD6EulcgImPc0M61Sq9vGvevV4OQY=;
-	b=0rr8gN9IkMjztrRJTKMVqQCbFPoh9Jxoj+Fa4We7z4ct8zg+iBGL7k0DczUzu40kmDuf7O
-	6O6NfvLMcQVHaFN7zYJHqSq57j50KqWfLOmIfHyw2krjldInTCZRA/MJxWguRqbzOHPebf
-	IYFL2ToBdy05Qh0XuzJVP5ZwSPHrpaw=
+	bh=rfg1cZlJEwCYeHTThqQx/kzAjyEawogFMalQMObgNNs=;
+	b=heJo5vTXGMmyO7oWg6tzjUkzQU0Pugev/ate1Wbm904S763WQQHKThY402lXwVfAmUjIDp
+	R6dMw/r91vOkcX+PaEk7NXLMR3QSBDgmVnq7Zqa8XmFIu9vrARbNqFKfIMeQDaB1OvLkZV
+	6e1vOKsIVDtrDmpwIxgJoQVO2vy9rAY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793175411;
-	b=40jTHkiss8DHspgg4v3olUl5EbXISf8Cgr2zBCRjFioquFAT/gZQZanyomnppIcN1aFjtO
-	ObLXy2rRmBP8nyX//4QrfPBFHEG4OlPRBLqjlnTCywTBQiqjkA9luKowyoOLxAFHkpzxhn
-	iV6hTN9DPZikH7F+MQCYt0qlygEAN5Y=
+	t=1793175513;
+	b=iQt6kyV4K51Y8JPk6AFPIhONPue9Sh6NOzKIuS8WPN9vAsgoQGKZxz+Ogzc2PXg/L6qqwy
+	hCg5qq2qF26KLjogZ8h/KBbQRBJIGHq6cY05HOBgwdyBnm92YmeZG8rUWmfV5K2T+GOhx0
+	kyVnj+EUgjX0EI3Jr1KoHGVl08JLkIw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jCDyC8ok;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=izn1ZkeJ;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B7FC142208;
-	Wed, 28 Oct 2026 08:16:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B7C1F01825;
-	Wed, 28 Oct 2026 08:16:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7E80E600CB;
+	Wed, 28 Oct 2026 08:18:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE98A1F01825;
+	Wed, 28 Oct 2026 08:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793175410;
-	bh=2SbShK97MZ85y0KD6EulcgImPc0M61Sq9vGvevV4OQY=;
+	s=k20260515; t=1793175512;
+	bh=rfg1cZlJEwCYeHTThqQx/kzAjyEawogFMalQMObgNNs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jCDyC8ok1EAtBemPTyE0fEaa8zBu8wdILXDuDlpXS9nnr+VVOWOsINKYRo0N2twMr
-	 xVJ3b6czM53QXz06HU/Eb9nkPGbrgrb96WXdGDd7kqo000v7zbKenf3euRolPgTN5D
-	 0GH5kIUbRcDn3KhovrrLfbOjYbIeO65d0eK0SO8S/0Qc/7eEA9FqKbxAWx3tHaN+0O
-	 b9EEoHYN49L9Hk3N7i9dpabSSf8s5Zj/VOKbJ/ZpjQaAyA7h+1dKAMfwjAQP/Gvb6p
-	 cNBn8nXLmRSE5/VmahsYgyjtVPBc3vVMJ/vfR9rM4LOLQnYvedSEg9WTh2qXSaoJpa
-	 LPh8rswVKh3TQ==
-Message-ID: <032c036d-f80e-4b3b-b650-2b30b7a2f3fb@kernel.org>
-Date: Wed, 28 Oct 2026 09:16:31 +0100
+	b=izn1ZkeJiAVyrZlZw/L12WrwvmU9O9TkhkIMYNeFuVV3QwF+dw6E6BnNte8AiawuX
+	 V4xa+DjVJZXhwb5An4LGNvsgrUubDnomzrscpG6wexo/M14K7qD7WbjYWr1SfVEaTd
+	 AMkXsm0mtFAhikKH3fvL5DsiOpBnOYXnOslQmQLqvPGzEO+Fzs5Jel7RNmnq/bYJFW
+	 wzwgIjUhuSDrcUKqPEirYiuau8fXKzIffDyoMU2KiJUhvgXXCjqI2ADqU4XbpQD0Tn
+	 pYDUfJZhkBy630Bqk8DYa2RyUOuVUbSxoXiHNg6m5Poej1wzj+GJCLIhuEFesgWzl1
+	 NnCJrrGyNgccw==
+Message-ID: <7193e4ee-c5c7-456d-91f8-ef6f465f9803@kernel.org>
+Date: Wed, 28 Oct 2026 09:18:14 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/46] mm/huge_memory: fix truncate racing with PMD
- zapping
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH 43/46] mm/vma: don't leak the charge for stack growth
+To: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
@@ -84,8 +84,8 @@ To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  Pasha Tatashin <pasha.tatashin@soleen.com>,
  Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Alistair Popple <apopple@nvidia.com>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Alistair Popple <apopple@nvidia.com>,
  Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
  Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>,
  Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
@@ -98,14 +98,14 @@ To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
  Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
  Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, stable@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-13-6f74bec9a5bb@kernel.org>
- <DMG4RXAC0531.1TP9FSMKUMZS0@nvidia.com>
+ <20261027-fixes_core-v1-43-6f74bec9a5bb@kernel.org>
+ <auEJGq46amG5oPVQ@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,22 +152,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <DMG4RXAC0531.1TP9FSMKUMZS0@nvidia.com>
+In-Reply-To: <auEJGq46amG5oPVQ@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9C4E61C0005
-X-Stat-Signature: w9qe9uzrsaj7j79bik4ouw689rzg7a3n
+X-Rspamd-Queue-Id: 060FEA0009
+X-Stat-Signature: spfga6bnpcpdz98i13jub18fsym4gh73
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793175411-986852
-X-HE-Meta: U2FsdGVkX1/ZpXxXUU/bwb1TJntgDt8bcXQI1UolrzXXq4kOuGiol/K58fJP88huo0npkyokSLQaj2s4NLk2QXu3lIO4dumcL6q3T8332+Ps8DbC67jemAkO5B1DW1BjdNXX5416mgktrd1dHYt9v1sQk+We3f9bGmdc1LDS/OC2qTwqZkWh5KtyMywDHM8Z2WlTLU1jQUFPn75KcqgiGPIFLI18MaIH9sIiNhOxNXCSUDtZ8Vp5p347Z0rC4uWtPtIRKEGFLOVIlAMhrx8Gx/Z9BxUrt3MvlZutAdFy2fetUVhzAhid6JznOu0e0LkKG+QAw72RO6+kVoJxzKhIXKNfnNRLmDvjFSZuOcwf3gV7Nl6B0Ord0dQ8iC8xdu7wkpk1+c1FA2VnJIxxXX1XgURsDUEi/vA7cVjr3D6T7YuYuo+PK9AjIWsVGFHyGbwcEAcueys30nfrxAOpRpiN46jkG/4Yqr7IJo27QeOtpQUFZ6Y5RFwWI4D5LZlWeCTM39eYJHSgDmaESWKOqnoYfEh9sEmKbMEhvN4OFq+bC4pCJj42OtAHCy3BvUgg1oyEztoQNtQYURNpF2FJY3Yq7gIEyBaZ9LALrHHpckbIm+1fBboki5tGcNrmDhVRuEABE+jpQQBfQciGabgfzwi8FT5ACisOtdGSuastfmNCqHGXIIolZAOaFMlTUp2R128SlwqGzC0oYjgvdrr9E8RUjHhk7W1V8j1G9/doYO6G4oxP9clcocR+2W4BHhc+YHGn1bJAoSArcA3SFb0zdV1cgLZJoGuGf3XSFCwwnKPDHqQiF0vs2NdudMZjFR2R+b7aNU2u0qEIGPhsETYxHkqltp+yltL6mJ1f8e5obQPb+YYlXRC/jwhN06ZCdo5qDsM2m1HwZ7CEIU3slZv5b/KI1JS+r//FdROs9NqIISwE+rxWksTIrPv64ECJlS+bMpza9qWhxyLfcThfvLfM3uQ
- lj29nQO0
- 6KqpVrzcHg+Q5uw9l5GD+CK8i9peJnSABjgeo/inzzic7q1W7sxVPr5zCd3+VoO6hkBUcBrMaGwUBpP607sBILM3URpX4GGU6eY2PQgytdwqx+Y94Iw3q/gJjvJloBhIZoRitYQwPB8HhRqRUSZo97Lks6UFl+RRrFccLkX/c7/RL3uh0tMNhMMh3A645EqpkuxveUE0tHWiZDbRogQh4CA8eVRgtFKD1XTTXj8+u2Rn3sUvsDEAagBUd9L6ajvWGW53FitCXuykiAF/A+Cb7hBW1fUXDVFqARFrzrFY5X9N9Ejxd1SWauoPA/jSotW3hIRVyhq0Y8xZZqrs3lwb3XlopEYqJupiq3EUxUE8tetaNtsh5+FnKg4Z4UD/J92GkU4NEcinu1Lt3wdiPKj9xCzzx2w==
+X-HE-Tag: 1793175512-591614
+X-HE-Meta: U2FsdGVkX1+QomXstUNtYhatC8WYPGWCI0QqAhZCdIARX7iR234doe0Lrg4wsHIIypk1AzSfeumE7Mu/idlf/viMAHBTRsEK1uABEXd/NqwcqX7wcDPQL0M9stR1723nkVloKdxvWQKleuOEXn5k7xom532NoXeiuUIXOV+GsBW6ALL9xRqq3BLlbEHcvh01LG/vNpsOfaJ9l2bHS4T8PoCDArVFuPIRcIvNfy2RKewVp5SZMba/RZ6MZkt0kE1JtZ3kONQE9vw9vy9p6qM0Q4u1eGanJSr41zxpuYuZz+R/Bej2MjCB+H0IYvjjDN/zDN25qKmVz6C6wkOcQqwiMBxv1UHG+G9rWRH+E95XCtYhIzujy/648UqUvudO6pCSvdu01MlxfAstzGS5Svq8Wqj0glclxNTMVi0sq0OggrTZi+jhG2MB64NQLN9rrlinrYBH8B+PDKbEr4BWAM+D361102cYXEx/Xk9R8/b4pEPhKwd3PMz8RSXaT1GPZB62z4an7IRVIwGFvat12WCgN/tpR9YoE09ZczHLbivbVJduem05apvOGhLZhtT1GNDZUSK9niHxIiYLMlYhTrjoD/ezlFvAIthkJfEK1fmGVUiCd/XzW2jRFGIFE+rNdZ6kQSo17+Ptg4AVD++WXLF6003Ujsb5sN1Jfkeskm2l2pnKldY5C2lKePm7pL0JC5W3zy/OY4QIu7EcW2KY3E+GIRPShSnXFUIbKxbioEiOAt6E36vZq2yMIpxYDbyYBhk8dgjDaYMPjrfCUBXBF1GOzQmhPyGnLL2l3dyYYciw5TJLMnJcVzUKM9nKa7pRFE409AKtf/iRwl09hT7Pkjx4EQrYp8OnfLkqN5lflvhZlbNAQdCkIuYPKaeGqWBZP1uCTOvd33ajbcqpb/2Rdl9l91bmtYwYdejEzFtb7XmHZMBqHgSUpaKNBwktgF/BWFAcurwyc2oUi6FlkdGDCUZ
+ gd0I/cOI
+ 6CEnlEWZUyRDcIXV31vTatvjMSl66kzWurtLcJv7VEZ6J7Wcm1Bo0enztV2T1hunSqIkbmaXyACzwm1OHuYJhQR+56H37KJRT9Ir8b2cF8UponQSWhnmFekUxS4hRkzGAM9OjpNQ+BKluMGXvcl70MfHVUb6uYQkpC3RK09f+NziQ1CBOrAu4YbaOxuIZopN1iWmWPcLR8RWlTBeAmH7czGePiOL1KeIDuEKgI3U6oVUcZskiPcgwV/DROoO2mehOvAw5bC1dRBYSWQE023wSyu4KsTCeUE3JLP5/m4L8SG2LQYbgg2n62BNNXAOcgqNoT22eTDh8O9w3BGckbyhZzHMN8I+cK6m6Go6KMXP/0Znfn7gXSQ3yTfcIItoIjoC5hTEzX2N6SEMImOwiySiEVRSFfXhGB1hEOJHT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,38 +176,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 03:54, Zi Yan wrote:
-> On Mon Oct 26, 2026 at 7:17 PM EDT, David Hildenbrand (Arm) wrote:
->> From: Chris Mason <mason@kernel.org>
+On 10/27/26 21:32, Harry Yoo wrote:
+> On Tue, Oct 27, 2026 at 12:18:03AM +0100, David Hildenbrand (Arm) wrote:
+>> acct_stack_growth() charges stack expansion even without VM_ACCOUNT.
+>> This can happen for read-only or MAP_NORESERVE mappings created with
+>> MAP_GROWSDOWN. Unmapping these VMAs does not release the charge, leaking
+>> Committed_AS.
 >>
->> zap_huge_pmd_folio() removes the rmap before calling folio_mark_dirty().
->> If this was the last mapping, truncation can skip unmapping the folio
->> and proceed without waiting for the PMD lock, racing with dirtying.
+>> Only check and charge growth for VM_ACCOUNT VMAs, matching mremap().
+>> Unaccounted growth skips the overcommit check while remaining subject
+>> to the other stack-growth limits.
 >>
->> ifs_set_range_dirty() can oops if MADV_DONTNEED races with
->> ftruncate() on XFS, when we get the folio set dirty after it was found
->> to not be mapped anymore.
->>
->> Move folio_mark_dirty() and folio_mark_accessed() before rmap removal,
->> matching the PTE zap path. This keeps the folio mapped while updating
->> its state, so truncation must wait for the page table lock.
->>
->> Fix generated by an LLM and sent by Chris Mason in private.
->>
->> Fixes: fe6cf984939d ("mm/huge_memory: transfer the pmd dirty bit to the folio on zap")
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 >> Cc: stable@vger.kernel.org
->> Signed-off-by: Chris Mason <mason@kernel.org>
->> [ david: simplify comment and description ]
+>> Reported-by: Josef Bacik <josef@toxicpanda.com>
+>> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 >> ---
->>  mm/huge_memory.c | 14 ++++++++------
->>  1 file changed, 8 insertions(+), 6 deletions(-)
->>
 > 
-> It seems to me that moving the rmap removal code after folio_mark_*()
-> matches zap_present_folio_ptes() closer. 
+> Looks good to me,
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> 
+> Maybe worth having a warning when it's accounting w/o VMA_ACCOUNT_BIT
+> or let those helpers skip when there's no VMA_ACCOUNT_BIT set... 
 
-Yes, can do that! Thanks!
+You mean passing the VMA instead of the MM?
 
 -- 
 Cheers,
