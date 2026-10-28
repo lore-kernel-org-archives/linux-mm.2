@@ -1,162 +1,167 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741E0606A338
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01871606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=gy8OenAF;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=H8GnFBEZ
+	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=wkN1Gghj;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=gLG33pWn
 Received: by kanga.kvack.org (Postfix)
-	id 961E76B05B2; Wed, 28 Oct 2026 09:26:33 -0400 (EDT)
+	id 03ACA6B05B4; Wed, 28 Oct 2026 09:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 913B06B05B3; Wed, 28 Oct 2026 09:26:33 -0400 (EDT)
+	id F2E5C6B05B5; Wed, 28 Oct 2026 09:26:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 802276B05B4; Wed, 28 Oct 2026 09:26:33 -0400 (EDT)
+	id E1DED6B05B6; Wed, 28 Oct 2026 09:26:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 556796B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:26:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C889340CB2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:26:32 +0000 (UTC)
-X-FDA: 85372109424.08.5D2657E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B54D26B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:26:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8970380C83
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:26:49 +0000 (UTC)
+X-FDA: 85372110138.29.0E9E28A
 Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9E50720002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:26:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=gy8OenAF;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=H8GnFBEZ;
-	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by imf02.hostedemail.com (Postfix) with ESMTP id 73BEB80004
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:26:47 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b=wkN1Gghj;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=gLG33pWn;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793193990;
+	s=arc-20220608; t=1793194007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=nGV8TGo/yLZr4o9PiqDwm5LBW5oZMSj/CX19OZeK0Do=;
-	b=Ip40P+lvS9oIWUFNLEnzTAGSbVAuXoxHjP3NylJEvOw7XNZo4GKK4a24dQlUXMETPG1vIp
-	pUXta4fb3gVLghw0sUXrA0A+bH8oJtB8/f0Wr+u+cvevYXhhOS4hgsXYsFiZU4rGvt4Sma
-	x86qJJ7LmP2a2GGftAGvxMxrdh5PRCI=
+	bh=+BFs+a/yE1nGxZn4Kjy6BKUgF7WYUxZLCCRtW2ZfPxQ=;
+	b=joIuR/EoJsySNtWwXrAvLMXPce7YYsczpIur0LrAunBR+gIUKVJ945PnIOhFROOwL6AmcX
+	Qfx/Qy9T9uuGnsUdGxth95ryOUuD1IKxBeK0bVbXNyxBGG6VDNcrM1KwX/SJZIrfUB36bZ
+	sgBzBng2Mu1zKg2PWi29VhI97EXnyLc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=gy8OenAF;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=H8GnFBEZ;
-	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf02.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b=wkN1Gghj;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=gLG33pWn;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793193990;
-	b=s8lgBiKNwpz1H5LHHHHkjWoyZiwT4Agla36WWDw9s/+1uOaAZbrkif4EcnGWYccPdx7q+l
-	gvcLy/tjQO7NUk19+hUuF5+5eg0DXrI70ydCYYI4b4xZZnk1u7c6G35H9H1D7u9HiqnTzv
-	W+ZPRWrsWCsBajYf3S3p/2k/Fg0Z5E8=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.stl.internal (Postfix) with ESMTP id BBD031301F0E
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:26:29 -0400 (EDT)
+	t=1793194007;
+	b=5a0cn3B6dLRiCqBRCcpw75ZZn3REmy7TMmkMnRxoaLttelfqygYvl3y/wWS5llkWF6DG8g
+	vyXODFQZe1XhgfxDRaC2/C+QH7RhFd0tun2rslQj6eLUGdPg3lccomJ+yW5HWDIJpyMdsM
+	Hb8K1V6Vfu+LCjWy20x86p8546XuiwM=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id C276C1301F21
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:26:46 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Wed, 28 Oct 2026 09:26:29 -0400
+  by phl-compute-05.internal (MEProxy); Wed, 28 Oct 2026 09:26:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm1; t=1793193986; x=1793201186; bh=nGV8TGo/yL
-	Zr4o9PiqDwm5LBW5oZMSj/CX19OZeK0Do=; b=gy8OenAFMLHfaZG0qmRFdJB67l
-	2fdnIqzhzrXbNNxQwblZ6fJC/9T3uIZpJVPeVkYlSlSrwr2HmVyg7+nixwLiNTZy
-	m+lOrTOcbrjqrXxD4J8Su0i4QF8hn56tFUJs/T/w/G9uUaqkeah42XO4glWc7aZC
-	5qS2fA+F6MLR4FEE3cKDHbbgdCB4TBj/NvL0JeXjZyj6HED78UMY4bR+3lieqR4U
-	yD5zrL2/WurM8KF8xvTIFukBwNilVrnqjyteq/Tac11pYShlDy0eMcb7sihS7EcY
-	MllQAm5tGQuUylHSBQxU/2Bxavc4F3xM/0DXCjT6Ua/O2GwUqKrBuLhqFvcw==
+	:subject:to:to; s=fm1; t=1793194002; x=1793201202; bh=+BFs+a/yE1
+	nGxZn4Kjy6BKUgF7WYUxZLCCRtW2ZfPxQ=; b=wkN1GghjUOU4F4acB0AlmTxl9y
+	0yTt40b5LpRv1IyQGrVBq74PpASjIFdep+ZW7S3LJLWeFMUKLbEGhi4tbHrIhan6
+	8m2B5+pPfBHbGy/wLHj4N72PD3/jmpFAwwNGj+KnzrH47v//J+jU7ZxbjoNCFjmf
+	W78IuDxHnF8oamkmDgwzPjIM1aG0JXSAswPCIXlrKaVz9QfWBZmRDnt9sa+QXs7G
+	XlZCD3qHDOQewi+uhmVZ3EEyGarE0GuQrHWQLuTbF9aNVa4hE4szZbNX1/1QvVZz
+	R8fyNUl18KNiynR31x0WF05dO2NUVOYfUSmU/PIukqCE++4AvxyxfOpYutMA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793193986; x=1793201186; bh=nGV8TGo/yLZr4o9PiqDwm5LBW5oZMSj/CX1
-	9OZeK0Do=; b=H8GnFBEZYw4ImYs4/EgX41yMD2bVchofdDp5MgKLd7TDbqo/uqp
-	YYFsgRUXKR5BZTKIrQZ42ASDrpoYoffMP9yWHZV8Hf0wJKMmbfkRTX8ePRaTagsL
-	ihy+vQh/aebhd70bPT2OaUBq3tOSt901l4j/ENCwyzfvmMnSaqscaYhUtIoHxNwh
-	GRRB+3QaILezQc4gyBhlGi8vDhaK4FoeX2HHrO+k5EkRY6J4iCT8YTzzTqa4Nrki
-	/nYmsNWQTufXvPOASD0/Vc/TVEhiV1p6TcjrZsIOAHMRLs1vHpO8PdfARTaTiKv9
-	BQAQs+a11S0Jle1pzWUv14AgfUXfMqRFpWA==
+	1793194002; x=1793201202; bh=+BFs+a/yE1nGxZn4Kjy6BKUgF7WYUxZLCCR
+	tW2ZfPxQ=; b=gLG33pWn6C0LwRfwWzVPftPrqGRWt8oTxgRUePOlvzQjP3EBTd+
+	yaYsql3MmCYDEw6Ldth6Cb9tvvfBbKpnLBMRuYyw2cY4Cm+ooXXlPrkRBpTougBE
+	7CfEA9JEvvJFumr4M+ND64wlDL6nqNF0khpFIQIjLsF5vGbhwWojy4scPi6qnY0G
+	Ary069WMvbNWIaEsgebfBWkp2jWnX6YiKPrrXOult7iWuOVMzjWZKU+RiJ4/eK/0
+	Vqac9yzvOmDQVQpc3GUyhXRXSXegMkI02NWTs65VcEE83B3FoapqvjpsqtbSdx5h
+	HjAvuuMqU9C1uP8Hqkm6oifyPqzt7FH817w==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
 	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
 	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793193986; d=shutemov.name;
+DKIM2-Signature: i=1; m=1; t=1793194002; d=shutemov.name;
 	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
 	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:AbWeUNMV7nnrZcCexnJMrCsl785vMyC2XYXtkVjdzDU/3rV
-	BfTCqyYc9Q2VSI63RFV9r9REmnqeDR1SUJyiRyLncPq1RmaZow7zp782D0wAbSJU
-	CWSR2Dz8HLzzayP/+aM5UAiPSctwuu8j7wQAmSudG/bxpKCui2rsWaUZXStDMeNH
-	ODcNN+DiKwAGQlYG0igNNEixBiSoNSs/zFW76a1y5v00syUdMgaO27oXtEqTvt1O
-	wusIbkBBjHqFi9OY2EoMVjY2WoAcqjgCq/1zqmNcXREd7eTU+sUeioY8yspjtyVZ
-	O2y0eu+j6ShL95AlcmQbiPIkM+RpuXzwbHOqyWw==;
+	s=fm1:rsa-sha256:XnSLn73nhVp10eaOFH0PQ2D6i4DIL4VBaiMWW7wm87egMmI
+	YhTfSs21z582neICkLZKANS8qBO+tTEhjPxY+r2IEJT/SxkP+T61Kec15OC1on9K
+	+mVubA/TaMS4Ht2EDTkFoNtX64xlsghGICq/kdsSP9mpufUEcB6UrGzztvZy2SYd
+	MMRjPvQn7gWJ2A1PzebKw/2IwDmWVz7u8uk2rjQxz8MDIujpDsMhxkLRIQy/RYlt
+	3MAymlSpxZtnyo4bpeZsaIOaQ5MIL7Wlujh9sOg22bN45VFr6+JVsuifEjDdN5JP
+	NIUbX9mkuZdj8MC9tWP7jltSZlGCNWhvOtYZJNA==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
 	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
 	action=mi-m=1; hc=9;
 	hn=cc,content-transfer-encoding,date,feedback-id,from,
 	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:OA/Jt433qooHZMN1h1WfoAm++DE0cH2Dg90+cuGoGF0=:ry0dPA1lG7EjfUdotOKwWx/qimPuaUA0TcFFKTFqWn4=;
-X-ME-Sender: <xms:AfjhatVj2es6gkQDMYQSgr9nxnbON-bIYFOsUIt37tagNRyuhwXm9Q>
-    <xme:AfjhaoGHWCR8fomC0IqSeRFAEWFbBKJnCKrOAfDp7VV62yKXdXHI6Th7JE8cDZCyb
-    HNvoQyqIPqVQkeARlQ_2a6odwsaiNCfaip38ojLX4wTk4NYEMtzARg>
-X-ME-Received: <xmr:AfjhamU1gRIgp1j7PumnllJnE-T69J7QMo2nhORsgGaGgqrJRxqUWrfyq3I>
-X-ME-Proxy-Cause: dmFkZTEBob7BBdDUpiR/GngnoqTsMBf2/lBIU/4HIblrHHKKO1LG8nWmV+7kthh8R/a2+K
-    vcfJ3uMRW+8EZo1Is4k2ufyPCCwrsPei6dHydg9OvN+DJ9ptNt4hF/42xgm86G3vfDFHFj
-    rdodipbfc74DZ5B354ocfR6zFiENC1woBoZk1x/ZFax9UASuUX/LRAr4Qoo7LtIuZAV8VH
-    OztBs+qrN3d8zQvSyiTswcoP/a8mprmxxZ/Wzc/DE2pxN1fA2dga3xnGCDSCF7IiQoJS3C
-    B9pIX8YIbUTKmafQ4a6iV/l7Ku/n4maIj2OlC3uit0Ir3lO1BxAO7Hfq2OD9EQ9EOO0ljG
-    B4Q3IRTbmCFH2ma40rgv4JCOmdm+r8iEJ6icf2+NG2H6lOA/Ax4QrzuN2phS+JzcCTn9E/
-    kLVAnQI4wjHgFI2u7cS3K+U76cFQfnfRsJEtk4k5nLoK+xaEVpCg8x9dxO3DXiIQTABV/r
-    XiBZGg41Qbn9j23Fk4tRQviTsR+xLuH+RiCgV60VFsQ5URba42Yhm7FI9epUrEYXDKYdO/
-    nDkGBnLdaj2XXiW4bsemjDHZlRNY5u2M7ZyIE8HioffVyz8YblTM4a1CyIMMTrYtNIEUEI
-    cTQ9jIRCDK8BNbXYM1vpt7b5C62QKRUgZGqyoOOYaMHzf6rPuK+xZN2MmRSw
-X-ME-Proxy: <xmx:AfjhajBBheFrS7CaCUtr6xJEUuZdFR4f0RoSMw1N3bD-YtO15xUe4A>
-    <xmx:Afjhav0kTEtLGRfMbaAhFlI8SghYxSexJbZJf_j1gEOAR1c0M89G2A>
-    <xmx:AfjharRkGw49QdBD_N4SdpyevUijtPGNurC0nUexAALVMuotUFlC2w>
-    <xmx:AfjhakYRy4M27O9Is9nnt_U7V-j5DomIw2ZtZr2732YsXq13Fp1Fxw>
-    <xmx:Avjhag5tmHV-eZkrvxuU6XGq8oClFUrtxYsrXKOXtWHKbZUb5YanxnFJ>
+Message-Instance: m=1; h=sha256:CH1tYYxykiIv1RLbCWw0YN5CssjwRZjejHr3tQ/GpnI=:VtQAXVOylUEgwRm//tK+opODqw4nrYRdQrF2wdKvBdw=;
+X-ME-Sender: <xms:Efjhanh5htqG8JCU2f6tlaAll2oSa5FQV43VKyS3wwu5906H23CzuA>
+    <xme:EfjhalE_tM76h_E6ctMoTrbM7yWwIevZXFIlB3juK4oczo3kYcSrTViNG6U6vmO_l
+    PrMJWCdeNxDCJXRskufFlJ25zO8h3Y_4SIxZXkonu807FGNwVFrdzWy>
+X-ME-Received: <xmr:EfjhaqCQ1cZIO6mEoFmJXasBaAttfK1ApobCMb2e_9Lc5iZP-xNBxOa1fbI>
+X-ME-Proxy-Cause: dmFkZTFyZBkhzb8SJ3YurTz98jXoxrAYOSV6yvJXRkVCXWaX1UL6gXkfeoPA0eMvF1lpuQ
+    YBehhHfXX0goLqnZWpor4J+CA9nfDYcgen9bxZLNA4gZVNkJzFVOOYyecKuMf0KPmk/WLy
+    JABIbxkhX9UHWkNp64tDUxgce9NDeYLNxymsnr8Hh/OzuhGF2+slL7brGNrL9pr1t2ELvK
+    XsBOqImIT0qtCqdOBMOFTTZ61MmNHlUFJ/kzF0URLFhZauZ2pkQvlIuvuOnUxfrNMU7a+N
+    UcHWrfGWxTSLefU7DxGYs3ZV3tYCoVKxGG9z3HTf9uDp77sbcc4ixgm/1kZT21IhPjp+Fp
+    8KnC6XRNhS4bo7kA/muidgelZi4875pDDSYiPyQ/Zn+/DOTX0BqdD/43iWaz+jAyqlPn8w
+    k1UJ66hPG69/KHz7e8K4GQJ2bOP+g8rV2N8WDJ4RaA4sJpWliaD3mQeYqlfjmLZ9HStiyZ
+    XZyln2pmhbhaWSrEa00xpS/NJV69LYKv97pV/bsYUqlWf8mx5qaKLgOtldY/pSb1rMO9JE
+    xheZTQ+DJiOFlKvo8SuDpV52pauwIBMufdYOYB/RzDOYWaSla8oYBYoyU75bLXG0KUxZeY
+    iroLB1cSjbkH0PCOx7ZNOKrqKZBXQpk1d8aQ1M9XsaZVdy7ggqVxdKtOqr2g
+X-ME-Proxy: <xmx:Efjhah-aOO9V4alyJtpFxuAMfr2KObqtG90118qB0jwL4ttCRd6Ltg>
+    <xmx:Efjhatg0dspY4E5rJ8jB8YMbvhqRgAiMn6tmC0Vcgd6Amcg8IhKPGA>
+    <xmx:EfjhaqYoM9m0ohZrCVp0Zn1AjGAP2AW2GUo935TLng69la39mpqKtw>
+    <xmx:EfjhavTKGQkS-Eb9aKaipRWkzgrOYsM8tNCx1t_HmgPb_CaBNajTog>
+    <xmx:Evjhai3mtA0pM0HaRzlpwvsJbhZTC7pjdW4PIa6myL1YwZeWqStRDh-0>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Oct 2026 09:26:25 -0400 (EDT)
+ 28 Oct 2026 09:26:40 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	David Hildenbrand <david@kernel.org>
 Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Frank van der Linden <fvdl@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel-team@meta.com,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Harry Yoo <harry@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
 	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/hugetlb_vmemmap: map the shared tail page writable
-Date: Wed, 28 Oct 2026 13:26:21 +0000
-Message-ID: <20261028132623.2560146-1-kirill@shutemov.name>
+	kernel-team@meta.com
+Subject: [PATCH 0/3] mm: make watermark checks honour ALLOC_NOFRAGMENT
+Date: Wed, 28 Oct 2026 13:26:34 +0000
+Message-ID: <20261028132638.2560361-1-kirill@shutemov.name>
 X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 73BEB80004
+X-Stat-Signature: hoqz3skirt3btwwb6ikxo17takg5wxpx
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9E50720002
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: bnrbq5k9p8fn8tuxbofmz39npopdncfo
-X-HE-Tag: 1793193990-261781
-X-HE-Meta: U2FsdGVkX1/ULXoX8fX5+jBWAhVcK6uMM+8Euvd5uWEK2MgBFXC1IbKFlcJaq0UT7+LA4VgpEbRzKSmK2LU5+s+uCl+Tm/EqOk8XI29zfiS8ANMFW6/pmh/SmX7EKwvrW5uOoW/rF2qm2mFyTMawIXMk66QeSQt9FglvMHyyPAtQydlP1TCzTGfugY1vSU71CrtNoot2MUmm7YMMds57OYSs1WRx+QrRx7QLt3rYFf7ZLbD/5S/S315hVRs2Jd/JFvXJpI4yXbkcZGpv9o3aJmxo7/iiROVPxUaFvCI5IE+FQqPE33zQ/1fMNn15BY2GqdOLNtrfTm9EdHM5hEAjawPIrl556vLd36s5P6AsIe1q1QgLObXakQambtzbU7AV+LDXh4cT69rBM/r+6vb1laA7xYFoQ8zmiCvVxnbKuh7795g8pCNEYq24ktOjAp0vIYdnEo+I6S9lRTWCuaAK6R1dC2fn+0jNdkRWT4dm7KQ+Utr5ZMEe3VKPYW47gY5bEsTpej2datPOdzTmBQKqSYAM06T75fZzY1FNN7ZFqWjgYaHC6KylLFB8QbxlBFtF1MyPULbNjOQOlc6pz4Yl5xeeZ7uhLNjjDrQfOU0IDoBO9Rh7AutUYXqleBHCpOuAgQFbvp6iS6T95owbpLkrRi8axxxVL8ooXTNfhD3AwoyV1MHWIjVfKPvx7oDIjfRq/0CjgqfycE/FVxx/QSzvP3Ec5GcwMND1pzCkWdpCVgxx+J4eqsJUhAZeJGYPO6pPlbnaPwkRMpmZr29478iPsTbWWhbrLpQLIRuFYF7X0w3tNGIZPVXclKJ8bPOUXybb6GJdmX2XexYngg7i8lm2x1qZU+Qwba7xco3BflX0nSQZHh+IHFZ6wyLn/o2IJiTSscRg/J8uVu7ijIV9KM2811Uj68g6IEjveNQQeHEFk4eELWZB0nj8/mEx/o9g7GD251dKukYL1VgZTi8Mrnj
- PFpqDhqy
- x0RsNmChmMlNOSjKLxeKrloM45z/nrFqfu+c2RC+j3qgEDD4aRVR/kzahUdkwvSoQeL5ydHXUu6XMuhVkDY67WDaYYiN6hVGwS8NFHvlgUcymWDR4QuTJfjjEz9+PV8RLsirQw0lyH8euJfhfH0U+c+YD1gMxJkuJeBIzIgpGkEtse8J7AuA/ZkYzppmwPh/2LMLonHp4on7SYb3OUS7D+hUYvt62Gf5oPzDkzIedM/S5WoDqgV0KV5yrgbzatd8H3i4P8lKCKlqtTQc/FQ85vVCzDUvWGUG/WNFPjVnoBnexpBMLjDkPMw6VHmgQ7/j8g4Qs4F4Knh88gYpKI7phI/Y1GWUZk0diJZvJVy5L43/XMF2OB64gQ4vOiLj6wlbHdK1H2PdOJOO2b2AtPogqCwoS7g05pj17mneI89FBEsQOEqq64+dm1iZ5BwasL2MC6VYKmdqflRJS0fLJn9jyCiujyvZClgLtKPcW3WnzsS6kNbQ9YO+SSPoq8JEdZgare8LQcuUdIXI3hG49TsQOlnvkSiTgN5X2MHNKt/b1F97LZ2QhFBJlXwQZIg==
+X-HE-Tag: 1793194007-593780
+X-HE-Meta: U2FsdGVkX1/HPUHJ2YkEBNrFt+JRCCto6AzhTqIXg+Y5mxVqQFOqwk6p8IRF47+/9qDD1FivQw3XACUrrP7KNliuq7uPkxVXyQ+8K6ipeEQooHBpE7RWO0gNy+FgxsXQrsKu3sReF6iDdLPsT/++PjZeNYORQWrQ0m+C0VfEQwih8uOaJ3LdcNbPLvxF5OxYalK2C4dB5lv41+ZxOse0KEjTV9tvFuvXcAvbBm8LtYoey4ncfmJikGiij5vJCFIsWFlHFpfHI60Mhm/F8FT+EPA+4VCSLirsmyVRhCuwqqo/PbQCiA1BdVwBl0EFeGd2jTzPKgeAuTuKKBQIZ77jgZC1cqu5gfvh2AAWmA/NroQvhyKtrA6feCDqSw/WLMmVRT8sLZucgP9xqe6GkPmf8Fqvaqk1kOUx/de0L/3p1COX2mTuMcWed+ABKFq/BGuycxE6KsjWWVCPvRWUOpngjDFP4V6Xs51b74CUNaRuNYJ6PPDYa3XcAraMNO0CXPDFSTHsjJSZ+DBtOeRbKW2WckdNl4u4Bj/HTVUkKKZm6+4AVdaacbZfQ6toAnKneQnIyaVleXoALuMMlEv8pRf6pNNrNrJOKEZ8phKIonaFrlMLRutgLG1KmVi+T9g8UVGWnIvnf4r4H40pm9bv/bJqkM97TcseF2h0xRSzjdi4PAPs+Wr11as6F/cJJJ3A4xlPmdz2g676NDVu5sPYhtp5cexdQBWMI51bTLhCpJGgXx8/pL93pHIhvYgZ03gCVLN3q6e5uomdLUR76vJmDJWZnigUfqBYpqXPpsvgVXB7PgNu2uiaaBFbFIKmmaeVKY2Hnqh/kc1+9wYZA+secKa3HLhG+RUX3oAcFPur4j5rT/4K9pvRXwnqBOIBa9fU2Zbp4Z2/FFxi4o0VqJqQxmhVDWMOJFYxscy4fyKgYh+YruYGjjXFPLZlPe/WNMfZTQRiK5E+ppCY8Kvk9UalQY4
+ as44fp4W
+ Zcllmv/+pdDWhaCJLKcAgT2w0go/71GoYwkr9hvgzOkXxSanRY+Rf5Q2MR4GcPshrHZ8EJwmy1bcMb+1AgnZ6MHmpQiw6aHdn8lHpZq+tM1/FgtDlFK4iVZqKxov/lJF+UIGS+VPgoh0ORh0D55o2Mpqy7bWh4K0A83FLK6HORWbzCk6bKInoNJnqDshvDmYrFjOOX6HvjjGwyN/I5uyCR043kiKTDoRPMNSmQwrHx9EJH2vSzav97CBUzAhZVaP5+8jZ8GAGORtT1saltr1NVrTVNfV8q3MOIxuYDo6QSFR6WZOPH894Gh3oukNrFhDeq1BEcWkOovSftdlbW1kKELPeEHzhpZNd9AP+E41U8YOoTTIKFiMmTmmEx8vbPJeHEtKSO71AMXhGFaPyxdXTmBtQP/nC2F2LGnpiWEs7KCTOPLxKjzDYp88XZdvqLzeIf63MNAgQxp9DCX/NyHFhZ2Q8VSLIBKACDFUuB576nE4RwsIB4OQFMy5Q/a8+0OUnjpaHg9r1013fRd6UApvQd1mTIGxKV7NiV3NXFDpAwXIhqSHCVMVWfwUFjr61kgpNGYr5PFIov4a/2mAbuMYL4valHl1/Q26YQtm0dzjuo+y4ipLYlSzjAm7HEQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,110 +172,55 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-page_ref_add_unless_zero() reads the refcount and then updates it with
-a cmpxchg.  A lockless get, such as a page cache lookup or a PFN
-scanner, can read a non-zero refcount from a page that is then freed
-and reused as a hugetlb tail page.  If HVO remaps its struct page to
-the shared tail page in between, the cmpxchg writes to read-only
-vmemmap:
+With defrag_mode, 64K mTHP faults under memory pressure stall in
+compaction 18 times as often as without it, and get about a third of the
+folios.  Dev Jain reported it [1].
 
-    CPU0 (lockless get)               CPU1
-    c = atomic_read(&page->_refcount)
-                                      page freed
-                                      page allocated as a hugetlb tail
-                                      HVO remaps the struct page RO
-    try_cmpxchg(&page->_refcount, &c, c + 1)
-      -> write fault on read-only vmemmap
+The high-order watermark check counts free pages of every migratetype.
+With defrag_mode, every slowpath allocation is ALLOC_NOFRAGMENT, and a
+request below pageblock_order cannot take free pages from another
+migratetype's pageblock.  Under pressure, that is where the large free
+pages end up.  Two callers act on the wrong answer:
 
-The refcount is zero by then and the compare fails, but a
-compare-and-swap instruction needs write access whether or not it
-succeeds.  The kernel oopses when hugetlb pages are allocated at
-runtime with HVO enabled while a lockless get races with it.
+  - direct compaction's up-front check returns COMPACT_SUCCESS without
+    compacting, so compaction is never deferred;
+  - direct reclaim for a costly order stops early, having freed little.
 
-Commit bd225530a4c7 ("mm/hugetlb_vmemmap: fix race with speculative PFN
-walkers") closed the window with RCU on both sides.  The RCU was removed
-together with fake heads, on the wrong belief that it was only needed
-for them.
+Patches 1-2 give the check the request's migratetype and make it skip
+the free lists the request cannot take.  Patch 3 tells direct reclaim
+that the allocation is ALLOC_NOFRAGMENT.
 
-Map the shared tail page writable instead of restoring the RCU.  Every
-struct page on it is a tail with a zero refcount, so a late cmpxchg
-fails and leaves the page unchanged.  RCU would put rcu_read_lock()
-back around every get and synchronize_rcu() back into hugetlb
-allocation and freeing.
+Dev's benchmark in a 7G VM with only 64K mTHP enabled, medians of 15
+runs:
 
-The cost is the protection against stray writes to tail struct pages.
-The shared page is shared by all hugetlb folios of the same order in
-the zone, so such a write now corrupts all of them instead of oopsing.
+                              defrag_mode=0  defrag_mode=1  defrag_mode=1
+                                                            + series
+    compact_stall                      1690          30669          7366
+    64K faults allocated              20750           7391         20129
+    64K faults falling back to 4K       725          13832          1339
 
-Bootmem folios optimized when the memmap is set up keep their tails
-read-only.  Nothing does a lockless get on them before hugetlb takes
-them over.
+defrag_mode=1 still compacts more than defrag_mode=0: by design, it
+keeps 64K faults out of unmovable and reclaimable pageblocks [2].
+defrag_mode=0 is unchanged: 20698 64K faults allocated with the series.
 
-Fixes: 32c440d67e6c ("mm: drop fake head checks")
-Fixes: 01b1d0ffb6f7 ("hugetlb: remove VMEMMAP_SYNCHRONIZE_RCU")
-Reported-by: David Hildenbrand (Arm) <david@kernel.org>
-Closes: https://lore.kernel.org/r/ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
-Changes since the draft posted inline in the report thread [1]:
- - keep the pre-HVO write-protect for bootmem folios (Muchun);
- - describe the fault in arch-agnostic terms (Muchun).
+[1] https://lore.kernel.org/all/4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com/
+[2] https://lore.kernel.org/all/auCDnqJc7fsBpUW2@thinkstation/
 
-[1] https://lore.kernel.org/r/auDkbDlgSZxqlk2G@thinkstation
+Kiryl Shutsemau (Meta) (3):
+  mm: page_alloc: add a watermark check that knows the migratetype
+  mm: page_alloc: make the high-order watermark check honour
+    ALLOC_NOFRAGMENT
+  mm: vmscan: tell direct reclaim the allocation is ALLOC_NOFRAGMENT
 
- Documentation/mm/vmemmap_dedup.rst | 15 +++++++++++++--
- mm/hugetlb_vmemmap.c               |  8 +++++---
- 2 files changed, 18 insertions(+), 5 deletions(-)
+ include/linux/mmzone.h |  3 --
+ mm/compaction.c        | 16 +++++++----
+ mm/internal.h          | 10 ++++++-
+ mm/page_alloc.c        | 64 +++++++++++++++++++++++++++++++++---------
+ mm/vmscan.c            | 24 ++++++++++++----
+ 5 files changed, 89 insertions(+), 28 deletions(-)
 
-diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
-index 9fa8642ded48..66d58fbea5b1 100644
---- a/Documentation/mm/vmemmap_dedup.rst
-+++ b/Documentation/mm/vmemmap_dedup.rst
-@@ -131,8 +131,19 @@ pages of ``struct page`` (page 1 to page 7) are tail pages.
- The optimization is only applied when the size of the struct page is a power
- of 2. In this case, all tail pages of the same order are identical. See
- compound_head(). This allows us to remap the tail pages of the vmemmap to a
--shared, read-only page. The head page is also remapped to a new page. This
--allows the original vmemmap pages to be freed.
-+shared page. The head page is also remapped to a new page. This allows the
-+original vmemmap pages to be freed.
-+
-+The shared page is mapped writable. A lockless get of a page reference can
-+read a non-zero refcount before the remap and attempt its atomic update
-+after it. The refcount of a tail page is zero, so the update fails without
-+changing the page. Nothing else may write to the shared page: it is shared
-+by all HugeTLB pages of the same size in the zone, and a stray write would
-+corrupt all of them.
-+
-+HugeTLB pages whose vmemmap is optimized when the memmap is first set up at
-+boot keep a read-only mapping of the shared page. Nothing can do a lockless
-+get on them before they are handed to HugeTLB.
- 
- Here is how things look after remapping::
- 
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 917db0984143..8e5981888937 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -222,10 +222,12 @@ static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
- 		VM_WARN_ON_ONCE(!PageTail((const struct page *)addr));
- 
- 		/*
--		 * Remap the tail pages as read-only to catch illegal write
--		 * operation to the tail pages.
-+		 * Map the shared tail page writable. A lockless get that read
-+		 * a non-zero refcount before the remap can still do its
-+		 * cmpxchg after it. The refcount is zero, so the cmpxchg
-+		 * fails and leaves the page unchanged.
- 		 */
--		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL_RO);
-+		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL);
- 	}
- 
- 	list_add(&page->lru, walk->vmemmap_pages);
 
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+base-commit: d865f2677c44cb2171b833d6775cf692756fa8be
 -- 
 2.54.0
 
