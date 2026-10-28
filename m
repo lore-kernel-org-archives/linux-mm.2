@@ -1,72 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF53606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B256606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n9uz2qBx
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gzxSbj9g
 Received: by kanga.kvack.org (Postfix)
-	id E6F1B6B05B1; Wed, 28 Oct 2026 04:59:13 -0400 (EDT)
+	id 9687D6B05B3; Wed, 28 Oct 2026 05:01:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1EB26B05B3; Wed, 28 Oct 2026 04:59:13 -0400 (EDT)
+	id 8F27D6B05B4; Wed, 28 Oct 2026 05:01:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5C56B05B4; Wed, 28 Oct 2026 04:59:13 -0400 (EDT)
+	id 792986B05B5; Wed, 28 Oct 2026 05:01:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A16926B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:59:13 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF49AA0C58
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:59:12 +0000 (UTC)
-X-FDA: 85371435744.16.F7EC198
+	by kanga.kvack.org (Postfix) with ESMTP id 4C30D6B05B3
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:01:12 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C4876A0C6A
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:01:11 +0000 (UTC)
+X-FDA: 85371440742.29.8C05C61
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2618680003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:59:10 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n9uz2qBx;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id F2919100010
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:01:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gzxSbj9g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793177951;
+	s=arc-20220608; t=1793178070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i9qOtY7a0khzZp+2JUyiQcNdwBewsSehqHZrdYTNXPA=;
-	b=1mnaBtBQDzibHfnfiuv5viKSv3IuIzDrB8y5Q2lM9aPBwZx5Kq98iuqX4MaFRSvhmhChv9
-	LOMNWwarM52g4goHlx0CfUZb1mD4pQQI7x7w9V8q7Nwqfwbj+Yt70mdlYsx6YKHhBWaC+P
-	jebQ3HUh+0xbMuGBKoRK+GTLwhYBKus=
+	bh=R5wr0if4ae6etOqOYy2puT3KmtBxIJiRCgooahnyzco=;
+	b=jpYaQyyPcF2Zgt2+HsCl1RzQkLoaqatiCc35bzJgbMSL/dp4Hj+Em1SGWTTbSknH8XskGd
+	dNFSkKJSDh81ilgaAWW6qV4HIYtKUnm/nAX0GCM5+2lYUg2jXjR9cyAfnSHl0W6aa7g6B0
+	+KlWq7EdMsGFZT7BzR0tQLfv1IqVPDY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n9uz2qBx;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gzxSbj9g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793177951;
-	b=AdorhchrQsu/ITQePCWb1b9L7yX0/TPWEFm+sU4UDWyY3PeNIXZ0Wn7uSUNZVlO/D+ldRo
-	K5xnKUCZ65RQAonTNAGx45XaeAPvVciQpO8zJ/fpMU9p0vhesbR+nAJACMIuKwGWFOR6kN
-	x5gn/5LRSEvV/1zFlrr8j7Oq9IpeBMo=
+	t=1793178070;
+	b=Wz73cAVtl6YUwsjVh2+xQz8qPAeDOh5rUr2NaPN/kenYiwW2uco3uQCN2HQfA6t8yvEocz
+	03fpfRTfG40xC23xpqhpVdR1jhLq3qLrf+DNB2jvD+E8I6q0NLqOopxZaKzjW62kykIVZW
+	d2bLE3wAcE4GznjA8oDZc1eHgqjlwEs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5E01443AD0;
-	Wed, 28 Oct 2026 08:59:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DD01F01825;
-	Wed, 28 Oct 2026 08:59:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 199AF43620;
+	Wed, 28 Oct 2026 09:01:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AE21F01825;
+	Wed, 28 Oct 2026 09:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793177950;
-	bh=i9qOtY7a0khzZp+2JUyiQcNdwBewsSehqHZrdYTNXPA=;
+	s=k20260515; t=1793178069;
+	bh=R5wr0if4ae6etOqOYy2puT3KmtBxIJiRCgooahnyzco=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n9uz2qBxwkdOt+BBYDqcRYBsL0H4V2Ug9Ow5tu7fLk3/xzx2mxzf+HMTVGUiIJnbu
-	 UHfvtxmIjhY+xQ766vsmgwePsLiGx8kAmPZPlD4WCnC+4rJaxzKpjDf8l/PxSRuS7U
-	 ixLAvMeOxeiUvefXEFI/jfC9xp7ljf7OTppVYZjzY1dNcHcmh1NZWDF2vGHdc49hWv
-	 uTT0NSrtYNOYOcDppWH6dHgfZpTd171QUNIp7WpPs8lDGkcfpOKXPATlxU3qiH1ANx
-	 V+qfMdLsle8HqlqWD8gAGSfEwjudq/PMbS1R0zs9PPUAGsrYy40er4yK4lQU4aDgLA
-	 HllBmwshL59LQ==
-Message-ID: <2976bc2d-2642-4448-9c1f-ec13e67e45d5@kernel.org>
-Date: Wed, 28 Oct 2026 09:58:59 +0100
+	b=gzxSbj9g/L8dIM/Z9ZCKHBBWWjg3GQ5Pvl/B5ss+vAH76KF8/PhGk1dpgDiRbXFC1
+	 H2ityu3ASdu+2cdnEDMuFjbHfPVqep29gXZtqdbdl/Ey8cQOE0eZr3Ialo+zTRc+Z6
+	 BI0muSRnXfNXEU+tuoQGSZxWLm3IXexoLjucgsc2XnL5hT6/90eQxpuwvl6t5zPNOb
+	 VUItlXz5psLqiRVgAPCYEkB27MqQmqhzANZtA0Z7M2UOGFEmjdPsTWHDclbPNUSXjg
+	 xTPgu1yDpAoejTsURH+8G9NuIwJ1cOnB2ITDtnB2NiulVDurOMRka9lvx9gWIUz4/Q
+	 rnWE2Mi1GUNig==
+Message-ID: <279a92da-772c-422b-8047-ad37dbae211f@kernel.org>
+Date: Wed, 28 Oct 2026 10:00:58 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/13] virtio_balloon: add higher-order page inflation
+Subject: Re: [PATCH 00/13] virtio_balloon, efi/unaccepted: support memory
+ ballooning and free page reporting in CoCo guests
 To: Kevin Loughlin <kevinloughlin@google.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
  =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
@@ -90,7 +91,6 @@ Cc: virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
  Jacky Li <jackyli@google.com>, Steve Rutherford <srutherford@google.com>,
  David Skidmore <davidskidmore@google.com>
 References: <20261027025616.1632690-1-kevinloughlin@google.com>
- <20261027025616.1632690-11-kevinloughlin@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,21 +137,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261027025616.1632690-11-kevinloughlin@google.com>
+In-Reply-To: <20261027025616.1632690-1-kevinloughlin@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2618680003
-X-Stat-Signature: 3bu5dr5qgdskqog5kaycgpo4arrkn93y
-X-Rspam-User: 
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F2919100010
+X-Stat-Signature: xsqqpwk1rjihh8bsykpepawx1ie1owh5
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793177950-428094
-X-HE-Meta: U2FsdGVkX18t4JyPoY++oa1JErkoGL5HIXpXkOP6lN2GVZ1lq9ueROTh8TD3NFOTwumRDrodEyJ83LA63CjcWvrUFl2i6cqgGrp/NVYIZOyDHBsUSvQK0S4BGjBEXvUALhLvRvp1uBjzJ/UshVQxBrwdkFmhLrSp/wdVozGQvO7/w7kpmjvbRCpES2bN4RKLsNg3TsV82voT3DpPpaNb4m3ebz/hvHqFGSIDxnXbwssj0VcVTWmq/qRsdyIVUIXkNZ3xrMYuz6R3OFgZTvR5p0xz2qEeawBkcsR6JgBNjwkSN3c+4tW5pqFHKwtQvXW9Aaf10Jou3YnFpG/rOXag2urZ5Oi8mV3IKznwxM/nq/qEIve+XG2JNttFQRgOJz0b27SDcGROeeTkw0PlsfQUh8Jb9CPS5jwJuMx12Fm2mktZjKnZz3/E0fTMEORWTxe3RNfo2VvrzSTVoCHXoz8xkZzwghvupKA57UjIyP6beN2oV7194dvdZivI03x391ALcqJSFP2fuGecmU9kDBAdV6aiUde8+ztaCQodwiIhiynyopSQ+HOq9cZe8NQHM6lwmMPGY+e8RFTtE79tYHV5rMhitPUCbghMchsnt29L9wbNnswn0THQ66r1zWwLy9kiU/tGa14DAHcSQuofddlMPSEsIxEC3Wmaw9DEDBH6niZSOM3J6A/pseWg0A2ha66DMU3jFXJtA2GDItDPa9aVAuWYZZ1zhi7sFZ+oxCCj/ttaGo/2Pmq2RN7Oxg1UVhtB24lhUR1qJu2buXVID6EKa+YL2EGn0oJDbR3DHEiKpuDdS9zIDZitjQSUCGmbmg3rYaGOfwaJrXfxztmc8IWJAMBiFxxNwY1Rs5p1geK33wpuSyuMUzXuSlC/jXgHvmqL+qov/fPDFvjOeHwsUDh5fAQfRmU/fZP0Dq83K4OeeUPKGApJWDWeGMtZ2KN8hEOMDztvMhHnuphN0KGA6hV
- qlZHwPZW
- 5Q1DsAbisNMtCz3WIHANsA/cG6hiOSjX1lFgA2anE2NSt4Awm81p8nttqHwEBy03heG5Ls7CgQGlBxDMShPJJODFB6nUA66Uu6h+tq9utM0JppRbjCrnl0LFLW/1Nm6M8M8UxThXj6rj+4duZXKUT+lD+wUQTtW0xzrwa0qucT+KbzFbn1/PUDinhUs06kkp5yXDr1Uiv4onS5mLxscWt1oG/U0t6emfxQ0AUt6FSNW2XMOyGfSZXk5k187x9ySNpux4UVX9MGyghqxYOVlMvQX+phHFpF8rGjgbK+61OjfiM6G7xQMlHYN2W+3Dd8kt0f7S0kZT6pR0SlF8=
+X-Rspam-User: 
+X-HE-Tag: 1793178069-527327
+X-HE-Meta: U2FsdGVkX18aHU3BYD+ty9v2i45IANaMQYkwetX1GYVCsY2RDHz9tjjGmI1pJkQGSGkiXqjJQQiCccJvV3IrAsX7sjUINc0MIGMLSxlfJLyuyNXsdzp6U924qISoBm6QGUD7Hi+QqvzrQYc2EyvL2aQWcyR7Bng/+cYzZ9ohfTaQMNQ9MZota4+jhIrVnyRtfZfdAUwNfD+ISc+hXeullu/siiSQhWBkVDfwu2ixtNA/pP2Q/46AgVh2AT0ZvVTB3g5tWD+Jyebk1P6rE4XZ3LgDydZtykBPUtdXQMfAOTcBXoy/d1DQjgSHVqg83+t4Mq7jIWkdE9ATmZy8KA8Uzao9JNPumdLdF+bn298e44+NuEsNCjCVNCd9Jzfv1J80NYlw4+Mlw64nFz8243aOG7ijjvUgi//NjnnhRGM3oMKeOxjrAJmvPAepVMSEV+SaiWHn8haAjJEWjVc7zncVSIQ4R4Gzr7maw+ng5cgpS2X8ZvZVnzMhkP+xObjl3M/xFDuum/32IFs3QDBkz01n7pDSlD3h0doB4vdWOg8ebBStD/qssOXdpibqjJZxH+Hbu6INEZvfxQGWLP84oC5LGdUXEvZ30M3Qmsq7GTwq1jF4EK25tYOrjwqfJ9O5YN6lgWVG3480mB7sTFXp02kdEF5xp228OXqI0xmyOzsM4pS5SM43yZgnHO59eTO65NoR5bU82DcxNCFPRiGncIACCFf4nisSWbjxU60bGG05POiom62TT1vUtuDco0SXZpso/WCmMxz7Sgt93b4ZC8viIwM8YNBOLqdOZ1gLFDxqXntLZpMIaHVyKNLcl9lNCOixzEI1VZcGEY8GCpPklyQQ3bVaGKfTC7RdEi4FSPRpY4SFjZlbVJ7W8HrhkWfIYRxnaM9i4XRoqfeJrMhjOqWqeEgqFWulbs2ZM85jaRHT4esK2OvnpsRSDzPh7cMnL4yItUTKs8riIJZtruElBem
+ srHSe+L+
+ MOgv/wLGZeCRaP3JN2gCVYq2paYwWG3KQGC08Mmq9pUwnWHwhdQuOLX8OdR6BwQi4jqD1lJK4qfCLoL1GD5YA57WpUy6cP1wBhMqAd0ZYbmd2sUQk2PEEqy5fP1O80VB3pNjXyjWD7NJrE0P50BIF6vH5m4MqTXLISyN4Aqx0ffaUoXOAauiuAhKx0MU5iafenKlx1my2lVya/VYgCdH7pDK/QXMzKLwiXLM239gvqhMNax4lnFCyMLEo4lMyHTioVoXZIIC12i8Dp2ZDb/rsMv/PKpE1bxloXzzRCSoKZzlpCCCwJklwaCS2zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,24 +161,175 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 10/27/26 03:56, Kevin Loughlin wrote:
-> In confidential computing guests requiring page state transitions,
-> unaccepted memory tracking operates at the EFI unaccepted memory unit
-> granularity (typically 2MB / order 9 on x86). Inflating the balloon
-> with 4KB pages would prevent unaccepting the backing 2MB unit.
+> This series enables virtio-balloon free page reporting and memory balloon
+> inflation/deflation in Confidential Computing (CoCo) guests, starting
+> with architectural hooks implemented for AMD SEV variants, in order to
+> support dynamic CoCo guest resizing.
 > 
-> Inflate balloon pages at unaccepted_memory_order() when
-> virtballoon_cc_needs_state_transition() is true, while retaining
-> order-0 allocations for non-CoCo guests and CoCo guests that do not
-> use unaccepted memory transitions. When a higher-order balloon page
-> spans more 4KB balloon PFNs than VIRTIO_BALLOON_ARRAY_PFNS_MAX (256),
-> transmit its PFNs to the host in VIRTIO_BALLOON_ARRAY_PFNS_MAX chunks.
+> Today, memory ballooning and free page reporting are essentially unusable
+> in CoCo guests due to three main roadblocks:
 > 
-> Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
+> 1. SWIOTLB Bounce-Buffering on Free Page Reporting:
+>    Under VIRTIO_F_ACCESS_PLATFORM, virtqueue_add_inbuf() maps every
+>    scatterlist entry through the DMA API. For reporting_vq, these are
+>    multi-megabyte ranges of free buddy pages. The host never DMA-reads
+>    or writes the page contents; it only inspects the GPA to punch holes
+>    in backing memory. Running these ranges through SWIOTLB exhausts
+>    bounce buffer pools and wastes cycles copying gigabytes of
+>    unencrypted free memory.
+> 
+> 2. Dynamic Memory Unacceptance & Re-acceptance:
+>    When the host reclaims guest physical pages via hole punching,
+>    the guest must transition those GPAs back to unaccepted/shared before
+>    the host reclaims them (rescinding PVALIDATE and issuing a GHCB Page
+>    State Change on SEV-SNP). Otherwise, any subsequent access triggers a
+>    fatal #NPF or #VC. While the EFI unaccepted memory subsystem handles
+>    boot-time lazy acceptance, it lacks an API or state tracking to
+>    dynamically unaccept memory at runtime or route unaccepted freed
+>    pages in the page allocator.
+> 
+> 3. Acceptance Granularity (2 MiB) vs. Balloon Pages (4 KiB):
+>    On x86, the EFI unaccepted memory bitmap tracks state at 2 MiB
+>    (PMD_ORDER) granularity both to keep the bitmap compact and for
+>    performance: accepting and unaccepting in 2 MiB blocks preserves
+>    2 MiB host hugepage mappings (NPT/RMP on SEV-SNP and Secure EPT on
+>    TDX), avoids 512x per-4 KiB page state transition and validation
+>    overhead, and prevents RMP/SEPT size-mismatch splits. Because a
+>    2 MiB bitmap unit cannot be partially unaccepted, CoCo free page
+>    reporting and balloon inflation require 2 MiB blocks and do not
+>    fall back to 4 KiB allocations (though low-level PVALIDATE still
+>    falls back to 4 KiB instructions if the host RMP entry was already
+>    split). Standard virtio-balloon allocates 4 KiB pages and caps its
+>    PFN array at 256 PFNs (1 KiB descriptor), so CoCo guests must
+>    allocate 2 MiB compound pages while streaming PFNs in 256-PFN chunks
+>    to respect existing VMM descriptor limits (such as QEMU's 1024-byte
+>    cap).
+> 
+>    As a trade-off of requiring 2 MiB blocks rather than 4 KiB pages,
+>    the effectiveness of balloon inflation/deflation in CoCo guests
+>    depends on guest memory not being overly fragmented (which guest
+>    kernel command-line options like movablecore / ZONE_MOVABLE or
+>    background compaction can help mitigate). Even when unmovable
+>    allocations fragment some pageblocks, free page reporting already
+>    operates at this same 2 MiB (pageblock_order) granularity on x86_64
+>    and continues to reclaim contiguous free blocks opportunistically.
+> 
+> Key Design Elements in This Series
+> ==================================
+> - Per-virtqueue DMA map ops (Patches 1-2):
+>   Extends virtio_ring to allow individual virtqueues to install custom
+>   struct virtio_map_ops. For reporting_vq, virtio_balloon installs a
+>   no-op GPA identity mapper so free page ranges are passed directly
+>   without SWIOTLB bounce buffers, while keeping the descriptor ring and
+>   any indirect descriptor tables securely mapped via the device-level
+>   DMA API.
+> 
+> - Dynamic unacceptance & SEV-SNP hooks (Patches 3-4):
+>   Adds arch_unaccept_memory() / snp_unaccept_memory() for SEV-SNP. Also
+>   adds exception fixup in vc_raw_handle_exception() for
+>   SVM_EXIT_PAGE_NOT_VALIDATED (0x404) and SVM_EXIT_NPF (0x400) at
+>   EX_TYPE_ZEROPAD instructions so speculative reads from
+>   load_unaligned_zeropad() that touch the edge of dynamically unaccepted
+>   memory are handled cleanly without kernel panics.
+> 
+> - Dynamic unaccepted memory tracking & MM routing (Patches 5-9):
+>   Anchors the EFI unaccepted table at base 0 when unaccepted memory is
+>   present, introduces mark_memory_unaccepted() with error reporting and
+>   proper locking, generalizes zone->unaccepted_pages to variable orders
+>   >= unaccepted_memory_order(), and updates mm/page_alloc,
+>   mm/page_isolation, mm/page_owner, and mm/page_reporting to route
+>   unaccepted pages back to zone->unaccepted_pages without corrupting
+>   them with page poisoning, KASAN, or init_on_free before re-acceptance.
+> 
+>   Generalizing zone->unaccepted_pages from MAX_PAGE_ORDER (4 MiB on x86)
+>   down to >= unaccepted_memory_order() (2 MiB) aligns allocator tracking
+>   with the underlying hardware validation/RMP/SEPT and EFI bitmap unit:
+>   even when boot-time lazy acceptance processes a MAX_PAGE_ORDER block,
+>   the hardware and bitmap validate it in 2 MiB chunks, and runtime
+>   allocations, pageblocks, and mm/page_reporting split accepted memory
+>   below MAX_PAGE_ORDER anyway.
+> 
+>   Note for reviewers: The three mm/ patches (Patches 7-9) are the most
+>   intricate part of this series due to the interactions between lazy
+>   acceptance, page isolation, and page reporting. Extra scrutiny from
+>   mm reviewers to ensure no page-allocator or pageblock corner cases
+>   were missed would be especially appreciated.
+> 
+> - 2 MiB compound ballooning with 256-PFN chunking (Patch 10):
+>   Allocates compound pages at PMD_ORDER in CoCo guests that require page
+>   state transitions, breaking them into 256-PFN chunks when queuing to
+>   the host so virtqueue descriptors remain at 1 KiB, preserving
+>   out-of-the-box compatibility with existing hypervisors.
+> 
+> - Balloon state transitions & CoCo ACCESS_PLATFORM (Patches 11-13):
+>   Calls mark_memory_unaccepted() on reported ranges and inflated pages
+>   before adding buffers to reporting_vq and kicking the virtqueue, routes
+>   deflated pages to unaccepted freelists, preserves
+>   VIRTIO_F_ACCESS_PLATFORM, disables VIRTIO_BALLOON_F_FREE_PAGE_HINT and
+>   unsupported VIRTIO_BALLOON_F_PAGE_POISON in CoCo guests, and rejects
+>   probing on CoCo platforms where balloon page state transitions are
+>   unsupported.
+> 
+> Why Both Free Page Reporting and Inflation/Deflation
+> ====================================================
+> CoCo guests using lazy memory acceptance boot with their maximum RAM
+> declared as EFI_UNACCEPTED_MEMORY in the initial EFI memory map,
+> avoiding runtime ACPI/virtio memory hotplug. Prior to this series, lazy
+> acceptance was a one-way ratchet: once a workload spike caused the
+> guest to accept pages from zone->unaccepted_pages, those pages could
+> never be unaccepted or returned to the host.
+> 
+> Turning EFI unaccepted memory into a bidirectional lifecycle enables two
+> complementary mechanisms on initial boot RAM:
+> - Free Page Reporting (reporting_vq): Autonomously reports idle 2 MiB
+>   free buddy pages to the host for hole-punching, and lazily re-accepts
+>   them locally from zone->unaccepted_pages on demand without a host
+>   virtqueue round-trip.
+> - Balloon Inflation/Deflation (inflate_vq / deflate_vq): Allows VMMs
+>   that size guests without hotplugging to actively apply memory pressure
+>   (triggering guest reclaim) and enforce dynamic memory targets on boot
+>   RAM.
+> 
+> Architecture Support & Intel TDX Follow-Up
+> ==========================================
+> The efi/unaccepted, mm/, and virtio_balloon changes in this series are
+> architecture-agnostic, with architecture hooks (arch_unaccept_memory())
+> wired up first for AMD SEV-SNP via snp_unaccept_memory() (alongside
+> VIRTIO_F_ACCESS_PLATFORM support for SEV-ES).
+> 
+> On Intel TDX, I think dynamic unacceptance should use
+> TDG.MEM.PAGE.RELEASE to transition private pages from MAPPED back to
+> PENDING so the host VMM can reclaim them (and the guest can later
+> re-accept them via the existing TDG.MEM.PAGE.ACCEPT path in
+> tdx_accept_memory()). Once TDG.MEM.PAGE.RELEASE support and
+> load_unaligned_zeropad() handling for dynamically unaccepted pages
+> (e.g., via direct-map unmapping under SEPT_VE_DISABLE) land upstream in
+> arch/x86/coco/tdx/, tdx_unaccept_memory() can slot directly into
+> arch_unaccept_memory().
+> 
+> Testing
+> =======
+> - AMD SEV-SNP Milan hardware (CoCo): Passed end-to-end memory pressure
+>   soak testing with live guest_memfd hole punching (FALLOC_FL_PUNCH_HOLE)
+>   and dynamic lazy re-acceptance under memory pressure on an internal
+>   hypervisor.
+> - Cloud Hypervisor & QEMU: Verified standard non-confidential
+>   ballooning remains compatible. End-to-end SEV-SNP balloon testing on
+>   upstream Cloud Hypervisor and QEMU has been limited so far (while
+>   both punch holes in guest_memfd on shared page-state transitions,
+>   QEMU's virtio-balloon still issues MADV_WILLNEED on shared HVA
+>   mappings during deflate); any testing help or suggestions on these
+>   hypervisors are greatly appreciated.
+> 
+> Note: An LLM coding assistant was used during the development of this
+> series to assist with code and commit message drafting and refactoring.
+> I have reviewed and verified all changes.
 
-Sorry, not happening. There is no migration support for these (large) things,
-and there likely won't be any time soon.
+[...]
 
-NAK
+>  mm/page_alloc.c                               | 248 ++++++++++++-----
+
+This diff stat should give you a good indication why this series is not acceptable.
 
 -- 
 Cheers,
