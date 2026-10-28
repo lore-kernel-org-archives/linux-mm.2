@@ -1,116 +1,179 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3958E606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 02:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB773606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 02:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jXwOsPem
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=d+znapmE
 Received: by kanga.kvack.org (Postfix)
-	id 385156B094F; Tue, 27 Oct 2026 22:38:36 -0400 (EDT)
+	id 932A56B060A; Tue, 27 Oct 2026 22:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30F5A6B0951; Tue, 27 Oct 2026 22:38:36 -0400 (EDT)
+	id 90AC46B0610; Tue, 27 Oct 2026 22:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FDBA6B0952; Tue, 27 Oct 2026 22:38:36 -0400 (EDT)
+	id 7FA406B060B; Tue, 27 Oct 2026 22:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E6A5F6B094F
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:38:35 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D2FB140B26
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:38:35 +0000 (UTC)
-X-FDA: 85370476590.11.28365A6
-Received: from mta0.migadu.com (out-212.mta0.migadu.com [91.218.175.212])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0A71840008
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:38:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jXwOsPem;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.212 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793155113;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BB966B0952
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:42:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 932BE1C45FE
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:42:36 +0000 (UTC)
+X-FDA: 85370486712.21.591F205
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011016.outbound.protection.outlook.com [52.101.52.16])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BCED840005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:42:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=d+znapmE;
+	spf=pass (imf17.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.52.16 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793155353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gWOt3gCxCJxa2iTMcD7U8FKt63sulo4DQ8hTX1fQe1A=;
-	b=VWJXxCs0KJyL5sdGqn+zR5Co5KcpVUHbdxfzFmuVxrXgEUUlLdSkPKsJzxi1C8rMa1FKKz
-	Z+3t+i2OWk4lXP8c3mfEENSsW8vLWCvOwf1a4m9wx1Ay+tlTKCnnaE7j9HzMGYTnaxZJFZ
-	xTLQqvWn3KD+F0GpnFH5ZlybztWXRAQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jXwOsPem;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.212 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793155113;
-	b=FQpIamJWljEpGzsr4ug+Z1i1Q8FO+gadzt0W0V10BHGCIsVLstpJ74/40haDgHsdnIVfE3
-	4gnfQ5w6xEYDUXdPHcVzRJ1b+u/ri3AFGYSujMkhXqMRH4HgtqKc1WWXrt817QjfZRikPq
-	dwPiyqF65o+2E93saBfFALuHyXsQZUs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=mH0ZQfc34RCOtl2VGjdl8OmmCthdfz1kAMiroh/O+oo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793155110; v=1; x=1793759910;
- b=jXwOsPemx6nPPPWhLyBfFsUK638JsuH8vWBB2BXx1z2g/7MsOmykTPau9pQ+A8fZw7P0ZpTa
- fGknOnwEHphp2pvLDdsQzifBLrGH6Tf8cX0ILKEQn9HEIRfho1LVCmyrFJIFVGYtRJ6CZ79JBSz
- D8weOeehEMYc1l8qTXKqM7l8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7896afea03d26d48;
-	Wed, 28 Oct 2026 02:38:30 +0000
-X-Mizu-Trace-ID: 7896afea03d26d48
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <7cb3dd91-f518-49b6-b311-9ec807b3c63b@linux.dev>
-Date: Wed, 28 Oct 2026 10:38:22 +0800
+	bh=HQL9p3RFteYJHSpyeeyXsYlloO2LuHIDKkrEoNphPtY=;
+	b=mDkiejpGDLYs1H0eXy5w228/f1jS8I65Wuh4Vh3Dj7YrNmqsCa/1y2anp6tXhYzv20G9cQ
+	HpdEWSzeMc4l/xmbOZ6PAS6PGj/8AZVipWjULx5Dq+Zr+ocnS138fkkuwR8+7YY7SouUNb
+	P6cWQDO1VtcFodUwlxf+qJnwmREgSxQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793155353;
+	b=yZym5yYHHrT2LH/9a/CJ6kuH2QAajh7UauDaLodrrWlLOKNsGop8eX8BQKLlKCqzAXaOAv
+	Ks4V3JxzYhdxX9MFrGx/LFKEeprqqYKztEVHrrIPJo9W36HBOfh3sg72QZqgWSJCQhrYx3
+	VSmkCQ0krjcLrS/KyREMxO16aWvvQiY=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=d+znapmE;
+	spf=pass (imf17.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.52.16 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M/ephZvh1LCzHl4LPvVumqkfd7po3L8ii9dgTv5N/iqhz76shsnwXHLm+J4BN7F9qe30p3mBc2DMCYGbS7QmhsgeSkS/TJfkyedSRbcdT7h5/YkdhgVyYaUPkIn4Wa1vHPhZhOV166ZC3xNXPlBEDyV2iGNXGFaH6jaJQPmiB2Dkto4eazCI3psZuJBXoDcAkRaC00hvCBskD34Q5jh3Zlgw7Q3cwu6z6IVHjgYD4UOUwAjWypgX6h78G9BUPUY7i1ezSbHU/kPbnNr+b2wTGvuKWu2uzfcTwMh6X0nXn3DaBcbamghW5iXZ93beQuPOyybieNPtDCEqhrhdAFNB3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HQL9p3RFteYJHSpyeeyXsYlloO2LuHIDKkrEoNphPtY=;
+ b=OoI6uzax/Sa1Rthn1ZfbeP3mjyDtcJdnAwwE7tZoecf8IMrHja2CYx7Liy2KlxaRnrow3Bq8oep75nLXmeakZf6RACzmDNytk2xj/XKqojE0y75FRXpYwGVH8qd3Z6TOCUBBwRBgqlIBQnmQ0QnEP5jOiGTFfHkjdAtpI5j9ByTDjhUJ0nx3Xclx750aLngzw2IVrA46K2B8AW1hFJXYwF5/QiDybXQh/I3Wm/KMjC2wxX2V4rIRQdVGEjOsaate1q6jQ/+tD0HMQGBdWRs/iROBNtVAMKJmt0h/z9bYP5udyTyB3JYVuGi8KRX+j/1zS0CmZDYwvuhJDSs/c09Dww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HQL9p3RFteYJHSpyeeyXsYlloO2LuHIDKkrEoNphPtY=;
+ b=d+znapmEb1KQgRCUnZ7aB/ym/gpluz99SVHRWseB0AjnMwM/rjHaqKbjcnsyQMNk9ZlZGZg/7mlALHnnZTTLj6jSEDdxKSNi1cRAZjGP4qEYJu3SaAnvjkBoImsoQh6tz3e68hJWRBkMfdJcuKYwj/bubRY/MZ3DjtUiGtNcd9l4avhLo+uZvpDL7MmRObxUcCWPuPj1wtUpALfGWfWtuIUbp/54tfx6+g/TXX051Bo5ggpVo501pw3kNWCndvFNsies1s8nnEJi31Ft+fotLMELj8C2vyqTRZ+TmsyXvzXLQ0uzcYNZAziucZlj7cqaJgz9WaGNp6Fp6WYDKdCLkw==
+Received: from CH3PR12MB9730.namprd12.prod.outlook.com (2603:10b6:610:253::9)
+ by CH2PR12MB4278.namprd12.prod.outlook.com (2603:10b6:610:ab::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.18; Wed, 28 Oct
+ 2026 02:42:25 +0000
+Received: from CH3PR12MB9730.namprd12.prod.outlook.com
+ ([fe80::843d:c1f0:b2ed:4128]) by CH3PR12MB9730.namprd12.prod.outlook.com
+ ([fe80::843d:c1f0:b2ed:4128%4]) with mapi id 15.21.0546.021; Wed, 28 Oct 2026
+ 02:42:25 +0000
+Date: Wed, 28 Oct 2026 13:42:20 +1100
+From: Balbir Singh <balbirs@nvidia.com>
+To: "T.J. Mercier" <tjmercier@google.com>
+Cc: roman.gushchin@linux.dev, muchun.song@linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Johannes Weiner <hannes@cmpxchg.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/mglru: stop rotating offlined memcgs to the old
+ generation
+Message-ID: <auFhDMtwymMynf8j@parvat>
+References: <20261028010611.3929937-1-tjmercier@google.com>
+ <20261028010611.3929937-3-tjmercier@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028010611.3929937-3-tjmercier@google.com>
+X-ClientProxiedBy: ME3P282CA0013.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:80::23) To CH3PR12MB9730.namprd12.prod.outlook.com
+ (2603:10b6:610:253::9)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>
-References: <ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org>
- <at_f43oDv73y-t7O@thinkstation>
- <f97a8d33-50b2-4a86-8381-ee840cdfa2f9@kernel.org>
- <20261027110028.GH2668564@noisy.programming.kicks-ass.net>
- <auCKv_omLGRc6wv2@thinkstation>
- <f3f3aca9-bdb7-4aec-9099-9fb63a60e61d@kernel.org>
- <auCZFckDfBMrlfxV@thinkstation>
- <070DDE5C-2183-4A8B-AC2D-891CAE15E581@linux.dev>
- <d7a634b6-8668-4753-8bfc-e9334dde705e@kernel.org>
- <4A32F5E6-977D-4720-8723-B19AFBC08FCF@linux.dev>
- <auDkbDlgSZxqlk2G@thinkstation>
-Content-Language: en-US
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <auDkbDlgSZxqlk2G@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0A71840008
-X-Stat-Signature: copy7pmh65cjf196wokhtabsdt916rhf
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9730:EE_|CH2PR12MB4278:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b21672b-5cc8-44fe-7850-08df349d1978
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|261026140227099003|261021121427099003|56012099006|261009223027099003|5023799004|4143699003|11063799006|261021123027099003|18002099003|22082099003|261026121527099003|10067099003|6133799003|261022105027099003|261022075727099003;
+X-Microsoft-Antispam-Message-Info:
+	uuWX0HDSR+44vsbilm3jEqqNW1Ts8ar7zlr8zAfPvpL6f0NU4n5CV0w6naNs8ik90pq0XFL5wiSPIV2f7QovrplOs3Or2bbAXXkOob0FpCWudiZwlje5zbvKz7l+L+4aPNvDEUKd9r4uL7Y/ygq7WijYxT5kmwDx59zyDSZD1FkdkzMxcLpSUkgfdIQxDKOx+K9IpEQ6uKam+uHOcUwnSFLvUT41pmxHn48H5mLJt5fe5LxddJENKY3EHVvw64WBsFPueGYvvhLpdNc21nd0H6WwOvm6EnifyGm8MDHlznLp8QRIJzmbG8/cY0vXmB3PY0Sn3aQM8BekawPDq5LFowk7KnnoO7mjTAHigTHAFSgwOTxeEer8myaM5MBdXtayxe+z4MEsGRHml/A+xaB9/1M3ixhiyqLrDAjKJpGkrgSdDrEdTWVBEIJ4nxcWPtd2igKydaVklhH3ojYmqrb8Kr04H2WW7dP2qZmoIQ2G5HQH/DCLNpc19CFSgvNC/dZydAV5VTO/tsBenHFeGFsEHmi/XxdlhrLnLaHFvsKEIkTfqPqPPx2GyBQN46j7Y5X0ku07BI32P+THG6Y+OGy2I6IGP/hQfn5dArOATvKMgMb1KAy+RH35YwVi/5i7Q4udshv1yDC0ZVxbd8/o7apkrCaC7KcQNxHk1je+Gc5NoFw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9730.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(261026140227099003)(261021121427099003)(56012099006)(261009223027099003)(5023799004)(4143699003)(11063799006)(261021123027099003)(18002099003)(22082099003)(261026121527099003)(10067099003)(6133799003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QghB/Imr3Wvc5oEyAD4m7cssR2euuSunKiQvY0U2j3Hi3nj3538Ys3MJfrvN?=
+ =?us-ascii?Q?k6aWFsYWNkrxBpn6lgpr7F1RzkEw2TtA7+G/W+8tRiIE0cqKR4XPro+gVXMy?=
+ =?us-ascii?Q?yQjBHeNyJCx4elFW3QNHwxyB3RDrcCY5/BsXMnaeg9Jx7i3eXg4rqpKGMIIo?=
+ =?us-ascii?Q?roa45xhJkXEMKTa4QZMzwDzWLr6UCYXsk2NI6EWWcHi12+xrE41ZEwDQy+k9?=
+ =?us-ascii?Q?JZNWIbGgItNmy0wjnjKO6EB9vQxKMbE/cIVqdMrXIwbO+wWnLgJaS+EaBwPV?=
+ =?us-ascii?Q?KBQXl2oKozntH0wb+r6/5NPHBmV96oBuC6DETukrGflJv+I0T3QfcI2uD9KY?=
+ =?us-ascii?Q?tnq4XcIT9ES6XTEoMfUky1F0pA7Uohz9ZK8r78NeUMHOt6Q5P51zBcUEp3Od?=
+ =?us-ascii?Q?HkBMqGT7ZlgmFEaQ2wt1ybGkYt50Fjc4uRz574iAg29Fy1ljGIR4SOMyjo8Q?=
+ =?us-ascii?Q?OyjYJwjOV1XfZjm3f36eYAf2v8oJhZ1RGLzUidom9ALgiRw5Et+rH9WzKatI?=
+ =?us-ascii?Q?3qEWhiaJNOqtJhZiq0ta2MzAYKGLIIp9H9rcisKXR2l9W/ABGtcznmsEbrm8?=
+ =?us-ascii?Q?AsFOIpEI0wRSZU3V3pMINAQaRf6PAIIp1gFiceBJ7DfvjkyAeg7mnQMJ3yTU?=
+ =?us-ascii?Q?zZD/ixxvb5TTBi+dfhXBmBkfXKKDNACeFrzO/utUN31Llac/esIkNUlR2vZ5?=
+ =?us-ascii?Q?pEKVesCn6fBZbdsv4hG1yxZ+mTRosFIkeS67QVmylBiRK+9Gc6F0P1zXfp0K?=
+ =?us-ascii?Q?C8d7aYxHOeW24FnAI4RWgEgOOvaqsQkv5g1y5Nw4Z1IBm6F9MUZF/b3JN8Nu?=
+ =?us-ascii?Q?MOwsoveKz7f3HbDoB5bAHUS7HVq8x7cE8losyTABZIp+QOphCuMn7kVwr/0f?=
+ =?us-ascii?Q?37r+LtroFMtslpivXu3M1yv8r3CJpEDLNTFohje5Rce/ojn3feuOn/ObbObe?=
+ =?us-ascii?Q?GZmFJ7oCWQ64OwyiAbd2ieYkE/hTBe606mA+4W6qSKwa/vc3qa8x4K5z6tGz?=
+ =?us-ascii?Q?gjIYT02iDLDx2mvNc1B5buNcO4TN2KZHBn8tNxAubv88xdPdmP5XOicC81ub?=
+ =?us-ascii?Q?Eek78S1kTTyB8f0K9V6t0SAIjLavdGp0ue+a13hac9msoTOJStEY2quAqxw0?=
+ =?us-ascii?Q?MixOePQAr95zna90SMnyatytnnoLePduDiiyie6mIyNyyMzSQMxJcJajkwte?=
+ =?us-ascii?Q?H/jrjSRgtP596be2EZI0NhUZS7E9iAea9Lb3dtJrOzIO13D63ofGB2oAnyIA?=
+ =?us-ascii?Q?/w3FN6sTsQYa77glwas/BXwIAzcgfqHT9AeNCvLYmOsNn2c3rEYLCRfmtEwA?=
+ =?us-ascii?Q?MZDwjCQ7FOpkmw/2OQnWkI1OFgJZ8swj9lKx0CGbj+ajzigwORnikSBNxu79?=
+ =?us-ascii?Q?gxaTmXltOYj0iCb2Nwwhm48HSjE8ol/LzRRcGIcGsU8Ey96OwJJArTwInA4b?=
+ =?us-ascii?Q?Gdruq5SS8yH/8mUAZu61hdkkhe+MZ+KXJEh7WQsBs+nr/eyMzvWGfe4N5CKP?=
+ =?us-ascii?Q?UEJFlxfoxFq8qRje3S9LHQ5VPkn00IVNQjrJWOZVTpFelekSubHxwqZAazdk?=
+ =?us-ascii?Q?XAAdcqXYw9SqHIECWWIJfzxK5P6EMCnhbPm+0FgxxTNsX/eM90gtN97zwtaA?=
+ =?us-ascii?Q?is8CgJEPKNpC1sJ0WNP84hDNXMOgTR2zhN2uqQ8hkKLtvXulW5kEcrIOPDDu?=
+ =?us-ascii?Q?8ZoCvVON+fAv8h6ja3s9nMogzUEAiz+qlN38KN2dqURe5x2OWSsmOUAEHK+T?=
+ =?us-ascii?Q?iWIOtOcKHQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b21672b-5cc8-44fe-7850-08df349d1978
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9730.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 02:42:25.4808
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YpBE/1KFuK7VsHKcdklkKCwQUtNHbagxm4jEzL6h9EwYhN3d6glbEMBqSoAukByOAtlYP8Ut6M1ERCOpYlwzCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4278
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BCED840005
+X-Stat-Signature: 9px6xhc43wqn4fjbh8xygw8x89mfdfqh
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793155112-178077
-X-HE-Meta: U2FsdGVkX1+cZwCKNR7XdH3Lo/ednyOeWAKK9H2YOfGvQ0BGUR4ECEFB+YH+6RKVhfUpLy8udBZrarUTxzW3uWusIARWwVAwWwKVyobHEtg95630xalt5AJQOV+o+3j2XSJfShjW3IJL8M8WX2mXCthvLFTPTv2m0STMGoRlb9pR19G18Jb9DDSDYy+za9VeKILvZnBsIjN+L3TOVrO7VdYgtuAHKnzrxOZKZN00Zt+3cA2Gf128cpZLW5dvM41QQYzWSSVyor+97oeISfWoTEwg2vMUDcZUn3rQX8ZyNtcdgRNZgv90QYAhR+1j/be/GMlt7ygAtIcgbFfbcLRXx3pn+4/Ge9L9UBmcuaKvVuRBIaAJ7q7o4N0wEVbUbazaC3MAOXBo4ln4DLtez22+07wqZE4lkRE7KOIvMYb1hvWmWxZ0T0rxq3T/Zt6+rxsQ8wKuNOT/UZhPxQQmvPHinD/IURR+7yeupQ9nnOSxGEwTwgrCP7VA1nb8u9FpfxadPhdq3FZbX7HbT2oZ6r6j9g7uha1vOhVV8UT9VIB41Pq0z0+bvKFSBl89vsAJl57qMu0DGwIqs/IVDvLMjR48YoMlK0JP+ruNKD+gu9jaEHK3OGZO9JaDBZnbR1sPgYfB5t6X/9ETf73RdwB3eLhXMVv1Md5ul/jIngI3snkcSeqSibgo9+fkvoxnQr+fL0TB4Zf3IfxPU/5TVFvoG3ejCf6o1HJ0t53YIgNsTDzm2rn8ACJjCHnEyUMuU6eOSszhwSfrZf1ZQn9NMV24bASSErZ+Sd2R53j8zUZEYtL410vyfjWYHohK18i8Yfc+TnaxU5eNUxN5+umnR+lFIL62lnG0YpQ0ADmsVnklpexySfw4ReL8hT+8y6r//rN28Jma49nrnM9FhAVd8lCKpeunwdI8H1lsF7PxWhj49I7p91kCATfGAvIemSJF1y29RlKO6yxEQh0qfTc+LTctBKM
- BbrdAbYA
- hkSIBBBhPj5Fi7XCr9+US5C4LiNNyD2SlaJ84t1mg9BTwBBUyYVOmYE2KRZOh62OxbdzlG/Bu2y5AmdoR1jahfpzlVxqwACzfNgjQlLVc1ablYZwO0omVLgQgZjYPEIsrVYLPDdjeUQwbzWECOVNbRBlTDSpNK5jEq/N6KKlANnCjckNp5nHZHfrn7AiHvuKk/eYARV6R46waxGrJbpO/dYrpdMR2NDmOYY+m++7Y8dyRYOCcPMb3dl4USwbFwtO/mfV01gyXZ6HI5TmE0Ak9EB0gs3Xx2YOKyBOqUf8h1gI6CbQ=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793155353-989694
+X-HE-Meta: U2FsdGVkX1+eKK/78NLQ0TVNSMgp68hg4nbtxv2C9nnvzdhBr/wBewvLiCDOmUHw0PQaTBWcpKKuB1dPZp3W+x/lxDEu5hD+64zdjJIq2M4wsRR24CsligyUG1/MznQyjfK0+hSiHgdX0EVrOz+98MqUPK4eeFGw0gxePQtt7exkwyQp1K0i6uJGO7nTLxIvXZ46hfrBKL2xE67BwDEUIAf4w0AXUP+DxyCxDbrwoJ1FQRBt06Nm67lYu2WUAomF9F/VjUZOWh0f/IBqrQ9x2CF8OhosdpFUI1PHm0dFOamgkyqc2KZsoZZ5N/SoJ91Mnq0kubMJhRsGQIQzmiiD6umEy+X7ly5hNPVzbJ1zD16ygcs7XMMXj/9WFwVBLfdCpXBVLzsWeP843U2cCV0Bd1Cf43xiB6+eBPmP3Zc/kenuCK4+/ETTNKBJWGNjc88vvZ2KfZ5VS7Ehd9zNrCsZ7llJL4zt3hSbIlf188mF/cl/jK9mjW6nbnCFPn/bdUs1rwuW3XOlTRj0Zxm5wmL2xRzCIZ2H3kUsiBaUzY2USqsz7RaECG3I1jxcKLr2aR825vsdsZ26Wg2AtQSs2Hsy3nAjzp9qpNr7p5rwc1jB7KpTNZE0hQmY/LC3mve81cyIxIgs/3QGn0VOt+tXcFvPxcQcyzaFJQTwNaEMkCYc5XFGeNr0ZtIjhWesQeEy6OsHQwdPTPaq85TbUfieSydYAB/SknfnhOEwhlXMHgTABsGjCKwNLlhkj12wUZhHtH5QtgNAufM8ZW1sl2xzM2tCDJngUp6v9iPBCpX0N7bnSLESUIQRq2pmYsVMpS8xRYRzjbJaoVRBraMBb/L+HwaENq7XcIprPl926kCuMcx+IbeXxTIitW3fuImnYJULKtYfiSNtRER7AsJ0xHW3w1qAFwtKRCnfDh6i3pvqo8S/qP9ssRgSVCJnUazxqObDQmJp0pKWcSveJdjN0WNUhZj
+ x8js0eTw
+ Xp9rGWxkZ6jrhIJQChywgoCY4tOh9C+iKqgV0ywmRJ148md4jrbB4eQ6sF3DQK84lmFBxK4V40VRifmQ5Z0zXLt9IR0LM3DJLXhJe98biqMyNEgDNXIwoNYtAJ3Hx4/Ne1vDcls8mdtOUjETpHJ2UxBjVQCeheZ2g/PpcVFkzSG3slK5gpaMpAhit+czieOjW5sH3UWGT3U+BGhYx7XYLhhShKa202Tmyesqg9nLYCw5fK0TvmvZdsT6K1wUAf+6DkM4aNWks634LUegAEtC4lPo326yTMZ7Og4qhR6TD120OwSK4lICr2JZTJj8wBm03oEzB1v//Q03e2hecQwfKJ7BArTI34S3cWmFmxERRmJRxTGeQkR47naryaAgc38zxmct8iYi4ZgZhgrkMKhHDZaIwPyaB32mCgv9ugVmqvmbxoHY7jZA81Qz8gWHGgW3HCG0v5isDykr+Xys=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,223 +182,159 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 2026/10/28 01:51, Kiryl Shutsemau wrote:
-> On Tue, Oct 27, 2026 at 10:03:54PM +0800, Muchun Song wrote:
->> Therefore, I am kind of leaning towards removing the RO protection
->> and restoring RW permissions to solve the race.
-> Okay, what about this:
->
->  From e23ab850837b53cc79d57d58f1cfb4266e745c3d Mon Sep 17 00:00:00 2001
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> Date: Tue, 27 Oct 2026 17:23:47 +0000
-> Subject: [PATCH] mm/hugetlb_vmemmap: map the shared tail page writable
->
-> page_ref_add_unless_zero() reads the refcount and then updates it with
-> a cmpxchg.  A lockless get, such as a page cache lookup or a PFN
-> scanner, can read a non-zero refcount from a page that is then freed
-> and reused as a hugetlb tail page.  If HVO remaps its struct page to
-> the shared tail page in between, the cmpxchg writes to read-only
-> vmemmap:
->
->      CPU0 (lockless get)               CPU1
->      c = atomic_read(&page->_refcount)
->                                        page freed
->                                        page allocated as a hugetlb tail
->                                        HVO remaps the struct page RO
->      try_cmpxchg(&page->_refcount, &c, c + 1)
->        -> write fault on read-only vmemmap
->
-> The refcount is zero by then and the compare fails, but LOCK CMPXCHG on
-> x86 writes anyway.  The kernel oopses when hugetlb pages are allocated
-
-Is this an X86-specific issue? If not, I suggest a more generic
-description.
-
-> at runtime with HVO enabled while a lockless get races with it.
->
-> Commit bd225530a4c7 ("mm/hugetlb_vmemmap: fix race with speculative PFN
-> walkers") closed the window with RCU on both sides.  The RCU was removed
-> together with fake heads, on the wrong belief that it was only needed
-> for them.
->
-> Map the shared tail page writable instead of restoring the RCU.  Every
-> struct page on it is a tail with a zero refcount, so a late cmpxchg
-> fails and leaves the page unchanged.  RCU would put rcu_read_lock()
-> back around every get and synchronize_rcu() back into hugetlb
-> allocation and freeing.
->
-> The cost is the protection against stray writes to tail struct pages.
-> The shared page is shared by all hugetlb folios of the same order in
-> the zone, so such a write now corrupts all of them instead of oopsing.
->
-> Bootmem folios optimized in early boot get their tails mapped writable
-> and write protected later.  Drop the write protect step.
-
-For bootmem folios, I don't think the RO mapping should be removed,
-because we are in the initialization stage of struct page.
-No one should touch those pages at this point; otherwise, they could
-encounter uninitialized struct page as well. This assumes no race
-exists during early boot.
-
-Since such a problem does not exist during the boot stage, why should
-we give up the protection that RO provides?
-
-Thoughts?
-
-Thanks,
-Muchun
-
->
-> Fixes: 32c440d67e6c ("mm: drop fake head checks")
-> Fixes: 01b1d0ffb6f7 ("hugetlb: remove VMEMMAP_SYNCHRONIZE_RCU")
-> Reported-by: David Hildenbrand (Arm) <david@kernel.org>
-> Closes: https://lore.kernel.org/r/ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+On Tue, Oct 27, 2026 at 06:06:06PM -0700, T.J. Mercier wrote:
+> lru_gen_offline_memcg() moves an offlining memcg to the head of the old
+> generation of the memcg LRU (MEMCG_LRU_OLD), so that global reclaim
+> visits it first and evicts the folios it left behind.
+> 
+> Since commit f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of
+> dying memory cgroup for LRU folios"), those folios are reparented to the
+> parent before lru_gen_offline_memcg() runs, and nothing can be added
+> back to the offlined memcg's lruvec afterwards. Putting an empty
+> offlined memcg at the head of the old generation no longer serves any
+> purpose and only delays reclaim from the memcgs that still have memory
+> due to additional shrink_many() iteration.
+> 
+> Remove lru_gen_offline_memcg(), so that an offlined memcg is rotated
+> like any other memcg below the reclaimable size threshold until
+> lru_gen_release_memcg() takes it off the memcg LRU. MEMCG_LRU_OLD has no
+> other user, so remove the op and update the memcg LRU comment as well.
+> 
+> Signed-off-by: T.J. Mercier <tjmercier@google.com>
 > ---
->   Documentation/mm/vmemmap_dedup.rst | 13 +++++++++----
->   include/linux/mm.h                 |  2 --
->   mm/hugetlb.c                       |  4 ----
->   mm/hugetlb_vmemmap.c               | 21 +++++++--------------
->   mm/sparse-vmemmap.c                | 23 -----------------------
->   5 files changed, 16 insertions(+), 47 deletions(-)
->
-> diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
-> index 9fa8642ded48..6cd85aca4b96 100644
-> --- a/Documentation/mm/vmemmap_dedup.rst
-> +++ b/Documentation/mm/vmemmap_dedup.rst
-> @@ -131,8 +131,15 @@ pages of ``struct page`` (page 1 to page 7) are tail pages.
->   The optimization is only applied when the size of the struct page is a power
->   of 2. In this case, all tail pages of the same order are identical. See
->   compound_head(). This allows us to remap the tail pages of the vmemmap to a
-> -shared, read-only page. The head page is also remapped to a new page. This
-> -allows the original vmemmap pages to be freed.
-> +shared page. The head page is also remapped to a new page. This allows the
-> +original vmemmap pages to be freed.
-> +
-> +The shared page is mapped writable. A lockless get of a page reference can
-> +read a non-zero refcount before the remap and attempt its atomic update
-> +after it. The refcount of a tail page is zero, so the update fails without
-> +changing the page. Nothing else may write to the shared page: it is shared
-> +by all HugeTLB pages of the same size in the zone, and a stray write would
-> +corrupt all of them.
->   
->   Here is how things look after remapping::
->   
-> @@ -196,8 +203,6 @@ happens at a later stage when we populate the sections. HugeTLB reuses the
->   the head vmemmap page representing, whereas device-dax reuses the tail
->   vmemmap page. This results in only half of the savings compared to HugeTLB.
->   
-> -Deduplicated tail pages are not mapped read-only.
-> -
->   Here's how things look like on device-dax after the sections are populated::
->   
->    +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index dd09c438fa23..bfaf4ce6d831 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5162,8 +5162,6 @@ int vmemmap_populate(unsigned long start, unsigned long end, int node,
->   int vmemmap_populate_hvo(unsigned long start, unsigned long end,
->   			 unsigned int order, struct zone *zone,
->   			 unsigned long headsize);
-> -void vmemmap_wrprotect_hvo(unsigned long start, unsigned long end, int node,
-> -			  unsigned long headsize);
->   void vmemmap_populate_print_last(void);
->   #ifdef CONFIG_MEMORY_HOTPLUG
->   void vmemmap_free(unsigned long start, unsigned long end,
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index cea25773a6c9..7596704d94b5 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3220,10 +3220,6 @@ static bool __init hugetlb_bootmem_page_earlycma(struct huge_bootmem_page *m)
->    * if marked with the 'noinit' flag. Set it to the default (MIGRATE_MOVABLE)
->    * here, or MIGRATE_CMA if this was a page allocated through an early CMA
->    * reservation.
-> - *
-> - * In case of vmemmap optimized folios, the tail vmemmap pages are mapped
-> - * read-only, but that's ok - for sparse vmemmap this does not write to
-> - * the page structure.
->    */
->   static void __init hugetlb_bootmem_init_migratetype(struct folio *folio,
->   							  struct hstate *h)
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index 917db0984143..77f9d035d04c 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -222,10 +222,12 @@ static void vmemmap_remap_pte(pte_t *pte, unsigned long addr,
->   		VM_WARN_ON_ONCE(!PageTail((const struct page *)addr));
->   
->   		/*
-> -		 * Remap the tail pages as read-only to catch illegal write
-> -		 * operation to the tail pages.
-> +		 * Map the shared tail page writable. A lockless get that read
-> +		 * a non-zero refcount before the remap can still do its
-> +		 * cmpxchg after it. The refcount is zero, so the cmpxchg
-> +		 * fails and leaves the page unchanged.
->   		 */
-> -		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL_RO);
-> +		entry = mk_pte(walk->vmemmap_tail, PAGE_KERNEL);
->   	}
->   
->   	list_add(&page->lru, walk->vmemmap_pages);
-> @@ -629,19 +631,10 @@ static void __hugetlb_vmemmap_optimize_folios(struct hstate *h,
->   	nr_to_optimize = 0;
->   	list_for_each_entry(folio, folio_list, lru) {
->   		int ret;
-> -		unsigned long spfn, epfn;
->   
-> -		if (boot && folio_test_hugetlb_vmemmap_optimized(folio)) {
-> -			/*
-> -			 * Already optimized by pre-HVO, just map the
-> -			 * mirrored tail page structs RO.
-> -			 */
-> -			spfn = (unsigned long)&folio->page;
-> -			epfn = spfn + hugetlb_vmemmap_size(h);
-> -			vmemmap_wrprotect_hvo(spfn, epfn, folio_nid(folio),
-> -					HUGETLB_VMEMMAP_RESERVE_SIZE);
-> +		/* Already optimized by pre-HVO */
-> +		if (boot && folio_test_hugetlb_vmemmap_optimized(folio))
->   			continue;
-> -		}
->   
->   		nr_to_optimize++;
->   
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 5a2469fb1838..3f25d4a0bf47 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -299,29 +299,6 @@ int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
->   	return vmemmap_populate_range(start, end, node, altmap, -1, 0);
->   }
->   
-> -/*
-> - * Write protect the mirrored tail page structs for HVO. This will be
-> - * called from the hugetlb code when gathering and initializing the
-> - * memblock allocated gigantic pages. The write protect can't be
-> - * done earlier, since it can't be guaranteed that the reserved
-> - * page structures will not be written to during initialization,
-> - * even if CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled.
-> - *
-> - * The PTEs are known to exist, and nothing else should be touching
-> - * these pages. The caller is responsible for any TLB flushing.
-> - */
-> -void vmemmap_wrprotect_hvo(unsigned long addr, unsigned long end,
-> -				    int node, unsigned long headsize)
+>  Documentation/mm/multigen_lru.rst |  4 +---
+>  include/linux/mmzone.h            | 14 +++-----------
+>  mm/memcontrol.c                   |  1 -
+>  mm/vmscan.c                       | 20 +-------------------
+>  4 files changed, 5 insertions(+), 34 deletions(-)
+> 
+> diff --git a/Documentation/mm/multigen_lru.rst b/Documentation/mm/multigen_lru.rst
+> index 52ed5092022f..b532ce961371 100644
+> --- a/Documentation/mm/multigen_lru.rst
+> +++ b/Documentation/mm/multigen_lru.rst
+> @@ -234,9 +234,7 @@ the active/inactive LRU (of folios):
+>  1. It has the young and the old (generations), i.e., the counterparts
+>     to the active and the inactive;
+>  2. The increment of ``max_seq`` triggers promotion, i.e., the
+> -   counterpart to activation;
+> -3. Other events trigger similar operations, e.g., offlining an memcg
+> -   triggers demotion, i.e., the counterpart to deactivation.
+> +   counterpart to activation.
+>  
+>  In terms of global reclaim, it has two distinct features:
+>  
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 7f078ff0dd76..542e465ee7a1 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -626,12 +626,10 @@ struct lru_gen_mm_walk {
+>   * per-node memcg generation counter, whose reminder (mod MEMCG_NR_GENS) indexes
+>   * the old generation, is incremented when all its bins become empty.
+>   *
+> - * There are three operations:
+> + * There are two operations:
+>   * 1. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
+>   *    current generation (old or young) and updates its "seg" to "tail";
+> - * 2. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
+> - *    generation, updates its "gen" to "old" and resets its "seg" to "default";
+> - * 3. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
+> + * 2. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
+>   *    young generation, updates its "gen" to "young" and resets its "seg" to
+>   *    "default".
+>   *
+> @@ -643,8 +641,7 @@ struct lru_gen_mm_walk {
+>   * 3. The second attempt to reclaim a memcg below reclaimable size threshold,
+>   *    which triggers MEMCG_LRU_YOUNG;
+>   * 4. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
+> - * 5. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
+> - * 6. Offlining a memcg, which triggers MEMCG_LRU_OLD.
+> + * 5. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG.
+>   *
+>   * Notes:
+>   * 1. Memcg LRU only applies to global reclaim, and the round-robin incrementing
+> @@ -675,7 +672,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr);
+>  void lru_gen_init_memcg(struct mem_cgroup *memcg);
+>  void lru_gen_exit_memcg(struct mem_cgroup *memcg);
+>  void lru_gen_online_memcg(struct mem_cgroup *memcg);
+> -void lru_gen_offline_memcg(struct mem_cgroup *memcg);
+>  void lru_gen_release_memcg(struct mem_cgroup *memcg);
+>  void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid);
+>  bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid);
+> @@ -709,10 +705,6 @@ static inline void lru_gen_online_memcg(struct mem_cgroup *memcg)
+>  {
+>  }
+>  
+> -static inline void lru_gen_offline_memcg(struct mem_cgroup *memcg)
 > -{
-> -	unsigned long maddr;
-> -	pte_t *pte;
+> -}
 > -
-> -	for (maddr = addr + headsize; maddr < end; maddr += PAGE_SIZE) {
-> -		pte = virt_to_kpte(maddr);
-> -		ptep_set_wrprotect(&init_mm, maddr, pte);
+>  static inline void lru_gen_release_memcg(struct mem_cgroup *memcg)
+>  {
+>  }
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index a05d9a8baa1b..e2ddf0680e62 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -4475,7 +4475,6 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+>  	memcg_reparent_objcgs(memcg);
+>  	reparent_shrinker_deferred(memcg);
+>  	wb_memcg_offline(memcg);
+> -	lru_gen_offline_memcg(memcg);
+>  
+>  	drain_all_stock(memcg);
+>  
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 636152d8c94d..45a2c1021f4f 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4538,7 +4538,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+>  enum {
+>  	MEMCG_LRU_NOP,
+>  	MEMCG_LRU_TAIL,
+> -	MEMCG_LRU_OLD,
+>  	MEMCG_LRU_YOUNG,
+>  };
+>  
+> @@ -4560,8 +4559,6 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+>  	/* see the comment on MEMCG_NR_GENS */
+>  	if (op == MEMCG_LRU_TAIL)
+>  		seg = MEMCG_LRU_TAIL;
+> -	else if (op == MEMCG_LRU_OLD)
+> -		new = get_memcg_gen(pgdat->memcg_lru.seq);
+>  	else if (op == MEMCG_LRU_YOUNG)
+>  		new = get_memcg_gen(pgdat->memcg_lru.seq + 1);
+>  	else
+> @@ -4571,11 +4568,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+>  	WRITE_ONCE(lruvec->lrugen.gen, new);
+>  
+>  	hlist_nulls_del_rcu(&lruvec->lrugen.list);
+> -
+> -	if (op == MEMCG_LRU_OLD)
+> -		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
+> -	else
+> -		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
+> +	hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
+>  
+>  	pgdat->memcg_lru.nr_memcgs[old]--;
+>  	pgdat->memcg_lru.nr_memcgs[new]++;
+> @@ -4613,17 +4606,6 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg)
+>  	}
+>  }
+>  
+> -void lru_gen_offline_memcg(struct mem_cgroup *memcg)
+> -{
+> -	int nid;
+> -
+> -	for_each_node(nid) {
+> -		struct lruvec *lruvec = get_lruvec(memcg, nid);
+> -
+> -		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_OLD);
 > -	}
 > -}
 > -
->   #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->   static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *zone)
->   {
+>  void lru_gen_release_memcg(struct mem_cgroup *memcg)
+>  {
+>  	int gen;
 
+Acked-by: Balbir Singh <balbirs@nvidia.com>
 
