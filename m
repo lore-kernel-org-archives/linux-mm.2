@@ -1,83 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE63606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29217606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qu0TDpHX
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MQZfJNG9
 Received: by kanga.kvack.org (Postfix)
-	id 43A6E6B05B4; Wed, 28 Oct 2026 05:02:25 -0400 (EDT)
+	id 3EDBF6B05B6; Wed, 28 Oct 2026 05:02:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EB5F6B05B5; Wed, 28 Oct 2026 05:02:25 -0400 (EDT)
+	id 3C55E6B05B7; Wed, 28 Oct 2026 05:02:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DBA36B05B6; Wed, 28 Oct 2026 05:02:25 -0400 (EDT)
+	id 2B4246B05B8; Wed, 28 Oct 2026 05:02:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DC5E6B05B4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:02:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A24BC140C0F
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:02:24 +0000 (UTC)
-X-FDA: 85371443808.08.1625698
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D645840007
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:02:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qu0TDpHX;
+	by kanga.kvack.org (Postfix) with ESMTP id 012B46B05B6
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:02:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E90DA893E
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:02:53 +0000 (UTC)
+X-FDA: 85371445026.13.915867F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A0EFC40002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:02:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MQZfJNG9;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793178143;
+	s=arc-20220608; t=1793178171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZOwWNn0gibZHQc2EDK+4gHhTei1ryqyCLAasJqC6i4o=;
-	b=FCmoXqqzN+JaU6CFaX9ExWA8kj20ArZZeNuQ/TguTsWs9iDssK5z+9OZbbX4voZNwapfjn
-	vRG8CIR8Vjg1tIefKF+ILBK+UGdixVX60NSge/HQaKS/hCoAb9rfjuXaX/eiMXqDJxfo4e
-	fATGPkfk1ZM7QJ0O/pl/6JaZp68D9Xc=
+	bh=EVc0/f8ChaWRV8kX9ByD+jZc0OWkw1ePPWsvRnLXgIk=;
+	b=mg9FT1uSdV/43mvv6Icn1OxstBQ6vjgZdLOFpI0cKX2bsBzH9+rHqahM3/3t/u602tOY7K
+	20REA+IfdYzKrhFpMj+EurXuyOVrK9IKzWhY5ce93QKKkkjE4EWpvh6Ou3T3Pt3HrBzYfV
+	mIXoZLFbhK0M2NOvXawZxsFXmCDui+g=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qu0TDpHX;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MQZfJNG9;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793178143;
-	b=6fuIJaqrhNmoCuUzSPRgFak/vIWWgfGLJauIWt/Z2S03QJhHPPN7Z9Zw7TfKFDJpe8cm0D
-	TVo6MJs+vrXeTJ7JXNLSUWWt3tr9LIDSCyImrktZnce2l9lwppg83RfxZW+/MH+yadYx9N
-	EtgWgY5slT44EW492+42BhDPMoMS/vc=
+	t=1793178171;
+	b=6PjcGa7KZuf+6LL3HdLnIm83F8RvxAwsifAFUwy8SjvEq20E4rwOcJ3ZrGvs5rcxTeEv/C
+	W+L7Q5xMcocdBs6WkhjQ5h7BLWfj8WAt0PSJ9bSJdl4ujDiYl7zmUJfdsB2ce+dR4jdE3M
+	3tHRjTFjLCcK++JNTIuoIdI0T59r3aE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A1F2414D6;
-	Wed, 28 Oct 2026 09:02:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67401F01825;
-	Wed, 28 Oct 2026 09:02:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 28162600DA;
+	Wed, 28 Oct 2026 09:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB631F01825;
+	Wed, 28 Oct 2026 09:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793178141;
-	bh=ZOwWNn0gibZHQc2EDK+4gHhTei1ryqyCLAasJqC6i4o=;
+	s=k20260515; t=1793178170;
+	bh=EVc0/f8ChaWRV8kX9ByD+jZc0OWkw1ePPWsvRnLXgIk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qu0TDpHXppHbMLw4Ywd+W68Z2SfmHz0TSYxcDxEchzKQqHss7RIfbsrtyFD87s5Q9
-	 0iI6Qr624LOBrqBHxGMtERKfUAa/HKE8mWaVw0hbBJ2e21B7j4NNdJODu0gyHVb2SL
-	 BEJevBBCi+NSSGcu3ly1Rw/sHhdahONR+m6Z7LAoIrbmQ+RrAHNnd5WXFDspJ70IcO
-	 5nUR8VBsy33Z4cAf64TYz0NJjlJ4ZfHTFQ/xSZ96OAmmEzfxC5YBtCsPsTXZN7983+
-	 9EEmtAb2aVXpHG3i63jwsyDqoj4i3Yv/mGK5yuHjKno3Ca/l+P6yavYF2v8982ERIW
-	 /sl9Z0WE6OBsw==
-Message-ID: <c8468755-4f75-4502-8d41-5cb9245a356a@kernel.org>
-Date: Wed, 28 Oct 2026 10:02:15 +0100
+	b=MQZfJNG9+JCMzP5YNvf+YJ9gL5OOyjmTXPQnk9aW+HKbD0t24o2nd3HhnZ1LNrDQ/
+	 q1yk/FMjfF8s9rlx4AZgdEf9k8YX0i/Up4dKThnSN81ZQIUMkepedhJeJcQ7hGVn43
+	 XuwhGNaWUkhQJzrchBR9cRmpV7HVXZsUOsdGKoAPw1iDwB4Jf73xq/qdW9uZfcajnw
+	 8XPb84Us2IWyzm1EcGSGgBqyc126G5xm4dkDgsEXLktbrtH6jNe6KiRv12vwF7j2Pa
+	 tEynM4JiFTAbfLtZ6Sc7wY2RTTGf5dexzk05+N2QQd7DlCsOKl7N12DEDl/rEP9tcr
+	 Q8JRJxoU8wjmg==
+Message-ID: <e34c1804-8de0-488c-b962-b10ea45fd784@kernel.org>
+Date: Wed, 28 Oct 2026 10:02:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] mm: don't migrate folios containing hwpoisoned
- pages
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, "Huang, Ying" <ying.huang@linux.alibaba.com>,
- Kaitao Cheng <kaitao.cheng@linux.dev>, vbabka@kernel.org,
- linmiaohe@huawei.com, nao.horiguchi@gmail.com, ziy@nvidia.com,
- wangkefeng.wang@huawei.com, tujinjiang@huawei.com,
- mgorman@techsingularity.net, chengkaitao@kylinos.cn, muchun.song@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261026025552.1427901-1-xiangzao@linux.alibaba.com>
- <18602383-2326-4e54-8dec-bb695ae8878e@kernel.org>
- <20261027120854.1213156-1-xiangzao@linux.alibaba.com>
+Subject: Re: [PATCH v2 12/14] mm/shmem: fix truncate loop after boundary
+ swapin failure
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Gregory Price
+ <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Lukas Czerner <lczerner@redhat.com>,
+ Carlos Maiolino <cmaiolino@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Stevens <stevensd@chromium.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ William Kucharski <william.kucharski@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20261027-fixes_shmem-v2-0-86a00952acb9@kernel.org>
+ <20261027-fixes_shmem-v2-12-86a00952acb9@kernel.org>
+ <2d111275-e7a8-4ac5-8618-f068e87145f2@linux.alibaba.com>
+ <10ae2533-cc4b-4c30-95d7-705815ba7830@kernel.org>
+ <7f4155ef-9f5c-4567-a84d-dddf640cb844@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +139,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261027120854.1213156-1-xiangzao@linux.alibaba.com>
+In-Reply-To: <7f4155ef-9f5c-4567-a84d-dddf640cb844@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D645840007
-X-Stat-Signature: 68jjbewaifaf7osfma17rbd8gxncgysa
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: A0EFC40002
+X-Stat-Signature: heg1a3a87d1hhgn99ag9qbmbghqakugy
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793178142-56413
-X-HE-Meta: U2FsdGVkX1/yo2GDP8j/w/FovkNgJV9EKrJDhPDpV4WfeKt6lzo8+Yr+VAuvbUdtG/04HiE9bc9xUbyKaut0L5thbD+b8Ozl9/3i6d7Mc1jHDAMMCV0L1Dt7icBSktehapblxY2Ov+XP0BNZLSNpmfIcV60BDh9Q41BiV4YxPp9aWsku7v1/oTokjfeun31U+Z+8vwKR/PkCNnWr2NDdINrYn8SF8/DHqCEfzeifc32GnGuvfs1diHMWctDOxDdIRw/9BQzlGddbDEkbmBv2MlxJ2p5LnIsj1VmQ5uvrTii2wQn/6BA+mF4jLckk8UWlmpPji1ohVyVZjtFadcNVkPwp4Xx2CaB3JYs+dAQpQhXOks+4EV3CJorED62E/X5MgC4/+MtGmRpdSj2+gHGnsK0cn6KoNTyxxsUcvQPcUJnEaUnWPfQ0AYbKdHvAgzUv2IafaNb6Lq7vxnukKkOpPcpb5iy4spq0NEmMGFi+2BPO5RGTFlm9iICVVf4zs22Y1zN6aYarx0i4dLWgONueyLnMo06jfGtpsBMUfoN2nh7WxLPVdGYgqG6IC4zmI35WBqG7VyVfHPXMKjbaHpnrLnLZgVntdJ4g5hAxQJlJDpWtm4kQQ/zQNsAwXOSnJ6TSnH1XXX6CWqlfhDb52usEasl4bQZJ/vXg/HbTrIa8WGxgAsoyHiOGRwcvCRUeYkt6TWk92uEIC4o4TA6W/nHQ83z42RPU3N+Ir5urn4Os5OIjbIx7fYeu6zbebUxaTZEzvH3DAUiL8Lw6kAXZAM6ieiGUNLrYkkM0FI1TbnyV0QaS1VqUv8UkKhwch8rBm1M3sT0BUdB2oz/6s6qJIjsD4wL2NLAAwhP7J04FOOhyCpuSrIn/LDxxV9zEr85zmFe7+xTeR0JqXZiZdolo0Yr3eh5NCnGvRqqA6fDr1yPJ4vlgiWMksJx7mnvazCfy+jJN/msfMQ5CZgUaWmrKHKh
- BsgClG+6
- hXvdhL00DVZiGUeMIYmpWss2rM9Fi8SYoCSJe76SlbBoshV9nBx7x/KLdIn/R3ps6/pUthq3+uVHm9q4sdB/oSYtVNZgz+WmDr2phQw8Eo1rLv8iZV3NOdunogjc/U7spKpUsrHnPkUgVZidqpsGC7eBvAu+LSgMxsHEca191EXgji7+2wMjSOPDoajCQ5d0NK+g2dijXGquzm2OHxioeO5tJos14VZ1OHxrGw+AqdHyjdC2ZjwPiy9dd4UuyoYno1birdd50CxHYqKdTVDxoYs/1Haj/wKIPS8XKHa1o291mfOxR1tPT04zT8M6aGtCU2mWeMA60xLOrGho1Et4HOW2CnQ==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793178171-803792
+X-HE-Meta: U2FsdGVkX1+/orPNz8o4GPgLyXNCS3RT7NGfzbgDqjroQ1SpeJxOGJ2jstRg2f23tMhUsgdgOChuX0hl/UYPRHSBgTW3OONuxmckULXXz119oPNCnNZ+lcRJXo1c2ljvj+H5p7s1vO4tj6jk+qkAPFVy8pxBVRuOz5eevrCZIAq2k12lEsz7g2z9DJhz9Rlz9efX+cGmGtcqhXTroe1UvdzPpZ12PWNEXhSuI5bnrYUsrvdKLUPHhIlx3L+uv6lDfbXzGoaKI7pW86xxGv7sH9/AyDuG7Kbui3ukXH5wOFFPP+waLUnRpRv/0Ymh2rDe3WSaPuioJ6g7vMJIUoJpKilJLY6D1N/ANmpsCT5XH+H6i7I75PFqaj1ojpw6Mf54vVswW9yKEAFcM9wf0gL0UoYHI77UvMLFotxXqoazB5Ki/iYXstQ6/VuiO9noz9aC4g9SOF2aqoCr1DVNZv0Ev7OQsYxcrBiPbxrazENr7KWQirsp9Bm4ESXw6sRlikDdTFbT/lDFp6fHDTUmmTFOzfxGSyobB9lhWAIImfSS/tYjKhlp8Zr18zx/NgTfcQ9S3YjsOYVQ4l960KmJeLHWXNTqSc17J6oySOBw74ksfyp0YUVdKt9hBnOjDYe5DTmn+vNmLqL3Er0kXshSJ5XLPHx8Cdw/jsebwtaQb508VqsmkqO/1tIuR/DuHsYCRx3NgfUS3OnMrkXWkmts/WA91aUg9/MMKaF/0s0WM/DM6RjDVJ5agprCN89abaBKJUtGm7YDEXxcU/Unb2SVxSEGDvmoZ9sOWLjylgOtqVoVGXhAhtL4s+gxG5QyWcvwhBoWn05/4PfQHDw6c1hOvGI5Qops2Q+9bc5PalVIr5f1T33Lg2Hm8xfVSZxZf5T8KClIO0x9ULJmLLKiWNM4gjI4Y7C3RgT2v7qQN49hDJxkHxNJpbnhnakFZgEP+DIKFVGARqu0lxI3p7ijY5nnzj2
+ JeybBWy0
+ pb70AXj4MJBktMNUN8jN8puW0oc2f5mM1mM3G5KePoRhbo5SxP2RcguwlhpI5rN2OFDFPtZtpQt9wE5aYRF8RztMoI8S0q++xIviDkEQmIjvV0N9gK6F/nAijQnTs8QsePrcLopirTTPkaJYBBQxIyyNWZgssflLRLO/VEo0uRNYMDlRnBxHfBlT7XM/WzE0XiLICcmHc3F5ES438sYmgXVZAXelQfK7uqjGpQtF1fBfY2NMsRtp1EF+GlME7JKCR/dNGknkCk8Yfksjh+5UyTY6g8sRxWhJGdLtwBdt8eADqVanO4tkR2EE22q6Hi4Vn/gyqw3FjgZQH9tBsS4o1gOwsLlIe4zOHsIevBn8jmg0z6Sg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,14 +162,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 13:08, Yuanhe Shu wrote:
-> The fallback check does not compile on x86_64.  There,
-> folio_mc_copy() only catches a synchronous #MC at the copy, and
-> software-injected poison never triggers one.  
+On 10/28/26 10:01, Baolin Wang wrote:
+> 
+> 
+> On 10/28/26 4:21 PM, David Hildenbrand (Arm) wrote:
+>> On 10/28/26 02:30, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> Right. But ...
+>>>
+>>>
+>>> IIRC, we originally avoided advancing start because a concurrent swapin fault
+>>> could split the boundary large swap entry via shmem_split_large_entry(), leaving
+>>> small swap entries below the new start.
+>>>
+>>> Sigh.
+>>>
+>>> There doesn't seem to be a simple fix. We may need to swap in the large entry as
+>>> shmem_get_partial_folio() does, and then split the large folio. I'll work on
+>>> this as a follow-up.
+>>
+>> Thanks!
+>>
+>> So you are fine with the patch as is to fix the endless loop?
+> 
+> Yes, let's get this fixed first.
+> 
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Why is that a problem?
-
-Why do you care?
+Thanks, sending out v3 soonish!
 
 -- 
 Cheers,
