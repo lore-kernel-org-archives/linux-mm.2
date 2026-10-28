@@ -1,144 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42DB606B7CF
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 19:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AA8606B7FC
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 19:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PipEhC+e
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hmOud5m1
 Received: by kanga.kvack.org (Postfix)
-	id D1BB66B00EF; Wed, 28 Oct 2026 15:10:29 -0400 (EDT)
+	id C336C6B05B2; Wed, 28 Oct 2026 15:11:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCC486B05B1; Wed, 28 Oct 2026 15:10:29 -0400 (EDT)
+	id BE3B06B05B3; Wed, 28 Oct 2026 15:11:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6D0B6B05B2; Wed, 28 Oct 2026 15:10:29 -0400 (EDT)
+	id A840F6B05B4; Wed, 28 Oct 2026 15:11:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87A116B00EF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:10:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AFCA0140267
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:10:27 +0000 (UTC)
-X-FDA: 85372976094.12.811AFF9
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A5CB716000A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:10:25 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PipEhC+e;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793214625;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 839826B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:11:30 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A75EA0260
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:11:30 +0000 (UTC)
+X-FDA: 85372978740.09.960A00B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 77C41100005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:11:28 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmOud5m1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793214688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LTRbuuK9g1LUPZHzumdbyEu1P7vkaopyl0+z0dso4UY=;
-	b=DEbx6kvO3jMZAHwyZ0jIgQuVdQ7vJ0/5/BLUr2phKwpr85J4o0i3J7PxJempWQeX/2Mjth
-	PYUTV/0AV1bcII583I5wfIXFCEy4zB9PT8fsce7uf/hEqVxrutLWw3ZnIqWBEilaVTDs2h
-	i7IUyhbZlUXs/zNEL8MrqVZx0SkquP8=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PipEhC+e;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793214625;
-	b=IP+ctPnc9iXfhN0LgOHGKYHRy21tzczTTw5qSyjybekBTWTrcVk9DcDkrO3cWVmA0H3bak
-	chfVs/v+h/Hyr+Izm4W4DRoHIhudhDoB8gUmEL6jzmV6IaXCzmyQLaxAjCrcfgB7U5wTxi
-	KlyRpXznw/k0ONy7Q4L4MDOPZ6KuT5c=
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8b0a45e0fc2so1697557b3.1
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:10:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793214625; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BfKU31HmjuB+ch24+aQlyHrfU+4er9HA/vlRo9eSfvCTU5+L2pw8FJvT9MbJAqEOVq
-         oePIWMBFlNDgxMCp+qlgKvIVzFourBolqd8Oqllg3I0krTiP+b3XzOrqIkptSu7Kef0c
-         1wBCsh1JWaDRxSC5vn6V2kT9MdRGi5P67SaC+mi6/AjViTnvhIE1HLfyjRH+8Xropk22
-         8k8QW9sw70XdrbdkI41vkD9Tg8XjO7inrggSX73v+r6ZPTgIwSebnHvEThecW3VAsQky
-         dbIBqIm0RZ3WMUE3Lvu5EIP/kblSWisYVYQ/7F+2zbaJomvuQnPa7vbzgXnvT2E9JosD
-         XbWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=LTRbuuK9g1LUPZHzumdbyEu1P7vkaopyl0+z0dso4UY=;
-        fh=uIxmSnTytzPbJGP6Pb/8jEf7Ob/djM+HlZWV0WZgnwI=;
-        b=p/1kIUfA5Z1CvknSrLVZrMkLGMfRE1tyFiOVWKUwadL7Yg3ykdD4vV+E4wyfuYGVOA
-         YMrgTFTl46swzptAzyKCRqSd9r/XsirrwfgLY8fw01njZeB1Fg8DEgotstTriWV6UEto
-         zv/XsWt0tll6K1OdZr4s/lZ8fwCJ1zz+LAJcOI8JhxHLQInbRn+a66R6HCNHyIooav6+
-         Xz6MX3qdkYkl4zPxHLHLn5BGUnIaKIzgqs8uWbevtPZ7X+qP4ZRPi86EcnKnuWc5MQB9
-         Dewg1Upu673bRAFAd1bcbRfr4bObC3M9Ap6eqLFn/fP64b10es6PEd8W7xRbfqkZ+hFW
-         jYiQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793214625; x=1793819425; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LTRbuuK9g1LUPZHzumdbyEu1P7vkaopyl0+z0dso4UY=;
-        b=PipEhC+euDwZAk4bZK6HFx/c/bDmmDrAjw+h3gOI38MQKoaX3SG70JAf6DBY0DHCzG
-         FvroXEIf+zgEPBdmaWDPsX6Eag4T+7Mq3mnOygqDgANQXxrgk6DXTiarBe1o3IQe6WGC
-         Eyta1E/PM7PbQlfcVqj21mLO7RNI7cmaF5G2I/W15LS7GSj+fWc+X0e467y7Pqllax4a
-         Z36Wj1zwz0fmU1a7JJUNW8qbo/H4APewFMvYbdwa/xPUnbXb1XHbhFaBuA5eRK2l3xXc
-         m2RRPYEVixbxe2U9/Uo7PXwTWzwR2urVkbyBLJLZv1FyxXcbaA1bAPk66uOzYd8ivLmA
-         WuQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793214625; x=1793819425;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LTRbuuK9g1LUPZHzumdbyEu1P7vkaopyl0+z0dso4UY=;
-        b=e3WU/XUo5IkYdLex3G6QrIqq+YCrBZauDx7m33zEukr5ntpVTOwpMxEYLwZiyR/7NC
-         856ugLVuP14rEg2/nmSCehpmfShwcE9v1jBYU18s1SwzdGf+em7944pRnDfphOIyeeu+
-         nLQFOmIQpqoL+a8xgWUU0k6I49TagnI76nFx8aZ0/MHAuJcCu5zsEbcJDORpplQNPu13
-         cbtPc9SKVWqVKPJtrL5F8EcUBawaeqbQ3omOVfm6cxBvWuTrPzi2rQt9L+sthm62qnTS
-         LadoXJnCgsXptw1c+LC3iBZAfyvXDL0RaQPaJPTCyx/++OMFVToPpV9IngklHw8riCZS
-         izWg==
-X-Forwarded-Encrypted: i=1; AKwUvBytRlCRQ/5Z7NCgcoW0VIi9ZP3nuIt37ovEZJlnMBi7+b8exMMo0EDLD+Pirsw3pnUj1NGGPDk8Xw==@kvack.org
-X-Gm-Message-State: AFq9FYKlBdF2w+yWRCrghq9HSoYfHgUFNH9/kte4QtHPeooLqqs/5Bja
-	OWyXVyvpVyga6Tw+kvOwACRO/rj0yC3BMNbJWG9uofO04LmFlx4hHeXOR0zFGKX/mZPxYW03fXr
-	i2sOCkeM85mLwoQPdn8WvFQeY92vGHH0=
-X-Gm-Gg: AYBFou10Tm3C+JcsvSTm5XUEovwBC8KNYIgWiJN2eT39VH9xpM6BH2MXgxXUtPvCm1Q
-	iaFA6I0t8+KimTM8gOd/6xW0zLmwlrmwIP7qpXJRhSPoF2LTA+UV0g31tm01/xMgs4vElEKOOa7
-	vNJxQTBaSwa1e0ZHQ11IyOHA+dkwAnO8wMCtyIS+lCSYWWX8EDyLqAdRdfUVmwRkkqcWtvv0Zls
-	611BTreNXXn5gXzZCpwxdteNDZVHyoNLNTxIaZz/htCANLLm5WjtvqInvQ0TbVB3s41G2ijMzu4
-	z+z3rPNghjvTTHRjGsbtjrmbT2kJVhouHpvMHH+1q0aNmmO//MIUkenoRZNcsylJV39vEGeHVLX
-	VqIjJr9zeaH8xsASZkhEtC58gY06GilfDVC0=
-X-Received: by 2002:a05:690e:408b:b0:677:b7a7:ba35 with SMTP id
- 956f58d0204a3-67a7b9ba99bmr5590714d50.1.1793214624747; Wed, 28 Oct 2026
- 12:10:24 -0700 (PDT)
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 28 Oct 2026 12:10:23 -0700
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 28 Oct 2026 12:10:23 -0700
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20261027222557.1072105-3-kuniyu@google.com>
-References: <20261027222557.1072105-1-kuniyu@google.com> <20261027222557.1072105-3-kuniyu@google.com>
+	bh=1ZCiiEwQ5cdvAEferIPSF0WM9T5tFjDIqRGawKcIWjE=;
+	b=P5KZ+12FmfjFEHqZG8RRkebFxhFsT3+kwxQ05pPmNk3dVm6kcPpx29myFypFrl/BT6QIUs
+	Rh4U4aore8OuRSZpo1gR/3e9D9MDWhMga3qAYmfK3l3Bvh+PQuEpoR4eHIdCHWC6gAIYD0
+	K+jgOYvPse7caE3vaWZ5OWIRE9v5BFw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmOud5m1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793214688;
+	b=OihPHVcqEPBtdMaiuW7kpByUEU//NVT1h/m/cxm0RfLXuW8220i57uWm+PR5SXXnZeEaVP
+	ikUNHXbNevHWfm1N3BixjAzjpVDSLWOBp1pDveJua3X/VKKUQVSotEoTIsw5JUEWw115T6
+	hCHQnNQV6CJvG9nL9KZkMuDJ1LBogCw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CB4AF601FA;
+	Wed, 28 Oct 2026 19:11:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CAD1F01828;
+	Wed, 28 Oct 2026 19:11:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793214687;
+	bh=1ZCiiEwQ5cdvAEferIPSF0WM9T5tFjDIqRGawKcIWjE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hmOud5m1Sys3ZbTVWvDLH3V3m0RYDac/VMmvlzuKOpUFVThxM9d66icG4REDhsESI
+	 VkbmzLvsCDD4IkwZyColJ4DMXhsDF/wQCixhdKvmY3cSyt3UhjBF/u2VaT/I3PeGZF
+	 N7E+Oo5g53zikjg8t6V6ZXsvopctc4u79C51eB/ZuqqChDZ41cphS5bcgW3G9T3OZd
+	 v2srl5wPazMKelBV/jMiqY9X1jjFk0iho1+sUukEBFmpNXl1eKbDlSvCPaW6KpETE9
+	 p5QqvR65F9sbstCc5R7yBPIvZZQs+EolG8UszOEiTDpRu9tLd8NSeXiCtxMW004ZhA
+	 pMdmD5HqKfAJg==
+Date: Wed, 28 Oct 2026 21:11:21 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	linux-sh@vger.kernel.org, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] sh: mm: replace the page size bits in pte_mkhuge()
+Message-ID: <auJI2blzfpFD9yLe@kernel.org>
+References: <20260926183904.76186-1-kmehltretter@gmail.com>
+ <20260926183904.76186-2-kmehltretter@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 28 Oct 2026 12:10:23 -0700
-X-Gm-Features: AclHuK-4hCqcwKRWdOyvz6JQHnyn5CYILZG5p3PZBGRVeev0VZcttnATHXNTRZ8
-Message-ID: <CAPAsAGzK9tySui7+LBTrtONJBdXu1FUXo15S+_EZCtm-Qsccnw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm/kasan/kunit: Add double-free tests involving kfree_rcu_sheaf().
-To: Kuniyuki Iwashima <kuniyu@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>
-Cc: Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, kasan-dev@googlegroups.com, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A5CB716000A
-X-Stat-Signature: xfj96j9yoozk93ak96by6noehsafxr17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260926183904.76186-2-kmehltretter@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 77C41100005
+X-Stat-Signature: s1cokxgtxgw7ckk4w971zgsqfpgurpz6
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793214625-434253
-X-HE-Meta: U2FsdGVkX1+IRWmNET+XzviFUrQ/hdUUeaEw3jGVobSPrIrNc6Kl+CbBOjRJ7mbHRY3yLFIe1wbN7NAp8/9fflbdky8VyVhDrMsNkz1OqZrABsdOtorPq1kwx5rG5N8M4Lw766H7iXDsOUJdOQUmX/ChgnqtrLmHgKBun8L4M7bIaCTYd02FDA2ul86WVArIw0c/N/Uz9Pqo3hjBebZaxZtNPv7JdvZMNpWnQliN3pGIUQPyKNjBVP1gYMRDHzvaj3aVkJA4ZEoyA1V24yY/Wk3nxe+IcfcZSIOxM6bLNCl3ltDLM9Q/IRG1uW/5VYCNdRvnk6lrYDEa1ygDVVJsCXBSHsx57gAKI1ZQgQpaVzcB4QW/6osGd1LSsZR49C0af7CmjiQC1QldjaMCUjUjg4CGqwjEP48mxhRBRo6Rsv60VvKFJMg7ajoy9UZj2yS0Xs9aqkrvu2wCkf7XvoKEqsQK/iOv5HKMMq+T9X+0diAYUV/6UNRxtJEsrmJt+13sSCvCoJ4SFrButjFuQhpdTY/ySpW2x/DKsrfSBaleYxeAmdfFiN8qtcgtNka192Jfo0R1Ekjsf2BYSZfGeQU46+tN4iw7XZlG7SrIGBCC3vOsXNEPgtgUllYZm6+CqvMT07BnHImxuQ+8CuAMSK9G6jfs0X37/Oj/3nol0+GD3mwEgTPtT/srunhSyijEXy37Yb5WI+uMQUXEoOc6ipbLLo8kYtNzwCc1h7gFrLFeN2dvDh4n14sYt80YvgOCPuH3nKZASVZ8qc4+xAi+OLqg8ZjmSKCDwH66w/xVtigVaoUkxModUhFLbZVdJoLT7q4aTvsUaoH8OaP+Zxrbu2d+orxG54ovIN+fU7KXHjHGqab9BJhvfqEIOttGqxPU6R6eP5ol04R/deUtDwTVkan/XIKg6kR3eFU6yS/1pxAP2iZjIfwPo2FIpsw7/s+bPoklvwtbZ2ikPD6+a7KzK9o
- duI4Sjqd
- PK+KU+ik/jS30D27gQx11enL3BDZLiHv0FsUBytPZzCCYyHSrqDvi+lZfDsZsD2P+bVorerWXZuliA0vaQ3oAWk3HnABD87Mi1pT9KSrcFD/GAdEEpd4zDAwIRTAgPteWFnoS6G85gyyljszTWHhKX/k9zkfLUg1QKvp4ovtcIH8PeVJPOPVi/+vhE0QIdapFl7yMFe+XpPKkNAKx4AkE4vgC5DYVCgFYIZ5G7uBXlmlouA8vnUnanEJfdl/K/luaylkT/aiRlwUuIwxo1npY4GaDxFp/XyX5o9ziLQt9yQtapZVb3b3VK1OO8g6E8NffSJVMcv/2q7uraB/U4fRPYDzquTfQI79tFjE5GpC6oxTolm/KpdwRqHsPvbVaxBeMY5TSYWNLzfOFsLBmiR01xOZvbdb49RSVsHFA38JPRc32ouahch2MjAUA8dhdsJs8JwhsIPdA1FcpO6btIrn613u+VSg3rek7EMFz82ZjZ/ePGT7WP08GdPkOO9cQzcm5ICEpwOgy7dxsTMCyaC2m4sgPJhOSirkjhIgkkYFNY821Y3/7KcrObILSyh1mO65bLVzA
+X-HE-Tag: 1793214688-699575
+X-HE-Meta: U2FsdGVkX1+e7UihzcDLSq4ztjGgcWxBSYhwHHxOUAydzReBZIIOHg2xBDwgu/pmo1Sykaut5G09Ms5GyidFyh7pe2k0veK/tmX+NoPXiM3lna05Zmfrpd4fU4/1Px1clQHAq2vqqLLowRyKpQAEPVlQ97o24N/kzqK0Uv/naa+5XPbQhjiP7UxXY0ejWB3oUZxo1vxSDEz68rdth9hnD/eVokFi0qWMmENaotKLaIG+GKT0+HbTETfWgYW7Q9P2iX6yL12Ohwlxk5A8ThguHkgGrdqVyC66fXwgpC1OEeLW7s/IJjmiueeH09hIh5qf4y015rdFOYJ/CxrYfBPMW2nFX6xyCJp0eiCVj3fuXyntP0V1GfCnxBB6tO9SqxRlymtLOqP4+KCcjJCzdfZGySBWyPxJT1jMFR3ugdif0o9+VS9rPuFh/vWOOMg9I/E5XrXIp4oSBDmK4DV7M3Kt4sBbzRaM3SWmbemlQk1mpV3vreW9McSFUiQ0AhAb7CamDDUDg7NSRtQzgYZPxCkyP95MIBR2X2OjHhZeYRxsDd6Ss3fgy73+dxbbxBSx1PKkDg2Ei+bC3qTTw9rkNhz3mq55blbsX7/ZKtVrJBJ2q9I/lB/kag3oJZvot79pNRCZMvlzISdA8t1YBpItXvfYR8WP/e7Gxpn/4cZ0hD+Dhv10W4wPIkGIhNuS85YAo59d3voJYVFe/meKU3azALucZUpSGhwMT5I3fPWFoBKpf3VoEkX95Zcg/X39/vshwzwlnaxiaSzOBwhi4pztmeF1rubzlxXpALDkuRAPgR3xTokTwJiA2zOujvMBvMDEIsiVm7xE9ElpacGtaVmFygT8sJ5mulp2hQxNFdsqw5uRXu7JCaOcDs1nyy0pM63RBiHZSRt9xVWZjiJtKrVtvrQpupobtVrefP1cK14V21pb8zbrqUQzes11vBTOUIcfNu9X/ShytWZiJKseQ4nevTf
+ LgcBtVq3
+ DG/KJr0Ir+t/bbucajyAdc17YrvlJreqLQcVaw91Hz9ZLaUO8utTMcttLjsabrk3Y0LPMXaHzS098Q/30sdbB4xgB076T/5vzc2pDnApYVEV0Rqz7JCQQ1pFaD2FZ3f60vEPIL9AxmG8V6ixK8YHrkLXOTLxPzSn7q8ymuSkAFQSEVYRrn3qTLiB8ipImaSmd6NQ9hZdKHytT7T7k3/wpRJYo4YSv3MRSCPlG51woakjZCASLxbOSzUZGhv7+AadLqD4caRbBDf0Eu7i2MtGYqhww19WAAcPBDLRtjasI7mpX+Gw42T80sFsrDbsWdFKdm/G4KrFyqtdFGX7jwW298oYlTPAs0xKyoXyM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,85 +100,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Kuniyuki Iwashima <kuniyu@google.com> writes:
->
-> +#ifndef MODULE
-> +static void __kmem_cache_double_free_rcu(struct kunit *test, int mode)
-> +{
-> +	struct kasan_rcu_info *p, *victim = NULL, **objs;
-> +	struct kmem_cache *cache;
-> +	int i, n = 0;
-> +
-> +	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
-> +
-> +	cache = kmem_cache_create("test_cache", sizeof(*p), 0, SLAB_NO_MERGE,
-> +				  NULL);
-> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
-> +
-> +	if (!cache->sheaf_capacity) {
-> +		kmem_cache_destroy(cache);
-> +		kunit_skip(test, "Test requires sheaves");
-> +	}
-> +
-> +	objs = kunit_kcalloc(test, cache->sheaf_capacity * 2, sizeof(*objs),
-> +			     GFP_KERNEL);
-> +	if (!objs) {
-> +		kunit_err(test, "Allocation failed: %s\n", __func__);
-> +		goto out;
-> +	}
-> +
-> +	p = kmem_cache_alloc(cache, GFP_KERNEL);
-> +	if (!p) {
-> +		kunit_err(test, "Allocation failed: %s\n", __func__);
-> +		goto out;
-> +	}
-> +
-> +	switch (mode) {
-> +	case 1:
-> +		kmem_cache_free(cache, p);
-> +		/* p is already in quarantine. */
-> +		KUNIT_EXPECT_KASAN_FAIL(test, kfree_rcu(p, rcu));
-> +		break;
-> +	case 2:
-> +		/* The actual free order is inverse. */
-> +		kfree_rcu(p, rcu);
-> +		KUNIT_EXPECT_KASAN_FAIL(test, kmem_cache_free(cache, p));
-> +		break;
-> +	case 3:
-> +		migrate_disable();
+On Sat, Sep 26, 2026 at 08:39:03PM +0200, Karl Mehltretter wrote:
+> pte_mkhuge() ORs _PAGE_SZHUGE into a PTE that already carries the base
+> page size from _PAGE_FLAGS_HARD, which every PAGE_* protection
+> includes. The PTEL size field is an encoding, not a set of flags: on
+> SH-4 with 4 KiB pages and 64 KiB huge pages, _PAGE_SZ0 | _PAGE_SZ1
+> selects a 1 MiB page. Every hugetlb mapping is therefore loaded into
+> the UTLB as a 1 MiB page whose physical base is the huge page's address
+> rounded down to 1 MiB, so user accesses land in unrelated kernel
+> memory.
+> 
+> In a QEMU r2d guest, after touching a MAP_HUGETLB mapping at
+> 0x30000000, QEMU's "info tlb" shows
+> 
+>   vpn=c0000 ppn=32e00 sz=3 size=1048576
+> 
+> and writing the two huge pages overwrites kernel data, for example
+> page tables ("bad pgd 5a5a5a5a" on munmap) or a struct file:
+> 
+>   Fault in unaligned fixup: 0000 [#1]
+>   PC is at file_tty_write.isra.0+0x24/0x220
+>   R1  : 5a5a5a5a
+> 
+> The SH-X2 extended size field has the same problem: a 4 KiB base page
+> (ESZ0) combined with 64 KiB huge pages (ESZ2) encodes 256 KiB. Only the
+> configurations whose huge size encoding happens to contain the base
+> encoding, such as 1 MiB over 4 KiB on SH-4, have worked.
+> 
+> Clear the size field before setting the huge page size. All hugetlb
+> PTE constructors, including huge_pte_modify() on mprotect() and the
+> fork/COW paths, go through arch_make_huge_pte() and so pte_mkhuge().
+> With this change the same entry is loaded as
+> 
+>   vpn=c0000 ppn=32e00 sz=2 size=65536
+> 
+> and the mappings read back correctly after mprotect() and fork()/COW.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 
-Shouldn't this be before allocation? If task migrates to another NUMA,
-the test would fail
-because kfree_rcu_sheaf() declines objects from foreign NUMA:
+This implies nobody ever used hugetlb on sh-4, doesn't it?
 
-mm/slab_common.c:kfree_rcu_sheaf() {
-    ...
-        if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
-                return __kfree_rcu_sheaf(s, obj, SLAB_FREE_DEFAULT);
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+>  arch/sh/include/asm/pgtable_32.h | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 
-        return false;
-}
-
-
-Also the tests fail with CONFIG_PREEMPT_RT=y (causing use after free
-reports and all sorts of warnings)
-for similar reason, in PREEMPT_RT=y case kfree_rcu_sheaf() skipped:
-
-void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr)
-{
-...
-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
-
-
-[    1.552763]     ok 37 kmem_cache_double_free
-[    1.553617]     # kmem_cache_double_free_rcu_1: EXPECTATION FAILED
-at mm/kasan/kasan_test_c.c:1109
-                   KASAN failure expected in "kfree_rcu(p, rcu)", but
-none occurred
-[    1.606445] ==================================================================
-[    1.606446] BUG: KASAN: slab-use-after-free in
-__kmem_cache_double_free_rcu+0x111a/0x1280
-[    1.606452] Read of size 4 at addr ffff88800da67b10 by task
-kunit_try_catch/203
-....
+-- 
+Sincerely yours,
+Mike.
 
