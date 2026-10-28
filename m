@@ -1,126 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB353606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 07:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF3C606A31D
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 07:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qAO7tgcE
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=LdMbv88D
 Received: by kanga.kvack.org (Postfix)
-	id F03F06B05B0; Wed, 28 Oct 2026 03:52:22 -0400 (EDT)
+	id 5967F6B05B1; Wed, 28 Oct 2026 03:56:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB4F76B05B1; Wed, 28 Oct 2026 03:52:22 -0400 (EDT)
+	id 546866B05B2; Wed, 28 Oct 2026 03:56:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCAA56B05B2; Wed, 28 Oct 2026 03:52:22 -0400 (EDT)
+	id 435636B05B3; Wed, 28 Oct 2026 03:56:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9D026B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 03:52:22 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B9E5A8A04
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:52:22 +0000 (UTC)
-X-FDA: 85371267324.02.013E5CF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 23750160005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:52:20 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qAO7tgcE;
-	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1586B6B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 03:56:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 876A7C0BC7
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:56:37 +0000 (UTC)
+X-FDA: 85371278034.11.9F86F8D
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AACCD40003
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:56:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LdMbv88D;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793173940;
+	s=arc-20220608; t=1793174195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C2MebSDm+AGzraIelTihisR4wHMyVkbMMbZmgrZJ7WY=;
-	b=fSUfMUseTbCl4IL3f+R6gryZIMfmS2RRisHLztytf1H7PPt+mKLAhu+UgoFEmlBk3oAfzD
-	rKljMygXKW9dSvkht6fvM5SD3b5DswIPJfo3gq1ild2jX4yd4C5wbZrUH9lj5vV88oBEIZ
-	JTOvxJ2OvdVKE4I2fQWpvuflDzz6JCs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qAO7tgcE;
-	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=kHjcBED3Ycog4A3HXnCvRQAGAdc1n7vzZLXNcrluU/c=;
+	b=yKrGnXOiZRBEtiDO4XyVFWBxzpRxMVX4wuaccVPHqoB/bE8FGiHN3aWghzkHb/gaEwl/y3
+	6yTTGthAM8Dv4kYixlZBFnOIUJhfFXhWPjwOgoM2kjC9hQ4xw8zi+bjdGiOBbRdv5GU7K+
+	+wjSxH0XvitNfORrh1RdUHAExxIU+mE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793173940;
-	b=7NwRMt1aDHBpMuDBgJyHSWWqK/Oj2XuhzRtLAA2dsU9n6WSvBxs8j55HEdaurpUIqf+Rtv
-	vYKhidPm5acSfjAJc1B5a4o70VACVcsMSjgA8q3lGGEBfXWXIrweRdaSPeAE0dSUOGLljJ
-	q9LiOO6ULZz4+IKbzy+JsgN9utY84Kc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 091D81756;
-	Wed, 28 Oct 2026 00:52:16 -0700 (PDT)
-Received: from [10.163.164.200] (unknown [10.163.164.200])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 046D23F673;
-	Wed, 28 Oct 2026 00:51:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793173939; bh=wGe8fo0LsEeNmyXuE7t5RJoQX1lGKJltqCDxnR+anGM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qAO7tgcEvyo0Q3H3HaTM1nwzy8/QBeW1tnF4JOXa8qF71VXcIH8niSLEX8yBfM9DY
-	 y3XuPsTISI5OiWjvg0v6LudaMoMHfe0T+fQRVNRKQDaWP3kjmosTINe/S2/q5eMvvF
-	 XylgVFbGPVK2/y+rwaLieJ3EjGQdsqqHDKUNnM9o=
-Message-ID: <e32a19c4-76c4-40ba-83a4-781333af7b0a@arm.com>
-Date: Wed, 28 Oct 2026 13:21:55 +0530
+	t=1793174195;
+	b=UV89LfScXdaRTCfppcb3D2+eR0ii6nrRLcBzquNDcbqNc0525IYvH81YBlh+GjtfnRd7rN
+	EYYY6ascYfhdHCJj96+jfONu7TQ/UIISvETKcH2uNtV/Gb8cgKD5Qf4cTdBFTWXgCkD31w
+	/D81AkdOyVH3bE63012e7aAOU+BkkHc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LdMbv88D;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793174189; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=kHjcBED3Ycog4A3HXnCvRQAGAdc1n7vzZLXNcrluU/c=;
+	b=LdMbv88DsHfP5BNmZrH5JZ4tjB9eb0cURyKLKqmRvFtZpE4ZJOuLwyCg3xLZ3RQTwmhNvgu1+iW9fVLMhJh30F3eO6bckP14w7TwbagpvnAK5MxCtc6LF7TYRctQvS32tIeO6wREx4EWqwRvjX9udDK4aLgYiPKc8sG5YdFJiRE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XDg8HhM_1793174186;
+Received: from 30.74.144.137(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDg8HhM_1793174186 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 28 Oct 2026 15:56:27 +0800
+Message-ID: <03363c4b-ed04-4921-8bc8-165ed8c363e4@linux.alibaba.com>
+Date: Wed, 28 Oct 2026 15:56:26 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/46] mm/rmap: handle device-exclusive entries in
- folio_referenced_one()
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 0/2] mm/shmem: trace swapin results and allocation
+ fallbacks
+To: Xuewen Wang <wangxuewen@kylinos.cn>, hughd@google.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
+ akpm@linux-foundation.org
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-9-6f74bec9a5bb@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261027-fixes_core-v1-9-6f74bec9a5bb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20261027094014.2432692-1-wangxuewen@kylinos.cn>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261027094014.2432692-1-wangxuewen@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AACCD40003
+X-Stat-Signature: ccqpxq7n69orqe8oimi5bptpyxdtf359
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 23750160005
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: y19u5u5u9mqee6gz8z6omaxdahk9czp4
-X-HE-Tag: 1793173940-344676
-X-HE-Meta: U2FsdGVkX19VO4zQqWfkazpXv2IUaETpSpl/fH2hrH0scNmkFih90m+tQ+I4eXNb8Mu1v5dwXv6Gwxiyy6tK7Us08EoyA1JaiMPErh3z8PYeohcqaDEBTZ3Gzn6L1UA9zoyH8iBAZOCsLBuUQQU+7TcbTDbuLeGhO+LzNzaqKlIo6yKZU4fMLoMk1MQhL5NJR+FJyIJHl89qGqMG4Cj7fRI5QvG0JX29ZRZAmLF1BUmFqFzi0XEuhFlheIcfikzUdFlK7I3mrgGDkPNZJeuAgmJ+hnm20BPl5en69T/WLGdM6DOGjYUSCc8k2Fg/FWEpFZKHigvLO0mFqTn4Z3tdQ6PPYcLLgoXFRAiWCvM4pQWHUGfVBcqKeyPp1fjw4pvHIHIQcvShfQsi8SQTaaIKj7CPrL3fok7ORC1Sv99WjJGG9ktEllxSfkWlqd/beWjAMcCu4W5uU+ZVuIH3CmGseMEOnPofVtCh8S5tmB6bV7tdF/qFh4CppOWqURZnN0QZJ7B/TUhcN5ZcppAAN3khBCerTevAhGEn1Gc15DC8EIIcYSCPJVo3cOsuOZMhNF8xTUNorPGf9a+ZVIyVNNWj1sy8wsQcZoXfgOpkNXhjqAAy2EJXbt+8xgO4FrRmEPsBOyC5fUUsuSVE9VkcbN238gQquQiPfsJcolFX/3oK975D+g4eBWX1ekdGlSvQYxiTi+wMfyKRCxJKjN8g8hpftlx7h1O4jxobkRYCxH7CloWPWpcGWQbl63L+1Wg8PNWgeNSRXA13kInk8JA2z5hqG5YQHYMn9WYJoIrgjAesXB23JweP9E8LiKB41X+Gvuyms47DlEeGd8xs6oDzs+w763dy/FeoIcj/tJsgG1C7695oscGtYHXvwBnoijuzULOsNj+0Qi6cmCeduYnMNNzmuSyEZymn4wbYPr4cowvfO2/awDTPCikyQFocOKOfEkRCY9z0LDmz/4flz4dY8Lm
- TxRyqQm+
- O6dONPOdPeGfuCoTtHJ/XXd1y5NykQiU30OqiNPqlg2sOlOtMsn+pALgCfgksAD18XrcRNsLkJ6//rbFygt4+G6PQzcdFtDv1MmcjC/064Hdt3Bfu9H+GAYm+wZDYT6Bq3xJxr2jHMGsjLq3IHXx+wgjulKWq8YvOLP7w5YFWW7/oy9xXMomSyB+PxOMUoeQTJKmaOROry+80V0fcQszBub08658mslJYvxVEg5ViQia5O3AGQB6MbxBik2b3MexKdY2Gr8IXFXks7o68ub+tIWYX4plqDVerSFoA+H/E4iY2hOC45C3XDlKcZyYNuU8kE0gh2ruQPlHumS2vXBKuTMFjm8ELVQUogm4epPwwsQ14rTi7oECaXtZ1lOwM6zvB9LhQAvzGhaSTrxV3frXNsJAYX7GyK+xvdK05yQzJdvdMenCVfP9CzEQsPc/Er+11OLTIyA/S5HDHgyKPKh36wKFkghomme59UCYeFMy5oIvyPhbUaGCy5vG8CnUxbo8+WDxDfQwLB6XAvCUGLzVbtJewTQ==
+X-HE-Tag: 1793174193-13048
+X-HE-Meta: U2FsdGVkX1/o6wg3OT4opAX6QvI7sGg8K6OKllEfmB63CDxig/uwK1jJFVPAlCk52xgANXh5N8v0tA/Fy19AF6CNrXU5p11WDS9JzttJpVFip8BJ4CnHDiQFomlKcLzdIZX0nUJeUZ+MMJP5fS3bAJ1fT4S1ZbQEbhaGZ+a49CQQPhN3pu3jPD4b0Ib0t/myCZKuB3lgkPY4lRzQlMzhbO4IjO7aGyyeA3pnShJSENgr/WbCF01DeGJdoWyr3fhyAJ8qcz5GQeGFK5sYB1xWgWa6UyHoUvEo1WF1KWbmqUdIqPburSkvAG6qxrQzX/L0ohWuQiE4Xk143Kuk52Q8inV/HPkak2XYMP65zRvqcd7cwdjJ7pyDcfCXo5JFi0vubSCkQp6+QkC9ExtyUwHUCliXrUXdh9JVo6+lOQX3R+tydlyLpX5JlpX95+kDaaTNmNV/7AmUNAxEhAnxm6oBFx/kPnyF6GLm3ZgYZlFOxeXQjX7BuQutg39a4ej5KrBwWBs0mKgJ+MgrWbBcXJ5INnEvmsn55V6PT4+KyUwPbFWhduxj2NQumdNhoU7YQPYiUkOFv08ov4IusHNnuyTJxDMT3yXa7GWRZOUnI1X+Z3wMZyOr0+Cnx3Q9oN4aBXsyO7rglyf9jmo+E3/fDfm44NNrAppGQbIUqsKoQj7+izBiBaaFtIOqg6zciMUaWuJusItjnW3JEjTxMVsYnimNVgb8NrRm3a+El1CGsh0zUJ3+xMBYPrwXe6aA3qvPHxv98TLRl95uSMiM2oFNxjYU/GQqWaz7ykGm+fPif/bQfthcJc6HW3vuM2w8ufksrN1aI6s58uJC7Fb/MkdjAaK6zVsJu7IF3B8WtaW+eR3K/1VZjcgd7nQDd4KSYPDFI/0EZC4cqpbOu7Fqiocxti3XjcX3KzIWM41UCTjN/ElnNJf62gFyi9EDbu4Bn7UXOehzW9/pA5irv+0dQqRBgbs
+ Z/XyGpcd
+ c0x4UjRfRNHzDKjbybGKVqHQ9r0OxWCy+NThLFut5riPBF4vhd7mhgTzcXSLMyOLC4s48iTdQMZyasfqFZhlVriW3F3AF/c+HV2C/yx1IqacqiU/82qIhzb/Ylhapi67Nvp5t3IL6bqNQDhEVfsbxlA5BN38gH4gIjLwk1EtNWmacdOvkdiaCu6VPz8Z5t0dlqYoaEzLmrH7bL3cQNoyVRcmsk+Kx32KG6MjtSSghgEz8FlBdZeKj90Xl9pJ7SN6JhNcFtmY/PL6oXlwZsHmULt/prPNoH3hpwlqcKLUWtJWDJKkdGowCbgbq8Xa6MjL3vjqh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,98 +96,217 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 27/10/26 4:47 am, David Hildenbrand (Arm) wrote:
-> page_vma_mapped_walk() can return non-present device-exclusive entries,
-> but folio_referenced_one() passes them to PTE young-bit accessors that
-> require present PTEs.
+On 10/27/26 5:40 PM, Xuewen Wang wrote:
+> The tmpfs swapin and allocation paths are currently a blind spot for
+> tracing: the swap layer has no tracepoints at all, the existing
+> counters cannot attribute events to a file, and an mTHP request can be
+> silently downgraded at two layers - or fail outright - with only one
+> of those having any accounting.
 > 
-> We must neither call clear_flush_young_ptes_notify() nor
-> folio_pte_batch() with non-present entries. For example, clearing the
-> young bit on non-present PTEs can corrupt the entry: on arm64
-> PTE_AF overlaps the swap type, so clearing it turns a device-exclusive
-> entry into an ordinary swap entry.
+> On the swapin side:
 > 
-> folio_pte_batch() will VM_WARN_ON_FOLIO.
+> - PGMAJFAULT only accounts the page fault path; swapins triggered by
+>    read()/write()/fallocate()/truncate/symlink go through
+>    shmem_get_folio() with vmf/fault_type NULL and are not counted
+> - PSWPIN/ZSWPIN are counted at the I/O and zswap layers with global
+>    and memcg granularity, but cannot be attributed to an inode or file
+> - the mTHP order degradations in shmem_swap_alloc_folio() (uffd/zswap
+>    forced order-0, order-0 retry after sync allocation failure) have
+>    no counters at all, unlike the swapout side which counts
+>    THP_SWPOUT_FALLBACK and MTHP_STAT_SWPOUT_FALLBACK
 > 
-> Apply the same approach as the previous fixes to e.g., damon_ptep_mkold():
-> treat these entries as old from the CPU's perspective and obtain their
-> young state through the MMU notifier.
+> On the allocation side:
 > 
-> Skip PTE batching and MGLRU look-around for non-present entries, and
-> don't modify non-present PTEs.
+> - the order mask from shmem_suitable_orders() (vma filtering, page
+>    cache layout conflicts) can drop the order with no counter at all;
+>    the code comment notes that -EEXIST "would be the right code, but
+>    not here"
+> - the allocation fallback loop is counted by MTHP_STAT_SHMEM_FALLBACK
+>    without attribution
+> - a fully masked-out request fails with -ENOMEM while the caller
+>    silently retries at order 0
+> - when mem_cgroup_charge() fails with the target range already
+>    occupied, the error is rewritten to -EEXIST, making a cgroup limit
+>    event indistinguishable from a benign insertion race
 > 
-> Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-But nit below.
-
-
->  mm/rmap.c | 23 +++++++++++++++++++----
->  1 file changed, 19 insertions(+), 4 deletions(-)
+> Patch 1 adds a single shmem_swapin_folio event at every return from
+> shmem_swapin_folio(): the original caller index and XArray entry, the
+> requested (entry) and actual (folio) orders, the branch taken -
+> validation failure, initial swap cache hit, synchronous helper,
+> readahead helper, or poison marker - and the return value. For the
+> synchronous helper it also records why the request became order 0: a
+> fallback bitmask reporting the userfaultfd and zswap restrictions
+> together when both apply, sync_fail plus the initial errno when a
+> higher-order attempt failed and was retried, or none.
 > 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 1131b76bbbc28..0faef46806e5c 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -924,6 +924,7 @@ static bool folio_referenced_one(struct folio *folio,
->  	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
->  	int ptes = 0, referenced = 0;
->  	unsigned int nr;
-> +	pte_t pteval;
->  
->  	while (page_vma_mapped_walk(&pvmw)) {
->  		address = pvmw.address;
-> @@ -968,10 +969,12 @@ static bool folio_referenced_one(struct folio *folio,
->  			return false;
->  		}
->  
-> -		if (pvmw.pte && folio_test_large(folio)) {
-> +		if (pvmw.pte)
-> +			pteval = ptep_get(pvmw.pte);
-> +
-> +		if (pvmw.pte && pte_present(pteval) && folio_test_large(folio)) {
->  			const unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
->  			const unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
-> -			pte_t pteval = ptep_get(pvmw.pte);
->  
->  			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
->  		}
-> @@ -981,11 +984,23 @@ static bool folio_referenced_one(struct folio *folio,
->  		 * are. —they could be on active/inactive lists or on MGLRU. So the
->  		 * simplest approach is to disable this look-around optimization.
->  		 */
-> -		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte) {
-> +		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte &&
-> +		    pte_present(pteval)) {
->  			if (lru_gen_look_around(&pvmw, nr))
->  				referenced++;
->  		} else if (pvmw.pte) {
-> -			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
-> +			bool young = false;
-> +
-> +			/*
-> +			 * PFN swap PTEs, such as device-exclusive ones, that
-
-You mean "PFN softleaf PTEs"? Better expressed as "softleaf PTEs embedding a PFN" ...
-
-
-> +			 * actually map pages are "old" from a CPU perspective.
-> +			 * The MMU notifier takes care of any device aspects.
-> +			 */
-> +			if (pte_present(pteval))
-> +				young = clear_flush_young_ptes(vma, address, pvmw.pte, nr);
-> +			young |= mmu_notifier_clear_flush_young(vma->vm_mm, address,
-> +								address + nr * PAGE_SIZE);
-> +			if (young)
->  				referenced++;
->  		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
->  			if (pmdp_clear_flush_young_notify(vma, address,
+> The fallback field is a bitmask rather than an enum because the two
+> policy restrictions are independent: a VMA can have userfaultfd armed
+> while the boot-wide zswap latch is also set. Reporting only one value
+> would hide that the other restriction must also go away before large
+> folios come back. sync_fail never combines with them - a policy
+> downgrade forces order 0 before the first attempt, so the retry that
+> sets sync_fail can only run when no policy bit was set.
 > 
+> Patch 2 adds a shmem_alloc_folio_finish event with the full order
+> chain (requested/suitable/actual) separating VMA and page-cache
+> filtering from allocator fallback, a stage value (filter, alloc,
+> charge, cache, account, done) identifying where the attempt ended,
+> and both the stage errno and the returned errno: a memcg charge
+> failure stays visible as error=-ENOMEM even when a page-cache
+> conflict rewrites the return to -EEXIST. A fully filtered-out request
+> reports stage=filter with error=0 and suitable_order=-1 because no
+> allocator call occurred. Successes at the requested order - including
+> ordinary base-page allocations - are omitted, so order-0 traffic
+> never floods the ring buffer.
+> 
+> shmem_swapin_folio does fire on every swapin attempt, and that is
+> deliberate: a swapin is a major-fault or I/O slow path whose rate is
+> bounded by actual swap traffic, and each event is precisely what
+> PSWPIN cannot attribute. Folio allocation is the opposite - it runs
+> for every page ever touched, "succeeded at the requested order"
+> carries no information, and it is already counted by
+> MTHP_STAT_SHMEM_ALLOC and THP_FILE_ALLOC. Hence the asymmetric
+> gating between the two patches. Both events, their fields and the
+> attempt semantics are documented in Documentation/trace/events-shmem.rst.
+> 
+> Three questions answered up front:
+> 
+> Why not vmstat counters?  Counters show trends, tracepoints do
+> per-inode attribution; the two are complementary, and the trend side
+> already has its counters.
+> 
+> Why not eBPF/kprobes?  BPF programs attach to tracepoints, so this
+> series is an enabler for BPF rather than competition. The interesting
+> data is mid-function state (suitable_order is a local consumed by the
+> fallback loop, the fallback bitmask is an internal policy decision,
+> and the charge error is rewritten in place before the return) that is
+> not visible at any function boundary; the functions involved are
+> static and may be inlined, so kprobe scripts silently break across
+> kernel versions, while a tracepoint's fields are documented in its
+> format file and any change is visible in review.
+> 
+> Why not extend trace_mm_filemap_add_to_page_cache()?  tmpfs never
+> emits it.  Its only call site is in mm/filemap.c, while
+> shmem_add_to_page_cache() runs its own XArray insertion loop with no
+> trace calls at all, so tmpfs folios entering the page cache produce
+> no filemap event.  Even if they did, it reports only the final order -
+> no requested/suitable/actual chain, no stage, no errno - and nothing
+> whatsoever for the swapin side.
+> 
+> Reproduced on x86_64 (8 CPUs), kernel v7.3.0-rc3 + this series, tmpfs
+> on disk-backed swap with cgroup v1 memory limits forcing swapout
+> deterministically; zram provides the SWP_SYNCHRONOUS_IO device for
+> the synchronous path.
+> 
+> Swapin attribution - three tmpfs files (400M + 500M + 150M) charged
+> to one cgroup, 965M forced out with a 100M limit, then the 400M and
+> 150M files read back with read():
+> 
+>      PSWPIN +116219 pages, PGMAJFAULT +0
+> 
+>      ino=2 (db_shm,    400M, read back): 102400 events - every one of
+>                                          its 102400 pages
+>      ino=3 (app_cache, 500M, untouched):      0 events
+>      ino=4 (misc,      150M, read back):  16661 events, exactly the
+>                                          pages that had left memory
+> 
+> 104528 events took the cache branch and 14533 the readahead branch;
+> all carry error=0 and fallback=none. PGMAJFAULT never moved while
+> 119061 read()-triggered swapin events were recorded.
+> 
+> mTHP order degradation on the readahead path - huge=always mount,
+> 512M faulted in as 256 2M folios, 414M swapped out to disk swap and
+> read back:
+> 
+>      102672 events  requested_order=0 actual_order=0
+>        1656 events  requested_order=5 actual_order=0
+>        1449 events  requested_order=6 actual_order=0
+>         207 events  requested_order=9 actual_order=0
+> 
+> The 3312 events with requested_order > 0 all came back order 0 while
+> fallback stays none: the readahead path returning a smaller folio
+> without any policy downgrade, exactly the case the documentation
+> describes.
+> 
+> Synchronous whole-folio swapin - the same workload with zram as the
+> swap device and the zswap latch unset:
+> 
+>      207 events, all path=sync requested_order=9 actual_order=9
+> 
+> 207 2M folios account for the 414M that went out: with no policy
+> restriction the synchronous helper preserves the entry order end to
+> end.
+> 
+> zswap policy downgrade - zswap enabled once then disabled (arming the
+> one-way latch), 128M fault-written with zram swap, 90M forced out:
+> 
+>      23040 events, one per page swapped out
+>        720 events with requested_order > 0, every one fallback=zswap
+>            360 order=5 / 315 order=6 / 45 order=9, all actual_order=0
+> 
+> fallback_error=0 and error=0 throughout: policy downgrades, not
+> failed attempts. The remaining 22320 events are order-0 entries that
+> had nothing to downgrade (fallback=none).
+> 
+> Combined policy restrictions - a userfaultfd registered over the
+> faulting VMA plus the armed zswap latch, 158M forced out and read
+> back through the armed VMA. This is the case a single-value fallback
+> field cannot report:
+> 
+>      1264 events  fallback=userfaultfd|zswap
+>          632 order=5 / 553 order=6 / 79 order=9, all actual_order=0
+> 
+> The 39184 order-0 events in the same run report fallback=none: an
+> order-0 request has nothing to downgrade.
+> 
+> Allocation filtering - MADV_NOHUGEPAGE 64K stripes every 2M on a
+> huge=always mount, 512M fault-written:
+> 
+>      1280 events, all stage=done error=0 ret=0
+>      256 each for requested_order=9 with suitable_order and
+>      actual_order of 4, 5, 6, 7 and 8
+> 
+> Not one 2M folio is allocated across the whole 512M file
+> (shmem_alloc 2M stat delta 0), yet nothing today reports why.
+> 
+> Allocation failures under a cgroup limit - 300M fault-written inside
+> a 100M memory limit, 8365 events in one run:
+> 
+>      1976 stage=charge  error=-12 ret=-12  memcg charge failure, the
+>                                           errno preserved
+>      1976 stage=filter  error=0    ret=-12  suitable_order=-1
+>                                           actual_order=-1, no
+>                                           allocator call occurred
+>      4413 stage=done    error=0    ret=0    cascade fallback,
+>                                           suitable_order 1 to 9
+> 
+> Filesystem accounting - a 16m tmpfs mount written with 64M of 4K
+> pwrites: 24576 stage=account events, all error=-28 ret=-28, firing
+> at the block where accounting ran out; 12288 carry requested_order=9
+> (the large-folio write attempt) and 12288 requested_order=0 (its
+> order-0 retry), two events per failed write.
+> 
+> Negative controls: 0 events for re-reading a file already in cache,
+> 0 with the events disabled, and 0 for a 64M plain order-0 write
+> (patch 2's volume filter).
+> 
+> Not exercised at runtime: path=lookup and path=poison with nonzero
+> error, fallback=sync_fail with fallback_error (these need a failing
+> higher-order synchronous attempt or fault injection), userfaultfd
+> without zswap (the latch is one-way per boot and was already armed
+> for the combined test), stage=alloc with a real allocator failure,
+> and stage=cache (a concurrent insertion race). Everything quoted
+> above was observed on the target machine.
 
+Sorry, I'm not a fan of adding such tracepoints without any real use 
+cases in production to show which data is truly useful. And as you 
+mentioned, eBPF can do most of the data tracing.
+
+Moreover, I don't think shmem is special. I don't want shmem to have its 
+own swapout/swapin tracepoints while anonymous memory has its own 
+swapout/swapin tracepoints. If there are swap related tracepoints that 
+are actually needed, they should be considered together as proper 
+interfaces.
+
+Finally, tell your LLM to simplify the cover letter.
 
