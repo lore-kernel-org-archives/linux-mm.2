@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E495606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9615606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dcYKIC6l
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QgDHCjFr
 Received: by kanga.kvack.org (Postfix)
-	id 5317A6B05B0; Wed, 28 Oct 2026 07:33:34 -0400 (EDT)
+	id C0ED26B05B3; Wed, 28 Oct 2026 07:33:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E1FA6B05B1; Wed, 28 Oct 2026 07:33:34 -0400 (EDT)
+	id BE6986B05B7; Wed, 28 Oct 2026 07:33:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F7D86B05B3; Wed, 28 Oct 2026 07:33:34 -0400 (EDT)
+	id AD5B16B05B8; Wed, 28 Oct 2026 07:33:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 171936B05B0
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:33:34 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 803DC6B05B3
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:33:40 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 700A5140C1A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:33 +0000 (UTC)
-X-FDA: 85371824706.28.59F328E
-Received: from mta0.migadu.com (out-34.mta0.migadu.com [91.218.175.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 794EB1A0002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dcYKIC6l;
-	spf=pass (imf19.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.34 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BDCFD1C42E3
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:39 +0000 (UTC)
+X-FDA: 85371824958.28.024AD2D
+Received: from mta1.migadu.com (out-202.mta1.migadu.com [95.215.58.202])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AB54F140008
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QgDHCjFr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.202 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793187211;
+	s=arc-20220608; t=1793187218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=I8Qx+rwY6H3jQ6L89yvvvHh+9fiYuKQUWmXchJSlClg=;
-	b=P2pN5SShNYcwKICYNloMA4zTw5+ivNl9sLaoH3YyMJKkJXgQdMIzJDPW7WqmkmKbHpkl57
-	kNJsL7zQWPRbFCg1euQsm7OJsexkBN1OesrKfGsHxfc5cRmFpLxgeFQZtjOXdZM/sLT1Eu
-	8OJohMywh5wba8457tg2xlCfuPPwBLg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793187211;
-	b=71Gi1iNz/R9NW4WebaMuzjbyj6DanD2O6XmDJByHqFKkUE0sWIvXiaGPtSjDMidBeSjLfp
-	Mx3fYLFTRffdIZDVUuZcvDp4FwsvCMrVHGCiiNndiJW1v7qfOBpY/mV564S22yNie3NDmi
-	sEaIGBRU21LHkzSCcwbECn9HubnJ2fY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DYyWO7IFZ8NnMGxqJk1c136n4piizJJ+e+oNjZmZUYM=;
+	b=I9+UrnCU1biu5ArG826xWqotXKwFNyM3byCi0m/XVyoStvXEV9eJDpAmJ+RK3+5qjltdXW
+	KihESfLwJcyO4DUFjGLLyKmhijMD3O0JYD4XR8YcjbT8FXrRHK/oz8FLvyNtnSk248b01t
+	rR2gRL9R3dPhQMWWEuJvRz0/zUARG70=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dcYKIC6l;
-	spf=pass (imf19.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.34 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QgDHCjFr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.202 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793187218;
+	b=yEtRbUnpdI3I9++OgVZ7YFWtf0o3/4pdeipdKhEL5Gfo7ugDkCrjphWHBiAdXz+zvpSEfL
+	lCC6EhyedLhu0JktVRIONzAfkcC5oPOKxfQeFMeAXrvj8L6ATyy5y+yz6KgSf40JvhZMu3
+	EYohsZ4MxKN7MqIy6xOyKAX7zoDLMO4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=uj6DpQ+dYHugok4ARQkYXSn+IV5soWPeKjdz94Jwpd0=;
+DKIM-Signature: a=rsa-sha256; bh=MsFjm2rc5UIeYKXjIXqxPFWcyN0aWeNxJ6c8Yz/3Cjg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793187209; v=1; x=1793792009;
- b=dcYKIC6lUcS1vobgg/rKKtcTKJh2je3fA4ESE5C9StvQp4g1Q5nDtijXXaa3vuKczCjMUXjK
- 4nEfNccXRaZbNCV8gPRGC7Gj6CmDVYzgXNWnBLDZgEO8JyIvM+W4Trv9jMDPJPczdnN2H2OwMWR
- OMHD3l4lkrbm7KnTFyb4v6Yc=
+ t=1793187215; v=1; x=1793792015;
+ b=QgDHCjFrIxFsL9bpcPCU43RgNEfGTTyMJrC4qYryNHZsTsg3j/VBMyczw9H3xNCT12Kbi8ym
+ 7UWLI0/wSshcrWD4Dx+EK8wR8AxhR0ICil8EpBDaO5hJ4RLbyl0Jg3ekPkdfa4rDZJESOv02jrB
+ F5O0VLEPFUjdmYGA86IJ/Fm0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 33cbc6c67f81e8a8;
-	Wed, 28 Oct 2026 11:33:29 +0000
-X-Mizu-Trace-ID: 33cbc6c67f81e8a8
+Received: by smtp.migadu.com with ESMTPS id 1b8b82fa4a673740;
+	Wed, 28 Oct 2026 11:33:35 +0000
+X-Mizu-Trace-ID: 1b8b82fa4a673740
 X-Migadu-Flow: FLOW_OUT
 From: Kaitao Cheng <kaitao.cheng@linux.dev>
 To: Muchun Song <muchun.song@linux.dev>,
@@ -73,25 +73,27 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH 0/3] Subject: mm/hugetlb: fix CMA handling and surplus allocation accounting
-Date: Wed, 28 Oct 2026 19:33:16 +0800
-Message-ID: <20261028113319.38544-1-kaitao.cheng@linux.dev>
+Subject: [PATCH 1/3] mm/hugetlb_cma: fix incorrect hugetlb_cma_size assignment on malformed input
+Date: Wed, 28 Oct 2026 19:33:17 +0800
+Message-ID: <20261028113319.38544-2-kaitao.cheng@linux.dev>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261028113319.38544-1-kaitao.cheng@linux.dev>
+References: <20261028113319.38544-1-kaitao.cheng@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 794EB1A0002
-X-Stat-Signature: uh4mg6no61t4pueffgfo3wr6bc7jyhsc
+X-Rspamd-Queue-Id: AB54F140008
+X-Stat-Signature: rrzzrgjb8entuapykyqqobh849fgbfxd
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793187211-314329
-X-HE-Meta: U2FsdGVkX183U+tJ6iU7rs4LX9eU2B2hxaFaG7eSpHAnLUdTTzRfoer+qPCOl98fRxE76x+G0l6gzSwOfDZe1f/rlhPW/MnBchudB9GO276IOg1sVVeBYWokyPuZ06mbjfBB0JQibiC1gqiP30CHHrRg9sWSFNFSsYxcA0+oFw0bhie+DjJmGEpjITi7aZNrzEgvLEanvWdidntTxPP2Gtn2MWdzOzngDeFzp0cq6orUdEATzNwu9mAnX7qF7XVWhvhHLzJ75L7W0AycEjjTj+JpBns8YsZObR6JoJ5gVf88JPNm4ZlSGno/f2HAw2fmaGSsIekV4ogaJlvv+7AhssUhfu9zC15mHTjswM6zjPCAoawDh632/OkrzzRY5NIizxpZK3x2atQEczZdTYGsTIfTlGyinfcxEm8+8qTF61buyLPqxoolR3QDAX58UVzTOR00MaUIWT7kStlLGPYfoELa7blNJ6kWWk2YCr7PhsdqF5rp69/k3EYOivy84yXU+qsSpOBlXiIaCzeGA5SZJ7JeeB6qB0uCi/Gaoq6Cer0SKcC3s7zaXwpNfvMCHN5nW98hPJ+YLol9lFbFpQm1l6vUfVcDO3gXHpFgoALKTazpD1pPLy9Vyj+MtoqgoiQjwMTgkYh8xwtxGQ/nkKaFTJd/q16KZju2vA7ZB4cXzKTQiRvZN3t41du8qDIkTxghcmft/wmydzELo+pam3Yijpe7XNKPgonE6WQ6s06Ffm9dBbQxbsO5tWSDEljRuZX9R7WSZn5rxQjIahlmMPO5BCXi+RCzVOib8dE9dnFCWz6x7/3/r7bjGWhJXCCRFQhv5J/R1lGomev79s/b7YyJuwjSHwPgwc2gOcMmM9qgUr9qJemgLiTomDtMaZZNsjVhWSi4m9Gga2G4Uqaf0Bnlkl4j9GqkrV7PBIdN7sc+oohe1kdIWu4b6LkV80a0J3qq79Tx6FDC0Ii5j2LRZye
- CUlnTeh+
- 82ubu2AcJB+RnjWfrEpn7XJaSnB5PBUYu4dOniSz287rpmNRb4NYwv0lQJCmablibgfOwAbqx7dpA8WWv0rrWzliqKWz/9M/0zDGrYeKBfkW9nppY3PkdT3vgRx7a6Cm7Itmrzx8vf0B7S2Pcl0BbShu51iMAZ0qkOPr8GIoJfupyD/ahaLGJ7cpv1Fmz+txEKRyrNz1CQN0lCzbTuh3YAwZQIo5kJjmDb3iSE/q9BLKVLWrEi4xDv3cROWGDMUEW063i64t2kKCD4eoswwQ6oH7SHhFx/LUWikvDOibNI0Bvx5weYeMKwcJ53g==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793187217-898517
+X-HE-Meta: U2FsdGVkX1+Qza4WwA6PXDwIvvjiaZhb/W+FksYkG3qHUizgt3J0JXcmCaJMzKs6FSFZWQ0ZDqI5SOvIOLiolYBJp5KntdYSM2W2BgrQ58y/6HEexbsPXg07psi5W6j30e7lKOnuPS8Oy/n+f3mplu/s2RM3aRBu6p9HXNRc7MAqvNOIZbdzEwXhV582eaSQjueWVoRH+WvKZJq9dpsXLOZscEfBux4q8mvYd5XEtrHu87zy1WapxYQiVL7q9f6y9H+AzdKZPjg47bfxElcOBt76x5f9BFPH51EkcmfaVrnbMxdcXv45y/Hb1Ywn96eHQkqhCOuSWg+oNUEkGHX/nTlCk3RQ5DF4X1K4bnGSkuIcilef39YAbTPWC0D6OhMbr8ddbAuuLIJN5f6WGB30u9STK21bQlDr/tJ0/FmVv2rjornciPK6BS7u1lprBqRFHi5P/tb88GiO5D78DPCm+D7lSlxbcf0tL5XrpAz9byJbUfWRrzzOyPhWUtQHKSq4qCcFhb+k9pIUGIKaQsMDkb0se9QLVH7yPNaHMuwfkC+58Ti9MKo3WR8oqEhluGW4XEfWDbqqcFCIkVOgLIGMS9472ez/DschQR0NiFb54hFsiqzS2bUvXAZDt+YjOy83ktpNitb0z/6GItNaepjpvu+7jrnKP1Im0IdCtgyqvciPOYFOi1h4n5qUvzvexoQCVdW+QlMo5iEEpkjtOlyZgf25cckm7PWYlmSnKO7iVDneo3ygRRrwyNcfkduGR/aDwDH1dhtUji5a/kABX52q8bgE5UJt/8KXH4yLPCwqvP7BPNwUegU4iyuuBpYW+O9ikKl9bv6EpKXrsWY6zsqj7jIcGLM28J3LiwBlKKOF9MtIJd7rGP6UzQeRQ0g4QwPIafQUD55SLAJL3ru/4UlBerFCfVx60MTM6qXsH2HK4lTJgG1Gn/douoLgefXdh9iSJ3G0cZhzC11xQy2aOEH
+ Glzshctl
+ t2wWgCjKhongLlKhBOSFvPY92Tz/yzpJdzZBh2bIAmRcW3iIATwgKyNGvOybqylkqPpSGH/cYm4zZG4MIJsVvguaAU8OcHqwEJqe1ed5yvQXsF2vPYLxOqecqu/0c/W5dJbNVGs7Rk505IYWTg6R+RTVEHRzJHZFL82N+R10/ictc6x3WCp3Ald2nGd7cL2q+vysp64/PolxlvQdPm1kZrjO+QA4J1FMT8Ir6Xoot7udaozBtcpAJacMn9H6e9z8j7t7N7scTX0IUPXItNr//j/p3juk9Xhlih89VY8Asf0b7j0hWNOhB7z30L0WC3mbIEPWM46tDWeKA4hXPMvLwsu4QRfFWUYhanXlgpSPrtpvP+WJQS+QPjBD+wjfLkRquHAw2KXvQc+XHt4GNNHtHlE3jJ2IoFM7jZ5za
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,31 +104,38 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-This series fixes three independent HugeTLB issues reported by Sashiko,
-covering CMA parameter parsing, CMA allocation state preservation, and
-NR_HUGETLB accounting on allocation rollback.
+When hugetlb_cma contains a global size after node-specific entries,
+cmdline_parse_hugetlb_cma() enters the global branch and reparses the
+original parameter string. For hugetlb_cma=1:2G,4G, this interprets the
+initial node ID as a one-byte global size and clears the 2 GiB reservation
+recorded for node 1.
 
-Patch 1 rejects a global hugetlb_cma size following node-specific entries.
-This prevents malformed input from overwriting valid per-node reservations
-with an incorrectly parsed global size.
+Global and node-specific formats cannot be mixed. Return -EINVAL when a
+global entry follows a node-specific entry, before updating any settings.
+This preserves the valid prefix, so the example retains node 1's 2 GiB
+reservation and reports the malformed option.
 
-Patch 2 preserves the CMA flag when a folio is returned to the HugeTLB
-pool after vmemmap restoration fails. This ensures that a subsequent free
-releases the CMA allocation correctly instead of leaving its bitmap set.
+Fixes: 38e719ab2673 ("hugetlb: support node specified when using cma for gigantic hugepages")
+Closes: https://sashiko.dev/#/bug/linux-10f40d3e-3feb-4622-9da8-1fedecb2d0e2
+Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+---
+ mm/hugetlb_cma.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Patch 3 fixes NR_HUGETLB accounting when unused surplus folios are freed
-during allocation or reservation cleanup.
-
-Kaitao Cheng (3):
-  mm/hugetlb_cma: fix incorrect hugetlb_cma_size assignment on malformed
-    input
-  mm/hugetlb: preserve CMA flag when returning folios to the pool
-  mm/hugetlb: fix NR_HUGETLB accounting for unused surplus folios
-
- mm/hugetlb.c     | 13 +++++++++++--
- mm/hugetlb_cma.c |  3 +++
- 2 files changed, 14 insertions(+), 2 deletions(-)
-
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index 95fd2d190f0d..8e6b20341fc4 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -167,6 +167,9 @@ static int __init cmdline_parse_hugetlb_cma(char *p)
+ 		} else {
+ 			char *next;
+ 
++			if (s != p)
++				return -EINVAL;
++
+ 			tmp = memparse(p, &next);
+ 			if (*next == '%') {
+ 				if (tmp > 100) {
 -- 
 2.53.0
 
