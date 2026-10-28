@@ -1,120 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55758606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6D8606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WQTo7RRj
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=m9GTcDvb
 Received: by kanga.kvack.org (Postfix)
-	id 4DE326B05C1; Wed, 28 Oct 2026 09:34:54 -0400 (EDT)
+	id BEFB36B05B4; Wed, 28 Oct 2026 09:42:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48EF66B05C2; Wed, 28 Oct 2026 09:34:54 -0400 (EDT)
+	id BA11E6B05B5; Wed, 28 Oct 2026 09:42:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37DD56B05C3; Wed, 28 Oct 2026 09:34:54 -0400 (EDT)
+	id AB66F6B05B7; Wed, 28 Oct 2026 09:42:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E1446B05C1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:34:54 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA0A340CC4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:34:51 +0000 (UTC)
-X-FDA: 85372130382.18.C833D08
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AD7CB4000B
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:34:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=WQTo7RRj;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf04.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 88CD06B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:42:00 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0FE56C0282
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:42:00 +0000 (UTC)
+X-FDA: 85372148400.13.5ACBBC8
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 338F320003
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:41:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=m9GTcDvb;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793194490;
+	s=arc-20220608; t=1793194918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K5sU8ZAJRz6gFhM4gDWxCHu2kvyqTC/PTTWhoAieCGY=;
-	b=k1M+oT4KQZTRDtZN9tzl+04s9vQXhorI4OS2bumnC3GfovoOIknSDoaCqBPVWXAUWKRVF/
-	RS6Ywn69CAJlxVjhcncsQgJKC0H8v+BKM9bbIxHnISEjiNAa0akmKnVz/PUKDznd7tTZKH
-	BusMmbM3AeMscu5J3secYyFO+r6VNIs=
+	bh=1mZLWc84btDXl0MHk8lbS2Z2QDCAWwzGK7CzWjzphtY=;
+	b=kJtZ8Cx/H0GmCIqyKgk7rjdYuUZKPoHfGIDh+XCRRZvmiSEEZ0IYg2GMw9myrr6pu4qSAM
+	b+ySIGbLHRtzZU+aYTSTFnI7oA95vKAn9wsVw8aV3WKkEx1n2rQE/LHmLQQ3+dci38qxcf
+	W2OKXv+0vyMCK8ounSx6ucewvlz7X64=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=WQTo7RRj;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf04.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=m9GTcDvb;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793194490;
-	b=ONhX/6ngSw+Gm3lYLsPYGQvL0ItVXbCss4UzSOyK/3P/jWkL/vsWSXXNv4aWSaIdj3tVoq
-	G5da9CdBRLwBpRO18rtzjRGzQdNKLn8i6vkV1SYESxrfS2I0xlOCT2qrMaK65Pvm5xc7G7
-	+EKdRvEh6hV9dfasQAhOg4TrPB2qifc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=K5sU8ZAJRz6gFhM4gDWxCHu2kvyqTC/PTTWhoAieCGY=; b=WQTo7RRjUws4wLzC6TxpAmx57w
-	qcq5fCMagtfKad2FmcZhLNiyNmxBTF8/cvyU5FhHuyznlY2ota9MN31xYDxFIv2Erfp4aIicHdOEl
-	E2jxLk1iu6UVgBFuNZDHQbP8i5O71tuJIGJbKRCf70a3PNnSQKK+sWlOzaRMzfKYFkbHgL5lDL9Vp
-	ZvXgetdmOXoLVKHD/1ZDYuRo7eMc1PaJvukhM56Ia68PICeBLH2PimR6BGNHj7GsDJbTI86FtVG5t
-	W0wLnsMXdRptmezamho6yQr8A3y96kAxjX7Nk07pkHXtbr6zoq0TtEiKMjF427WJnVaamNRv1dQ0Y
-	/t33+Xow==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xM3ne-0000000G0rh-0VGE;
-	Wed, 28 Oct 2026 13:34:43 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E42F1300DB9; Wed, 28 Oct 2026 14:34:39 +0100 (CET)
-Date: Wed, 28 Oct 2026 14:34:39 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	kernel-team@meta.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCHv7 13/18] mm: Drop fake head checks
-Message-ID: <20261028133439.GK2668804@noisy.programming.kicks-ass.net>
-References: <auCKv_omLGRc6wv2@thinkstation>
- <f3f3aca9-bdb7-4aec-9099-9fb63a60e61d@kernel.org>
- <auCZFckDfBMrlfxV@thinkstation>
- <070DDE5C-2183-4A8B-AC2D-891CAE15E581@linux.dev>
- <d7a634b6-8668-4753-8bfc-e9334dde705e@kernel.org>
- <4A32F5E6-977D-4720-8723-B19AFBC08FCF@linux.dev>
- <auDkbDlgSZxqlk2G@thinkstation>
- <7cb3dd91-f518-49b6-b311-9ec807b3c63b@linux.dev>
- <20261028080635.GD2668804@noisy.programming.kicks-ass.net>
- <auHxIORufMbldrBr@thinkstation>
+	t=1793194918;
+	b=5uBMhMUxLipepsQdhk3XOpbw2fHUy0QCREWQf0FZOeAIHVoUkqo4N8IbsUiNVOlgAD3vA3
+	uBH3sxK7PXFdhbiOC3UznbD71X/I0yJN3Evec2pXirDeL7lqbuMmOL8iyqd3UWhDiGYUI6
+	DYXNPDRawv3dGCBjYvVffKix2ZWAkfE=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-535179e995bso10363371cf.0
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:41:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1793194917; x=1793799717; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1mZLWc84btDXl0MHk8lbS2Z2QDCAWwzGK7CzWjzphtY=;
+        b=m9GTcDvbwCVjr/HyeMjjbHz2yW+GUMZ0ePniX4CRKsObda5X9HJhHKQoCOGCQHzxI8
+         f6SDPff+JzPlzMtkEw+3CkiOtRwQWdkUKHGF10AtjV9TzQtJ5kMdjzmLfSGKDH3CRA/U
+         mvbF39jOQM8i2o/nqlCXpQMXtPZSSVPU2P2yI7f0KGbkV84YgC/4cIL93YQZ//WnYBNT
+         LoubyZ3O2gdEC9nwkHaypTudHXPPB/ia+EGje36/QF9z/vCvSQN9aX1qgOhMiI9OiwAt
+         ZfK6cOap2/72JKx7C/vLiihsqdAsdrEwu8sFExb86SDBfiAcbEfNX6DUiecac3Xa/BHg
+         zHVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793194917; x=1793799717;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1mZLWc84btDXl0MHk8lbS2Z2QDCAWwzGK7CzWjzphtY=;
+        b=WQvp8gyGhIRUe0pzdCnWMlUqQnDCUeFVdiJ473eAq/huRUk/VxcxVuvdbKWkpBlPP+
+         FOibBqAXA9j+XrOvuLRtICaTZvBM+EbFLxva50kew24PjzZ9BHwUy0WxTXM0OHem8Aez
+         8lsKtsrWAxeoSXWeCuUMZAi8QCm7F+ob3eYQM01cf8H9nSrVZmlRMOC51xMNK3ZVjecU
+         o0iDGg/ETWsV2WZN2BvivZZ3LnKfWzpBWFPEVRL1tt4qfOs8nzjFCa71h3Mo0Mvg8vhM
+         3247HF3SZ4cjyuHiztK4Zt3yjAAyh7BWb+FfKEGVa0TT52inoXtnLYjlRCDVAybWTSk4
+         Lcsw==
+X-Forwarded-Encrypted: i=1; AKwUvBzRjKeJkcJpJF4AWhYe1g4nZkA9gn9yy/O/Uds8lrqyKNe8GtCdtRx6vvWvkWUVCfNedHKzpqaStQ==@kvack.org
+X-Gm-Message-State: AFq9FYKrJtCWrAnnipLVrj2LfZPbPGm9EHr8nNkqvBeZs7AqS6UhTXUS
+	h+2Dmq7PsNVL+mZu24LcC8K3sF+/rBO1UlthMuXOKELw9BfjbSn7zxGM+KezpVBGuaU=
+X-Gm-Gg: AYBFou1d4cGqYWTFtDqTZBhMkGSNmZbmUIDO4zYMVdhrTat9oTi92azRhVrO6beN3sH
+	dla8zECaBvVhrE/jY4BjR0CrgdCk6xvbAIlIFQoTkHRHl0p2ZezV9jinCABOpvsVbfZCeYJOKmq
+	s5uwIhwcjMIzxtA7ONaJRhf3Hf2qEztG3RQ1Fq6+A7i7WLrY4KEMcMKkPS1KKezsIyhMKp7WCvR
+	BsHBlB3QRLCjPwRfdkCwnwLT9ovGHjpsGgkiRCcmsuLi4YSn3YVvigNYBEb9ZFH7uHdtBOADVBO
+	lzRYzrJu/WF7rKHG26k3zEi7aO0c/2SuBEEKif2WD07HWelzKXkZhA6OR4l/oDLePPoUudQGnhG
+	NUoJU98dZQvNyZxLg4BEfSLhVK6b+T3PrXgwAb1VJ0ikJqH8bhWbNgHwDc0jNnw6TU+imneBHOl
+	nYnLIO9/F7M9xJYqfMy9IoBXD9sAf4D19QKlacm2g5WiI6zhqHF23Daxp+io8g8nqyAF5oPyydg
+	ywhlEk4vv/k4K/FDxBGyZx3salpliO+ARbw4iK8G1j4hWbD2+RJkHPCclHjqHozTJoJk00bs17a
+	Elx8J8tn8Mw6WlgjjI88hLx+DLC+4q4O4vzIA2+Gw+lKVTU/S+r3XOH55dfa/MdnTJ1pUnqywop
+	L
+X-Received: by 2002:ac8:59cd:0:b0:535:52c:a2d6 with SMTP id d75a77b69052e-53fc919dd94mr39416861cf.3.1793194917292;
+        Wed, 28 Oct 2026 06:41:57 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c47c96375sm132097726d6.33.2026.10.28.06.41.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 06:41:56 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auHxIORufMbldrBr@thinkstation>
-X-Rspamd-Queue-Id: AD7CB4000B
-X-Stat-Signature: tyh3h3znaikht3bq9sm89tokwmq34i8y
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 0/8] mm: fix allocator races with memory hotplug
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, kernel-team@meta.com, 
+ akpm@linux-foundation.org, mhocko@suse.com, rientjes@google.com, 
+ shakeel.butt@linux.dev, rostedt@goodmis.org, mhiramat@kernel.org, 
+ mathieu.desnoyers@efficios.com, muchun.song@linux.dev, osalvador@suse.de, 
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+ surenb@google.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, 
+ ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org, 
+ mgorman@techsingularity.net, anshuman.khandual@arm.com, 
+ Bessel.Wang@huawei.com, jiang.liu@huawei.com
+In-Reply-To: <5e980194-d892-4b68-80fe-612c910c29d7@kernel.org>
+References: <20261021023940.1940971-1-gourry@gourry.net>
+ <5e980194-d892-4b68-80fe-612c910c29d7@kernel.org>
+Date: Wed, 28 Oct 2026 09:41:55 -0400
+Message-Id: <179319491540.2032926.7199366288730313291.b4-reply@b4>
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-HE-Tag: 1793194489-777563
-X-HE-Meta: U2FsdGVkX1/Pn3LfEX3H5ql+WlmlCd5gnePjHsPyjNZ+NEY+guYu9keryb+nK9J12MPx4i1p7R4ox9uqG4cD7dpuagdOFKQz7zSTorlzK/K/6bFIp1BrvAxfJ7yRhEBIWm9DI3CDZ8UWjzn401nS5Vgq2w2Pxv7ZLGje7TEn6doq2gWqMRkpfQStp4CObDQ9zEgOWw0sEkkffoaBlPCN/7g3L4lXfe5Y8wfkKzLUT92vUTQ1pvGOCcAX2nAnQzpO2i+8wDZMXBgSYSZGbs3bjV0qMjODwY9TWZ1pIv3qCPrGzUagV+VY5POMdpvgA8pNs1iOrVNgQ6VI42MMe4mrebSmQYs2ODkWTfXu/XzLbP/pn/qrL7pgUOpw7F0ha3HaxxS5VU6YnsAErzqEBD0VBnifw0w2DOFkKpSYDw7sk/N8BcDtauWYKrjv6zt5c9E92UcTTJr1U1bdKuAzkQaM1oHx81Gcs8/VwkeSOTpXvpkNmG3L4ggXwUDBeElhG/+Y8oDZ8gUr5R4nfaffGfSbYIRBS7QcE6P3x8ubx3MYow7yrRkXSR+dWP+7LvrtRO6ZyyAw/G/E6oib5wS/F9XTMmqHJtZEuixh48LCc6bOE9mDpIS/pEE/lyjyucmU+7HefLLkkYI9+MPK59Niq7y9XN4akEgJ3JzjcG+4ewtUciCnBABKFkAki6R5G0uYFAwtvQzi632DYtrhLX1584Qfw385rSc1OkN2efImVI7z5fEujbEZtFicF2FWiH36gNUaornTTI+52XDaxvifNDbnibB5umeqZr35qqFMqqym43snt3H2DcjDK3GqweRD7dhGYLN/DWTRX0LfrRxoys8tiYEACQfsQmFrLjICjxj9K4Ik4ovOhqK3MlQ8x5j8iVMhxaQagEXqJrYAXRgYFZ59NPZ7bwizp7FcEdQGYc6BvMri4J8+Sdy3Wu7hIBIROFxE9kgBtqzDlfNz0dUNwVV
- IKFIpUwa
- Wq3gWG/nf+IHKMblVLriJR1zRzdUu0JMEHL4PcO0W4gt0a40pMiO5P5jhtdB7vogxuLuFuwcGy3vJd++pAJEUnCZ+D1VoJEkK3JPAAqsBFiPGcBfcGJtYDNWedpVpkK44UyRhX7te8GZ8lWEDsb3RuISz6X1SauIk4DKSYI7zQQm5Q9gYezr8a3xuDBVQY53vU6y/edspnpjW0Tk6v7jvjtDVIm725fFXqSKRLcyyRAkqKL4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 338F320003
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 7pi5cke5qumbutn9pdsirfzj61f5nruc
+X-HE-Tag: 1793194918-294418
+X-HE-Meta: U2FsdGVkX19PJijCxD8SPjZf9cj7GtYbd1a7Q2O4tbK4qEF6qIEb4Bs6EUnK1H8fduZaql5G/BDLLjVgx7Obf2ighsa6IpDVfJnA0OWU2TierSPW3vWle65viTz0/lySZVkU0Vmi25T4DE6tokuLO0OtCMT0bMwDDj08PrtQzxK4Oh6iWv1GMUwOYSmN6zJR9XcPNt5/dCRCC/0+ylkBSnaZoRtno5sCH3u72BB7FE0X1ECFOS/xlD+hBnoHZduVhCznbL3tDFfOjhBRItt42YNUKKn0P3iaCjRuUSNjl3KCX6LX75vTE45z3z5KBHednywkRTSLkifaQTs/V0V1LEd6vXQe8b9LxbmxhAoOY1rb5YfRqmo2zO7F7db87vfmXAhbSsmNNHn02WciJx8YzmNPcfxa7zKjzpFODKtPtg1VwoXD+kFKvwX7wCW1yx3A0sAE45BqohJirAmtAKvd0/itzN+f9fw45QpubYmPY63UVsdXvpMnEDpUm8CO/6HJ5qzfLiwjGVp1pCBOhJ+5Ki2yModSQxDqy89WGTeVrRNG2KmrSX+ZbWhUmj9OKNm0ZkcAOwncP7/jVv9WODgC7OveG89EDY/IwW/18dILMEIJGSBq1KdBUsTgm0DbqKcRSworp1TOyJFMUeZsqAMGUvp0qHadn/9a5AztYJKP6wcZrus4fXFilWqCsoQvfQOp0+8fars3UyBKGZIazBgb3J8lJDFaSkr8JvRMPekYKYtENSv09UxOS8LQXs8iSqFwfd3nybMDHHpqX8yvdiyife2ts7Dk3nJQa5me69BJKVUTHnL0IXqiNKpF2SDzDhq/IbhWZ3nlb/XD9JJDEqS4KQeWXpcU2qB/O9d3ZK+2Gs4BAEkIEbbO4/g6fEJsTCkVumarIrW8H6HIozwIDUT+lZSUNFgb7sSUcad8dUjszWY6tdbKtqt8nhFafXHCwU6ZmHeB9M39n2M141nN/nq
+ xxqhe86g
+ SnPRBjTYpdWYNXSu/O4xDmK/WD3JG/PEH6OoaYsw5qtVnywjzVmdTlxlzIC4icsNdDwvB3TYmsigu1PtWXF8bGhzn9ONLjaEy0P+dMyru9Z5QWJDpEaHR7UFPY9fWMJMvQb1iLGLezferuj7WYwJr2ksWrKXX5thRG4NgH3Z3bWQLIxyHD6HKETCJrkp07CiHv28s+AahtNP/IgsivRHLawtN5lpOWGv/kvTpXkueQkxuO0J9TAC2IhsWCaARFgm4GXwqoup47heex3OMbStGAApYO9q5N69JYipJOzrHEa4RZ0k+1YwArB42lvnpjECewDz9BuVXKrKyyU8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,62 +136,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 12:58:11PM +0000, Kiryl Shutsemau wrote:
-> On Wed, Oct 28, 2026 at 09:06:35AM +0100, Peter Zijlstra wrote:
-> > On Wed, Oct 28, 2026 at 10:38:22AM +0800, Muchun Song wrote:
-> > > 
-> > > 
-> > > On 2026/10/28 01:51, Kiryl Shutsemau wrote:
-> > > > On Tue, Oct 27, 2026 at 10:03:54PM +0800, Muchun Song wrote:
-> > > > > Therefore, I am kind of leaning towards removing the RO protection
-> > > > > and restoring RW permissions to solve the race.
-> > > > Okay, what about this:
-> > > > 
-> > > >  From e23ab850837b53cc79d57d58f1cfb4266e745c3d Mon Sep 17 00:00:00 2001
-> > > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > > > Date: Tue, 27 Oct 2026 17:23:47 +0000
-> > > > Subject: [PATCH] mm/hugetlb_vmemmap: map the shared tail page writable
-> > > > 
-> > > > page_ref_add_unless_zero() reads the refcount and then updates it with
-> > > > a cmpxchg.  A lockless get, such as a page cache lookup or a PFN
-> > > > scanner, can read a non-zero refcount from a page that is then freed
-> > > > and reused as a hugetlb tail page.  If HVO remaps its struct page to
-> > > > the shared tail page in between, the cmpxchg writes to read-only
-> > > > vmemmap:
-> > > > 
-> > > >      CPU0 (lockless get)               CPU1
-> > > >      c = atomic_read(&page->_refcount)
-> > > >                                        page freed
-> > > >                                        page allocated as a hugetlb tail
-> > > >                                        HVO remaps the struct page RO
-> > > >      try_cmpxchg(&page->_refcount, &c, c + 1)
-> > > >        -> write fault on read-only vmemmap
-> > > > 
-> > > > The refcount is zero by then and the compare fails, but LOCK CMPXCHG on
-> > > > x86 writes anyway.  The kernel oopses when hugetlb pages are allocated
-> > > 
-> > > Is this an X86-specific issue? If not, I suggest a more generic
-> > > description.
+On 2026-10-28 09:37 +0100, David Hildenbrand (Arm) wrote:
+> On 10/21/26 04:39, Gregory Price (Meta) wrote:
+> > Eight fixes for allocator paths that can act on state another CPU is
+> > updating: zonelists rebuilt by memory hotplug, and the pagesets of a
+> > zone that offlining empties.
 > > 
-> > AFAICT most architectures that implement single compare-and-swap
-> > instructions are affected, with the possible exception of s390.
+> > I've packaged these together because they're all related to hotplug.
 > > 
-> > That is, sparc, arm64-lse, riscv-Zacas, loonarch-amocas, openrisc (and
-> > ia64 for those people keeping the out-of-tree port alive) all require
-> > write protection to begin cmpxchg.
+> > *** Backport note - Patches 5-7 build on patch 1: without it, their
+> >     retry is compiled out when CONFIG_MEMORY_HOTREMOVE=n.
 > > 
-> > All the LL/SC architectures should be fine, they'll never get to the SC
-> > part.
+> > Most of these race conditions stem from zonelists being re-ordered
+> > in-place at runtime during hotplug.  The result is a mixture of failed
+> > allocations, NULL dereferences, incorrect placement (GFP_KERNEL in
+> > ZONE_MOVABLE), node misplacement, or incorrectly allowing hugetlb /
+> > contig allocations on a node/zone otherwise not eligible.
+> > 
+> > Most of these are incredibly narrow race conditions, but since the most
+> > likely impacted machines are VMs with memory hotplug, the narrow
+> > condition can more easily occur when a vCPU takes a long interrupt / VM
+> > exit of some kind.  I've made all of these race conditions
+> > deterministics with a kprobe reproduction module described below.
 > 
-> Only architectures with HVO matter here: x86-64, riscv and loongarch.
-> arm64 has had it disabled since 060a2c92d1b6.
+> What's the status of this? "memory hotplug" caught my attention, but then then
+> is all page_alloc material :)
+> 
 
-Per that commit, could it be re-enabled now that its no longer marked RO?
+I have a v4 with the requested tweaks and some performance analysis,
+though i think there is some overlap with the other Fixes: series.
 
-> riscv and loongarch implement atomic_fetch_add_unless() with LL/SC only,
-> no CAS variant, so they see the zero at the load. That leaves x86.
+I can send it out and if it helps i can pull together a report on
+overlap between the different Fixes: series.
 
-Ah yes, I only looked at the cmpxchg implementation rather than the
-fetch_add_unless :/
+~Gregory
+
+-- 
+~Gregory
 
 
