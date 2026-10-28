@@ -1,97 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AA8606B7FC
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 19:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D85606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 19:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hmOud5m1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S6wxM0rA
 Received: by kanga.kvack.org (Postfix)
-	id C336C6B05B2; Wed, 28 Oct 2026 15:11:30 -0400 (EDT)
+	id 1240E6B00EF; Wed, 28 Oct 2026 15:23:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE3B06B05B3; Wed, 28 Oct 2026 15:11:30 -0400 (EDT)
+	id 0D4EA6B05B1; Wed, 28 Oct 2026 15:23:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A840F6B05B4; Wed, 28 Oct 2026 15:11:30 -0400 (EDT)
+	id F05656B05B2; Wed, 28 Oct 2026 15:23:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 839826B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:11:30 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A75EA0260
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:11:30 +0000 (UTC)
-X-FDA: 85372978740.09.960A00B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 77C41100005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:11:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmOud5m1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE0DC6B00EF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:23:01 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA5551A0299
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:22:59 +0000 (UTC)
+X-FDA: 85373007678.19.1FA68AA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C99EB180003
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:22:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S6wxM0rA;
+	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793215377;
+	b=3e2h/aH4XlFUlz6qOP/M4LLd0fzZaNcwqcwQiO5Lq9gP0YCH52na1v1JJamo03AFA6nrgO
+	BDhSH4hzjUS2dfr3L129A/VIxNdTHQrm6JbFh3s2jAd1a3bfDnaQTYhSCe06MWxI9Nyx9Z
+	/u7/zkOinG8gT9wqcqog8D8j2SW9KCg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S6wxM0rA;
+	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793214688;
+	s=arc-20220608; t=1793215377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ZCiiEwQ5cdvAEferIPSF0WM9T5tFjDIqRGawKcIWjE=;
-	b=P5KZ+12FmfjFEHqZG8RRkebFxhFsT3+kwxQ05pPmNk3dVm6kcPpx29myFypFrl/BT6QIUs
-	Rh4U4aore8OuRSZpo1gR/3e9D9MDWhMga3qAYmfK3l3Bvh+PQuEpoR4eHIdCHWC6gAIYD0
-	K+jgOYvPse7caE3vaWZ5OWIRE9v5BFw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmOud5m1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793214688;
-	b=OihPHVcqEPBtdMaiuW7kpByUEU//NVT1h/m/cxm0RfLXuW8220i57uWm+PR5SXXnZeEaVP
-	ikUNHXbNevHWfm1N3BixjAzjpVDSLWOBp1pDveJua3X/VKKUQVSotEoTIsw5JUEWw115T6
-	hCHQnNQV6CJvG9nL9KZkMuDJ1LBogCw=
+	bh=YgW7z2/wWcYNE6vFIw6PaupAVuPE4rl6qJWBPo/OcK0=;
+	b=qFSiAhNdeFztJQttUd+tNK8r68h6l79ejnTnOxC9H7iK12YDOcXTRLDZNz57VONDwOrghi
+	9xUdiOwLJnA1LmQWtdCI7uLMlSc2gumOuN3AHNryf+5ej5iArNI51lfsc+qWslVPAdyPdL
+	LsV8LmueWY+sM9s5qa/3BrIO4Ydr4HU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB4AF601FA;
-	Wed, 28 Oct 2026 19:11:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CAD1F01828;
-	Wed, 28 Oct 2026 19:11:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DC7EB40287
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AEA1F031E6
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793214687;
-	bh=1ZCiiEwQ5cdvAEferIPSF0WM9T5tFjDIqRGawKcIWjE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hmOud5m1Sys3ZbTVWvDLH3V3m0RYDac/VMmvlzuKOpUFVThxM9d66icG4REDhsESI
-	 VkbmzLvsCDD4IkwZyColJ4DMXhsDF/wQCixhdKvmY3cSyt3UhjBF/u2VaT/I3PeGZF
-	 N7E+Oo5g53zikjg8t6V6ZXsvopctc4u79C51eB/ZuqqChDZ41cphS5bcgW3G9T3OZd
-	 v2srl5wPazMKelBV/jMiqY9X1jjFk0iho1+sUukEBFmpNXl1eKbDlSvCPaW6KpETE9
-	 p5QqvR65F9sbstCc5R7yBPIvZZQs+EolG8UszOEiTDpRu9tLd8NSeXiCtxMW004ZhA
-	 pMdmD5HqKfAJg==
-Date: Wed, 28 Oct 2026 21:11:21 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	linux-sh@vger.kernel.org, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] sh: mm: replace the page size bits in pte_mkhuge()
-Message-ID: <auJI2blzfpFD9yLe@kernel.org>
-References: <20260926183904.76186-1-kmehltretter@gmail.com>
- <20260926183904.76186-2-kmehltretter@gmail.com>
+	s=k20260515; t=1793215376;
+	bh=YgW7z2/wWcYNE6vFIw6PaupAVuPE4rl6qJWBPo/OcK0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=S6wxM0rAqLqBuFeZ3SV02XilYqZM/o515ZY52fY+JVmJmZ69Vbu79sLZiio1E6GUL
+	 pDYS3JNoHMHxuNHPdwYCQb+DnktnC4ejR9J2QEH7HpyyJtdHXhZsoDdixLOgrZjtZd
+	 FnqwtveB5J4kD//vs7YwvaZZJU8utON4j4/IfKR9WJSFtdr/l+jVcLmxtG48j6aJ/D
+	 yUTjqCDjh5iSiXxW+KBng/6nUDvtKBo5drcL85W+Ax5zNn8X5kOESN8gu9m1YemjPq
+	 taG1xj1LLamdLbnnB47cpwXglwARq/zDjugSV9R7i+NnPf3mS21QY/reXsSQ/0Tk1o
+	 iIB5hXDJarnpQ==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c40e30c26a4so3831166b.0
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:22:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxhfFjWwG/PuWS7GARqB+6ieDGaqpo/ZlLDLpWic/U1CpE5Sm2qJmP9pIBHzcF+p002lC5FQyGddg==@kvack.org
+X-Gm-Message-State: AFq9FYJieixp/yDfN7rnPdGysAZcbGWNlyAdC9pvRd4IffzsaAZ+OArB
+	ol1HiA/nhVcG/EVozYBDZb4Rez5KI2DDjPWfkL1R9ls1vr8tC/jFW+pCS8YiU1Tte2r+Roz5oye
+	xvHgIyIr68Hs2J0XZCZ4Bfe9FxozWkWU=
+X-Received: by 2002:a17:906:c112:b0:c41:9a35:17a2 with SMTP id
+ a640c23a62f3a-c49d14eac79mr39390166b.31.1793215375607; Wed, 28 Oct 2026
+ 12:22:55 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260926183904.76186-2-kmehltretter@gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 77C41100005
-X-Stat-Signature: s1cokxgtxgw7ckk4w971zgsqfpgurpz6
+References: <20261028113619.38752-1-kaitao.cheng@linux.dev>
+In-Reply-To: <20261028113619.38752-1-kaitao.cheng@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 28 Oct 2026 12:22:43 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zP15iW3ECW2Bs0rfyZrifeisDunLa6qJC43M1RcE16wWQ@mail.gmail.com>
+X-Gm-Features: AclHuK-nDakba48q3yy7tQAgKOVWr5ALwdirufivl6co7xpMzm3953Jsvm2dlEM
+Message-ID: <CAO9r8zP15iW3ECW2Bs0rfyZrifeisDunLa6qJC43M1RcE16wWQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/zswap: fix double decrement of the LRU node count on writeback
+To: Kaitao Cheng <kaitao.cheng@linux.dev>, Dave Chinner <david@fromorbit.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4cm5nxtnhgpak5zejpu4bnjkeb39z5ec
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C99EB180003
 X-Rspam-User: 
-X-HE-Tag: 1793214688-699575
-X-HE-Meta: U2FsdGVkX1+e7UihzcDLSq4ztjGgcWxBSYhwHHxOUAydzReBZIIOHg2xBDwgu/pmo1Sykaut5G09Ms5GyidFyh7pe2k0veK/tmX+NoPXiM3lna05Zmfrpd4fU4/1Px1clQHAq2vqqLLowRyKpQAEPVlQ97o24N/kzqK0Uv/naa+5XPbQhjiP7UxXY0ejWB3oUZxo1vxSDEz68rdth9hnD/eVokFi0qWMmENaotKLaIG+GKT0+HbTETfWgYW7Q9P2iX6yL12Ohwlxk5A8ThguHkgGrdqVyC66fXwgpC1OEeLW7s/IJjmiueeH09hIh5qf4y015rdFOYJ/CxrYfBPMW2nFX6xyCJp0eiCVj3fuXyntP0V1GfCnxBB6tO9SqxRlymtLOqP4+KCcjJCzdfZGySBWyPxJT1jMFR3ugdif0o9+VS9rPuFh/vWOOMg9I/E5XrXIp4oSBDmK4DV7M3Kt4sBbzRaM3SWmbemlQk1mpV3vreW9McSFUiQ0AhAb7CamDDUDg7NSRtQzgYZPxCkyP95MIBR2X2OjHhZeYRxsDd6Ss3fgy73+dxbbxBSx1PKkDg2Ei+bC3qTTw9rkNhz3mq55blbsX7/ZKtVrJBJ2q9I/lB/kag3oJZvot79pNRCZMvlzISdA8t1YBpItXvfYR8WP/e7Gxpn/4cZ0hD+Dhv10W4wPIkGIhNuS85YAo59d3voJYVFe/meKU3azALucZUpSGhwMT5I3fPWFoBKpf3VoEkX95Zcg/X39/vshwzwlnaxiaSzOBwhi4pztmeF1rubzlxXpALDkuRAPgR3xTokTwJiA2zOujvMBvMDEIsiVm7xE9ElpacGtaVmFygT8sJ5mulp2hQxNFdsqw5uRXu7JCaOcDs1nyy0pM63RBiHZSRt9xVWZjiJtKrVtvrQpupobtVrefP1cK14V21pb8zbrqUQzes11vBTOUIcfNu9X/ShytWZiJKseQ4nevTf
- LgcBtVq3
- DG/KJr0Ir+t/bbucajyAdc17YrvlJreqLQcVaw91Hz9ZLaUO8utTMcttLjsabrk3Y0LPMXaHzS098Q/30sdbB4xgB076T/5vzc2pDnApYVEV0Rqz7JCQQ1pFaD2FZ3f60vEPIL9AxmG8V6ixK8YHrkLXOTLxPzSn7q8ymuSkAFQSEVYRrn3qTLiB8ipImaSmd6NQ9hZdKHytT7T7k3/wpRJYo4YSv3MRSCPlG51woakjZCASLxbOSzUZGhv7+AadLqD4caRbBDf0Eu7i2MtGYqhww19WAAcPBDLRtjasI7mpX+Gw42T80sFsrDbsWdFKdm/G4KrFyqtdFGX7jwW298oYlTPAs0xKyoXyM
+X-HE-Tag: 1793215377-893413
+X-HE-Meta: U2FsdGVkX18wBfv9e+XrahF/W3U8ZDvuYrResZ9OOdr6juuOGADIFWUitEn3DR6FtIy2PK+7Dnh51oMcyejTk+aUxu48al3PFbhYwIYTI92CYsFrIFph+2kmC39soU+lOyrwfYpinryxlYrxP6+sV5pAjUYz5IYV6HNjTh53W4P906IWxpkM2VEcwurzYKQphrpVWyhTPX2EylY5/QEiTQNOmoFEvrNluh/2jSznECS5R/L6RZC6BSZM+u9JHJHhCGyHkwQL+HEZ3qB5Ip8nSRnEra9quz28WTxs92kfEbqSE/QBNZdH2XMZPXG/nmDjtvyFqs0RrUdainhYViw/BFce7QHwGcrlMxVCuB1VHdLtfNOJY2pyelTVh4uFMNY0u3oRX6+i5TOlAECylEVlpPHf/xM8XIyDu1gRjCYigtgHf+iylOuICb4jgqHwzp/aGQ+aDoLAixK/hrzi17cWWkJ/OsWczhw9TN0YbGf9LVNW+4kPMoi0iYSYIGTGA0dy9LEmKjWN+RIABUGDHc3TIodnRiu42bJCYlv+CuKCEQccdyrAr/av+73j5A3C3IsU261mqcT6l+skM9bvN4mgW/oYilbVFFdN015UqPZ5mwIp3EbSuAaouT8hmthafwPvH64vn2tXiudhmvVfH4ywUHOiL/4BOa2AHLBVlfcNaNFYs5EyKMpfrATQVeAEzC9p5iC6/lgdWltsqumFj/RaAeuegh/JEA7CqOYsBeeJ/kLqxMNJ+Yq5XKPXGBuam1ieetR2iIm4UYL+d1K/BQusGXn0iGj/KmiBvHCsLvPZueJ7RWRzPlGNoJEaZkyZSjlVC5Ed6qvd90jW1wXKPSrMhTXYGDIuN9juJO6eaVEmkOBouv+z7RMh88PMQvfWw1V+wUYuCfZwFfSPD2R2xhgTs9O8XA3043UUG0ynkq3Dc8lzEUjuGfyw0hzgtai8p0dATp5nnprm1GkMSDSX+j7
+ Om8lW9Hf
+ GjSGnOUtvhvRJwG1lb4cU2UfAk+r1vcAYbFKlMxbx1WiXylfcZ24ifunjn6bsxk3X+VVZfg50VtQ0YucwV0jbGUnCfyBPmHYvAKtWFJ804JNyG33bJF8drsNQVS6NS1j3GvpOSr7/HlsvlpCnU3fbDfwaj9lmKfEAnRNMJxbcP68Ym+smq/Hd9XhAWO34mgHC9j2g92QD6Ia40MJuqq74iLXNhzwmANWU6PLCApO8u3kVHzmo4bqAkBPjrNVlGqckolbQkQBhZR4WHKeGENEJiSbi4q+K8vxol8gdK8LeIV70VyOoWifnUoVcPS21fhT3Ga0ia/hUhBWdlXm58UmDT7AGaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,54 +108,118 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Sep 26, 2026 at 08:39:03PM +0200, Karl Mehltretter wrote:
-> pte_mkhuge() ORs _PAGE_SZHUGE into a PTE that already carries the base
-> page size from _PAGE_FLAGS_HARD, which every PAGE_* protection
-> includes. The PTEL size field is an encoding, not a set of flags: on
-> SH-4 with 4 KiB pages and 64 KiB huge pages, _PAGE_SZ0 | _PAGE_SZ1
-> selects a 1 MiB page. Every hugetlb mapping is therefore loaded into
-> the UTLB as a 1 MiB page whose physical base is the huge page's address
-> rounded down to 1 MiB, so user accesses land in unrelated kernel
-> memory.
-> 
-> In a QEMU r2d guest, after touching a MAP_HUGETLB mapping at
-> 0x30000000, QEMU's "info tlb" shows
-> 
->   vpn=c0000 ppn=32e00 sz=3 size=1048576
-> 
-> and writing the two huge pages overwrites kernel data, for example
-> page tables ("bad pgd 5a5a5a5a" on munmap) or a struct file:
-> 
->   Fault in unaligned fixup: 0000 [#1]
->   PC is at file_tty_write.isra.0+0x24/0x220
->   R1  : 5a5a5a5a
-> 
-> The SH-X2 extended size field has the same problem: a 4 KiB base page
-> (ESZ0) combined with 64 KiB huge pages (ESZ2) encodes 256 KiB. Only the
-> configurations whose huge size encoding happens to contain the base
-> encoding, such as 1 MiB over 4 KiB on SH-4, have worked.
-> 
-> Clear the size field before setting the huge page size. All hugetlb
-> PTE constructors, including huge_pte_modify() on mprotect() and the
-> fork/COW paths, go through arch_make_huge_pte() and so pte_mkhuge().
-> With this change the same entry is loaded as
-> 
->   vpn=c0000 ppn=32e00 sz=2 size=65536
-> 
-> and the mappings read back correctly after mprotect() and fork()/COW.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+On Wed, Oct 28, 2026 at 4:36=E2=80=AFAM Kaitao Cheng <kaitao.cheng@linux.de=
+v> wrote:
+>
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>
+> Successful writeback calls zswap_entry_free(), which removes the entry
+> from the LRU and decrements both the sublist and node item counts.
+> shrink_memcg_cb() then returns LRU_REMOVED_RETRY, causing the LRU walker
+> to decrement the node count again.
 
-This implies nobody ever used hugetlb on sh-4, doesn't it?
+I wonder if we have a valid use case for adding LRU_REMOVED_COUNTED or
+LRU_DELETED instead to simply avoid the decrement.
 
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Adding shrinker maintainers.
+
+>
+> The affected call path before this change is:
+>
+>   __list_lru_walk_one()
+>     shrink_memcg_cb()
+>       zswap_writeback_entry()
+>         zswap_entry_free()
+>           zswap_lru_del()
+>             list_lru_del()
+>               __list_lru_del()
+>                 atomic_long_dec()  /* first node count decrement */
+>       return LRU_REMOVED_RETRY
+>     atomic_long_dec()              /* second node count decrement */
+>
+> Add zswap_lru_del_nocnt() to remove the entry and update only the sublist
+> count, leaving node accounting to the walker. Split data cleanup into
+> __zswap_entry_free() so writeback can free the entry without performing
+> another LRU deletion. Other free paths retain their existing accounting.
+>
+> Fixes: 5878303c5353 ("mm/zswap: fix race between lru writeback and swapof=
+f")
+> Link: https://sashiko.dev/#/bug/linux-68d2ca49-23be-4504-9a75-b8526ec9238=
+8
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 > ---
->  arch/sh/include/asm/pgtable_32.h | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-
--- 
-Sincerely yours,
-Mike.
+>  mm/zswap.c | 28 +++++++++++++++++++++++++---
+>  1 file changed, 25 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index ad01c691a263..d0c98daddf2e 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -719,6 +719,22 @@ static void zswap_lru_del(struct zswap_entry *entry)
+>         rcu_read_unlock();
+>  }
+>
+> +/* Like zswap_lru_del(), but does not decrement the node item count. */
+> +static void zswap_lru_del_nocnt(struct zswap_entry *entry)
+> +{
+> +       int nid =3D entry_to_nid(entry);
+> +       struct mem_cgroup *memcg;
+> +       struct list_lru_one *l;
+> +
+> +       rcu_read_lock();
+> +       memcg =3D obj_cgroup_memcg(entry->objcg);
+> +       l =3D list_lru_lock(&zswap_list_lru, nid, &memcg);
+> +       if (!list_empty(&entry->lru))
+> +               list_lru_isolate(l, &entry->lru);
+> +       list_lru_unlock(l);
+> +       rcu_read_unlock();
+> +}
+> +
+>  void zswap_lruvec_state_init(struct lruvec *lruvec)
+>  {
+>         atomic_long_set(&lruvec->zswap_lruvec_state.nr_disk_swapins, 0);
+> @@ -781,11 +797,10 @@ static void zswap_entry_cache_free(struct zswap_ent=
+ry *entry)
+>   * Carries out the common pattern of freeing an entry's zsmalloc allocat=
+ion,
+>   * freeing the entry itself, and decrementing the number of stored pages=
+.
+>   */
+> -static void zswap_entry_free(struct zswap_entry *entry)
+> +static void __zswap_entry_free(struct zswap_entry *entry)
+>  {
+>         struct zswap_pool *pool =3D zswap_entry_pool(entry);
+>
+> -       zswap_lru_del(entry);
+>         if (!WARN_ON_ONCE(!pool)) {
+>                 zs_free(pool->zs_pool, entry->handle);
+>                 zswap_pool_put(pool);
+> @@ -800,6 +815,12 @@ static void zswap_entry_free(struct zswap_entry *ent=
+ry)
+>         atomic_long_dec(&zswap_stored_pages);
+>  }
+>
+> +static void zswap_entry_free(struct zswap_entry *entry)
+> +{
+> +       zswap_lru_del(entry);
+> +       __zswap_entry_free(entry);
+> +}
+> +
+>  /*********************************
+>  * compressed storage functions
+>  **********************************/
+> @@ -1119,7 +1140,8 @@ static int zswap_writeback_entry(struct zswap_entry=
+ *entry,
+>         if (entry->objcg)
+>                 count_objcg_events(entry->objcg, ZSWPWB, 1);
+>
+> -       zswap_entry_free(entry);
+> +       zswap_lru_del_nocnt(entry);
+> +       __zswap_entry_free(entry);
+>
+>         /* folio is up to date */
+>         folio_mark_uptodate(folio);
+> --
+> 2.53.0
+>
 
