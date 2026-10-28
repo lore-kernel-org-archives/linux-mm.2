@@ -1,84 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18774606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC75606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ppjq6uci
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mie8jh39
 Received: by kanga.kvack.org (Postfix)
-	id 433776B05B3; Wed, 28 Oct 2026 04:37:52 -0400 (EDT)
+	id 4378C6B05B0; Wed, 28 Oct 2026 04:39:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E3546B05B4; Wed, 28 Oct 2026 04:37:52 -0400 (EDT)
+	id 3E8196B05B5; Wed, 28 Oct 2026 04:39:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D3B86B05B5; Wed, 28 Oct 2026 04:37:52 -0400 (EDT)
+	id 2B00F6B05B6; Wed, 28 Oct 2026 04:39:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 055D06B05B3
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:37:51 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 83FDB140BEC
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:37:51 +0000 (UTC)
-X-FDA: 85371381942.21.453F789
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E60BF6B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:39:58 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 390B9120B5B
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:39:57 +0000 (UTC)
+X-FDA: 85371387234.06.00E2675
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D06F0C0005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:37:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ppjq6uci;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 86AF180003
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:39:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mie8jh39;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793176795;
+	b=tpgigC/GFoMvVht9CeGaJ49/u2V7paip6QavTCJGEva4QvOtYWj8QJjXGr9LFBjPCIflHH
+	7PbsWVb85DY57VMOXLeuxtNjTAeTOKb6Vl/s2exTA66/u3q2w3iT1Rhoz4Y7gFqMPRzr3a
+	bVpCKjligJIGjK0Y8WDXLVqpp6BbLpA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mie8jh39;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793176669;
+	s=arc-20220608; t=1793176795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1wbs7cHydDEQXXO5KItG+AMA3doDxVoVAxLbCzDRe70=;
-	b=Hjm7a9SqP7B7UtrQT6LCeBENFACI1tb4R49QrqxI4b6Sn5nwDQBFJEDTFh0DLpdTBGXQux
-	WUMNtLqamcjURJMl0QStAIAaUHRqSjx9Rf/EyQK5BIIGsbdvem39kEdzTckIDgMpmWRh0e
-	7ocN7txfgxfvcI3dn4EF6vemgBxK6N4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ppjq6uci;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793176669;
-	b=WvXL96IHGYvl2Bu7GjvYKLCBK7SgKK4iSaygOqqgtm4ngtbcSMtoDoNzL2/QDXNfD7T7t9
-	o+HDBOJ3syZPsDgWZiZB8bwC3/K7NBBt2+pwNmPCEkv7ujLJmsrcnyrdHaNsXYfTWstn1A
-	8OWQCwLMNp+dGIZe2Df8OqIz4JtQoSA=
+	bh=EuSPBpfPiwDzYLE9j3bMQIok2xPGQVDesPuFSULAs28=;
+	b=BSjNIVEGJYKoRhvN87fW8DESJ4EeNeCX87s0WrDf4jXcf7pMsAYt1/056hZdXUvnzAtjdL
+	5ujJp3DUm4weMQlGsNBJLdUye7hOdRCQI61kI6X+vpOcP+cHFoKPD65og3/L0ohr0tEYkt
+	fCmarWaDVI0sjA0z2UXnfJpZ9O36bSA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A829A600DA;
-	Wed, 28 Oct 2026 08:37:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCC61F01825;
-	Wed, 28 Oct 2026 08:37:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A46060120;
+	Wed, 28 Oct 2026 08:39:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C5C1F01825;
+	Wed, 28 Oct 2026 08:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793176668;
-	bh=1wbs7cHydDEQXXO5KItG+AMA3doDxVoVAxLbCzDRe70=;
+	s=k20260515; t=1793176794;
+	bh=EuSPBpfPiwDzYLE9j3bMQIok2xPGQVDesPuFSULAs28=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ppjq6ucixIquylI1RXa0glpRlIx0VRokubeu3+Rd9Zd3zOXS9VnLl/cf7El20ued2
-	 LHGK6Xk9IQaRqA1ZpE5lW55bE8uTquQAGIOd9nbpx+msITLI5rBfXXBi6zLH41Zeqc
-	 PQVQTbbhTl+Xu3JKPXDUPG5SFtltCsZNT5zDz5R5fMPIh9kI/s6nMR6wCLH/WBSttZ
-	 Jd5uHYmnCRco+nGQQ0WjggVO4uKe9cQrI20/3HnGRX8jkvjhI3JLTfX7mJMkM07Cdu
-	 F2b+fzMNBq2vYgLkkqQ8IJadCUPcQEYgH5F/oqVQGjN5I00CKnmk+1zKvUPVkVo3LC
-	 m4OYLuMKXTIMQ==
-Message-ID: <5e980194-d892-4b68-80fe-612c910c29d7@kernel.org>
-Date: Wed, 28 Oct 2026 09:37:39 +0100
+	b=mie8jh39y/BQE69uPA+3u6b6UyI8Nt1ralfAIWhFNNTRSMdv0XI1QmX/FC3Ny7Qhc
+	 ZhQ9zZCJWtKIugv7K14H8T+1uM1GyTD2K+4besn4VLQgQkW0azexi8qFk91TF3cfTh
+	 W9sNM5Dbkm4U6TAmERY2uj+6WxDmECEAcWSNnpza1ypv+e+bAHytezpfAPK4IflUL5
+	 jgnR5HSXmZ7J/8+Y6XMGRBhEhR4u8Ie9eq1TsMurpfZOGG3BEhRgQYQuQy05WH3QLU
+	 lsPjzcgAhHRLG8M9IZ0wwLs9qt3S+cNesJUmdjM1eCXsrG6MUKIAfMCaOzb4Q9OrCD
+	 yVBzjZZdFzzVg==
+Message-ID: <524ee7d9-790d-48b6-8613-841da042c32a@kernel.org>
+Date: Wed, 28 Oct 2026 09:39:42 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/8] mm: fix allocator races with memory hotplug
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, kernel-team@meta.com,
- akpm@linux-foundation.org, mhocko@suse.com, rientjes@google.com,
- shakeel.butt@linux.dev, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, muchun.song@linux.dev, osalvador@suse.de,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
- ziy@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
- mgorman@techsingularity.net, anshuman.khandual@arm.com,
- Bessel.Wang@huawei.com, jiang.liu@huawei.com
-References: <20261021023940.1940971-1-gourry@gourry.net>
+Subject: Re: [PATCH v6 4/7] mm/memblock: add a reserved-region flag for
+ poisoned frames
+To: Mike Rapoport <rppt@kernel.org>, Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, kas@kernel.org,
+ kexec@lists.infradead.org, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+ driver-core@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ rmikey@meta.com, riel@surriel.com, harry@kernel.org, kernel-team@meta.com
+References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
+ <20261016-hwpoison-kho-v6-4-f304255147da@debian.org>
+ <ato62palTbNjLwN7@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,21 +138,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261021023940.1940971-1-gourry@gourry.net>
+In-Reply-To: <ato62palTbNjLwN7@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D06F0C0005
-X-Stat-Signature: n7meqajsn946ecxbphjphfohnr8q1e8r
+X-Stat-Signature: wkxhn1fr81k4z36qo5iyeja4pst3pycw
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 86AF180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793176669-357116
-X-HE-Meta: U2FsdGVkX19o6QJZuU+rL5SB2cQ90Y80toI042bEiTgyXeMK82wIrExZgVK2f/ogMCfSvlV+zwMB/kkLnfNlqrTMALo48pRefBphmlN7MjPkbAlAmOlA5ThYFmXL2+hABZWnjOVkxQSp0DujwEnOTiwAPE4Z5S9phQDHY7zHNfyfz66WXs9aK8cHIbjwzzIMF/OArQJnIkQUfxkVJrUfND2HyL4wYOT5xERej+1ObyF4/1Kb4Ov9thZPDhX8Snwh8LI9uwKnsTiytfGmV+HkhZcrVnofo+93ba9eEDO3amkxOoAThVFMqHxUGesA038Qofp1+g+D4yRAiOwuti9Bexj7sNUaYl4RT8J6X/RZW/lDTGxS1xWfJT/p/IgPM5MUxxJXzzNDlOBNnF/QNPvxZjLU5NpELFhdJMXEzQmkTDF0Uvu/fn/WdsHycq/ooVDMwTz5+w01K9rCppuVmds38yYkZen88RPJgzZ8/8WWfu7ADqUlJ8VGlCd5y6n+zYLxbbz5rRfwfa6aR3WYOAy020Qz6LXt+T/5+XmV68N7NAfsoyzs/QA/IHu0isi1tWHhqRI0jvfifmgSVZrq4eKpmYn0ygeP5PWAZ61ocW9nJX+HAVF3KFn/96P6KC925GfXF6vbCaRPwPsbpaXatrqWzEGti5kpSu7CgxMIX8TUALU0DMVBlgbg0CDPmXW+9N2RLFu/hb8cezFUap0rIbM5gThonVYyi+cWiqM1+uVU2HQCGynUd4G+5BYlQC/V6pVMnwCp8Ix1ojlYhZ0aA3iuwE9GhimjQW5eYN7ThfHboeBkq9lxwvuV38SYniVjlfjOzPktCpc6gE81vOZ8CfDpXI+f2h13LWEfgQcnKuyeA/hACzl1l9H3SD7E7MYFl6NTNO0oTHvnkH835b8KKbSNTRVojv5N1QbPHYKGj8FNvpAS1LqBDToDqWxLmWA1szozYdq3ekiCmIrBAQyJNwu
- 9qOEHV69
- /011Kw8QRa1TVI2xgkm03yY86hcrKob1Ue25zGWdrnGSw3cDp+n0XGZluXjT+i3YMhb6oAGAmdmOFaBvBX4SiXKLWZ9yCZc+wD5oe2VItxHLxWhndDE7GWoXP7gCuvZEPc196CfqvObau0Ldt6aPybl6KdWcZgA2Vmd7CqVRk0c4dSfhSmigdN1RoEcWFxg2TuKYGq98qwxC/M0r7GLbd3WnMX3maRhVJrs521RT0DZzYs0zLJBwXYSAppn2FpAj1xeLpV8FiZcHLDhUXWUp/uD6m6GLmiGTQCcredJM3qpnFSEU1fJBCF22JnakQ0dkT/pOqumvTHWp4GPY=
+X-HE-Tag: 1793176795-232131
+X-HE-Meta: U2FsdGVkX18lrhLVFhQOpEnyYkrY5PQ4hoe7OZPk0sEJo8m2DhTwBxv7bsuo38kilydhy+JjY8esE1Ye1wRI6l/E775Y/kZCNyEUh7Lu1ntiG6R1AVUozgWfYkHqyGKBKRKbO76p8sc4EXNRvlUHiXBp39OOcYgG6BdUDZXQzgVtZ4X4uwoYR/MRowGFn1pMOyrrFYywF1z6PnfUuPLcxfsHru+ZrqNHy+KJsCdpA1G65VwANOhWOIXaBa/H+stITV6GuB10RCVIZzl5Dx5vX2TU3KFuXSdX7p7CGRTWZQsBIAge3FBSf3yillh8TKqmIRPjLK2shQL5l2vOkHSOFfBhOB07nS0RH3owx9BaEjtyjTJIvDA7ebmNLyyjUMFZepNY0VARWSGS7fdZrOAx4EG3enB2SQ/C/sPGpeLP355DKWKht+QNN+PgKQNi9o1SY4dY9I7Diu37yYzx1msINYJnSoS4RCiPa4l8gjsu1eKr01mA79PEX6j8+FRY46opxVjPvy2iK6oGPW9XN9GrrWW15h+ijMBdRit+4yZrFY1CRy+kccODiWRDd36VimytpSEZCdNIudUFwK8eISJ0NofRcoMic2up5kJejsxW5Q4eNNCoR3UluPNNJzAlvUIHCrSEWvidnLbXlxPKj0qNIZ7hz2+bhueNJt7OfYcZG2VItDN1NNS3bjdNz6hqNlCWkA1Ri/s10D07nyaCpkdLlmg56jVBbC86x8/BFhaF8yNoSmp5Oclgh7RoobGinMKUawCIZJ+tX8Vkchx2FC94BySHerTN9cI234QxQJd/2MGbi1VRJI1ZQQ2/AG9juF3VjJeoyGkajKYWXqU+JZ9xrdFBtFGOnX1jwqE6Yo4VPC7uAQxZnAfo/CGKWcZ9R46jNOClQJ6TGHGVTaS4wcyvHrfbgJpglfXxclQYI7xeO8mbv7W+aamLVcLbFH0VdzAZXIR6aAZbEq+iSLdQuEQ
+ 7RFvYKoX
+ WNS99KwNlIF159hT1yNxvzkPY99Ok58FbBI2AEFbiLFiIDpl+puQIhYc3CulPt+oruJAvtaQfCbIYmqhzEtCliJ9gUy4Qriy8sjthOC2/EB1yQDEVS1fBGCxnIa6prY+XZUDFQkwBFK0upwanLRhuhuNxsDZ0HtDSIJEYp3BAJnjzuvmS0VsbQT/KvNrLreOh3hjM4Ruul2cNScwLaxo+8odRB6UqjUaper6lsKV5CdcojtrhR6aFzrOuu5IicBcSkPp/uxxbZKmyihli7j9McdWh62owG4sTkw53+rQm6+lf/pmJjIE7vTuT4EkIxpnY5tZ+Jgrxl/H8F14=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,30 +161,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/21/26 04:39, Gregory Price (Meta) wrote:
-> Eight fixes for allocator paths that can act on state another CPU is
-> updating: zonelists rebuilt by memory hotplug, and the pagesets of a
-> zone that offlining empties.
+On 10/22/26 18:33, Mike Rapoport wrote:
+> Hi Breno,
 > 
-> I've packaged these together because they're all related to hotplug.
+> On Fri, Oct 16, 2026 at 05:15:44AM -0700, Breno Leitao wrote:
+>> memblock allocates from and frees to buddy whatever is not reserved, and
+>> knows nothing about frames an earlier kernel found hardware-poisoned.
+>> Such a frame can back the memmap, a page table or a percpu area before
+>> any hwpoison code runs, and otherwise reaches the buddy allocator like
+>> any other free frame.
+>>
+>> Add MEMBLOCK_RSRV_HWPOISON for a reserved range holding those frames.
 > 
-> *** Backport note - Patches 5-7 build on patch 1: without it, their
->     retry is compiled out when CONFIG_MEMORY_HOTREMOVE=n.
+> How much this would fragment memblock.reserved?
 > 
-> Most of these race conditions stem from zonelists being re-ordered
-> in-place at runtime during hotplug.  The result is a mixture of failed
-> allocations, NULL dereferences, incorrect placement (GFP_KERNEL in
-> ZONE_MOVABLE), node misplacement, or incorrectly allowing hugetlb /
-> contig allocations on a node/zone otherwise not eligible.
-> 
-> Most of these are incredibly narrow race conditions, but since the most
-> likely impacted machines are VMs with memory hotplug, the narrow
-> condition can more easily occur when a vCPU takes a long interrupt / VM
-> exit of some kind.  I've made all of these race conditions
-> deterministics with a kprobe reproduction module described below.
+> memblock is not very scalable, to say the least, and each new flag
+> increases the size of memblock arrays which obviously hurts performance.
 
-What's the status of this? "memory hotplug" caught my attention, but then then
-is all page_alloc material :)
+I assume that if you have too many regions there, you have different problems
+than scalability problems.
+
+We should cut out larger chunks, and if they are all over your address space you
+should scrap that machine.
 
 -- 
 Cheers,
