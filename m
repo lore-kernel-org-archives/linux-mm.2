@@ -1,107 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8402606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965F1606A31A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y6SK1F6G
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZSkH9Agj
 Received: by kanga.kvack.org (Postfix)
-	id 10CAB6B05B2; Wed, 28 Oct 2026 10:38:07 -0400 (EDT)
+	id 94C926B05B1; Wed, 28 Oct 2026 10:39:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BDE06B05B3; Wed, 28 Oct 2026 10:38:07 -0400 (EDT)
+	id 8D7246B05B3; Wed, 28 Oct 2026 10:39:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F158D6B05B4; Wed, 28 Oct 2026 10:38:06 -0400 (EDT)
+	id 7C97B6B05B4; Wed, 28 Oct 2026 10:39:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C9C086B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:38:06 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46D4DC0CA2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:38:06 +0000 (UTC)
-X-FDA: 85372289772.30.5B05F6A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1A3A4C0005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:38:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y6SK1F6G;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 51CB16B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:39:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C55C1160CEC
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:39:26 +0000 (UTC)
+X-FDA: 85372293132.20.538C07E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2DE27100005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:39:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZSkH9Agj;
+	spf=pass (imf05.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793198284;
+	s=arc-20220608; t=1793198365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SsgeWLG4dI0l0/bC6ar9wPtwyPpf6L7PqvCPXj7gOQE=;
-	b=ssTS5ETL5of+ln4XVAdmQKrwP6GdkYTIkJWeHbgs3xMc08+fr5BQ8Qz6jp6MmvS9pU3b/S
-	iNOonixhIaSg0TIiiT0b/ySwwQ8FsRYKZ4UfFm8lObP+pWFUUbQG051m50EKX4U0Azl5Kk
-	h1uD5PbNGrXSiatJfDgaI8erAydLqrY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y6SK1F6G;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+	bh=eCisLb2VRu0iADmHFVpreIQCwjhWOtNKh8jVGOYf+aI=;
+	b=h9l6q6S2MBHZGw+zC4EFovFxTpZMn9wgBhM2slLP1PwJrS1HiX41/ESS/uCZfxa51fgtys
+	vVWw9izgkm8qq9C+WCZ4huvxIA7RVNSTw1RT9aKftMZmjtzBS3J0e5M8fM32pb5bJis9Gn
+	mTjIofbzzeQV1tandBRYeevOeHFSxAs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793198284;
-	b=cb9CpCLSiWggrB6sIgsm4eRzP11Q7JQIJt1jDzcl8CQr0vM1Y36iSJnMONFR28t0JJsY6B
-	H2zSCVEoNOukTFHvoxPetO1aaCPb/NhkOM1cepYoCbMqTDFxJNuk33VBSoxnVYVYKKS7vy
-	6Czop7N5kmdUN/DjTqgAyZ/CyUabv7o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793198283;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SsgeWLG4dI0l0/bC6ar9wPtwyPpf6L7PqvCPXj7gOQE=;
-	b=Y6SK1F6GZJnWwamsHB0Pp/GAIBenbfMFZTnI0vbxjc/F2zxb7PlH0ef5oK+ftu7VQqBGsV
-	dci7Sr1yY0QtAo2gUW6Yn5fhtES2N36gOsgoPAVM/l559tDs1ab7VxOZdjxoeAOnzWR5S0
-	LevPmM2e43/J0d8xw+20e+aNAd/OaX0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-QF4qfS1LM5m0tpuRNg4TWg-1; Wed,
- 28 Oct 2026 10:37:57 -0400
-X-MC-Unique: QF4qfS1LM5m0tpuRNg4TWg-1
-X-Mimecast-MFC-AGG-ID: QF4qfS1LM5m0tpuRNg4TWg_1793198276
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 196681955F7B;
-	Wed, 28 Oct 2026 14:37:56 +0000 (UTC)
-Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id CD3A319560AB;
-	Wed, 28 Oct 2026 14:37:53 +0000 (UTC)
-Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
-	oleg@redhat.com; Wed, 28 Oct 2026 15:37:55 +0100 (CET)
-Date: Wed, 28 Oct 2026 15:37:52 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
+	t=1793198365;
+	b=OgWPrKVhicFIwfCquuOAAW0LBrcjtYPu1Z+3dcjfR0zH5x+Zv8Cfo7IIX4yvJP4w983YAj
+	W0BDzk3dO/wEWiYaoSPLHBgU8jpsBLKzt9SY9UEzMqDu/X8NewHl22TZaJcLilnZLyaQT7
+	FBofgYIFwUx+mXuxHJ0Pnv6vUNHlejo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZSkH9Agj;
+	spf=pass (imf05.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 66ED643DC1;
+	Wed, 28 Oct 2026 14:39:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E39C1F01825;
+	Wed, 28 Oct 2026 14:39:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793198364;
+	bh=eCisLb2VRu0iADmHFVpreIQCwjhWOtNKh8jVGOYf+aI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZSkH9Agjre8913zHh4b1HLO9CLoDWHGYpW+eB4gbdBiovVJe478t24Jn9yGHNxstR
+	 NP3qWYlZcSww8LVEBJOay+6O1zVCQb6abwW/yWG4rGwnOdaZEGKWV9TWCiRcQCL1Iu
+	 ZxCZ7HPgK+ObNzmXs5+bwip4YNAuEJerqJYRdb3ojfheEifO+CePt7FLeoKRUuWYt4
+	 BV2heYqLTv8c1MrxPK5dWzc/kblnBlMKbNVu/dmqaJjvCzMsPCOO3YeB2DJSPpQJ1g
+	 ninPoUCoeJstjgmxEhmJCf2v43wqA6MB5Aqf56sdir1SyzSj5+WAzPGa9MdivRK4kQ
+	 asfMvotu/x3Og==
+Date: Wed, 28 Oct 2026 15:39:16 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, tz2294@columbia.edu,
-	Mani Tofigh <mt4022@columbia.edu>
-Subject: Re: [PATCH] exit: use READ_ONCE() to read mm->owner
-Message-ID: <auIIwLWa3MLWCd6q@redhat.com>
-References: <20261027-kcsan-exit-v1-1-7c0429a29bc0@columbia.edu>
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Frank van der Linden <fvdl@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, kernel-team@meta.com,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/hugetlb_vmemmap: map the shared tail page writable
+Message-ID: <auIJFHg1haY5c937@localhost.localdomain>
+References: <20261028132623.2560146-1-kirill@shutemov.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261027-kcsan-exit-v1-1-7c0429a29bc0@columbia.edu>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: 3nwNzYopAPv45V7Jj1GJKP1yYV5jMxrJecL8LdptKa4_1793198276
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 1A3A4C0005
-X-Stat-Signature: pg6ftfhnjq3j8cr89tz7bsopxx16kyti
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+In-Reply-To: <20261028132623.2560146-1-kirill@shutemov.name>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2DE27100005
+X-Stat-Signature: qwqmwdkaqyf76btsrgaugpzfk3o4ijcg
 X-Rspam-User: 
-X-HE-Tag: 1793198283-809623
-X-HE-Meta: U2FsdGVkX18cyfJ81tmRpyhTYW0sh8mXkldufUlGQA0xQ/Yug+8T51qBaF851FWqhmOm0VSdGVDic+YkIjCG5o7eLqzraL6MV62tbq22vL7TxcbWqM1P6F5eYEFWhSxUMiroziF8M+7r56RjRXNC5A+4UbqCRkkYf3NQcoA//53CkIyNkLObbBgnvu2jK6l4/rObirLj28P8J4ku+eLTunoL0YMiG1TyIcVBE+XTmdpqqlpwCzq6wqqyqeM0G3Nazq4JJODZgVDZFJ9z4oJG0MgoH1doVuoakGQ6qhQI0r0GEfZMouHO8HMagtro/saQgSivverugdjyO3FvloT9EO169WBFWrSU7Wf5wS6RLKlBZ9eFiNxSOAjwB7kguJ/3vPD+vFV2BTePFmSCpEIo6/FYIw6TOvyV7NPzbhSoTa077SzBk1qqxxzTiSKVclcPmMOv2OMLMKDBQnLlhy8XuUNJWullZx2YQMNXWtrsVi7UNx6tTKqZ4vlX9qH+O3BNUSiN14IT278npSxwAw+WuPBeE0FxKShONSfuJRSFydcXGoE8nyBeDzbmW5hCbdwAsVXDR8CUVupHCZFKWzWlEE63eaLWyWBuEbo030VwEKZWJ7PP6HQFJWYf0x7Q/aeIQ2pvxm70E1f24hlk60PybKMs3ky4muVcb2Uf0ZtOxXgOlIfB00Fe+2iKsZuA/FMhyDSysjDcx86w5YMYA8lpJbRjs5n6JUMdrBOC96AR/zkm2f7IbeCw0HRmC+NZR0UR6CBkjJXzCKHxlDLpbbHahdMtDr4/fsXbx5WBFMK3fynD2zLv4GMz8a+2SzMGdkWno9wYgu6x5FC9kfMwhCmg8xZT64TF/xTf9uZk97wGHgcTpCDUgzeF+t9gDEQUvNB26qzRNs8rohNw+HHIzH4iGHe1r+1PWq6GRG/GhEAucUxPqbQeJ/kDfSxYM48nfkhqigXgvGrdGqGrpzTBX8D
- ynKMELYj
- euiZfQSPH2BPBsQ23NOfU/k2MAPpFqimr8ljqiZ3L1rmpdDoOc3vt9az1SmY7yLUizhQTYZdKcNAIKQqC9jKeY4RpucQY8gRIOTR4VqxCM4RpBA9LxR8hLgW0W+hZ6RIpkoZg3tS/blU4pzTibmE381KRrGVo+f+dEVC6HCebkZRZtKF1BA8lM6b1d/0KkugixYBbQK1Wq3wY47ajdd3FCTIUYhBw+y3o41NYPRXC1bbQZKO4CHL8HRSdNhOCZAOC1rGB/8pg+MTqnSTgscwVabNruNyVKdBTiXYeLVeLLPsT2wwWto21QCFeN22L01kyBX5GlFT3BPLm3arWEMY72q8DQ7fXJiOwgUMYcsqIcLkGMXkxKJvTMqT7PmfIY4201E+ZE82wmbARmaROj4sR9suiAS3GGl4frW0DQrnpxgGPebPI57xDUhAJvEVC88yKdqnlED98EftUf7GRPRL7/YlT6G6M/zIdId+6v8BXsWWaLDQHbXDJWceeze1H4XzKHvRlpP+3PSL3XleiZF2kd7FvWSGdSyXGO3oAMJEMUHSwdPA=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793198365-654756
+X-HE-Meta: U2FsdGVkX1/KdIqQUEuFhmoecRaIGQDCAIQ4PxLXlGvNLLWJK+ZtnMYdRAwrf+q5IKmzaFOUY3N4LxkAzZJ4WtEabFRaKQKnkZpi7dZzYW+uPITINAuzJxekMZFZ9VhzoH0T9sgFgTJfxhIOpDNlJIShcdlXICt+76xIEoCcqEtelP5NGieFg7nrIe69emmLPqghg9WuCWuSwbXeKBpYw7Tk+dSxK76oaBv4UF+R/3GtMc4NxBBl55VSx2Nnyc8J/98ECPUIe5OALp8PjvZb5OfbBoT0H9z7O8HRlfl3JuOF2mba1ZePEOCGYXSYxAnLbg5hAC1rAos9GgE6mYyECtY1pWb5He7pMp5FWldZNBNXewQt6fUeudc3mRDonu3nK+VYrDGO3sEP+oo20tsQsi9HdZJ3PqGwBT4dqgTkt18JFaEeLoFtQFsS8Nwzn3NkyIYbkIrvAySD4Hn4eptKKV69lvJctoEuo1IIeKFQIrZdiTMXV8KMPTUoC505hobaKPpyeT7n7scnafNnsjRugXbELq+rl7r15mARPk4ujpLVDM4RoJ70sLzabfI36uYDCsou9CC/ybwWOUSsRrsiRIEMmHhK7ib5+0+XAqou04anuPcTdxmStM8X25Xv7zGb5aJBE4EnKSXvwNOYSgA1DzFigQyVaIDBgfxtZG9vbCzpFimxnnjMSuW1KNCkDbsl4lX1bmfD3/bsmQ71CTe5avT4jTuuhejlo6SyxscSpo2YUvzk4z/SPnt6YavKdEjzB7mxQypMtSi792I7qFGDY3PVj59D3/HHGbNIO53naiK0ATr/qKszWgk+/VrG0H5dmDJW+VbCvTX/dN0KcWJbXsHy4JNTge8CNiQ+0DKGRAuip6Y/iUY09AV0A4xE5wZJ2ZW5tfQBlydm4e+BV/BrBstfPsz21dPf5tNrvgjhbyNrgfy/Valygy41sOfN55+hQK6zet4da8OBrXpjxag
+ MhkHYwBj
+ A8D9g245QzYGbCmfmdBuTV7+tNkUnznv8SxJur4/jjUCFaS7I4EehK/EbdnCjrZe2hn9XRCxtrFNOzKywK1rCUKQOld/cylvGP6iFelNxiYS/NRhqc4QZDmFvBRnMMwNjVcQgQqwI5aZjC7xixzq1pgGeXEMlgfLHsJW8RQbE0A86o6KCIHnGVqwMmPDNLenneFxbwpkVoSXEQw9UsvS8Vc9q057IyuK1LIuZvCHLTwv6zmlPgTKvY1AyqWS3EKAJVrH+KFZpy91iU5Reqs+14p/SnWkT6LkZSZnl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,17 +109,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27, Mani Tofigh via B4 Relay wrote:
->
-> --- a/kernel/exit.c
-> +++ b/kernel/exit.c
-> @@ -494,7 +494,7 @@ void mm_update_next_owner(struct mm_struct *mm)
->  	 * If the exiting or execing task is not the owner, it's
->  	 * someone else's problem.
->  	 */
-> -	if (mm->owner != p)
-> +	if (READ_ONCE(mm->owner) != p)
+On Wed, Oct 28, 2026 at 01:26:21PM +0000, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> page_ref_add_unless_zero() reads the refcount and then updates it with
+> a cmpxchg.  A lockless get, such as a page cache lookup or a PFN
+> scanner, can read a non-zero refcount from a page that is then freed
+> and reused as a hugetlb tail page.  If HVO remaps its struct page to
+> the shared tail page in between, the cmpxchg writes to read-only
+> vmemmap:
+> 
+>     CPU0 (lockless get)               CPU1
+>     c = atomic_read(&page->_refcount)
+>                                       page freed
+>                                       page allocated as a hugetlb tail
+>                                       HVO remaps the struct page RO
+>     try_cmpxchg(&page->_refcount, &c, c + 1)
+>       -> write fault on read-only vmemmap
+> 
+> The refcount is zero by then and the compare fails, but a
+> compare-and-swap instruction needs write access whether or not it
+> succeeds.  The kernel oopses when hugetlb pages are allocated at
+> runtime with HVO enabled while a lockless get races with it.
+> 
+> Commit bd225530a4c7 ("mm/hugetlb_vmemmap: fix race with speculative PFN
+> walkers") closed the window with RCU on both sides.  The RCU was removed
+> together with fake heads, on the wrong belief that it was only needed
+> for them.
+> 
+> Map the shared tail page writable instead of restoring the RCU.  Every
+> struct page on it is a tail with a zero refcount, so a late cmpxchg
+> fails and leaves the page unchanged.  RCU would put rcu_read_lock()
+> back around every get and synchronize_rcu() back into hugetlb
+> allocation and freeing.
+> 
+> The cost is the protection against stray writes to tail struct pages.
+> The shared page is shared by all hugetlb folios of the same order in
+> the zone, so such a write now corrupts all of them instead of oopsing.
+> 
+> Bootmem folios optimized when the memmap is set up keep their tails
+> read-only.  Nothing does a lockless get on them before hugetlb takes
+> them over.
+> 
+> Fixes: 32c440d67e6c ("mm: drop fake head checks")
+> Fixes: 01b1d0ffb6f7 ("hugetlb: remove VMEMMAP_SYNCHRONIZE_RCU")
+> Reported-by: David Hildenbrand (Arm) <david@kernel.org>
+> Closes: https://lore.kernel.org/r/ebc7bde1-f52e-4da8-b16f-822d6c0a4d74@kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Acked-by: Oleg Nesterov <oleg@redhat.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
+
+
+-- 
+Oscar Salvador
+SUSE Labs
 
