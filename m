@@ -1,159 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C1D606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F22C606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PeoZYG9L
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a/rb5U1K
 Received: by kanga.kvack.org (Postfix)
-	id 5C91B6B05B3; Wed, 28 Oct 2026 05:48:57 -0400 (EDT)
+	id 83AFB6B05B5; Wed, 28 Oct 2026 05:49:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A02F6B05B4; Wed, 28 Oct 2026 05:48:57 -0400 (EDT)
+	id 812586B05B6; Wed, 28 Oct 2026 05:49:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48FF66B05B5; Wed, 28 Oct 2026 05:48:57 -0400 (EDT)
+	id 74EC56B05B7; Wed, 28 Oct 2026 05:49:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2032A6B05B3
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:48:57 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0CA0160C36
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:48:56 +0000 (UTC)
-X-FDA: 85371561072.04.3C88D31
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B506240005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:48:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PeoZYG9L;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793180934;
+	by kanga.kvack.org (Postfix) with ESMTP id 576F46B05B5
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:49:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59FC3160C14
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:49:21 +0000 (UTC)
+X-FDA: 85371562122.26.ADDB9B0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B482C40004
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:49:19 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a/rb5U1K";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793180959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dcY0Gi4dcvyxZkHDA78yGLoz9GDb1HPFjbtFx6GpqEs=;
-	b=AI5vPoLawEMOTw33yuQVAVI1u2jHRIlNORll7cr26dwWMbhnzl83QdjyJyJy8Mz1BOvOXJ
-	PG7KuxEtVVl1nXg5SDKSJQW25XrXAKmVgafP/KWUYTyiZkd/AoaL0BF68tl2znDXxcGgi5
-	xLIeQ70ion9wBBykhkEpmcusd1bVz9o=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PeoZYG9L;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793180934;
-	b=inJWYgDDedP7MIu/AE+FCguEQu1XxcO+S+3XdMcoG7kwuhfuu52sLYIuN3IAQ6HpMWT1q4
-	U60LZU4uvtDaen+Vvd8hVqirjk2JCM7rKCpV1TIyNg2nm+0lPlvG7QMFeaJ3mgoj9s9u4q
-	/sjY8YEVEC5KG2A7giwESuC/W2T0IWI=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6afafc89b48so1342379a12.2
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:48:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793180933; cv=none;
-        d=google.com; s=arc-20260327;
-        b=D4FI/GTuzhY08W18CSCuPtyWarrQtA/bURG2kTwnOofsuzfbYPQONMnM+bE08fbJci
-         e0NDsIvT6SDadh0pkVu7ImgcgrcWqKVRM5JSv9PXjKxJHnAXMeoYrY5n7ipO4gCvNnfS
-         CyPGtVola07p6ctQkjnfsYqvhxAtRnu9vvffyRECzgEzR/pLRsyf+x8nY87fnRkUyqkK
-         5trhi5QqlcciXm5WmhiF5XZGaDYiGvyiYLDp4x/iZhCKub/CR4R1lYhByzek8unJ9QSS
-         MKIyc/QxlOWyJEdmgGc60EgnDWvXpySzQRERjypp5Kk73CJULEDXmVgbKUZj3QfPEfQn
-         ur0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dcY0Gi4dcvyxZkHDA78yGLoz9GDb1HPFjbtFx6GpqEs=;
-        fh=TYRptob6hMq4P96j1FGoq90/XX4nNH+hplR2R0rzBJE=;
-        b=lxON9ozIuPhGPgyTB701SaXwPRlq0h53QAnU8U+AmTF3gDLGKYWy7dHhkzSeD1o4Jn
-         K48CAf/ZilrPKJ4jglY9Jge2ziTXT+tGH5Xo+Ts4aUo2iKdP0gb0RmX96DGdbrxM8jhF
-         ak/OWjDPmUsFpBqYROIzZF0rlxqobDUGHvrHh0jCbZcIa9Md9K7I+596cSdpVJR/EtTa
-         3VsRrg1af0JtuhHGIkqkyuiy+yCb3j6swqWIF9OBgY6Vu52GW7uhQfYCpnCtxrZcumPU
-         SmluSmnSakpXONVtmAuwcdL49uJVJY5KXDq2m1O/rSTwIjByagFWG/Ch2QBDEwV8tzeH
-         kj7Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793180933; x=1793785733; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dcY0Gi4dcvyxZkHDA78yGLoz9GDb1HPFjbtFx6GpqEs=;
-        b=PeoZYG9Ls9lCnXukipHMS1ejBBq4X4bemjBG/2Ht5iYCc7ic/3K+jE4XPmVdvrC9qw
-         91m3oyK7LHfYUdgGO7BrxBUnb5+4wEvx2N/SKZlNows5+j6X0L7bzkcgeQNl13Maj0cp
-         l+37yq6ZZ3Pqjb7H7/SgDndfiZXcyd2XCS6teU1qjoAIYhhkueB4tudMwLrsou3IP11q
-         RKPVO6B5YcfQ9jkupoXGthaxGbKgrVWjwWGc4vCWqH0ryxejp2zEIN0tKGYXxHrk2OKu
-         h9v2osfKwlcVmEO6NmYRaQY+wmXaSewAimhOTMVyAcbngrOMFDpTQm/XhVY1IoPy8EJ0
-         z1QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793180933; x=1793785733;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dcY0Gi4dcvyxZkHDA78yGLoz9GDb1HPFjbtFx6GpqEs=;
-        b=0xvIGvIapnSvCW4yuksveeqVllwnqQqd7qJoLCyEcLMPjPMLjWzSdzMcKyDoq+O90m
-         WyfQhe4Mvy9OY5z5lk0Zf8WTvxRhjuTBOBmiIupkzsaArMmaNagY3YxABjKLcexwk88R
-         Z3EF+b4F/j2tt/56sq/pi/I1rJnvakuJERpzvlaZFerdf78tL8ZAZFBpgcLJSRnBTJQl
-         8JA7eyxEiwdBHaFbAaEpzHmsanTHMAA9fXXUDudtKOFcFDS0BTbJCnfRGEOJ943O8e4S
-         sPSa1XB6A50nXNqBwOBwfLiUZ9hRMbMYKP9+w3ybpm0Ry5JiEWYT/7pBDOt+B1qbfVr3
-         H12Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwVeSoo7wRfi0FB0XsAz9xqFhzxzOASW1rOjgmOlbcHj59LpSobcPoJRi7f7Hf+wdKEzRS9V5FuOw==@kvack.org
-X-Gm-Message-State: AFq9FYIgrO/N8A+Oc9kTL1MOidkklifwRUlUlGuWC27usqBfRb+8Cbkx
-	njYZRqDjAJ0gYZkOyjTKmgq5ftemEr/oJSlEOBYRpkjMJQ3YtJkVLpSHAsd7jo3t12VYVYzUd9s
-	KlBDLXi+deq7aif4wEgVycM/yE8ChXv0=
-X-Gm-Gg: AYBFou2x9PTuOFPsD+cXh/CmtQY6KfO9vMGcY2blusyiBEtgpP5CQuFdL6xYpn5GgPm
-	m8qmUNCy93WPQ0GKb4hHi6qlPsyV3hJTlQgHrfEe63rBu9s/JBaK7SCfAD1Z0icGNxKZIRtYM4N
-	sROQVapKOGpqrYoRE0Xwr0/ooKiJbfAIlVZJyBK+tFMi2JV5tHTHHO+2SlpdrM+YEfDsjZXF8qp
-	li2tbg9qe3Sx2H3e4n2RaKVo+KOPU7ZOOXu7L/O6y1xRNIyohk9BkranVagZkqCtDzsR/QL9blH
-	7Qq5rcILpyKfVEirvb5JOsSd3zqBk87O9OqjrY3+01D5eCLb9igGfBGvL/cqMup60GfhyvBHSTK
-	mLQVei5ctFwcvp4cjGmgLLhcKEe3ZDZAFJ1FrGqqRVQ8J0tiXy7yi9z5ZX4n6MeV5IFrUmCIhqa
-	B1hs1NWBtSWGrOt6DfIPtxcrnHwoVreps9720qX2YOw/W55lgMRoJLwJlQ2pAROF9Ptfb+KIXt+
-	ktbynuJxI7H/Ca2StaJu51B/w==
-X-Received: by 2002:a17:907:a893:b0:c46:8b51:c17c with SMTP id
- a640c23a62f3a-c49bdf394e6mr156034066b.17.1793180933042; Wed, 28 Oct 2026
- 02:48:53 -0700 (PDT)
+	bh=j99P5QWiCp9mK5Hf0fpTUVyqcAtcoB4QyeGqeo1OT2s=;
+	b=SSFQdUnnIrVWQJtCLJKY/UdRwhjqvu/ftv6d2dzm+RAXfO95sJZlDIGmpeAJoA/DuiZTZr
+	rHv3bUF78lZSec+/wheXORDRyad7O0R2ReA8Qjs9+mhjGJaw9fwAHhB1sa96ORVF8g4AUc
+	zyMWuf8ears4Uvke4vVB5EsrANo4A8E=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a/rb5U1K";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793180959;
+	b=ofIyg9e8W1p0Ddpq+PQ8Eix4Uwds3A4nJSkPsPLGhm2yMoxdcm3hJ0YNiV8/I50IlGGyoe
+	cLKyUZViczTpAQBP4ui+ZKLNGPWJiXX//soHb3kiJ5pSrGCcT6QMkk1qHner65mDQ/tSy9
+	uBvxjuOgALG5bZgwoRTTmddJ0OnIxw4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4ADB94196B;
+	Wed, 28 Oct 2026 09:49:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18371F01825;
+	Wed, 28 Oct 2026 09:49:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793180958;
+	bh=j99P5QWiCp9mK5Hf0fpTUVyqcAtcoB4QyeGqeo1OT2s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=a/rb5U1K0Gj9rgjjeNICrvcAIx0kQwZx3+rm6ZZYnaEKZaXecdZyKs1e4wZMaPTu8
+	 kOyQlOjw53t+7mEwMLLtfU1AlSR6yN0WdsKoO9r0X5U3l8Ol6z/Gl8gJE6rHxaSGc4
+	 IPU0auxW+r8/9eUEM6X0OeMwkvjfzdoPhcezmbEfKT56H43y/MLYJBq2lhDAcQ3ilA
+	 uhC6NbxVzMhVPsFoY2a92GIuPsayNwHxTd9YAqhxVL6ZEd0tyciCqjEvenCRFpdUqI
+	 HUwCq7TjVx920vPdi7+q1VvFF+pV3u57U/9WO5STKbe+D/NfQHN2FAJZ9F2UB3aP4R
+	 +vL89dEkpf+ag==
+Date: Wed, 28 Oct 2026 09:49:10 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Chris Down <chris@chrisdown.name>
+Cc: Jeff Xu <jeffxu@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>, Jeff Xu <jeffxu@chromium.org>, 
+	Andrey Vagin <avagin@gmail.com>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/3] mseal sysmap: Add mseal_system_mappings= boot
+ parameter
+Message-ID: <auG8bgpy-m5JUYWp@gremlin>
+References: <cover.1793094611.git.chris@chrisdown.name>
+ <5bd3c89d733ad22224f296dfa8900769de937de0.1793094611.git.chris@chrisdown.name>
+ <auCxjbvY3qPv1sV6@gremlin>
+ <auDTMb6WMFUpxeZy@chrisdown.name>
+ <auDTptDQsB4xBcz7@gremlin>
+ <18e2972cb8520c2e.3137322e32382e342e3434.279dd1.0000sendgmr@google.com>
+ <auGNkhSHpBRd2U_5@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <cover.1793027261.git.d@ilvokhin.com> <f0d7b2f0dce916f4cde3dd466a5b51a4b88fbdd8.1793027261.git.d@ilvokhin.com>
-In-Reply-To: <f0d7b2f0dce916f4cde3dd466a5b51a4b88fbdd8.1793027261.git.d@ilvokhin.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 28 Oct 2026 11:48:16 +0200
-X-Gm-Features: AclHuK9bqVSr5ebQZT2ja4gGk1wmv0GUJ0T7y7aJfJNVsg1OI_1bv2lVUKDS3Hk
-Message-ID: <CAHp75VfJ-L5ELAttN+Fz_Co2E1KHumwLZAEMXFMhRubzgVLqug@mail.gmail.com>
-Subject: Re: [PATCH 02/10] string: Switch to __nonnull_args() macro
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Ryan Chen <ryan_chen@aspeedtech.com>, Billy Tsai <billy_tsai@aspeedtech.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
-	linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-hardening@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B506240005
-X-Stat-Signature: 3sa9775u18owoow314i1xpt3rjti8n9s
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auGNkhSHpBRd2U_5@chrisdown.name>
+X-Rspamd-Queue-Id: B482C40004
+X-Stat-Signature: wr6f1zzy5a78zz1tsjdg3m1zn9caeo3r
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793180934-178169
-X-HE-Meta: U2FsdGVkX199d000vsHTAUjj09zA7H750xToRp+OLGGSGrgsQqA0VDXZwSSr7kFvPofjcEcYr1W+PPyi4Un2PlgRNxKal0Xl93dLSIZRY7TS89A5DiFufJaPSX+pzDUjJnD1+K5xTivHyHt0pCevVtSSnqZ/LrUhRRd5hThlfEYoB8Oolp2Suj9IR++FFu+h9/faf3RsKbJ+OpzoKrtQsdOhhOfdB62CdsxdVGkhAPhhvWc1cLvEKccL/yehw+sM502v+J/jfJq1fC0R4MhbAuf/Mp/WFODHU1ombSgvtHjicaQPVTBy3TGzxdRf62lhwgog53aARSthUgi7+6Yxt5o31cJcV7bVzo9YUmEg/tcgJGjciFYCEvAzCo1KiR1JrwKzWsaS6x8ApBldF1FaTaSNwHqI209YAR9mm4CSgs4WpDGJnVXzusVWI5MkxQZ/A0foFB8BVLc0tIIDoAu+2mx5co6FbtYtD0MYlQ0qmeFoTflItF87Bu4q8uiSt00b4kk8GJuHsl5161XCJ+Na8hQWl6NVp6TcehjgqlrF3O4k8WFUTO2/LLfesQpF8LbMRyYJfuPPJWB3jKWDIzQ4QOOodYPnDls2VukEVVGHLHtcwCs/CwPVeJXfNC3e3hBeuAqMmKV4Q+AJzyIbun2tMOaf8TtCu2nl2xP7EZvf/Poyw5Ll9GTu6S+gqNFYlNvO/E9nWx+GqnTBVib0+uZoTf9GfaDzew/SzJPvELz2AbVRl+5u3HObt8adYWSLnxuuLs+4QR2ypNzvBNT2f8fvBq2j0335kwHn5cKLcTX9AgHrfDd0SMffjdwQ/ruJErFo2NMrPtSHzfPULuj0HbiUjvxYPxZlkplS9hcfr6l/hYb+Ww/oKxd51yNvD7WKZz6vLjiBr+sqgrSdQeUS+ztVDkZBz0+xjw5eQe5Auec0hKm1ezAzxa47o247DqQpWRKvcPu0f+6hxGWdffPO6wE
- MNJtDHko
- qRdi9MEH2noP2II4kvUgphzxRT1k1Nz1R9BPDcTbEzd5tmdZiJ3Diws8khHCl2WCNU8zZArzo0K/tb/NqZ4O+VHcOAjL8Wo/0F7FRN7HhBVOrAOfLlCP+HLCP/7ZKmesJvHV2W1C99FQWwMqrDnZtOUzhI0NOX+qM3NghYbg0QJ+xqexzAIQcMri0NSFZLsZ+M9BJP6zWp820PwnK/jf+ORsDiCq7hUTie2GMCyPXAF4vz6ZIbZEYZd6TGIOWvpIo8zz41OtICOt7ExaxZWecdcwy24+1N+1XaL3lsuxHVtQCUQmUmh6ZWBqlfCrSmyMQoP7VXyQwEV/KrzNz97HzK5B6VatgEF9STS5OPwhWldcOBihXuLgGjwK11eAUhE49LGr9C5XcHEg2NOcibLcK5hpmze1wlbzlZoCN11zplJCli3dI6bBRY2m+rXl8VuSCfEQ2kNg/Pv54zHLovq1oTvZxEkqZVEFdL/01HYJ2b4+aMkU73HgNLOyCv88h8rWL+2lBLtqdfDbCOkbLNf0kZpg/K+PuJjc9MTIZ+oppvt2Hsvk15SEVN/Jv2IxhhU9lhhgtqZv/HUL6ICdHb30VesYIFR8ens8aqOl3
+X-HE-Tag: 1793180959-425779
+X-HE-Meta: U2FsdGVkX1/NQCOnj2uFoZ0Oj0n2g2/2SIhp6msR9cvPSUhe31Ty/EaKjELrNe7IOjhx+fLbmbdhzUvaurjquXa5jTkw6y60DVmofhr2mMTU2dsjgkzWcubE/AiPIey5L/nq172jWbcypJJ2w2+iYWmK8glXtHIQsgFWAYN5Z9vBAQSgVQf3Ffy19AhBM5rL0rAhMvPnKURtkQzfQoAxxKCBjYb7ZoatQkWrRfQRKPYxwgOJAzw21zeKZKelii9msoEGftouFkm+Sou60cPSCPbYAhAvcT/KFi7+NU/8jW/8e1+l5bETWy4KaHKrAyjuGPTMRmaCcgcBvpcxnLLdf94EOlCOLK5NYa17FXB1Qv8JAnY5WDnp7OHVgJvJe9FX6ERn1rcFIuGnLeC3BywtvSG7z+zMmRhlNA+Zau313zDtk1Bzfiss06De81IvIdjqitK4g1R1gx6A6hwJa9T/RF5eVKWkN8TdueKNiln64JZuqju/M11eblvKmOtIC/UToqAkJOnrFOQ6Uh1ZcmYAj4JE6Zigkqv8ALjWha0sqAwPN0Qfxb/rxsJqemJgCzSJwuR1ZDZ8LgOQQAMel2fMDhWwoPiszfXbryCApSvAWKXm7ztirTTBmUn8hBGW8FeJw9WzHY8CsCofLboCGM3Rhd2Gtu3ouywXPSJQ0pmDdylXacTWJfe/wB6wvWv0DTlz0/FSYbmT9SyCaF8wdYskwtI8tCNOsYUyjQr9bKz6SXh8IS1PxoHr1QX1iWwcEv5bbf00b+q9q+0b4qA2NxM7Qe0GumrE4V9DdDnvUYgynZxEXsMwxucjFodvMQBsnVbIm4Q33k6Fdz6fcB1Z9bGAy5qwUsyA0HG0/vWPWies7skk5OZ+ZB8c1orNJswa5SmtuU0/cllksNM2MwT1uVZc5ocHs9vKtLTqtQN59PUMyqpDXl939JBPIQiOY1KBZYzk7pqNsWYBxkOea2vyC6H
+ 5CNNAtQO
+ tsAdbPeJ/fdq3/Lw77AEVdVQ+ZE4Pdm0nkpU6zlx2mmxx0b5NVXbHHRT9WVlKyu3/Tox7bwduFImaVK1AElppabDGSZ7/Gb1Pwqg6QVV+JGO0HRM4rYM7FWQsFCbZnsHcsfZTHh7aeOyHY30zuZFzZLHhhBiO7Ei7EnO8/dyDSCN5W4zddvBHgFhHJ4ozgw+oLFT3yry0DefgoA5nSKHdCOrwQd6fvak3sFohfPIwOrDeSskvbE2vbwgzpwCyY6MDC1jG1SVndwt3x3kjBxtQoUEw2cWahTz37BLAjLV1ywM78wE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,21 +108,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 10:20=E2=80=AFAM Dmitry Ilvokhin <d@ilvokhin.com> w=
-rote:
+On Wed, Oct 28, 2026 at 01:52:18PM +0800, Chris Down wrote:
+> Hi Jeff,
 >
-> Commit 22302af28d3f ("cleanup: Annotate guard constructors with
-> nonnull") added the macro __nonnull_args() to wrap raw compiler
-> attribute.
+> Thanks for the review!
 >
-> Replace __attribute__((nonnull)) with __nonnull_args() to
-> standardize nonnull attribute usage across the tree and keep the
-> attribute's quirks in one place rather than open-coded at every call
-> site.
+> Jeff Xu writes:
+> > Could we please keep the test coverage for the unsealed [vdso] case and
+> > avoid unconditionally skipping whenever [vdso] is unsealed?
+> >
+> > There are two regressions I'd love for us to still be able to catch:
+> >
+> > 1. Kernel or config regressions when sealing is expected to be on:
+>
+> Yeah agreed. With the cleanup it matters even more I think because when
+> sealing is set in one place the most likely regression is probably one that
+> unseals everything at once.
+>
+> > 2. Regressions in the new `no_mseal_sys_mappings` boot parameter itself:
+>
+> In v2 I can check /proc/cmdline for no_mseal_sys_mappings to do that.
+>
+> Lorenzo, I think that also may inform your question about whether checking
+> for the disabled case is redundant, right?
+>
+> >   When booted with `no_mseal_sys_mappings` (or when unsealed), running
+> >   the assertions in Patch 3 (verifying system mappings have no `sl` flag
+> >   and that `munmap()` / `mremap()` -- and ideally `mprotect(PROT_READ |
+> >   PROT_WRITE)` -- on [vdso] succeed) directly verifies that the boot
+> >   parameter works and doesn't regress.
+>
+> Sounds good.
+>
+> >  or keep strict failure as an option (e.g. `./sysmap_is_sealed` fails if
+> >  unsealed without the boot param, while `run_vmtests.sh` passes a flag
+> >  like `--allow-disabled` when `CONFIG_MSEAL_SYSTEM_MAPPINGS` may not be
+> >  enabled), so CI environments that expect sealing still catch a broken
+> >  seal.
+>
+> I like this and I think we can do it without adding some of the complexity
+> that Lorenzo was not so happy about:
+>
+> - Have check_sealed skip as usual when [vdso] isn't sealed and param is not set
+> - A new test, say expect_sealed, fails in the same case
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+I'm confused about this one - we want to skip altogether if the feature isn't
+enabled, right?
 
---=20
-With Best Regards,
-Andy Shevchenko
+> - run_vmtests runs with -T expect_sealed when CONFIG_MSEAL_SYSTEM_MAPPINGS=y
+
+run_vmtests I will have to best-guess it, e.g. if /proc/config.gz is present
+check it, I suppose?
+
+>
+> That should be pretty minimal. Lorenzo, Jeff, how does that sound?
+
+Sounds reasonable!
+
+I am a bit leery though of requiring a CI to enable the option when it is known
+to break things, however, as CI's might rely on some of the software this
+impacts.
+
+--
+Cheers, Lorenzo
 
