@@ -1,63 +1,64 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD54F606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 04:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451EB606A31E
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 04:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=XXbSx7eL
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=mP0ywnjY
 Received: by kanga.kvack.org (Postfix)
-	id D67356B097D; Wed, 28 Oct 2026 00:14:53 -0400 (EDT)
+	id 4198D6B097F; Wed, 28 Oct 2026 00:15:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3DFF6B097F; Wed, 28 Oct 2026 00:14:53 -0400 (EDT)
+	id 3C9F76B0981; Wed, 28 Oct 2026 00:15:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7BAC6B0980; Wed, 28 Oct 2026 00:14:53 -0400 (EDT)
+	id 2DFCF6B0982; Wed, 28 Oct 2026 00:15:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A46846B097D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:14:53 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3683880BB3
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:14:53 +0000 (UTC)
-X-FDA: 85370719266.28.732B044
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7AC7640003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:14:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=XXbSx7eL;
-	spf=pass (imf07.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A3126B097F
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:15:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F367240A59
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:15:30 +0000 (UTC)
+X-FDA: 85370720820.02.F8745DC
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C179320008
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:15:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mP0ywnjY;
+	spf=pass (imf03.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793160929;
+	b=MOFv4OxocgqDSb+UkXLH4odsyL0zY5/rC5K9lJZdclxiJXJZkXcpFkM9JUhvFkutTRTqpw
+	8VSWAV0oMjs+vR3QyVIyGCK5RApELnpnCbe/ROlMeP+ZaEC26oy8jLIowaNB4gaeJQa3fo
+	eo7U4+nf8vVDtj9d9AqFpt9l9vchEaQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mP0ywnjY;
+	spf=pass (imf03.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793160891;
+	s=arc-20220608; t=1793160929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KU/0A4X+KAaLkdtLWi9oM8/JR72sv7pM4/duoNwVWJs=;
-	b=s54p8TtKzHh8/NnPtRyfaR2s6bE13v5jlSkXAGyQ/GqpMZ0lYfxWrVGo2WRoHNCdXNsPWf
-	6gINgkA/1T55z8ubhpY6GiLCcU8R8JOvjVK47wNhlaODEMUeODwDTMEbkDAossv2z7vd2Y
-	is4gIUBayn2XKt0E11fRQ6FwUbfHt88=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793160891;
-	b=8qG6Rrnex15agB7Qdf2po5oZHE3vQW6PZ3ZzhN62XtMEhcZeb0JKYPXVyelNUxw3Crb4QE
-	iEyS2R1xzm4aX4N6HHW66lyXXWuYhhWTk/LvWPhHj0IIL5jrnVfEdvMTlSlzFtf3wLfuj3
-	BzemEsuiU2GoyumSrOuozb0QzuPItn4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=XXbSx7eL;
-	spf=pass (imf07.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	bh=EfDs06NpzHyL1TD0z072gNMA7YWDkCnN/RbTxmf/C60=;
+	b=Mck83N/qhkaI8IXrUlPOKXQSpun2ZOAitlFQR5hxqg9+DpygeDXUwI2RO7fw63Yxx/U6Cb
+	mCVwor+wF7ri1uqF3ASuDTN0fs3DRghaLKJ//fTUS7l59wnpz2l7oM7KLgvsoXnysRG4HH
+	LrC/tUv/C2foakP9RPsu0UXOXbhhO3M=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1793160879; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1793160919; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=KU/0A4X+KAaLkdtLWi9oM8/JR72sv7pM4/duoNwVWJs=;
- b=XXbSx7eLYDocUKAVPFz96s7iHNCtBWnzh5RGvprfSAOtgjov7vGLJCeY6lstCUgdhf9RUH
- p0EBvrsDdCnfzPCQoKbN2L5OOZXYaBIf6mTEZwwtvbpyJphS2DQXBI5+sywEacaZSecLTn
- gkVdy8J/6emXRZDD9z+mlZwOfTE0I9qe6ASup2D1zAoS8lyLJT/XxZXDEzJEbd5RoJnu+0
- qhvFNc1j+ots3oaJVxsx3AXzOk5Tv2A2yCRCrQHTYIJtccSiABF+lAfpgFdUOzFVpMaPWa
- S9o5kw6b+iPc4XuswspbS+mLqs97xS/t6yJqEROXs7t8VHedytes2hJb8uD5Zg==
-Message-Id: <20261028041253.74839-3-lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26ae176ad+6dfaf8+kvack.org+lizhe.67@bytedance.com>
+ bh=EfDs06NpzHyL1TD0z072gNMA7YWDkCnN/RbTxmf/C60=;
+ b=mP0ywnjY0MiBeKD+TLL/PcteYTbXxRJD97x5jkUgYiS7WyPZdzeL+zXUDCW3mkNUBE2COq
+ CbbtT0Nd24bmvvYYepNaRU6venqLfBQRsSUnt/6czk3jR9TKQF1Gb0epEhi6Fea/+CT/QZ
+ qXui/qTNMNCB62rIGalLEjXSB2vraaBgDPnw2O5GcvyFyGkqpPBgSuAkhZoSneuQV989wA
+ GZC7vvEOGN21NbgsD7H5cZYq3nAOqJE+4J64BgRuVr0Ec0GVZ+thjxsFLK4jtLMZQbBWbS
+ TXrlBtdByJYN4z5O99qkJjr/cv/KTcnXm3F2FScaceZXtHqmx7SR7ydSpzIUeA==
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
 To: <akpm@linux-foundation.org>, <bsegall@google.com>, <david@kernel.org>, 
 	<dietmar.eggemann@arm.com>, <gourry@gourry.net>, 
 	<joshua.hahnjy@gmail.com>, <juri.lelli@redhat.com>, 
@@ -65,31 +66,30 @@ To: <akpm@linux-foundation.org>, <bsegall@google.com>, <david@kernel.org>,
 	<mingo@redhat.com>, <peterz@infradead.org>, <riel@redhat.com>, 
 	<rostedt@goodmis.org>, <vincent.guittot@linaro.org>, 
 	<vschneid@redhat.com>, <ziy@nvidia.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26ae176d5+9695b8+kvack.org+lizhe.67@bytedance.com>
+In-Reply-To: <20261028041253.74839-1-lizhe.67@bytedance.com>
 References: <20261028041253.74839-1-lizhe.67@bytedance.com>
 Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
 	<linux-mm@kvack.org>, "Li Zhe" <lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
 X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 Oct 2026 12:12:52 +0800
-Subject: [PATCH v2 2/3] sched/numa: do not feed tiering promotions into task placement stats
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <20261028041253.74839-1-lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7AC7640003
-X-Stat-Signature: bmzibu56zq5trmaqs96furtb4p419nfn
-X-Rspam-User: 
+Message-Id: <20261028041253.74839-4-lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Subject: [PATCH v2 3/3] sched/numa: fix scan-period adjustment for tiering-only mode
+Date: Wed, 28 Oct 2026 12:12:53 +0800
+X-Stat-Signature: q4eb1wua9x88ut8r5qbfydmhwaanyn3f
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793160889-914
-X-HE-Meta: U2FsdGVkX19KTbQbOcUaVXn1C8+mIKCT6cZa9kWpE6MHrce/c7dInyLUKou/tXZnJXeaaGQaFN6MBgg2ahsN5gDAiUzuBitpExk5D+Un4Yt6MhejW3dZXESN3hJ9eurP0ylZdXOTRNcIxWCKz5w6jvxia+5UNO4038iEmI1jJ0nBWvDNDnF+lFIa5ZXXnQXXRj0xfAHLpc/EAKLusxekgg5MTv4DProBrJ7nivO4nkfPmihUW72/1ZgTv8R5chQGdkIuGmVSTobO6TNoEO0NkOxqVtHIwnn2aDiPRNbkNOEni5z/98wNVLA9hypb0bgXduA8IplDCr8suGI+PN/Hysjt2KSw0lB/UnUD3gswN9dF5L+6dMTpemZA5Bl3iYctbNvw5z5TpRW1Rs/mHykRTsFLRcqVDNnD2CCVHnvIa1LF5eXkc2psTRpdwXzeXl+G954aKv1qQHj+HI+N/1j8oeEpqk+R2E16eZJmT1+fGvt4A/DzGeqxPjqfBx5p2jucWkdHuVbxQsZLyB/1GkfWG8bKtMIHWdTM/3p93R75JuNeqS1sTSTpnne5GZ8x5FyGwCQ9BPdML5LDJHdQj/eiav3ZvcVmdeTAiXE/cdawizTvCrU9465ckfPcghdD1kaiBD+NkYNF9GIUCTcsR/En3oRYhgR06e/3eXGvUkFSSW87GSQ7iUzvVWowh1Ed/gudsWWwapOVJNnyM49nAZRK4dOVINxfBR/LYxMuJ/OHnBeQoWOFkh/8DG2OOxO7WYHYjaNILvGxGnW+XtSOrUwA8OYTqas8TxuR6HWrAyiMz9B5DB5vfG1SLwwv9X8Ij07i62UK76fp/2ZNyOkErIFWCOO4BvHbXBR/05CYbRqWFr+GDYqagY29ThzF/on2XUTEyqvAP9HcCnG+H1vz88Zn404BunRyVF9mkVt8736rnyhH/DA1MuxNgMgq+xzs7bpo7yT/oUeGzSfLCmHE4wl
- VYatI74E
- nSsnM5XBXJ3lFc32d9XTtx4CT94JRWSnGJxK0yo42Oh0GPPZde8C6a5SXMcjARMBeaXmOiiVtWjNfZCg0f2jdhwSY8C80pbL2JhzeLWMHL2MGH/DK3pc8l/+121QvY1thtjiQMn7+rXmA7GcDDPbin7tqe3zToh5UQkGg7bF0F8TuAvR9m/AgLn4U2rrnTNjSXD4lFJcVoT4pyjWCFZsOmJtY0SnSQMUQreBXz3qeqdj3DPrlRE694jVmo8mVZnK+6A3gvCiL2O3OCx247OoNRyT6Z8g4LuelrwwQ4B+rqXZDsm5TRfM1CWcoPSQ+FGlWcp1dFObkAD84h44=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C179320008
+X-Rspam-User: 
+X-HE-Tag: 1793160928-732426
+X-HE-Meta: U2FsdGVkX1+GeXdL18H3RHnZXDGM+qokDUuSd1vrFMw/GWhlJMiMqL3VYP1pWHUcvc0r41bjerC0c2PwcJ7gjjAQVCcUxPeo4Nfj04YaU0Xg+3uOBef7/rJ0Hkg8VlrAWo90uQu5fxHVaMP7FRV9aEAv74U1vb+7IBp/WreIn6djHfhlDS6J6OYoR50bo9oTP9TNo9uBks8mOvkA26TyZEo65qRgd8CIsBZ7uSguTVC78dTM7DUIxNqsxgpakclz5X/Jv/EtJev2QnH32X21HwmUZkNphS5We3rpgR54AFTxbbQMs9upD7SyHlMaj767wEJIVVrJU/XFxj7i69Rmah4pY2yFgUiL3CHzjE4Lu4tXTP5RQZrppQ8s6CQhqey7bXuX4wYehzetX7p+Ahv2OZ8n5hj7K7qi6mdUkb0SvpR/uwLkNi4Nk0BlCyFK05AggVcZy5RV3iAeG0G5zSh+dFnb01RXGBEWgb5+QVN1gmbNfa/o6naGgkUQpvBZ+5u9ORGIjh3KrRI/GElEYEJCWWYV0++7DjQXqstUjXY2EXIfYEn4CR8oMSveGpeLE278V3G1iuKeAmo8i3T24zvVGGMWJmv4PuMgCuRvZ3McjQDaE2x6x/sWKHxuvGk789ab9f9iKST30FbIqYjSCpsHdpWe4QZFZyJ7+soNWu/8I2KOVk+2SRGI/yioEQsg0CFn0Q1RDaVttpObTU9ZBBQSVHaEtP1Y5Durev1UNBf5d1qfBvkJQQ5s/mGGRC4kso3BgcHceTDGPv+Md6Ryzjao+GWJ3zY0mCZYkJ3Buzuty/GQVnt96Ftrc11d1/FKg3eJfCT38T3m344ZYt7n/vgiyyAON+dptHvDD+MpAMUUU2Z5S0hiOD+/z/AUtDQWTSg7fR1uAfa4uziAK/KjMbzdlrU2rWxQ6WEzEjlAC6vJ5AqmxSwXShJwyKcJuFej3u2AI3/TEpJdxiI5UCW1mwu
+ YvgAfQDO
+ riazuVetp/1euQWQMnUG8zzN/IBK+snlbsb+8yggq0RbbanjbZyu0ZTXgGI7YygSoxip6YgCjvA8ixTMV7b7p+iDbMXSvBQ/wBYB3endJgZWuZKsXURy5ags8pMDp0nqZ8tEV3OHNapF5xmB1bGXzh6LxmhLueWbWINpDoIfWnzkCFM4Gu57KTf22EfvtTHwC6F5jFcCnVFD/2AmUKpaQHiejzB46xnUdu2fHK2k+IYeM3OaQrD0vHEevTWBUSeyFxZ7Kv7n+jPuSUsAI4tsHJkB3eG6Oc0aCYQJlw2fKN4euZO2HF0ZMT80Lnx1jUczq3+hpaKAcQwkItkc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,106 +98,300 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-NUMA balancing has separate mode bits for normal task placement and
-memory tiering. In memory-tiering-only mode, NUMA hinting faults on
-slow-tier pages are used to detect hot pages and promote them to a top
-tier. They are not normal task-placement faults.
+When automatic NUMA balancing runs in memory-tiering-only mode, NUMA hint
+faults identify slow-memory pages that are worth promoting. They are not
+normal task-placement feedback.
 
-For slow-tier folios, memory tiering reuses the folio last-cpupid field
-to store access-time metadata. numa_migrate_check() therefore cannot
-return a real cpupid for those faults. Before this change, it returned the
-same all-ones last_cpupid value that normal AutoNUMA uses for a first or
-unknown access.
+Without separate tiering feedback, successful tiering promotions are fed
+to update_task_scan_period() as private remote faults. That leaves
+local == 0 and shared == 0, so the function hits its early slow-down path
+and doubles p->numa_scan_period. Repeated promotion feedback can therefore
+drive the scan period towards the maximum.
 
-That can make a memory-tiering-only promotion look like an ordinary first
-private AutoNUMA fault. After a successful promotion, do_numa_page()
-reports the target top-tier node to task_numa_fault(), so the existing
-slow-node skip no longer applies. task_numa_fault() then accounts the
-fault in p->numa_faults and p->numa_faults_locality, and
-task_numa_placement() can consume that sample to update normal task
-placement state even though normal NUMA balancing is disabled. In other
-words, hot-page promotion feedback can leak into the CPU placement
-heuristic.
+Track memory-tiering feedback separately from normal task-placement stats.
+Successful free-space bypass promotions are not counted as tiering scan
+feedback because they did not pass the hotness and rate-limit checks. Cold,
+hot, and throttled feedback is generated only by the hotness/rate-limit
+path, while migration failures slow scanning like the normal placement
+heuristic does.
 
-Mark faults that carried access-time metadata with TNF_ACCESS_TIME. If
-normal NUMA balancing is disabled, keep the migrated-page accounting but
-skip normal task-placement accounting for those faults.
+Use the same 70% threshold style as the normal scan-period heuristic. A
+hot-dominated window speeds scanning up, a cold-dominated window slows it
+down, and a throttled ratio of at least 30% also slows it down. If a
+window has no tiering feedback, for example because promotions used the
+free-space bypass, double the scan period, following the same
+no-useful-signal slow-down direction as normal scan-period adjustment.
 
-When normal NUMA balancing and memory tiering are both enabled, promoted
-pages can still feed task placement. In that mode, the user has enabled
-both CPU placement feedback and tiering promotion, so a promoted top-tier
-fault is treated as an ordinary unset-cpupid AutoNUMA fault.
+Evaluate the tiering window when a scan sequence completes as well as when
+tiering faults are reported. This lets an empty window back off the scan
+period after qualifying tiering feedback stops.
 
-This does not change whether a page is promoted. It only prevents
-memory-tiering-only promotion faults from being consumed by the normal
-AutoNUMA placement heuristic.
+On a CXL system with node0 as DRAM and node3 as slow-tier memory, a
+STREAM Triad-derived OpenMP workload was used to model a
+bandwidth-sensitive working-set shift. It first accessed one 100G range,
+then switched to another 100G range. The workload was first-touch placed
+on node3 and then run from node0 with memory-tiering-only mode enabled.
 
-Using a fault flag avoids reserving an in-band value from the cpupid
-namespace, where any masked value may also be produced by a real CPU/PID
-pair.
+With the free-space bypass disabled, so that promotions have to pass the
+hotness and rate-limit checks, a kernel with only the bypass control was
+used as the no-feedback baseline. Tiering scan-period feedback improved
+the transition window after the active range switch:
+
+                              no feedback       tiering feedback
+  first 80s after switch       122.4 GB/s             129.3 GB/s  (+5.7%)
+  200-240s after switch        139.9 GB/s             140.6 GB/s  (+0.5%)
 
 Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 ---
- include/linux/sched/numa_balancing.h |  1 +
- kernel/sched/fair.c                  | 13 +++++++++++++
- mm/memory.c                          |  6 ++++--
- 3 files changed, 18 insertions(+), 2 deletions(-)
+ include/linux/sched.h                |  17 ++++
+ include/linux/sched/numa_balancing.h |   9 +++
+ kernel/sched/fair.c                  | 113 ++++++++++++++++++++++++++-
+ 3 files changed, 137 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched/numa_balancing.h b/include/linux/sched/numa_balancing.h
-index 52b22c5c396d..200f50075d5c 100644
---- a/include/linux/sched/numa_balancing.h
-+++ b/include/linux/sched/numa_balancing.h
-@@ -14,6 +14,7 @@
- #define TNF_SHARED	0x04
- #define TNF_FAULT_LOCAL	0x08
- #define TNF_MIGRATE_FAIL 0x10
-+#define TNF_ACCESS_TIME	0x20
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 1c93da75226e..c4959747374b 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -833,6 +833,16 @@ struct task_ipi_mask {
+ struct task_ipi_mask { };
+ #endif
  
- enum numa_vmaskip_reason {
- 	NUMAB_SKIP_UNSUITABLE,
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 46a11f5ddafb..136207b62d87 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4149,6 +4149,19 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
- 	if (!p->mm)
- 		return;
++#ifdef CONFIG_NUMA_BALANCING
++enum numa_tiering_fault_stats {
++	NUMA_TIERING_FAULT_COLD,
++	NUMA_TIERING_FAULT_HOT,
++	NUMA_TIERING_FAULT_THROTTLED,
++	NUMA_TIERING_FAULT_MIGRATE_FAIL,
++	NR_NUMA_TIERING_FAULT_STATS
++};
++#endif
++
+ struct task_struct {
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 	/*
+@@ -1433,6 +1443,13 @@ struct task_struct {
+ 	 */
+ 	unsigned long			numa_faults_locality[3];
  
 +	/*
-+	 * Slow-tier pages use last_cpupid as access-time metadata instead of
-+	 * a real cpupid. Do not feed these faults into normal task placement
-+	 * when normal NUMA balancing is disabled.
++	 * Memory tiering faults are tracked separately from normal NUMA
++	 * placement statistics. In tiering-only mode, slow-memory hint faults
++	 * are used to decide promotion, not task placement.
 +	 */
-+	if (flags & TNF_ACCESS_TIME) {
-+		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL)) {
-+			if (migrated)
-+				p->numa_pages_migrated += pages;
-+			return;
++	unsigned long			numa_tiering_faults[NR_NUMA_TIERING_FAULT_STATS];
++
+ 	unsigned long			numa_pages_migrated;
+ #endif /* CONFIG_NUMA_BALANCING */
+ 
+diff --git a/include/linux/sched/numa_balancing.h b/include/linux/sched/numa_balancing.h
+index 200f50075d5c..12f31ed56d66 100644
+--- a/include/linux/sched/numa_balancing.h
++++ b/include/linux/sched/numa_balancing.h
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/sched.h>
++#include <linux/sched/sysctl.h>
+ 
+ #define TNF_MIGRATED	0x01
+ #define TNF_NO_GROUP	0x02
+@@ -16,6 +17,14 @@
+ #define TNF_MIGRATE_FAIL 0x10
+ #define TNF_ACCESS_TIME	0x20
+ 
++static inline bool numa_balancing_tiering_only(void)
++{
++	int mode = sysctl_numa_balancing_mode;
++
++	return (mode & NUMA_BALANCING_MEMORY_TIERING) &&
++	       !(mode & NUMA_BALANCING_NORMAL);
++}
++
+ enum numa_vmaskip_reason {
+ 	NUMAB_SKIP_UNSUITABLE,
+ 	NUMAB_SKIP_SHARED_RO,
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 136207b62d87..1d9efc2b7427 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -2760,6 +2760,32 @@ static inline bool cpupid_valid(int cpupid)
+ 	return cpupid_to_cpu(cpupid) < nr_cpu_ids;
+ }
+ 
++static void task_numa_tiering_placement(struct task_struct *p);
++
++static bool task_numa_tiering_update(struct task_struct *p)
++{
++	if (!numa_balancing_tiering_only() || !p->mm)
++		return false;
++
++	task_numa_tiering_placement(p);
++	return true;
++}
++
++static void task_numa_tiering_no_feedback(struct task_struct *p)
++{
++	task_numa_tiering_update(p);
++}
++
++static void task_numa_tiering_fault(struct task_struct *p,
++				    enum numa_tiering_fault_stats stat,
++				    unsigned long pages)
++{
++	if (!task_numa_tiering_update(p))
++		return;
++
++	p->numa_tiering_faults[stat] += pages;
++}
++
+ /*
+  * For memory tiering mode, if the target fast memory node has enough free
+  * pages, recently accessed slow memory pages can bypass the normal hotness
+@@ -2887,6 +2913,7 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+ 		pgdat = NODE_DATA(dst_nid);
+ 		if (numa_balancing_promote_free_space_bypass &&
+ 		    pgdat_free_space_enough(pgdat)) {
++			task_numa_tiering_no_feedback(p);
+ 			/* workload changed, reset hot threshold */
+ 			pgdat->nbp_threshold = 0;
+ 			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NRL, nr);
+@@ -2899,10 +2926,18 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+ 
+ 		th = pgdat->nbp_threshold ? : def_th;
+ 		latency = numa_hint_fault_latency(folio);
+-		if (latency >= th)
++		if (latency >= th) {
++			task_numa_tiering_fault(p, NUMA_TIERING_FAULT_COLD, nr);
++			return false;
 +		}
++
++		if (numa_promotion_rate_limit(pgdat, rate_limit, nr)) {
++			task_numa_tiering_fault(p, NUMA_TIERING_FAULT_THROTTLED, nr);
+ 			return false;
++		}
+ 
+-		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
++		task_numa_tiering_fault(p, NUMA_TIERING_FAULT_HOT, nr);
++		return true;
+ 	}
+ 
+ 	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
+@@ -3708,6 +3743,48 @@ static void update_task_scan_period(struct task_struct *p,
+ 	       sizeof(p->numa_faults_locality));
+ }
+ 
++/*
++ * Memory tiering uses NUMA hint faults to identify recently accessed slow
++ * memory that should be promoted. In tiering-only mode, those faults are not
++ * normal task-placement feedback, so use tiering-specific outcomes to adjust
++ * the scan period.
++ */
++static void update_task_tiering_scan_period(struct task_struct *p)
++{
++	unsigned long cold, hot, throttled, failed;
++	unsigned long total;
++	s64 period, period_slot;
++	s64 diff = 0;
++
++	cold = p->numa_tiering_faults[NUMA_TIERING_FAULT_COLD];
++	hot = p->numa_tiering_faults[NUMA_TIERING_FAULT_HOT];
++	throttled = p->numa_tiering_faults[NUMA_TIERING_FAULT_THROTTLED];
++	failed = p->numa_tiering_faults[NUMA_TIERING_FAULT_MIGRATE_FAIL];
++	total = cold + hot + throttled + failed;
++
++	period = p->numa_scan_period;
++	period_slot = DIV_ROUND_UP_ULL(period, NUMA_PERIOD_SLOTS);
++
++	if (!total) {
++		diff = period;
++	} else if (failed) {
++		diff = period_slot;
++	} else if (throttled * NUMA_PERIOD_SLOTS >=
++		   total * (NUMA_PERIOD_SLOTS - NUMA_PERIOD_THRESHOLD)) {
++		diff = period_slot;
++	} else if (cold * NUMA_PERIOD_SLOTS >=
++		   total * NUMA_PERIOD_THRESHOLD) {
++		diff = period_slot;
++	} else if (hot * NUMA_PERIOD_SLOTS >=
++		   total * NUMA_PERIOD_THRESHOLD) {
++		diff = -period_slot;
 +	}
 +
- 	/*
- 	 * NUMA faults statistics are unnecessary for the slow memory
- 	 * node for memory tiering mode.
-diff --git a/mm/memory.c b/mm/memory.c
-index 0fb676dd2bd6..00b171e2fe23 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6241,10 +6241,12 @@ int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
- 	 * For memory tiering mode, cpupid of slow memory page is used
- 	 * to record page access time.  So use default value.
- 	 */
--	if (folio_use_access_time(folio))
-+	if (folio_use_access_time(folio)) {
-+		*flags |= TNF_ACCESS_TIME;
- 		*last_cpupid = (-1 & LAST_CPUPID_MASK);
--	else
-+	} else {
- 		*last_cpupid = folio_last_cpupid(folio);
-+	}
++	p->numa_scan_period = clamp_t(s64, period + diff,
++				      task_scan_min(p), task_scan_max(p));
++	memset(p->numa_tiering_faults, 0, sizeof(p->numa_tiering_faults));
++}
++
+ /*
+  * Get the fraction of time the task has been running since the last
+  * NUMA placement cycle. The scheduler keeps similar statistics, but
+@@ -3974,6 +4051,22 @@ static void task_numa_placement(struct task_struct *p)
+ 	update_task_scan_period(p, fault_types[0], fault_types[1]);
+ }
  
- 	/* Record the current PID accessing VMA */
- 	vma_set_access_pid_bit(vma);
++static void task_numa_tiering_placement(struct task_struct *p)
++{
++	int seq;
++
++	if (!p->mm)
++		return;
++
++	seq = READ_ONCE(p->mm->numa_scan_seq);
++	if (p->numa_scan_seq == seq)
++		return;
++	p->numa_scan_seq = seq;
++	p->numa_scan_period_max = task_scan_max(p);
++
++	update_task_tiering_scan_period(p);
++}
++
+ static inline int get_numa_group(struct numa_group *grp)
+ {
+ 	return refcount_inc_not_zero(&grp->refcount);
+@@ -4105,6 +4198,8 @@ void task_numa_free(struct task_struct *p, bool final)
+ 	unsigned long flags;
+ 	int i;
+ 
++	memset(p->numa_tiering_faults, 0, sizeof(p->numa_tiering_faults));
++
+ 	if (!numa_faults)
+ 		return;
+ 
+@@ -4158,6 +4253,11 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
+ 		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL)) {
+ 			if (migrated)
+ 				p->numa_pages_migrated += pages;
++			if (numa_balancing_tiering_only() &&
++			    (flags & TNF_MIGRATE_FAIL))
++				task_numa_tiering_fault(p,
++						NUMA_TIERING_FAULT_MIGRATE_FAIL,
++						pages);
+ 			return;
+ 		}
+ 	}
+@@ -4529,6 +4629,14 @@ static void task_numa_work(struct callback_head *work)
+ 		reset_ptenuma_scan(p);
+ 	mmap_read_unlock(mm);
+ 
++	/*
++	 * Tiering-only placement feedback is still scan-window based. Consume
++	 * the window when a scan sequence completes, so an empty tiering
++	 * window can back off after qualifying tiering faults stop.
++	 */
++	if (numa_balancing_tiering_only())
++		task_numa_tiering_placement(p);
++
+ 	/*
+ 	 * Make sure tasks use at least 32x as much time to run other code
+ 	 * than they used here, to limit NUMA PTE scanning overhead to 3% max.
+@@ -4562,6 +4670,7 @@ void init_numa_balancing(u64 clone_flags, struct task_struct *p)
+ 	p->numa_faults			= NULL;
+ 	p->numa_pages_migrated		= 0;
+ 	p->total_numa_faults		= 0;
++	memset(p->numa_tiering_faults, 0, sizeof(p->numa_tiering_faults));
+ 	RCU_INIT_POINTER(p->numa_group, NULL);
+ 	p->last_task_numa_placement	= 0;
+ 	p->last_sum_exec_runtime	= 0;
 -- 
 2.20.1
 
