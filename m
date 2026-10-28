@@ -1,127 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DF7606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 10:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321DB606A31D
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=z8Wnlr4v
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=CCm9AuOB
 Received: by kanga.kvack.org (Postfix)
-	id 8E0856B05B3; Wed, 28 Oct 2026 06:56:07 -0400 (EDT)
+	id F07AB6B05B0; Wed, 28 Oct 2026 07:22:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 891C26B05B4; Wed, 28 Oct 2026 06:56:07 -0400 (EDT)
+	id EB8576B05B1; Wed, 28 Oct 2026 07:22:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 781236B05B5; Wed, 28 Oct 2026 06:56:07 -0400 (EDT)
+	id DA6C16B05B2; Wed, 28 Oct 2026 07:22:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 571B86B05B3
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:56:07 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A7F6120C7C
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:56:06 +0000 (UTC)
-X-FDA: 85371730332.06.4E43347
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 73C26140005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:56:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=z8Wnlr4v;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B63E66B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:22:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34A15A0CA1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:22:56 +0000 (UTC)
+X-FDA: 85371797952.29.57CB623
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4FAF91C000D
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:22:54 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=CCm9AuOB;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793184964;
+	s=arc-20220608; t=1793186574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=42fUzzG0W2qYfbl++Ffgg89HqosiKQlRzn2fAEw0aa4=;
-	b=rz19Y/QrDQpkIkl8pTJz05IrukpCWWUsv07P2vPR+Qd7XA1by3JqBntWItwQwqdk48N9SN
-	8ON+oQQf6dcUi1kONIjfsT6iSdppFhAU8O6R7y7aEWJjRJcoe6CgfX00RMMECnVtcATJez
-	R6AQBS5lPx5oB36lBPBh77chQ0JtDcw=
+	bh=n5pury5YV9GvH2clnXbdOyRZC5fJ6UftyKNGGJhyG/M=;
+	b=rC1DOCXRzUeZXULQjMQkjh/uO/0ictp/0CsyMXF2FcIRnemnqoV2+WP1hr4IYRQehGb1v0
+	QCv4srGnsxhmkC+TYUs9wWYT8nEB18xyQmBZ3LMHYd2vVCAIAG9wwaw1X+39XJrqeNjkFx
+	D1wR2qXFuOlEDPQEKIaplp6iqExc2xU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=z8Wnlr4v;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=CCm9AuOB;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793184964;
-	b=gS35iu2xOTp15TVQdi95wmVoS7tk9tkGrkRnFgz6QZDNU/lMvyAflxn5qSjTmd1zs/ybI3
-	UcOU8hAM5wHi3VFGqI58CJ3ZRBTFv+qshbAtkFwhVMwOKlPPMk0MidtTpNT/Kr/pjnF6YJ
-	6Pz00YNntUriaEWNWug4/qpr8DIpvJQ=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a218c463d1so5348115e9.0
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 03:56:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793184963; x=1793789763; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=42fUzzG0W2qYfbl++Ffgg89HqosiKQlRzn2fAEw0aa4=;
-        b=z8Wnlr4vz1hEsh5+j0nP6RctYkVR+O2g3g6wB3fpaaR7x11P67gvoWhWZ3kjBVNlSM
-         ad3R66yU60KPfkWbydM3zX9lfOgTEQ39RmKV7b94Kd0PcxB/53J5hVQSFGrhmiR/98JI
-         /nAndw3+CdpVaS80P4nScYCZoDDjwVQsZh13f1ERbqEF6HyPDl+Do0WHdiy/3NNTumPy
-         l65A7ZnkdQwVyeRaovVmZ0qFyZ8kSFKHf5d6OtzmS0H0cKmpKgGz9EwSWYB7l4oCebAm
-         hj2sqbwX1wi8oMLCVWSsx9JqjtOevxrGw5M3Fba28511yenARqFeh4DRTSCkYplCn8sd
-         k5xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793184963; x=1793789763;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=42fUzzG0W2qYfbl++Ffgg89HqosiKQlRzn2fAEw0aa4=;
-        b=0NzwH+pn7fGrONynucQD+VXtGk6KkNldB5UezaF+X8Dbf4ANev8h7flaal57KZ8UiM
-         8bvxvPDzZWQNCY7B6Op/pr6SUeid432CpprVnkCyDh96jfX8XZNjGRanAwgc3rqOIRZk
-         S1aDLk6tD18Qs9UQcI9bIrpO7DnKXlBC8W4YQdcnvS4UJwr+kz/iVdIAzyP303MGKIud
-         E/0qzb2DCi6gITFMPrlsLfoZu72qTffgWa4fide12erc+A6p0FkUJPZ4b1uf3PdYERMW
-         yErnwhigMDEW3GjfT4uXK2Ok/soLOv22oZ3dw2o9PsVDA9Hzv7uZP6xpkU72Wg5yN1aK
-         A0Qg==
-X-Gm-Message-State: AFq9FYLr7AW6o0H1doOcnYPh6l2rertPmQemUcEEwjC2x7mFLH9KTS/I
-	N5xW0tBIZ5IiOcY0Hvv08Kte70KNc5Q1xGVtmXNxoEpYmtlOBO4BJnjM
-X-Gm-Gg: AYBFou2qzLJWrkPos38qz5G9bjcfcf19GvLQTRupTLmSkFpaQ7xZdr/wZjtSZUqZrcS
-	c3k+dpnQXZigFmDKU+BTClpJyfvGYVt9umjHscJkR20dsj+YwBx/+MOimzzoYtxBPfpSMRyky8C
-	C9j8p3UW3QJ/VfyOD2C23odSnG4BhsvwUS55R4tDcSuuBzwl5bxDRX92KNorgFiqQ8ChCY/JB53
-	ZnwDjY/bFeWyqkAfqscPcEI4N0BmFXrFb+DpLQOHlLdtEgtTNbdA6aPIiaOt70Gml9fXZkp/vNL
-	lk/Ijs4y0h7boI0EZUWVNMfKJV+WibWeGSkGRPINTnavuAi1lzCNJ2AVSK+hBNmbwM1mf5p7YJd
-	C3gXCC0YYlbqLdR//XTEGd+9c5QkaODS/sNwXlvsUSvx97gih9ptQFbHqsiQOLX9tILNBA/agzP
-	jYFqczZGtd1skbTArUtz+lN7w5RLn6WTaUa9t9tGBzIjs1S8FCRJViH9VKc38FlzYrd1VeLguCO
-	dM50H6sBIUxFLQe2eoiYTwBoJfb2f7DoGaZ2OJ9DZ+o0EBi1ofvfTp1QHhCcyJBYX/agwto3OrC
-	vIy19t5EhSnLCIHkG9jmGy4F
-X-Received: by 2002:a05:600c:a11:b0:4a1:e11f:b2e1 with SMTP id 5b1f17b1804b1-4a966773233mr39854085e9.15.1793184962863;
-        Wed, 28 Oct 2026 03:56:02 -0700 (PDT)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a978795f4dsm33227565e9.9.2026.10.28.03.56.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Oct 2026 03:56:01 -0700 (PDT)
-Message-ID: <599fe237-0a05-4e95-b377-7186cb0d761a@gmail.com>
-Date: Wed, 28 Oct 2026 11:56:00 +0100
+	t=1793186574;
+	b=MVWNyHZwYoTVK9nFrMIWLm6AssTOyMBHVrzq42q2OAvW7CeqBh//OWC/buxxlWSslm6SoS
+	XAg+eq1nA1mJc1OnLExjGEndGhL1viefEE4l+TeZjoABX6uSS4sRkxm9iSgmsl17Ls6xmK
+	3huKjDmGe8/BThon1EmPzKrCZ5HtQ+c=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 16D2416A3;
+	Wed, 28 Oct 2026 04:22:50 -0700 (PDT)
+Received: from [192.168.29.156] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A0AA63F673;
+	Wed, 28 Oct 2026 04:22:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793186573; bh=43ADtVMuUF6FIB096peM5yM5+HordZTKhuRDK9S1TAs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CCm9AuOBTD2xEHiF6xW5BCJJq46KaABx0gQ/th+q+4PJG5mBgBzJnVLRoB6jueIfJ
+	 AAUFydZevToDAZdtOtsMo44LWIYuSAXr82n92foLrER00R5EZlJ12NZo1QsvzOHJWT
+	 hpO3X5IKKOFnwXn0BNOZY47Y8nSttk9lCEFNLXwk=
+Message-ID: <726ac203-7ee1-41d1-a9f3-7322c7528971@arm.com>
+Date: Wed, 28 Oct 2026 16:52:44 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/vmalloc: warn on NULL page in
- remap_vmalloc_range_partial
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Ye Liu <liuye@kylinos.cn>
-References: <20261026-vmalloc_remap-v1-0-b7a907814e90@linux.dev>
- <20261026-vmalloc_remap-v1-2-b7a907814e90@linux.dev>
+Subject: Re: [PATCH v3 1/7] selftests/mm: add MADV_COLD and MADV_PAGEOUT
+ contract tests
+To: "Gregory Price (Meta)" <gourry@gourry.net>,
+ linux-kselftest@vger.kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org
+References: <20261019171206.3331374-1-gourry@gourry.net>
+ <20261019171206.3331374-2-gourry@gourry.net>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
 Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261026-vmalloc_remap-v1-2-b7a907814e90@linux.dev>
+In-Reply-To: <20261019171206.3331374-2-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 73C26140005
-X-Stat-Signature: 6kabe5kyzonrtkbbfckqfuco8tm9up19
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4FAF91C000D
+X-Stat-Signature: ewwtnj5kc8hw8njwesr57pdmq988rcz1
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793184964-331621
-X-HE-Meta: U2FsdGVkX18SqmEs0MejXVkuKTkg8OfYSrpDwXzjxXrj/7IsilAb9gmMlcky4BR4c15bNWVCumP/s0SM55SHuSXqlLUzEgCkMJ8qyudTQ78bHKMm9dhGB9E+9B4Xwzk91v7O+hD2Vqz1ZLyEqs0OCmvvoI2KxpAkRKFkIJ760hbh9J4VRRTFs1Hf64fU3PnqlCuhJ7jBRqDbTPErLfJNB2J2+JyfLqZgiZoQR18mZ/+klmwXc+fWbA21HICwwJGeHk4y3pYMRinH8CilxVc2J8IEAFtXqaMejHzuzE9VM+uxFkMA2ByTdaWA8eE9Iv8Lct46d+7W+R2ZYf8pckai0KRrtveY1VPhfFwbR3zyD2VgwW6F4jJOAT1SKy7VGTUYglwkVkMNF+fAEWrGPyUVOAGFWziUqyn0EVa8nNdODNdjoC+1EBFyHHgJmkqPvm4lo7H8z7j0b+Iktzgq7vpmCulRzdqkiu30HJpRUJPe7PTokPuIZSlzwbs2v2rtA6/Jc5HKhfIgK91iF4mQrvaPsU43cqeFvLz3/Igjngdl9C8SI+cnxLt4vK7NVpA//SBnCuZG/9LlVB6BFMUcL2g/5E+zCY12J0eGvZlj2KCKaGsf3RCN+uHv+QGsH97CTos8r0A2br/8WFsD8cOSWjL4Vq+K3VmYUnAnmrzv1ePqL7K4eW24XqOueh7bXnPI7QPOTdVYjz6nxujFOsqROUEEX4XDjYrpy1cAixn0FruUgUH/b5AYlxoB59fhS6/iykWp9eSmqDPnAtL1aMi3PU08whSt7YgABfXygEMYRFRMR3qUcnaHPl1roX2trT488iiSD0taatfGS2QUywNM5j5LpShSuR29eBDHB0lPUpQUneMKC/F5jtwkpNGOXPnkfFfGOuyoXp0H8B7odBoVmCPf7g2TBaXoKcLGsetMPLBZYhZwjAJxdsrKgNBtJoSxJTJyYvf2dhzBd0PLIXN+FZf
- lEZBU713
- aLO1xkcQ5zqxPeJp0eqku7SpcLYhukru4LkUUIAK1H950eW0qG3PPdl2s/iBJ2UlqA3He0P4hCSljYXuxGiuC+kElyEhDrgIJyXzXPcm1xyuAcomGg9h5hWHOSG1OTOAS3VePwbGYCsEY7QHxwCbVgaKNO/3ZB+2qeh0ND3guxQmnzvuHrjmLSEZDHe8oqyJruGS+MZ2AuFzoPFOErOuSLE6RCLrPAguGKZFrHGZMDP9so4r1jCcX+//7ArsSm1Esbll/8qOsUbUwCRsJLYpdws1YwNIi+qnh0GCba0rKi6nQ79SB3RtgkPpPFe/XfChhKU2EFShrrRSaAzRQY/C+9ZXZXKNmnVuiLEUDrkBrdQrc7NhzjjqxhR6MtL2pH2/WEz23blD5/2xRGn7qBxry5TeL9cbPhmoU3SRzwl8LK9KOhOPy3osiDtDcZZ0Jk8Wbu/Q1NHS+sfPn3ZdefeEqfteE0Tb8myg6joIQilcm8I+c8wo=
+X-HE-Tag: 1793186574-998145
+X-HE-Meta: U2FsdGVkX1814eM2/dgR4PwWYCbGMwF50UTaJbeZ9u5zYiTJE1/rATcE3dc5YXOVqNFr9Pu+Ro+t+OdVh60XjTYbDzlk7tCDxh8nWXBYPRzvDHsy1dwqdnuvjIZVivqsswpqCfCmz1GepNyEVMPWNxgi3sNKkDpYS++aq1oO36Xb+++YxI2i///JnG1f1GbqXghM9ZjuNSNpRMkc9MVmX+H3LsqoKSChyrVZrp//dPsiFw1IhzSpYmDW8Ssk9vXRbqIBz5+4pFlazl7omVs6rwb62Aw8brD37M+R22BO2kkS7psEhrEbNb/nhcV6IOsCzEkdfD8tT09FSDn6w+m0kQ3lviYhK4smOh6bMAXasVuVgRyF3qmMH8CM0OBQNc+XkKg2826nQUB2MowLCQqY05Fpj4a0mL0OMZ4FHX7Zv2RtDf6QZMhcUY0mrDwf9vjiIzmqKBcykul3hV0sZskKA/6tlbvSxE+HQDq4CVhdOCAqQmXle/X+sfnIgAGvAhkIedZmwQasH4Na0IdZjbKnHxtBW/Zw4p1K4s8GGhsnwTHBHz7YeSNKWAi36gH/M+edq1Jx+2LY5EGq1Ei6FfuZE6+ifkL/EtEUk+SWZZZMNJQmB3x7oNZzNeYdU0NQjN1eNdA0Irp8csee6DqoIqqJbFzjP/MRCvNZVLvAJ2XHE2qGEsPK1+n0+WRh/5tq5RUfLVIydlTcABpQhIhG13LOcxvdYwDB9+ReaSNdaICEbpwAcR7cdMK0CujWgi46Iz3KOm//xSuF71SaetU/rfP2XkhKB9HGSLEcV15b0g+zT3py5j9JwCEtyjRWxEhcyn1fBbEM3Mlq7zjx8yuRImBKZjbECKK1Xx0JTC5/sGfk8lQkxJoX78bdR5KPnFZTtPUTSmu0rXXerSArcjNI92qlcdosIPbNLMi47PJt1ZWWpn0i74B6PP5SKN+scKqnNkRaKEWHgJg0kb8X7akciPa
+ xhyhjcpn
+ oUbmgFx/6cFR42EYlYswde9NF7X++p4sCNF1GcVPmdqnR6EUOv/SIh3XaTjJRzOZQZgYoTA8UwZ6hpi9FiNaQmHeL9gmEtHZAry+EqZX+rPanrXNqg/vgBqoMH8N2TPI6m0ABiBWN7BCHCqrtEkE5woWkV9rOuNQP9oivlv0QtGld6ALyyDZe9pbvF0ttGN1h4JfX6925GUsiKcGOMeobgH8Y29txfLBL+GjPGaiALTZiOcIwxwj5wLvXiIWAHIjpV+lk3dfT+IH4g5PNyPVaOJKdaY9kdcS1BXnrraFyn1kZpSeFlf1aE6VyvqqVWd0e3LrxHnOYWZMymwIVNFhjj94KSvpRh57yr4FQBaI64IvMduIRhuKpqTAdWM0AK+CC/+yiLOFUUbJoBhjM0MdrVDvXkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,37 +98,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/26/26 7:09 AM, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+
+
+On 10/19/26 10:42 PM, Gregory Price (Meta) wrote:
+> MADV_COLD and MADV_PAGEOUT share a page-table walker covering ordinary
+> PTEs, PTE-mapped large folios and huge PMDs. Existing selftests use
+> MADV_PAGEOUT mostly to swap memory out for other tests, and check only
+> special mappings (PFNMAP, guard regions, droppable memory), not the
+> walker's range, folio and permission handling.
 > 
-> remap_vmalloc_range_partial() oopses if vmalloc_to_page() returns
-> NULL, which never happens today because VM_USERMAP areas keep every
-> page mapped. Add a WARN_ON(!page) to flag a break before the oops.
+> Add a kselftest harness test for both hints, starting with the most basic
+> behavior userspace relies on: neither hint populates a PTE hole or faults
+> a swapped page back in, and neither may be applied to a locked VMA.
 > 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Before running the tests, pin the process to the CPU it starts on,
+> so that the LRU batch MADV_COLD and MADV_PAGEOUT drain holds the
+> folios a test faulted in.
+> 
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
->  mm/vmalloc.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index a888eca016a8..59ba203a4eff 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4906,6 +4906,7 @@ int remap_vmalloc_range_partial(struct vm_area_struct *vma, unsigned long uaddr,
->  		struct page *page = vmalloc_to_page(kaddr);
->  		int ret;
->  
-> +		WARN_ON(!page);
->  		ret = vm_insert_page(vma, uaddr, page);
+> v3: Dropped Sarthak's Reviewed-by from v2 1/8 and 2/8, which are folded
+> here, since this patch now adds main() with the CPU pinning and the
+> one-time reclaim check, and the swapped-page tests fail rather than skip.
+Thanks for changing the name of the selftest. Adding the swap check once
+in main() also looks good.
 
-doesn't this still hand the NULL page to vm_insert_page() right after,
-so we warn and then oops anyway? wouldn't something like this be what
-you want here?
-
-		if (WARN_ON_ONCE(!page))
-			return -EINVAL;
-
--- 
-cheers,
-jose a. p-a
+Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
