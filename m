@@ -1,157 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D930606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 17:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38896606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 17:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pQOibE5W
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=khWkVIOI
 Received: by kanga.kvack.org (Postfix)
-	id F1F806B05B5; Wed, 28 Oct 2026 13:51:55 -0400 (EDT)
+	id 3B4486B05B0; Wed, 28 Oct 2026 13:54:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED0686B05B6; Wed, 28 Oct 2026 13:51:55 -0400 (EDT)
+	id 38B756B05B1; Wed, 28 Oct 2026 13:54:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBF946B05B7; Wed, 28 Oct 2026 13:51:55 -0400 (EDT)
+	id 2A20F6B05B2; Wed, 28 Oct 2026 13:54:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FA6A6B05B5
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:51:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C38A120197
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:51:54 +0000 (UTC)
-X-FDA: 85372778148.24.0EA47FD
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7D3384000A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:51:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=pQOibE5W;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of kevinloughlin@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=kevinloughlin@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793209912;
+	by kanga.kvack.org (Postfix) with ESMTP id 032686B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:54:55 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 90CC1120196
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:54:55 +0000 (UTC)
+X-FDA: 85372785750.26.81C1013
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E5218100009
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:54:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=khWkVIOI;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793210094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mF/L3R2/oy06ccOwt7FWjRMyAPem26+3IHOwef8ICXY=;
-	b=70btPYBsEi2M+6HyvasDuh3ou1NTiC7KCbJ3R7IKYpShU9zk21KTXTzYb8BmJa9EDTuYY6
-	PcIOrPJDKkrkR013d1OcdbWT/GJR4AVZ8u/KmQ5qvMxMZaFPHtW6mgbdxDcxI1JbWLFADp
-	eEhqA+LOOEw1FCKi4A/WcRk8ChsGAMc=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=pQOibE5W;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of kevinloughlin@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=kevinloughlin@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793209912;
-	b=mmqbaEthF+jeESBW9ifs4o49p5wMGkdXGg9S45wTLPiHPhaPGY80+j8kM2RvpRbbBCkq4k
-	k5yJQZDDYGknYwMZs7cnhi2ah5zJim4DZK8qmqE2/R9DCTYopH2ucGWfc3IfWxV1AU2XkI
-	xS6o0je11i/FBb4tQ4Pu/zx3zh2JegU=
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-8b0a921ee46so12082207b3.2
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:51:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793209911; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BgkIzj5kDEa4wiMarCEx9WE42E70fp7Ddrm8GQGPBAhd+Ix1H/6YjN2N+q/QcsKNIo
-         +AdJ/qz4tY3eff1AhluuECZo1O/HuhioDO3BmXb82AdTN+U2g9APaARd8h4Y8DhHRR7Q
-         ml0T35+25wBeRAIgBWqUHHJVlmG4VoF1EhqXwUcj7w5YgVWx3ofVaPoXGKlsA3vLJAjb
-         0BbqpYCBr+n1mNZ0BMr8UQM7dbmMmwdj6XI/vUHogPg3yXgBVN8KQIAb3zSBkfNRsOa7
-         dvZhdgb/0JVyccJNQiA40Q6RZjS8GE/oYAJ5puJAta1XLnblKH15v4Gp5Bzu0SqnnYiQ
-         OofA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mF/L3R2/oy06ccOwt7FWjRMyAPem26+3IHOwef8ICXY=;
-        fh=pLm9k78AlHrHiSj/tZmzv904gRVd2+3qU6iRxpCcAYg=;
-        b=DJarpPOn0S7YZsdVz7FWybuL0ddGYdcLnSSXrrko0I3SrEipM/jqa7Yz6jh5B3O5Mv
-         nruu0PpYGzWpdAhe5dDZL7a91CitZFCLtN9Yx+wyza+Uf926OcvG/vVzfkY+gvLws3ys
-         +1RBZchi5YQC12AwexQJJnVPFXb7YPBcSt/Qgfw/oLq9bL2KZfDeMYI9tuv08zH+ZS8I
-         yOlzuyV5i2GcE/4qBRfyI+cO3hIecX9PY+uBFrlndMnUpN/oaQtRZHjUKQ6Vkizpab+7
-         jzKJJRdX/ArCji0BUSUrvjEM5orAhHRP0u0opjThiz7S7oAtUtU9u+CtswwbgVr2WYq7
-         G1Zg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793209911; x=1793814711; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mF/L3R2/oy06ccOwt7FWjRMyAPem26+3IHOwef8ICXY=;
-        b=pQOibE5W5sEy6R30e4DxpyK5HAytQNVo78ULWwEbFPpeW7ghRS1ViVpFdOkwcmh/dO
-         24AYpFBMOI2PIb4MIIK8QeW4gtcd221qtC5wNbA4YF0hWht0pWgqBP5czmbgmra+dbE4
-         RmbMBzx+IqTi6cW+egsqUNHc9emOAoKtTOBQjpgASYAPStV/U+IxuIwPEus0IxHvQyG9
-         6oFHKxUsnaHP4uqdSAl55sO3FMozt9xrx4QdpQ6PsaMQsBKN/f32CHPTS02Eyo8zWqye
-         R2ppTLSiCyATibwb4MKpjLa2aFbWDk/arWbw6MawCdtStK+/bUduZ6QRqd5E4Zna3QW6
-         Wzww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793209911; x=1793814711;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mF/L3R2/oy06ccOwt7FWjRMyAPem26+3IHOwef8ICXY=;
-        b=RE0OBohAQTobo+ysdY5iFGF+p7Nr68fDiH3JTB4jKIftWYN4ilDxWef39x4iX76AgW
-         FsLFHCXYSFuuKY30RLxjuRu49/dNQlqhxWQDlzCiTUyCAWKGON+heWokOJah47NeSEc8
-         jmltzFJC6z5uEKBbWPiJGWkRU1hRSFF/P7/+HaQZ06WD/g0uyFy/kTOf5H/sr72G5nY7
-         vBoy2BxHTFICod21xpgBxcaBoVtel0m2T0P0WHs5qVG98z04RP8dE62P/r3f6+h9zan0
-         1gcWuTKHvybR0/ff4NgOnDk+ue+COrMBGs4EgGMkZp77lp0vNljxP3v8P9r4GkrnGBCX
-         /9Jw==
-X-Forwarded-Encrypted: i=1; AKwUvBznh6XKyhTcGsGBe2jbiz2TXUP7gG9Gwv07J8ehsp3txHCkd7VklZtsMhK6045jX+MNFfuxXwSI1w==@kvack.org
-X-Gm-Message-State: AFq9FYJdXfB71QMmjZ5c8WD85P8vsL4QGTy1ykYR7kNcefcdByX+GZyB
-	UBRkoJojBxraF9xQlG9eMg+fodnAwbqxIi3WqUJvZ6muyyRmTHGcv8mABIpFlmZ/Ihn/qzf+IkQ
-	GLIscsdIwZuqr4NBNRxpQMTIUbsYO2/v+TvpAIJrM
-X-Gm-Gg: AYBFou2nKy0robaE+BuZUPs/B3t3TpZS93+/DzD+yPkw+P/5RBNFSN5j83jU49pE79p
-	ivhsIriNlAvdvuw/8vQA2KaOZ+M4X4PkjyRmi/Dfgvri483VUyHBr5Hig5QXjA9xF2bvZvgc5KR
-	GBiHwT0xCck55AYszrV6ERPFrZA5fr60ssbVdmnuuBz6pEWpsIy7KSqOj6XRrE3RD6DZ7JZExKq
-	a96p8uo+9WQf4RyGTSz8hcUWmAy0U0+lYb41Bv6vrAOTvYRgeVfX9tQsDgAdxjaysqZLaeYk17x
-	TIYhaA0nYPe2lSY5p0TtLbamvU39zPo2o8grOO8tdyzLzTH5GmMI3X94bd25OhoQ40LV+KLFxFr
-	vm3Uay36Tz6A3hXzKf8bcwfRIxTteQP+YAIiJfbeCHVN8N1cr9tNWDorY49pzOYGOTA==
-X-Received: by 2002:a05:690c:c512:b0:89a:63da:fa8f with SMTP id
- 00721157ae682-8b1b5d5b9a8mr19678387b3.74.1793209910194; Wed, 28 Oct 2026
- 10:51:50 -0700 (PDT)
+	bh=v6lgge4WdsOVmOEXha6YU4EWcAVpqL0HGPQBV5WSBkY=;
+	b=Tm0e9tBrrMHOGuB7PT/kvsc+HTmh6aON4EWMeO7tmPulNRxQaQRycBfzT+s0KWHfFJskWr
+	60tb/4X2e3D5SuwUUB06yIZ2NxuUMw/2MwLPgwoEF7Bt9mpLhcP9laAzMymMC/rw6kZ2ov
+	hJrTLxCWbKsWTN+m8cde3Js5N6jboZE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793210094;
+	b=7I6cSbE0hCEt2LrD+CRJdKRQ53miZwZdIqFZ5wxspOZLxXm9Nvy7kqeH/ULt5LlaBMwJmr
+	tKg7jf45TE8bAqJE4D60ZY3QSYvJ0dbGWjqex452jPuzU3Ubyb7PeI6EAYB6NfIdLftxnS
+	FJ5AXYmiIHGxaQZWaCnp6/VLHn/LkpM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=khWkVIOI;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F37ED601F8;
+	Wed, 28 Oct 2026 17:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8A01F01828;
+	Wed, 28 Oct 2026 17:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793210092;
+	bh=v6lgge4WdsOVmOEXha6YU4EWcAVpqL0HGPQBV5WSBkY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=khWkVIOIxNRfDHMWRxAQtKPepjJau1mWH1tfNKVk66Ch1Lv9J7cPoDH51yRVQkwQe
+	 lm9acNXE11ARvqj46A/Jyhi7EbsCe7jxWNp+QA+oIQecZm/cowX6xbtuw2ZcnMLeZW
+	 F66i8Mn634THVYeZ8kW0a7P38yefWynfUloLYRA+QdcLjo8wWma67XNK0XQZydnh42
+	 /vDm0n3McPffCVHg9YW7z8haJZkTA8RlJPH1/umGHKF2jPmhag50YsXMCtLexT4VbV
+	 Ii/RzfMxlGoN8SWgNRUNR0nsu7SeT0M1r10FoZv6ArCr77yMxsJQbPadK4R3ESzy4a
+	 4ho1RTRTgtRxw==
+Date: Wed, 28 Oct 2026 17:54:47 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Liam R. Howlett (Google)" <liam@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Thomas Graf <tgraf@suug.ch>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, Chris Mason <mason@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 3/4] maple_tree: Update internal warning and bug_on code
+Message-ID: <auImniguGIVq6c_L@gremlin>
+References: <20261028154218.1668182-1-liam@infradead.org>
+ <20261028154218.1668182-4-liam@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261027025616.1632690-1-kevinloughlin@google.com>
- <20261027051245-mutt-send-email-mst@kernel.org> <20261027163814-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261027163814-mutt-send-email-mst@kernel.org>
-From: Kevin Loughlin <kevinloughlin@google.com>
-Date: Wed, 28 Oct 2026 10:51:39 -0700
-X-Gm-Features: AclHuK9-u99s7D6HT09CfAyO9Ftn7vr_iH3z9UIt21N8WRT_BYsbqycnLIpHOb4
-Message-ID: <CAGdbjm+f+b8bMBFMdqXavXx79NSnXzDFeJRUxZdEox_+dKV6tw@mail.gmail.com>
-Subject: Re: [PATCH 00/13] virtio_balloon, efi/unaccepted: support memory
- ballooning and free page reporting in CoCo guests
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Kiryl Shutsemau <kas@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Alexander Duyck <alexanderduyck@fb.com>, virtualization@lists.linux.dev, 
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Sidharth Telang <sidtelang@google.com>, 
-	Punit Salian <psalian@google.com>, Peter Gonda <pgonda@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Jacky Li <jackyli@google.com>, 
-	Steve Rutherford <srutherford@google.com>, David Skidmore <davidskidmore@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7D3384000A
-X-Stat-Signature: 3be9u1agftek1qi5994r4fsrsx68rmu8
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028154218.1668182-4-liam@infradead.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E5218100009
+X-Stat-Signature: ujtu3bhcg65kstr3bcm9eiker7g5dj5r
 X-Rspam-User: 
-X-HE-Tag: 1793209912-942203
-X-HE-Meta: U2FsdGVkX18A4D5kYXGD9ax61Sw6/sOOsdEVMLy5zU7GD9Hsv5T9KP3yQNNJy9XCUWPbFgGqUHBIp3siN0ilrjD340JXAHHzBXBrTUTmCli6Na1ZpDOFSGFNPqpZJYyy3mET6EwwEhqx8J4w0T5O/RKPKJB/KB28Dxg6wdgDLm/RphfxXwccXoV0LF1xEmzXo4qTFZ3bVBpAPGRkza4gFY991PRVyQ5GnBz0LJeEgaELmMbHc1Vj1OnvY1fS/HaT3KZD3nr3sGHS+ksme+4sBsL+CKqy2fd4XN39MeoimC+0glpQUm9ad62P5/PyiRLJd1esZbBqH+R2gc66llZ4qLRWr9xiNr+lZ0FRuFu0dL3RaD5ZwYFFnPNvmFRNrXQVWColXyCoMU4sNWP1njq4NV1P/P/4YgytQqLNkT5dYMY5krILaxkfb54kWgb94bT3QTBd6xBqP6dF0zpxRB5rHUqDOSc5VuympcYooRBrQM83EmAKwZ69+ALsiP3QQ+W+S+pvkWd+PtX6MXZToYIy/3ul+TLpqIz3mFMvgXjpBOP3dqodu4V7ab/7ZYn8eVdV1+/DRi1OdEpw43lLk5bVhzgQenpTxGdQhPbRACyeAbHumD5o4IGrQS6b0Fk6d88rQlXgPEdVYYTgqk6S85qE6z4FrkyhCPWvjSTMozl1nMy60wXzi91q8jJsVPkUJzgonjp73no4A+YSTU6adi73DdepoeN18RcWuedX9B+wHJOdw6cqESM5UdfqaMV6tCW+fGPguy35i/u/HhBv1Zz5vfXA8E1dA219tma4beSLnKUsOJ7wMuDmKcntthSzw0T+75DB68isKMlXKEDfopIzrl2YWh7Lp7jUBw6HSQbBO5OrkPBgjZrMqNz0y4lQ04Ayh59ne+lm1HKIY/8pONqMr9jP5zKvMwgCz7vhFjLXGthEkbsizif34D6alaZ/EZ6jaPHFddiU27uMLPLzcmw
- dbgC5OZF
- Voi8iHnu4vaDy+TdJJlmo9DcwY9jhq9gLixWuIejgCouhu3l8fa3Ay9seM4F8NQdyT3C+B9M0KKX/qLEfMwcqNjgQtu3JshXA49XakE4APQKW88EFWMPwrV0IJeeeu/G9R/rAoKWhVAWm8PFxbeI24Gn2LT4vvrFhg4Pcqf5n80549s1/zp4N/4aGjpXKOFOPWNV9uOwdjtLv+qYJtMgP64OSt700OVGibU7j4nA+HIL376TYjohdtTSDvegIyIpsRtzKQq0zjqarq37sZF4mlrnSj+hGoNvoGMzTKJ62/DauGCJpiRwlXUPE15YidbOPenFD69KJ0zSm3qg=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793210093-980491
+X-HE-Meta: U2FsdGVkX19Bo+UnYCrcy4GFgDzXgtMHloATYrpcO1LgqquTD1TONFtro7ErH0YNAGBYEbOyclgNReRkEd6/nCl3rpcQp4blj7X6ohByDosmxUzIA0Tt10j0Q+yLmLrY07ad2Bkbia8RJjDmvtejkUTCCvtmS6o+clrkDbhaehii16Q/kFfX7DM7tPMdEFScSHiTaMDMDGUqujBPC14cN4TGofjHil/69hbzv3YvQ5Ym+aue0ZeXhAuelX0SU3A+PksgnqdD/yim9f9iRGiGpM3GuPfPS1zdue7JvV8droCwllZ1aDw5+mFbV0sqgNUw/upFnlSLvXOLsXmeuMiXwx1IYF83bCulwU2xzItNDRJ+5oy4yRD4CI34GsTtDrnJ5M9FkV61mACMie/rynGo395k0gkUP4OUnbBOBwaVmym73dc3nO19qMuhVObddpGOcYyIy5VZX8Zg9temv4wzitiKTxHo2gATq3qE1/h56y+5Ao46MFwQfXqt6w+kQv39MxNTvQ5QZBPzJQgjjbgdzaTJkp+YPYB35F3VHaqmhkVKI80ia8Mej/1nSQTb0S3EqEoWr3Ud0FcVVilv91Gv5hq5nZr1WxepHXmrjpNx0xoTy7gPDzAJxAc6bRvTU0QaHdcpjUhmQ/W3LOeT1hNQI5XQO5PoNUMQIqDnooVK6FvRDYr8029ruQDacXfoRXk/1zLryscJSv4CJcg4GhD4tdqYhUcDK6PJkN3N2HmGM1bYzScVqxAfkITZJ7E82UnI27loIPfTkhJ2/6g0cHAl4TEsSJ/hEYltUlJhnT92YHq+5tV16IyhrxvzYBiATL4ZAsB/ksNHqrG8BI2FjBivqAJZvXSheJ1RXIpsVYg4XRmAi3YvO4H5/M+72FbYlokcSgiE3zBlZaD8DdTGtp34nWzWUABQH2SPMt/ojFhxFDKAZiCxxo7ba3HOU5LruawQXv8MNWPYerR7Z2eWehp
+ lQgZ+a1/
+ O8Ha/BBRkjcpc5GaXQpZp0MtECBrZaFA7ft7KubL3QvefLlGezk+dxsi3EUInIUnysKn5mKllNjD0iUn+adtAZwVMPT94cKF2hzmXH+zw/LWD4PumKThfF8WiDGekfVXTr8VFruiZ+yTvSQtrC9cWEm3Ijy90wRtoYmqYNie6O5qEOIj5lOxNDH1G/rJAZA+xgNjpehK26trOmd4Bsx/+M8pMVR+h3x9jKQj5Goch0iXxWCDQHTiPB3BthLcwPXwc3wpxAdyBCQlAAkDHRr5eJ4Uz1ZKBbRBwvUNWIUsoYD0NChWY7JdtfpB60yw5RmhbSOKdB90sJLaPqFZ5dadfVWvoDud+/NAcqG1qzpUIupaOz5+EcfoAsCjHB+ewXWRuLTPJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,103 +97,206 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 1:39=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
+ma
+ On Wed, Oct 28, 2026 at 11:42:17AM -0400, Liam R. Howlett (Google) wrote:
+> When CONFIG_DEBUG_MAPLE_TREE is set, call the WARN_ON_ONCE() after the
+> custom information is dumped about the tree.  Without using the kernel's
+> WARN_ON calls, syzbot will not catch issues detected by this code.
+
+Mega nit but commit message doesn't mention the BUG_ON() bits :)
+
 >
-> On Tue, Oct 27, 2026 at 06:29:35AM -0400, Michael S. Tsirkin wrote:
-> > On Tue, Oct 27, 2026 at 02:56:03AM +0000, Kevin Loughlin wrote:
-> > > This series enables virtio-balloon free page reporting and memory bal=
-loon
-> > > inflation/deflation in Confidential Computing (CoCo) guests, starting
-> > > with architectural hooks implemented for AMD SEV variants, in order t=
-o
-> > > support dynamic CoCo guest resizing.
-> > >
-> > > Today, memory ballooning and free page reporting are essentially unus=
-able
-> > > in CoCo guests due to three main roadblocks:
-> >
-> >
-> > For me, the bigger question is not whether we can, but whether we
-> > should. Considerations I would like to see addressed:
-
-Thanks for raising these. I will address all of them in more detail if
-I send a v2, but here are a few shorter thoughts that I'd love your
-input on. For brevity, I will ignore the inflate/deflate case for
-CoCo, since I'm planning to drop that, and just focus on free page
-reporting...
-
-> > Security, e.g.: does knowing which memory is free leak information from
-> > the guest? If no, why not?
-> > Consider CONFIG_SHUFFLE_PAGE_ALLOCATOR, RANDSTRUCT, etc.
-
-I think the min order we'd support for CoCo free page reporting is 2
-MB (and tbh we might do 4 MB only for reasons I will mention in my
-reply to David's comments in a bit here). On that note, I 100% agree
-there would be some new direct leakage of "which 2MB or 4 MB regions
-are recently-freed or recently re-used inside the guest", which may
-present some side channels to infer other information.
-
-Some related channels are already open in CoCo and don't seem to be
-signficantly worsened at first glance (ex: for
-CONFIG_SHUTTLE_PAGE_ALLOCATOR, the hypervisor can already induce
-faults on any GPA at 4 KB granularity). However, there is of course
-strictly-more information leaked by adding CoCo free page reporting.
-My hope is that the coarseness is a reasonable tradeoff for some
-guests, but I will follow up in more detail.
-
-Aside: now that I'm looking at it, I think some aspects of upstream
-page shuffling logic might actually skip the unaccepted pages even
-today, so perhaps we should change this regardless of this series. I
-admittedly don't have as much context here right now.
-
-> > correctness, e.g.:  Linux has init on free (and default on windows), if
-> > initialized pages are dropped and host can not be trusted, they have to=
- be
-> > re-initialized. Is this handled? I don't see it in code.
-> >
-> > Also, performance, e.g.: How much does this re-initialization cost?
-
-I think the existing accept_page() logic (which would re-run if we
-fault a reported page back in) is wired up to
-free_pages_prepare_init(), so I didn't introduce anything new here.
-However, I'll verify this and call it out either way if there's a v2
-of this series.
-
-> >
-> > Management: it was simple with balloon off unconditionally.
-> > Now we are in murkier waters with various features offering
-> > various performance/security tradeoffs.
-> > What if some guests want the tradeoffs but others don't?
-> >
-> > Documentation: for all of the above.
-
-100% agreed. I lean towards an opt-in policy for CoCo free page
-reporting (ex: via guest kernel command line, which could be attested
-as part of guest boot as one way to verify the setting matches
-expectations), but please let me know if you have other thoughts.
-
-> And to give this a bit more perspective, I present:
+> Update the non-debug code to call WARN_ON_ONCE() as well.
 >
-> commit ab676b7d6fbf4b294bf198fb27ade5b0e865c7ce
-> Author: Kiryl Shutsemau <kas@kernel.org>
-> Date:   Mon Mar 9 23:11:12 2015 +0200
->
->     pagemap: do not leak physical addresses to non-privileged userspace
->
->     As pointed by recent post[1] on exploiting DRAM physical imperfection=
-,
->     /proc/PID/pagemap exposes sensitive information which can be used to =
-do
->     attacks.
- [...]
-> Leaking phys addresses to unpriveleged entities might not be wise.
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Lorenzo Stoakes <ljs@kernel.org>
+> Fixes: bf857ddd21d0b ("maple_tree: move debug check to __mas_set_range()")
 
-Yeah, while the host already controls GPA -> HPA mappings, the free
-page reporting would indeed likely give finer-grained timing control
-of what 2 MB or 4 MB GPA regions map to which HPAs. So yes, another
-potential case for "let's only support this if CoCo guest opts-in."
-WDYT?
+LLM overlord says bf857ddd21d0b only moved it, and f0a1f866aba1 actually
+implemented it.
 
-Thank you for taking the time to review, Michael!
+> Signed-off-by: Liam R. Howlett (Google) <liam@infradead.org>
+
+Looks sensible to me from kernel perspective, but LLM overlord tells me this
+changes the userland tests from asserting on dump_stack() to just printing
+something out on WARN_ON().
+
+(BUG_ON() is OK, it asserts already).
+
+However we really do need this for the kernel so CONFIG_DEBUG_MAPLE_TREE
+triggers syzbot and such, so maybe the userland bit can be a follow-up?
+
+On that basis:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Or... maybe just respin with something actually, can fix it by updating the
+shared maple tree testing header to make warn do something like this
+(schlopped, apologies):
+
+diff --git a/tools/testing/shared/maple-shared.h b/tools/testing/shared/maple-shared.h
+index 2a1e9a8594a2..112052e7201f 100644
+--- a/tools/testing/shared/maple-shared.h
++++ b/tools/testing/shared/maple-shared.h
+@@ -10,6 +10,30 @@
+ #include <time.h>
+ #include "linux/init.h"
+
++/*
++ * The tools/include/asm/bug.h WARN*() family only prints a message and
++ * carries on.  Nothing in the maple tree or VMA tests expects a warning, so
++ * treat one as a failure and abort at the site.
++ */
++#undef WARN
++#undef WARN_ON
++#undef WARN_ON_ONCE
++#undef WARN_ONCE
++
++#define WARN(condition, format...) ({					\
++	int __ret_warn_on = !!(condition);				\
++	if (unlikely(__ret_warn_on)) {					\
++		fprintf(stderr, "WARN at %s:%d: ", __FILE__, __LINE__);	\
++		fprintf(stderr, format);				\
++		abort();						\
++	}								\
++	unlikely(__ret_warn_on);					\
++})
++
++#define WARN_ON(condition)	WARN(condition, "%s\n", #condition)
++#define WARN_ON_ONCE(condition)	WARN_ON(condition)
++#define WARN_ONCE(condition, format...)	WARN(condition, format)
+
+> ---
+>  include/linux/maple_tree.h | 54 +++++++++++++++++++++-----------------
+>  1 file changed, 30 insertions(+), 24 deletions(-)
+>
+> diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
+> index e30e57f5f3df9..0f96f1f19eb95 100644
+> --- a/include/linux/maple_tree.h
+> +++ b/include/linux/maple_tree.h
+> @@ -680,7 +680,7 @@ void mt_cache_shrink(void);
+>  		pr_info("Pass: %u Run:%u\n",				\
+>  			atomic_read(&maple_tree_tests_passed),		\
+>  			atomic_read(&maple_tree_tests_run));		\
+> -		dump_stack();						\
+> +		BUG_ON(1);						\
+>  	} else {							\
+>  		atomic_inc(&maple_tree_tests_passed);			\
+>  	}								\
+> @@ -696,7 +696,7 @@ void mt_cache_shrink(void);
+>  		pr_info("Pass: %u Run:%u\n",				\
+>  			atomic_read(&maple_tree_tests_passed),		\
+>  			atomic_read(&maple_tree_tests_run));		\
+> -		dump_stack();						\
+> +		BUG_ON(1);						\
+>  	} else {							\
+>  		atomic_inc(&maple_tree_tests_passed);			\
+>  	}								\
+> @@ -713,62 +713,68 @@ void mt_cache_shrink(void);
+>  		pr_info("Pass: %u Run:%u\n",				\
+>  			atomic_read(&maple_tree_tests_passed),		\
+>  			atomic_read(&maple_tree_tests_run));		\
+> -		dump_stack();						\
+> +		BUG_ON(1);						\
+>  	} else {							\
+>  		atomic_inc(&maple_tree_tests_passed);			\
+>  	}								\
+>  } while (0)
+>
+>  #define MT_WARN_ON(__tree, __x)  ({					\
+> +	static bool __warned;						\
+>  	int ret = !!(__x);						\
+>  	atomic_inc(&maple_tree_tests_run);				\
+> -	if (ret) {							\
+> -		pr_info("WARN at %s:%d (%u)\n",				\
+> -		__func__, __LINE__, __x);				\
+> +	if (!ret) {							\
+> +		atomic_inc(&maple_tree_tests_passed);			\
+> +	} else if (!__warned) {						\
+> +		__warned = true;					\
+> +		pr_info("WARN at %s:%d\n",				\
+> +		__func__, __LINE__);					\
+>  		mt_dump(__tree, mt_dump_hex);				\
+>  		pr_info("Pass: %u Run:%u\n",				\
+>  			atomic_read(&maple_tree_tests_passed),		\
+>  			atomic_read(&maple_tree_tests_run));		\
+> -		dump_stack();						\
+> -	} else {							\
+> -		atomic_inc(&maple_tree_tests_passed);			\
+> +		WARN_ON(1);						\
+>  	}								\
+>  	unlikely(ret);							\
+>  })
+>
+>  #define MAS_WARN_ON(__mas, __x) ({					\
+> +	static bool __warned;						\
+>  	int ret = !!(__x);						\
+>  	atomic_inc(&maple_tree_tests_run);				\
+> -	if (ret) {							\
+> -		pr_info("WARN at %s:%d (%u)\n",				\
+> -		__func__, __LINE__, __x);				\
+> +	if (!ret) {							\
+> +		atomic_inc(&maple_tree_tests_passed);			\
+> +	} else if (!__warned) {						\
+> +		__warned = true;					\
+> +		pr_info("WARN at %s:%d\n",				\
+> +		__func__, __LINE__);					\
+>  		mas_dump(__mas);					\
+>  		mt_dump((__mas)->tree, mt_dump_hex);			\
+>  		pr_info("Pass: %u Run:%u\n",				\
+>  			atomic_read(&maple_tree_tests_passed),		\
+>  			atomic_read(&maple_tree_tests_run));		\
+> -		dump_stack();						\
+> -	} else {							\
+> -		atomic_inc(&maple_tree_tests_passed);			\
+> +		WARN_ON(1);						\
+>  	}								\
+>  	unlikely(ret);							\
+>  })
+>
+>  #define MAS_WR_WARN_ON(__wrmas, __x) ({					\
+> +	static bool __warned;						\
+>  	int ret = !!(__x);						\
+>  	atomic_inc(&maple_tree_tests_run);				\
+> -	if (ret) {							\
+> -		pr_info("WARN at %s:%d (%u)\n",				\
+> -		__func__, __LINE__, __x);				\
+> +	if (!ret) {							\
+> +		atomic_inc(&maple_tree_tests_passed);			\
+> +	} else if (!__warned) {						\
+> +		__warned = true;					\
+> +		pr_info("WARN at %s:%d\n",				\
+> +		__func__, __LINE__);					\
+>  		mas_wr_dump(__wrmas);					\
+>  		mas_dump((__wrmas)->mas);				\
+>  		mt_dump((__wrmas)->mas->tree, mt_dump_hex);		\
+>  		pr_info("Pass: %u Run:%u\n",				\
+>  			atomic_read(&maple_tree_tests_passed),		\
+>  			atomic_read(&maple_tree_tests_run));		\
+> -		dump_stack();						\
+> -	} else {							\
+> -		atomic_inc(&maple_tree_tests_passed);			\
+> +		WARN_ON(1);						\
+>  	}								\
+>  	unlikely(ret);							\
+>  })
+> @@ -776,9 +782,9 @@ void mt_cache_shrink(void);
+>  #define MT_BUG_ON(__tree, __x)		BUG_ON(__x)
+>  #define MAS_BUG_ON(__mas, __x)		BUG_ON(__x)
+>  #define MAS_WR_BUG_ON(__mas, __x)	BUG_ON(__x)
+> -#define MT_WARN_ON(__tree, __x)		WARN_ON(__x)
+> -#define MAS_WARN_ON(__mas, __x)		WARN_ON(__x)
+> -#define MAS_WR_WARN_ON(__mas, __x)	WARN_ON(__x)
+> +#define MT_WARN_ON(__tree, __x)		WARN_ON_ONCE(__x)
+> +#define MAS_WARN_ON(__mas, __x)		WARN_ON_ONCE(__x)
+> +#define MAS_WR_WARN_ON(__mas, __x)	WARN_ON_ONCE(__x)
+>  #endif /* CONFIG_DEBUG_MAPLE_TREE */
+>
+>  /**
+> --
+> 2.47.3
+>
+
+--
+Cheers, Lorenzo
 
