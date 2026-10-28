@@ -1,124 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7376606A324
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22055606A334
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 11:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IVVNMxQQ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AQEJ1Oz9
 Received: by kanga.kvack.org (Postfix)
-	id 113D46B05BB; Wed, 28 Oct 2026 07:33:54 -0400 (EDT)
+	id 119266B05B4; Wed, 28 Oct 2026 07:36:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C4206B05BC; Wed, 28 Oct 2026 07:33:54 -0400 (EDT)
+	id 0CA016B05BC; Wed, 28 Oct 2026 07:36:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECE436B05BD; Wed, 28 Oct 2026 07:33:53 -0400 (EDT)
+	id EFA166B05BD; Wed, 28 Oct 2026 07:36:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C5CD46B05BB
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:33:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7EBAE40C60
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:52 +0000 (UTC)
-X-FDA: 85371825504.13.8653AEB
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9E66B80015
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:33:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IVVNMxQQ;
-	spf=pass (imf30.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C6F9A6B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:36:33 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ABB2D160BFA
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:36:32 +0000 (UTC)
+X-FDA: 85371832224.12.78C4D4B
+Received: from mta0.migadu.com (out-90.mta0.migadu.com [91.218.175.90])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B7ED2C0005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:36:30 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AQEJ1Oz9;
+	spf=pass (imf22.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.90 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793187230;
+	s=arc-20220608; t=1793187391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jLuXcsrhYze/uot6RAritgtezmvs46B7suAi1iRl0v0=;
-	b=rSJQp1xgIDykbCcmEG6h2YKr1NAwnekMTTLUygY73KPeRwQJOwqxT7e/E5N8D+POlJqZRO
-	R9nQ0dB9pTqbG1wSD3kI3bnIhuxa4S8SJNmEkSm0c3qLulfavjROFR2QRMFESYL/fEQmwY
-	RQ2xtV/psU5DuXUYLkf4/2/+8JHbPBE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KJQ5MFQyAoYK4/IEHk3nRAEzowJdeSnGgVSxIBuPHzk=;
+	b=A0rgEUkruVgPuMVTie6tupQYcOH60p4NoEexa5ctfxhxmYcv9+W6HqkhVpaAO01nmZH//g
+	Lr8gdgfIzQOM4mv4YjXc13UeEMMF8L6Y1WR871pGMBT3fRSfHQ15z6gh0zPav8gJIwluz8
+	7b9IH9p7Mpgyy45xrp386FVovFeEtp8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IVVNMxQQ;
-	spf=pass (imf30.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AQEJ1Oz9;
+	spf=pass (imf22.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.90 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793187230;
-	b=eQtfcHE9+XdgGS8ji7RIwbDldqynLOfhQsHlS8lOmnw4/OnHwhc5+iHL9+JXA5ZcVeIcg/
-	OV4FR2ik1DhhYWB8j9jh8kIUE8RncPl21r5thcRQIaq16RTvFKTDxHfZ2UUYnNx0oLkmoH
-	z9vXlPcsz1mPF9GX8FLe3sBDNeuAphY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793187230; x=1824723230;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=z8y8XV24bROqh0zonAMNAjIZyMJbY12xpb+/fK8m0AI=;
-  b=IVVNMxQQqo6fRprueP3x9UMTEHumVFKzrdmky/mkExXlJb7w2SFFjxXX
-   /NLDT53XEpbeLXEeS/gGxzM7FjFxrnIsyThFGtVRgg5w1IiSpIqBYJLXM
-   05oc8sMSZ2hRsO2aGSU66QdPpdw8ixblIu9JJUkg/wIGAFglPYUveovro
-   CpTBuglbqDYb33zKzhmIGGmzRl9pvxoxVIdf64LtQLXjLyXuBKXc9ZBQI
-   GBtOBLobOqGn/J5w3CcFT0HT+41kso6oS+1Bq4jLRaitFsmxOFStIc15A
-   naApAlA57SGHoy0w5Uzi1njxha9Ixm+AsZ6SFuMMmv5PSjrOcxFj6Lyzn
-   Q==;
-X-CSE-ConnectionGUID: ZOZZA3ahT0a6JrDxBpFdUA==
-X-CSE-MsgGUID: RvnG3qynQR+CDDEn3haVdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1813638"
-X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="1813638"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 04:33:48 -0700
-X-CSE-ConnectionGUID: F9mrBK1+QXS8jOjCv8P8bQ==
-X-CSE-MsgGUID: KJ1QgI6jS6ey2L/RLS17LQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="6633584"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.146])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 04:33:40 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Dmitry Ilvokhin <d@ilvokhin.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Joonas
- Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, Lee Jones
- <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Joel Stanley
- <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen
- <ryan_chen@aspeedtech.com>, Billy Tsai <billy_tsai@aspeedtech.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Kees Cook
- <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, Matthew Wilcox
- <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Andy
- Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Jonathan
- Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy
- Dunlap <rdunlap@infradead.org>
-Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-aspeed@lists.ozlabs.org, linux-hardening@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: Re: [PATCH 05/10] drm/i915: switch to __nonnull_args() macro
-In-Reply-To: <33ec8080594f9f4ef1d50e36497339c9a6897393.1793027261.git.d@ilvokhin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <cover.1793027261.git.d@ilvokhin.com>
- <33ec8080594f9f4ef1d50e36497339c9a6897393.1793027261.git.d@ilvokhin.com>
-Date: Wed, 28 Oct 2026 13:33:37 +0200
-Message-ID: <3b839373c03f6b8aeafa8e4801a486ece68b0815@intel.com>
+	t=1793187391;
+	b=zttEMaR3VUFWNXm+fPVVpqcGRGpSeV8j0JfCTIeU7Gz8hLN/OC0wWtFIs/dCyqPh6+/ZRJ
+	L1RTiv7W8KuQMA1umc0+JeTGfNHM949NpJFfgSZHaBIkCDpN++fWZ5v8LZvdKb3BUzWs6i
+	9go0ar7BhXID4qi+ErW5CpVbzaLEaZA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=kMCNGJJYpGz5x7c10ToMLdnciTX84LaiipX1h2aokB0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793187389; v=1; x=1793792189;
+ b=AQEJ1Oz9qonlO9wnD+shAr0CZf+DRW2FBdnkeZQ/L6EDrrClmEze0FZ/gxAIb9L8FmrWN6mL
+ +0fF1JPkhKLSYWtq2Nbpmjw+mP+wG3RQ1obOsne+2356nFX6wJTXaNF59siH1W1JuCKzjzkFUwn
+ qle2y5Ay+dE2nlebMb82tqu0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0fbe3d682f9be5a6;
+	Wed, 28 Oct 2026 11:36:29 +0000
+X-Mizu-Trace-ID: 0fbe3d682f9be5a6
+X-Migadu-Flow: FLOW_OUT
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: [PATCH] mm/zswap: fix double decrement of the LRU node count on writeback
+Date: Wed, 28 Oct 2026 19:36:19 +0800
+Message-ID: <20261028113619.38752-1-kaitao.cheng@linux.dev>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9E66B80015
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Queue-Id: B7ED2C0005
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: kswf77kbc4euwgqji3abjds5jh1o7nss
-X-HE-Tag: 1793187229-462307
-X-HE-Meta: U2FsdGVkX18wTDxrhauFSvOhc0iIZIuQDYehmeHQSNQXpLsNVIJnqIHi88/vCIjqYrh/ekOKP7ERVYHUMYkgViJONaZyMa3B+mjV6Ta3AdLAPcrAEDlwMbStdtLCiQlI/2p7kCjDfV+KQCDUKpLocRbdL4WKSBhZU7tFWZe0DzQjjuz8FVZfEqWqnz1uZuJxdnhUbX1WAUrAQXIigpq7RQ+OISsmx0CPGBelEzTZacyTEPyoOSjGHEXqhL5/l022abZG3pJ5vsnULatYZUgxr3cwEU4GGsVvYGbRtCeLH1OQsrLwatv/Q2tiWq2bBMjQ/iDvF3GtbPEMq657puyXyJXHlzshENxVn+GDQeIDKNBV9WjHUn1kF3rWObWIBobb+yTQwAADNojDBWkH38+7qq8PN0uNbSW2zQAdHfy+glvbpOHTst89wvfE0R7RElECOk+RLMTYMckHqXlhui+XDX2Z5O1zlxclJbYsIONKEp86TVE2Fw5f2bO3Co8iwnyKM1PDFJCXlBKK5bYxjFH17rVX11duVie+zNWJdZQITeYMG9yCY+NwH4URaH1PuEU89s3XsuQIsbEaf3EEzrxL2XebxNa+4w0yZc68T8uuC7KFz0PxwoZUPftxhxlSakUyLKd+SFE3PkEz55HD5ZgozsL5L8eGBfkffGQsK/TfzxybFD1zubZNs18FTiFrzhrMBmJbKZqjW6G1bdMk+7+16CJypVIE6L4a+NCOTC3247iNXSZo3lNk3mt3tC4jG03H7VnJK9FL4INZUO3sphURoo4t3B5xZImZ5LiyERkEiUUTfCVpgTV4pjdHK4p/BivmE68TAB543AqOSfWEtNikG3whqHCv6ZbxRtBz5sLEJH8Hj0UBi5Y/J12VJQ17XJpw3H76dzBZpNxyJz9ZhJfLd6Jj/aYHhrWjHlftbbpHe4uA1P3hwyk2rCq67uhSXO/BpbsRVjGws9Ze0Xd5AJE
- v/VoGkwI
- bqCc2pmJDRuIt+Z3pEFGhj3aLgQ8XzXR2ipURhZASjM1R2dHt3DV7QfhrWP3NBSombHbJCJY9coIYYbkXwcYLHXtnBZdEhrPCN6dZyIMO6x1Mfe7QhSRFbJI8InKplwvJkwSd32LMy0xAQwj4jt+QWPiYFZpVYdD9nhjjIN0bfY1zOiASutaFMD0uq+Gp/qYLbCngpEvyytjH/AFlj+Z8jTkamAo4ynCzrkfohojoAexaW85WwxmVWBtKUZbRYGmpge9aKppdQ49WfKdSvtFwkjijczeb3Lv4Tro8ofzz22kCM70LD06No26+MhTxpOrZKgvkyx2/FRjuIXtp+PUvTkZOF7ujEYefbF0/djR4yuZZYEcD8kxWyg37a+tnqLXAPyf34eUjGLRolwTZDPXisVfrRQMOXI4JIioS8qSb+wTj4wqObP2nHvuG6qL60qCbb/5iGR4Q3hnkwUABPxZnHPwWLz4FQbZJ/LEM6xZjtt19oXlmd94c2OREsL7Ak/3NTuTY2sV5NW0WxH3wJOfss71aElfB1ObqAexai+M1tN/O2KKI1rl7a2XJG2M4wlY7avLDgVNguoYKAtDwAychnFmtd5ujvF/fiDDknLmKKsbGUVjEKE9Kz50E8w==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: qhexsdyn499f7ghgq6stdmf7cd9y9r7t
+X-HE-Tag: 1793187390-675929
+X-HE-Meta: U2FsdGVkX19lsOVbLPIBtbfjS4t+ENUiMhkR42HQdWeA6snPMlx9xaOM3qqqV9y9RZystQVGyRmk3JVcMm8KFrTxiybuJLF1XDD5EvCjEJOCjZN4YdKSSXBStvAVJJHcn1zqJRtAexCcOLXW2VW097BLGWXtU+vNyRtaoudVlvlBSRbB0hRGA/2LOIOXBby7nu4HdUvPWIQeuLAbzwuGAkAZXv+GWgfindbG075F159WEY/QuE06/rZ26lupXyPtLgMisSH6Km4SIfzqVT/10Seia39OoA1Dp1DBumS+fXPmAcIuwQke43GGazkNJlNfR9Jc8S3DcGOFqo9WVP+JAxJkc6RP4hPqvS/oRVHDmnejSa6lsLpe3ssIhg4BbuioEyNIUlgD+Mx5utbc3+tEPjLMQz+q/sWm4tb1g/laXqg9Lct+qGWUNlRR9X9pQt+0OuyOIJQ0SLJejzOTG8X9tYacULbnhTEFMX8G/o6+V10pjKPQ4VTsyCY1mJfMuRG6Qsiw4nMv3TUyK+uR5DDRoZ8woEyIIjQuwbTniv8fTjkqEHWYZuDxmFgANxkv4qjr0RMMtHRhrbdn1YmHMLHo/bnp41XzMOb3YXNqREifc5rsmk5tgEpzJ/s+Fo6UeVEhQJlE45ifYPxOyODSfBvNGzna/0NDIRbrn2tS7LT6gkbTu1n8YsgmzEOS27nZvAIe9iwWOlVh/MsFrqNawkEFazKtcEQv++3vMlelJoZ6JaL4WXCC7LlwPtiix7prMNr0aCfCX12urwGsFBEpkTZ2YMRxclSptn8gOz8SPu7HCTIkYDk4EGUS57vPWk57Wc8QE8snEH7SspshbAJIsTdqkfJtvJqAgZ6P//cm3un4NCRMSGBv8pYbo/jToASWkneX9OBOZZyD+nuVzGs2UEoFz+e9Z9MxKgXmGFXLJbgyH6njDmyS+YeQ8y+9vUhcPHknr9y3/fDSKt8D4Xl8HSj
+ pSqbQBXx
+ ykS2Dn6Tflk4mQaoYA4lPLrMIseGLghlp2P0PDryNEHo63RHaCCTl7DahfFTGIgFvEtCFdLSIAMJCTx5i8jq66a7VLHNZhmjnJEntR+q+Y+s3ymJOYmueFgeiElTkdLEiCxFZhfPRMv9QyRBvEea5UToLfg+x7a29DdQ3dodjjGANEUVsTE2VHT+zmXcxZdhKFVznwPc2VprLw24m0K3wGRptfKRRtUfy2SSGV71d/fsADY3OZ5D6/Ehch5UxbF1RFFzsvhOsJEhC1bpgj56kbNN7iii4U6vFTkG4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,67 +95,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 28 Oct 2026, Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> Commit 22302af28d3f ("cleanup: Annotate guard constructors with
-> nonnull") added the macro __nonnull_args() to wrap raw compiler
-> attribute.
->
-> Replace __attribute__((nonnull)) with __nonnull_args() to standardize
-> nonnull attribute usage across the tree and keep the attribute's quirks
-> in one place rather than open-coded at every call site.
->
-> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Successful writeback calls zswap_entry_free(), which removes the entry
+from the LRU and decrements both the sublist and node item counts.
+shrink_memcg_cb() then returns LRU_REMOVED_RETRY, causing the LRU walker
+to decrement the node count again.
 
-> ---
->  drivers/gpu/drm/i915/gem/i915_gem_object.h | 4 ++--
->  drivers/gpu/drm/i915/i915_request.h        | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object.h b/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> index a2f4b6758a65..648d0b4139cf 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> @@ -127,7 +127,7 @@ __deprecated
->  struct drm_gem_object *
->  drm_gem_object_lookup(struct drm_file *file, u32 handle);
->  
-> -__attribute__((nonnull))
-> +__nonnull_args()
->  static inline struct drm_i915_gem_object *
->  i915_gem_object_get(struct drm_i915_gem_object *obj)
->  {
-> @@ -135,7 +135,7 @@ i915_gem_object_get(struct drm_i915_gem_object *obj)
->  	return obj;
->  }
->  
-> -__attribute__((nonnull))
-> +__nonnull_args()
->  static inline void
->  i915_gem_object_put(struct drm_i915_gem_object *obj)
->  {
-> diff --git a/drivers/gpu/drm/i915/i915_request.h b/drivers/gpu/drm/i915/i915_request.h
-> index b09135301f39..f559203c332d 100644
-> --- a/drivers/gpu/drm/i915/i915_request.h
-> +++ b/drivers/gpu/drm/i915/i915_request.h
-> @@ -437,12 +437,12 @@ void i915_request_cancel(struct i915_request *rq, int error);
->  long i915_request_wait_timeout(struct i915_request *rq,
->  			       unsigned int flags,
->  			       long timeout)
-> -	__attribute__((nonnull(1)));
-> +	__nonnull_args(1);
->  
->  long i915_request_wait(struct i915_request *rq,
->  		       unsigned int flags,
->  		       long timeout)
-> -	__attribute__((nonnull(1)));
-> +	__nonnull_args(1);
->  #define I915_WAIT_INTERRUPTIBLE	BIT(0)
->  #define I915_WAIT_PRIORITY	BIT(1) /* small priority bump for the request */
->  #define I915_WAIT_ALL		BIT(2) /* used by i915_gem_object_wait() */
+The affected call path before this change is:
 
+  __list_lru_walk_one()
+    shrink_memcg_cb()
+      zswap_writeback_entry()
+        zswap_entry_free()
+          zswap_lru_del()
+            list_lru_del()
+              __list_lru_del()
+                atomic_long_dec()  /* first node count decrement */
+      return LRU_REMOVED_RETRY
+    atomic_long_dec()              /* second node count decrement */
+
+Add zswap_lru_del_nocnt() to remove the entry and update only the sublist
+count, leaving node accounting to the walker. Split data cleanup into
+__zswap_entry_free() so writeback can free the entry without performing
+another LRU deletion. Other free paths retain their existing accounting.
+
+Fixes: 5878303c5353 ("mm/zswap: fix race between lru writeback and swapoff")
+Link: https://sashiko.dev/#/bug/linux-68d2ca49-23be-4504-9a75-b8526ec92388
+Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+---
+ mm/zswap.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index ad01c691a263..d0c98daddf2e 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -719,6 +719,22 @@ static void zswap_lru_del(struct zswap_entry *entry)
+ 	rcu_read_unlock();
+ }
+ 
++/* Like zswap_lru_del(), but does not decrement the node item count. */
++static void zswap_lru_del_nocnt(struct zswap_entry *entry)
++{
++	int nid = entry_to_nid(entry);
++	struct mem_cgroup *memcg;
++	struct list_lru_one *l;
++
++	rcu_read_lock();
++	memcg = obj_cgroup_memcg(entry->objcg);
++	l = list_lru_lock(&zswap_list_lru, nid, &memcg);
++	if (!list_empty(&entry->lru))
++		list_lru_isolate(l, &entry->lru);
++	list_lru_unlock(l);
++	rcu_read_unlock();
++}
++
+ void zswap_lruvec_state_init(struct lruvec *lruvec)
+ {
+ 	atomic_long_set(&lruvec->zswap_lruvec_state.nr_disk_swapins, 0);
+@@ -781,11 +797,10 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
+  * Carries out the common pattern of freeing an entry's zsmalloc allocation,
+  * freeing the entry itself, and decrementing the number of stored pages.
+  */
+-static void zswap_entry_free(struct zswap_entry *entry)
++static void __zswap_entry_free(struct zswap_entry *entry)
+ {
+ 	struct zswap_pool *pool = zswap_entry_pool(entry);
+ 
+-	zswap_lru_del(entry);
+ 	if (!WARN_ON_ONCE(!pool)) {
+ 		zs_free(pool->zs_pool, entry->handle);
+ 		zswap_pool_put(pool);
+@@ -800,6 +815,12 @@ static void zswap_entry_free(struct zswap_entry *entry)
+ 	atomic_long_dec(&zswap_stored_pages);
+ }
+ 
++static void zswap_entry_free(struct zswap_entry *entry)
++{
++	zswap_lru_del(entry);
++	__zswap_entry_free(entry);
++}
++
+ /*********************************
+ * compressed storage functions
+ **********************************/
+@@ -1119,7 +1140,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	if (entry->objcg)
+ 		count_objcg_events(entry->objcg, ZSWPWB, 1);
+ 
+-	zswap_entry_free(entry);
++	zswap_lru_del_nocnt(entry);
++	__zswap_entry_free(entry);
+ 
+ 	/* folio is up to date */
+ 	folio_mark_uptodate(folio);
 -- 
-Jani Nikula, Intel
+2.53.0
+
 
