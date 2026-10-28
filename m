@@ -1,160 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0B3606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 18:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42DB606B7CF
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 19:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S6UPL3Lu
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PipEhC+e
 Received: by kanga.kvack.org (Postfix)
-	id 8B6FC6B00EF; Wed, 28 Oct 2026 14:54:33 -0400 (EDT)
+	id D1BB66B00EF; Wed, 28 Oct 2026 15:10:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 867A76B05BC; Wed, 28 Oct 2026 14:54:33 -0400 (EDT)
+	id CCC486B05B1; Wed, 28 Oct 2026 15:10:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7566D6B05BD; Wed, 28 Oct 2026 14:54:33 -0400 (EDT)
+	id B6D0B6B05B2; Wed, 28 Oct 2026 15:10:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EFCB6B00EF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:54:33 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D235D140226
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 18:54:32 +0000 (UTC)
-X-FDA: 85372935984.24.FE24C57
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 68C108000E
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 18:54:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S6UPL3Lu;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793213670;
+	by kanga.kvack.org (Postfix) with ESMTP id 87A116B00EF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:10:29 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AFCA0140267
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:10:27 +0000 (UTC)
+X-FDA: 85372976094.12.811AFF9
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A5CB716000A
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:10:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PipEhC+e;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793214625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0vc/BwRMumh6GCDfZk9HEhgcPOmsWkZc9E+U0h5Wqek=;
-	b=53ZUkBvT+waQyCNIUlJLAblWAUU/of5eR7CHEtNlX4CzWTkYLKHYhPp/odsPNehv69NcEU
-	MnmXkp51ybjJrSR6K76zoQI7+BHoLR0wZQd+F/WYCOl9lCg6UJEphENcqvVoZACYILSnsf
-	O+XO1l/z4IW+ZyyJ27sDpG0+Oh9JKlA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S6UPL3Lu;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793213670;
-	b=dusJjidhgHINQdYq7qLUiXbemJMTdMhJlaDNtbaWiJL/yOqY7l+9+s0yUbhYpGjIF0YFbS
-	uUmU2jE+jM944/i3xRFZQsesXlUTW75hO4+0DcVJ2y7CC8R1JdcyGG8zB8miFV0TjAKmm9
-	h6I8w2FizTy/pkkJZlGDooYd2fw6o9c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793213669;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0vc/BwRMumh6GCDfZk9HEhgcPOmsWkZc9E+U0h5Wqek=;
-	b=S6UPL3LuEu3t4EP+SqZsdOo3Pvkl0B6g2qFejBlIJUviQ/xF46QtqLiXZOEaMcknm8SSZ2
-	Yn9WB/zFQRiZO32+5GgxOvtqT4BIgd3INuM8tiPcg9+F4vLN9FS6D/TyZlp5exbqUndJ9s
-	gvcf8oGoZvkCw+mCjARc7irlZEq9zYY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-ZiyeGxYiN-W-EVoGNIcw1Q-1; Wed, 28 Oct 2026 14:54:28 -0400
-X-MC-Unique: ZiyeGxYiN-W-EVoGNIcw1Q-1
-X-Mimecast-MFC-AGG-ID: ZiyeGxYiN-W-EVoGNIcw1Q_1793213667
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1fa972b4fso6611035e9.2
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:54:28 -0700 (PDT)
+	bh=LTRbuuK9g1LUPZHzumdbyEu1P7vkaopyl0+z0dso4UY=;
+	b=DEbx6kvO3jMZAHwyZ0jIgQuVdQ7vJ0/5/BLUr2phKwpr85J4o0i3J7PxJempWQeX/2Mjth
+	PYUTV/0AV1bcII583I5wfIXFCEy4zB9PT8fsce7uf/hEqVxrutLWw3ZnIqWBEilaVTDs2h
+	i7IUyhbZlUXs/zNEL8MrqVZx0SkquP8=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PipEhC+e;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793214625;
+	b=IP+ctPnc9iXfhN0LgOHGKYHRy21tzczTTw5qSyjybekBTWTrcVk9DcDkrO3cWVmA0H3bak
+	chfVs/v+h/Hyr+Izm4W4DRoHIhudhDoB8gUmEL6jzmV6IaXCzmyQLaxAjCrcfgB7U5wTxi
+	KlyRpXznw/k0ONy7Q4L4MDOPZ6KuT5c=
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8b0a45e0fc2so1697557b3.1
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:10:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793214625; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BfKU31HmjuB+ch24+aQlyHrfU+4er9HA/vlRo9eSfvCTU5+L2pw8FJvT9MbJAqEOVq
+         oePIWMBFlNDgxMCp+qlgKvIVzFourBolqd8Oqllg3I0krTiP+b3XzOrqIkptSu7Kef0c
+         1wBCsh1JWaDRxSC5vn6V2kT9MdRGi5P67SaC+mi6/AjViTnvhIE1HLfyjRH+8Xropk22
+         8k8QW9sw70XdrbdkI41vkD9Tg8XjO7inrggSX73v+r6ZPTgIwSebnHvEThecW3VAsQky
+         dbIBqIm0RZ3WMUE3Lvu5EIP/kblSWisYVYQ/7F+2zbaJomvuQnPa7vbzgXnvT2E9JosD
+         XbWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=LTRbuuK9g1LUPZHzumdbyEu1P7vkaopyl0+z0dso4UY=;
+        fh=uIxmSnTytzPbJGP6Pb/8jEf7Ob/djM+HlZWV0WZgnwI=;
+        b=p/1kIUfA5Z1CvknSrLVZrMkLGMfRE1tyFiOVWKUwadL7Yg3ykdD4vV+E4wyfuYGVOA
+         YMrgTFTl46swzptAzyKCRqSd9r/XsirrwfgLY8fw01njZeB1Fg8DEgotstTriWV6UEto
+         zv/XsWt0tll6K1OdZr4s/lZ8fwCJ1zz+LAJcOI8JhxHLQInbRn+a66R6HCNHyIooav6+
+         Xz6MX3qdkYkl4zPxHLHLn5BGUnIaKIzgqs8uWbevtPZ7X+qP4ZRPi86EcnKnuWc5MQB9
+         Dewg1Upu673bRAFAd1bcbRfr4bObC3M9Ap6eqLFn/fP64b10es6PEd8W7xRbfqkZ+hFW
+         jYiQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793214625; x=1793819425; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LTRbuuK9g1LUPZHzumdbyEu1P7vkaopyl0+z0dso4UY=;
+        b=PipEhC+euDwZAk4bZK6HFx/c/bDmmDrAjw+h3gOI38MQKoaX3SG70JAf6DBY0DHCzG
+         FvroXEIf+zgEPBdmaWDPsX6Eag4T+7Mq3mnOygqDgANQXxrgk6DXTiarBe1o3IQe6WGC
+         Eyta1E/PM7PbQlfcVqj21mLO7RNI7cmaF5G2I/W15LS7GSj+fWc+X0e467y7Pqllax4a
+         Z36Wj1zwz0fmU1a7JJUNW8qbo/H4APewFMvYbdwa/xPUnbXb1XHbhFaBuA5eRK2l3xXc
+         m2RRPYEVixbxe2U9/Uo7PXwTWzwR2urVkbyBLJLZv1FyxXcbaA1bAPk66uOzYd8ivLmA
+         WuQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793213667; x=1793818467;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=0vc/BwRMumh6GCDfZk9HEhgcPOmsWkZc9E+U0h5Wqek=;
-        b=jlVGMgCALiqIEU+fn68UoUHPGQatPM7SiE6gyTw5DlUHlL4AvP2qxSdcnBwAftECzt
-         QKB1jOl6ftsYFdWgI3ZQ5P+G/pOEh78MrcTu/7EekRyWw8z2Rbf4Hg6BDEHGENKDClke
-         cqafZC22sic78w+MLHAaSTHZE8QEVQh7Ezgj1d9oJ8fjoDRkUJcuLfuqV5VfigyCz1Qz
-         LD2xpjaLtJKMLJ7rLj69TMNw5ogcZKMNkitQz8g7Uu4hK6GKTZHVWRkKtQlq+67GrDJ3
-         YhdkSSNPaIcc5wmxiBQSGLw6KMFUN3GdFFdIlIiNRc2jbkpeubS/KN9INy/9Jgs8sg0S
-         zzqQ==
-X-Forwarded-Encrypted: i=1; AKwUvByF3DAFpxdGyRUG5EJyzSCrVGbA5ln2HP2F2qvaoZyJXkr4FQ4TgM/y0ISqeXbBM/y5Yrh13DAHww==@kvack.org
-X-Gm-Message-State: AFq9FYIR5om3lfykIuVWSDeYufQRokOj82ls4txInRCFmlhTBCyIX/rg
-	m39h6/fgO0YusSZ7U6YHtugQhVwKUHzJ24pkJoDno3j3dVvu8p7QfNOXNqbWQLqFBUuX49hj3uq
-	uNDMz+GcY0jUmfBwa49WMj7jS4R1R7RDcVa9IvlM90fV9ZbTy23NR
-X-Gm-Gg: AYBFou3rGx/QtqEHNZxqTNG+AOJ8Xl8eTITDvmlBrjfXQ1Y42JS/KSztR8009udJPdH
-	gyg99KE2NUbJjiUOQxRpbCJJYAVWp49bsTx9ewG8A40j80WVFY1gIa7Zrih/oWvWAWxSd6mfAnP
-	bZvhEOi1AZGHK1erwXbeayCRdeDJWKb4ZkeyJybpjjGMJN4izENQwj8noaskhrn+I9XbQJ+WWjY
-	rLQA/ByO2h/eVAcpbOj6kWpRpsgtL8fu4ZRk807I+hFa9Jv5S7kPL/yXtzKNIvXFucr/1aMQhDo
-	U/CF2er7TCbdSohHGNCPHkkaznxPt7dWn8qYJgtsaoI2j4b6LN3EfQHX2+VIqLC2Z3gkiYQymtP
-	hy5a5eTlNTOp0P/hgb/XfidSvCiw7ENKzJ5CSBClY
-X-Received: by 2002:a05:600c:524a:b0:4a1:efba:511 with SMTP id 5b1f17b1804b1-4a9674e6bf7mr73578885e9.35.1793213667456;
-        Wed, 28 Oct 2026 11:54:27 -0700 (PDT)
-X-Received: by 2002:a05:600c:524a:b0:4a1:efba:511 with SMTP id 5b1f17b1804b1-4a9674e6bf7mr73577935e9.35.1793213666877;
-        Wed, 28 Oct 2026 11:54:26 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa80f04785sm10398775e9.4.2026.10.28.11.54.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 11:54:26 -0700 (PDT)
-Date: Wed, 28 Oct 2026 14:54:21 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Kevin Loughlin <kevinloughlin@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Kiryl Shutsemau <kas@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	virtualization@lists.linux.dev, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sidharth Telang <sidtelang@google.com>,
-	Punit Salian <psalian@google.com>, Peter Gonda <pgonda@google.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Jacky Li <jackyli@google.com>,
-	Steve Rutherford <srutherford@google.com>,
-	David Skidmore <davidskidmore@google.com>
-Subject: Re: [PATCH 00/13] virtio_balloon, efi/unaccepted: support memory
- ballooning and free page reporting in CoCo guests
-Message-ID: <20261028145316-mutt-send-email-mst@kernel.org>
-References: <20261027025616.1632690-1-kevinloughlin@google.com>
- <279a92da-772c-422b-8047-ad37dbae211f@kernel.org>
- <CAGdbjmJ8qk7FCbGU85u9+db5_RtcrK2y_7TfNH+iuz+OJxebow@mail.gmail.com>
+        d=1e100.net; s=20260707; t=1793214625; x=1793819425;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LTRbuuK9g1LUPZHzumdbyEu1P7vkaopyl0+z0dso4UY=;
+        b=e3WU/XUo5IkYdLex3G6QrIqq+YCrBZauDx7m33zEukr5ntpVTOwpMxEYLwZiyR/7NC
+         856ugLVuP14rEg2/nmSCehpmfShwcE9v1jBYU18s1SwzdGf+em7944pRnDfphOIyeeu+
+         nLQFOmIQpqoL+a8xgWUU0k6I49TagnI76nFx8aZ0/MHAuJcCu5zsEbcJDORpplQNPu13
+         cbtPc9SKVWqVKPJtrL5F8EcUBawaeqbQ3omOVfm6cxBvWuTrPzi2rQt9L+sthm62qnTS
+         LadoXJnCgsXptw1c+LC3iBZAfyvXDL0RaQPaJPTCyx/++OMFVToPpV9IngklHw8riCZS
+         izWg==
+X-Forwarded-Encrypted: i=1; AKwUvBytRlCRQ/5Z7NCgcoW0VIi9ZP3nuIt37ovEZJlnMBi7+b8exMMo0EDLD+Pirsw3pnUj1NGGPDk8Xw==@kvack.org
+X-Gm-Message-State: AFq9FYKlBdF2w+yWRCrghq9HSoYfHgUFNH9/kte4QtHPeooLqqs/5Bja
+	OWyXVyvpVyga6Tw+kvOwACRO/rj0yC3BMNbJWG9uofO04LmFlx4hHeXOR0zFGKX/mZPxYW03fXr
+	i2sOCkeM85mLwoQPdn8WvFQeY92vGHH0=
+X-Gm-Gg: AYBFou10Tm3C+JcsvSTm5XUEovwBC8KNYIgWiJN2eT39VH9xpM6BH2MXgxXUtPvCm1Q
+	iaFA6I0t8+KimTM8gOd/6xW0zLmwlrmwIP7qpXJRhSPoF2LTA+UV0g31tm01/xMgs4vElEKOOa7
+	vNJxQTBaSwa1e0ZHQ11IyOHA+dkwAnO8wMCtyIS+lCSYWWX8EDyLqAdRdfUVmwRkkqcWtvv0Zls
+	611BTreNXXn5gXzZCpwxdteNDZVHyoNLNTxIaZz/htCANLLm5WjtvqInvQ0TbVB3s41G2ijMzu4
+	z+z3rPNghjvTTHRjGsbtjrmbT2kJVhouHpvMHH+1q0aNmmO//MIUkenoRZNcsylJV39vEGeHVLX
+	VqIjJr9zeaH8xsASZkhEtC58gY06GilfDVC0=
+X-Received: by 2002:a05:690e:408b:b0:677:b7a7:ba35 with SMTP id
+ 956f58d0204a3-67a7b9ba99bmr5590714d50.1.1793214624747; Wed, 28 Oct 2026
+ 12:10:24 -0700 (PDT)
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Wed, 28 Oct 2026 12:10:23 -0700
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Wed, 28 Oct 2026 12:10:23 -0700
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <20261027222557.1072105-3-kuniyu@google.com>
+References: <20261027222557.1072105-1-kuniyu@google.com> <20261027222557.1072105-3-kuniyu@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAGdbjmJ8qk7FCbGU85u9+db5_RtcrK2y_7TfNH+iuz+OJxebow@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6B3XZZkUxSFKLY8wAPBdSKh8kODvztfdJxEoRoOtIaw_1793213667
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 68C108000E
-X-Stat-Signature: 59nbeijpa85qsao8mjo8a793oh6bm3up
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+Date: Wed, 28 Oct 2026 12:10:23 -0700
+X-Gm-Features: AclHuK-4hCqcwKRWdOyvz6JQHnyn5CYILZG5p3PZBGRVeev0VZcttnATHXNTRZ8
+Message-ID: <CAPAsAGzK9tySui7+LBTrtONJBdXu1FUXo15S+_EZCtm-Qsccnw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm/kasan/kunit: Add double-free tests involving kfree_rcu_sheaf().
+To: Kuniyuki Iwashima <kuniyu@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>
+Cc: Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, kasan-dev@googlegroups.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A5CB716000A
+X-Stat-Signature: xfj96j9yoozk93ak96by6noehsafxr17
 X-Rspam-User: 
-X-HE-Tag: 1793213670-367956
-X-HE-Meta: U2FsdGVkX1+Z2GKvEY7KJSAerw0dPZWbt0bYGa0WESEvYmUp5fHezYz8wp6HUkRYXdgNHY9I3pgaPNq9A4dzGIVYXz2dC7qDuXKsnW6CLGOkUl2eFfC3qS9BUpZCPn2ar/y13T5mSsT9ciPeb4qX3gLztYCJY8EcHpSuPm1hg/OQVlHvlhpetVCpty+wxSoXjxYdp0EJNcy26mS9034vw6TImAyQJ12+Jzlz7S/dHlrP5AJA/lipYNqu6s9pOwY/JcbxHj3E5fNo1E66TEGMEZyV5U7NqRO6W4il7PJ1IF4vb3Lm5q7y5h/GWsonjZlwIN7A3fEnFWMRnQCtz1TxYozkN1lwuXWfPTq2bfu/hDjPBHj/K5+fAkYx3zNFfHZKq2EUOya1oCu6Bc2+V8O67R/3UC3JlqjUypx/0Jcqux3l+Btr5npeIi6wv1fWcb0DiCTSlIM08+uBMtF2Fj05tcv9/PjB6Ik3SFf48KKDMc9ugpXDyh+9T/mowZXcWl71dx+M8aap1OwIeY3M8TZxf+BJHuNOVtb1SBP8NK0+fSKoi9JoiUnqPJ0RSpUqU62WdqiGKQKbOO/i+QsxqRKQ+1AYOhLDZbkYiABqVLrts/WooVKLnXfeZkrVt5YjEzMaPK3ZmYFK8KZsOI73rg4vS1mEWmgUV3QkhHMQD1hwB6nOjlCoGwPcQhRjZ5z68kH0Kxlu68jZUvUKcjznmxL7db2/SlxhbcBLQU+y3L7oLRNrtwkzLUZGxhwFaAf6IGbHWqK0IB+p5qIx/FkcebL4QCiylpUTbSHiYHQ/l/Gyti37R/ZrXNQrim1kVKMukwv347JRBKxWkunqPaby+9ocMFRoK0trxqU+l+6ate6S7Q7T6+J/YPNf3/MIX7QHnsiSuk8M3MoR1UiikeXzXukubMP/k9DVYEby52WrOaeqrMANrTeJrOOezJCl/IdyKfoYz/JIolRieCchDHgfbTJ
- D5pIawX8
- uDqM88WFZ4Jw4fD36SHSiEK81S5r2B53IKJU/MQIIDMKdLjD0eKgiTshbMSBn5ZtCQhJPkuvgRkGnKqZsuJdHBqAxUweoXdNS6OrIjd5U7x2CDDYJNKq5kpms8RNoIHkEAUBWafNtAJaRMLzpcvs3OKaqwfETPasFnGR57x1E9folTbAfFZX3CfrpA/BwwHJFT1QXH51SAGVqWWadYDg9+I2FBEs4fUlyrxqMahcJkBIBByvdcSFkMxOlD12MSE0KxfNcSo1AJvI27TONyiL0jp19hjveMVfge7zlxkpmldXho9xracwdn7s2L36HhGB/e4zwSOqjM4vbOPKmMTjhNgVbAxHje98dXcEoA6QPQk6saHx/X98Gl16gOar8+s2F0OqCK3ddug+pv38CQMqe2JgkTQQW9nX4wKtOjMdtHytJx4wB7Is6tvJQTw==
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793214625-434253
+X-HE-Meta: U2FsdGVkX1+IRWmNET+XzviFUrQ/hdUUeaEw3jGVobSPrIrNc6Kl+CbBOjRJ7mbHRY3yLFIe1wbN7NAp8/9fflbdky8VyVhDrMsNkz1OqZrABsdOtorPq1kwx5rG5N8M4Lw766H7iXDsOUJdOQUmX/ChgnqtrLmHgKBun8L4M7bIaCTYd02FDA2ul86WVArIw0c/N/Uz9Pqo3hjBebZaxZtNPv7JdvZMNpWnQliN3pGIUQPyKNjBVP1gYMRDHzvaj3aVkJA4ZEoyA1V24yY/Wk3nxe+IcfcZSIOxM6bLNCl3ltDLM9Q/IRG1uW/5VYCNdRvnk6lrYDEa1ygDVVJsCXBSHsx57gAKI1ZQgQpaVzcB4QW/6osGd1LSsZR49C0af7CmjiQC1QldjaMCUjUjg4CGqwjEP48mxhRBRo6Rsv60VvKFJMg7ajoy9UZj2yS0Xs9aqkrvu2wCkf7XvoKEqsQK/iOv5HKMMq+T9X+0diAYUV/6UNRxtJEsrmJt+13sSCvCoJ4SFrButjFuQhpdTY/ySpW2x/DKsrfSBaleYxeAmdfFiN8qtcgtNka192Jfo0R1Ekjsf2BYSZfGeQU46+tN4iw7XZlG7SrIGBCC3vOsXNEPgtgUllYZm6+CqvMT07BnHImxuQ+8CuAMSK9G6jfs0X37/Oj/3nol0+GD3mwEgTPtT/srunhSyijEXy37Yb5WI+uMQUXEoOc6ipbLLo8kYtNzwCc1h7gFrLFeN2dvDh4n14sYt80YvgOCPuH3nKZASVZ8qc4+xAi+OLqg8ZjmSKCDwH66w/xVtigVaoUkxModUhFLbZVdJoLT7q4aTvsUaoH8OaP+Zxrbu2d+orxG54ovIN+fU7KXHjHGqab9BJhvfqEIOttGqxPU6R6eP5ol04R/deUtDwTVkan/XIKg6kR3eFU6yS/1pxAP2iZjIfwPo2FIpsw7/s+bPoklvwtbZ2ikPD6+a7KzK9o
+ duI4Sjqd
+ PK+KU+ik/jS30D27gQx11enL3BDZLiHv0FsUBytPZzCCYyHSrqDvi+lZfDsZsD2P+bVorerWXZuliA0vaQ3oAWk3HnABD87Mi1pT9KSrcFD/GAdEEpd4zDAwIRTAgPteWFnoS6G85gyyljszTWHhKX/k9zkfLUg1QKvp4ovtcIH8PeVJPOPVi/+vhE0QIdapFl7yMFe+XpPKkNAKx4AkE4vgC5DYVCgFYIZ5G7uBXlmlouA8vnUnanEJfdl/K/luaylkT/aiRlwUuIwxo1npY4GaDxFp/XyX5o9ziLQt9yQtapZVb3b3VK1OO8g6E8NffSJVMcv/2q7uraB/U4fRPYDzquTfQI79tFjE5GpC6oxTolm/KpdwRqHsPvbVaxBeMY5TSYWNLzfOFsLBmiR01xOZvbdb49RSVsHFA38JPRc32ouahch2MjAUA8dhdsJs8JwhsIPdA1FcpO6btIrn613u+VSg3rek7EMFz82ZjZ/ePGT7WP08GdPkOO9cQzcm5ICEpwOgy7dxsTMCyaC2m4sgPJhOSirkjhIgkkYFNY821Y3/7KcrObILSyh1mO65bLVzA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,47 +147,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 11:12:47AM -0700, Kevin Loughlin wrote:
-> On Wed, Oct 28, 2026 at 2:01 AM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
-> >
-> > On 10/27/26 03:56, Kevin Loughlin wrote:
-> > >
-> > [...]
-> >
-> > >  mm/page_alloc.c                               | 248 ++++++++++++-----
-> >
-> > This diff stat should give you a good indication why this series is not acceptable.
-> 
-> Got it. I will keep that in mind going forward, especially if I end up
-> attempting a v2 that simplifies things.
-> 
-> On that note, I believe the majority of the bloat in mm/page_alloc.c
-> comes from...
-> 1. supporting the legacy inflate/deflate option
-> 2. introducing support for various page sizes to be unaccepted
-> 
-> (1) I can get rid of by dropping the inflate/deflate option, which I
-> think makes sense given free page reporting should be sufficient to
-> enable dynamic guest downsizing in cooperative scenarios.
-> 
-> (2) becomes simpler in part just by doing (1). For further
-> simplification, we could potentially restrict free page reporting for
-> CoCo guests to the current 4 MB MAX_PAGE_ORDER instead of supporting
-> any order 2 MB and up. There's a trade-off here for reporting
-> effectiveness under fragmentation, but perhaps support for 4 MB only
-> (and its relative simplicity) could be acceptable? Especially since we
-> would then maintain the invariant that all pages on the unaccepted
-> list are MAX_PAGE_ORDER?
+Kuniyuki Iwashima <kuniyu@google.com> writes:
+>
+> +#ifndef MODULE
+> +static void __kmem_cache_double_free_rcu(struct kunit *test, int mode)
+> +{
+> +	struct kasan_rcu_info *p, *victim = NULL, **objs;
+> +	struct kmem_cache *cache;
+> +	int i, n = 0;
+> +
+> +	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
+> +
+> +	cache = kmem_cache_create("test_cache", sizeof(*p), 0, SLAB_NO_MERGE,
+> +				  NULL);
+> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
+> +
+> +	if (!cache->sheaf_capacity) {
+> +		kmem_cache_destroy(cache);
+> +		kunit_skip(test, "Test requires sheaves");
+> +	}
+> +
+> +	objs = kunit_kcalloc(test, cache->sheaf_capacity * 2, sizeof(*objs),
+> +			     GFP_KERNEL);
+> +	if (!objs) {
+> +		kunit_err(test, "Allocation failed: %s\n", __func__);
+> +		goto out;
+> +	}
+> +
+> +	p = kmem_cache_alloc(cache, GFP_KERNEL);
+> +	if (!p) {
+> +		kunit_err(test, "Allocation failed: %s\n", __func__);
+> +		goto out;
+> +	}
+> +
+> +	switch (mode) {
+> +	case 1:
+> +		kmem_cache_free(cache, p);
+> +		/* p is already in quarantine. */
+> +		KUNIT_EXPECT_KASAN_FAIL(test, kfree_rcu(p, rcu));
+> +		break;
+> +	case 2:
+> +		/* The actual free order is inverse. */
+> +		kfree_rcu(p, rcu);
+> +		KUNIT_EXPECT_KASAN_FAIL(test, kmem_cache_free(cache, p));
+> +		break;
+> +	case 3:
+> +		migrate_disable();
 
-I'm not sure what is meant here.
-But if a lot of memory is free and it gets merged beyond MAX_PAGE_ORDER
-and then it's not reported, that's counterintuitive.
+Shouldn't this be before allocation? If task migrates to another NUMA,
+the test would fail
+because kfree_rcu_sheaf() declines objects from foreign NUMA:
 
-> If I can sufficiently simplify the changes (especially in mm/), do you
-> potentially see a path forward purely for the free page reporting
-> aspect of this (dropping inflate/deflate)?
-> 
-> Thank you for taking the time to review, David!
+mm/slab_common.c:kfree_rcu_sheaf() {
+    ...
+        if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
+                return __kfree_rcu_sheaf(s, obj, SLAB_FREE_DEFAULT);
 
+        return false;
+}
+
+
+Also the tests fail with CONFIG_PREEMPT_RT=y (causing use after free
+reports and all sorts of warnings)
+for similar reason, in PREEMPT_RT=y case kfree_rcu_sheaf() skipped:
+
+void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr)
+{
+...
+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
+
+
+[    1.552763]     ok 37 kmem_cache_double_free
+[    1.553617]     # kmem_cache_double_free_rcu_1: EXPECTATION FAILED
+at mm/kasan/kasan_test_c.c:1109
+                   KASAN failure expected in "kfree_rcu(p, rcu)", but
+none occurred
+[    1.606445] ==================================================================
+[    1.606446] BUG: KASAN: slab-use-after-free in
+__kmem_cache_double_free_rcu+0x111a/0x1280
+[    1.606452] Read of size 4 at addr ffff88800da67b10 by task
+kunit_try_catch/203
+....
 
