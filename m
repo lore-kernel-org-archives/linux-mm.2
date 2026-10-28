@@ -1,98 +1,163 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72103606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 12:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F11606A322
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 12:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=JILlLiKn
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=DVvoiYFN;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FAqoZbGv;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Cf2Osd4z;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=p9+PcCPJ
 Received: by kanga.kvack.org (Postfix)
-	id 89E8C6B05B1; Wed, 28 Oct 2026 08:22:30 -0400 (EDT)
+	id 0FD4A6B05B0; Wed, 28 Oct 2026 08:43:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 875D26B05B7; Wed, 28 Oct 2026 08:22:30 -0400 (EDT)
+	id 0879A6B05B1; Wed, 28 Oct 2026 08:43:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B2B76B05B8; Wed, 28 Oct 2026 08:22:30 -0400 (EDT)
+	id EB9A46B05B2; Wed, 28 Oct 2026 08:43:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BCD86B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:22:30 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D568AC0C3B
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:22:29 +0000 (UTC)
-X-FDA: 85371948018.18.18E1ADD
-Received: from out199-16.us.a.mail.aliyun.com (out199-16.us.a.mail.aliyun.com [47.90.199.16])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 435A640009
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:22:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JILlLiKn;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf27.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 47.90.199.16 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C333F6B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:43:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5A4FA0CC0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:43:36 +0000 (UTC)
+X-FDA: 85372001232.26.D1B8E67
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 939BF80005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 12:43:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DVvoiYFN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FAqoZbGv;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Cf2Osd4z;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=p9+PcCPJ;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793190148;
+	s=arc-20220608; t=1793191414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W8G8RmtjEXPIN0vCT7dpFz9ADq2mZ2AcFkZ2Qb2//wo=;
-	b=8J2TzA6w7jfR3aju/Tofb6TAAdU+FtCJaYfpoefKXNZCYcbg5i2VF4U/TBi/JMR+kEv6Hz
-	3grkc71itGAtxePQNZRjN333T5NuDmgQ7vl6StE3y1zzPMuBsD14uUxcLKyhmFEhluHRjI
-	Kz1GEHKx18h/X0bkrNP+3bILtLThjq4=
+	bh=SIZVjq4hJ3t1VQV9XqvU6Y6r776YU0NJyxVEAhuGGa8=;
+	b=0KZCb2zGCzzBSh0295HuQqkYnN7P49j5Cn+53BfOIE8dsYEIHaWBBQLh2KwI2cVfB45cOq
+	6fGvJ4nmMRPeDfjqtqdJ+QZjj4RUy3eIpwE8Uge/FdTukyC69vwB8dGDjI8Ox0yMjGmU/I
+	sU3+P9WefHlIikrRXkiW13hGSJGms5Y=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JILlLiKn;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf27.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 47.90.199.16 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DVvoiYFN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FAqoZbGv;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Cf2Osd4z;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=p9+PcCPJ;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793190148;
-	b=dlN0jpqpu8e6AWURyGxXPGcR3XnwwdtwS5jfNkMpjq+luRUQjadFoHHcPYerRfm6h7ef/t
-	nm1A/LpX8uMu6N/18RhmfvmwIcmFWlq/rFktUIodLQpsp8pfNtkPmZ8tPh6iGLtB+WMGaA
-	xVobXBDY4qLXpfNo+H46q7tSV2mXikM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793190133; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=W8G8RmtjEXPIN0vCT7dpFz9ADq2mZ2AcFkZ2Qb2//wo=;
-	b=JILlLiKnPOXsXnsiot4czkjiyExG+P0ZfOYu9WAFqfnXdRz4Pq4IYVQD1H4oGhLYsQWsorBIA05ygHUzJo5UMtDSK9+DexURITlSzW9NAGF4pIywhpZYyOObi9nxx5DN2t6ldkrdcfhCNzpuzHMaG0r3I7Lq/TtQr3K6dU++RXM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R391e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XDgoACg_1793190125;
-Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XDgoACg_1793190125 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 28 Oct 2026 20:22:12 +0800
-From: Yuanhe Shu <xiangzao@linux.alibaba.com>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	"Kaitao Cheng" <kaitao.cheng@linux.dev>,
-	vbabka@kernel.org,
-	linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	ziy@nvidia.com,
-	wangkefeng.wang@huawei.com,
-	tujinjiang@huawei.com,
-	mgorman@techsingularity.net,
-	chengkaitao@kylinos.cn,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	xiangzao@linux.alibaba.com
-Subject: Re: [PATCH v2 0/2] mm: don't migrate folios containing hwpoisoned pages
-Date: Wed, 28 Oct 2026 20:22:05 +0800
-Message-ID: <20261028122205.3914169-1-xiangzao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <c8468755-4f75-4502-8d41-5cb9245a356a@kernel.org>
-References: <20261026025552.1427901-1-xiangzao@linux.alibaba.com> <18602383-2326-4e54-8dec-bb695ae8878e@kernel.org> <20261027120854.1213156-1-xiangzao@linux.alibaba.com> <c8468755-4f75-4502-8d41-5cb9245a356a@kernel.org>
+	t=1793191414;
+	b=1zV87Zk6GDJnMH1s4o3LCybesJu0pqIlik1JgS3HJSdvF2JuswKjjINaeqFhAOFReKjgsT
+	GYtLzRcpl4/Jt7edHJS6cSqyR+mNl9vX8FERcuv2QlgWrxxu0sKnOaFVIu/wfIfJlRMNko
+	kd64bHn+qy3WDUQ3dPEs+9kGgdrGfsU=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C2D991F45A;
+	Wed, 28 Oct 2026 12:43:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793191413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SIZVjq4hJ3t1VQV9XqvU6Y6r776YU0NJyxVEAhuGGa8=;
+	b=DVvoiYFNHh5XTFT1JwNGFQl49KVYetJWc7meB1CHoaHnT+LPC0mbUoAnDEIpZEQrbSEHsS
+	FvEntye5b12nndi70rfOOOBbV1Stui2APdvxUAAj95hL5JxdUyEmRiPV3GSo9X3Ltts95x
+	qV2N1A+6Fzw56utZ223yUEqcsWGEiTs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793191413;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SIZVjq4hJ3t1VQV9XqvU6Y6r776YU0NJyxVEAhuGGa8=;
+	b=FAqoZbGvZaKzPhXAkP6jX5bf/4TMMTqW4k2zUaSfpzbzD8NQPyZoMFDswfnT9emRo+Aj5w
+	KVUQCY8EAOL+bXAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793191412; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SIZVjq4hJ3t1VQV9XqvU6Y6r776YU0NJyxVEAhuGGa8=;
+	b=Cf2Osd4zyVG7l6XYjmWmttp3P+ahTrSv9HT3W3msjARcHfAmKuajToUZqb4RRCOKnW1Zik
+	wPTT1/MnJ4/dVnkN89WxELP0Alff01WggTTtH25XTS66mkwjMqt+ru2y0sRG5FzCaoEbxc
+	6w1ND0zMc4PEGkv/GX4wZgk6+iVZyRY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793191412;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SIZVjq4hJ3t1VQV9XqvU6Y6r776YU0NJyxVEAhuGGa8=;
+	b=p9+PcCPJhGehydbjM2LDrQmjdW4NIlHsU4oPUukpcTl/iLExPoPe1fBvMQAUHM6ukWW7O2
+	NL4NDdQbXtnY6kAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDC9F13419;
+	Wed, 28 Oct 2026 12:43:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DdBgIPDt4WoWCgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 28 Oct 2026 12:43:28 +0000
+Date: Wed, 28 Oct 2026 12:43:27 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Hugh Dickins <hughd@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Minchan Kim <minchan@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, Chris Mason <mason@kernel.org>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 13/46] mm/huge_memory: fix truncate racing with PMD
+ zapping
+Message-ID: <auHt3OOD7lFwVpCg@pedro-suse.tail5790ac.ts.net>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-13-6f74bec9a5bb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 435A640009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-fixes_core-v1-13-6f74bec9a5bb@kernel.org>
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
+X-Spam-Level: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 939BF80005
+X-Stat-Signature: 77s6karf46ihuohjirjw1sunit5kaqs1
 X-Rspam-User: 
-X-Stat-Signature: u1g1nzyr4y8isnrgxgnfb8osnxnki9on
-X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793190145-260543
-X-HE-Meta: U2FsdGVkX198hN1uPjI0FZqsIi3m3Fp9OCp/vQ9LELEAtnftJB/LupHYR6/oW7zPD0Th5v2KjDsHborJn9TldPPLiGyBrVGi7MeqjVdfREjPz8s81WVQoJgyR8ZCSYM5oeTNjSkLyn1FlDHmo13QgmsNxdoNyaXZg+MVyWR9EaMT+ARPP2/F1W0YqAJAd6G27cef0AWO7W9QH640xQucsx40nk02dCXsLg6MY+Wd01HtaI/VHjRClxi3ScHSMZQ6Y3wQl0GKpPEa8eEN775Ak4ubEtIWhJq2WoEGw0UMTjIAHM7kCOA/gGb5g5nyv6M8PGjKzkW3IQpBqFfVuE6IOg5gADlZ0ZqNFgOoet2AyrI6sL6JhS77v+9KE2kbc1WLmdBiMNvcEyYyUBa89chwnDMhDB1uFqzirWa8MZd1GwajLnLAJVTW7ZNl/4Klx64tyNR1m16o39E05mSUuhgls+B9pZfz3UmHMdW/NaPvUSRefzY3Os1hq44HWxxy3HJcCz4RqKsgebUk/2NWkYDkj5Cd9PrB4//ijmGQBzIueiuD4LVOLzjaye9UkQoR50wc5oaVGiS3zS1vo/hJGA4T2+jtLVjROuvVgStOYjPcbNQjdTGJlS+C00sewCkMkkjITUYs+0vjrLEo1ibRrptArDL4vRGNbdMYLKIOpnPDbxHMkIiCcbFtFlEhvieAEaNt5bDs5r3Rvzvl24Beb5YhckKaWioz/toqf2cEh+f4P3DGzwW0c1nyGuepwoj/u7nomW09yWX0DKPmCEzoppGV+HwkGkgDrlbBe2nR6KpldUBYi8kGlgkDEe3eulLcYhO1mfDVo4eEa7riO2VT8RkCEet69UJOuxDscsyzWk61GGm4eQK1QQHuiW9cwYNc0XLFtOC6U3x4ShmQmPDwJgBn+i9CKvWfxb9rQ9bTHqV6CrUfwkPWc5xR3WfoZrokpZUyvLZkqBincaukSsJJcDR
- hmdhEvfN
- 7ueDVPZJ8p8nFeITF1D2q87o1vecS1Nv4omHInh6bPX1Kxq+C9RXxBNvzK9Jpqu0h/0qzJNLtR4jsHqP67AJEomwPPlgLcQNo8krFIlqaM+SNROMlZ7oXos8Av83cpFft2X9xCyOnS9QAc4EwV1KrFHlf3YZ6/t8yVSk6kEYVerqTZv0UOk3dvvfrNWqkEbuXZoZW6YU8Tu7ooRuYMi79d5l+WwgoZ84n4d2LAw5zOcFu24tkvfk4/O/5sjZjwnLfzE5BlLPuMTgEKh/sR3pV+zw9RSVrdH1aiK4+zZTF95LbjDGi5fuK+1pAzMDFAZ4UXtLBh0rW2KJRaXTyBzKuXdmdEGyiUwJ6Y8IgebxGpv03fe1CVcIQsqrPWAVbW+vepKumQ1f41IsDL/2UuWoJqiy5p2L2XEiz3UpTg+YgI8ihqHo=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793191414-289460
+X-HE-Meta: U2FsdGVkX1/iuXRjiw6/2/qu8hiMJ1xDzXckzTzv3aiBSpegwRtw1mS7xbS3AxZUjhgIJlDQosSUI7aJduGMsIA3F6FpvekUPoC072MNHfirQn2D8TwcjwFrkPm9B7OZcfTPWPFxcvOpLD7afqK30Dja6ffUOH5943/mxyy4k9snrtX3Tb7ZEODAjONPQLNuBVSRFmS8xbKKCXs6bXeFAJbUegg4RcCBkNXfnrjNzhuVrsnd9koJLfksEqyzecdh6MoonthvHJdJa+rDYhdOie3RghGqU72MCASehsv6eya5JOKL9fi639XYYbTNJaLZKOz3YFRNC9pZbzFVAAeZbpx5gEJZ96fctAypHbduI6ci85oEmNN5n261baNJ70cwx3gS9GSFM7QX+jVyojzRSiEpeR/EqWfQkls/rQGcmoxgCSWQCSkUFvLubuP+qGxJFMrOq2ywbEH/ZGAKbl+ty9RL6T3UoQ0T5C71mBXdDgSfcp5N2iGBbRPz2XI4xjsZPheC2WodpTHmOWl8AtaJij4HjYiea7ZdCpZBeH0y20fcU7hyhdYbraAf32tE+F8Uh1ft4iUt8a69i9dBa8VZIi1ogm25Imw/ZYHuaqVS0FY0Y9z5go8s2HI2QRp3AUshu/pIk4sjQ1gKbn0EDciHjqOFgHJW/uMQcpMWD+Mggo/OLEaCGdzmFghYLLeH624kyUQ8lZYGf3t0C3fG6YzVzUjMdxModbqXYkKPI+BEr8XKLPZkQagSJHkeEJqp7Mg4K/QW/VOl8y14RQVhduAYcOyz51Zcdt20vQy6i1pOoQS8MSSTN6vPnqhGg2+v6gixusR21THyyv9o0K1QBxxzDV5NpJSyYL2diRDF5lPOZU70g2hi0UCXX7j6RuTCe5almWiirFDr0+AcQAXhrEqwXZnL54TE8vYYwIH3iVQyZD6Q4J2JwHEzk5HtA0neppw3ARnNDiEQ5UjkILBMevl
+ c6zeErrn
+ NowRq8rHN/ZstR5MK3MN7h8+yQlkwuIob6dr+DNc3f3hcUldpFPNVQBYHuqftLi/L2djObiM9edJoVhyYktUCxYGlGzZ4dyEJ2v10H4NnemXrlxMI5+wAQvVGIB+J9tb+kmvqNJPYsCEfSG22zZtfw9IL5xT3LMwMhuWlZ5rjgfEf0SJ8aE7TKNxNWNPmNdzrwCfMbuChksvJtMLgV6yyRsFO6avuXduj3LV2JhnzKjCmT6iq8ud4KUe89AHSTPwHWRYLTA69+rD62pMK6H6tMNA03Q3DJWQJWElSLSwKZhtAY9PRvdZ4iV90A6eOkJeQRacxbcFV+B112ncdlYmr/LCCowncDVqH7vAjPfnCcRQc47HC01CZJv4BrZJYTNZ9C1h6+SI9HW71UfkvyKjbOa2k4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,26 +166,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 09:02, David Hildenbrand wrote:
-> Why is that a problem?
->
-> Why do you care?
+On Tue, Oct 27, 2026 at 12:17:33AM +0100, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
+> 
+> zap_huge_pmd_folio() removes the rmap before calling folio_mark_dirty().
+> If this was the last mapping, truncation can skip unmapping the folio
+> and proceed without waiting for the PMD lock, racing with dirtying.
+> 
+> ifs_set_range_dirty() can oops if MADV_DONTNEED races with
+> ftruncate() on XFS, when we get the folio set dirty after it was found
+> to not be mapped anymore.
+> 
+> Move folio_mark_dirty() and folio_mark_accessed() before rmap removal,
+> matching the PTE zap path. This keeps the folio mapped while updating
+> its state, so truncation must wait for the page table lock.
+> 
+> Fix generated by an LLM and sent by Chris Mason in private.
+> 
+> Fixes: fe6cf984939d ("mm/huge_memory: transfer the pmd dirty bit to the folio on zap")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: simplify comment and description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-The flagged state is not debug-only.  A real error on an isolated
-folio leaves PG_hwpoison set.  The data is still readable.  A THP
-that cannot split is left on the LRU flagged, by design.  A copy
-then propagates the poison silently: no marker, no hwpoison PTE,
-no SIGBUS.
-
-Thinking about it again, the copy layer is indeed the better
-place.  So how about this: drop patch 2, and put the flag check in
-the copy implementations instead.  The fallback patch already checks
-is_page_hwpoison() before and after the copy on the !copy_mc archs.
-The same checks in the copy_mc implementations would cover x86_64
-and PPC64.  folio_mc_copy() then propagates the refusal to the
-migration core.  Patch 1, the compaction skip, stands alone.  Does
-that work for you?
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
-Yuanhe
+Pedro
 
