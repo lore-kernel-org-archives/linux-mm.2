@@ -1,93 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC61606A325
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6971C606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 14:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KosHCLT5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nEpzLNv3
 Received: by kanga.kvack.org (Postfix)
-	id 834126B05C1; Wed, 28 Oct 2026 10:14:46 -0400 (EDT)
+	id 8FD1D6B05B8; Wed, 28 Oct 2026 10:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BE196B05C3; Wed, 28 Oct 2026 10:14:46 -0400 (EDT)
+	id 8AC786B05BC; Wed, 28 Oct 2026 10:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65EAF6B05C4; Wed, 28 Oct 2026 10:14:46 -0400 (EDT)
+	id 7C2806B05C3; Wed, 28 Oct 2026 10:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 432946B05C1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:14:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 487FB120C90
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:14:41 +0000 (UTC)
-X-FDA: 85372230762.15.7A8B309
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 596FB6B05B8
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:16:59 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E18C580CAE
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:16:58 +0000 (UTC)
+X-FDA: 85372236516.22.9CB4ED0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A8A1040006
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:14:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KosHCLT5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1B2582000D
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 14:16:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nEpzLNv3;
+	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793196879;
+	s=arc-20220608; t=1793197017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cnCdwdKLIRu22zpmh++d3j4s9fK6gxqvvFFUcjcNhTE=;
-	b=q4DhhI8jjyouYmRdcN5g/o6gRcOVn8h/1dHRoSfnUFlW2kTg7o+QIA7A4aAS+4PWxLRD90
-	dmROCWXxv7vR0kwz0z3qpYV+cEUtArAomtCSL5q9GPr4HEVYWRQU21mpcNILkwHVnS1utL
-	LNd+WlSRDB0+Ro6o3EK+V/yl6tm9+ZQ=
+	bh=emSS8rGhFSAVh+HSifwB6oqPZ30JVlQSlhM7wMUoNhg=;
+	b=ZDLQoUrMQz87cUN+V5QcKx8Vypf2RwlYWrl1lJzLWAATr7SA0lHIWuMfFrlY7mRtJmq1el
+	eBFVV/d7JWYCKAeaedE1NO14Vjc08y+dmfkFP1NohyiZilkke14ISlkFKNYSAJbV/v05dN
+	RpCYA1dgaQirOxo0KIcprC/MYiHTo3o=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KosHCLT5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nEpzLNv3;
+	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793196879;
-	b=8bOsWxSjX3V+kaGA6bKjW/ziBFxXQF3UkoNI2DsLqwtk7z9vK8g6AhG5WTysC5ADvbyBS6
-	ca9w8hb4iKIntmhgT0JRLMNsvyzKAzOPXOatEFMFJQgssT/1fUwU79Fa5oMQED6wJJFQPj
-	tJ+hjNHnv9bgi2DpS4pBkBvSXXduPhw=
+	t=1793197017;
+	b=073Ctafw6tEFrmovdq3+x0LYnb+8/lsom4t7ibVu4RYdgzepy0Yq3c44W8ZedRLeqzP9kw
+	DZFO0wkwWfksf8NpSvKgDOK26cyOCQ8qKgWi2YRSmwyMQ+S6IB+qqrvyV/3HWE/TVo1T2L
+	9oDVJlmjAh+84tx0i5kMeIbzYqqGbSo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 17384600C8;
-	Wed, 28 Oct 2026 14:14:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932B51F01829;
-	Wed, 28 Oct 2026 14:14:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D4015600C8;
+	Wed, 28 Oct 2026 14:16:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D581F01828;
+	Wed, 28 Oct 2026 14:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793196878;
-	bh=cnCdwdKLIRu22zpmh++d3j4s9fK6gxqvvFFUcjcNhTE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KosHCLT5ErruhKe9FgBcT2mZujTeztnBTMNCB4vnxJIjLTsYHk8+JPnZiaqT8/cSf
-	 9DySpe1g1xW4cGc9NhHvflNowtkA0HOExbqWV0bpUZI3s+HWCFsHbnFaX7weUtGy8k
-	 dve+RBKTVpjWkwYqA4aPjfYfF/0Zcjkp5Nwo40xN7cO3a8P6v1MbqbckdCNYD1Jm66
-	 ZZgOhU0/P00hwbxR6D1pnxghjYjBWvDjmluZQlj/GMrfD8/PbOLN57vX1zeIJhpTzw
-	 ArLeOD+R57Pth+QWnwIFqwCRzEDEIiVn77tWjria5tRl8ZeGfIvULj3sQ98yopmquh
-	 T2iDSA6YJ97EQ==
-From: SJ Park <sj@kernel.org>
-To: stable@vger.kernel.org
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 6.6.y 2/2] mm/damon/sysfs: put target pids for apply_inputs() failure
-Date: Wed, 28 Oct 2026 07:14:29 -0700
-Message-ID: <20261028141430.161175-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261028141430.161175-1-sj@kernel.org>
-References: <20261028141430.161175-1-sj@kernel.org>
+	s=k20260515; t=1793197016;
+	bh=emSS8rGhFSAVh+HSifwB6oqPZ30JVlQSlhM7wMUoNhg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=nEpzLNv3PknOMyHQDCqjJNXNxk/Uc/Xh6hGOvqmAGnYRM75hq1XI6GjwGRVh3QDUU
+	 WPyMbIJ96JuiX9TIfrkO7CHN68+xWENn8oz9SnBTMQTtDod7Jw+YJSqjqKB0z6ueQY
+	 J+YjJc/Tp5PBrDEN9hIQo6SKn5oz3hKTGYGOCTydvTr5e4+QLq14Y2E28qKbTLrpO2
+	 2DthOftJEg8ZxPlmZOeZrR6Bu+RaBacV3FP84D0QE51AGmBqfDN7DZMzEAwYRcikXa
+	 cu5ouLFHOwwZcrz5yM3YVxIOLEklM3lPuD/O0NMM/rfTy5E/nfNz73pg2CuQsm7rv6
+	 wHzuZ3koXF/xA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,  <ljs@kernel.org>,
+  <liam@infradead.org>,  <vbabka@kernel.org>,  <rppt@kernel.org>,
+  <surenb@google.com>,  <mhocko@suse.com>,  <baoquan.he@linux.dev>,
+  <pasha.tatashin@soleen.com>,  <pratyush@kernel.org>,  <graf@amazon.com>,
+  <linux-mm@kvack.org>,  <linux-kernel@vger.kernel.org>,
+  <kexec@lists.infradead.org>
+Subject: Re: [RFC PATCH 2/2] mm/cma: reject CMA areas that overlap the
+ kernel image
+In-Reply-To: <20261014145731.3431527-3-radhey.shyam.pandey@amd.com> (Radhey
+	Shyam Pandey's message of "Wed, 14 Oct 2026 20:27:31 +0530")
+References: <20261014145731.3431527-1-radhey.shyam.pandey@amd.com>
+	<20261014145731.3431527-3-radhey.shyam.pandey@amd.com>
+Date: Wed, 28 Oct 2026 15:16:52 +0100
+Message-ID: <2vxzcxstoqp7.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A8A1040006
-X-Stat-Signature: gofpung4w3kzz6tqeke1dzs53tew4w51
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: text/plain
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1B2582000D
+X-Stat-Signature: p7gphoib1ebxaabekh6ypuxwefnuijxr
 X-Rspam-User: 
-X-HE-Tag: 1793196879-752029
-X-HE-Meta: U2FsdGVkX1/P4DE7vlkYh2eT6sflq6cLduvjibCv7RiG216g6/YyDS5Nv2Dj1QFTLssk1mN6DPdfkZXt8+td7eMWJ+U27eobgFnlYTyxxRBlmxGAY7mNBfGJZ8p9MsMJl+YO5MQuvZYv9fOn0lroMd3mdSaJ08r/h3dzy/Mp/ebKyEpukM3XeI+b196yljQrICz1hVmacxvAepKBNHH4zuFTqtexrKD/tx5DKyLuqFOJHX1k2JO5bhvrLBRfLToUGn3D4tvTPKo9fgQxBEtQRKToarw4bX3k8/P5lWbjv88KuuAB4qBN8EM+OmtKnfdU4g5XWRfTFMrCEnG7G4V2ZH9whFOv+qclsOndQnyaD4fJ5M0vxT3D6ERsGve1ITDlgVLqPcTQ4jF9vr9W0h6y/W3nrlEnqUiIDYvs4Tg01ssYhiyKc70UBDYviotHCoV3P510azMCmJhVG5+nZzyJgH3ddyFcAS2ko0rbflfFNN8NhP/jCmN8hBXTkKxxBIAJF5oJQ4CIp0Al8o/eRY5ph5qO0i5Zg6/jZQDCt/nkk8Hi/KbPvCS/HMPF8dXjBKZ5a8ZLhR3z+7GQU0IhW+7H2PI/U0EEcBpDM3ML93nwtlAf0peF0D/YyjCvRbufbXuZMM/+T7as3XfKv2ri+gvpXlAmXgTVIc7gsax3q80CXuWiRHvLYsN4z/i+n005t5UjR8L8IcNZkXvaPPRrrOc3fj8XKmXvMQqpIXKH8T8qDM2FfYYGt/WGNqtFrUJnkkiVath8oLTn2UTN412v6X3Zsh053MCZ2ABowYpVRq2cFM3itd9wbfQpctPOO8OnKAMl998Tgu4Por//jGYqDicrQOyYx78fGTAB5ZZRNNzzA0VO4sMGjNXB2EuOVSGjdhTGU5R9U0Ebq9YT8b+QVcx1GpkydITudWJdmnh5T4wrtSzAdgbd8DxzHsw7SOpRpbesaa7JkbdSSzS9kikPo9q
- 39G5OdwY
- ztyOx6mhNrw7bi4hWZF63OPTutODFrIuSG44C/lLTTV8rCcxUx5v/gjIRZpaC/WMGv/Xobj+br4kHkVhGc2o9ynA0sVHAkily0s5pX26ZBDHhJ26tx9smxR8Hg4MsEDWmHk9cRSlSYr1fNiRa6bSPfnLb03aoFzeQrNuYIkJDqD5Bzi1D1ExgGi5lqzyN6PVMzJvfO4/feuAMLRymgZ9UwOlI/MyjX9UGBw98IuS3Jq8ZpWFBL5jJY013cpsbDc0bf32FJzet1t6OiuxEfIBZ1OufZQ==
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793197017-599073
+X-HE-Meta: U2FsdGVkX1/26DEn0QyVmykp98PsKl3BvRij/367e+Ku84rtQIOJlHbN0hMkr+XFRkR9m6Nyz8tDhrG5WnJtoZO3jA+DApoHk0GsdAvitZx1c9Nleu5fdmglJQRFnaXYFtCf81R0A7nC4/oF3eCr0pe1gc0Un+SmQU/zr4KU5uNUwGVHjpPic9OW3yUoMajp/JpbWyot0VrVNHAdboFbhiUrUq+o0hNLLdyxd1QBxHPKJbx9GfqY2jsA4/dV+ZAfVOhkmqKskoGw0JlR4rI7xwOL5Bd30XdklpjxalVXMiXsAOvmK42LGCvux6WySGjiTlxRnHsrJ7VdDFMQhncYaxoDPNAf/LJRWC7HklUq1V0HTlCMpB2aw9NvtVuX6CeaUVdGjxCbxelS+sxH3AjiVMeIzzP65V4QWO6fb7KBAtGwqwmQuUtPHPdcjh6o9rBSyQVv3vd1jF64qTWf6FpDTyRVRRf+edlzDCPI0CCVmgWgm0qAlxYCmCgK0eTa3EofS+/kJBANtew+0zc+FpJeAsUcpR/SUcqfLLb/oAkNondTvnfODb0iA2N9ijpI72jUSVMvgmA7BiQjVIXzgNg9I6zhsLg27c6EgqfpgPb1KCLUFpZ2Enm5T07BqOzXQDs18CP91p2R9NI/w/Zz/urDtQpW9v+DnHCxPHjVUsFaNC/9f40LxPS1Q1eTwcqMc07pbzc+gRf5dlJy519bY7BY0IYwk0nwQkzF2KkSOgYXxMw1bxNVw/SfiV42+75v1XgJEUKDwNxP5WiCtpXIYhBh0Hw1g/b0ljCDuwJM3NWx00lz9WOZvdXXTGorENp6O5TrtgVY7fW0Apt14ULapy7wZGVO2nH8r0xWcY/2+dK9K9Oqv3umOqgJZJhWb30TjCKlvvMIW+203SDvtUe5mQDch5+9m68Ea/U7qT7VtBWYkQhgFakGujizXHErmoLn+fAB0wJxvdg5iVoYhj3jP4e
+ dmNAINEx
+ 8TwpVi2haYtK89sI1jA6+UCuSaq65KjlEoziG/wzF4zVQVEF1EAxvFfpQOwwNZtp1mICVRYqJWfb3HOWl0uvlQFq+bKeMQ7JhPDxqKr9Wtj+Um4Bt1P6vUxM9UExKdH1s/E++RXNJjkK2Ac/ZG/xbOboMKI0hlbXmGwLEX+mpb9uGTRTGbCa9GmlNB6RQufm8HX6riRqTOubGN5CYHqq4mKJZh69K5IpsdJib6kgu28hIQ6Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,40 +100,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-damon_sysfs_build_ctx() invokes damon_sysfs_apply_inputs() for setting
-damon_ctx object with user inputs.  If it is configured for virtual
-address spaces monitoring, the setup also increases reference counts of
-monitoring target pids.  If the setup is failed, damon_sysfs_build_ctx()
-deallocates the damon_ctx object without decreasing the reference counts
-of the pids.  If the failure happened after increasing reference counts
-of pids, the pids can be leaked.
+On Wed, Oct 14 2026, Radhey Shyam Pandey wrote:
 
-Fix the leaks by decreasing the pid reference counts before deallocating
-the damon_ctx object.
+> cma_init_reserved_mem() takes a base address chosen by its caller and
+> requires that the range already be reserved. That makes an overlap with
+> the kernel image indistinguishable from the normal case by looking at
+> memblock alone, yet such an area is fatal: cma_activate_area() hands it
+> to init_cma_reserved_pageblock(), which unconditionally clears
+> PageReserved on every page and frees them into MIGRATE_CMA, overriding
+> the memblock_reserve() of [_text, _end) that the architecture installed.
+> Those pages satisfy ordinary movable allocations from that point on, so
+> userspace is handed live kernel text.
+>
+> The preceding patch closes the way this is reachable today, where a
+> kexec'd kernel runs from inside the default CMA area and then declares
+> the range it is executing from as a shared-dma-pool. On a VEK385 that
+> reproduced within ~300ms of /sbin/init starting, as a copy-on-write
+> fault writing to the read-only linear alias of .text:
+>
+>   Unable to handle kernel write to read-only memory at virtual address ffff00084030c000
+>   Call trace:
+>    copy_page+0x48/0xc4 (P)
+>    copy_user_highpage+0x14/0x30
+>    __handle_mm_fault+0x318/0x1340
+>
+> Dynamically placed areas cannot hit this: __cma_declare_contiguous_nid()
+> either rejects a fixed base that is already reserved, or picks an address
+> itself and so avoids the kernel image. Only a caller that passes a base
+> chosen elsewhere can, so check for the overlap explicitly rather than
+> leave the next such caller to corrupt the kernel silently.
+>
+> Note that failing here is not by itself sufficient for a device-tree
+> pool. fdt_init_reserved_mem_node() responds to an error from a non-nomap
+> region by calling memblock_phys_free() on the whole range, which drops
+> the kernel image's own reservation along with it, so the pages are still
+> released - as plain free memory rather than MIGRATE_CMA. Callers that
+> keep their reservation on failure, such as powerpc's fadump_cma_init(),
+> are fully protected. For the device-tree path this is a diagnostic and a
+> second line of defence behind the preceding patch.
 
-The issue was discovered [1] by Sashiko.
+Why leave the dangerous code around? Why not update
+fdt_init_reserved_mem_node() to expect -EBUSY and skip freeing on it?
 
-[1] https://lore.kernel.org/20260730040740.140836-1-sj@kernel.org
+Other than this,
 
-Fixes: 74bd8b7d2f8e ("mm/damon/sysfs: move targets setup code to a separated function")
-Cc: <stable@vger.kernel.org> # 5.19.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index d95fda1054a00..f830b873d05fc 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1433,6 +1433,7 @@ static struct damon_ctx *damon_sysfs_build_ctx(
- 
- 	err = damon_sysfs_apply_inputs(ctx, sys_ctx);
- 	if (err) {
-+		damon_sysfs_destroy_targets(ctx);
- 		damon_destroy_ctx(ctx);
- 		return ERR_PTR(err);
- 	}
+[...]
+
 -- 
-2.47.3
+Regards,
+Pratyush Yadav
 
