@@ -1,116 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17FE606A322
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 06:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38038606A322
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 06:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=fAiBo8UL
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=2+1C75S9
 Received: by kanga.kvack.org (Postfix)
-	id CFD1A6B05B4; Wed, 28 Oct 2026 02:03:01 -0400 (EDT)
+	id 2D17F6B05B0; Wed, 28 Oct 2026 02:09:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAE1C6B05B5; Wed, 28 Oct 2026 02:03:01 -0400 (EDT)
+	id 25A6F6B05B1; Wed, 28 Oct 2026 02:09:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC37C6B05B6; Wed, 28 Oct 2026 02:03:01 -0400 (EDT)
+	id 1227B6B05B2; Wed, 28 Oct 2026 02:09:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F7BA6B05B4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:03:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DBEAA0A01
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:03:00 +0000 (UTC)
-X-FDA: 85370991720.25.FE8E57F
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 06352140004
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:02:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=leemhuis.info header.s=key2 header.b=fAiBo8UL;
-	dmarc=pass (policy=quarantine) header.from=leemhuis.info;
-	spf=pass (imf23.hostedemail.com: domain of regressions@leemhuis.info designates 188.68.63.174 as permitted sender) smtp.mailfrom=regressions@leemhuis.info
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD66C6B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:09:55 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4595C408B9
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:09:55 +0000 (UTC)
+X-FDA: 85371009150.06.841F6F6
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1141540005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 06:09:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=2+1C75S9;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf11.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793167378;
+	s=arc-20220608; t=1793167793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=grngWBuiji8lwqsdeZEwLlbBmKPklRKaERiWSs5Ihh0=;
-	b=P1tV6giB08pO7NSjVhAztbKW6usiutYx51WYmMI9x2Ct1zjHAhI5mtgYnyiMV1oGyB3lZw
-	vRvivScxjA1gx6KIro+97IfR3PG94HzzkGoGTsvbpQrR4wvqss8xiBQLG2q+emb4d4GJiZ
-	PTCAAZn1xG5loMF3mC2v8Dgxs7dE5gU=
+	bh=W7W8QgouVJygAFTU/QOPQhBR1kM7Toq82huy2c/7CAk=;
+	b=io9ZTkHef08A26w3rhMvKliB5HY+ViyJX9N8Um72g0nmjEhnPf1TJ9MgiCv5OMeYEb/fqA
+	+2BQO+k5aria+iKwIuSCmj35dj4DK5PrGFcC5EV+AOdfWMvPHdFu1ctNvxTiT/Pf/0yYgL
+	+iFMgphyYNk9Eiqa8QEe2VeJWuW2raI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=leemhuis.info header.s=key2 header.b=fAiBo8UL;
-	dmarc=pass (policy=quarantine) header.from=leemhuis.info;
-	spf=pass (imf23.hostedemail.com: domain of regressions@leemhuis.info designates 188.68.63.174 as permitted sender) smtp.mailfrom=regressions@leemhuis.info
+	imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=2+1C75S9;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf11.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793167378;
-	b=67/YGDFXIWqwp7hdwQfmCpKy32Io/hDw0g72mg0t01Wyt4csu+rvyLYmvSc/iv1WeiVV1M
-	GrKIr0h1/aA49rxNNw8PNPE5Wi18Ah08gXK4KE9YHKeaSW52eEcMJSY6VE2r1nksIcWqqK
-	12uBhtQAm+eDHuvuhud0aX5RDygDXqk=
-Received: from mors-relay8204.netcup.net (localhost [127.0.0.1])
-	by mors-relay8204.netcup.net (Postfix) with ESMTPS id 4jDxbz4T3fz8sd2;
-	Wed, 28 Oct 2026 06:02:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1793167375;
-	bh=1okY4/WQi99J7SX0kElMLxT+6AgqYCI7lGDlpsDqa+A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fAiBo8ULWstc9LQnFor1eWiy9y2h1iQVBO8Ml0nYw6NgYJnJqC6CGNvDeInwQN8DQ
-	 K/YrYmEpEvGvaNzav6FPa5YpGSFFWenbu3xepK1f1bkfTIHzW+20rTMxeI73biav6y
-	 M+44CEY5xcXqaV3moEIwbgQqnWRW57EaprPF4gik9Hsu6a3kBzvsapzk3HDaSqdpZF
-	 AQb/kspy+U6e4/LRz0TkqBt/D4nMPaIUZXTbfrLqwnzMGzzIvzLXJ4UNsyevgyZMpZ
-	 e3gmqrJU9K2NoYF4ALm1/AVhyF8s3SNEbDSyyQjpREHg3AjcNaNtInSzeLWpKo0e/v
-	 iqOx/Fgzi/Z7A==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay8204.netcup.net (Postfix) with ESMTPS id 4jDxbz3mJ9z8sbb;
-	Wed, 28 Oct 2026 06:02:55 +0000 (UTC)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4jDxbv1pfpz8sgW;
-	Wed, 28 Oct 2026 07:02:51 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id F2C265F9FD;
-	Wed, 28 Oct 2026 07:02:43 +0100 (CET)
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <18f0bae1-5cdb-460c-a147-33cd1fa2acdf@leemhuis.info>
-Date: Wed, 28 Oct 2026 07:02:42 +0100
+	t=1793167793;
+	b=y1nyCKg752UElEMoIJQ93D1yuqhzlttTej70BLRclfhuGeGZfQUxsmC/IyfRGAt3Xsi7J5
+	r2Bb1Z3dJoHiaLH7m7iy8ZclVPU8q4JF6cHWzz2YpDb77RktLKK8mU5zmdy6f0qXXM15Zn
+	n74cm5QZ+UY8FvsKGdWmt0JvRte/T1Y=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=W7W8QgouVJygAFTU/QOPQhBR1kM7Toq82huy2c/7CAk=;
+	b=2+1C75S9OvsLz5K40sfJSzRlBYdU/BzYWI58tMpRIf+0f0ZK2cOZMkg2juReOBynHPHQxG8TR
+	tTmeA6XyS7FmG29CW8JylZa5BKgFqpekjwBkELhjh5GoiGNjizS2oYUG38F/FqoFbE36Y/xgmF/
+	PUeGEdiWDebD7k2wBkYX44Q=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jDxld6q7gz1cynb;
+	Wed, 28 Oct 2026 14:09:33 +0800 (CST)
+Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9C6AE40586;
+	Wed, 28 Oct 2026 14:09:40 +0800 (CST)
+Received: from [10.67.110.68] (10.67.110.68) by kwepemk200008.china.huawei.com
+ (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 28 Oct
+ 2026 14:09:40 +0800
+Message-ID: <b0fb80cc-4a0d-4612-beef-bf2fc398f06e@huawei.com>
+Date: Wed, 28 Oct 2026 14:09:39 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/gem-shmem: Install writable PTEs for write faults
-To: Konstantin Fastov <kfastov@gmail.com>,
- Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>
-References: <20260804140403.16337-1-kfastov@gmail.com>
- <20260804162924.0268f80a@fedora-21.home>
- <CABWhNekebS6dt=Ft+74iG4YpCq-5ZcV1EvvERNxT612VUOC9Ww@mail.gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: 
- <CABWhNekebS6dt=Ft+74iG4YpCq-5ZcV1EvvERNxT612VUOC9Ww@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] Docs/admin-guide/mm/damon/reclaim: document how to
+ disable watermarks
+To: SJ Park <sj@kernel.org>
+CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<damon@lists.linux.dev>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20261028053525.155909-1-sj@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <20261028053525.155909-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <179316736461.617485.9239835948581871887@mxe9fb.netcup.net>
-X-NC-CID: zzZh23SNCmq0eCiirHBvMPb1mMm7zOOn/wv4ZUvO7omB48g47ew=
-X-Rspamd-Queue-Id: 06352140004
-X-Rspam-User: 
-X-Stat-Signature: 163a7dobmpmphun1m36sg4yptqexwign
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk200008.china.huawei.com (7.202.194.74)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1141540005
+X-Stat-Signature: nezs6grrf8c94odj8a8e645bsxycnudi
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793167377-422037
-X-HE-Meta: U2FsdGVkX1/dpal74GsYESLQNZVH+GC0+ByYjZgm0kKwUMScV6JXWgm/pwIn9QSH3P13Wa/EL4Hf0tai82HwxyVbvZUB1p5UIZB+8amIHXDypxjDWiZ0lhfJjyujI51yQ+svmZvebSiVHKQOFatFWXn3VUwBbqNODsjAOKPEgv0d+xyjs7eyvHYSY7L1XZKQYkR8t/hf62O57iVZqNNj8uv/ZqkjojbREQjyKZ8cXG4qNx5M25T8OhJ76iKxKpzTyYtE5/l4Wr5lZspELg96z7qGEUHKCiroKifVzUauHEstJLCmBySihMZNMG7VDule0atUJ+/tMOkac43N2pZabU5Tx4YuqJ/A2tqGIAgmvAVpd29rZxsrWFQGulYzep5zaN/tJ1h2ngEMDjKc9vso8iuLPahOd5FcWVFmi8GKsVMLBZHCLJqdBJ1XLIIMU1D8WueCqw/F4chL4u5HtLkFb+b4K/HsTpPpe+mXTCQF6lWJBC3DCICWXFWpnUUa7dVuEQp+mH8SdyJhXPIj+QitGEoZWr8I6I0xJcejxaymlzutCHRff1rFBpKEauydmicdTBuv6VJ08O8xWLwiIKRbTnUA8bhxHJ8IBYQI6bHx7c9q0cEnNck4gbolMBaHUT4s1s3KdcI98R9o5TMTXoD0P0DxdzibjtvAbls42LXgNoVYoBlK9sO/KHFkB0lwPriincaRRwBkeA7Pomi3SGYMJ3ognZe4Qg6jNf1UOFH48Ar1aR0BDj9aqiKXEIzmUCTiTVkdHO3gays4y55vdrq2phX+BxlLBSArdBoZG1iXqJN2JZREnE2zkZMC1zrnpwuDpdHJ58H8hLTWwNAd7zb/twxQdCf/D6xXIMyELFBzdMEjuE5oWKnQWs9vjyWKsnIJij3RlXuJZaAu+W0vdiQuiZGNjqnElJklwgqqWK4TtLmhIGDVzMsDrjswU/BuFV7auOQUMrsZ+KCp3KyqHV8
- R9/tCGdp
- lRgUJIrBy+gZd5nUGct09LF2oY2jHXQydHvxc+aCGhTX3qHvu99ATeEzc3yKJkxNwFtWr1bqUsDZIB+5WY/cxnX/QkVLyVXknNo6+/tA5ncrCcnvEk6ferDbMQN9KXLS1s327Wr6CyI23BS+X4gYfKiWh9qXMhZDoTMsrfUC7HXooBnJ9PVMJskBmyqxH+P65MrvK90zqpgTpRKoAkjMXuA3b2YIAQ0ZGQA18xGtvyRnA4Plw6G7wG+weFRJIjXlwNW3dNGh2vmojtut5WQbLBpbpy7rYy7Wi2hK9YrJBJ6/Z9uLjr7Kd0SmSOtxoCEyKOdUmH5Kbm01zFk4hHcYjXbpUW9WHVHtZQE8VOp7MwcWrBp9CmJU+b7dRmQNXXsKEl9VDjsBD9TB/Hl15d86pOLI/9GpgcNq+2ZwjOD/Rg/JeRLTISzVSca1Of9NE8NveW5UmyYLxPVja5D/XfQTWSBRG+4R+Cnil2pQNHPT8MUx+qbkiDx19Vxcgc5dJ3ox+xRMCoX4YuvBx4Q5wf7/Nhmk8wg==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793167789-732396
+X-HE-Meta: U2FsdGVkX1/W1sBy19EKPdAJUJuZIRKPFmCU6BLeRsyxGPVIdutoBv+SfDQRnwmow+fNnP8uRoHLEz2c/59KTdh18QhSjGpaJVdInFyC+aOWaoa+4EEME/C7AyefXpjkwelyCbwlcGKAdfwPkQ/pXPcsz+W5A+UqafHiDp/nYF6sE7Wmg3psK12yrOX+FK98aiIq9meZofbAosHZcZ0Zfl8bKnVb0jaVKqSlCaTumX5NsxTE3yCcHKjW2myzefSD8ctr6RB4lOVvNC02tOhDtl7oo1bzfHqw2zDkdzWkTzUL4S36JPtfghw+Wp/7Z2NIJuOtV6GoUMJcRWeg5pKqJZr8HZnqGBwIis7xMwneT+sx9uTs22HwDLXiUJwB0YoGabO00RFQzkwMyNLFWlYwEDqXA2EY4gzhl+qCBxbs47GgxVtdCGDOAXoWkTfAXywWhmt/7vyf5waWtbjGA8eiND0s8feuzKVdbMmBRVnyXKBvZrZ92IQKFuKJcNlTqbfEsEviX+oEfRwo/wxRwY0wKCG1Yk9XIji7vcSRTawHk3D51XqD4aM56xJNkP64oWWOe6mQDeqrt6Q2QhtYrWaZt1JYh6nvThuI85X6amCtVcERkOA3JS87dvCUOeQ0XhdJmVea1G+BSs10DJ0GNO8tdMcnsBRaS0Vgy0ed/2r3mhJWeNXB7jZIjNXvaHC0bkRyzDjzfFJQvCYtauisE0E+5FoA+/OKL2rWhIObIBcbNVlk1mSB/35c1nv9BOjdMI6kkdwMpSmWIt24rXitlw1OzeQOEkFa6kIfVaghIRRoSpRQQA7cKVfzGuvZryUvV9DVDNW37ZsUIZ23ksn7Bpq8fOlc0ezb36cLRdLXdUN2R24UPJd+i51pT/Ks5p4epUBPMDJBEJcBPXVqjRq9htizW51hXs6CHV8l6E4dism+e+fKN1+xptg0ec1lMrPskANma2HZxEhkIC4RbN49TZu
+ TQtfBZR0
+ xK3bDmRYb1rmjh/5K9oxnNZX83ogniW1IxCsRnoXCvROua9hs4sbPFD0MgYOWQt6YanyjYIdf7rtSnN2tGM/ehikB8ZCvlrJbqdCsHy/MDFQVn+oKLKXHZgCKFe/4qz64RLsrvFNQ93bHt4m/ytNQCjEgZvqTJ1jbXXpxUz7jVcb5CwazQf28j3zcRNUd8Ea4KwhBzGzOaIAG8rBlnkJn+MhmgAL2YZKatKQWXyMtGAra+HuzLKhxtSB1P+Y0Yq4loQbNaYGPktiBMOmeR5kcv1aLU/7+k3hmqjDicsrgdsF3F5fBpSinGerWcF1mhdpL9uCnyGzQeGKSUdk+OpMX2O/9fvuHWe+WSPwt29J5XJR8Os5zXwXwQuEDdEjERL8bIUH8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,44 +102,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-[CCing Paolo and Sergio]
 
-On 8/4/26 16:57, Konstantin Fastov wrote:
-> вт, 4 авг. 2026 г. в 17:29, Boris Brezillon <boris.brezillon@collabora.com>:
->> On Tue,  4 Aug 2026 17:04:03 +0300
->> Konstantin Fastov <kfastov@gmail.com> wrote:
->>
->>> Since the introduction of dirty tracking, drm_gem_shmem_vm_ops has a
->>> .pfn_mkwrite handler.  Its presence makes vma_wants_writenotify() true,
->>> so vma_set_page_prot() removes the write bit from vm_page_prot of
->>> shared mappings, and the vmf_insert_pfn() call in the fault handler now
->>> installs read-only PTEs even when serving a write fault.
->>>
->>> For regular CPU accesses this is transparent: the retried access faults
->>> again on the present read-only PTE, goes through wp_pfn_shared() into
->>> .pfn_mkwrite() and the PTE is upgraded to writable.  But consumers that
->>> resolve faults through fixup_user_fault() + follow_pfnmap_start()
->>> perform no such retry.  In particular KVM's hva_to_pfn_remapped(),
->>> after "successfully" handling a write fault, finds a present read-only
->>> PTE, treats it as KVM_PFN_ERR_RO_FAULT and fails the vcpu run with
->>> EFAULT.  Observed as AsahiLinux/linux#560: muvm/libkrun microVMs
->>> mapping virtio-gpu blob resources die with EFAULT on first GPU access.
->>> The traced failing sequence: [...]
->>
->> The same issue is being discussed here [1].
->> [...]
->> [1]https://lore.kernel.org/dri-devel/20260804120529.1730187-1-pbonzini@redhat.com/
+
+在 2026/10/28 13:35, SJ Park 写道:
+> On Tue, 27 Oct 2026 22:24:24 -0700 SJ Park <sj@kernel.org> wrote:
 > 
-> Thanks, I missed that series, I searched dri-devel but not the kvm list.
-> Paolo's patches 1-2 are indeed the same fix (down to the same function
-> name), so please consider my patch superseded by his series. [...]
-FWIW, it seems that series takes a while to get polished and mainlined:
-https://lore.kernel.org/all/CABgObfYgZ87%3DW%2B6E%3DN%3DWwTuyYkaoKU3hqd84JDTSAvT3_9dh6w@mail.gmail.com/
+>> Hello Jinjie,
+>>
+>> On Wed, 28 Oct 2026 10:36:28 +0800 Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+>>
+>>> DAMON_RECLAIM runs its scheme only while the free memory rate is
+>>> between `wmarks_low` and `wmarks_mid`.
+>>>
+>>> But some users want to reclaim cold pages even while the system has
+>>> plenty of free memory, and it is not obvious that the existing
+>>> watermarks parameters can already do that. So Document the setup.
+>>
+>> Thank you for this patch!
+>>
+>>>
+>>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>>> ---
+>>>  Documentation/admin-guide/mm/damon/reclaim.rst | 7 +++++++
+>>>  1 file changed, 7 insertions(+)
+>>>
+>>> diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+>>> index ec7e3e32b4ac..23fede7d1cdb 100644
+>>> --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+>>> +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+>>> @@ -193,6 +193,13 @@ DAMON_RECLAIM becomes inactive, so it does nothing but periodically checks the
+>>>  watermarks.  In the case, the system falls back to the LRU-list based page
+>>>  granularity reclamation logic.
+>>>  
+>>> +To keep DAMON_RECLAIM always active regardless of the free memory rate, set
+>>> +``wmarks_high``, ``wmarks_mid`` and ``wmarks_low`` to ``1000``, ``1000`` and
+>>> +``0``, respectively.  Then the reclamation is limited only by ``min_age`` and
+>>> +the quotas.  This is useful for reclaiming cold pages even while the system
+>>> +has plenty of free memory, e.g., right after an idle virtual machine is
+>>> +paused.
+>>> +
+>>
+>> I feel like above might be too detailed.  Particularly, the second sentence
+>> looks too detailed.  In a sense, it is not technically correct because of
+>> 'skip_anon' parameter.  We might later need to add more such controls, and I
+>> concern if this kind of detailed documentation will limit such extensions.
+>>
+>> What about keeping only the first sentence and dropping later two sentences?
+> 
+> If you don't mind, I could add this patch to damon/next after dropping the last
+> two sentences on my own.
 
-To quote: "It ballooned a bit and getting acks from everyone involved is
-hard... Either I or Sergio will get back to it."
+Hi SJ,
 
-Is that something you/AsahiLinux/the world can live with?
+It is fine with me, thanks. Please go ahead.
 
-Ciao, Thorsten
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+
+-- 
+Best regards,
+Jinjie
+
 
