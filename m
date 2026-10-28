@@ -1,152 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BB860A2605
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 20:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D87606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 20:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hLkTVheJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A8SiLvNr
 Received: by kanga.kvack.org (Postfix)
-	id 721DB6B05B2; Wed, 28 Oct 2026 16:11:06 -0400 (EDT)
+	id 664436B05B4; Wed, 28 Oct 2026 16:13:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F9D46B05B3; Wed, 28 Oct 2026 16:11:06 -0400 (EDT)
+	id 5EDFC6B05B5; Wed, 28 Oct 2026 16:13:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60F206B05B4; Wed, 28 Oct 2026 16:11:06 -0400 (EDT)
+	id 4B6216B05B6; Wed, 28 Oct 2026 16:13:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A69B6B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:11:06 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C53BEA024E
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:11:05 +0000 (UTC)
-X-FDA: 85373128890.11.76D4F0B
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D32C220002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:11:03 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=hLkTVheJ;
-	spf=pass (imf03.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793218263;
-	b=lxCUdhkaHEFLuKIbfMMPvmItY++X5hYlJmmZ1yq+hdAb40aglXYeFd0EEP+mdRPSdarNJE
-	l5DtHqRYsRWODUy2QK6iOSArEWCNFDTHoTWfYcbb1Leamd1g59iARZljmrh/bQtRgKNRLG
-	u3UG0b7pbWzsEIAGIPIV8J7FZq+Y2mg=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=hLkTVheJ;
-	spf=pass (imf03.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793218263;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 265456B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:13:50 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A34EE1A01FD
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:13:49 +0000 (UTC)
+X-FDA: 85373135778.28.AEE886F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1C7CC160002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:13:47 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8SiLvNr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793218428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ieVwSKOmF05EqHDhXoM6Ev5vmdo6Ln+FEC5KQGbFME0=;
-	b=fCdmbEjwJaNeAu3mvmd773bzncBVfzDtLkRrXmR4/o5b6vgs8iU2VFm5RvTedgebwAbtsV
-	2ZzWd+gdDFQM+OnHWf57iUoJUjCqK5KxDPv3QxpVuNNFv/dOBccmDADk+wnv176cBbwWC1
-	OsoSPH17qmfAPNsRaqI7+g38CHTEj54=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a018493d57so18345e9.0
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:11:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793218262; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pspLagQBrZBFMyxJ6aHvPkpmlstUNPE5ZnLKa+sYUbnmj5LLU6TjP8Arr33JyPmJpV
-         O6LsDlsonEzcv69cq5bUdn5GPVAJA906NhABRhh8/iSG7YqWMbTBTtYNabuADjrUquUE
-         /rtifIIzrV86XueWYYIpYYUR7dHmxRe7EEIpReR6dfzlq/A38FHLcFBtudqHjh+pSV6E
-         KIta6L5iNeDzQqGHJhFehQA/4D/XkYV/Dj28gMFa42hlkEKDOJ3C+AJlc28PNfBXPlAh
-         VGkeg2B3xPxufME0+SvlVQEbzAde49KDAE8ujzBHp76ogrVVK8KLw4T/d1pQUgVQ8vWd
-         VUAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ieVwSKOmF05EqHDhXoM6Ev5vmdo6Ln+FEC5KQGbFME0=;
-        fh=TXwqPoLOO+NGF8K64tyXahNlkfZFh+fowjxmz4frLVI=;
-        b=o8Fj3vvXTOqPM6zTF/J7onKVBDcKS6yyOFqjh7ghAaIEjlzorSYlqJtmUl8jdD38z0
-         MR1N4ROo8vxYyQK51VhZ2bIsDmjEAyCxd/wsHx2O3/gMxqdcEGEgoGwckoGaKcA1vhbl
-         G0WbIUKkkhZ2lfRgMCAc8+A/QVBoOqm2q+qfaSiIQCApvzuUFdMEB5+NC2dfmFACBpr/
-         cW1p1y6edOd02rdKro3v626KOy+G8rtT8WYSgSWeftevIedAb6qXeEB9mcWhDRZMgHi8
-         K7PgjDuX3BJ/ld+Md1tEvg/I0a/PfYKMv2/xaAanMxRCevgmv7jLWeigjP0KjGuR+Q8T
-         j2wQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793218262; x=1793823062; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ieVwSKOmF05EqHDhXoM6Ev5vmdo6Ln+FEC5KQGbFME0=;
-        b=hLkTVheJRyHgCy7kcBAuyt3oKMbSn1v4mHl9zMaNisTSZjiLzS0KKG/neWgiGEizQm
-         9uJYgMZb5xZMCRSbYcdgAKDYpy1g/LIVzaYS//0xfH/V1kw8USpVPm4HFLdXSOHSii8Q
-         0RyvPLOkd9mddxcreyGGm47EF84vDTIX0urErkT6Po39IbBV5zJn3E1mHrSpIYJXc20Z
-         qI+dZ/rvTgolYE3UFQNpRycdWHDC497Y8oVe7cCWVdus+C8rxXC7z4AXnYxAaChKqxRF
-         ctESxkJrZUXKNP1NPBVy/MlHaSilnctXTkY4epQF+myQbnrr+UTcCJ+zYpKgAn2RM/1h
-         f3Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793218262; x=1793823062;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ieVwSKOmF05EqHDhXoM6Ev5vmdo6Ln+FEC5KQGbFME0=;
-        b=rxeNQdRsThHLUKCyPj/jyr4q9JIISWwV+oQtYEHJRV2qVC8FwTwVyGrpAt5+xBxVLj
-         tiSPcLi8bFP+402/1dKJpdCAb8VBd++hWXa0h4KTXHwjUPXPcmzXUHLNTdCMbo8OTiBg
-         lhhSF2rRYoo7vLiQg7pbXAJYgL2drghUBWRX3b3W7OJmg39OAYPRGmfH0YoI5brYVPVP
-         CBG0G6Z6WdggE6rmxnBksTx1AQzfZTCNxhSDX5ILuilimg17Fdq30ohqzWC/rPsEl47Y
-         6iFe+ILX6XVGiIvgI2HMhJdsEEX3B/UbJf87f/t/EAcSKEncZG8ETg9Q3aIvtGpczG97
-         3PcA==
-X-Forwarded-Encrypted: i=1; AKwUvBxSfHt1uhPqxrPYlBWc+G4fXPOU5skq3ut77ED0khr6BYAgYIW32lSXe8xum8fzvRjoFFlv8xFiaQ==@kvack.org
-X-Gm-Message-State: AFq9FYKiTPqN8nVID0HsetGKXfEGxUxFG7OVWVsc5VXj28eZIIXqkwNW
-	/6McQnKMj8yiUhGNsm4DTc4EOex9KyyDphJ7Q4Mo42Jesx9LljYBe6WugZIC1CtD1KL7fAYUwUW
-	YxKN/aQqo0Se2s7ifU0fvsTVhcigHgK+RaeeB1zMc
-X-Gm-Gg: AYBFou3ZORgs80Hg5FKySaHgMijjbBpeGxo1i4Hfv3jspzJB7HdYuct7yH/AxSAYtCP
-	mh/cLWzPVb/k38tQ+SMVksk+S9m0Pdkpci9D34HyVg3tUstP7A/hNAvsPFuyy8CVkMom7f4sujZ
-	jSwadSHT9SS8oCeu602gLTTURik3Ykn7BLxyXaAatHO8LbxVnDpxn2FzQP/LhsBqwRbSuheK01l
-	lZNmY4vA4I0ON77DS4domRNhVF/IG81LZ52YkNiomt6RtV4aM/WH7hK04+Hs4X0acn2KRMnDbdq
-	nLoWVm6RWrXWzaz2heiPK8LLaHeeHpX63AM10RDN3Iove7NgkcKJUJPC3yeIThjn5vUPeFFE39C
-	psDcTQg7AkGpqjhw3o1OZMBpExBQZH0A5WkbW5K2G5wMmHrNfiZodPx0kiREtdG5ifwcijeo1as
-	4x9ktniOfH01zafkJ61d2oT3k=
-X-Received: by 2002:a05:600c:5903:b0:4a2:a8c:22ae with SMTP id
- 5b1f17b1804b1-4aa9617c228mr122895e9.12.1793218262038; Wed, 28 Oct 2026
- 13:11:02 -0700 (PDT)
+	bh=qcNCn3o5PHSz7rHDpFBcCfTyitECJ4mMk4mDBTECIc0=;
+	b=s3TeDih9Q+UjpA71pIRM04pZPgA4kt+6f4FjHXUebeWXtX2A1rGgze1U3nMV/00JPtND+f
+	heWhUnAyH5EwskVEMaeTKYXXNDlfQlURL4cXYeIBJYtJOrkpwnsufbjwRPJNz4mkz5SilM
+	XH/lB0xn+OhG+OMDHuHhQYURy9GecwE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8SiLvNr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of jarkko@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jarkko@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793218428;
+	b=k+Csmnm48ip2fBalLbFm/x2FXIxnyXc8jLdinwNufdds7TGbyxWyYR8ikta4AqrUUpaVF5
+	C6jzLIk16fq5mDiS2WCTFpv5v7K4dQQ1qacvnU6BEveCya0HGf2hF6l50meocQAMw/sMAQ
+	E2uUjIfGCEpDZzlBlA8YAB5tUG+Ktyo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with UTF8SMTP id 18A1C60202;
+	Wed, 28 Oct 2026 20:13:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 4688F1F01829;
+	Wed, 28 Oct 2026 20:13:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793218426;
+	bh=qcNCn3o5PHSz7rHDpFBcCfTyitECJ4mMk4mDBTECIc0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=A8SiLvNroTPllgxM7/NlCUN5LPANqhn6UynTAq5ihgbboZkFux6BhBkTBjZm3crr9
+	 dZxaHxev/vlaupaACgdv834naSVYBkUmjwfsPLlSW08KoweT/hCn2jJhlFEBBoQp0n
+	 ThnwIDRbeospa50sgUHEaLYo5TdohXooPlJll8bGcGX5NMPkLTkwVsUvTplrrSbSTR
+	 wFSVjQvIZRMzBWSBYAgQARXpltti5u6bQnimxtIRnQ9pmDCxDHDGY4qvncj2r0M5iP
+	 Wy5oqGXTFGtNUiHCP+3VArt+FptWgWlWI612t6R2PoKF6VYZYkHx5SU177/bobDWkp
+	 JXow5JGpoMKZQ==
+Date: Wed, 28 Oct 2026 22:13:43 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: David Howells <dhowells@redhat.com>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev, keyrings@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Thomas Graf <tgraf@suug.ch>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v3 5/6] KEYS: Replace assoc_array with rhashtable
+Message-ID: <auJXd718ys6ZaTHj@kernel.org>
+References: <20261025001105.1824178-6-jarkko@kernel.org>
+ <202610281546.OMDCubFW-lkp@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261028010611.3929937-1-tjmercier@google.com>
- <20261028010611.3929937-2-tjmercier@google.com> <auHLzLazLr4iA_Pn@KASONG-MC4>
-In-Reply-To: <auHLzLazLr4iA_Pn@KASONG-MC4>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Wed, 28 Oct 2026 13:10:48 -0700
-X-Gm-Features: AclHuK8Bs1IRBhRVIWz--v-y6aB5LNo_Pu_T9E7KUcmFBJKynmoafpKWfnr2kyE
-Message-ID: <CABdmKX2xEPL3tTWS22rDeVeCKuT9QhW9QAQdXGLSjUJEvSnWiQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/vmscan: remove redundant !mem_cgroup_online() checks
-To: Kairui Song <ryncsn@gmail.com>
-Cc: roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspam-User: 
-X-Rspamd-Queue-Id: D32C220002
-X-Stat-Signature: bzz9ctjjen8ruh8ij8sdrrmr7brzpo5r
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202610281546.OMDCubFW-lkp@intel.com>
+X-Rspamd-Queue-Id: 1C7CC160002
+X-Stat-Signature: j4f8et6b4i7s3hh4gw81qqbtkdk5fk6o
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793218263-22179
-X-HE-Meta: U2FsdGVkX188riece4jJiSY+pYL6QXLHlbIfxrtqjG7AUXhlZSgaJGqUoELUrjwGx9hKmihXwKxjeOtmMjoDcRm5z3FjvmSQnDA2DQ/OxyKf2T3KTtiitDG+Zg9EAZDlVOOvK/6DbzcM63RS2wHO8BNNnmCRhD1TZS3Px25SVxCYGtvt+Ts9obJ7+eD/h+0G3QAXa1u+MD9znANkllRxaRc72Q+fQ+pL/IcASENnkUCV+ziG5CpzCX5r+6ZwK1cWKkuREXp0msTLp1rsaRZ4OARiLMfAS3ahNpdOyWb5uT/xMs0fFFxWaynQNzdcZJDy55KbutPR0x+cleOygHKShsesgecDPnaHHAMDQP1H8muhI31VxiQ0XcgnfwjfskueR1A/YDkGmW1bDaC4KkmOtEMt2S1o1qrd6YxgzPLMauTig9sQUu7S//71i24qikv+Nrvs8eQlKfWJCEmwbggBaD+AKYWwNtN1C2BGqLhT4DT4HMtjKgGxhOlG5mlY9fPKCKN2ISJQR9TBxBL8UHUZ33cwOteOwXs7xWHnf6bMQNn0uW28zFK7Lo7zHiGcLUBfNyoeczO0UfvKcHC8UrLfBM3p50pjzUf2Ekqn7PZ2E5YCwDVJumS7rwr76ounR1GHHsyl6kfIYFAy9LmmAydVhErz98tHae8PYm7NIs5F+2G84X7ZXNXauMPEuRJyOXZYMjjhjXJDZnTOHWh3rEpymiR9/2f8FMxKEHcZV797MN0iEwIK5vCiU2tzX5jk9kpgGl8OTDZ/xk28ndDFFbaIVa4UDjbWIowkrHmhREvmdRB7GTubzOK+w1SPK6xHgq0BUhbudrGJ9E/Nt1grkYxTfRmBIqZ2BJDPuKBh+c9Gp0+n0WZnMW91kdQ2WoGGBEFETiyK11cWhZzBKSxyCTh5sR5gKrmHsDMx12RxR0Z8ddDpXcneFrAVAmAecAZXeAjsMI4RIE7ZX9RUldamne9
- Sw9pa1pD
- +mNs5aNy0FtPpAl2dEB1obZQQO22q1IpZN4l2s4G5HihYX0dsibMAb/p/LQ7I1AcJOuURG2/O910H+u9Y0OWxT9ZlLXsAAgmKJa0UtxtXG/Xia0TZ/308b6sHkK1mopSbzxfVs5/H5JzYygadZDMuyxiOLmed7BkMSBLOXz2BMU2v9S9V3ZVO//oHtMAY0neqH7OLdfzfOpYR3DgOg4pDFuoiqlI7hL2ksFmjqnD5X3RnUBrug9Jlr+qr8pwOqHccMdSI5/W1XGNVjD6KhNg0siDVquluuh8FNLvQBdejfm+sAr4Stx3mBLrYDbiTNrNQ4DdpPY1W7WgylN2O2Z99TepqPCTGZrA3GAuJuJCFjZiKqau6nUkWyC+XDlG06OktYwZ6izJxkk3DKvFhVFq363/Sag==
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793218427-223541
+X-HE-Meta: U2FsdGVkX188i+vLKZnBZeybN85rIIbhP0LbKKHheJKVLsOWjw8Qynt+ObiviQEX4GFAj9m7dhJDBn/3R98WZlY8x78zELmC5nxxiyPv9ZizZhNSdSksCsfVbI2xacw5qs3FR/411dOoCyp/Lf6ZjmzCxaHAojAmAaSlx7mJECw5IJ5nPu64aXQHIa6ZuEiCixnWx8vn1liVGkuoJA+3aRg7ho/BvVBlzj6r0Sy7rimhUdKI4zPaKzU+Y2rdTjt2Kk/4kcZNAMG3jc2YMbd+CemcmY7Zwj9yg3FqX3bOwBVdnorthngESiSUhI6UKEsGmMSoGpX2BELfvJ3GK3wnWehCSZzZbzo4oAwPTM2Amkpy2UM1W5rLkntBT//6yW0SN/6pskoWYB5NdURS+HAWZQQDgpproXhiUwrVqrqTrCTmnb+Tw4sVYzuuDXrOmK1+hPaEDIAqJ1mrm70YjwG1ma/p8ITjBflrptBSHyOeIiDbzd3e8gS0I0G/5ALmS/DIp0q6Lpo8u1Q5tnf9bR8oJF8qd0EsSZoSHH8DXuxMrvwWoxgek+osQ0GeGbckPeCXe/U2ygrz5sYit9xWzwvuVSFRLQVxULZy0cy7Iksd/h+HhsVxLhJV5JyMcxaqv7av62QZPytU0d93x3Z/KSrOkCW5TFpx9oQq0uRMk8wq9H9QiFBNCyhmxSDpvjglS6eC+Zd0HXXtziUxukZCaqtQmwQMo+il49kA1LcuIDZYsW5swfKlr9h/Q9+mltXNpueaPfBGzGi/lZwp/3E91wJOCJuwmX1WQiqv7+vmAGjjdC/N55Kf7j7U+inn/VeoYfiEDH+H9wUScPUV+bzctoOLWA/nrfm864RWxn1ux/SRnZTtSJeSSzyrE7LeozWST9XrLcSxJGIj2t3L3Lggif47HMABSpH0fBxr6sGbgjI+Vxzf2pu+irZ5e2ApQwzICYciyhvbmyXJn0HYCuQ6Zf0
+ lqn8ftv9
+ d/UhI2lGfzzPJnrX7auX/XtKntNPBBwuzqfwg/hRnD1lJJsPy0y+alX04pGt1y8JGT43xpvM0yzB+nDbT9yKbdVjndkrPXe0kMDm6Pc5J7gFrSLEexNM3v7ukfbkiaVcGkU1JtoIJpKLnCTwRc599v5NgGh0+7xsei4URGomyIHda8IiDmW6DKuwQ5pMnVGLZNlFBCZIINMK/lhXmyEsQ7gukZitssMQNhLO4yKhgOC9XOK2LeqgufpiHraeZwK+yYZGY9EOSUcZrMkR/H40Zj7ahCHYfzyvkpJgtHKgOvgW01jlM66wGP32yPqy9seLzql0nb8Wo+0Pb8/g3RyN6yUsPaqNLuzTZUNCODMU2wVZ+lrdm7lHVsnHLVx5It40SL11eiSpNiepbckkVAfYSrmDh48cl1QTu2Ksq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,156 +102,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 3:20=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Tue, Oct 27, 2026 at 06:06:05PM +0800, T.J. Mercier wrote:
-> > Since commit f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of
-> > dying memory cgroup for LRU folios") and commit 0e0ac326c511 ("memcg:
-> > move LRU size accounting on reparenting instead of copying it"),
-> > mem_cgroup_css_offline() reparents all LRU folios to the parent memcg
-> > and zeroes the child's lrugen->nr_pages and lru_zone_size before the
-> > memcg is offlined. Nothing can repopulate the offlined memcg's lruvec
-> > afterwards. A folio that is off the LRU during reparenting looks up its
-> > lruvec through its objcg, which now points to the parent so it is put
-> > back on the parent's LRU.
-> >
-> > As a result, lruvec_lru_size() and lruvec_evictable_size() are always 0
-> > when !mem_cgroup_online(memcg) is true, making the offlined memcg speci=
-al
-> > cases in get_scan_count(), lruvec_is_sizable(), and shrink_one() dead
-> > code. Remove them.
-> >
-> > With the get_nr_to_scan() special case removed, an offlined memcg that
-> > still has stale effective protection now has
-> > apply_proportional_protection() applied like get_scan_count() does, so
-> > the MGLRU and traditional LRU behavior is now the same.
-> >
-> > Signed-off-by: T.J. Mercier <tjmercier@google.com>
-> > ---
-> >  include/linux/mmzone.h |  8 ++++----
-> >  mm/vmscan.c            | 28 +++++-----------------------
-> >  2 files changed, 9 insertions(+), 27 deletions(-)
->
-> Nice!
->
-> >
-> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > index 3b96d6c7123b..7f078ff0dd76 100644
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -638,10 +638,10 @@ struct lru_gen_mm_walk {
-> >   * The events that trigger the above operations are:
-> >   * 1. The first attempt to reclaim a memcg below low, which triggers
-> >   *    MEMCG_LRU_TAIL;
-> > - * 2. The first attempt to reclaim a memcg offlined or below reclaimab=
-le size
-> > - *    threshold, which triggers MEMCG_LRU_TAIL;
-> > - * 3. The second attempt to reclaim a memcg offlined or below reclaima=
-ble size
-> > - *    threshold, which triggers MEMCG_LRU_YOUNG;
-> > + * 2. The first attempt to reclaim a memcg below reclaimable size thre=
-shold,
-> > + *    which triggers MEMCG_LRU_TAIL;
-> > + * 3. The second attempt to reclaim a memcg below reclaimable size thr=
-eshold,
-> > + *    which triggers MEMCG_LRU_YOUNG;
-> >   * 4. Attempting to reclaim a memcg below min, which triggers MEMCG_LR=
-U_YOUNG;
-> >   * 5. Finishing the aging on the eviction path, which triggers MEMCG_L=
-RU_YOUNG;
-> >   * 6. Offlining a memcg, which triggers MEMCG_LRU_OLD.
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 9959ca158ce8..636152d8c94d 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -2754,13 +2754,6 @@ static void get_scan_count(struct lruvec *lruvec=
-, struct scan_control *sc,
-> >               scan =3D apply_proportional_protection(memcg, sc, lruvec_=
-size);
-> >               scan >>=3D sc->priority;
-> >
-> > -             /*
-> > -              * If the cgroup's already been deleted, make sure to
-> > -              * scrape out the remaining cache.
-> > -              */
-> > -             if (!scan && !mem_cgroup_online(memcg))
-> > -                     scan =3D min(lruvec_size, SWAP_CLUSTER_MAX);
-> > -
-> >               switch (scan_balance) {
-> >               case SCAN_EQUAL:
-> >                       /* Scan lists relative to size */
-> > @@ -2769,14 +2762,8 @@ static void get_scan_count(struct lruvec *lruvec=
-, struct scan_control *sc,
-> >                       /*
-> >                        * Scan types proportional to swappiness and
-> >                        * their relative recent reclaim efficiency.
-> > -                      * Make sure we don't miss the last page on
-> > -                      * the offlined memory cgroups because of a
-> > -                      * round-off error.
-> >                        */
-> > -                     scan =3D mem_cgroup_online(memcg) ?
-> > -                            div64_u64(scan * fraction[file], denominat=
-or) :
-> > -                            DIV64_U64_ROUND_UP(scan * fraction[file],
-> > -                                               denominator);
-> > +                     scan =3D div64_u64(scan * fraction[file], denomin=
-ator);
-> >                       break;
-> >               case SCAN_FILE:
-> >               case SCAN_ANON:
-> > @@ -4355,12 +4342,11 @@ static bool lruvec_is_sizable(struct lruvec *lr=
-uvec, struct scan_control *sc)
-> >  {
-> >       unsigned long total;
-> >       int swappiness =3D get_swappiness(lruvec, sc);
-> > -     struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> >
-> >       total =3D lruvec_evictable_size(lruvec, swappiness);
-> >
-> >       /* whether the size is big enough to be helpful */
-> > -     return mem_cgroup_online(memcg) ? (total >> sc->priority) : total=
-;
-> > +     return total >> sc->priority;
-> >  }
-> >
-> >  static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_c=
-ontrol *sc,
-> > @@ -5199,10 +5185,6 @@ static long get_nr_to_scan(struct lruvec *lruvec=
-, struct scan_control *sc,
-> >
-> >       evictable =3D lruvec_evictable_size(lruvec, swappiness);
-> >
-> > -     /* try to scrape all its memory if this memcg was deleted */
-> > -     if (!mem_cgroup_online(memcg))
-> > -             return evictable;
-> > -
-> >       nr_to_scan =3D apply_proportional_protection(memcg, sc, evictable=
-);
-> >       nr_to_scan >>=3D sc->priority;
-> >
-> > @@ -5325,13 +5307,13 @@ static int shrink_one(struct lruvec *lruvec, st=
-ruct scan_control *sc)
-> >
-> >       flush_reclaim_state(sc);
-> >
-> > -     if (need_rotate && mem_cgroup_online(memcg))
-> > +     if (need_rotate)
-> >               return MEMCG_LRU_YOUNG;
-> >
-> > -     if (!need_rotate && lruvec_is_sizable(lruvec, sc))
-> > +     if (lruvec_is_sizable(lruvec, sc))
-> >               return 0;
-> >
-> > -     /* one retry if offlined or too small */
-> > +     /* one retry if too small */
-> >       return READ_ONCE(lruvec->lrugen.seg) !=3D MEMCG_LRU_TAIL ?
-> >              MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
-> >  }
->
-> This part looks much cleaner, thanks!
->
-> Reviewed-by: Kairui Song <kasong@tencent.com>
+On Wed, Oct 28, 2026 at 03:28:38PM +0800, kernel test robot wrote:
+> Hi Jarkko,
+> 
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on linus/master]
+> [cannot apply to akpm-mm/mm-nonmm-unstable manguebit/cifs-next manguebit/cifs-fixes device-mapper-dm/for-next fsverity/for-next fsverity/for-current shuah-kselftest/next shuah-kselftest/fixes dhowells-fs/fscache-next dhowells-fs/keys-next v7.3 next-20261027]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Jarkko-Sakkinen/KEYS-Expand-key-datalen-quotalen-to-unsigned-int/20261025-031009
+> base:   linus/master
+> patch link:    https://lore.kernel.org/r/20261025001105.1824178-6-jarkko%40kernel.org
+> patch subject: [PATCH v3 5/6] KEYS: Replace assoc_array with rhashtable
+> config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20261028/202610281546.OMDCubFW-lkp@intel.com/config)
+> compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 186e70f4e6a1521991d2340d3d49b23b1beff11f)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261028/202610281546.OMDCubFW-lkp@intel.com/reproduce)
 
-Thanks Kairui
+This is expected as at the time when I sent the patch set I did not have 
+BPF changes yet.
+
+Br, Jarkko
 
