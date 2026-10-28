@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAD4606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B177A606A33A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 09:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T7LvDeA4
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dC6x6mp0
 Received: by kanga.kvack.org (Postfix)
-	id 7D2666B05B1; Wed, 28 Oct 2026 05:56:44 -0400 (EDT)
+	id D79686B05CE; Wed, 28 Oct 2026 05:56:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AACA6B05CD; Wed, 28 Oct 2026 05:56:44 -0400 (EDT)
+	id D50826B05CF; Wed, 28 Oct 2026 05:56:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E8586B05CE; Wed, 28 Oct 2026 05:56:44 -0400 (EDT)
+	id C66B46B05D0; Wed, 28 Oct 2026 05:56:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ED406B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:56:44 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6788160C20
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:56:43 +0000 (UTC)
-X-FDA: 85371580686.11.1A09FCA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0C7B91C0007
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:56:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T7LvDeA4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BEFF6B05CE
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 05:56:51 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D28AA8589
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:56:51 +0000 (UTC)
+X-FDA: 85371581022.25.D0EC976
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 821F3100003
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:56:49 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dC6x6mp0;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793181409;
+	b=KhuQHKT+joLJR2uC8U0rsod+3Mdh4vaM8ic+HCLd19K+4dfNBNvFEfvqFsibfzIlgY6ba8
+	JOZmvCrHy/O4qKqaL2WCxLSs7C+YUZn3PmA9eVqSEQrFdXMteDFTV9MPgNtajMPzywtEmV
+	69eF0dKaB6VOLiznS/U+bm1w1K5mllI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dC6x6mp0;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793181402;
+	s=arc-20220608; t=1793181409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tTONV0wfYTEoLkmIvz7RQ+tH1UPTg8CBB7eyk2nMDtc=;
-	b=TdgDttW7euvf6gqkv6a+MOAlfKKilygOA6+f2fjmo6UuZK3MiueDbpYaJTzy1IzQqrsyhn
-	EjWClIrUnIc0gfsfyxsK8ThqWqZy84IroTF3dRCbz7qaT3NOfKDGwTtb+50jGggDPTii4h
-	EjBV+YRldCLyrMnzzHBpxVMaWC6yVLU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T7LvDeA4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793181402;
-	b=GH0f2PkJdztHeAPYr5kdW0CadLFqZMu5oSFCthwAiOOSHW3IdcE5Zq7TTbKlfLGmsahCkc
-	24A/yxwvVP2/30yY3ELySg0EGMF8UYkLHbUcUTchz7pUyCyO10AnJ0wL//+hvtP+n127fm
-	r9q7KTo/RePsd7CPJkH8kTC82LcZEbM=
+	bh=9K6LuntH9T4HIMxba+wTQAhrty/BEZYK/zZUmw09iQg=;
+	b=1l3XnxmFqVRucbmmZEM5kKwCd6onMcTtsA+YsCPZ+ei+aMwRlYz7fubIJmRklrTriv1GRq
+	XS/nb4dszBYgSjw6DwQ9TzhrqFxwt8dkyplu/OE8EZkXsqISyGcLMp0M34+pNCOVbfFAOa
+	DabWGo8+o/lk2UZG7UOpjX6qDwQeITc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 56AD340094;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E1EA601FE;
+	Wed, 28 Oct 2026 09:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98C91F01825;
 	Wed, 28 Oct 2026 09:56:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9411F01828;
-	Wed, 28 Oct 2026 09:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793181401;
-	bh=tTONV0wfYTEoLkmIvz7RQ+tH1UPTg8CBB7eyk2nMDtc=;
+	s=k20260515; t=1793181408;
+	bh=9K6LuntH9T4HIMxba+wTQAhrty/BEZYK/zZUmw09iQg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=T7LvDeA4NM/lf+CB9jzmQfHAxXqaA3Ilna6y11k3BHwLYimyi8th7awsune2nKO06
-	 9H2OBF61PJCX3HYXXz+7XH7SmhmgJeweeG5IpaOZaOOv1yL7SH0nhtRdSMcr96rkQS
-	 NF2FrV2WybzV8IXuBcvvCxOANd7SfGQAjGm4WVcU8DkfAFzoZJ68tcUhc2LYaBDsb0
-	 td7m++OEXW8bXS7MrcK8hBRbby4mcy4stf+J8LYOQswXRivoQ3g64SXlYFVta8lg1Z
-	 Oq951tfV3xmBNNEkjbAxrjVA2tfiA/V5JEhPYhZcV7gRc3neSLCOlNU5YwgMJDMH8K
-	 anruem1gGbZyg==
+	b=dC6x6mp0CrCnPmvZRxEeyoOslOOH9vDbPicyPAx237mqoHjzDrh2nBB8VnKrGZbZS
+	 RVoA8doKLR8SCFpYl6x5Civn1umJCktVgsaZ+0ScQ/mRCPZevSCw1YXe609a/wY8ai
+	 1crQ/b9lXE0NENwwR1RR+4A6jU8TYGf35TKKhKogJrAeW0leTWEbgIwkBWvBXZJqpC
+	 9x9vcwKJ3r84XTxC0sVpuTJcTIfZuE08brjSDjKW7qQIeZOtZaO7PHVRWbtuvHJccE
+	 dAtEMpcu88OfE7WYR9+o3CvCWDhiZZ+6/eKozJcKOP5tXKhUZMCucKSoLgNVfbKQ3+
+	 ZUlVVTfRXkMDQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 28 Oct 2026 10:55:08 +0100
-Subject: [PATCH v3 10/15] mm/shmem: rescan after nonuniform folio splitting
+Date: Wed, 28 Oct 2026 10:55:09 +0100
+Subject: [PATCH v3 11/15] mm/shmem: fix truncate hang in large swap entry
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-fixes_shmem-v3-10-4ce3baf2db4b@kernel.org>
+Message-Id: <20261028-fixes_shmem-v3-11-4ce3baf2db4b@kernel.org>
 References: <20261028-fixes_shmem-v3-0-4ce3baf2db4b@kernel.org>
 In-Reply-To: <20261028-fixes_shmem-v3-0-4ce3baf2db4b@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -91,28 +91,28 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+ Chris Mason <mason@kernel.org>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2061; i=david@kernel.org;
- h=from:subject:message-id; bh=kDSUfEl5ZNv/axp1FN2MBeYxXzEoqliEBOqbPl2MeRo=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeHmu6oaGktF8mefv+O1eUsyMWHqrtO7JsXqaBY+PcJ
- 6u8DunkdpSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjARd1ZGhlkzfM/qP2F9KKC8
- gnEd0y+FevO9fEtWz1a59/90bW1m30mG3+yfNC47XDzyfNKO7SsaMry3Pm3dc/Giy+E/DhJcd+d
- G72MGAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3891; i=david@kernel.org;
+ h=from:subject:message-id; bh=8QPoeV9STiSx5Xa/ZaTy76exQxrTdIRl5s6LBctDShA=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeHmvKOja9bm5b0N1XbK0vNl1b69Otc/6Kwax/J467P
+ vgirS30qKOUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJLL7O8E9TdEkR/728ohqB
+ zYeLLuortPAKfZCfcn5dkPHdmperOoIYGXaIN7JrvFz+5K9KAU9QQKm8k+2umt7KJzHmf9wKneW
+ YOAE=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 0C7B91C0007
-X-Stat-Signature: mrhdxms9xgwsqwn4eg3bbx5otpjzme5r
-X-Rspamd-Server: rspam04
+X-Rspam-User: 
+X-Rspamd-Queue-Id: 821F3100003
+X-Stat-Signature: b3xhhs714k88dsx6rhszr8jz98iu8bmj
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793181401-945128
-X-HE-Meta: U2FsdGVkX1+LXOmm5yNRhTIAZcrJAJ1vnO30kq99NQ3C9aF1HDFHxkLgsAKwTlSSbwBSn1/AslvbCkDuGFGNQt8uTmQyuOa3mEqxI5ZjHxEs3ng2YkIyfeLdCA6P4iG1AtFIXMhEkC4y2Khc3usT2M+B2EmzmNASR60A+kiMcc/QTuCd/x3ZQ9QpV7zXit/6FYA6FU27Dg1ERirqyZkbYtrVELhj4GGDNHwyec8L7Tb8YZ4nUAyAVv+YQ9F5SNna21B8b1/AD5/0/SJNF22WUziTSUTGuoipEz1dGQKgbzuCpbR2TpOKQRv4/Er+AHBfbdmPf+4OMQGI+NjzIOqlkWNK0IY/2Q3aN4gD3oYiQVVbdIqQbReQUNM8h4D/D0aHQT94TjayBzQkw46lqSNVSIpj2jxgT/YvmQgdizwq4PcwCveXHsW+hj5nnFAZChelBZIr15Ysc1BQMOai+2UA8uoLqRETXcHzh6mVjZ18OGI9ZfQycHOyTm/ikMbTD4IcDLFXvCA90qROnrKQg8bkWydCydTJUUhLdvngRVXZIP92zpRiRxwo1CizcGobBH7wtBNWjr8gnidbjo3EzHng4muH66ZhK/6bIpoRbJ9GBkQFaRvwM6ED474AQq0wj7sPTD0pIF2jjuRnLSlHgHKx+NOlbuv/nD1W9zw4FoRAAM5vZmG99bXmrlXAyjVtVemdhOKvKiXxtIMJbsQby5H1gV2Qp5KaUXOMugJAmWZLO7/EC5/KSQ9GIUZlzL0+ievMHDPWWpJ52ErScpTX64IEc2IHg54rS3g5ULCLB6QQZW49Lux85r6n1qxBTrVsY2RbETcjFqkxqFkjhg4zaHMRJMG/t9L3XWwu8LxgaxelnikF0Opy/zod3jXKRlq0E/lhFBCJcdTrSYBUGNkEDTEAZirppmi4dgQZdQFnaAgqrSgjLwagVNrZXtbEkMf756bDYG5e8cp4/cZunFP+7w6
- 5a5w1R1v
- 3tvjrI/Urlj1kYksaKnMVWXGPtjOst7ZEkhZZ4kJMXMLRyonSn5+BxB8o3t8LrgO2DjzHDaoCwp7YcAckk2xs1rN/9ENonOSrhgt6k9WvYQrecj0/0rSo8ez8jfCSCQJi5397YdsitCEFYdOixa8Yr37IDjdhGIdOe9bqDrxdoTvYkkZvC4RDY1bdrlp09w6QCHHwW9HnNtHRXT3CG1IWW8emafXjUlmOV050T/pX1zAfF2Twzb8qHhVcn3c/u3yyYkdBqRZGHwwlP626GdTl9hPNDJY5x+KiGJDJcnzXfZPibGvjZ6ctBFZ1FCmCQ0Der1q70OEbItV0LJSjstzdgbVNWzyd0aMuMzu/p8DlpMxqH7xqEBA2Z7ZtPgxNE3c3NzsZqY7D1w7FcvLMi3DcAV1aXturAG/Ov1wpbFMMcKlPqcg=
+X-HE-Tag: 1793181409-547189
+X-HE-Meta: U2FsdGVkX18CBlAklBzElnOMYR10I7FN2EiRKaDd1Fs2juz3D2ju3h4J6VaZv4LDcE8EAJqAzrZfqOgRpjoY1kAlPtmno5BioKjVov4L+u+lToQBm/C/rewLUjriCVFHtedZ5jVUfFXuMxdeejlmTfun9fbqslxc/kfyODq0mTP/xk5LwmySSDBKfJPsNYLLcCZuQYOMcgtYGLEvNB46NFNJzoaTL8dhRNuSxIVHusRxWtErhuaIdxyDhKtl2TYDZmbXiWFMtM0fwSAGURjl93kwrcJHzsvB9xU2sxyqIM8DggvekJsGNHC8ulZ0sVz9zxse1kZMvpaTgSUBhDDFmbhquRjTEKZr6xioblSd9EHphqSE7ut5gDHA6h1jf3/TUopgx3tpSBe4Xh38KusvEjtdLB8KQ7oP5EobHgKMf9H1o1F384LFsDtYlMTK2mb+waT/IpdTIk8XSB1VZre10GoEqmbsBLa3Dl96b9bN+khs6Ibu6CPwcVIZ0bcHxMUTJVWgXOnCr65ezpjKB+Uwz/lwSM3nQkjGPNvbYjND1CQRSXoxXFC2aC73peiyo0BO3bJqLnOipGMFDsKrP/GmjFTBPrkg46084QPFtoYxdjOdOjw73MBwoILuGjbWhqGuenDpregSXn+lyqlRHpBrch1Z5ZvdZzVMpL9Hr+AvFCTBLDovJ6hiUd1HBZjnrJiNbYTb+hKhfzS2AlLWszXFmxTkmwNmXk3Lkdu2EQ3PNMeUgCjK+gGXy3+Updb1RSoMGzOnCVnLGGxhqHcOCDMeqjCrbE0ka2dFfrZnWs3yurJIfPzMzjhvH7jYs3RB7nK5aH18Im9t181P+ieCE5a7ipmsd4uRj0Kg7DSPlTN2tqJ0ZvS+FFfMbPkN1dEPQDpJlZ6KA1EA2rdkJZFuZy28844GhGXLjVcJU9GSZ2mHRVeXyumTRi6bk/SEi0FRmIDMVKdlwwz4i6R6Txg1iHF
+ 0M6OR6fx
+ zBHjZ/kRahCjCiQ7vZDW0mf8WsjPNzqhWmDu+Dot0PThprCFbV57nayApoRaUlii1xeF1T0JxPK5kWDMBwGkrgj7RcYIDK2UBZD/r1O4MTX/9WWP7GOZRNyd65UUEP0V2Fe6bgBq5oumoYzDSDaesK6lGXps5VN7DVXTrjh7y//7OWmaijM55z2fT/oEqYcHacK9wqIFGV+1d8CvzSvV/RUu2vFcLPOpmGFMErEGx331/AfUUg7C9jrMHpmivaSfFWafg1q7nC+T4+AautpN0uYg7J8QwBQiJjriomoouLlHMq21Fu78eMXEEA5j4LL2aiDaD7Zb67kzMnAoLFoR0/v2N3JhB9vRwp4OludS9JmaErIxgVpSdINEIDLJjZ/eXXA/bU+YKxm/X8T14U7hcsFvL+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,57 +121,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The final scan in shmem_undo_range() restarts after a successful split
-only if the original folio is no longer large. A nonuniform split can
-leave that folio large, so the scan skips the newly created folios.
-Hole punching then leaves pages within the hole allocated even though
-they could be discarded.
+Truncating a tmpfs file or memfd to a page-aligned size inside a large
+swap entry can loop indefinitely in shmem_undo_range(). The task holds
+the inode lock and cannot be killed.
 
-For example, a fault below the hole can allocate a 2 MiB folio after
-boundary handling. Punching a 1 MiB hole at offset 64 KiB splits the
-folio successfully but leaves the original folio at order 4. The scan
-continues past all 512 pages, leaving 2 MiB allocated instead of 1 MiB.
-The hole reads as zero, but the pages and their block charges remain.
+A large swap entry represents a whole swapped-out folio. For example,
+truncate a file whose pages 0-7 share one swap entry to four pages:
 
-Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
+    [ 0  1  2  3 | 4  5  6  7 ]
+         keep    |   discard
+                 ^
+            new EOF, start = 4
+
+i_size has already been updated when boundary handling asks
+shmem_get_partial_folio() for page 4. Since it is swapped out, the helper
+calls shmem_get_folio() with SGP_READ. That rejects page 4 with -EINVAL
+because its starting offset equals i_size. Nothing is read back.
+
+The final scan cannot free the entry without losing pages 0-3. It skips
+it, restarts from start = 4, and finds it again indefinitely. An unaligned
+truncate avoids this particular failure because the requested page starts
+below i_size. Folios already in the page-cache cannot trigger it as the
+direct lookup will return them beyond EOF.
+
+Fix it by letting shmem_get_partial_folio() call shmem_swapin_folio()
+directly for swap entries. This bypasses the read path's i_size check,
+allowing the existing boundary handling to zero and split the folio. If
+swap-in returns a smaller folio, it also splits the swap entry so the
+final scan can free the entries beyond EOF. Retry the lookup if the entry
+changes during swap-in.
+
+Handling swap-in allocation failures remains broken and is unchanged by
+this commit. Even when shmem_swapin_folio() correctly returns -ENOMEM
+instead of -EEXIST, shmem_get_partial_folio() returns NULL and
+shmem_undo_range() skips boundary handling. If the large swap entry
+remains intact, truncation can still loop in the final scan, while hole
+punching can return without zeroing the boundary.
+
+This may read an entire large folio back from swap while holding
+i_rwsem, only to discard part of it. Avoiding that I/O would require
+splitting both the swap entry and any large folio still in the swap
+cache. That, however, is much bigger work.
+
+Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
 Cc: stable@vger.kernel.org
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Chris Mason <mason@kernel.org>
 Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/shmem.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ mm/shmem.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/mm/shmem.c b/mm/shmem.c
-index a686b3d77647..21983cce9fcb 100644
+index 21983cce9fcb..59907556369f 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -1478,18 +1478,12 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 				} else if (truncate_inode_partial_folio(folio,
- 						lstart, lend, NULL, NULL)) {
- 					/*
--					 * If we split a page, reset the loop so
--					 * that we pick up the new sub pages.
--					 * Otherwise the THP was entirely
--					 * dropped or the target range was
--					 * zeroed, so just continue the loop as
--					 * is.
-+					 * The folio was split. Retry the scan
-+					 * to find the split folios.
- 					 */
--					if (!folio_test_large(folio)) {
--						folio_unlock(folio);
--						index = start;
--						break;
--					}
-+					folio_unlock(folio);
-+					index = start;
-+					break;
- 				} else if (folio->mapping) {
- 					/*
- 					 * Splitting failed, but the part in the
+@@ -1298,12 +1298,10 @@ void shmem_unlock_mapping(struct address_space *mapping)
+ 
+ static struct folio *shmem_get_partial_folio(struct inode *inode, pgoff_t index)
+ {
++	const gfp_t gfp = mapping_gfp_mask(inode->i_mapping);
+ 	struct folio *folio;
+ 
+-	/*
+-	 * At first avoid shmem_get_folio(,,,SGP_READ): that fails
+-	 * beyond i_size, and reports fallocated folios as holes.
+-	 */
++retry:
+ 	folio = filemap_get_entry(inode->i_mapping, index);
+ 	if (!folio)
+ 		return folio;
+@@ -1314,13 +1312,14 @@ static struct folio *shmem_get_partial_folio(struct inode *inode, pgoff_t index)
+ 		/* The folio has been swapped out */
+ 		folio_unlock(folio);
+ 		folio_put(folio);
++		goto retry;
+ 	}
+ 	/*
+-	 * But read a folio back from swap if any of it is within i_size
+-	 * (although in some cases this is just a waste of time).
++	 * Truncation can look up a large swap entry at or beyond i_size.
++	 * Swap it in directly to bypass the size check in shmem_get_folio().
+ 	 */
+-	folio = NULL;
+-	shmem_get_folio(inode, index, 0, &folio, SGP_READ);
++	if (shmem_swapin_folio(inode, index, &folio, SGP_READ, gfp, NULL, NULL) == -EEXIST)
++		goto retry;
+ 	return folio;
+ }
+ 
 
 -- 
 2.43.0
