@@ -1,79 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCD0606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D57606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RoKXrxRL
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e0FGFPFZ
 Received: by kanga.kvack.org (Postfix)
-	id AEF3E6B05B6; Wed, 28 Oct 2026 04:41:00 -0400 (EDT)
+	id CCA046B05B7; Wed, 28 Oct 2026 04:43:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC7966B05B7; Wed, 28 Oct 2026 04:41:00 -0400 (EDT)
+	id C7B676B05B8; Wed, 28 Oct 2026 04:43:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DD6F6B05B8; Wed, 28 Oct 2026 04:41:00 -0400 (EDT)
+	id B6A256B05B9; Wed, 28 Oct 2026 04:43:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 76CDB6B05B6
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:41:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 03A8EA0C57
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:40:59 +0000 (UTC)
-X-FDA: 85371389880.22.FC39914
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 428341C0007
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:40:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoKXrxRL;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 861296B05B7
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:43:58 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C2511201BB
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:43:58 +0000 (UTC)
+X-FDA: 85371397356.04.71E0C7B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 34F64180004
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:43:56 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e0FGFPFZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793176858;
+	s=arc-20220608; t=1793177036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NScCcV9wFc6Sd1YtAGPOEgK4jDQ30KRAuuBIko3e0tY=;
-	b=ObKafwliCy5JW+hmNOXTL+VwvCKv5Nbs+JSWBnwhPEG/tQ9EHwB5FnV2nKKlf/woBZCwJM
-	ehcrD+Qq0KV/htYKxOUD60sVeR2oAj0EIj0vLH243ENbZkSIOkn+ca5eUhSI9F97ZxzHSC
-	2I/PUJ/3W6FCXwpntSTHQNm9v25J3C0=
+	bh=LMwbpJ5FecMxJ5P7RbpHp11xGjgqCgb5rSN6ahzVqzY=;
+	b=wRAI4OFzf/N6MhqpMMI2dkVcYw2fF0+SrvIJd8+UXtniK3BstpJqI01Y3AoBHIaZBaI4P0
+	ThbBWXRLU9qem25x52261m951wR73JK4s+Zzys/61Ki+cCI/3uc692P0dQ2adZnkBPthTH
+	zTc6KTDZ49chvxnx/zakdqH58EuSh3o=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoKXrxRL;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e0FGFPFZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793176858;
-	b=320HhFBu6k8okcB/gZLp8XIghSDXWW8ywpTzMVqtRHKOrTrxBAd30HxWKa783OsAQKOVgK
-	cgsyKflxgziFoSIsrt+FPB8mHl3q5w/1Sja2okFvtvEjVZdfbNdJQbGl3yGfeSF2Qq2iK2
-	B/ZTelBeNLm+8RYYYu8wpsb0dMXKtfQ=
+	t=1793177036;
+	b=4cJ1EMPwnTTMru5JcoPPjulcM49J6niLpYQFHF9FXpIpKDXpu66zZ2+fZ4tby7fjlXPhei
+	QZ+Opfus4GXVvDHcrcjpbJCiC5aCk/EQZKV8nHkUGWK2v+nok8q6e2rHB+EzDouw2SNLuq
+	NobHDsRa9JI0dcYKXXkgR4KaGQL1GBo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 91D1D60136;
-	Wed, 28 Oct 2026 08:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0EF1F031E2;
-	Wed, 28 Oct 2026 08:40:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 61563434F5;
+	Wed, 28 Oct 2026 08:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514F81F01825;
+	Wed, 28 Oct 2026 08:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793176857;
-	bh=NScCcV9wFc6Sd1YtAGPOEgK4jDQ30KRAuuBIko3e0tY=;
+	s=k20260515; t=1793177035;
+	bh=LMwbpJ5FecMxJ5P7RbpHp11xGjgqCgb5rSN6ahzVqzY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RoKXrxRLPSgf26a6jGNaysWfRNoZuVhq6LhyElLzyxCGgnlYSmwc6jQjMIvjn2CfW
-	 grOFoNwwPNL1zB0oH2t4PElnk9fwgVTYa4/Tp1721aiXkzkSSCUsUvngV+bfzy+vnn
-	 ybZnFU4aTm/JO6kcIP9tS7sVgF/4asdtiIbTdGtMnf3E+Umijm95tGIBqnQGC0xq3E
-	 z0xio0fi+QIsk94xhcj0Cu0q+D7cur4M0vlceYqW337VsgA5A/W6acgwGAN8Fzjyjo
-	 958jVF4UeDgw0Q1j5ps31XySmZ3JYWG3bW+6BgG6k9GWU5Lx+BmRfn7NCaELLadrF3
-	 eB84dhGt+8GHQ==
-Message-ID: <a212c5c7-04a8-452f-ad2e-68d61d281e83@kernel.org>
-Date: Wed, 28 Oct 2026 09:40:52 +0100
+	b=e0FGFPFZV0eKLLl32jk8I59lTEHQZEc8BJazgceNrvGoPpcwCu+4WvrvaSKgCd9WX
+	 IzOyxh5oVJv8Nwhf5GAZZMKstLdzYZ32czuXW9YbIlsF03Nm3316wrUZvZlxWKb6du
+	 1PI+nawkxeyHD3BszZ03n5XTcheeQMbGpQFJ5Fs1Kcei/oeJBiMO3407pEVCoFxfRp
+	 w+UqDHQWXzrYlTaICvdhu1UyuH0FoWiPJyYnP7SA8hO6sA+LJGZky0dPGRW4/HJK6q
+	 FsTNGORi3mzq4nTdwM7L+t0toa2Kn+9DsarvP71ZTDicaw2OfwnPj1BKd7c89OkoOU
+	 Zl4DnismZRDgA==
+Message-ID: <829c448d-e6e2-4874-a166-7624e87489ef@kernel.org>
+Date: Wed, 28 Oct 2026 09:43:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate: snapshot the source nid before the
- misplaced migration
-To: Yafang Shao <laoar.shao@gmail.com>, akpm@linux-foundation.org,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com
-Cc: linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>
-References: <20261027021721.95781-1-laoar.shao@gmail.com>
+Subject: Re: [PATCH] RDMA/uverbs: Don't return the shared zero page from
+ rdma_umap_fault()
+To: Zi Yan <ziy@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>
+Cc: linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261025-fix-rdma_umap_fault-zero-page-v1-1-186255624f1f@nvidia.com>
+ <78802ed9-9cc6-41c4-b131-7c7d38f7ff39@kernel.org>
+ <DMEVZ5MU1YA9.2X3HCCHNQOIA7@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,22 +122,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261027021721.95781-1-laoar.shao@gmail.com>
+In-Reply-To: <DMEVZ5MU1YA9.2X3HCCHNQOIA7@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 428341C0007
-X-Stat-Signature: cno8co4umcfa8uozpe9xrxbsot4x3ac7
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 34F64180004
+X-Stat-Signature: 716ej89phskctmakudq6iwpqpy5jjioc
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793176858-984341
-X-HE-Meta: U2FsdGVkX1+6Gw0wH/3y0tKHe1XCnjkJkXXJZM5PSnG3ET6rjU0U8+XDTS6BlCrijI63IHc7AZ7TM1XF/KVgbee7k6Zg/y0xHsqumKPj9Yj/PV0fKZ3tzWp31kZEBfEsoBT6Bl9CWp3ek6EUw+dc0y7iJ2qGVh5ibjABTWLsZQy7w67lOC/DyLAiJE0asxkDEjxV29HGawK2jYIOW6EhERN735ZCerdC2MJybY2nhNoX46e3p6aMo2Zcr82oWUVfHja9XjK/21lsCNQ6NyhHKU60Zt05St7Yu1rs4aoLgoQhOMZH7rnNxVD8JAVqQHC4Jmz2RefQDFKo0BZ81r6eVGBmPBBfFB9Nr2EXn7OWq2703du2yLNdxXQyHHw+kLKh8oyRFUD8zVVtM9JDokdQ9tJan2qcSWZVt82amCCSGM18Z8xSmoPkSBEFDq3wlYgDb96UFjs6HPxjXD5xBrvG+wd4mJpnmpmX5M/rqcRyM8P38N/taGsRJ0/QXe40wGQuQZCjRIlsGtVUbcfc69uWS1nRloGmEP4E5i4XqBxYYp1qswB+2ZIZ9uau/Z235c2lvKoXsXYpWM94l2LiO1AvlHBn0VN9+DC+TNE70b3V1zBGVQYDtnTxjerZFgh7SN27HjfQc41oRbMIzAP+ocwPbZymRVla0DGZL02f6VWfBN19U9ii4ZGqVeJyCp1JErl9U58DjA4qqBiXPlAa5w14jrdFfFYOO+LZnQXCkTjhFw+Gf1xpR9UNeR3z5TJCjdF2TevoGi29m5WSuQ2Fb+aIKpiTQac6ORqjJfL+ijVZhhPcRZMs56ls7cGPIP8TW8YIlkQ/8a1LOp7DRvRbqQ7R43LUQUSKmGahUvhXSABq2H0dEayQdcv2OEig76b2cP8UsHsjieQdstqVnh8J62foj913yh7QeYkS0kwvzZNPXCNSIdcTV+Y2d5+oXDp7B1nWoJzgMzliXEvnfIt/fkq
- K6akMnHc
- WgM6Z90sOpHRPa6VbTIJhUq46LXbsAaxxOq9HeBhjx2taPwDvqKSTJxaxinzTz70pA8p+pLkxfGc7B+rCqQqYYeCN8lWhfn0gUy40Z8BWCGnZqg6XD1092VFbUbdN1DDQw6Duy1fZtUz8HwzQbxH/OWC8VWSbALL3/lFOYc3YLVGbxpHo8U5ta2xQxiWa5YUk49DzxMNn4QTlvLR6xkibJkBwb7+vNb6DbPNXz1DKxkOPpeGFB+cCJYJ1ERYgdsTfqpTwd56xs3HMIMuJL5/lupnPZYO/LHKr0p3htX8srA0vcTcKtL/1iW4VWrO/fpOqOKZubsZaIxoRiyRgwLnSeb+NB1/ENeHsU/wMv+ww7ixDULyCsp+OVh90xQT4/CRF4xjFWxY43RNHcLLJGzg3s9FtLhAoRZQNPtAitzf+SLryTzhEMJA6/t5VErqFdRd/HiSOIgrf4ChyRUgQ8VrHtm+owoJV5vhGK9N0ATkkl2sQjYJcBhRxIpAXm2n4U+NpUa1h5jp8ErpVvrWpE4F5FCnv8coVxMTuqSIKg/YFfTAxGWZTNQcffsSrdRiHho1SUzHD
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793177036-377604
+X-HE-Meta: U2FsdGVkX1+Ef720S1iGsqsf7FlNi3ZQU8QYh+feVVq0u8B7T/hv5wOBN7aDB+2WOg2rmDRGZ6jFXe6aE/UNYQrveWsF1L6tmQ80DRWOKlqxe+krPB22LNU0X00e6WAOQs7cOud1w2rRr5fFfZObwmUyYHhVWh0IWAscM8Ls9Vh/VUkizchHvdjvpMM9Uz3UPkWpCljTNPQsbP6r7rUxcK005fbcYGQ8qfUcujy7vdNxq+CHcvfxYRtnEjj/FK7jPa/qVuxKVcHgWmy6s7Cjej2OdQu6OvRvUEPACHFxqWuwF5BxWvSuZ4z0mvy7UFg6UOHExRu+kuLpjdfu0PIb7AMGXaWeL5zh/r5tZjmGxopwwfqRm63zDvde6SdOj006Bzt1ERwzsA1cRmy6NVK81veIlTAZKu7UoOm8xex56HEY+rHDIiU3uD9ztdFPYJP9OYYA/jme4oCBfX6R2veuArbgFohGAhCP02MQX6/lb+8mtk06/sA+TTEyJES4Ea2bUXnXQ7GdSo63838xSpH6y3H/xATNiK8b0+4SkLem/nxPjPkemTXHuPOos5txfE2tE2GGslxxc6ruThiTmXlBGr5OHCxK1kusGAuZp4/0g/wOiYLi87Owi0HNO7cIE00zsQifFjab2WMvFVds+Whl18zOSAAygwiAwOD0AyNyMhHeqzkX4rcfa7kCS7DUBf1OEEk9tj1JKJN5c3bWdnM0J/U0WnK1ksHn9US6W2HGaPwHlT7o7xja7pIX6YMtggVHNl7VI6KFI8gtOWPiquP6XYQb81/w4XMr92LY1g9g3PQ616oce/S0UjR4ARcbf04AbZrRDEKeq2ILiEVc5a8k7v53r1ZLenis0Fam4OltoaE5NrC223KSCaRqyw/l5T6mWRJIJqehdQVXp9K1hkF0JG+1N/rrfVrmmf8OEhelJ1KTYs3iHK0AYd5n/VQrWLZ5paSJU8vWEtJQV2vA+we
+ BbVg1I85
+ Ui7NkceBOJtmumQt9vfe4D+Dz8274v4uqfAFShmQ1wBGbF1L7vCPGo407e4E+ERKDO+4CvadFIHGtKPfluhVVHK1e7AQ85/eNc2QzYf4RwdTpskOkmMFIap8RSU51LfxUBEaz0p2WG9IUNWfVY7rsjRfNzLeadOv73YdKFqK0gOhj2twr8/djulC8F8aOC4hfksBucRfGiIDcnBk0TS5J0aodc5WOXeET/0Pn+PCHkmlIyRF6ALW1CgkZjlOP58gyrY3rukY9BuT3U0cezW1tDgDD5oGZPwlWPmBTEuYtT7cmnxK59aWjoZCqfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,63 +145,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 03:17, Yafang Shao wrote:
-> A successful migration frees the source folio before the promotion
-> counter update, so the folio_nid() read there operates on a freed
-> folio — which may already have been reallocated. It happens to work
-> today, as Zi explained:
+>>> +	/*
+>>> +	 * VMAs that cannot become writable map the page as a raw pfn, like
+>>> +	 * the device memory it replaces. The page lives as long as the file.
+>>> +	 */
+>>> +	if (!(vmf->vma->vm_flags & (VM_WRITE | VM_MAYWRITE))) {
+>>> +		ret = vmf_insert_pfn(vmf->vma, vmf->address, page_to_pfn(page));
+>>> +		goto out;
+>>> +	}
+>>> +
+>>> +	/*
+>>> +	 * This VMA is forced to always be shared so this doesn't have
+>>> +	 * to worry about COW.
+>>> +	 */
+>>> +	vmf->page = page;
+>>> +	get_page(page);
+>>
+>>
+>> This split handling is pretty horrible TBH.
+>>
+>> In once case we take a reference in the other not?
+>>
+>> Why not perform a PFN mapping in any case?
 > 
->   : Strictly speaking, it can be seen as a benign UAF. It works, because
->   : 1. folio->flags happens to be the same as page->flags,
->   : 2. folio/page nid is stored in the ->flags and never changed.
->   :
->   : In memdesc world, after a folio is freed, I assume folio->flags would be
->   : zeroed since struct folio is freed and calling folio_nid() on a freed
->   : folio would give a bogus result (yeah, it can be mitigated by not
->   : zeroing node field and each node has its own struct folio pool, but that
->   : makes folio_nid() implementation dependent).
-> 
-> and Matthew explained further:
-> 
->   : once struct folio is separately allocated, it's a UAF.  It could be
->   : recycled to a different NID or maybe the slab containing the folio could
->   : be freed (assuming we're not holding the RCU read lock at this point in
->   : migration, and I don't see why we would be).
-> 
-> A separate concern is memory hot-removal.  With memory-tiering mode
-> enabled, successful migration can release the source before the
-> promotion-accounting folio_nid() read.  If the task is preempted there,
-> an otherwise-free source block can be offlined and removed first.  On
-> the x86 path, removal can unmap the source's vmemmap, so the later read
-> can fault.  The snapshot avoids that read.
-> 
-> Fixes: e39bb6be9f2b ("NUMA Balancing: add page promotion counter")
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> ---
->  mm/migrate.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> ---
-> 
-> v1->v2: improve the commit log, thanks to Zi, Matthew and Andrew.
-> 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 15b45832bcfa..91ba064e1bf4 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -2757,6 +2757,7 @@ int migrate_misplaced_folio(struct folio *folio, int node)
->  	pg_data_t *pgdat = NODE_DATA(node);
->  	int nr_remaining;
->  	unsigned int nr_succeeded;
-> +	int src_node = folio_nid(folio);
+> For writable path, a new vmf_insert_pfn_mkwrite() is needed, so it was
+> not fixed. I can fix that part as well.
 
-can be const.
+We should do that; returning kernel allocations from this function in ->fault is
+bad.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+How urgent is this fix here? (can it actually be triggered?Specific hardware?)
+
+> 
+> The read-only zero page part might need more attention, since
+> we just prevented vmf_insert_pfn_prot() from using zero_page. Do we want
+> to add the support for rdma_umap_fault()?
+
+We just have to make sure that we cannot install it writable etc. But that's not
+a concern.
+
+Just have to be careful :)
+
+> 
+>>
+>> (Does GUP have to work on these things?)
+> 
+> These are VM_PFNMAP mappings, I guess not. But I am not a GUP expert.
+
+So we installed folios with ->fault in VM_PFNMAP!?!?!?!
+
+That doesn't sound right :)
 
 -- 
 Cheers,
