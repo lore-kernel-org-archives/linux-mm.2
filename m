@@ -1,67 +1,70 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C29606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5A2606A323
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=oKxKo39Y
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tK8FPKJ7
 Received: by kanga.kvack.org (Postfix)
-	id D91C36B05CE; Wed, 28 Oct 2026 04:24:50 -0400 (EDT)
+	id 7792C6B05B1; Wed, 28 Oct 2026 04:26:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D69C06B05CF; Wed, 28 Oct 2026 04:24:50 -0400 (EDT)
+	id 751886B05B2; Wed, 28 Oct 2026 04:26:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7F226B05D0; Wed, 28 Oct 2026 04:24:50 -0400 (EDT)
+	id 640056B05BC; Wed, 28 Oct 2026 04:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ECB76B05CE
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:24:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 98674160C31
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:24:49 +0000 (UTC)
-X-FDA: 85371349098.09.4ABEFFD
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 18358180005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:24:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oKxKo39Y;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F7836B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:26:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7584A89E0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:26:25 +0000 (UTC)
+X-FDA: 85371353130.19.310FA40
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E40A9180008
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:26:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tK8FPKJ7;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793175886;
+	s=arc-20220608; t=1793175984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nfoVrSYOIzxmSP8r27IFAd8Frmu7ylTcKW71rW773Fg=;
-	b=irUU0+riLP4jxp2czLEcNQvIUUI+glNuvuZQJcJMZAO9Ti78oGmOwjnX8AfU406wMX6TZz
-	oRaiwivaXeWdzFgAYYDS701WHq6as0UozL1pLVp44uECStQOZbQXWpZTF529URij31zZEA
-	enhfS4dfWLXJzoMX1dfma1OOnPaBxCQ=
+	bh=ZqxvUOYEnw6epSxNJkOsH/iPXoP3tG6fnt6qx+16CDI=;
+	b=iNT+lv0hPK2d+FD6d+o5gSxeC/qXy1xXR1G99DyOCaYcM4QgwFg1V/gBw7iT7Ljc3wmkyQ
+	RmXsSXiLzcvq1PQa8Eeysecui5ib8tdZG5+AAbLiETX99KqtUusGN1jfTcQGMfksV5zPub
+	299Pai5aBJZPCEAr1kK+OSF9LUnoOQ8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oKxKo39Y;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tK8FPKJ7;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793175886;
-	b=gXiM6+O8QDUi4zJg+W6+G9IVSGEZWPqoJ7nvZbLQuWzN3ur/M9F/Z/3nZTKOSgCCoC9IPw
-	g5i6PkY/jIlw97McBjWk6gW9Bcs+HCnwllDN+mFGMDD9AsZiFDmyphS1oy+xIUFLkZqWMi
-	q761SwCwiAXnBHqdZZeRIxn8yPNeTfk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793175881; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=nfoVrSYOIzxmSP8r27IFAd8Frmu7ylTcKW71rW773Fg=;
-	b=oKxKo39YnjDecrJ9vQGt5VoDSJr5iOvdeo5dTF68P2GSUvraMmJwlYd+dqHwG1ST8U4ESsrSd6sR2qxP4vw15s2Lfn4N9GtulczSotGaEOzs7oDpySA4WoPu/Cdncu77y02zTC83CUvEhdJIWcY+5k7NanA0dseuJ82RI6lF09Q=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=65;SR=0;TI=SMTPD_---0XDgGDMt_1793175874;
-Received: from 30.74.144.137(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XDgGDMt_1793175874 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 28 Oct 2026 16:24:37 +0800
-Message-ID: <c822865f-8287-4a68-a204-d041ed85a695@linux.alibaba.com>
-Date: Wed, 28 Oct 2026 16:24:34 +0800
+	t=1793175984;
+	b=WG6Z49bjC6hoI+UQ7CuFc5MZNomCWWze3MAe2H7ht0P5VRnF9IWtfTKxGdCkYcWbhkvTSN
+	SpZTkHXaMewYHPZoMZfaJy3mnMkVcN3X31Ea5hh6F3YmcaoC/DnrBWUTNAhS+IeyvEjNTT
+	gVGY7ykUo4xzQSeBqp1uDunXqCIvfnQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6ECF2175D;
+	Wed, 28 Oct 2026 01:26:19 -0700 (PDT)
+Received: from [10.163.164.200] (unknown [10.163.164.200])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FA7C3F7B4;
+	Wed, 28 Oct 2026 01:26:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793175982; bh=/EbjTDVkdW0F57Y0gRKQi9v+oLhQOt+D3xEeKM70nII=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tK8FPKJ775LMj/HKo8mObMmx6qKh5HiYiCirC0X5N+Uj94ZXLcgBO0gJmsuhWRb4A
+	 Le1KG8SJsaJkW/YAWbL9G7bsI6/KPkhwkETh7gUgwJbaEDX8Eg/t78/F2JU1nNSeDl
+	 jDJpfCYMNVh0lVMDuVYpKwlU4CCZEtAy7DaSDSSM=
+Message-ID: <50f426ea-7477-4fb4-a520-0d7fe4b84c37@arm.com>
+Date: Wed, 28 Oct 2026 13:55:59 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/46] mm/mglru: don't use stack pointers when walking PUD
- and PMD tables
+Subject: Re: [PATCH 14/46] mm/huge_memory: fix zapping migration entries for
+ device-private THPs
 To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
@@ -69,23 +72,24 @@ To: "David Hildenbrand (Arm)" <david@kernel.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
  Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
  Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
  Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
  Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
  Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
  Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
  Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
  Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
@@ -96,26 +100,27 @@ To: "David Hildenbrand (Arm)" <david@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261027-fixes_core-v1-1-6f74bec9a5bb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <20261027-fixes_core-v1-14-6f74bec9a5bb@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261027-fixes_core-v1-14-6f74bec9a5bb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 18358180005
-X-Stat-Signature: g399n47wyngwazgehq6y3rgzgmjb8o5w
-X-Rspam-User: 
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E40A9180008
+X-Stat-Signature: ka3ojkh8eoaf1ziinnhg3hasbwyr6hqg
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793175884-668837
-X-HE-Meta: U2FsdGVkX1+H5YF+vm1Q4lxdoqvZMUv3d7i5LNCN2cm6f53gFeC8eo7YNwUvAMtOCg5ixPsAm/oWZZvCENE1ZUB17gAvN7IeKiKvcfUlQFDWe9L1yq0cZ61oCwGHyvDh8bKUwqlQZLJ2NMLfr/xNUwy5BQ2/QHVXZcyKqDHS3PK/VcA+BXK5Cdy+SII7W4mWHC0gzi471ommaTuqDgbZpRzoeEPpvK/zDDqWre0b1eBcaHviBzbro4mdPTyzUFFOnmD7C3DB3Lro7RTlS4GTU5H46OYCemKEcqJV8MFIImtyOWLdtjtQ73qj/p3qOoZNQ3kyN1Ej6tetCBVS+cXLwO08SqXr0QGrMqozIRQEjgMLI6OW3CFtFehM7KSsG0zrjS1yIQDxFs2T435jc5i51OXTcPn4rexqsxQpNJn88skgpM3rLV8r2US3ZdL9MdJEyzbtBmQA1v6qrby0n4X1l6Im6AB979rgjj+lEYxGwlapcqFcZe64hpq3WDzENMEq3x72XIM1SnXhSV3jFSC3K9UGBQcZ+Bbqa9ulkECdsjUTQ6s72P0v1PjUGann9NMo9sjwskn7RB6nV8tgKlNSmW5z3uzGZY3uGfQ7i8LaJHC0AJUolvQhQJa1+O+lK5wPcNlbT8WnMVNzoKNmTf2FZw5EESgfAf/exemcOHmUdmc5btyT19QHMouUw963EvngoffGMFcIPNtuVmmqUzxzfw/bdg8eSsbf/9jZ43ZlkgQsAu9F7al5RvKWHxX5a/t8J2NBzd/riKiVHsVrI5V7FxsxqVS65P7rhowkqFY530amWilvHBg84K2JOL4aR4hsz+woBqiC6yWs1U1U8G8wR92kiOjOjIr41E81RC94Tq2t0pooX6gsGOmiCgWeQSvd5SKHN7g4333yufo9F+OUMnyjHLHIZP14L/wSd+psbz4IJxVYxXFU1jeQn0OYYev3FuzOPzXbbe+n2mM6V/a
- /J0XOHSf
- o/y4DJQgCPSAXMuhM+rlrtA9IWEKX8FzAeF3QJ/RupoGMGw0VvljDYTIKVSDHLjwk8vbYjeP3HobgYtdJbRAfUZm3977v+iQ095t2UD8HKs1VYTe7uQHZ1vCKPPg6fC6+Qo+9JzLy+5v6ag41S91HnEjVs5jOHXTohrudcOBpMvJr9OhzXzi8EGJyjPwas6HZhY2tzXSjdnHKTq25JNCw4iqOgRRgcS7HoivvxQ96EkIjp6vJDw7xi2is3gIf78kBMBS+ZjQuGni1O3sPfMuzxpmPcj6XcJAPjjADyk60GBf55WmnDiEme26x8htwnq3fv2EaJH6rB3Sojo2tpSLpGaaP86HuoXix5nAYLhfduPqfm0mL+Fcrdrm32DXYALerkBJ5PvDla5ow/ZCBgGExu5YxDrZzuVbuXk9tfbDv9ZfZUkZgnWpxvRq6wS7bcK6RVi201c6WsaTv28Q=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793175983-175384
+X-HE-Meta: U2FsdGVkX18BgvyvXWfhdt3lpEMq2aOL+CIxPxwvPMnFP9i2pjNgHT5h0pn/jZ++8gJWVRn8ynMN3RbpCzE2R5KPQCBjdQZ5xm7CoKMP4aGhvX0e8OAaVMH2Z198JAYrM3T8rx0YFDKGwCRPG1QUm/Rgo+9C3ysVG7viufwrjK/qp+iK+F2Hr/Qh2Qvl7ld/k673Bi1dpmWF56tPM9ookbH4ZXXTRB1ub+d+rFhAmWjuHMSt6IqO5xjQEMYtVXsbjG3KlXzyju5ryW+d9vzwJBaoekt2uXvHUuY0+gerB+Aiw2TY5//kFeej6+uigvNm90KbpU4LFHnLHEkWvhZaX8PGCvbBbBx3TWWMwhUXOlWWtVr8rkPslCGSaGIi8azoXlORNLt1jpc5YEFKmHiUzS21YL5bQFrxLXun57dOiyAzvxETAjovBLIoXUAbN+NhC3wgSueL4M/ZfeCAjkzfl5QGqKQmVmyvm8R0AY56neApTC72Z8jES2Q3mApaC+tPTeMUPsFiAV13BgHkW7HhDf9/I7wutN+GDDv5tppbPak+C+WbeL22o89iLL27V0JEPkcmJeOIZk5mNdW+GrrzRaJ2ld8k20R4xno0r5QB2jc+Tp6z+Mng2SKLYV6mdOnd4k5NVgvZlPm+xOa6Jr7QWvtSv/eKqIOOw9MJPFLUl7gYjq+bnyayXOUNRIp4JMsHK3bMo9n0YBnaj9nKXHwOfwSP+g5mkEb0k9Ap6ee4gSXTu0WZJQCBGxueKexozszMjPzv5RSwFeURlpndNtgKT28BkV3EenfqgeHLZeQrKmUgg7M43Wv2Zx40kR1Ja7+mkM2Gtye25ZQY0JWhoQPP1u3ipI5TGIv6lyBNWxJUUEPHmIKhBwlaOW5iIhNNFj3OgiPy3l5LK38T3nNBY9tgKyuObPwf6CrFIiq2NedWCBnhf40rkTO/CKoXk0o0VYig5j1t/cVMQ7e5PPE7tla
+ s+B+vXbX
+ t38/A2XafznCzut6XQti6ioD+6WQAhSSS0V5nT9uK5gaMcB3/+F5bMJFkmeV8EIalvkcpx1nNxotzrcy3zTpFSHFPv8fUnR5USZtyLKdPaZKKd1vyuFHyHF2Kc2+tcD4X3yQG1ip/yjveTajO4cmo3pWHgdFh1NwjaTiiHmBTNfKhlhnkqlSicuyFznZ4Aohcz+G6rwyxT54iXpPgpifKxSt7u8EeR0Z8dlPRkT5l/inxK7O5obzUvQbs2e0/F2r2TXiJvjZDo8VMl1udKyRpvhHvjwkhGH/R1zZy52LePWKt8+Ke4dx+BYKjlvLkhAxrefZPT9LmRd1cilk0DAXq968MbanlfkM2+Xm7iT/QmFwmh1pWkYYb1PdrKwDTwDNqnmaXd8/GEZhqOyQX0K1RZ2Wvl/I9MAwbDCCnXBSf19ZQyBqjMzJdxBr/Nw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,37 +131,50 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 10/27/26 7:17 AM, David Hildenbrand (Arm) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
+On 27/10/26 4:47 am, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
 > 
-> MGLRU passes stack copies of page-table entries in walk_pud_range() and
-> walk_pmd_range() when walking to the next level. These copies can become
-> stale when khugepaged or MADV_DONTNEED (CONFIG_PT_RECLAIM) removes a PTE
-> table concurrently.
+> A PMD migration entry can refer to a device-private folio.
+> zap_huge_pmd_folio() checks the folio type instead of the entry type,
+> so it treats such a migration entry as a device-private entry.
 > 
-> This pattern dates back to commit bd74fdaea146 ("mm: multi-gen LRU:
-> support page table walks"). Likely, earlier locking masked the latent
-> bug. Later changes exposed it: commit 1d65b771bc08 ("mm/khugepaged:
-> retract_page_tables() without mmap or vma lock") allowed concurrent
-> retraction, and commit cf4a65539c13 ("memcg-v1: no need for memcg locking
-> for MGLRU") dropped the walker's outer RCU protection.
+> Installing the migration entry already removed the reverse mapping and
+> dropped the mapping reference. Zapping it must not repeat those
+> operations. Concurrent MADV_DONTNEED during migration back to system
+> memory can trigger this.
 > 
-> The fix is simple, so just fix the original commit so we don't have to
-> speculate. To fix it, pass the actual PMD/PUD pointers. This restores the
-> RCU-protected lookup and validation against the live PMD. Note that the PUD
-> handling is required as well to handle folded page tables correctly in all
-> cases.
+> Check the PMD entry type using pmd_is_device_private_entry().
 > 
-> Fix generated by an LLM and sent by Josef Bacik in private.
+> Fix generated by an LLM and sent by Chris Mason in private.
 > 
-> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ david: handle walk_pud_range() as well, clarify+simplify description,
->           adjust Fixes: ]
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: simplify description ]
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Matches zap_nonpresent_ptes.
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
+>  mm/huge_memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index eda020dd6e33f..1b50cc2b35351 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2493,7 +2493,7 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
+>  static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
+>  		pmd_t pmdval, struct folio *folio, bool is_present)
+>  {
+> -	const bool is_device_private = folio_is_device_private(folio);
+> +	const bool is_device_private = !is_present && pmd_is_device_private_entry(pmdval);
+>  
+>  	/* Transfer young+dirty while the folio is still mapped. */
+>  	if (is_present && !folio_test_anon(folio)) {
+> 
+
 
