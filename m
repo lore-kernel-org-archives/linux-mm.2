@@ -1,116 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD25C606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 04:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D817606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 04:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HOfCUqIC
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WeW0dcEy
 Received: by kanga.kvack.org (Postfix)
-	id 9654E6B098D; Wed, 28 Oct 2026 00:30:24 -0400 (EDT)
+	id 217E26B0612; Wed, 28 Oct 2026 00:33:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93D1F6B098F; Wed, 28 Oct 2026 00:30:24 -0400 (EDT)
+	id 1EF2C6B0613; Wed, 28 Oct 2026 00:33:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8527D6B0990; Wed, 28 Oct 2026 00:30:24 -0400 (EDT)
+	id 106CD6B0616; Wed, 28 Oct 2026 00:33:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59B606B098D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:30:24 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1B1BA052B
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:30:23 +0000 (UTC)
-X-FDA: 85370758326.13.BE59772
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1D4D1180003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:30:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=HOfCUqIC;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3W3rhagYKCDQZUVVnkWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jeffxu.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=3W3rhagYKCDQZUVVnkWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jeffxu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E37C46B0612
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:33:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE46B140B91
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:33:24 +0000 (UTC)
+X-FDA: 85370765928.14.EB6CE06
+Received: from mta1.migadu.com (out-222.mta1.migadu.com [95.215.58.222])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B4703C0002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:33:22 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WeW0dcEy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.222 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793161822;
+	s=arc-20220608; t=1793162003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kPQx6GgboXmcUMcY5/lzKrJ0ssCkME3FTMDmy2U7T6k=;
-	b=JjFBvqu+vWWNkU2lJwMR/iTCXzefhs/T+FHu4dkuObAw0i5Haj9E3oB39+g8z0L46lPMaz
-	K2qQXuNFg2pMbH6xwxY1SItRC239kM0ESJ+ZvHRw/XRIF17r0KdBe9MIoA97l2A89jjS+0
-	BsCoqs7pKD5mo/MRw7P0urHlMsBiRJQ=
+	bh=hoaYYE9clIuJ0Ig445chvZt4nolRKxe5BT9MRTh3Egg=;
+	b=6b48w78tV586ASuhvH2z1CWor+9xBk1BZKG0ewz6WYVpc5cUuXWcQpaWxBoZtne7ZfRui4
+	cGQIbCthfmiiDYKR0B9ImeqtAm9+J8LsuJ6hV78rmwxiBUWB1EfSBazA5pqQWHMYIUScCB
+	rQ9VTUgFLZt0uzYKPSyQKMedGgrse/M=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=HOfCUqIC;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3W3rhagYKCDQZUVVnkWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jeffxu.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=3W3rhagYKCDQZUVVnkWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jeffxu.bounces.google.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WeW0dcEy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.222 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793161822;
-	b=qKrQRAmtxkOTJN45E8daDdKIIlMCpL3oLv/CsPjqePW5N0RI2JCaJrbSE8AyYt+8cOKF5E
-	PlFDaN2BKapUMbAMIrYaXQt+o930t+O185E5H5WqvtunTZBJj4nOYtfBvj9EGWZ7GdfH5n
-	lYlFSp1OKd6x+o9/H8dOTIxR9JmFLxA=
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso1038579eec.1
-        for <linux-mm@kvack.org>; Tue, 27 Oct 2026 21:30:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793161821; x=1793766621; darn=kvack.org;
-        h=content-type:cc:to:from:subject:date:message-id:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=kPQx6GgboXmcUMcY5/lzKrJ0ssCkME3FTMDmy2U7T6k=;
-        b=HOfCUqICXcBfhDcv8hi66Ni8QXbGbdG26YVFXc8F9TYkvMfc4ae8wSpvVA16ffnT3l
-         oMvTv+muiNbNR4ApfJExnxBx0FIbME3vRAEYfaJ16SIZDGPZTXej0id+wF7m/lbrKBn1
-         WF4u4oUsoUI2ws3ttAisMTV25i78vs8zy1m9fTTyTISHW8sY3QEYiyMTVKlplZsIWB7E
-         6GKOA6inmLlzxChXWGkKSmtveFTlbiTTI2xlwGyhllfk3pBtEvFxPQsw3Lka04Cil4fG
-         xx8gBgg0ZdIagbG8hp/oHWIHNM9J2r0Hz38s4VMtn2afcastmVrkNM54dq5YfMkHbeD0
-         41ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793161821; x=1793766621;
-        h=content-type:cc:to:from:subject:date:message-id:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kPQx6GgboXmcUMcY5/lzKrJ0ssCkME3FTMDmy2U7T6k=;
-        b=K2Y+68Xu8vXkjHVuBwGkDKIBQ31UhxTAwhgR+H8j8TzjscPsZvwJEq1feds5yC5v3q
-         sUNooRWKb0y1xMQwJlIMaciXh/A6cvDThGFXmj2D9JmeIhfQGsV1sWQ0amcp8n0K2PC/
-         UkdD88T4d4TuhBXN9LNUMzbWyGN9MD24R1eR+KHLE2E50bMMdiM8fgf2jZF+bZGX22L5
-         HhUbpLCCNb7lJ11c/VUInf/f3C9fDW+pzhjuZECzznJeGqcTLqgRZK/nHKQpfZjb0J4o
-         24NRRgqQBXBSVNIDXQN2uJsNXr9/JdMJSpDT03NFJiRIrryVGJggepZtJyLuRX5QDNif
-         fWAQ==
-X-Forwarded-Encrypted: i=1; AKwUvByNfG/eXGgFHnSvZ9DLe8A24jRRoyGhJNsHTnafLEqsyDdorW2BHKy42ghFpNd9rMtHuiRSoTedfw==@kvack.org
-X-Gm-Message-State: AFq9FYI9vdROXjpeu+ZkraSn9bI6ZCW5xdSulTshA0Vrv+7qMv3FkZQr
-	dE99gnYR3dnKaYflSE2LNG5Gsu/LV0FTA+GQ9w1giovkilXJgatlWwN9/50XJP/5ekpkSJuJFpv
-	179rkig==
+	t=1793162003;
+	b=rx9xda0wuDdZjMbDUp4ph6hOSZj1WMhptwNlkUoxV3pz+HLs+ZrzJcFrcUwOy21wISG4zT
+	TAqdYDaaX6wwZ9E3rHFMmLqkxpnD3bEgFfe71jmQZf5AlF90S6MCk1xi1Sd+qL0Zy6lJe7
+	Pux9+enmg5MnuMoKGsSzqC4/BHhARJs=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=T4efCo2Hap6aPJgKK/ehUGhK0yIt+mn0LCQnSmlQd0s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793162000; v=1; x=1793766800;
+ b=WeW0dcEyzkw6mTIdVt2Z06iHEedOA9csfafpNxIqlvgXWGNleOMk4G5+xIqtxnfY0oJlEGQo
+ 3RIOLo03odtO32V/gvt274JFHEpf0OAsY2K6WgJh+s2w2M9H9KOLel/juzZL0FcuRQ3OjvRdcI0
+ 9UEAxWdkfJdjVzGrmw7+tycY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id bee4a2cb7972e2c2;
+	Wed, 28 Oct 2026 04:33:20 +0000
+X-Mizu-Trace-ID: bee4a2cb7972e2c2
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fa0f07af-e8d7-44b0-b1e7-ad325d75ac34@linux.dev>
+Date: Wed, 28 Oct 2026 12:32:54 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Received: from dyaz12-n2.prod.google.com ([2002:a05:693c:638c:20b0:369:fbca:f640])
- (user=jeffxu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:693c:250d:b0:369:f5f6:36a7
- with SMTP id 5a478bee46e88-36a2014b887mr2079336eec.16.1793161819981; Tue, 27
- Oct 2026 21:30:19 -0700 (PDT)
-In-Reply-To: <auDTptDQsB4xBcz7@gremlin>
-References: <cover.1793094611.git.chris@chrisdown.name> <5bd3c89d733ad22224f296dfa8900769de937de0.1793094611.git.chris@chrisdown.name>
- <auCxjbvY3qPv1sV6@gremlin> <auDTMb6WMFUpxeZy@chrisdown.name> <auDTptDQsB4xBcz7@gremlin>
-Message-ID: <18e2972cb8520c2e.3137322e32382e342e3434.279dd1.0000sendgmr@google.com>
-Date: Wed, 28 Oct 2026 04:30:20 +0000
-Subject: Re: [PATCH 1/3] mseal sysmap: Add mseal_system_mappings= boot parameter
-From: Jeff Xu <jeffxu@google.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Chris Down <chris@chrisdown.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>, Jeff Xu <jeffxu@chromium.org>, 
-	Jeff Xu <jeffxu@google.com>, Andrey Vagin <avagin@gmail.com>, 
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Shuah Khan <shuah@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
-X-Rspamd-Queue-Id: 1D4D1180003
-X-Stat-Signature: wirp9dxu7oo86k7ww93bornjtso5jtf6
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 32/46] mm/memory_hotplug: avoid races in
+ pfn_to_online_page() with dying pgmap
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
+ qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org,
+ kasong@tencent.com, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, kees@kernel.org,
+ peterz@infradead.org, jannh@google.com, pfalcato@suse.de, hughd@google.com,
+ pasha.tatashin@soleen.com, pratyush@kernel.org, willy@infradead.org,
+ jack@suse.cz, ziy@nvidia.com, riel@surriel.com, harry@kernel.org,
+ apopple@nvidia.com, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, usama.arif@linux.dev, kas@kernel.org,
+ matthew.brost@intel.com, jhubbard@nvidia.com, peterx@redhat.com,
+ will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ osalvador@suse.de, minchan@kernel.org, muchun.song@linux.dev,
+ xu.xin@linux.dev, chengming.zhou@linux.dev, chrisl@kernel.org,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, youngjun.park@lge.com,
+ gourry@gourry.net, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ ying.huang@linux.alibaba.com, jgg@ziepe.ca, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, josef@toxicpanda.com
+References: <20261027-fixes_core-v1-32-6f74bec9a5bb@kernel.org>
+ <20261027121307.40431-1-lance.yang@linux.dev>
+ <87e3d64e-8b25-4d51-a984-7ab8a58f785d@kernel.org>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <87e3d64e-8b25-4d51-a984-7ab8a58f785d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B4703C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793161821-54623
-X-HE-Meta: U2FsdGVkX19enlwM7pjOKtfOTNKb/ScxQoIVp06PPc7Jy1TQeecdRGPsusI5mwftgCZJ9oLkF+xN/cfdM3SCbxCRRxV+ENqVIZGR9ylAB3t0vHFn0/gnWUoYOKvAbBeo3uH0jFxTS0XXxRt91mKwVrxVoHmJDFOhx4463Kmy1zd2FB8AYVS7/rhPd7NftJFE6H2e6AFeUMh23iUXjSASf1jw5QRTA77ucSvt8cUG2bifexkncQCWnCXIvuhyj6VPw9EGHyUvlj/d0lr3j+Z5Hxh5xE7iU6gwMce6a1BZGlyvHqSnJZduy73UXSwMBiaoAyntM2V7x65XfaSyqxDX76y6P1Fyp2wHT4EsjggnYjF4/kQZmrjYsjYSISZVI7yTdv3dQrSoqo6PCtrRU76DDyyjyK8oj81KTngeOdgylqyCzjZ6HbRmapXJOEmjO2qNZbqsShL0Z45n0qjGg/W6hhDSe8QDDkZjtn6kFfdg6BQyYt8fH1oFfWD1YUmx4twkeGjp8uGOu0fnhm7xgijiFJGmy+YtVBQNrnT0BAHVsa8poymNtRt827Ej14gtNlAo6fIGACKKuWKkFVyilXU3z7DpMFszAI0GfebpuKf1D6hBWxiGlbYaihTQWl+ku9BrcxFXISCVfSvE03AB1JNzR7KVE2QEiAfBpg230gQmzY7eSg1R+KSCEWGt4dc8IkCkCL1lR7zRpr6AAi6taRFTPdefNU8m7k0qFeHmZzinsd8WL8Ib52uBkZKEHeE2MRlP0+ETow4W2Fa3pczBzl/YIZ/zObEQQ4VgXfM384LJI4XJ1Q337qF4NF1BCse+zLEZAe0AdE2jVx/REeomjOOQ8vEv/eg5e8bWdpWlm1YapeGZRjxKUQpRavH3FXioDoDZ25GjTuGaDEn0iiV9VwQo9bIWJk+uf3UyrmrwIV4vLN3oiR6O6UoGdwAbkakdacuNPxVdzk6Muoq7pbyMOMA
- 7I+hMvaG
- Gcsbs4elFVQ/TvyDaN+XJre3hCnKHd8Umk7WzN1gW0DraUveVV/uaHkccZMfIsWwdRZoOk5ttEyWv781rkDChXYlAAslBIA4oOwxISZcWQYZxq57IPpwtM8dlm/EEPluPgW32hv3FgGi+5BkXVUEsCx2cI4bYJv5TJc4ThAddy7aVD96OU4Zbf6s4BgCZ/sflGNyQzLSihNPJsIKrD6P/L2f6Q3x6JLJYmVJPiUEBZji9tqATZX1PK53v7nuvZU3i6Quygpi9FCz4o7B1c0CnOTze+eW3yswpa4jexhXs3xUT8LHGjnWAzqESKSY5ICsEFa5+ogLAA9i4pnKapq9XlAvXDVr1XEkvvx9AfnXebevnHNq8OefryOZ/Zgm3Bfp502P55D+WyOELcA06S6sFV8+GD2VjvwMf2N0BHh9hv8FyGLtPB8vSpjlTwQADlz+pR04pvpTIiP/xnGwH/CfHmkldCt5TwO8yA0aRl2ObdxS4YZ+RRiLYmicHB2po5Ztz8rFaFoVw4pBPEctcvw0yE+XSQ9UbmrgAN5miXOe3ReMbM3A0+RppHr4T7OJADqXTqahqYrBSaMz/UY5S8Wx6M9ninuh6oeIn1vHJ7fYPxR/N3vGLjfhDTdmMvizJv2wKjqqa3Ld+MbHeF/A=
+X-Stat-Signature: gxfc7itzcpg73y3bmhkbyajafamxkjhd
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793162002-461208
+X-HE-Meta: U2FsdGVkX1+alCybVjyQYo/QDJAEdYev3D65CNkYZdd7b6rybCaaAzTcGcHOZABy1eMJ7ZUaplhVISsWFRD9wYEkJ+RcIMlHJDtQdQOzj5KhJ37oiLHyzAetjiKudPx5rBhwgIj0mcZj0QqyxOLfslRDEUKLYbzw0mleASDQTBEzw4MvPwpeD5ZlbLX8URjp8JQWT5OOR1ieE6HTfTQcyZ1jGzqCiLHGq/AyfA0JW43h9dH04Apf2lCnu59fMjzL8s5AywSgPD8e6DxH1BBut/cVV418ZmczTuyrrNzkNPFiBbYoV+up0EfEDuAMTUenviZn30RjGiRVwFkxzsoTNfb814R2IXvO3pgWTD2+xd0+4qc7VXGRF1UySA+Z/p2Un9FhHwfJFyUFIB4MYyUF8ohoJjT9IRcWeYyequIfvGpgc5YaiSDGZWwRrEp4qmoPqz1+BjNJ0UpCZPUYIKaXUErAVDvULJh70dN3HWGJkhwYWgkebxWykXty5Hk+pZ4rfRhigBNbymQyDzOrzL+ShHmlJWsu9W0MgKpTNohUnpTwjUl9HEs96EgJ8nDHHcbZXbyd9+8eVbJhNEVZJSInJYnEUe0YiGgQZqud+nV+Y31lBfaC6XS3W78y+I47Rxq8XqSlPXmziULoBAtfcmZFq/wXRzpZgbCDlBFovV2EX3J89QuCYAETuiCuAmcL1BZ7BSLXRdBaSi6fteOYR/TAWRCVIdszPYaSe1wycJ9Wk3/1/l8gNEF8YyTAcizz/hst9t3RqHAkYVRPP9V69/56vDxSn8BypyAr2+u78bgM4EeuL1ZdFWTM9UeWvK8VhEpmo4XbzhF28MkpVMay4fraJApmqLXAkB2RaFuWAkcd5kUebiQIMkNGSwjKxLmVdkwhI5LEz/b8hyUW+YLwudVA1xlr59eDTe+YihgIlnJMjRjDT57L9jSS+9NJew5cLzXMnwrJC/NQFBdm4jwyUz/
+ RaixzGF3
+ 3dF2FVrAc3o2zJCu47uIv/ddbV+fQUJVMuq+t+vpTRSG4fIzmQqlwr6vk31Vc6UuXfBHhC8YiD9foHx5rWL+MFUg8CqcGOgUn2hsOL/7+6QlY3yHLaU/wGnTLhYvD8EEhPFiCwMRsBH5sOTnpMyf+QzQeGzji2NqufpOE7PoUwXLm8MExF17R7+J486ONp2Kr/vV1pz3w3ycpigwoNVX898OFbicrJuovSN3RyMPaxaw7jYhoLU0kewKajBw0dEvWGUyjSpLk+6S0Pwt8gXwSRBSBTV3zNqbbpH+XDALAP6Pu1QQO0A1wQM6ZHhoHaflQN0MVF9nu0QbvaqtfdAYrxP1wEtza0QMFFoQSkAsM6lUNW1+dPvvoMY9wiTpSl6D/clIHHu3Bjx2+JY4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,63 +116,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Chris, Lorenzo,
 
-On Tue, Oct 27, 2026 at 04:57:04PM +0000, Lorenzo Stoakes (ARM) wrote:
-> > One option is to skip if [vdso] isn't sealed, and otherwise expect
-> > all system mappings to be sealed. Then there's parsing at all, and it
-> > also stops failing on kernels built without
-> > CONFIG_MSEAL_SYSTEM_MAPPINGS, which matters more once it's in
-> > run_vmtests.sh. The downside is that it can't notice sealing being
-> > broken entirely.
-> >
-> > Another is to check /proc/cmdline for no_mseal_sys_mappings and
-> > expect the mappings to be unsealed if it's there. That's only a few
-> > lines now, but the test still fails on kernels without the option, as
-> > it does today.
-> >
-> > Do you have a preference between the two?
 
-> Yeah it's awkward, really moving the tests to mm we'd have to skip them
-> if the vdso isn't sealed, then assume a sealed vdso for a new process =
-> feature enabled.
+On 2026/10/28 03:41, David Hildenbrand (Arm) wrote:
+>> LLM stumbled upon a possible race in kpage_read() ...
+>>
+>> Say the reader passes pfn_section_valid() for a device PFN in a section
+>> shared with online RAM, gets preempted, and resumes after
+>> pgmap_array_delete(). We'd then find no pgmap and return pfn_to_page(pfn),
+>> even though the subsection is no longer valid ...
+> 
+> I think that's similar to our pfn_to_online_page() vs. memory offlining races,
+> just slightly different. Getting these races down to 0 is pretty hard.
+> 
+> This patch here tries to do better and arguably almost looks like a cleanup.
+> 
+> I wouldn't worry about that one for now; it's extremely unlikely to hit. And it'
 
-> I guess at that point it's redundant to check if disabled?
+Ack.
 
-Thanks for working on this series!
+>>
+>> Could we take the memory hotplug read lock in kpage_read(), covering both
+>> the lookup and the metadata reads? We can drop it before put_user(), once
+>> we're done with the page.
+>>
+>> Maybe along these lines?
+>>
+>> ---8<---
+>> diff --git a/fs/proc/page.c b/fs/proc/page.c
+>> index 6aa99e42ec22..12bed36d76dc 100644
+>> --- a/fs/proc/page.c
+>> +++ b/fs/proc/page.c
+>> @@ -12,6 +12,7 @@
+>>   #include <linux/hugetlb.h>
+>>   #include <linux/memremap.h>
+>>   #include <linux/memcontrol.h>
+>> +#include <linux/memory_hotplug.h>
+>>   #include <linux/mmu_notifier.h>
+>>   #include <linux/page_idle.h>
+>>   #include <linux/kernel-page-flags.h>
+>> @@ -77,6 +78,8 @@ static ssize_t kpage_read(struct file *file, char __user *buf,
+>>   	count = min_t(unsigned long, count, (max_dump_pfn * KPMSIZE) - src);
+>>
+>>   	while (count > 0) {
+>> +		/* Prevent memory removal while inspecting the memmap. */
+>> +		get_online_mems();
+> get_online_mems() is the big hammer we try to avoid (or ideally remove at some
+> point). And it's most pfn_to_online_page() users that are affected.
+> 
+> A seqcount in pfn_to_online_page() could detect concurrent pgmap removal and
+> retry from the start. But I'd rather delay something like that.
 
-Could we please keep the test coverage for the unsealed [vdso] case and
-avoid unconditionally skipping whenever [vdso] is unsealed?
+Fair enough, let's leave it alone for now given how unlikely it is to hit :)
 
-There are two regressions I'd love for us to still be able to catch:
+> Thanks for taking a look! (Can I convince you to review some of the THP fixes?
+> pleeeeaaasseee :) )
 
-1. Kernel or config regressions when sealing is expected to be on:
-    Distros/platforms such as ChromeOS and Android enable
-    CONFIG_MSEAL_SYSTEM_MAPPINGS=y. Originally this test lived in its own
-    selftest directory with `CONFIG_MSEAL_SYSTEM_MAPPINGS=y` in its
-    `config` fragment specifically so that if a kernel change accidentally
-    broke system mapping sealing completely, [vdso] being unsealed would
-    trigger a hard FAIL rather than silently turning into a SKIP in CI
-    (whereas `run_vmtests.sh` runs on kernels with
-    `MSEAL_SYSTEM_MAPPINGS=n`).
+Of coursssssssse! I'm already looking through the THP fixes :D
 
-2. Regressions in the new `no_mseal_sys_mappings` boot parameter itself:
-    When booted with `no_mseal_sys_mappings` (or when unsealed), running
-    the assertions in Patch 3 (verifying system mappings have no `sl` flag
-    and that `munmap()` / `mremap()` -- and ideally `mprotect(PROT_READ |
-    PROT_WRITE)` -- on [vdso] succeed) directly verifies that the boot
-    parameter works and doesn't regress.
+Cheers, Lance
 
-If we move the test into `tools/testing/selftests/mm/`, perhaps we could:
-- Check `/proc/cmdline` for `no_mseal_sys_mappings` and actively test the
-   unsealed behavior when it is set (rather than skipping), and
-- Either enable `CONFIG_MSEAL_SYSTEM_MAPPINGS=y` in `selftests/mm/config`,
-   or keep strict failure as an option (e.g. `./sysmap_is_sealed` fails if
-   unsealed without the boot param, while `run_vmtests.sh` passes a flag
-   like `--allow-disabled` when `CONFIG_MSEAL_SYSTEM_MAPPINGS` may not be
-   enabled), so CI environments that expect sealing still catch a broken
-   seal.
-
-Thanks,
-Jeff
 
