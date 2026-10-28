@@ -1,115 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611D0606A31D
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 17:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E3D606A31D
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 17:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MeiUkkTx
+	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=MBJTGDAn
 Received: by kanga.kvack.org (Postfix)
-	id 6A68E6B05BB; Wed, 28 Oct 2026 13:19:09 -0400 (EDT)
+	id 5985F6B05BC; Wed, 28 Oct 2026 13:21:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67E636B05BC; Wed, 28 Oct 2026 13:19:09 -0400 (EDT)
+	id 5489C6B05BD; Wed, 28 Oct 2026 13:21:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5937B6B05BD; Wed, 28 Oct 2026 13:19:09 -0400 (EDT)
+	id 4373C6B05C0; Wed, 28 Oct 2026 13:21:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0276B05BB
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:19:09 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9B6CA7069
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:19:08 +0000 (UTC)
-X-FDA: 85372695576.09.265F766
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3B29740002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:19:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MeiUkkTx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793207947;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=iA59H/LDNhkaV57ivIpVgCN8zVjfYFqLt84NAT8Jikg=;
-	b=ERyVMsFMZpL7QBfRlUzgWHB/zfXtmMHexCjlH0Ac5qlQv6+TpfNqT/0rmQP0giabmSvsvD
-	naFaIVcV9TgyuDLbOzvvW3HfOeumEY5TKbziXt61sWAd88pneNoWz/eSX5AfaopWUxtiA4
-	wGrPQpMzV/nPq1fgSt9NfknkSPJh4Dk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MeiUkkTx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C16F6B05BC
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:21:29 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B497D40192
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:21:28 +0000 (UTC)
+X-FDA: 85372701456.26.6E1121E
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D8834180009
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:21:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=MBJTGDAn;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793207947;
-	b=nNu2xZjGJxGJp49NIa2t7MDTLzITUtQP6Mzo1ZqQAvNm3uYOJHV7ghuQFgajompHj/NwrH
-	1WWmRIxl8VzRxITSRFEL+N05sICdDDSdEigYtnopXWWqOuTsZuJ6VX6dVoICGZJlwdYxji
-	zhJQYc7q//ZoElohiD4DXzEyZiPT0+8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8698842D5E;
-	Wed, 28 Oct 2026 17:19:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCFE1F01825;
-	Wed, 28 Oct 2026 17:19:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793207945;
-	bh=iA59H/LDNhkaV57ivIpVgCN8zVjfYFqLt84NAT8Jikg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MeiUkkTxcl/ZYalrXsKfZK5vIOlQrmac2J0jzKLvwfTSVkHW/EqJju3D2t5LraDBO
-	 HFBWcUhcKn1N9O9rwcgt7ycPunBlHdJaWWUmKIi5Obw31rPdeq3wBL2J4pJ0nVXidE
-	 JqByT/tUR5FPDpjikQrL4ioCo1Wm45zMK8adF6UPkLnSHnXG0Df4ZvmeRfQWJm7JT/
-	 v6Cf33DnRjATzw74NYdsy5RY49irRJk+HTAvPxntr1fG3+RRLiOPcAkl/iNMPw1Nh8
-	 S+PflWOLZEOebmXde98cg5hbdX57G7CmBYnXk5vhP+A0kOxw6ai7w29GpWVoPhRJFE
-	 dOLHhWgZtzAMQ==
-Date: Wed, 28 Oct 2026 07:19:04 -1000
-Message-ID: <5572f45165fa3ec7d16e1d17eb2c3fb6@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, JP Kobryn <jp.kobryn@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- KP Singh <kpsingh@kernel.org>, Tao Chen <chen.dylane@linux.dev>,
- Mykyta Yatsenko <yatsenko@meta.com>, Leon Hwang <leon.hwang@linux.dev>,
- Anton Protopopov <a.s.protopopov@gmail.com>, Amery Hung <ameryhung@gmail.com>,
- Tobias Klauser <tklauser@distanz.ch>, Eyal Birger <eyal.birger@gmail.com>,
- Rong Tao <rongtao@cestc.cn>, Hao Luo <haoluo@google.com>,
- Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
- Jeff Xu <jeffxu@chromium.org>, mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
- Christian Brauner <brauner@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Brian Gerst <brgerst@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>,
- Willem de Bruijn <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>,
- Paul Chaignon <paul.chaignon@gmail.com>, Lance Yang <lance.yang@linux.dev>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Barry Song <baohua@kernel.org>,
- Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH 0/2] memcg_ext: dynamic memory.low and memory.min protection
-In-Reply-To: <c652f3e6198b143fcf29f5540a769228f3d8470c@linux.dev>
-References: <cover.1793086858.git.zhuhui@kylinos.cn>
- <769e80ffa618327ac03c13c4657e7229@kernel.org>
- <c652f3e6198b143fcf29f5540a769228f3d8470c@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3B29740002
-X-Stat-Signature: 6uojmemrys64a1f6ym1p1jofecp3oxpu
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	t=1793208086;
+	b=XdD6SRLk/X+pDVTh/uFqAbOOHbvPMD49MGIZxhAL/EDfVo3HwKym6qu4pm7xA/qBo69ro7
+	6whGwlBTMar/mnp+H4+O4GatiwExGJrZb04z8oEXozY1pbN24LA0uUq3oorGx5bqW7SLtY
+	ZTum00mW0qGcxRlEow8jBdo65gCU9l4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=MBJTGDAn;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793208086;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gKWv/vfGN+v0zoryVVsOrqbU4hq0g1uoOUtfYF5rLd4=;
+	b=tnTVg8VvfQAQ17LMnwSy2MavnfWQFpauvj8tmMv64ywl40eErMFB6vooi58p0sRtphDwXG
+	tFfmFGXsBqiF9sQODEhWUCqK8+xL7jp725J+LxFozhY+GtAh/JtchnaW0XstYdri7JOiOk
+	lMy9ZKYU8kEgukQnWP0pcQuYQukJ3bc=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-6774639a8a4so1186403d50.0
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 10:21:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1793208086; x=1793812886; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gKWv/vfGN+v0zoryVVsOrqbU4hq0g1uoOUtfYF5rLd4=;
+        b=MBJTGDAnHD+inRwqwntNNJApandYul40r1MAQC0EKopFJdT2EMvSZEeuE/mO7oKRdl
+         sD5YgSl5iF8Yr2x4TsxapCTSwnXQAKH9mZCQ1rwPgiacGbFw4GdhXfo/EN1LhpMMSLaO
+         Nd6lbUjViE0VOkdlpd8HqKKsaqbhtChwr2NGcQ8dTnZbapMqrqKvWKix6pKuGjRW/AyG
+         bAFmBCJvs4PNnAtt0z2UI/t0600EMboofC5d9b418mX+mqA7F/06gZbCY4/Bcb2OYRCk
+         oLs3LEvUmxHkcs+8r1Ze6bS8k3KcLl7QfRXM/wFH++1dr5KdrR449UzN/yTqKCUQjNsw
+         MWcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793208086; x=1793812886;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gKWv/vfGN+v0zoryVVsOrqbU4hq0g1uoOUtfYF5rLd4=;
+        b=fNGSRjdUuN276qGrWwqR+7uVhipQJIKY1kyn+hA/nEKJEacVoJHITIvaUgGdiULdZe
+         vnFDtplb8e75hk+IKhOloQ2xzRFdK8rb7NpWMiQVqyvTrhBl8/4lmO/rxvPKQijw9QHO
+         DVUiMZzwOXAkkL6yoxTK1JWsFjcY3E4YaE0dY6ZN3+MG142aYmxZ8I+G7NPhG83QmeYz
+         qaH43995cT+zxjXw5+oWvzrrOlBoF38WUAZp9xeaOiKoQJ5Ny2csWOQ86apy9PWZMHzg
+         S6ZylPUbJGNhkTrsHqfLiyJxiegyZxwYvlxqi00n3RFwsWkQMfzVHhXPF9IbtoY/EzJz
+         MazQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxBeDFwX1nx62Jt5uWoeoJLvYbP5CZGsaBnOh3kpXEuaHE+VI5Yjc5eDLd2KJD5dyrTZJkuhEP8Ew==@kvack.org
+X-Gm-Message-State: AFq9FYLFNC3LTedgo/5mKbpA+T6r7fTRM3LEUna1LO+gEEVhEo+VV/TU
+	8i3LLXq8PJ3VLHtsnTNRip0l2zFZIDZn02dlgMjGyVCB4xOLutsJrC0ydyJWZDLuOwI=
+X-Gm-Gg: AYBFou1yUOBP/3OLEM+zEWAZAEWRVz2tQ9wD3CeKnV81rSHBAeoox4+RGUOuev5P2VO
+	nXyy5e3yZv+8gkSikU2KEYb4K9xj0XTj4uSbkiLeOge0EBC/1nix/TjHDOJznJbkO5hcBzOO3J8
+	e+5Tn+uEAflYzt/o0r+kfLobaUUz/KhvrscjSRXpm9UDTvqETybbyGfj5VjxhjsdbwudDT57GI1
+	VuYWvZdTz8zX33CCjKepJMJrze5JvonyXZhOObhmTq02mf95zYGpJdgdXeja82/ZQZ/Oz7KdUxh
+	C4Nk6eLa5t2o0MDSVuEemhYyPQ7o+OCTgifCpla3OI40okqWcMOpcyx4XKJC/UxXRUuu5DvSkAe
+	H9DD5yMzLLXMposiXfMEsVg7ZnKhsjWLcoBoSNGPAk+E6JtudJro0xouIDwd9BAMu2SqpQj3/EV
+	2b/fYCc960ZRvAl+xW3SYRfEmVQiMctBl718km6jPhIfrAoQ4wktkTLPdhKWPZMDBk/sfx/3emq
+	6Q8aadsxL3rALewmjDqyMGEIbzIbmaRUeG7ltsry/lv9dhA+cg9I+oaK88T4GEB0uq9f504Dp9o
+	P8QiC8TylGtlmmn7zWwo3c6KYbtW
+X-Received: by 2002:a05:690e:1183:b0:678:fa71:301c with SMTP id 956f58d0204a3-67a7b992b9amr1910178d50.7.1793208085931;
+        Wed, 28 Oct 2026 10:21:25 -0700 (PDT)
+Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a7a0c31cfsm2144554d50.9.2026.10.28.10.21.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 10:21:25 -0700 (PDT)
+Date: Wed, 28 Oct 2026 13:21:24 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: abuehaze@amazon.com, akpm@linux-foundation.org, alisaidi@amazon.com,
+	blakgeof@amazon.com, brauner@kernel.org, brendan.jackman@linux.dev,
+	david@redhat.com, dgc@kernel.org, dipietro.salvatore@gmail.com,
+	djwong@kernel.org, hch@infradead.org, hch@lst.de,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org,
+	matt@readmodwrite.com, mhocko@suse.com, ritesh.list@gmail.com,
+	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+	vbabka@kernel.org, willy@infradead.org, ziy@nvidia.com
+Subject: Re: [PATCH 1/2] mm: page_alloc: do not give all non-blocking
+ requests reserve access
+Message-ID: <auIvFBlNU5N_PVyd@cmpxchg.org>
+References: <arFBr22V60BMmVpl@cmpxchg.org>
+ <20261027150002.318916-1-dipiets@amazon.it>
+ <auISZ5w318zwUZuc@cmpxchg.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auISZ5w318zwUZuc@cmpxchg.org>
+X-Stat-Signature: 868exyozewixi5a119zm46u9rdoqr436
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D8834180009
 X-Rspam-User: 
-X-HE-Tag: 1793207947-705949
-X-HE-Meta: U2FsdGVkX19mJFKR+wHlFy3Y3pgvFFbfrY1taKCstv3AWFiVdGPZqg+io8WZpSGCkuMBo1OqTRZo4VhzgfqH7x1CCJz5L24WU19h07z4dOG9cBfhJ2dfryV05hTzPDvZAnhIkFVMJbJRMM/WLvXYApDb6Asn1DA1t8JmOKyrXUsDPvrl/w3xHrivVPNr8irqvwNUvhOCtzIBK5TPcfCoGFFsDz1pbmIAqq8GKeUVY5XmDraQISd2y4Ty67i4dgtIkJPnFrjym5/TQp16p4yTakij6XbK37UaP06S+XFD61lCUsJYh+M9BTuaEbSG+e3PUx9Vlb1c0YlFCC1DCUbuM30/aCaJTvZxf8szomKZp3N+rZPBGKPy0pMn+HedXbISpmPSVsrX6oH1bpcBkkSaEUlXE8u6/dN5sOvLdI+/bqNHG5uxDxaw3E2BvdKQyFB/ISFHSYonF29XF9oZMooTPHxEDdmtMnWP3So0/MZJW/QRXowlQKUQdXPaTR6hAQfr1uqa8ZpFhP2R3ZnvEmol+FexppeEAHhJmnuJW5I63e0EPZWCgUbQjoqN939GGJp+cpdxBYPit9k+us6XdjuGHPkzewLxNPJ6nT2a4WHoDr/BPWS93KPiK1rVia8fBWGZtwY1QLDRVom5Fvpy2541ylZB63RSzz92Ff4K4Bp7/TtmBbxzETauw6bOPGCZZuwYQb8Bw9ybAlyUb/y5kgDLBtHlqOiCzc9R8oJGUzU2rcL3b1jlipLwbe4bPs0r/zZty4bVkvmSbfok0AeyhJ6Mv96NBMJ04gS+hJrCA4nJSQnCRp9IOP2lIbce/Y+wTEmMb/3l2Oypx+kG3EMa+UJ4JuwBDu0jl8s+COs1YMyY39734v061+JLxY5349BIsEWtbd7Wia4FEfKVQ/jyBYfvEXl2UgOTKdk+mmvUXtN68O/hdP6B82EgW7hKN1IazIMD0R5r4uT/jgnWIdsLCbY
- gsPMKVri
- YI3PMSXu3BXUXpGHexCjDDKoba/SWem8QuKAse8f58moQyF14OBvNH7qbQop2tohDkB/t+W6nGuY5mVogvcy/uPs7n4qBHPQ1y90tRxkUDBWEwrFFmozU2UkktNz3gzOO76TrqJtUj+WAHi6AXlFPDBP4otcmYj7bDaKdxS1XeGYguEyBQxpXMIMuufCPHGntHKAtqK1+0OVUVGnPW/lOQkY04rKhhsj02jRgx/RAtw3lv/YPCrg253Lbs9H9a/mYx7vwRUY7r8CZ6xw9GChdjy2sZOpZYdwZW26sJBtGB5Y97eOPatf27MZvnMk9rFlip50XZ6DtBhu/6IWewfUrry7VKQU05X5w2jdRo/8ANzlMiwpH9lK4BMC7ew==
+X-HE-Tag: 1793208086-154256
+X-HE-Meta: U2FsdGVkX1/9FWmOvH4WZk+L0frNCjj/QX/WG0FW0gc9i19GVoVA6pLWX5FstCgPMbu3+NSmOSq8N12KguhIrW6xpxVQMqOW+9yzH+KHoJJjEbdeL1HbqUwMZQHg1EZlJNfnkMMkgVETJZ9NHqUfrGY4X7y/zhX9V9DhIrWVXj5ugGjmi/xY04OPA3EcLvbdM5oYyVf2Z22WCOV/cWcm2ulfxS8HI/OFHbBXuE1my8ErT121d8ID46CnwgP8ldBmpSveleAtF5J5YKIY2tKUhz+Yn1aqbIVMsW4urCZAdC/OA+sUxHt9QHbtzogZjhtgN4Ro0vY0rq0PvxYuA6yZ31ESuR+BZbEoCvmrsAqvnBPFI3ljVEZp9+PMmb3VTWsu+GVKwdGpYmQV9xU7uehp6LNL/3c41GMOu/vfLJYhZn5U1hnKftlI1tsFPqn2DZGwf4etWR4VW0CMpnGRYkJXV4yaQMgKi0V2WyI3IBmQhR0ctFjcbobmGN7hfO19cUZL1XAhyHU5QJi6cD/9DjuLmvoSkJpnbBdRWJmQMmML6mo6T3An8LtDIiE9Y86W+FhCsE1kMJojWAbtdAHsDRNtWdDvh3s24dMSlw3DD3P3XEEGTlyZUQSrydB35zn6au7l1lZyurdtnLH+qqA5GoY+WGJiK0ehE5Ude7Li2LGkOmYnhvZonSdtvgGh2NuVXLSyg121VsslR8PZEyZCdD4rtj/gJrgJShEh1NBmBde5esCLjIGn0niDYxFV9729q+jy4w9oeY8ScDr83cDpxa/knButWWJ4MDmvuFZW3DoqJ7O1aRkRWzt5Qx85GrLE0yzNNkd6VTtkqDMNyonKz+66/1fKI2ozh5/JJfKrex4ue/6R3aNg6oWwlYWPYMH2UKFLhuQS9MkmC3OlmYveK3F5U/X/6jJvidQwJd28eQ4ZjqU5asfPSn4KsbIO39Y173mXAaY6bITQkj/ezMKpsZH
+ MisPm5d2
+ oOnRJowMI8jZ5/Bvsq8UYNC8hy/QUsDBEiK+urCCzv3V5P+/2HkbprteIrbDfFzwHzPFQKIpSjKWDXsv/Vp8jLQf4YIi49OjJ5+E6HJ7uhE/ffpRPoIkN20ffOMd7AFDcHun7lV8ELrRJ7FPeVX4Thdwqdw4RqZNTjESPdA/34lHkQ0K3mvrMDywf1XKIylXJd/Fxj3rY84fC701ATFVE75cIYtE0k3DnojDEKZdiLGvBjWbsarIoPC4Mh+Wdn9puu2MILU7w9N1tFui60d2WiVDAhZvhCr4rb6+1r6rbAKtXOODVFTxIi+GIPFym1lMeM6M4wb16tup1okrLa5rG6IFLYLHZchD5UeWs1c+T4SKnZVgurO7j2bkZf0rNSzX7mNyNTis09chKbeO6Yp9tftqqhDWV3p0moBwQ41T2I2sGhrLO0cFnOMS3qKBXCYhZCRsxuFllBqcmQxNJbVusd8/VfkMtwkw+OWeHC4a68nNXNN2mkiQUTV8if8k4Y7gBMehQNZKZrr6lvOppWdCgmfNIAM2CcPj6lnwh1Cfhkx8QJOdnswpsTxNVuKzWB5OgO1rk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,76 +132,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Hello, Hui.
+On Wed, Oct 28, 2026 at 11:19:08AM -0400, Johannes Weiner wrote:
+> On Tue, Oct 27, 2026 at 03:00:02PM +0000, Salvatore Dipietro wrote:
+> > 
+> > Hi Johannes,
+> > 
+> > Vlastimil asked that v6 of my page_alloc patch [1] not go to mainline
+> > before these two patches land, so Andrew parked v6 at the tail of
+> > mm-unstable and dropped its Cc: stable until then.
+> > 
+> > Are you still planning to work on 1/2 and 2/2, and if so, do you have
+> > a rough ETA? Or would you rather post them as a separate series as
+> > they are? If anything is needed on my side to move them forward, I'm
+> > happy to help.
+> > 
+> > For what it's worth, I ran both stacked under v6 on v7.3-rc1 and saw
+> > no performance difference on my benchmark with or without them.
+> > 
+> > [1] https://lore.kernel.org/linux-mm/20261001082152.2879289-1-dipiets@amazon.it/
+> 
+> I'll work on this today, will have patches before EOD. Sorry for
+> dropping this.
 
-On Wed, Oct 28, 2026 at 10:27:33AM +0000, Hui Zhu wrote:
-> memory.low is a request, and what reclaim honors is elow, which
-> page_counter_calculate_protection() derives on each pass from the
-> parent's elow, the siblings' requests and the tree's usage.  At the
-> first level below the reclaim root that comes out equal to what was
-> written, and there the knob is enough.  Deeper down it is capped by the
-> parent's budget and shared out between siblings according to what they
-> claimed and what they use, so what a cgroup wrote and what it ends up
-> with can differ.  As far as I can tell none of that is visible from
-> userspace: memory.low reads back the declared value, and I could not
-> find anything that exports elow.
-...
-> So the derived value seems to be usable only where it is derived,
-> inside the check, and that is where low_policy() sits: it is evaluated
-> per pass and is handed that pass's own inputs - the memcg, the reclaim
-> target, the elow just computed, the usage - instead of being state that
-> is read at the check.
-
-The visibility of effective values is a problem of wider scope, not an
-argument for implementing bpf struct_ops. There were discussions in the
-past on whether we could expose some meaningful effective value. They
-didn't lead to anything conclusive, and we may yet find a way to expose
-something more useful.
-
-Also, the hook doesn't use elow to decide anything. mem_cgroup_below_low()
-and below_min() return true as long as elow or emin covers the usage.
-They ask the policies only once the usage exceeds it, and the only
-answer a policy can give is BELOW, which makes reclaim skip the cgroup.
-So, what the hook buys in the nested case isn't access to the per-pass
-elow. It lets a cgroup escape the ceiling that its parent's protection
-imposes on the subtree.
-
-Some of that may be innate to nested protection semantics. One
-shortcoming may be that there's no way for a parent to "passthrough" in
-terms of protection, because there's no way for a parent to be neutral.
-If its memory.low is too low, that's the ceiling for the whole
-subhierarchy. If it's set high, the subtree gets the total protection
-one way or another. There may be arguments for a different semantics
-which changes the shape of the protection.
-
-However, it doesn't make sense to let a BPF program escape the parent's
-policy, and, again, none of this is an argument for adding bpf
-struct_ops.
-
-> The other half is what a policy can key on.  memory.low has one
-> dimension, bytes.  A policy program is not limited to the ctx it is
-> handed; it can also use state that other BPF programs keep, so
-> protection can be a function of activity rather than of size - a
-> workingset refault rate, for instance.  [1] reads those counters from
-> BPF and acts on them; it drives reclaim rather than answering a
-> protection hook, but the signal it reads is the one such a policy would
-> want.  The limit is on the output rather than the input: the hook
-> returns a boolean, so it cannot grant anything memory.low cannot.
-
-These signals are all available to userspace. The workingset refault
-counters are in memory.stat, PSI is in memory.pressure, and whatever
-state other BPF programs keep sits in BPF maps which userspace can read.
-So, the inputs aren't the difference. What's left is how quickly and how
-often the protection gets adjusted.
-
-That may be an argument, but nothing so far shows that struct_ops is
-needed for it. Can you demonstrate a realistic and useful scenario which
-can't be achieved from userspace but can be with struct_ops?
-
-Thanks.
-
---
-tejun
+https://lore.kernel.org/all/20261028171719.2043421-1-hannes@cmpxchg.org/
 
