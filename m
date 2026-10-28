@@ -1,61 +1,61 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE50E60A261B
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CD960A3837
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 08:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=DeIiv9WX
+	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=Jg8BLE8I
 Received: by kanga.kvack.org (Postfix)
-	id 3504C6B05B6; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
+	id BB4136B05BE; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB126B05BE; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
+	id B3E0C6B05BF; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12BDE6B05B7; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
+	id A539E6B05C0; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E076B05B7
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:20:38 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3D7EA12034C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7470C6B05BF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:20:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA958160C33
 	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:38 +0000 (UTC)
-X-FDA: 85371338556.27.47A86C5
+X-FDA: 85371338556.08.A05A974
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9C8A840002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=DeIiv9WX;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 53D811C000B
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 08:20:37 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Jg8BLE8I;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	spf=pass (imf18.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793175636;
+	s=arc-20220608; t=1793175637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dWJJn/15+ghgzzIGKgM3IMULkpSh/eugDFHemmlBRb4=;
-	b=Ti6QbTUhnJSFsUYvTyFYM+urtAqMHOIsif3L2B46tdteUh9DyCH+r+1QQW7GJdZrQ6mHN3
-	gsXGd689ed6IXKuSHZCqzkaMXUjTZlH+446nsDGPBkBWE9Vo885FLD4yy0zL4G79Em7peq
-	H8qvMmmqnoeY4NVq/1pDTQVMhsoZ4jM=
+	bh=ceexsp2t6/v12ItyH2pSPyV+syh2rxnTHvgHk3Ni1dE=;
+	b=rOONv5eDO3R6/Q/17wUK9UWs050oMqGTxUNgJkB8JFqr6IgVOEl1b035wv2ot/dvpcu7+k
+	uojBi305RI+Y9nFqz59GoIk95v4vRhaAGaUp8wWXH4ikpYym730jCr7QCmOzuPuRq3NmA1
+	WyOot22pDk+Tw+XwUWtleyAZoBOKs8w=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=DeIiv9WX;
+	imf18.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Jg8BLE8I;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	spf=pass (imf18.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793175636;
-	b=t43RrvWuEnTVvAhHKTVUA18Qq1MY+QwKPikWuqfbXcQ3KGO0YaeK3s9Ym6xfHSlPXADyqN
-	k/IuJvE1yjSJ5dhCJOxCdo66sCTxjeAqnyvdilUsCB1dpvJ0W19Gy/pobsL2Fwdp3KWPdQ
-	Ock6JerLD3ZlvmY+jmI4k9CAO9e1iaA=
+	t=1793175637;
+	b=GAfYWDFBibi9mpqZ0A4ZRKpjymIcGVy5aYx+tkZQm+K0SnVA6C2y4NZmDDZ+lx89dTWaBp
+	Dh6z/3ZvoNY+5q9CKKcJejZarzbNbyK2EmaOT+ffgm8FOvfzsZ1Q08IkyE5zfqlKk10NvH
+	idJSZxZzRzNsQNKK4BBWfx0/Dd0YnL4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1793175634;
-	bh=dWJJn/15+ghgzzIGKgM3IMULkpSh/eugDFHemmlBRb4=;
+	s=mail; t=1793175635;
+	bh=ceexsp2t6/v12ItyH2pSPyV+syh2rxnTHvgHk3Ni1dE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DeIiv9WXQV3gD55AucY67CXV5GytqfXEJkOIlH/p1vvpmEBa02wb0CiZ7FetKO8kp
-	 vKMP3WYwznobDJIR52jidVzMPZfhGDf6UWW8grvqXfGJ9aPtokciLL67F0nlp74wpP
-	 VCbSuHZCHz4d69J6NRvoiFKB6uqBPcC0poA2OXFs=
+	b=Jg8BLE8IZCB+yObRAAqiVmVgU9sigg/nFDUGFqQXhWnSUadRZwDKyR4LY8EpthVle
+	 pA/bIha5skUWK4mVY8+AIkx6NRdoOUTSd/zD45eghCBSekWpPyZ52q6p9FUlikkAVg
+	 i5iCn86ahK5MOiZH/P0BO+c07/rkr7dgAwZrsWjg=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id DF86BFBCE8;
-	Wed, 28 Oct 2026 08:20:33 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id E1323FBCF2;
+	Wed, 28 Oct 2026 08:20:34 +0000 (UTC)
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Alex Deucher <alexander.deucher@amd.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
@@ -96,27 +96,27 @@ Cc: amd-gfx@lists.freedesktop.org,
 	linux-doc@vger.kernel.org,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH 02/10] string: Switch to __nonnull_args() macro
-Date: Wed, 28 Oct 2026 08:19:41 +0000
-Message-ID: <f0d7b2f0dce916f4cde3dd466a5b51a4b88fbdd8.1793027261.git.d@ilvokhin.com>
+Subject: [PATCH 04/10] xarray: switch to __nonnull_args() macro
+Date: Wed, 28 Oct 2026 08:19:43 +0000
+Message-ID: <e2660c4c9f5e6f97be2ef7bd3752d259bce77d81.1793027261.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <cover.1793027261.git.d@ilvokhin.com>
 References: <cover.1793027261.git.d@ilvokhin.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9C8A840002
-X-Stat-Signature: 3sptk6abdejajt7anjoekjy6dt96tci8
+X-Rspamd-Queue-Id: 53D811C000B
+X-Stat-Signature: sdaqwapire8h5e5m5wc5k7nsisnxhcmd
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793175636-968178
-X-HE-Meta: U2FsdGVkX1/PO2fky0T+GGADd9sN9qTGjfNIAeAZnQ9J2Xqz/QTqF0NXES2EtaV2lodDI1cH1d5CkgHGsptajSQksgskFIqTm0l2OOjOWvNQGemacK8Afi73KqG9bWENWhk8cV76ILGXUa14Y2PU4PQFZbGSTLY1Tlw0ONizScDlkdgTay+hT+ZydGjGzQ+Tm3Cosws3qeYnUoZZzUdCPj3HIcJufvMnIL25W8T2+cWK5YZD9u8lRF/F3YC76GeYOb4A/+8ntfukNIjbL1u1P9EjugpipKt7pOFqPWdCbiYXjcYmYRJz0B+NcRgqx4FaVV5K/Bk3HK1m7T7+gmMy/nn+wrpM0I35uOUHb5bzCbkO/48Laz5XDndNTf/wcR7IyWgLNmiRmOA9d0ByWyEqFv1MlxL/VLX90CBovRxxcWK320dQ3GmZh2SWhK4TPiOUhXrOEBn3QVuO+aCC0oXVvCI51J5nxNFuqxb10/8acMWX1zBGvuup6mxVOIPCUj6YYcI3ai8IvS4vNbuZ11Nw+1FJodiW2WoXRfBj+r7p8BZ4LADPNM1Jb1G0WKHVIdSY2pEN5QjbCIp/l7CWI60nh3+9HTzdwQudovl+duU5+TH5gnyE5n1pXy6dJYW1D01AnhxjSfx0INnxrF6vFmYO4tAoUMbWir2HPY2s2e8sPgJYQKttjkNCq3SLteVzABZuMaY2J6XtnMxzZQmyLj8NdofH/SbwmpiSVUxFMCxi9UZuue0az/Zsz04DPcsTOu50ZIYkQkNcidQv/fqhRxPg82d7i0Kiw94TuMcj7pPuh43wfkzD7xE+SftHqj2N69GXr/TgugATICQ6o20Xg0SqXVtTHn25KlfVlZRwBw00Y5oDJX+EAe4KTnaKp8YZWQBfwdSKcPePo6HjcY6WpCI4uQ2w7SaoIPvtPSBIspW4vzXGWb1s26zP5tqS5YQvm7Z4Sur+MNLnB18gtrEDxZz
- 2xTn5yFP
- r5jcBQDdKeaF3tHYyoXnBYQBPS20GYq3RbyD2l6ROxxZl+09VZDlWgI3Lnax8rVJXj1YG0xdaVhnXf+izsinj270E+4G7JJXIp4NAB89ekBhJ5STgWuOIPCZunczxKWLr5RulAzHapqWC5wigkHolHf0icaj3VrymiWdsH+gfRKkvgRT63/S7VueuciCIt6dgnFB7Nfsoxw9UE2WdufReX5unYwtP62iXwQN/yTTMd15NOcioioxU+x4/bU40qWgRZedpihwxoFTJ3GyyDbWEenBYzRQjILcPnezldWvcMNICNspC5U3tlplz0NEg63StQoWHPWjtbxKPre9q3qQi3QmLRv4F5iaDr5QmKgnV3lKMJBzNyDUUwsO+7CfbOCNIdQDfH9efBTay17w=
+X-HE-Tag: 1793175637-307075
+X-HE-Meta: U2FsdGVkX18z0vuxDuMwH+RQYU4tpHzGXwnoovJVOyhWWcqdcz4h5Q+swUz/LEueV0jiwyuJFqENEw2pYVoXBPuQIyEykVfP7wCrurucE7n69eVBCbEsxrlV8YYUnqlnIMnKxquknNUyikY4kPIulwHH8Dq4MyXCBAEMUqnx3pEvHfXCXFbaeHkeklEaJcA6iRP2JNAM4GdicqWQwhCgaJ7azpthumUlKjEhtomSYAamAzR4Cyv3YmgKCdK2O4LKoP2JIOul5TbSPl4sPbqQXSgnfps5wasiJHLupEhoyqaYIlAC5mdiUZgQCIwxqHtxYldqJ+KTtukC1HpDkUXBt7QFmAV+uy9eGakBCw/NHnQJAXLQFKz4bzfUZtga2G76MCWtwDZqMMjsDZA8FvPVyE+1ggYE4JqpZQf8N9d3ffJZ+Sc779MICftuUwoE6GXh2WFP9F+Y95foz1701bHtro/e7ot3tKBzT5VdQs2a6I/PfVi0aK1auMNS1htPzNlr+/WvoLVxGfitAXDR1G5Zsj+l/kq5RSADdEpIDrmn+NAnfWiNJ4sIVRNNvMNAbyGktD+5hGk4wMcczD8xyp8iQRCiNL1G1sNokitHs8VGxYNwUBf8cartfI8Uoshj9hMuVpd07z5NpUbWZ8wF+dtzg3YM3HzYRQW5+5+/ErK70y93ZXxFEgcCfLbH6gutDMSfZh4CKdbIVNWcDq9AY4sHjdEE81io+qHL3gNl3D093SpYlowN3qleMC6xL8zwDK9oc4ohfefmAfGwHJElWU+MXcFSd1pk1nLMLSxTJU/4GMhJFs+QICF1EiSWQCq+HBc2kW0MLdRvpDcm6CEwxHgaulKH5AoJw70AqV08CZZ1B+fHOX6L8amASmTjUpnkDpjWexAeRgA7MgPehYKaHy4ToUQq8x98V2NbkOUFqwpY2cPuB5jesjf7uEqdR86tNbrdIWZVNnX9cdKIkDLfUhP
+ XpcFmSFV
+ /znMVzW1eQwXKFCXdEEVClDR4Ah8D7tZ2cI3tHvgouRQNgXH/+sWL+HjMJjVn7/ZMyLZHucgJtHmx+64vRNCVfDTBDUIm5VRwr6yCNAc24uzYq+m20VLZQqPgadgS/18CrrlWE3w3tZH83qd1lGBXoXDFRuy0nL0WG/Fxd9RQ2B5S39SKCOa+nnH+LW+n9dvrGrrgh8BEwuijPTE2sya1sm8eCUriKNrozR1yWyDHlv9QZMZ8E5rRrZtLaCGXHSTAR3q9s2ng3mlkAXu3usJfi32ahxCn6fce5CYXmsKJ695Kr6TjE5/OTrvYB6LFhNv3nY0AZ4h+ANHjlAHlrnF2qmDp0euIP/FVKb88D3a6jMTJHY2W0OsHTTggOgDNVe3j5hGD7gUceeoe/xY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,30 +129,54 @@ Commit 22302af28d3f ("cleanup: Annotate guard constructors with
 nonnull") added the macro __nonnull_args() to wrap raw compiler
 attribute.
 
-Replace __attribute__((nonnull)) with __nonnull_args() to
-standardize nonnull attribute usage across the tree and keep the
-attribute's quirks in one place rather than open-coded at every call
-site.
+Replace __attribute__((nonnull)) with __nonnull_args() to standardize
+nonnull attribute usage across the tree and keep the attribute's quirks
+in one place rather than open-coded at every call site.
+
+tools/testing/shared/linux/xarray.h directly includes the kernel's
+include/linux/xarray.h, which now uses __nonnull_args(). The macro is
+not defined under tools/, breaking test builds.
+
+Define __nonnull_args() in tools/include/linux/compiler.h.
 
 Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
- include/linux/string.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/xarray.h         | 4 ++--
+ tools/include/linux/compiler.h | 4 ++++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 6cb5cdd01158..1f1cb73514e1 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -587,7 +587,7 @@ static inline bool strstarts(const char *str, const char *prefix)
-  * Returns:
-  * True if @str ends with @suffix. False in all other cases.
-  */
--static inline bool __attribute__((nonnull(1, 2)))
-+static inline bool __nonnull_args(1, 2)
- strends(const char *str, const char *suffix)
- {
- 	unsigned int str_len = strlen(str), suffix_len = strlen(suffix);
+diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+index be850174e802..cf7f8802da5b 100644
+--- a/include/linux/xarray.h
++++ b/include/linux/xarray.h
+@@ -361,9 +361,9 @@ bool xa_get_mark(struct xarray *, unsigned long index, xa_mark_t);
+ void xa_set_mark(struct xarray *, unsigned long index, xa_mark_t);
+ void xa_clear_mark(struct xarray *, unsigned long index, xa_mark_t);
+ void *xa_find(struct xarray *xa, unsigned long *index,
+-		unsigned long max, xa_mark_t) __attribute__((nonnull(2)));
++		unsigned long max, xa_mark_t) __nonnull_args(2);
+ void *xa_find_after(struct xarray *xa, unsigned long *index,
+-		unsigned long max, xa_mark_t) __attribute__((nonnull(2)));
++		unsigned long max, xa_mark_t) __nonnull_args(2);
+ unsigned int xa_extract(struct xarray *, void **dst, unsigned long start,
+ 		unsigned long max, unsigned int n, xa_mark_t);
+ void xa_destroy(struct xarray *);
+diff --git a/tools/include/linux/compiler.h b/tools/include/linux/compiler.h
+index 03ecf9086643..fad2c6131a80 100644
+--- a/tools/include/linux/compiler.h
++++ b/tools/include/linux/compiler.h
+@@ -68,6 +68,10 @@
+ #define __naked __attribute__((__naked__))
+ #endif
+ 
++#ifndef __nonnull_args
++#define __nonnull_args(x...) __attribute__((__nonnull__(x)))
++#endif
++
+ /* Are two types/vars the same type (ignoring qualifiers)? */
+ #ifndef __same_type
+ # define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
 -- 
 2.53.0-Meta
 
