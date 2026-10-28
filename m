@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C733606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 20:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FCB606A32E
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 21:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WpZXmrJh
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LN/bo96W
 Received: by kanga.kvack.org (Postfix)
-	id 7A3046B05B4; Wed, 28 Oct 2026 16:58:17 -0400 (EDT)
+	id 1999D6B00EF; Wed, 28 Oct 2026 17:07:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72CB86B05B5; Wed, 28 Oct 2026 16:58:17 -0400 (EDT)
+	id 14ABC6B05B1; Wed, 28 Oct 2026 17:07:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F54F6B05B6; Wed, 28 Oct 2026 16:58:17 -0400 (EDT)
+	id 038E56B05B5; Wed, 28 Oct 2026 17:07:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 335EC6B05B4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:58:17 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B347712019D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:58:16 +0000 (UTC)
-X-FDA: 85373247792.25.E9A711B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CC4F16B00EF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 17:07:10 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B182A7204
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:07:10 +0000 (UTC)
+X-FDA: 85373270220.21.1B27F86
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 07A19100009
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:58:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WpZXmrJh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 86FE2160007
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:07:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LN/bo96W";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793221095;
+	s=arc-20220608; t=1793221628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OkkxJXamG/EOg1fXbdxdVy//NPlViTUZPyzdPBS0XNI=;
-	b=RIRwEaSlYk9Q799gn1PgJA7daffRDkbq9Xwufn5yJ4ZLzDGiSo7XEwFJi98XAvs0PmX6tX
-	uCw2OuzCTV6GX6EgZnnxIsoEI1J2INcybiUAguoe6J8YI9UD00bfbkTRB+OC/LMkro62nG
-	BIn/9SdVg0toUkLEYeNh6YDCqAqqnwA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WpZXmrJh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=xxZoPiTulvdMTGEYFvoIZ44CCQijO9eunuLg0kQXxFk=;
+	b=0gDAfWh5NovdEteQ1Ec+ItS3pr2tqXSOnXQa4b0B0WQSHZeuYWclxvAa7Shd8kAAR/ECsY
+	xj8SXVw8L4cXePFLIs2vXLKrCmHBwCsZZy0jmvflqbi/bXCi++5jR247zAiW5c42moBXa8
+	uZ+tM+HjN6e7Bc1A/IMOwBcyuSeHWnY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793221095;
-	b=ngq+RKlLIIR6LtmTSEnfCuDSfMvk84rNvTBP9Uf46+NpY/MUcDhT8NweeWll5xs2Dta8Fb
-	ossq87/Q6wartWM2FIW5zZYm3yrtgmd06BllpOOgZ1NsUdjw6xyWRXOC0EIEGi4bdxLavg
-	3tXJbsUmstoxWRyJ8aFjjOcro02Gg/Q=
+	t=1793221628;
+	b=ufCuczS6CejM/JXyesOuNN8LpfA0/5FGZjcqvw6Hoi6Siq5PRhg6VrNdKWCQahh0MwABwa
+	886/J1NXs5V/X7z23lH6lHp1a3fnJG0hUzk4GKbKvgZvTzPzvzIJqL/NneTyacVvQ1p2nd
+	rfUtp+364JKsrMzc05D7MEhXrvmIXOs=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LN/bo96W";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6BF55601FE;
-	Wed, 28 Oct 2026 20:58:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385F51F031E1;
-	Wed, 28 Oct 2026 20:57:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E626E600DA;
+	Wed, 28 Oct 2026 21:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C600A1F01825;
+	Wed, 28 Oct 2026 21:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793221094;
-	bh=OkkxJXamG/EOg1fXbdxdVy//NPlViTUZPyzdPBS0XNI=;
+	s=k20260515; t=1793221627;
+	bh=xxZoPiTulvdMTGEYFvoIZ44CCQijO9eunuLg0kQXxFk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WpZXmrJhfZ4oFqEjPk/JBXWd575607dk5zGyo1rvpwVg3yy5YfXeNqH5w4vNIuQ0d
-	 ktOBD8dQNFzWnH3XPl6qzKMN2hP2/vyEl+46oFkRGa6BZf7drUChBa82kCuH/c0DUS
-	 4CdKqDnR8j5WZaqwqSM2nFlx0ftJBuLWGr4Lbh/2VrlOFq7ZhO68etuPzFcaxVfO9F
-	 ZsFMFRIJFcw/2vEWbBe/tqJrUBZIpK95m9X3L3KY24CdVU5OCiwKZO7X6MQczUDuDg
-	 AGEl/ld/sByznq2EWDJP+O/uKfdSVS5eGuApV6Jdg6Ibbm/bAgkmLKnbgUaCwCgLH9
-	 zwTicYTUGAKpQ==
-Message-ID: <da631095-bc93-4b18-b5b3-c68644f9ee0f@kernel.org>
-Date: Wed, 28 Oct 2026 21:57:56 +0100
+	b=LN/bo96WZvsiQi1qe+JR9nlcD/dtIGQ3FMfkNtmijuD8fjEQvKUZbveUSkvBFTpiT
+	 q6Edde755VLLwfbtDICVm/OW4Pm+/etk4qBGkfzt7OHtDuZ3eCdxBEwg9OirXuns+M
+	 XsvYfyUNxV7GxmUXhpEDJCqSSig5E7leSPceajxOCaywHlCdhCxFMwskHRcKuUXv06
+	 PDthkCr7ALLRll2jP+OhkIKbt46NDpsV5HResmFBVneLOSa8AjHiykgI/EVkjCB6+y
+	 im/ok434xapBK6Jzyew5LWXpxM6m7VRgE7Je11/Pjst7rZUdUqcoFHcm6G7+s6AIdF
+	 R9o+fP1ANqrsg==
+Message-ID: <d709fc9e-1940-4e73-92a1-09ab36ae16c5@kernel.org>
+Date: Wed, 28 Oct 2026 22:06:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 20/46] mm/gup: fix clearing folios in memfd_pin_folios()
-To: Pratyush Yadav <pratyush@kernel.org>
+Subject: Re: [PATCH 31/46] mm/mremap: fix moving PUD leaves
+To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
@@ -80,8 +80,8 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
  Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
@@ -101,13 +101,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
  linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ linux-cxl@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
  stable@vger.kernel.org
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-20-6f74bec9a5bb@kernel.org>
- <2vxzbj8fp4sn.fsf@kernel.org>
- <ec55c760-f099-48e1-900b-9f8e2e5315da@kernel.org>
- <2vxzld7injcv.fsf@kernel.org>
+ <20261027-fixes_core-v1-31-6f74bec9a5bb@kernel.org>
+ <auH0bgdchd6DyCbU@pedro-suse.tail5790ac.ts.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -154,21 +152,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <2vxzld7injcv.fsf@kernel.org>
+In-Reply-To: <auH0bgdchd6DyCbU@pedro-suse.tail5790ac.ts.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 07A19100009
-X-Stat-Signature: xqftjunk4qdqqdckq6nq4zf6qq43aor6
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 86FE2160007
+X-Stat-Signature: x37ybwqhair3umrdtw7zmgdpb77zq78y
 X-Rspam-User: 
-X-HE-Tag: 1793221094-264581
-X-HE-Meta: U2FsdGVkX18ASL/c/jsZCnhetftx57rWieN5WtrMaS6IB138CICYsBP4QVwyut8tR4FmnkBeTf+oZrtMLDIZCRZ2n7Xsp4C2WaPxZLbn4rtRL2nUHXvzdEi8w8RgIxeYkcfdKlw88vUXkxXoC06BJyUFT8hUmqjiz3Ay55DFaKM32+8XfdtyLN1XGKLiyeg1h3aYqNdxbSiUNjeq3e2J4hXBS/3xufHaimeIuvfAV03VT53P6kTDTg+37BSx4vNcOYzc2kp4BEBBtNf5hZgRgMPHY1j0T14F+7ajGAaTUIuAQP+nfRHBxk4oxEms2jOEtfCiZn5EpwFWzXBSL8ssdpI7XcZPN88mrsDIvMzRJ2iWMgmwR4AL/aKvyIB5RkN69NDxNC/JG0ebpe+dKTcUNWIxqQi+Y77pXyDnKCNrOV0SfqsFad8U+YluvVEsU7m9ALBv/6+oZAidWFfx8VdHm3AFx1EYZburIVxAh4iB1dPhw+HXvhdTyYTfXzA1jK/z3STkhQ73YKj4Kaef6Wz/3BuoJZr8aQwzuyQU5UTDehKUqqz4Wk3lwWfZtgXi3GUBdfJcMP0IxdvV0qKjdKCZLihnfwQtjeLGPVTNx/EjghWKxhJcbYw6vrzir4jObj+3ufyZXP01da6SuNGbFoXLEv/DvF0f3TXirt1+hp3thyub/J7lv4Ma6ksU4gcLKroTe9xr/CqokystO/gLPDahS6OYU2sDwLxQYpBFrvI/QCLhAIQGzkLR0ufQIu4xVnLXZN0W/YrFM8XDPouLHKp62qPpVtYkMb8DZMJXGd5m/GIz3GxXAa3GB/ZYtL7jPtOYgYvWtWAUbF0gKK8/ZcmWC+Ww0GrjVUtJCscNqQlA5VnjpVjRBRk2Oromv3eZARITaAxjrYWTLzUzmNBJpqnrJe1jtegtsuiFx0ik90HTsfwo41g9VTaIIio408zCHTwBxUp+XL8449/j+6yTNrX
- a50/2KOC
- QWhfkx6jFQS6FUR77G7ZWYhJE6pgf59doh5wkfGUT93LA4DANZMFMviz/D7LZefwaFzWqyZrmrYxfqrk4uWGAkQ1XmiShbwcD3qXHkq8zEh7nVmxhj6uvuMH0WErIlR6n6H68q3wh8W+DqFoSmmgNYRjK9GTjfOgrNc+RE/jxKDw2EqbLaEtXXW9GiZPgOh707rtN2hDZEgAA4UlKSv3fsJQM3KEs22rS07uOAbYCXTfGVEkCmDyYQU/Xlt+k7kM9r3SkecMLyRhPyjnxNYAufRqYHFAua8XzC1MwovokfSSFSplziHFgpRSGlWC/FYps5AEvWlSZZlto+joIDrMzv1eIAZbhbD9WwGBHnBq9MySHnh95P2E9d2AueWUXNIC4z9zs
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793221628-443422
+X-HE-Meta: U2FsdGVkX19rOFjMGgZUhGbYjxxu90iSQvqLifd6VXY6c2g9BJa/k0LQpXEjg0AMSbYzFlwAyzrXVLQ69B6UEq35UdiY7y7XE1ePQkYGa6QkJ2XGGD0otL1GLix43q2ICBbiQhh5yPWb1wn5suFD9XLykbdtkBJ1R4FLlPs0Bwn1XOZZk2y0NJIOrQn886R+Q5BHP1M6O6h1DmPl4hRIyauikcKGEAQNZ06DvHuzyRNpowcoOOtWZTKy5Ebe930sEvS+v6J+AqQmkhhMN5t+P4rudhv6634XOAKFqLFuIqr7OIl5CdgEYSLZBMrIwWzGuLNxTXeyxr9RWkKEoO0Lfb8FQEQ2SuewyOwRBV86XZyq308lIgD9JB9rXWeyGQzMZiGKLGrBM7G5CFCr8J4KzByvmD5uTpNhCfZFdlvlm2pjHgZbPyWeCm0R6Rg/FqApYNxTYvjQL/QnDhUJLo3KBMvaTFmR41B4rK1DVZE9UgHisrd8TamMaCp8b5aVOdvrc4urBicgTawR3pYavVOFFpNZ7d2sM0EheGRoLNf7Q5wOHMWUV1hQTk5TkOOkxnOn6g6LUbKlCxkgx7i/z0UbcOjxBENeE3inO2AeVI/+xhTfp70GJCuKpGt2lBCr8BtXtX+9mKU9+3ndK6j/NQXBT9D1ayVHJwCgxJ4rUUCLCxZUS3kOme1amwAw4/SRCvX5Qrn3FvnjikXwM1qrYbQCW4FcOE3jdBr5s+QbuNiAjfnj0ybPrbz2O2G04Xrda0afcVM2+aSPNLnJCHi8RE3ss7EV+oSTElHyyA2h9xhEQWOH9BJlFtnN7hgvOeR/9WxD9ewKU1Ro21bSxrY1gtm66TFluJUVvftATcYXaAuPEBxd6szKNjCWWTLk9q3DK9ZJaIGtlrc38gtpfLTVbsUw+WGziBw3bF7t3MO+eaM6tzu9ryUJbnADgFRgJz6BAovgXEE0Rw+Do/WFn86CWpZ
+ RWxW0Yij
+ opNZ5oa7VTI0kCKLXAAGkVpEvhL+fW1iNM575+05IfPmD8oT4l8r9s7+1ggjmZjNgnaJImTyga4go3eZMSUIJDJJ4Lw/a7kK1LjTYUwACCQs5KryW8WixXZwaP5GZRg14WNdpOHO1qHerQJVa7kIYGW/tXJ6xK9CXP9BN6gtNMxdRhPvOUhZ6TmbaOSVDuy4ik+FhbemhRcH9eEJUuREWWCChT63u/aw8JDA3ZPhgba1o0rdOz7MZkaCBaWlcMtIGlFz5M0uM2GRf5/spBqhGlToEQ0sqm7lmIHZi30zdoyLUer3ea0dMlalFKIqKfOpld1dFLQOpJjkBnOEBSwc/uOAAbiuorMz3zLcCudqgS3mAOl8EWmyK7abZhR8TSnsYip1YtOfrsyPn3LXJuew0sOODh/eS1LA4UYTT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,34 +176,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 12:40, Pratyush Yadav wrote:
-> On Tue, Oct 27 2026, David Hildenbrand (Arm) wrote:
-> 
->> On 10/27/26 16:00, Pratyush Yadav wrote:
->>>
->>>
->>> Nit: this logic is repeated in a couple places in shmem.c and in
->>> memfd_luo.c. Perhaps it deserves a helper?
->>>
->>> Anyway, sounds like an important fix so don't make my nitpick stop you
->>> from landing this if you don't want to bother.
+On 10/28/26 14:20, Pedro Falcato wrote:
+> On Tue, Oct 27, 2026 at 12:17:51AM +0100, David Hildenbrand (Arm) wrote:
+>> From: Josef Bacik <josef@toxicpanda.com>
 >>
->> Thanks! yeah, I had the same thought when trying to improve this. We should have
->> an easier way to just not hand out unzeroed folios outside of shmem core
->> functions in the first place ...
+>> pud_none_or_clear_bad() only really works on page tables. PUD leaves
+>> confuse the check and make us clear the page table entry and print a
+>> warning.
+>>
+>> Since commit aed877c2b4257 ("device/dax: properly refcount device dax pages
+>> when mapping"), this also leaks device-DAX folio references, mapcounts
+>> and RSS accounting, resulting in "Bad rss-counter state" warnings on exit.
+>>
+>> Allow PUD leaves in get_old_pud(). If a PUD leaf cannot be moved as a
+>> whole or the move fails, split it. This unmaps it with proper accounting
+>> instead of treating the leaf entry as a PMD table.
+>>
+>> Keep using pud_trans_huge() for now, in the future this code should be
+>> cleaned up to just check for PUD leaves.
+>>
+>> Fix generated by an LLM and sent by Josef Bacik in private.
+>>
+>> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>> [ david: fallthrough after splitting ]
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> Normally this should use shmem_read_folio() to get all the folios, which
-> does zero the folios before handing them out. I guess memfd_pin_folios()
-> uses filemap_get_folios_contig() for performance reasons. 
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-That is my recollection from back then, yes.
+Thanks!
 
-> It does the
-> lookup under RCU and doesn't need to take the folio lock. Perhaps we
-> need a shmem_get_folios_contig()?
+> 
+>> ---
+>>  mm/mremap.c | 9 ++++-----
+>>  1 file changed, 4 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/mremap.c b/mm/mremap.c
+>> index 91f0865f6aeea..1237718848f5c 100644
+>> --- a/mm/mremap.c
+>> +++ b/mm/mremap.c
+>> @@ -87,7 +87,7 @@ static pud_t *get_old_pud(struct mm_struct *mm, unsigned long addr)
+>>  		return NULL;
+>>  
+>>  	pud = pud_offset(p4d, addr);
+>> -	if (pud_none_or_clear_bad(pud))
+>> +	if (!pud_trans_huge(*pud) && pud_none_or_clear_bad(pud))
+>>  		return NULL;
+>>  
+>>  	return pud;
+>> @@ -847,11 +847,10 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc)
+>>  		if (!new_pud)
+>>  			break;
+>>  		if (pud_trans_huge(*old_pud)) {
+>> -			if (extent == HPAGE_PUD_SIZE) {
+>> -				move_pgt_entry(pmc, HPAGE_PUD, old_pud, new_pud);
+>> -				/* We ignore and continue on error? */
+>> +			if (extent == HPAGE_PUD_SIZE &&
+>> +			    move_pgt_entry(pmc, HPAGE_PUD, old_pud, new_pud))
+>>  				continue;
+>> -			}
+>> +			split_huge_pud(pmc->old, old_pud, pmc->old_addr);
+> 
+> Note that, if the HPAGE_PUD move fails, we split but miss the opportunity to
+> move at the PUD level (right below). Is this on purpose? Am I missing
+> something?
 
-That sounds like a reasonable cleanup I think, without looking into some
-of the nasty details. :)
+I was mirroring the PMD code, really. There, we also don't seem to move a PTE
+page table when moving the PMD leaf failed and we split.
+
+I think part of the puzzle is: move_huge_pmd() / move_huge_pud() only really
+fail if there was some race with concurrent splitting. So it doesn't really
+happen all that often I guess.
+
+> 
+> ... I say, realizing I am missing something, because split_huge_pmd (and
+> consequently split_huge_pud) just decide to zap if the VMA isn't anonymous,
+> and split_huge_pud() just hardcoded it to "of course it's not anonymous, lol",
+> and just zaps. So there's no point in moving what isn't there.
+
+Right, we don't support anonymous PUDs and file PUDs/PMDs are split by
+effectively zapping them (no PTE page table prealloc required).
+
+Can I hear that you are interested in cleaning up this code? :)
+
 -- 
 Cheers,
 
