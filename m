@@ -1,113 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D817606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 04:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A918606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 04:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WeW0dcEy
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=vNZJ1Y9v
 Received: by kanga.kvack.org (Postfix)
-	id 217E26B0612; Wed, 28 Oct 2026 00:33:26 -0400 (EDT)
+	id 302066B0613; Wed, 28 Oct 2026 00:33:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EF2C6B0613; Wed, 28 Oct 2026 00:33:26 -0400 (EDT)
+	id 2B3256B0616; Wed, 28 Oct 2026 00:33:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 106CD6B0616; Wed, 28 Oct 2026 00:33:26 -0400 (EDT)
+	id 1CA126B0619; Wed, 28 Oct 2026 00:33:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E37C46B0612
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:33:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE46B140B91
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:33:24 +0000 (UTC)
-X-FDA: 85370765928.14.EB6CE06
-Received: from mta1.migadu.com (out-222.mta1.migadu.com [95.215.58.222])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B4703C0002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:33:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WeW0dcEy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.222 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id DE6B56B0613
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 00:33:28 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 68F22A88F6
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:33:28 +0000 (UTC)
+X-FDA: 85370766096.17.FD058E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9D417180002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 04:33:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vNZJ1Y9v;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793162003;
+	s=arc-20220608; t=1793162006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hoaYYE9clIuJ0Ig445chvZt4nolRKxe5BT9MRTh3Egg=;
-	b=6b48w78tV586ASuhvH2z1CWor+9xBk1BZKG0ewz6WYVpc5cUuXWcQpaWxBoZtne7ZfRui4
-	cGQIbCthfmiiDYKR0B9ImeqtAm9+J8LsuJ6hV78rmwxiBUWB1EfSBazA5pqQWHMYIUScCB
-	rQ9VTUgFLZt0uzYKPSyQKMedGgrse/M=
+	bh=KQliSYu5IO0Ztf2KMR9ZclDlsE5PuZwsA7H/3S4ytlk=;
+	b=Obyafa5ncY6xQeC4RVFFM47GYGNrtbDiERU06fZlK9g+D9BOsv5TqfDbvMPDJDCImul+QI
+	tZaL1zA97JqL+0AZd/tkTAkgvv7c2se6BHfWprxFP9lk/5PmzES80pp3kksjjPNAxLkBHf
+	v6+S87ik5WENEG3qmSv8Mtn5dlg2qBU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WeW0dcEy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.222 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vNZJ1Y9v;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793162003;
-	b=rx9xda0wuDdZjMbDUp4ph6hOSZj1WMhptwNlkUoxV3pz+HLs+ZrzJcFrcUwOy21wISG4zT
-	TAqdYDaaX6wwZ9E3rHFMmLqkxpnD3bEgFfe71jmQZf5AlF90S6MCk1xi1Sd+qL0Zy6lJe7
-	Pux9+enmg5MnuMoKGsSzqC4/BHhARJs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=T4efCo2Hap6aPJgKK/ehUGhK0yIt+mn0LCQnSmlQd0s=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793162000; v=1; x=1793766800;
- b=WeW0dcEyzkw6mTIdVt2Z06iHEedOA9csfafpNxIqlvgXWGNleOMk4G5+xIqtxnfY0oJlEGQo
- 3RIOLo03odtO32V/gvt274JFHEpf0OAsY2K6WgJh+s2w2M9H9KOLel/juzZL0FcuRQ3OjvRdcI0
- 9UEAxWdkfJdjVzGrmw7+tycY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id bee4a2cb7972e2c2;
-	Wed, 28 Oct 2026 04:33:20 +0000
-X-Mizu-Trace-ID: bee4a2cb7972e2c2
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <fa0f07af-e8d7-44b0-b1e7-ad325d75ac34@linux.dev>
-Date: Wed, 28 Oct 2026 12:32:54 +0800
+	t=1793162006;
+	b=5gcEwHp6uAuheS3rqwaStUumxGqONhwGPxGbfOVwW9+lgFE1WjQ0jSyGyjuj+sNCgISMvn
+	3YMGP9BgVbv5Ds2WS7QZ+vgY8D1M5Pf+fXQ7Xx726wx7LquM2syxMf8GK10Fp757WWWjEK
+	3bXOMYhf/E+UCibJxQUTdEYGYYg1g3Q=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C398743C04;
+	Wed, 28 Oct 2026 04:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B331F031E1;
+	Wed, 28 Oct 2026 04:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793162005;
+	bh=KQliSYu5IO0Ztf2KMR9ZclDlsE5PuZwsA7H/3S4ytlk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=vNZJ1Y9vgwzm5vi2q/Ro/QE7r6JtOMQI/X+zg6SZf41Yqbhh5Dmq397ZRxr+++zBw
+	 YAzgHNsBD8KWgp9VqpRxOFCiAqE0jn7QJCo4yAQZfuHNs2lRzHtXBX2f5fGuJCLiaw
+	 AbvahUgZ+Ds6OFZN1RNimOCoo+eYNPJ0Y4MXjObU=
+Date: Tue, 27 Oct 2026 21:33:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Wang Guangke <gkwang@linx-info.com>
+Cc: rppt@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: fix typo in comment
+Message-Id: <20261027213325.d28fb3a913c68a982b5a6591@linux-foundation.org>
+In-Reply-To: <20261028040625.204-1-gkwang@linx-info.com>
+References: <20261028040625.204-1-gkwang@linx-info.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 32/46] mm/memory_hotplug: avoid races in
- pfn_to_online_page() with dying pgmap
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org,
- kasong@tencent.com, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
- baolin.wang@linux.alibaba.com, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, kees@kernel.org,
- peterz@infradead.org, jannh@google.com, pfalcato@suse.de, hughd@google.com,
- pasha.tatashin@soleen.com, pratyush@kernel.org, willy@infradead.org,
- jack@suse.cz, ziy@nvidia.com, riel@surriel.com, harry@kernel.org,
- apopple@nvidia.com, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, usama.arif@linux.dev, kas@kernel.org,
- matthew.brost@intel.com, jhubbard@nvidia.com, peterx@redhat.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- osalvador@suse.de, minchan@kernel.org, muchun.song@linux.dev,
- xu.xin@linux.dev, chengming.zhou@linux.dev, chrisl@kernel.org,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, youngjun.park@lge.com,
- gourry@gourry.net, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, jgg@ziepe.ca, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, josef@toxicpanda.com
-References: <20261027-fixes_core-v1-32-6f74bec9a5bb@kernel.org>
- <20261027121307.40431-1-lance.yang@linux.dev>
- <87e3d64e-8b25-4d51-a984-7ab8a58f785d@kernel.org>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <87e3d64e-8b25-4d51-a984-7ab8a58f785d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B4703C0002
+X-Rspamd-Queue-Id: 9D417180002
+X-Stat-Signature: tgtxsfn15oonyf76dhsm1ahqrphp7cpz
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-17.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Stat-Signature: gxfc7itzcpg73y3bmhkbyajafamxkjhd
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793162002-461208
-X-HE-Meta: U2FsdGVkX1+alCybVjyQYo/QDJAEdYev3D65CNkYZdd7b6rybCaaAzTcGcHOZABy1eMJ7ZUaplhVISsWFRD9wYEkJ+RcIMlHJDtQdQOzj5KhJ37oiLHyzAetjiKudPx5rBhwgIj0mcZj0QqyxOLfslRDEUKLYbzw0mleASDQTBEzw4MvPwpeD5ZlbLX8URjp8JQWT5OOR1ieE6HTfTQcyZ1jGzqCiLHGq/AyfA0JW43h9dH04Apf2lCnu59fMjzL8s5AywSgPD8e6DxH1BBut/cVV418ZmczTuyrrNzkNPFiBbYoV+up0EfEDuAMTUenviZn30RjGiRVwFkxzsoTNfb814R2IXvO3pgWTD2+xd0+4qc7VXGRF1UySA+Z/p2Un9FhHwfJFyUFIB4MYyUF8ohoJjT9IRcWeYyequIfvGpgc5YaiSDGZWwRrEp4qmoPqz1+BjNJ0UpCZPUYIKaXUErAVDvULJh70dN3HWGJkhwYWgkebxWykXty5Hk+pZ4rfRhigBNbymQyDzOrzL+ShHmlJWsu9W0MgKpTNohUnpTwjUl9HEs96EgJ8nDHHcbZXbyd9+8eVbJhNEVZJSInJYnEUe0YiGgQZqud+nV+Y31lBfaC6XS3W78y+I47Rxq8XqSlPXmziULoBAtfcmZFq/wXRzpZgbCDlBFovV2EX3J89QuCYAETuiCuAmcL1BZ7BSLXRdBaSi6fteOYR/TAWRCVIdszPYaSe1wycJ9Wk3/1/l8gNEF8YyTAcizz/hst9t3RqHAkYVRPP9V69/56vDxSn8BypyAr2+u78bgM4EeuL1ZdFWTM9UeWvK8VhEpmo4XbzhF28MkpVMay4fraJApmqLXAkB2RaFuWAkcd5kUebiQIMkNGSwjKxLmVdkwhI5LEz/b8hyUW+YLwudVA1xlr59eDTe+YihgIlnJMjRjDT57L9jSS+9NJew5cLzXMnwrJC/NQFBdm4jwyUz/
- RaixzGF3
- 3dF2FVrAc3o2zJCu47uIv/ddbV+fQUJVMuq+t+vpTRSG4fIzmQqlwr6vk31Vc6UuXfBHhC8YiD9foHx5rWL+MFUg8CqcGOgUn2hsOL/7+6QlY3yHLaU/wGnTLhYvD8EEhPFiCwMRsBH5sOTnpMyf+QzQeGzji2NqufpOE7PoUwXLm8MExF17R7+J486ONp2Kr/vV1pz3w3ycpigwoNVX898OFbicrJuovSN3RyMPaxaw7jYhoLU0kewKajBw0dEvWGUyjSpLk+6S0Pwt8gXwSRBSBTV3zNqbbpH+XDALAP6Pu1QQO0A1wQM6ZHhoHaflQN0MVF9nu0QbvaqtfdAYrxP1wEtza0QMFFoQSkAsM6lUNW1+dPvvoMY9wiTpSl6D/clIHHu3Bjx2+JY4=
+X-HE-Tag: 1793162006-130462
+X-HE-Meta: U2FsdGVkX1+ZBhCImOHCiAxcGy78RMwnCtiisWsUJ3lvv40Q0uCIyXlDP4t3V5XOeSwB0gia08LUsF5vGBn2163DYpKlHEJ06qb0sg5+gSrjGEUVcHiT4PTYsQZJvFGd1a2eIMVGfqYVvEkMBDyXNejvxNT7lPwrNXpQlGypRlo7uvM7Pxiewnleh6Cm9iCTRB6VlK255TqUc8GuQmWF4IJKmxDwhFt4hWpXaqglkE8xcjUPezIklXiPaK8vu3IxPciv/Zs+RjqxFEUn6yEEm4E7KC29sstoeAVvF2ivrjVYcV8jZbK6OnH0QDxigLfkjFjbmBGEqBCYeJqcFuVhcxfrtFkv9PK4eJ46u4V+fOVbQ8t4OZx8YwFMq8NWQa13NdCOqJYzZKhtX3ffdyE8gLytu4/gqFCGLVyiBshBqOZ8mGZg1vKxUdAhl8l1QjmOuVMpPzNZX5BPvsS5Ne3aNygfAHW9sBvpJuFPmcq3Jf/CddbO8+fpCp9PMhflJihZmokBYj5ELF8RrUSre59Jp60+3SQVSCN6pQziH0Z91wG7E+MrquVlHhYeEkQgiloPi5N+z9cJMcz6yLu+FYVMWSLpe64Pn/65UQCRltFo3vpI1VXlwsgtNnllxt+UhQ+1rCgudgez61xdp5bH3bWadSu3UviMgABOTNxKEvZAVF43t6W/k7Zvmu698nLKChffmJFPJnZ1xOJlZqDE1ClweEjyUjspRnfpCewiaqevUeocw+ZD/XvRKwzeoF1YQxg4xmfF4ZA8gnnsGyRw7AOYG3XiDIW+R49vvvJCRDWhpRfO8WVeiyvDpphrQqb/yTtC/UfEkKYFQW4AjST5gftLjgd7U66TbjGQh7SYE9lSVFlEAKj9rnmZsJ22wS2hinInZMqzyaFp5AhS45MD1UXXRan4Ms1ulqV0JGQu2K5h0ytb59oGweg9DhyNcd+MPxsNNfpkMPr8w6URhDgSzdx
+ luOojJZv
+ qsoehdDq+ji7amJrvN+HoR/h8ffNoAod/emghm+FpEiE7llOqW7BykeJq45Wl8D7NdDMti8ITGgR8Ohv1AVFZKk0qUbOkFLfvHSszoF8PzAe4cF/2W8iTZMHsXWZHZ9Ssmz67qH7T/fpy4olYKaKHn8XVV/f6S2ARV1zhAmfnZmDvWqmev0LEGNjFnudegF3Wtds/Q1Lx+D3//nEr97FQCj1OmQ8q/rP2kB16qkIRsu3y7GkO59vkWDAcXBQmoYJlseK/5phOtgeuH4gIyw8d6wPzBcRYeWZXVCtXD/9slh+7tln6HLRLvmIwvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,64 +91,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, 28 Oct 2026 12:06:25 +0800 Wang Guangke <gkwang@linx-info.com> wrote:
 
-
-On 2026/10/28 03:41, David Hildenbrand (Arm) wrote:
->> LLM stumbled upon a possible race in kpage_read() ...
->>
->> Say the reader passes pfn_section_valid() for a device PFN in a section
->> shared with online RAM, gets preempted, and resumes after
->> pgmap_array_delete(). We'd then find no pgmap and return pfn_to_page(pfn),
->> even though the subsection is no longer valid ...
+> Correct "pages frames" to "page frames".
+> Only touches comments,no code changes.
 > 
-> I think that's similar to our pfn_to_online_page() vs. memory offlining races,
-> just slightly different. Getting these races down to 0 is pretty hard.
+> Signed-off-by: Wang Guangke <gkwang@linx-info.com>
+> ---
+>  mm/mm_init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> This patch here tries to do better and arguably almost looks like a cleanup.
-> 
-> I wouldn't worry about that one for now; it's extremely unlikely to hit. And it'
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 1533aebafb68..9d233b6af7ab 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1179,7 +1179,7 @@ static unsigned long __init __absent_pages_in_range(int nid,
+>   * @start_pfn: The start PFN to start searching for holes
+>   * @end_pfn: The end PFN to stop searching for holes
+>   *
+> - * Return: the number of pages frames in memory holes within a range.
+> + * Return: the number of page frames in memory holes within a range.
+>   */
+>  unsigned long __init absent_pages_in_range(unsigned long start_pfn,
+>  							unsigned long end_pfn)
 
-Ack.
+Sorry, but a one-line comment typo fix just isn't worth a kernel commit.
 
->>
->> Could we take the memory hotplug read lock in kpage_read(), covering both
->> the lookup and the metadata reads? We can drop it before put_user(), once
->> we're done with the page.
->>
->> Maybe along these lines?
->>
->> ---8<---
->> diff --git a/fs/proc/page.c b/fs/proc/page.c
->> index 6aa99e42ec22..12bed36d76dc 100644
->> --- a/fs/proc/page.c
->> +++ b/fs/proc/page.c
->> @@ -12,6 +12,7 @@
->>   #include <linux/hugetlb.h>
->>   #include <linux/memremap.h>
->>   #include <linux/memcontrol.h>
->> +#include <linux/memory_hotplug.h>
->>   #include <linux/mmu_notifier.h>
->>   #include <linux/page_idle.h>
->>   #include <linux/kernel-page-flags.h>
->> @@ -77,6 +78,8 @@ static ssize_t kpage_read(struct file *file, char __user *buf,
->>   	count = min_t(unsigned long, count, (max_dump_pfn * KPMSIZE) - src);
->>
->>   	while (count > 0) {
->> +		/* Prevent memory removal while inspecting the memmap. */
->> +		get_online_mems();
-> get_online_mems() is the big hammer we try to avoid (or ideally remove at some
-> point). And it's most pfn_to_online_page() users that are affected.
-> 
-> A seqcount in pfn_to_online_page() could detect concurrent pgmap removal and
-> retry from the start. But I'd rather delay something like that.
+A more substantial file-wide sweep might receive more consideration.  I
+asked LLM to do that and came up with the below.
 
-Fair enough, let's leave it alone for now given how unlikely it is to hit :)
+But even a fix for these wouldn't be smiled upon at this time.  We're
+all swamped and stressed out over a maelstrom of bug reports and fixes.
 
-> Thanks for taking a look! (Can I convince you to review some of the THP fixes?
-> pleeeeaaasseee :) )
 
-Of coursssssssse! I'm already looking through the THP fixes :D
+I found these comment typos in mm/mm_init.c, against mm-unstable
+4685a28187f4:
 
-Cheers, Lance
+  55: "then end" -> "the end"
+  377: "before borrow the nodemask" -> "before borrowing the nodemask"
+  1090: "smaller that" -> "smaller than"
+  1092-1093: "in the lack of an altmap" ->
+             "in the absence of an altmap"
+  1217: "sized independent of architecture" ->
+        "sized independently of architecture"
+  1223: "in order of monotonic increases memory addresses" ->
+        "in order of monotonically increasing memory addresses"
+  1279: "pages frames" -> "page frames"
+  1524: "been setup" -> "been set up"
+  1631: "0 ," -> "0,"
+  1651: "`struct *page`,so" -> "`struct page` objects, so"
+  1921-1925: missing spaces after the leading '*'
+  1957: "pfn's" -> "PFNs"
+
+Two comments also name the wrong thing:
+
+  1481: "multiple of pageblock_order" should be
+        "multiple of pageblock_nr_pages", matching the rounding below.
+  1834: "arch_max_dma32_pfn has no pages" should be
+        "ZONE_DMA32 has no pages".
 
 
