@@ -1,103 +1,203 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E656606A323
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 02:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B28606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 02:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WLtaUbKc
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Td+mfv4p
 Received: by kanga.kvack.org (Postfix)
-	id E682A6B0946; Tue, 27 Oct 2026 22:45:44 -0400 (EDT)
+	id 2BA296B0958; Tue, 27 Oct 2026 22:54:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E190C6B0950; Tue, 27 Oct 2026 22:45:44 -0400 (EDT)
+	id 291A56B0959; Tue, 27 Oct 2026 22:54:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08C66B0956; Tue, 27 Oct 2026 22:45:44 -0400 (EDT)
+	id 1809B6B095A; Tue, 27 Oct 2026 22:54:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D9EA6B0946
-	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:45:44 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 18D741A0B76
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:45:44 +0000 (UTC)
-X-FDA: 85370494608.29.5024620
-Received: from mta0.migadu.com (out-35.mta0.migadu.com [91.218.175.35])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CA0AF140003
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:45:41 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WLtaUbKc;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.35 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793155542;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C8FD36B0958
+	for <linux-mm@kvack.org>; Tue, 27 Oct 2026 22:54:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 866F7120BEE
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:54:47 +0000 (UTC)
+X-FDA: 85370517414.12.C0D744D
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010019.outbound.protection.outlook.com [52.101.46.19])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 986A140002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 02:54:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Td+mfv4p;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793156084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pzifb9DGH5oVeEHmO9xeHY8G1nYs/tTXaM3a6nLgoI8=;
-	b=tfQoDUn1T+H7W4Hvzfwi9qNLlJA/DR8kVKWB3aATfRuD2BQs+IJMbp4o5fKhtMRzlH3GTH
-	yYm8uLHSzihHEZRkrGpcM+kpbtjTV+YRmFEwUcCHJtu5QyJmwUoBlljc1mh7Lb3B8SrOB1
-	jnb+JhP794UzM3cnwbZUA5V5uWj+YaQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WLtaUbKc;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.35 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793155542;
-	b=kUPeKCyFXGXeUUCqGp62rs2yk6prkPsQyZvJlBb7OyCWGk8mPy+QuXvThakaai3pzYHIow
-	ZHhJSV2a6ApmhHk75bybpI/lvI8HztYdEw4Ogf6yyj+IvBU3TcewrmFlSGgE7rEcfC+bwS
-	eYBqdJzqVnafCxjwFwkfHB2cB+78FNk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=mXTPaQxw8eOvyMaMU78vJQsektczjVENB5s0wOZjHaY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793155540; v=1; x=1793760340;
- b=WLtaUbKcMFSmR/V9Fk87tany1r9QjVrIyZSXVsOlVC3F3qJkpZhxXLhiVmdTC2R32g/U3nF2
- vNklbotP3azN9kEIbOpfE3MI9VWafagRqvy8aftAVjg/1/PFhBJvILVs9pQsqAgzadOD5e/1dE3
- w5vf2GuM+4kgq5IA3AXVA24Y=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 91429c3f323fe2c4;
-	Wed, 28 Oct 2026 02:45:30 +0000
-X-Mizu-Trace-ID: 91429c3f323fe2c4
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH] mm: memcontrol: fix NULL pointer deref in
- high_work_func() on dying memcg
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <CABdmKX3DEDwgO_wj3JDYvx15FYPKGCav8HKvHC-u_EHdGhWwLg@mail.gmail.com>
-Date: Wed, 28 Oct 2026 10:45:11 +0800
-Cc: hannes@cmpxchg.org,
- mhocko@kernel.org,
- roman.gushchin@linux.dev,
- shakeel.butt@linux.dev,
- zhengqi.arch@bytedance.com,
- akpm@linux-foundation.org,
- cgroups@vger.kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+	bh=CMb2oVQye3RPKvMmYxLoWlrPiQUfMmGkRTvDAZ0TYtI=;
+	b=Nwyz9zve/Sxt0hwU/MKEuZ4y/BZQGf+vbJSt7hX3iElvmAxlyIVfp5ngvKeMnm8weBy2Ba
+	cJMXA2QW0lR9Cn6Dps2xysYcw1fTeLlZuwFTO5Xk6lDNee0HzKjXGxPxObAJp4HHdIr+jR
+	cHZwMu+X8JYtnLlgdHdgaqTzi68f2kU=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Td+mfv4p;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793156084;
+	b=E4uwSgrOKybUWePj4mtDLQ+TUHld3ao4lH0FT6gFWmiOe7S4nbqktd05V2XdgxVZ2LlXNM
+	d5vyC15f9GZu0JPt5w/YN03fk/47Wq4Fs4PyUFzTNbE7DwV4TQAKbTaJuRXgR7cGgL5npD
+	xtCRJgBNFVZoO4RfddeRNpTItkImYUk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ydYLIWq6W1iwhje/hOX8xJKHEecf7oNydsIfJQhsTN33XzOFx77nBCpzUVKvw0hBGM6BcL2gMhOlWPF+JYg3q7EXHFarVOqqnZuKl9xSfr7bI8IqwMgv7pVNCfCTeayLTo7km0cnTlREQ5iHsrZkx5CD2mwIdUi2KwbjLgb2BtfrBmdfRzoaxN5ZALqBfjf1U0HyY2F2GieANzJQt+xqQR0cfX5wfCFh9sF/P4WzjDlTAjSEw9xLHmyGDxPvd0uyuJTL2sY0TKWt1dWcDKqu5jln+b3D1GlFpYwsndxSnu7e+HA23oUMnrJfDu+oZys2aQ20trpfvVV/W8RL+x5R3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CMb2oVQye3RPKvMmYxLoWlrPiQUfMmGkRTvDAZ0TYtI=;
+ b=gy3yN0FLVPYLJzLnbZf0J/qjbWi+17R7WvNg7hMydy4oKtDnfWAQVpAmcRX2WK2CAtuv0dwdrqsyOYegSWkUhW1cbf8XuxVs00mAy4JdrgFtZCjerAe9ecrDvQ4gQUrV9E4Xm3C9lDExTevUBhf/nBRpGnRyT6LGVpqwdFaroN06wHZ90JxnNqqFzSAyePiYBQvMx7QVlafHQfBZSQ7618ullkWlBybQ0SnX3hnsyyCH9hgN2qD7zQ5x6KYp8AHHKcOx7RP3n++OM+LrqbVqbA7kdsiw6DH5AKLsUa35xRTkzbtScMcAu53Q93IAHhyVu882YRwKh2vVqwoVK/0Lrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CMb2oVQye3RPKvMmYxLoWlrPiQUfMmGkRTvDAZ0TYtI=;
+ b=Td+mfv4pRQCtrM/B5rxLLI1LuwRIMt8HRWQgzB9zAMz/NusJdSUTXDrU18a/iOd9qSlPWaxXMyxtRNa54os1D837xnpaT5TcifJlq8BursF4ytaWAwUxblb/rFE9YSTGJ3iHF7YOiqtGRC449DMNb33MA81m+cc93rX9mSi5n/3v/PgwET8aaHG2LqBb8ixQBA/SNBWhld+FxqD1OUbfXR6qbiLK+4Z9avQcp5lE8sBDR1+JQ2FLFYHnrQx/O7rb1EINRji1zdVJ89idTMp/syW7hixqsNF+I+rPsXcKFI7Ez1Us3kUvWBorGbXDtcFzaT8SOVGhAsoW8ZGz87h8sw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DM6PR12MB4155.namprd12.prod.outlook.com (2603:10b6:5:221::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Wed, 28 Oct
+ 2026 02:54:31 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0546.021; Wed, 28 Oct 2026
+ 02:54:31 +0000
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <47089233-E973-4F25-B64F-DBBBE0F31FC0@linux.dev>
-References: <20261023222313.3979455-1-tjmercier@google.com>
- <DF7DBE4B-E0BA-423B-BDA7-DB07D1C9E564@linux.dev>
- <CABdmKX3-XKWXwZe5f=VwZeSuKH6xM0dsK7TvY7u9B1hgaPOm4g@mail.gmail.com>
- <CABdmKX3DEDwgO_wj3JDYvx15FYPKGCav8HKvHC-u_EHdGhWwLg@mail.gmail.com>
-To: "T.J. Mercier" <tjmercier@google.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Queue-Id: CA0AF140003
-X-Stat-Signature: gh389an9foe58icbph48d3n7g99dgndw
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 27 Oct 2026 22:54:27 -0400
+Message-Id: <DMG4RXAC0531.1TP9FSMKUMZS0@nvidia.com>
+Subject: Re: [PATCH 13/46] mm/huge_memory: fix truncate racing with PMD
+ zapping
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <kexec@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-arch@vger.kernel.org>, <linux-cxl@vger.kernel.org>, "Chris Mason"
+ <mason@kernel.org>, <stable@vger.kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Michal Hocko" <mhocko@kernel.org>, "Qi Zheng" <qi.zheng@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Kairui Song" <kasong@tencent.com>, "Barry Song"
+ <baohua@kernel.org>, "Axel Rasmussen" <axelrasmussen@google.com>, "Yuanchu
+ Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "Baoquan He"
+ <baoquan.he@linux.dev>, "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Kees
+ Cook" <kees@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>, "Jann
+ Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Hugh
+ Dickins" <hughd@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+ "Pratyush Yadav" <pratyush@kernel.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Lance Yang"
+ <lance.yang@linux.dev>, "Rik van Riel" <riel@surriel.com>, "Harry Yoo"
+ <harry@kernel.org>, "Alistair Popple" <apopple@nvidia.com>, "Nico Pache"
+ <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev Jain"
+ <dev.jain@arm.com>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau"
+ <kas@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Peter Xu" <peterx@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Nick
+ Piggin" <npiggin@gmail.com>, "Oscar Salvador" <osalvador@suse.de>, "Minchan
+ Kim" <minchan@kernel.org>, "Muchun Song" <muchun.song@linux.dev>, "Xu Xin"
+ <xu.xin@linux.dev>, "Chengming Zhou" <chengming.zhou@linux.dev>, "Chris Li"
+ <chrisl@kernel.org>, "Kemeng Shi" <shikemeng@huaweicloud.com>, "Nhat Pham"
+ <nphamcs@gmail.com>, "Youngjun Park" <youngjun.park@lge.com>, "Gregory
+ Price" <gourry@gourry.net>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie
+ Kim" <rakie.kim@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-13-6f74bec9a5bb@kernel.org>
+In-Reply-To: <20261027-fixes_core-v1-13-6f74bec9a5bb@kernel.org>
+X-ClientProxiedBy: YQBPR0101CA0165.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:f::8) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DM6PR12MB4155:EE_
+X-MS-Office365-Filtering-Correlation-Id: b30f481d-89b1-45e7-6f53-08df349eca35
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|921020|261026140227099003|4143699003|11063799006|10067099003|261026121527099003|261021123027099003|261021121427099003|56012099006|261022105027099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	OZTu+o0W3haK2eOig9g4KGRW9l++E2eJHbYgl7rZhIXF/aiVpg6F0Z2oxR6IAv97PBEuzZIpdj+POd8WGLkFQ74Cl4fSOB1qWj4mm6LEfrxaL3cxzevCaSwGL0EYsJ+M4Uh6c/oSzuRISDiemQmXts4mtUz0JAMa/le8ck5MFVYhSVOdJq9ka9J/fQytd2mxhBMnLzbQjy3iZ18EBx/MZb/NypSyvHJihhgYfrA+an86HP2K6PvDM39qU/mYC4VznaqeMXH5fni5OzkkvrceXNp9a4jdZRS9K+gL9lI9Ot6N5n7fPBk2lM5ipwYABzE6SZ57M0gKtbxMk1hZGca1IhiGsyVH1hP+gRaWFmPBKIu3R2OujSXBmQFKOXaLn9fQG4OMFUQ15BX3cbH+4GgShgsUCYh2GjMg81XSSZPdzyp+f0zuUgG7AY/jmmD8+mnxfwDjyy+Hf6OnBuPESgsFjvyc7kuP0cvuF31JYdHa/GcwGSVjt3I7OMHwsjKzzyOVzu5qG6k1ADVPGjNq4X1x/igXlzSuN6wBbSLcvyFGlNyRd5BjeHk5gZbQRqPewAEyaF4rVukOBQ6XKOD2MHLwqPZZ45zVaCliKF0lhiF1aG/+0bC6no/Or64LTw99mx9by0L0iMoNKNyzUEZ0PQ/GENCL0Qau3V6YDWnkLC3A8hmzGHNXR6Hk93D8jhEq2Up418iFuydH2Xi9DdpWkpPIYQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(921020)(261026140227099003)(4143699003)(11063799006)(10067099003)(261026121527099003)(261021123027099003)(261021121427099003)(56012099006)(261022105027099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?KzVqNmRFQmZSM1RzQVpCcFdjeHN0YkVLL1duWWpSQlZZdjhTNjZsYll4TnZu?=
+ =?utf-8?B?ZlIyM2V5U3VueVl0MHRGT0I0VFpDbUc2cEhLMTBYMS9KMER1WHhYUG0xUlla?=
+ =?utf-8?B?OUVNRHJ6NHZQYTA0TVgwU1VRS1VuQ252R2dKU1JwK1dhcEJoS2tCc1hoUTh4?=
+ =?utf-8?B?eGROMnR2TGQ5eTJMU1hQc25GK2oyL3g3c2NmYm51M3JjTnhLNzZhUCtMV1Uw?=
+ =?utf-8?B?L3lKN3p0anN1eG9zTE0vcGJpUnBNamh0WHQ1Z3JuZ2ROK2FWM3F5ZlJxQ0xk?=
+ =?utf-8?B?Y1FNdjhMcjVwZUlFVFRESGp2MmtOL3ZoaFgyZGVVLytRNXNIWVEyM1E3L2JY?=
+ =?utf-8?B?N2Q2K2daQU1lczZGOHorcHhWV1lnOWNwWXl4Q2hiMGswN2ZqaTNHSEpGT1FE?=
+ =?utf-8?B?TGZycGtGSFgwem9jbzd3VFZPOWNRTjVmVGZEZmZTY282ZCtkc09XczFGb2cy?=
+ =?utf-8?B?cCtRM3dRUjA5amtKQUFxR2pXQjdJMkszb1BCYlZKcHh1RHRFQ29lVVgrT3Jx?=
+ =?utf-8?B?bmN0amptV2ZJMlVvUVFSUnFINTlneWNXNnZNZHNESEs2dEhQMnpsYU9wSDNF?=
+ =?utf-8?B?bEZSK3ZhWmI0UXVla2RUaFV5TkRnVFpvcXdLTTA3a3Zldnl3c3UrM0tMUDVQ?=
+ =?utf-8?B?bjcwN3FOTUlIYTdqcG1zQ0NLMGlhbEoxUlZDZHNDUkNxQ0VWOVFaZVVMVWFE?=
+ =?utf-8?B?UUUrWGVjc2lvQ2dnLyt4UnhyK3I3YU8zdVkwZ3dCdDZKazhLTGF6a1grUlJE?=
+ =?utf-8?B?YTJoYU1hcXhCdUhscXc1ZTVUMUlNZ0J5UDIwc21YQ3JMcm0yT1NnUWMybzA5?=
+ =?utf-8?B?NC9ZZzhQQ3dmdFRMcWt1NW03akhMMXVkbWZmdTN2WkdqM2hGQk44MUZzQTBN?=
+ =?utf-8?B?aGp2ZWgyNS85MlhTQlh6a01wcHdOSWUxOTZwRUVIaWtmeGczRytnek5MamRh?=
+ =?utf-8?B?T1dlbWluY2thelBDNm56MzRqZzlkNThkK0JSbUpMdkVsVHJrcytOVTg1T1dO?=
+ =?utf-8?B?WS9UYWI4OGlGWmlvcjhxT1k5ckhDNWM0TVZuT0VLNEpRRVpMNEM5MkRENG9p?=
+ =?utf-8?B?TThRZ2RQTU9EQWhGdHNuR1ZEbUFpdlVHamZVa0NiM0ErbDMwUUdzK2VteWpF?=
+ =?utf-8?B?dlFVK29BbFM3YkdIRW81RjRURmc4WUFoT1ZySlJsTkdUaEpUbkQ5N2lsMkZZ?=
+ =?utf-8?B?eTBpbFBJZkNhd3NhREZWZ0szUlFjQ2xtR01DQ0NyVzloek5WRlVGU1QyZ3Fz?=
+ =?utf-8?B?VXpHZC9INEZWMjhuZ21UVTc3VjBiZHBHd09lRGNPNm84VXpIV0VvWnBOblBl?=
+ =?utf-8?B?WitudU9ma0k2UmV3TGlMRkpna2x2SUZmYVBYdVlpZUprR3E4Y3hRaG8wWFVh?=
+ =?utf-8?B?bjIyN0x3d2JBd0NPdG10b3p4aW10eVo1b3RxNWRxM2RhRm5ETkYzUlBITWlE?=
+ =?utf-8?B?czVBeU0rNFREWkt3WEVxZlJ1MFZCMm8xYVdQS0dhTWJoM1IwOVFFakIyK3gw?=
+ =?utf-8?B?MG5WQ2h5Ym0zZWc4WUJGaXI4Rm1nNFFRQ0tZQXVaY0xYWHEza0F6YXpNS004?=
+ =?utf-8?B?MzE0c0dkeFBoZ2xsR3QrVnBTcTY5TGptU3NUS0ZKZld2SktrZkR6Mk1aUFlh?=
+ =?utf-8?B?c1Zwa3NjVjRDejFPOFkzakJtQnpuNUtmdGhwL3N3M0k2eVNpYlVrbjJXNU1h?=
+ =?utf-8?B?YVc0NkV1RllGOVkxdEk1Q1N3VlduYVZRY0orKzNxaXZRM3c4UFQ5OUNSeks5?=
+ =?utf-8?B?b1d2RUxBbFhMYjZuQllNMktsZ3ZuR1Nvc1VYcCtRaFk1a2FBMWpxdlVBREVW?=
+ =?utf-8?B?aFJuS2owcUNrT2F0SHVjeUxGSFZuTFdYYVlwampTekFCdWNkUDFFSXpjb2o3?=
+ =?utf-8?B?OGlGaW9FMFg1TVVMS3o4byt5S1ZuTlR1QTc5ZXI5bmpDQi80RVEyNzFXbUdy?=
+ =?utf-8?B?WHNmbjltZ0Z1cHpjNU0yM3p0WFIwT1dUTUxRUFNqVFlwS3l0R2dIcFRWL2Iz?=
+ =?utf-8?B?R25pak1iajdHUEljM1N3Und0UjhJUHVKc01xYkVtVUNmVis0RE9HdFA4aGtE?=
+ =?utf-8?B?cjZmNldva0FqUjZScXFsS1RkczdVRVJ5b2hLbzkyUkNjc2RHbzlKbTUzellT?=
+ =?utf-8?B?UG9RZW15KzBucEhaTjR0T2lqVjdlUmNpa2ppMkRKdG44Snp0OW5sMVNaWEd3?=
+ =?utf-8?B?aEQvV2VuaGUyNXdqYTVrRk1McmRYOUowRGMrY3lQNDlpTmVhRVRvcVh6NGRt?=
+ =?utf-8?B?RTF1MWNGaFVpY2JHZWc0eGtldVd1cGhEU0ZCSVV6aEc3VHBnTXh1dHFsM3dM?=
+ =?utf-8?Q?xD+nAPcjBeBYePWKBB?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b30f481d-89b1-45e7-6f53-08df349eca35
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 02:54:31.3406
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Pv7vMDR3pr9wb3UChXTf5DyTKBW056riedEYYsKtyJgQKJ2LCPD1OkojT61SltU9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4155
+X-Rspamd-Queue-Id: 986A140002
+X-Stat-Signature: tub5q61fbs3dnu98m5hpyw484oqb7i4k
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793155541-401919
-X-HE-Meta: U2FsdGVkX19YPzWTt9LyxpoXm9BjouqYj4K+IoXcHZW0nraMZpER1iP/EdcMyKvhS9aIAOFW9BqQlhOlCceIlZQjq+y1Yf84P+BMHNxgvCiNCnEr+jWnr32x7EnLyw0BZmTP96xJpgozPsb04bprnCmO62Dan8Bpdli+UnGKbz4ZUqNufyAWC6N3gVG/FgKNChE0R6cM17Ixk83yIcLjMmBmOyMc8tw3b8GycyQxjPZq/a8GWaPAQ8IDiUZCpc6pTukWDbTSn387L05Km5H107cBpCcsxNHFX0CJrfBVvWfr26hy7tTY7P4zIDrFbHOOQkEfxK+g66yIG4rWxEKmOhOw9ZdrNF1+fFUO7LbGyIcxNmwQrSLa3uULhAxgbDgpJ7iBfzWtJukL4aje+ZfZ8zP3B98hU8/0PrqMwKFJwzmZ+6mh5Fw73URRgZhbjicsmhLOReGnNneWomgKMYseIoGWmV008d5bXWcCZMGXwpZ/PbZRlpzbF5mrcOv2qwSxlWBSgw/H2n2Fe1JawKEF5GfsPJRyk+BKrFSuGgSS9xmQdVil7BbE3AM7+91tSQPLJ4ufUCswn6cAPpAzqjuSwU2UWrbsqhVil2ChMdvnrQtjESFbqMdg0PFvRM95Dpfn8O1lu8bwFz1DTxQtjjdlA53YclW9aI9ybk8d4yFmuzL6JGmLxdvWu7v59ZWN4S3LyV7/zNv90NyJcOImMeOLWzckEWhdl1p/vneLkWRiGcAr2egvTrpbHkPzkU7UxTsnfVCa1yRFB1VJ+UkrdFoH79YDQ6uMMdXjPfgDYM+WvliVJsNN9bMRmEnB5CSxStanHKvXqcMKSikfm0u6/8iRCcpGUlWgS9MHr6ofBTPpaFfJvyh33v+FmWC9EzIyyqeIxiaSrbI1imPl8ABp4dViYPqVNR4CzRh7P4jEqjDkdRWALoyJ3ncdNgYTKag/c5kCM9g1f/yeJZ0/3ZZjrw+
- WyRXfaKn
- WOCnDncRfUfArAYg2npPoPgsIBY0D/Q1sYQoLB6kce+3EJ7QDdcgc3BpqeuZdIgbyNHfhfQxIcPD0Sph8YBY067Sf0QBZK1NfRJ4SXaGHE1DMVdblO0eR56iMQtF9VnF+y8bYOkVzpYgA8i/GW4y4oXn/T4/bNNn84kXlD6ljleSaMKixJAhdPnYFNoF0LpPWF9LQPuWq3MndvpZ1uQXj9fLoNxuMRrbBNNqzUVB0i/iOBuRH7D4iSBiQH7x8Qy8HDx1pkaYXECLTjSmOOiTL4lnbwz4YZKKN/yDGexAQWr22H2+wP3b7HGU9LUCxtKQtR/Pyh8Mth9hhkl8=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793156084-345293
+X-HE-Meta: U2FsdGVkX1+K4Ldqus2+aeMBVHdczeJQ9NrBOQIJlZEEtAlEGqbnwBID9xKK6P2dDitIOJNyOWU3VZ0XIyLE83XAgzgcfkrs/Dqc4RpYEJt+XGoumbh46ry4Zk4nMjSzYlu7ZjguvqZHr250fISy+Hp826P4WPFaDaDLN26VLdHipjA9oR2fAPr3Yn92cGeT9SSTkY7FW+z9zXXH9tbWtOkl9smEfLA7O7JRxUDZ8R6HVQVSFQSUZhJdTot0hUgXKAH1kBQhdVcdEKW6l1bonZxq6OAPbEErg+7o+9tN35sAf+5Bxp+4k1fgh3UAXC/zASxTje6d1iRz3vWPB0FyXFif6KIbCkYTx2EiOSn+a/4IbqagIiKBSu8PRcGbx8Mm9B5Ua2cq15O7vhXmidYTz/B3RsjBbMEBvX516M7qO3eC1D2MVXHtOPh6Lv5m0LO3hpWMeC+5qh0tZ16r15Nmy8bAIvPySj71Bx4+HfTwZ7pnASK7M0sw9eAEYibkZ/s9NgpySDjhQOe6kQ4GqM+9E1xT0C64jcoVlwaHDP8aAgVQ3pud5/25LLJESVYsP6hoe50pQsxRTespP2/6+Ys4WZz6YVwua+iSoKQd+weVW3puFDSlzO8Ldnj9A60ng4AH2l/Rzb5y5Gm6dESXgWyLKgBvyOUuAHeQsqqjGikH9W2DUwpo8XGv70Cm1nbq4in6J0DpnnfNAmfvVxAUnt12wVZRmGp8zSsjsD1svKaugUzOcYmYPzTxCG7Gc2CBf0/z5pC9jJyNcgPyMMVepHExyazuX5TcyWr4qriDICyNZELOY5/nfgW8MBiYPppWwUZj5QrKoNA1NmCtslZKmwnMlgp4p9qJp3MXiyl7U+eyw4igsu54VbFNffftnMH3R4hdmpowj8YlFjMsZWQgTRO8Ud6gmRtolE7sWTc5KNiHf1OorTd5W4ARfTx+uX226BTGYhDdZXk6q84TTmbpLAv
+ wdC9P/rC
+ snezxK0/DhFN+hTV46GVTfEFU2vvcErJ6rB3rkvr7viCT6MiAT8vPE1PvzI5jpkVjOACaQ2q2UYlviuxZ6QSFnFaCAvD43tjNccgpR9T6vJmMAzlAhFAvuUzhdwMGbdWrIsCRNoVx/vEcZrtuQlusDhXbaSQWDernIU+9iq3gxL1A0tNjPqX+ac4fhfmpiQ70eIql4FpbFYWrSbqJ1U8NMlhuZ+cr+0WoKkBL5AQZC1T7pNU7d3/5M/TjAEFRcCnXC0+HnKK8silgxr6Mif/fBoeQgOunjB/tNlJLh9rrFNQB/Hqs0gdAa4suK3EjvbV4qSdWTJaorXdNMEe9NKvUxCokT5c4rmeTLlv/ioEyE0xaLH5XAEmMgF8Ew6/iBzC3pbhwUYNb3gjZEl/UG8RjeLDykstiN33x6teE9GkNkWybULkum7cO82YyU8BizD6P/s768mTlboi2OIiqfBObK9+x5R+S8epWJy45QWps7/0Yw759XrVX845JeZ1EGrln3ho9+bneLL6YaX6ZjN+EjfhsetRAkpmAooK/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,299 +206,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Mon Oct 26, 2026 at 7:17 PM EDT, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
+>
+> zap_huge_pmd_folio() removes the rmap before calling folio_mark_dirty().
+> If this was the last mapping, truncation can skip unmapping the folio
+> and proceed without waiting for the PMD lock, racing with dirtying.
+>
+> ifs_set_range_dirty() can oops if MADV_DONTNEED races with
+> ftruncate() on XFS, when we get the folio set dirty after it was found
+> to not be mapped anymore.
+>
+> Move folio_mark_dirty() and folio_mark_accessed() before rmap removal,
+> matching the PTE zap path. This keeps the folio mapped while updating
+> its state, so truncation must wait for the page table lock.
+>
+> Fix generated by an LLM and sent by Chris Mason in private.
+>
+> Fixes: fe6cf984939d ("mm/huge_memory: transfer the pmd dirty bit to the f=
+olio on zap")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ david: simplify comment and description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/huge_memory.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+>
+
+It seems to me that moving the rmap removal code after folio_mark_*()
+matches zap_present_folio_ptes() closer. Feel free to use it or ignore
+it.
+
+Anyway,
+
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
 
-> On Oct 28, 2026, at 07:11, T.J. Mercier <tjmercier@google.com> wrote:
->=20
-> On Tue, Oct 27, 2026 at 10:42=E2=80=AFAM T.J. Mercier =
-<tjmercier@google.com> wrote:
->>=20
->> On Mon, Oct 26, 2026 at 7:42=E2=80=AFPM Muchun Song =
-<muchun.song@linux.dev> wrote:
->>>=20
->>>=20
->>>=20
->>>> On Oct 24, 2026, at 06:23, T.J. Mercier <tjmercier@google.com> =
-wrote:
->>>>=20
->>>> When memory.high is exceeded in non-task context, =
-try_charge_memcg()
->>>> schedules memcg->high_work without taking a CSS reference on the =
-memcg,
->>>> and high_work_func() invokes reclaim_high() without pinning the =
-memcg.
->>>>=20
->>>> Before commit f1cf8d2f36dc ("mm: memcontrol: eliminate the problem =
-of
->>>> dying memory cgroup for LRU folios"), memory usage above =
-memory.high
->>>> kept the memcg's refcount non-zero. With reparenting, folios and =
-objcgs
->>>> charged to a child memcg are reparented to its parent in
->>>> mem_cgroup_css_offline(), leaving the offlined child's memory usage
->>>> permanently above its memory.high even after its last reference is
->>>> dropped.
->>>>=20
->>>> cancel_work_sync(&memcg->high_work) only runs at the end of =
-teardown in
->>>> mem_cgroup_css_free(), so high_work_func() can start or still be =
-running
->>>> reclaim_high() after mem_cgroup_css_released() or shrink_many() has
->>>> called lru_gen_release_memcg() and unhashed lruvec->lrugen.list. =
-This
->>>> causes lru_gen_rotate_memcg() to dereference a NULL pprev pointer.
->>>>=20
->>>> Fix this by acquiring a reference with css_tryget_online() in
->>>> high_work_func() before calling reclaim_high(), and by resetting
->>>> memory.high and swap.high to PAGE_COUNTER_MAX in
->>>> mem_cgroup_css_offline() so that charges via references on an =
-offlined
->>>> memcg do not trigger high_work on the dead child or skip checking =
-live
->>>> ancestors in try_charge_memcg().
->>>>=20
->>>> Oops: general protection fault, probably for non-canonical address =
-0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
->>>> KASAN: null-ptr-deref in range =
-[0x0000000000000000-0x0000000000000007]
->>>> CPU: 1 UID: 0 PID: 27 Comm: kworker/1:0 Tainted: G    B   W         =
-  7.3.0-rc5-g2bba28e98578 #284 PREEMPT(full) <- Taint from =
-lru_gen_rotate_memcg() VM_WARN_ON_ONCE
->>>> Tainted: [B]=3DBAD_PAGE, [W]=3DWARN
->>>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS =
-1.17.0-debian-1.17.0-1 04/01/2014
->>>> Workqueue: events high_work_func
->>>> RIP: 0010:lru_gen_rotate_memcg+0x1a3/0xe90
->>>> Code: fd 7f 09 45 84 ed 0f 85 64 0c 00 00 48 89 cf c6 83 6a 07 00 =
-00 00 48 c1 ef 03 88 83 69 07 00 00 48 b8 00 00 00 00 00 fc ff df <80> =
-3c 07 00 0f 85 ec 0b 00 00 48 89 31 40 f6 c6 01 0f 85 4e 00
->>>> RSP: 0018:ffa00000001ef4c8 EFLAGS: 00010046
->>>> RAX: dffffc0000000000 RBX: ff1100000779e440 RCX: 0000000000000000
->>>> RDX: 0000000000000001 RSI: ff1100000779b9b0 RDI: 0000000000000000
->>>> RBP: ff110000bffd8e40 R08: 0000000000000000 R09: ff1100000779ebb8
->>>> R10: ff1100000779ebb0 R11: 0000000000000246 R12: 0000000000000000
->>>> R13: 0000000000000000 R14: ffa00000001efb30 R15: 0000000000000002
->>>> FS:  0000000000000000(0000) GS:ff1100011c0e7000(0000) =
-knlGS:0000000000000000
->>>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->>>> CR2: 000000000251ac88 CR3: 0000000009d6c000 CR4: 0000000000751ef0
->>>> PKRU: 55555554
->>>> Call Trace:
->>>> <TASK>
->>>> ? read_ctrl_pos+0x22f/0x3f0
->>>> shrink_lruvec+0x16cb/0x1b80
->>>> ? ret_from_fork_asm+0x1a/0x30
->>>> ? lapic_next_event+0x15/0x20
->>>> ? clockevents_program_event+0x2bb/0x6f0
->>>> ? lapic_next_event+0x15/0x20
->>>> ? __pfx_shrink_lruvec+0x10/0x10
->>>> ? __pfx_clockevents_program_event+0x10/0x10
->>>> ? _raw_spin_lock+0x84/0xe0
->>>> ? __pfx__raw_spin_lock+0x10/0x10
->>>> ? kasan_save_stack+0x30/0x50
->>>> ? psi_group_change+0x381/0x740
->>>> ? __pfx_sched_clock_cpu+0x10/0x10
->>>> ? save_fpregs_to_fpstate+0xc4/0x2c0
->>>> ? finish_task_switch.isra.0+0x1de/0xac0
->>>> ? __schedule+0xf62/0x42c0
->>>> ? __pfx___schedule+0x10/0x10
->>>> ? __pfx___irq_work_queue_local+0x10/0x10
->>>> ? shrink_node+0x626/0x31e0
->>>> shrink_node+0x626/0x31e0
->>>> ? ring_buffer_unlock_commit+0x11d/0x5c0
->>>> ? kswapd_clear_hopeless+0xa0/0x150
->>>> ? __pfx_shrink_node+0x10/0x10
->>>> ? 0xffffffffc0000095
->>>> do_try_to_free_pages+0x255/0x13b0
->>>> ? ring_buffer_unlock_commit+0x11d/0x5c0
->>>> ? reclaim_high+0x10a/0x1b0
->>>> try_to_free_mem_cgroup_pages+0x1f9/0x5a0
->>>> ? __pfx_try_to_free_mem_cgroup_pages+0x10/0x10
->>>> ? irqentry_exit+0xc6/0x670
->>>> reclaim_high+0x10a/0x1b0
->>>> ? __pfx_reclaim_high+0x10/0x10
->>>> ? process_one_work+0x5ff/0x1030
->>>> ? __pfx_high_work_func+0x10/0x10
->>>> process_one_work+0x6e2/0x1030
->>>> ? __pfx___schedule+0x10/0x10
->>>> ? __pfx_process_one_work+0x10/0x10
->>>> worker_thread+0x422/0xbb0
->>>> ? __pfx_worker_thread+0x10/0x10
->>>> kthread+0x2cd/0x3a0
->>>> ? recalc_sigpending+0x15c/0x200
->>>> ? __pfx_kthread+0x10/0x10
->>>> ret_from_fork+0x368/0x590
->>>> ? __pfx_ret_from_fork+0x10/0x10
->>>> ? __switch_to+0x588/0xf50
->>>> ? __pfx_kthread+0x10/0x10
->>>> ret_from_fork_asm+0x1a/0x30
->>>> </TASK>
->>>>=20
->>>> Fixes: f1cf8d2f36dc ("mm: memcontrol: eliminate the problem of =
-dying memory cgroup for LRU folios")
->>>=20
->>> Hi T.J.,
->>>=20
->>> Thanks for fixing this.
->>>=20
->>> I have one question about the Fixes tag.
->>>=20
->>> The changelog says that, before f1cf8d2f36dc, memory usage above
->>> memory.high kept the memcg reference count non-zero. This is true =
-for
->>> LRU folios: before that commit, each charged LRU folio held a CSS
->>> reference until it was uncharged.
->>>=20
->>> However, I wonder whether objcg-based kmem already provided a =
-reachable
->>> path before f1cf8d2f36dc.
->>>=20
->>> In particular, BPF alloc_bulk() mostly runs from irq_work. It =
-obtains a
->>> temporary memcg reference from a persistent objcg, uses =
-set_active_memcg()
->>> while performing __GFP_ACCOUNT allocations, and drops the temporary
->>> reference after the allocation. The charge can therefore queue
->>> memcg->high_work in non-task context without transferring a CSS
->>> reference to the work item.
->>>=20
->>> If this races with memcg offlining, objcg reparenting can redirect =
-the
->>> objcg to the parent while the old child's page-counter usage remains
->>> above memory.high. Once the temporary CSS reference is dropped,
->>> mem_cgroup_css_released() can call lru_gen_release_memcg() before =
-the
->>> queued high_work runs. The worker can then enter reclaim_high() and
->>> rotate an already removed lrugen.list.
->>>=20
->>> This path appears to have all the required pieces after:
->>>=20
->>>  e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
->>>=20
->>> Commit 6867c7a33206 later changed the release operation to
->>> hlist_nulls_del_init_rcu(), which explains the exact NULL pprev seen =
-in
->>> the reported crash. Before that, the same invalid second deletion =
-would
->>> instead encounter LIST_POISON2.
->>>=20
->>> So f1cf8d2f36dc clearly broadens the problem to ordinary LRU folios, =
-but
->>> I am not very sure it is the first commit after which the underlying =
-race is
->>> reachable.
->>>=20
->>> Is there an additional lifetime guarantee that prevents the pre-f1cf
->>> objcg/kmem path above? If no, would the following be more =
-appropriate?
->>>=20
->>> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio =
-lists")
->>>=20
->>> Thanks,
->>> Muchun
->>=20
->> Hi Muchun,
->>=20
->> Everything you said sounds correct to me. I don't think there's
->> anything preventing kmem from keeping the memcg above high while the
->> refcount hits 0, and hitting the same problem in
->> lru_gen_rotate_memcg() from lru_gen_shrink_lruvec().
->>=20
->> So using Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node
->> lru_gen_folio lists") sounds good to me.
->>=20
->> Thanks,
->> T.J.
->=20
-> I was able to get a reproduction on e4dde56cd208. Fortunately this
-> patch applies cleanly on e4dde56cd208, so I expect the stable
-> backports to be straightforward.
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index bd44d58e86845..192f7969e3648 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2484,10 +2484,6 @@ static void zap_huge_pmd_folio(struct mm_struct *mm,=
+ struct vm_area_struct *vma,
+ {
+ 	const bool is_device_private =3D folio_is_device_private(folio);
+=20
+-	/* Present and device private folios are rmappable. */
+-	if (is_present || is_device_private)
+-		folio_remove_rmap_pmd(folio, &folio->page, vma);
+-
+ 	if (folio_test_anon(folio)) {
+ 		add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
+ 	} else {
+@@ -2501,6 +2497,13 @@ static void zap_huge_pmd_folio(struct mm_struct *mm,=
+ struct vm_area_struct *vma,
+ 			folio_mark_accessed(folio);
+ 	}
+=20
++	/*
++	 * Present and device private folios are rmappable. Only remove the rmap
++	 * after transferring young+dirty to the folio.
++	 */
++	if (is_present || is_device_private)
++		folio_remove_rmap_pmd(folio, &folio->page, vma);
++
+ 	/* Device private folios are pinned. */
+ 	if (is_device_private)
+ 		folio_put(folio);
 
-Excellent job. Yeah, we need this backported.
 
-Thanks,
-Muchun
-
->=20
-> general protection fault, probably for non-canonical address
-> 0xfbd59c0000000024: 0000 [#1] PREEMPT SMP KASAN NOPTI
-> KASAN: maybe wild-memory-access in range =
-[0xdead000000000120-0xdead000000000127]
-> CPU: 1 PID: 37 Comm: kworker/1:1 Not tainted =
-6.2.0-rc4-00108-ge4dde56cd208 #1
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-> 1.17.0-debian-1.17.0-1 04/01/2014
-> Workqueue: events high_work_func
-> RIP: 0010:lru_gen_rotate_memcg+0x147/0xef0
-> Code: 49 c1 ea 03 41 80 3c 3a 00 0f 85 a5 09 00 00 48 89 f7 4c 8b 93
-> 08 07 00 00 48 c1 ef 03 48 89 fa 48 bf 00 00 00 00 00 fc ff df <80> 3c
-> 3a 00 0f 85 2a 07 00 00 4c 89 16 41 f6 c2 01 0f 85 72 00
-> RSP: 0018:ffa00000002a75e0 EFLAGS: 00010206
-> RAX: ff11000008d46701 RBX: ff11000008d46000 RCX: 0000000000000000
-> RDX: 1bd5a00000000024 RSI: dead000000000122 RDI: dffffc0000000000
-> RBP: ff110000bfe54000 R08: ff11000008d46708 R09: ff11000008d46710
-> R10: ff11000009a5a708 R11: 0000000000000000 R12: 0000000000000006
-> R13: 0000000000000004 R14: 1ff4000000054ee4 R15: 0000000000000001
-> FS:  0000000000000000(0000) GS:ff110000a3480000(0000) =
-knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000000000 CR3: 0000000007d5c000 CR4: 0000000000751ee0
-> PKRU: 55555554
-> Call Trace:
-> <TASK>
-> ? reset_ctrl_pos+0x10f/0x460
-> shrink_lruvec+0x19e0/0x2000
-> ? kasan_set_track+0x25/0x30
-> ? __kasan_slab_alloc+0x66/0x80
-> ? kmem_cache_alloc+0x165/0x310
-> ? __kernfs_new_node+0xd3/0x590
-> ? __kernfs_create_file+0x2d/0x280
-> ? sysfs_add_file_mode_ns+0x12b/0x3a0
-> ? internal_create_group+0x286/0x940
-> ? internal_create_groups+0x84/0x110
-> ? really_probe+0x223/0x690
-> ? unwind_next_frame+0xa9a/0x2040
-> ? arch_stack_walk+0x7a/0x110
-> ? unwind_next_frame+0xa9a/0x2040
-> ? arch_stack_walk+0x7a/0x110
-> ? __pfx_shrink_lruvec+0x10/0x10
-> ? preempt_count_add+0x83/0x180
-> ? unwind_next_frame+0xb2/0x2040
-> ? unwind_next_frame+0x212/0x2040
-> ? ret_from_fork+0x2c/0x50
-> ? __pfx_stack_trace_consume_entry+0x10/0x10
-> ? arch_stack_walk+0xa2/0x110
-> ? sched_clock_local+0x132/0x210
-> ? __pfx_sched_clock_local+0x10/0x10
-> ? unwind_next_frame+0x212/0x2040
-> ? __pfx_shrink_slab+0x10/0x10
-> ? sched_clock_cpu+0x232/0x2c0
-> ? __pfx_sched_clock_local+0x10/0x10
-> ? __pfx_sched_clock_cpu+0x10/0x10
-> ? mem_cgroup_iter+0x269/0x600
-> ? vmpressure+0x30/0x3b0
-> shrink_node+0xb39/0x26a0
-> ? __pfx_shrink_node+0x10/0x10
-> ? kasan_save_stack+0x42/0x60
-> ? ring_buffer_lock_reserve+0x2fb/0xe30
-> do_try_to_free_pages+0x31a/0x1880
-> ? __pfx_do_try_to_free_pages+0x10/0x10
-> try_to_free_mem_cgroup_pages+0x282/0x5f0
-> ? try_to_free_mem_cgroup_pages+0x4/0x5f0
-> ? reclaim_high.constprop.0+0x191/0x250
-> ? __pfx_try_to_free_mem_cgroup_pages+0x10/0x10
-> ? try_to_free_mem_cgroup_pages+0x9/0x5f0
-> reclaim_high.constprop.0+0x191/0x250
-> ? __pfx_reclaim_high.constprop.0+0x10/0x10
-> ? __pfx_high_work_func+0x10/0x10
-> process_one_work+0x641/0x1010
-> worker_thread+0x424/0xec0
-> ? __kthread_parkme+0x89/0x160
-> ? __pfx_worker_thread+0x10/0x10
-> kthread+0x26c/0x300
-> ? __pfx_kthread+0x10/0x10
-> ret_from_fork+0x2c/0x50
-> </TASK>
+--=20
+Best Regards,
+Yan, Zi
 
 
