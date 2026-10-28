@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C260606A75A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB857606A31F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gMVsWss/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UcB6K23C
 Received: by kanga.kvack.org (Postfix)
-	id 4C3CA6B05B3; Wed, 28 Oct 2026 11:48:43 -0400 (EDT)
+	id D9BC76B05CC; Wed, 28 Oct 2026 11:48:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49BAE6B05CB; Wed, 28 Oct 2026 11:48:43 -0400 (EDT)
+	id CDA9D6B05CD; Wed, 28 Oct 2026 11:48:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 363BD6B05CC; Wed, 28 Oct 2026 11:48:43 -0400 (EDT)
+	id BC7876B05CE; Wed, 28 Oct 2026 11:48:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 18CAB6B05B3
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:48:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E87112015E
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:42 +0000 (UTC)
-X-FDA: 85372467684.27.2ABF0E7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 991886B05CC
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:48:46 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 284351A0165
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:46 +0000 (UTC)
+X-FDA: 85372467852.10.6D24BCD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D721AC0004
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gMVsWss/";
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 70932A000E
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:48:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UcB6K23C;
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793202524;
+	b=N4GzCVGjt3WEyVRl+97tCegERmh4XKg8CVDszK6f2g9+Qy9+PcCsLG9TAZKZgZHcxP9oU3
+	ODCaYH9Ay268fM6KP8YY3v0lwkPqUVQpWZA7EY2HSWtD7KxcgrQhOQ8sItk8cfEKBVzTtJ
+	yC6qqTAqVINsp+GBjMCieuPrR2uYgLE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UcB6K23C;
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793202521;
+	s=arc-20220608; t=1793202524;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WoLnYplPftaOBa6QSFMZqNIkryf8r7D8aUeEXV+6FRc=;
-	b=yPI+RweoykC2mAH83QHEDjwQf0+AnnjPuX01gepBmfMf62jKM5bhVh34rnlMDNxbzgPdFd
-	dkw2Kj2PsnydUeUUaLcO5CC6YBmUftYDTQeSOmy4bUdtSmjiYxRZe0kXR5/iOWNX+2Bc2x
-	3yup5p9E4JpGJNMU4V+FvW4P2yd6erU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gMVsWss/";
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793202521;
-	b=xavenKymeI5iqEKDAfrfhJtn9AS8JbodHdNjZAygsmmy/aOR8y3Cu8LDySV/Uh+QUE/b9Q
-	a+9YuH9tQ4m5CXs76bcF41Xz7Cg4ylbPrw9DMWvr2j2GA3CtcVGuX69ntkXVQrMmMQ5kfP
-	u/z6YEd2Slo80sEVUxKi8oyV2ixU/Yw=
+	bh=WB+g+Slbuqa3OAFsR/L9R+koPQb3pE6dF2HAbJEZAnQ=;
+	b=pBZ+LBWuyMlvNxfq/uKX52axdjCO1D7kOvJ/ZF4AAurMhgxeq8Jh68opwjVUgp7KbkaIfV
+	q/KCjHmZC2C+hCFTcsnHk/HgUPKJg7/l9J3UVvLXV8JxWmrKKO0aXqMG8Vw/oF0EgTnpbt
+	78p36XeeQTsLzB9IlJa5Lqz0sVWM3Fg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 222A441210;
+	by sea.source.kernel.org (Postfix) with ESMTP id C159743D62;
+	Wed, 28 Oct 2026 15:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9361F01825;
 	Wed, 28 Oct 2026 15:48:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BD51F01829;
-	Wed, 28 Oct 2026 15:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793202520;
-	bh=WoLnYplPftaOBa6QSFMZqNIkryf8r7D8aUeEXV+6FRc=;
+	s=k20260515; t=1793202523;
+	bh=WB+g+Slbuqa3OAFsR/L9R+koPQb3pE6dF2HAbJEZAnQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gMVsWss/mr5UF2gkAulV7LLqDWCYhBwv0EGaqSVURwA3s7N2bF5bHvf7z21565lG1
-	 bkqr1uaDa1NKGx8SYXe42L5KuT3fqDORAc70B5If6AG069hlF8NFqeTGhPI64JU9xA
-	 or0DHmbrla/np7qle8VI2TzjCq8sTUmD0sTwHDTJX5630CIC36Lm7ro17fN0Xf6Ewy
-	 xw8bok+nH9cA3HyOt0oPc1YJxwyhWsxgs4i6KtdE5NGSOLRtDmix4PowmuGZONzvOo
-	 VdIAI/BI/UyhxMQcj4s08hPRNII6FoLnGTOBdysIzV3yRy2pOdIvvUBcioFVv8BieY
-	 ucEp+DO+7JhQg==
-Message-ID: <sashiko-outbox-188087@kernel.org>
+	b=UcB6K23CVpLO8P10LHZqJX9STIGFLjDAkR4Z2JOHlTMmVdxlQK1gQFGZQ5YZBKNrZ
+	 GCsvWHVAJt+/YfJhux+cVn7zLG+hYDgRYSKLht5Wy39cUp1bY8FnS1rkxBXKggmW8+
+	 ufYcdx0lrb8+8W3bM0Qz7iQFN2vFi3ms6sG7ySHH64j2eNEbU+T7CJ89yGdVAicFMu
+	 qbdNAjTCJ7yV9IkMmA1VBtbHgsF9ghrif1/gRYoJ94Nsr6G+WmcxfYKJVRKLLRpFCM
+	 MKLDmU9vUZGGP+Ixtq08YhHNec4bMivEO9QLU5mxPymN0FAqYuIFd6FmhSNn64j3WN
+	 +q/asZnjvgo5Q==
+Message-ID: <sashiko-outbox-188089@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 05/14] KVM: guest_memfd: Export PFN mode files
+Subject: Re: [RFC PATCH 07/14] KVM: guest_memfd: Update exports when pages
+ are allocated
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Fred Griffoul" <griffoul@gmail.com>, "Ackerley Tng" <ackerleytng@google.com>, "Paolo
  Bonzini" <pbonzini@redhat.com>, "Sean Christopherson" <seanjc@google.com>, "Jason
@@ -97,25 +98,25 @@ Cc: "Alex Williamson" <alex@shazbot.org>, "Alexander Graf" <graf@amazon.de>, "Al
  Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Yan
  Zhao" <yan.y.zhao@intel.com>, "Zenghui Yu" <yuzenghui@huawei.com>, x86@kernel.org, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Fuad Tabba" <fuad.tabba@linux.dev>, kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261027154649.91571-6-griffoul@gmail.com>
+In-Reply-To: <20261027154649.91571-8-griffoul@gmail.com>
 References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
  <20261027154649.91571-1-griffoul@gmail.com>
- <20261027154649.91571-6-griffoul@gmail.com>
+ <20261027154649.91571-8-griffoul@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 15:48:36 +0000
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D721AC0004
-X-Stat-Signature: wwkrtu5ghif3jn8y9cgzade1ie6e4q89
-X-Rspam-User: 
+Date: Wed, 28 Oct 2026 15:48:40 +0000
+X-Stat-Signature: 4fickkpzstt11hhbxhyz7kda1p189isk
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793202520-709897
-X-HE-Meta: U2FsdGVkX19N75JIH7ZgZcVDtJlyCY24T4HHEC6Q981mC8j3U3H2ty8ZC/UoV9R3ttEcx+fggPNYbXpqFl11bydKFux99C0UvySk3tsRx72BJldJRCaYrT6vansw1HJ0BAyvIi0PdSHhVQQwY2culjx7hvRk8Vx+habB0i5RIZ25rLgIzLhiWXeAXZsnKAKRhBvRQiqC9ewb0W3Zh6H9WYBdTpute8K0IJcyGK9xOU/IVOu4GXa8CCO5EIokERR3cpe2hZqAjxo+nVv14vV9ZH3fMlI+Z5wQO9Jxb9bwFaIf4HmXV1oGSy/sy18uA8XwHvOt70jo52ydgamGGB6yrUNoXOjuxSzbDXbbOnT1E1lI3sUBekshykzk/ncOevk9z7sGtQbN3bgpcV+/ywTGxVfzQTNKbfi/QvoIT6/0H2n5prXASyX31kKG1jcEKcvaju6TIRiliCE1Ygh4MeiuciFlcZthW40KuZyJgKLEiPIGnxYf9+aDI0iFZTfisQ5E0O3VeOpZvCse+aPKIc/c6KcAKHVXa4IhnGdDJj8VtfJ8slh9mN54+B73W/2IgvfEUJZy/R2s5CdoeCgKZ3bCa/9dC5Q8xkjOK7Ldv91eEe006vL9gwL+7ZUomfrr3NfvuuAdZLGKsF+0ibw8bPdKW4YR+/zgaExQMc+v/mg1pAZMG4WxUF46ZPHXYoijfCBe18rPNZYg1B8vbzA833K66hrVixcdYWCx0rU9vwjxOXby26MUr1Do706YPr0/XCgBHNZ9jyCHaQaCQHdUGSXwtPpkMQLfBZNtkXz/5uUod2kMAnQ6vCSk3kpHrnMHGjrV90NMC7okMk8zGV75VtPFzbn3rozeJyCzpI0nFuZJSu/1mCn9YkP56fU+LNFxStA7ZMJXy9dmEBHhZuyhDIFwQ0+rEzIlpQ0WAXI6epDwXuVs29ZJyZOFYPb1rbsP4ZFSyKSSh84wy0KoqVG5bpe
- YiPXROqP
- tj7F+PGZzz9U29/1VsRYHE6R6tq5kZwwBY8HcU41T7is7HfR9qgQWgZS5or98UHznZCMWl3BhhwJyb6sKqHbaRIiIs96WGK/DhTmP5U1BGayvFCoMqOsVVI/ImH63pg9nGvDqSVc1HDFAqTejft+T/JeLV14UYt6BZqVzAztCDHi/PwEkPWLyiWr9P2vBQDtIzZEZBJLB5UMaYHyCfmwBABXEEces3BQlw3LsXqXcLFxGl9SKz7VzoPmK33U5ycDIWoYk8emlIKjBUwynUC1M+cbkSVYKniPvNffBWYne2KcemF1i0Tjcb9utavgrdRQU2XD9M5GxTTtiipIV23zyVjUXl4g9jqfmQfjnnErONSC2JA1S7LnYhfj3MjIFNGfj8vhoAv73RPr82d9rXThqeelsUZWcOmhD1acMJXLZriHsQwg96tb29CSKEljL3G4Tf/SQI6NwoqbmxnGBgADCM3pNPMfRFl5uWUpgcLptUHXekmIehwQMBH4Q9HSUhBW9pmcoxMu+o9roKwmsrdcQEstn9764weiwZ4ocpNd/5JrI4RaSPc2paj3LSJ67qFs9aI3PYnpvqVdxjTIuY1N8d9l/8M8otY4qn4hk5I3xp0jm5gfHkZkTavLsRbXH3zaUkI4NXNaSjk0TAFsFCar0Kh9Yl5ymxGNxjDqamZNSUr3oqkPx10LKwU/2+DMff7ASUwGd1jxxRlSIlKvhjYYbO+YQluWSqnmZftg4Muy/GKlDsjk=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 70932A000E
+X-Rspam-User: 
+X-HE-Tag: 1793202524-550892
+X-HE-Meta: U2FsdGVkX1/ZIeW/8gxwY3llD1nbJ8DT+4Y2uylnmrpSOjjYTTjAXqKfrfZ2FJXNTXBPQj5CSCdZS9v3te+9xBfdAngN0pXxl9uwvnRBRTVqgjVTNA0CGzXFGxtf+If0UetJr0AnQSXbWq3qld2jlGC2sFF6UkNrhgg4cronw+zvz05J3gTUWCF28P7vXgVtep6et6E3D30nYEXEN0UPS59Q4N3BbarK9ZCnmyqF3MVG0rmtEsGp6qCPtRllrr88FyWhmHE7/ZM+aYzaYayqHOhV7TZufA1G58KRWeOWQPox8dLp5BdCmeDJJCOq3i0sgkiWAJlXYF7y/LpI/Eo7iUCIel7dQVndkw3X38teyQGgDJ95IRZzdK14kPfCknprA8PvDYw9Whh2K08n0MlqegmDyOpNBPv0iDG/tH57JD3HIke+PYKTVn5K4GOSBHH2c6EQv9UjqABd3kcvXean7gi2A3Xt3hQA7PlH/8oQVjs6bu0j5yM8fL8i2LiiZ9/p7UykSCE3DcLui8y54oQ1mJoD7chiXGGYDiQWDD+rU20FzDkZOLAif/sHRV58PTt0CLe55V6kx9mMbwhe0WINkBr4LJS0xQTvzaUVVOgAo10zRoFuOW04drm4FKu0rfw2JLysxE6YwlK9g/9PI7xIP45itSi7SPuuRcyUygvmpssp2A5kCIeRqsQ4jt/9etXMFqkdXpzfPouczaYPStPup7mNXHA+yYB6Vs+w2pwynDFE3dHZL1InfAEGSCMRk3M4uVQ+PSH0FJOfi7TgTvsJzKIXax0CI9luo48E1TnDnDEqiBDykC9bt4ldBINikrIXfiRm1ILVAttTbsNNMJcM4ToP9C+qSgbSs134qjN6A93+NfMdB3Ai43zKcYMDc0Sg/pHJMX1Z6xgA2ip5phGnUXXseKBtDUYB4oxvFO1Nq5WGGtHu3zGzI7udaPkA4KIaDIVLMcEcT8VLB9Jvzj4
+ SuQks8uT
+ 3YDGHhtM4CDqByhGuai/xemombb515/MnsdFdtmzzDOsjYKc/UVjNjSq60d8iQyAn9QS5/U9udepIzDR30bleiOsagv+GoOshaAoiH7dnj8g9azvu6xAtqk+FMioeDPWnQxa7CySI1I6WjDArjPU3ItoXQl5XISP/tWqBOFMkWyJmJ1Il1giwA5imuCR692t/1Y4LhFXpPyttdg3QCXqVEbA+kZsXEOnQLzEtQMPbJ+1tSO3aH0p0ibsVU2vhsoCpBaf5a7HslPMK2d+9rBiw52sxSa71u/qYpqJQvEd/1CPqrIeCfuefEFY9Ng3LJhGPWosOtDb/NYJ9PTNs7Y+VxPFdlKLvugMYv0InEKvhlbxZ6hKjafsTKkvk2GW0SxRzTTjXT/4rIqwbsZ+igLdVd+TKNhD54RHEJhBx3Uhuobs9DZOJbTio2eBY8tEDnM167LvRTKdiqSDQLQYCMsvewxr1ugGb9ONLcaKGMyH5g9x3yXd/kso733sdhD8Rd+3/6tMXKIe+PTlrzrM7WKdojLU2R1x+0CvW6BPWu1px+2wnuU+EM/YbNGMr++DwwY8zd4070fejl6rLkvW0BWO1fukBi7hr3VOrJqDisD9HuLMUK0QKKg/HFKaX4as0VcGeuYq14hvRWD3OeV7fAbvHJOU7RXXzhWs6rX0T0NiXJF+MwFqGC31k05q1jydyFQnqvMKwG4PUoSqQBANv8XgE9hUvebpsgzwqOqHd0aXPWUQ0taU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,224 +126,168 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] KVM: guest_memfd: clamp export block order to i_size in kvm_gmem_e=
-xport_pfn()
-- [High] KVM: guest_memfd: missing barrier and range tearing in kvm_gmem_ex=
-port_pfn()
-- [High] KVM: guest_memfd: TOCTOU race between lookup_pfn_range() and get_p=
-fn() in kvm_gmem_export_pfn()
+- [High] KVM: guest_memfd: race between lookup and export update in kvm_gme=
+m_pfn_get()
+- [High] KVM: guest_memfd: missing export update in kvm_gmem_pfn_mkwrite()
 --
 
-commit 3bf31837d177882cb062328d3af172d19383cf4c
+commit 4b6454858c8ba7cdab87cd12917c8977ac8eab47
 Author: Fred Griffoul <fgriffo@amazon.co.uk>
 
-KVM: guest_memfd: Export PFN mode files
+KVM: guest_memfd: Update exports when pages are allocated
 
-This commit enables export consumers to attach to PFN mode guest_memfd
-files, looking up frames via lookup_pfn_range() and get_pfn(), and
-updating exports across revocations and hole punches.
+This commit updates attached exports when guest_memfd pages gain backing
+memory via host faults, KVM get_pfn(), or fallocate(). In folio mode it
+zeroes newly allocated folios, marks them dirty, and notifies exports under
+the invalidate lock, while in PFN mode it checks if the page was a hole
+before get_pfn() and updates exports for the populated block.
 
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 65a951fa49c26..015f6657c3863 100644
+> index 1c5826c5384ed..42bb5f263e234 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
-
 [ ... ]
-
-> @@ -515,15 +521,32 @@ static int __kvm_gmem_revoke(struct inode *inode, p=
-goff_t start,
->  	kvm_gmem_invalidate_start(inode, start, end, filter);
-> =20
->  	if (kvm_gmem_is_pfn_mode(GMEM_I(inode))) {
-> +		struct gmem_inode *gi =3D GMEM_I(inode);
-> +
->  		unmap_mapping_range(inode->i_mapping, offset, len, 0);
-> +		/*
-> +		 * A punch hole gives the frames back only after the reclaim:
-> +		 * until then, lookups find holes.  Afterwards, the exports map
-> +		 * what the provider backs the range with.
-> +		 */
-> +		if (put_pfn_range) {
-> +			WRITE_ONCE(gi->punch_start, start);
-> +			/* Pairs with the smp_rmb() in kvm_gmem_export_pfn(). */
-> +			smp_wmb();
-> +			WRITE_ONCE(gi->punch_end, end);
-> +		}
-> +		kvm_gmem_update_exports(inode, start, end);
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
->  		if (pfn)
->  			kvm_arch_gmem_reclaim(*pfn, nr_pages);
->  		else
-> -			kvm_gmem_pfn_reclaim(GMEM_I(inode), start, end);
-> +			kvm_gmem_pfn_reclaim(gi, start, end);
->  #endif
-> -		if (put_pfn_range)
-> -			gmem_provider_put_pfn_range(GMEM_I(inode), start, nr_pages);
-> +		if (put_pfn_range) {
-> +			gmem_provider_put_pfn_range(gi, start, nr_pages);
-> +			WRITE_ONCE(gi->punch_end, 0);
-> +			kvm_gmem_update_exports(inode, start, end);
-> +		}
-
-[Severity: High]
-Can clearing gi->punch_end with a plain WRITE_ONCE() here race with a
-concurrent lockless reader in kvm_gmem_export_pfn()?
-
-In __kvm_gmem_revoke(), after the first kvm_gmem_update_exports() finishes,
-the consumer lock is released while kvm_gmem_pfn_reclaim() and
-gmem_provider_put_pfn_range() execute (which zero pages and update provider
-state), and then gi->punch_end is cleared via WRITE_ONCE(gi->punch_end, 0)
-without a release barrier or smp_wmb().
-
-On weakly ordered architectures, can the store setting gi->punch_end to 0 be
-reordered ahead of the stores in kvm_gmem_pfn_reclaim() and
-gmem_provider_put_pfn_range(), allowing a concurrent kvm_gmem_export_pfn()
-to observe punch_end =3D=3D 0 and map the frames before reclaim or provider
-state updates are visible?
-
-In addition, kvm_gmem_export_pfn() reads punch_end and then punch_start
-without holding inode->i_mapping->invalidate_lock:
-
-virt/kvm/guest_memfd.c:kvm_gmem_export_pfn() {
-	punch_end =3D READ_ONCE(gi->punch_end);
-	/* Pairs with the smp_wmb() in __kvm_gmem_revoke(). */
-	smp_rmb();
-	punch_start =3D READ_ONCE(gi->punch_start);
-	if (index >=3D punch_start && index < punch_end)
-		return -ENOENT;
-}
-
-Because kvm_gmem_update_exports(inode, start, end) only notifies exports of
-[start, end), an export consumer mapping a disjoint file range (such as
-[200, 300)) can skip taking its consumer lock during a hole punch on
-[500, 600). If a lookup for index 250 reads punch_end =3D 600 during that
-first hole punch, and a second hole punch on [0, 100) then writes
-gi->punch_start =3D 0 before the lookup reads gi->punch_start, won't
-kvm_gmem_export_pfn() observe a torn range [0, 600) and falsely return
--ENOENT for index 250?
-
-[ ... ]
-
-> @@ -1310,28 +1330,83 @@ static bool kvm_gmem_range_is_shared(struct inode=
- *inode, pgoff_t index,
->  	return true;
+> @@ -590,6 +592,64 @@ int kvm_gmem_revoke(struct inode *inode, pgoff_t sta=
+rt, size_t nr_pages,
 >  }
+>  EXPORT_SYMBOL_GPL(kvm_gmem_revoke);
 > =20
+[ ... ]
 > +/*
-> + * PFN mode: lookup_pfn_range() first, so that nothing is allocated, then
-> + * get_pfn() for the order and attributes.
+> + * get_pfn() in PFN mode, which may back a hole: then tell the exports a=
+bout
+> + * the whole block that get_pfn() reports, as the provider may have back=
+ed all
+> + * of it.  Called with the invalidate lock held.
 > + */
-> +static int kvm_gmem_export_pfn(struct gmem_inode *gi, pgoff_t index,
-> +			       unsigned long *pfn, int *max_order, u32 *attrs)
+> +static int kvm_gmem_pfn_get(struct inode *inode, pgoff_t index,
+> +			    kvm_pfn_t *pfn, int *max_order, u32 *attrs)
 > +{
-> +	pgoff_t punch_start, punch_end;
-> +	int order =3D *max_order, block;
-> +	unsigned long raw_pfn;
-> +	size_t nr_pages;
-> +	kvm_pfn_t frame;
-> +	int r;
+> +	pgoff_t npages =3D i_size_read(inode) >> PAGE_SHIFT;
+> +	struct gmem_inode *gi =3D GMEM_I(inode);
+> +	bool hole =3D false;
+> +	unsigned long raw;
+> +	pgoff_t first;
+> +	int order, r;
+> +	size_t nr;
 > +
-> +	/*
-> +	 * The end first: a new end comes with its start, and an old end of 0
-> +	 * makes the window empty.
-> +	 */
-> +	punch_end =3D READ_ONCE(gi->punch_end);
-> +	/* Pairs with the smp_wmb() in __kvm_gmem_revoke(). */
-> +	smp_rmb();
-> +	punch_start =3D READ_ONCE(gi->punch_start);
-> +	if (index >=3D punch_start && index < punch_end)
-> +		return -ENOENT;
+> +	if (!list_empty(&gi->exports))
+> +		hole =3D gi->provider_ops->lookup_pfn_range(gi->provider, index,
+> +							  &raw, &nr) =3D=3D -ENOENT;
 > +
-> +	r =3D gi->provider_ops->lookup_pfn_range(gi->provider, index, &raw_pfn,
-> +					       &nr_pages);
+> +	r =3D gmem_provider_get_pfn(gi, index, pfn, &order, attrs);
 > +	if (r)
 > +		return r;
 > +
-> +	r =3D gmem_provider_get_pfn(gi, index, &frame, &block, attrs);
-> +	if (r)
-> +		return r =3D=3D -EFAULT ? -ENOENT : r;
-
-[Severity: High]
-What prevents the page at index from becoming absent between
-lookup_pfn_range() and gmem_provider_get_pfn()?
-
-When a consumer calls kvm_gmem_export_lookup_pfn() holding only the consumer
-lock, neither the provider lock nor inode->i_mapping->invalidate_lock is
-held across these two calls.
-
-If index is present when lookup_pfn_range() runs, and another CPU starts
-revoking index (marking it absent in the provider and calling
-kvm_gmem_revoke(), which then waits on the consumer lock in
-kvm_gmem_update_exports()), kvm_gmem_export_pfn() will proceed to call
-gmem_provider_get_pfn() on the now-absent index.
-
-For an on-demand provider where get_pfn() populates absent pages, won't this
-allocate and re-populate the range in the middle of the revocation (leaving
-the revoked frames mapped after update() runs), or deadlock if get_pfn()
-acquires the outer provider lock on its allocation path while
-kvm_gmem_revoke() holds the provider lock waiting for the consumer lock?
-
-> +
-> +	order =3D min(order, block);
-> +	if (frame ^ index)
-> +		order =3D min_t(int, order, __ffs64(frame ^ index));
-> +	/* Nor may the block reach into a punch hole. */
-> +	while (order &&
-> +	       round_down(index, 1UL << order) < punch_end &&
-> +	       round_up(index + 1, 1UL << order) > punch_start)
-> +		order--;
-> +	*pfn =3D frame;
-> +	*max_order =3D order;
+> +	if (hole) {
+> +		first =3D round_down(index, 1UL << order);
+> +		kvm_gmem_update_exports(inode, first,
+> +					min(first + (1UL << order), npages));
+> +	}
+> +	if (max_order)
+> +		*max_order =3D order;
 > +	return 0;
 > +}
 
 [Severity: High]
-Should kvm_gmem_export_pfn() (or __kvm_gmem_export_lookup()) also clamp
-*max_order so the returned block does not extend past inode->i_size?
+Can concurrent calls to kvm_gmem_pfn_get() race between lookup_pfn_range(),
+gmem_provider_get_pfn(), and kvm_gmem_update_exports()?
 
-If a guest_memfd file is created with a size that is smaller than or not
-aligned to the provider's contiguous block size (for example, a 4KB file or
-a 2MB + 4KB file backed by 2MB order-9 provider blocks),
-gmem_provider_get_pfn() can report block =3D 9 for an in-bounds index.
+All shared-access callers of kvm_gmem_pfn_get() -- kvm_gmem_allocate(),
+kvm_gmem_pfn_fault(), and kvm_gmem_get_pfn() -> __kvm_gmem_get_pfn() -- hold
+inode->i_mapping->invalidate_lock in shared mode via
+filemap_invalidate_lock_shared(). Unlike folio mode, where
+kvm_gmem_get_folio() returns a locked folio and holds the folio lock across
+both kvm_gmem_folio_zero() and kvm_gmem_update_exports(), kvm_gmem_pfn_get()
+has no per-range synchronization across the lookup, allocation, and export
+notification steps.
 
-In __kvm_gmem_export_lookup(), the trailing loop checks whether the block is
-shared via kvm_gmem_range_is_shared():
+If thread A calls kvm_gmem_pfn_get() on an unbacked index,
+lookup_pfn_range() returns -ENOENT (setting hole =3D true) and
+gmem_provider_get_pfn() populates the backing frame or 1UL << order block in
+the provider. If a concurrent thread B calls kvm_gmem_pfn_get() for the same
+index (or another index within that newly populated block) after thread A's
+gmem_provider_get_pfn() completes, but before thread A finishes
+kvm_gmem_update_exports(), thread B will see lookup_pfn_range() =3D=3D 0
+(hole =3D false), skip kvm_gmem_update_exports(), and return to fallocate(),
+the host fault handler, or the guest vCPU fault handler while the export's
+IOMMU mapping is not yet installed.
 
-virt/kvm/guest_memfd.c:kvm_gmem_range_is_shared() {
-	mt_for_each(&GMEM_I(inode)->attributes, entry, first, index + nr - 1) {
-		if (kvm_gmem_get_attributes(inode, entry) &
-		    KVM_MEMORY_ATTRIBUTE_PRIVATE)
-			return false;
-	}
-	return true;
-}
+Conversely, if both thread A and thread B call lookup_pfn_range() before
+either thread's gmem_provider_get_pfn() populates the block, both observe
+hole =3D true. After thread A finishes kvm_gmem_update_exports() and returns
+the mapped page to userspace or the guest (which may immediately start DMA),
+thread B will run a second kvm_gmem_update_exports() on the same block,
+causing export consumers such as iommufd to unmap and tear down the live
+IOMMU mapping.
 
-Because kvm_gmem_init_inode() only populates gi->attributes up to
-(size >> PAGE_SHIFT) - 1, indices at or beyond i_size_read(inode) >> PAGE_S=
-HIFT
-are NULL in the maple tree and are skipped by mt_for_each(). As a result,
-kvm_gmem_range_is_shared() returns true even when the block extends past the
-end of the file.
+[ ... ]
+> @@ -819,7 +881,7 @@ static vm_fault_t kvm_gmem_pfn_fault(struct vm_fault =
+*vmf)
+>  	u32 attrs;
+>  	int r;
+> =20
+> -	r =3D gmem_provider_get_pfn(GMEM_I(inode), vmf->pgoff, &pfn, NULL, &att=
+rs);
+> +	r =3D kvm_gmem_pfn_get(inode, vmf->pgoff, &pfn, NULL, &attrs);
+>  	if (r)
+>  		return vmf_error(r);
 
-Meanwhile, __kvm_gmem_revoke() clamps revocations to max_pages:
+[Severity: High]
+Should kvm_gmem_pfn_mkwrite() also call kvm_gmem_pfn_get() instead of
+gmem_provider_get_pfn()?
 
-virt/kvm/guest_memfd.c:__kvm_gmem_revoke() {
-	pgoff_t max_pages =3D i_size_read(inode) >> PAGE_SHIFT;
+In virt/kvm/guest_memfd.c, kvm_gmem_pfn_mkwrite() still calls
+gmem_provider_get_pfn() directly:
+
+static vm_fault_t kvm_gmem_pfn_mkwrite(struct vm_fault *vmf)
+{
+	struct inode *inode =3D file_inode(vmf->vma->vm_file);
+	vm_fault_t ret =3D 0;
+	kvm_pfn_t pfn;
+	u32 attrs;
+	int r;
+
+	filemap_invalidate_lock_shared(inode->i_mapping);
+	r =3D gmem_provider_get_pfn(GMEM_I(inode), vmf->pgoff, &pfn, NULL, &attrs);
 	...
-	if (start >=3D max_pages)
-		return 0;
 
-	nr_pages =3D min_t(size_t, nr_pages, max_pages - start);
+When userspace writes to a present read-only PTE in a shared VM_PFNMAP VMA,
+handle_pte_fault() -> do_wp_page() -> wp_pfn_shared() drops the PTE lock via
+pte_unmap_unlock() before invoking vma->vm_ops->pfn_mkwrite(vmf):
+
+mm/memory.c:wp_pfn_shared() {
+	...
+	pte_unmap_unlock(vmf->pte, vmf->ptl);
+	ret =3D vmf_can_call_fault(vmf);
+	if (ret)
+		return ret;
+
+	vmf->flags |=3D FAULT_FLAG_MKWRITE;
+	ret =3D vma->vm_ops->pfn_mkwrite(vmf);
+	if (ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE))
+		return ret;
+	return finish_mkwrite_fault(vmf, NULL);
 }
 
-If a consumer maps the whole block reported by kvm_gmem_export_lookup_pfn()
-as allowed by the export API, won't this map provider frames beyond the end
-of the guest_memfd file that __kvm_gmem_revoke() will never notify the
-consumer to unmap?
+In the window before kvm_gmem_pfn_mkwrite() acquires
+filemap_invalidate_lock_shared(), a concurrent hole punch via
+kvm_gmem_punch_hole() -> __kvm_gmem_revoke() can acquire the invalidate lock
+exclusively, unmap the PTE, notify exports to unmap the hole, and release
+the backing frame in the provider.
+
+When kvm_gmem_pfn_mkwrite() then acquires the shared invalidate lock and
+calls gmem_provider_get_pfn(), the provider allocates a new frame for the
+hole without calling kvm_gmem_update_exports(). Afterwards,
+finish_mkwrite_fault() sees that the PTE was cleared and retries the fault
+through kvm_gmem_fault_user_mapping() -> kvm_gmem_pfn_fault() ->
+kvm_gmem_pfn_get(), where lookup_pfn_range() finds the frame already
+allocated by kvm_gmem_pfn_mkwrite() and sets hole =3D false, leaving the
+export unmapped.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027154649.9157=
-1-1-griffoul@gmail.com?part=3D5
+1-1-griffoul@gmail.com?part=3D7
 
