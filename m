@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C529606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D64D606A32E
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 15:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EIRs14Ak
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ii2Cv1I1
 Received: by kanga.kvack.org (Postfix)
-	id 97BF36B05BB; Wed, 28 Oct 2026 11:04:42 -0400 (EDT)
+	id C3A726B05BC; Wed, 28 Oct 2026 11:04:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9525A6B05BC; Wed, 28 Oct 2026 11:04:42 -0400 (EDT)
+	id C11F06B05BE; Wed, 28 Oct 2026 11:04:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88FC66B05BD; Wed, 28 Oct 2026 11:04:42 -0400 (EDT)
+	id AFE406B05BC; Wed, 28 Oct 2026 11:04:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 56F4C6B05BB
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:04:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DDDE280110
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:04:41 +0000 (UTC)
-X-FDA: 85372356762.26.9C8F2A0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 31D7316000B
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:04:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EIRs14Ak;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793199880;
-	b=kTpu5mtUxm7hvFtcoyLCUNM0RWBR2opmj5aGNixlFtXMYR+NFXghkr3AzDAVj4OKHpkABz
-	ukR1Me5fkdl8RheR6ZIQPp6/o0OIF+gwp2YKdQbSLf8Sn6fHFzV3xfACABTvJ3OJoHHu3z
-	c2smZfPvcEqucibRQJvLvBVsj/pLFNc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EIRs14Ak;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7FF886B05BC
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 11:04:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E91818012E
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:04:43 +0000 (UTC)
+X-FDA: 85372356846.23.7AEDAFF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4B87E40005
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 15:04:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ii2Cv1I1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793199880;
+	s=arc-20220608; t=1793199882;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1TKqOP98FHIDcaJNoj3/GWwGDtZsh2WFMN9gl9UcQOs=;
-	b=u06nc5E6Mdv/Pc/j5qK/bbtF638yT4b+ZBqsd5y595WclwYHpFyD9PSVdzcMBpHZu+AnZY
-	UneuvlAyueltHpUhC2zbSK6gFF0WD8EKnY8+FFozO9qVB9lm3+cwVIVnvuxHIFO7cSfT/c
-	kT0sxvqfbHSdg3NTrhASY8/2gERIJn8=
+	bh=mSdqxz6Q37ONxr+q5PLgX5Mx5sgsbL1ZlDMhRwJ4tls=;
+	b=xQi3AwNApXdwGp0/zHbXR3Xr/v0QnmIAX7Ttbq8zeiSXSS4gTBbkFZrDqROMoMWG/Lw0+F
+	w8MOIhwp9knJvFqzRnxFXUnnvDqwfW7PU8dGhgGWRhBDfOVuHRia7s3IqEE9lBeO4YjyiF
+	NjiWpxEyOfs4B4IveQadBqdRVMpYDB8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ii2Cv1I1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793199882;
+	b=izpp8eaMtA6TcusClnDxlmAcMB9QJsVCDUzu8K+Y9zLmWJMkpn2dFtsTbeShrSS9H4dRHq
+	QUDR+UMmhhY8pSY5tLTbZ8Vnnrlbam9ZlpPpU3z5vX9ugaJrFheeW+rh0TTqvoPZoeIwcT
+	BaAZ6kVEpVYD/YyLAhaZ6o5S5J6PgHI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 55BFD40938;
+	by tor.source.kernel.org (Postfix) with ESMTP id 833BF60252;
+	Wed, 28 Oct 2026 15:04:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7631F01829;
 	Wed, 28 Oct 2026 15:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB0F1F01825;
-	Wed, 28 Oct 2026 15:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793199879;
-	bh=1TKqOP98FHIDcaJNoj3/GWwGDtZsh2WFMN9gl9UcQOs=;
+	s=k20260515; t=1793199881;
+	bh=mSdqxz6Q37ONxr+q5PLgX5Mx5sgsbL1ZlDMhRwJ4tls=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EIRs14AkkJNqV4FP2ztjO7metvge3koWsF8rvc9H1eOkLYX/cgC+Pq+XLh/h7oAnj
-	 MNEGn9M/5cbtIepg3E5EECqqap8BFEljXDT05wKvMgl+Apv61iiIqUYexNfJTjfmPs
-	 AoRvFUnbC3JIf3GjxOS+wc+ep8hcuNWLd1w3y7jCZ6hnohvFWH1x2A80texn/ET9Kq
-	 yEq4MfQLIx5q38dPZ7eq1EDKuY5cCnLKRotbFLGUKXR/tzKM6v7AlFttlp5sh19hjJ
-	 UBMh1XXQFRZUVF7n1jMrjSfKEDoADfSjdgZdcB6KfU5RvH6Y0q7CasX9j84wOnfCZY
-	 3UAJSV4V6VVAA==
-Message-ID: <sashiko-outbox-188031@kernel.org>
+	b=ii2Cv1I1mFw6z0jUk6ND3vI1KQsc+cPLiCIZMvKnAo54Gp0s/gplwdGsTCOINjF3m
+	 Vyp8TPUP1c89LMrtNfl1SSCyLKR8iCzMdClXf8Ag22Q466Srn6wp0pPBEPe1niet9S
+	 ltmp6epcmx5o/iHtRObx0gat20oSI3vbNsnbdjdF1arYD08Zmh3aUxS6DVRKuWcEhE
+	 +D3p7ka5Cqbc2R7/WvOlKFR5jK2qoxxu/WaG77pXfVBFw+gw6l11JjB/aHP5om3QIg
+	 XPjWzyvY1HOBKSJdOvSWDFjmd3ugT+ApaWExa7poGt1jjmuxkJPlMjdXVPIc7LG6HW
+	 WCOxu4Wy9nCCA==
+Message-ID: <sashiko-outbox-188032@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 6/8] selinux: Restrict dma-buf direct cgroup charging
+Subject: Re: [PATCH v3 7/8] dma-buf: transfer memcg charges via
+ DMA_BUF_IOCTL_XFER_CHARGE
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Jonathan
@@ -79,24 +80,24 @@ To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, "Jens Wiklander" <jenswi@kernel.org>, "Sumit
  Garg" <sumit.garg@kernel.org>
 Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, op-tee@lists.trustedfirmware.org, echanude@redhat.com, mripard@kernel.org, media-ci@linuxtv.org
-In-Reply-To: <20261027-v2_20230123_tjmercier_google_com-v3-6-78d2c4cb8647@redhat.com>
+In-Reply-To: <20261027-v2_20230123_tjmercier_google_com-v3-7-78d2c4cb8647@redhat.com>
 References: <20261027-v2_20230123_tjmercier_google_com-v3-0-78d2c4cb8647@redhat.com>
- <20261027-v2_20230123_tjmercier_google_com-v3-6-78d2c4cb8647@redhat.com>
+ <20261027-v2_20230123_tjmercier_google_com-v3-7-78d2c4cb8647@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 28 Oct 2026 15:04:37 +0000
-X-Stat-Signature: r84y6rr1oa845e87s3zb7cr8qtoeni3s
+Date: Wed, 28 Oct 2026 15:04:39 +0000
+X-Rspamd-Queue-Id: 4B87E40005
+X-Stat-Signature: j885cp83zohhcwe9thmrdsodkjukphkn
+X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 31D7316000B
 X-Rspam-User: 
-X-HE-Tag: 1793199880-921984
-X-HE-Meta: U2FsdGVkX1+JQi9b59XghLFXQN4/mEO1rhZgtY97IGeu8dAza3sujfF9YTcjXyeD1rKvttPZP47hODK0IcFmYZcwikkipG5U4Nepsdj+NjTWqQwvWW/iEsGvRVJlsYBDEYqotqVAK0Rdw7XM3XViaCEbnUW27m+U98TFyuK9tP/sIxZzJpdFodXzAr5Hsa/UQOPnhFKV+F/MtuwsZOCybjA5R1h6JCqbaZVbwORoha6e+YFGvgxSuEqwVi/joO+DHOJpDGK+pYuI31wYhuczCTHWZwxKoFfP2wpQWhzH3ZwHI6z6x2YoRpNJjc8AHT9nVaNQiIkSd8BIyzi6q6oleQp+/6CaY8r6mzpMoGB3jW9aIP1g+OfA9LsRn3gF96obQLTLPL6xlUbu2ud1GwyWWHtOiFEvnfY2dHLVLyfq6pODZyJuqsi78lJSiclJS0uDIJP+voTj04c2zzflMPaURtfe9TcGC0LhwNCeho5efupXv35lzBVoWJ+45fcbeQ67B0AOMB3IeTOU37dD3HSXoLNsfq2w4G47tFYH32ihXqde8Hpwzz9A0T4wg4DDDvg4c80IqxaxQlWdJyfl20su0YcLEb4XJs9OLBSxt3lY0dDUfFLTBY+RA4+j0iWhsCETc5A0cJfYKE8/1JKaUyqECRHL992kchA8MLVQUUsoFnPm23dRQXG3lgIUyxWcHi7DJ/LyhqkQ94Fg/aGPfUj27vElfMXQTvbVLrJ/OA+bCbc3Bs7RQH+RKoSW2PQQX4J9WlEpw5e01TqdJu5enM1zFYZPReZFPy5ajvrfL5dpWSPD4NcprJvnf+p9PQGbBljS7bb1Oyy0eW8qR2p/OoIEMAPpWJHAm62I+WLqYb8vlbEfxBKnJRJm5pSBWtpJqK+xkCngDiTlWZO2bh5STzlkvXB26WUPwx2SGnNmuZJsICNaCBBth23tqJHTJTpwNOuptVzsd1kNx0eKm/J5Kuy
- KYby36lQ
- oW2Xi3F6XlGBp+HY4ZNURXljD3NdkJy/BBziMVSd0ZyL/N5A307qM5wXjBCb1IezP+7tP6Ui11HKvwLKCEMiKmPvRrgLnkiZgPlY36Qd6z+L4/BXdstOkNTYSbWntDwdc0Ia5Kb5giPg9gatFT8g3DcUI+GpRu6/7yTWVmu1XMnVntJM9ldXJQueqgWj23sExfkFNlUhYV1B+IZqHUwbjTEtI5WypB5AiLAI+wOz6DvnUy/Kx74bAA3lhD+8rt+t3fJVRabSgmJcmpecQ0DAPQC0MxJ5zioXKXpa+MAqFPhHjfcThOQI0AbalkHABSvAXvb9WpSEPtVuJEn3Ujt+qNEp4BnzGNWnUZruNFqfx4LQOwr7/3Vd2X1A1KT0Ol3DihXYi/h5k6af9OkIpBmYbgEwX413IqxfUbRPoqj9Jx6235fEpVxFWA4caO8JstfjboWfJgby81eDqEIszpCh/W/uA67oEKxe+/w03bEeb+uY43zcNkKzuoh5oykvGFV9NGm7wjNIGGubS9dqaEbh1aRxIqEIQt7Rg2JI3+rg79bujEVgj8tq+CAWDJ6ReG2MiCUU46BBxWjiFO6QQAlYxa0rKpux0Raj0fY8cQkDPN5R+NKrUYzROSN9+jxbFjFEA/aaP26YdCrBwwC3/w/eqs9nO4Y5TRFusCXSP
+X-HE-Tag: 1793199882-629686
+X-HE-Meta: U2FsdGVkX1/q2KVHmFwskrv5tIa6GSrtxqRE/euFfHpI6EN1d3tt8YSFvG3/y+bDPe0WOB+uc/ThbZrnWFJN3ykT/Wg4STHM1374GJ55j3QiDIFbueeEYOoeCl06yxw3jBxaST8Jeg+F7LBmxrHy8hh05RzvpUAWrv/y5qrPnRO+6FTj8SPmIeSwsOgJQYW9RBldSF+wxL0HGJtL9pUWa36Zi7tiE7bSBXEdMF8m4lWk3gNYzruRRj3vpK/KF+lw/B1pEoKm3ZU+BP4mbajFRkhxFNofS8G+XK3FyyCidLOx9KQqc8MG28wHRK4/qWK2mjgkn61hv0pRGLzJvDH/PnFecuxBdPYnFukwZBfJk95zwlR2DuKRYDwl8xbFWPLODxLO3bS05FwdxLxVKWZ99WLI/2PvlsE+BYg9mz/Z1ugM/+uxUbWt6akWphfCGL2FX3lhbi0F07wjRDRwO2E40jQqCwB6DrjC/pO+xyjQDK9l+IuaSEgqoiK1SQTBOYNufAJ259OM6lyqSe2YSFguZ+sFXJe7yO25G+GJ+JBBxBb2rPwfOvCnbKu48fWCX8fZHnEQp3EoA3Knz6FMNaouvTkpZ5XFodfyIyRsu0lq7Zi5JW1+ILbVcjzZQw3tiuxgaUuWbL58zqlZzuxb3Fy6m9TCDW4FoJ11A0fy1+EnxcSvPd0vZZg1QtOKRjX+x2UAQuq/egGY7dTl6LCV3ddRwMQvvQjgl1QHRyJIWVZFv76rwMuJOje//muAeOfF330bks+OPbgqjCILMclmTv2mOkWHH+nfJpe/6vnoHDyF30tABEMxygPH06XuJt9UY+cWb94GAEPdjk1P2GbgkSdMQxJjlUhFE78eF+OeETIdxK8d2pvMjwxgRl/ju4xe9z4D/Acn2qj+ymMaFXs37M4AcqSu7Em738Q9bW7qZz73D19VQblhwelLHQLJ7olBRSr/qLufuDqDZVi8uksmLmu
+ /o7ac1hf
+ fUC7ww55rnttppswbtaUfHYfJ6qQfSG9+1T3FYZCAv6PjbXumKbp2CS6ZDoqZHaBoMPaFC3+z3Kg2T59lJDH74zGiNyLy3g+VcDgW+puMyVt2AqRLbodrchJqPpkjREyKmZhuEJKYdKzDdvuGJi40lTTyG7i87LpbR0sFFrnl19NN/1A8nFGlASSyOj4IjrVe05slFNgaOm8F/sG6Nnu7byshcmEIg84yTacYOhHizBrIAUx/PKqp9qKDSJu1tlXZlwaNBbOUhcEPJasGWGvRJRnmsjyj06x+bAEi83ThlimZvzm/ITKiJvhrbFrlHHIng04awjaorVfb34i00buhxjWPaZJh27N4uB8AfJGpGkBzcXHqzFzxGIFn9Lozb03GFv7+tulUYb6U5dzeSpUiBOe0r9aa+RaK81fNTOUd2HIWnuz7qJEOCAtAdzutb5vHYMqoTQC0kXaEoYoJTvyjTMFVmMFGSDadvkJCWSLtyZY0/TWAZMX+6GsZopOrUsZ1K5mY2oLDJ+qZdCpA5IdZfsmKUpJdSW1hkyjfP9Jb6XphEy9FLdgt1de/6Vz1fYeGfropc2n3Bj9/SRDC0aZsot1Bde6FrZ/J4YhtThrN6llGBhMXEXcpP+9tlPupm/i84DVj+hsDOsYlfnef4iByLkD4bhDLqBBbH3Ha/JlgGGJDogW2tDWeYt8qs9AeuWYsOLfNz/4I9GYLXZ2IwpcaD/qqYw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,107 +107,235 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] selinux: selinux_dma_buf_charge_cgroup() bypasses check on genfsco=
-n cgroups
+- [High] dma-buf: unprivileged cgroup escape and OOM via dma_buf_xfer_charg=
+e()
+- [High] dma-buf: race in mem_cgroup_transfer_dmabuf_charge() double-charge=
+s memcg
+- [Medium] dma-buf: broken disabled-memcg handling in dma_buf_xfer_charge()
 --
 
-commit 6b412783b17727c382f1a67078326c58c39264e7
+commit 1660729e62b15fd915c69f26225530bd5ae30ce0
 Author: Albert Esteve <aesteve@redhat.com>
 
-selinux: Restrict dma-buf direct cgroup charging
+dma-buf: transfer memcg charges via DMA_BUF_IOCTL_XFER_CHARGE
 
-This commit implements the selinux_dma_buf_charge_cgroup() LSM hook and adds
-the charge_cgroup permission to the dma_buf security class to control which
-processes may charge dma-buf memory to a cgroup. It reads the target securi=
-ty
-context from the cgroup kernfs node's security.selinux extended attribute a=
-nd
-checks permission via avc_has_perm().
+This commit adds DMA_BUF_IOCTL_XFER_CHARGE to allow transferring a dma-buf's
+memory cgroup charge to a cgroup identified by a cgroupfd or pidfd after
+allocation. It also introduces a memcg_account flag in dma_buf_export_info =
+for
+exporters to opt in to memcg accounting, enabling it for the system heap.
 
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 8f39d91eabc97..2f99eaa910af4 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -2210,6 +2210,40 @@ static int selinux_dma_buf_charge_task(const struc=
-t cred *from, const struct cre
->  			    SECCLASS_DMA_BUF, DMA_BUF__CHARGE_TASK, NULL);
+> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> index f31f49ebd0af3..07513ecedc105 100644
+> --- a/drivers/dma-buf/dma-buf.c
+> +++ b/drivers/dma-buf/dma-buf.c
+> @@ -540,6 +540,45 @@ static long dma_buf_import_sync_file(struct dma_buf =
+*dmabuf,
 >  }
+>  #endif
 > =20
-> +#ifdef CONFIG_CGROUPS
-> +static int selinux_dma_buf_charge_cgroup(const struct cred *cred, struct=
- cgroup *cgrp)
+> +/* Transfer a dma-buf's memcg charge; see struct dma_buf_transfer_charge=
+ */
+> +static long dma_buf_xfer_charge(struct dma_buf *dmabuf,
+> +				const void __user *user_data)
 > +{
-> +	u32 cgrp_sid, clen;
-> +	int rc;
-> +	char *context;
+> +	struct dma_buf_transfer_charge arg;
+> +	struct mem_cgroup *memcg;
+> +	int ret =3D 0;
 > +
-> +	rc =3D kernfs_xattr_get(cgrp->kn, XATTR_NAME_SELINUX, NULL, 0);
-> +	if (rc =3D=3D -ENODATA)
+> +	if (copy_from_user(&arg, user_data, sizeof(arg)))
+> +		return -EFAULT;
+> +
+> +	if (!IS_ENABLED(CONFIG_MEMCG))
 > +		return 0;
+> +
+> +	if (arg.flags !=3D 0)
+> +		return -EINVAL;
+> +
+> +	if (!dmabuf->memcg_account)
+> +		return -EOPNOTSUPP;
+
+[Severity: Medium]
+When CONFIG_MEMCG is disabled, should dma_buf_xfer_charge() still validate
+arg.flags and dmabuf->memcg_account, or return -EOPNOTSUPP?
+
+Returning 0 before checking arg.flags !=3D 0 and !dmabuf->memcg_account cau=
+ses
+calls with invalid flags, non-accounting exporters, or invalid file
+descriptors to silently succeed under CONFIG_MEMCG=3Dn, while also leaving =
+the
+!CONFIG_MEMCG stubs for mem_cgroup_get_from_fd() (which returns
+ERR_PTR(-EOPNOTSUPP)) and mem_cgroup_transfer_dmabuf_charge() in
+include/linux/memcontrol.h unreachable.
+
+Also, when CONFIG_MEMCG=3Dy and cgroup_disable=3Dmemory is passed on the ke=
+rnel
+command line (so mem_cgroup_disabled() is true at runtime),
+mem_cgroup_get_from_fd() behaves inconsistently across its two branches:
+
+mm/memcontrol.c:mem_cgroup_get_from_fd() {
+	cgrp =3D cgroup_get_from_fd(fd);
+	if (!IS_ERR(cgrp)) {
+		rcu_read_lock();
+		css =3D cgroup_css(cgrp, &memory_cgrp_subsys);
+		if (!css || !css_tryget_online(css)) {
+			rcu_read_unlock();
+			cgroup_put(cgrp);
+			return ERR_PTR(-ENOENT);
+		}
+...
+	memcg =3D get_mem_cgroup_from_mm(mm);
+	mmput(mm);
+	return memcg;
+}
+
+For a cgroupfd, cgroup_css() is NULL and it returns ERR_PTR(-ENOENT), where=
+as
+for a pidfd, get_mem_cgroup_from_mm() returns NULL rather than an ERR_PTR, =
+so
+dma_buf_xfer_charge() returns 0 for pidfds and -ENOENT for cgroupfds.
+
+> +
+> +	memcg =3D mem_cgroup_get_from_fd(arg.charge_fd);
+> +	if (IS_ERR(memcg))
+> +		return PTR_ERR(memcg);
+> +
+> +	if (dmabuf->memcg =3D=3D memcg)
+> +		goto skip_transfer;
+> +
+> +	if (!mem_cgroup_transfer_dmabuf_charge(dmabuf, memcg)) {
+> +		ret =3D -ENOMEM;
+> +		goto skip_transfer;
+> +	}
 
 [Severity: High]
-Does returning 0 on -ENODATA here bypass the permission check for all cgrou=
-ps
-that carry their default genfscon label (such as cgroup_t)?
+Can an unprivileged holder of a dma-buf file descriptor use
+dma_buf_xfer_charge() to escape its own memory cgroup limit or trigger OOM
+kills in another cgroup?
 
-In selinux_set_mnt_opts(), cgroup and cgroup2 filesystems are configured wi=
-th
-SE_SBGENFS | SE_SBGENFS_XATTR. When a cgroup VFS inode is initialized in
-inode_doinit_with_dentry(), SELinux obtains the default SID from policy via
-selinux_genfs_get_sid() and then checks for an optional xattr override via
-inode_doinit_use_xattr():
+In the call chain:
 
-security/selinux/hooks.c:inode_doinit_with_dentry() {
-	...
-	rc =3D selinux_genfs_get_sid(dentry, sclass,
-				   sbsec->flags, &sid);
-	if (rc) {
-		dput(dentry);
-		goto out;
-	}
+  dma_buf_ioctl()
+    -> dma_buf_xfer_charge()
+      -> mem_cgroup_get_from_fd()
+      -> mem_cgroup_transfer_dmabuf_charge()
+        -> mem_cgroup_reserve_dmabuf(new_memcg, GFP_KERNEL, nr_pages)
+          -> try_charge()
 
-	if ((sbsec->flags & SE_SBGENFS_XATTR) &&
-	    (inode->i_opflags & IOP_XATTR)) {
-		rc =3D inode_doinit_use_xattr(inode, dentry,
-					    sid, &sid);
-	...
-}
+neither dma_buf_xfer_charge() nor mem_cgroup_get_from_fd() checks DAC or
+cgroup delegation/write permissions (such as inode_permission() with MAY_WR=
+ITE
+or cgroup_procs_write_permission()), capabilities, or ptrace_may_access() on
+either the source cgroup (dmabuf->memcg) being uncharged or the target
+cgroup/task (new_memcg) being charged.
 
-When no explicit setxattr() has been performed on the cgroup directory,
-inode_doinit_use_xattr() sees -ENODATA from the underlying kernfs node and
-falls back to def_sid in memory without writing a security.selinux xattr to
-cgrp->kn:
+Because /sys/fs/cgroup directories are normally world-readable (mode 0755, =
+so
+any user can open them with O_RDONLY | O_DIRECTORY) and pidfd_open() can op=
+en
+a pidfd for PID 1 or any visible process without privilege, an unprivileged
+process can resolve a handle to the root cgroup or to another cgroup on the
+system.
 
-security/selinux/hooks.c:inode_doinit_use_xattr() {
-	...
-	if (rc < 0) {
-		kfree(context);
-		if (rc !=3D -ENODATA) {
-			pr_warn("SELinux: %s:  getxattr returned %d for dev=3D%s ino=3D%llu\n",
-				__func__, -rc, inode->i_sb->s_id, inode->i_ino);
-			return rc;
-		}
-		*sid =3D def_sid;
+When SELinux is not active, security_dma_buf_charge_cgroup() and
+security_dma_buf_charge_task() return 0. Even with SELinux enabled,
+selinux_dma_buf_charge_cgroup() returns 0 when the cgroup kernfs node has no
+explicit security.selinux xattr set:
+
+security/selinux/hooks.c:selinux_dma_buf_charge_cgroup() {
+	rc =3D kernfs_xattr_get(cgrp->kn, XATTR_NAME_SELINUX, NULL, 0);
+	if (rc =3D=3D -ENODATA)
 		return 0;
-	}
-	...
 }
 
-Likewise, selinux_kernfs_init_security() sees -ENODATA on the parent kernfs
-node and returns 0 without storing an xattr on newly created child cgroups.
+and neither hook checks permission to uncharge the existing dmabuf->memcg. =
+As
+a result, a confined client receiving a pre-charged dma-buf fd can move the
+charge to the root cgroup to bypass its own memory.max limit, or move the
+charge into a victim cgroup where mem_cgroup_reserve_dmabuf() with GFP_KERN=
+EL
+triggers direct reclaim and the memcg OOM killer.
 
-As a result, unless a cgroup directory has been explicitly relabeled with
-setxattr(), kernfs_xattr_get(cgrp->kn, XATTR_NAME_SELINUX, NULL, 0) will
-return -ENODATA even though the cgroup is labeled cgroup_t via genfscon.
-When userspace passes a cgroup fd via DMA_HEAP_IOCTL_ALLOC or
-DMA_BUF_IOCTL_XFER_CHARGE, mem_cgroup_get_from_fd() invokes
-security_dma_buf_charge_cgroup() -> selinux_dma_buf_charge_cgroup(), which
-will return 0 without calling avc_has_perm(), leaving default-labeled
-cgroup_t cgroups unrestricted?
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 7b841b9057594..3adc84fe6668d 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5786,6 +5786,47 @@ void mem_cgroup_cancel_dmabuf(struct mem_cgroup *m=
+emcg, unsigned int nr_pages)
+>  		refill_stock(memcg, nr_pages);
+>  }
+> =20
+> +/**
+> + * mem_cgroup_transfer_dmabuf_charge - move a dma-buf charge
+> + * @dmabuf: buffer to transfer charge
+> + * @new_memcg: target memcg; caller must hold a reference
+> + *
+> + * Transfers the charge for @dmabuf to @new_memcg and, on
+> + * success, stores @new_memcg in @dmabuf->memcg.
+> + * Returns %true on success, %false if the charge against @new_memcg
+> + * failed or a concurrent transfer raced on @dmabuf->memcg.
+> + * On failure the caller retains its reference to @new_memcg.
+> + */
+> +bool mem_cgroup_transfer_dmabuf_charge(struct dma_buf *dmabuf,
+> +				       struct mem_cgroup *new_memcg)
+> +{
+> +	struct mem_cgroup *old_memcg =3D READ_ONCE(dmabuf->memcg);
+> +	unsigned int nr_pages =3D PAGE_ALIGN(dmabuf->size) >> PAGE_SHIFT;
+> +
+> +	if (mem_cgroup_disabled())
+> +		return true;
+> +
+> +	if (!mem_cgroup_reserve_dmabuf(new_memcg, GFP_KERNEL, nr_pages))
+> +		return false;
+> +
+> +	mod_memcg_state(new_memcg, MEMCG_DMABUF, nr_pages);
+> +
+> +	if (cmpxchg(&dmabuf->memcg, old_memcg, new_memcg) !=3D old_memcg) {
+> +		mod_memcg_state(new_memcg, MEMCG_DMABUF, -nr_pages);
+> +		mem_cgroup_cancel_dmabuf(new_memcg, nr_pages);
+> +		return false;
+> +	}
+
+[Severity: High]
+What happens if two threads concurrently call DMA_BUF_IOCTL_XFER_CHARGE on =
+the
+same dma-buf?
+
+In dma_buf_xfer_charge(), dmabuf->memcg =3D=3D memcg is checked without
+synchronization before calling mem_cgroup_transfer_dmabuf_charge(), which t=
+hen
+re-reads old_memcg =3D READ_ONCE(dmabuf->memcg) without checking whether
+old_memcg =3D=3D new_memcg.
+
+If thread 1 transfers the buffer to new_memcg after thread 2 passes the
+dmabuf->memcg =3D=3D memcg check in dma_buf_xfer_charge() (or if both threa=
+ds
+concurrently transfer the buffer to the same new_memcg), thread 2 sees
+old_memcg =3D=3D new_memcg and still calls mem_cgroup_reserve_dmabuf(new_me=
+mcg,
+GFP_KERNEL, nr_pages) before uncharging old_memcg. That transiently charges
+2 * nr_pages against new_memcg for the same buffer, which can trigger recla=
+im,
+memcg OOM kills, or -ENOMEM in new_memcg even though the buffer is already
+charged to it.
+
+In addition, old_memcg is read before mem_cgroup_reserve_dmabuf(new_memcg,
+GFP_KERNEL, nr_pages), which can sleep in direct reclaim. If another thread
+updates dmabuf->memcg while mem_cgroup_reserve_dmabuf() is sleeping, the
+cmpxchg(&dmabuf->memcg, old_memcg, new_memcg) fails without retrying against
+the updated old_memcg and returns false, which dma_buf_xfer_charge() reports
+to userspace as -ENOMEM even though charging new_memcg succeeded.
+
+Finally, if mem_cgroup_transfer_dmabuf_charge() is called when
+mem_cgroup_disabled() is true, returning true at the top without storing
+new_memcg in dmabuf->memcg or dropping new_memcg's reference would leak the
+ caller's reference to new_memcg, since callers only call mem_cgroup_put() =
+when
+this function returns false.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261027-v2_2023012=
-3_tjmercier_google_com-v3-0-78d2c4cb8647@redhat.com?part=3D6
+3_tjmercier_google_com-v3-0-78d2c4cb8647@redhat.com?part=3D7
 
