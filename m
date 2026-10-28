@@ -1,107 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD9B5606A31F
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 07:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F37606A31D
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 07:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MbaoWJUv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OHta1iho
 Received: by kanga.kvack.org (Postfix)
-	id CA9046B05B1; Wed, 28 Oct 2026 03:02:28 -0400 (EDT)
+	id 2168A6B05B0; Wed, 28 Oct 2026 03:36:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C59A36B05B2; Wed, 28 Oct 2026 03:02:28 -0400 (EDT)
+	id 1C72F6B05B1; Wed, 28 Oct 2026 03:36:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6FF66B05B3; Wed, 28 Oct 2026 03:02:28 -0400 (EDT)
+	id 08EEA6B05B2; Wed, 28 Oct 2026 03:36:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 951ED6B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 03:02:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C43A1C4649
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:02:26 +0000 (UTC)
-X-FDA: 85371141492.19.546DE33
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7E9954000A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:02:24 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MbaoWJUv;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE82F6B05B0
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 03:36:27 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AA0680BDC
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:36:27 +0000 (UTC)
+X-FDA: 85371227214.09.60B79B6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A1B92A0006
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 07:36:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OHta1iho;
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793170945;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793172985;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YqMDWZaaRapM5JJzBgdWWKkQQCkL8Mdt/SJ2Z6FiaTw=;
-	b=HZnT6GVEx/aCdlAOk2LyLtXAsyF8BmvpA7yHeWFaZbt6F01/owsYzBJH2oxNCPmGWADrut
-	FI//W3VlHcL4H81swGgcHmUofHEt8WKz2JL4bu6aH0Z77tgVxYCVtEbDnlBXNadwjooSaU
-	3ytGh7tn7zjyIYt2yCnylS+7V31tFFc=
+	bh=mE7HrhvYUQ/hkBSvppoQbLgz+hmem0TBpSvgPBfiyBM=;
+	b=Y1IqI6816yVVG/WTDXW2tb0lkxeVpkrbrjGat5z3rAE4oUEhe92j1ewqxADWOxUj7mjTOj
+	7Bno7faWkn6Valt3gSFkZltMqqMMRK/KUvE1EBaR4MiGdp0Q74t+soVqg0xy4Ym1TLXNac
+	EirQbzLfoE6hZm/iC9lIRcya3qlY6bk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MbaoWJUv;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OHta1iho;
+	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793170945;
-	b=0SjLtN/+6TnhC+2dHLjN4ebGu6PY+UUgsOysAQuW/TgB8scwikKemyN9LinpPH8YC/i1La
-	mSrMjM14sG9wZTh+YJhHL0PkmBlUifTEkyYu9P5hpZFT+afoJ5qpKZNvE8tcNjyiTG4HVS
-	5lMuQNjd4erk/kJaqRou0+PrCH5cnUw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 29D7B1756;
-	Wed, 28 Oct 2026 00:02:20 -0700 (PDT)
-Received: from [10.163.164.200] (unknown [10.163.164.200])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 496EB3F673;
-	Wed, 28 Oct 2026 00:02:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793170943; bh=pHcA5AF4V+BVk2kWzI92VbLUecJ8ewRtrlSehqaLj/s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MbaoWJUvhJDQbHFVrjpOxDE3CyORMGTd3NpdK/61gpkc0W6MuOUM+EZjeoqpLLM74
-	 wiHQ91S+/66UxUQoh8QNkfwPgxgFta+DxLovi1npFjhDzue2RFhZH16rMP77tXmAd9
-	 WLBbYQsnwaWmIv5l3Tz5js3XaGuXuNUGXp6hND18=
-Message-ID: <adc41db6-16b7-449c-b883-8b093309db8c@arm.com>
-Date: Wed, 28 Oct 2026 12:32:14 +0530
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: page_alloc: make defrag_mode retries follow the
- promoted order
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Harry Yoo <harry@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kernel-team@meta.com
-References: <20261014202936.GC371161@cmpxchg.org>
- <78238103-3a7f-432c-b1df-bd14d7cf4bb1@kernel.org>
- <atDMN5MoGrwJNpAj@thinkstation>
- <4aa14b41-9b89-494c-8825-55fffd5a541c@arm.com>
- <atiCG2iPrHwDznSZ@thinkstation>
- <d2b8edf0-39ab-4a44-bd0d-58230dee2fad@arm.com>
- <ats7oFM-fsYdUS8y@thinkstation> <attOFXch_TchIfEv@thinkstation>
- <atty0n4UzTfI46eN@thinkstation>
- <0757f1b0-9af6-417c-a4cb-eff0b05ba277@arm.com>
- <auCDnqJc7fsBpUW2@thinkstation>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <auCDnqJc7fsBpUW2@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7E9954000A
-X-Stat-Signature: 89ks9kiuwm1xx64snwxfper854m47rcw
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+	t=1793172985;
+	b=XNfSZErhFoAj5G7KgnlgF2xUVUV0x9G5kLeVdnjnaJY7QSCLc8m7GtXsgmBk6E9yAFNHW3
+	mIETXjm/GxBKa7HfjWH53IDqvlhzRr3GlTWPENfMefWpnoKTSOb+fzp8sK0h0SNLn/y3No
+	5ZGop9rkF4iI18SwmB9MzLAO5kq2i7A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id ECE0F60008;
+	Wed, 28 Oct 2026 07:36:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04EB1F01825;
+	Wed, 28 Oct 2026 07:36:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793172983;
+	bh=mE7HrhvYUQ/hkBSvppoQbLgz+hmem0TBpSvgPBfiyBM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OHta1ihopcj3sf6P1RHjYvZGyCt4kvQUWc7mdkKQjpQnehDIFr+zrmtJN5HAOaPL6
+	 X5R0bhjnd8U2vKBHB3NAchHnT5eJ9U9g9Va2qi3vhJR1NHvT78o/bzIF5Jb+3BGovI
+	 /mtpPSkqlz2e3oSrV3uuWlrzcyTjYDxKYWqM2OPN+Aet2fOEW6ogVCnTZJ7f9ffix1
+	 8UVz4yUjI9wQxNYQXILqXW1UmM8dV5rgkjsH9pkWd4x4u9FxV0IhxLBy5Ig7hZC0Y9
+	 SE3bB5RyPz0PZaT2MuV2+XcAOAAY1GxIy+ylSx7DyxGKzfZN9scJ2s1PVmxCeXK6GM
+	 PXVJwXhmVaBPA==
+Message-ID: <sashiko-outbox-187584@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/8] slub_kunit: Add a test for slab_freelist_random=
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chris Down" <chris@chrisdown.name>, "Vlastimil Babka" <vbabka@kernel.org>, "Harry
+ Yoo" <harry@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
+ Rientjes" <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Kees
+ Cook" <kees@kernel.org>, "Marco Elver" <elver@google.com>, "GONG Ruiqi" <gongruiqi@huaweicloud.com>, "Jan
+ Kiszka" <jan.kiszka@siemens.com>, "Kieran Bingham" <kbingham@kernel.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, linux-mm@kvack.org, kernel-team@meta.com
+In-Reply-To: <0af4fc45ca8e1d7027ceaad079f8f9eaac663c76.1793086056.git.chris@chrisdown.name>
+References: <cover.1793086056.git.chris@chrisdown.name>
+ <0af4fc45ca8e1d7027ceaad079f8f9eaac663c76.1793086056.git.chris@chrisdown.name>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 28 Oct 2026 07:36:22 +0000
 X-Rspam-User: 
-X-HE-Tag: 1793170944-990296
-X-HE-Meta: U2FsdGVkX1/dBlkDjsR3FsMjTGJvMca1TZTBRIDswf7pU3jWY1hKtzVNVyckhrKtbdE4roEp9b5netz12ZBS+RBUmQX0rcBIfe8niHPkfKMyML+A3pD2cUecSM7ARpdXJNXp2JluGGp4CS41qShJrAuHqnW+vfoIZ9vVLVOeCgHP9GCBSUR2EngpzEYA3MsQKeHQxm2NdvjY+koKxS6pb7+d7igadeufPwnrAWyYj0Ob2xyIzbB/4mjR+yAfZGPjogpKUQkvHw2/Y9RdD/Pe80gWqxqUZ/lXcxyB61zlyx72TFH2UU8zeVQo9vv2iWYYYJwgPm7Xs7NI511hQFrPKeaJ/PJ7VcwyDF4zwZTYvOBpsfeSBsOamDy9XISSjzYfaDL4qkgvgk3oaPdvTZOTrRFR3hJVq7fGu2sVxSC2E+7+6yjcMIF7s1EvVow0H+XPsiKl0S7CdPgGAcXVy8TmU2qazoras6pDJbLACWCD/MIaOwJRZjxcu+0TNEHirnKKNVkxVyJnq7cfGJ8uOppE3gUZU+lhvIercDldZg8Hl5nAaLuwmKuEXkWFNohaToH/Oqh+fsYApsXAJOrMmZWNJCa2ylfnfyXaZHRaWKbBfcyBaT75N/JiosRBb6qP0XqEcuh9zNYMZ5KT7lzaWe4P7GO1aXZUHs2kbkZX6JFpoK36txs1GMBsh0zvAXu/AsuRN/7qbeojf8U92HSgUusTy3G9EjpN+eP4ymL0go3drvPl5nqtdYdRlAbl+15k6AsTK4WiRrhTQjka5PFGxgVCzrAiTn4krdS1G9zEN2RL0G1vqq7Hh0wUrZIu290bUjfIGULSWvfvIOfyhW+4mgHPnzwlh8fIIeK5yt+DBKu1tYfaJ9zT2K0KU0srIiimXdK4bvSr99whgFaUC+Ej9JDIhUZ1Wl1tXF+HRA1jXu9ZIqz+mRkrCRHsnnDTpXVKAVvqCWL7pvpSM6bM2DO/7T8
- K/COoGOC
- THBvwifssB6Xybd3uQbZYEpw7e212nc8nByy8qkSAO9hMKy7m2CX4CPuqtCPezCppOf5VIwubSUW/x9BK9BU8OJnne1cXCGOISOeoKb+yzjUnjJdV1Wnd3MXkS43n9Bh9+DQOpoeFFsF1dGIgFDdN6zLr6k69DfWruzGTJfUgzr8h2WqA8GTUkc9jEpQ0d1Ap7IDXdCsoGo9VOVOZpCIiG9FW2xbcW5nkk/Gi5w6S7Nys8z2bCWDlqbovzLPKYGCUl2IdMiXWxzi5tP8K4JKneChoncbYKa0NLirth7DpBaswj6fI04sSknAEvg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A1B92A0006
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: jqkgragq8u6hofss4igr5q8uxqu6583w
+X-HE-Tag: 1793172985-215775
+X-HE-Meta: U2FsdGVkX18vRRfzKtj/+6C2QINUK7d79knprt4PM3PAFDUouny6wqC7J2gYzBCo/7m/eWirZYBjarE3dxgkquwoj7kGBywefr4XZLHVb+rFYODTPTmYIf4tL7rE5SOanF1P+YYMwcyw6cOuEP8OZ8/l3f1hc3o9WuXIeEQ3FZ8DRaInkGwuirrOZS0rBxoJRmX8AT6fhM3R3ACONnTK2a8HW3KHgCaUcH7wp+Bv5wqFfynddbr0AUGyGssu5EESSwCvyLSpz70g7kQPzHDjpWoIBeL2zpPRzT8oFAnfvbpIMeLhxgSLbH20RcqClxfV5Zj4eV+s3aI+ZjCITJ4XIyAdRM/T/6xzlnSVpomwM7vFdn0n3OuYVsOvycZjwGZWmgNsRA7H44n+D7mfhsTVTiqYjB5XFTZNdY5pq1dWuKHkzDE2XdemOMsJ87euBBF9dHTrR4b/iZZDr3gGgua/RhY1YLM1gw6PQH9msXrKKSx6rnXPlp03Un7MqXb8AGOcEyucnN/Yqje5dZFY+dAQASPkJSSRR3buEUJ5VEJu9SSnnNHqKctHw/5KYdo2DWJzFvbkFKdt6aDkThcIMGNibotL7Wze6sfQCxLdihPk26MGTDym9cwD7YuNR9PSnoHpMBsfpgcYx+SSa+WeS5hvb6ozUNyQYsiPXb+qgF5vAeB45wYbX0dwj57gAjjHNmHBymWi50ox03XFlnD+Atm6GpzdUJBpWlSR/VGo65FnAOb3WLYWodZaNvNwxvYVV80SFFEzXEiVLvqFnQku58d4vX8pyhLEHR+sEXEa5VHs5TfcPNcVGt7ixOwXpUn+bSUOcAQgYRNBuvm9vlvEAvxkXLXFTRMtzqcSOMPla/BCW74cFNyZNwt7BDE39zMtFSXkFrBajZZdy5LrZ0STt9+wjzA6IP5vZtPXqmjB8AhjB/Swrqy53gq/bHFkCMIqrA4kAkfSpxgtzsrM+aw1r3/
+ hU7hFRVK
+ 0KjR5V9QM+Rk8NEsGaOfdmJImzutiKsZZzIO64o6FfF/byl9BujjG4IwEeFSRti77nTqONly/U+OgBIpQjI+Tmlatao5VTP09lkzoqN7jYdjrM7LDi6RWeYAiNOwPVzdEtLOMmpOSma/HAys6r0g4wfbreVlGQiCbN2lD03nNct0ilkWsNDT7ZVpX76XVyLNONxJFwMdDwT/SSKbIWbdVG6E1MPOtCitJh32QX/GsYiSSux97m0bNyOlnMWFQGObU/TmqnVq7nzQARlc7J38xYvAXMbOdzZ8dJdUO9612iEYRBLPlqSiFQhypD2q1YaHIFvvJutfTTCrFbkJv9WdFhNPkcTICwWUele3eARoFQQfbgugMpzTxrrSEZz/2RHZCMgN/t/rrcJ3b3xtzjeox6VsHJ/OygnRRvLuWzbg/jHxnUFlJzsVjSv0+G3zbPQWMxDZHow7Y7IHGWe1FvTv9NjiF9U5I3758Ou91RZOxvWKv5zomUBbNPTsgIvgPz6YrRh5G+9bt8t16BEP2k90pM8uSSBqzAt64J5bhSmVqOaLOgphgGS0IQkWBw6wxFFp1Tr8FJXkVex097Eui97lmQABWSKMp9KuyYOy4vAj30I5slOE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,68 +96,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] slub_kunit: missing kasan_reset_tag() in test_freelist_random()
+--
 
+commit a6a4a9e9d2827c11abe21a80276d4c98393a0acc
+Author: Chris Down <chris@chrisdown.name>
 
-On 27/10/26 4:30 pm, Kiryl Shutsemau wrote:
-> On Tue, Oct 27, 2026 at 12:42:12PM +0530, Dev Jain wrote:
->>
->>
->> On 23/10/26 8:16 pm, Kiryl Shutsemau wrote:
->>> On Fri, Oct 23, 2026 at 01:12:02PM +0100, Kiryl Shutsemau wrote:
->>>> The diff below replaces the previous one. It needs cleanup and splitting
->>>> before it goes upstream.
->>>
->>> Proper patchset:
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git page_alloc/nofrag-watermark-v1
->>>
->>
->> Thanks! I applied the 3 commits on top and the results improved a lot. Your patches
->> make sense to me.
-> 
-> Thanks for testing.
-> 
-> Can I use your Tested-by?
+slub_kunit: Add a test for slab_freelist_random=3D
 
-Sure! Do Cc me whenever you send. I'll try reviewing if I am not on vacation : )
+This commit exposes slab_freelist_random to KUnit and adds a test case in
+slub_kunit to verify whether slab objects are allocated in linear address
+order or randomized order based on slab_freelist_random.
 
+> diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+> index 5ace733685231..49b9942bc564e 100644
+> --- a/lib/tests/slub_kunit.c
+> +++ b/lib/tests/slub_kunit.c
+> @@ -190,6 +190,56 @@ static void test_clobber_redzone_free(struct kunit *=
+test)
+>  	kmem_cache_destroy(s);
+>  }
+> =20
+> +static void test_freelist_random(struct kunit *test)
+> +{
+> +	struct kmem_cache *s =3D test_kmem_cache_create("TestSlub_freelist_rand=
+om",
+> +					64, SLAB_CONSISTENCY_CHECKS);
+> +	bool random =3D false;
+> +	unsigned int i, nr, nr_linear =3D 0;
+> +	void **objs, *first;
+> +
+> +#ifdef CONFIG_SLAB_FREELIST_RANDOM
+> +	random =3D slab_freelist_random;
+> +	KUNIT_EXPECT_EQ(test, !!s->random_seq, random);
+> +#endif
+> +	kunit_info(test, "freelist randomisation is %s\n", str_on_off(random));
+> +
+> +	/*
+> +	 * Caches with debug flags have no sheaves, so objects come straight
+> +	 * off the slab freelist.
+> +	 */
+> +	first =3D kmem_cache_alloc(s, GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_NULL(test, first);
+> +	nr =3D virt_to_slab(first)->objects;
+> +	objs =3D kunit_kcalloc(test, nr, sizeof(*objs), GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_NULL(test, objs);
+> +	objs[0] =3D first;
+> +
+> +	for (i =3D 1; i < nr; i++) {
+> +		objs[i] =3D kmem_cache_alloc(s, GFP_KERNEL);
+> +		KUNIT_ASSERT_NOT_NULL(test, objs[i]);
+> +	}
+> +
+> +	for (i =3D 1; i < nr; i++) {
+> +		if (virt_to_slab(objs[i]) !=3D virt_to_slab(objs[0]))
+> +			break;
+> +		if (objs[i] =3D=3D objs[i - 1] + s->size)
+> +			nr_linear++;
+> +	}
+> +
+> +	if (i =3D=3D nr) {
+> +		/* Without randomisation, objects are handed out in address order. */
+> +		KUNIT_EXPECT_EQ(test, nr_linear =3D=3D nr - 1, !random);
+> +	} else {
 
-> 
->> But still, I see more compact_stalls and a worse compaction success:fail ratio. The
->> limitation must be by definition I believe: we still won't be able to use 64K blocks
->> from non-movable pageblocks.
-> 
-> Right, that is by design.
-> 
-> defrag_mode keeps the free space in unmovable and reclaimable blocks for
-> those allocations, so they don't spill into movable blocks. Your 64K
-> faults never take it.
-> 
-> The price is that defrag_mode needs more free memory for the same
-> workload. In return, the system does not fragment over time: huge page
-> availability stays steady instead of decaying under load.
+[Severity: Medium]
+Can this pointer comparison fail under tag-based KASAN modes
+(CONFIG_KASAN_SW_TAGS or CONFIG_KASAN_HW_TAGS) when freelist randomization =
+is
+disabled?
 
-Right.
+Because test_freelist_random is registered in test_cases[] outside the
+#ifndef CONFIG_KASAN block, it runs under tag-based KASAN configurations. T=
+he
+cache s is created without a constructor or SLAB_TYPESAFE_BY_RCU, so each
+kmem_cache_alloc() call passes through:
 
+  slab_post_alloc_hook()
+    -> kasan_slab_alloc()
+      -> __kasan_slab_alloc()
+        -> assign_tag()
+        -> set_tag()
 
-> 
-> The benchmark runs right at the edge: it fills 99% of MemAvailable and
-> then faults another 20% in 64K. defrag_mode=0 takes the 64K chunks it
-> finds in non-movable blocks without compacting. defrag_mode=1 has to
-> build them inside movable blocks, and with memory full there is little
-> free space there. So more compaction, and more of it fails.
-> 
-> The 64K fault count ends up close anyway: 20.1k vs 20.7k in my runs.
+which embeds a random tag in the top byte of each returned pointer in objs[=
+].
 
-Yep, the issue is that Android folks may complain - they observe increased power
-consumption due to reclaim stalls and compaction stalls and would like to
-minimize them.
+While virt_to_slab() strips the tag via virt_to_page() so the loop reaches
+i =3D=3D nr, the direct comparison:
 
-I would really want to see defrag_mode become the default since it attacks
-the major cause of fragmentation nicely, but the assumption is that compaction
-is a free resource, unfortunately on smaller devices that's not the case.
+  if (objs[i] =3D=3D objs[i - 1] + s->size)
 
+compares the tagged pointers without calling kasan_reset_tag(). When
+consecutive allocations receive different tags, nr_linear will not reach
+nr - 1 even though the untagged object addresses are contiguous, causing
+KUNIT_EXPECT_EQ(test, nr_linear =3D=3D nr - 1, !random) to fail when !rando=
+m.
 
+Should objs[i] and objs[i - 1] be untagged with kasan_reset_tag() before
+comparing their addresses?
 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793086056.gi=
+t.chris@chrisdown.name?part=3D4
 
