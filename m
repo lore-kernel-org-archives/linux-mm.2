@@ -1,102 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F195606A31A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 20:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D8A606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 20:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VmSj8+N2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VTRwxKvl
 Received: by kanga.kvack.org (Postfix)
-	id 3F4966B05B9; Wed, 28 Oct 2026 16:14:29 -0400 (EDT)
+	id A5CB66B05BB; Wed, 28 Oct 2026 16:14:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37D826B05BA; Wed, 28 Oct 2026 16:14:29 -0400 (EDT)
+	id A0E156B05BC; Wed, 28 Oct 2026 16:14:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21F066B05BB; Wed, 28 Oct 2026 16:14:29 -0400 (EDT)
+	id 8FC9A6B05BD; Wed, 28 Oct 2026 16:14:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EED996B05B9
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:14:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7915614015A
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:14:28 +0000 (UTC)
-X-FDA: 85373137416.16.C73077C
-Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6B086100005
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:14:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793218466;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h6GqamuA001HPemkjnOqUKBb2WcS9teBrRtjEmx99fA=;
-	b=MJI460wIAL/40kgQ/mf5QtXka1hEOwLSEh7Ro7HG7mLWx/IQpdsCCO67QcTMPVj13DwEGN
-	9LJzOgk6ZxaDzsgbxgldlVlAJk0MKwWutopCTNGdA99tl6I4FDIrpq6HLs7BvhCRNURYM7
-	58GTLfiMOUrdI41s6A6jOhj27qrHRxQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793218466;
-	b=d6YSFosR+YR18dtt7qhhXEIDNdtI9NRRCRwsd/fKAhH5uhhmTeWDpc7eTS7iKqcRvHVvSQ
-	6qUy5PIUHVBznLaBg/E3h37poizHE7lFf0Z/T+DMewORK45jGJDEcqL1qyMtCu1QIicBwc
-	oAzy3oNIAi9qBShnJXz4ksYSEJTF4Zs=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 035C9801E3
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:14:25 +0000 (UTC)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C6CD3140290
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:14:25 +0000 (UTC)
-X-FDA: 85373137290.29.2F4C684
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 18CED1A000D
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:14:23 +0000 (UTC)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793218464;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h6GqamuA001HPemkjnOqUKBb2WcS9teBrRtjEmx99fA=;
-	b=8nIrJxQQkwpOZcqovQtWu2RkarSO1/nUp/xVLW5RIBhAXMewj02FOkr4GfEvjQfb5DkLgH
-	RPY95lZ2aX9Pm07a5IMa1Gr19zFI23L/GMV3aWsDLlmSANUK2h2Ur12gDTYfCmbEbjYnth
-	/LDIgzWRQVMgTQ4MtkHtoTybTdb3E/s=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VmSj8+N2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 65E846B05BB
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 16:14:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3E5E1A02B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:14:35 +0000 (UTC)
+X-FDA: 85373137710.13.A3326EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2879BC0002
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:14:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VTRwxKvl;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793218464;
-	b=HnFpNJetk8rWFTGOzpVVw93rb33aP2aiu7KzhWBpY2W98UHqdmEVxBrOEegXwge2EJvrfj
-	lbMRTt44o8d3rX5qoyZnD/oJjZGvRFVd80Lgk5HbHvGhX9MjW9uTIVzen+Nig+1PiIpJlT
-	DYf6lXUDv2CkNOQLzZuSoY9fqtBg+L8=
+	t=1793218474;
+	b=FMEIVfcNeEdlAd155JbffLLpG5XSnglQLYGG2RA+H3Z9Fua6XKYTBLMu8NS5hWyMj3I4vx
+	QQYt0TWP9DEN9OIo6XB/xsjV4o1OgvR813FJMpvj2Ai4Di4ITeDRnA4iVM1d5YaTzNb8mS
+	3wLeUETX5/whMjfF6sz9R7rEqIF7Gcc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VTRwxKvl;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793218474;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/NM9XFFGSO65qxsWQ2ClcDwcNb/R+WuaFpARUDvIeT8=;
+	b=E63NdynRS7XRozwcYF3LapaRwtrF7evY1+SUgWsVoxKIXnKotFcLJj3QXUrE/wqpfPKPet
+	mdKHTuAVAmIpJC35D2Eu8rZJwdcg036O6SrVksFKE+DxjF+79WAEfXQrKDziuAbCMqsPlv
+	s+mlm2BO57In3M/iszaslMN10bmME/Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A425B6022B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C52E42A18;
+	Wed, 28 Oct 2026 20:14:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00021F01825;
 	Wed, 28 Oct 2026 20:14:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477271F031E3;
-	Wed, 28 Oct 2026 20:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793218463;
-	bh=h6GqamuA001HPemkjnOqUKBb2WcS9teBrRtjEmx99fA=;
+	s=k20260515; t=1793218473;
+	bh=/NM9XFFGSO65qxsWQ2ClcDwcNb/R+WuaFpARUDvIeT8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=VmSj8+N2GzA0MbyYqBFCd1q6TYu1wwu2CeQnYCY5NJMrnwzn9omLMG6o8jgBSmll4
-	 igFnOw111D4kzU5USzz+fQqulM7UVW2WVUrpKxUg4Dx3ZhL0i+82q053jOaO4pOhnH
-	 NQSTg94doN4gEENEUDmEkwCcjOGPwVZ443UxxiKO/e1Wj2XuHBNxmFJfp2Oee9xrHx
-	 3qNqIDpQZB7HlC7KnAACf4/1fJ4UpTvEwx9EAvHjGpkPgNp1iVLmxUrZm4jh8VtNeG
-	 D0Iwv6FZ0BaKeJxJW6UTIjr1is3S9ENjSOTRd4cIXTh43um9ft8vrt2PCM1VIjNnEM
-	 0vMa5Tdlrk2kA==
+	b=VTRwxKvlDtuGNct7+ct1WzfF91occy+dZHEIHXyanlTfJ+2qXoqwbgNti68rGsrt1
+	 U7fV17hTyFnZuGJJ6Z2MiBltroBzbbQLm18Gd8mjCSp8S1yQDzMKPyLo9wZP/8MR2e
+	 xLJwjbWbX3gYlJMM4Pt0FG7jywafkO3NOvxGzUtABtuNynGtMEz/KiZSQCMoCeZ+Ff
+	 rkz6gVr3O96wljkGVYVZSr/olkf5JfOmIy6s/NhctieKDs21n50ROG/Z55BN8BdaGv
+	 5MoDeDB2/FubHkOEy6OiWIJI5xb2Im3x97ksFmWPgffdr+zJ9ZUC9m4gDFTm6ahJdY
+	 nQLY7pkXYiXpQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 28 Oct 2026 21:13:31 +0100
-Subject: [PATCH 03/15] mm/hugetlb: preserve reservations when shrinking on
- HIGHMEM
+Date: Wed, 28 Oct 2026 21:13:32 +0100
+Subject: [PATCH 04/15] mm/hugetlb: account temporary folios separately
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-fixes_hugetlb-v1-3-a0a033db180f@kernel.org>
+Message-Id: <20261028-fixes_hugetlb-v1-4-a0a033db180f@kernel.org>
 References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
 In-Reply-To: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -123,32 +95,29 @@ To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>
+ "David Hildenbrand (Arm)" <david@kernel.org>, stable@kernel.org, 
+ Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2561; i=david@kernel.org;
- h=from:subject:message-id; bh=fOag8m9aWaD8O5/vp5VjcGR+Ra7oerb0CGoQ+KJ8h0k=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIehZeG/by512hynePr08whB7ziv9zbXvip7y3nD7UDE
- VeUl//t6yhlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAic1oYGZ4ufiQux71z0xLZ
- pD8vZ3UwOj09OGuz0BxGRpciyXRdtacM/wtuzX9WWfrozIRFO0566Zs5qt54JsqZeXz916mzFpo
- +2s8PAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8747; i=david@kernel.org;
+ h=from:subject:message-id; bh=j5/vZkhhc7lfw42jVaGiP44VlJrSmAd3z2CLNENWPRg=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIehZcq20erO7R+2Ky5VktiYg/Hi0YNAQkzP8XNFdc2T
+ fH/+OZHRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABNpt2FkWPFm8ZwlvzcoSd+Q
+ CC6KvuFzOOPz68tb9t2Q9s2Yx6uktYThn9GkwKkP+ZZX6wYuyRVP8hNj0s3uufRNfvIUqZPmaoW
+ z+QA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-HE-Meta: U2FsdGVkX1/cOceTNlBWH8s+mHAEN065iZ+drN8FBnBfzyW6pj9667O/XnYzwDdvt3kHXRGTAldJ9EoiOGlwgzeYSa/8pnfMPycD2KQx7D/Trm/I0GZbjglDq68c118Zd+mqeCFycuSOoWW8PcfYT8lQlUCF/9/+mClQSK7CaIhaouvq6nkUTseUYdwnjDARxDotvetbWRT3DsCkhve89vED0KBFW44MS6bi0KVJhjw5saght9prLQFR34//7llCPk+mZPkBkCgLUzwg/C0MvWwN/TWBzAHo/T70YL8O1qkaRp4aGO4oepyvYMUTFSiiaCH5rJq2IaStV+7pwEje8i5dnoQFOxyWdLSRLKvP7umyy4nFhEVxyoacJSMqkMH/qzL3q8XRDkgLLk50PJ7k1E2FcoUvvHazm0b0PmH6iyP1OHjOudSj6EgE496tTNFiAJ8twid5YVotrytNX9e4Gbb+IYyoDnZVHz2ptCxcbZbtVYM4QoLA24GBmqX/Mpk1GrgIfnOrP8qDdDDOqy3+n7pVlSPT/4ExPNSCsTpYdc6rmYuXy7OQ+vSwrvHKni0MlgH15oAJ+hP5eAR4fQhw8iNcsC0jzO2LCr2Fri71NYyuAjlSLz5useKnhyVkdQHlG1bkdbdnQUN8AfzQ3U4LIDlrSZVpTSbmxpSfkEzdRodNzTZ/KXwXbAgbuZ+3yl7uZNVbSl9WBh4JBtOt3rHIlgdjjIhxD/4lo3RvoGJrqQqFwIBe9cs0r86vx/PsLissHkAp8cursszYk7fNCDAttFrqVMlALyoJkKyQwEO48/ro4V1nHbOuIJ1p4F9p18kLEs5XhcYUGsu4wEnLKWKb6069Y7JQ1kY15TM1uNg8uuEnxprOrHEI3N0p3E/OQFj8BUR5qYsam3q2n1V7ijKAbuKRBXggqor89RrMl+IjC7nX7OqQyxxKE/i+1HfYl0XCVubsqf2MuScMmzsy+zp
- tbacS+IW
- eBm5hCW5dBwpTCxjscLbOBbpcAuQq3RwVyZpiySwQd+LFKvH/f2ioH5QtvQ8NbwKQ30LWe1FSdSnIbrMwc2Kh37j5NE89j4Dd37dgzCWapKeTMAoeB/GXT+/GBAMCkU9NuRTYCd8LTVNnkC3pDkcEfz2OoKDvXyvlGXmFclenpu0KyV0RONI6wgKi1Kd+3Iiag/wVTacagLsfwT+pCf43oRo0AN5I9YbUG8RofHqGkfRDtjypHC0zw1qhwgFnLKUL6QYMU6Oh7pFz0UdjFmwj0n0Dn2mAZVLO7US9yuokVJpW62pmJTbs+2pUuAmSkVLcuKDf
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6B086100005
-X-HE-Tag-Orig: 1793218463-577543
-X-Stat-Signature: z461yo5kdmj9szxrufm9447t4ft4d9sx
 X-Rspam-User: 
+X-Rspamd-Queue-Id: 2879BC0002
+X-Stat-Signature: u9ydcrzxyamyejpfxjcafrr6cfy31x4p
+X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793218466-984970
-X-HE-Meta: U2FsdGVkX1+wwtrEjOkOHj4IYUzKK3qYTikRh2C1ZRkEE8hpMAEYK09M3hoIw1TcC6slZ0d+zEF6193YaPFSdK3vMV5KxfIi6G5MwskIbRp59/6RPGDlhtjnLbVl8NWPRVBzeytGg1QOCrqulm5itIXUOCaQtn4z61zu3RNcaQ5qy89+KX26rEgEbnk/Xf2kBFQGu3UaS74WW1DVIDDabSlkYmjntXKq1qhfR54cchy8RFjZlhJ5HkaTakerYUt67WuPFOX85hcbYbRFjw0FrsI0/XE+6CtxmykLSQ6KpTySfs+c1SYcugB32wbNLhuSh2aksrksr+gHiwfF+6h8m3bTUVjMtJQp3bsP0NXD7gPsUEi1J0zyjjJXsXZANShcEXvRx8owWiADfPAj4ufpeFI1CyqjoDTWwr+eDqnd95SKHlf20/NjEclzwIBeAPpnWZmHhAxVN8AV5V0eRORRuAc3RTmIG5j8KxEcr7D+LFJNi95PVwAyxnYTREVuC23aMa+DYLs7Hq5TZSuepXlP4qlQPx6XQ69ya3p5/7oNdoaQS/IZwfXbg1cswpkEh3ixsADd6Kk81yO5UIdHuttMgQ3QPMF6nkpfLz+H4Xjm+Cg01VmdJY8jco88CBN1iBj1cM2ORt46mOxsMxAYJ+JTCR0OdpBEfZ4evtIPa1DKWxZQ4LbJS/EJO7ONK+CN9JoJb+VEJAYveqh17e/zoUQAPSraMyFVPBGkxYmsecH9C78h94NcOdwQ8BGrP1qW2IHkehrFXd/Kq6fwrju+iM40ylcwsn0Bvoc7MeoPy6Yiyn8YWbow44230xkfFIs7ue5SJ1SLmnnvaVPZi6QE03/VKaVrypZHZsqFxjq4HpKADu+MmcC5T16AvLosCnSabfyvIYT+9WUekfL/9MNJt5rvh0dyjjnR9N9uHPxs0052itTr7I8ZOxuSsVtKhtaI/1DKFnwi5wWgsguJ6lebj1O
- MmI9gvcO
- WGt545dvit26AC8pMDU+vq76XWcaoRZ5kPAZSdZISGclVjpGDAXtrOlilxfk0c/VIMS8S7/qtsdnibcVErxZSl0DNiMLTQ2OdJNpUDkIIrXcb8BpmE9NKi6zNnnZBdpCqLwrvaGj/b5JLg4/eVt05QEmxR2ZloxKRJW7GoDJXKl/x00Xo9EhO/VRK3ESjwSj7RsIQwOJArHyDXgFnDKMnVMMAAaRT1M7Ccw2VYVE46uAAgZX92VRiTnQjo9hOjiw6ayub/7P7IGn315rmaRZncCqWQppi3lYSe0khJo/aTX33bH+1kut2VLJ73DXzzZ8egAcKBcfuhn1PKiku+YqZ5babn6Dp7yMMjc/c
+X-HE-Tag: 1793218473-513976
+X-HE-Meta: U2FsdGVkX183IKz1SgTuZ0yLAA81kSvvQ052c6oyz3oEZYHVC9mekIAKzNoME8bSKfk7kdoCc/seMtR5zKQepAVAnOivewBGYdu72eGRUD3r7TubuStlAJQdyN8EbQgRlFH/0Q1T6Ru5BILQhGVZHyz5Cy5fxrl2ML1DVPRqdEukhfn8HIfTuoRfIe2EYPKf1lIAZJk03UCGo9hld0moxxRYi7RwnkQqm2mGHycV488NuZ+c9pCVEvkOkCHU1rNwEXVSq/K2TdCx97E7fWopq1QybWcgSWyJj4Bg38Z0G05+o3geAebSRMGmSd+in06P7mcDuFRBHDWiZxVlDszwa35KNWUo0my8R41Dda0MOF0lWfy4IuM171psG2zpfW6mm+8LtIPExTNWZ130RcXEtXanLAcx4iwYYo/e11+JxJ2goeIrZTEipr94uim1u0GAS3WFSvzKVtB5GXW2PFQNcIgd//HY6q33SHjhbaSDhCrXxaoe3cMDk/8N9BZl4LEo0KduvdXwX5J5ggL1wr9Peh1UHpkW31FFpCyF8sQhaJTJQAq1bVIyEpqxpOnPGnx0vspbsjs5TzbEey6UJJce6BZ/ufWc8gUX6evTu/ng4zx2M0jnp82SLkwQ6aglavgApZVJspSB4psSFjdcjGe95Vu8w01MfMYDGsmFJRSdFetUw+dWCYdxZYhI1Bi7oeZbRE71SJzPwPBiQM5iDNKfguvsP6IlOKW5omWefA0N3FWkqyHwU5gK6VfmCFwlDEqydUAxe/D3f6dimd7JpMN1sHqxQ2eY/abC+8CrpYIHkMKm73hn+r9YVeHDMYX9th9FvP0mVf7eC9lJ+59LlceXZYPPmgRu0aJTSIRLkziCfyg4cNjO8NS3J9RzYDoiFNQkaFc0mVdy+8nLsAaJMEddJEPehuF8FNnIpOGlPINcDuCn1zByh0y0P1aEYE55YoZE9hOsUSuGHggocGF1yUx
+ 832ohnnZ
+ E14byko75sPP78iYMG93F3a+t1b2Wi82cgGvVw6YGkQ9RMSXZf9IUd7m+Zovo9uiTnWmFqXfDQ8B3Gmybgr5C0wmPM7+7zv+GuLYY063Jy1/2f9Sap5KDl8TCf+nKU690B5KpMZ+7eQ3v5uCg252GziddmsF9ZZ7E28Yl7vg8mWIKrqvdFdaCl+e5ztrBGXe+zpqRuBQ8sdj6BHGYyw5azrjD1Pt0ZGg/lOufsTDQqUUMCDh1OTWxvDR0ykt+YHgK1KLww3xZtxhMP6eI0Ij3Dvp1Q5Noldk3LczUnDoyO1/IEgQ3Hs2/TGr5BdzYuHhniZZddpkROe3y+1Cl/xsP6QMkFus/7d6vLY8FkzLyrt1VxV3W+EBYR7IinqwDR6EvH7/S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,84 +126,240 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-try_to_free_low() drops the hugetlb_lock while freeing lowmem folios.
-set_max_huge_pages() then resumes freeing folios using the
-min_count computed before that unlock. Reservations created in between
-can consequently lose their backing.
+Hugetlb migration might have to allocate a temporary folio through
+alloc_migrate_hugetlb_folio(). Such folios are currently accounted in
+"nr_huge_pages" but not in "surplus_huge_pages". persistent_huge_pages()
+can mistake them as persistent huge pages, as it merely calculates the
+difference.
 
-Collect lowmem folios on the caller's existing page_list instead. Keep
-the hugetlb_lock held through both selection passes, and free the combined
-list at the caller's existing unlock point.
+If set_max_huge_pages() shrinks the pool at the wrong time, it will turn
+hugetlb folios into surplus folios until persistent_huge_pages() returns
+the desired number.
 
-Likely not stable-worthy.
+After the migration (successful or unsuccessful) either the new (temporary)
+folio or the old folio gets freed: this will reduce "nr_huge_pages" but
+not "surplus_huge_pages", to undo what was done when allocating a
+temporary folio.
 
-Fixes: 1121828a0c21 ("hugetlb: call update_and_free_page without hugetlb_lock")
+This can result in having more surplus folios than actually allocated
+folios:
+
+  HugePages_Total:       0
+  HugePages_Surp:        1
+
+From then on persistent_huge_pages() returns garbage.
+
+To fix it, add internal temporary counters and subtract them when
+calculating persistent pool sizes. Update persistent_huge_pages() and add
+persistent_huge_pages_node() to make the code easier to read.
+
+Count migration targets and rejected surplus allocations as temporary.
+Transfer the per-node temporary count along with the temporary flag on
+migration, such that folio freeing will always do the right thing.
+
+Take care of calling account_new_hugetlb_folio() only after setting the
+folios to be temporary.
+
+For now, keep temporary folios in nr_huge_pages, so HugePages_Total and
+Hugetlb continue to include them and overcommit accounting remains
+unchanged. The new temporary counters are internal for now and are not
+exported to userspace.
+
+Fixes: ab5ac90aecf5 ("mm, hugetlb: do not rely on overcommit limit during migration")
+Cc: stable@kernel.org
+Reported-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ include/linux/hugetlb.h |  3 +++
+ mm/hugetlb.c            | 65 +++++++++++++++++++++++++++++--------------------
+ 2 files changed, 42 insertions(+), 26 deletions(-)
 
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 5029c7241863..d49cb15d13e6 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -701,6 +701,8 @@ struct hstate {
+ 	unsigned long free_huge_pages;
+ 	unsigned long resv_huge_pages;
+ 	unsigned long surplus_huge_pages;
++	/* Included in nr_huge_pages; not exported separately to userspace. */
++	unsigned long temporary_huge_pages;
+ 	unsigned long nr_overcommit_huge_pages;
+ 	struct list_head hugepage_activelist;
+ 	struct list_head hugepage_freelists[MAX_NUMNODES];
+@@ -708,6 +710,7 @@ struct hstate {
+ 	unsigned int nr_huge_pages_node[MAX_NUMNODES];
+ 	unsigned int free_huge_pages_node[MAX_NUMNODES];
+ 	unsigned int surplus_huge_pages_node[MAX_NUMNODES];
++	unsigned int temporary_huge_pages_node[MAX_NUMNODES];
+ 	char name[HSTATE_NAME_LEN];
+ };
+ 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 3a94ea1c9457..a78b2487c20c 100644
+index a78b2487c20c..110a5c2d9e50 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -3708,39 +3708,31 @@ static void __init report_hugepages(void)
+@@ -115,7 +115,7 @@ early_param(str, func##args)
  
- #ifdef CONFIG_HIGHMEM
- static void try_to_free_low(struct hstate *h, unsigned long count,
--						nodemask_t *nodes_allowed)
-+		nodemask_t *nodes_allowed, struct list_head *page_list)
+ /*
+  * Protects updates to hugepage_freelists, hugepage_activelist, nr_huge_pages,
+- * free_huge_pages, and surplus_huge_pages.
++ * free_huge_pages, surplus_huge_pages, and temporary_huge_pages.
+  */
+ __cacheline_aligned_in_smp DEFINE_SPINLOCK(hugetlb_lock);
+ 
+@@ -1337,7 +1337,13 @@ static unsigned long available_huge_pages(struct hstate *h)
+ 
+ static unsigned long persistent_huge_pages(struct hstate *h)
  {
- 	int i;
--	LIST_HEAD(page_list);
- 
- 	lockdep_assert_held(&hugetlb_lock);
- 	if (hstate_is_gigantic(h))
- 		return;
- 
--	/*
--	 * Collect pages to be freed on a list, and free after dropping lock
--	 */
-+	/* Collect lowmem pages to free after dropping the lock. */
- 	for_each_node_mask(i, *nodes_allowed) {
- 		struct folio *folio, *next;
- 		struct list_head *freel = &h->hugepage_freelists[i];
- 		list_for_each_entry_safe(folio, next, freel, lru) {
- 			if (count >= persistent_huge_pages(h))
--				goto out;
-+				return;
- 			if (folio_test_highmem(folio))
- 				continue;
- 			remove_hugetlb_folio(h, folio, false);
--			list_add(&folio->lru, &page_list);
-+			list_add(&folio->lru, page_list);
- 		}
- 	}
--
--out:
--	spin_unlock_irq(&hugetlb_lock);
--	update_and_free_pages_bulk(h, &page_list);
--	spin_lock_irq(&hugetlb_lock);
+-	return h->nr_huge_pages - h->surplus_huge_pages;
++	return h->nr_huge_pages - h->surplus_huge_pages - h->temporary_huge_pages;
++}
++
++static unsigned long persistent_huge_pages_node(struct hstate *h, int nid)
++{
++	return h->nr_huge_pages_node[nid] - h->surplus_huge_pages_node[nid] -
++	       h->temporary_huge_pages_node[nid];
  }
- #else
- static inline void try_to_free_low(struct hstate *h, unsigned long count,
--						nodemask_t *nodes_allowed)
-+		nodemask_t *nodes_allowed, struct list_head *page_list)
- {
- }
- #endif
-@@ -3935,7 +3927,7 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
+ 
+ static struct folio *dequeue_hugetlb_folio(struct hstate *h, gfp_t gfp_mask,
+@@ -1422,6 +1428,10 @@ void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
+ 		h->surplus_huge_pages--;
+ 		h->surplus_huge_pages_node[nid]--;
  	}
- 	min_count = h->resv_huge_pages + persistent_huge_pages(h) - persistent_free_count;
- 	min_count = max(count, min_count);
--	try_to_free_low(h, min_count, nodes_allowed);
-+	try_to_free_low(h, min_count, nodes_allowed, &page_list);
++	if (folio_test_hugetlb_temporary(folio)) {
++		h->temporary_huge_pages--;
++		h->temporary_huge_pages_node[nid]--;
++	}
  
  	/*
- 	 * Collect pages to be removed on list without dropping lock
+ 	 * We can only clear the hugetlb flag after allocating vmemmap
+@@ -1764,9 +1774,15 @@ void free_huge_folio(struct folio *folio)
+  */
+ static void account_new_hugetlb_folio(struct hstate *h, struct folio *folio)
+ {
++	const int nid = folio_nid(folio);
++
+ 	lockdep_assert_held(&hugetlb_lock);
+ 	h->nr_huge_pages++;
+-	h->nr_huge_pages_node[folio_nid(folio)]++;
++	h->nr_huge_pages_node[nid]++;
++	if (folio_test_hugetlb_temporary(folio)) {
++		h->temporary_huge_pages++;
++		h->temporary_huge_pages_node[nid]++;
++	}
+ }
+ 
+ void init_new_hugetlb_folio(struct folio *folio)
+@@ -2113,13 +2129,6 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
+ 		return NULL;
+ 
+ 	spin_lock_irq(&hugetlb_lock);
+-	/*
+-	 * nr_huge_pages needs to be adjusted within the same lock cycle
+-	 * as surplus_pages, otherwise it might confuse
+-	 * persistent_huge_pages() momentarily.
+-	 */
+-	account_new_hugetlb_folio(h, folio);
+-
+ 	/*
+ 	 * We could have raced with the pool size change.
+ 	 * Double check that and simply deallocate the new page
+@@ -2129,11 +2138,18 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
+ 	 */
+ 	if (h->surplus_huge_pages >= h->nr_overcommit_huge_pages) {
+ 		folio_set_hugetlb_temporary(folio);
++		account_new_hugetlb_folio(h, folio);
+ 		spin_unlock_irq(&hugetlb_lock);
+ 		free_huge_folio(folio);
+ 		return NULL;
+ 	}
+ 
++	/*
++	 * nr_huge_pages needs to be adjusted within the same lock cycle
++	 * as surplus_pages, otherwise it might confuse
++	 * persistent_huge_pages() momentarily.
++	 */
++	account_new_hugetlb_folio(h, folio);
+ 	h->surplus_huge_pages++;
+ 	h->surplus_huge_pages_node[folio_nid(folio)]++;
+ 
+@@ -2155,17 +2171,17 @@ static struct folio *alloc_migrate_hugetlb_folio(struct hstate *h, gfp_t gfp_mas
+ 	if (!folio)
+ 		return NULL;
+ 
++	/*
++	 * Count temporary folios separately so that pool resizing does not
++	 * mistake them for persistent pages.
++	 */
+ 	spin_lock_irq(&hugetlb_lock);
++	folio_set_hugetlb_temporary(folio);
+ 	account_new_hugetlb_folio(h, folio);
+ 	spin_unlock_irq(&hugetlb_lock);
+ 
+ 	/* fresh huge pages are frozen */
+ 	folio_ref_unfreeze(folio, 1);
+-	/*
+-	 * We do not account these pages as surplus because they are only
+-	 * temporary and will be released properly on the last reference
+-	 */
+-	folio_set_hugetlb_temporary(folio);
+ 
+ 	return folio;
+ }
+@@ -3757,8 +3773,7 @@ static int adjust_pool_surplus(struct hstate *h, nodemask_t *nodes_allowed,
+ 		}
+ 	} else {
+ 		for_each_node_mask_to_free(h, nr_nodes, node, nodes_allowed) {
+-			if (h->surplus_huge_pages_node[node] <
+-					h->nr_huge_pages_node[node])
++			if (persistent_huge_pages_node(h, node))
+ 				goto found;
+ 		}
+ 	}
+@@ -3807,9 +3822,7 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
+ 	if (nid != NUMA_NO_NODE) {
+ 		unsigned long old_count = count;
+ 
+-		count += persistent_huge_pages(h) -
+-			 (h->nr_huge_pages_node[nid] -
+-			  h->surplus_huge_pages_node[nid]);
++		count += persistent_huge_pages(h) - persistent_huge_pages_node(h, nid);
+ 		/*
+ 		 * User may have specified a large count value which caused the
+ 		 * above calculation to overflow.  In this case, they wanted
+@@ -7440,9 +7453,8 @@ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio,
+ 	 * be final while the old one will be freed so it takes over
+ 	 * the temporary status.
+ 	 *
+-	 * Also note that we have to transfer the per-node surplus state
+-	 * here as well otherwise the global surplus count will not match
+-	 * the per-node's.
++	 * Transfer the per-node temporary count to the old folio's node,
++	 * and any surplus count in the opposite direction.
+ 	 */
+ 	if (folio_test_hugetlb_temporary(new_folio)) {
+ 		int old_nid = folio_nid(old_folio);
+@@ -7451,13 +7463,14 @@ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio,
+ 		folio_set_hugetlb_temporary(old_folio);
+ 		folio_clear_hugetlb_temporary(new_folio);
+ 
+-
+ 		/*
+-		 * There is no need to transfer the per-node surplus state
+-		 * when we do not cross the node.
++		 * There is no need to transfer the per-node state when we do
++		 * not cross the node.
+ 		 */
+ 		if (new_nid != old_nid) {
+ 			spin_lock_irq(&hugetlb_lock);
++			h->temporary_huge_pages_node[new_nid]--;
++			h->temporary_huge_pages_node[old_nid]++;
+ 			if (h->surplus_huge_pages_node[old_nid]) {
+ 				h->surplus_huge_pages_node[old_nid]--;
+ 				h->surplus_huge_pages_node[new_nid]++;
 
 -- 
 2.43.0
-
 
 
