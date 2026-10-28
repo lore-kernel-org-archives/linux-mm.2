@@ -1,104 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C499606A322
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2363A606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ApHKPPw1
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=BxUepWxa
 Received: by kanga.kvack.org (Postfix)
-	id 718F16B05B4; Wed, 28 Oct 2026 09:48:01 -0400 (EDT)
+	id 45E666B05B8; Wed, 28 Oct 2026 09:50:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F00F6B05B7; Wed, 28 Oct 2026 09:48:01 -0400 (EDT)
+	id 435B06B05B9; Wed, 28 Oct 2026 09:50:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62CF46B05B8; Wed, 28 Oct 2026 09:48:01 -0400 (EDT)
+	id 372AA6B05BA; Wed, 28 Oct 2026 09:50:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 490906B05B4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:48:01 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF8E3140C83
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:48:00 +0000 (UTC)
-X-FDA: 85372163520.06.9E1BFE8
-Received: from mta0.migadu.com (out-138.mta0.migadu.com [91.218.175.138])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BD9B740002
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:47:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ApHKPPw1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.138 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 17D7A6B05B8
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:50:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 723FCA0D00
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:50:21 +0000 (UTC)
+X-FDA: 85372169442.16.B27A135
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D3299140008
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:50:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BxUepWxa;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793195279;
+	s=arc-20220608; t=1793195419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=idoYOC3z+fcHVodb6uVVCkkEj9ml2yjsfszDNHVYELw=;
-	b=VvW5BBkoDBxCs8kzdYeiCb8ycXdmVIP558HmxXhgodQIUC8liFNKk22Y6IYIROTHeGGQ6T
-	/yvVsaGj1WSawUTbeXffvJGf7HyAfnAmFbvK9AwKqY9L3+BNGbvdwLiyK/DO5Rm6QltHmX
-	bBcFUxwb8Xpq952dZBTdhVbMGkp6cVk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ApHKPPw1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.138 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	bh=EKOJSvQCyvmegciiDSA3qkq54znl6sRsTPqc7BTTnKg=;
+	b=pZX1i6pSsvNvDURkjM88xwO5/NWN+jfkueFakK3wO2vv512aoqhCWdqkk0jztuL8tGqo/Z
+	X30hUPjEYUroiFuGf1SRN4oB79edtXugS8B9hTezypdsiKXAOGvVcQ+e/DzMrG2tJVvQ9B
+	Z4fw387RD+/vj6sDoVBWRpChQnvyaxI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793195279;
-	b=L7hwIHusCBtpX1z4/72i75lBjVcA44bPdfvaYNGbH3Jy1LzULvKG4pnie2QujZNKxFAlQY
-	C0Y/kHqyZm7y0Ah6OYVkCKwSotL0nmv6B9qAqneyr1n0FRjTlU3oKs3hiieJDChYHxQrKb
-	4cqUz251QPQNbBpsgMnZTrEU4oqeAY4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=idoYOC3z+fcHVodb6uVVCkkEj9ml2yjsfszDNHVYELw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793195277; v=1; x=1793800077;
- b=ApHKPPw1H1Xc1WQqFBILX6ARyMr3+ZSovKwWSKxV9S4CAR559P0xbjqaljbiacDk0PsadFVu
- /duWA3QB5jSf/tAGDUbwE+mpbt+R74UVGU8eVLzSu49UyKzGFASuU78xjnr7NUhTslEOd0o3geW
- PVwWhr426TgexAD3F9Dx3bZI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 29e8c50da497430a;
-	Wed, 28 Oct 2026 13:47:57 +0000
-X-Mizu-Trace-ID: 29e8c50da497430a
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	t=1793195419;
+	b=GIolJ2X8fUtvNyOzLgBqUOk70wA7buM1DtR+jNGBO8SxFYJJLfFEJej6OcYhdzFkTYi4wT
+	m2aiuMlj6jZjAINdDJW5tsUwueRWSnQZA3JuAwq6jMNPwa2JkozzsDWgs+JpuUbsNnwDvy
+	Sr3pL750jjKnG+FpwtFnslR4klpGKfA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BxUepWxa;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=EKOJSvQCyvmegciiDSA3qkq54znl6sRsTPqc7BTTnKg=; b=BxUepWxaQM94nl47RKcbqrBwZ7
+	kKjKjVjHXt+ZcHaBoC9nDp4oSN9ak/TO/XSgZcZWwNyUes07CsiuLocLH66v0bHNVj9IKB35ZiIBf
+	fXcJPdkUhdzi3eVA3yYx2Wb11fbpqdcML3ik3qmNvo9oHUT+1pIV40JNfxDMJ/wmX9eR2jxICexSE
+	ad3Hc1No0hfI+y0IgWiVtZAg0BshCR6qLOZqqp16nouHynXTJ9IQB4qiaP3+hFCWqYSQ+ZvQao6uQ
+	gtgCbH3J+tJpJRCI+onTodJWcxHXBKOxtmizI01tTt3GIKNO4zPmrK05hh4otiSxEU/f4XlZ4mWb4
+	KFvceyFg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xM41u-002Ho4-0T;
+	Wed, 28 Oct 2026 13:49:26 +0000
+Date: Wed, 28 Oct 2026 06:49:18 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, kas@kernel.org, kexec@lists.infradead.org, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	shakeel.butt@linux.dev, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, rmikey@meta.com, riel@surriel.com, harry@kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v6 4/7] mm/memblock: add a reserved-region flag for
+ poisoned frames
+Message-ID: <auH6WT5zR1RM1lpA@gmail.com>
+References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
+ <20261016-hwpoison-kho-v6-4-f304255147da@debian.org>
+ <ato62palTbNjLwN7@kernel.org>
+ <524ee7d9-790d-48b6-8613-841da042c32a@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 1/3] mm/hugetlb_cma: fix incorrect hugetlb_cma_size
- assignment on malformed input
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261028113319.38544-2-kaitao.cheng@linux.dev>
-Date: Wed, 28 Oct 2026 21:47:32 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- Frank van der Linden <fvdl@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>,
- Chris Down <chris@chrisdown.name>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Kaitao Cheng <chengkaitao@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B3545C17-96BB-4A17-937F-3C91F8A0A1CF@linux.dev>
-References: <20261028113319.38544-1-kaitao.cheng@linux.dev>
- <20261028113319.38544-2-kaitao.cheng@linux.dev>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Queue-Id: BD9B740002
-X-Stat-Signature: 7jc7psqqepf88e3qge3x9bscion3h37s
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <524ee7d9-790d-48b6-8613-841da042c32a@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D3299140008
+X-Stat-Signature: a9wjiwazdih6nthe5mwe6x8h1p37gqu5
 X-Rspam-User: 
-X-HE-Tag: 1793195278-422346
-X-HE-Meta: U2FsdGVkX1+XC50X7SmWVU7KY4zbPWFtjPDrXBP6SJUQsz7e2SUATBdTSLzAtJ3yThoOyMN47pTUM6tcLgxaBds1AFSu6Vnq5/WU6ywp0vIxkwoWaE2+Id8AZrHnBxMga5VuLWGwNWqgrmnarvPlZoBMGkKOhF793H+aEc0xIa3xzHmw3z9EHBETt90QscS6U93bzhPDwC870gp1JP1pxTEIBZ0XXZOQKw05eNZ0vAD6DxUKInon9Sw9ar5Sd27Aoo/cTQrrgafKaxnO6IcqNw389Yud9CHEKi11scYihOXVBVnL8uzyIvmgz3/fQm4Q5TSalZjJD3U13wv0jWzhAK3xzeX8w/7qcbyYSrntEupIfps1gmvwu0sAS6Zu+bo2MTdLOJMbK9o/eSaNIBGm39ldsfPFfZqkvPC4jmIgGjN6AA7z2kxSKcYfpGOBnDdadno5HJggtG0p3gb+0qp4Lk//cZdVO8DEpjw0S5GWrdiEAijfPJJNgJWZ2ZywHfc9bJuYsYIArzLt4CYmX2sMs5YTL4Ia4pjfd/TcX3+/9enjnh/hKU3G9bbQOhAg1dbuO9wZEaTrEW9KlSWYcK5/9BJVRf/ywT0cz8dyiL4BiwsDVwUXoSyt0MLyXJ2K3rJMJmYe21pzLH5WEEBTQTJqND9TQsRZFm7VElTkLw4oPnT8mXpkRp8+lPTbyWoWVx/a8EwNDXP5dKov22VI6dUHJgNlfnKAHnlDqdNtg32698VkGYWu54rSf7Dth3fZ3H2VXClp6zIsx8PNwQMmhDyQUdVDi5JMIF9lHV3433Mn14q+yqqHpR/Q5VecraBnv2fMXaBfra/Sf2hjJHQtkjCyQAdl48nqZeraY8aruqTOjo9WlrjGh6AWh/GAT2je06XzdA35daIiSS0k+iSrxWZnwXFjbSLz95mpXqgwmNkP11xHB+a6bZH5J6axCh42cdavmgQe7hc9gKiXGcX40iJ
- gOlVX/BE
- Wp22ILXtEiHrQwTQh+pilX78k6IxGhZ8/WCraelNFLtSGQMr4fu3TXeH96Av+SMb9+23IcarU3HvkXt5OGGqWVS4PxKdSMViqXp2AwS6CA1WpH16+1xcpzVJORnY+HjT4ryKdut2LsT8syQUBrXC+kj2jJZTCRRfJoYwNMyK8xqup5z9Ec3/GEuzKjCaaaFjz34lCC+/Xem1r6lcPYLdXwBG6qU1of2wVV10l1zo5CB3fYyhbZSnDv6VxeenFw5jgL/keXYB/IgrDAUMA3HwAA7HU3MuwIzhVMLajh0P/tnz0n5QfCSORPF4Me+BqBtrXmbuAa47VsG/1F+NUr1KAkmp0XPkhiWki2HT322qdkpb4wXzkKWUlVI5JZ7iEpGzp/v3g/2+aKRX0loxxz3e7Lx3dnrIwwdgpMoXVtbAXf4p+5sbO/Nxk+Jrh7aWMLnA6IiLh
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793195419-85301
+X-HE-Meta: U2FsdGVkX1+vnHm+NJ7zI7gpYpAuJ4ZoZJ2RxJYBvYOy4tllJvoq7ts41XwHStjS8t4xkoAUBv0SJ4+kKxkN4ocMKfJiUo0F/ukhOSBAupmInje9XmfCBOScbCXdfUUUnW1R62TDktx0zxIgkHH1R6626SjCQgddO+fmDgbvRIKLousyW1cq08iMUFhBSMqZowLQVnrQZ+XNNtB/AFhIxXWfuexXPclc2oQgXkDDft9xBFfnmPxDAo4+bmFkJNDUogD2gpbyF1sQpAmqnnSxx06AouFg3kjCseXsn4Srt8iTdcSYNlLyZ1HAONCKTduO5ZkGW3dJDwW/OooVrqFY/H5l3aiHD8S9zePkRLP4pPlGrAqXaLggMVaukMHUmDz4V2otN7bFm96DfGA4zn2avrgQ+4qHYmbK3kf0F8GESxsBCWq2TJBYr+bAaxb4OAjRg+JnJgkZKdKpE2BF/MO2w3p6plePfGPMtyMY1sdXDtviN0IN/arGmIoERcCGGg3a4dIwIWAc9L9di9+XG8sLwVq5WrVVvoTZatUuV3hJsrmgE7GQSxqYnGHuKkVJDQxchyNzf+1T/hwI8L/+MLNf+fGpO9G43kH0lkJGKkFalBbINTGUKhbatF+2drOKKUmIyb8uLMkfsvnAn/op/Bg9g/p6DJVMbQcDc4R941WMKjY7L+zbtY6QT7mpDNaRRMknHoY7/35AIGuDHxdraBH/1GP8apDur9XgpzZhBoUx7jJnTABya3b8i3LGqf/pKbTIlL6zl9Hujsc2xZMVnCS6vVtN+kKOjPdBT9PWSBXUXR7AOFDF4y3mE2jfUCXEoN1/oFgOU29/scl/OlNnVlFAyrSWnhjsnPWZWD7I4G5KD+zg4b+Sz5MgxAmLLrSirUQ0cfRuMSuPhMrGsfX6rUiwRC89Y63LQf0apNTE7QDNPbgyF0Pf/+GLwUP2uh4zQMYFOk2hVmE8l+nJMIdol5j
+ Mg+ixmSL
+ JZFYfflEiA/LF0X3aCrhqlw4qUlPzH0gzJrdQOg51SFtKei0JrEnUnfu9wLohdkJpNRq/prpG0WoVYx6hdcmDCCUdwpqXvnasyV0iqrfZ8LrdaOLE8Fizd0KUZQ5OxB3GTNvHExE2P1Jq9J8pFm8ZbHYQO0DJnCH6g4XcC6AIydQAwwTJlczfM+fmAaSrTtntFncP/vGe4YAsZ3pyfIZODUJBZJckxEC6DEKcYhanlSqkq5jxwESRApSJ/yKutTuqO/zN36B/U0LIwA6Jbcb6fZVjFg/vHYsntepdT0qb2bGEEgN5RGE2SUgATarsVFi4zIRK3gsBEGngTnw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,37 +114,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, Oct 28, 2026 at 09:39:42AM +0100, David Hildenbrand (Arm) wrote:
+> On 10/22/26 18:33, Mike Rapoport wrote:
+> > Hi Breno,
+> > 
+> > On Fri, Oct 16, 2026 at 05:15:44AM -0700, Breno Leitao wrote:
+> >> memblock allocates from and frees to buddy whatever is not reserved, and
+> >> knows nothing about frames an earlier kernel found hardware-poisoned.
+> >> Such a frame can back the memmap, a page table or a percpu area before
+> >> any hwpoison code runs, and otherwise reaches the buddy allocator like
+> >> any other free frame.
+> >>
+> >> Add MEMBLOCK_RSRV_HWPOISON for a reserved range holding those frames.
+> > 
+> > How much this would fragment memblock.reserved?
+> > 
+> > memblock is not very scalable, to say the least, and each new flag
+> > increases the size of memblock arrays which obviously hurts performance.
+> 
+> I assume that if you have too many regions there, you have different problems
+> than scalability problems.
+> 
+> We should cut out larger chunks, and if they are all over your address space you
+> should scrap that machine.
 
+Ack, that is what the 2M unit does. A DRAM row fault shows up as many 4K
+pages but lands in one or two units, and adjacent units share one
+memblock.reserved region.
 
-> On Oct 28, 2026, at 19:33, Kaitao Cheng <kaitao.cheng@linux.dev> =
-wrote:
->=20
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
->=20
-> When hugetlb_cma contains a global size after node-specific entries,
-> cmdline_parse_hugetlb_cma() enters the global branch and reparses the
-> original parameter string. For hugetlb_cma=3D1:2G,4G, this interprets =
-the
-> initial node ID as a one-byte global size and clears the 2 GiB =
-reservation
-> recorded for node 1.
->=20
-> Global and node-specific formats cannot be mixed. Return -EINVAL when =
-a
-> global entry follows a node-specific entry, before updating any =
-settings.
-> This preserves the valid prefix, so the example retains node 1's 2 GiB
-> reservation and reports the malformed option.
->=20
-> Fixes: 38e719ab2673 ("hugetlb: support node specified when using cma =
-for gigantic hugepages")
-> Closes: =
-https://sashiko.dev/#/bug/linux-10f40d3e-3feb-4622-9da8-1fedecb2d0e2
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+Mike, on the statistics you asked for: across the Meta hosts that logged
+a hard memory failure in the last 28 days, these are the
+memblock.reserved regions each host would need:
 
+             p50   p90   p99
+     x86      1     4    41
+     arm64    1     5    27
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks
-
+Thanks,
+--breno
 
