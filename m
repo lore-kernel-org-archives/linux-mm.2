@@ -1,100 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4D360A260D
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF135606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Oct 2026 13:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fNmqWDGm
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FjOywHBV
 Received: by kanga.kvack.org (Postfix)
-	id DD9876B05B9; Wed, 28 Oct 2026 09:53:13 -0400 (EDT)
+	id E7C2E6B05B8; Wed, 28 Oct 2026 09:56:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D625A6B05BA; Wed, 28 Oct 2026 09:53:13 -0400 (EDT)
+	id E53A86B05BB; Wed, 28 Oct 2026 09:56:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2AC36B05BB; Wed, 28 Oct 2026 09:53:13 -0400 (EDT)
+	id D68AB6B05BC; Wed, 28 Oct 2026 09:56:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9663B6B05B9
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:53:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B0B0E6B05B8
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 09:56:42 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2580DA8B40
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:53:13 +0000 (UTC)
-X-FDA: 85372176666.08.47FB994
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A37D74000F
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:53:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fNmqWDGm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 39D71406F2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:56:42 +0000 (UTC)
+X-FDA: 85372185444.08.500A4DC
+Received: from mta0.migadu.com (out-23.mta0.migadu.com [91.218.175.23])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 166251C000E
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 13:56:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FjOywHBV;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.23 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793195591;
+	s=arc-20220608; t=1793195800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=EZ/4ugvFA15Yu6Na+g54C1TjihOcshtcopxkcUJxWNg=;
-	b=AuCWHs+MocvD2EHDlKOlqU463flimU1Lp+MTlJE0gHzp3u7YSZC7D41q8ZSM6wNWbOgh3Q
-	yMIoaYnqct9OvjRs7WS8vQgk/8B/req6unq6dpWolqDLdNibhxd3b5WorAAe8Nd3nfIzvb
-	coHD7aWYM3ra1auq0vaL0wV/dr8qMrE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fNmqWDGm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MOy5rZipXXkhcaK0HM+VbL7SQtsFC89tD9F7riLKLfE=;
+	b=xQQ9K10SQ23OQ/83Wdy5S6WGQg64TMDyQyrDnXIEMjqyLwHpawM9dJh2y4KJa6cOdez5cv
+	oXG7bDOuVPWk+yHB7xnYC+E/mvnRmAEsLh9ybW5kPBHzyXwL3kd6dOrEFJY+K2Vd2cMRuR
+	7ao102v/Lqj/GJXKuCCyJ17Eq38tyao=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793195591;
-	b=zNEHLl9r2nlLgNGLEezz8BZf21afw0CeRSYOWgjPwPV4jSeAixn9CKEp/7b3PTxhkf7uYp
-	dUKDpQLjRT3gnp+0+3MHte2RL5xcKWA8WWxYuiARQdTNB3R12788C81CxmAFMdB82pHAtJ
-	R8MbAgCb4Q/I6Sp8E2mMzt9sXEqMoPI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793195591; x=1824731591;
-  h=date:from:to:cc:subject:message-id;
-  bh=2Z64tFbRRnl1NCtjyFnKTgAEOdfYuWwp0ABUWJPJORw=;
-  b=fNmqWDGmPNesshyALPu67u5sC1peQENkSHTcx8xa7E8yManW4xlIHVbe
-   9QHdCcKSyfEuOBqbDqbzLwT2ZkwQU5h0eTGprRpilYz/3CGeA4mQdq3Kq
-   fFT39Y7/BFI3X8GHgrkJd4sBsOLX2fdr4E+TpvtKQpEExDtXBZsX4gZ90
-   rVfAqYabtCjeL06f1OFUgFOUviKzGGGX5pupjtkzMngf2GLaoRygGRI+9
-   XbiKkgw0hQs4JeBeyEsuSdbI4NoX+Io/eii+FGTiVoEBiD12TQa8Vqxb8
-   920/McAHsW8e7VeJ8+GL2YPfR7PhpLxaD2suzVPwKu1aLNMsvefACjVXn
-   g==;
-X-CSE-ConnectionGUID: BafAlO2/SqytA/D2Zqgogg==
-X-CSE-MsgGUID: 9pnKa62jTZui9cVy2LxfBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1929214"
-X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="1929214"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 06:52:28 -0700
-X-CSE-ConnectionGUID: 2Avg18UPRyuai7Xu298GTg==
-X-CSE-MsgGUID: BPnWOelvSASUiH2YbGO2Wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="6666292"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa013.fm.intel.com with ESMTP; 28 Oct 2026 06:52:17 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xM44b-00000000Ymu-3Vzn;
-	Wed, 28 Oct 2026 13:52:13 +0000
-Date: Wed, 28 Oct 2026 21:51:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD SUCCESS
- 151a134a4e6ec66f69db8750c66006f5207f7a9d
-Message-ID: <202610282151.M2bNbEeR-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: A37D74000F
-X-Stat-Signature: kq48n53ncfpxqetuujny4myzeo4yr16y
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+	t=1793195800;
+	b=XT2gIEG1knhTtrhKbwPNLMfvjn/r7ttL30Ew+0fmdjydj7mW/OUccngLQubQErpC5+DoKW
+	tpN28F5m6eRmHywW9nhs62iszQFgIa28TlhkZ6m028Q9Lc7If6q9EpZ9gm8hfrqVxSF1P0
+	i8G6iDy/ugEh6YXTmRTOOW5Lc7T4BTk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FjOywHBV;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.23 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Gr1tCLiWG+AKW5n0i5TvbesSC1XjxBlWg6zWvuFNVus=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793195798; v=1; x=1793800598;
+ b=FjOywHBVm/r1Ws8hz8di1G6VXcyFBPKX3/ZbQXHGbvQYnNdmdsmw4W/23ya1cAPKMIWhh/vr
+ z1IPtP1g5OxWDX1g4Y3MiF7YNoOsAKUWqDTulbhdpbgffDlOz2taSs9RzeUvnDtqyo4yGSEHwi5
+ NxQz7fn62HZrS4DsgQ6OMmhY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id fb71a9c2f9e0e65d;
+	Wed, 28 Oct 2026 13:56:38 +0000
+X-Mizu-Trace-ID: fb71a9c2f9e0e65d
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH 2/3] mm/hugetlb: preserve CMA flag when returning folios
+ to the pool
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261028113319.38544-3-kaitao.cheng@linux.dev>
+Date: Wed, 28 Oct 2026 21:56:09 +0800
+Cc: Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Chris Down <chris@chrisdown.name>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0005A5C9-47ED-45EF-BEA8-2693DAA7C46E@linux.dev>
+References: <20261028113319.38544-1-kaitao.cheng@linux.dev>
+ <20261028113319.38544-3-kaitao.cheng@linux.dev>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>,
+ Zi Yan <ziy@nvidia.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 166251C000E
+X-Stat-Signature: 8spy9ukzqomzpeqi1cjuyiucy7wj7dmh
 X-Rspam-User: 
-X-HE-Tag: 1793195590-593319
-X-HE-Meta: U2FsdGVkX1+7kaYTDALt9K9qQ6d1/tL+/LUXDYcveBoEItQqJGrHGU/S1l5VvpoJaZOjHef+h9wHdfXn/IMXI+A6tOnqDG/paI0n0/0iA+2NcUI0cHoPPPIpnS23QlCH9eQ+8oXu8mH2oDdPojK0lPpj9VJmcn5GL5quPCvc41uL0GfFG/14AE3cA1oY23yO5LBjlor0oWu8HTLyHX/P7gmYP/JaT1ye9+gzBBBqKfi+S8RmDN/KCSZ4tDEfOJshsGqC7FPww3tz2eEEiuChVDupgcBCJO6/V6NIOnj/Brhy9lIoa9MPpsqecZKfup08ANkB1QPCGDL+zidaRtbUh/t4094V3zOh1F4vekKXD7cZ5sXIxQXd3gp/ZUlsmUKgVWOAY3Frhj2dkf9FjEjqmlgWrnbC/Hq4VScbeU4mMyxxqGHLP2gny3O007iqKGHi1EfGmvb2z4iS4jAPn5n6dpg7LlVrBfBW55gJDl3H3UVX7ormZ4fg7BZFINZyoudSPKjSFOPUuPnyBtgsSpG5OZV0kZPaj84IFPDysFlc7zOEEvB8aUC1pjD0HLeYjGqd3c5gxgbmVfacvdjh0KKlhylqohAP0c2gk5bYUjxrRlujhCYlZbYALy5WUtDEDkvMvYSjE69Gv6yg8EYLzwoHhZWgXZm4Qw38kg8GvCKe1YHURy25PgccKgaSo8V5ji23iF+LGYPZL4kQhbHLLd8ogbFdpL31uafkf0qKLK5Y0g9faGqeOmGD6XEZUHzBDQWz5v0oca605gEie+RzLT1onzT7o6rIIjyx7/nuq55AiUFywnO4ZY0uomdmclJIvjKYENQkvwQrdkuJlBuq2sAQ+dNDytICp+3henWPrfQSta972+z27Kt+++X5YKPRFy2ocJ86iQCNpFCqmRv599uFCvkvSwobxYX0kgMTDwzt0J0TN0zdwtTPcNju/gyYJP3nIYu6ZGIz6x4MeZGsNGg
- 1XSfo1q2
- Z4uUmmniiKkFpsF+OCedFawOcHKGSUpKr1BZGsq6PTQB9n/SfBpxRh3cRNYJJPTPTy6KvuftaD4BX7XGqiw8gLwZh/Bnvvh58KDir8mncMDu/Jm3Bd3HAzJs8oWF14Iu3HMnXrZsHkwW4BZFA+g8hf7ELFNdVQF/1YeuMES/Ci1kuNdjP5kkkeyBehJIl2/VXtXMrH0Qs3RNM5U4=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793195799-436101
+X-HE-Meta: U2FsdGVkX1/c3ggQ9e8EsyhC2DHrWopU5pDFZPEqsOEz+1bsTzfvCi0OH6LKts0OopyCYz1ZkK0M6iqAqWBKb3/pU3VHYpkCDr9C2J8T7MTWafaYGU+2HHiq5aoPpQIjalWcscb8Xb+nj6DqMZKypmQ8j/CQKbRjvSLeAcdRgw5it/v2405pIhNOI3V9g0mP5b7Q396hTpqgCCHK8oDqibyIXtR90BOL8iFz6XB4aU81aEq4+ZI0tklPYvaw82GfZ8meQR8ZumQorUXmKeD7DsZKsdadWDs0IxiL1mBCu4QDYdh+0xMvJac7vkAJiU7slKxca9wIzPhATaA1b6bzbyah0zq23a2ThugW/VUDRG4R8BYquwMH8vTQIPD3d5MwLIjQPv2dy4FuYJuRZvLFNOIflZn7Xdt1W6udNRjSZJeD3m7CP4NFiuiV38ZitwxAqdr9RA4ETkFBdytSiyuyiZ/9cmTEJZKPnKLjQnIn5xxiLk+9ctrQV3IvFkC459Id6lVmg0UQU67vvOOX4/wjK5MbMjSSB0nyIXRchgt59QRme3QDmic+20OseM3jaP/7bwjr4oDqTzdAFNpbFE8Mq+3hWcN+ZtwNCMxoei9zJzHoGbLo6znHjnrxrbAxLONs4J5ACLi8KGxDJjl3RAHGT5VF/9X8SqMhTeRc50JR/N80fhND0k+vmrbgzwCwM2aMm1vcTAcoFgDSGxj5jVP2yYyVCwkisRQDvknazkqo0w7uk7EQX2864hr6SDxlUKYkOvH+Yyj7mY38wg0yRdU5HpzwdavasqAG8YIQ9D5e/xcWbwHAPM/DU+QSJBsXLkNnvsCAYov4lMx2/2JF8Sbv87mogNPOwnoIip+QQi+BbqpnET27+FFL65UNPRS2eKk15ubrhO9HIhxDhe57Krv2eflQ3dNSz1R1FC3xg8IH+CiHU8v2xzb6rHm+HJ6MXJ82zViSdU+ddvQHKLMndIw
+ 7B9w5VgE
+ Zdi+k2MKvT2id4l2Xl7EeaFEzhWJKXJe4ez9XRwfiZEvm45QQpWN5lbOOofKqjOVtAcRF9JM0B+FOrcJ8HvHlyPs0vfPaSdvfgcAMzx2DD/yHVB0RHJ6oLV3CNrPzEFn3pwovQxHJ/WW86jFS0VedWSX20neh//Neuf0wUYmNgz7LAyZsbSvveE4GJZPtS4a2I0YwbgHIsWsZzAmYVudPEbN+xAykZyCKu35W+gvUsxmW96l20HTMOy7uX5yHp0yFQcqKx3tjJQulRr7ekrfDsySwJ+zdFz7bEH05u7gX4++HoM5+nqo7ejrLy60MqA3dPe1XWCSkPGXOk32SGBQv9y9Hza5FX17QgpG6FtgMbBYPKBMo0Y6kkAQ5/PSZSPe5XXVf+Gcy4vReJiFBW7mZp4p9P/rDktalnGfbaMV+xmVj7Dw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,159 +107,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 151a134a4e6ec66f69db8750c66006f5207f7a9d  Add linux-next specific files for 20261027
 
-elapsed time: 865m
 
-configs tested: 137
-configs skipped: 9
+> On Oct 28, 2026, at 19:33, Kaitao Cheng <kaitao.cheng@linux.dev> =
+wrote:
+>=20
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>=20
+> When vmemmap restoration fails, add_hugetlb_folio() returns the folio
+> to the hugetlb pool. It clears folio->private and restores only
+> HPG_vmemmap_optimized, losing HPG_cma on CMA-allocated folios.
+>=20
+> A later successful free then bypasses hugetlb_cma_free_frozen_folio()
+> and returns the pages through free_frozen_pages(). The CMA allocation
+> bitmap remains set, so the range is unavailable for future CMA
+> allocations.
+>=20
+> Save the CMA flag before resetting folio->private and restore it along
+> with the vmemmap optimization flag.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+We already knew this issue. Cc Zi Yan. Seems he hasn't sent a fix.
 
-tested configs:
-alpha                              allnoconfig    gcc-16.2.0
-alpha                             allyesconfig    gcc-16.2.0
-alpha                                defconfig    gcc-16.2.0
-arc                               allmodconfig    gcc-16.2.0
-arc                                allnoconfig    gcc-16.2.0
-arc                               allyesconfig    gcc-16.2.0
-arc                                  defconfig    gcc-16.2.0
-arc                   randconfig-1000-20261028    gcc-8.5.0
-arc                   randconfig-1001-20261028    gcc-15.3.0
-arm                                allnoconfig    clang-17
-arm                               allyesconfig    gcc-16.2.0
-arm                                  defconfig    clang-24
-arm                   randconfig-1000-20261028    clang-24
-arm                   randconfig-1001-20261028    gcc-10.5.0
-arm                   randconfig-1002-20261028    gcc-11.5.0
-arm                   randconfig-1003-20261028    gcc-8.5.0
-arm64                              allnoconfig    gcc-16.2.0
-arm64                                defconfig    gcc-16.2.0
-csky                              allmodconfig    gcc-16.2.0
-csky                               allnoconfig    gcc-16.2.0
-csky                                 defconfig    gcc-16.2.0
-hexagon                           allmodconfig    clang-24
-hexagon                            allnoconfig    clang-24
-hexagon                              defconfig    clang-24
-hexagon               randconfig-1000-20261028    clang-24
-hexagon               randconfig-1001-20261028    clang-17
-i386                              allmodconfig    gcc-14
-i386                               allnoconfig    gcc-14
-i386                              allyesconfig    gcc-14
-i386        buildonly-randconfig-1000-20261028    clang-22
-i386        buildonly-randconfig-1001-20261028    gcc-13
-i386        buildonly-randconfig-1002-20261028    clang-22
-i386        buildonly-randconfig-1003-20261028    clang-22
-i386        buildonly-randconfig-1004-20261028    clang-22
-i386        buildonly-randconfig-1005-20261028    clang-22
-i386                                 defconfig    clang-22
-i386                  randconfig-1000-20261028    clang-22
-i386                  randconfig-1001-20261028    gcc-13
-i386                  randconfig-1002-20261028    gcc-14
-i386                  randconfig-1003-20261028    gcc-14
-i386                  randconfig-1004-20261028    clang-22
-i386                  randconfig-1005-20261028    clang-22
-i386                  randconfig-1006-20261028    clang-22
-loongarch                          allnoconfig    clang-20
-loongarch             randconfig-1000-20261028    clang-20
-loongarch             randconfig-1001-20261028    clang-24
-m68k                              allmodconfig    gcc-16.2.0
-m68k                               allnoconfig    gcc-16.2.0
-m68k                              allyesconfig    gcc-16.2.0
-microblaze                         allnoconfig    gcc-16.2.0
-microblaze                        allyesconfig    gcc-16.2.0
-mips                              allmodconfig    gcc-16.2.0
-mips                               allnoconfig    gcc-16.2.0
-mips                              allyesconfig    gcc-16.2.0
-nios2                             allmodconfig    gcc-11.5.0
-nios2                              allnoconfig    gcc-11.5.0
-nios2                 randconfig-1000-20261028    gcc-9.5.0
-nios2                 randconfig-1001-20261028    gcc-11.5.0
-openrisc                          allmodconfig    gcc-16.2.0
-openrisc                           allnoconfig    gcc-16.2.0
-openrisc                             defconfig    gcc-16.2.0
-parisc                            allmodconfig    gcc-16.2.0
-parisc                             allnoconfig    gcc-16.2.0
-parisc                            allyesconfig    gcc-16.2.0
-parisc                               defconfig    gcc-16.2.0
-parisc                randconfig-1000-20261028    gcc-15.3.0
-parisc                randconfig-1001-20261028    gcc-9.5.0
-powerpc                           allmodconfig    gcc-16.2.0
-powerpc                            allnoconfig    gcc-16.2.0
-powerpc               randconfig-1000-20261028    clang-24
-powerpc               randconfig-1001-20261028    clang-24
-powerpc64             randconfig-1000-20261028    gcc-10.5.0
-powerpc64             randconfig-1001-20261028    clang-19
-riscv                              allnoconfig    gcc-16.2.0
-riscv                             allyesconfig    clang-24
-riscv                                defconfig    clang-24
-s390                              allmodconfig    clang-24
-s390                               allnoconfig    clang-24
-s390                              allyesconfig    gcc-16.2.0
-s390                                 defconfig    clang-18
-sh                                allmodconfig    gcc-16.2.0
-sh                                 allnoconfig    gcc-16.2.0
-sh                                allyesconfig    gcc-16.2.0
-sh                                   defconfig    gcc-16.2.0
-sparc                              allnoconfig    gcc-16.2.0
-sparc                                defconfig    gcc-16.2.0
-sparc                 randconfig-1001-20261028    gcc-8.5.0
-sparc64                           allmodconfig    clang-20
-sparc64                              defconfig    clang-24
-sparc64               randconfig-1000-20261028    clang-21
-sparc64               randconfig-1001-20261028    clang-20
-um                                allmodconfig    clang-17
-um                                 allnoconfig    clang-17
-um                                allyesconfig    gcc-14
-um                                   defconfig    clang-24
-um                              i386_defconfig    gcc-14
-um                    randconfig-1000-20261028    clang-19
-um                    randconfig-1001-20261028    gcc-12
-um                            x86_64_defconfig    clang-24
-x86_64                             allnoconfig    clang-22
-x86_64      buildonly-randconfig-1000-20261028    clang-22
-x86_64      buildonly-randconfig-1001-20261028    clang-22
-x86_64      buildonly-randconfig-1002-20261028    gcc-14
-x86_64      buildonly-randconfig-1003-20261028    gcc-14
-x86_64      buildonly-randconfig-1004-20261028    gcc-14
-x86_64      buildonly-randconfig-1005-20261028    gcc-14
-x86_64                               defconfig    gcc-14
-x86_64                                   kexec    clang-22
-x86_64                randconfig-1000-20261028    gcc-14
-x86_64                randconfig-1001-20261028    clang-22
-x86_64                randconfig-1002-20261028    clang-22
-x86_64                randconfig-1003-20261028    clang-22
-x86_64                randconfig-1004-20261028    clang-22
-x86_64                randconfig-1005-20261028    gcc-14
-x86_64                randconfig-1006-20261028    gcc-14
-x86_64                randconfig-1007-20261028    gcc-14
-x86_64                randconfig-1008-20261028    clang-22
-x86_64                randconfig-1009-20261028    clang-22
-x86_64                randconfig-1010-20261028    gcc-14
-x86_64                randconfig-1011-20261028    gcc-14
-x86_64                randconfig-1012-20261028    gcc-14
-x86_64                randconfig-1013-20261028    gcc-14
-x86_64                randconfig-1014-20261028    gcc-12
-x86_64                randconfig-1015-20261028    gcc-14
-x86_64                randconfig-1016-20261028    gcc-14
-x86_64                randconfig-1017-20261028    gcc-14
-x86_64                                rhel-9.4    gcc-14
-x86_64                            rhel-9.4-bpf    gcc-14
-x86_64                           rhel-9.4-func    gcc-14
-x86_64                     rhel-9.4-kselftests    gcc-14
-x86_64                          rhel-9.4-kunit    gcc-14
-x86_64                            rhel-9.4-ltp    gcc-14
-x86_64                           rhel-9.4-rust    clang-22
-xtensa                             allnoconfig    gcc-16.2.0
-xtensa                            allyesconfig    gcc-16.2.0
-xtensa                randconfig-1000-20261028    gcc-11.5.0
-xtensa                randconfig-1001-20261028    gcc-8.5.0
+But we want a different solution. See:
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+=
+https://lore.kernel.org/linux-mm/A1A14368-7A43-40ED-B2AB-C2EC2C5FFB1D@linu=
+x.dev/
+
+Thanks,
+Muchun
+
+>=20
+> Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA =
+areas")
+> Closes: =
+https://sashiko.dev/#/bug/linux-5363eb09-9c3c-4f8b-9f3c-a998a8c4b258
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> ---
+> mm/hugetlb.c | 5 ++++-
+> 1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4a008afaedf9..8da4bab676c9 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1437,6 +1437,7 @@ void remove_hugetlb_folio(struct hstate *h, =
+struct folio *folio,
+> void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+> 		       bool adjust_surplus)
+> {
+> +	bool cma =3D folio_test_hugetlb_cma(folio);
+> 	int nid =3D folio_nid(folio);
+>=20
+> 	VM_BUG_ON_FOLIO(!folio_test_hugetlb_vmemmap_optimized(folio), =
+folio);
+> @@ -1453,9 +1454,11 @@ void add_hugetlb_folio(struct hstate *h, struct =
+folio *folio,
+> 	}
+>=20
+> 	__folio_set_hugetlb(folio);
+> -	/* Clear all folio->private flags except =
+hugetlb_vmemmap_optimized. */
+> +	/* Preserve the vmemmap optimization state and CMA allocation =
+origin. */
+> 	folio->private =3D NULL;
+> 	folio_set_hugetlb_vmemmap_optimized(folio);
+> +	if (cma)
+> +		folio_set_hugetlb_cma(folio);
+>=20
+> 	arch_clear_hugetlb_flags(folio);
+> 	enqueue_hugetlb_folio(h, folio);
+> --=20
+> 2.53.0
+>=20
+
 
