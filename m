@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67587606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEA2606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MOR3fC9x
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IsO8Jxrx
 Received: by kanga.kvack.org (Postfix)
-	id 673FE6B05B8; Thu, 29 Oct 2026 15:45:01 -0400 (EDT)
+	id B57DF6B05B5; Thu, 29 Oct 2026 15:45:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FF5B6B05BA; Thu, 29 Oct 2026 15:45:01 -0400 (EDT)
+	id B09B56B05B9; Thu, 29 Oct 2026 15:45:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 542576B05B9; Thu, 29 Oct 2026 15:45:01 -0400 (EDT)
+	id A454F6B05BA; Thu, 29 Oct 2026 15:45:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1546A6B05B5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A9246B05B5
 	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:45:01 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A0F940544
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:45:00 +0000 (UTC)
-X-FDA: 85376691960.30.BF4C3EF
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C6C47180008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:44:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=MOR3fC9x;
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8E71160459
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:44:57 +0000 (UTC)
+X-FDA: 85376691834.25.E2CB9C2
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1017540009
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:44:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=IsO8Jxrx;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3OaLjagYKCGoScVQgcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--kuniyu.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3OaLjagYKCGoScVQgcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--kuniyu.bounces.google.com
+	spf=pass (imf27.hostedemail.com: domain of 3NqLjagYKCGcPZSNdZLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--kuniyu.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3NqLjagYKCGcPZSNdZLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--kuniyu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793303098;
+	s=arc-20220608; t=1793303096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TFoNYJUi96cxZ7GAHijH9uanPv7mqKBvmKJStUGrtrk=;
-	b=uNILwYg4jftgonBkcJ+sEsR/tTaJcEMdN3M1IgEZmc7O0Ka2Dvpq1KVt1JMvQMStGlclM9
-	sd8QQbHMN/VxaHf543Aa0DyRau4L5NyMRT7+y1rIc7oVxDW7CpHm9C7aeoG7JnLTUfl5mO
-	rcIkLn5TvMshhNOE8QIBocOh+fCymio=
+	bh=XKP9XqF6WNttRjhAQCndRzAJLGq8oPUqGtmSvk9voCs=;
+	b=iGyy40HnamE0l1LU/KSrL0tCkoz2q6Ja2+a1LcZ1b5GTslUx+1iRBMynO8yMIsHZCaUD3F
+	CRQIydyGGhxpm3wwNFqCsxRA1Te7mBGFxLsTEoabjcbTsuMgSTt/XGWg/9pyrsTT5zqz/H
+	aeMfIL3u2jJWnIf7OB3TEjPMRwlrKZY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=MOR3fC9x;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=IsO8Jxrx;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3OaLjagYKCGoScVQgcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--kuniyu.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3OaLjagYKCGoScVQgcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--kuniyu.bounces.google.com
+	spf=pass (imf27.hostedemail.com: domain of 3NqLjagYKCGcPZSNdZLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--kuniyu.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3NqLjagYKCGcPZSNdZLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--kuniyu.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793303098;
-	b=ov6awXGXDkQJUeoukYcsJ9IxCSeQ1K8VOmzks0B6juXPUJvikzjH3vjvqCCHiqCi+tP7xL
-	VxISd/M9Z7nQQXtoT8yEhPmocHDxYZD3aQ6kWgDk8GgyAu9u1qmmhOmxCfZhUzHiZFaxl8
-	DThOXOr41+GcuYCvB6lU6PgDspIuA+g=
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d02df2bf09so46905ad.0
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:44:58 -0700 (PDT)
+	t=1793303096;
+	b=CoJZDTk11z1HO2BXv9s9biQP/pf3uAs8F2TzFKgb0bn/HYlLTeHBRrcMg9KKplMNh5D2Ux
+	cPcqnvx5TEB9gqZEMTlAUHuFh1zQrgAOeBMSVYMtc5GuS3FWkLfN/p64F6JpmfXkXYjxyA
+	IUcGuY2g+v89u33X0/qI8Wo+XFVWSZM=
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ada8bc8575so4363860a91.3
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:44:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793303098; x=1793907898; darn=kvack.org;
+        d=google.com; s=20260707; t=1793303095; x=1793907895; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TFoNYJUi96cxZ7GAHijH9uanPv7mqKBvmKJStUGrtrk=;
-        b=MOR3fC9xYmIegqfo1CnrllrSkluv5zt4XpDI4VYSvTyt7roDzk9box/K/9zSbyczFc
-         9HGM4Atzzqwhc+7PyOUQEQuegiCJr9EXMXUYD7v4MwxM8Env2zR5oS0Oy+p/kML3Ja5T
-         oQarJ9qzEs2eWKbupFmNt2M88QOF5S18U2xeV17NSz14KSVOvGdp78GCFYZ6BBkcAd2p
-         yNDWID6q5Ny57CGeda/WGUXkwOMVwsloAW6gSZ7ycAAS5eR0nci1L647z/u0hPj4yrmW
-         T90RIDPzdm3BPLDeFhW0PSV/42cE5UO2tBE5EFCPwqD+blSVqBh/P5CgRQUPZODUdT6B
-         5v4A==
+        bh=XKP9XqF6WNttRjhAQCndRzAJLGq8oPUqGtmSvk9voCs=;
+        b=IsO8JxrxNKXP7Y+Zfyh7b6ULMVORJ8c4Ve/Tj2/XwkIGbz4Ywpyla051eJKU7OQ0YS
+         gmnvw0vWjz84q2U5uhL1Td0ahGvuxkQ8m+JfMaQNihzVsrNfN3HN6o9tDm4QEPswUI7z
+         1Mf52yMTrxuSGnplEFRYtGfauyspbTmv/8BtD1mvWMNR0m802EKMvQF2jUWRVxH8kKz0
+         v27vgnh0kmf9VKlX7Jp2TbYgkrbcPfwfrr0viD+gpidR9XwD6+hxzxqF8ylQMfHrCsAm
+         KqGEyFqRaBa+SU55IyCMQFK3D1QpA9Sgb4ktgLDh3m+GKpPnb8HeiCuSEjPgf1X5PzwO
+         piLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793303098; x=1793907898;
+        d=1e100.net; s=20260707; t=1793303095; x=1793907895;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TFoNYJUi96cxZ7GAHijH9uanPv7mqKBvmKJStUGrtrk=;
-        b=GidgReyxQ6x/3X3hx3stY1oYrBsXWPKXd37eBmZc7Cthzzra88xcHmV62hZDoVTVh1
-         rz1kpDMcP/+f6iuZZWCWjAxswdP5gByy5jjIxeREdhGOajFXF+7aRDHbRo+KfBTsp/yS
-         dWVk6pxmoYPEBxXbOe9b3ZI2/80YbjZbeEHbNMPvh3epo9wXe6E6th23eLDLQy6lJHDY
-         vXvsSqRKfmPTX/Go3UU5bVVKPhpCg/AcjK2Lm0V4DlZb01QuFDI4W6Fx6IadGafCYVjY
-         lcp7GlEkynmAkL8LMlLZukWNhNLZctXPOQkfP6+qR28QkmFNy2Na/W5l2GV8fYHr7v8P
-         rjdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzWFmQcvXg0nwUI6J3YNtHhcMUskWXwQVzgmYRGzGZ9Xy1J1YSoysShFRYk9G8KWkt7JR+yANTAPQ==@kvack.org
-X-Gm-Message-State: AFq9FYIwZvyLgetmT5FKgn3VsxoXfcvVcn6wxJzFi31A4XBr7omB5DCt
-	iFbpn6KmnmD/0v++nuICxI6BOl9ckh2z60zdUMiBhG96Y6t07PALUNS6iJ0a253Z058+jwQuAF6
-	U1OE+fw==
-X-Received: from pgfd10-n1.prod.google.com ([2002:a05:6a02:654a:10b0:cd8:ba74:813f])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6b8c:b0:3dd:85a8:cad3
- with SMTP id adf61e73a8af0-3e9289ce7c5mr283305637.42.1793303097365; Thu, 29
- Oct 2026 12:44:57 -0700 (PDT)
-Date: Thu, 29 Oct 2026 19:44:15 +0000
+        bh=XKP9XqF6WNttRjhAQCndRzAJLGq8oPUqGtmSvk9voCs=;
+        b=JO4GsfBoH56cbGDEB0YALXWwipc/74OqpgYm4pTpJlKEo9l78z2rKAoV7pMkG6G85M
+         26/6Q7Jsaci5emUOFGtmej6Qwax3Whsn8makb2C7ue2SoAqjLYS+7Md7fndQp6Jhs3a+
+         arUuOdB6RCS6fzvR95iCQTe1QaPcqZsXZmHRoc9/1CDpWESjgeFn/NVLtBc2yiwmM47/
+         1V5wXiP+f2AqSPPDFvgiJ1Vwr3qPWfU5dozO6rczbnlHURnPsorGw1hwWNozlsw2yWXh
+         iKa33gG8IFzcGAi69eeFoc4/kHafEqhY1IDM6kFflYRfJQ3/qZLe130mcSLc/eExLZRj
+         alVg==
+X-Forwarded-Encrypted: i=1; AKwUvBwzBklEU+KqMivLXJzZ7Ydc87x8v300RX/xW2O+Km8/WaWx+RXm/bjL8uOFYgG4IR59Uk4qikrADw==@kvack.org
+X-Gm-Message-State: AFq9FYIE3Cw1JcVxAiXR8T7HBGpnMayHbr1lGC7YoESplB/Njlzlk8mM
+	Owj/BOvw4lmYpUblkY39aDSDVMHLIASnPfee9xpX1e5kGL8IYEo9H8GAweWppsbOT0OmXvUTCLQ
+	vMYDAQA==
+X-Received: from pjso24.prod.google.com ([2002:a17:90a:c098:b0:3a8:837d:95c7])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2891:b0:3ab:2c2b:1026
+ with SMTP id 98e67ed59e1d1-3ae580a1c9dmr5741824a91.34.1793303094831; Thu, 29
+ Oct 2026 12:44:54 -0700 (PDT)
+Date: Thu, 29 Oct 2026 19:44:12 +0000
 In-Reply-To: <20261029194452.3189365-1-kuniyu@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261029194452.3189365-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261029194452.3189365-5-kuniyu@google.com>
-Subject: [PATCH v3 4/4] memcg: Uncharge pages outside memcg_stock.lock in refill_stock().
+Message-ID: <20261029194452.3189365-2-kuniyu@google.com>
+Subject: [PATCH v3 1/4] memcg: Remove unnecessary READ_ONCE() under memcg_stock.lock.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
 	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
@@ -94,19 +94,19 @@ To: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.o
 Cc: Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuniyu@google.com>, 
 	Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C6C47180008
-X-Stat-Signature: 58gikr3aupchu71974977ti6wk64ozi4
+X-Rspamd-Queue-Id: 1017540009
+X-Stat-Signature: c7e8hayxwhhe4thy4g6hps7m1w84s1g6
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793303098-110751
-X-HE-Meta: U2FsdGVkX1/yv8IBDaBCv7Rkc9k+JkJqDvatjOIu2FT4U+d638AYrc86eKDseIKW0mQKLeC73Ih38Q8S/WpJhrVCi2SRYbcVL7wkPo1BYQKtTYmhfqtA2HTEXHTpeW3YcAGzemVeTNy/vb+pv0Zjn+kMcCjPuPEQVlnq3ThUpm3yZs1YjlGUIENQXGtYkbwFT7IOP3o8SKq0ojyA+THKoHGOrv9raqFkUXiuzMlDXjSGj3rS8eK11K+z5vMYx6V12TiFyaPGhNYSaS+myHPwN25PgFCyAaG8klLiCWK5udkH9WdmWyjNw+6Gw4AEZkxEIhBA4eWX4lvg+EvleclTzP2xNN74+3aK8Dxv4vzwZMCEeTwy0w0k/VkCL1wZ+NNhI8WiKBioDz+eJhNcUF+tnD/tKlj+49uihYasuqJXoXoTW3dFAUTPpbc4zdfJ3BbIxJr3S2V2YV99A+5oAq1/ZD/D26xVy/BNghBg6VQb5eTGW+xtTYVeYd39NJ0ZRYd/bOCXYGFlrANyt35Rv/nWF2TkEo2uQDLtdcJmKQ12I0EVdK7YlypzNjA1Dnbs+ZCO+sCzyvqzAsnsOTU/wAT6XTg/rg8B4h9CZDFSClieaXhazlATOApSqJVtKt8HzfSJsoXf0YT5pm0S/u1ag7lowU/r17tpwTIm2omLAQJwSpBmNVEbOSmN0ymRFiHgcQEThi1jVvvvHYgopv3oV+BXcgtX2bD2YPWQ8gAEit7CLyee6nD8ybg5I4OJB+Hpdlf1OgzGok+bJjE4TaKjht9NyA5gIedsV0OYZuJfAMPAQR9nkpUMn/EM+OrWK4dMy53nzprHNuq9KOrqI4cLfWMCvkk08ADwQutv5+cczErzooZ6eAp3/5BIt5PWx4TnwODgX2RIiSyonNvHAEixZEOqs1Ks0HFrhNWjfOPl+sEYyqclLu5XkzKQfYSkMWLY8NXH+JkY8oG9BJuZyExO8uZ
- eoW2nI4t
- wa8iYfnOSsbSeVG/a/43bMOZ3Y9vI8z5jMsnSl8dMJUWJBOfZrfXSfSqCQ3nNaLEuOxQfCZm+Da3O+xi7zXMgxUERt4Ln7Bo50DcUT27Q/UGuLyJMXdPPs5JMi9k5wmc/RU0NuYJ73JXGW4StdRA0I6ifpQ4FzzQQ48HbePR3pEs9Zb4fji1URIk6RkaOTWaOK/u9IIpFxKgQeGAvdd6w8EzYCCW+TqXvgd0cmDa1z+SqLVgZ4YwEjT2oEsurlSls/Ym3e6sNeBjjEYS+9uCFYmDfnkGe7dSj1uj9EPHoWXD13ZgYMyMi+aUFGfZDde/INytPUXCrcGRbg6Fu447zf8IoMqMo7z3Pahvmffw5TSe1c3J/RN28pf8Cp+0oEm+kTWM0oLGM0blCJ7gJQHms0FEVEGuJQIJFY/EjPYS98FDg1WZVQnt3HE0+oB6ye1r9jtnQaJBUSoz/e18bcWDZHB1QuV9Pd9ZKeqkvyqE/gAQm0g7LeoFwB230kQuiNg2zmCLG/S3F+HWpmy2LFllImKFZbbCsMxFiVjMkt00HLLZYokaVRjOlbNuHThfn/eJTef3flyHA92McAX9OJDX1KrdOmFql2SfYHK7rB/f4kO9YS8xO5LY8aA7jTA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793303095-41884
+X-HE-Meta: U2FsdGVkX18NuYzQk6zoDkUJ4vJJ3hADfzNyB7EMyxt78ATrvUnF1zz4wY0Uz/7CLCebmPGtvF7g6NA7wJ/6zGdsPqeWomP/AB47g3333pEBq0U69SW4qbHO7JLxHNYAEo567AhgUCxSP+ghjEjvhIrxPtO6RXwdi35hTYme5vmNCzyvPHlfvw1++OI5qLWr8rtxl+XTuApCOlR0Z0WaJ8XIXTFpEISp3FGNPS1/PV1eT1O/W2Vr2mu2xwhD+cNwB6dURho4LRgaTzJLniswIl3OJDbOPNwAQUK8COecIQtjG1sutg039MgOcvvYs1cYCqXzGQb1SgSb9gdxAGoEcPjTXCkfjjfagXxqbZd+gEUNcq9I409kR0/q7d9k4nHTWrDc6jc0HZc+fMMgD3w+Bi+Csz8pb8ZzWcHnd7k3JuTD3OCBDmnQOjLvTL4N/aAq4RPOPpF27SOyoE7Ahxz6Vick44g39ylGBSsq62B/Ifoatu6mqNRYmcbv+1rqNi07zf1Vl5Brdrp4CjV2vsoQxDJ0XTrGbo98bLmUDfJ5nPfXvppdzpUf7ks+FEhoIma/ISGg5T5usOsZYu/T/eu42GrpYymn3Jo4G5KOgW9dxpCjPqRcVojwmREgP8AFpbQMx911OItOog4KaQZyZdQ3YFF7n83N9xU2yEq5YYMUaqFmktrRW+B+AiF5T3d1LMUecM338TDyiwq/H5BhgBHRGs09gzccRI7CCG2Giskopv/2Aob7yPYl6wlnKfpBE9CJWck3AEmWLeZOC6uxpVlQY4u+2doNaapRJJUTk3tqKBtCfUyh7Q61Uc5NG2+k0t4AvU4cS56Gu6py8oM6pLAl67k12kJgyln850hiDo4QfvRkBSRMfBoMp6kR+Uv+XTWme3WMrHLSCfXbE7nQm9HtxxfJYsgO4Srb3KFSz1MXWeeyNIO3qNTlOCQhIdLYzPHXoF+9LsfSAzUNYtsba9M
+ 5+ThUN6K
+ oo/fnjezJqNnPdxn/PwwyfdR/jSFoduTH66hMb+I3wMulhTdZsQM7xs/N05WOBGetMdpd37TpCMXxbCMnaRAeNK/qbGA99AWLwtCpXewW9tokVtyLMPmd3NMAeMB0MPMdOnzzfH9I+ZvFCaNRAgjDPRVu0aBTqcfD/wluO+pjA1DuoiMXSWBgWR9VZNrbO7H4vLHW7D6adtCwJXXYa9EMOznpt+88c2eSDlO2wJ0MkeC3dWvgzNiWiSiQtZgMfMMx17jSwwn5dfDkgkpE0F85hBAMYs0bCqEnj073JHaPobMrlhFejGdGX4GMzIxVncp87ehLNRlJ8mUWkIzN5rgvbhGkvrizmUlT9D36adc7HD49u3hC+eeUdPTcqVJlrAd+TDesw+HUvAtnxX/XCASQd1ZNCHSLm+Kl8TRKA4NuRaD2eVr405jqdXt1dYXhzOvhUJfaG8qyvdQM7M2TKUQshfB4bWJLMCTdpkKi2G5upi+rSloDJ4ZgYEVH1uNvSNjLogOS7EbXb2ZbXjYYWDQRsUFkFGWB6+5UDk+2cHE7/cnZpILMZ+ll7lyFBtvEu859YS7m+a09gVeCftPzmuWhDXY97vthKw1hBP5HaBxtCQeLcEr/biHyAfLeniY6/3MOSb6N6woLCToSdjiauMJ0mJn/vwLyL0uW7oxp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,148 +115,90 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On host w/ AMD EPYC 9B45 128-Core Processor (Zen 5 Turin,
-2 sockets, 512 vCPUs), tcp_rr w/ 20000 flows throughput often
-degrades by ~50%, 32M -> 17M~27M.
+this_cpu_ptr(&memcg_stock)->{cached[],nr_pages[]} are always
+modified under local_lock(&memcg_stock.lock).
 
-In the bad case, the number of involuntary context switches
-was extremely high by 12x (241733 -> 3093367).
+Unlike is_memcg_drain_needed() under RCU, consume_stock(),
+drain_stock(), and refill_stock() do not need READ_ONCE().
 
-In perf record, 96% samples had the same pattern, where the
-thread was interrupted during page_counter_uncharge() by softirq,
-and later ksoftirqd was woken up:
+Especially, in refill_stock(), READ_ONCE() is used twice for
+stock->cached[i], which forces the compiler to emit two volatile
+loads from stock->cached[i].
 
-  # perf record -C 0-15 -e sched:sched_wakeup -g \
-      -o /tmp/sched_wakeup.data -- sleep 1
-  # perf report -i /tmp/sched_wakeup.data --stdio --no-children
-    96.36%  tcp_rr   [kernel.kallsyms]  [k] wake_up_process
-            |
-            ---wake_up_process
-               |
-                --96.00%--irq_exit_rcu
-                          |
-                           --95.82%--sysvec_call_function_single
-                                     asm_sysvec_call_function_single
-                                     |
-                                      --95.58%--page_counter_uncharge
-                                                mem_cgroup_sk_uncharge
-                                                sock_rfree
-                                                tcp_recvmsg
-                                                __x64_sys_recvfrom
-                                                do_syscall_64
-                                                entry_SYSCALL_64_after_hwframe
+Let's remove the unnecessary READ_ONCE() and eliminate the
+redundant loads in refill_stock():
 
-  # perf script -i /tmp/sched_wakeup.data | grep -A 20 "comm=ksoftirqd"
-  tcp_rr  101952 [001]  9679.340985: sched:sched_wakeup: comm=ksoftirqd/1 pid=23 prio=120 target_cpu=001
-  	ffffffffb64cd0cc wake_up_process+0xe6c ([kernel.kallsyms])
-  	ffffffffb64cb034 irq_exit_rcu+0x264 ([kernel.kallsyms])
-  	ffffffffb68ad31c sysvec_call_function_single+0xcc ([kernel.kallsyms])
-  	ffffffffb560158a asm_sysvec_call_function_single+0x1a ([kernel.kallsyms])
-  	ffffffffb653c4ce page_counter_uncharge+0x2e ([kernel.kallsyms])
-  	ffffffffb6541b28 mem_cgroup_sk_uncharge+0x3c8 ([kernel.kallsyms])
-  	ffffffffb6561383 sock_rfree+0x83 ([kernel.kallsyms])
-  	ffffffffb6577faf tcp_recvmsg+0x2ff ([kernel.kallsyms])
-  	ffffffffb65604d9 __x64_sys_recvfrom+0x159 ([kernel.kallsyms])
+Before:
 
-The problem is that when stock_pages exceeds MEMCG_STOCK_HIGH
-or all slots in struct memcg_stock_pcp are full, refill_stock()
-calls memcg_uncharge() or drain_stock() while holding
-memcg_stock.lock.
+  cached = READ_ONCE(stock->cached[i]);
+   4c 8b 80 88 d7 bd 84 	movq	-0x7b422878(%rax), %r8
+  if (memcg == READ_ONCE(stock->cached[i])) {
+   48 3b 98 88 d7 bd 84 	cmpq	-0x7b422878(%rax), %rbx
+   0f 84 86 01 00 00    	je	0xffffffff817d01e0 <refill_stock+0x210>
 
-Because local_trylock() only disables preemption and leaves
-interrupts and softirqs enabled, an RPS IPI arriving while
-refill_stock() stalls on page_counter_uncharge() invokes
-NET_RX_SOFTIRQ (process_backlog()) on the same CPU while
-memcg_stock.lock is held.
+After:
 
-Every incoming packet in process_backlog() then fails
-local_trylock() in consume_stock() and falls back to
-try_charge_memcg() and refill_stock(), hammering the global
-page_counter atomic twice per packet, and slow processing
-finally wakes up ksoftirqd.
-
-Let's move memcg_uncharge() and css_put() outside
-local_unlock(&memcg_stock.lock) in refill_stock().
-
-With the change, the flakiness disappeared on the 512 vCPU platform.
-
-In addition, on machine w/ AMD EPYC 7B12 64-Core Processor (Zen 2
-Rome, 2 sockets, 256 vCPU), tcp_rr w/ 10000 flows achieves 36% more
-throughput with lower latency.
-
-  tcp_rr (10000 flows, 128 threads, 60s, average of 3 runs):
-
-  Metric                     |       Baseline |    Patched |    Diff
-  ---------------------------+----------------+------------+--------
-  Throughput (RPS)           |     20,884,499 | 28,453,051 | +36.24%
-  Latency Mean (us)          |         478.46 |     351.07 | -26.63%
-  Latency p50 (us)           |         453.96 |     343.04 | -24.43%
-  Latency p90 (us)           |         669.00 |     479.57 | -28.32%
-  Latency p99 (us)           |         969.38 |     593.92 | -38.73%
+  cached = stock->cached[i];
+   4c 8b 88 88 d7 bd 84 	movq	-0x7b422878(%rax), %r9
+  if (memcg == stock->cached[i]) {
+   4c 39 cb             	cmpq	%r9, %rbx
+   0f 84 7a 01 00 00    	je	0xffffffff817d01d0 <refill_stock+0x200>
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-v3: Add a new benchmark result without batching stats patch.
+v3: Be more specific in sentence 1
 ---
- mm/memcontrol.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ mm/memcontrol.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a04b44656b38..ac43c895490a 100644
+index 84f4a8fd4d16..8a401550dfaa 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -2294,23 +2294,31 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+@@ -2164,10 +2164,10 @@ static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+ 	stock = this_cpu_ptr(&memcg_stock);
  
- 		stock_pages = stock->nr_pages[i] + nr_pages;
- 		if (unlikely(stock_pages > MEMCG_STOCK_HIGH)) {
--			memcg_uncharge(memcg,
--				       stock_pages - MEMCG_STOCK_LOW);
--			stock_pages = MEMCG_STOCK_LOW;
-+			WRITE_ONCE(stock->nr_pages[i], MEMCG_STOCK_LOW);
-+			stock_pages -= MEMCG_STOCK_LOW;
-+		} else {
-+			WRITE_ONCE(stock->nr_pages[i], stock_pages);
-+			stock_pages = 0;
- 		}
+ 	for (i = 0; i < NR_MEMCG_STOCK; ++i) {
+-		if (memcg != READ_ONCE(stock->cached[i]))
++		if (memcg != stock->cached[i])
+ 			continue;
  
--		WRITE_ONCE(stock->nr_pages[i], stock_pages);
--
- 		local_unlock(&memcg_stock.lock);
-+
-+		if (unlikely(stock_pages))
-+			memcg_uncharge(memcg, stock_pages);
- 		return;
- 	}
- 
-+	cached = NULL;
-+	stock_pages = 0;
-+
- 	i = empty_slot;
- 	if (i == -1) {
- 		i = stock->drain_idx++;
- 		if (stock->drain_idx == NR_MEMCG_STOCK)
- 			stock->drain_idx = 0;
--		drain_stock(stock, i);
-+
-+		cached = stock->cached[i];
+-		stock_pages = READ_ONCE(stock->nr_pages[i]);
 +		stock_pages = stock->nr_pages[i];
- 	}
+ 		if (stock_pages >= nr_pages) {
+ 			stock_pages -= nr_pages;
+ 			WRITE_ONCE(stock->nr_pages[i], stock_pages);
+@@ -2197,13 +2197,13 @@ static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages)
+  */
+ static void drain_stock(struct memcg_stock_pcp *stock, int i)
+ {
+-	struct mem_cgroup *old = READ_ONCE(stock->cached[i]);
++	struct mem_cgroup *old = stock->cached[i];
+ 	uint8_t stock_pages;
  
- 	css_get(&memcg->css);
-@@ -2318,6 +2326,13 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- 	WRITE_ONCE(stock->nr_pages[i], nr_pages);
+ 	if (!old)
+ 		return;
  
- 	local_unlock(&memcg_stock.lock);
-+
-+	if (unlikely(cached)) {
-+		if (stock_pages)
-+			memcg_uncharge(cached, stock_pages);
-+
-+		css_put(&cached->css);
-+	}
- }
+-	stock_pages = READ_ONCE(stock->nr_pages[i]);
++	stock_pages = stock->nr_pages[i];
+ 	if (stock_pages) {
+ 		memcg_uncharge(old, stock_pages);
+ 		WRITE_ONCE(stock->nr_pages[i], 0);
+@@ -2284,11 +2284,11 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
  
- static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+ 	stock = this_cpu_ptr(&memcg_stock);
+ 	for (i = 0; i < NR_MEMCG_STOCK; ++i) {
+-		cached = READ_ONCE(stock->cached[i]);
++		cached = stock->cached[i];
+ 		if (!cached && empty_slot == -1)
+ 			empty_slot = i;
+-		if (memcg == READ_ONCE(stock->cached[i])) {
+-			stock_pages = READ_ONCE(stock->nr_pages[i]) + nr_pages;
++		if (memcg == stock->cached[i]) {
++			stock_pages = stock->nr_pages[i] + nr_pages;
+ 			if (stock_pages > MEMCG_STOCK_HIGH) {
+ 				memcg_uncharge(memcg,
+ 					       stock_pages - MEMCG_STOCK_LOW);
 -- 
 2.56.0.317.g454f8302e1-goog
 
