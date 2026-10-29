@@ -1,97 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D89606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135B6606A32C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kraS3KWc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DG5qlG+6
 Received: by kanga.kvack.org (Postfix)
-	id 283DB6B05B3; Thu, 29 Oct 2026 07:03:13 -0400 (EDT)
+	id 410326B00EF; Thu, 29 Oct 2026 07:06:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 234486B05B4; Thu, 29 Oct 2026 07:03:13 -0400 (EDT)
+	id 3C0F46B05B1; Thu, 29 Oct 2026 07:06:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FBD96B05B5; Thu, 29 Oct 2026 07:03:13 -0400 (EDT)
+	id 2892B6B05B5; Thu, 29 Oct 2026 07:06:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D11816B05B3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:03:12 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63E65140358
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:03:12 +0000 (UTC)
-X-FDA: 85375377024.26.C95D338
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 91ECE100009
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:03:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kraS3KWc;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0196E6B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:06:29 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B0409403AD
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:06:27 +0000 (UTC)
+X-FDA: 85375385214.30.9F0DB16
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E372240010
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:06:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DG5qlG+6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793271790;
+	s=arc-20220608; t=1793271985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MN2H/Sd0YoWD7yOsUu+/3nrXR4+HLFAIs61hYMcDiRg=;
-	b=282Taz3epajqnklf7osUycsCvA1zjD928b8qTqg9hMcPTOxPi7UJ64mokOYbkLyML0QAXA
-	sPDqUih+ShOqlccUvhoQG88DRO5jqXBvlV02/yV5tSY4nx01IqPj0hp3ynamQZ8pJqwhrA
-	wvHXyteUF92/bju1ZtU7WM3j/Jys4Nk=
+	bh=G4SI2MOIEpxP5HU3ERLaWsdHJtIDnixVPHVu+nHUwyQ=;
+	b=T9FOhPjCkHAShkKzDO8J67hICJfwjol7Nt/2w56oFFTGoN82PRMx8WRkk3YRYksLyjJtNs
+	PewqcMaH0THVIPlkNc8tZ4wUBa0h+wF71ohzgPuvv8SMKNzwyyWxM/ztgirNa1l5XnGYp/
+	KoTrWNmpBHvIM91iMH0GFnQGmKhSYXo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kraS3KWc;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DG5qlG+6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793271790;
-	b=7qoByIr9KvqarhgfEp3NM3Rekd7AKgQ1qegFTkqGheSoTl88DchaV/r9i9dniqi8vhKY/f
-	ulkP/L1mEC/96juMZRWgI90klOzgSb1o4fZcj0POxOcqHB61rCi3yxlQVA2Udnh4cWyh6o
-	nkhDDuL7ySTi4Ulexe2lXZWhpVz/HtQ=
+	t=1793271985;
+	b=pDyzOXgZ9HPAf3d2tAg/k5pcOHMBIy3dnT3SZayhsJIevzpUVRiK70840lFndgyZI8gzr4
+	k2y5w2baGOUG4AEjOoVDeGYDoTPSUP+26zHZkSy5K4mU0Tc74dsGwaQlpwtZhmkZTflc3R
+	jpvgFh+4QnFSVRot3lwlc8if/RCESmY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF16543EB1;
-	Thu, 29 Oct 2026 11:03:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E871A1F01825;
-	Thu, 29 Oct 2026 11:02:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 16B53600D1;
+	Thu, 29 Oct 2026 11:06:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D77C1F01825;
+	Thu, 29 Oct 2026 11:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793271789;
-	bh=MN2H/Sd0YoWD7yOsUu+/3nrXR4+HLFAIs61hYMcDiRg=;
+	s=k20260515; t=1793271983;
+	bh=G4SI2MOIEpxP5HU3ERLaWsdHJtIDnixVPHVu+nHUwyQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kraS3KWcR1HapYe2L8S04iaBUBqNCB8CgKH3Z4hF8TMnrmxZGGmnZ2QpTqjbmPO7b
-	 mVvrwquiFMJDE9p3UwAnEs+1js4PqXm/tZQtza0S3ZtIpsLWkdtViZEFp6ZJ8SEQST
-	 v+nIgqZXH8hsCK1nprjCVjMvlhvvsz91WUv0cl4n2JQlB+wnm6BaRxa/js3GiGpLr3
-	 jizIWEtIUQzmXO+462nKgWuYKe2pZMOfnpo9WCtr1L4+fxPj7YKX4aqbouQaA2aRux
-	 vUEyglwL6d5E0toW8MCroM61RUoU3Lux0qi7OwzKJW51rs80KLz2s0rbV7ZIljKCo+
-	 K3ZqDZO9lh7XA==
-Message-ID: <cba61fbf-17a1-4e27-88db-9ba066cbceb9@kernel.org>
-Date: Thu, 29 Oct 2026 12:02:48 +0100
+	b=DG5qlG+6Sja3SZ5kFUK34tgk4SYB6mT49t9Ydiwl1UmmUSD3Z7eZTpdi9hErSp6J3
+	 rJy+pdJ4xnrv+lAE+8PJM9LuhQ91KO44IKjD6i7lRiQF5sAG6yfA42ECErt9i+4hlZ
+	 VqUZ+q8IKKTOoKoRg0gz3v3YNhG4U3iakSFkuH5T2JEkY20iTWI+uTLXikjQQRHGFM
+	 iitTQcffWyPVBKOk5dKhoqgHt5X5LmnO9yty8zuvAujX+5k++YqHcbVx84qeghojpP
+	 ONGbbquOo1zaFCKZkU54MNJA/SW+jdnu2TfP3rM7xp551okzH9jzB8lL389t/PCYJF
+	 RNML/haAtaDfA==
+Message-ID: <676e49b1-6cc0-4d0a-8492-452ffb294d2a@kernel.org>
+Date: Thu, 29 Oct 2026 12:06:02 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 33/46] mm/madvise: fix data loss from MADV_FREE on a KSM
- page
-To: xu.xin@linux.dev
-Cc: akpm@linux-foundation.org, aneesh.kumar@kernel.org, apopple@nvidia.com,
- axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- baoquan.he@linux.dev, chengming.zhou@linux.dev, chrisl@kernel.org,
- dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, harry@kernel.org,
- hughd@google.com, jack@suse.cz, jannh@google.com, jgg@ziepe.ca,
- jhubbard@nvidia.com, josef@toxicpanda.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, kasong@tencent.com, kees@kernel.org,
- kexec@lists.infradead.org, lance.yang@linux.dev, liam@infradead.org,
+Subject: Re: [PATCH 36/46] mm: fix unkillable fault loop on MAP_DROPPABLE
+ memory
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Johannes Weiner <hannes@cmpxchg.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, matthew.brost@intel.com,
- mhocko@kernel.org, mhocko@suse.com, minchan@kernel.org,
- muchun.song@linux.dev, nico.pache@linux.dev, nphamcs@gmail.com,
- npiggin@gmail.com, osalvador@suse.de, pasha.tatashin@soleen.com,
- peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de,
- pratyush@kernel.org, qi.zheng@linux.dev, rakie.kim@sk.com, riel@surriel.com,
- rppt@kernel.org, ryan.roberts@arm.com, shakeel.butt@linux.dev,
- shikemeng@huaweicloud.com, stable@vger.kernel.org, surenb@google.com,
- usama.arif@linux.dev, vbabka@kernel.org, weixugc@google.com,
- will@kernel.org, willy@infradead.org, ying.huang@linux.alibaba.com,
- youngjun.park@lge.com, yuanchu@google.com, ziy@nvidia.com
-References: <20261027-fixes_core-v1-33-6f74bec9a5bb@kernel.org>
- <20261029045307.131675-1-xu.xin@linux.dev>
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-36-6f74bec9a5bb@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,22 +154,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261029045307.131675-1-xu.xin@linux.dev>
+In-Reply-To: <20261027-fixes_core-v1-36-6f74bec9a5bb@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 91ECE100009
-X-Stat-Signature: 67u79fdbknsiyd3qjtabthtaycn3okp9
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E372240010
+X-Stat-Signature: iu6hgj5nkmx7e5qx8nfgayjkimg4cfd9
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793271790-68885
-X-HE-Meta: U2FsdGVkX18d7axx12OUJy7+QNSvTPlXy/Gyd3EfPKei6KWlMCVIYMwNBnQ6QyYsqtdctWoRaKq6Y4KVCOrGbsypqZluFnaUsaCYYf368NU1Vztmg/aGpl/ECjGLrIMQBQ6r2vAAogKFqTlbVL3/UCCqS8rjTpRfHTOwAx4UR3cJEMQGLjw4oZ5tPqRM9oUeiTvOIANTYrbtJBjbgvhP6QnkUczTLiwkqOYja5s9MOT5PUt4fIDN8CP+jioQVBNwQP24/ILDohWvlBtDJIqDRSHt8LZ1GeSfOkvmxC+zthr0YMZZkOzw5hofKZP1ii5+tykjYvGnySy03DXcSBSF8nueoXBY7cPT9g2PN0W87zTrFyg3MhCl+tEEeOPdOFEw8YQJu2702ezWjp65EWPC6HhQsdAqDtWEkhd3X39IRiEKCqAvBko+YKtM6UkhpOgLtBMFUu0/RzcTjpuXx4sw9z22NHu2fWFe5CykfdJD0Azjb7EeLCpNjGktg0+pck3FJchweVUELcPGrUzNVjOBiYiHQeR/5RbVdQiwgzm+2zsVmGKrMLOxdDD0aADXT+FkS5gCysuhx2xXBT5ZL3M7m/miYHtUJEmfSSOmnhfCFVWbD0YrHIS2ppMS85ObgxxQuh1sakPg8ir5TvtG5Ue359O+mYeV9xbwDC2uvOEmFIozp3ITnp7Ren8gwQoq8TjAlg8UKjE6H1fyvza/8NDvuIwZEJ3sP+7zNnmn8vImjYFwDn+X7gI7+DhP9E6KZzM9Sv4h4xg1dFPMthdaCF+XWxvgqxde0dKISrgritcpdUK0BGl1PBvztjtnm4D691zuHq0/YR+L7XkEF7mZaOpz9StaLT/x0hviyuPJsyetSDQZzgDQUF4uhtWWJFkR1VbSR10CriHvAJ+eXEaRqCLlSWPoUpsjzGHV0Ev6UfkExBzGa4tWHUY7i/kVSZYir/ftdINg7ax1RxmpqJNBuG9
- FlfPjb2x
- kf1N9OAR52gzqiprTlZHy2rpAqtfC60yLdJfKPcflKvoTj0g7fpC7ZUTKE1BGT7XR9D1pZLi+0s2D2xJFfJW1r+9PeNeUPsjFSWa2QpirYY0a63RMeM+a8ZI2hJEjtaQ7DnrDqa6lkdv7gYZeKvQorU+LKysQBN3VmGiBFUGqDj1xAfwnucoTbAEnXNy+sSsd7aWJCkIC2t2IZfEC/Y482KUM0VltPHTvK5qTNWvtBa4nT06SFnVf5UhHObubjLTNxsNbKl/R/ipiVcBsqjgsUQs3omU/snQP4igR+WYrKvrgIv88RR8L3KTasJc8l89NUJ3vJOT2deFG3ajzjkRyBkG2xR3sQs+sKO7ex+2805lfQ5c+y8MC+FDyAh9vmX3eSc1Fzbb6QnYQ2+ym3IrolsFtiYPp3q6RcGqUAwOixZpPZHPEYlQAv6JTF0t5GJfrXWK/ft8gJy9K7PIFJJpkA2BFcA==
+X-HE-Tag: 1793271985-128203
+X-HE-Meta: U2FsdGVkX19ucHyPKhQTTDjbQIcNrdxdeE/AZuVHsHTS6v/5oC+szYjvtbxsyCQmgQt1JBuLBTRUKyKIFMpotxlSUSPf3C8AFBrT9DTCsUwcM+4awNFcBJ0gXIE0TGarS4Bwy/51jczJTQ8PYso/1F3FpryBS1Q59qe5DEqQV3g6v6BxaU5dxof1gC3lUHg7Vsk00pRkVF3sDS52HHuI/lQZQ2fnYM7qbY7t2YrU5sGWqYBQcDHyZIBTYxNtTMZ5Gsog2IyhqaM6z9FN+AP5tODZoEidEA2VZWkRL2g4xd9mYEgGtJNhfJrzJrms0yy7+nkbIawMmeXqGbq6f9jEolKGEM/BK9rUkm/Hl42j3Mz5vR2ek0IKAsozoRGgmyvv7t4RCv1pxKt+JPQx/oCQklFwDtYG2jMzuyiqBfHRrsXmNIibaPcv+qYywTfLAjiIXTrq7lu3gs6BKkLki05ClA3JwZgK79Haq8iMbqSG5py/MlOAnUJYbpoucIkJU2aTV+IAngx8Rtx0Hh05F73wqTICTaXGlBzd5egjvr1LMj7mbGKTgIGlyR78Cg8+pVv5ZJ5mTWLfwYbHqpWnOOLFY3/H5z9u53DZ/LykJqlgIIjo5yBd5Ay04Dtn/ZAKfpYV2hVa9WryyiRqESH2LXnQU0KymIxPlDpF8eCIGc8k2DNx0jhvxSo7s3PghUVF6rlGpyzPeMu13N4hltNP++GohCGBkUNFN7qgChOwRNdW0eRt71y/2vkgV2EoNR9yWfAoZ9m7gqQajwqX+iyzee48kvB21gcKGf7yYxu2di7wP1ujJErNdxceXx+0+gRnTb4d+vyqFHk6RRb3G3p6RvVyWllb4HCFWScrIVHnVH0NGnjjzkp7LmQRUiR7477bcsyT1JNqKs7OvN0AkeZ6F3p/dlCk4qXTIMJIb27v6Te/BkC6z/ZmzkXKSMYt5meJ4kPWyTGJsMjw81P4hDy39Bb
+ 4TCIUL1U
+ ruUXnmDm8ToLlVw1eNIJy7alsuWFvcmJX3+krdSuciGe7dT6wDC60g4V9ZzFiVb1Hy94Q8DRgIM5lMqqm4/9o6808yMz+Ex3SPTY6q0Paa2gm4YvMBlP/kcO4KRJYoFfh9NsBk1zGESTnFOaJXfCRrdn7Ulqmg3kguDIK8WhRR9gCA0mlAaZ4bTyhnvKLxlR3xWrST7PNQsvUHsvFO/XPbglAY155bRbHas20a/soDmtzVme5YxHdS01auyJINA6e0i4gkw9ei/3AIEN9b8yAVUM1HOTIjTumnSdh9TB1D/1Mf5RTZI+fA9MliEfLCUCDocbZDbk/U2znwbRUtKyGe0voT8PqzHeQuirymjmJrQ+M4LfCE7PIW+RJUz4dgCgImTidNBvyxn3WlC/sQWGTl5wa5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,61 +178,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 05:53, xu.xin@linux.dev wrote:
->> MADV_FREE can clear the dirty flag of a singly mapped KSM folio. The
->> folio remains in the stable tree and can gain new mappings without being
->> dirtied again. Once marked lazyfree, reclaim can discard data that those
->> mappings still need.
->>
->> KSM always marks a folio dirty when converting it to a KSM folio in
->> try_to_merge_one_page(). Marking a folio lazyfree clears PG_swapbacked
->> but leaves PG_dirty unchanged. Preserving PG_dirty makes reclaim restore
->> PG_swapbacked instead of discarding the folio. This also protects folios
->> that were already lazyfree when KSM converted them.
->>
->> Skip KSM folios before clearing their dirty flag, checking under the
->> folio lock to serialize with KSM conversion.
->>
->> Fixes: 854e9ed09ded ("mm: support madvise(MADV_FREE)")
->> Cc: stable@vger.kernel.org
->> Reported-by: Josef Bacik <josef@toxicpanda.com>
->> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  mm/madvise.c | 9 +++++++++
->>  1 file changed, 9 insertions(+)
->>
->> diff --git a/mm/madvise.c b/mm/madvise.c
->> index 75b409e97dbf2..a16e3cb256b7b 100644
->> --- a/mm/madvise.c
->> +++ b/mm/madvise.c
->> @@ -756,6 +756,15 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
->>  		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
->>  			if (!folio_trylock(folio))
->>  				continue;
->> +			/*
->> +			 * KSM folios can gain new mappings at any time, so we must
->> +			 * not clear their dirty flag.
->> +			 */
->> +			if (folio_test_ksm(folio)) {
->> +				folio_unlock(folio);
->> +				continue;
->> +			}
->> +
->>  			/*
->>  			 * If we have a large folio at this point, we know it is
->>  			 * fully mapped so if its mapcount is the same as its
->>
->> -- 
->> 2.43.0
+On 10/27/26 00:17, David Hildenbrand (Arm) wrote:
+> From: Chris Mason <mason@kernel.org>
 > 
-> The fix looks correct to me: checking folio_test_ksm() under the
-> folio lock properly serializes with KSM conversion, and skipping
-> the folio avoids clearing PG_dirty on a KSM folio.
+> handle_mm_fault() suppresses VM_FAULT_OOM for VM_DROPPABLE mappings.
+> 
+> For user-mode faults, pending signals are processed before retrying the
+> access. Kernel-mode faults on user buffers instead return directly to
+> the faulting instruction.
+> 
+> With persistent allocation failures (esp. memcg limits), a syscall,
+> such as write(), can therefore loop while not dropping locks.
+> 
+> Only suppress VM_FAULT_OOM when FAULT_FLAG_USER is set, allowing
+> kernel-mode faults and GUP to fail and signal allocation errors.
+> 
+> Fix generated by an LLM and sent by Chris Mason in private.
+> 
+> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> [ david: simplify description ]
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/memory.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 5c5f326b8bcbe..230a2f4dafa13 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -6957,8 +6957,12 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
+>  
+>  	lru_gen_exit_fault();
+>  
+> -	/* If the mapping is droppable, then errors due to OOM aren't fatal. */
+> -	if (is_droppable)
+> +	/*
+> +	 * If the mapping is droppable, then errors due to OOM aren't fatal: the
+> +	 * task returns to user mode, handles its signals and tries again. A
+> +	 * fault from kernel mode has no such return, so it must see the error.
+> +	 */
+> +	if (is_droppable && (flags & FAULT_FLAG_USER))
+>  		ret &= ~VM_FAULT_OOM;
+>  
+>  	if (flags & FAULT_FLAG_USER) {
+> 
 
-Yes. And doing it under the lock is something the original AI fix missed.
+I think this is the single patch in here where I struggle with the side-effects
+and possibly remaining issues for user faults.
 
-Thanks!
+It feels like the obviously right thing to do, but it all feels a bit shaky.
+
+Maybe the memcg/reclaim folks have a better understanding of this?
 
 -- 
 Cheers,
