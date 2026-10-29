@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C75606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 03:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E3A606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 03:04:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 084E46B05B7; Wed, 28 Oct 2026 23:03:14 -0400 (EDT)
+	id 1BE846B00EF; Wed, 28 Oct 2026 23:04:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05BC16B05C2; Wed, 28 Oct 2026 23:03:13 -0400 (EDT)
+	id 196746B05B2; Wed, 28 Oct 2026 23:04:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB4B76B05C3; Wed, 28 Oct 2026 23:03:13 -0400 (EDT)
+	id 0D46F6B05B4; Wed, 28 Oct 2026 23:04:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4C636B05B7
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:03:13 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 55B541A018C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:03:13 +0000 (UTC)
-X-FDA: 85374167466.30.9DCC020
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E26586B00EF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:04:39 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 74DBC1602C2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:04:39 +0000 (UTC)
+X-FDA: 85374171078.11.5B4C4D4
 Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 842601A000A
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:03:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 73D2E180004
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:04:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf19.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793242991;
-	b=UG/Kl89zvUlbongWmH5kbUGq3W0AyRqDw4VRkmHc49yRn4wUNkbjfKRlL+1esobtYixQgp
-	45uc/DeNko1jLe25xKsCNJFG7npUctTcSDU4xe9vKUHfzam6GconCuR1Sab4ZzaAsTPLzW
-	5Mw4QKYjj6P6U78v93EyaHvIUgTXVJ4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf19.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+	spf=pass (imf06.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793242991;
+	s=arc-20220608; t=1793243077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oKF5wqMFzUCUVxGDoC2rEk2wPVNMUgCMUrf0EZTo9Bc=;
-	b=KkuJ7TA6E9cl4TUlnCw8urBEXPBoLRcFnLKx1PeOFT5aIivXobP5bkzShp9snOum0VgDeJ
-	WSQRrGhgj5Ej45RHYvDIkzD7PLR994F0o1IbVlxAn9QhVSyMAYNLoQ+lvVHp9fA6mnvwpZ
-	PmUDfB1f7yS/A6q9do2nyQjc27YHzIU=
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jFTZ21MrTz171Z8;
-	Thu, 29 Oct 2026 11:03:06 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jFTYz2b9Qz171Z8;
-	Thu, 29 Oct 2026 11:03:03 +0800 (CST)
+	bh=vv+IYR9dud8EsrFaA0dR51P4en2GrhP5pTZk8r56EFQ=;
+	b=dC8/VKJU2h64P4HdwRYzSDKGWf0dl/vYjGZX40WEvN5jssFhqztWeP1s0AUl8w/MtvBlBH
+	uUKg4rxK3p89RWoxDRWOwUMMhVj27ShE+XONPzsgrR7dsHVeqh2u5pEC+yAKCO7IOFODfC
+	1zsPmnSs6QlbaUsVHMh0zIoVWVpc1hU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793243077;
+	b=QLYMWY8o+GhrPaCVqxdfFcec5gTP02TFuJWss7gu6aIgpw73mDl/YPs6D6+aidGiyhQnxc
+	CjCO3bdJ2VtTHx4Ea1pmvzBg2IZiYjZwNoYvLIOD1VId4mHSj0rVD0QPcFjADa8qoaNvoM
+	IJbMhR8hlCECPOaF5zZwWMMZXs4O/D0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jFTbj1Q1Cz171YY;
+	Thu, 29 Oct 2026 11:04:33 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jFTbf6Gr6z171YY;
+	Thu, 29 Oct 2026 11:04:30 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id EE91F314AC01;
-	Thu, 29 Oct 2026 11:02:39 +0800 (CST)
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id 027055943;
+	Thu, 29 Oct 2026 11:04:24 +0800 (CST)
 Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
  (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 29 Oct
- 2026 11:03:01 +0800
+ 2026 11:04:24 +0800
 From: Jianyong Wu <wujianyong@hygon.cn>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
@@ -71,10 +71,10 @@ CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
 	<mpe@ellerman.id.au>, <ljs@kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-mm@kvack.org>, <wujianyong@hygon.cn>, <jianyong.wu@outlook.com>,
 	<zhongyuan@hygon.cn>, <huangsj@hygon.cn>, <wangfengyu@hygon.cn>,
-	<yingzhiwei@hygon.cn>
-Subject: [RFC PATCH v3 16/17] sched/cache: Drop stale preferred LLC checks
-Date: Thu, 29 Oct 2026 10:58:28 +0800
-Message-ID: <20261029025829.4005192-1-wujianyong@hygon.cn>
+	<yingzhiwei@hygon.cn>, XIAO WU <xiaowu.417@qq.com>
+Subject: [RFC PATCH v3 17/17] sched/debug: Show cache placement and preferred LLC in /proc/<pid>/sched
+Date: Thu, 29 Oct 2026 10:59:40 +0800
+Message-ID: <20261029025940.4005235-1-wujianyong@hygon.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261029022036.4002331-1-wujianyong@hygon.cn>
 References: <20261029022036.4002331-1-wujianyong@hygon.cn>
@@ -84,18 +84,18 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 73D2E180004
+X-Stat-Signature: hq3s34au6s5f5af36hx6d7ghsyz8cc4y
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 842601A000A
-X-Stat-Signature: iwk1q7i4gb96jmxng7dujaupbudakza3
-X-Rspamd-Server: rspam01
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793242989-522550
-X-HE-Meta: U2FsdGVkX18vdCX7xNk0/uUt+UgIzyTNYC4DTQtM7B4bzIAZYe4CQo/adIqtboqm0uM8HP29/oZfR9y0OWLd9raQVz34g4+lfHSEFieDEdiSLEtQeBDN5vWfVV3Regjsh+lgsZEAeMC7CPyT4GtApCv0KIOYBJ+igVhfEsddDTMTDU7PeV79QIhznkcQ41VBfb+qEA/Qa8uACDCPWpFbjtM9L31ckvwC4sIPmLX0pvZ1U7BsKzcVj/KwY2MF7wwcfO55GXj34AI7gcbIsrvd9tuaUy+VNqwGsHBqTUlI3Y8svFRyfcsDnDsnhvNoZhkZHNfj02z9wbO4ARkK17qlLPmb5csiGWA6HFVu0dS4PVC8uDIMqyEk/NXuMCiO57soYs0iZQRhPTkI0SxNlrlhaQgfkEoQgjB+r7ve5oYpeNxn7Bd8QaicIRoqYWQdshhDp13Joh3p7BylqdX2YVAd1LdxhTSnxEtqGZUsoAI/ugG1dgV4Qw5jWPPJ2W7kAjGcnwDqsAvaRVFzEVmYYex8AQhO0Wg9VsCPPdG1S8oU1HclaU9RPtWLFzsOIk6JkJgkc9TnWtnxTiSo894ABlaHL2IvxewFW62lUia1Sn6rKRyiYyVbfHKgqtBQWTO/qs7m94uYR2n0//HTrqhfM29DaEkdRVzdzOLOFX5eRPA7jIPDUtsicbqETx38tWRXK3Vhcmy4LBosSOiAhELDQYWBkxB/QykG1DcdPAGbLUXbJODfda0icKNS1SemxtsDubXSBigz1wI6nDqy/MBIkZRDGczoiMp230vcBPgnvjHN1tHiyeCkMMngDe+mlQptSrq0B1XUUzYmIfB7P5xnqIjOEOUPKP7wvHQtIZsXMPdfZjFBJadCa6tZZiYBKdUmCX4r3RVzW6OMT6UjIPGjxut/c2v1dvbschVvsAoFwBAacIOqSRoZCR/wG6G/5Io3XeahULqu5mbIi+Gqqeybm6D
- QrvrKt5z
- CdgpBI2pFkeqIfoeT9ga1Q+PgdGJiVOvRi78x1he4AIV6CnZq2Pd+PuPtwXUkzbk7q/QtvhJvxgcVq4DLM92P1dlQtHrHHNoNCIzTPpv99dIAWPnRgxsrn9+W+ajr+HHV2hZmyGXvnqzrTIw4UiSE5tMuXg==
+X-HE-Tag: 1793243076-570573
+X-HE-Meta: U2FsdGVkX19o/EYK02tgxf06lu0G//BKdxbNkp1ZIOUOH4iLiPiT+ZRhftWCebEeOi0tDXk2IdKhdE6wyE0g1Vm+EYjgcnSAPQz2vegx6JWs5hWTAeuxdSmq6dWGpFz6xFvlMcQyFLPu+MyQw1Ddp58o9XUCf+riWnDqPxa95mvwg8A7zBUht3hZCOYdlyhUEzg/lhHaoD2yHMylA3b6EGjYskzdTnXTYIh6Hccxj4nwwPlz+9o8v6bSv7iq3Wv5AOoB1mOh/2UL09+dinLJ8z0ns7ijpNGGBS9hODjjXEMg0nBM60KY8CGuitjQYbh7uyS76Nyu8dXlU2eqFjucu+Tbk5I+AGMYTG2nHglibjuPuRe8uGonjd3Ga3+yACcm6SlLPZ3YuzqhJ4IW+Bn3M6eP/564H6SMZ8irzeawa5nsp/NepPn9bE3IQ0/UKPPW181g/Rg1b3bXuwFQh02Mh1sFqYKDhqoM6l8lVynzMn75GyPf/0hNRqCsA10tFlSn6BqCIONpDUeVzcTuxnPKlBfkFMh/bfOj1nCtC0P0Y809yiXIw3vU8fcd0Q29zYyEwLpCAPxH4IqZOl4bqKd6kVuzIC1b8hOG1OM9esED1Y/jLlcm6UFdsrMwTjVzGc53rCZY4S4DuGmBa/gQPJFiveI4337JNVM9avFYig21DWo9Z7eerwNEMl4Iol/KSbcBELR6PKnQAJdVgsmNumSStlyPCcBkxlPnXvSpyMeAYKtov0Ce8wwaCskBpMsQauZHLwcMSvEDjU1a4pOMDPGahO3Lf3/gCboH136R8/2bjl+MUbj5N2nDmcDhWQ8av42cQuECeXLO+1s6/2ls/wMSUtPCM77/DAueNCMrJDDJ10QKRO2IysIef3ncQ+wJjiDnpst3Hlc2COqELE6zw9JUHe8uEvfOOb5qzm2RMNunAmtFh1fewAhpymg+93UDtptKFTVXmGXFL+Sc+ym827g
+ m6RNIF7j
+ 1wRHVooUcMAGvnIR7bOhgzzw9vXJTVG9UbxHDl3tPjJKTBchhCqp2FetO3BzLUF89y8y7cKTgF6N7l20K+18YrjVc6gmqHtmltUQf0edVe1HOwUkNhF9j5cp2g9Gnt+zPusev6LHAlsIGkmDYsTkJ7VYfbAnvSC41C+cHI0Tq9Qx9i3Z8eANp3DPyV1jk2M8fJzYLzx8l2J0+6AXT5YxSiWgCNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,69 +104,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With multi-LLC aggregation, an mm's preferred LLC can be
-outside a task's preferred NUMA node. Do not discard that LLC when
-calculating the task's preference.
+Print the mm's selected CPU and its LLC and NUMA node, alongside the
+task's preferred LLC and its NUMA node. This helps diagnose cache-aware
+scheduling and task placement decisions.
 
-Likewise, an LLC migration may select a destination other than the
-task's preferred LLC. Let can_migrate_llc_task() decide whether the
-migration is allowed instead of rejecting the task based on an exact
-preferred-LLC match.
-
+Suggested-by: XIAO WU <xiaowu.417@qq.com>
 Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
 ---
- kernel/sched/fair.c | 29 +----------------------------
- 1 file changed, 1 insertion(+), 28 deletions(-)
+ kernel/sched/debug.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index b93b6e6c9dea..5d11f9b7f685 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1669,27 +1669,9 @@ static int get_pref_llc(struct task_struct *p, struct mm_struct *mm)
- 		return -1;
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 40584b27ea0c..d18dbc1da67c 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -9,7 +9,9 @@
+ #include <linux/debugfs.h>
+ #include <linux/nmi.h>
+ #include <linux/log2.h>
++#include <linux/sched/clock.h>
+ #include "sched.h"
++#include <linux/sched/debug.h>
  
- 	mm_sched_cpu = READ_ONCE(mm->sc_stat.cpu);
--	if (mm_sched_cpu != -1) {
-+	if (mm_sched_cpu != -1)
- 		mm_sched_llc = llc_id(mm_sched_cpu);
+ /*
+  * This allows printing both to /sys/kernel/debug/sched/debug and
+@@ -1304,7 +1306,6 @@ void print_numa_stats(struct seq_file *m, int node, unsigned long tsf,
+ }
+ #endif
  
--#ifdef CONFIG_NUMA_BALANCING
--		/*
--		 * Don't assign preferred LLC if it
--		 * conflicts with NUMA balancing.
--		 * This can happen when sched_setnuma() gets
--		 * called, however it is not much of an issue
--		 * because we expect account_mm_sched() to get
--		 * called fairly regularly -- at a higher rate
--		 * than sched_setnuma() at least -- and thus the
--		 * conflict only exists for a short period of time.
--		 */
--		if (static_branch_likely(&sched_numa_balancing) &&
--		    p->numa_preferred_nid >= 0 &&
--		    cpu_to_node(mm_sched_cpu) != p->numa_preferred_nid)
--			mm_sched_llc = -1;
--#endif
--	}
 -
- 	return mm_sched_llc;
+ static void sched_show_numa(struct task_struct *p, struct seq_file *m)
+ {
+ #ifdef CONFIG_NUMA_BALANCING
+@@ -1320,6 +1321,30 @@ static void sched_show_numa(struct task_struct *p, struct seq_file *m)
+ #endif /* CONFIG_NUMA_BALANCING */
  }
  
-@@ -10898,15 +10880,6 @@ static bool migrate_degrades_llc(struct task_struct *p, struct lb_env *env)
- 	if (env->sd->nr_balance_failed >= env->sd->cache_nice_tries + 1)
- 		return false;
++static void sched_show_cache(struct task_struct *p, struct seq_file *m)
++{
++#ifdef CONFIG_SCHED_CACHE
++	struct mm_struct *mm = NULL;
++	int sc_cpu, sc_llc, sc_node, pref_llc, pref_node;
++
++	mm = get_task_mm(p);
++
++	if (mm) {
++		sc_cpu = READ_ONCE(mm->sc_stat.cpu);
++		sc_llc  = (sc_cpu >= 0) ? per_cpu(sd_llc_id, sc_cpu) : -1;
++		sc_node = (sc_cpu >= 0) ? cpu_to_node(sc_cpu) : -1;
++		pref_llc  = READ_ONCE(p->preferred_llc);
++		pref_node = (pref_llc >= 0) ? llc_to_node(pref_llc) : -1;
++
++		SEQ_printf(m, "sc_stat_cpu=%d, sc_llc=%d, sc_node=%d\n",
++			   sc_cpu, sc_llc, sc_node);
++		SEQ_printf(m, "preferred_llc=%d, preferred_llc_node=%d\n",
++			   pref_llc, pref_node);
++		mmput(mm);
++	}
++#endif /* CONFIG_SCHED_CACHE */
++}
++
+ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+ 						  struct seq_file *m)
+ {
+@@ -1439,6 +1464,7 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+ 	}
  
--	/*
--	 * We know the env->src_cpu has some tasks prefer to
--	 * run on env->dst_cpu, skip the tasks do not prefer
--	 * env->dst_cpu, and find the one that prefers.
--	 */
--	if (env->migration_type == migrate_llc_task &&
--	    READ_ONCE(p->preferred_llc) != llc_id(env->dst_cpu))
--		return true;
--
- 	if (can_migrate_llc_task(env->src_cpu,
- 				 env->dst_cpu, p) != mig_forbid)
- 		return false;
+ 	sched_show_numa(p, m);
++	sched_show_cache(p, m);
+ }
+ 
+ void proc_sched_set_task(struct task_struct *p)
 -- 
 2.34.1
 
