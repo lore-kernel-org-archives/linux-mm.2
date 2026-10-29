@@ -1,159 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A644606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 22:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082DA606A320
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 23:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=Gr+jRJjG
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=R9MX+2U7
 Received: by kanga.kvack.org (Postfix)
-	id BB1FA6B05B4; Thu, 29 Oct 2026 18:37:37 -0400 (EDT)
+	id EE97F6B00EF; Thu, 29 Oct 2026 19:00:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B62A26B05B5; Thu, 29 Oct 2026 18:37:37 -0400 (EDT)
+	id EC0F26B05B1; Thu, 29 Oct 2026 19:00:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2CC26B05B6; Thu, 29 Oct 2026 18:37:37 -0400 (EDT)
+	id DD6A56B05B2; Thu, 29 Oct 2026 19:00:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E9826B05B4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:37:37 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1B93A7C02
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:37:35 +0000 (UTC)
-X-FDA: 85377126870.05.378A7A9
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 039D4100009
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:37:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Gr+jRJjG;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793313454;
-	b=g1oBvuMdrb9v45DRGZuNZn4akTu030wNuC+wUOsQti1mZ1pBiLPwdjNY7se0XWXXOBf9UY
-	5JzO6U25HqvtjM8HYBCVAi5tsG82Gnn5PkZMYff+xNbtAnQaD9e8dt45DCZPMsK8yPDG/v
-	FiSMulf1rT390JZOXh+pPxMDaeGpL7k=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Gr+jRJjG;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793313454;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A42756B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:00:30 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28328120544
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:00:29 +0000 (UTC)
+X-FDA: 85377184578.22.739823B
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 08FD720012
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:00:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=R9MX+2U7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793314827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QsPG26s54J59UedVlJRCxJXndkzu8TR98XKtjA3+1AU=;
-	b=TzhN5YFyo+jacXe8+7Jz6i46ExVOfw1+PZsM14vuc3FxS5GFRPS2mODiRzArWNFEXVyiZm
-	eNsofo/DQVguIYn8RNTdNKnVcNnUKY/jYCStQhAKX7VTKjStXilJJz1VVrjEr/l6ruVihA
-	xfqCrm0g1usWjVVRsrIR6DXFnzRDqKQ=
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-91b9e758c50so1457896d6.1
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:37:33 -0700 (PDT)
+	bh=OjIFR9RHuZyb+FQlUiSJHHP2buOKCHCE0JjDFtdSiWE=;
+	b=NwEwNsWqO0fkPHfpjsxOdSzsSiKqjZx0zlvw9GvK4p8jtH2jqhFhU4R1HpCoB4gmDb14U5
+	8E9FePWpPqrWQ4XSXRWr1HBRzIgb/3CnJkHMx+w2o8OL8QWXFmhnHBp2vRBoI9KHdrnivG
+	8w6KyyBukYeb6CqpDrL7VZhtAWBUNIU=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=R9MX+2U7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793314827;
+	b=nGgCGi2JfeExo6cSYWjjCY68r0q8JlnxUnLKMyJq9zuVOwSPGwJ3e91lbxi5GlwpYG6drA
+	uyX5hh3duRx5GSj4eYfEVdKf0toObLFPIhWOzCQJWbnmM1JBXSsTgVsDu/B6p4w2dOFaGA
+	KvpltYU7qjnmc4Z9fLzltEt+zgPJdRU=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5bfc2ae6e9dso123459e87.0
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:00:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793314825; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NLqu2dgBiqvwUTrhJuu1iV6R+LWulYHBW5S7+Zcixr3nWfuiKhxsCYyKJraZMAJ14t
+         yiukzmD6IN86lBxoVfHu7tKMNI5eHMPw+jaYKWDuxlWFmGMZ9FGEA1JAU3+2Ex1PAzqL
+         ars0lKzrC7p+ENJ5BXXbGHtS8M9pGA8fLTDQjimaW2ARE5VW7WjykRL6hmC9FydlJzHa
+         ktDYK7ym9uA+/WoakXCVMYVic1vebbLevss20wFvmSR/FZHmI5N+ceAqI0vWhZibs5BR
+         /4tLjF3DkdSUTRpAUrIFTGLNDM2xJEbo/wnapqyXnTmRd8Jr7Y26Fjl+7uDba5mk0MiC
+         ljPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OjIFR9RHuZyb+FQlUiSJHHP2buOKCHCE0JjDFtdSiWE=;
+        fh=pq5pA1YqaGBjRIanJVvReN555Ibwi8KTblVM6e7Zb04=;
+        b=nC8wgso6NSMHpgSo8bd/Fv2r+eJaGiuUEPEK7/W5e8N0WoUP6LHryp5BiopVhRagRh
+         Qqa0AuCdWGmrj2jM3P/4y0lDFq7uND8Uo7yGTLUU12yhCpre51lA4DAdRuUHOoavRnvS
+         yy0uTWkL4QuLXKFo4Zo4BD4CScTiMS/tWIw3GZILv47A8O8npCD6BIY5+9yTX5KISzAE
+         eR9rtGFR8tVirVHr75ETgyjiEKq+gG9DTzNK50RKvP45N0s0Fdg+C78gRdvkv9ctWaj5
+         6vTrD7Hdc8aFkJ1EBX8EwgAjqg5U/o/Fn3RabzXG4KdVQwlMc64WsPg9Vwa8MO0ju6Db
+         tJIw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1793313453; x=1793918253; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=QsPG26s54J59UedVlJRCxJXndkzu8TR98XKtjA3+1AU=;
-        b=Gr+jRJjGKUnGmSFkOogiukvOUnT2xzMPew4o2jcGeoA/rONO58SWMfdagZ/08z6VCh
-         kHMG6Zg6tcCgMXv9tFvEQJSXyFsXOdcRppZEKP87kc+/8O43eM0ecAEsYq3KHMwKwZu4
-         pH/fLgNIuy0mzoXzOBMq0OKRQ0t3VN+LOpxfmdiRLdVWlokiVrUpmbIbjtGAB06Q2cGn
-         rPfUwgnGb4Gh4/tjJYrGwwRhrLx/wxv4iv+DBd+PpWKRzyqMA8rN1Zo1S5NxMYuIRfW4
-         dEfAt47uHR1caitv8aqOeyg8m/8ycPsfCM7GothDzTaLPUptG1ujItpSin8mKxif0gXo
-         RPcg==
+        d=gmail.com; s=20260707; t=1793314825; x=1793919625; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OjIFR9RHuZyb+FQlUiSJHHP2buOKCHCE0JjDFtdSiWE=;
+        b=R9MX+2U7NsojashcA2kPN3KhjacX23bPE8X+SSXpS5uI1C8M+u6HWbV6z9yT4Pea/K
+         9g2LyjOwKHeDFd3lBoncKaXJs/eROja8FVYKqVMERr97uDEvqMBHlfL5CBYMN8BGhQUy
+         sOK47uXNhTDSjK/pA1d3YLajcoJoFeT4PSh04zUdd0kZigjoDElqtfQX1ACRYCN59ooK
+         g5BHtUDw608BeZ45M16AVq2wjjuSzKmOJ4l+TXX5EBdgQqbolKQM1yukGhPV6fVtIKcq
+         Hx0AypnI8M4ZkD9Iqm2/g+8FYnlSJnTcUeMXwPQIyqYmz8IH+aMf0L5/x50GhhR/dtuC
+         EGfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793313453; x=1793918253;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793314825; x=1793919625;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QsPG26s54J59UedVlJRCxJXndkzu8TR98XKtjA3+1AU=;
-        b=jr5yFZlej/wYrakeSu1ZDMPXU7GGPZcVKPnuuFdmZ9izgAiSWsREjZ4eKpK4Rd85e5
-         QL6RwwC5+ohaG3ffbgWIxf4jKGoumi2+lUhmymT+g0xtthIvKTD55JaR2Sr23nkx3P7U
-         WZNoE23uyc3bE+BALOIff66D4MLG5YN1CtVra/S/GzgDY2CTjRbdOfMcITGgWkgAqN8O
-         +7XxCcPuxBY/hbUihr/Xe8dj/qSH2d+rGVH1sXGwr4WUc3q/3X4f6nkPjjN2tkNS8537
-         2Bmh/y8NhE6Dni5bHb+k3XkoOLqerH2hrsF7wK2OeWG851uHyW/W7MN4maVnvHO+32w+
-         qKnA==
-X-Forwarded-Encrypted: i=1; AKwUvBwIEDwbdl20KTaLwDnFyKLPHlVCF3RnSaePbIVB2eapLEFwS3SaTzOULwGsfbwst1lTjnnJKibFWA==@kvack.org
-X-Gm-Message-State: AFq9FYIOeWVTe+7iMor8WMZmj3cSxTxHIVCTakH6z78hvsdfHAfXTN1/
-	3lT1TavhD37tSgTTXw3LgO57JAc8Z8TtjyQNg7ZlpPa6KP88QH2Ns89eTeY7xS1pIng=
-X-Gm-Gg: AYBFou1i3+KKcfHyupfn6ZqMFSmJVSfken8sTI/uQj/60uK4IRrFHw8ndYllmajPq8c
-	gsIsnxy/y0mzfhhrCujGN8UEPPU0oNG02gOK77zgz4K87zZafTKWJOz7XNSeCnrAPaL+FUDY1RO
-	wnh8UG8lQdjmb3OaLNq4NlACha40936bVInAB136xwAXw2Xc8QotLGvKcPLlw26Xwxp3FvnwHus
-	Vka17pL+MjwPttXcFQmMD4/L6NncA/zmXgSWRAfj8qQVrC9S/TbSfbUb3TMdBvO1mlaE502ot7C
-	/9GNk7nYWdX137oz9NO0PkXE6RiVfvRDCFrfuE/L7SEJFuHyrEuwlptSvZmxFjnBuqDiwCnz/nb
-	7v/LLz+J4/eFqsrUOM/I4vdj/ubQoQXuUKEEpHWkSGw9wYw+B6mQ6VsPuZEjWXUkNJuyM7uO29M
-	RACxMndG0WgLiVL3LKzQSkro0g36Z7gb+axnLW3OJII0E7N68vZnHAVfNZKZfZvtQpKX1Qu5Hek
-	jpx6PBEXc7auXzsHG8APrMnTQgAgv8ab8v4xXULOEyGqGtwXDudDajwXnHjd3ponax5c+qiUBBn
-	HNbQy5aXZrKiG1FNSJht+IHFPLDV1PQvAGEAZxD15Yydx9mc41U9blB5lTuQmMs9lQCt2aFROtj
-	8ge/d8GkxLjsouIaOvGVm/g==
-X-Received: by 2002:a05:6214:401e:b0:917:c073:1b98 with SMTP id 6a1803df08f44-91c90686fc8mr65881526d6.15.1793313453118;
-        Thu, 29 Oct 2026 15:37:33 -0700 (PDT)
-Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca6855ea1sm646896d6.8.2026.10.29.15.37.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 15:37:32 -0700 (PDT)
+        bh=OjIFR9RHuZyb+FQlUiSJHHP2buOKCHCE0JjDFtdSiWE=;
+        b=LxPBEcimjge60uvaSJ7wCqYxhqF33RGFEGqRQawTgLxje/22JFjoitTrf7Qto5n0oX
+         UQ909+/l7UUHcXo+HUe/nzV8TXD1RP+T4cUg7HWA5R3nHjiliivORWOk98NOkMCmDCiu
+         0HiHIjsZ+RsldHTuD7WWIwIQDlNbBpxf+1GAOhHUl3+l9LnMw+NKywAXhwFH8HD/WQ69
+         lk/LqU28i8TwrKcz05AinbdaYlObGSg1av95FHol5XCaaUcAgJ2nlYs1vvv4OC59oLb9
+         OMzusWcL/1+r8KCuENPSne4vDeIEW08osvQhSNgjJrwVO/xWBLYkrqPUUjwexGmkLZxT
+         vRbg==
+X-Forwarded-Encrypted: i=1; AKwUvBz/CdZlBxtVpUjPpQlD4pRPemEy7XlrdvwHlPTuXljnY0+acqIPRCmUhFluPgvgQ3cVSTScpNSSyA==@kvack.org
+X-Gm-Message-State: AFq9FYJlqsJoSgV/qxO5TyNG/RIyr6Ep46hbMWAnGEBGc6kYlwmCriyQ
+	hSSrPSrzdYh/BOx9XtW9XGEHM5woz/MYloC1I3OzD116MHX5k7wtLEwUH3ntc/UO1x1ffdliv5i
+	RC14xWo1avC5XoQgbYPzA5DbvYpZeDUI=
+X-Gm-Gg: AYBFou2A507hD/zBkGKdPSRUhR1GYb5mtFaXezUi0TB57Nd/GrHUH8YOl2E/UH4MgYG
+	nZkijYLU5gOVsIfgbiWpLEJfq6zte0dO3vHZ5aSNEKRoTR0Rb76hpeOAH9bguvmJc34ZPMntRiL
+	p5Idgjx06OEyk+pl11Kmf/beRuRN8ZLyYxAWWRTVC3y6elsiCBRg3Q8B+RCrgPDTqdKKV2RnNAW
+	7bOa9gFgVPCdeDDU6gTgIZowCap13ehYA2VMTr0wEhUft7uNi3OdQS6FjU7ESBMFgUxgqVaShbY
+	jjNJuWaezPdkKnWANaVwncm/wjomhd1mWWZbV8Z+S6HAi66cVYbzbDtRyHLZvSyO1krDlyCEqeu
+	ctPHC6aEcs95Z2lSQf3guA1GQoca9nPFyaHw4
+X-Received: by 2002:a05:6512:32c9:b0:5bf:aad9:df71 with SMTP id
+ 2adb3069b0e04-5bfd95208d7mr108143e87.7.1793314825046; Thu, 29 Oct 2026
+ 16:00:25 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 13/47] mm/huge_memory: fix truncate racing with PMD
- zapping
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-cxl@vger.kernel.org, Chris Mason <mason@kernel.org>, 
- stable@vger.kernel.org
-In-Reply-To: <20261029-fixes_core-v2-13-a64ce7f83abb@kernel.org>
-References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
- <20261029-fixes_core-v2-13-a64ce7f83abb@kernel.org>
-Date: Thu, 29 Oct 2026 18:37:31 -0400
-Message-Id: <179331345102.2127828.8211829708894165734.b4-reply@b4>
-X-Mailer: b4 0.17-dev
+References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
+ <20261028030503.17923-6-kanchanapsridhar2026@gmail.com> <sashiko-outbox-188657@kernel.org>
+In-Reply-To: <sashiko-outbox-188657@kernel.org>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Thu, 29 Oct 2026 16:00:11 -0700
+X-Gm-Features: AclHuK8vPy78HoUW065_s9Da2om9WIPFjJ9GZXx-qNzNfH1rQXOgW4zxEQfJFis
+Message-ID: <CACpmpofjVP17TpyieQ2khsdRL+FMX9oCEcaNE9Hh+vBfGBO2dA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/8] mm: zswap: Store the folio's node id in the zswap_entry.
+To: sashiko-reviews@lists.linux.dev
+Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	herbert@gondor.apana.org.au, davem@davemloft.net, 
+	linux-crypto@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 08FD720012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 039D4100009
-X-Stat-Signature: mgie8rcy1z7w9r7p5jwj89nj3ja3a78g
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793313453-523947
-X-HE-Meta: U2FsdGVkX18Yhli4OzZquTKhm3HmQEk6wjuWrVdO+pLaiqmgBluJFkx9BaeteJew+TwfSDwNo9HbR9EgSJGiNry0BMDx2ffbwR6qqbk2eRK2a7bYIiENfw3gE8iu4ojIDvZaAcYSfPI1auyryNNnp2a5Z/2r5MxKEESV26ssv0LE9MeMKjsu8geI5Qang6q7Vu8/9Zb4aIv7l7PsNt1vEZqZmXLNWcldqiPmFJRH5ix6x3YjmGoELGpkhtncY7y//elKT1rdMckzV3y22Cw/9YrauGP2ArHr6Ge5HWGpRnr+n/knfvuKWOxlUAu4YN9vjuXX/ajnIeMuABcQAyiQshZI8L/dNsqRVZy6++LCkRFIq1Dwtq5aFOVRucK/dzVOiP1Xp2Mbt+SphjFZTVuGWHiP+iCu1wpnOHAyT01kRfYKDaQ/4dBdtMiidA6jlW+0GetmPdUWVq1CI8cydvYkjoIlQschkEhmke2AvS4og5ueWrXHxZyIqav1HyvatEE/rIy4pbJ2TE0YicBmn5ZERSBQNzP0oHjmiyy5kdssnhQhmVWRDsO1FwcDvWkTJHlXpO1qiRwdUSfoR+ZquwnGUlH/7vv56EiVliGSMOyQEaarUukpUe5S4SjniSH5oItJSumruGy909wowP64JrW1EPaxJ68a2052GGMntwppIf4ANlauFJaLqh3ubjuvspmWxMN0SL8QWeA5q5ZFsgjrEZav+Y4HhRQK3pFUzrRgcYDVia4CQsRpOKHCiuIjmOu/L4cKDZNXOKhDWR+C9cOzDmRtXHsbwCDiAmaA+Egn2/dAk8NgZPhxhfI7qI7dYGzbYFiumrdfcdoBN3EUj39vvIEKnfGFH72A8AJ3gdnscnoBoXXieESTYRHZ65sze6s9pJVU+n8nVKP7579QdsOwbs9afvaBNiX6JDnS//XUTscFU6ch77FHomQIfpBO29o7ZsM9pRYRe81yHdf8I71
- M+RL4nY9
- ZY7IdS0NSblGnLLiiRR9L+QGyxQCfFrpnZVuBJJBao9nmJCpF+3JmoSLktrG+IwtvbMoZuwox8ysAf8yLhiN8PekgvH5J3+IExiq6NYq0uTqHoCbY3HfXSmYPFOlAwzwamGg+AcCAO7FaOK5By7D4TKNx1IJCTpnAH+ZveWtKfkkPBSCFLhd2vOyLDGyqOVl8kii1S44De19Lc9pDtW32Hh/MzMj8ZL35iO48BvpNs9GreyWFs6WriVrmulez6+Uz0iEPEfqmNQfV1V5rztl4lvJr1Ylf+rX/2uo3mJ3/Sv1M/vU+eBPet/6fuoYyi/TAt8VKkHMlh5LPjTtav5xPA287WiaDa4jdyOyhliSsx/a7wLdONNhAWtmaRHqcpmUNdg/btX1Hpr6nrfJi2bTK5ytvjPlfDRt76msp20GI7eegfaH/WKkVKX6FwYuckTmj5Z7y5jH3Jo3dS1Y=
+X-Stat-Signature: myhjcdz7ggxuufheunc4r158k9kqcjss
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793314827-84396
+X-HE-Meta: U2FsdGVkX19cG92sPmkg2iItPba7BW0Jlk8qCtgg2IDg1AUgDsJOeoW9AeJPQkeGQunSRoUDTS+EUCH7Rq3a/NS//82d7hfD5aifIm0pzfpgDd2izj0p7q5fIs1iGM9Ss/ZHZH/n6KkpvJ0vbTHvZIoPt0/sZLCxsuGGQnyO+g5J3LOuHigFdIZCJmNU17AlUM4Uj797zAsU4dhSYRsplDVUoQ5SKx7hT5HTp22CmelHFVG/6SdN/onlInm0CHvR+shJBftyq40xEypXNM7eYCFzhoqDrH+iyHHfbgqcFVPRGFw1jzHJzU/80HqdKEXD3icdCY/1hONRKHrAV33v708vNuQRAzh537S7OvixmhLZmPEhOf02yiHMwru4eiZg/2S6JX1Rd++QLfP3CtAvt1tp+tzNzoMI+iWe+TysVrUNA4YclN5vvrZyqBgc5CPH09s8Ui5sAgcuJ9S9W2kD1MfmPIK3M+1JvvKqLdMFXLgiFq3I70jvHezP6G1Nt3YPuPn7N5sM1qAOSmQHd8wD+dmuqGOFryLXju65O0j9ZK10Vj2TvJ3qFaGf5GT5qN74rOsNj198dbCs3ylTQc1eSGqOPMPI2VqB4OBy1W/n1ruM/SbgqJOSs/uc4Z4erARpLRJ76iuneBHEIqPpLDjsjrYF/WxO07aK1Hidwit/PA+sOfxkoWXoOoVYFPn3wGxZ9QCpmVoBb8FwkUyoAHpnypvYOssPbgQZlQ0idnpS8+sukLwg2rAdXxlES8Rwz7VZjaQ2g5mfRx5vYBJ9ZEQ896CFc6Y95BRK/eZRIMAARo9X5lg/0uf9EX0wtZ59hPePlXxiq9cSceiTCq2cRzajJexdOPjhYn2M89R/y4QJxpvR8lkoMmsC9r4RWsQQWpn2KUmNHtFiFCXmL+vXJQNpOvWpbdPdtHf87tZEeJKL+6z20FW/oF6Ir2O8z3cH2crcUZhovCey4ph8uBOiSxl
+ itZ/cJle
+ dZ0ikAEBEEfjoj2LZeiJd2tSgTur/5Pt0HmV51Ct/3zZmOYoJbVaT46YUngs/O7v5rhRfVSD4pGsfDokqqLnFyotUdD7xuU0lPhnVWdOKHh6I1ZGUS6L3NUHqtTY3gM3ODAQ63qGMSF7kdCF8j5NScNoOZsqx4e5iqndhbqus+N+vmfq9C4SkEZLFq80i62dfW5xpGI8Rg/m5w8/8QlQc0tkEbPU6eCtNPCE/ueBejfLYvWmk48U+3uc9vNeLD6JzPwiXQXrC5DcgVR4wP2FL1wWTAqJi3mS7no+OMpiMc9drWRbkFn/NAi+Kn/Dg0GQasncVU7wYo2CRDMIibUcFgABL6BeuPU0Yni9xL8ruVSgbpg7zhroczThZ0f0yxda8VLQHHmPPaw7MEqHT50wrSlNVCFqEGAeOtEVr/9ki0f+L/9fzNvozFoWPgeDK6Kr67gpZ8kavpF1i2MIiebH7bnZcYz7lX7+XNB2Kz/tD2Je15BIJ7kKXXfyAlSILopPRmUhqADa/rh9abfLgFbj0ox/jOntGypEHnEoOOG8QSDZdKro=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,37 +148,144 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-10-29 21:33 +0100, David Hildenbrand (Arm) wrote:
-> From: Chris Mason <mason@kernel.org>
-> 
-> zap_huge_pmd_folio() removes the rmap before calling folio_mark_dirty().
-> If this was the last mapping, truncation can skip unmapping the folio
-> and proceed without waiting for the PMD lock, racing with dirtying.
-> 
-> ifs_set_range_dirty() can oops if MADV_DONTNEED races with
-> ftruncate() on XFS, when we get the folio set dirty after it was found
-> to not be mapped anymore.
-> 
-> Move folio_mark_dirty() and folio_mark_accessed() before rmap removal,
-> matching the PTE zap path. This keeps the folio mapped while updating
-> its state, so truncation must wait for the page table lock.
-> 
-> Fix generated by an LLM and sent by Chris Mason in private.
-> 
-> Fixes: fe6cf984939d ("mm/huge_memory: transfer the pmd dirty bit to the folio on zap")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ david: simplify comment and description ]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Wed, Oct 28, 2026 at 8:06=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+e(s) to consider:
+> - [High] mm: zswap: off-by-one bitfield width for zswap_entry.length on 2=
+56KB pages
+> - [Medium] mm: zswap: shrink_memcg() skips non-N_NORMAL_MEMORY nodes in z=
+swap_list_lru
+> --
+>
+> commit c4aa889f59a75fcf871276fd68b4a4738afe132b
+> Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+>
+> mm: zswap: Store the folio's node id in the zswap_entry.
+>
+> This commit stores the folio's NUMA node ID directly in struct zswap_entr=
+y
+> instead of deriving it from the slab page backing the entry, and converts
+> zswap_entry_cache_alloc() to use node-agnostic slab allocation. To keep t=
+he
+> structure size unchanged, it packs length and referenced into bitfields.
+>
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index e1d57a7d95950..19b7d60bc7d2a 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -180,6 +180,7 @@ struct zswap_pool {
+> >   */
+> >  #define ZSWAP_FIRST_POOL_ID 1
+> >  #define ZSWAP_MAX_POOL_ID U8_MAX
+> > +#define ZSWAP_MAX_COMPR_LENGTH_SHIFT 18U
+> >  static DEFINE_XARRAY_FLAGS(zswap_pools, XA_FLAGS_ALLOC1 | XA_FLAGS_LOC=
+K_BH);
+> >  static struct zswap_pool __rcu *zswap_current_pool;
+> >
+> > @@ -206,15 +207,19 @@ static struct shrinker *zswap_shrinker;
+> >   *              logic if referenced is unset. See comments in the shri=
+nker
+> >   *              section for context.
+> >   * pool_idx - id of the zswap_pool that the entry's data is in.
+> > + * nid - NUMA node id of the page for which this is the zswap entry.
+> >   * handle - zsmalloc allocation handle that stores the compressed page=
+ data
+> >   * objcg - the obj_cgroup that the compressed memory is charged to
+> >   * lru - handle to the pool's lru used to evict pages.
+> >   */
+> >  struct zswap_entry {
+> >       swp_entry_t swpentry;
+> > -     unsigned int length;
+> > -     bool referenced;
+> > -     u8 pool_idx;
+> > +     struct {
+> > +             unsigned int length:ZSWAP_MAX_COMPR_LENGTH_SHIFT;
+> > +             bool referenced:1U;
+> > +             u8 pool_idx;
+> > +     };
+>
+> [Severity: High]
+> Can entry->length overflow to 0 when storing an incompressible page on a
+> kernel with 256KB pages (PAGE_SHIFT =3D=3D 18)?
 
-didn't have time to run tests, but this looks trivially correct.
+Good catch. This has been addressed by setting
+ZSWAP_MAX_COMPR_LENGTH_SHIFT to 19U and the build time assertion check
+for BUILD_BUG_ON(ZSWAP_MAX_COMPR_LENGTH_SHIFT <=3D PAGE_SHIFT)), as per
+Sashiko's suggestion.
 
-Might be some backport ordering issues between this and commit 14.
-Hard to say, didn't look into the history too deeply.
+[ .. ]
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+>
+> > @@ -1507,9 +1506,10 @@ static bool zswap_store_page(struct folio *folio=
+, long index,
+> >  {
+> >       swp_entry_t page_swpentry =3D folio_swap_entry(folio, index);
+> >       struct zswap_entry *entry, *old;
+> > +     int nid =3D folio_nid(folio);
+> >
+> >       /* allocate entry */
+> > -     entry =3D zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio));
+> > +     entry =3D zswap_entry_cache_alloc(GFP_KERNEL);
+> >       if (!entry) {
+> >               zswap_reject_kmemcache_fail++;
+> >               return false;
+> > @@ -1524,6 +1524,7 @@ static bool zswap_store_page(struct folio *folio,=
+ long index,
+> >        * to an unrelated live pool.
+> >        */
+> >       entry->pool_idx =3D pool->idx;
+> > +     entry->nid =3D nid;
+>
+> [Severity: Medium]
+> What happens during cgroup or pool reclaim in shrink_memcg() if the swapp=
+ed
+> folio resides on a NUMA node without normal memory (for example, a
+> ZONE_MOVABLE-only or ZONE_HIGHMEM-only node)?
+>
+> Previously, entry_to_nid() derived the node from virt_to_page(entry), whi=
+ch
+> was allocated from slab with GFP_KERNEL and therefore always resided on a
+> node in N_NORMAL_MEMORY.
+>
+> With entry->nid now set to folio_nid(folio) in zswap_store_page(), anonym=
+ous
+> and shmem folios allocated with GFP_HIGHUSER_MOVABLE can have an entry->n=
+id
+> that is in N_MEMORY, but not in N_NORMAL_MEMORY. zswap_lru_add() inserts
+> those entries into zswap_list_lru for entry->nid, but shrink_memcg() only
+> walks N_NORMAL_MEMORY nodes:
+>
+> mm/zswap.c:shrink_memcg() {
+>     ...
+>         for_each_node_state(nid, N_NORMAL_MEMORY) {
+>                 unsigned long nr_to_walk =3D SWAP_CLUSTER_MAX;
+>
+>                 shrunk +=3D list_lru_walk_one(&zswap_list_lru, nid, memcg=
+,
+>                                             &shrink_memcg_cb, NULL, &nr_t=
+o_walk);
+>                 scanned +=3D SWAP_CLUSTER_MAX - nr_to_walk;
+>         }
+> }
+>
+> Should shrink_memcg() iterate over N_MEMORY instead of N_NORMAL_MEMORY so
+> that entries from movable-only or highmem-only nodes can be reclaimed by
+> shrink_worker() and mem_cgroup_try_charge_zswap()?
 
--- 
-~Gregory
+Conversely, is the previous behavior correct? The entry is created on
+a node in N_NORMAL_MEMORY, and when that node is under memory pressure
+the folio (allocated on ZONE_MOVABLE-only or ZONE_HIGHMEM-only node)
+could get written back. This doesn't resolve the memory pressure for
+the node on which the entry is allocated.
 
+Nhat/Yosry/Johannes: Does Sashiko's suggestion for the shrink_memcg()
+modification look Ok to you?
+
+Thanks,
+Kanchana
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028030503.17=
+923-1-kanchanapsridhar2026@gmail.com?part=3D5
 
