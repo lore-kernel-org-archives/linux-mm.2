@@ -1,167 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72509606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB296606A32E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=a0u/Zj9b
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WIvSeu0T
 Received: by kanga.kvack.org (Postfix)
-	id 985416B05B2; Wed, 28 Oct 2026 22:00:59 -0400 (EDT)
+	id C20AB6B05B1; Wed, 28 Oct 2026 22:02:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95C896B05B4; Wed, 28 Oct 2026 22:00:59 -0400 (EDT)
+	id BD1B76B05B5; Wed, 28 Oct 2026 22:02:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8721E6B05B5; Wed, 28 Oct 2026 22:00:59 -0400 (EDT)
+	id AE8776B05B6; Wed, 28 Oct 2026 22:02:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E2E66B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:00:59 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 06FBD1602B4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:00:55 +0000 (UTC)
-X-FDA: 85374010470.15.2E86194
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011045.outbound.protection.outlook.com [40.93.194.45])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2D8401C0007
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:00:52 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="a0u/Zj9b";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793239252;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BAA66B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:02:46 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 06CC18029B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:02:46 +0000 (UTC)
+X-FDA: 85374015132.20.8D2A751
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2FF0C20006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:02:45 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WIvSeu0T;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793239364;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wXh21ZtbBV0WqjvjXU8QtKhqp1jWV/KXknHIuaGmwsY=;
-	b=NfeAY1OkcXhM0gu7r4xeY6VyhWpu1VNN39V+OiRh1eGpUvorVZJKbUUySj1aQf26iTY+Bx
-	3OYypA+gSG/bc6LEnPdyihcZAIF2KL74aBH7PNns12GtLD7w6uioSEZ+CHUm9KFSE7BIbo
-	K1LaPoHZTEMAKjBGm0W6lBlOud5BHgU=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="a0u/Zj9b";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793239252;
-	b=6s9DpR4Vtu05tCbVaQOGN//GMOFifGcvZAkXPxHx/AF3Pwq/QWDnmNmxiHqQeTR+8ha12Z
-	KT4bCqw/7bI07NYA5lMbdTfqoaf4qKBanJCWr568RDQiYhDXvOs6wn36AXzLOJebB4i68K
-	uDj1A2G45spkKHsWbrOquJXP/TbKEZA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FTxNOobxSRe+Wv0RRVQFRXsR7RnlOS1bmp1NgSeULNcoAPYWbUBVRQOtiYheYH8nH6dEBtTBMDmD+a6PHtQR+QfLepNXZCcja7SkFVBzVAuxCYzCvUHqwzR6RHbVvLaZaEcA+l9sV4Kysq5sf6UVt+a5yy8eQne/ChSDFRWSUboLobhYpyuNGyJCZsPGocdmdB5+KWyXJvx60jbS6mcphV7qyRATA0XIdq7/nmEEigOCjHOjSzmJEwRzXQ5zcn4CCU8lAVAcu9v/arB7Qi3ZKeOgC0ysijWHjwbviHWBUsKPkn2wTQ5P45EluQ2MpLaWUlpPIGh71e8DdLqv1aW92Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wXh21ZtbBV0WqjvjXU8QtKhqp1jWV/KXknHIuaGmwsY=;
- b=nr7q7P6hVs6pN5SHJf+/07oIeK2Ozo/2ct4H5VVTdOV9/SV7X9bDpFI703ynNOOjAGGJAtMVTK1B6uKSqB3MtnK521/o0fgNdOm9jB+XT7PYjQ4941lBUK1dDi1G0N89CAp/qBIzn4zXkDIDtCNWYTblUqqSXKGmbr/qfgcznZc62nwBI5waOv2AYg5itRZ5BpHkaItTKmm8amghM/s/xPb0LNKvowag6wA67hatP7lceZlFMccnyaUz6fNPeMaMpr5JUP9vwom3CQMklvc9rrmL4xB2WlbQZEM9zVWc6PdO5U86T06F67kh0CnPmRhnm507yKY9VkYP/yMF6Immxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wXh21ZtbBV0WqjvjXU8QtKhqp1jWV/KXknHIuaGmwsY=;
- b=a0u/Zj9b29KiE9Eby99trvdVg96F2alVvcLfZ3UdPD8DITKaD7p2p8jWb1BuiSrxXcnle5oOoBYvvu/YksCTa2Khf2gFuGRJIGe4mWSMp2KX7DCWfUwQlL+VQTn/BKXcDfdnTO+9sxstzM52Pv23/TdqqYarg9E41PU6+h0uPm8Nv4feSrIJjvKA7CtBhRHaeHkHWGofZEHqKmqhHpHpzaDn0dzVL6fcbljf0fXmx5OKTG1EnV/WbF4ab9pCZ9LvMNZj9OfnFUy6l2Aw/xG6/5nHDl4fUpxvsEw8MGd5u27GkG9VbR7/M512OXhMz96KsIbIpbCerGGxPv41LBoU4Q==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CY8PR12MB7097.namprd12.prod.outlook.com (2603:10b6:930:51::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
- 2026 02:00:47 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0569.007; Thu, 29 Oct 2026
- 02:00:46 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] RDMA/uverbs: Don't return the shared zero page from
- rdma_umap_fault()
-Date: Wed, 28 Oct 2026 22:00:43 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <EBA77B7E-B4AE-4725-8E82-061676C9B1DE@nvidia.com>
-In-Reply-To: <44a5aa3e-173c-41fd-bbb5-92ae9d1cdc8f@kernel.org>
-References:
- <20261025-fix-rdma_umap_fault-zero-page-v1-1-186255624f1f@nvidia.com>
- <78802ed9-9cc6-41c4-b131-7c7d38f7ff39@kernel.org>
- <DMEVZ5MU1YA9.2X3HCCHNQOIA7@nvidia.com>
- <829c448d-e6e2-4874-a166-7624e87489ef@kernel.org>
- <5E86E76B-F97A-4998-9EDB-8E450470FA4A@nvidia.com>
- <44a5aa3e-173c-41fd-bbb5-92ae9d1cdc8f@kernel.org>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BN0PR03CA0011.namprd03.prod.outlook.com
- (2603:10b6:408:e6::16) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY8PR12MB7097:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb4b30dd-130e-4081-fe67-08df356072a3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|6133799003|18002099003|22082099003|56012099006|11063799006|261022105027099003|4143699003|261021121427099003|261026121527099003|261026140227099003|10067099003|261009223027099003|261022075727099003|261028144727099003;
-X-Microsoft-Antispam-Message-Info:
-	MLLNSiWpJUgaI/9OyM/VYcK4VfmsR6PcQjJQcVgpXryw2xIBUlZQGwpEXbKcSbOYv9LXpEXUvXSyMA74KKzJLh8YzShkJtpa1oXIoFz5x9bTodf2XMYl+EjpG52TrwL5Zi98kPPr851vJeIY0CBQqi3BQCo9HZOwzqm1/nC1I8UVgu/ZQqLwYfyxTaeRYtez5CRpanw46QeQoPZEorWOpAi3Q5kjKjd4xVEG2CLKLLwXPbl6D4aAaxir0Ou9NNzh6lW3/nc+b2S+nJvQM74jt8O3k9VHN03TjjJYVbYwtuudL4BT8PnY8PlA7etiNxPqjDw2E2t4rvhgFDOXRB74XuGPLyLIALK3bfzdC7WcMvbb905rQ78Ea6kBfgo2Dwi53V/yJcM1d7qqN1ioMKF2iNAIiSenx+ZBPaCCM8GYac2XNn+Banb6st65AYdnWveRMHf/nnt+tzP5A8ziIve62sZeqYtsAv5DmltgNW6YhND7A4QTP90fDJCkJwp5OLQG+/9e7JRzPZwMsRFKTx9Tc9qOKDsGOQyV6Ma6MQwCK2RqRgaXQIvtU1+ltZX0+1xqoV/coDQZ1RnzZKXe4wje2CBhmc2YGHxkE1UsLExaoic9030sCBVZcOs8+RcV8aVB6SThHvVOLwwMEvnxaOtfejSWyciz7l+EtukjtmJe4E8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006)(261022105027099003)(4143699003)(261021121427099003)(261026121527099003)(261026140227099003)(10067099003)(261009223027099003)(261022075727099003)(261028144727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?g1N6arjFibNoKnIXcVISBMx2tbFFyfqSSAWi2Ya1vnV65pWtM5L9fOJ8zw6Z?=
- =?us-ascii?Q?jHEQu60oCsMywpSoJC+wOc+Oijiq9S6DwXlvniMQKVJeZdYNDwkafE8Q1Oon?=
- =?us-ascii?Q?dQow4D0rhOTDS497aGS5UQyuxjzEbcl+O7cSpI5tytJkUd5npBXptBgukW2G?=
- =?us-ascii?Q?10jRJmO/qPl0I/o7tA8WZaBxtCeLgEXpR5jkK6tYMeGDQFpX7VMSX5nlIUeH?=
- =?us-ascii?Q?kt4ttdTpqjNlpZ9gUrXFWJ8Lbbc4DYkjO1d+UpCx3v+vh7iTexDH4D7LDO73?=
- =?us-ascii?Q?648FBfudTeQNY2iAYL9NEC74xXaAYbpBX9wklUabqeiVSj3Di766JZrVlqD1?=
- =?us-ascii?Q?hzjtaOS0tTgvBSUjAMh0b8vq2AcGwYzep66zFrhcSvqwf28+aGjEjbg4e+LL?=
- =?us-ascii?Q?LPLwI7tk4VkjiSGVrvc2iUISUAXk1Jmx65/l438TnM8mqysQ8nKq++Q1OJgU?=
- =?us-ascii?Q?EzCGF/vqnOX9JupgwtXR3ISv1o8JAgxP58DuB6ZkC4GXwOvyKucrvARp2F+M?=
- =?us-ascii?Q?jhVipwn03eW7z2CdRvpVAd0+qnKkEJzRyxL8c1S606KzS/ig3jQcX2MuBntE?=
- =?us-ascii?Q?70EZhIJfRkvBFxzQmoB8NQ7lVzFHUO0Zp65kP0oUZxEFySeOkhzZn2GbiFql?=
- =?us-ascii?Q?SZXyoun4Ohj479x/k0QDzfMcMip2BDjC4NWhk7yYG1hqCvXDhquKImyJsEIR?=
- =?us-ascii?Q?uD4XCIG4VeGwo2/nbqr5DTvqSpDL/75Iit/fsi6FCvDNn4JjpP2PVWsabzP1?=
- =?us-ascii?Q?RhDkdspN5pEorjRtBhPhZbjupMduNRdWjVtwYT2c7VIrr+FSkwl7v3KRLAr1?=
- =?us-ascii?Q?bcGFZmC9y3vD4Mo2UhftYZtxKJVS9dlfFOgq2lTsOPlv/ZDOzEmYtUb06c6O?=
- =?us-ascii?Q?+rUe9qVl/XQxYMq5vHcR7362EGa8cV9PN5cjWQ+Ss4OHw3lVNY2Z60KBqDKB?=
- =?us-ascii?Q?J2OD4O+gPMni6n7VwSsYKi2rWYwroV8Wfe3wpuaX7rb4ofZmbO0MSKizst2X?=
- =?us-ascii?Q?5y2JLK6Aou5sjQUhavQr3Eoy+RPYpyEU9DbATE6JT9tq5yintgQtzUg6Alv2?=
- =?us-ascii?Q?zJKeKWR6nHA6uAzQfxXymUrzVYKL+tjQA5y2ysqMF2iLtJRVySFVnIVnEEcU?=
- =?us-ascii?Q?+1Pf3MIn7utM109MF8x1ojn7rhLzGXswwt6Vrx8ZnXzEMPrmnjcsj0KN31wW?=
- =?us-ascii?Q?2a+elDbQdRytsUT9c1yLSw8PHDQ5vbfvZ+yR3RCz165arIwGWQyQaffZNOMz?=
- =?us-ascii?Q?2FwJW+Duj7XQWXZeuPzEU1+rZD7xrzX3IdUEnj4IbCCHCO6nakfYgO42CEdL?=
- =?us-ascii?Q?LsT6QGQlBf23/veeWEGAaN8Oendw9c89+RMhX671fErqiPeQ2up+TnGO7h03?=
- =?us-ascii?Q?ULmA1LEer1S77k/RStRoAHgpWHjoXDbsqzX+Yuh7N/rJ9KCG7ZG/uwbdWv7V?=
- =?us-ascii?Q?MPILqCu25ZksieJxfOt/fByUVocnjVZG+6yF8FY/gnxyKLsdGODXi8W63Gx1?=
- =?us-ascii?Q?MiD/9t6tPHsgNcvWykX8n7NocOw67M1o+i5SwAUMKwfQrSYKAykxpHg2F5Lb?=
- =?us-ascii?Q?1MmI0Wd3zRKDEITha09wYpSaO/2tarq9BBhfA23Rxj6e2N6l5I2NPdn7/QE4?=
- =?us-ascii?Q?Nt2Dpf70dd7RDx9I5Mcel9FIQ0FyUjlUriuEKk3ZlTf7I3jSR1rSIKfRj8Hu?=
- =?us-ascii?Q?rzgQnnSLwW4yAYNxlmihAT/vm6Iry3MlsZoSFGRxSon9jKU8?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb4b30dd-130e-4081-fe67-08df356072a3
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 02:00:46.7923
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g1pthwFLddgkaOzDCtY5k6H8IRnte96fWtJ1kPLUF33yqrm3wfUzXI1lr2uhjBC9
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7097
-X-Rspamd-Queue-Id: 2D8401C0007
+	bh=tgvWlnWFppEnT1CoCTYoqGmvjAB4fbAjntbvbb4Z4i0=;
+	b=hd9lAAAzkHQzY7qAqL3v1DYwmL5uZDsrI+Twz5ppVhbyPt9fCRFKxI5OkoDyYu5ZOY+y43
+	DCbvix7jPu5O86Bvo21Y3kJa6mumRO39O7gjRV7NoQOfafksxzgktrDsbn2p+TNoZcT4i0
+	wutsVtFVeHyv4DyVSDY24DcywSHR45k=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WIvSeu0T;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793239364;
+	b=tBBMbEbioY8aerSOcCou+vWbXNYh8mxUacT7/yqp4A9QcaRFLakAZY0IaXno+n8bAVTWaG
+	gg2qEcW/pllXtAnyDui1AgNTfpxq7twUh3sc7+SoYqZqYqg4vpIZz2Eqv/cwjhwJmxHGXG
+	DGPR2LT/ulpl/eJuYJ+9AAvb0pr9pN8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C424640F00;
+	Thu, 29 Oct 2026 02:02:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9F61F031E1;
+	Thu, 29 Oct 2026 02:02:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793239362;
+	bh=tgvWlnWFppEnT1CoCTYoqGmvjAB4fbAjntbvbb4Z4i0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WIvSeu0Tvx+LeNyQgMMt4LthVOnp1EQG0LopAFXH/6DEbtlehnx8zCjdP6o8aAk+A
+	 enOu/ge+RTZkAC1WA0s/bIlovpZiI3IHXhYgAxVZmuXsa7q+Ppp8QMR2lbNwTYVLRp
+	 EDcWQ0AoFRJ8QXcsx9BAbKqpWFdmDc+fcOaUPdZiC08JpegemntSPM28Zzvun0WiFf
+	 3SY/q+KchD973cSumOZKHjKkqwmhcZSrqOEMjnxaJFTXsFJq41ukD500jCmX1PyIAu
+	 /cZQaHhaTm2c0MtVR/ZNPJpBHiuxP7ZWSrQWI8chzJbrPdhudej90PXgizxmvkILzk
+	 axorqdNxkAo3w==
+Message-ID: <sashiko-outbox-188628@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/damon/tests/sysfs-kunit: fix leaked pid reference in
+ add_targets test
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Xiaolei Wang" <xiaoleiwangxiaolei@gmail.com>, sj@kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, error27@gmail.com, yanquanmin1@huawei.com, wangkefeng.wang@huawei.com
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, "Michal
+ Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Vlastimil Babka" <vbabka@kernel.org>
+In-Reply-To: <20261029015725.17378-1-xiaoleiwangxiaolei@gmail.com>
+References: <20261029015725.17378-1-xiaoleiwangxiaolei@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 29 Oct 2026 02:02:41 +0000
 X-Rspam-User: 
-X-Stat-Signature: adku8rqt9zmgsg1wuh5wj1dhiugxrto4
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2FF0C20006
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793239252-805135
-X-HE-Meta: U2FsdGVkX18dQuivDy/YHEQhXi+6lbpT2vIgyU6Kd6j+nHslmqjO2vjONI+ClXmlSuGegpkL5smU0AQJOgVVd31WkQF5TpAfwanidiWraHCv/AY1NMG/P9PHcVyrmTjMs6lljgbsa9td+YddTTTM5PUIl6x6Vtb+nrS9pXQphX0eJJ9JoondMlfzYSj67HTtlsmreGCgoRuDxYpy6u7MEu7WwhJd0jTghQLjkeiqrIBD8GzyNjLkFxOZxko9Nm09Q2T+5ydHe53++U8FXLyDnAivf144pZje3j9pvMdL37qoYhIiyV1IXkLFlhWOjl9Ro+tbiKmsSRDzOk1Hf4ZNMUBp9lX9qBmhEw+6aNM1RLtCj0+3wFT7bZQy2JQb5x8diSOVRC/wN9zFsG+2uPHgOfc0783XnE2j1TNI45N502qiEA/lqMvpNchHLdIqGPGONN3jROwOAMRO0MW5U8j/y+2wsfk9g2FvhW6RWpTtoBKkrx0puhbgSTctoEsX0biMlOKCLyeKvOJ5dWomAhA0ysIrhpdmqCjF9QpxhQ0+MPx006L3GKYAjDZpHsMgsiOGjEdKhVjtrZzZRSXi5f/F64H/nsm4d1ZyQ0zyhBCwl6fKwvzDWxVmf2QkXhm/NYo+ZbYV3xkypXgy/cegyHcfESavjZhe1t9oQSBKPlWKKGUiKcbU+5duHC1NDsYkM6c/mNlz7pQKOYjjy6pZ/0ujqpwo7LGrhs8aAAkChTf9s7guvDx25W3bSwWE/FH2DpxIM9OlUhj+LID0jFhFGSbey8CrOxeZ1I9P5Z28O2hTyT8FtFeSkE8yJU9Dg7obkGFgrCVY/7xenxt3Vj+FIJ1+lxTAxv2dsA2Ve+51wJmV66i8SfZn2WNp8lHysxMhAS7pCqqZUwVADrig9+sA0hSeulHFbHhloxQ+IogsLzYMh9qUi53mI8sKuyLpBB950dyVQqXA7+vmXcHqgUFjJRb
- Ljq9ZKX6
- N/g1rYH3sT8Z3TS2/jqQkEo2ZhRncKzaMXhq3qyMZ1L3trIoaeAa4McG9hcYVVqm9EDLWCwoBfdteD+RZCwHjJqxuxk5bFYBQbk/OjQ/QBvw9AcVqX2fMmNpv5u/VIwSaEsAxwUYrpZGVlZLTuGjdPXoYFKp1IoGCnKURkqaJaV0W+tTD4MT03BHtJlJKqZ03vaZQXk4GPi4JA663mLORXJO7CO+Bp7VpPw7SUGq2gwRhPHr+8kjKYDtZ8YKurvZOTuRS74irlabAxjkdlRH8fDEn3RRfy6IT/yZJa4fDjzyAuJ2BTh4imoIA1/KXdSqDTvNJOUqHklGN2jddY38xAdnZ3LYTJapoCgcvceGUHZ4UAOBHUoKbMgSdLp8GCXwPJtDyxvwAjFBJmRUzzKG+TgDhhrSjLAfx0ema
+X-Stat-Signature: nsxemwsdcf3qb7ebjq6s3ri9uc8t8pgi
+X-HE-Tag: 1793239365-199681
+X-HE-Meta: U2FsdGVkX182BGzEDumq9wIFRGXGBs3ft74bf+P82E0Ig93aMnmKgtlAlJ25FQyygqU6cg/C1/6Spr2amVrOaRypb2XmD3mdG0i09J/hZY/AyfZDaK019AeGyp14jj2VWh9+gRhRfYc65VC1+PU/tmVjWVHtv3mVUhbml/s/gLurO3FPGw/k66bh/PqA8Q2JlJGbsiBpdsD+Wjc/9DEIIB1A7eQjPFOlbpCRVjfb/RE79ee6qOIsZH7i18itRJN69jJ9EXomuTgkuoYMHH/n3e4x1FhVSAHusyOMtzliaOSpdm4uh/Z10aXloNxxj+9b15yj50F6U7P3lC1XxJUTPJW2f/TFnHDXcnL8JqRdYlN1Hbutxno/uOlicNNOIPKRzIkSZ21vYwbUa6WL2GfkfTPxrxwV+c3jI4/sXeXRSU1qD/S6xW70Ebws33f9QL8d3dIrZXs/1LQ2NrM3eddU9MxCoht/EFRZ9NIdq7ROMr3Db5s7sro/7B/kcUwyOGPmiIbxDMaRLKy06buOBhmBgjyGKfw6X7AgwsmZmdOcD4sn0b5qlTgWL34srn2L0hpd4+MEqz+GIkYFV1uZ8CRe+Dm640mRzzaNzeQAZIiE92p5hHRcLGRwiUgNUSng8pntfWB1n8WVW/8PhJEynTwCI9xEjX8M8FI48hacTtDagTSMeBLD7+HuVdWZyVpCjer4KWde2zU2bhUIZH5MCKcO6vU9/h5dBYx8iIlO2PjNw6FUH2BOPdyrXr6iG9jTGa//wPv2DFp1YRBkLUPSKKrNbMGyk+iuvZm4G2Zb/5tQT4Ms1OUfjzIBbXEkTkd825jZIC0us5zwJAjXfQx7Mq4D1rxg7PerUWms6QcCl7mLIpEdnY77JcrR+j1PgxTEc5uKGQnzarVy6roRTmLdPaY4nsqYIKIsSoR0qzzhpcRmTaTF6nCb2XclwJbD5G92nyIexcRzTv3iBwPU7W0oeI6
+ VwLPpDUE
+ 1ISTAd8i8H/sGiy/9MogWKlPzcDa5oexUbPiNgOcJPGaXpO2fG5SWwf+3JsaMl4T1Nkwh8VJMwatazm282PyERZ6nJz1Lu/Y8+Q767WEEod+BbmcUUFRMgv1F4+pUCn5D6mucSAAOPuk+L2/djKp4i1Q7d7ftQr6XClCiACKeMn27tLHK31LJmMZo/lt7KUZhrCWI6bV3OH1KhyNsxqPB2VBancKRIwKjWIYnADEmguf55InQp12Yn7CeyIGUIDAg4Dkr5QxZbeUG6XT4/3u3D+bPvS8fK3QoBIjTzqrKkARxaqJh4Xf2d0Vzu+HFMzKuqjuhfXfvLSnblwWiIGt5rFYJ0fiPSq8qWWq1Q6/iCxUbf3ljKdkCoKKHywSbJkPCBrbkVUj7z1GXCx3HuHY3RPwL3j9Fpo350++O3erwwfkjlwphTLR72zFWFefzOnwxJlZL9BFZ9tB0z7sKCTXY3h9DYLHr9o1mnQ4YYZmp42M30vvddD4Vlh2C9UYd+pBY8k0jIB2lL6aaSQr0ZM0smaVzTk2XstL/0psl89Fl63LeesTMegm5864xKxMl9dLorVkV0f91caWK4R3Ofzt9r4+YUBo2FLsIukz4CZClPj2HKRlo0HdHqoxmL1ARQygavyT4ubGKwF8IBNc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,71 +93,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 28 Oct 2026, at 16:34, David Hildenbrand (Arm) wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm/damon: memory leak of ctx in damon_sysfs_test_add_targets() o=
+n skip
+--
 
-> On 10/28/26 18:49, Zi Yan wrote:
->> On 28 Oct 2026, at 4:43, David Hildenbrand (Arm) wrote:
->>
->>>>
->>>> For writable path, a new vmf_insert_pfn_mkwrite() is needed, so it was
->>>> not fixed. I can fix that part as well.
->>>
->>> We should do that; returning kernel allocations from this function in ->fault is
->>> bad.
->>>
->>> How urgent is this fix here? (can it actually be triggered?Specific hardware?)
->>>
->>
->> Not urgent. Like Jason said in another email, RDMA only runs on arch
->> with special PTE, so refcount, mapcount, rss are balanced. With DEBUG_VM,
->> zero_page checks in rmap will fire on the returned zero_page.
->>
->>>>
->>>> The read-only zero page part might need more attention, since
->>>> we just prevented vmf_insert_pfn_prot() from using zero_page. Do we want
->>>> to add the support for rdma_umap_fault()?
->>>
->>> We just have to make sure that we cannot install it writable etc. But that's not
->>> a concern.
->>>
->>> Just have to be careful :)
->>
->> There is one wrinkle, it does not work on
->> s390 + mm_forbids_zeropage() == true, where zero page is not present,
->> and a private zero page is needed.
->
-> Yes, see vm_mixed_zeropage_allowed() I added.
->
-> In a VM_PFNMAP it doesn't matter. It's only a problem if we can GUP involved
-> IIRC, and VM_PFNMAP just disallows it entirely.
->
-> Similar for s390, it doesn't support any form of memory deduplication (incl.
-> shared zeropage) for some KVM use cases. IIRC, PFNMAP does not really apply there.
+commit 15e9d751202cdf7c593524fe7b4266b6f6dd0dbf
+Author: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
 
-Got it. It is then all clear to modify vmf_insert_pfn_prot() to support
-zeropage for VM_PFNMAP (no huge zeropage support will be added).
+mm/damon/tests/sysfs-kunit: fix leaked pid reference in add_targets test
 
->
-> (have to make sure that gup-fast doesn't try pinning the shared zeropage)
+This commit fixes a struct pid reference leak in
+damon_sysfs_test_add_targets() by calling damon_select_ops() to select
+DAMON_OPS_VADDR on the monitoring context before adding targets, ensuring
+that damon_destroy_ctx() invokes damon_va_cleanup_target() to release the
+pid references. If DAMON_OPS_VADDR is not registered, the test cleans up
+its allocations and skips itself.
 
-With special pte, GUP-fast bails out on the PTE. Without special pte,
-gup_fast_pte_range() simply returns 0. Then GUP slow rejects VM_PFNMAP.
+> diff --git a/mm/damon/tests/sysfs-kunit.h b/mm/damon/tests/sysfs-kunit.h
+> index 138a4b8d14e73..634387c6178b9 100644
+> --- a/mm/damon/tests/sysfs-kunit.h
+> +++ b/mm/damon/tests/sysfs-kunit.h
+> @@ -79,6 +79,14 @@ static void damon_sysfs_test_add_targets(struct kunit =
+*test)
+>  		kunit_skip(test, "ctx alloc fail");
+>  	}
+> =20
+> +	if (damon_select_ops(ctx, DAMON_OPS_VADDR)) {
+> +		kfree(sysfs_targets->targets_arr);
+> +		kfree(sysfs_targets);
+> +		kfree(sysfs_target->regions);
+> +		kfree(sysfs_target);
+> +		kunit_skip(test, "vaddr ops not registered");
+> +	}
 
->
-> (of course, the shared zeropage must never get mapped writable)
+[Severity: Medium]
+Does this error path leak ctx when damon_select_ops() fails (for example,
+when CONFIG_DAMON_VADDR is disabled)?
 
-vmf_insert_pfn_prot() will only accept a shared zeropage on a VMA if the
-VMA has neither VM_WRITE nor VM_MAYWRITE. It should prevent the VMA
-becoming writable. Also it will ensure the result PTE is not writable.
+Earlier in damon_sysfs_test_add_targets(), ctx is allocated via
+damon_new_ctx():
 
-As we discussed on IRC, VM_WARN_ON_ONCE_VMA(vma->vm_flags & VM_PFNMAP, vma)
-will be added after __do_fault() to enforce no page is returned
-from ->fault().
+	ctx =3D damon_new_ctx();
+	if (!ctx) {
+		kfree(sysfs_targets->targets_arr);
+		kfree(sysfs_targets);
+		kfree(sysfs_target->regions);
+		kfree(sysfs_target);
+		kunit_skip(test, "ctx alloc fail");
+	}
 
-Since it is not urgent, I will probably send V2 after rc1 is out.
-Thank you for all the info.
+When damon_select_ops(ctx, DAMON_OPS_VADDR) returns a non-zero error,
+kunit_skip() aborts the test immediately without calling
+damon_destroy_ctx(ctx). Should damon_destroy_ctx(ctx) be called before
+kunit_skip() here as well?
 
-Best Regards,
-Yan, Zi
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261029015725.1737=
+8-1-xiaoleiwangxiaolei@gmail.com?part=3D1
 
