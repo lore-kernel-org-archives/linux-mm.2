@@ -1,97 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A0E606A32F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA73606A326
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UXOfp9RY
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pbM7HBm0
 Received: by kanga.kvack.org (Postfix)
-	id E33DF6B05B2; Thu, 29 Oct 2026 06:34:33 -0400 (EDT)
+	id F20D66B05B4; Thu, 29 Oct 2026 06:35:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0B876B05B3; Thu, 29 Oct 2026 06:34:33 -0400 (EDT)
+	id EF8416B05B5; Thu, 29 Oct 2026 06:35:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFB566B05B4; Thu, 29 Oct 2026 06:34:33 -0400 (EDT)
+	id E36026B05B6; Thu, 29 Oct 2026 06:35:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AD7456B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:34:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35769A0381
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:34:33 +0000 (UTC)
-X-FDA: 85375304826.21.52BF574
-Received: from mta1.migadu.com (out-91.mta1.migadu.com [95.215.58.91])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E89A1140007
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:34:30 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UXOfp9RY;
-	spf=pass (imf26.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id B8EAC6B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:35:32 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 581F2A0383
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:35:32 +0000 (UTC)
+X-FDA: 85375307304.15.0089F10
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8003380002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:35:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=pbM7HBm0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793270071;
+	s=arc-20220608; t=1793270130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=AOkwsWmwjY7T0BagmEwjwy19sbGkrNkf9+nM9gVRFeA=;
-	b=Z9G58932XrxCk9JuBRBXgcvMng0DipfzEt3rcnYI7IlCxrFYerLRiy/hdU4khdmv+6DUvg
-	EjFvTKQd5kRz9jlPma3inxjjmKYs5PeUo/9qwOWVqMJXo7Bm1chD8Uwm9L8XHgKq96mHu4
-	3c0US6D00D2b9daVKuMpFmagHBnXG24=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793270071;
-	b=1IF6IwSkYaABsoSbT7bpB+Ezsit58drb7jewSmxu7BT648z8oe55BviDh40zmvZ6t+a58q
-	rxtvvopmAnmXTtXCyhPwPhavhWCwPmQSDzU3scDWg18s5ZZ7o0oUHQqsjKeTfHVnKyy11Z
-	dUF1t/IQidWqc4bzkF2XxeoZTErc4W8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=G+dOdTKmIbVkiM3lsAF+c1rAUHzJmMdTQfVlB9f5eEM=;
+	b=bgRs0oTbGa7zymywlR4ASnArWIyB6ZKTOM+MdRRA1hBuHqpEPjOcBE6IESnngOMARbEOgA
+	k87yy8goUWUXKASPXicgbHeoT/GZGPFI5psIfYC/yleuMoB15R+7qDfcVbtrUQ+VAo+dhY
+	cS5KA9/NbsGOnImdkFUyr/g3H2bk498=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UXOfp9RY;
-	spf=pass (imf26.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=V9eKCFzwICKE4rFO7Nmsc0WCMFzPWjs4u+0Fk0qiHkg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793270069; v=1; x=1793874869;
- b=UXOfp9RYEVzG9pxkQUlobs6A4jb1xYE3cZWLzCOHQGck1nZV/9xfA585SJTqLRsuzC5Wd36Q
- lj4xBsZMIOrGWoGZb2gahqDlSCr3eNASR11V9aCanvfVTk8onkRsgfuJQ5v8PN8sabF8JzeIo+U
- 24AXxMU3ShTpP0llLmIiyVxQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id dd12de82c714536d;
-	Thu, 29 Oct 2026 10:34:29 +0000
-X-Mizu-Trace-ID: dd12de82c714536d
-X-Migadu-Flow: FLOW_OUT
-From: George Guo <dongtai.guo@linux.dev>
-To: rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org
-Cc: graf@amazon.com,
-	changyuanl@google.com,
-	akpm@linux-foundation.org,
-	chenhuacai@kernel.org,
-	sourabhjain@linux.ibm.com,
-	liukexin@kylinos.cn,
-	guodongtai@kylinos.cn,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] liveupdate: kho: calculate per-node bootmem sizes before allocating any
-Date: Thu, 29 Oct 2026 19:34:25 +0900
-Message-ID: <20261029103425.14689-1-dongtai.guo@linux.dev>
-X-Mailer: git-send-email 2.53.0
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=pbM7HBm0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793270130;
+	b=c1BtpqXV4vcqTb4X9kXGMX0hUGoO7EskDeVTisBHW2dDed0xwAfjSdIC2E33XTQfl0QdZr
+	UzZdgTZ/7SpZKyMH+YXsv0AMWsDpqqkLFlYJlCcAD1K3NcSxrmOi9MAyUXJ32vWIpsgmis
+	dB3QV69cWRWqOsAgK3uwwGjBerk+sII=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48df0fa43c5so318877f8f.0
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:35:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793270129; x=1793874929; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=G+dOdTKmIbVkiM3lsAF+c1rAUHzJmMdTQfVlB9f5eEM=;
+        b=pbM7HBm0Ndiru11DD3yjOMTyyH7sX04bG6ik/4Zbw6u9sosP8a8iYr02nWOG0+2uZy
+         iQItEpB8HV6pDBRacgl9rur0kt+a8SsY7km+haOTiGCJ2qSOUIHfr4k+obZ/G3UdgLoI
+         C1IEogaoRxc1GDpbuYwS4tpuGN93eDHVVd7WAB0uppaYFRvqmbQ6VgML46XZIt8ERemI
+         kp9qqbwoR9ZgyG/YyOz29i88APlVt7ww4CNGGpVgnOZF53K78SV5hjtGt0VEPoE2N7/A
+         0DVO9p/ROGsxgT8q6l23r1AbAAx03pKD7Mhveb2PMqnkdOQQ1gRetCA5oghahx2gS78p
+         nVmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793270129; x=1793874929;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=G+dOdTKmIbVkiM3lsAF+c1rAUHzJmMdTQfVlB9f5eEM=;
+        b=cZ4OT3lDbvB8OO3LvpLaw1WXVb2O1oN6RTOhc5iWldbP79Zxp8VNukbxRn5rdyT/5P
+         /yGbFBfnLzTy4z5XcenAkLLlf8FhV5R2Vf58irpALw51B9rersWdK3MDYhZB05g+jE6S
+         N99nozuLPZX8Y3pAKH0+Nsrf0UBgDpUKrx9i3HRf2krqX+ppsDQS8i/FHp8cLYTHIHo7
+         oxM88CPyWLGzIQq4a9C2tJkQwAVltn05udy+LLNj3GfDvIkkDvIf4+vbNzssEQm1XZnW
+         48TyHaIQD/vWNS5TmwpaDZ4K39Pzo/OFfTREkyIjKkP8XB7nHSUA0GPCPTlQwFRJbqeo
+         Pdqg==
+X-Gm-Message-State: AFq9FYItNBqaLjByMIrfLmC1spBYL3QijSFPbVlY3b6q+5+Cxtur/gKw
+	DyHLsiF5vcP3csE1sq6OZ2aTaVlhUj8Xp8QHWJFBky1fwvEmZAUt0K3T
+X-Gm-Gg: AYBFou0APuOAEhc1RH559ovUUqVx41ebXbzkptiT3o8LLPRZnALCXT+2y58vYyHmXzA
+	ndiGfNhtnYE+Y2ZSbl9jzlvkTAhTRAJIgFuSsTTismhWfLCIYcDpC43haKjyjNn4+BG8HQUKM3b
+	53O1IrIRfncyQe4zQF7GW01kDhqOMHn3NGj/S/fxZkERdMl5w5IMdLRAjmHliLzmkVdnKxU7/jL
+	H0KK6fn7EibnvEDbvU1TZ04W54ll4hTOsZukihncReoxo+2Ref33qLLK3Kn6BmlcfCETbhjUknX
+	bVY1MSdHdymsa7sLJgX1637CpiznfkDl9+OBYvhS7WwLRof8cmXcO5dR6Eo5h7lgGDEqWU5lJen
+	73LTBAKTayzUlfiIvQ+y4YzGF2RYs3AHr7GREBH1eYk9npCCMRrFTwB93CMq91WGJpOvdz06/6t
+	om3gxG0ooQKayNIORjuljY8I2JFYlz9g1LuunSwRQ3LL8Tj3THg2TFu8TJmEQ/Lc8thqExGhoXL
+	qtCogfz9cr0yLhB7825RxVwEZNC4yZx9AQGSL8nLaCJCUF8EpL2bt4TusBl9AaAXwyW2sLsRj9R
+	SXADcYcUrRY36m/EFNb2ZmJAGqoREWiBqxAp6S9SEk+aiQ==
+X-Received: by 2002:a05:6000:2893:b0:48e:5e63:27fb with SMTP id ffacd0b85a97d-48e649b1219mr5739523f8f.20.1793270128547;
+        Thu, 29 Oct 2026 03:35:28 -0700 (PDT)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd8ddasm36580278f8f.48.2026.10.29.03.35.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2026 03:35:27 -0700 (PDT)
+Message-ID: <3b80c557-ea63-4d32-8901-3f7939ff541c@gmail.com>
+Date: Thu, 29 Oct 2026 11:35:26 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E89A1140007
-X-Stat-Signature: 54mb8p6afg445ukmxfj9g3gkmhqdq619
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] selftests/mm: load xfs before checking for it in
+ run_vmtests.sh
+To: Qiliang Yuan <odys.yuan@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-0-16ad772850ee@gmail.com>
+ <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-2-16ad772850ee@gmail.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-2-16ad772850ee@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8003380002
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793270070-458963
-X-HE-Meta: U2FsdGVkX18gX1WwbPXm5MbdHvz0LucTNOwGFfzqqAgZTNIztn+O0atopDNZIg8QgPyesB8YQzTTTX0lZ2cmJ7BhybuF6eMncuZM/qxy0SwphhCtrObsuru3rdp57XbK83GusVVNhWG/9Pov07c/XjdhBSe/B4niEPUMmDwQAm5cXVX1wUg000t++NKYMqNm3jdX0b6YT42wBZoAvMpH14F/Mnr3YCLNPRO1y3bmMWt2w9iPjRc4ZaNcoKEAlfTcZn4cqQnWfI4/vxhN/YpCl47YcuMTTTK9Dzj1f0bGRcGWmTUezTJHbwHuk4fDc2+nGFN59oFoHzVAGXGUnTpEb0ynn9RsHREomy9AhTMWa8RUxKRAuvEfjSTLnGU0SiJIlRR92mUpp1bnfEPYtd1ozMXie9Biz5aBsvnsBmX818DKoOG+TnJPeFPaRM6sdLQTcsQA+aL2g7lO33sbrvjUg7FaaOArry90ll1EBPC09t/CIQtb9pNsVTpc7/50PF9AEC8t0CiEuCq560kWywnpRiShb02X8N+D/+m7jV8u1g8Bdca7bo/sjmRuRbklcC/HVWOLh+eubNuThUO4hpKfsV4npGu8TAAQjLOjghRHt46j3/hURu9Lfx1ClLhDwcrItmHZ1CiXWOWfP28SXwo4GKT+b+y1S4/Mi6NgKUxpur+Jcb4U0CEW0x8MKkgXb02urSG01k8wV9TUtzpvgLfq0ezw05tKm0AmL8o+zfvx51Lkv/0x2J7mOZdcK20SGt7fKQKAsWVWBDuayno01KB3qEOVdOZ6r2ok6/HjH/8gZnl1zHUjnVcHWsobSyFqmdt0yi+KJCdwrFc7XZSBHA6NPLRp0MLlIHC4KaALEjf4aDslygGtPA0VKhZUr5od6icKeFwvWQgaz644pgx9xGi5P9GzOXVAFTLG5z9GJXGlUplZXl77KWCOFlvyg3i59FVxTihsR4l/4IjHG1rBQBG
- ZYatkqDl
- QB9XHc0v0XGXqiSyuT6CydypLd4aZU3f8czDhuEP5aPs4loQCf6Dji1bfGmQ1jXTCsn0M1TI15CLqfmhuHV41EzZDQManwtB2V9y16YNTjZOveWlXwU76i5MnkxGqxvZNHz65oZuUa3FZgO51b7i8gJqume4rQ3X2jYEdwWqyYs4LigTdMVTfhsXZFWgR+SndgqFwhY2X+axCDpSJmwOBJBMp4VZDT8qNj2xqiK9jbCSCkhfeJQ+NMtHQrLhyBJqQ9snSYJjGCLx3aVP0jbvZOchyXw==
+X-Stat-Signature: hhqtg8bmc83fcuha7uy1akawzmx5okzt
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793270130-375953
+X-HE-Meta: U2FsdGVkX18JvHhE4wwqxIKo5kS0JE7OsH43Yc2yBgUKHzpbnk1TsJ6u/2JA3wO6Rj10+AWAjVXwzdZh179WnjCSMoOuGTyRVF/2v6C3++rGygqXIbqWBdSzUsV7c6yHMpsRiLTiLrYzyMXKqUrqEYtDveF6f5pjln6WDR3rDP0B2N3WY5hNM8V3vKK9R/vx6pyjNNYJc7k1UBDD9pPieQw2NXNdGgBDxbmNjxXr5M+1PNXranrdkwBK9SMlMlN1dWoQoAYjNLIhofhLECD583+4WYPW7RhAT8atXFa0jEOIszqYSDnMgCe5gnV0LKLydu38lHalQjZGtqoKZIh6ahencFQECgAfothZigWvIzQ3KkrRBbIOsnvoKE/js+No96TAocKDsXSu8/sfNvqXMO8Ur01Wq1r3FqR6aeOiimVCWb5SuOnvG0q/M0vsjrjyx9McblNfVTj8tgBHxs/Z/d2ARJtzupbFdMg/f8m0qK4OGHhztG4pfPfFs573AXIdxXthftqx/Gxx1IHRYqoQU5sc1IJo1DTuwXvZCHES5mGHiG++e/tMHQII1VtURdwdoUevej1HkPW0mxDFS8cmarLhjwLBNo+aPIHPPnkHqJOwpdhskxArNaxfKAytgL1PxTlC2eqg5riNr43uEI4SLxxSo7h6yzmzyJMMFvE+glvzDJ1a1NAU6Wloa/0SO7z7SPHTVSIRIam4PDXzKgjjramG8bVcj0sxzrF7O0qQEmtcpob/07f1YjRVM5HzZGbw9Pe1bEkwtrsDEBNv9DKIGTemMk9vzwwUgZuMnOy5pz0686RYKPbFQ+fQXzLpq37R8QtXdmmIcdpgGUbnslzmdDt79613pad7KHlzMW9pd260HqAhn5/1JRQI2zc1wYmRYZDt+hnGnx8nGfiseBfEO8WgJNHNGBzB73wXx+LLRwBNZBpZpy/hdehTvBztXS30AlL75t8L8j4y2QSxwL5
+ 6xq8OpYk
+ uzX6BgJ05jAS/UHjkmmxUoL34CCrgEpRa6zX+gq7KFAW483plOm91QCvM7S2Mx9A3SNxDizElo5wqM2LHnFe6oro6qQ2EWahoucFszaXsk7rC3hLPvM8r+ANSnQ7XI2dj9X7IapwZ+ZlwvU+FmzbzBG8jAXmdEmI9db/ir4KW0RuDFFtmdtB9hjCBgHwzOR0XYq+99huMilat4av4RlOfa6iZIWq7RkhhN6vGejIRN4fpO5hTgqeRxtPHBq3SoByfP6VfdzGOd6G1jklDUPNWGBwDU/KtyKyG7iZ4XF4hp6SJd3yzV5XJ5CkXZwnbouSIRN5jFjcI6Ztsxj+vK9uynHg3vKPST/TlBnSXjHuHfH6tLdQIXGGfoF8n9gSXM+8Ji+HY4vu1hw3y9uzffnk3WEU26IjXDWroEbU8Md08iCTE3hlJChEmgt0IChjuUsgw1+PvAor62ZdOKpCxGM99/W0FOG9zMJmiEdoBlOGF0tZgbUHhpY3GJ0KyKIIwy47z+KOE+KFdqrPUDrCkJq+eCO5zD5uiPJRo9MDYp+yWZ7XLtssgtt5VZIxb+tHkyOs37h01VO00obU9+0rg20RKindAXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,121 +135,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: George Guo <guodongtai@kylinos.cn>
+On 10/29/26 7:24 AM, Qiliang Yuan wrote:
+> run_vmtests.sh creates a loop-mounted XFS for "khugepaged all:file" and
+> for the pagecache folio split cases of split_huge_page_test, since
+> tmpfs does not give them large pagecache folios.
+> 
+> It only does so when xfs already shows up in /proc/filesystems. When
+> xfs is built as a module that is not loaded yet, the check fails, no
+> XFS is created, "khugepaged all:file" is reported as skipped and every
+> pagecache folio split case of split_huge_page_test is skipped with "No
+> large pagecache folio generated".
+> 
+> Load xfs with load_module() when it is not registered yet, so that it
+> is unloaded again once the script is done. Match xfs as a whole word,
+> as "selinuxfs" contains it too, as does "vxfs" on kernels before 7.3,
+> and would otherwise skip the load and leave xfs to be loaded by
+> mount(). "run_vmtests.sh -t thp" with xfs built as a module and not
+> loaded:
+> 
+>                                         before    after
+>   khugepaged all:file                  skipped      run
+>   skipped split_huge_page_test cases        43        0
+>   xfs loaded after the run                  no       no
+>   xfs loaded after the run, with
+>   selinuxfs or vxfs registered             yes       no
+> 
+> Fixes: fc4d182316bd ("mm: huge_memory: enable debugfs to split huge pages to any order")
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+> ---
+>  tools/testing/selftests/mm/run_vmtests.sh | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> index e104a9c6fdefb..b422edc2e2664 100755
+> --- a/tools/testing/selftests/mm/run_vmtests.sh
+> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> @@ -412,7 +412,7 @@ CATEGORY="thp" run_test ./khugepaged -s 4 all:shmem
+>  # Try to create XFS if not provided
+>  if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
+>      if test_selected "thp"; then
+> -	if grep xfs /proc/filesystems &>/dev/null; then
+> +	if grep -qw xfs /proc/filesystems || load_module xfs; then
+>  	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
+>  	    XFS_DIR=$(mktemp -d /tmp/xfs_dir_XXXXXX)
+>  	    truncate -s 314572800 ${XFS_IMG}
+> 
 
-kho_reserve_bootmem() calculated the per-node bootmem sizes inside the
-allocation loop, after the lowmem and global areas had been allocated.
 
-Without CONFIG_NUMA, memblock_get_region_node() returns 0 for every
-region, and memblock_reserved_kern_size() attributes a region to a node
-by memblock_get_region_node(). Since allocations are marked
-MEMBLOCK_RSRV_KERN, the newly allocated lowmem and global areas enter
-node 0's baseline and are scaled again by bootmem_size_node().
+tested it on x86_64 in qemu with lockdep and DEBUG_VM, xfs as a module
+and with SELinux on and off. LGTM so:
 
-In the original 1 GiB QEMU reproducer, the default 200% scale made
-node 0 request 672 MiB: twice the sum of the 98.45 MiB baseline and
-224 MiB lowmem area, rounded up to 32 MiB alignment. The reservation
-failed and KHO disabled itself.
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Tested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-With CONFIG_NUMA=y, node-specific accounting excludes the NUMA_NO_NODE
-reservations.
-
-The lowmem and global sizes are already calculated by
-bootmem_size_update() before any allocation. Calculate the per-node
-sizes into the kho_bootmem descriptors before reserving any bootmem
-area as well, and allocate the per-node areas from the stored sizes.
-Use separate read and write indices to preserve the saved sizes when
-zero-sized per-node areas are skipped.
-
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-Reported-by: Kexin Liu <liukexin@kylinos.cn>
-Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
-Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
----
-Changes in v2:
-- Calculate every size before any allocation (Mike). The lowmem and
-  global sizes are already calculated by bootmem_size_update(), so only
-  the per-node sizes move out of the allocation loop.
-- Rebase onto liveupdate-7.4: follow the "scratch" to "bootmem" rename,
-  and keep the zero-size node skip added by "kho: do not reserve empty
-  per-node bootmem areas" by reading the saved sizes with a separate
-  index.
-- Explain why only CONFIG_NUMA=n kernels are affected (Pratyush, Sourabh).
-- The global size over-allocation on NUMA systems, which I planned to
-  look at as a follow-up, is handled by Sourabh's "kho: fix global
-  scratch size calculation" [1]. Mike asked there for a broader rework
-  of the sizing; this patch only fixes the CONFIG_NUMA=n double
-  counting.
-- No Assisted-by tag, although I said on v1 that I would add one: the
-  Assisted-by references have since been removed from the documentation
-  in mainline.
-
-Tested with the KHO vmtest on a 1 GiB LoongArch QEMU guest, with the
-LoongArch KHO series on top: it passes with both CONFIG_NUMA=n and
-CONFIG_NUMA=y. Without this patch, KHO disables itself in the
-CONFIG_NUMA=n run.
-
-v1: https://lore.kernel.org/all/20260904025101.9959-1-dongtai.guo@linux.dev/
-[1] https://lore.kernel.org/all/20260922131217.698809-1-sourabhjain@linux.ibm.com/
-
- kernel/liveupdate/kexec_handover.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 6f1f55fe3181..9a53d7750367 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -831,7 +831,7 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
-  */
- static void __init kho_reserve_bootmem(void)
- {
--	int nid, i = 0, max_nr_bootmem;
-+	int nid, i, j, max_nr_bootmem;
- 	phys_addr_t addr, size;
- 
- 	if (!kho_enable)
-@@ -848,6 +848,15 @@ static void __init kho_reserve_bootmem(void)
- 		goto err_disable_kho;
- 	}
- 
-+	/*
-+	 * Save the per-node sizes before allocating bootmem areas. Without
-+	 * CONFIG_NUMA, new lowmem and global allocations would otherwise be
-+	 * counted as node 0 kernel reservations and scaled again.
-+	 */
-+	j = 2;
-+	for_each_node_state(nid, N_MEMORY)
-+		kho_bootmem[j++].size = bootmem_size_node(nid);
-+
- 	/*
- 	 * reserve bootmem area in low memory for lowmem allocations in the
- 	 * next kernel
-@@ -860,6 +869,7 @@ static void __init kho_reserve_bootmem(void)
- 		goto err_free_bootmem_desc;
- 	}
- 
-+	i = 0;
- 	kho_bootmem[i].addr = addr;
- 	kho_bootmem[i].size = size;
- 	i++;
-@@ -879,9 +889,12 @@ static void __init kho_reserve_bootmem(void)
- 	/*
- 	 * Loop over nodes that have both memory and are online. Skip
- 	 * memoryless nodes, as we can not allocate bootmem areas there.
-+	 * Skipping zero-sized areas leaves i behind j, so writes to
-+	 * kho_bootmem[i] cannot overwrite unread sizes.
- 	 */
-+	j = i;
- 	for_each_node_state(nid, N_MEMORY) {
--		size = bootmem_size_node(nid);
-+		size = kho_bootmem[j++].size;
- 		if (!size)
- 			continue;
- 
-
-base-commit: 9a6a70aefe77f6fb9ff2b3037dcf87f6dff65c8c
 -- 
-2.53.0
-
+cheers,
+jose a. p-a
 
