@@ -1,102 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE487606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 09:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D51606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 09:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WPG5loz0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Feb8Y+6Y
 Received: by kanga.kvack.org (Postfix)
-	id EDAF46B00EF; Thu, 29 Oct 2026 05:18:29 -0400 (EDT)
+	id A217D6B05B2; Thu, 29 Oct 2026 05:19:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8BE16B05B1; Thu, 29 Oct 2026 05:18:29 -0400 (EDT)
+	id 9F90A6B05B3; Thu, 29 Oct 2026 05:19:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7B346B05B2; Thu, 29 Oct 2026 05:18:29 -0400 (EDT)
+	id 936E26B05B4; Thu, 29 Oct 2026 05:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B1DDA6B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:18:29 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DE59A0354
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:18:29 +0000 (UTC)
-X-FDA: 85375113138.30.8F8D441
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 85ADC1A0008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:18:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WPG5loz0;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F65F6B05B2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:19:27 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10F6C4031B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:19:25 +0000 (UTC)
+X-FDA: 85375115490.18.5C5E829
+Received: from mta0.migadu.com (out-20.mta0.migadu.com [91.218.175.20])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9A806180004
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:19:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Feb8Y+6Y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.20 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793265507;
+	s=arc-20220608; t=1793265563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UkwRg2MfCoRtAJI2sGxhVQjo2bap0vqxQXUt68TRs8o=;
-	b=k+GWivregZcQbcoyEe9cqS8sM3sHQse2ssLx3jaFbmjLdRiV9BVNrAd9Ipz7yPfic2Wrof
-	gRuAdLzxf+8zp3/4Uwr3mkIoklqsn8TL2DubM2doHYHI9j4Fi5L5j/CZE7KK7v6SzyLer7
-	N4MoEKaSFSsPPZAlFrl9ELCZtaddEJ4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wc1cCegTsF419DOZKQ+etFEgEn2COXujDpdlOtNxm70=;
+	b=iQsUZ7ZAgAUO1caB3l33wSVRm0aIKNc0z4ik66Lqrdj96iet2so2kwt47Q9a9qfZ9cGNhF
+	4YUroM1mBiUvuCdcZKOUjnVAXdivCTmKt+MTWxNVob2phZ6A+Ape5rbTUhAdZM7lnEUUx3
+	jV8pVq9761co/vu5NhaSbzybQ+kn2KU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WPG5loz0;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Feb8Y+6Y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.20 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793265507;
-	b=C9UaEronURay05N7L9jI+N1yL/ftbz9Ra42Kw9fENSwiUJd5e2dlKCyZB4KH0QsQ99CrKQ
-	0TFMpY7op1cbMScNaS67iJl+M4bp7+Hz/YGV4EfXppDU5b5ZzkDIyOKONVVNqNQkvvt9pm
-	H6nnXhunfUnajC3MH6zV4qxCK+3g2UM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B364140B30;
-	Thu, 29 Oct 2026 09:18:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54F61F01825;
-	Thu, 29 Oct 2026 09:18:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793265506;
-	bh=UkwRg2MfCoRtAJI2sGxhVQjo2bap0vqxQXUt68TRs8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WPG5loz0OzzMkDVWR0/RpNMb53o+NMDQ8VSEFjfepQzfcPpperDYBZwPoNNeNuXO+
-	 FkRxqWgqe4eYfxS1nYOjB6wQZ/xqbDR+H5e0gXKGrgldBgH4Gmm0OaX81ATkpADRSi
-	 TGzIeIazP00gQWOV30Urwq0V5NhUxJrj5dv7qfWC/woUpG/I4RVC7f4FuNgsLcb+c9
-	 rOG3r4VVE2tMYRR1aWjgT1wIyKxaF6r3JHRqW/rgCpeVnw/LprE4s6KHUJh4D+YwlZ
-	 Eaz30jiCbbmNhI3jaGaef4jqEDApfzBH3O2P/uV4L7REpM6bmmfTT5GthHZY7vWaS6
-	 Y/pOavIuBOLAg==
-Date: Thu, 29 Oct 2026 09:18:20 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	Daehyeon Ko <4ncienth@gmail.com>
-Subject: Re: [PATCH v2] mm/vma: avoid spurious write locks when
- mm->mm_lock_seq overflows
-Message-ID: <auMHSGBR6SB6HcTZ@gremlin>
-References: <20261016-fix-vma-lock-overflow-v2-1-9eb778b79b58@kernel.org>
- <atXjbsDn7DJybsHU@pedro-suse.tail5790ac.ts.net>
- <atYJA7nIu_RwpoCC@gremlin>
- <auIIxSorX0bhZNZc@gremlin>
- <auIPRjj2t0BcYlOa@pedro-suse.tail5790ac.ts.net>
- <CAJuCfpFVv-t08YGMPR3YHCyiOK4HY-YjMk5rB6tdBa=mq2MvKQ@mail.gmail.com>
+	t=1793265563;
+	b=l4W/51EDqP1Nk7EI3sT6HZ+SILuTeZWBEvs4DxB7+0xdEM5vRQ1PV3V+vcSg/b62frh0cB
+	76P1US+hRfrUiLVBA1LjIwrmKYmFF9qtiUJuOnyRhGM1MrrZgra5veJWuLwXAYsfxJva69
+	J9+8URaTdW6Egw/qV7SPIZrkPkCGmlo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Afj/DxHItcSs+lti4Qv2oWzmWeorYwqYqELX8olihxw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793265560; v=1; x=1793870360;
+ b=Feb8Y+6YWSTPiNXbfR9zgxSHIK2u9HO9kpPPqQ9klyeAYytpYUOSUcuJBW6vMvI3qncwvmCp
+ olZchMsQwEAG1taCYCV5pjQgvg/WOp1JApmuduEEG3fVjd4Zgr3Vns/C+77FHIgZiOt2LzPkN0l
+ gPKmnynPAXSWWQLM8eYiq+JI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ee0a28769bc6ca81;
+	Thu, 29 Oct 2026 09:19:20 +0000
+X-Mizu-Trace-ID: ee0a28769bc6ca81
+X-Migadu-Flow: FLOW_OUT
+From: Ye Liu <ye.liu@linux.dev>
+Subject: [PATCH v2 0/2] mm/vmalloc: harden remap_vmalloc_range_partial
+ against NULL pages
+Date: Thu, 29 Oct 2026 17:19:06 +0800
+Message-Id: <20261029-vmalloc_remap-v2-0-c4705cbf26c2@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpFVv-t08YGMPR3YHCyiOK4HY-YjMk5rB6tdBa=mq2MvKQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIoP42oC/3WNQQqDMBREryJ/3ZQkSI1d9R4iJcZv/UWNJBos4
+ t2b2HUXs3gw82YHj47Qwz3bwWEgT3aKIC8ZmF5PL2TURgbJ5U3EsDDqYbDm6XDUM+NCmi4Xyki
+ tIG5mhx1tp6+qf+zX5o1mSZLU6Mkv1n3OwyBS7587CMZZU+iSF0rkWPLHQNO6XVsMUB/H8QXiG
+ qFavAAAAA==
+X-Change-ID: 20261026-vmalloc_remap-012cf418c2a8
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Ye Liu <liuye@kylinos.cn>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+X-Mailer: b4 0.17-dev-39d60
+X-Rspamd-Queue-Id: 9A806180004
+X-Stat-Signature: h5asd83q4r6th61oux184dnwkjax3agg
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 85ADC1A0008
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: m3p9or4uygyb84biuncwqc97jyxohs3e
-X-HE-Tag: 1793265507-171737
-X-HE-Meta: U2FsdGVkX1+CLBwqGh37ebpdLo4VuuRR3P5Ke1eja9USCB6i1bWFdk2Qn34WNYvrFPMp3q2TIhQ4j5s6dSvLWitjs2XDK3+P5GQkriUkXUyiK4iB+LE7kITDPJNYqJtSzJzuNI3QTdDcyHOW4hbK6MdgjWB5a+QwCkMTX72hd2TtxUXAZhIYLIrN8rmKHPr38zG3VtCW70YZlANLM4w/0SBoogUb3iBp8YuIOhWmlHOOCDsXroB4oiswsl3D/3XFyZGYNQZndkDoWxz2sMKv/GApszY90o0Ki/nczNo51UVzbHAmU1fvfG9zjM1peQQRKCkTBhCcqifg28CHzp2zFkYRGjn6zT9A7dBVCQBD8K+IRAS9BEMpjjeOzZ1xOJhArHQK5Xbk3SE250oyN1Dfnb4F1JdMzaJreNaYA9jWZB9D2Hyk7gHtWG5R0Wpfl11cdOYqtjCoEVVAktKUc43GlwYGsjGIH7vw6DnLP8axzCftHVT35jSej9LQ3gEIc8tM59HbskRKy3guJjPzA+BnLJvpS5RpYyI8AfiH7kENt72lEC3d0FEueXoqeLkPevXzRCyLJrc6TJFKrfu8G5/D/syOpjrFwcgwVRIJwvqB08IE+U/NJ6YGcbke9wSC+W0B/pKlbOPKpntE5jVrsecNp7qg+ksFcKjbnaifVdj2dNkBUmLTJdwmgePI/cohsW5LXLSzroxNI46n9/drpSK5A0460N3OdNETsqcZBMuRCMw970LJd1UAnmM/KXXyDP9OBNTTeqX7sN+jfaoaeu7coI2oyrvCo9Bd8cH+5ADVccDcpqoqzvuQEpagJrjh4UTEw4DxtdUpg6AxjypknDQSUoa+qZ69QFH/AnztMVKm/dyNDP6kW+x6cSfZU36H0NN8y089bpM/b4Q73ORCTE3/9JuowOGc5lmGZymdMO2b4oiik8CtIhr15a5R4fOcVryAixjpxu5usfIcL/4lDtt
- eSgbshWh
- b1r+z63j0l6DuWHE/ZU+22lMw9nDdN7fPR7LlRQFpNc5RfB13MDIkJDollKdmTSJ7o9fGQXkSU5YQ3qZInZyYpH1zAX7zqyNZXlUum3iDlYlIPCxvipW5a3nIPPqeyczAbv8eXbxmiJEJHlIF2BiMwBEiO4tke1GnfD48Pjscgw7XSopHIOHKHGD+vBQ++o082MYlANq9SyWddo08ETt/3OTL/M3uUzSr97yET1n9DG3gIuOP+XlIU+79aI+Ey/o18yblY9hDh9lPe7Csivrnu5CPU5ysHRqcCxmfGrc298Lwvqg=
+X-HE-Tag: 1793265562-64064
+X-HE-Meta: U2FsdGVkX1/ZNX/HlqFVhwwmkK3E2FIEwibHYiFSGfSXDHOcIITPD//MBopkdmN76hU5iR2tmKlPEnwKP4qjJ7ebqoDjGeG73FzQTaCbR4sE9x3xStJ2sTVRs+EeoiXZZGF7227DMpjOhvfJ6Qt+aNarI7B5wGcK087RzTyDfdDq3hb+T5xvUkUsai9uVe5ZQPXKiGlBzxF1hXg5vq/k5gvLwkFFCwrpe9bwICh3KMGo+kn+EkXg/x48SHowCm7dAr1kqV+62UkgPctBkzzAC+HjOxQYN825j7reUY41EoCM/ENT7yTvC4BcR2nPWrFOXjOm5h62C8v5RGbJy6Bkuo8Rz2+l7GivswhIbaRd0lrCrflPGdh/N7MmKHt0/tWqJJRpiHBeUufBVJzwyosEtbmoNZNpUx7oN+oNe4sTWm+DvNuuzNQVerqUP6OpljfHYvXRBDSOtzVD7NsE+FgzMnJgmHH8Zo7PqfhdrZmiCawRRKJ9rWXWRcKW3W6g3QXFfaqLb1Fpdm1PKYS/6U+p20XqKLqt7eO/wwg5p65q94l2+Ha7BaG2kVHaKqRFqIscTlO7UcVsRpfbyE2TH94HAdBbzYugZWbdhhy8DPwMwQIGNqDJ/ccjJMvqQGl6gIvvDu1EZ870EXutkVANP73RYbw+KqKfNE+VlHG+lBcnI1VmLBLHvyiC2FLAMyd0kAFSEi/r/HBz9xhjvycJPKziZTCjPPNyZRQCCbtgjNK/HOY710xk14sSlx3lXr9lVKNo1dczGVDwLi35wXmRWEt5blYVDdr80jRqq5FJBHkiA9cBLJ/f+MCcgqPiV8A1vSmuv/7lPPZr1/nKxeOISaB8UCogLbC++sxFhwQiA6NaU/GWkkdNQBlad20sSoZQPhAJ5KmCP8NOOkn41Y8Q4CxoXJ5LEs47ldA9RWUazSFMuH/eCcTYjNxIGw3O/2q4PCj0+fpMHpqmjhOFdmv83oi
+ kIzoUPPf
+ UsxJtJO7NOSZHB70EDCuh96QU4Q4dmYm2SbTxZsjy+g0HpLOL1OWFg5LTEzUHzwexlhKfJa/jDW73JomcJGGeHH13WlmP49wwA86achELHMmZMxdxSHj3IpI24TsyHik+SgHNft6cP59nswBBjPQoJNBqpBQogfS2TXI1im21S1tXyW7/E2Uop9ZToSIG3ivW67SAyev068ZRlGZJZ/NpIPbRD6EqCX/kGb5M8t8Er/5XC5BWxERXMVNREEVUZy5eRAmGBD8egpPqmP2EzlUWsQK7vz1v48YJC2LqdQS+ur/Zv0G7RgAY/BIWzMSEezN4sz23G0zvnncTIWu86RAyqq85LL1RdaJ457fJFGH32LH4Vvw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,52 +97,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 05:34:38PM -0700, Suren Baghdasaryan wrote:
-> Sorry for missing this fix before (due to my vacation) and only now
+remap_vmalloc_range_partial() passes vmalloc_to_page()'s result to
+vm_insert_page() unchecked, oopsing via page_folio() if the page is
+NULL. The NULL case never happens today because VM_USERMAP areas keep
+every page mapped, but that assumption is nowhere checked.
 
-Never apologise for taking a holiday ;)
+Patch 1 drops VM_DMA_COHERENT from the allow-list -- a dead entry (no
+caller maps a DMA-coherent area through this path).
 
-> finding it. From a quick look it seems correct but I'll spend some
-> more time reviewing and testing it.
-> Thanks Lorenzo for the fix! I completely overlooked this overflow
-> side-effect. And thanks to Liam for flagging it!
+Patch 2 fails the mapping with -EINVAL instead of oopsing if
+vmalloc_to_page() ever returns NULL, with a WARN to mark the broken
+invariant.
 
-No worries, though it has already been merged -> Linus's tree (lol). Obviously
-if you find anything of concern we can chase up!
+Patch 1 is a behavior change (no in-tree caller affected)
+Patch 2 only changes a failure path that cannot be reached today. 
+The two are independent.
 
-The general idea is simple, really - though there's nuances with the memory
-barriers (ugh).
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+Changes in v2:
+- patch 1: drop the vrealloc-shrink justification. 
+- patch 2: fail with -EINVAL rather than oopsing.
+- Link to v1: https://patch.msgid.link/20261026-vmalloc_remap-v1-0-b7a907814e90@linux.dev
 
-First off, it turns out we don't have to use UINT_MAX when initialising a
-VMA, since commit e5e7fb278e59 ("mm: convert mm_lock_seq to a proper
-seqcount"), as 0 works just as well (it's not observed since VMA is
-detached at that point).
+---
+Ye Liu (2):
+      mm/vmalloc: drop VM_DMA_COHERENT from remap_vmalloc_range_partial
+      mm/vmalloc: reject NULL pages in remap_vmalloc_range_partial
 
-Then we can simply detect when there's about to be an overflow, and zero
-every VMA's write seqcount.
+ mm/vmalloc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+---
+base-commit: 2efb7a11f1aa4d2dc285fe2680cca22cb9f72f64
+change-id: 20261026-vmalloc_remap-012cf418c2a8
 
-This is done without VMA write lock and with potential concurrent
-readers. Which is fine, since the write locks are about to be unlocked
-anyway, so any write-locked VMAs can either be encountered as write-locked
-or not-write-locked safely.
+Best regards,
+--  
+Ye Liu <ye.liu@linux.dev>
 
-0 is even, so that marks everything as unlocked. However, to avoid read
-locks spuriously failing due to vma->vm_lock_seq == mm->mm_lock_seq, that
-check is updated to also test whether the seqlock is odd (write-locked), if
-not it allows a read-lock.
-
-Since the 'reset' doesn't acquire VMA write lock (not required and not
-really meaningful in the context), nor does it block read locks, it causes
-no interruptions on that side.
-
-And, as per the numbers I got the LLM to obtain that I shared with Pedro,
-there's no meaningful latency when this happens, which for most workloads
-takes ~days/weeks to achieve.
-
-For backports, which lack my anon pgoff stuff, I will simply make the
-fields 64-bit which make it practically impossible to hit the issue.
-
-Let me know if you have any questions/concerns, thanks!
-
--- Cheers, Lorenzo
 
