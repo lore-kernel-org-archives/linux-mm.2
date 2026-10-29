@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7A6606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34892606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cs7/GV6p
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tz9fODLA
 Received: by kanga.kvack.org (Postfix)
-	id 755F36B05E2; Thu, 29 Oct 2026 16:41:25 -0400 (EDT)
+	id 50D296B05E3; Thu, 29 Oct 2026 16:41:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72DA46B05E3; Thu, 29 Oct 2026 16:41:25 -0400 (EDT)
+	id 4E4FA6B05E4; Thu, 29 Oct 2026 16:41:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D886B05E4; Thu, 29 Oct 2026 16:41:25 -0400 (EDT)
+	id 3FA916B05E5; Thu, 29 Oct 2026 16:41:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 381786B05E2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:41:25 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21BAC6B05E3
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:41:39 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C79DA1204DA
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:24 +0000 (UTC)
-X-FDA: 85376834088.13.2130710
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D986740005
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cs7/GV6p";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA6EA1404DA
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:38 +0000 (UTC)
+X-FDA: 85376834676.13.61A6AAE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F0FF41C000C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tz9fODLA;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306483;
+	s=arc-20220608; t=1793306497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6dCA7l8Qcb+zVMAoQ+u8vRDzaCWYfUWbDIcwuPkJnxE=;
-	b=doOCmizswNTzfTn30NJA4YTG+8dZRR0UZtWEFpyEBYuV1g0MEPpr7VjUVj4z5cLBZvZudl
-	IslDFXAyLRXmQlzzJ+qxd57qn7k5oHwo/ZbkjC9Zgc3fNrna0Z73+l3R/+/qL6lDfCE25s
-	5cZsBrlxxOcwD9DGGQ+4lOwhztlMRvc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cs7/GV6p";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=5uSiir5kVbedebaZsFGaz4hqB6R1E7mLyr2MzNoLngs=;
+	b=kW0Cp5YR10BGQT++7blQ2OzKa/MYG8YeG9fR05Jz8xNvhiwg3Er9O5+sNppZi8O6Ys5qZ7
+	PkL0fwqaOiIjsN+shA1a4jvz4a2L/pHd5Lg/hewNaahdccFqFICKcNbgUDn9eo2i+7ivf5
+	DGPG3HaPqUJSlitAr4XwjrSlaXSvVAY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306483;
-	b=L4jy3G+2s5Ize0Z9sk+8LOCcEyC6GqFlSSy2B0exxwm/MpX0NnFSYxAOFXJCGSLI24/jUM
-	2RcHcu4mr7pBjrtCh8254VxDGMsKb8KNDfEHB2JqZmnqrJWLoah1/ecuwvn/SSXJ2dmMmL
-	4Q0A08PSWSe7SkooVoTUcO7WrS++50A=
+	t=1793306497;
+	b=zbbCGiWdgMP/ctDoLGd46siVfdeMpcIB+t6NiAd0gA7E/DOsnrIQY76BxuuO9QnliHedYu
+	hLyUbz994lO+F7xRB94ckO37cvGpf98qI+tfMO4lPax/fNY9QyzvaTYMSWMs6WXnC7lFGp
+	wVFZ7uEXCn0uz7hs4uLXn+lVuPzFrR0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tz9fODLA;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01E7140E4D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A350600DA;
+	Thu, 29 Oct 2026 20:41:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6C51F01816;
 	Thu, 29 Oct 2026 20:41:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C4C1F01824;
-	Thu, 29 Oct 2026 20:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306481;
-	bh=6dCA7l8Qcb+zVMAoQ+u8vRDzaCWYfUWbDIcwuPkJnxE=;
+	s=k20260515; t=1793306496;
+	bh=5uSiir5kVbedebaZsFGaz4hqB6R1E7mLyr2MzNoLngs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Cs7/GV6pq6eMLJFnqbR9+QKwK6ShcOEk4QCMZXclq06zJpivW8mGEnMOZW9YEUEFr
-	 me7PFVPeK46BJU1hjQNgFbL9/Ot6d2rPuJ6UQP4THorxpWzVRPECaHsgmeLmeQaRON
-	 Qz3YkhJPUWzx9FFcChAKrp6TTNfjeGiMQn3b2VQ+bZ35CbukcS1MZ9fuoJYnDyK6lG
-	 AUytHBl6JsN8niXhnFNeFcHIlaRbkFht1w9q9lGzvdPO5tqDfSobnLfmLK7CA9Um/U
-	 /nVJ+0XtYKdEenTS0MtJI5vr91YRIY3EYdRZLofvgfQHN7xXwyvcFndR9Tor8730zm
-	 oJFwe5HvlcUCg==
+	b=Tz9fODLAYQG594yPNH75AeKGyE5cFdBIpvZVoymg4hDw3mti0G72s02fvYCaVCUD9
+	 lt8Exc8l8x1xV1p7UpPPu00DRqu1tPXmV2/pctBaUJFydsCRxtD4iT8RTWEzzIv2D8
+	 /zH+dZt56YPixFKyK9DnQKCpaudqze7p+L1zR7/mL7E11HewLLmqinTJ1K7n8/Nfj9
+	 IfCN0pIc+ff0kFboqS6a5ZLKM55gHo3muvDnalvvf151ZywFvHCvY170kgNbNM7tXC
+	 og5+8uu0N/RIhshEfKUph58MECD2INqomDBTAZ5HCuHM/JbWs1X7LTu17UzbxGvru2
+	 jnwfdPJDCCm3Q==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:27 +0100
-Subject: [PATCH v2 32/47] mm/mremap: fix moving PUD leaves
+Date: Thu, 29 Oct 2026 21:33:28 +0100
+Subject: [PATCH v2 33/47] mm/memory_hotplug: avoid races in
+ pfn_to_online_page() with dying pgmap
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-32-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-33-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,30 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
+ Josef Bacik <josef@toxicpanda.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2222; i=david@kernel.org;
- h=from:subject:message-id; bh=/15IZZT8ry+ExEMoaMWjieutil1+NN7piBMJHRZeGuI=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+3odp3/SFVqszD/9KmpUY5brG9yzZ8jcP7lKREXI
- 8UDqbdLOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZjIG2FGhi0fIzf8PaAuzKQZ
- dYKBuzLwhYbeshPx4vtiqgxnXdy2z5aR4doFmTtHUgTvnzzV//uy0tLr5xwkZ8wVz4721PU8ELn
- WkhEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4287; i=david@kernel.org;
+ h=from:subject:message-id; bh=K/Rz5AheKAp1O4iTIfDAL3ySR9IndGWc0AInEz1GWlE=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+2Q2HP6vnFJwjbR5iWc8v7H1nGs/zFtM3+9wLTXx
+ rctJ5QFdZSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjARzv+MDNNYetk5BC433npa
+ bWNiyFHyuetN8VGDR8tfL8n5cNO38xzD/3qNiW9uZEV/67rzcvkCrrt7TOSOm11TfjY3SIf12cz
+ MNFYA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D986740005
-X-Stat-Signature: fn7pw31ioj5s74hhjbgfa3ahj4a8fjcn
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F0FF41C000C
+X-Stat-Signature: scs7jxfnqoginecbdjwq6mc9az1jka4h
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793306482-224372
-X-HE-Meta: U2FsdGVkX19B5LCUASTuiX8Xpoy0d7CaKF7IYtzU0tzCEaarsZSWeYj3KxdU2b45p+tP8yHIpbJ3N9xfMjFFiOPHmCOXPuOERpF4qmUTcRwgOc8a2LYHDpEYaeqb6phpk49IzEJ50kPcbmPJXs/nHZv7WQeq9bQ3dokOsKvTS8+dR01aKL5yM5MHfr+8lgexSeLb/vMbDurinabliBom/vRgLpo/e8zHEjSBXVaP3uboBhlRNgA81ABbbH/8tzUu2sLMG8QEJzyKxNZgxfUE95HuyPnJ7UPqK8KZTdAwjNp3bisSaW5AUaLlrgKmHdMpGuvFDk+snWUkWjU2ypfRBg1jt507orJbIswr7ts6G4RrTWy000BT/q3yfKwkFJMBSJI9o/Y8DOvqO/SOydtWpJ6/7AxwazIC2suQrq6kR97nP7aCbhgw3l4dwbBM1AsZixwNfA9MkCUJSfoClnoz0OHSl2cMCB/aoEqBtTBh3FGyKoAwYMacFc2GOHcHjeApnnlutKW6+ExrqtbVjWanz7OGUuUjYGAyotF89TRSwK7Wd7XSPgE8t85cKPgEtDdTOtFjfCiUvobWoDKVHO1i129d+0vos5gBt68xhST5CO2R9Oj0w4SHiHFZvmjeaKf1uXM/bRhJk1UkZGh5QvA0Tub5lVNLGs4oABswnEvXHJ94YG5hrh2uMZ7hFLanwsj0lLttwEUaqoB+EgWgajb2VDBYu3gpbvkC9ApOOaE+RMm+coE1kAMROabMP6Mck0/iyCdva4vuTlIZoYuXgH1GV+6kjnSumum39Tbjz+mc4322Oxa/vhGhTulkM/rwAwFiK7RSeYoqsmak3HNRN9oDsJ7H8sKWyZSdd2jP+tS1TcGkIAzKempWGjaprVAQ4wSAGzYS942oqBME9mmD+cr54ezb7GTXu63/sUZdM+xzZX/orHLl7EKI1q4429R+XbrFvvDTdKLPc7Uxbesg257
- k298GRtS
- iyvqwaQV4K0/CDXpzr3F5tdChic7pnZ1Dxn5fchcM4Fo7MZOoSK4fG1GGOeA5Sq2yitrCS05KmahQLUgrjAEOB5KEi8oEPnKMRKw+ZK9/qrjh6eX2Il5tzJJSI8reH4+dAGdfFDwZP/DQHGJ1nQ/xmQVUwdt+Gq//mYfCjae+UKKatP4tdSlMIaR+gm9eXnrx+lRphNUWrrqAWy5fJbEPTnFHKcYepT4gKmntxOHjtAZbRTL3MAXkOLWiZdwTsLRwY4re8oAHXuIkdN1lsNDE1X6VwI7lyGpkLH2UGTo8tNnjm7X62l0i18Hr17zsoefnT4szeo14PHCqcGAM9oEu6mOiDq305kFRqGBcMV4s1fbh36adqqsIotuNB3+c+tgCP4+z
+X-HE-Tag: 1793306496-402078
+X-HE-Meta: U2FsdGVkX18gUKm00f3DIKmsV5u5JoKIjmwXH5k6f3KXaLANGbSgw/lisGcoK4SjdIxhhtlBgxBb7cIDaQ1ZL/cnZiiiPnyqt+Iv3N2cgx2JdN/V1HHqCo3xb0iFtR4tM1+o36IVI6FVGK0YQ/EqWDyc8uW0y5v2p9lpj1RE4Mv1YcZ2G/dTh1dWUW/SfBJ5zIQ+p3HCOk5Af88iQ2ptonFa2j5ZXzURzQWS4eCQjfClBYuSBBFHp3zsKbgj8d/PWxZRqpDKeP5xHHfq59mL0zBkKrkMpMqM6X4DNol0QZk++qJ8GYAhdYBW6EmnRfAjsjNvqT/lLtiZ/1kwvBPfbKAiJCcMyqaOqf0N3R2uN4mj2llBAYyX7zhG6dP/xEcix8zcHCQk6Gds4BzfY/+FJoLYLUWLfDxMCFC6/gbDalMExLuACEom7HNUT5NuyuNPkulSOenlOjkpEYViPYut25Au45S9mxog8+VjsLbn2FYmRz6XMKUGfvZ8yYaJmWSmjj6o7YEyU5ChASQRmEIyrP9RHSSqzAc17Y4m8H/Z361nnk9LVrE4EcAgxZbjbLE/S6uvJwsqupVCyASXiPNLjYqGh3HI080/Xzif7cTdcakYmlAVN5SSPiRPbpg6C7i3d6tZ7zJogYy+fdQ+BtYaP+kVCDEZfVwJ0amyyfYuoNlfxqajwUKMXoqK+DyEh/3ZJ2gtQING/+WOuBpiGZCA74PCyxQ18Rp7jhGqFAx/6DvlbrXyIyvKLMyoW4xR8GtJiVYkXfyQ+CVAEd4Kb72+IMe+y6qVmOmxTfh+ihz84VQ4ZQa/XVLHER8MJPJoGWMxNipDXRdugFIRk9Hkhxh4RjsBSWVPvJ5xn3aTX3Oiwmo90hDaDvH1faytsAsUEhHEreJ9zIpYiHQz6eqVBoEyo6RKH19sgG3cFaqm/vs3mYMrkOD7h5qfSMumf8E0llAkRBft8RBm7X8yzp/TnOq
+ XRNxVUGd
+ AVbK6//fROFX0rb/UKOFH19OLWzQ3TM/dWB0i/sSgBlmG/1yE712l454NE0p07mrYpkO0/wuwhxQupEH2v8PHSd9AFT+Mp7QeVjlgxwk39cspUYH8p4cLrHHNYuNlBLEOkEVj+Lv3iXtipRPwvF5ciKKawkN/iZ7hrFkNoVQj92H6tlxDoaf9KHEZgoDghmfvVp962sdx3QEbTbR/W57SKdFKt7e88B0WvSLt2FO6vRQ9XN33wcwzThP5IP28xkpoMA6LaKXDKV4CT4aEDqCH3vl5dRoulfHQ835BqJHu8ynF2NgMenENYaxfnC3kdhmk7o+KXbCJizZABPiIKtBaeMv1ftsDsVSe6LBc91LOpOl/dgV129DA/5kanAz6tOcArtVpoHiC+Yompjee5Bg82TlCIVEH7b/R/BOsZc3Y3/HT4leperKRREF7Wb4npKurt6kxOjLXOQXCSm/bO0UlkbPaJg8pG7aY4SZjQvhj8OGMqGg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,62 +141,115 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-pud_none_or_clear_bad() only really works on page tables. PUD leaves
-confuse the check and make us clear the page table entry and print a
-warning.
+If ZONE_DEVICE memory shares a memory section with ordinary memory, the
+section is online and the pfns of the device are valid.
+pfn_to_online_page() tells them apart by asking get_dev_pagemap() whether
+the pfn belongs to a dev_pagemap.
 
-Since commit aed877c2b4257 ("device/dax: properly refcount device dax pages
-when mapping"), this also leaks device-DAX folio references, mapcounts
-and RSS accounting, resulting in "Bad rss-counter state" warnings on exit.
+get_dev_pagemap() only returns a dev_pagemap whose reference is alive.
+memunmap_pages() kills the reference first, waits until all pages are
+idle, and then removes the memmap. During all that time the function
+finds nothing, and pfn_to_online_page() hands out the struct pages of the
+device as if they were online memory. A pfn walker reads them while they
+are poisoned and freed.
 
-Allow PUD leaves in get_old_pud(). If a PUD leaf cannot be moved as a
-whole or the move fails, split it. This unmaps it with proper accounting
-instead of treating the leaf entry as a PMD table.
+The entry in pgmap_array is only deleted after the pages have been
+removed. Look at that instead of trying to get a reference.
 
-Keep using pud_trans_huge() for now, in the future this code should be
-cleaned up to just check for PUD leaves.
+This is probably not worth CCing stable.
 
 Fix generated by an LLM and sent by Josef Bacik in private.
 
-Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
-Cc: stable@vger.kernel.org
+Fixes: 1f90a3477df3 ("mm: teach pfn_to_online_page() about ZONE_DEVICE section collisions")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-[ david: fallthrough after splitting ]
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/mremap.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ include/linux/memremap.h |  6 ++++++
+ mm/memory_hotplug.c      | 13 +++++--------
+ mm/memremap.c            | 13 +++++++++++++
+ 3 files changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 91f0865f6aee..1237718848f5 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -87,7 +87,7 @@ static pud_t *get_old_pud(struct mm_struct *mm, unsigned long addr)
+diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+index e3c2ccf872a8..b5e5e626c7a5 100644
+--- a/include/linux/memremap.h
++++ b/include/linux/memremap.h
+@@ -231,6 +231,7 @@ void memunmap_pages(struct dev_pagemap *pgmap);
+ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
+ void devm_memunmap_pages(struct device *dev, struct dev_pagemap *pgmap);
+ struct dev_pagemap *get_dev_pagemap(unsigned long pfn);
++bool pfn_has_dev_pagemap(unsigned long pfn);
+ bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
+ 
+ unsigned long memremap_compat_align(void);
+@@ -284,6 +285,11 @@ static inline struct dev_pagemap *get_dev_pagemap(unsigned long pfn)
+ 	return NULL;
+ }
+ 
++static inline bool pfn_has_dev_pagemap(unsigned long pfn)
++{
++	return false;
++}
++
+ static inline bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn)
+ {
+ 	return false;
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index c9cc42e54f05..944ea6fd8856 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -342,7 +342,6 @@ static int check_pfn_span(unsigned long pfn, unsigned long nr_pages)
+ struct page *pfn_to_online_page(unsigned long pfn)
+ {
+ 	unsigned long nr = pfn_to_section_nr(pfn);
+-	struct dev_pagemap *pgmap;
+ 	struct mem_section *ms;
+ 
+ 	BUILD_BUG_ON(IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID));
+@@ -363,14 +362,12 @@ struct page *pfn_to_online_page(unsigned long pfn)
+ 	/*
+ 	 * Slowpath: when ZONE_DEVICE collides with
+ 	 * ZONE_{NORMAL,MOVABLE} within the same section some pfns in
+-	 * the section may be 'offline' but 'valid'. Only
+-	 * get_dev_pagemap() can determine sub-section online status.
++	 * the section may be 'offline' but 'valid'. Only the presence of a
++	 * pgmap can determine sub-section online status: it indicates a
++	 * ZONE_DEVICE offline pfn. That includes a pgmap whose reference has
++	 * been killed, its memmap is about to go away.
+ 	 */
+-	pgmap = get_dev_pagemap(pfn);
+-	put_dev_pagemap(pgmap);
+-
+-	/* The presence of a pgmap indicates ZONE_DEVICE offline pfn */
+-	if (pgmap)
++	if (pfn_has_dev_pagemap(pfn))
  		return NULL;
  
- 	pud = pud_offset(p4d, addr);
--	if (pud_none_or_clear_bad(pud))
-+	if (!pud_trans_huge(*pud) && pud_none_or_clear_bad(pud))
- 		return NULL;
+ 	return pfn_to_page(pfn);
+diff --git a/mm/memremap.c b/mm/memremap.c
+index accba23aef28..a1e99a4c55c5 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -413,6 +413,19 @@ struct dev_pagemap *get_dev_pagemap(unsigned long pfn)
+ }
+ EXPORT_SYMBOL_GPL(get_dev_pagemap);
  
- 	return pud;
-@@ -847,11 +847,10 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc)
- 		if (!new_pud)
- 			break;
- 		if (pud_trans_huge(*old_pud)) {
--			if (extent == HPAGE_PUD_SIZE) {
--				move_pgt_entry(pmc, HPAGE_PUD, old_pud, new_pud);
--				/* We ignore and continue on error? */
-+			if (extent == HPAGE_PUD_SIZE &&
-+			    move_pgt_entry(pmc, HPAGE_PUD, old_pud, new_pud))
- 				continue;
--			}
-+			split_huge_pud(pmc->old, old_pud, pmc->old_addr);
- 		} else if (IS_ENABLED(CONFIG_HAVE_MOVE_PUD) && extent == PUD_SIZE) {
- 			if (move_pgt_entry(pmc, NORMAL_PUD, old_pud, new_pud))
- 				continue;
++/**
++ * pfn_has_dev_pagemap() - does @pfn belong to a dev_pagemap, dead or alive
++ * @pfn: page frame number to lookup page_map
++ *
++ * In contrast to get_dev_pagemap() this also finds a dev_pagemap which is on
++ * its way out: it is registered before its pages are added, and until they
++ * have been removed.
++ */
++bool pfn_has_dev_pagemap(unsigned long pfn)
++{
++	return xa_load(&pgmap_array, pfn);
++}
++
+ void free_zone_device_folio(struct folio *folio)
+ {
+ 	struct dev_pagemap *pgmap = folio->pgmap;
 
 -- 
 2.43.0
