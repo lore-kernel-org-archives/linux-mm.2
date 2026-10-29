@@ -1,85 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264B4606A325
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC40606A31F
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H3FsUol2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WrVYzA32
 Received: by kanga.kvack.org (Postfix)
-	id 38BD16B05BC; Thu, 29 Oct 2026 06:58:08 -0400 (EDT)
+	id CBAAB6B05B2; Thu, 29 Oct 2026 07:02:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33CB36B05BF; Thu, 29 Oct 2026 06:58:08 -0400 (EDT)
+	id C447C6B05B3; Thu, 29 Oct 2026 07:02:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 205A96B05C6; Thu, 29 Oct 2026 06:58:08 -0400 (EDT)
+	id AE5D16B05B4; Thu, 29 Oct 2026 07:02:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD9DC6B05BC
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:58:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74CEA80312
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:58:07 +0000 (UTC)
-X-FDA: 85375364214.27.2BCCA73
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 798986B05B2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:02:03 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EC865120350
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:02:02 +0000 (UTC)
+X-FDA: 85375374084.03.E00B5F1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A6973100002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:58:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H3FsUol2;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1FF8C40002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:02:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WrVYzA32;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793271485;
+	s=arc-20220608; t=1793271721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HRlYvtp0NLbF/qBaWCj/ZYIcUA7W6S9v5stNA3ILEuU=;
-	b=4nkmB5RdLQ+kt0et8ZkQna24+w7GYQxYro3hWr8CJxZk3gd+hkelm+P5IpnfAHn5ZAMKI1
-	3yZ5yYCjF5W5nPuM9zc+M7gnyeP3+b++ByABhM55khpQtZ5k3ytuBg6QACYqhj8F5wLAjL
-	HieEQ5upWo3xD9u8nF0AS9UIP7v4vYU=
+	bh=OYmhv8HwvlOQOOI8sOhoeifNYQzQv5FQ9ix1RIz0byk=;
+	b=I8NBDyGOLhOyerxTZq+I9R5yx2lCKWnPgfjgoJ11zd76OgDeKOUmHose1EhYwxSCu+1C8p
+	ISrmo18SVHDaeFs9zaqWIJfY/Vx593t4rHma6Wl83q6QraLxWH+V9H3WYEyTAqQ3bbjAdQ
+	h9qq1/8D8L7VYkSvzp0CDm92rFdZtkk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H3FsUol2;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WrVYzA32;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793271485;
-	b=wNUmyAJ4hYOWnQiv//LyOzVlS3SFuVBUMEs/6o4geT58YeG1EMcJh/2JuMfNda8uKfvZfm
-	jwCqmO9A20WwbdN9BJElY+h/c8Vrj1LGWFLh9sMtiqj8TdEMrb8x2yYEp3K+vd9zTGon56
-	YyskI4oAJfOaf7eVjD/HSqSZr+J/284=
+	t=1793271721;
+	b=OeP2xvlAVhPQCyMiNStC1pAX8M3KzeCfNs3EIcNDW9I+uVyw/eSgFKY3eLl9wyc4hgEgHr
+	qslZ4F1DCCZAksVpCAQ/FdzzwQ09ocrOWCo8676tntLjqsZYFIqQqZziiQwszjts9V/7/q
+	kDb48t02HZ+QusVuOC/n7gIv2/ZaNBo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED08F43ECB;
-	Thu, 29 Oct 2026 10:58:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11AA1F01825;
-	Thu, 29 Oct 2026 10:57:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1CDCE4039A;
+	Thu, 29 Oct 2026 11:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868E41F01825;
+	Thu, 29 Oct 2026 11:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793271483;
-	bh=HRlYvtp0NLbF/qBaWCj/ZYIcUA7W6S9v5stNA3ILEuU=;
+	s=k20260515; t=1793271720;
+	bh=OYmhv8HwvlOQOOI8sOhoeifNYQzQv5FQ9ix1RIz0byk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=H3FsUol2krhWc0MOsqYSy4b1n5I/yEBuYGJf4ssu48mgFUkvW+0qm9DYEj2+lgKgm
-	 fFIbgCvBARf3WoqRQM+NLSRyK4kJJtyXKF974wXPAnGy4mgrBPrkqSLraPFBxk9NfV
-	 L82qn5kVuNTWaxKH3veWkSXybe31FXgnFOznG6WMGFZe9paGUxsFhSbjUdaJI80DAR
-	 97c4aNlaizxp0hL3Aeed13cW6uSdzU+3T6iuag663YJN6movTiPMGWocBnKF741/kS
-	 kb2KEPH80ay4scp18cnaw4P1KMwb8sIEcjlJBYfiyGroVIGDg6lz21BKMsUllLAqh1
-	 0vJP7Pj5AIqZA==
-Message-ID: <d7b1c89f-b119-4598-af22-1a7e4e4a3037@kernel.org>
-Date: Thu, 29 Oct 2026 11:57:42 +0100
+	b=WrVYzA32uJkCm0VS++wNZs3DP7uWRGdJEXgTe24KpJtmejSidIe8tQmWXTY33s0QG
+	 HWa5maFNgZ9hsLBs9p6tltp+e/BdFtOGCb9jz8qmS+Cp/6fRjZJQMmzLdLwR9TfBUQ
+	 sN03Re4Pf9uxJOc9kulo+S78oKrbtmqC1f9GNHIJfTsLmluP4xsQoE6hd9E9GfiCvb
+	 17qs7MKo4Qvzf3fWJz3HgnZ6Q6xNSZmlIhFv32WzWDFBIhnqWNSRPfmP7RtFcf+bLQ
+	 l2Tpp3alC16EanFj658aO1knHP3qQXCiprCyZR3keIAic7R0SlOv9FIqNe2jn4U8+0
+	 pf43loQgoyv0Q==
+Message-ID: <f9067f65-fcdc-4ebb-bbf8-84db9e22af0d@kernel.org>
+Date: Thu, 29 Oct 2026 12:01:40 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
-To: Barry Song <baohua@kernel.org>, Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH 18/46] mm/khugepaged: check if PTE table is empty in
+ try_collapse_pte_mapped_thp()
+To: Gregory Price <gourry@gourry.net>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
  Pratyush Yadav <pratyush@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
@@ -95,20 +98,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
  Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
  Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
  linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, stable@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>
+ linux-cxl@vger.kernel.org
 References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
- <auB-3BQn_rR6IfY8@pedro-suse.tail5790ac.ts.net>
- <22b819a2-631d-468e-b724-770caf9f94e4@kernel.org>
- <CAGsJ_4z3qgCPBpCDitVTq+xiGsS=-yEhKSbEO4Lbdn9MVAHK0g@mail.gmail.com>
- <auHve-G8bboW77IZ@pedro-suse.tail5790ac.ts.net>
- <CAGsJ_4xD_EU9sBZmJRb3ET3zfxnOnXJvZB1p_3pTLV=Y4xHPMw@mail.gmail.com>
+ <20261027-fixes_core-v1-18-6f74bec9a5bb@kernel.org>
+ <179323853182.453251.8510731747954180380.b4-reply@b4>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -155,21 +152,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAGsJ_4xD_EU9sBZmJRb3ET3zfxnOnXJvZB1p_3pTLV=Y4xHPMw@mail.gmail.com>
+In-Reply-To: <179323853182.453251.8510731747954180380.b4-reply@b4>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A6973100002
-X-Stat-Signature: ta43dnhsiy8u6kaiqo3e8tgmedj7w4j7
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1FF8C40002
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: y79mrjoud4coyydiuwyrog5jkesohrj1
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793271485-870568
-X-HE-Meta: U2FsdGVkX19ATT/jXIvJLzjnSke8MDYIPmnLl6mzrMA5wmn4JcPv31WnmT8XVDz/AViIoHTWdTzyNyEMzCSVP6VyiWy9072oZmky3hsy3ihLKh4oqq+w+JYt1nZyYR702VEi9M0Rh7bTCaW9QbG1ox4laYL68i46F8GHFKTW7F+io/s0eQ1X0ZbVHOee4AzbqDcTvxDa96zABtZQ9BK7jAp1vC6bIHs7zz5Z98y4fSSaMCQJeLkR4hBVDW5JiZVfcgRmpCWHVaJuHNlhWQ+sTwfzZNZLUFCyMzMs5f6bmRvoifVZbVOmU+hav5fsfVRcOZuLVAOmOm+0Jc1U07aLMi5+IZ1r6AOWOZFO5WIlEyQaw2Naiq/eMEZMnltx6Oq6vsb0vscOHNmmIqCQLTJijKKhXbYUbKUkXAvflrEXm3n2cVmz9R9Ztk/0Xy9ZWZj0bi7jSqxfQx+nT1ru85ktyLNkMdQhoWLkHdfx2hedCrIqHXR38sxdvE/aDlurTsIoLD+n4N+K97A6VADQjRlpxjuw/BUE5F3U5HJXopE+apuULSKNwusZr6UTI+ecBl6JSCQmC6ZyFkeBnAmMFRX8B8XSSqT9YIASHffw0PCCi6cKl8C7+gQi+Q/4FvUPpSqYkySLaHWWQGZgsi7KzAopjNwYXpk2X2Dzojg/G/F4w5+FrjKRfHY5O3ni01sISMQe+YHi0DAZjCdzSaQPZbfZ2UgNTzQw2MRHMWItSxXBdNhKukTUrisB9tFVuauTT0eFZUbScztKp3WCuUQPqb5fgLntACpKNrXN0ib7saGZzYMyYZQe4k4DH/RD+qzEroq2bSvZlusvVjEWbBEPtsSwlMUC43mS1j0O2JDUIa1pV570Hc6DNah6HZdTqn9cGscN26mqrcvYvAnR1K37eIuf2TWIlKr0YMctRJ5Ufxz1N+bMkOT+Fh18TSSgCypp0j2MJ2u7MDfb0zXZv0i+Kq8
- qtTZnp2Q
- svZLX+cALzzxjBCFzhZisFvplCrw2EpUV9XzMoeoBdY1VHtGBS198EUzkKm/kf3NM0EAPc56Bt49n0PF2pT0zHbeuV15vRdS6bsiCsrmLdjnnGT7HnaLxXOxQyFNxsD/Cc871yeHCkD2djl8BqJpU9vaqkBB9/AHa5HS8MvfepNK8t6U4r1N/ovPZQhgZeIGSAyL8rjDb5q0+TXbGL+7AfecIWMrlFafu6JOXTMU9mg96edjrySrZUqkxbyBbizglnEAn3zh81M5q5EZsr5QPAolghyzniESUWhNKa1BNU5Ab3HQQLuxhLyLNkv93HvK18Ofl5P89K0TiJWsVdvRIZ8F2yOv30923xjEYTnOF85fKEAXegMdcgLXSwa+v6H0RY1i5rOzasW+xyU09ccyv/We5bkVqslR3RPzpk0UnwLRXeDA=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793271720-631622
+X-HE-Meta: U2FsdGVkX1/Gu6cQlK8kFu5Vlq09thZDcv+U6n5kf35/vqAkRcY109oHKiWe/ne5Dz2/MGOSRCqMCD3gT1Wj6B5sAovWLfdiMCtFAYequ5paK+c+WE7u7c0FLgeZewd3lvKUGzamlmCPZVJO+qJ05kGMSU9acDTUTuMHfj2Pcy5OLHhfOuFx0dBFq8kHmxO6QmLVRe4If4oBWHhnn/UOVxv57+DK0GsYesquznfDC7LHCyZCpg/NZeJEhFPojmJUVMCzhf1UULRY0WNXhwdCYgxBx3IkizQnPM7VyTiIt2WjMf2ifoqoM04+jTISipeBeWBH5R8aKLCjS6WXEVek2nX92E54RIo/bMUTIhR6g+bbadhh99X8DI0WYoWfyBi17EoVstr6cjSGPSkr6HMX/papuHxZijtgEB9SQOzwMCNG/qrSaqfWRGaVwRrHPEc3bsxIereGjZsrYIIfNZEaZ53sm8oNuWBoDAbSOV8eifivgCbijVi3w/ILTCeqoi0xegvcKOKnTyqbcxq9AuLSklmSaXSn2nA3P5GEzmAhjTMBjLU8k12PkASgPu4Th0gPOwwRdjgMliVDR4lZGuV8AAE1bKB8nTmouvfACeRksmBZ6Tj5baNbLgJ7allXTdF+VwMWEMFlPrl8TTo2FL+CpVda6+fECcAe941aGJrJnsm5DwzAgxORIvkYVREKIZp6lXOg+hAQgs/E9nD7ugqoPq6WI8MRnVY19gJppfqxgnBfIaZmRkIDzPQLEXILd4ss3XA2XnKYki+mI+ciKo/lNB+wWzY8sSdJc/gsZhZOr4OhVqqokbV3UxWUw9rT/73Yf78HAWez3ZVSml4rOxOqWEbVpyMKOKExJ2fWNDxcM2hTVGFdh8d5+MQZXxsCBnU4umaG33bBvQqV03X9lTL/6AJCbvBAh9lxLYdOG8lxUjFbyz9QbUy1+vgF5F1it3kEYzzCLziQP67/0yN42Jx
+ 4mckrot8
+ cwioJauVQaTmcQidrcdmRZG5u6ewXMsSv9YzusTF0OLjlCdtCoNhqZTJJwEicGhH/kKCmeJGqA0EGF8Fg0Ta6lyR/WCgMP0htMeDJQQgtSAkqYKfZ+h6IOpLV/AvhhecJP4jwpwAtwRkZGy3ALUieYhQ1ya3ErgBeOp5SjYVBTqvb9jWsppK5KWlwSsgOnmojoVBrtMQiDiZeuyeo5wsm865Ra2kflNV7kxJF5xyIwGEO0gWsELlwlMUJlJUDDrhOSqMfWHrf8pW/D/f+iLP4Zv3tRFMv77je0yTT6REjcSYJj8Gmai25e+2+f09dViFoV3vqA0xLKQzW0AXFALFVs9xQ3/GihjMrbWVgUia9Sp3Idl88kkrzNUx6SOedwAYwFv9hh8hzau10AKVjK/F5YdiJaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,52 +176,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 22:11, Barry Song wrote:
-> On Wed, Oct 28, 2026 at 8:55 PM Pedro Falcato <pfalcato@suse.de> wrote:
+On 10/29/26 02:48, Gregory Price wrote:
+> On 2026-10-27 00:17 +0100, David Hildenbrand (Arm) wrote:
+>> The existing code is rather horrible and already resulted in bugs in the
+>> past: we special-case UFFD inserting anonymous folios by grabbing the PMD
+>> lock early, but ignore any other markers (guard, poison through uffd) that
+>> could have been inserted into the page table in the meantime, effectively
+>> dropping them.
 >>
->> On Wed, Oct 28, 2026 at 03:48:09AM +0800, Barry Song wrote:
->>> On Wed, Oct 28, 2026 at 3:07 AM David Hildenbrand (Arm)
->>> <david@kernel.org> wrote:
->>>
->>> Regarding the race with memcpy(mm, oldmm, sizeof(*mm)), we
->>> still have one [1] even after this patch.
->>>
->>> That is, copying mm_struct can happen concurrently with
->>> lru_gen_del_mm(). However, this race doesn't seem harmful.
->>> I might be missing something here though.
+>> Let's just unify and simplify the locking: try to grab the PMD table
+>> lock and if that fails, flush the TLB, drop the PTE lock, take PT locks in
+>> the right order and check if the page table is still empty.
 >>
->> I don't think it's harmful as well. mm_init() reinitializes those fields.
+>> We still perform the heavy lifting (zapping the folio ptes) under PTE table
+>> lock only.
 >>
->> Though I hate that memcpy. I think that ideally we copy by member and
->> data_race() benign races, like what is done in vm_area_init_from().
+>> Include <linux/hugetlb.h> for now, as x86's flush_tlb_range() macro
+>> depends on hugetlb helpers. This dependency needs a separate cleanup.
+>>
+>> Both issues this fixes are rather corner cases. Let's not CC stable for
+>> now.
+>>
+>> Fixes: f807123d578d ("mm: allow guard regions in file-backed and read-only mappings")
+>> Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> Yes. I was suggesting something like using data_race() to
-> silence the warning[1], but applying it to memcpy() also
-> seems a bit too drastic.
-> 
-> Another option is to copy members one by one, skipping those
-> that don't need to be copied. However, that would make the
-> code quite lengthy, and the copying might also be slower?
+> This patch is painful. It's taking me a bit to wrap my head around.
 
-The compiler might do its best to improve it, but I don't think this is the
-direction we want.
+The key here is that we unfuck (sorry) what we over-engineered before.
 
-We'd have to figure out
+We just to the same locking independent of VMA flags. But if the trylock fails
+(which we have to do because of possible deadlocks) we'll drop both locks and
+just do another lookup.
+
+If we raced with someone messing with the page tables in the meantime (no longer
+empty), we give up.
 
 > 
->>
->> Anyway, KCSAN reports aren't the most serious thing in the world, so this can
->> (should?) be cleaned up later.
+> I get that you want to avoid taking both locks while zapping, but
+> wouldn't it be simpler?  I suppose we don't know what kind of
+> regressions might pop up with that though, bah.
+
+Exactly, that's the spirit of the original code. We would just block a 1GiB
+range of va space for the entire operation.
+
+If you think there is a more elegant way of doing it (while minimizing holding
+the pmd lock), please shoot :)
+
 > 
-> Yep, I don't think there are any blockers for this patch. I had
-> actually given my Reviewed-by tag before raising this race.
-> 
-> David discussed races between memcpy() of mm_struct
-> and other operations. I recalled another related case, so I
-> posted it here. Hopefully, I'm not just making noise.
-Not at all. I think that needs a proper investigation as well ... and I am still
-u clear how it would be valid to access the mm struct without the mmap lock (per
-my patch) that way.
+> I can say that I've reproduced and tested the before/after state,
+> and it looks stable.
+Thanks!
 
 -- 
 Cheers,
