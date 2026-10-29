@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18891606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8686860A2607
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AQKsyj+q
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SjSyyyt2
 Received: by kanga.kvack.org (Postfix)
-	id 4FE046B05B7; Thu, 29 Oct 2026 16:34:17 -0400 (EDT)
+	id 747E66B05B8; Thu, 29 Oct 2026 16:34:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AEB56B05B8; Thu, 29 Oct 2026 16:34:17 -0400 (EDT)
+	id 6F8536B05B9; Thu, 29 Oct 2026 16:34:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39DB96B05B9; Thu, 29 Oct 2026 16:34:17 -0400 (EDT)
+	id 5E7506B05BA; Thu, 29 Oct 2026 16:34:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE6CB6B05B7
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:34:16 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 59A32140506
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:16 +0000 (UTC)
-X-FDA: 85376816112.08.64534B6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 33FF66B05B8
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:34:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3D9A16042F
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:31 +0000 (UTC)
+X-FDA: 85376816742.05.CC3EA37
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7F46F180003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AQKsyj+q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id D7F4540006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:29 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjSyyyt2;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793306070;
+	b=oG864Zf6lQ2/p2VsTQO+kcqadDTgNs9o2GjcY+BqVxQScP/kRtvtiAVhxQCAeE7Y+aB96W
+	5/85nQk28FuinGkOBIWfAkbbI6Ba5mX3OD44VI3EwJ/tz5iZywpZI+IGnXbTdavJnQtO/f
+	SUag0DDS6Q/UEgCv2odWYp9bbucYXjY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjSyyyt2;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306054;
+	s=arc-20220608; t=1793306070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IUH+yaBKom46Q63QM7iBm+f59t3sGZ4mQyL9p/SX3S4=;
-	b=ppTceLFwJlFEcuZyHxvg5Bx8he/K991cu8GkMgmpWZCBylzdVPDWrv8UmI3/Dk3HyMdUqo
-	piqcOGufQEpsmIcYpgiLyNCro5349HQqo0m0KhNR/22iDDkSLJPy37JH5hkI8YNzZ/DCOw
-	WkkWP1/+Y/sN2oDvuIbaNyAB/W1Ywxk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AQKsyj+q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306054;
-	b=dFK0FvK7cfQ7tk2c+ASJ8p2P5FDcGKzWGWtN1lD7X669MNAfO0ezcLspdXoLyYlddq2zor
-	HliTD/3nX3vfIV6RWP+3vCFRh9CF1TV4fgsaG9EXKMUmZVYyR0Sbk4iFBM5KDAMKs0eeN/
-	OgCFFxRcU1WfeBfxxjluq7WNjS6c/7A=
+	bh=oT+YqEtlQbND2mfRTH9TILHjv0P3Fo80cSp1PCr5wUg=;
+	b=cKCrhbImljw5M7m89bn14vie4oF37qy7c7US9m/oFo1+WJvs6on5jDfm5pVDRgxccLiZPj
+	G9rPyZpX8UZmVwqyEToDxiNF8Czl739j2BOBpb+3Zb8qZ8X8UYEuSZUIPwKjGaTrva9rZo
+	OJs/QD0Pt4IqtjKDVWA3tX7yKwvx5tw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C7E12416D8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 22F8542B79;
+	Thu, 29 Oct 2026 20:34:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341E61F01816;
 	Thu, 29 Oct 2026 20:34:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26F31F01828;
-	Thu, 29 Oct 2026 20:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306053;
-	bh=IUH+yaBKom46Q63QM7iBm+f59t3sGZ4mQyL9p/SX3S4=;
+	s=k20260515; t=1793306069;
+	bh=oT+YqEtlQbND2mfRTH9TILHjv0P3Fo80cSp1PCr5wUg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=AQKsyj+qR4bxZGp8hAtyoQ1xOy4UZyL47FxstML+FqQX7G/y7pZ8l9SOf+5ou7WnS
-	 AZ/MIxoJhVWJNFDauvFzu5zXAw5inOOKbVVHKcdXEUzqJPeX7wQfcuJQKHYfLV7cgT
-	 DBS0xvxyeqIDcCB94oXE/FoCz/yzahtQW9be2ViknnFuUwiLNKNChtzZica7dWmXmI
-	 rxJu6FqHy+hS0KRyeLYDs7SF6JTjHzt3/Fnx/dmoxM+iCSbUu0aeKsMfsauzJgHrdB
-	 M2PNJNfSKISDgyTRDXYcWYfP+czRJ+zkR1pNBo2whDOaHlVJSA2riVVk0BtrRZThlu
-	 TWT19hXESofoQ==
+	b=SjSyyyt23NhzYdLUJQzjyOqLwA8+XnmlLC5njjzlYt6G5ocTnXx44lnZTPI/B7exG
+	 Tpqip0IMnoVAS6p/71GtzFblSHA6svKrTkHsAq9WcnMlGJUdiQBwr4XlMyXh12ZqvM
+	 PMICUX0jeBtzxG34zNZAKpfGD12ftE+vqPHD+fywpcJnjaLgQt+vpN4uGZcLThOK8u
+	 D1jTUIEWcxMJjlyTBTqH9cb9voaIk3GpZ5mh8GmYLQdLgkQJ6rmEWMxh6gdHx15QIA
+	 Ie2Q4Jtu03dezRZ2IiU2gLRK/y+6l0H5VxNnAzVZG2SouSugNYWL5yMEENxKvREYzJ
+	 LvERDYWVFwK4Q==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:32:58 +0100
-Subject: [PATCH v2 03/47] mm/memfd: check for real shmem inodes before
- accessing shmem state
+Date: Thu, 29 Oct 2026 21:32:59 +0100
+Subject: [PATCH v2 04/47] mm/memfd: make f_pos accesses atomic
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-3-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-4-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,30 +106,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, Chris Mason <mason@kernel.org>, 
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3516; i=david@kernel.org;
- h=from:subject:message-id; bh=llGJ6NdJiWik0yJaZwx3srvBERv6b9fGHgw5NUViur8=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer21Ju85syDihqpSx8kZevq/BZ7vdCS+E9j8/nxLpZ
- /XE2Ia3o5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgImo6DP8j8p2PfZIeerUF4kK
- Hjnn3G2C5wiVWez72jNt+fOvrBv2ejH84b6byOPtzq2/yLfz8kkfNWWZyr3pRUYsIhJrNjtK6AX
- xAQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2770; i=david@kernel.org;
+ h=from:subject:message-id; bh=nYtl8pReTocJvpHuEkN/fjyaxBPiNA2Y0oMG8lh8AYY=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer22xkX+5Wkk7rWjRXY2Wt0+XTo3qWFSprqoufvySW
+ 8BivVlHOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZiI701GhvMcKwXqeEUK1hzV
+ juE376/hNWV5cNDRsyVF2ofV0GlGGCPDGvUzvfqV+ta/o6LsdG0TzrptVd5fecV8r1nh2W27GjU
+ ZAQ==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 7F46F180003
-X-Rspam-User: 
-X-Stat-Signature: biupy8g41us7d41s3jf8sttewa9rsbor
+X-Stat-Signature: oiuprqzq5a1f5qz35z6sshsi3zzmhwb5
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793306054-780677
-X-HE-Meta: U2FsdGVkX19ZvNd+KSstA9B/NWlhB1WnnWErGpT4G2rmGj6WrFsu/PqpM7n8PFiNl5pNBQ5H2UDkuxuPYrQDEfB9q79z1q5v6vqrEST/NJVgqztlSXrsdyNybt1Js36KlEzVZNXFll3KxxFjae+PWkSr6+F0PKPkxY4Bqa6c02OvKPk6DzzHB6DxkIsLMQiLX8qvN/gfCbz9EuIFae1Q2S3wAsM4sE1GNd6YfX28AGnO4GNFOr7WNE78rQcCnl+4vt4K9PkR/9ot35Nl2V5/7I8IFT3c2dMdekoQ8DU2H9qro8CwxkzrLH+f1M4+eNE3ILGR61flMr6wV9wPaBGqaoWqgBRE4Rp9BfY/QncKXZCpzEmn2MTwSpmII5zOlYAGJY/OEGiH2yRZUBd5k661AjQkxNx6p4SmwrzHQJ9lpHjfozgVpGnnWwP5XYTLTb/Bhzk/MB8vJENFox4qXroYmJbAqChwoK4WxBxVa+cylJVvOFeKxPJxS+RbdcO0pBce9UlvD0LXO50ApKQT02tjzlkPDehKJXwih7bBFxLYeQ81f1d+H46Nyv6ZfDMR83uYVkPQVvo6zXHDi27CGgArkBHxqi6MRGL2UVJ+uagCQD7kYR3xkUQhKISZUMdBpuvEoBRnZJ4TAJtoBuKnRWcl1o5ZIGiKHNGc2fyQumJ0thoXNgov7B73kmwZ4s/QoweLYIaIJpNHynYHQmPMZLYOfuod/u+9NF0YaY99TcdrdG8F4LpslHSGzjsSz+c3YX8zoJpSj/uY9csSWyqUHyRrULUMD19hgizQC77N9OcgXFjEvQyMPcxKozqRyXu06Zu6ETQk8Lmr0BCmvfNUcnOTK+E7+p5j3fnCtnK3AzhyLIvH6AC3dEKyd4+S2iNJFhkw36g73FJWJGqXSncPcToqTccJO7Xe3P88Lu2B35OknP8awkrI2aWpfb6TCNMc46lB676bZ4QHPYxLH5Q+i9I
- ZclQi2XK
- c15qWU4dv0vGD0W6hD5rdrEyMKpMrZ/UrxotbH74HNw6yFFHaJxwq4DwVKTNTuKGgqUMYeXxW4nyqZF0isoduyYAYiW+3Q5k/M3R001tEiWeTuxYNpwrqBltArP4+gxhcejoEFIVusHI5tpKI0KovM7PgBhveISwW7gzYYbLENw/QEIy0DiqXHjO53Dz3WwPzV1xtmfGcDefjd6Bq/4q6sVTg54xY3NpTxvKQJcpNBAQd6KmUy4Wpf+aKBJocT+BD+HFMNFZHIp71pt/fJK1bDaavEtNsehAr30oCn5amrHNMpGdhAUIH94zsZR7caPDi16lksI2CXj2rh3pZ4OenZ9SM0rP7ay/nIS38i19tpqLSRwiKTiu/XUMlbD7WVWde047m
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D7F4540006
+X-Rspam-User: 
+X-HE-Tag: 1793306069-470884
+X-HE-Meta: U2FsdGVkX1+/RFhMBjkh/0WCsjPPy3XkNlPv+FRnw2ja3m8C4BK0YaFD6VFvr6CwBHkPdzFormiNbeJMFGuC5HBaDMNyGOFdIypGC5/OQ+vg0soX55qoFQCd/uFgFMsWuTfSkR3qiNTzT2ek9kIA4i/nfL26QOcrYEQxk6dR5dQiGHocY3xABDTbq6ltHkRwnZ+1H0beFE9q7WeEwlGqSy+1jzXvcjfzJ1+kUNadI5+S77oXhp5pl3mRYldeIg8SGJ0InGYuR2RZHgMMSl7PtGjgqHYhOtY8ycFCrxANHUehPtn59RbDR06MOhC9Xv1gcbysI+IysjvJsik3ybwM1lrhakpKiU5kUTIGtVyZD5Ygr/QKRSQL4/4ED9Z0NP50ktxOVL5giV621jAma3SKMXGpejuJbDUWAwEyvjV0Xd4phdYIwICR8sCaaHVY16O9+vLFHPk3RHtyI6WXeeDi6RDLaJdN4wOEVMVISk+49TQlyKuGVW9wNL9SUIlpddGTdEI91HmxlXYtrND7Mg3mvxMFHCqLTYQApvCk+eicd4ZwYdhjBQUOrg/lGQIdVUTnS9rsgTQopFlG3r/k3mwwas6rBQzygZxHMAWymIgK8Fw34jZWEb3G6YWBo7RF/xCnc7furLcxQYsyvt00B9B8Tre47qgEZnpSHGI9cmdBB0emiSOHDPTWzNYjB9i7OIqYtAB5mwbNIEVK5mXPqT6VMI5RVR91JA6TuJ+EbuLQeC+QNx/8g3G40ASQOAgwyAZMs3qs17OEzI5UK4XgkpTJ0cpWdQ1Ke88fyfkGeaR/oGhP+7E5iO7vUcqt/aKkw+CbK7tnA4My2Uyskx2fNt/+BZNaSBp50ojDK786ZJ6ydJpn8R4QqsvmDYj8hAmiYD56Xv+LMzmJ95tRVgvbDT0dAZQ1pCxZVIW1kX3Usp1ZcvUw0PyFzyQ/ql3acSo7mSroCQvf9AySAVyLvtjy3PK
+ +UlaXP2Q
+ KAtJ0dmyGYJvUoMZvJjF2CMnygHL8jyUa/yM9WLvpm5oCyhvWpf+hC8bTGO9/ysJAxlUsktjmgvRMIVA8iqa+w2DArmI5zXJt8uo/WkncvvLMe10J5m1ac5GQXBUMu7lofHWtLduA2S+AM/Q10AAZiXFJ6ts59h5b2yjbYsO394x6/oHCcmul2TBJ4ERTJeypsQfX7rI/qREnlpk7F/28iR9KUk6dLXGPU+L2NtoAjfb8hHw63BfQIUXzqLsor93zt+i9JG+4v5TNvQZTXNXvJKaJRmlAmnZBmqUS9ry2XIz1ubwOF+NZO9Fg2YNQst71ETaETZSaTlIFQ4GtZw9iU+WGLkxANhIJbqmgZuPK0qPBcYM9DPO18He3rjOA94ZcA1oyEDhMis+23jPKTT3HaSjOW0ApsqJFy0YplsAWC2peACaJ8BvemOfLMx61dxwSL6AiHJO1Xl3NaO79h6wsn4osbqL6w4FVv2DQSKaQfvq4tO54fLYrOtwqh56M1dXkeWy8G5VjSotFCYzJvqLm58MZQWKSAhYxRK/1RohmV1JkHbexrTjptBrqLSXuXdcAeFlW1yMeLTS0nkxoF7UvHEXpRV7RoG+eFZu+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,101 +138,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-shmem_file() only checks a file's backing mapping. That mapping can belong
-to another file, as with a Coda file backed by a tmpfs container after
-mmap(). It does not establish that file_inode(file) is a shmem inode.
+From: Josef Bacik <josef@toxicpanda.com>
 
-Seal handling and memfd preservation use this check before accessing
-shmem inode state, so they can access an inode of the wrong type.
+Commit 9c225f2655e3 ("vfs: atomic f_pos accesses as per POSIX") made
+read(), write() and lseek() on a shared open file description of a regular
+file serialize on ->f_pos_lock.  The flag that asks for it,
+FMODE_ATOMIC_POS, is set in do_dentry_open().  A memfd is a regular file
+too, but its struct file comes from alloc_file_pseudo() and never passes
+through do_dentry_open(), so it does not get the flag:
 
-Add file_inode_is_shmem() to check the inode's file operations in both
-paths. This identifies regular shmem inodes, including those used by
-memfds and ordinary tmpfs files, independently of wrapper file operations.
+  CPU0                                CPU1
+  write(memfd, "a", 1)                write(memfd, "b", 1)
+    pos = file->f_pos  (= 0)
+                                        pos = file->f_pos  (= 0)
+    vfs_write(..., &pos)
+                                        vfs_write(..., &pos)
+    file->f_pos = pos  (= 1)
+                                        file->f_pos = pos  (= 1)
 
-Fixes: c49fcfcda8b5 ("mm/shmem: update file sealing comments and file checking")
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+One of the two bytes is overwritten.  Two threads writing 100000 bytes
+each, one at a time, to a memfd end up with a file that is far shorter than
+200000 bytes, while the same program on a tmpfs file never loses a byte.
+
+Set the flag when the memfd is created.  As for any other regular file the
+lock is only taken if the file is reachable in more than one way, and
+nothing a memfd does in read or write waits for another operation on the
+same file.  This cannot be done for all alloc_file_pseudo() files: anon
+inode files such as eventfd are S_IFREG as well, and a blocked read holding
+->f_pos_lock would lock out the write that is supposed to wake it.
+
+Fix generated by an LLM and sent by Josef Bacik in private.
+
+Fixes: 9183df25fe7b ("shm: add memfd_create() syscall")
 Cc: stable@vger.kernel.org
-Reported-by: Chris Mason <mason@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+[ david: minor description tweaks ]
 Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/shmem_fs.h | 6 ++++++
- mm/memfd.c               | 8 +++++---
- mm/memfd_luo.c           | 2 +-
- mm/shmem.c               | 5 +++++
- 4 files changed, 17 insertions(+), 4 deletions(-)
+ mm/memfd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-index a7c7a96a7cbf..4996420cfe60 100644
---- a/include/linux/shmem_fs.h
-+++ b/include/linux/shmem_fs.h
-@@ -117,8 +117,14 @@ extern unsigned long shmem_get_unmapped_area(struct file *, unsigned long addr,
- 		unsigned long len, unsigned long pgoff, unsigned long flags);
- extern int shmem_lock(struct file *file, int lock, struct ucounts *ucounts);
- #ifdef CONFIG_SHMEM
-+bool inode_is_shmem(const struct inode *inode);
- bool shmem_mapping(const struct address_space *mapping);
- #else
-+static inline bool inode_is_shmem(const struct inode *inode)
-+{
-+	return false;
-+}
-+
- static inline bool shmem_mapping(const struct address_space *mapping)
- {
- 	return false;
 diff --git a/mm/memfd.c b/mm/memfd.c
-index 0f6fff004f5e..507c00ce0fda 100644
+index 507c00ce0fda..131fb772ad65 100644
 --- a/mm/memfd.c
 +++ b/mm/memfd.c
-@@ -211,12 +211,14 @@ static int memfd_wait_for_pins(struct address_space *mapping)
+@@ -484,6 +484,8 @@ struct file *memfd_alloc_file(const char *name, unsigned int flags)
+ 	}
  
- static unsigned int *memfd_file_seals_ptr(struct file *file)
- {
--	if (shmem_file(file))
--		return &SHMEM_I(file_inode(file))->seals;
-+	struct inode *inode = file_inode(file);
-+
-+	if (inode_is_shmem(inode))
-+		return &SHMEM_I(inode)->seals;
+ 	file->f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
++	/* a regular file like any other: POSIX.1-2008/SUSv4 Section XSI 2.9.7 */
++	file->f_mode |= FMODE_ATOMIC_POS;
+ 	file->f_flags |= O_LARGEFILE;
  
- #ifdef CONFIG_HUGETLBFS
- 	if (is_file_hugepages(file))
--		return &HUGETLBFS_I(file_inode(file))->seals;
-+		return &HUGETLBFS_I(inode)->seals;
- #endif
- 
- 	return NULL;
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 6b68220275eb..adaab98c8b63 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -581,7 +581,7 @@ static bool memfd_luo_can_preserve(struct liveupdate_file_handler *handler,
- {
- 	struct inode *inode = file_inode(file);
- 
--	return shmem_file(file) && !inode->i_nlink;
-+	return inode_is_shmem(inode) && !inode->i_nlink;
- }
- 
- static unsigned long memfd_luo_get_id(struct file *file)
-diff --git a/mm/shmem.c b/mm/shmem.c
-index af21a89abb0f..0ca5b7f7a517 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -275,6 +275,11 @@ static const struct vm_operations_struct shmem_vm_ops;
- static const struct vm_operations_struct shmem_anon_vm_ops;
- static struct file_system_type shmem_fs_type;
- 
-+bool inode_is_shmem(const struct inode *inode)
-+{
-+	return inode->i_fop == &shmem_file_operations;
-+}
-+
- bool shmem_mapping(const struct address_space *mapping)
- {
- 	return mapping->a_ops == &shmem_aops;
+ 	if (flags & MFD_NOEXEC_SEAL) {
 
 -- 
 2.43.0
