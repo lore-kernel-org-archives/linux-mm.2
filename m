@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A635606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1C860A262D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I3wM2Fp2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GauLCy/1
 Received: by kanga.kvack.org (Postfix)
-	id 7A9546B05F4; Thu, 29 Oct 2026 16:44:08 -0400 (EDT)
+	id 587F56B05D4; Thu, 29 Oct 2026 16:44:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 759976B05F5; Thu, 29 Oct 2026 16:44:08 -0400 (EDT)
+	id 55EEF6B05D5; Thu, 29 Oct 2026 16:44:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66FD06B05F6; Thu, 29 Oct 2026 16:44:08 -0400 (EDT)
+	id 475D76B05D6; Thu, 29 Oct 2026 16:44:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D4546B05F4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:44:08 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3184804E1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:44:07 +0000 (UTC)
-X-FDA: 85376840934.07.D59C015
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0E06B80005
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:44:05 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3wM2Fp2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 119356B05D4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:44:39 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98048C04ED
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:44:38 +0000 (UTC)
+X-FDA: 85376842236.16.587438E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AFEF218000B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:44:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GauLCy/1";
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306646;
+	s=arc-20220608; t=1793306676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PI8EmdBn37j7qc/hvMAGTDVDDo5VBf2eU5QEycECV2k=;
-	b=XzoNt3CIpZRrUsd/aTQ0EuwXj+FI9PEccSVM/3ebI21B5MA5qiAj6iYrv93xuHL/4QYQsW
-	zc9sTdDKOIoVI2U3AfEE8ye7I2EbinlgkvN37RZbHqvo0DL8dhnWV6vxTbHx8QWjvNWwi8
-	K2d1nKftwuFEuyC1Vyo+lM/S2I9UbpU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3wM2Fp2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=OmrddnalYvKzrQnN9N4Fpu9NVAES2TsOMe4SsI3z9gU=;
+	b=NujfvWXKDxPV4YwGmKonTDlko9H0S+xlB6a9Hn/gntY7Cisg0VWVx9Ktiln6yFr7Ichrnd
+	zE6YYMcgeSy3Eh6dJm+DyUHIqp5nnb/RSvNILOT5NLi8ad3qPX+zElmwYE0u85Hpwk+Y2d
+	Uwq4smTVQTQ7Sno6d3yNgcjiwCmgvVI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306646;
-	b=oGR8UHYkj5onO5aRpMasgJ2/J9/6xRrLq3oldy1PsnijFxDvvq7MDx4gPF/9LPWazUwEdM
-	6O151XWJcaLd/7Npexww9jC5qS3rQTgCCnnvC2v2vdMVB7sHosvLnz7JYCT/5C7cnHDimB
-	tYlQxU629kxYgJcj8mK3ISt9hwT3d3Y=
+	t=1793306676;
+	b=4oCJo9lv5cCfn+aP5Fn5aTRDiRG9eg4/+nHoJzVDfNB4bsIOo8RBo01MB9EUcUYO/s1B1U
+	gB63tjMJPCV06UlUwH3Fe1I6jvUyi4/fKIqnaDACJGXeAkq+mrg9K7dxLu1MLkYBqfhF+4
+	+gf8cN2AajefaPzIp/T6c4+rTAUZCso=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GauLCy/1";
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 97A3A6062C;
-	Thu, 29 Oct 2026 20:44:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABD81F01826;
-	Thu, 29 Oct 2026 20:43:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B7B8541082;
+	Thu, 29 Oct 2026 20:44:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00911F01825;
+	Thu, 29 Oct 2026 20:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306645;
-	bh=PI8EmdBn37j7qc/hvMAGTDVDDo5VBf2eU5QEycECV2k=;
+	s=k20260515; t=1793306675;
+	bh=OmrddnalYvKzrQnN9N4Fpu9NVAES2TsOMe4SsI3z9gU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=I3wM2Fp2M/mnFZOoLQjrOOGcJn2Tv+0zUzVbgWBHluank6O6Jj1/hRTD8bqfwKQr4
-	 zHGg1evLbpkE+EIITtj8IU/8h5sV5/cwswPhYhl58K+pNMq7yafhM/3QJ/6tSZvjtc
-	 EIkF69eSqkz5J1NC2rlbPl+flcQ/bjkq88b6bJXNhOBiP8sgZRILnp8rnBww98GwHz
-	 WXdmRGcnvgjlqG7d/lH2c1NXRCKkWqDCNw2Js2U532SmcF2gBH4YHMWqG1WEOaK84E
-	 XQRunhZ8gsVpvKbm8t04i7F4xsicZijv9ybjklw+5K7P0vn1r3nGM9fxxNtquFNu1P
-	 xH52ZIz0oh+VA==
+	b=GauLCy/1HrYbdieZoYJGY/PpIUS1vgONUu0M4PlXJvY7eY+GegQj06Bc3k52Nn7Cw
+	 5pUOiZmQPSa/agrZVJmrfiWcTl/MEWxkZ9UQsk7lluRie9slFArS3/SevT9Xccdva3
+	 jp2ZFiK7k5Rm5+WgEwWwD32w960RLwKV1pQDqkERuQqbjtkTQtpbzWr7jdja43hl2C
+	 c8k7J5I4N2CU6YXX6Fvp4i5opY3LoX3l2OPr87naVfONU+oHtwZSXt5gIoOIzHgVXo
+	 jtFFykZR1o4q1kxv0399ek+IcViDhuU9YWAlcP+xsYEpMNrWrwGCMJzm0kwU8GDd9N
+	 c2NA3KmLJdFDw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:38 +0100
-Subject: [PATCH v2 43/47] mm/huge_memory: split huge PUDs when adjusting
- VMA boundaries
+Date: Thu, 29 Oct 2026 21:33:40 +0100
+Subject: [PATCH v2 45/47] mm/cma: don't release CMA pages still in use
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-43-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-45-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -109,27 +108,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
  stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3933; i=david@kernel.org;
- h=from:subject:message-id; bh=QffgpAOB3agwHlZzTMqGo5KOI/hFG36iruKivYKWL2Q=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+303vND6POzBp0C/l2WzFfevlivUbNg/4TeZ/vCm
- T3+ZP1b0FHKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBEZnozMkwLOl5Wk5Bj1Thd
- SFvk4Twt9r1svrlLZnWGliUJ23L9vMbwV86BzahUqf7TnN3Gc6RW/hTcvvzy1FTBp8v2vL6/5VD
- ZYz4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2252; i=david@kernel.org;
+ h=from:subject:message-id; bh=3kpfFp5NOxLKJV7MN0qgqEyHjOOrTqFsf7HE3Qur7Ks=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+16LPZT4EOJ2H3DwG0neWorjk3wfGRVsoy7nXl93
+ YOjzLF9HaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzk7zaG/wGvIi2+nrw7edI2
+ i513/4c0ZS6asqr28e2KUp2fNmp7rUMZfrPoSJ2ovysSvbya44cCH9+H3rqFRjUPV/WUWk7Yv/V
+ nMCsA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 0E06B80005
-X-Stat-Signature: xzfanbp68765bo3bckcx5kno8uig1snd
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AFEF218000B
+X-Stat-Signature: 7duxx147x3h91xy1sybmdsf6oemmp8ni
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793306645-957370
-X-HE-Meta: U2FsdGVkX1/EyQN4j+jg2tYnh5XP3VUmMsSJpT9301ZVx84aMKVYJ+NQmaAxOgSZpZU4C03tzzUxbi1lsCcmjZcsV4acYVi6Nk8nM/j5PMKk31CuLCS2xeKW10km/r6bWDMgw2ccmhPnpbD4M8Xd6xqGGKVRKHWt6a2LjED1eaD15vBltesEVmysUa2yt/3sq3AI64xNVOh2LmvxflygnLILsdDM+5I9Kb7aR8jqsWqTuBHyBd3g9YU4gswYLJZsKIqKK6d4afykpCyhtQ8xdUO7hIEvqz7jGJwVH7wJ51lOAVmiEzyYrvrn2RqzK+UIcycvXQID6S3ofr7Bk/pDLk8eh+Q6CBv62S8DXJA8CN4Mm8Y3rvhoQYzaTqn9bpc0SsXV5osA87z8wF7tu46F6QUqwE4s6HH+RRjlAsGNfjsox3gBwG2pePLalXhnSXYUW/gcF8+9ZpjdayXpTvEiMVREunGT4cZuF6waKm6d9x/RwLAo0nFXKul8JG1ksBwMvgOiUJaJ67hHmGT0SRXzzBjjpl1hRmjotgedHmEx/3s7e8M1dxRAiltaZOsyuBk878IWzkD5uspC6cwG7wb65SCey9DhRHR/mm7Q5mYmBSa3ldZF0GO2FH6/K4f0JwdN9yglfvq5HT6lEo8RDwjEIkboayJeRqkLcdyKlT4PL4KAYTM2uUaLMA6zSuV3x4SxM8eYQCcGrCXnsYBtq/d/foiz4e0D6FVMUZZHG31tY1v93Fuq5ijbIZ5Lzbc4K/Us8oMofpryho2CisIUsJpZ/GPZNZbzbtGcx6mfup/ivGaQEKgt3h6onHXrRAhaAM1JAd8v6A85cBzY48OrUaeXEwMflyXjRQEZbfwRchg7nZyXWIDImQJbmme2tneTitXvLXm2gKdtP0MyR2mpTgVMS1+WOG7adZpf1J2U3Y5ee6+RjjHiNaWiHt9VoD5iu6JVTkD/t2K6m8UDPjg6Y/D
- ErMsbBMn
- eFq5R+bWh/paRQNnFuHhO5dHZiifxSQAiw4qep3CIuSGUEr3oyqiwFiHnoYoMoaX1XmNKoT7EqsTXhkJrO6DPZ7y22DN0kKRxdtYQsjalfeeWTPxcWEt7AY9f12si+uPZkdjpoFBxIqWwNlihgCdlQ4Dny+oM9/sXqDIt0nxWXEJ46fW+zT/AUMgBzTnqL9eDSQJoGyYJmQqjtJILPfi2bSFeLK47huA+Y0eJbgqXHCtEJ/R1JOsb1k6Z8nrfsbmscam9aTGa0IxNTkeDjoW19SwTg1U9kK12KJ0dsDbKOlZbag0tAvtkSPQKAOt8NCoB0dZ/PxerUSiwn6IAyqM6/pR9iojHPzB11YNU+ZXTt9sZN+4=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793306676-484773
+X-HE-Meta: U2FsdGVkX1+X7QmFv1Gl719GUaQLKtz8WVeyx+hGNSVa13l3gnr6IAIolEwtq9wHv5Mhwb2ZyErBeo0VtD7GixFTL+y3yDr0ANSJT7exqxhiY7vffYrg5Jbfqot1miWJRVGOPM/qh1x+h87syT+yhqYxKpmsA/YaU7nkRtESUD8qLWBXu/tCuGzQ/edsIaZl2w1zxxIWH5wEjS2AvqfKVgaeFDE4kDWYzYEhsuuaWTCm2GAzhxE+FCvsjgJ5I6sHVPWDNCVPUi+uMYSidxSaW64yYf5SwrRM+6cPImfB5ZXqdH1CD9LDXrAFNPNV0axTGUmNVZ7vNltesDkah0QYrzwvmkvdIQ76qKnYHcj6jEmy+s9Xc6iP3WVmKSkPmjyxMYzFX9sMVweNKHWjA+9nzN3KmjnAx79BtfDf3RLxcytjbNFRf3lJyVJbz1ud7XrrBu02QpSsUgndLwOogO5SmQBxxSSHEK8xwymup3osanD0qG7a6cWifzn2cKQqU95yNr2XWqY5Fshv23bBvZQbqjL41UH1IYYObxxBNnWibxHyqi+KdUPe6atWmhWoGwk9+GGBVftU4ztWCnpbxvtcfX2v+9CT7Zj6hjFG0mUMd80Fc3Dp6goinncc38/+m+dAqLKCmRu5jefe7dyVGnxv8JMUWu+eY/WIBcvXb++dCrqfsWgH05R9SdFTjQkgR/4F5OM09IaRnN3S8/HWe6LQlsG125x38R4L3q1cipk1UnpKszG7mq0X8HQ6xtFuYWuHYanHPCLFkFMx/sITjtYs60GtmKVlvW9UEoTLxKpvvJtYPXgGPWx5bSdKO0BXnNNkt8Uk6mLzsQufkw1/kQ5XFdMigiusSJccKGQlgLETmfxVeHTMLMrOBsve2VD1bxi1BFOszsnbwZ5FgRTngEqmwxsRAfKh2G40z6uclv5+f0OTlBf7TZ+JXnWjpVWl057YSWPGy81Mu+9Bj7lxhLB
+ DkK5ZTfq
+ qKgoQ+hBBZZ098vyhkXIDcpK2+4QZkMk7WSMDS5ePtJQdXGk0UpG0ymAjELUAljczEweMSu7FlOaeYQIKdNQjr2h4Fr2YoVeBtWcCdht4VluT2JkqMkzHsYHzS5c/ga7KDk1XWS3EFlgDewF3tQVXn621UGHfpQU0tK67gIAGoitwOJvuA/JI3XI5vH1gUQVVbQpAXkbl3yQiZ3A7ms6pNPVPHJpQ8KP6VZ9CaQmpL7iGw3jvR02hb86VIRFPwcPeHKfNUKtDQnZeGL+FEtMXMr0ItGdxdsJg0iY1JEGGoB5RE6B8U52yVkjVD4KuZx6e11KWL/oBJUaqCnYPVvWeDGGVQpCnkWE8OAN30Ychz4r4GGV2IRI+S0LbkReBDgDg1PpVrYlxBHjIM/zo+7SI3n/qb9A37mZL4MEnzN2smngG/SXvsx+8dGVmXec7jzIjgxFlVPi6N0XwGL1wrMQddfAheQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,122 +136,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-PFN mappings such as VFIO PCI BAR mappings can use PUD leaves while
-allowing VMA splits at page granularity. However, vma_adjust_trans_huge()
-only handles PMDs.
+From: Rik van Riel <riel@surriel.com>
 
-After faulting a writable PUD-sized VFIO BAR mapping, changing its first
-page to read-only with mprotect() makes the PMD walk treat the PUD leaf
-as a PMD table. Applying MADV_DONTFORK to the first PMD-sized chunk leaves
-the PUD spanning two VMAs: the PMD-aligned boundary skips splitting.
+When a driver calls dma_free_contiguous() before quiescing DMA, the
+page might still have a reference from the device.
+put_page_testzero() there returns false, WARN fires, but the code proceeds
+to free_contig_frozen_range() putting a live page onto buddy and clearing
+the bitmap. A subsequent allocation can hand the same PFN to a new
+owner while the original holder still references it.
 
-Walk the page tables once at each adjusted boundary and split a huge
-PUD or PMD leaf as needed. Handle PUD leaves even when the boundary is
-PMD-aligned.
+A concurrent put_page() that drops the last reference between the
+testzero loop and free_contig_frozen_range() can double-queue the page
+via page->lru, corrupting buddy lists.
 
-Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+Avoid the corruption by not freeing a CMA region if any of the
+pages inside are still in use.
+
+Make it explicit in the warning that the driver allowed a leak.
+
+While at it, use page_ref_freeze() to make the semantics clearer and
+switch to pr_warn_ratelimited().
+
+Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
 Cc: stable@vger.kernel.org
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Link: https://patch.msgid.link/20260811132045.5f114772@fangorn
+[ david: use page_ref_freeze() + pr_warn_ratelimited() ]
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/huge_memory.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 60 insertions(+), 10 deletions(-)
+ mm/cma.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index f1b3f744c630..6ff3faa200f9 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3504,16 +3504,66 @@ void split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
- 	__split_huge_pmd(vma, pmd, address, freeze);
- }
- 
--static inline void split_huge_pmd_if_needed(struct vm_area_struct *vma, unsigned long address)
-+static bool pud_split_required(const struct vm_area_struct *vma,
-+		unsigned long address)
+diff --git a/mm/cma.c b/mm/cma.c
+index a10ea37a261d..871f95c9ae9f 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -1020,7 +1020,7 @@ bool cma_release(struct cma *cma, const struct page *pages,
+ 		 unsigned long count)
  {
-+	if (!IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
-+		return false;
-+	if (IS_ALIGNED(address, HPAGE_PUD_SIZE))
-+		return false;
- 	/*
--	 * If the new address isn't hpage aligned and it could previously
--	 * contain an hugepage: check if we need to split an huge pmd.
-+	 * Only selected VMAs support mapping PUDs for now. Lift the
-+	 * restriction once this changes.
- 	 */
--	if (!IS_ALIGNED(address, HPAGE_PMD_SIZE) &&
--	    range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
--			 ALIGN(address, HPAGE_PMD_SIZE)))
--		split_huge_pmd_address(vma, address, false);
-+	if (!vma_is_dax(vma) && !vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT))
-+		return false;
-+	return range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PUD_SIZE),
-+			    ALIGN(address, HPAGE_PUD_SIZE));
-+}
-+
-+static bool pmd_split_required(const struct vm_area_struct *vma,
-+		unsigned long address)
-+{
-+	if (IS_ALIGNED(address, HPAGE_PMD_SIZE))
-+		return false;
-+
-+	return range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
-+			    ALIGN(address, HPAGE_PMD_SIZE));
-+}
-+
-+static void split_huge_leaf(struct vm_area_struct *vma,
-+		unsigned long address)
-+{
-+	const bool split_pud = pud_split_required(vma, address);
-+	const bool split_pmd = pmd_split_required(vma, address);
-+	pgd_t *pgd;
-+	p4d_t *p4d;
-+	pud_t *pud;
-+	pmd_t *pmd;
-+
-+	/*
-+	 * mmap, VMA and rmap write locks protect the walk; the split helpers
-+	 * take the page table locks.
-+	 */
-+	if (!split_pud && !split_pmd)
-+		return;
-+
-+	pgd = pgd_offset(vma->vm_mm, address);
-+	if (!pgd_present(*pgd))
-+		return;
-+
-+	p4d = p4d_offset(pgd, address);
-+	if (!p4d_present(*p4d))
-+		return;
-+
-+	pud = pud_offset(p4d, address);
-+	if (pud_leaf(*pud))
-+		__split_huge_pud(vma, pud, address);
-+	if (!split_pmd || !pud_present(*pud))
-+		return;
-+
-+	pmd = pmd_offset(pud, address);
-+	__split_huge_pmd(vma, pmd, address, false);
- }
+ 	struct cma_memrange *cmr;
+-	unsigned long ret = 0;
++	unsigned long leaked = 0;
+ 	unsigned long i, pfn;
  
- void vma_adjust_trans_huge(struct vm_area_struct *vma,
-@@ -3522,14 +3572,14 @@ void vma_adjust_trans_huge(struct vm_area_struct *vma,
- 			   struct vm_area_struct *next)
- {
- 	/* Check if we need to split start first. */
--	split_huge_pmd_if_needed(vma, start);
-+	split_huge_leaf(vma, start);
+ 	cmr = find_cma_memrange(cma, pages, count);
+@@ -1029,9 +1029,13 @@ bool cma_release(struct cma *cma, const struct page *pages,
  
- 	/* Check if we need to split end next. */
--	split_huge_pmd_if_needed(vma, end);
-+	split_huge_leaf(vma, end);
+ 	pfn = page_to_pfn(pages);
+ 	for (i = 0; i < count; i++, pfn++)
+-		ret += !put_page_testzero(pfn_to_page(pfn));
++		leaked += !page_ref_freeze(pfn_to_page(pfn), 1);
  
- 	/* If we're incrementing next->vm_start, we might need to split it. */
- 	if (next)
--		split_huge_pmd_if_needed(next, end);
-+		split_huge_leaf(next, end);
- }
+-	WARN(ret, "%lu pages are still in use!\n", ret);
++	if (leaked) {
++		pr_warn_ratelimited("%lu pages are still in use, not freeing CMA region!\n",
++				   leaked);
++		return true;
++	}
  
- /*
+ 	__cma_release_frozen(cma, cmr, pages, count);
+ 
 
 -- 
 2.43.0
