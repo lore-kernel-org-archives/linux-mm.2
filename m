@@ -1,114 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DB4606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B13606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=djhtxDlm
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RGkwUZO4
 Received: by kanga.kvack.org (Postfix)
-	id 1C0D36B05B4; Thu, 29 Oct 2026 15:27:12 -0400 (EDT)
+	id 6F32F6B05B5; Thu, 29 Oct 2026 15:28:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 170DE6B05B5; Thu, 29 Oct 2026 15:27:12 -0400 (EDT)
+	id 6A3A86B05B6; Thu, 29 Oct 2026 15:28:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 060B06B05B6; Thu, 29 Oct 2026 15:27:12 -0400 (EDT)
+	id 5936C6B05B8; Thu, 29 Oct 2026 15:28:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D24206B05B4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:27:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4ECFC8048B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:27:11 +0000 (UTC)
-X-FDA: 85376647062.08.3508CBA
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9A169A000B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:27:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=djhtxDlm;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3DJ7jagYKCDUbleZplXffXcV.TfdcZelo-ddbmRTb.fiX@flex--kuniyu.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3DJ7jagYKCDUbleZplXffXcV.TfdcZelo-ddbmRTb.fiX@flex--kuniyu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 349566B05B5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:28:33 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5025F404C6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:28:32 +0000 (UTC)
+X-FDA: 85376650464.30.B5FDEFC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 26DC214000E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:28:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RGkwUZO4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793302029;
+	s=arc-20220608; t=1793302110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FdQRCRrJYOu5wxkzWtr5JmhvTpLm+/jNo5Ek6VGu/fE=;
-	b=rPhS1o93cD2agQ74g+n+tVEhqgJz1ohJ55eUaqRa1FfE8qQFPuuGCw1EiihNIdAmsXVTJJ
-	W42kU2S5xcv2kIN3GsDE0R9Y03vpzKFS6B6Mm6QI49tM24cdPYIDv1NRny+55iGJ1nbdIM
-	ULJINRw0Z3/AF3MWLIBI4z1g17Swaq8=
+	bh=l0+5ubFd1J4lsWZ084UYpuCIbDZPJCuWoPpCJ9/g/fE=;
+	b=kIlK9g1OAQWmTcIjFwI9t45WHnLDuugBBpA677rg0hxjyFMxHvCwhBHaQxtBTNuxe6u9uw
+	vncXYWdk+FpEIoEH/8tml0LSxzTqrUrpphutNbmOXSmDunvgngvTjfySn8DdSqvjsX4TKu
+	YoyWpZgtKi/a3EQewVoL49eZZeqnemI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=djhtxDlm;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3DJ7jagYKCDUbleZplXffXcV.TfdcZelo-ddbmRTb.fiX@flex--kuniyu.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3DJ7jagYKCDUbleZplXffXcV.TfdcZelo-ddbmRTb.fiX@flex--kuniyu.bounces.google.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RGkwUZO4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793302029;
-	b=RbsetIxSDEFHspT/MZu4kvOcMMIPyyGvDzTRWMNGwDfnEv/YfII8vTwWNznWp9QOaVGXy3
-	3rIGheec4sa1xhw4+PgkHtm07H9bUjWZEX7vk2HrBkJYbR/zE0toZPia2HNU3RoBmEMQfI
-	RtgScDcRgPejPp47KCWyB5uLXBxmgzw=
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd60a365440so1740806a12.2
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:27:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793302028; x=1793906828; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FdQRCRrJYOu5wxkzWtr5JmhvTpLm+/jNo5Ek6VGu/fE=;
-        b=djhtxDlmtpb5QzJZPQm4KgNjfO34qNU6SazdsVuyRl3GMXdEJqKg94AiNjvCz+julX
-         fw9W793zriOo5l9sb6lGQWsVDUStx2O4PGFjFMV70zWnC96S/w8/hk01ZI1yNRqoiPXo
-         uHkBGARFbRcVyvlp0k7DEwM2KeYOgNbbSIBhHIMpjuGv2cx9/VrBFbZuM7EMAoL5HFVp
-         OM3tPMmfViXUzqqMU36s4qIyTcmFIUUKJeg+nt3PxeL140KnaQzOEybqvsQBlTPXUKuI
-         8aPQuvv6g8wAGwMhsBUszvfToJQKAL17IU6JXzXR6CPvwNEsvKVXALMk3o6cGyPMJStM
-         l1cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793302028; x=1793906828;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FdQRCRrJYOu5wxkzWtr5JmhvTpLm+/jNo5Ek6VGu/fE=;
-        b=bTghtc3clD0Apl7eWkTjss2lrA/XFHFoihgKX14qXlGju20Jxs2Mhl32f8DOYWtnLP
-         G7vaxU1RhO6wOzBZ2CdWl9NObVqLMCytmLvmibO35sMhPEwXWHHsb+En+ln7Klvniz4o
-         q1HRM5jaMj0Jou1QcgDFO1GULJiRpgZUQV9rTfeXobcyw50U2ZZR0hOcJaORN0GqFHyP
-         vaztT3M/iQAPhO1xiVZ9QnLNPRyiEK72XLrrYRgLQ1rx3lz7u+kquBvG+j616vzIXyG+
-         L7uOQsNV/YQb7y2ljhxhfny7C4wQuxSzNd4r/ur0rKFQI8/gdyUcAUn7LS87ZfiyqlVi
-         GLsg==
-X-Forwarded-Encrypted: i=1; AKwUvBw51i06H7hcyI7xNiygcMJFX8gnGwA2JOxdWN+AhUhWAUWr2/qrIz4Jm+bzvN5Vt4zy0qpLgzqt4g==@kvack.org
-X-Gm-Message-State: AFq9FYJ5+X2dHo0A2sdbHDPyug515N/PnvQQdnyGIO89g7zhcOEm8Ims
-	qUI6kXa3AHyIKQhVHFWpYLUig8mwFSLwAnzkQlmZefZA3uQNB1CWb4IilSbmLfqD2AWDPnNrw15
-	JzFvaWg==
-X-Received: from pgbm25-n1.prod.google.com ([2002:a05:6a02:6199:10b0:cca:c02e:bfe5])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6372:a745:b0:3e8:b7fd:6273
- with SMTP id adf61e73a8af0-3e928d46c3fmr159781637.25.1793302028204; Thu, 29
- Oct 2026 12:27:08 -0700 (PDT)
-Date: Thu, 29 Oct 2026 19:27:07 +0000
-In-Reply-To: <auNQ9fjjyF5Xa0qb@thinkstation>
+	t=1793302110;
+	b=R7F75YYQnVozMIy8HdERb6zYwzV100XkVZvmpn5vQA+ElTa7ryD2kAb4HifIIJE7c4QG7W
+	iz1s89RW7+ttcKqehAagFYhGAHqVsMncHHRF5/kz/ggCTOAgXjrn1qlLWbEpgi0aY5pW1E
+	45ltDYJKMemzySwLS2hy0ZczJA5maH0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 22A8643BBC;
+	Thu, 29 Oct 2026 19:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274F21F01816;
+	Thu, 29 Oct 2026 19:28:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793302108;
+	bh=l0+5ubFd1J4lsWZ084UYpuCIbDZPJCuWoPpCJ9/g/fE=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=RGkwUZO4lk0dRv+GCt6hx+Fa3JOBxQ5LpFilAhtlj+7EgNtaLZsNIsmN7bBZoimWF
+	 mbYVmeEC6H8Wal5rW6OFzXmN8XqQHluMk/wmMoiH7gkBHSF8eJ0ss1U8W/vFZnIjY0
+	 J9etYb5B/EbNd0+VKAQdCBGYywn3pjsITdP8ljx0ZZjnWMLsh/h0q2Xmya5JARAT/e
+	 G/03IGzogJXIVC6ACnxCg2WckjZFCOVBszefNj4FOk0Kp3mOnXAtdZz/E2F9FSisRn
+	 k/+IkAHFs4FpgJkfprKkYtiyXUKTuK6I+YkkcS8nHysmEKvq/kQ9WUkcGsmDERCUYJ
+	 yxpeOhPFPCKQA==
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 84372198003A;
+	Thu, 29 Oct 2026 15:28:25 -0400 (EDT)
+Received: from ams-imap-11 ([10.64.2.31])
+  by ams-compute-02.internal (MEProxy); Thu, 29 Oct 2026 15:28:25 -0400
+X-ME-Sender: <xms:Vp7japqDDH7MTBpj2o1_0HawlWVyvY0FOU7D8Nd9IguEUhdaix0NLg>
+    <xme:Vp7jamc4F6MAAJVzCkF6_bNAJ-7k-8SOvhUA7n3HuyFOvMyH0BMFlNP5K3bDlVkmU
+    _MmSSbFPwfBRpUeSAyALsDRKfHwP5svjvMMMnJX_-T0oDwT3xHlOQ>
+X-ME-Proxy-Cause: dmFkZTEUgvLRPruJWwMD4Akvs3ZiKwYmL4oDztPDoA8hrr5wiy3BkBr/L+J8ffIc495+a8
+    sVhiVVtwPIuNAOKAlOpndG4mY3OFBA0yxH/iDkko4Iw92VWlZpDVx91SpbqSTdnJwCsCmq
+    fNWy+5fryrK9SVPiry0Lo1zBi6buqOp0lcoqLNhSe+EeqeBh3swNKQj473ROSt/e3Q3YzT
+    Y6Vqe3oHE7LWnGQ7fdLxgfCMkC2+Mben6NfQDOT8lpSGnMgUR7e0byjD60bSFe5B3Hne7U
+    w5Gfiok6+D9TuVISthJHKLQtTSjEFU84bn3lh0P6LFT1Swa09hrw4mNbqBD5zejN/EOIVm
+    llqnU5WA+hypRMru22igAtp2EarCpc/fa5olztzEdkS0JpQS4cjmX6GqUrUxqz7IITIK4z
+    K3yxyQbcBGMl04ZmpOqisSGPU9G/2asCSPnYRTSQLv5jInUHP/+yzOxTPG2wbvC9GhIS8Z
+    nwAjnIxctRgMiScIn7m6OoJIyndLKBXCkesgX55ummn8NiOto5buDBM9zYGYlz6iHP3oCs
+    7guFdH0nVF56k6/788zHoqITj7rHth1rQqq8VphlCPUZPp0f0Tf2V7S+aum5FfPDPzLsPo
+    sw2J/w3694XUXfHo/Js1a6n736sSGucGslN4UA8hN96a5+o4rLIesRyiQSiw
+X-ME-Proxy: <xmx:WZ7jam3_6jP7JYZKi7_ncq2u7jb1GraqdICHIIEXhUjfDVgazjJ8Gw>
+    <xmx:WZ7javjQ0EQPb0oalPZ_Y84GSb9fuBCm5hcsd0-_BmBh8nf4QJ4h4A>
+    <xmx:WZ7jasZ9VmdjIbSXaeztyyyt16GVwnJztwEObzWgR8yzA6LOMR-XqA>
+    <xmx:WZ7jagN_FdpPrbKtzGVUnXth4ieCquH3vlgtCHvjBwW2p6cxqSnNgQ>
+    <xmx:WZ7jaoR32XkuWPNxMvWbVBj2VFK7d4bzjxxEq1WJNsRrSY-uXsbr36X4>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id F28D7F80093; Thu, 29 Oct 2026 15:28:21 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261028194014.3671161-1-kuniyu@google.com> <20261028194014.3671161-2-kuniyu@google.com>
- <auNQ9fjjyF5Xa0qb@thinkstation>
-Message-ID: <auOddgOVRE7EDDkn@google.com>
-Subject: Re: [PATCH v3 1/2] mm/kasan: Detect double-free involving kfree_rcu_sheaf().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Harry Yoo <harry@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, kasan-dev@googlegroups.com, linux-mm@kvack.org
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: 9A169A000B
-X-Stat-Signature: u7zwifgrctru7awog7nezayz7to4xqi1
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
+MIME-Version: 1.0
+Date: Thu, 29 Oct 2026 20:28:01 +0100
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "George Guo" <dongtai.guo@linux.dev>, "Mike Rapoport" <rppt@kernel.org>,
+ "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+ "Pratyush Yadav" <pratyush@kernel.org>,
+ "Huacai Chen" <chenhuacai@kernel.org>, shuah@kernel.org
+Cc: "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, baoquan.he@linux.dev,
+ ruirui.yang@linux.dev, guodongtai@kylinos.cn,
+ "WANG Xuerui" <kernel@xen0n.name>, "Alexander Graf" <graf@amazon.com>,
+ liukexin@kylinos.cn, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org
+Message-Id: <2382a0ee-cb6d-4572-be6e-ce3cf4d006e5@app.fastmail.com>
+In-Reply-To: <20261029172956.20791-2-dongtai.guo@linux.dev>
+References: <20261029172956.20791-1-dongtai.guo@linux.dev>
+ <20261029172956.20791-2-dongtai.guo@linux.dev>
+Subject: Re: [PATCH v6 1/8] efi: Pass KHO state to the next kernel in a configuration
+ table
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 26DC214000E
 X-Rspam-User: 
-X-HE-Tag: 1793302029-604735
-X-HE-Meta: U2FsdGVkX18FEYmzf20EfP3LSsej4qK4IDdiFcqC45oa0DR6nhrxhN3BkddkWe0ZYGUjz4w52ReStsmqWesaDfQt5D7OjSXDz8PH5qEDnQIsJGEFH7SCt7eV+o9g55lSDFcU9RLLWce4iljhDt5OclndsSWS8BDLV86g9guBtKeMKlyB6I6JZlbuWZSAxDMFN8EJLTHeoT3H2pxHAzEDsqi6oE4Rwxa6kPjJtwi2tiNWgP+r6vW9OPL6Y1tt0XKz9hNPt54wAaX3XMQkzulO/5uBgiExTDTccplWE2fmpN+nezbPwftkhWJyJ0nxhfZpRsmc7Umsv0iRaRCRe6WOS3nps/canYCwM/FIcVfLuSuAubhkYfp6Q5992LXTCoMm7js2v9SOoYPBEfGD0sOXThpyScMe5BYPXXIggmQCI8f6g/wnX48Uuy1IML9sK/8qDaQNRXqsc0WRCp+PaK3FtMQgxIv9w0GQQBu2pwGw0fT6GCkJgGUpKoOqZIGwkuOnKcdD2oDc7B8jyPSc251XUPWJ+o3y9sUtZ5NoYOwdNaWunLLLsYGq8FDXoovtAP5RFqi8s0m+jw7ci2dmUpNOx3aopxuR0E9zw782S34xeQps5gk6H7EJViB6bxhKUxSTaXxR7T6/qft9dl0qGb7rzYetn+5PRwa+T0a4HhQlx8wpzGgbhByOa1GXqptj78psMROm13mQqMzV89bMB6ZDysmZBVbXm5OcaI7lPOkD0PnidPlW/1zQWF/C90O8HyU+rqw83s1BBcYKfhot5wG3hy4hD8wQdTqWEM8Kir1RLdofoKKVSwSv16aIs7MilcKCBixg8C2XtLD8BEeZCclTsKBVmDJT8QmGp7kX0Ju5ub4SyZ4w9gPM1AxMaU3+WU8JoRP5lqOBBH/i15yPAdCsB9HIHlThwnzWWuWv26wvIsSTywEHiLBF64Afz0yCEsp1EUeUTh237M0ga28hbF4
- SOkxmFc7
- CwbGQXy+z6HOfcITl9VhQU2HCpl0qoxln8200nl4X9HUK72shOiB8rQnKTD2M6teBKNG+QNzb8a2FWppTPPs5iQkATcy9YtAkkgWIr6FidEVY9lSapJ59eF4O2T+TyLNe6phv6Dggca3RK1D0tIM3TuFhbag/ErGzDDV3/Ob+CaqR/GwOSlIzspzEAKKzB5PAIHuSSdpaUPmlfyySWMYMw10AF6IxzLjH2pZnwFnWOZT6u3Z5uhBONFktLPm37zo1g/FZSpfD5iw0OUz1Tw9UZhX3oyjABShWYlQees4v/Kru/D4qWKv3aOmJG3I2+wlYcsyLKWCbVP9CDQ4MQPNu7F84u693izAzKi7YTOuE524shNiSSBaZBno9VN7Ok759bKtKnYUBAzB0DjGLBL49A/4r0abJTeV+oCa7PRqJIm3pK2Vhyk1IfrpJ9REgJpSSHo+5Yhendsj48lmNB3PKnr9VkyPW+GoGQLNU3AYdKx2hMXMzOTRwMPuJvKHE2EaKkS46qWss0mZ+RCEcf9kWBMCtQ3a4XCfIpc48Zl4G8lUG8b4X3mG0RmqTRMYnv/pzQ9SRwT6tt/de+dMzgEJx8LteSvwPymj5DDrHxm0Tcdxttn9W4yaTh1K7ZQ+tddKZAq8Y+op9FR2iQDOd7tYbsPafSsKxIE0qEgZjdPFniRT3eqr1dPxpFtHDMz8C5Qy+bwL9Y0ra/9EL5J5mIbekY7i5MzGCA5olfIYcOU/bDWnTZEcKGGTgFJhydw==
+X-Stat-Signature: d73o1hhwxb593xnf7q5q7ut3gaazngg6
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793302110-322073
+X-HE-Meta: U2FsdGVkX1+WmHJpMcC8STQ6lbuvow6AZ0uWOm0sQVIsZu5XGghreZNVDA382BZm6seI0Djc9Fl9+bpS5rYcKPSaM1U3sCZJZEjlIVVhndKTWPp5aB/CJa9imuOIHvFceQLHogpu5VMlsUj3w+JdOShN71qPrS+SJhRH2/nXw5Iw2SRStqPft0EL6z/Z9F5ZW67dtMxgwxf1n1CF9c/z5ANruVIzXOLDlqSwqYYvp3eTUj/3CvYRNH6FwofrJ04UX5iJakh2hhnDcqkXxnQ+AIkEhKLV6UKsddG+zo96l3JyvgozG/zdLPV/e6geRGrGdlOQV9lpFeOywqx6MwRwOJnY0wMJInyqSyl1soq+MT9Q9V05KQ07D5iPVx2sbfqVTOq0DkjC0juBLzprp+mDGHKJTLF2oQgrVsJsc5B1rGgFzzwMOXwTTsmrWDdm+O2dV79k2Ppaa6bqecHJCYX7mYbaaLCHnnJav3AaXsy1X5M040TJhvqTg/LH6UHAN5qpbZ/nzg6TKknnK3nj8ZcPLdVBifjz6QpFHsiNbngk9OciIQRAOKOZh3XzE9nb3IvwYea3nbJUIjbzWifLN7xz7cRto1LgcnIMRFnz6hJX4tSKw2/CbjwyD3SWkheThmaHC0XtlGHI1ttd06nLgXAS5ByKyoI7cc4X07dPCkPST0rrgMh4F4OQvJxnNnXgAaj+19knZWEr/WbKZ03B/hpZRGBzCzkJGg4DaAtHv407JzGMIQMLFN2GrVNshY5OpO9uCFxzIqpbYVNbUnxYw6qjrrwuyo7IGbo/3PAhWY5aACZmUSXuAcFXMrZX3HStv/bRJUequMVkxGy/kdwcRshFcjsYVaOL2j+S6Hp5/6/aQRQzbTKbGu/jyWMoB/qyWVD4lmmBUUQ07/NcEl7JWQ92F/TLEkwK/lyuagYjIc9aEdBtBMAA+wbiGWznxWhZcWSgZukrny/qHvYcoAs9gqn
+ k7U4cWyO
+ c+I8wUzU1FdIH5BFAQhooWgNiqEQ5lqsizqnNHcguWueZjj3D49iIllsDlX/EO+X+1YgQS7U3pTXobXN9ndoQ8SIiYDhq9Xgu1HDULbf/3bmS+Z833Qat6jW9G+DxUIdBBbl5FABCXpB7ngtFuq+T9/Ejfjbh+KNiU1vlfmpRt/hAFNLaGUuE85eTX3qVZuqh6+sJ2OjMbqNsdwbmeyqIlt4PLY4xYpSra/Ol
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,93 +131,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 29 Oct 2026 14:07:21 +0000, Harry Yoo wrote:
-> On Wed, Oct 28, 2026 at 07:39:19PM +0000, Kuniyuki Iwashima wrote:
-> > syzbot reported a weird use-after-free splat. [0]
-> > 
-> > In the report, an object in the kmalloc-64 cache was freed via
-> > rcu_free_sheaf() while it was still in use, even though the
-> > object should always be freed with kfree() (in xfrm_hash_free()),
-> > implying that the object was a victim of a double-free involving
-> > kfree_rcu() somewhere else.
-> > 
-> > When kvfree_call_rcu() frees an object via kfree_rcu_sheaf() and
-> > queues it into pcs->rcu_free, debug facilities are skipped, e.g.,
-> > kasan_slab_pre_free(), kasan_record_aux_stack(),
-> > debug_rcu_head_queue(), etc.
-> > 
-> > As a result, KASAN cannot detect the double-free at the call site.
-> > 
-> > If the object is still in the KASAN quarantine when the sheaf is
-> > flushed, KASAN can detect the double-free in rcu_free_sheaf(), but
-> > with no trace of the suspect.
-> > 
-> > Worse yet, once the object is evicted from the quarantine and
-> > reallocated before the sheaf is flushed, rcu_free_sheaf() silently
-> > poisons the live object, resulting in a false-positive use-after-free
-> > report on the new user.
-> > 
-> > If __kfree_rcu_sheaf() simply calls kasan_slab_pre_free(), we
-> > can detect the second kfree_rcu(), but only while the object is
-> > poisoned in the KASAN quarantine after the first free:
-> > 
-> >   kfree()     --(poisoned)--------------------> kfree_rcu()
-> >   kfree_rcu() -> rcu_free_sheaf() -(poisoned)-> kfree_rcu()
-> > 
-> > An object queued in pcs->rcu_free remains unpoisoned until the
-> > sheaf becomes full and rcu_free_sheaf() runs after the RCU
-> > grace period, so a subsequent kfree_rcu() or kfree() before
-> > rcu_free_sheaf() cannot be detected by shadow bytes alone:
-> > 
-> >   kfree_rcu() -(unpoisoned)-> kfree_rcu() -> rcu_free_sheaf() (too late!)
-> >   kfree_rcu() -(unpoisoned)-> kfree()     -> rcu_free_sheaf() (too late!)
-> > 
-> > These cases can be detected if we call debug_rcu_head_queue()
-> > before kfree_rcu_sheaf(), but ODEBUG splat only shows the second
-> > free.
-> > 
-> > To detect these cases with KASAN, we just need a 1-bit flag
-> > to indicate the state, which can reuse an unused bit in struct
-> > kasan_track.pid. (PID_MAX_LIMIT is 1<<22)
-> > 
-> > The bit is marked along with recording the stack trace when
-> > deferring slab frees in kfree_rcu_sheaf() and checked in
-> > check_slab_allocation() so that any double-free pattern above
-> > can be detected immediately.
-> 
-> Why do we not need the same thing when it bypasses kfree_rcu_sheaf()?
 
-In the fallback path, we can detect it via ODEBUG at the 2nd
-free, and I wanted to focus on SLAB Sheaf in this series since
-it was the initial motivation, but I'm happy to follow up
-if we want.
+On Thu, 29 Oct 2026, at 18:29, George Guo wrote:
+> From: George Guo <guodongtai@kylinos.cn>
+>
+> KHO has to give the next kernel two addresses: the KHO FDT and the
+> bootmem area list. arm64 and riscv put them under /chosen in the boot
+> FDT. LoongArch systems booting with EFI and ACPI do not require a boot
+> FDT, so KHO needs another way to pass this information.
+>
+> Add a Linux EFI configuration table for them, under
+> LINUX_EFI_KEXEC_HANDOVER_GUID. It points to a struct linux_efi_kho_data.
+>
+>   - On a cold boot, the LoongArch EFI stub installs the table, zeroed.
+>     Each kexec'd kernel is given the same EFI system table, so it finds
+>     the same table.
+>
+>   - In early boot, efi_config_parse_tables() reserves the table so
+>     neither the page allocator nor kexec segments use it, and calls
+>     kho_populate() if the table holds KHO state.
+>
+>   - Provide efi_kho_update() to update the table before kexec. Map the
+>     table during boot so updates do not require allocation or mapping
+>     at panic time.
+>
+>   - efi_kho_table_found() tells architecture code whether the table was
+>     found at boot, so it can turn KHO off when the table is missing.
+>
+> Only the LoongArch stub installs the table, and only with
+> CONFIG_KEXEC_HANDOVER. Elsewhere there is no table and this code does
+> nothing.
+>
 
+Can we handle this as an arch table then, and handle everything in
+the LoongArch arch code?
 
-
-> 
-> > Link: https://lore.kernel.org/all/6ac959ee.70ed5d86.2ac85.007d.GAE@google.com/ #[0]
-> > Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
-> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> > Tested-by: Alexander Potapenko <glider@google.com>
-> > Reviewed-by: Alexander Potapenko <glider@google.com>
-> > Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> > ---
-> > v2:
-> >   * Add Fixes tag
-> >   * Add kdoc for @after_rcu_delay of kasan_slab_pre_free()
-> >   * Rename s/kasan_record_aux_stack_rcu/kasan_mark_rcu_free_pending/g
-> >   * Add comment for __kasan_record_aux_stack()
-> > ---
-> >  include/linux/kasan.h | 15 +++++++++++----
-> >  mm/kasan/common.c     | 13 ++++++++-----
-> >  mm/kasan/generic.c    | 17 ++++++++++++++++-
-> >  mm/kasan/kasan.h      | 34 +++++++++++++++++++++++++++++++++-
-> >  mm/slub.c             | 13 ++++++++++---
-> >  5 files changed, 78 insertions(+), 14 deletions(-)
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
-> 
 
