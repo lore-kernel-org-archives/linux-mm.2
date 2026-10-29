@@ -1,131 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A53606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B176B606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=D8tmWuWQ
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ONM0cOgY
 Received: by kanga.kvack.org (Postfix)
-	id 6A9216B00EF; Thu, 29 Oct 2026 02:36:22 -0400 (EDT)
+	id D97236B05B2; Thu, 29 Oct 2026 02:45:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659946B05B3; Thu, 29 Oct 2026 02:36:22 -0400 (EDT)
+	id D47AF6B05B3; Thu, 29 Oct 2026 02:45:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 547116B05B5; Thu, 29 Oct 2026 02:36:22 -0400 (EDT)
+	id C12196B05B4; Thu, 29 Oct 2026 02:45:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BC966B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:36:22 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3F4AC02DB
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:36:20 +0000 (UTC)
-X-FDA: 85374704520.29.93B55F7
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6A01640002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:36:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=D8tmWuWQ;
-	spf=pass (imf01.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9BE766B05B2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:45:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90EF6C02E3
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:45:23 +0000 (UTC)
+X-FDA: 85374727326.19.F3DA2FE
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B8920100008
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:45:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ONM0cOgY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of trilith.zheng@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=trilith.zheng@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793255778;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1793256321;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=BTXYfxfVOBhpvhPnAVq2lfmYKNgysPKxlm4ckRVwZ/U=;
-	b=7nTgmDg7s9qXzakoGaDzEO8oOyVANTFeXzdyrdBaiYBxSln5/cPbccT7neMM3Zey6kXRw/
-	CFK2oFGHlqt3iOMltaMOP4Kj7roeU4iSEGjx+qzrvX6l2qnDN/Mluqle5Bpfn3JNt+fuCd
-	g7Gs+vmOwFZUkR/2v7YbYUvkq2eH3Vg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793255778;
-	b=Nx6cnkPchc853rBU2igeNVS/AI0uHIPPJIA9PFSulOR3My8Pca6oXqV3R2GlkzW+5G8juE
-	ay0cr2LodzCHr3CDPTMpwU4cLK4aSi2sCEtXP7+SyUSqubWQJ9S8Y9y94nEUoRNBNalkrZ
-	Iudv2KqCtye5m3o2iJ9YEeUmx9gZZPA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PpZwiOLy+qBSQ8PQ3tlsCfW6m/0pXMByVlZ/42AmEx0=;
+	b=VvNAT851bf9Zg4cxZVkhpKTvm04b8ssCWGCFHCF5Uj/CWbSaBgu6qdZG7NplEqrp+HPhxo
+	303qeRdGwfYRBljh5OMIRLNLsmmPY2wwcvqc6bU/shXVRuhRozem+et9rWTIppNFDm/Rv2
+	93hqAH1oViXyrOdHGtEoHhs0svepbNM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=D8tmWuWQ;
-	spf=pass (imf01.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3adac5c10e3so1027560a91.0
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:36:18 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ONM0cOgY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of trilith.zheng@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=trilith.zheng@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793256321;
+	b=hrFJTQLe5ctSgbYiUMXebTfIguVtJV1dnm/pFX8y6abRnG5aj0xGcEXPJCiTOPN18jlb8M
+	aerzHsSOr7PuG3GPh7QjdLZkDMmoF8gfMyjMC2cdmNHpcUfjKvgKatPTruAhHRG9IQdG4M
+	kjxYRp6FPOQwu2iwoPre6cpuKbQZuSg=
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cdac6d19ddaso849410a12.2
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:45:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1793255777; x=1793860577; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BTXYfxfVOBhpvhPnAVq2lfmYKNgysPKxlm4ckRVwZ/U=;
-        b=D8tmWuWQYCvAToYIsMPTiC7FEs5pJMpCgcqiChy8p29/5yiZABsDEFi3SiokfBbwz1
-         WVPhULAL5ExEoBV2Mfu9giKFQbJBe0ReFyEMzuzqGjngcR9gsGrSQH6h3Vc1KyBn3Brb
-         qX0O0DcVgAA2c5/T93roh0BqhFQkYhUnd7ceQNNF7eRBSifl2MYv2EW0998BAhgLc4A2
-         +YDVsHBwzsPp6vDKPCtahlygV5TC8OB8stXGxvhuQQmwsjT6//+98fQuCms9k0/rryl5
-         Qdw9a6qARW0SqOmDXlL3dBvddj7XPNrfIHeCaySVtWzEKZnpGVR510CwCku5VAl2WEZv
-         xCPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793255777; x=1793860577;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793256320; x=1793861120; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BTXYfxfVOBhpvhPnAVq2lfmYKNgysPKxlm4ckRVwZ/U=;
-        b=W/v/4J71yY94Tuyoo6s9xU6RnPrDI7pLOXrqXlfO7aXXjQeww7TiVChonJiodIMFF5
-         9i5wWwXZIU16Vl8ehaxS+4/uk1I+r3GqR+XUPhw1PLHA2vSl3tQeC73ayWRgBXQIpJsJ
-         0IKLJBCh2Bpgz8qBBBqhRYvAh9iZSf8MzfxbyamJZEUTyiuXR5IyYI0J8xdvE7TXoK2b
-         GkTNEB44QoLOMhUo/K2j9ShmKmnmRvStmFoqh0mMmLeyCTPTujLvPaMvnV1TAn/dIzdu
-         Sc7wJgW8zxckag/ORCNZ7BXU55nebHcKEptHu9Rst3Jug0KdPw8QwWxtcGhRpqdmsYXI
-         dSvQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwJWwFMvWqp7TIxx2S8RD3XVv8y4xkJ6NMWyP9U5tRwbmSYlSTeD8QxclzGpjuk2DZlMPsnaF6HbA==@kvack.org
-X-Gm-Message-State: AFq9FYJPAM35Z8bdVpc5C/iQEd+mifEfAm+a6BJLTmvX2wGdZGBMX7fq
-	9abkE5QkodgiSNqAmQmMh8pxpiGYHKr5GYA+SAUuFb+H/cCZVvS4ThEs52Vfz+3oHwo=
-X-Gm-Gg: AYBFou3P8n6CQeYqknS77eJv1IrnvSmcSe5NYC1IyHgg2QyX+SST5FIJ1klgo6hNNrX
-	1kQbiHovpcTphPZTixEzPN0g+Z+E0+0utGFdkK9igjiSBcdw8I7WKJXloQ5DkLxw2pH+l3azjfw
-	KAkuAGxc9yOhBowiV7omPMvu18TM+lWcfi1k7xMzT9sFQhEOUtFiSjAAOY77fblPXzndSzzRi8f
-	aVSHHfmBFyTLvZzOjYVMlEQ3+uI9CNcKxZzxFyHxcmBh1Pi8k0folUvXAlyV7HbBG7VLH5mYJId
-	L/JE5gcs6ULcg+7PX3oixGmZoRQEYB3ehjNQ2dspuiKFveSPGF7K/X+r/3bHvfs97Ld0TrXN1Ui
-	U59pla9fRswLjuG15xL6cJ2yFSP3acKBO2VCnTcS807eY3JvxCXkwZnxqQpjwPGC00JSMsmeF8K
-	2y26G+DPyV3rfwLWmxW9isxLJtQkkjvhaQQjV7/cKfjHg+Kq9DkKJ0f/UJKjDHwxP6mKm50FF08
-	TjEtxiKpPkJaStE4Nz5+k1v5udl02UpTd72MDND0Ker8YNVdzdSef7vEklBfEL0m/aDasr8FmQS
-	dVgbhH75XUGuqRVgbLyjivchMY+5asv7xNVCMsL43LhIFXaARA==
-X-Received: by 2002:a17:90b:4d10:b0:3ab:e588:c275 with SMTP id 98e67ed59e1d1-3ae57f9ae1emr3026634a91.20.1793255777049;
-        Wed, 28 Oct 2026 23:36:17 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.98])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e2a703esm2734757a91.0.2026.10.28.23.36.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 23:36:16 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Pavithra <pavrampu@linux.ibm.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-	Muchun Song <muchun.song@linux.dev>,
+        bh=PpZwiOLy+qBSQ8PQ3tlsCfW6m/0pXMByVlZ/42AmEx0=;
+        b=ONM0cOgYptKoFHw2aLSq0MdPI50ryP1F2gt9NkEUoZ+CLehehDcYu/O2F+QxSKsK17
+         OrUqcUQEW0vmCg8hV0T1HY6MLoRBamFQkSOk3+YvLNyx7BCsayRozEoBHD5Lb1uVUWaV
+         gmAZ4IUr+IjC2KVQ+moTLlQFDRDBYbMT8nzdieoDlCnb/diLdH/OC7t1ynBZiwsoYl8X
+         QmvNxmTNCtPT9v4g5b5ynKf3AOhR9FoC5faqdMXA/KS9ZuYRiEyt/xhL6hI3a/wA8/cN
+         EUbwdsF9pZdQ1dvOezzHVOjrqG6EGu93fMtba03V4j0pSO3OctWAWkXq+jrmAYncnrN/
+         rL6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793256320; x=1793861120;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PpZwiOLy+qBSQ8PQ3tlsCfW6m/0pXMByVlZ/42AmEx0=;
+        b=FyPRLYFWWhkOKSIYswYG5H5FPCmU7mW3FwFnYx/DuCRowG6Jq2Cgsp2MoiauC0e8Mk
+         /+ctz4aMlz2ALKi1oJEvGUZAjt6it8fgb6bcckR9VrqD5f5ig8u2rRvfu8zNkRMXeOSe
+         fSI/wnHuIVoL5bPBmkG3FM+KdRm7kL5NepB1wtOtEGC1Kat1XTomyyCrjXk/QSjHHITJ
+         TgC3EYo/vd560sZJ/ciIOPhAnJHUqP2+0WCq/dAzQIHuIqxhhisiMuf5uqBYThRDOzx4
+         iYQd6jtSS50AqV12ZH59e1sJxLaxiiq2bBz0vK2I4emFQ67KNxk//bqa1IMj5MDVPdO1
+         xavQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwE3C+bHX5C9wSuQ1zJmBtFPu2UTDq3wbL5cFulymkyPq/RM2f/5hwWR7G1Vb0s1xTmq3Qi37IdVg==@kvack.org
+X-Gm-Message-State: AFq9FYIuGxioTrupObB6qg6ARKq4lJxnoalgIyZ1F9kZSbYSPuVjrRBQ
+	6ROABq5kC1Lx1hPkOwqT7FtWFXPBTziuRjYuFp0LDbymKr0Pd8eBxWAr
+X-Gm-Gg: AYBFou0TQGbpce4BtY2mZdFGswbnd70ygG9UJ4jHorqf3lm3xWFO+Od2QCjekZWQ1Wq
+	s0sxZKX68UhLkfhTHrliO4GOB1TeSwgFgvXvSRXb7LPGG++UaG9/PhecK3wnJ6q4xw+lIQuIgD0
+	ELVAsaQa7BQooku7xTbr2M6uLuv0GlsTNM4HUiF40hPkEkiaf9XtFDJYJNcTBWYfNEV/O3gepCa
+	FXzocBkE1ldsUJztzVFj/CKXH3FGJoz4dGAON8tR7yj0kqNLf91Ir0rwwzQVnbUIOLt/i5DqfBb
+	KwALGpJJE6BxZgKYI3NmUSks9ynfxrbXi4kWCIv956C4j+l/eZujrDSH1Dc84FS+EKsbUjVqI5Q
+	6vjRrJ3JF08PQgrOyh0YvycvYDMKZ65C2gkZe5DkrkzR217uV3heG+HL8Rv3S6hQaD9t0OU7SOa
+	S+qfDEu7XjsTxpza3y7tQ98vV7zYQs61+rZIIwXc8FcZavYoVJsoM99RIkyRJgQOFdcaj1vr05m
+	D2Ic/axzcCP9V1eqR7LpyzgEOPkfgHwstcunsEzmzz+pdVAI8OsDszin2voYRADYFbUSR4jRpXA
+	1WcyCoeyJQ/9yvEbAHXNCmfTNcF8tnM4Ho6HVlz74phC+zQIG7rdTQ==
+X-Received: by 2002:a17:90b:2543:b0:3a0:e1f7:9b04 with SMTP id 98e67ed59e1d1-3ae58172e4emr3338233a91.12.1793256320522;
+        Wed, 28 Oct 2026 23:45:20 -0700 (PDT)
+Received: from localhost.localdomain ([101.44.96.6])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e8401casm2729502a91.11.2026.10.28.23.45.15
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 28 Oct 2026 23:45:20 -0700 (PDT)
+From: Yilei Zheng <trilith.zheng@gmail.com>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dan Williams <djbw@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
 	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
+	nvdimm@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH] powerpc/mm: fix uninitialized ZONE_DEVICE struct pages with PMDs
-Date: Thu, 29 Oct 2026 14:36:01 +0800
-Message-ID: <20261029063601.1961415-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
+	linux-fsdevel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Ira Weiny <iweiny@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Matthew Wilcox <willy@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH 3/4] mm: add shared read-only vmemmap support for FS-DAX
+Date: Thu, 29 Oct 2026 14:45:10 +0800
+Message-Id: <20261029064510.17667-1-trilith.zheng@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <2E5C10CF-F3E0-4694-965C-B0E432A1A962@linux.dev>
+References: <20260903122128.12264-1-songmuchun@bytedance.com> <20260903122128.12264-4-songmuchun@bytedance.com> <20261027065723.66564-1-trilith.zheng@gmail.com> <4c9741cf-ac62-41d4-9c7a-7d5ceea4a8e1@linux.dev> <20261029030511.12004-1-trilith.zheng@gmail.com> <2E5C10CF-F3E0-4694-965C-B0E432A1A962@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6A01640002
-X-Stat-Signature: zrehsp558gx1bg97j3eec6yqnj448r9g
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B8920100008
+X-Stat-Signature: oc936aysq839kwzkhbij9jkxiukbat3i
+X-Spam-Status: No, score=-3.5 required=3.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+	DKIM_INVALID,DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793255778-483159
-X-HE-Meta: U2FsdGVkX181CoidRcx1ryrO55G/Lx3Nd8icX2S4ugx4LVevxiOBmJOBIe3jqd/v00k1PaafmsKPmWd9H3S0Di0gfDesgE9FBNN4Ylo0UFq8ccWP5a4QhRH/JVZPGi/ik+tBi7oLjVJgJhuKS/dLUz5NkjhuD4u1wAS1IPxiU4LvCiNGZ9vclfx/lauoKNaZNsgCv8RE8/B4fn0ZSYUd+qDDMnQTfSncSpieVJyzKvzDZIMn9a0EbZFvGedBaQ54hD9Igh4FCMHAa8CfDYjwkvF2Y99ngAO19adDfxwZhmRWMzzHaua2q8R627GUa4Z/g55PZCVWH8OtceYZ86Q2HlxvuQFzSe3Y6N6pOGBDBBFtuo0r41NrMZYWbwe4N/Byn1jg8VLZ6LPotLdpvwyTK+a5xPFm+llfSKSctX0V19q67E3fF1RKqlKmT81/hAKv0GIj5AdmS2QcPSlwEIAuTBbfNpeI8AA7rO3uoucIOpmW6wty+pl6uR8VOsBXSdfS0pjcY7ev1WXE+w6Ksn48+M0T3BTjT/cT0tPTl5enNil6s2frtifnrdopORxkqqlK1KOEPPSZE8/gHxdAbU5L1y0PHlvMiUvbiqdb6VTq9naIqgYVZJ7JLOX+ZDaA8j86hTIV3qJA0FY1xWuiqODt8qEJLSeRdr0HPSwRexcGnJk0kdWuqO37fIYfno/zUMqRfbI+Vlxi9kP3WNpgd7Ujx3MX7wRtJw2Slua9IWaAE3JC1tvk2DID4jxQ2HW4y3sJYQLiIa8cc2hSdYLMCpKCsLzF9OLgNDExgmy5pMSqRwL70JRXFcfnI0PKMd9QQC5d/maKHiMXH0cirww3mRsIhb/CH24TQXmV/GYBntNYM65iU23GEab1/xpHFB7KjZ5GU2CJAaovbcZ8DNbMXlaFPSXv1vVf8mLR8ou93PREymhh6q8Jq9YKinWIXZP3tJysDJbjjw2lKYosOiee6KB
- TkmGz9oQ
- Fk+cunQWCA43HKKIbeAXk+Cd2Yc28fvoFqi6/xic5ZRduKHBxMVkcO0PP2wdvMWkcQbsV8m1sBdsaYrEksrMyuSt+q2zCNnl9ySqMH93yY9gysiiIOSCx05b5dkYMloMMD6Nh1/MPVQZqfDKXuiWkDTCwtEBOywHibELhoe3BtXGqlU/28/UkfmFupFGO9zbxqO0ga5dJbmQDE7u0WqXTLHRR1p8LlcAQtlZK6ox6hZ+wWTPWK3t9Oc7d0DsT+MRMQwpYwWXGEozl+VBBzDTBg28S1RKbadWViRg1+fzU1viUwuGpVmF1+uEp+XjzapWWquBTzvYvu/+6YyXaqJM9AkLvGD/cZK5C8zeFQXBfHEHTqskazBqWIxF+j+UGIOFltO6wd0BVeGB/UXu4Ki/API4LBYvAVpkfFbMmzEtapwkLtrh/1/lURa3C+XRTxaAjXAXhkrIn5g0rAy6HF56LF9CdoYe48HcchydsFr6+O4hzbRkzX3FJ4BuHhQ==
+X-HE-Tag: 1793256321-894065
+X-HE-Meta: U2FsdGVkX19AYxc551bsolZBy9opxfBKL/wUi66l8vbXkisU1U6rDNRvKdS+MWMNLEzFvA8BNCdiT9LE15JmuHWShnCJ8Oev93BDIJWtFUld0ALVBre3NsDAO3l2RHTE6Culk4yEdYS2UeIr4usaDD1FnBZcGovJc7EQWuc178L69JB7Z67pAOAml/pG21RSyArsiD3ruHFgoxRuNUKx4NFUZ8u0ZvrcfNWpPFLRuFl+7xbFxi/eCbTgKoI62HpyoyBO676bbW2cOPfLmDOXMgNVpxAnj2M/sgovYhgcIRH1sXJDZo14hGL1LX/HLyAqF/VXgdRMcEN+54tfE2HBI8FdWme62CNoLhbOLN+kraW99jNmu+niUmGYgxAvgqKAH4gL2h9GPqxdnmOK/IHX7FECmOFSxuW4m1Qab837XW0CtGlCeUcjBQPdS9XLLH0gUfsOybEfw98kxP9teOqq0eJ++qTd9PAVMMw0BUzZxSQ1YyH/CZrBmkMQ7M8T/Ixn6o2+gFSU8iUwhZXa+jGvNSlwC53eVdGsJJNK2uzM+Ob5p9svsx11MKdgEgBfUYcYmiYQokFtQa49F6LD+3USMR2eGbZ2g2Z8IsuXall8jZCdNeKzPOQSSzzXSM+bp2T2UAnVnXGY0CPPXk6r6103vZXpcZRLBEaKlr3Bl1DVwfyrNAkCakmarc/VxqgBxj3HIYnYYgY7obhKPe6wIgoCRG+Vy4x2sGc/5y1d4/iC1fFzZmHFGFSSGmJLkKMwi6AF0VCAkGl/M+mWHGnD85W+g27NZpJTxqyCE0JAo+b7gN8rJCmXxT8f9erxMxkiTNYtY+heOOPbpa+WEX4nE9p0oOe8i7pud3B5YNnehMTBCdjbnmZOgafCBzeEbrKH3Y+P0hjkCFAxdtJ2hZajU8FsP2ogNTen33WrKAZusOA5aJlgYhUjl7jXjzTaz/jlsZ5FxTgCK9V2wdlHpeQkcjJ
+ 4bIDGraX
+ 8hVAQ10Ba3h1YX3UUGbh00YTDD1Xsq2hf8PUPCgTfp83464+u1boTZrRzHKxd/9NCuVruHeuxIeDB7IiBtL3UEy2hyXr3TPSD90i+UqRHVimimk/Zfi8I7Ue7knU3VlKiDWqYXGWEw/3t0Ovv3uOWTWH872JhFgwaBRFZ+rPsiMyX/VkR0M5yzuJWOzMyFVmVPJ9XS0tyuKg/kW3Snrqpide1C8jx6yC+eMIFXxFOPo5SBzLMzbV5bdCJtfIfMd2E+9Mt3y2a/s9/6Mq2Vy5PUwlp4aTk0fAXVWJ8wblTjtxW3sTSGx/2mKck9QQwbrJ4E5hU3Bn+iF6q4C8E5CWH2IEzRAgX1Yf4bGkUJ6LGsZR6yTy6cpnX6DkN8BDLRNbnVOHyyhqFWWPhCMgxHdffbXP6vClEfDdhYVMTlZmHuDKIGiM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,82 +143,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-PowerPC radix vmemmap population can reuse an existing PMD mapping while
-populating a device DAX range whose section is marked as HVO-enabled. The
-reused mapping is an ordinary vmemmap mapping: the redundant tail struct
-pages are not remapped to the shared tail page.
+> What's the size of the roots image? And I just want to know how much
+> memory this series could save in your workload.
 
-Leaving the section marked as HVO-enabled makes later ZONE_DEVICE
-initialization treat the range as optimized and initialize only the struct
-pages that would be backed by a real HVO mapping. The remaining tail struct
-pages can then be left uninitialized even though they are still used as
-metadata for the device DAX compound page.
+In our setup, the rootfs is an EROFS image exported from the OCI
+container image, so the pmem device size follows the image size.
 
-This first triggers a zone mismatch warning in __init_single_page(), then
-faults while initializing the pageblock flags:
+Most of our workloads are simple today, with images around 1 to 2 GiB,
+which means 16 to 32 MiB of vmemmap overhead per guest. And we expect
+the average image size to reach about 5 GiB as we add heavier desktop
+and agentic RL environments. That would save roughly 80 MiB per guest.
 
-  WARNING: mm/mm_init.c:600 at __init_single_page+0xd0/0xf4
-  Call Trace:
-    memmap_init_zone_device+0x164/0x430
-    memremap_pages+0x43c/0x93c
-    devm_memremap_pages+0x3c/0xa4
-    dev_dax_probe+0x264/0x3d0
-    dax_bus_probe+0x140/0x1c8
-
-  BUG: Kernel NULL pointer dereference on read at 0x00001400
-    __set_pfnblock_flags_mask.constprop.0+0x34/0x160
-    memmap_init_zone_device+0x358/0x430
-
-On kernels without these initialization-time diagnostics, the
-uninitialized metadata remains latent. When userspace later maps and
-accesses the affected device DAX range, the kernel operates on those struct
-pages and panics at that point instead of during device initialization.
-
-The Fixes target predates the section-based vmemmap optimization
-infrastructure, so older kernels do not have section state that can be
-marked non-HVO. Backports to such kernels need to handle the PMD-reuse case
-in powerpc radix code directly, for example by initializing the tail struct
-pages that core ZONE_DEVICE initialization would otherwise skip.
-
-Mark the section as non-HVO when reusing an existing PMD mapping, so the
-section's HVO state matches the actual vmemmap layout and all required
-struct pages are initialized.
-
-Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap optimization for radix")
-Cc: stable@vger.kernel.org
-Reported-by: Pavithra <pavrampu@linux.ibm.com>
-Closes: https://lore.kernel.org/r/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 44868b62b14e..4f75f10ed68f 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1261,7 +1261,16 @@ int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
- 			return -ENOMEM;
- 
- 		if (pmd_leaf(READ_ONCE(*pmd))) {
--			/* existing huge mapping. Skip the range */
-+			unsigned long addr_pfn = page_to_pfn((struct page *)addr);
-+			struct mem_section *ms = __pfn_to_section(addr_pfn);
-+
-+			/*
-+			 * Existing PMD mappings can cover the edges of a valid
-+			 * HVO populate range. They are ordinary vmemmap mappings,
-+			 * so the current section must not be treated as HVO-backed
-+			 * when its struct pages are initialized later.
-+			 */
-+			section_set_compound_order(ms, 0);
- 			next = pmd_addr_end(addr, end);
- 			continue;
- 		}
-
-base-commit: d865f2677c44cb2171b833d6775cf692756fa8be
--- 
-2.54.0
-
+At our target density of about 200 sandboxes per node, this adds up
+to around 16 GiB of guest RAM saved per node. Memory is what caps
+density here, so this saving helps a lot.
 
