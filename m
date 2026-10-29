@@ -1,131 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E63E606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 03:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81DB606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 03:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JwHCiaU6
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZlkUj1KF
 Received: by kanga.kvack.org (Postfix)
-	id 890D56B05B1; Wed, 28 Oct 2026 23:39:53 -0400 (EDT)
+	id B50986B05B2; Wed, 28 Oct 2026 23:40:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81A436B05B2; Wed, 28 Oct 2026 23:39:53 -0400 (EDT)
+	id B01606B05B3; Wed, 28 Oct 2026 23:40:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E26B6B05B3; Wed, 28 Oct 2026 23:39:53 -0400 (EDT)
+	id A17DC6B05B4; Wed, 28 Oct 2026 23:40:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ADAB6B05B1
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:39:53 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB1A11A0301
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:39:52 +0000 (UTC)
-X-FDA: 85374259824.01.1198AE7
-Received: from mta0.migadu.com (out-55.mta0.migadu.com [91.218.175.55])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B1FCD100006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:39:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JwHCiaU6;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.55 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 74C246B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:40:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F199CA02B3
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:40:22 +0000 (UTC)
+X-FDA: 85374261084.22.A355BE1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 35EDA160003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:40:20 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZlkUj1KF;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793245191;
+	s=arc-20220608; t=1793245221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nHYJzejo29azPzDNOxZ+tmpvvDu3XTTv89JLTyFVqd4=;
-	b=VuzJpdtI6PAQVf9Jl14b3jXDG+nSbzz04eXeBmrOxxoiq31/4ZKTGic6M5BgW2S+5EII5K
-	iZaON+RrR9FdDZKDKZKLbmYr4hmaM9OVVz82PQ6XFiA2BpBPULlD9djLILGR+GK2NU7pUv
-	+8MBDfxhCMUEPSl2UgDvnHJoovB+hgY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793245191;
-	b=0P2nyXYJA1KMS831+v/fh/SccOTLDHocZrWcfFD/kaYWqDGeqEGFqCPGpfcWWDGmprdX4v
-	1Iix9eydyx2g1H18H97DDvlXn/dB9Byay42Lz8nF90yDF4m4mPQGtbK9OmkuLzW+O7IZLm
-	EK1arVt9paLpFWvBcAih+Mq63ad0NPQ=
+	bh=T2wJHvvfHh5stRmUDRprT6CqvsTMqTsUp6BRdeqqGCI=;
+	b=VnMud7D/huvuksTaPAlMPAdneIoj7HfryB3LPJp5OkWalakv2xXsfCGFQ0pLmGtZ0lQC8m
+	BDB8cnfhvNiKFudgpheJ7FQURfb2yAWWteG8qzb5w+ZAkPq+r+jeLk9E7C9aOP0l2ztQeK
+	8QTzZcGwCTh1I1ygtykTwxrd/opcLMA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JwHCiaU6;
-	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.55 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=R50k7qXAG33bbhagggBhqvchCPQ52saBCXt3awMCb6U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793245189; v=1; x=1793849989;
- b=JwHCiaU6wNlgkZwersY6AMgWtViVtjskMcecd/6+Od2qPv/mWGKr7rlSGPwoiVQjWtSEquTl
- jz8ubRhsB/Dyc/RqHacrPomgc4WK1uts7m7DL8ZDejrhXjpDsM5Zh945kHdyhP94x2zIdgWwum6
- 47kzoRxtALGbiybFTOALoFVw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 5ac0218b5b613cc1;
-	Thu, 29 Oct 2026 03:39:48 +0000
-X-Mizu-Trace-ID: 5ac0218b5b613cc1
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZlkUj1KF;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793245221;
+	b=eZyS2BGUxRaQacREV1O+ANYC+AX+yiJ25f4PxFrmNYhDXuJTYIHeNJdwKNNA7qCYD/ZSlu
+	5Sg20NY0roMbPG2vvd8yQuIkx/TZ0eUsOYIIihNXrCLuDSPxjY2ke+ps+5XekkIPxqMXlM
+	QheROmojtId9N2jnaqbnYXIOG68jwKE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793245220; x=1824781220;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6He+g3AusxeH/gTF4BqtGi6Idfhj/4/mur9we+ezF4w=;
+  b=ZlkUj1KFGQ0CHAoMAKsPK0CsiEEJJu+7ttpobi5UK2lPdaAT+O1PMlTM
+   K2BqOfjvEShSFtntSauhZ7eBboCwEaA6/ympxV5bLlNG+NDfkztyiAPeM
+   +kcJQPKow9IIIDe2zbCTW5xcIpAPPC4T5jUkhJ3S5W6oVtbC+RBIN0jiX
+   B432Qqn8QM2qxd4DghKIHiA4X/AFyY7SpZvKhUuTE8u9sTje84V6znlLw
+   ZN6YYFdWJImZN5Qs50Jk2OoImkOZpv07Lk3f3ZRdDSimLiQWBuYSL53Em
+   JwnCJFG9sLGwamlIKjpuru3ZEWb3opFqJFlyVdvz3/1+/vSLARbMflo7r
+   Q==;
+X-CSE-ConnectionGUID: CbPObJIqRUaaq4KwPaTzhw==
+X-CSE-MsgGUID: GQ6w6o95QCC0ipoIkchGuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2012087"
+X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
+   d="scan'208";a="2012087"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 20:40:19 -0700
+X-CSE-ConnectionGUID: ksy7pyXKTUmlIOtfUgQwJw==
+X-CSE-MsgGUID: Xn2yZ/ccSASehaLbTgTq5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
+   d="scan'208";a="5143393"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 28 Oct 2026 20:40:15 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xMGzs-00000000ZYe-0jbr;
+	Thu, 29 Oct 2026 03:40:12 +0000
+Date: Thu, 29 Oct 2026 11:39:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+	david@kernel.org, ljs@kernel.org, catalin.marinas@arm.com,
+	will@kernel.org, mark.rutland@arm.com, ryan.roberts@arm.com,
+	peterx@redhat.com, dave.jiang@intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev, wangkefeng.wang@huawei.com,
+	sunnanyong@huawei.com, tujinjiang@huawei.com
+Subject: Re: [PATCH RESEND 3/3] arm64: Add PUD THP support for DAX and pfnmap
+Message-ID: <202610291125.dNGHD2Vr-lkp@intel.com>
+References: <20261028121404.853944-4-tujinjiang@huawei.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH 02/15] mm/hugetlb: compare against persistent count when
- freeing lowmem folios
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261028-fixes_hugetlb-v1-2-a0a033db180f@kernel.org>
-Date: Thu, 29 Oct 2026 11:39:27 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mel Gorman <mgorman@suse.de>,
- Andy Whitcroft <apw@canonical.com>,
- Miaohe Lin <linmiaohe@huawei.com>,
- Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>,
- Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Dave Airlie <airlied@redhat.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Peter Xu <peterx@redhat.com>,
- Breno Leitao <leitao@debian.org>,
- Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Gerd Hoffmann <kraxel@redhat.com>,
- linux-doc@vger.kernel.org,
- linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org,
- stable@kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <68EFA1E5-4898-4278-8718-06B1A010DFFD@linux.dev>
-References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
- <20261028-fixes_hugetlb-v1-2-a0a033db180f@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B1FCD100006
-X-Stat-Signature: 98z6zb6iybqaowz5n9xysa5sh4ad5dsz
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028121404.853944-4-tujinjiang@huawei.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 35EDA160003
+X-Stat-Signature: wbcpscwoo7188dzzxdfsajzaee5wze3d
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793245190-649558
-X-HE-Meta: U2FsdGVkX1+s2Yi1Wl0CeFeqF5Ci0675J4/5HH1PGERpvo6d6MZ6WN7Msrza7UNbsuJ21SD3Y1EYIZVKiuAShqM+rxACpdSTsZxPqfo9bOYSOQBLAtAwBc7TGx7wc9hwth0gjzVTw4l+wMA37U++9tfwPz+CGOMiYg03VNplZxDEXoAlzbZ70TWuUQp34EZbwyt4hOODaOXiRLL6v5pQPt8si/KKt8uaULRSTrhh4ykQO5+A0BZr87i6Zj8pncbtkjgR7HKWDBwBhBDJPKaV/ybauspPaYO+ceTZq7vs4GJFLE1MB6IbtBEEAqchJvlvx0pbcfaheBZdRt95TaZ4A60D93tDvod+ZCubpK/CGUIv4M7yR+LB/Sl+DYn3DQnS0MXMfV6XBLFDPqlhHeD7tC1KTxkn/x5TD4O10hNBsTvU42rSdXXjxV8Mp3Io3zbyyQkWBIF+uYcB4TQ0yLE55vRn4G2PC/rV3QhgpJDPFEYYiB9ZXKw/3wHrd+Tj0v9E679umES/G3xhJP9FztG2e0Nx9A4VqYjpeeVzQ+2fugs4NG12+vi395vnCLjuRhqmtNsMYg2iihXY1fguP5cVCz5aM/G0cJfGVXAbn+Ihy6NFZQoMF16uMNWo0Sbu+NkVrJp3cw5Ys1CCnN5qiPnUMyr+tlwYERXrPvIOcOLuV99/yOjl7H0sLkQisk9pFQLw5i7P7V/3WlRDfr+NNch0/4a5IgBk9tDEpQshLzTHgH0PtgWwf5GEDS+jI1pQSuydS7NyAnD9hs3dsuSWKMeKQJG5AxJbIw0CQ3wYHluLH1vqA9+O0HohVe74ceg7aRlEWIJMg+VMtF3ly8Alhq7ey/w5iSBAv9BnBDOaY/Cl3YtqVgwvLhJYZbeES7WP2SMoFMwgC0uYLK4K7iufxxeEB3XnLs3wYAEfHQnchZgyQlKDFlAuvg1ZzOa4mz7RUBJ4hOG80CF63WqZstigxIh
- gl38J4If
- +BfTdnezDxErHVMHcgVtY81OLiCRtTdTgK36KJsypG2f5bXWchQRae8vTkKsqXauZCkmpFFIZw6CzRnEOX19WR1DXsJo5yIqq+y7bcp2Yq0lAo2lF+xNqsV+J/KRlO3IXkngjPmXa9iLG3V+7pUFgIp8b6rr2VMslmNWV7J4CIvy3bDgJqIeGwa6WBDuD0GDOjTq4spwJbtqcube521R6vGcKrgHsWoXfj1ypYFeeiK5zwyVCYklDCfqvcoyw4mNbF5XAfBfEumgQK9NKQGGXzT9M0qRgEaJO7wdQgd9XlOnS0TMMU6IxNbPz+g07QCVOLMlR4/98IXCoGEuLyxGQl8Qq4zsPi/RWdbDfb6CAGHuYI90=
+X-HE-Tag: 1793245220-438201
+X-HE-Meta: U2FsdGVkX19pmu4jNB7T94dnPWaOL1NbTc+rQAwX1ae/fLxSt+O1B1e9AsuatdBG6cEDwzR2u94mwOv9EaJGneU80DRrW1TZCZuGxYvb5Q/aL980jYhptqOgDdHU7LOQQOqaPhW9ByqY819bIzvI7OpnQoD5MUk2IbCxa+Pn/tDvOnZMH7aEwsTDVROCtiE8OdvTb2L9fZPOO7oCcCOSoqMT2XRd0CKR6tRViiAW1XUIZI3MuwM5yKMsj4ykQXVk5zDyjxiCDXa8QMcj3sJea3eyJ8KMwmVz5BuwYjeRiGwI6MqAVEYZbcoNNhpcLME/Tc9ZqOWRpdiaXGl1ahY8Q12oQNu5Ln6c03eQeWoRjQrkhajqHZ9Rnb1EUUiMI10Ef8HT8P1m31+D14vU3sKhpIyUhpfEkL1sU2/3NAAci8oGmGDgdt7uEaUp0kv0/gr+rQcxAEt79Lq6YsE0Hh29IM/p20myWg7OuJb7YxDawOIcZJulk9esJduIwzJsfwGpTOF60ww0r/fpC+O6Bidj/6QueEhCPF/ULFjTXIebI0yuoDRcMSJsS7KrESIsVAs5gjBmRS743rUJDQ8NIhFvpNTB69ptuxDrKIMvV76QdcHBXMI737BKK3FB4GgF03gNVGRm+tkLnVs4GDDHJEFt6FeFeNy7/DVRrTCeUB+nIghhsfRN4juoVY6RVNlfbNJh7h9TnKE9+3TkDafEfnSbBaKZYdIJCzegxhNJzwHSQRiXrLUcfOBOeXMIXX4JJoKXdRiroJUExGn02ZnODSaxQJ07qSuljMvtYuX3ofxUFuYAxhwKwl3nRzLmA6oE3H1dABbvW8WiDO0Iko5Slr0nggtDZ059nLhhHTcX1XoU6N5/SS3PTojKp9Zt9F6bP3vNnJ6VF3zMyUobGP+jEAFNi1K4Z8RHpHEJJW9vl/s+WGKhL2smAPCujsggEY3Tww4IdHsMbGx/v1WiPKvZt4F
+ n0oF99Mi
+ eLmq1SrPfUAQI4Hm5T+kvHt3UVsVfVB1GTKZy5HwIxmEs6W7yjKuggKI1uKBBqcJaftEU9iv2SnRrhDTXFDvy7toCt6U0EVw34OWD26t1Wcj26rC+mJWLJE2RwV5A8PXvaBsE5+K5unNgafw50dhJYZ4n5o7uB3amuWbVKJRd+jkZitpekf/Yes2PnvTbMJoFWnX2y8rq/78CHy5s8VJvEzyHZBgpSvpFN4Khqb/7YYFhLP+mT6s96mjRec36i/xgVTyld58g5lIh52ey4f6DlfIRAFGH+iFq1F0omJrVSncNllVrWUTVhNznPVg/xzq5d62lQUEH0Tmu0MNehMGmXhJM5Cs4seWoRiFE07gXc+Tob0mH5BSmWQYp58zX5wfY/Yts
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,84 +113,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Jinjiang,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on arm64/for-next/core powerpc/next powerpc/fixes tip/x86/core tip/x86/mm linus/master v7.3 next-20261027]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jinjiang-Tu/mm-define-generic-pudp_invalidate-implementation/20261028-201402
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20261028121404.853944-4-tujinjiang%40huawei.com
+patch subject: [PATCH RESEND 3/3] arm64: Add PUD THP support for DAX and pfnmap
+config: arm64-allnoconfig (https://download.01.org/0day-ci/archive/20261029/202610291125.dNGHD2Vr-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 16.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261029/202610291125.dNGHD2Vr-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610291125.dNGHD2Vr-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from arch/arm64/include/asm/io.h:13,
+                    from include/linux/io.h:12,
+                    from include/linux/irq.h:20,
+                    from include/asm-generic/hardirq.h:17,
+                    from arch/arm64/include/asm/hardirq.h:17,
+                    from include/linux/hardirq.h:11,
+                    from include/linux/interrupt.h:11,
+                    from include/linux/trace_recursion.h:5,
+                    from include/linux/ftrace.h:10,
+                    from arch/arm64/kernel/asm-offsets.c:13:
+>> include/linux/pgtable.h:2098:19: error: redefinition of 'pud_trans_huge'
+    2098 | static inline int pud_trans_huge(pud_t pud)
+         |                   ^~~~~~~~~~~~~~
+   In file included from include/linux/pgtable.h:6:
+   arch/arm64/include/asm/pgtable.h:842:19: note: previous definition of 'pud_trans_huge' with type 'int(pud_t)'
+     842 | static inline int pud_trans_huge(pud_t pud)
+         |                   ^~~~~~~~~~~~~~
+   make[3]: *** [scripts/Makefile.build:185: arch/arm64/kernel/asm-offsets.s] Error 1
+   make[3]: Target 'prepare' not remade because of errors.
+   make[2]: *** [Makefile:1416: prepare0] Error 2
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
 
 
-> On Oct 29, 2026, at 04:13, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> try_to_free_low() gets a target number of persistent folios, but
-> compares it with "nr_huge_pages", which includes surplus folios. As a
-> result, it can free lowmem folios below that target.
->=20
-> For example, with two persistent folios and one surplus folio, a =
-target
-> of two can still end up freeing one persistent folio.
->=20
-> Compare against persistent_huge_pages() instead. Convert the macro to =
-a
-> helper function and place it before try_to_free_low().
->=20
-> Fixes: 7893d1d505d5 ("hugetlb: Try to grow hugetlb pool for =
-MAP_PRIVATE mappings")
-> Cc: stable@kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+vim +/pud_trans_huge +2098 include/linux/pgtable.h
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+1501899a898dfb5 include/asm-generic/pgtable.h Dan Williams   2017-11-29  2095  
+a00cc7d9dd93d66 include/asm-generic/pgtable.h Matthew Wilcox 2017-02-24  2096  #if !defined(CONFIG_TRANSPARENT_HUGEPAGE) || \
+bcd0dea5f4fb3d0 include/linux/pgtable.h       Liu Shixin     2022-08-29  2097  	!defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+a00cc7d9dd93d66 include/asm-generic/pgtable.h Matthew Wilcox 2017-02-24 @2098  static inline int pud_trans_huge(pud_t pud)
+a00cc7d9dd93d66 include/asm-generic/pgtable.h Matthew Wilcox 2017-02-24  2099  {
+a00cc7d9dd93d66 include/asm-generic/pgtable.h Matthew Wilcox 2017-02-24  2100  	return 0;
+a00cc7d9dd93d66 include/asm-generic/pgtable.h Matthew Wilcox 2017-02-24  2101  }
+a00cc7d9dd93d66 include/asm-generic/pgtable.h Matthew Wilcox 2017-02-24  2102  #endif
+a00cc7d9dd93d66 include/asm-generic/pgtable.h Matthew Wilcox 2017-02-24  2103  
 
-One nit bellow.
-
-> ---
-> mm/hugetlb.c | 8 ++++++--
-> 1 file changed, 6 insertions(+), 2 deletions(-)
->=20
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index da5d04edf7c1..3a94ea1c9457 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1335,6 +1335,11 @@ static unsigned long =
-available_huge_pages(struct hstate *h)
-> 	return h->free_huge_pages - h->resv_huge_pages;
-> }
->=20
-> +static unsigned long persistent_huge_pages(struct hstate *h)
-
-Better to make *h const?
-
-Thanks.
-
-> +{
-> +	return h->nr_huge_pages - h->surplus_huge_pages;
-> +}
-> +
-> static struct folio *dequeue_hugetlb_folio(struct hstate *h, gfp_t =
-gfp_mask,
-> 					   struct mempolicy_interpreted =
-*mpoli)
-> {
-> @@ -3719,7 +3724,7 @@ static void try_to_free_low(struct hstate *h, =
-unsigned long count,
-> 		struct folio *folio, *next;
-> 		struct list_head *freel =3D &h->hugepage_freelists[i];
-> 		list_for_each_entry_safe(folio, next, freel, lru) {
-> -			if (count >=3D h->nr_huge_pages)
-> +			if (count >=3D persistent_huge_pages(h))
-> 				goto out;
-> 			if (folio_test_highmem(folio))
-> 				continue;
-> @@ -3773,7 +3778,6 @@ static int adjust_pool_surplus(struct hstate *h, =
-nodemask_t *nodes_allowed,
-> 	return 1;
-> }
->=20
-> -#define persistent_huge_pages(h) (h->nr_huge_pages - =
-h->surplus_huge_pages)
-> static int set_max_huge_pages(struct hstate *h, unsigned long count, =
-int nid,
-> 			      nodemask_t *nodes_allowed)
-> {
->=20
-> --=20
-> 2.43.0
->=20
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
