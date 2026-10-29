@@ -1,151 +1,183 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B46606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 04:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909AE606A33C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 05:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wzldufxr
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=iwwagKXA
 Received: by kanga.kvack.org (Postfix)
-	id 6F9286B05B8; Thu, 29 Oct 2026 00:53:51 -0400 (EDT)
+	id A664C6B05B1; Thu, 29 Oct 2026 01:03:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CF916B05B9; Thu, 29 Oct 2026 00:53:51 -0400 (EDT)
+	id A16A96B05B2; Thu, 29 Oct 2026 01:03:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BFCC6B05BA; Thu, 29 Oct 2026 00:53:51 -0400 (EDT)
+	id 8DDF46B05B3; Thu, 29 Oct 2026 01:03:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AA916B05B8
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:53:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E4A9F1C1B2C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:53:49 +0000 (UTC)
-X-FDA: 85374446178.13.20D4DAC
-Received: from mta0.migadu.com (out-85.mta0.migadu.com [91.218.175.85])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3FFD11A0002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:53:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wzldufxr;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.85 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793249628;
+	by kanga.kvack.org (Postfix) with ESMTP id 626D76B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:03:31 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1465160271
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:03:30 +0000 (UTC)
+X-FDA: 85374470580.09.A657648
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azolkn19012023.outbound.protection.outlook.com [52.103.10.23])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2C8BA80004
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:03:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=iwwagKXA;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of x-professor@outlook.com designates 52.103.10.23 as permitted sender) smtp.mailfrom=x-professor@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793250208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nSvRu+DrKpZk9fhC33/WfqayjP5HLD0PEYNxYg/H2d4=;
-	b=lYI7PN6Y4cQklmzFmyLB6BSP1YG4IdN+B9gX3DENjEuEL21+lQghTjZBr1+MOPqk6q1Y5x
-	y2umR0KjkNADxmJptdIKKjC9E19grvpGB2MZhcKkFZFeFz6J9V5841rLoH48GNC5h8nWzZ
-	R/Ki9blobTTZ7H8ieTO04sqPo2hgf6M=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wzldufxr;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.85 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793249628;
-	b=Qm+Hq6Lzdks/x/VYhQ5s+jZXNbRA0cdn0kBr7BjfwDw8IvF2B3sgBXwN8IFnCMhyOAmRXI
-	4KmO8DTgWc6FfgWIqDg2S/ABZiDErY8rk4LfjpFMEO0/7bAWqrvsIhdPEYXNedigfNcsYg
-	+OMjAtcJKKWNLYfXuWzs8FqZ8glV5zo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=i7u+rlmCh6Mr8ur+/yCWDheirhBIEcgUXzKbr5iYaLI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793249625; v=1; x=1793854425;
- b=wzldufxrq7LeGF/UT1w/d7qBoo4cSoxFnLCvJgGiKddxIK6nGj3eWwtYfsSoRfGtBw1RSw+o
- l2EEGi9jB7oYX3VF+s085Fb8klvLZm/TtHLejbv1l7E/dPxEI1csGXXbkf56r/0e2nXCXfg2S7r
- 8BiHJX3hY4QzJUxF7RNT23/I=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 06f3ecca37f8f8d0;
-	Thu, 29 Oct 2026 04:53:44 +0000
-X-Mizu-Trace-ID: 06f3ecca37f8f8d0
-X-Migadu-Flow: FLOW_OUT
-From: xu.xin@linux.dev
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	apopple@nvidia.com,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jannh@google.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	josef@toxicpanda.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	kasong@tencent.com,
-	kees@kernel.org,
-	kexec@lists.infradead.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-arch@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	matthew.brost@intel.com,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	minchan@kernel.org,
-	muchun.song@linux.dev,
-	nico.pache@linux.dev,
-	nphamcs@gmail.com,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	pasha.tatashin@soleen.com,
-	peterx@redhat.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	pratyush@kernel.org,
-	qi.zheng@linux.dev,
-	rakie.kim@sk.com,
-	riel@surriel.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	stable@vger.kernel.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	weixugc@google.com,
-	will@kernel.org,
-	willy@infradead.org,
-	xu.xin@linux.dev,
-	ying.huang@linux.alibaba.com,
-	youngjun.park@lge.com,
-	yuanchu@google.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH 33/46] mm/madvise: fix data loss from MADV_FREE on a KSM page
-Date: Thu, 29 Oct 2026 12:53:07 +0800
-Message-Id: <20261029045307.131675-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261027-fixes_core-v1-33-6f74bec9a5bb@kernel.org>
-References: <20261027-fixes_core-v1-33-6f74bec9a5bb@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=DqiFzpc0xHaVGhfwxqUGFRgPJkquueCfeSJ73YunQ7U=;
+	b=fUop4W5FdgEFvsfmIxb9IKtDY1thhv7k0Dy9HtKS85cjGUrzwoau0vMJTvQTwKM8Q+X4x7
+	JqD4oaB+cs3HtHgZi+b6Qrx+zmm41+9Jb8BdZbgBZ5N3adENWjD74ntNfSiqW3qYAQPHW5
+	dQpfekZDAx2+rf2OBAcobOOFDv21dZU=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=iwwagKXA;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of x-professor@outlook.com designates 52.103.10.23 as permitted sender) smtp.mailfrom=x-professor@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793250208;
+	b=mKVCMHb2ccwZyXe6nhTHBtN3hfWobgyKbStMYkiIe5/nIau7H540/9b3UddqaKhOEvvT+v
+	phJz36mrdxJfqZF1tFIR89Q5fs5kFAH1mjpJvwLo63Ip9SWytHroGLNwIKGUx1zKXh6uI/
+	hSzQlwXLFOeiyGr6cfiRK/zd0sMWDjs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wQD+kwU6+cDduEpL+RNr9JeO6seyyMQ+vPVe20a+MX05hoBi155UWIIaPbF1Wzp0VtqMBAScilSRDDS+a7G0PAh9sfa8ipSHoCaxAkFKYvrTvg31I1iJfVyMWewrxqyx+uVcZMbjLYozTZc5CwX/qAo6ch5ikZ+nNOsk0wvx8sozber5uYXzzHh9r3ua0x8HIHzvB//bdu97SxBV3JFb7IOdLSRHk2oaPJiD8U1/P435I9v3VDYJvC9YOBwUDZ8q28SSHUZeNw+ADdGSNlxYEO69T7swJyMOL4rhu+rz8D36ZgiKzEZAxuX3N64lw651HiepQjzjGwWvNdo1UpUe2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
+ bh=DqiFzpc0xHaVGhfwxqUGFRgPJkquueCfeSJ73YunQ7U=;
+ b=rDTzXKPKr8eWvKghwmFJBvtYedJnCJ6v5F4wmrDR7EaayhTugDIGiF42ews7JSL0RcpcoLH063uvnyM9hESEsIGyIxALkohhafJF3ujmDbPu9IAe+rMd+Djd2O/iocLsKlp/Fc++If9dZwP3/SX7wNOdFyDrMzdTx9Atq5iE6ppZKf94RDfPq+XK0PZyHI1mC5p3gnKOomwyctFWTkmkuWYKXasKFMtG6JYvba1U45MtI371MWQyNuc/WMYB153jAy9b6H/r6JTsE9EajY1oxa4InmPMCekvwl77cumEqEZPOKA48GKmLYjBdbAeQ1T2lAJCZ6CgHk4NWzqm3gQ/Pg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DqiFzpc0xHaVGhfwxqUGFRgPJkquueCfeSJ73YunQ7U=;
+ b=iwwagKXAZrLSw1xZ4Xt7VXy2zjir8HyjgvdHqH3i/QRkDwmzDnNE/MykCouSvOHh8O0whnIBZcedO9QrcJ/UZCSCS+BYV/skZbzWz+IiAmLgV5Y/KA230AW4phRdAtICIMgD8100xcYN1zuWyHgLSuOyMkZ5jNenDirrNY3uRDuqnY+z/qVRrNK/IKcks2maIO7KPrBYzQR2LD35kEHrpkfqwRets0InzfZehcE5k8EZ5KocypaARxcW138V/7uFYgJdNJTCL1GrtFNUL7CXQ/lRefR3lDtL4A57Ulung0uwUCf1UUSSIhfUb45oke8bnF5tsjMndOu7tofZ5KCQpA==
+Received: from SA3PR05MB10385.namprd05.prod.outlook.com
+ (2603:10b6:806:39d::17) by SJ0PR05MB8214.namprd05.prod.outlook.com
+ (2603:10b6:a03:390::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Thu, 29 Oct
+ 2026 05:03:24 +0000
+Received: from SA3PR05MB10385.namprd05.prod.outlook.com
+ ([fe80::e22f:a0f5:fcb0:9b0d]) by SA3PR05MB10385.namprd05.prod.outlook.com
+ ([fe80::e22f:a0f5:fcb0:9b0d%6]) with mapi id 15.21.0546.021; Thu, 29 Oct 2026
+ 05:03:24 +0000
+From: Yingjie Wang <x-professor@outlook.com>
+To: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, Manfred Spraul
+	<manfred@colorfullife.com>, Alexey Gladkov <legion@kernel.org>, "Eric W .
+ Biederman" <ebiederm@xmission.com>
+CC: Yingjie Wang <x-professor@outlook.com>, Vasily Averin
+	<vasily.averin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
+	<shakeel.butt@linux.dev>, =?iso-8859-1?Q?Michal_Koutn=FD?=
+	<mkoutny@suse.com>, Michal Hocko <mhocko@suse.com>, Alejandro Colomar
+	<alx@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
+	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+	"linux-man@vger.kernel.org" <linux-man@vger.kernel.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
+Subject: [PATCH v5 0/3] ipc/sem: account dynamic sops arrays and validate
+ SEMOPM
+Thread-Topic: [PATCH v5 0/3] ipc/sem: account dynamic sops arrays and validate
+ SEMOPM
+Thread-Index: AQHdZ2LT/+5o4bKjo02vICQcsvNQYg==
+Date: Thu, 29 Oct 2026 05:03:24 +0000
+Message-ID: <cover.1793250194.git.x-professor@outlook.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA3PR05MB10385:EE_|SJ0PR05MB8214:EE_
+x-ms-office365-filtering-correlation-id: 6f74eb51-4ead-4e3e-a0f2-08df3579f5e7
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|31061999003|12121999013|38102599003|24021099003|4140399003|15080799012|19110799012|8062599012|8060799015|25010399006|2604032031799003|5062599005|22091999003|21061999006|11091999009|24121999003|1602099012|10035399007|52005399003|40105399003|26121999007|102099032|4302099013|440099028|3412199025|1710799026;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?/T66Q5us69k/LX5YG+RBFZjjj/HMqSlnoXKuEG5jAF4C5XLatTgGAHYAlv?=
+ =?iso-8859-1?Q?58k584IKehcNUPd4bryMpckjFNG18bEDSWXE+NqF2ro+brUqyNNwYO4xuE?=
+ =?iso-8859-1?Q?aMQ75TIwY0H5riTF4j6j2tcBnB5VMyBYVrgHeh6eTFWCQyY8yBnH05obXB?=
+ =?iso-8859-1?Q?sCOmAWye6MgU8DnGx2v1xl8oOtnRiD09hPYkLuJ5Y7Ad4UynH+HCMEBYhj?=
+ =?iso-8859-1?Q?qwhJiLDNFTa7BYVwlMjC0cfNJ/jxBiBMNFxUJ0flHmuENDI1NzqeydFcco?=
+ =?iso-8859-1?Q?rDPMnS9L2SWR8U+g06VhQHSlm5QzNGA4IWMuIoZ0PQe0qR2ErJQeNyDD8q?=
+ =?iso-8859-1?Q?+2M67iP5AlPVIkdLJ8Kbad2ryg8iQZTk7TJ7DN6bVNjyt+4l5bEr9fbs8M?=
+ =?iso-8859-1?Q?+/AJHevdJvH9qMZekUzOcp0rxe6jKz1PK4jMZdIT5ZH+4FZ7PClPmQbQvD?=
+ =?iso-8859-1?Q?q23dYt3rLrTVvXpYavLiQkNODnXYLPMwJ4r3VNWmSVroQEG6fnEFwa2SUS?=
+ =?iso-8859-1?Q?0kOzaC0hB3N3m+5XdetSIHZGjqHblNB22K2UmLs5mfWRuI/rv5TixZyy5Z?=
+ =?iso-8859-1?Q?WslSjckRCKxVDyKzmpKZjTHj/4v80/8mC4Qoenzf3f101bhOMngq35gHLY?=
+ =?iso-8859-1?Q?qrWVHitj81SxNPcujbAmTZXlkC1Dj3a1PqUCEMppV9X5/vpBilbUvitvsp?=
+ =?iso-8859-1?Q?DGezC7bSjRO2GgBSmaDwx8RFr53QXTN4RYjotWdfd5/I2K+c7vWCbDZC4V?=
+ =?iso-8859-1?Q?ZXLtxBPHVjvX5V0OUJDhXmQODLKmuFzSs30gWuVn0bxAZlqSou7kCovci4?=
+ =?iso-8859-1?Q?mlcvsdHFeKYIABaBMlzUFUY3hVJxxCfOSV9JUoigFXJFawGC5mTuwJsuGq?=
+ =?iso-8859-1?Q?a6NQ4DIf3K5Dn8UCnjcOy1+fDOZmeqH63w4drBH5sjuKa3vEDYd9hZr3dL?=
+ =?iso-8859-1?Q?0Y8YkLMkEI1liK77yW1mHFn7sdUr7NXjQGFp8SuG9+phCAeyHkDC9Mbxrn?=
+ =?iso-8859-1?Q?3Tcxt/fRFGd6aoJOLuJmfxdiV7O+3AGZoES0YFTSvipM4HnVh+SUmIehsL?=
+ =?iso-8859-1?Q?iYIz/iWJtOp6NV08Ih+ktj0MEDKQR3yhwyHzULqIgN6VPsEcWK9Wdgfk7f?=
+ =?iso-8859-1?Q?wkuTMRQ75Q31Q6e8du+YQsPBWDytlyg1Nz6AOq4SeuFu0QBjKvMF9RGhZb?=
+ =?iso-8859-1?Q?oK57HVZ4ZKk63Qq3rCTix+aD/UvTpV0zndTcwth9zWblWSoxoby/MY2Eju?=
+ =?iso-8859-1?Q?BBQ9ovHA8X2qtKYb7fjVwJVsGn5QDJsFhTXNvXq9FDUFST8pvAjIhipJ59?=
+ =?iso-8859-1?Q?vAPc2f952M/ZVodk6GFtA3TIWtg2CJy7e6/hNcT6HbXxe9k=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?xUUg8A4AYh1WW1VxZaWVHDbOqwbZJcdhicIx44k7sIVQzwnA20zvmM7yVl?=
+ =?iso-8859-1?Q?3KdTHKyHz1YCg4tRH3ArOdDWBYY++wEWcrTw5KpGeDaacq0JISLw2t7vr/?=
+ =?iso-8859-1?Q?ojGj91UWkjv+CQ2JMCGrQGaFh7AP30WN8QFkKQqYqQdLUdOibkltzuKgei?=
+ =?iso-8859-1?Q?WDojaxAZfvdEGelISOpDp+hBPq2V05++MsXCAFMlJcXZOSVAoPau+WyvDg?=
+ =?iso-8859-1?Q?WQOQTmulC8yfkxkBE7ZcySa/i8JdZ5n9f0wv1rwM5hmoxthKxD7klfLdN0?=
+ =?iso-8859-1?Q?CbphK5MhEQbCukXtrCarQftcTnQks6nQbWLQ/XtwWuaqGnMOmEvgEfqMFL?=
+ =?iso-8859-1?Q?QdBsIUwB3rqCAnwWzdgj/SkvnbDqrNY2vXxo3bYw3o0G8GNs+Yle9/GxkM?=
+ =?iso-8859-1?Q?G/aXINipoW8Vn4n5yfjmMlQukwBLgUhCeSZSudVgbQCdSqjOJlUBZUYF1k?=
+ =?iso-8859-1?Q?90hCfL/bHDPHrjXanS8liXVLZteZpx9/SwfzgcIPLi1mlzM/dOehIpy8Tb?=
+ =?iso-8859-1?Q?w8ebQ7AbX9E26ejOsuFOc+6SlxbKkzzhDB8HNqyjuYRTzjrUL+Jg/nJyPg?=
+ =?iso-8859-1?Q?/IPPoxK1jso50maTDBwu+aM60Ki8JhQEHrgMynz/0LKEopayfWcRohtHxR?=
+ =?iso-8859-1?Q?smd7/i25DkE4IDtlRkSbegs2tk2bmdpaPe7COvF7RBJ1pj061uYsMSDS1+?=
+ =?iso-8859-1?Q?pAJZF4ECgjmhc0eds2gNUfIXHnTFFJjdJFuI8pzbi3+HYZoATCmauDXco8?=
+ =?iso-8859-1?Q?h882hVhdx+/MUvWhmK2EwThaWNZGmOFlp0BPgjiJ3CoLJ5ag6yD069hHVi?=
+ =?iso-8859-1?Q?/WhhPoqf9R7pyFJ2G4EmhyJO1q4jNs4Yjf4D+F91y+OlE2Kzhy1Z3XKDD8?=
+ =?iso-8859-1?Q?+ePzZx0FC42mcSBgcQPe3jlimyOEhU0+LLeIX6aQulyMI1+jxsvN8MN3bK?=
+ =?iso-8859-1?Q?9iY9S8K0nOL2JbeLUfb7C6OYvIpUI3l7T/mLFC6bbhsK5XqcwjpOOyo5E+?=
+ =?iso-8859-1?Q?m1p9dZGYP6SW046eUz8oNZpDtEF3r32yN802i+gmKfNnHVKjXkTRjlJLVz?=
+ =?iso-8859-1?Q?vX3fJQVWDq3Gg3tFZttkiVUT79R33QGB2RXLMHP9c0JZSEw4a75FQD45FK?=
+ =?iso-8859-1?Q?L2pWPPt6aoMsR7xZv8gqR6PNXkwG9ja3gC8D6zojfscGn9XqYSNIfPKC6Z?=
+ =?iso-8859-1?Q?2vOqLzkqCVxFA6xQZvBJQBL4wD3cYZXLXSMzWql/J86pBadz4ThGLmgr1h?=
+ =?iso-8859-1?Q?fupPuNVgMTtnZT347Uv954HN0pXQ4bUOAjzPfrjYkkSPrS+zs9it6RLA9T?=
+ =?iso-8859-1?Q?Nj6MVKZumNiOKO5SihHTK41E5o+qNcjLkGf6X0jKc7h3IW+AlsVvvIX6oJ?=
+ =?iso-8859-1?Q?BiyX7IjhmzrW/kKOv8SuzDUJZ240lEqj9n3ixGzr1Iv/FWOqWHIiU6l5Qv?=
+ =?iso-8859-1?Q?uPpDroksjgsrD3i3?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3FFD11A0002
-X-Stat-Signature: ym4z6oyep6mn7obbe9arh9btx3gz4fwc
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR05MB10385.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f74eb51-4ead-4e3e-a0f2-08df3579f5e7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Oct 2026 05:03:24.2107
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR05MB8214
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2C8BA80004
+X-Stat-Signature: 7h3ntxxnooxryk5shfc88wyzhhisxa5w
 X-Rspam-User: 
-X-HE-Tag: 1793249626-136955
-X-HE-Meta: U2FsdGVkX18YvmDFx3L4YsLyKPW46orTG6UdbRslNRMtfBVCFtZNDkane7vJMgA5bN2DTUV4h/PMdzaWW1SkKzXFfd0L86NEKcN8UQhgU0TS0LNrZtI0IkY2BIM/jxYbwuwUy90sUMDmaQCmmEIMNAIqRU399F1SmwPFHBL+M/dl5vUi1IRelJf3l6afy8rJSpgPViZyVaDp5IycrlvQg1RZas6MxlViK9Xosl3YMo6oIb9ldEJBTRGoy3ko+ywTt/rOEmM9aBrd5muA0+qxoROWXYwetRAx1k4oeKdflnOZHK8Tg/yMKPc1EcVnqT0unXr3YcQRX2+odIsBYBXxa+ld2mMLJMn4PGrtS/6EO59Dyr0lCfJhRkp39S3VqdsmKHEVfZ2ByUkX4LWXiYV9Aa5H7g2ONkDffFVUGfqh7o2x/lLKOVJCVF2jF3DltA36+Vg6TdARkCUjeKlZx+9fzg2kDuyWLpDnuSpvMr39uagLX+jf6oYG5IiOCFHBPG2AT0Y6UV4i3r3Fc6m3TdzXxThsW5BU4Bv1/XzI0Zckuq0348taTkRE0yRRVuma5kch37Xx4DCcvp5zt6j0J3h1V4Z4VZtzzARlu/HVlR3NNxW7eIWKCJU+7EabuQxd80OYe8fOTI2QiHhY0jzqCwYpgFfZbWdsmko3m/dO0uamn/bODUV3ZKGrvPu/91dsJZSncmP6JQdqI7cYkZKgj0IT/KWUSa7oSot2r2UZLe2GdKTd2exat7+hEsDHLkhBLy3WS3D8JbjlyIN5lOJGurPwp0mCQthu1gG0CFV9BtWfBduFrPezSzwrPOAfOH89+Hzj85EC2vuBZxjPUcUuhkbZNG4GlrVaLN7OG7TCSNlIIMa5UryKVbx+ihkEUYhl2+HW19BQBhVq4P/b5uVMMJR23OQWD+QRyWx/wea0L+w7N52Z14fHPkNPVk1odlsqRa2ATXxnXz4GZenwn/Bz8Hq
- TdvY21gr
- P3oSd1JWlVpNB7bLIlpadCnJ8gb33Lj0JKveMfQb+t9ne1sWi06KmpPPXecKOmhHF821wgDrw1j1+zkf5SCSBt/HnSgvLM5T8xbu5Vm4HPkfT6uv5v0CiuO4FMmlE8xrIJcn4jbWR9zVh+zyPVWDp16u2sPagvOqHWJQyrdiK9amWOARzvo6w38UMnYmZRRZZl1AhuU3KvqGgczrMJn9JJ6dw4kjHNlkMuWdU5loa6troYymev+27TjOIegsXlAzAd298YzXk3tXtkcw1OfjQ1PzoAbdnuFYhDojW9LFNL8vO4l23eCLONDSkZA5A4V8NiSUKbXEgGpJOZl0Q8GJElj5P0Bcbif50QnroiYJXIwZxngbu5YORq85hsO13g69DNmqPRwS20IAPSQ4tcFSNo75RJLwWG6Gyt1UmhjFeMbM7ljjpoGP0SPfqjQ==
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793250208-75779
+X-HE-Meta: U2FsdGVkX1/fjLEPr784/gziZDvToPcKqCmkhlO5t4P1fyxWdNHHcMUIBOwXaVz4CT+lLn7WygRZ55tbXLA5pto4YAd++2f29J5wFNb7B76ASCMtsZJ3M7s6VO+jfoYJJUkT60c2djw2cf/iRbHcyAfLW59f58PpxDRUpO8eINFQgeXbig0hkrMcN7kL5qka5opj9/B1cKmSBVVmJa2VvLaNvVP3L+MH8O1bEKNP5vpVb7zC3bCLNDb9VLLrBdJhhzvXq9D5HV8324Lqx+7YJgGPLYKfkVgHrxCNT2M4J8dDAVizwZ8ujdhlKZs8chbO4OpNCqMSB7x1BDxHFmwSHV5xB/t2ieqD2akKa990Bj4Wz9E9Bk/fN8lxKY9tQoVKq4R45DKUgym3Vkq3RoWWQs320GPf6aAhPnUtLiCQHoHbhJMVXzpoDbZo91KCNOvpON0w3KxUF2ip5Mn9hXoVyprsowLXIkVSW9Uj4TrUZrkCv0y4cKgqHtExuIwU+qd1OQ8rrnxFSx6NqAcbq+4mCNUNdPArd5Ur8q8fOP7zARtC+DckG+XSVyEKdcNhHjGJqP1KimjRUf8iEKFHOn5RO4/84XZtOCdibhhtoWow+CV1F2/oQZvH0fm0ifBZtPmaTBUy6MlRGu54PeYCAadHkOrnxSrAho7Y1cLq/Su+9DCLZQvdFgCsx59vyMuTNGChPO7wQtTF+e+HNGee8Fr114wSSUoSvPCTZ5IEERkKS6VukZKtrwxRy36wfRrg2tmoB7Kiy6hCr99h7wLGEunyR76Okt4B3TpDv+xMpMfcApU8qrxH1ifpQm3l2ixWiSTVcrXSpVQfbXUKR04f9mJVUhhUmx6Cmtu9BgASOE0VpWaMqc8EI+Gtt3gnUwk2pvN8QjCVC2rB7aSWT3MWJA8heXcZHpPcvF0z6txya9J+D/d4q/pIBxEsjcdo3IWdtLu9Y9aY4d+cPEGSHxaewGo
+ lVdHnSbY
+ wFV+IUUOGqu4Ym1r576Jjj0v00Jp500XES0eYtUXtcsWAjDyAz4sqFxn2fE+Go5sxQ6rD8jGEeg1DJvAb+KxDsWiExXQhM8zAL/bXcmmmtyNUMWfj61C58gQY4MxBYsaxQZn/rP0+EfUNMW93X7bvLKdnfwfYZGG7qZEOi1iHSWei+giBh/buqGzQgr+z+IhX5nFD+aZOqFC4pKhRMt80j8luVPRAL3l4qgYB2eLHSZNG21j/3rmtg2OCiiE5HxKsyzeI/hN3o/WKG/2+7AiRKVeco3++/sG2PKMY5TqeqjeszBkVOyCXLF9JpdjhA1LuXl2x25xjkynr9tW9rMdEW78govo+oplJoz2pLJdZb4koWDIANHyACCWsLo7PrWJjCeQ0MZZgjTgtHZCi14TNXzdjpIuNy+UZ5R/FZn9hFh+/Q8eHEib4gCoWYCM5ZKgKV2ftU8j0ddVrXX3LGEaLVm/3679fleONWcH19qtcpmUvaoYSfonb0giTVezdz1SnIEHlxlu6VmkCewQaj27XPpKhfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,56 +186,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> MADV_FREE can clear the dirty flag of a singly mapped KSM folio. The
-> folio remains in the stable tree and can gain new mappings without being
-> dirtied again. Once marked lazyfree, reclaim can discard data that those
-> mappings still need.
-> 
-> KSM always marks a folio dirty when converting it to a KSM folio in
-> try_to_merge_one_page(). Marking a folio lazyfree clears PG_swapbacked
-> but leaves PG_dirty unchanged. Preserving PG_dirty makes reclaim restore
-> PG_swapbacked instead of discarding the folio. This also protects folios
-> that were already lazyfree when KSM converted them.
-> 
-> Skip KSM folios before clearing their dirty flag, checking under the
-> folio lock to serialize with KSM conversion.
-> 
-> Fixes: 854e9ed09ded ("mm: support madvise(MADV_FREE)")
-> Cc: stable@vger.kernel.org
-> Reported-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  mm/madvise.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 75b409e97dbf2..a16e3cb256b7b 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -756,6 +756,15 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
->  		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
->  			if (!folio_trylock(folio))
->  				continue;
-> +			/*
-> +			 * KSM folios can gain new mappings at any time, so we must
-> +			 * not clear their dirty flag.
-> +			 */
-> +			if (folio_test_ksm(folio)) {
-> +				folio_unlock(folio);
-> +				continue;
-> +			}
-> +
->  			/*
->  			 * If we have a large folio at this point, we know it is
->  			 * fully mapped so if its mapcount is the same as its
-> 
-> -- 
-> 2.43.0
-
-The fix looks correct to me: checking folio_test_ksm() under the
-folio lock properly serializes with KSM conversion, and skipping
-the folio avoids clearing PG_dirty on a KSM folio.
-
-Reviewed-by: Xu Xin <xu.xin@linux.dev> 
+Shakeel, thanks for the suggestion.=0A=
+=0A=
+Patch 1 now uses GFP_KERNEL_ACCOUNT for every dynamically allocated sops=0A=
+array. The first 64 operations still use the existing stack buffer. The=0A=
+fixed 1000-operation exemption and its conditional allocation flags have=0A=
+been removed.=0A=
+=0A=
+I compared this version with v4 in a 4-vCPU KVM guest. The benchmark proces=
+s=0A=
+was pinned to one vCPU. Each number is the median of 21 samples from three=
+=0A=
+fresh boots of each kernel. In a leaf memory cgroup, the changes were:=0A=
+=0A=
+                                      65       500      1000=0A=
+  successful semop()                   +3.2%     +3.2%     +2.3%=0A=
+  allocation-focused invalid semid     +5.6%     +9.1%    +11.9%=0A=
+=0A=
+The invalid-sem-id case allocates and copies the operation array before=0A=
+returning EINVAL, so it emphasizes allocation overhead. The 64-operation=0A=
+stack controls changed by 0.9% and 0.5%, respectively. The already-accounte=
+d=0A=
+1001-operation controls changed by 1.0% and -0.2%. Successful calls in the=
+=0A=
+root cgroup changed by at most 2.3%, including the controls.=0A=
+=0A=
+The sysctl handler parses writes into a temporary array while holding a=0A=
+per-IPC-namespace mutex. The mutex covers the snapshot, validation, and=0A=
+publication, so a failed write leaves the live settings unchanged and a=0A=
+partial write cannot restore fields from an older snapshot. The snapshot an=
+d=0A=
+publication use READ_ONCE() and WRITE_ONCE(), and reads continue through=0A=
+proc_dointvec(). The unused sem_check_semmni() helper is also removed.=0A=
+=0A=
+The UAPI warning about physical fragmentation is obsolete now that the=0A=
+operation array uses kvmalloc(). The header describes SEMOPM as the=0A=
+compiled-in default and retains the uniform <=3D INT_MAX range comment.=0A=
+=0A=
+Patches 2 and 3 are unchanged from v4 and retain Manfred's Reviewed-by tags=
+.=0A=
+The series is based on 7be4bc52fd9e ("Merge tag 'driver-core-7.4-rc1' of=0A=
+git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core").=0A=
+=0A=
+Validation completed on v5:=0A=
+=0A=
+- a W=3D1 full x86-64 bzImage build;=0A=
+- W=3D1 i386 builds of ipc/sem.o and ipc/ipc_sysctl.o;=0A=
+- three paired boots of v4 and v5 for the root/leaf memcg benchmark, with=
+=0A=
+  seven samples for every path, cgroup, and operation count in each boot;=
+=0A=
+- initial and user-owned non-initial IPC namespaces rejected negative SEMOP=
+M,=0A=
+  invalid SEMMNI, and malformed writes without changing live settings;=0A=
+- zero and positive SEMOPM values remained valid, including the 1000/1001=
+=0A=
+  operation boundary;=0A=
+- concurrent partial, full, rejected, and successful sysctl writes complete=
+d=0A=
+  without stale-snapshot overwrites;=0A=
+- successful, EAGAIN, EFAULT, signal-interruption, and IPC_RMID paths relea=
+sed=0A=
+  operation-array allocations;=0A=
+- no BUG, WARNING, KASAN, UBSAN, or lock dependency report appeared;=0A=
+- strict checkpatch with the intentional CONST_STRUCT diagnostic ignored,=
+=0A=
+  and patch application checks passed.=0A=
+=0A=
+Changes since v4:=0A=
+=0A=
+- account every dynamically allocated sops array with GFP_KERNEL_ACCOUNT, a=
+s=0A=
+  Shakeel suggested;=0A=
+- remove the separate 1000-operation accounting threshold;=0A=
+- add root and leaf memory-cgroup benchmark results for 64, 65, 500, 1000,=
+=0A=
+  and 1001 operations.=0A=
+=0A=
+V4:=0A=
+https://lore.kernel.org/r/cover.1793207025.git.x-professor@outlook.com=0A=
+=0A=
+Review of v4 1/3 by Shakeel:=0A=
+https://lore.kernel.org/r/565d855cbd81e0f49018da21df00ff0308f646b1.17932070=
+25.git.x-professor@outlook.com=0A=
+=0A=
+Yingjie Wang (3):=0A=
+  ipc/sem: account dynamically allocated sops arrays to memcg=0A=
+  ipc/sem: reject negative SEMOPM values=0A=
+  ipc/sem: remove obsolete SEMOPM fragmentation warning=0A=
+=0A=
+ include/linux/ipc_namespace.h |  3 +++=0A=
+ include/uapi/linux/sem.h      |  7 +++----=0A=
+ ipc/ipc_sysctl.c              | 35 ++++++++++++++++++++++++++---------=0A=
+ ipc/sem.c                     |  3 ++-=0A=
+ ipc/util.h                    |  9 ---------=0A=
+ 5 files changed, 34 insertions(+), 23 deletions(-)=0A=
+=0A=
+=0A=
+base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614=0A=
+-- =0A=
+2.43.0=0A=
+=0A=
 
