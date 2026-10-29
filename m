@@ -1,114 +1,175 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C488A606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264B4606A325
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N0zWNQbb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H3FsUol2
 Received: by kanga.kvack.org (Postfix)
-	id 707796B05CD; Thu, 29 Oct 2026 06:54:10 -0400 (EDT)
+	id 38BD16B05BC; Thu, 29 Oct 2026 06:58:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DF246B05D1; Thu, 29 Oct 2026 06:54:10 -0400 (EDT)
+	id 33CB36B05BF; Thu, 29 Oct 2026 06:58:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61C406B05D3; Thu, 29 Oct 2026 06:54:10 -0400 (EDT)
+	id 205A96B05C6; Thu, 29 Oct 2026 06:58:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 457BB6B05CD
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:54:10 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB887C033B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:54:09 +0000 (UTC)
-X-FDA: 85375354218.18.FD5877A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 34D6AC0005
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:54:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N0zWNQbb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DD9DC6B05BC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:58:07 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74CEA80312
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:58:07 +0000 (UTC)
+X-FDA: 85375364214.27.2BCCA73
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A6973100002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:58:05 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H3FsUol2;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793271248;
+	s=arc-20220608; t=1793271485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yRQohK+CSt2OKE4WJtHLQd1a3qhKEoEvkjG3iYzfLuI=;
-	b=m8k8LCFqER87PJktIfYherz4liXhPwngR9R3Gu3OMtyynu2ls5upcBTkZSqwukexNqyEpJ
-	d6ogAYLnIOjj9sMkgA/RpIzHmQVPK/RN0nvYM09hqoC4rnSd2iJ+996c1pDdslLKvyScbr
-	yyZpzpW5bazioUwLvr8VmLRgPnyTc+g=
+	bh=HRlYvtp0NLbF/qBaWCj/ZYIcUA7W6S9v5stNA3ILEuU=;
+	b=4nkmB5RdLQ+kt0et8ZkQna24+w7GYQxYro3hWr8CJxZk3gd+hkelm+P5IpnfAHn5ZAMKI1
+	3yZ5yYCjF5W5nPuM9zc+M7gnyeP3+b++ByABhM55khpQtZ5k3ytuBg6QACYqhj8F5wLAjL
+	HieEQ5upWo3xD9u8nF0AS9UIP7v4vYU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N0zWNQbb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H3FsUol2;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793271248;
-	b=Ang3yJo1LpWKOyRHY78ymR2FaikpasM0HvygZLehDLH2HMmmZ/c1tg2l2fgnmzL/lVsLQI
-	uk2y783tbMbSNH5T37/Mbsm8Yn2jGzqhBFnM3ray7O5Djg3zSX46Wghf6xE4IQD+BRBrik
-	gzmuTtnRF5+6+6iPJqLjFUgfd4Ss5TA=
+	t=1793271485;
+	b=wNUmyAJ4hYOWnQiv//LyOzVlS3SFuVBUMEs/6o4geT58YeG1EMcJh/2JuMfNda8uKfvZfm
+	jwCqmO9A20WwbdN9BJElY+h/c8Vrj1LGWFLh9sMtiqj8TdEMrb8x2yYEp3K+vd9zTGon56
+	YyskI4oAJfOaf7eVjD/HSqSZr+J/284=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC33D60207;
-	Thu, 29 Oct 2026 10:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB29A1F01829;
-	Thu, 29 Oct 2026 10:53:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ED08F43ECB;
+	Thu, 29 Oct 2026 10:58:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11AA1F01825;
+	Thu, 29 Oct 2026 10:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793271247;
-	bh=yRQohK+CSt2OKE4WJtHLQd1a3qhKEoEvkjG3iYzfLuI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=N0zWNQbbnqBYz5SjJ7FymjJkYGEKptrE0TDLsZJx4o4qG4WBngSOzXO06L54iDVYo
-	 5c66LIlnuajAKwRqmp8TSe6/sf6rsGNOVtyXtkbgOGeb+IVmi/Ad6785EauUqkvV9I
-	 6jwsZJBIR+U1ZzYyNLvmAFomsFtds6sAvYNYFC4BT/oIy/3cSIfXeC2bf/fRiTZj/b
-	 uvO5K9JnpHfhTMlyuorebMDeQG5dPl9Va+Jzwtdxs29naBrp3OYND8YS3ozUwUPEz6
-	 RPNUivzrLa1PDKRzDwJLu6FKOync5cOh9c41m6+qWsEP2fmSXV+5oi1vd27KhuBcJj
-	 st9g5SU1pI8rQ==
-From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, 
- Vladimir Davydov <vdavydov.dev@gmail.com>, Michal Hocko <mhocko@suse.com>, 
- Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Lukas Czerner <lczerner@redhat.com>, Carlos Maiolino <cmaiolino@redhat.com>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- David Stevens <stevensd@chromium.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- William Kucharski <william.kucharski@oracle.com>, 
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Nhat Pham <nphamcs@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
- Pedro Falcato <pfalcato@suse.de>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
- Balbir Singh <balbirs@nvidia.com>, Josef Bacik <josef@toxicpanda.com>, 
- "Pratyush Yadav (Google)" <pratyush@kernel.org>, 
- Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-In-Reply-To: <20261029-fixes_shmem-v4-0-392fc715d8f6@kernel.org>
-References: <20261029-fixes_shmem-v4-0-392fc715d8f6@kernel.org>
-Subject: Re: [PATCH v4 00/15] mm/shmem: various (urgent?) fixes
-Message-Id: <179327123632.4954.5925006193124962193.b4-ty@b4>
-Date: Thu, 29 Oct 2026 11:53:56 +0100
+	s=k20260515; t=1793271483;
+	bh=HRlYvtp0NLbF/qBaWCj/ZYIcUA7W6S9v5stNA3ILEuU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=H3FsUol2krhWc0MOsqYSy4b1n5I/yEBuYGJf4ssu48mgFUkvW+0qm9DYEj2+lgKgm
+	 fFIbgCvBARf3WoqRQM+NLSRyK4kJJtyXKF974wXPAnGy4mgrBPrkqSLraPFBxk9NfV
+	 L82qn5kVuNTWaxKH3veWkSXybe31FXgnFOznG6WMGFZe9paGUxsFhSbjUdaJI80DAR
+	 97c4aNlaizxp0hL3Aeed13cW6uSdzU+3T6iuag663YJN6movTiPMGWocBnKF741/kS
+	 kb2KEPH80ay4scp18cnaw4P1KMwb8sIEcjlJBYfiyGroVIGDg6lz21BKMsUllLAqh1
+	 0vJP7Pj5AIqZA==
+Message-ID: <d7b1c89f-b119-4598-af22-1a7e4e4a3037@kernel.org>
+Date: Thu, 29 Oct 2026 11:57:42 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Rspamd-Queue-Id: 34D6AC0005
-X-Stat-Signature: ogkuju8k71gj54gdqq5ef1bsh7p5wqoo
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/46] fork: take mmap_lock before copying mm_struct
+To: Barry Song <baohua@kernel.org>, Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, stable@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-2-6f74bec9a5bb@kernel.org>
+ <auB-3BQn_rR6IfY8@pedro-suse.tail5790ac.ts.net>
+ <22b819a2-631d-468e-b724-770caf9f94e4@kernel.org>
+ <CAGsJ_4z3qgCPBpCDitVTq+xiGsS=-yEhKSbEO4Lbdn9MVAHK0g@mail.gmail.com>
+ <auHve-G8bboW77IZ@pedro-suse.tail5790ac.ts.net>
+ <CAGsJ_4xD_EU9sBZmJRb3ET3zfxnOnXJvZB1p_3pTLV=Y4xHPMw@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAGsJ_4xD_EU9sBZmJRb3ET3zfxnOnXJvZB1p_3pTLV=Y4xHPMw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A6973100002
+X-Stat-Signature: ta43dnhsiy8u6kaiqo3e8tgmedj7w4j7
 X-Rspam-User: 
-X-HE-Tag: 1793271248-795048
-X-HE-Meta: U2FsdGVkX1+NGpH6QZltHu2EwrjgzqkF5imwHE6IV5DU+be5/VcNx6s8blhT59RBqIlV3BcgaCT6BMEAzB1bMOYs9CMmvq+cpwL/k/HaYEB+8RptzBJT4gFT9i0w5wA15yNYMJ6u3Uw3/gJn0IQRg0YUp3201pcHxFZtN1/o7fy6vDC48uULvjUAJ0S/SU/6hg2qXuI8FZ0hW2JaAq5w+2lQjILucZd2RjHPJep295hNc9rdQ8L0eUYegK9vUsxmhKT0Ej5TziafnkUJnKwy+sgkr9nY8XTWGlOQ+wWdFtRkv8ms4+2kgG0tiqNtLh2mQ2MhoNBa3tyZzcGRvobPaDSMvVyLMCWuFLQEiQ2JZJ9O5T2V1HTV28LoXFlT9KymGD9LD+wb4r/AsRoki42EgiTneB3dUS4G0a4VK2WMlyigaOcPRDnPgUyZzbviiqYnC5tUzeYNQKotg4q5q5zi49IbrOCCfyYnnKfCWjRhjxO0QystA9qmPqroKgMQGzvkNWopyie/squu91J8TPUyrM3b+qQVOpOcR2WbAL8TwJMMF8NnNMR3v/YEAmP2ZxaIp2wy1+5qrM+7UxQ9yDkQbqII6qerN153OKoztC84S7V71X61Rb1la53JCA2TARW74o4cCFrr59WH2EADkN5Kt+upaTMJLBcw8sIUIpGyEAa6+zue3ZSR0ZBmesEIgx9a3th6tSUoATd0ZZ/AcRDgoMM2vwtYMRxCV8nhL6l7+THdGI5/OKRcXr5J/sGegeNDUFT2QWQKTFblKXq3of98K1yjIFp1FHuwsN5+owIdGRHaB4hICM6ZKBJkDK+29SOrNZK4decuo7tCB1LWbgkv1Fk4D1BO3cqM2kbRyM0pCppdDEVRHdYECQFWovrQmESa6XJYCvdG+fRIYdna1DWaj0y0WvEF0EjToGWQARGvGAmeNkgbr803WqLkgjX/WGD+YJmKEjIroGPbaHI9dGC
- LH20Bar5
- Itckk/O3M0fhS32gLy1EFGRNaJCD3m5kjAvPK1nLu8p/Nzqi8HmNV3eEFfA0eJLPGBoxShG3qgMo0UyAn6QnK94JNh8eBGR2BZwc0uQlxyc+7MAtKZeW24oV1H5qA3R8dG2r95um/ms6eST8OrocROnw91q6PqEXhQXwj6vhXKHnOflv76HLu8HF8oLqe6M1BWc6DNMFxTcy5bGQS8WBCxQXiX7pZE4cYochN4KmXAWhg87IgnBgpq7hJHOVHBcEDqqXODxb0A6sG8sNQA+lTzho+sfuahzqWgFs/4vfB3ugHqZB95bdVt88AbR60YzyTZoQri/3qGvjKmVaWl31zby5NJA9KL/zCDMhfpgLg8VyFcy8=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793271485-870568
+X-HE-Meta: U2FsdGVkX19ATT/jXIvJLzjnSke8MDYIPmnLl6mzrMA5wmn4JcPv31WnmT8XVDz/AViIoHTWdTzyNyEMzCSVP6VyiWy9072oZmky3hsy3ihLKh4oqq+w+JYt1nZyYR702VEi9M0Rh7bTCaW9QbG1ox4laYL68i46F8GHFKTW7F+io/s0eQ1X0ZbVHOee4AzbqDcTvxDa96zABtZQ9BK7jAp1vC6bIHs7zz5Z98y4fSSaMCQJeLkR4hBVDW5JiZVfcgRmpCWHVaJuHNlhWQ+sTwfzZNZLUFCyMzMs5f6bmRvoifVZbVOmU+hav5fsfVRcOZuLVAOmOm+0Jc1U07aLMi5+IZ1r6AOWOZFO5WIlEyQaw2Naiq/eMEZMnltx6Oq6vsb0vscOHNmmIqCQLTJijKKhXbYUbKUkXAvflrEXm3n2cVmz9R9Ztk/0Xy9ZWZj0bi7jSqxfQx+nT1ru85ktyLNkMdQhoWLkHdfx2hedCrIqHXR38sxdvE/aDlurTsIoLD+n4N+K97A6VADQjRlpxjuw/BUE5F3U5HJXopE+apuULSKNwusZr6UTI+ecBl6JSCQmC6ZyFkeBnAmMFRX8B8XSSqT9YIASHffw0PCCi6cKl8C7+gQi+Q/4FvUPpSqYkySLaHWWQGZgsi7KzAopjNwYXpk2X2Dzojg/G/F4w5+FrjKRfHY5O3ni01sISMQe+YHi0DAZjCdzSaQPZbfZ2UgNTzQw2MRHMWItSxXBdNhKukTUrisB9tFVuauTT0eFZUbScztKp3WCuUQPqb5fgLntACpKNrXN0ib7saGZzYMyYZQe4k4DH/RD+qzEroq2bSvZlusvVjEWbBEPtsSwlMUC43mS1j0O2JDUIa1pV570Hc6DNah6HZdTqn9cGscN26mqrcvYvAnR1K37eIuf2TWIlKr0YMctRJ5Ufxz1N+bMkOT+Fh18TSSgCypp0j2MJ2u7MDfb0zXZv0i+Kq8
+ qtTZnp2Q
+ svZLX+cALzzxjBCFzhZisFvplCrw2EpUV9XzMoeoBdY1VHtGBS198EUzkKm/kf3NM0EAPc56Bt49n0PF2pT0zHbeuV15vRdS6bsiCsrmLdjnnGT7HnaLxXOxQyFNxsD/Cc871yeHCkD2djl8BqJpU9vaqkBB9/AHa5HS8MvfepNK8t6U4r1N/ovPZQhgZeIGSAyL8rjDb5q0+TXbGL+7AfecIWMrlFafu6JOXTMU9mg96edjrySrZUqkxbyBbizglnEAn3zh81M5q5EZsr5QPAolghyzniESUWhNKa1BNU5Ab3HQQLuxhLyLNkv93HvK18Ofl5P89K0TiJWsVdvRIZ8F2yOv30923xjEYTnOF85fKEAXegMdcgLXSwa+v6H0RY1i5rOzasW+xyU09ccyv/We5bkVqslR3RPzpk0UnwLRXeDA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,68 +178,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 29 Oct 2026 11:43:21 +0100, David Hildenbrand (Arm) wrote:
-> Thanks everyone for the fast review and tests!
+On 10/28/26 22:11, Barry Song wrote:
+> On Wed, Oct 28, 2026 at 8:55 PM Pedro Falcato <pfalcato@suse.de> wrote:
+>>
+>> On Wed, Oct 28, 2026 at 03:48:09AM +0800, Barry Song wrote:
+>>> On Wed, Oct 28, 2026 at 3:07 AM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
+>>>
+>>> Regarding the race with memcpy(mm, oldmm, sizeof(*mm)), we
+>>> still have one [1] even after this patch.
+>>>
+>>> That is, copying mm_struct can happen concurrently with
+>>> lru_gen_del_mm(). However, this race doesn't seem harmful.
+>>> I might be missing something here though.
+>>
+>> I don't think it's harmful as well. mm_init() reinitializes those fields.
+>>
+>> Though I hate that memcpy. I think that ideally we copy by member and
+>> data_race() benign races, like what is done in vm_area_init_from().
 > 
-> I'm planning on picking these myself and routing them through mm-core.
+> Yes. I was suggesting something like using data_race() to
+> silence the warning[1], but applying it to memcpy() also
+> seems a bit too drastic.
 > 
-> This is a handful of fixes for shmem/tmpfs. I sneaked in a related
-> hugetlb fix that stalled upstream.
+> Another option is to copy members one by one, skipping those
+> that don't need to be copied. However, that would make the
+> code quite lengthy, and the copying might also be slower?
+
+The compiler might do its best to improve it, but I don't think this is the
+direction we want.
+
+We'd have to figure out
+
 > 
-> [...]
-
-Applied, thanks!
-
-tree: mm/core.git
-branch: for-next-fixes
-
-Applied patches will appear soon in mm-next, followed by linux-next.
-
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
-
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[01/15] mm/mempolicy: charge shared policy nodes
-        https://git.kernel.org/mm/core/c/9e3b76ba
-[02/15] tmpfs: keep the quota soft limits of an unused id
-        https://git.kernel.org/mm/core/c/85a7d29e
-[03/15] tmpfs: preserve explicitly disabled quota limits
-        https://git.kernel.org/mm/core/c/3283c3cd
-[04/15] mm/shmem: honour F_SEAL_EXEC when an ACL is set
-        https://git.kernel.org/mm/core/c/460346e9
-[05/15] hugetlbfs: enforce F_SEAL_EXEC in setattr
-        https://git.kernel.org/mm/core/c/73fe78f9
-[06/15] mm/shmem: hold off eviction in shmem_writeout()
-        https://git.kernel.org/mm/core/c/69634c49
-[07/15] mm/shmem: stop retrying folios that cannot be split
-        https://git.kernel.org/mm/core/c/52f47e06
-[08/15] mm/shmem: preserve data in clean folios when splitting fails
-        https://git.kernel.org/mm/core/c/06162197
-[09/15] mm/shmem: discard whole new large folios on fallocate rollback
-        https://git.kernel.org/mm/core/c/beba3c5a
-[10/15] mm/shmem: rescan after nonuniform folio splitting
-        https://git.kernel.org/mm/core/c/920600c0
-[11/15] mm/shmem: fix truncate hang in large swap entry
-        https://git.kernel.org/mm/core/c/29c3fae7
-[12/15] mm/shmem: preserve allocation errors when swapping in large entries
-        https://git.kernel.org/mm/core/c/f8bb4422
-[13/15] mm/shmem: fix truncate loop after boundary swapin failure
-        https://git.kernel.org/mm/core/c/9df76e1e
-[14/15] mm/shmem: fix accounting of swapin-error markers
-        https://git.kernel.org/mm/core/c/5dca4cd7
-[15/15] mm/shmem: fix truncation of files containing only swapin-error markers
-        https://git.kernel.org/mm/core/c/52c5619a
+>>
+>> Anyway, KCSAN reports aren't the most serious thing in the world, so this can
+>> (should?) be cleaned up later.
+> 
+> Yep, I don't think there are any blockers for this patch. I had
+> actually given my Reviewed-by tag before raising this race.
+> 
+> David discussed races between memcpy() of mm_struct
+> and other operations. I recalled another related case, so I
+> posted it here. Hopefully, I'm not just making noise.
+Not at all. I think that needs a proper investigation as well ... and I am still
+u clear how it would be valid to access the mm struct without the mmap lock (per
+my patch) that way.
 
 -- 
 Cheers,
 
 David
-
 
