@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB6F606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 16:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A51860A260B
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 16:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SaNj3haK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ApHOtygA
 Received: by kanga.kvack.org (Postfix)
-	id 07F0B6B05CD; Thu, 29 Oct 2026 12:08:21 -0400 (EDT)
+	id 1696D6B05D1; Thu, 29 Oct 2026 12:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 056F46B05CE; Thu, 29 Oct 2026 12:08:21 -0400 (EDT)
+	id 141536B05D2; Thu, 29 Oct 2026 12:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E87DA6B05D0; Thu, 29 Oct 2026 12:08:20 -0400 (EDT)
+	id 056F56B05D4; Thu, 29 Oct 2026 12:08:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE0CE6B05CD
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:08:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 210E916048C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:08:20 +0000 (UTC)
-X-FDA: 85376145960.23.2D9B8E4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CDAFA6B05D1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:08:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 289C21A0496
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:08:24 +0000 (UTC)
+X-FDA: 85376146128.17.60E255C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4C1D716000C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:08:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SaNj3haK;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 561F1C000C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:08:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ApHOtygA;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793290098;
+	s=arc-20220608; t=1793290102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iVtfPcXJU1Dl8ABOoiDUG8I8knzlj5kyhgqCw7tVF5M=;
-	b=lNMUX7wSXoKYNhGdZaLSs3qaUmpLPAWr/vkZtBjO7tSSRge8S21di0weeZAj4dsQ0/yoxX
-	bY4+Ld0pRaPFcvyrNjufYQzFTDxUcKDM0dmEA93O81z7noJGBXANd8z62Y3YSCeF6XYSQU
-	euMAJunuQYRbHSP2kVtEyZduCvBdnVw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793290098;
-	b=ApxFOeqTI4wjEeg+racHeoDjUpcnU5+tb8ODPSxY5UfHh0R2oc6TuK1dLIEcjIWh2QlE8m
-	etD8f+Yoc3pwaEC144Gq9///c3lkWHoEiUmNjBxzrbXkA2/ZC997LoBQ6+oHDbo+N2GNrg
-	Z4FW2W5NvzbxQSozdRvdZNiXDbLtyO0=
+	bh=j99u7pP3jHqCnfV5WtBilQ5GA+9ufePIWzsotxmVBBU=;
+	b=jpBcb9jBs9Kl9k9L879TZL0swPYmHnZ1ilOcCQocuIq/lSIt9GRAMjN3vBAn+1AbfwIqfN
+	SuP8iVNi/SnzXC7WFBqDCdyT/rAaejykIMq6jApdlEEWGpL8t6JVLJd3zO4PbQKnCKLI/g
+	CQ/Xsl5ry/aUnh75L/b3zAFFE7Flwz0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SaNj3haK;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ApHOtygA;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793290102;
+	b=ZURx9pwpqQFdfTm7mn91P2QNvaBvqceQX0Fny439QPRFRth5578ewSQhQPT9xE+W0hmz9J
+	8p6VbxduhYv07kn/dMhrASAHv6dernRba08lY/zCUPA+T7W0aVCP3y5n6/xTrtaKyDv/ls
+	9VFspHWG60LyDlYPCliWy/5eJq/BNq0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99645406F0;
+	by sea.source.kernel.org (Postfix) with ESMTP id B319440600;
+	Thu, 29 Oct 2026 16:08:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003F01F01825;
 	Thu, 29 Oct 2026 16:08:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20F91F01816;
-	Thu, 29 Oct 2026 16:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793290097;
-	bh=iVtfPcXJU1Dl8ABOoiDUG8I8knzlj5kyhgqCw7tVF5M=;
+	s=k20260515; t=1793290101;
+	bh=j99u7pP3jHqCnfV5WtBilQ5GA+9ufePIWzsotxmVBBU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SaNj3haKjPhS0EV5du9JfwoaG8Rin7tmXFLxPOygnrJjfpOEMsH1kKI3PDQ5XrA31
-	 elsbGH2JC31Wkk9r2juQXQaMil6mGer0JYCXeGnlS7/hHIbTjXtNGAiTEsULpLJxMu
-	 x7YJWpentI1ho5FrGAqj77ZuQkE0HOtBSPBH+2h5Sw/HmrQ7Qr5Z3mw2MkbbdT1YeW
-	 C4YSP8lYmdEQ5tm4M6lVTrBxeZPwia5DPaoZf9AuXRGXTJe+LAly8bh0nCkCaJXpRy
-	 gtiqGKF122MQYR1+vHibsjYN3LXS6PReB5hM7+APMQef/PKfJbmCFxtyQT0H0voNLH
-	 HSOMgvztVLvIA==
+	b=ApHOtygAYie4o6OfC8p8riQyw/hRIKEDv65ljECOi0GbxgJG8hhaZZCSLV1Kaqp/7
+	 zEmzGeCD+Mvtk8xp67myAQ9KKZCf2+iEgF4CbfBNy2R/ycA7Ayj9+MHo4CuSKSz61c
+	 97AX1RHHqupm/dYhQryHBkxTxqUwAlTMkzWKYY3l5Fy8hBc9SDCG//kmewuIXKdO8Y
+	 eNjVoewC3BCUxPV8ygBSL3Q+rzosvTCaK7215ZYw7839CsPKnIY9PEQWrVdUizRJtW
+	 0AdJ/13Y/G8NVfaL8At+9hFR7AjOYUc4m9btUTtz5wTd0beeT6PMjKoTfoXo0MFXr6
+	 uAmCFZl0/UEiQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 29 Oct 2026 17:07:04 +0100
-Subject: [PATCH v2 13/34] hfsplus: don't set SB_RDONLY when creating the
- attributes tree
+Date: Thu, 29 Oct 2026 17:07:05 +0100
+Subject: [PATCH v2 14/34] affs: don't set SB_RDONLY after filesystem errors
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-work-fs-sb_rdonly-v2-13-2f44f64f0b66@kernel.org>
+Message-Id: <20261029-work-fs-sb_rdonly-v2-14-2f44f64f0b66@kernel.org>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
 In-Reply-To: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
 To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
@@ -80,29 +79,28 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
  linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
  linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
  linux-xfs@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Viacheslav Dubeyko <slava@dubeyko.com>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4282; i=brauner@kernel.org;
- h=from:subject:message-id; bh=ceXsregJOQeiQPf6PAYWpIExvMexFMwQYxKrBcvN4/M=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9ztf/G9F4fqpwKhPTyquti1c/aoie/mDt5qzJk/o3n
- OiRrDI53VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRNWcY/ofueNnGaSAsE9ow
- Q/pZjtOVzvKr4cfmvV425Zn10Rk6T2sYGR4lKM17/HbTJjHHb7e8RaenbuR6nMZutGfxEYddod2
- vjJkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3169; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=aNVN7e+XHpPHKN9tOY57qjlfaGO8JcRJCASZQZdJlkw=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9zte/Ebh0pecj7qbpW7nSayITpWwXyx4OFPh5/sHzY
+ 0LrXyq3dJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkETMjw5VvW8XD2QTabio7
+ bnE42Suz78+K12eY1aYxP7iW9nt62i5GhqtLpBKr/zsWnqrKZ1e1dVY784VncfucO3Oyrwe/dPn
+ 4gQ0A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4C1D716000C
-X-Stat-Signature: fcy63w8bhbsqh6sxtfde6zzegy3adoic
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 561F1C000C
+X-Stat-Signature: er8ffqi7ik8q3kmico5zduat8d8dguhg
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793290098-352991
-X-HE-Meta: U2FsdGVkX1/1Ujifq1r1wWDo6tMvicximdW2oUvi9HlMKLfmfo+XjS3nFcFv/FSt4/q81bRLRsRwN81PY2xs98ree4cq12iHzVahs0SiKMRlSGhujJDhBeBJVWmzUHmTCZxaB76/zoWCoQHvaR3DD6mKB64eG9VhmUQAlTisbecz/OsQgy0xgpDDkUC+tWCww6DV49kWuevpmajQgj80PxZMQI+LPFpSJincrxbyeLk+DX99JdbavZNvU6NsWwOXSC7FKiYEwoN/gQBEPVo2oJ0dINAsTh2SSK0XaRL0YgMRrwC2+tZC6HiM1va+Kx/5MulK897hcoe/lWnO6c4QlfNw3tQ1sh89vztV4v0a3f+nDt+Ckwe/8uUy/6yqR3NylgTb4CNCPvT0oqkC9KgW0xXTIjjEmDuIk3n1oLsg//orOpm2iqRQAPWHBZV3YbxqhSQrgJkX+Gr9+J6zz7ArcMiRJgAi1mCsTiurTjoyWmKIxYcw9j/wxUxMWY9ciGpot9rOP5cj3L813g5TYTnHhQ1ouFiZdTOOps38HGdtlkjd1DHcJImZF6SeDyn7whkJXRm8EBjsFKRUneiiwnf0/Lc84KdQckf8mr+mvRNQADJ87Xy4KqmxsrWgqkuMKz7wGsqG0KtXv5grPbdF8pf3zB4ma/nJREtmlr2o5xMWeMrDN9zYVVtWxWfJCbr9dq5+/ZUPA16u0FRPjEkEPmY7SzGLE7lTXtM4fheEVddaexkTvz1hQbCGUyi0tef84JcK29epGflbdQ125STNqQNJbOFOBIJAi9vrLKye0Il9m1hUUbzCfJDAWjEpPA9JFkQt/Ud3we4Km+R4ajhF42FnjCHIHp6cPe5PAJfmSaKHLxpLYHCc23+MHdm+JABPYPJn5P/rZjmqtMnTXPb3pRSso4PMkegj5bdU4Lz54WSjItTzXdtR3JBKUHgIu1b7IXXum4lDERRjYJ4Zaive0Le
- 2GrV/6sl
- pRtdBWwT0270qZpUR5wijRst/E4cq8CzLTQjQub0PDXYg8X2fPMFjZ7whJsTVE2S6NWyUCl3VWOnwlUDngLrqgiSoXbc8UNb+UZvps3DKzx3IOcDmT9uv8ATS0ewYpDm6K67SImgI9dJMP5S9Bjl2lKXtM98FyUxpmx54tVIP8Z6N1GqtMR3iC16rNlTwL8Jg08VSaXdN+J1ty/eafnUqwk1VQM33g3ZYAJ4FLFfmoZZrhMWit8aKpSGtiCW8BaSSjSvDsD3E6o0Vbjz0Ij1XY2tRhjtcdvz6BQgwsRwtAQfVHGUp1FYx5+4oVCkKNXTiK1pNvb+c0G2NTS5Af55ysLyG/AhzMgschjaqZvaQ+ceFOfCQvI8O+cJi6PhRYMY9CBXQNHDJZF/UKTI=
+X-HE-Tag: 1793290102-634389
+X-HE-Meta: U2FsdGVkX1895lARR98Q4bxAI3FuP5NqPRkfTuRSNBCSLl1UJgUks/sd7XI3UnJbmsVzvALsUcTUwhRSMO2EqKvEl+dFQ92ZpChm83asZ4p/5pLxrM71OELekTkBDZCWGKQexFDQ42gxwZJqlQK8fuP0Ok76hKJqbsNLXrxmhRxyw/bc9KE+UsaJjvaIp/kH5mYT6Rav7ppMtyURiluUIY92sm1vs3zY07ck/llU1uxDtRU48zosSIsCUhNaTe214aGin6icnxQs8GY5YmJRKhZDgDMuR55xUTSYalC5Cd4IZ/OTh3QekYo905fFv+PMyXkuCygHcdjeib+mRpW7GVOU+jhD2nWhoxOU7/HpH5bWaWXILq1DiWgjJ/OChiA4HjmBnFeWsruUmpV6Gr8zqPz/Q4FaQfnaFKiM9BXzqNbIov83fqJgIN59RarJatCHearP8JyMCZREFxNmpMPBTz8TTq0XZA9HFN3OS02reQq0LFo6DpbTS9AlU8kficcbG2C1dzQt9kpfbii3iVKLWRRloS1VLGHqzjGNLRJ/+8xtpfEiS0OCgqigz8L68K7+ZxrHkWpGipqMCZ+mUr8IlKhmXosID/UkHwnvfnRVE70FQenEBHpWZo5lbJJa1MRcAT5Q1uxuS1coi9pf10UlE2T/IzHPAI0FfImPx63EnVHpPoz7P5L+zaOh70fut6OoOhGkermpvoIXZxHDw94u/hWAG6mtWCtRNhjjl0TaHctBQi6yz+QHXu2CETBkHxzGGJiTVDXGLsPHjWYPoP9Ep6ysGjp+lTnbBCHW7vXKJzOoSW3hbDjni4zszukV6COhXkdzf1rifpIcax6lJZQ2D6osaPJXlG4BFnJJcmpcigDcTBEynRfLm3NusJfy4NHlPNIH2VYDQl+fI/F9eTxNS7P+pYUE29lH/xMJLtX1WlVQ1z+XNj61iMp8TfF0kWXXe0da0iOy4ASCYtfRees
+ mgJGu9ZC
+ DYllolCIsOW9/nuB8roOUlgE1iAMVWgcDiFXtZ15b4r6gcJ4Q6cMl/MFip807CW7kraiWv/YUQ9Rjq+gNHtF2cBjpDEucydza/y/0zNkW9ZrMOVfLFnTblp8kbuK1DJHT+dhSnxVC1jsINI4wjKGyFqWKLvMIUUMofRiyDp7J51rLR9gLZRBXBW9+JaQYiTS+R5Yz+m9sywGJxrwMaqV3dNGVu2quyNTnguxk3mPJjIMsGH+Em0gT9tj1NdR4SsEigI8tmUZ0fN1yTkKBAisvBB7zOWSJpCDVlothFsC2kMFf6eebxuiao7krr5C6kC2sTxZekN5HgAtDwb4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,121 +109,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-hfs_btree_open() sets SB_RDONLY when the map record of a b-tree doesn't
-mark the header node as used. That's fine while mounting. But
-hfsplus_create_attributes_file() calls it too when the first extended
-attribute is set on a filesystem that has no attributes file yet. That
-runs on the live filesystem without s_umount and a filesystem must not
-change SB_RDONLY behind the VFS' back.
+affs_error() sets SB_RDONLY from whatever context hit the error and
+without holding s_umount. If that happens while the filesystem is frozen
+through bdev_freeze(), e.g. by a device mapper suspend, thaw_super()
+sees a read-only superblock and leaves the s_writers rwsems locked so
+every writer hangs.
 
-hfsplus_create_attributes_file() opens a tree it has just created itself
-with the header node marked as used, so there's nothing to check there.
-Move the check into hfsplus_fill_super() and do it for every tree it
-opens. No functional changes.
+So call sb_set_emergency_ro() instead and let the VFS refuse
+modifications. affs_write_inode() refuses as well and
+affs_commit_super() leaves the root block alone in that state.
 
-Suggested-by: Viacheslav Dubeyko <slava@dubeyko.com>
+A remount to read-write fails until umount. A remount to read-only works
+and keeps the bitmap around because evict and the last close still free
+blocks, affs_kill_sb() frees it. Writes through file descriptors opened
+before the error fail with EROFS.
+
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/hfsplus/btree.c      | 42 ++++++++++++++++++++++++++++--------------
- fs/hfsplus/hfsplus_fs.h |  1 +
- fs/hfsplus/super.c      |  5 +++++
- 3 files changed, 34 insertions(+), 14 deletions(-)
+ fs/affs/amigaffs.c |  4 ++--
+ fs/affs/inode.c    |  2 ++
+ fs/affs/super.c    | 14 ++++++++++----
+ 3 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/fs/hfsplus/btree.c b/fs/hfsplus/btree.c
-index bd4dbdbc8f98..4a67569050e3 100644
---- a/fs/hfsplus/btree.c
-+++ b/fs/hfsplus/btree.c
-@@ -270,7 +270,6 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id)
- 	struct hfs_btree *tree;
- 	struct hfs_btree_header_rec *head;
- 	struct address_space *mapping;
--	struct hfs_bnode *node;
- 	struct inode *inode;
- 	struct page *page;
- 	unsigned int size;
-@@ -381,19 +380,6 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id)
- 	kunmap_local(head);
- 	put_page(page);
- 
--	node = hfs_bnode_find(tree, HFSPLUS_TREE_HEAD);
--	if (IS_ERR(node))
--		goto free_inode;
--
--	if (!hfs_bmap_test_bit(node, 0)) {
--		pr_warn("(%s): %s (cnid 0x%x) map record invalid or bitmap corruption detected, forcing read-only.\n",
--				sb->s_id, hfs_btree_name(id), id);
--		pr_warn("Run fsck.hfsplus to repair.\n");
--		sb->s_flags |= SB_RDONLY;
--	}
--
--	hfs_bnode_put(node);
--
- 	return tree;
- 
-  fail_page:
-@@ -407,6 +393,34 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id)
- 	return NULL;
+diff --git a/fs/affs/amigaffs.c b/fs/affs/amigaffs.c
+index affa20d2b73d..40ee1998ff33 100644
+--- a/fs/affs/amigaffs.c
++++ b/fs/affs/amigaffs.c
+@@ -483,9 +483,9 @@ affs_error(struct super_block *sb, const char *function, const char *fmt, ...)
+ 	vaf.fmt = fmt;
+ 	vaf.va = &args;
+ 	pr_crit("error (device %s): %s(): %pV\n", sb->s_id, function, &vaf);
+-	if (!sb_rdonly(sb))
++	/* SB_RDONLY needs s_umount, see sb_set_emergency_ro(). */
++	if (!sb_rdonly(sb) && sb_set_emergency_ro(sb))
+ 		pr_warn("Remounting filesystem read-only\n");
+-	sb->s_flags |= SB_RDONLY;
+ 	va_end(args);
  }
  
-+/*
-+ * Check the map record of a b-tree at mount. hfs_btree_open() can't do it
-+ * because hfsplus_create_attributes_file() calls it on the live filesystem
-+ * where SB_RDONLY must not be set.
-+ */
-+int hfsplus_btree_check_map(struct hfs_btree *tree)
-+{
-+	struct super_block *sb = tree->sb;
-+	struct hfs_bnode *node;
-+
-+	node = hfs_bnode_find(tree, HFSPLUS_TREE_HEAD);
-+	if (IS_ERR(node)) {
-+		pr_err("failed to load %s header node\n",
-+		       hfs_btree_name(tree->cnid));
-+		return PTR_ERR(node);
-+	}
-+
-+	if (!hfs_bmap_test_bit(node, 0)) {
-+		pr_warn("(%s): %s (cnid 0x%x) map record invalid or bitmap corruption detected, forcing read-only.\n",
-+				sb->s_id, hfs_btree_name(tree->cnid), tree->cnid);
-+		pr_warn("Run fsck.hfsplus to repair.\n");
-+		sb->s_flags |= SB_RDONLY;
-+	}
-+
-+	hfs_bnode_put(node);
-+	return 0;
-+}
-+
- /* Release resources used by a btree */
- void hfs_btree_close(struct hfs_btree *tree)
- {
-diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
-index 6f240f87f8ff..58c780b09b6f 100644
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -362,6 +362,7 @@ int hfsplus_block_free(struct super_block *sb, u32 offset, u32 count);
- u32 hfsplus_calc_btree_clump_size(u32 block_size, u32 node_size, u64 sectors,
- 				  int file_id);
- struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id);
-+int hfsplus_btree_check_map(struct hfs_btree *tree);
- void hfs_btree_close(struct hfs_btree *tree);
- int hfs_btree_write(struct hfs_btree *tree);
- int hfs_bmap_reserve(struct hfs_btree *tree, u32 rsvd_nodes);
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index ff7d6b3336a6..532f23502df3 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -564,6 +564,11 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
- 	}
- 	sb->s_xattr = hfsplus_xattr_handlers;
+diff --git a/fs/affs/inode.c b/fs/affs/inode.c
+index c7de9c793ab8..009245ad6c99 100644
+--- a/fs/affs/inode.c
++++ b/fs/affs/inode.c
+@@ -173,6 +173,8 @@ affs_write_inode(struct inode *inode, struct writeback_control *wbc)
  
-+	if (hfsplus_btree_check_map(sbi->ext_tree) ||
-+	    hfsplus_btree_check_map(sbi->cat_tree) ||
-+	    (sbi->attr_tree && hfsplus_btree_check_map(sbi->attr_tree)))
-+		goto out_close_attr_tree;
+ 	pr_debug("write_inode(%llu)\n", inode->i_ino);
+ 
++	if (sb_emergency_ro(sb))
++		return -EROFS;
+ 	if (!inode->i_nlink)
+ 		// possibly free block
+ 		return 0;
+diff --git a/fs/affs/super.c b/fs/affs/super.c
+index ed8225b3c93d..655d7282a8de 100644
+--- a/fs/affs/super.c
++++ b/fs/affs/super.c
+@@ -36,6 +36,9 @@ affs_commit_super(struct super_block *sb, int wait)
+ 	struct buffer_head *bh = sbi->s_root_bh;
+ 	struct affs_root_tail *tail = AFFS_ROOT_TAIL(sb, bh);
+ 
++	if (sb_emergency_ro(sb))
++		return;
 +
- 	inode = hfsplus_iget(sb, HFSPLUS_ALLOC_CNID);
- 	if (IS_ERR(inode)) {
- 		pr_err("failed to load allocation file\n");
+ 	lock_buffer(bh);
+ 	affs_secs_to_datestamp(ktime_get_real_seconds(), &tail->disk_change);
+ 	affs_fix_checksum(sb, bh);
+@@ -82,7 +85,7 @@ void affs_mark_sb_dirty(struct super_block *sb)
+ 	struct affs_sb_info *sbi = AFFS_SB(sb);
+ 	unsigned long delay;
+ 
+-	if (sb_rdonly(sb))
++	if (sb_rdonly(sb) || sb_emergency_ro(sb))
+ 	       return;
+ 
+ 	spin_lock(&sbi->work_lock);
+@@ -550,10 +553,13 @@ static int affs_reconfigure(struct fs_context *fc)
+ 	if ((bool)(fc->sb_flags & SB_RDONLY) == sb_rdonly(sb))
+ 		return 0;
+ 
+-	if (fc->sb_flags & SB_RDONLY)
+-		affs_free_bitmap(sb);
+-	else
++	if (fc->sb_flags & SB_RDONLY) {
++		/* After an error evict still frees blocks, keep the bitmap. */
++		if (!sb_emergency_ro(sb))
++			affs_free_bitmap(sb);
++	} else {
+ 		res = affs_init_bitmap(sb, &fc->sb_flags);
++	}
+ 
+ 	return res;
+ }
 
 -- 
 2.53.0
