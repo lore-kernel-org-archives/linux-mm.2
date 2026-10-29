@@ -1,103 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DEB606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 13:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F86E606DA67
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 13:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ONahoAZC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fIXuH3oP
 Received: by kanga.kvack.org (Postfix)
-	id 5DFBE6B05B2; Thu, 29 Oct 2026 09:31:35 -0400 (EDT)
+	id 4D9E76B05B1; Thu, 29 Oct 2026 09:37:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 590EA6B05B3; Thu, 29 Oct 2026 09:31:35 -0400 (EDT)
+	id 489EF6B05B3; Thu, 29 Oct 2026 09:37:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480226B05B4; Thu, 29 Oct 2026 09:31:35 -0400 (EDT)
+	id 351AB6B05B4; Thu, 29 Oct 2026 09:37:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 265FD6B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:31:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B13111603DD
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:31:34 +0000 (UTC)
-X-FDA: 85375750908.16.ED425E4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 020F76B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:37:13 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E45140418
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:37:13 +0000 (UTC)
+X-FDA: 85375765146.01.BC781F6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E2407100003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:31:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ONahoAZC;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9A460160006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:37:11 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fIXuH3oP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793280693;
+	s=arc-20220608; t=1793281031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=N9FnodYZ3kBJhwYghvxHoiPkxtwL/OpTE20Oa6bvLyI=;
-	b=UwvLOjLIp+/CKdpUmm+DfxIIRzdF/N9oAJySDbRwXP4OpzWoQGSvEznw2ev6r81sdyKgXt
-	6uzQSaTMpDWyeNoHyJk4rnEMWfgYx9c3GLm2E/U5lVUpv7tigNUsgur2RFHLxIykQZKbD1
-	EpbxDflCHBrV94zMa26tO60QR5wiVUk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yusQ/gNp1al5ffFyiPFxovqkMkBkDvq1/V1A+G8KNP8=;
+	b=pMrbS7ZmmvxxKtgYJmhdEam/c8fVq8SgFyK2CQpRW0wXIZPrDnECN/1QnCrGQ7t7Qsf9Lu
+	uNhYRcxKInAZFExt21YJvgI6qN+3pXszbpjVbS+TYENkqmvND30h/wnPZKptVJSwEOlsIn
+	P8JPon7Afoazg524VZ39Zigvyhz4c50=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ONahoAZC;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fIXuH3oP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793280693;
-	b=1xnj5Y4rR++wrQQXtzWO2WOekSqlHunRRU2SyDO1uC0Gur2oUqZZJte05bc/pPD0vjhM++
-	9lpKw4kSYLHdvhbiZxevBULAI527AZYKNJyEUmccS+W1BXKYUCRSWLFWF3Se7Iv8D5AZZO
-	u7ZNmrTavD7uiI+tHG5XA+PCZE/64Hk=
+	t=1793281031;
+	b=0ubGFrQss/e9M8MIE1cmUiFRAYZAegBudZFJwnKF/tnSNE2elS5Q2PBuz/pLvUoxTeqXLO
+	9MVdtrUu20p+MDtLNz1e8YgRj4CRDHBURFN3HiS0NqCG3fdaKkW+X/U5APKf301pfqHo9c
+	D9AHRGXm6R/MXgDZZt3sN3Xq+vgelF4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D024C43E9A;
-	Thu, 29 Oct 2026 13:31:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A591F01825;
-	Thu, 29 Oct 2026 13:31:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C349E44057;
+	Thu, 29 Oct 2026 13:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2692A1F031EC;
+	Thu, 29 Oct 2026 13:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793280691;
-	bh=N9FnodYZ3kBJhwYghvxHoiPkxtwL/OpTE20Oa6bvLyI=;
-	h=From:Date:Subject:To:Cc;
-	b=ONahoAZCw2KJ4Ip3+oj3Vc82Z4vcxvJd7E5UWHxMmHv9YcY/XTkQOH2H1Be1hopK3
-	 ZIOznH/netbMBoS/abeX/4nSmNGOEM95BurjlY4RDXEXJKZq3zNN9v7qXiuUZB+BJI
-	 hZiG/9OAg/REp6IIZzU5TU+F0PjCHdz1E8gpG06IvM4xjLSQnEHB0SjgwMK9gdutpF
-	 rhQ51BnU54FBo3P5Lbwd18qMF3TBzR751uFxu29FuJtreV+XTwf2TMzLoHGDMwq5+u
-	 MMdXXTThHYdmtYWkIebO3Ic4X/prC3B9AKqipsKgULC4Hhq8BPt9Ou/XldNwanD3mx
-	 BBzKsO7dIzTyQ==
-From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 29 Oct 2026 14:31:24 +0100
-Subject: [PATCH RFC] fs: defer reclaim of inodes with I_METADATA_WRITEBACK
+	s=k20260515; t=1793281030;
+	bh=yusQ/gNp1al5ffFyiPFxovqkMkBkDvq1/V1A+G8KNP8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fIXuH3oPbKOQqHa+sb82A1lqdGEE0KcOgjF+PatDaFm43q0tXh6aZfgHVTPVkzhK8
+	 jR0yOowvlHMK1RAA3Gh8EHvmNFZ190IgWKCan6bh89OQ1KHejC1cxKJrwPjErgz80o
+	 GtZ2nO9DmLB3ry90DZ0LhmjrKBrm9bdOrPRHbKa5tH3YviCk87S5bMVhZiS13bbaTE
+	 diYUiyFFeavhUjIW73ix4dDOFSqJsVIrEM0rBfDWS9QMA8oCUgO6HMKrQk71Ol0HKC
+	 t7wrO2vnOAMFY65gPgYkcD9GNDNEe1748kh2kCS7PeaNEk3VFGgZjLQKCOwc3IihDq
+	 15/bp4/cVuzDg==
+Message-ID: <68fd8182-cdfb-4f11-95de-1472e6c92d33@kernel.org>
+Date: Thu, 29 Oct 2026 14:37:03 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/8] mm/page_alloc: reset can_retry_reserves when the
+ slowpath restarts
+Content-Language: en-US
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+ akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20261028211930.3504634-1-gourry@gourry.net>
+ <20261028211930.3504634-2-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261028211930.3504634-2-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-work-inode-metadata_writeback-deferred-v1-1-7e49f6c12b60@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XNQQrCMBAF0KuUWZvQhlKpW8EDuBWRSTK1sZjKJ
- Fqh9O4mFVcu/2f+vBkCsaMAu2IGppcLbvQpVJsCTI/+SsLZlEGVqqlK1Ypp5EE4P1oSd4poMeJ
- lYhdJoxmEpY6YyYq27rZVY3WtWoT07MHUufcKneB42MP5W4anvpGJmchnGgMJzehNn6uMyRWT/
- 5j8YTKvYFk+pzWGys0AAAA=
-X-Change-ID: 20261029-work-inode-metadata_writeback-deferred-94f716db429a
-To: linux-fsdevel@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>, Andreas Gruenbacher <agruenba@redhat.com>, 
- Josef Bacik <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>, 
- linux-mm@kvack.org, "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2906; i=brauner@kernel.org;
- h=from:subject:message-id; bh=l6UGRopzhmtN4DdQ66yhkoqkIV31utyxLuAkS4gfbXw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ99lrvoNhbZZ9ns3/vj8NbrxzZvfLEgRb+d0u+iGjac
- p+d959nXUcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBExNQZ/pc4t35s7lj77dei
- nUpiHBNlFyis8lRa4afCIuMkk7go4gvD//TcLfe8Vub1ndLXEFnkJKndyhT+r65jec3Np5uTjV7
- 3MQEA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E2407100003
-X-Stat-Signature: b9uqoarpbsuh7qmi19heoposxbhti14y
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9A460160006
+X-Stat-Signature: q6fd96cyx4zwzub66486ipw67d5imip6
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793280692-29511
-X-HE-Meta: U2FsdGVkX1+xS5yYS6ljHmRKMeBVCk6OcGF+yOZTIJkb5sHlL+E+cTTqIVhXYog/zJ+rfFS1/suagWPo1IAKz1Rg3ncVjSAQQSRqQ8pS/gw1wpQgmDmemU+B72TPr3KSGZ22PM+n9u53bcY/41HggTaEle+v8sYjtiNaGjF/hR9PCIyXhPBdtWhRfGyplYH22S3wB7SBW4pO4hYAKpv+8eKi8mxA4AH6RLtCYFCso/icQMJtnMQB6ymWlHwHBvANqgu2Fplan5rnBkqEL9Zb3kJ5TlrLZJXWLCHmsWvy3OwTikN2wlZ1AZ4OWSByahfUvRRqxDy9cppWJjaA84OMsVSWTS9ZXDpb5ub6ey7DoQJSs+e/9n53wqZdLjs5U0O/DQRm/tKwCP6vnNZWeWpU1uxSEDWCBwsG3UKgkDe8Sj3jItHoLCqazQKc59vspeP/8FhKu/noLEkPgIdR0v3nxNBTWjnjM4mkR2fuyhGWIFEvjODVv/OFFryxtBmEZYf2VjXQmG1atD3h33Su1UFqfqRuoWDqLfRQdOoly4P3DksATOLw41BCO4wgMykQTPygsjWdeOKhRMh6Ga6dczGNe4+Vh6t27JNsTgLpbowQeJrnMhAB5m969iaNs6llRVANMBDijqtm9bjxNXWy1iHf+GxoMqNLNUQJGGnIAHoM1U5Uxa5OV8uvzGcMhMfXCdTsVfwDTrJB+ukEFLtJAJVTdnh92uO9tUVON1dSMwLi4ilkoOaQfvRXiAeA/nqZuKAAtDotMpfx6uobWQOVTroHhHs979+wP1n42Tx1ZHh+/4d9DEOsP/Tz6+cPrWj8MnSnAcI4182j8AZs8vcOnD5hIc6+8+zbHvLmXH8cX28nCogS0EN6tgGpgIkDE7Fac0eWGbgLsGvq0qKgvhC4ZQ/fjgP2NehKw3DDnLsmSEZ+Z6JRMnUqbwsg7R3/w97lm7xVtJnls/8aIlew+ehT7Ur
- duA/57rj
- Z/Ty/oITL3qOO0WNQGRDzscifcvIFL+8xDLI3jW/HCamm2wuJAY5im0ZaMev2ZG4RVhChGn8Fppcq4fwkkUAuQquWI1gV0Ho+d58S95gepvWbON8cw5DnWNJ/SZC3dw9CKFu7AfsHTlEeCv8B/7dnxrgs/rZJPQ7Y+/3lxz2ditFs2Z7YNJ0FVRPzwCJkkEcgqrhMojLFi7QXFY0Q0dRqxYHz/PT0cl8JrdzhKTpkl0fcyqHLwJaAp5YSNcw3sryXa5onhp9NocbL2IV8twooz5BWQbfAcXVRpoKg0R1HdAWfoBDWdLMW3oj33DSkPkaWHOf7S3yaB+dEnNTXpO6H7tFUByKKokmol6BTOD3qQw806Qk9G1WPTkwRMz3j8U0b4D0t5hGrUbNxxtI=
+X-HE-Tag: 1793281031-861222
+X-HE-Meta: U2FsdGVkX18pazn/iLCCgDr8eK1m+Ww8uNGTOsLND6UahB9SPa5qA3gZiYCTT1kLjzmdqkaX0zmhcs+hwYoUsvZ99pvF0NnFcqheJGGfZ8e9ShWlQj4CGtZN+ys2r1jyToc+vDaU+tv6jsgsi9BZyRX3zxWJrlPEOdxLOHx7J7Mh5BHDJWnzxcGLoRHfwY/4bMyNeOmFMdDM4wU0pQh/GlhbQM1cmqlFJgPbNI5At/IaThk63iF/xzXjYCWzS+mW4VglVFsD4FbvhqGlJ0h01ADoR+ikWyTvDMLQJ7T5I/TyzYHyvHRFJs7W2TrbIBhQa1IecHomINJd4GJ+QcerX/0igEVeFtV7HqG6U5y+R0wtKF/G91F3ElGK84nrtgQ8TPKgAfgfzaO3YSTnGlzz+wsXwMGd+qIHAIT7fcJjQVMoClkFZ7PwVe4zkv23Px2e++3uvT0EvA6JfOQg8UoMM6mWmQrNiVNb3FHlrjkE7aQZFzWmuhN5YndqBtXvs/1AzHtJ7srUiODVlu7/nQgYGKPN5eSc4X0SN6ST9mTa2s48twMxrfFQ4HrN8hWMWvUiazB8i0Oh5DbDiY1I8Btnd5YVXhDsfWv3c32QyWylGNxFHw6beVAO2sm4QtGEnm1ImakowbvCXbZXsvdTjwzdRNtfNVV7n4+Cyx7kTgqFODybFMeu1+xd4Ecxodb3vFXsojLA8zfe6+y6+57OcubwqsmWA+AWORJcaABc0y03kUHmO+c8VjYXH5NNqhla4bI40AYBYfXzoLQg5SRe/Tmgj3GrXytnFP4PfQj8pPm/tx551/Mx5f2gwgD81VpsnuLLvQTVEADI1b6gOBJFdhdx/bWSx3vVTzFagk7cztn99K/nleASE+wYyovmgMuq+KQvZEZjaDKKJ0GdtS8G9GS8O2H7Eh0S6rPDrYg6GnVv12VOjZcUXSCGFdO/qJ2iCaEyxyOMkt8XP18HCtChumR
+ PPF/1ByQ
+ Ic9a7jmjEn+cHQ2EcGlPoHPJXNFSjb+Ey6K6aFj7tc5m5132sTYKEkGbaCiI5OS4Rh34940kskc9b4fIMNrkanMyXw3yqWBYpT5A+1R7KHa3kOSQY2G18IXV3eNVdtQFutxG6jWr1mPsWG+d+UC20ZuH5JY98YQAXXmBHZmvGuL7UyVLwggviOpU42ESI5IqBn74pGqrsFl1zESwjPAJapd43MdI4+8kEtsIClYsdvkFg+LYELKFu9H/NEqRJj5kvVQsazexEaMLZ1e1WNgqsbvmaOwQN2WavhNE2TQm3GZF5AbnujjAE/vLkXlexcxZencPEmDYl3XPFUPgPlK/tDW3Fdr1un6XbpZWEGURcqE5RqGQ/VZWxLGQ1p4zId2CoRfRu5YV/uBHk+1SaQMutKA5Zf815TpS08+uQtQktA5jMaTbLvVrVEHEUz/BPvSaRdzEOfKIF8bsPUbDkLtUFJcrwtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,70 +143,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-evict() writes out the metadata that I_METADATA_WRITEBACK tracks for an
-inode that isn't being deleted. When the inode shrinker evicts such an
-inode that I/O happens from kswapd or direct reclaim. Keeping I/O out of
-reclaim is what deferred inode reclaim is for. So hand these inodes to
-the deferred reclaim workers.
+On 10/28/26 22:19, Gregory Price (Meta) wrote:
+> Commit 2c4c3e29897d ("mm/page_alloc: simplify __alloc_pages_slowpath()
+> flow") retries an allocation once with reserve_flags when the caller
+> becomes eligible for reserves, guarded by can_retry_reserves.  The flag
+> is set at its declaration and never reset.
+> 
+> A restart after a cpuset update or a zonelist rebuild drops
+> reserve_flags
 
-Don't make the filesystems mark them with I_DEFER_RECLAIM though. On
-ext4 without a journal the bit is set by nearly every inode
-modification, atime updates included, and the mark can't be cleared
-again. So nearly every inode that was ever touched would end up being
-deferred. Instead, decide when the inode is isolated. Once a data
-integrity writeback has cleared I_METADATA_WRITEBACK the inode is
-evicted directly again.
+I don't follow, nothing "drops reserve_flags"? after the restart,
+there will still be a get_page_from_freelist() without them followed by
+get_page_from_freelist() with them, right?
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
-This goes on top of Jan's deferred inode reclaim v3 (cf. [1]) and my
-I_METADATA_WRITEBACK reclaim fixes (cf. [2]). It's an RFC because
-neither of them has landed yet. Jan, feel free to just fold it into
-your series if you like it.
+> and comes back with can_retry_reserves already false, so a
+> caller that cannot reclaim, such as GFP_NOWAIT | __GFP_MEMALLOC, fails
+> without trying the reserves again.
 
-[2] makes evict() write out what I_METADATA_WRITEBACK tracks. When the
-inode shrinker evicts such an inode that write happens from kswapd or
-from direct reclaim, which is what deferred inode reclaim is meant to
-avoid.
+The "goto retry" triggered by can_retry_reserves actually drops nodemask and
+recalculates preferred zones. Perhaps "can_retry_reserves" wasn't the best name.
 
-I didn't use mark_inode_reclaim_deferred() for this. ext4 without a
-journal sets the bit on nearly every inode modification, atime updates
-included, and the mark is permanent. So nearly every inode that was
-ever touched would end up being deferred. Looking at the bit when the
-inode is isolated defers only the inodes that still need it. That's the
-case Andreas asked about (cf. [3]).
+> Reset can_retry_reserves at restart.  Only a cpuset or zonelist change
+> restarts the slowpath, so the retry still runs at most once per change.
+> 
+> With kprobes failing every attempt without reserves and the first with
+> them, and a memory block onlined during the walk, the allocation
+> returned NULL in 3 of 3 runs, and a page in 3 of 3 with this change.
 
-Tested with the reproducer from [2] on top of v3: same numbers as with
-[2] alone, no OOM in the memory cgroup run, no splats.
+So IIUC the allocation was racing with a memory online in a way that it
+would fail if the online happened fully after the allocation. So this just
+turns part of the race window into the allocation's favor?
 
-[1]: https://lore.kernel.org/r/20261009133253.20102-1-jack@suse.cz
-[2]: https://patch.msgid.link/20261029-work-inode-metadata_writeback-v1-0-7d6c678a585d@kernel.org
-[3]: https://lore.kernel.org/r/CAHc6FU4Rf9-r8m8SSb=e0k0zyoFhQAdjupHMWvT6rStBshntug@mail.gmail.com
----
- fs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> Fixes: 2c4c3e29897d ("mm/page_alloc: simplify __alloc_pages_slowpath() flow")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 
-diff --git a/fs/inode.c b/fs/inode.c
-index c67ec6aa490b..9420afaaf7ce 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -1086,7 +1086,12 @@ long prune_icache_sb(struct super_block *sb, struct shrink_control *sc)
- 				     inode_lru_isolate, &freeable);
- 
- 	list_for_each_entry_safe(inode, tmp, &freeable, i_lru) {
--		if (inode_state_read_once(inode) & I_DEFER_RECLAIM) {
-+		/*
-+		 * evict() writes out what I_METADATA_WRITEBACK tracks, don't
-+		 * do that from reclaim.
-+		 */
-+		if (inode_state_read_once(inode) &
-+		    (I_DEFER_RECLAIM | I_METADATA_WRITEBACK)) {
- 			deferred++;
- 			continue;
- 		}
+I mean it's not wrong and if patch 5 depends on it (unless it also only
+fixes a racy window in the same way I think is happening here) then so be
+it. But the commit log would need correcting.
 
----
-base-commit: 548be8616e3e38a9dfc02bd766582ec0acf06647
-change-id: 20261029-work-inode-metadata_writeback-deferred-94f716db429a
+> ---
+>  mm/page_alloc.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 2daf358269ae..78569ac6f2d9 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4783,7 +4783,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	unsigned int zonelist_iter_cookie;
+>  	int reserve_flags;
+>  	bool compact_first = false;
+> -	bool can_retry_reserves = true;
+> +	bool can_retry_reserves;
+>  	unsigned long alloc_start_time = jiffies;
+>  
+>  	/*
+> @@ -4817,6 +4817,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	no_progress_loops = 0;
+>  	compact_result = COMPACT_SKIPPED;
+>  	compact_priority = DEF_COMPACT_PRIORITY;
+> +	can_retry_reserves = true;
+>  	cpuset_mems_cookie = read_mems_allowed_begin();
+>  	zonelist_iter_cookie = zonelist_iter_begin();
+>  
 
 
