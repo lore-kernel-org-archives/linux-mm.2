@@ -1,173 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62B4606A334
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE95C606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ywu0UgES
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S+7+kNzI
 Received: by kanga.kvack.org (Postfix)
-	id E3A566B05B2; Thu, 29 Oct 2026 10:28:02 -0400 (EDT)
+	id D57316B05B1; Thu, 29 Oct 2026 10:31:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E12556B05B9; Thu, 29 Oct 2026 10:28:02 -0400 (EDT)
+	id CE1AA6B05B9; Thu, 29 Oct 2026 10:31:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D00CF6B05BE; Thu, 29 Oct 2026 10:28:02 -0400 (EDT)
+	id B81316B05BA; Thu, 29 Oct 2026 10:31:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AAF9E6B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:28:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 207FBA7F4D
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:28:02 +0000 (UTC)
-X-FDA: 85375893204.07.1B2B2B7
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3875DA0007
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:28:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Ywu0UgES;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of griffoul@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=griffoul@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793284080;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 93CE46B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:31:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 075B71C3B86
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:31:33 +0000 (UTC)
+X-FDA: 85375902066.23.39EFFAE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EE9B618001A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:31:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S+7+kNzI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793284291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
-	b=fax5sXUdZoib42hjZQFSzY5fm4OxVM/ZD5UOOBU6hFtB/jW39ZPszIyZ560kMu2qLBMETN
-	AwRaH0xv5N/Yz4qTn6gOAP1xQA291tk5wOUcOjKStdxFUwhccUTRcnCEKpJipxWEN+LegJ
-	dBnhqrCgv3cJjJ4Bhb+/InAPQgtGRLE=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Ywu0UgES;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of griffoul@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=griffoul@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793284080;
-	b=c+a4E8tF6EDvMPfOssCKHx91QGu326Zev+kNJd1b6vsP7zpKdNZ4/xrAMgSuyrPX21z9FM
-	5sDv5l2rGO32nVP+BJa34fAwZZGi2HbwXs9VITkDvs5/B+M4kyU54SuHUjVOAfJpWGUulM
-	HsBM13oQAKXEGj8j7LVO9PpHQ5Tc/uE=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b4a13789b0so1091718a12.0
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:27:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793284078; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L7nJPTw96tPlQRAkEAGaKFp43WHibBiym/QI2I3BrEhOIIKwuEo/mAXBYt5qPSwooA
-         UlJ/L3pubxo7mjSo6U6vITLSIqtcOXrCc+6VJwhg8hOf29CcSeZFRlMIn/0wog05Cqri
-         mJg0yOuI6eT5Ww2n61/6qUBJhYNEz19pM+ZPHyAXwd2F8nu2kLugaoW6STcMYw2iI5ZT
-         /+yyrs48vZblUzKA+1YJ9EFBvjGS5le4yLCHK1O4qtpjQUpEhpS9fojh7wrrUAgZeBoR
-         YjOWC3LoXhBoEH1MnSgq39F5owD58O3lknf1PkdRk1Y212JUUhL4cPOT25e49sI0b0j9
-         W1/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
-        fh=KcA7aVq6IT6Q/s3+5AJmn01rCLItdqXNFnEsV26qO6I=;
-        b=bkpMVmteXOYeEaIE2gWSXA0i4WiHmN/xCswoxJp6vkKWIun/XRRyFXisaLAshFTX9P
-         h4BeIvDjFW+Rw/HM5pZ0IpeVSJoUn1ljgukqIIRuvJHty1viMnUV6qKIKO0BcmkFc5JP
-         IKJWvMKeljnZJFzDgN0OEJM/RKj8AlRnaOxXg3qMpNAWXJR6MSitCOuOhPj+UfXvGxHt
-         JGwalj8h1F9xwFPjbgLlY5eS3L6HPKxc/G/UjesMR7tlEvjj9AnkMoBpsZ8l8QoGnkpn
-         2eW47LvViUsq2Ez02duuVKi5zQO5MUeJRLrMTe/JY+KNpMxm9yv8XAKGQkDe7pC1Uhzk
-         LArg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793284078; x=1793888878; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
-        b=Ywu0UgESBG0SBJ7qMBBftD6g+c7Hlc7ThPzGRmqUlI7lDuH6ly8JmDoU8dWBf1DQOD
-         I8REF97gYO/IDA3b/Me4n8AVdo3QLCz83+2SZCzfcRGIW8Y6NvZI8qB6jTSsc5bEmqzD
-         esLlmVS6X/goNqJRYBYWw+pbN1BUr4i/AqKyblXduKoj5nTOsi3otOq+pXhI2w9sjmb1
-         J8zmTpI9urzyFw4he3LtUKayB2fbjGE6GRSYeAdasVSGujA1X1H02/rk000NVmSJPLI/
-         yyQrAGlD5A6BQZj9SojXJ+6gCSlfbE3+B5JjPhQgR7PkAJoCWatj3DHTqsFaxeD0H9m/
-         yz5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793284078; x=1793888878;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gO96Ic3QVCctvLn6OTuZFYeIzqeAoDK7wy79tyihoyk=;
-        b=dUsYlRH0xELREXLnxkj5xEcUcpBGtHVZNCrVO6KNwgvYOmY29Q6RDMYpQDN5DSQCgR
-         Y+apXtk5u4OR8bXlU0XPvYpbWt00je2Xmlsk+QcJVyHZKGf8Hhwne/gPdDAqXG4V0fq1
-         R+6La76csE3NUxQxH78PJQBhL1qcd/2+r3FJdCt1p3/U3taFGiiCq1QpXxe1LoYo+c9b
-         D8gf37JLimdMYTFL2qsm7bjaDZTZWznmfxi0vFpvm3Bjq1hh5CzxCHkyrcTmh6YEyK1S
-         aLNXJKvnnN4UpIzzo0Fq+VY2D7iP6+GaB8GMh+ZGEiuMxALymiZzdcdvoEabtALnzRzF
-         RKOQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwqllNHZcnkaYSBVK5h9c7lUFEYgd5YCVceDAla3/hniOlpwk1QlVnATpbPd2/AwTyC6crrIihBBg==@kvack.org
-X-Gm-Message-State: AFq9FYJzMAtsCIg2x3Kb0sje0UqpV2iC58HjPMYKeF7it5/4zAiwJHRe
-	o2nRo8ii3sP/F2e9m0jw2CaAIFhVADYEKZfDcGauKsLxV5qWIrTheQIGhUbeRCE1CheAx5Lu0vJ
-	httXgjnUMwJGPZ7yuYiZJG876+pji+oQ=
-X-Gm-Gg: AYBFou3pTw+Pql8kaKLpKutWjeGCJR3DWuogoWE/2F0V6PFy2EE5/C4YLwiLHiq+9O/
-	ssjHxd4bcFif+0K8IVAwSpFPet6OaIHLLlfvJ/d+Jz+ZrZzMFT4ruC+H3wZ6aDQIJkGDvsvFUf3
-	DVX/99lYS9pS9RctzQWmEYlGClqnoCRFGCjdFA+/OrIfAeTLp7KNnbZLYyGjDWY1FTqEAYbk8sG
-	RAV1vKRr1kRdDY4346D077D5d8lU1sTG5WCKvSsJb/LRvXhNdIJVMbOw9tu6h1acuhJK4P6+W+x
-	ZQ1pUUZDUnGOWXw6YNNoXb5rDiIxNfA9DG7RWHjuY5I/WMassbRph1kOg1Ij1vHg1l03gMsTu1l
-	dEWJU5zCFbsnlDbn/fpxbjsG405OAMNOHVe7DNqDVJQt58HnDpSvAJkY5N94ir8VfpaTBQw==
-X-Received: by 2002:a05:6402:4508:b0:6b1:bb19:de98 with SMTP id
- 4fb4d7f45d1cf-6b4b0b09dcemr2163933a12.1.1793284076799; Thu, 29 Oct 2026
- 07:27:56 -0700 (PDT)
+	bh=mqXY1OcC5ARgzPi+R8XxHlz09YM9rQmQCBQ/7d/aXCU=;
+	b=4spKq6eaa0vbDm6mqr7HnN7pAuh0DoSNvG148Cgw59tVrR/+5Wbd+vjIlxb5N8FdjWOjDq
+	2RStCD33OAvjmvG9iZJjb7YKzeR9Snl4w4lzsBeMN1q6cm3pYWiTYly8DQJiH3i3hvGMTr
+	wTuPzV+I1x/Xxo5MxVPLwt6tq5qIoRE=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S+7+kNzI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793284291;
+	b=d0X0WVOXk0FrNzXd/pQtzVIkr7VePnYh95oZrVIF/R5ZloHOsypFDJdyr0GRENvxIMpsqN
+	aD2kZ8jMfTE7oiAyNK0QzkJfnTW4MYYaSiiuyL2RbIxkalFjdz45CqaKaRxvSzQFDzYu37
+	CtHzm1t40E2RNjS25aKmHK5ZHnH5OvI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 34ED143CCB;
+	Thu, 29 Oct 2026 14:31:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB091F01829;
+	Thu, 29 Oct 2026 14:31:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793284290;
+	bh=mqXY1OcC5ARgzPi+R8XxHlz09YM9rQmQCBQ/7d/aXCU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=S+7+kNzIX2ZMdfMr/hr6l4bhKncW3jvATRjUZNWSosKkVDp+gfFYQ4kqjyiXjyyAK
+	 gs5kPXW8xG/0KT+HvaTk4xQTZL9v3hHSNBHmZpL8Pp7wWOJucUIy6ZbUAV4KXBR9x1
+	 WYtze+u+asK21+yj3mqxwfp+1brn7eF/wYYE4dYb/mAQp0dP7jvSdnFY4f35xAZv1W
+	 1wJ5WknxozTNNR3uE3WCHiS9+iQbSjFlGEJv0CzUW305T8TDzosH2HSKrlhpFrYV0d
+	 IFR/sChwTcpkPvhDuq0AUrOOuXSZfwDloqRcMjT2PK3CjH1QEgeNOgtYdTI1xnrx0/
+	 Ylgvn4jx6UkMQ==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id D7CDE198003A;
+	Thu, 29 Oct 2026 10:31:14 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 29 Oct 2026 10:31:24 -0400
+X-ME-Sender: <xms:sljjasqqEYG9A6MGaYyB4phrmTc2UR4CNo6cGE6o9_kIYPTyiUFFXw>
+    <xme:sljjamQukc3mBiYHzNxlKORPPuNOLZVFK_EljO4aa-UFfATXcXfDpFeOOR5ySp5e3
+    2W3oY_IYOPYN4_89WjzZLcMZHSh89B7LCmJxyMw7LqTGE41QgnPebOe>
+X-ME-Received: <xmr:sljjaocHgpSsSPKdmipnZxJV5PxaUcKSr06Kl253C0MMkKvw-vVhmbCWn5g>
+X-ME-Proxy-Cause: dmFkZTEZfGskmN/KIALm0CJB+7YSa6+/0z6TYSZsJYszNysoKl9ha19QRgLMFtDXR5YTJU
+    /ZtSllXOANZXHyFMLUtTazs3TqL4wn789TDCt9Clg6UWb/6TcorYCgPnRO1yG/d+ASCNki
+    ef8dq7SubLCazhJOigTaPhJlXCh+AauxneJX30NAaSC9cSSvOTgd/RYPeHFhgwmIxxm9Yd
+    XUnA7opn8M6R0HNovJsW3EeF88ulEUJFLh9pAaky7aJDjYSiN5BtFPOV7TerL4btsXoEPq
+    cp6ZV2vmAclzI+C8mBPXQk99548l2lhaunvBg1pEEnk0CURYD04FMA3h2gwijrqVLBamEX
+    +KoxpWN36HbdMDBokyDgZcydhpS1f9KgI8PaFAed8ADm5abJnc6vuHwnggI8aO9IAtffDI
+    ipCbDbz1M0bdaXw7zTOgeTBkOyOY6iObnEFXJnh8OiD+rhFLRxfOgjlS5bLqPRuXOEA7dc
+    zuovqc0yO0PHGX5SV5M+OqtwEuHlLIRmba3XmtKAmvZQn97ay5w+2tiMYysvPf4WcLEm0y
+    mClz5VTCDYXL6iInsVZEfxH8cbr6DpXm1B3a05NNC7Hkc4aI3diZhsPjvb2EocdX3sTJRy
+    rSmOHFVblnqwyUxgB9IIfYCWAnZ7TnDQAP2A4F7kC+UwttipX8k4t0q/Ks7w
+X-ME-Proxy: <xmx:sljjao3Ii9-U-1biFjXoSLWZyLnxsgW96gQbMsquBxpP-XHQC1zwiA>
+    <xmx:sljjag3mwxkldqLKpz1tkxq02ICrVtXAsM5jokWmrb5wmUqUqwkszA>
+    <xmx:sljjahBJ84sMoOzMrfPwa0DHewrgQa8hcJrYxzjtmbxK_1HTl4OrnA>
+    <xmx:sljjan8zr5rDWNd6RB2AB-_VoITYIhzyaD_PXTriegZPBPyEHpV1SA>
+    <xmx:sljjag5aYtzxuNskXd_FD4Xl48JUUUMw0e1pRDrBF8NHnpEZV_hBWtA3>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 29 Oct 2026 10:31:11 -0400 (EDT)
+Date: Thu, 29 Oct 2026 14:31:10 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Hugh Dickins <hughd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, 
+	Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+	Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Gregory Price <gourry@gourry.net>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 42/46] mm/huge_memory: split huge PUDs when adjusting VMA
+ boundaries
+Message-ID: <auNYPPlCnLdN88t_@thinkstation>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-42-6f74bec9a5bb@kernel.org>
+ <auMxQPze5cOvGbCe@thinkstation>
+ <9f4128a4-85fc-4f4b-ac41-b9d348f56e37@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261022-gmem-alternative-providers-v2-0-5dd1dc6c660a@google.com>
- <20261027154649.91571-1-griffoul@gmail.com> <20261027154649.91571-12-griffoul@gmail.com>
- <CAEvNRgGn09qrCZjUM5sdqQohPWE62GN4c52iK7ZV_gi5wro_Ww@mail.gmail.com>
-In-Reply-To: <CAEvNRgGn09qrCZjUM5sdqQohPWE62GN4c52iK7ZV_gi5wro_Ww@mail.gmail.com>
-From: Frederic Griffoul <griffoul@gmail.com>
-Date: Thu, 29 Oct 2026 14:27:45 +0000
-X-Gm-Features: AclHuK_kIg9XZ2cFnZL0tpsqSJGFt3xKJOd_xbKB2NrNWZ3oy-bCAgu9pf3hZSM
-Message-ID: <CAF2vKzOTd=0rmMXvtAE_SzbbZ3C9n9jTcjM+Rj=ovFoYBsXCKA@mail.gmail.com>
-Subject: Re: [RFC PATCH 11/14] KVM: guest_memfd: Add kvm_gmem_restore() for
- PFN mode providers
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Alexander Graf <graf@amazon.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Alexey Kardashevskiy <aik@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Baolu Lu <baolu.lu@linux.intel.com>, 
-	Bill Wendling <morbo@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Christian Brauner <brauner@kernel.org>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Connor Williamson <connordw@amazon.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@kernel.org>, 
-	David Rientjes <rientjes@google.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Erdem Aktas <erdemaktas@google.com>, Frank van der Linden <fvdl@google.com>, 
-	Gregory Price <gourry@gourry.net>, "H . Peter Anvin" <hpa@zytor.com>, Hugh Dickins <hughd@google.com>, 
-	Ingo Molnar <mingo@redhat.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	James Houghton <jthoughton@google.com>, Jan Kara <jack@suse.cz>, Jianxiong Gao <jxgao@google.com>, 
-	Joerg Roedel <joro@8bytes.org>, Joey Gouly <joey.gouly@arm.com>, 
-	John Starks <John.Starks@microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Justin Stitt <justinstitt@google.com>, Lorenzo Stoakes <ljs@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Michael Roth <michael.roth@amd.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, Oliver Upton <oupton@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Steven Price <steven.price@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Tarun Sahu <tarunsahu@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, x86@kernel.org, 
-	Shuah Khan <skhan@linuxfoundation.org>, Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, llvm@lists.linux.dev, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3875DA0007
-X-Stat-Signature: drja8t9hniufy3fqq8n81frytymwa7f6
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9f4128a4-85fc-4f4b-ac41-b9d348f56e37@kernel.org>
+X-Rspamd-Queue-Id: EE9B618001A
+X-Stat-Signature: hq1eapo6a6oohzyk8xcezkgbegsmrf9f
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793284080-617470
-X-HE-Meta: U2FsdGVkX1/GMxYxGrZzkWLGimXja2hp8AEVuk9XPXGhTQalet+f9GXT3EUi5LKL4u0Y57cPapYHkgMFLHz+ZNdUr6Im34CCtuZM8eziARJFITFbVpiuBskeyA93PqK9hIqtep5Ot0hKgzQk+qUTNVslnw2SIEu4yLbg0rpZWd3l4qpkaBDvqkeNH55tWsDQlZBQICRZ+NlPOyvHemWxykBATcrV0yqWqWlKB1rvWZCv4TzU9Cu34KgHehP8G8IYxcnWl7vaAMfdnxdiDE8vq33G/IThFhw92L8lbRQkc+ZAzaaquX2HhrZVegqiAdlb8/m+dp3pV9yKdiQuX4jQc+HuTRX1K4wF04taCAfxRJ8bLPbt7hc0SsYUBuRNyElhoc1R/jynj9FKYjWyyDSI9CURjq6GO1pLrUEhS1Ysiz7NJ/cCjkTC27jTd/VANtSkHSjmeJEXmv4cfkPBP37udoGMIOMQEJ++3uMWbFV68QAQUWGBi/jCsJTGzaB1AjVzc6sGygCHq6LbIjgahD+b+ej/PSpUGeNn8xn05LnHZM2o1gu531lwkgZM82/CbipcXnb5evQQ46WRxJ4hA20nVhG1bJXk6hddniINR+UgpHz6DAKcZshGPUxWcBZSXJydks9RrsRhc5JtjIQHSADXYcIl5BfBlxY7OwFDWD0OSUFFuWXRW1B5VKYjcG+udha2dOaH7eZqqqF+hZHPQLDGrWElr2lJ9FEQX+o1vhsl40OB1tc9zTR5UguB7+X2QrQmIa0s1K5A67BH5nkwuv/KKUD12n5hn5jjgaM9b9WfucVehiDdWvXJ/48kcnqS82eWdOmSpnPbP7qCTBxok5J3CBnpUzc8GpaAdJ4PZpCXTV/HQ/oVyNnznMPVZvvLLeYbe0VgYv8OJtz60TTKyk/LRlYNhVmQRazBIGXoIYDmibV0cbXsbgLjrnSxqmKoPdfJNyYp8oRMRjr4i1GM5bl
- G7fmn3yY
- 6y86Xmj8+vd16EgQPJoDMM2E4XJ/gm/45CCN3qrwQFeNYwDq5pDMDo8fLC+w0RLayssvE10ziufGaE4YIpkaW7W2jPWKZgl22XJKZdt9qp4JZ9grL9z0q93GnnLKSI8oH4Br+earVCKZIjb4H/Ze2+vuZiTk15A0fwb1meWm9W8WDiiRKg+8sYlDIhVFi+RQ6IqKWH+OcICRBu5qmnQDrIi6x1N/VGo5PU6EEdt9ORCIVSXY/cnPKF3zeUZJ9Qi6o43vcBf0z3iExd9nSSWeWCsB1S+mKx45xDMk2L9fXMbPbp2aT3x3MhPyq5cHXkde6jebvG0+gzPPSJlThmFuCPpcF5gZjsJyFIutpwt05DzzPXUrq6OuPT6aaHAprcjCO6l6/NDCvtE1g5OpIKZOrDwLIFAXX6eC+uwPUSi08fD/WtDgWIk1l1JIPqkRIM0c6RvBqqrFFLz2XVdsKICPA27KkGmgqmotvtIoiO+yj4RVE97IADjtVwpeaWDwwRFAFGN6fiqOZLT3D6a1DSaU8JpWAWw9U6Pbj4nrF
+X-HE-Tag: 1793284290-892573
+X-HE-Meta: U2FsdGVkX196Br6QO9TJkJK1BZKY6/N1TFgcoKhpZzIFrnSbEyntXTU6uVM4WkotQORLg+tQjsD+gKGxV7LXFqqYeaXv4StL9dKPpXBl2QawKAQm/yGVsNvFVs24HXZO+HSYnBaf76rJj4sQpQ9y6zeJJ6KsrQffbKAW8jv6fBKspSuESG1XvFi7xEBWiKUoO4DSDFRyoiazpcJfVOHCKWY4vd1WbAzfWLI4gnkhwUoWv0rbg+FtARIjOsb2xOd0NZ9/UrvNiyE7bvnDuiNVATR9FHsqlJVtvSqGHppbnE6o4HEDOsa/tuXwWSm0fR1tcZSxce3jqehQ/vEJwiE6FJjJWKmF1AGRBsyRfn3eOricQHwwRvSvXFFwuvFDOM3plFSiRTQHr+NreyVUFg2MrOqBZXaOPozai2WGAng6rEsaLQb07K6SmD76OgCwZCncPsP9eGJrefAHqwlB3KDSWSZjWcr+J6zj6RkE0dAg16PzfwzS6l8e1VYz/OQp13vKmgpy17Ae+XbMBBI6QdEupkGWqakzuSx94UMU2tdg/81LmqpDZ1T5R/L8qHfgNqC+Wo5ct2CnJ+4/N8K7XiOwt9baU6EdsU1/ksSLDjyvAhcarERcozv8qJmPf+FDUMpC1dIcD/In1VyXLjmOXYqR1bTnoImSxHjnYf+rT18LBQjhYXDn7p7gNX4otIeY2AELcETpDXr85XBJ/1HQcd/z5PIZbYkBGRGQkyMYLr12Eyrt2I1O4RTts3oiXXfKrR1MiIeCNdv85KXcpnNDAU/nEHY3+9kYG2AsZBweOS0GWdCHOVSAD6BYzf1kq+CvvQUfgFLh2TVdz+EIJjhs8RCwzctE0Fp2OnVY8WOvvaehHF+uQLXQbHrohJRIznoL096YB6NWrTOEB1KbWq1+cXblcPi35toTv5jD2nUOmKVh8og4YBaOCaxxz46/WHl5i28vBPmRtM5CHdpALVI5hTK
+ 239+XhxD
+ m43+kBh4aCIO7/dGpNivSzVFd5gbkBnb5aLGqYILSSDRtQYOO2fmjOlaZMkck35upiBUrthjPH4/cUC+p/f8XdYVTxHePFJHQ+4a3aG1qK1HNBZ8mqoaWv5I/q97CcvXmCLdql7sLKtovLgNST6Ff6ASXs6MFAHmQm8WAtZXuZeTHd44iEaxtUlYnhiAwVWsuURDwSnkCLI8jYRt6a56Z50apDn4OMUxxvOANLHlWfuNgyBg6lHByMIm1tT4uYg+wEfzv/LCU2jOm5ftc8+H+QisGBrT4DQMBmoke6vVd6MFuF5/IzY1Y0tmYN3Pe/XRIueFHa2R73wn89HnXK1vO6FOFwSeJafQlxg4e7GHA9WXx0QWsXUBDU8gUcIe1K0AC/NkND2JwH/3QKdeL6Z3a6u8M0KVNE38xlf6zpjpnZq1P887GJsMu6GKpDhPxAC0Gl441X7Bfz+RM7+sJQ+uMOoxTMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,60 +149,113 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 05:52:40AM -0700, Ackerley Tng wrote:
-> Fred Griffoul <griffoul@gmail.com> writes:
->
-> > kvm_gmem_revoke() does not fit: it would
-> > zap the guest's and the VMM's mappings and reclaim frames that a guest
-> > may already use.
-> >
->
-> I'd drop this paragraph from the commit message, kvm_gmem_revoke() is
-> the complete opposite and isn't a candidate at all for the goal, which
-> is to notify importers that a page is now available (and they can map it
-> in).
+On Thu, Oct 29, 2026 at 03:24:29PM +0100, David Hildenbrand (Arm) wrote:
+> On 10/29/26 12:45, Kiryl Shutsemau wrote:
+> > On Tue, Oct 27, 2026 at 12:18:02AM +0100, David Hildenbrand (Arm) wrote:
+> >> PFN mappings such as VFIO PCI BAR mappings can use PUD leaves while
+> >> allowing VMA splits at page granularity. However, vma_adjust_trans_huge()
+> >> only handles PMDs.
+> >>
+> >> After faulting a writable PUD-sized VFIO BAR mapping, changing its first
+> >> page to read-only with mprotect() makes the PMD walk treat the PUD leaf
+> >> as a PMD table. Applying MADV_DONTFORK to the first PMD-sized chunk leaves
+> >> the PUD spanning two VMAs: the PMD-aligned boundary skips splitting.
+> >>
+> >> Walk the page tables once at each adjusted boundary and split a huge
+> >> PUD or PMD leaf as needed. Handle PUD leaves even when the boundary is
+> >> PMD-aligned.
+> >>
+> >> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> >> ---
+> >>  mm/huge_memory.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++++--------
+> >>  1 file changed, 60 insertions(+), 10 deletions(-)
+> >>
+> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >> index 08e58cda7d37d..d090642ac8c2b 100644
+> >> --- a/mm/huge_memory.c
+> >> +++ b/mm/huge_memory.c
+> >> @@ -3503,16 +3503,66 @@ void split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
+> >>  	__split_huge_pmd(vma, pmd, address, freeze);
+> >>  }
+> >>  
+> >> -static inline void split_huge_pmd_if_needed(struct vm_area_struct *vma, unsigned long address)
+> >> +static bool pud_split_required(const struct vm_area_struct *vma,
+> >> +		unsigned long address)
+> >>  {
+> >> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
+> >> +		return false;
+> >> +	if (IS_ALIGNED(address, HPAGE_PUD_SIZE))
+> >> +		return false;
+> >>  	/*
+> >> -	 * If the new address isn't hpage aligned and it could previously
+> >> -	 * contain an hugepage: check if we need to split an huge pmd.
+> >> +	 * Only selected VMAs support mapping PUDs for now. Lift the
+> >> +	 * restriction once this changes.
+> >>  	 */
+> >> -	if (!IS_ALIGNED(address, HPAGE_PMD_SIZE) &&
+> >> -	    range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
+> >> -			 ALIGN(address, HPAGE_PMD_SIZE)))
+> >> -		split_huge_pmd_address(vma, address, false);
+> >> +	if (!vma_is_dax(vma) && !vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT))
+> >> +		return false;
+> >> +	return range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PUD_SIZE),
+> >> +			    ALIGN(address, HPAGE_PUD_SIZE));
+> >> +}
+> >> +
+> >> +static bool pmd_split_required(const struct vm_area_struct *vma,
+> >> +		unsigned long address)
+> >> +{
+> >> +	if (IS_ALIGNED(address, HPAGE_PMD_SIZE))
+> >> +		return false;
+> >> +
+> >> +	return range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
+> >> +			    ALIGN(address, HPAGE_PMD_SIZE));
+> >> +}
+> >> +
+> >> +static void split_huge_leaf(struct vm_area_struct *vma,
+> >> +		unsigned long address)
+> >> +{
+> >> +	const bool split_pud = pud_split_required(vma, address);
+> >> +	const bool split_pmd = pmd_split_required(vma, address);
+> >> +	pgd_t *pgd;
+> >> +	p4d_t *p4d;
+> >> +	pud_t *pud;
+> >> +	pmd_t *pmd;
+> >> +
+> >> +	/*
+> >> +	 * mmap, VMA and rmap write locks protect the walk; the split helpers
+> >> +	 * take the page table locks.
+> >> +	 */
+> >> +	if (!split_pud && !split_pmd)
+> >> +		return;
+> >> +
+> >> +	pgd = pgd_offset(vma->vm_mm, address);
+> >> +	if (!pgd_present(*pgd))
+> >> +		return;
+> >> +
+> >> +	p4d = p4d_offset(pgd, address);
+> >> +	if (!p4d_present(*p4d))
+> >> +		return;
+> >> +
+> >> +	pud = pud_offset(p4d, address);
+> >> +	if (split_pud && pud_leaf(*pud))
+> >> +		__split_huge_pud(vma, pud, address);
+> >> +	if (!split_pmd || !pud_present(*pud))
+> >> +		return;
+> > 
+> > This looks wrong.
+> > 
+> > We should bail out here if PUD is was a leaf and wasn't split.
+> 
+> __split_huge_pud() must split a leave. Either by zapping it (what we do right
+> now) or by populating page tables (as in Usama's PoC).
 
-Sure, I'll drop it.
+No, meant the situation when pud_leaf() is true, but split_pud is false,
+so __split_huge_pud() is never hit. pud_present() is true so we proceed
+to pmd_offset()
 
-> provider --1--> guest_memfd --2--> IOMMU
->
-> 2 is definitely required, but why is 1 required?
->
-> Between the first .get_pfn() or .lookup_pfn_range() () and
-> .put_pfn_range() or kvm_gmem_revoke(), the provider should consider the
-> memory in-use by guest_memfd.
->
-> When it's in-use by guest_memfd, then guest_memfd should use --2--> to
-> map into IOMMU page tables as necessary.
->
-> When it's not in-use by guest_memfd, why would the provider force it
-> into guest_memfd?
->
-> If the guest VM knows that the page is now usable (some other
-> communication channel), it would touch the memory and do a .get_pfn(),
-> that would be successful this time. Perhaps that's when --2--> needs to
-> be performed?
-
-The IOMMU never asks, and the CPU may not touch the page before a
-device does. A few cases where only the provider knows:
-
-- The provider gives frames back with no guest involved: a page that
-  arrives during post-copy, a range moved back to the VM, memory given
-  to an overcommitted VM.
-
-- The guest already gave that IOVA to a device as a DMA buffer. The
-  device writes it without any CPU access, so there is no .get_pfn()
-  from a stage-2 fault, and most devices cannot fault.
-
-- A read-only frame becomes writable. KVM finds out on the next write
-  fault, but a device write to a read-only IOPTE just fails.
-
-kvm_gmem_restore() doesn't push the memory into guest_memfd: guest_memfd
-only passes it on to its exports. Stage-2 and userspace mappings stay
-lazy, and iommufd looks the range up again and maps it.
-
-I'll make that clear in the kernel-doc and the commit message. Would
-that work for you?
-
-Fred
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
