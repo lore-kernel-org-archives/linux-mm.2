@@ -1,128 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566C0606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 08:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C11E606A335
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 08:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eU1+Y3Wz
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mjqEq3Ve
 Received: by kanga.kvack.org (Postfix)
-	id 60E496B00EF; Thu, 29 Oct 2026 04:42:41 -0400 (EDT)
+	id 464616B05B1; Thu, 29 Oct 2026 04:44:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BE2E6B05B1; Thu, 29 Oct 2026 04:42:41 -0400 (EDT)
+	id 43B286B05B2; Thu, 29 Oct 2026 04:44:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AD626B05B2; Thu, 29 Oct 2026 04:42:41 -0400 (EDT)
+	id 378036B05B3; Thu, 29 Oct 2026 04:44:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 24A916B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:42:41 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A1CA31A0339
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:42:40 +0000 (UTC)
-X-FDA: 85375022880.14.8B57B10
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E714340008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:42:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eU1+Y3Wz;
-	spf=pass (imf01.hostedemail.com: domain of xiaoleiwangxiaolei@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=xiaoleiwangxiaolei@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 18E986B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:44:11 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8CF201202AE
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:44:10 +0000 (UTC)
+X-FDA: 85375026660.22.87EB58A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DF8DC160002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:44:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mjqEq3Ve;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=jani.nikula@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793263358;
+	s=arc-20220608; t=1793263448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=eJN7tODtM96gshRP+uJBFf1UOunuTrvylT+4Jwns9+g=;
-	b=l4mqLzYGEQo8gv1eREEfAFjpvc9lK4S9sb0YDa6u4KBYM3q7P1hzDUGuFdl8Uj6xfE9Ju4
-	7GZFpdAN4U4Qe7QN2ttyCWT444Q/ByNChPSDP1iDvweXlHreTgPTR6yCHNp9aRuRXy8Dhp
-	6Hh7UGpB4GBTXdqLONPhj6DR1iW0kdg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YDl9p7g5quENVJzD97vvD5OqlYe1ysXU7bQyzl1X/uw=;
+	b=F6oQxUeseMfz8e6ragjhO0BLEuyhomkYI+JpHSKeR6OGfbIX7KPKuQsvRVub3Bp/0ahQoj
+	RwBekW7ISDd4mfbV1IcMQOFCXjRoV6BU/WQlaw4eZTTvCHAQ/mL3S+Ic4KE9oHEUdqqvAK
+	b0pdXy/D+iyfk6Lgn1FuVGheyFUwpz0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eU1+Y3Wz;
-	spf=pass (imf01.hostedemail.com: domain of xiaoleiwangxiaolei@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=xiaoleiwangxiaolei@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mjqEq3Ve;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=jani.nikula@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793263358;
-	b=j26mn5VOQJmD/U91uqY0KzF/mscxmsZQPbXiCpigOfEPPsyX9oRKr+DbfLGYvb/xHe//sD
-	+KX5HClBheQlXbacVsD8XYW9jmWSSlvGRYCIM66HsKzp1MzNATw+OFkSvMgKm8Xu57oTVa
-	zZ+r2uTUY912Swc6BMbrg5lS9GZXZ0w=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-89f639ba307so749407b3a.3
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:42:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793263357; x=1793868157; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eJN7tODtM96gshRP+uJBFf1UOunuTrvylT+4Jwns9+g=;
-        b=eU1+Y3Wz8W1cHg2PckCvRLsoblTaQMhpK9h9ymLUK6tLN0q7pLX8gpZdF5oVQ0uy8F
-         T0ebD+cEIEfTk5aXqF2A8Fmg4nz6qFA5VrfOOAiCSSpyRbftNwQ9EBnMK0cJRYCUOet1
-         jTHhf9du4Kzh1YJ+qG1Zfv+gE5RKVSl2kloP/waKK7ZkDzYq7wNsgm6rhgvyUt7CKzrW
-         tdPcH8Op1HZKw8o10TqTY0sXryZG70JELZZNccXrW1eH3r70BLHPDlZu7QEYefwRfug9
-         4rcPSYPoI6YbLuQ+ughW41F7kJTG+a8LxB+sC5DHpGiYvt9RQOqhzA55DFBl8uci/fhW
-         HzNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793263357; x=1793868157;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eJN7tODtM96gshRP+uJBFf1UOunuTrvylT+4Jwns9+g=;
-        b=A3pwRLW1btfmOt5I2DVI69W29IdWg39MkP7VEIxjXv9sKqWdpoioJ/JdNm9MW1swMI
-         Zxo3kUUrUMB6VIEUwJritusE4FINyAjLMJhK4rKDGVQE55vKGxm/jdMDRaM6G0zlwaSY
-         Qnf9YMY3I+cJ5k+MWm2Dx8HX8hRqkIYNJTbzlaWLuGC9PUHs6uaONV1QS0aEC9tITka3
-         FXBgEosLxw3wVVr3gar0snZejLG8Usv77JZ63030LsXTXkho+jRQXBD5yL4mXciYVmJ2
-         w1dTUOhn1/w86Ce/GpTwo/6AgB+w9Bj8zi9f0nAT7yQOlyEmEOtQKPF7ye3EHozTsAYF
-         CQeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz8hEE75sOY3oWwjMJzT7RuvrDMkFCbseCiy6YvmjZ3CT5j3RCW4y6kDA72wH9d6lCttY0h7pHgWw==@kvack.org
-X-Gm-Message-State: AFq9FYLKprVnMBRpm3GL8FMMkksZk1RhS1jU6Y4uOwoZqGpTP3DYwiKv
-	Db6F/1W3y506WAtYfmKp5k0dlaaO8Bx0xu7Q1NAkq5wIapNf/xPQOZjB
-X-Gm-Gg: AYBFou0wby0RzLH+mYByQxOOtWelRq7vOvgX9jSyhQ5xARwKMlGn6syUrHoyeahO7ZN
-	6USu7qN4tYpyShNNvfvQrXf98fOdh3+vIKyWFsm4NYV6L80Gmrq85M3IZzcWwiepbpWWpUMYnMn
-	cEzcNVKArOs+uFy6nB5FuBjkMgDQBVMvxKQOxIPv0rWeCsRQvfP4qWNLnOfc+G+M6arh0VA9iSv
-	OykHAKO4X6BdeI0MSAl5wfe6Krw1Jc0OYIzMf8K2fMV2l6bmOG7GjehTJGVhiUzhn7jzqN/u1BS
-	WRelkIhxW8ILYA1yQSqGT/anS2iP/RlChzzdlw6kDXsFH/146G3nmrZSAUIfJnH6miCZjnEEdUT
-	hj3moASM7JFSWzyc754aLD94yiqKZx+TBJ2Z3plGJEAn/1PwxRYIqYB5e0VpKIANQx2vrFzoiAw
-	JJRwZ7VdNG2zzSOjzAK/kb4i9I0a1eARF2XWulD/vQLGIVrCvucPX7nemL4MaD1ttRHcrrDe9Uk
-	7daLpOXbqePCwrGI5Q3cuHQ3B1UB+HD6gZoKxPWmKNJtvj4J4Ym0M1+DafHwJZvdtG6DlqUfozu
-	lclh+VsL0DpS/iOA9qdO4bV81xVjRytNFVz/5PcBlsJ4mre56NihSpkgraUzOR8WwRM2
-X-Received: by 2002:a05:6a20:244e:b0:3e1:af52:6d06 with SMTP id adf61e73a8af0-3e9023bdcb8mr4276472637.52.1793263357282;
-        Thu, 29 Oct 2026 01:42:37 -0700 (PDT)
-Received: from xiaolei-VMware-Virtual-Platform ([219.142.21.190])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdacea7938bsm3338029a12.27.2026.10.29.01.42.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 01:42:36 -0700 (PDT)
-From: Xiaolei Wang <xiaoleiwangxiaolei@gmail.com>
-To: sj@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	error27@gmail.com,
-	xiaoleiwangxiaolei@gmail.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: [PATCH v2] mm/damon/tests/sysfs-kunit: fix leaked pid reference in add_targets test
-Date: Thu, 29 Oct 2026 15:56:09 +0800
-Message-ID: <20261029075609.35661-1-xiaoleiwangxiaolei@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	t=1793263448;
+	b=ZX3DEKINIXC5YycDawTutqilpcIxNTT0qNNXJfYjz4bcLNXSOVe35mquSOQ4rhl8w3HddI
+	2GpLHZzeyuA2QEjBt9xpog5vBk8vbfQb3d5FJu2Fdv+PY48ghN6XsgEcO/C1acUtsNwZxH
+	ESuZ6yYP8YS+S8FAynchhvLS3RofRJ8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793263448; x=1824799448;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=WP/QAZ7Uc8hCjUk9W10FsuMb7rLn58PCckd869LjBFA=;
+  b=mjqEq3VeraslGj9/7vbEe+ZlrEtnNsxV7dHtAAjHEn9FXZ/8raR+4Ccj
+   wReKvmYMV4u+bH4P+MAt/88tIWS2q218Jsuc38ui8Iyb1cR5BqJszCvuK
+   E4xBrGD/PRs3krMVA7CgonhV4pfsu81D2t2NsIJvB+oSZsVHOhNadSh+E
+   MeC+BIuLH+fmEKRbK4z5Eh2IKfQG3iguRSHtOAcl3EkuN0kRJD81Av0s9
+   mBofpV+Vz/9vM4tMtWZxkmIDCnEmO8P4qQq4FRhD8tCP0oErXNJ1O4KuN
+   wbktK079jz2l24DoZICGBTEFlHH8pzdJAuiUEwuGCCGOucoUYycMnVD62
+   Q==;
+X-CSE-ConnectionGUID: pzaNd3xSQb6sYDI/K+6ovA==
+X-CSE-MsgGUID: nkUw+Q3eQTG6F6M2fP0gIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2002477"
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="2002477"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 01:44:06 -0700
+X-CSE-ConnectionGUID: oDqzyd5cQ0OZV3ZmvaMS7A==
+X-CSE-MsgGUID: gVbT5JW4Somf8pxelwKQ+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="5411378"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.74])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 01:43:59 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Andi Shyti <andi.shyti@kernel.org>, Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>, Christian =?utf-8?Q?K=C3=B6n?=
+ =?utf-8?Q?ig?=
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Lee Jones <lee@kernel.org>, Pavel
+ Machek <pavel@kernel.org>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Ryan Chen <ryan_chen@aspeedtech.com>, Billy
+ Tsai <billy_tsai@aspeedtech.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Kees Cook <kees@kernel.org>, Andy
+ Shevchenko <andy@kernel.org>, Matthew Wilcox <willy@infradead.org>, Andrew
+ Morton <akpm@linux-foundation.org>, Andy Whitcroft <apw@canonical.com>,
+ Joe Perches <joe@perches.com>, Jonathan Corbet <corbet@lwn.net>, Shuah
+ Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-aspeed@lists.ozlabs.org, linux-hardening@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Subject: Re: [PATCH 05/10] drm/i915: switch to __nonnull_args() macro
+In-Reply-To: <auHf-pdvGkPibgTp@zenone.zhora.eu>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1793027261.git.d@ilvokhin.com>
+ <33ec8080594f9f4ef1d50e36497339c9a6897393.1793027261.git.d@ilvokhin.com>
+ <auHf-pdvGkPibgTp@zenone.zhora.eu>
+Date: Thu, 29 Oct 2026 10:43:56 +0200
+Message-ID: <b3045bc3ae77ef78a1f479448a5dc780d89bf38d@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E714340008
-X-Stat-Signature: rmrk875xwnn9hqbprsqs85kfkadyxcy7
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DF8DC160002
+X-Stat-Signature: j11o9i6f8htgtq75fxr8mjw6noqbdssc
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793263358-135151
-X-HE-Meta: U2FsdGVkX1+hJxExkX2NeWOwT6sLJzGupbuKpEeqDZ8UZYeDxKDguy2P79foJvXLXlkrT+MVDQWBFxeJIYZEU3qvmcDuIXyPbyKzrJGdpqLNHLyxIYDxCV3pivWE1IeiXtw9EHNc/1+PXHTaboeTLC7FeK/56oB1/qjuCTrG7j7a/+ZPIvwWpM9970vukuLvDE4I4GBunBqNPPtopaXveKdnMgrlCNyrGOF/5MFLXYpnX5qfjNExwv3fdFzmDtIniyW+5FuHcUQvjqS9zuqLfvQflasrykouW8pJgV7G+QgpWkP/JF0xLUWCcQ+x83eAOw7Vpy4ccOHbDOLXr4W+AN0S/2cpTxsNyiIYDYAHDl8AWe2SivysDF47q/AIwfJm9MCU2sWLdcMC7rCaNQVIjwj1XFkNPryUB7tC+NBMpR6X3evfQYYkxJYKT9kOKBCUvJmqk6502c72MLbQSarlsAU0x2mf5aIkvnf4tra5wf8BB0jmsCcXMuDKA18qVopyKRtZ3UcGzlbaktIFRlxwGM820ry7HX42PDFUrfiftfix1jdEjV0OQBvhH+/4FiH0iIaFnnWLqHPOZf4WqSJolwVuh+1XaltZQuccjF1eNQIK82fh7NMyR0Q0qqGjXJJG6Eb7PNNq/cYCNDgNkVcMHscpDkWKrOzv/x3v3gee+dcB4aeBSJF5xow10CrPqMMB0LvEcX9JIb6rpGqh2iaJzPu7WiUJmo3oAxL23yVtshrTCdD+6PyJIjwubv4WgYFzKBnX8kVxrRG8i73oaHL+QhNcG/agogvXFJLkdyQ2KRQFc/gAbQThOOE8jjbH0O5atwjuzOSzc6SAZj5IdeLCC9FwRMQ9BRAW8vqujaMBhpbM1cltJvd3NYXO0D6FhVFCaVPR0Fd9iIVPChY0pBfgmMOeSj4Fw/kRYEyeUC/VCNK5FAm25siltg+vCHw7ApZ0Xejr/9sqtlIjyyFYZJK
- hucP9Iqm
- FZX9ky6nLwP/qGhzmpWDuWK2x6tTd6FArxXoZE1DPQ9hyezASH5yOBYkNVC5kBPfXcwMxLjC+UdXHMcQ/eZN03yI6wnHc5gOJSnXrLWL7sPZrGgC0pc5hsNvv6Td6pbI8gih/+T2EhppmJCY6I1aMK1dDqrYML3LY1mooSNvRT+ddEX5lIXY0vHyql3jOf0bBaQO4vhoysaDEKXPjSzq3/qsDxlQXbFYUE/Mk2J+K2KxIHm+aWQUPwTvDsCpfoS7IVsN7C1Brs2sNIM/am8evSpVgQsRFC9qiHgFrdxbYWMjBxJc/Bjmb4HAqb0JIHa6K+ziJ5XZ6hKx9N+fbI0kN2842Hbfgrf814pOwpZ+jZSVI7Ukv47T8VI3EF4L3Idr9oawMM97G3m8BrAqSX1/s8VNuzjtMbj4Jyrc/WQf/92hzKaT2c4XcOeN8CZMl99hy5keq1X6s0h1OkSx+WbsLpBdpe8jMr9WLZPePm4m79aHCILOr/GvmgCYrbuO23x5mQ/POtLazAUumAf+komXD89HipSJTDgjiWJo8F8auFCypXNXbMhLXP9oxyfTcmeEFQl0plyATjejGQJQuOmCdmFUXV9UlPNYmgVvOGxhcjNo33FqJrCY4LxflMQ==
+X-HE-Tag: 1793263447-882426
+X-HE-Meta: U2FsdGVkX1/ZsPb4RCbnNXvPfPLYUVKkmyfeQUH+rqSI6cM/npLJrpS75JiJVT1575Nw6KkMQYLNwKTD0MYGnTJUe076nkPGoK0ctYSiUD+D4r4ECqDXNQgHU/e9b0O4J13bMUtFMwH7F1LzuRC78uTWqvgG1YKSnFEv7B+RQl1ry0ZN5TQfDJxNIvzTCKACB+2A1APmKJRdkNXXrkTR/dyJEGK2AoNKS/dImbtAMQ04ZGILJXDZ0iEMM3ow/XajvxPOpj1EREKFiTPi7QTeTvM8DVAdgy3zrJhb/tqv2g7XUzMMcYUr3ncO3VaxdI8GHfKoI2Eo5RG6Rzs1TMAnJuXQGwgMop3foHk24D5CchWYp/e1aZLg/SxiSuBQr13dopp3DdYjDn3ro9dMnAuMYLhN7AttZESf2fLByElrTAYqXXh+peu2eBYaG3V/jvuRM+cI86G0PBh80rayixGIgpnKRJfSMNcIe2gTwBlhLIgOODZ7Ka62Bh2SFW6YwSO9I29+BmrCxBlapiMlRqzqBOUQX5/9BAGR5Ck2yJQjb8zjX0ZRKzH0WMjGJWKVsjc5x1cTZzK9yUX4HM723MVhviBOeRSN/5hI7dsEbgcVR11gsHkp10XxHX+1EFPcsitzIDu6dEibRs++oZNtUlxnlY+V40mdfRdA2i1YgM12a6C/ywhJ4mpJzTDHWYSqBG+/I7QPG0pPLluKnlTLN1SCiIJ8hbtZ3uy1k2YFhrfF45IuG+3uUdrUU5AePkm6R5Kqci2aZto75yPADh8dlN+65vbh3Z8T7nr13WoL0jJmeKCeYi6DSzt4PJ7sQJWZLLp0EIXTA89Uc8ad1AUZ1if6+jvp0zV4XBFZbG58nM9eR5NeztfyeXMpQeuQzNzLgy61UsKiuWUlGjS1ZRAf3d9XEFaUuAwibnLLTzPgC9h1mFaFZxaDUVEjGBSyzDsAnaECEF9eAI9Fa6Xz3o6elxL
+ VA2vah7r
+ ihvQkP4X82aRRzHEOQA1dTmTu5vT7aDoqfVI+oSki49HYaXCk93c0tgdlJ4aWnMoIU/U7wpKv9OjeuBSmlYeM6jJO12b+gRzynRXZDcbhOvJ91FqmFwq9h7E4QzYTAEI2mT1sChrBKydtxcEwjvQSEzpZXa0wN3CxxTUh3hAw5SOqi0aSeSfmyxCx6MV9DllMu+02b/B/8OWlkQSgvtwU7j7tYYihm0ESzdjvvkw83nrda9JU/9K6898687hlpH/N2Fjpjnb3EqTkvnvGcyztoVW4GG+cSnq53+em19JDGOsDZTA5zmfee5Ey4zo6Dgfr/cOhxG03Fg6WY2I0E46vmwuD+P1byMEz+HMKS3pyHyW4q/lwR+1xBu7RGhyfGlfZrye76OLfAAsUda9Wkhb0HMURnTnszNwfSACMYnAFXKV8XnejwxJIvgKKYVRLIuuQSmiXCmoeKj3OWfW+ELcYPFqCMO9UB58qy7eE59hzmJlfaYc2hagAnGLmf6ipPB9CLld1HLAuZxs7P8xz1WBSSqViuAL5FnrwVXbzQH8AeCXtOt/2QpBcj458k2fTFx3Nu6hUnteRGDgYQVLYuTGCad+CRHZAsOQ7cJqnoj41Z29mcj1lq5t2EhIzI/0HNc9JWLZ8Rfg6XvqZseU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,69 +127,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
+On Wed, 28 Oct 2026, Andi Shyti <andi.shyti@kernel.org> wrote:
+> Hi Dmitry,
+>
+> On Wed, Oct 28, 2026 at 08:19:44AM +0000, Dmitry Ilvokhin wrote:
+>> Commit 22302af28d3f ("cleanup: Annotate guard constructors with
+>> nonnull") added the macro __nonnull_args() to wrap raw compiler
+>> attribute.
+>> 
+>> Replace __attribute__((nonnull)) with __nonnull_args() to standardize
+>> nonnull attribute usage across the tree and keep the attribute's quirks
+>> in one place rather than open-coded at every call site.
+>> 
+>> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+>> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+>
+> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
-damon_sysfs_test_add_targets() creates its monitoring context with
-damon_new_ctx(), which leaves ctx->ops zero-initialized.  Since
-DAMON_OPS_VADDR is zero, damon_target_has_pid() returns true for the
-context, and damon_sysfs_add_targets() therefore calls
-damon_set_target_pid() for each target it adds.  That function grabs a
-reference to the target's struct pid via find_get_pid().
+Pushed this patch to drm-intel-next, thanks for the patch and review.
 
-The test then tears the context down with damon_destroy_ctx(), which
-releases such a reference from ctx->ops.cleanup_target().  For the vaddr
-operations set that callback is damon_va_cleanup_target(), and it is the
-only place where the reference is put.  The test never selects an
-operations set, though, so cleanup_target is NULL and both references --
-one for each of the two damon_sysfs_add_targets() calls -- are leaked on
-every run of the test.  Running the test with CONFIG_DEBUG_KMEMLEAK
-enabled reports the leaked struct pid objects as unreferenced.
+BR,
+Jani.
 
-Fix this by selecting the vaddr operations set for the context before
-adding the targets, mirroring what the sysfs interface does.
-damon_select_ops() fails if the vaddr operations set is not registered,
-in which case the test cannot exercise the pid handling and skips
-itself.
 
-Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Signed-off-by: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
----
-
-Changes in v2:
-- Fix ctx leak in the vaddr-not-registered error path
-  (reported by Sashiko AI review)
-- Link to v1:
-  https://patchwork.kernel.org/project/linux-mm/patch/20261029015725.17378-1-xiaoleiwangxiaolei@gmail.com/
-
- mm/damon/tests/sysfs-kunit.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/mm/damon/tests/sysfs-kunit.h b/mm/damon/tests/sysfs-kunit.h
-index 138a4b8d14e7..16373ba751db 100644
---- a/mm/damon/tests/sysfs-kunit.h
-+++ b/mm/damon/tests/sysfs-kunit.h
-@@ -79,6 +79,15 @@ static void damon_sysfs_test_add_targets(struct kunit *test)
- 		kunit_skip(test, "ctx alloc fail");
- 	}
- 
-+	if (damon_select_ops(ctx, DAMON_OPS_VADDR)) {
-+		damon_destroy_ctx(ctx);
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kfree(sysfs_target->regions);
-+		kfree(sysfs_target);
-+		kunit_skip(test, "vaddr ops not registered");
-+	}
-+
- 	damon_sysfs_add_targets(ctx, sysfs_targets);
- 	KUNIT_EXPECT_EQ(test, 1u, nr_damon_targets(ctx));
- 
 -- 
-2.53.0
-
+Jani Nikula, Intel
 
