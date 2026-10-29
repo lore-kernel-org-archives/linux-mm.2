@@ -1,95 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D191F606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 07:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48284606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 07:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kyhGWe6l
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I7uYHMCO
 Received: by kanga.kvack.org (Postfix)
-	id D1A0C6B05B1; Thu, 29 Oct 2026 03:42:56 -0400 (EDT)
+	id 4DEEA6B05B6; Thu, 29 Oct 2026 03:43:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCAE96B05B3; Thu, 29 Oct 2026 03:42:56 -0400 (EDT)
+	id 48F206B05B7; Thu, 29 Oct 2026 03:43:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C07C16B05B6; Thu, 29 Oct 2026 03:42:56 -0400 (EDT)
+	id 3CC296B05B8; Thu, 29 Oct 2026 03:43:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 99E8B6B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:42:56 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34373A031B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:42:56 +0000 (UTC)
-X-FDA: 85374872352.27.E791700
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 873B440002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:42:54 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F7526B05B6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 03:43:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9594A75D7
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:43:53 +0000 (UTC)
+X-FDA: 85374874746.01.B1BCDA9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3B53940002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:43:52 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kyhGWe6l;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7uYHMCO;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793259774;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1793259832;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FnIFycVxPAWcUtQJVVl8WWNhkjZ3nGmUb3DoahAD2uA=;
-	b=qC3ed64r+upH3BAWmwUfu+IkLniGBHHBTskklmgxkbVy0nqptEQCosQDJ7wVnFS6EjB7t3
-	QDFV2PmtsJhTVz/f4a+Kfaq+3JfkZM7VvPikVy79yjdx8OI17o82rFDESR0dPnISc9KKA/
-	wQu//ahkbHoGCb0Yl48wFc6xPQ72r6Y=
+	bh=njjkZYJyqK98tAp78SKwIUi3lpd2OxnQLHE7CyLOajg=;
+	b=Cja22OsnU1YnmzcXr3KDraK9BEDBYtNRzCFf6jOkwvQr2viO7D/AzwquDe2rNPKl61HMwJ
+	HaMOxuJ+3x/Zs3qEdnPkw/GoFypXDUrnALQMGq05oci8bQJIxLyGHC0ccX3AjGTwL71WlF
+	WCIOhcX99UCg28P5YMkKA52K1+JsqpA=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kyhGWe6l;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7uYHMCO;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793259774;
-	b=yT51xxU10ug8a2HC7IbKR17F4K3j/g1g7J0B1QEdyyoTiHdC+5J4WM+u+uV2cjKEtu8qoH
-	lJYQZsqY4ZZ5DffOEG1+a7s94WwCIyvupywfatL4rmYmKpJ2m1bZKFF2SuNKTo7zlx5LYV
-	RbAnsW1BNzkHe46IvInNWnS4rT5J/9o=
+	t=1793259832;
+	b=QreOjOVDocRE4cl0vwyNJOxKcIZ6fY7IxAwwyZSlb6nAn9uUEXGLbZ9ZmIhpbJrUz9T5S5
+	QqniRUN+YIGJiXU9w4kPnebRvC7ehFABTMTxrcBSNifNq+fpE2jF+d1P6LNhVTXYV4oBge
+	pXsdmsq0/8vF0NW8n6Wg27Aiej/tCtU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A926B41A65;
-	Thu, 29 Oct 2026 07:42:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9341E1F01825;
-	Thu, 29 Oct 2026 07:42:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A74D3601E4;
+	Thu, 29 Oct 2026 07:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20801F01825;
+	Thu, 29 Oct 2026 07:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793259773;
-	bh=FnIFycVxPAWcUtQJVVl8WWNhkjZ3nGmUb3DoahAD2uA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kyhGWe6lxVRHmY2A8+LGSw1PRADfLdQmrVkp+WhLyFDADBLYh8qf3hGC5GTEK+fSF
-	 Jj/v3QEiuO7gjUpaIXVyTATrvvq9I6g4baEtUIVoGDwXpnF+o/TeEZDQiRMFkDcbew
-	 ZQdVQCTzLEA+Hww6c13lr+LoMchRaHYwLVxQxOkIoM45XpeSdhHLX65djGGdiUJJ78
-	 mJUA2Zlei2hoGSD4uWSuxwrH9OGr9GLofCzJqHLnu2IBvJKGUNupUdrj23PTU+bd9N
-	 JJDt/fdMYbCWxRtaQV1Ol+ZTtK0g8tYLUsxvNcM7JRAyAW1XcCrcG5SkvYBx9Um9dk
-	 0OmuuPIFH28Kw==
-Date: Thu, 29 Oct 2026 09:42:44 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, baoquan.he@linux.dev, pasha.tatashin@soleen.com,
-	pratyush@kernel.org, graf@amazon.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-Subject: Re: [RFC PATCH 2/2] mm/cma: reject CMA areas that overlap the kernel
- image
-Message-ID: <auL49EhsNL4jc1o3@kernel.org>
-References: <20261014145731.3431527-1-radhey.shyam.pandey@amd.com>
- <20261014145731.3431527-3-radhey.shyam.pandey@amd.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014145731.3431527-3-radhey.shyam.pandey@amd.com>
-X-Rspamd-Queue-Id: 873B440002
-X-Stat-Signature: nhotdfc8sjd31rzhd1faq9nuqb9ox1zg
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793259831;
+	bh=njjkZYJyqK98tAp78SKwIUi3lpd2OxnQLHE7CyLOajg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=I7uYHMCO4Op0o65e+C4O1vUCEIdSALNmdj8KY7Z64T7dy9i5ddLds5cf7nTUO1rRH
+	 McZGlyuEVoccntgtTYeb19AyFCGkU4QSxmSuWIXZlzRwL3Z+Yi0eAasS9ZzbMnpuUS
+	 oPMMndrU2NydLSRI6Fo+w/Yk/rLkRinAtWdU/Piii1CvOzwX/vPliQnewfADc1kFre
+	 mxEsLWa27M2PSntvN2sm/5rpBioMk4burxhZBqDFX6wUi5mm7sfdU42ivVMcItZ++A
+	 wnCYhu8TNfUexiv04ajeBrCpMpElNSGmqQCmEr6W8Lp55UUO8Jzhw7IsMRPvsRjIEp
+	 c6QifSF/qKP4w==
+Message-ID: <sashiko-outbox-188895@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 5.15.y] mm: call the security_mmap_file() LSM hook in
+ remap_file_pages()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "yao zhang1" <yao.zhang1@amlogic.com>
+Cc: gregkh@linuxfoundation.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, ebpqwerty472123@gmail.com, paul@paul-moore.com, stephen.smalley.work@gmail.com
+In-Reply-To: <20261028074251.1695-1-yao.zhang1@amlogic.com>
+References: <20261028074251.1695-1-yao.zhang1@amlogic.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 29 Oct 2026 07:43:49 +0000
+X-Rspamd-Queue-Id: 3B53940002
+X-Stat-Signature: xf5ptmx7mg589yihm7k6to7fkwcoudjy
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793259774-728601
-X-HE-Meta: U2FsdGVkX1+c70pKEFLS21d0GW4570Ph1b2zI1+bng8JpP5yv0trZEVq9nGXyNbLnCR8BLiwtyUEvwVlKQI6oPMRkL6NE/uv08odNsknwHOAr/BEg0Esfp82r9EPbMvGAXeKXsiX0dl3Oe4G+6EVCTiokPIAI7ARJEsWJ2vMfAHghLZFokDZAvjJnXTbd/WBlUW+h3tnDAXCnX6JqUsbwvj6mNz0QIu68bsr+LzJWSKwNz2s07gBrLsvj+AEun4FfeElQSR9ScE/aO5+d25JJMkrbhze2EzgectS9p4lmtRoY0wsOP8PKk9gmvTKCp7I682Acl/F0skMqqoCB7/giz+Nr+pqsr+OhZ5AEM08XZduu84zRyNvIgmyNx6gDjYWYVz6v1lENk18UZB/8tJq3+Xy8PN1N4Gz62CWSLvDjmBmntUvtwQS3Iu2XmOvaQ5caU/AAvmh8lKkxXtcV2LB4dSVCrFPpvNF6L6IUKngN8YehzNlT1Hu6oErbBSXdS3Zp+ifa7GkEdH1r2Igz814Y98Bh/cxlRsmaNyRv6TQpMaMmI3Cpo2TqxlyAyGBNM6d4iqvON3WaTzcXys0aKxmgdK30BiS2kHnCd+cdZcBwaV+SNnTcLpujF6dmN8T148/6quVNa2t0/+xlGxKmjU9ZzUqPIYelXUYNzwi33dGP3kaAnyVCmlkxEii05LiwJO8/9Cbr4lNGK8A4YKmIRaSnOzvG1ZcOoKoAiG1bAt4+i2oAjEhc+3bhrrLTGFjvLvUm31neCzPOFsBfz6m7aH3ox41x2A0KpKrewJusa7tJAQFuGS23VHwqORltY16wqTwpdZrhKFAYWUvcOQn6Im3BJoMT9r6c2vaqywiQQHv0RadL74KrtFN5bnY+6wRCjb7wDILWANevjXSCLPO3XLgbAe1zFm/ulGQes2d2IZCyASuRVBDMboxWkQaQsiAg47U9D8yI0QYf9kspZxQv07
- w8qhkpxO
- +OWb7XyJLW1XQFs1tZmTdQSyZ92X3xO47POtVCiyGoY9NHdYETADj3zJKyAqNNKDJHwyTgXL/i25o2pH/ipXZj9NpskKf5o4jF8LgHPBKdf4h8jvPY9P6V3jlxyJUiq9k0eNZbqyyrReMlKR3nXBX8NqHidRfDVAIK8JpiFEmgw8Ouhz4IZ1h3tzgI5EFConDMBzg68+EeOTZJsyixEZ+0TI21LPGot836VzVGr+bApFSEK6LcvZcUGShF4fGoJdduyyY6HhPVsh0DdPz6mK9q0uhTQ==
+X-HE-Tag: 1793259832-673636
+X-HE-Meta: U2FsdGVkX19ofc6eXWg0BdJ59Q+rgT3XIQl2ttUq67CZmDfxyGfRCcDmvbUrdjDBOvanfl7vjOxB4X16EQ3kMV2Y81UVWp0N/Ttha7/A3FuBABgLYDUqNecjPQ9LMcDg4ntFnCRtsscTfPQAwz5io33OdOHqZ2ucYlRJebjgd5Cca2Sq47s5Jt+UBXJoAthban9A1pCP1QGMEPDtnbHPsh6eE34pKy9buRl1DMRoEviX0EwBYaL3NU5/FRHJQIfZ3FkuAml00TkCHQgZIrin1N5bbeNpL+fss7wPjrIQrWiRwJVx3w5yA79WZZKLh5vdyxshm0zM/lGPbcnugFDI/Y231vxZPcAWp/4GMJHM8lJRiitMHo2KCillN3MWD6DnO4ybYI+/ycIENGkR63Ba7UT+Fw+jNakfLauID9XMsHo4l7twv0u4FabeT4MUME6v+V5OHZF99F1vRJRtwdXqaVipiCK/x/XxBfTNFNX31B59eoR1UhwdhlCwy2IZchvA8vfSEmVBUOeM5BPCSrU/ylKZAmQqc9Abug5rttOH8QrRBa556UxjpxpI/+PE0IdQKPJ58/8jMrNELFfHHYCO+CfP06364PnmAd1NhrqAiEZInN5Tj6A2x8ehpztWsBWfh3suzqnhJXMblTaj1h1RKB3qe17VUMBcogufKWkJFW3b4UhzPfDlvOQ+cLIe5EMMzdSbUcy4/jYzlR3sT775tlZZ6L7Ny3hfoNE2ebxqTxySV8uPOdNONNDbUCZa7i7bsvE/h3QINdfa9aR+3hHLuZQExC3dyUTJv0dtyUvG7CGimRuNUbNyzWYy2mra/Ku31hjIVqOV8b1EYjvYIm2YIwfYJ4WiQGUpdDITBVE13v9/GOvX9RR9Dj7rsUcXDQ8eFOVEM5nFF7gamiBKPPnFM1VMk9w+Dq8or0iqNzytRVDmZpEGUC0bAFZTzFsxcRKFku0hFU/lDBQehbCyiSQ
+ a8Na9MbW
+ rfyTLQI896bQUaZCoG3uYFw9HUa3gQ5Hq5V1NPODvgO7oBkZo3g7UWMSK3vqzjatD3T/m1ZfpDuPYgs0MEqBs5+HlEDQOuoBzSs1aFdMgIeClxfY35f3uyymcn1XxeDNsgjwiRtQhvRoUFbTJM5JIpDdu/VH8Ot8wX2BQPsmxvEaahIXDHaTLFVLE2fbUD+6zlbFZPhqXngWdLZy/9D7i3Bd2MzvqoWbm2hrGNYUN2p3yJ56foo9GxgiymMI4iaKbovCbzCNst44zXdZjeCz+63LnlJD2+4+kHmsmCm0ppIaVKKhAgO5yC2KY06dcR4XTayiOVYnQVng6f4Z+3Gi+AKJ7Wd83s9/5P0iRlrsREKQH72wrQE9bk9xhwKusEvjyPaSsSXpRhkkkx9i1ALYSXnjkh+zYiM8ZMRGWvbfroZ+je68pyj9SiF1QODN/iTScTLSMiK/BPSbacX56qDQg1iPu8r/8QLgQmP6hzz2XzbLSa0AEEuYVW0oYEH6kebV72w6Yjiwz6dyFPz3sWgrpJ8bE2Oqu4GEnhu3KuqZG6i0q+MFPWusNgySt1lnpU9E5JnQVpdpXanyI19aHQqANqjqjOyAqbcG0Q1l41JNLB0IPJwql895vKTAeDHJNWiFwf2KxbPnffsMK1gI+LjaF8Vj1OJC/BS5FsIKYnUpEmK7FRHm5llVSHjr4g7P16d33NOmIhKU/LNIIcJVevEnHidf6DafOGk/hTCTbLppHmSnaMsMC6vJPIbZRf5rbtWBXXjQ4w7AIKVQLd0IZ9nYYni+o2ZwoFs08/on2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,114 +91,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Wed, Oct 14, 2026 at 08:27:31PM +0530, Radhey Shyam Pandey wrote:
-> cma_init_reserved_mem() takes a base address chosen by its caller and
-> requires that the range already be reserved. That makes an overlap with
-> the kernel image indistinguishable from the normal case by looking at
-> memblock alone, yet such an area is fatal: cma_activate_area() hands it
-> to init_cma_reserved_pageblock(), which unconditionally clears
-> PageReserved on every page and frees them into MIGRATE_CMA, overriding
-> the memblock_reserve() of [_text, _end) that the architecture installed.
-> Those pages satisfy ordinary movable allocations from that point on, so
-> userspace is handed live kernel text.
-> 
-> The preceding patch closes the way this is reachable today, where a
-> kexec'd kernel runs from inside the default CMA area and then declares
-> the range it is executing from as a shared-dma-pool. On a VEK385 that
-> reproduced within ~300ms of /sbin/init starting, as a copy-on-write
-> fault writing to the read-only linear alias of .text:
-> 
->   Unable to handle kernel write to read-only memory at virtual address ffff00084030c000
->   Call trace:
->    copy_page+0x48/0xc4 (P)
->    copy_user_highpage+0x14/0x30
->    __handle_mm_fault+0x318/0x1340
-> 
-> Dynamically placed areas cannot hit this: __cma_declare_contiguous_nid()
-> either rejects a fixed base that is already reserved, or picks an address
-> itself and so avoids the kernel image. Only a caller that passes a base
-> chosen elsewhere can, so check for the overlap explicitly rather than
-> leave the next such caller to corrupt the kernel silently.
-> 
-> Note that failing here is not by itself sufficient for a device-tree
-> pool. fdt_init_reserved_mem_node() responds to an error from a non-nomap
-> region by calling memblock_phys_free() on the whole range, which drops
-> the kernel image's own reservation along with it, so the pages are still
-> released - as plain free memory rather than MIGRATE_CMA. Callers that
-> keep their reservation on failure, such as powerpc's fadump_cma_init(),
-> are fully protected. For the device-tree path this is a diagnostic and a
-> second line of defence behind the preceding patch.
->
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-> ---
->  mm/cma.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
-> 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index 1f4d3d48a3bb..32b799a3f5c8 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -31,6 +31,8 @@
->  #include <linux/kmemleak.h>
->  #include <trace/events/cma.h>
->  
-> +#include <asm/sections.h>
-> +
->  #include "internal.h"
->  #include "cma.h"
->  #include "mm_init.h"
-> @@ -68,6 +70,11 @@ bool cma_has_fixed_base(const struct cma *cma)
->  	return test_bit(CMA_FIXED_BASE, &cma->flags);
->  }
->  
-> +static bool cma_overlaps_kernel_image(phys_addr_t base, phys_addr_t size)
-> +{
-> +	return base < __pa_symbol(_end) && __pa_symbol(_text) < base + size;
-> +}
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm: lock inversion in remap_file_pages() calling security_mmap_fil=
+e()
+--
 
-We have helpers for that in include/asm-generic/sections.h
+commit 5a07ec5e983287a566c335be52d6b9bab2cb5e44
+Author: Shu Han <ebpqwerty472123@gmail.com>
 
-> +
->  static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
->  					     unsigned int align_order)
->  {
-> @@ -295,6 +302,22 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
->  	if (!size || !memblock_is_region_reserved(base, size))
->  		return -EINVAL;
->  
-> +	/*
-> +	 * The area being already reserved is expected here, so an overlap with
-> +	 * the kernel image cannot be told apart from the normal case by looking
-> +	 * at memblock alone. Check for it explicitly: activating such an area
-> +	 * clears PageReserved on the kernel's own text and data and releases
-> +	 * them to the page allocator.
-> +	 */
+mm: call the security_mmap_file() LSM hook in remap_file_pages()
 
-I don't think this comment is useful, the check itself is clear enough.
+This commit adds a call to security_mmap_file() in remap_file_pages() before
+invoking do_mmap(). This prevents processes with the READ_IMPLIES_EXEC
+personality set from remapping writable file pages as executable and
+bypassing SELinux W^X restrictions.
 
-> +	if (cma_overlaps_kernel_image(base, size)) {
-> +		phys_addr_t text = __pa_symbol(_text);
-> +		phys_addr_t end = __pa_symbol(_end);
-> +
-> +		pr_err("area %s (%pa, size %pa) overlaps kernel image [%pa-%pa]\n",
-> +		       name ?: "(unnamed)", &base, &size, &text, &end);
-> +		return -EBUSY;
-> +	}
-> +
+Link: https://project-zero.issues.chromium.org/issues/42452389 [1]
 
-With removing cma_init_reserved_mem() from API this would move to
-__cma_declare_contiguous_nid().
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 273e06dad3c6f..7f357de8f4d68 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -3047,8 +3047,12 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, s=
+tart, unsigned long, size,
+>  		flags |=3D MAP_LOCKED;
+> =20
+>  	file =3D get_file(vma->vm_file);
+> +	ret =3D security_mmap_file(vma->vm_file, prot, flags);
+> +	if (ret)
+> +		goto out_fput;
 
->  	/*
->  	 * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
->  	 * needs pageblock_order to be initialized. Let's enforce it.
-> -- 
-> 2.43.0
-> 
+[Severity: High]
+Could calling security_mmap_file() here while holding mm->mmap_lock for
+write introduce a lock ordering inversion against inode->i_rwsem?
 
--- 
-Sincerely yours,
-Mike.
+In SYSCALL_DEFINE5(remap_file_pages) in mm/mmap.c, mm->mmap_lock is acquired
+exclusively before reaching this call:
+
+mm/mmap.c:SYSCALL_DEFINE5(remap_file_pages) {
+	if (mmap_write_lock_killable(mm))
+		return -EINTR;
+	...
+	file =3D get_file(vma->vm_file);
+	ret =3D security_mmap_file(vma->vm_file, prot, flags);
+}
+
+When remap_file_pages() is called on a file mapping where the VMA is
+executable, or where the VMA is readable and the task has READ_IMPLIES_EXEC
+set in current->personality, security_mmap_file() in security/security.c
+computes prot_adj with PROT_EXEC set and calls ima_file_mmap():
+
+security_mmap_file()
+  -> ima_file_mmap()
+    -> process_measurement()
+
+In security/integrity/ima/ima_main.c, when an IMA policy applies to the
+regular file, process_measurement() acquires inode_lock(inode)
+(inode->i_rwsem) as well as iint->mutex:
+
+security/integrity/ima/ima_main.c:process_measurement() {
+	...
+	inode_lock(inode);
+
+	if (action) {
+		iint =3D integrity_inode_get(inode);
+		if (!iint)
+			rc =3D -ENOMEM;
+	}
+}
+
+However, the lock ordering documented in mm/rmap.c requires inode->i_rwsem =
+to
+nest outside mm->mmap_lock:
+
+ * Lock ordering in mm:
+ *
+ * inode->i_rwsem	(while writing or truncating, not reading or faulting)
+ *   mm->mmap_lock
+
+Other callers such as vm_mmap_pgoff() in mm/util.c and do_shmat() in
+ipc/shm.c invoke security_mmap_file() before acquiring
+mmap_write_lock_killable(mm). Can calling security_mmap_file() under
+mmap_write_lock() cause a deadlock against concurrent buffered writes or
+truncates on the same file that take inode_lock(inode) before faulting pages
+under mm->mmap_lock?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028074251.1695=
+-1-yao.zhang1@amlogic.com?part=3D1
 
