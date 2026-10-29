@@ -1,93 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11C8606A32C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86BE606A322
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bzfuVvTM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K87jbF3Q
 Received: by kanga.kvack.org (Postfix)
-	id 0259E6B05B3; Thu, 29 Oct 2026 11:03:13 -0400 (EDT)
+	id D20146B05B5; Thu, 29 Oct 2026 11:03:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3F806B05B4; Thu, 29 Oct 2026 11:03:12 -0400 (EDT)
+	id CF8176B05B6; Thu, 29 Oct 2026 11:03:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E55726B05B5; Thu, 29 Oct 2026 11:03:12 -0400 (EDT)
+	id C0DD36B05BA; Thu, 29 Oct 2026 11:03:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C1AE46B05B3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:03:12 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4AAB81C3BE7
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:03:12 +0000 (UTC)
-X-FDA: 85375981824.28.435B27C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EC716B05B5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:03:43 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2EE0BA047B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:03:43 +0000 (UTC)
+X-FDA: 85375983126.16.C7B7543
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A4F3CA000B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:03:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bzfuVvTM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6D5E320002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:03:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K87jbF3Q;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793286190;
+	s=arc-20220608; t=1793286221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fVWr3OM+U06uicRq1p/6iVn+dk2JPaOEC0k0vVXrOLs=;
-	b=kWtwOlhrvGNngsW9EH/jlP1rDENZg1Yd3OX0CnXrr3EQav3/t1Ij+Vy/OiTHiGOpOWw1b+
-	3OJMepG8R8aWTYzElzfdM5c67HTK0NNZJQ9HJVcnJVUohYe4URgh4o8AyDNBhcT9BO8Ffa
-	S3XpPjkbL0pTms7UuHAKUQ7xCqdAPJs=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bzfuVvTM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=c6CEhYs14U8U+JezWPAfQbVngV7jbZT+JjXbmGtNusc=;
+	b=huu3CzfmXIVm6zS98mwH0+LViStyt/OEk67BDcOcfxfDfRCGUi+SDfWBw82TBWsZCFzoLM
+	vwnHU1IZONZrdqXkv2NhiijXZ92iLAK4KuUIc/dZKKGQR+bX7fRrhMv2y5sKAv1Zz1R1pM
+	x8f+sZr6Rluivka7sXxiEGB86SlPT5U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793286190;
-	b=Q832VX6BUqo9gqwLQGlpm1EWbHXIC1OakPe36OnPkicb0KENHlWuHne71IXAo2t00skX9H
-	m7B8paGeCDfsB6xZkV/0v4i+ucKNgNNioOp7M94bkDqt9Im6S5jVzBjk61D7lzQcDcYjvr
-	7joU8j5wJHAbOebaTIIlOJh0wJYk4Mw=
+	t=1793286221;
+	b=svMLXAHFG2nBI3gCP1GndVcW0WMR7hqij5aaGZRhHZCY52ZR3mDMtscHPIMcRjLAjCDcbT
+	ZeTgSBbDf78a7q+SV+lLHEg+Jt736rxui0G4W+vhYuapDRm4FlLMVA1CL3jJzMKs0KUMXF
+	m0dxjVw8EoyvCV1RtTWjdYtLdSY/NrI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K87jbF3Q;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2811960219;
-	Thu, 29 Oct 2026 15:03:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD771F01825;
-	Thu, 29 Oct 2026 15:03:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 04FBA6060E;
+	Thu, 29 Oct 2026 15:03:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3821F01825;
+	Thu, 29 Oct 2026 15:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793286189;
-	bh=fVWr3OM+U06uicRq1p/6iVn+dk2JPaOEC0k0vVXrOLs=;
+	s=k20260515; t=1793286220;
+	bh=c6CEhYs14U8U+JezWPAfQbVngV7jbZT+JjXbmGtNusc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bzfuVvTM0M0f9XhXZZmeaUL6iJWrBO311hwhO58zgryd3MMm9nEJtRn+vvU7KPewF
-	 wnINkxYdbteeY3zjAR2b0AizoGxarq4nm0pWaJaF9nt+DLKDePDhsGOBwx7azSTkis
-	 1nMIyHi09/qboB2C708ArhYuEfReIZByBl8tjy+uFfWYm2CsFUM+pycTusgMEgjDLW
-	 l/vRoArv7v7ddEuqiyQmf8qIONCMTw4ITtgH0HBfB1cUfO+uIdAdhpSQGIOIQFvLPU
-	 GU0aLSYdoQYjzj7RHkqtklMHzxRZsVdMJmQSIva9X1u3FagbnYt1InkKvJ+ZioZm5P
-	 VrmUsnC+6q4Ew==
-Date: Thu, 29 Oct 2026 15:03:05 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Nickolai Zeldovich <nickolai@csail.mit.edu>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] xarray: clear the new head's parent before freeing
- the old head
-Message-ID: <auNdNjH4zo7OYbe-@gremlin>
-References: <attzI4sj2Pagmvkd@casper.infradead.org>
- <20261027192014.844878-1-nickolai@csail.mit.edu>
+	b=K87jbF3QgksMsvFlmThw/QGWsaljNclLuymOMt5wEkDnh8/EuqdfHKvslVlKVhA2S
+	 eoyjkAX5BvgXvitcfznNi5xc/1kfcK8AInIiJfMi7D8i37m66Slhydl8sbMOmNSkcc
+	 LF7jlLR4keBh/OD0Gzc0tBj9s67TsE8uZHxKbFOipg4oNdW4zj35JydofE93ABUEYu
+	 SdGyW9vCE4YDt7jxl+uNCLL/6MQLfZvFOOn2VEv5fqTxq8i9/EJdvcYJmgTA2oJ5EZ
+	 5WRyxneY/AC/P4kdebYsNu3M0BqstmK0vC/WJ5VDmqMbNnhaHHTZvrSbW5bMZZUvwk
+	 8a/Q2Au4OT6Zg==
+Date: Thu, 29 Oct 2026 17:03:33 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm/cma: accept memory of CMA areas reserved with
+ memblock_reserve()
+Message-ID: <auNgRT19droHmv3Y@kernel.org>
+References: <20261029-cma-multi-v1-0-2cbced8b5cb7@kernel.org>
+ <auM6lKGAeUI26jCj@thinkstation>
+ <auM-tYrdV4TJgJ6K@kernel.org>
+ <auNE2XEGreHRKoPO@thinkstation>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027192014.844878-1-nickolai@csail.mit.edu>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A4F3CA000B
-X-Stat-Signature: cu3d9jrc6u5ws8ysr77rigjeou3xb6ju
+In-Reply-To: <auNE2XEGreHRKoPO@thinkstation>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6D5E320002
+X-Stat-Signature: 5yngr7d9ieatgb5djrnar8rgri4169cy
+X-Rspam-User: 
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793286190-386244
-X-HE-Meta: U2FsdGVkX1930YGfkqyd5QyTuN9by5rGlD4JtZgfV7/bMYhoAx9xf8qZDRMqcfuKYszxBzEu8cAE3iKrszty4s4HH8tIKCXilzwMcsAeuyoWAMKlgj/6hLRrJVSPBaQzMTDgeSAvkTOJV2F/5BGVRlTO/IsZsjCis1GWiIuOEDc4tJjP5SE5fdV6QIs63FRBYfobJKSm6++0FF+5xydFlJ2BjA9AhM0C93Mdfc22NGFQ5QGGXZDrJ0vMnJs1YFV7oYWuWTtnvgBW7gvRNPtxX1BkIiBuuMqwR3C9UAULGB0ahUi1PW4087fC2AH4VlDPR6jiNwTp0+YsoR+rzKAmEukIQAjW0ttlqubNKeQbDiC3Q33ODvn2YURGETNY3lZGtz69B4IQp2iFI1n3Oz4QaGK/kOr+XnC7cGZ0CpTTYwpKAZd51aijc7SNlkHemkIj7m1quU//6IFET9AGKkpa/VEWYs2U6CmeQsxG9vpm1jkLwPtMs7eORUi3WXaeMPP4PHD5YUafsUUFu3UfUwNaFL6IES2wV/gfoN0TDP8hVs6BBtlO0mB7ckwImNHIv61fECoFrL9NO3l7+A2mH7t13kw9KMo9pvH5n4WElvrVyt/LWQDwUF1qIDHiqP8+0+tK+C8cyEHeWvtgg/ad8bwaNTeSnRuzli2ae2kYGeUQ/DaMivaSh2fjYkQyOybaE95U0gOQMv/YV2svoZR07uZ3OobHBAu9/IoJMPQSxrdJwGCaxpBe57qbt93M2IRMB1ujSiOyJ6JDLxe9CXbMvqYh9S0HVL3NmMgVQSI8S7WnbEbuJwU1cdDm3oXkD1m+V1j6fkz76/yl2XFSCtpL5aQGEaxnNb/6BP2SG+rV7sZ61V4J4KDX/k5Jhu2U4NYmt+lW0ndcPymkq7dngIRpUMYpL4TFQ3/sbRu0ptJ17RYLEo+SZRpiNpgjuAQRsfwz2E4+Ik2lyb0HtagKUNa6KJE
- PdsPgPPj
- 7LaFkF1siAUDShKgvquWqEEsu1a0aonCgiaibVE6aQHtpWzoeSh+EimegOFZtVfqbNJXOJ6CMw4l0+N3OXbeQVh/5dGOB8Zpre3gw0QHDKTKlMq+pfzfiPLAPGqh0BWf1qIHsWbFBMOmLKKi0di5lf4+oZ/W3tPVg8k0z1C1R7F2Kvod5X1AIPO3z1YVMoPEVoEB/LOCnzyoqcsLoUu/QojIWF6l5gQO3KSjF2yfYmpEthuOVsTQy+OVJK31ubo2Q9CFpe69W+QCHIM3ScLzrHbMxUb199JJrMVghoNLBsoBqD0E=
+X-HE-Tag: 1793286221-599856
+X-HE-Meta: U2FsdGVkX1/hIDBo5n+P+8/5MUOE3HtEnekYsWp6r3CiNS2QNK57PLZ3S+yQZTJD0JDgm3Ro8adJbwL9oWRFZnj6W5534MBYHChrKv1QXJzL6G0BlvaCowmrMV0zuJHJCt4ODlvfopfB+574mHm1pJ5skKRdYtq4XsB+SW/PJMv2HMDqiQnWPttdn8TVPI7PFe7fMzzCSrtGT/Tf4ryeL3WL3F9jAEuc8qK/sH5RRxVis4g1K53338jPOOlI08ORKLFIytKLJpbj57t4WevtaKWrN46gfHKm2Q4UpAHtmGuSsKPjiDmvRyQU2s6uScGk6dI0yZS4lzf1saoIM19N9skmUnKO4ijQ7IsZmUwgHgTN3XAr8AppCAtR9plf05apPo74WpQETad2y6fj71g+JOelrBJxdLIHoPaRFUnuZYf7JFkAwQtzTqyVOqZHyeXhdu7dmNz57GE2PrYZRRlq8QbizcMPMwRPQnRpbIRep1Z9hIoYZjGFuj3QZoI3RoAVRdfFmIW0MKWfAOoUDh7aSYUuuZpzbaw6pM61S/tGcogSW2duWnQCiKCb9faijVc+5x/rDUieuh/0PCIZCqqzQTw7UyZ3U1etQjx/x4MX5NyK+F0e+J37kwZxrzthO+OhbvCow+u52TB2DYuJLj8+G3zTJhYeJdiuQtvB4fsthjNnwsh5YnulwbuMjOPOe0QoF0TQeslTN56W80mpY7QUKuECTjrajyAhZcobO7dk2RJnGqDQHpCkyPRbzbCd54cZKTfWy8xaj7YS7e5B+KSSzIHbgDQXrfVuY6hBpWcMyqthm6q5Fs3MR3cD4myZEayeJUeqz/rTcqcP6eLhEuplNKkCKAH3x5jSwxwSDDWCxGTGPmIWkK4omHb1Wx1y8AHky5cagyB0U8onynNUmeMcvS1yEI70GfydZXZLsNoin8P67Opu/4aRsA5UYelCS0rPXc748XJSYff3tyKE6dM
+ UPV07Zai
+ Y8Z496cbWn40NhHAl7yh/Oyw7E1qkXz/35zj9vL8LZzP2a/E833JICzSDlHMX25CpKjraFFnuj6aGbhCu4MisLbpCecS8HFR95jzR5yD8FPdVk5gaFhaxE6W0RrDh40HQvYj623gsi2Bi+3qTxxAGhtQFhg5p8JI+hyq+gRbQDXVW5nxmM1u8DDo3f8FuJV2SvRIXCi5lSmHJ1nyjQgRo0HLLOyqWbxDXQ6E5wfCYonPuwaSpnYc3CJrnUQ1lr3eDctIfpnYjtVx8Y1Nt8+jda6htEFOxT2bj5nqqyK2C+ZSUPRk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,33 +102,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Nickolai,
+On Thu, Oct 29, 2026 at 01:17:06PM +0000, Kiryl Shutsemau wrote:
+> On Thu, Oct 29, 2026 at 02:40:21PM +0200, Mike Rapoport wrote:
+> > On Thu, Oct 29, 2026 at 12:27:23PM +0000, Kiryl Shutsemau wrote:
+> > > On Thu, Oct 29, 2026 at 12:18:36PM +0200, Mike Rapoport (Microsoft) wrote:
+> > > > Pages of allocated CMA areas are released to the buddy allocator with
+> > > > __free_pages(), which does not check for unaccepted memory.
+> > > > 
+> > > > This usually works because memblock accepts the memory it allocates.
+> > > > 
+> > > > However, multi-range CMA areas, used by hugetlb_cma, and fixed CMA areas
+> > > > requested with cma=<size>@<base> are reserved with memblock_reserve() and
+> > > > their memory is never accepted.
+> > > 
+> > > It feels like memblock_reserve() abuse, no?
+> > > 
+> > > crashkernel=size@base already uses memblock_phys_alloc_range() for this.
+> > > Should the fixed and multi-range CMA paths go through the allocation API
+> > > as well.
+> > 
+> > Fixed path already has the range, why would it use allocation APIs?
+> 
+> Having the range doesn't make it a reservation. Both paths take free
+> memory for the kernel's use, which is an allocation, and an allocation
+> has to be accepted. memblock_reserve() is for memory that is already in
+> use: kernel image, initrd, firmware tables. Using it for allocations
+> leaves acceptance to every caller, and both CMA paths missed it.
 
-It's pretty 101, but please don't send new revisions in-reply-to older
-revisions or feedback [0]. Also, if somebody replies to
-you, reply back. You, not your LLM.
+memblock_reserve() predates any allocation APIs and it is used to say "I
+know this memory is free, I'm taking it". So memory acceptance should have
+take it into account.
 
-Also, you are flooding the kernel with patches, 5 series across 5
-subsystems over 2 hrs:
+> If memblock_phys_alloc_range() is the wrong tool, let's add a
+> memblock_*alloc*() helper that takes the exact range and does the reserve
+> plus memblock_prep_allocation(), the way memblock_alloc_hugetlb() finishes
+> its own search. There is no search, so the multi-range path doesn't get
+> slower, and accept_memory() stays inside memblock.
 
-https://lore.kernel.org/all/?q=f%3Anickolai%40csail.mit.edu
+A new helper that does reserve and accept makes sense, but let's do it on
+top and also audit other callers of memblock_reserve(). I believe we may
+also hit some curious corner cases with memmap=, although this is less
+likely.
 
-I already asked you once to stop doing this [1]. You've carried on.
+These two are really simple and easily backportable and I don't see an
+issue with calling accept_memory in low level cma code.
 
-This is not how to engage with the community. Please contact maintainers
-ahead of time and ask 'do you mind if I spam you with slop?'.
+cma_declare_contiguous_multi() has other issues and I'm reworking it right
+now. But again, that does not mean a simple addition of accept_memory to
+CMA contradicts it.
+ 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
-Only if they say yes, carry on. Yes we want bug reports. No we don't want
-people like you running scripts without permission and sending out dozens
-of patches all over the place.
-
-I'm sure you're acting in good faith, so can I please ask you to engage
-with maintainers instead of ignoring us and treating our time as valueless?
-Thanks.
-
---
-Cheers, Lorenzo
-
-[0]:https://docs.kernel.org/process/submitting-patches.html#explicit-in-reply-to-headers
-[1]:https://lore.kernel.org/all/atYQW_lfJdRZnU_n@gremlin/
+-- 
+Sincerely yours,
+Mike.
 
