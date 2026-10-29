@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68119606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475F4606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B+gNQr3I
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iUNGuoc0
 Received: by kanga.kvack.org (Postfix)
-	id 8B2ED6B05D7; Thu, 29 Oct 2026 16:39:57 -0400 (EDT)
+	id 4E3466B05D9; Thu, 29 Oct 2026 16:40:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88A986B05D8; Thu, 29 Oct 2026 16:39:57 -0400 (EDT)
+	id 4BA4A6B05DA; Thu, 29 Oct 2026 16:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 779956B05D9; Thu, 29 Oct 2026 16:39:57 -0400 (EDT)
+	id 3D0A56B05DB; Thu, 29 Oct 2026 16:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 584D76B05D7
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:39:57 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A846E1A04C6
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:39:56 +0000 (UTC)
-X-FDA: 85376830392.25.2EA0E29
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 15EBB6B05D9
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:40:17 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9767A140506
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:40:11 +0000 (UTC)
+X-FDA: 85376831022.17.05D408B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EA50A40007
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:39:54 +0000 (UTC)
+	by imf11.hostedemail.com (Postfix) with ESMTP id C274840004
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:40:09 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B+gNQr3I;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iUNGuoc0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306394;
+	s=arc-20220608; t=1793306409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kUEfRiVPdPCg2/KqbNX9PPOiFF/eP69nxT6xONTBQFk=;
-	b=fGyPFIVdPcmqaOwgda35mAodtaOE6qsPkthfMHiX9+sczH1JCq+3CzaudM8a9RVLhTYUNj
-	TumPHlZrvL16Ns8pXUFW9ALFxFz8QJVq8TytBBsz6y5d7VR3mTwd6vGkhfdMe1EzEQbJy0
-	bs7XB4zNJZanZoNFxzJT2KvvE9UBVJc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306394;
-	b=JqyzUXTbFKfzyD4rdbggrfksjrv9VM0mZtspcNn+mzHftgSqEvAibtFuKmmxdthNxCSFQx
-	nzL0xfKwb4vhNDc71zw7ufsK4nge/LhatEpK0+9YPPED7MKtld1N8EtrVfx1P1FfqKzuQp
-	NYkJwJ9QUpw7r0sgzrVq6tGkpi8JEvo=
+	bh=FUMlocCCR3FNPkXe9l59Im2VqUBDzK2bwkLLReRcpPc=;
+	b=XAr6SGbjHQe6aIXLEoCK/KCRp6X3nQgAfCeoRhtrlG7hrq/V6YBJZdShoydXv7dRlqS/em
+	synR7F2PMuVE/9/IosVH7of+KyDM+nC8VYPxDQ/wQzwxzUAnkxsDz0Muiar38Fof5T/Vgo
+	7JYDPRYaT8bvUI0SuTOIN5ImrZj/mjc=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B+gNQr3I;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iUNGuoc0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793306409;
+	b=QzIN2sWCCFwyvfyGD6PZfHHpEOsBhmQZsm3Kb0YsDGHKa8LJU5RezCvdBPPU71YU6PBVJi
+	a9cNSjjDQ4Q2FFgDTIqzEvZUDcWFZxNUlz7pwOp/ZYC89qkX22rodnGv3KyQWJ7OAra2t4
+	khOpVflbexWuTiG01AZdC4k0hevuG6Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8334160629;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5E8436061B;
+	Thu, 29 Oct 2026 20:40:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01EC1F01825;
 	Thu, 29 Oct 2026 20:39:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA2A1F01824;
-	Thu, 29 Oct 2026 20:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306394;
-	bh=kUEfRiVPdPCg2/KqbNX9PPOiFF/eP69nxT6xONTBQFk=;
+	s=k20260515; t=1793306409;
+	bh=FUMlocCCR3FNPkXe9l59Im2VqUBDzK2bwkLLReRcpPc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=B+gNQr3IgYPjaHbppcw9o3+A/kH5KGFoMEXaT3pmXT0FTMtlv+J0pbqsgNG8qOKhI
-	 EzZv32DWC5UMbUTC6nahg8i99r8SlIDGC3mhtb/aPJleJt9pQnXfM7DC3eqXrVeT7x
-	 EdKUlx6xc9n+S59O83153Y6MLC9vkrBo3YohvFsMgyPF2XXX8arnY4I/NzKyuM/JEz
-	 3ygSXzPCjFoKhHuKLnRUhILHFjQnmeRktJ+2iXs0kQOeWBYEibfl7ylO2Cg8X4ctvj
-	 stH0v8Jp4kfpNdJepSKPR7w68ibQTVHXls/i3r3UYfHi7GEl6lgKmrtsNLIYxmrLpp
-	 X+MiazDsOENog==
+	b=iUNGuoc0WeakiHgmDXnhuPlSghajcP6iyTr2aD2FuFZ51pYroFUry3bk8JUaMuEA3
+	 XXcNDCVFvoALkSqrqd4c4ihHA2LGsPX/upOgvPJuWvhrp+8/2zaa0PLUJuKsN/8plW
+	 9iGLRa5wuxHYdpBgli4Hpi+HHP6EIxJmTlApX431kJFtoeZ0B1B1M0Zp4gzk9TElJz
+	 VP0ojaFjbHD+kB+2kggTzsPRUHMqSoFzPO0brdXePjOTplmQj3LV3C4wd16dRHjz6d
+	 LfhgkMqYVhJp4fw1eMSl1gAQOa6lfEyik4W4IucHpl8YgrOAayJWXboJOwGq83GAdS
+	 y6H9j/Ymf33KA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:21 +0100
-Subject: [PATCH v2 26/47] mm/userfaultfd: compare exact registration modes
- before skipping
+Date: Thu, 29 Oct 2026 21:33:22 +0100
+Subject: [PATCH v2 27/47] mm/mmu_gather: fix flushing ranges with 4 GiB or
+ larger
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-26-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-27-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,29 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1463; i=david@kernel.org;
- h=from:subject:message-id; bh=EB1on15q6q+0KCAB0yKS0tRudcnaZpRwYV9wTcssTD0=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer203CXiXELbMN4o57IvJUo3yzuqG+rPOik++eEpsO
- TjZ80ZFRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABNZu4PhfzavpnbcmeVGF7QM
- sr8/+8rw5RZPRxITd/OkpnP6gn7Fcxj+e2b1ZInfnHld9ZtWi3l+277N38xu99RKLNbot+cSfFn
- GDAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2091; i=david@kernel.org;
+ h=from:subject:message-id; bh=QH73tRoFq91DTzVscInadBQ8PK5Px8G2ighCsSz8YrU=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer23f+WLDDxbu6impZza76Sw7pvh0S2eDTcz8nSb2D
+ zL3qncc6ChlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAizaYM/905uFk2VqfFhrmz
+ XVlbZVP9L0C+ZDrvTsdXQa7Hvk8vSmL4p10dqrF9woXJN66x3TSeKXedRyrsAptEvgMXa+HZI8n
+ PuAE=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EA50A40007
-X-Stat-Signature: tb9ncu8ngen9gxt6w55qsu1g5zwb5ggt
-X-Rspam-User: 
+X-Rspamd-Queue-Id: C274840004
+X-Stat-Signature: 4fct1bco4ue8kaoq8jwf8xr1wk6x9cji
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793306394-623571
-X-HE-Meta: U2FsdGVkX191rMfqeQ334racUy9aqrfXJbMH0WTc8U18/3LAhlM73QCrqOMaSqX44nT77ZAZNBpk0OAav58i+2feFFGk/iUUEyXwfogB+3RionLQ8SyMkjhyd9X8Ur9g24SXx52ZASIRh/bgXa0oa1nl31Y6aFdnyRcoMjyxtVcInLrKaO0hP1+5eC47hX1fRo+rLwFa+Y0L4dtCCgsfh0zXLmYqeCgFKr6BwyuQfuqZ0yudTMg0d0wtx0vgDns8pqzoa3wtBEmrqn/ZCwp/JMRTzMXsurgyFFWmpqtjhYHZop1/tnI6LQknckUl49cxQfRETbZYpgZK9vxLHR6/SeFHp+GujS2DzOrKOm6yXJP9M+/FvbuQehKqHOe6WYkaZ3zTrUc5WWKbOQC8M2CUJnqaSyrFIbSOHJ3cPKNUv+D9hD6Z82iIWEpfxquXeFDotHTUqbmxwdRbQQAFBPZ0mouLxEQNasMBZcPG+m9khf5b8yqVZQQ3jMRxHaOGkBk4vhTJO7VQznn5oJRMnWKycy3bJiMEA5sYbUMXHLgvKV3M6sdMeNBDPWRv9f3PgVxeJaNAwtKfdyBVYD7/FAju0bsaO/CLbWsqCywKBq/qZdN/76SxwQIjiYYVpXcivakchA5U3Gppu83xqMatt2nwqw14MVRXLXmKHO9TeQB/1+ddVI2XKYRpHFEEeNYxlKX5FtrK9oV4TjQ5osn+btXI1Bl0tw9K3nIHf7mRQYC5d7IrsG2xw8UoMmgKJ9jm10hmr0ENYW938wEJkMPp1FF57sMeItqkbdditt9+oDokwOOCKvRkq9lO9FtdJLgRxfEHbXp5YQkBVzIQcNz/8RBT4y7pPfCZyQn60wSfiLOq2+Zt8uLT82Dslh5vaFxpgGHgl6YWE+HHWwrvXrE+k6qcViE+BPBI6bWNZSlNpi19L+aCBoC9u4aLHc8wrxlyyd0Yp8W5oASlapVW7fK6xAh
- 1lcdzubt
- O3u07+WHfSAE/GF+o4zMywB6ftG0VaO6cjKzjQNphn8pkj8HMUi8gq5seDiuf59qxNgLrgJc/OGpN/xTgTwwW7aL69TlX+BN40iVS35KM7TKCtbgSQhqz10If4Rtmo4ylkBiAGXBpbqdA2+/yjw4xHItGpA6JLF/gxUtt0LIM55YCbDWaChp53arJLmG2uHhg2o2Ud2UDHwm/kXmsyU8gZ4+VcT9/fY2rkVU+ZFDEARGxLAcGQ6fRuZlUWoyPSSYNOjHw+lqi5LQwBFHRC5AEtwc1wYu3peSZzQf4SJgQ/L+avQA/oqkI/zf3amHvSycmZVTDzutMKGBERbWgxn6K9zBuUJNXDKIIvPPGlXi+4n2xSEvw8mzvD90TD5/qf5eE5CvvxTvQ+rpb0P4/UnV8bt7GF/BnMvJJmvrOORsISExK6eI=
+X-Rspam-User: 
+X-HE-Tag: 1793306409-577772
+X-HE-Meta: U2FsdGVkX18ZR9qrkLWTF7hFeHnq6K029Qa8k6FgeKmeXGrvL7JE2OJYBXeclrtBTO8KPE9DeLDIWnd29hNcT5omxtXhLW/yE3i45k9pQ3BSCB/Pps+RETNbLNvgT/Z1/PfjlCk8L6Y31ztdUA9IeuXnwpjI4OYzVNkKAM8Dex/lqW2JwWaCuhg5L9VcNs0Mwwt7/GH/gabngkPW1Koej1tUXDLwhoyWrqd6mFlUcnZ02R2sWT4vDoRW6Cu/x3pTBE1vMr9Ecvd8V38tmbfsGCeS4Fs+DHrPwYZfbsBN/cDIUs7DZ+vfkQY0DvNeI8+jTLOwtLlIvlZMLL3GGq7y7hO1qsBAfHdNMk5HShc91U16pInFGMJhkqmbImGMRIwQEZhF7qt8hV3Fq1PT47DtvxXNToqxvjEFcTizHrFRyDKSJYSxrSrK13VveoJDFYxaT15cztkmf7rViyTSOzJEzlT9DAK42neLNqdZpe4sc3tTPyM5kWpgsjV5+ecpy1TFZfJO8KShGOsrHJen2MmB/mpxxB8NiTsDXxnvvEMrXv6b7oT6PmM8pk6eT4AGR9b7UqWMBUUwJdBXu4ILBjrvIievH1VQYEW1ZkUPn2g+wFufKEQWFEKaDrUlI7hpTTzRzUtWDVz/rVQeW2Vj8NMjLCro2tTnqIX3bWmO04aoi7LsZyj/NaSR2YhMtahv+9bJR4IxH8QVbk72a0lbWC1JE+Qqkl2mtMdQVhBOXuAcaA5Ul3+/M0jS0icWAdtmamiNr3V6jPlV4tLRfduDBHJWYGV29fLDDDURDLGffLdm5Acxva8d7FzsvXYaEzIApz2dCECeS3m0DH5QiNmthAiAdDTzKoBt4uzTNHQ4wV0GSk8N3G26rQZ5SqRJSeTwSIG+blqlCOjKBK8BS58cJSjEhYkksf7pO+Z+2svh3orr+67gOZdnEg2LlWtLBPLh+T5eJlqHEvPMi1Ys72GoYYH
+ PEVog5i9
+ OXMnIiIdxe5UBajaZFJik3lIyIP1Tb47jrobZxXw+wsP8LSU82T/mTnknzrbOZX3gJGo6nTBvnT9tDSgL1Siu6Yfu8AMaHqYfjp+I0zUTKix3JaFgCu8B4geGgR+T+gs28Dz7x/ZujnKd9mUzXsekqfnQ27MODE57IQT9AWolyj0mAe/Algw0pxqbR85n3o398FgHUnyL0zEivpS5upEBcwFHx4rvWgZh2UDgUI6KnTXhZbLHn+VsnwSrKqseCKYw9gfc1YHXMaDRc68UyvN38os8AAmK1AmQyFhAf30+GmovW2PdKFE1Rz3x4YYjwYUTFlG0MBFgJWI122eugMYg85P+txqvZP1AB1/+idmdlmRYvuM4TvtEAlASo35p7WNsX6rfp9zOzbUAN+TZz6HDiJfsj7vQM9tD1sTOxhfTRoy9ETVYDUnIU/+9iR/nbQGbLqA0kQMXO8GzE8MvUGiusd19+8Dnr1lshkQbyzTcfTMkzAgA3AFc69vh0BxUNWf0IvxL7oHC2pi/4Rt9oSPCMSF6yT1dGjSyYhxsXMjMa7DyqbI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,45 +139,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Gregory Price <gourry@gourry.net>
+From: Josef Bacik <josef@toxicpanda.com>
 
-Changing registration from MISSING|WP to WP returns success but leaves
-MISSING enabled. The no-op check sees that WP is already set and skips
-the update, so later accesses to missing pages still wait for userspace.
+__tlb_adjust_range() takes the size of the range which has to be flushed
+as an unsigned int. Its callers, tlb_flush_{pte,pmd,pud,p4d}_range(), get
+and pass an unsigned long. Consequently, a range that is 4 GiB or larger
+gets truncated, possibly to 0.
 
-Skip the update only when the current and requested UFFD modes match
-exactly.
+On arm64 with hugetlb, a 64k kernel can have 16 GiB hugetlb folios
+mapped contiguously at the PMD level and flush them when unmapping, and a
+16k kernel can flush 64 GiB PUDs through tlb_unshare_pmd_ptdesc(). So
+at least these two scenarios are affected.
 
-Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+Fix it by flushing the proper range instead of the truncated one by
+properly using "unsigned long" for range_size.
+
+Fix generated by an LLM and sent by Josef Bacik in private.
+
+Fixes: b528e4b6405b ("mm/hugetlb: add tlb_remove_hugetlb_entry for handling hugetlb pages")
+Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-[ david: apply fixup from Lorenzo ]
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+[ david: use two-tab indent, simplify description ]
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/userfaultfd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/asm-generic/tlb.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 03f1b15bfe63..dac696bda19f 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2291,6 +2291,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index fbe1114e9a44..3f4a180b48f3 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -350,8 +350,7 @@ struct mmu_gather {
+ void tlb_flush_mmu(struct mmu_gather *tlb);
  
- 	for_each_vma_range(vmi, vma, end) {
- 		const bool any_mode_removed = vma->vm_flags & __VM_UFFD_FLAGS & ~vm_flags;
-+		const vma_flags_t curr_vma_flags = vma_flags_and_mask(&vma->flags, __VMA_UFFD_FLAGS);
- 
- 		cond_resched();
- 
-@@ -2304,7 +2305,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 		 * userfaultfd and with the right tracking mode too.
- 		 */
- 		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
--		    vma_test_all_mask(vma, vma_flags))
-+		    vma_flags_same_pair(&curr_vma_flags, &vma_flags))
- 			goto skip;
- 
- 		/*
+ static inline void __tlb_adjust_range(struct mmu_gather *tlb,
+-				      unsigned long address,
+-				      unsigned int range_size)
++		unsigned long address, unsigned long range_size)
+ {
+ 	tlb->start = min(tlb->start, address);
+ 	tlb->end = max(tlb->end, address + range_size);
 
 -- 
 2.43.0
