@@ -1,127 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF9A606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 12:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866F3606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 12:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h7Nf0VAi
+	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=WUo05cr+
 Received: by kanga.kvack.org (Postfix)
-	id 6C8906B00EF; Thu, 29 Oct 2026 08:04:38 -0400 (EDT)
+	id 9DE6D6B05B1; Thu, 29 Oct 2026 08:09:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 678CE6B05B1; Thu, 29 Oct 2026 08:04:38 -0400 (EDT)
+	id 98EBC6B05B2; Thu, 29 Oct 2026 08:09:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 540236B05B2; Thu, 29 Oct 2026 08:04:38 -0400 (EDT)
+	id 87CB96B05B3; Thu, 29 Oct 2026 08:09:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 292976B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:04:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8950D1C3A0C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:04:37 +0000 (UTC)
-X-FDA: 85375531794.11.DCE67C8
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A825F140005
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:04:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=h7Nf0VAi;
-	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 67BAC6B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:09:11 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA1101C3A64
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:09:10 +0000 (UTC)
+X-FDA: 85375543260.25.B07C139
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3A5D51C000A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:09:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=WUo05cr+;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793275475;
+	s=arc-20220608; t=1793275749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bJSH14qka21Pa4IF7UBG6kGZapW9mNIllQsE6kiy4uo=;
-	b=AlJpDveo+WcCUG7M3pEP57NFcdg3xO9fLOV6p0q0BS7hpXxVMsTGA/sN5gzZO672FofOvK
-	akNw6g7LQPwPuzsSVJJXnA8wqdx1TfmjN3qztFB3yTCyfi0uZOdShl5rnM4DAUj3cuRAAX
-	M5DSwc7Rt1Su34CkNkO9YcXFuBmrGh4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793275475;
-	b=BY3cVb6OJiSqEr1MQHRDRcCufOzmrQxu7RDt/r/gOcQ2ywV+ST9qx0FUJZZlLZCXOvKEkw
-	y3b5yryQLaRbSbhgNVfnTTM75phGqVTVyIx0Q7ANLoDH4bSnilRUlCEIsbM8XwX7vuksRV
-	qAWEMgQ3kcY1ZbcCtgdtnWImPYdOpZY=
+	bh=RocjA1LFJ8nCgW+tO2y+Fh4wXXWjfdPFo024IhF5Wq8=;
+	b=K9poo9O5moP7wxu+DcitY/XoL2SSmRle8yXhNU1KINgO91AnTO+CWfzRtMW5wkjmz6xiGQ
+	uuYuQ12y2Yv9jQbLDGFGoFHMK96JK3OpsJ5EOep20euFdU0XofJ6ZKWbk9KI2h0jn0AwH1
+	s0iVwovnUEx6HzHIWGGeCtaKK1h0YhA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=h7Nf0VAi;
-	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48e46e449e8so1217547f8f.3
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:04:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793275474; x=1793880274; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bJSH14qka21Pa4IF7UBG6kGZapW9mNIllQsE6kiy4uo=;
-        b=h7Nf0VAivrIF5RvBLjMBTsgftJZrWxslcyVFlc3yuTo6GuXw975CnkuuSfgNr+28XD
-         jCGPOYBcWhpmNGuQkGdoDioZtO4x6MpGvHExlGr22MXZkWIyDTq2EAq81e25A9DzSzOk
-         2pbQYPCN7biFakDafzb7hVb1m8L/JDvnjK11dT98kfnZt96pg+hWzpEhxPQH1ccp88ni
-         WeRUM7T8wHP3R7noBLNeOtOv0xWjs4mTsP5IShOELD0SqVXlznQbv4Ax+lg/FNU/9YFM
-         JaS1rvtZA0p8jdlxemGrnT8JObcAn8QFbIPPcPIDzKkFQixc9pxkigP7GfNekma0NMRk
-         jJbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793275474; x=1793880274;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bJSH14qka21Pa4IF7UBG6kGZapW9mNIllQsE6kiy4uo=;
-        b=VCU3yU+LOrd6LEjWshsEjOvC7/fbvNdhonFBCmAhnRhwlV0WMcbMiPui3u85flVCai
-         ZH6xUQZ4vo6XuHYGqTqwacdHmA1AZHXhp3F271S1r4CP5SmpcT0r3Qu2jy//gB8kxQ04
-         fSajR8mlLbdgO0ExlWR6uJ08eafO/DeiDQtvvW+RbOoAmgnDoLwQAzOO2agzcriro6d7
-         tjmLYs8YubwW7zuBeuttYNOZS0+VjsDdx+uWmkcsSQ+nlToO40VGOWwQqy2QsTMJsLwv
-         lEh2HMDwAQHqyGXGpyJY+YXn4CcbjL+zmhZOnOCuvIhQH9Emo9D3feOIAnBKDj/i28l6
-         B4Ow==
-X-Gm-Message-State: AFq9FYLgsY7hNjU3v/cYu861o7OjRTIKjeDC475J6nY1iq0OUpKVYkVI
-	yS3cpxLtA9+HaCWA6jZc848Ei8iihY1q1K2hV5uKcehuAumim9SUoysb
-X-Gm-Gg: AYBFou1A9DmGtwRa868y0PeSNbJGvcInsPsB6LTNMw85jXMyjofnWqbADyiDVNufnRr
-	SQCt3w7tCBh1SxaV8xXbe3/3gCqwGPfyJgz0rd0DGe7XKVLB0uIKQay3yGSJkXm/PrKlI1WdiFK
-	+KeEJvdqPT+OulhNgudtip+jfQaPokSIBbqY7dxbSpe90S6F2UeFhvMHOj1mRVZn+MKfqwjLpkq
-	pljfKP57wDMf6LPYYlsOg/9f3Bh+Z4VTrdMl6Gcjxr77oW2qyDSWlaSMZ6xdJeyik9hsfB8MM+J
-	fdXjgIZpC+D5MM+uKxFHdD8+JMlyH3rcN2xdrocZu9qw8yN8ItzC8G4CDiIetIGkiXf4M86pdE7
-	594gIvQ0d5D7wGhrJzcma63j7bKP4h/2LjFB8PzX7M+Csp5dIfLnigahZeR9LeNvsZJRmzkgVK0
-	674CIY5ZoM8zRjDrs4YLnDfbQ/KN8asDuOpM6YWSIq9xcBeCRelljEWdVDeLcCKMgvBMOdvhg36
-	e0GQqQbRb1naowY1et7SESp8IuWiLbbJvtSnshtmqRxw9avHHmMeqqcBNSyPjbA0dUuN4xIb1lY
-	XwGoz6IfWvLSeHE3CP7Exp8Fz8CZUmHC3O3iDP/8sLPMnQ==
-X-Received: by 2002:a5d:5f85:0:b0:48e:bf0:35c with SMTP id ffacd0b85a97d-48e5d2e749cmr13206928f8f.13.1793275473988;
-        Thu, 29 Oct 2026 05:04:33 -0700 (PDT)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebcb846sm34237059f8f.25.2026.10.29.05.04.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 05:04:33 -0700 (PDT)
-Message-ID: <ad048090-431a-4343-a08c-d8e139d52005@gmail.com>
-Date: Thu, 29 Oct 2026 13:04:32 +0100
+	imf20.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=WUo05cr+;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793275749;
+	b=3Qh5Dy+YcB2I7tmescNgdZSJrQtTyu2nrbdi+je6dUskAvnNJ3sbSjN54ai7RmqjV/2vry
+	JgJFZ9+wMNa1pQdesKUSyX6dqOcrVEuk5LeNyr8bP01s71e0PCfqQcH6UsEfxfwsbPIoe8
+	/uwt8ZRvx/Oy9rXFzHsAwuvrcAanYWA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1793275747;
+	bh=RocjA1LFJ8nCgW+tO2y+Fh4wXXWjfdPFo024IhF5Wq8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WUo05cr+foO7RPlP7534YSiBgZ8CQPkwQY40XhGkYZY6+6/4j3XkS/IFDfGv+Pkoh
+	 y9zJIn2BFoMmtdWooRjNBcjjjJtArbTwyJLsxt66JLoWE/gVCnnA7sNVi3UolL8xve
+	 VDmnu4pCCOxy8JC/MQlwNqsBS6P1OvE3N85vIIf8=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 2E446101220;
+	Thu, 29 Oct 2026 12:09:07 +0000 (UTC)
+Date: Thu, 29 Oct 2026 12:09:03 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+	linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-aspeed@lists.ozlabs.org, linux-hardening@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Subject: Re: [PATCH 00/10] treewide: switch to __nonnull_args() macro
+Message-ID: <auM3XwWPnMHcPptM@shell.ilvokhin.com>
+References: <cover.1793027261.git.d@ilvokhin.com>
+ <cce30180-c1c4-4b10-b681-8944057bc698@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/vmalloc: reject NULL pages in
- remap_vmalloc_range_partial
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Ye Liu <liuye@kylinos.cn>
-References: <20261029-vmalloc_remap-v2-0-c4705cbf26c2@linux.dev>
- <20261029-vmalloc_remap-v2-2-c4705cbf26c2@linux.dev>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261029-vmalloc_remap-v2-2-c4705cbf26c2@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A825F140005
-X-Stat-Signature: dhoec6odqf76zrpmmurfhorwmnruzeoz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cce30180-c1c4-4b10-b681-8944057bc698@infradead.org>
+X-Rspamd-Queue-Id: 3A5D51C000A
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793275475-103730
-X-HE-Meta: U2FsdGVkX18zSBYms8wcjt4YxOp2csxs8ywuQNPYCNkiK3J9ECEYj+aEqayv7joAB26o/kGvck67vpKAgJTlTVaVLVWl3DGeQxbh4vGwdkSZiM7oQ+yrK1cLZOmYCY8uhWGLVtWRIaJh0la7EANy8AG9IGDTBY//lYm4QYWSX/pXGvl9/CHxkwc3XYxTy/I3ByLtgS7wWu3gjEuXxCzQlKZPOsPr9/fmODlOzYwf7aB26SpIQl+gZIzX7qgcyXXDJw0EHg4MeRwcnROup7/xiMx2Hlrfwaz4lBK2Cf6HgIX+kHUcIpgzO4ICDjFJLwZANfhiT+dbmRzcLW1Z53vezIz0MmDlTObYsHX0pXlbGAj5IecwiNKAhj43mGqfm9PDASjCMicIVrig/nA9oQXEZ4sGXEg2l70Shf+gGDWv7BekmupyUf7CxfeV5APvVR8jdajKg1IIcC4eSYbygODW8RIP5gFCBfYEJn18L4NWlDDxhnWauBFv5rvG5yGkKrP9lbTTwS2A1p/OvqMnR+/0dx3Gc7OuP01U7A4bdlL2AYAyGUYv1sTibCanckT6Dhdniw2uKeUqJb5MqC5h+0EVBSP+EJbagZe4NpvA28pni4CCVXaLg1o8vLtVXabhZKIP6cbwb7QKRelhxwJUFwTA0SrPhAo8wPXPLoGQKFB8YSZxBQEXu6Pw+Z8p29rSLANoMBFaBW+gYhKdxNmsMEES+hXKIa5Trm+FTVn20A64c2M84SDS5SkQDtP7rvIAUm1+CUE4IDh33utPYZm0MZ93uTf3RS28Bu+9pj0solhFu4BoK9bf4Qk8hgaHHfgzbfVrhTwo42LSsX9tn4KRnfrF8mhzjJnt6dd5ptXrPiej5O8N8xL7CYfTostwdGfsfXKzGl7DwK5shaqMwAY/E/CmLKT2eyeNaNT77MpYGqO6SGJGwA1M/CTRF9eOKygWlEf494cwNpOpr8uWcQidpoE
- YCyNcz3d
- Fv1Aw682Dpwjvk00yEVAq7cakch9I4jYT20DpRplFuA2tYNcD/Zz85VWFxLysW6yctAfl3h1Kc0ead6dknX5dxjvNSQmAffom6h1bE5vUqc+jIRBeroqos7W4agE1TRsM52U/RC19qV/h8ZhsSrJqF/0fPgNhoUhb9u3QKcC9v/g7WAwROPtlkizEHOmtZJvAQhGFD/Xe3VxVgqP4q3XSuDE9mx2tjYqg9w36mf6U39mFTSjciqyAoezwxzZV4ylNKmZXvPxOcH7hjFZ+WahHIHPiUFRE1CXnx2yaAVQZWKLLE2zIuuJpx+MAP7UI4mdNEb7NMXQUpl8QCACL8f9cy0IEaHBg74edw8VMTa/yCKxM2Kyg8aTpj70eTQjIdXXwAsjd5B8QgCSUzOM+1X0Q7catSxnGy1b1q79+QDgTJPDSxBgR3yzDghxssulyA7msfKXXD1qX7bqn0HKvOvdSg2fQ4OJm3PfDAFiUqc/klR2rPWjkVtlD5vLgpacjnm2NgXL9
+X-Stat-Signature: 8jo5ykotnr5zjpbqguk3qwt8n7yzhzio
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793275749-802
+X-HE-Meta: U2FsdGVkX1/3H1xw6bYlKnpNbPn2+sQvzxX0I80bfYksKyyThW2UnfZrgu6hzAmy9q/i1Hverqc6LWxNhE6L0Oa/k/6LhS02jRHu7WcDlLrd8IrRZz4HPkQk39DqiQNKjjRilVx7Z0uWf8OkQTjTul0OVbSYTsFtjBwHtdKw3b97g0+fUbJx8EKxdKyDAfgnp1/flchgXXoBPmtq35joC4v06rMZ2or4B28IiLmHbUY0o6Odtn4OJg4M4hM4/aFLNBRww2RWEi1d6oZaqylCmnn56S+yT9XXxDLgcG0Qa5JwkHKG2Q/uYjsPOc5MREnWOpMtLbUgEC1dshNWgZdSOQ+IEN3jhP0D2F/fYrKoVlPbVWo5NdWT/uTGeHQqPK8OSbf5P+Q+TOCAuxBnRF11vaSgkXawExY7uCUhwCAEchgdnXwgKLLWjagCFu+uq1QWCnhjHLs7BLtVCgfl+4oa1CsC34Fq6ElkB8uLUIBS7Y5k1Ole8zXKaIcjq/+XA588VC9/WABlvuFMUKgQkDbz2GVsnMrUfvMZqS82HgpNt7dD7l5QCjMKFOKSRoOBVsJh41sLqy7SIDtU5sBaDtoqgs3BXAvOTVbZ/c7tHVJ5frHR8QRSabtlXNeeZNPExCGImwXbeBGmX1Y4VqS2yQCcFyXTOgDT+istFbML2N2TrKCEf6SFhr4Ih9qyltR2wIN/kO0cbzDEXZKyRAc4bVtPjlRjdW8gSeAC/QjLYeeM9af4+SCLTzxj6Fo9TUb/5s+K40PA+APQgFRK19JyN0lnxS1cKvVmUb+KfUZZveJ9l8YS33B109A5QhiTbNIyruZg84ooKtLbB6O+Pg9ePoX6zVr0kJzwTLvZ5fSt9hP8imsKsMrCaaRB14W2Q+dZPEyAaeK5cV60be97P5NiJQ5kKwtnXnMc1MlZHh1tN+aSvUw9uv1ZNPYjrFxXGprE8OSIVVZY+m70mx1n6BRb7Yy
+ 5x/CEmxC
+ SCUrrS6LeEBT7A7J2GcCXcVmMoPcPAH6ddj95SWMbybgiqpPIXA2cFjs1TNYUZmQi+sQSkQLGu9DzqCd/7HcRSZRGb4PIJVOzzO3l02myPAdXPiTTeb9rXN0TUsUufZjYoVMbv9NT5Y04qJ0e+F3ePb9FqXq43kzsdNzg1XCB128jMy/9HM6ornUnNSJ2bUT4S4u79dVWelks6M6wvIKdgXpxyePUgzVOhh2MhY7bKPh4RLRtfznl2SThgHOEbsncTCf+39eIDm5UhzOnsb3Jfr01TFa83T5FNLHikYHO/PrBRRgccoj9y6eoyi//i7MVOREup9uI0bO5oGKvok6A6hn5jV0R1u6WqaAwt52o+lHDD+8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,38 +115,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 10:19 AM, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On Wed, Oct 28, 2026 at 01:44:59PM -0700, Randy Dunlap wrote:
 > 
-> remap_vmalloc_range_partial() passes vmalloc_to_page()'s result to
-> vm_insert_page() unchecked, oopsing via page_folio() on a NULL page.
-> The NULL case cannot happen today because VM_USERMAP areas keep every
-> page mapped, but nothing enforces that invariant. Warn once and fail
-> the mapping with -EINVAL instead of oopsing if it is ever broken.
 > 
-> Suggested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/vmalloc.c | 3 +++
->  1 file changed, 3 insertions(+)
+> On 10/28/26 1:19 AM, Dmitry Ilvokhin wrote:
+> > Commit 22302af28d3f ("cleanup: Annotate guard constructors with
+> > nonnull") added the __nonnull_args() macro to wrap the raw compiler
+> > attribute, keeping the attribute's quirks in one place rather than
+> > open-coded at every call site.
+> > 
+> > This series replaces the remaining open-coded __attribute__((nonnull))
+> > users with __nonnull_args() to standardize nonnull attribute usage
+> > across the tree.
+> > 
+> > Each patch can be applied separately by the respective maintainers. The
+> > only dependency is kernel-doc: the string and lib/list_sort patches need
+> > patch 1 ("docs: xforms_lists: support __nonnull_args()") in the same
+> > release, otherwise strends() and list_sort() drop out of the generated
+> > documentation.
+> > 
+> > Latest Sparse release could not properly parse __nonnull_args() without
+> > arguments. Fix was proposed [1] and merged, but until updated version of
+> > Sparse will reach wide masses it might trip on __nonnull_args() without
+> > arguments.
+> > 
+> > There are few more instances of __attribute__((nonnull)) usages left in
+> > the tools subdirectory, they are perf related copied files and can
+> > (should?) be updated separately after this patchset lands.
+> > 
+> > Build-tested allmodconfig with GCC 11.5.0 and clang 22.1.8.
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index a888eca016a8..dabef40ea88b 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4906,6 +4906,9 @@ int remap_vmalloc_range_partial(struct vm_area_struct *vma, unsigned long uaddr,
->  		struct page *page = vmalloc_to_page(kaddr);
->  		int ret;
->  
-> +		if (WARN_ON_ONCE(!page))
-> +			return -EINVAL;
-> +
+> What ARCH(es)?
 
-thanks for picking this up :)
+Fair point, I should have mentioned that I run this on x86_64 and
+aarch64.
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> 
+> Did you mean to use such an "old" version of GCC?
 
--- 
-cheers,
-jose a. p-a
+There is no grand plan behind that to be honest, I used it, because this
+is a version of GCC that comes with CentOS Stream 9 on the box I tested
+the change.
+
+To be on the safe side, I checked patchset still builds on GCC 16.2.1 on
+allmodconfig x86_64.
 
