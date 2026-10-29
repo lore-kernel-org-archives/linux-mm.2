@@ -1,138 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95220606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA72606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oLZSPrRP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aDF6T8wd
 Received: by kanga.kvack.org (Postfix)
-	id B02EC6B05EB; Thu, 29 Oct 2026 16:42:45 -0400 (EDT)
+	id ED3326B05ED; Thu, 29 Oct 2026 16:42:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD9726B05EC; Thu, 29 Oct 2026 16:42:45 -0400 (EDT)
+	id EAB306B05EE; Thu, 29 Oct 2026 16:42:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EFBD6B05ED; Thu, 29 Oct 2026 16:42:45 -0400 (EDT)
+	id DC0B46B05EF; Thu, 29 Oct 2026 16:42:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 764AB6B05EB
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:42:45 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A0FDA0517
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:42:45 +0000 (UTC)
-X-FDA: 85376837490.03.3D62903
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 57DFE40003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:42:43 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oLZSPrRP;
-	spf=pass (imf07.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B8BB36B05ED
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:42:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 40AB4C04B6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:42:52 +0000 (UTC)
+X-FDA: 85376837784.30.BDBC54F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 85BDB1C0006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:42:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aDF6T8wd;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793306570;
+	b=PlKZM07BzSx9YrRj2ePGM5F00rq6brrV/ZVX/Kf0Bn29IhxZ6m9wlKpp8z8oKAjc21mFNN
+	y50/Bf9mNSp2u/cZ2pmn9SK4kGM9sEvqPK24VPzVAO7eTRLXqck8PH5fBaQkDWnJj/LTR4
+	s89DHQuEtm0Y7MY9k//vBtlmB3T54Qk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aDF6T8wd;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306563;
+	s=arc-20220608; t=1793306570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=w/WnGJOegOoSLg6t17xX/8xCyLj+uCEUKKeXduOsb7c=;
-	b=4ufE0B6AIhcI+Pc2lmbACCKvYm3Q1R2vLMJ2GC3M0FdUMD+geCeJKkSz/2cvi3BoMwdwex
-	F53sdmtw84PLVjvGpgoRQKO/j2etbZwjh+bhUJUd8wv19tmTuIqSxSHRg1Li9qDkZoO7Q/
-	cvIABKqqD4ja83OhnAbLkql73XLk8RE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306563;
-	b=Vyop9hdIOILGBgO5LbwhXi1R9/cp/wuR8y/7Tgunp5l55YakjvEDuTaJQOJ+jrZvE/5Fjb
-	pnPS1DJkTxuOAHhC4PTL+wauVfjdMWijaF3RT5vWOqaCgxJYQOaryIRP7R1zkKeYfhUzqg
-	2eYd8GTJTSHeJMwJrbVt3gt0YiPykz0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oLZSPrRP;
-	spf=pass (imf07.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8ab432273c5so401967b3.3
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:42:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793306562; x=1793911362; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=w/WnGJOegOoSLg6t17xX/8xCyLj+uCEUKKeXduOsb7c=;
-        b=oLZSPrRPg+e5c0WWh7hgbaao0Jf0k41ATcfl8wi5OA9IHng9X1eSqZRE5YzL0WfW8c
-         HuSRL7ksVSWpuHiOixgRo47ILYTqjyNXUVnjVfZIgpK+uQ0k6uUKIePWfivtjrqsqCca
-         3KGhDpQXIwRxCzqWJF7Ki/t/31i8ODoaEU43KwU5zTZACjYynWNQHDVUJe1lHdAdAI7u
-         6YMuq271ftVjcYULa1FNxMZIf260QSV0DYae4KVxQ/063Z6u6TmnAI9GdqLm4od+VkKH
-         DH5yAaCOyuPVTiGQc+nPVY2r/BH5i5pJXpA5kzjuFsHvxuDseigiXFk65jOad3b5jNHd
-         qgcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793306562; x=1793911362;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=w/WnGJOegOoSLg6t17xX/8xCyLj+uCEUKKeXduOsb7c=;
-        b=0r6lMyJHPTA2iQz7rV8cKxGqmp4JP9m2BTf4OHogiprsgDHBzJG84IMbQLNRcgEqa8
-         eVWQmny+FQOLnnOnS8Xaf/zBvc9IjFad8iDuj2Z8qtZZNWkb1+VK5SfVdw9xHywdFLy0
-         jJ2xejGu4GB/aIxCDB7WYO8LURjw0bmcdsleBrOIyPj71Ijl/cT4PRQC5qa+tgTn8Cw9
-         d4gKJKdithLO1FCXT0xMXzpUKGjXjKQapnmYi9sAkPJpvelzQ8n7z57R16kTp2h5P/ZP
-         9G4oR4yV8f682WHbjxo1EAf2LnUULepz8RJhcS86Jp65Png/K+PA7Uo7cMjHgYeBaTQK
-         eiRg==
-X-Forwarded-Encrypted: i=1; AKwUvByvo6BHOzqrAvlDyqVwlNbEJUXpQx2r7VjSQlRTnvjSLGGS3j/gpBhA/BGYkOqkZnUQJPoe/647Bg==@kvack.org
-X-Gm-Message-State: AFq9FYLwmJVN2Ti6EfvSGHtn8EK4Ren3NsUyGbSDbNasHedoNNi8kO0n
-	Zj4i8mfkFnRl+Br9z9V2LFBPFGINEz+bCxv52HcQF9RtzRIVioMCW8/r
-X-Gm-Gg: AYBFou0HfN+TBpToUAD29V7gda5Jds1r9H+RTSYcEbViX0yQeb8qzsYMh7W6oxhiV0l
-	2Z6aVyWDRn1STYcg9jesG5k2frI72f8ce7iskadA/kGBQ0i3WMW/v0gB1krbyim8TbKfok0jZGC
-	sDFKllu4Nk9YEvY+1mVHjDoszgMQoz+FWyjVVZjBMFcK2vVy4MQZfR84jfToQk3hqwRLE0lLLp1
-	Dgml4CQ+KEDXLYbRiNkMpC8c34ZXsH0bPWTUXef+gpYdtUk3ZD8hJ1Y6vi0Tk+h3kXITW3/XaUR
-	79zZuuOdBLrIp7Rsv81EYYHKi3OfKxlHLtVrQvD65K3+7piOil23nE5R6CtKkJevpGSAD80w1k1
-	bVR5+N/vhmAERwsQG9m1pHQa7tXNZlnwkQYth9nFArYbmgEti7hpKdUTmbaxevsBx3XdiP8atq2
-	iXjR8mMYh6WUiVYQT8aPdq+5IBx90+zCaW6GvNMlmsc1xNet4gjDP17fMY1MtiHMmCtSQiamckT
-	yM7j8NGwBqLbu5Jic7J1RvnY6D/lSMGFqx0ZvPvO7Ot6e++gR8aNO7IeoxDZGSFhAzLiAMcZDh7
-	26coP4dfvvu8ZHSUohmyEQLoAAMTKpncb+M3R7S8c4RIEQ8RGYFC3L/7HlcL91r+QPCd9orSQ7A
-	gZbDiGKLWVuyKNc9+q2czxWJhTQ==
-X-Received: by 2002:a05:690c:f8d:b0:8b1:60a1:cd3b with SMTP id 00721157ae682-8b2b6738972mr619647b3.24.1793306562286;
-        Thu, 29 Oct 2026 13:42:42 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:1::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b4b85986sm1522527b3.45.2026.10.29.13.42.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 13:42:41 -0700 (PDT)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: akpm@linux-foundation.org
-Cc: shakeel.butt@linux.dev,
-	yosry@kernel.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2] mm: move LRU size stat updates out of lru_lock in folio batches
-Date: Thu, 29 Oct 2026 13:41:57 -0700
-Message-ID: <20261029204157.117879-1-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kpXCIXpYcOHF2fLMWL00r8Ods+QQon1CvytHhn7VrKk=;
+	b=Jxrl5gekt4k43rxTagYWHXQnUDIqhIqBuX8O5zwtSS6jTkOpkRIyDP4ooWUbKC89N50o2U
+	x2n4Y7bjFX6r0ac3wO+29i/qQpvbDNfBX3aP3+zrFaBKyhJGNIv9dkvGTEKZ+7qjSAznsL
+	vo77yeijhfLckIXqqJ5q/v30aL7yc+s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D91260267;
+	Thu, 29 Oct 2026 20:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8818A1F01816;
+	Thu, 29 Oct 2026 20:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793306569;
+	bh=kpXCIXpYcOHF2fLMWL00r8Ods+QQon1CvytHhn7VrKk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=aDF6T8wd0gwxvp1VKLtvbP21SVeKqYd+Z/n9TTKCaj1ks+K8+3/OoymW2Ueh5TISk
+	 beWeu6pQTAma4+FTRF+x4WDQ2l2dQQFKlBuYVyDHOyeYk5BsJvmNNAFU2aMzzB0PEB
+	 aDyJRnnAxKtvQxcbB/gNhwhLir0cVhe9blCW050YcCC18n1aQqPMotNwXP4I4Kxfpi
+	 kgnBntgyeGb0BOAbuhjQoeOIJ+jmxBS/Dz/y6+z9AR9S1l+7cU1nbRAt2NJAeRXlun
+	 asqb7+6a1Z/McyDaGBwEYF5RNmDUc8d44V+kac87/OIskMGtjDSeG4SCTDxKCckUqu
+	 ltWhhFS/uRhtw==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Thu, 29 Oct 2026 21:33:33 +0100
+Subject: [PATCH v2 38/47] mm: fix deadlock of mremap() against UFFDIO_MOVE
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 57DFE40003
-X-Stat-Signature: cz8q1971fjz3dgyxqkycexjtap4cbpbx
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261029-fixes_core-v2-38-a64ce7f83abb@kernel.org>
+References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
+In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+ linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12306; i=david@kernel.org;
+ h=from:subject:message-id; bh=btZP0hs2mwmde+kZJSEFtckjPtPT8YReBmzeThVc37A=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+3MXWF1sH9NzYbJRpu6+oW5Vn00ttB59OxtqJP3X
+ stye9cnHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExk6VOGP9xyhzJOvXM79XXe
+ rgOXfWc5cfodENpXtO735x+ilRl29XIM/zPfSrI8vZhn/a7/mrXZ6cOuW6t7zrxfxXnwt56KwKu
+ O3fwA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Stat-Signature: 85o5e9gutk9fm8q153utf9trph3zrgag
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 85BDB1C0006
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793306563-370136
-X-HE-Meta: U2FsdGVkX1+DtwWs+YuKAdGSOFodHK0AHTMUdiyoErQVPN+CVGBcSRirflKZl+9ZKtTHcj9L+ZX0QNe75ZlCJDek4InJgvWoxFjeH5hmCt7nbgnFhZUXmCeZ8pcKiUjBrC+90pI4dopN/z0tmknNrTIIj9Kv/9hVKSsSYC36s/muATNg/dTTZWmvsOvcIqmwNu6hq10z61cMduIxK3VaJf7fOLonpQvd91EOndE4Gx48Sc+l9mknmdNNThiKLEeZHQmzwP4zC+FVul24lk8UGcL6oFsbJC/dhNY7pE/3X2rSJTwlWIADi09sWDEfGL1ZojwN60qXgvVIFId/l1i7DSBFyU7wngXqnNCGSFD5OwUShX7tk0NDL9t9q7aiBOHXsfNkG71mbHVQiVQ6N9qoSeZDBTbarqci28GONjqjnyF4YUioB4gP1+vpwc6Ui8DPBiZPOxn1Cqag9vuO/VACrVwLvehs26HHdt/s3tbPpP6AcN8PK8OlzaoYK8z1Y32h2nmBALsLPbR/Uix16nvR3YWkT/XFw3tK49Uso2wRVXKeNuFsXrl6u+ob/frdz9RH0Jg/ypcCjHmj6B0O3d6CgG4SsDBZV1nd+LQ4RourpayOTRyqnfuWIsj9p4avlWDk24SETC5SbiFAGAy4mbGfVAujC/R/k4QrLaVqr8939uB/af1sBJr7XCluUJuCYyP5e1eIFOkMzsOzrk0hmB4VdkwX0doT1jE/5VAfkGvXTymsF3NoutMlxdc9sNZfaMU10H9DNrq4YqenAJwb5AyVIP30BsWvxtqJAyB9438S77AaOfqp7uaSWCj78LstRgI7xNyL7Zmf/KqTuBg5h2QrPS3j6mAjrDvVOa6EAGf10VkIXpS1nax5DtvdTaL3QUcvOK8LDJCya4EtP+MBo6J5uTpqc/lipDmTk1brwwcrKcaWJD/CvXQ+1jxzF2io/k6ETX6BeHxhB5pq+an0MAF
- lp5aXega
- SKB+d2xCp2xHTfUJMkFCggXknvRl68rcFgnxFmB3rPguq6foSAN5joCVvJyfAsQajue+MZMPNkATXeyQc6/9ga7Ugyy6HDfbpG+T4xNQlQQoioUZZqMkYy18FtaQ+EF1RrYYvIsdx9qlx1TAx6gAhJi7Oyryw3lcKTXywcWTdV2YzEhiO1XpXI38zJDStEhwiM/ZngVCo0X2ED0IPZ1OKGMyWRJXCE4kWuRDKQPk0QDrUiuzYbwKnSgXi6QMFV8g7P7X89ip8f4jelXFz8e5yGM5qzGO15SWj1AiuAxe1YvPerrEf7XUt7kQaEUYTNYYScGn+N6p12ZvMVvTVPhwZUANvv3Ovv1UCJXd9aIOazXrONX5WcoJX88LlClfK9jEauhBEsHqA8v1r39jFjmZQsbjT/NXJUH4GlOAb8CBF56IHu2fxQDBTXqpm+qrlTWympy+QhQQdFZ3bc0XPrX1uWzVezlxbb9qe8M7JnNtiJrxPwjEAbZcLENpwf+SQqen27jQr
+X-HE-Tag: 1793306570-563993
+X-HE-Meta: U2FsdGVkX18jgtANqIrS7Yv5dAJH8EC4Qz4s3oUmBYrjzdTV0RtS30d1ZUx/dCDUVuPjmE6FS12ECrwqYa+qtFWMEqRM7DDO3e3S+TsMhw9BTf5dQIIJLBIZD+tgqvPNHY45DLE44oPogearZofTlOIMxt9qw5Poex4XcMSIl50b+oCVF8xlXBN9nNAmfOE7TuorBkPjfa+4hje/+2TV6zG4TuzfhDk52UyEJxvkZ2r6k5rLqNHNsIQ/ZzAX7/UXHDV+tpxJnBXT1AC/1OFYctAFwrnTxepfRplhxhEEIPkDEk3vZT4NwrRrPd5wKjKhZgPKAAAqvtqTjyf3Ik0arXLDwB6qR6r10xb1Y272Pd2TWUBREXjgMBP84OqSrCPFL3iSBKZ6tF9iVFIWRj2vhIWUBsxZ0h0BTTSkJJU2RNhlSzwnTP6zC8b9F+ipfCf31j5CJpwoM1xd2Ed9BTJZjqPW4SwLuDF3+rI/ihUpN8b5V4dzfF8oRozjUU6qkhWoExk/6ALlz9snKxO5edcGaDUoGoq+XNeUs4YLeRp/o68J89h0uxOnFZW2/WQ5WqmVRhS/jHMXYdokFlBE6/yr2H1QvOgNVDpPd3PhAJGLEuwsF3ujrgQFn7HjcyhoYeL3ivcVY988uhAsCIK+T0OOXbXVwrid/N6dAcNCNQxQxvuH7CJnue0qyhfXSzI38h0C/FpDxESj0ew3x+SO232VPn0ygXKesaVeTsQC2z6/LAqRHBOXy/eV+cRRy9Ybo3A2EXtVPHtHLd4Gw40ogdvYBDYkKQ350c+1jbqmddWJdTr9RaQ0bV8qxUSWOrVH/byZfaNkt2C7XelJFgP104za/7llMK2z/yWdOqEbzUZGRtc21WlpgnRw+gF+NY6JfWvEo+9EXjZihJNq601DVKOQP+Sog+I+AKKUbvtm6AD0GpULLvghU28KU8cJcUvEAb4nXnOkbh5v4Ng3C5PlGgQ
+ bDZP+5m6
+ Hi5IC4if3ihGFl2nx3g7069yo7awSp9/BsZL880ucBuSjsIjofBuT/+45hZ1noAa7MV8Msm2W+3h36ssrNKja2q8oEgTDnzhnpAUZwqYFx1UKQ9BacbrtrnkmlaehnQsQdVGsg6ZnhPLt0tIZArTvRqmUfsbGOLb1rtu+wLbcrJdZ8U5xdteDPSeAq2AE/LlWTjjQNCu/IsY8I8IndgV8bZcvl+79BT+Fgrb2yJ9WSte2b9B5FSb2iIYEsi8qZEs0tKEEbYwmpwiJSipRreAognYk/52ApaF9//+AyEaQSAhp3cNs1uyS601+ZTzBoBDvpelz3xc08zkboHbfYaFm6uMdpwkddiM2QVTE+K8Cv1+53dM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,268 +138,374 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-folio_batch_move_lru() and folios_put_refs() take the lruvec's lru_lock
-once per batch, but they update the node and memcg lruvec stats for
-every folio in the batch while holding the lock. Only the LRU lists and
-the memcg lru_zone_size need lru_lock. Updating the stats while holding
-the lru_lock is unnecessary, and they make up a large part of the
-critical section, as seen in [1] where a change that added just a few
-instructions to the memcg stat update path cost about 2% throughput
-because the LRU stat updates run under lru_lock, and the overhead went
-away once they were moved outside of the lock.
+From: Chris Mason <mason@kernel.org>
 
-With many threads faulting and freeing memory in a single memcg, about
-half of all cycles are spent waiting for lru_lock, and the hold time of
-the lru_lock directly limits throughput. A perf profile with 80 threads
-faulting in and freeing shmem in a single memcg shows 52.8% of all
-cycles spent spinning on lru_lock, split evenly between
-folio_batch_move_lru() and folios_put_refs(). About 25% of the time
-spent holding lru_lock in those two paths goes to the LRU stat updates,
-mostly cache misses loading pn->memcg, pn->lruvec_stats_percpu and the
-per-cpu counters. The stat updates are only 0.7% of all cycles, but they
-lengthen the critical section that the other threads are waiting on.
+With per-VMA locks, UFFDIO_MOVE can run concurrently with mremap()
+on different VMAs in the same mm. Those VMAs can share page tables, so
+both operations can acquire the same pair of page-table locks.
 
-Accumulate the stat changes per LRU list while holding the lock instead,
-and only apply them after dropping the lock (while still inside
-the RCU read section that keeps the lruvec's memcg alive). This moves
-the stat updates out of the lru_lock critical section and turns the
-per-folio updates into at most one update per LRU list per batch.
+UFFDIO_MOVE orders the locks by address, while mremap() takes the source
+lock first. These conflicting orders can deadlock; mremap() holding
+mmap_lock for writing no longer helps.
 
-The batch is attached to the lruvec while lru_lock is held so that the
-LRU add/del helpers don't need to pass it down. To keep struct lruvec
-from growing, cost_lock is moved into the hole after lru_lock, which
-leaves room for the batch pointer in the same cacheline as lru_lock.
+Move double_pt_lock() and double_pt_unlock() to mm/internal.h and use
+them for all page-table moves in mremap(). Preserve the source entry
+checks after acquiring both locks. Remove the comments claiming that
+exclusive mmap_lock makes lock ordering irrelevant.
 
-The stats can now lag behind the LRU lists by one batch, which is well
-within the per-cpu batching they already have.
+In move_ptes(), make sure to just recheck source and destination PMD
+after taking the locks and drop the overly-long comment.
 
-On a 2-socket Skylake (80 CPUs, 2 NUMA nodes), with threads pinned to
-CPUs repeatedly faulting in and freeing memory in a single memcg,
-average pages per second over 7 freshly created memcgs per run, 2 boots
-each:
+Fix generated by an LLM and sent by Chris Mason in private.
 
-                     before    after
-  shmem, 20 threads  4.74M     5.47M   (+15%)
-  shmem, 80 threads  7.94M    10.33M   (+30%)
-  anon,  20 threads  3.04M     3.35M   (+10%)
-  anon,  80 threads  3.23M     3.41M   (+5%)
+[ david: use new helpers consistently; simplify description and comments;
+         move_ptes() fixup ]
 
-Link: https://lore.kernel.org/linux-fsdevel/CAJnrk1ZezmmzrYdf8KP6re_a76izMS=qGPeC8ZZXiteHyZZC-Q@mail.gmail.com/ [1]
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Fixes: 867a43a34ff8 ("userfaultfd: use per-vma locks in userfaultfd operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Mason <mason@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-v1: https://lore.kernel.org/linux-mm/20261022200313.2354350-1-joannelkoong@gmail.com/
-v1 -> v2:
-* Added summary of [1] to the commit message as well as the perf profile
-  findings (Shakeel)
+ include/linux/userfaultfd_k.h |  2 -
+ mm/huge_memory.c              | 19 ++++------
+ mm/hugetlb.c                  | 14 ++-----
+ mm/internal.h                 | 28 ++++++++++++++
+ mm/mremap.c                   | 87 +++++++++++++++++--------------------------
+ mm/userfaultfd.c              | 27 --------------
+ 6 files changed, 72 insertions(+), 105 deletions(-)
 
- include/linux/mm_inline.h | 12 ++++++-
- include/linux/mmzone.h    | 11 +++++--
- mm/folio.c                | 67 +++++++++++++++++++++++++++++++++------
- 3 files changed, 77 insertions(+), 13 deletions(-)
-
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index ab69b9930893..b3d85fe91385 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -50,7 +50,17 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
- 	lockdep_assert_held(&lruvec->lru_lock);
- 	WARN_ON_ONCE(nr_pages != (int)nr_pages);
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index a14b8a9ffb7b..565e98f342dc 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -153,8 +153,6 @@ extern int mrwprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
+ 			    unsigned long len, bool enable_rwp);
  
--	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
-+	/*
-+	 * Batches in mm/folio.c attach an lru_size_batch while holding
-+	 * lru_lock, to apply the node and memcg lruvec stats only after the
-+	 * lock is dropped. The stats don't need lru_lock and updating them is
-+	 * a large part of the critical section when batching. The zone stats
-+	 * are still updated right away.
-+	 */
-+	if (lruvec->lru_size_batch)
-+		lruvec->lru_size_batch->nr_pages[lru] += nr_pages;
-+	else
-+		mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
- 	__mod_zone_page_state(&pgdat->node_zones[zid],
- 				NR_ZONE_LRU_BASE + lru, nr_pages);
- }
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index ecd1ebd49756..8618e9543983 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -739,10 +739,19 @@ struct lru_cost {
- 	unsigned long		last_io;
- };
+ /* move_pages */
+-void double_pt_lock(spinlock_t *ptl1, spinlock_t *ptl2);
+-void double_pt_unlock(spinlock_t *ptl1, spinlock_t *ptl2);
+ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pmd_t dst_pmdval,
+ 			struct vm_area_struct *dst_vma,
+ 			struct vm_area_struct *src_vma,
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index c5aa0a0a407c..f1b3f744c630 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2646,15 +2646,11 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 		return false;
+ 	}
  
-+/* LRU size changes made under lru_lock, applied after the lock is dropped */
-+struct lru_size_batch {
-+	long nr_pages[NR_LRU_LISTS];
-+};
+-	/*
+-	 * We don't have to worry about the ordering of src and dst
+-	 * ptlocks because exclusive mmap_lock prevents deadlock.
+-	 */
+-	old_ptl = __pmd_trans_huge_lock(old_pmd, vma);
+-	if (old_ptl) {
+-		new_ptl = pmd_lockptr(mm, new_pmd);
+-		if (new_ptl != old_ptl)
+-			spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
++	old_ptl = pmd_lockptr(mm, old_pmd);
++	new_ptl = pmd_lockptr(mm, new_pmd);
 +
- struct lruvec {
- 	struct list_head		lists[NR_LRU_LISTS];
- 	/* per lruvec lru_lock for memcg */
- 	spinlock_t			lru_lock;
-+	/* Protects cost[]. */
-+	spinlock_t			cost_lock;
-+	/* If set, defers lruvec stat updates until lru_lock is dropped */
-+	struct lru_size_batch		*lru_size_batch;
- 	/*
- 	 * These track the cost of reclaiming one LRU - file or anon -
- 	 * over the other. As the observed cost of reclaiming one LRU
-@@ -751,8 +760,6 @@ struct lruvec {
- 	 * serialises that update.
- 	 */
- 	struct lru_cost			cost[ANON_AND_FILE];
--	/* Protects cost[]. */
--	spinlock_t			cost_lock;
- 	/* Non-resident age, driven by LRU movement */
- 	atomic_long_t			nonresident_age;
- 	/* Refaults at the time of last reclaim cycle */
-diff --git a/mm/folio.c b/mm/folio.c
-index 45c814f3857b..dc2c796a4ea7 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -64,11 +64,54 @@ static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches) = {
- 	.lock_irq = INIT_LOCAL_LOCK(lock_irq),
- };
++	double_pt_lock(old_ptl, new_ptl);
++	if (likely(pmd_is_huge(*old_pmd))) {
+ 		pmd = pmdp_huge_get_and_clear(mm, old_addr, old_pmd);
+ 		if (pmd_present(pmd))
+ 			force_flush = true;
+@@ -2683,11 +2679,10 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 		set_pmd_at(mm, new_addr, new_pmd, pmd);
+ 		if (force_flush)
+ 			flush_pmd_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
+-		if (new_ptl != old_ptl)
+-			spin_unlock(new_ptl);
+-		spin_unlock(old_ptl);
++		double_pt_unlock(old_ptl, new_ptl);
+ 		return true;
+ 	}
++	double_pt_unlock(old_ptl, new_ptl);
+ 	return false;
+ }
+ 
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index da5d04edf7c1..84141527fe73 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5153,15 +5153,9 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+ 	spinlock_t *src_ptl, *dst_ptl;
+ 	pte_t pte;
+ 
+-	dst_ptl = huge_pte_lock(h, mm, dst_pte);
++	dst_ptl = huge_pte_lockptr(h, mm, dst_pte);
+ 	src_ptl = huge_pte_lockptr(h, mm, src_pte);
+-
+-	/*
+-	 * We don't have to worry about the ordering of src and dst ptlocks
+-	 * because exclusive mmap_lock (or the i_mmap_lock) prevents deadlock.
+-	 */
+-	if (src_ptl != dst_ptl)
+-		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
++	double_pt_lock(dst_ptl, src_ptl);
+ 
+ 	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte, sz);
+ 
+@@ -5190,9 +5184,7 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+ 		set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
+ 	}
+ 
+-	if (src_ptl != dst_ptl)
+-		spin_unlock(src_ptl);
+-	spin_unlock(dst_ptl);
++	double_pt_unlock(dst_ptl, src_ptl);
+ }
+ 
+ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+diff --git a/mm/internal.h b/mm/internal.h
+index 566cbd2dce48..824c2919a37f 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -624,6 +624,34 @@ static inline void force_page_cache_readahead(struct address_space *mapping,
+ 	force_page_cache_ra(&ractl, nr_to_read);
+ }
  
 +/*
-+ * lru_lock helpers for batches that defer LRU size stat updates until the
-+ * lock is dropped, see __update_lru_size(). The deferred stats are applied
-+ * while still in the RCU read section entered by locking, which keeps the
-+ * lruvec's memcg alive.
++ * Take two page table locks at the same level in address order such that
++ * we cannot deadlock.
 + */
-+static void lruvec_unlock_irqrestore_batched(struct lruvec *lruvec,
-+		unsigned long flags)
++static inline void double_pt_lock(spinlock_t *ptl1, spinlock_t *ptl2)
++	__acquires(ptl1)
++	__acquires(ptl2)
 +{
-+	struct lru_size_batch *batch = lruvec->lru_size_batch;
-+	enum lru_list lru;
-+
-+	lruvec->lru_size_batch = NULL;
-+	spin_unlock_irqrestore(&lruvec->lru_lock, flags);
-+
-+	for_each_lru(lru) {
-+		long nr_pages = batch->nr_pages[lru];
-+
-+		if (nr_pages) {
-+			mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
-+			batch->nr_pages[lru] = 0;
-+		}
-+	}
-+	rcu_read_unlock();
++	if (ptl1 > ptl2)
++		swap(ptl1, ptl2);
++	spin_lock(ptl1);
++	if (ptl1 != ptl2)
++		spin_lock_nested(ptl2, SINGLE_DEPTH_NESTING);
++	else
++		__acquire(ptl2);
 +}
 +
-+static void folio_lruvec_relock_irqsave_batched(struct folio *folio,
-+		struct lruvec **lruvecp, unsigned long *flagsp,
-+		struct lru_size_batch *batch)
++static inline void double_pt_unlock(spinlock_t *ptl1, spinlock_t *ptl2)
++	__releases(ptl1)
++	__releases(ptl2)
 +{
-+	if (*lruvecp) {
-+		if (folio_matches_lruvec(folio, *lruvecp))
-+			return;
-+
-+		lruvec_unlock_irqrestore_batched(*lruvecp, *flagsp);
-+	}
-+
-+	*lruvecp = folio_lruvec_lock_irqsave(folio, flagsp);
-+	VM_WARN_ON_ONCE((*lruvecp)->lru_size_batch);
-+	(*lruvecp)->lru_size_batch = batch;
++	spin_unlock(ptl1);
++	if (ptl1 != ptl2)
++		spin_unlock(ptl2);
++	else
++		__release(ptl2);
 +}
 +
- static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
--		unsigned long *flagsp)
-+		unsigned long *flagsp, struct lru_size_batch *batch)
- {
- 	if (folio_test_lru(folio)) {
--		folio_lruvec_relock_irqsave(folio, lruvecp, flagsp);
-+		folio_lruvec_relock_irqsave_batched(folio, lruvecp, flagsp,
-+						    batch);
- 		lruvec_del_folio(*lruvecp, folio);
- 		__folio_clear_lru_flags(folio);
- 	}
-@@ -80,12 +123,13 @@ static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
-  */
- static void page_cache_release(struct folio *folio)
- {
-+	struct lru_size_batch batch = {};
- 	struct lruvec *lruvec = NULL;
- 	unsigned long flags;
+ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
+ 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
+ unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 1237718848f5..70b7264aa6bf 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -202,7 +202,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pte_t *old_ptep, *new_ptep;
+ 	pte_t old_pte, pte;
+-	pmd_t dummy_pmdval;
++	pmd_t old_pmdval, new_pmdval;
+ 	spinlock_t *old_ptl, *new_ptl;
+ 	bool force_flush = false;
+ 	unsigned long old_addr = pmc->old_addr;
+@@ -234,31 +234,30 @@ static int move_ptes(struct pagetable_move_control *pmc,
+ 	if (pmc->need_rmap_locks)
+ 		take_rmap_locks(vma);
  
--	__page_cache_release(folio, &lruvec, &flags);
-+	__page_cache_release(folio, &lruvec, &flags, &batch);
- 	if (lruvec)
--		lruvec_unlock_irqrestore(lruvec, flags);
-+		lruvec_unlock_irqrestore_batched(lruvec, flags);
+-	/*
+-	 * We don't have to worry about the ordering of src and dst
+-	 * pte locks because exclusive mmap_lock prevents deadlock.
+-	 */
+-	old_ptep = pte_offset_map_lock(mm, old_pmd, old_addr, &old_ptl);
++	old_ptep = pte_offset_map_rw_nolock(mm, old_pmd, old_addr, &old_pmdval,
++					    &old_ptl);
+ 	if (!old_ptep) {
+ 		err = -EAGAIN;
+ 		goto out;
+ 	}
+-	/*
+-	 * Now new_pte is none, so collapse_scan_file() path can not find
+-	 * this by traversing file->f_mapping, so there is no concurrency with
+-	 * retract_page_tables(). In addition, we already hold the exclusive
+-	 * mmap_lock, so this new_pte page is stable, so there is no need to get
+-	 * pmdval and do pmd_same() check.
+-	 */
+-	new_ptep = pte_offset_map_rw_nolock(mm, new_pmd, new_addr, &dummy_pmdval,
+-					   &new_ptl);
++	new_ptep = pte_offset_map_rw_nolock(mm, new_pmd, new_addr, &new_pmdval,
++					    &new_ptl);
+ 	if (!new_ptep) {
+-		pte_unmap_unlock(old_ptep, old_ptl);
++		pte_unmap(old_ptep);
++		err = -EAGAIN;
++		goto out;
++	}
++
++	double_pt_lock(old_ptl, new_ptl);
++	if (unlikely(!pmd_same(old_pmdval, pmdp_get_lockless(old_pmd)) ||
++		     !pmd_same(new_pmdval, pmdp_get_lockless(new_pmd)))) {
++		double_pt_unlock(old_ptl, new_ptl);
++		pte_unmap(new_ptep);
++		pte_unmap(old_ptep);
+ 		err = -EAGAIN;
+ 		goto out;
+ 	}
+-	if (new_ptl != old_ptl)
+-		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
++
+ 	flush_tlb_batched_pending(vma->vm_mm);
+ 	lazy_mmu_mode_enable();
+ 
+@@ -317,10 +316,9 @@ static int move_ptes(struct pagetable_move_control *pmc,
+ 	lazy_mmu_mode_disable();
+ 	if (force_flush)
+ 		flush_tlb_range(vma, old_end - len, old_end);
+-	if (new_ptl != old_ptl)
+-		spin_unlock(new_ptl);
++	double_pt_unlock(old_ptl, new_ptl);
+ 	pte_unmap(new_ptep - 1);
+-	pte_unmap_unlock(old_ptep - 1, old_ptl);
++	pte_unmap(old_ptep - 1);
+ out:
+ 	if (pmc->need_rmap_locks)
+ 		drop_rmap_locks(vma);
+@@ -395,14 +393,9 @@ static bool move_normal_pmd(struct pagetable_move_control *pmc,
+ 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
+ 		return false;
+ 
+-	/*
+-	 * We don't have to worry about the ordering of src and dst
+-	 * ptlocks because exclusive mmap_lock prevents deadlock.
+-	 */
+-	old_ptl = pmd_lock(mm, old_pmd);
++	old_ptl = pmd_lockptr(mm, old_pmd);
+ 	new_ptl = pmd_lockptr(mm, new_pmd);
+-	if (new_ptl != old_ptl)
+-		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
++	double_pt_lock(old_ptl, new_ptl);
+ 
+ 	pmd = *old_pmd;
+ 
+@@ -418,9 +411,7 @@ static bool move_normal_pmd(struct pagetable_move_control *pmc,
+ 	pmd_populate(mm, new_pmd, pmd_pgtable(pmd));
+ 	flush_tlb_range(vma, pmc->old_addr, pmc->old_addr + PMD_SIZE);
+ out_unlock:
+-	if (new_ptl != old_ptl)
+-		spin_unlock(new_ptl);
+-	spin_unlock(old_ptl);
++	double_pt_unlock(old_ptl, new_ptl);
+ 
+ 	return res;
+ }
+@@ -452,14 +443,10 @@ static bool move_normal_pud(struct pagetable_move_control *pmc,
+ 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+ 		return false;
+ 
+-	/*
+-	 * We don't have to worry about the ordering of src and dst
+-	 * ptlocks because exclusive mmap_lock prevents deadlock.
+-	 */
+-	old_ptl = pud_lock(mm, old_pud);
++	old_ptl = pud_lockptr(mm, old_pud);
+ 	new_ptl = pud_lockptr(mm, new_pud);
+-	if (new_ptl != old_ptl)
+-		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
++
++	double_pt_lock(old_ptl, new_ptl);
+ 
+ 	pud = *old_pud;
+ 	if (unlikely(pud_none(pud)))
+@@ -473,9 +460,7 @@ static bool move_normal_pud(struct pagetable_move_control *pmc,
+ 	pud_populate(mm, new_pud, pud_pgtable(pud));
+ 	flush_tlb_range(vma, pmc->old_addr, pmc->old_addr + PUD_SIZE);
+ out_unlock:
+-	if (new_ptl != old_ptl)
+-		spin_unlock(new_ptl);
+-	spin_unlock(old_ptl);
++	double_pt_unlock(old_ptl, new_ptl);
+ 
+ 	return true;
+ }
+@@ -503,16 +488,14 @@ static bool move_huge_pud(struct pagetable_move_control *pmc,
+ 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+ 		return false;
+ 
+-	/*
+-	 * We don't have to worry about the ordering of src and dst
+-	 * ptlocks because exclusive mmap_lock prevents deadlock.
+-	 */
+-	old_ptl = __pud_trans_huge_lock(old_pud, vma);
+-	if (unlikely(!old_ptl))
+-		return false;
++	old_ptl = pud_lockptr(mm, old_pud);
+ 	new_ptl = pud_lockptr(mm, new_pud);
+-	if (new_ptl != old_ptl)
+-		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
++
++	double_pt_lock(old_ptl, new_ptl);
++	if (unlikely(!pud_trans_huge(*old_pud))) {
++		double_pt_unlock(old_ptl, new_ptl);
++		return false;
++	}
+ 
+ 	/* Clear the pud */
+ 	pud = pudp_huge_get_and_clear(mm, pmc->old_addr, old_pud);
+@@ -523,9 +506,7 @@ static bool move_huge_pud(struct pagetable_move_control *pmc,
+ 	/* mark soft_ditry when we add pud level soft dirty support */
+ 	set_pud_at(mm, pmc->new_addr, new_pud, pud);
+ 	flush_pud_tlb_range(vma, pmc->old_addr, pmc->old_addr + HPAGE_PUD_SIZE);
+-	if (new_ptl != old_ptl)
+-		spin_unlock(new_ptl);
+-	spin_unlock(old_ptl);
++	double_pt_unlock(old_ptl, new_ptl);
+ 
+ 	return true;
+ }
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index dac696bda19f..169f681f9849 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1206,33 +1206,6 @@ int mrwprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
+ 	return 0;
  }
  
- void __folio_put(struct folio *folio)
-@@ -165,6 +209,7 @@ static void lru_add(struct lruvec *lruvec, struct folio *folio)
- static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
- {
- 	int i;
-+	struct lru_size_batch batch = {};
- 	struct lruvec *lruvec = NULL;
- 	unsigned long flags = 0;
- 	struct folio_batch free_fbatch;
-@@ -199,14 +244,15 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
- 			continue;
- 		}
- 
--		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
-+		folio_lruvec_relock_irqsave_batched(folio, &lruvec, &flags,
-+						    &batch);
- 		move_fn(lruvec, folio);
- 
- 		folio_set_lru(folio);
- 	}
- 
- 	if (lruvec)
--		lruvec_unlock_irqrestore(lruvec, flags);
-+		lruvec_unlock_irqrestore_batched(lruvec, flags);
- 
- 	/* Cleanup filtered dead folios. */
- 	if (is_lru_add) {
-@@ -998,6 +1044,7 @@ void lru_cache_disable(void)
- void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
- {
- 	int i, j;
-+	struct lru_size_batch batch = {};
- 	struct lruvec *lruvec = NULL;
- 	unsigned long flags = 0;
- 
-@@ -1014,7 +1061,7 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
- 
- 		if (folio_is_zone_device(folio)) {
- 			if (lruvec) {
--				lruvec_unlock_irqrestore(lruvec, flags);
-+				lruvec_unlock_irqrestore_batched(lruvec, flags);
- 				lruvec = NULL;
- 			}
- 			if (folio_ref_sub_and_test(folio, nr_refs))
-@@ -1028,20 +1075,20 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
- 		/* hugetlb has its own memcg */
- 		if (folio_test_hugetlb(folio)) {
- 			if (lruvec) {
--				lruvec_unlock_irqrestore(lruvec, flags);
-+				lruvec_unlock_irqrestore_batched(lruvec, flags);
- 				lruvec = NULL;
- 			}
- 			free_huge_folio(folio);
- 			continue;
- 		}
--		__page_cache_release(folio, &lruvec, &flags);
-+		__page_cache_release(folio, &lruvec, &flags, &batch);
- 
- 		if (j != i)
- 			folios->folios[j] = folio;
- 		j++;
- 	}
- 	if (lruvec)
--		lruvec_unlock_irqrestore(lruvec, flags);
-+		lruvec_unlock_irqrestore_batched(lruvec, flags);
- 	if (!j) {
- 		folio_batch_reinit(folios);
- 		return;
+-void double_pt_lock(spinlock_t *ptl1,
+-		    spinlock_t *ptl2)
+-	__acquires(ptl1)
+-	__acquires(ptl2)
+-{
+-	if (ptl1 > ptl2)
+-		swap(ptl1, ptl2);
+-	/* lock in virtual address order to avoid lock inversion */
+-	spin_lock(ptl1);
+-	if (ptl1 != ptl2)
+-		spin_lock_nested(ptl2, SINGLE_DEPTH_NESTING);
+-	else
+-		__acquire(ptl2);
+-}
+-
+-void double_pt_unlock(spinlock_t *ptl1,
+-		      spinlock_t *ptl2)
+-	__releases(ptl1)
+-	__releases(ptl2)
+-{
+-	spin_unlock(ptl1);
+-	if (ptl1 != ptl2)
+-		spin_unlock(ptl2);
+-	else
+-		__release(ptl2);
+-}
+-
+ static inline bool is_pte_pages_stable(pte_t *dst_pte, pte_t *src_pte,
+ 				       pte_t orig_dst_pte, pte_t orig_src_pte,
+ 				       pmd_t *dst_pmd, pmd_t dst_pmdval)
 
-base-commit: 9c449f885765cf8d80b2c60b1971e774bba51a3f
 -- 
-2.52.0
+2.43.0
 
 
