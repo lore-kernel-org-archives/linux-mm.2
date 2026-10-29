@@ -1,151 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47679606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6665A606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UrdyCeEM;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GWyd71jI;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UrdyCeEM;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GWyd71jI
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=TEsYbTdz
 Received: by kanga.kvack.org (Postfix)
-	id 30FD86B05C9; Thu, 29 Oct 2026 10:44:50 -0400 (EDT)
+	id 7192C6B05DC; Thu, 29 Oct 2026 10:54:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0DD6B05CD; Thu, 29 Oct 2026 10:44:50 -0400 (EDT)
+	id 6A26E6B05DD; Thu, 29 Oct 2026 10:54:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 161966B05D0; Thu, 29 Oct 2026 10:44:50 -0400 (EDT)
+	id 543796B05DE; Thu, 29 Oct 2026 10:54:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E1C316B05C9
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:44:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B1DE1C3A98
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:44:49 +0000 (UTC)
-X-FDA: 85375935498.25.51BAC2F
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5AFCF1C000E
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:44:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UrdyCeEM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GWyd71jI;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UrdyCeEM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GWyd71jI;
-	spf=pass (imf21.hostedemail.com: domain of clopez@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=clopez@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 317456B05DC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:54:06 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AEE5B4045F
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:54:05 +0000 (UTC)
+X-FDA: 85375958850.26.19CC459
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 643F3180003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:54:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=TEsYbTdz;
+	spf=pass (imf16.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793285087;
+	s=arc-20220608; t=1793285644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
-	b=crPXAfgFon5LZeN/o6Jncyqm1H+M0Ce4HKqpO4OiMdCphTomWCm8jZ4ZJrEc+zJtzCWr9p
-	P1ctaKhOQAi10IWqktVixxwynzZ3nQdxCBzDatPgYS/rZmWkgv73sCySkU4XgM/cyZFpXy
-	VGwrZOa7plsF595x4mN1XJ3lQmlCM6E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793285087;
-	b=ZUfs3Uk6CixlcceVPG2VZ1dbNNXbsSaqEcyQ7vRYmcHld92FDaSxgc8Wq/4995P+GBflTi
-	kYKysaEIehoGuKbPFFQmV0YioIR9HzYAP/XH0XjElgwmj27WI2W05S1odHXdLZp2AS20Xr
-	wlahTKYgNbp59KRIWB+fxkfZFt3Udrw=
+	bh=afj3acdy9ojv0BvYV/YH41RH6XpHTpffhj1u2wt7WSU=;
+	b=mbwog69QJ/y2A9DRWquGNkzFSOEF1uh4TPqlS3/v167x5CtNf5nd1KPwrqiT0twCjTPOsQ
+	10IxLnGFYlaXSpR5RreISQyNedasyGK9OCmyEeQlJBlv3ZohW+QrgOfUmGZZXPggrQ/oca
+	E05i8Gv5cYqyz0khQwqSpzOhetII+oY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UrdyCeEM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GWyd71jI;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UrdyCeEM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GWyd71jI;
-	spf=pass (imf21.hostedemail.com: domain of clopez@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=clopez@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B54C22210D;
-	Thu, 29 Oct 2026 14:44:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793285085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
-	b=UrdyCeEMKHhopqmzqB8HSWFgIEcKTFU4pSYcOCLxn3f/ee6De+XpoEYELmPbxsMduW0d3a
-	596LYkT6TmeSIL8H/20MEj37EoRurGIvmzIGn+C7tiHkb9FRgi3NS1/YJIcCio8Xnl0i2D
-	pRhue5Oo8xf5WTkSNWH5zZ+V+BQ3HvA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793285085;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
-	b=GWyd71jI75LiMrHVSGXVpQz70/7L7+unh/faDaAFEJ33aAcmosuQKzFL6yk0+RBTU3mlPx
-	hi/UyO4w4CAHTyCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793285085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
-	b=UrdyCeEMKHhopqmzqB8HSWFgIEcKTFU4pSYcOCLxn3f/ee6De+XpoEYELmPbxsMduW0d3a
-	596LYkT6TmeSIL8H/20MEj37EoRurGIvmzIGn+C7tiHkb9FRgi3NS1/YJIcCio8Xnl0i2D
-	pRhue5Oo8xf5WTkSNWH5zZ+V+BQ3HvA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793285085;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=On/WzBslNRdooO2nM6+KcAg+UNarkQsFuaUhWqaMpyc=;
-	b=GWyd71jI75LiMrHVSGXVpQz70/7L7+unh/faDaAFEJ33aAcmosuQKzFL6yk0+RBTU3mlPx
-	hi/UyO4w4CAHTyCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C9C7C1339F;
-	Thu, 29 Oct 2026 14:44:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iNqFENhb42qRUwAAD6G6ig:T5
-	(envelope-from <clopez@suse.de>); Thu, 29 Oct 2026 14:44:44 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kvm@vger.kernel.org,
-	linux-mm@kvack.org,
-	seanjc@google.com,
-	pbonzini@redhat.com
-Cc: linux-s390@vger.kernel.org,
-	imbrenda@linux.ibm.com,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
-Subject: [RFC PATCH 4/4] KVM: x86/mmu: don't zap the secondary MMU on permission upgrade
-Date: Thu, 29 Oct 2026 15:33:37 +0100
-Message-ID: <20261029143336.390231-7-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20261029143336.390231-3-clopez@suse.de>
-References: <20261029143336.390231-3-clopez@suse.de>
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=TEsYbTdz;
+	spf=pass (imf16.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793285644;
+	b=vfJil3Wzd6nV4FfsgQpbVMyqdpo/9/fRxDRxjCB90IMAuMII5Vx3EC9pwzxl2LDGf6xIaM
+	m1lUz3TgnjBPDW2c1NFuuI6FytDPTUi7jzc0OWtMECt0qxFLgnedVUAzlcErgiFEWMQK7a
+	eBDWEYOkJQRDOkK8UqIuFn+X1llaIYM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=afj3acdy9ojv0BvYV/YH41RH6XpHTpffhj1u2wt7WSU=; b=TEsYbTdzMT+SODeK6nJ0Sxuj5k
+	PYnCvw0cBUzpaPNfDihLevB+g+jDrtTZRPMr5dWfnLMh6Hw47nevYTLPyUTLFZmGEtyYJBi1E5oCu
+	ij987NgFINqINwETRxDEjgnHHuDd227mpUm0O03tCEXEfQU2dx/EnS9xZyUlt3+CtutsZXazz1ulV
+	nZORVAxWbmRgkjZYUBmzYODyvZbQ5fkHSbmdR2C8bAzSs/NxV+YZZUyuMICYg729sZrZT4euaIEsb
+	PuoIBBwhMRy9jWMyu7Zn37u01Otx0SGFTR+sNWLDWCHqCFcy2FAQPi/80X7xfX1nrvS+iPWCLZDnk
+	h8Q8hPgQ==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xMRVw-00000009aWz-0hmY;
+	Thu, 29 Oct 2026 14:54:00 +0000
+Date: Thu, 29 Oct 2026 10:53:56 -0400
+From: "Liam R. Howlett (Google)" <liam@infradead.org>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
+	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 4/4] rhashtable: fix vmalloc() deadlock in atomic rehash
+Message-ID: <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
+References: <20261028154218.1668182-1-liam@infradead.org>
+ <20261028154218.1668182-5-liam@infradead.org>
+ <auKshDXKQXt1kvjy@gondor.apana.org.au>
+ <auMbCuecFeRmBFSK@pc636>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Score: -16.30
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5AFCF1C000E
-X-Stat-Signature: 7yzobmuooj3npnc6mw56spbha7wgcx1s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auMbCuecFeRmBFSK@pc636>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 643F3180003
+X-Stat-Signature: mawpbnc6cj4pnupbx3mpxixuor1nt8ut
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793285087-776235
-X-HE-Meta: U2FsdGVkX18fll+9b4tKdqM4rjGz3hE6Tn8QaR1tQydPgwgYlf8UrXepcRR7Mo26mrhv/mOblVX0Mmxvai5gltTnZOkYs6O8NQVvkjRouCFqnMJI5XYQEO8pvH2ojjC1/0WHs56oA8+WgdMJhqfz7u8OVhIWrzsKnSrRVZvrOwXfyy4jx/wKcjNmzo0X8/O+s8i7tJ90rWWNCIdK0/ss+XHNDOuCqw4EnoR724lpLuQLgblnCtAb6m3emgUNzT7I1QhfrNgeq6OVyb8Od6pjfYdNmFikrLzZHWQXCQOZKmdSmdPWAS7FHCtCw3btQsPuhQUSiEq8j/9jZCdYryTKBPse5DygaC/BRVHF/vLvABJhOYLABT/cOdOQIWi2DUMkQxHQMkUJ2XDaOKHGnXm7Tdg8gIW9ouf/03tz/3aOn15GSerdQREsN/mvvVNRJ/hK8kWVQgL2HCiXs/sUr3VZKVkJFdgsx5Tmn1YKyTuKwJojrr3ayJAEmFReCSwzRrYONQaXPHVI7fcOSNsmZaiQO7QYfkNiLmC67Ho6pZ/s11rNuhyaNsZX79gxw/M+ftct8CCPKBFPeX4H8uusAjJF3V2WK6MOWQbvxC7mX3ZZzu5KBTaL2VrXw86FjN8Mj3olOE+oa0HClFn+R54xV6X+yeruGm6mTH16W0XTjtFw7mrSDAVDWJa2GtpvR6moYRvfiOIVROF54ziZyNMXD/Lj/NquVorSMenH9JDvfqaaXvyJR4Q3MXgTp20KHulFf2/Kw4SDi+HfAbS2nZHm7oQLun9vK+r2DoNYDPvyl9x2htXttDVpOoaGt6jQd6+wm1XO525LVGN8vVZCpQjnqfTDoKt7Tj7jv/9ZPhVmQ0fa2t3wUGzSast74+qdI+rP+zh1y9qOGn7/NVn4XhgafiOWZq8I/97oi2XHnSnSC8Y8yKlCW8bE7hxP1exna6jEEPhYB+j23bAaS/SjwJvty0y
- Fzb8ZRb9
- mJVDl/itylCuTz0ohhCrZzPkifOkbvuw0MN0NPAb0sw9ERkPwzaM0X10maqx3g8Ew0IRxN+iEqHkTc4Lsk6eiwOnjabgkukjKLnRNpugNVqppAfGsyBKX3Ea7E1082ZYvWy/5jYPzA1E8UflR9qex3S1oICTNK1W+3YBdu9T8vNk4hVxkwb3HRKUhSVYMYaLeobrvDyFrfIdXJhLyKDCSKDxlAD02GKNad8i4Xj0YZELNpMQ8UcDQ0NyXVglF3C5bpzR87bk7rkxyi6Ba7dsWazS4g/T00A/lhUEmTZFxZpvHAXxlkSpSuYeYa3FXTpw7trfZ
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793285643-525660
+X-HE-Meta: U2FsdGVkX1+rhVk1tHLZ6tTrtDuKAmAsxX0SDoFDXq6Amamui+H/4s3fce+3axvehPYSlEfl5+o3TXgMNZHYaq/PTlP2ikNsYecWad5iB76kffc67eQAW73IwfdtWugjJZcDYGm8NLDhopbLquQhmKD+YATPIRMmosvBrItLCipgs2ZtxSMK06bF/SWFoJSutxrD+5CYWIVUTFCex1y2Z6DdYugTTmaveSEA2EOUTxOXByHqblJkMHoUhAj+z/z67bU881HftSGqaQv/3VOgj0n+20kzxgl/Oczp+tnaNgmJEiKUasMOjO5ogl/uZI8hBfYxo5kRLst2rzQYhXdzqjECSWrUtjAth6i5Cp5izsjiKhBpUsxYC1am5GK9zijB7odmSRknbiSPsDyTnGpJdDtjpBgSQ7c/1TBRztx2BKCAdjZrFpriaYA+eyr4o1u+byY0sZZtThisshoLBBb277gefUC2SWHiPtBNo7GJXlncdwn+ShihdcfDWP0A2ba1YT+ih+kIxJIUTI/DTSFenG4pqniCoZ2OneViI9WyB7kaLvCBdoeEK11EAhLny9ALxgfE7pfHbjw9xTcj3ARHls7TlUnj7GZv6wwWn3tYvjzhJ7jP4nv/rcZQr3eonghQlxdh3seTOLKatN+Oqu93/fVa1J1FG00Qd7Cuvt77uob44TQMUWYJAFdHxaQHaRhD5anmDxKQ4wMDSUWs5XvYu/uTh19ohp+peD39lmALYAvNB0QbcLhl9IJetBa1c3tTQMupxe2nEGR46Za70mEGi47h7zyZjDpeQ+Pd12OIxj/lw8hbFlT7oXzQPdPxCsqLntztBbBG5kQMjm/Q/YVB9Mq4eA6CkiLBWWpY3ndW/+4cd9LtFL3U2WLkS6lcGuj5/5PtTZEPsW3LElM5azVuJY+exTBTB2VXP/FYCk6a0DKfBU0qw99FdPOY6AdKQ/vLOshNnESJuWrDjw+DFpj
+ qXiTj3WO
+ eMLaovKGClP9tCJJAk/9j8KXqPOBRZEQWhVc/7Bw0Pi/jDPo1CkT5JlJ9fBrEAwP8Aya2rsOcIGWFpP/5kUwWh7R38DkKqhUPTZ3fLDL+b1f8oAlIqMW80/1nDBrlgLv/QmSXVBN/W0o7SMsn9OvCqeluOIPXPEUucUq4ckL9wpQgC91RdPSIacfeE6/Cr2cgD+e5G0zfQUjP2yiqUIY1Kf8v3IMa8pXojlfGLiC6r0VeTrv9DMC1kFszDB7yrCHhOx4TFdUEej0fl62gqCe35yxv9+R8nzXSsSM3fXszlm/Av8B2LPcgBUuAgcBKFgyPIxi3ey8m8hvLaTo/1KxKo3yGna1tUKu8Duq25x9ggbQg4m4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,44 +101,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When an mmu_notifier invalidation only upgrades permissions
-(MMU_NOTIFIER_RANGE_PERM_UPGRADE), keep the existing SPTEs instead of
-zapping them. The PFN is unchanged and no access is revoked, so a held
-SPTE is at most as permissive as before. Permissions for the SPTE are
-updated on the next fault, so dropping them early gains nothing.
 
-The motivating case is a userfaultfd-wp dirty tracker such as QEMU's
-background snapshot, which unprotects every guest page as it saves it.
-Zapping on each unprotect makes the guest refault its whole working
-set. On a 64GB guest under a background snapshot, a read-mostly workload
-drops secondary-MMU refaults from ~1M/s to ~2.5K/s and cross-vCPU TLB
-shootdowns from ~1400/s to near zero. Uses of mprotect() that only add
-access benefit likewise.
+Sorry for missing the ML in my initial email, I missed it from
+get_maintainers.  I should have really clued in with such a small cc
+list ;)
 
-Signed-off-by: Carlos López <clopez@suse.de>
----
- arch/x86/kvm/mmu/mmu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+On 26/10/29 11:08AM, Uladzislau Rezki wrote:
+> On Thu, Oct 29, 2026 at 10:16:36AM +0800, Herbert Xu wrote:
+> > On Wed, Oct 28, 2026 at 11:42:18AM -0400, Liam R. Howlett (Google) wrote:
+> > >
+> > > Below, one CPU adds an FDB entry for an RTM_NEWNEIGH netlink request,
+> > > while another CPU is inside vmalloc() or vfree():
+> > > 
+> > >     RTM_NEWNEIGH                      vmalloc() or vfree()
+> > >     ============                      ====================
+> > >     spin_lock_bh(&br->hash_lock)
+> > >                                       spin_lock(&vn->busy.lock)
+> > >     rhashtable_insert_rehash()
+> > >       kvmalloc(GFP_ATOMIC)
+> > >         vmalloc()
+> > >           spin_lock(&vn->busy.lock)
+> > >             waits for the other CPU
+> > >                                       softirq: a frame for the bridge
+> > >                                         spin_lock(&br->hash_lock)
+> > >                                           waits for RTM_NEWNEIGH
+> > 
+> > I think this is a fundamental bug in the kvmalloc non-blocking
+> > support patch.  How can it be used at all if it is susceptible
+> > to such dead-locks?
+> > 
+> > And if you can't use it safely why don't we just get rid of the
+> > broken kvmalloc non-block path and have it always go to kmalloc
+> > like it did before?
+> >  
+> If we have a look at this as we did not have vmalloc() here:
+> 
+> 
+>      RTM_NEWNEIGH                      foo() or ...
+>      ============                      ====================
+>      lock_bh(&br->hash_lock)
+>                                        foo()
+>                                         lock(B)
+>      rhashtable_insert_rehash()
+>          foo()
+>            lock(B)
+>              waits for the other CPU
+>                                        softirq: a frame for the bridge
+>                                          lock(&br->hash_lock)
+>                                            waits for RTM_NEWNEIGH
+> 
+> Same issue?
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index dc2aef72ffdd..a4258a8c0c89 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -1719,6 +1719,13 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
- 	lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
- 			    lockdep_is_held(&kvm->slots_lock));
- 
-+	/*
-+	 * Do not bother zapping SPTEs if this is only a protection upgrade.
-+	 * Permissions will be faulted-in on demand.
-+	 */
-+	if (range->perm_upgrade)
-+		return false;
-+
- 	if (kvm_memslots_have_rmaps(kvm))
- 		flush = __kvm_rmap_zap_gfn_range(kvm, range->slot,
- 						 range->start, range->end,
--- 
-2.51.0
+Looks like it to me.
 
+> 
+> I have a question:
+> 
+> GFP_ATOMIC/GFP_NOWAIT guarantee they do not sleep. Do they guarantee
+> not hitting ABBA dead-locks or they are not interrupted?
+
+GFP_ATOMIC and GFP_NOWAIT can be interrupted.  It's more about not
+waiting for reclaim (kswapd might still run) and GFP_ATOMIC might dip
+into reserves.
+
+The issue is that kvmalloc() now falls back to vmalloc() for
+non-blocking flags (I am restating this to make sure I'm not missing
+something here, please correct me).
+
+So this changes what is called internal to rhastable so it doesn't reach
+vmalloc(), like before, if the caller cannot block - they go to
+kmalloc() with the old fall back.
+
+I *think* the question is if the change should be here in the caller,
+internal to mm, or a new call to opt-in.
+
+Considering this is the only kvmalloc() caller that forwards
+non-blocking gfp from BH lock + softirq context, I think that it makes
+sense to do it in the caller.
+
+Given where we are in the release, this fixes a real issue that can
+happen so maybe we take this now and settle the general handling later?
+
+Thanks,
+Liam
 
