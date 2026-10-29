@@ -1,105 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A91606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14AE606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tKqbDw0k
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vlE7YCUk
 Received: by kanga.kvack.org (Postfix)
-	id DB86D6B05C9; Thu, 29 Oct 2026 13:23:35 -0400 (EDT)
+	id EAEFF6B061C; Thu, 29 Oct 2026 13:30:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8F206B05CA; Thu, 29 Oct 2026 13:23:35 -0400 (EDT)
+	id E5F3D6B061D; Thu, 29 Oct 2026 13:30:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7E566B05CC; Thu, 29 Oct 2026 13:23:35 -0400 (EDT)
+	id D74DD6B061E; Thu, 29 Oct 2026 13:30:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A61676B05C9
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:23:35 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 393EE804C6
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:23:35 +0000 (UTC)
-X-FDA: 85376335590.19.75A816F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 25BAE140012
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:23:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tKqbDw0k;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf26.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AFD196B061C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:30:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 47C3540509
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:11 +0000 (UTC)
+X-FDA: 85376352222.08.DC08703
+Received: from mta1.migadu.com (out-169.mta1.migadu.com [95.215.58.169])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 979444000D
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vlE7YCUk;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.169 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793294613;
+	s=arc-20220608; t=1793295009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2eiZj4z0YqxczDZhTP4xk2y8uh1O35jeXRePIqjNdtA=;
-	b=nMoifoU6f6lqG18Z52G80ZX3DP3He7nW+L6h3Ut1CMOWQj/jdmtut4U6WOgEl+Tsxbwgwl
-	Y/XPKJDQZ+tztqe+5Tiw9+xrQAFv78APjYP0AMsLIHm8VcMUWNNsj+QRBQ7PEqpf2c+oaz
-	XipwmM/jlLbGNrTLl3dLf6sd+p3YYII=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=74gBWRt7WtLpCuOuHi792FTVea5VELP18N+2xYhOiBw=;
+	b=ie7IG44/f22UJU9Djqn9tyNOsYFFLDAraKaTL7vRHUCIqe9K6j3zS/hYA6072/IcfXDlWr
+	H18hKXl7Nr8W+6NyJrBi2fiU0M2cAyHSK/Ca06dWzwJcVkOhcz3+AnntCGZKPlX+dIK1uJ
+	Oq3UfV9/J8qhbm9j7t/Kyz77gYRBh4Y=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tKqbDw0k;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf26.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vlE7YCUk;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.169 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793294613;
-	b=SVll5+D7kN8uvhdURqgWMFVbeSoOaxsuRQJBWsG3cd0tCJyccD6xrJfGRP4DCOLUe9qYJu
-	Pxl/wZJ0DvnnKKieVxlQaMoUOVo+6AcuQJVvi2JZtztZ1TUzCvoPn+wY17pDvN5mEicxvE
-	CLvuXUeiSpU4RuxrY7mXQSiAvMpY+LI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB56B1682;
-	Thu, 29 Oct 2026 10:23:28 -0700 (PDT)
-Received: from gaia.lan (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 00DB53F59E;
-	Thu, 29 Oct 2026 10:23:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793294611; bh=89SvGZ6WMPqFWYQKrcmNz6K4h0a9xvHSBOWe1Dr2QQU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tKqbDw0kJstskDmn46lt05CuTnjC3aInPTR+oCreDFmV1TDXRixNV7gQs9bvaolno
-	 9vloIPpeqvvl/gryOc82+JKTrXA3ps7tBc9lEcHzJokLGtsLKIA/dqPhL2aktd6nV6
-	 FD7SXq5tC9XzlvCsLzMdG06RdEwDTzqfLK4CFf50=
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: will@kernel.org,
-	Zhao Gongyi <zhaogongyi@bytedance.com>
-Cc: ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	lance.yang@linux.dev,
-	mark.rutland@arm.com,
+	t=1793295009;
+	b=tboNbBcF4bnTeMowDs1JQtFASrIqtPMneZYhuzYBwBXE4JholYiM8ATwx28vvG5nbP83E5
+	xf9jmsK4cltIOsyvuZoyM8yb3CUP0VOX0hPSa0tLup0CfRT0TkfbrA2THh+7q6AvtuipA1
+	nR8FVYrGFCzIu61yQfrL5kovvZWN+IU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=MYWB4yKYU3wamhVGzDfXOfnneQtLbPsY49kJbIwQCX0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793295005; v=1; x=1793899805;
+ b=vlE7YCUkXd3612qrpE2Q4jETXeA7ZxK5A/P0k9sfX+Ip5mOP32HD90gE+B2sI/iiFuffNFep
+ 7+XL2w1wZQ0UmcpXM/ow0Mut/D32YcyiR3advKwEPIiaHTY0yqS7swFS+RkYFW3zmZydxHB/XKw
+ V33v16m+l43DjsInf4BZDvKU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id cb79ae80c03f3ace;
+	Thu, 29 Oct 2026 17:30:03 +0000
+X-Mizu-Trace-ID: cb79ae80c03f3ace
+X-Migadu-Flow: FLOW_OUT
+From: George Guo <dongtai.guo@linux.dev>
+To: rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	chenhuacai@kernel.org,
+	ardb@kernel.org,
+	shuah@kernel.org
+Cc: ilias.apalodimas@linaro.org,
 	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org,
+	baoquan.he@linux.dev,
+	ruirui.yang@linux.dev,
+	guodongtai@kylinos.cn,
+	kernel@xen0n.name,
+	graf@amazon.com,
+	liukexin@kylinos.cn,
+	loongarch@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64/mm: restrict transparent contpte mappings to valid PTEs
-Date: Thu, 29 Oct 2026 17:23:23 +0000
-Message-ID: <179329460319.2444743.17610856580354729996.b4-ty@b4>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <c4c33aaddf5741e125e4130f2220b1892b50aa61.1792756709.git.zhaogongyi@bytedance.com>
-References: <c4c33aaddf5741e125e4130f2220b1892b50aa61.1792756709.git.zhaogongyi@bytedance.com>
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH v6 0/8] LoongArch: Add KHO support and selftests
+Date: Fri, 30 Oct 2026 02:29:47 +0900
+Message-ID: <20261029172956.20791-1-dongtai.guo@linux.dev>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 25BAE140012
-X-Stat-Signature: sr4radhqptcob98bhdne9ksbo1w14g6f
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 979444000D
+X-Stat-Signature: rfjky99r6ey3hfebidj8qqdiu9hfashk
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793294612-842154
-X-HE-Meta: U2FsdGVkX1/MvQEMn6DSgiadmcriEOEKj9D+kigRauUxzjfZxMSNgX2CWb16LQSMpvkOPxBmnDKqWFpIaDu/NfgzKwJr5Dkz5wJSEoFuBUK/snmJ6v5NPXY8jJtcEHNN9ROpAfC6f/R8o2EK/Om+XPVE1MRMlHQweyQT90whxUu7R4iVD8ttZNEC/WRXe3GiamrgmSUR2nTvFE6tdlHG01gdhHtaF3cNYZORU9CKh5FdD+s19VCZ0ZMWltuMolqxn+c0Ki/lOdSpldKgDBFTGhzmbp8UCAM52W5uzu+4gx2qJXr/T+yZfSoD8RNrOlICx6Tk8v3jSbynGF5q2+NNdUtBpUjM4ZOBn48S/qWmeKBoJzAILd/qA3bPrH7KPjPXouCHrv+F/HcXu/YcjghQhTq4nDcc0oqVNpnAMP5MKWxuD4t3qScsPT+/bFe1VGICD6PnNf5yO2dv/Z4mzsdNdGqUgDFlCVwO9JmWa3LOwEGh4xEgLY5M/HMpfOHNpcEqjqHYyR27E1SnuG2RooUOCfAQG85XYNo060TybLblMW2WOM8vKxb5NmGas6DvbigvFTc+F7Tx9tpf/d72xPPklqUbVyRRvHF21b7Oxgkvr4h1bcLnYvPzrCj2UlDy0b3RloE/2GFGmlKemflaV+zjE1ipjzA7VcjMGLUdMXIWguLmOTyV6UumavZ0lbwqPg/Cj0DHtE3cgKm+hyQEfets8Xwy0Crnxnl8NeUf7A/HcDB0DOBMuWp5CUPvpIhW1rFXqQmgFpY0i1mi/tvoFOR17pSPTxS6A1JNrJ5upzN/iZOJFBBlmYyveseDrUxVUkEPGGMBgSPV2a3puq0AROp8EBG0sLgeTZJGU6sdBJWyL6+bKLDWF8TDfLSpVsAbX8Plm94jE+avBRz0TWBW/DWGvOm/2UpkWj/REwMEq+PjpnTz/tdjJJxX8Y8LEy6oD4Dl3+KDaZY7mVfjRNJQPqX
- xk+9woyG
- lsGpOMEi3fjepc+7J0AAeoNG3z3FgDGrunLpM3ydIPcctdpxKwDYAomCoF3TsXkW743SAQonCsTsAPN0zuIh0X3vX3dewxIYWr6q6hOKiMJJtL8m8jYyld/lkpseOK1hzCM5WhNzGqXdYF7E6gq+h80f9OSNLRkhSf20ezYCPzFliMUePuT7jIxEmFb+qMB7fsYT6xDTJEXZ8jDpKlad/xEGn4A==
+X-HE-Tag: 1793295006-752256
+X-HE-Meta: U2FsdGVkX18i0hlMQPs9zmlW4TYV/kUp1V0Z8OdTYINbgSH9Y+0yRpiqQKH206ZRPASHHCIDsbnUz/p2L5OOv8nh0vI0OtOBHBHAdaKGYnLaJ8/qeVS1/YgLEP49y94cajgHlqY4qcUkG8sGxybXyGGz03cVfn/x5zB8VwQw8q9LFO+Ap7WrmDqZbIlhYOu8HA4A7FFCCAQ3hbFtHM5287/rGSQjvgrX5ovAWRG9sUgRw683dyUZxWJ0KI9X11A455HeGi+3g+oKSwI8FD/FWlEBxAsm5c2O5Hhz8uHDKEjtEpUUR8cUDAJQz2RacCOQeZi22N498ZhJXC3xnaFcogIjGvV8MRXnfzGx+MkfPfKCJbRgFKW6jmLhwU840LVNVnK0WC61sWzqsR9+cPNwSVtGY/UzfiakgbE9HM8XuP1LiRVSCab11WhSEHgBQWZcIJptUItRyKsqy2EloslnQexTQ91PPU2Lx/LgztTjOgCC8e1HZZxf2LB4ZR4c47d/eG5bgp2ulMo5UXYBMLS8vyX+SffRnyJeIPknqHu8NRbsd1rCgcDNP1VfDiSyBGhG5RaOcR3QFT26JRbShgPtxHdQReQrSdUK7nZgMKxCpEQvTrQDi8lOS4LwqrwKXbd35Q02feY/WB9mvbMG/tqfilur5FGLogzonHHMC/DouIGxKKOb/i/atqX6vtDz2Q68oM7qzuW5InvuoAbcqTbv9GlN0pXuLrPvbGtOaw9OtScPnr+1zs4RVDuIi/u1Q4fgG5K+RQl7L/U/pTNM6TFhZ0jkdD0UG8d7ySYOTpS0nyiI7CqwN7dqN1BSmWDbqgU/Q1rg34D5SO2O1GFfJ++9yubhDrFbPfUfmm4mKg1PqUiDjH0FI20PTchK25/k6Kawea3nTSBItPb02OqBCBVuZZGjxkwbd7PayUxnWB+SsYqJv/QbR8YcxyvlSvBEHuQjKc/yozusQoBx+3fU2b6
+ +jeqsbV7
+ G5cHXLruOkYyzSSGzFYZ1IrE2QZ3LsCdvUikSk93bh+h3fJj3mP+b9LYEiixA2cK7I74u2adC+ZoQrrvdXqDihOpzSpdsYnPjL/kMya43DoLnOCOmt5VolzRVjJqaTXwQwMGLdml/SY/eTOYTOYxEzAVA3t3AT9x/5UYhsv76fToAlSapTDLeQleKmLrbXfuN4DnRiee7MRW9lbqQvRsG6sPiCfZw4tnDNfUB+4EGu51bFbwwmq2b1UMc+41Sv2aidfah
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,19 +106,116 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 23 Oct 2026 20:12:33 +0800, Zhao Gongyi wrote:
-> The transparent contpte layer treats PTE_CONT as software grouping state.
-> When a valid PTE has PTE_CONT set, the contpte helpers may align an
-> operation to a CONT_PTE_SIZE block and operate on the whole block. The
-> current single-PTE helpers use pte_valid_cont() to identify such groups;
-> this is a helper contract, not an architectural restriction on using
-> PTE_CONT with present-invalid descriptors. Explicit users such as hugetlb
-> manage their contiguous encodings separately.
-> 
-> [...]
+From: George Guo <guodongtai@kylinos.cn>
 
-Applied to arm64 (for-next/core), thanks!
+This series enables Kexec HandOver (KHO) on 64-bit LoongArch and adds
+LoongArch to the KHO and liveupdate QEMU selftests.
 
-[1/1] arm64/mm: restrict transparent contpte mappings to valid PTEs
-      https://git.kernel.org/arm64/c/486d396b19e9
+KHO has to give the next kernel two addresses: the KHO FDT and the
+bootmem area list. arm64 and riscv put them under /chosen in the boot
+FDT, and x86 puts them in setup_data. LoongArch systems that boot with
+EFI and ACPI have no boot FDT, so this series passes the addresses in a
+Linux EFI configuration table:
+
+  - On a cold boot, the LoongArch EFI stub installs the table, zeroed.
+    Kernels started by kexec are given the same EFI system table, so
+    they find the same table.
+  - In early boot, the kernel reserves the table and calls
+    kho_populate() if the table holds KHO state.
+  - Just before kexec, the kernel writes the KHO state of the image it
+    is about to run, or zeroes the table if that image has none, for
+    example a crash kernel.
+
+A kernel started by kexec from a kernel that did not install the table
+has no table and cannot pass KHO state on, so LoongArch turns KHO off at
+boot in that case.
+
+Patch 1 adds the table, and patch 2 writes it at kexec time. Patch 3
+fixes a kho_block.c build failure with CONFIG_KFENCE=y on LoongArch.
+Patch 4 adds kho_disable(). Patch 5 lets the LoongArch memblock
+arrays grow, which restoring many preserved regions needs, and patch 6
+enables KHO on LoongArch. Patches 7 and 8 add LoongArch to the KHO and
+liveupdate vmtests.
+
+The series is based on liveupdate-7.4 and depends on "liveupdate: kho:
+calculate per-node bootmem sizes before allocating any" [1]. Without
+it, the KHO vmtest fails on a 1 GiB LoongArch guest because KHO cannot
+reserve its bootmem areas.
+
+Tested in QEMU: the KHO vmtest passes on LoongArch with both
+CONFIG_NUMA=n and CONFIG_NUMA=y, and run-vmtests.sh passes all four
+liveupdate tests on x86_64, aarch64 and loongarch64.
+
+Changes since v5:
+  - Drop CONFIG_EFI_KHO. Only the LoongArch stub installs the table,
+    from efi_boot_kernel(). The other code is built with CONFIG_EFI and
+    does nothing when there is no table (Pratyush).
+  - efi_kho_update() returns 0 when there is no table, so kexec on other
+    architectures is not affected.
+  - Warn if the table cannot be mapped in early boot (Pratyush).
+  - Document each member of struct linux_efi_kho_data and drop __packed
+    (Pratyush).
+  - Rename efi_kho_table_phys to efi_kho, mark it __initdata, and join
+    wrapped lines (Huacai).
+  - Rename kho_sync_channel() to kho_update_efi_table(), and stop
+    calling the table a "channel" or "transport" (Mike, Pratyush).
+  - New patch 4: turn KHO off at boot on LoongArch when the table is
+    missing.
+  - New patch 5: allow the memblock arrays to resize on LoongArch. The
+    liveupdate luo_stress_files test overflowed the reserved array in
+    the next kernel when CONFIG_SMP was not set.
+  - New patch 8: add LoongArch to the liveupdate vmtest.
+  - Rename scratch to bootmem, following Pratyush's rename series.
+  - Drop the luo_session history from patch 3's commit message
+    (Pratyush).
+  - Capitalize the subjects and use the kho: prefix (Huacai).
+  - Rewrite the cover letter and commit messages (Mike, Pratyush).
+  - Rebase onto liveupdate-7.4.
+  - No Assisted-by tags, although my v5 reply said patches written with
+    LLM help would carry one: the Assisted-by references have since been
+    removed from the documentation in mainline.
+
+[1] https://lore.kernel.org/all/20261029103425.14689-1-dongtai.guo@linux.dev/
+
+v5: https://lore.kernel.org/loongarch/20260904100852.26006-1-dongtai.guo@linux.dev/
+v4: https://lore.kernel.org/loongarch/20260807103714.33074-1-dongtai.guo@linux.dev/
+
+George Guo (8):
+  efi: Pass KHO state to the next kernel in a configuration table
+  kho: Write KHO state to the EFI table at kexec time
+  kho: Include linux/mm.h in kho_block.c
+  kho: Add kho_disable()
+  LoongArch: Allow memblock arrays to resize
+  LoongArch: Enable kexec handover (KHO)
+  selftests/kho: Add LoongArch vmtest support
+  selftests/liveupdate: Add LoongArch vmtest support
+
+ arch/loongarch/Kconfig                        |  3 +
+ arch/loongarch/kernel/setup.c                 | 19 ++++++
+ drivers/firmware/efi/efi.c                    | 68 +++++++++++++++++++
+ drivers/firmware/efi/libstub/efi-stub.c       | 22 ++++++
+ drivers/firmware/efi/libstub/efistub.h        |  2 +
+ drivers/firmware/efi/libstub/loongarch.c      |  2 +
+ include/linux/efi.h                           | 40 +++++++++++
+ include/linux/kexec_handover.h                |  3 +
+ kernel/crash_core.c                           |  6 ++
+ kernel/kexec_core.c                           |  5 ++
+ kernel/kexec_internal.h                       |  8 +++
+ kernel/liveupdate/kexec_handover.c            | 35 ++++++++++
+ kernel/liveupdate/kho_block.c                 |  1 +
+ tools/testing/selftests/kho/loongarch.conf    | 11 +++
+ tools/testing/selftests/kho/vmtest.sh         |  3 +-
+ .../selftests/liveupdate/config.loongarch64   |  5 ++
+ .../selftests/liveupdate/run-vmtests.sh       |  4 +-
+ tools/testing/selftests/liveupdate/vmtest.sh  | 14 +++-
+ 18 files changed, 247 insertions(+), 4 deletions(-)
+ create mode 100644 tools/testing/selftests/kho/loongarch.conf
+ create mode 100644 tools/testing/selftests/liveupdate/config.loongarch64
+
+
+base-commit: 9a6a70aefe77f6fb9ff2b3037dcf87f6dff65c8c
+prerequisite-patch-id: 433e6f8fdec5151f12221a0a34f8fb111b95bb46
+-- 
+2.53.0
+
 
