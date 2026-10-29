@@ -1,184 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02775606A334
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 05:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A81606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 05:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=EgsmJR/v
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZLRMmHNg
 Received: by kanga.kvack.org (Postfix)
-	id 2EC236B05B5; Thu, 29 Oct 2026 01:03:43 -0400 (EDT)
+	id 235BD6B00EF; Thu, 29 Oct 2026 01:09:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29D666B05B7; Thu, 29 Oct 2026 01:03:43 -0400 (EDT)
+	id 1E71A6B05B3; Thu, 29 Oct 2026 01:09:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13EE66B05B8; Thu, 29 Oct 2026 01:03:43 -0400 (EDT)
+	id 0D5886B05B6; Thu, 29 Oct 2026 01:09:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D25FD6B05B5
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:03:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 54EFF12028C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:03:42 +0000 (UTC)
-X-FDA: 85374471084.06.DA5850C
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azolkn19012023.outbound.protection.outlook.com [52.103.10.23])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 74B7180003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:03:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=outlook.com header.s=selector1 header.b="EgsmJR/v";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of x-professor@outlook.com designates 52.103.10.23 as permitted sender) smtp.mailfrom=x-professor@outlook.com;
-	dmarc=pass (policy=none) header.from=outlook.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D8DAD6B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:09:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70CFC16023C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:09:51 +0000 (UTC)
+X-FDA: 85374486582.07.A119BF7
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 89F2F1C0009
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:09:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZLRMmHNg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793250219;
+	s=arc-20220608; t=1793250589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8igprn/UOyCqFPmOG8oAlfP8pOfRCS5h0pQlsfqphP0=;
-	b=qD7WRYs+pMcW6CaQ9Do88+xiT4L6KncAR4JlICsGKu56scWMDIMP9WwTIQVmhLMK4/UQME
-	xIueBR5mO1cC4BKQizpPnCRfesjoD8kmsumhhWKOSJVodVJT2P7ndcr1MRc6zevm8tPqpK
-	xwxLE8XgD57WXdOM5CjGQNkqlT83hYM=
+	bh=kpw8TTYWKB5hnWuUygH4ZRFIeIPvKSlqcY3nCnns/2g=;
+	b=0YsqhzSAuuJ1q/kdfNEwtSBMToEVix+3JfxX39Bi2gI3o0pCm2+1sEzY18IlxbdUtv23iW
+	hbcifmuEqh+wdWXuu+FDb0dimMDLuj0o+61tYE9CA0R1M8CzLQFj1p1Dp+xfm3/vINIh7i
+	X7MgylUX/B0kfVPgV8DC8BT8YTQEjZQ=
 ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=outlook.com header.s=selector1 header.b="EgsmJR/v";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of x-professor@outlook.com designates 52.103.10.23 as permitted sender) smtp.mailfrom=x-professor@outlook.com;
-	dmarc=pass (policy=none) header.from=outlook.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ZLRMmHNg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793250219;
-	b=B4as3WciJ3ims0VPy5Taa1Jg4bfFgGutK3P7ag103hw+SkODfPwe6QIZtGJGfbHUwRdMWZ
-	O+ZywjLz4Jbb0wnDIQ+tkoHb3gtDBryqtnpMbs4VPE56xhp467Ds3uMMrGxLNfnEA1eR2B
-	HNkUZd1oE/HcNiokI4KuKRZYOM7y4/E=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yAoEgHfSH0p/OfquS4/UmourAMT9bP8DjF9+77jq71ZOv6x/m2veW5ne/+EGoDuOJmHzWJFkP+rd7Fcmdgh7BrmGNez6AkfiHCyf9XCvPmAWqNotiFsjW455TwHF00AtuwaJyYo1RdWZZ6LEE/gn5PujC9YWVDur13hionlaSDnaEx03S7B0FPnAJboGiVTWTwD66wrUco0wa3qQjPsZA0OU5+PexgWstAHw5jmfL+N6yTQlWUoNnDLC9z8y73uToIvsY50l9aQRKuCNJMA1XpIul6MasbEB74IlIcHVQjmbAMEjJK6jmaCDS8p8xWnfoXO723AWFsGtIS9hhlPhXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=8igprn/UOyCqFPmOG8oAlfP8pOfRCS5h0pQlsfqphP0=;
- b=k1J3YRrCZWEIjepySrhIEGzzMYO3tkoQOl+VekhQ7BzAn29kSYdaKyxYP8kRmueSkRSsLhzIunHz2zc6nSa6iH57z3Ypxa+Ggyu3IDJ7Hm0QAk9ILmszG09hZ7Iroyd81WdFXzbDDT3w1q+rWlB8z0GBSASvKEOCSz3h5A2Fjy2aiKpROKvrUSADFR6PsijAAgqVH4Ch6O5yQwlO3Q/6Ovev4jHe766iuFmjRx/txbE4aSt6nQIdEcaDwmJ63m7P6rGKl5ltG9kISKyua9JNyLJezosooFMeelk/FdCKBXyS56zsJEqoQiBBlggHJQy45ScGqhVPZefNE589q6Zssw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8igprn/UOyCqFPmOG8oAlfP8pOfRCS5h0pQlsfqphP0=;
- b=EgsmJR/vTIzyddjdXEQNVoa+i8wHTnnoL1GPcG8Q0sGJQTr7t0siM7Mgq7ZZDqCJ4lmHhqv2fBTUE3d9pe9psTvlllMyg5cmKt/lRzl7bBAANP/oyMaUypc6bkUPe42qnHbTWJ6csE8WAbppUQzhwaNphBuEwnNi9uj+w8KncJGIbpeJIXZcGEuz/rdCS4xz70CLSNAAl0fSOzrqOWjrG/KzoxAlXkhCghz8W9fSdkcC8zPVSnweQbW2pJNZzwCFRXtc9jiObsgf9mGITZQ5eU6SziDOxkana4G1Mse4V+iDVdbIwEDbRm4e4BabUArDcF9cWiVLmEBSDV/Zi6KiIg==
-Received: from SA3PR05MB10385.namprd05.prod.outlook.com
- (2603:10b6:806:39d::17) by SJ0PR05MB8214.namprd05.prod.outlook.com
- (2603:10b6:a03:390::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Thu, 29 Oct
- 2026 05:03:28 +0000
-Received: from SA3PR05MB10385.namprd05.prod.outlook.com
- ([fe80::e22f:a0f5:fcb0:9b0d]) by SA3PR05MB10385.namprd05.prod.outlook.com
- ([fe80::e22f:a0f5:fcb0:9b0d%6]) with mapi id 15.21.0546.021; Thu, 29 Oct 2026
- 05:03:28 +0000
-From: Yingjie Wang <x-professor@outlook.com>
-To: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, Manfred Spraul
-	<manfred@colorfullife.com>, Alexey Gladkov <legion@kernel.org>, "Eric W .
- Biederman" <ebiederm@xmission.com>
-CC: Yingjie Wang <x-professor@outlook.com>, Vasily Averin
-	<vasily.averin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
-	<shakeel.butt@linux.dev>, =?iso-8859-1?Q?Michal_Koutn=FD?=
-	<mkoutny@suse.com>, Michal Hocko <mhocko@suse.com>, Alejandro Colomar
-	<alx@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
-	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-	"linux-man@vger.kernel.org" <linux-man@vger.kernel.org>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Subject: [PATCH v5 3/3] ipc/sem: remove obsolete SEMOPM fragmentation warning
-Thread-Topic: [PATCH v5 3/3] ipc/sem: remove obsolete SEMOPM fragmentation
- warning
-Thread-Index: AQHdZ2LVhtHGdgs2WkKTOxYJnworMg==
-Date: Thu, 29 Oct 2026 05:03:28 +0000
-Message-ID:
- <6d795eecfd0beb666251e6bc03ef9fd135386362.1793250194.git.x-professor@outlook.com>
-References: <cover.1793250194.git.x-professor@outlook.com>
-In-Reply-To: <cover.1793250194.git.x-professor@outlook.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA3PR05MB10385:EE_|SJ0PR05MB8214:EE_
-x-ms-office365-filtering-correlation-id: e5fca09b-811f-40d5-355a-08df3579f872
-x-microsoft-antispam:
- BCL:0;ARA:14566002|31061999003|16051099003|38102599003|24021099003|4140399003|15080799012|19110799012|8062599012|8060799015|25010399006|2604032031799003|22091999003|24121999003|52005399003|40105399003|26121999007|102099032|440099028|3412199025|1710799026;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?wgVT+0UnyHEV9mA3OalL/EcN1bDuNqMw4YYnHYGNN1xwVX1e2wCB8rgsZi?=
- =?iso-8859-1?Q?hnkCz4iKt4nxAJxysGu+ppdRiB59wrQjiKaxbKAG25oznY981Ey+B78Q6r?=
- =?iso-8859-1?Q?ZZMBFkdwYuppczPP6ElVz2LMYDskzmvpLl15WfBupTUZgfXpVIZ8r4g7YU?=
- =?iso-8859-1?Q?lM/8YNQu5n+obPz1LnhI6uEgfeA2Qz8dtWFntgXQeUBT5O8f1RZOzAHUqC?=
- =?iso-8859-1?Q?A2v4lvJCnnqcbbNOqXwC2nEaRUG4zH7ppBw82q/ob7B8qocrg/Lu0e+Vct?=
- =?iso-8859-1?Q?AyskljYUKUAyetYrS3CzgireD8moD+ziH4TZ+OewaHYH6oiMHJz1WFSsw0?=
- =?iso-8859-1?Q?AJHpK6wObWxUHTrZRT7KOpwsSBJsnSD9shSTx3RpUzxY2gwX++gsZqyIrX?=
- =?iso-8859-1?Q?PVqQoELcV7Unvf+gM6YTXzKKdnFo/bscjTqMDFOBGE1K+5FwMrd3bpZRsQ?=
- =?iso-8859-1?Q?Ob6L7uYqR2yMLaYvNTL83xjvb9mriZj4vGzhNjTCsNV+GFJovQ4R98+5YR?=
- =?iso-8859-1?Q?HsCQjclzvb/tZiFcDaEvYnYrfzJyE/19C8mDT5hU1KcunZp4Rdc3sZjeLN?=
- =?iso-8859-1?Q?aF4mYEq7nX1MBBcBHVNM/33JA1Uptm6rk09DLyngzGisME6wyyMsp5tVvl?=
- =?iso-8859-1?Q?nGc9hNJeZd25fVJH75YUyjRxLk3wUO8cWWZPuII4HXn5RdkeqvrfRA5fTH?=
- =?iso-8859-1?Q?c3saMIpRR8slFR+LFSFVGtoBfBIupyZyysGbpRjlNhE9fyC4Qraw6OsMfm?=
- =?iso-8859-1?Q?Xx2wDsDx/7Q06Fd8j3nO2HTrYD1igL/QkgIQQTcYwFNmUWJI+4KW1qlvk/?=
- =?iso-8859-1?Q?SA6smw85Bc8RcM5V17HEop1EBYZDVHijrj6RR2sDf05enlAAh/dEs9k8/Z?=
- =?iso-8859-1?Q?tQWwYx4Zcx4MjhB2KVO+XeWNDdjaorTKl/LqbeCvNREUxf7dwijMU7hSmz?=
- =?iso-8859-1?Q?yjvQhU7CUMguqa/I8whkmJpfeMrv2q3k+oj/kGXdlLz8awptmzqfACkeyh?=
- =?iso-8859-1?Q?Az4ehB/UGjUVi2FUQq4tlNjjHm6L3a0OVkB6WIkNEuquj4fwe3GryZH4qY?=
- =?iso-8859-1?Q?8lsG+slYyxRRITg9xTBih3yZDGJCHtxMU7ndnt7PHmelrfFhUbFeDuBR4h?=
- =?iso-8859-1?Q?QRevOtjJ356Z7VGFyk2YQN2j9gnA9LfB+JlEcQmjlMzpEvZssnY2bdVt00?=
- =?iso-8859-1?Q?yXPGUk4TsfttpwsN6Aq5UB1ruJyf9ndFgiw=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?7XCZOWf71f4wvg0XBBgJz1bol5qmHE2ZshaPbX9B0priYZggJMJxIYrO0R?=
- =?iso-8859-1?Q?r3bvHFgt2tprMcNpo9KpOlbqiIg//4ZmQ808FWIzDzEaD30tD/oaL3/f1q?=
- =?iso-8859-1?Q?IbYHsbUOvoMV2EBTbCYXl9PKq6L0QN7CmED2X4F50oaY8+cE3ay9IXzPbU?=
- =?iso-8859-1?Q?DK8tc49vsl1MMu0MgxFQMHDCrNWFzBfubuADjnm6m/TGWlovVUXpfmocHi?=
- =?iso-8859-1?Q?3dd1nef14PClx8sAd7G3xmLw7HPaZ19gjpGOiZbRsUfkKp1GjMO8EMplg8?=
- =?iso-8859-1?Q?cHrUDm+8IhYDc/1tKICpmnCSlUyj10xoR2D7tughIIf9btUfpiYWecZoTy?=
- =?iso-8859-1?Q?meomkvotWiPk1BZj06L+Cikg+9yeebFfYef+Hij5ewEYGelRWVf95dJyg3?=
- =?iso-8859-1?Q?1i+S9jtczHRppb3AyLFi3C41+tQthThMcwuv3tcOUT6FkrZlreHvuZqJUE?=
- =?iso-8859-1?Q?geaMVi5Vo1LO6w3vmttw4UbOxyXOKpLimuwRnN1OB/UPTnv+58Ta2qPs0f?=
- =?iso-8859-1?Q?oxrRuNmVi8TXRC0P1EO7G2b/5/hx/EVY75KJIhmJe+uqPDvFRHD+lG4nUX?=
- =?iso-8859-1?Q?tVoMpbxKnSNbWqfxOyXm5o+3azM7xptAB7HEAtQmUtmgAa8hUGjsy26dQQ?=
- =?iso-8859-1?Q?MWIAiSC36TGtCwwPZfXDqjk1j6fag4AemI1aDcc6CVQpQ3NefgQb1Los1g?=
- =?iso-8859-1?Q?p05AlFqEL+nbYR050Z8rmsuosRd5ohRBMfLxS92GijI5BJcoYlQL8jOT2z?=
- =?iso-8859-1?Q?MVXwD+meTg1lWrAPD6BIO38NwxRndPs3bg0ivdxE2h309NGVFQJE2NbHyf?=
- =?iso-8859-1?Q?0VWkjuGTJZRAq1ZJKBfVJSWR+EHcV6EyCTNTWEsI3LprhTRkW3TOCbkMcL?=
- =?iso-8859-1?Q?p61/TyGXp2xexQcoQLKGWdF1FruFSNZncnpk9VWpqUcXl/3AVHOSdcZuSq?=
- =?iso-8859-1?Q?+maAv61MWwfonDnSZMaVQC5Mjfhrg8dzifYBwGpI6WuCETNsGydQq9Ej2z?=
- =?iso-8859-1?Q?4DhlKTrnlvm7k+OAlNcjP2T0Yv2le6btaJauhG5ZB/Io1Q3ttgPssF7k7u?=
- =?iso-8859-1?Q?UzC8FvfmCh0s3+hgGO1bFxln8Xz0yyiQTou1aqtb39nOIEtOksLVQFZ/QG?=
- =?iso-8859-1?Q?qa9UCrOL4ZYoiCsX+5E/ixsIT0/RG/4T24hAtBjvs9XY6No66zzHrkk218?=
- =?iso-8859-1?Q?4JTROwyVCjReUI1OKRove4Z4+oO0E8MYglFkSzF/uqv42LfVxnx1jf9rF8?=
- =?iso-8859-1?Q?WtHeo+QBOAM1i3ezcxrXUIx39tKTQHNPbStYk2w1GQRtX41ugPh6fZN7Ey?=
- =?iso-8859-1?Q?uThfBqugz+laYWfJGxHYtX5Dmv2kw6NF/4Ss0BzwigxRKS6pNVNZqly2kx?=
- =?iso-8859-1?Q?TmwK7jT6DzlUIFTTErvQjoyuHXBYsfuJzi9PafIp5QnYRi7L531w/zoF55?=
- =?iso-8859-1?Q?oQcj2dRL2/0w5+lG?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	t=1793250589;
+	b=56K+GRjakr3VnPJeayd1PIWz+5OUNaEeISVsdACdffmAEkyhD0eeqnM/7b1/ng/LJhu3MD
+	bvr6uR4Lw5VP96o7jGSpZm6+JusdPCRZOGhDPJ8UwGXPFrnYtXcVRjDjSrTeaaOX0LQ2vt
+	cNNwYAc5sGJcEPEpqfEbg8NgjIfkuBA=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5ba3fba0080so1416111e87.1
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:09:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793250588; cv=none;
+        d=google.com; s=arc-20260327;
+        b=R4V9efj/KnFFDBoK0pzVTyAU0q9g7YtCwnP2QwjF+7pPURws1SZJ/XkHV3AG41dP4m
+         YJkO/P9orcGPF5tHhyDJoUJ85XsASvskxBgRvqIoeAGCeiPkOpeaZXRy1T+4f7LFwehF
+         VnuorSOb7c+4Nf03lzvyH8hWs/kyJ0Gc8wrFBXxFETHsdvqCNQpPihOUmMdMgEPHW5Zu
+         g05yvGIfuvpUJsIY+rC8JO2iSw4WaTV9aPY7nFXjqbuVvGcW8n03yEuOU561C6s2hHxh
+         ptQ+qLEEKeOWoOGYknqg504FLKFo2tIoguxH/x8rmdiYlOwlm3Gs/rfDi8M28qtIKvV1
+         EhKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kpw8TTYWKB5hnWuUygH4ZRFIeIPvKSlqcY3nCnns/2g=;
+        fh=vdPXqvMAe2aKDHo3WZQ4/FG1mKRBr5wcn6X2WYKMBvU=;
+        b=Ozzi3nfNVomh6SidW7Xonf1S0xX8Rk21hFYfkTZ4ak0UPHJOOPoHJ2ZmI7PiYXQCQz
+         yHQ2MclGaObXn6eEKhSKl7V8bHO/lxciRQQeVyfqoxpNp2+6Di+0LnOPQJ4x80u1r9EW
+         AFCPvjT4LNzbGMVwOWYEiL22ZaKahIpdKVk7dbaa9RMQpAlIkJDYACIJ774I0DrB9kps
+         cCr14fvnt//tLv8thPxfSQHcmPW9aKDO6uqc9ZCvmUptOBA0ZHmkm3Lsd1bd9y3ppxQP
+         TfaQEfGp0T9VtfufnLIJgZFg6OcdlbMrNVYx/hAsobzA+dMqyZRJDVGrA03gq8eUI88X
+         yD6A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793250588; x=1793855388; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kpw8TTYWKB5hnWuUygH4ZRFIeIPvKSlqcY3nCnns/2g=;
+        b=ZLRMmHNgNQhaeiqNhTTPVE04fBQpbwHKLFZipujDmwAvxe/heHsgO4cRKrivNnDeA9
+         2OWxi7lCqGIhX//2TdTsoCLwZMVHLd2I393F3q8MoYVpW6rTzJU+y8zl0ntqEKRt7H3O
+         f/acew/eahIeNs3AuT0cP2ocpKdgOj8bQ1lbpMqdaZt4ROWLShskvNqXlVZ5AREVGayy
+         RpFNhxawQXCGh/6NRfbQqROgDXXPeRBzoyNHsaGoD/MdsiR6n53zn1ZeQqxMPTJc8KQU
+         sYvtY/Tc9dj8M9ppK3cpnOYYK+Rj/5g8OFOMQ6QWfJG+BcWu5AMXGA75jj9JL7wbFGH/
+         PEXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793250588; x=1793855388;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kpw8TTYWKB5hnWuUygH4ZRFIeIPvKSlqcY3nCnns/2g=;
+        b=K+paA9BD3QHEyZAOSNtI0Kwp8scrC1yqDIHgdUWGpEmhm3S1YrdkFNcMUsr36G/PSa
+         3nzEdcTDXFe1O+eXleJPFHZMnPRpeVotDDteaDoZU6Jv0CW919qem6UyGXac1Gp2WXT8
+         dG3KvwiMvWs70gr7Lkqr3QAma+HRojwlkkR4vFJC0tWVfCZiMqk3qgAKq6iAjQlMAldg
+         6D0htIxr/EMEEvkTA9HSkZuGBKVXeDbiLRE4NIDq0Y1kHNSSWculumbHlMQ/XyDp/VnN
+         8nPYgNu95bd8d9NPdK+/Cj3g52pG0d1eLxvUpw6AjSjikwTiOoOMxT7LRXt5hVcxV6UN
+         nv1w==
+X-Forwarded-Encrypted: i=1; AKwUvBzGV/RPM0ObQMCE2b1gzgS2lqY/XOBigvK28KmZ4zbQfU6R1I4gryQ6TR7w0YUJuxkQEgJ7rQe7Gg==@kvack.org
+X-Gm-Message-State: AFq9FYJm65UTUVdFXFQbN3Gc7JODkQCYPlvmrwRa6wDMjoekxQ9JFXd6
+	U0A5smyxikPJS2O7zGEsdqeIh0lMjgxpcms3Sko11oEr24WSwyHuB6FYsk4Hbcck14YmEf3F6lh
+	yooBPs6QFjkXlYlJV1nBpLinjw2iGk/k=
+X-Gm-Gg: AYBFou1xoFB3JnJRvN75xNSec+NbFdhn3eykwFgNbyhGrqYXNIHzUcVaAIMDMbrDu8I
+	XdefskGW0bh2XWd8v9uOwa1wBwIe4Jk1T/1zMhSVMgvA34dHhUpgyv17oNRSlDy8LRWHe9DOM8/
+	WGI0gQwa4a0z7+ZHLPW11WhcKtUV9oMjwt7SUNdto7Efd6m22Li0zA1q0wXA6qvluHsRm4CB5kr
+	WAFOz8kM+7ln6zaJQW0hKH/gon3U0dwsAXgrIsvZUBkaldu4ujLwnyU8TPYbNtH9wRxfU1Y8fT2
+	Bpa1oaLbQzXnrRZe3BQHnvCvYKwRe0eGvc0EGefzzeDoRIKzDbSxuQXwtFyHTfa15VjcQ2DD18u
+	GxjtmkSKWg5/RO8R+C8cIminVQMW53cRxCfRH
+X-Received: by 2002:a05:6512:2254:b0:5bf:bbcb:5090 with SMTP id
+ 2adb3069b0e04-5bfcad1735cmr1673625e87.11.1793250587589; Wed, 28 Oct 2026
+ 22:09:47 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR05MB10385.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5fca09b-811f-40d5-355a-08df3579f872
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Oct 2026 05:03:28.5197
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR05MB8214
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 74B7180003
-X-Stat-Signature: 9948e1h5w4myoyhmro5r4bes7m316cob
-X-Rspam-User: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
+ <20261028030503.17923-4-kanchanapsridhar2026@gmail.com> <sashiko-outbox-188655@kernel.org>
+In-Reply-To: <sashiko-outbox-188655@kernel.org>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Wed, 28 Oct 2026 22:09:35 -0700
+X-Gm-Features: AclHuK8nR-G5FLP-nKgfLbRVgykWEd41gXMbkberCRHNZZZBPGk3kNc3GrhEkxw
+Message-ID: <CACpmpodu3C=uYH6dmFM-xkvdJxiRDjamRKs1Q4jU6_KKjFWNqA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] crypto: acomp - Add trivial segmentation wrapper.
+To: sashiko-reviews@lists.linux.dev
+Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	herbert@gondor.apana.org.au, davem@davemloft.net, 
+	linux-crypto@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
+	senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 89F2F1C0009
+X-Stat-Signature: 7se8rjnoc1g9s1z6kk8z3uyd5qpogt3f
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793250219-634023
-X-HE-Meta: U2FsdGVkX19n/GtT1RlRP5OnNQtmA4hkGF64bsnfKt1XTp/97v6tA5jFn0WWTzkLltrdolzQISkc/bPAZ96AOWjCjCSgSs4fIBqRqjEahEgTNodRhyskPWfx0oqU58mFgDNi/OmZHvwnN8DC6fnaCmgqdD/GnXZEmHQuxp1pqE3ip0N7earOd0OuaFSnnaRUu3a+2W74GzCakZE5eTao2izdPxK0wPmOAESHAuXs3WVrZf1YIX3BzjedBLzARI1XAXJmVW2ogGdtfEJcTibW3XDqKmIRjsX5SZBjgqJyJiV2XXMTCyUR75Zj+zLUD/hB/z5xOsIe4F7IGark3XrJQ/kkj6WRA7hl82XoTVI0fzAhu79sQeAQAuB0WSe24paYqrnjfqyL5uCi4cWCblQWFw2olobJJ5r+NXWBpjk3MBlqAjnVPBpyoqJLzIn5CfaEHkafNREaiUAm1Rhzb5PAM2r+oMz1tpeYp8hYoI9WmWtKF5Ebm9k1jmuHLBgAf0pll5oUvw2mwcDr2vyDjzxHXaJYQbSd4GsHmtRmbgRWL3b01IlBapYfT2CLD+KE1eMMWQypwUoB8saBAdF65+upyCKlSIVjPRS6IZn/PlCz/Q//CzZ00h0i6pGW4ruqATd5v3kADoVIlXtRWjic3duLSjQT1fOh8DJzUEZjV9HmU1sIccfXIA97X6MUoHCsvpqI1ZcgNExTwLzCVpOYCULXjNQ9mKwMu357blvl9ImVCpIsVO37zy3gLQ7awgA+eY5QfxFeR+vxqlFMQ5+NpFpJcZgW1tiIpew45H2wN1N6U7M5IbwKQa861CFvBcq/g6Y4M4negsRtSaWX2tlXubxKRg8La+mLNjbgavEPtMEAqNrg9FaNIUezbs8B/8gNauIVJAk9bZ75QCjvdmNQbnHGjx6QPGXCpcmbrb0Ci3QzzN/ad8VZxD6ikE0090aYfrSqI/PcpqnNf30+BFsx7sB
- 3EJDw1vA
- Rua9gUV8hsWV0TChoC0ytNePc6fMQ9ONpKOyHsPDV6dNRPCjWn0xMhdn+Ri0SXik7NkezVFZ6NpL7/i5XKXyxo+0Gf2s28BYNRzU1gCTVVo/tzrTiiOig5Fr+W19eDrb239wf/x8b2436fXaCPJGBaueCf8U6Kg2Jub00ajcEaqxxDp6pHUfQ5H+QQDrzfeQPLTlQ7Yn7vhsqmwGVrIhTAv/b3BOgP8L3y1qllUfkaVfX4692DlfquhgD5wgvg+eDjqXh69Mfy1fdEbdwMTgWAjd2+LVyjyIUkrFC+Hl7dBqBCHJ3A+9JfGq7S+POoFjCjfJUYjX/tm/8MvbHtGOHPBxnlbBPkTSqr2+hOlN4vSau3d8ZuGYvGgCB9UcnhAKYqKfoJKoYIeLlrz0TmAide/iM6AZzRnW77sURBmGqg6bSwEMgYSMSMMyalDZwlGkS36abAQLDtgKA8YcLGuHEYCQeRXNWe1BwhAgTsWvste90p6apWyRSiq2vjX4ZVOUObn93FNjv9ef5+pA/8+Bkr5TblIx0kW/iMlMngTCwev1wrcFVnW1opLJp+QrszKXsCXCdrfXalKt1ZvYbbRMRIrKetIrBj26Szsb1HfDhbfgSO2m/KOcZz2WyeipQ6u1mkIL5qyyQhad5Z80Mqu2zK59Z107cCrVnsTlUmALuUC7/59AoN8P2e90W7Q==
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793250589-667969
+X-HE-Meta: U2FsdGVkX18MWAortDTSISGFn2lLoprEN7Sted3abec3pFffqQtEjQ04UmIGC6Kv7XTkH63i+hBvvg84RJGLVs2Dl3HFPBDrvSxOQ+6AItGiP7WePkAamMBvU9vLqmO3fmoUUq+GA8GN9KGVCHcCyNWmseDGAJUoeHJSJLNdscM/ZzrsExGP3I0vGVAwFo7nMwaGy3XtFnxEnN1ZYzBmNOf/+m0Ce4eJpu1ES+4Z/RroWf+bKkwsgOykNIz9xo3XhRpCo8nO6fg5ucpmYpYVJvFlsiyXWQcfDuvaJ42xqvzDxE55bBodV/95A6gCs07eDOUrQL/etiv+qejBSQ10fChqaAIyEjsk2wkKHVj/MurAA3/DSb6bIViBmUn3hSqHLogR83tKmaemF5CQPqj40T7fHm6UrIsNJPoSeAE8Sur+dkTi7w8L4VGUXuPGmc0uZ22+lnmd1s5ApQvCQE7HGns3V36ftVPdGQG83q+w2OV35HFVRKLH94lqlC6I4wPSUsLGT6FfGlyWzyagYR82xA3H9z9cppvDAWC5BeRAC76NKItZxLbashsTvViL+177HaKSxrQi+IY9hIn1Zn8021QTtXRpJBxM4Y/vvVqeV8AdKqRif16BQy0t8yGjpfCfkDSiLn77IiUzwl3h3Y1RzYUGaDAKqNJOqdKfCYUczL0znpSfdzS7Vn9HqfUHwYmtz+2YHeyB0OFLNsOliFE7hw1vHJS8lOFReSVOXv3n/yvgSE60tdnPfledmAcRK+2JfmWoiDXzlVTxwBv22agxmoBw7HZ71R18Pi3l5oRy94Ph4othi4NPbFe8DHsOuO42kYvhOI4m50FVwT9xkBU0t6fsg4Ai8RzttFxTZhQDQJQnAxPtJIzWrKa3S1qI2A4jn0I4TSijoGmf0Mj9oQ2kCp3T2ZvDQ1L6Hdx/yZkCjV7fw6E+Fz7kTPuIKkmi+Iuc/n6VZC5NBgFvZXB/aLy
+ qZpr1ptz
+ XWiJoAo09H5soLaWYdFVaz7ReLtsshI88SjNSeDoJ/G6cadTjValTqB7jClP3Q4U69tMmbg/TA4+YeMt5OIKGFXVnS1ZB6oDCZDO/LWa8oUxEb5tPTrtQ0Mm0Z9CmT4hi7OUKZjTY2yGeNLMID81e0j7pCL4pGqfqtlXL2YouYAAnjmEFFpDZfitA21RdDLP/I0SxJ+JFN1mze4nGfzuaB2YDe3n6X7pbRLka4jXUWODwdX2OM8I1BVVaP5hF6TaMIN7BNLSZkH48Z2mIKc1HvybD4sZy7y0JSlSle0TlLWa12ywuqkZVfsAPootrtIlnceCx6CZOKQAZuV3AkWXPIT5RZWuucin1i2zM168swyWI9bLX3tBFuxSwZrBqZSkFU9VyBDwOAR94XF1IoGsxjNYoTuYKB3TYk+0yQkV1C08QltIBro9dy47wl6rNzYmHSl5BCwTE4kpjKwAOBp5rlDhGHl6J5P7HrK0pPjfc/jSuvm8oDwWQuX6owYec51243ia9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -187,57 +148,169 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The UAPI comment advises keeping SEMOPM at or below 1000 because a larger=
-=0A=
-operation array may fail due to physical memory fragmentation.=0A=
-=0A=
-Commit e4243b8062c1 ("ipc/sem: play nicer with large nsops allocations")=0A=
-changed the operation array to kvmalloc() specifically to support larger=0A=
-configured limits, with vmalloc fallback when a physically contiguous=0A=
-allocation is unavailable.=0A=
-=0A=
-Replace the obsolete warning with a description of the compiled-in=0A=
-default and the runtime sysctl.=0A=
-=0A=
-Reviewed-by: Manfred Spraul <manfred@colorfullife.com>=0A=
-Signed-off-by: Yingjie Wang <x-professor@outlook.com>=0A=
----=0A=
- include/uapi/linux/sem.h | 7 +++----=0A=
- 1 file changed, 3 insertions(+), 4 deletions(-)=0A=
-=0A=
-diff --git a/include/uapi/linux/sem.h b/include/uapi/linux/sem.h=0A=
-index 75aa3b273cd99..d9f961a1592c7 100644=0A=
---- a/include/uapi/linux/sem.h=0A=
-+++ b/include/uapi/linux/sem.h=0A=
-@@ -71,16 +71,15 @@ struct  seminfo {=0A=
-  * The values has been chosen to be larger than necessary for any=0A=
-  * known configuration.=0A=
-  *=0A=
-- * SEMOPM should not be increased beyond 1000, otherwise there is the=0A=
-- * risk that semop()/semtimedop() fails due to kernel memory fragmentation=
- when=0A=
-- * allocating the sop array.=0A=
-+ * SEMOPM is the default maximum number of operations per semop() call. Th=
-e=0A=
-+ * runtime limit can be changed through /proc/sys/kernel/sem.=0A=
-  */=0A=
- =0A=
- =0A=
- #define SEMMNI  32000           /* <=3D IPCMNI  max # of semaphore identif=
-iers */=0A=
- #define SEMMSL  32000           /* <=3D INT_MAX max num of semaphores per =
-id */=0A=
- #define SEMMNS  (SEMMNI*SEMMSL) /* <=3D INT_MAX max # of semaphores in sys=
-tem */=0A=
--#define SEMOPM  500	        /* <=3D 1 000 max num of ops per semop call */=
-=0A=
-+#define SEMOPM  500	        /* <=3D INT_MAX max num of ops per semop call =
-*/=0A=
- #define SEMVMX  32767           /* <=3D 32767 semaphore maximum value */=
-=0A=
- #define SEMAEM  SEMVMX          /* adjust on exit max value */=0A=
- =0A=
--- =0A=
-2.43.0=0A=
-=0A=
+On Wed, Oct 28, 2026 at 8:06=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+e(s) to consider:
+> - [Critical] crypto: acomp - missing async check in crypto_acomp_compress=
+() fast path
+> - [High] crypto: acomp: uninitialized state->src/dst restore in acomp_req=
+chain_virt()
+> --
+
+Thanks for the detailed code review!
+
+>
+> commit 7144b07b2cc5b6704699fb53fac44c4270d31f7b
+> Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+>
+> crypto: acomp - Add trivial segmentation wrapper.
+>
+> This commit adds a single-segment compression wrapper in crypto/acompress=
+.c
+> that stores the compressed length or error code into req->dst->length whe=
+n
+> req->unit_size is set on transforms that do not support segmentation. It =
+also
+> adds an inline fast path in crypto_acomp_compress() for single-segment
+> scatterlist requests.
+>
+> > diff --git a/crypto/acompress.c b/crypto/acompress.c
+> > index c8b4b8589769e..c55b0e8eff3d8 100644
+> > --- a/crypto/acompress.c
+> > +++ b/crypto/acompress.c
+> > @@ -166,14 +166,20 @@ static void acomp_save_req(struct acomp_req *req,=
+ crypto_completion_t cplt)
+> >
+> >       state->compl =3D req->base.complete;
+> >       state->data =3D req->base.data;
+> > +     state->unit_size =3D req->unit_size;
+> > +     state->flags =3D req->base.flags & (CRYPTO_ACOMP_REQ_SRC_VIRT |
+> > +                                       CRYPTO_ACOMP_REQ_DST_VIRT);
+>
+> [Severity: High]
+> Can moving the state->flags assignment from acomp_virt_to_sg() into
+> acomp_save_req() corrupt req->svirt and req->dvirt when a request is
+> configured with acomp_request_set_src_nondma() or
+> acomp_request_set_dst_nondma()?
+>
+> When a caller sets up a non-dma virtual request via
+> acomp_request_set_src_nondma() or acomp_request_set_dst_nondma(), both th=
+e
+> non-dma and virtual request flags are set in req->base.flags. When
+> crypto_acomp_compress() or crypto_acomp_decompress() calls
+> acomp_do_req_chain(), the call chain is:
+>
+> crypto_acomp_compress()
+>   acomp_do_req_chain()
+>     acomp_save_req()
+>       state->flags =3D req->base.flags & (CRYPTO_ACOMP_REQ_SRC_VIRT |
+>                                         CRYPTO_ACOMP_REQ_DST_VIRT);
+>     acomp_do_one_req()
+>       if (acomp_request_isnondma(req))
+>           return acomp_do_nondma(req, comp);
+>
+> Because acomp_do_one_req() returns early through acomp_do_nondma() withou=
+t
+> calling acomp_virt_to_sg(), state->src and state->dst are never initializ=
+ed
+> from req->svirt and req->dvirt.
+>
+> When acomp_reqchain_finish() then calls acomp_reqchain_virt() in
+> crypto/acompress.c:
+>
+> static void acomp_reqchain_virt(struct acomp_req *req)
+> {
+>         struct acomp_req_chain *state =3D &req->chain;
+>         unsigned int slen =3D req->slen;
+>         unsigned int dlen =3D req->dlen;
+>
+>         if (state->flags & CRYPTO_ACOMP_REQ_SRC_VIRT)
+>                 acomp_request_set_src_dma(req, state->src, slen);
+>         if (state->flags & CRYPTO_ACOMP_REQ_DST_VIRT)
+>                 acomp_request_set_dst_dma(req, state->dst, dlen);
+> }
+>
+> won't acomp_reqchain_virt() see the virtual flags set in state->flags and
+> overwrite req->svirt and req->dvirt with the uninitialized state->src and
+> state->dst pointers (while also clearing the non-dma flags), causing a nu=
+ll
+> or wild pointer dereference if acomp_reqchain_finish() then writes to
+> req->dst->length when req->unit_size is non-zero?
+>
+
+Herbert, can you please take a look at this and suggest what changes
+need to be made here, since you are the original developer of this
+portion of the patch. Thanks.
+
+> [ ... ]
+>
+> > @@ -279,10 +289,27 @@ int crypto_acomp_compress(struct acomp_req *req)
+> >  {
+> >       struct crypto_acomp *tfm =3D crypto_acomp_reqtfm(req);
+> >
+> > +     if (likely((req->unit_size =3D=3D req->slen) && acomp_request_iss=
+g(req) &&
+> > +                 !crypto_acomp_req_seg(tfm) && !acomp_req_on_stack(req=
+))) {
+> > +             int err =3D tfm->compress(req);
+> > +
+> > +             req->dst->length =3D unlikely(err) ? err : req->dlen;
+> > +             return err;
+> > +     }
+>
+> [Severity: Critical]
+> Should this fast path in crypto_acomp_compress() in crypto/acompress.c ch=
+eck
+> !acomp_is_async(tfm) instead of !acomp_req_on_stack(req)?
+
+Thanks for the catch! Yes, I will add (!acomp_is_async(tfm) &&
+!acomp_req_on_stack(req)) here.
+Since zswap is the only current user who, with this patch series,
+submits the req as SG lists, I was assuming that async algorithms
+would set the segmentation bit, and avoid this short-circuit. But
+until that happens, the above check will take care of this.
+
+>
+> Callers using asynchronous hardware compression transforms (where
+> acomp_is_async(tfm) is true, such as qat, hisi_zip, or iaa in async mode)
+> allocate requests on the heap with acomp_request_alloc(), so
+> !acomp_req_on_stack(req) is true for asynchronous requests.
+>
+> When zswap_compress() submits a single-segment scatterlist request with
+> req->unit_size =3D=3D req->slen to an asynchronous transform that does no=
+t
+> support segmentation, this fast path will be taken instead of
+> acomp_do_req_chain(req, true):
+>
+> crypto/acompress.c:crypto_acomp_compress() {
+>         if (likely((req->unit_size =3D=3D req->slen) && acomp_request_iss=
+g(req) &&
+>                     !crypto_acomp_req_seg(tfm) && !acomp_req_on_stack(req=
+))) {
+>                 int err =3D tfm->compress(req);
+>
+>                 req->dst->length =3D unlikely(err) ? err : req->dlen;
+>                 return err;
+>         }
+> }
+>
+> When tfm->compress(req) submits the descriptor to hardware and returns an
+> in-progress or busy status, won't this immediately overwrite req->dst->le=
+ngth
+> with the negative error value while hardware dma is still in flight on
+> req->dst, and skip registering acomp_reqchain_done() via acomp_save_req()=
+ so
+> that req->dst->length is never updated to req->dlen upon async completion=
+?
+>
+
+The augmented check for async algs should take care of this.
+
+Thanks,
+Kanchana
+
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028030503.17=
+923-1-kanchanapsridhar2026@gmail.com?part=3D3
 
