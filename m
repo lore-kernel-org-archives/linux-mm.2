@@ -1,102 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D419D606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 01:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5481B606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 01:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VnshaIwX
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ECAqvZmi
 Received: by kanga.kvack.org (Postfix)
-	id D805F6B00EF; Wed, 28 Oct 2026 21:00:36 -0400 (EDT)
+	id 630C16B05B2; Wed, 28 Oct 2026 21:01:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D31776B05B1; Wed, 28 Oct 2026 21:00:36 -0400 (EDT)
+	id 6083B6B05B3; Wed, 28 Oct 2026 21:01:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6DB16B05B3; Wed, 28 Oct 2026 21:00:36 -0400 (EDT)
+	id 544606B05B4; Wed, 28 Oct 2026 21:01:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A6E426B00EF
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:00:36 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 33F28120289
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:00:16 +0000 (UTC)
-X-FDA: 85373857632.14.9773019
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 86F2E180003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:00:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VnshaIwX;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FA266B05B2
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:01:55 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A2904020B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:01:54 +0000 (UTC)
+X-FDA: 85373861748.10.C649442
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CF44FC000C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:01:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ECAqvZmi;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793235614;
+	s=arc-20220608; t=1793235713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=AvcUC/1MiOceAMBu9K9D2zoZ9m1WdRohTEGTv0h4Flw=;
-	b=3vjjRk+HzjH2fIAeh8u4HSa0H7WrW949lde+feerzKMTH1bOQTzpotL8gNKbGSinh7Uf7D
-	oAzp7FoB8umWlmodiNcYwpkIgd1RjnSUtW4GIQFpvpLtOmUaAmNyfILtiw/0fXsu3ruYyX
-	jqOX0wVFEtjkafdTRm6EvlpLd/2Oyhc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793235614;
-	b=ujWOYOGNi6kf1TVc7SKcbA21+fWoZm8PHRRPg4gpZL8eY6BGXXjqRVe2RoxSSVeVaQZnm8
-	8xG/XRtp7DTVtwXZ5fhdeM0+YPwpWGKQXb2eMum2XW1rrgmUF+wumTWmnWNTMOvqSVuM4o
-	uPPpqJHvGSYnvHMbCg87GDiAeJFB4qw=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IeVai7414BFTHAGTwhgEP7/ooB/HFDOlmc07AL7nxgw=;
+	b=kM46eo3n8btz7Bm6iygcBaD81g6GqFhIDGE7IzCRrjOwajVBIMSlCKD2l7qufefrDWRFLv
+	9Qwo2G0Q7AwXKBaL1Vs/19F8OiONIMB21ZrC8ZvatcxcnqVZvMYq/5fF8tc37puxvoD3EV
+	cXL1c7O9fFKeFbrwjNLtVIdSDiesS2o=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VnshaIwX;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793235613; x=1824771613;
-  h=date:from:to:cc:subject:message-id;
-  bh=EUKRzknw2e8I9NSRveKmihVUd0h/TngiF/kNRita2mM=;
-  b=VnshaIwXWNsOKDYMZA9ba1ZoTVYxIdx+p8JYwc/ebaZwpb+2+5YxqFef
-   R0GMKWg5BSO25S2xaYt4qQG5KFkrIn+vcrpAB5Swdxmw+BgguBC4txiCv
-   mdYxTHF3flZeqGZhWL97QLfEIXoUFgfSSQgQ9y9ZQwaKQAJSkFeAJwijK
-   ubI1hw37vH1TdOei7BiPUI7E6DxhfFrdNFuPztVAs7zg83cNSE7baON0f
-   lZ8Ek5+xVQtMvDykp1QZlNjyThP3fnjWGxwKFVdrThFwX5idMhOzByOyA
-   5IoM/73xItLlxcgxtkbT0fXP3EOWivhyqXARTblvrSylE2Km5HxRUM6e8
-   g==;
-X-CSE-ConnectionGUID: KJDK0fodQHO+xgrio4vS+A==
-X-CSE-MsgGUID: G9MwbNDyRTaNO1tobAmdEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1996875"
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="1996875"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 18:00:12 -0700
-X-CSE-ConnectionGUID: xuLpf1JaTRiH9SL1hq5ocw==
-X-CSE-MsgGUID: uJVdH5ozRpi0erEHLgdGVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
-   d="scan'208";a="6822378"
-Received: from igk-lkp-server01.igk.intel.com (HELO 58ca8a381a5c) ([10.211.93.152])
-  by fmviesa011.fm.intel.com with ESMTP; 28 Oct 2026 18:00:11 -0700
-Received: from kbuild by 58ca8a381a5c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xMEUx-0000000055D-3ljg;
-	Thu, 29 Oct 2026 01:00:07 +0000
-Date: Thu, 29 Oct 2026 01:59:13 +0100
-From: kernel test robot <lkp@intel.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Bradley Morgan <brads@mainlining.org>
-Subject: ERROR: modpost: lib/kunit/kunit-example-test.ko: symbol
- '__mulsi3' undefined!
-Message-ID: <202610290106.o8Fs3NvO-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 86F2E180003
-X-Stat-Signature: digcpnxndrynw47jz7crjfexo9ufobbp
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ECAqvZmi;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793235713;
+	b=8ZuZy2lCCRrJpitAQTQpG86B5uOURbe9tBA5cRj0mPnahPbpNAeklJgO6fG4FS7VQzAhia
+	27ckko9h/WssVjNQjEDLBlEvfGnPbEzOMhXJb01UNfNbSvG2hs0IgoUfXCMP5Mpn5wfM2A
+	mzdjDUtklK7Uk61rp8zd40sKUJbS6Vo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CFBC2439BA;
+	Thu, 29 Oct 2026 01:01:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7750C1F01825;
+	Thu, 29 Oct 2026 01:01:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793235711;
+	bh=IeVai7414BFTHAGTwhgEP7/ooB/HFDOlmc07AL7nxgw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ECAqvZmilqOVTKFJ8qolp8yvMQLx/QSdVSr93C28cvzl/0dxYZCXxgMclau8JKYvM
+	 QPnICZw1BDjFIj9n/PPijc33msLgEgd8cMvd5hoYMqY5k60dsG+13SBCRlJX+3Ksxe
+	 TBiETsgEiqA9Nk5h1NtWmnC4CAEA371uwU0wThCc9YKWOMmiAYnmm56+7NDzn4CEH0
+	 X16wKmenU040CDzh5+aZ3Bb6K4I5l5T969lhWgmr+h+MZ9X/Vx76gXvDG1uboXFruD
+	 t3Ml6V9rsfzmb5YJ/9spqNQ7nnxKFwh5gW0zK7o0yRadIOtu+uTHLEn7So14AulCkb
+	 dlImzvrIAHX3w==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Bijan Tabatabai <bijan311@gmail.com>,
+	Bijan Tabatabai <bijantabatab@micron.com>
+Subject: Re: [PATCH] mm/damon: skip folios already on the migration target node
+Date: Wed, 28 Oct 2026 18:01:43 -0700
+Message-ID: <20261029010144.169906-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179320218513.2.7432933245840036676.damon-same-node-skip@gmail.com>
+References: 
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CF44FC000C
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793235613-305958
-X-HE-Meta: U2FsdGVkX19ZIcl5EYC1V/n3pnoOq1REWvMVLwEHeyHP+yMcxn3UQ4RAMjaoTauw/SgG8c7UBvMzpBHouoc3qFgEj66GTdxXnCb0jefFe00oo/kXUVRbbYiywI+qgDc59x9k8Ud9YmrEC1vjMfJEzTpzjOZoXvjYCjFx/1XNp2FhTr3RWUR7JiEqRdpXZv9i2ZTjELfdwk8mnEhMEWVJpOqXNhwE+wVcEnYhXdnKYWkv806zUNlsQIy6fYOM+BWRsAMJ1IGnjl8oX3M9hXtfTlcUi4bBW5Ix/uDYoDphiPJB0SqcSU6DaxWV3byETZc8CwyG1eEb14El/n/qsAD5qipa3z1G09miRhASPPIXSsI2saSoYyGXn2UnP7STpHzqKd+SE83ZYhrp8eGTeU6bpr0wbMW/SWXk4R1f/70ARWe4K6Mu8SyBlc4FrmWqQAjF3MDoFcX5i/XK6mWG4Yw8z7zlnENVlM6rt+DN0WQJ0ZQVG91oXzKlqu1JB74aZ1bsWPTQ4GnppDmg1I66fj+80q6TeQpYjVCAhrnrK0YPFIbYMcEZ7HFrHyD+6Ridjk3kI35jPlG/BqDXQgIO0wc2I26KPZLmQ8/E4sLlvVPqiPYxwrBWSUHhMamj4HFwm49Oge4ZIm6ULyWLpzyuI8SD+4ia2LEsWY5VuLpGQ5DbCrYCsbkvKXOq5sYnizRel1VAsw3Vo3loGOjKVSMZE3gsXRKwqmOP/QaKkp8Ei9R/8UtNYPVmi1G6FFvBQfuZ8cddhjwmAD5BTZuCR/+FcHO7s9x+D+bVXdFQ7CCrq+4RYklo3jOo6RdoCujzT8I11vYSgCbd8s/p6vrDnjiEgkf1dwcHWm9uUiN4+JA0nq+peyVcP4M+oRkNPJDdxDsZYxSZ2R2dLhV68EvOhIMW9yQlUHYBKaiStAtFZgJFgsZ002HHiMBlIR+8cNX+zVcVnYmn+IpGu78BFVi+GmawAB5
- bzlnPqEF
- /mIoByVd2mIIPzj3cbzRQyZhXvMHjDO5rSaGeQuCxhVubOUJkA05GjkPRumtFKAhNyutCz1Ob00x8Stwh9NyOE2TU6tVihrFQ++yuqXKAIlhKIBvALyPyJGdeFxIVIRbi3St9VM/ZoyTn1z2UI+XuGs6i382R8QsLa45/TCqoEDJ2v1vTQcCNPgOwndrrYFn+MDXzMLj7hsSL1A/zObmP0NN989Ftq3DS9bF0ReY7+ifF0v6uLw83H75myxy+FQ5y5Mx8a+wHo+LZnaL1dAnzfuLo/8d1o5SztCeNRDGyi3SzA+xnV54BdSEh8Ri6XInFSI8NvDp9m5cTKZze5mUFxEy2SM1Xp30oMAUxIpP4dwBUZFQMRuV3euIXww==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 5ffow6ff4k75wac74xqjnr5jkzhirirg
+X-HE-Tag: 1793235712-438780
+X-HE-Meta: U2FsdGVkX1/rTPr6jl66Ww+lLTP804uplTU3iT0XummIyg25RCQI0/k8zEONNgLd16NAHLodgKDE6gZ7OKrbbgF46+ATnk77X+/fOaPqCsdrCgZwRQV3maGTOJdRGpP6GQGd0aPXz3q8/CH085sxz6U5Te0MNLOVs6vJVFE08vvzADK7CKjIvaFkeH/EjlRkHFzkQPtM+6KvZZi5LBcz2O1MhI10NvXGrsE6lLzHqFowAuLKq19CviIQTjFFXz3txrhJN96Aa0589Oxn06cKkhWfgu6jbTOycgZ4Ddcdv/NsQYg6auC4PASBZqOY+QJR9YKQ9WoGt5xTdpjEikvPT7WdY5j2SyytZTH1+l4Xz5Jz4amQnayq78arpn1W1IFfIbD63PlxyTvVSpwdkjWwavF3c2ihOZ9t6wa3pl/1iJGhwnBA2Xe/C4CQv5lmpJNL/YpgesyNaVKyQEtDzM7hMImrj22+A/MjTIaV5Yc136yH1pmRg2jA+G1sFx6+nsrgTED/vzA3S+3Qhm6oMEZpA2ZYTLhIJdKtoQT7+UG1lCsuYK8I0Qs5r4D7dF/eG0GRQVGxux6mzVjBq0+grVuIBjLW8GvEqkGL/SJwQR6luTB2q+0glALLMUi0QbBhEYn3A9b8edklYTqa9N7c6fmOL6rr7A4VPt88iVQbk8WKPmbhPfzFODpI5De8J36I/Gj7KRNMpBODujnRw9Uxq1RdS+Vmg+65UTDh2hfX3dZ/o7Z2LABfW/PxyagL6pAAnfSv+W3DGoQL/lnCneDw96F2xR8hcqWZKw0xM52Y4W+81RHdplIXfSD9HqAWqMFHSgtxg/0uQvAICt/MXNtXsToEOxLiDBp+4rqZXdyIiNBI/7/mWuijXZIaD5kwX60aXw5WhwkkDzt4TnPsHc9fk8e0px3iSDs6zXQ8qOfo5YToevH+ZV5QSQFVE39e9P+n6adcvrPi4i5mQL/FT2gum5t
+ k1VOc+Sm
+ gc2RBAAc/pMExuw3RnKEG262s3cTik7DY2bia1TRTd81242I5yQixejDjXINuPCDol1CA3yjap3svlTu7aMJiZa+YKYf9o5eYC7QchG9fI1s9A+PU7Y9ZazZQ18dxfMVqhwx622ne+oTWdgO3Ph8JfNjDzIuhMxzaoPikVTVN3u5jQ/msmyYbEFWm994pe9FC7pwoTCa+9nOV1/Sn497s31G3UMMVRfK450Sk056mI3THpPgnYVHRBHYB4mhraIQ8/pZSBuZzTwvAGpENdEWHHhQFZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,42 +97,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Hi Karl,
+On Thu, 29 Oct 2026 00:05:46 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
 
-First bad commit (maybe != root cause):
+> While measuring DAMOS migration overhead, I found that the target_nid
+> path isolates folios already on the target node, then puts them back on
+> the LRU without migrating them.
+> 
+> Skip them before isolation in vaddr and paddr, as the vaddr explicit
+> destinations path already does.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   c339f4010dea8b0d754f84ace70cd1b089878ef8
-commit: 7c3f4d699f34535285d0ceb184927d71543d0064 resource, kunit: stop selecting GET_FREE_REGION
-date:   2 weeks ago
-config: openrisc-randconfig-r2306-20261028 (https://download.01.org/0day-ci/archive/20261029/202610290106.o8Fs3NvO-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 16.2.0
-sparse: v0.6.5-rc1-1-gc4640450
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261029/202610290106.o8Fs3NvO-lkp@intel.com/reproduce)
+Nice catch!
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Fixes: 7c3f4d699f34 ("resource, kunit: stop selecting GET_FREE_REGION")
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610290106.o8Fs3NvO-lkp@intel.com/
+> 
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+Other than below trivial nit,
 
-ERROR: modpost: kernel/rcu/rcutorture.ko: symbol '__mulsi3' undefined!
-ERROR: modpost: fs/fuse/virtiofs.ko: symbol '__mulsi3' undefined!
-ERROR: modpost: fs/pstore/ramoops.ko: symbol '__mulsi3' undefined!
-ERROR: modpost: fs/ecryptfs/ecryptfs.ko: symbol '__mulsi3' undefined!
-ERROR: modpost: fs/overlayfs/overlay.ko: symbol '__mulsi3' undefined!
-ERROR: modpost: crypto/asymmetric_keys/pkcs8_key_parser.ko: symbol '__mulsi3' undefined!
-ERROR: modpost: crypto/ccm.ko: symbol '__mulsi3' undefined!
-ERROR: modpost: lib/kunit/kunit.ko: symbol '__mulsi3' undefined!
-ERROR: modpost: lib/kunit/kunit-test.ko: symbol '__mulsi3' undefined!
->> ERROR: modpost: lib/kunit/kunit-example-test.ko: symbol '__mulsi3' undefined!
-WARNING: modpost: suppressed 1014 unresolved symbol warnings because there were too many)
+Reviewed-by: SJ Park <sj@kernel.org>
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+> ---
+> DAMON KUnit and selftests all passed. In a synthetic same-node fvaddr
+> test on a two-node x86-64 KVM guest (8 interleaved runs per kernel),
+> guest-kernel cycles fell by about 29%
+> with 4 KiB regions and 90% with 16 MiB regions. Median kdamond CPU
+> time fell by about 76% with 16 MiB regions, with no clear change
+> with 4 KiB regions.
+
+Thank you for sharing the test result.  We don't want to add too much test
+results in the commit message.  But the performance part above is informative
+and concise, so I think it deserves to be in the commit message.
+
+> ---
+>  mm/damon/paddr.c |  2 ++
+>  mm/damon/vaddr.c | 22 ++++++++++++----------
+>  2 files changed, 14 insertions(+), 10 deletions(-)
+[...]
+> @@ -858,8 +860,8 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
+>  			goto huge_out;
+>  		if (damos_va_filter_out(s, folio, walk->vma, addr, NULL, pmd))
+>  			goto huge_out;
+> -		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
+> -				migration_lists);
+> +		damos_va_migrate_dests_add(folio, walk->vma, addr, s,
+> +					   migration_lists);
+
+Let's not align parameters on parentheses but just give two tabs indentation.
+
+>  huge_out:
+>  		spin_unlock(ptl);
+>  		return 0;
+> @@ -883,8 +885,8 @@ static int damos_va_migrate_pmd_entry(pmd_t *pmd, unsigned long addr,
+>  			continue;
+>  		if (damos_va_filter_out(s, folio, walk->vma, addr, pte, NULL))
+>  			continue;
+> -		damos_va_migrate_dests_add(folio, walk->vma, addr, dests,
+> -				migration_lists);
+> +		damos_va_migrate_dests_add(folio, walk->vma, addr, s,
+> +					   migration_lists);
+
+Ditto.
+
+Assuming you accept my humble suggestions above, I applied  this patch to
+damon/next [1] tree, together with my above suggestions.  I will repost it for
+mm.git inclusion within a week.  So, no action from your side is needed for
+now.  Let me know if you think changes to the plan or discussions are needed.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
