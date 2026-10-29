@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD33606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED587606A33C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mjH9b6uf
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kLNZ1CIW
 Received: by kanga.kvack.org (Postfix)
-	id 38E8C6B05B3; Thu, 29 Oct 2026 06:18:49 -0400 (EDT)
+	id 736926B05B5; Thu, 29 Oct 2026 06:18:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3187F6B05B4; Thu, 29 Oct 2026 06:18:49 -0400 (EDT)
+	id 6C1076B05B6; Thu, 29 Oct 2026 06:18:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DFD86B05B5; Thu, 29 Oct 2026 06:18:49 -0400 (EDT)
+	id 5617B6B05B7; Thu, 29 Oct 2026 06:18:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E9FCA6B05B3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:18:48 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80108120310
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:18:48 +0000 (UTC)
-X-FDA: 85375265136.22.081FDE4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 315D76B05B5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:18:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C695A7CEA
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:18:51 +0000 (UTC)
+X-FDA: 85375265262.26.9F45238
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C1CA6140008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:18:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjH9b6uf;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id F3C4B80012
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:18:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLNZ1CIW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793269126;
+	s=arc-20220608; t=1793269130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xBpB5rqMwqaO0EiguVkBI+vJ38Q+R+hHBLQGHSLh6Io=;
-	b=6KdCjorC2d39+/ah0pegKdONin1iMCBuW9nXR6G/kGBPoph3N8Q5vqIO5H9+nlvOPo09nf
-	FyMdfFcqKB7XR4bfsjqlFbBliQWZnUe9R81/cAYPyvArABpo3rPHghtqMlpvCE/ki9CSot
-	OiQlOyy6NwxF4zwPJet024Kt2Wsfzlc=
+	bh=TMyNi9h8uZB0CnN21h3FMGgHT3Z+cop+m15S7SnkkEE=;
+	b=awsC67xZJEAXymgeod6rm4+MEmtCHRaX4yiZ57Z6tgfJ7bZmeWwvlazPVnURqy3CDX9uVQ
+	oR6aX6IGxRZxEkesCcpqrdfCshQJOVpyd111SWtHjlD3hZP4/DJvfv4wqnBL1Y01tw/no6
+	7Z53yUyNDdxZlCSoX/+T+jjF6/FbyJg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjH9b6uf;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLNZ1CIW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793269126;
-	b=CoXuOQmsrg4XyU/+lUGLfcR18e0ZsKQ3U3F0/lQkEbkthqlt7loQQsrK0Fd5H4OvWBUZpn
-	4iokgtcWs0kEtPkPU6r0MSFg9ejt2kVeIcj+Qct67aIf63Dzb4CMxPdxvdRLcFHvjBIzos
-	xuS39UasGA8pYq1OMhbaNZHwJgfagNQ=
+	t=1793269130;
+	b=qVkJWaOYm/9glKZ3sgeYtTIySsXtHQ9Q7tLDA4NgXmLthdkukrNXMW0yaUOQtJZ9lFxXTY
+	Xf6wKETnJl2xJBfRlbEqTNUrple7pmBvqOQADWytUTXsa8iX8Yq7exdL6mIqQDieMLOSWd
+	CZUCAxSPXh2Ve0TMziIq8IY2WxGe2mY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20D3043F8D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C5B040F2C;
+	Thu, 29 Oct 2026 10:18:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800F61F01829;
 	Thu, 29 Oct 2026 10:18:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5275C1F01828;
-	Thu, 29 Oct 2026 10:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793269126;
-	bh=xBpB5rqMwqaO0EiguVkBI+vJ38Q+R+hHBLQGHSLh6Io=;
+	s=k20260515; t=1793269129;
+	bh=TMyNi9h8uZB0CnN21h3FMGgHT3Z+cop+m15S7SnkkEE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mjH9b6ufQ0uFKdPmq2bt3uv53CEse22aWsgSGvW0075uoTXX8hxJoXpO67N855U9H
-	 BBTD4zayPyW0W8Cy+vHaZJgzEz6sLHK9kiuSKnwBTpdr9ONtLXpC9yBHXrbrynDzHW
-	 wggNJAF2pDgRD//fEt397LEDRpDQsuhOqUIJJBKGWXiL0khRSoW33GjxELcpHRZ5u8
-	 Q7ApB9GtBMe3vFYB2uutEzEWI/aM7RH9lxkCOYuOu3VmQnjqhclH9Gz7ydWwuwpN0t
-	 AALQfkdt9earHQHN8sbQrNCvQD42YzZ6qHwhgB4Fw4wOz0b9I38zRPcwuAh1yDpIyk
-	 SWDG12pDuFP3w==
+	b=kLNZ1CIW2YxK0uST8iiMQenMa7zmpUsZAyb4dVyOsejE+jvn/l9vgOMmNecd2xd48
+	 jLuQs/kZGYQg+ozRL0n6IhurzDdCEhRo34ZyLlqHTCgjl56zP1w8mAoLGwaHEUlos7
+	 XtKu82hBX81C7OX3yfRMEihSQnbDEBI2nDB5BE+JjQhabRsawia8vcrJ8sEz9TwHaa
+	 dtUbAzMsCJdShBOyvNoLtEIOdw2tn8qslCCM+VFfnQBLkn2doBYK8ZhpkAck2GUgT2
+	 U9roVrXu+3qvHtQcvut7xEHw4hDV12vHibzvr+Li4hyvn13zMM43+TVQEF3TCOgmVg
+	 rK6RMcRR8tWpA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 29 Oct 2026 12:18:37 +0200
-Subject: [PATCH 1/2] mm/cma: accept memory of multi-range CMA areas
+Date: Thu, 29 Oct 2026 12:18:38 +0200
+Subject: [PATCH 2/2] mm/cma: accept memory of CMA areas reserved at a fixed
+ address
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-cma-multi-v1-1-2cbced8b5cb7@kernel.org>
+Message-Id: <20261029-cma-multi-v1-2-2cbced8b5cb7@kernel.org>
 References: <20261029-cma-multi-v1-0-2cbced8b5cb7@kernel.org>
 In-Reply-To: <20261029-cma-multi-v1-0-2cbced8b5cb7@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -79,18 +80,18 @@ Cc: Kiryl Shutsemau <kas@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C1CA6140008
-X-Stat-Signature: nfb3wsp5qr5e7auz8py3nhrpej4ff4oe
+X-Rspamd-Queue-Id: F3C4B80012
 X-Rspam-User: 
+X-Stat-Signature: 1qa9yr7br5dgqt61j3ug7h4b1xm97hs6
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793269126-195831
-X-HE-Meta: U2FsdGVkX188lAEVSQQuZwzmk8Zbr6oEDAZxpOrKBWxWuKwc11qx46xqTDk6/3tCGw1HsgcLhGRcVxpTN786rdDl2yAoz6f4aFHum6tfCvnOnnjqV0lx8jnQqG24IQGuH/LBQWivkeQKCzHlelTFXgaecHusHEwFlk2fCbI0wjgusyDn2ddfaKvsDYIcrCnO3pqcMYDu5RBB2ucLTMDf33V3gjeDvftfeHbKdYxS20OZgscDf2TqX/w+xAkkjpCagcjcXII/FTu1y5b1LAsjUwcUgfUEOBaY86VgWiXrk8vWMQ1odmG2wdqcoJG0Sm79EpA9OSF59R/kE/ashwsls0pJxcME9zfqTe7/B4YpH+dDvrWh44/OIz41QPLugB3kIctn0iTTuL9yGFGGL8U50QpYb8SnbKYH5erX0UjvdpFkMJ1LH+yl4eqFSS3jIpFt51Ys8pixCOUmqD4hlM993xPLAnjZIOh1+mw56KHmODSPkIcZ9JA0i5tLaKk9sDYpAQYoOazYBdKis2D+j4rFvQeY274bL7PbvAiV/Hx418UBRauP4AB3GA8fq5GMaeI0bxCdxY29MhK5QB1fuMODgUawjjdTzV9WS/u6/LpQvMP2tYkYxDbe9DdfF13wUzQkkV44CrwL92YbcVcfKYYRdWBk+gwszWvLNPmPl7e/KgsNBdTpuXETKEc6Eq+RkP2IMkFlqCj2NoAEQ/iRaAo/GSD+YBZCBwfBNVQqcnhBlFcfI9CCgvKxpSAoe0Tz2FIspTiYORretb3XYetZKy6TIfjQUtOLKP7e2uYfn5ELXJV6eeKpUDDGPvlFHi0ohVQp3BLiQd61TyJ6e/f0MNfhG/UuFYu5bERdBG3swpECC6MAz5olQa8Da6wJDa6lFJ+zHXSvtXjJgNsXEMFcSDa5hFPOw6FOs7AjkB8En0o22gy4ATYb6qG42CEihUTWh+4zxUeqIhFdM6XdNSnjyKc
- Hd3ihAkR
- FYt5RhQ9Oxkg+18nvTYiIVBN9zudZHxY/RS0dbLUnbLwRX4Pydqhi0SOhD17bBmmNlcNzwaTHZ9+ojer1jVZeCqk0cs2M0nL8mdAqv0Vfy7iTHpv8NTnOQi2+CeYpkiKu09LkL4lsSltceSMbBPZJe7g0YOix2njO29EVcBWFeDxjxHu/G6NxyNnGsmacfFwDwdGucJ6oc/VqiSI4iX/A/ZmxUMgnbfnxp1t0Ml4oJ8FVsJYip8BenE3Odg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793269129-295633
+X-HE-Meta: U2FsdGVkX1/4U8vxmzcdAe8eVkWu+HNY8yTALYGX2mVRBRkiEWfXy60aKfjCKPKMaV4so5O34oNXqfv8uFd2nhCLeh59wUJai6ds2OzXaOHEwF+w/EWnPWV2/UbYw4QoJXPLmjz+uFRa707cICizvhwhJ17+xlIZDFaAwKbBndKL1wpGCUNNSJqQvxsAKytPOtP22a7b3+KBu2pe+9mp7np43p8fBQBoZ5+ujOnWtFDjOkIkLNLNs1t4Mrb5g4h60vzaYQPWoZ1wFn1KjJc/F1LCSOcMo3e8CFADtPPraEIt2nKkvdD+R41AEAJ+Oqk8FGSgvMavEBioww+Pu/V2FnbLeGQpkP1HJlZQAio/b9u1HznbpW/hzYEWuuFJXeb02BTigCs4xR+xeZEBuX688OkxcizgR+M6AbdfSM/HVrwBrimcg19P4hJEe0vyj5Y+Cz8zl4kI89Pe9XyaT5SkrLdjygug2dSjo9CDIAxRCVQGFgTTOnYY/rIOC9u1LuTWNzlXhY3AnP0MqbGVYDoqujs2UjnElp1OydbzzglCtten6nWgT1lxAa6rhOTMK/g2+TBJbNkRihAlGoY/8yryHgunDmZmZL6YsS/9HpouAVD7nXkPrRBiVQihawiVbcocR+VDfnNTWKZ6dVwE+JKqyxhaAywVffNw/tbHSqUDCK6kH1nmA3BT8GN61NyBNcAts5+dpf7G9HRnJnB1Lk7VQ7+qMwwqpT5Wmo2ezKUCXcLPmamq7VUPzRdo7RM2zkkipc6t9XtAnIXyFdwc84Px1eOsh7VMsqTlu/JH7S/0RpPuUc89QAFSyOBipqnZI7jGMXV3oI4TS7dE1Q1H7TwL6yjIi9PhN5kUmFY9XPoCoZ/jL6Mew12vmW5LgDsat4iNz6s8uKISmZQpy50SsWDjUInrIMeMardY5VXUu6IynOhBmq7q7wqtvuGOShiZnS2kjN/qvM05wMJgIkXGL7W
+ UvMUYrgr
+ 2S/QkqkwSdfn/82yOobgTaa3B3NkkQ7QbivvSwiXRNfJ45M8ghOmNrfWLCLydBDYX3QpCA2VAfqdjEpQkG6bcCyDlQy9JyxqGO8rSPvcHlIw5CxQqB4sNXJZ/V+9EjaYCSdtCIEZnD9i66bWts2LGd8EA/H8a4nsjefslsvJz0UqV3UrYdCIvSbS0CncWJemR0cbH3EoXQXdBVnemSkXYscIwPyn8xV0Fo0TuzbbcPJ9wv/5DwYqLONAGvKSf7/29frOCJDP55Zu1SY4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,18 +100,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On systems with unaccepted memory, memblock allocations accept the
-allocated range, but when cma_declare_contiguous_multi() uses open coded
-allocation of multiple ranges, it reserves them with memblock_reserve()
-and they are never accepted.
+CMA areas allocated from memblock have their memory accepted by
+memblock_alloc_range_nid(), but areas reserved at a fixed address with
+memblock_reserve() are not.
 
-These pages are released to the buddy allocator by cma_activate_area()
-with __free_pages() that does not check for unaccepted memory, so the
-first access to such a page in a TDX or SEV-SNP guest is fatal.
+If a fixed CMA area is requested by the cma=<size>@<base> command line
+parameter, it may be in regular RAM and on TDX and SEV-SNP guests it
+must be accepted.
 
-Accept the memory of each range when it is reserved.
+Accept the memory of fixed CMA areas as well, so that all CMA areas are
+accepted regardless of how they were reserved.
 
-Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
+Fixes: 75d090fd167a ("x86/tdx: Add unaccepted memory support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
@@ -118,18 +119,18 @@ Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/mm/cma.c b/mm/cma.c
-index a10ea37a261da..0035efb1130a5 100644
+index 0035efb1130a5..f61d52796f4ef 100644
 --- a/mm/cma.c
 +++ b/mm/cma.c
-@@ -678,6 +678,8 @@ int __init cma_declare_contiguous_multi(phys_addr_t total_size,
- 			break;
- 		}
+@@ -381,6 +381,8 @@ static int __init cma_fixed_reserve(phys_addr_t base, phys_addr_t size)
+ 		return -EBUSY;
+ 	}
  
-+		accept_memory(mlp->base, size);
++	accept_memory(base, size);
 +
- 		pr_debug("created region %d: %016llx - %016llx\n",
- 		    nr, (u64)mlp->base, (u64)mlp->base + size);
- 		cmrp = &cma->ranges[nr++];
+ 	return 0;
+ }
+ 
 
 -- 
 2.53.0
