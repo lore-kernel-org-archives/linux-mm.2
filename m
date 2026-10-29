@@ -1,108 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38245606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2594606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=outgoing.csail.mit.edu header.i=@outgoing.csail.mit.edu header.a=rsa-sha256 header.s=test20231205 header.b=A9KLBjkV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JpAFqAMm
 Received: by kanga.kvack.org (Postfix)
-	id 64FAE6B05BB; Thu, 29 Oct 2026 11:50:53 -0400 (EDT)
+	id 78B3B6B05DA; Thu, 29 Oct 2026 11:51:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62D576B05BC; Thu, 29 Oct 2026 11:50:53 -0400 (EDT)
+	id 762E06B05DB; Thu, 29 Oct 2026 11:51:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53D656B05BD; Thu, 29 Oct 2026 11:50:53 -0400 (EDT)
+	id 678006B05DE; Thu, 29 Oct 2026 11:51:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 36E7E6B05BB
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:50:53 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D901B1C3C30
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:50:52 +0000 (UTC)
-X-FDA: 85376101944.03.D5248A0
-Received: from outgoing2021.csail.mit.edu (outgoing2021.csail.mit.edu [128.30.2.78])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D484080002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:50:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=A9KLBjkV;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf02.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2685D6B05DA
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:51:52 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C4FB14044A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:51:51 +0000 (UTC)
+X-FDA: 85376104422.18.B1A8C83
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id CE1421C0002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:51:49 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JpAFqAMm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793289051;
+	s=arc-20220608; t=1793289109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZGVbAria0Qqiedh4pyoA4PlNAYwcnbIuCp+A1N8+bTI=;
-	b=DtdjIKwcNd0zecGd4dj9NS0ZlN96BhXMGi4rwKWfN/BoTrr1kMVXTV+wnNLYxZi0LEoy5U
-	87wgwf/lUuQjYilRJ02Wg40R4ZL1Yt9H4YiksH2cGxPGDDF0ooy0+A1NdqqXSdjp9lq66g
-	53B2V8gooKuyFBqtHwJcH9dC0woJpZs=
+	bh=fqt04aVmWCFFMW5PhNUnGvgQrBeB0qH6TmYzshEFSoo=;
+	b=I80L9jsjEUU9NMEsvqmfTrLL6cuOB59igBtk79UHepd0eXQ1YUXN8pH/Z4UwTP72gNATd+
+	olrpN8vi6tp6Pkzm4c8WUvvOYywqnVANonQEwNBsGI7hEo48GB1GalwRo2/itG0WtPDgcj
+	l+GCoAzLeKEIdCOVE3xDe/qlDbxvuWg=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=outgoing.csail.mit.edu header.s=test20231205 header.b=A9KLBjkV;
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf02.hostedemail.com: domain of nickolai@csail.mit.edu designates 128.30.2.78 as permitted sender) smtp.mailfrom=nickolai@csail.mit.edu
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JpAFqAMm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793289051;
-	b=eCYAwC7SSmEs1PnGyaozMk+e/ng6Wfe3aUNjZ+GmJn721i702pyw1R9M4R7/fwtVuHGIs7
-	ollReZuR9+85v/fhh13rt9IXDz+AAN1QegIc2IAArIa+mfzqVLlmlSB1eG4jULrpqgLkBG
-	tAVGVri3VOLwOofm7l1dJ1sMHmg2i4c=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=outgoing.csail.mit.edu; s=test20231205; h=Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ZGVbAria0Qqiedh4pyoA4PlNAYwcnbIuCp+A1N8+bTI=; t=1793289050; x=1794153050; 
-	b=A9KLBjkVV18JvImOKBqQB4Zr5RiiS3EpmLVZC7L96H6rdgFoF6ORnrnx7BM1RpgrYNogC7P+tlx
-	cXMeA48etVLIEKea+R4MOVnCXb5nNhVINSRORopBIgfoj0Bu8C82KHb3ej4mS8sE/obVhuvHFpES1
-	Gri4Gh67sV5NMBUnCmJb4AmMebODLHPFqNMM6yxEuyNK7Wq4KJ1D2x4GgPJs+nVpvu0irs22M2woj
-	7fdPdOuiSSDvkwuoTzmhUAbpBv4bxjPe0qemM8f9Uo7HQhnhRUuVtj/YZ3L8zuph40gfReF0DaVki
-	QRGrAqQmm+pgeMIy6Zi2rvFBlHrV6E/LNsGA==;
-Received: from mail-dl1-f47.google.com ([74.125.82.47])
-	by outgoing2021.csail.mit.edu with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.95)
-	(envelope-from <nickolai@csail.mit.edu>)
-	id 1xMSOw-004ZUd-0X
-	for linux-mm@kvack.org;
-	Thu, 29 Oct 2026 11:50:50 -0400
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1a8cc11ac42so912294c88.0
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:50:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz2O0CCT1i3WPIaUl9bQLotYwR028ZL6xavKEiJw727sHE6IVR/i9dyjriKqZOANBa2af2MUsANaw==@kvack.org
-X-Gm-Message-State: AFq9FYJhieyh8bCqU7rk+Et2EhkehK5iwEV8aVX3rw6IfCf+W2bD5Mku
-	45z2SvsGjPMSux8zSnkX/BR9TKpAIkvOIevLGbtJHn8fLx75d+utVL/+Q1HDS8lEYB3GLqZVbPS
-	UmKyD3L3J2Wel6mtJSUENXDgw6inRuiY=
-X-Received: by 2002:a05:7022:4396:b0:15c:20b8:796e with SMTP id
- a92af1059eb24-1a6ce208ad1mr9947732c88.22.1793289049038; Thu, 29 Oct 2026
- 08:50:49 -0700 (PDT)
+	t=1793289109;
+	b=23PpEUAPBOrUWFzqNhoXLwSA9ljmPaSEKikWAxamb11TeCsC4rdBBgGnNhzUMBALnFVQES
+	hN3XZsQG4KCKrC3Sr8h+202h2m58NNzqEVMdErBYZGp5cUEj3LcTew6W4tDSgMKC+/UgVm
+	tswicOjpbDcJAlhkyZErZh4YNcHB1fE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2F6EF60207;
+	Thu, 29 Oct 2026 15:51:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CAE1F01816;
+	Thu, 29 Oct 2026 15:51:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793289108;
+	bh=fqt04aVmWCFFMW5PhNUnGvgQrBeB0qH6TmYzshEFSoo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JpAFqAMmtKjz2YNA1PCteNNZKLQs6+Kbf3XFPbl5KJzUPOekANKjzlLumikEZG/GC
+	 kyvzIS1lMX/dB23SwAo8ObKjij0MkZSGJXHCpJcSmMkD2ZiM/2zw/MgQt4V85bYnI4
+	 EHP+FEgtUrKS3ncKCRvUu3BL2PDXOhefQr/vJTPEww0seLm7MLu+nYFvjr5pCgCFco
+	 R/YA1jKSKnGcq8ioaXtqLJw2Mp3D4uGmEdW57c7J0G+y67HRe82W6JgCqNchkaVMuy
+	 ItAIGB0PsekMUWRi+ZP9SkN6dQM3dYGNgqVRp/6lcGDi3ZqV0NxezVxQY22uZxlL5j
+	 iN6uKrHV3gzbA==
+Message-ID: <7efdc32c-9df4-40b2-84fa-1ad90196b861@kernel.org>
+Date: Thu, 29 Oct 2026 16:51:43 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <attzI4sj2Pagmvkd@casper.infradead.org> <20261027192014.844878-1-nickolai@csail.mit.edu>
- <auNdNjH4zo7OYbe-@gremlin>
-In-Reply-To: <auNdNjH4zo7OYbe-@gremlin>
-From: Nickolai Zeldovich <nickolai@csail.mit.edu>
-Date: Thu, 29 Oct 2026 11:50:37 -0400
-X-Gmail-Original-Message-ID: <CADGQE7EtDGs=g7p5=_m2LieLcEj-k4LyupOFWt96Aw9py-gYaw@mail.gmail.com>
-X-Gm-Features: AclHuK8yS5TxpZVU_n3PpHxl-8IBYZs67giAAwk7Tv4-zhBVnjxpmpu0FOC9ZHE
-Message-ID: <CADGQE7EtDGs=g7p5=_m2LieLcEj-k4LyupOFWt96Aw9py-gYaw@mail.gmail.com>
-Subject: Re: [PATCH v2] xarray: clear the new head's parent before freeing the
- old head
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D484080002
-X-Stat-Signature: aqymwwa3mpkwzzkdk8ync4q5jfm1j4ux
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/8] mm/mmzone: read each zoneref slot once when
+ filtering by nodemask
+Content-Language: en-US
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+ akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20261028211930.3504634-1-gourry@gourry.net>
+ <20261028211930.3504634-5-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261028211930.3504634-5-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CE1421C0002
+X-Stat-Signature: uuf8a7yoh3bcq6ut9rit6tbzew1gsg7n
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793289050-917971
-X-HE-Meta: U2FsdGVkX1+5GqILXxCHac92uTNuPeNxD5jkete7KfTVa8tsbzK5JUZph6TZIuI0aagYnBrYxNZx0Dz54EC/llSdy/lfK/FqooNm2V00a/U9wyiIociN/F0+04uNTy+Y8fpKIcx/zcl111qLk1WKqUswvHNWy6le7dl75iJKR/4Qpy+sbrvHdogF1ST+wEZ9EwB9h/m7tvMsNNqXdvUhw63fBhpoV88r06DMbHlYI2Tdsdvd4fHLYYEHdsG3DTEo5YP3vAFbcAPhG3lL2rxKhUimYK5ncMSbV8kbAaQDWzj0tpGffTgdxZgGSXmYNdryz/JQV+3Q8uQOBpXb6RLF2ddLxlwTQesq7pgXMfqWVHswyEEmUDI9nqPJlyEukbjITJFQ89jl0GnEoLgVx8FTQk30UOqCH6Gg1yN0xGG4NDudyh8eSSP4Wn/3RGeK1DEpMcOninpK9srRC3AYeDzEBD4AThMhuXOIA7nXgV4w0WV6OBdR+E+DcDmwAKsqBThA9ZkBwH3d/HoyFWAM1TPj9YLcUIhDVdQDjZgLjtUG3nf5Oczmw9npn7WETD9DbOyK1G0idz1idID3TotWLRQpvdaBIdyPScAxPLzwIylFdTAc8OYA3xqyf3VusfGUYJIPLifpitMjLN1VoUBeE7KxxVRDxgs5BWrbEDI98KnK4ae0cq7lFPJ78qN9+o9mY+sYARX82q+H5EvFRJGxehoFBwRLEw/EYoYi6quo+S+w3fpZicAVuHRMpToRynWmeWacgVt7nO7aLicrzab9InIfSgQq5ooEChJS5wPadmqKU+YoQGd01a3IVN3YD5xJRM/8FnnlEi6DzDYHW79Nlinc0BaWOUytd5UWAs99C6bgt4rT70rmVb1/5jeYIuRmdL8Ie6UfFdIVZ/g36oKssPpq3/x93GnORFaTWgXN+1xOGAbs+QYCcOVQRhcRIHzlHZywIoYmoxKetspQSBfgkU5
- XXz8HzHo
- Ti7tBl4RY0cXCCZDpHP2CQaD/xy2bri1bVBixWb44HDQdOn4hP3W1ynVlPa6U3vCsdSSCArvqIpMxpol4t1oZsxrAUVYFYk3p0j9eemLL9fn8OGygfTbDFYWPsXJgrNfDGvE5adO4bY6PyTjfBcvs3BxY7kGSSNalEFbhjyyD1gi0H+bWFpjYaswYpmvxlZM1MkGG0bepaX8wHXuvWkzPmH+NBfDZFvTDoOF1vw/UpY1GBw0w+ceFAKEFRIcPDXTNA4hZvmn2k5aaw48J8tK5Jwx/0+EfuEhT8mH9ShAbdoWkv0bgBVlph4k7ni8mznYq1lal
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793289109-776320
+X-HE-Meta: U2FsdGVkX1+ssYP/q0cB9TZUXlGmoE8YYPZgi4sYWv9/omlocZ1g0gGL5d/vL4eawzYD3qvp2qjgxDFoMuEHSKUPM7JgFGJAEXchPyK8Iy8j9tkZYz5UFdfiBVc+NYtmXgXSqwKsOTr11dNloYx0iaR0tt/ZYLxr0zNejzXMdqkt4giMSoave/ywhuMV5/ead8plPiVFyf9A7KQMlMaJf9qhxfURyBgX6zTgB61j6w+3JjCOJv2kS7LtLdqUSDvHLsXcvbM17hhX/DowGKqZLRzH1Iejc7ooAWjQ8Stjuf1bO+IwZ4hZRpWykrRn+mztYh44J5d39v8pc65mMcfgM0We15rYgL+jzoktEzT9dfbv39QgFpzojwgr91LKsJ0gEqVjLI2OvKCcchKtKNFJEMJzHPTdxcsbBAQlKhB6XH3Q1uCc9zUkM/ds6mbbw+aKxkcUWQ7282L9TWlVobIXNUSYjR2F0Pcji1rR56r4req8z6urWN7FsQiXxkivZ8KjOQnfz/H6ll04F3ny1avxWn3HZZhM4F3sxARZK5D1w9RceIAvNlx+IeFucw27S+MCiN7OL4cRXrjH1jSfr9r2wV32n0/LtZgKXYj55Ul3t6LC1RgCmeRccCpIiPcVVr4KowB8NPmJ2dAiElmab54rBh933y/V/0RWX77uo5rktoIdrNTgqVnr0Shf3M9CNbmcH6PiZRNMgkMlk9Cg+9OLA8NrzYBTHsaHiUqEtACpBbWrf2AOfvETOa7G2Bj7zmLLaG1EwjhOGXOhxqqZ16K0yO9aSjQQDbtPuocTrrYj2ok4qDyDk/U6TQ+lL5y07qCDSvS/N1OzooItTI/SVBKvR7IT4rrgWfyVkx2A6HmwuyC9JTLsYHnjW641DBndva5kj79jfT3Yn++EGaRJXI/6HGIcgO8X3+JwQx8zGr5lv3HR510XZd6AeqXFtdqRCUL3RvwcBeTzSdNtGdtSu4B
+ e2/f88Yr
+ t0mrSagdI6ustV5LRD5gG209Lel5JYhY60im7mCUgXy9HhO87vbcU4WTvjEiAe6Lct8wAA+Ck64Eo809cf+P3gFvzil74vPLV5zncw40mSxUmNgcVYyiuhlo05Pq2+bciZfaePEjCMp+bKP43+n0x8U2EIAPPUsVg3aZAYuDsfYTROaBNIN5azubxxPT9qiJK2c8GA7KNLsNWD5WrhaG94ioHXGr3fVyXI6LC9Bud79KJibrruaSOyD9WAlQzVhVtVoB2YWVWpD9+l4r0UKLbYyEQvG2qMZBx6TT3DdsluKxAfwz3pEWnK65PS08bXHdvg/kQ+mo24iQpIKeYy4Zbe/hhCrHtGRC4ocdMiQo2XL4qswJH66bHmhsJxlS2X8C6Dj4+ZHDohWoO55QmO+WzuIqUx3Kp8qXrutKd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,44 +143,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Lorenzo,
+On 10/28/26 22:19, Gregory Price (Meta) wrote:
+> __next_zones_zonelist() tests a slot's zone for NULL, then reads the
+> slot again to look up the zone's node. Offlining a zone's last block
+> rebuilds the zonelists in place, so the second read can return the
+> terminator:
+> 
+>   CPU 0                             CPU 1
+>   __next_zones_zonelist(nodemask)
+>     zonelist_zone(slot 1) = NORMAL
+>                                     offline_pages()
+>                                       build_all_zonelists()
+>                                         [MOVABLE, NORMAL, NULL]
+>                                         -> [NORMAL, NULL]
+>     zref_in_nodemask(slot 1)
+>       zone_to_nid(NULL)
+> 
+> Current GCC and clang merge the two reads, but nothing requires it.
+> With mm/mmzone.o built with -fno-inline -fno-ipa-sra, holding a
+> nodemask allocation between the reads while the node's last movable
+> block goes offline oopses every time:
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000060
+>   RIP: 0010:zone_to_nid+0x0/0x10
+>   Call Trace:
+>    zref_in_nodemask+0x9/0x20
+>    __next_zones_zonelist+0x23/0x70
+>    prepare_alloc_pages.constprop.0+0x16c/0x190
+>    __alloc_frozen_pages_noprof+0xaf/0x330
+> 
+> Read the slot once and test that zone. A NULL zone still ends the walk.
+> 
+> Fixes: 11cd8638c37f ("mm, page_alloc: remove stop_machine from build_all_zonelists")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 
-On Thu, Oct 29, 2026 at 11:03=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.=
-org> wrote:
-> It's pretty 101, but please don't send new revisions in-reply-to older
-> revisions or feedback [0].
+Oh, zonelist_node_idx() reads nid from the zone, it's not part of zoneref as
+I thought. So it's the same after this patch, just with READ_ONCE().
 
-Understood, will do.  (I was thinking that applied more to
-multi-series patches, which indeed gets unwieldy.)
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-> Also, if somebody replies to you, reply back. You, not your LLM.
+> ---
+>  mm/mmzone.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/mmzone.c b/mm/mmzone.c
+> index 9cc9ef588580..009f1dd75dde 100644
+> --- a/mm/mmzone.c
+> +++ b/mm/mmzone.c
+> @@ -43,13 +43,14 @@ struct zone *next_zone(struct zone *zone)
+>  	return zone;
+>  }
+>  
+> -static inline int zref_in_nodemask(struct zoneref *zref,
+> -				   const nodemask_t *nodes)
+> +/* A NULL zone terminates the zonelist, so it ends the search. */
+> +static inline bool zone_in_nodemask(const struct zone *zone,
+> +				    const nodemask_t *nodes)
+>  {
+>  #ifdef CONFIG_NUMA
+> -	return node_isset(zonelist_node_idx(zref), *nodes);
+> +	return !zone || node_isset(zone_to_nid(zone), *nodes);
+>  #else
+> -	return 1;
+> +	return true;
+>  #endif /* CONFIG_NUMA */
+>  }
+>  
+> @@ -67,7 +68,7 @@ struct zoneref *__next_zones_zonelist(struct zoneref *z,
+>  			z++;
+>  	else
+>  		while (zonelist_zone_idx(z) > highest_zoneidx ||
+> -				(zonelist_zone(z) && !zref_in_nodemask(z, nodes)))
+> +		       !zone_in_nodemask(READ_ONCE(z->zone), nodes))
+>  			z++;
+>  
+>  	return z;
 
-Indeed, I've been replying personally, though in a few cases I sent
-the response in the notes of the v2 patch, in an attempt to send less
-mail to lkml.
-
-For context, I use an LLM to write Lean proofs of correctness, which
-seems useful for cases where the patch is non-trivial (e.g., [2]).
-
-> Also, you are flooding the kernel with patches, 5 series across 5
-> subsystems over 2 hrs:
->
-> https://lore.kernel.org/all/?q=3Df%3Anickolai%40csail.mit.edu
->
-> I already asked you once to stop doing this [1]. You've carried on.
-> [...]
-> I'm sure you're acting in good faith, so can I please ask you to engage
-> with maintainers instead of ignoring us and treating our time as valueles=
-s?
-
-Sorry about that.  I'm happy to send bug reports with clear userspace
-reproducers, instead of patches, for any bugs that seem particularly
-significant.  I'll also get in touch with the relevant maintainers to
-see what, if anything, might be useful to them, rather than sending
-individual issues/patches.
-
-Nickolai.
-
-[2] https://lore.kernel.org/lkml/20261027125210.843589-1-nickolai@csail.mit=
-.edu/
 
