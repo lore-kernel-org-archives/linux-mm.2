@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6F5606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00754606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 10:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KY2WSYrS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PFxz1lIy
 Received: by kanga.kvack.org (Postfix)
-	id E71386B05CB; Thu, 29 Oct 2026 06:45:38 -0400 (EDT)
+	id 28A886B05CC; Thu, 29 Oct 2026 06:45:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E48B16B05CD; Thu, 29 Oct 2026 06:45:38 -0400 (EDT)
+	id 23B136B05CD; Thu, 29 Oct 2026 06:45:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3E446B05CB; Thu, 29 Oct 2026 06:45:38 -0400 (EDT)
+	id 152506B05CE; Thu, 29 Oct 2026 06:45:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B49BE6B05CB
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:45:38 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60F79A0308
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:45:38 +0000 (UTC)
-X-FDA: 85375332756.02.69E86D3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EE3736B05CC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:45:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8DDB3A7D5E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:45:47 +0000 (UTC)
+X-FDA: 85375333134.13.0D67346
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9668A100008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:45:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KY2WSYrS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id AB00114000E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:45:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PFxz1lIy;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793270736;
+	s=arc-20220608; t=1793270745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0fxJ1yIZnUumW1Gvcfcp9HFQq0zCF7wYA9AuvuvXBWc=;
-	b=H8c49EdnZl64Cl2ftca9sSBLZ97o56Z4DT7jnJyUZZU/SnccF3ZcyIAxLS3iB3F49N9aru
-	ItDPE/S22Ul1jFBb5tKOTVr/gw7jaCoDa/PH8k/24ABH/dqR0Kk458nMOihFPMq2YDf8GI
-	3PZM8baZImXkdcqSABQfj5snyP/Jx3M=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KY2WSYrS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=Qf8qG507wre4SONZUotxgYcBHB/n//LoEtT0ilQ0jRc=;
+	b=B5NoD6x2UafaC6ldVNWrFL3ujrwdQplGCgi50XkePL2taHDpqkYhjwjYAYnIZTSsbpfLZO
+	GdU2vjHZ+85MLI4HfptB+YrcUZMuO9xC6adBPFxeE6FT1W5GglKxz3hbMNkN0KBMcthBg0
+	IAbLZfFZZTpeS5fk9NM1Etmf/d6LInw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793270736;
-	b=1PnWijO6+eicef/zlLCX+C/7S6XTt25IOvmwnJtb6TK8GLbSMfM/BTkmn/k4wo5jhw28tM
-	pEFkJFhKMwaQIq0GNPyx90u/wiHWQZoKdvNrNT5HBofn2TgXRyYaYEdHjVP1AbAD0kkX8m
-	GZVr0WuD4tufzq5oBMbEXYACePj8zeg=
+	t=1793270745;
+	b=uiN3RHHE4Mr1rZkQ5BHE45P88jBvs4AHOOSy+s5JPMQwCYXX7hxuNmh1mjGCcqwm04jTIG
+	6DEE0yV1RdHi2kWl0WjKqLhZyUazZj51ffciIctmAl7LOylSW5Lv1ymFgG6WgtDjZeHfLl
+	mbOxuVsByLe6l5cr8AD2M+130UybASA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PFxz1lIy;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E65C743B17;
-	Thu, 29 Oct 2026 10:45:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AA81F01825;
-	Thu, 29 Oct 2026 10:45:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0DC1B43EBA;
+	Thu, 29 Oct 2026 10:45:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7498C1F031E2;
+	Thu, 29 Oct 2026 10:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793270735;
-	bh=0fxJ1yIZnUumW1Gvcfcp9HFQq0zCF7wYA9AuvuvXBWc=;
+	s=k20260515; t=1793270744;
+	bh=Qf8qG507wre4SONZUotxgYcBHB/n//LoEtT0ilQ0jRc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=KY2WSYrSAZkUAfPZMrMsx5s36BqbaDUK+7BvSQwkci2fEIxnAa3xelYkAzkMmSG7L
-	 IgEqM119VkmsnG8dfE12u+oOdMyG7g8SIu8HsM6Hxo9bv5mrTJLIWMq/Zx9CueNUKf
-	 II7OgBOUS6/L04rBwXsRrj8+LCurvC+JTW+liZhssZgviwuN0wJ6eirbWolHEj1kar
-	 Mtj6uehUVnoaOWjn1JMt9QaFn3HZ8PTZSwNtnDAp3kvhL1PWr3dhYoVW+eGYzObhCl
-	 BzxPgb+IFzmlMOlKAqNg8aSHH4Gybk4cLRBC3BJKA2svjqIWREfWK+xjrtklMx3Pi8
-	 HBIVilPTrkFJA==
+	b=PFxz1lIyQ9tq7f0NdG088fn/h2vXLU77RNHMMgt9PFlS9psyh9gYNvZo7eo8PTS5x
+	 pqR/abniRuuQqzrpHtJR5vGIY4Vc5fU9gLeMOGoFKNy90leSggqwhMbdhxcaFuJ8o4
+	 Kc8PzSAXTGDA6JwXu37HTpMjB+Y28E2anP2vuwZoiL/D3YAcQzTm8PxXltuhBcbQtM
+	 6CEEGQDtVn2E0jJPByvw2LL0shlyLZPEB+9LQH4DuYe4SSIX+/+5G6wXuIdo2U3YEW
+	 tqsk+KwH4sRTgD2VpwTsNUNBN7H4QBS7UqXsmLMELC6CROD+oCMgEE9oZywZddBnKl
+	 eEnboukpwQVpw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 11:43:33 +0100
-Subject: [PATCH v4 12/15] mm/shmem: preserve allocation errors when
- swapping in large entries
+Date: Thu, 29 Oct 2026 11:43:34 +0100
+Subject: [PATCH v4 13/15] mm/shmem: fix truncate loop after boundary swapin
+ failure
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_shmem-v4-12-392fc715d8f6@kernel.org>
+Message-Id: <20261029-fixes_shmem-v4-13-392fc715d8f6@kernel.org>
 References: <20261029-fixes_shmem-v4-0-392fc715d8f6@kernel.org>
 In-Reply-To: <20261029-fixes_shmem-v4-0-392fc715d8f6@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -92,29 +92,28 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, 
  "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1547; i=david@kernel.org;
- h=from:subject:message-id; bh=/qXGMJ2+Vc8UHm0Vypsyjzej9eUaZtHiT5EAktCFeu4=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeK4db7fTebfvxomo7W7/gYnm9LZLnmNs3Ntz5bHJXY
- m3MpM3aHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEykcjcjw9KU61svWB5VWCvo
- Y5IXNleV9fGtJw1xVX1q+tf3xygeCGP4X7f6NK/LVyWjV8uLGBa9bOFwbrrTk3yP8+Pms4KyokK
- 8rAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1913; i=david@kernel.org;
+ h=from:subject:message-id; bh=Iz/Ns6ilvBHJdxwO3TPj304o+BNdiHuhjsO9UbzV6vw=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIeK4d/WhZaPuvJcYe1etXn+2++mFf6Pr6zOftw8ENj+
+ 67JO5e+6ChlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAi2asZ/lmcWZd06cS9vI/+
+ B0JKL05T3rPA8q7xjiO6dku6J164/3YNI8M1q8PXc2zcHGLlc377pu+vml1cL8NZwBA9e+6y1n5
+ 9C2YA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9668A100008
-X-Stat-Signature: t8fppwn9csrtmuhutb9xgd8trtxjnj8t
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AB00114000E
+X-Stat-Signature: g6jm9zezmee73sckciq4k8u5ygdic7ab
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793270736-456907
-X-HE-Meta: U2FsdGVkX18jsb8GcQn5GNcdoLdji94FnxGHtV9fbUMr83OERR/UjLPvaskP+cHST5/7vIDRoHcQwEAfWiik1zuVNUWe/4D19Z2Gz31FN+uB2RKwGQKm+G18NrdVBWqKGW7WDfWOivvTpyVFamTew624NqbyJ5Zadtq6G5B/XS42UpDVA4pNkjAMsCAV4jDnc2NggI8BSUzYnXbA/4qZXGBJZV6+HI2beZ4p8Ayv4szDEa+HSM+KVzuXEsMuspwXYrfZ+nWB4wG07XpKO1/XfQKkJ1+2XzYDHPEy/eKvsmyyaupeJ+x42xNEV4SZxzgphZgLz+DTesNfHy+PkH9ctfhAwgNbH7GM3WDsw4enjZUzWOwukwVggF+Wc6P8Hulrq5mWGdg8dVMFqfggav4RzYLjODOMOrjqFQcqevx1q6kMrI8wzgDps6JN5etTAsgCxXp/y23rw8m+FudJSn/bfvnvp77Yra2UrzEqdajhQWREWMihmf0Ip4N86OYB1UOJJf7WxGL9L21g9fvblQ2jDzcnSrutkCtZVBLU3QWqjrWJ3aPy7PLSr7Q1GytXjK/OZLjD/XKvIrT20svnoUgNZhOoNA9UfdUeqxfpJfBFsuOOmvxNpZV/ot5lSjhrGWbjyVbuqgRwh3OP907ugT8rmSCDcCJw/WwiTTwecxps8CjM+yrdRFqBWwlYMGFSTzG0Q/wIzegzEIVhbW2ypxBiGgvT24adblTXnK7/qdLxCFjXcP5CmYas6dDoUeZyC1BmyShL1+MdSQLihh5lXsJDvZTn1GzpAYBuDh1qaUyGZDHP4CqYhHg35dzC5bio829iCzhj+/e92xQUFIP+DRrK9obbSgG+W9PC28gRabgFxVxLrEARONOe0OFin0KtAJjTOO7maVyJ2XirHBynpn2sbu9DWROGJ3kZK5w5eebCkpaKU7VTM2adYXV324wdyEybCNCnGO6FcaI5jeCvHCP
- c0Lff/z9
- g3keWFxoT9cVIwhzujVMT0DLTS6RHSHBF8XqUaIZrG7omaD+A59ATk3wN0dBx0fImGzbw1H+nCbCH4CFgCGiahd7SQueUQye9bG8qdUHQZwwVibnUQSYSV+AxAPvhS96mY3mQZjwB0Smnc6QwuXzKh9C4yxH4mwdY2YRxkI5F2S0/LDs+0j0UoG9WBiNLXJ7lUCIh0t+yv6M0OpC2eMns7kqCfp8l4HxCt14zGpk7yHghvKLxLR+4N/Dvp3kKkQp9iCYCX6xDAQGWlY4jw8k9pnCo1LlS9gVOE4hJjz1qUV2zn/Box39t6FTTW1cVcELTdWHn20Bob5YVy7wxNC+qR6OUPGvSjx2cbNGguEMM4xS0wjT4X0ZjmSNy+j2WNqqmClPSAJxJZqesugDG6Dyp//f9xRyLehU4ytO2rnnw6Pz7lsLUxn5EmBNUQDtCRrLi9p9n4LPSDz7X/Ho=
+X-HE-Tag: 1793270745-629071
+X-HE-Meta: U2FsdGVkX1+yzHdbaAks9f0sJhI/sT2ax2wP6u88oCG6KlL2e5ZrWtC2vM5efoCnMYw+hhIFkt68ZlqhhQVnNz8pTAx4C8qbUCqumaMZdBOJpFo1WgMR4K5U29QBF/FcRg/PTkjBOQfwt4dmO8t2Qm3rBGgxjcl4JVDNTMv+Mv45PQ9ZrIjalz3v3KGN7fjPlH7A2DVcAj0/crpPN8ZpQ7tmTFL/NgEtFrZD1l7w/k31+d3sQGDJprlFx12ENg9zz+woTalqFVvBHdkECdZs2tV9j22QV+4YGO8VHKhy0bofyq0w1luWc1NvrGxcOmGjTtuyWRp2ReDIx8+JBzUEtcfAfBdNdAKbWnw4WRMyP0QI+E/mQaqoHB1nNxu5DTJoy8jrEEIV+pcD5hZVg5Ba1/4wnTBFI/flH7kYUtbhp/wkWdbuiDRlmSM5jWDsfmkUNnnm32svjWUad2wAqCXHr0hujdteLAE+SLxDvNA8melB1ayQY8tNAZHns8mePi4dSZ8cxqGk0LDHiqxqhshNiHsoLGCs4j/cy4qoi+pLtlgN+G/tekasKr+jqv6VdTQ3d1l4DT7AFyEhjRPd5epHcrXsFuLmJG41pt38LO620/+J0GJefjuMC/7SXGipz6qC1Q/uyol44oUizoGVH/zLQQx67yID+CjAlVbHoAGQfMF7wJceTk1hoR0vzJLBhAff9ryfAjy2HL08c0mbjoWxClv2pSXLvhbY+3ILmrVhnmTUqx1PfoubKJ44vpEXGP2FcZPnTOYQJacP2Yxc+I/VApDrdbgR+SnDQbW3nN51dH3i482bQLiIRQxUb2gIsrGC7xi79WTnq5iMT/Json9MTNwPcjf/ujawxKlEzqoFlevzq5wvBE5Eu43yZsrS8LW20TUyZbvch7ILuRBQYgnPuzdC0XOR7aXejxLM+uFe3TsMtpyVqc7mPPbKutXQ+FaKmrcObucAJg1YoLsGJ1+
+ SdAyYSPl
+ 3DMSsNeKa7IhZeMI7gvZmMjpVTZnb+00cHzXogeFWOyRRGBMS4bSyoTV2Q1En6zKqKVHNGQMeYzaqcOT2ulUdcVc+fgwaK19YibGzmCONWS2qyjMTF/ugTDgutmvwtwGCW+KXL+wjTFtQupPMs+/TzHDSNsjOtKj9RnKIIbsGXXjyGPAeV07sQSjPCaC3Ps5ya88oRfku93b44NvndGt7/wu59TR2Nj0CwHZano1xFQIU+BWp4oTaGE4MRykbnXnt0mmAI8O0kumR7u2i2GL9dK2u8zKAG7Wk0VDDIp4YKvwi0RTq+mvOXuI3qeHN7oZqKBy0Lx76QnQTxZbzNSySf4QRqW34xcvXMa7XJX4yhkrIyEpvvM6LsEvHHz9OUumsFfDER6Vfkc6nZAz7RcctbaqDSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,45 +122,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-shmem_swapin_folio() adjusts swap to the requested slot within a large
-swap entry before allocating a folio. If allocation or charging fails,
-the error path compares this adjusted value with the original entry
-still stored in the XArray in shmem_confirm_swap().
+If swapping in a large entry at the new EOF fails, shmem_undo_range()
+leaves the entry in place. Its final scan skips the entry, then restarts
+from the same start index and finds it again. Truncation can loop forever
+while holding i_rwsem.
 
-Unless the index is at the start of the entry, this turns -ENOMEM into
--EEXIST even though nothing changed.
+Advance start past the skipped entry so that a restarted scan can finish,
+as we already do for folios that cannot be split.
 
-The caller retries -EEXIST, so persistent allocation failures can leave
-the task spinning instead of returning the error.
+Note that this does not fix the missing zeroing when boundary swapin fails,
+it merely prevents the endless loop.
 
-Restore swap to index_entry on allocation failure so the existing error
-path checks the original entry. This preserves the allocation error if
-the entry is unchanged and still retries if it changed concurrently.
-
-Fixes: 91ab656ece13 ("mm/shmem, swap: tidy up swap entry splitting")
+Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
 Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
 Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/shmem.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/shmem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/mm/shmem.c b/mm/shmem.c
-index e1b7cf4b5280..02de6326ef3b 100644
+index 02de6326ef3b..eb2e6e50630c 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -2552,6 +2552,8 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 			else
- 				error = -ENOMEM;
- 			folio = NULL;
-+			/* Make sure to validate the original value. */
-+			swap = index_entry;
- 			goto failed;
- 		}
- 		if (fault_type) {
+@@ -1434,14 +1434,16 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 					order = shmem_confirm_swap(mapping, indices[i],
+ 								   radix_to_swp_entry(folio));
+ 					/*
+-					 * If found a large swap entry cross the end or start
+-					 * border, skip it as the truncate_inode_partial_folio
+-					 * above should have at least zerod its content once.
++					 * Skip boundary entries when restarting
++					 * the scan to avoid endless loops after
++					 * swapin failure.
+ 					 */
+ 					if (order > 0) {
+ 						base = round_down(base, 1 << order);
+-						if (base < start || base + (1 << order) > end)
++						if (base < start || base + (1 << order) > end) {
++							start = max(start, base + (1 << order));
+ 							continue;
++						}
+ 					}
+ 					/* Swap was replaced by page or extended, retry */
+ 					index = base;
 
 -- 
 2.43.0
