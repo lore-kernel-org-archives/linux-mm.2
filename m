@@ -1,94 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501A7606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=SJh5Z0og
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D387E606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52CC06B05B5; Wed, 28 Oct 2026 22:53:08 -0400 (EDT)
+	id CF7936B05B7; Wed, 28 Oct 2026 22:55:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 503F16B05B6; Wed, 28 Oct 2026 22:53:08 -0400 (EDT)
+	id C81486B05B8; Wed, 28 Oct 2026 22:55:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CD016B05B7; Wed, 28 Oct 2026 22:53:08 -0400 (EDT)
+	id B70026B05B9; Wed, 28 Oct 2026 22:55:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 141CE6B05B5
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:53:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 93071C02B0
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:53:07 +0000 (UTC)
-X-FDA: 85374142014.01.AE97177
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 68402180002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:53:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=SJh5Z0og;
-	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BBAF6B05B7
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:55:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FDD6802AD
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:54:59 +0000 (UTC)
+X-FDA: 85374146718.26.CC47982
+Received: from spam01.hygon.cn (unknown [101.204.27.37])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B8419140004
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:54:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793242386;
+	s=arc-20220608; t=1793242497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0CbHfJZd9Ouin6+NJRHxk52K7pGc80VMx8HJ0a2GrKE=;
-	b=095DWiRCwVtHSjlJURXQbeqJ0KfhpfTpOiDvB2hMCAEHYl1h/DmNAqsOUn71IJ9wod1KAx
-	Zdh6NpQnqbaDiZ+43DKTR9VHvZR2yGu+zWWV2ngbLY9ilCU4r1cmiBaA3zNIt8oz7oSqGL
-	fRi3Q0hFyDMPZ06iHGJFWYxXwlxe3Eg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=nwzRLqo3JIwT8sW8EedZYwfWsX0Ld8ECZ+PVvahOUys=;
+	b=ZasmJqsMmRGeBkbgTEDvlwxKqKn9sazZ52Vy1AX6WeDvhzapfPRxwwdVq4LmZnemJNCjzq
+	pAE3bMq3ed45iTAPLZMd/OwZL2N6/M8T386wOuVYDNRV1Mdg8vIAzFlqS1WOBSO3WX62vg
+	UDZkvl45h5bzAvlWeWa3lPi/JCuFWZc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793242386;
-	b=PngGd/3uM7JZuROybnC1kxptdGEBH+l8y/heroVNfi+UUYyQCwSCY3x93KIL+JCz+WQ4nu
-	SLoK0sfCJBOZpfPf1KO+yonO5l2Chdk5z1EdpBoERwHbgRln9u5nB6/wi2l5NZzChMTQaL
-	0sh2tmwxsPY8pv9Y6qyRr5woYuQRBjA=
+	t=1793242497;
+	b=flU/R7lKlf4DroGeDQKNISb31P7nn1zo2TDYW78Swq0Kc7lJRltJO5eyK1J2z/hEQqq1oq
+	/iNhoaFo8X6uZ1kDXPq0d04LjzLFpUEArDB3suitFC8Cqc9nuzz/g0C4ZkwxyuHVLZswNl
+	A4ha66ZjqFuLBa3CAqapZJL4+L8MJww=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=SJh5Z0og;
-	spf=pass (imf24.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1793242380; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=0CbHfJZd9Ouin6+NJRHxk52K7pGc80VMx8HJ0a2GrKE=;
- b=SJh5Z0ogxzVgWC5Iq6gppdzxJz4Cx56PFP0+s6qEX0jb6ve0HdH2SrMhm2PMidCVMHB1H/
- Is4M+d6dO7JtVaEfHuOHcdEm6fTkGXvm0S113pETH4hyeWobCbwe8SeEAw82iCrHrTiA4v
- rQMUnTZH6f5CExCiKpKR+RJj2JpWPCaJ7IoAwvC15POKIbGHL3gXF/WZKFN8W3+zJHQiAe
- 4yEXNbIQOcWi+UVV83y/1FnQhlv0dO6G9lixig834P+IeAcY/gC1wleoyj7gWsg+ojrNRV
- vKtJJOyjP9POXxDNacS6J6VEpEXodbgh/1S6HxMvJJCe9iTLJBQmMNTfgRpyZQ==
-Content-Type: text/plain; charset=UTF-8
-From: "Li Zhe" <lizhe.67@bytedance.com>
-References: <20261028041253.74839-1-lizhe.67@bytedance.com> <20261028041253.74839-3-lizhe.67@bytedance.com> <CAN+CAwPM=-sRDypP0+ZxX8_CziBRjXbxKEE3UZGLzkmOWrajNg@mail.gmail.com>
-In-Reply-To: <CAN+CAwPM=-sRDypP0+ZxX8_CziBRjXbxKEE3UZGLzkmOWrajNg@mail.gmail.com>
-User-Agent: Mozilla Thunderbird
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26ae2b509+d51529+kvack.org+lizhe.67@bytedance.com>
-To: "Joshua Hahn" <joshua.hahnjy@gmail.com>
-Date: Thu, 29 Oct 2026 10:52:35 +0800
-Message-Id: <4c94b526-cacb-4b52-9c28-7344f8ab582f@bytedance.com>
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jFTNX0rb9zwXwL;
+	Thu, 29 Oct 2026 10:54:52 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jFTNW2YXfzwXwL;
+	Thu, 29 Oct 2026 10:54:51 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 036E1314AC01;
+	Thu, 29 Oct 2026 10:54:27 +0800 (CST)
+Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 29 Oct
+ 2026 10:54:48 +0800
+From: Jianyong Wu <wujianyong@hygon.cn>
+To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+	<vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>, Tim Chen
+	<tim.c.chen@linux.intel.com>
+CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
+	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Phil Auld
+	<pauld@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, David
+ Hildenbrand <david@kernel.org>, <maddy@linux.ibm.com>, Michael Ellerman
+	<mpe@ellerman.id.au>, <ljs@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <wujianyong@hygon.cn>, <jianyong.wu@outlook.com>,
+	<zhongyuan@hygon.cn>, <huangsj@hygon.cn>, <wangfengyu@hygon.cn>,
+	<yingzhiwei@hygon.cn>
+Subject: [RFC PATCH v3 14/17] sched/cache: Consider LLC load when selecting a single-task source rq
+Date: Thu, 29 Oct 2026 10:50:11 +0800
+Message-ID: <20261029025011.4004061-1-wujianyong@hygon.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261029022036.4002331-1-wujianyong@hygon.cn>
+References: <20261029022036.4002331-1-wujianyong@hygon.cn>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Cc: <akpm@linux-foundation.org>, <bsegall@google.com>, <david@kernel.org>, 
-	<dietmar.eggemann@arm.com>, <gourry@gourry.net>, <juri.lelli@redhat.com>, 
-	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>, 
-	<mingo@redhat.com>, <peterz@infradead.org>, <riel@redhat.com>, 
-	<rostedt@goodmis.org>, <vincent.guittot@linaro.org>, 
-	<vschneid@redhat.com>, <ziy@nvidia.com>, <linux-doc@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 2/3] sched/numa: do not feed tiering promotions into task placement stats
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 68402180002
-X-Stat-Signature: 3t4ck7aojqtiqbn1ecytna6ze64zu75h
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
+ (172.23.18.114)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B8419140004
+X-Stat-Signature: pxk5xtcpw9sfw5e49us6hu8acrzjsy9h
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793242385-404487
-X-HE-Meta: U2FsdGVkX19Y6PKLVWgiNMvNi5wqtZZRyp2ggT3Lu9CnIbQjlC+N7Oz7BcgznXcVGPn8ASLRZyw8/DGTA1eGu6ry07F912fDRaTCPTRe8qlFZRdKGTW4lf1XIDKIu3TZpK+Hdd3kPg6QMVL9SiOvAVqt3sSwSt7AdYiBnwri/H1gTiZocFMRhhGFCOKBg+i6LTutn6mTMm1WtUPWIrRuzJVdTmg8AqbjLo1PsEG+LujW3evsAvG8GMyp+OMtVR346+x6ln65Mtiyt+biIxLxGjhaZ6c0LLQ2+A2cDmTQkYNKW8inG4HhGM81Q3l2d4Tk6U1GhHZs218C4sImi4mZ0rxqPazWl8VB6jl63LFNf4DjaXz+ZK0uvpYgHDamt4IUeEgfRYoKGCAGh9YX9AyIrvSPBf1bI7/de4blfGsVK/96Djrx7tAXtjO4riPC5frwXPk4H9wOHlG48QoSxKRfo2HAs4zMJFa/xt8ZRhduFekr+JE8ZTVMNeUNni5qwAo4xUzYj6f4xMTAEOvpxG6rNr/JKOl9UvkpklJURccn2ebv4ysOgqjp3U/3y3mSPbtzwqixHKcM0tYUvkJgX1r/H7NJ9wTmorAzMooXuZrcMDzXTZVeaRCb66i2UJB/L057ERJ5OqUWurIM2SHLQNIerBD2qkHgzloQm1E7Osbq4QqQbJLbL1EtnNBwmr024xyK9V4CYAoETBwiyfwHCGbg2DmfUta+2hmySkLJ4b4aZS1GTvu6lHN/3rrJ66Xtx4axgECvY2EWCnajkcUCV8fLkgODQj27IkwY58pAxuUdlzHStyl4z+TxImnsIH3DAMUoktJAswVHt84gxC8+AcFeC9TfAUhC2GRBEwBe6xzxFHe11l+ZG6pzpN99cV7d5ZeEwhV5WV6wOOYoNlriKBgeWhYLRPf4ebqlYQv/2qBuc17sckEgSqDgfoL9uycypGQDL6ILGKCeprcwHk+2kAU
- nWH2kZZ3
- ipOwriGpwmNdk2ZG1bjI9xpUryhZ96G64jO5QZOeRxQR0BmwWj57l7nP+iOwXZCZckBocP0OfIXCxm1kfbg53tGBquHaJbBTR37y8iV2J0dJf6hTIot01ay9qNzrJMCnLNH+Amsg6zKQtsv/j1xOfTpK3/eUgmnBzRtl/Fw8S8q69MgDFg0CWqJX1rvHp+Eeg6s0c36Jg3TtLfH8eSlP+9H+Jpv5e70pc+RDfpupPAlhWGLts5/bWxTmC/U2YaszlbdhNKVfxze8Zl8KSmLg5GP0B3grn1bIbAGt6oV+HrQBTFOD6ILsHC38Ru+Ay2V2M+5O8doIXCbC8uu0SDdpGxS85UebvLy8HKxrbbzTeJAO6dR+Xa9oXog1XeKFfUKdmiT/3KAJ942w7iB2uAoXFu47BkTiFiIefUEQz
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793242496-563826
+X-HE-Meta: U2FsdGVkX18ne9GELhmhbD7hGVIXHT/25+I9G/57gH0Fo4v3EgveErS46U4HV6R3f6IDIRYTXqy71/s7SEyP/aug9Y1cO0kiaFEACsYQQMhy+lUkLWhHnz9IagDwPfYuepuwIB3AHDbidLRLuLk3ATREdcfwj5Ab71yHCdp4ppdxTTv01HMPS6EBrAf+eJycRGh9Cnhb++kx/FWqAXgYvyzOFNeyJS9iNcmxGvNOm/rM6eAw7IXxQnVb4cZDeu82Han3Hnu8OppWO2S6rjNPHZgAzWyI7F9BrG6yNjqHEeKy77iUrlwb357K04oRb8Z11R3rWUQFEfKIAu21Oz6cx57b3uhqDdHQYqzLZ+PAR2AchRDNQayMbMU9ThtOFqVNbmm9qmEqFd7Y9uO1ImhEdeZxD1US4CE6MLg/EX2Q1/TO6gBT3mo2Lspa+6KqYJqMnAyU5m8/9vP1czngbABwneC7epaCJ5vaMtmIp8V0pOK57qf6ydZTLQO+ikie/FQCmobSHe4ZwlFpRSYoaCKNTly6cLo7mjPCpKGzy0zz3Fs4/tigEjz/cOBkbC+gpqDQk7uMPrIjPcgAVKPJewAeE+iJsPIkNf3v689MaCy2PGqoMX4AGIPn+6ViLfoOjc0rFq71pA0vDqX1pHvkrlir1g6qsWkvGIr8337zpkJ+u9slnxYlcbmpcb4KBiv4qZCL5jOSFbxqm3srrzu7eXBegYAIhKtBc07jra7nI9/6Rf3xD5J8mPy2KanHYEx3v7lyvkVOVCMFfjn/h7TLPquVPO7inkSMJO4GZhK6yXdC73zQtOI5HsVQfeUqle5kryxQdN4ip+QXEjYo0hTvW0F/vkSAzwa90ZipT3QvMgCTvHRCqC+kifuVswWv0l6SX8hMMViUZgdryDRG11Z0mS5xpq9lt8WYU0GRCLe1JNhUuQXPOL8zMStWUXakwgQIAuL50ZF8ZY/urxH/odo98BL
+ 6xRz9wW0
+ 5vKnAjyKuKSyVt224Er1Qg2XVTSvgz8Q3/9dcWlFOm7HZ7cv5Qd6SYINR9JZY2TqGaWN5hXY0fb/ptf9mO9gdoJMo+k7tcWIdvqOe2bNZs+fiVTD4Jj9Cexyhsmay/5NsrXrQ5nC/37zLjohSuidlXJeBegySCd+RXINE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,65 +104,123 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 11:03 PM, Joshua Hahn wrote:
-> On Wed, Oct 28, 2026 at 12:14=E2=80=AFAM Li Zhe <lizhe.67@bytedance.com> =
-wrote:
->> NUMA balancing has separate mode bits for normal task placement and
->> memory tiering. In memory-tiering-only mode, NUMA hinting faults on
->> slow-tier pages are used to detect hot pages and promote them to a top
->> tier. They are not normal task-placement faults.
->>
->> For slow-tier folios, memory tiering reuses the folio last-cpupid field
->> to store access-time metadata. numa_migrate_check() therefore cannot
->> return a real cpupid for those faults. Before this change, it returned t=
-he
->> same all-ones last_cpupid value that normal AutoNUMA uses for a first or
->> unknown access.
->>
->> That can make a memory-tiering-only promotion look like an ordinary firs=
-t
->> private AutoNUMA fault. After a successful promotion, do_numa_page()
->> reports the target top-tier node to task_numa_fault(), so the existing
->> slow-node skip no longer applies. task_numa_fault() then accounts the
->> fault in p->numa_faults and p->numa_faults_locality, and
->> task_numa_placement() can consume that sample to update normal task
->> placement state even though normal NUMA balancing is disabled. In other
->> words, hot-page promotion feedback can leak into the CPU placement
->> heuristic.
-> Hi Zhe,
->
-> Thanks for the revision. To me, this looks more like a fix than an
-> optimization, since there really is incorrect NUMA balancing behavior
-> happening that could be visible in userspace (unintended
-> task-placement and related accounting). On the other hand patch 3/3
-> doesn't seem like a fix to me despite the name, since this one would
-> mitigate the incorrect behavior.
->
-> How about we pull this one out of the series and submit it
-> independently with an appropriate Fixes: tag and cc:stable, and
-> discuss 1 and 3 later on? Unfortunately this is also not a great time
-> to submit new features or behaviors as we are in the middle of a large
-> merge window, and there are a bunch of fixes that maintainers might be
-> busy looking into : -(
->
-> Regardless, thank you for the fix, Zhe! I don't have a strong
-> preference on the ordering of this against pghot, but if other folks
-> are concerned that this could create more churn, I think it would be
-> reasonable to wait for patches 1 and 3 after we discuss with Bharata.
-Thanks for the review.
+When a source sched group spans multiple LLCs and every eligible rq has
+at most one runnable task, migrate_task selects the first eligible rq.
+It cannot distinguish an LLC above the aggregation threshold from one
+at the threshold. If the selected rq is in an LLC at the threshold, the
+cache-aware migration checks can veto the pull, while the LLC above the
+threshold is never selected. The excess then persists.
 
-Agreed, patch 2 is better framed as a fix.=C2=A0 I will check the exact
-commit that introduced this path and can resend it separately with a
-proper Fixes tag and Cc stable after rc1 is released.
+For example, consider a two-socket machine with this topology:
 
-For patches 1 and 3, I agree they are more about the tiering heuristic
-and policy behavior.=C2=A0 I will keep them separate from the fix discussio=
-n
-and continue that part together with the pghot-related discussion.
+  Socket 0: NUMA nodes 0-3
+  Socket 1: NUMA nodes 4-7
+  Each node: four LLCs
+  Each LLC: four cores with SMT2, exposing eight logical CPUs
 
-Thanks,
-Zhe
->
-> I hope you have a great day : -)
-> Joshua
+With a 50% aggregation threshold, each LLC can hold four full-utilization
+tasks at the threshold. Suppose a workload has its preferred LLC in
+node 6, with the node affinity order starting with 6, 7, 4, 5, followed
+by the nodes in socket 0. One LLC in node 7 holds five CPU-bound tasks,
+while every other LLC in socket 1 holds four. Each task runs on its own
+rq, and socket 0 has spare capacity.
+
+When socket 0 balances against socket 1, rq-level task counts select
+the first CPU in node 4. Moving its task would leave node 4 below the
+threshold, so the migration checks forbid it and active balance is not
+started. Every such pass fails the same way: the five-task LLC stays
+above the threshold while socket 0 has room. Balancing within node 7
+does not help either, since moving a task to a sibling LLC with four
+tasks merely reverses their task counts.
+
+With cache-aware scheduling enabled, at domains above the LLC, track a
+candidate rq in the LLC with the highest utilization within the source
+group. Use it when the maximum runnable task count is one. In the
+example, socket 0 then pulls from the five-task LLC. Node 7 remains
+filled, so the move is permitted and brings that LLC back to the
+threshold.
+
+Keep task-count priority when an eligible rq has more than one runnable
+task. Use the per-CPU scratch mask added earlier to sample each LLC
+once during the existing scan.
+
+Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
+---
+ kernel/sched/fair.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 1e286296cd65..20a6a7f5c2f7 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -13357,8 +13357,18 @@ static struct rq *sched_balance_find_src_rq(struct lb_env *env,
+ #ifdef CONFIG_SCHED_CACHE
+ 	int last_node = -1, node_num = 0, llc_max;
+ 	int *cache_data, *affi;
++	unsigned long llc_util, llc_cap;
++	struct sched_domain *llc_sd, *sd_self;
++	struct rq *llc_busiest = NULL;
++	unsigned long llc_busiest_util = 0;
++	struct cpumask *llcs_cpumask = NULL;
+ 
+ 	lb_affi_scratch(&cache_data, &affi, &llc_max);
++	sd_self = rcu_dereference_all(this_rq()->sd);
++	if (sd_self)
++		llcs_cpumask = sd_self->llc_stats_mask;
++	if (llcs_cpumask)
++		cpumask_clear(llcs_cpumask);
+ #endif
+ 
+ 	for_each_cpu_and(i, sched_group_span(group), env->cpus) {
+@@ -13472,6 +13482,34 @@ static struct rq *sched_balance_find_src_rq(struct lb_env *env,
+ 				busiest_nr = nr_running;
+ 				busiest = rq;
+ 			}
++#ifdef CONFIG_SCHED_CACHE
++			/*
++			 * When every eligible rq has at most one runnable task,
++			 * task-count comparisons select the first non-empty rq,
++			 * favoring lower-numbered CPUs regardless of LLC load.
++			 * This can leave LLC load uneven even when individual
++			 * runqueues have the same number of runnable tasks.
++			 *
++			 * Track an rq in the LLC with the highest utilization
++			 * during the same scan. Use it only if no eligible rq
++			 * has more than one runnable task, preserving task-count
++			 * priority while helping resolve LLC imbalance.
++			 */
++			if (busiest_nr < 2 &&
++				!(env->sd->flags & SD_SHARE_LLC) &&
++				nr_running == 1 && sched_cache_enabled() &&
++				llcs_cpumask && !cpumask_test_cpu(i, llcs_cpumask) &&
++				get_llc_stats(i, &llc_util, &llc_cap)) {
++				if (!llc_busiest || llc_util > llc_busiest_util) {
++					llc_busiest_util = llc_util;
++					llc_busiest = rq;
++				}
++				llc_sd = rcu_dereference_all(per_cpu(sd_llc, i));
++				if (llc_sd)
++					cpumask_or(llcs_cpumask, llcs_cpumask,
++						   sched_domain_span(llc_sd));
++			}
++#endif
+ 			break;
+ 
+ 		case migrate_misfit:
+@@ -13514,6 +13552,11 @@ static struct rq *sched_balance_find_src_rq(struct lb_env *env,
+ 		}
+ 	}
+ 
++#ifdef CONFIG_SCHED_CACHE
++	if (busiest_nr == 1 && llc_busiest)
++		return llc_busiest;
++#endif
++
+ 	return busiest;
+ }
+ 
+-- 
+2.34.1
+
+
 
