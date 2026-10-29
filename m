@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3884D606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E18606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xPnFkVGP
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=W9LFoFBs
 Received: by kanga.kvack.org (Postfix)
-	id 031BE6B05C7; Thu, 29 Oct 2026 13:31:03 -0400 (EDT)
+	id 932326B0625; Thu, 29 Oct 2026 13:31:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED6536B0624; Thu, 29 Oct 2026 13:31:02 -0400 (EDT)
+	id 8E22A6B0626; Thu, 29 Oct 2026 13:31:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E132A6B0625; Thu, 29 Oct 2026 13:31:02 -0400 (EDT)
+	id 7D2E86B0627; Thu, 29 Oct 2026 13:31:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCDD56B05C7
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:31:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3267D1C3CCD
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:31:02 +0000 (UTC)
-X-FDA: 85376354364.15.2E82909
-Received: from mta0.migadu.com (out-197.mta0.migadu.com [91.218.175.197])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 14DE714000F
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xPnFkVGP;
-	spf=pass (imf23.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.197 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 43D0F6B0625
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:31:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1075A04BD
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:31:07 +0000 (UTC)
+X-FDA: 85376354574.03.2ABA091
+Received: from mta1.migadu.com (out-19.mta1.migadu.com [95.215.58.19])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D8BB1A000D
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:31:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W9LFoFBs;
+	spf=pass (imf15.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.19 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793295066;
+	b=yMOQ/P4L1hOLC7wHFc3HsUcs9R/0yBdqh+JXCyQR6SaYW4Kaxbs2jUlubh6sbF3ikKS6r5
+	YH9gNuI71c7aUdLvgJKlgY6MV2h9LfaHlTdfludws4jIybpTckfDryLIvve5Y05tuwfRoM
+	BahLp/kw6aCpQx/mHTjd9i6/ajDF3ng=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W9LFoFBs;
+	spf=pass (imf15.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.19 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793295060;
+	s=arc-20220608; t=1793295066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/+hjM5CsEedso/LlGxQH+kdJiIeJBeEghJpwPsmuqXM=;
-	b=l/CyftIVLxfQZu8hZiHlWhrESLmg5OqiAWSzzVM9rmoc3eXeemos423JjolNV4A9SypH4e
-	2YXhMAo7i9R0a/u8ANpjMLK7VgJ4HTszgFwFRPlgdOsw6Vr/KgtsmASogske/jboWVnvwO
-	WY9fwwwdzVjW22oXtxe5tH9wVZDdTuM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793295060;
-	b=QbOqW6gl1ybfZ6Et0jci4UXRfmTr1utIPWdIoMMHDtwbiyxPmeuYRse+v3iUo/uZNlEnt5
-	n8v9y2WVTQHoG0dbHi80pkvY8j/tLDVLcjqdAhgXbvM109q65aW01v50+MCHfJAIlWiPs/
-	5lmuI5OoU4nbWHangZ/0qRwEpTBdrpA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xPnFkVGP;
-	spf=pass (imf23.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.197 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=hjl3YWLB9mIMK4NxN5xFoTsa4zvmwEeXlgSjnO0OUbA=;
+	b=3PRiO1Yn7r3Zbq6k3LI7W8B3qC9gvB0s8J8O7yMVG58WNseFDE7zeiJzJwdvKd/ovlaM4n
+	DGf+ghia2WejSWyFPRxO0/2Lqf65weSeSJUMQCJwS7Wn9B/aFEvM0VA2TRxDZySHuB8l4I
+	KPx7heDpa2RHxsFFp0uyTrkqco4LBm8=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=XjaLIKpPNBz8YS+fveYxov34nv5lXYqg9aUyoW4HF6I=;
+DKIM-Signature: a=rsa-sha256; bh=GBih4azSAalhMpwQa4vAt/wr7df5ETSpm+lkTN2YYcw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793295058; v=1; x=1793899858;
- b=xPnFkVGPL1QlatO8UExQBh7I/oQ7dCIPtcm0w9D9uT/f3tQiHIeMhfaVOfxkUr317Yy8D3qq
- Z9q+BkBVSYSu8XAvbF7V302QzSYfro1VtTONorAqqtsMb84XMbG+lFZgfoRYpIiT7eF/FRER19m
- tadG1qwTfbcTGi96CL0Qf208=
+ t=1793295064; v=1; x=1793899864;
+ b=W9LFoFBszpWry1/NSZbVhjNsFbcVuSrt/CoO/JfaLe7WiVW7vFpNJY7uGjKf+aJPQSKJXkIV
+ 06V+5qqpODl9AsLap7BQ8oVrkrYL+GpTR9hNsSgs8TMSSct9wgIdgHD1c/40EKKFuVfRSevj1BA
+ V7H11bHuwTRyacCfRGC8mjeE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 072f51d6be77a39d;
-	Thu, 29 Oct 2026 17:30:58 +0000
-X-Mizu-Trace-ID: 072f51d6be77a39d
+Received: by smtp.migadu.com with ESMTPS id d28391d344248cfb;
+	Thu, 29 Oct 2026 17:31:04 +0000
+X-Mizu-Trace-ID: d28391d344248cfb
 X-Migadu-Flow: FLOW_OUT
 From: George Guo <dongtai.guo@linux.dev>
 To: rppt@kernel.org,
@@ -79,28 +79,28 @@ Cc: ilias.apalodimas@linaro.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v6 7/8] selftests/kho: Add LoongArch vmtest support
-Date: Fri, 30 Oct 2026 02:29:54 +0900
-Message-ID: <20261029172956.20791-8-dongtai.guo@linux.dev>
+Subject: [PATCH v6 8/8] selftests/liveupdate: Add LoongArch vmtest support
+Date: Fri, 30 Oct 2026 02:29:55 +0900
+Message-ID: <20261029172956.20791-9-dongtai.guo@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261029172956.20791-1-dongtai.guo@linux.dev>
 References: <20261029172956.20791-1-dongtai.guo@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 14DE714000F
-X-Stat-Signature: oah3oyy696os6nws41dx551awg19siqh
-X-Rspam-User: 
+X-Stat-Signature: ymoiyzbuydxa7qetxkjnnxz4u8q4miyh
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793295059-673742
-X-HE-Meta: U2FsdGVkX18he0xuOJWT7aLaku53OuFNTcQF6Yle43sLZSH4CYr0wa3j0X8163G0xrMYtxxkZMlhokE1sCrRrKMktgzT0Gi7aZENfJe/H0oxjtvrz7hhYdhKE50kfBu2+2HiJzTaDiVwb4g1q+2ngczLJ3u1T/0JqpEC9R9eeCVfWidvYS2A5ix8gDPdAusrcU0LWX5s60N+QJAg/zFZZO5nVfMKHiHoBIj6RomhYKG6m3LhZgIittJRraky/tT2DTI0bdD3sh/ntvR4SOfO1QxTgMEMRJ6pfcnWbHjZReVF4lPmCx1c/cQEcToYxCCY2WtL+xB4jPmpwUoz0NwIgg1sYdIwt1IuloFiCtKudDzwJZe4V/7JrPUEWeKFCVtp/AmMDp0Ka4fSaYuTBuTNugqyENVd8ZzJ/ApQ4VcOJy43G5Bk8fIpyFu7iYmhr2vyySLmPsbc6RfdFJflMy2AQwyi8xUZ4V9XOGNaImDsPCaX6imIimid9YGcC/aaUGIOpEAG1ZsTKr+hiWlnR7CkgE2aqaYuCOEvyZSGj8E/tbMDTI6PwXs+zjZpn4W4zGgz9SPjEA/ct1VdYpFcLmZhHBPS0IXpo4PbdJxSA7La7XdgiAO3f8ORnckuMwVxEMdKbepk/oQUvTUxVoqB15a6sNkf0JTcORxMZKiGKjNIYi27bYbP9IJgJihlVyIYJ5vUokV+owt/4r59spRUQEfE6sRWEU7gWaCijB2mCRdfBnLnX7u/Ih0mca2NXsvczzXslLxgw2slFMkT5Yr8e141zPR6662quSY/UPrOgkjcdsT8jAECLaP4ggbj9g7n0uMZ47FGYfDynli1V0YFr3ZRbW9nhsIxGofgUPAR8cbGzg6lwHeAkvCEzDDXHGUfkri6aP6Xec6jSw7QZuOiOcFg1qt5gDn6jAHiOe5g6mdvfcrDxi7dT1ZGFJeZiEjNCNdrDnWC02afg7UmMItXMeN
- 2Nt2ppeX
- vVVbeUfjBusbrwolaFvBzeeWR9f1yoFAOZeSsJYgwuFWiLAhDJlCpeb5Oj99FvVuBtSFeAxCi5rF2n1kVdvaQDrar2CI2HwnYQqg+8n7fACSP4l6Ws+U2QOyOad94Vc4aiQXe4dm2xwhKwk22H/Oc/11Ejgu2csvbLWtuFClCz2w3fSAHJ8DeOg8vO0tCKQ2HHxzetiyWNd+eYduDN8kAoBQeAO7JskU8j/+0
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D8BB1A000D
+X-Rspam-User: 
+X-HE-Tag: 1793295065-44146
+X-HE-Meta: U2FsdGVkX1867m1cIIyWwiioOUYUOuU7JBznaO9AtsCro6OSZRXmFCAxSUqOhoz806ggVvIVk7T3ygkZ7IRCc7HnuHIwWkEtmbAr36Vo7qgHjcgJDcPpiUp+ESZSPgh31uBhNi4tgxHa8hAAmNtJij/tbb1PP8rZUX1dBeIU7LUA01CyrXoinC8W9ZjaQOjShSGyJ1I5wi4P5OAMXwRm1znRWa6qD0SOywZgFHZ+Z7UKvg/0j1xmOAfO+F8LNJ1IxnXOw71cIu0s/6I2lc83Qe7VUoS2XkLHvuRX1nt5zVpE38rorRwjtjqimbVfbBzszbqE8GH2OhP+fVoSvnmc3nv7pn7Fzxfu+sO1mBWzyFWjC2pZ+qyDa/3Bv7kLHIQVPCBE5XiMDfNFE3InL0LypIA+alX1QGmUC4m/OiJt+MQerxs2Kjhqi/A/GY7MxMFH5E1U9uu3bS9UsERnAkcdWISQO3D1K2zgx0UERp2KsSl3rEO10CpFVZ4fRX6KGd4kwOusMbayd33zRAFth8AAbNuiS2H2HSVUth84Eq2bOumhybMnedQj3PwwLCVDHZWj2A9Dfm8Di2p5P+8XWjJ1nAf4IfcRXVjpygQf4lFwPMOIcZJ7+D23x5X2FzovNUXD+Jtnkcz9DP58lSog2nOm6ECVImBqmGrVb+Ygj9QMfqT0gtDxX4OJLmAyjsDSrRnaukQe2Z8Fq13plz1iQJ7B/Orb+/vWZGMBPm4qQncpXZv6gjT0CkkV9Xw2rUeWCHIjfxEr/2HFzrN9ILvVFzk8q/ox1b4IjOEr6O5+GJpJUcR98zy49Oaeq7Umd822NjFbeWBdy3OveNgwNgn7vahugiKbMye3Ara/Xb+ZBp7IG7Ma+9D0g6H2Bz6mebpY8+piIClhdt/593JueJ/ey29QbZq6l6AutpWqOzxT+0oQcic5PA6e00B7cwW1ayYXbYZq9WYyiXKv5kCoqZFwtwZ
+ FlbJdZk2
+ 7qW3nMGU5uqsV0uTBJ4VRLaOOioGw5wjrdYU9qz7itkg+KrahMV2u3dpbGZ/746sCuhVIXEEDm0cl8agQwAP/uAUZUeZhPLrCeoVIANBLjISTMjDqwm21gHsjyYqq8y9kQmMbZO39HQkTApvO0Vp9yb4/hmS9B0K+0E5c1IFKjXwgOWblt1bcS82Tgvt4qomUAb80TZaA+cqiY5dWa4saA3kUZUynMri4ITJ5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,70 +111,100 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: George Guo <guodongtai@kylinos.cn>
 
-Add loongarch.conf to run the test on QEMU's LoongArch virtual machine
-with a la464 CPU and an 8250 serial console, and let vmtest.sh accept
-the loongarch64 target.
+Add the LoongArch kernel configuration, target and cross-compiler
+detection, and include loongarch64 in the VM test suite.
 
-Boot vmlinux.efi through EFI firmware. The EFI stub installs the KHO EFI
-table, and QEMU's direct kernel boot would skip the stub. QEMU_EFI
-defaults to /usr/share/edk2/loongarch64/QEMU_EFI.fd and can be set for
-distributions that install the firmware elsewhere, such as Debian's
-qemu-efi-loongarch64 package.
-
-QEMU's LoongArch virtual machine has no i8042 controller. Enable the
-generic PCI host so its I/O space is mapped before the i8042 fallback
-probe touches the legacy ports. This keeps i8042 enabled, so the same
-kernel configuration still works on real hardware.
-
-Enable ACPI_SPCR_TABLE so the bare earlycon parameter gets the UART from
-the SPCR table installed by EDK2. Unlike x86, LoongArch does not enable
-it by default, and without it there is no early console and vmtest sees
-no early boot output.
-
-The KHO vmtest needs CONFIG_DEFERRED_STRUCT_PAGE_INIT=y, which depends
-on SPARSEMEM, so select CONFIG_SPARSEMEM_MANUAL=y.
+Boot vmlinux.efi through EFI firmware so the EFI stub installs the KHO
+table. Allow the firmware path to be set with QEMU_EFI and skip the test
+if it is unavailable.
 
 Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
 Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- tools/testing/selftests/kho/loongarch.conf | 11 +++++++++++
- tools/testing/selftests/kho/vmtest.sh      |  3 ++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/kho/loongarch.conf
+ .../selftests/liveupdate/config.loongarch64        |  5 +++++
+ tools/testing/selftests/liveupdate/run-vmtests.sh  |  4 ++--
+ tools/testing/selftests/liveupdate/vmtest.sh       | 14 +++++++++++++-
+ 3 files changed, 20 insertions(+), 3 deletions(-)
+ create mode 100644 tools/testing/selftests/liveupdate/config.loongarch64
 
-diff --git a/tools/testing/selftests/kho/loongarch.conf b/tools/testing/selftests/kho/loongarch.conf
+diff --git a/tools/testing/selftests/liveupdate/config.loongarch64 b/tools/testing/selftests/liveupdate/config.loongarch64
 new file mode 100644
-index 000000000000..36153b03c4ef
+index 000000000000..264067ef5ab1
 --- /dev/null
-+++ b/tools/testing/selftests/kho/loongarch.conf
-@@ -0,0 +1,11 @@
-+QEMU_EFI="${QEMU_EFI:-/usr/share/edk2/loongarch64/QEMU_EFI.fd}"
-+QEMU_CMD="qemu-system-loongarch64 -M virt -cpu la464 -bios $QEMU_EFI"
-+QEMU_KCONFIG="
++++ b/tools/testing/selftests/liveupdate/config.loongarch64
+@@ -0,0 +1,5 @@
 +CONFIG_ACPI_SPCR_TABLE=y
 +CONFIG_PCI_HOST_GENERIC=y
 +CONFIG_SERIAL_8250=y
 +CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SPARSEMEM_MANUAL=y
-+"
-+KERNEL_IMAGE="vmlinux.efi"
-+KERNEL_CMDLINE="console=ttyS0 earlycon"
-diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selftests/kho/vmtest.sh
-index 0014bd76e88d..d05ba0734b25 100755
---- a/tools/testing/selftests/kho/vmtest.sh
-+++ b/tools/testing/selftests/kho/vmtest.sh
-@@ -21,7 +21,7 @@ Options:
- 	-d)	path to the kernel build directory
- 	-j)	number of jobs for compilation, similar to -j in make
- 	-t)	run test for target_arch, requires CROSS_COMPILE set
--		supported targets: aarch64, x86_64
-+		supported targets: aarch64, loongarch64, x86_64
++CONFIG_SMP=y
+diff --git a/tools/testing/selftests/liveupdate/run-vmtests.sh b/tools/testing/selftests/liveupdate/run-vmtests.sh
+index d656ce58c5a7..f6cfb76b1dac 100755
+--- a/tools/testing/selftests/liveupdate/run-vmtests.sh
++++ b/tools/testing/selftests/liveupdate/run-vmtests.sh
+@@ -4,7 +4,7 @@
+ SCRIPT_DIR=$(dirname "$(realpath "$0")")
+ TEST_RUNNER="$SCRIPT_DIR/vmtest.sh"
+ 
+-TARGETS=("x86_64" "aarch64")
++TARGETS=("x86_64" "aarch64" "loongarch64")
+ 
+ GREEN='\033[0;32m'
+ RED='\033[0;31m'
+@@ -72,7 +72,7 @@ function main() {
+ 		for test_name in "${TEST_NAMES[@]}"; do
+ 			log="$output_dir/${arch}_${test_name}.log"
+ 
+-			printf "  -> %-8s %-24s ... " "$arch" "$test_name"
++			printf "  -> %-11s %-24s ... " "$arch" "$test_name"
+ 
+ 			"$TEST_RUNNER" -t "$arch" -T "$test_name" &> "$log"
+ 			exit_code=$?
+diff --git a/tools/testing/selftests/liveupdate/vmtest.sh b/tools/testing/selftests/liveupdate/vmtest.sh
+index 69beda6c961d..ffe82512f3e4 100755
+--- a/tools/testing/selftests/liveupdate/vmtest.sh
++++ b/tools/testing/selftests/liveupdate/vmtest.sh
+@@ -21,6 +21,12 @@ function get_arch_conf() {
+ 		QEMU_CMD="qemu-system-aarch64 -M virt -cpu max"
+ 		KERNEL_IMAGE="Image"
+ 		KERNEL_CMDLINE="console=ttyAMA0"
++	elif [[ "$arch" == "loongarch" ]]; then
++		local qemu_efi="${QEMU_EFI:-/usr/share/edk2/loongarch64/QEMU_EFI.fd}"
++		[ -r "$qemu_efi" ] || skip "EFI firmware '$qemu_efi' not found, set QEMU_EFI"
++		QEMU_CMD="qemu-system-loongarch64 -M virt -cpu la464 -bios $qemu_efi"
++		KERNEL_IMAGE="vmlinux.efi"
++		KERNEL_CMDLINE="console=ttyS0 earlycon"
+ 	elif [[ "$arch" == "x86" ]]; then
+ 		QEMU_CMD="qemu-system-x86_64"
+ 		KERNEL_IMAGE="bzImage"
+@@ -37,11 +43,15 @@ $0 [-d build_dir] [-j jobs] [-t target_arch] [-T test_name] [-w workspace_dir] [
+ Options:
+ 	-d)	path to the kernel build directory (default: .luo_test_build.<arch>)
+ 	-j)	number of jobs for compilation
+-	-t)	run test for target_arch (aarch64, x86_64)
++	-t)	run test for target_arch (aarch64, loongarch64, x86_64)
+ 	-T)	test name to run (default: luo_kexec_simple)
+ 	-w)	custom workspace directory (default: creates temp dir)
+ 	-k)	keep workspace directory after successful test
  	-h)	display this help
++
++Environment:
++	QEMU_EFI	LoongArch EFI firmware path
++			(default: /usr/share/edk2/loongarch64/QEMU_EFI.fd)
  EOF
  }
-@@ -126,6 +126,7 @@ function target_to_arch() {
  
+@@ -86,6 +96,7 @@ function detect_cross_compile() {
+ 	local candidate=""
+ 	case "$target" in
+ 		aarch64) candidate="aarch64-linux-gnu-" ;;
++		loongarch64) candidate="loongarch64-linux-gnu-" ;;
+ 		x86_64)  candidate="x86_64-linux-gnu-" ;;
+ 		*)       skip "Auto-detection for target '$target' not supported. Please set CROSS_COMPILE manually." ;;
+ 	esac
+@@ -193,6 +204,7 @@ function target_to_arch() {
+ 	local target=$1
  	case $target in
  	     aarch64) echo "arm64" ;;
 +	     loongarch64) echo "loongarch" ;;
