@@ -1,101 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D387E606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58736606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=r4Dl88Vx
 Received: by kanga.kvack.org (Postfix)
-	id CF7936B05B7; Wed, 28 Oct 2026 22:55:00 -0400 (EDT)
+	id 646ED6B05B4; Wed, 28 Oct 2026 22:58:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C81486B05B8; Wed, 28 Oct 2026 22:55:00 -0400 (EDT)
+	id 61EBE6B05B8; Wed, 28 Oct 2026 22:58:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B70026B05B9; Wed, 28 Oct 2026 22:55:00 -0400 (EDT)
+	id 55C526B05B9; Wed, 28 Oct 2026 22:58:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BBAF6B05B7
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:55:00 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FDD6802AD
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:54:59 +0000 (UTC)
-X-FDA: 85374146718.26.CC47982
-Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B8419140004
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:54:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AC7C6B05B4
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:58:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A06131602BF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:58:07 +0000 (UTC)
+X-FDA: 85374154614.03.37A9B8A
+Received: from mta0.migadu.com (out-102.mta0.migadu.com [91.218.175.102])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 54BF5A0006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:58:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r4Dl88Vx;
+	spf=pass (imf25.hostedemail.com: domain of liu.yun@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793242686;
+	b=CWLrN/ssXJiuv/LRQPjCn19Vk7JiJmMtHqeCksjzRHuY+V9mZrtkR5LZLU4nT9tYW6wRIO
+	1FeotPnc84VDhejtnMMj+ayOUcMlCWSJNwcyYobhhhUQAsTIbC+fUaVZfmEK6edUOvqI+S
+	nKC8zumQ5gA1XCLbAV7mXOCYC+a+4b0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r4Dl88Vx;
+	spf=pass (imf25.hostedemail.com: domain of liu.yun@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793242497;
+	s=arc-20220608; t=1793242685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nwzRLqo3JIwT8sW8EedZYwfWsX0Ld8ECZ+PVvahOUys=;
-	b=ZasmJqsMmRGeBkbgTEDvlwxKqKn9sazZ52Vy1AX6WeDvhzapfPRxwwdVq4LmZnemJNCjzq
-	pAE3bMq3ed45iTAPLZMd/OwZL2N6/M8T386wOuVYDNRV1Mdg8vIAzFlqS1WOBSO3WX62vg
-	UDZkvl45h5bzAvlWeWa3lPi/JCuFWZc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793242497;
-	b=flU/R7lKlf4DroGeDQKNISb31P7nn1zo2TDYW78Swq0Kc7lJRltJO5eyK1J2z/hEQqq1oq
-	/iNhoaFo8X6uZ1kDXPq0d04LjzLFpUEArDB3suitFC8Cqc9nuzz/g0C4ZkwxyuHVLZswNl
-	A4ha66ZjqFuLBa3CAqapZJL4+L8MJww=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jFTNX0rb9zwXwL;
-	Thu, 29 Oct 2026 10:54:52 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jFTNW2YXfzwXwL;
-	Thu, 29 Oct 2026 10:54:51 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id 036E1314AC01;
-	Thu, 29 Oct 2026 10:54:27 +0800 (CST)
-Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 29 Oct
- 2026 10:54:48 +0800
-From: Jianyong Wu <wujianyong@hygon.cn>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
-	<vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>, Tim Chen
-	<tim.c.chen@linux.intel.com>
-CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
-	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak
-	<kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Phil Auld
-	<pauld@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, David
- Hildenbrand <david@kernel.org>, <maddy@linux.ibm.com>, Michael Ellerman
-	<mpe@ellerman.id.au>, <ljs@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <wujianyong@hygon.cn>, <jianyong.wu@outlook.com>,
-	<zhongyuan@hygon.cn>, <huangsj@hygon.cn>, <wangfengyu@hygon.cn>,
-	<yingzhiwei@hygon.cn>
-Subject: [RFC PATCH v3 14/17] sched/cache: Consider LLC load when selecting a single-task source rq
-Date: Thu, 29 Oct 2026 10:50:11 +0800
-Message-ID: <20261029025011.4004061-1-wujianyong@hygon.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261029022036.4002331-1-wujianyong@hygon.cn>
-References: <20261029022036.4002331-1-wujianyong@hygon.cn>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=z/VnQt5DC7ZDkdABthZSi7jwABJbhFlA4p/KW5opRjk=;
+	b=TZgJIpOSSu6MHpTOMyuocsBnX7wEOYvY9uGzlLxxDlXciG5IK8p3XIPRLhONEGKVKpyctj
+	eyqePqv2iNhkfL81Fi2kSopAzrxbpz1hBL8ci0WhXE2NxScPcwcu3DYm+RPc/2uCZH6Ixz
+	Z4uAp9eX0XPb0SzlI8Lv0pzyyvuLu4g=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2yJPhEA+osB6DVRCw5dTasiq5meR1ZntSgNLQBMw2zo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793242683; v=1; x=1793847483;
+ b=r4Dl88VxHTQ5u7jfJcN3OerbImh7YLUfp03Qzf2/uF9HvKKphBxtKAyThluKZm3Vvrcxm2ej
+ kNsqTTdScf/Qw0NAxC33y05z3+Zis9c4snvQ3p9vLc/ewE1MzMuxchj8WGBBRa4anebpdjtVi4M
+ J5cOlHNz3mlr3EeeoMlZXSrk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 14de6ad10eb9457f;
+	Thu, 29 Oct 2026 02:58:03 +0000
+X-Mizu-Trace-ID: 14de6ad10eb9457f
+X-Migadu-Flow: FLOW_OUT
+From: Jackie Liu <liu.yun@linux.dev>
+To: glider@google.com
+Cc: dvyukov@google.com,
+	elver@google.com,
+	pjw@kernel.org,
+	alex@ghiti.fr,
+	aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org,
+	linux-mm@kvack.org,
+	kasan-dev@googlegroups.com,
+	muchun.song@linux.dev,
+	liu.yun@linux.dev
+Subject: [PATCH v2 0/3] kfence: fix pool allocation failure handling
+Date: Thu, 29 Oct 2026 10:57:40 +0800
+Message-ID: <cover.1793242457.git.liuyun01@kylinos.cn>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
- (172.23.18.114)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B8419140004
-X-Stat-Signature: pxk5xtcpw9sfw5e49us6hu8acrzjsy9h
-X-Rspam-User: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+X-Stat-Signature: mbwd893wmz85cswz1ibadxdg35t9d9r6
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793242496-563826
-X-HE-Meta: U2FsdGVkX18ne9GELhmhbD7hGVIXHT/25+I9G/57gH0Fo4v3EgveErS46U4HV6R3f6IDIRYTXqy71/s7SEyP/aug9Y1cO0kiaFEACsYQQMhy+lUkLWhHnz9IagDwPfYuepuwIB3AHDbidLRLuLk3ATREdcfwj5Ab71yHCdp4ppdxTTv01HMPS6EBrAf+eJycRGh9Cnhb++kx/FWqAXgYvyzOFNeyJS9iNcmxGvNOm/rM6eAw7IXxQnVb4cZDeu82Han3Hnu8OppWO2S6rjNPHZgAzWyI7F9BrG6yNjqHEeKy77iUrlwb357K04oRb8Z11R3rWUQFEfKIAu21Oz6cx57b3uhqDdHQYqzLZ+PAR2AchRDNQayMbMU9ThtOFqVNbmm9qmEqFd7Y9uO1ImhEdeZxD1US4CE6MLg/EX2Q1/TO6gBT3mo2Lspa+6KqYJqMnAyU5m8/9vP1czngbABwneC7epaCJ5vaMtmIp8V0pOK57qf6ydZTLQO+ikie/FQCmobSHe4ZwlFpRSYoaCKNTly6cLo7mjPCpKGzy0zz3Fs4/tigEjz/cOBkbC+gpqDQk7uMPrIjPcgAVKPJewAeE+iJsPIkNf3v689MaCy2PGqoMX4AGIPn+6ViLfoOjc0rFq71pA0vDqX1pHvkrlir1g6qsWkvGIr8337zpkJ+u9slnxYlcbmpcb4KBiv4qZCL5jOSFbxqm3srrzu7eXBegYAIhKtBc07jra7nI9/6Rf3xD5J8mPy2KanHYEx3v7lyvkVOVCMFfjn/h7TLPquVPO7inkSMJO4GZhK6yXdC73zQtOI5HsVQfeUqle5kryxQdN4ip+QXEjYo0hTvW0F/vkSAzwa90ZipT3QvMgCTvHRCqC+kifuVswWv0l6SX8hMMViUZgdryDRG11Z0mS5xpq9lt8WYU0GRCLe1JNhUuQXPOL8zMStWUXakwgQIAuL50ZF8ZY/urxH/odo98BL
- 6xRz9wW0
- 5vKnAjyKuKSyVt224Er1Qg2XVTSvgz8Q3/9dcWlFOm7HZ7cv5Qd6SYINR9JZY2TqGaWN5hXY0fb/ptf9mO9gdoJMo+k7tcWIdvqOe2bNZs+fiVTD4Jj9Cexyhsmay/5NsrXrQ5nC/37zLjohSuidlXJeBegySCd+RXINE
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 54BF5A0006
+X-Rspam-User: 
+X-HE-Tag: 1793242685-131712
+X-HE-Meta: U2FsdGVkX18U5+A74QBnepvhimxEwiGIc6Yyf6khIcpECX3gz4auPPMOEb/CETKKLv2dF6MEx1wKywN2aH9FSc46bM8+Tw+m8/WzruM7yZmsANNqm8oA28Set9yBqUXi31mC5Pahu60LH6hkumlYRv/Dd3ExS2KvvqBgsh6lP17enf4zzWksKYNQ7Zx/l9HaaBj4ug/+XenKid6u0DyBDLD7wKafYJ+m0wG+mmjgFmzTzmUhAhCbMPUoUi+AiTd7d9h3KySGLyq9DmpdyiAU1wU5g8kuimRc8WI9Lslzb+xUSCnIbG3R0TJ/2bqlaxWknDNAS0/Bi7hbv1fCKxhN3gcBYuBjY2v1PetxiJ4twxIAYP5LHwERL+q1p/NrjBD7jOhUPiBwuABD6cJqZ/PdtvbQuU01TlC+q8ij/c9l2/VWZgBYklS4E0y7+Wmcz60CP/2UD4R0aKX4plZcvjCl5oFhVckss7lCDo53ZBb4v883ZNXqlo+TopIoahmPIWVtiK9vKeFw0yh4k/brcI627Oqva3OQ3UZ31Ep7GTFgytBidqr52wmuDttnDvDWfRVcQkP6klcP5UMW5TZq0izBWy5B9fK/qRLdJKZ/0V9wQXlUPmDJjM58nvrnyfVN18AZWg77m0CSKEbD9TQvkI23x88Xm6EA2Rl9jHovEVUJvjuZCZFuHKRc9hWAgBoGo27BJlVV2rweR0E7VFJf5EE3yXaEAWAGkdJRLUZVF1HS+BM5tQTXvVWbYIc+eXBim+CyJUEkH3tUqjqTaWvNjRJnkvwmqMtT/BfknKjHWVKJgF1t20xPoj+e5bUsB5e7FM4yshWOSzRCIw6KlPMS+QTmfE8xkOAOCH27AmIkM84c0pvSuult1E96F96Gj1GqhFQwDd93wX2+9YtKyz+3gQPU5nuFZWzG4sSwNu8M3/ijDW8/nJB/4x3GX8q3SYufWSo7X3kHcYTVxf+E5WwAdDJ
+ wwOU3okN
+ CXpwL+Ov7TFzRJr0DmjuKTGhTH1Ip/Mmjw80Fd7ohK0SRJGlpfcMNRoZupRS1uCUZB47zXqqdDHx6VdUrNAiIVDD0zgkUJ1do7hPNEgl5rhdg5Q/p9cD+8XMb0Gh84CA7rhvXk1rJU2vg/0t1odgl0FCmHOHiCfoZSfNSfJNwAlDnfHSQ+SpOsPRSdUzRehCsI6Q4SAFYzev/JLwlM1EI/9GlTY5krOBJYIYWxwPWR38TxfgQVWzNTBxwCYNzEneFziflIhWJL2Ie8doUPSza2HEd3D2Y8IG6LH5Fqm9JLlpx3rA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,123 +97,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When a source sched group spans multiple LLCs and every eligible rq has
-at most one runnable task, migrate_task selects the first eligible rq.
-It cannot distinguish an LLC above the aggregation threshold from one
-at the threshold. If the selected rq is in an LLC at the threshold, the
-cache-aware migration checks can veto the pull, while the LLC above the
-threshold is never selected. The excess then persists.
+From: Jackie Liu <liuyun01@kylinos.cn>
 
-For example, consider a two-socket machine with this topology:
+Fix the cleanup address and page reuse window in failed late KFENCE
+initialization. Also let RISC-V boot if the early pool reservation fails.
 
-  Socket 0: NUMA nodes 0-3
-  Socket 1: NUMA nodes 4-7
-  Each node: four LLCs
-  Each LLC: four cores with SMT2, exposing eight logical CPUs
+Patch 2 depends on patch 1. Patch 3 can be applied independently.
 
-With a 50% aggregation threshold, each LLC can hold four full-utilization
-tasks at the threshold. Suppose a workload has its preferred LLC in
-node 6, with the node affinity order starting with 6, 7, 4, 5, followed
-by the nodes in socket 0. One LLC in node 7 holds five CPU-bound tasks,
-while every other LLC in socket 1 holds four. Each task runs on its own
-rq, and socket 0 has spare capacity.
+Changes in v2:
+- Add Marco Elver's Reviewed-by to patches 1 and 2; their code is unchanged.
+- Drop the unused asm/kfence.h include from patch 3. Sashiko reported that
+  its unconditional inclusion breaks RV32 and NOMMU builds.
+- Credit Sashiko and kernel test robot with Reported-by and Closes tags
+  in patch 3.
 
-When socket 0 balances against socket 1, rq-level task counts select
-the first CPU in node 4. Moving its task would leave node 4 below the
-threshold, so the migration checks forbid it and active balance is not
-started. Every such pass fails the same way: the five-task LLC stays
-above the threshold while socket 0 has room. Balancing within node 7
-does not help either, since moving a task to a sibling LLC with four
-tasks merely reverses their task counts.
+v1: https://lore.kernel.org/all/cover.1793017073.git.liuyun01@kylinos.cn/
+Reports:
+https://sashiko.dev/#/patchset/cover.1793017073.git.liuyun01@kylinos.cn?part=3
+https://lore.kernel.org/all/sashiko-outbox-186543@kernel.org/
+https://lore.kernel.org/oe-kbuild-all/202610290904.wbrEL97y-lkp@intel.com/
 
-With cache-aware scheduling enabled, at domains above the LLC, track a
-candidate rq in the LLC with the highest utilization within the source
-group. Use it when the maximum runnable task count is one. In the
-example, socket 0 then pulls from the five-task LLC. Node 7 remains
-filled, so the move is permitted and brings that LLC back to the
-threshold.
+Validation on AArch64 Linux with Clang 17.0.6 and GNU ld 2.40:
+- RV32 and NOMMU: reproduced v1 failures; v2 init.o builds successfully.
+- RV64 defconfig with CONFIG_KFENCE=y: init.o, mm/kfence/core.o, and the
+  full Image build pass without warnings.
+The existing NOMMU warning in include/asm-generic/io.h is identical to
+that from the unpatched base. No boot or failure-injection tests were run.
+All three patches pass checkpatch.pl --strict and git diff --check.
 
-Keep task-count priority when an eligible rq has more than one runnable
-task. Use the per-CPU scratch mask added earlier to sample each LLC
-once during the existing scan.
+OpenAI Codex assisted with review, adaptation, wording, and validation.
 
-Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
----
- kernel/sched/fair.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+Jackie Liu (3):
+  kfence: fix pool cleanup on metadata allocation failure
+  kfence: clear the pool pointer before freeing pages
+  riscv: keep booting if KFENCE pool reservation fails
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 1e286296cd65..20a6a7f5c2f7 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -13357,8 +13357,18 @@ static struct rq *sched_balance_find_src_rq(struct lb_env *env,
- #ifdef CONFIG_SCHED_CACHE
- 	int last_node = -1, node_num = 0, llc_max;
- 	int *cache_data, *affi;
-+	unsigned long llc_util, llc_cap;
-+	struct sched_domain *llc_sd, *sd_self;
-+	struct rq *llc_busiest = NULL;
-+	unsigned long llc_busiest_util = 0;
-+	struct cpumask *llcs_cpumask = NULL;
- 
- 	lb_affi_scratch(&cache_data, &affi, &llc_max);
-+	sd_self = rcu_dereference_all(this_rq()->sd);
-+	if (sd_self)
-+		llcs_cpumask = sd_self->llc_stats_mask;
-+	if (llcs_cpumask)
-+		cpumask_clear(llcs_cpumask);
- #endif
- 
- 	for_each_cpu_and(i, sched_group_span(group), env->cpus) {
-@@ -13472,6 +13482,34 @@ static struct rq *sched_balance_find_src_rq(struct lb_env *env,
- 				busiest_nr = nr_running;
- 				busiest = rq;
- 			}
-+#ifdef CONFIG_SCHED_CACHE
-+			/*
-+			 * When every eligible rq has at most one runnable task,
-+			 * task-count comparisons select the first non-empty rq,
-+			 * favoring lower-numbered CPUs regardless of LLC load.
-+			 * This can leave LLC load uneven even when individual
-+			 * runqueues have the same number of runnable tasks.
-+			 *
-+			 * Track an rq in the LLC with the highest utilization
-+			 * during the same scan. Use it only if no eligible rq
-+			 * has more than one runnable task, preserving task-count
-+			 * priority while helping resolve LLC imbalance.
-+			 */
-+			if (busiest_nr < 2 &&
-+				!(env->sd->flags & SD_SHARE_LLC) &&
-+				nr_running == 1 && sched_cache_enabled() &&
-+				llcs_cpumask && !cpumask_test_cpu(i, llcs_cpumask) &&
-+				get_llc_stats(i, &llc_util, &llc_cap)) {
-+				if (!llc_busiest || llc_util > llc_busiest_util) {
-+					llc_busiest_util = llc_util;
-+					llc_busiest = rq;
-+				}
-+				llc_sd = rcu_dereference_all(per_cpu(sd_llc, i));
-+				if (llc_sd)
-+					cpumask_or(llcs_cpumask, llcs_cpumask,
-+						   sched_domain_span(llc_sd));
-+			}
-+#endif
- 			break;
- 
- 		case migrate_misfit:
-@@ -13514,6 +13552,11 @@ static struct rq *sched_balance_find_src_rq(struct lb_env *env,
- 		}
- 	}
- 
-+#ifdef CONFIG_SCHED_CACHE
-+	if (busiest_nr == 1 && llc_busiest)
-+		return llc_busiest;
-+#endif
-+
- 	return busiest;
- }
- 
+ arch/riscv/include/asm/kfence.h |  4 +++-
+ arch/riscv/mm/init.c            | 18 ++++++++++++++----
+ mm/kfence/core.c                |  6 ++++--
+ 3 files changed, 21 insertions(+), 7 deletions(-)
+
+
+base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
 -- 
-2.34.1
-
+2.56.0
 
 
