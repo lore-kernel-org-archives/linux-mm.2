@@ -1,102 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57993606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C5D606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ofbH3Y62
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=UeK4r7He
 Received: by kanga.kvack.org (Postfix)
-	id 73D086B00EF; Thu, 29 Oct 2026 10:10:51 -0400 (EDT)
+	id 804D56B05B4; Thu, 29 Oct 2026 10:13:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EDAC6B05B1; Thu, 29 Oct 2026 10:10:51 -0400 (EDT)
+	id 7B62F6B05B9; Thu, 29 Oct 2026 10:13:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DC846B05B2; Thu, 29 Oct 2026 10:10:51 -0400 (EDT)
+	id 656A56B05BA; Thu, 29 Oct 2026 10:13:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 37D8A6B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:10:51 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2F771C3B6B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:10:50 +0000 (UTC)
-X-FDA: 85375849860.02.EC31FBB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 05D9F20005
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:10:49 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ofbH3Y62;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 38B7C6B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:13:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 71F891202CC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:13:56 +0000 (UTC)
+X-FDA: 85375857672.16.DD7EEA8
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5D8431A000D
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:13:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UeK4r7He;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.218.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793283049;
+	s=arc-20220608; t=1793283234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T6jBwgB0mzd2kWy+BfoLDGgcNGK1100O7enXCOOxA3k=;
-	b=qbfoYxeFWMjT3Scv94IQuly4HMumpf3dN40GYD2d9wXl5X8L3EHHGkq1dkx29Tu2aBiGZI
-	mx7GRf02TUdpQ/GCM9UxczSsDAduwBrSXY4iDMzhMGKl7+0+TzPuQ0+2CFMGyjXUl4GOzH
-	Xgw858qN8ydDmBh9TkXb0prLqpt7egA=
+	bh=VHQCBBokr9ANF1mnkSximMg4YC5imaFH/YUHtOF7V4U=;
+	b=ng74J/g3BInTxVABYKQsPI9aOSh5lS5VcG1yI/Ylo+1vpBjSvl6Ckkxsj8flw/zIvq/nWF
+	NxflgaWeG1KA0YRpAuNxDB3LhpfmnUUMCMXqkPg9YcAGv5WMtZarlwkv2Sm/rISmy/RYbv
+	ubbJc1cEjqZr32V5pkcD9ex1Nda7bBU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793283049;
-	b=kgfJKZiQSy2pHppDEXpXFopzTVQwsNRZLU/XAkfKu81teCBUBDsGmURVsoHloGJJJKSQN9
-	vCQTLdLhfGAxh0hqS0MUDaOIfkh0cHSMCgrVemH7hJmk9FKThY5K8pCDEUta7OyvCN+ssu
-	+2S+dmBgrNCs0yTiM9XFgmutIkVwbMI=
+	t=1793283234;
+	b=lDtqX/gDze4Ypt00bNjwpJhrxL2CLj/22DbQ/HsQONgIgBsATDYtHRTyFKZ8gLYfBDfdTa
+	fJ+lzCM+yYgxrCAQ1aKDOkhuVTHoKIIAiZvy1ysTs9H0ArkmAahcgY7/GSnhN1PR1xoAex
+	u00jL+FWpfVURmZonGahpPJtrpx7ccE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ofbH3Y62;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6159F4165D;
-	Thu, 29 Oct 2026 14:10:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C076E1F01825;
-	Thu, 29 Oct 2026 14:10:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793283048;
-	bh=T6jBwgB0mzd2kWy+BfoLDGgcNGK1100O7enXCOOxA3k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ofbH3Y62HqYpuqTQ/c4/VW+V2KrlrU26ac96H/imGeTXuJfi45MHa8Gn0m/qlcJxq
-	 RZ6Md1fc3/YT2PjPoYLfD35mVwuRy+lkSAWBKG1zXteuYW3UuM3kqLcelqnGzuA5pv
-	 sG4eYTJDftBSbgHNjpym1EU92+c4R0z8laWYPHWgnkcWG2B89L5RKZ/vXDTEf5sVR/
-	 DSX687NvGSA3+Hk/hj5wkVCMv3iazPeJXjGGW4Z6WV6paQtY5zx4VC4K/gJtqVrRLI
-	 x4RuXoIvR+N9dgtWWq+zWE9r/mqI4/Dl4WguTRko6rl3FPhuAKPqD+/BEgfszS9+4+
-	 8lIosbATeLo7A==
-From: SJ Park <sj@kernel.org>
-To: Xiaolei Wang <xiaoleiwangxiaolei@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	error27@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/tests/sysfs-kunit: fix leaked pid reference in add_targets test
-Date: Thu, 29 Oct 2026 07:10:40 -0700
-Message-ID: <20261029141040.148392-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261029075609.35661-1-xiaoleiwangxiaolei@gmail.com>
-References: 
+	imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UeK4r7He;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.218.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso387774666b.2
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:13:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1793283233; x=1793888033; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VHQCBBokr9ANF1mnkSximMg4YC5imaFH/YUHtOF7V4U=;
+        b=UeK4r7HeM12Actt+pHgRABm1GjmdoWM96dKOVvAX6cofADGdPi7JeSSa0lWhFVURsm
+         FLaJkOI/jGb2M3CF3jXduEsMCETng3mnhrKUCv0555vhrHvq9dXYzb4APeh/1jLkzbNs
+         bUDnwT6y1E+fEVDk2ka3ZYmqE6UDlTwvjaAS6GsNv5S1ur3xkQc/ZN5pV8LUrl6QSNXM
+         1r2R9A6v/6s4aKwLcpoS7j3Hvbtjjij8KNTo4SouAYynzBBoLpG1ILTvgvECmX9FjuyW
+         OH+Lz6n8RpXfu7Hgb8IvIH30qKLISqm+UF8LCCl8l+0f8E1QQn15KRlzledmIeFITh9N
+         19ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793283233; x=1793888033;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VHQCBBokr9ANF1mnkSximMg4YC5imaFH/YUHtOF7V4U=;
+        b=FAe2PPBgRxSkcjwUBx0NeTlus/vaLTNBrEujfy93OUq92xL+JZyd3YFS7wi0O+nZsu
+         K3qN5aJ/b3fsYcl0RX/iZkyvfRE4HEyqJQZHmHwVs4X8QTyCYzpEdOvTXZW2Ydl9X0yL
+         3tg7eXjA9kMz4yJvQAl5TJP4Hvfz4VfYjfRG2r+oU+qzCJPb/UVhmM3zVKqEmdsMinfh
+         MuK3i6/QqtuE62HZPA4q8nrEK8AJ2RA5/MLP2c/mzih/XGcgyxKE80YVmU9tWZShPbs6
+         +y3hOdz/7yVZwcjT4ScQoC77qVBfyGkWqG85qYjeqEgAXWFCE3fylVvhLkMpyOSvBLfD
+         ECmA==
+X-Forwarded-Encrypted: i=1; AKwUvBwoE/VWdvusm0rvye5zU+agAd1VgEcpzLKs4IQbEYqRzGIyJ+XfXfKCML6V7PFptEueVjm3bkRTzQ==@kvack.org
+X-Gm-Message-State: AFq9FYLdyNjrbB33lxtWCpvZnJQdSacsZJJdzACWBq/ZMYSq1LB5vIlJ
+	hSqJAwGk6pRb+n+twQBsuPhEX5HAQi4KUWzPQjBo5In/Ycg/IOqt1lt1gkpXtH6U+QY=
+X-Gm-Gg: AYBFou3kf+5xSaRIZRuQd8gQiDd1X1GoS+mBJZoN9ieRkf21WHMcoxztq53WPcF+Jq9
+	E1/+t+Uk4klkU8mNofK5FHqdhSDeeIBCSFe0vVqww24v8KUPxL3obE7slhlc9nEZY4psodVlQPR
+	83CC5NlttAz+MZIQi5aW6k2a352kPjbwdu3dxYAx/hBC479zxMu95JcHtF9DDv40LY5IQ5gP9d0
+	XZLsXV58452ucIDjl5PzfjSSbq/nclkzrvTsKncRkn9n5f/KYnlkp6JlxNhkQzEMQHu6ZaTxfL0
+	mNpJe7Qk2NloKTBGOk0ez4wXjm7jmHXDRHtMaSRkzyhZtOeohv4FshjqVFzl1WmpvBJ18Lz2wyF
+	b/35g39xeQW6EMd9wS8IakY65YDLzm9BaJcB0NSzZfKRBTJnAMEfRAjZSFkbdvhb4rAmIXQMFvI
+	0Z9OOrX6rOtcQ6KTenMgWnf3XyrJpyRDtCqhakZ/o0s0zlPcWWKtzQ4K2c3C0NCrXkUGR/Z1z13
+	Lc1KVAhhXnhPy4vpwnsDRWrYpIYyRNXhQhfpozJ8gcvio1UUeEywsqjIgIY+yvvUryeAn7CJwNi
+	lDsE36aBClOfB6TNAzs=
+X-Received: by 2002:a17:906:7313:b0:c45:c030:732c with SMTP id a640c23a62f3a-c49be03a73amr545832866b.41.1793283232717;
+        Thu, 29 Oct 2026 07:13:52 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:4::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4992141068sm521507866b.60.2026.10.29.07.13.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 07:13:52 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 05D9F20005
-X-Stat-Signature: oyw3xfbusgfx9j1fab156ii6h6xp1oh1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 18/46] mm/khugepaged: check if PTE table is empty in
+ try_collapse_pte_mapped_thp()
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Gregory Price <gourry@gourry.net>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-cxl@vger.kernel.org
+In-Reply-To: <f9067f65-fcdc-4ebb-bbf8-84db9e22af0d@kernel.org>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-18-6f74bec9a5bb@kernel.org>
+ <179323853182.453251.8510731747954180380.b4-reply@b4>
+ <f9067f65-fcdc-4ebb-bbf8-84db9e22af0d@kernel.org>
+Date: Thu, 29 Oct 2026 07:13:51 -0700
+Message-Id: <179328323124.453251.12177231963891458248.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5D8431A000D
+X-Stat-Signature: iky8injtgny69gez3cuktwukdchp9oqp
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793283049-872202
-X-HE-Meta: U2FsdGVkX1/Pa6XYsvu3C6DabIeIGK8R85HWs/aON2L6MhfzSFD7wI09a/WC9KeA8igt3mnJlYx9bUtU+D6vpawjhz/3Qvifp+qaALMG68bhIQqsWCNVD3TKmYuf8+EFL9GZZ/zKa0YgYCv04ekFFZOvVkgP4sfaPRd4WlzqJ9ZgDH+/K+Y+adXGmCRFioYYU85UyBKg506OojfId5VgF4poqBNWM9qYBf7ZiUA+w1mMjt5qFOFSj53Qbp47kTpm5xJQo1U9+0X7LvImwWaFYSwh6JWhVczCgKEu0eGmG4iqqWBVW01heTJw4LnD3AIdOcEHSwGCPZI5Q6SFHtbYL+pdmkikzbx0xoaxSYQPQ5nbcFk282jEI0yPaEnbprYnklaCUKQLYew9e3fLYvVHZ9LOGytZetObrxk9vzmUACaINEmS5S8JJ9gSflCtWUqjUQbnpesh61rCvONjYxWzA0sCQSljsavaMN39QFWo+880Q9DO8FP7NrE8eJx6QxE+eFf9smOVL6+oiLIcS2tJdi8qLXSqK0JmIPRkPorm7bm4FZBLgdKqcVFpRrQ+8v3woJdLE9hjVHwGWDBXxo3sbT5wg5uMkjvQGvpHrh7pWrd6312TQ/7z3UZiUfkf1YsOhmq9X7cea6M++1ntTDUHZBvmMl0s7+HAe9Ll8vTFjM1V4Fi3vO+v5ZT1NHx6ZdtrqRSlcJxFLwjPxwAqPMcLuihcsSqy9Do2m0LQ/hs5l5eluL/ACMsXMqvABRr2L/9VJKMuBXoPvOiiHVlu9hmdf9DvElz8E27TRQ3wr+RM/xK6pdJE6s9j1vri1DfHu7C6KbtWFaDr0em0gvTT1FtDYE5xu6YpTBUze69dC1IjFyMpfWo0MwCrlOX2W7rZNjaI4d9VXThK14fz9DAaaraRfc6no79KdbD07257RVeXDZ3ef4K9+39UMj3Uzfl3UfGB5svHd2FToMYeTO9S6/d
- 5+mWlc1d
- B9R1UQE7bGzTYwtd6akhu8qchF7FWtdDvh118U+OfP1bDMmQZ9qziNB6cXTauJCRAwLg4S60YDPQxLFdbcmaI9m6UkvMZbHg7jnccrIBW3nLYv30HeLOPZ/Y/LMuUyrzpnNItaKZ3R4i3XOEyFbg1Edx0WrR7LJm1+13Y+t6LegsTxxUTpHDQQSsOqC1w4qzfPvl3P89izoT6IxvvhTySM4ICNmOvmMjYENX/j/D5GNpUgonczG2b6PGY2mAgFmv5mPL8q8d9TtCIfMrV5cxKR/rB8f6yL/EixnPNaZ5wggvqpSq1ujF5a1ZVD5V1H4Zfb1ieUVUZ//7Zelf8D5vdp4EZ+nlV9QFw/dBUqqd5hSjcB9TXFvs+hhXId7nEsM4AHwXDCOyMg6rAfwc9IRaPfUzkmRn0TPQ4lC5rehLeM9ojKTD0ZMbDLmrECDmEF3Yu1AbtAjkFIxpX09OZVtL7SAZeUw==
+X-HE-Tag: 1793283234-840826
+X-HE-Meta: U2FsdGVkX19WppJ2UuTA/2Ln9Kr339NIcSCxt3rd0sfQ7YIew8gRsucck5fDCpGeoUnQ/h7m25CRtD76NIpCPim09dsF60GQjWGPTbsMYIVbuoSQ3N9NiGz2lyC0/Mp01ax+DPn07FnQ+sp3XoyFSO5l4buWv/xSTvpTkqEXg0VrzZLKtbgiwHcywIPEcZZFk7WQI6eUijsF/4Eu4IJJ60cSBS/5WY7uL0a0REudaHTT9YX+2CHHqXQHj0/NR759SR3+Hhj0GjWo3JBuhjXM1Wjh6+uvaYJIz4NFU16X4xQ1pZQLtMFzVzU36zDoNB8mJkv3TnTw5sZCM+olzTgm8g5MPrU7JXrBswOZpC+3qsfThNTtqFhiEERLAO0ohTSug0WqwtMOCO+Y5/WrixsK5DLSGI2bSnPANOShS5dzyIbA2rhsYHbgB27jgth05j4D6pbBHdzdjHBf5yQ1L9YvbV0oiYXfwcMxOQMNCUj46JJGxk9FADdmapS5k/7wwU6+OUKbdGq77dK6MsOjvhdB93iYQ+CahiSClVNU74jnWS2WIicSx1As3SrEkm1lJEnjK40GilHjVccZkapdZZoowijJgHPgW4Rgaoy/guy5SoKMpPugHO78WWL+Q0IiI0pWvAZMwz4JyKsC8KktLr5Vo+PDu5Kd+QtJExN3W79mtjjdaxFO5Rs6DK+bcv65FdIWmZcllnqaghDf+gZ8rn07NyguSHU4jk6VSapIma6fMO4S+YSYjZpb8YmhoMA5zsklHl/M/+p2bHJ9nVn0apV810JzY/c5c+lg7cbAafP1tvYOn/0QmOxNabgXlbKaSDwQ4niu293fZzWTzvZW7FF07vQ8jZdjcuzm1bJQOCcgataPch/859BOz4LlgTg+QVWEvfvj9f6H/epgeeVViR6Yx/JS6LkYL4LUVQyI2LtyZHyMRgzXiPEFzgmc0Dg8Mr3iGQPe46Z9Rq0dFIF+wsW
+ +i2VnOUU
+ v53l4Oa6FC/lk80kFQ1TF4uDDaVX3S4TJjpjS10vWF5qB3iBiuK2sfRGLUmpTHnA1Uy7iRPx+LpE0rno2ekGCqpEcDDyK2QLlI1S/Yq/UV2zdCOxEr6xegEGkUYqSTE9tBqKCL52w9BSlxegooHOwWUQkO31Z/8pprLwQu2FU99ESAkMayGMYM4YOdKyMfPORMbe9pzaGNhh/2ah7RzfxZ/O4BFycJz8vEgbwPSUcS+RSCjlgEkj8dVk5lxEaOxDDL3eq7vOEDCUOZBrRMHHdsWMzV603AylsCYdjgmDQ/K4Vmz+LgZAnETw7LXbWzt7aWR5fZEevuu+wbAI9t/gHFgTn8od2smqnuhl8MMjQH6VypioaY/Pewmc1Y4zhZgjx8J8Xpuhe2VeisXL01Eu5NaZwqF4xlYTwWs62QMJy+7+dIyYI7D0fiVE8gh1eTgldN34ARkXzuPaJBgMicJG8oXXfL/2r7BGZ3ayFDcP9MNIxCDqo6hc0fU9zLZyjDaJt7ORgzwsO0iUvrBs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,63 +162,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello Xiaolei,
-
-On Thu, 29 Oct 2026 15:56:09 +0800 Xiaolei Wang <xiaoleiwangxiaolei@gmail.com> wrote:
-
-> From: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
+On 2026-10-29 12:01 +0100, David Hildenbrand (Arm) wrote:
+> On 10/29/26 02:48, Gregory Price wrote:
+> > On 2026-10-27 00:17 +0100, David Hildenbrand (Arm) wrote:
+> > 
+> > I get that you want to avoid taking both locks while zapping, but
+> > wouldn't it be simpler?  I suppose we don't know what kind of
+> > regressions might pop up with that though, bah.
 > 
-> damon_sysfs_test_add_targets() creates its monitoring context with
-> damon_new_ctx(), which leaves ctx->ops zero-initialized.  Since
-> DAMON_OPS_VADDR is zero, damon_target_has_pid() returns true for the
-> context, and damon_sysfs_add_targets() therefore calls
-> damon_set_target_pid() for each target it adds.  That function grabs a
-> reference to the target's struct pid via find_get_pid().
+> Exactly, that's the spirit of the original code. We would just block a 1GiB
+> range of va space for the entire operation.
 > 
-> The test then tears the context down with damon_destroy_ctx(), which
-> releases such a reference from ctx->ops.cleanup_target().  For the vaddr
-> operations set that callback is damon_va_cleanup_target(), and it is the
-> only place where the reference is put.  The test never selects an
-> operations set, though, so cleanup_target is NULL and both references --
-> one for each of the two damon_sysfs_add_targets() calls -- are leaked on
-> every run of the test.  Running the test with CONFIG_DEBUG_KMEMLEAK
-> enabled reports the leaked struct pid objects as unreferenced.
+> If you think there is a more elegant way of doing it (while minimizing holding
+> the pmd lock), please shoot :)
 > 
-> Fix this by selecting the vaddr operations set for the context before
-> adding the targets, mirroring what the sysfs interface does.
-> damon_select_ops() fails if the vaddr operations set is not registered,
-> in which case the test cannot exercise the pid handling and skips
-> itself.
 
-Makes sense.  Thank you for finding and fixing this.
+Elegant and this code do not appear to be compatible.
 
-> 
-> Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
+Another look, i think this is the preferred route.
 
-The impact is leak.  I think we should add Cc: stable@.
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Cc: <stable@vger.kernel.org> # 6.7.x
-
-> Cc: Liam R. Howlett <liam@infradead.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Signed-off-by: Wang Xiaolei <xiaoleiwangxiaolei@gmail.com>
-
-Other than Cc: stable@,
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-Assuming you agree to Cc stable@, I applied this patch to damon/next [1] tree
-after adding the Cc.  I will repost it next Monday, as an mm.git merge request.
-So, no action from your side is needed for now.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Gregory Price (Meta) <gourry@gourry.net>
 
