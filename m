@@ -1,94 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5000606A33F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00C9606A32D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 18:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KipDBXKq
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=NmKxoPwv
 Received: by kanga.kvack.org (Postfix)
-	id C22236B0644; Thu, 29 Oct 2026 14:43:57 -0400 (EDT)
+	id 1AAA06B05C7; Thu, 29 Oct 2026 14:52:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BABB86B0645; Thu, 29 Oct 2026 14:43:57 -0400 (EDT)
+	id 15C816B05CC; Thu, 29 Oct 2026 14:52:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AF696B0646; Thu, 29 Oct 2026 14:43:57 -0400 (EDT)
+	id 04A936B05D8; Thu, 29 Oct 2026 14:52:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7780B6B0644
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:43:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 01C241C277D
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:43:56 +0000 (UTC)
-X-FDA: 85376538114.27.BAFF41A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4C04A160006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:43:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KipDBXKq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D7EB76B05C7
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:52:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A47D1A051E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:52:55 +0000 (UTC)
+X-FDA: 85376560710.11.6DB30B3
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7BE7E40008
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:52:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=NmKxoPwv;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793299435;
+	s=arc-20220608; t=1793299973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CtpDxwIoT1nrTi1nrGQzeAHOqSMBl/MAyoIlA+VWnP0=;
-	b=TUKsVqNVTq8kA1tJsgMaRoBEVnwWd9XDu+l6pG75qc1LnmdQ7J/P+BHFCN4eEaI9q4bmIh
-	2YWO8oRr4HPtcTBhqHvOZS9vJHbbXyqpsjZWTn4eRxdXXz0Ma9eVDCOWG+LBaJ2gEEc89W
-	KjEChzlCi7DTjVD1ST6iN5j93qominU=
+	bh=kPPto5KE/jC+RmkH+6jKlnfiz+VihZ+geh+WGRQD6SI=;
+	b=lSjmH2VNc5QtdmwtjjMNGW+6fd5bfV9dFPlvZFbyttEPwUFNr+azMCpn9p1QmY7duhBvR/
+	x9ZHpzibsj9M5CCTtREDa82b4B/0i8eUS7nWyHE7qvAPY8J3tB3i69lBTv+IYkxNQtS9nJ
+	w8ne97R6MSzHmZ9mkiGPJkXAHLYRfmI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KipDBXKq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=NmKxoPwv;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793299435;
-	b=Oe5w1mjOaSOgLWEYvbThRtz53f6aXw5/jfJQ83XCNEYWwItgg0HUw1prmRf25z2L+xXL6e
-	cE6Zj1BFJkqMq+e68iLUriiqQYlei8ojnrchNt3rrgbTFvfQO/S9YFgdKZbcstiYf+53Sj
-	KnpIs6C5AsyJFSKsbmK47GIVZvHN/bM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D1344389D;
-	Thu, 29 Oct 2026 18:43:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C7C1F031F2;
-	Thu, 29 Oct 2026 18:43:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793299434;
-	bh=CtpDxwIoT1nrTi1nrGQzeAHOqSMBl/MAyoIlA+VWnP0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KipDBXKqL3PiEjjs0hHts6XbTkKe1GoyzxvHUP4bLeZ/wXx/lL8mFdW7MCCk5ynuk
-	 pRhsIAnmUu3ABfkvvj1HAiRbpimojIH6qU86CZQSNrHpPU4Xajlh2pyo2Tes7qxrOu
-	 EEKwDpyUb+PCrPqZZ49uG3l8ATnqhZMpuDDtk9ibaaqy28dvICetwAI3STBGLw95gg
-	 sF1IFVBYEOXAj41Nffq9ck9wDbMEYg095wJeXK6zuhxxVP/5g+V12sQhwHGBPDDDMk
-	 QhqC/rythRBSvt9wfjXr3u4YdLAQ8JxwGQ6amFiuN/70TSpo3QDhMePBCy4zJ4EVcp
-	 wO+MUEySOCGUQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 6.1.y 0/2] mm/damon/sysfs: fix pid leaks from wrong error handlings
-Date: Thu, 29 Oct 2026 14:43:24 -0400
-Message-ID: <2026-10-29-1-daily-reply-0017-damon-pid-leaks-6-1@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261028141723.161776-1-sj@kernel.org>
-References: <20261028141723.161776-1-sj@kernel.org>
+	t=1793299973;
+	b=XDVNKm/afeQCbMIaLCpd/EAQVOTE6BFQN9WKKezNvNLmzANcVxDX9ykfiaEKGkVZrIcKwd
+	9ewFlKm0cccOpyVxPVGKBuMAd5pJ3OCeWeEd0/A8yh1w5q5LVMCyqPReejQreQJX2Q4wIe
+	rs4aX5/DOruXnG8VF9gAlCZKZNOxmWc=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f22a8515eso212007885a.2
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:52:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1793299972; x=1793904772; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=kPPto5KE/jC+RmkH+6jKlnfiz+VihZ+geh+WGRQD6SI=;
+        b=NmKxoPwv+3Honwo8t0ABhzZDXR7cunyh1eSxS8qKEnEyPActzExSBYi+7LPItOy/qC
+         6hXrzuRRszaGMISq/0aEgpv1JeKCamcsndybfLc+gO/9n2uOBJzROYljZlskvFfot1tz
+         R0alNuNuIr71QXoTMj5lCNfYpzzlC6eyJdFmkHfADYyN19qlUADleUXW3vFer8cYUliw
+         hzeQsEn0fP370eZeW4FWNGo2U1qGDsF7YhMF6zILNwyN7/xoCKhfgK5PR1PvyZiVNfeZ
+         bvs1DOlnogj3hcgZ+lBbKGrPzQslBpCOQUiguri/4sLbXMu55t+vlVWjuL0QWUWxfgwD
+         D3lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793299972; x=1793904772;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kPPto5KE/jC+RmkH+6jKlnfiz+VihZ+geh+WGRQD6SI=;
+        b=XVlLp2RTgzHSibDB0Dc+zH027gk+mutKESPpsklVr8CAmkcXthfDNyEcBA5CRDZAha
+         dnzmf1Uoq532k1BxJAq2Ffp/mZ1/a99cUAiLjxTp5TijBb3ylJ7as7ZSHIYjG3Xtdlwz
+         YHZy1IwvQL/nkAx3ZRYgYjCEGjCeC2ybmivuSpYzfAb0j8iJ5Pf4tnPcewMmSrYpPPqx
+         90RouyBgAsZLWpOKQf761alyMCaZw48IVMLe4UK+FDQqgGOy+kd0s4/iK/IJhrfBVwKf
+         of7Ypd2dipOK10uDqxdu6Hpnmm+Qhf6NX4eaf78Yiz9IyZkwmGXETeMLHcPLGaWKnucD
+         YZzQ==
+X-Gm-Message-State: AFq9FYI/mLAdcHZQUhWuBE25kWyejeDyaLjMzEfBBnwLZ453S2Rejdyb
+	OsVAYiooBbzHV/j5Y8KiQ/DVsEEF2EZcZIbrA5mBE5nulveUr+W7vCg6XZIJM03GU8Q=
+X-Gm-Gg: AYBFou397IjX0updAAIWiZ0gUkhYJyx3XXOkwL3QSSEbH/ZeGQeBUI+orfaPIyulT0/
+	rgEnnrypWRLU/h8+Z1wlOpOhC2wxQwTM0X+boCQeh5cvT9cMVuxY3Arc+8bK1cx0Rs/Q1cTw0VT
+	3fUs7dxkV0HjrrBW2DHLpof8CA69Np0NBMCM+WF1bhbETC97SgvJexQWEFisZ45dNw1AjpFdWJl
+	2V7kun2rhrHDkMB1SYpoYCOCCuIEIPsY6Ig+LiQYPZc+JlVg622BqjLtZd7WDNYFxWNhF/vTFBt
+	BllBqqFwo1JbTQjRhd6FnBusfCrGn4HJhCi6X90DdSTgLGtDmt53K0gRkj9ewnm90FtVcxHWbYG
+	te0U+VusdSyHGmhVvq1cnNnt34rYpoCPH3jH//ThG3dphsME2xjJ8WEP/v0csw+baCFoZT0xgwm
+	gr/vQS9ZS0GdSIbxcSjuIux69vQKiR9iiUfZRf0TXnbYmkgwENtNQajPaxYh27zJtONQ45bG+be
+	FkJIxuZSArWlXkwObtkDISKz0Wgyaco7Ggv//euZ1lWXs1p2OAlNLk2ozEwGO6stZT84fZnXi/7
+	1aQGyrX8wNzYdJfGNSBunuUEXIFTur6H2EcBV0FWtk9x/seYtVkuOQ/QFoLIl17sa30qOpRZecW
+	9
+X-Received: by 2002:a05:620a:2686:b0:93f:5f83:2cbb with SMTP id af79cd13be357-94421581847mr21461385a.7.1793299972404;
+        Thu, 29 Oct 2026 11:52:52 -0700 (PDT)
+Received: from [192.168.86.58] (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca31581acsm3343856d6.36.2026.10.29.11.52.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 11:52:52 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4C04A160006
-X-Stat-Signature: eq3dwtepe88ft537u86ekturjg69heug
-X-Rspamd-Server: rspam04
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 0/8] mm: fix allocator races with memory hotplug
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Gregory Price (Meta)" <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, 
+ akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com, 
+ rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org, 
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+ mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, 
+ mgorman@techsingularity.net, anshuman.khandual@arm.com
+In-Reply-To: <20261028211930.3504634-1-gourry@gourry.net>
+References: <20261028211930.3504634-1-gourry@gourry.net>
+Date: Thu, 29 Oct 2026 14:52:50 -0400
+Message-Id: <179329997091.2127828.9582419476069377621.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 7BE7E40008
+X-Rspam-User: 
+X-Stat-Signature: c8ntpeqg83xfikmb395u9nputjcew39c
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793299435-327695
-X-HE-Meta: U2FsdGVkX1/w7jBd6tinvGLPShOfGSm/CUV6E8YQ8dESb4alIaUkL1G07EKbrvaic7z4OVxYFq5xf0rc3cf2Ur7ugdosmr8Qh3wryx2tFt+qZdpNJ6Le+UQeeMxyyr104jR5dijvUCXqrg9nAD7ej5kP5h92nhyJDp/w6da+eVeCTiAIiyHn6yedCi041M2t9Pz5qNcj7V3QT4N16gVJ4RMDv+41/KKorkgZASZ8hev3l4vkS9f+K76s92+2WrCa2dHnBByuArNH0bea2xp5WQS9eFxRZoQgv4yHwkjKURpKpQgBz9o3XDf3SCCpz+vbHjBsAKANXn9my5+dU84+gPwpt6Ay4MLDoeQJGsv7jJACiqJWu2YRy5yFZZCByufMbmNDSIAjyxX5FsXyRnIfNdEO1VJsQCYve9UcJlAiORAElcIUX467W2UINhn/5MDe+I0QE4kQoNVHtjPxrlSI9+s60QQpJh8CXfQKZmgrr4shXAzsY8WtmSEKEI9FRPRJ0S8ExpnjQe+/dAGUqmlNr1Vf6I7q4ckHy+0UNsAtLibEqnmfnQiF00ng1pgfb1nxggkP2ZsaSRWRQd4ysze2ar7PF7eP0wxg7LPY8gSNmwUQyYLuHlcTn3VGfXh2yRxeVJjusgvCiwd6MyzPIQJYDieA8MLeYNh+ckyCzY9t9qCoeAI1rnxwruYbSxsOeLkXwtaC5JNBnls1koG8bh7fxjyoFeF3/bYz6uHMeH/3w5YOfKRh8bN3R4o9lxgPSZ6ExbVRDx3soRY74DwRtK8BJnGdpATfXn+BxC1n0Wii1/InJIrEWTyOUarHxN/+pmkUyiIZep77N+8GC7j6j1P5Qu53hvmWxvr0zZDMVnnbSknvztZd5r2/J03CkCZur788lXPZu1TisBuwMX1ps31lf3BJD/QfFUi4K9Do17U65X7WGNPhGg/NbUUyBj3I3K6w9QkrZOxcrRahZ0fxBw9
- 8w4wk1Ml
- 9sEliZuWwoIM5e4elKNqaqNqtI8phRCqLzg83cmfgmoUq+cBT+VkQ1ljPoVWvCaW9hA35VNebSBo6kz69YSw0K85ZswosJIPyVKvG2AJjomXP8w9I3ZLUUeyQTD/UUemMq1MiPBRW35c/SVMeU/M6zc4hZNJbZ9krbzLIzDyr+xwTCGmd9SuFdUsIzFpzYa7RjzXMRbMJeKerZ+w=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793299973-856144
+X-HE-Meta: U2FsdGVkX19V0hkxfTNrJRUGySLzI00rysftZJsC3u6xGSxdEiFcdi44KdyZhYg13rzbI5Ygx2+HPo66khSTPc3Q30q22n7952afuJmLKXiIcnjJEhvIGq4v+EyUEZbvakgNS35y7gaBnUUjRayW8qTL51vOVdaD16Y/rKFLfxQcqvqTZNqoo/CZRAzgKKk2TXCZnOTi1ZmfhQcJ+P2QLzmDcptS9d0NcqBgbii5kILdPrQhKuuOeZ0xKAQSy1QcEa+9DVMXe70ujd7wflVvxCllyR0nWLUelLow6wPVQJl9wkEn9WnbU5QR5jWwIKV0n9lTZ1iugZBl7ytcAI/M5uiavLCNN0LbRU/h2CaImvz/4enHA9BGbsJBo4ClFBxpOI6Pn/WVhYtuOwn7FxHf5FzHo6laP/PKoq4XVOliAZI+kilPWDIOBCsr2NRC1C3sEqCkT0dEAQNNdIavB65DgSUkRCs3yUBN8Pis7dvUyaq/22GKsfAwahfIA9Q7uQyPViBT2K81YrNsU14wlJiCXEggHjBRX+AENZWR2lv8ETvI//0CwCYCFnXKVPc544RRTXBPGBDSby6rigR+8yEsBsPEWSTwOofS6C0xuja96VL0HLKiCA0gMR5urIzsMpvQFMG32JA2VgbrXlEhakmYQE4Vwz4dco2JJ00ohZ8W3LiZUUCLkjTlFrawjyjZ027Wwkd1nE5h4sLC2Omz3LnjZ+4k4mRKIVSn/g7e4jcHhMXxsv1J7t3eTc/iEXyPBQr20IW2qNzgWqxfrA2CGL4WuoOFyAl0HvyVKhvi1zMc23hkFDRiwIrarIqiVX82/2t0zN/dIYmNiNBmMDnno1hiivbK6wbkK2oFlE2ACWNM7YkXK3k8ZVX+Z0LJjpLiHpblw9d8W0nMTwK5J5W+DDVawHUgbrl0T6JEQPOSkX8mwhNMOAupEGy1PB8Ie4CacPtK453EQZNUL9Q5l4mKIqY
+ xETEXQdo
+ iHDfkG9zsBBWBd2xP0VnInu+n/4PNtfafiHkEjh3j/5x9Ray8chZQKLUGfhh7ewWgc4tdfePpjEYUPJZFf6OeazVgYTf0VLbwtouggeAs4ty/2sdngsW91ptoxu93Z9qarRFqdOXOrA0GIPnjGiRu9q7c5aq7xT+94iNqc1bdeR+QFx6NEf/ltuwv1xeoYctc25PA0qIlf/CuJFn1Ut4P2mR+qTyTUxlhJyU9ogEK8T/bmZuxhxoEBEeIl+5on1L7cGy57xFLqkKXrTPDN4l2S9gG6urHQlBm2v8MdMan1JzMqB8jJgzUaHMziMRMXkFyvQ61yKT61Xrg+nhJ3FdrVKGOdvTUGngEF5J34NSnG5VrTeV3Il5uKqr5Kw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,12 +130,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> DAMON sysfs interface can leak pids due to wrong error handlings.  The
-> issue in the mainline has been fixed with code refactoring.
+On 2026-10-28 17:19 -0400, Gregory Price (Meta) wrote:
+> Memory hotplug rebuilds zonelists in place while allocations walk them,
+> and offlining an emptied zone frees pagesets the vmstat worker can still
+> hold.  These eight fixes cover the walkers that crash, fail, or pick the
+> wrong zone or node as a result.
+>
 
-Queued the series for 6.1, thanks.
+Andrew/David - please don't pull this for now.
+
+We're solving some cross-over between this series and Vlastimil's
+set of fixes from anthropic:
+
+https://lore.kernel.org/linux-mm/20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org/
+
+Have discussed with Vlastimil, and i'm going to pull patches 4/9 and 5/9
+from his series onto this series when i respin this for his updates.
+That should keep the backport issues self-contained on this series.
 
 -- 
-Thanks,
-Sasha
+~Gregory
+
 
