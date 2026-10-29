@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92AD606A333
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD6C606A32C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FpX9XV92
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LMMfsIV7
 Received: by kanga.kvack.org (Postfix)
-	id C18346B0622; Thu, 29 Oct 2026 13:30:57 -0400 (EDT)
+	id 736CE6B0623; Thu, 29 Oct 2026 13:31:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC8D46B0623; Thu, 29 Oct 2026 13:30:57 -0400 (EDT)
+	id 70E306B0624; Thu, 29 Oct 2026 13:31:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB7A96B0624; Thu, 29 Oct 2026 13:30:57 -0400 (EDT)
+	id 64ADC6B0625; Thu, 29 Oct 2026 13:31:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DD616B0622
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:30:57 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EAB4FA7F9B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:56 +0000 (UTC)
-X-FDA: 85376354112.22.A636E19
-Received: from mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 108FC4000A
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FpX9XV92;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C0B26B0623
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:31:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9A0EC04B0
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:59 +0000 (UTC)
+X-FDA: 85376354238.24.F062BC8
+Received: from mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A4E1240002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LMMfsIV7;
+	spf=pass (imf17.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793295055;
+	s=arc-20220608; t=1793295057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YeQsqnpkwn6ypXN7vyNImbLG7QIbHLNRV1Ffg9tI2a4=;
-	b=DtUKk7yl12I2cj1buc5vdTlEjUiTfFV6sIJdJbzmaG0ikfLAhIlpQwRvvM2L/Uq5j4kJwm
-	vdo6zORZ1tK3LvWPcFY7xtaIXYGHxczDT8BrwbDc2C1H/pD/7ZGMhKcu/HudS/b5qknnFb
-	lg6J5qbAhn4xAyxJPjI5NOAlbrCi4uE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FpX9XV92;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+	bh=62v7psIL8EAQ47S6rRTJha+UTtgm3E7BPb1/D07Yo+E=;
+	b=XNJPFI04nBZ95P9f52SwgY5aHXEezESZDPz08EtgHjP/DsKU6+jwY0fGUSPaPsdJePFcui
+	cziGj3DDtCt5fBKqpeNqm2eRbAu2BuiwWWzFZZ4DJOEf83SBKlPxjaePcGY/4PZpajf6Ym
+	pngA+tVFvwFEbsVrdoXc/bDp24hLsac=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793295055;
-	b=bVet3jgrzvYGns9dm2GbW5YFDkhSccHQ/m9yyCBHn80Mvp6cCbWDtwGvZIC/OemEeL/TVl
-	NrM9TBtY6DooaKa5tMYAZTI6ckGuypsf1rssLkgcQNNzNStO2YABSfcifvOUPVuIj/IL/E
-	e5LLXxeZd7xt2ui/6BgnzL9wpZf7DfQ=
+	t=1793295057;
+	b=Hd8cukLe5/l5hNZbi56kqqm1d1iSoEjcGEdSzm4p0PEENSX9nmF9OHKe7TxGyUXr5C9Vqu
+	v+FWoMdL9etw58pd8CcELoy2H8vqHp8SUFf7WeQu0R5e0VAwUW7zvAlsrwlcweXoNUJ+VL
+	zWA9fOGdyWd4+Gxe5wuNo2my655DxKY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LMMfsIV7;
+	spf=pass (imf17.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5xQkj3N9yiVJ8AVum9FtJNkr8nMttgbgXIeAZWsu7R4=;
+DKIM-Signature: a=rsa-sha256; bh=PxCNVTb6jX0UZU4kP0/sdxuyaH5XxnIihD4Mw61jNnk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793295053; v=1; x=1793899853;
- b=FpX9XV92A0v/B1Tp65pVnzHFflZPsb/Paqgp5DTXqZzfwEOcbIYDvyjn/jkvkoHcKBLGzh0/
- 6unVyNBofcX839jRDqKW1UmW2dv6/m5EhOwc+cVK5Nc6TT90RVisiUXypBi6CNimLs9DaW7jg8/
- 74i75g7i084UaIvQJWOHH12o=
+ t=1793295056; v=1; x=1793899856;
+ b=LMMfsIV7/WEuySCEeQ2ahXjZrszY+S3tecdRjOn+1M62yCAFfHGHSIAKS1DEwfQK1o7OKVxb
+ bz2XZ5ru3RXLaPasMWrVcUPjFWcjPvXGUeJ9AOs+lztf4LL72U/mAHJpNKfXXPY1B30JgfpTTSS
+ 7QgfD0efB+yaycgxYhXyGieE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e9111306d7fcf669;
-	Thu, 29 Oct 2026 17:30:53 +0000
-X-Mizu-Trace-ID: e9111306d7fcf669
+Received: by smtp.migadu.com with ESMTPS id cdb39e29496ef9b2;
+	Thu, 29 Oct 2026 17:30:56 +0000
+X-Mizu-Trace-ID: cdb39e29496ef9b2
 X-Migadu-Flow: FLOW_OUT
 From: George Guo <dongtai.guo@linux.dev>
 To: rppt@kernel.org,
@@ -79,28 +79,28 @@ Cc: ilias.apalodimas@linaro.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v6 5/8] LoongArch: Allow memblock arrays to resize
-Date: Fri, 30 Oct 2026 02:29:52 +0900
-Message-ID: <20261029172956.20791-6-dongtai.guo@linux.dev>
+Subject: [PATCH v6 6/8] LoongArch: Enable kexec handover (KHO)
+Date: Fri, 30 Oct 2026 02:29:53 +0900
+Message-ID: <20261029172956.20791-7-dongtai.guo@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261029172956.20791-1-dongtai.guo@linux.dev>
 References: <20261029172956.20791-1-dongtai.guo@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 108FC4000A
-X-Stat-Signature: qmxa9sj64q8s8q1qomunrogkzhqi4eoq
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A4E1240002
+X-Stat-Signature: nfn7eoiu9oz9fdk4ba4g6aoxt6idgzqc
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793295054-978300
-X-HE-Meta: U2FsdGVkX1/gw1QJPvjwOcyXO2t3MK881LsSCJBYFNPY2UUcaGYKmkMgAIDiTDeVJ/XdQAXdnNt6FGrCaoVYqAqLC88xmJWWCTcBTLQSissqmiJvtGyFqYz5MYSmYgzI5hFXMFT9FBqRZeD9wF6lrzCDNGxd+2xij7SDBd4CFYtexjqjPqqSTYVbDaxS/UISUcaj7zOzCnxrzji5cuJ8iDgfhEiNnnGw3puOGKI0Y1tgRQ7AUrtg9DxdTodnWNQS0j8Wv4MczvbfCgaLvgPdlrU3lCEYzAwk1YONWZ1BScT1uwJLGbXjdx7D7OHFg3IwE2csM0Ze0dx5vgU2sPGTVSLIv6lCqlB7mna9WX97BOdQWZcGY9oWkHbmyo1wxVg11cHzCtzD7y5qsY89M0msrQnwkypFldFgsVuhtDgut8It3IJeSr8crMlIr33k8AukIBs+9I/i6So69BM6CVNdn5lFahKzmphKWqO1n3HB4urNXPumYbmVdaicVDskmzMotJ84A1FUnl/aeb5CHfymECaDSS3GAAuevCIxnx5YDA6zQZCXz8Ao387MRgF0zVm2U4T3eq3YlJuzkTuDPzYa7Nu042kVGp626eGGfwsHOvK3Igo6BNrwI8XBLQz5G7MEGCEbkkVcWsG5Jhx7Z3GUGVCl8QQtFhCzwORe7GEasLzzVwkCZhNpImrBDNksI0HvTXAi9jRkygGMLEAk0UetYozANFx17zT0vsam5dIcTb48cx6IQ3acEnCQPi8LZ1oX1oCfq45Y8RPErDHxZKMN09k2vvEadf11bsM91HZ7L6Q2I87B8bcTGrjYx7/y4R3g5HoP79148s0qlWe7TMGsdvakGZWPYTIc0Dv6Nxdsol3sSM829HXg1A3AtTRGzKbIiiB6K9nVDfUgzfVrhnhqPePvmwEyWUo2kWeXThDlJNajC+fO7XvXVJ3J+nN4jdrmZoHIi+7dpmDyDsbIYRI
- nsURII7G
- Xa5+CUK3KJalR0zAnD1TZZQxa56ibWU6iWSATHsEMN4Rz6XBPp0JFlXe4BGsLpj4AqnlgkcTnY80MavUjIcBBou4iOSPE0YyNw4vOvhOfRUcBkEF1Y0wzQ3kmvTjA1h6GL2sq/iZVflX7y7sxXvwgFR9Qf866SHWdR0z8W2Jj6kIkDdla2BrCLakS8K+9WE989nbsmZpQEBE2WghEYyrIl7RLf8bRnPss1jJHASszlasKLk0=
+X-HE-Tag: 1793295057-162649
+X-HE-Meta: U2FsdGVkX1+yDT3QjibX/5htV3c6glXSlhDXEm6Y4CZQB1u4Gpx6LvNunPPKI8Mzrl0DG2Z/umaWh/5CdsKQyn91qnsLvRshuWrHA8j9UdIKRCKJWHn2TdJ94cdiLQo96K+FeVdYHh8vlpRk6RfRz6BmQQZaPLbJgVYDZUyO3FL/7X8yh9aMG8vSpanEGXBngn64kcee0pflhiUb4IQynpXMWI+72ALitON2wWFK3iphZBZaQeIIRTOOK+KzbEAhLyqn+bHQ5v7raL93isOJZsUCztKQh3brh7Y46jdAl9nGF/nlbh4yo25Z10/NTdROFhC/ivb3lnh4nKzAG9Ri3F1NzoxWo+fXP1LrNq/J02r1tLv6QbveyfKZskKzba1Kw22mXeI+XRtIgRHWa7ybepztKHzbyYF9CC8A5a2mc7/nGmrmkdY6S5Xk6x3rRHaEJ5brDaNPhqqzV9KdNe9OTUzx9jaVitTHTChvyPSv07iYg0pyBfEk14sfCsNZbqKknntu18Gm9VXtr55FcBci03AQg7vVFSoKeF9aSsUJT30FUpoqO09JZ8CC4LK6EKgT+z8WBYCXyu0HnbfFWKAP1ZxSXICJWZuUX+5CYwah0Z14j2iC3z+rAKxOXIjeszFAaxyHMC7nONc9yt1b+BkZH77k/GS9YbkAERw3CHDzePNXsUbd156v+FzE1z04aBrMdkP9I7TSmplOE6KO4dg8igSAHq2pyX7Wprd26I5hgqpHvJCxW9I+BXWgwjzMF1Pmq1nxhPTkF52jKNbh+QhQbrEAhB8Xec1SRt5bYQh3thxbgl+r0WFepdEg32amwZjn3zK6ua5vwm+tsSgc0KkG5sNfExsF6ZYPFwOLd3U7TfEy9791fdN5ShrY6O0RWr/sXO/a8ktwHYen0cSYBWOa020YPIZKL/cDbNxqblJBJYKjmqjobECoSeisOuyvNpu5SrfxA7w3oXAUCSEA27N
+ A06fi7b3
+ EP/pdG7wo7IGIN+VtM+o1N528EDTNpaWLDmoCqm+2cmIvBBCDOr2tZxncN6tvrzWwJU7SE/1QvqU7feJN5Ebiw3rs+ht54CCVSfVLzm8NGoMMBmKnBG3rGR/MFd9WU96PlsKBkjo96ayiqu3KdUgABGuU14MOAkHwKJ/fqETuv2l6E6/CARIaN6h2w+2ROh+ZEVzCzEDQXsmFGvIZTpJ3x2KlvMtA85oiRyea
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,62 +111,76 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: George Guo <guodongtai@kylinos.cn>
 
-LoongArch never calls memblock_allow_resize(), so the reserved region
-array cannot grow beyond INIT_MEMBLOCK_RESERVED_REGIONS entries
-(INIT_MEMBLOCK_REGIONS + NR_CPUS).
+Enable ARCH_SUPPORTS_KEXEC_HANDOVER on 64-bit LoongArch with EFI_STUB.
+KHO state is passed through an EFI configuration table installed by
+the stub.
 
-After kexec, kho_memory_init() reserves every range preserved by KHO.
-Each range that is not adjacent to another one needs its own entry, so
-with enough scattered preserved pages the array overflows and the
-incoming kernel panics:
-
-  Kernel panic - not syncing: memblock: cannot resize reserved array
-  Call Trace:
-   memblock_double_array+0x2d4/0x2f8
-   memblock_isolate_range+0x54/0x1a8
-   memblock_setclr_flag+0x44/0xe0
-   kho_preserved_memory_reserve+0x78/0xb8
-   ...
-   kho_memory_init+0xbc/0x394
-   mm_core_init+0x124/0x154
-   start_kernel+0x568/0x6dc
-
-The liveupdate luo_stress_files test with 500 files triggers it on a
-kernel without CONFIG_SMP, where NR_CPUS is 1. With CONFIG_SMP the
-array is larger and the test passes, but more preserved memory still
-overflows it.
-
-When the reserved array is full, memblock allocates a bigger array
-from free memory. This is only safe once all memory in use has been
-reserved, so enable resizing in arch_mem_init() after the firmware,
-kernel and initrd reservations are made.
-
-The memory preserved by KHO is reserved later, in kho_memory_init().
-A new array cannot land on it either, because kho_populate() already
-limits memblock allocations to the KHO bootmem areas, which hold no
-preserved data.
+Disable KHO at boot if the table is missing, since the kernel cannot
+pass KHO state to the next kernel without it.
 
 Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
 Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- arch/loongarch/kernel/setup.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/loongarch/Kconfig        |  3 +++
+ arch/loongarch/kernel/setup.c | 16 ++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index a21f51e5815e..d35ddd6ec540 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -685,6 +685,9 @@ config ARCH_SUPPORTS_KEXEC
+ config ARCH_SUPPORTS_KEXEC_FILE
+ 	def_bool 64BIT
+ 
++config ARCH_SUPPORTS_KEXEC_HANDOVER
++	def_bool 64BIT && EFI_STUB
++
+ config ARCH_SELECTS_KEXEC_FILE
+ 	def_bool 64BIT
+ 	depends on KEXEC_FILE
 diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 6fa4a22a58fd..dff2e0c67ea0 100644
+index dff2e0c67ea0..e1023f93460c 100644
 --- a/arch/loongarch/kernel/setup.c
 +++ b/arch/loongarch/kernel/setup.c
-@@ -402,6 +402,9 @@ static void __init arch_mem_init(char **cmdline_p)
+@@ -20,6 +20,7 @@
+ #include <linux/initrd.h>
+ #include <linux/ioport.h>
+ #include <linux/kexec.h>
++#include <linux/kexec_handover.h>
+ #include <linux/crash_dump.h>
+ #include <linux/root_dev.h>
+ #include <linux/console.h>
+@@ -594,6 +595,20 @@ static void __init prefill_possible_map(void)
+ }
+ #endif
  
- 	check_kernel_sections_mem();
- 
-+	/* KHO may restore more reserved regions than the initial array holds. */
-+	memblock_allow_resize();
++/*
++ * Only the EFI stub installs the KHO table, on a cold boot. A kernel
++ * started by kexec from a kernel that did not install it has no table,
++ * and the next kernel would not find what this kernel preserves, so
++ * turn KHO off.
++ */
++static void __init kho_check_efi_table(void)
++{
++	if (kho_is_enabled() && !efi_kho_table_found()) {
++		pr_warn("No EFI KHO table, disabling kexec handover\n");
++		kho_disable();
++	}
++}
 +
- 	memblock_set_bottom_up(true);
+ void __init setup_arch(char **cmdline_p)
+ {
+ 	cpu_probe();
+@@ -608,6 +623,7 @@ void __init setup_arch(char **cmdline_p)
+ 	bootcmdline_init(cmdline_p);
+ 	jump_label_init(); /* Initialise the static keys for early params */
+ 	parse_early_param();
++	kho_check_efi_table();
+ 	reserve_initrd_mem();
  
- 	swiotlb_init(true, SWIOTLB_VERBOSE);
+ 	platform_init();
 -- 
 2.53.0
 
