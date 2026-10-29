@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4AC606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 09:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEE5606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 09:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l6l6g97f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EOyp7y/K
 Received: by kanga.kvack.org (Postfix)
-	id 9BE7A6B05B8; Thu, 29 Oct 2026 05:50:03 -0400 (EDT)
+	id 491C56B05B9; Thu, 29 Oct 2026 05:51:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96EE76B05B9; Thu, 29 Oct 2026 05:50:03 -0400 (EDT)
+	id 469036B05BB; Thu, 29 Oct 2026 05:51:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85E286B05BA; Thu, 29 Oct 2026 05:50:03 -0400 (EDT)
+	id 384DF6B05B9; Thu, 29 Oct 2026 05:51:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DEC96B05B8
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:50:03 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC7054036E
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:50:02 +0000 (UTC)
-X-FDA: 85375192644.10.17D5433
+	by kanga.kvack.org (Postfix) with ESMTP id 16B846B05B9
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:51:17 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AAD4D40368
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:51:16 +0000 (UTC)
+X-FDA: 85375195752.01.83F7CA3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 239E01A0006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:50:01 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l6l6g97f;
+	by imf09.hostedemail.com (Postfix) with ESMTP id D0375140002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:51:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EOyp7y/K";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793267401;
+	s=arc-20220608; t=1793267474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ia0Mtm3zy/9bRYGZBaX24d9DjUyjcJwGOTQAf9z14P8=;
-	b=s06fsxTKmuWrtV/mltjU4PvtprpYhrZbQ/bsVBAfzF4+Wxj2pnyrJ4T+oNp0AoLwjJiNm0
-	xbeBh7mkS/59H2MX1EL/4u6O6ovBimO8dvf0odH4w+RchSuPZREOE4lFtzesiwE2fhK4+G
-	aAaGMexCzDmqvME0Dmpd9q5J9qqL8MI=
+	bh=1D22SNiqa1UrbTEMSaPprbApV03u/ZanKGMk7KtF224=;
+	b=BBfGsbpcXzHsVJ+ZRFAiacwiNoopVqe71S5BsRwIc+h3biVjlSJn373OD3AVx2aPaCYaUX
+	4LLNmIHehRbRGy4YPkXpCx4fDmaSAe6DgH5Nk/N0btJ05ouMn7W9uPDOWZNZWuqg2+hnke
+	W0cGLly77x+wXDwaLsH4evMxJxdt7Lc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l6l6g97f;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EOyp7y/K";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793267401;
-	b=OT4QZVfBTz7sG7Dc3vIEJL7pnxhkmZckbkCWkWTglOdogz72gNcJczKQEc1OKu++ddk3t9
-	2RMC7lPqjTVrnEnjFUNakdN1Qq0cCC/Cj8Y6D75jSDzCax1sfNZo83Wvg3BEQkqj0Trtgc
-	H0jw59KF3iNnuu/kBdaPzuCQUU4xJsk=
+	t=1793267474;
+	b=5HkFkJ7n8Zaz39eqrAwv0D1t8D4wLcbEtmMovPzgBk9sNm46dOi/5wwkMNffB1rRlPejbk
+	dWUGcXVM5vA+bzuBIL1PYOvJR890SC+VgLwPpznz6osMDmlc5JYsf6X078nQExbRS1c3MF
+	03dct/jSX0ZDsvi/cy68Nl94YuSUgN8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 26B5D410A5;
-	Thu, 29 Oct 2026 09:50:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36DA1F031E1;
-	Thu, 29 Oct 2026 09:49:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0441B43460;
+	Thu, 29 Oct 2026 09:51:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B5F1F01825;
+	Thu, 29 Oct 2026 09:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793267400;
-	bh=Ia0Mtm3zy/9bRYGZBaX24d9DjUyjcJwGOTQAf9z14P8=;
+	s=k20260515; t=1793267473;
+	bh=1D22SNiqa1UrbTEMSaPprbApV03u/ZanKGMk7KtF224=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=l6l6g97ftKGETwe9W+MgWjB7StxSM/rVyuw87s1BGU7VPUbP4jpcnKr+cLkBw1ym4
-	 2fFxA8DyzSMtnmtuppQVDmKr2v60BVjWnZ9wwNmhttPQfkgNceKO6BjypqhXsEkHwe
-	 x5s/RRZgYbPhDo/ygFvmqmqWAP7Lmv1wVCBrtn4LDqBFKPRsGdZFBM5rB1Q1ztxo9f
-	 LSUvmic9nHXt8/ZyZG4fdyAy1iqul0fJd4do3I3sPN0C92jftCAGhHw0gXpglGLLJF
-	 7f6jS0ePCDTOhaVGFBvmoBRhtmZHHfoNPyo//JqpZCvvSutgP5vz5wYWa2JKdIf+NB
-	 YMfPInhXkqAEA==
-Message-ID: <3126db67-8ac8-4913-bd4a-4008de730148@kernel.org>
-Date: Thu, 29 Oct 2026 10:49:54 +0100
+	b=EOyp7y/KQ28jNwvMBe17X8JocvZojLzsh4FbzrqXockmjLe7Jme2XXnp3gbWwiWZe
+	 laDyyVTBheueGI71ovv2woMgR727qgvuJPLBTtp7uFvu+OH9Uu/sXD7p7JSS/9Xj3x
+	 O+z2Dfe166i/lVoLbFMjxdwAahvXk5LL/Fr0Iu+UBtVMm4+l0+p/QVVhKBkD1iRYNp
+	 3dyA7B1dRKSiWatmXumWdeYbDmgOTdPAu6KfZjoHITIiDQeopMTbx00Lo8TXw/6kbu
+	 ue/fnbOAR+t/BFpeBcs/MblQoGdXM0EUZD6Ik9K0iLtH5mAOIAoSDJ6Gai8efjPWkJ
+	 B3zoQo7u53SrA==
+Message-ID: <9c35b2f5-ab90-468f-98af-3763b557e439@kernel.org>
+Date: Thu, 29 Oct 2026 10:51:09 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: page_alloc: do not give all non-blocking requests
- reserve access
+Subject: Re: [PATCH 2/2] mm: page_alloc: remove ALLOC_NON_BLOCK from
+ ALLOC_RESERVES
 Content-Language: en-US
 To: Johannes Weiner <hannes@cmpxchg.org>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -77,10 +77,9 @@ Cc: Matthew Wilcox <willy@infradead.org>,
  Mel Gorman <mgorman@techsingularity.net>, Michal Hocko <mhocko@suse.com>,
  Suren Baghdasaryan <surenb@google.com>,
  Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20261028171719.2043421-1-hannes@cmpxchg.org>
- <20261028171719.2043421-2-hannes@cmpxchg.org>
+ <20261028171719.2043421-3-hannes@cmpxchg.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -121,22 +120,22 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261028171719.2043421-2-hannes@cmpxchg.org>
+In-Reply-To: <20261028171719.2043421-3-hannes@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 239E01A0006
-X-Stat-Signature: y3shw4jz4h96rznn9844hc1wpsztozrh
+X-Rspamd-Queue-Id: D0375140002
+X-Stat-Signature: 8byz59d41imeapqbcxm3bki5j5gs4m89
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793267401-16947
-X-HE-Meta: U2FsdGVkX195jCmLoxKLK+t8XlFm1HHD/h71QKxluCtIibNDl24VYL3U2m9pbwE9SRSXf7A2Ia3PgAfHQS3Ibc2TwgpiJVMfx7cBrDLACVrgJavuWbCFotR5RSxzXovvmGwN9o7uqUZnkTzm6+QvuK9rAAa3THH9cEO48s5wVKXkqH57qbGtwz/wNM8U7lg8+0tKSpDjDGnPPbR3OLFH7wnN9sXC1uDyF+aW/p0XelpL3uMKBR24D5G3TT7hRtCPzVEe0R/T1aalV820XCq5fARhjaln4YMMTQLsSKhGUHcmuD7PJayFfe49yVM2bRvabzP18OzseT3aOofReQ26qrDYfXaOE4xbZc/0mYSTvU36j7A4EGmns/ubjljfwnGJWW0GK3laxWGC4bu3QWwf4OWjhLp8zzreC2C+2j6wzfr6ojNPZz/o9sYncZqkmDaPURDLDVcS0GRXkK/h6liwKXlW79yZcyoU3jFFt/Cwg8DOF/+vHyLLh9afEsb5mdSB8Z5icpdc5EZOUAQNQIogfN9zSJfd5peduhY+wH31Ltcc6zHhVLy4AKwYfWaA/9/g8sjJIrmZeWaiZogKxuWNDYIrHn/f4plxKGBdG1esdP/fBzcOdBaHQKrGQaTzK9FHWRZAz6HU21jQxkqhSlm9OKTKsd5jnd8wkusZzrduAkPO9z44PMd/H9M2LJLg2yPKY6qy2zokExV6WoJK0OCP+4g+7LmNwzGU8s/LC4iEJhYkU9YkpyyVAdx1jhiBl3weX2XKaAMVodYYKbUAaF4OMrvUc4ZIj0Lzzhf3JbDy3ASCBppCYDu3fvSgqhHwokbmRYIdN3JAg712woCkmY3LJXI168W6uczKsD8O+XbhsCI+R2VChZkuzOEPRyKjHZYoRCDftJ00UawN24eSg6V8sdjzWln0Y1jnFjaA5xwVPz43O4oczW6x5NdwE5os30GaIJQEOKIpPuOvXh/3qys
- /4swFhdL
- 1x+FHWDnOnJ9OCDnFqV6PRm4e0udMT/YRC0J04UtwUbusLK1UFmyhMxcEU6xsbpPb8/um708DPeJRokOI7hsZWy/S1fnlRpL1YVzZ1lddwZUkD0EUZLqSkffGISjdCWjs5PGFC9IUGjlgS2mcjSOOYZ1RvV46UkKHXLSFdpWSMCkBfl10bAhKNWS0QdixyVp9kN5l0NzLbnyqwkL3n0QebXijHHVjo7G726wrmUuF814xzSM9Ew6F4EYMjBy/p5Y49mUTMYSSK/sXQ4hvaEQZ4+Tyx+IZyVsgqF4e2xssoGd70qsc+/jDegw2zPRA1KyZopayJWrE0vL6mdYr33Ks8hd233Eih0/QLAuK414AvwSY8kp6l8AYDuZUBCtZFn3g4x2QJnP/5JOb1lLglubOsJc+FYjOOTJjD4lnt6BdXsWptHPySPHyAuSPEJILFz135gAW
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793267474-206077
+X-HE-Meta: U2FsdGVkX1810Z4DKin8DKc2xVhJJLC39JlgKTz6eoTuU4zrQ60Jd7ts990IOSlLgUvYlWxxIENiCQe7fm2xMXsf9L3vJkRgJ1q7EBeKl9rybPYxA45QGBrfslkfz7BAYRUCo7qzYe8HpS1z5io7ROiA7Ug5dtw8pXE8JGmMVe1JiL6Ey8XonAgtKu2P07X9KHvzuCclhbckjPRRpwiuHQDIwxnYvshgWaFjKLQAB0U/gaut6lixCSrgoebF8nYiauqKC+EUJKOmOC6k3w2zUj0tJqCnY0JbDMWhG9n94jjE0vnaUA7YuouM7VLG9WUhYIJ0SobGmYU0LBRezzGpqgcbmEHeLBZDk6QWEfVqJAeTUbn4hq88JYKFBgq6L0fsvc49Xb5LCX0QYk2Ttq9EVOsdLVq0ptilvxyytl5qHuvC/56/dzhXPBxEZEsBK0njsuxzn5EGIZ75gpEb8y1NVcQp+uAEuV8JMSIfeemAXHyFEccHdlCupV2adWsu+ynXQvkVvNEGCJUFkR/SJ/zz0PvNJ36gHqRLsNB4RL2sXFXizRtlHy66W4j8A6yIHGiVBX5z0GMm3qDe9vDPI3l0N7N4m1XjfgXWuv7wAt8Q3xPzDP7iJ+M+/kcYKrrOLSy6ZWRBfwafOszLmwE7HrVXtDHoBncZWdDKRIOkBBLPDHeNzOENBEgcgRnjTxwD/rKhmVPxF/5HCRSAUiena4NOfmZnJCBhAAvNtKza96Y3sdOgY3ohnSl+LzXQTuD2eeq4e+U96eN4uESayE76DoW/3pWAFc85/bapSgR9p6WvOKmw899LQd9vacqrOYaffpACgwTvrW1BSE23Kx9r9AjvmS4is4cBZZzZNViVEORFW5OEkAJ8ZzE1oX5PQptAzF0itg07JWVLgf1Oj2Al1qeEhw11ykRDRC7bAYM6isYJ2IBABZyAXyn1ePS/J4qlXXaxl9kQ3IWATa2YN04C+Co
+ WPmg1tJG
+ LIheNHGzxboiSIvjpdWzeWQ6JwEZY0NlnTu8PDJB9xyYJh3zB21Q4/SoT+EzOABGmDr8rTiECW6sWzqmpUA60E4L+dOMDlRqrCcDpQfCzISXUjpmyjKOtTN3hSxKYGqfhz7HfbSCE+rJRBe2tiT0IlL5cLOexwwOk+g+BW5QLaDLB9gztT1ZtSliT3F1/6NSGmCmjsN8JWqW7+jH2iMWg35M16e0lMFGb89kkwYwqK1z5TndjGuDwx3CHAH0KmCYvsfBwPHAVlZuwuZJVEV1+6V2c0laXazflIMV3J/qkibMVC7qDTU7nAdqJ7nQZTUY2B/479s/s1WbVJybBEgJO9rQsEQS1skT71iT+kMZzkuI0WJMSWMVqAdmV5SEj5mpOMSjdKdJ/kXUC1rI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,66 +145,92 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 10/28/26 18:15, Johannes Weiner wrote:
-> 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access
-> highatomic reserves") accidentally gave all non-blocking allocation
-> requests access to highatomic reserves, which includes GFP_NOWAIT and
-> other sites clearing __GFP_DIRECT_RECLAIM.
+> 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+> non-blocking allocations accesses reserves") stopped handing out
+> reserve access for ALLOC_NON_BLOCK on its own: the extra 25% below the
+> min watermark is now only granted on top of ALLOC_MIN_RESERVE. But the
+> flag was left in ALLOC_RESERVES, which produces something odd:
 > 
-> While this improved atomic request success rate, it's unintentionally
-> broad and can actually worsen highatomic requests by squandering the
-> reserves on requests that don't need it.
+> With the ALLOC_RESERVES match, __zone_watermark_unusable_free() doesn't
+> subtract the free highatomic pages for them. So in the slowpath, they
+> get to consume regular blocks below the min watermark by the number of
+> free highatomic pages. The highatomic reserve is capped at 1% of the
+> zone, which on any decently sized machine is a multiple of the min
+> watermark: GFP_NOWAIT can drain regular memory to zero.
 > 
-> There are concurrent efforts to clear __GFP_DIRECT_RECLAIM altogether
-> for costly order __GFP_NORETRY requests, which would then also fall
-> into this exemption and deplete reserves even faster.
+> The user-visible result is brutal hiccups during bursts of GFP_NOWAIT
+> allocations under memory pressure. This was found in review and
+> reproduced with a synthetic burst, not observed in production, but the
+> sequence of events is a realistic one: On a 32G box with an anonymous
+> working set, swap, and a filled 290M highatomic reserve, a GFP_NOWAIT
+> burst drove regular free memory in the 28G Normal zone (min=60M) to
+> 28M, 0.8M and 0.6M in three runs. Swapout failed to allocate its swap
+> table, reclaim scanned 13M pages to reclaim 200k, page faults stalled
+> for tens to hundreds of milliseconds. The machine survives it, but not
+> by design: direct reclaimers eventually fail and start unreserving
+> highatomic blocks, until the allocation succeeds or the reserve is
+> gone and the OOM killer runs. That reserve exists for high-order
+> atomic allocations; here it is destroyed to bail out a GFP_NOWAIT
+> consumer that was never entitled to the memory.
 > 
-> What GFP_ATOMIC has over the others is __GFP_HIGH, which
-> alloc_flags_slowpath() translates to ALLOC_MIN_RESERVE.
+> Remove ALLOC_NON_BLOCK from ALLOC_RESERVES. With that, the GFP_NOWAIT
+> burst is stopped short at the min watermark. No direct reclaim, no
+> stalls, no failed allocations, and the highatomic reserve stays intact
+> for the requests it exists for.
 > 
-> Narrow the exemption to contexts that have both ALLOC_NON_BLOCK |
-> ALLOC_MIN_RESERVE.
+> __zone_watermark_ok() is unaffected, since everything it keys on
+> ALLOC_NON_BLOCK is already nested under ALLOC_MIN_RESERVE. Update the
+> flag comments accordingly: ALLOC_NON_BLOCK just means the caller can't
+> block; the reserve math belongs with ALLOC_MIN_RESERVE.
 > 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://sashiko.dev/#/patchset/20260904115629.3993331-1-dipiets@amazon.it
-> Fixes: 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves")
+> GFP_ATOMIC order-0 requests have a milder version of the same problem.
+> Through ALLOC_MIN_RESERVE they also count the free highatomic pages in
+> their watermark check, but rmqueue_buddy() serves them regular pages
+> first and only falls back to the reserve once those are gone. They can
+> still push regular free memory to 37.5% of min minus the free
+> highatomic pages before the reserve is touched. Unlike GFP_NOWAIT they
+> are entitled to the reserve, so this needs the watermark check and the
+> freelist order reworked together, and is left to a separate patch.
+> 
+> Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 > ---
->  mm/page_alloc.c | 4 +++-
->  mm/page_alloc.h | 3 +++
->  2 files changed, 6 insertions(+), 1 deletion(-)
+>  mm/page_alloc.h | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index a8cac5e01066..8ac2e2bf14fc 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -3238,7 +3238,9 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
->  			 * reserves as failing now is worse than failing a
->  			 * high-order atomic allocation in the future.
->  			 */
-> -			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
-> +			if (!page &&
-> +			    ((alloc_flags & ALLOC_OOM) ||
-> +			     (alloc_flags & ALLOC_MASK_ATOMIC) == ALLOC_MASK_ATOMIC))
->  				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
->  
->  			if (!page) {
 > diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-> index e238ee91ed24..9c3c2830acb0 100644
+> index 9c3c2830acb0..7097ea1805f6 100644
 > --- a/mm/page_alloc.h
 > +++ b/mm/page_alloc.h
-> @@ -60,6 +60,9 @@
->  /* Flags that allow allocations below the min watermark. */
->  #define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+> @@ -32,12 +32,11 @@
+>  #define ALLOC_OOM		ALLOC_NO_WATERMARKS
+>  #endif
 >  
-> +/* Flags that mean GFP_ATOMIC */
-> +#define ALLOC_MASK_ATOMIC (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE)
-> +
->  /*
->   * Structure for holding the mostly immutable allocation parameters passed
->   * between functions involved in allocations, including the alloc_pages*
+> -#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. Allow access
+> -				       * to 25% of the min watermark or
+> -				       * 62.5% if __GFP_HIGH is set.
+> -				       */
+> +#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. */
+>  #define ALLOC_MIN_RESERVE	 0x20 /* __GFP_HIGH set. Allow access to 50%
+> -				       * of the min watermark.
+> +				       * of the min watermark, or 62.5% if
+> +				       * the caller cannot block either
+> +				       * (ALLOC_NON_BLOCK).
+>  				       */
+>  #define ALLOC_CPUSET		 0x40 /* check for correct cpuset */
+>  #define ALLOC_CMA		 0x80 /* allow allocations from CMA areas */
+> @@ -58,7 +57,7 @@
+>  #define ALLOC_NO_CODETAG       0x1000
+>  
+>  /* Flags that allow allocations below the min watermark. */
+> -#define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+> +#define ALLOC_RESERVES (ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+>  
+>  /* Flags that mean GFP_ATOMIC */
+>  #define ALLOC_MASK_ATOMIC (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE)
 
 
