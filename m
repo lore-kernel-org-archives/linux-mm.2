@@ -1,146 +1,157 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EDB606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 05:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3517B606A31F
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 05:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eIhbNjvl
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=0qFfRZuA
 Received: by kanga.kvack.org (Postfix)
-	id B0C736B05B2; Thu, 29 Oct 2026 01:49:17 -0400 (EDT)
+	id 4D0B46B05B4; Thu, 29 Oct 2026 01:52:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABDAA6B05B3; Thu, 29 Oct 2026 01:49:17 -0400 (EDT)
+	id 4A79F6B05B5; Thu, 29 Oct 2026 01:52:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ABDD6B05B4; Thu, 29 Oct 2026 01:49:17 -0400 (EDT)
+	id 3BDCF6B05B6; Thu, 29 Oct 2026 01:52:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 692E66B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:49:17 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB807802C3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:49:16 +0000 (UTC)
-X-FDA: 85374585912.01.AFE600B
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E47DF80003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:49:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eIhbNjvl;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1035D6B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:52:02 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7ED29A79DE
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:52:01 +0000 (UTC)
+X-FDA: 85374592842.13.F9BBAF2
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011046.outbound.protection.outlook.com [40.93.194.46])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6E9EC40003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:51:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=0qFfRZuA;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf04.hostedemail.com: domain of bharata@amd.com designates 40.93.194.46 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793252954;
+	s=arc-20220608; t=1793253118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qO35EV0mnWV9G43hoQX9fpVz/YShAelE6s2Ci5t7qJQ=;
-	b=TvBoaSOR+/SYRvCs8hfhVhC9ul4aTrjAWoIuSAlBHj2O8Eq9rDIrmg5ZxldIdRfpsDVazS
-	eNKlQtJ4rhjrN4e6zzlGTnAf2Mb4rtOyUncPPj9IuMEqgxWhS+ZKKFS7wnXDTAAs+68GbF
-	LbkU6Q9Y92Y1vUDkjIpzQmhoydnNxFM=
+	bh=8GHIN+BezP5E4cFcEnKietJaaRrj32cVdp3XGBe+Ko4=;
+	b=bYh8Zshw4am2TrxK5PTmN4trVskqv4Wh3pUZE3Of9ooZwPkH9T3s/Oh6B2BwM17XyrAZrA
+	Y6v0k9W4ZRORMguXqLaFUsGRagU1UcWmZ8xr2SpTEiatE3cgV7iLhhhC+LnZj1TxyZ9Q9W
+	tCKfUmDdmMOidFAISgvmwcO66rIjRdE=
 ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eIhbNjvl;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=0qFfRZuA;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf04.hostedemail.com: domain of bharata@amd.com designates 40.93.194.46 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793252954;
-	b=m/wJsFodGlGFNKs2f9nj5FwQtY9jMck2xsoo/1y9/nOWf/owIrjRFzvCLn+xdmT/0PI7//
-	PYn6CWd8VHq0isOKZzaoaGSi1OTqnw7WsuR2jr34dpRkgLVFfrE5mdp6KAdWpXZXHRiZE2
-	Cd8b4jlWw4ggWetUZMA0eEabY/XJUE8=
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5bcb1f1358aso1324853e87.1
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:49:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793252953; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DaIT3vYh6Tqa7EFLFwjIoTcJ3Xmb3cHJftzMQrUMed6xubipPrwVdS6FqkXoaO/6I8
-         baGTZ8MvsCCIplstl7qZpicgKhGyxkR1WCJ76oLj7KvjJYOe2rlPIs/LYRv0XKAKJ1aj
-         vXEBUEB2PR5VF0UagxeJp5a2Z44TDwxoKCpYh+0ys5Uq+Q2+GoEPguQuO1DArsqhKxF7
-         EYqHhbw4VpPyl+X7CGGs+AiT8xi3O1A01QZAxMgVbzScb5iLdrTU2L1P32h2QTY7vZVe
-         4TzyW1g4ZrrtUiRaxfLRqVy/BbkmzWDg3yYpGljbewzviTGTptYJIqRr1rvR864Wh2Sj
-         xFSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qO35EV0mnWV9G43hoQX9fpVz/YShAelE6s2Ci5t7qJQ=;
-        fh=ZgZL0u2840totQWLE8+ZReBCcaprlCRaKCAnBjk8tCg=;
-        b=U7tAIyIQvpoHR0DLdl9dbM1fTek3zOelNk2mLT4ua2B7t3jHUVm3IqjaNFoAMCW91Z
-         q9ccTf0FjYWulVYRy69LR3U1pwZ+IyLEzzj44BOB4xsDMqFvMAb1zsc+4KDOsntJvaqV
-         aYJUWIJykXoFICNwBZqwyL6Zsa9nHM5uWbN0Dc8s+L8XbJbDQQPEBY7BD+YxYxWNTBdp
-         tgLwbEFdV2sMdJDX4F6gFyBckVsPHoysFlItoy4IzYkMGRVdUIO+c50ZE7K5VOL8raCG
-         k69TG+Xh6nudD8xVa6sTUDXjWYScKJjVwnHKQ4tWIoQxtPgPjKlNbVG9L6WZcAomwImU
-         Qa4g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793252953; x=1793857753; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qO35EV0mnWV9G43hoQX9fpVz/YShAelE6s2Ci5t7qJQ=;
-        b=eIhbNjvlr4Oh4WDMNkFsishGmEHQi1VPgXi/toTGnU9stpc+vuN1+spaaWYctCCioE
-         gH4QhVgCIHhyHAHZ+uVnfuX0IgUXm48R1z7tU2UgM21g2jmuUiJ9RWGQkqZc2IwnqXvV
-         cd+ycBQrAU/YosZyNVwe4BWKvvUkQ+mzmyr+RcgBD9shLf2WPytzprU/FDUXnhNfG+VX
-         QaDFUR0ECgmRRMNgvp2XpsLawY9SH3uIp5e1ssGHpaCZecdE5MZmfQKno36YJKVgOaNW
-         e7G8hknLJqGZtCTmEFLAMQmgpcgI9lJgHtl04OskXwWL2tf/a32YN0wIR5vgycmbNyhK
-         jTwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793252953; x=1793857753;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qO35EV0mnWV9G43hoQX9fpVz/YShAelE6s2Ci5t7qJQ=;
-        b=IZZ0IFU9LqQhaKSSkRZ/EN10QJDPoewouQQEb3UMFlRNXKaW7pD/LS4p/T5RKzXQ3D
-         W5mdDZ0k7dHuh9aUtxGNUQ6XG5a1M+YWPnpyvh9VO6dG6ECWKVQ954/C0j901wDxuPI+
-         yv7mNP+BkJncUywpQ69jloOBKMTZ+YoTc/Iz7tmavsEH42/9pit+KZeHZ4UCLwyCwvRO
-         PjQTphsNDh1UFeBkaaEm0/iitwFQdTYpnQyCRqZq4ywkozBHi2WPS9i9zKZ2uYCAjxcY
-         w+wimt/Aoz/DYVfCXI7J8hrEQe7ftelSPQOttzwFGxDxOyarE7n60CJS/+rVwHc3ddbO
-         zIpg==
-X-Forwarded-Encrypted: i=1; AKwUvBy6JAqy6wJwnE55sF478zO8Wku09pVsT4eAEJEqspTLQ5GLnQRejMHKWh2xQxjDnoe9kzpPTvs6Vw==@kvack.org
-X-Gm-Message-State: AFq9FYLsUHgAwFNkbwlxAt5vYFVj/VcmCZzQPYOuONw/JwXCGSBaOgr8
-	DM/RVl+0RtFwvfW/GnYL4LREqsP7wzul6paCS5xP3WPVtZ9WgNZHTh2LmrXl8AB00mNMp0EF9fY
-	u3Bd/ILRdwvl+9NAAIuVP4IWICg7FYJQ=
-X-Gm-Gg: AYBFou0e0sA+eNRvrcwmhL5YBnJYjmIABdtw9+olA18hYQcz8lYmmg12jmDT881YgUn
-	Hvke2n6n0RKeLprag87Mt+s41Lcs4ocpYDZlqyIxGhuLoQM5ZO2eICa1CQWOK/80B4JtCOtoRtG
-	7TWXFugCv0CbDuukYuXDB0qweTJ/ZQewe8YRlcQ7mYdF3pZW/tzQ6t/3hvVIVASdR+NfppC8wP+
-	7DWPZW/QWPYYrVNOD8j5SIIasOh+CEBBjBU998MYjLuNLzXBHwhjxsgWYds+IUNH1mEh6/vsbIM
-	UFAxLFwA8dIAdmbSbV0gxn/uI9QQENQ6u0/aicjlmXk3wRUAMvCiKLqIHJRSaAGKDAq7kGsh09m
-	xsuj1M6WMsMuNsrxAf+obIIlfxPf6aHd0CV69
-X-Received: by 2002:a05:6512:3e22:b0:5bf:ce85:4d55 with SMTP id
- 2adb3069b0e04-5bfce854e61mr1159757e87.33.1793252953140; Wed, 28 Oct 2026
- 22:49:13 -0700 (PDT)
+	t=1793253118;
+	b=HFk1nHSeZKtsHle9PdoOwaUfOwunY12yFceiyLaqttfm3XN/pA1jDxEkAB9t38rpHsrsde
+	t2YOb+0TjgR3eEIlfkQjKGKL07JHTy3m9k1oVpstbhv83z+L4zbTWGVYXX6zhGqlJZi6t8
+	+4EAkcvbbZCS7epWuwVzMXJoMicQ1EM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hesJ3D/Ouiy6BHnb0pBueO+w8i7FkgjQVkOZACPW+3Erj+U4BuKdqkaEJpBiMqxOYaK7iFDm5JYvwBQKyV/HXDm0uq9WBydmN26TuvAIa3JgvUgpBTQkNFpDCckvnl5ql6/pSTbH/Io2Nc8+5uFHIc+kRNvzu6k56ALs155hZZErLxc+Scf0WbktkUyqpc4HsjUeuNmen6VLvI8qReuwEVFrUoqfKAvRHxqX0XG6xYyXJKl9AjQNjcDd/pKmgU4b4GyEyclv+mmHZL9BJltvxyS/T6Cwc22CXSxehH+/XylvuC4C5pe3D8HBdsfGXY3f2wj/YaqI1lTRqwf0VNOy9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8GHIN+BezP5E4cFcEnKietJaaRrj32cVdp3XGBe+Ko4=;
+ b=kXKazXX37TsG2B3rsP7ntEm3xORMfepDNUZO8ftUVIx6S42DAIhAswfxZ7fmMSBSfHnou+af3oX8HEM5TDbRpHz49d9GGSx8NTpjEapGL/n7ovjyHiN3A3B33D51jRtp/boXfJqSMxScKrIIV6HGBW14sfzQORYzXrYNDFpqZnUSKN41JTXKCXdRW7cj92vL11jabyd4eygTuSJR4PRxSwiUrE8l6QItPN6B0rvM485AjdTZXpS+iBTGl8hFvEhXCFQf9RASGQwbw2IL2sH9HJmYGQHOvH99eoSjzjoxuKZbKR3MCnBlnaEAQanlCv3ffXluFOXfVS42ZVuw6IR+Jw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8GHIN+BezP5E4cFcEnKietJaaRrj32cVdp3XGBe+Ko4=;
+ b=0qFfRZuA6fRMeU9eOdDQTByr/1y2tPFegzzm/KTBaDKHS5AyEcGDEVl6EMp1m6zse3N9vepB91RQJncHe+vW516Leo6PJ3APosmhoQ4t944geSOmu1ne/tFLpLdIMi1Vw/eLU2KqVhkAnjLk1GJmdLQPVjYvz3fHoAp+3nCzuag=
+Received: from DS7P221CA0017.NAMP221.PROD.OUTLOOK.COM (2603:10b6:8:25c::7) by
+ SJ0PR12MB7082.namprd12.prod.outlook.com (2603:10b6:a03:4ae::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Thu, 29 Oct
+ 2026 05:51:52 +0000
+Received: from DS1PEPF00053453.namprd04.prod.outlook.com
+ (2603:10b6:8:25c:cafe::22) by DS7P221CA0017.outlook.office365.com
+ (2603:10b6:8:25c::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.7 via Frontend Transport; Thu, 29
+ Oct 2026 05:51:52 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS1PEPF00053453.mail.protection.outlook.com (10.167.23.235) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.569.4 via Frontend Transport; Thu, 29 Oct 2026 05:51:52 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 29 Oct
+ 2026 00:51:51 -0500
+Received: from [192.168.0.152] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Thu, 29 Oct 2026 00:51:45 -0500
+Message-ID: <8d6f589c-4427-465d-be5a-17eb99f41a91@amd.com>
+Date: Thu, 29 Oct 2026 11:21:44 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
- <20261028030503.17923-5-kanchanapsridhar2026@gmail.com> <sashiko-outbox-188656@kernel.org>
-In-Reply-To: <sashiko-outbox-188656@kernel.org>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Wed, 28 Oct 2026 22:49:00 -0700
-X-Gm-Features: AclHuK86TsSiLkFwQ-i4UWDD9J3s6NPe_Yms66pEsTQGm5NwMn9Bd4NlQj7Tw6c
-Message-ID: <CACpmpocJNk=WEE0_MiRUoWNJGS9wy7inKQ2pM6kNrdxaxgt0qA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/8] crypto: acomp - Add API to get a compression
- algorithm's batch-size.
-To: sashiko-reviews@lists.linux.dev
-Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, 
-	linux-crypto@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] sched/numa: do not feed tiering promotions into
+ task placement stats
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, Li Zhe <lizhe.67@bytedance.com>
+CC: <akpm@linux-foundation.org>, <bsegall@google.com>, <david@kernel.org>,
+	<dietmar.eggemann@arm.com>, <gourry@gourry.net>, <juri.lelli@redhat.com>,
+	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>,
+	<mingo@redhat.com>, <peterz@infradead.org>, <rostedt@goodmis.org>,
+	<vincent.guittot@linaro.org>, <vschneid@redhat.com>, <ziy@nvidia.com>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, "Huang, Ying" <ying.huang@linux.alibaba.com>,
+	<riel@surriel.com>
+References: <20261028041253.74839-1-lizhe.67@bytedance.com>
+ <20261028041253.74839-3-lizhe.67@bytedance.com>
+ <CAN+CAwPM=-sRDypP0+ZxX8_CziBRjXbxKEE3UZGLzkmOWrajNg@mail.gmail.com>
+Content-Language: en-US
+From: Bharata B Rao <bharata@amd.com>
+In-Reply-To: <CAN+CAwPM=-sRDypP0+ZxX8_CziBRjXbxKEE3UZGLzkmOWrajNg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00053453:EE_|SJ0PR12MB7082:EE_
+X-MS-Office365-Filtering-Correlation-Id: d14bb7e2-dde3-4cf2-ceb3-08df3580bb43
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|36860700016|82310400026|4143699003|5023799004|11063799006|56012099006|261026121527099003|261021121427099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	1/RONOmcmKtj7VreU/UAZKabmKjOwiWVO6M+EGfnT39ZgHFvlciIOaj2454ZwbJFSxbIFbtqjQH+H3IpD4HDpJ1miOPIYA+FVirBUBiRRstE/AS7jsFIu/JDHrTaxfm2Aju2tZC+WvdMhiyETTWyZ3wua3ZbFUQnuSvMiGKFuYTgR8S+I5TQWas4r3q+yLW8Wtw7p/awkI06TkdBDSERhgS20HGrmzu+pwCJaxYvULjvH9UTvMTUSY/Ujq/Lv0scUQCPgMnMpuf4lPluBrh3VVh7L1MJxozhpZ/oAS2ihMhUK93h5Z6I89Zki2JaTwPgE2swK2U+bfI7gZc4pdwCmHJK7XmI+0eQOTBodcosme4WEPj2XOdyIX+4YKepejLxMr1I4PBJtS17xKj7ZIXhg6tf4Fb8w5GMWEgEuOs6JIydG3OQOYgn//yYtsmdB2UhKfvOzjtzB4x9Oetwn9ta+bo5tgyXLTWKp5VfObdcAVE+rQwRIrBn+L1Fk/QR5XWZl6iwIh2bv7CNmWyYxH0OFQbeQiswOXpkuT/gMPiwHsYtETYDjk7OklaZnUedtUnBDl5UG/i2OG8i1NCpnotAf71Fo33Hkbkewrkdz/khTH62eeDsuEdh/JI/cFBSmR/Z43TYs7A+Tlf5wG9Tz3STXUMLpbpiHDuwLop+SekkUViijf7OJ+7bayeI66+YLLh9zNorwCYuSPircHwcwrb0gw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(36860700016)(82310400026)(4143699003)(5023799004)(11063799006)(56012099006)(261026121527099003)(261021121427099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	KBYThA9IEIuxPiDNQQ1U3hCxSH9yBVoD3L5nYd0jlEdOxIsqmfdh6jdyjvSHC52b7GQQVULxDv0F8tj8xi33SWKwuothJhJjLfhP2XEbFQAg7bDfbWCRL2WBOTAskA0vEfFVdoLgZmBzcLkxjaeK1D1Yl10Kle5llcUFqNh08clqerYa2J73aHQuqGNS7KBOmbvwwFE7bhYYwxk9tgzQBm8kZHUcHznv4FlW3eVc8zzuboD3/uEpU2GqsIK1Z+dJ3/xmqqGTJqGZVfi1MtVy3Obx/nBbuAzc5JtkfcBiVf77BtAZuCEAwhZBWhvw0/N2Oqc9crncibx3vhbOt2+WKMW6kItZreIOCc5vO2HgGBKWjoEZ3lQoHHon5hMEgQ3IuASSFY/vH/ymYt+gdUvlJ2ynvy2c9wK1OPfUdjxaHQk7o6qLL4ihmXAzh8E+MvNk
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 05:51:52.3027
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d14bb7e2-dde3-4cf2-ceb3-08df3580bb43
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF00053453.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7082
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E47DF80003
-X-Stat-Signature: 1qn5srtzbxksqtkxiamme7eku68b8mjh
+X-Rspamd-Queue-Id: 6E9EC40003
+X-Stat-Signature: j4hgquo6dzcdxkmsxe4ptbp7zhimjgiy
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793252954-151923
-X-HE-Meta: U2FsdGVkX19JTsuiyuH/XDBc4/mVjIuZNBzs3xU0i4KEIVT8XIUWoZw+cxDBQmNAyKA+k16eyGmSVNBgZujMRkAi+uP/ZbTKplxxXawhNHNdvutZuG94MhmkcZ/Z/zNZgetHagESel1H8EvrQ5Qd/SuLDpmcp28U4nC4n/TnAoNxZt5u8QDMC+aojKGjOajiCCNSUqMOnR7qqXdoQaojGWt7KW4G8VxeZW5pfaC45mubCvRobwaJ4+XoLlp59HpJxeTM5vD9yU6Kg9R3EZZHfN0+W/W4YbLnQFvA6vETwWlVxqVEo0TiWSwT/S5S9Bf9hDe8WZXYpYszwHrL5cIDtdCJJqcgFlrNJS+iLWYI4t+EYzjrjDe3+ZLtWsI8vCd6fiALwr7OV/TnLqH9Y00dub9SRvVEY6luL/GaggSVXjL2ZEz7JoRWS6JF1HrOAbhXvgK5DxuPJcNbmAJy0cZgjJqbstL+QQXf8W0iveTJc7XEiH4W4tWAHnCkMo8GN8HBPyswR7UoRviytnHWnnEPOJUsZDhu9sQxZg2H1Mplx0ZxFJgCTsVV3hcpExKA674g1s4+Dul83BjztjeLTWe57jbOpdeWy94Lk1pfCCZuIJqMtOYJz2AeUV0CoB8RKNE6NIZpp8eMf7ZCAUrfkEIViHmmo+TJ9mj4iNM+nBAcj3QKUELi7IAXFGCC3p7IC6c6AjlnltFD4Rw8dZranjcHT1eUAH6FlSK1f1FZBW0BgSrLL4TYBgnMwJOu7lnpyZocARRbIWMPodHB4Hs8waYO0jrU97pFD3DRxbrwQmZKz5jewfKbPsoa6ZhhcJft0/qf2uCxpOqi08qtQR8lfNoTPqWwpJDKWDgh8tcIvLCwPwrq6PexhqygZdlerl8otOLB5hRtGFJ+dArHpJICbwgn0EQG3ID0Z65/PoH6C3gXCNcB9qg8g4jAFdwUj10IS80OiZbsJG5xNRGAkwE+Y8K
- P+UeWHjg
- Al6xkDTOtj6QcVT222mfELbo7geGcqsrowbgKdc4Mj1Dgfnzjw7gXpSRTZI/ERxQgHOcAefE/CbEZOiMtFMdLNwGUApFKFtvGPieBYURf0LOX0dc4p7t0n+EodCmm+oV67V/wyDgYHbJNqADE/iKusvC7sqFyUxbg4NRyWauQ6qiQjX5bmZU2jpGa+zgFt4/Dac7xbo0vboDg/g19Mz98due83xBRNlAepmRvn3/lzMOqgi1KjeT5tK1e39xRk0rlykhd2Eji+ywRn/LcZXB0SgQkp9yJBDWe18fa0FaDDSQldhpvK/zuXi6GZXEmPrsrgR4aIZlMnzkGFnxrCFC/qD2KUGq+OCyQuPzN77iMldibTAbIxzixg2QxYQV3tfhZttK2/vFEWlfAkagEAkKWyWctkm3f8IU27Z6BzDsv3MGkVI5xcfx2T3Hri+LNrRjmj/kNwK70JAtGrGSfghnrnwn/kcS1q8VJRfW6sN1XgnaiCClHyVoMB3hO9s2EuBHxwPmr
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793253118-433659
+X-HE-Meta: U2FsdGVkX1/UU+34sd3Yt9mrMY8H0O3oUJgVDnrTclMo518KUEQUxSyrSpAsQpNJ4rpa1v96J3BcvGZMSKW1PteNMWu1GsikWWADvuhVf4LJuKgWPQ9o/YmasFD875NxVY5qNHrdGcP6xRPI3TbjBTwS/buoQK5F1XJbsj7f2y9qn2SmwlGAmC1isHF757jCAnsC8Myx1oCXs0qLWEP4kPNoIXv9tfWN148VtRC67DUbbGV95R0ZKCpzREnz3K+8CNUZ11PR6XFr9Ey7gys7yXPD9la7B5LpVS+IZDc2zd+iSKVNP8VKQuTcpQeYVXoaO5Tm9JK1ZJ2mb+r3WWmUrrKwQZEFnlSQFMvBG6CEnVekMMh1ZldvmIAMsOCBdcSC1H/j9S6Rgit3hwroeWeg37CEOf3CVmwqV/GbnMMAAxTukkifPqFXpEqBQqattZrB17mASDrnnFK7WSLyG9azfjeu5I3U8v7VrHeZg0M8OUBmDs1pLfF6d4hT//1puVqJ2uNirixmE/sahm9runxilDt7N3/ffNtuouyt/WahPl/v2RvaIfE/Q+lQIxmN99yeDH5+oIgweMD2Pn3LShfvQ4hCurSw6rs8kRKUfUYxPqNlcPKrhFAPBwf+iyDugBfwoMDnbC2Qq8Ow90VzYJuaMUEB+apea7kJWwjJKaZuVr5uWJhufDz7PDXgdb1uNOF/XrxmsEbodLDKC+MpHk7sKPL8v/sa0fI7BfxRbHoPFSDstRqDw+2A++Vz9dxRNxpjJUjckRqZ/+7vrq1kwzzJvewG2RwJA/MXBAjjbW9pbA27fmKGkZLdyVpKZCneDkzkArUrz6x2CAaCUdzhkIaols4MQ42uCL0/H/DkTqytmf+L3wiPGHiSCtx46UYrFqjUmufChtnvuhufX32ZZ286LutBN1pJY76OQrZez4jth/yF3KTNZgWQrN1q5/Um3lZ+lM3spmyujfVLz71OECK
+ s+QJ+z5A
+ zLYQHFaynctYVSOs2EblozECkdpwOWewC0OfaH44oSyVpyH5EL840VsIsGR6mB6nucT9JrRKOxmasMhR/SJ70Q/F427fKEKE0BBL1aHKwKeJXTUKp9TM+skHrOl7TZyYpaX1BTdniXv0YAapPZ91RGjZLnm/5J51MwqsEm75uaFkRnqpnhUemg9bmjN5rggl9RGSGkLkrQ2awBed2hwoYJtE/Zpg2FVRGJqO20SNMwan5sjQRY1Z9E7tD+iyA77fa3OgDB2NJBFiblOZNBKqpUfCga2xShO0J+WAfVNZE8hBNN0HIM57DmIRySvnA6o+4gx+sC8/fYtywz1+729p026udj0HnYNE2WcUwMiVBfFij4RUKx6afBIYn+Lo5kaArVt/A3qBrXk4skyxHcs8hUKM2sKfOagUD/e00TzmoGseEGEEncWDCIMsVOBBJ/onQ22EyvSEUJXYx24bF77sX3UCJxnulRXUTJPW/HrpG8BiS1kA6kFuQ+3nxdhyxIDYLr9ixcWmaXS8pn9Q6x5djmB3V1OmgR0fGRF7x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,103 +160,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 8:06=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] crypto: acomp: broken type check and async gate in crypto_acom=
-p_batch_size()
-> --
->
-> commit a38b95e87019ff2c11b51ebf159a082ec340456f
-> Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
->
-> crypto: acomp - Add API to get a compression algorithm's batch-size.
->
-> This commit adds a batch_size member to struct acomp_alg and introduces
-> crypto_acomp_batch_size() so callers such as zswap can query the maximum
-> number of requests an acomp algorithm can process in a batch.
->
-> > diff --git a/crypto/acompress.c b/crypto/acompress.c
-> > index c55b0e8eff3d8..8e285cb7477e9 100644
-> > --- a/crypto/acompress.c
-> > +++ b/crypto/acompress.c
-> > @@ -326,6 +326,20 @@ int crypto_acomp_decompress(struct acomp_req *req)
-> >  }
-> >  EXPORT_SYMBOL_GPL(crypto_acomp_decompress);
-> >
-> > +unsigned int crypto_acomp_batch_size(struct crypto_acomp *tfm)
-> > +{
-> > +     if (acomp_is_async(tfm) &&
-> > +             (crypto_comp_alg_common(tfm)->base.cra_flags & CRYPTO_ALG=
-_TYPE_ACOMPRESS)) {
-> > +             struct acomp_alg *alg =3D crypto_acomp_alg(tfm);
-> > +
-> > +             if (alg && alg->batch_size > 1)
-> > +                     return alg->batch_size;
-> > +     }
->
-> [Severity: Medium]
-> Does the cra_flags check in crypto_acomp_batch_size() distinguish
-> struct acomp_alg from struct scomp_alg as intended?
->
-> In include/linux/crypto.h, algorithm types are 4-bit values under
-> CRYPTO_ALG_TYPE_MASK rather than single-bit flags:
->
->     #define CRYPTO_ALG_TYPE_MASK                0x0000000f
->     ...
->     #define CRYPTO_ALG_TYPE_ACOMPRESS   0x0000000a
->     #define CRYPTO_ALG_TYPE_SCOMPRESS   0x0000000b
->
-> Because (0x0b & 0x0a) =3D=3D 0x0a, testing cra_flags & CRYPTO_ALG_TYPE_AC=
-OMPRESS
-> without masking by CRYPTO_ALG_TYPE_MASK evaluates to true for both
-> CRYPTO_ALG_TYPE_ACOMPRESS and CRYPTO_ALG_TYPE_SCOMPRESS.
->
-> A struct crypto_acomp *tfm allocated via crypto_alloc_acomp() can wrap ei=
-ther
-> a struct acomp_alg or a struct scomp_alg. If an scomp_alg has CRYPTO_ALG_=
-ASYNC
-> set in cra_flags (or if the acomp_is_async(tfm) check is removed), callin=
-g
-> crypto_acomp_alg(tfm) performs container_of() to struct acomp_alg on a
-> struct scomp_alg and reads alg->batch_size from unrelated memory inside
-> struct scomp_alg::streams.
->
-> Elsewhere in crypto/acompress.c, such as in crypto_acomp_init_tfm():
->
->     if (tfm->__crt_alg->cra_type !=3D &crypto_acomp_type)
->         return crypto_init_scomp_ops_async(tfm);
->
-> the code checks cra_type =3D=3D &crypto_acomp_type (or masks cra_flags wi=
-th
-> CRYPTO_ALG_TYPE_MASK before comparing against CRYPTO_ALG_TYPE_ACOMPRESS) =
-to
-> verify that the tfm is backed by a struct acomp_alg.
+On 28-Oct-26 8:33 PM, Joshua Hahn wrote:
+> On Wed, Oct 28, 2026 at 12:14 AM Li Zhe <lizhe.67@bytedance.com> wrote:
+>>
+>> NUMA balancing has separate mode bits for normal task placement and
+>> memory tiering. In memory-tiering-only mode, NUMA hinting faults on
+>> slow-tier pages are used to detect hot pages and promote them to a top
+>> tier. They are not normal task-placement faults.
+>>
+>> For slow-tier folios, memory tiering reuses the folio last-cpupid field
+>> to store access-time metadata. numa_migrate_check() therefore cannot
+>> return a real cpupid for those faults. Before this change, it returned the
+>> same all-ones last_cpupid value that normal AutoNUMA uses for a first or
+>> unknown access.
+>>
+>> That can make a memory-tiering-only promotion look like an ordinary first
+>> private AutoNUMA fault. After a successful promotion, do_numa_page()
+>> reports the target top-tier node to task_numa_fault(), so the existing
+>> slow-node skip no longer applies. task_numa_fault() then accounts the
+>> fault in p->numa_faults and p->numa_faults_locality, and
+>> task_numa_placement() can consume that sample to update normal task
+>> placement state even though normal NUMA balancing is disabled. In other
+>> words, hot-page promotion feedback can leak into the CPU placement
+>> heuristic.
+> 
+> Hi Zhe,
+> 
+> Thanks for the revision. To me, this looks more like a fix than an
+> optimization, since there really is incorrect NUMA balancing behavior
+> happening that could be visible in userspace (unintended
+> task-placement and related accounting). On the other hand patch 3/3
+> doesn't seem like a fix to me despite the name, since this one would
+> mitigate the incorrect behavior.
+> 
+> How about we pull this one out of the series and submit it
+> independently with an appropriate Fixes: tag and cc:stable, and
+> discuss 1 and 3 later on?
 
-Thanks for suggesting this. I will mask cra_flags with
-CRYPTO_ALG_TYPE_MASK before the comparison.
+Currently only successful promotions feed stats to scan period update.
+This change stops that and nothing updates the scan period for tiering
+mode after this change.
 
->
-> Also, should crypto_acomp_batch_size() gate on acomp_is_async(tfm)? A
-> synchronous struct acomp_alg registered via crypto_register_acomp() does =
-not
-> set CRYPTO_ALG_ASYNC, which causes crypto_acomp_batch_size() to always re=
-turn 1
-> even when batch_size > 1, whereas segmented request handling in
-> crypto_acomp_compress() and acomp_do_req_chain() checks
-> crypto_acomp_req_seg(tfm) (CRYPTO_ALG_REQ_SEG) instead.
+Though the direction of the fix is right, I think this can't be an
+independent fix until there is some alternative which patch 3 in this
+series brings in.
 
-This is a good question. When the patch was initially planned, the
-intended algorithm for batch_size > 1 was async, that too for zswap to
-know how much memory to allocate for batching resources. Plus, we did
-not want to impose strong semantics between batch_size and
-segmentation for synchronous algorithms. The only known usage model
-for batch_size > 1 was for async, hence the gate to prevent unintended
-side effects until we know more about how to evolve this.
+Also it would be good to get a view from Ying Huang as to why only
+successful promotions drove the fault stats while unsuccessful promotions
+didn't in the tiering mode.
 
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028030503.17=
-923-1-kanchanapsridhar2026@gmail.com?part=3D4
+Regards,
+Bharata.
 
