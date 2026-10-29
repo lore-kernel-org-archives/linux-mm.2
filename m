@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34892606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5502606A31F
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tz9fODLA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RGLYR88r
 Received: by kanga.kvack.org (Postfix)
-	id 50D296B05E3; Thu, 29 Oct 2026 16:41:39 -0400 (EDT)
+	id 0EF216B05E5; Thu, 29 Oct 2026 16:41:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E4FA6B05E4; Thu, 29 Oct 2026 16:41:39 -0400 (EDT)
+	id 0C71B6B05E6; Thu, 29 Oct 2026 16:41:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FA916B05E5; Thu, 29 Oct 2026 16:41:39 -0400 (EDT)
+	id F20446B05E7; Thu, 29 Oct 2026 16:41:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21BAC6B05E3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:41:39 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA6EA1404DA
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:38 +0000 (UTC)
-X-FDA: 85376834676.13.61A6AAE
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D48B96B05E5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:41:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 730694050B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:53 +0000 (UTC)
+X-FDA: 85376835306.14.EF9494C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F0FF41C000C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tz9fODLA;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id B08A940008
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RGLYR88r;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306497;
+	s=arc-20220608; t=1793306511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5uSiir5kVbedebaZsFGaz4hqB6R1E7mLyr2MzNoLngs=;
-	b=kW0Cp5YR10BGQT++7blQ2OzKa/MYG8YeG9fR05Jz8xNvhiwg3Er9O5+sNppZi8O6Ys5qZ7
-	PkL0fwqaOiIjsN+shA1a4jvz4a2L/pHd5Lg/hewNaahdccFqFICKcNbgUDn9eo2i+7ivf5
-	DGPG3HaPqUJSlitAr4XwjrSlaXSvVAY=
+	bh=zArSmg7yLUQusiUDBjlm/kScYeO/TmH/P9/Smu4iQZg=;
+	b=rhU9SlASNC+2NnZCkxmhCu7K6D/24Io0MqjRMc1/yU/a0on/X9p4GHSu2f81U/CeSkCwtw
+	ztXIw7qU0Xzq7ybi8IaALX6KJLJwhjJZudA8by3ViIrOXzyBXpnzK37ODyfHGAZcpxcNYs
+	vjRCbvb66gYDlM9UClxMFVU2WqzlTxs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306497;
-	b=zbbCGiWdgMP/ctDoLGd46siVfdeMpcIB+t6NiAd0gA7E/DOsnrIQY76BxuuO9QnliHedYu
-	hLyUbz994lO+F7xRB94ckO37cvGpf98qI+tfMO4lPax/fNY9QyzvaTYMSWMs6WXnC7lFGp
-	wVFZ7uEXCn0uz7hs4uLXn+lVuPzFrR0=
+	t=1793306511;
+	b=Y+F0QFzwAEJpO/35xKSPGTVlGNg78srKxgEGi+2tsdqGYi36id85w4cgImI78v54vV51Ly
+	whFixvL90q5tW4KhcbO1DazoENTMiPdSrRPVcxoqqOpENWm16fks6rZ4cIVp+McX3r+Shk
+	ov/GAX62k7VQruphgxFcPFZjxwVpiHY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tz9fODLA;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RGLYR88r;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A350600DA;
+	by tor.source.kernel.org (Postfix) with ESMTP id 439D1600DA;
+	Thu, 29 Oct 2026 20:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D979D1F01824;
 	Thu, 29 Oct 2026 20:41:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6C51F01816;
-	Thu, 29 Oct 2026 20:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306496;
-	bh=5uSiir5kVbedebaZsFGaz4hqB6R1E7mLyr2MzNoLngs=;
+	s=k20260515; t=1793306511;
+	bh=zArSmg7yLUQusiUDBjlm/kScYeO/TmH/P9/Smu4iQZg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Tz9fODLAYQG594yPNH75AeKGyE5cFdBIpvZVoymg4hDw3mti0G72s02fvYCaVCUD9
-	 lt8Exc8l8x1xV1p7UpPPu00DRqu1tPXmV2/pctBaUJFydsCRxtD4iT8RTWEzzIv2D8
-	 /zH+dZt56YPixFKyK9DnQKCpaudqze7p+L1zR7/mL7E11HewLLmqinTJ1K7n8/Nfj9
-	 IfCN0pIc+ff0kFboqS6a5ZLKM55gHo3muvDnalvvf151ZywFvHCvY170kgNbNM7tXC
-	 og5+8uu0N/RIhshEfKUph58MECD2INqomDBTAZ5HCuHM/JbWs1X7LTu17UzbxGvru2
-	 jnwfdPJDCCm3Q==
+	b=RGLYR88roEEbDd5tCeYUTOpvVfraAhTmG++35UVmmW+MOOjtMfDoQbZ3JwNu9EYK7
+	 a99vFMdfcGf8o5juAUZnbJ5xZs8mAGQ1+gjvsFf6NHOO3vpEmbqZVt3FCXH1tgKNfy
+	 WHJSd4Lz8UjYheY8b6tfHXBpyMyIhevr0bOkLKm7e0YsAY15rmrqUd+JMgpP99OcGM
+	 p5rxJpPQrcARGEcSkJF+8J7+1oI/T8LiSMX5XgFh2+E67ydfTgPDCA44s95fCGJaSG
+	 Vvv0OX3xJ1ptZi56r/nPn2GsnNt0bERfJYkrF8Yyh5tqVEW86MP0+rqj4DGWD7vADq
+	 jNLTFzqpOM9ZQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:28 +0100
-Subject: [PATCH v2 33/47] mm/memory_hotplug: avoid races in
- pfn_to_online_page() with dying pgmap
+Date: Thu, 29 Oct 2026 21:33:29 +0100
+Subject: [PATCH v2 34/47] mm/madvise: fix data loss from MADV_FREE on a KSM
+ page
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-33-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-34-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,30 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, 
+ stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4287; i=david@kernel.org;
- h=from:subject:message-id; bh=K/Rz5AheKAp1O4iTIfDAL3ySR9IndGWc0AInEz1GWlE=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+2Q2HP6vnFJwjbR5iWc8v7H1nGs/zFtM3+9wLTXx
- rctJ5QFdZSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjARzv+MDNNYetk5BC433npa
- bWNiyFHyuetN8VGDR8tfL8n5cNO38xzD/3qNiW9uZEV/67rzcvkCrrt7TOSOm11TfjY3SIf12cz
- MNFYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1733; i=david@kernel.org;
+ h=from:subject:message-id; bh=K1BVe7ZYRTk2Zt50NT+PN3jE7jOx7NQzRVqTDwh0m6c=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+04M4X18V1Z9xPSyy/e+WsUa9zSlnOmMjtRcs/1g
+ NZP74686ShlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAi+dYMf8Ucyw4tm2A0J/OW
+ z8VXDYXdXeKvv2wMrxY7eGn1EVedZ0sY/lmd9HP2W/rCXJN5+ou8mx8EBQO2BC78+WrrK7Gc7rI
+ f+9kB
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F0FF41C000C
-X-Stat-Signature: scs7jxfnqoginecbdjwq6mc9az1jka4h
+X-Rspamd-Queue-Id: B08A940008
+X-Stat-Signature: krsxu4d6qkozufwf1fdmze5bhk4f3po6
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793306496-402078
-X-HE-Meta: U2FsdGVkX18gUKm00f3DIKmsV5u5JoKIjmwXH5k6f3KXaLANGbSgw/lisGcoK4SjdIxhhtlBgxBb7cIDaQ1ZL/cnZiiiPnyqt+Iv3N2cgx2JdN/V1HHqCo3xb0iFtR4tM1+o36IVI6FVGK0YQ/EqWDyc8uW0y5v2p9lpj1RE4Mv1YcZ2G/dTh1dWUW/SfBJ5zIQ+p3HCOk5Af88iQ2ptonFa2j5ZXzURzQWS4eCQjfClBYuSBBFHp3zsKbgj8d/PWxZRqpDKeP5xHHfq59mL0zBkKrkMpMqM6X4DNol0QZk++qJ8GYAhdYBW6EmnRfAjsjNvqT/lLtiZ/1kwvBPfbKAiJCcMyqaOqf0N3R2uN4mj2llBAYyX7zhG6dP/xEcix8zcHCQk6Gds4BzfY/+FJoLYLUWLfDxMCFC6/gbDalMExLuACEom7HNUT5NuyuNPkulSOenlOjkpEYViPYut25Au45S9mxog8+VjsLbn2FYmRz6XMKUGfvZ8yYaJmWSmjj6o7YEyU5ChASQRmEIyrP9RHSSqzAc17Y4m8H/Z361nnk9LVrE4EcAgxZbjbLE/S6uvJwsqupVCyASXiPNLjYqGh3HI080/Xzif7cTdcakYmlAVN5SSPiRPbpg6C7i3d6tZ7zJogYy+fdQ+BtYaP+kVCDEZfVwJ0amyyfYuoNlfxqajwUKMXoqK+DyEh/3ZJ2gtQING/+WOuBpiGZCA74PCyxQ18Rp7jhGqFAx/6DvlbrXyIyvKLMyoW4xR8GtJiVYkXfyQ+CVAEd4Kb72+IMe+y6qVmOmxTfh+ihz84VQ4ZQa/XVLHER8MJPJoGWMxNipDXRdugFIRk9Hkhxh4RjsBSWVPvJ5xn3aTX3Oiwmo90hDaDvH1faytsAsUEhHEreJ9zIpYiHQz6eqVBoEyo6RKH19sgG3cFaqm/vs3mYMrkOD7h5qfSMumf8E0llAkRBft8RBm7X8yzp/TnOq
- XRNxVUGd
- AVbK6//fROFX0rb/UKOFH19OLWzQ3TM/dWB0i/sSgBlmG/1yE712l454NE0p07mrYpkO0/wuwhxQupEH2v8PHSd9AFT+Mp7QeVjlgxwk39cspUYH8p4cLrHHNYuNlBLEOkEVj+Lv3iXtipRPwvF5ciKKawkN/iZ7hrFkNoVQj92H6tlxDoaf9KHEZgoDghmfvVp962sdx3QEbTbR/W57SKdFKt7e88B0WvSLt2FO6vRQ9XN33wcwzThP5IP28xkpoMA6LaKXDKV4CT4aEDqCH3vl5dRoulfHQ835BqJHu8ynF2NgMenENYaxfnC3kdhmk7o+KXbCJizZABPiIKtBaeMv1ftsDsVSe6LBc91LOpOl/dgV129DA/5kanAz6tOcArtVpoHiC+Yompjee5Bg82TlCIVEH7b/R/BOsZc3Y3/HT4leperKRREF7Wb4npKurt6kxOjLXOQXCSm/bO0UlkbPaJg8pG7aY4SZjQvhj8OGMqGg=
+X-HE-Tag: 1793306511-627419
+X-HE-Meta: U2FsdGVkX1+FC2AyXQaiOe+EDg+iN8/jcbsEnX9bHakuTrhXpRiHExMHG7EDJoh3no8/+rAP/ZCNj2sP3AdZkAps6ujf7ehRbQWm3OQ995SPPdSzptjAwFZQrMROKE100VtEJJeYbU1LOsgXEuC+k+vEJCWA/MB/4OjYoRIWzonn3KViFxziO3YHvgvMPHvoU3RntBIF7sluRxfJsiR+A/GBWpb773B8zP6TB6qWEtgL4szOYvNm4CEtnbw0ab7OoEVFYkbmIRCXDDbqy3362fc1jyhUSwEEyWGXf1yeG20PwYlzkPut33iZDZg2LuylmtKCExWxa6zvQp8mmLRJYmgpq0oHWuaRvFuH1jV2yhqlHB7WB9wQTOwInrdSzfERfFJEapof9Am9hv10Ccj0Ox/3pjEalutF/hcTAM0jTRtHd0kzVOuA3N+UbRpAvUl/NIUQeR4fiVEPiu+I/BruT1ZxmOt2VcPNxKSaVDvYe//572PB4GRuvxQCpstsYHbH8w1v2PzIhaPAh+rCed8IzBrEm9r+RQvAD+wgXUjM3rQ5zZn4C7ApBwO1aBxfPK4T/X7bWnlVJRTvtzlXDnhOaoEm4vs/z+fUih9PELnAtZVa0Rn0wEW4ILH1yXlh0M1cQ0bpVyDvw4fmaq2Ib85/nfRTolb+nKhq3jPGeQ1X1WuNq5Z9GmI3UaQx7LgIfpAgIAQF1Raz9RhUkSufccS9a8mHxNw77uM8y2sBNsulEkOkOGKrKqYR/hzUcQpuPIbk+/25194Gw/8E8Xqm2/pXRE+UAfcUd2UcDoDZ/oH0zg1Hxw/LDMF1EsyvGYmpWsjVfAUIk4ZtOPlPTRUksOhzMgeeXPcRnxx2I9O7AHwn4QT4dKeR43Xc1RYQ2lzbiR1bBf2sCh70BQO3ZI0BFhpJju7vFnsquTqzYwnqivRXU8nlTVcf2XFYzV6XL1EPJxvjUSKTflq1/oMHbg1DNH6
+ XgYokVGw
+ 3FnVFuC46Ud7wE6IsGl6gksgbZMcf3iK8nCwGzqceN0EonzeiUgsVdcbiJtRPpgJe6yzUL7iH9di4OYVX5W8hfIWndBnGHD8jt1TZ7FYE9Ms7/bVNLrofRGjJpOZo0pGgNNvBCtS53pwztV2VpmEv0E5sr7P2RnAN5USPPCkCG99Vs0FLEi3+PdTfZ2sAbCjjJQvSN4274V+mh7RgQBd9vI2OL2+5fMWcB+aP5Y88uvjiJOMEG9dS2EJzS/A+fUUry0EMjUbharQatarn2vsERlmjPeniZnjSiD9m6BP22vlx6svf+UoYMqdhiBsMQzIPUpuEEyhFXNrLddYUJqCVZi6AG/HevZgpzaV3vux32NoGaVctW/Gmhi/iTr5tEd38sxAGz/MYSRgRpaKZ7pzV14lnIJOtRiOKu2C2V7CdQAVxiDY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,117 +139,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Josef Bacik <josef@toxicpanda.com>
+MADV_FREE can clear the dirty flag of a singly mapped KSM folio. The
+folio remains in the stable tree and can gain new mappings without being
+dirtied again. Once marked lazyfree, reclaim can discard data that those
+mappings still need.
 
-If ZONE_DEVICE memory shares a memory section with ordinary memory, the
-section is online and the pfns of the device are valid.
-pfn_to_online_page() tells them apart by asking get_dev_pagemap() whether
-the pfn belongs to a dev_pagemap.
+KSM always marks a folio dirty when converting it to a KSM folio in
+try_to_merge_one_page(). Marking a folio lazyfree clears PG_swapbacked
+but leaves PG_dirty unchanged. Preserving PG_dirty makes reclaim restore
+PG_swapbacked instead of discarding the folio. This also protects folios
+that were already lazyfree when KSM converted them.
 
-get_dev_pagemap() only returns a dev_pagemap whose reference is alive.
-memunmap_pages() kills the reference first, waits until all pages are
-idle, and then removes the memmap. During all that time the function
-finds nothing, and pfn_to_online_page() hands out the struct pages of the
-device as if they were online memory. A pfn walker reads them while they
-are poisoned and freed.
+Skip KSM folios before clearing their dirty flag, checking under the
+folio lock to serialize with KSM conversion.
 
-The entry in pgmap_array is only deleted after the pages have been
-removed. Look at that instead of trying to get a reference.
-
-This is probably not worth CCing stable.
-
-Fix generated by an LLM and sent by Josef Bacik in private.
-
-Fixes: 1f90a3477df3 ("mm: teach pfn_to_online_page() about ZONE_DEVICE section collisions")
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Fixes: 854e9ed09ded ("mm: support madvise(MADV_FREE)")
+Cc: stable@vger.kernel.org
+Reported-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Xu Xin <xu.xin@linux.dev>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/memremap.h |  6 ++++++
- mm/memory_hotplug.c      | 13 +++++--------
- mm/memremap.c            | 13 +++++++++++++
- 3 files changed, 24 insertions(+), 8 deletions(-)
+ mm/madvise.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-index e3c2ccf872a8..b5e5e626c7a5 100644
---- a/include/linux/memremap.h
-+++ b/include/linux/memremap.h
-@@ -231,6 +231,7 @@ void memunmap_pages(struct dev_pagemap *pgmap);
- void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
- void devm_memunmap_pages(struct device *dev, struct dev_pagemap *pgmap);
- struct dev_pagemap *get_dev_pagemap(unsigned long pfn);
-+bool pfn_has_dev_pagemap(unsigned long pfn);
- bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
- 
- unsigned long memremap_compat_align(void);
-@@ -284,6 +285,11 @@ static inline struct dev_pagemap *get_dev_pagemap(unsigned long pfn)
- 	return NULL;
- }
- 
-+static inline bool pfn_has_dev_pagemap(unsigned long pfn)
-+{
-+	return false;
-+}
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 75b409e97dbf..a16e3cb256b7 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -756,6 +756,15 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+ 		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
+ 			if (!folio_trylock(folio))
+ 				continue;
++			/*
++			 * KSM folios can gain new mappings at any time, so we must
++			 * not clear their dirty flag.
++			 */
++			if (folio_test_ksm(folio)) {
++				folio_unlock(folio);
++				continue;
++			}
 +
- static inline bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn)
- {
- 	return false;
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index c9cc42e54f05..944ea6fd8856 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -342,7 +342,6 @@ static int check_pfn_span(unsigned long pfn, unsigned long nr_pages)
- struct page *pfn_to_online_page(unsigned long pfn)
- {
- 	unsigned long nr = pfn_to_section_nr(pfn);
--	struct dev_pagemap *pgmap;
- 	struct mem_section *ms;
- 
- 	BUILD_BUG_ON(IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID));
-@@ -363,14 +362,12 @@ struct page *pfn_to_online_page(unsigned long pfn)
- 	/*
- 	 * Slowpath: when ZONE_DEVICE collides with
- 	 * ZONE_{NORMAL,MOVABLE} within the same section some pfns in
--	 * the section may be 'offline' but 'valid'. Only
--	 * get_dev_pagemap() can determine sub-section online status.
-+	 * the section may be 'offline' but 'valid'. Only the presence of a
-+	 * pgmap can determine sub-section online status: it indicates a
-+	 * ZONE_DEVICE offline pfn. That includes a pgmap whose reference has
-+	 * been killed, its memmap is about to go away.
- 	 */
--	pgmap = get_dev_pagemap(pfn);
--	put_dev_pagemap(pgmap);
--
--	/* The presence of a pgmap indicates ZONE_DEVICE offline pfn */
--	if (pgmap)
-+	if (pfn_has_dev_pagemap(pfn))
- 		return NULL;
- 
- 	return pfn_to_page(pfn);
-diff --git a/mm/memremap.c b/mm/memremap.c
-index accba23aef28..a1e99a4c55c5 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -413,6 +413,19 @@ struct dev_pagemap *get_dev_pagemap(unsigned long pfn)
- }
- EXPORT_SYMBOL_GPL(get_dev_pagemap);
- 
-+/**
-+ * pfn_has_dev_pagemap() - does @pfn belong to a dev_pagemap, dead or alive
-+ * @pfn: page frame number to lookup page_map
-+ *
-+ * In contrast to get_dev_pagemap() this also finds a dev_pagemap which is on
-+ * its way out: it is registered before its pages are added, and until they
-+ * have been removed.
-+ */
-+bool pfn_has_dev_pagemap(unsigned long pfn)
-+{
-+	return xa_load(&pgmap_array, pfn);
-+}
-+
- void free_zone_device_folio(struct folio *folio)
- {
- 	struct dev_pagemap *pgmap = folio->pgmap;
+ 			/*
+ 			 * If we have a large folio at this point, we know it is
+ 			 * fully mapped so if its mapcount is the same as its
 
 -- 
 2.43.0
