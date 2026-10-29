@@ -1,40 +1,30 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F86606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0050606A32C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iptjPr9S
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=ZtOQpinT
 Received: by kanga.kvack.org (Postfix)
-	id BE9C76B05B9; Thu, 29 Oct 2026 02:24:58 -0400 (EDT)
+	id EA9BE6B05B5; Thu, 29 Oct 2026 02:24:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B74106B05B7; Thu, 29 Oct 2026 02:24:58 -0400 (EDT)
+	id DE4DE6B05B7; Thu, 29 Oct 2026 02:24:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A624B6B05B8; Thu, 29 Oct 2026 02:24:58 -0400 (EDT)
+	id BE8436B05B5; Thu, 29 Oct 2026 02:24:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 83D0D6B05B5
+	by kanga.kvack.org (Postfix) with ESMTP id 94F576B05B6
 	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:24:58 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 09F131C2304
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 312231602CA
 	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:24:58 +0000 (UTC)
-X-FDA: 85374675876.06.5DEE795
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 35FF920005
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:24:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=iptjPr9S;
-	spf=pass (imf03.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793255096;
-	b=sT/YI2RU56GEu01u+TyccFreY6wsCfzrhfSiHG6dmqj7Rxw9AXW5jYwkheXCSto5EzlmY7
-	jEgHO6YtcHUs5THg1Tmg3dpStXcv1n5g7zHwqLjS6ch82HGksPUzcYIakts509AZ+bsaZH
-	Bm9Kc7CgS+PqZGYQUX/W2Axqi4P6Ahs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=iptjPr9S;
-	spf=pass (imf03.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+X-FDA: 85374675876.14.878C73E
+Received: from va-2-113.ptr.blmpb.com (va-2-113.ptr.blmpb.com [209.127.231.113])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A0C0340003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:24:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ZtOQpinT;
+	spf=pass (imf17.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793255096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -42,87 +32,64 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8NzBJI6EsRS50iI3ozE0K4oKaJ1QSXdP21FHU7kTXig=;
-	b=FOc2zx6cCx2vOhrkboE2PCFsJJf6Jf7lwicEMIMvZ/PzRjbvrqBtUDI8rL0+pD/zTerCT9
-	AtcXpOAnh82CCu6mC24ey39bZiN9oOn5YTa+Qc6pnWuoaJgnwuRpyXY+/dtVzaYK2sKm/B
-	nQg4bAEvkC5WuTPecqd51XE2F/7Pbz8=
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-14fc585291cso1580556c88.1
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:24:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793255095; x=1793859895; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8NzBJI6EsRS50iI3ozE0K4oKaJ1QSXdP21FHU7kTXig=;
-        b=iptjPr9SOm7bYTOnNa+iQoDbx4DdQdusqkHflSJZAN6Jas1jWeo+olPVKSKHBAbDwZ
-         FD5mvQoZG8ohmr6HTPvUwIoskfkNYQeCHuHSSWGoQM9f5VlfkVUmxCzuXoVxFvQ9ylyk
-         fJCqwRd+FinMR17RMiTn1GiChJJVQqRY1jMQuNHR6G4s4PLEXzBEECOC0dcYwkTfHRXM
-         JwWNpV+dj5RvUGVIRtE42QcvmAHIdGiP1+Kcpq7szYn8C5SHOAAzKKYzaMoKyK8nvCp7
-         fI4sBj9v8Os8b1wvnFzKgA/7PsO0IMrCnWagXxVaUNJu+INSew9SVl2TbIncSkSEe5Mz
-         8t7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793255095; x=1793859895;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8NzBJI6EsRS50iI3ozE0K4oKaJ1QSXdP21FHU7kTXig=;
-        b=BLPTkFCWa7Y7kpqfFwHeSCrW6+bVHwEyyRYQtpyD+KMgxjf/jdBxkt3PmEC7RdAsAN
-         rOElWfvxJ5fgYowArfF8au7su0hA/rqf1NLHmAKqDusN0OVnCQyF2hFKR9K+vxchef5D
-         ivce4wrRkJErHHzEzNehuX2MZa4uEL721bhMZfCttk46wAu7/+GRpTzAEvtA5nCXy7UG
-         MKf23gkj0vSNRnAadVNcO7EbwZtTa8USpDBdnyhMkjVHPMChEzUuMWhoW5l7fG70mY9K
-         bDs4hErAmv1E9xe7GjCu7ayHfwFNIpnQWlWiMpytyECz+572qxc6Gc8ADWt2ujDrJoiP
-         QO8g==
-X-Gm-Message-State: AFq9FYKsHQ/PCbdr3Qx64XDflDC2Mx0QiFkY9ytO+1Pr8dPKiDvhREJF
-	KCPb7UcC2EfmllmP04Po4H4DO+f12coYmFYxvnHorIsMF/6lfhWbAl//
-X-Gm-Gg: AYBFou1zrZmsobdA66AxL90Yu5TKuv1QTBUABiOcGgNfsayTcedW2BhEkWjyufQUVu0
-	wBDonF4guw8vq3kSHP1Fra9Y2A1FLd4TiHVhyfppAuDY2yPJNZF/1/G93zMxt1314Iz8C3NCKq5
-	FHdb1jSIng/FUScSsfC5qKTzFgq5nFrnBCi668P7GtnvH4hsckHlDlBFjcW15X/TkHZ043CFe51
-	Q/9lBAViJnOfH5gkUSgX0ARMMloEFXhWhZTg7TW8MunpLOf91kGQnzrBWsmP0xvgAsJhqxYICZT
-	JJP/PxRwXKftTO0bGmm+Q5waWgH3KqTioeVoejl94SHYZhgVOLk5A9npZh0fvw0QVmoolIDQIPY
-	PPwfs3xxmUJCyNTKqg0WXKGl7SIANdJdJXcGv7crdB0hF49PiGhMDdKBH7X12tUxmafbRqdXVwg
-	f0sc6QB/F8Wr0tiMZQ65W4lRZj6psultaP2Ah9gA7wcZ4lDIzypel2Bt4bCXgoQShGxMlNpYCm+
-	8i3z41uKPIGabG5mOQE7Uo/+5OpnDjJ5eBge9G8y56aPKdu5knxXAdnFNQzYRx6LZCIdB8kgA/s
-	CG37SO/0JI1ZA3M+6EA296N/
-X-Received: by 2002:a05:7022:1003:b0:151:8280:2c1a with SMTP id a92af1059eb24-1a6cfcedf27mr7079202c88.42.1793255094945;
-        Wed, 28 Oct 2026 23:24:54 -0700 (PDT)
-Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1aa2f100684sm2152004c88.3.2026.10.28.23.24.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 23:24:54 -0700 (PDT)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Thu, 29 Oct 2026 02:24:36 -0400
-Subject: [PATCH v3 2/2] selftests/mm: load xfs before checking for it in
- run_vmtests.sh
+	bh=G/jHONOjsG3jk3ok02og65/P6DgsNIUASy0C0aH+3Fk=;
+	b=hxcuQf5P6HN7/v+i1C87swyisa8Pw5NYi3jUTO/mekuMdU82VfwcG2dbfJXqr+rwPMBAzP
+	klAqjjpCgeSyDPGyt/jmmlnvT/oUFGOt3A1al1RR4kBi3FU2aIpqqJ0XE/FZE5aT6gNtkz
+	B0ZjsFSZhxBXNznPWY2z3tQLfNLb/3U=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793255096;
+	b=cbDs0ffqpTkwYiQQ6P4IrpCG8aGAI0q6YFrF2YQxJPlYZxyjub9yhJemR8y3yW57GcYDG4
+	RQ5Cytc4hHJg1wM0QemoeTZdFEhYt5Z3YA1nzNS7eTQR2T5CNpi51B73KT2hOwVkvpfQsZ
+	UkmIp4y8n3YYkEun0NjzZo/ueEPaQrs=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ZtOQpinT;
+	spf=pass (imf17.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1793255089; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=G/jHONOjsG3jk3ok02og65/P6DgsNIUASy0C0aH+3Fk=;
+ b=ZtOQpinToUAnE5i2fpxWQ/Sbs6hx6Jgx3dpW3z4CMXa0LEp6S3Y36paqfrL4rJcNGoVWbq
+ KZMwuwlNWtfKC0yA9VXgkb8z2Q/qya8jztPfkYSV7dIa4JmJhNX9+Z8Kf495etYfmfY/dX
+ K0b5qTGbp7fTzS1QuUpYZ9zhCgdiZ0mNw5NSyoISy+/cVBg/3P7vuTodSfZCbT3l3N+2AP
+ 8BmkXmRzt5lXl6gE6kxFwFo+XR4Gh/kLLGfJGxArIr78cB7LEFOzQWf130WmdAnsuXb5Hz
+ DtOZz0TAQTuTCmNTN5AexDn1e1ZGAXlOP/erRKdLEOOw/PZHuv+glcqWJNXWbA==
+To: "Bharata B Rao" <bharata@amd.com>, <akpm@linux-foundation.org>, 
+	<bsegall@google.com>, <david@kernel.org>, <dietmar.eggemann@arm.com>, 
+	<gourry@gourry.net>, <joshua.hahnjy@gmail.com>, <juri.lelli@redhat.com>, 
+	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>, 
+	<mingo@redhat.com>, <peterz@infradead.org>, <riel@redhat.com>, 
+	<rostedt@goodmis.org>, <vincent.guittot@linaro.org>, 
+	<vschneid@redhat.com>, <ziy@nvidia.com>
+Subject: Re: [PATCH v2 1/3] sched/numa: make free-space tiering promotion bypass configurable
+References: <20261028041253.74839-1-lizhe.67@bytedance.com> <20261028041253.74839-2-lizhe.67@bytedance.com> <e2fb13e8-6d17-41ea-a9f7-397f62a85f72@amd.com>
+Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>
+In-Reply-To: <e2fb13e8-6d17-41ea-a9f7-397f62a85f72@amd.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Message-Id: <74f3a0bf-22cc-42b7-8ced-c8c6ea9f6f93@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-2-16ad772850ee@gmail.com>
-References: <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-0-16ad772850ee@gmail.com>
-In-Reply-To: <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-0-16ad772850ee@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.13.0
+Mime-Version: 1.0
+Date: Thu, 29 Oct 2026 14:24:24 +0800
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-Lms-Return-Path: <lba+26ae2e6af+2b1159+kvack.org+lizhe.67@bytedance.com>
+User-Agent: Mozilla Thunderbird
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A0C0340003
+X-Stat-Signature: t88us6dk4bhdz1ke4u5pthqndnrh77pk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 35FF920005
-X-Stat-Signature: yrxxmn57ouwms6kgw74r4ywa4pn4qo5p
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793255096-266085
-X-HE-Meta: U2FsdGVkX18iPZ93DDPjanONWkh4sGGDDoucrUoswegwBtws2LxhQ744djwtamosSG4O0Sn+vEZAOvtWjZnAfg36wCG0H8jSx/pX+uqkfkhbeX35sKQIfx5KA/zgzXU92JIYNhPll0O/eTeFxJ73zJB++WdExW834NUJy8MeIsMbjdnBT1NA02AYlN/wsYCXpizymp9Unj929cg8FndeFEOEsP223Uh7+lN5ptcfaY8sLhq11ilEIK4rk1UgtVNBXmg6Zt8Wra5FWbX+WH+uPSyalZ/iF9b+ZOEscrENGdagwcMSSF2U7AuBEuAJdGb/pw18/4oX+Yo5KajHYTxRNx3FjYdV5FVoSi6ibr7x3DzAhc4ycg8uLcO7cMKsAb4TWXL7+ZgsGPFXbEuyFt+21/hhCe4hFEPd7oxZ8QP3KdqtZ+mw2XlCdvFkOf0So9pLQgicgsmm9XkNkQNvFteV73WWQy/lGJzkRqWOBDHuiZpbCXrZiZRLi4YpAv1ESoxgQe2kMEhsCo3iwxOoqy3RuUckSHGlsszq6llEOiv8GZpGz7v8iyAw+Tupv4a46JOJc7BvKvMjBhQevGqzmut6/9M0GCbOkZUPBpcwQ48SO2NjaXS7kPCM3FAXmLTj3jdGejHzYSrtTXFGVR9FA/fhqXbkvhk3qsCxihgWbLoZ/WC6hcJx56xDNJFOdkdPW5cdnq7WHta28EIITzGlVNA9+Lw9/Mc/iJAgaJCHCvVZGEZeRI5kLVfd+M03UQDnY6pjOi2Nb1J2G2ek0Mc6LaZTtA+NtXxX77SnGx6rkbco3ATaN9CGDiDI+n55+Cor4Hwjub0GO2gj14EvYqbBYN6tksVJJLT2wheWMZOD7+Xw15eYUR1zcaqAVGws1nm+EyfhOANxdC4N4dX8FhhYPMgArnyHtm07yw3RRUCtU8uaYk8CE/JUP58/ebzx+H+kBbAJ0X1Jk/sWN00r4K4KNjR
- CNO4mtiL
- X5jAHvxMp0v6cxBJPwAHsC4+mwsLPefrooNh2d5AFbliqUdGlIQ7LNiWR1yUTNVHrCFWGQGAI0ERjGF3IxmxM+Y7e7gcEvPO0Okk2fxI8jD/rcYqSUVEsaV8bwKwXpaD4ZAth7g4Ik9FMDZRlcC7ymApV4Ix1QoIyRsoEmG7aADNIQulhjEaW2LEpjkepe/2H/SX3F28eMdklQ93mEouPydxLLMQGrvwmQtHg/rPEJrtHs7bk7Osg4ufZ01/RYhzkUDkxI8NseJ2F7L25evhGAJ4QkcrwwUjVxFO7qKXVIfoae9L9ZG9P85zpfjiznpxhgn2bPjyyoxbw/xiEZpf+Ukw/0bqylOApzgwWOCJot9oZYYcQ5G30HMkWF7DxJJXi9vQn0F+5BPJKycQB+wwYhCQ/ucMMSSO/Y0irwFvhtdEpEwdm2M0riOeHhDnmaub8QmcbHES6p1mEQmdxt3bjJLfN5rbYdn2wpLGP6GQZ1Xv8Bzz5h56NHbeN8bi7DZUtLqHz7EKydKglioL52kMyDKK6E96GTsxTjalL
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793255094-159350
+X-HE-Meta: U2FsdGVkX1/dQoQkwf9TGxsDrBZWZYztbYYmU4bcY/gZm5ZTVPhHoKImOIG3XrxvqrUZynYYprhtF1t8RGgKOJFDzeC8rsUAOk4eTwrG1CMSyRLFCfB8Lk0Vu63z3RDIcCC069cLNboQqcnUS+/PKc7imp7+B5eiV7A69sRVQh63fPSeRMl2SnAd63F22ktTZv7H6Ri1nUBN5tB703QxJHGU+uUdFR/OBd4EjXRdnp7GARY16ILyMdgT5jEiWFQYEiq4MCiA+m0qiPHab906p6823zjoVEHv6nyDMOuXMACGuLmmvSZ+fsTU1VcGOqNzudiO5qK82wq/sYjQuBiUL+zMSb3VJ4R+BlUlXQbf4JLfpd/pm742bMOTx94vtaskOZVvpsf7+qK7MD52eHPEIclij092B6vMF0tcpVdNCeqkQkBcVPiSkgBXpCgfLIdcwHQseViQ5S9GOYjDEiataWf0BQ689J9HMhKbhINVJc4s671M/Y2XlyI//yLeZKiTNaI8GsIPPJZnFCior62DztHYXkUUS+3/58Fg22Ha9rwUY2uJFCJ9B0c1uoZXI7aMyOhYCWQP7He+OTd9KrlFiSYd/d7h7yyY2ycqRZ1Ukhh88I1FCh3zRMUDrdHb9oR8TVSKvvEGbnbpGxYuXfyEQA79AzBTp9bFWXSZOW4IGmPWKhBvcxDBMMk076wGMoWYb87/CehgSCrTGH2xKctyYk5Tf2iX7tKus4C3Uj8YBCc6U3KAd/1YXU1LnNqKXfGHUGsSw+7TYtwsKH0YIiqwyf9lafpfA3Y4bAQE9AYolMUBE11dev/bELXTEmoabqE+UEzzYRDbkp5vU12AEC371q/R2+ctpkrerNtD9SdC/rBmg8zgPg67ANeGxgAb2QPmGQVDu24RDQr2/zy5YvwPtvw5STKzc9ToAVEdSRz6aIf5G29G0k2rpzT5BL0YbhOLS9ytAt6o2Q3Iqyt8TL+
+ b4BRf+Vi
+ h4yYpm80uWSmxpK4zbu+8H8aTpLeyHsGWVM79L/WoRRs3RlPN4H+DLky0YGxLjLPcx+E2mmQlNLNty9MHC5G0XESL/6VgKsgVsnUpRvEKilSCRD8kNgpR8kzU40bjvGBq7QwgPlfCC2kO6hBuKIdfNFRKOQKGjzB7TBM0P0K8sUeaR72BXoNaPgZ0kisXPhGMcIfMctHdsMIlt+4H6WX0j+6YwUut/d4FykCDDGqi/Fg7BRSUxAZIbLVFkiHTL8aXsP3x+OPw+LKh6mlnlBEqD0GJ+5dPNr/9mZoKqYkFoYgpfssUJ8t0yCKXraA9pmcwiNqIZSd8I6ne3Pff9YJNMZz6vgYk2v9srj1OoNL3JyYfyvRbFx0c3hYKrRiQE8FpRqhB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,51 +98,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-run_vmtests.sh creates a loop-mounted XFS for "khugepaged all:file" and
-for the pagecache folio split cases of split_huge_page_test, since
-tmpfs does not give them large pagecache folios.
+On 10/29/26 12:16 PM, Bharata B Rao wrote:
+> On 28-Oct-26 9:42 AM, Li Zhe wrote:
+>> Memory tiering normally promotes any recently accessed slow-tier page if
+>> the target fast-tier node has enough free space. This preserves the
+>> existing policy of filling available fast memory before relying on
+>> hotness and rate-limit control.
+>>
+>> That is not always the desired policy. Some deployments may intentionall=
+y
+>> keep part of a workload's memory on CXL-attached memory, for example to
+>> preserve a desired DRAM/CXL capacity split or bandwidth distribution. Wi=
+th
+>> the free-space bypass, short cold accesses and bursts of hot accesses ca=
+n
+>> refill the fast tier and pull the workload away from that distribution
+>> whenever DRAM has free space.
+> Currently promotion happens on 1st access. Won't it be more natural to tw=
+eak
+> this frequency of access and also the time between successive accesses to
+> prevent promotion due to short cold accesses and bursts of hot accesses
+> rather than free space bypass configuration?
+I agree that using hotness and rate-limit controls is the more natural
+policy here.=C2=A0 That is exactly what this knob is trying to make possibl=
+e.
 
-It only does so when xfs already shows up in /proc/filesystems. When
-xfs is built as a module that is not loaded yet, the check fails, no
-XFS is created, "khugepaged all:file" is reported as skipped and every
-pagecache folio split case of split_huge_page_test is skipped with "No
-large pagecache folio generated".
+The current free-space bypass promotes before reaching those existing
+checks.=C2=A0 So when the target fast-tier node has enough free space, shor=
+t
+accesses can still be promoted even if they would not pass the
+hotness/rate-limit path.
 
-Load xfs with load_module() when it is not registered yet, so that it
-is unloaded again once the script is done. Match xfs as a whole word,
-as "selinuxfs" contains it too, as does "vxfs" on kernels before 7.3,
-and would otherwise skip the load and leave xfs to be loaded by
-mount(). "run_vmtests.sh -t thp" with xfs built as a module and not
-loaded:
+With this knob disabled, the free-space shortcut is skipped and those
+faults fall back to the existing hotness and rate-limit controls instead.
+So the patch does not add a new hotness policy; it only makes the
+existing one effective even when the fast tier has free space.
 
-                                        before    after
-  khugepaged all:file                  skipped      run
-  skipped split_huge_page_test cases        43        0
-  xfs loaded after the run                  no       no
-  xfs loaded after the run, with
-  selinuxfs or vxfs registered             yes       no
+Thanks,
+Zhe
 
-Fixes: fc4d182316bd ("mm: huge_memory: enable debugfs to split huge pages to any order")
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
----
- tools/testing/selftests/mm/run_vmtests.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index e104a9c6fdefb..b422edc2e2664 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -412,7 +412,7 @@ CATEGORY="thp" run_test ./khugepaged -s 4 all:shmem
- # Try to create XFS if not provided
- if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
-     if test_selected "thp"; then
--	if grep xfs /proc/filesystems &>/dev/null; then
-+	if grep -qw xfs /proc/filesystems || load_module xfs; then
- 	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
- 	    XFS_DIR=$(mktemp -d /tmp/xfs_dir_XXXXXX)
- 	    truncate -s 314572800 ${XFS_IMG}
-
--- 
-2.43.0
-
+>
+> Regards,
+> Bharata.
 
