@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6EF606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA2A606A32D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kSJM4jh0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BizzfTpX
 Received: by kanga.kvack.org (Postfix)
-	id 88EF96B05DD; Thu, 29 Oct 2026 16:40:41 -0400 (EDT)
+	id 029216B05DF; Thu, 29 Oct 2026 16:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8666B6B05DE; Thu, 29 Oct 2026 16:40:41 -0400 (EDT)
+	id 000616B05E0; Thu, 29 Oct 2026 16:40:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77CA26B05DF; Thu, 29 Oct 2026 16:40:41 -0400 (EDT)
+	id E59EA6B05E1; Thu, 29 Oct 2026 16:40:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FEE96B05DD
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:40:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6BE94050D
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:40:40 +0000 (UTC)
-X-FDA: 85376832240.08.EB934D3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BEC556B05DF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:40:55 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 566ED8031A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:40:55 +0000 (UTC)
+X-FDA: 85376832870.25.39DE9BD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1116C40007
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:40:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSJM4jh0;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7615A14000D
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:40:53 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BizzfTpX;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793306453;
+	b=cmIyvSGNXrlF1Hasgj1YWbNbrDT9rLiCptRZ++4p4JcTaVlZKN62Dr2lubZPTqRQx/daZl
+	S5t10QRHUT/6h6JsmkVx0ucKTSqzb0e130vZBHxDgX7Jla5je4vWwbMs6dMQpcw/9WCBQ8
+	AsOek+h5rpP4cyc4U72FHPdYbPsKE80=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BizzfTpX;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306439;
+	s=arc-20220608; t=1793306453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QSDRgnr69YPTIztges5CfT2KnEGoLvf21RQ7Ru6EwMk=;
-	b=3CBjBt7paVOqiAPzYrtem222Why87N9U8WlriRUkmwt0iDLw8cqS8y8PnjOfXQq34GI02i
-	M3zg9LRE/X8tpOL7OAlCeJxBvjA/HbQIn+FJJLHexyJeIcF9Lj68do2ruZu5sEvgU8Y3Z8
-	8a+KnaWxyB1BWWOhpfhhL86Sy21FawE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSJM4jh0;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306439;
-	b=aq0OH4x6kNIgK/9PE6qukaYGi5hxZ/kHdBGmnF2yX/d3d7Mde0xNdb23wHkWi698+B3IQS
-	I2IaC8wvc+giP2JCnjHl8a2pOPKv2ymFJ354b8jBTxwvdzWO5PP81h40Ea03MK+ofkiDeP
-	zF8xM/zcQsGCC06lozdTcaNLNUfizAw=
+	bh=X+A4bDZDQi3RaQKtCdHq4Q8CuoDLcygQanGTwpRAvoc=;
+	b=NT/M707qDJTMwX9Eu4dSgFOhPx9zUUS4aM08WTfApDLk0yVZ35wfh/IDxf8aeBWfHsBFGa
+	idZVC0vxyMYXMJcsPpA71hddDSrRhTZ+nzz96Mr/04LK/u5iwU07DPkZQj8PKCoDbmnsso
+	/K3qo3QBDpq4s7SYaBI+nqd2YDQtO+4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 61A2C40803;
+	by sea.source.kernel.org (Postfix) with ESMTP id B040A43981;
+	Thu, 29 Oct 2026 20:40:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BA41F01816;
 	Thu, 29 Oct 2026 20:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16E01F01826;
-	Thu, 29 Oct 2026 20:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306438;
-	bh=QSDRgnr69YPTIztges5CfT2KnEGoLvf21RQ7Ru6EwMk=;
+	s=k20260515; t=1793306452;
+	bh=X+A4bDZDQi3RaQKtCdHq4Q8CuoDLcygQanGTwpRAvoc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=kSJM4jh0HrN4VoBlBOqhsPGwGw2Ay3L6UkwB26SEadkf6ghUVo2z8TB8QCJ9muHku
-	 5O77SDUckn2sO3yoVq/4XT6gpdq26chxpQr5jmd+TFr7yyyjMEAT7vJlAlHNi2G586
-	 9dRzcbSiqzIJZhkYCZd0MkRZjlSqG4A/IqkIfPVXCSD+uJYrJlLddKokdFu1Lpj4s+
-	 AM4Rg32kxI2Hn7JiuuOIn7WunGYp4G6VoTkDjcU1gizGyXkzJyZ9GEOxzwegUo/KUo
-	 f8ea/Z5QTtcFqqdC8XZvDhfq5KUMWVmWRyPkk5jZK+YupM1MEDamRB8Ea2ZIKljyXO
-	 MS5d+tWdUKOVw==
+	b=BizzfTpXd6POIT2VXSctKqd3AYlrKo21t0yuW7k67ZzOykQkrmsF70tvdF27m6nHR
+	 yNjzirG7yxUIMePV6cd6o6LqX0pSAl/IgEUme2KHxm9O9PpZuALo6dRUKAQxGfhH+t
+	 DA4gWLZ8yol5BW+DLrHcMvUGxusQPKgKUrtfujihDYvPnJt/TJ6tSS39u2H8P+KZTy
+	 nZoUv3JERjR/gKqqgwAYI7hfD8T9nuqpmpfN6GDlxYR++om/RP/DZmQULDWoiS4s/L
+	 v9kzIakhQuG4RHlpqlhNNq5l4cyBf7BOUkPJX3p8OED7PzmsQ16EQbSRbPchOgEa/p
+	 CExcoOfTYv/tA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:24 +0100
-Subject: [PATCH v2 29/47] mm/mmu_notifier: set ->mm only after mmgrab()
+Date: Thu, 29 Oct 2026 21:33:25 +0100
+Subject: [PATCH v2 30/47] mm/mremap: use pudp_huge_get_and_clear() when
+ moving huge PUDs
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-29-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-30-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -106,30 +107,29 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>
+ stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2087; i=david@kernel.org;
- h=from:subject:message-id; bh=c82hKzDD/9RIfU3f00HaLlK2GVigMUUm/EjoMU8UlA8=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+3QEZsaWVS8/Mt/6UkCdn1zjjE9rGt3nrrZJ0dxZ
- 1tMXZtlRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABOJ9WX4H/prQtCmW1M9M2oK
- 9NuZ999n01ZTbl/OzdHgtG6HjKPSZ0aGF04lWz43hK3uUjCvqbrEzXLhdlBiS+zbzR6tTzNsL7N
- zAgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1293; i=david@kernel.org;
+ h=from:subject:message-id; bh=Bwj0I+EdpwxOB+DXKGU57G1Zy0OI6QgT1Ao2qNPPN2Q=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+1YqffjAfvFE1GvVCPrynaJrxGaF5yRGLK27FbyY
+ f3NFjY8HaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzEtJDhvzePiszu11vf/Jz+
+ fcHuUKufNir2r8+1Gp+U2pslsLRl02qG/4lXDK3vLmCe9X8G+/cET8cdsvu85+ru1m57H2Vyc9r
+ crywA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1116C40007
-X-Stat-Signature: wkqbpm3bkbd3a7kpf635x3smm3qeamqt
-X-Rspam-User: 
+X-Stat-Signature: dqtjzyuu9nahm17u7sexpm979uss4nzx
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793306438-289325
-X-HE-Meta: U2FsdGVkX18ysm6emGemAHhHQwMZqC82T/DFa1VHyKKyv8rN5V58qNVYOXSl3I+yCawCQTFFfvYZkICS4AxFyFVcg/klO+/1yMaypP2Q/UUgB+3+9jlRrD+0MkNNkD23OnKDSTat7TbVA64MCww62/oKug3WkGxKcTwUQFKWQMEnvsl/gNYAjn5EFOEEB9PQVgR8PwA2jeA6RAEB+IHU+H32hBTuTzZ1EMZUKrSVXUgrj5HnEmqoKgJnQVqBHZ1iWI61l3gJ9dELLPicGBQ/xKL8lJ9FodTkBvI7oOHa861t8f06y+x1satsnBuhwrZqd6uJKdCSVoRnkYLVQCZU7QlhsFcDYULOlvSC+wJwjgSfpyPrsDX3Re5XH7D0EKokY9KMPqaAqP8/x92vRMz5+f6o43nGDNeTkVFkmALSK/ZZgxRdWEZsVyk/1unDg1m3QK9I4AfJ2UwUzAkZgzV/4CVyfnlDOK6qUMtl4HN7IeHlCGX8IxKTYKZJQ1jRW4/3b19tRgqf3b6HdsURDzcaTALR2cgXY/8DL8/kVm2KdmLND8YrXPmC8dFkb7CE4UywZcljQsx3usk+tMhN2jcJMPEzVwkQBgCD/b9IjrbleEKDEZFB0Az4X+GfgDNFstHXdTwEdiSZznutSkVgnKmSHkITASYtiHNyKrpkUS55gOV600Ml7hRXmlam0Qyj5JPorzjFrQITZcJAbs/N2S4OEr1HZpk1li02sINcw3tbmRT4kcDGNaslAfttlMW5156UIPT7VUQYU3D7CrJjamG+VpfbZr3WmiA1+WKT9q3ritRWTMTtYUw78evE7YK2dzTWfY3LHQjHB++N2SlNNq5dusyXSOYVT5lOj40PxK6kRiNp+7SXk1W1q+l8L26ewy5DgM+w65sgbuHEhv6LeuPRhlS3h97ErfLioh258JPbZfoVOLzrDeHnv+rywvm5qLM+YS5hC0nEfeN2vmIAvGz
- dUReiEgW
- G3y9/89lgtd+HZ0mn2ZYSEX/+BBn06nLW2u1h5WpZV4iU9frqk2+TxH//tPbuT/Jdx+aYpS6ZoUxNQXoHq8zAx58Pk+EuzH9Q8MJNmbL7SlzyLZutRtuYcCYtoRmyPl5mSRbXN1iBwdBK4WgKiFeW0qRQwYMENG2cLP8UtCoyelsWw/VW18q9ZcGf72e05GJmiVHVa+teK6FzG609O5kaWs432HfBY+K9Z5COLjuEdEWy9KaVoUxtgxoXu/VnjTYWYKPTPt8JgYmQbAWdu4G/Nz9LgFbc9D8xPLwBQkal8XEwXki6YpAckDsHn/OK+r2A82lHoJC+C1wZxTxR7MPMW64z00BZpyGl1DemC759nP0BHPEWaJQ3k935/tgVosNXuVFxIbJoUaGrH0VsLY1De/XjHo+Cy7SAROqaXmfddk6/L4I=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7615A14000D
+X-Rspam-User: 
+X-HE-Tag: 1793306453-32435
+X-HE-Meta: U2FsdGVkX1/JQSuVxfBQjtXQLZgpXm/iSo4Mngwrwmv4MGsWTds52PB2p/spkRCEqJEAXPEZ31sJSh7cZrPuxwD+WqzyfKZT5hZPYJ4tiZfOCfk/2czmmpRGV1l+yhzZbrHo6h27jDOQZ/JkQQuMkcpkHbtuYWYbX3OFlrhkL/AWYcyqia9eTmIfy55HKOTJ/dDUyfrx+RQ8cYVhspX4oSYOJorhfrLhBCHNrLboHG2Z4D5C32sT19THwz3SAo0eNd8rG9CH46fE/OEz1Hz26r2w4XNyW044TcP0Fpr0wX5MBBr/tTEdY+A3kiVnreRCd4As3mGXzK2Px6QPZg00+eEma4gsnASZh6ndafNdSPQsf7AIIysgXCsZfVSlO2aFwpDlwZ9kk3ZFMD5fTkjqIyFbwaWTSDn817yHCHvQiCF5ZDStfHrGBp/65NvpRuZ/81ZVaARs/izptKZzrh++P2vYzyuUdCfyqBFL77y2v3wI1TMZgrM45NDBt0a/j3MaNGytIxmShtvT6i1JHoT7zb1ajILKI++V8eYHt1pQzAVR9TH4EzIkdcMeJ2OB4vnggBz1ozHE/fj1Ptpu/H27Zhr3AYqXbZ0LgUUa0uqyHuH9yxm1nj6FiboWcVlD4M7EMLxaUpzSpE4ud5ZRrpztQQtRF9iuPreS/nGXiHH+Byc12ViARQExTKbLLd9Dvkx4tVQnopJxkVqeK51nPSG+0ngWc/l/2iuVeh+loiQ0q5OYh5Twx7LCVErhjro4rsv73FHdgjrXTgvfKBJvqY9QucIGAdmbOMvZGNurc8Vl5sdIykTXM2AbGQFPlAKzB0qwtBhaMzoQe/1bHeeVqMSZwa1Oy3yjobniQB2lx5eeELfFnMiGq4NmYXLKWPyiLre5Kssy4MdP/ry1rzBm44oJFq2HPdzD84ioJxcvz+8wVHxYHkgipXwwmwObx91OOKPJLlqtJMX13Nk0G1B/VQN
+ jlfk8Gir
+ Ctx9JKbmTEiII0mw4eOQaEDTE3NoOAQ0vbuuFs+Xg2A1mB4NOfKQZp406sHRqzAasOBkSpu1ZVEVp29F3TuyjbUQK2DlRBq26l6SAFIurUbH+sngoK0wKQxsM0YMSDHM1fVHPVZkcDnhpLsolsXFhdK6wjBCOSVlogG3gidZCJiQtGlqMb0u3NqTIs70dWFP7pPAOatxPwMU9QIJ5/zUerdvby26o02MpRk6UbYPKYTh70LiZIllB3AzFuofdSjH5ZRRWd7jpUzsAo8+utb6kQFzEP17lqQJZF4hzbWpib/Phx1BdP4LiERuxhyuv2WWFE8rDM603VwzcDN06BhFhcU9n4gcvL6aqQJhBw3RpJwzeMf0KCoAM1bYcapa07rn1Jw+kU3ujLXi/TWPubjmFIb7ukQa/kQm4xdsabfxpxtfByk4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,59 +138,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Chris Mason <mason@kernel.org>
+move_huge_pud() reads the old PUD and clears it in separate operations.
+Hardware accessed or dirty updates between those operations can be lost
+when the saved entry is installed at the new address.
 
-Radeon uses a non-NULL notifier->mm to decide whether to call
-mmu_interval_notifier_remove() when freeing a buffer object.
-__mmu_interval_notifier_insert() sets ->mm before validating the range,
-so a wrapping userptr range can leave ->mm set after insertion fails.
-Cleanup then tries to remove an unregistered notifier for which no mm
-reference was acquired.
+The raw pud_clear() also bypasses page_table_check_pud_clear(), while
+set_pud_at() accounts for the destination mapping. This leaves the
+checker counts unbalanced for mappings tracked by page table checking.
 
-Set ->mm only after mmgrab(), once insertion can no longer fail. While
-we could fix radeon's code instead, setting ->mm on success only makes
-the code more robust.
+To fix it, simply use pudp_huge_get_and_clear().
 
-Fix generated by an LLM and sent by Chris Mason in private.
-
-Fixes: 3506ff69c3ec ("drm/radeon: use mmu_interval_notifier_insert")
+Fixes: 7d846db7d0e2 ("mm/mremap: convert huge PUD move to separate helper")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chris Mason <mason@kernel.org>
-[ david: simplify description ]
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/mmu_notifier.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ mm/mremap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-index 2e20f88e162d..a7bae5de5fed 100644
---- a/mm/mmu_notifier.c
-+++ b/mm/mmu_notifier.c
-@@ -947,7 +947,6 @@ static int __mmu_interval_notifier_insert(
- 	struct mmu_notifier_subscriptions *subscriptions, unsigned long start,
- 	unsigned long length, const struct mmu_interval_notifier_ops *ops)
- {
--	interval_sub->mm = mm;
- 	interval_sub->ops = ops;
- 	RB_CLEAR_NODE(&interval_sub->interval_tree.rb);
- 	interval_sub->interval_tree.start = start;
-@@ -964,8 +963,12 @@ static int __mmu_interval_notifier_insert(
- 	if (WARN_ON(atomic_read(&mm->mm_users) <= 0))
- 		return -EINVAL;
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 0d06d7f37f19..16e736c72d9c 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -509,8 +509,7 @@ static bool move_huge_pud(struct pagetable_move_control *pmc,
+ 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
  
--	/* pairs with mmdrop in mmu_interval_notifier_remove() */
-+	/*
-+	 * Pairs with mmdrop in mmu_interval_notifier_remove(). Drivers take a
-+	 * non-NULL ->mm for "registered", so set it only with the reference.
-+	 */
- 	mmgrab(mm);
-+	interval_sub->mm = mm;
+ 	/* Clear the pud */
+-	pud = *old_pud;
+-	pud_clear(old_pud);
++	pud = pudp_huge_get_and_clear(mm, pmc->old_addr, old_pud);
  
- 	/*
- 	 * If some invalidate_range_start/end region is going on in parallel
+ 	VM_BUG_ON(!pud_none(*new_pud));
+ 
 
 -- 
 2.43.0
