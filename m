@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA875606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41F9606A332
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m8stvVUt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XzOcSZ0/
 Received: by kanga.kvack.org (Postfix)
-	id E4D856B00EF; Thu, 29 Oct 2026 16:35:01 -0400 (EDT)
+	id DD9BE6B05BC; Thu, 29 Oct 2026 16:35:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFE2A6B05B2; Thu, 29 Oct 2026 16:35:01 -0400 (EDT)
+	id DB1836B05BD; Thu, 29 Oct 2026 16:35:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CED5D6B05BC; Thu, 29 Oct 2026 16:35:01 -0400 (EDT)
+	id CC75D6B05BE; Thu, 29 Oct 2026 16:35:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A5FD76B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:35:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28F8DC04D7
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:35:01 +0000 (UTC)
-X-FDA: 85376818002.29.CBA2A87
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A9A566B05BC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:35:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4CDA0A055E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:35:16 +0000 (UTC)
+X-FDA: 85376818632.21.613179A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6A0E28000E
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:34:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8stvVUt;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8B2BE40002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:35:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XzOcSZ0/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306099;
+	s=arc-20220608; t=1793306114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KxYr7Sm6OEegxhd0iVI9DwNJDZ8ymD/S/fyvDRwEbZs=;
-	b=E2GzWTXRx40r5TQA2h7/8JOqw2W3CyOJAJDWzRVcg3AAARiejQv1b4dNXhJAsxGksELZNo
-	FRk3ZEZ4whxrr80Bdb7doKYMdkjJnnqmMVhhqQk8hrB8duL7/y2/gWhe3D1a6FCtXk4trX
-	TP+e0sV+WwQi+Q1MyEUsUEc5Do8e+v8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306099;
-	b=kGKYLr/sFDxhIQZkC5v2Z6/wswDm7rYpFKz6dbfhXUvrqv0jvsLllx8Hykc5Rk5WAj//7v
-	b2MG5qB0sbksPYeo4+YtbJx/Z4rYZmzWvrBlLy6cOfGDWRKIpYHoX5khauTpWLbDc/pk84
-	kbCrPBksyyO8II1teCtWb5knQgYrTew=
+	bh=kFAjWqVlFrIH7aRNsfEXW0cTwDAw9D8sfuZWY6alCX0=;
+	b=P2j8FeeOMcXSiXou//eBEolsie1Aq1KN4tXPLevsnQvn8CNugsPRWUMbUhFNnWZwDXDShc
+	rVYfDj9ZLAaDqw3uJBy9Ze/Us7yxi8yfLjRsXlclCThCJS3yShgYnnojbHz5ZRSVghY7gK
+	HeuXfNQ9rKmCFzmG5pZdOVQlsvzORI4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8stvVUt;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XzOcSZ0/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793306114;
+	b=6aUE78jxU51tLjfSvDi+dagXx3GzicodYXOokXVn2nNi8CG07dJhyImqF0UJtG33Xod78L
+	KYHZVu7wcCUYd4Rs/90JbTxfhUPswicmurl2LegxyCVDIb+BcV3XaR3fVimX7nvDYi/fiT
+	5n8z6uIpSraBjgdThj1isKJVvv/FiHI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F189F605CA;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2B0B3605CA;
+	Thu, 29 Oct 2026 20:35:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A761F01828;
 	Thu, 29 Oct 2026 20:34:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3413D1F01826;
-	Thu, 29 Oct 2026 20:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306098;
-	bh=KxYr7Sm6OEegxhd0iVI9DwNJDZ8ymD/S/fyvDRwEbZs=;
+	s=k20260515; t=1793306113;
+	bh=kFAjWqVlFrIH7aRNsfEXW0cTwDAw9D8sfuZWY6alCX0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=m8stvVUtaQ1zzXBZo9b4DXWtjQAwfK94PwzaJ/eyWlctn2jfEk/kIccDZT4yzRzTV
-	 xUwhkYp4JFgiEQbnWZ93UJ8mt2S+Web/7pzGe0SpkYI6oocQZiPLpHT73hP74roi3D
-	 Yr+BUk3pE/quR4/Ig1StPmT2uOE6hcTPcUKEVJ/Lv5UMx5k4G06IaFelmWSX8rEvzA
-	 ylUcnc1dGEcjLRHd7oeEGKeFW/1BtT4p1adLyRlFCZ+tJKXJz8Wd3CUiSLA5LptqrQ
-	 Lopmi7EvwC7Ts8BZAb+MLwTj6XScPpqfDLchayfM4KgiBF4iArRR7JwJRL9P4FDqwX
-	 OjQa5upyhqaBA==
+	b=XzOcSZ0/8EjfLSpO8K/HcuZSOJbmmXQkIY53mzRn59GBRxsAtfiTFEDVrcM1yLKl3
+	 oBTrNqK7TdiI9gM7WJtE7zLxyjhZPpzV0WsUkCfYL/Zq7ZgrFgNEGdSxyxupO/nLIR
+	 Fs81prGpuyNkh4h18yqjW9N0cMlbxwMV3ALHT/84WBDoVJ05WlcrWo0o5AIcoX8Ql7
+	 0AhvnXbjkE3P/WuPhUNmmNp4c7S4pWbHzyrQPQDz0y4hQDrEGq2WCt9sVPsDVsy6e6
+	 zuX6cUOkjI5zZKKMpRFrRsGcZ9emk6B2GcItEG2PBmoGgzccnuLwaPMBL3pmdnj64+
+	 bnSOphJYGh87A==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:01 +0100
-Subject: [PATCH v2 06/47] mm/filemap: read mapping->a_ops->free_folio under
- i_lock
+Date: Thu, 29 Oct 2026 21:33:02 +0100
+Subject: [PATCH v2 07/47] mm/filemap: don't lose a folio lock wakeup to a
+ signal
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-6-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-7-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -110,27 +110,27 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3722; i=david@kernel.org;
- h=from:subject:message-id; bh=QdrOe18hQtm70tC+kr29IxB4g7ljmyzLHze5efGpjA8=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer22pSz/Yr2rC1Wyzv75dSO/9zxyjvv59K06tKJoq7
- jFNwXtbRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABOpqmNkOBziF+Ztzcv74uOs
- M8/99SO2irj9uWaeLBJ/3eKDe2PYO0aG15ob3G0e/LRW1gmRjJv2v3bv/R1bGjMeL888u3fdBef
- zDAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2263; i=david@kernel.org;
+ h=from:subject:message-id; bh=7u0AsrX18I9QfeKreay7tXsWSgpaxn4U+CWR4qcEsEM=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer2291MuXbnXaLNMw/uX1tOZXcYnK+9aeVL/nlaF4h
+ qdaO96jo5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgIkcF2P4X16RdGbNIbGQ9tV/
+ VrRe9lk932Zp6z6/K2/elLFvtlF9HcjIcMTwqNbp+EmRTVN1f3YYHTcs7L35TMld5fmhDd/PyCm
+ e4gcA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6A0E28000E
-X-Stat-Signature: pik9zkam4rpmzes98o5ei1biekuniziz
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 8B2BE40002
+X-Stat-Signature: wpawij6psrph4h3db4iuh1xhziyb9ipw
+X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793306099-304944
-X-HE-Meta: U2FsdGVkX1/GtHy9d3ixx80jD6dtvPOO7iWJpDHEvcWViryLxp/GDoX74DQ1ng8nWoDeGBexAeDg4Mwzf38Sm2oFoTKBs7qucuX0qhBGF65dUZ/3ucFF3WL858se7Td5/spZHTufXe0xML/he1M2vJEByiwA8y2l8UJXWngmO5nc+WfLdpolKesVBk8Nok8tUlZIORRh1fsHkdwi3J6vQQpn4LI7RqsmKT/O+gKxCfRlBm3HF+0azNL5SX+k9vHdXeHPho19e+2DFjFumpdH18kYSOzLme0lQ60pPRTvHq4Dwond7+m3MU0+LtjRyO+EmfZxtnRUQJlcEyZ0pGf4MyeIsL9QvAfAhu7TUupqKVEtiYMBJ5l4oSOSL7j77X+kayaTz9/ndXRL3k8wSptFeTyKMU+0lkX7TAsZLbS3BUDWoZLzOEYR4vCoGa4weTDqdDYAK4Re4yQU/U9J44PkJejkgckQd8rtbWZNJwwFg/SweQyxHMUHAZjdSWNtf5e+cXQnQjw/C8AJSefJLK3yMps5jRb4LR2O3YmiHdQomXWgCYmScqnzulJmmZ2l3b4bKLWIHmt2QJA8reh2nOeRpdNGmR7bzOiyyzPYTcVC4RftDCPlQ+nfbMjSv6ZqfGiF1y2K4UEpRvc6EZh3s+CUlTbxE6s5pWpdh96KdY8q41s8+XK7pDbxxBXqxr6t8GMYVV6M3FBHrKU7WPbgWtBdZ1W5Ecb+HuhCveFiWgiPEDuBoLWdlnn8J7+7vF0SL+NaMSj5q1dpGw91F4FjfeHkvuJSV+d/cxLwZYMp8rJkEkToWdmN7bYTGfHRj+VwoX12kozNwoNz95URFeZAn3lIjpa9M/OG0HbsYRhNr2LMTFHziusIlhQ6E+QpO2Wvg5Nl2DxVx5xqTGU2GUlTQ8DiIMjT7viFwiFPNVvw8IGytQfxDTM9rQH6Pj0QSMwq1N/JG0LqpBgUd8ncNkgOW41
- gE67HNSc
- CHb6ebP4kKu/94D1FEGcDG9YQqqbHZ9Ab94rTQ2EaSyEI+S6+S3ya06WgmKuHZjbmWDcnQ7rnyP1qgMtSaHjS5xGwbopSq9UGJLlf7bdNcDC86pFkXYpLgVYrAH6LUPsBwkmak6SFYcfo9epKEVzDHzFNJsUYGmXKGowj0QqdzzyXXYvVbTK3BgOoXCfZeDlAHGQaidpxHH2HbQ6hgsMNAgzzlA9dog3VvyHc0WsP4hejPR988X6gojFxRMoGIWIVfwthdbwtPTLZjcqPSGblMvntOGaTj/DFY9EHXpS88xxDL9zkAbQU7sGKuScdbquGKSRDdbGg2/mL97BWNxpUJr2TrDEYRMzsJGYqYDiNQemULCM4uSkIHDIOYzidRU89HywrPdnjsceA9UTF8hgmZt9268pqU/Obe/lh2nvNr+tggBDkVsvSfEXdLHT7kPay3SWWTznqYP5bv/X823f3OW02X4RxCLYOMMJLlFxHurrwAO8=
+X-Rspam-User: 
+X-HE-Tag: 1793306114-966883
+X-HE-Meta: U2FsdGVkX18eM064Ql5KWShcQH7sj9kAhzb2NeH727Ratkb7xxX+paUVRbM40GYGPYQR+3SEqQq6ZlMgaeZx37nDrY8iipcnEXrCN29wL9pnkKMHI4LuMQ13YH5+VRgBIHcQs7dh1hsruOgmf++OL4sHEkun+b9yvJekb/8ZGXrv11mIkv1wvHFrJZBjPuvXOuv7SRNm8XgK4LAzsB2PGNmKaTjCH0jnlbmRYPsDwbBpYgsOC9evJrpXDKHgRTFvOITj2VZ6SL9WMuKeFe6Zl3EIYZTGinK2K8+dFX9K1yVusGViOZqaCgu3+7CDwPAB4x9wHzY0KR/bx+PgmV9EY2l510RtSD5Ybs1YkFTFGgcVGd/tY+1q4DVtpJwH8RaEdXQkNfpEqjbXAtmLfi1JPAl3guuMVu68iV4BKhA3LpMGas4zbkSCRGpQ2+0NL8xCli832QsqjDUdKVkeRvD1TP0XpfAue5baLjfq4/wH56phKOFNhrV34BqihRfJ2UowTXQa24maXsr3qIDpmUVtS7hHCWnss5z3LVoGM/gu6hDDY2LmGZVkNocnsfOAb8bUwHnTOcRT36osXW00l3vODIlmhE4/Njp9uB3OPnhGYgZNHcxSb2S393NckTbrGB8igphtj8IEnUMb8/d8tVdpdPZPzV4tmL2Hzb4PFJO587oVyT0+x4SZldc9IJjdugHWnViJdlpd9yjYN7c45BEcsFfKcvl7J/ZjiHzuiqUplpx9srPv+CEbQYrdzuBBJ1NMCqvDOpUX+OHWt5A+QmcCOxMT6CjTvUgVgKhfLUVImyoa+VEwH1BvGTeekTQZVIl8hiEsp0/t3IEKfv6JZMx2KIMXxopFX5hTt0DGILWskWp0YRHO8W4Lmtv1pwCfWFPpWbwUwFNEV5AJQ1VcRhCjKyLE/FeNyP1UwOWKSGLLyormcE7HxY0Zqt08DRE3izXwU8ZB4x8Ltnt3gU/jwwt
+ gkWPM1VU
+ L3cnOhzUAuaj0BRe0YVnzkW/4/Rdroc73TJwIx7ONxqhHUWR4okRzTu61Wpu2rIR9jT6EGOtmhPusa3O7dAUq9teBJS5/Kimr1CU9doP98AIRLao6kuAbzK+XlofnCt5YZFwJsc/hVwS0dde/8OE/6klWuplSnHMFayRtArmaUMRzmHPnnSe3PZJ+fWN2X+W9TsQ3dwcktSAHOSlv+hKXFzPpecETTI+ljkUMT0vc3YZvOLB5atoJ7QSizqVLeuDsYHG/1L62U2DBl/CrylkxsQMhb0BafLmh7HV+hGZJHCXJXpO3iEb4IEzUXFb1a71NO82IQ79gBESVn4Gs26LW54DlUzbvcpI5U/qlHdj82iKitGilLEJeSKqWaXkyHXGh1K5NOutkYMURhTrS5XqDEsGwBYhvSCPZEFXtWIw1EAMBvo8a1aZayU/pLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,110 +141,63 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-memory_failure() -> ... -> filemap_remove_folio() can read mapping->a_ops
-after the inode has been freed. Once the folio is deleted from the
-pagecache it no longer pins the mapping, so after i_lock is dropped
-e.g., a concurrent final iput() can evict and free the inode before
-filemap_free_folio() looks up mapping->a_ops->free_folio.
+An exclusive waiter in folio_wait_bit_common() can leave the wait loop
+because of a fatal signal, then be woken by folio_unlock() before
+finish_wait(). If the waker did not hand over the lock, the waiter returns
+-EINTR without trying to acquire it.
 
-Most callers hold a reference on the inode, but not all.
+folio_wake_bit() stops after waking the first exclusive waiter, so this
+loses the wakeup and can leave other waiters asleep indefinitely on an
+unlocked folio.
 
-Documentation/filesystems/vfs.rst explicitly states that ->free_folio()
-must not assume the original address_space mapping still exists.
-
-Fix it by loading ->free_folio while i_lock is still held, similar to
-what folio_unmap_invalidate() does.
-
-Inline filemap_free_folio() into its remaining caller such that
-delete_from_page_cache_batch() also just loads the callback before
-dropping the i_lock.
-
-The bug was found by code inspection and has not been reproduced.
+After finish_wait(), let a waiter woken without a lock handoff try once
+more to acquire the lock. If successful, return success so the caller's
+eventual unlock wakes the next waiter. Otherwise, the current lock owner
+will do so.
 
 Fix generated by an LLM and sent by Josef Bacik in private.
 
-Fixes: 59c66c5f8c4f ("mm: factor out page cache page freeing into a separate function")
+Fixes: 5ef64cc8987a ("mm: allow a controlled amount of unfairness in the page lock")
 Cc: stable@vger.kernel.org
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ david: get rid of filemap_free_folio() entirely; improve patch description ]
+[ david: clarify and simplify comment + description ]
 Reviewed-by: Rik van Riel <riel@surriel.com>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/filemap.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ mm/filemap.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
 diff --git a/mm/filemap.c b/mm/filemap.c
-index b74bc1e5015c..906b013c11eb 100644
+index 906b013c11eb..6b5e1d866a9e 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -227,18 +227,6 @@ void __filemap_remove_folio(struct folio *folio, void *shadow)
- 	page_cache_delete(mapping, folio, shadow);
- }
- 
--static void filemap_free_folio(const struct address_space *mapping,
--		struct folio *folio)
--{
--	void (*free_folio)(struct folio *);
--
--	free_folio = mapping->a_ops->free_folio;
--	if (free_folio)
--		free_folio(folio);
--
--	folio_put_refs(folio, folio_nr_pages(folio));
--}
--
- /**
-  * filemap_remove_folio - Remove folio from page cache.
-  * @folio: The folio.
-@@ -250,6 +238,7 @@ static void filemap_free_folio(const struct address_space *mapping,
- void filemap_remove_folio(struct folio *folio)
- {
- 	struct address_space *mapping = folio->mapping;
-+	void (*free_folio)(struct folio *folio);
- 
- 	BUG_ON(!folio_test_locked(folio));
- 	spin_lock(&mapping->host->i_lock);
-@@ -258,9 +247,12 @@ void filemap_remove_folio(struct folio *folio)
- 	xa_unlock_irq(&mapping->i_pages);
- 	if (mapping_shrinkable(mapping))
- 		inode_lru_list_add(mapping->host);
-+	free_folio = mapping->a_ops->free_folio;
- 	spin_unlock(&mapping->host->i_lock);
- 
--	filemap_free_folio(mapping, folio);
-+	if (free_folio)
-+		free_folio(folio);
-+	folio_put_refs(folio, folio_nr_pages(folio));
- }
- 
- /*
-@@ -320,6 +312,7 @@ static void page_cache_delete_batch(struct address_space *mapping,
- void delete_from_page_cache_batch(struct address_space *mapping,
- 				  struct folio_batch *fbatch)
- {
-+	void (*free_folio)(struct folio *folio);
- 	int i;
- 
- 	if (!folio_batch_count(fbatch))
-@@ -337,10 +330,16 @@ void delete_from_page_cache_batch(struct address_space *mapping,
- 	xa_unlock_irq(&mapping->i_pages);
- 	if (mapping_shrinkable(mapping))
- 		inode_lru_list_add(mapping->host);
-+	free_folio = mapping->a_ops->free_folio;
- 	spin_unlock(&mapping->host->i_lock);
- 
--	for (i = 0; i < folio_batch_count(fbatch); i++)
--		filemap_free_folio(mapping, fbatch->folios[i]);
-+	for (i = 0; i < folio_batch_count(fbatch); i++) {
-+		struct folio *folio = fbatch->folios[i];
-+
-+		if (free_folio)
-+			free_folio(folio);
-+		folio_put_refs(folio, folio_nr_pages(folio));
+@@ -1373,10 +1373,22 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+ 	 * return value based on that state without races.
+ 	 *
+ 	 * Also note that WQ_FLAG_WOKEN is sufficient for a non-exclusive
+-	 * waiter, but an exclusive one requires WQ_FLAG_DONE.
++	 * waiter, but an exclusive one must also acquire the bit.
+ 	 */
+-	if (behavior == EXCLUSIVE)
+-		return wait->flags & WQ_FLAG_DONE ? 0 : -EINTR;
++	if (behavior == EXCLUSIVE) {
++		if (wait->flags & WQ_FLAG_DONE)
++			return 0;
++		/*
++		 * We might have just been woken up and the waker will not
++		 * wake up anybody else. If we ignore that now, the remaining
++		 * waiters may not get woken up: take the bit now if it is
++		 * still free.
++		 */
++		if ((wait->flags & WQ_FLAG_WOKEN) &&
++		    !test_and_set_bit(bit_nr, folio_flags(folio, 0)))
++			return 0;
++		return -EINTR;
 +	}
- }
  
- int filemap_check_errors(struct address_space *mapping)
+ 	return wait->flags & WQ_FLAG_WOKEN ? 0 : -EINTR;
+ }
 
 -- 
 2.43.0
