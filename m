@@ -1,92 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E5D606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 00:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D419D606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 01:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Kq24YAtb
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VnshaIwX
 Received: by kanga.kvack.org (Postfix)
-	id D03F86B05B2; Wed, 28 Oct 2026 20:56:35 -0400 (EDT)
+	id D805F6B00EF; Wed, 28 Oct 2026 21:00:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB4666B05B4; Wed, 28 Oct 2026 20:56:35 -0400 (EDT)
+	id D31776B05B1; Wed, 28 Oct 2026 21:00:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9C66B05B5; Wed, 28 Oct 2026 20:56:35 -0400 (EDT)
+	id C6DB16B05B3; Wed, 28 Oct 2026 21:00:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B5286B05B2
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 20:56:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A23971A015F
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:55:50 +0000 (UTC)
-X-FDA: 85373846460.30.2CC301A
-Received: from mta0.migadu.com (out-228.mta0.migadu.com [91.218.175.228])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 290671C0004
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:55:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kq24YAtb;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.228 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793235349;
-	b=hvtyQ2ThEQ1dS0XsPkVht2tpaq97gaNsSX82TOO0/I+G2RZ+DVf+rYFQDNcNAsJVhzA9KP
-	tqznlS+Gl0S8lPPhtebQL4/8kK4CTyqBYZZz9Q71VLUPaoOQLJYZj5i2JZw3vtQZJZNrUJ
-	8ya+iJOqcJq0Qr3/hrCvoVlelsdswMs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kq24YAtb;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.228 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A6E426B00EF
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 21:00:36 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 33F28120289
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:00:16 +0000 (UTC)
+X-FDA: 85373857632.14.9773019
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 86F2E180003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:00:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VnshaIwX;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793235349;
+	s=arc-20220608; t=1793235614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fFzYuQaJCauylA1fGRQBnIg3JJop64i3OCtTEnPOz/Y=;
-	b=IDamZpAq1mjVq51YNY9TFkYguVAz2n+QaHsRlk4DWYiNavKTdstm9nVN1SAZ9Ga29aszCx
-	7Ubd4MF/5doBHHTIS3C8sAsZU28C9YDSB0HzuOqE5VV98/4t7jZLavvthJEJSwmRkmfhBZ
-	JRDa0FSjJntA5T9dr55BMPlGkqB34C8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=yT3k3zYkwm+Ajt3rhJuC2pHkaVqR6QAMaSTFBMTEmxg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793235345; v=1; x=1793840145;
- b=Kq24YAtbCnV/0p22oZCli0sPgTnpcN2bx8viUurrFAO9WCJaJp2aR7NIDOF4/Yw8EI4GLAaI
- pCTGfY/E/DPwZccPDtTVLexxHabyV0MFo7aEytvqGvktbi/HyfFYatgngZvX7+6lvTWflRGdixw
- Hwd8HjwFZxHiE3BoVCtNv8dg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1fc603a9cbf2cb33;
-	Thu, 29 Oct 2026 00:55:33 +0000
-X-Mizu-Trace-ID: 1fc603a9cbf2cb33
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 28 Oct 2026 17:55:31 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] memcg: Annotate slow paths in consume_stock() and
- refill_stock().
-Message-ID: <auKZIA-0j9WT_gFU@linux.dev>
-References: <20261028185034.3607746-1-kuniyu@google.com>
- <20261028185034.3607746-4-kuniyu@google.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028185034.3607746-4-kuniyu@google.com>
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=AvcUC/1MiOceAMBu9K9D2zoZ9m1WdRohTEGTv0h4Flw=;
+	b=3vjjRk+HzjH2fIAeh8u4HSa0H7WrW949lde+feerzKMTH1bOQTzpotL8gNKbGSinh7Uf7D
+	oAzp7FoB8umWlmodiNcYwpkIgd1RjnSUtW4GIQFpvpLtOmUaAmNyfILtiw/0fXsu3ruYyX
+	jqOX0wVFEtjkafdTRm6EvlpLd/2Oyhc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793235614;
+	b=ujWOYOGNi6kf1TVc7SKcbA21+fWoZm8PHRRPg4gpZL8eY6BGXXjqRVe2RoxSSVeVaQZnm8
+	8xG/XRtp7DTVtwXZ5fhdeM0+YPwpWGKQXb2eMum2XW1rrgmUF+wumTWmnWNTMOvqSVuM4o
+	uPPpqJHvGSYnvHMbCg87GDiAeJFB4qw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VnshaIwX;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793235613; x=1824771613;
+  h=date:from:to:cc:subject:message-id;
+  bh=EUKRzknw2e8I9NSRveKmihVUd0h/TngiF/kNRita2mM=;
+  b=VnshaIwXWNsOKDYMZA9ba1ZoTVYxIdx+p8JYwc/ebaZwpb+2+5YxqFef
+   R0GMKWg5BSO25S2xaYt4qQG5KFkrIn+vcrpAB5Swdxmw+BgguBC4txiCv
+   mdYxTHF3flZeqGZhWL97QLfEIXoUFgfSSQgQ9y9ZQwaKQAJSkFeAJwijK
+   ubI1hw37vH1TdOei7BiPUI7E6DxhfFrdNFuPztVAs7zg83cNSE7baON0f
+   lZ8Ek5+xVQtMvDykp1QZlNjyThP3fnjWGxwKFVdrThFwX5idMhOzByOyA
+   5IoM/73xItLlxcgxtkbT0fXP3EOWivhyqXARTblvrSylE2Km5HxRUM6e8
+   g==;
+X-CSE-ConnectionGUID: KJDK0fodQHO+xgrio4vS+A==
+X-CSE-MsgGUID: G9MwbNDyRTaNO1tobAmdEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1996875"
+X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
+   d="scan'208";a="1996875"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2026 18:00:12 -0700
+X-CSE-ConnectionGUID: xuLpf1JaTRiH9SL1hq5ocw==
+X-CSE-MsgGUID: uJVdH5ozRpi0erEHLgdGVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,183,1787036400"; 
+   d="scan'208";a="6822378"
+Received: from igk-lkp-server01.igk.intel.com (HELO 58ca8a381a5c) ([10.211.93.152])
+  by fmviesa011.fm.intel.com with ESMTP; 28 Oct 2026 18:00:11 -0700
+Received: from kbuild by 58ca8a381a5c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xMEUx-0000000055D-3ljg;
+	Thu, 29 Oct 2026 01:00:07 +0000
+Date: Thu, 29 Oct 2026 01:59:13 +0100
+From: kernel test robot <lkp@intel.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Bradley Morgan <brads@mainlining.org>
+Subject: ERROR: modpost: lib/kunit/kunit-example-test.ko: symbol
+ '__mulsi3' undefined!
+Message-ID: <202610290106.o8Fs3NvO-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 86F2E180003
+X-Stat-Signature: digcpnxndrynw47jz7crjfexo9ufobbp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 290671C0004
-X-Stat-Signature: xtjqmt9gqi1ih1bo74zkndtaai71w3jt
-X-Rspamd-Server: rspam01
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793235346-423380
-X-HE-Meta: U2FsdGVkX18v6fayk950bOFwO1p2s7nP+XKALkQ/cUcCKma0M6aTBbaLWqCoxkgLoAD4ciKwFY7OcPWp/YvPa3X2FlDhBUqOu87dw7F5HLeo3NI5wnrtre6GhzAJGbz8RDEWkItzZzX8vqINMN+Jyyr0nJz+D92Xx0hKDxfaKQIoi1boLzj6xGCShmfcrkHM3MDDvf1KUGVbAaWqd6A1Kk6jMzQL9oy20a8L/AnxDfuymWHQp4k9kB/6C1OyFHT7VMBHFIHQuLDrDiXtoVfVjOgEc9U0yFtZDe95kIe6Ko2gMHBXkGeGJTGOYqarAmVqTnf9HE7+GsXNyfvI4ryQEI6DzK/agh7PPARBIeS4In9UOvKZ8srCtNgijhf69z5+9EbktuN4juSNGpluFex+GZc1mcv2fa+UVWRkrps97pJs3NSwun7l1tzF0YyVrWUXTSLKW+Drx/QlmyrdTjorfR5jqidGT8Ru1raUeNEwm/nTxajvYG0tmlIifAv9s24bcID4zaGeHnURSgcNHceDssUyqmWZSHVHVfhCTzTsDWoAEOKejcZKVzych6d5FjeG4Zl6L1u+aphDkbKWhAJJrjnIwaxgPZEsGljZKL2tZ9AfJ4RAqAO/LRRmVNDHn358psnUldo3Yb0nzgko4Z4X7IZUDV+6zUqrwLWLlWcvvVOuB2MIc55Q7VfJGH3e6PE6ROqAPSxOgBe6GB7Lkis0bgh6t1dw0LV9RPMg+iclQsxtSxQRwQnKqKRc58GjsbbrzxQHQhb/rL7wFU7kF1EVER5/LFfGU2kOmvyETopNm/if53btxPNo3ctTIzecMsd1lH1RFDFJe+jfTQJO8ag6S3GF/8x301hfHHB2vhwzd+7jRNHl586xtxXUb3Z3dV0L9cXYJd8ovw7q5Y7XOkPQikpSXZgmjTykC1lEyMqaEJTceEcxu/joXLKdVwGb7qfglYIlGie1pYk+KXLkuvy
- TDTynv3p
- LMgA4QO1HHzopoZlZapj0gPvBbuDeJgTlmxEe79wOEzqRoUPO2EE/ti+sNXI0sNCRM26UzO4g07gasxwqc5Ah4D2DK9DZ7MqFW7xjA3P8cNTEYF3NwuKIcKyzk9nqGdL9FaQpQ+GhIf4bhTQshBiML01ogdyQDpqBJzrNRopk6jUvx9rNLiQjPvdTQRSlt71k2mewhoQ4ElbL+KM1zVMjzl7lyuDjPdHKN0bKUsA2oXeMNrixENlswdF+CO3U/pGWW2hJjTAy+ke6wiwU8PU3gGOo1Yw+MgtSoKxwFRCuLRVa2cMzPz7cM1zM7mzG2Voh5dux
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793235613-305958
+X-HE-Meta: U2FsdGVkX19ZIcl5EYC1V/n3pnoOq1REWvMVLwEHeyHP+yMcxn3UQ4RAMjaoTauw/SgG8c7UBvMzpBHouoc3qFgEj66GTdxXnCb0jefFe00oo/kXUVRbbYiywI+qgDc59x9k8Ud9YmrEC1vjMfJEzTpzjOZoXvjYCjFx/1XNp2FhTr3RWUR7JiEqRdpXZv9i2ZTjELfdwk8mnEhMEWVJpOqXNhwE+wVcEnYhXdnKYWkv806zUNlsQIy6fYOM+BWRsAMJ1IGnjl8oX3M9hXtfTlcUi4bBW5Ix/uDYoDphiPJB0SqcSU6DaxWV3byETZc8CwyG1eEb14El/n/qsAD5qipa3z1G09miRhASPPIXSsI2saSoYyGXn2UnP7STpHzqKd+SE83ZYhrp8eGTeU6bpr0wbMW/SWXk4R1f/70ARWe4K6Mu8SyBlc4FrmWqQAjF3MDoFcX5i/XK6mWG4Yw8z7zlnENVlM6rt+DN0WQJ0ZQVG91oXzKlqu1JB74aZ1bsWPTQ4GnppDmg1I66fj+80q6TeQpYjVCAhrnrK0YPFIbYMcEZ7HFrHyD+6Ridjk3kI35jPlG/BqDXQgIO0wc2I26KPZLmQ8/E4sLlvVPqiPYxwrBWSUHhMamj4HFwm49Oge4ZIm6ULyWLpzyuI8SD+4ia2LEsWY5VuLpGQ5DbCrYCsbkvKXOq5sYnizRel1VAsw3Vo3loGOjKVSMZE3gsXRKwqmOP/QaKkp8Ei9R/8UtNYPVmi1G6FFvBQfuZ8cddhjwmAD5BTZuCR/+FcHO7s9x+D+bVXdFQ7CCrq+4RYklo3jOo6RdoCujzT8I11vYSgCbd8s/p6vrDnjiEgkf1dwcHWm9uUiN4+JA0nq+peyVcP4M+oRkNPJDdxDsZYxSZ2R2dLhV68EvOhIMW9yQlUHYBKaiStAtFZgJFgsZ002HHiMBlIR+8cNX+zVcVnYmn+IpGu78BFVi+GmawAB5
+ bzlnPqEF
+ /mIoByVd2mIIPzj3cbzRQyZhXvMHjDO5rSaGeQuCxhVubOUJkA05GjkPRumtFKAhNyutCz1Ob00x8Stwh9NyOE2TU6tVihrFQ++yuqXKAIlhKIBvALyPyJGdeFxIVIRbi3St9VM/ZoyTn1z2UI+XuGs6i382R8QsLa45/TCqoEDJ2v1vTQcCNPgOwndrrYFn+MDXzMLj7hsSL1A/zObmP0NN989Ftq3DS9bF0ReY7+ifF0v6uLw83H75myxy+FQ5y5Mx8a+wHo+LZnaL1dAnzfuLo/8d1o5SztCeNRDGyi3SzA+xnV54BdSEh8Ri6XInFSI8NvDp9m5cTKZze5mUFxEy2SM1Xp30oMAUxIpP4dwBUZFQMRuV3euIXww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,24 +104,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Wed, Oct 28, 2026 at 06:50:15PM +0000, Kuniyuki Iwashima wrote:
-> In consume_stock() and refill_stock(), each per-CPU stock slot
-> holds up to MEMCG_STOCK_HIGH (64) pages, so depleting a slot in
-> consume_stock() (!stock_pages) or trimming a slot in refill_stock()
-> (stock_pages > MEMCG_STOCK_HIGH) happens at most once per batch.
-> 
-> Similarly, requests larger than MEMCG_CHARGE_BATCH, local_trylock()
-> failure, and insufficient cached pages (stock_pages < nr_pages)
-> are all slow paths.
-> 
-> Without unlikely() annotations (when building without FDO, or
-> when an FDO profile does not cover a caller), the compiler treats
-> these branches as likely and inlines css_put() in consume_stock()
-> and memcg_uncharge() in refill_stock() right into the middle of
-> the hot path.
+Hi Karl,
 
-Please state the compiler along with its version here. I didn't see this behavior
-on gcc 14.
+First bad commit (maybe != root cause):
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   c339f4010dea8b0d754f84ace70cd1b089878ef8
+commit: 7c3f4d699f34535285d0ceb184927d71543d0064 resource, kunit: stop selecting GET_FREE_REGION
+date:   2 weeks ago
+config: openrisc-randconfig-r2306-20261028 (https://download.01.org/0day-ci/archive/20261029/202610290106.o8Fs3NvO-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 16.2.0
+sparse: v0.6.5-rc1-1-gc4640450
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261029/202610290106.o8Fs3NvO-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: 7c3f4d699f34 ("resource, kunit: stop selecting GET_FREE_REGION")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610290106.o8Fs3NvO-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+ERROR: modpost: kernel/rcu/rcutorture.ko: symbol '__mulsi3' undefined!
+ERROR: modpost: fs/fuse/virtiofs.ko: symbol '__mulsi3' undefined!
+ERROR: modpost: fs/pstore/ramoops.ko: symbol '__mulsi3' undefined!
+ERROR: modpost: fs/ecryptfs/ecryptfs.ko: symbol '__mulsi3' undefined!
+ERROR: modpost: fs/overlayfs/overlay.ko: symbol '__mulsi3' undefined!
+ERROR: modpost: crypto/asymmetric_keys/pkcs8_key_parser.ko: symbol '__mulsi3' undefined!
+ERROR: modpost: crypto/ccm.ko: symbol '__mulsi3' undefined!
+ERROR: modpost: lib/kunit/kunit.ko: symbol '__mulsi3' undefined!
+ERROR: modpost: lib/kunit/kunit-test.ko: symbol '__mulsi3' undefined!
+>> ERROR: modpost: lib/kunit/kunit-example-test.ko: symbol '__mulsi3' undefined!
+WARNING: modpost: suppressed 1014 unresolved symbol warnings because there were too many)
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
