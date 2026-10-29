@@ -1,140 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F86E606DA67
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 13:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9576E606AAC6
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 13:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fIXuH3oP
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AcnqFvq6
 Received: by kanga.kvack.org (Postfix)
-	id 4D9E76B05B1; Thu, 29 Oct 2026 09:37:14 -0400 (EDT)
+	id A58CF6B05B4; Thu, 29 Oct 2026 09:38:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 489EF6B05B3; Thu, 29 Oct 2026 09:37:14 -0400 (EDT)
+	id A30EA6B05B5; Thu, 29 Oct 2026 09:38:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 351AB6B05B4; Thu, 29 Oct 2026 09:37:14 -0400 (EDT)
+	id 946FE6B05B6; Thu, 29 Oct 2026 09:38:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 020F76B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:37:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E45140418
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:37:13 +0000 (UTC)
-X-FDA: 85375765146.01.BC781F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9A460160006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:37:11 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fIXuH3oP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 72D896B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:38:11 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC79F1C2A1E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:38:10 +0000 (UTC)
+X-FDA: 85375767540.05.143D803
+Received: from mta1.migadu.com (out-115.mta1.migadu.com [95.215.58.115])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D294D20003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:38:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AcnqFvq6;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793281031;
+	s=arc-20220608; t=1793281089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yusQ/gNp1al5ffFyiPFxovqkMkBkDvq1/V1A+G8KNP8=;
-	b=pMrbS7ZmmvxxKtgYJmhdEam/c8fVq8SgFyK2CQpRW0wXIZPrDnECN/1QnCrGQ7t7Qsf9Lu
-	uNhYRcxKInAZFExt21YJvgI6qN+3pXszbpjVbS+TYENkqmvND30h/wnPZKptVJSwEOlsIn
-	P8JPon7Afoazg524VZ39Zigvyhz4c50=
+	bh=pyqAO/uWU5yVFQr+UTpxevk8bBFR60Op4CruyZ1Yw1c=;
+	b=axoi+S2hQcrzOfvPy3I0StwukRCzjVOAWkCkFJgslOib8ZmFeRzviiKKdZRz6ciJ8J21Dd
+	E2OA6BWZhcudW2k5ZejHu/J13R4yay+Q8Hc8WxySILgia+opWcLC+e4qOp9sIa1hI+QYFk
+	1SJCU1ZDmrhyiup4MJutx8ykwIKx2Nw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fIXuH3oP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AcnqFvq6;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793281031;
-	b=0ubGFrQss/e9M8MIE1cmUiFRAYZAegBudZFJwnKF/tnSNE2elS5Q2PBuz/pLvUoxTeqXLO
-	9MVdtrUu20p+MDtLNz1e8YgRj4CRDHBURFN3HiS0NqCG3fdaKkW+X/U5APKf301pfqHo9c
-	D9AHRGXm6R/MXgDZZt3sN3Xq+vgelF4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C349E44057;
-	Thu, 29 Oct 2026 13:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2692A1F031EC;
-	Thu, 29 Oct 2026 13:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793281030;
-	bh=yusQ/gNp1al5ffFyiPFxovqkMkBkDvq1/V1A+G8KNP8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fIXuH3oPbKOQqHa+sb82A1lqdGEE0KcOgjF+PatDaFm43q0tXh6aZfgHVTPVkzhK8
-	 jR0yOowvlHMK1RAA3Gh8EHvmNFZ190IgWKCan6bh89OQ1KHejC1cxKJrwPjErgz80o
-	 GtZ2nO9DmLB3ry90DZ0LhmjrKBrm9bdOrPRHbKa5tH3YviCk87S5bMVhZiS13bbaTE
-	 diYUiyFFeavhUjIW73ix4dDOFSqJsVIrEM0rBfDWS9QMA8oCUgO6HMKrQk71Ol0HKC
-	 t7wrO2vnOAMFY65gPgYkcD9GNDNEe1748kh2kCS7PeaNEk3VFGgZjLQKCOwc3IihDq
-	 15/bp4/cVuzDg==
-Message-ID: <68fd8182-cdfb-4f11-95de-1472e6c92d33@kernel.org>
-Date: Thu, 29 Oct 2026 14:37:03 +0100
+	t=1793281089;
+	b=N3WUf4ksrGlqqHn8vRuUt1zEvpz3qU75hr1L9RVRzftxIcn+7OFVbO6I4QPFRtCGxiY6BD
+	W7xW/lEKD74v3/BV0WlTi9w3O4sHuMFhlw5oZxC6J2usqYcsqYau4l+VgHP1mOGIGTFfYs
+	pRZhmsHhuf1BPpSdOMmCmUkzvqClCfQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=UkLfq2AiCr37WjjegzJiymqxIyI9DVtkKBDdhIlx4rA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793281087; v=1; x=1793885887;
+ b=AcnqFvq6grjWGiixwLNrFUbCAe3FMNFxYBXdET61Ks57+qWvMENKyvD9y6ste8M2nPu38g9g
+ LBfbtJjVGg93vAO0no6Xy7d59rpMOLEH2vkNMt7tzB2L18IDKL6VkaoMc+O5/eYk62y5aijwxpv
+ f7tBWziYdLKrJBirq30IQAeI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 909f986a67bd46f8;
+	Thu, 29 Oct 2026 13:38:07 +0000
+X-Mizu-Trace-ID: 909f986a67bd46f8
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <2162e5c9-58f4-427f-984d-0099d9b515fc@linux.dev>
+Date: Thu, 29 Oct 2026 21:37:58 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/8] mm/page_alloc: reset can_retry_reserves when the
- slowpath restarts
+Subject: Re: [PATCH] selftests/mm: fix uffd move-pmd test crash on 64K base
+ page systems
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com
+References: <20261011163527.95988-1-zenghui.yu@linux.dev>
+ <67c30e4c-3576-4ded-a71f-b49075ed42e3@kernel.org>
 Content-Language: en-US
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org,
- liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20261028211930.3504634-1-gourry@gourry.net>
- <20261028211930.3504634-2-gourry@gourry.net>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261028211930.3504634-2-gourry@gourry.net>
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <67c30e4c-3576-4ded-a71f-b49075ed42e3@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9A460160006
-X-Stat-Signature: q6fd96cyx4zwzub66486ipw67d5imip6
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D294D20003
+X-Stat-Signature: guoyt95wboe7zz141ibt847x1ujss5kp
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793281031-861222
-X-HE-Meta: U2FsdGVkX18pazn/iLCCgDr8eK1m+Ww8uNGTOsLND6UahB9SPa5qA3gZiYCTT1kLjzmdqkaX0zmhcs+hwYoUsvZ99pvF0NnFcqheJGGfZ8e9ShWlQj4CGtZN+ys2r1jyToc+vDaU+tv6jsgsi9BZyRX3zxWJrlPEOdxLOHx7J7Mh5BHDJWnzxcGLoRHfwY/4bMyNeOmFMdDM4wU0pQh/GlhbQM1cmqlFJgPbNI5At/IaThk63iF/xzXjYCWzS+mW4VglVFsD4FbvhqGlJ0h01ADoR+ikWyTvDMLQJ7T5I/TyzYHyvHRFJs7W2TrbIBhQa1IecHomINJd4GJ+QcerX/0igEVeFtV7HqG6U5y+R0wtKF/G91F3ElGK84nrtgQ8TPKgAfgfzaO3YSTnGlzz+wsXwMGd+qIHAIT7fcJjQVMoClkFZ7PwVe4zkv23Px2e++3uvT0EvA6JfOQg8UoMM6mWmQrNiVNb3FHlrjkE7aQZFzWmuhN5YndqBtXvs/1AzHtJ7srUiODVlu7/nQgYGKPN5eSc4X0SN6ST9mTa2s48twMxrfFQ4HrN8hWMWvUiazB8i0Oh5DbDiY1I8Btnd5YVXhDsfWv3c32QyWylGNxFHw6beVAO2sm4QtGEnm1ImakowbvCXbZXsvdTjwzdRNtfNVV7n4+Cyx7kTgqFODybFMeu1+xd4Ecxodb3vFXsojLA8zfe6+y6+57OcubwqsmWA+AWORJcaABc0y03kUHmO+c8VjYXH5NNqhla4bI40AYBYfXzoLQg5SRe/Tmgj3GrXytnFP4PfQj8pPm/tx551/Mx5f2gwgD81VpsnuLLvQTVEADI1b6gOBJFdhdx/bWSx3vVTzFagk7cztn99K/nleASE+wYyovmgMuq+KQvZEZjaDKKJ0GdtS8G9GS8O2H7Eh0S6rPDrYg6GnVv12VOjZcUXSCGFdO/qJ2iCaEyxyOMkt8XP18HCtChumR
- PPF/1ByQ
- Ic9a7jmjEn+cHQ2EcGlPoHPJXNFSjb+Ey6K6aFj7tc5m5132sTYKEkGbaCiI5OS4Rh34940kskc9b4fIMNrkanMyXw3yqWBYpT5A+1R7KHa3kOSQY2G18IXV3eNVdtQFutxG6jWr1mPsWG+d+UC20ZuH5JY98YQAXXmBHZmvGuL7UyVLwggviOpU42ESI5IqBn74pGqrsFl1zESwjPAJapd43MdI4+8kEtsIClYsdvkFg+LYELKFu9H/NEqRJj5kvVQsazexEaMLZ1e1WNgqsbvmaOwQN2WavhNE2TQm3GZF5AbnujjAE/vLkXlexcxZencPEmDYl3XPFUPgPlK/tDW3Fdr1un6XbpZWEGURcqE5RqGQ/VZWxLGQ1p4zId2CoRfRu5YV/uBHk+1SaQMutKA5Zf815TpS08+uQtQktA5jMaTbLvVrVEHEUz/BPvSaRdzEOfKIF8bsPUbDkLtUFJcrwtw==
+X-HE-Tag: 1793281088-20041
+X-HE-Meta: U2FsdGVkX196DW+3Sfl5GW45iV1skRr2j8IfYHlWEMhBu+bdH5Wk+6rIpdlCcRSsZAl43m4Tva3DhUVTTaP3rui8RGt0j6jGzColffzjY84buT1VuaeuJU7eikly2TNpQQJRv9JXL1YZWwMkEHL1TeY5Cd+5I7Xpeykh+YPCwcBM/czx05urC1FH6DjygRPs1mbii8rzArv3vX5MJvwACUh+QfVEmF+qaZQZJiVy/6ilhNFYeVtEYBwzCQzAm9zUbsqX1Rf7wxvjWvSSlic9eiPe3luTSJez5lqPglzMGcTXGzPWkWEz20COkzeVNFMTPSBdVijWMReqahDy4gb3Q0dsR2dd4cfzwlkZGWkCfNHQAr+CMpUoH2se9TSYpmJJ1WPldSThfVVWZvJLJEhUEJ6YPBr/ItyTe10UhzRzs3/Q1vsfkhV6HssYGy4CALEsjA0rsd/gfPG9ml5Mpc6i97ujMOHnA8kmB/TsQGBg4z7J3z2v/AmXB9c8TfPVFbnO5o5FJVH14DM8lwjGwL9qF1B7aMMwvPZ4thDTSk8gxUxn/0tOkXGIbY3vvehqC/zLBcWKZz1zaTGWTc22g0I7+/fddH8qLtyRO+Gc5QblxDwuXW1KnP3DUy7iTWNMk7mtspH63U77EtAuZ8UH1MZmSuLKjzHOis8qqMcLD7dM5Xakq8eE2cxzvwAJmWrv4eU6ecSz5fVQe13ZZaChm4uEgaM6VuRoiPNr6X3lkjfW1zT7AmeHg7OJTmFKwi3rfz6upfN29Lx5BfQRMbyzYtWhLfpa/JEwFsRQOi46yU3a0EEfS6T4sitwGDkrwpavKcoV4fq1AvwqxdRVp2qcpBHS7oMRI0+jvyy/RjpGbT4h9w2s083c9aGfhl/0eP2CGp575cx1J5KShcNP/1QSEzaXLnvx1EymI65khL2OUKFyS8k+O8ujEoH+2i9o7A4GWcnYM56g4BaPDwvBKKR4RmZ
+ SuU6TlU5
+ LzqQlrNWPVLgBYL63gVbP8S7asPvJgs/N9FwT76ZDd8xVmbplmjdmp8ZkawWpgPZYJ3YTXLwFsLdblKTi8ZRkwLRlxMiZ07LxmwXbb4vPuGdWp8FJyoaH1xCv2QBjngrZMfnTAwkuTDqMDuuy8/O6y4103CQZGA9yXjYdTW8oeoqoreiYAMpzRYuDFACck9iH0GQ2lq/lhj587ubQDNRJ+DtUK77i3q5fF2mxgbR2Zahp/VZfCmj8ku7iAff0lR7zU1ezOvemXcAmSGc9AsIlk1Iv6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,69 +98,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 22:19, Gregory Price (Meta) wrote:
-> Commit 2c4c3e29897d ("mm/page_alloc: simplify __alloc_pages_slowpath()
-> flow") retries an allocation once with reserve_flags when the caller
-> becomes eligible for reserves, guarded by can_retry_reserves.  The flag
-> is set at its declaration and never reset.
+Hi David,
+
+On 10/13/26 3:39 PM, David Hildenbrand (Arm) wrote:
+> On 10/11/26 18:35, Zenghui Yu wrote:
+> > From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+> >
+> > uffd_move_pmd_test()/uffd_move_test_common() splits the test area into
+> > chunks of chunk_size and moves them one by one.  On arm64 with 64K base
+> > pages the chunk_size (read_pmd_pagesize()) is 512MB, which is larger than
+> > the whole 32MB (UFFD_TEST_MEM_SIZE) test area:
+> >
+> >   step_count = nr_pages / (chunk_size / page_size) == 0
+> >
+> > Because chunk_size > page_size, the test then aligns both areas up to
+> > 512MB, which points far outside of the 32MB mappings, and decrements
+> > step_count, which underflows to ULONG_MAX.  The verification loop then
+> > runs away and the first dereference of area_src faults with a SIGSEGV.
+> >
+> > Skip the test when a single chunk cannot fit into the test area.
 > 
-> A restart after a cpuset update or a zonelist rebuild drops
-> reserve_flags
+> That leaves 64k untested, though? Why not adjust the chunk size accordingly?
 
-I don't follow, nothing "drops reserve_flags"? after the restart,
-there will still be a get_page_from_freelist() without them followed by
-get_page_from_freelist() with them, right?
+Right. Apparently this has never been tested on 64k :)
 
-> and comes back with can_retry_reserves already false, so a
-> caller that cannot reclaim, such as GFP_NOWAIT | __GFP_MEMALLOC, fails
-> without trying the reserves again.
+I agree that scaling the chunk size is the better approach -- it gives us
+actual test coverage on such configuration, instead of bailing out early.
 
-The "goto retry" triggered by can_retry_reserves actually drops nodemask and
-recalculates preferred zones. Perhaps "can_retry_reserves" wasn't the best name.
+If anyone is interested in it, please feel free to send a patch. Otherwise
+I'll work on it when I get some spare time.
 
-> Reset can_retry_reserves at restart.  Only a cpuset or zonelist change
-> restarts the slowpath, so the retry still runs at most once per change.
-> 
-> With kprobes failing every attempt without reserves and the first with
-> them, and a memory block onlined during the walk, the allocation
-> returned NULL in 3 of 3 runs, and a page in 3 of 3 with this change.
-
-So IIUC the allocation was racing with a memory online in a way that it
-would fail if the online happened fully after the allocation. So this just
-turns part of the race window into the allocation's favor?
-
-> Fixes: 2c4c3e29897d ("mm/page_alloc: simplify __alloc_pages_slowpath() flow")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-
-I mean it's not wrong and if patch 5 depends on it (unless it also only
-fixes a racy window in the same way I think is happening here) then so be
-it. But the commit log would need correcting.
-
-> ---
->  mm/page_alloc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2daf358269ae..78569ac6f2d9 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4783,7 +4783,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	unsigned int zonelist_iter_cookie;
->  	int reserve_flags;
->  	bool compact_first = false;
-> -	bool can_retry_reserves = true;
-> +	bool can_retry_reserves;
->  	unsigned long alloc_start_time = jiffies;
->  
->  	/*
-> @@ -4817,6 +4817,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	no_progress_loops = 0;
->  	compact_result = COMPACT_SKIPPED;
->  	compact_priority = DEF_COMPACT_PRIORITY;
-> +	can_retry_reserves = true;
->  	cpuset_mems_cookie = read_mems_allowed_begin();
->  	zonelist_iter_cookie = zonelist_iter_begin();
->  
-
+Thanks,
+Zenghui
 
