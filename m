@@ -1,194 +1,174 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE3A606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA72260A2603
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=z54b1nmR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XUQVHCdI
 Received: by kanga.kvack.org (Postfix)
-	id C9E646B05B6; Thu, 29 Oct 2026 10:16:29 -0400 (EDT)
+	id D8D556B05BC; Thu, 29 Oct 2026 10:18:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C75FC6B05BA; Thu, 29 Oct 2026 10:16:29 -0400 (EDT)
+	id D65026B05BD; Thu, 29 Oct 2026 10:18:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B64A06B05BB; Thu, 29 Oct 2026 10:16:29 -0400 (EDT)
+	id C545B6B05BE; Thu, 29 Oct 2026 10:18:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FD876B05B6
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:16:29 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1B46A1203AB
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:16:29 +0000 (UTC)
-X-FDA: 85375864098.25.A615A54
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013060.outbound.protection.outlook.com [40.107.201.60])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 13B912000A
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:16:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=z54b1nmR;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.201.60 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793283386;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CE7A6B05BC
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:18:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16732A0435
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:18:46 +0000 (UTC)
+X-FDA: 85375869852.19.79F1EBD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 666F8120012
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:18:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUQVHCdI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793283524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8UYhPe0kmRbwlyhj7BUSe/Tr8+GrHIXXO+aLH7QV2qA=;
-	b=mwUQDTqGkPrIrngTE6bN97B7fMnyd7GstmHFH7dDny1fjaUWRER4Z99m/+Aig937HNkNHw
-	0ES5oVKr3iaS+tQFKudKTZlKGY1SL6glCnMSY7O2TXwHU8gJ7c0yiHtDbuCAPzppgX14Yx
-	Jp2FBjwBHg3MTNevCuYMhao46/yD6zs=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=z54b1nmR;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.201.60 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793283386;
-	b=uXgvtHDf05YMhu6/wt3qpREC3u7z+DtJinBASyM66blszuLXN2MvFoXPbpSwEEHkffz2rM
-	EwggKdB3KCKkwRz+LcFhecEaUPiHwG92MYWBz9Y9FO4lBJlXwp5M3XY1YtummSuWKqTlQz
-	7LXzGsbb5Y9j5ayF1vOUPJg+Xpy/gSY=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A7Y6PnvlkMX8yEI1GNNGZMQD9InS28dIOp6X7fc+KXrnn+bg/xa84k0hFY6f0j4Z7qfwS0/gbtdQEBzqXgGhoUuzF528Su0+iF2MZDndgnVY7Wdnn5LrCBT3PAy2q/S1/IbyCJ94izqPgrzIbqz87QDNdkU2Cp94bqFpVr6ar3O0of9dxZjJTP4+XXDKSsd11pPFzoJRzmpdXynO3aCGmdHauz0q795lkY0v0dAVpiTkwqpYt47ZAQ2BFaVUhjVDHpdfHYJI6EfnYrpVKjxeKssyVxV3vx9hM30MLMfcYm+BpT5KQLystHOD6vfsmE4J80yYEc0ncb+RQbHzqzG0mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8UYhPe0kmRbwlyhj7BUSe/Tr8+GrHIXXO+aLH7QV2qA=;
- b=poRU1IrY6CM2RgINNWq+hbBLAMj+lfmc5p76hCP6wglxL0G+rpktVJNDOgrnydax2wSVkPF/7ZOcAjZQRj3Uh2MIDoTvknTfRX7SaKPyaS6ke619bsLIjjpEbdtrCTbIr8yRZuQc902dZpZ1h4ogyGk5PtbBsUaZi4xcXpJTP2pt5lerZwKK0TDYlKkZoSBPbmzXQYP7CRyrGH+KRvlv1W9Rs8LnGcS1SdENmqqXYqbpvGfIn7V1F7W006ytihcqNg5qoe9hI7L3eK7ADGGDigE/WK5E0HNteYMi8fSCzj5G93hoitLXdkf+uEb4+1GRiSK114KoVDnikHMJy+cR/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8UYhPe0kmRbwlyhj7BUSe/Tr8+GrHIXXO+aLH7QV2qA=;
- b=z54b1nmRTBak7Armg0zFEikj97NwozyyTNjhTF4PFHoP+d9JNgaI4YMkQit10MpLV9mWltzeJQdYGWp29dm6+ozoO8YulWD2j+M8MFijbyjp0mjMjEnTBWXQ9X239kTm07g48LZi9SWz7YaKO6z0jy4rM3R90pSsM2TEjxFngak=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by PH9PR12MB174847.namprd12.prod.outlook.com (2603:10b6:510:415::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Thu, 29 Oct
- 2026 14:16:22 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0546.021; Thu, 29 Oct 2026
- 14:16:21 +0000
-Message-ID: <9ebce3f2-f7a0-46a9-bad7-39059b99423f@amd.com>
-Date: Thu, 29 Oct 2026 15:16:12 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/8] dma-buf: transfer memcg charges via
- DMA_BUF_IOCTL_XFER_CHARGE
-To: Albert Esteve <aesteve@redhat.com>
-Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
- "T.J. Mercier" <tjmercier@google.com>, Christian Brauner
- <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>,
- Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>,
- cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-mm@kvack.org, linux-security-module@vger.kernel.org,
- selinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
- op-tee@lists.trustedfirmware.org, echanude@redhat.com, mripard@kernel.org
-References: <20261027-v2_20230123_tjmercier_google_com-v3-0-78d2c4cb8647@redhat.com>
- <20261027-v2_20230123_tjmercier_google_com-v3-7-78d2c4cb8647@redhat.com>
- <d76d8bfe-e955-4e90-9f5f-e3e914c0869c@amd.com>
- <auIeQU0nAnOLdKUB@aesteve-thinkpadp1gen8.rmtes.csb>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <auIeQU0nAnOLdKUB@aesteve-thinkpadp1gen8.rmtes.csb>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN9PR03CA0449.namprd03.prod.outlook.com
- (2603:10b6:408:113::34) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	bh=KrmJHHnmWU49kR3EjjGIqe7TD1rMMa5OKGo7QYF6nE0=;
+	b=yIwOdueAkCgJ6plVmjejKDyj5O3c91bCMJFEiRgCJXPpm9SJk2iNlYWXQ3S0VfbH/TLLxD
+	DUzOIOaM3qd+LFQuOlrgRLbMibBMDaPjpmJP9/5huGduj0ABGDlc+bEAtQkmcPtS3s1gK3
+	ry3nAr2JXVEWo4X+6Dgz0rDvWz9lJe4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUQVHCdI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793283524;
+	b=amCoq19SwqbkulceccGvSDrqtPCk8tTQDocqISXqbCiarRw7v3e/j39LnfIzZ6M6kKlNUI
+	R6JlwLfxeXRWv5b+GmiWtMCGmjgkPwXf6FVqP/ncHtklwBMx7OOURQfkBZTWbiikpA5QYn
+	hCdnhN8p/J+cpuhnOlf7TbMS3z2mmuM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9F9506022F;
+	Thu, 29 Oct 2026 14:18:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A8D1F01825;
+	Thu, 29 Oct 2026 14:18:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793283523;
+	bh=KrmJHHnmWU49kR3EjjGIqe7TD1rMMa5OKGo7QYF6nE0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XUQVHCdIXfvmbaph/VA/rxWkBrBMpTWNrTAYGGhlCnhClgHcbmqfLm/eKiQyCpl+W
+	 E3eYifg9BPWiMSDXEftsG6P1erQcEU1cxEqVv7Q65NLTq6sRGvicyug8evlSykwQ1n
+	 N555FxgSSTArXb9eRt1k/+Rr7/gKg542EG3ZHgkCdrsxx5r9mVZUcQFcOovPpa8Tf+
+	 K5DX1M/2E6C5yMjxDhwgcHRNE2N173N/c0Ut2AaVXgOtOHtG0XhsZlbs8t2w98oJlg
+	 Mu1VOIE7670qxMrHyiu6QL0I/NiamJbSsCKr41PrvWSm0g6yo0ne75ilTxt7hUJyj/
+	 vpESVobE2Pi8Q==
+Message-ID: <7fab2115-6c44-43b1-b03b-8ce4a37ffe32@kernel.org>
+Date: Thu, 29 Oct 2026 15:18:23 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH9PR12MB174847:EE_
-X-MS-Office365-Filtering-Correlation-Id: 251e27fb-2967-48a1-50b6-08df35c7351f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|11063799006|4143699003|56012099006|261009221227099003|261009223027099003|261026140227099003|261026121527099003|261028144727099003|10067099003|261022105027099003|261021121427099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	6eokDo3Dim7WLZlzIdmzyUcuNjtN6TS5zPaByC0itX9cmXhUt4nWo2VBw8ncEsI/4lUokQZXVzx/Z9S0S8y5Sh1aUEMYOCgKV0akmRB/cBP2JRn9n/TgcLW20I1u5fexkrdKE9CKLdHFTzsR9FCo0chDZbX5jyZD4/+80CEpT/PPzwC47iZqln6whrfcvzQpnHUYPYpOHxolQ+sZJp9HcEaTMfyW02E/1cVQuu9vc70bre1XzKI9awvXnFhi9qJcGJPrGXFXEfm5X0xm30BYWpCDt9rN8lMMggq8hUbtJ8uODq2sv6UAtyx7WlTBl7FS2RgI1Lu+cuFNwGhLxXyCNUINtIB/jj7qLXQRWfwY+7ztVfdPEJBpv2UHu6tFudbKz0He7lmNjWdQV/rEgIox/okUgvucj4EzZgdh0S6mp+kBBol7aa8TiNfBj658M6dcvbogsdNkVuP3SwqMBCEUSJCzhh5XN4UIgDIUdqnZyPCcw/QAJz+rbZT7ZxHvgyRyENMUSFdsiUnSKiCwmuPEukeNWAuiKggcXJsuyDscvBDbYLlJ3zaCwFoLRtQTpMuKOtOf9AAdaQ0DtNcTSAxnJoeIBL0SOvcVn+sAO4dqc53wneLEs+GJOioLEaOY9n4b5ZYEOWwsopcjffCOivprwWK8jA97tLi8QvldOFm1uVw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(11063799006)(4143699003)(56012099006)(261009221227099003)(261009223027099003)(261026140227099003)(261026121527099003)(261028144727099003)(10067099003)(261022105027099003)(261021121427099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RFdDR2RLdElxbTJyN2FjWjJvUGlGTFpqTjR1eW5jQndMaldqVU9rSmJtQnZ6?=
- =?utf-8?B?VTlrUnBCYlpJK0R3bktKY0pDT1VKQ1Q0bEFJbjBiTkVHdzN3R3FsZFNTb3FP?=
- =?utf-8?B?VlU0QVJPMkEyK1FYR1FIL2FkL0hMK1NTSXdHNlAwOWFYdm1aaVZwN2NjKzg0?=
- =?utf-8?B?MGlGc2FQOGxmWk5EeXBKOXlTTmpoNmhpcDZRN2w3WWllS3JNWUZ6OEYyR0Rm?=
- =?utf-8?B?RHBYdzVHc2tQbUJnNFpPK0xUTGxzeWhtN2lZcm9hU3E1bzhwU0ZOSEVYeUZR?=
- =?utf-8?B?Q0VGcDllUDZJZjM3VVF1WmI4N0NtSzJzQmx5d2NHWEtBOEV4NWRLMFA3eGlO?=
- =?utf-8?B?Wk00cDZDNmJLSEo3WGZPdFdNMlpCSDlJR1FiYkNzNDhVd2ErVC9KQUVNb1BS?=
- =?utf-8?B?c0xWU3NNQ04zZncwdDlVbWlNUlFrb1l4QlRDek5CeVhaSEJSU1B1b2dFRnZu?=
- =?utf-8?B?UTNSQWNXMi9LZ21RbURiUnVvYTlYZGlJRDVBUG9OM2w4TUY2U0VBL1hqKzVL?=
- =?utf-8?B?YlpRaUlodEVjRTRER3VWZEJkTFptVjZLLzN1OWRYL0kyVlpjWDB1RFVaQldG?=
- =?utf-8?B?TldGTlRkUEJHQ2NQV3NqTDYvdmJaK1FCRGY5aGtlK2FjZStNN0VVaU0rWStL?=
- =?utf-8?B?UG4xLzlhb0JiVnQ0SitWMFljdnl1NGhJMmg3SGNPY1RkanNoZlNydFhESDFJ?=
- =?utf-8?B?UndJYVNpRXhwV2hZeThWcU1wTkE4akhqUElNQnNtRkdwTktrYTFYcWhtTFR3?=
- =?utf-8?B?Q1pNeDNVR3lvN1NVQVhNMS9pejJxWlVNejhtZkxBTDRjNW9hUmRYdC9OOXB2?=
- =?utf-8?B?RnNhUzNrcHFraUx6Y1NQTmJqUnh6bmhUY2MzZzhTb0hwVXVHVE5qZytPMFda?=
- =?utf-8?B?czlNTzI3S25tZGk4V2toemIvaUx0aTFHVHZ6WDZPTGJZQ1lyVFB4a1hUNDVH?=
- =?utf-8?B?cGlPV0RWWTZBdG5vV0FPdU1acmUxbzk3MWFHTWxhOUt0akVBM2ErWW5KQ3Mw?=
- =?utf-8?B?bTBERi9kTXBFUGxNcUd2YUx3OEYxdmZhY1ozMlJmRlV2dFNFV00wd1RXSDlC?=
- =?utf-8?B?eHRneXJpWUNFVlVtWDVaVmo4dllmaTd3U3RIVDNFQWY1ejF5TXgwMFdwNXJK?=
- =?utf-8?B?U1FhY0JQaVlBM05naCtUSzdkZE5DMW5BZHg2aUFFSklGTUFKQUJpNEZvVEdB?=
- =?utf-8?B?ZXZQR0NsY0FRdGJjSEtJUmwralVrVHlwcFBrY04xSGhkSDh5em9vWkUxei9J?=
- =?utf-8?B?QkZ3TWYyS3RmcVZLTVlJbDk1cWQ1NlpTNHplcVVSeVlSYXN3dU50WjFSSk9t?=
- =?utf-8?B?aExFczNlTjhlbmtISzd2ZEgvRUhZZkNxWmtvaEw5MWYxZm9DakVweElBaHFW?=
- =?utf-8?B?VjZoM082VEUzN0toR2dGVDZtRlp3L0dSd24rQ2dkTE50Rk5sM2c3b08zRUR5?=
- =?utf-8?B?ejFwUmw1ZHBmNVdYaTlJaXZnK0VTVFU1dTBLY0ZwcFJCME5BakIySTZ4aGFH?=
- =?utf-8?B?RjV1d1VWdWcyNktFakpVYjM1c1dibW9XcHk3Y1JwS1FIbngyMkFzRTlxQ3NO?=
- =?utf-8?B?SUp1aS8vM0p4SFhVUUpBcWdldkJTaW92S3dGd2xGejhwaEJPMnY4Y2taTko5?=
- =?utf-8?B?VGZQamYwZGlyNzZ4MFBvK0lybHdLaXU5eSt4dGVBZTNGMnNnYmlENnF5aE8z?=
- =?utf-8?B?Q3hwUjF1R1A5MERvdnRISk5UK1daWTA2OU9vZngxQStBcy9WUVcvWlY0K1Vq?=
- =?utf-8?B?UjFFb3ZvZUhOT1plSmpJVGhpTEI4Mm45amduVk9penNpbjNSOG9XVE5HNVJZ?=
- =?utf-8?B?OWd1YVpUUlN0TXlYSlZiN0hZcVVkZnF2bVArK0JiYmRaRDhveGFOR2hPTTlN?=
- =?utf-8?B?MzlmU0I2a1BQQTBiSTBNWEFtUEtKeUU1S05SbW9CLy9BKytUV1ZFK2ZKRUhE?=
- =?utf-8?B?TlN1c2F1YlROd2IxTGtJVUJ0VlZ1dVk4TWdaSHk0WWgxdkJmd2lBbmlydWpa?=
- =?utf-8?B?NWcxRlVFanhDVmpQcE9YbXpsVytwNWp2QkE3cXVjV0l1VEMzNWkrZ1pyOEdz?=
- =?utf-8?B?MkVQeW9wMkJFK2lqTlJnblBrNWZPZGozSTNyYTFQemZ5YTNnSDNydE92ZUxE?=
- =?utf-8?B?azF5K1dDZmN3dmVaZXl6NHFYemxkbi9iL3Bxd0lKSzhJajl0LzJZOWRqQU9B?=
- =?utf-8?B?dHlia0pwUnZ1ZVNOS1pSMDNxYURZL2loMy9YYzhBNE5na1FHOE9UeGdsMmZP?=
- =?utf-8?B?c0hDaU1LckpGWW5LU0R1ZWpkRndrZHBRTVBST0JrdEZ4RjMzRzBHaHpkOERH?=
- =?utf-8?Q?pinVAkpZbLp5Bw3bUh?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 251e27fb-2967-48a1-50b6-08df35c7351f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 14:16:21.8145
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Uuq72KcRChC4YW9c8uqLnSY+0jivqx+jIuNJkxYdGc5jcxVhEPXXlJqdyChC0Y5+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH9PR12MB174847
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 13B912000A
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/46] mm/truncate: look again if a folio left the mapping
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
+ Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-cxl@vger.kernel.org, stable@vger.kernel.org,
+ Josef Bacik <josef@toxicpanda.com>
+References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
+ <20261027-fixes_core-v1-5-6f74bec9a5bb@kernel.org>
+ <auIniV8YSpA4_oxg@thinkstation>
+ <2f2ef336-2186-4f20-b7f5-565e60471bda@kernel.org>
+ <auMvYdTd_e9O9kDj@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <auMvYdTd_e9O9kDj@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 666F8120012
+X-Stat-Signature: scea6sq6x7zzpgcsrasw5dfbubfphmf7
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 76tdoxukoaspwpc3an37qc9an15xn6ob
-X-HE-Tag: 1793283385-265185
-X-HE-Meta: U2FsdGVkX18tDjY/xP6mPlHCatTcn35qPoKByrbTxxflye/bbQYmWYdQrJRIzQe9srXoCxMp3MrVdNf90/+bSJK9gVJKecOd5BCMKbkTEWK3wch+Twya74VtpzvxjDHPDKpdRWgmdb1mtkCy5257cYz/0Kw1lGFhyCm4ziL6tAPBA5VqzjYbbEN7538f1BNb7uTOnW/fFfwqqawQzB3S/uKxAba1JcuOu1NfQrigSG62/EoJO7DNCzPv3ViQ0x+7vO/t6pdLow+RSx04KLd7jnM1jYXOqsIH7VJ7UfX3Jl9/Uslye+Y5fe8oIsQOE15g4nJcv1yB2KX/5MX/M/RtO1SeY9xoRLxeZavSoTELTrpdrK9aKw9l77qHNnDGpO7xZIQ2RqokYjlN3tAVfDWPJyKSbWkVXUQO5a4bBRfzl3YXQ/LhKONOHHOm5H/nnGdovclETHLJwVhS6L/a2Zf1ofMP/s82tAPaAv8zkN0gzqHStKmhRl4NGP/MYWyQL9eDufOrpoWtyjjdTKkoLo0eDdAlZS42BjOV00L3BCg69V7kxhZT0xdqABtoJs0CBaf7/p4Cx+5IZHyN4mepIfMdHV7F8lJlO+CKOxa/dk/saI8iJiYjEj5KGCZ+Cikv8Ku+zGpJWeOKIDkpoHK9wKrN4WDmzjgNNXV0EhD6SF9wnX5OFyqc/qdbbFImRKoihukmQMS89kLSZ0bOlf6RAFEK4kpHhqCi9sz6/W9VvTVMT/OgyueHYqMs2WMmuqFNsGLsYy8gEZjxAY6mcr4a3XRZxLBYQPvd9e9ro6xzgxum7YTCbPyeRY8F24p5WkaBPhPY9BDfnJ8G1YuHTJ69Jy4UPKxJESzhuYKav1+DPhs7B5suy1N4lPNYGh46gxRHd1AMSPxPUDLI8RC8+ctbeaG5vEp5NxLzeAYfb6lYyX+4mmBn8PxqblngObi+q8HLNOLXN8DvlGqY2uhxzRj+sNH
- QKxRlsIV
- X9VIIoD7TGVfdEm3HL7wcstIMPBYyV9vkg9x7M7R+9RxI9xcDV43J/PluxzrhlxT9u5RJgPNoPPphURaMYAj3+szuUAIrf01KFSCBRC/mLJ3fnL3N1g5sd9mAgKd+15zl+zgqP/64sCpPUfU0GGNZ32Mp7oUpZKFYH0ew8lPE7cVaWMvwBHn/CtSrjcRld5NQAGStbkha6NNp2LZXubT1AR9Q45PNnz3aBiNsCGkFyFOOS+o1Sdlnb8BFoU2qQAPp1G8cuze/EPC4wd5GzTVJr0kUvNeqWnAnLzBwa7uz3xxCYWD56l8nXgP4zQqC/TIW56y+rK6OAJ97ihujLeUooSNSu0YuI348HaEwwZnf+vIHFsLHpMdiQnbASgAfmI/LezpJ5P2GRan52gVtd0p2+XTcODfjcLt2K0J3sxYrDMF3g1n5nv5szI11+u+Mo1otsKRqtugafgwKZY2/cqyndaD7l6mVESvXxYr2JfAh1b1C388IKbE7K1hRe3PQ+Hif3Ps3q21p/+G2yhs2yIVFXptpejgRp68iLCSIQWXAt3M2auehK4s2cH3U4O/5KsQENKIqMKcYHh6UhXFrPLUvAshl4Iusmh/byIt8
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspam-User: 
+X-HE-Tag: 1793283524-614958
+X-HE-Meta: U2FsdGVkX18c4KHYuJ3cA4riseSmZlrL0xnNO6g2sN1WEOgzTFMqWtc/jdh5Zf4HCXSTBFlb2LwYjMK7YAPptbFTmTNX1ncq6CWDMubfatj36hpTix+9c/wCEf2K3OSS0wDlCvWtE6c0FMEwFgL70v8ORU2SZJWQCz8r5d213e6UFn0WMMmLXj1NSAn612ZQztZsO8Z5XXfI6Ysjzmy0zPYAWbiWds372zX0TaVLVqRkr6TJQellWblOui1SR+mpQmyTxncWfqqTNrcetZUqt1lxGwIZM1wqM7g/guWGzdkoWsLbMGsJKkNxPXmQ9UPk1VtQlsr2joiliTWQg7fLUFdzmYiePP/UnF14UWYvFGnw/pUrTb/qRhOmKRMEjfxIGmCxsYsSVWY6lSbQw1eux5M5TEELd6bMwo4c67UMaNmn45aRzhPrychmFA0Jf+myZZgAfcMetqlPLBwnmEuVMW6LXKg1X6zPniHANoh5p6QDrqmDcX+9//a/fdH0d0SimKP5TkO1m1eTHswkiCQFpuiCJZHcrcU2XU1p8Sbf8ULolkDZtHZcogukwsG90iwUHFUvqRjWf5cmtigOjid/QtFW+oNn3ZI1eVOrVkPO3k7P6gbHMAosJVFl/0HSS0oEjf+W2vjU/W3uawU15pzlhx4BM1DNbPDFuH2wg+mLZd7p7wH8y0btWzSqZJbGgtISaV0ai9OenhTPZfVVXy7GTfLyDT5+K+PfT1rz1d1EqopwoSwB6wU3FmLvAF4lx5IuAq1pkm5jdagWXOciqCXo16p0f1pV4WxMNd+tO3ULOXrxygiLLtGxir1dnS1ntJ3btZ38dzVs7XXGyCepjRmOaunDmDrtf40QLezUtHCGj7yWGbMtN1PUy36pWTRRRccb5tDQZqpKFCkMmsWLVE3hVv0GsF03/2HM5WeAIzbk+wArLvYfOTnRf2KOW0tI1+v0wcj10Q38Cq+ow/31vqz
+ MvALH8MI
+ AUpdybM2jQHVDlCqhhbWbEOI1rhSAC8lHQfyBOx9PP6HUMkHJgKsedBNft2t7lua69LZ4wZeVdxuITONKbz25Uk7ZQcB/53Az75wA/g4LLoBSD6Hd55QpbsGyh92af8ajYWXU1BYLMFQbaXMH63vZ3iuimOfb9GMf/wLe7qTWQkGJ91pb7PjL2O6OOtjyymnHY8ZPoreZAxh98dZr82LbDbcXIHC6JFge7g4JlHtAJo3iRNEjSFwkLynsiSTfJdJ4rMFMNAWJQRiZIj010DE/3DZrBVhW8fkGcv76FfVx6rswyWq9HkACVDmnChiN9YzkZ4Vr0VBKp85vg7NZROQD7ZyTaOjI/Q8MmM4vnyXJejF0p0s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -197,330 +177,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/28/26 17:09, Albert Esteve wrote:
-> On Wed, Oct 28, 2026 at 10:08:19AM +0100, Christian König wrote:
->> On 10/27/26 16:02, Albert Esteve wrote:
->>> dma-heap already supports charging a specific cgroup at allocation
->>> time via charge_fd in DMA_HEAP_IOCTL_ALLOC. However, dma-bufs can
->>> originate from any exporter (DRM, V4L2, etc.), and the allocator may
->>> not know the final owner at allocation time.
->>>
->>> Add DMA_BUF_IOCTL_XFER_CHARGE to transfer a dma-buf's memcg charge
->>> to a different cgroup after allocation. The target is identified by
->>> charge_fd, which may be a cgroupfd or a pidfd.
->>>
->>> The transfer charges the new cgroup before uncharging the old one,
->>> preserving the original charge on failure. An atomic cmpxchg on
->>> dmabuf->memcg prevents races with concurrent transfers.
->>>
->>> Not all dma-buf exporters back their buffers with reclaimable system
->>> memory. Some represent device registers, VRAM, or carved-out pools
->>> where size is not a meaningful memory cost. Add a memcg_account flag
->>> to dma_buf_export_info that exporters set when their buffers should
->>> participate in memcg accounting. The xfer ioctl returns -EOPNOTSUPP
->>> for buffers that do not set the flag. Currently only the system heap
->>> sets it, other exporters can opt in as needed.
->>>
->>> Usage example:
->>>   int cg_fd = open("/sys/fs/cgroup/clients/app1", O_RDONLY | O_DIRECTORY);
->>>
->>>   struct dma_buf_transfer_charge xfer = {
->>>       .charge_fd = cg_fd,
->>>   };
->>>   ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer);
->>>   /* charge now on app1's cgroup */
->>>   close(cg_fd);
->>>
->>> Signed-off-by: Albert Esteve <aesteve@redhat.com>
->>> ---
->>>  drivers/dma-buf/dma-buf.c           | 43 +++++++++++++++++++++++++++++++++++++
->>>  drivers/dma-buf/heaps/system_heap.c |  1 +
->>>  include/linux/dma-buf.h             |  5 +++++
->>>  include/linux/memcontrol.h          |  9 ++++++++
->>>  include/uapi/linux/dma-buf.h        | 26 ++++++++++++++++++++++
->>>  mm/memcontrol.c                     | 41 +++++++++++++++++++++++++++++++++++
->>>  6 files changed, 125 insertions(+)
->>>
->>> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
->>> index f31f49ebd0af..07513ecedc10 100644
->>> --- a/drivers/dma-buf/dma-buf.c
->>> +++ b/drivers/dma-buf/dma-buf.c
->>> @@ -540,6 +540,45 @@ static long dma_buf_import_sync_file(struct dma_buf *dmabuf,
->>>  }
->>>  #endif
->>>  
->>> +/* Transfer a dma-buf's memcg charge; see struct dma_buf_transfer_charge */
->>> +static long dma_buf_xfer_charge(struct dma_buf *dmabuf,
->>> +				const void __user *user_data)
->>> +{
->>> +	struct dma_buf_transfer_charge arg;
->>> +	struct mem_cgroup *memcg;
->>> +	int ret = 0;
->>> +
->>> +	if (copy_from_user(&arg, user_data, sizeof(arg)))
->>> +		return -EFAULT;
->>> +
->>> +	if (!IS_ENABLED(CONFIG_MEMCG))
->>> +		return 0;
->>> +
->>> +	if (arg.flags != 0)
->>> +		return -EINVAL;
->>> +
->>> +	if (!dmabuf->memcg_account)
->>> +		return -EOPNOTSUPP;
->>> +
->>> +	memcg = mem_cgroup_get_from_fd(arg.charge_fd);
->>> +	if (IS_ERR(memcg))
->>> +		return PTR_ERR(memcg);
->>> +
->>> +	if (dmabuf->memcg == memcg)
->>> +		goto skip_transfer;
->>> +
->>> +	if (!mem_cgroup_transfer_dmabuf_charge(dmabuf, memcg)) {
->>> +		ret = -ENOMEM;
->>> +		goto skip_transfer;
->>> +	}
->>> +
->>> +	return 0;
->>> +
->>> +skip_transfer:
->>> +	mem_cgroup_put(memcg);
->>> +	return ret;
->>> +}
->>> +
->>>  static long dma_buf_ioctl(struct file *file,
->>>  			  unsigned int cmd, unsigned long arg)
->>>  {
->>> @@ -590,6 +629,9 @@ static long dma_buf_ioctl(struct file *file,
->>>  		return dma_buf_import_sync_file(dmabuf, (const void __user *)arg);
->>>  #endif
->>>  
->>> +	case DMA_BUF_IOCTL_XFER_CHARGE:
->>> +		return dma_buf_xfer_charge(dmabuf, (const void __user *)arg);
->>> +
->>>  	default:
->>>  		return -ENOTTY;
->>>  	}
->>> @@ -750,6 +792,7 @@ struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_info)
->>>  	dmabuf->size = exp_info->size;
->>>  	dmabuf->exp_name = exp_info->exp_name;
->>>  	dmabuf->owner = exp_info->owner;
->>> +	dmabuf->memcg_account = exp_info->memcg_account;
->>
->> The initial charging should probably be done here as well.
->>
->> This way DMA-buf heaps only needs to pass in the charge_fd and we can re-use the functionality for other DMA-buf exporters as well.
+On 10/29/26 12:37, Kiryl Shutsemau wrote:
+> On Wed, Oct 28, 2026 at 10:45:34PM +0100, David Hildenbrand (Arm) wrote:
+>> My brain hurts, does the above make sense?
 > 
-> The problem with doing the charge here is that it happens too late.
-> That is the reasoning for this proposal to move all the charging logic
-> into heap allocators before pages are allocated.
-
-Oh, that is a really good point we need to talk about.
-
-DMA-buf heaps is actually a rather simple use case, but we have way more complex things.
-
-For example in some use cases the backing store of a DMA-buf is only allocated on first use and only then it needs to be comitted to it's memcg or dmem.
-
-I don't mind implementing it for DMA-buf heaps first, but we should have the uAPI and it's handling so solid that it also works for future use cases.
-> What we could do is fill the dmabuf->memcg field when the flag is set
-> (i.e., committing into the dmabuf in the patch semantics). But for that
-> we'd need adding the memcg we want to charge it to into exp_info in
-> order to support charging to cgroups other than the allocator's (for
-> the common case would be simpler as we can just look at current).
-> Maybe that's what you meant?
-
-At least for the DMA-buf heaps use case that sounds reasonable for now.
-
-Regards,
-Christian.
-
+> Yes, I missed that the loop only goes back to start when a lookup
+> comes back empty below end. When the last batch reaches end, it exits
+> without another look. It doesn't need the split either: any punch hole
+> whose last page is in the page cache gets there.
 > 
->>
->>>  	spin_lock_init(&dmabuf->name_lock);
->>>  	init_waitqueue_head(&dmabuf->poll);
->>>  	dmabuf->cb_in.poll = dmabuf->cb_out.poll = &dmabuf->poll;
->>> diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
->>> index adeea8cd328b..a764167167ba 100644
->>> --- a/drivers/dma-buf/heaps/system_heap.c
->>> +++ b/drivers/dma-buf/heaps/system_heap.c
->>> @@ -479,6 +479,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
->>>  	exp_info.size = buffer->len;
->>>  	exp_info.flags = fd_flags;
->>>  	exp_info.priv = buffer;
->>> +	exp_info.memcg_account = true;
->>>  	dmabuf = dma_buf_export(&exp_info);
->>>  	if (IS_ERR(dmabuf)) {
->>>  		ret = PTR_ERR(dmabuf);
->>> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
->>> index 23ec0ff23fba..ac0ec88cab93 100644
->>> --- a/include/linux/dma-buf.h
->>> +++ b/include/linux/dma-buf.h
->>> @@ -433,6 +433,9 @@ struct dma_buf {
->>>  
->>>  	/** @memcg: the cgroup to which this buffer is currently attributed */
->>>  	struct mem_cgroup *memcg;
->>> +
->>> +	/** @memcg_account: account buffer memory to cgroup */
->>> +	bool memcg_account;
->>>  };
->>>  
->>>  /**
->>> @@ -505,6 +508,7 @@ struct dma_buf_attachment {
->>>   * @flags:	mode flags for the file
->>>   * @resv:	reservation-object, NULL to allocate default one
->>>   * @priv:	Attach private data of allocator to this buffer
->>> + * @memcg_account:	account buffer memory to cgroup
->>>   *
->>>   * This structure holds the information required to export the buffer. Used
->>>   * with dma_buf_export() only.
->>> @@ -517,6 +521,7 @@ struct dma_buf_export_info {
->>>  	int flags;
->>>  	struct dma_resv *resv;
->>>  	void *priv;
->>> +	bool memcg_account;
->>>  };
->>>  
->>>  /**
->>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->>> index 6b30baa79fa9..36fddafbef4e 100644
->>> --- a/include/linux/memcontrol.h
->>> +++ b/include/linux/memcontrol.h
->>> @@ -679,6 +679,9 @@ bool mem_cgroup_reserve_dmabuf(struct mem_cgroup *memcg, gfp_t gfp,
->>>  void mem_cgroup_commit_dmabuf(struct dma_buf *dmabuf, struct mem_cgroup *memcg,
->>>  			      unsigned int nr_pages);
->>>  
->>> +bool mem_cgroup_transfer_dmabuf_charge(struct dma_buf *dmabuf,
->>> +				       struct mem_cgroup *new_memcg);
->>> +
->>>  void __mem_cgroup_uncharge(struct folio *folio);
->>>  
->>>  /**
->>> @@ -1206,6 +1209,12 @@ static inline void mem_cgroup_cancel_dmabuf(struct mem_cgroup *memcg,
->>>  {
->>>  }
->>>  
->>> +static inline bool mem_cgroup_transfer_dmabuf_charge(struct dma_buf *dmabuf,
->>> +						     struct mem_cgroup *new_memcg)
->>> +{
->>> +	return true;
->>> +}
->>> +
->>>  static inline void mem_cgroup_uncharge(struct folio *folio)
->>>  {
->>>  }
->>> diff --git a/include/uapi/linux/dma-buf.h b/include/uapi/linux/dma-buf.h
->>> index e827c9d20c5d..ea957f4b1d38 100644
->>> --- a/include/uapi/linux/dma-buf.h
->>> +++ b/include/uapi/linux/dma-buf.h
->>> @@ -168,6 +168,31 @@ struct dma_buf_import_sync_file {
->>>  	__s32 fd;
->>>  };
->>>  
->>> +/**
->>> + * struct dma_buf_transfer_charge - Transfer a dma-buf's memcg charge
->>> + *
->>> + * Any holder of a dma-buf file descriptor can perform a
->>> + * DMA_BUF_IOCTL_XFER_CHARGE to attribute the buffer's memory
->>> + * cost to a specific cgroup, or move it from one cgroup to
->>> + * another.  The ioctl charges the new cgroup before uncharging
->>> + * the old one atomically.  On failure the original charge is
->>> + * preserved.  If the buffer has no existing charge, a new
->>> + * charge is established.
->>> + */
->>> +struct dma_buf_transfer_charge {
->>> +	/** @flags: Reserved, must be zero */
->>> +	__u32 flags; /* unused for now */
->>> +	/**
->>> +	 * @charge_fd: File descriptor identifying the target cgroup.
->>> +	 *
->>> +	 * May be either a pidfd, in which case the charge moves to the
->>> +	 * memory cgroup of the referenced process, or a cgroupfd obtained
->>> +	 * by opening a cgroup v2 directory, in which case the charge moves
->>> +	 * directly to that cgroup's memory controller.
->>> +	 */
->>> +	__u32 charge_fd;
->>> +};
->>> +
->>>  #define DMA_BUF_BASE		'b'
->>>  #define DMA_BUF_IOCTL_SYNC	_IOW(DMA_BUF_BASE, 0, struct dma_buf_sync)
->>>  
->>> @@ -179,5 +204,6 @@ struct dma_buf_import_sync_file {
->>>  #define DMA_BUF_SET_NAME_B	_IOW(DMA_BUF_BASE, 1, __u64)
->>>  #define DMA_BUF_IOCTL_EXPORT_SYNC_FILE	_IOWR(DMA_BUF_BASE, 2, struct dma_buf_export_sync_file)
->>>  #define DMA_BUF_IOCTL_IMPORT_SYNC_FILE	_IOW(DMA_BUF_BASE, 3, struct dma_buf_import_sync_file)
->>> +#define DMA_BUF_IOCTL_XFER_CHARGE	_IOW(DMA_BUF_BASE, 4, struct dma_buf_transfer_charge)
->>>  
->>>  #endif
->>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->>> index 7b841b905759..3adc84fe6668 100644
->>> --- a/mm/memcontrol.c
->>> +++ b/mm/memcontrol.c
->>> @@ -5786,6 +5786,47 @@ void mem_cgroup_cancel_dmabuf(struct mem_cgroup *memcg, unsigned int nr_pages)
->>>  		refill_stock(memcg, nr_pages);
->>>  }
->>>  
->>> +/**
->>> + * mem_cgroup_transfer_dmabuf_charge - move a dma-buf charge
->>> + * @dmabuf: buffer to transfer charge
->>> + * @new_memcg: target memcg; caller must hold a reference
->>> + *
->>> + * Transfers the charge for @dmabuf to @new_memcg and, on
->>> + * success, stores @new_memcg in @dmabuf->memcg.
->>> + * Returns %true on success, %false if the charge against @new_memcg
->>> + * failed or a concurrent transfer raced on @dmabuf->memcg.
->>> + * On failure the caller retains its reference to @new_memcg.
->>> + */
->>> +bool mem_cgroup_transfer_dmabuf_charge(struct dma_buf *dmabuf,
->>> +				       struct mem_cgroup *new_memcg)
->>
->> I would make that more generic instead of dmabuf specific. E.g. something like this:
->>
->> bool mem_cgroup_transfer_charge(struct struct mem_cgroup **ptr_memcg, struct mem_cgroup *new_memcg, enum memcg_stat_item item, unsigned int nr_pages)
+> That exit looks unintended to me. b9a8a4195c7d ("truncate,shmem: Handle
+> truncates that split large folios") turned the "if (start >= end) goto
+> out" early exit into the loop condition. Before it, the loop went back
+> to start until a lookup from start found nothing; Hugh kept that on
+> purpose for hole punch in 792ceaefe621 ("mm/fs: fix pessimization in
+> hole-punching pagecache").
 > 
-> Ah yes, I like this generalization. And the implementation remains
-> mostly the same. Thanks!
+> Restoring it is enough, and makes the "restart to make sure all gone"
+> comment true again:
 > 
->>
->>> +{
->>> +	struct mem_cgroup *old_memcg = READ_ONCE(dmabuf->memcg);
->>
->>> +	unsigned int nr_pages = PAGE_ALIGN(dmabuf->size) >> PAGE_SHIFT;
->>
->> This way we can also document in the DMA-buf caller that this conversation must be ok when memcg_account is true.
->>
->> Regards,
->> Christian.
->>
->>> +
->>> +	if (mem_cgroup_disabled())
->>> +		return true;
->>> +
->>> +	if (!mem_cgroup_reserve_dmabuf(new_memcg, GFP_KERNEL, nr_pages))
->>> +		return false;
->>> +
->>> +	mod_memcg_state(new_memcg, MEMCG_DMABUF, nr_pages);
->>> +
->>> +	if (cmpxchg(&dmabuf->memcg, old_memcg, new_memcg) != old_memcg) {
->>> +		mod_memcg_state(new_memcg, MEMCG_DMABUF, -nr_pages);
->>> +		mem_cgroup_cancel_dmabuf(new_memcg, nr_pages);
->>> +		return false;
->>> +	}
->>> +
->>> +	if (old_memcg) {
->>> +		/* Uncharge old cgroup */
->>> +		mod_memcg_state(old_memcg, MEMCG_DMABUF, -nr_pages);
->>> +		mem_cgroup_cancel_dmabuf(old_memcg, nr_pages);
->>> +		mem_cgroup_put(old_memcg);
->>> +	}
->>> +
->>> +	return true;
->>> +}
->>> +
->>>  /**
->>>   * mem_cgroup_uncharge_dmabuf - uncharge a dma-buf from its memcg
->>>   * @dmabuf: buffer to uncharge
->>>
->>
+> +       if (start >= end)
+> +               return;
+> +
+>         index = start;
+> -       while (index < end) {
+> +       for (;;) {
+> 
+> Then a replaced folio is found on the next round, and truncate needs no
+> special case for it.
 > 
 
+But that's then another lookup even if not really required?
+
+Why do you thing that is that better?
+
+I agree that the code is simpler, but at least it's consistent with the other
+handling.
+
+-- 
+Cheers,
+
+David
 
