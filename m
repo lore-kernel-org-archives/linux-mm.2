@@ -1,135 +1,157 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471B8606A339
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B03560A2614
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XNLXlqRw
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DTKijxHL
 Received: by kanga.kvack.org (Postfix)
-	id C18946B05CD; Thu, 29 Oct 2026 16:44:53 -0400 (EDT)
+	id 60E586B05B1; Thu, 29 Oct 2026 16:53:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEF2D6B05CE; Thu, 29 Oct 2026 16:44:53 -0400 (EDT)
+	id 5BF706B05BA; Thu, 29 Oct 2026 16:53:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B065C6B05D5; Thu, 29 Oct 2026 16:44:53 -0400 (EDT)
+	id 487646B05BB; Thu, 29 Oct 2026 16:53:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8705D6B05CD
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:44:53 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17ECC140512
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:44:53 +0000 (UTC)
-X-FDA: 85376842866.19.190599A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 52FD4180003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:44:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XNLXlqRw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306691;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 06FAB6B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:53:49 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 307301204DF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:53:49 +0000 (UTC)
+X-FDA: 85376865378.10.468C142
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4A30C20009
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:53:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=DTKijxHL;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793307227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0u9mqum51kiy34ukMYiOeDJqgQ6PcqJiGIEfUzDte84=;
-	b=aUcnvOpsGMPOTXjUzrF/9MExgncgsflCwk2qap843Q0+sMROpAdbF3n4ZgHXGd4CwACjeq
-	sPkTxOnqPaLrZ5wZm50hBUXVLpcW4eCxwQZriuUAcV8n+DnkcfApVT4Uolyjy41nh0uuGt
-	tzCgJMY4DZVKuZIPooBdD9LCInFTdQo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XNLXlqRw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306691;
-	b=SmIsm+qGu+miR0tgSqPEDCcWmdfKbSQntvbRjYPeoXS66tWv5Kvn2FQEaHPR9HFUvsHePF
-	ghkueK70pYXHIhp1a+Gv6rvncWo/CQNkdc64BTDQwHbIlkjZPlP/jf5iidYyuPor0Q6ymB
-	4qQeEyn4OVPe+rg1DA8kM8WLAyvAZH4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA33A601EE;
-	Thu, 29 Oct 2026 20:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9CC1F01824;
-	Thu, 29 Oct 2026 20:44:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306690;
-	bh=0u9mqum51kiy34ukMYiOeDJqgQ6PcqJiGIEfUzDte84=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=XNLXlqRwdRH7zOXlHSAyM5r9l+ZsOYydF9IM6c41SfzDtPH1QjYiKg2vebUPxLRhE
-	 op9syInbMCIbPK5ag5w28kgrB20oq6dz6kz7zwHtoMeI3sn0MMvrWpam94RFGJgDxP
-	 PwuSJ2sDX281xB+sF7JbamBjH+Lt1N+zLFvcykhavgdcPfZcysVtAD4MHmB4sYH6Ln
-	 ybtI5TkPw6mEClQrIsXfrvgw+3L5rwnHWTSP6EOAsNIyTGyK5uyY2hbH03ERH5/SzU
-	 /29GOoPKsf2oq6PwxEHLGhAGPKt6XxH3qiXXHt/UH7EJc+i1SCplW5JPkQ0WQvlUQC
-	 DoaDQWsFpWhEA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:41 +0100
-Subject: [PATCH v2 46/47] mm/memory-tiers: unregister empty tiers outside
- memory_tier_lock
+	bh=+9X2/iX/Lqo173Vwu0EOcoEv3bNJRFgizimBaD4S5Pk=;
+	b=4rva9B/SRc9Ev8j8/OIV0tuve3/Bg/xMz6DeZTpE41P/W5IOkoZ9hROcte01RQYWvXWmgp
+	gygFGoAIK8sBNtQRdLHhB+ZbLADcKj7ZMziBD0Jkeeh/9xICNtbyV4UH/rBZkmdcR3W82v
+	4qqZmWMlz2J+F6oEZIk/g2Dr112wd3M=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=DTKijxHL;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793307227;
+	b=wQ8kZRQUI5c1YWWp2qjdZ00w8FFPHlt21EQZfa/3lHzBKrGsjQ0dO2xeon3uiMZTzXxr0C
+	iwtv4qWhOFcpDNBadEHqNTpPOkSbDLNaJtBH6mnitaroenobO2TFjATB+95JensHqrRerh
+	wyvpL4opYOVX5oxcuwYUMuDhE1iNygg=
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-15943c9c005so2235565c88.1
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:53:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793307226; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CRUFAhKBI6lNMkroFRJTEwmyIEZIaTkLFSAOdtkcT4PjfZ9YlWQXsPW3N6J8tfrsu2
+         p9I/e1aG1JTVBriR1iMPExtTpxnCdzr7YP4VeXE+iGeuNMmOhuN33MV5bTNLdPM2H3F1
+         OcanRMgdIZUkDb58IIqhljupsZVXFClaQaNsu4fSwjVSY4iCol+NRyymS/dOakm2Ty23
+         nJfZCbyY5JNdEiQ8r4GdZ/hMF5hWZ9nCO6OtYmBhYpe05oA+gex4//2MVcHRqt3kpYVn
+         Z5NUzkEdP0p3+uvac/4Fn2n6XuxlIPfyXlKrgsjQ4BkIm0AY7IveR1dxplCJwiRvR1Uv
+         5IQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=+9X2/iX/Lqo173Vwu0EOcoEv3bNJRFgizimBaD4S5Pk=;
+        fh=tkhQ6UztH0IBbRBUZ7gmKW14+O7g4m2ZM/sDLFo9Jg4=;
+        b=ASosUfvgX83FM5PaG8oYNTuQuuK9Cg8leViDPjWw/oHq2C52OIuJm4Qw8S0JByrpHf
+         xbFtsNWE0+OXVsRlz6GYai+I73lbpN+nozRys5XsbbGt9RFo69xcBYIXzUYxCZOclhpT
+         Mnj6NOw9Ub+XtxMNDKfM3Rdk6EgfmtCnb9mv7c1r8kQTHbieQpACbnOQz9kFrP0pCjPl
+         nIRXEN3ky52r2yTTMw6r9uA9sCYhQ0NDoVcxX1GvUjmKRWn3QCghQ3eX/2BR8pYQ2D9N
+         YkXkExVwBe5jHheWpHmBS2xQopOO7eie9ZNPlf51wff9dvNJrVz99Ism2QSokf2NTGVE
+         5xhQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793307226; x=1793912026; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+9X2/iX/Lqo173Vwu0EOcoEv3bNJRFgizimBaD4S5Pk=;
+        b=DTKijxHLD9KyLF4rQ8bAN9R5Dvmxx8yOxc0bA8D31PETWj72/oWwQHnSi6uqWZzHu/
+         8LB6vXMZmYFjAb19IvfEkWdxJfz43k/d0e5ik3ykQ/Em0yDMrxj1wtSNvKsPab+SnXdF
+         i5U0nhW7IyI7q44tSTt7p1RGJE4TAsa6Q8PAHqAKvVl230kgpGER7B5FIFeQbine3JBK
+         K9SyR0dmmh4SWehqGTIOfFSicVsuAJIP/iOJKmOydMviDd9eKh5CUOwni46eZtct6ohn
+         wvrRiCS6LIkRNDfeS3xALZvQG76X8Qi3HUa/BZC08Dp4qM81+y84e01mM6i6hwaRYYMJ
+         oR2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793307226; x=1793912026;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+9X2/iX/Lqo173Vwu0EOcoEv3bNJRFgizimBaD4S5Pk=;
+        b=cMfO9zcpGGRYLmg83CoSG659Cy5prfb3zZCWG90s1jBT7+gQ8EhTfIhVnilLEGpfbd
+         UGdw21c7EfVncR3xc3RuB8ei12jW5Z0eZ01hGsmaBORcPbsSb+flctlQvJagVccI9vP1
+         QLADLvGQMcZpoiRXHe+kzociL8ZC02sWjxd9EG2G49SaYsFO/UslEUMD+6LnGrTAzbg/
+         yZfJ22U5wiIhiowOjs4ATU88nU3sRjb6fLpZK9r6s5DE8iy7Y4hjhv9Mz+/uCp8BRB+D
+         FWwjiiob7t6BvlDMuofDFtM65jeO/qXsSkDtwG0JvjiqPbuMwbjdQtocQ7Kr1hVNtq2O
+         ZbsQ==
+X-Gm-Message-State: AFq9FYL1dikmwnU7Ex7hHCJwUh0mldTQbRkDcwVsC8vrWDjbwPWuArhy
+	KWCNxm6qc/h8DuzKYEjhkandOcPe3hrg4qxoh14KHSRxVROXC1B0GSbDLrsgz4JDBALEPbHmNRH
+	aI6557V3PUg+HqCvF82uy1oe1MNUQVvhi8akT87J1
+X-Gm-Gg: AYBFou0nU6N/q41BUyXX2Y+mnWJG3MJw5px3hIfAXV4w4xk4SYUvFx+GgIm1Oqnhba4
+	Dy8/KC3ExrECM+KKEj84v3Dn+qfyv2/72YG6RFhtOo5tbOHELNxixwXxUJxPb+b8rynf107tmuN
+	s0qcMwtlzPF4km92cv32xGrl6556idBovKnVpgPsvsqcFMHmgly4Tf4/UqWX9FvawBVvXY+Pnnu
+	PhKMF8PPCyGp9/vG2NUNkY/631jIj4J+F86mxjLKkhOu7dweNzru8A50OKiaiOg2leWijoWeoEb
+	RyHUdFPh4+105UmN+nTGAxWHIsEhwZmIStqX2xSZuB7oNf7bXwIoq2ZcSBGZLMoiIdfr/oulS/n
+	YbjHNrhpfSGU+qBGCUDVApFzRFjpnwQGC0m2jqynIaFdznW5Hwd5gfHOQojk0xCp1fHgDWpIbGw
+	sERZi2chhWWtJb3b0O53iJfMM=
+X-Received: by 2002:a05:7022:2522:b0:1a9:c9fe:12c7 with SMTP id
+ a92af1059eb24-1ac5bbb4b85mr358477c88.9.1793307224406; Thu, 29 Oct 2026
+ 13:53:44 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 29 Oct 2026 13:53:43 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20261028-fixes_hugetlb-v1-1-a0a033db180f@kernel.org>
+References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org> <20261028-fixes_hugetlb-v1-1-a0a033db180f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-46-a64ce7f83abb@kernel.org>
-References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
-In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>
+Date: Thu, 29 Oct 2026 13:53:42 -0700
+X-Gm-Features: AclHuK_vfygndkmig7dtJT75402KjRWCrBeo-qQvow0jlIneeAJCjzWqgPCqOeQ
+Message-ID: <CAEvNRgEY1uNs7F+ZPpcbx4Tgg=9r+f6nYpPsnm7em0+2YMq6cQ@mail.gmail.com>
+Subject: Re: [PATCH 01/15] hugetlbfs: fix integer overflow in fallocate()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@suse.de>, 
+	Andy Whitcroft <apw@canonical.com>, Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Peter Xu <peterx@redhat.com>, Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Arnd Bergmann <arnd@arndb.de>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3065; i=david@kernel.org;
- h=from:subject:message-id; bh=Be0cEORXL/+FFSLbAGaUCWXPcitw/28TU4MyQxK8Pu4=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+2KdjtU9mUqD/ObE6nfr6W/WsvPu0X2p7PUp8V1b
- +oT/Z1XdZSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCRk6cYGdakdG50VWY+a/9V
- 8/mJgoV/fRerH9Bh/RdRvUB9CnvUSjuG/24s+zm964Q1rNsURSvOGhmcdnscZ7DUsWr7it/1S89
- +5wYA
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 52FD4180003
-X-Stat-Signature: m3ep17oatrmj3b4h6r4xj4uyy4ip6ee7
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-s390@vger.kernel.org, luojiajun <luojiajun3@huawei.com>, 
+	Josef Bacik <josef@toxicpanda.com>, stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4A30C20009
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793306691-350100
-X-HE-Meta: U2FsdGVkX18kA5tMlRGOi3IxNDgiYDJxsXe/d3oziJ4bGU3DADRkMHBfinNFekroDaDEWkTDSZAKJsD3L/IzbLsEPXu13VA9u35bYFU1V1J7CN9h1UmAQxjCWehVrpw/H1I5tzrOmtKZuDquCr715Tq8TelYtRgy8FOmSLKpKVVCTtdLo1kFdbVrYOhfFgzz2nFatCCZxQE50ki7mMrLjcwM5hpQxZAfIO0JekhJszAREI7M9JcKOUNfKTQMX9iNwgjSdb7oeIRzR0nKCrs0w9vKEku0yvODobHsWHuWg+aGor67+MqDfyhsgccsRlhZ/exUnZqSMGyfpTQ+KxiO/ESk+zxcmR0g60YBHWRAL99X4zcJUuSM1jhRKiyTNRWQjJBfboJLNthPX4JOTdPKOtvRu6H+EADxbA8s14IKPdCVcA3lWZ0IXlGbnW5xrWEW+eYeU+348uncmjSf74HuqfFPnQxuaWfSwfjjbozAvd4jREpKKEfUPMF6q2miytfqYFTkQQE0OptTse9LNCsQ1rE3n9Lu4b3zKofY+lNpEvxB3hmOFN9sDKk7AuxB97a+cvRAYm5mmJs12dNa2JSOm1QdSjSYTLWE073khcJXC9tUKjkWzLXSS1Bbx/5S/81HdnzmrW4RsIhb7GwwtSrtGbjY8DIA3T5Sw0i18AtlpLtLqPn0XzY9QPaudChNHdxxCmFe+z3Ft6bLYKWX+ag6QymeCZFLgfQpAaPXvVP1XTwWlta5xfqDvXQ5TRrHl1UCDaEQvTBmIvO3tSeEDYl5K3r2uUNIH6AQYfGXwSlTPFIVP7kprlAvrFah6NWbjCpfAVfkID6cluEHPEJJxCLoBsZ2aImUxRF7FxvO3bxXO7bbhPsJKHiDMNwpKlUVr8lmigQT499jOKYPL1/J2YBc+IAhTklYwxaJegSBFNfZ2dfyIQ7CQXAjw2kjmoneGCBip6oxiwjRMH/JD45J63G
- 5JAwwXUz
- Wp666AWPS3ueJGV+2141GJM8GjLk49wvqhAL+MhLEespjKuPxmhq7rGUoiE1S0IQ/sfm9Jve5O5Jclu0rO3zycPa9rRMcGHZxtkONPTZZwq3p3COLPIpkrLKdAEYsT3POKHWnQHup7N6+oPzzHhdv1WwEiKtGqEAyXBQuwNyfgSmejuxFI51MC+hI5ca+RzKWkarru+GQcgwwi8sEGbpV4dAb9/wXT/0eOAvBRZeQw3feK6AUc59vhFK7J6kX1078AiyD5N58sJOvioQfym7gzo32AZCI/xDhK0KpM3HsM10Dlfq3vnMDQCmUyrEjCSgthhsvdL0jF5LH0qpknEsa0C+QKxDx1Poe69Hei7MSo/xjvkmxEOtqMvIQTPUhTSCWFju1Hkhe6ZhMiBCDOywT4mx/T0u3Li/MTtEwneaHsVi/ZJD3h138uor2NpfQABjhn2pwHFker7OJFBl9FAwIt8pzuRJEpVyK5yRh
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: gxcs9zfuch17qo785xgjft5pq1hmebfi
+X-HE-Tag: 1793307227-104234
+X-HE-Meta: U2FsdGVkX1+EAr5xDx00cE5CUxsJSBR3jwVpv/l+cVPlrfr/+NQW2WqiJHhbPBClKeaefAs/kC/yNVKAXbaYP2W/xSwi7dzYBZ/K0rmc1PwmEmezw3bTRrD3oNKjsCv2im7He97c3CtN2YItrqnzI+3r8U7OR0v4W9DfyiVCAq0ANzQTNRjaIfarZdpw04O4AIzGZ6I73VUcPPuJ2+VX7A0z730P5Ha44LW2t4uQOF8Ys3++wSV87ljky6tP9LI63uWCla9jJFRtmeP4+V3NX9phWrLwRnLSw/BDr0AQMuqZxFKKz/nf6nC0dEVPveccRxOgkuWNqM8aOZGMJphp1IEXDqQI3HWadA7L33xo2yekgfwTRgfU7/nF4bzVM7bhOWgDNp24W9J7N4tOrzsoV1vH8o9sGALsrFWCdkfV/m7QdHmauUkNo67l3V9r+zOYmWsUCmNL67iUilX8+AyxHviMV+V8lk5XkbwOJrCfEgPmNFEkU5pYyQ0za5mH/YlGtf9YcQDXVZhgCKMqQ3C2KcZGAHmP6MOdAwt4GCqPeiXxQo8/OgK7soaGyQGc+VvrAEVnHk6zjvrCvGjV7qaHhIwCB2OXxtKNPPHROly6URskymAOMk9BXDPKYuEwIXNZjCy7FdfwUlVlbHJQkBgryaNmxc8QdBTkOxWxCrSkzdZToywRlejJlgTKLeoue+SnOCVizSbvzctHguH4pIkwg+ejKXpyCHSd5OCmXFIpTDjJmZxi3oDxwZS3mmc4WO5HD7mEFr8Ax/W9AvpyhRwKwlg5WipKSlDPyWBCAvj7xS+sgWsrxIvxSxa5toZjjw3n8dW+GpC46dK5PVr79hO99UJFc8WZxRrh/k/Kdy6jl7Xf5rF3mQMw9maIazm4RZpMoVz5dhBk+fX434ytorWySrRJy7Z2WjSk1YIZcnNjfCMyi7fCmjO0xSPQWCKVC4+avvVGCO20eA0nTGQ7OIj
+ S/jcScBG
+ nz28Eqq2VTM7n0A+Tl/OGYEAlvO0P6nL3CTQuOeEzCtoaaje5Ruv1O0KA8nVI80nadO7iQt4VncdnPrywvuyniw0HeMQNRHkyLG7roP1fLB63pAAg6wTGEctjasKyNFz3PX6SYCpwimc21tnsqDgked6iiggX0fqFpo3T2Y2VHzoLsrKd5JcWXhI6euaB3CBNSVAfDjmw518snajDPDD0j4WdNGE2YD9pV55vfIRRWi98k44yRuQ3jw1NgtjPvF9v7+ElfbRu6bfNVc6o6wsEveIobyAth16xZrDBLQUp51vIikSf62hxShuukvkpfGuwRLMf8ymSLPJtdty+Xe7sg/xQEriCfPdpqlvPnVr/NCMmMETdvWGCPaLgAgsuLhqx7k5+orVrE3JNGqa+paivHoLTrrcnABY0UbH3bZhl1unPRyn4PS6Rh1y8Z0HI6qMtOHufkudOhTYkayFrXSv7k4fCsrEZPPMYWIzktn7yYcim5+T5nxMMV9rCuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,99 +160,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When offlining a node's last memory empties its tier,
-clear_node_memory_tier() calls device_unregister() while holding
-memory_tier_lock. A concurrent sysfs read can hold a kernfs active
-reference and block in nodelist_show() on that mutex. device_unregister()
-then waits in kernfs_drain() for the read to finish and release its active
-reference, while the reader waits for the offlining task to release the
-mutex.
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-Return the node's former tier from clear_node_memory_tier(), making the
-helper more similar to set_node_memory_tier(), which also returns a
-memory_tier pointer. Let the caller unlink an empty tier under
-memory_tier_lock before rebuilding demotion targets, then unregister its
-device after dropping the lock.
+> hugetlbfs_fallocate() rounds the range end up by adding hpage_size - 1
+> to offset + len. vfs_fallocate()'s existing overflow check only makes
+> sure that offset + len does not overflow.
+>
+> Once we overflow for valid endpoints near LLONG_MAX, we can get a
+> negative temporary result that is then converted to a very large
+> huge page index.
+>
+> A one-byte allocation ending at LLONG_MAX can therefore consume all
+> available huge pages. Pages added beyond LLONG_MAX are skipped during
+> inode eviction, leaking them and triggering the BUG_ON() in clear_inode().
+>
+> To fix it, calculate the end index in a simpler way that cannot
+> overflow. This also fixes the signed overflow reported by luojiajun in
+> 2019.
+>
+> Backporting notes: without commit a08c7193e4f18 ("mm/filemap: remove
+> hugetlb special casing in filemap.c"), remove_inode_hugepages() must
+> include the final huge page during truncate and eviction.
+>
+> Reported-by: luojiajun <luojiajun3@huawei.com>
+> Closes: https://lore.kernel.org/all/1554775226-67213-1-git-send-email-luojiajun3@huawei.com/
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Fixes: 70c3547e36f5 ("hugetlbfs: add hugetlbfs_fallocate()")
+> Cc: stable@kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  fs/hugetlbfs/inode.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 01c4d6f44ebe..5592cfc6cc8b 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -721,11 +721,13 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+>
+>  	/*
+>  	 * Default preallocate case.
+> -	 * For this range, start is rounded down and end is rounded up
+> -	 * as well as being converted to page offsets.
+> +	 * vfs_fallocate() guarantees that offset + len is positive and does
+> +	 * not overflow. Avoid overflows when calculating the end huge page
+> +	 * index: set it to one past the index of the huge page containing the
+> +	 * last byte.
+>  	 */
+>  	start = offset >> hpage_shift;
+> -	end = (offset + len + hpage_size - 1) >> hpage_shift;
+> +	end = ((offset + len - 1) >> hpage_shift) + 1;
 
-Fixes: 9832fb87834e ("mm/demotion: expose memory tier details via sysfs")
-Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/memory-tiers.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 25e121851b58..8eda313cf619 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -572,21 +572,14 @@ static struct memory_tier *set_node_memory_tier(int node)
- 	return memtier;
- }
- 
--static void destroy_memory_tier(struct memory_tier *memtier)
-+static struct memory_tier *clear_node_memory_tier(int node)
- {
--	list_del(&memtier->list);
--	device_unregister(&memtier->dev);
--}
--
--static bool clear_node_memory_tier(int node)
--{
--	bool cleared = false;
- 	pg_data_t *pgdat;
- 	struct memory_tier *memtier;
- 
- 	pgdat = NODE_DATA(node);
- 	if (!pgdat)
--		return false;
-+		return NULL;
- 
- 	/*
- 	 * Make sure that anybody looking at NODE_DATA who finds
-@@ -604,14 +597,10 @@ static bool clear_node_memory_tier(int node)
- 		synchronize_rcu();
- 		memtype = node_memory_types[node].memtype;
- 		node_clear(node, memtype->nodes);
--		if (nodes_empty(memtype->nodes)) {
-+		if (nodes_empty(memtype->nodes))
- 			list_del_init(&memtype->tier_sibling);
--			if (list_empty(&memtier->memory_types))
--				destroy_memory_tier(memtier);
--		}
--		cleared = true;
- 	}
--	return cleared;
-+	return memtier;
- }
- 
- static void release_memtype(struct kref *kref)
-@@ -884,13 +873,21 @@ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
- {
- 	struct memory_tier *memtier;
- 	struct node_notify *nn = _arg;
-+	bool empty = false;
- 
- 	switch (action) {
- 	case NODE_REMOVED_LAST_MEMORY:
- 		mutex_lock(&memory_tier_lock);
--		if (clear_node_memory_tier(nn->nid))
-+		memtier = clear_node_memory_tier(nn->nid);
-+		if (memtier) {
-+			empty = list_empty(&memtier->memory_types);
-+			if (empty)
-+				list_del(&memtier->list);
- 			establish_demotion_targets();
-+		}
- 		mutex_unlock(&memory_tier_lock);
-+		if (empty)
-+			device_unregister(&memtier->dev);
- 		break;
- 	case NODE_ADDED_FIRST_MEMORY:
- 		mutex_lock(&memory_tier_lock);
-
--- 
-2.43.0
-
+>
+>  	inode_lock(inode);
+>
+>
+> --
+> 2.43.0
 
