@@ -1,99 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2A8606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 05:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E31C606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=CzzFQDyd
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rqECxI/h
 Received: by kanga.kvack.org (Postfix)
-	id 8A7206B00EF; Thu, 29 Oct 2026 01:55:22 -0400 (EDT)
+	id 4238E6B00EF; Thu, 29 Oct 2026 02:04:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 881F36B05B1; Thu, 29 Oct 2026 01:55:22 -0400 (EDT)
+	id 3AC586B05B3; Thu, 29 Oct 2026 02:04:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BBA46B05B6; Thu, 29 Oct 2026 01:55:22 -0400 (EDT)
+	id 274D46B05B4; Thu, 29 Oct 2026 02:04:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 52BA06B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 01:55:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B21B31A0279
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:55:21 +0000 (UTC)
-X-FDA: 85374601242.04.9EAB741
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E0FE5140006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 05:55:19 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CzzFQDyd;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793253320;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F16B26B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:04:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7FFFA802DA
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:04:11 +0000 (UTC)
+X-FDA: 85374623502.12.746506C
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 875B9100008
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:04:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="rqECxI/h";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793253849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hddx7cW1nUVz3kkMDf5xox3K0/URdftdZ51g0o1y9xk=;
-	b=f0SLjlXbEysFXOXkQdxx/H3pEsX0WXYFfnIDnn2Md7zscFkVo3hTKAXG3IIefpRsUx72+8
-	pyyOLANHH8ImKdUUFOsUUqqmOkqxJyexzmuGBk0qIYEhjHo44HiRkWrDj03j/Jyiw1diML
-	0+hZji3bAmygN+95WtZzO8I0ryZemsE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CzzFQDyd;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793253320;
-	b=zIV94Vk6axs+dTWT1jOXd5NXgokhMp44Dqs4CW2DRBeq4287jGqkRImDfefWH7l+DsZAsM
-	m42lvI6xfGZY1rDFCLW9uiaCN31J5XjeovPlcw5Dq+//XmWiCWz3nmx8tGvg9g22xqVFIt
-	/UJazmEy2nerwcMRlFdaderRFRUHhTE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5A080600DA;
-	Thu, 29 Oct 2026 05:55:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BC21F01825;
-	Thu, 29 Oct 2026 05:55:18 +0000 (UTC)
+	bh=jyY0mISq30/hBaQ7vdW5SKnqvf4R26xAX2ccXy18/70=;
+	b=IirlOIff3INF7b0HxzcIMauWCupmQAMcd8pvCQQRggz506Y1cYpUBIbmA/duT07aIXa2Ep
+	QgAR3grE/GwT7jAG6EbpHDQPUML5dvd9QhLp0cz1F3J/fOdNsu8MClKvgDmvhml4Ezinr6
+	AXycCGEldwQUNQ8RTGGb3OnNr221JKw=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="rqECxI/h";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793253849;
+	b=Lwh6oxCcmvWRmh7ogmazYkwQqX4ieBYiwcYOLHP4oMtoegvWKeIQMdLiOdSg1AJL+x8UpR
+	Q4tALDw3ldepf6eZ3X8iHEcIxyLDavVxzvwSXCAqXgjIHQNfCLayuR/fJ+CTlyOBogkS4f
+	lCiv1PO7WujUu90ZkKHF0/S1uZuouak=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5bcb0f245e0so1689269e87.3
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:04:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793253848; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UcP156q5XH4vjjIIEe+T5a9ZX6Nh6fz8HIQQFoOa4sWC3o5zTyje2U9wBhkOyYorEw
+         UBzpbtMsEjy3Jxja+4JctkIWGcUtSXlwVCKSFi3S7HL8cZL3jGuxsVcPfeagty5hvZdn
+         e/JiN2snTBhkOdX54qOBJIuq8/mbztOFN6C4WqM6nRonCKxs5omS4+RWHZofX1U3uTc0
+         AsgFeuSZ1u7JN7IYn/mKDyGehVtal1FVjGmI8PNSdA4xnSczLrjpBbExNdJMkkYMqy6V
+         4K+xT0auj5qxmEUaMWZxsLRzgXdUkYqxGHexS5g6eIzdezVBM8/IhebkIjbYQVhbjWE8
+         04mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jyY0mISq30/hBaQ7vdW5SKnqvf4R26xAX2ccXy18/70=;
+        fh=v1jZnaWnWhQjr4BvuS81rLKrXTnxZDDbmQPju+n3B/Y=;
+        b=OtmFmJcmKGJNiQ3DI3jLsOlWKT/nEoBuVH5kGq4PJA0m6QWQ8Fk0zqQ5yF6MEg+Ure
+         Jpqy2C3Tdb8QVJFJRm0wCqurArxUG3fJikxEZ20j1qtCy2Iv3qJ8pXcMFihVAy7cXK8d
+         rjvbcQjvfXiPtXMdQY5gKlMJZLO0ZmE4lyKJfFqOddtYYTijgRd6d4a/g0J+C2T0neIz
+         zDPy14wLS3FjP2vjQqRbCEclMBBzeZ9yQIuBbdSdce4nDDi19ZuA00JK1CQJ4oalGgGP
+         ibf9MKhHd84IVTjA2aZeWix+a2/WgvBTa6BQP90Um+aAL1x7Kw9qvgHYgMN1Ge2JHJeh
+         2COg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793253319;
-	bh=hddx7cW1nUVz3kkMDf5xox3K0/URdftdZ51g0o1y9xk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CzzFQDydrJtAi2nM2ke5/ieg4gB6r0aQxtJggHBc49Wvn3D68/5DrhEf5hGSC7tK7
-	 aNRgjcj/Sgj0ZwCermfUWR69bU+QqkajLJL75XVXc6kklaiII0Sir8NYw9rH8LLYlD
-	 7x5kovjRCSppfOyZkbk27wxx43tUAitJVCv8iEyQ=
-Date: Wed, 28 Oct 2026 22:55:17 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Salvatore Dipietro <dipiets@amazon.it>, hannes@cmpxchg.org,
- abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
- brauner@kernel.org, brendan.jackman@linux.dev, david@redhat.com,
- dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-xfs@vger.kernel.org, matt@readmodwrite.com,
- mhocko@suse.com, ritesh.list@gmail.com, rvvandan@amazon.com,
- stable@vger.kernel.org, surenb@google.com, vbabka@kernel.org,
- willy@infradead.org, ziy@nvidia.com
-Subject: Re: [PATCH 1/2] mm: page_alloc: do not give all non-blocking
- requests reserve access
-Message-Id: <20261028225517.75e13881be22461a8c94e07d@linux-foundation.org>
-In-Reply-To: <20261028144148.GA14023@lst.de>
-References: <arFBr22V60BMmVpl@cmpxchg.org>
-	<20261027150002.318916-1-dipiets@amazon.it>
-	<20261028144148.GA14023@lst.de>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20260707; t=1793253848; x=1793858648; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jyY0mISq30/hBaQ7vdW5SKnqvf4R26xAX2ccXy18/70=;
+        b=rqECxI/h6zFnL2ncA8jQbivo303PxAI6aaevfp+5POvkFGVoK+uKdSMcrdccen+yNZ
+         SXYUd9lXD5RuGTKy8/sImjtrjlkKJe8Q3BSnJjnZGPgsQo3ff+CKZtmUu77P0IbDzu9z
+         Oal8pAqgbeWCbW7xhr78oMMtM3zeKbbN9qSoQZgTphQrvC5bsGJReGVaQClINazlZMa4
+         MXuf6KEXwuWpRsRZlOg6XSrc+1ZiPIzd6VUPl6FugWeadbEzwJyeI0SdFybuzs0dddYo
+         7sLROiyW52FbfquWNF0iYrwEBaDqvXkYTFH1Yx5DaWXKa8q4XlYOKce7bQabu5ohQ6oa
+         hAeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793253848; x=1793858648;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jyY0mISq30/hBaQ7vdW5SKnqvf4R26xAX2ccXy18/70=;
+        b=Q0v6HBaKa9VWHFk/KuM3S4/ApGDdP3BY2zs42JR0MFW790ONTfH+uKyixYKOELXQGE
+         r0oPmOv/KQln3v/NGVBPKfBxVu5UltcUQBaX9+34lQ8+84hFUaR1vIjP4bXwOC7dWI5R
+         PcR1GC6L3xB6dTgFRMToQbcWXbb7UoGzci8hjZyd3DNftzQ/Ute9sDZ/sPVZoWrHjgDQ
+         1CuUvP0I7wAvg0Lwr5GB0EybqWz7wBywmC1qENHHIFveUPV5sLD138+icyRQfzc7bH8s
+         Od5imtoRadumaZOyXDVLBAhwoS1zLTyxH6Vg0A+Vqft27oUjL+SDQiDcxeSwcI09oieE
+         u7vw==
+X-Forwarded-Encrypted: i=1; AKwUvBwkwJQaJGnnESqTH18as1RWF+/lQJwo71PW+3Lu2IL0T2YSNgFxqYPG1F8zOQYnhqYbxUVQo8NBwg==@kvack.org
+X-Gm-Message-State: AFq9FYLl9YO+7lh0pKj39Nn610v+wJaw8cKdM5Myg3Dy0vhBmkmmJx6b
+	WI+BmI7Xd5f9K2JKIUSRu7gg7eT1wz0LwVcHBM3r+BEtjtErSfvSEZSI0bPDWnZD/pznd/nw5dE
+	2ve4VkabZpJmckQp9tYK83VzgNGEXmQs=
+X-Gm-Gg: AYBFou3LN1Bfg3Yibh/D0a8FLRK49QR99gXcdhvgAVxbAyrjbW45nwenusPqFgPQhWy
+	Qq+7nAvdU/sQhvxikTfSCYmBvaC7XgHuNeimAXzDw6cbjG7qp3N+brySSbnBXvDUD0pAj5BBS8U
+	W+LNrLzy55xGCCtkIgvNbVNv2OSb68BDtQcKeZUYfAkTrbP1TRSfH3Gn6+IvxaqnhTGbxvBp7PM
+	2cYk3Chu6UAMEwDECxMm+3e9WghfapPESVCFtwh2W0d51ZuZDdKdRCSsqE/uFtgAKcu+aRO7OOk
+	XNZvGICaDxuh5GmJZQ5oJVu8K1RiYGMdZ0+/f/+OLcKXEV3Fso5n8U1vMQmURSEwW/ABvDiqzdd
+	KCZm5k162Dl9S7J0Y0RCYBr+YzTO8iRp3wQYL
+X-Received: by 2002:a05:6512:3f08:b0:5bf:a42d:9115 with SMTP id
+ 2adb3069b0e04-5bfcad31a26mr1709830e87.4.1793253847632; Wed, 28 Oct 2026
+ 23:04:07 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E0FE5140006
-X-Stat-Signature: wpnfgm8q9eue7xh3b7zihjfyuborfwy5
-X-Spam-Status: No, score=-17.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+MIME-Version: 1.0
+References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
+ <20261028030503.17923-4-kanchanapsridhar2026@gmail.com> <sashiko-outbox-188655@kernel.org>
+ <CACpmpodu3C=uYH6dmFM-xkvdJxiRDjamRKs1Q4jU6_KKjFWNqA@mail.gmail.com> <auLbyon-KaV5Sw5_@gondor.apana.org.au>
+In-Reply-To: <auLbyon-KaV5Sw5_@gondor.apana.org.au>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Wed, 28 Oct 2026 23:03:55 -0700
+X-Gm-Features: AclHuK-DCy2JhmM1ocR9rPIODBB_vde0-q1YKusn4WlZiYizVxfQyHZpW4RBSmw
+Message-ID: <CACpmpofcd=ZPKhAoHJfvJU_JZshKs1GGJZf5JhjAW1PZzDq-Lw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] crypto: acomp - Add trivial segmentation wrapper.
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: sashiko-reviews@lists.linux.dev, hannes@cmpxchg.org, yosry@kernel.org, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, davem@davemloft.net, linux-crypto@vger.kernel.org, 
+	rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 875B9100008
+X-Stat-Signature: 87tsnz1b1duai3tr55ttkenfrkxrupzd
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793253319-39967
-X-HE-Meta: U2FsdGVkX19w3N8mdArO+gGYDNa+1E2LiZgIv68uWPOQGOrFwZz7vu/+3JjjFs+3zTobokIuSQ6wfClCaFJOb+IX8lpkoHYRGsCwTe4WPHogeJoXVHws9jyOqetfsX2U13slX3tGVRioekxPWcuecVMCqZma41uCL0Op8U4tiue7Qba7Tdcu7/m4XijboO3cmHcvlwzM1zjTLJXQWlj1WEFty1iMdXjX/Yzhx7udLpI61Pj4KNVFx/dM+3Gi6GojOO4pzV2Tbar+8tGKiLQrSptoXy/l9ItKe+X61l62Pm3VunFYZbI8bBdnyl1j1SvJ+6iiZ//2cPEneJKHpEo5yvDnFPD/6gGihhGJByBQFCntUuvaqAb34lO4SdyJC82lotWZFtpw9ZrPCW2FUW1+NS7oGRe+ChR4mAtsJAktAEHmWtuL0KPs6AgNhWKESpL/KdnW8h+BOdgR4q5vH8wD8QBZSKy7WF3ixHXAWDirZbyfMTrbDrvYMnKy4aHtfuT62UhCu306BHjVWl1JmwvwII142ZTI+NjkJwKZtPXQUHFOnWInrzdPHELJfQhtKR4r5KNJasmrDR17TvuYR+Vc3ADyvMwd6ijzTelnRk9KdABQwjkaV4nw+t6aoicerWkcBg9rQaZq4/uwluiGQ9TpEv63+6sKx7jz4UtM0X1Bz7JRBN7/zpASgL3kHKosCegNzOPZ1VijAFRDvx4psnfwTGobBMNhMSe3eUK/+RgNhUtQxEMk3HhmAIQenP7jfSFSX3etvMkbtmr4gEGHO+Cb96Rs/QwXkdJTXfoNWvAt4cppD+eCim/E7ukL408dQ6Ca9MbM5S+7zm2WQlmBfQyeRrwtQ5M2hGVB33B/GQIU44pbYJcmaWVLDX3k2ybTzSusK7PKDbA9Qt7O/Fl3Hi7TjTaMGdj5LoTKCur7awiNaUpYSIdphRXkwGiNAWQI4GSLW1fXpcQXuTcjNJIrAXk
- wnwmJFNL
- WgRtMhroodJIJ8xdyY59LxuAlSYjfyX006gsniYbo0ouSDptQwUxOJzr5P654Wi6KldC9P7foCnwStUivdfOccrvOOejynPmeXW7LRpgPUFH+boEkpHzTMIUHDGzF1Px0tjKBn4+VOld4XACtrpw53cPVAYMzvd+I11bfnWwQDQX0ecSQ6kVrOGCwX2zvTYXhBpsKBLnsMyCNmGiqQe2hXW5jdCv14XcQwMwJFpIxztpEtM8HDb5vJNLMftARDBtoHwdc0WGOdGz/Xc6MwMrOunMggIlleRJcD/Xa/RGn1xXnBLuQoTchjVs5CcDVCDKBGBCdmS9ljLkeOnxv5G3O/PIYdbbdan0aONO3yKFVuY2Y+ekNY2r00eMmYbkfrX7qNLSYBxgGJMUzgCgCXAg/d+5Eb4WaqEZ0vfXYYwbuF4j+SB5Peo3DmyoVvsEFHOkHdwpjlY5B3e9LCRpQwbXKF9Zfsk1VPme56je3bEAv0ky7XzLeC+qZoKO9fw5fEpiKNRiJOH5JcXh67YgGdY0R5p+pizIF7av7W1NS7Gxj9fmXVcQYCwmiiC5M/+8yvLBzO9xmgwDo9TWswl2YcQ3jxFvjrOufZ9neZH+7b+I8nDPYy4ehik7VZApASh23/sPHI7ST2Kwu9BSC6b0xd+HED1f9nRA0Z9ZROUeIKWF4DYkrQ0t+QgnvivIXZI1XlEvv7YHqT6BIV7PInO7opRNq2oSvRdLDAc9IHWSK4C3/2qb8nTnnxEvKZurC/thTX6+pX3irODZ2YQ2dIEcYvKYxtWhWrST1V/gQJhX1ynHR3VNR4DOq6Tudu6raOg==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793253849-719550
+X-HE-Meta: U2FsdGVkX19FBfo84DI7Ub+sC6KvG3Yr6eEbhfhAzdlboxzNgTmB77xHi9KYAb6zHzANcqK4j+cMc21UJnW1zB/MC78JwwRVBL3bibIviC4JRtYLdtnCVCj2bi+jwQQdY+KJTgwB+pVec+qmO1CGPdQDMR8kfjXTQGZ5WH96Qd20z3gzXnWnXhb2Q82b6Vtc29viwD6GoesEaV3IRyXePG363DO30cNBu7FjCTNWo8UIC0adkmjKYn791g+LTwvU+Q44PdeSYf/w9DbXruKgZTeJ8sB3G63pfSCdHspBYjOW+/9bHSMYaCpXppFmpoKJv0b/c3b5qAkmY7ZPsu2+dwe/FtDEWhb3+uLOhyF2HThUJqG87MB9+oo5vV19f5MEp1wjo016wbi8XdZnYVJvEVs7tctZJ1xddCUk60YuNK7f5hCA17x7CMDlboGIM0dyyKO75ZAQ8kES4bFs01sTJyBrff1xSP8tb/B3uLPt02pIaFckKzwM4qMXq/Q7FgqS7TriaTU61UgkR6lKOI4hlC7HNUlk/ntEPSTpOpcJNxzltEZ1td+aFZAH8KCMr7mlQg6EaOqiYzvnQmH1S3KpCbPCoHrAzjmWvBDzN0L1o+8OmJD8g4ShrncYkNV1rnHCRO++Jc3E1iYzxtbJq1Nh6Z/RxfuMUcliy4PCIEuXMHVxrm1MTLOCuVVYPK3Kf82G5acNjh72bQsmtPBV24ffDza2jMpGXzgSkY6N6imMCrh2upmZt7N3GxL9g4+i/EvsXdHeENBDl3IkwctzCsUblCg2xibkJEdqF1i/3jD4RhG3AVHelu8sJsMs3GExcH+pRB9r+sBvZUoTz+7R74Dr16L/8EalFmCuRrQnRBdf65m88iZ6EcjA4cs/+1VpBqlThK9CIbk7KR62aaRcngyDuXF+0xCdunrkiFDgk2Vmkx5Gk5Qzd7soCEgM7i57G5YTuCkKfLcA/A98KvjPQcm
+ N2V9WjSO
+ xiNHmGOt7C0Mz8e+TYdWJKt/i/d6+GVd9ZI/dmEWtkr4xQtWXxGHrOwxlxXUg60e77h0tNFMeRpNPf5h6jjsqKAQwOrabdLFLv5eoABUDEW0+CeT8cYFRrQfJp9Hge9XCwYxxZWwdi60LIV2Am/rjqkkmjw5CvPPYQPWw+V5L25O8QkGKQE22nn2KVKzNCSfygIw9l8aKmZwDWSznviNsgs5HyxXj2UCCElBYKxT8LsODx7ZBDTYs4c80Oc7/zQBUaEWzqpy5DIc89AdI/HB6zC6h0DQDniqtTPsOuNvue1qj1coAyPBb04lKwg5w8q00hArPcKpAG60+jPdhcOTPj9lTYbjdFoUqlIJK4KR0/IVJY3UG6091pGpuC92ddwO8mNrRuiiwmAaME7baZYhxXTVUSvpkvp+kpjOmNZ8DRAvWAno=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,197 +148,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 28 Oct 2026 15:41:48 +0100 Christoph Hellwig <hch@lst.de> wrote:
+On Wed, Oct 28, 2026 at 10:38=E2=80=AFPM Herbert Xu <herbert@gondor.apana.o=
+rg.au> wrote:
+>
+> On Wed, Oct 28, 2026 at 10:09:35PM -0700, Kanchana P. Sridhar wrote:
+> >
+> > Herbert, can you please take a look at this and suggest what changes
+> > need to be made here, since you are the original developer of this
+> > portion of the patch. Thanks.
+>
+> I think we should get rid of the changes to state->flags in
+> acomp_save_req and keep it in acomp_virt_to_sg.
 
-> On Tue, Oct 27, 2026 at 03:00:02PM +0000, Salvatore Dipietro wrote:
-> > 
-> > Hi Johannes,
-> > 
-> > Vlastimil asked that v6 of my page_alloc patch [1] not go to mainline
-> > before these two patches land, so Andrew parked v6 at the tail of
-> > mm-unstable and dropped its Cc: stable until then.
-> > 
-> > Are you still planning to work on 1/2 and 2/2, and if so, do you have
-> > a rough ETA? Or would you rather post them as a separate series as
-> > they are? If anything is needed on my side to move them forward, I'm
-> > happy to help.
-> > 
-> > For what it's worth, I ran both stacked under v6 on v7.3-rc1 and saw
-> > no performance difference on my benchmark with or without them.
-> 
-> It would be really important to get some fix for this into 7.3.
-> We can still perfect it later.
+Ok, I will make this change, thanks!
 
-What is "this"?  You're referring to the performance regression which
-Salvatore's "mm/page_alloc: avoid direct reclaim and compaction for
-costly __GFP_NORETRY allocations" addresses?
+>
+> > Thanks for the catch! Yes, I will add (!acomp_is_async(tfm) &&
+> > !acomp_req_on_stack(req)) here.
+>
+> Why do you need !acomp_req_on_stack if you know that the tfm is
+> synchronous? IOW, how about just testing !acomp_is_async(tfm)?
 
-In
-https://lore.kernel.org/all/9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org/
-vbabka indicated that Fixes: 281dd25c1a01 is needed on that patch.  The
-patch I'm sitting on (below) has Fixes: 5d8edfb900d5.  Please clarify.
+I was under the impression that if acomp_req_on_stack and synchronous
+tfm, it would go through acomp_do_req_chain(). Please correct me if I
+am wrong, and I can modify the conditional accordingly.
 
-In
-https://lore.kernel.org/all/c6e2c1e1-a285-406e-a2b6-c09e05df91d8@kernel.org/
-vbabka argued that Salvatore's "mm/page_alloc: avoid direct reclaim and
-compaction for costly __GFP_NORETRY allocations" should be a 7.4 thing.
+Thanks,
+Kanchana
 
-So it's all clear as mud.  Can people please clarify?
-
-I have hannes's series "mm: page_alloc: fix reserve access for
-non-blocking requests, v2" in mm-hotfixes, planned for 7.4-rcX.
-
-Should I move Salvatore's "mm/page_alloc: avoid direct reclaim and
-compaction for costly __GFP_NORETRY allocations, v6" into mm-hotfixes
-also, and restore its cc:stable?
-
-My vote: "yes" - that's a pretty obnoxious perf regression.
-
-
-From: Salvatore Dipietro <dipiets@amazon.it>
-Subject: mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations
-Date: Thu, 1 Oct 2026 08:21:51 +0000
-
-Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-introduced high-order folio allocations in the iomap buffered write path. 
-When memory is fragmented, each failed costly-order allocation enters
-__alloc_pages_slowpath() which runs direct reclaim, direct compaction and
-drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL pgbench
-(simple-update) with 1024 clients on a 96-vCPU arm64 system.
-
-The root issue is that direct reclaim and direct compaction are too
-expensive for hot allocation paths that have fallbacks to smaller
-allocations.  __filemap_get_folio_mpol() already marks higher-order
-allocations with __GFP_NORETRY | __GFP_NOWARN, signalling that the caller
-can handle failure.  However, the page allocator still enters the full
-blocking slowpath for costly orders with __GFP_NORETRY, which is
-unnecessarily aggressive when the caller will simply retry at a lower
-order.
-
-For costly-order allocations with __GFP_NORETRY, clear
-__GFP_DIRECT_RECLAIM at the very start of the slowpath, before
-can_direct_reclaim, can_compact and the nofail checks are evaluated.  This
-makes the entire slowpath treat the request as non-blocking: no direct
-reclaim, no direct compaction and no drain_all_pages() IPI across every
-CPU.  Reclaim and compaction move to the background instead: kswapd is
-still woken for reclaim, and it wakes kcompactd for defragmentation.  The
-system keeps its long-term health while the latency-critical direct
-allocation path no longer stalls.
-
-Allocations that also request __GFP_THISNODE are exempted.  That flag
-pairing identifies the local-node-first THP attempt issued by
-alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
-form transparent huge pages.
-
-Clearing __GFP_DIRECT_RECLAIM makes these allocations reach the
-!can_direct_reclaim bailout, which since commit 4c0ed883e051
-("mm/page_alloc: fix defrag_mode for non-reclaimable allocations") drops
-ALLOC_NOFRAGMENT and retries instead of failing when defrag_mode is on. 
-With vm.defrag_mode=1 a __GFP_NORETRY allocation could therefore succeed
-by fragmenting another migratetype's pageblock.  That is the wrong trade
-for a caller that has already communicated it can handle failure and has a
-cheap lower-order fallback, so exclude __GFP_NORETRY from the relaxation. 
-The exclusion is not restricted to costly orders: any __GFP_NORETRY caller
-has said it can cope with failure, so failing is preferable to fragmenting
-for all of them.
-
-Test environment:
-  Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
-             12x 1TB IO2 32000 IOPS RAID0 XFS
-  OS:        AL2023
-  Kernel:    v7.3-rc1
-  Database:  PostgreSQL 18.4
-  Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
-
-Results (average of 3 runs, TPS):
-
-  Config                                       Avg TPS   % vs baseline
-  v7.3-rc1 baseline (vm.defrag_mode=0)          58,602               -
-  v7.3-rc1 + this patch (vm.defrag_mode=0)     157,246         +168.3%
-  v7.3-rc1 baseline (vm.defrag_mode=1)         109,012               -
-  v7.3-rc1 + this patch (vm.defrag_mode=1)     157,778          +44.7%
-
-Link: https://lore.kernel.org/20261001082152.2879289-1-dipiets@amazon.it
-Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
-Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
-Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
-Link: https://lore.kernel.org/all/20260904115629.3993331-1-dipiets@amazon.it/T/#u [v4]
-Link: https://lore.kernel.org/all/20260911142102.2294202-1-dipiets@amazon.it/T/#u [v5]
-Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Dave Chinner <dgc@kernel.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-Cc: Ali Saidi <alisaidi@amazon.com>
-Cc: Geoff Blake <blakgeof@amazon.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <dipietro.salvatore@gmail.com>
-Cc: Darrick J. Wong <djwong@kernel.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>
-Cc: <rvvandan@amazon.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: "Garg, Shivank" <shivankg@amd.com>
----
-
- mm/page_alloc.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
---- a/mm/page_alloc.c~mm-page_alloc-avoid-direct-reclaim-and-compaction-for-costly-__gfp_noretry-allocations
-+++ a/mm/page_alloc.c
-@@ -4773,10 +4773,10 @@ static inline struct page *
- __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 						struct alloc_context *ac)
- {
--	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
--	bool can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
--	bool nofail = gfp_mask & __GFP_NOFAIL;
- 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
-+	bool can_direct_reclaim;
-+	bool can_compact;
-+	bool nofail;
- 	struct page *page = NULL;
- 	unsigned int alloc_flags;
- 	unsigned long did_some_progress;
-@@ -4791,6 +4791,18 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
- 	bool can_retry_reserves = true;
- 	unsigned long alloc_start_time = jiffies;
- 
-+	/*
-+	 * Costly __GFP_NORETRY callers have a cheap fallback, so don't stall
-+	 * them in reclaim or compaction. __GFP_THISNODE callers are exempt.
-+	 */
-+	if (costly_order && (gfp_mask & __GFP_NORETRY) &&
-+	    !(gfp_mask & __GFP_THISNODE))
-+		gfp_mask &= ~__GFP_DIRECT_RECLAIM;
-+
-+	can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-+	can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
-+	nofail = gfp_mask & __GFP_NOFAIL;
-+
- 	if (unlikely(nofail)) {
- 		/*
- 		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
-@@ -4907,8 +4919,11 @@ retry:
- 		 * Reclaim/compaction cannot run, so defrag_mode's strategy
- 		 * of enforcing ALLOC_NOFRAGMENT cannot be fulfilled. Allow
- 		 * fallbacks rather than failing the allocation outright.
-+		 * Not for __GFP_NORETRY: those have a cheap lower order
-+		 * fallback, so failing beats fragmenting.
- 		 */
- 		if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
-+		    !(gfp_mask & __GFP_NORETRY) &&
- 		    (gfp_mask & __GFP_KSWAPD_RECLAIM)) {
- 			alloc_flags &= ~ALLOC_NOFRAGMENT;
- 			goto retry;
-_
-
+>
+> Thanks,
+> --
+> Email: Herbert Xu <herbert@gondor.apana.org.au>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
