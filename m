@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB7860A2616
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF5B606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wn33W2jS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hLIyzFr/
 Received: by kanga.kvack.org (Postfix)
-	id 7C32F6B05C6; Thu, 29 Oct 2026 16:36:45 -0400 (EDT)
+	id 466BF6B05C8; Thu, 29 Oct 2026 16:37:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7994F6B05C7; Thu, 29 Oct 2026 16:36:45 -0400 (EDT)
+	id 4170C6B05C9; Thu, 29 Oct 2026 16:37:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AFAC6B05C8; Thu, 29 Oct 2026 16:36:45 -0400 (EDT)
+	id 307C86B05CA; Thu, 29 Oct 2026 16:37:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B4F66B05C6
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:36:45 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6ABFA805D
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:36:44 +0000 (UTC)
-X-FDA: 85376822328.01.96FF0FB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 06EEF40006
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:36:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wn33W2jS;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F15B86B05C8
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:36:59 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7BCB91A01F0
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:36:59 +0000 (UTC)
+X-FDA: 85376822958.09.3E7516E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B8492120002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:36:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hLIyzFr/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306203;
+	s=arc-20220608; t=1793306217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q5vK/qK4XuBQrL53cs9TeuLxUrSX2eJpWdLNS5EZvqY=;
-	b=BWBl/mSFZlGoffEpW+UPCK+VeQDfVfpYpmz+d9Ob+Vr68qBCvS5e/R4P+TivxB+9j+WAQj
-	ZRM11t336IHMI1POnF6R+ZrqDPOtinx40P/QXvnKPeROotJZdcHSCxNQz78wZuPXtt9Ups
-	5z0BA133IQ8A1fO3iqRW+JJqf1LYzUc=
+	bh=39sO4eVWOAhWIFY7dwmw5wDLBZR1O1Wkdyg2pyVIaSw=;
+	b=8mKiC8g2s7jOcEhZ35MoUzPLlSqO3fBUCavocklegj7diDOpgWJ9hMfZnGX41V0cZ/yTVT
+	VpDI7SlFZ4+XFaTwBg2uw+fpsuSpVOnp7/51wdJprDFDa8oyFSRuqN28TgbbXGtTrX90Vg
+	AS+iPH/cgYwnNvmZgMItXSYdRTDxG6o=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wn33W2jS;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hLIyzFr/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306203;
-	b=D0rU+T5a/p15U16TC5OTsvWNIvYkgqE7bnmZiVSTsgjHbqzUADleqbQhvIDjvqe3kR7xD1
-	QXffTB4JJatFaLwSQL58prGKHHJCiDoRuTJTeeSE55kna8ILZLdvO5Z3TussuHcvCcbBPP
-	RWKSYmT9rYxdK3pzr0sQ+3FpZqht7Ec=
+	t=1793306217;
+	b=54R8rAAMZaXHRhoFWYaoT7aoT3V8U/Nk4NGeLvgQx9lcvGCJi1AbJ8UJx6WWPvpzs+6+ES
+	ts67pzq6a/SvPAWTAomujUIcqTs0gI7pyVSxsSBJsdg7J4BGSPpqESOyjhx9ww0SuTb3/C
+	oO9bu3SBwMthvSj/l7H8oj7d7Mrdhs4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3E89240F48;
+	by tor.source.kernel.org (Postfix) with ESMTP id 59B46605CA;
+	Thu, 29 Oct 2026 20:36:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E0E1F01828;
 	Thu, 29 Oct 2026 20:36:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39EF1F01816;
-	Thu, 29 Oct 2026 20:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306202;
-	bh=q5vK/qK4XuBQrL53cs9TeuLxUrSX2eJpWdLNS5EZvqY=;
+	s=k20260515; t=1793306217;
+	bh=39sO4eVWOAhWIFY7dwmw5wDLBZR1O1Wkdyg2pyVIaSw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Wn33W2jSO7FMd6s0f6J+WahGrG50HQ170ETyv6hs47qSO1TwExsP9mS9I9/sBR3+c
-	 7wsvODaM9WxAO5Rc5MJD34QTdFNd4D08AlxQyrVme7gS4+H0uLmPkOVIJZg7RTVfdc
-	 zaLgXKXLjTgdZKdtfmg0AFBGu9Ssc9s+ntFiFxRAjCvlss1/LcmLsBYqtdrqVGlRG0
-	 9CDMyd4sYfaUFqKRB9NscT9OhnDRrKnXImU+vH5BiOtbyQW/e/5qy85Fn5d/9xx7cr
-	 Su1TurTVFKrvkJSSNlOjYBJx5bpNzRnX2gPRMqdkL8WXnfFrlviI2cmvyyjoLIzbjy
-	 7x2DRkHzJkQnw==
+	b=hLIyzFr/V/VvcGfnmQExxQg7IIwVIxjs2CWLB1sCab5pSvGmM4huLIGWjFbTIQt/g
+	 LvIjs//slU9Pq4A2SJLgO204tjYJlgMOO2JybMj7kVGc2TG/vohe/X3Zz7FeCoRLRc
+	 nrf/oQie/gYaRI5uDKW3ey8ucpkNlAPAQfa6wQ9bTo3VzjDmA6sP4x+IV/OttkAqd3
+	 JyWct3e8oJ1K9D8M52trvZOLS6s+qHpCPGamQ5HJ5Fz9lHdo495ySJkjCRlFWivA2z
+	 btGsxZgoULfAhGK6RKAeYV19UJkhbRKtCZuqzEA68xNrUH7XyrReQRSJ+prYoLs7a3
+	 fqpJE+V6bRCdQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:08 +0100
-Subject: [PATCH v2 13/47] mm/huge_memory: fix truncate racing with PMD
- zapping
+Date: Thu, 29 Oct 2026 21:33:09 +0100
+Subject: [PATCH v2 14/47] mm/huge_memory: fix zapping migration entries for
+ device-private THPs
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-13-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-14-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -110,16 +110,16 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2058; i=david@kernel.org;
- h=from:subject:message-id; bh=whzXA4Qm4HXSA1pqm4tcjWrVcDozZ04CivHfstsAKVQ=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer221D+SO8q1Sly3O/b/h+7nDEu/kw7iWNp/nM7Vet
- HgP39H4jlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTAG6yEMM/UwX358mXle/zSWT1
- C8a7zAkNVfL6do+z7XPyZJFLRnKKDL+YK/rkNSuXzGoxr93d/TuuL1y5+PQNd8e8cyxz3n6uMeQ
- BAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1532; i=david@kernel.org;
+ h=from:subject:message-id; bh=I7I0jhaFoDQ+nBqhpxvpT0b9yhPeTYbK2Z2XhTeg/TA=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer21bu2tt8uaHDhHRMpPkLUTW16ivZ94sK3hdWn5lQ
+ 8L31aqJHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzkghUjw3rfBSFaX+RXSHif
+ D2cU2Dqz50GT77tKx0VZSuXaaz3ahRj+KTklP/0QL6kglxAToL0i5/q5rtPBtyrT2i1fVd2MMHv
+ HAQA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Queue-Id: 06EEF40006
-X-Stat-Signature: fetiwx7ecrh4sh7h9fpeqza8fuz7q7w6
+X-Rspamd-Queue-Id: B8492120002
+X-Stat-Signature: b4uu6ity7pbhhb8jipeo7w66h1khf44o
 X-Rspamd-Server: rspam06
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -127,10 +127,10 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793306202-925739
-X-HE-Meta: U2FsdGVkX19W5POXhgyA1L/I6oxqj5bSbrT90ZA87i4csJ+d/ktP7irsqrKxfYuxu5nUgxuAfsvjS3c90MEb+o0yGZ6/kHLri0ngLKUu0RgPyp6Td6Ak7HRsiDikJb1lkkheehtQ5b08vHerp8SDTQJrxY1PB/lmb0Vqw+zaPB8aIpWQdERZfkZZGndWHifaR5cT4hV90edYijvaKA+/ewidhQXBVSPd/bsp+ojqRZZG+X+JoqAH2CgFzAGPK8h+Z2+dMjqOihzijluZiolII/qeDUB4e0KuQZH5KOqHAmq0zhri0QyTpRiLlucLVMMPOBNYv6cF4p89PL3OfgMFvZ7DCECr6ELxS/k/xCcqCxRiTDCSHT0eSqKVmjtj9KqQMNAI+zl89v5N2uxzuJbWvuAksh0hBuN/XasvvEfLQn4Pkog/bAHm9SRmmwryRGqXu4iqYbjUxUkGFSk/K1+o22t88E2aYTFxwjkayU8ZXLtXnBffMGmqljVz+uqhhpRJj4tY1BbBCBgD48I+mW5zD7ucOwEUcdgjWG6kvQ4RCLvPbspbtTjgqHFNntS8NJchBGUDyOIh2f7fo7splH84Wjzbkdg8l3PPPuJUNBPFIIlX/JBmhqrHdFL54EPe/xZMyrF/wLuc3a1ktgzgLFgSbBG4QQsxrmHBBTNAC38VSEdnR9RCQtkiG2sSEmqLciHLJ0jnHe/cyA1jgr/5fWEFxRH6QQ3sZUVR1pR45gIKyTyZHF5w4jY84uaao8QHS6VlTYQtlnj/dJlJD7YigrJH5xL5JALViQ4asI32e/wK/PUoHtBAxU/Hj+7cWjSpFfV2BUHxJfZxdJf3itC4DUyt0JUvkrGx4C+fWVYcru4m4Brj6bfrkkGKyyFrA1UgW0/ksYBsTVyTZJFPlHXox0/rItVPozyaUfMTRH/m2ZkzF8e6fmMolBFh8U2k8szQCMGTUEUWOSSwsApLKu+ybLb
- oLv+WDR2
- KISQ7cEd6FwLshL7uchKc8qvgIj9Lji8LXT7j4OqvUXUCOE/5kBaONxDopKM2A3xqCUc7Xc8rkk7q0xfqhBOGDIQPlwTji0JJnW9Hw2Co1mI7Js4MEbW1ekjPt8YvknrRtQzksYU3hqgUVxsaC/fgGlrVwKXpAgino6mfw+SSIDCw+GBc38QLaUJ4nUkEERPURmzAo91H63r99hDdjjS58iG/xhilu1BcbGeQPhrxFjsQ4eTl4cT7Fbb5EWjQEF51uS3acLWgEjDLIMJpG/jOaIDLE0zNy4TyeOyqlp8kXlBkcexU3V3WDung/E1RqXwikkCT8RlyVuz4B5ScRtgLZ9+rUIg/GdFDUx4tgDrOBj0MlhU=
+X-HE-Tag: 1793306217-279631
+X-HE-Meta: U2FsdGVkX19Y2t724/oI8Lrv8AX0nLM2bMpeuh0M5ExKzu8q8wkGQ3m5nOEPrK9cxLl5tjMKEPmzFBHzU8u5CNntiR26BYVcmgIT9de5HQ9ldotdw45svDkB1vXSyXXH2a5DdSNRwwX/F9//N6xFqgqym6VCkSFRxLvGTDb91VtZC3UgsG++CaUs/HzAbNkHPtA0dtWcfp976xK0Dinh0ZZ1f+2o5eLovntPjaA3TERyLsaVWVC2i61B7CTw3c2ZmGyhGiZ8XWIgOumvbvr1sJM5i60/Pa8Ye5qlcPpkFtFWG4Wt21NJxuA8CWnk6jvB2m63C1AiDDRy0//MS4jig+js+fQ+yofZGPat3ycLNv/DIYJSMjgbFy9REo7DB0AQtgn0W0tdSajjhWwB29mKjrZFBDFsdbs930T/NKiWYvQ3J2TMGcwG1ykD7W1WsGrfvO5njLdqdNsfA9bwkUtpk7ZOToLgAvlRjNgtgsVRVMgkPibuAhkVcVgifGx5D3c9fnvPc3atEi59lxIfxBoLR47ADcayHkXmJ33DXGSI5nEe1ZX0WE00mYWDlonpQrqq6SuuZ8nspX/GddBoKi71bt+MS+TjTW+Xija0HXhXlqCVX0m9MYO5A+t2UIL/l4fziRp7qWp7uARE2U2tLAb4moI6M5wzeFv3hGSx232XyYl4xNtXW5ImNkXDVfG2pB4tlfjTtaAvrCEq3C/BGX1tzqyQV42EZ/zjghrNtZKN6G/37i3veW0N4b3MBDHsALqKxGOI/fGsIrttZA3IecGwkd/88e7bzi6tycY+Kn/hLNliovSQZ3jmJASs0UB6Wv9QikRHUVSxzR8EZfBaP8RLgWPRQSpBgHUyHM7e5VQckBZhFg75pxCzdXTDR1W+APzauFNef+EuxEOupicnDbrmaS73cb6XxZ0ByrYL40Bz7a5HqtVzMu3ePVrUFZ+o47R+I+x3JJH722mySsq9aaA
+ G7pjOlRq
+ W8EI7GSO15HpO5q+zdlx4tSDGrOTmr9G5zmR44jhDlDp1+g/dtSoW0TR3l6R1uvq9OUdPZan07RmlxV6X2ve2NKr1P9OcbTiGQ/rRBUc22k/Xf1Qg4cN2uptuOr13W+6foeFgR0Q5r85ovU6flGaN3tPULsnZ/JnPNdC7235o70TPgnOTM1KHLnIDILFzuuTA16wxHFnOnTo0ExxBRNakCptTI3cb/nrF8fqHstRtQW6QViqZEqvBhFhcpU3j3PrPnqx3JuM7CO935obc+Pm+mrh+GqqRlHZQZhtWBmN7DerjQuf0ymgGlggUmN2X1UJT/aUDUxlA2zFUbLrtW2ML1fln/NnVx0Zu8ssbYjn9HojCDBI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,58 +141,41 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Chris Mason <mason@kernel.org>
 
-zap_huge_pmd_folio() removes the rmap before calling folio_mark_dirty().
-If this was the last mapping, truncation can skip unmapping the folio
-and proceed without waiting for the PMD lock, racing with dirtying.
+A PMD migration entry can refer to a device-private folio.
+zap_huge_pmd_folio() checks the folio type instead of the entry type,
+so it treats such a migration entry as a device-private entry.
 
-ifs_set_range_dirty() can oops if MADV_DONTNEED races with
-ftruncate() on XFS, when we get the folio set dirty after it was found
-to not be mapped anymore.
+Installing the migration entry already removed the reverse mapping and
+dropped the mapping reference. Zapping it must not repeat those
+operations. Concurrent MADV_DONTNEED during migration back to system
+memory can trigger this.
 
-Move folio_mark_dirty() and folio_mark_accessed() before rmap removal,
-matching the PTE zap path. This keeps the folio mapped while updating
-its state, so truncation must wait for the page table lock.
+Check the PMD entry type using pmd_is_device_private_entry().
 
 Fix generated by an LLM and sent by Chris Mason in private.
 
-Fixes: fe6cf984939d ("mm/huge_memory: transfer the pmd dirty bit to the folio on zap")
+Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
 Cc: stable@vger.kernel.org
 Signed-off-by: Chris Mason <mason@kernel.org>
-[ david: simplify comment and description ]
+[ david: simplify description ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/huge_memory.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ mm/huge_memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2b31a425c7a3..1d65c4f576f9 100644
+index 1d65c4f576f9..c5aa0a0a407c 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2495,10 +2495,6 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
+@@ -2493,7 +2493,7 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
+ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		pmd_t pmdval, struct folio *folio, bool is_present)
  {
- 	const bool is_device_private = folio_is_device_private(folio);
+-	const bool is_device_private = folio_is_device_private(folio);
++	const bool is_device_private = !is_present && pmd_is_device_private_entry(pmdval);
  
--	/* Present and device private folios are rmappable. */
--	if (is_present || is_device_private)
--		folio_remove_rmap_pmd(folio, &folio->page, vma);
--
  	if (folio_test_anon(folio)) {
  		add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
- 	} else {
-@@ -2512,6 +2508,13 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
- 			folio_mark_accessed(folio);
- 	}
- 
-+	/*
-+	 * Present and device private folios are rmappable. Remove the
-+	 * rmap after transferring young+dirty to the folio.
-+	 */
-+	if (is_present || is_device_private)
-+		folio_remove_rmap_pmd(folio, &folio->page, vma);
-+
- 	/* Device private folios are pinned. */
- 	if (is_device_private)
- 		folio_put(folio);
 
 -- 
 2.43.0
