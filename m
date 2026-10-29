@@ -1,97 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1EE606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 04:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11579606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 04:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lC/NIBrW
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GoyS671z
 Received: by kanga.kvack.org (Postfix)
-	id 7F83B6B05B4; Thu, 29 Oct 2026 00:23:54 -0400 (EDT)
+	id 11E1A6B00EF; Thu, 29 Oct 2026 00:25:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A9536B05B5; Thu, 29 Oct 2026 00:23:54 -0400 (EDT)
+	id 0F6CB6B05B1; Thu, 29 Oct 2026 00:25:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C1276B05B6; Thu, 29 Oct 2026 00:23:54 -0400 (EDT)
+	id 033926B05B6; Thu, 29 Oct 2026 00:25:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 446B56B05B4
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:23:54 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 24AB4A01C1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:23:53 +0000 (UTC)
-X-FDA: 85374370746.09.C48D76D
-Received: from mta0.migadu.com (out-120.mta0.migadu.com [91.218.175.120])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6D30E40002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:23:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="lC/NIBrW";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CBDDE6B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 00:25:47 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36CA98011B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:25:47 +0000 (UTC)
+X-FDA: 85374375534.12.710FF93
+Received: from mta1.migadu.com (out-20.mta1.migadu.com [95.215.58.20])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2CA05100007
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:25:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GoyS671z;
+	spf=pass (imf05.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.20 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793247831;
+	s=arc-20220608; t=1793247945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7dXsrgUlut7z8koNhHFnaevyZ/dqIruzgu7a/b5mCrU=;
-	b=NIX8QMvCPGED8XeBj9QG3WBlePW68jJmFzqJqIe6e1UNrn/zSxGb46EuOtTwHlhBC3vOOS
-	qL7iN95ZJFB5UarADajJqaQ95R3YSr7v+v5wOpAYm8wldagHhMi3Gw3pjjdNMtv+DmKsc4
-	uPQcSOjH+lcX5dYRl0StKkMstY1mElI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="lC/NIBrW";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+	bh=tBC4/NmO2zgQtfBxKcPngAWQ7uwqZiYLnLuVSCbwzqk=;
+	b=lEV5madBcx/foYlcZ36n9F9pnHvJIa03iTIoIoSO+MREhOp1tl3lDWu3xBKYk5Tb4HWfZv
+	iIgm1XtnDe+QF+esWLHMKh6bM3mmbq+aNB60tBQC9h3mIzQEjPAhrG0AlFO09x8W1Y6XfF
+	r1A8cNL77njk2e4/7c0L9PsLNwzjbts=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793247831;
-	b=WHcKsIJ67fl2rO9/npAPrvcEwkxyO2+YhXXWvDHM7RSQuDabE5ygDW80hmdpVKf9MKFynO
-	Hftkzj1c8pMmvHQcO7pZZH/RJIHgLZcv7ANuGOYYHSWuWr22/UHa7yNHLQysbW52dC9T0I
-	Te1Uu68wZcHO/Ic7kZ4KrC+njWetMYE=
+	t=1793247945;
+	b=GdHk/vDHTMhxo+CVqavsQ3jmjuR4rsbJMjsUIRkuXAR5Toh9kEqTaiArZPWBUcmi1EifQ4
+	SFXVEvBO4Qd5LJYVwtQp5KWISB0CN40GHiKDv3axjj7QVANrVqPoYvQqKKmqj/9WmRjozg
+	TtPCmfPbYYGNKm9sTnZCa0N0E/GlGzo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GoyS671z;
+	spf=pass (imf05.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.20 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=KCVQ9p13e3GAc36gdApz1ELKMKOGi7CgHndl6zoXWi0=;
+DKIM-Signature: a=rsa-sha256; bh=atljCCTK/fj5aHjLEJvo0PUUzPCzwYh2AWWInU7Lvfo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793247826; v=1; x=1793852626;
- b=lC/NIBrWIIa43Ewd1VbYlglYXZm0gnb6AM+04blOJkR2zPVx3qPb7Zty/QBotnG4NNv0IlCg
- K9EJROTLdodyX38OSXMr0Ro1zqJ7O70OIa52RpbWSqOb4S04H3kMyoR/CokAAmhp/FCkJPYnP5m
- /3YvbtmQdz+6tPMplXMCenuM=
+ t=1793247941; v=1; x=1793852741;
+ b=GoyS671zRO2mtqGP20EgptdJ5lpJOWbQZnGwe6yybUp74BbPr35/xLlMVCQO1siUxKWmVKNs
+ JPT2gaPONIEsc0f5dXqf5Fzl28t2uDu3eNmSX7TabAtLw8+vXguzJTGiqzVuBjSYSDneWDfJf44
+ blxnp5Cd2pjdX2D0Sx5WZidI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id cab5a1f6a6641afa;
-	Thu, 29 Oct 2026 04:23:46 +0000
-X-Mizu-Trace-ID: cab5a1f6a6641afa
+Received: by mta10.migadu.com with ESMTPS id 687ed835cbe95f64;
+	Thu, 29 Oct 2026 04:25:37 +0000
+X-Mizu-Trace-ID: 687ed835cbe95f64
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <2bd4f0df-80c7-4d32-ab50-1225681ff6be@linux.dev>
-Date: Thu, 29 Oct 2026 12:23:30 +0800
+Message-ID: <25bd4ed8-1132-4fa1-b48a-c50564a6dc7c@linux.dev>
+Date: Thu, 29 Oct 2026 12:25:32 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/zswap: fix double decrement of the LRU node count on
- writeback
-To: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>
-Cc: Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+Subject: Re: [PATCH] mm/sparse: simplify the vmemmap alignment check
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
-References: <20261028113619.38752-1-kaitao.cheng@linux.dev>
- <CAO9r8zP15iW3ECW2Bs0rfyZrifeisDunLa6qJC43M1RcE16wWQ@mail.gmail.com>
- <auJkvb-Lq0M5Enkz@cmpxchg.org>
+References: <20261028121129.39916-1-kaitao.cheng@linux.dev>
+ <auIeDjoOQej4AT9b@kernel.org>
 From: Kaitao Cheng <kaitao.cheng@linux.dev>
-In-Reply-To: <auJkvb-Lq0M5Enkz@cmpxchg.org>
+In-Reply-To: <auIeDjoOQej4AT9b@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6D30E40002
-X-Stat-Signature: rbnpm43kzzf8r8eeosg9xhi9dkwahyye
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2CA05100007
+X-Stat-Signature: 8ihkmd45z1j6wcj6n94z1g7h11yio8fd
 X-Rspam-User: 
-X-HE-Tag: 1793247829-304716
-X-HE-Meta: U2FsdGVkX1+NOJ9VbEszV1R2WrTPXwKek5F+f0h2WaJdvsRXXAPCuxAUCd9JoPzVQC51ap5CnBSnzGbBz8IHRKb1a/YJhyUX9Fu3s+JNHY7XdZA8dwxoOAKpkMI3rEg8XhdVArBM/FyDqBcqV0juSx/6XzyVwX+t3jh9LS1ZWcUdeo0//kvVeLdrWt/Fl7LDtwxgbr/spVrT/sitburWplcl39dhgwCHOORpPcPMwuV+rfWSB1cLbUEUXsBDEO99CIoa6nkrKdy2yYl6roxhCy5gNQTpLXiuMclUDdnunfRLgtR84ZWK/Co77GLy9S8ufV6oj7xyrbCpTBqg35I8S7CJXnLLvNCx+oyhwTKPK/+SUM3r0oj6my+FZDgN9H4pWU4hXQ/5gH8ApTujGq5tO25VXTpHGLWPGyrPzoVonMfpBgvxkvvtGiX1EvFWWa4P0pyiGbvp/kwPrgm/LTem/jTdGKlKbziL9m41T2KC2aI+1PVIRKD513UaQp2kQ4aNSLQW8SCh9j8Ww4JkA8j532Ho+U0UxQdLfSTkxu5a6IEyf6EqZtUGLpKWTEk7hYaHat0QDU4lpvH3FV+pxquVGwNNLSpwbGnA3UP+4lLTEJJErmzam+L5i5WMnlergCOaqmm2yRFArv7n/2wuXsQ/Ye4lUDzDjDzJ4uBcdCDYMPb97s9spz2sehHdMUb4GB6KSi2SKDQqZwwTa7wFDR8oGNX/WKOq2RFmDkOHjWAkDh0bGFnR78FCJBDPfv/WYMihPiM2AkX+ZbAwnWCC8v61kwrkJIogYbT2Z2I9jJR3lcfNYomiVeMifwSVzVuCo8Oo597EPRuihuFKEakng2/MAbkYPOdHJg35v744RwnuMu9gavWjCYFdL0CZg4YZTXloYomAsoe3pj3GS/zGZkeLXKjdbAquhws3YORM6YCbXcIZJBMlgqJnSsrUe+cI/wkPMnB9ZEvLLbHxTpfBaKW
- Raf+XeAP
- miHxdQmY3LCfXLGcB+A+jqIDZ26NzoJLds96PTQWesDKrQzBS/5XDogVd0p3n66vDOEyHqdIYlteGNvR3mjTZHVM5t12ohvZfX4KNQ8KT4gyQo6dt3arYn/DX6+c+8KTkf8Gsk0pUfzOCGxKRZtE9KN///KwKVYglfmaiBvL3uJUQz6c2z2bq8C1qVLSqIsTxrMIUlEdEwQtpZ+UN7k0/QCUm+6Bwb7RAdeZQEEGMefvrpi4xf7AndqLGH6CPAKaa63OiU4uW2a39nw+oPIueW99URDt4n2xm9Akt4UO+VmnYtllCBobP5aU5hg==
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793247944-151363
+X-HE-Meta: U2FsdGVkX18nkk+TY1zYFu2aKIx9ol0UgXWMe4vfECkRaie0O5NkGbHZW582lqmKqBcUQL3tQSUVft1yTyElYu0Edm3X0cNaru1dzuBw+sa4f2T6Wmx1WaOHfjs+94CtOV7QPls1H785TV0RpvhEjOcEZYTjh4QXv/7XazWGjrni5ak3u7RDMJekDD88H/nKKyZ2Gq3FBKK9ayTfcLYFF+3jHcpWQmtgxYC48izl32RRAv40bJXppnXJ+oPYDqZXFL85leMR4URW0QNzrKMqkEppnPDqAThERrWfgy0Bmv2QaDaVz0Go2Ji3vRlUbX5j3zJjq2HkmkYhOPa6cvwnKaTpxUEXiqaGDdG7aDQaq51OMKMxFecJmlIS1/2npFag7jJZLcMOeGgCLvhPDOtsbDwZHctt9ydeEwsWDatklknWWUgysyfrjNE+ByF0GZFtv+zAEoNkBDksqRvnKiSvUi0QA2qlm8aJ79j4Cm5WZL3gPr6zO4aRfzkrAGk2GX16Od2FRvUKcdZoN/i5Ni1wsIaemNOecz0cu+WvduCv/iQuGwFa/VHt55xocOzlGMObLWNGMIdsa8qxy8GGiKPtHRJt9o4TEnXyo6gqg+8o8iXMVkpQDwoXayUTCpN7tuVIw7NnbJUkbiNt+q0FwhCY3q1tT5AFgfIKE9fOxokLQ/06/8QrEPM+91KMH2dfYMq2uMDT/cHo93Gx9BHOEL/gY2WAseiep8aW7Gf4HZuqPPh4filvJN+uuThMPlL+fsFS8SD320EyEcaWHvNIX+Hfrvr4fYLzMqMA8okdgTyVDJPk8YZLjSax86kkQadc9FEGKCmmijl90a7HEU6ypy2hUtdvBriOkUdjyQx+Z4ww5yL71v60kvlRk6tiSgQ3WTwJYdwXWmLtahoxNWJY1aLz6fajU1KrBuU9fQQrDqUY0nJ31AtM9H8Dc16mjTDxA6bJ4x7dMqyonOM0Qf3KGAg
+ wdduxLi1
+ relzO1Vbv3LhIn0PNDwg9ZtFWhV6imc79CqUNTkVRF4RSBBldfD1rzvU81W/5XCtQXYT9FU209GyUE67WHRhLKkEIosXkxV2cPnq44xux9UT3AlJh/ThSJtYuAamahf/1FRP2PGY94DejG2h2iZWUFN7+cz5z3oQI468dxdgmDjqms0hx0uysu3YSbYzDhKD2OJobj6HwFT7vH8NnK6NyzKibEzeazMQEtFPqe0g8SPzSc4QetrbM6dgC2gwBLk4AQbFJMJ7QzcIJ5KbTy8rmtvl/FgiDfMSx7W7Gn584f7fAMHM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,92 +101,53 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-在 2026/10/29 05:10, Johannes Weiner 写道:
-> On Wed, Oct 28, 2026 at 12:22:43PM -0700, Yosry Ahmed wrote:
->> On Wed, Oct 28, 2026 at 4:36 AM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
->>>
->>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
->>>
->>> Successful writeback calls zswap_entry_free(), which removes the entry
->>> from the LRU and decrements both the sublist and node item counts.
->>> shrink_memcg_cb() then returns LRU_REMOVED_RETRY, causing the LRU walker
->>> to decrement the node count again.
+在 2026/10/29 00:08, Mike Rapoport 写道:
+> Hi,
+> 
+> On Wed, Oct 28, 2026 at 08:11:29PM +0800, Kaitao Cheng wrote:
+>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
 >>
->> I wonder if we have a valid use case for adding LRU_REMOVED_COUNTED or
->> LRU_DELETED instead to simply avoid the decrement.
+>> sparse_init() is called only once during boot, and the vmemmap alignment
+>> check is outside any loop, so VM_WARN_ON_ONCE() provides no benefit over
+>> VM_WARN_ON() here.
+>>
+>> Use VM_WARN_ON() and fold compound_info_has_mask() into its condition,
+>> preserving short-circuit evaluation.
 > 
-> It bugs me that it's the walker, not the callback, that adjusts the
-> count. That composes poorly with the normal list manipulation API.
+> Do you think it's worth the churn?
+
+I think saving two lines of code is nice. It also eliminates a variable,
+even if only in debug kernels.
+
+I’ll send a v2 following Muchun’s suggestion. If the consensus is that
+this change isn’t worth merging, please feel free to ignore this email.
+
+>> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+>> ---
+>>  mm/sparse.c | 6 ++----
+>>  1 file changed, 2 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/sparse.c b/mm/sparse.c
+>> index 6acb628c8a73..248bee2d39b9 100644
+>> --- a/mm/sparse.c
+>> +++ b/mm/sparse.c
+>> @@ -277,10 +277,8 @@ static void __init sparse_metadata_init(void)
+>>   */
+>>  void __init sparse_init(void)
+>>  {
+>> -	if (compound_info_has_mask()) {
+>> -		VM_WARN_ON_ONCE(!IS_ALIGNED((unsigned long) pfn_to_page(0),
+>> -				    MAX_FOLIO_VMEMMAP_ALIGN));
+>> -	}
+>> +	VM_WARN_ON(compound_info_has_mask() && !IS_ALIGNED(
+>> +		   (unsigned long)pfn_to_page(0), MAX_FOLIO_VMEMMAP_ALIGN));
+>>  
+>>  	sparse_metadata_init();
+>>  	sparse_init_subsection_map();
+>> -- 
+>> 2.53.0
+>>
 > 
-> How about pushing the accounting into the isolation callback, which
-> can then simply use __list_lru_del()?
-> 
-> The tradeoff is that more things need to be passed into the isolation
-> callback, but that seems reasonable. It does make the change noisy,
-> however, and we might want something like Kaitao's change as a
-> backportable fix first regardless.
-
-I tried three approaches.
-
-The first was "pushing the accounting into the isolation callback", as
-Johannes Weiner suggested. However, as Johannes's example below also shows,
-this would require extensive changes across multiple subsystems. I doubted
-that such a broad change would be accepted, so I dropped this approach.
-
-The second was to add a new flag to enum lru_status, as Yosry Ahmed suggested,
-to handle cases like zswap where the callback has already decremented the
-count. However, the incorrect lru->node[nid].nr_items value in zswap is only
-an accounting issue: I could not find any code that reads this counter for
-zswap. Changing a generic interface to fix an accounting error with no
-apparent functional impact did not seem worthwhile.
-
-The third approach is the one implemented in this patch. It keeps the changes
-within zswap and fixes the accounting issue, so I think it is appropriate.
-
-> Thoughts?
-> 
-> ---
-> 
-> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-> index b0c797523bc2..157256e52dd0 100644
-> --- a/drivers/android/binder/page_range.rs
-> +++ b/drivers/android/binder/page_range.rs
-> @@ -24,7 +24,7 @@
->  use kernel::{
->      bindings,
->      error::Result,
-> -    ffi::{c_ulong, c_void},
-> +    ffi::{c_int, c_ulong, c_void},
->      mm::{virt, Mm, MmWithUser},
->      new_mutex, new_spinlock,
->      page::{Page, PAGE_SHIFT, PAGE_SIZE},
-> @@ -684,8 +684,10 @@ fn drop(self: Pin<&mut Self>) {
->  /// Called by the shrinker.
->  #[no_mangle]
->  unsafe extern "C" fn rust_shrink_free_page(
-> +    lru: *mut bindings::list_lru,
-> +    l: *mut bindings::list_lru_one,
->      item: *mut bindings::list_head,
-> -    lru: *mut bindings::list_lru_one,
-> +    nid: c_int,
->      _cb_arg: *mut c_void,
->  ) -> bindings::lru_status {
->      // Fields that should survive after unlocking the lru lock.
-> @@ -728,7 +730,7 @@ fn drop(self: Pin<&mut Self>) {
->          };
->  
->          // SAFETY: The item is in this lru list, so it's okay to remove it.
-> -        unsafe { bindings::list_lru_isolate(lru, item) };
-> +        unsafe { bindings::__list_lru_del(lru, l, item, nid) };
->  
->          // SAFETY: Both pointers are in bounds of the same allocation.
->          page_index = unsafe { info.offset_from(inner.pages) } as usize;
-> @@ -746,7 +748,7 @@ fn drop(self: Pin<&mut Self>) {
->      }
->  
->      // SAFETY: The lru lock is locked when this method is called.
->  >  ........
->  ........
 
 -- 
 Thanks
