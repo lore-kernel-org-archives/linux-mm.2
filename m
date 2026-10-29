@@ -1,140 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2594606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30C1606A31F
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 15:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JpAFqAMm
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V03ycYNv
 Received: by kanga.kvack.org (Postfix)
-	id 78B3B6B05DA; Thu, 29 Oct 2026 11:51:52 -0400 (EDT)
+	id D65426B05B4; Thu, 29 Oct 2026 11:59:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 762E06B05DB; Thu, 29 Oct 2026 11:51:52 -0400 (EDT)
+	id D3DFC6B05B9; Thu, 29 Oct 2026 11:59:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 678006B05DE; Thu, 29 Oct 2026 11:51:52 -0400 (EDT)
+	id C2F176B05BC; Thu, 29 Oct 2026 11:59:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2685D6B05DA
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:51:52 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C4FB14044A
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:51:51 +0000 (UTC)
-X-FDA: 85376104422.18.B1A8C83
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CE1421C0002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:51:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JpAFqAMm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 826216B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:59:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79DE4404B5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:59:20 +0000 (UTC)
+X-FDA: 85376123280.22.2E2FBC9
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CB9F9A0006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:59:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=V03ycYNv;
+	spf=pass (imf25.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.161.48 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793289109;
+	s=arc-20220608; t=1793289558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fqt04aVmWCFFMW5PhNUnGvgQrBeB0qH6TmYzshEFSoo=;
-	b=I80L9jsjEUU9NMEsvqmfTrLL6cuOB59igBtk79UHepd0eXQ1YUXN8pH/Z4UwTP72gNATd+
-	olrpN8vi6tp6Pkzm4c8WUvvOYywqnVANonQEwNBsGI7hEo48GB1GalwRo2/itG0WtPDgcj
-	l+GCoAzLeKEIdCOVE3xDe/qlDbxvuWg=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=2Iavpt0xD5+NOsPxR52uOxmq8ZYkCHkAdBvsyZeTFxk=;
+	b=TNoaxETApZ8/DjTmsZotL0F7NOOorz2ZmKdkmtpqnU7K+dwppYuY/yiHW3LdplN5tYuozk
+	j1ayGKi7TmNnGwymYlMbfgYJfThEGrnorhiDTG2UsQFFsGdAIn7xtIamLLIy+OvOwQ745P
+	+FudRwlcHCyovak9swQMyX12NLGUi9k=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JpAFqAMm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=V03ycYNv;
+	spf=pass (imf25.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.161.48 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793289109;
-	b=23PpEUAPBOrUWFzqNhoXLwSA9ljmPaSEKikWAxamb11TeCsC4rdBBgGnNhzUMBALnFVQES
-	hN3XZsQG4KCKrC3Sr8h+202h2m58NNzqEVMdErBYZGp5cUEj3LcTew6W4tDSgMKC+/UgVm
-	tswicOjpbDcJAlhkyZErZh4YNcHB1fE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F6EF60207;
-	Thu, 29 Oct 2026 15:51:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CAE1F01816;
-	Thu, 29 Oct 2026 15:51:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793289108;
-	bh=fqt04aVmWCFFMW5PhNUnGvgQrBeB0qH6TmYzshEFSoo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JpAFqAMmtKjz2YNA1PCteNNZKLQs6+Kbf3XFPbl5KJzUPOekANKjzlLumikEZG/GC
-	 kyvzIS1lMX/dB23SwAo8ObKjij0MkZSGJXHCpJcSmMkD2ZiM/2zw/MgQt4V85bYnI4
-	 EHP+FEgtUrKS3ncKCRvUu3BL2PDXOhefQr/vJTPEww0seLm7MLu+nYFvjr5pCgCFco
-	 R/YA1jKSKnGcq8ioaXtqLJw2Mp3D4uGmEdW57c7J0G+y67HRe82W6JgCqNchkaVMuy
-	 ItAIGB0PsekMUWRi+ZP9SkN6dQM3dYGNgqVRp/6lcGDi3ZqV0NxezVxQY22uZxlL5j
-	 iN6uKrHV3gzbA==
-Message-ID: <7efdc32c-9df4-40b2-84fa-1ad90196b861@kernel.org>
-Date: Thu, 29 Oct 2026 16:51:43 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/8] mm/mmzone: read each zoneref slot once when
- filtering by nodemask
-Content-Language: en-US
-To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- akpm@linux-foundation.org, ziy@nvidia.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, ying.huang@linux.alibaba.com, ljs@kernel.org,
- liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- brendan.jackman@linux.dev, hannes@cmpxchg.org, mgorman@techsingularity.net,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20261028211930.3504634-1-gourry@gourry.net>
- <20261028211930.3504634-5-gourry@gourry.net>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261028211930.3504634-5-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CE1421C0002
-X-Stat-Signature: uuf8a7yoh3bcq6ut9rit6tbzew1gsg7n
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	t=1793289558;
+	b=MAGsMPsQiE9CyYCfrg1TcLbed0thxuP6+gmPapnTcNolKliLll0jonV4pwq0bfR+8O6JTy
+	hW1+sw4WfG8lTnEDUcb7EvFGBUWY6ZLcHPY6aeRSYiTaLYgbBMQ3iDRK0bf65wle5Ug1El
+	3/upxl9luprJhfGHVMBLGOlUKrVzbOU=
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6aa9606ddadso1839755eaf.0
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:59:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793289558; x=1793894358; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=2Iavpt0xD5+NOsPxR52uOxmq8ZYkCHkAdBvsyZeTFxk=;
+        b=V03ycYNvs0BV5qtpSsnjKftRhjjP0uwLegPDlGQTNPX61BLyqIUqxiZwAEDCn1OFZl
+         GZ2iEdmOAcSGItz3Js9/cLRSYNAMq6iDSsLLNivA48KkRdWSym43fQ7x1vuGyLl6FaaR
+         EQwYaes63vtWrLAs9Uy2b2gJlB+r6fE5WLbt3g0uGsjVJR0xel+P/WHTafy+DMAYefGg
+         hwA3pOIKxyW02HfQH4N9/rirBB4ISGyUejDWh28gTp6Q9Ud7GMym/hNJXUsiwvLEJq52
+         YdOOAoFj60yhNvL+RLLui55af8vRMirDV7VjHlPnbr1X8VXbComyfSnwee1G8Q1jkeaL
+         QQnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793289558; x=1793894358;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2Iavpt0xD5+NOsPxR52uOxmq8ZYkCHkAdBvsyZeTFxk=;
+        b=SbwDubTGV+qIy9NLxDnfeb09y8GZkdSfG85g9cCDmOo6GWFnKBqiq9CQB7GGEopxPx
+         /b4jpcwHdVt0rdw4If0NOAedVHpa0EWFavbM7vrhkDBVzbbWF7UXVBIAcQpH+jb6W/Qo
+         r/dOKZUuKOyrBcN0l3yBJvjgui3mhK4jilHsROQPLQ1MJVwTgwIcc4U5cqQAJY9jvGZc
+         1DHvN7BsIV48yspmSplObEOPihvp4vqLWdKPAv+fK1hrI5wcAdQIfl8PsXXVwxGlyHhZ
+         XEbL1imMiXOAk9W7xte2ezbpfZuiKD7XwsSzT7LTJQXoe6n9erNz9T6JuByFhxSw8dR2
+         o6/w==
+X-Forwarded-Encrypted: i=1; AKwUvBwzenQJuYh7HN5l0iNjAt3SkGkyVIJpwz/qxETqTevOBFJVh5exfSqj+pBK9s3uw8r+fRMF7NcBWA==@kvack.org
+X-Gm-Message-State: AFq9FYIj+8z37WhlHNXGpJm8AwJMBWoAL7qtj86iFLkcr/uC7XrgHHZz
+	1ChvThmCeS83U8Fru2uHQaL+TkYCteUhM9h0Js1twhES3seuJNkbeOnZ
+X-Gm-Gg: AYBFou2SU2l1FvtEx0H0HInFkOZX3MXYhbbRn/gwHHYtnLabkyRa1v2GRaGPAtG5omL
+	xi8Kul8FVMwYBsXcMko4ZuMxE7tlcuG6mSEhw1u7wjGPvbPzKl+obHU2N+tiYIz2/GBuDXdhwSU
+	YiarXy4302EiTfmJUhBTgUQFmhblZie7IN1npG2wqlgz9mKM5mF39HP6DixEszU4yIBC1vXlLFI
+	ZQffIKJddI+1LMUNZvDpVyT2W4mBXxOZT9eFshG2ua0qdw3pqaEH30Uws6hc3OFlqBjXqNF0Uut
+	PbTRDl3hyWk/+QZQMsypilIhVebV1ImSLDsgfEvDYPqQltd2CCOUrjU0PMGiRh6oN7pfk3FmMoU
+	rIcx8gPHvbj4sS24qLteYCDfZBjFRbH3zlLsLUD4Z//lwjg3bWNSS4kH2EXPLfvjKd5w6ZDscBO
+	saIRAYwHZSHmceSUvFDSgaGg50QANWxpyJRbbtvBB4dOR6qsv4AgjilxRLcFn87kIDFSJG9/v80
+	FxKm331YtrjwOia72RuUGmiytCVTQu6fTYsdzN65VGOIt/5CmbtN8aFCKI3pW5CM9sZ+ul1oUIC
+	LSe2rVaffeEKgnUrgejMYiAbozM=
+X-Received: by 2002:a05:6820:1629:b0:709:529a:478f with SMTP id 006d021491bc7-713ef240bb2mr3244491eaf.60.1793289557756;
+        Thu, 29 Oct 2026 08:59:17 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85d33f57805sm182778a34.6.2026.10.29.08.59.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 08:59:16 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Muchun Song <songmuchun@bytedance.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Pavithra <pavrampu@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
+Subject: Re: [PATCH] powerpc/mm: fix uninitialized ZONE_DEVICE struct pages with PMDs
+In-Reply-To: <20261029063601.1961415-1-songmuchun@bytedance.com>
+Date: Thu, 29 Oct 2026 21:15:10 +0530
+Message-ID: <h5i4wlx5.ritesh.list@gmail.com>
+References: <20261029063601.1961415-1-songmuchun@bytedance.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CB9F9A0006
+X-Stat-Signature: cgxjhqu37ohhryfgpibwye4jsguhbb7z
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1793289109-776320
-X-HE-Meta: U2FsdGVkX1+ssYP/q0cB9TZUXlGmoE8YYPZgi4sYWv9/omlocZ1g0gGL5d/vL4eawzYD3qvp2qjgxDFoMuEHSKUPM7JgFGJAEXchPyK8Iy8j9tkZYz5UFdfiBVc+NYtmXgXSqwKsOTr11dNloYx0iaR0tt/ZYLxr0zNejzXMdqkt4giMSoave/ywhuMV5/ead8plPiVFyf9A7KQMlMaJf9qhxfURyBgX6zTgB61j6w+3JjCOJv2kS7LtLdqUSDvHLsXcvbM17hhX/DowGKqZLRzH1Iejc7ooAWjQ8Stjuf1bO+IwZ4hZRpWykrRn+mztYh44J5d39v8pc65mMcfgM0We15rYgL+jzoktEzT9dfbv39QgFpzojwgr91LKsJ0gEqVjLI2OvKCcchKtKNFJEMJzHPTdxcsbBAQlKhB6XH3Q1uCc9zUkM/ds6mbbw+aKxkcUWQ7282L9TWlVobIXNUSYjR2F0Pcji1rR56r4req8z6urWN7FsQiXxkivZ8KjOQnfz/H6ll04F3ny1avxWn3HZZhM4F3sxARZK5D1w9RceIAvNlx+IeFucw27S+MCiN7OL4cRXrjH1jSfr9r2wV32n0/LtZgKXYj55Ul3t6LC1RgCmeRccCpIiPcVVr4KowB8NPmJ2dAiElmab54rBh933y/V/0RWX77uo5rktoIdrNTgqVnr0Shf3M9CNbmcH6PiZRNMgkMlk9Cg+9OLA8NrzYBTHsaHiUqEtACpBbWrf2AOfvETOa7G2Bj7zmLLaG1EwjhOGXOhxqqZ16K0yO9aSjQQDbtPuocTrrYj2ok4qDyDk/U6TQ+lL5y07qCDSvS/N1OzooItTI/SVBKvR7IT4rrgWfyVkx2A6HmwuyC9JTLsYHnjW641DBndva5kj79jfT3Yn++EGaRJXI/6HGIcgO8X3+JwQx8zGr5lv3HR510XZd6AeqXFtdqRCUL3RvwcBeTzSdNtGdtSu4B
- e2/f88Yr
- t0mrSagdI6ustV5LRD5gG209Lel5JYhY60im7mCUgXy9HhO87vbcU4WTvjEiAe6Lct8wAA+Ck64Eo809cf+P3gFvzil74vPLV5zncw40mSxUmNgcVYyiuhlo05Pq2+bciZfaePEjCMp+bKP43+n0x8U2EIAPPUsVg3aZAYuDsfYTROaBNIN5azubxxPT9qiJK2c8GA7KNLsNWD5WrhaG94ioHXGr3fVyXI6LC9Bud79KJibrruaSOyD9WAlQzVhVtVoB2YWVWpD9+l4r0UKLbYyEQvG2qMZBx6TT3DdsluKxAfwz3pEWnK65PS08bXHdvg/kQ+mo24iQpIKeYy4Zbe/hhCrHtGRC4ocdMiQo2XL4qswJH66bHmhsJxlS2X8C6Dj4+ZHDohWoO55QmO+WzuIqUx3Kp8qXrutKd
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793289558-679070
+X-HE-Meta: U2FsdGVkX1/tvjH1YqIk6IdhXvj2Q330vOt/Ggp26ZGvznQ7BhCM3SXJkMej1kP1RtO9KYP31YDgAxCbiS8K8rMO4AD3DX5KNYzY/ep/3V89tp6Ctu6U+jzf4vm5gRo/eAoBp1+JzMpo1B1vfxoGXUGqcAdkB9t/entBuDWQ0VU+Qp6xtqit8exyNVLavCFPXH9IMoVtFB0Oe0lScLnGrPVFdtrY3z/mKuq+IXuUwLqsGMH/nSAlzWy8bfOz4ouKjeafEcvTsn8Df77Rq9O3mnJUsJcprvLrAzNt1dqQFED0G0CRTs7qJDEiAKXPAxziTdAuuEkizKQyJ8zFUaMi4yGkCYEAeQqNJ1C5wN4gaOCMwwOxYH4ivbHC9zeJ1W/u81Tle+xWAfycLYgOKp4GS99LF4CVVsq/s7NQthFo/PnaRvvQ6bof7/5pBiXUu+VvTEFEDHE1XWugFC6bTteg0VvXe9Gt0qAKA33fdjMRUY2dkFCUEHFHymYapz17n7aFOP1hI3L0Dty4be7xF0YxkIhiQ+N9aqZSxsmLOKi+LV7uZ4A/XeqVlt/UiLp5BYpdNUEaIt8DucD/f/v6N0CKZjNuUK0PaUta5OHenbPOa27qWbBitxPNczGv5JtObFll2cUj4bJL5gy/Sqv4XgWyrDFTNiCWlaia4JZVY58sCixGjopKFVf80sG4UTbQwXKi+RVPthN2HZJP8LsQInvNqjoZ7rrYlHEk4bTD8AjiHDqe8c7iWKHEdpfYPTJC70EggBGQn4dKAT/shwEQULnv5s/EkSQQcoYAOftixF+ZgEzSIraGiTGADkTjjjX9JwRETlTLynmRcRRBJFeh9Ksppqc0MJ4gC+5joI2GXyWEDwMDaL6Fh3ZDK82ZCrFpuChRJqRQRKQcQuXmFUhm928j4GNxxHrm2aiB9yClNrB7fgb+dIZGjmXM/NSd3puIiPkllpoeljYjS91e8+6OZNV
+ bEb9do6s
+ 1r6XH870kRF6ofYqX7i4HtR6RdIc/fj26hgSzJ7ULP/DcdR1XPxvSmVD8bS9tO45vGsTzCU9+3DV4fBNx/qPlwffQHpAP5ReE5kMvrNgxjyKE18glLmEZveWVUDRFxDjHmY+on70NJIE1VQaixEGly09HiaU7R4PbxZ+cn+qGM9z68s8rSnT2LLlcKh1ZGT6caI9/TiDzHsUSUHnrvKIoE0viC/0+7B3wvUrDRM188vzHXZMHc/q990PUL3e9ZobkvnbOq/8d2SMTABHkC5o4B2Gu92a2eBOLSkTvjHbDXv5eZwcz3jA3hZxIez6Xh34NOU5xRkJt9HltFbN4x21zkTBhQzXXJdyXwBIhcy3z1OY+9o9SY4pYbuEUk843zN5nKfjfkQSF/DrptCMG0KE0qEN95fNGsselEe4cLXZX4lzGOJRYT/w1asu63pq7kcRsvFTEIXWP4Fk/b92TwqWGQYRlViWdIEYsIiR9mbus6hImLrUYV4beLNK2BwEJTTFr5G8kcG9GWfq86khPB0ut08j7Q7qXlOTOaupqv8feOEggBIyPLHU+CKGMmU/qWm1rB1pNGALeCVr7jEI6vnEHwFj0V6Vqwlfw6p5e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,82 +116,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 10/28/26 22:19, Gregory Price (Meta) wrote:
-> __next_zones_zonelist() tests a slot's zone for NULL, then reads the
-> slot again to look up the zone's node. Offlining a zone's last block
-> rebuilds the zonelists in place, so the second read can return the
-> terminator:
-> 
->   CPU 0                             CPU 1
->   __next_zones_zonelist(nodemask)
->     zonelist_zone(slot 1) = NORMAL
->                                     offline_pages()
->                                       build_all_zonelists()
->                                         [MOVABLE, NORMAL, NULL]
->                                         -> [NORMAL, NULL]
->     zref_in_nodemask(slot 1)
->       zone_to_nid(NULL)
-> 
-> Current GCC and clang merge the two reads, but nothing requires it.
-> With mm/mmzone.o built with -fno-inline -fno-ipa-sra, holding a
-> nodemask allocation between the reads while the node's last movable
-> block goes offline oopses every time:
-> 
->   BUG: kernel NULL pointer dereference, address: 0000000000000060
->   RIP: 0010:zone_to_nid+0x0/0x10
+Muchun Song <songmuchun@bytedance.com> writes:
+
+Thanks Muchun,
+
+> PowerPC radix vmemmap population can reuse an existing PMD mapping while
+> populating a device DAX range whose section is marked as HVO-enabled. The
+> reused mapping is an ordinary vmemmap mapping: the redundant tail struct
+> pages are not remapped to the shared tail page.
+>
+> Leaving the section marked as HVO-enabled makes later ZONE_DEVICE
+> initialization treat the range as optimized and initialize only the struct
+> pages that would be backed by a real HVO mapping. The remaining tail struct
+> pages can then be left uninitialized even though they are still used as
+> metadata for the device DAX compound page.
+>
+> This first triggers a zone mismatch warning in __init_single_page(), then
+> faults while initializing the pageblock flags:
+>
+>   WARNING: mm/mm_init.c:600 at __init_single_page+0xd0/0xf4
 >   Call Trace:
->    zref_in_nodemask+0x9/0x20
->    __next_zones_zonelist+0x23/0x70
->    prepare_alloc_pages.constprop.0+0x16c/0x190
->    __alloc_frozen_pages_noprof+0xaf/0x330
-> 
-> Read the slot once and test that zone. A NULL zone still ends the walk.
-> 
-> Fixes: 11cd8638c37f ("mm, page_alloc: remove stop_machine from build_all_zonelists")
+>     memmap_init_zone_device+0x164/0x430
+>     memremap_pages+0x43c/0x93c
+>     devm_memremap_pages+0x3c/0xa4
+>     dev_dax_probe+0x264/0x3d0
+>     dax_bus_probe+0x140/0x1c8
+>
+>   BUG: Kernel NULL pointer dereference on read at 0x00001400
+>     __set_pfnblock_flags_mask.constprop.0+0x34/0x160
+>     memmap_init_zone_device+0x358/0x430
+>
+> On kernels without these initialization-time diagnostics, the
+> uninitialized metadata remains latent. When userspace later maps and
+> accesses the affected device DAX range, the kernel operates on those struct
+> pages and panics at that point instead of during device initialization.
+>
+> The Fixes target predates the section-based vmemmap optimization
+> infrastructure, so older kernels do not have section state that can be
+> marked non-HVO. Backports to such kernels need to handle the PMD-reuse case
+> in powerpc radix code directly, for example by initializing the tail struct
+> pages that core ZONE_DEVICE initialization would otherwise skip.
+>
+
+Actually that would be totally new code right? It won't be a straight
+forward backport, correct? ... 
+
+> Mark the section as non-HVO when reusing an existing PMD mapping, so the
+> section's HVO state matches the actual vmemmap layout and all required
+> struct pages are initialized.
+>
+> Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap optimization for radix")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Oh, zonelist_node_idx() reads nid from the zone, it's not part of zoneref as
-I thought. So it's the same after this patch, just with READ_ONCE().
+... then should we mark Cc: stable here with the above mentioned fixes
+tag? Because this patch cannot be backported as is to older kernels -
+for the reasons you mentioned above.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
+> Reported-by: Pavithra <pavrampu@linux.ibm.com>
+> Closes: https://lore.kernel.org/r/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070429.git.ritesh.list@gmail.com
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 > ---
->  mm/mmzone.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/mmzone.c b/mm/mmzone.c
-> index 9cc9ef588580..009f1dd75dde 100644
-> --- a/mm/mmzone.c
-> +++ b/mm/mmzone.c
-> @@ -43,13 +43,14 @@ struct zone *next_zone(struct zone *zone)
->  	return zone;
->  }
->  
-> -static inline int zref_in_nodemask(struct zoneref *zref,
-> -				   const nodemask_t *nodes)
-> +/* A NULL zone terminates the zonelist, so it ends the search. */
-> +static inline bool zone_in_nodemask(const struct zone *zone,
-> +				    const nodemask_t *nodes)
->  {
->  #ifdef CONFIG_NUMA
-> -	return node_isset(zonelist_node_idx(zref), *nodes);
-> +	return !zone || node_isset(zone_to_nid(zone), *nodes);
->  #else
-> -	return 1;
-> +	return true;
->  #endif /* CONFIG_NUMA */
->  }
->  
-> @@ -67,7 +68,7 @@ struct zoneref *__next_zones_zonelist(struct zoneref *z,
->  			z++;
->  	else
->  		while (zonelist_zone_idx(z) > highest_zoneidx ||
-> -				(zonelist_zone(z) && !zref_in_nodemask(z, nodes)))
-> +		       !zone_in_nodemask(READ_ONCE(z->zone), nodes))
->  			z++;
->  
->  	return z;
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>
+
+I think, this patch should go via mm tree, due to all the dependencies
+coming from there, right?
+
+-ritesh
 
 
