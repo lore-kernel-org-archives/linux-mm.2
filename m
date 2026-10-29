@@ -1,125 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F71F60A261B
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 08:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B31D606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 08:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=iEbujbYC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UGmzUw0h
 Received: by kanga.kvack.org (Postfix)
-	id BDF316B00EF; Thu, 29 Oct 2026 04:02:51 -0400 (EDT)
+	id 384706B05B1; Thu, 29 Oct 2026 04:07:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBD9D6B05B1; Thu, 29 Oct 2026 04:02:51 -0400 (EDT)
+	id 3345B6B05B2; Thu, 29 Oct 2026 04:07:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A36D16B05B2; Thu, 29 Oct 2026 04:02:51 -0400 (EDT)
+	id 2234A6B05B3; Thu, 29 Oct 2026 04:07:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 392456B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:02:51 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE8A41A0339
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:02:50 +0000 (UTC)
-X-FDA: 85374922500.22.AF5DFD3
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BF565C0003
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:02:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iEbujbYC;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 06BE26B05B1
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 04:07:48 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 614B51202DF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:07:48 +0000 (UTC)
+X-FDA: 85374935016.30.128CC31
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B43C1100008
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 08:07:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGmzUw0h;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793261266;
+	b=aNhmLs8v37c4Y4kuOLLVRAgfhnV11yUn4/BneExrMmYUAxJuQbPFIOQ9SJYc7n65MqD8oy
+	XQ9LVRjYNcK9Kj/zdF9MHaApVLRQ/4yw80fkPHQfANs5stc/GJhBAW/NQ0xYNFY5b1Ylbz
+	W4hx3LsbMHjaGw0Hr4V4C4xQmJN4Txg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGmzUw0h;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793260969;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793261266;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k8apCcAMk8pZRsZxsH16Lc+5TIn4jIu/b15pYO6Z0Bs=;
-	b=V/fhVrdQf/BXhfUxloEx7sY1+IFeWU+VQjGmahIK8KK/CNtblHPDU6RQUwq8XI4kCy91gf
-	CJWeUub+V6IcbAPFJt9oPyfzE8Ir+sUOv7x38QdMf2oFb1Dsx80zdQix0hgZ4BguTPbxNc
-	yibn+3fvpUd4Yv1BYzgwVZiRitC8Sew=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793260969;
-	b=ytYhQr1IzMsx+pW7Gtuf8MBf0S1ArZibnyvXePo6zo741Ta+Z7BIUJ8q7UWotxwuyf0OmD
-	/YNol/jwfG96mtqq8myyaPMqPL/J8lMCaKtMmtwrRtuHuxvtA+pf9lgbMyKNCRi+rVvm8w
-	TcLrdCYjgXqeQqmM7L+x0jIthhMEMAA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iEbujbYC;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30B8A1682;
-	Thu, 29 Oct 2026 01:02:44 -0700 (PDT)
-Received: from [10.163.164.4] (unknown [10.163.164.4])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 385A33F7B4;
-	Thu, 29 Oct 2026 01:02:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793260967; bh=ef9Fg1J+efa9K0lYaHXATY0/T5dH7yrFdYQc0z2MAV0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iEbujbYCswZ8RFK2+bOqH9GrXNfdspdEyeLWvgWq16i/7q0yxHJyjSKh5wRDFg8sA
-	 90j56I5hjCTLgfRploz8x7UQzuMKPs6udMHmkEokQ81ilxBQr2532zpMPLliV7ataQ
-	 ekLC1vjHF7zTz0euRAfdkqhMPZF/1uaGmanjmQX8=
-Message-ID: <720a50ae-5828-450f-a7ee-a7107b884225@arm.com>
-Date: Thu, 29 Oct 2026 13:32:23 +0530
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 29/46] mm/mremap: use pudp_huge_get_and_clear() when
- moving huge PUDs
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, stable@vger.kernel.org
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-29-6f74bec9a5bb@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20261027-fixes_core-v1-29-6f74bec9a5bb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BF565C0003
-X-Stat-Signature: 1j8cutdqwgyupjys681dsr95zz3gtt4p
+	bh=0/5uRqJy/VgEhejne3xSc6gn5mfLQb/Op0B9UDn9Dv4=;
+	b=1fsIUCrrwfEmejzBIK9h8zAtnFTBz9BHPk1Gl63ZQzMq+hh4jh7gVHy40FEDNBNfxbi5fE
+	AO5L54w/dxRlVGYfak3Vk897E15cKoFk+Hk6/IXCbKmEBLnE48JuWivqkT0wSZ8bA7QOYP
+	Wk/jxp1agj3jYJFOoVMt4zZsJEcFxEc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F2DB43D21;
+	Thu, 29 Oct 2026 08:07:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D42B1F01825;
+	Thu, 29 Oct 2026 08:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793261265;
+	bh=0/5uRqJy/VgEhejne3xSc6gn5mfLQb/Op0B9UDn9Dv4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UGmzUw0hxqQB5Jq7K0ZmE8qi79Qh6q/FwJOCvyVhuK7bYNkKkjDFg7534wmT5brvs
+	 R0PXvM2ulEtAq4iCNIerACIRHsXPOSAtUVxeEG1CmR+Xn1k4TU5Id+LxPC+eWgUxXN
+	 9FApgWS5HSHxCcH0kStuEJbBSRGwq6uLCra3Zfgj7QxRnCcrnRvM3SnYOYQ7Thk6ZI
+	 2VaWoduewMiSMIE2jaCqh9vxB7nFdNZco1bjLrXd9xzt77p9AcghmjlJCWrMzaitN+
+	 /yJN0+twezwW2pILyIesGTCtPXmNGM5v9Z8qax3+IUH9eWF7JfWJpE6kjE5EmW9uuV
+	 9AkBlLloGxKkQ==
+Message-ID: <sashiko-outbox-188948@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 5.15.y] mm: call the security_mmap_file() LSM hook in
+ remap_file_pages()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "yao zhang1" <yao.zhang1@amlogic.com>
+Cc: gregkh@linuxfoundation.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, ebpqwerty472123@gmail.com, paul@paul-moore.com, stephen.smalley.work@gmail.com
+In-Reply-To: <20261028080719.1821-1-yao.zhang1@amlogic.com>
+References: <20261028080719.1821-1-yao.zhang1@amlogic.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 29 Oct 2026 08:07:44 +0000
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793260968-977050
-X-HE-Meta: U2FsdGVkX191x6nQ1MGXEfuo+/gW4YQArC6L43tJ+wSrMwouqluLid4IJ45dlE3XMuaOU9Dt5pxxCIOnmbWOKyEp+U+HF7F3DkgEjE929PDuFU6XMmbN8wEPGAy2pyzHxwo0pJgCtxijdYGS4bH/KCLK/BcmsANmzAFkQlzVw9NqLxT2tKRGe2X6FGQgEREU0s9KJpKZNKMxZQdUZ3sXo7e02Ui7emOJQkv2Zwdd/mT/pt8XR5V9d5vucbK0mI84zMayb0A3rsF3afIHxlGPsf3ClwpIJYga+f2TgrelBlbd3YeUGGbTb6FxsCs0KGRi4sCqRK3Ly8vauN3dVbAyVSvuYgC81Wq1+r0jeKcg7hga6uWsxwGWUxUd6KcLYAgcOBGGOEI6BhSaxBYNzZUqvMeZpqnHrA00YdYiQpIdOAKQnWmJeLMOjH9fAUvZxG9gsZ52cJZXYNZHxn34QbyeGltwAchvez7z/4oP+dzRbigwoZM2QJVtZt+X+fgBfnRkMrD2FzC9W8ZstizGYTfrxr/vtp8ZUvUZ94rpn8iCUy8EpFFm4wJABhDVrkLJLhfLJLBRHXenpZFjYbgy4ddcLr101jxLNGkCbcIqeVtS4CF1+G2ieic/Swzpnleji1ORutGoKu4isfaab+UV78YEKAF3DTDh/Xmrkk6K5BW3urNk0lmm6zjighuzkH/2Cvr1daBo4zB8an/xhAz3XDGWg5kDxtMwSNK+nkrPvsTQhQbvHUhRTrL4gp6XDd9CKhvNixavVE6O3j/3Oerx0bXhZ2rvPk64nowL4uj9M7WoWP28k+UFDLw84rta1B+hxjfppaWarv+iXRJArc9TAUzIyyH9GT2+7XPFLys+mUHj6vcPu7+m+j437RZj5pW7Cp3/dIJmezbnRiLXr8/QowIJ369UhGJM4WjrR8NG+cQwUQ6OacMGYwuU1I65s97W+TUjCO1hCPBKN7Tv+SKxQ8e
- GhMlGLsj
- tN2ftLWwMAyQthIGWl9BlivPd0JfDr361w8SMt2wIJh0jYHe57ltRnMjFzf+6SiZfgmN4mfzOOEiT7qdgzEKimKVUrU/E3xnWniGqcUHEg9OQ4przMzAvouFQdi/s7MYcdri+R3E6AxSePY3/pyeU+nuQKo/s1yNSIEAL8d5YxOxpv3OLGRJOhMm2aWE4i5tTKu1NVoVXXgRQ6uDmNwr34mLEGg2enDIrh9jpw7K/TLkxRLI8+/cXDP7KCt05rFJ90B+S4TeQ635Hp065uamAoD3THviG53ZTJRPp0b1J/48rRX5+UFYfZuCUwCYgleAJfX59IN4rgXEHek57w831COwLPUcL7/FQweqUcU7h0Qq7nBq501J0mbUZGedttPLItB3FJpK+1eGAhPmyzhAPMlM6gs0cQxnk9Vuctcf69Q+gqqQsiK9HzKTK8Q==
+X-Rspamd-Queue-Id: B43C1100008
+X-Stat-Signature: prtk6p6pdee3gi4nu9gji3f1hdu3dnr8
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793261266-19563
+X-HE-Meta: U2FsdGVkX18nM90sffKc600LooIqwgzjZKzd6LSHMzbYbGO7MAM+CRXRmcozVWBrqBB6OsIHB38nHZtLQubbAz3LVSVwggiBi+i+aQM0YftFWqoxQQaHyBl8sEBv1awL4Dx1z85UNseK+Shp3+BsWJseIIs140HV2+AGgA3ZkIVZ3NzuAltUrHknOSvIk1Ep70lCjtwToGZ1V/rImcnMZ84PZukmI+HsTIV1r79ogCj0bayzb243UoVLJbQoDNpZbjiffmwlbVCBO/s/eiRv42bzq86QjgvTpLnmP3T3a+bwxNCadd8L6EyjPjCZujdWYvrqyYQmidSgHdrDWPaK/WFDYOi77dG3Jg3Qam56KRoWOkw+hzg/AytqBMj0K5D0krGTkKGM5TAQ4d215ZNKJHSc4c0JI22gGL3pubeCBnMt9OLly1mz4DcZsh3B9OyDWzxByUbVzA2tjyNfpq7iA9z3xUqbhYBbrLFhUGYHjWYt/xAjZ73v26opV4J3myRvtI2zmTIXbjmMn1TlBJ6/jWIe5eMK2nKvf/oEC0TpYOKvSZPIO3HOXbnnwNzB8NcRtzLqgIGC+ww/m4x+85UOWNA3od/5gixLKqujeYlileigsJwYuLduu+X8RKFq1chQypDs31SgdfcuWTN/2mnTolSgTeXiI6xWa/xKcvoosI0hfpUq3AYj0ebfPvbzOe4tLGSmLX6ifbJRFd2hJhj8Pr7vS0oSlrnnJ+ylwK/DIBJUrGfXxYNrQGasyS/MLXeo6XJLySrqL6LzZfmWMJDtQY4il93Gm6MAu8n3RaWJkRk0Td98lcDFalNHgEqycRUZEERhuWtX7lZeVRQOs9mAHlCrerabXzWnbGumz6Zkz66MlJa8UnO38YnnZnEvF67orFPmhIe/talXnN4b+9Oo2QTcHiF/hFgCYFLUzhhKyt2OpMl6bnE1GN9KPMPres+V5iAANHp1en8k8uTeC9+
+ B7BDuhmD
+ 4JkLaV2kycqiKmwnec9fJIxPX2K9G6nXPhI2EA58pvJCM6sPAejaUNP/1/WUftWtWHHMnX5KYqaKgge1UkoHkufDFZnaRIpbpicmYK25a531+DRcNB7TyBdU245w+ku5CnomU0x1ibVYv3B8ez+WY74eWkyRga3cFGRcwMOEumTfcmd7+FEM0Re1TFN3YEdzZ9wBbHSYGK9bpYPWO3252vIBzLPuZp4lR4/WQmENM4eSxTjizqVJEd70koiLLoG0K/gL7MIYKCkNX5BA91wJrlvR1ayF1e1tOw0RzMGd/OUoDyaGNRL2hTbEsE6P90E9sgQeLauKRq97T26P0q6Y8y/kOlhLiNAdHeBL1Ky+fgwA7iuqCO8iMTR0/BwcHcTLO5ACkXMzU1pSkvWEhh86rzpwpKTp6Y7YobCcFW+DkB0pLSwbPdAunO80vbg02y4odFXm80s6lqkwil02fwOQx7DtbDA2oIL9mRmUoML2V933l8/BXuVRzIR4NMsFk0afSN4hndbF0+Fpp3ajfuRJdRAlKigyPAL56z5cbe3g0lUGMoviJY88Md+SOIL6RiP2zg3WLJXwfunYe8EALCCdPYiWiAKbFbSAWgTXZC+2/azD9b5X2OlqRaOftARdTEInTsE1CrChzIA9Vgoh9L68UcN2uoho9rhDmSAo4Pv1mma37o1lAx6jgLfWb/+3Fngp8j8yX1iULBpOQ9GKzm+iWBML1iB6GnTa41wtbCBLmozCYK5cpOnk5/YTYv6Sx9MUADpCretOPfCczHhP/tIe0jX/QykaCiBdgwzwt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,46 +91,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm: lock inversion in remap_file_pages() calling security_mmap_fil=
+e()
+--
 
+commit 78749fa17008059030caa915f2db592fbe2d9fa2
+Author: Shu Han <ebpqwerty472123@gmail.com>
 
-On 27/10/26 4:47 am, David Hildenbrand (Arm) wrote:
-> move_huge_pud() reads the old PUD and clears it in separate operations.
-> Hardware accessed or dirty updates between those operations can be lost
-> when the saved entry is installed at the new address.
-> 
-> The raw pud_clear() also bypasses page_table_check_pud_clear(), while
-> set_pud_at() accounts for the destination mapping. This leaves the
-> checker counts unbalanced for mappings tracked by page table checking.
-> 
-> To fix it, simply use pudp_huge_get_and_clear().
-> 
-> Fixes: 7d846db7d0e2 ("mm/mremap: convert huge PUD move to separate helper")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+mm: call the security_mmap_file() LSM hook in remap_file_pages()
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+This commit adds a call to security_mmap_file() in remap_file_pages() before
+invoking do_mmap() so that LSM policies such as SELinux W^X checks cannot be
+bypassed when READ_IMPLIES_EXEC is set in the process personality.
 
+Link: https://project-zero.issues.chromium.org/issues/42452389 [1]
 
->  mm/mremap.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index 0d06d7f37f19a..16e736c72d9cb 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -509,8 +509,7 @@ static bool move_huge_pud(struct pagetable_move_control *pmc,
->  		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
->  
->  	/* Clear the pud */
-> -	pud = *old_pud;
-> -	pud_clear(old_pud);
-> +	pud = pudp_huge_get_and_clear(mm, pmc->old_addr, old_pud);
->  
->  	VM_BUG_ON(!pud_none(*new_pud));
->  
-> 
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 273e06dad3c6f..7f357de8f4d68 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -3047,8 +3047,12 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, s=
+tart, unsigned long, size,
+>  		flags |=3D MAP_LOCKED;
+> =20
+>  	file =3D get_file(vma->vm_file);
+> +	ret =3D security_mmap_file(vma->vm_file, prot, flags);
+> +	if (ret)
+> +		goto out_fput;
 
+[Severity: High]
+Does calling security_mmap_file() here while holding mm->mmap_lock introduc=
+e a
+lock inversion with inode->i_rwsem?
+
+In mm/mmap.c, SYSCALL_DEFINE5(remap_file_pages) acquires mm->mmap_lock for
+write before looking up the VMA and holds it across this call:
+
+mm/mmap.c:SYSCALL_DEFINE5(remap_file_pages) {
+	if (mmap_write_lock_killable(mm))
+		return -EINTR;
+	...
+	file =3D get_file(vma->vm_file);
+	ret =3D security_mmap_file(vma->vm_file, prot, flags);
+}
+
+However, security_mmap_file() in security/security.c computes the adjusted
+protection flags (which includes PROT_EXEC when VM_EXEC is present or when
+VM_READ is present with READ_IMPLIES_EXEC set in current->personality) and
+calls ima_file_mmap() -> process_measurement() in
+security/integrity/ima/ima_main.c:
+
+security/security.c:security_mmap_file()
+  -> security/integrity/ima/ima_main.c:ima_file_mmap()
+    -> security/integrity/ima/ima_main.c:process_measurement() {
+	...
+	inode_lock(inode);
+    }
+
+When an IMA measurement or appraisal policy applies to the file,
+process_measurement() acquires inode->i_rwsem (as well as iint->mutex) while
+mm->mmap_lock is already held.
+
+As documented in the lock ordering comment in mm/rmap.c, inode->i_rwsem ran=
+ks
+outside mm->mmap_lock (for example, generic_file_write_iter() ->
+generic_perform_write() in mm/filemap.c holds inode_lock(inode) while fault=
+ing
+in user pages under mm->mmap_lock). Other callers such as vm_mmap_pgoff() in
+mm/util.c and do_shmat() in ipc/shm.c invoke security_mmap_file() outside
+mm->mmap_lock for this reason (see commit 8b3ec6814c83).
+
+Can a concurrent buffered write or truncate on the same file deadlock again=
+st
+remap_file_pages() when IMA is enabled?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028080719.1821=
+-1-yao.zhang1@amlogic.com?part=3D1
 
