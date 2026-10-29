@@ -1,88 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EA8606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 21:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52508606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 22:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kijhsrvd
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=b1vULQpE
 Received: by kanga.kvack.org (Postfix)
-	id 9E2DC6B05B1; Thu, 29 Oct 2026 17:59:36 -0400 (EDT)
+	id 3A4FC6B05B2; Thu, 29 Oct 2026 18:01:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BCE36B05B2; Thu, 29 Oct 2026 17:59:36 -0400 (EDT)
+	id 355256B05B3; Thu, 29 Oct 2026 18:01:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AB7F6B05B3; Thu, 29 Oct 2026 17:59:36 -0400 (EDT)
+	id 26C596B05B4; Thu, 29 Oct 2026 18:01:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BDDA6B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:59:36 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E2700A811F
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:59:35 +0000 (UTC)
-X-FDA: 85377031110.13.310C38C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5E6DF1A0008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:59:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kijhsrvd;
-	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793311174;
-	b=HKvck55bHgbRtKrmU8bgTUG++Phs9V98Ia1Hxdy++WA3SUhFHgKQbjdozoD13/TdgSiQUk
-	vMYnmu1bT3Rz9xuf5GfEQsRdn+RgFRlpNfIoUwHs7cRbDjErhb43MiTC/wfDhJRJOON+lj
-	jWzSLNg+I+UwGqL1vXv5z7nAuoAZvJA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kijhsrvd;
-	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793311174;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F00906B05B2
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 18:01:34 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 883D41A057F
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:01:34 +0000 (UTC)
+X-FDA: 85377036108.18.4F718B3
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9EBFDA000E
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 22:01:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=b1vULQpE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf25.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793311292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M+YkVfh/m9QNMVkwEafBbwPCRvwdpFTGjYDGrmLRT6g=;
-	b=IWgjTT64GdMcKFIq14rXWPbc27jINVFJjnpBwhJEzIrRJtokgIftgd1mI92fT/tSCpbCpy
-	2pBJ1A7PJzW66PHhET3BwEf5ICB0JsIDncwKZaJ5nKz09/TEeB/hHQR/u1jbtHnjGpsyMq
-	xwRdHq7HxSe9gGm6g5ZpfJ3eFj7ekU0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EF362605D6;
-	Thu, 29 Oct 2026 21:59:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632561F01816;
-	Thu, 29 Oct 2026 21:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793311173;
-	bh=M+YkVfh/m9QNMVkwEafBbwPCRvwdpFTGjYDGrmLRT6g=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=KijhsrvdCMs7njoxZIgNpvRfUz8AWbcZLX/EFCBaqexoqJ5laFtbXpTwuWKaWQCeE
-	 CfYMoIGpALaRSk+S8S6zLHE3+RS0mKXTToXZJs7QVffBu9u7xjMS/aIR69kO8hbA7b
-	 cHnIdO8kHFlJij+tU7GeVZrPjRt/ZLvNRqxUdibZ7cFR6vQbj5szmwfhjgS/YPrqGd
-	 Ggok7RAsI9q2+QKK9ejSMNBExWQgZZlY67FTAiKmx4rwsadju7KyelHVk2oBuj4lZS
-	 Sy5dMB78xEDPktHiU15wF7wusyG5HExR9+7s6mJvc7DAUJ5+I4giqkHKAtm+eVpwOt
-	 Hkb+uaU227oCQ==
-Content-Type: multipart/mixed; boundary="===============3154708283504647599=="
+	bh=rWki7vE/miPR/Xe87Tbb6uEule/+hs/cjmC52gkJ2k4=;
+	b=WwnKcvMbg3RD29/aYG8l8kVFKB5zl+CsJx2/KXNUcDF4eHa/bEl+VOH0dZ2DXPIPY8uUsl
+	rt5HF/vsDwJaC2QqnTxTGgHB7XgIq/844SZM1Xm0CiC2Pa8PyJhBf6z7qok/apmR7E4GQs
+	+Nhc8XPTVwbjdAFDgJgfxazxbVX3q2Q=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=b1vULQpE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf25.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793311292;
+	b=A6jpKjAYAuyJ9mazlKcbevotZUTdFL2Ew+/yDxlaWxjHU0gWKGJQAt2zVZfPFzt4bvMbtC
+	PyQkRpwh/i9wQKfIJ4IpTOaYaghWO1B213BHYB4wlD2x1oQdxTUDaCY85JnrBEe13xgkoK
+	V0t4BB7Ets9x39mNFRdPjTlHPCiNV4I=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6af8620a7d2so60946a12.0
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:01:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793311291; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Kwub1UqOjYY7yNqqLfxu+fzZ0W1DE20pcooGDQdCYthbA5YlB9KGjgkiD1xikdRl6z
+         mQEC/DwFS+CfCGsAsusg7OqvF9J+3P7zMkoZg2f2cF10c0bSbVE9oHl+ovC6nLlWCyTu
+         Q3XwhVMvrOGDyLOztGVmnAamXw9ANzRPuJbdBnDW9n0PPsUJ9hBA9bY2QTvIkRfnS2uA
+         ESu9pTFebBkyhe0ScdZimiDK0c32OMix5UMZFBmKIgdfQlGGQ7pq5aQf3G2HK8HZAAqO
+         R4lY4Bw8Cb4febSA28TvqVuLF6QNRL1KbC5YXsLq06GLEwQ70H3bhRfqHbJIedwW4QIK
+         f4YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rWki7vE/miPR/Xe87Tbb6uEule/+hs/cjmC52gkJ2k4=;
+        fh=WrlUaqad4jxXKwX9u5lIheEjo4aiG1ojfPxQ2jrwWBA=;
+        b=kWWaNV93UmjgJYcsAaMHwaFl/hs7KtZ6uf/pxyFpfbWRYawXwfaWKJr6OklzyKKYc3
+         2R/LB4RM7ER4cyj9oC4tHZSbzVo8t6m0Z41avpQ+J8JGvtlBLaLdRgDZjA0vXkGq2obq
+         eDv1O+fPOhVj6KtHUmv3S9NPjGZeY7WT6dOdk+A29qaJ2HQpVZ5Rxfc9QAoiRBgSpsFI
+         xx1cSLYzbKBe7+sPWUcl8aCR1dxfB6Tc3ElDAWqsfFrfSNmnkDSlBBuBCKBf9YFXnyPR
+         aBYq4H9A/SvhioWQxo/p9S0lNGHDmSt6ALf4LTPv3WtjNgeIgIqGLrr56uaFGMmo5MIg
+         nwQw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793311291; x=1793916091; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rWki7vE/miPR/Xe87Tbb6uEule/+hs/cjmC52gkJ2k4=;
+        b=b1vULQpEideWXdEv57tnfrJOFc/mLUOvxXwByaFXDWdWkTK5GFoTYGiSLj0NgYtl2R
+         5EF1q0XQ7KJ3y/L4Rtyd0S5aVsmZLOlcVIb2tdZ2yr9dOVLetBoJT2BUg2isRMnCHcOm
+         OvXQBAc5RI5rdo/uHu6Th2hC4DCE11qSpQ21ZHa5LiolwNgYVohEqMJmFWCbHh6drUJH
+         ummAdZmp5CNpSXcY1448z5DZUw+16H12AWCmjbXF0zJKJa0lxTv0bqRYL9kiAyV9fa2J
+         UBrIfuQt0MLuA3RnGVwPhHlvOXW5JGnFASNeZPuxYaWg+L10TBXlYlcvh70eMjZkDBZP
+         6frw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793311291; x=1793916091;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rWki7vE/miPR/Xe87Tbb6uEule/+hs/cjmC52gkJ2k4=;
+        b=wftxPCop5yFKio9DmrjJjg/lTSFLkYUmX21q7fEJhgA456R8FprEaCF5rK02PmSk/H
+         nfUnWPv166tX9hoCifJoQE5yDwAma8z8ltIY9DsxEAAmUpGoZOzjqng1e+3HzuFeoxoP
+         aqDO7nVVc47mbhXTNeHikjmf/ntwPIJBlDLrkNfjMrKfTA2IlL5RBC0ybwk5jlDx5Jpj
+         pzWkV0MoRV0edB1LQG6A6rDKgzAJsfQh0HeUykcspBLAStjW01xMsMp9l5WL0TmoM8dE
+         ShnRWpF/15lCKSRDNfHZjTv5DDuShKruWyYU/aBFRe98Goc8YASK7vqX9XnayVIZa8Bl
+         nEAg==
+X-Forwarded-Encrypted: i=1; AKwUvBxEgikC3M8amdHKnAamCfCGV4vxS8IVXyUrsaKiX5pMPaH1sE7GLLPjKYJLAlejHWC+LcW9TZpsxA==@kvack.org
+X-Gm-Message-State: AFq9FYJnqUAjSJrA2W5m7xY01s7GjfEKf/eaI0DHQIXmZxXbwlxK0jKl
+	RrPid0ZG8JqSU0myHp+qgvDFBs2LFUMEHGThnMrvUY+AW1njvIDaRXvfKX2J85ud8gSH5coVdS5
+	PvpIGlwcmczZKJ1gt/Yab3p46iFtiglA=
+X-Gm-Gg: AYBFou0MQav/R+vNn6zyNeG/xJw1+3dgp7YJqq3tKiNcDYl9gWnN/HR4MvsGq/N9QBF
+	JiTjiJDNjeUUjEgKxTXFMciTYNDmVyXMZDeSrk1MWNSaxPQwToBLt13U8bgTsw+kL/5A4rQl/Zr
+	9npGgFzMdbW+uVEbS/NfERxPI3RxI3tl4+oQLj7UUb58v+P79wRNo6qBVW+KuvQBT3XhhRPaKiT
+	H7yzxmSmlcfdT8TzJo2RlAaVqAriXG1mLhHgSyWTO5NESeOgNOg1BJp3qURsTkzf4FYXt8mvCmU
+	bOw0N2MR9efbLyRPMbNQC/CFU6tONIgfmTBHz3db4Linffd1b3WHteVHATfb5CE0S9RxBwOL4lx
+	pDzu93+8Ebitk7ZqLXP0obA8ZVgUFQWAZghOD/q0FSbQ1ShkavPS658Q51hq+u28Dr7QNRFITW7
+	J0oCZUQ/+SFoAiPpssg4SHsHoEdqErLwnLsQ==
+X-Received: by 2002:a17:906:ef0b:b0:c46:b9b0:8e8f with SMTP id
+ a640c23a62f3a-c4ca7a9d96emr36300066b.41.1793311290809; Thu, 29 Oct 2026
+ 15:01:30 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <d023b011d67ae13695a93c94ae0197e96fb5d42bbc3a4a63b42fcd0c1852a605@mail.kernel.org>
-In-Reply-To: <20261029212551.56964-9-jolsa@kernel.org>
-References: <20261029212551.56964-9-jolsa@kernel.org>
-Subject: Re: [PATCH bpf-next 8/8] selftests/bpf: Test user memory kfunc errors
-From: bot+bpf-ci@kernel.org
-To: jolsa@kernel.org,ast@kernel.org,daniel@iogearbox.net
-Cc: bpf@vger.kernel.org,linux-mm@kvack.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,ljs@kernel.org,john.fastabend@gmail.com,nierro92@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Thu, 29 Oct 2026 21:59:33 +0000 (UTC)
-X-Stat-Signature: bnqgncafwr5bx7x5oq9f7y789k445d8r
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5E6DF1A0008
+References: <20261029212551.56964-1-jolsa@kernel.org> <20261029212551.56964-3-jolsa@kernel.org>
+In-Reply-To: <20261029212551.56964-3-jolsa@kernel.org>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Thu, 29 Oct 2026 15:00:50 -0700
+X-Gm-Features: AclHuK-kOUOtQ-G-FVVktnJEDJ8Q5GaaNL0lIdZEWjSEGoZpsRYH87xNkw7hKcw
+Message-ID: <CAEf4BzaAbWxWfjn4u8vieaWzhjE+Af+KV8sLFH9kfgGT5PtAGw@mail.gmail.com>
+Subject: Re: [PATCH bpf-next 2/8] bpf: Add user memory kfuncs
+To: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Federico Di Pierro <nierro92@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9EBFDA000E
+X-Stat-Signature: uy4abshcatbwmq4ipp3jkbskrpzxbipf
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793311174-144302
-X-HE-Meta: U2FsdGVkX1+oxuCBygXPoIySCOWyrr2j0GBTmz/e9SZBpw+qFH7ZVRyrBesI/TCyhqJWOFqWPNsT9uNUXAX1ce9BI22gHWinrDr4CRnGTHPXesu5raFbwoGyrr5IM8OSv3OFE44zjBK+OP+0FNluOQpTGRuM1r0eHdlaKm1W0BaDKil8bqyLy5S7TdZGpsBFdoOAYqw0FYlcrDDXTdjhyMpa3f1WX0EFcDrMnb/Zm0p2vqNlvBBWNQn1Yw2DV6F+AiG8DyNotG844ZNKBOaUMBYwqeu6zurRZQPB46UKsrLGI1/OD2g94+V3UC//z27OTWG/yeMVbTcdXRe1bdut/1uJrbRbeYGR5f0gxc6ARxVoWcQVjg5duZKOlF1vg6ZSv7jchqVl/BBlA1qMnZRVwhfdhV6Hc8elFBAS74mytEgY9SWMF4IBFNQ/fG91LnA93fecbNteXI1BlAZ0dTpD3DVyncXP7VvTG/9WzNEH1+nHA0wrFKAuw7h5pxMZImsjwhwEImTZdPjIIJKbcJzzn3v2b+7Ykhs6CNfqyKlwPfCQ5NxVeL9KrMBit983RkgRD+mx4XGCPeWi04kuOnOk6Tqgvk4FQ+mdVCGcM6nxPV4eyvbWmUjDVmK7kb8HhuAL3edy4rtvkeYato+CoNc41XkMBiX9ecEJms1G7L+fc9pVsKQY6hJFerE1i+PqJ2ibjHg59jlpSy98aDokCy4Xj/83D3azsWBdn08fxttPjlEfPAqLvwVYF20YMcAbQUXNUAZQRXCMYv+EPEPBaJ0rgy0ZW8Xu5/914aKbmXotD7+1GiCVaoHK4LVcJvkSXB6bTaJ6hwbJDe7W3Wtr1pOMW/VvCsJkeWnotkVqBi0wHpmhc5A434pKG7QljnE9OH8FuoofoqVHZJ3jhy46wGb6OCAjpRlhpswpFHNzzNRogWncaezUPgj0HyWx1ENB0u+Wu+iMpGLFcUqJk9ifrEV
- nFDA1OQl
- cij+rj7lqk4CBoL+imhQ5oxdCBPX39cEQyxSWYQwufvWCH+C9PKOxYFMJP31mhqFyM03SgyFzZxeZEQXMF8NHHbMBwC27T9WeYjeW1Tf2GqWoIQ6xPnSmbFiZ/bn7awUrpTxm8tID61UDbxkjUHnsp8yYKDmReQSbiST7djmFJe/rCDWarPmFTQPIhCqcM+9CL4kPmkMDprge+iP9qjGlZ3n41T7TewJefTLmrNSF6CIvUk1XqDwjPO5m5L1JTOJk3hAt7OwW1Isa1Xp4Hf+fKmlceCzS1MktWhmXu8SUhYkU5en1KUxjFITd/22+/lpCi4P0QoqkvpKcoHgqmKE1ZQ1IAcaYt21IrRA5F/FOLd8baGRch3G32Wmg3D92FsyqBSnS9ccook9I5c7jcUGLLZUoZXVCSsNwIzWcHvEetSBPC/Du+N8GTF4Q80WkZlHsyx8tmERc3GN/G9HlD5PlvuiJG7ls+5F666jR5p9qU7wKqPzzU7A9TJanAFuEUX5LgU0jVBW72UlDSlM=
+X-HE-Tag: 1793311292-444391
+X-HE-Meta: U2FsdGVkX1+p1ZaZ0FeFQn9j6rguSyB2qWj4L2mJLmN+13OS1VKhEYb/aYLisqKVwebcDPR0z/9hGHxH3fr3tIwt+yJ+7xbMY7zqC7JC3BcNWH0TZGNcpqYfvMIkouYbSRU1l03fNhivtOquLQvhGIGs4o/J92zPMATfx8qJGhoAHLOCCehtPAGoO5gpvg5rf6CJj9w7jdDsjWnRpk/oHcnySg/OssB9Tt5ZG55yfKIUl66leHcDf3g9oVliKKHL5z79Dsi0zQPF4D9LIcon3kGuT8aJbyOEKNmPRV4bvaGpUSPji30Xq915BamTb4KLSwW87e1nrf9BGPcQjnAYruLsyMGfPNgLF/vQ6KbHe1zQkv55ujstGV/X+BBOfuzvwkz0c5i6ha/+Q/T621fLJ4BKD33LLByaoqWK2rHZK7X2NoxbkZ98yUqPwWIrkLfqqdBOv3PWw0f5x62ttJfPmw2cEYqjTlZekx6Y3LCgJiKetbmaWlhVAhHMSQHWAUNdYl5FYS/3077rVmlHrebKHTJjbZ+m4ONVM+xLE39NvVUIEkicZjGJHLlDcGYeeLnsk1vd43erQS1zH9H9AxvwjYIS6LNBONWGYNZIqunPEaO2Ykp03jeiyqDitJiGj4yP6w2r33XOfkyWRcGiwQK47q6HbliDN4/AXwhGBNjVBF8+3ijHHvWucaqQBMZHPkk2IlCCUOPg294YF9A0KzAkZXdttfLJ9TS+frMnxRLq32xcBeC37V+Mn9QmH44LptpYM2PeCVwBBb9GzE6I1z47T35Ho+XLb2JnrZZyZg61J6URtiuLt3E0tUIEaC3/tQhf/Bc5T+yjn0Pb7i/PvJEzKPjzBncO+STbb60tQF8bdPZAMjHu81jkLejVn9johCriVcgiccF/hS3Ak1FAksbCl/5R1WZLPJXHzDTH6gezKmZww4jcsqWhC4EpT9H3hFASKL9KzmOG6UUR1M2hug3
+ Mk3dLqFu
+ gXzVotM0XjLfoPRdKExD/nNN0KWuza3u662C1ilLql/kfHOD+tvMUHjjArW3MfATuQR/CgXi0Pd4xxoeJfn3l565n610yVJdSQpz2psNg4C3iPIaNPRGvUgiMyQ7BbsoBGpMvfulx8lA487IZ5Ax5smJG8p/DLJSqSZSx/Ht2OHuGStB9E1VyhnvA7tWgcgJkobUUgHapVpAAGmQPySzV7033iB62hnfLlJjKPOxmwR0O0/2Pg0iKxD7yJI0qCF5Mb1wszlpc78mBFrfA3Z+ndGOkZBnsh+tfbx0uPUO9GKYtDjSnP20Y8SNaa2GApE60CfZD3eI2jqBhfOxkm5VG5r9fxT+lsoD/c0pQiJboCTmgEv/UW55AkukDZfDydMSboNzWeGSUTqjLn0CocxS2ShzX4NWEkqSpsJiwiywdAtFxZvTyOfAZ3aILb7RgkQGTQelZZ3MH8DPoSF3XTLGQcNNPgpmesafjOWy+1Hv/cj6qYuPUHdgilFaktw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,50 +147,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============3154708283504647599==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> selftests/bpf: Test user memory kfunc errors
-
-TL;DR: Commit message only: it claims tests for partial copy faults and
-read-only mappings that were added by the previous patch, and omits the new
-RUN_TESTS(user_mem) verifier-failure tests.
-
-> selftests/bpf: Test user memory kfunc errors
+On Thu, Oct 29, 2026 at 2:26=E2=80=AFPM Jiri Olsa <jolsa@kernel.org> wrote:
 >
-> Test invalid copy arguments, zero-length mapping operations, partial copy
-> faults, and copying to read-only mappings. Verify that a failed unmap
-> leaves the mapping intact, and that non-sleepable programs and programs
-> without CAP_SYS_ADMIN cannot call bpf_user_mmap.
+> Add sleepable kfuncs to copy data into a task's address space and to map
+> or unmap private anonymous memory in the current process.
+>
+> Require a usable user mm for mmap and munmap. Register the kfuncs for
+> KPROBE programs and gate them on CAP_SYS_ADMIN BPF token capability and
+> the BPF_WRITE_USER lockdown check.
+>
+> Use FOLL_FORCE | FOLL_WRITE for task memory copies and return -EFAULT
+> when a copy is incomplete.
+>
+> Rename the syscall info-copy helper to bpf_copy_to_user_buf to avoid
+> the name collision.
 >
 > Assisted-by: Codex:GPT-6
 > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> ---
+>  kernel/bpf/helpers.c | 102 +++++++++++++++++++++++++++++++++++++++++++
+>  kernel/bpf/syscall.c |  10 ++---
+>  2 files changed, 107 insertions(+), 5 deletions(-)
+>
 
-The changelog says this commit tests "partial copy faults, and copying to
-read-only mappings".  Is that accurate for this patch?
+[...]
 
-test_partial_copy_fault() and test_copy_to_readonly_mapping() were added by
-the previous commit 8f0bac0f80cd ("selftests/bpf: Test bpf_copy_to_user
-kfunc"), whose changelog already describes them, and this diff does not touch
-them.
+> +/**
+> + * bpf_user_mmap() - Map private anonymous memory into the current proce=
+ss
+> + * @len:  Length of the mapping
+> + * @prot: PROT_* flags of mmap(2), including PROT_EXEC
+> + *
+> + * This maps memory by calling vm_mmap() directly. It does not invoke th=
+e
+> + * mmap(2) syscall, so seccomp filters do not mediate this mapping.
+> + *
+> + * Return: The address of the mapping on success, -EPERM if the caller h=
+as no
+> + * user mm, or an unsigned-long encoded negative error code, as returned=
+ by
+> + * vm_mmap().
+> + */
+> +__bpf_kfunc unsigned long bpf_user_mmap(unsigned long len, unsigned long=
+ prot)
 
-What this diff adds is test_zero_length_mapping(), test_failed_unmap(),
-test_invalid_copy(), the three verifier-failure programs
-(user_mem_nonsleepable, user_mem_kprobe and user_mem_no_sysadmin), and the
-RUN_TESTS(user_mem) call that runs them.
+bpf_user_anon_mmap(), so we can conceivably have a more generic
+bpf_user_mmap(struct file*, ...) in the future?
 
-The changelog also does not mention RUN_TESTS(user_mem), which turns the
-existing user_mem_test program into a privileged load-only subtest.
+> +{
+> +       if (!bpf_user_mm_ok())
+> +               return -EPERM;
+> +       return vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0=
+);
+> +}
+> +
 
-Could the changelog be reworded to describe what this patch adds?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/40959191771
---===============3154708283504647599==--
+[...]
 
