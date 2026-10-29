@@ -1,161 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71820606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6995D606A31F
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 06:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=vAcYbX1i
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gMIV7vKD
 Received: by kanga.kvack.org (Postfix)
-	id 925406B05B1; Thu, 29 Oct 2026 02:21:53 -0400 (EDT)
+	id 77C8A6B00EF; Thu, 29 Oct 2026 02:24:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D5C56B05B4; Thu, 29 Oct 2026 02:21:53 -0400 (EDT)
+	id 705F86B05B4; Thu, 29 Oct 2026 02:24:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C4976B05B5; Thu, 29 Oct 2026 02:21:53 -0400 (EDT)
+	id 5D0FE6B05B5; Thu, 29 Oct 2026 02:24:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 55A496B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:21:53 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C2832802DC
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:21:52 +0000 (UTC)
-X-FDA: 85374668064.16.35FEFF4
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012048.outbound.protection.outlook.com [40.107.209.48])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9CA23A0002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:21:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=vAcYbX1i;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf15.hostedemail.com: domain of bharata@amd.com designates 40.107.209.48 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793254909;
+	by kanga.kvack.org (Postfix) with ESMTP id 3272E6B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:24:46 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B0CF3802D5
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:24:45 +0000 (UTC)
+X-FDA: 85374675330.17.D69EA5C
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DB0251C0004
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 06:24:43 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gMIV7vKD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793255083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wLfduqBXLNMlCnhaczovDEndt3vcdmfZESMLOzlcWQc=;
-	b=C31JePynLoTkUkwzCBpUSTBvV+3RBsDG0easz/FxuDaTPYNbQaDLkNjHPxgLrXFho1W22C
-	uNXPGNvTp3FqFaVW7LpLaUiQ8sWiagGqochpUuBX0CJSDpYCaqcyTTqRlRv9h2nRp9RjBH
-	WjrJ7Bx8QvgQw+mbjaSgfTzTKvX9UXw=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=vAcYbX1i;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf15.hostedemail.com: domain of bharata@amd.com designates 40.107.209.48 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793254909;
-	b=30LiahOEOOUsev3X1hSO3qUDRgY3nNKc2tSxnfDyO5bs6mi2cXSGVbGKP5k83EGCAjpOlF
-	RFZaoFlzntW8caaAw18I4QNvQASkwLiFve4BHYEyilpl3Z2K4hravBAXoRnuASOWsTfgi3
-	fK0TJRAUN4NtfaOBRUMNsO3IYqPKdZM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aWS+32e0RJtGGFHigk7A6rjoxbAzSYVVmT8yeiXQ36pAcOqxLHVCtatSuIkZF86lILwlBhjnH4oN5nKOGUD5+FIVWRdJ5U8WkWosmhKEwODrTWshtFZ/fYwEtrPXe8XtzcN9kTx6aWJ1bXciULfbrFvFOlgg/G49ZaADdzHQUVC8Cq5P+8MJaf+SAo738xQIOWUzx1odcZz/LOYEXzBUJCFYseTrPSUHK0DAgrKdh0XUoePL4N+wS651N8gzYd95gl0C22KkGyINVQ1lMuVgnMNp7PJtycbpl72ly50oARY6T/UACBfUnjFt636RRZNNNVB5c+40eZ6Hi2WFIYRMGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wLfduqBXLNMlCnhaczovDEndt3vcdmfZESMLOzlcWQc=;
- b=f4nvDnW/nkfSFv+5rc/i2wzwhFHjBC1AkU6rhweVjBqTvx5Kfmfw7Hb62eQgtqWEiq7IiqjDzJ9khgG3XU9gcUVixAOvpUGqki4BYWI6lIHkdZSWwXyG46NpUy9+9fesXujgjq/8m4CuDBcqXszNr0KHaIuJcyD8FMalWfmykCGs+bEDSOGhxc9L38eh2EykrfvnsZCjSNjsps5+FGJMQ5NTYCEPh1oM7b5w/kZHrNpVUa3S3HrCXWPUDjaGN+wwNgg/5AnFGwwAbR7OWOitVQ64rtYxaTxIXRXtgSa4nrq9oIZMZzWs1bty2WAmudTM1A1B77yvTiiGSSXNaxUfiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=bytedance.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wLfduqBXLNMlCnhaczovDEndt3vcdmfZESMLOzlcWQc=;
- b=vAcYbX1inJznCGvY0z8mYJ4hTRr5qBkfYMzirqOFdqDDDExaDRcAZCtgkNv0Wtqo8marO5MreVIriqii101oxEKgeoh3Zjb7Nc3xiu9eL2yqgjon3gMLvbx0bf13P6EW86xU235vMp379X0/SrpRqrOwrlMiptqKFEWWtEhp+MU=
-Received: from CH2PR19CA0015.namprd19.prod.outlook.com (2603:10b6:610:4d::25)
- by SN7PR12MB8132.namprd12.prod.outlook.com (2603:10b6:806:321::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Thu, 29 Oct
- 2026 06:21:41 +0000
-Received: from MN1PEPF000793FC.namprd05.prod.outlook.com
- (2603:10b6:610:4d:cafe::47) by CH2PR19CA0015.outlook.office365.com
- (2603:10b6:610:4d::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.7 via Frontend Transport; Thu, 29
- Oct 2026 06:21:41 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- MN1PEPF000793FC.mail.protection.outlook.com (10.167.249.199) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.4 via Frontend Transport; Thu, 29 Oct 2026 06:21:40 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 29 Oct
- 2026 01:21:39 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 29 Oct
- 2026 01:21:39 -0500
-Received: from [192.168.0.152] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Thu, 29 Oct 2026 01:21:33 -0500
-Message-ID: <de52b5f1-97eb-4404-b7f1-53f0aab17fae@amd.com>
-Date: Thu, 29 Oct 2026 11:51:27 +0530
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3bbEEd0YswyM9gjR9hkxZR+uYtqrPZWlSsQUrKIRuMc=;
+	b=OUIUn7dt7Qxg/yo8SUoUxfSMJviZoO3ROg63RPCcglnG/y84tVrIHlGDCBT42TUiJNGt21
+	BuqZzYKVZEoN466jf95nOQu97F/MdLdhGtA9B5vI4BeBvbb76on4fvR1vlWnLH83Crikng
+	01ZS60i3ZsfUpCGAbQ6XWPvdmWyc1ic=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gMIV7vKD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793255083;
+	b=f1OGnFHZ81uf5qyLkW2sLrqwGY3M3dNFHOL4XcJN2XE3/D2bzGGuluUxj5gBpT+jIi3CxT
+	VD13XB+F3m62G/1V2jshxjoL3zhDUZeJdGei12MF7gjIkXmPYG/ozHgK4IjrN7lWLNTNZy
+	ykTPtpxuBEasunk0oxzmJoynDh+O29I=
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-14394530ec6so1994002c88.1
+        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 23:24:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793255082; x=1793859882; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3bbEEd0YswyM9gjR9hkxZR+uYtqrPZWlSsQUrKIRuMc=;
+        b=gMIV7vKDROMedvbh7vi5ofRoStuvhVINd8dXShfENxFIRsJQrxVWfdDku+hV6Q9xJq
+         adJ1dPXinUEu5ngSqdIshRdGYlvicVsVNgzZvWF3TB0zYKAwLKhF9cBWzs4ZDC06lmKx
+         /FFj0Gxo1zMh5ow2b/iIZspmNHEsxgq7SKsn5D3RtZ2Pa7LWX8BHgmDG502hMU5uOeYD
+         /yb3+sL9O/1oq3UHnwuFw5/e4gy3MCps7cDtoqC4jtdi190V0ODiwUvT/uPg3izoPSsL
+         SisDWMXrYewvTzbghTyAp7C8Ti7DimiaOXvfvAUkaAloiMDJtDCHTKFnodXwy9S97Cfn
+         A9vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793255082; x=1793859882;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=3bbEEd0YswyM9gjR9hkxZR+uYtqrPZWlSsQUrKIRuMc=;
+        b=YWSFC3EQi/+tQ75vIFYJtgnbAmBXVgsXJfh6p6UJS7dgKA4yTOPMcBuzULdTPHOGDy
+         ApEdVEZBaShbfP17oYcE/VwFXcvcU6hJJd8PwtsGjFFmswgWOKMu/MQf19Iwu5gqE6kK
+         wM04jWeES6hpxRcdEEr/uoOPF1qrQ8aINn6wJFq1KRqfDDwtAmBbLfeE4MRPPqt9Lfr9
+         wOud6PQhdEv8nFMvWIs5YfffSTsTlqQXr/FouFYYAXwhT+EuXQVueO5Z/0/8P3Dw/L2/
+         gMbs/uArzh/6VokV3T9fBDdyoAtwD7mLz0LpZ4al7+TSnDQ5mHN5dbk5RztKRj+wGwxx
+         iqDg==
+X-Gm-Message-State: AFq9FYI5SXiER1qJuzqynzzmOFnSPHdAhzAdTb5y+4tYTxgjPci7KHT7
+	nAnwOPsZqs6WMoOK3/8PkO8Ea5Q46PfFebZUSuA4tkpYS0061betY3Wc
+X-Gm-Gg: AYBFou3J14CKZQBvCBNWzXXyvZUdJE0yBRJUgEI7xA2EsXdAMsdL6u04eowYQlHT8qS
+	jJo17s9M3IxJUQlREgRknpRgYi4W5NRcK8IF1ewSVf82Xj3cHEfU+xvbsqkamwMiLbqKb3IpTYP
+	+lTp9vRpJ7YNpvRda95pk44hwoRe3e1cyC3b7iAMrHyUPv0fsAOdwVuT6PQ9R2S9svFvy3Wnyeg
+	AcDWgbujH++M/38v8lOVoQyAkcvOhxGDYtZ5WyyY56yF8FjoRY5TEuzOB+y8TQXxoICi+Ch2i9J
+	XrpLl6VWKhtqWBoL68ccaxzYfyAI4wgKCU4+/Duu06YPYsVPICi+SWjrq6GTMAed7y9YKoTAg1K
+	NtsqlvAVwqtP2CZIMWhAaool7AiEYfk2D/hJrC+dYgiyCZqVxUxiOfiAmnxKaxHdTsry59/iIia
+	TEbA62osZUEJgh2V1+8y6izsA5dK0rnYRK7okhsimhz2hS4Zf/73nIde1ezQB681RYnGovirXls
+	hwHEB8Dos/xCdsN9eDLibCviHlKY14GibsNu+G0h4DQoziY5eDfufPukfIP6/BX7D9dxiuY/cTR
+	oeo5MI6MV86DHKWnLjN+qfDx
+X-Received: by 2002:a05:7022:ed0a:b0:144:eb46:be0 with SMTP id a92af1059eb24-1a6ced912f1mr6332516c88.13.1793255082423;
+        Wed, 28 Oct 2026 23:24:42 -0700 (PDT)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1aa2f100684sm2152004c88.3.2026.10.28.23.24.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 23:24:42 -0700 (PDT)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+Subject: [PATCH v3 0/2] selftests/mm: run the XFS-backed THP tests when xfs
+ is a module
+Date: Thu, 29 Oct 2026 02:24:34 -0400
+Message-Id: <20261029-bug-selftests-mm-run-vmtests-xfs-modprobe-v3-0-16ad772850ee@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] sched/numa: fix scan-period adjustment for
- tiering-only mode
-To: Li Zhe <lizhe.67@bytedance.com>, <akpm@linux-foundation.org>,
-	<bsegall@google.com>, <david@kernel.org>, <dietmar.eggemann@arm.com>,
-	<gourry@gourry.net>, <joshua.hahnjy@gmail.com>, <juri.lelli@redhat.com>,
-	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>,
-	<mingo@redhat.com>, <peterz@infradead.org>, <riel@redhat.com>,
-	<rostedt@goodmis.org>, <vincent.guittot@linaro.org>, <vschneid@redhat.com>,
-	<ziy@nvidia.com>, <riel@surriel.com>
-CC: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-References: <20261028041253.74839-1-lizhe.67@bytedance.com>
- <20261028041253.74839-4-lizhe.67@bytedance.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20261028041253.74839-4-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF000793FC:EE_|SN7PR12MB8132:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d673e7c-4110-4d81-2785-08df3584e4f1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|36860700016|376014|23010399003|82310400026|11063799006|261028144727099003|260925021911599003|261026140227099003|260925021311599003|260925022911599003|921020|56012099006|261022105027099003|261021123027099003|4143699003|261021121427099003|261009223027099003|10067099003|22082099003|261026121527099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	rjsAJcZYN/AUtKB0uQW4bpDpa4XApfBf84sNdV91n+BSTux/WJjVi2Bdru0FVnS+b4DcYfAVwbzGg0yUP5Z4QMIfH6b8jFcg2y/SspISepw0XXXtBvzYV99oCJXIcts5NmN8eiNOnwDhw0e1/tNYv0QVTbnKZIL3Em8ldIOCevESWXsfVH89GE2glaSzv5etL6hDDYOa0KZeYY0RQfnqPziCk55QSKgJlBTMBgZUlKBstpKEidVaedu0fVIpVVLJBCDTJcYnSQzY9JO8O+zWtnyCfOZFK7YOG1AjytyxE2QPqh3EOKBgwil7GhWQSfknIjLGiLxQBdZiRU2VUMEd8dF1Vsfo9YaPRkuKrIMsaK9euaOQELsa/8D+3z6p71GZD8V8pMq2pTcIIGI+2rM9UhluJokoTkILKpRswnsy/L+ALPwb28Me6fR5D12SIQzDEo0qymAxwH0ev7ji6qiLOFOVhgvqaDTlzn4uB/lWOjdBkVvDq3bUfE9LqTw9P1MT/4hdsde7fuzwJqrfyuQyjMaApxp5zoOQg8+2TEd6vs7eIjuV0xptt/CWD4YhiSL4nnJve/vLvt7fNS/ylQ34nrKLzAMtE4k+SIa9Haj3399mDG8lpo+H7QklivkeKRvWT5zjQK9U0ACXeD9fWLvJ3RjJpbEsUrt2Zn0ZmXilbvXsim9zPxiKJ8w/GKQqpxBMLOGzv2Nc7AiDvuh0qODS1j9mAEkSs3QtzgJtlLovGxGQGF/4gzCwGEWASp6uW6hM
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(36860700016)(376014)(23010399003)(82310400026)(11063799006)(261028144727099003)(260925021911599003)(261026140227099003)(260925021311599003)(260925022911599003)(921020)(56012099006)(261022105027099003)(261021123027099003)(4143699003)(261021121427099003)(261009223027099003)(10067099003)(22082099003)(261026121527099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	DiaB39WjhR1j69ulx6GX24PHlEtZXqVlJJJ0nouUiOp4PCDdPHfyx7dRn7tC+hW70cqKBQ+iLP1RQmMLwPZlJl3u5R2h6XLZKE8DOZf9HE7rFYEnrWByHkx2LJLehRcK44/7Z2rwJyqxM9oS29Ippd6bDGfusP+KKfuNwVZ7xaf4QbUQBq9bD66KrzJUaygqp6d0lvGUE42kJG6nJGqARz6D61S3h4aR1+undjXo76Ny0m1aCP3eAjUGq4cwmajymRb+Rj/99EbSxTm/0m0tkXIry18DgQUI7H5eDXVpqNrbM0SuzvKUbPlDe7dcN41l7jdZGrImbAQEtepKdmrL3GYuUjbM7INCTpdosIXlmCC4H2TryZoUhtl/rg9j1WpmBB/ag3VVmVVx1BnfRQBpQIH34mrI+e2M8fllgQciyMzYFXsDyh5kAylUtZQ36urQ
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 06:21:40.2440
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d673e7c-4110-4d81-2785-08df3584e4f1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF000793FC.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8132
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9CA23A0002
-X-Stat-Signature: apsc97c96jgrxf9e8bae48ybmhw5ezue
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-B4-Tracking: v=1; b=H4sIAKLm4moC/52NsQ6DIBQAf8Uw9zWABmKn/kfTQeCpJCINKLEx/
+ nvRLq7teDfcrSRisBjJrVhJwGSj9WOG8lIQ3Tdjh2BNZsIpF4wyAWruIOLQThinCM5BmEdI7ot
+ Lm5U3r+AVgkEqamkqXWFNcu8VsLXL8Xo8M/c2Tj68j3Viu/3nkhgwUPnTalljLZt75xo7XLV3Z
+ L8kfi7LX8ocKGilSqEoq0rOz+Vt2z6plHFZPAEAAA==
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>, 
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+X-Mailer: b4 0.13.0
+X-Rspamd-Queue-Id: DB0251C0004
 X-Rspam-User: 
-X-HE-Tag: 1793254909-552767
-X-HE-Meta: U2FsdGVkX1/WniFG8z453R4DYtfiSnFsmWw8l46809Dj6qpPlBu8AzL46Kd07qSZzyK3HYJYboZVzmTOF01aNM3JLVRRkjJllWOqiBBcXUX6UCbuk8NR+8ccwbH5lo7PzPmOmUQ2MaYOJGCP8YmcExTPYk8eQtF58Lo9LxU/QVqAY6ArhrSAH97HPgMTBFF0xTEtURuy6lH1WlXzQxICpv81/JGecLzQoc8rpXCmPb8d+z3OO6BdRsyCkcLC/mwL51krGL8CIQQ0HK6MhOgkmTsfPfbULoeASc1xEyJJAq48SS7fV5+jGZ8bKCQyTccnps5j0DaOniifXv8XuEktReam3tGcbz+rdTsajyaX9abMOzP0Zc7aSu1VAHKd5SKcMdWs2D7a9hIUQcQ93ly0/RE1x0+mzOhNar4mGkQunD2uFoPGEMONje7Mo7hkACoDdxrQYzkkXO8dOZ5MBARmpQAxMguDddmg9WGM7Qe+CjwCFAf3xpMzmke3qJ4P9dM/pcWPFuvQSoeHfmiUpDqH3oOOClHgznzKNUDqzhHv3E6SZmjBTF5YrGc/RJR7Yf0DLCSuu3zqvuTzHfr0XBIKv/vPIGW5hnr3uFGs/aSHxsAm1ySxBBc240pn/mK2YTuqIcNgz+oOOtxF2JmnCzzDelBQ1xr/7qe6EMaIIA19qUW95L8J88zHPLBun6gyybNe9B3V5TwVpk/y+GmGHBfgekVpE7SJQoooALhHL2YbBbGShKyMDlGZlouwCTSsydE9KRHs/f0AzrNuaDyC7oQgOL44MGpybfec3MSKty988r1umVEMaz1jg9JdqAMl1357+Y7xuIUYFTeOPBc3Y36rxPWMOTl08g3h5bEhp+zXwDqNTK1e5KEX5qt3EvUqbnr9WKbcNRzE4D+Jnz8/RF2xPqxGcf4ZcGXtog60ZULDvMYmJ+k50f/1c4xh0YGREpBya2KVsUAV0BzPvTqR0Ed
- KXDfmckD
- DIM3ovzQtKS0w1JcLzgLEaTuvb0Z7cmAJtMTxd6wPOKlmDnUU7xwICfp4i8j/L/MBlKTrYUDDJfyGUKo6FcM7hHapeod4DIeqUvrV6jbXHocQkNL3xpnRTjskQaAi7rc+c/UKzUrdTkTLgKIveeLdJFgXsKALXFqvuIRl8LT5TDQK/jqECMGg5mGzF+vA1mpjOBISrfAVPBrhJZf7iw8v5ZKBaoZKhuFv/8s/KO5SqgFvJqD3As305jhj3T90R1sD+Xd5JG+H7ZTRHHAYdES+TmKdIW0hbt+VBcmdvxY1mGZ29xwc6c8+0zgx6PJ/DvLCJb+Qy3HhBvmAXJQJ/5pFl6nECgLCv8m18RhS/ONq+5ZmSZShx/q/4n4aLiRb6v6cEZ08CM5JI1s8J2V5H9ZZHWlVWNZHIS6XCa4+SXqtJqurwjbocti9YjaFwUpKL9GlaLTspy3qjnp7g/VCRLSiWecpc/tr476ZtbEk7a0kwDnypGMwvknE10Y2Bek6Il39TNXiqDUu71iiBwy/lKk2IvAfjNgeJwnQvh5isInrTWaAqTU=
+X-Stat-Signature: 1e5w4n6x88dmyhoye1sc7jhbtgk7kqfa
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793255083-221786
+X-HE-Meta: U2FsdGVkX1/PRgsbNEzV6ELY6mIUOxWSDoG4fmOVShUvAEVlX2Qg/7FVRxYdfqkUJltppS9CqaCiZCE3nD9d44oGuF4oQj8wICRDun72RqOK/Ps9CJ9WmZa0oC9cfmCzsswBonEvz7/8nvc7D9JaadJbu4aT8nbsthqWVcxzksTQM0NfN+5A4H4VZ7iv7CoNgVO52I2n6xaKKwA9K+HqIdgsGtAWD/EJsp9NIhS6WZTw0CPME1aSo/UE6LZNEx+F7kF61/3wQlWvVu5uZLbufWYjzPj38D4BioffSl9P+eHiOOxz+teXH+G4NPgpC2YY2xc0e4DDYsogQbCj7lpNrrghOQzY0w1aS7+scrAe5mxpC1o734qs7Lz3HXIyBAwMePlkmBdoqJNIEtxPP2UrZTfmyiUk3kFe/PcGs3QhJyIEJsv8aJjvAigY/mBkHpTPi9QST/e6knZyNUFMl27kpmj6N9cTJnPZTgf5924SOAPaTaIoFdpJjjrpkJypbwxMD8WW30+stBRZ9nhwD3BT+pECulAmsIOKXTk4m7gPekAUAv+hhLJ6eqB4/HD8PEcdWuFbttiBHtviLMFvUGccfjPrZVRkdp/VgtKU+Ca3ZAbllWd010xiAnmalWa3dMPRKiMhcD25m8Y6auVbXhVdNCT3Vl9VJacnzH6i2/g91fq7DQuaTAppkGUrzSd4vr90xxBt7qcPPKUOJOe5mojJzABdyjdebTN88owIrjjoLggK/s7Hq/mZNit/STSbQiBKxbvwBaaxFxSIFr7wZsWgbScyjMOFriSsQ2WfXzUp3OBO9pIyp0MLh0xdGG8MbV9fyS3Fo23vPpoXrAdCREZ2RjXXL/PxL5br5bS0uAN5XdTHszYPU9AcqX7LzSOIhBXGoDiPVK9RXvtAyjNS8809UdVoWFeju86dsy1oEW8KUIqO/0TWR5yvIX2Y4Xnqi693th0w3srrqDHVgmvA71t
+ FvGVLcie
+ IsBtGgaDNqfD9F/BHnDYNnaT8M7O6hTG5qDmbNEnWBompHvoBXxtYcUDnLuWp3s8kpQfgonU+XYFtIpaaeiKZN2kI7FZOlxIrgWRI32ox7IBK4CcdoAYKSQiXLoCg6oqT+Lzz1UcWrC5TNqZHsOSmMfbMmxOrHNcZ8fCR6NMjpM1hrKo7fj6oVH2mDH09O2FOi7Ic2lWAPghMd6NGrX1Vb+yuuYutvwg3olLrpj9WzxaTCGz5hpsyclxr6hru0LtWi7YRRfv6dG6NhqYc+UlV47fN65LLPep84/P270z0f1PJm6e8j05oBI6ghZxEpZqTEdfgDatI/GtHFYWJltCLEyBDsd5yiXmbnbyNtIwlxL/3LFRfur6YR4iy+a801tROGmqtaxOjVmqaiArhwDrN09+yTkuoi5/1nTRklGdqk52m380g+VQIaGOEH9v748XLvAi4GzXkgxXInfF9Br5Yberw94B7SAazhgGtmT4fekvXTEvfzt1W306EjHHx0EjpsoS+PaZHiSpIFo0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,200 +132,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 28-Oct-26 9:42 AM, Li Zhe wrote:
-> When automatic NUMA balancing runs in memory-tiering-only mode, NUMA hint
-> faults identify slow-memory pages that are worth promoting. They are not
-> normal task-placement feedback.
-> 
-> Without separate tiering feedback, successful tiering promotions are fed
-> to update_task_scan_period() as private remote faults. That leaves
-> local == 0 and shared == 0, so the function hits its early slow-down path
-> and doubles p->numa_scan_period. Repeated promotion feedback can therefore
-> drive the scan period towards the maximum.
-> 
-> Track memory-tiering feedback separately from normal task-placement stats.
-> Successful free-space bypass promotions are not counted as tiering scan
-> feedback because they did not pass the hotness and rate-limit checks. Cold,
-> hot, and throttled feedback is generated only by the hotness/rate-limit
-> path, while migration failures slow scanning like the normal placement
-> heuristic does.
-> 
-> Use the same 70% threshold style as the normal scan-period heuristic. A
-> hot-dominated window speeds scanning up, a cold-dominated window slows it
-> down, and a throttled ratio of at least 30% also slows it down. If a
-> window has no tiering feedback, for example because promotions used the
-> free-space bypass, double the scan period, following the same
-> no-useful-signal slow-down direction as normal scan-period adjustment.
-> 
-> Evaluate the tiering window when a scan sequence completes as well as when
-> tiering faults are reported. This lets an empty window back off the scan
-> period after qualifying tiering feedback stops.
-> 
-> On a CXL system with node0 as DRAM and node3 as slow-tier memory, a
-> STREAM Triad-derived OpenMP workload was used to model a
-> bandwidth-sensitive working-set shift. It first accessed one 100G range,
-> then switched to another 100G range. The workload was first-touch placed
-> on node3 and then run from node0 with memory-tiering-only mode enabled.
-> 
-> With the free-space bypass disabled, so that promotions have to pass the
-> hotness and rate-limit checks, a kernel with only the bypass control was
-> used as the no-feedback baseline. Tiering scan-period feedback improved
-> the transition window after the active range switch:
-> 
->                               no feedback       tiering feedback
->   first 80s after switch       122.4 GB/s             129.3 GB/s  (+5.7%)
->   200-240s after switch        139.9 GB/s             140.6 GB/s  (+0.5%)
-> 
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->  include/linux/sched.h                |  17 ++++
->  include/linux/sched/numa_balancing.h |   9 +++
->  kernel/sched/fair.c                  | 113 ++++++++++++++++++++++++++-
->  3 files changed, 137 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/sched.h b/include/linux/sched.h
-> index 1c93da75226e..c4959747374b 100644
-> --- a/include/linux/sched.h
-> +++ b/include/linux/sched.h
-> @@ -833,6 +833,16 @@ struct task_ipi_mask {
->  struct task_ipi_mask { };
->  #endif
->  
-> +#ifdef CONFIG_NUMA_BALANCING
-> +enum numa_tiering_fault_stats {
-> +	NUMA_TIERING_FAULT_COLD,
-> +	NUMA_TIERING_FAULT_HOT,
-> +	NUMA_TIERING_FAULT_THROTTLED,
-> +	NUMA_TIERING_FAULT_MIGRATE_FAIL,
-> +	NR_NUMA_TIERING_FAULT_STATS
-> +};
-> +#endif
-> +
->  struct task_struct {
->  #ifdef CONFIG_THREAD_INFO_IN_TASK
->  	/*
-> @@ -1433,6 +1443,13 @@ struct task_struct {
->  	 */
->  	unsigned long			numa_faults_locality[3];
->  
-> +	/*
-> +	 * Memory tiering faults are tracked separately from normal NUMA
-> +	 * placement statistics. In tiering-only mode, slow-memory hint faults
-> +	 * are used to decide promotion, not task placement.
-> +	 */
-> +	unsigned long			numa_tiering_faults[NR_NUMA_TIERING_FAULT_STATS];
-> +
->  	unsigned long			numa_pages_migrated;
->  #endif /* CONFIG_NUMA_BALANCING */
->  
-> diff --git a/include/linux/sched/numa_balancing.h b/include/linux/sched/numa_balancing.h
-> index 200f50075d5c..12f31ed56d66 100644
-> --- a/include/linux/sched/numa_balancing.h
-> +++ b/include/linux/sched/numa_balancing.h
-> @@ -8,6 +8,7 @@
->   */
->  
->  #include <linux/sched.h>
-> +#include <linux/sched/sysctl.h>
->  
->  #define TNF_MIGRATED	0x01
->  #define TNF_NO_GROUP	0x02
-> @@ -16,6 +17,14 @@
->  #define TNF_MIGRATE_FAIL 0x10
->  #define TNF_ACCESS_TIME	0x20
->  
-> +static inline bool numa_balancing_tiering_only(void)
-> +{
-> +	int mode = sysctl_numa_balancing_mode;
-> +
-> +	return (mode & NUMA_BALANCING_MEMORY_TIERING) &&
-> +	       !(mode & NUMA_BALANCING_NORMAL);
-> +}
-> +
->  enum numa_vmaskip_reason {
->  	NUMAB_SKIP_UNSUITABLE,
->  	NUMAB_SKIP_SHARED_RO,
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 136207b62d87..1d9efc2b7427 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -2760,6 +2760,32 @@ static inline bool cpupid_valid(int cpupid)
->  	return cpupid_to_cpu(cpupid) < nr_cpu_ids;
->  }
->  
-> +static void task_numa_tiering_placement(struct task_struct *p);
-> +
-> +static bool task_numa_tiering_update(struct task_struct *p)
-> +{
-> +	if (!numa_balancing_tiering_only() || !p->mm)
-> +		return false;
-> +
-> +	task_numa_tiering_placement(p);
-> +	return true;
-> +}
-> +
-> +static void task_numa_tiering_no_feedback(struct task_struct *p)
-> +{
-> +	task_numa_tiering_update(p);
-> +}
-> +
-> +static void task_numa_tiering_fault(struct task_struct *p,
-> +				    enum numa_tiering_fault_stats stat,
-> +				    unsigned long pages)
-> +{
-> +	if (!task_numa_tiering_update(p))
-> +		return;
-> +
-> +	p->numa_tiering_faults[stat] += pages;
-> +}
-> +
->  /*
->   * For memory tiering mode, if the target fast memory node has enough free
->   * pages, recently accessed slow memory pages can bypass the normal hotness
-> @@ -2887,6 +2913,7 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->  		pgdat = NODE_DATA(dst_nid);
->  		if (numa_balancing_promote_free_space_bypass &&
->  		    pgdat_free_space_enough(pgdat)) {
-> +			task_numa_tiering_no_feedback(p);
->  			/* workload changed, reset hot threshold */
->  			pgdat->nbp_threshold = 0;
->  			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NRL, nr);
-> @@ -2899,10 +2926,18 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->  
->  		th = pgdat->nbp_threshold ? : def_th;
->  		latency = numa_hint_fault_latency(folio);
-> -		if (latency >= th)
-> +		if (latency >= th) {
-> +			task_numa_tiering_fault(p, NUMA_TIERING_FAULT_COLD, nr);
-> +			return false;
-> +		}
-> +
-> +		if (numa_promotion_rate_limit(pgdat, rate_limit, nr)) {
-> +			task_numa_tiering_fault(p, NUMA_TIERING_FAULT_THROTTLED, nr);
->  			return false;
-> +		}
->  
-> -		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
-> +		task_numa_tiering_fault(p, NUMA_TIERING_FAULT_HOT, nr);
-> +		return true;
->  	}
+run_vmtests.sh only creates the XFS that "khugepaged all:file" and the
+pagecache folio split cases of split_huge_page_test need when xfs is
+already registered, so with xfs built as a module and not loaded yet
+those tests are all skipped.
 
-I like the separation of scan-period updation of tiering mode from the regular
-mode as the existing update scheme was dependent on private/shared faults which
-made little sense in tiering mode.
+Patch 1 adds load_module(), which records the modules the script loads
+and unloads them again before it exits, and moves hwpoison_inject over
+to it. Patch 2 loads xfs through it.
 
-However I am not sure if you should drive the scan period updates from
-should_numa_migrate_memory(). The scan period belongs to the hint fault
-scanner. I am pulling the promotion heuristic out of
-should_numa_migrate_memory() in the pghot series. The hint fault path
-only reports an access and shared engine does the classification and
-migration for every source. The other sources may not have numa_scan_period,
-so this feedback has to stay with the hint fault path.
+Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+---
+V2 -> V3:
+- Match xfs as a whole word so that selinuxfs and vxfs do not count
+  (Jose A. Perez de Azpillaga)
+- Rebase onto 6593a15af108 ("selftests/mm: skip khugepaged file tests
+  if mkfs.xfs is unavailable")
 
-pghot supporting multiple sources may not see the light of the day in
-near future but it is still good to keep the source specific
-aspects and promotion engine separate.
+V1 -> V2:
+- Add load_module() and unload what the script loaded on exit (Zi Yan)
+- Unload xfs again after the run (Zi Yan)
+- Rebase onto mainline
 
-Regards,
-Bharata.
+v2: https://lore.kernel.org/r/20261017-bug-selftests-mm-run-vmtests-xfs-modprobe-v2-0-cbb36b014322@gmail.com
+v1: https://lore.kernel.org/r/20261016-bug-selftests-mm-run-vmtests-xfs-modprobe-v1-1-b97dfc79e97a@gmail.com
+
+---
+Qiliang Yuan (2):
+      selftests/mm: track the modules run_vmtests.sh loads
+      selftests/mm: load xfs before checking for it in run_vmtests.sh
+
+ tools/testing/selftests/mm/run_vmtests.sh | 33 ++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
+---
+base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
+change-id: 20261016-bug-selftests-mm-run-vmtests-xfs-modprobe-de0697d4c4e9
+
+Best regards,
+-- 
+Qiliang Yuan <odys.yuan@gmail.com>
+
 
