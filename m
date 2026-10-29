@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF04606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 16:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698A7606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 16:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=apnLeEp6
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mkkh/6Ad
 Received: by kanga.kvack.org (Postfix)
-	id 624896B05DE; Thu, 29 Oct 2026 12:08:31 -0400 (EDT)
+	id 1699A6B05DF; Thu, 29 Oct 2026 12:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FC466B05DF; Thu, 29 Oct 2026 12:08:31 -0400 (EDT)
+	id 1416F6B05E1; Thu, 29 Oct 2026 12:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 539066B05E0; Thu, 29 Oct 2026 12:08:31 -0400 (EDT)
+	id 07EF26B05E2; Thu, 29 Oct 2026 12:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 299136B05DE
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:08:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68181140491
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:08:28 +0000 (UTC)
-X-FDA: 85376146296.04.330C3ED
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8285D16000B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:08:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=apnLeEp6;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CE5AC6B05DF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:08:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C121120449
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:08:32 +0000 (UTC)
+X-FDA: 85376146464.08.92B215F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 99178180014
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:08:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mkkh/6Ad";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793290106;
+	s=arc-20220608; t=1793290110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I/oiBbhXQXOuy5/WHon3lGMzwYKAwOcdwRlB5xpdxo4=;
-	b=X5m78+6cF6UJh6YzXKFRUoOorbGSdxOVtPAIVC1dfgccQpcI4GJmoraKkr5WOR9I6h7x8l
-	qyz26in8FtlaYqTRhyZ9NbWJXvrt5jpxkIRHx1RTrNePpIlLYxe9JtRxcKSluvdG0cQsuZ
-	EOkLt3W1YkUWTiQcCxU2t2hEm0HtHeQ=
+	bh=lOdaf0Zf7Tx/CylsO5jKdAcnuGg+xFWYSOeHAoH3mNc=;
+	b=ucmKbKMXMdjk5jQc2QUZz0iVYRDHzKB3vaLm9XlxiPeAchMgHzcYGkHalMSwMLFi4E/1E1
+	rmNlzGBUGJwKPBysmnVOL/e3p5G2RS80Gby9QdudDs1bwI87Ie4TxVO5i+x7SWceGUK1rE
+	2M1nZgK2635laJ0Y3cKhXPBVZ0vVwL4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=apnLeEp6;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mkkh/6Ad";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793290106;
-	b=wqQ40lTygozyAgBJ+6XlMxDrOGWhuD6AGjiOES+JpW2ohpx2t2K1+CETBadi47cNzPitpK
-	cSiSKyP3k4SOzgRnmyBTOunehQjmsnoTk1YHAvLuKmeJI2vKz/afYBaAPcKGO7R1IKRstQ
-	27AZXIO1OOdd5s0rE+yTMt61ptLe/Jw=
+	t=1793290110;
+	b=y1NHx+GmPfk59S4gu5FBKmKBtgKrYQ6oZp9zhhwwpOZ9Pr4heo+FHGofrITa+4X1hGUIJh
+	nbZVcXbQZaQktp9MbDZJeFhoWH9aFaeLi4X6H9w3R384i97cj4ueKCpsOBUtlJa43EptfV
+	f1B3TP+0Sn/YT3Z9PcKNXhIA80WEhEs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D3C4940BEB;
-	Thu, 29 Oct 2026 16:08:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1211F01824;
-	Thu, 29 Oct 2026 16:08:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C02760625;
+	Thu, 29 Oct 2026 16:08:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC6A1F01826;
+	Thu, 29 Oct 2026 16:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793290105;
-	bh=I/oiBbhXQXOuy5/WHon3lGMzwYKAwOcdwRlB5xpdxo4=;
+	s=k20260515; t=1793290109;
+	bh=lOdaf0Zf7Tx/CylsO5jKdAcnuGg+xFWYSOeHAoH3mNc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=apnLeEp6sWFy2449fzQAHriIIqCswM8uoD0mTMMHveLird8YKw0oOjAo1G4GlLf/E
-	 wlj38mUL83hgTM19xi+oSPQDnV9WXWU1yHBf3y2zit5T3almbhv+eS37w3lnS9deCd
-	 16QZrfScJpN69CogqhFXyUYjLlkeyV0oTct2sfU+T4L+omqsbHA4buFp6xSmkfbKp8
-	 pWym+AoDsETj00RyBN8gL99EcOvnbplUFTpKbcTnb0LQgoQe366xX/UwyS/NQOtRb3
-	 G9NgaIdQ/P78ph9RLW7QyFUmrAYZUeSPX4LFQAH48AGbNdt/9cXHMX5TwjlcYT/9Fc
-	 2kP+LcuIAbwjw==
+	b=Mkkh/6AdRYfvSfyjpLwbroR31lzxLlJFZEp5FSNJ/gv/Y2ksuNNMnQ7DNOpxkFJZs
+	 H83BjlVu+Ow4K2PY+bVZIdujbY8jRUosS55d6uMBxaEbOVWjifjTtQxwXpQbmotZwa
+	 ItPwCURgbjN3znNMx9+vi6oI7MD5hB4GZLh+yTtQFSA6hw9ritBvSwoFIcVGsxL74p
+	 cOIZZ7MhC3xEAHShIX+IwymVOtNP+lQy3SvX8HJZwqCK00aPdqC0gLmGjwNZyVbtAs
+	 B17SiqaVnq6QhU+0td2yT+ST7BNJyJCQAidTifAqGK7AHn3T+wC4LuwZ/CyKJandiB
+	 uBreV+q7tvzQA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 29 Oct 2026 17:07:06 +0100
-Subject: [PATCH v2 15/34] ufs: don't set SB_RDONLY after filesystem errors
+Date: Thu, 29 Oct 2026 17:07:07 +0100
+Subject: [PATCH v2 16/34] hpfs: don't set SB_RDONLY after filesystem errors
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-work-fs-sb_rdonly-v2-15-2f44f64f0b66@kernel.org>
+Message-Id: <20261029-work-fs-sb_rdonly-v2-16-2f44f64f0b66@kernel.org>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
 In-Reply-To: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
 To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
@@ -81,26 +81,26 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
  linux-xfs@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8083; i=brauner@kernel.org;
- h=from:subject:message-id; bh=5wkaJy8Del2GgoWgJLyIqhCgM2FMCOm88L7ydmoZ6Xw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9ztf/dfEn9+fLU13UX185N/37l95e7lUXL32av3rm1
- zcbC9bkSXSUsjCIcTHIiimyOLSbhMst56nYbJSpATOHlQlkCAMXpwBM5NoLhn862w35hG/cdz0h
- +/8km8q/0xs/NQn/v9XN8UpsgWxn/T8Zhv/pXwwEzuUckp3csGHLlhShgCThzspVCxf03T0ZvHh
- BnwEvAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4412; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=HjY2TpU2zaQJA3Ncvw1b4w9QnMNY6uHTIkSft5aNRTE=;
+ b=kA0DAAoWkcYbwGV43KIByyZiAGrjby+jQvJKYk2QQRQ1L8q//FVvZJgprvAFPf0r1TvUIMCe+
+ oh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmrjby8ACgkQkcYbwGV43KJSKwD+MnJY
+ PXjYZUPCVMbe+ntVEdsrAo9wqFKueXJYeySUyQkA/RQp/pST8RDbnSwtc7r5VAOV4jWHE1f9RMH
+ rZe91yVII
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8285D16000B
-X-Stat-Signature: w1t3orrxsdpz37gkk7odjdcet8ffy4x8
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 99178180014
+X-Stat-Signature: xay3cjobtj1fgtz7u949brnocbks63qc
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793290106-572879
-X-HE-Meta: U2FsdGVkX18SfZqlH0Y/IZmgOaaJk01attLLByet+/IG/S6WoO6XCOvAtn1OvZjgZIwpz6Az6siDmfYq/RHsMBfcg/QXH/4ga89nOL641dKm2/jYVxqjFbR4VQnTRnSXtzCt2xVfTCCFwRdcdCdlkyNhn4NorzUj9ID5vskkOcFiKEQerFacoTjWuTNs9MB3Qv+jFDOT3M4sF2nmQL4kTuhuBBPyW2I87g375ycThXt6gqH4MgpzUecrlD4dmdWCaXzbuS+9t7pWcRdpmcm9sCSO1LAvfW5ZREHvS9Jpzg8trKu8TJ+26qsw9Q2nZC4kCrG4QcmD68XRTemdeTasMVq/L353WNwK1G4rvKlpm12zJgiwvea62CgSFIBveNNDQiGygqx0lXYiiJOKM0K8RTaE0eK4ghX2YeYptxqnhqNE+UnHWtpV3fssqRrdoo/mY7h+9ZK+zulRFz2BUD7P7JBo4GXz4GvxqFegO2zyGeD6guvMscVaPdh3jQ4VOIS57ldW7d7uPoVl5/J3yI55Q9j498ni52hJr+W+KC7JnAuRJPIfzB5XVGBqeqCvua7sqaGzBgLqWYlUdAnmoPtynbNmK5QyqP95KTE7iHkqIyV9ALMvzdGup6EQYY3F8wxDDY9LFp7xRMOFIrhOlh8hEIheO06PGWLZD6a2xtkjLwML3VhOY5d8W2D6L19yB7TstY21hDj9D7OFhYiu4uVi0F0tC/jAYYrYEmfkip035zXqJDAQWy9co6YubaQQH6Htsy0UT/aAwsb8E1cYnxQyYU5pKF/akdxv7neaCnR4Q9dqeD7mBqSWSD/qWoKih4iqrpeY52AijAdZ1DQ91ofKcSPnvrt/u0ioJt+8zt9AedYJvOSK0DKyPnWDNQmgVroWsa7v3vunsdHIXWCtbnSEmwqiFesX6TF+uXiyXAKuahH9nDyWwUJXlDtK4y1LG8tUNa6TT1YqFZ2wKeaN9et
- JpcAdH/P
- tD/2X0nHvVTGBYDXrUjUzYlzf+e9WnJiktZUQZLVBJxtZCL+2AC1/t7ADn/h7U6S7HytSjrEs0v0L5i2YG280V+Mi+VtAiVIyVZllsBt+CGs8Z4K9Vz+zvnL/glIVF1bb+r2zmOZAo6++XG/VkXjThazR/sqaLgrKBwsgHr2xtI5FvsH5PtahwznfZFiM4WSDZHl1/YLnkt+TqTe9y8nXmVZdUsPTPxJ/6m2D1RX0B6rSoYSZaxXHiIXiLSILR3OBE/9wQ1/FblfaRjkX3yAj2m52mFCqKiw/GhdCq/rRxxG1JR1earhlR7hef00A5y6uzQTw+sKixOw4TZMURYV34uEOJ/eHmU8S0o2pAHyRePxchC5dXtDpGXtXFw==
+X-Rspam-User: 
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1793290110-954059
+X-HE-Meta: U2FsdGVkX1/ygPhA2S2PWYUUe9JgsAa0xR/XIqVSihX0/c6Rmi0OiR9CVfradXh7inzlRgJtN90DETUMKs2nNVQjypFRArIPCsD1kRr9jTWQkIBXXFVBxIS4C2Fk7mjAWSbfFE3lRXtT3yzHtxkDqnbdFCv6XR3VpcpvrLvk0COmk43XSJW9V0JNAWu0jXlsrYdQB0tLPrhfFgbfxPDhsYE7Vgaqo/M6EYO53upx2ZCWfuVV7DtZKth1121CWA2Jn9tJXv+zePYgl0SqDbzjWOpgsYdajDAdmRKx2docGPm+zJC1935ogVZm/QnoIf0fdKf+T7IwEpUByLFwVVnPZJ63bqDOslhIuYndQ1BOW9P7bXQ2KlsmLiP6p6DofwwVSRDGYZHUPlRjGyx0Vtgqt58+0/imsnfPlLbUr3oXuYypo4fmgvh6yzXCDPNId8N2mC438LtNVpUK6L7/VayEPDAwjg1Aiu1aVmjeAWVUroBved+3L5tmzjQa1q6NTUH91Hi79i+g1xIURCc2LEmmlw0XBy8MRpbnX4JwNNnvj+p8vj6AJkXgBa3h55XpiY7MNu//zlbFFFMOXcU8UT2FvzmeyOiBl5p/fxwmh+6IUqKMaCjedaaV+BEXH5ytz6MALoVrvgADZEzA2lE5xoO7EGADHTs8t+i4U8ulkkqIrHnC9aG+9Wl6ROc4E2R9eN+SeGq3VaGIkl++uN+2qRXuPKr9rda1Y9Eb2wodKDoozdZ9HZrZU6MFSieZPddaWsWt4sm1PtLo65o3QBrmeA6JLIHcUkDK+1mrW2jCv/pIOgSLz3+yYyWOxB6/jEZtXL6+poHZQ8ZBc2N1ypm8/BWU8q8V7889DgbGYm6Qm62pZU/TAH5xUBNshgNYeMgdQBA/iGyVqTjTEz0KWwcgj3O8XGp8H+eKCnOxZzRsrvvA4xopDUeRdEpS9zydOLD5DBao3yEx1DBiMRFV585tHsc
+ UfmiK7cd
+ tFdTa22Gyr96ZnE+92vb+T2FbkjDJIozIxsYwdKzOjdtywMvh/GyFtJP7bgRtEGidmzwN366CqMn/lOw1QBRJ7n98xd10mWQibhuntj+uTEB4Le1ocwfpLt8NSvzK+E0CPJYbfWVj1Ua1eSMHvJiSgw3TDayIZSJGDUu3pU0ll+XKBZzB3IJyFPSlz9E6Ur5Usk4E4IqjvACkj+KrUvABdX6jLftbwzhTVKqKRxq25B9uUxZd9Hx8BtsJivBWA4hILBuiAsPkbUfoqzQ3meY/xP4XVjDNYUw4f+ISeEOQbwCiCisFf9bGO2IOtzMFHgVZ1K6wXh1k7W1xa04=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,232 +109,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-ufs_error() sets SB_RDONLY on every error, whatever onerror= says, and
-ufs_panic() does too, both without holding s_umount. If that happens
-while the filesystem is frozen through bdev_freeze() thaw_super() sees a
-read-only superblock and leaves the s_writers rwsems locked so every
-writer hangs. It also leaked the cylinder group info because
-ufs_put_super() doesn't free it for a read-only superblock, and a
-remount to read-write read it in again over the old copy.
+With errors=remount-ro, the hpfs default, hpfs_error() sets SB_RDONLY on
+the first error without holding s_umount. If that happens while the
+filesystem is frozen through bdev_freeze() thaw_super() sees a read-only
+superblock and leaves the s_writers rwsems locked so every writer hangs.
 
-So call sb_set_emergency_ro() instead and let the VFS refuse
-modifications. ufs_error() and ufs_panic() still mark the superblock
-UFS_FSBAD but don't queue ufs_sync_fs() anymore which does nothing in
-that state. ufs_put_cylinder() doesn't store the allocation rotors and
-ufs_write_inode() refuses. ufs_handle_dirsync() treats EROFS as success
-like ext2 because the directory entry was already changed.
+hpfs_error() is also called from hpfs_fill_super() where nothing can
+freeze the superblock yet, so keep setting SB_RDONLY there. After that
+call sb_set_emergency_ro() instead and let the VFS refuse modifications.
+FITRIM is refused and unmark_dirty() does nothing in that state so the
+next mount reports the volume as improperly stopped. hpfs_map_dnode()
+and hpfs_lookup() treat the state like read-only so lookups behave as
+before.
 
-A remount to read-write fails until umount. A remount to read-only works
-and keeps the cylinder group info because evicting inodes that were
-unlinked while open still loads cylinder groups. Writes through file
-descriptors opened before the error fail with EROFS.
+A remount to read-write fails until umount and a remount to read-only
+doesn't write the spare block. Writes through file descriptors opened
+before the error fail with EROFS.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/ufs/cylinder.c | 12 +++++++-----
- fs/ufs/dir.c      |  3 +++
- fs/ufs/inode.c    |  2 ++
- fs/ufs/super.c    | 56 ++++++++++++++++++++++++++++++++++++++-----------------
- 4 files changed, 51 insertions(+), 22 deletions(-)
+ fs/hpfs/alloc.c |  4 ++--
+ fs/hpfs/dir.c   |  3 ++-
+ fs/hpfs/map.c   |  3 ++-
+ fs/hpfs/super.c | 11 +++++++++--
+ 4 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ufs/cylinder.c b/fs/ufs/cylinder.c
-index b930ee1cf853..e0360873a7f8 100644
---- a/fs/ufs/cylinder.c
-+++ b/fs/ufs/cylinder.c
-@@ -117,12 +117,14 @@ void ufs_put_cylinder (struct super_block * sb, unsigned bitmap_nr)
- 	}
- 	/*
- 	 * rotor is not so important data, so we put it to disk 
--	 * at the end of working with cylinder
-+	 * at the end of working with cylinder, but not after an error
- 	 */
--	ucg->cg_rotor = cpu_to_fs32(sb, ucpi->c_rotor);
--	ucg->cg_frotor = cpu_to_fs32(sb, ucpi->c_frotor);
--	ucg->cg_irotor = cpu_to_fs32(sb, ucpi->c_irotor);
--	ubh_mark_buffer_dirty (UCPI_UBH(ucpi));
-+	if (!sb_emergency_ro(sb)) {
-+		ucg->cg_rotor = cpu_to_fs32(sb, ucpi->c_rotor);
-+		ucg->cg_frotor = cpu_to_fs32(sb, ucpi->c_frotor);
-+		ucg->cg_irotor = cpu_to_fs32(sb, ucpi->c_irotor);
-+		ubh_mark_buffer_dirty (UCPI_UBH(ucpi));
-+	}
- 	for (i = 1; i < UCPI_UBH(ucpi)->count; i++) {
- 		brelse (UCPI_UBH(ucpi)->bh[i]);
- 	}
-diff --git a/fs/ufs/dir.c b/fs/ufs/dir.c
-index e96174b738b4..78c883921115 100644
---- a/fs/ufs/dir.c
-+++ b/fs/ufs/dir.c
-@@ -64,6 +64,9 @@ static int ufs_handle_dirsync(struct inode *dir)
- 	err = filemap_write_and_wait(dir->i_mapping);
- 	if (!err)
- 		err = sync_inode_metadata(dir, 1);
-+	/* The change is done, an error made us read-only in the meantime. */
-+	if (err == -EROFS && sb_emergency_ro(dir->i_sb))
-+		err = 0;
- 	return err;
- }
+diff --git a/fs/hpfs/alloc.c b/fs/hpfs/alloc.c
+index f5150372618e..8c84126ea038 100644
+--- a/fs/hpfs/alloc.c
++++ b/fs/hpfs/alloc.c
+@@ -539,7 +539,7 @@ int hpfs_trim_fs(struct super_block *s, u64 start, u64 end, u64 minlen, unsigned
+ 		return 0;
+ 	if (start < sbi->sb_dirband_start + sbi->sb_dirband_size && end > sbi->sb_dirband_start) {
+ 		hpfs_lock(s);
+-		if (sb_rdonly(s)) {
++		if (sb_rdonly(s) || sb_emergency_ro(s)) {
+ 			err = -EROFS;
+ 			goto unlock_1;
+ 		}
+@@ -560,7 +560,7 @@ int hpfs_trim_fs(struct super_block *s, u64 start, u64 end, u64 minlen, unsigned
+ 	end_bmp = (end + 0x3fff) >> 14;
+ 	while (start_bmp < end_bmp && !err) {
+ 		hpfs_lock(s);
+-		if (sb_rdonly(s)) {
++		if (sb_rdonly(s) || sb_emergency_ro(s)) {
+ 			err = -EROFS;
+ 			goto unlock_2;
+ 		}
+diff --git a/fs/hpfs/dir.c b/fs/hpfs/dir.c
+index 3bf11202e2d3..1fd35a98a5f1 100644
+--- a/fs/hpfs/dir.c
++++ b/fs/hpfs/dir.c
+@@ -265,7 +265,8 @@ struct dentry *hpfs_lookup(struct inode *dir, struct dentry *dentry, unsigned in
+ 	hpfs_result = hpfs_i(result);
+ 	if (!de->directory) hpfs_result->i_parent_dir = dir->i_ino;
  
-diff --git a/fs/ufs/inode.c b/fs/ufs/inode.c
-index c9ff8673fa66..ed5d98c8bfca 100644
---- a/fs/ufs/inode.c
-+++ b/fs/ufs/inode.c
-@@ -828,6 +828,8 @@ static int ufs_update_inode(struct inode * inode, int do_sync)
- 
- int ufs_write_inode(struct inode *inode, struct writeback_control *wbc)
+-	if (de->has_acl || de->has_xtd_perm) if (!sb_rdonly(dir->i_sb)) {
++	if ((de->has_acl || de->has_xtd_perm) &&
++	    !sb_rdonly(dir->i_sb) && !sb_emergency_ro(dir->i_sb)) {
+ 		hpfs_error(result->i_sb, "ACLs or XPERM found. This is probably HPFS386. This driver doesn't support it now. Send me some info on these structures");
+ 		iput(result);
+ 		result = ERR_PTR(-EINVAL);
+diff --git a/fs/hpfs/map.c b/fs/hpfs/map.c
+index be73233502f8..e9af634e54fa 100644
+--- a/fs/hpfs/map.c
++++ b/fs/hpfs/map.c
+@@ -288,7 +288,8 @@ struct dnode *hpfs_map_dnode(struct super_block *s, unsigned secno,
+ 					goto bail;
+ 				}
+ 				if (((31 + de->namelen + de->down*4 + 3) & ~3) != le16_to_cpu(de->length)) {
+-					if (((31 + de->namelen + de->down*4 + 3) & ~3) < le16_to_cpu(de->length) && s->s_flags & SB_RDONLY) goto ok;
++					if (((31 + de->namelen + de->down*4 + 3) & ~3) < le16_to_cpu(de->length) &&
++					    (sb_rdonly(s) || sb_emergency_ro(s))) goto ok;
+ 					hpfs_error(s, "namelen does not match dirent size in dnode %08x, dirent %03x, last %03x", secno, p, pp);
+ 					goto bail;
+ 				}
+diff --git a/fs/hpfs/super.c b/fs/hpfs/super.c
+index 8fbdbf080627..ab89e624cd51 100644
+--- a/fs/hpfs/super.c
++++ b/fs/hpfs/super.c
+@@ -44,7 +44,7 @@ static void unmark_dirty(struct super_block *s)
  {
-+	if (sb_emergency_ro(inode->i_sb))
-+		return -EROFS;
- 	return ufs_update_inode(inode, wbc->sync_mode == WB_SYNC_ALL);
- }
- 
-diff --git a/fs/ufs/super.c b/fs/ufs/super.c
-index 3569ac92b065..d82cf73360a7 100644
---- a/fs/ufs/super.c
-+++ b/fs/ufs/super.c
-@@ -280,11 +280,13 @@ void ufs_error (struct super_block * sb, const char * function,
- 	uspi = UFS_SB(sb)->s_uspi;
- 	usb1 = ubh_get_usb_first(uspi);
- 	
--	if (!sb_rdonly(sb)) {
-+	/*
-+	 * SB_RDONLY needs s_umount, see sb_set_emergency_ro(). The superblock
-+	 * marked bad goes out with the block device.
-+	 */
-+	if (!sb_rdonly(sb) && sb_set_emergency_ro(sb)) {
- 		usb1->fs_clean = UFS_FSBAD;
- 		ubh_mark_buffer_dirty(USPI_UBH(uspi));
--		ufs_mark_sb_dirty(sb);
--		sb->s_flags |= SB_RDONLY;
- 	}
- 	va_start(args, fmt);
- 	vaf.fmt = fmt;
-@@ -314,15 +316,14 @@ void ufs_panic (struct super_block * sb, const char * function,
- 	uspi = UFS_SB(sb)->s_uspi;
- 	usb1 = ubh_get_usb_first(uspi);
- 	
--	if (!sb_rdonly(sb)) {
-+	/* See ufs_error(). */
-+	if (!sb_rdonly(sb) && sb_set_emergency_ro(sb)) {
- 		usb1->fs_clean = UFS_FSBAD;
- 		ubh_mark_buffer_dirty(USPI_UBH(uspi));
--		ufs_mark_sb_dirty(sb);
- 	}
- 	va_start(args, fmt);
- 	vaf.fmt = fmt;
- 	vaf.va = &args;
--	sb->s_flags |= SB_RDONLY;
- 	pr_crit("panic (device %s): %s: %pV\n",
- 		sb->s_id, function, &vaf);
- 	va_end(args);
-@@ -512,11 +513,13 @@ static int ufs_read_cylinder_structures(struct super_block *sb)
- 
- failed:
- 	kfree (base);
-+	sbi->s_csp = NULL;
- 	if (sbi->s_ucg) {
- 		for (i = 0; i < uspi->s_ncg; i++)
- 			if (sbi->s_ucg[i])
- 				brelse (sbi->s_ucg[i]);
- 		kfree (sbi->s_ucg);
-+		sbi->s_ucg = NULL;
- 		for (i = 0; i < UFS_MAX_GROUP_LOADED; i++)
- 			kfree (sbi->s_ucpi[i]);
- 	}
-@@ -579,7 +582,8 @@ static void ufs_put_cstotal(struct super_block *sb)
-  * ufs_put_super_internal() - put on-disk intrenal structures
-  * @sb: pointer to super_block structure
-  * Put on-disk structures associated with cylinder groups
-- * and write them back to disk, also update cs_total on disk
-+ * and write them back to disk, also update cs_total on disk.
-+ * Nothing is written back after an error.
-  */
- static void ufs_put_super_internal(struct super_block *sb)
- {
-@@ -591,10 +595,14 @@ static void ufs_put_super_internal(struct super_block *sb)
- 	
- 	UFSD("ENTER\n");
- 
-+	base = space = (char*) sbi->s_csp;
-+	/* Don't write anything back after an error, see ufs_error(). */
-+	if (sb_emergency_ro(sb))
-+		goto release;
-+
- 	ufs_put_cstotal(sb);
- 	size = uspi->s_cssize;
- 	blks = (size + uspi->s_fsize - 1) >> uspi->s_fshift;
--	base = space = (char*) sbi->s_csp;
- 	for (i = 0; i < blks; i++, space += uspi->s_fsize) {
- 		struct buffer_head *bh = sb_bread(sb, uspi->s_csaddr + i);
- 
-@@ -607,6 +615,7 @@ static void ufs_put_super_internal(struct super_block *sb)
- 		mark_buffer_dirty(bh);
- 		brelse(bh);
- 	}
-+release:
- 	for (i = 0; i < sbi->s_cg_loaded; i++) {
- 		ufs_put_cylinder (sb, i);
- 		kfree (sbi->s_ucpi[i]);
-@@ -616,7 +625,9 @@ static void ufs_put_super_internal(struct super_block *sb)
- 	for (i = 0; i < uspi->s_ncg; i++) 
- 		brelse (sbi->s_ucg[i]);
- 	kfree (sbi->s_ucg);
-+	sbi->s_ucg = NULL;
- 	kfree (base);
-+	sbi->s_csp = NULL;
- 
- 	UFSD("EXIT\n");
- }
-@@ -628,6 +639,10 @@ static int ufs_sync_fs(struct super_block *sb, int wait)
- 	struct ufs_super_block_third * usb3;
- 	unsigned flags;
- 
-+	/* Leave the superblock alone after an error, see ufs_error(). */
-+	if (sb_emergency_ro(sb))
-+		return 0;
-+
- 	mutex_lock(&UFS_SB(sb)->s_lock);
- 
- 	UFSD("ENTER\n");
-@@ -684,7 +699,8 @@ static void ufs_put_super(struct super_block *sb)
- 
- 	UFSD("ENTER\n");
- 
--	if (!sb_rdonly(sb))
-+	/* NULL if a remount to read-only freed the cylinder groups */
-+	if (sbi->s_ucg)
- 		ufs_put_super_internal(sb);
- 	cancel_delayed_work_sync(&sbi->sync_work);
- 
-@@ -1265,14 +1281,20 @@ static int ufs_reconfigure(struct fs_context *fc)
- 	 * fs was mouted as rw, remounting ro
- 	 */
- 	if (fc->sb_flags & SB_RDONLY) {
--		ufs_put_super_internal(sb);
--		usb1->fs_time = ufs_get_seconds(sb);
--		if ((flags & UFS_ST_MASK) == UFS_ST_SUN
--		  || (flags & UFS_ST_MASK) == UFS_ST_SUNOS
--		  || (flags & UFS_ST_MASK) == UFS_ST_SUNx86) 
--			ufs_set_fs_state(sb, usb1, usb3,
--				UFS_FSOK - fs32_to_cpu(sb, usb1->fs_time));
--		ubh_mark_buffer_dirty (USPI_UBH(uspi));
-+		/*
-+		 * After an error leave the superblock alone and keep the
-+		 * cylinder groups, evict still needs them.
-+		 */
-+		if (!sb_emergency_ro(sb)) {
-+			ufs_put_super_internal(sb);
-+			usb1->fs_time = ufs_get_seconds(sb);
-+			if ((flags & UFS_ST_MASK) == UFS_ST_SUN
-+			  || (flags & UFS_ST_MASK) == UFS_ST_SUNOS
-+			  || (flags & UFS_ST_MASK) == UFS_ST_SUNx86)
-+				ufs_set_fs_state(sb, usb1, usb3,
-+					UFS_FSOK - fs32_to_cpu(sb, usb1->fs_time));
-+			ubh_mark_buffer_dirty (USPI_UBH(uspi));
-+		}
- 		sb->s_flags |= SB_RDONLY;
- 	} else {
- 	/*
+ 	struct buffer_head *bh;
+ 	struct hpfs_spare_block *sb;
+-	if (sb_rdonly(s)) return;
++	if (sb_rdonly(s) || sb_emergency_ro(s)) return;
+ 	sync_blockdev(s->s_bdev);
+ 	if ((sb = hpfs_map_sector(s, 17, &bh, 0))) {
+ 		sb->dirty = hpfs_sb(s)->sb_chkdsk > 1 - hpfs_sb(s)->sb_was_error;
+@@ -81,7 +81,14 @@ void hpfs_error(struct super_block *s, const char *fmt, ...)
+ 			else {
+ 				pr_cont("; remounting read-only\n");
+ 				mark_dirty(s, 0);
+-				s->s_flags |= SB_RDONLY;
++				/*
++				 * Before SB_BORN the mounter holds s_umount,
++				 * later see sb_set_emergency_ro().
++				 */
++				if (s->s_flags & SB_BORN)
++					sb_set_emergency_ro(s);
++				else
++					s->s_flags |= SB_RDONLY;
+ 			}
+ 		} else if (sb_rdonly(s))
+ 				pr_cont("; going on - but anything won't be destroyed because it's read-only\n");
 
 -- 
 2.53.0
