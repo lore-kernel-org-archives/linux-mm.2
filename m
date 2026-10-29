@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3863E606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2780C606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=b8+aD1KJ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BJLkrOXZ
 Received: by kanga.kvack.org (Postfix)
-	id 3A7816B05B3; Thu, 29 Oct 2026 15:50:51 -0400 (EDT)
+	id 3A5026B00EF; Thu, 29 Oct 2026 15:52:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 372226B05BC; Thu, 29 Oct 2026 15:50:51 -0400 (EDT)
+	id 3755C6B05B2; Thu, 29 Oct 2026 15:52:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28B0C6B05BD; Thu, 29 Oct 2026 15:50:51 -0400 (EDT)
+	id 2B38A6B05BD; Thu, 29 Oct 2026 15:52:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 030B36B05B3
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:50:50 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54FA7A04A2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:50:50 +0000 (UTC)
-X-FDA: 85376706660.08.5706CD1
-Received: from mta0.migadu.com (out-117.mta0.migadu.com [91.218.175.117])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 25339140002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:50:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b8+aD1KJ;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 02E196B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:52:40 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 90FA6804BB
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:52:40 +0000 (UTC)
+X-FDA: 85376711280.10.91712F3
+Received: from mta1.migadu.com (out-31.mta1.migadu.com [95.215.58.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8F553100002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:52:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BJLkrOXZ;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.117 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793303448;
+	s=arc-20220608; t=1793303558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VtEOaWfP8tv9g+g92adSRdR2qBq/UBZnhwhpMjBubc8=;
-	b=V2EpxjeHJm8MBvoKb2enZWF5mTQBdiHcgty4tPH1qqV4Bh93PapT6X4yZuQjOhQMBzmutC
-	FiTyeBhSJrrV5F6k1zos2BtyxzBFaFSOUrDHqY4sFuDUAWkroZrr81XXdYrrnC48ff4Up6
-	1kQ0VIr9x9IFGpBODf/Isdmgw3GwMDU=
+	bh=a447cVMtdkqcUJRY7pb6L3o51fer89SCf7m7k3ULuN8=;
+	b=jOB17twUI8naVQICwjdyr+Rqn3maLLlrm0jmVhDWL4RkQgQhHmHWFOm2OWwC0awO2nCmbH
+	e8uX2FW7ATZh/r3mTbxMG4YnKKOXR6SLgIeritpn0huDAhDOFVb/KlA3lkTKzzv7PHl6eX
+	DfVfr1hA+LDuIRR+/Yiffe7tdD7wHAY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b8+aD1KJ;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BJLkrOXZ;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.117 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.31 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793303448;
-	b=VXhlXjtlLwPNN0vve+FwwSGhK3FAG8AJPkCM10h3xp7N6PWLFtRtg1vaPsAAuoDqpIDZX6
-	7lnMdt6CCG7MVc5aEP4xFbW+w+l3soJsi70ekPqOAYbIF7+LZPOMtLzIxMAR4wYS2i5LT0
-	J1J5bOseB5mu8O/01FeRsggCkk5S0U0=
+	t=1793303558;
+	b=R8N/hsMjNrDjJsKzBjClbLMdTwr2/GneaaIwR+7JkuUfss1H43swVk0/Gwfp9+2tp007YB
+	ZopBia10YicVMT37x9r3WozkqVm7BTN19uCmZEwfwdMN8Noq4U6c2sYHIPEyjoakFzqYAv
+	5LBYUKTgTH1Pkwe89mKbBD/1fL+PKWo=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=oCF7P8x0NM5ij/TruM3+Ta2vikeg2OnPaSW/zqp0m6w=;
+DKIM-Signature: a=rsa-sha256; bh=XZ2azTUUWfrxKE1K4J2pw0GmPL2WGA3CYY9gqmtHK18=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793303445; v=1; x=1793908245;
- b=b8+aD1KJALXDFdfbJRJ6AOK1uLs3j10fzQ+6XWK3dioQ/YbHWvfKpOLb4xyBKWqZVo//LtMk
- rNHfeh3IuV8Z5sC0ebz2xvai35ySheUYRzUNqTRShcv3ui5Jtrcuoa621buHz6OvudKKjZWdwvd
- QD3h3jVHjpUwyk8S3XZpDWiM=
+ t=1793303557; v=1; x=1793908357;
+ b=BJLkrOXZx/1vobWi+dAYt72zpfjVKP52ixGzQxuNg5bTSwDs/wGRXzmwdqhf2jIHhWav8q4s
+ GNGJy1yDmOp5m1OqjeANl8gOfVeCqVh9L3cMEl/qLibkW3BR83L7EnAHpVECAR/3PJSqotAedBa
+ w4HH65LOIdY9hipBf3AHflLc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 796089e730b762cd;
-	Thu, 29 Oct 2026 19:50:21 +0000
-X-Mizu-Trace-ID: 796089e730b762cd
+Received: by smtp.migadu.com with ESMTPS id 682a9705787ec960;
+	Thu, 29 Oct 2026 19:52:37 +0000
+X-Mizu-Trace-ID: 682a9705787ec960
 X-Migadu-Flow: FLOW_OUT
-Date: Thu, 29 Oct 2026 12:50:15 -0700
+Date: Thu, 29 Oct 2026 12:52:34 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Kuniyuki Iwashima <kuniyu@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
 	Kuniyuki Iwashima <kuni1840@gmail.com>, linux-mm@kvack.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] memcg: Annotate slow paths in consume_stock() and
+Subject: Re: [PATCH v3 4/4] memcg: Uncharge pages outside memcg_stock.lock in
  refill_stock().
-Message-ID: <auOjX_O3vwou-lJ6@linux.dev>
+Message-ID: <auOj3mC-J9QC0hCx@linux.dev>
 References: <20261029194452.3189365-1-kuniyu@google.com>
- <20261029194452.3189365-4-kuniyu@google.com>
+ <20261029194452.3189365-5-kuniyu@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261029194452.3189365-4-kuniyu@google.com>
-X-Rspamd-Queue-Id: 25339140002
+In-Reply-To: <20261029194452.3189365-5-kuniyu@google.com>
+X-Rspamd-Queue-Id: 8F553100002
 X-Rspam-User: 
-X-Stat-Signature: dx5stkrohztw5p774e7943shweqi9uyh
+X-Stat-Signature: chn6yaa6kakx15xfzhrenk3zmy1scm6s
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1793303447-378234
-X-HE-Meta: U2FsdGVkX1+xNfYAuu0zRR7nMnny6SSPhD4+AGre06m4YquR67B9IYts+/P/fyR8sjyY0XVvZUromdSJlknbV47pLQ1Y//D37OpYXFxSPHgl6CV4z/il0anpxzzABO1cOLrcJbWPREpqInCEHqFtgWYtFIR8uXvZhkRbtK83S4hXNPM48QZDBRhmplTZus8YwGIp/6xwNFCLK9B5K/JQnUzpsA5C3BHKG+dVHgwcemdDB7gFu3EVy9mAg3O/KMgbOOXOIgP5AA3upePV5T75Abr2GAES/+PusEhjYqLTwYLvAop+xkWfZppwxMvHf1ty69K22YohAC7SM2eFuj5aNep6CGZjsIz4CtSP/l33AR/0PeM2KeBgFLwSW07Cz7UoUlzOu2INwhoqJLfVjM+tVV1P0aKwxA/R/idTVVJGlsHLVhQOrl0ZS2gSjlL0UZInOcKDZynGqy7aEQzZhkHFrGU2cc8ixKLweWHroTcvjiWFgmJLAvEt1QCyMVQwN7NbULV+uICxJSOCptGDzTYgVHQHevSQ8fmNFMjPLalzsyczVfFfneQna2X1TPgRwKbYDF82lbM0Zh35IG/jcVYPre5yiNosgJ2Lkgk53F8jsvaeQKb5sWPFF2L1qCPkh7yKlwFiHmAQgtXKWaolDCIYJzSlpZd/bB79RaU7CJml++BvyAYfM93FheEEUluqZN84JOkRZoggbrNzv1lvv6KXI/Sph15gTtfS5qcILRDKMUClpE71nEtLIu2cSfnkxfIvC7M54xuSE3QUsYJkl2xXilbbdSxVHp3IY8Z955oP3PI/8aa6P5ynGVUaC3buGM8Ms54Atu8TYJiCzojye9RLLU3MaFg8GCNDgnpCepAvFGvlFiIuG4tJDdu6QoJTT088/3tAQJPu0+zcjJI+F2cSI4WeclUbj2zttdmlR8Nv7LaxTecXWxCw5uC2lQCv6CjSUycoNLbDvknlcHYv3qK
- U2nhg3YX
- E6IWK6EGS5/d7Rc5EZFaR76Yidczw48reuwDMYb/WyRfnrc8IFwkGA5n2NgI1nVEn0tF3mNV0IhVQNpWpKrQsnDk/QP7Y0tG0wobaB1L8chyh5KfakIMH8iI2APowJ+ekh/gTdd7GPoKcOgITRkc+nHSrPLwig3fUlK7U+MTTjKzKs0/hW5/JNuzhT2YgXb2crUhI8m1fcpJ16/ZNUTUt7JdEENnQ+A4pHPtij53Bavbp40BsomEjjlk7WRz7IfVBo/X0W5Ry8D9t17l/o98scQZorCKD/qNL1mnvUx+B47K1oFvsV4uedIc6w1K6dx6Nil0xJDx1XSfFGkvcjHuq4t/f4AVuwV7dEbe97VyXQRojt0pgTYF/5a2J7wFQS7cnNiG7
+X-HE-Tag: 1793303558-142227
+X-HE-Meta: U2FsdGVkX1/djGx+6Yaef+nyx8pPEoAYaDf59QfyFVjYQhhlEw3YKgdA6VV6gtKyjJ49DG0upfRfvgfKgcxRKik2sSLaVgmC2xjhGWexNxfYbaKQTyGwKl75VOBgtGe6fdoH4LhCrXWh91IbxWuOXNmow4CCxH46VYcEXhcZGoYi+Ml2UXPc9L9hq0uunJCQ6YL9mSnEZ5f8EyFrW5UBpszfJ7KX4QZ6UP8TayHNauyy4K5nPBusWNo479WWgVXbAXyxnFrvMKWtrvxtetVFmUBEc1KemPWfqmuTCXQmLDdh0bWinxO7Xj+KogrkpXRIlGa7Tz1W7FS9xj5kl/ygCZNicpJf+IgmypiVs0UTAU9QjVi2Q9vLGgb+GPTAGpqQV9cP4s3hbS2+sFXTfqwE5nlWY/cVwTYnbN8T6Lha7GImyfmu3lwSfkl4KIwbH5gL3vJe/TrgcpgVCtG1KsIc7qtgbJ+RAx2cqgnQZ73dI46n8n+7K8eSf5pljiL06k2QDw1uf1xN4I1diBhRhwJmtQxNepBo4n1RRwNNTVOVz5YKPWga2FtGNKaCX7wdPmfIMtMvA6cHpbqDiWOrth5iT8ozlnfj44bSFGUTf/oyTHW+ne0hp6yPJjI3hYgdNja/Pyw4YsLhal9GL4bFKJRw7MUe6WGa0SN4AWUgKsfNhn2hTSL8aNNoX0MLfTo9FmmUMiU0GiSPMX9NYHINpyRI/TlPZqvY7OcajuSaYuPa59/0YJzEm8wy9Y+bs2NrSZFLEzbOC7GsrEfZcUcwp6LkaHK1TW1rlPrsIqnYwO7oIFJSvcS573rUxV4dhDBQgG4oHO3Bf2rALV04t5ACcnmROIJyHMIi+JkuvXa8jPZIYSHodgvvsLdEqK+jwe0ZzgJG28+hPVIZXqhmF7WWsUrFaM0R3yYkk3iGAyos8yogIiNOHJlTylv2SO7hcIKH6CPdTFw2HfGHFSuFoaaV9Ha
+ o2/M6Waa
+ zVkmbhdbfjlTqWmawE9uvi8brhOjUmWQklTP8yw+2uKyPWn/TrtFE5gHjaOlhdEXiRansSU1e46oDEV0AqpqPsMuZ6xMs3/kLqua7YpSfhTyGuJc3G9dyvHlre2sFxXX2Hq6YtZOsG6bps/oXQN7impteP1cuItQzLVGxHVL7RETab5ggMG+AoIRgN8zca7D5XG716D1l1OyCqIZERJ9s7UFdEbgKEGIe+pfOjH2+aCp/Unz/zfCVpAcy+LNP1x/DUIpiFPsw4V1YwUY9FNlcDWhqqA3618zlv2ubrHVeI0RUPaWqChQ4yIw3wz8doILUzG04mIZtXFSlptq3Z7Nklp58bg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,80 +95,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 07:44:14PM +0000, Kuniyuki Iwashima wrote:
-> In consume_stock() and refill_stock(), each per-CPU stock slot
-> holds up to MEMCG_STOCK_HIGH (64) pages, so depleting a slot in
-> consume_stock() (!stock_pages) or trimming a slot in refill_stock()
-> (stock_pages > MEMCG_STOCK_HIGH) happens at most once per batch.
+On Thu, Oct 29, 2026 at 07:44:15PM +0000, Kuniyuki Iwashima wrote:
+> On host w/ AMD EPYC 9B45 128-Core Processor (Zen 5 Turin,
+> 2 sockets, 512 vCPUs), tcp_rr w/ 20000 flows throughput often
+> degrades by ~50%, 32M -> 17M~27M.
 > 
-> Similarly, requests larger than MEMCG_CHARGE_BATCH, local_trylock()
-> failure, and insufficient cached pages (stock_pages < nr_pages)
-> are all slow paths.
+> In the bad case, the number of involuntary context switches
+> was extremely high by 12x (241733 -> 3093367).
 > 
-> Without unlikely() annotations (when building without FDO, or
-> when an FDO profile does not cover a caller), Clang 23 treats
-> these branches as likely and inlines css_put() in consume_stock()
-> and memcg_uncharge() in refill_stock() right into the middle of
-> the hot path.
+> In perf record, 96% samples had the same pattern, where the
+> thread was interrupted during page_counter_uncharge() by softirq,
+> and later ksoftirqd was woken up:
 > 
-> Consequently, the fast path has to jump over the inlined slow
-> path and jump again to the function epilogue after local_unlock().
+>   # perf record -C 0-15 -e sched:sched_wakeup -g \
+>       -o /tmp/sched_wakeup.data -- sleep 1
+>   # perf report -i /tmp/sched_wakeup.data --stdio --no-children
+>     96.36%  tcp_rr   [kernel.kallsyms]  [k] wake_up_process
+>             |
+>             ---wake_up_process
+>                |
+>                 --96.00%--irq_exit_rcu
+>                           |
+>                            --95.82%--sysvec_call_function_single
+>                                      asm_sysvec_call_function_single
+>                                      |
+>                                       --95.58%--page_counter_uncharge
+>                                                 mem_cgroup_sk_uncharge
+>                                                 sock_rfree
+>                                                 tcp_recvmsg
+>                                                 __x64_sys_recvfrom
+>                                                 do_syscall_64
+>                                                 entry_SYSCALL_64_after_hwframe
 > 
-> Let's annotate the slow paths in consume_stock() and refill_stock()
-> with unlikely() so that the compiler keeps css_put() and
-> memcg_uncharge() out-of-line at the cold tail and lets local_unlock()
-> and the function epilogue fall through on the fast path:
+>   # perf script -i /tmp/sched_wakeup.data | grep -A 20 "comm=ksoftirqd"
+>   tcp_rr  101952 [001]  9679.340985: sched:sched_wakeup: comm=ksoftirqd/1 pid=23 prio=120 target_cpu=001
+>   	ffffffffb64cd0cc wake_up_process+0xe6c ([kernel.kallsyms])
+>   	ffffffffb64cb034 irq_exit_rcu+0x264 ([kernel.kallsyms])
+>   	ffffffffb68ad31c sysvec_call_function_single+0xcc ([kernel.kallsyms])
+>   	ffffffffb560158a asm_sysvec_call_function_single+0x1a ([kernel.kallsyms])
+>   	ffffffffb653c4ce page_counter_uncharge+0x2e ([kernel.kallsyms])
+>   	ffffffffb6541b28 mem_cgroup_sk_uncharge+0x3c8 ([kernel.kallsyms])
+>   	ffffffffb6561383 sock_rfree+0x83 ([kernel.kallsyms])
+>   	ffffffffb6577faf tcp_recvmsg+0x2ff ([kernel.kallsyms])
+>   	ffffffffb65604d9 __x64_sys_recvfrom+0x159 ([kernel.kallsyms])
 > 
-> Before (refill_stock):
+> The problem is that when stock_pages exceeds MEMCG_STOCK_HIGH
+> or all slots in struct memcg_stock_pcp are full, refill_stock()
+> calls memcg_uncharge() or drain_stock() while holding
+> memcg_stock.lock.
 > 
->   stock_pages = stock->nr_pages[i] + nr_pages;
->    7ab2: 43 0f b6 44 26 01       movzbl  0x1(%r14,%r12), %eax
->    7ab8: 01 c6                   addl    %eax, %esi
->   if (stock_pages > MEMCG_STOCK_HIGH) {
->    7aba: 83 fe 41                cmpl    $0x41, %esi
->    7abd: 72 1d                   jb      0x7adc <refill_stock+0x21c>
->   memcg_uncharge(memcg, stock_pages - MEMCG_STOCK_LOW);   # inlined
->    7abf: 41 89 f7                movl    %esi, %r15d
->    7ac2: 41 83 c7 e0             addl    $-0x20, %r15d
->    7ac6: 48 8d bb 00 01 00 00    leaq    0x100(%rbx), %rdi
->    7acd: 4c 89 fe                movq    %r15, %rsi
->    7ad0: e8 00 00 00 00          callq   <page_counter_uncharge>
->    7ad5: be 20 00 00 00          movl    $0x20, %esi
->    7ada: eb 41                   jmp     0x7b1d <refill_stock+0x25d>
->   WRITE_ONCE(stock->nr_pages[i], stock_pages);
->    7adc: 43 88 74 26 01          movb    %sil, 0x1(%r14,%r12)
->   local_unlock(&memcg_stock.lock);
->    7ae1: 65 48 8b 05 00 00 00 00 movq    %gs:(%rip), %rax
->    7ae9: c6 80 00 00 00 00 00    movb    $0x0, (%rax)
->    7af0: e9 03 fe ff ff          jmp     0x78f8 <refill_stock+0x38>
+> Because local_trylock() only disables preemption and leaves
+> interrupts and softirqs enabled, an RPS IPI arriving while
+> refill_stock() stalls on page_counter_uncharge() invokes
+> NET_RX_SOFTIRQ (process_backlog()) on the same CPU while
+> memcg_stock.lock is held.
 > 
-> After (refill_stock):
+> Every incoming packet in process_backlog() then fails
+> local_trylock() in consume_stock() and falls back to
+> try_charge_memcg() and refill_stock(), hammering the global
+> page_counter atomic twice per packet, and slow processing
+> finally wakes up ksoftirqd.
 > 
->   stock_pages = stock->nr_pages[i] + nr_pages;
->    7b76: 42 0f b6 44 33 01       movzbl  0x1(%rbx,%r14), %eax
->    7b7c: 01 c6                   addl    %eax, %esi
->   if (unlikely(stock_pages > MEMCG_STOCK_HIGH)) {
->    7b7e: 83 fe 41                cmpl    $0x41, %esi
->    7b81: 73 20                   jae     0x7ba3 <refill_stock+0x233>
->   WRITE_ONCE(stock->nr_pages[i], stock_pages);
->    7b83: 42 88 74 33 01          movb    %sil, 0x1(%rbx,%r14)
->   local_unlock(&memcg_stock.lock);
->    7b88: 65 48 8b 05 00 00 00 00 movq    %gs:(%rip), %rax
->    7b90: c6 80 00 00 00 00 00    movb    $0x0, (%rax)
->   }
->    7b97: 5b                      popq    %rbx
->    7b98: 41 5e                   popq    %r14
->    7b9a: 41 5f                   popq    %r15
->    7b9c: 5d                      popq    %rbp
->    7b9d: 2e e9 00 00 00 00       jmp     <__x86_return_thunk>
->   memcg_uncharge(memcg, stock_pages - MEMCG_STOCK_LOW);
->    7ba3: 83 c6 e0                addl    $-0x20, %esi
->    7ba6: e8 15 f2 ff ff          callq   0x6dc0 <memcg_uncharge>
->    7bab: be 20 00 00 00          movl    $0x20, %esi
->    7bb0: eb d1                   jmp     0x7b83 <refill_stock+0x213>
+> Let's move memcg_uncharge() and css_put() outside
+> local_unlock(&memcg_stock.lock) in refill_stock().
+> 
+> With the change, the flakiness disappeared on the 512 vCPU platform.
+> 
+> In addition, on machine w/ AMD EPYC 7B12 64-Core Processor (Zen 2
+> Rome, 2 sockets, 256 vCPU), tcp_rr w/ 10000 flows achieves 36% more
+> throughput with lower latency.
+> 
+>   tcp_rr (10000 flows, 128 threads, 60s, average of 3 runs):
+> 
+>   Metric                     |       Baseline |    Patched |    Diff
+>   ---------------------------+----------------+------------+--------
+>   Throughput (RPS)           |     20,884,499 | 28,453,051 | +36.24%
+>   Latency Mean (us)          |         478.46 |     351.07 | -26.63%
+>   Latency p50 (us)           |         453.96 |     343.04 | -24.43%
+>   Latency p90 (us)           |         669.00 |     479.57 | -28.32%
+>   Latency p99 (us)           |         969.38 |     593.92 | -38.73%
 > 
 > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-
 
