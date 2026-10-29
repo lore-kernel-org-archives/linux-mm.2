@@ -1,107 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A21C606A31A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 23:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA518606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 23:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cd9jirO9
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=X3AxTvhb
 Received: by kanga.kvack.org (Postfix)
-	id 2ED9C6B00EF; Thu, 29 Oct 2026 19:09:35 -0400 (EDT)
+	id C48C96B00EF; Thu, 29 Oct 2026 19:16:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C4D86B05B1; Thu, 29 Oct 2026 19:09:35 -0400 (EDT)
+	id BD2936B05B1; Thu, 29 Oct 2026 19:16:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 202DF6B05B2; Thu, 29 Oct 2026 19:09:35 -0400 (EDT)
+	id AE9386B05B2; Thu, 29 Oct 2026 19:16:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EBABA6B00EF
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:09:34 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11C5EA8115
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:09:33 +0000 (UTC)
-X-FDA: 85377207426.04.A7CE267
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1903B1C000A
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:09:30 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 79A226B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:16:36 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E0B1DA806A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:16:35 +0000 (UTC)
+X-FDA: 85377225150.17.B0A0331
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 12B0F1C0002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:16:33 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cd9jirO9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	dkim=pass header.d=google.com header.s=20260707 header.b=X3AxTvhb;
+	spf=pass (imf18.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793315794;
+	b=kwGXMSbiPQnQvsd2v8DashFAzncLj6gcCt/XJrhScKQSQtvpI6emzKCApp1VrxOFY9rJTd
+	zVA2/8NmJiNGOGlxJp18uDVNLOUbKbQahtsUDrHhSvFww7geoeCne4gU9xw3XwidOzK9c8
+	KJRxbDeymF0qBjUx2JDqgqdqkOQ5XTA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=X3AxTvhb;
+	spf=pass (imf18.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793315371;
+	s=arc-20220608; t=1793315794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SxAccaK9CQKKqijAxHgkuHdJDdULygHNWNh9e96YezM=;
-	b=EgWW/6OjVviNeYHwYf/52Cxzu/wgqSwH6TjQmSoUVVrkAQOjO4L1S6HyAf0cREVaOp9Y1C
-	aKCQWpkUpKmalVTBYc/FZwOmdo371VpCyI25NsoP3+fdLLIpPvfercp9NBvEhLogcERUqx
-	tcAC5aAKaxX7FuZju4AtmaXjlj83khQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cd9jirO9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793315371;
-	b=V7p9vPgErJImIq4ukyL3XJENZh+1izzuC+gTvbSQsPvs3UYpe/Xub7PAE+B0UQD76dpHEV
-	iipVXfDgzR7hTLbSLbKNtLm0xnIUfhEsp3zkyJ0DXVTpkNXxBWY1s8mKB4TOVqP3JJacg/
-	IbVmkNMboQ9GY0KXjaeZ/cPPXLIVQ3s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E133443DE7
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:09:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C636C1F031E0
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 23:09:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793315369;
-	bh=SxAccaK9CQKKqijAxHgkuHdJDdULygHNWNh9e96YezM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cd9jirO9W/+vRVFDbjADdAp0u5N2Kmb/GKL7qLaLbHWNxWybKDCURefBIedJUWnSS
-	 6/wCareaJPxjAlus2f3zM2c20cRCt++ZPhvdB1eub4OjUE17sps3XjTueKFNY6BJTd
-	 2Wmjt0iPz3673rly56jk1ku90ZOCLY5peM14pb9bt9+oDmgB/Mo3IU6CiHhS+Rb1wG
-	 Cus/8q3uLUxCRYz5DwNQzGsMKWPXQMkxq7K6Xlebz6PMuKumBDGsNfq4xIQHIDdizP
-	 ZQoTXC7m2Hg6OoXbc8mBkHDkA7pnZPa4sCpKCab2s2irMensJU2Zxb7MreQLSAcCyk
-	 z/MUB6SsJ+pqQ==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4550d8ab15so7318666b.2
-        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:09:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxOgNRgFxvVafuPBneFPMHOX9g6GWm8uCoj1LGkicog3xUV9aGJzSo0r4GQ+3EWWl8t8brIHP8yyw==@kvack.org
-X-Gm-Message-State: AFq9FYJBIyhGmKZ+g7Y7V+2maxvNyD04zd76ZWw7CLvxCIBhUNSIwRmz
-	9KELr6irtBDLSwPSDA6bB2qZSVN2FR3cOBaUL2lvisEvL9bzy+LqRW5cd3/nhG96Cr90lJiYA4g
-	aKhi+i6BP6dsjb/M3+ofiuDKmK9tHTLU=
-X-Received: by 2002:a17:907:6c17:b0:c41:9228:baef with SMTP id
- a640c23a62f3a-c4ca7a54fa0mr46411166b.8.1793315368743; Thu, 29 Oct 2026
- 16:09:28 -0700 (PDT)
+	bh=3fmE280TvwYgL1SpHpcTgt7nw3en3MelpBcz6M9OOWk=;
+	b=EOnbJRMQ4ugZiNtvZmJNnMy7dogEJXM9oL07IAj4SOO1pA81wUWKH4InZtzdfmxzJv3nut
+	uEivs1OKcUDeHoZdNMEEdXWYBzP+Rl4WLrSKDf1t3jPHR916pBtPswDeLbHjq9lQMqJSlS
+	nTus+u8ggzOWTIcTev374NCPx2qR4AM=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e9f6a16afcso13335ad.1
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:16:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793315793; x=1793920593; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3fmE280TvwYgL1SpHpcTgt7nw3en3MelpBcz6M9OOWk=;
+        b=X3AxTvhb5qG+EtmPzOjjnI8+3MO02mO9hfrcsjQ4p9Bx3q/mTiYtFz5RL7hQa1u8Ll
+         p6ADnwJg6lwxn/i3+nXi7PdRewp5bM/pHwFWFzQyhd9t68mYw/IF8+foDsDXBPjJQRO4
+         dW5Wus8cxTBmGsZiF7RrY7+DWRCdO9VywEiaGaywZUW2/k7V/Zydfup/WV5Wgk78T/pP
+         0IYDdOxm3sWqX+YfCkSLVkFY//A4fc6yOkahOBi5LcMoFY1TkaPwM521zNryOXjgIbN3
+         WRq5kG6D90DVXX4ycVOqLnmKn+Me5TyHmXI+eX99T7K+GelB0P0fSGzv9OnjKkUk272I
+         npkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793315793; x=1793920593;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3fmE280TvwYgL1SpHpcTgt7nw3en3MelpBcz6M9OOWk=;
+        b=GDTPmwYndqdwOVyP5lC5PVaeFK/v95xAnFx/BZrdr3nM51fzPxRegFYyoSHchhAg9f
+         jHJhFZxEq7lwyYwb1lN39xMYM3oLystMtXYiL6jFM31grnla/NP3AZqVFBFBOc+uWasM
+         aenE955z8hVcIH2paPsVSpBoO+BHx/YNqrlh/cuhnUcm9BghDOzoNGLaIVWw686A2Wn6
+         q2rgKrQBe0cPjLCXhXZnPLmDaniEmrgWig811au6flK8uhIVffOIJv4sv0UbXCdlWa0a
+         yUeXcOOO7fJ4RHiyIzIICKzaMywJJq2MS4hgTHf8Itgu/heQ2LH6RC3zWT4RjhuyURXC
+         ngcQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxT6OPfHqj/DDW4IGUGvtFWb53AVRrQL8ivOQYV38FVloEoXoQYUXaz6Q5lSldr8WJVwCJOct4Smw==@kvack.org
+X-Gm-Message-State: AFq9FYLLzEdKl3a/EWt4EX35FgtL5EFOZ/kHo9yK15kV81/m0n+c1tCh
+	GOOE4NTDHhzY4DEvD3FCFW8+by8FsXozY+bE3ipar5baDGyJNW/Njsoh2qEB/LJh/Q==
+X-Gm-Gg: AYBFou0qOXJcganeNfxdgMmOywqIn+ZM5P/rbj9Q0zKHZ3ls4/sPNghOZhEnkLb+7t8
+	F0N8FZ+Kq6QZULsV93uRKwM7ETyyyQ743DfWInWIS1sqgBOY4gdySWhf03ZApn9cu3veflfVfmO
+	jJjtviXWRikw1nZYNMEkMSCKAPkueeQNUop9d5oolCqN50xKaQrgGlBZPi1d8h9yzRSPxez1CNv
+	977E5Zm98+3pkFdp7lMhgh6Cs3KSohxsYOslUrhWM+9S8Xja7dO9feTbg3yWosgLK8qClos1eTl
+	otx7cO3L/MJFDVQnhzmn25Xs4XpLZZQRwDrBMQ3WTl9+CrSKjCvd/4kPqPIxFloVkZN8RO834hT
+	rISqjNtmMwc2b0iY9F6yQGljwrUnTi0/yMW0QMuChwujHgfPke9NNI1w3P/a6kU2FIFVC0SzKGq
+	nlZTqvyJ3YuXtnEoQzgyv20EYBX8Xw7+vqKJaMo1bDqRwYM1btZbaHEGmTJQAyIB4ZZAx4EiHdn
+	vnnVhvEr1u+sqVT1amjZfI5O97XqCvLKy+xAS2lygGtj7jZ0y0CCwTAZHmmIUZPLsL7aJkW11fc
+	czH9Xrt5GQmt5aPL0B/40fmOasb+55UFKuPYGnjLbX/ER+J+9YXUxzcjyBSQwQl/mwS1b4Of3Vh
+	gWESFx/bCU6nHXs+qWOuhug==
+X-Received: by 2002:a17:902:d2ce:b0:2eb:188a:1c06 with SMTP id d9443c01a7336-2eb1ec12e12mr7097365ad.9.1793315792099;
+        Thu, 29 Oct 2026 16:16:32 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae84542a13sm1362240a91.5.2026.10.29.16.16.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 16:16:30 -0700 (PDT)
+Date: Thu, 29 Oct 2026 23:16:27 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Jeff Layton <jlayton@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Alexander Aring <alex.aring@gmail.com>, Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	Jeff Xu <jeffxu@google.com>, David Matlack <dmatlack@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, linux-mm@kvack.org, linux-api@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm/memfd: add F_SEAL_PUNCH_HOLE
+Message-ID: <auPKfqh_YjRU9Ui3@google.com>
+References: <20261026220546.3114241-1-skhawaja@google.com>
+ <CALCETrXNEWQNPjtuHnTfVFOafeJ7APXq288Cq16Q5adDNYx9+A@mail.gmail.com>
+ <auEksxfAi9lHFXmT@google.com>
+ <CALCETrXDY2e8x2kdr-FQvFLs-Y7FwNozXGDvqqM6yvVA7QLV3g@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261028030503.17923-1-kanchanapsridhar2026@gmail.com>
- <20261028030503.17923-6-kanchanapsridhar2026@gmail.com> <sashiko-outbox-188657@kernel.org>
- <CACpmpofjVP17TpyieQ2khsdRL+FMX9oCEcaNE9Hh+vBfGBO2dA@mail.gmail.com>
-In-Reply-To: <CACpmpofjVP17TpyieQ2khsdRL+FMX9oCEcaNE9Hh+vBfGBO2dA@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 29 Oct 2026 16:09:16 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMxUZxWjZaRx8ZK69qQBmd9EQ3OY3kv8DDVsuDky_7Axg@mail.gmail.com>
-X-Gm-Features: AclHuK88KyLz-z--PbBy0WnVbdAZWcqI-BsmnnLL1fm3tmu9BUUE_ZogzqpNpS0
-Message-ID: <CAO9r8zMxUZxWjZaRx8ZK69qQBmd9EQ3OY3kv8DDVsuDky_7Axg@mail.gmail.com>
-Subject: Re: [PATCH v2 5/8] mm: zswap: Store the folio's node id in the zswap_entry.
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: sashiko-reviews@lists.linux.dev, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, 
-	linux-crypto@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1903B1C000A
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALCETrXDY2e8x2kdr-FQvFLs-Y7FwNozXGDvqqM6yvVA7QLV3g@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: jkibw9m4ayz1rqcefw9hk4qkzwfirudq
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: 12B0F1C0002
+X-Stat-Signature: qjz33qz5kh66zq67g5qjhbseqsa5kamn
+X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793315370-469526
-X-HE-Meta: U2FsdGVkX19sNbCHLlIPaCg6XuDEojagv0xdp81/e51qf7gudhTq3iF21FyYtYDc25PMBePtipRegGXWgc67L6d2wh1Ua8mAyixnMd1YwZWg8P2r2iuail/CXz5YiiNf4EBLJnPzO2AfUJpwOg5ZAScAgxomTP7kaFkHvh5/sfJt6Smmx43dKhvN6Iqh6xTSeO3zCd1+RfYJo26btiyLdl6KPVR+5LJmhI7ZidA8AO/PFUHYiEX0LrfeTSNuU1/aGBCHCwtkCUFunxPj37yqoWVoD7Mbms1mSijzYorMkeak4Nq9wUtT2S8JHVQecJoMU3kZE0f1ElgbEg4idaqZEdRa8orWFbAYKeEZNPmTKy3xf2tu3xeaROZpUPGFReE7fMSNYWC+DYEvS3myBhh/kbOruvlMjnoAkw54uAWvawxGRUdlkcIcMjMUCv9AiMaSujACg0fg1jK9LBnnafmoPp1cw6PIJ6Hm5oi8FRIsAlxfzXoNMDf9YXknCtbdmdEf7YKVuKQBLQ5E8J19NQ4phJ+wOtQBEjnma4cGiuGu9Xa+aglwvW/SBwdcUcExoYZsYogfU3Vs+ZybC/VGVuYhD//FUWyyhR2o9s8lqXem4q+Lr4eBpp6do4G3t4evPMqO5bAPbleo9/J0OhR7B812F11U646oAFjfh12MueNIfqJZJIqU1dUkWFUsuh5zQBZFwOx5CAlWqv4URonAqRLZ7r2vfKuCuRTUgy4dNq2p4dch9jZq3eAQCqMf1rXx9i+pUYOWgVrwQ/+0mUuilQmB9nY+cuaXE/h1TdEKtoGOhDQLZrBhdKXfAt704QXqoF+6NKRYKUa5dZrzYTMeZaZDsHgm/wf6uAK0XTw4qs6Q2h/wuqgksasQMl3cmseluLVjaTNLsoZq0McF9SGnjVw4LDY/N7rlnfUqxZQxAqnfsOzu0Oj4/U3fJpLtj26ReOyM+P+NBxLcy4z/OnaDCdt
- 0wTYJHng
- 19NxULetoxrbObIwpRL8bHx/YInYbCxvgaP2W6F8c+NMGmF8Hjb3TsIcA8ZIV9fG7wMwEseh9PyEF2WilGId7GeKb3Pl/cSUKiQ1oEOORCeDovcJwVHuEm0adYzjD2F7L07FoKHvF/+tSM1qoxbosrL4xv0kE4GbAljraHqW2J5ItM8UaLPPTmzUB5qH/vzfDTlFfAjdDZhIcXs+ULc4OnRuKXzbi7zDqaGFiBvFCHr9+R2fbIEIP7dSGfSX2Hnzv1KZrLSqWPONi8PjynPL3kjFIk9vsAq4SKyKtCiVofpqyD0ElIcaSe16SDdMw2iqJMgysMVo7t28fP3OD08MjO9AHYlLnrsNuVf0w4JNp2zMpQPrk3yRwjmqsLMahEvxeR50rnLaYnj+sQlTtpOwz3ojyqFIMn8g+6sMO
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793315793-997271
+X-HE-Meta: U2FsdGVkX192WzLyXASgjqGDThtCYXUKf+6VZSyh081OLVinklh7CsYOOREy8Xv4JPbJbnSQkizU75SmS9YmEjM3i8+SjAh6KCL32E3G2/DB0H8ZukWpuFZcLbatcgA+TxeV9s2RngSdKHnSNTZDI/hrh3FwTaDcLDEV+WXuxGfe2RSgCaA+dV657xiit3SibkGZf39yBo//nie9zaEd5AELjaBt5IKgBi5R++HfhmpxUKSwkxTpgU2A/j/XT2LWFGTKKBuFbH2OAqTOPC+1cv3VgLEJSvBXca84/WwCbnWdOOkNuZUZBveWtuLCU9j3tmOuBATsPIw8Qj5Eojz7WmLP/Vv2uzdtrz7FI/Eg5RlGTyNsSyM64eOGLuoy1RiZ7h3ZiEBtyzuyBsjwXXYDrn+cCwvPIxP7rnx+raxgMLL5A28cS1DJCp5BmTLUV+Lt2tgUOo/S35BrV740u8SBBFxTm9GzcNbBY+e8Aoi/7BcmakeaxxXaDlTZ/GurQH77ofFPVBnJITcu+XeztUAZd++k7EChcoacaKV8yZveoRVimr3zVCzpNoYRzaEbCLBhbp9gO7OhK3nUsBOUNDRsfnPBQQe5fYq26bdBgDAlQWksZYd6hMVRv1MJDN1TLF15Tz3BkHYp77VgXdUo5OxsNpcw8ttdBUoII/F97glk92NwhmQ3fl95O1NoPWasckXwRyzI8CoCyLcIw8VWw2gZGanxf63ShX3f8OJ044cYmrHDmQ9zROBgDfDn2dhKgdvDsLj3oSU8br9x7sgg6YeR3KWNAQP7rOwHTtQqwprb1aqMawcSMJYiwohbs8U8vaAKyWXRhhgbswdB0QGIEB1EnUtr0RGL22DvzDYUGyoUeisjK029/u6bVPHPKNqwnahkyNdy80e6eg9QLqKODtL88i4FOENvNDWYkPJ8tbOnB4q2XYpKsmF3hWxzj1p7h2qCktj6okOySBpszjjyi/E
+ w0dDVBqg
+ CkluwSeJOLfhWs6fRU1yKhPdkRAWQ8/nwbpyYQATyimOflYUgJXCIn8UplsnRWW+Pn5rBTkbye2L79+rs4GE9ImutPWep3aApZBrETUV2wRb47ZfgL4lRzpQH1jbxtMwyZr0JIbMvpEuhtBCG4QCabxcMSotJO97tux5imw/nUDApEgK1GrC8azfHwEBp43w1s4oEyjem1GGtVAB68X1/V1NzDKjlKHehJLLGZ7sP9WNkEa61J+vgFV3mbgtjuskMqvM0tlZFrMarGjY7wy/Bc4s5d9jzBaOYZLou1LZKd6Uzawm+icTcPsxtlpR0yyG1JH0DDqfUxwXwEunyDcbMqBFWoJxz6sVMGBI4VkvRzt5Ayf8FMNWy+w+PfpWZv8Ap/sTlGayqJGafYcmuK2t1mQrgri0c4IGyKW79Thuj+gMJMU+IXQO4MrSWV9ZtuATKG1P/+vxeHUbECxquMnfnzOTBXs37TTxUvc35SXxACwUJE49JnIk2NrNihX5oOTWIIWFNR+g88JgZ9ZE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,89 +136,164 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> > > @@ -1507,9 +1506,10 @@ static bool zswap_store_page(struct folio *fol=
-io, long index,
-> > >  {
-> > >       swp_entry_t page_swpentry =3D folio_swap_entry(folio, index);
-> > >       struct zswap_entry *entry, *old;
-> > > +     int nid =3D folio_nid(folio);
-> > >
-> > >       /* allocate entry */
-> > > -     entry =3D zswap_entry_cache_alloc(GFP_KERNEL, folio_nid(folio))=
-;
-> > > +     entry =3D zswap_entry_cache_alloc(GFP_KERNEL);
-> > >       if (!entry) {
-> > >               zswap_reject_kmemcache_fail++;
-> > >               return false;
-> > > @@ -1524,6 +1524,7 @@ static bool zswap_store_page(struct folio *foli=
-o, long index,
-> > >        * to an unrelated live pool.
-> > >        */
-> > >       entry->pool_idx =3D pool->idx;
-> > > +     entry->nid =3D nid;
-> >
-> > [Severity: Medium]
-> > What happens during cgroup or pool reclaim in shrink_memcg() if the swa=
-pped
-> > folio resides on a NUMA node without normal memory (for example, a
-> > ZONE_MOVABLE-only or ZONE_HIGHMEM-only node)?
-> >
-> > Previously, entry_to_nid() derived the node from virt_to_page(entry), w=
-hich
-> > was allocated from slab with GFP_KERNEL and therefore always resided on=
- a
-> > node in N_NORMAL_MEMORY.
-> >
-> > With entry->nid now set to folio_nid(folio) in zswap_store_page(), anon=
-ymous
-> > and shmem folios allocated with GFP_HIGHUSER_MOVABLE can have an entry-=
->nid
-> > that is in N_MEMORY, but not in N_NORMAL_MEMORY. zswap_lru_add() insert=
-s
-> > those entries into zswap_list_lru for entry->nid, but shrink_memcg() on=
-ly
-> > walks N_NORMAL_MEMORY nodes:
-> >
-> > mm/zswap.c:shrink_memcg() {
-> >     ...
-> >         for_each_node_state(nid, N_NORMAL_MEMORY) {
-> >                 unsigned long nr_to_walk =3D SWAP_CLUSTER_MAX;
-> >
-> >                 shrunk +=3D list_lru_walk_one(&zswap_list_lru, nid, mem=
-cg,
-> >                                             &shrink_memcg_cb, NULL, &nr=
-_to_walk);
-> >                 scanned +=3D SWAP_CLUSTER_MAX - nr_to_walk;
-> >         }
-> > }
-> >
-> > Should shrink_memcg() iterate over N_MEMORY instead of N_NORMAL_MEMORY =
-so
-> > that entries from movable-only or highmem-only nodes can be reclaimed b=
-y
-> > shrink_worker() and mem_cgroup_try_charge_zswap()?
+On Tue, Oct 27, 2026 at 08:57:29PM -0700, Andy Lutomirski wrote:
+>On Tue, Oct 27, 2026 at 3:55 PM Samiullah Khawaja <skhawaja@google.com> wrote:
+>>
+>> On Mon, Oct 26, 2026 at 03:46:34PM -0700, Andy Lutomirski wrote:
+>> >On Mon, Oct 26, 2026 at 3:06 PM Samiullah Khawaja <skhawaja@google.com> wrote:
+>> >>
+>> >> This series introduces F_SEAL_PUNCH_HOLE, a new memfd seal that prevents
+>> >> holes from being punched into a shmem or hugetlbfs memfd while leaving
+>> >> the file fully writable.
+>> >>
+>> >> Background
+>> >> ==========
+>> >>
+>> >> Drivers such as udmabuf and iommufd (via IOMMU_IOAS_MAP_FILE) use
+>> >> memfd_pin_folios() to pin the folios backing a memfd and hand them to a
+>> >> device for DMA. Pinning keeps those folios allocated, but it does not
+>> >> keep them in the file. If userspace later calls
+>> >> fallocate(FALLOC_FL_PUNCH_HOLE) or madvise(MADV_REMOVE) on the range,
+>> >> the folios are dropped from the page cache while the device continues
+>> >> to use them. The pin holder is never notified, and from that point on
+>> >> the device and the file silently diverge.
+>> >>
+>> >> The existing seals only partially address this. F_SEAL_SHRINK prevents
+>> >> pages from being dropped by truncation, which is why udmabuf requires
+>> >> it. Hole punching, however, is only blocked by F_SEAL_WRITE and
+>> >> F_SEAL_FUTURE_WRITE, and both of those also forbid writes. That makes
+>> >> them unusable for memory that must stay writable, such as guest RAM or
+>> >> DMA buffers, and udmabuf explicitly rejects memfds that carry them.
+>> >>
+>> >> Proposal
+>> >> ========
+>> >>
+>> >> F_SEAL_PUNCH_HOLE fills this gap. Once it is set,
+>> >> fallocate(FALLOC_FL_PUNCH_HOLE) and madvise(MADV_REMOVE) fail with
+>> >> -EPERM, while reads, writes and resizing are unaffected. Combined with
+>> >> F_SEAL_SHRINK, it guarantees that userspace cannot remove pages from
+>> >> the memfd while the memfd remains writable.
+>> >
+>> >How does this solve the problem?  F_SEAL is about a userspace
+>> >contract, and if there are existing users of the APIs in question, it
+>> >makes very little sense to start making those users fail because they
+>> >haven't taken the appropriate seal.
+>>
+>> It doesn't change any existing behaviour, nothing starts failing for
+>> users that don't set the seal, and drivers wouldn't require it. It's
+>> opt-in. Userspace that wants the guarantee seals the memfd, and a
+>> kernel user that pins it can check for the seal and rely on the pages
+>> staying in the file. For example, the iommufd live update path could
+>> skip verifying the pinned pages at preserve time when the seal is
+>> present,
+>> and do the full check otherwise.
 >
-> Conversely, is the previous behavior correct? The entry is created on
-> a node in N_NORMAL_MEMORY, and when that node is under memory pressure
-> the folio (allocated on ZONE_MOVABLE-only or ZONE_HIGHMEM-only node)
-> could get written back. This doesn't resolve the memory pressure for
-> the node on which the entry is allocated.
+>Can you clarify the API you're proposing and the issue?  It seems to
+>me like the user is expected to preserve HWPT state by creating a
+>memfd, then using some new API to tell the driver to "persist" its
+>state into the memfd (possibly by binding its existing state as folios
+>into the memfd)?  And userspace is supposed to seal the memfd against
+>growing and shrinking but not against writes?
+>
+>What if the user writes to the file?  What if the user populates
+>pages/folios into the file before using it to preserve HWPT?  What if
+>the user mmaps the file?
+>
+>Have I understood this correctly at all?  Why does memfd make sense?
+>If the goal is to attach a bunch of pre-existing pages to a file so
+>that the page preservation machinery can preserve them, wouldn't it
+>make more sense to have a handoverfd mechanism where the kernel can
+>make a handoverfd that stores its purpose and logically represents
+>some pages but does *not* allow read or write or fallocate or any
+>other user operation that actually acts on the data or its memory
+>layout?
+>
 
-Yeah I think the previous behavior might be wrong if Sashiko is right
-about the slab not being on the same node as the page.
+Not quite. Let me elaborate my use case.
+
+For live update we need to preserve HWPT (iommu domain) so the devices
+can continue to do DMA during live update. Domains are preserved by
+preserving page tables and relevant data structures using KHO.
+
+To make sure that the devices can only DMA to preserved memory, the user
+preserves the memfds (into KHO) that are mapped in the preserved hwpts.
+During iommufd preservation we need to check that the memory backing the
+iommu mappings is preserved. We do this by checking if the mapped memfd
+is preserved, but if the memfd had a hole punched into it before its
+preservation then the punched pages will not be preserved. For this we
+need to do a complete page table walk and test each page separately.
+
+A punch hole seal, before the memfd preservation, allows iommufd to
+optimize the validation path and avoid doing full page walks.
+
+The HWPTs are not preserved into memfd; the memfds are mapped into HWPT
+and we need to make sure that the mapped memfd has not mutated and the
+pages mapped from it are preserved. Also it is ok if the user writes to
+the file or mmaps it.
+
+>>
+>> https://lore.kernel.org/all/arVYa_90j0oN1hnu@google.com/
+>> >
+>> >Would it make more sense for the drivers in question to set some flag
+>> >(refcount?) on the file to block hole punching?  Or perhaps to have
+>> >the hole punch code notice that it's trying to punch out a folio that
+>> >is pinned or otherwise referenced and to refuse to do it?
+>>
+>> The pins already keep the memory alive while it's used for DMA; the
+>> problem is only that the page silently stops being part of the file.
+>> Refusing to punch pinned folios on every file would change behaviour for
+>> existing users: fallocate() would start failing whenever a page is
+>> pinned, even briefly by O_DIRECT. A flag set on the file by long-term
+>> pinners would avoid the short-term case, but it would still make punches
+>> start failing for existing users of those drivers, which is why I went
+>> for an opt-in seal.
+>
+>Wait a moment here.  Given my comments above, I'm not sure this is
+>relevant to this patchset, but...
+>
+>As far as I know, right now, a program can open a file, register some
+>of its pages with io_uring or RDMA, and then use io_uring or RDMA to
+>write to those pages later.
+>
+>And another program can open that same file and use fallocate to punch a hole.
+>
+>And then the first program thinks it's reading into the file, and it
+>ends up not reading into the file.  Which makes the hole punch
+>operation rather different from the write-zeros operation that it's
+>supposed to be a fancy version of.
+>
+>Now this doesn't sound like a security problem per se, since the
+>offending hole-puncher needed write access (admittedly that write
+>access is only needed at hole punch time, not in the indefinite future
+>when weird behavior happens).  But this whole sequence seems highly
+>suspect to me.
+>
+>Are you *sure* it wouldn't make sense for a GUP'd or similar reference
+>(whether pinned or not) to *actually preserve that folio's status as
+>part of the file*?  Or maybe for there to be an extra pin bit to do
+>this?  Because the current behavior is pretty strange.  And I'm not at
+>all convinced that anyone would really object if the kernel prevents
+>hole-punching a range with an active GUP, especially if this behavior
+>is restricted to writable GUPs.
+>
+>I admit that truncate seems slightly different in the sense that it
+>seems more likely that someone would be annoyed by an inability to
+>truncate a file.  But still, truncate does have the same issue.  Maybe
+>extending a file could notice that there is still a folio covering the
+>newly extended range and stick that back into the file?  Seems messy.
+
+For live update either approach works. If pinned pages cannot be punched
+or truncated, iommufd can rely on that directly and the seal is not
+needed. I went with an opt-in seal only to avoid changing existing
+behaviour. If folks are fine with blocking punch hole and truncate on
+pinned pages, I can send patches for that instead.
 
 >
-> Nhat/Yosry/Johannes: Does Sashiko's suggestion for the shrink_memcg()
-> modification look Ok to you?
-
-It seems correct from a high-level but I didn't look closely.
-
-
 >
-> Thanks,
-> Kanchana
-> >
-> > --
-> > Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261028030503.=
-17923-1-kanchanapsridhar2026@gmail.com?part=3D5
+>-- 
+>Andy Lutomirski
+>AMA Capital Management, LLC
+
+Thanks,
+Sami
 
