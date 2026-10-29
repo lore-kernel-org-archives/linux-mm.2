@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA95E60A382C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 16:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A32606A9C5
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=StoUJS5a
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LBGAP223
 Received: by kanga.kvack.org (Postfix)
-	id 90D1D6B05FB; Thu, 29 Oct 2026 12:09:32 -0400 (EDT)
+	id 8220F6B05FD; Thu, 29 Oct 2026 12:09:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E4706B05FD; Thu, 29 Oct 2026 12:09:32 -0400 (EDT)
+	id 7D2806B05FF; Thu, 29 Oct 2026 12:09:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FA816B05FE; Thu, 29 Oct 2026 12:09:32 -0400 (EDT)
+	id 710076B0600; Thu, 29 Oct 2026 12:09:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F7256B05FB
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:09:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E0EBD404C6
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:09:31 +0000 (UTC)
-X-FDA: 85376148942.16.8C5B4A3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1E9FD40004
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:09:29 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=StoUJS5a;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A8456B05FD
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:09:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C3D9B16030C
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:09:35 +0000 (UTC)
+X-FDA: 85376149110.08.5BCAE8D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 117B820006
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:09:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LBGAP223;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793290170;
+	s=arc-20220608; t=1793290174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tghqoO8dgKkXNrANwBfbEQhOH6ptXpRkG83I7JeJUiM=;
-	b=EUu9Xfe8V250GJ2mlZNsjWroevIR92D7fm0ndt5RF1YJz8jny/kYRdPK/k8tjo+A8pDNzx
-	oDY0cG4sbQCAhn99z6BMaDNab7UFsNMPGcK2jeo7HLwPrbOUPelZjYK7RKiRjNN5aJeQIC
-	GDup6iq8Vx+wzkc7UJ7/Lb453TJoy74=
+	bh=5Pp7M5kHXjNf3+1q9VkVlIi5dRXg3Q7oc/xEP3VOCsw=;
+	b=lt3HxCkwyU42vp4daFiGotTAOlKmpdiAXR9OiNLrrRk7iyhfbRZ8L1yR0M9BxaxFsB2m61
+	SghIS+TDPEsJ7QZB+K1FNotYCkcnbDfHW5Pt9cMy10xII8CeSFSYjjyVS4ryPGjK3+6DQO
+	6D8tL91xO3UaLsXeofjjl3X4X8PP3fY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=StoUJS5a;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LBGAP223;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793290170;
-	b=LfW5bITNlDZwrCUL40wmKNL+AEyP1EwITK0raz3ODhwtNxDyNLg7apRmKdea3firoZSGrT
-	fZQwf8STOfXukbE3OzK3KlstNg9hm1F/XsxY3k3ISn4Bnhgw7QrhfdWv+rGNa8ffytJXoh
-	Pb6UNlmTwewflwzDXfxcbhRScFP3PbA=
+	t=1793290174;
+	b=E4/7cEL2jnmdNExTEm7mbcsZGAREzXWkw1QA1tEfEC5qbpZZ4ex5pRuXoBXHaBmYyD0BXq
+	6awrSKp6SZeKx01sejkrWO+My7E2FMZ7CjoFIWcdg2Y4GnHFt9/cxHLwmrO/S0Z/ydjH4M
+	S/KoVkTcusT6jot3ahXg2JlUK6gW2ns=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 63C3443335;
+	by tor.source.kernel.org (Postfix) with ESMTP id AD3E460627;
+	Thu, 29 Oct 2026 16:09:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFD41F01825;
 	Thu, 29 Oct 2026 16:09:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3057E1F031E5;
-	Thu, 29 Oct 2026 16:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793290169;
-	bh=tghqoO8dgKkXNrANwBfbEQhOH6ptXpRkG83I7JeJUiM=;
+	s=k20260515; t=1793290173;
+	bh=5Pp7M5kHXjNf3+1q9VkVlIi5dRXg3Q7oc/xEP3VOCsw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=StoUJS5aez/Dy/p0iLnpmzYRskJI6njG4RHriV4VKwHnEmSuoJpr7bf64RKmoL5kZ
-	 LpYsoz5f1fhAS24bkRrkWLnYofAnj8P0THUafKWW7RafHWI2dCVm0A2NrfftU/4EJ4
-	 W/a36jiBtQyLdmCJJlDckE5uFA4+djxGxtfNu5HW0DKMCMXrP35nweWjwITAu2twm8
-	 Ar8Ozhlu/wg5Jvnl8D2aAP4Pdl8NzfwCxb/DsbUJOTYcGiyhF6CGbKIGj15TD3X0LQ
-	 JCblZ8bW5R4fvo7BPU3E1I+l8B02IQOsLnwajPji0+DPvdymSCKmpGwsKnw6kjCi+2
-	 J8bcUPJXeTwdA==
+	b=LBGAP2234hdWhTWmkiwtcNBNLZv3kdKW7A12H240APspISuOw8K0/DrAk7cojALfy
+	 eCHxkuc1RjFeg9gL9Niid947L2sIZw0O1vp4xM3WSlJ/cIZ+6GJwJzAmYhb1pUSigM
+	 elffXST2g2mTJoisTvyydqNgN1fAMiS9HWcTtk4UGR/v1R9ojlbwgaxL0cJDVDkGH9
+	 fLOAD9/SI1nCadBee7QduMMaKKYC16TUXwXDzVE2+RpABZBbICCzAn71NbYDalAJBA
+	 xiIoaKYRb9NGzWeBGBwaNy4g1sVrHEexNQhZrmOdcjHIG9gTW2Z0Jjt2hJygAQl/kT
+	 0cCHArmLVPfmA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 29 Oct 2026 17:07:21 +0100
-Subject: [PATCH v2 30/34] ext4: allow remounting read-only in the emergency
- state
+Date: Thu, 29 Oct 2026 17:07:22 +0100
+Subject: [PATCH v2 31/34] ext4: use the generic emergency read-only state
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-work-fs-sb_rdonly-v2-30-2f44f64f0b66@kernel.org>
+Message-Id: <20261029-work-fs-sb_rdonly-v2-31-2f44f64f0b66@kernel.org>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
 In-Reply-To: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
 To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
@@ -80,29 +79,28 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
  linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
  linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
  linux-xfs@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org, 
- Jan Kara <jack@suse.cz>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2356; i=brauner@kernel.org;
- h=from:subject:message-id; bh=ti3vaFeq1wr2J3gmGLEbz9S2kgER+gU7DSPKbKEcJIw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9zjf41qx6p3hhZPmz/Xlf/a8WR073X8O4NyFMf+t+I
- fspOo5HO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbCa8vIcHxmS8CnWPEZp67N
- 5q6/bvdVvq+uhv25WeeDk0V1PSeXvgeqyC7PmRFnnz+z9ejFH64Pv2xW9n99ZfOORsPiqZ2ThaV
- 5AQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=980; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=QT9bEmgMx7HOZfltPAgtswWtwVjCWwJIOMw37FP7ctQ=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9zjeY/8T6pH+S+Yw5W3oCW1aZtRdPydBI8eCT75jgs
+ r9D4FRARykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwET8kxkZDm07O8G75MpxzcAF
+ s/+9sTCSZFr/8Vf0/KXT3zcKLp8yg53hf0Dn32fFXMe3rvnJUbozJu2VU4WVc/3d0K9vLs7e8dD
+ mBxcA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1E9FD40004
-X-Stat-Signature: s84j589ckstw8bfgyzggao5ddaon7wgc
+X-Rspamd-Queue-Id: 117B820006
 X-Rspam-User: 
+X-Stat-Signature: g5w34mc79d5f3sudktusc6hg4ozohkc4
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793290169-761961
-X-HE-Meta: U2FsdGVkX18VbBBQqNZ4YUF5aBqlopz9csYaMkquyIjYl8LAghB7zt2wkJbOEhwTRVFFmHC0nljV1wM7IBNHVKoNHkia9W9HD6vGgjrct47W2NUgIN1AO29VQl5sDjeasrMrZwrOmMQ4b3ND9+hb9KOFRjt3ikqav8kmyvZmaXXhWUjCCLBkWc4cvRoIMJUPnquacfnr4ZjWJfRiF+eArilhq5gV+exlI9VMA+9lnZFRQQEvqC+8sP4WEgogf2KAs41YzSjyn2kU/cMgOf95AlDKrc6d2JXGNGbKbakaKBmBYfjAjAre2iqnsmlfzXY6HEbARCgjQhV5wxhgv9dWUqdjEdj322bRpQT+nZkJ7r6ftEa2TclhwkXfjk+NYYMG5hyCy+AjpbSZ38JocyWx+csDKqi0Q3criPaaUwfFJ1m8a6Ie2ETySVpMXE5sGxiimCvYdrw7bnW2ZxcnswIH4QOcmaPing5KBTTK2PBe51rinHSPlhWOcL/lrESfWgDrzuzb/ObUHzkiGLGEN0c2ZVAPiCmEEr/vvxuyVxajp8E/QKiPhb84qcW9BxP9dD7QDLApPz8GCvAlGwwtBre867u7teQEBRmZX9pSiaq7dCrGVIhIycZ7/t63FqPk81w9UQ6D5NldjlcwkfpGc6koPx1WF9umjBjhtsxJe6BMfEUycukkWom8o/D0FQ7R0sjY9GdJOKM2PVyoHGtpYYU33oxRAFNzhd+m71s19MRNGhbTAwbMLxHqvnik8bu+vWn7WWpCzz2OWqlKBZA6wUvfE8m2ZpgtMR8P/MVkGdpn+8eQyq8d0vUWcdqGTOqDJShDRnrjNA6rfyb/5EhDhCmqBFRa35fZr7r4vR9GpCs9C511ttco9qq8paKSRVmAD9sshqBXm0RTVQEL/enxwssB2rwbvjwslpuamPZONA5ffhfpboR3lx34uz8VmRcqmQ6mtjaeS/HUOxS5Zp8PsKN
- +7j9DomW
- vDdsyICcrqbvJhIH05QAb86rryElTaY93YglCXXaWtCqMs9die+vf/TxpYNaEdbpJAs/JriAxcvMMIMcgDByloqBtnsjHORv/t+WtwDpMgRIFAUoBKCTyFsDHW8quz3bH5RLFpXY73c3z81eQLX5bqLQ43nMqCteAA1s3qAOiMJPzVcYv3IzW+WPITHW7xTy3cNUltvuhcw8EaWRfk5ykCw7PpmzvIFzLjMCEqMjOVc2RHP5P5dZZG4a0/tNOqs/u+kDajWcL2Xie/OrZrqJgwGXLtZOk2AarXfvguLgx1hxMybMHSgozb+CIHWXG/Ok2h9KG
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1793290173-635064
+X-HE-Meta: U2FsdGVkX19ZSdpDS5oyCWuWyRz0IAPcayamu8Ap8/cZQJxD+hjPzGRvvAtPmSaV5zH45FAqiz0WlU+YSn6+2pBy3SEiKKFh2RCACznuX19DqGANZv3r106nuBxAO0/51Mi94PSwxRn4MIXui1Ueye1M/RcQG+FdrDFTOeMtbBl3gGt+pmmBqYnGX5YMJXKjMENdA0ZdEa67DDlkrfd2IQdTwhkwVD48wXf1Ol52HaoR3v5uaLzolx69AIp/Ym0ODvz4am31onC7Lfhjto8jHZPKdGB+Jt1wcM9i/EOaFE2DrFLD8aLwgEhrUn6DhBHrellp5QyMfJUhw/8L3htqj2FrWU6rV7oMbxDAzLSugg+H+DUiANKRL6HJAAuId+RUag7J8G55XIYIWwAMa8na5fWkyU2QW54bxBLKrqx73zz03xl93+/qtOHxOWc4ZSKb5z6BIjRkbjEJedHtldl/Ty4pd8yLWhPm7vtZZBF9tN7w3wEjjA3hCBLVnos2ThQa2ycPV4sSSvw8se1+rK9884OE8+aiRDJNsfYcnmK7DlG0RG0cRl06TqXKOBZFq6TLjnf8CzG+R1E/X3IMbu23otFCs+ppG20+L1V+G42Ssf6sGQPKjw9kgr88UtTjK1JnbdrRLbLSzljxwVftFnmlGSGLmO0wf73dPRYoaKMvV9PLs/QEAMNGkSSHawFIBQkvOjcUXvdaBA7YWJKXUOalItLZbdyorgTlno/0hsYBwd+v4bfPTfr2VvCZvaLae32fXNdrWvCZApuAMF2JDguqxCztKDe5OM8Rab0fXtMPh3OT8LC+PzmYVqo4MWJzlNxfobE/x9ey6zfqMH78o01qNxDQXeAFiw4dQQI0PTstA69UUHd1k5VUWdnDTpS6Q/MLazzVOpXN/YOSk751+J4q+KozEfhW9g75vJpIztTPlkNplyQoo8yIf3uYZDnYdXwyEjKC79rrtj5iu3x7GAD
+ Ea9PVWTx
+ rpidm1V6ENZzORaNK7/1Bb9bLogoej5qTqO2SiM/31tF6oSgCd7WlYH1jp7KgKxqy9g7gSCeXaLAdwP3+hUm8bb/7XVeYO4hRj6QIN2spG1WN14+jBT2OCBuC4V4Sye6IrpYoKmSQE9L7EFw23BWv4LQt7iaqe8oYjeHZWmj5ofhjSXQm7aAJE9zjT9rjPPyLxQn1P/ez7qUoIT9F4g8P/zd3eV0bwBJbMOSo+50vT0ZDhA4ZJW52TImVYUMoVHFPgXg6uoSRLP5CPXwcmd5zyXStAcMUE0jcbrrZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,68 +109,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__ext4_remount() refuses any change of the read-only state with EROFS
-while ext4_emergency_state() is set, i.e. after a shutdown or an error.
-Neither sets SB_RDONLY anymore, so a remount to read-only fails and the
-filesystem stays read-write. Emergency remount (sysrq u) asks with
-SB_FORCE and reconfigure_super() WARNs, a panic with panic_on_warn:
+Set SB_STATE_EMERGENCY_RO next to EXT4_FLAGS_EMERGENCY_RO when an error
+makes the filesystem read-only. The VFS then refuses modifications
+before they reach ext4 and reports the superblock as read-only like it
+did when ext4 still set SB_RDONLY. The shutdown state stays ext4's own
+and so do all of ext4's checks because they cover both states. ext4
+keeps showing "emergency_ro" in its mount options.
 
-  forced remount of a ext4 fs returned -30
-
-Becoming read-only doesn't need to write anything. So allow it and skip
-everything in that branch that would touch the disk: sync_filesystem(),
-dquot_suspend(), the s_state update, ext4_mark_recovery_complete() and
-the superblock commit without a journal. Going read-write is still
-refused.
-
-Note that ext4_emergency_state() only exists since v6.15. Older stable
-trees need ext4_forced_shutdown() instead.
-
-Fixes: 95257987a638 ("ext4: drop EXT4_MF_FS_ABORTED flag")
-Fixes: d3476f3dad4a ("ext4: don't set SB_RDONLY after filesystem errors")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/ext4/super.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ fs/ext4/super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 9cae52471dee..ae5ba6823c01 100644
+index ae5ba6823c01..afbdbb607b14 100644
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -6761,11 +6761,16 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
+@@ -757,6 +757,7 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
+ 	 * and other problems.
+ 	 */
+ 	set_bit(EXT4_FLAGS_EMERGENCY_RO, &EXT4_SB(sb)->s_ext4_flags);
++	sb_set_emergency_ro(sb);
+ }
  
- 	if ((bool)(fc->sb_flags & SB_RDONLY) != sb_rdonly(sb)) {
- 		if (ext4_emergency_state(sb)) {
--			err = -EROFS;
--			goto restore_opts;
--		}
--
--		if (fc->sb_flags & SB_RDONLY) {
-+			/*
-+			 * Going read-only must work for emergency remount
-+			 * (sysrq u) but nothing may be written, just flip it.
-+			 */
-+			if (!(fc->sb_flags & SB_RDONLY)) {
-+				err = -EROFS;
-+				goto restore_opts;
-+			}
-+			sb->s_flags |= SB_RDONLY;
-+		} else if (fc->sb_flags & SB_RDONLY) {
- 			err = sync_filesystem(sb);
- 			if (err < 0)
- 				goto restore_opts;
-@@ -6876,7 +6881,8 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 			goto restore_opts;
- 	}
- 
--	if (sbi->s_journal == NULL && !(old_sb_flags & SB_RDONLY)) {
-+	if (sbi->s_journal == NULL && !(old_sb_flags & SB_RDONLY) &&
-+	    !ext4_emergency_state(sb)) {
- 		err = ext4_commit_super(sb);
- 		if (err)
- 			goto restore_opts;
+ static void update_super_work(struct work_struct *work)
 
 -- 
 2.53.0
