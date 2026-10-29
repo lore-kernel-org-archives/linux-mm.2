@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8BB606A31E
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92AD606A333
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 17:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HC6izpFB
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FpX9XV92
 Received: by kanga.kvack.org (Postfix)
-	id BA2EA6B0620; Thu, 29 Oct 2026 13:30:51 -0400 (EDT)
+	id C18346B0622; Thu, 29 Oct 2026 13:30:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B532E6B0621; Thu, 29 Oct 2026 13:30:51 -0400 (EDT)
+	id BC8D46B0623; Thu, 29 Oct 2026 13:30:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A69706B0622; Thu, 29 Oct 2026 13:30:51 -0400 (EDT)
+	id AB7A96B0624; Thu, 29 Oct 2026 13:30:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 82F456B0620
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:30:51 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A748804D6
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:51 +0000 (UTC)
-X-FDA: 85376353902.02.25C3AE1
-Received: from mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A5E9020012
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HC6izpFB;
+	by kanga.kvack.org (Postfix) with ESMTP id 7DD616B0622
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:30:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EAB4FA7F9B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:56 +0000 (UTC)
+X-FDA: 85376354112.22.A636E19
+Received: from mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 108FC4000A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:30:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FpX9XV92;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+	spf=pass (imf01.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793295049;
+	s=arc-20220608; t=1793295055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rBVVW3tHabgwrKT2QwycDYkPKCsMYjmGYVvwfvGvrhE=;
-	b=LyqYb7BSpCEk+XNW6VSfmviKQriKcxBTcGkq173zroa+/gZvfLt0a9TtFYxsdIKWwpZt3S
-	bP5fFa9l6+Xkp6HckrHUzLY1V6AOfkJWhno0WQ8VNCirsWBxcuqA0rZH5vcfLfauHmHyHo
-	qSizgQTYqr5HoM1Cz5oIHC6XSZS5q8A=
+	bh=YeQsqnpkwn6ypXN7vyNImbLG7QIbHLNRV1Ffg9tI2a4=;
+	b=DtUKk7yl12I2cj1buc5vdTlEjUiTfFV6sIJdJbzmaG0ikfLAhIlpQwRvvM2L/Uq5j4kJwm
+	vdo6zORZ1tK3LvWPcFY7xtaIXYGHxczDT8BrwbDc2C1H/pD/7ZGMhKcu/HudS/b5qknnFb
+	lg6J5qbAhn4xAyxJPjI5NOAlbrCi4uE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HC6izpFB;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FpX9XV92;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
+	spf=pass (imf01.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793295049;
-	b=mhwszucCFz90q6eEITZZlq1GtDJwjaHIDLla3Q6lfCUWvRGLBKFnug5Xv7qjuEWSNeThVQ
-	6CZ1r5Tz4ZWtSmzg5nVts2PccZFhKOX6cJQiC2gBcxvsjpOeDH+sQbnZp0EiAGGnvpZeWG
-	E8VUhJkUHQyjW+k5NGbltVa2HQAdaYw=
+	t=1793295055;
+	b=bVet3jgrzvYGns9dm2GbW5YFDkhSccHQ/m9yyCBHn80Mvp6cCbWDtwGvZIC/OemEeL/TVl
+	NrM9TBtY6DooaKa5tMYAZTI6ckGuypsf1rssLkgcQNNzNStO2YABSfcifvOUPVuIj/IL/E
+	e5LLXxeZd7xt2ui/6BgnzL9wpZf7DfQ=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7EdBEd5XL5wRdZvYlylGxvVrrhD/K6K3u333eKYP51c=;
+DKIM-Signature: a=rsa-sha256; bh=5xQkj3N9yiVJ8AVum9FtJNkr8nMttgbgXIeAZWsu7R4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793295047; v=1; x=1793899847;
- b=HC6izpFBgx9Os0a9ApbmT2Glk501euie4yvJGNNb7zQBjlxydSGvilwWczTel/QZIX6ywO4n
- MTUMT5QvMBh0ouFgHp4Nv4X3nrI2oItKbxYRkNG+LllR7xNIV3QSufQWwP14HJ5/bGcN9HFVUX0
- L2/ocLWMVGp1/+3XWj/tMaXk=
+ t=1793295053; v=1; x=1793899853;
+ b=FpX9XV92A0v/B1Tp65pVnzHFflZPsb/Paqgp5DTXqZzfwEOcbIYDvyjn/jkvkoHcKBLGzh0/
+ 6unVyNBofcX839jRDqKW1UmW2dv6/m5EhOwc+cVK5Nc6TT90RVisiUXypBi6CNimLs9DaW7jg8/
+ 74i75g7i084UaIvQJWOHH12o=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 155dc8602c7bb9c2;
-	Thu, 29 Oct 2026 17:30:46 +0000
-X-Mizu-Trace-ID: 155dc8602c7bb9c2
+Received: by smtp.migadu.com with ESMTPS id e9111306d7fcf669;
+	Thu, 29 Oct 2026 17:30:53 +0000
+X-Mizu-Trace-ID: e9111306d7fcf669
 X-Migadu-Flow: FLOW_OUT
 From: George Guo <dongtai.guo@linux.dev>
 To: rppt@kernel.org,
@@ -79,17 +79,17 @@ Cc: ilias.apalodimas@linaro.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v6 4/8] kho: Add kho_disable()
-Date: Fri, 30 Oct 2026 02:29:51 +0900
-Message-ID: <20261029172956.20791-5-dongtai.guo@linux.dev>
+Subject: [PATCH v6 5/8] LoongArch: Allow memblock arrays to resize
+Date: Fri, 30 Oct 2026 02:29:52 +0900
+Message-ID: <20261029172956.20791-6-dongtai.guo@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261029172956.20791-1-dongtai.guo@linux.dev>
 References: <20261029172956.20791-1-dongtai.guo@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A5E9020012
-X-Stat-Signature: wo6h7wohbauszxetgr3mpxoaxhzsjuwp
+X-Rspamd-Queue-Id: 108FC4000A
+X-Stat-Signature: qmxa9sj64q8s8q1qomunrogkzhqi4eoq
 X-Rspamd-Server: rspam04
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -97,10 +97,10 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793295048-813033
-X-HE-Meta: U2FsdGVkX18XxfLDfTw7Q9HPg73QzwcFnp0g9IGI6wDmngJ8RT/MiEicahfe6Rqnyi9vTolNcsIVPEszT/QgGZG8pa7jnc0h1sL1YkTfgW4CyC1HHk9Dy6uglDjQyw5c4auXJr2LvRc+frmfee+mDzZ2WV3JKJBRsfddRorgyFpZjEwkSQ3NjAP1N+27QYG6zIUorP7eCpTkgfBIamfuvRpgA0z4B66PXJlEtQd0DuG9M0VHRwLF4Hofxq817NvwfMkGgL6Sx9hufhShdjpSixY71Cc7hVwHivoohvo7zyLd5101T1ugBwhiP2VaTv0UI/nSnh7aGqq+Sc7bT2/zdx2U97KRAsSWICZfXIdU/AKKK2eB1ZnLQRBgucxZVLehB/WnMvZ5m+1BvOaqrBOpCaxvkGPTkJugZCevok8Yf/GkEBaoXOZB8MtD2Dk8kAH3VPDKoDCRbcS6Ddrfgp6+YiD3didrqhthHjmo3scAZ6VVZ3NDT1lKnBA/I4TsUlcEyqt17xArNqJcjodBw1hs/KKlJjxZLKaELGMUGAnwGCXYSi+JDYHRmwbnuWuMHGHaB7a3K9uJyHpIfpXAr+L2Mpq2LQ3uRCyXBka0e+inz2bj5z5XW3t7JUUoOrFNZLux/f1R0CBs0eU6UY6A/fX2k/ogWfTlrn/XxlvlBn+HG8tcTZ+yD9GOPYDCOQt78hHaglTMFJJftmScNT15c+BR7l/URqd8/kGb57f/JGqbLvyvBWyKriuFL4zPF+E3ym9X/dyg8VbjH5ahvMcXMhGVlWktDNgKdnLMEIstfv3o7usWxP7Fo4BcXaU3WEE3yrm6zstcUyAriPQ7CPUSt0Svgkxnx+MBAlUBWqa6uVjJJnheDTxr8hnS4ZLEuTEKc0J3ceHBEjsYqaCpmtntYr2dk3a+E+9aCOhh/edGQyQmjW5BTrKOGqwmmOAHMmngRHkhIUwVSSeOo1JDBh1m++V
- aQ3Fv1w6
- kn6jjjTMxkVtzc96tkAmG/wCn9RyIy47239Rl3nnpACVCL77GN65dHwHFlFXNA4IUZqMOQNsnB+1YjKyrk+flfLKEXL/oJ8bNowtqtjTgsbm2Yiny+RlE/J2olk4x6GbsOoUiEfJjhan/wdMca6OH56UB3mp7dUxFMFn/BhBO0096IpAl+Ly1GxCiHNFwTh6yHZMNLn0emAUIQePeVSjBGlTu0EQmPcrnx8HAe9yojnaph8gadP2hyBlSUFPiTuclxbnXhnNE21WYHqNupJLNxSwW9A==
+X-HE-Tag: 1793295054-978300
+X-HE-Meta: U2FsdGVkX1/gw1QJPvjwOcyXO2t3MK881LsSCJBYFNPY2UUcaGYKmkMgAIDiTDeVJ/XdQAXdnNt6FGrCaoVYqAqLC88xmJWWCTcBTLQSissqmiJvtGyFqYz5MYSmYgzI5hFXMFT9FBqRZeD9wF6lrzCDNGxd+2xij7SDBd4CFYtexjqjPqqSTYVbDaxS/UISUcaj7zOzCnxrzji5cuJ8iDgfhEiNnnGw3puOGKI0Y1tgRQ7AUrtg9DxdTodnWNQS0j8Wv4MczvbfCgaLvgPdlrU3lCEYzAwk1YONWZ1BScT1uwJLGbXjdx7D7OHFg3IwE2csM0Ze0dx5vgU2sPGTVSLIv6lCqlB7mna9WX97BOdQWZcGY9oWkHbmyo1wxVg11cHzCtzD7y5qsY89M0msrQnwkypFldFgsVuhtDgut8It3IJeSr8crMlIr33k8AukIBs+9I/i6So69BM6CVNdn5lFahKzmphKWqO1n3HB4urNXPumYbmVdaicVDskmzMotJ84A1FUnl/aeb5CHfymECaDSS3GAAuevCIxnx5YDA6zQZCXz8Ao387MRgF0zVm2U4T3eq3YlJuzkTuDPzYa7Nu042kVGp626eGGfwsHOvK3Igo6BNrwI8XBLQz5G7MEGCEbkkVcWsG5Jhx7Z3GUGVCl8QQtFhCzwORe7GEasLzzVwkCZhNpImrBDNksI0HvTXAi9jRkygGMLEAk0UetYozANFx17zT0vsam5dIcTb48cx6IQ3acEnCQPi8LZ1oX1oCfq45Y8RPErDHxZKMN09k2vvEadf11bsM91HZ7L6Q2I87B8bcTGrjYx7/y4R3g5HoP79148s0qlWe7TMGsdvakGZWPYTIc0Dv6Nxdsol3sSM829HXg1A3AtTRGzKbIiiB6K9nVDfUgzfVrhnhqPePvmwEyWUo2kWeXThDlJNajC+fO7XvXVJ3J+nN4jdrmZoHIi+7dpmDyDsbIYRI
+ nsURII7G
+ Xa5+CUK3KJalR0zAnD1TZZQxa56ibWU6iWSATHsEMN4Rz6XBPp0JFlXe4BGsLpj4AqnlgkcTnY80MavUjIcBBou4iOSPE0YyNw4vOvhOfRUcBkEF1Y0wzQ3kmvTjA1h6GL2sq/iZVflX7y7sxXvwgFR9Qf866SHWdR0z8W2Jj6kIkDdla2BrCLakS8K+9WE989nbsmZpQEBE2WghEYyrIl7RLf8bRnPss1jJHASszlasKLk0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,65 +111,62 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: George Guo <guodongtai@kylinos.cn>
 
-On LoongArch, KHO state is passed to the next kernel only through an EFI
-configuration table. Only the EFI stub installs this table, during a cold
-boot.
+LoongArch never calls memblock_allow_resize(), so the reserved region
+array cannot grow beyond INIT_MEMBLOCK_RESERVED_REGIONS entries
+(INIT_MEMBLOCK_REGIONS + NR_CPUS).
 
-A kernel entered through kexec does not run the EFI stub, so it cannot
-create the table if the previous kernel did not provide one. Without
-the table, it cannot pass KHO state to the next kernel on a subsequent
-kexec.
+After kexec, kho_memory_init() reserves every range preserved by KHO.
+Each range that is not adjacent to another one needs its own entry, so
+with enough scattered preserved pages the array overflows and the
+incoming kernel panics:
 
-Add kho_disable() so architecture code can turn KHO off when the EFI
-configuration table is missing.
+  Kernel panic - not syncing: memblock: cannot resize reserved array
+  Call Trace:
+   memblock_double_array+0x2d4/0x2f8
+   memblock_isolate_range+0x54/0x1a8
+   memblock_setclr_flag+0x44/0xe0
+   kho_preserved_memory_reserve+0x78/0xb8
+   ...
+   kho_memory_init+0xbc/0x394
+   mm_core_init+0x124/0x154
+   start_kernel+0x568/0x6dc
 
+The liveupdate luo_stress_files test with 500 files triggers it on a
+kernel without CONFIG_SMP, where NR_CPUS is 1. With CONFIG_SMP the
+array is larger and the test passes, but more preserved memory still
+overflows it.
+
+When the reserved array is full, memblock allocates a bigger array
+from free memory. This is only safe once all memory in use has been
+reserved, so enable resizing in arch_mem_init() after the firmware,
+kernel and initrd reservations are made.
+
+The memory preserved by KHO is reserved later, in kho_memory_init().
+A new array cannot land on it either, because kho_populate() already
+limits memblock allocations to the KHO bootmem areas, which hold no
+preserved data.
+
+Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- include/linux/kexec_handover.h     | 3 +++
- kernel/liveupdate/kexec_handover.c | 9 +++++++++
- 2 files changed, 12 insertions(+)
+ arch/loongarch/kernel/setup.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index ef2b188c8ed0..6f80e1b0ccd4 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -15,6 +15,7 @@ struct page;
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index 6fa4a22a58fd..dff2e0c67ea0 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -402,6 +402,9 @@ static void __init arch_mem_init(char **cmdline_p)
  
- #ifdef CONFIG_KEXEC_HANDOVER
- bool kho_is_enabled(void);
-+void kho_disable(void);
- bool is_kho_boot(void);
+ 	check_kernel_sections_mem();
  
- int kho_preserve_folio(struct folio *folio);
-@@ -54,6 +55,8 @@ static inline bool kho_is_enabled(void)
- 	return false;
- }
- 
-+static inline void kho_disable(void) { }
++	/* KHO may restore more reserved regions than the initial array holds. */
++	memblock_allow_resize();
 +
- static inline bool is_kho_boot(void)
- {
- 	return false;
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 74c4633f5afc..3280533eaebe 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -82,6 +82,15 @@ static int __init kho_parse_enable(char *p)
- }
- early_param("kho", kho_parse_enable);
+ 	memblock_set_bottom_up(true);
  
-+/*
-+ * For architecture code that finds, after the early parameters are parsed,
-+ * that it cannot pass the KHO state to the next kernel.
-+ */
-+void __init kho_disable(void)
-+{
-+	kho_enable = false;
-+}
-+
- struct kho_out {
- 	void *fdt;
- 	struct mutex lock; /* protects KHO FDT */
+ 	swiotlb_init(true, SWIOTLB_VERBOSE);
 -- 
 2.53.0
 
