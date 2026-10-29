@@ -1,174 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA72260A2603
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9634606A31D
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 14:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XUQVHCdI
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=s21pyadU
 Received: by kanga.kvack.org (Postfix)
-	id D8D556B05BC; Thu, 29 Oct 2026 10:18:46 -0400 (EDT)
+	id 189056B05B3; Thu, 29 Oct 2026 10:23:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D65026B05BD; Thu, 29 Oct 2026 10:18:46 -0400 (EDT)
+	id 160AF6B05B9; Thu, 29 Oct 2026 10:23:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C545B6B05BE; Thu, 29 Oct 2026 10:18:46 -0400 (EDT)
+	id 076E36B05BD; Thu, 29 Oct 2026 10:23:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CE7A6B05BC
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:18:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16732A0435
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:18:46 +0000 (UTC)
-X-FDA: 85375869852.19.79F1EBD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 666F8120012
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:18:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUQVHCdI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DB73D6B05B3
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 10:23:52 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8C87DC0409
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:23:51 +0000 (UTC)
+X-FDA: 85375882662.02.529922E
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B943A40008
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:23:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=s21pyadU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of joasantonio108@gmail.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=joasantonio108@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793283524;
+	s=arc-20220608; t=1793283829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KrmJHHnmWU49kR3EjjGIqe7TD1rMMa5OKGo7QYF6nE0=;
-	b=yIwOdueAkCgJ6plVmjejKDyj5O3c91bCMJFEiRgCJXPpm9SJk2iNlYWXQ3S0VfbH/TLLxD
-	DUzOIOaM3qd+LFQuOlrgRLbMibBMDaPjpmJP9/5huGduj0ABGDlc+bEAtQkmcPtS3s1gK3
-	ry3nAr2JXVEWo4X+6Dgz0rDvWz9lJe4=
+	bh=JJb2/HmhBTTuuyxE/cFYx3WSBj9uBlfuHJGXiko2698=;
+	b=Iu2iyZc7EoYs7603vxkwBherpMLVD2lSPCl3ljGGrJt8bgYOFAKYnGvy6WxdSjGCow6bJq
+	porrzLGBQD7DpQ08k4+TjnoMAp942NX9IELB9CgYoNhM06Q8NXXEgL0jwh+WCSm9Ywp0sh
+	u0sp+p510kATkhjQn7kat1zriPmelv4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUQVHCdI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=s21pyadU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of joasantonio108@gmail.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=joasantonio108@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793283524;
-	b=amCoq19SwqbkulceccGvSDrqtPCk8tTQDocqISXqbCiarRw7v3e/j39LnfIzZ6M6kKlNUI
-	R6JlwLfxeXRWv5b+GmiWtMCGmjgkPwXf6FVqP/ncHtklwBMx7OOURQfkBZTWbiikpA5QYn
-	hCdnhN8p/J+cpuhnOlf7TbMS3z2mmuM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9F9506022F;
-	Thu, 29 Oct 2026 14:18:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A8D1F01825;
-	Thu, 29 Oct 2026 14:18:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793283523;
-	bh=KrmJHHnmWU49kR3EjjGIqe7TD1rMMa5OKGo7QYF6nE0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XUQVHCdIXfvmbaph/VA/rxWkBrBMpTWNrTAYGGhlCnhClgHcbmqfLm/eKiQyCpl+W
-	 E3eYifg9BPWiMSDXEftsG6P1erQcEU1cxEqVv7Q65NLTq6sRGvicyug8evlSykwQ1n
-	 N555FxgSSTArXb9eRt1k/+Rr7/gKg542EG3ZHgkCdrsxx5r9mVZUcQFcOovPpa8Tf+
-	 K5DX1M/2E6C5yMjxDhwgcHRNE2N173N/c0Ut2AaVXgOtOHtG0XhsZlbs8t2w98oJlg
-	 Mu1VOIE7670qxMrHyiu6QL0I/NiamJbSsCKr41PrvWSm0g6yo0ne75ilTxt7hUJyj/
-	 vpESVobE2Pi8Q==
-Message-ID: <7fab2115-6c44-43b1-b03b-8ce4a37ffe32@kernel.org>
-Date: Thu, 29 Oct 2026 15:18:23 +0100
+	t=1793283829;
+	b=2oWMF4EwvFn+jbwd2qqOI6jyOLC+OQC7bTqnL/bijugGg7/rXNyEMjI651TuEWO/jOD7/n
+	2h0Gv47TkVZzqyaF29baLJMtEnXjBmkgkia4YoJLIwXgBNkEXRjyE0cxPPyVJcfVgIqzkI
+	ReOQHg1O/9t1r4flYAkYwBDp/TWmozI=
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5ec3561b07dso685750e0c.1
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793283829; x=1793888629; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JJb2/HmhBTTuuyxE/cFYx3WSBj9uBlfuHJGXiko2698=;
+        b=s21pyadUC71FohVsXeDLUXbQ6hQcNqg/EyxX1RmzFNRQBdtcx+NnvwC5kZLJGb3a0Z
+         WVBa2ylZZqedXi87UOvJQwCNF4WWpp3ywR/XsGeK1q73UluaKX89IbzJ7SXy69JH5hLs
+         +4LWlEAbPKpRloGe2aClgKFOp1f5LoPlyW/wFKySawKXZaUPekEYGW5UzPwcF1d0Hm/y
+         nm0AQo1enjVfe9fNqNrr9HDcsjpGyhVO4X6mUSvY9bo4DgD9EAld5ybRenl640xeD+xp
+         vayGwO1Soojav3cmAomnoLb5K38W3xKWziRb6Vuf9bFtDrJESpv8TwADVfmbLmChIFmF
+         WBbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793283829; x=1793888629;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JJb2/HmhBTTuuyxE/cFYx3WSBj9uBlfuHJGXiko2698=;
+        b=SheIepxL+r/p9SQmyKbrNDqgs819Wh+nSkiwAnNiZufG/VW9nsvJ1skDv4q+hauz9M
+         RaUtrwYNJGcy8NeFtByGFjcMXCQV2E3xTFGCqw4/rBTjUTl+QEIQnsJZFohLHFW0Rlk1
+         5XkcOa0qVLRrkEz8t0/b17HcOl3soSQvz3+c9M0Y9fwuF3raf9M5f9ZG1erB0OGsxIc5
+         php7b8jjG9f0wzvm+4IDGq86W9hYfxp7IYqV7p7dSfOFZ6jvJ1nfhhnhx5aSaAGE+sHw
+         x3cczfVcGaCdnO9KyYU8S7pcZDHTgxUJaJdkNntmHi8y5EATXZfJTNoDcojIkc/mw+fI
+         EcZA==
+X-Forwarded-Encrypted: i=1; AKwUvBxh2Gi4vYt84pcK1tMziwwoWQNIyaDAHI6+nDm8AMsc9qNZ3hMIUM3ibM2e/6fYNWbNiBDum7gDCQ==@kvack.org
+X-Gm-Message-State: AFq9FYLaLChI541AkHovY1HAB2eTHhv+WbUh7t+XfYgiLUXbEYoPx3PR
+	nKzLt//gzydAoDFx2mtJsBDKo/sYz6ZsUAqu8LfoK7j4rmB6e5hmnIZ5
+X-Gm-Gg: AYBFou2Sgf1mpts0fdDt7oJZr5eJRpCAlYcO1JSnanzbNeojyauDvNA9+R/PRp0bK7c
+	PlrdjLeQj7pxVi/k3fBw+8Ukr5natuISdvOHLK8QFE8IYkEoYDF5fkF1KSCqWUqh2pLgeJ0syHf
+	iEPoL5GXXBoFL36SOXje9EhssP966+w8mZqE0G8rq69e4JvvJUyWkQlm0SZ1u3xAtz4CRsrhmOQ
+	cAtbA5HhQ9CAPPAj7E7M6i/20eGpogEWKm3NxCh/NGdqiIdgS8FYQXR0bEaeqJEqZqVovGFq3gj
+	pBzolMZx5Lm02UeHLJjRy8hTMyzzsG6VUg6jXxlCTKvOGqGake3PUjeFijwl+jQKtM5L9+a4mpq
+	QxYmN6lAAtxsohuoVF9iupHIkSLSFgjPwnm3RYky6XQU+rRMeFX9fzYFARJMOMsd/w++tygD2FR
+	lxi451R9bEOX4VthxEX7oBRk61POaT8e7tkIaWy6XYJATmfFyxDfpPLNnQyfaNwPF20RuwXrL7F
+	ZI+MDOWVvJkUTTTu4pwQ/P9szWIuoj/IputrjqeLuiypw5WtZybVRaw12aMvjrQ3sGHwyQ64Ylt
+	mv2tuLKc7MceF1by6ARFCg5osP1NHwnP3wAYBKR4Xl3kd80O5q6hr7raPsVsjdOAd8mST2gUEVn
+	GXE5ROvq2hq1h
+X-Received: by 2002:a05:6122:e46a:b0:5ea:bf30:851d with SMTP id 71dfb90a1353d-5ec587ac1ecmr879502e0c.16.1793283828654;
+        Thu, 29 Oct 2026 07:23:48 -0700 (PDT)
+Received: from [192.168.15.16] ([2804:1b3:a2c1:77a1:5cd:8fee:f3c:4da7])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec4f92e3e3sm5524139e0c.9.2026.10.29.07.23.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 07:23:48 -0700 (PDT)
+From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH] hugetlbfs: emit hugetlbfs_free_inode from ->destroy_inode()
+Date: Thu, 29 Oct 2026 11:23:37 -0300
+Message-ID: <179328381770.67441.15785036410268577790@gmail.com>
+In-Reply-To: <acfd9678-fa48-4610-ba90-278cab92ee9c@kernel.org>
+References: <179324176522.32673.7602596908234555806@gmail.com>
+ <acfd9678-fa48-4610-ba90-278cab92ee9c@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/46] mm/truncate: look again if a folio left the mapping
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-cxl@vger.kernel.org, stable@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
- <20261027-fixes_core-v1-5-6f74bec9a5bb@kernel.org>
- <auIniV8YSpA4_oxg@thinkstation>
- <2f2ef336-2186-4f20-b7f5-565e60471bda@kernel.org>
- <auMvYdTd_e9O9kDj@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <auMvYdTd_e9O9kDj@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 666F8120012
-X-Stat-Signature: scea6sq6x7zzpgcsrasw5dfbubfphmf7
-X-Rspamd-Server: rspam06
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B943A40008
+X-Stat-Signature: ketwkb7jr8irh4oq1ijc7zykejzswyo1
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-HE-Tag: 1793283524-614958
-X-HE-Meta: U2FsdGVkX18c4KHYuJ3cA4riseSmZlrL0xnNO6g2sN1WEOgzTFMqWtc/jdh5Zf4HCXSTBFlb2LwYjMK7YAPptbFTmTNX1ncq6CWDMubfatj36hpTix+9c/wCEf2K3OSS0wDlCvWtE6c0FMEwFgL70v8ORU2SZJWQCz8r5d213e6UFn0WMMmLXj1NSAn612ZQztZsO8Z5XXfI6Ysjzmy0zPYAWbiWds372zX0TaVLVqRkr6TJQellWblOui1SR+mpQmyTxncWfqqTNrcetZUqt1lxGwIZM1wqM7g/guWGzdkoWsLbMGsJKkNxPXmQ9UPk1VtQlsr2joiliTWQg7fLUFdzmYiePP/UnF14UWYvFGnw/pUrTb/qRhOmKRMEjfxIGmCxsYsSVWY6lSbQw1eux5M5TEELd6bMwo4c67UMaNmn45aRzhPrychmFA0Jf+myZZgAfcMetqlPLBwnmEuVMW6LXKg1X6zPniHANoh5p6QDrqmDcX+9//a/fdH0d0SimKP5TkO1m1eTHswkiCQFpuiCJZHcrcU2XU1p8Sbf8ULolkDZtHZcogukwsG90iwUHFUvqRjWf5cmtigOjid/QtFW+oNn3ZI1eVOrVkPO3k7P6gbHMAosJVFl/0HSS0oEjf+W2vjU/W3uawU15pzlhx4BM1DNbPDFuH2wg+mLZd7p7wH8y0btWzSqZJbGgtISaV0ai9OenhTPZfVVXy7GTfLyDT5+K+PfT1rz1d1EqopwoSwB6wU3FmLvAF4lx5IuAq1pkm5jdagWXOciqCXo16p0f1pV4WxMNd+tO3ULOXrxygiLLtGxir1dnS1ntJ3btZ38dzVs7XXGyCepjRmOaunDmDrtf40QLezUtHCGj7yWGbMtN1PUy36pWTRRRccb5tDQZqpKFCkMmsWLVE3hVv0GsF03/2HM5WeAIzbk+wArLvYfOTnRf2KOW0tI1+v0wcj10Q38Cq+ow/31vqz
- MvALH8MI
- AUpdybM2jQHVDlCqhhbWbEOI1rhSAC8lHQfyBOx9PP6HUMkHJgKsedBNft2t7lua69LZ4wZeVdxuITONKbz25Uk7ZQcB/53Az75wA/g4LLoBSD6Hd55QpbsGyh92af8ajYWXU1BYLMFQbaXMH63vZ3iuimOfb9GMf/wLe7qTWQkGJ91pb7PjL2O6OOtjyymnHY8ZPoreZAxh98dZr82LbDbcXIHC6JFge7g4JlHtAJo3iRNEjSFwkLynsiSTfJdJ4rMFMNAWJQRiZIj010DE/3DZrBVhW8fkGcv76FfVx6rswyWq9HkACVDmnChiN9YzkZ4Vr0VBKp85vg7NZROQD7ZyTaOjI/Q8MmM4vnyXJejF0p0s=
+X-HE-Tag: 1793283829-307170
+X-HE-Meta: U2FsdGVkX1/4qDTNOjPswK0f8tAP6DVP7rdUguLT2jO2uxLiXS7WA7ki2FEyD2O1POdwiIkvMrn5dLXas6d+2L+4Jxfp0LrJrKhA+6by6/+5yWoE9dhUJV/c17S9WicXuyYsfk13C2dRGgAAuAzfxqeLtDkIMmazd1LsMoKVzHWaKpyN+TJtVaKwFykSoG5+8TNQvhVAvBN0Oi1kWsnyvbNuQRxChmV3OH5oE0Qlnu1rW9kO+xoiKvL1LJ+N1TtoFjICbySMleHw1XYUE9AvUWDarFpyo79Zvb5wYdKetjr4e3lv3/RNBd5vXXZsuGw2cSJH633yTol/3fHSUUdrbnEzy1/vsW5O0p3A5IaFpMG51go2j0yQ04PmFp4UD41JSduFW9t+oOYjcAV7u91Gww1fqJoyXBTLQKPeUnnuwDGTfhJL14qmxVhngkQk92Dx4u1bxMlQc6kwVLQTjR5iRQ/kGKdUCUfxVI7mIrb2wXYJZcNNQsK2Olf8lz3i7K+WGNC5Mo4GLAj5fRMbEg3xyvjdbeKGuPuzYVGqY5u6DASYlWZYt6He1psH+Gx2b/bkWEql7msoP5IB71U1beT+dsB2Rs7WD+iOopVQ1D9d4E7kK5LDwBNqvLqcriQ0Z0qcwZcoOA061SRmsbJFp4H0RUfR/64PG2gP6uQgqOdXUjhJ8IUMAxvPsvbJ2prfTf5pnMKXIGl1uzAKd3bS0hgyrsVGWLu2Qz2zpGBextkAae4gzVjg7pn1ESDYaWUzF8GkF7tl0fUQAl/2F1WvP29JCtkdsEOsDj85bP+zxci3WFrdQh1u0aIaFmrip+MuAUuFYjZBqsB7UrGtGjoXuoE5SuLoxqNjL8f/rpeAYv0P5ykFzXTRpunuyOK8rka9UQuVpfkZxZqK+q/rxqilHcjXRG2wCMwqmhtgSFEPSDxmnMqurMirmv/KJ1A7Lm40X5safrN36sPmQalJkCWgkLm
+ Ykikb9L4
+ 8UejQdgC1cRfq8t4H67HQqK/DWTM9+YZvDWeeSiepPagCN4olktv8osQ4nPO1v/jfoSItV9f494miz/5tgey9gLdppX8L1TjJnmzllmZzTay5NOhmfaNv7/Xz/p0Ycl0iN4sTi6mnyjlrviVMb51z4mjGpHIovhnG303APjHOu5/LZD9vgYNOaXB1XNtAtiJQdSQnQ+NhSxiuS/6wf/1tqswMNUjVHSuvC1qFVjoONoTwVF51VHURvtFLF3Dgky54SlBQl0nbzJCaM3W2oLQ/YucgVuPV/sJ93Uiq/3vWUnjr8VHixsDyKavSI1vYOOw0+fmN0M9nIwOGdxY4u18I7pUE6PITsbY0lxehlYvXcAZktGnOiR69VplzcNXZS6uKULJKGc0YkmS7Yzl1BHGRY3G1A6NmLazpAttwNazFjDREFW/+qwQayCgA5ggQUmBNV5dOR8GUbwzqm5eYROTKv49MN1LTMSxUSuXkM5eccJ69DaqNDRtxWbT1RhE+FHAgBHmEdP2xC9QO5AJVqU90eh7Y4PDo0YOCvWtxeq9qDWVRPZG/c/BpT/J37yBmUcF/62vUA5EEv/VD55HdP3eB8hY4dJF+Eu6QeDWhWS9ZXnRqO7kWouujymEJr5CUQVLFriJVGNSgynE3/fJqyHX/CfUdNyYvZDRz6xZIGYNqyk48+n8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,45 +129,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 12:37, Kiryl Shutsemau wrote:
-> On Wed, Oct 28, 2026 at 10:45:34PM +0100, David Hildenbrand (Arm) wrote:
->> My brain hurts, does the above make sense?
-> 
-> Yes, I missed that the loop only goes back to start when a lookup
-> comes back empty below end. When the last batch reaches end, it exits
-> without another look. It doesn't need the split either: any punch hole
-> whose last page is in the page cache gets there.
-> 
-> That exit looks unintended to me. b9a8a4195c7d ("truncate,shmem: Handle
-> truncates that split large folios") turned the "if (start >= end) goto
-> out" early exit into the loop condition. Before it, the loop went back
-> to start until a lookup from start found nothing; Hugh kept that on
-> purpose for hole punch in 792ceaefe621 ("mm/fs: fix pessimization in
-> hole-punching pagecache").
-> 
-> Restoring it is enough, and makes the "restart to make sure all gone"
-> comment true again:
-> 
-> +       if (start >= end)
-> +               return;
-> +
->         index = start;
-> -       while (index < end) {
-> +       for (;;) {
-> 
-> Then a replaced folio is found on the next round, and truncate needs no
-> special case for it.
-> 
+On 10/29/26 11:45, David Hildenbrand wrote:
+> Should we rename the tracepoint then?
 
-But that's then another lookup even if not really required?
+Fair point, "free_inode" no longer matches where it fires.
 
-Why do you thing that is that better?
+I'd keep this patch as is, though, since it is tagged for stable:
+the event name is visible to users in tracefs
+(events/hugetlbfs/hugetlbfs_free_inode), and renaming it in stable
+kernels would break existing tracing setups there just to fix the
+use-after-free.
 
-I agree that the code is simpler, but at least it's consistent with the other
-handling.
+I can send a follow-up on top of it for mm-unstable that renames the
+event to hugetlbfs_destroy_inode, which also matches the
+hugetlbfs_evict_inode name next to it. Would that work for you, or
+would you prefer the rename folded into a v2?
 
--- 
-Cheers,
-
-David
+Thanks,
+Joas
 
