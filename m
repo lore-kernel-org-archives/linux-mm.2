@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5502606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E425D606A31E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RGLYR88r
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aupcWAQV
 Received: by kanga.kvack.org (Postfix)
-	id 0EF216B05E5; Thu, 29 Oct 2026 16:41:54 -0400 (EDT)
+	id 164566B05E7; Thu, 29 Oct 2026 16:42:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C71B6B05E6; Thu, 29 Oct 2026 16:41:54 -0400 (EDT)
+	id 13D366B05E8; Thu, 29 Oct 2026 16:42:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F20446B05E7; Thu, 29 Oct 2026 16:41:53 -0400 (EDT)
+	id 054136B05E9; Thu, 29 Oct 2026 16:42:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D48B96B05E5
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:41:53 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DA03F6B05E7
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:42:08 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 730694050B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:53 +0000 (UTC)
-X-FDA: 85376835306.14.EF9494C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B08A940008
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:41:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RGLYR88r;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3170FA0517
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:42:08 +0000 (UTC)
+X-FDA: 85376835936.14.71E565A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 57950180002
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:42:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aupcWAQV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306511;
+	s=arc-20220608; t=1793306526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zArSmg7yLUQusiUDBjlm/kScYeO/TmH/P9/Smu4iQZg=;
-	b=rhU9SlASNC+2NnZCkxmhCu7K6D/24Io0MqjRMc1/yU/a0on/X9p4GHSu2f81U/CeSkCwtw
-	ztXIw7qU0Xzq7ybi8IaALX6KJLJwhjJZudA8by3ViIrOXzyBXpnzK37ODyfHGAZcpxcNYs
-	vjRCbvb66gYDlM9UClxMFVU2WqzlTxs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306511;
-	b=Y+F0QFzwAEJpO/35xKSPGTVlGNg78srKxgEGi+2tsdqGYi36id85w4cgImI78v54vV51Ly
-	whFixvL90q5tW4KhcbO1DazoENTMiPdSrRPVcxoqqOpENWm16fks6rZ4cIVp+McX3r+Shk
-	ov/GAX62k7VQruphgxFcPFZjxwVpiHY=
+	bh=EmFFeOpTju++ba/4+xeyEk8Axf+jyt6U1SaWbXoiuJ4=;
+	b=M80J/6hHZF76uu8blq4Y4dZU0aA1Oz8xzb5CE4CztGTrfuG96q5LDGV/uZuGZokcxgL7lp
+	ju5AYrfMF8s+mUeb831QQWGNa+sKmNa1ILAAc/LYq5eh0nzl+7kI1wdBVeeyjCEy+e0Xb/
+	jhr0gEQSNhheAvo6hsiO3o5S65zCBMs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RGLYR88r;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aupcWAQV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793306526;
+	b=GuS4fEfbW04XFCOOm+DKryyQ59vMnDwwwMGB4jmqt9V8x6QBTMH6EYYd5iVdeTAYQ8HeD7
+	uFZRZ+qQnZyETuofbMKlO0819GLEYKeNBtq/YWO/AB0Wzqr24q4UtvfiDXfdg8dln4zJs1
+	46m8Yd5lxWVumuoom/GZk6nq3HCYnYA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 439D1600DA;
+	by sea.source.kernel.org (Postfix) with ESMTP id AA4E04119E;
+	Thu, 29 Oct 2026 20:42:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823091F01816;
 	Thu, 29 Oct 2026 20:41:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D979D1F01824;
-	Thu, 29 Oct 2026 20:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306511;
-	bh=zArSmg7yLUQusiUDBjlm/kScYeO/TmH/P9/Smu4iQZg=;
+	s=k20260515; t=1793306525;
+	bh=EmFFeOpTju++ba/4+xeyEk8Axf+jyt6U1SaWbXoiuJ4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=RGLYR88roEEbDd5tCeYUTOpvVfraAhTmG++35UVmmW+MOOjtMfDoQbZ3JwNu9EYK7
-	 a99vFMdfcGf8o5juAUZnbJ5xZs8mAGQ1+gjvsFf6NHOO3vpEmbqZVt3FCXH1tgKNfy
-	 WHJSd4Lz8UjYheY8b6tfHXBpyMyIhevr0bOkLKm7e0YsAY15rmrqUd+JMgpP99OcGM
-	 p5rxJpPQrcARGEcSkJF+8J7+1oI/T8LiSMX5XgFh2+E67ydfTgPDCA44s95fCGJaSG
-	 Vvv0OX3xJ1ptZi56r/nPn2GsnNt0bERfJYkrF8Yyh5tqVEW86MP0+rqj4DGWD7vADq
-	 jNLTFzqpOM9ZQ==
+	b=aupcWAQVBJTU5Efp9WaPPRXHokXcM9AJqzyLpqG83aXFjxFt7JZ/KxBuLj5XfBFcl
+	 8A1HXSJpx0v2mV8OmFjFfgEiQrctA7BiCWa2AjsSS8WoRaQRyd0aCK6rU84MfjOd2h
+	 LKtHqaFV52W+DJFd2Zu10Gt0mzqUxMT2JZ2/clGN6CTEFYixvBfaHqCMg3UMkkr9mW
+	 immrEuLeds/yA/5o0Dxsl1l87L5TafFkI2LWsR/jcIjDLTDVfs/jSTM9WABHdLUIfG
+	 znmWD6Nyo5Mf5P7bc2R5bVFgPnZPyLmvRlzxgwlFeWU+xfv1JehQcmxcXuSeVhYFQM
+	 TWNhKtkgz6Mgw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:29 +0100
-Subject: [PATCH v2 34/47] mm/madvise: fix data loss from MADV_FREE on a KSM
- page
+Date: Thu, 29 Oct 2026 21:33:30 +0100
+Subject: [PATCH v2 35/47] mm/memory: reject remote COW faults on PFN
+ mappings
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-34-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-35-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,30 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1733; i=david@kernel.org;
- h=from:subject:message-id; bh=K1BVe7ZYRTk2Zt50NT+PN3jE7jOx7NQzRVqTDwh0m6c=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+04M4X18V1Z9xPSyy/e+WsUa9zSlnOmMjtRcs/1g
- NZP74686ShlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAi+dYMf8Ucyw4tm2A0J/OW
- z8VXDYXdXeKvv2wMrxY7eGn1EVedZ0sY/lmd9HP2W/rCXJN5+ou8mx8EBQO2BC78+WrrK7Gc7rI
- f+9kB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2247; i=david@kernel.org;
+ h=from:subject:message-id; bh=NZgsSdEHxnbgHjPXcrsPLj969BYYYgAtMd+ESFDEtdw=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer+0oO21x57rIvu0fshoW9U9UFeH7v3SBKt+E3TK5e
+ 07veWrG0FHKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBEAjMYGfbvP1TLKbb2+ymZ
+ M607Djdul16prRrWU53vWcS73WVt2yqGvyK2ZcrruRZEXiv69mWViZnE/EkPxE7f+vuSLeDilpC
+ UR+wA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B08A940008
-X-Stat-Signature: krsxu4d6qkozufwf1fdmze5bhk4f3po6
-X-Rspam-User: 
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 57950180002
+X-Stat-Signature: 18pttk1m9xd6h8b6b8o8mjx3dgc61kdn
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793306511-627419
-X-HE-Meta: U2FsdGVkX1+FC2AyXQaiOe+EDg+iN8/jcbsEnX9bHakuTrhXpRiHExMHG7EDJoh3no8/+rAP/ZCNj2sP3AdZkAps6ujf7ehRbQWm3OQ995SPPdSzptjAwFZQrMROKE100VtEJJeYbU1LOsgXEuC+k+vEJCWA/MB/4OjYoRIWzonn3KViFxziO3YHvgvMPHvoU3RntBIF7sluRxfJsiR+A/GBWpb773B8zP6TB6qWEtgL4szOYvNm4CEtnbw0ab7OoEVFYkbmIRCXDDbqy3362fc1jyhUSwEEyWGXf1yeG20PwYlzkPut33iZDZg2LuylmtKCExWxa6zvQp8mmLRJYmgpq0oHWuaRvFuH1jV2yhqlHB7WB9wQTOwInrdSzfERfFJEapof9Am9hv10Ccj0Ox/3pjEalutF/hcTAM0jTRtHd0kzVOuA3N+UbRpAvUl/NIUQeR4fiVEPiu+I/BruT1ZxmOt2VcPNxKSaVDvYe//572PB4GRuvxQCpstsYHbH8w1v2PzIhaPAh+rCed8IzBrEm9r+RQvAD+wgXUjM3rQ5zZn4C7ApBwO1aBxfPK4T/X7bWnlVJRTvtzlXDnhOaoEm4vs/z+fUih9PELnAtZVa0Rn0wEW4ILH1yXlh0M1cQ0bpVyDvw4fmaq2Ib85/nfRTolb+nKhq3jPGeQ1X1WuNq5Z9GmI3UaQx7LgIfpAgIAQF1Raz9RhUkSufccS9a8mHxNw77uM8y2sBNsulEkOkOGKrKqYR/hzUcQpuPIbk+/25194Gw/8E8Xqm2/pXRE+UAfcUd2UcDoDZ/oH0zg1Hxw/LDMF1EsyvGYmpWsjVfAUIk4ZtOPlPTRUksOhzMgeeXPcRnxx2I9O7AHwn4QT4dKeR43Xc1RYQ2lzbiR1bBf2sCh70BQO3ZI0BFhpJju7vFnsquTqzYwnqivRXU8nlTVcf2XFYzV6XL1EPJxvjUSKTflq1/oMHbg1DNH6
- XgYokVGw
- 3FnVFuC46Ud7wE6IsGl6gksgbZMcf3iK8nCwGzqceN0EonzeiUgsVdcbiJtRPpgJe6yzUL7iH9di4OYVX5W8hfIWndBnGHD8jt1TZ7FYE9Ms7/bVNLrofRGjJpOZo0pGgNNvBCtS53pwztV2VpmEv0E5sr7P2RnAN5USPPCkCG99Vs0FLEi3+PdTfZ2sAbCjjJQvSN4274V+mh7RgQBd9vI2OL2+5fMWcB+aP5Y88uvjiJOMEG9dS2EJzS/A+fUUry0EMjUbharQatarn2vsERlmjPeniZnjSiD9m6BP22vlx6svf+UoYMqdhiBsMQzIPUpuEEyhFXNrLddYUJqCVZi6AG/HevZgpzaV3vux32NoGaVctW/Gmhi/iTr5tEd38sxAGz/MYSRgRpaKZ7pzV14lnIJOtRiOKu2C2V7CdQAVxiDY=
+X-Rspam-User: 
+X-HE-Tag: 1793306526-232801
+X-HE-Meta: U2FsdGVkX1+QuDOk70XI/yLJuq6CWMFBIJakePBbU7DLVn/sYLM4sQlhrcvJAu0eE2vaOpRJ75lgWirgBERbiCzQ1oev0EM/LuH01B7i0ffU0/vqx9jIDQRLe7RFzCRqeyqoKu6uiNaQZ98S3rV+uhZQ1BzgKlq2vP7+WJ9QlHTdI5aH28Qz8WZg8ABskL90Fw6rpX6b3c+utQ02l56F92yIuRmXyrJpdXxYPdZCHWgOallcIjCRZQr011u1P8MDVHepLFy/x3rs30oBLYp9v7wEIkof3Qsn4R1iGDiv2Jy1Y+gb5dbfHOmfxCiJUlfqOmMrERwlqptR7azS0n41Z1mut9bDvbOof2PihULsia335cDy9YQlPp3HxWJfMs8pRsdzwLp3UKxqs7IU62xDn8JwJH66BBBHRQLO6wf4pb4bzLZzYs542D0jQGmMM2PEKDK8A9g7ujLAvL6K73m+/XwWbSbwkkyWjX9FWTTGORBRlxO/7A7it/Ea0PGyRnDm+NlIna6V8DVqPXBKGY49ew4m+f2WxJWl/KRTRcq/zKe0gfxf6zaVGYI/PjcFWiGtvNMVzGioryUd6/3vJRs9wSsyc1QmTiQ3aGGsAzP8v/QnIiowfLZPBorIjVotkf9V+qbOAks/I2ByONcASEHRwvDvRQLtFJ0hpAjT2mAQ1/MKiK3l5/XD1gHLLC6j2pIu5rZ3EyHvSMr8P/hEiTfV6z7sY01lsR9j+5n/Eiwt2LNqvB0+qmtn0DgAR6L3oS6mdUHixSHkn35Py0zouoYzO66lEtYev+m3875VLV3gZdLhJyR0eVMZbNcL7sYrKgNN3RS5i0gPfKn2K+9aAMUTm2m+HtVSeomjWulVI79/AjsC9VuQhROXMg+MpFeE1u2X7tm47IE/A4dflzfrEuRA5bcIKPAhVEJIpjGs+DnbSC2jWsUcUKVuWXxwKruhyLl6sk1Gsomo80NV8w40/nw
+ 3W5IfVtz
+ iUIgSRzUbFLmQXbFNp/9gMZS9plDBWRrKwKUaHC/IEIbOmPpqiGIkObAvE1stRbC9JsPrnCL92Od6oXhaHstugd2krnwkFVGCCuFpyBIf0vrZo0LA8RFirXUVFW3c684vLBaAkUfLw8TYi0a4pW86blCi+mKO3EjZ+YbNARZh+PJzOde7H8NIbvVDMS5nZeHdrVLjsNMBRquV7JnUA+p98nJQ/JJtExYW3AAaCpU2uK7nxTgeiMJ22dMUUH3ITXo312049Fw+497R+gnSx6hxIew/iTejs1khq4YdQIDnusR/2HOpvHb7tVBb5/QMXdlG9JrAXUdGfji+zyYzCY+721acfjIiCcFd9H9j
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,50 +139,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-MADV_FREE can clear the dirty flag of a singly mapped KSM folio. The
-folio remains in the stable tree and can gain new mappings without being
-dirtied again. Once marked lazyfree, reclaim can discard data that those
-mappings still need.
+From: Chris Mason <mason@kernel.org>
 
-KSM always marks a folio dirty when converting it to a KSM folio in
-try_to_merge_one_page(). Marking a folio lazyfree clears PG_swapbacked
-but leaves PG_dirty unchanged. Preserving PG_dirty makes reclaim restore
-PG_swapbacked instead of discarding the folio. This also protects folios
-that were already lazyfree when KSM converted them.
+When handling a COW fault without a normal source page (PFN mappings),
+__wp_page_copy_user() copies from the faulting user address. For remote
+faults, this accesses the wrong address space, resulting in wrong data
+getting copied.
 
-Skip KSM folios before clearing their dirty flag, checking under the
-folio lock to serialize with KSM conversion.
+For example, user_events updates an enable bit in the registering
+process's memory. If that memory needs to be faulted in,
+user_event_enabler_fault_fixup() calls fixup_user_fault() from a work
+item. Placing the enable bit in a private PFN mapping can trigger this
+remote COW path.
 
-Fixes: 854e9ed09ded ("mm: support madvise(MADV_FREE)")
+Reject these faults with VM_FAULT_SIGBUS when the target mm differs from
+current->mm: remote faults. Ordinary (non-PFN) mappings are not affected.
+
+The user-address copy dates back to commit 6aab341e0a28 ("mm: re-architect
+the VM_UNPAGED logic"); likely, actual ways to get remote faults in
+there on COW PFN mappings appeared afterwards. But the fix is simple and
+straight forward.
+
+Fix generated by an LLM and sent by Chris Mason in private.
+
+Fixes: 6aab341e0a28 ("mm: re-architect the VM_UNPAGED logic")
 Cc: stable@vger.kernel.org
-Reported-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Chris Mason <mason@kernel.org>
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Xu Xin <xu.xin@linux.dev>
+[ david: simplify comment and description ]
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/madvise.c | 9 +++++++++
+ mm/memory.c | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 75b409e97dbf..a16e3cb256b7 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -756,6 +756,15 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 		if (folio_test_swapcache(folio) || folio_test_dirty(folio)) {
- 			if (!folio_trylock(folio))
- 				continue;
-+			/*
-+			 * KSM folios can gain new mappings at any time, so we must
-+			 * not clear their dirty flag.
-+			 */
-+			if (folio_test_ksm(folio)) {
-+				folio_unlock(folio);
-+				continue;
-+			}
+diff --git a/mm/memory.c b/mm/memory.c
+index 5392bcb1d24d..ae8d567bc6ba 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3761,6 +3761,13 @@ static inline int __wp_page_copy_user(struct page *dst, struct page *src,
+ 		return 0;
+ 	}
+ 
++	/*
++	 * __copy_from_user_inatomic() only works as expected for local faults.
++	 * Reject remote faults.
++	 */
++	if (unlikely(mm != current->mm))
++		return -EFAULT;
 +
- 			/*
- 			 * If we have a large folio at this point, we know it is
- 			 * fully mapped so if its mapcount is the same as its
+ 	/*
+ 	 * If the source page was a PFN mapping, we don't have
+ 	 * a "struct page" for it. We do a best-effort copy by
+@@ -4086,6 +4093,8 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
+ 				folio_put(old_folio);
+ 
+ 			delayacct_wpcopy_end();
++			if (err == -EFAULT)
++				return VM_FAULT_SIGBUS;
+ 			return err == -EHWPOISON ? VM_FAULT_HWPOISON : 0;
+ 		}
+ 		kmsan_copy_page_meta(&new_folio->page, vmf->page);
 
 -- 
 2.43.0
