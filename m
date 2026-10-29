@@ -1,115 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51ECE606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 13:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBDF606A329
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 13:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ilvokhin.com header.i=@ilvokhin.com header.a=rsa-sha256 header.s=mail header.b=vALBjl5t
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MmZFJDiu
 Received: by kanga.kvack.org (Postfix)
-	id 71CCA6B05B5; Thu, 29 Oct 2026 09:12:12 -0400 (EDT)
+	id EEA6C6B05B6; Thu, 29 Oct 2026 09:15:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F3B86B05B6; Thu, 29 Oct 2026 09:12:12 -0400 (EDT)
+	id E9BE46B05B7; Thu, 29 Oct 2026 09:15:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E34F6B05B7; Thu, 29 Oct 2026 09:12:12 -0400 (EDT)
+	id DB39F6B05B8; Thu, 29 Oct 2026 09:15:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A8346B05B5
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:12:12 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AEFEA403E8
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:12:11 +0000 (UTC)
-X-FDA: 85375702062.16.0382A83
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EE7224000B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:12:09 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=vALBjl5t;
-	spf=pass (imf07.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC6DF6B05B6
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 09:15:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 49609A7E33
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:15:48 +0000 (UTC)
+X-FDA: 85375711176.28.EDD5F70
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A277A100011
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 13:15:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MmZFJDiu;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793279530;
+	s=arc-20220608; t=1793279746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4cruogtXfNCOrJCvoodcyrTOzahFlsASVgaus3wd4bs=;
-	b=uUUvA7BUlmteDv+fxJRzLtWPKePK5VWU2jQxEjXYza8q5wlp/9T5Wa+CI3xOiAza1fb0P9
-	JtYsKhLkz3cGiANounNtSXZ/Cj/SbVqPgInw7hzSRxFynEU5vxcqHNNGIW4t1Uhl0VI7ij
-	OQc/crVJVxopmtBw4OfwJXvFCiLnUcI=
+	bh=lqh2h9OdAhEsv8R7JgV92DMgdxSdmNya/U3mKn63VeQ=;
+	b=44RGKhUOwmymP56OrD9cwZfBMhj4lWWOBpl1UVbmRDHu8+utJH0ZCaoJMKTsQB+FN2iiXT
+	B57bLB58uJhAXkx30DRMTNYuiQLI7XsqFh7zosLQznCEP0emtXp+wZqsHSaxWTkqFaK6ga
+	lPSAlLBvFiaye7pURjja8pimpb5yYDE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793279530;
-	b=8YYeAZtk+F1tKprHBXFopUXD4glnS0V8eDKdqFh2FY0E1UgM0TtKSdgzWFVih0Xh7Ehwsf
-	K7CWdQqBQPPayS+w24EnkvaXH08D8Vx1aVyf4MZsrbnlXw3zs2jrTXsPCIavSinDkJtdt6
-	55a2+n5BN8s2KHlUt1LSBpatPC6ZAIc=
+	t=1793279746;
+	b=7EdE1nbpc8QUN3UAdMShv7lrv/5akV81uTgREKnGm57IOc3MYk+CiMiUjWmEBZp7uNIktT
+	gbE/eFJkbbDsO7Zp5kPcEM/346BYh6YPZ0Ze0vDETEQPGhISdb2spG5oyXq3nlL1A9gFc3
+	SMSnl80HZe3WlfuNajQfOmGpA8rnEa4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=vALBjl5t;
-	spf=pass (imf07.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1793279528;
-	bh=4cruogtXfNCOrJCvoodcyrTOzahFlsASVgaus3wd4bs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=vALBjl5tg/HLHwAe5LnWN0I+FZe/ilBHT2lZAbbXATHMbz98KZlNi97W3j84M5MIm
-	 EgXRxUJW0KRszvy4pqxbaKoourAWAFiwAZJY+Ct2Jbwg3k04WPlzyGUItH+c8SnyYr
-	 SQLCcctV6enovEyNRJB4QlV0k1lXcskW58pkHYoY=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id D6809101233;
-	Thu, 29 Oct 2026 13:12:07 +0000 (UTC)
-Date: Thu, 29 Oct 2026 13:12:06 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, linux-leds@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	linux-hardening@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 07/10] drm/gem: Switch to __nonnull_args() macro
-Message-ID: <auNGJhSe3tVi7rDy@shell.ilvokhin.com>
-References: <cover.1793027261.git.d@ilvokhin.com>
- <5bfdc1491d297b5e98cf42322c790f06481c28c7.1793027261.git.d@ilvokhin.com>
- <fb3b6a24-74ca-4da8-8593-352afd515313@suse.de>
- <CANiq72mMm75svCqevd8fHtVoczDpvpo4NwL0SC8=bWy030vQuQ@mail.gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MmZFJDiu;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF0D6600D1;
+	Thu, 29 Oct 2026 13:15:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98C01F01825;
+	Thu, 29 Oct 2026 13:15:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793279745;
+	bh=lqh2h9OdAhEsv8R7JgV92DMgdxSdmNya/U3mKn63VeQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=MmZFJDiu5p0O+/D6H9EcM1bWgs2P1sLao6pof6JMiCUbkuDuhoUnWvIYq6wdOTfbm
+	 BpcdU9h8weFSI7YLOAuJPhsKw4Gi4YRQO5cUZN10fGi7ReIbYh9hagBT+jrYElX2YH
+	 +ih3xGMrA3kLoEpG35T95VY9VY8CZ9PitTQpY1G0Ri8tbgIY4OEyb5lujXrodMB0ht
+	 9mq4mqJBN5iSIEzqMYOWBi7auC6ctfTuZZc8lG2Ic63rca7gBPiLKOXjhv0fOpMgDy
+	 ZaqKgfNBg3F6hiO66BQ6fFngZ+rT7A9j651kIkx8sefoDuBSSHj73PbusVG/D+GcyR
+	 U4/gnsox7yWQw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Viro
+ <viro@zeniv.linux.org.uk>,  Christian Brauner <brauner@kernel.org>,  Jan
+ Kara <jack@suse.cz>,  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+  Hugh Dickins <hughd@google.com>,  Baolin Wang
+ <baolin.wang@linux.alibaba.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,  Zi
+ Yan <ziy@nvidia.com>,  "Liam R. Howlett" <liam@infradead.org>,  Nico Pache
+ <nico.pache@linux.dev>,  Ryan Roberts <ryan.roberts@arm.com>,  Dev Jain
+ <dev.jain@arm.com>,  Barry Song <baohua@kernel.org>,  Lance Yang
+ <lance.yang@linux.dev>,  Usama Arif <usama.arif@linux.dev>,  Kiryl
+ Shutsemau <kas@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Matthew
+ Brost <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,
+  Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
+  Ying Huang <ying.huang@linux.alibaba.com>,  Alistair Popple
+ <apopple@nvidia.com>,  Kairui Song <kasong@tencent.com>,  Qi Zheng
+ <qi.zheng@linux.dev>,  Shakeel Butt <shakeel.butt@linux.dev>,  Axel
+ Rasmussen <axelrasmussen@google.com>,  Yuanchu Xie <yuanchu@google.com>,
+  Wei Xu <weixugc@google.com>,  Baoquan He <baoquan.he@linux.dev>,
+  Johannes Weiner <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,
+  Lorenzo Stoakes <ljs@kernel.org>,  linux-fsdevel@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  kexec@lists.infradead.org
+Subject: Re: [PATCH 1/3] mm/memfd_luo: don't use memfd_pin_folios()
+In-Reply-To: <auKJXHWnNMzju7cv@google.com> (Pasha Tatashin's message of "Wed,
+	28 Oct 2026 20:01:59 -0400")
+References: <20261027173031.763213-1-pratyush@kernel.org>
+	<20261027173031.763213-2-pratyush@kernel.org>
+	<179321872100.1775665.6881420026761127422.b4-review@b4>
+	<2vxz4ie5o2ak.fsf@kernel.org> <auKJXHWnNMzju7cv@google.com>
+Date: Thu, 29 Oct 2026 14:15:38 +0100
+Message-ID: <2vxzv76kmyv9.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mMm75svCqevd8fHtVoczDpvpo4NwL0SC8=bWy030vQuQ@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EE7224000B
-X-Stat-Signature: fczywfw5g9gtx4gdtw7hs94eka579arx
+Content-Type: text/plain
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A277A100011
+X-Stat-Signature: ydw173yeo68xpw8mjggex8yyfuoiea9f
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793279529-676224
-X-HE-Meta: U2FsdGVkX1/9m1LqiQ8n0PqM5dhUe9jwoX8Icm8QWsF52dvhyarG1+wPJtq4Ui61DLscJjfyM8KA7mhgdZ8j+0E7+xlMihOJ0k8OuJeqt4VgQm4F3UrrOAG2WE0Zi4/cTrCqrM9nIDVCNPUuZdNYY6lOSMWHNKopCP4kC1O5nJJ6Es+X4hlZhEh/l0q3Dj2f3MMk5Gno/KbCrWQmQX4RvXnTdFXIQcx3sM30itu8W8c2wU0CcagZke0wYOMyi3kmTqge7OpXLSWMHnMjBVklVrgnGcc/zKKjkQxrtUHPQ2Kj33RE3nNW6SuIMUUWMi1k+7Ugu9oi6rRCtiEkWCMqrhtCF63RPPsfgqhMGYtZ/6Ke9pe3vCRspErMDMr19PGUQfX2SlQQKmjRQT9KpJTREzCpR6dbKEdT6hNOgA+p6ZM6/4TmaMKIJTfqlrwl2AJNpWB1O5SM1GEIy7c+ssQuAHFm/LMAPVc+OKc5QhPsLL7rwpbFvNwCScNNi4iGonp4huYAWFV6VbLLc8PbMdhyV8BFLMJPzfw42Gf/FzefVCYmBsP/C7tbrXs/zH9r/hlHOa0y8EsL1t+MzcliX5sCTr1c9y9ddRaGX0xjaAwVDmPvaPZYMSFnXG5QPZbYHku4OXgWQgQ1fdZGfNboKfZi9vjMjL1AdbWOPKVPiPlH5DB9lNgg+rYAxbPA/bs2C/MnvJUuQ8K7c2jFN92ZRpEBpPyqV9SIB4Inw0Q/MRnAwEtpwSrRCYu4NyyMDBCQxt1gxdyJ2Z7Q0ZeIsvvXEEobU9aZ59LwGbDnTjGI/IXat5YXCskcgYG9oeSEi+YiqRaD6V+I7b35TxOyrXiBPjgu2dTMLmAo6IvVOSgOVY5MDA228SEYKYviqFzqf4ps28dhjRd7pRLuN+j3m+3vN6m9OWqg0/JDcGKr2LCXYUvNzJoEmTTaW4Y6kt8Hu8HxymSowWLIeLJTwpsYF1LZfTu
- cn/IVnTa
- jtg+MCTDwaSiqnFaOOVuKawgSNGw2IyGhs2ghKgSQJkIMRJ+4pj6Ijlv4UOYVp6j8o7wgt4EQMkcKsPU6R32EAnIlRinzHhG9oKSGgbY79z6lOCK9uxWS/V/IPy0/ZWEezZaD2ZZQNZHLnmmeiCNbvFlsloTJzP+nQBJZKPVLuarBThoaXrDquvmsqY624AGnyG5oYU+PktF+jKxS+fjY7y7zGLcoTbJXfwHLpMhnyxkc1ICcnoOHFvBU7SpATi8wGAaHKSRMO3uTdJa/z3SdPXArfJEUm43J9gIXuclXjutapMzELQLw4Gh7MR1F6aCgqC4i6A56qJZxXCscICx283F03kviyS+USrERLro6ga+4nxvdIeNUVas12iXinOXl0AR/
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793279746-583199
+X-HE-Meta: U2FsdGVkX1/8OMLlePjcaaOROLbGTKUrBYNqam5s1f1xFcxrWs9dwyv/Hg1ZBncL+HLVCPvRfGGuuwhSIaDtwRkblnqUspwNEBjGvJh9qA/HKDViWZH/OCQ9kqKAYkTI1dZneCfg6gLL6n9nwpvf/08XpjdV5HdqDwWZk66X2sBOZ/BW4Rl+0EOmbCcfn5x0EUYaDB0YOQji+i7P//FrUXH3f1LX0sSvypW+9kyuAXSn3ELty8asYbA3lmUr2u32B6mIDqkRAhD4zuVjte0ltZcbHq1XLoe/t4gB6tp8tR/u3ak+hppuQMrhBcTb3jiJoqYurqZ4cxebxU48AJ3Bjh8sO4scVz6efAsMc719Cs2MCRPZUHfnWeWyurEq2hFGGqyWSi6Osq6L3vH2H/vI1+zGuJk5YbolbSEjDAwfwYgSohEPMlQmFEJ14tenBXc26Q0JSNNbqQ8oc1KmxqIqfxRNN9N43ARdjOFQyKUFrNm4ottJlHC0H7YXLrRI9M2q99TZk8DjrV+SbM/jF9tquKA1L74SVx/KFpD0e2nXfirI5WmUlh+mLZq3pnSLkPDYfOqHxEK8VrgTed926vp+GvwmZga00O1wwAQ001FXf0Guz3VgfdfPcZIcotU7+XED/yD8RYvk8MK8QBD3cgLrvzT1kUsNODtwHIhni/8jsJe9tk3B3PX25QUF2m5ErNZwG2e7HESaECRS0WX9EuzjrCjCnzytTYKVpSUoIbljtP7xthS6QCc0hhcewHyCy6h95LD3ORsFgXmQ6JKUH1uoXg4ME7k/ZwJUC/WyaPPTs912lCDmHGsOA8Gy9Be/2jS6sJwdKDaRNaIUtUpk+ctzGNOmW1ynaybaauP3EekaiuvQVeNvYxN1/CMrHm2IUBy9zb3mOTCkyF2C+jsaFUtwv/dJgSMKIoZANTlmArhDIuZRrnUL/QjzNKPNYG0uIYfVNwjKzxaObefSRH/V109
+ Zoi+POl1
+ 9VoRXMx3p3zRh+7SPJbwxbIcMIUoLH71slIxBqriNxvQo4R5Y5VHUg1+DFApAzD84juPojo2Xr36RAvH9cvWEVLg1ZBH6gH90wkm+mvCvjgHnKki1uFuw1mAeMJGyjv6R3vmkbN0939LLt2Hs2P9PUW56NfED1PoFxdexUr0YKYSmi357NK2Er3V+B8yVBGXQ2zsqkd2ZYIRywD3/GRKK+1B35AbeGlJBfeiGhmEs9GQgWTKFPqpREQ1bW7vWn79rrdVSBO/zndhLcETWIktkn6JFa8OBSsKnLjFk0l4oTx3aDr37pixq3pL8a7PliFS7Rp6M/Q8Rymvrljf/vmQDLNFGPHHgdFvtHsgO6RvQCSPVt/nbjucnNUhkhulgwvfucjxmPAe9sQb8dkojCt/cA+7XJYM+dHLjpIH3OcqC1C2pEamJ40jZ5PgtEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,23 +118,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 02:00:28PM +0100, Miguel Ojeda wrote:
-> On Thu, Oct 29, 2026 at 8:32 AM Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> >
-> > Should gem.h now include <linux/compiler_attributes.h> ?
-> 
-> No, it should be included for you (unless you are doing something
-> custom with the compiler flags etc.).
+On Wed, Oct 28 2026, Pasha Tatashin wrote:
 
-Just to add a bit more colour to Miguel's reply.
+> On 10-29 00:04, Pratyush Yadav wrote:
+>> > Nit:
+>> >
+>> > I would suggest adding another helper, memfd_luo_get_folio(inode, index, 
+>> > &folio), that wraps:
+>> >
+>> > - shmem_get_folio()
+>> > - The !folio_is_longterm_pinnable() migration retry loop logic
+>> >
+>> > I think this would make the final code a bit more manageable.
+>> 
+>> Sounds good, will do.
+>> 
+>> >
+>> > Other than that the patch looks alright, feel free to add
+>> > Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> > Once the nit is addressed.
+>> 
+>> Thanks!
+>> 
+>> I think the MM side might take some time to gather reviews so I will
+>> send this out as part of a liveupdate-only series. This patch is useful
+>> on its own anyway.
+>
+> Sounds good. Could you also consider adding a patch to that live 
+> update-only series to extend the memfd freeze from retrieve to finish()? 
+> That would close another gap that does not affect us yet, but will once 
+> other session fds depend on the memfd mapping.
+>
+> See:
+> https://lore.kernel.org/r/20261022225035.377445-8-dmatlack@google.com
 
-I believe idea behind include/linux/compiler_attributes.h is to make
-attribute wrappers as simple and transparent to use as native compiler
-attributes. In particular, this means they should be available in every
-kernel compilation unit without any additional effort.
+Hmm, right. That's a useful fix. I think I'll do that in a separate
+series, since it can go independently.
 
-For this reason, all the nessesary plumbing is handled at the build
-machinery level (see scripts/Makefile.lib:171), where '-include'
-compiler flag is used to pull in include/linux/compiler_types.h, which
-in turn pulls include/linux/compiler_attributes.h.
+-- 
+Regards,
+Pratyush Yadav
 
