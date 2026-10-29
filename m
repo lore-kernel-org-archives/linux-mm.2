@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6DD606A33A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9420E60A2639
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 20:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ccajB90x
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PbsN8DUM
 Received: by kanga.kvack.org (Postfix)
-	id 32DDA6B05C2; Thu, 29 Oct 2026 16:36:16 -0400 (EDT)
+	id A0BC66B05C4; Thu, 29 Oct 2026 16:36:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD476B05C3; Thu, 29 Oct 2026 16:36:16 -0400 (EDT)
+	id 9BBC16B05C5; Thu, 29 Oct 2026 16:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A5E06B05C4; Thu, 29 Oct 2026 16:36:16 -0400 (EDT)
+	id 8AB086B05C6; Thu, 29 Oct 2026 16:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EB7536B05C2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:36:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 635F5A0560
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:36:15 +0000 (UTC)
-X-FDA: 85376821110.08.5115E67
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D7FC6B05C4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 16:36:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BDCC9140511
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:36:29 +0000 (UTC)
+X-FDA: 85376821698.03.BFBC308
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A9353160007
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:36:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ccajB90x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0048B1A0007
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 20:36:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PbsN8DUM;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793306173;
+	s=arc-20220608; t=1793306188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8FhHny9mHzITD4CyW6Cx5He8UZdbQ/QXgTkMZkuawzE=;
-	b=v8BUgoTeMwbYpnSYSHkBI1lkbnK0AW6qIO3ubYsz2zJ16wrv9nEcQR3oIRE4MaOk6pVTTg
-	rL+rTu5YJWs7sit3AAJMEHDmLb351KtBpe4wMH5RsQXY990ZYFSKk1uZf4vZcqKycrmZdd
-	5anynAJMJLnDZ4ACcUG+92KUukmSjcw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ccajB90x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=qltIiuXU+zlhML5RIS5IOe+lQ29Yj3eoAi87jDTJsc4=;
+	b=CCDQmOzy7drL5w3/scLr+5y8iHuq1YF3Wx6IMmVhlEsBPyyQohxX9Pg8Em/uyNpkdgjXRi
+	LROW8NoGK5xL8O7aBm61bXMzDcfKN38nHyrnY/dJNkubrYIuJoVjlVtM0ax5876G3xoHNW
+	GEnnj3UXMbAB24MvEPvFos2vmtHQWvk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793306173;
-	b=U7RiCiU5sPEBkpgo8ovA6KCh5+yYvtelxyLT9F97YyoL3JVkU7V8eeHqAC4nFmkrDWslYw
-	VXMyLbNYQDxf8lOwPtzyALryugDkfYbSNqFJ2lpXZyTxpvF8CmSEfgQoqTs6IMEPAfPVNn
-	GniMlT3GyP+Nvxb8WBi/kHkjIJIJyGo=
+	t=1793306188;
+	b=Y6uI525kYs6gFDwYcId2LPp1I/y7kfez7fNLJyGh5siHHhlH+ZetJMmSPKIAkrAXfH0Th/
+	CYStW1Xc56y5AEgEVxuHoxX7JA3jWyZ4ZHLfOl/miRy1K2Qg9syEii3LyYqKFjfQeaFhWk
+	psTJ/a5VkLCwFjsy81yj76ml/411HWg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PbsN8DUM;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C9E46061B;
+	by tor.source.kernel.org (Postfix) with ESMTP id 75E3F6020F;
+	Thu, 29 Oct 2026 20:36:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1151F01825;
 	Thu, 29 Oct 2026 20:36:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241201F031E0;
-	Thu, 29 Oct 2026 20:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793306172;
-	bh=8FhHny9mHzITD4CyW6Cx5He8UZdbQ/QXgTkMZkuawzE=;
+	s=k20260515; t=1793306187;
+	bh=qltIiuXU+zlhML5RIS5IOe+lQ29Yj3eoAi87jDTJsc4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ccajB90xcKYAJCG+pfTeSfTQgjX/IGEu5IjSG5+Pjf3i6QHQbNF5DXftMaJFL6HVu
-	 /5+C09DE+AnR3J0PzYmM64letPIG7IW7jp2VxHhPVYsO1JYzLZGMyx3TgxYn+mTvXr
-	 p8xeUBk5TFgRSbPLFEUwrqVA2cHXP0EM5NyVUnDQjpsdjAsOCHovHoLpu9i/boW5oK
-	 9GGuAoMMCHI5Rx065d5OV5gaX1z11Po9mfCcEkr2eKbTHlSvJUubujMoX+E1fhzo1y
-	 47li6wryfeTWOH5R1QNgs2QcsRkR30gorcsJRsx5oWXrcZCkesEr7cPVm+WYu7sVTV
-	 wUHHbmk+/tizg==
+	b=PbsN8DUMZHet0eiaz/YtPnbseBFjT1WXluzzZmPAiGCnwOVZOmGfKM9mh4Hhr8RQL
+	 7YWdZwjM5Y5r6JqhpSIgRiraov8JyP5s3tVFCEdzVv5TXOjLSA1th27MnlnYUVgFgL
+	 sTC1CQ2rinSRaPVNA6+7XHDreBot/Mj62PBOaQUurFuFoTySKorBt6xAL5tvLLjPn7
+	 mhhTElRxbidvb5VwGdMn4KiqZOXsOdHbTTmCNjbgcCnwq18newaSnJDP+nYR6R1cS6
+	 RKvmRadHrc65MZtqR3trGpVjQPff933JBn/tkhEaQ/OjVCubDuvzFbz+wtW8t1s41u
+	 n6zXIzSEWRF7w==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 29 Oct 2026 21:33:06 +0100
-Subject: [PATCH v2 11/47] mm/huge_memory: properly handle refcounted PUD
- mappings on fork
+Date: Thu, 29 Oct 2026 21:33:07 +0100
+Subject: [PATCH v2 12/47] mm/huge_memory: fix livelock on device private
+ folio
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-fixes_core-v2-11-a64ce7f83abb@kernel.org>
+Message-Id: <20261029-fixes_core-v2-12-a64ce7f83abb@kernel.org>
 References: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 In-Reply-To: <20261029-fixes_core-v2-0-a64ce7f83abb@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -107,29 +107,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+ Josef Bacik <josef@toxicpanda.com>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4463; i=david@kernel.org;
- h=from:subject:message-id; bh=ziCtV5F1IAav4zC3aLs97NPTL1M7KSjISagzm3G8GUM=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer231ehEbUXtgUrZPiXR+i9qhrnuRX7zX+C11mGzxY
- mHX826XjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACai8oiRoelaWFaAxWKDlINn
- 1p2TPMcSULDb4rmTwC6PhZ0821oesjP8Fd36sWvXfC9JTqmgSbwbUpYvrVbv+qZ465tMtvHWGwV
- hXAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2251; i=david@kernel.org;
+ h=from:subject:message-id; bh=tTSXVaSqYcMlwqAolP5RSmpCZsM2rRJpm1YXsCV5Hb0=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIer20905Lzv2PqpDmTOl4ztoqsFfh5lK3YtmudyjV+x
+ SV2qq+mdJSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjARzo0M/+y3cLez3TOs/a+7
+ 1kfwzeSVL85PeZSotXbB1S1i9enXP1UzMhw/XBApxjFnktgLNZlCZa/Fr75NZQu/Grl5xyH1p24
+ +e1gA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A9353160007
-X-Stat-Signature: um3sqsrzwx5rgxfdy48w6bm67fc4pszc
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0048B1A0007
+X-Stat-Signature: stmajh84gz7eu7yd8q8aa9pmpwozkb15
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspam-User: 
-X-HE-Tag: 1793306173-871287
-X-HE-Meta: U2FsdGVkX1/9filCYme6jtMa34VYy/j1Ck9c2famHucyS8V+yuwuCtHZ462MIP9tz/Ul9caGDEMM1Ejb1ikHAPpfYWRsiiik2T08kHFG2HgXK3Yxn+HdfG3LMkXK5v2hWl3ELaFXj/gmgmIyTcf2HWIXYMXsMxNRTdHdM7Dha5+MLg1hWwT2FL/5z57rHhNsGjG9N/OwIhW7PN5qZ978yH25qwfDrSdkwmx9K7ifgR3Zu6ZjSwuIhCn0kpmtGq5wVaWdbwhUpV57pNGQOCBozlnYaLQi4i/c+Vl7GjUiRnqFk0c5SU3GYYRUVeNQTi1U4kiQVHcuBULaS7tSwt9uzH01P6r62Y9E0F3yLUr72hApQsdZbRfG9YYERVOHRuVNMlRBMmV0jljt2YQ3imz1/oI6jJJgXU6UvjyuLHGNSdJS1xQjaQAc+BKyEOORx/WkfZjABWFsfzlepcsEXoNcP186GH6/oFg60g6lQ6IW0nAmydAFFIXz9Mc2TXzT0yrVxy5yO6bHnAsCiPjO8gwfMLGqTyd5W7b8X1MCU9PnAO0YhuxnxvFdYVb7E9sXThYBwYTRmzfLCCnqb96PZSGDNos0dnW/zHoDS24kBKLYK7/4AC1+VTWHlUCnBVAcdKuGhRSgIKOUCdVwPe0K4/N9pM4SnKM81LB5b/LXMyPJ8tekB8HP3GsViXyri1VmbN973Yf0jdo5VoPnFYb3wZK95o8Peg7vnmQNXaUo6gFnTkSYfQvkHLDm8m5E+pQvC54rHMl7458otXEh6YdimU1/iWYnm8Vqzd4WT0U3mQUMPbTylxd5BiGUROMw/13MChCIuRYZjSu3lNbqRKZvEbstlAUJcEkZgEPwVdrUxsKZPWfAelAmd0CiDLNcC5qcmnfD6TRRjuSawV8xNTUCI34u+lTWFSXe/wYwpTIgSIvdh8BgrFbXn5S9DV8FSZocwaHvBP+9AxeRSvaKsBJFt/M
- J7sOgyKm
- WZFXX8iNxzSdXfbNNSdkKY1tDYRrHcfclw12yAAvooRvJivSne+nHPzP8OKQn9wRi5INm/SqzKreWjuvDl/3S9cmYr1THJGTgVFGm2J/dQHESb1mAzIaLKuT9vsfh4PYSe1AoCzGgJ8IbT+BaYLG6JQR5sD15m49dSNHO9ziOceJE0lWYKF2stpKAN5MZM265+EzN/aAw/gLP5aPsiEfvBSP9ZBSTGQlhctOSpBne9K1lx/W44H4HL+Qxd+3ruG5WJ+aPjtXhyeCWXkhsyDO5x4DgVaGAN1LbpDKaNlWFxrEeQgGsCPusRMIP494yYi1XGEEnx0lB0tV+HtGKZaq1Wsa3/iz2gOOQbY8eibRtkuLqBTgW8La2SO0xXhMO7Agjs+3xBjJYu3jW1N4=
+X-HE-Tag: 1793306187-880670
+X-HE-Meta: U2FsdGVkX1+Z7visJZg/O0E81vS5LKUMoEnow/nMZ81iv58tNPU5F03mttI9xXRAawYyeInmKm/EOwvDpgLMRtv+irhBP94P7HElwdqBJ1sfbyp9zklogrjiUPpMmnw+4V6lwscNEZJrBTfotbLjnvYcd7Tz9d2qfo5QepyBb2Kc+7mHaBFQImMORyKYCm++GlK96bnuf5rHnLqO9gdy4+5p1j/V6zbL1Ysp5CHkolO/cNu2x3Z1kZUvPHASlMABeUY+7YSJ+Cvk+G/sviqCnZ8muAnJqUgAfNRQLC+eXN6akVp/gevdzWzTXupaxIQTY7rTHyozlFUA/pl1xB7nHOftApKVgQRNbU2Ast6i9Vf5ML7/56cfEGwwsRFk0XgGdxbzjviiEpGwWHbdSGvqV5rNF3cvtJdbV7YVcNfvqxxfOVkAoX/IOUgiC3aLag+z/H/wo7VvjJnb6PH+TGTfgEMeOKjfqUUxUu1/i422faD+ZBTBjEwn8cvFPCQZGndynMVrjR/gs6NinhtI+P/ZKhFBw1v38nqZTb0UjgotplRrFF745FsFPezh+U4u7JaWYlngzCCNp+Dbs4lcGcOLlkip1aIgxxSNuQIAPRspzoUg3HMiz7zHg15AO5uYVRxEjnRJyT7JNuKGEAkU5KBvmL0F1zCVfmjI43uEFdLMQufPPVJg2OKtOWAQwcF/kkvYL890IQpxQ0JqfW46fbiKuvbOJFbbiYd5dFcaEHkMEWBYLijEGJqEJYekJ6Yi+jQoBwtRQabVQUYlMGl9UY/EHbSgQyB+JFrbxUiWUsp8jqepFU27hewYk98PgAoXgT6jd8xW7xtoicanyfXzVNyd1rXgi8D817QfJ3UNBnjX1GFgzKOMe1bp/9OFc4ew9hfWbKjSVbyoDQ0ED5tVNDEoacazZ/HGrdCaa/jRq2YlpBd6w5aDppDfsZJuIMqBFrR3NcVBNTHbH6hj7MU9KEr
+ fSjFzL8p
+ lB7tEe/tpraztKeT0KlkGvwvjx1fBaHO0Etktqa30urCkdoVm3YpYzMoKanjKWg9iyknkpUOS2D2Y+C47qKSesNafrfnRqGCV0WLVIIYzCw8kTc280ml+Zsxd+n2otfK/6v6yc3RPiVj7PR593zn+1YzdPoVd21CkMFf0G+l+wgcbgO8fGiMoJ/sx3ER47oZT2svAFds3acUNY96QQ/GDP1zwgbqq//zS2eHtaYpjxjxv/aFqr/5xUqUufNyWeut9jkdYiJrPKe6coDHnjA4OyqOmVXT5x+mz3QittH8qVRWOvTqtZHO3u0Ze0rg8QoWGAB4K0uSwkT4Wai+5WrZbhesLXSSzGT6sYzVBIFicr7JGnsFrTCnUINEbmwvuvMtTypJX08SmZjRpBtHgw2OqslUTB78lUzqZln7AE416S/irtCmgmV1Z8k4BVGePDJPTa8vXYXHl85BXyGU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,116 +139,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-copy_huge_pud() copies device-DAX entries without taking a folio reference
-or updating mapcounts and the child's RSS.
+From: Josef Bacik <josef@toxicpanda.com>
 
-For example, MADV_GUARD_INSTALL sets VM_MAYBE_GUARD on a device-DAX VMA,
-forcing copy_page_range() to traverse the whole VMA on fork. Any remaining
-huge PUDs are then copied without accounting for the new mappings.
-Unmapping them in the child decrements accounting that was never added.
+If do_huge_pmd_device_private() cannot lock the folio, it simply returns
+to try again on the next fault.
 
-Use vm_normal_page_pud() to identify refcounted mappings. Take a folio
-reference and add the child's PUD rmap and RSS accounting before installing
-the copied entry. Pass src and dst VMAs consistently instead of src and
-dst MM. Move the TODO.
+Just like we did in commit b570f37a2ce4 ("mm: Fix a hmm_range_fault()
+livelock / starvation problem"), let's wait for the softleaf entry,
+which will drop the PTL and wait until the folio was unlocked. This is
+precisely what we do in do_swap_page() with device-private folios. This
+avoids possibly livelocking.
 
-Fixes: aed877c2b4257 ("device/dax: properly refcount device dax pages when mapping")
-Cc: stable@vger.kernel.org
+Update softleaf_entry_wait_on_locked() documentation to clarify that
+device-private entries wait until the folio is unlocked.
+
+There seems to be no compelling reason to backport this to stable
+kernels unless we actually see problems there.
+
+Fix generated by an LLM and sent by Josef Bacik in private.
+
+Fixes: 4964099163d0 ("mm/memory/fault: add THP fault handling for zone device private pages")
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+[ david: simplify patch description, fixup softleaf_entry_wait_on_locked description]
 Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/huge_mm.h |  5 ++---
- mm/huge_memory.c        | 27 +++++++++++++++++++--------
- mm/memory.c             |  4 +---
- 3 files changed, 22 insertions(+), 14 deletions(-)
+ mm/filemap.c     | 4 ++--
+ mm/huge_memory.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index c745f7ad2298..fac05120ab77 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -12,9 +12,8 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		  pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long addr,
- 		  struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma);
- bool huge_pmd_set_accessed(struct vm_fault *vmf);
--int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
--		  pud_t *dst_pud, pud_t *src_pud, unsigned long addr,
--		  struct vm_area_struct *vma);
-+int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-+		pud_t *dst_pud, pud_t *src_pud, unsigned long addr);
+diff --git a/mm/filemap.c b/mm/filemap.c
+index b04be64a5069..e85a4114d2ec 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1395,8 +1395,8 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
  
- #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
- void huge_pud_set_accessed(struct vm_fault *vmf, pud_t orig_pud);
+ #ifdef CONFIG_MIGRATION
+ /**
+- * softleaf_entry_wait_on_locked - Wait for a migration entry or
+- * device_private entry to be removed.
++ * softleaf_entry_wait_on_locked - Wait for a migration entry to be removed
++ * or a device-private folio in a device-private entry to get unlocked.
+  * @entry: migration or device_private swap entry.
+  * @ptl: already locked ptl. This function will drop the lock.
+  *
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 4c0194af9016..283c4bc8b927 100644
+index 283c4bc8b927..2b31a425c7a3 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2072,11 +2072,13 @@ void touch_pud(struct vm_area_struct *vma, unsigned long addr,
- 		update_mmu_cache_pud(vma, addr, pud);
- }
- 
--int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
--		  pud_t *dst_pud, pud_t *src_pud, unsigned long addr,
--		  struct vm_area_struct *vma)
-+int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-+		pud_t *dst_pud, pud_t *src_pud, unsigned long addr)
- {
-+	struct mm_struct *dst_mm = dst_vma->vm_mm;
-+	struct mm_struct *src_mm = src_vma->vm_mm;
- 	spinlock_t *dst_ptl, *src_ptl;
-+	struct page *page;
- 	pud_t pud;
- 	int ret;
- 
-@@ -2089,11 +2091,20 @@ int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	if (unlikely(!pud_trans_huge(pud)))
- 		goto out_unlock;
- 
--	/*
--	 * TODO: once we support anonymous pages, use
--	 * folio_try_dup_anon_rmap_*() and split if duplicating fails.
--	 */
--	if (vma_is_cow_mapping(vma) && pud_write(pud)) {
-+	page = vm_normal_page_pud(src_vma, addr, pud);
-+	if (page) {
-+		struct folio *folio = page_folio(page);
-+
-+		folio_get(folio);
-+		/*
-+		 * TODO: once we support anonymous pages, use
-+		 * folio_try_dup_anon_rmap_*() and split if duplicating fails.
-+		 */
-+		folio_add_file_rmap_pud(folio, page, dst_vma);
-+		add_mm_counter(dst_mm, mm_counter_file(folio), HPAGE_PUD_NR);
-+	}
-+
-+	if (vma_is_cow_mapping(src_vma) && pud_write(pud)) {
- 		pudp_set_wrprotect(src_mm, addr, src_pud);
- 		pud = pud_wrprotect(pud);
+@@ -1500,7 +1500,7 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 	} else {
+-		spin_unlock(ptl);
++		softleaf_entry_wait_on_locked(entry, ptl);
  	}
-diff --git a/mm/memory.c b/mm/memory.c
-index 0fb676dd2bd6..5392bcb1d24d 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1463,7 +1463,6 @@ copy_pud_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 	       unsigned long end)
- {
- 	struct mm_struct *dst_mm = dst_vma->vm_mm;
--	struct mm_struct *src_mm = src_vma->vm_mm;
- 	pud_t *src_pud, *dst_pud;
- 	unsigned long next;
  
-@@ -1477,8 +1476,7 @@ copy_pud_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 			int err;
- 
- 			VM_BUG_ON_VMA(next-addr != HPAGE_PUD_SIZE, src_vma);
--			err = copy_huge_pud(dst_mm, src_mm,
--					    dst_pud, src_pud, addr, src_vma);
-+			err = copy_huge_pud(dst_vma, src_vma, dst_pud, src_pud, addr);
- 			if (err == -ENOMEM)
- 				return -ENOMEM;
- 			if (!err)
+ 	return ret;
 
 -- 
 2.43.0
