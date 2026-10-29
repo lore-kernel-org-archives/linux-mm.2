@@ -1,171 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E087F606A31F
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89015606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 11:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IjQKIYSh
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=J2tR4AcC
 Received: by kanga.kvack.org (Postfix)
-	id 06B146B05B1; Thu, 29 Oct 2026 07:08:32 -0400 (EDT)
+	id 99AD66B00EF; Thu, 29 Oct 2026 07:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01B786B05B2; Thu, 29 Oct 2026 07:08:31 -0400 (EDT)
+	id 971716B05B5; Thu, 29 Oct 2026 07:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E25CA6B05B5; Thu, 29 Oct 2026 07:08:31 -0400 (EDT)
+	id 887B66B05B6; Thu, 29 Oct 2026 07:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2DAB6B05B1
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:08:31 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1095B80360
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:08:30 +0000 (UTC)
-X-FDA: 85375390380.15.CC23739
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 446C14000A
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:08:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjQKIYSh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 66A916B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 07:12:29 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 004B0A7BA8
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:12:28 +0000 (UTC)
+X-FDA: 85375400418.21.B9D702F
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 77707C000A
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 11:12:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=J2tR4AcC;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793272108;
+	s=arc-20220608; t=1793272347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QV6ru4LzI4CmXf0yaBqGi/sbD2aGTH7mnJBOmjBV1oc=;
-	b=CAEF0Q436g/RCxIiymvRLCFHBumYr6Fg7xTEg422pkaYUI1Ip4SZnpeGkyvd5MW1Gpzn+n
-	MQopBao3HQy4Qs0AzFmgqd3NYh7qhcNUR7J2D3nLprPUqoQrcajUQDFPJgVb5u++C8LXKM
-	71RkT9iBoyh38872f78nndzlNG5DJFU=
+	bh=0wHFqFmUHOMyAXGgatt6RtiWY+xh2oo6ZgNjkZL1EJw=;
+	b=P/7PBl7BymD6LB9WbGEv93s0aPoWTa6YKJRIhl+hWalrn0f/WMX6Cgxt9samzC7fz8zHyM
+	J0/eHUA3jGnyBffreopHjScYg8K9/XWHfnrbkJIBKlE1dZILbEhiW67bcK/4uW7/dk/bpI
+	iCJvM3u4MTDO9OzbfgLNgm8KXZkZOds=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IjQKIYSh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=J2tR4AcC;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793272108;
-	b=FcQqw16acngz84fV53xHxNJ+uzNQWi3MfWmcZ78br85S+eUhhJ4hb+EvuQek/DSTjdDLz/
-	sltmo8YJ6lpEtBOxtVSrWVaVuJayCYYqokfiTIoRz7QgOmNpAOwUR9SAfjjeNMtCDU3Gym
-	vHN+3b8NjWZtYmfEOXFK181nSAsL0x0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BC104600D1;
-	Thu, 29 Oct 2026 11:08:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731B71F01825;
-	Thu, 29 Oct 2026 11:08:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793272107;
-	bh=QV6ru4LzI4CmXf0yaBqGi/sbD2aGTH7mnJBOmjBV1oc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IjQKIYShgiE1rHAvQH2KPIVlfVgKLAfAVVuy1LgzyIkRjQUS5c0qN49WPwNuoMLiu
-	 qwYXlmc5f64RZ3uwGFEjS2+ey0B4Vf+2lp+mP3KT1rEK9TbhXGv5QiJ8afeiDXN5GT
-	 zvTh/VJAQaLji7/gyKTR6gZfnTg4h/gekBSRxpBkFPRmGdlfGmbrs7t9cRLirh/yXJ
-	 Yx5YxXpDflbIdzD2F7D5oqFAmIoaJli6PqrB17xUUsm0ZR4JCvxxi3Km/0xBDOd968
-	 OyEiJzB71FHfXcyGzxQ3NifZ7+TiK7Vft29v2wLdVp5L6VQ25nFdpwgBv6Onjgx7tx
-	 8HpgWODSQ9wHQ==
-Message-ID: <b7cc9b61-8482-494b-92e2-168cbf7db111@kernel.org>
-Date: Thu, 29 Oct 2026 12:08:05 +0100
+	t=1793272347;
+	b=TrG//gfpv0trsnRr+Ixxwo/CcppaSnv8QXH9Y2LIqX7vsWHgCxr+5JppaFdEdhF9vJVbaP
+	GnWLQ3l4esQ7lNsd10DGofZU6g94eZeCZy9gKE/WGPU+kFaW+lbiAa3ttZsuulzeqfpaV8
+	2JyC2PpXMsA/p1kdz1JiD4Yh7Aqq4yM=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793272341; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=0wHFqFmUHOMyAXGgatt6RtiWY+xh2oo6ZgNjkZL1EJw=;
+	b=J2tR4AcCmlEYiZmwACVESFSvfwao+B3FKy+0OJYUdeWoFfy7tAf2HJkCF6VoEfTDje42vwE4KNa0BNujZlyVQnoI4mcdLmmQuVEu/AKzhWg9EWzMC+rwoQiH6b2C9gVLVRg0DRr0QMspHq7AyrYSRGNW+OWV22NYzxlSJIVDkwk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0XDjF4uj_1793272333;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0XDjF4uj_1793272333 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 29 Oct 2026 19:12:19 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Cc: akpm@linux-foundation.org,  david@kernel.org,  "Kaitao Cheng"
+ <kaitao.cheng@linux.dev>,  vbabka@kernel.org,  ljs@kernel.org,
+  liam@infradead.org,  rppt@kernel.org,  surenb@google.com,
+  mhocko@suse.com,  linmiaohe@huawei.com,  nao.horiguchi@gmail.com,
+  ziy@nvidia.com,  wangkefeng.wang@huawei.com,  tujinjiang@huawei.com,
+  mgorman@techsingularity.net,  chengkaitao@kylinos.cn,
+  muchun.song@linux.dev,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/highmem: refuse to copy hwpoisoned folios in the
+ !copy_mc fallbacks
+In-Reply-To: <20261029034254.2487998-1-xiangzao@linux.alibaba.com> (Yuanhe
+	Shu's message of "Thu, 29 Oct 2026 11:42:54 +0800")
+References: <20261029034254.2487998-1-xiangzao@linux.alibaba.com>
+Date: Thu, 29 Oct 2026 19:12:13 +0800
+Message-ID: <87zevwiwvm.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/46] mm: various (urgent?) fixes
-To: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>,
- Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-cxl@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org,
- Chris Mason <mason@kernel.org>
-References: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261027-fixes_core-v1-0-6f74bec9a5bb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 446C14000A
-X-Stat-Signature: gdcfsyf3jfgc7fdnxkoxg5yxynd1a1oy
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Queue-Id: 77707C000A
+X-Stat-Signature: pnf8iaa1a963re76mq65c66rr5uwus9z
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
+	version=4.0.1
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1793272108-444817
-X-HE-Meta: U2FsdGVkX1/WxKEUpHkYu5ltpNQTL1RoTxD34TdqYDLUkhgpnJTywy9HWE5HrDFnDiVuLyuaYYho5cZyWLR9v/ztRb0Os+bRoQHOmdFup/uFXzz3i7Pa9iFia4W55J7dPb8aFHnIOIZpqWlNOWs4JEQ+QTPn4IpYzB0pwAKToV6bDJelUbUUTXCLToXnP1M98/GTOxh/5vLTcdRb2l0WLo/6LBh6AVxDWOUFwc3MNpGCeegbDpE5DFWE7myCumOr1+NNmulFYHdnfEpCLJ/qIXcNIzy2CSxryD9JSk1SBagH2rdeJcgxpMavPu1v9f4pjRJw9WZBljV4Wu63Ziu7q6tALnGJfIERJc0CwZVKypQ1AQZyjMYnVhgtbzA8Wb8+L6fBR5aAxZq5iyRy3QPBexgffR0PxsBG2X7O2COZgASe+ZY18/8xsw7N/oE+9t5fxNLLu9rZVHfSeg+/bowx8YNpNH971sI2w0mmhIyD9QCH4g9nAfjzZ1EW+IFXEfILRZRpUWLdkFCjYmJx7uLlTmPD/Sz4JStxWM3oJ/l59NwDVABMFGd+dp5Cb7fxc+TjQx54+lm/BIgxbOcYte3MKQuAchkA6d8AuLlGh/HTS2oYHPxCp4wTmHg5zQoNmgbOtPqyQlqfQ73zA0UEdmNbN4DSyKmECtysu2g3jlctCXWD2lPo61ZIizM0JyHkzydYu3pxzKZOfzXT2L+fw+3cNGkZdZKHLD8L4zxYEv3iOF1p/a5W4cJw7FZdBzYalKGKCVK4gS2i8HX9rYhOAlJl9P1zRvDYMzKPTWgGRvGUlf8XRVaxUExLObJLVeZlj4HTqXX9RL2M1uS6cxupWMkaMHk07FAVhhhCSGu7lnedaT+fKGaDG8dthUOBCKLPG14v4BQy1JTdtvmWH275TsLMsk/cKaFDBoDjz6+DrYw9b2aZHi55hkmkyOBL39pRXRe1tcmQOGyrVmSEperfpnz
- bver6Yo3
- jn9+2DHYI0HCsKPNeBNoNTsmORtrJwATogxB9XHE7r5JIxmwmFDDOtolguoJGXCS777cEposWkGmGtDsqRnGeYo4P0Qa8L+kh+feYkmNgBRv+9dACW+k/VloXRhIUbi34mCeXeMdlMID7U3L3ie+KDCBKz8eQw0y8v6scrbIIqMOI3VMH/NT4Wo3aPlmquYPOmv0D67tyoSpzjCh2XRlZ6ik3dts7YIUxb9JcDXb25Ul1VbRjlVHpld364Sd01nH5gSyR9UmbDHR2oFA+P3/bF1o9e7eD9L6Vth4exImq6ud3fM+/0dvQSIH5l7gK161bzlSnTiIqSh2yRZ2md0st3poQYPHaXwyCBP2uhEKUuf2J3QqTL8o9OLryqw==
+X-HE-Tag: 1793272344-463156
+X-HE-Meta: U2FsdGVkX19SvoxJG1Ok//5QpmoDR245tHnohtsIAzM6ayxiGtpwsaCoXkB079PGi95zlhenMnY7f/IvTsfCIyUI6gIQWW0N1Z1qWwi16KTMy1P6MpPSgP0ViBkyZG4rI+aTssJC2gi81Cd1t/q94DVoPm1UDD7apnEvunjD9n1BVCjG4gJtpQJuGryQqqCfFSRav8PBP0WJbOemSEVRd32ev42gAe+n7vCyulJHHKFHBot+l9y9oMmqo87V5Ci7DnedYU2RPzziXxe83Dl2FSNqJYXivtAZ8URXcqOeaQT1Fwi4HFHi34eEuCgfQTLmzme2d/r8vgvOjGySV77xNKUApBzjVK0wP0elD6PlaSatnW5ep88O9s31WJuh5XjQ2wYqy6p/BA2EtIoGoW7pHs6wNvAHNqx7DwAwi1u41wzs6b8LtFNeYWMTBx3OhqQVpomz5p9PE6+1y2G4NQOxdnSthy/8+/wAyEYwwdj4mJk/xLTOurGqnlm7lZhurYRplRgCegr/xII55lhdGTalkUtKMaTh0gDXVAsqx6E8VFkhPloHzT8mppQwP4JLAeE/gGvGR/T7pzrxrMOyZW/0UqSRXmfMq3BDDzWhceVacI1e9PjFqj6gKnR3OjfXc4x+m235AdeDHPMn31TlXyZGKQWrzez8abWWvbo7crxgb3KkSaMj1CJph5UVAzsvwqJ1DsGAY3IwtStvF9qbPZocszUv01kA364hExx9HROjV3/quQzpOo+UlE+fI/LzYp+YrPNcgdsefpwb/mHEoqFW37TwzGYUQ9lTEheaKm+48ndiFg41eYKWC1OOTpa9byshM022wfOEM2KLLDhUd+35gFgQj3H+8e7e1m5Q/9tEamr7Tz4WOCY7koi0vyQRRGXhq9fLxgFWiH0WOVxfYMGdOjtdKDOLj0guQkRLsTCro84My4scT5MpNdhWhgzYYqCLybyi/0kLBTvWdNryLJC
+ oIvBBj7F
+ ObXhhiMFro+Wdql1po07O9NmkgPA2fRheaNQHMtAISeUmJ4EMOBPKmuOdgmIBlj31ZqwLWV0n6Jkg14gP+cGRchv5ULqbMkXLgBFl68PLtqjSdvlkH9Hb6v/bLD8ku4BYu5D8UjreSVYOatTuIs+0KJKRuDnXQrp7GVJRcz7lYdzYJ4fDdjMpgDuCdiO/x/Ie5797UjlbzfoWk3HJzEzI+pO2C9wfF22aSE5EJdmMuc7aW0Whm5n75Vz3nUsDKnuzYpEucb3+Y3fjadK9DmSUcv+CxOVqfjohbCdmnoYAL8ribfXfDZIguXMJ0Z5YXq5VogGUYifV/Uxt1RE6VL4LaZ4B8SHTKlAnYVZk6IbIgW7MhOsi+Tt858Fr9sKxchK/i0+0O9hgt8gnu0LadFVye3d3ydLp/vJ4wX0d1wCpmxOgtBE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,47 +95,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/27/26 00:17, David Hildenbrand (Arm) wrote:
-> Another set of fixes from the current batch that focuses on all core-mm
-> things that won't be sent out separately by others. I decided to bundle
-> these together as they are all over the place.
-> 
-> I have some hugetlb stuff in the works which is pretty horrible
-> (code wise ;) ), that I will send out once ready. Plus some
-> low-prio migrate_device oddities + two core-mm things that need more
-> thought.
-> 
-> This is the biggest set of patches coming from me, so don't be
-> scared ;)
-> 
-> Once more, some of the stuff is more urgent than others. No fixes are
-> crazy big and most are easy to review.
-> 
-> The majority are again fixes from Anthropic that I cleaned up or reworked.
-> While doing that, I found a bunch of other issues and tried to fix them
-> somewhat cleanly.
-> 
-> I gave it at least some basic testing on x86-64; more testing will be
-> highly appreciated.
-> 
-> This is based on akpm/mm-stable.
-> 
-> As with the shmem fixes, please prioritize review of these fixes, I want
-> to get fixes for the issues in a timely manner upstream.
-> 
-> Thanks to everyone helping out with moving the flood of fixes forward :)
+Yuanhe Shu <xiangzao@linux.alibaba.com> writes:
 
-Thanks a lot everyone for the review.
+> The !copy_mc fallbacks of copy_mc_user_highpage() and
+> copy_mc_highpage() return 0 after a plain copy.  With PG_hwpoison
+> set while the data stays readable, there is no fault to recover
+> from: the copy completes, the destination folio carries no poison
+> marker, and the poison is consumed silently.
 
-I think I have tags on all except one fix:
+IIUC, in all cases except debugging, reading poisoned memory will cause
+an MCE (x86), an SEA (arm), or similar.  Otherwise, copy_mc on x86
+would not work either.
 
-[PATCH 42/46] mm/huge_memory: split huge PUDs when adjusting VMA boundaries
+If so, we should only check is_page_hwpoison() before copying.
 
-I'll likely send a v2 this evening/tomorrow and then try to get these things
-into linux-next by picking that.
+> Check the source page with is_page_hwpoison() in both fallbacks,
+> before and after the copy, and return PAGE_SIZE, the
+> not-copied-bytes convention of the real copy_mc paths, so the
+> callers take their existing error paths.  On archs with copy_mc
+> this code does not compile.
+>
+> Measured on arm64, where the fallback code compiles (10 rounds
+> each): COW copy throughput 1043.67 MB/s before and 1043.26 MB/s
+> after the patch, fork latency 348 vs 359 us, forced migration 57396
+> vs 57654 MB/s - all within run-to-run noise.
 
--- 
-Cheers,
+Could you implement a micro-benchmark in kernel to test your copy_mc
+functions?
 
-David
+[snip]
+
+---
+Best Regards,
+Huang, Ying
 
