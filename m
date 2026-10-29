@@ -1,97 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518C7606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 21:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2913606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 21:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EVelXOyj
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qwd9mADS
 Received: by kanga.kvack.org (Postfix)
-	id 6C1A46B05C0; Thu, 29 Oct 2026 17:27:20 -0400 (EDT)
+	id C68946B00EF; Thu, 29 Oct 2026 17:49:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6728A6B05C1; Thu, 29 Oct 2026 17:27:20 -0400 (EDT)
+	id C1A326B05B1; Thu, 29 Oct 2026 17:49:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5612D6B05C2; Thu, 29 Oct 2026 17:27:20 -0400 (EDT)
+	id AE1726B05B2; Thu, 29 Oct 2026 17:49:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F9AE6B05C0
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:27:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 85A946B00EF
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 17:49:41 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A8F421204C7
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:27:19 +0000 (UTC)
-X-FDA: 85376949798.19.E854CBD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 04F6A14000C
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:27:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EVelXOyj;
-	spf=pass (imf23.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793309238;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7DF45A0574
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:49:39 +0000 (UTC)
+X-FDA: 85377006078.19.D693ABA
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 915651A000D
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 21:49:37 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=qwd9mADS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793310577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ojy+UhwC3CeZ0n5OWvhNQedtQf6s/LFGjHqzO8hqIs=;
-	b=YXXu2cOIEFBo7hBMqeUogvsDTa8vqoCcgq/msVDQzjEvtYjAlcOPR99K/AIETfRUxgRiE9
-	HLW9h7f/aIgy26ZuKEMOlaSJ9BVG1EjYPRYCR2TQ+YGFUP1J50t5brk9cpztGnesgGgPKV
-	FFlW2sHJmELAV9YauvHIp5Wn+bL8odE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EVelXOyj;
-	spf=pass (imf23.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793309238;
-	b=d6HR0i4TY5YOiKnXH1J2EHPprjxxaRCNWPsTBjUKWGQioVZARc/EDQC6gS3kv2BGWMlyYR
-	u5ZZrjcEGqj79vta3nlF/KsXfubvbr5YnN9tquWhQSi55JHxv0zvV3RYeru8TI1F85Balg
-	rTnsE5b/YFiFNj0rhGttb/0zZc/e/Uw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 52D2643C74;
-	Thu, 29 Oct 2026 21:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9DB1F01816;
-	Thu, 29 Oct 2026 21:27:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793309237;
-	bh=0ojy+UhwC3CeZ0n5OWvhNQedtQf6s/LFGjHqzO8hqIs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EVelXOyjABrLv4ULU0RJ3o0XRfVChKl+o20IbGRwJiJwWfg5d3X8Eab6sbLaNktl1
-	 9rUkQa5x+qrwknfzJSgz/j3GID5HWSloiERPoPxeDAhHhkX+djEkKRtx9xuK9twBvK
-	 jLyQXeaOwTtCXK0W2lIl6jnJfqHC+R37Cnc6A3+zwpw/7BLUZ6HKLQ1fsbFMBE1DJ3
-	 A2+TLqAs2clx8Djo1RvgjNbdDhG1lI7nUjPgO8lGVPKIdrHjGkhrR+Z3Q6GzptkU6x
-	 nC4Y97Tp6gXkR/bqfwmTsDcnuJ6WgGWlb1vXdSgwuBP5aNTJIofrX/jt7k0WnSBotF
-	 /kwOMPRd0vsTw==
-From: Jiri Olsa <jolsa@kernel.org>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Federico Di Pierro <nierro92@gmail.com>
-Subject: [PATCH bpf-next 8/8] selftests/bpf: Test user memory kfunc errors
-Date: Thu, 29 Oct 2026 22:25:51 +0100
-Message-ID: <20261029212551.56964-9-jolsa@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261029212551.56964-1-jolsa@kernel.org>
-References: <20261029212551.56964-1-jolsa@kernel.org>
+	bh=4LvPUtuyu2GhVduPqIuGkGvQXkCV6OpKfaG8/4pXsnI=;
+	b=tW0EP3/UfCeFIHB2rAmtup93ArK92+NHP0LsvLfKQyl2Cau13m8toCNWfzA0pIltwktLAa
+	Ug72rvxjLG+KDaQrToDnzU4uy6pu7dgW8x5qZ1cRqXaaDyqzkJcDti6MRn6SlEj8EAUJx3
+	nkaWsQWy4/I/o6h3bsn0fc6kffLUoqA=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=qwd9mADS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793310577;
+	b=ypRkiRbK8owqeGWjUOTOb8ybbPj/gKuhyXoK6OfeGoBADIBDwYrvUaqu1EoAiv8WBdcag3
+	wVcX7xdGLjrm2azGyluXfHix1vnjVDlLFWtQ27QSqieY8QLH0t9PuFKy+2H0aB4H6GAhD/
+	W56vdtb7Sd9NWKGHUgc9Pn4JDVw/kcA=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e831e86ebfso499045ad.1
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 14:49:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793310576; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ka8g6t1N/3uUSAqbgByIWnTi5yjd3hessl7ODMfNO1ydnbu+dKu1konkU0GBgsp1r1
+         O47++Hf4iFXkzcmZzNEOv7sHSXYLvHdEqBAorEVa+E0yjZE6U5Dcdf9OpWlN3KS+dmpm
+         YOhkKk0wODI3DVtwDxWEf3s9j3Jgy5ZdwAmMLvcppakPI43buVazCE+ukfa7RUVXqmkm
+         JKXvAJhlRY/0L3PKcTDvHjPoygs2LGg86gA4MxTJlnlMXyajyvQXtnBYeqtboZI4g36O
+         M0CPrAOG82X9yITwR94sVrSkQa2mptLMfr7W/BPMnF1Zp3UG5JkyUAWLShUXdvT2eYeF
+         3gmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4LvPUtuyu2GhVduPqIuGkGvQXkCV6OpKfaG8/4pXsnI=;
+        fh=+4QPVHxzsvmbzygIxbinhvxvVBpPbPvJIYinbBdO4b8=;
+        b=KYb4+JCTEHtXhmqBYOBeKxN4GaEDlzCySnrG7XFJ4s5+TzZpufHYrOETVqht1ig5y6
+         XMXBSxL5sk4aCmu3gzkkoXTu4dXAdMk69yKvyg0HCf8l31sCL4aKoTuFfx+kkZELZ5s1
+         9kxq2o5HBO3CO0w8h+lM479b2lrVpDzwEcPaaUdmhoE6RM3dALSH2lGgiF8YYewKfi19
+         +Dq09JMgUshpbSA2P2t/jHm5h06dedBMYgXQfKa9L4p5jdT699/Y4JDXb3y+WZ/l358i
+         CSTHl6wQugpIs28NJEnIoQ0iMbJJDfMSMfw977Z4sMlCvfQ1xGYtxhxEp5onFnBGusc+
+         Z2UQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793310576; x=1793915376; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4LvPUtuyu2GhVduPqIuGkGvQXkCV6OpKfaG8/4pXsnI=;
+        b=qwd9mADSSVCrWz/2C4bwEQFq0Rc/A6SH4HMXOjpv5kwYodQ0feewN1JD5oulE9DSPf
+         dcKMBLWgTB9p8XZYcKopN1qnXQmt+0Q6RLfDWBOLddLmW9vNYC33sgHoEjMwFFOIKPAv
+         zb7Sn8tMCoLYrSshja6U3veVNDWaGTYeA6W62JIpjLIuakGpVXwtQMwHyTX3S1mncvvW
+         w9J5WndDlA0oYiLLjbWg9ezaLNnTAKjjBef/21W1QtRlLOEbfrIwMw4xEZ4GNGGYaGng
+         QKYTH4pvRFMTSpqdpfBfNlK3aSk3veqwKWvaR/6naBQHq4LaLSnTL374fMAaQ85NHYbH
+         K/ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793310576; x=1793915376;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4LvPUtuyu2GhVduPqIuGkGvQXkCV6OpKfaG8/4pXsnI=;
+        b=XD7m/W/ABSsnfAY1QEy73barqtS2O9KzphLkE+3RQVnSyGSVMYFB0/HcBRWJ6pwM20
+         Uds5gDXoXw+nuMtoNHCCs069C5Tw0NYeOnVCe9dZOL6hKgxS0spSk/vuulrZ4xCBoA4b
+         ytiShbnCI+4Arxr6F3Rai64yHMvoZ7zXmAI8HJzLhlSTGCnq1VkSCZq+N+DKPH72Cpi8
+         Sy0hIrPsI+oPc1aOgd38QMckG6XLrDQf7CCWoiermIFzMm2YfV9/0Th0XahM5TKP4dbW
+         VJNfIWqf93mOvSWNftJvLSElBo5TTcusRF/+u6mPVA4eA3zW7Abjzr9LdpVGGd8lQi00
+         pSLA==
+X-Forwarded-Encrypted: i=1; AKwUvBz03NcEEduAMWPBaengazjmh0083g3Q/6a4Z/Gns62RnZuZa2m2CNcqPozn8W1XeGkM9EHhUbTUcA==@kvack.org
+X-Gm-Message-State: AFq9FYI3GAVby5PsIafL5jjpTU370V8eciBWydXl1v/45hcpva89xpG5
+	6BiZ1rSzlNkprr6clszQKH5RpXlHzhGVYNLCNo8KMHOzgzBvJQiEp6pa/v0QDv57nIvFmxPXKTB
+	wEIt8XVouIxVnewSIaXp6Dl4gl21mDs0=
+X-Gm-Gg: AYBFou2IaNROtDKGh3JBykYJSHIIsKFFR0iCcVxKcU0m8DQGOA2XvnrvmOlp5WWZLlJ
+	Xi156NL4bjIjs+OQIjcYnUsO08o7/5fXueqln2N8yRuv70m/T5qpMBY2S2tTjbxWYb523uoKQ2I
+	vtuxGuxKCU9Sst8478t618Vs7P7jGwcJyr9qsDwDtf1ffGGNOrxlwDfxDwCw8Eca1MACN5spHgc
+	ZkRoBfIhr4cgNB1WAYEH8NOxDpUvBUVvoVKjXT2RJT4GpMsvBg6wwkVArH4E6R2jUzvgDcExBqy
+	Ivla+/RSZMdAkNNhBF4W6+DMwsAYRpnfiLYqKU+nMiTaYzw1OKFaienv5v0A2isWJPP7y4dX5uu
+	SODFQFT1lo8NzTLf65kxeDoU/qz1Bau1oX7uBkLhJlQcP5pIKyzLO7V8KlIno0hMo4pAxqzWJ5C
+	EI0Vq6et+NrfQx7QnuarE48actvK3/nL68Og==
+X-Received: by 2002:a17:90a:c2d0:b0:3ae:533e:7e3c with SMTP id
+ 98e67ed59e1d1-3ae8981bf57mr183023a91.35.1793310576388; Thu, 29 Oct 2026
+ 14:49:36 -0700 (PDT)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 04F6A14000C
-X-Stat-Signature: zbka5sou1gjss4okqjn46nzcce4scdfp
+References: <20261029212551.56964-1-jolsa@kernel.org> <20261029212551.56964-2-jolsa@kernel.org>
+In-Reply-To: <20261029212551.56964-2-jolsa@kernel.org>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Thu, 29 Oct 2026 14:49:22 -0700
+X-Gm-Features: AclHuK_5bx_yu4DhThJ8Z6lvpTGvlgJql7An9DPk8XTshDlWp4Rvot3r6HrMVDA
+Message-ID: <CAEf4BzbUQpQcdpCJ0o2g0YkaR_Lwe9EOXdj8Fth0UUpAs-LR6w@mail.gmail.com>
+Subject: Re: [PATCH bpf-next 1/8] bpf: Add __srcptr kfunc argument suffix
+To: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Federico Di Pierro <nierro92@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 915651A000D
+X-Stat-Signature: wmiixhm56fc15wwq84qmftbt51pxu6t8
+X-Rspamd-Server: rspam04
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793309237-578856
-X-HE-Meta: U2FsdGVkX19juxcgmlACj3gZZ20LSEd3qeK8gV+fl4IQw24i8eGKN+kCL9IAsjlvxq9vL3nBiuHvLozuZ5q5sh4r4iGGeuDViommkN7qTVEWD6ONFNUgkWZmqUwkLHzRxhXSERqav8xQRrDkG1Keu/1kaSU6MPCpLI5sh8A9ygl06rBIQz7fJKOxGHuM6P0EcGZv+6v6WXTmAVgNh8GhM2zw9nRPgO2tKJGq4n2b6JpV3GV32rI+PVmdMthqosRUa+TscflPcnqBD7MqGnbw8GZ0yIjdCmKZkGD7rPx+2gGvDlp2VO28jrD/7fjabR95h9OQGbwD4/RNi2jTQOZwJR6M+SlhzeJskBROdhqHNiyFQ52Yu2+KJyEKnsRUS+Q7HWK4oIpRSnLDVTsaa+d1JVABO9Y+ecl7rP6i2BFNjkOnQOeDIfj/BAmjs1Hco73kK7fegdCEieLnPkFgDMpL8hX/wKxB8mfe8l8Ivz7rMwNMPTUir8dxCS96U3YyxEKU9mc0hE+Y9Q4/4AxQ4nW8lry8ILsjVTjnT+sKoyPUu+5LrjcsmbEgyaYykQin5JoHzwpKOCGM09jWSsc2NTxC3stCi/+sBhLhCW2IDMDjhnUIl0Bymd4IUqRijC2smh11sR2sySQimD3AMOpqQALRFsb9LHGvV64/BuuUI84CO2NaPl7u5eE9Afym62qWJnsZfNWIqrvp+QuZCFGL2WcCbvPnfYnkYyILiFsuM2B381aaC+pM7QsuKcqbDxUIL/L50rkhktq1Jw2suK0HQleOU7pKsJOS8eZ8bPHZTTP+fI9sV4glt1V92a6Zjo46igcxVUp/30gIWHxPQ5LObid5s5XNI5Vji8j5NTLIQAo9uKHaN60H6OGv14SLnqfBMVAk11aWyzcfQy0c9OPf7GlduCL7v71N0GOOEGmEyTfwu+z0iyHWetxsesYZhcE5aH+kJM28FCWhNwwiZj3HeUI
- CKb1Og1n
- ClgZNiWiLqDce0jk6SUnWPTFd3pzxvd+p9wsqESi2+7mAxAsC/d72/hBSQxKtiD9Kkf+IO9FUnpszLSwtmD8DxqfziyK7902eab7J85PobzqHEV3cQsP5mV47TbAYwQz60P0DtobTY+3IsHvXsNSKjobFT6UIG2ee5Gj/p7oHEprNxbgNk6hW6fNfi0AoXYgC/2ENuOrS8PKLc+cXx/v/Qq77D2lJ6AecvzdvKNOt9V+Hv7v7/yNz8PAo+So9cnZz3EJ0iU4hIvLdKI2i7UgA83Kc0QRWGBGF0HmPXTXWFsuBi1k4jKNNtvMxyQ==
+X-HE-Tag: 1793310577-687172
+X-HE-Meta: U2FsdGVkX1+MH3UsjAGVgy68UVWRs/8KtIwaMD214qgRCOYinSMPLa/V5IG8naVBTlMYYQvTU+485NgM4OHabzvOPteaKgbeTN1EZyZ5A7aCOkEEXZ8CK3a91xoIIGHkbel8vX27L31H5wawMqPB7yvbJee9l/yASbecOClh9f5d32fyx8nBmfBim69KX0zPG+fmiDYkmApFEmOvVJdl74xZdJYMXV6cp60wQyJwtARgUTT6krvTJZMEJ3gwEgi+KUleJDvEgGRCKklW8i9bC6ikX76j6jauSt/BgWpfiCQ+NSfS9BVP+UhhgsvnvTHJ+9HRSIrvqfYiAY5THzm4B57gLiMW3tFSphcijAE4+pkESOAi3N8BEEIrh4PGVG5DtEZTydfUNorW6qwp5VBECU7ycprT4ssbl0vNloYAAwermA1p7FzA/LgB2Xt1I5vfsdcKSdc1yz5iX4VLbIfEyfITeGEGVGexnNF536jqRVsEoV3P4ZjayzbN2aWje3oexejpoGXV9LvE7aCcNqdu8YrQ6HJuhpig2LUOvl1VZ/IQWMFqXPFpzblq9CssdnBf5wnMAHle/g2T7V5hou5a39lByg8TP83LVA2FTWdi9KVS2W0EBv66TP/BqU0ToJ8FyBhoDRQ8H5AZU/g41LjabVZAbpcaFzmyzg4Y42ByXWQo9fyABH/1Op+6F9wJTlD7TRvdfPNl28TL1noCxle4Y1SUhHn5mg8S2vjUMZ0dYrZTJ5FNHIi+3DKumfoYsV2nXb2MW2DJeE35ygfZJrPfgBgCNa4Wa5yw+kUkO2MgHTsAugDiDwEH+9B2htRKEjX0gCAPUhOZiKRjqliXqqOe5r35ERK5X9bJP+dZGT3Qy956bJbtxba/mNhQvbaeaSb5vTmib9q8jCCJKeQfZcoDt2TD+dEwjKuCNlpbxwEtMxompR9LoKseskDHoFaqcL99ETytSNg19+IAcO1g/HY
+ /yjqBmFM
+ VyPcoGbIk6t5B5NNn1slLE7cR2y4J9BrDwi+9s8dVjLWI7lCM7MqFXAfo7UXoeG/K8PFnzpMzozhCnNyHo4/33JUiCxhFo6Z4bbpI90Bc8y5Vlqe2Sg93gKRIIJQpZfxUw8TvDIKN+Be3Nco0OtjT/aQhUQCgjTDBcxbzMrZCIyUT5lsjrccUq7j9OmcEdAYaZqkx/SLu43ySXsM909dWkWAhjzeRhFDoQfndL7QLvWpIT5UpMoPD/eqZHCFT87LslanmeRpLvtvXI0xIbWT40lvkalnu1JKZmai5ETzRslRsxmO0BtXdq4FI1gZCaW+ecZcdAj01BVfEFq+hOmzX/qpFS3vEfYdXtQWGdXMN9mIXB06cxb0lhLJ6IZBEIyzznX4P0ggma3Aug1QjNGJrr2sbwqn/Ro5XzfmGjpTGMk3ZKOiwbSIozdSyhQ8zdjlnK5+W0m34BE9IrH8fgPN1q9cgdxUB5CZJfybeKHPsDlqbskMMwWCM/SFBJkF7xBCrPZZZNYlxyJmzgmWvesbW7eD25CyjUXcMTmNv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,123 +147,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Test invalid copy arguments, zero-length mapping operations, partial copy
-faults, and copying to read-only mappings. Verify that a failed unmap
-leaves the mapping intact, and that non-sleepable programs and programs
-without CAP_SYS_ADMIN cannot call bpf_user_mmap.
+On Thu, Oct 29, 2026 at 2:26=E2=80=AFPM Jiri Olsa <jolsa@kernel.org> wrote:
+>
+> Generic sized pointer arguments are treated as writable memory. This
+> prevents kfuncs that only read from a source buffer from accepting
+> read-only BPF memory, such as const data.
+>
+> Adding __srcptr to mark pointers the kfunc only reads.
 
-Assisted-by: Codex:GPT-6
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
----
- .../selftests/bpf/prog_tests/user_mem.c       | 45 +++++++++++++++++++
- tools/testing/selftests/bpf/progs/user_mem.c  | 29 ++++++++++++
- 2 files changed, 74 insertions(+)
+why can't we infer read-only from constness of a pointer? what's the
+advantage of __srcptr (which, honestly, says absolutely nothing,
+"__readonly" or "__ro" would probably make more sense if we have to go
+with suffix)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_mem.c b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-index c87620e39abb..f3a35f8e005a 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_mem.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-@@ -263,10 +263,49 @@ static void test_partial_copy_fault(struct user_mem *skel)
- 		munmap((void *)addr, second_page_unmapped ? page_size : page_size * 2);
- }
- 
-+static void test_zero_length_mapping(struct user_mem *skel)
-+{
-+	skel->bss->map_len = 0;
-+	skel->bss->map_prot = PROT_READ | PROT_WRITE;
-+	skel->bss->action = USER_MEM_MMAP;
-+	user_mem_trigger();
-+
-+	ASSERT_EQ(skel->bss->user_addr, (unsigned long)-EINVAL, "zero_length_mapping");
-+}
-+
-+static void test_failed_unmap(struct user_mem *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	unsigned long addr = ~0UL;
-+
-+	if (!user_mem_mmap(skel, page_size, PROT_READ | PROT_WRITE, &addr))
-+		return;
-+
-+	skel->bss->user_addr = addr;
-+	skel->bss->map_len = 0;
-+	skel->bss->action = USER_MEM_UNMAP;
-+	user_mem_trigger();
-+
-+	if (ASSERT_EQ(skel->bss->ret, -EINVAL, "zero_length_unmap"))
-+		check_user_mem_vma((void *)addr, page_size, "rw-p");
-+
-+	munmap((void *)addr, page_size);
-+}
-+
-+static void test_invalid_copy(struct user_mem *skel)
-+{
-+	ASSERT_EQ(user_mem_copy(skel, 1, sizeof(data), 0), -EFAULT, "bad_copy");
-+	ASSERT_EQ(user_mem_copy(skel, 1, sizeof(data), 1), -EINVAL, "bad_copy_flags");
-+	ASSERT_EQ(user_mem_copy(skel, 1, 0, 0), 0, "zero_length_copy");
-+	ASSERT_EQ(user_mem_copy(skel, 1, 0, 1), -EINVAL, "zero_length_copy_bad_flags");
-+}
-+
- void test_user_mem(void)
- {
- 	struct user_mem *skel;
- 
-+	RUN_TESTS(user_mem);
-+
- 	skel = user_mem__open_and_load();
- 	if (!ASSERT_OK_PTR(skel, "open_and_load"))
- 		return;
-@@ -287,6 +326,12 @@ void test_user_mem(void)
- 		test_copy_to_readonly_mapping(skel);
- 	if (test__start_subtest("partial_copy_fault"))
- 		test_partial_copy_fault(skel);
-+	if (test__start_subtest("failed_unmap"))
-+		test_failed_unmap(skel);
-+	if (test__start_subtest("invalid_copy"))
-+		test_invalid_copy(skel);
-+	if (test__start_subtest("zero_length_mapping"))
-+		test_zero_length_mapping(skel);
- 
- out:
- 	user_mem__destroy(skel);
-diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing/selftests/bpf/progs/user_mem.c
-index 6ebfdc54edad..1ff5be6e3e62 100644
---- a/tools/testing/selftests/bpf/progs/user_mem.c
-+++ b/tools/testing/selftests/bpf/progs/user_mem.c
-@@ -80,3 +80,32 @@ int user_mem_test(struct pt_regs *ctx)
- 
- 	return 0;
- }
-+
-+SEC("?uprobe//proc/self/exe:user_mem_trigger")
-+__failure
-+__msg("program must be sleepable to call sleepable kfunc bpf_user_mmap")
-+__msg("cannot be used in non-sleepable program")
-+int user_mem_nonsleepable(struct pt_regs *ctx)
-+{
-+	bpf_user_mmap(4096, 1);
-+	return 0;
-+}
-+
-+SEC("?kprobe")
-+__failure
-+__msg("program must be sleepable to call sleepable kfunc bpf_user_mmap")
-+__msg("cannot be used in non-sleepable program")
-+int user_mem_kprobe(struct pt_regs *ctx)
-+{
-+	bpf_user_mmap(4096, 1);
-+	return 0;
-+}
-+
-+SEC("?uprobe.s//proc/self/exe:user_mem_trigger")
-+__failure_unpriv __caps_unpriv(CAP_BPF | CAP_PERFMON)
-+__msg_unpriv("calling kernel function bpf_user_mmap is not allowed")
-+int user_mem_no_sysadmin(struct pt_regs *ctx)
-+{
-+	bpf_user_mmap(4096, 1);
-+	return 0;
-+}
--- 
-2.54.0
+>
+> The get_kfunc_arg_type change sets the initial memory access mode
+> and the resolve_func_arg_type preserves the suffix=E2=80=99s access mode
+> when it converts a BTF pointer classification into a memory argument.
+>
+> Assisted-by: Codex:GPT-6
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> ---
+>  Documentation/bpf/kfuncs.rst | 24 ++++++++++++++++++++++++
+>  kernel/bpf/verifier.c        | 20 +++++++++++++++++---
+>  2 files changed, 41 insertions(+), 3 deletions(-)
+>
 
+[...]
 
