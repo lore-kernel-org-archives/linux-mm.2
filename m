@@ -1,121 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3DC606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD04606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 02:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UZmWhM8b
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=hmChqv33
 Received: by kanga.kvack.org (Postfix)
-	id 20D306B05B4; Wed, 28 Oct 2026 22:42:56 -0400 (EDT)
+	id 4FF836B05B1; Wed, 28 Oct 2026 22:49:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BC3E6B05B5; Wed, 28 Oct 2026 22:42:56 -0400 (EDT)
+	id 4D7846B05B3; Wed, 28 Oct 2026 22:49:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D36B6B05B6; Wed, 28 Oct 2026 22:42:56 -0400 (EDT)
+	id 414116B05B6; Wed, 28 Oct 2026 22:49:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA3C96B05B4
-	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:42:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 58D54A7931
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:42:55 +0000 (UTC)
-X-FDA: 85374116310.06.9D5823A
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9B889C0002
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:42:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=UZmWhM8b;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of joasantonio108@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=joasantonio108@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 213D26B05B1
+	for <linux-mm@kvack.org>; Wed, 28 Oct 2026 22:49:46 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A439AA0245
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:49:45 +0000 (UTC)
+X-FDA: 85374133530.12.ACF5591
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CE01740003
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 02:49:41 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=hmChqv33;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf04.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793241773;
+	s=arc-20220608; t=1793242184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=li6JwHU0iWRxuOXLh3ZiIpZVFgZFIl6/9VTBe15UUWc=;
-	b=6KX0R/+E5/3Cy9UovfGn03tf7Ewf6PGsdsnVNgIlSwrFS8JgKBWS/z87bxTX0Jisx1KGLS
-	+Cml2dle3kXLnpvq1OqlzuaeIHJUG/QHjdjDsAtRlyYszZfdF770ZoB82SIhLzpjE9H+I8
-	4QHIHpksgSM0o8trwaIjlI3tYn1G1s8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hTvlG/Tq8WG71QR3KEeqZ4U9dHyqctWa0aSN+5Yu23w=;
+	b=wyWXw1dwVaEmomJNrKwY9BCS2mJ4B/9ib16v2JPFze6Gbw7T93qQBbcJLwoD0q8GYxITcn
+	kbfmJ3FjJfO0jeQ71MTBGT/f4nM3+vvKsxXW9HdvlFN64W5CyPtMMD3oy6K51odPw6adrV
+	foq6PBwNat51ExQlbjdTKxMRsbxVIAM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=UZmWhM8b;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of joasantonio108@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=joasantonio108@gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=hmChqv33;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf04.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793241773;
-	b=OsXk3bv2kPHCnPz92EzhrfqlCPRskPyljWuOwsLIchYS5PNdHniB6lbHBdpNrXI+IENBlh
-	ikT83frhQ2y4FyYt9QAxUB6zJVW4GYArVz5TsEH4hSDS68BcTYch19gdh6YZFpvmNbOzmU
-	phsZzM3kXRhm4z7ELpfwxDGIqoRKVWo=
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5eac01ff101so594883e0c.2
-        for <linux-mm@kvack.org>; Wed, 28 Oct 2026 19:42:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793241773; x=1793846573; darn=kvack.org;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=li6JwHU0iWRxuOXLh3ZiIpZVFgZFIl6/9VTBe15UUWc=;
-        b=UZmWhM8bVG/1IwGVqfXBAqfVFbhyt58U3ACvpCNRfaOJwDMGKYBUcCG98V/o80LqHh
-         Ke6hMtcb/kmEIa4vPrsgKpwgXbq4p5ptG1yauM9sVq6b1K3hSdfe6JxhwCCcNRcRW52v
-         TUK07aAuracdJnyov0QaTWdotsaC8+R0GuovfIApaVexaFmmN1E99NRlPIx4YG2Z/ftq
-         Rq0BG8PvH4GI6AtHm6OT8iZaboHEPOE5Kno696mK0i78UAq3dVugkdoLn8UVtl5nlbRj
-         DuZFpaoLM3uVe27b4mhzMMDtb+QyeMpfABsCYTs0Lvz238XzX3bUCbt3A+mInygcgSW0
-         2Ogg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793241773; x=1793846573;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=li6JwHU0iWRxuOXLh3ZiIpZVFgZFIl6/9VTBe15UUWc=;
-        b=QDI1QJWBEtdU5JsZr8KQEbefuY83T7QUwaQHk1m0nn1LFUrsibGtXFJ8yFPzKf1iC8
-         vx/VBFCgJVHTpUoKqzVB9jWsugy5iok0cxHW1XWDJKj54YpGmE2IUkdU9ZOaClktsQz3
-         xgPK0imlaOZdqWJWl3VtZa3eUE0Bw4vw2MD6TvzAmopRHjUjHeqGK9oOPj6UdSVjGSZW
-         Zryq8MO290Pnpx9IHik85aPa+K0N+AgKghv4/PWKdoevrod80KdHxG8+X8EYhu73jsSF
-         ZCvm9mHCyxS6NXlgD3ydwKq9SSaw+OGurLJ7jqLNM/bl8zg6tyJh8uleQfgz6CAkNw37
-         LBWw==
-X-Forwarded-Encrypted: i=1; AKwUvBy24FRjrN71juNLRMZYLY3ZjOtb/ljBjN08RJfc3dydsIbY5SWIh2YPVyqvS1ViObX2SO7nbzSlFA==@kvack.org
-X-Gm-Message-State: AFq9FYKi8rUX7k/MuFlUrPV2ImuxVkvbXwkxaF3dnk/ozptW02+AyTEx
-	jjUrHtiLFEwSgZ/wdrmeCS3xMS6K8WKQtJEOUNm9vpRg7tHg+eOzUXsX
-X-Gm-Gg: AYBFou2jGQVfsG/nbpDDN3FE3P+cDCYknjl0au0JD6p6b5CPEYhiGA8qjiy2MkbDa/s
-	8GxI+Y5A0aZlQH3POlNyYiLb0dB7YQ8UAhnxhuDrz3UO9iDX5PEhF4VfbN0OjgbXXcNLJoF0OiP
-	VUcBw2DuPTked6R3D1uxcvcxe7fY4nLEi/WHwlR/YGjJ612/ZSj7l6a5JBBQwPu9ZBc5mVWbLAM
-	+MoBFY6dCJ+y45C71QKsnT01Tx/l1bLzcPm3fUc4yPTgj20VHosoVx3HM43X5GKIbUDCk9DYK59
-	9+jQqwpfwbu1yrtyBC/YeXJ1wrS80A5Gf3XHta8toABktgiFy9XoiiXw4azQsNE8MpnwqUkfyJr
-	sgRIQZ4bh3lj9sYrhQTNbLTBBpSIsU3sI5+9PiIbMn/ODMZRWZtyyOYPG69Rl5LFe51UkxomhRy
-	zYaksZzFKXRIBPY5182wEoNz/wado1QcyF5PJjqoeeCGkfP735i7zaIck3v0JVk/MhR8KAUJRDE
-	U4oKOl76wSRJHELMJIJPkAt8xX4gXxoSXqUpzn9TF9mWoGorCviME6/qfH38o+m3ZDSeUbpNIJ1
-	+QztpWQJuq0XUEB/8g0nMqzKf6GXXtTLXWg2E1guP7H3Q4E5a8QH6KmJmu79YhLa5xywA3x3/nO
-	SXje1Q7WOd/wsnZ+k8XHbNyzzlvH2
-X-Received: by 2002:a05:6122:e20c:b0:5ea:9218:eac1 with SMTP id 71dfb90a1353d-5ec4cccdb04mr1920518e0c.20.1793241772644;
-        Wed, 28 Oct 2026 19:42:52 -0700 (PDT)
-Received: from macbook-pro-de-joas.local ([2804:7f0:b101:c5e8:7d75:cb37:7054:6d4b])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec57fa451csm1790680e0c.13.2026.10.28.19.42.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 19:42:50 -0700 (PDT)
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hongbo Li <lihongbo22@huawei.com>,
- syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] hugetlbfs: emit hugetlbfs_free_inode from ->destroy_inode()
-Date: Wed, 28 Oct 2026 23:42:45 -0300
-Message-ID: <179324176522.32673.7602596908234555806@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	t=1793242184;
+	b=yvHidXxkiH5yA5MoGhSN5byzNHQEnun3T0iJ2gtFZS5seiAw8Q140PPoJJgtySfuttfIqT
+	w7QTfpKwUex1UTbSUoOdXGhU+k6j7WpBAf/Njm+960NWxeCYCqnYsOEReaiWcBmFnWWt3x
+	ez3D1XjZWTk0UZfa0IvQ/k+fzBmQTCM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1793242172; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=hTvlG/Tq8WG71QR3KEeqZ4U9dHyqctWa0aSN+5Yu23w=;
+ b=hmChqv33gfVO7DDXLBCCvz024yX96oP6jT6I2APcVenpq6En0KK2EPMiu48+40o0B3lZGv
+ 4d74ls+K2rGOJsS/aOIBvfqvgKgfQLxVLEqsmFtIzNhSxVv5g61UmE3LvnkFIhQja5GY+k
+ h7ikl1twG7zZrQpES57sOFAyGRXYGmhFvhpxxJsTzPJ8lHUfhaDXEG2U9g1I6F4k5LLc8W
+ AoVCqi+nadH/RpGzeuDcG7+zV23DP16JIwtIC0rRY0eY9s323S8oVUvjeaiuFtlQ0D637R
+ EycI6Yf20UFlPP98jncdt805gVOCQweTsIMpa1O/hoqNjbWHNf64FXFpZaowXA==
+Subject: Re: [PATCH v2 0/3] sched/numa: refine memory tiering promotion heuristics
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+References: <20261028041253.74839-1-lizhe.67@bytedance.com> <20261028092004.GG2668804@noisy.programming.kicks-ass.net>
+X-Lms-Return-Path: <lba+26ae2b439+9687d8+kvack.org+lizhe.67@bytedance.com>
+Cc: <akpm@linux-foundation.org>, <bsegall@google.com>, <david@kernel.org>, 
+	<dietmar.eggemann@arm.com>, <gourry@gourry.net>, 
+	<joshua.hahnjy@gmail.com>, <juri.lelli@redhat.com>, 
+	<kprateek.nayak@amd.com>, <ljs@kernel.org>, <mgorman@suse.de>, 
+	<mingo@redhat.com>, <riel@redhat.com>, <rostedt@goodmis.org>, 
+	<vincent.guittot@linaro.org>, <vschneid@redhat.com>, <ziy@nvidia.com>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Thu, 29 Oct 2026 10:49:03 +0800
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-Rspamd-Queue-Id: 9B889C0002
-X-Stat-Signature: kknyhfzigsztyxj7tbuztq1pb9cp55t7
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20261028092004.GG2668804@noisy.programming.kicks-ass.net>
+To: "Peter Zijlstra" <peterz@infradead.org>, <bharata@amd.com>
+Message-Id: <b32b2bec-4fa1-4899-9014-52a6568cbd73@bytedance.com>
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+X-Rspamd-Queue-Id: CE01740003
+X-Stat-Signature: rp33y96dmso5gjjjpycmd7itdk6mr8eb
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1793241773-807896
-X-HE-Meta: U2FsdGVkX1/K2LwRRZkWhcq/363flJ5XztYADe5K1N5O/w9DhqP3MuAtzViAI+ugKZoRA8ZrLeBHYZnbwBnitdpr/0qF3bsI/vvgwEyBAa2VomRinJKY3gJKR34A+zdlYx8M52CRwblHrvVtuburlrgYTfrgDPf2g/lnHtK76zaCOyX5eYL1NZM6j3kw4H1kssTt0yGjoZ3HZXSHc/65S4h6ZSlUBv+lfpTV/6yQVFtxOHQ6jOZXGbMatPEuDWfjDqPjQl2SJX0B4r9rLQEGX/B7ZrLO97dJO4HgTORV95KwQbyb1mzhrQQ3OmAmosAnZxPfryzxIzlI6teKvjmwzfUXX1yNyJbzNNFrtoYSzZHj7g5ByG3wsolnj8Vk2b7JhCYwTS85XW1Ff/yMpxt/0McCliZiNRSCGxmA8JYNZ6oILRG/JyB72cGEUTJNv+fRnzGVKb6Vqm5aFVaJeStxwveB/pTWL5lzhCg/bx1KXcbszdpWjt0CJQDbyWmU7KPieU5vvCrNV3i5PnLBZyqvKdDGH57lUK+N6uCUX+YrDNXtFXvng1WUL00cRwLHbyUKVRa5LiK8SYFjwIx1qncaC1A8pYQsHKMUTvQuYIB4poU+MriUASym5ZoJ6KkP+b09HRQ5jBqU6FAWcA3/WBjzeUca5R/xnEx+hJ+jdkOn6VcImTf3urQlqlBXwBX9vOZJ56wPkjYd/d3qaaeeYmUjisZzT0FcAPIR3YaCYpPSz2nU/8NEDDIOu1hZqkwk/9269AUB8JarvC5HH4v77ohC/XmkmJN/b+2MkJozNsw7B8Mh+RhWAv20wpBfJRYa/O6/GKMpPc07lt5O/cHe+OHsE4ARapr9v2Oa5bPVyISREY1TWGodIRZSFKl1AMsu5/u5Tb4q9JoDXYfYqK/GxI5y6a4C8OziW1IkCgYFmBAzoGFKZgwNJyXxXaNG1KPCCGEXzI8jOr1ibsqq9mlwUbd
- 6v2OSLVy
- usUPl4Qp7bwj1DcTcbot026IKVCHBsvfT/AJaqXRVp/hKSYM8u5ePFMKAe1lpXJOxQeaJvSVwmyhyfCOWIrF0RgJNeIAfy+Bnmf6/tofnuCjbbaau/tT09o1Y21os4QXuiRfzFu5fIKDesYX1e+7aic4yCVqbcspqasN5PFE5FHSKlnAgtwbfZr1V0Sg+El0nnsiqVl4zhzk3TfQseMZc5AciL/SYtk+C48dujq22BJPt2oUBxSHj1aKZP4bHshqYpbHWYV8N08s73CLmWTW6PnCQ0Wb0lMKQlgCNGolBbfpC/hQz5FQt36s5R7AMGydka+3b/1J892tnuaWwZ91uzl3KxqmUjj2+ltgxC7/+toTTT6q7lntHrHSkCTSjY+r3kXu2N2WPUc1IBYeV/9rcXqMYKGhjjpsuSl3TK1Br31lP6SBqUF6t0nIHnUN9fy+pSG703NqheXJojauartG2+SXr6HSRCpxwEIp74zI5I/M45vWPrMrenmZwBPMxgacPutF/AQrnWMaR08+dZOD5npIOsKK32+uO3victFnbKAx6s0xIHjttWYkqDxCs1X7ke3y+Gzvq4tsulI0fPELz9dPIBfBQCW/0xOkZT/AhQ8CB2AQELC2fwEKxUJUS8Uk+hwbMNovJqdroXpT7vzcWAPlqW9gaZYThUPRsHkW+MvY7oBDBTlNdLQa+GUS7fL0/iRZLNJPVqvDixPYvUvbPJ/Cd61OJTfFp0EeuM1Ird0CGRDJOF6iaqTviMxto2ZLQ5YKll7vNM2pQZhc=
+X-HE-Tag: 1793242181-982926
+X-HE-Meta: U2FsdGVkX1812dcQOV6BL39YlYnvbL1j6P/LnlYKTr1eI6B5DPLmL+YTzLdtv6KStnsE4unQOp2pOWp4FGUFxI9NKcuGXh2dJVDb4UWecKpQIYvYMK8Oz0pkTd51aFjgNqwhojabkAJIVrXyH4kHVIhQUadaZ/8dbdwklpIpXTxWhqyZeQcxoB04Caff5eYaOqTrGW4lKAiPV5SjMP1bqBGLSl1zjjq3l7DNW3LyKVp/sPnEKsGhrouKOygD62+DM2a8IUC9pHDuH146RzNDBXuLH9TYGpxppTFUMXnC6RnGQkYU+CS28C1qcDdHc0ewsVrHM6jDp7EY2HJJQy5AcgZP0ZUgnHZrkwp1hqFJzUP31gVt1R9auJguX2hRxFhAiyl9x/obhf35xBLgWig/EhNQRVcHcKoxOueji52UXuNgXXky4M86tXQ+FS6h1snMD4Lw4BeQ7LVwJ8sAGZV+M4lp80UU95y4XX3Ub8JBVlAEHLneYuQxLsXcVqey9l/fJJnMxdfPl0MZJXzBmHh1rdoSb7u6zyq8NRkMjVd7FSmpKoIHh8b1HDlZwJFFIOMu7L6gsTSbxXBr6FRfWx2RhlSvOMKvgwwSn+qOeYwwf4Z79ET71w81fcaResbUiSaPngAx2gQfcIhpXi2fkIIwPGZiKUoKgRPZnuczva5rP+EVAHYamnVfhWgN/ZEEpXCVld1CEOq3rJCJ8xQAXtV5Z7maIjo8Qdzjuf8CtcyU38jR+uwfxPuiNAdGpYPzNSwUJ4CEQmku9wNaWZpAvIYdudkolyiHvwI8YGR1BbVXP7Q3IIHWDC071FSrexD6RCpyWhuXcQar+BKS4gFNMQrMwi3yUqTf0gRxyIGbPR3SYPfEhrzLzzUmAIavQiubnIDeWDXB+N3PsGkGrouCs6IfsCFQr8TrBlZQWwjxdw87W7L7g5gAVB0llM9AIGSjddJe+eUggK1RZs2XsPenftx
+ S+wpzobH
+ xp7C/yrzBahbUyC5KXhtAmcLD+oZT3/cYLGgVDPcGywojBR632qvhvwyQ3WOe9zI/0h2UY9OHr08mM22fu1LFf0oSX26Z8hg5qgpl/1cZEdyVdkKqat1ikCEvud6QFRnoieGodUbd04jYV3aT4s5DwZRfjkLWvb7syRX+XSWj98yRJo7ezg6ZtQzBF/8oem7JVT7vv1NIjgJkLWiDMs+Lx5gHpkgRd6m2mS10SDjIbsZCCEk5MGyC+u4mMCewT2ByCSxrlPlUO6xA0fFBOjLxmGl9df5+GkUEhnPt9IamqPwYQmY+yLAlugFDI95i6ABzR58ebt0Ig/Q85vXJYUu70AT6qkpZ1SZbbP3K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,82 +98,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-hugetlbfs_free_inode() calls trace_hugetlbfs_free_inode(), and the
-hugetlbfs__inode event class records inode->i_sb->s_dev.  ->free_inode()
-runs from an RCU callback (destroy_inode() queues i_callback() with
-call_rcu()), and Documentation/filesystems/porting.rst says that this
-callback "is *NOT* ordered wrt superblock destruction; as the matter of
-fact, the superblock and all associated structures might be already
-gone".  put_super() frees the superblock with call_rcu() followed by a
-workqueue item (destroy_super_rcu() -> destroy_super_work()).  syzbot
-hit this with the event enabled:
+On 10/28/26 5:20 PM, Peter Zijlstra wrote:
+> On Wed, Oct 28, 2026 at 12:12:50PM +0800, Li Zhe wrote:
+>> This version narrows the series to memory tiering.  The generic normal
+>> NUMA balancing cleanups and heuristic changes from v1 are not included.
+> Should we not look at Bharata's pghot stuff first and untangle this numa
+> balancing vs tiering nonsense, before making an even bigger mess of
+> things?
+I agree that pghot is relevant to the longer-term direction.=C2=A0 My
+understanding is that the two ideas are not conflicting with each other:
+this series tries to refine the current NUMA-balancing-based tiering
+implementation, while pghot would be a larger rework of the promotion
+infrastructure.
 
-  BUG: KASAN: slab-use-after-free in trace_event_raw_event_hugetlbfs__inode+0x45b/0x4c0 include/trace/events/hugetlbfs.h:36
-  Read of size 4 at addr ffff888038850010 by task syz-executor952/6134
-   hugetlbfs_free_inode+0x15e/0x1f0 fs/hugetlbfs/inode.c:1182
-   i_callback+0x46/0x80 fs/inode.c:317
-   rcu_do_batch kernel/rcu/tree.c:2650 [inline]
-   rcu_core+0x5f0/0x1220 kernel/rcu/tree.c:2919
-  Allocated by task 6134:
-   alloc_super fs/super.c:326 [inline]
-   sget_fc+0x1ba/0x1f60 fs/super.c:874
-   hugetlbfs_get_tree+0x1e7/0x2b0 fs/hugetlbfs/inode.c:1431
-  Freed by task 855:
-   kfree+0x22b/0x6d0 mm/slub.c:6923
-   process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
+Let's also copy Bharata here so he is aware of this discussion.
 
-Emit the event from hugetlbfs_destroy_inode() instead.  destroy_inode()
-calls ->destroy_inode() synchronously, before it queues the RCU
-callback, while the superblock is still alive; hugetlbfs_destroy_inode()
-already dereferences inode->i_sb there.  ->free_inode() is left with
-only the kmem_cache_free().
+Based on Joshua's comment, I can also split patch 2 out as a standalone
+fix with a proper Fixes tag, and keep patches 1 and 3 for the broader
+tiering heuristic discussion.
 
-Fixes: 014ad7c42a69 ("hugetlbfs: use tracepoints in hugetlbfs functions.")
-Reported-by: syzbot+91e1fc35f51774c479b2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6ae27525.5451848c.f7707.0001.GAE@google.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
----
-Tested on net/main 94cea342e891 (arm64, QEMU, generic KASAN, tracing
-enabled) with the syzbot C reproducer, which enables
-events/hugetlbfs/hugetlbfs_free_inode and races hugetlbfs mounts and
-lazy unmounts with open + unlink.  Without this patch KASAN reports the
-slab-use-after-free in trace_event_raw_event_hugetlbfs__inode() from
-hugetlbfs_free_inode() <- i_callback() during the first 10 second run,
-on 3 of 3 boots.  With it, 12 runs over 2 boots are clean, and the trace
-buffer still holds the hugetlbfs_free_inode events (about 46k per boot)
-with valid dev numbers.  fs/hugetlbfs/inode.o builds cleanly with W=1.
-
-The event now fires when the inode is destroyed instead of when its
-memory goes back to the slab cache, one RCU grace period earlier; the
-recorded fields are the same.
-
- fs/hugetlbfs/inode.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 6656807..27a3937 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -1179,12 +1179,16 @@ static struct inode *hugetlbfs_alloc_inode(struct super_block *sb)
- 
- static void hugetlbfs_free_inode(struct inode *inode)
- {
--	trace_hugetlbfs_free_inode(inode);
- 	kmem_cache_free(hugetlbfs_inode_cachep, HUGETLBFS_I(inode));
- }
- 
- static void hugetlbfs_destroy_inode(struct inode *inode)
- {
-+	/*
-+	 * Not in ->free_inode(): that runs from an RCU callback, when the
-+	 * superblock the event reads may already be freed.
-+	 */
-+	trace_hugetlbfs_free_inode(inode);
- 	hugetlbfs_inc_free_inodes(HUGETLBFS_SB(inode->i_sb));
- }
- 
--- 
-2.39.5
+Thanks,
+Zhe
 
