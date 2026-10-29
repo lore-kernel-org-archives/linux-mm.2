@@ -1,141 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A03606A31D
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DB4606A31A
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Oct 2026 19:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vuz79kYO
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=djhtxDlm
 Received: by kanga.kvack.org (Postfix)
-	id 8C44D6B05B2; Thu, 29 Oct 2026 15:26:41 -0400 (EDT)
+	id 1C0D36B05B4; Thu, 29 Oct 2026 15:27:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84DAD6B05B3; Thu, 29 Oct 2026 15:26:41 -0400 (EDT)
+	id 170DE6B05B5; Thu, 29 Oct 2026 15:27:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 716746B05B4; Thu, 29 Oct 2026 15:26:41 -0400 (EDT)
+	id 060B06B05B6; Thu, 29 Oct 2026 15:27:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 430E66B05B2
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:26:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A299212045E
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:26:40 +0000 (UTC)
-X-FDA: 85376645760.06.5A8E4E8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D022116000B
-	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:26:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vuz79kYO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D24206B05B4
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 15:27:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4ECFC8048B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:27:11 +0000 (UTC)
+X-FDA: 85376647062.08.3508CBA
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9A169A000B
+	for <linux-mm@kvack.org>; Thu, 29 Oct 2026 19:27:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=djhtxDlm;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3DJ7jagYKCDUbleZplXffXcV.TfdcZelo-ddbmRTb.fiX@flex--kuniyu.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3DJ7jagYKCDUbleZplXffXcV.TfdcZelo-ddbmRTb.fiX@flex--kuniyu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793301998;
+	s=arc-20220608; t=1793302029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=olq2oLw59YhnpeUJwxDmzWejxUeT+/sp90poHb2MYpE=;
-	b=6/nWrMEuSXexE6NQb1RgamdQhvoAsGy9Qr8wdMUEux7KOI65YmPW1hcvEfDv1bVdVhPNRj
-	8bdzeISFoUWhoadEicGIZwa/ZEvUaVRY4DOc7H3AZ5LUPmLBkmbKiNFBXpWc0wLbslglFI
-	Q+WCaItmSLd4NqZn40EqfTjKMtV8vtE=
+	bh=FdQRCRrJYOu5wxkzWtr5JmhvTpLm+/jNo5Ek6VGu/fE=;
+	b=rPhS1o93cD2agQ74g+n+tVEhqgJz1ohJ55eUaqRa1FfE8qQFPuuGCw1EiihNIdAmsXVTJJ
+	W42kU2S5xcv2kIN3GsDE0R9Y03vpzKFS6B6Mm6QI49tM24cdPYIDv1NRny+55iGJ1nbdIM
+	ULJINRw0Z3/AF3MWLIBI4z1g17Swaq8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vuz79kYO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=djhtxDlm;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3DJ7jagYKCDUbleZplXffXcV.TfdcZelo-ddbmRTb.fiX@flex--kuniyu.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3DJ7jagYKCDUbleZplXffXcV.TfdcZelo-ddbmRTb.fiX@flex--kuniyu.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793301998;
-	b=hE025AukIuPnN5L0lxBz32SWQdgFl4MUMIbsHEgP+K80BbueXh7TxZqNaODpUknVHA4mm5
-	WKhkxMaMzS8YIb9KNROz9hsJQVn5voUDMc5BOKlDa7X7BGmMrKUw899yOCyw/GGC+HOd6o
-	jl89hu9iN++FVN3oE6J4VoisPgKrAKk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFD0743CE8;
-	Thu, 29 Oct 2026 19:26:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B31D1F01816;
-	Thu, 29 Oct 2026 19:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793301997;
-	bh=olq2oLw59YhnpeUJwxDmzWejxUeT+/sp90poHb2MYpE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Vuz79kYOC25Pp9Lahkn6JIoGjLKWZgFMbszt9wdYOSUiNklBr4qPAG+Z4n0nCZ1A0
-	 eTnnRFm9Rw4IsBqS8OzDtTl17wf+e48vjls768zrm5h2RnQ9WeHLCsdOSWJIIaeEOb
-	 YML9LUIT7+G5zuOu3mOEaeFf/7OJ1Hauz1eLBtTE5Z/wfuS50OqrjJRgjI1JwBkGI+
-	 kF1Ii/KT98x8jXIXfkV/UZVqCgi8xq9PU4qG3X67p4XghMEn7hf338VOMdjyjL/U8R
-	 ylDOaPrnvYV/ZL/kdu/Wn3yRVQ8rZ1F8Hz7yZiCTmDjZVn9p2Tb1lfA9FPtv+/Sj+Z
-	 orROyVbGDU/Kg==
-Message-ID: <0a1ad7d2-ff0e-4248-8f03-2a64a9134aae@kernel.org>
-Date: Thu, 29 Oct 2026 20:26:33 +0100
+	t=1793302029;
+	b=RbsetIxSDEFHspT/MZu4kvOcMMIPyyGvDzTRWMNGwDfnEv/YfII8vTwWNznWp9QOaVGXy3
+	3rIGheec4sa1xhw4+PgkHtm07H9bUjWZEX7vk2HrBkJYbR/zE0toZPia2HNU3RoBmEMQfI
+	RtgScDcRgPejPp47KCWyB5uLXBxmgzw=
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd60a365440so1740806a12.2
+        for <linux-mm@kvack.org>; Thu, 29 Oct 2026 12:27:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793302028; x=1793906828; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FdQRCRrJYOu5wxkzWtr5JmhvTpLm+/jNo5Ek6VGu/fE=;
+        b=djhtxDlmtpb5QzJZPQm4KgNjfO34qNU6SazdsVuyRl3GMXdEJqKg94AiNjvCz+julX
+         fw9W793zriOo5l9sb6lGQWsVDUStx2O4PGFjFMV70zWnC96S/w8/hk01ZI1yNRqoiPXo
+         uHkBGARFbRcVyvlp0k7DEwM2KeYOgNbbSIBhHIMpjuGv2cx9/VrBFbZuM7EMAoL5HFVp
+         OM3tPMmfViXUzqqMU36s4qIyTcmFIUUKJeg+nt3PxeL140KnaQzOEybqvsQBlTPXUKuI
+         8aPQuvv6g8wAGwMhsBUszvfToJQKAL17IU6JXzXR6CPvwNEsvKVXALMk3o6cGyPMJStM
+         l1cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793302028; x=1793906828;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FdQRCRrJYOu5wxkzWtr5JmhvTpLm+/jNo5Ek6VGu/fE=;
+        b=bTghtc3clD0Apl7eWkTjss2lrA/XFHFoihgKX14qXlGju20Jxs2Mhl32f8DOYWtnLP
+         G7vaxU1RhO6wOzBZ2CdWl9NObVqLMCytmLvmibO35sMhPEwXWHHsb+En+ln7Klvniz4o
+         q1HRM5jaMj0Jou1QcgDFO1GULJiRpgZUQV9rTfeXobcyw50U2ZZR0hOcJaORN0GqFHyP
+         vaztT3M/iQAPhO1xiVZ9QnLNPRyiEK72XLrrYRgLQ1rx3lz7u+kquBvG+j616vzIXyG+
+         L7uOQsNV/YQb7y2ljhxhfny7C4wQuxSzNd4r/ur0rKFQI8/gdyUcAUn7LS87ZfiyqlVi
+         GLsg==
+X-Forwarded-Encrypted: i=1; AKwUvBw51i06H7hcyI7xNiygcMJFX8gnGwA2JOxdWN+AhUhWAUWr2/qrIz4Jm+bzvN5Vt4zy0qpLgzqt4g==@kvack.org
+X-Gm-Message-State: AFq9FYJ5+X2dHo0A2sdbHDPyug515N/PnvQQdnyGIO89g7zhcOEm8Ims
+	qUI6kXa3AHyIKQhVHFWpYLUig8mwFSLwAnzkQlmZefZA3uQNB1CWb4IilSbmLfqD2AWDPnNrw15
+	JzFvaWg==
+X-Received: from pgbm25-n1.prod.google.com ([2002:a05:6a02:6199:10b0:cca:c02e:bfe5])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6372:a745:b0:3e8:b7fd:6273
+ with SMTP id adf61e73a8af0-3e928d46c3fmr159781637.25.1793302028204; Thu, 29
+ Oct 2026 12:27:08 -0700 (PDT)
+Date: Thu, 29 Oct 2026 19:27:07 +0000
+In-Reply-To: <auNQ9fjjyF5Xa0qb@thinkstation>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/filemap: stop fault-around when the walk steps back
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Krystian Kaniewski <krystianmkaniewski@gmail.com>
-References: <20261028-jf-mm-filemap-map-pages-lower-bound-v1-1-0bf126e876d4@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261028-jf-mm-filemap-map-pages-lower-bound-v1-1-0bf126e876d4@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D022116000B
-X-Rspam-User: 
-X-Stat-Signature: oo6fpdr1zrnykirruj7j1b6ket6u1cg9
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Mime-Version: 1.0
+References: <20261028194014.3671161-1-kuniyu@google.com> <20261028194014.3671161-2-kuniyu@google.com>
+ <auNQ9fjjyF5Xa0qb@thinkstation>
+Message-ID: <auOddgOVRE7EDDkn@google.com>
+Subject: Re: [PATCH v3 1/2] mm/kasan: Detect double-free involving kfree_rcu_sheaf().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Harry Yoo <harry@kernel.org>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Alexander Potapenko <glider@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, kasan-dev@googlegroups.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: 9A169A000B
+X-Stat-Signature: u7zwifgrctru7awog7nezayz7to4xqi1
+X-Rspamd-Server: rspam06
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1793301998-485248
-X-HE-Meta: U2FsdGVkX1/GzxGooN7V9VPdgmL+e4huSNBmunx/t4Jzu0gTY1XCZaledTmk6qqI+oKc7fEP8GfE/Ml7GmSFo52gMIGQ6HBR7mQ2OI/yQnKOP8P5LXU/ryI+TE7yqmEzE9t+moLIpIcnKuJ7FisbmIOUFC0uib4i9um9/U3OUTLJnoqwYOvapTGingEyQgnW9v71Ok1hg1Btt6K5Ylw+EsAdCycdYEjxbwpPanD2hnNOCbFIxWK3LNi7y5cXzVFL3WTcSXXK32jLLA8T1smSAM7yyDIfam7w3OqVYjXIiU/NOPUwijKGLIh9O8ciVmTV9zJO8hJ6SzP4zfz9qs4OGvTjFgNy3vb6ygWQwdJsNzF3i0MYjGi+MFnxtNkgckdUX99VcqARS2XpHL94ha9l4hJfqpMank53fVPPHZx0nfxEX8FmxzUcQ1oXUbSQxaN1LvPnUamnYk3ZDKoaQw8xrxN2rlThAIz31EXXOV8intxW3jbJejXowYjydUz47QZAQcS4wlYE9T7RjbIeXfAsgHNEo3kdtL+FeqxMvLMopSpChgf/MCMx4R5XgNL0xlvw4pFyw8lP1M6LMKFqXjVX65+5KxdCyE3sN3tgB1GUTNoXzQ3JxAxheBeNVyerCN+rBmAC/3uEwykHqHD0r1sxsM437wfKQUqC259idXCCWZ7N0bCuX9151x3xtHbrQsSsQXnHeHgKV3nPrE2JqfrbubuV7a6XlUlnJ8okqHlX5iZJEWgCcGKJ6RmgbkZ/KBOPyPzuegd1jW3mcdDXQsDAK1kIuqQ7zFfGEuao7UuuKsognizWGie09LTYIF1XhkXlD+cbgWYEpHmiR/CYl6k5UkBy97HvgkY2BRq1DRsoyoFYzCLa6ad4mtdLRNRjSVqynmD6HHIYMc1aDCUFx7+ycTHhWcIXwxgl3x5N5AAZPT+65jRuZEOHHwcloIx2kps+/jC4iWWwCqXpaJc6lLE
- 0gVwwztz
- ys35yB632wBAmre3JXS8+eBzWI78r8fci3jKaGpN0CRWcgxNYeYmzZLMGs9SOp99Hvc7X0PrBsh6J0rhoGHy7aHewTL43e8Eh3Pbo0X1Ri7bu+kzd7T4Kb23fduelnxcUFxMRyIauuBVxNJcnaCitfJoRljPaOTTqsTrdfTarSezWcQMsjRqqJWFF8MsjjIPUlq/FXlQQo+xUdTsPQuYY3c76nzG3GROSKGBI0pckrONoS4GwNQJsnneiqzOebj+pY2Xs8Dcu0oir6cvx5ZV9Dxbv8t9ENqR0DIKqF1jbKr2P4rg=
+X-Rspam-User: 
+X-HE-Tag: 1793302029-604735
+X-HE-Meta: U2FsdGVkX18FEYmzf20EfP3LSsej4qK4IDdiFcqC45oa0DR6nhrxhN3BkddkWe0ZYGUjz4w52ReStsmqWesaDfQt5D7OjSXDz8PH5qEDnQIsJGEFH7SCt7eV+o9g55lSDFcU9RLLWce4iljhDt5OclndsSWS8BDLV86g9guBtKeMKlyB6I6JZlbuWZSAxDMFN8EJLTHeoT3H2pxHAzEDsqi6oE4Rwxa6kPjJtwi2tiNWgP+r6vW9OPL6Y1tt0XKz9hNPt54wAaX3XMQkzulO/5uBgiExTDTccplWE2fmpN+nezbPwftkhWJyJ0nxhfZpRsmc7Umsv0iRaRCRe6WOS3nps/canYCwM/FIcVfLuSuAubhkYfp6Q5992LXTCoMm7js2v9SOoYPBEfGD0sOXThpyScMe5BYPXXIggmQCI8f6g/wnX48Uuy1IML9sK/8qDaQNRXqsc0WRCp+PaK3FtMQgxIv9w0GQQBu2pwGw0fT6GCkJgGUpKoOqZIGwkuOnKcdD2oDc7B8jyPSc251XUPWJ+o3y9sUtZ5NoYOwdNaWunLLLsYGq8FDXoovtAP5RFqi8s0m+jw7ci2dmUpNOx3aopxuR0E9zw782S34xeQps5gk6H7EJViB6bxhKUxSTaXxR7T6/qft9dl0qGb7rzYetn+5PRwa+T0a4HhQlx8wpzGgbhByOa1GXqptj78psMROm13mQqMzV89bMB6ZDysmZBVbXm5OcaI7lPOkD0PnidPlW/1zQWF/C90O8HyU+rqw83s1BBcYKfhot5wG3hy4hD8wQdTqWEM8Kir1RLdofoKKVSwSv16aIs7MilcKCBixg8C2XtLD8BEeZCclTsKBVmDJT8QmGp7kX0Ju5ub4SyZ4w9gPM1AxMaU3+WU8JoRP5lqOBBH/i15yPAdCsB9HIHlThwnzWWuWv26wvIsSTywEHiLBF64Afz0yCEsp1EUeUTh237M0ga28hbF4
+ SOkxmFc7
+ CwbGQXy+z6HOfcITl9VhQU2HCpl0qoxln8200nl4X9HUK72shOiB8rQnKTD2M6teBKNG+QNzb8a2FWppTPPs5iQkATcy9YtAkkgWIr6FidEVY9lSapJ59eF4O2T+TyLNe6phv6Dggca3RK1D0tIM3TuFhbag/ErGzDDV3/Ob+CaqR/GwOSlIzspzEAKKzB5PAIHuSSdpaUPmlfyySWMYMw10AF6IxzLjH2pZnwFnWOZT6u3Z5uhBONFktLPm37zo1g/FZSpfD5iw0OUz1Tw9UZhX3oyjABShWYlQees4v/Kru/D4qWKv3aOmJG3I2+wlYcsyLKWCbVP9CDQ4MQPNu7F84u693izAzKi7YTOuE524shNiSSBaZBno9VN7Ok759bKtKnYUBAzB0DjGLBL49A/4r0abJTeV+oCa7PRqJIm3pK2Vhyk1IfrpJ9REgJpSSHo+5Yhendsj48lmNB3PKnr9VkyPW+GoGQLNU3AYdKx2hMXMzOTRwMPuJvKHE2EaKkS46qWss0mZ+RCEcf9kWBMCtQ3a4XCfIpc48Zl4G8lUG8b4X3mG0RmqTRMYnv/pzQ9SRwT6tt/de+dMzgEJx8LteSvwPymj5DDrHxm0Tcdxttn9W4yaTh1K7ZQ+tddKZAq8Y+op9FR2iQDOd7tYbsPafSsKxIE0qEgZjdPFniRT3eqr1dPxpFtHDMz8C5Qy+bwL9Y0ra/9EL5J5mIbekY7i5MzGCA5olfIYcOU/bDWnTZEcKGGTgFJhydw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,50 +117,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/29/26 16:50, Jose Fernandez (Anthropic) wrote:
-> filemap_map_pages() can dereference a PTE pointer outside the page table
-> it locked. KASAN has reported this as a use-after-free read [1].
+On Thu, 29 Oct 2026 14:07:21 +0000, Harry Yoo wrote:
+> On Wed, Oct 28, 2026 at 07:39:19PM +0000, Kuniyuki Iwashima wrote:
+> > syzbot reported a weird use-after-free splat. [0]
+> > 
+> > In the report, an object in the kmalloc-64 cache was freed via
+> > rcu_free_sheaf() while it was still in use, even though the
+> > object should always be freed with kfree() (in xfrm_hash_free()),
+> > implying that the object was a victim of a double-free involving
+> > kfree_rcu() somewhere else.
+> > 
+> > When kvfree_call_rcu() frees an object via kfree_rcu_sheaf() and
+> > queues it into pcs->rcu_free, debug facilities are skipped, e.g.,
+> > kasan_slab_pre_free(), kasan_record_aux_stack(),
+> > debug_rcu_head_queue(), etc.
+> > 
+> > As a result, KASAN cannot detect the double-free at the call site.
+> > 
+> > If the object is still in the KASAN quarantine when the sheaf is
+> > flushed, KASAN can detect the double-free in rcu_free_sheaf(), but
+> > with no trace of the suspect.
+> > 
+> > Worse yet, once the object is evicted from the quarantine and
+> > reallocated before the sheaf is flushed, rcu_free_sheaf() silently
+> > poisons the live object, resulting in a false-positive use-after-free
+> > report on the new user.
+> > 
+> > If __kfree_rcu_sheaf() simply calls kasan_slab_pre_free(), we
+> > can detect the second kfree_rcu(), but only while the object is
+> > poisoned in the KASAN quarantine after the first free:
+> > 
+> >   kfree()     --(poisoned)--------------------> kfree_rcu()
+> >   kfree_rcu() -> rcu_free_sheaf() -(poisoned)-> kfree_rcu()
+> > 
+> > An object queued in pcs->rcu_free remains unpoisoned until the
+> > sheaf becomes full and rcu_free_sheaf() runs after the RCU
+> > grace period, so a subsequent kfree_rcu() or kfree() before
+> > rcu_free_sheaf() cannot be detected by shadow bytes alone:
+> > 
+> >   kfree_rcu() -(unpoisoned)-> kfree_rcu() -> rcu_free_sheaf() (too late!)
+> >   kfree_rcu() -(unpoisoned)-> kfree()     -> rcu_free_sheaf() (too late!)
+> > 
+> > These cases can be detected if we call debug_rcu_head_queue()
+> > before kfree_rcu_sheaf(), but ODEBUG splat only shows the second
+> > free.
+> > 
+> > To detect these cases with KASAN, we just need a 1-bit flag
+> > to indicate the state, which can reuse an unused bit in struct
+> > kasan_track.pid. (PID_MAX_LIMIT is 1<<22)
+> > 
+> > The bit is marked along with recording the stack trace when
+> > deferring slab frees in kfree_rcu_sheaf() and checked in
+> > check_slab_allocation() so that any double-free pattern above
+> > can be detected immediately.
+> 
+> Why do we not need the same thing when it bypasses kfree_rcu_sheaf()?
 
-Only read or also write? I assume only read.
+In the fallback path, we can detect it via ODEBUG at the 2nd
+free, and I wanted to focus on SLAB Sheaf in this series since
+it was the initial motivation, but I'm happy to follow up
+if we want.
+
+
 
 > 
-> Its fault-around loop walks the page cache and moves vmf->pte by the
-> change in index. A lower index moves it back. xas_find() can step back
-> to a lower index when a multi-index entry is split during the walk.
+> > Link: https://lore.kernel.org/all/6ac959ee.70ed5d86.2ac85.007d.GAE@google.com/ #[0]
+> > Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
+> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > Tested-by: Alexander Potapenko <glider@google.com>
+> > Reviewed-by: Alexander Potapenko <glider@google.com>
+> > Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+> > ---
+> > v2:
+> >   * Add Fixes tag
+> >   * Add kdoc for @after_rcu_delay of kasan_slab_pre_free()
+> >   * Rename s/kasan_record_aux_stack_rcu/kasan_mark_rcu_free_pending/g
+> >   * Add comment for __kasan_record_aux_stack()
+> > ---
+> >  include/linux/kasan.h | 15 +++++++++++----
+> >  mm/kasan/common.c     | 13 ++++++++-----
+> >  mm/kasan/generic.c    | 17 ++++++++++++++++-
+> >  mm/kasan/kasan.h      | 34 +++++++++++++++++++++++++++++++++-
+> >  mm/slub.c             | 13 ++++++++++---
+> >  5 files changed, 78 insertions(+), 14 deletions(-)
 > 
-> [1] fixes xas_find(), but the loop still relies on the walk never
-> stepping back. Stop the fault-around when the walk steps back. ->fault()
-> maps the faulting page if the loop did not.
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 > 
-> Link: https://lore.kernel.org/20260904121301.200049-1-krystianmkaniewski@gmail.com [1]
-> Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-> ---
->  mm/filemap.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index b74bc1e5015c..1df776907140 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3968,6 +3968,13 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->  		unsigned long end;
->  		vm_fault_t map_ret;
->  
-> +		/* A lower index could move vmf->pte out of its page table. */
-> +		if (unlikely(xas.xa_index < last_pgoff)) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +			break;
-> +		}
-> +
->  		addr += (xas.xa_index - last_pgoff) << PAGE_SHIFT;
->  		vmf->pte += xas.xa_index - last_pgoff;
->  		last_pgoff = xas.xa_index;
-
-Sounds like we want a Fixes: tag and Cc: stable? :)
-
--- 
-Cheers,
-
-David
 
